@@ -8,10 +8,10 @@
         var newVal = $('input[name=new_revision_id]:checked:first').val();
         var oldVal = $('input[name=old_revision_id]:checked:first').val();
         if (newVal == oldVal) {
-            $('a.compareButton').hide();
+            $('a.compareRevisions').hide();
         }
         else {
-            $('a.compareButton').show();
+            $('a.compareRevisions').show();
         }
     };
     $(preventSameRevisionCompare);
@@ -23,12 +23,17 @@
     PROCESS compare_revisions;
   END %]
     </ul>
+    <ul id="revision-tools">
+      <li class="flexButtonBlue">
+        <a class="genericBlueButton" href="[% "${script_name}?${page_uri}" %]">[% loc('Back To Current Revision') %]</a>
+      </li>
+    </ul>
   </div><!-- st-editing-tools-edit END -->
   <div id="controlsRight"></div><!-- controlsRight END -->
 </div><!-- controls END -->
 
 <div id="contentContainer">
-  <h2 class="tableTitle" title="[% display_title %]: [% loc("Back To Current Revision") %]">[% display_title %]: <a href="[% "${script_name}?${page_uri}" %]">[% loc("Back To Current Revision") %]</a></h2>
+  <h2 class="tableTitle" title="[% display_title %]">[% display_title %]</h2>
   <form name='revisions' id="compare_revisions" onsubmit="return check_revisions(this);">
     <input type="hidden" name="action" value="revision_compare" />
     <input type="hidden" name="page_name" value="[% page_uri %]" />

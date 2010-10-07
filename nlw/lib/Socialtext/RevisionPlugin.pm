@@ -65,6 +65,26 @@ sub revision_view {
     $page->revision_id( $self->cgi->revision_id );
     $page->load();
 
+    # find the previous and next revision
+    # if there is no previous revision, use the current revision
+    # if there is no next revision, use the current revision
+    my $this_revision = $self->cgi->revision_id;
+    my $previous_revision = $this_revision;
+    my $next_revision = $this_revision;
+    my $one_more_time = 0;
+
+    for my $revision_id ( sort { $b cmp $a } $page->all_revision_ids ) {
+      if ($one_more_time) {
+        $next_revision = $revision_id;
+        last;
+      }
+      if ($revision_id == $this_revision)  {
+        $one_more_time = 1;
+      } else {
+        $previous_revision = $revision_id;
+      }
+    }
+
     my $output = $self->cgi->mode eq 'source'
       ? do { local $_ = $self->html_escape( $page->content ); s/$/<br \/>/gm; $_ }
       : $page->to_html;
@@ -77,6 +97,8 @@ sub revision_view {
     $self->render_screen(
         $page->all,
         from => $from,
+        previous_revision => $previous_revision,
+        next_revision => $next_revision,
         human_readable_revision => $revision,
         tags => [ $page->html_escaped_categories ],
         edit_summary => $edit_summary,
@@ -85,6 +107,34 @@ sub revision_view {
         display_title_decorator  => loc("Revision [_1]", $revision),
         print                   => $output,
     );
+}
+
+
+sub next_compare {
+    my $self = shift;
+    my $page = $self->hub->pages->current;
+
+    my $old_revision_id =  $self->cgi->old_revision_id;
+    my $new_revision_id =  $self->cgi->new_revision_id;
+    # find the next newest revision after old if old < new
+    # TODO: when old meets new, Next Compare bumps both
+
+    my $previous_revision_id = $old_revision_id;
+    my $next_revision_id = $old_revision_id;
+    my $one_more_time = 0;
+
+    for my $revision_id ( sort { $a cmp $b } $page->all_revision_ids ) {
+      if ($one_more_time) {
+        $next_revision_id = $revision_id;
+        last;
+      }
+      if ($revision_id == $old_revision_id)  {
+        $one_more_time = 1;
+      } else {
+        $previous_revision_id = $revision_id;
+      }
+    }
+      return ($next_revision_id,$previous_revision_id);
 }
 
 sub revision_compare {
@@ -111,9 +161,13 @@ sub revision_compare {
     my $old_revision = $before_page->metadata->Revision;
     my $new_revision = $new_page->metadata->Revision;
 
+    my ($next_id,$prev_id) = $self->next_compare();
+
     $self->screen_template('view/page/revision_compare');
     $self->render_screen(
         $page->all,
+        next_id => $next_id,
+        prev_id => $prev_id,
         diff_rows => $differ->diff_rows,
         header => $differ->header,
         display_title    => $self->html_escape( $page->title ),
