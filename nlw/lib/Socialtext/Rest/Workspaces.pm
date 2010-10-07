@@ -217,7 +217,8 @@ sub POST {
             -status => $status,
             -type   => 'text/plain',
         );
-        return "$message";
+        $message =~ s/at\s+.+\.pm\s+line\s+\d+\s*$//;
+        return $message;
     }
 
     my $location = @workspaces > 1

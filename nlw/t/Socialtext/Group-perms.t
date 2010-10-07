@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 38;
+use Test::Socialtext tests => 40;
 use Test::Socialtext::Account qw/export_account export_and_reimport_account/;
 use Test::Exception;
 use YAML qw/LoadFile/;
@@ -22,6 +22,9 @@ update_perms_controlling_ws: {
         'update group permissions lives';
 
     is $grp->permission_set, 'self-join', 'group permission is updated';
+    is $grp->display_permission_set, 'Self-Join',
+        'group displayable permission set is correct';
+
     is $ws->permissions->current_set_name,
         'self-join', 'workspace permission is updated, too';
 }
@@ -128,4 +131,6 @@ import_group_without_permission_set: {
     );
     is $group->permission_set, 'private',
         'Missing permission_set set to a sane default';
+    is $group->display_permission_set, 'Private',
+        'display is correct';
 }

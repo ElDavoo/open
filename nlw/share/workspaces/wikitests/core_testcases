@@ -101,6 +101,7 @@ Keep these Miki test cases at the end since they create a large number of users
 
 * [Test Case: Miki]
 * [Test Case: Miki Authentication]
+* [Test Case: Authen Renewal]
 
 Put tests that don't use the browser here
 

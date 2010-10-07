@@ -471,7 +471,7 @@ sub _get_wafl_data {
     # authorized to see (and we see all such results).
     $hub->current_user($self->hub->current_user);
 
-    $hub->search->get_result_set( search_term => $query );
+    $hub->search->get_result_set( search_term => $query, limit => 10000 );
 }
 
 sub _format_results {

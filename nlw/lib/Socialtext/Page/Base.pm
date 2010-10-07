@@ -594,6 +594,10 @@ sub _answer_file {
         warn "No _page_cache_basename, not caching";
         return;
     }
+
+    # Turn SvUTF8 off before hashing the answer string. {bz: 4474}
+    Encode::_utf8_off($answer_str);
+
     my $filename = "$base-".sha1_hex($answer_str);
     (my $basename = $filename) =~ s#.+/##;
     warn "Answer file: $answer_str => $basename" if $CACHING_DEBUG;

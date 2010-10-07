@@ -1100,6 +1100,28 @@ CREATE TABLE signal_attachment (
     signal_id bigint NOT NULL
 );
 
+CREATE TABLE topic_signal_link (
+    signal_id integer NOT NULL,
+    href text NOT NULL,
+    title text
+);
+
+CREATE TABLE topic_signal_page (
+    signal_id integer NOT NULL,
+    workspace_id integer NOT NULL,
+    page_id text NOT NULL
+);
+
+CREATE VIEW signal_asset AS
+ ( SELECT topic_signal_link.signal_id, topic_signal_link.href, topic_signal_link.title, NULL AS workspace_id, NULL AS page_id, 0 AS attachment_id, 'weblink' AS "class"
+   FROM topic_signal_link
+UNION ALL 
+ SELECT topic_signal_page.signal_id, NULL AS href, NULL AS title, topic_signal_page.workspace_id, topic_signal_page.page_id, 0 AS attachment_id, 'wikilink' AS "class"
+   FROM topic_signal_page)
+UNION ALL 
+ SELECT signal_attachment.signal_id, NULL AS href, NULL AS title, NULL AS workspace_id, NULL AS page_id, signal_attachment.attachment_id, 'attachment' AS "class"
+   FROM signal_attachment;
+
 CREATE SEQUENCE signal_id_seq
     INCREMENT BY 1
     NO MAXVALUE
@@ -1125,12 +1147,6 @@ CREATE SEQUENCE tag_id_seq
 CREATE TABLE tag_people__person_tags (
     person_id integer NOT NULL,
     tag_id integer NOT NULL
-);
-
-CREATE TABLE topic_signal_page (
-    signal_id integer NOT NULL,
-    workspace_id integer NOT NULL,
-    page_id text NOT NULL
 );
 
 CREATE TABLE topic_signal_user (
@@ -1465,6 +1481,10 @@ ALTER TABLE ONLY "System"
 ALTER TABLE ONLY tag_people__person_tags
     ADD CONSTRAINT tag_people__person_tags_pkey
             PRIMARY KEY (person_id, tag_id);
+
+ALTER TABLE ONLY topic_signal_link
+    ADD CONSTRAINT topic_signal_link_pk
+            PRIMARY KEY (signal_id, href);
 
 ALTER TABLE ONLY topic_signal_page
     ADD CONSTRAINT topic_signal_page_pk
@@ -1836,6 +1856,12 @@ CREATE INDEX ix_signal_uset_groups
 CREATE INDEX ix_signal_uset_wksps
 	    ON signal_user_set (signal_id, user_set_id)
 	    WHERE ((user_set_id >= (B'00100000000000000000000000000001'::"bit")::integer) AND (user_set_id <= (B'00110000000000000000000000000000'::"bit")::integer));
+
+CREATE INDEX ix_topic_signal_link_forward
+	    ON topic_signal_link (href);
+
+CREATE INDEX ix_topic_signal_link_reverse
+	    ON topic_signal_link (signal_id);
 
 CREATE INDEX ix_topic_signal_page_forward
 	    ON topic_signal_page (workspace_id, page_id);
@@ -2419,4 +2445,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '126');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '127');

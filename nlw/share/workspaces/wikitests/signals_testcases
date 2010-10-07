@@ -1,26 +1,32 @@
 A convenience testset for running all of our Signals tests
 
+* [Test Case: Replies]
+* [Test Case: Signals Bookmarklet]
+* [Signals Annotations Testcases]
+
 * [Test Case: Signal to Networks]
 * [Test Case: Signals Search]
 * [Test Case: Signals Search Pagination]
+* [Test Case: Signals Workspace Privacy Rules]
 
-* [Test Case: groups ui search signals by group]
-* [Test Case: groups ui send signal to group]
-* [Test Case: groups ui signal from group home]
+* [Test Case: Groups UI Search Signals by Group]
+* [Test Case: Groups UI Send Signal to Group]
+* [Test Case: Groups UI Signal from group home]
+* [Test Case: Signal Page to Group]
 
-* [Test Case: signals page]
+* [Test Case: Signals Page]
+* [Test Case: Permalink Refresh]
+* [Test Case: Signal From Private Group]
+* [Test Case: Signal From Profile]
 
-* [Test Case: signal from private group]
-* [Test Case: signal from profile]
-* [Test Case: private signal]
-* [Test Case: signal to networks]
-* [Test Case: signals activities interaction]
-* [Test Case: signals follow filter with pagination]
+* [Test Case: Signal to Networks]
+* [Test Case: Signals Activities Interaction]
+* [Test Case: Signals Follow Filter With Pagination]
 
-* [Test Case: signals login logout]
-* [Test Case: mobile signals]
+* [Test Case: Signals Login Logout]
+* [Test Case: Mobile Signals]
 
-* [Signals Annotations Testcases]
+* [Test Case: Private Signal]
 
 And the MONSTER:
 

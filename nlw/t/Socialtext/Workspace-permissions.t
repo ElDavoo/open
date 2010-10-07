@@ -7,20 +7,21 @@ use Socialtext::Account;
 use Socialtext::Permission qw( ST_ADMIN_WORKSPACE_PERM ST_EMAIL_IN_PERM ST_LOCK_PERM );
 use Socialtext::Role;
 use Socialtext::Workspace;
-use Test::Socialtext tests => 57;
+use Test::Socialtext tests => 73;
 fixtures(qw( clean db ));
 
 {
-    for my $set_name (
-        qw( public
-            member-only
-            authenticated-user-only
-            public-read-only
-            public-comment-only
-            public-join-to-edit
-            intranet
-          )
-        ) {
+    my %sets = (
+        'member-only'             => 'Private',
+        'self-join'               => 'Self-Join',
+        'public'                  => 'Public',
+        'authenticated-user-only' => 'Public',
+        'public-read-only'        => 'Public',
+        'public-comment-only'     => 'Public',
+        'public-join-to-edit'     => 'Public',
+        'intranet'                => 'Public',
+    );
+    for my $set_name (keys %sets) {
         my $ws = Socialtext::Workspace->create(
             name       => $set_name,
             title      => 'Test',
@@ -32,6 +33,9 @@ fixtures(qw( clean db ));
 
         is( $ws->permissions->current_set_name(), $set_name,
             "current permission set is $set_name" );
+
+        is $ws->permissions->current_set_display_name, $sets{$set_name},
+           "current permission display name is $sets{$set_name}";
 
         my %p = (
             role       => Socialtext::Role->Guest(),
@@ -62,8 +66,8 @@ fixtures(qw( clean db ));
         is( $admin_has_lock, 1, 'Admin has page lock permissions');
 
 	my %defaults;
-        $defaults{allows_html_wafl} = ( $set_name =~ /^(member|intranet|public\-read)/ ) ? 1 : 0;
-        $defaults{email_addresses_are_hidden} = ( $set_name =~ /^(member|intranet)/ ) ? 0 : 1 ;
+        $defaults{allows_html_wafl} = ( $set_name =~ /^(member|intranet|public\-read|self\-join)/ ) ? 1 : 0;
+        $defaults{email_addresses_are_hidden} = ( $set_name =~ /^(member|intranet|self\-join)/ ) ? 0 : 1 ;
         $defaults{email_notify_is_enabled} = ( $set_name =~ /^public/ ) ? 0 : 1;
         $defaults{homepage_is_dashboard} = ( $set_name eq 'member-only' ) ? 1 : 0;
 

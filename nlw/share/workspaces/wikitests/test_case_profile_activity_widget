@@ -98,12 +98,12 @@
 
 | *Comment* | Test Case: Profile Activity Widget. list values for ".. within <group>" filter shows all shared groups |  |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[1]/a[text()='All shared groups'] | 5000 |
-| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[2]/a[contains(text(),'%%shared_acct%%')] | 5000 |
-| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[3]/a[contains(text(),'%%shared_group%%')] | 5000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[2]/a | 5000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[3]/a | 5000 |
 
 | *Comment* | Test Case: Profile Activity Widget. "Post to" list shows all shared groups between viewer and viewee |  |
-| wait_for_element_present_ok | //ul[@id='st-dropdown-3-list']/li[1]/a[contains(text(),'%%shared_acct%%')] | 5000 |
-| wait_for_element_present_ok | //ul[@id='st-dropdown-3-list']/li[2]/a[contains(text(),'%%shared_group%%')] | 5000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-3-list']/li[1]/a | 5000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-3-list']/li[2]/a | 5000 |
 
 | *Comment* | Test Case: Profile Activity Widget. list values for "Showing <event-type>" filter are all the standard choices |  |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-0-list']/li[1]/a[text()='all events'] | 5000 |

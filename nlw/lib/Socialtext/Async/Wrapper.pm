@@ -130,6 +130,10 @@ sub _InWorker {
         eval { $fork_cb->() };
     }
 
+    # AnyEvent::Worker ignores SIGINT, un-ignore it so st-daemon-monitor
+    # can kill us.
+    $SIG{INT} = 'DEFAULT';
+
     # make it reconnect
     Socialtext::SQL::disconnect_dbh();
 

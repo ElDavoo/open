@@ -516,3 +516,6 @@ lib/Socialtext/Gadgets/Container/Explore.pm
 lib/Socialtext/Handler/Container/Explore.pm
 t/wikitests/signals/signal_comment.wiki
 t/wikitests/push/presence.wiki
+lib/Socialtext/Signal/Asset/Find.pm
+t/Socialtext/Signal/Asset/Find.t
+lib/Socialtext/Handler/Mobile/Activities.pm

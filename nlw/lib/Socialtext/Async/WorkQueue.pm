@@ -6,7 +6,9 @@ use MooseX::AttributeHelpers;
 use Coro;
 use AnyEvent;
 use Coro::AnyEvent;
+use Coro::Channel;
 use Guard;
+use Carp qw/croak cluck/;
 use namespace::clean -except => 'meta';
 
 =head1 NAME
@@ -27,8 +29,7 @@ Socialtext::Async::WorkQueue
 
 =head1 DESCRIPTION
 
-An infinite length work queue.  Avoids the inherent memory leaks in
-C<Coro::Channel> by using a linked-list rather than a perl array.
+An infinite length work queue.
 
 Enqueued tasks are worked on in a C<Coro> thread (one thread per work queue),
 cede-ing after each job completes.
@@ -55,6 +56,7 @@ non-blocking shutdown:
     my $q = Socialtext::Async::WorkQueue->new(
         ...
         after_shutdown => sub {
+            my $q = shift;
             $cv->end;
         }
     );
@@ -70,45 +72,58 @@ L<Coro>.
 
 Defaults to C<Coro::PRIO_NORMAL>.
 
-=item size
-
-Returns the size of the queue in number of jobs. The job count increases when
-a job is enqueued and decreases B<after> it is worked on.
-
 =back
 
 =cut
 
 has 'cb' => (is => 'ro', isa => 'CodeRef', required => 1);
 has 'name' => (is => 'ro', isa => 'Str', required => 1, default => 'work');
+
+has 'after_shutdown' => (
+    is => 'ro', isa => 'CodeRef',
+    clearer => 'clear_after_shutdown'
+);
+
 has 'prio' => (is => 'ro', isa => 'Int', default => Coro::PRIO_NORMAL());
+
+=head2 ATTRIBUTES
+
+=over 4
+
+=item is_working
+
+Is something being worked on right now?
+
+=item is_shutdown
+
+Is the queue shut-down (and will new jobs be rejected)?
+
+=back
+
+=cut
+
+has 'is_working' => (
+    is => 'rw', isa => 'Int',
+    default => 0,
+    writer => '_working',
+    init_arg => undef,
+);
+
+has 'is_shutdown' => (
+    is => 'rw', isa => 'Bool',
+    default => undef,
+    writer => '_shutdown',
+    init_arg => undef,
+);
+
 
 # below attributes are "protected"
 
-has 'runner' => (is => 'rw', isa => 'Object', predicate => 'has_runner');
-has 'cv' => (is => 'rw', isa => 'Object', writer => '_cv');
-
-has 'is_waiting' => (is => 'rw', isa => 'Bool', default => undef);
-has 'is_shutdown' => (is => 'rw', isa => 'Bool', default => undef);
-
-has 'after_shutdown' => (is => 'ro', isa => 'CodeRef', clearer => 'clear_after_shutdown');
-
-for my $end (qw(head tail)) {
-    has "$end" => (
-        is => 'rw', isa => 'Maybe[ArrayRef]',
-        default => undef,
-    );
-}
-
-has 'size' => (
-    is => 'ro', isa => 'Int',
-    metaclass => 'Counter',
-    default => 0,
-    provides => {
-        inc => '_inc',
-        dec => '_dec',
-        reset => '_reset_size',
-    },
+has '_runner' => (is => 'rw', isa => 'Coro', predicate => 'has_runner');
+has '_cv' => (is => 'rw', isa => 'AnyEvent::CondVar');
+has '_chan' => (
+    is => 'ro', isa => 'Coro::Channel',
+    default => sub {Coro::Channel->new},
 );
 
 sub BUILD {
@@ -122,14 +137,14 @@ sub BUILD {
         $cv = AE::cv();
     }
     $self->_cv($cv);
-    $self->cv->begin; # match in shutdown
+    $self->_cv->begin; # match in shutdown
 }
 
 =head1 METHODS
 
 =over 4
 
-=item enqueue(['job', 'args'])
+=item enqueue(['arg 1', 'arg 2'])
 
 Enqueue a job, which must be an array-ref.  The contents of the array-ref are
 passed in to the C<cb> registered during construction via C<@_>.
@@ -138,31 +153,32 @@ passed in to the C<cb> registered during construction via C<@_>.
 
 sub enqueue {
     my $self = shift;
-    my $args = shift;
+    my $job = shift;
 
     if ($self->is_shutdown) {
-        Carp::cluck "attempt to enqueue job to ".$self->name." queue after shutdown\n";
+        cluck "attempt to enqueue job to ".$self->name." queue after shutdown";
         return;
     }
 
-    my $job = [$args,undef];
-
-    if (my $tail = $self->tail) {
-        # add to end of queue if anything is waiting
-        $tail->[1] = $job;
-        $self->tail($job);
-    }
-    else {
-        $self->head($job);
-        $self->tail($job);
-    }
-    $self->_inc;
+    croak "can only enqueue array refs" unless ref($job) eq 'ARRAY';
+    $self->_chan->put($job);
 
     # start a runner since this is the first job
     $self->_start unless $self->has_runner;
-    $self->_ready;
 
     return 1;
+}
+
+=item size
+
+Returns the size of the queue in number of jobs. The job count increases when
+a job is enqueued and decreases B<after> it is worked on.
+
+=cut
+
+sub size {
+    my $self = shift;
+    return $self->_chan->size + $self->is_working;
 }
 
 =item drop_pending()
@@ -174,60 +190,43 @@ will B<NOT> be cancelled.
 
 sub drop_pending {
     my $self = shift;
-    if (my $head = $self->head) {
-        $head->[1] = undef; # detach head
-    }
-    $self->head(undef);
-    $self->tail(undef);
-    $self->_reset_size;
+    $self->_reset_chan;
+}
+
+sub _reset_chan {
+    my $self = shift;
+    $self->_chan->[Coro::Channel::DATA()] = [];
 }
 
 sub _start {
     my $self = shift;
-    $self->cv->begin;
-    $self->runner(async {
+    $self->_cv->begin;
+    $self->_runner(async {
         $Coro::current->{desc} = $self->name." queue runner";
         $Coro::current->prio($self->prio);
-        scope_guard { $self->cv->end };
-        while (1) {
-            $self->_run(); # returns when no more work
-            return if $self->is_shutdown;
+        scope_guard { 
+            $self->_working(0);
+            $self->_cv->end;
+        };
 
-            $self->is_waiting(1);
-            schedule;  # block until someone calls $self->runner->ready
-            return if $self->is_shutdown;
+        $self->_working(0);
+        my $cb = $self->cb;
+        while (my $job = $self->_chan->get) {
+            $self->_working(1);
+            eval { $cb->(@$job) };
+            warn "Error processing queue ".$self->name.": $@" if $@;
+            undef $@;
+
+            $self->_working(0);
+            if ($self->_chan->size) {
+                cede;
+            }
+            else {
+                # reset to immediately reclaim AV memory
+                $self->_reset_chan;
+            }
         }
     });
-}
-
-sub _run {
-    my $self = shift;
-
-    scope_guard {
-        $self->head(undef);
-        $self->tail(undef);
-    };
-
-    while (my $head = $self->head) {
-        eval { $self->cb->(@{$head->[0]}) };
-        warn "Error processing queue ".$self->name.": $@" if $@;
-
-        # shift next onto head and cede if more work
-        $head = $head->[1];
-        $self->head($head);
-        $self->_dec;
-        cede if $head;
-    }
-}
-
-sub _ready {
-    my $self = shift;
-    if ($self->is_waiting) {
-        $self->is_waiting(undef);
-        if ($self->has_runner) {
-            $self->runner->ready unless $self->runner == $Coro::current;
-        }
-    }
 }
 
 =item shutdown()
@@ -252,24 +251,22 @@ sub shutdown {
     my $timeout = shift;
     return if $self->is_shutdown;
 
-    if ($self->has_runner) {
-        die "can't shutdown queue synchronously from the runner;".
-            "use async {} to start a thread?"
-            if ($self->runner == $Coro::current);
-    }
+    croak "can't shutdown queue synchronously from the runner;".
+        "use async {} to start a thread?"
+        if ($self->has_runner && $self->_runner == $Coro::current);
 
-    $self->is_shutdown(1);
-    $self->_ready;
+    $self->_shutdown(1);
+    $self->_chan->shutdown();
 
     my $t;
     if ($timeout) {
         $t = AE::timer $timeout, 0, sub {
-            $self->cv->croak("timeout while waiting for queue to flush");
+            $self->_cv->croak("timeout while waiting for queue to flush");
             undef $t; # clear circular ref
         };
     }
-    $self->cv->end;
-    $self->cv->recv;
+    $self->_cv->end;
+    $self->_cv->recv;
 }
 
 =item shutdown_nowait()
@@ -285,9 +282,9 @@ asynchronously (if present).
 sub shutdown_nowait {
     my $self = shift;
     return if $self->is_shutdown;
-    $self->cv->end;
-    $self->is_shutdown(1);
-    $self->_ready;
+    $self->_cv->end;
+    $self->_shutdown(1);
+    $self->_chan->shutdown();
 }
 
 __PACKAGE__->meta->make_immutable;

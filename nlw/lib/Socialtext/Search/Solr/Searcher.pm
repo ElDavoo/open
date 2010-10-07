@@ -44,6 +44,14 @@ has_inflated 'query_parser' =>
     (is => 'ro', isa => 'Socialtext::Search::Solr::QueryParser',
      handles => [qw/parse/]);
 
+my %DocTypeToFieldBoost = (
+    '' => 'title^4 tags^3 filename^2', # page + attachment
+    page => 'title^4 tags^3',
+    attachment => 'filename^2 body^0.8',
+    signal => 'body^1.2 tag^3 filename^1.1',
+    person => 'name_pf_t^3 sounds_like^1.5 *_pf_rt^1.1 tag^1.3',
+);
+
 # Perform a search and return the results.
 sub search {
     my $self = shift;
@@ -101,17 +109,21 @@ sub _search {
     $self->_authorize( $query, $authorizer );
 
     my @filter_query;
-    my $qf;
+    my $field_boosts;
 
     # No $opts{doctype} indicates workspace search (legacy, could be changed)
     if ($workspaces and @$workspaces) {
         # Pages and attachments in my workspaces.
         push @filter_query, "(doctype:attachment OR doctype:page) AND ("
               . join(' OR ', map { "w:$_" }
+                sort { $a <=> $b }
                 map { Socialtext::Workspace->new(name => $_)->workspace_id }
                     @$workspaces) . ")";
+        $field_boosts = $DocTypeToFieldBoost{''}; # default = attachment + page
     }
     elsif ($opts{doctype}) {
+        $field_boosts = $DocTypeToFieldBoost{$opts{doctype}};
+
         if ($opts{doctype} eq 'signal') {
             push @filter_query, "(doctype:signal OR doctype:signal_attachment)";
         }
@@ -133,10 +145,7 @@ sub _search {
                 # Find my public signals and private ones I sent or received
                 my $viewer_id = $opts{viewer}->user_id;
                 push @filter_query, "pvt:0 OR (pvt:1 AND "
-                        . "(dm_recip:$viewer_id OR creator:$viewer_id))",
-            }
-            if ($opts{doctype} eq 'person') {
-                $qf = 'name_pf_t^4 sounds_like^3.5 *_pf_rt^3 tag^2 all';
+                        . "(dm_recip:$viewer_id OR creator:$viewer_id))";
             }
         }
     }
@@ -145,7 +154,7 @@ sub _search {
     my $query_type = 'dismax';
     $query_type = 'standard' if $query =~ m/\b[a-z_]+:/i;
     $query_type = 'standard' if $query =~ m/\*|\?/;
-    $query_type = 'standard' if $query =~ m/\s/;
+    $query_type = 'standard' if $query =~ m/\band\b/i or $query =~ m/\bor\b/i;
     my @sort = $self->_sort_opts($opts{order}, $opts{direction}, $query_type);
     my $query_hash = {
         # fl = Fields to return
@@ -155,7 +164,16 @@ sub _search {
         qt => $query_type,
 
         # qf = Query Fields (Boost)
-        ($qf ? (qf => $qf) : ()),
+        ($field_boosts ? (qf => "$field_boosts all") : ()),
+
+        # pf = Phrase Fields (Boost)
+        ($field_boosts ? (pf => "$field_boosts all") : ()),
+
+        # mm = Minimum words that must match in a multi-word "dismax" query.
+        # The default is 100% (all words must match), but we relax this to
+        # 1 (any word matches) for compatibility with multi-word "standard"
+        # queries, which is used for words like "field:value" and "prefix*"
+        mm => 1,
 
         # fq = Filter Query - superset of docs to return from
         (@filter_query ? (fq => \@filter_query) : ()),
@@ -179,7 +197,7 @@ sub _search {
             raw_query  => $raw_query_string,
             hits       => $num_hits,
             solr_query => {
-                map { $_ => $query_hash->{$_} } qw/sort qt q fq start/
+                map { $_ => $query_hash->{$_} } qw/sort qt q fq qf start/
             },
         });
 

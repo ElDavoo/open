@@ -22,31 +22,31 @@
 
 | open_ok | /st/signals |  |
 | text_like | st-editing-tools-edit | Signals |
-| st-name-widget | 1 | signals |
-| st-select-widget-frame | signals |  |
-
-| st-send-signal-within-activities-widget | %%signal%% |  |
+| st-send-signal-in-activities-widget | %%signal%% |  |
 
 | *Comment* | Test Case: Private Signal. %%psshort%% sends privmsg to %%psshort_two%% |  |
-| wait_for_element_present_ok | //a[@id='startPrivate'] | 5000 |
-| click_ok | //a[@id='startPrivate'] |  |
+| wait_for_element_present_ok | //div[@class='private'] | 5000 |
+| click_ok | //div[@class='private'] |  |
 | wait_for_element_visible_ok | //input[@class='lookahead-prompt'] | 5000 |
 | type-lookahead-ok | //input[@class='lookahead-prompt'] | %%psshort_two%% |
 | wait_for_element_visible_ok | //a[@class='insert btn'] | 5000 |
 | st_pause_click | 1000 | //a[@class='insert btn'] |
+
+| *Comment* | Test Case: Private Signal. %%psshort%% looks for Private message confirmation |  |
 | wait-for-element-visible-ok | //div[@class='message private'] | 5000 |
 | text_like | //div[@class='message private'] | You are composing a private message to %%psshort_two%% |
-| st-send-signal-within-activities-widget | %%private%% |  |
+| st-type_signal | %%private%% |  |
+| click_ok | //a[@class='btn post'] |  |
 
 | *Comment* | Test Case: Private Signal. %%psshort%% sends pubmsg to %%psshort_two%% |  |
 | wait-for-element-not-present-ok | //div[@class='message private'] | 5000 |
-| st-send-signal-within-activities-widget | %%public%% |  |
+| open_ok | /st/signals |  |
+| st-send-signal-in-activities-widget | %%public%% |  |
 
 | *Comment* | Test Case: Private Signal. All signals appear in activities widget |  |
 | st-verify-text-within-activities-widget | %%signal%% |  |
 | st-verify-text-within-activities-widget | %%private%% |  |
 | st-verify-text-within-activities-widget | %%public%% |  |
-| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Private Signal. login as another user, see public but not private signals. |  |
 | st-logoutin | %%username%% | %%password%% |
@@ -55,17 +55,16 @@
 | text_like | st-editing-tools-edit | Signals |
 | st-name-widget | 1 | signals |
 | st-verify-text-in-activities-widget | signals | %%signal%% |
-| st-text-unlike-in-activities-widget | signals | %%private%% |
 | st-verify-text-in-activities-widget | signals | %%public%% |
+| st-text-unlike-in-activities-widget | signals | %%private%% |
 
 | *Comment* | Test Case: Private Signal. Start privmsg, cancel, send public msg |  |
 | set | cancel | Public Hello after Cancel to %%psshort%% from %%short_username%% |
 | set | private | Private Hello to %%psshort%% from %%short_username%% |
 
 | *Comment* | Test Case: Private Signal. %%short_username%% initiates privmsg to %%psshort%% |  |
-| st-select-widget-frame | signals |  |
-| wait_for_element_present_ok | //a[@id='startPrivate'] | 5000 |
-| click_ok | //a[@id='startPrivate'] |  |
+| wait_for_element_present_ok | //div[@class='private'] | 5000 |
+| click_ok | //div[@class='private'] |  |
 | wait_for_element_visible_ok | //input[@class='lookahead-prompt'] | 5000 |
 | type-lookahead-ok | //input[@class='lookahead-prompt'] | %%psshort%% |
 | wait_for_element_visible_ok | //a[@class='insert btn'] | 5000 |
@@ -73,18 +72,16 @@
 | wait-for-element-visible-ok | //div[@class='message private'] | 5000 |
 | text_like | //div[@class='message private'] | You are composing a private message to %%psshort%% |
 
-| *Comment* | Test Case: Private Signal prepare the private signal, do not send |  |
-| st-prepare-signal-within-activities-widget | %%private%% |  |
-
 | *Comment* | Test Case: Private Signal cancel the private signal |  |
 | wait_for_element_visible_ok | //a[@class='cancel'] | 5000 |
 | click_ok | //a[@class='cancel'] |  |
 | wait_for_element_not_present_ok | //div[@class='message private'] | 5000 |
+| st-type_signal | %%cancel%% |  |
+| click_ok | //a[@class='btn post'] |  |
 
 | *Comment* | Test Case: Private Signal send and verify the public signal |  |
-| st-send-signal-within-activities-widget | %%cancel%% |  |
+| st-verify-text-within-activities-widget | You less than a minute ago |  |
 | st-verify-text-within-activities-widget | %%cancel%% |  |
-| select-frame | relative=parent |  |
-| st-text-unlike-in-activities-widget | signals | qr/You.+private to.+%%cancel%%/ism |
+| st-text-unlike-in-activities-widget | signals | You.+private to.+%%psshort%% |
 
 | *Comment* | Test Case: Private Signal COMPLETED |  |

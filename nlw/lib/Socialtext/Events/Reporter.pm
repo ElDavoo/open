@@ -27,7 +27,7 @@ has 'viewer' => (
 );
 
 has 'link_dictionary' => (
-    is => 'ro', isa => 'Socialtext::Formatter::LinkDictionary',
+    is => 'rw', isa => 'Socialtext::Formatter::LinkDictionary',
     lazy_build => 1,
 );
 
@@ -510,14 +510,27 @@ sub visibility_sql {
         # TODO BUG: groups should be limited to those in any account_id params
         my $i_am_connected_to_that_group = q{
             SELECT 1
-              FROM user_set_path
-             WHERE from_set_id = ?
-               AND into_set_id = evt.group_id + }.PG_GROUP_OFFSET.q{
+              FROM user_set_path grp_usp
+             WHERE grp_usp.from_set_id = ?
+               AND grp_usp.into_set_id = evt.group_id + }.PG_GROUP_OFFSET.q{
         };
+        push @bind, $self->viewer_id;
+
+        if ($opts->{account_id}) {
+            # limit to groups in the selected account
+            $i_am_connected_to_that_group .= q{
+              AND EXISTS(
+                SELECT 1 FROM
+                    user_set_path acct_usp
+                    WHERE acct_usp.from_set_id = grp_usp.into_set_id
+                    AND acct_usp.into_set_id = ? + }.PG_ACCT_OFFSET.q{
+              )};
+            push @bind, $opts->{account_id};
+        }
+
         push @parts,
             "( evt.event_class <> 'group' OR EXISTS (".
                 $i_am_connected_to_that_group."))";
-        push @bind, $self->viewer_id;
     }
     else {
         push @parts, "(evt.event_class <> 'group')";
@@ -849,6 +862,11 @@ EOSQL
 sub _get_events {
     my $self   = shift;
     my $opts = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
+
+    if (my $ld_class = $opts->{link_dictionary}) {
+        my $class = "Socialtext::Formatter::${ld_class}LinkDictionary";
+        $self->link_dictionary($class->new);
+    }
 
     # Try to shortcut a pure signals query.
     # "just signal events or just signal actions or the magic signals flag":

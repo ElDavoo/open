@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>343</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-343.air</url>
-<description><![CDATA[[Build 343 - Sat Sep  4 02:10:28 PDT 2010]
+  <version>349</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-349.air</url>
+<description><![CDATA[[Build 349 - Fri Oct  1 02:02:25 PDT 2010]
+* Workspaces: Restore page preview and loading functionality (regression in build 347).
+
+[Build 348 - Thu Sep 30 04:44:48 PDT 2010]
+* Renew the (time-limited) login cookie every 24 hours.
+
+[Build 347 - Thu Sep 30 04:40:20 PDT 2010]
+* Renew the login cookie every 24 seconds. (QA testing only)
+
+[Build 346 - Wed Sep 29 02:52:04 PDT 2010]
+* Perf: Fetch /data/people only once, not twice, during startup. {bz: 4461}
+
+[Build 345 - Sun Sep 19 08:06:49 PDT 2010]
+* Deleted signals are now properly removed from all views. {bz: 3174}
+
+[Build 344 - Tue Sep 14 04:32:09 PDT 2010]
+* Only put an account on a reply prior to REST API v20. {bz: 4385} (Stash)
+
+[Build 343 - Sat Sep  4 02:10:28 PDT 2010]
 * Fetch page name lookahead candidates asynchronously too in "insert wiki link" dialog.
 
 [Build 342 - Fri Sep  3 23:56:59 PDT 2010]

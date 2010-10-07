@@ -538,6 +538,8 @@ sub is_appliance {
     return $self->{is_appliance};
 }
 
+sub is_dev_env { return !shift->is_appliance }
+
 sub set {
     my $self = shift;
     $self = $self->instance()
@@ -1417,6 +1419,12 @@ value.
 =head2 Socialtext::AppConfig->is_appliance
 
 Returns true if NLW is running on an appliance.
+
+=head2 Socialtext::AppConfig->is_dev_env
+
+Returns true if NLW is running in a dev-env.
+
+Short-hand way of saying C<!Socialtext::AppConfig->is_appliance>
 
 =head2 Socialtext::AppConfig->set( key => $value, ... )
 

@@ -154,6 +154,10 @@ sub add_user {
             $acct->add_user(user => $user);
             $changed_user++;
         }
+
+        if ($user->is_deactivated) {
+            $user->reactivate($acct ? (account_id => $acct->account_id) : ());
+        }
     }
     else {
         $user = $self->_create_user(%args);

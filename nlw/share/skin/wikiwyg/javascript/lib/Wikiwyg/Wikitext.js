@@ -2390,7 +2390,7 @@ proto.format_br = function(elem) {
 
     if (Wikiwyg.is_ie) 
        this.wikitext = this.wikitext.replace(/\xA0/, "");
-    return (this.wikitext && !this.wikitext.match(/\n\n$/)) ? '\n' : '';
+    return '\n';
 }
 
 proto.format_hr = function(elem) {

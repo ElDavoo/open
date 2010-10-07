@@ -53,12 +53,18 @@ sub get_resource {
     my ($self, $rest, $content_type) = @_;
 
     Socialtext::Timer->Continue('_get_entities');
-    my $results = $self->_get_entities($rest);
+    my $results = $self->_get_entities($rest, $content_type);
     Socialtext::Timer->Pause('_get_entities');
 
     Socialtext::Timer->Continue('_entity_hash_map');
     @$results = map { $self->_entity_hash($_) } @$results;
     Socialtext::Timer->Pause('_entity_hash_map');
+
+    my $total_results;
+    unless ($self->rest->query->param('skipTotalResults')) {
+        $total_results = $self->_get_total_results;
+        $total_results = $total_results+0 if defined $total_results;
+    }
 
     if ($self->pageable and $content_type eq 'application/json') {
         if (defined $self->rest->query->param('startIndex')) {
@@ -67,9 +73,7 @@ sub get_resource {
                 startIndex => $self->start_index+0,
                 itemsPerPage => $self->items_per_page+0,
                 entry => $results,
-                ($self->rest->query->param('skipTotalResults')
-                    ? ()
-                    : (totalResults => $self->_get_total_results()+0)),
+                defined $total_results ? (totalResults => $total_results) : (),
             }
         }
         else {
@@ -82,7 +86,7 @@ sub get_resource {
     else {
         return $results;
     }
-};
+}
 
 sub _entity_hash {
     my ($self, $item) = @_;

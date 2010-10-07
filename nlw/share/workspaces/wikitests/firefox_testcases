@@ -10,17 +10,18 @@ Socialcalc enabled is required because we run Calc Testcases
 * [Control Panel Testcases]
 * [Core Testcases]
 * [User Groups UI Testcases]
+* [Signals Testcases]
 
-* [Test Case: RSS Icons]
-* [Test Case: Table Info]
-* [Test Case: Signal to Networks]
-* [Test Case: Signals Search]
-* [Test Case: Signals Search Pagination]
-* [Test Case: Signals Activities Interaction]
+Test Case: Replies is Firefox-specific because we load IE without wikiwyg while using Se
+
+* [Test Case: Replies]
 
 * [Calc Testcases]
 * [File Testcases]
 * [Localization Testcases]
+
+* [Test Case: RSS Icons]
+* [Test Case: Table Info]
 
 LDAP Testcases will Enable LDAP and use a known LDAP user instead of a Default user where required
 
@@ -46,7 +47,6 @@ People tests
 Dashboard tests
 
 * [Widgets Testcases]
-* [Signals Annotations Testcases]
 * [Test Case: Gadgets Galore]
 * [Test Case: Upload Update Gallery Widgets]
 * [Test Case: Add Remove Gallery Widgets]

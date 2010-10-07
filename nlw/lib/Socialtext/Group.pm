@@ -51,6 +51,7 @@ has 'homunculus' => (
         delete
         user_set_id
         permission_set
+        display_permission_set
     )],
 );
 
@@ -123,6 +124,13 @@ sub user_can {
     return $authz->user_has_permission_for_group(
         group      => $self,
         %p,
+    );
+}
+
+sub uri {
+    my $self = shift;
+    return Socialtext::URI::uri(
+        path   => 'st/group/' . $self->group_id,
     );
 }
 
