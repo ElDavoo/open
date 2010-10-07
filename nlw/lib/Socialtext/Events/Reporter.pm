@@ -27,7 +27,7 @@ has 'viewer' => (
 );
 
 has 'link_dictionary' => (
-    is => 'ro', isa => 'Socialtext::Formatter::LinkDictionary',
+    is => 'rw', isa => 'Socialtext::Formatter::LinkDictionary',
     lazy_build => 1,
 );
 
@@ -862,6 +862,11 @@ EOSQL
 sub _get_events {
     my $self   = shift;
     my $opts = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
+
+    if (my $ld_class = $opts->{link_dictionary}) {
+        my $class = "Socialtext::Formatter::${ld_class}LinkDictionary";
+        $self->link_dictionary($class->new);
+    }
 
     # Try to shortcut a pure signals query.
     # "just signal events or just signal actions or the magic signals flag":

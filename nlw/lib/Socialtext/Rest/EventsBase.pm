@@ -129,6 +129,7 @@ sub extract_common_args {
         _one($q,'after'),
         _one($q, 'activity'),
         _one($q, 'direct'),
+        _one($q, 'link_dictionary'),
         _bunch_of($q,'account_id'),
         _bunch_of($q,'group_id', sub {
                 # is the viewer IN this group?
