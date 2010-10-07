@@ -9,11 +9,17 @@ t.run_roundtrip('wikitext', 'expected');
 /* Test
 === Indented include roundtrips in IE
 --- wikitext
+!
  {include: [bogus page name]}
 
 Don't tread on me.
 --- expected
+!
+
+
 {include: [bogus page name]}
+
+
 
 Don't tread on me.
 
@@ -27,14 +33,18 @@ La la la
 
 {include: [bogus page name]}
 
+
+
 Don't tread on me.
 
 === Include with other text
 --- wikitext
-{include: [bogus page name]} this page.
+! {include: [bogus page name]} this page.
 
 Don't tread on me.
 --- expected
+!
+
 {include: [bogus page name]}
 
 this page.
