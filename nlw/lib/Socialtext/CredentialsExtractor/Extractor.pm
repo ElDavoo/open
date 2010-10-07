@@ -2,6 +2,7 @@ package Socialtext::CredentialsExtractor::Extractor;
 # @COPYRIGHT@
 
 use Moose::Role;
+use Socialtext::JSON qw(json_true json_false);
 use Socialtext::User;
 
 # Returns the list of headers used by this Creds Extractor
@@ -19,6 +20,27 @@ sub username_to_user_id {
     my $user = Socialtext::User->new(username => $username);
     return $user->user_id if $user;
     return;
+}
+
+# Returns "valid" response.
+sub valid_creds {
+    my $class_or_self = shift;
+    my @extra         = @_;
+    return {
+        valid         => json_true(),
+        needs_renewal => json_false(),
+        @extra,
+    };
+}
+
+# Returns "invalid" response.
+sub invalid_creds {
+    my $class_or_self = shift;
+    my @extra         = @_;
+    return {
+        valid => json_false(),
+        @extra,
+    };
 }
 
 no Moose::Role;
