@@ -152,36 +152,27 @@ sub new_changes {
     my $offset = $self->cgi->offset || 0;
     my $order_by = $self->ui_sort_to_order_by();
 
+    my $ws_id = $self->hub->current_workspace->workspace_id;
+    my $pages_ref = Socialtext::Model::Pages->All_active(
+        hub => $self->hub,
+        workspace_id => $ws_id,
+        do_not_need_tags => 1,
+        limit => $limit,
+        offset => $offset,
+        order_by => $order_by,
+    );
+
+    my $total = Socialtext::Model::Pages->ActiveCount(workspace => $ws_id);
+    my $changed_total = $self->count_by_seconds_limit();
+
     my $display_title;
-    my $pages_ref;
-    my $total = 0;
     if (defined $type && $type eq 'all') {
         $display_title = loc("All Pages");
-        my $ws_id = $self->hub->current_workspace->workspace_id;
-        $pages_ref = Socialtext::Model::Pages->All_active(
-            hub => $self->hub,
-            workspace_id => $ws_id,
-            do_not_need_tags => 1,
-            limit => $limit,
-            offset => $offset,
-            order_by => $order_by,
-        );
-        
-        $total = Socialtext::Model::Pages->ActiveCount(workspace => $ws_id);
     }
     else {
         my $depth = $self->preferences->changes_depth;
         my $last_changes_time = loc($depth->value_label);
-        $display_title = loc('Changes in [_1]', $last_changes_time);
-
-        $pages_ref = $self->by_seconds_limit(
-            $category ? ( tag => $category ) : (),
-            count => $count,
-            limit => $limit,
-            offset => $offset,
-            order_by => $order_by,
-        );
-        $total = $self->count_by_seconds_limit();
+        $display_title = loc('Changes in [_1] ([_2]) out of ([_3]) total pages', $last_changes_time, $changed_total, $total);
     }
 
     Socialtext::Timer->Continue('new_changes_push_result');
@@ -192,7 +183,7 @@ sub new_changes {
     Socialtext::Timer->Pause('new_changes_push_result');
 
     $self->result_set->{hits} = $total;
-    $self->result_set->{display_title} = "$display_title ($total)";
+    $self->result_set->{display_title} = $display_title;
     $self->result_set->{partial_set} = 1;
     Socialtext::Timer->Pause('RCP_new_changes');
 }
