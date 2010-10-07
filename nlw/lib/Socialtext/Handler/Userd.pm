@@ -7,6 +7,7 @@ use Socialtext::WebDaemon::Util; # auto-exports
 use Socialtext::Async::Wrapper; # auto-exports
 use Socialtext::SQL qw/get_dbh sql_execute sql_singlevalue/;
 use Socialtext::UserSet ':const';
+use Socialtext::CredentialsExtractor;
 
 use namespace::clean -except => 'meta';
 
@@ -132,16 +133,21 @@ sub extract_creds {
 
 worker_function worker_extract_creds => sub {
     my $params = shift;
-    my $guest = Socialtext::User->Guest();
-    return { 
-        code => 200, 
-        body => {
-            valid => json_true,
-            needs_renewal => json_false,
-            username => $guest->username,
-            user_id => $guest->user_id 
-        }
+    my $creds  = eval {
+        Socialtext::CredentialsExtractor->ExtractCredentials($params)
     };
+    if ($@) {
+        my $e = $@;
+        st_log()->error('when trying to extract creds: '.$e);
+        return {
+            code  => 500,
+            error => $@,
+        };
+    }
+    return {
+        code => 200,
+        body => $creds,
+    }
 };
 
 1;
