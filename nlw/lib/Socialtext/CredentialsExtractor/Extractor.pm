@@ -4,12 +4,23 @@ package Socialtext::CredentialsExtractor::Extractor;
 use Moose::Role;
 use Socialtext::JSON qw(json_true json_false);
 use Socialtext::User;
+use Socialtext::Log qw(st_log);
 
 # Returns the list of headers used by this Creds Extractor
 requires 'uses_headers';
 
 # Attempts to extract creds from the given set of headers
 requires 'extract_credentials';
+
+# Logging helper
+sub log {
+    my $class = shift;
+    my $level = shift;
+    my $mesg  = shift;
+
+    $class =~ s/.*:://;     # short class-name
+    st_log($level, "$class - $mesg");
+}
 
 # Converts a "username" to a "user_id".
 sub username_to_user_id {
@@ -35,8 +46,10 @@ sub valid_creds {
 
 # Returns "invalid" response.
 sub invalid_creds {
-    my $class = shift;
-    my %extra = @_;
+    my $class  = shift;
+    my %extra  = @_;
+    my $reason = $extra{reason};
+    $class->log('warning', "invalid credentials - $reason") if ($reason);
     return {
         valid => json_false(),
         %extra,
