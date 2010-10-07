@@ -32,7 +32,8 @@ three
 --- match
 <div class="wiki">
 <p>
-^Malformed Header</p>
+^Malformed Header<br />
+</p>
 <p>
 one<br />
 two<br />
@@ -50,7 +51,8 @@ three
 --- match
 <div class="wiki">
 <p>
-Not Header</p>
+Not Header<br />
+</p>
 <p>
 one<br />
 two<br />

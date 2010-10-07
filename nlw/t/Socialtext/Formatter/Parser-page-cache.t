@@ -130,7 +130,7 @@ CACHE_DIR_UNWRITEABLE: {
 
     throws_ok
         sub { check_with_user( user => 'devnull1@socialtext.com' ) },
-        qr/Failed to cache using questions.*not writable/,
+        qr/Failed to cache using questions.*(not writable|Permission denied)/,
         'Page caching dies when dir is not writable';
 }
 
