@@ -63,6 +63,7 @@ sub link_directory {
 usage unless @ARGV;
 while (my $plugin = shift) {
     warn "Linking the $plugin plugin\n";
+    chdir "$ENV{ST_CURRENT}/nlw" or die "Can't cdnlw! $?";
     my $plugin_dir = "$FindBin::Bin/../../plugins/$plugin";
     usage("plugin $plugin doesn't exist") unless -d $plugin_dir;
     link_directory($plugin_dir, "$FindBin::Bin/..", 'lib');
