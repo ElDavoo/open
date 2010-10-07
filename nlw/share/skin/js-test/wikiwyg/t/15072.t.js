@@ -26,11 +26,13 @@ three
 === As the 'different behaviour' one in ticket description.
 --- html
 <DIV class=wiki>
-<P></P><BR>one</DIV>
+<P>!</P><BR>one</DIV>
 <DIV class=wiki>two</DIV>
 <DIV class=wiki>three</DIV>
 <DIV class=wiki>&nbsp;</DIV>
 --- wikitext
+!
+
 one
 two
 three
