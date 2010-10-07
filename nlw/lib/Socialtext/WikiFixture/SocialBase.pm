@@ -3158,4 +3158,11 @@ sub set_basic_auth_header {
 
     $self->{$name} = "Basic ".  MIME::Base64::encode("$user:$pass", '');
 }
+
+sub restart_userd {
+    my $self = shift;
+    Socialtext::System::shell_run('nlwctl', '-s','restart');
+    $self->sleep(2);    # have to wait for st-userd to come online again
+}
+
 1;
