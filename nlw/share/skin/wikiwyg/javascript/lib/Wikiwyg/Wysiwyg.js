@@ -2137,13 +2137,31 @@ proto.replace_p_with_br = function(html) {
     var p_tags = jQuery(doc).find("p").get();
     for(var i=0;i<p_tags.length;i++) {
         var html = p_tags[i].innerHTML;
+        var parent_tag = null;
+        var parent = p_tags[i].parentNode;
+        if (parent && parent.tagName) {
+            parent_tag = parent.tagName.toLowerCase();
+        }
         var prev = p_tags[i].previousSibling;
         var prev_tag = null;
         if (prev && prev.tagName) {
             prev_tag = prev.tagName.toLowerCase();
         }
 
-        html = html.replace(/(<br>)?\s*$/, br + br);
+        /* The last <p> inside a <td> does not need trailing <br>s */
+        if (parent_tag == 'td') {
+            var ns = p_tags[i].nextSibling;
+            while (ns && ns.nodeType == 3 && !(/\S/.test(ns.nodeValue))) {
+                ns = ns.nextSibling;
+            }
+            if (ns) {
+                html = html.replace(/(<br>)?\s*$/, br + br);
+            }
+        }
+        else {
+            html = html.replace(/(<br>)?\s*$/, br + br);
+        }
+
         if (prev && prev_tag && (prev_tag == 'div' || (prev_tag == 'span' && prev.firstChild && prev.firstChild.tagName && prev.firstChild.tagName.toLowerCase() == 'div'))) {
             html = html.replace(/^\n?[ \t]*/,br + br)
         }
