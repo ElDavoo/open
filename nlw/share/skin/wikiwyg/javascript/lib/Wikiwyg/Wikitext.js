@@ -1711,10 +1711,10 @@ proto.walk = function(elem) {
                 for (var node = part; node; node = node.firstChild) {
                     if (node.top_level_block) {
                         // *** Hotspot - Optimizing by hand. ***
-                        // this.wikitext = this.wikitext.replace(/ *\n*$/, '\n\n');
+                        // this.wikitext = this.wikitext.replace(/ *\n?$/, '\n\n');
                         var len = this.wikitext.length;
 
-                        while (this.wikitext.charAt(len-1) == '\n') len--;
+                        if (this.wikitext.charAt(len-1) == '\n') len--;
                         while (this.wikitext.charAt(len-1) == ' ') len--;
 
                         if (len == this.wikitext.length) {
@@ -1760,7 +1760,7 @@ proto.walk = function(elem) {
 
     this.depth--;
     if (!(this.wikitext.length && this.wikitext.match(/\S/))) return '';
-    return this.wikitext.replace(/\n+$/, '\n');
+    return this.wikitext;
 }
 
 proto.assert_trailing_space = function(part, text) {
@@ -1947,7 +1947,7 @@ proto.format_p = function(elem) {
     // formatter print a P with a single space. Should fix that some day.
     if (text == ' ') return;
 
-    return text.replace(/\s*$/, '\n');
+    return text.replace(/\n?$/, '\n');
 }
 
 proto.format_img = function(elem) {
