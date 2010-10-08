@@ -1733,8 +1733,10 @@ proto.walk = function(elem) {
                     }
                 }
             }
+
             if (part.widget_on_widget) {
-                this.wikitext = this.wikitext.replace(/\n*$/, '\n');
+// This isn't required anymore after [Story: Preserve white space].
+//                this.wikitext = this.wikitext.replace(/\n*$/, '\n');
             }
 
             this.assert_trailing_space(part, text);
@@ -1834,11 +1836,20 @@ proto.no_descend = function(elem) {
 
 proto.check_start_of_block = function(elem) {
     var prev = elem.previousSibling;
+    var next = elem.nextSibling;
 
     if (this.wikitext &&
         prev &&
         prev.top_level_block &&
-        ! this.wikitext.match(/\n\n$/)
+        ! /\n\n$/.test(this.wikitext) &&
+        ! ((elem.nodeType == 3) && (!/\S/.test(elem.nodeValue)) &&
+            /* If we are on an empty text node, and the BRs following us makes
+             * up for "\n\n" required by start-of-block, don't add another \n.*/
+            (next && next.nodeName == 'BR') && (
+                /\n$/.test(this.wikitext)
+                || next.nextSibling && next.nextSibling.nodeName == 'BR'
+            )
+        )
     ) this.wikitext += '\n';
 }
 
