@@ -1711,9 +1711,10 @@ proto.walk = function(elem) {
                 for (var node = part; node; node = node.firstChild) {
                     if (node.top_level_block) {
                         // *** Hotspot - Optimizing by hand. ***
-                        // this.wikitext = this.wikitext.replace(/ *\n?$/, '\n\n');
+                        // this.wikitext = this.wikitext.replace(/ *\n?\n?$/, '\n\n');
                         var len = this.wikitext.length;
 
+                        if (this.wikitext.charAt(len-1) == '\n') len--;
                         if (this.wikitext.charAt(len-1) == '\n') len--;
                         while (this.wikitext.charAt(len-1) == ' ') len--;
 
