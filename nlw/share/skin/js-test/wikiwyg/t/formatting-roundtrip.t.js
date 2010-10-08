@@ -1,6 +1,6 @@
 var t = new Test.Wikiwyg();
 
-t.plan(7);
+t.plan(9);
 
 t.run_roundtrip('wikitext');
 
@@ -30,13 +30,45 @@ t.run_roundtrip('wikitext');
 * *{link: enboldenated wafl yo}*
 * *{link: enboldenated wafl yo}*
 
-=== Raw HTML Blocks
+=== Raw HTML Blocks (one newline)
 --- wikitext
 .html
 <h1>Hello</h1>
 
 <p>I'll find you in heaven.</p>
 .html
+
+.html
+<!-- A comment -->
+<ul>
+<li>(double dash bugs)--</li>
+</ul>
+.html
+
+=== Raw HTML Blocks (two newlines)
+--- wikitext
+.html
+<h1>Hello</h1>
+
+<p>I'll find you in heaven.</p>
+.html
+
+
+.html
+<!-- A comment -->
+<ul>
+<li>(double dash bugs)--</li>
+</ul>
+.html
+
+=== Raw HTML Blocks (three newlines)
+--- wikitext
+.html
+<h1>Hello</h1>
+
+<p>I'll find you in heaven.</p>
+.html
+
 
 
 .html
