@@ -67,7 +67,6 @@ sub text_filter {
     my $self = shift;
     my $text = shift;
     $text =~ s/(\r?\n)\z//;
-    $text =~ s/^(\r?\n)//;
     $text =~ s/\n/<br \/>\n/g;
     $text =~ s/^( +)/'&nbsp;' x length($1)/gem;
 
