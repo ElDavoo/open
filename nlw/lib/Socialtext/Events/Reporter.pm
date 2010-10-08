@@ -1130,9 +1130,24 @@ sub get_events_activities {
                        AND tsu.user_id = ?
                 )
                 OR person_id = ?
+                OR EXISTS (
+                    SELECT 1
+                      FROM signal root
+                      JOIN signal reply ON (root.signal_id = reply.in_reply_to_id)
+                     WHERE reply.signal_id = e.signal_id
+                       AND (
+                        root.user_id = ?
+                        OR EXISTS (
+                            SELECT 1
+                              FROM topic_signal_user tsu
+                             WHERE tsu.signal_id = root.signal_id
+                               AND tsu.user_id = ?
+                        )
+                    )
+                )
             )
         };
-        $user_ids += 3;
+        $user_ids += 5;
     }
 
     my $cond_sql = join(' OR ', map {"($_)"} @conditions);
