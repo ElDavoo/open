@@ -2172,7 +2172,7 @@ proto.format_td = function(elem) {
     if (elem.wikitext.match(/\n/) ||
         (elem.firstChild && elem.firstChild.top_level_block)
     ) {
-        elem.wikitext = elem.wikitext.replace(/\s?$/, ' ');
+        elem.wikitext = elem.wikitext.replace(/\s?\n?$/, ' ');
         return '| ' + elem.wikitext;
     }
     else {
