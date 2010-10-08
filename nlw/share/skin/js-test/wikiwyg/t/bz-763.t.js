@@ -10,7 +10,7 @@ else {
 }
 
 /* Test
-=== wiitext from bug description
+=== wikitext from bug description
 --- wikitext
 *Some bold text*.
 A sentence no verb

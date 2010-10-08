@@ -177,7 +177,8 @@ _fish_ |
 
 | 15410 | .pre
 content
-.pre |
+.pre
+ |
 
 === The old big Formatting Test page roundtrips, part 6
 --- wikitext
@@ -346,6 +347,7 @@ once
 !@#$%^&*()_+-={}[]||;':",./<>?~`!@#$%^&*()_+-={}[]||;':",./<>?~`
 .pre
 
+
 .pre
 &lt;some text between carets&gt;
 .pre
@@ -362,6 +364,7 @@ once
 
 <p>I'll find you in heaven.</p>
 .html
+
 
 .html
 <!-- A comment -->
