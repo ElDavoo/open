@@ -12,8 +12,8 @@
         </a>
       </li>
       <li class="flexButtonBlue">
-        <a class="genericBlueButton" href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% next_id %];mode=mode">
-          [% loc('Next Compare') %]
+        <a class="genericBlueButton" href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% prev_id %];mode=mode">
+          [% loc('Previous Compare') %]
         </a>
       </li>
       <li class="flexButtonBlue">
@@ -22,8 +22,8 @@
         </a>
       </li>
       <li class="flexButtonBlue">
-        <a class="genericBlueButton" href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% prev_id %];mode=mode">
-          [% loc('Previous Compare') %]
+        <a class="genericBlueButton" href="[% script_name %]?action=revision_compare;page_name=[% page_uri %];new_revision_id=[% new_revision_id %];old_revision_id=[% next_id %];mode=mode">
+          [% loc('Next Compare') %]
         </a>
       </li>
       <li class="flexButtonBlue">

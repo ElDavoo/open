@@ -12,8 +12,8 @@
         </a>
       </li>
       <li class="flexButtonBlue">
-        <a class="genericBlueButton" href="[% script_name %]?action=revision_view;page_name=[% page_uri %];revision_id=[% previous_revision %];mode=[% mode %]">
-          [% loc('Next Revision') %]
+        <a class="genericBlueButton" href="[% script_name %]?action=revision_view;page_name=[% page_uri %];revision_id=[% next_revision %];mode=[% mode %]">
+          [% loc('Previous Revision') %]
         </a>
       </li>
       <li class="flexButtonBlue">
@@ -22,8 +22,8 @@
         </a>
       </li>
       <li class="flexButtonBlue">
-        <a class="genericBlueButton" href="[% script_name %]?action=revision_view;page_name=[% page_uri %];revision_id=[% next_revision %];mode=[% mode %]">
-          [% loc('Previous Revision') %]
+        <a class="genericBlueButton" href="[% script_name %]?action=revision_view;page_name=[% page_uri %];revision_id=[% previous_revision %];mode=[% mode %]">
+          [% loc('Next Revision') %]
         </a>
       </li>
       <li class="flexButtonBlue">
