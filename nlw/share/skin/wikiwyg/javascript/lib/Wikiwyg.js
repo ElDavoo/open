@@ -939,7 +939,7 @@ Wikiwyg.htmlUnescape = function(escaped) {
         "<div>" + 
         escaped.replace(/</g, '&lt;')
                .replace(/ /g, '&#160;')
-               .replace(/\n/g, _NewlineReplacementCharacter_) +
+               .replace(/\r?\n/g, _NewlineReplacementCharacter_) +
         "</div>"
     ).text().replace(/\xA0/g, ' ')
             .replace(new RegExp(_NewlineReplacementCharacter_, 'g'), '\n');

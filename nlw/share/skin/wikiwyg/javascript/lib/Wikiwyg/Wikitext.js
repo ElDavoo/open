@@ -2216,7 +2216,7 @@ for (var i = 1; i <= 6; i++) {
 proto.format_pre = function(elem) {
     var data = Wikiwyg.htmlUnescape(elem.innerHTML);
     data = data.replace(/<br>/g, '\n')
-               .replace(/\n$/, '')
+               .replace(/\r?\n$/, '')
                .replace(/^&nbsp;$/, '\n');
     elem.top_level_block = true;
     return '.pre\n' + data + '\n.pre\n';
