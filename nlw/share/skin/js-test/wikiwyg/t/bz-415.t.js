@@ -20,10 +20,9 @@ else {
 --- html
 <script type="text/javascript">
 var a = 0;
-</script>
-!<br>Simple script
+</script>!<br>Simple script
 --- text
- !
+!
 Simple script
 
 === script written in wikitext
@@ -33,7 +32,6 @@ Simple script
 var a = 0;
 </script>
 .html
-
 
 Simple script
 
@@ -45,7 +43,6 @@ Simple script
 var a = 0;
 </script>
 .html
-
 
 Simple script
 
