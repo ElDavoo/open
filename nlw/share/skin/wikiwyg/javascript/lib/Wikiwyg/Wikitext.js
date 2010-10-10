@@ -1770,6 +1770,7 @@ proto.assert_trailing_space = function(part, text) {
     if ((! part.requires_preceding_space) && (
             (! part.previousSibling) 
          || (! part.previousSibling.requires_trailing_space)
+         || (part.nodeName == 'BR') // BR now counts as trailing space
         )
     ) return;
 
