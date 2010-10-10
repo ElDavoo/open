@@ -422,6 +422,10 @@ div#controls div#st-editing-tools-edit ul {
 	height: 41px;
 }
 
+div#controls div#st-editing-tools-edit ul#revision-tools {
+        min-width: 900px;
+}
+
 ul.buttonRight {
 	background: url(../images/controlsRightDivider.png) no-repeat 10px 10px;
 	padding-left: 10px;
