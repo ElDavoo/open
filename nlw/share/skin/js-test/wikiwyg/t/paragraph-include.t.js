@@ -4,7 +4,12 @@ var t = new Test.Wikiwyg();
 
 t.plan(5);
 
-t.run_roundtrip('wikitext', 'expected');
+if (Wikiwyg.is_ie) {
+    t.run_roundtrip('wikitext', 'expected_ie');
+}
+else {
+    t.run_roundtrip('wikitext', 'expected');
+}
 
 /* Test
 === Indented include roundtrips in IE
@@ -13,6 +18,13 @@ t.run_roundtrip('wikitext', 'expected');
  {include: [bogus page name]}
 
 Don't tread on me.
+--- expected_ie
+!
+
+{include: [bogus page name]}
+
+Don't tread on me.
+
 --- expected
 !
 
@@ -28,6 +40,13 @@ Don't tread on me.
 La la la {include: [bogus page name]}
 
 Don't tread on me.
+--- expected_ie
+La la la 
+
+{include: [bogus page name]}
+
+Don't tread on me.
+
 --- expected
 La la la
 
@@ -42,6 +61,15 @@ Don't tread on me.
 ! {include: [bogus page name]} this page.
 
 Don't tread on me.
+--- expected_ie
+! 
+
+{include: [bogus page name]}
+
+this page.
+
+Don't tread on me.
+
 --- expected
 !
 
@@ -56,6 +84,15 @@ Don't tread on me.
 DEE {include: [bogus page name]} DUM
 
 Don't tread on me.
+--- expected_ie
+DEE 
+
+{include: [bogus page name]}
+
+DUM
+
+Don't tread on me.
+
 --- expected
 DEE
 
@@ -70,6 +107,11 @@ Don't tread on me.
 * DEE {include: [bogus page name]} DUM
 
 Don't tread on the asses
+--- expected_ie
+* DEE {include: [bogus page name]} DUM
+
+Don't tread on the asses
+
 --- expected
 * DEE {include: [bogus page name]} DUM
 
