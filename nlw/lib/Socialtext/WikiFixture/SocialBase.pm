@@ -34,6 +34,7 @@ use HTTP::Request::Common;
 use LWP::UserAgent;
 use Socialtext::l10n qw(loc);
 use YAML qw/LoadFile/;
+use DateTime;
 
 # mix-in some commands from the Socialtext fixture
 # XXX move bodies to SocialBase?
@@ -1687,6 +1688,34 @@ sub set_from_header {
 =head2 st_clear_cache
 
 Clears the server cache for the widgets
+
+=cut
+
+sub set_date_from_interval {
+    my $self = shift;
+    my $name = shift;
+    my $interval = shift;
+    my $dt = DateTime->now();
+
+    if ($interval) {
+        my $do = $interval =~ s/^\-// ? 'subtract' : 'add';
+        
+        $interval =~ /^(\d+)(.+)$/ or die "invalid interval";
+        my ($val,$units) = ($1,$2);
+        $units .= $units =~ /s$/ ? '' : 's'; # make sure units is plural
+
+        $dt->$do($units => $val);
+    }
+
+    $self->{$name} = $dt->mdy('-');
+}
+
+=head2 set_date_from_interval (name, interval)
+
+Set a data variable. The value is based on an interval from now.
+
+| set-date-from-interval | tomorrow  | 1day   |
+| set-date-from-interval | last_week | -1week |
 
 =cut
 
