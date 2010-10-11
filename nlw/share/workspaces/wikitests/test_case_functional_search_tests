@@ -2,6 +2,8 @@ Note: Heavily dependent on the default content of current test-data workspace
 
 | *Comment* | Test case: Functional Search Tests easy searches |  |
 | st-search | =Jabber | Pages matching 'title:Jabber' |
+| select_and_wait | sort-picker | label=Revisions |
+| select_and_wait | sort-picker | label=Relevance |
 | st-result | 1 total |  |
 | st-result | jabber |  |
 | st-search | tag: carroll | Pages matching 'tag: carroll' |
@@ -23,6 +25,9 @@ Note: Heavily dependent on the default content of current test-data workspace
 | st-result | Project Plans |  |
 | st-result | Credit Card Payment |  |
 | st-result | Sample Excel 2007 file.xlsx, |  |
+| st-search | jabber |  |
+| st-result | 5 total |
+| text_like | //body | qr/jabber.+The Vorpal Sword.+beamish boy.+Stemming test page 2.+Jabberwocky/ |
 
 | *Comment* | Test case: Functional Search Word, Excel, PPT 2007 format |  |
 | st-search | lorem AND ipsum |  |
@@ -44,6 +49,7 @@ Note: Heavily dependent on the default content of current test-data workspace
 | st-result | jabber |  |
 | st-result | The Vorpal Sword |  |
 | st-result | Stemming test page 2 |  |
+| text_like | qr/Jabberwocky.+beamish boy.+jabber.+The Vorpal Sword.+Stemming test page 2/ |
 | st-search | vorp | Pages matching 'vorp' |
 | st-result | 0 total |  |
 | st-search | vorp* | Pages matching 'vorp*' |
@@ -183,6 +189,7 @@ Title searches
 | st-result | The Vorpal Sword |  |
 | st-result | Stemming test page 2 |  |
 | st-result | Wock |  |
+| text_like | //body | qr/jabber.+The Vorpal Sword.+beamish boy.+Stemming test page 2.+Jabberwocky.+Wock.+Stemming test page 1/ |
 | st-search | tag:"carroll's poem" OR tag:jabber | Pages matching 'tag:"carroll's poem" OR tag:jabber' |
 | st-result | 5 total |  |
 | st-result | Jabberwocky |  |
@@ -208,6 +215,13 @@ Title searches
 | st-result | Project Plans |  |
 | st-result | Sample Excel 2007 file.xlsx, |  |
 | st-result | Credit Card Payment |  |
+| text_like | //body | qr/jabber.+Canonical Test Data Set/ |
+| text_like | //body | qr/jabber.+beamish boy/ |
+| text_like | //body | qr/jabber.+Project Plans/ |
+| text_like | //body | qr/jabber.+Wock/ |
+| text_like | //body | qr/jabber.+Credit Card Payment/ |
+| text_like | //body | qr/jabber.+Sample Excel 2007 file.xlsx,/ |
+
 
 | st-search | =jabber OR 1.2 | Pages matching 'title:jabber OR 1.2' |
 | st-result | 3 total |  |
@@ -221,7 +235,14 @@ Title searches
 | st-result | Canonical Test Data Set |  |
 | st-result | Jabberwocky |  |
 | st-result | Project Plans |  |
+| st-result | Credit Card Payment |  |
 | st-result | Sample Excel 2007 file.xlsx, |  |
+| text_like | //body | qr/jabber.+Canonical Test Data Set/ |
+| text_like | //body | qr/jabber.+Jabberwocky/ |
+| text_like | //body | qr/jabber.+Project Plans/ |
+| text_like | //body | qr/jabber.+Sample Excel 2007 file.xlsx,/ |
+| text_like | //body | qr/jabber.+Credit Card Payment/ |
+
 | st-result | Credit Card Payment |  |
 
 | st-search | tag:"carroll's poem" OR 1.2 | Pages matching 'tag:"carroll's poem" OR 1.2' |
