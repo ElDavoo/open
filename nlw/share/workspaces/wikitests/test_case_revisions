@@ -10,37 +10,78 @@
 | type_ok | st-newpage-pagename-edit | test case revisions %%start_time%% |
 | type_ok | wikiwyg_wikitext_textarea | original revision number one %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |
+| st-page-save |  |  |
 | click_ok | st-edit-button-link |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | revision number two %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |
+| st-page-save |  |  |
 | click_ok | st-edit-button-link |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | revision number three %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |
+| st-page-save |  |  |
 | click_ok | st-edit-button-link |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | `[revision number four] %%start_time%%` |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |
+| st-page-save |  |  |
 | click_ok | st-edit-button-link |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | `[revision number five] %%start_time%%` |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Revisions: Check for sorting and the "Compare Revisions" button |  |
+| clickAndWait | `//a[contains(@href,'action=revision_list')]` |  |
+| wait_for_element_visible_ok | link=Back To Current Revision | 30000 |
+| clickAndWait | link=Back To Current Revision |  |
+| wait_for_text_present_ok | revision number five | 30000 |
+| clickAndWait | `//a[contains(@href,'action=revision_list')]` |  |
+
+
+| *Comment* | Test Case: Revisions: Prev/Next Button on revisions view |  |
+| wait_for_element_visible_ok | link=Revision 2 | 30000 |
+| clickAndWait | link=Revision 2 |  |
+| wait_for_element_visible_ok | link=Next Revision |
+| clickAndWait | link=Next Revision |
+| wait_for_text_present_ok | Revision 3 | 30000 |
+| wait_for_element_visible_ok | link=Next Revision |
+| clickAndWait | link=Next Revision |
+| wait_for_text_present_ok | Revision 4 | 30000 |
+| wait_for_element_visible_ok | link=Next Revision |
+| clickAndWait | link=Next Revision |
+| wait_for_text_present_ok | Revision 5 | 30000 |
+| wait_for_element_visible_ok | link=Next Revision |
+| clickAndWait | link=Next Revision |
+| wait_for_text_present_ok | Revision 5 | 30000 |
+| wait_for_element_visible_ok | link=Previous Revision |
+| clickAndWait | link=Previous Revision |
+| wait_for_text_present_ok | Revision 4 | 30000 |
+| wait_for_element_visible_ok | link=Previous Revision |
+| clickAndWait | link=Previous Revision |
+| wait_for_text_present_ok | Revision 3 | 30000 |
+| wait_for_element_visible_ok | link=Previous Revision |
+| clickAndWait | link=Previous Revision |
+| wait_for_text_present_ok | Revision 2 | 30000 |
+| wait_for_element_visible_ok | link=Previous Revision |
+| clickAndWait | link=Previous Revision |
+| wait_for_text_present_ok | Revision 1 | 30000 |
+| wait_for_element_visible_ok | link=Previous Revision |
+| clickAndWait | link=Previous Revision |
+| wait_for_text_present_ok | Revision 1 | 30000 |
+
+
+| *Comment* | Test Case: Revisions: Check for sorting and the "Compare Revisions" button |  |
+| open_ok | /%%workspace%%/?test case revisions %%start_time%% |
 | clickAndWait | `//a[contains(@href,'action=revision_list')]` |  |
 | text_like | qr/Revision 5.+Revision 4.+Revision 3.+Revision 2.+Revision 1/ |  |
 | wait_for_element_visible_ok | link=Compare Revisions | 30000 |
@@ -67,11 +108,43 @@
 | clickAndWait | link=All Revisions |  |
 | clickAndWait | //a[@class='compareRevisions genericBlueButton'][1] |  |
 | text_like | qr/Revision 4.+Revision 5.+four.+five/s |  |
-
 | clickAndWait | link=All Revisions |  |
 | click_ok | document.revisions.old_revision_id[4] |  |
 | click_ok | document.revisions.new_revision_id[1] |  |
+
+| *Comment* | Test Case: Revisions: test Next compare button |  |
 | clickAndWait | link=Compare Revisions |  |
+| text_like | qr/Revision 1.+Revision 4.+one.+four/s |  |
+| wait_for_element_visible_ok | link=Next Compare | 30000 |
+| clickAndWait | link=Next Compare | 30000 |
+| text_like | qr/Revision 2.+Revision 4.+two.+four/s |  |
+| wait_for_element_visible_ok | link=Next Compare | 30000 |
+| clickAndWait | link=Next Compare | 30000 |
+| text_like | qr/Revision 3.+Revision 4.+three.+four/s |  |
+| wait_for_element_visible_ok | link=Next Compare | 30000 |
+| clickAndWait | link=Next Compare | 30000 |
+| text_like | qr/Revision 4.+Revision 4.+four.+four/s |  |
+| wait_for_element_visible_ok | link=Next Compare | 30000 |
+| clickAndWait | link=Next Compare | 30000 |
+| text_like | qr/Revision 5.+Revision 4.+five.+four/s |  |
+| wait_for_element_visible_ok | link=Next Compare | 30000 |
+| clickAndWait | link=Next Compare | 30000 |
+| text_like | qr/Revision 5.+Revision 4.+five.+four/s |  |
+
+| *Comment* | Test Case: Revisions: test Previous compare button |  |
+| wait_for_element_visible_ok | link=Previous Compare | 30000 |
+| clickAndWait | link=Previous Compare |  |
+| text_like | qr/Revision 4.+Revision 4.+four.+four/s |  |
+| wait_for_element_visible_ok | link=Previous Compare | 30000 |
+| clickAndWait | link=Previous Compare |  |
+| text_like | qr/Revision 3.+Revision 4.+three.+four/s |  |
+| wait_for_element_visible_ok | link=Previous Compare | 30000 |
+| clickAndWait | link=Previous Compare |  |
+| text_like | qr/Revision 2.+Revision 4.+two.+four/s |  |
+| wait_for_element_visible_ok | link=Previous Compare | 30000 |
+| clickAndWait | link=Previous Compare |  |
+| wait_for_element_visible_ok | link=Previous Compare | 30000 |
+| clickAndWait | link=Previous Compare |  |
 | text_like | qr/Revision 1.+Revision 4.+one.+four/s |  |
 
 | *Comment* | Test Case: Revisions: Comparing revision to itself |  |
@@ -79,7 +152,7 @@
 | wait_for_element_visible_ok | //a[@class='compareRevisions genericBlueButton'] | 30000 |
 | click_ok | document.revisions.old_revision_id[2] |  |
 | click_ok | document.revisions.new_revision_id[2] |  |
-| click_ok | link=Compare Revisions |  |
+| click_ok | //a[@class='compareRevisions genericBlueButton'] |  |
 
 | *Comment* | Test Case: Revisions. cannot compare revision to itself |  |
 | verifyAlert | You cannot compare a revision to itself. |  |
