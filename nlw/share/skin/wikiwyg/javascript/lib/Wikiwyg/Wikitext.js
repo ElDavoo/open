@@ -1533,7 +1533,7 @@ proto.convert_html_to_wikitext = function(html, isWholeDocument) {
             for (var i = 0, l = elems.length; i < l; i++) {
                 if (elems[i].className != 'wiki') continue;
                 var div = document.createElement('div');
-                div.innerHTML = elems[i].innerHTML + '<br>\n';
+                div.innerHTML = elems[i].innerHTML;
                 elems[i].parentNode.replaceChild(
                     div,
                     elems[i]
@@ -1546,7 +1546,7 @@ proto.convert_html_to_wikitext = function(html, isWholeDocument) {
 
             $dom
             .find("div.wiki").each(function() { 
-                $(this).replaceWith( $(this).html() + "<br>\n" );
+                $(this).replaceWith( $(this).html() );
             });
 
         // Try to find an user-pasted paragraph. With extra gecko-introduced \n

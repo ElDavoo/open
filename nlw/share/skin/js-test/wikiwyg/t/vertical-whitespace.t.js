@@ -18,9 +18,7 @@ t.run_is('html', 'wikitext');
 1
 
 
-
 2
-
 
 3
 
