@@ -658,6 +658,22 @@ proto.enable_pastebin = function () {
     var self = this;
 
     if ($.browser.safari) {
+        this.bind('keydown', function(e) {
+            if (e.ctrlKey || e.metaKey) {
+                switch (e.which) {
+                    case 66: case 98: {
+                        self.do_bold();
+                        e.preventDefault();
+                        break;
+                    }
+                    case 73: case 105: {
+                        self.do_italic();
+                        e.preventDefault();
+                        break;
+                    }
+                }
+            }
+        });
         self.enable_pastebin_webkit();
         return;
     }
