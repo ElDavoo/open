@@ -1,13 +1,7 @@
 var t = new Test.Wikiwyg();
 
 t.plan(2);
-
-if (jQuery.browser.safari) {
-    t.skipAll('Skip roundtrip tests on Safari');
-}
-else {
-    t.run_roundtrip('input', 'output');
-}
+t.run_roundtrip('input', 'output');
 
 /* Test
 === Inline WAFL blocks should add extra vertical whitespace around it
