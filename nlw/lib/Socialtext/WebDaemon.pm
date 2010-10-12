@@ -23,7 +23,6 @@ use Feersum;
 use Socket qw/SOMAXCONN/;
 use Socialtext::Async;
 use Socialtext::Async::WorkQueue;
-use Socialtext::Async::Wrapper; # auto-exports
 
 use Socialtext::Cache;
 use Socialtext::User;
@@ -83,6 +82,7 @@ has 'guards' => (
 );
 
 use constant RequestClass => 'Socialtext::WebDaemon::Request';
+use constant NeedsWorker => 1;
 
 # called by startup scripts
 sub Configure {
@@ -121,15 +121,18 @@ sub Configure {
         $class->ConfigForDevEnv(\%args);
     }
 
-    Socialtext::Async::Wrapper->RegisterCoros();
+    if ($class->NeedsWorker) {
+        require Socialtext::Async::Wrapper;
+        Socialtext::Async::Wrapper->RegisterCoros();
+    }
 
     $0 = $PROC_NAME;
     $SINGLETON = $class->new(\%args);
 
-    Socialtext::Async::Wrapper->RegisterAtFork(sub {
-        $SINGLETON->at_fork;
-    });
-
+    if ($class->NeedsWorker) {
+        Socialtext::Async::Wrapper->RegisterAtFork(sub{$SINGLETON->at_fork});
+    }
+    return;
 }
 
 sub Run {
@@ -157,8 +160,6 @@ sub run {
 
     st_log()->info("$PROC_NAME starting on ".$self->host." port ".$self->port);
 
-    worker_make_immutable();
-
     $self->cv->begin; # match in shutdown()
 
     require IO::Socket::INET;
@@ -183,21 +184,25 @@ sub run {
         $self->shutdown()
     } "shutdown signal error";
 
-    for my $sig (qw(TERM INT QUIT)) {
+    for my $sig (qw(HUP TERM INT QUIT)) {
         $self->guards->{"sig_$sig"} = AE::signal $sig, $shutdown_handler;
     }
 
-    $self->guards->{worker_pinger} =
-        AE::timer $self->worker_ping_period, $self->worker_ping_period,
-        exception_wrapper {
-            try { 
-                ping_worker();
-                trace "Worker is OK!";
-            }
-            catch {
-                trace "Worker is bad! $_";
-            };
-        } 'Worker Pinger error';
+
+    if ($self->NeedsWorker) {
+        Socialtext::Async::Wrapper::worker_make_immutable();
+        $self->guards->{worker_pinger} =
+            AE::timer $self->worker_ping_period, $self->worker_ping_period,
+            exception_wrapper {
+                try { 
+                    Socialtext::Async::Wrapper::ping_worker();
+                    trace "Worker is OK!";
+                }
+                catch {
+                    trace "Worker is bad! $_";
+                };
+            } 'Worker Pinger error';
+    }
 
     inner();
 
