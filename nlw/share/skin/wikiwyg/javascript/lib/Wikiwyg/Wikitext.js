@@ -1476,6 +1476,7 @@ proto.build_msoffice_list = function(top) {
 proto.convert_html_to_wikitext = function(html, isWholeDocument) {
     var self = this;
     if (html == '') return '';
+    html = html.replace(/^\s*<div(?:\s*\/|><\/div)>/, '');
     html = this.strip_msword_gunk(html);
 
     (function ($) {
@@ -1546,7 +1547,13 @@ proto.convert_html_to_wikitext = function(html, isWholeDocument) {
 
             $dom
             .find("div.wiki").each(function() { 
-                $(this).replaceWith( $(this).html() );
+                var html = $(this).html();
+                if (/^\s*(?:<br\b[^>]*>\s*)+$/i.test(html)) {
+                    $(this).replaceWith( html );
+                }
+                else {
+                    $(this).replaceWith( html + '<br />');
+                }
             });
 
         // Try to find an user-pasted paragraph. With extra gecko-introduced \n

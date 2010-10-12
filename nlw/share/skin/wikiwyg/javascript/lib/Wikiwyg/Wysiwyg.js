@@ -61,7 +61,12 @@ proto.clear_inner_html = function() {
     var clear = this.config.clearRegex;
     var res = inner_html.match(clear) ? 'true' : 'false';
     if (clear && inner_html.match(clear)) {
-        this.set_inner_html('');
+        if ($.browser.safari) {
+            this.set_inner_html('<div></div>');
+        }
+        else {
+            this.set_inner_html('');
+        }
     }
 }
 
