@@ -318,7 +318,7 @@ proto.toHtml = function(func) {
         html = self.remove_padding_material(html);
         html = html
             .replace(/\n*<p>\n?/ig, "")
-            .replace(/<\/p>/ig, br)
+            .replace(/<\/p>(?:<br class=padding>)?/ig, br)
 
         func(html);
     });
@@ -335,10 +335,10 @@ proto.remove_padding_material = function(html) {
     var pTags = dom.getElementsByTagName("p");
 
     for(var i = 0; i < pTags.length; i++) {
-      var p = pTags[i]
+      var p = pTags[i];
       if (p.nodeType == 1) {
-          if (p.outerHTML.match(/<P class=padding>&nbsp;<\/P>/)) {
-              p.outerHTML = "<BR>"
+          if (/<P class=padding>&nbsp;<\/P>/.test(p.outerHTML)) {
+              p.outerHTML = "<BR class=padding>"
           } else if (p.innerHTML.match(/&nbsp;$/)) {
               var h = p.innerHTML
               p.innerHTML = h.replace(/&nbsp;$/,"");
@@ -2218,7 +2218,7 @@ proto.toHtml = function(func) {
             html = self.remove_padding_material(html);
             html = html
                 .replace(/\n*<p>\n?/ig, "")
-                .replace(/<\/p>/ig, br)
+                .replace(/<\/p>(?:<br class=padding>)?/ig, br)
 
             func(html);
         });
