@@ -113,6 +113,10 @@ sub _InWorker {
     # Prevents recursive workers:
     $IN_WORKER = 1;
 
+    # notify EV that we've forked
+    eval { EV::default_loop()->loop_fork; };
+    warn $@ if $@;
+
     no warnings 'redefine';
     Socialtext::TimestampedWarnings->import;
 
