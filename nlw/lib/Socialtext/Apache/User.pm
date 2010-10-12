@@ -42,7 +42,7 @@ sub _login_cookie {
 sub current_user {
     my $r      = shift;
     my $client = Socialtext::CredentialsExtractor::Client::Sync->new();
-    my $creds  = $client->ExtractCredentials( { $r->cgi_env } );
+    my $creds  = $client->extract_credentials( { $r->cgi_env } );
     return unless ($creds->{valid});
     return if ($creds->{user_id} == Socialtext::User->Guest->user_id);
 

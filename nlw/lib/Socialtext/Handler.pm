@@ -51,7 +51,7 @@ sub authenticate {
     my $request = shift;
 
     my $client = Socialtext::CredentialsExtractor::Client::Sync->new();
-    my $creds  = $client->ExtractCredentials(\%ENV);
+    my $creds  = $client->extract_credentials(\%ENV);
     return undef unless ($creds->{valid});
 
     my $user = Socialtext::User->new(user_id => $creds->{user_id});

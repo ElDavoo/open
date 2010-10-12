@@ -41,7 +41,7 @@ sub extract_desired_headers {
     return \%hdrs_to_send;
 }
 
-sub ExtractCredentials {
+sub extract_credentials {
     my $self = shift;
     my $hdrs = shift;
     my $cb   = shift;
@@ -101,7 +101,7 @@ Socialtext::CredentialsExtractor::Client::Async - Asynchronous Creds Extraction
   use Socialtext::CredentialsExtractor::Client::Async;
 
   my $client = Socialtext::CredentialsExtractor::Client::Async->new();
-  $client->ExtractCredentials($env, sub {
+  $client->extract_credentials($env, sub {
       my $creds = shift;
       if ($creds->{valid}) {
           # Valid User found (which *COULD* be the Guest User)

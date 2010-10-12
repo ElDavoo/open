@@ -6,7 +6,7 @@ use AnyEvent;
 use namespace::clean -except => 'meta';
 BEGIN { extends 'Socialtext::CredentialsExtractor::Client::Async' };
 
-around 'ExtractCredentials' => sub {
+around 'extract_credentials' => sub {
     my $orig = shift;
     my $self = shift;
     my $hdrs = shift;
@@ -33,7 +33,7 @@ Socialtext::CredentialsExtractor::Client::Sync - Synchronous Creds Extraction
   use Socialtext::CredentialsExtractor::Client::Sync;
 
   my $client = Socialtext::CredentialsExtractor::Client::Sync->new();
-  my $creds  = $client->ExtractCredentials(\%ENV);
+  my $creds  = $client->extract_credentials(\%ENV);
   if ($creds->{valid}) {
       # Valid User found (which *COULD* be the Guest User)
   }
