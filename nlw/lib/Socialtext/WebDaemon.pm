@@ -269,9 +269,10 @@ sub _wrap_request {
 
     my $env = $r->env;
     my $body_ref;
-    if (my $fh = delete $env->{'psgi.input'}) {
-        my $body;
-        $fh->read($body,$env->{CONTENT_LENGTH});
+    if (my $cl = $env->{CONTENT_LENGTH}) {
+        my $fh = delete $env->{'psgi.input'};
+        my $body = '';
+        $fh->read($body,$cl);
         $fh->close();
         $body_ref = \$body;
     }
