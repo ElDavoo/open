@@ -16,50 +16,25 @@ has 'log_params' => (is => 'rw', isa => 'HashRef', default => sub {{}});
 has 'started_at' => (is => 'rw', isa => 'Num');
 has '_pid' => (is => 'rw', isa => 'Int');
 
-has '_handle' => (is => 'ro', isa => 'AnyEvent::Handle', required => 1,
-    clearer => '_clear_handle', predicate => 'alive');
+has '_r' => (is => 'ro', isa => 'Feersum::Connection', required => 1,
+    clearer => '_clear_r', predicate => 'alive');
 has 'ident' => (is => 'rw', isa => 'Str', default => '??', writer => '_ident');
 has 'responding' => (is => 'ro', isa => 'Bool', writer => '_responding');
 
 sub BUILD {
     my $self = shift;
-    {
-        my $d = DAEMON();
-        $d->cv->begin;
-        $d->stats->{"current connections"}++;
-    }
-    $self->_ident("fd=".fileno($self->_handle->{fh}).
+    DAEMON()->stats->{"current connections"}++;
+    $self->_ident("fd=".$self->_r->fileno().
         ', user_id='.$self->for_user_id);
-    $self->_handle->{push_req_guard} = guard {
-        my $d = DAEMON();
-        $d->cv->end;
-        $d->stats->{"current connections"}--;
-    };
+# put this in the poll_cb thinger below until we get Feersum w/ guards
+#     $self->_r->guard(guard {
+#         DAEMON()->stats->{"current connections"}--;
+#     });
     $self->started_at(AE::now);
     my $env = $self->env;
     $self->_pid($$); # for detecting forks
     trace "=> REQUEST ".$self->ident.": ".
         "$env->{REQUEST_METHOD} $env->{PATH_INFO} $env->{QUERY_STRING}\n";
-}
-
-sub DEMOLISH {
-    my $self = shift;
-    return unless $self->alive;
-
-    my $handle = $self->_handle;
-
-    if ($$ == $self->_pid) {
-        # ensure a clean shutdown
-        trace "<= DROP ".$self->ident."\n";
-        shutdown $handle->{fh},2 if $handle->{fh};
-    }
-    else {
-        # can't shutdown if in the kid; just silently close it
-        my $fh = delete $handle->{fh};
-        $fh->close if $fh;
-    }
-
-    $handle->destroy;
 }
 
 sub _build_query {
@@ -100,51 +75,37 @@ sub simple_response {
     $ct ||= 'text/plain; charset=UTF-8';
     $ct = 'application/json; charset=UTF-8' if $ct eq 'JSON';
     my $ref = ref($content_or_ref) ? $content_or_ref : \$content_or_ref;
-
     $ref = \encode_utf8($$ref) if is_utf8($$ref);
-
-    my ($code, $status) = split(' ',$message,2);
-    my $resp = HTTP::Response->new(
-        $code, $status, ['Content-Type' => $ct]
-    );
-    $resp->content_ref($ref);
-    return $self->respond($resp);
+    $self->respond($message, ['Content-Type' => $ct], $ref);
+    return;
 }
 
 sub respond {
-    my ($self, $resp, $cb) = @_;
+    my ($self, $message, $hdrs, $content, $cb) = @_;
 
     unless ($self->alive && !$self->responding) {
         confess "attempted to respond twice to a request";
         return;
     }
-    my $handle = $self->_handle;
-    $self->_clear_handle;
+    my $r = $self->_r;
+    $self->_clear_r;
 
-    trace "<= RESPONSE ".$self->ident.": ".$resp->status_line.$/;
-    my $code = $resp->code;
-
-    {
-        # in theory ...
-        # $handle->push_write(serialize_response($resp));
-        # ... is probably more efficient than ...
-        my $t = time_scope 'serialize_response';
-        my $data = serialize_response($resp);
-        $t = time_scope 'write_response';
-        $handle->push_write($data);
-        # ... but we need to use timers
-    }
-    $self->_responding(1);
-
-    $handle->on_drain(sub {
-        # IMPORTANT: this callback must keep a reference to $self AND $handle
+    trace "<= RESPONSE ".$self->ident.": ".$message.$/;
+    my $code = 0 + $message;
+    my $w = $r->start_streaming($message, $hdrs);
+    $w->write($content);
+    $w->poll_cb(sub {
+        # IMPORTANT: this callback must keep a reference to $self AND $w
+        $w->close;
         $self->log_done($code);
-        shutdown $handle->{fh},2 if $handle->{fh};
-        $handle->destroy;
         $cb->() if $cb;
-        undef $handle;
+        undef $w;
         undef $self;
+        # this is temporarily here until we get guards
+        my $d = DAEMON();
+        $d->stats->{"current connections"}--;
     });
+    $self->_responding(1);
 
     return;
 }

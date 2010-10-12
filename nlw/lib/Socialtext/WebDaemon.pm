@@ -18,8 +18,10 @@ use Socialtext::AppConfig;
 use Socialtext::HTTP::Ports;
 use Socialtext::HTTP::Cookie;
 
+use EV;
+use Feersum;
+use Socket qw/SOMAXCONN/;
 use Socialtext::Async;
-use Socialtext::Async::HTTPD qw/http_server/;
 use Socialtext::Async::WorkQueue;
 use Socialtext::Async::Wrapper; # auto-exports
 
@@ -140,8 +142,8 @@ sub Run {
 
     try { $SINGLETON->run; }
     catch {
-        carp "$PROC_NAME stopping due to exception: $_";
         st_log->error("$PROC_NAME stopping due to exception: $_");
+        carp "$PROC_NAME stopping due to exception: $_";
     };
 
     st_log->info("$PROC_NAME done");
@@ -157,9 +159,21 @@ sub run {
 
     worker_make_immutable();
 
-    $self->guards->{server} = http_server $self->host, $self->port,
-        unblock_sub { $self->_wrap_request(@_) };
-    confess "Couldn't create server" unless $self->guards->{server};
+    $self->cv->begin; # match in shutdown()
+
+    require IO::Socket::INET;
+    require Socket;
+    my $socket = IO::Socket::INET->new(
+        LocalAddr => $self->host.':'.$self->port,
+        ReuseAddr => 1,
+        Proto => 'tcp',
+        Listen => Socket::SOMAXCONN(),
+        Blocking => 0,
+    );
+    die "can't create socket: $!" unless $socket;
+
+    Feersum->endjinn->request_handler(sub { $self->_wrap_request(@_) });
+    Feersum->endjinn->use_socket($socket);
 
     $self->guards->{stats_ticker} =
         AE::timer $self->stats_period, $self->stats_period,
@@ -187,7 +201,6 @@ sub run {
 
     inner();
 
-    $self->cv->begin; # match in shutdown()
     scope_guard {
         $self->_running(0);
         try { $self->cleanup } catch { warn "during $NAME cleanup: $_" };
@@ -217,7 +230,9 @@ sub shutdown {
 
     st_log()->info("$PROC_NAME shutting down");
 
-    $self->disable_guard('server'); # don't accept new requests, shut down port
+    Feersum->endjinn->graceful_shutdown(sub {
+        $self->cv->end; # match in run()
+    });
 
     inner();
 
@@ -225,8 +240,6 @@ sub shutdown {
         exception_wrapper {
             $self->cv->croak("timeout during shutdown");
         } "Shutdown timer error";
-
-    $self->cv->end; # match in run()
 }
 
 sub stats_ticker {
@@ -247,15 +260,19 @@ sub stats_ticker {
 }
 
 sub _wrap_request {
-    my ($self, $handle, $env, $body_ref, $fatal, $err) = @_;
+    my ($self, $r) = @_;
 
-    if ($err) {
-        trace "HTTPD error: $err";
-        return;
+    my $env = $r->env;
+    my $body_ref;
+    if (my $fh = delete $env->{'psgi.input'}) {
+        my $body;
+        $fh->read($body,$env->{CONTENT_LENGTH});
+        $fh->close();
+        $body_ref = \$body;
     }
 
     my $req = $self->RequestClass->new(
-        _handle => $handle, env => $env, body => $body_ref
+        _r => $r, env => $env, body => $body_ref
     );
 
     try {
