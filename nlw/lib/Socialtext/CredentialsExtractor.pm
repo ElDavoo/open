@@ -2,6 +2,7 @@
 package Socialtext::CredentialsExtractor;
 use strict;
 use warnings;
+use List::MoreUtils qw(uniq);
 
 use Socialtext::AppConfig;
 use base qw( Socialtext::MultiPlugin );
@@ -33,6 +34,11 @@ sub _key {
     my $key = shift;
     $key =~ tr/-/_/;
     return uc($key);
+}
+
+sub HeadersNeeded {
+    my $class = shift;
+    return uniq $class->_aggregate('uses_headers');
 }
 
 1;
