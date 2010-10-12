@@ -1967,7 +1967,7 @@ proto.format_p = function(elem) {
     // formatter print a P with a single space. Should fix that some day.
     if (text == ' ') return;
 
-    return text.replace(/\n?$/, '\n');
+    return text + '\n';
 }
 
 proto.format_img = function(elem) {
