@@ -29,21 +29,28 @@ sub _build_userd_uri {
     return "http://$host\:$port$path";
 }
 
+sub extract_desired_headers {
+    my $self = shift;
+    my $hdrs = shift;
+    my @header_list  = Socialtext::CredentialsExtractor->HeadersNeeded();
+    my %hdrs_to_send
+        = map { $_ => $hdrs->{$_} || $hdrs->{"HTTP_$_"} } @header_list;
+    return \%hdrs_to_send;
+}
+
 sub ExtractCredentials {
     my $self = shift;
     my $hdrs = shift;
     my $cb   = shift;
 
-    # what is the Union of hdrs we need to send to st-userd?
-    my @header_list  = Socialtext::CredentialsExtractor->HeadersNeeded();
-    my %hdrs_to_send
-        = map { $_ => $hdrs->{$_} || $hdrs->{"HTTP_$_"} } @header_list;
+    # minimal headers needing to be send to st-userd
+    my $hdrs_to_send = $self->extract_desired_headers($hdrs);
 
     # XXX: check client-side cache
 
     # send request off to st-userd
     try {
-        $self->_send_request(\%hdrs_to_send, $cb);
+        $self->_send_request($hdrs_to_send, $cb);
     }
     catch {
         # XXX handle error from sending/decoding
