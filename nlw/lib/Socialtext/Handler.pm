@@ -13,7 +13,7 @@ use Socialtext::Apache::User;
 use Socialtext;
 use Socialtext::Hub; # preload all other classes
 use Socialtext::AppConfig;
-use Socialtext::CredentialsExtractor;
+use Socialtext::CredentialsExtractor::Client::Sync;
 use Socialtext::RequestContext;
 use Socialtext::WebApp;
 use Socialtext::TT2::Renderer;
@@ -49,9 +49,12 @@ sub handler ($$) {
 sub authenticate {
     my $class   = shift;
     my $request = shift;
-    my $user_id = Socialtext::CredentialsExtractor->ExtractCredentials($request);
 
-    my $user = Socialtext::User->new(user_id => $user_id);
+    my $client = Socialtext::CredentialsExtractor::Client::Sync->new();
+    my $creds  = $client->ExtractCredentials(\%ENV);
+    return undef unless ($creds->{valid});
+
+    my $user = Socialtext::User->new(user_id => $creds->{user_id});
     return undef unless $user;
     return undef if $user->is_deleted;
     return undef if $user->username eq $GuestUsername;
