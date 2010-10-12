@@ -6,6 +6,15 @@ use AnyEvent;
 use namespace::clean -except => 'meta';
 BEGIN { extends 'Socialtext::CredentialsExtractor::Client::Async' };
 
+around 'ExtractCredentials' => sub {
+    my $orig = shift;
+    my $self = shift;
+    my $hdrs = shift;
+    my $creds;
+    $orig->($self, $hdrs, sub { $creds=shift });
+    return $creds;
+};
+
 around '_send_request' => sub {
     my $orig = shift;
     my $cv   = AE::cv;
@@ -15,14 +24,6 @@ around '_send_request' => sub {
     #             event loop.
     # without Coro: enter the event loop and wait; effectively blocks
     return $cv->recv;
-};
-
-override 'ExtractCredentials' => sub {
-    my $self = shift;
-    my $hdrs = shift;
-    my $creds;
-    super($hdrs, sub { $creds = shift } );
-    return $creds;
 };
 
 __PACKAGE__->meta->make_immutable;
