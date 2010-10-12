@@ -519,3 +519,6 @@ t/wikitests/push/presence.wiki
 lib/Socialtext/Signal/Asset/Find.pm
 t/Socialtext/Signal/Asset/Find.t
 lib/Socialtext/Handler/Mobile/Activities.pm
+lib/Socialtext/Rest/Signals/Assets/Tags.pm
+lib/Socialtext/Signal/Asset/Tag/Find.pm
+t/wikitests/signals/data_signals_assets_tags.wiki
