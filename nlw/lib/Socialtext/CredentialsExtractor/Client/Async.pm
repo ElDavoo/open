@@ -5,6 +5,7 @@ use Moose;
 use AnyEvent::HTTP qw(http_request);
 use Try::Tiny;
 use Socialtext::JSON qw(encode_json decode_json);
+use Socialtext::Cache;
 use Socialtext::HTTP::Ports;
 use Socialtext::CredentialsExtractor;
 use namespace::clean -except => 'meta';
@@ -28,6 +29,8 @@ sub _build_userd_uri {
     my $path = $self->userd_path;
     return "http://$host\:$port$path";
 }
+
+sub cache { Socialtext::Cache->cache('creds-extractor-client'); };
 
 sub extract_desired_headers {
     my $self = shift;
