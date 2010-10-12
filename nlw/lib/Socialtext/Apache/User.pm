@@ -6,7 +6,7 @@ use warnings;
 use Apache::Cookie;
 use Digest::SHA ();
 use Socialtext::AppConfig;
-use Socialtext::CredentialsExtractor;
+use Socialtext::CredentialsExtractor::Client::Sync;
 use Socialtext::User;
 use Socialtext::HTTP::Cookie;
 
@@ -40,13 +40,13 @@ sub _login_cookie {
 }
 
 sub current_user {
-    my $r        = shift;
-    my $user_id  = Socialtext::CredentialsExtractor->ExtractCredentials($r);
-    my $guest_id = Socialtext::User->Guest->user_id;
+    my $r      = shift;
+    my $client = Socialtext::CredentialsExtractor::Client::Sync->new();
+    my $creds  = $client->ExtractCredentials( { $r->cgi_env } );
+    return unless ($creds->{valid});
+    return if ($creds->{user_id} == Socialtext::User->Guest->user_id);
 
-    return if $user_id == $guest_id;
-
-    my $user = Socialtext::User->new(user_id => $user_id);
+    my $user = Socialtext::User->new(user_id => $creds->{user_id});
     $r->connection->user($user->username) unless $r->connection->user();
     return $user;
 }
