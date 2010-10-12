@@ -80,13 +80,24 @@ sub NeedsRenewal {
     my $class = shift;
     my $name   = $class->cookie_name();
     my $cookie = $class->GetRawCookie($name) || '';
+    return $class->NeedsRenewalFromCookie($cookie);
+}
 
-    my $factory = _token_factory();
-    my $token   = eval { $factory->parse($cookie) };
+sub NeedsRenewalFromCookie {
+    my $class  = shift;
+    my $cookie = shift;
 
-    if ($@) {
-        #warn "cookie failed to decrypt; $@";
-        return 0;
+    my $cache = _cache();
+    my $token = $cache->get($cookie);
+    unless ($token) {
+        my $factory = _token_factory();
+        $token = eval { $factory->parse($cookie) };
+
+        if ($@) {
+            #warn "cookie failed to decrypt; $@";
+            return 0;
+        }
+        $cache->set($cookie, $token) if ($token);
     }
 
     # Check if the cookie needs to be renewed
