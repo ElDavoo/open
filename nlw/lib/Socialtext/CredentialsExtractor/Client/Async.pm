@@ -33,8 +33,11 @@ sub extract_desired_headers {
     my $self = shift;
     my $hdrs = shift;
     my @header_list  = Socialtext::CredentialsExtractor->HeadersNeeded();
-    my %hdrs_to_send
-        = map { $_ => $hdrs->{$_} || $hdrs->{"HTTP_$_"} } @header_list;
+    my %hdrs_to_send =
+        map  { $_->[0] => $_->[1] }
+        grep { defined $_->[1] }
+        map  { [$_ => $hdrs->{$_} || $hdrs->{"HTTP_$_"}] }
+        @header_list;
     return \%hdrs_to_send;
 }
 
