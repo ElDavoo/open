@@ -91,6 +91,7 @@ sub respond {
     $self->_clear_r;
 
     trace "<= RESPONSE ".$self->ident.": ".$message.$/;
+    no warnings 'numeric';
     my $code = 0 + $message;
     my $w = $r->start_streaming($message, $hdrs);
     $w->write($content);
