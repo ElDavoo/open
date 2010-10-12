@@ -10,14 +10,9 @@ var filters = {
     html: ['html_to_wikitext', 'strip_trailing_slash']
 };
 
-if (Wikiwyg.is_safari) {
-        t.skipAll("firefox tests, these are.");
-}
-else {
-    t.plan(2);
-    t.filters(filters);
-    t.run_is('html', 'wikitext');
-}
+t.plan(2);
+t.filters(filters);
+t.run_is('html', 'wikitext');
 
 /* Test
 === normal links

@@ -2,12 +2,7 @@ var t = new Test.Wikiwyg();
 
 t.plan(1);
 
-if (Wikiwyg.is_safari) {
-    t.skipAll("testing roundtrip on safari");
-}
-else {
-    t.run_roundtrip('wikitext');
-}
+t.run_roundtrip('wikitext');
 
 /* Test
 === wikitext from bug description

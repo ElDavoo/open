@@ -4,13 +4,8 @@ t.filters({
     html: ['html_to_wikitext']
 });
 
-if ( Wikiwyg.is_safari ) {
-        t.skipAll("On Safari, we do not convert HTML to wikitext");
-}
-else {
-    t.plan(1);
-    t.run_is('html', 'text');
-}
+t.plan(1);
+t.run_is('html', 'text');
 
 /* Test
 === Bold, italics and strikethrough in the TD level are correctly preserved

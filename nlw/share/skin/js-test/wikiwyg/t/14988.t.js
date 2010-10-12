@@ -6,16 +6,11 @@ var filters = {
 
 t.plan(3);
 
-if ( Wikiwyg.is_safari ) {
-    t.skipAll("On Safari, we do not convert HTML to wikitext");
-}
-else {
-    t.pass("#14988: Wikiwyg: Can't create whitespace separated lists in Simple mode");
-    t.filters(filters);
-    t.run_is('html', 'wikitext');
+t.pass("#14988: Wikiwyg: Can't create whitespace separated lists in Simple mode");
+t.filters(filters);
+t.run_is('html', 'wikitext');
 
-    t.run_roundtrip('wikitext');
-}
+t.run_roundtrip('wikitext');
 
 /* Test
 === Two seperating list as in the ticket description.

@@ -6,18 +6,13 @@ var filters = {
 
 t.plan(2);
 
-if ( Wikiwyg.is_safari ) {
-    t.skipAll("On Safari, we do not convert HTML to wikitext");
+t.filters(filters);
+if (Wikiwyg.is_ie ) {
+    t.skip("IE doesn't have this problem.");
+} else {
+    t.run_is('html', 'wikitext');
 }
-else {
-    t.filters(filters);
-    if (Wikiwyg.is_ie ) {
-        t.skip("IE doesn't have this problem.");
-    } else {
-        t.run_is('html', 'wikitext');
-    }
-    t.run_roundtrip('wikitext');
-}
+t.run_roundtrip('wikitext');
 
 /* Test
 === A bold becomes a br

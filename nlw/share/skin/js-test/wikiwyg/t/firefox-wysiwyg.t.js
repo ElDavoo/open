@@ -4,16 +4,11 @@ var filters = {
     html: ['html_to_wikitext']
 };
 
-if (Wikiwyg.is_safari) {
-        t.skipAll("firefox tests, these are.");
-}
-else {
-    t.plan(1);
+t.plan(1);
 
-    t.filters(filters);
+t.filters(filters);
 
-    t.run_is('html', 'wikitext');
-}
+t.run_is('html', 'wikitext');
 
 // t.run_roundtrip('wikitext');
 

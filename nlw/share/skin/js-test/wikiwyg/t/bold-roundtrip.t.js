@@ -1,14 +1,9 @@
 var t = new Test.Wikiwyg();
 t.plan(4);
 
-if (Wikiwyg.is_safari) {
-    t.skipAll("testing roundtrip on safari");
-}
-else {
-    t.filters({ html: ['html_to_wikitext'] });
-    t.run_is('html', 'wikitext');
-    t.run_roundtrip('wikitext');
-}
+t.filters({ html: ['html_to_wikitext'] });
+t.run_is('html', 'wikitext');
+t.run_roundtrip('wikitext');
 
 /* Test
 === foo *bar* baz
