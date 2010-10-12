@@ -10,15 +10,9 @@ around 'ExtractCredentials' => sub {
     my $orig = shift;
     my $self = shift;
     my $hdrs = shift;
-    my $creds;
-    $orig->($self, $hdrs, sub { $creds=shift });
-    return $creds;
-};
 
-around '_send_request' => sub {
-    my $orig = shift;
-    my $cv   = AE::cv;
-    $orig->(@_, sub { $cv->send(shift) });
+    my $cv = AE::cv;
+    $orig->($self, $hdrs, sub { $cv->send(shift) });
 
     # under Coro: schedule other coros (yield), one of those coros runs the
     #             event loop.
