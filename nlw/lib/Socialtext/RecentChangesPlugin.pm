@@ -172,7 +172,7 @@ sub new_changes {
     else {
         my $depth = $self->preferences->changes_depth;
         my $last_changes_time = loc($depth->value_label);
-        $display_title = loc('Changes in [_1] ([_2]) out of ([_3]) total pages', $last_changes_time, $changed_total, $total);
+        $display_title = loc('Changes in [_1] ([_2]) out of ([_3]) Total Pages', $last_changes_time, $changed_total, $total);
     }
 
     Socialtext::Timer->Continue('new_changes_push_result');
