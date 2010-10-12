@@ -92,9 +92,12 @@
 | post-signal | MoreRelevant %%start_time%% %%start_time%% %%start_time%% |  |
 | pause | 3000 |  |
 | post-signal | LessRelevant %%start_time%% |  |
+| pause | 5000 |  |
 
 | *Comment* | Test Case: Signals Search. Process Jobs |  |
 | st_process_jobs | SignalIndex |  |
+
+
 
 | *Comment* | Test Case: Signals Search. Relevance. Find a more relevant signal |  |
 | open_ok | /?signals |  |
@@ -145,13 +148,35 @@
 | *Comment* | Test Case: Signals Search. Search for Private Signal to %%z_username%% |
 | http-user-pass | %%a_username%% | %%password%% |
 | post-signal | d {user: %%z_username%%} Private Signal %%start_time%% |
-| st-process-jobs | SignalIndex | |
-| open_ok | /?signals | |
+| st-process-jobs | SignalIndex |  |
+| open_ok | /?signals |  |
 | wait_for_element_visible_ok | st-search-action | 30000 |
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | type_ok | st-search-term | Private Signal |
 | wait_for_element_visible_ok | st-search-submit | 30000 |
 | click_and_wait | st-search-submit |  |
-| text-like | privately to %%z_name%% | |
+| text-like | privately to %%z_name%% |  |
+
+| *Comment* | Test Case: Signal Search. Relevance of Tags |  |
+| post-signal | #%%start_time%% MoreRelevanter NotAStopWord 05 |  |
+| post-signal | #%%start_time%% #%%start_time%% #%%start_time%% MostRelevant NotAStopWord 05 |  |
+| post-signal | #%%start_time%% #%%start_time%% MoreererRelevanter NotAStopWord 05 |  |
+| post-signal | Lower Relevance %%start_time%% |  |
+| pause | 3000 |  |
+| st_process_jobs | SignalIndex |  |
+| pause | 4000 |  |
+| open_ok | /?signals |  |
+| wait_for_element_visible_ok | st-search-action | 30000 |
+| wait_for_element_visible_ok | st-search-term | 30000 |
+| is_selected_ok | st-search-action | id=st-search-signals |
+| type_ok | st-search-term | %%start_time%% |
+| wait_for_element_visible_ok | st-search-submit | 30000 |
+| click_and_wait | st-search-submit |  |
+
+| *Comment* | Test Case: Signals Search. Verify tag more relevant than 2x signals in body |  |
+| text_like | Signals matching '%%start_time%%' |  |
+| select_and_wait | sort-picker | label=Relevance |
+| text-like | //body | qr/MostRelevant.+MoreererRelevanter.+MoreRelevanter/ism |
+| text-like | //body | qr/MostRelevant.+MoreererRelevanter.+MoreRelevanter.+MoreRelevant %%start_time%% %%start_time%% %%start_time%%.+Lower Relevance %%start_time%%/ism |
 
 | *Comment* | Test Case: Signals Search COMPLETED |
