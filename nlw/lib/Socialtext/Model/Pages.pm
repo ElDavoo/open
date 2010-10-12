@@ -176,6 +176,10 @@ sub _fetch_pages {
         $p{order_by} = "LOWER(users.display_name) $2";
         $more_join .= " JOIN users ON (page.$1 = users.user_id)";
     }
+    # If ordering by page name, make sure the order is case insensitive
+    if ( ($p{order_by}||'') =~ m/page\.name(?: (\S+))?$/ ) {
+        $p{order_by} = "LOWER(page.name) $1";
+    }
 
     if ( $p{type} ) {
         $p{where} .= ' AND ' if $p{where};
