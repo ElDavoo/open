@@ -16,7 +16,6 @@ use Socialtext::TimestampedWarnings;
 
 use Socialtext::AppConfig;
 use Socialtext::HTTP::Ports;
-use Socialtext::HTTP::Cookie;
 
 use EV;
 use Feersum;
