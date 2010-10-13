@@ -60,38 +60,33 @@ sub extract_credentials {
 
     # send request off to st-userd
     try {
-        $self->_send_request($hdrs_to_send, $cb);
+        my $body = encode_json($hdrs);
+        http_request POST => $self->userd_uri,
+            headers => {
+                'Referer'    => '',
+                'User-Agent' => __PACKAGE__,
+            },
+            body    => $body,
+            timeout => 30,
+            sub {
+                # my ($resp_body, $resp_hdrs) = @_;
+                my $creds;
+                if ($_[1]{Status} >= 500) {
+                    $creds = { error =>
+                        "extract credentials eror: ".$_[1]{Reason} };
+                }
+                else {
+                    $creds = decode_json($_[0]);
+                    $self->store_credentials_in_cache($_[1], $creds);
+                }
+                $cb->($creds);
+            };
     }
     catch {
         # XXX handle error from sending/decoding
         my $err = $_;
         warn "ERROR[$err]\n"; # XXX - handle better
     };
-}
-
-sub _send_request {
-    my ($self, $hdrs, $cb) = @_;
-    my $url  = $self->userd_uri;
-    my $body = encode_json($hdrs);
-
-    http_request POST => $url,
-        headers => {
-            'Referer'    => '',
-            'User-Agent' => __PACKAGE__,
-        },
-        body    => $body,
-        timeout => 30,
-        sub {
-            my ($resp_body, $resp_hdrs) = @_;
-            if ($resp_hdrs->{Status} >= 500) {
-                die 'ExtractCreds: '.$resp_hdrs->{Reason} . "\n";
-            }
-            my $creds = decode_json($resp_body);
-            $self->store_credentials_in_cache($hdrs, $creds);
-
-            $cb->($creds);
-        };
-    return; # force http_request void context
 }
 
 sub store_credentials_in_cache {

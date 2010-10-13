@@ -17,7 +17,9 @@ around 'extract_credentials' => sub {
     # under Coro: schedule other coros (yield), one of those coros runs the
     #             event loop.
     # without Coro: enter the event loop and wait; effectively blocks
-    return $cv->recv;
+    my $result = $cv->recv;
+    die $result->{error} if $result->{error};
+    return $result;
 };
 
 __PACKAGE__->meta->make_immutable;
