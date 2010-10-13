@@ -30,8 +30,7 @@ sub make_getter {
         my $user = $rest->user;
 
         unless ($user->is_authenticated and !$user->is_deleted) {
-            $rest->header(-status => HTTP_401_Unauthorized);
-            return '';
+            return $self->not_authorized();
         }
 
         my $appliance = Socialtext::Appliance::Config->new;
