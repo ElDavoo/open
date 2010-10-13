@@ -1286,7 +1286,7 @@ sub exec_regex {
 sub sleep {
     my $self = shift;
     my $secs = shift;
-    sleep $secs;
+    CORE::sleep $secs;
 }
 
 =head2 get ( uri, accept )
@@ -3162,7 +3162,20 @@ sub set_basic_auth_header {
 sub restart_userd {
     my $self = shift;
     Socialtext::System::shell_run('nlwctl', '-s','restart');
-    $self->sleep(2);    # have to wait for st-userd to come online again
+    my $ua = LWP::UserAgent->new;
+    my $req = HTTP::Request->new(GET => 
+        'http://localhost:'.$self->{userd_port}.'/ping',
+        [Accept => 'application/json']);
+    # assumes graceful shutdown delay is 5 seconds:
+    for (1..12) {
+        my $resp = $ua->request($req);
+        if ($resp->is_success) {
+            pass "userd restarted";
+            return;
+        }
+        Time::HiRes::sleep(0.5);
+    }
+    fail "userd could not be restarted";
 }
 
 1;
