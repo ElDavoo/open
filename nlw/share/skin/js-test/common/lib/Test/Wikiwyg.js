@@ -161,4 +161,11 @@ proto.dom_sanitize  = function(content) {
     return html2;
 }
 
+proto.trim = function(content, block) {
+    var result = content.replace(/^\s*\n/, '');
+    result = result.replace(/\n\s*$/, '\n').replace(new RegExp(String.fromCharCode(0x2424), 'g'), '\n');
+    return result;
+}
+
+
 })();
