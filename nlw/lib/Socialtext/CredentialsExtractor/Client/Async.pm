@@ -60,7 +60,7 @@ sub extract_credentials {
 
     # send request off to st-userd
     try {
-        my $body = encode_json($hdrs);
+        my $body = encode_json($hdrs_to_send);
         http_request POST => $self->userd_uri,
             headers => {
                 'Referer'    => '',
