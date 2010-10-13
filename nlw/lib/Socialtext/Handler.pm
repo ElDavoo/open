@@ -50,7 +50,11 @@ sub authenticate {
     my $request = shift;
 
     my $client = Socialtext::CredentialsExtractor::Client::Sync->new();
-    my $creds  = $client->extract_credentials(\%ENV);
+    my %env    = (
+        $request->cgi_env,
+        AUTHORIZATION => $request->header_in('Authorization'),
+    );
+    my $creds  = $client->extract_credentials(\%env);
     return unless ($creds->{valid});
 
     my $user = Socialtext::User->new(user_id => $creds->{user_id});
