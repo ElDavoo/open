@@ -45,22 +45,21 @@ sub extract_desired_headers {
 }
 
 sub extract_credentials {
-    my $self = shift;
-    my $hdrs = shift;
-    my $cb   = shift;
+    my ($self, $hdrs, $cb) = @_;
 
-    # minimal headers needing to be send to st-userd
-    my $hdrs_to_send = $self->extract_desired_headers($hdrs);
-
-    # see if we have valid cached credentials
-    if (my $creds = $self->get_cached_credentials($hdrs_to_send)) {
-        $cb->($creds);
-        return;
-    }
-
-    # send request off to st-userd
     try {
+        # minimal headers needing to be send to st-userd
+        my $hdrs_to_send = $self->extract_desired_headers($hdrs);
+
+        # see if we have valid cached credentials
+        if (my $creds = $self->get_cached_credentials($hdrs_to_send)) {
+            eval { $cb->($creds) };
+            return;
+        }
+
         my $body = encode_json($hdrs_to_send);
+
+        # send request off to st-userd
         http_request POST => $self->userd_uri,
             headers => {
                 'Referer'    => '',
@@ -69,24 +68,28 @@ sub extract_credentials {
             body    => $body,
             timeout => 30,
             sub {
-                # my ($resp_body, $resp_hdrs) = @_;
+                my ($resp_body, $resp_hdrs) = @_;
                 my $creds;
-                if ($_[1]{Status} >= 500) {
+                try {
+                    if ($resp_hdrs->{Status} >= 500) {
+                        die $resp_hdrs->{Reason};
+                    }
+                    else {
+                        $creds = decode_json($resp_body);
+                        $self->store_credentials_in_cache($resp_hdrs, $creds);
+                    }
+                }
+                catch {
                     $creds = { error =>
-                        "extract credentials eror: ".$_[1]{Reason} };
-                }
-                else {
-                    $creds = decode_json($_[0]);
-                    $self->store_credentials_in_cache($_[1], $creds);
-                }
-                $cb->($creds);
+                        "extract credentials eror: $_" };
+                };
+                eval { $cb->($creds) };
             };
     }
     catch {
-        # XXX handle error from sending/decoding
-        my $err = $_;
-        warn "ERROR[$err]\n"; # XXX - handle better
+        eval { $cb->({error => $_}) };
     };
+    return;
 }
 
 sub store_credentials_in_cache {
