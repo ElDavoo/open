@@ -4,7 +4,7 @@ var filters = {
     html: ['html_to_wikitext']
 };
 
-t.plan(5);
+t.plan(6);
 t.filters(filters);
 t.run_is('html', 'wikitext');
 
@@ -25,6 +25,14 @@ t.run_is('html', 'wikitext');
 0
 ␤␤␤3
 ␤␤2
+
+=== Vertical whitespace in Chrome (part 3)
+--- html
+<div class="wiki">1<br class="p"><br></div><div class="wiki"><br class="p">2<br class="p"><br class="p">3</div>
+--- wikitext
+1
+␤␤2
+␤3
 
 === Vertical whitespace in Firefox (part 1)
 --- html
@@ -58,7 +66,7 @@ t.run_is('html', 'wikitext');
 ␤␤␤␤4
 ␤␤␤␤␤5
 
-=== Vertical whitespace in Chrome+Firefox
+=== Vertical whitespace in Chrome+Firefox (1)
 --- html
 <div class="wiki">
 <br /><p>

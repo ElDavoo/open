@@ -1548,7 +1548,7 @@ proto.convert_html_to_wikitext = function(html, isWholeDocument) {
             $dom
             .find("div.wiki").each(function() { 
                 var html = $(this).html();
-                if (/^\s*(?:<br\b[^>]*>\s*)+$/i.test(html)) {
+                if (/<br\b[^>]*>\s*$/i.test(html)) {
                     $(this).replaceWith( html );
                 }
                 else {
@@ -1714,7 +1714,7 @@ proto.walk = function(elem) {
                 continue;
             }
 
-            if (this.wikitext) {
+            if (this.wikitext && this.wikitext != '\n') {
                 for (var node = part; node; node = node.firstChild) {
                     if (node.top_level_block) {
                         // *** Hotspot - Optimizing by hand. ***
