@@ -97,6 +97,9 @@ Socialtext.show_signal_network_dropdown = function(prefix, width) {
     prefix = prefix || '';
     $.getScript( nlw_make_plugin_path('/widgets/javascript/jquery.dropdown.js') , function() {
         $.getScript( nlw_make_plugin_path('/widgets/javascript/activities.js') , function() {
+            // XXX - Need adjustment to work with the newly refactored activities.js
+            if ((typeof Activities == 'undefined') || !Activities) return;
+
             $.getJSON('/data/users/' + Socialtext.userid, function(data) {
                 var default_network = 'account-' + Socialtext.current_workspace_account_id;
                 var activities = new Activities({
