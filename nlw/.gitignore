@@ -519,3 +519,4 @@ t/wikitests/push/presence.wiki
 lib/Socialtext/Signal/Asset/Find.pm
 t/Socialtext/Signal/Asset/Find.t
 lib/Socialtext/Handler/Mobile/Activities.pm
+service/st-userd/supervise
