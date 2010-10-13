@@ -52,7 +52,11 @@ sub extract_credentials {
     # minimal headers needing to be send to st-userd
     my $hdrs_to_send = $self->extract_desired_headers($hdrs);
 
-    # XXX: check client-side cache
+    # see if we have valid cached credentials
+    if (my $creds = $self->get_cached_credentials($hdrs_to_send)) {
+        $cb->($creds);
+        return;
+    }
 
     # send request off to st-userd
     try {
@@ -78,17 +82,61 @@ sub _send_request {
         body    => $body,
         timeout => 30,
         sub {
-            my ($body, $hdrs) = @_;
-            if ($hdrs->{Status} >= 500) {
-                die 'ExtractCreds: '.$hdrs->{Reason} . "\n";
+            my ($resp_body, $resp_hdrs) = @_;
+            if ($resp_hdrs->{Status} >= 500) {
+                die 'ExtractCreds: '.$resp_hdrs->{Reason} . "\n";
             }
-            my $creds = decode_json($body);
-
-            # XXX cache results
+            my $creds = decode_json($resp_body);
+            $self->store_credentials_in_cache($hdrs, $creds);
 
             $cb->($creds);
         };
     return; # force http_request void context
+}
+
+sub store_credentials_in_cache {
+    my $self  = shift;
+    my $hdrs  = shift;
+    my $creds = shift;
+
+    # creds not cachable; skip
+    return unless $creds->{valid_for};
+
+    # store the creds in the in-memory cache
+    my $now  = time();
+    my $key  = $self->_cache_key($hdrs);
+    my $data = {
+        valid_until => ($now + $creds->{valid_for}),
+        credentials => $creds,
+    };
+    $self->cache->set($key, $data);
+}
+
+sub get_cached_credentials {
+    my $self = shift;
+    my $hdrs = shift;
+    my $key  = $self->_cache_key($hdrs);
+
+    # find the creds in the cache
+    my $data = $self->cache->get($key);
+    return unless $data;
+
+    # if the creds are still valid, re-use those
+    my $now = time();
+    if ($data->{valid_until} > $now) {
+        return $data->{credentials};
+    }
+
+    # remove this item from the cache; its not valid any more
+    $self->cache->remove($key);
+    return;
+}
+
+sub _cache_key {
+    my $self = shift;
+    my $hdrs = shift;
+    my $key  = join '\0', map { $_ => $hdrs->{$_} } sort keys %{$hdrs};
+    return $key;
 }
 
 __PACKAGE__->meta->make_immutable;
