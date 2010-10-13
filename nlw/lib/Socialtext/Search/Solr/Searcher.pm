@@ -155,6 +155,11 @@ sub _search {
     $query_type = 'standard' if $query =~ m/\b[a-z_]+:/i;
     $query_type = 'standard' if $query =~ m/\*|\?/;
     $query_type = 'standard' if $query =~ m/\band\b/i or $query =~ m/\bor\b/i;
+
+    # Turn "tag:" search with non-word chars into "tag_exact:", as it's
+    # unlikely for them to match under normal "tag:" semantics.
+    $query =~ s{\btag:("?)(\S*[^\w\s]\S*)\1}{tag_exact:"$2"}g;
+
     my @sort = $self->_sort_opts($opts{order}, $opts{direction}, $query_type);
     my $query_hash = {
         # fl = Fields to return
