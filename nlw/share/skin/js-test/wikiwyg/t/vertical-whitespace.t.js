@@ -6,7 +6,12 @@ var filters = {
 
 t.plan(6);
 t.filters(filters);
-t.run_is('html', 'wikitext');
+if (jQuery.browser.msie) {
+    t.skipAll('MSIE uses its own vertical-whitespace logic')
+}
+else {
+    t.run_is('html', 'wikitext');
+}
 
 
 
