@@ -522,3 +522,4 @@ lib/Socialtext/Handler/Mobile/Activities.pm
 lib/Socialtext/Rest/Signals/Assets/Tags.pm
 lib/Socialtext/Signal/Asset/Tag/Find.pm
 t/wikitests/signals/data_signals_assets_tags.wiki
+t/wikitests/signals/data_signals_assets-tagfilter.wiki
