@@ -36,7 +36,20 @@ UNION ALL
          attachment_id,
          'attachment' AS class
     FROM signal_attachment;
-;
+
+CREATE VIEW conversation_tag AS
+  SELECT tag.signal_id,
+         tag.tag,
+         signal.user_id
+    FROM signal_tag tag
+    JOIN signal USING(signal_id)
+UNION ALL
+  SELECT signal.in_reply_to_id,
+         tag.tag,
+         signal.user_id
+    FROM signal_tag tag
+    JOIN signal USING(signal_id)
+   WHERE signal.in_reply_to_id IS NOT NULL;
 
 UPDATE "System"
    SET value = '127'

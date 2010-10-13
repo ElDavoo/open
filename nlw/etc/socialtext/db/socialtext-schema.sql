@@ -731,6 +731,33 @@ CREATE SEQUENCE container_id
     NO MINVALUE
     CACHE 1;
 
+CREATE TABLE signal (
+    signal_id bigint NOT NULL,
+    "at" timestamptz DEFAULT now(),
+    user_id bigint NOT NULL,
+    body text NOT NULL,
+    in_reply_to_id bigint,
+    recipient_id bigint,
+    hidden boolean DEFAULT false,
+    hash character(32) NOT NULL,
+    anno_blob text
+);
+
+CREATE TABLE signal_tag (
+    signal_id bigint NOT NULL,
+    tag text NOT NULL
+);
+
+CREATE VIEW conversation_tag AS
+  SELECT tag.signal_id, tag.tag, signal.user_id
+   FROM signal_tag tag
+   JOIN signal USING (signal_id)
+UNION ALL 
+ SELECT signal.in_reply_to_id AS signal_id, tag.tag, signal.user_id
+   FROM signal_tag tag
+   JOIN signal USING (signal_id)
+  WHERE signal.in_reply_to_id IS NOT NULL;
+
 CREATE SEQUENCE default_gadget_id
     INCREMENT BY 1
     NO MAXVALUE
@@ -1083,18 +1110,6 @@ CREATE TABLE sessions (
     last_updated timestamptz NOT NULL
 );
 
-CREATE TABLE signal (
-    signal_id bigint NOT NULL,
-    "at" timestamptz DEFAULT now(),
-    user_id bigint NOT NULL,
-    body text NOT NULL,
-    in_reply_to_id bigint,
-    recipient_id bigint,
-    hidden boolean DEFAULT false,
-    hash character(32) NOT NULL,
-    anno_blob text
-);
-
 CREATE TABLE signal_attachment (
     attachment_id integer NOT NULL,
     signal_id bigint NOT NULL
@@ -1127,11 +1142,6 @@ CREATE SEQUENCE signal_id_seq
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
-
-CREATE TABLE signal_tag (
-    signal_id bigint NOT NULL,
-    tag text NOT NULL
-);
 
 CREATE TABLE signal_user_set (
     signal_id bigint NOT NULL,
