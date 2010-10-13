@@ -18,7 +18,6 @@ use Socialtext::RequestContext;
 use Socialtext::WebApp;
 use Socialtext::TT2::Renderer;
 use Socialtext::User;
-use Socialtext::User::Default::Users qw($GuestUsername);
 use Socialtext::Challenger;
 use Socialtext::l10n qw/loc_lang/;
 
@@ -52,26 +51,18 @@ sub authenticate {
 
     my $client = Socialtext::CredentialsExtractor::Client::Sync->new();
     my $creds  = $client->extract_credentials(\%ENV);
-    return undef unless ($creds->{valid});
+    return unless ($creds->{valid});
 
     my $user = Socialtext::User->new(user_id => $creds->{user_id});
-    return undef unless $user;
-    return undef if $user->is_deleted;
-    return undef if $user->username eq $GuestUsername;
+    return if (!$user or $user->is_deleted or $user->is_guest);
 
     $request->connection->user($user->username);
     return $user;
 }
 
 sub guest {
-    my $class   = shift;
-    my $request = shift;
-    if ( $class->allows_guest($request) ) {
-        return Socialtext::User->Guest;
-    }
-    else {
-        return undef;
-    }
+    my ($class, $r) = @_;
+    return $class->allows_guest($r) ? Socialtext::User->Guest : undef;
 }
 
 sub _preload_templates {
