@@ -127,7 +127,7 @@ const formatter_id => 'hr';
 sub match {
     my $self = shift;
     my $text = shift;
-    return unless $text =~ /^(--+)\s*\n/m;
+    return unless $text =~ /^(--+)[^\n\S]*\n/m;
     $self->set_match;
 }
 
@@ -159,7 +159,7 @@ sub match {
     my $text = shift;
     my $bullet = $self->bullet;
     my $orig_text = $text;
-    my $regex = qr/\A((?:^($bullet).*\n)(?:^\2(?!$bullet).*\n)*)(?:\s*\n)?/m;
+    my $regex = qr/\A((?:^($bullet).*\n)(?:^\2(?!$bullet).*\n)*)[^\n\S]*/m;
     my $match = $text =~ $regex;
     return unless $match;
     $self->set_match;
