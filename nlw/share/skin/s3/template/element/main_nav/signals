@@ -8,6 +8,8 @@
 
  [% PROCESS element/main_nav/subnav/workspaces %]
 
+ [% PROCESS element/main_nav/subnav/signals_explore %]
+
  [% PROCESS element/main_nav/subnav/invite %]
 
 </ul>
