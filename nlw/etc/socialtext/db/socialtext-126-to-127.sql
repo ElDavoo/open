@@ -43,13 +43,15 @@ CREATE VIEW conversation_tag AS
          signal.user_id
     FROM signal_tag tag
     JOIN signal USING(signal_id)
+   WHERE NOT signal.hidden
 UNION ALL
   SELECT signal.in_reply_to_id,
          tag.tag,
          signal.user_id
     FROM signal_tag tag
     JOIN signal USING(signal_id)
-   WHERE signal.in_reply_to_id IS NOT NULL;
+   WHERE signal.in_reply_to_id IS NOT NULL
+     AND NOT signal.hidden;
 
 UPDATE "System"
    SET value = '127'

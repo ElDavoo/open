@@ -752,11 +752,12 @@ CREATE VIEW conversation_tag AS
   SELECT tag.signal_id, tag.tag, signal.user_id
    FROM signal_tag tag
    JOIN signal USING (signal_id)
+  WHERE NOT signal.hidden
 UNION ALL 
  SELECT signal.in_reply_to_id AS signal_id, tag.tag, signal.user_id
    FROM signal_tag tag
    JOIN signal USING (signal_id)
-  WHERE signal.in_reply_to_id IS NOT NULL;
+  WHERE signal.in_reply_to_id IS NOT NULL AND NOT signal.hidden;
 
 CREATE SEQUENCE default_gadget_id
     INCREMENT BY 1
