@@ -15,14 +15,14 @@ const class_title => 'google retrieval';
 sub class_id { 'google_search' }
 
 sub register {
-    my $self = shift;
+    my $self     = shift;
     my $registry = shift;
     $registry->add(wafl => $_ => 'Socialtext::GoogleSearchPlugin::Wafl')
-        for qw( googlesearch googlesoap ); # Keep "googlesoap" compat
+        for qw( googlesearch googlesoap );    # Keep "googlesoap" compat
 }
 
 sub get_result {
-    my $self = shift;
+    my $self  = shift;
     my $query = shift;
 
     REST::Google::Search->http_referer(
@@ -36,9 +36,9 @@ sub get_result {
     # loop so we can adjust the limit later.
     while (@results < $self->limit) {
         my $res = REST::Google::Search->new(
-            q => Socialtext::Encode::ensure_is_utf8($query),
-            rsz => 'large',
-            start => 0+@results,
+            q     => Socialtext::Encode::ensure_is_utf8($query),
+            rsz   => 'large',
+            start => 0 + @results,
         );
 
         if ($res->responseStatus !~ /^2/) {
@@ -57,8 +57,8 @@ sub get_result {
     return {
         resultElements => [
             map { +{
-                title => $_->title,
-                URL => $_->url,
+                title   => $_->title,
+                URL     => $_->url,
                 snippet => $_->content
             } } @results
         ]
@@ -72,7 +72,7 @@ use Socialtext::Formatter::WaflPhrase;
 use base 'Socialtext::Formatter::WaflPhraseDiv';
 
 sub html {
-    my $self = shift;
+    my $self  = shift;
     my $query = $self->arguments;
 
     return $self->syntax_error unless defined $query and $query =~ /\S/;
@@ -84,15 +84,15 @@ sub html {
 }
 
 sub pretty {
-    my $self = shift;
-    my $query = shift;
+    my $self   = shift;
+    my $query  = shift;
     my $result = shift;
     $self->hub->template->process('wafl_box.html',
-        query => $query,
+        query      => $query,
         wafl_title => loc('Search for "[_1]"', $query),
-        wafl_link => "http://www.google.com/search?q=$query",
-        items => $result->{resultElements},
-        error => $result->{error},
+        wafl_link  => "http://www.google.com/search?q=$query",
+        items      => $result->{resultElements},
+        error      => $result->{error},
     );
 }
 
