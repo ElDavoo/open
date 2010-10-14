@@ -45,7 +45,7 @@ has_inflated 'query_parser' =>
      handles => [qw/parse/]);
 
 my %DocTypeToFieldBoost = (
-    '' => 'title^4 tags^3 filename^2', # page + attachment
+    '' => 'title^4 tags^3', # not doing the filename^2 boost as it's v.slow
     page => 'title^4 tags^3',
     attachment => 'filename^2 body^0.8',
     signal => 'body^1.2 tag^3 filename^1.1',
