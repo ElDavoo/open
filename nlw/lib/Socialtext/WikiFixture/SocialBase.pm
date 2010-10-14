@@ -700,6 +700,49 @@ sub deactivate_user {
     $user->deactivate();
 }
 
+=head2 st_create_health_report 
+
+Runs the appliance health batch job as super-user.  Will only work on a vz.
+
+Sets the variables:
+
+health_report_url: The url output of the call to the batch job that is the local report URL
+health_name_www2: the english pagename that will be set on he www2/st-reports-test workspace when the report is completed
+
+=cut
+
+
+sub st_create_health_report {
+    my $self = shift();
+    my $output = `sudo /usr/sbin/st-appliance-health-report`;
+    $output=~s/\n//g;
+    my $url;
+    my $date_stamp;
+    my $pagename;
+
+    if ( ($output=~/Uploaded/) && ($output=~/_health.+\d\d\d\d.+\d+.+\d+$/)) {
+        ok(1, 'output of st-appliance-health-report indicates the report was created');
+        if ($output=~/(http.+\d\d\d\d\_\d+\_\d+$)/) {
+            $url = $1;
+            $self->{health_report_url} = $url;
+        } else {
+            ok(0, "failed in match 1 of st_create_health_report: '$output'\n");
+        }
+
+        if ($output=~/(\d\d\d\d\_\d+\_\d+$)/) {
+             $date_stamp = $1;
+             $date_stamp=~s/_/-/g;
+             my $pagename = $ENV{WIKIEMAIL} . ' - Health - ' . $date_stamp;
+             $self->{health_name_www2} = $pagename;
+         } else {
+             ok(0, "failed in match 2 of st_create_health_report: '$output'\n");
+         }
+    } else {
+         ok(0, 'output of st-appliance-health-report looks ... wrong' . "($output)");
+    }
+}
+
+
 sub create_group {
     my $self         = shift;
     my $group_name   = shift;
