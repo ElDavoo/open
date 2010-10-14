@@ -46,9 +46,13 @@ sub get_result {
             return { error => $res->responseStatus };
         }
 
-        last unless $res->responseData->results;
-        push @results, $res->responseData->results;
+        my @more = $res->responseData->results;
+        last unless @more;
+        push @results, @more;
     }
+
+    # trim the result list to max "limit" items
+    splice @results, $self->limit if (@results > $self->limit);
 
     return {
         resultElements => [
@@ -56,7 +60,7 @@ sub get_result {
                 title => $_->title,
                 URL => $_->url,
                 snippet => $_->content
-            } } @results[ 0..($self->limit-1) ]
+            } } @results
         ]
     };
 }
