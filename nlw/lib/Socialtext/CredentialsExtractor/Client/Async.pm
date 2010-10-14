@@ -11,7 +11,7 @@ use Socialtext::CredentialsExtractor;
 use namespace::clean -except => 'meta';
 
 has 'userd_host' => (
-    is => 'ro', isa => 'Str', default => 'localhost',
+    is => 'ro', isa => 'Str', default => '127.0.0.1',
 );
 has 'userd_port' => (
     is => 'ro', isa => 'Int', default => Socialtext::HTTP::Ports->userd_port,
