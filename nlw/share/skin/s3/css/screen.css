@@ -1274,7 +1274,7 @@ body#settingsPage div.widget div.widgetContent h4 {
 }
 
 body#settingsPage div.widget div.widgetContent ul {
-        margin: 4px 9px 10px !important
+        margin: 4px 9px 10px;
 }
 
 div.widget div.widgetContent ul {
@@ -1284,10 +1284,6 @@ div.widget div.widgetContent ul {
 
 div.widget div.widgetContent ul li {
 	line-height: 18px;
-}
-
-body#settingsPage div.widget div.widgetContent ul {
-	margin: 10px 0 0 28px;
 }
 
 div.widgetContent ul.leftNavList li a {
@@ -3465,7 +3461,7 @@ body div#controls div#st-editing-tools-edit ul li a.disabled {
 }
 
 .widget .widgetContent ul {
-    margin:10px 9px 0 9px ! important;
+    margin:10px 9px 0 9px;
 }
 .widget .widgetContent ul li {
     border-bottom:1px #e8e8e8 solid;
