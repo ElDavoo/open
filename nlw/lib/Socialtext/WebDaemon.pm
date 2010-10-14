@@ -170,7 +170,7 @@ sub run {
     weaken $self;
 
     st_log()->info("$PROC_NAME starting on ".$self->host." port ".$self->port);
-    trace "$PROC_NAME starting on ".$self->host." port ".$self->port;
+    trace "$PROC_NAME starting on ".$self->host." port ".$self->port." Feersum $Feersum::VERSION";
 
     $self->cv->begin; # match in shutdown()
 
