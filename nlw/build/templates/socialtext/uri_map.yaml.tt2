@@ -528,6 +528,12 @@
             'application/json': [Socialtext::Rest::AccountPluginPrefs, PUT_json]
         '*':                    [Socialtext::Rest::AccountPluginPrefs, bad_method]
 -
+    '/data/networks':
+        'GET':
+            '*/*':              [Socialtext::Rest::Networks, bad_type]
+            'application/json': [Socialtext::Rest::Networks, GET_json]
+        '*':                    [Socialtext::Rest::Networks, bad_method]
+-
     '/data/wafl/:__text__':
         'GET':
             '*/*':              [Socialtext::Rest::Wafl, GET_image]
