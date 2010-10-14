@@ -52,7 +52,7 @@ sub _get_entities {
     );
 
     if ($filter) {
-        @networks = grep { $_->name =~ m/^\Q$filter\E/ } @networks;
+        @networks = grep { $_->name =~ m/^\Q$filter\E/i } @networks;
     }
 
     $self->{_total} = scalar @networks;
