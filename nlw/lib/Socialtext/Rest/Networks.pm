@@ -33,6 +33,10 @@ sub _get_total_results {
     return $self->{_total} || 0;
 }
 
+# Possible improvements:
+# * First filter by the filter prefix, then limit by visibility for this user
+# * Single query with two left joins (all user sets i can see, joined with
+#   groups, joined with account), filter by account_name OR group_name match
 sub _get_entities {
     my $self = shift;
     my $user = $self->rest->user;
