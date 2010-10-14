@@ -2,7 +2,12 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-BEGIN { push @INC, "$ENV{ST_CURRENT}/nlw/lib" if $ENV{ST_CURRENT} }
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+BEGIN {
+    lib->import("$ENV{ST_CURRENT}/nlw/lib") if $ENV{ST_CURRENT};
+    $ENV{ST_LOG_NAME} = 'st-userd';
+}
 use Socialtext::WebDaemon;
 Socialtext::WebDaemon->Run('Socialtext::Handler::Userd',
     Socialtext::HTTP::Ports->userd_port);

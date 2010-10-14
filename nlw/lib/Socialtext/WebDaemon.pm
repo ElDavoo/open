@@ -5,16 +5,32 @@ use MooseX::AttributeHelpers;
 use MooseX::StrictConstructor;
 
 use FindBin;
-use lib "$FindBin::Bin/../lib";
-use lib "$ENV{ST_CURRENT}/nlw/lib";
 use Getopt::Long;
 use Carp qw/carp croak/;
 
+use Socialtext::TimestampedWarnings;
+use Socialtext::AppConfig;
+use Socialtext::Paths;
+BEGIN {
+    # unbuffer stderr/stdout
+    select STDERR; $|=1;
+    select STDOUT; $|=1;
+    if ($ENV{ST_LOG_NAME} && !$ENV{HARNESS_ACTIVE}) {
+        my $path = '/var/log';
+        if ($0 !~ m{^/usr/bin}) {
+            $path = Socialtext::Paths->log_directory();
+        }
+        eval "use Socialtext::System::TraceTo '$path/$ENV{ST_LOG_NAME}.log'";
+    }
+
+    if (Socialtext::AppConfig->is_dev_env) {
+        $ENV{ST_DEBUG_ASYNC} = 1; # See Socialtext::WebDaemon::Util
+    }
+}
+
 use Socialtext::Async;
 use Socialtext::Log qw/st_log/;
-use Socialtext::TimestampedWarnings;
 
-use Socialtext::AppConfig;
 use Socialtext::HTTP::Ports;
 
 use EV;
@@ -41,10 +57,6 @@ BEGIN {
         require Socialtext::User::LDAP::Factory;
         require Socialtext::Group::LDAP::Factory;
     }
-
-    # unbuffer stderr/stdout
-    select STDERR; $|=1;
-    select STDOUT; $|=1;
 }
 
 our $SINGLETON;
@@ -158,6 +170,7 @@ sub run {
     weaken $self;
 
     st_log()->info("$PROC_NAME starting on ".$self->host." port ".$self->port);
+    trace "$PROC_NAME starting on ".$self->host." port ".$self->port;
 
     $self->cv->begin; # match in shutdown()
 
@@ -194,7 +207,7 @@ sub run {
             AE::timer $self->worker_ping_period, $self->worker_ping_period,
             exception_wrapper {
                 try { 
-                    Socialtext::Async::Wrapper::ping_worker();
+                    Socialtext::Async::Wrapper::ping_worker($NAME);
                     trace "Worker is OK!";
                 }
                 catch {
@@ -205,11 +218,14 @@ sub run {
 
     inner();
 
-    scope_guard {
-        $self->_running(0);
-        try { $self->cleanup } catch { warn "during $NAME cleanup: $_" };
-    };
-    $self->cv->recv;
+    my $main_e;
+    try { $self->cv->recv } catch { $main_e = $_ };
+
+    $self->_running(0);
+    try { $self->cleanup }
+    catch { Carp::cluck "during $NAME cleanup: $_" };
+
+    die $main_e if $main_e;
 }
 
 sub cleanup {
@@ -321,6 +337,6 @@ Socialtext::WebDaemon - abstract base-class.
 
 Abstract base-class and factory for a number of socialtext "web daemons".
 
-The RequestClass should sub-class L<Socialtext::WebDaemon::Request>
+The RequestClass should sub-class L<Socialtext::WebDaemon::Request>.
 
 =cut

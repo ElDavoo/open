@@ -14,6 +14,7 @@ use Socialtext::Timer qw/time_scope/;
 use Socialtext::IntSet;
 use Socialtext::AppConfig;
 use Scalar::Util qw/blessed weaken/;
+use Socialtext::TimestampedWarnings;
 
 our $VERSION = 1.0;
 
@@ -33,27 +34,24 @@ our @EXPORT = qw(
     $CRLF
 );
 
-our $DEBUG = $ENV{PUSHD_DEBUG} || $ENV{ST_DEBUG_ASYNC} || $ENV{HARNESS_ACTIVE};
+our $DEBUG = $ENV{ST_DEBUG_ASYNC} || $ENV{HARNESS_ACTIVE};
 
 sub ignored {}
 
-# Trace left intentionally disabled. It is only for debugging.
-# To enable trace, edit /var/lib/svscan/$DAEMON/run to have
-#    $ENV{ST_DEBUG_ASYNC}=1;
-# at the top.
+# Trace left intentionally disabled. It is only for debugging and is enabled
+# using the env-vars above.
 sub trace (@) { }
-
-if ($DEBUG) {
-    no warnings 'redefine';
-    no warnings 'once';
-    *trace = sub (@) {
-        my $msg = join(' ', strftime('[%FT%T%z] ('.$$.')', localtime), 
-            $Socialtext::WebDaemon::NAME, @_);
+sub _setup_trace {
+    no warnings qw/redefine once/;
+    no strict 'refs';
+    *{'trace'} = sub (@) {
+        my $msg = join(' ', "($$)", $Socialtext::WebDaemon::NAME, @_);
         chomp $msg;
         $msg .= "\n";
-        print STDERR $msg;
+        warn $msg; # will get a timestamp from TimestampedWarnings
     };
 }
+_setup_trace() if $DEBUG;
 
 {
     no warnings 'once';
