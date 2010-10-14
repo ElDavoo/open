@@ -14,7 +14,7 @@ t.runAsync([
     },
             
     function() { 
-        var rss_link = t.$('iframe[src*=local:widgets:activities]').get(0).contentWindow.document.getElementById('rss-feed');
+        var rss_link = t.$('a.rss-feed').get(0);
 
         t.is(
             rss_link.getAttribute('target'),
