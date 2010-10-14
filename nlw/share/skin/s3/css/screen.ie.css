@@ -315,3 +315,7 @@ div.group_directory .widgetHeaderTitle {
     position: static;
     float: none;
 }
+
+#st-page-content .wiki br.st-last-br, #st-revision-display .wiki br.st-last-br {
+    line-height: 2.4em;
+}
