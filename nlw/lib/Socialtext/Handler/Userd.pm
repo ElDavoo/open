@@ -151,3 +151,17 @@ worker_function worker_extract_creds => sub {
 };
 
 1;
+
+=head1 NAME
+
+Socialtext::Handler::Userd - Credentials Extraction handler
+
+=head1 SYNOPSIS
+
+  # see st-userd
+
+=head1 DESCRIPTION
+
+Credentials Extraction handler, as C<st-userd> daemon
+
+=cut

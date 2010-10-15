@@ -165,5 +165,20 @@ sub permanent_redirect {
     return '';
 }
 
-
 1;
+
+=head1 NAME
+
+Socialtext::Handler::Base - Baseline Role for handlers
+
+=head1 SYNOPSIS
+
+  package Socialtext::Handler::Base;
+  with 'Socialtext::Handler::Base';
+
+=head1 DESCRIPTION
+
+Baseline Role for handlers, containing common functionality that's useful not
+only for Containers but for other types of Handlers as well.
+
+=cut
