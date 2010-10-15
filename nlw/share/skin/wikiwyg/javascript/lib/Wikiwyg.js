@@ -1116,8 +1116,8 @@ this.addGlobal().setup_wikiwyg = function() {
         if (Socialtext.new_page) {
             window.location = '?action=homepage';
         }
-        else if (location.href.match(/caller_action=weblog_display;?/)) {
-            location.href = 'index.cgi?action=weblog_redirect;start=' +
+        else if (location.href.match(/caller_action=blog_display;?/)) {
+            location.href = 'index.cgi?action=blog_redirect;start=' +
                 encodeURIComponent(location.href);
             return false;
         }

@@ -319,8 +319,8 @@
             <td>{file: [page name] proposal.pdf} - [page name]</td>
         </tr> 
         <tr class="st-refcard-table-row">
-            <td>My Weblog weblog</td>
-            <td>{weblog: My Weblog}</td>
+            <td>My Blog blog</td>
+            <td>{blog: My Blog}</td>
         </tr> 
         <tr class="st-refcard-table-row">
             <td>Meeting notes category</td>
