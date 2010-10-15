@@ -43,7 +43,7 @@
   <dt><label>[% loc('Workspace Link') %]</label></dt>
   <dd>
     [% loc('When users click on the title of a workspace, they go to the central page of the workspace. This page has the same title as the workspace ("[_1]").', workspace.title) %]<br />
-    [% loc('You can also configure the workspace link to display as a weblog') %]
+    [% loc('You can also configure the workspace link to display as a blog.') %]
   </dd>
   <dd>
     <input type="radio" name="homepage_is_weblog"
@@ -58,7 +58,7 @@
         checked="checked"
       [%- END %]
         value="1" />
-    [% loc('This weblog:') %]
+    [% loc('This blog:') %]
     <input name="homepage_weblog" value="[% workspace.homepage_weblog %]"
       [%- UNLESS workspace.homepage_weblog %]
         disabled="true"

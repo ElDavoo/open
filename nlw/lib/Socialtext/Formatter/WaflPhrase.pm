@@ -742,6 +742,7 @@ my $wafl_id_str_tag = loc('tag');
 
 ################################################################################
 package Socialtext::Formatter::WeblogLink;
+# Deprecated in favour of 'blog'
 
 use base 'Socialtext::Formatter::CategoryLink';
 use Class::Field qw( const );
@@ -749,6 +750,17 @@ use Socialtext::l10n qw( loc );
 
 const wafl_id => 'weblog';
 #const wafl_id_str => loc('weblog');
+
+################################################################################
+package Socialtext::Formatter::BlogLink;
+# Deprecated in favour of 'blog'
+
+use base 'Socialtext::Formatter::CategoryLink';
+use Class::Field qw( const );
+use Socialtext::l10n qw( loc );
+
+const wafl_id => 'blog';
+#const wafl_id_str => loc('blog');
 
 ################################################################################
 package Socialtext::Formatter::TradeMark;

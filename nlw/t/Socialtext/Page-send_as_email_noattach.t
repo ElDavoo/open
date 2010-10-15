@@ -32,7 +32,7 @@ Socialtext::Page->new(hub => $hub)->create(
 
 In Socialtext, categories help you identify information so it can be found later on. Every page can have any number of categories. Pages can have many categories, and categories can overlap. Categories appear underneath the page name.
 
-> *NOTE* All workspace weblog names are also category names. Assigning a weblog as a category publishes the page to that weblog.
+> *NOTE* All workspace blog names are also category names. Assigning a blog as a category publishes the page to that blog.
 
 > *View all categories.* Select *"Categories"* from the top menu.  You will see an alphabetical list of all of the defined categories.  Clicking on any category will show a list of pages in that category.
 

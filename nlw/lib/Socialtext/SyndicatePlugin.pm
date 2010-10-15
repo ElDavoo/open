@@ -422,7 +422,7 @@ sub _tag_html_link {
 
     return $self->hub->current_workspace->uri .
            Socialtext::AppConfig->script_name .
-           '?action=weblog_display;tag=' .
+           '?action=blog_display;tag=' .
            $self->uri_escape($tag);
 }
 

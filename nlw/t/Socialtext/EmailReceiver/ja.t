@@ -275,7 +275,7 @@ EOF
 CATEGORY_IN_ADDRESS_UTF8: {
     my $email = <<EOF;
 From: devnull1\@socialtext.com
-To: $wksp_name+=E6=96=B0=E5=8A=A0=E5=9D=A1_Weblog\@test.socialtext.com
+To: $wksp_name+=E6=96=B0=E5=8A=A0=E5=9D=A1_Blog\@test.socialtext.com
 Subject: utf8 category
 
 Blah blah
@@ -284,14 +284,14 @@ EOF
     receive_ok( string => $email );
 
     my $singapore = join '', map { chr($_) } 26032, 21152, 22369;
-    my $singapore_category = "$singapore Weblog";
+    my $singapore_category = "$singapore Blog";
 
     my $page = $hub->pages()->new_from_name('utf8 category');
     isa_ok( $page, 'Socialtext::Page' );
     is_deeply(
         [ sort @{ $page->metadata()->Category() } ],
         [ 'Email', $singapore_category ],
-        'page is in Email and {Singapore Weblog} categories'
+        'page is in Email and {Singapore Blog} categories'
     );
 
 }

@@ -19,6 +19,7 @@ field recent_changes_query => '/m/changes/%{workspace}';
 field category             => '/m/tag/%{workspace}/%{category}';
 field tag                  => '/m/tag/%{workspace}/%{category}';
 field weblog               => '/m/changes/%{workspace}/%{category}';
+field blog                 => '/m/changes/%{workspace}/%{category}';
 # special_http and file and image are default
 
 =head2 people links

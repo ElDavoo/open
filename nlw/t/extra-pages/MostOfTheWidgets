@@ -18,7 +18,8 @@ It contains an example of the base form (e.g. not full form) of every Link and W
 | Relative link | http:base/images/docs/Search.png |
 | Section | {section: Link As You Think} |
 |  |  |
-| Weblog | "This is a weblog Name"{weblog: Socialtext Weblog} |
+| Weblog | "This is a weblog Name"{weblog: Socialtext Blog} |
+| Blog | "This is a blog Name"{blog: Socialtext Blog} |
 | Tag | "This is a tag name"{tag: Welcome} |
 | Category | {category: Welcome} |
 | Table of contents | {toc: } |

@@ -23,7 +23,8 @@ See {rt: 15184} | "AD Social"<file://ad-social/shared/testme.txt> |
 | Section | {section: Link As You Think} |
 | Section link | {link: Link As You Think} |
 |  |  |
-| Weblog | "This is a weblog Name"{weblog: Socialtext Weblog} |
+| Weblog | "This is a weblog Name"{weblog: Socialtext Blog} |
+| Blog | "This is a blog Name"{blog: Socialtext Blog} |
 | Tag | "This is a tag name"{tag: Welcome} |
 | Category
 This WAFL will get canonicalized to tag | {category: Welcome} |

@@ -71,7 +71,7 @@ or recent changes results.
 field search_query =>
     '/%{workspace}/index.cgi?action=search;search_term=%{search_term}';
 field category_query =>
-    '/%{workspace}/index.cgi?action=weblog_display;category=%{category}';
+    '/%{workspace}/index.cgi?action=blog_display;category=%{category}';
 field recent_changes_query => '/%{workspace}/index.cgi?action=recent_changes';
 
 =head2 special_http
@@ -101,11 +101,21 @@ field tag             =>
 
 =head2 weblog
 
-Links to weblog display.
+Links to weblog display. (Deprecated in favour of blog)
 
 =cut
+
 field weblog =>
-    '/%{workspace}/index.cgi?action=weblog_display;category=%{category}';
+    '/%{workspace}/index.cgi?action=blog_display;category=%{category}';
+
+=head2 blog
+
+Links to blog display.
+
+=cut
+
+field blog =>
+    '/%{workspace}/index.cgi?action=blog_display;category=%{category}';
 
 =head2 file
 

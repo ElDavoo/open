@@ -27,17 +27,17 @@ comment_popup
 --- match
 <a href="mailto:admin\@.*\?subject=Conversations" title="To\: admin\@.* \/ subject\: Conversations">Email To This Page<\/a>
 
-=== Hit the settings page for Weblog Creation
+=== Hit the settings page for blog Creation
 --- query
-action: weblogs_create
---- match: Create A Weblog
+action: blogs_create
+--- match: Create A Blog
 
-=== Create the Comment weblog
+=== Create the Comment Blog
 --- query
 Button: Create
-action: weblogs_create
-weblog_title: Comment weblog
+action: blogs_create
+weblog_title: Comment blog
 --- match
-Weblog: Comment weblog
+Blog: Comment blog
 or post by email
-first post in Comment weblog.
+first post in Comment blog.

@@ -2890,7 +2890,7 @@ sub send_watchlist_emails {
             . ' page.' );
 }
 
-sub send_weblog_pings {
+sub send_blog_pings {
     my $self = shift;
 
     my ( $hub, $main ) = $self->_require_hub();
@@ -2910,6 +2910,7 @@ sub send_weblog_pings {
             . $page->metadata()->Subject()
             . ' page.' );
 }
+*send_weblog_pings = \&send_blog_pings;
 
 sub mass_copy_pages {
     my $self = shift;
@@ -4046,7 +4047,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   set-logo-from-file --workspace --file /path/to/file.jpg
   set-comment-form-custom-fields --workspace <field> <field>
   set-ping-uris --workspace <uri> <uri>
-  send-weblog-pings --workspace --page
+  send-blog-pings --workspace --page
   update-page --workspace --page [--username or --email] < page-body.txt
   from-input < <list of commands>
   version
@@ -4483,9 +4484,9 @@ Given a set of URIs, this sets the workspace's ping URIs to the given
 URIs, replacing any that already exist. If called without any URIs, it
 will simply remove all the existing ping URIs.
 
-=head2 send-weblog-pings --workspace --page
+=head2 send-blog-pings --workspace --page
 
-Given a page, this command send weblog pings for that page. It pings
+Given a page, this command send blog pings for that page. It pings
 the URIs defined for the workspace. If the workspace has no ping URIs,
 it does nothing.
 

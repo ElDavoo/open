@@ -231,7 +231,7 @@ Run these tests as the main user.
 | fetch-page       | toc           | hit         |                             |
 | question-file-is | toc           | w%%ws2_id%% |                             |
 
-These tag/category/weblog wafls just generate a link, so we can safely cache them.
+These tag/category/blog wafls just generate a link, so we can safely cache them.
 
 | Comment          | Tag Wafl      |      |                |
 | edit-page        | %%workspace%% | tags | {tag: welcome} |
@@ -262,6 +262,16 @@ These tag/category/weblog wafls just generate a link, so we can safely cache the
 | fetch-page       | weblog          | miss  |                |
 | fetch-page       | weblog          | hit  |                |
 | question-file-is | weblog           | w%%ws2_id%% |                |
+
+| Comment          | Blog Wafl      |      |                |
+| edit-page        | %%workspace%% | blog | {blog: welcome} |
+| fetch-page       | blog          | miss  |                |
+| fetch-page       | blog          | hit  |                |
+| question-file-is | blog           | null |                |
+| edit-page        | %%workspace%% | blog | {blog: %%ws2%%; welcome} |
+| fetch-page       | blog          | miss  |                |
+| fetch-page       | blog          | hit  |                |
+| question-file-is | blog           | w%%ws2_id%% |                |
 
 These next wafls all generate dynamic data and are not cacheable.
 

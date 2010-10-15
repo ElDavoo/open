@@ -21,11 +21,11 @@ WEBLOG_CACHE: {
         'cache is written with socialtext blog';
 }
 
-CREATE_WEBLOG: {
+CREATE_BLOG: {
     my $hub = new_hub('empty');
 
     my $category = $hub->weblog->create_weblog('foo');
-    check_category($hub, $category, 'foo Weblog');
+    check_category($hub, $category, 'foo Blog');
 
     $category = $hub->weblog->create_weblog('foo blog');
     check_category($hub, $category, 'foo blog');
@@ -53,45 +53,45 @@ sub check_category {
     ok ((grep $expected, @{$page->metadata->Category}), 'post has right category');
 }
 
-WEBLOG_TITLE_IS_VALID: {
+BLOG_TITLE_IS_VALID: {
     my $hub = new_hub('empty');
    
     #
     # Check length boundary conditions.
     #
     ok( ! $hub->weblog->_weblog_title_is_valid('a' x 256),
-       'Too-long weblog name fails'
+       'Too-long blog name fails'
     );
     ok( $hub->weblog->_weblog_title_is_valid('a' x 255),
-        'Weblog name of exactly 255 characters succeeds'
+        'blog name of exactly 255 characters succeeds'
     );
 
     #
     # Check the name which had utf8 characters.
     #
     ok( ! $hub->weblog->_weblog_title_is_valid('あ' x 29),
-       'Too-long weblog name which had utf8 fails'
+       'Too-long blog name which had utf8 fails'
     );
     ok( $hub->weblog->_weblog_title_is_valid('あ' x 28),
-        'Weblog name of exactly 28 utf8 characters succeeds'
+        'blog name of exactly 28 utf8 characters succeeds'
     );
 }
 
-WEBLOG_NAME_TO_ID: {
+BLOG_NAME_TO_ID: {
     my $hub = new_hub('empty');
 
     #
     # Check creating the page object.
     #
     ok( !defined($hub->weblog->_create_first_post('a' x 242)),
-        "Createing Weblog page object fails"
+        "Createing blog page object fails"
     );
 
     #
     # Check creating the page object which had utf8 characters.
     #
     ok( !defined($hub->weblog->_create_first_post('あ' x 29)),
-        'Createing Weblog page object which had utf8 characters fails'
+        'Createing blog page object which had utf8 characters fails'
     );
 
 }

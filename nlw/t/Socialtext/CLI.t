@@ -1079,7 +1079,7 @@ VERSION: {
 
 }
 
-SEND_WEBLOG_PINGS: {
+SEND_BLOG_PINGS: {
     # Ensure the page exists.
     expect_success(
         sub {
@@ -1099,6 +1099,7 @@ SEND_WEBLOG_PINGS: {
         'update-page success'
     );
 
+    # Test deprecated 'weblog'
     expect_failure(
         sub {
             Socialtext::CLI->new(
@@ -1106,7 +1107,17 @@ SEND_WEBLOG_PINGS: {
                 ->send_weblog_pings();
         },
         qr/\QThe admin workspace has no ping uris.\E/,
-        'send-weblog-pings with no ping uris'
+        'send-blog-pings with no ping uris'
+    );
+
+    expect_failure(
+        sub {
+            Socialtext::CLI->new(
+                argv => [qw( --workspace admin --page start_here )] )
+                ->send_blog_pings();
+        },
+        qr/\QThe admin workspace has no ping uris.\E/,
+        'send-blog-pings with no ping uris'
     );
 
     Socialtext::Workspace->new( name => 'admin' )
@@ -1121,10 +1132,10 @@ SEND_WEBLOG_PINGS: {
         sub {
             Socialtext::CLI->new(
                 argv => [qw( --workspace admin --page start_here )] )
-                ->send_weblog_pings();
+                ->send_blog_pings();
         },
         qr/\QPings were sent for the Start here page.\E/,
-        'send-weblog-pings success'
+        'send-blog-pings success'
     );
     is( scalar @pages, 1, 'one ping was sent' );
     is( $pages[0]->id, 'start_here', 'ping was sent for start_here page' );

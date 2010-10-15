@@ -142,7 +142,7 @@
             <% IF !user.is_guest %>
             <li><a href="/[% current_workspace.name %]?action=display_watchlist"><% loc("My Watchlist") %></a></li>
             <% END %>
-            <li><a href="/[% current_workspace.name %]?action=weblog_display"><% loc("Weblogs") %></a></li>
+            <li><a href="/[% current_workspace.name %]?action=blog_display"><% loc("Blogs") %></a></li>
             [% IF is_workspace_admin %]
             <li><a href="/[% current_workspace.name %]?action=users_invitation"><% loc("Add Members") %></a></li>
             [% END %]

@@ -101,7 +101,7 @@ Singapore link [$Singapore]
 
 {tag help}
 
-{weblog help}
+{blog help}
 EOF
 
 eval {

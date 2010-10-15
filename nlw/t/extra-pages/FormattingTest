@@ -37,7 +37,8 @@ See also: FormattingTest | [FormattingToDo] | [WikiwygFormattingTest] | [Wikiwyg
 * {link: public [wiki 101] anchor}
 * ([link contained in parens])
 * _<http://sunirlikesthemitalicizedurls.com>_
-* {weblog: Socialtext weblog}
+* {weblog: Socialtext blog}
+* {blog: Socialtext Blog}
 * {file: Rule #1}
 * {file: Robot.txt}
 * "Named link"[with: colon]

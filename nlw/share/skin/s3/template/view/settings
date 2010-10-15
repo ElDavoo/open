@@ -63,9 +63,9 @@
             </ul>
             [% END %]
             [% IF perm_edit %]
-            <h4>[% loc('Weblogs') %]</h4>
+            <h4>[% loc('Blogs') %]</h4>
             <ul class="leftNavList">
-              <li><a href="?action=weblogs_create">[% loc('Create New Weblog') %]</a></li>
+              <li><a href="?action=blogs_create">[% loc('Create New Blog') %]</a></li>
             </ul>
             [% END %]
             [% IF workspace_present %]

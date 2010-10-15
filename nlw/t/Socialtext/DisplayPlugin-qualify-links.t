@@ -46,8 +46,8 @@ __DATA__
 --- expected
 <a href="HOST/foobar/index.cgi?%D0%9F%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D1%8B%20-%20%D0%9B%D0%A6"
 
-=== weblog
+=== blog
 --- original
-<a href="/foobar/index.cgi?action=weblog_display"
+<a href="/foobar/index.cgi?action=blog_display"
 --- expected
-<a href="HOST/foobar/index.cgi?action=weblog_display"
+<a href="HOST/foobar/index.cgi?action=blog_display"

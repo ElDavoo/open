@@ -231,13 +231,23 @@ PARSE_WIDGET_file: {
 }
 
 PARSE_WIDGET_weblog: {
-    my $widgets = YAML::LoadFile($yaml_path);
+    my $widgetds = YAML::LoadFile($yaml_path);
     my $wafl = '"label"{weblog: workspace; name}';
     my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'weblog', 'weblog widget id' );
     is( $widget->{label}, 'label', 'weblog has label' );
     is( $widget->{workspace_id}, 'workspace', 'weblog workspace id' );
     is( $widget->{weblog_name}, 'name', 'weblog name' );
+}
+
+PARSE_WIDGET_blog: {
+    my $widgets = YAML::LoadFile($yaml_path);
+    my $wafl = '"label"{blog: workspace; name}';
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
+    is( $widget->{id}, 'blog', 'blog widget id' );
+    is( $widget->{label}, 'label', 'blog has label' );
+    is( $widget->{workspace_id}, 'workspace', 'blog workspace id' );
+    is( $widget->{blog_name}, 'name', 'blog name' );
 }
 
 PARSE_WIDGET_search: {
@@ -327,6 +337,16 @@ PARSE_WIDGET_weblog_list: {
     is( $widget->{workspace_id}, 'workspace', 'weblog_list workspace' );
     is( $widget->{weblog_name}, 'name', 'weblog_list name' );
     is( $widget->{full}, '0', 'weblog_list defaults to not full' );
+}
+
+PARSE_WIDGET_blog_list: {
+    my $widgets = YAML::LoadFile($yaml_path);
+    my $wafl = "{blog_list: <workspace> name}";
+    my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
+    is( $widget->{id}, 'blog_list', 'blog_list widget id' );
+    is( $widget->{workspace_id}, 'workspace', 'blog_list workspace' );
+    is( $widget->{blog_name}, 'name', 'blog_list name' );
+    is( $widget->{full}, '0', 'blog_list defaults to not full' );
 }
 
 PARSE_WIDGET_aim: {

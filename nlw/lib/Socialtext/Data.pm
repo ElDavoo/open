@@ -104,7 +104,7 @@ Every workspace has a creator user.
 =item * WorkspacePingURI
 
 This table stores zero or more ping URIs per workspace. If a workspace
-has URIs, then weblog pings are sent on each page save. See
+has URIs, then blog pings are sent on each page save. See
 L<Socialtext::WeblogUpdates> for more details.
 
 =item * Account

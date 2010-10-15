@@ -26,6 +26,7 @@ empty image disappears | "Click to see some talc"{image: none} |
 | Section link | {link} |
 |  |  |
 | Weblog | "This is a weblog Name"{weblog} |
+| Blog | "This is a blog Name"{blog} |
 | Tag | "This is a tag name"{tag} |
 | Category
 This WAFL will get canonicalized to tag | {category} |
@@ -37,6 +38,7 @@ This WAFL will get canonicalized to tag | {category} |
 | Recent changes in categorized pages
 This WAFL will get canonicalized to tag | {category_list: }|
 | Recent changes in weblog | {weblog_list: }|
+| Recent changes in blog | {blog_list: }|
 | Search (text/tag/title) | {search: }|
 |  |  |
 | RSS feed | {fetchrss: }|

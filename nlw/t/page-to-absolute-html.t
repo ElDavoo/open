@@ -4,7 +4,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 11;
+use Test::Socialtext tests => 12;
 fixtures( 'workspaces' );
 my $hub = new_hub('admin');
 isa_ok( $hub, 'Socialtext::Hub' );
@@ -24,6 +24,8 @@ This is the [help] wiki link.
 {link foobar [welcome]}
 
 {weblog help}
+
+{blog help}
 
 {category help}
 
@@ -57,7 +59,10 @@ EOF
             qr{href="$server_root\Q/foobar/index.cgi?welcome},
         ],
         [ "{weblog help}" =>
-            qr{href="$server_root\Q/admin/index.cgi?action=weblog},
+            qr{href="$server_root\Q/admin/index.cgi?action=blog},
+        ],
+        [ "{blog help}" =>
+            qr{href="$server_root\Q/admin/index.cgi?action=blog},
         ],
         [ "{category help}" =>
             qr{href="$server_root\Q/admin/index.cgi?action=category},

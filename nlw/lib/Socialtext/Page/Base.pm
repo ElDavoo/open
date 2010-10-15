@@ -187,7 +187,7 @@ sub _cache_html {
                         }++;
                     }
                 }
-                elsif ($wafl_class =~ m/(?:TagLink|CategoryLink|WeblogLink)$/) {
+                elsif ($wafl_class =~ m/(?:TagLink|CategoryLink|WeblogLink|BlogLink)$/) {
                     my ($ws_name) = $wafl->parse_wafl_category;
                     $interwiki{$ws_name}++ if $ws_name;
                 }

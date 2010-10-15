@@ -48,7 +48,7 @@ category: Recent Changes
 <rss version="2.0" xmlns:blogChannel="http://backend.userland.com/blogChannelModule">
 <channel>
 <title><!\[CDATA\[Public Wiki: Recent Changes\]\]></title>
-<link>http://.*/public/index.cgi\?action=weblog_display;category=Recent%20Changes</link>
+<link>http://.*/public/index.cgi\?action=blog_display;category=Recent%20Changes</link>
 
 === Hit old-style URL
 --- request_path: /public/index.cgi
@@ -59,7 +59,7 @@ category: Recent Changes
 <rss version="2.0" xmlns:blogChannel="http://backend.userland.com/blogChannelModule">
 <channel>
 <title><!\[CDATA\[Public Wiki: Recent Changes\]\]></title>
-<link>http://.*/public/index.cgi\?action=weblog_display;category=Recent%20Changes</link>
+<link>http://.*/public/index.cgi\?action=blog_display;category=Recent%20Changes</link>
 
 === Log in and request public feed
 --- do: log_in
@@ -70,7 +70,7 @@ category: Recent Changes
 <rss version="2.0" xmlns:blogChannel="http://backend.userland.com/blogChannelModule">
 <channel>
 <title><!\[CDATA\[Public Wiki: Recent Changes\]\]></title>
-<link>http://.*/public/index.cgi\?action=weblog_display;category=Recent%20Changes</link>
+<link>http://.*/public/index.cgi\?action=blog_display;category=Recent%20Changes</link>
 
 === Hit old-style URL in public workspace
 --- request_path: /public/index.cgi
@@ -81,7 +81,7 @@ category: Recent Changes
 <rss version="2.0" xmlns:blogChannel="http://backend.userland.com/blogChannelModule">
 <channel>
 <title><!\[CDATA\[Public Wiki: Recent Changes\]\]></title>
-<link>http://.*/public/index.cgi\?action=weblog_display;category=Recent%20Changes</link>
+<link>http://.*/public/index.cgi\?action=blog_display;category=Recent%20Changes</link>
 
 === Check for correct linking in dashed workspace
 --- request_path: /feed/workspace/auth-to-edit

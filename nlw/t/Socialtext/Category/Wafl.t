@@ -24,7 +24,7 @@ __DATA__
 --- kwiki
 {category-list category 0}
 --- htmlre
-action=weblog_display;category=category%200
+action=blog_display;category=category%200
 admin page six
 admin page four
 admin page two
@@ -33,7 +33,7 @@ admin page two
 --- kwiki
 {tag-list category 0}
 --- htmlre
-action=weblog_display;category=category%200
+action=blog_display;category=category%200
 admin page six
 admin page four
 admin page two
@@ -42,7 +42,7 @@ admin page two
 --- kwiki
 {category-list category 1}
 --- htmlre
-action=weblog_display;category=category%201
+action=blog_display;category=category%201
 admin page five
 admin page three
 admin page one
@@ -51,7 +51,7 @@ admin page one
 --- kwiki
 {category-list <foobar> category 0}
 --- htmlre
-action=weblog_display;category=category%200
+action=blog_display;category=category%200
 foobar page six
 foobar page four
 foobar page two
@@ -84,7 +84,7 @@ foobar page two
 --- kwiki
 {weblog-list category 1}
 --- htmlre
-action=weblog_display;category=category%201
+action=blog_display;category=category%201
 admin page five
 admin page three
 admin page one
@@ -93,7 +93,25 @@ admin page one
 --- kwiki
 {weblog-list <foobar> category 1}
 --- htmlre
-action=weblog_display;category=category%201
+action=blog_display;category=category%201
+foobar page five
+foobar page three
+foobar page one
+
+=== {blog-list category 1}
+--- kwiki
+{blog-list category 1}
+--- htmlre
+action=blog_display;category=category%201
+admin page five
+admin page three
+admin page one
+
+=== {blog-list <foobar> category 1}
+--- kwiki
+{blog-list <foobar> category 1}
+--- htmlre
+action=blog_display;category=category%201
 foobar page five
 foobar page three
 foobar page one

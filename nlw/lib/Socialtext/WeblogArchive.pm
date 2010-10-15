@@ -10,7 +10,7 @@ use Socialtext::SQL qw/sql_execute/;
 use Class::Field qw( const );
 
 sub class_id { 'weblog_archive' }
-const class_title => 'Weblog Archives';
+const class_title => 'Blog Archives';
 
 sub register {
     my $self = shift;
@@ -123,6 +123,6 @@ sub get_date_of_create {
     }
 }
 
-sub box_title { 'Weblog Archive' }
+sub box_title { 'Blog Archive' }
 
 1;

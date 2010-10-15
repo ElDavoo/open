@@ -18,13 +18,13 @@ action: category_list
 --- match
 Welcome
 
-=== And view as weblog
+=== And view as blog
 --- query
-action: weblog_display
+action: blog_display
 category: Welcome
 --- MATCH_WHOLE_PAGE
 --- match
-Weblog: Welcome
+Blog: Welcome
 New.*Post
 or post by email
 href="mailto:admin\+Welcome@[\w.]+"

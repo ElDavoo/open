@@ -18,7 +18,7 @@ use Socialtext::Timer qw/time_scope/;
 use utf8;
 
 sub class_id { 'weblog' }
-const class_title => 'Weblogs';
+const class_title => 'Blogs';
 const cgi_class => 'Socialtext::Weblog::CGI';
 const default_weblog_depth => 10;
 field current_weblog => '';
@@ -27,19 +27,26 @@ sub register {
     my $self = shift;
     my $registry = shift;
     $registry->add(action => 'weblogs_create');
+    $registry->add(action => 'blogs_create' => 'weblogs_create');
     $registry->add(action => 'weblog_display');
+    $registry->add(action => 'blog_display' => 'weblog_display');
     $registry->add(action => 'weblog' => 'weblog_display');
+    $registry->add(action => 'blog' => 'weblog_display');
     $registry->add(action => 'weblog_html');
+    $registry->add(action => 'blog_html' => 'weblog_html');
     $registry->add(action => 'weblog_redirect');
+    $registry->add(action => 'blog_redirect' => 'weblog_redirect');
     $registry->add(preference => $self->weblog_depth);
     $registry->add(wafl => weblog_list => 'Socialtext::Category::Wafl' );
+    $registry->add(wafl => blog_list => 'Socialtext::Category::Wafl' );
     $registry->add(wafl => weblog_list_full => 'Socialtext::Category::Wafl' );
+    $registry->add(wafl => blog_list_full => 'Socialtext::Category::Wafl' );
 }
 
 sub weblog_depth {
     my $self = shift;
     my $p = $self->new_preference('weblog_depth');
-    $p->query(loc('How many posts should be displayed in weblog view?'));
+    $p->query(loc('How many posts should be displayed in blog view?'));
     $p->type('pulldown');
     my $choices = [
         5 => '5',
@@ -60,18 +67,18 @@ sub weblogs_create {
         unless $self->hub->checker->check_permission('edit');
 
     # If we have appropriate inputs, attempt to create the 
-    # weblog. Otherwise display the create diaglog and any
+    # blog. Otherwise display the create diaglog and any
     # errors we might know about.
     if ( $self->cgi->Button and $self->cgi->weblog_title ) {
-        my $weblog_tag = $self->create_weblog( $self->cgi->weblog_title );
+        my $blog_tag = $self->create_weblog( $self->cgi->weblog_title );
         unless ( $self->input_errors_found ) {
-            $weblog_tag = $self->hub->pages->title_to_uri($weblog_tag);
+            $blog_tag = $self->hub->pages->title_to_uri($blog_tag);
             return $self->redirect(
-                "action=weblog_display;tag=$weblog_tag" );
+                "action=blog_display;tag=$blog_tag" );
         }
     }
     elsif ( $self->cgi->Button and !$self->cgi->weblog_title ) {
-        my $message = loc("A weblog title must be provided.");
+        my $message = loc("A blog title must be provided.");
         $self->add_error($message);
     }
 
@@ -85,7 +92,7 @@ sub weblogs_create {
         settings_table_id => 'settings-table',
         settings_section  => $settings_section,
         hub               => $self->hub,
-        display_title     => loc('Create New Weblog'),
+        display_title     => loc('Create New Blog'),
         pref_list         => $self->_get_pref_list,
     );
 }
@@ -93,15 +100,15 @@ sub weblogs_create {
 sub _get_weblog_tag_suffix {
     my $self = shift;
     my $locale = $self->hub->best_locale;
-    my $weblog_tag_suffix;
+    my $blog_tag_suffix;
     if ($locale eq 'ja') {
-        $weblog_tag_suffix = qr/ブログ$/i;
+        $blog_tag_suffix = qr/ブログ$/i;
     } else {
-        $weblog_tag_suffix = qr/blog$/i;
+        $blog_tag_suffix = qr/blog$/i;
     }
 
-    Encode::_utf8_on($weblog_tag_suffix) if not Encode::is_utf8($weblog_tag_suffix);
-    return $weblog_tag_suffix;
+    Encode::_utf8_on($blog_tag_suffix) if not Encode::is_utf8($blog_tag_suffix);
+    return $blog_tag_suffix;
 }
 
 sub _create_new_page_for_data_validation_error {
@@ -113,11 +120,11 @@ sub _create_new_page_for_data_validation_error {
 
 sub _weblog_title_is_valid {
     my $self = shift;
-    my $weblog_name = shift;
+    my $blog_name = shift;
     my $message;
 
-    if (length Socialtext::String::title_to_id($weblog_name) > Socialtext::String::MAX_PAGE_ID_LEN ) {
-       $message = loc("Weblog name is too long after URL encoding");
+    if (length Socialtext::String::title_to_id($blog_name) > Socialtext::String::MAX_PAGE_ID_LEN ) {
+       $message = loc("Blog name is too long after URL encoding");
        $self->add_error($message);
        return 0;
     }
@@ -127,24 +134,24 @@ sub _weblog_title_is_valid {
 
 sub _first_post_title_id {
     my $self             = shift;
-    my $weblog_tag       = shift;
-    my $first_post_title = loc("First Post in [_1]", $weblog_tag);
+    my $blog_tag       = shift;
+    my $first_post_title = loc("First Post in [_1]", $blog_tag);
     my $first_post_id    = Socialtext::String::title_to_id($first_post_title);
     return ( $first_post_title, $first_post_id );
 }
 
 sub _create_first_post {
     my $self       = shift;
-    my $weblog_tag = shift;
+    my $blog_tag = shift;
 
     my ($first_post_title, $first_post_id)
-        = $self->_first_post_title_id($weblog_tag);
+        = $self->_first_post_title_id($blog_tag);
     return if (! $self->_weblog_title_is_valid($first_post_id));
 
     my $first_post = $self->hub->pages->new_page($first_post_id);
     if ( !defined $first_post ) {
         $first_post = $self->_create_new_page_for_data_validation_error(
-            $weblog_tag);
+            $blog_tag);
     }
 
     my $metadata = $first_post->metadata;
@@ -154,60 +161,60 @@ sub _create_first_post {
     return $first_post;
 }
 
-=head2 create_weblog($weblog_tag)
+=head2 create_weblog($blog_tag)
 
-Create a new weblog with the name C<$weblog_tag>. Unless the name ends
-in C</blog$/i> append " Weblog" to the end of the tag name.  Create a
+Create a new blog with the name C<$blog_tag>. Unless the name ends
+in C</blog$/i> append " Blog" to the end of the tag name.  Create a
 first post in the tag by creating a page tagged with the tag.
 
 =cut
 
 sub create_weblog {
     my $self       = shift;
-    my $weblog_tag = shift;
+    my $blog_tag = shift;
 
-    $weblog_tag =~ s/^\s+|\s+$//g;
+    $blog_tag =~ s/^\s+|\s+$//g;
 
     # reset errors to get around the fact that errors is effectively 
     # class level because all the object methods in plugins aren't 
     # really object methods.
     $self->errors([]);
 
-    my $weblog_tag_suffix = $self->_get_weblog_tag_suffix();
-    unless ( $weblog_tag =~ $weblog_tag_suffix ) {
-        $weblog_tag = loc( "[_1] Weblog", $weblog_tag );
+    my $blog_tag_suffix = $self->_get_weblog_tag_suffix();
+    unless ( $blog_tag =~ $blog_tag_suffix ) {
+        $blog_tag = loc( "[_1] Blog", $blog_tag );
     }
 
-    # If the weblog tag is already in use OR there is a similar enough tag
-    # that the first post title will have the same id as an existing weblog,
+    # If the blog tag is already in use OR there is a similar enough tag
+    # that the first post title will have the same id as an existing blog,
     # tell the user to try again.
     for ($self->hub->category->all) {
-        if ( /^\Q$weblog_tag\E/i
+        if ( /^\Q$blog_tag\E/i
             || ($self->_first_post_title_id($_))[1] eq
-            ($self->_first_post_title_id($weblog_tag))[1] ) {
+            ($self->_first_post_title_id($blog_tag))[1] ) {
             my $message = loc(
-                "There is already a \'[_1]\' weblog. Please choose a different name.",
-                $weblog_tag
+                "There is already a \'[_1]\' blog. Please choose a different name.",
+                $blog_tag
             );
             $self->add_error($message);
             return;
         }
     }
 
-    my $first_post = $self->_create_first_post($weblog_tag);
+    my $first_post = $self->_create_first_post($blog_tag);
     return if (!defined $first_post);
 
     my $categories = $first_post->metadata->Category;
-    push @$categories, $weblog_tag;
+    push @$categories, $blog_tag;
 
     my $content = loc(
         "This is the first post in [_1]. Click *New Post* to add another post.",
-        $weblog_tag );
+        $blog_tag );
     $first_post->content($content);
     $first_post->metadata->update( user => $self->hub->current_user );
     $first_post->store( user => $self->hub->current_user );
 
-    return $weblog_tag;
+    return $blog_tag;
 
 }
 
@@ -218,12 +225,12 @@ sub _feeds {
     my $feeds = $self->SUPER::_feeds($workspace);
     my $uri_root = $self->hub->syndicate->feed_uri_root($self->hub->current_workspace);
     $feeds->{rss}->{page} = {
-        title => loc('Weblog: [_1] RSS', $self->current_blog_str),
+        title => loc('Blog: [_1] RSS', $self->current_blog_str),
         url => $uri_root . '?tag=' . $self->current_blog,
     };
 
     $feeds->{atom}->{page} = {
-        title => loc('Weblog: [_1] Atom', $self->current_blog_str),
+        title => loc('Blog: [_1] Atom', $self->current_blog_str),
         url => $uri_root . '?tag=' . $self->current_blog .';type=Atom',
     };
 
@@ -232,8 +239,8 @@ sub _feeds {
 
 sub first_blog {
     my $self = shift;
-    my $weblog_tag = $self->_get_weblog_tag_suffix();
-    my ($first_blog) = grep { /$weblog_tag/io }
+    my $blog_tag = $self->_get_weblog_tag_suffix();
+    my ($first_blog) = grep { /$blog_tag/io }
                             $self->hub->category->all;
     $first_blog ||= 'recent changes';
     return $first_blog;
@@ -280,22 +287,22 @@ sub start_entry {
 
 sub weblog_display {
     my $self = shift;
-    my $t = time_scope 'weblog_display';
-    my $weblog_id = $self->current_blog;
-    my $weblog_start_entry = $self->start_entry;
-    my $weblog_limit = $self->cgi->limit || $self->preferences->weblog_depth->value;
-    $self->current_weblog($weblog_id);
+    my $t = time_scope 'blog_display';
+    my $blog_id = $self->current_blog;
+    my $blog_start_entry = $self->start_entry;
+    my $blog_limit = $self->cgi->limit || $self->preferences->weblog_depth->value;
+    $self->current_weblog($blog_id);
 
-    Restrict_max_weblog_limit: {
+    Restrict_max_blog_limit: {
         my $p = $self->preferences->weblog_depth;
         my $largest_depth = $p->choices->[-2];
-        if ($weblog_limit > $largest_depth) {
-            st_log->info("too many weblog entries requested ($weblog_limit); limiting to $largest_depth entries");
-            $weblog_limit = $largest_depth;
+        if ($blog_limit > $largest_depth) {
+            st_log->info("too many blog entries requested ($blog_limit); limiting to $largest_depth entries");
+            $blog_limit = $largest_depth;
         }
     }
 
-    my $weblog_tag_suffix = $self->_get_weblog_tag_suffix();
+    my $blog_tag_suffix = $self->_get_weblog_tag_suffix();
 
     my @categories = $self->hub->category->all;
     my @blogs = map {
@@ -303,10 +310,10 @@ sub weblog_display {
 	    display => (lc($_) eq 'recent changes' ? loc('Recent Changes') : $_),
 	    escape_html => $self->html_escape($_),
 	}
-    } 'recent changes', (grep {/$weblog_tag_suffix/o} @categories);
+    } 'recent changes', (grep {/$blog_tag_suffix/o} @categories);
 
-    my @entries = $self->get_entries( weblog_id => $weblog_id,
-        start => $weblog_start_entry, limit => $weblog_limit );
+    my @entries = $self->get_entries( weblog_id => $blog_id,
+        start => $blog_start_entry, limit => $blog_limit );
 
     my @sections;
     my $prev_date = '';
@@ -327,18 +334,18 @@ sub weblog_display {
         push @{$sections[-1]->{entries}}, $entry;
     }
 
-    my $weblog_previous;
-    my $weblog_next;
-    if ($weblog_start_entry > 0) {
-        $weblog_previous = $weblog_start_entry - $weblog_limit;
-        $weblog_previous = 0 if $weblog_previous < 0;
+    my $blog_previous;
+    my $blog_next;
+    if ($blog_start_entry > 0) {
+        $blog_previous = $blog_start_entry - $blog_limit;
+        $blog_previous = 0 if $blog_previous < 0;
     }
 
-    my $count = $self->hub->category->page_count($weblog_id);
+    my $count = $self->hub->category->page_count($blog_id);
     # We have to use ($count - 1) here because our entries are
     # numbered from 0
-    if ( $weblog_limit + $weblog_start_entry < ( $count - 1 )  ) {
-        $weblog_next = $weblog_start_entry + $weblog_limit;
+    if ( $blog_limit + $blog_start_entry < ( $count - 1 )  ) {
+        $blog_next = $blog_start_entry + $blog_limit;
     }
 
     my $blog_tag = $self->current_blog;
@@ -346,29 +353,29 @@ sub weblog_display {
 
     $self->update_current_weblog;
     $self->screen_template('view/weblog');
-    my $is_RC = (lc($weblog_id) eq 'recent changes');
+    my $is_RC = (lc($blog_id) eq 'recent changes');
     return $self->render_screen(
         box_content_filled => $self->box_content_filled,
         archive => $archive,
-        display_title => ($is_RC ? loc('Recent Changes') : loc($weblog_id)),
+        display_title => ($is_RC ? loc('Recent Changes') : loc($blog_id)),
         sections => \@sections,
         feeds => $self->_feeds($self->hub->current_workspace),
-        tag => ($is_RC ? loc('Recent Changes') : $weblog_id),
-        tag_escaped => $self->uri_escape($weblog_id),
+        tag => ($is_RC ? loc('Recent Changes') : $blog_id),
+        tag_escaped => $self->uri_escape($blog_id),
         is_real_category => ($is_RC ? 0 : 1),
-        email_category_address => $self->hub->category->email_address($weblog_id),
+        email_category_address => $self->hub->category->email_address($blog_id),
         blogs => \@blogs,
-        weblog_previous => $weblog_previous,
-        weblog_next => $weblog_next,
+        weblog_previous => $blog_previous,
+        weblog_next => $blog_next,
         enable_weblog_archive_sidebox => Socialtext::AppConfig->enable_weblog_archive_sidebox(),
-        caller_action => 'weblog_display',
+        caller_action => 'blog_display',
         loc_lang => $self->hub->best_locale,
     );
 }
 
 =head2 get_entries({})
 
-Returns a hash of weblog entries based on named parameters provided to
+Returns a hash of blog entries based on named parameters provided to
 the method.
 
 =over 4
@@ -398,9 +405,9 @@ does not happen.
 =cut
 sub get_entries {
     my $self = shift;
-    my $t = time_scope 'weblog_get_entries';
+    my $t = time_scope 'blog_get_entries';
     my %p = @_;
-    my $weblog_id = $p{weblog_id};
+    my $blog_id = $p{weblog_id};
     my $start = $p{start};
     my $limit = $p{limit} || $self->entry_limit;
     my $no_post = $p{no_post} || 0;
@@ -409,7 +416,7 @@ sub get_entries {
     my @entries;
 
     my @pages = $self->hub->category->get_pages_numeric_range(
-        $weblog_id, $start, $start + $limit,
+        $blog_id, $start, $start + $limit,
         ( $self->hub->current_workspace->sort_weblogs_by_create ? 'create' : 'update' ),
     );
 
@@ -417,7 +424,7 @@ sub get_entries {
         my $entry = $self->format_page_for_entry(
             no_post => $no_post,
             page => $page,
-            weblog_id => $weblog_id,
+            weblog_id => $blog_id,
             attachments => $attachments,
         );
         my $original_page = $page->original_revision;
@@ -427,7 +434,7 @@ sub get_entries {
             $entry->{original} = $self->format_page_for_entry(
                 no_post => 1,
                 page => $original_page,
-                weblog_id => $weblog_id,
+                weblog_id => $blog_id,
                 attachments => $attachments,
             );
         } else {
@@ -443,7 +450,7 @@ sub format_page_for_entry {
     my $self = shift;
     my %args = @_;
     my $page = $args{page};
-    my $weblog_id = $args{weblog_id};
+    my $blog_id = $args{weblog_id};
     my $attachments = $args{attachments};
 
     $page->load;
@@ -483,12 +490,12 @@ sub weblog_html {
 
 sub box_on {
     my $self = shift;
-    $self->cgi->action =~ /^weblog(_display)?$/;
+    $self->cgi->action =~ /^(?:we)?blog(_display)?$/;
 }
 
 sub box_title {
     my $self = shift;
-    return loc('Weblog Navigation');
+    return loc('Blog Navigation');
 }
 
 sub box_content_filled {
@@ -516,7 +523,7 @@ sub page_title {
 sub page_edit_path {
     my $self = shift;
     return $self->hub->helpers->page_edit_path($self->page_title)
-        . ';caller_action=weblog_display';
+        . ';caller_action=blog_display';
 }
 
 sub update_current_weblog {
@@ -583,7 +590,8 @@ sub compute_redirection_destination {
     return '' unless $page;
 
     return $page->uri unless $caller_action;
-    my $path = $p{caller_action} =~ /^weblog_/
+    $caller_action =~ s/^we//; # support legacy 'weblog'
+    my $path = $caller_action =~ /^blog_/
         ? "action=$caller_action"
             . ($tag ? ";tag=" . $self->uri_escape($tag) : '') 
             . '#' . $page->uri

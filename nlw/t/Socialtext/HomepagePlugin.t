@@ -69,7 +69,7 @@ S3_Dashboard: {
     }
 }
 
-Weblog: {
+Blog: {
     my $mock_hub = Socialtext::Hub->new(
         current_workspace => Socialtext::Workspace->new(
             homepage_weblog => 'monkey',
@@ -78,5 +78,5 @@ Weblog: {
     );
     my $hp = Socialtext::HomepagePlugin->new( hub => $mock_hub );
     is $hp->homepage, '';
-    is $Socialtext::Headers::REDIRECT, '?action=weblog_display;category=monkey';
+    is $Socialtext::Headers::REDIRECT, '?action=blog_display;category=monkey';
 }

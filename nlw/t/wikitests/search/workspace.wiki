@@ -18,7 +18,7 @@
 | code-is   | 201                                                    |                        |                                                               |
 | PUT       | /data/workspaces/%%workspace%%/pages/quote_3/tags/quote  |                        |                                                               |
 | code-is   | 201                                                    |                        |                                                               |
-| PUT       | /data/workspaces/%%workspace%%/pages/quote_4/tags/Socialtext+Weblog  |                        |                                                               |
+| PUT       | /data/workspaces/%%workspace%%/pages/quote_4/tags/Socialtext+Blog  |                        |                                                               |
 | code-is   | 201                                                    |                        |                                                               |
 | job-count | PageIndex                                              | 12                     |                                                               |
 
@@ -93,9 +93,9 @@
 | body-like   | Wise saying: The greatest achievement is selflessness.                |
 | body-like   | Wise saying: The greatest quality is seeking to serve others.         |
 
-| GET         | /%%workspace%%/index.cgi?action=search&scope=&search_term=tag%3A"Socialtext+Weblog" |
+| GET         | /%%workspace%%/index.cgi?action=search&scope=&search_term=tag%3A"Socialtext+Blog" |
 | code-is     | 200                                                                   |
-| body-like   | >Pages matching 'tag:&quot;Socialtext Weblog&quot;'</h2>                                    |
+| body-like   | >Pages matching 'tag:&quot;Socialtext Blog&quot;'</h2>                                    |
 | body-like   | Showing 1 - 1 of 1 total                                              |
 | body-unlike | in <a href="/%%ws2%%">                                                |
 | body-like   | The greatest precept is continual awareness.                  |

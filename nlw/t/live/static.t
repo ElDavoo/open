@@ -21,7 +21,7 @@ $live_tester->standard_query_validation;
 __END__
 === blog page <link>s to CSS files
 --- query
-action: weblog_display
+action: blog_display
 --- MATCH_WHOLE_PAGE
 --- match
 <link rel="stylesheet" type="text/css" href="/static/.*?/s2/css/screen.css"

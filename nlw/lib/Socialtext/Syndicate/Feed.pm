@@ -179,7 +179,7 @@ Socialtext::Syndicate::Feed - Syndication feeds for Socialtext pages
 
 This module provides an interface to creating Atom or RSS20 syndication
 feeds of a collection of L<Socialtext::Page> objects. It makes no assumptions
-about the pages, so this can be used to syndicate recent changes, a weblog,
+about the pages, so this can be used to syndicate recent changes, a blog,
 the result of a search query, a single page, or whatever else you 
 might imagine.
 

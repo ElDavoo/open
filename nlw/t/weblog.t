@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 13;
+use Test::Socialtext tests => 15;
 fixtures(qw( empty ));
 
 use DateTime;
@@ -48,7 +48,7 @@ basics_and_ordering: {
     $second_post->store( user => $hub->current_user );
 
     # Note that the following is actually testing a Socialtext::CategoryPlugin
-    # method, but the weblog is the only thing that uses the non-default right
+    # method, but the blog is the only thing that uses the non-default right
     # now:
 
     my $dot_com = 'Dot Com Blog';
@@ -91,12 +91,17 @@ compute_redirect: {
         {
             caller_action => 'weblog_donkey',
             tag => 'Donkey Blog',
-            expected => "index.cgi?action=weblog_donkey;tag=Donkey%20Blog#$page_uri"
+            expected => "index.cgi?action=blog_donkey;tag=Donkey%20Blog#$page_uri"
+        },  
+        {
+            caller_action => 'blog_donkey',
+            tag => 'Donkey Blog',
+            expected => "index.cgi?action=blog_donkey;tag=Donkey%20Blog#$page_uri"
         },  
         {
             caller_action => 'weblog_donkey',
             category => 'Donkey Blog',
-            expected => "index.cgi?action=weblog_donkey;tag=Donkey%20Blog#$page_uri"
+            expected => "index.cgi?action=blog_donkey;tag=Donkey%20Blog#$page_uri"
         },  
         {
             caller_action => 'i_do_not_begin_with_weblog',
@@ -117,7 +122,12 @@ compute_redirect: {
     my $path = $hub->weblog->compute_redirection_destination_from_url(
         'http://foo.socialtext.com/bar/index.cgi?action=display;page_name=baz;caller_action=weblog_display;tag=buckle;js=show_edit_div#'
     );
-    is $path, 'index.cgi?action=weblog_display;tag=buckle#baz',
+    is $path, 'index.cgi?action=blog_display;tag=buckle#baz',
+        'compute_redirection_destination_from_url';
+    $path = $hub->weblog->compute_redirection_destination_from_url(
+        'http://foo.socialtext.com/bar/index.cgi?action=display;page_name=baz;caller_action=blog_display;tag=buckle;js=show_edit_div#'
+    );
+    is $path, 'index.cgi?action=blog_display;tag=buckle#baz',
         'compute_redirection_destination_from_url';
 
 }

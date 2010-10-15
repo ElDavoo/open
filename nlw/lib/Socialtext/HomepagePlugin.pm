@@ -25,10 +25,10 @@ sub register {
 sub homepage {
     my $self = shift;
 
-    if ( my $weblog = $self->hub->current_workspace->homepage_weblog ) {
+    if ( my $blog = $self->hub->current_workspace->homepage_weblog ) {
         return $self->redirect( '?'
-                . 'action=weblog_display;category='
-                . URI::Escape::uri_escape_utf8($weblog) );
+                . 'action=blog_display;category='
+                . URI::Escape::uri_escape_utf8($blog) );
     }
     elsif ($self->hub->current_workspace->homepage_is_dashboard) {
         if ($self->hub->skin->info_param('no_workspace_dashboard')) {

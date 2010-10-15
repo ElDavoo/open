@@ -4,7 +4,7 @@
 [% WRAPPER $frame_name id="blog" %]
 <div id="controls">
   <div id="st-editing-tools-edit">
-    <h1 title="[% loc('Weblog') %]: [% display_title | html %]">[% loc('Weblog') %]: [% display_title | html %]</h1>
+    <h1 title="[% loc('Blog') %]: [% display_title | html %]">[% loc('Blog') %]: [% display_title | html %]</h1>
     <ul id="quickLinks">
       <li><a href="[% feeds.rss.page.url %]"><img src="[% wiki.skin_uri('s3') %]/images/rss.png" />[% loc('Subscribe to Feed') %]</a></li>
       <li><a href="JavaScript:window.print()"><img src="[% wiki.skin_uri('s3') %]/images/printIcon.png" />[% loc('Print') %]</a></li>
@@ -13,7 +13,7 @@
       [% END %]
       <li class="noBorder">  
     <form action="[% script_name %]">
-        <input type="hidden" name="action" value="weblog_display" />
+        <input type="hidden" name="action" value="blog_display" />
       <span>[% loc('Go to:') %]&nbsp;<select name="category" onchange="this.form.submit()" id="page-control-category-selector">
           [% FOREACH blog = blogs %]
             [% display_string = blog.display | html %]
@@ -30,7 +30,7 @@
         [% IF checker.check_permission('edit') %]
         <ul>
           <li class="flexButtonBlue">
-            <a id="st-weblog-newpost-button" class="addButton" href="[% script_name %]?action=new_page;add_tag=[% tag_escaped %];caller_action=weblog_display" title="[% loc('Click this button to create a new blog post') %]">[% loc('New Post') %]</a>
+            <a id="st-weblog-newpost-button" class="addButton" href="[% script_name %]?action=new_page;add_tag=[% tag_escaped %];caller_action=blog_display" title="[% loc('Click this button to create a new blog post') %]">[% loc('New Post') %]</a>
           </li>
         </ul>
         [% END %]
@@ -88,7 +88,7 @@
     <div id="contentRight">
       <div class="widget">
         <div class="widgetHeader">
-          <h4>[% loc('Weblog Navigation') %]</h4>
+          <h4>[% loc('Blog Navigation') %]</h4>
         </div><!-- widgetHeader END -->
         <div class="widgetContent">
           [% box_content_filled %]
@@ -105,7 +105,7 @@
       </div><!-- widget END -->
       <div class="widget">
         <div class="widgetHeader">
-          <h4>[% loc('Weblog Archives') %]</h4>
+          <h4>[% loc('Blog Archives') %]</h4>
         </div><!-- widgetHeader END -->
         <div class="widgetContent">
           <ul>
@@ -113,7 +113,7 @@
             [% FOREACH month = archive.$year.keys.nsort.reverse %]
               [% NEXT IF !archive.$year.$month %]
               <li>
-                <a href="[% script_name %]?action=weblog_display;tag=[% tag | uri %];start=[% archive.$year.$month.start %];limit=[% archive.$year.$month.limit %]">
+                <a href="[% script_name %]?action=blog_display;tag=[% tag | uri %];start=[% archive.$year.$month.start %];limit=[% archive.$year.$month.limit %]">
                   [% hub.helpers.format_date(year,month) %]
                 </a>
               </li>
@@ -135,10 +135,10 @@
     [% IF weblog_previous.defined OR weblog_next.defined %]
     <div class="st-weblog-entrynav">
         [% IF weblog_previous.defined %]
-            <span class="st-weblog-previousentries">[% INCLUDE element/ws_link href="${script_name}?action=weblog_display;start=${weblog_previous}", name=loc("Newer entries") %]</span>
+            <span class="st-weblog-previousentries">[% INCLUDE element/ws_link href="${script_name}?action=blog_display;start=${weblog_previous}", name=loc("Newer entries") %]</span>
         [% END %]
         [% IF weblog_next.defined %]
-            <span class="st-weblog-nextentries">[% INCLUDE element/ws_link href="${script_name}?action=weblog_display;start=${weblog_next}", name=loc("Older entries") %]</span>
+            <span class="st-weblog-nextentries">[% INCLUDE element/ws_link href="${script_name}?action=blog_display;start=${weblog_next}", name=loc("Older entries") %]</span>
         [% END %]
     </div>
     [% END %]

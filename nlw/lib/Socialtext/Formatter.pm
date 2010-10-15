@@ -46,7 +46,7 @@ sub wafl_classes {
       ? (qw(SpreadsheetInclusion)) : (),
     qw(
         Image File HtmlPage CSS InterWikiLink TradeMark
-        WeblogLink CategoryLink TagLink TeleType Toc
+        WeblogLink BlogLink CategoryLink TagLink TeleType Toc
     );
 }
 

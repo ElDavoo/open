@@ -1049,7 +1049,7 @@ sub is_all_users_workspace {
         for my $uri ( grep { defined && length } @{ $p{uris} } ) {
             $uri = URI->new($uri)->canonical;
             unless ( $uri =~ m{^https?://} ) {
-                push @errors, $uri . ' is not a valid weblog ping URI';
+                push @errors, $uri . ' is not a valid blog ping URI';
                 next;
             }
 
@@ -1979,14 +1979,14 @@ they're displayed. The domain name is replaced by "@hidden".
 
 =head2 email_weblog_dot_address
 
-If this is true, then the workspace will accept email for weblogs
+If this is true, then the workspace will accept email for blogs
 using the 'workspace.CAT.category@server.domain.com' format - this
 is to support Lotus Notes, Exchange and other non-standard email
 clients.
 
 =head2 comment_by_email
 
-If this is true, the 'Add comment' links on pages and weblog entries will
+If this is true, the 'Add comment' links on pages and blog entries will
 contain C<mailto:> links pointing at the email-in address for the current
 workspace.
 
@@ -2019,7 +2019,7 @@ workspace.
 
 =head2 sort_weblogs_by_create
 
-If true, weblogs are sorted by page creation time. Otherwise they are
+If true, blogs are sorted by page creation time. Otherwise they are
 sorted by the last updated time of each page's most recent revision.
 
 =head2 external_links_open_new_window

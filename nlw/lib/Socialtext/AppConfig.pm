@@ -1131,8 +1131,8 @@ Optional.
 
 =head2 enable_weblog_archive_sidebox
 
-If this is true, the weblog archive sidebox is shown when viewing a
-weblog. This will be removed as a configuration option once the box is
+If this is true, the blog archive sidebox is shown when viewing a
+blog. This will be removed as a configuration option once the box is
 not so darn slow.
 
 Default: 0

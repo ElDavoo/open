@@ -11,7 +11,7 @@ BEGIN {
 
     my @methods = qw(
         interwiki search_query category_query recent_changes_query
-        category weblog file image people_profile people_photo
+        category weblog blog file image people_profile people_photo
         people_photo_small
     );
     no strict 'refs';

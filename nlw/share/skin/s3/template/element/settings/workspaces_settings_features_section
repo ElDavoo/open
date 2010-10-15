@@ -52,9 +52,9 @@
 </dl>
 
 <dl class="form">
-    <dt><label>[% loc('Workspace Weblog Sort Order') %]</label></dt>
+    <dt><label>[% loc('Workspace Blog Sort Order') %]</label></dt>
     <dd>
-        [% loc('You can choose to sort weblog entries by the date an entry is updated, or by the date an entry was first posted.') %]
+        [% loc('You can choose to sort blog entries by the date an entry is updated, or by the date an entry was first posted.') %]
     </dd>
     <dd>
         <input type="radio" name="sort_weblogs_by_create"
