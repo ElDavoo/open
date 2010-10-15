@@ -95,3 +95,6 @@ div.widgetContent div.profile {
     margin-right: 5px;
 }
 
+#wysiwyg-editable-div {
+    overflow: auto !important;
+}
