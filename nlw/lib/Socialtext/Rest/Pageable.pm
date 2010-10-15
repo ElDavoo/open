@@ -6,6 +6,9 @@ use constant max_per_page => 100;
 
 requires qw(_get_total_results _get_entities);
 
+has 'default_page_size' => (is => 'ro', isa => 'Int', lazy_build => 1);
+sub _build_default_page_size { 25 }
+
 has 'pageable' => ( is => 'ro', isa => 'Bool', lazy_build => 1 );
 sub _build_pageable {
     my $self = shift;
@@ -31,7 +34,8 @@ sub _build_items_per_page {
     return unless $self->pageable;
     my $count = $self->rest->query->param('count');
     $count = $self->rest->query->param('limit') unless defined $count;
-    $count = 25 unless defined $count and $count =~ m/^\d+$/;
+    $count = $self->default_page_size
+        unless defined $count and $count =~ m/^\d+$/;
     return $count > max_per_page ? max_per_page : $count;
 }
 
