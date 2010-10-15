@@ -984,7 +984,7 @@ proto.on_pasted = function(html) {
 
             html = html
                 .replace(/^<div class="wiki">\n*/i, '')
-                .replace(/\n*<br\/><\/div>\n*$/i, '')
+                .replace(/\n*<br\b[^>]*\/><\/div>\n*$/i, '')
                 .replace(/^<p>([\s\S]*?)<\/p>/, '$1')
                 .replace(/(<a\b[^>]*\bhref=['"])(index.cgi)?\?/ig, '$1' + base + '?');
 
@@ -2169,7 +2169,7 @@ proto.replace_p_with_br = function(html) {
             prev_tag = prev.tagName.toLowerCase();
         }
 
-        html = html.replace(/(<br>)?\s*$/, br + br);
+        html = html.replace(/(<br\b[^>]*>)?\s*$/, br + br);
 
         if (prev && prev_tag && (prev_tag == 'div' || (prev_tag == 'span' && prev.firstChild && prev.firstChild.tagName && prev.firstChild.tagName.toLowerCase() == 'div'))) {
             html = html.replace(/^\n?[ \t]*/,br + br)
