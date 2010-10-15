@@ -30,7 +30,8 @@ sub BUILD {
 
     DAEMON()->stats->{"current connections"}++;
     $self->_r->response_guard(guard {
-        trace "=> DROP ".$self->ident."\n";
+        my $ident = defined $self ? $self->ident : '??';
+        trace "=> DROP $ident\n";
         DAEMON()->stats->{"current connections"}--;
     });
 
