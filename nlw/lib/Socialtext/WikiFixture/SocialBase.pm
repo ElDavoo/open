@@ -63,6 +63,7 @@ sub init {
     $self->{https_port}         = Socialtext::HTTP::Ports->https_port();
     $self->{backend_http_port}  = Socialtext::HTTP::Ports->backend_http_port();
     $self->{backend_https_port} = Socialtext::HTTP::Ports->backend_https_port();
+    $self->{userd_port}         = Socialtext::HTTP::Ports->userd_port();
 
     my $def = Socialtext::Account->Default;
     $self->{default_account} = $def->name;
@@ -1329,7 +1330,7 @@ sub exec_regex {
 sub sleep {
     my $self = shift;
     my $secs = shift;
-    sleep $secs;
+    CORE::sleep $secs;
 }
 
 =head2 get ( uri, accept )
@@ -1346,7 +1347,7 @@ sub get {
 
     my @headers = (
         Accept => $accept,
-        Cookie => $self->{_cookie},
+        $self->{_cookie} ? (Cookie => $self->{_cookie}) : (),
     );
     if ($headers) {
         push @headers, map { split m/\s*=\s*/ } split m/\s*,\s*/, $headers;
@@ -2016,6 +2017,11 @@ sub _compare_json {
         die "Types of json and candidate disagree"
             unless (ref($json) eq ref($candidate));
         die "No match for candidate $candidate, got $json" unless ($json eq $candidate);
+    }
+    elsif (ref($json) eq 'JSON::XS::Boolean') {
+        die "Types of json and candidate disagree"
+            unless (ref($json) eq ref($candidate));
+        die "No match for candidate $candidate, got $json" unless ($json == $candidate);
     }
     elsif (ref($json) eq 'ARRAY') {
         my $match = 1;
@@ -3214,6 +3220,34 @@ sub signal_targeted {
     else {
         ok($count == $expect, "signal did not target $what $id ($uset_id)");
     }
+}
+
+sub set_basic_auth_header {
+    my ($self, $name, $user, $pass) = @_;
+
+    $user ||= $self->{username};
+    $pass ||= $self->{password};
+
+    $self->{$name} = "Basic ".  MIME::Base64::encode("$user:$pass", '');
+}
+
+sub restart_userd {
+    my $self = shift;
+    Socialtext::System::shell_run('nlwctl', '-s','restart');
+    my $ua = LWP::UserAgent->new;
+    my $req = HTTP::Request->new(GET => 
+        'http://localhost:'.$self->{userd_port}.'/ping',
+        [Accept => 'application/json']);
+    # assumes graceful shutdown delay is 5 seconds:
+    for (1..12) {
+        my $resp = $ua->request($req);
+        if ($resp->is_success) {
+            pass "userd restarted";
+            return;
+        }
+        Time::HiRes::sleep(0.5);
+    }
+    fail "userd could not be restarted";
 }
 
 1;

@@ -13,7 +13,7 @@ use Socialtext::Apache::User;
 use Socialtext;
 use Socialtext::Hub; # preload all other classes
 use Socialtext::AppConfig;
-use Socialtext::CredentialsExtractor;
+use Socialtext::CredentialsExtractor::Client::Sync;
 use Socialtext::RequestContext;
 use Socialtext::WebApp;
 use Socialtext::TT2::Renderer;
@@ -48,28 +48,25 @@ sub handler ($$) {
 sub authenticate {
     my $class   = shift;
     my $request = shift;
-    my $credential
-        = Socialtext::CredentialsExtractor->ExtractCredentials($request);
-    if ($credential) {
-        my $user = Socialtext::User->new( user_id  => $credential )
-            || Socialtext::User->new( username => $credential );
-        return undef unless $user;
-        return undef if $user->is_deleted();
-        $request->connection->user($user->username);
-        return $user;
-    }
-    return undef;
+
+    my $client = Socialtext::CredentialsExtractor::Client::Sync->new();
+    my %env    = (
+        $request->cgi_env,
+        AUTHORIZATION => $request->header_in('Authorization'),
+    );
+    my $creds  = $client->extract_credentials(\%env);
+    return unless ($creds->{valid});
+
+    my $user = Socialtext::User->new(user_id => $creds->{user_id});
+    return if (!$user or $user->is_deleted or $user->is_guest);
+
+    $request->connection->user($user->username);
+    return $user;
 }
 
 sub guest {
-    my $class   = shift;
-    my $request = shift;
-    if ( $class->allows_guest($request) ) {
-        return Socialtext::User->Guest;
-    }
-    else {
-        return undef;
-    }
+    my ($class, $r) = @_;
+    return $class->allows_guest($r) ? Socialtext::User->Guest : undef;
 }
 
 sub _preload_templates {

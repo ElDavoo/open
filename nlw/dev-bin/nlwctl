@@ -38,6 +38,7 @@ Options:
   -p                operate only on the json proxy service
   -n/-2             operate only on nginx service
   -u                operate only on the pushd service
+  -s                operate only on the userd service
 
   -t, --test        operate on live-test server rather than devel. server
   -v, --verbose     extra verbosity
@@ -47,8 +48,8 @@ END_OF_HELP
     exit 1;
 }
 
-my (%apache_command, %ceqlotron_command, %appliance_command, %pushd_command, $nginx,
-    $apache_perl);
+my (%apache_command, %ceqlotron_command, %appliance_command,
+    %pushd_command, %userd_command, $nginx, $apache_perl);
 
 # Options
 my $use_test_server  = 0;
@@ -58,6 +59,7 @@ my $ceqlotron_please = 0;
 my $jsonproxy_please = 0;
 my $appliance_please = 0;
 my $pushd_please = 0;
+my $userd_please = 0;
 
 my %OPTSPEC = (
     'test|t'    => \$use_test_server,
@@ -70,6 +72,7 @@ my %OPTSPEC = (
     2           => \$nginx_please,
     n           => \$nginx_please,
     u           => \$pushd_please,
+    s           => \$userd_please,
 );
 
 Getopt::Long::Configure('bundling');
@@ -82,12 +85,13 @@ my @verbs = @ARGV ? @ARGV : ('start');
 
 # If you don't specify any of -c, -1, or -2, you get them all.
 $appliance_please = $ceqlotron_please = $nginx_please = $apache1_please
-    = $jsonproxy_please = $pushd_please = 1
+    = $jsonproxy_please = $pushd_please = $userd_please = 1
     unless ( $ceqlotron_please
           || $appliance_please
           || $nginx_please
           || $apache1_please
           || $pushd_please
+          || $userd_please
           || $jsonproxy_please );
 
 my $jsonproxy = "$FindBin::Bin/../../plugins/widgets/etc/init.d/json-proxy";
@@ -96,7 +100,7 @@ $jsonproxy_please = 0 unless -e $jsonproxy;
 # These servers don't run in test mode
 if ($use_test_server) {
     # XXX: does jsonproxy belong here too?
-    $ceqlotron_please = $appliance_please = $pushd_please = 0
+    $ceqlotron_please = $appliance_please = $pushd_please = $userd_please = 0
 }
 
 my @apaches;
@@ -125,6 +129,7 @@ sub dispatch {
             $ceqlotron_command{$verb}->() if $ceqlotron_please;
             $appliance_command{$verb}->() if $appliance_please;
             $pushd_command{$verb}->() if $pushd_please;
+            $userd_command{$verb}->() if $userd_please;
             shell_run "$jsonproxy $verb" if $jsonproxy_please;
         }
         else {
@@ -216,6 +221,22 @@ sub init_commands {
         },
         hup     => sub { },
         restart => sub { $pushd_command{$_}->(@_) for qw( stop start ) },
+        ports   => sub { },
+    );
+
+    my $userd_svc_dir
+        = "$FindBin::Bin/../service/st-userd";
+    %userd_command = (
+        start => sub {
+            print "Starting userd service.\n";
+            shell_run("svc -u $userd_svc_dir");
+        },
+        stop => sub {
+            print "Stopping userd service.\n";
+            shell_run("svc -d $userd_svc_dir");
+        },
+        hup     => sub { },
+        restart => sub { $userd_command{$_}->(@_) for qw( stop start ) },
         ports   => sub { },
     );
 }

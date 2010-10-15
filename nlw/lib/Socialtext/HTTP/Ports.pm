@@ -88,6 +88,17 @@ sub ntlmd_port {
         ? 9090 : PORTS_START_AT() + 7000 + $>;
 }
 
+memoize 'userd_port';
+sub userd_port {
+    return Socialtext::AppConfig->is_appliance()
+        ? _default_backend_http_port() + 4
+        : PORTS_START_AT() + 8000 + $>;
+}
+
+# WARNING An offset of 9000 cannot be used; since most users have a UNIX user
+# id > 2000, using an offset of 9000 will put the port into the ephemeral port
+# range.  Refactor the code to not need this large of an offset.
+
 ###############################################################################
 # Helpers: front-end HTTP port
 sub _env_var_http_port {

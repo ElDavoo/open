@@ -14,6 +14,7 @@ my $cmd = shift || 'start';
 my %services = (
     console => "$FindBin::Bin/../../appliance/libsocialtext-appliance-perl/service",
     pushd   => "$FindBin::Bin/../../plugins/push/service",
+    userd   => "$FindBin::Bin/../service/st-userd",
 );
 
 my $pid_dir = Socialtext::AppConfig->pid_file_dir;

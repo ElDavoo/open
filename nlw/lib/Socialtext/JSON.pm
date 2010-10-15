@@ -6,8 +6,14 @@ use Encode ();
 
 # Export our methods.
 use base qw(Exporter);
-our @EXPORT_OK = qw(encode_json decode_json decode_json_utf8);
-our @EXPORT = qw(encode_json decode_json);
+our @EXPORT_OK = qw(
+    encode_json decode_json decode_json_utf8
+    json_bool json_true json_false
+);
+our @EXPORT = qw(
+    encode_json decode_json
+    json_bool json_true json_false
+);
 
 sub encode_json {
     unless (ref $_[0]) {
@@ -28,6 +34,11 @@ sub decode_json_utf8 {
     Encode::_utf8_off($_[0]) if Encode::is_utf8($_[0]);
     goto &JSON::XS::decode_json;
 }
+
+*json_true = \&JSON::XS::true;
+*json_false = \&JSON::XS::false;
+
+sub json_bool { $_[0] ? JSON::XS::true : JSON::XS::false }
 
 1;
 
@@ -59,10 +70,11 @@ The C<encode_json> and C<decode_json> functions are exported automatically.
 
 =over
 
-=item B<encode_json($perl_hash_or_arrayref)>
+=item B<encode_json($anything)>
 
 Converts the given Perl data structure to a UTF-8 encoded, binary string (that
-is, the string contains octets only).  Croaks on error.
+is, the string contains octets only).  Croaks on error (e.g. if the parameter
+contains objects).
 
 =item B<decode_json($utf8_encoded_json_text)>
 
@@ -72,9 +84,20 @@ Croaks on error.  The utf8 flag should be turned off on the string.
 
 =item B<decode_json_utf8($any_json_text)>
 
-If the string has its utf8 flag on, this function forces the flag B<off> on the
-original scalar.  This is in order to make JSON::XS happy when the flag happens
-to be on.  Otherwise, this does the same thing as C<decode_json>.
+If the string has its utf8 flag on, this function forces the flag B<off> on
+the original scalar.  This is in order to make JSON::XS happy when the flag
+happens to be on.  Otherwise, this does the same thing as C<decode_json>.
+
+=item B<json_true>
+
+=item B<json_false>
+
+Special tokens for true/false json literals. (e.g. C<< {"thingy":true} >>)
+
+=item B<json_bool($val)>
+
+Returns the json_true/json_false token based on the perl boolean value of
+C<$val>.
 
 =back
 

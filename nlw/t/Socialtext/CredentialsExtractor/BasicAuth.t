@@ -3,7 +3,6 @@
 
 use strict;
 use warnings;
-use mocked 'Apache::Request', qw( get_log_reasons );
 use MIME::Base64;
 use Socialtext::CredentialsExtractor;
 use Socialtext::AppConfig;
@@ -17,6 +16,8 @@ fixtures(qw( empty ));
 ###############################################################################
 my $valid_username = Test::Socialtext::User->test_username();
 my $valid_password = Test::Socialtext::User->test_password();
+my $valid_user_id  = Socialtext::User->new(username => $valid_username)->user_id;
+my $guest_user_id  = Socialtext::User->Guest->user_id;
 
 my $bad_username = 'unknown_user@socialtext.com';
 my $bad_password = '*bad-password*';
@@ -26,100 +27,83 @@ my $creds_extractors = 'BasicAuth:Guest';
 ###############################################################################
 # TEST: Username+password are correct, user can authenticate
 correct_username_and_password: {
-    # create a mocked Apache::Request to extract the credentials from
-    my $mock_request = make_mocked_request($valid_username, $valid_password);
+    my $authz_header = make_authz_header($valid_username, $valid_password);
 
     # configure the list of Credentials Extractors to run
     Socialtext::AppConfig->set(credentials_extractors => $creds_extractors);
 
     # extract the credentials
-    my $username
-        = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
-    is $username, $valid_username,
-        'extracted credentials when username+password are valid';
-
-    # make sure that nothing got logged as a failure
-    my @reasons = get_log_reasons();
-    ok !@reasons, '... no failures logged';
+    my $creds = Socialtext::CredentialsExtractor->ExtractCredentials( {
+        AUTHORIZATION => $authz_header,
+    } );
+    ok $creds->{valid}, 'extracted credentials from REMOTE_USER';
+    is $creds->{user_id}, $valid_user_id, '... with expected User Id';
 }
 
 ###############################################################################
 # TEST: Incorrect password, user cannot authenticate
 incorrect_password: {
-    # create a mocked Apache::Request to extract the credentials from
-    my $mock_request = make_mocked_request($valid_username, $bad_password);
+    my $authz_header = make_authz_header($valid_username, $bad_password);
 
     # configure the list of Credentials Extractors to run
     Socialtext::AppConfig->set(credentials_extractors => $creds_extractors);
 
     # extract the credentials
-    my $username
-        = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
-    is $username, undef,
-        'unable to extract credentials when password is incorrect';
-
-    # make sure that an appropriate failure reason was logged
-    my @reasons = get_log_reasons();
-    is scalar(@reasons), 1, '... one failure logged';
-    like $reasons[0], qr/unable to authenticate $valid_username for/,
-        '... ... noting failure to authenticate user';
+    my $creds = Socialtext::CredentialsExtractor->ExtractCredentials( {
+        AUTHORIZATION => $authz_header,
+    } );
+    ok !$creds->{valid}, 'failed to extract credentials from REMOTE_USER';
+    like $creds->{reason}, qr/invalid/, '... invalid username/password';
 }
 
 ###############################################################################
 # TEST: Unknown username, user cannot authenticate
 unknown_username: {
-    # create a mocked Apache::Request to extract the credentials from
-    my $mock_request = make_mocked_request($bad_username, $bad_password);
+    my $authz_header = make_authz_header($bad_username, $bad_password);
 
     # configure the list of Credentials Extractors to run
     Socialtext::AppConfig->set(credentials_extractors => $creds_extractors);
 
     # extract the credentials
-    my $username
-        = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
-    is $username, undef,
-        'unable to extract credentials when username is unknown';
+    my $creds = Socialtext::CredentialsExtractor->ExtractCredentials( {
+        AUTHORIZATION => $authz_header,
+    } );
+    ok !$creds->{valid}, 'failed to extract credentials from REMOTE_USER';
+    like $creds->{reason}, qr/invalid/, '... invalid username/password';
+}
 
-    # make sure that an appropriate failure reason was logged
-    my @reasons = get_log_reasons();
-    is scalar(@reasons), 1, '... one failure logged';
-    like $reasons[0], qr/unable to authenticate $bad_username for/,
-        '... ... noting failure to authenticate user';
+###############################################################################
+# TEST: Malformed Authorization header
+malformed_header: {
+    my $authz_header = make_authz_header($valid_username, "");
+
+    # configure the list of Credentials Extractors to run
+    Socialtext::AppConfig->set(credentials_extractors => $creds_extractors);
+
+    # extract the credentials
+    my $creds = Socialtext::CredentialsExtractor->ExtractCredentials( {
+        AUTHORIZATION => $authz_header,
+    } );
+    ok !$creds->{valid}, 'failed to extract credentials from REMOTE_USER';
+    like $creds->{reason}, qr/missing/, '... missing username/password';
 }
 
 ###############################################################################
 # TEST: No authentication header set, not authenticated
 no_authentication_header_set: {
-    # create a mocked Apache::Request to extract the credentials from
-    my $mock_request = make_mocked_request();
-
     # configure the list of Credentials Extractors to run
     Socialtext::AppConfig->set(credentials_extractors => $creds_extractors);
 
     # extract the credentials
-    my $username
-        = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
-    is $username, undef,
-        'unable to extract credentials when no Authen info provided';
-
-    # make sure that nothing got logged as a failure; if no Authen info is
-    # available the Credentials Extractor should exit early
-    my @reasons = get_log_reasons();
-    ok !@reasons, '... no failures logged';
+    my $creds = Socialtext::CredentialsExtractor->ExtractCredentials( { } );
+    ok $creds->{valid}, 'extracted credentials from REMOTE_USER';
+    is $creds->{user_id}, $guest_user_id, '... the Guest; fall-through';
 }
 
 
 
-sub make_mocked_request {
+sub make_authz_header {
     my ($username, $password) = @_;
-    my %args = (
-        uri => 'http://localhost/challenge',
-    );
-
-    if ($username && $password) {
-        my $encoded = MIME::Base64::encode("$username\:$password");
-        $args{'Authorization'} = "Basic $encoded";
-    }
-
-    return Apache::Request->new(%args);
+    my $encoded = MIME::Base64::encode("$username\:$password");
+    return "Basic $encoded";
 }

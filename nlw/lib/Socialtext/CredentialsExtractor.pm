@@ -2,38 +2,43 @@
 package Socialtext::CredentialsExtractor;
 use strict;
 use warnings;
+use List::MoreUtils qw(uniq);
 
 use Socialtext::AppConfig;
-use Socialtext::MultiCursor;
 use base qw( Socialtext::MultiPlugin );
 
 sub base_package {
-    return __PACKAGE__;
+    return 'Socialtext::CredentialsExtractor::Extractor';
 }
+
+our %driver_aliases = (
+    Apache => 'RemoteUser',     # should've had this name in the first place
+);
 
 sub _drivers {
     my $class = shift;
     my $drivers = Socialtext::AppConfig->credentials_extractors();
-    my @drivers = split /:/, $drivers;
+    my @drivers =
+        map { $driver_aliases{$_} || $_ }
+        split /:/, $drivers;
     return @drivers;
-}
-
-sub Extractors {
-    my $class = shift;
-
-    return Socialtext::MultiCursor->new(
-        iterables => [ [ $class->_drivers ] ],
-        apply     => sub {
-            my $driver = shift;
-            return $class->_realize( $driver, 'extract_credentials' );
-        }
-    );
 }
 
 sub ExtractCredentials {
     my $class = shift;
+    my $hdrs  = shift;
+    return $class->_first('extract_credentials', $hdrs);
+}
 
-    return $class->_first('extract_credentials', @_);
+sub _key {
+    my $key = shift;
+    $key =~ tr/-/_/;
+    return uc($key);
+}
+
+sub HeadersNeeded {
+    my $class = shift;
+    return uniq $class->_aggregate('uses_headers');
 }
 
 1;
@@ -49,36 +54,48 @@ credentials from a Request
 
   use Socialtext::CredentialsExtractor;
 
-  my $extractors = Socialtext::CredentialsExtractor->Extractors;
-  my $credentials;
+  my $creds = Socialtext::CredentialsExtractor->ExtractCredentials($headers);
 
-  while ( my $extractor = $extractors->next ) {
-
-    $credentials = $extractor->extract_credentials( $request );
-
-    ...
-  }
-
-  die "No creds, can't do anything" if !$credentials;
+  die "No creds, can't do anything" unless ($creds->{valid});
 
 =head1 DESCRIPTION
 
 This class provides a hook point for registering new means of gathering
-credentials from a request object. 
+credentials from a hash-ref of HTTP headers and Environment Variables.
 
 =head1 METHODS
 
-=head2 Socialtext::CredentialsExtractor->Extractors
+=head2 Socialtext::CredentialsExtractor->ExtractCredentials($headers)
 
-Returns an iterable object comprising all the registered plugins in order of
-their configuration (found as a setting in C<Socialtext::AppConfig>.
+Processes the provided hash-ref of C<$headers> with the list of configured
+Credentials Extractors (see L<Socialtext::AppConfig>), and returns a data
+structure outlining the validity of the credentials found:
 
-=head2 Socialtext::CredentialsExtractor->ExtractCredentials
+  {
+      valid: 1,         # true/false; are the creds valid?
+      valid_for: 60,    # seconds that these creds can be considered valid
+      user_id: 123,     # User Id of verified User
+      needs_renewal: 0, # true/false; should creds be re-verified ?
+  }
 
-Returns the first defined set of credentials it can.
+The provided hash-ref of C<$headers> is to be encoded such that:
 
-Individual plugin classes are expected to implement a method called
-'extract_credentials' which returns a scalar, either username or user_id.
+=over
+
+=item *
+
+Header names are transformed such that they're in all upper-case, and such
+that all "-" characters are replaced with "_".
+
+=item *
+
+Header values are flattened into a single line,
+
+=item *
+
+Multiple values are separated by a ";".
+
+=back
 
 =head2 base_package()
 

@@ -3,54 +3,48 @@
 
 use strict;
 use warnings;
-use mocked 'Apache::Request';
 use Socialtext::CredentialsExtractor;
 use Socialtext::AppConfig;
-use Test::Socialtext tests => 2;
+use Test::Socialtext tests => 4;
 use Test::Socialtext::User;
 
 ###############################################################################
-# Fixtures: base_config
+# Fixtures: empty
 #
-# Need to have the config files present/available, but don't need anything
-# else.
-fixtures(qw( base_config ));
+# Need to have the test User around.
+fixtures(qw( empty ));
 
 ###############################################################################
 ### TEST DATA
 ###############################################################################
 my $valid_username = Test::Socialtext::User->test_username();
+my $valid_user_id  = Socialtext::User->new(username => $valid_username)->user_id;
+my $guest_user_id  = Socialtext::User->Guest->user_id;
 
 my $creds_extractors = 'Apache:Guest';
 
 ###############################################################################
 # TEST: Apache has authenticated User
 apache_has_authenticated: {
-    # create a mocked Apache::Request to extract the credentials from
-    my $mock_request = Apache::Request->new(
-        connection_user => $valid_username,
-    );
-
     # configure the list of Credentials Extractors to run
     Socialtext::AppConfig->set(credentials_extractors => $creds_extractors);
 
     # extract the credentials
-    my $username
-        = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
-    is $username, $valid_username, 'extracted credentials from Apache';
+    my $creds = Socialtext::CredentialsExtractor->ExtractCredentials( {
+        REMOTE_USER => $valid_username,
+    } );
+    ok $creds->{valid}, 'extracted credentials from Apache';
+    is $creds->{user_id}, $valid_user_id, '... with expected User Id';
 }
 
 ###############################################################################
 # TEST: Apache has not authenticated User
 apache_has_not_authenticated: {
-    # create a mocked Apache::Request to extract the credentials from
-    my $mock_request = Apache::Request->new();
-
     # configure the list of Credentials Extractors to run
     Socialtext::AppConfig->set(credentials_extractors => $creds_extractors);
 
     # extract the credentials
-    my $username
-        = Socialtext::CredentialsExtractor->ExtractCredentials($mock_request);
-    is $username, undef, 'unable to extract credentials; Apache did not authentticate';
+    my $creds = Socialtext::CredentialsExtractor->ExtractCredentials( { } );
+    ok $creds->{valid}, 'extracted credentials from Apache';
+    is $creds->{user_id}, $guest_user_id, '... the Guest; fall-through';
 }
