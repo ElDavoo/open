@@ -26,6 +26,12 @@ sub send_http_header { }
 sub auth_type        { }
 sub auth_name        { }
 
+sub cgi_env {
+    my $self = shift;
+    my %env  = map { uc("HTTP_$_") => $HEADERS{$_} } keys %HEADERS;
+    return %env;
+}
+
 sub instance {
     my $class = shift;
     my $req   = shift;
