@@ -120,12 +120,14 @@ sub match {
     return unless $text =~ /(^(>{$l}(?!>).*\n)+)/m;
     $self->set_match; # sets text field
     my $new_text = $self->text;
-    $new_text =~ s/^>+\s*//gm;
-    $self->text($new_text);
+    $new_text =~ s/^>+[^\S\n]*//gm;
+    $self->text("$new_text\n");
     return 1;
 }
 
-sub text_filter { Socialtext::Formatter::Paragraph->text_filter($_[1]) }
+sub text_filter {
+    Socialtext::Formatter::Paragraph->text_filter($_[1]);
+}
 
 sub html_start {
     my $self = shift;
