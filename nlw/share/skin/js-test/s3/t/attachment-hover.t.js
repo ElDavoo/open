@@ -22,8 +22,8 @@ t.runAsync([
         // Scroll to wherever the attachment widget is
         t.scrollTo(t.$("#st-attachment-listing").offset().top - 50);
 
-        var hoverText = t.$("#st-attachment-listing li:first a:first").attr("title");
-        t.like(hoverText, /Uploaded by .+ on .+ GMT\.\s*\(\d+(\.\d+[KM])? bytes\)/, "Attachment hover text contains uploader, date and size info.");
+        var hoverText = t.$("#st-attachment-listing li:first div.fileInfo").text();
+        t.like(hoverText, /\d+\s+at\s+[\d\D]+\s+by\s+[\d\D]+/, "Attachment fileinfo div contains uploader and date info.");
 
         t.endAsync();
     }
