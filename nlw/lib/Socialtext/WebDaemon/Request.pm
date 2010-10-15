@@ -23,13 +23,17 @@ has 'responding' => (is => 'ro', isa => 'Bool', writer => '_responding');
 
 sub BUILD {
     my $self = shift;
-    DAEMON()->stats->{"current connections"}++;
+    weaken $self;
+
     $self->_ident("fd=".$self->_r->fileno().
         ', user_id='.$self->for_user_id);
-# put this in the poll_cb thinger below until we get Feersum w/ guards
-#     $self->_r->guard(guard {
-#         DAEMON()->stats->{"current connections"}--;
-#     });
+
+    DAEMON()->stats->{"current connections"}++;
+    $self->_r->response_guard(guard {
+        trace "=> DROP ".$self->ident."\n";
+        DAEMON()->stats->{"current connections"}--;
+    });
+
     $self->started_at(AE::now);
     my $env = $self->env;
     $self->_pid($$); # for detecting forks
@@ -90,23 +94,22 @@ sub respond {
     my $r = $self->_r;
     $self->_clear_r;
 
-    trace "<= RESPONSE ".$self->ident.": ".$message.$/;
     no warnings 'numeric';
     my $code = 0 + $message;
-    my $w = $r->start_streaming($message, $hdrs);
-    $w->write($content);
-    $w->poll_cb(sub {
-        # IMPORTANT: this callback must keep a reference to $self AND $w
-        $w->close;
+
+    # replace the default guard so we can log a completion message (strong
+    # reference is OK).
+    $r->response_guard->cancel;
+    $r->response_guard(guard {
         $self->log_done($code);
         $cb->() if $cb;
-        undef $w;
-        undef $self;
-        # this is temporarily here until we get guards
-        my $d = DAEMON();
-        $d->stats->{"current connections"}--;
+        DAEMON()->stats->{"current connections"}--;
+        undef $self; # important reference closure.
     });
+
+    $r->send_response($message, $hdrs, $content);
     $self->_responding(1);
+    trace "<= RESPONSE ".$self->ident.": ".$message.$/;
 
     return;
 }
