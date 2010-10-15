@@ -1,6 +1,6 @@
 var t = new Test.Wikiwyg();
 
-t.plan(16);
+t.plan(17);
 t.run_roundtrip('wikitext');
 
 /*
@@ -216,5 +216,13 @@ hello
 
 
 
+
+=== Vertical indented space
+--- wikitext
+>> Hello
+>>
+>>
+
+Goodbye
 
 */
