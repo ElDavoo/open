@@ -136,7 +136,7 @@ EOF
           'plain body contains list in extra text verbatim' );
 
     my $html_body = ( $emails[0]->parts() )[1]->body();
-    like( $html_body, qr{<p>\s*Here is a paragraph[^<]+</p>}s,
+    like( $html_body, qr{<p>\s*Here is a paragraph[^<]+<br />\s*</p>}s,
           'html body contains extra text as html' );
     like( $html_body, qr{<li>\s*A list},
           'html body contains list items' );
