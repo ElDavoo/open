@@ -1,4 +1,6 @@
 package Socialtext::Handler::Base;
+# @COPYRIGHT@
+
 use Moose::Role;
 use Socialtext::HTTP ':codes';
 use Socialtext::HTTP::Cookie;
