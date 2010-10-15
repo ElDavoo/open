@@ -102,3 +102,7 @@
 | json-like      | {"valid":true, "needs_renewal":false, "user_id":2} |                                                  |
 | json-unlike    | {"user_id":"%%gooduser_id%%"}                      |                                                  |
 
+## CLEANUP
+| *Comment*     | Set the CredsExtractors back to their default value so we don't pollute other tests |
+| st-config     | set credentials_extractors BasicAuth:Default:Guest                                  |
+| restart-userd |                                                                                     |
