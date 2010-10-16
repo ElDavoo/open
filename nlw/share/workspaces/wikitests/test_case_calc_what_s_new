@@ -1,36 +1,38 @@
 | *Comment* | Test Case: Calc What's New |  |
 
-| set | wnemail | whats.new@ken.socialtext.net |  |
-| set | anemail | aaa.whats.new@ken.socialtext.net |  |
+| set | wnemail | whats.new@ken.socialtext.net |
+| set | anemail | aaa.whats.new@ken.socialtext.net |
+| set | wn_ws | wn-ws-%%start_time%% |
 
 | st-admin | create-user --e %%wnemail%% --p %%password%% |  |
 | st-admin | create-user --e %%anemail%% --p %%password%% |  |
-| st-admin | add-member --e %%wnemail%% --w %%workspace%% |  |
-| st-admin | add-member --e %%anemail%% --w %%workspace%% |  |
+| st-admin | create-workspace --n %%wn_ws%% --t %%wn_ws%% --empty | created |
+| st-admin | add-member --w %%wn_ws%% --e %%wnemail%% | now has the role |
+| st-admin | add-member --w %%wn_ws%% --e %%anemail%% | now has the role |
 
 | st-logoutin | %%wnemail%% | %%password%% |
 
-| open_ok | %%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=hey whats new %%start_time%% 0001#edit |  |
+| open_ok | %%wn_ws%%/index.cgi?action=display;page_type=spreadsheet;page_name=hey whats new %%start_time%% 0001#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | pause | 5000 | I hate pause; needed for entire page load |
 | st-page-save |  |  |
-| open_ok | %%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=hey whats new %%start_time%% 0002#edit |  |
+| open_ok | %%wn_ws%%/index.cgi?action=display;page_type=spreadsheet;page_name=hey whats new %%start_time%% 0002#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | pause | 5000 | I hate pause; needed for entire page load |
 | st-page-save |  |  |
-| open_ok | %%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=hey whats new %%start_time%% 0003#edit |  |
+| open_ok | %%wn_ws%%/index.cgi?action=display;page_type=spreadsheet;page_name=hey whats new %%start_time%% 0003#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | pause | 5000 | I hate pause; needed for entire page load |
 | st-page-save |  |  |
-| open_ok | %%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=hey whats new %%start_time%% 0004#edit |  |
+| open_ok | %%wn_ws%%/index.cgi?action=display;page_type=spreadsheet;page_name=hey whats new %%start_time%% 0004#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | pause | 5000 | I hate pause; needed for entire page load |
 | st-page-save |  |  |
 
-| open_ok | /%%workspace%%/index.cgi?action=recent_changes |  |
+| open_ok | /%%wn_ws%%/index.cgi?action=recent_changes |  |
 | text_like | Changes in Last |  |
 | click_and_wait | link=All Pages |  |
-| text_like | All Pages ( |  |
+| text_like | All Pages |  |
 | click_and_wait | link=What's New |  |
 
 | *Comment* | Test Case: Calc What's New Sorting tests |
@@ -48,12 +50,12 @@
 | text_like | contentContainer | qr/hey whats new %%start_time%% 0001.+hey whats new %%start_time%% 0004/ |
 
 | *Comment* | Test Case: Calc What's New add a new page |  |
-| open_ok | %%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=hey whats new %%start_time%% 0005#edit |  |
+| open_ok | %%wn_ws%%/index.cgi?action=display;page_type=spreadsheet;page_name=hey whats new %%start_time%% 0005#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | pause | 5000 | I hate pause; needed for entire page load |
 | st-page-save |  |  |
 
-| open_ok | /%%workspace%%/index.cgi?action=recent_changes |  |
+| open_ok | /%%wn_ws%%/index.cgi?action=recent_changes |  |
 | select_and_wait | sort-picker | Revisions |
 
 | *Comment* | Test Case: Calc What's New sort Date desc |  |
@@ -73,13 +75,13 @@
 | text_like | contentContainer | qr/hey whats new %%start_time%% 0002.+hey whats new %%start_time%% 0003/ |
 
 | *Comment* | Test Case: Calc What's New create Rev 2 |  |
-| open_ok | %%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=hey whats new %%start_time%% 0005#edit |  |
+| open_ok | %%wn_ws%%/index.cgi?action=display;page_type=spreadsheet;page_name=hey whats new %%start_time%% 0005#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | pause | 5000 | I hate pause; needed for entire page load |
 | st-page-save |  |  |
 
 | *Comment* | Test Case: Calc What's New sort Revisions desc |  |
-| open_ok | /%%workspace%%/index.cgi?action=recent_changes |  |
+| open_ok | /%%wn_ws%%/index.cgi?action=recent_changes |  |
 | select_and_wait | sort-picker | label=Revisions |
 | text_like | contentContainer | qr/hey whats new %%start_time%% 0005.+hey whats new %%start_time%% 0004/ |
 
@@ -94,12 +96,12 @@
 | *Comment* | Test Case: Calc What's New %%anemail%% edits a page |  |
 | st-logoutin | %%anemail%% | %%password%% |
 
-| open_ok | %%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=hey whats new %%start_time%% 0003#edit |  |
+| open_ok | %%wn_ws%%/index.cgi?action=display;page_type=spreadsheet;page_name=hey whats new %%start_time%% 0003#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | pause | 5000 | I hate pause; needed for entire page load |
 | st-page-save |  |  |
 
-| open_ok | /%%workspace%%/index.cgi?action=recent_changes |  |
+| open_ok | /%%wn_ws%%/index.cgi?action=recent_changes |  |
 
 | *Comment* | Test Case: Calc What's New sort Last Edited By asc |  |
 | select_and_wait | sort-picker | label=Last Edited By |
@@ -114,23 +116,18 @@
 | text_like | contentContainer | qr/hey whats new %%start_time%% 0003.+hey whats new %%start_time%% 0001/ |
 
 | *Comment* | Test Case: Calc What's New delete page |  |
-| st-admin | purge-page --w %%workspace%% --p hey_whats_new_%%start_time%%_0004 | was purged |
+| st-admin | purge-page --w %%wn_ws%% --p hey_whats_new_%%start_time%%_0004 | was purged |
 
-| open_ok | /%%workspace%%/index.cgi?action=recent_changes |  |
+| open_ok | /%%wn_ws%%/index.cgi?action=recent_changes |  |
 | text_unlike | contentContainer | hey whats new %%start_time%% 0004 |
 
-| open_ok | /%%workspace%%/index.cgi?action=revision_list;page_name=hey_whats_new_%%start_time%%_0005 |  |
+| open_ok | /%%wn_ws%%/index.cgi?action=revision_list;page_name=hey_whats_new_%%start_time%%_0005 |  |
 | text_like | contentContainer | Revision 2 |
 | text_like | contentContainer | Revision 1 |
 | text_unlike | contentContainer | Revision 3 |
 
-| *Comment* | Test Case: Calc What's New Teardown |  |
-
-| st-admin | purge-page --workspace %%workspace%% --page hey_whats_new_%%start_time%%_0001 | was purged |
-| st-admin | purge-page --workspace %%workspace%% --page hey_whats_new_%%start_time%%_0002 | was purged |
-| st-admin | purge-page --workspace %%workspace%% --page hey_whats_new_%%start_time%%_0003 | was purged |
-| st-admin | purge-page --workspace %%workspace%% --page hey_whats_new_%%start_time%%_0005 | was purged |
-| st-admin | remove-member --e %%wnemail%% --w %%workspace%% | no longer |
-| st-admin | remove-member --e %%anemail%% --w %%workspace%% | no longer |
+| *Comment* | Test Case: Calc What's New TEARDOWN |  |
+| st-process-jobs | PageIndex | %%wn_ws%% |
+| st-admin | delete_workspace --no-export --w %%wn_ws%% | has been deleted |
 
 | *Comment* | Test Case: Calc What's New COMPLETED |  |
