@@ -287,10 +287,9 @@ sub ceqlotron_run_synchronously() {
         if ($funcname and ($job->funcname || '') !~ /$funcname$/i) {
             next;
         }
-
-        if ($workspace) {
-            my $ws = $job->workspace or next;
-            ($ws->workspace_id == $workspace->workspace_id) or next;
+        if ($workspace && $job->arg->{workspace_id}) {
+            my $ws_id = $job->arg->{workspace_id} or next;
+            ($ws_id == $workspace->workspace_id) or next;
         }
 
         push @jobid, $job->jobid;
