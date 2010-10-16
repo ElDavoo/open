@@ -43,7 +43,7 @@ It seems that Selenium cannot analyze the content of feed pages because they are
 | location_like | /feed/workspace/%%workspace%% |  |
 
 Where are all the RSS icons?
-Search result. Single Page. What's New. Watchlist. All Pages. Weblogs.
+Search result. Single Page. What's New. Watchlist. All Pages. Blogs.
 
 | *Comment* | Test Case: RSS Icons Start Here page |  |
 | open_ok | /%%workspace%%/?Start Here |  |
@@ -77,15 +77,15 @@ Search result. Single Page. What's New. Watchlist. All Pages. Weblogs.
 | click_and_wait | //img[contains(@src,'rss.png')] |  |
 | location_like | /feed/workspace/%%workspace%% |  |
 
-| *Comment* | Test Case: RSS Icons Weblogs |  |
+| *Comment* | Test Case: RSS Icons Blogs |  |
 | open_ok | /%%workspace%%/ |  |
-| click_and_wait | link=Weblogs |  |
+| click_and_wait | link=Blogs |  |
 | wait_for_element_visible_ok | //img[contains(@src,'rss.png')] | 30000 |
 | click_and_wait | //img[contains(@src,'rss.png')] |  |
 | location_like | /feed/workspace/%%workspace%% |  |
 
 | open_ok | /%%workspace%%/ |  |
-| click_and_wait | link=Weblogs |  |
+| click_and_wait | link=Blogs |  |
 | click_and_wait | link=Subscribe to Feed |  |
 | location_like | /feed/workspace/%%workspace%% |  |
 

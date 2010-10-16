@@ -44,10 +44,10 @@
 | text_like | contentLeft | Syndicate |
 | text_like | contentLeft | Time |
 | text_like | contentLeft | Watchlist |
-| text_like | contentLeft | Weblogs |
+| text_like | contentLeft | Blogs |
 | text_unlike | contentLeft | Manage All Users |
 | text_unlike | contentLeft | Invite New Users |
-| text_unlike | contentLeft | Create New Weblog |
+| text_unlike | contentLeft | Create New Blog |
 
 | *Comment* | Test Case: Public-Comment-Only apparently we allow Unsubscribe from any workspace |  |
 | text_like | contentLeft | Unsubscribe |

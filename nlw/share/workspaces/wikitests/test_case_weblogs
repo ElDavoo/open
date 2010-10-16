@@ -7,28 +7,28 @@ RSS feeds are tested in a separate test
 | *Comment* | Test Case: Weblogs Create test weblog |  |
 | open_ok | /%%workspace%%/?action=users_settings |  |
 
-| wait_for_element_visible_ok | link=Create New Weblog | 30000 |
-| click_and_wait | link=Create New Weblog |  |
+| wait_for_element_visible_ok | link=Create New Blog | 30000 |
+| click_and_wait | link=Create New Blog |  |
 | wait_for_element_visible_ok | weblog_title | 30000 |
-| type_ok | weblog_title | Test %%start_time%% Weblog |
+| type_ok | weblog_title | Test %%start_time%% Blog |
 | click_and_wait | link=Save |  |
 
 | *Comment* | Test Case: Weblogs Test Weblog pulldown |  |
 | *Comment* | reliably open Recent Changes, navigate away then revisit it |  |
 | open_ok | /%%workspace%%/index.cgi?action=weblog_display&category=recent+changes |  |
 | wait_for_element_visible_ok | page-control-category-selector | 30000 |
-| select_and_wait | page-control-category-selector | Test %%start_time%% Weblog |
-| text_like | Weblog: Test %%start_time%% Weblog |  |
+| select_and_wait | page-control-category-selector | Test %%start_time%% Blog |
+| text_like | Blog: Test %%start_time%% Blog |  |
 | select_and_wait | page-control-category-selector | Recent Changes |
-| text_like | Weblog: Recent Changes |  |
-| select_and_wait | page-control-category-selector | Test %%start_time%% Weblog |
-| text_like | Weblog: Test %%start_time%% Weblog |  |
+| text_like | Blog: Recent Changes |  |
+| select_and_wait | page-control-category-selector | Test %%start_time%% Blog |
+| text_like | Blog: Test %%start_time%% Blog |  |
 
 Selenium can't "see" feed pages
-open_ok | /feed/workspace/%%workspace%%?category=test_%%start_time%%_weblog | |
+open_ok | /feed/workspace/%%workspace%%?category=test_%%start_time%%_blog | |
 text_like | feedSubscribeLine | Subscribe to this feed |
-text_like | feedBody | This is the first post in test_%%start_time%%_weblog |
-open_ok | /%%workspace%%/index.cgi?action=weblog_display&category=test_%%start_time%%_weblog | |
+text_like | feedBody | This is the first post in test_%%start_time%%_blog |
+open_ok | /%%workspace%%/index.cgi?action=weblog_display&category=test_%%start_time%%_blog | |
 
 | *Comment* | Test Case: Weblogs new post |  |
 | click_and_wait | st-weblog-newpost-button |  |
@@ -62,85 +62,85 @@ open_ok | /%%workspace%%/index.cgi?action=weblog_display&category=test_%%start_t
 
 | *Comment* | Test Case: Weblogs weblogs that differ only by square brackets cause error |  |
 | click_and_wait | link=Settings |  |
-| wait_for_element_visible_ok | link=Create New Weblog | 30000 |
-| click_and_wait | link=Create New Weblog |  |
+| wait_for_element_visible_ok | link=Create New Blog | 30000 |
+| click_and_wait | link=Create New Blog |  |
 | wait_for_element_visible_ok | weblog_title | 30000 |
-| type_ok | weblog_title | `Test [%%start_time%%] Weblog` |
+| type_ok | weblog_title | `Test [%%start_time%%] Blog` |
 | click_and_wait | link=Save |  |
-| text_like | `error: There is already a 'Test [%%start_time%%] Weblog' weblog. Please choose a different name.` |  |
+| text_like | `error: There is already a 'Test [%%start_time%%] Blog' blog. Please choose a different name.` |  |
 
 | *Comment* | Test Case: Weblogs square brackets are legal for weblog titles |  |
 | click_and_wait | link=Settings |  |
-| wait_for_element_visible_ok | link=Create New Weblog | 30000 |
-| click_and_wait | link=Create New Weblog |  |
+| wait_for_element_visible_ok | link=Create New Blog | 30000 |
+| click_and_wait | link=Create New Blog |  |
 | wait_for_element_visible_ok | weblog_title | 30000 |
-| type_ok | weblog_title | `TestX [%%start_time%%] Weblog` |
+| type_ok | weblog_title | `TestX [%%start_time%%] Blog` |
 | click_and_wait | link=Save |  |
 | wait_for_element_visible_ok | page-control-category-selector | 30000 |
 | select_and_wait | page-control-category-selector | Recent Changes |
-| text_like | Weblog: Recent Changes |  |
-| select_and_wait | page-control-category-selector | `TestX [%%start_time%%] Weblog` |
-| text_like | `Weblog: TestX [%%start_time%%] Weblog` |  |
+| text_like | Blog: Recent Changes |  |
+| select_and_wait | page-control-category-selector | `TestX [%%start_time%%] Blog` |
+| text_like | `Blog: TestX [%%start_time%%] Blog` |  |
 
-| *Comment* | Test Case: Weblogs RT 27013 |  |
+| *Comment* | Test Case: Blogs RT 27013 |  |
 | *Comment* | Test Case: blog or weblog ending respected |  |
 
 | click_and_wait | link=Settings |  |
-| wait_for_element_visible_ok | link=Create New Weblog | 30000 |
-| click_and_wait | link=Create New Weblog |  |
+| wait_for_element_visible_ok | link=Create New Blog | 30000 |
+| click_and_wait | link=Create New Blog |  |
 | wait_for_element_visible_ok | weblog_title | 30000 |
 | type_ok | weblog_title | X%%start_time%% blog |
 | click_and_wait | link=Save |  |
-| text_like | st-editing-tools-edit | Weblog: X%%start_time%% blog |
+| text_like | st-editing-tools-edit | Blog: X%%start_time%% blog |
 
 | click_and_wait | link=Settings |  |
-| wait_for_element_visible_ok | link=Create New Weblog | 30000 |
-| click_and_wait | link=Create New Weblog |  |
+| wait_for_element_visible_ok | link=Create New Blog | 30000 |
+| click_and_wait | link=Create New Blog |  |
 | wait_for_element_visible_ok | weblog_title | 30000 |
-| type_ok | weblog_title | Y%%start_time%% weblog |
+| type_ok | weblog_title | Y%%start_time%% blog |
 | click_and_wait | link=Save |  |
-| text_like | st-editing-tools-edit | Weblog: Y%%start_time%% weblog |
+| text_like | st-editing-tools-edit | Blog: Y%%start_time%% blog |
 
 | *Comment* | Test Case: Weblogs END RT 27013 |  |
 
 | *Comment* | Test Case: Weblogs Duplicate Names |  |
 | click_and_wait | link=Settings |  |
-| wait_for_element_visible_ok | link=Create New Weblog | 30000 |
-| click_and_wait | link=Create New Weblog |  |
+| wait_for_element_visible_ok | link=Create New Blog | 30000 |
+| click_and_wait | link=Create New Blog |  |
 | wait_for_element_visible_ok | weblog_title | 30000 |
-| type_ok | weblog_title | Z%%start_time%% weblog |
+| type_ok | weblog_title | Z%%start_time%% blog |
 | click_and_wait | link=Save |  |
-| text_like | st-editing-tools-edit | Weblog: Z%%start_time%% weblog |
+| text_like | st-editing-tools-edit | Blog: Z%%start_time%% blog |
 | click_and_wait | link=Settings |  |
-| wait_for_element_visible_ok | link=Create New Weblog | 30000 |
-| click_and_wait | link=Create New Weblog |  |
+| wait_for_element_visible_ok | link=Create New Blog | 30000 |
+| click_and_wait | link=Create New Blog |  |
 | wait_for_element_visible_ok | weblog_title | 30000 |
 | type_ok | weblog_title | Z%%start_time%% |
 | click_and_wait | link=Save |  |
-| text_like | contentRight | error: There is already a 'Z%%start_time%% Weblog' weblog. |
+| text_like | contentRight | error: There is already a 'Z%%start_time%% Blog' blog. |
 | click_and_wait | link=Settings |  |
-| wait_for_element_visible_ok | link=Create New Weblog | 30000 |
-| click_and_wait | link=Create New Weblog |  |
+| wait_for_element_visible_ok | link=Create New Blog | 30000 |
+| click_and_wait | link=Create New Blog |  |
 | wait_for_element_visible_ok | weblog_title | 30000 |
-| type_ok | weblog_title | Z%%start_time%% Weblog |
+| type_ok | weblog_title | Z%%start_time%% blog |
 | click_and_wait | link=Save |  |
-| text_like | contentRight | error: There is already a 'Z%%start_time%% Weblog' weblog. |
+| text_like | contentRight | error: There is already a 'Z%%start_time%% blog' blog. |
 | click_and_wait | link=Settings |  |
-| wait_for_element_visible_ok | link=Create New Weblog | 30000 |
-| click_and_wait | link=Create New Weblog |  |
+| wait_for_element_visible_ok | link=Create New Blog | 30000 |
+| click_and_wait | link=Create New Blog |  |
 | wait_for_element_visible_ok | weblog_title | 30000 |
-| type_ok | weblog_title | Z%%start_time%% weblog |
+| type_ok | weblog_title | Z%%start_time%% blog |
 | click_and_wait | link=Save |  |
-| text_like | contentRight | error: There is already a 'Z%%start_time%% weblog' weblog. |
+| text_like | contentRight | error: There is already a 'Z%%start_time%% blog' blog. |
 
 removed weblog name length test. There is no reason to limit weblog names to 28 chars
 
 | *Comment* | Test Case: Weblogs Teardown |  |
 | st-admin | purge-page --w %%workspace%% --page post_1_%%start_time%% | was purged |
-| st-admin | purge-page --w %%workspace%% --page first_post_in_test_%%start_time%%_weblog | was purged |
-| st-admin | purge-page --w %%workspace%% --page first_post_in_testx_%%start_time%%_weblog | was purged |
+| st-admin | purge-page --w %%workspace%% --page first_post_in_test_%%start_time%%_blog | was purged |
+| st-admin | purge-page --w %%workspace%% --page first_post_in_testx_%%start_time%%_blog | was purged |
 | st-admin | purge-page --w %%workspace%% --page first_post_in_x%%start_time%%_blog | was purged |
-| st-admin | purge-page --w %%workspace%% --page first_post_in_y%%start_time%%_weblog | was purged |
-| st-admin | purge-page --w %%workspace%% --page first_post_in_z%%start_time%%_weblog | was purged |
+| st-admin | purge-page --w %%workspace%% --page first_post_in_y%%start_time%%_blog | was purged |
+| st-admin | purge-page --w %%workspace%% --page first_post_in_z%%start_time%%_blog | was purged |
 
 | *Comment* | Test Case: Weblogs COMPLETED |

@@ -15,7 +15,7 @@
 | text_like | contentLeft | Workspace Appearance |
 | text_like | contentLeft | Workspace Features |
 | text_like | contentLeft | Workspace Privacy |
-| text_like | contentLeft | Create New Weblog |
+| text_like | contentLeft | Create New Blog |
 | text_like | contentLeft | Page Editing |
 | text_like | contentLeft | Screen Layout |
 | text_like | contentLeft | Email Notification |
@@ -24,7 +24,7 @@
 | text_like | contentLeft | Syndicate |
 | text_like | contentLeft | Time |
 | text_like | contentLeft | Watchlist |
-| text_like | contentLeft | Weblogs |
+| text_like | contentLeft | Blogs |
 | text_unlike | contentLeft | List All Users |
 
 | *Comment* | Test Case: Settings: Admin test Invite New Users functionality |  |
@@ -68,8 +68,8 @@
 | check_ok | timezone__time_display_seconds |  |
 | click_and_wait | link=Save |  |
 
-| click_and_wait | link=Create New Weblog |  |
-| type_ok | weblog_title | %%start_time%% Weblog |
+| click_and_wait | link=Create New Blog |  |
+| type_ok | weblog_title | %%start_time%% Blog |
 | click_and_wait | link=Save |  |
 
 | wait_for_text_present_ok | New Post | 30000 |
@@ -100,7 +100,7 @@
 | click_ok | document.forms[1].sort_weblogs_by_create[1] |  |
 | click_and_wait | link=Save |  |
 
-| click_and_wait | link=Weblogs |  |
+| click_and_wait | link=Blogs |  |
 | text_like | contentContainer | qr/post2 %%start_time%%.+edit/ |
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Workspace Features |  |

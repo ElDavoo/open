@@ -195,7 +195,7 @@
 | *Comment* | Test Case: Miki RT 26984 |  |
 | *Comment* | Test Case: Miki create test weblog for capitalization test |  |
 | click_and_wait | link=Settings |  |
-| click_and_wait | link=Create New Weblog |  |
+| click_and_wait | link=Create New Blog |  |
 | type_ok | weblog_title | Caps Test Weblog %%start_time%% |
 | click_and_wait | link=Save |  |
 

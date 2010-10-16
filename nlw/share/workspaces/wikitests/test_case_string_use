@@ -212,5 +212,5 @@ Use the string in Settings. Arbitrary nasty strings may not work in all places:
 * Invite New User (may not be able to construct a legitimate email address from a nasty string)
 * Create New Workspace (just use test_string for title and test_id for workspace ID)
 * Workspace Appearance: Change the title, but you might have to change it back in the teardown
-* Create New Weblog
+* Create New Blog
 * any lightbox UI: link or widget

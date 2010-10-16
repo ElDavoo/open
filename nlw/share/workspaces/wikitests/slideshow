@@ -152,7 +152,7 @@ Post by Email popup
 | clickAndWait | link=Workspace Features |  |
 | clickAndWait | link=Workspace Skin |  |
 | clickAndWait | link=Workspace Privacy |  |
-| clickAndWait | link=Create New Weblog |  |
+| clickAndWait | link=Create New Blog |  |
 | clickAndWait | link=Page Editing |  |
 | clickAndWait | link=Screen Layout |  |
 | clickAndWait | link=Email Notification |  |
@@ -596,7 +596,7 @@ Lightbox screens:
 | *Comment* | SlideShow USE Workspace Navigation |  |
 | click_and_wait | link=What's New |  |
 | click_and_wait | link=My Watchlist |  |
-| click_and_wait | link=Weblogs |  |
+| click_and_wait | link=Blogs |  |
 | click_and_wait | link=Add Members |  |
 | click_and_wait | //a[@id='workspaceName'] |  |
 

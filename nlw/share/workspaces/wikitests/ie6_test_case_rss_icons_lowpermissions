@@ -1,4 +1,4 @@
-IE6 seems to need low permissions to run this test successfully.
+E6 seems to need low permissions to run this test successfully.
 
 Selenium seems to need to run multi-window to run this test successfully, because the test
 uses "location_like" to determine if the RSS feed window opened
@@ -69,12 +69,12 @@ Search result. Single Page. What's New. Watchlist. All Pages. Weblogs.
 
 | *Comment* | Test Case: RSS Icons LowPermissions Weblogs |  |
 | open_ok | /%%workspace%%/index.cgi?Start Here |  |
-| click_and_wait | link=Weblogs |  |
+| click_and_wait | link=Blogs |  |
 | click_and_wait | //img[contains(@src,'rss.png')] |  |
 | location_like | /feed/workspace/%%workspace%% |  |
 
 | open_ok | /%%workspace%%/index.cgi?Start Here |  |
-| click_and_wait | link=Weblogs |  |
+| click_and_wait | link=Blogs |  |
 | click_and_wait | link=Subscribe to Feed |  |
 | location_like | /feed/workspace/%%workspace%% |  |
 

@@ -41,7 +41,7 @@
 
 | *Comment* | Test Case: Hidden email Address for Public wiki create weblog |  |
 | click_and_wait | link=Settings |  |
-| click_and_wait | link=Create New Weblog |  |
+| click_and_wait | link=Create New Blog |  |
 | type_ok | weblog_title | Hidden Email Weblog %%start_time%% |
 | click_and_wait | link=Save |  |
 
@@ -74,7 +74,7 @@
 | text_unlike | st-page-content | %%he_regex%% |
 
 | *Comment* | Test Case: Hidden email Address for Public wiki verify weblog |  |
-| click_and_wait | link=Weblogs |  |
+| click_and_wait | link=Blogs |  |
 | text_like | %%he_name%% |  |
 | text_unlike | contentContainer | %%he_regex%% |
 

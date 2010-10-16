@@ -30,9 +30,9 @@
 | text_like | contentContainer | Pages You're Watching |
 | click_and_wait | link=%%ws_title%% |  |
 
-| *Comment* | Test Case: Workspace Navigation Weblogs |  |
-| click_and_wait | link=Weblogs |  |
-| text_like | st-editing-tools-edit | Weblog: |
+| *Comment* | Test Case: Workspace Navigation Blogs |  |
+| click_and_wait | link=Blogs |  |
+| text_like | st-editing-tools-edit | Blog: |
 
 | *Comment* | Test Case: Workspace Navigation test for Add Members link |  |
 | click_and_wait | link=%%ws_title%% |  |
@@ -62,13 +62,13 @@
 | select_ok | recent_changes__changes_depth | label=Last Month |
 | click_and_wait | link=Save |  |
 | click_and_wait | link=What's New |  |
-| text_like | contentContainer | Changes in Last Month (30) out of (30) total pages |
+| text_like | contentContainer | qr/Changes in Last Month \(\d+\) out of \(\d+\) Total Pages/ |
 | click_and_wait | link=Settings |  |
 | click_and_wait | //a[contains(@href,'preferences_class_id=recent_changes')] |  |
 | select_ok | recent_changes__changes_depth | label=Last Week |
 | click_and_wait | link=Save |  |
 | click_and_wait | link=What's New |  |
-| text_like | contentContainer | Changes in Last Week (30) out of (30) total pages |
+| text_like | contentContainer | qr/Changes in Last Week \(\d+\) out of \(\d+\) Total Pages/ |
 
 | *Comment* | Test Case: Workspace Navigation set up Notepad |  |
 | *Comment* | Create a unique notepad page |  |

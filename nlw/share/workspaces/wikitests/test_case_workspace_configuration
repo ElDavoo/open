@@ -28,20 +28,20 @@ text_like | st-commentui-notetop | All Hands Topside |
 
 | *Comment* | Test Case: Workspace Configuration Weblog Email Format |  |
 | st-admin | set_workspace_config --workspace %%workspace%% email_weblog_dot_address 1 |  |
-| click_and_wait | link=Create New Weblog |  |
+| click_and_wait | link=Create New Blog |  |
 | type_ok | weblog_title | Dot Address %%start_time%% |
 | click_and_wait | link=Save |  |
 
-| *Comment* | Check the weblog link for a dot. Don't worry about the destination host |  |
-| text_like | //a[contains(@href,'mailto:%%workspace%%.Dot_Address_%%start_time%%_Weblog')] | or post by email |
+| *Comment* | Check the blog link for a dot. Don't worry about the destination host |  |
+| text_like | //a[contains(@href,'mailto:%%workspace%%.Dot_Address_%%start_time%%_Blog')] | or post by email |
 
-| *Comment* | Check the weblog link for a plus. Don't worry about the destination host |  |
+| *Comment* | Check the blog link for a plus. Don't worry about the destination host |  |
 | st-admin | set_workspace_config --workspace %%workspace%% email_weblog_dot_address 0 |  |
 | open_ok | /%%workspace%%/?action=users_settings |  |
-| click_and_wait | link=Create New Weblog |  |
+| click_and_wait | link=Create New Blog |  |
 | type_ok | weblog_title | Plus Address %%start_time%% |
 | click_and_wait | link=Save |  |
-| text_like | //a[contains(@href,'mailto:%%workspace%%+Plus_Address_%%start_time%%_Weblog')] | or post by email |
+| text_like | //a[contains(@href,'mailto:%%workspace%%+Plus_Address_%%start_time%%_Blog')] | or post by email |
 
 TODO: change to new central page scheme
 
@@ -55,7 +55,7 @@ st-admin | set_workspace_config --workspace %%workspace%% homepage_is_dashboard 
 | *Comment* | Test Case: Workspace Configuration Weblog Sort Order |  |
 | st-admin | set_workspace_config --workspace %%workspace%% sort_weblogs_by_create 1 |  |
 | open_ok | /%%workspace%%/?action=users_settings |  |
-| click_and_wait | link=Create New Weblog |  |
+| click_and_wait | link=Create New Blog |  |
 | type_ok | weblog_title | Order %%start_time%% |
 | click_and_wait | link=Save |  |
 | wait_for_element_visible_ok | st-weblog-newpost-button | 30000 |
@@ -142,9 +142,9 @@ text_like | comment_form | Red Field |
 | st-admin | set_workspace_config --workspace %%workspace%% invitation_filter "" |  |
 
 | *Comment* | Test Case: Workspace Configuration Teardown |  |
-| st-admin | purge-page --w %%workspace%% --page first_post_in_dot_address_%%start_time%%_weblog | was purged |
-| st-admin | purge-page --w %%workspace%% --page first_post_in_plus_address_%%start_time%%_weblog | was purged |
-| st-admin | purge-page --w %%workspace%% --page first_post_in_order_%%start_time%%_weblog | was purged |
+| st-admin | purge-page --w %%workspace%% --page first_post_in_dot_address_%%start_time%%_blog | was purged |
+| st-admin | purge-page --w %%workspace%% --page first_post_in_plus_address_%%start_time%%_blog | was purged |
+| st-admin | purge-page --w %%workspace%% --page first_post_in_order_%%start_time%%_blog | was purged |
 | st-admin | purge-page --w %%workspace%% --page order_post_1_%%start_time%% | was purged |
 | st-admin | purge-page --w %%workspace%% --page email_%%start_time%% | was purged |
 

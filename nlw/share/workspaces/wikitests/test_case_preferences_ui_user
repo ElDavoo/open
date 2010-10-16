@@ -221,34 +221,34 @@
 | text_like | qr/Preferences Saved/i |  |
 | is_selected_ok | watchlist__watchlist_notify_frequency | label=Never |
 
-| *Comment* | Test Case: Preferences UI User Weblogs. Default: 10 posts |  |
+| *Comment* | Test Case: Preferences UI User Blogs. Default: 10 posts |  |
 | click_and_wait | link=Settings |  |
 | click_and_wait | //a[contains(@href,'preferences_class_id=weblog')] |  |
-| text_like | contentContainer | How many posts should be displayed in weblog view |
+| text_like | contentContainer | How many posts should be displayed in blog view |
 | is_selected_ok | weblog__weblog_depth | label=10 |
 
-| *Comment* | Test Case: Preferences UI User Weblogs. 50 posts |  |
+| *Comment* | Test Case: Preferences UI User Blogs. 50 posts |  |
 | select_ok | weblog__weblog_depth | label=50 |
 | is_selected_ok | weblog__weblog_depth | label=50 |
 | click_and_wait | link=Save |  |
 | text_like | qr/Preferences Saved/i |  |
 | is_selected_ok | weblog__weblog_depth | label=50 |
 
-| *Comment* | Test Case: Preferences UI User Weblogs. Cancel preserves value |  |
+| *Comment* | Test Case: Preferences UI User Blogs. Cancel preserves value |  |
 | select_ok | weblog__weblog_depth | label=25 |
 | is_selected_ok | weblog__weblog_depth | label=25 |
 | click_ok | link=Cancel |  |
 | is_selected_ok | weblog__weblog_depth | label=50 |
 
-| *Comment* | Test Case: Preferences UI User Weblogs. Save without changing values |  |
+| *Comment* | Test Case: Preferences UI User Blogs. Save without changing values |  |
 | is_selected_ok | weblog__weblog_depth | label=50 |
 | click_and_wait | link=Save |  |
 | is_selected_ok | weblog__weblog_depth | label=50 |
 
-| *Comment* | Test Case: Preferences UI User Weblogs. Navigate away, come back, verify |  |
+| *Comment* | Test Case: Preferences UI User Blogs. Navigate away, come back, verify |  |
 | click_and_wait | link=Settings |  |
 | click_and_wait | //a[contains(@href,'preferences_class_id=weblog')] |  |
-| text_like | contentContainer | How many posts should be displayed in weblog view |
+| text_like | contentContainer | How many posts should be displayed in blog view |
 | is_selected_ok | weblog__weblog_depth | label=50 |
 
 | *Comment* | Test Case: Preferences UI User Syndicate. Default: 10 posts |  |
@@ -281,21 +281,21 @@
 | text_like | contentContainer | How many posts should be displayed in outgoing feeds |
 | is_selected_ok | syndicate__syndication_depth | label=50 |
 
-| *Comment* | Test Case: Preferences UI User: create new weblog |  |
+| *Comment* | Test Case: Preferences UI User: create new Blog |  |
 | click_and_wait | link=Settings |  |
-| click_and_wait | link=Create New Weblog |  |
-| text_like | contentContainer | Create A Weblog |
-| type_ok | weblog_title | No Brackets %%start_time%% Weblog |
+| click_and_wait | link=Create New Blog |  |
+| text_like | contentContainer | Create A Blog |
+| type_ok | weblog_title | No Brackets %%start_time%% Blog |
 | click_and_wait | link=Save |  |
-| text_like | contentContainer | First Post in No Brackets %%start_time%% Weblog |
+| text_like | contentContainer | First Post in No Brackets %%start_time%% Blog |
 
-| *Comment* | Test Case: Preferences UI: User new weblog with brackets |  |
+| *Comment* | Test Case: Preferences UI: User new Blog with brackets |  |
 | click_and_wait | link=Settings |  |
-| click_and_wait | link=Create New Weblog |  |
-| text_like | contentContainer | Create A Weblog |
+| click_and_wait | link=Create New Blog |  |
+| text_like | contentContainer | Create A Blog |
 | type_ok | weblog_title | `[Brackets] %%start_time%%` |
 | click_and_wait | link=Save |  |
-| text_like | contentContainer | `First Post in [Brackets] %%start_time%% Weblog` |
+| text_like | contentContainer | `First Post in [Brackets] %%start_time%% Blog` |
 
 | *Comment* | Test Case: Preferences UI User. What's New. Defaults: Last week, display off, 4 items |  |
 | click_and_wait | link=Settings |  |
@@ -321,8 +321,8 @@
 | is_selected_ok | recent_changes__sidebox_changes_depth | label=20 |
 | open_ok | /%%new_ws%% |
 | text_like | contentRight | What's New |
-| text_like | contentRight | First Post in No Brackets %%start_time%% Weblog |
-| text_like | contentRight | `First Post in [Brackets] %%start_time%% Weblog` |
+| text_like | contentRight | First Post in No Brackets %%start_time%% Blog |
+| text_like | contentRight | `First Post in [Brackets] %%start_time%% Blog` |
 
 | *Comment* | Test Case: Preferences UI User. What's New. Set: Last Month, off, 2 items |  |
 | click_and_wait | link=Settings |  |
@@ -340,8 +340,8 @@
 | is_selected_ok | recent_changes__sidebox_changes_depth | label=2 |
 | open_ok | /%%new_ws%% |  |
 | text_unlike | contentRight | What's New |
-| text_unlike | contentRight | First Post in No Brackets %%start_time%% Weblog |
-| text_unlike | contentRight | `First Post in [Brackets] %%start_time%% Weblog` |
+| text_unlike | contentRight | First Post in No Brackets %%start_time%% Blog |
+| text_unlike | contentRight | `First Post in [Brackets] %%start_time%% Blog` |
 
 | *Comment* | Test Case: Preferences UI User. What's New. Save without changing values |  |
 | click_and_wait | link=Settings |  |

@@ -23,7 +23,7 @@
 | text_like | contentLeft | List All Users |
 | text_like | contentLeft | My Workspaces |
 | text_like | contentLeft | Unsubscribe |
-| text_like | contentLeft | Create New Weblog |
+| text_like | contentLeft | Blog |
 | text_like | contentLeft | Page Editing |
 | text_like | contentLeft | Screen Layout |
 | text_like | contentLeft | Your Notepad |
@@ -31,7 +31,7 @@
 | text_like | contentLeft | Syndicate |
 | text_like | contentLeft | Time |
 | text_like | contentLeft | Watchlist |
-| text_like | contentLeft | Weblogs |
+| text_like | contentLeft | Blogs |
 | text_unlike | contentLeft | Manage All Users |
 
 | *Comment* | Test Case: Authenticated-User-Only Teardown |  |

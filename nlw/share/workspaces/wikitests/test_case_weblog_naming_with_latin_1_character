@@ -3,14 +3,14 @@
 
 | *Comment* | Test Case: Weblog naming: Make a blog with a Latin-1 char in its name |  |
 | open_ok | /%%workspace%%/?action=users_settings |  |
-| click_and_wait | link=Create New Weblog |  |
+| click_and_wait | link=Create New Blog |  |
 | type_ok | weblog_title | claus´ blog %%start_time%% |
 | click_and_wait | link=Save |  |
 | text_like | st-editing-tools-edit | claus´ blog %%start_time%% |
 
 | *Comment* | Test Case: Weblog naming: Make a blog with a Latin-1 char in its name |  |
 | open_ok | /%%workspace%% |  |
-| click_and_wait | link=Weblogs |  |
+| click_and_wait | link=Blogs |  |
 
 | *Comment* | Test Case: Weblog naming: Selenium can't handle a Latin-1 character in this command ! |  |
 
