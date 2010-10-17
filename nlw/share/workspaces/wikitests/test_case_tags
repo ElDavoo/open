@@ -78,13 +78,13 @@ click on several page links | Pages appear; each page has its that tag displayed
 | clickAndWait | link=Tag 1 Content Title %%start_time%% |  |
 | text_like | link=Tag 1 %%start_time%% | Tag 1 %%start_time%% |
 
- click: View {link: Category as a weblog} | All pages with that tag appear in weblog form
+ click: View {link: Category as a blog} | All pages with that tag appear in weblog form
 
 | *Comment* | Test Case: Tags Checking weblog view |  |
 | open_ok | %%workspace%%/?Tag 2 Content Title %%start_time%% |  |
 | clickAndWait | link=Tag 2 %%start_time%% |  |
-| clickAndWait | link=Tag 2 %%start_time%% as a weblog |  |
-| text_like | st-editing-tools-edit | Weblog: Tag 2 %%start_time%% |
+| clickAndWait | link=Tag 2 %%start_time%% as a blog |  |
+| text_like | st-editing-tools-edit | Blog: Tag 2 %%start_time%% |
 
 | *Comment* | Test Case: Tags post to category by email not implemented |
 
