@@ -6,7 +6,6 @@
 | st-admin | create-workspace --name %%ws%% --title "%%ws_title%%" | was created |
 | st-admin | add-member --e %%username%% --workspace %%ws%% | now has the role of |
 | st-admin | add-workspace-admin --e %%username%% --workspace %%ws%% | now has the role of |
-| st-admin | purge-page --workspace %%ws%% --page announcements_and_links | was purged |
 | st-admin | update-page --w %%ws%% --e %%email%% --p "Page 1 %%start_time%%" < %%wikitest_client_files%%wikitest.txt | has been created |
 | st-admin | update-page --w %%ws%% --e %%email%% --p "Page 2 %%start_time%%" < %%wikitest_client_files%%wikitest.txt | has been created |
 | st-admin | update-page --w %%ws%% --e %%email%% --p "Page 3 %%start_time%%" < %%wikitest_client_files%%wikitest.txt | has been created |
