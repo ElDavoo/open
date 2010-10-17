@@ -47,7 +47,7 @@ open_ok | /%%workspace%%/index.cgi?action=weblog_display&category=test_%%start_t
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | Comment 1 %%start_time%% |
 | click_ok | link=Save |  |
-| *Comment* | Just SAVED comment |
+| *Comment* | Just SAVED comment |  |
 | wait_for_text_present_ok | Comment 1 %%start_time%% | 30000 |
 | click_and_wait | link=Edit this post |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
@@ -92,18 +92,20 @@ open_ok | /%%workspace%%/index.cgi?action=weblog_display&category=test_%%start_t
 | type_ok | weblog_title | X%%start_time%% blog |
 | click_and_wait | link=Save |  |
 | text_like | st-editing-tools-edit | Blog: X%%start_time%% blog |
+| text_unlike | st-editing-tools-edit | qr/blog blog/i |
 
 | click_and_wait | link=Settings |  |
 | wait_for_element_visible_ok | link=Create New Blog | 30000 |
 | click_and_wait | link=Create New Blog |  |
 | wait_for_element_visible_ok | weblog_title | 30000 |
-| type_ok | weblog_title | Y%%start_time%% blog |
+| type_ok | weblog_title | Y%%start_time%% weblog |
 | click_and_wait | link=Save |  |
-| text_like | st-editing-tools-edit | Blog: Y%%start_time%% blog |
+| text_like | st-editing-tools-edit | Blog: Y%%start_time%% weblog |
+| text_unlike | st-editing-tools-edit | qr/weblog blog/i |
 
 | *Comment* | Test Case: Weblogs END RT 27013 |  |
 
-| *Comment* | Test Case: Weblogs Duplicate Names |  |
+| *Comment* | Test Case: Weblogs Duplicate Names Blog |  |
 | click_and_wait | link=Settings |  |
 | wait_for_element_visible_ok | link=Create New Blog | 30000 |
 | click_and_wait | link=Create New Blog |  |
@@ -129,18 +131,44 @@ open_ok | /%%workspace%%/index.cgi?action=weblog_display&category=test_%%start_t
 | wait_for_element_visible_ok | link=Create New Blog | 30000 |
 | click_and_wait | link=Create New Blog |  |
 | wait_for_element_visible_ok | weblog_title | 30000 |
-| type_ok | weblog_title | Z%%start_time%% blog |
+| type_ok | weblog_title | Z%%start_time%% Blog |
 | click_and_wait | link=Save |  |
-| text_like | contentRight | error: There is already a 'Z%%start_time%% blog' blog. |
+| text_like | contentRight | error: There is already a 'Z%%start_time%% Blog' blog. |
+
+| *Comment* | Test Case: Weblogs Duplicate Names Weblog |  |
+| click_and_wait | link=Settings |  |
+| wait_for_element_visible_ok | link=Create New Blog | 30000 |
+| click_and_wait | link=Create New Blog |  |
+| wait_for_element_visible_ok | weblog_title | 30000 |
+| type_ok | weblog_title | A%%start_time%% weblog |
+| click_and_wait | link=Save |  |
+| text_like | st-editing-tools-edit | Blog: A%%start_time%% weblog |
+| click_and_wait | link=Settings |  |
+| wait_for_element_visible_ok | link=Create New Blog | 30000 |
+| click_and_wait | link=Create New Blog |  |
+| wait_for_element_visible_ok | weblog_title | 30000 |
+| type_ok | weblog_title | A%%start_time%% weblog |
+| click_and_wait | link=Save |  |
+| text_like | contentRight | error: There is already a 'A%%start_time%% weblog' blog. |
+| click_and_wait | link=Settings |  |
+| wait_for_element_visible_ok | link=Create New Blog | 30000 |
+| click_and_wait | link=Create New Blog |  |
+| wait_for_element_visible_ok | weblog_title | 30000 |
+| type_ok | weblog_title | A%%start_time%% Weblog |
+| click_and_wait | link=Save |  |
+| text_like | contentRight | error: There is already a 'A%%start_time%% Weblog' blog. |
+
 
 removed weblog name length test. There is no reason to limit weblog names to 28 chars
 
 | *Comment* | Test Case: Weblogs Teardown |  |
+| st-process-jobs | PageIndex | %%workspace%% |
 | st-admin | purge-page --w %%workspace%% --page post_1_%%start_time%% | was purged |
 | st-admin | purge-page --w %%workspace%% --page first_post_in_test_%%start_time%%_blog | was purged |
 | st-admin | purge-page --w %%workspace%% --page first_post_in_testx_%%start_time%%_blog | was purged |
 | st-admin | purge-page --w %%workspace%% --page first_post_in_x%%start_time%%_blog | was purged |
-| st-admin | purge-page --w %%workspace%% --page first_post_in_y%%start_time%%_blog | was purged |
+| st-admin | purge-page --w %%workspace%% --page first_post_in_y%%start_time%%_weblog | was purged |
 | st-admin | purge-page --w %%workspace%% --page first_post_in_z%%start_time%%_blog | was purged |
+| st-admin | purge-page --w %%workspace%% --page first_post_in_a%%start_time%%_weblog | was purged |
 
 | *Comment* | Test Case: Weblogs COMPLETED |

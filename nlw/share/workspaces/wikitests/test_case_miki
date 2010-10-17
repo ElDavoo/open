@@ -192,32 +192,32 @@
 | *Comment* | Test Case: Miki traditional Miki verification as %%username%% |  |
 | st-login | %%username%% | %%password%% |
 | open_ok | /%%workspace%%/ |  |
-| *Comment* | Test Case: Miki RT 26984 |  |
-| *Comment* | Test Case: Miki create test weblog for capitalization test |  |
+
+| *Comment* | Test Case: Miki create test blog for capitalization test |  |
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Create New Blog |  |
-| type_ok | weblog_title | Caps Test Weblog %%start_time%% |
+| type_ok | weblog_title | Caps Test Blog %%start_time%% |
 | click_and_wait | link=Save |  |
 
-| *Comment* | Test Case: Miki Open the weblog with caps |  |
-| open_ok | /m/tag/%%workspace%%/Caps Test Weblog %%start_time%% Weblog |  |
-| text_like | link=First Post in Caps Test Weblog %%start_time%% Weblog | First Post in Caps Test Weblog %%start_time%% Weblog |
-| text_like | Recent changes in tag: Caps Test Weblog %%start_time%% Weblog |  |
+| *Comment* | Test Case: Miki Open the blog with caps |  |
+| open_ok | /m/tag/%%workspace%%/Caps Test Blog %%start_time%% Blog |  |
+| text_like | link=First Post in Caps Test Blog %%start_time%% Blog | First Post in Caps Test Blog %%start_time%% Blog |
+| text_like | Recent changes in tag: Caps Test Blog %%start_time%% Blog |  |
 
-| *Comment* | Test Case: Miki Open the weblog without caps |  |
-| open_ok | /m/tag/%%workspace%%/caps test weblog %%start_time%% weblog |  |
-| text_like | link=First Post in Caps Test Weblog %%start_time%% Weblog | First Post in Caps Test Weblog %%start_time%% Weblog |
-| text_like | Recent changes in tag: caps test weblog %%start_time%% weblog |  |
+| *Comment* | Test Case: Miki Open the blog without caps |  |
+| open_ok | /m/tag/%%workspace%%/caps test blog %%start_time%% log |  |
+| text_like | link=First Post in Caps Test Blog %%start_time%% Blog | First Post in Caps Test Blog %%start_time%% Blog |
+| text_like | Recent changes in tag: caps test blog %%start_time%% blog |  |
 
 | *Comment* | Test Case: Miki |  |
 | wait_for_element_visible_ok | link=What's New | 30000 |
 | click_and_wait | link=What's New |  |
-| click_and_wait | link=First Post in Caps Test Weblog %%start_time%% Weblog |  |
-| text_like | This is the first post in Caps Test Weblog %%start_time%% Weblog |  |
+| click_and_wait | link=First Post in Caps Test Blog %%start_time%% Blog |  |
+| text_like | This is the first post in Caps Test Blog %%start_time%% Blog |  |
 
 | *Comment* | Test Case: Miki TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | delete_workspace --no-export --w %%ws%% | has been deleted |
 | st-admin | delete_workspace --no-export --w %%otherws%% | has been deleted |
-| *Comment* | Test Case: Miki END RT 26984 |  |
 
 | *Comment* | Test Case: Miki COMPLETED |  |

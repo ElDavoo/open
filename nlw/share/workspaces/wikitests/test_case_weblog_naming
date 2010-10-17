@@ -18,9 +18,9 @@ This test provoked by {rt: 27013} - creating a blog name ending in "Blog" gives 
 | text_like | st-editing-tools-edit | add2 %%start_time%% log Blog |
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Create New Blog |  |
-| type_ok | weblog_title | add3 weblog %%start_time%% |
+| type_ok | weblog_title | add3 blog %%start_time%% |
 | click_and_wait | link=Save |  |
-| text_like | st-editing-tools-edit | add3 weblog %%start_time%% Blog |
+| text_like | st-editing-tools-edit | add3 blog %%start_time%% Blog |
 
 | *Comment* | Test Case: Weblog naming: 'Blog' not added to name if not needed |  |
 | click_and_wait | link=Settings |  |
@@ -32,32 +32,33 @@ This test provoked by {rt: 27013} - creating a blog name ending in "Blog" gives 
 
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Create New Blog |  |
-| type_ok | weblog_title | noadd2 %%start_time%% blog |
+| type_ok | weblog_title | noadd2 %%start_time%% weblog |
 | click_and_wait | link=Save |  |
-| text_like | st-editing-tools-edit | noadd2 %%start_time%% blog |
-| text_unlike | st-editing-tools-edit | qr/blog Blog/i |
+| text_like | st-editing-tools-edit | noadd2 %%start_time%% weblog |
+| text_unlike | st-editing-tools-edit | qr/weblog Blog/i |
 
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Create New Blog |  |
 | type_ok | weblog_title | noadd3 %%start_time%% Blog |
 | click_and_wait | link=Save |  |
 | text_like | st-editing-tools-edit | noadd3 %%start_time%% Blog |
-| text_unlike | st-editing-tools-edit | qr/blog Blog/ |
+| text_unlike | st-editing-tools-edit | qr/blog Blog/i |
 
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Create New Blog |  |
-| type_ok | weblog_title | noadd4 %%start_time%% Blog |
+| type_ok | weblog_title | noadd4 %%start_time%% Weblog |
 | click_and_wait | link=Save |  |
-| text_like | st-editing-tools-edit | noadd4 %%start_time%% Blog |
-| text_unlike | st-editing-tools-edit | qr/blog blog/i |
+| text_like | st-editing-tools-edit | noadd4 %%start_time%% Weblog |
+| text_unlike | st-editing-tools-edit | qr/Weblog blog/i |
 
 | *Comment* | Test Case: Weblog naming TEARDOWN |  |
+| st-process-jobs | PageIndex | %%workspace%% |
 | st-admin | purge-page --w %%workspace%% --page first_post_in_add1_%%start_time%%_blog | was purged |
 | st-admin | purge-page --w %%workspace%% --page first_post_in_add2_%%start_time%%_log_blog | was purged |
-| st-admin | purge-page --w %%workspace%% --page first_post_in_add3_weblog_%%start_time%%_blog | was purged |
+| st-admin | purge-page --w %%workspace%% --page first_post_in_add3_blog_%%start_time%%_blog | was purged |
 | st-admin | purge-page --w %%workspace%% --page first_post_in_noadd1_%%start_time%%_blog | was purged |
-| st-admin | purge-page --w %%workspace%% --page first_post_in_noadd2_%%start_time%%_blog | was purged |
+| st-admin | purge-page --w %%workspace%% --page first_post_in_noadd2_%%start_time%%_weblog | was purged |
 | st-admin | purge-page --w %%workspace%% --page first_post_in_noadd3_%%start_time%%_blog | was purged |
-| st-admin | purge-page --w %%workspace%% --page first_post_in_noadd4_%%start_time%%_blog | was purged |
+| st-admin | purge-page --w %%workspace%% --page first_post_in_noadd4_%%start_time%%_weblog | was purged |
 
 | *Comment* | Test Case: Weblog naming COMPLETED |  |
