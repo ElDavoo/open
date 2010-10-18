@@ -34,6 +34,7 @@ t.runAsync([
         t.click('#st-edit-mode-button-link');
         t.click('#st-oneline-button-link');
         t.is(t.$('#wikiwyg_wikitext_textarea').height(), 18, 'Single-line Input');
+        t.click('#st-save-button-link');
         t.endAsync();
     }
 ]);
