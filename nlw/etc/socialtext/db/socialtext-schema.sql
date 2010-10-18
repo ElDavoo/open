@@ -1937,6 +1937,9 @@ CREATE UNIQUE INDEX search_sets___owner_user_id___owner_user_id___name
 CREATE INDEX signal_hidden
 	    ON signal (hidden);
 
+CREATE INDEX tags_lower_tag
+	    ON signal_tag (lower(tag) text_pattern_ops);
+
 CREATE INDEX user_plugin_pref_idx
 	    ON user_plugin_pref (user_id, plugin);
 

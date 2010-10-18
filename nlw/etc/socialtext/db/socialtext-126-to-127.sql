@@ -53,6 +53,9 @@ UNION ALL
    WHERE signal.in_reply_to_id IS NOT NULL
      AND NOT signal.hidden;
 
+CREATE INDEX tags_lower_tag 
+           ON signal_tag (lower(tag) text_pattern_ops);
+
 UPDATE "System"
    SET value = '127'
  WHERE field = 'socialtext-schema-version';
