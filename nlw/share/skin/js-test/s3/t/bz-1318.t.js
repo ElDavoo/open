@@ -15,13 +15,16 @@ t.runAsync([
         ).find('img').get(0);
         ww.getWidgetInput(img, false, false);
 
+        t.callNextStep(1500);
+    },
+
+    function() { 
         t.ok(
             t.$('#st-widget-cancelbutton').is(':visible'),
             "Clicking on the TOC image brings out a wikiwyg widget form"
         );
 
         t.$('#st-widget-cancelbutton').click();
-
         t.callNextStep();
     },
 
