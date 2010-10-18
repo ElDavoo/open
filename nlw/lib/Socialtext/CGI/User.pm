@@ -4,7 +4,7 @@ package Socialtext::CGI::User;
 use strict;
 use warnings;
 use Socialtext::User;
-use Socialtext::HTTP::Cookie;
+use Socialtext::CredentialsExtractor::Client::Sync;
 
 use base 'Exporter';
 our @EXPORT_OK = qw/get_current_user/;
@@ -16,8 +16,14 @@ our @EXPORT_OK = qw/get_current_user/;
 # This one is used by reports and the appliance console
 
 sub get_current_user {
-    my $user_id = Socialtext::HTTP::Cookie->GetValidatedUserId();
-    return unless $user_id;
+    my $client = Socialtext::CredentialsExtractor::Client::Sync->new();
+    # XXX: We really want *more than* just ENV, but we're a CGI script and as
+    # a result *don't* have access to any additional HTTP headers.
+    my $creds  = $client->extract_credentials(\%ENV);
+    return unless ($creds->{valid});
+    return if ($creds->{user_id} == Socialtext::User->Guest->user_id);
+
+    my $user_id = $creds->{user_id};
     return Socialtext::User->new(user_id => $user_id);
 }
 
