@@ -15,7 +15,13 @@ proto.curCell = function(coord) {
     if (t.$('#st-spreadsheet-edit #e-cell_'+coord).is(':visible')) {
         return t.$('#st-spreadsheet-edit #e-cell_'+coord);
     }
-    return t.$('#st-spreadsheet-preview #cell_'+coord);
+    if (coord == 'A1') {
+        return t.$('#st-spreadsheet-preview td:first');
+    }
+    else {
+        // XXX - Breaks on IE / jQuery 1.4
+        return t.$('#st-spreadsheet-preview #cell_'+coord);
+    }
 }
 
 proto._doCheck = function(meth, key, value, msg, coord) {
