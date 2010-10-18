@@ -146,7 +146,9 @@ sub _token_factory {
 }
 
 sub _cache {
-    return Socialtext::Cache->cache('st-http-cookie');
+    return Socialtext::Cache->cache('st-http-cookie', {
+        class => 'Socialtext::Cache::PersistentHash',
+    } );
 }
 
 sub _not_before {
