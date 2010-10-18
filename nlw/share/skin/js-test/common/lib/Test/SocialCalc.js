@@ -25,8 +25,11 @@ proto._doCheck = function(meth, key, value, msg, coord) {
         if (value === true) {
             t.ok(curValue, msg);
         }
+        else if (typeof curValue == 'string') {
+            t.is(curValue.replace(/^[\xA0\s]+|[\xA0\s]+$/g, '').replace(/,\s+/g, ','), value, msg);
+        }
         else {
-            t.is(curValue.replace(/^\s+|\s+$/g, '').replace(/,\s+/g, ','), value, msg);
+            t.is(curValue, value, msg);
         }
         t.callNextStep();
     };
