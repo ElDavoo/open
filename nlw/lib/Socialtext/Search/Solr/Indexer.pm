@@ -261,7 +261,6 @@ sub _add_attachment_doc {
         [doctype => 'attachment'],
         [page_key => $key],
         [attach_id => $att->id],
-        [title => $filename],
         [filename => $filename],
         [filename_ext => $ext],
         [editor => $editor_id],
