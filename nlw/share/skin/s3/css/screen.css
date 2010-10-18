@@ -4673,3 +4673,41 @@ ul.dropdownOptions li.disabled a:hover {
     display: none;
 }
 
+/**
+ * Network dropdown
+ */
+#st-edit-summary #signal_network .value {
+    vertical-align: top;
+    height: 30px;
+    overflow: hidden;
+    display: inline-block;
+    white-space: nowrap;
+
+
+    *width: 105px; /* IE 6+7 */
+    +width: 85px; /* IE 6 */
+
+    *margin-left: -4px; /* IE 6+7 */
+    *margin-top: -9px; /* IE 6+7 */
+}
+
+#st-comment-signal_network .value {
+    width: 200px;
+
+    margin-top: 2px;
+
+    *height: 16px; /* IE 6+7 */
+    *margin-top: 7px; /* IE 6+7 */
+}
+
+#st-edit-summary #signal_network .dropdownOptions,
+#st-comment-signal_network .dropdownOptions {
+    margin-top: -15px;
+    margin-left: 11em;
+}
+
+#st-edit-summary #signal_network .dropdownOptions li,
+#st-comment-signal_network .dropdownOptions li {
+    line-height: 16px;
+}
+
