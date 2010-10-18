@@ -57,7 +57,7 @@ sub handle_request {
     if ($path eq '/ping') {
         $req->simple_response(
             "200 Pong",
-            qq({"ping":"ok"}),
+            qq({"ping":"ok", "service":"st-userd"}),
             'JSON'
         );
     }
