@@ -328,7 +328,8 @@ proto.remove_padding_material = function(html) {
     var dom = document.createElement("div");
     if (Wikiwyg.is_ie)
         html = html.replace(/<P>\s*<HR>\s*<\/P>\s*/g, '<HR>\n\n');
-    dom.innerHTML = html;
+
+    $(dom).html(html);
 
     // <BR>&nbsp; at t last. This is likely
     // something left by deleting from a padding <p>.
