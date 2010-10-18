@@ -13,13 +13,14 @@ t.runAsync([
 
     function() {
         t.click('#st-revisions-mode-button-link');
-        t.callNextStepOn('#st-spreadsheet-preview #cell_A1');
+        t.callNextStepOn('#st-spreadsheet-preview td:first');
     },
 
     function() {
-        t.is(t.$('#st-spreadsheet-preview #cell_A1').text(), 'test', 'Revision');
+        t.is(t.$('#st-spreadsheet-preview td:first').text(), 'test', 'Revision');
         t.ok(t.$('#st-save-revision-button-link'), 'Restore Revision (disabled for new spreadsheets)');
         t.ok(t.$('#st-edit-revision-button-link'), 'Edit Revision (disabled for new spreadsheets)');
+        t.click('#st-save-button-link');
         t.endAsync();
     }
 ]);
