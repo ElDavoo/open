@@ -53,7 +53,7 @@ sub wait_until_pingable {
     my $got = decode_json($content);
     if ($kind eq 'proxy') {
         is_deeply $got, {
-            "/ping" => { rc => 200, body => "pong" },
+            "/ping" => { rc => 200, body => "pong", service => 'json-proxy' },
         }, "wait_until_pingable: got correctly formatted response";
     }
     else {
