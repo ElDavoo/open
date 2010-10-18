@@ -115,7 +115,6 @@ else
 fi
 
 
-st-admin enable-plugin --all-workspaces --plugin socialcalc
 st-admin enable-plugin --all-accounts --plugin dashboard
 st-admin enable-plugin --all-accounts --plugin signals
 st-admin enable-plugin --all-accounts --plugin groups
