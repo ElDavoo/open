@@ -15,7 +15,7 @@ t.runAsync([
         ).find('img').get(0);
         ww.getWidgetInput(img, false, false);
 
-        t.callNextStep(1500);
+        t.callNextStepOn('#st-widget-cancelbutton');
     },
 
     function() { 
