@@ -100,34 +100,31 @@ sub _build_sql_where {
     # get sql/bindings for Users that are actually visible to us
     my ($vis_sql, @vis_bind);
     {
-        my $vis_from = q{
-            user_sets_for_user other
-            JOIN user_sets_for_user viewer USING (user_set_id)
+        $vis_sql = q{
+            EXISTS (
+                SELECT 1
+                FROM user_set_path other
+                WHERE other.from_set_id = users.user_id
+                  AND EXISTS (
+                    SELECT 1
+                    FROM user_set_path viewer
+                    WHERE viewer.from_set_id = ?
+                      AND other.into_set_id = viewer.into_set_id
+                  )
+            )
         };
-        my $vis_cols  = 'other.user_id';
-        my $vis_where = $self->all
-            ? { }
-            : { 'viewer.user_id' => $self->viewer->user_id };
-        ($vis_sql, @vis_bind) = sql_abstract()->select(
-            \$vis_from, $vis_cols, $vis_where,
-        );
+        @vis_bind = ($self->viewer->user_id);
     }
 
-    my @in_visible_users = (
-        user_id => { -in => \[$vis_sql, @vis_bind] },
-    );
-
     return {
-        (
-            '-and' => [ @in_visible_users ],
-            '-or'  => [
-                'lower(first_name)'      => { '-like' => $filter },
-                'lower(last_name)'       => { '-like' => $filter },
-                'lower(email_address)'   => { '-like' => $filter },
-                'lower(driver_username)' => { '-like' => $filter },
-                'lower(display_name)'    => { '-like' => $filter },
-            ],
-        )
+        '-nest' => \[ $vis_sql, @vis_bind ],
+        '-or'  => [
+            'lower(first_name)'      => { '-like' => $filter },
+            'lower(last_name)'       => { '-like' => $filter },
+            'lower(email_address)'   => { '-like' => $filter },
+            'lower(driver_username)' => { '-like' => $filter },
+            'lower(display_name)'    => { '-like' => $filter },
+        ],
     };
 }
 
