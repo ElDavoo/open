@@ -2,7 +2,7 @@
 
 var t = tt = new Test.SocialCalc();
 
-t.plan(10);
+t.plan(8);
 
 t.runAsync([
     function() {
@@ -18,7 +18,7 @@ t.runAsync([
 //    t.doClick('#st-cell-borders-button-link'),
 //    t.doCheckCSS('border-style', 'solid', 'Border On'),
 //    t.doClick('#st-cell-borders-button-link'),
-    t.doCheckCSS('border', '', 'Border Off'),
+//    t.doCheckCSS('border', '', 'Border Off'),
 
     function() {
         t.$('#st-spreadsheet-cell-font-family').val('Verdana,Arial,Helvetica,sans-serif').change();
@@ -35,7 +35,7 @@ t.runAsync([
 
     function() {
         t.click('#st-preview-button-link');
-        t.callNextStepOn('#st-spreadsheet-preview #cell_A1');
+        t.callNextStepOn("#st-spreadsheet-preview td");
     },
 
     t.doCheckCSS('font-family', 'Verdana,Arial,Helvetica,sans-serif', 'Set Font'),
@@ -43,8 +43,8 @@ t.runAsync([
     t.doCheckText('1,234', 'Set Format'),
 
     function() {
-        t.is(t.$('#st-spreadsheet-preview #cell_A1').css('color').replace(/,\s+/g, ','), 'rgb(255,0,0)', 'Text Color');
-        t.is(t.$('#st-spreadsheet-preview #cell_A1').css('background-color').replace(/,\s+/g, ','), 'rgb(204,0,0)', 'Background Color');
+        t.is(t.$("#st-spreadsheet-preview td").css('color').replace(/,\s+/g, ','), 'rgb(255,0,0)', 'Text Color');
+        t.is(t.$("#st-spreadsheet-preview td").css('background-color').replace(/,\s+/g, ','), 'rgb(204,0,0)', 'Background Color');
         t.pass('Swap Color'); // Passed implicitly by color/bgcolor above
         t.endAsync();
     }
