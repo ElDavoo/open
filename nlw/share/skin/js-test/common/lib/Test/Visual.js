@@ -455,7 +455,7 @@ proto._doEdit = function(check, button, mode_name) {
                     return;
                 }
                 t.$(button).click();
-                t.poll(function() { return check.apply(t) }, function() { t.callNextStep(1000) });
+                t.poll(function() { return check.apply(t) }, function() { t.callNextStep(1500) });
             }
         );
     };
