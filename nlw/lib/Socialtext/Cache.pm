@@ -14,12 +14,25 @@ our $CacheClass = 'Socialtext::Cache::Hash';
 our %CACHES;
 
 sub cache {
-    my ($class, $name) = @_;
-    $CACHES{$name} ||= $CacheClass->new( {
-        namespace           => $name,
-        default_expires_in  => $DefaultExpiresIn,
-        auto_purge_on_get   => 1,
-        } );
+    my ($class, $name, $opts) = @_;
+    $opts ||= { };
+
+    unless ($CACHES{$name}) {
+        # Figure out which cache class we need
+        my $cache_class = $opts->{class} || $CacheClass;
+        eval "require $cache_class";
+        if ($@) {
+            die "Unable to load cache class '$cache_class'; $@";
+        }
+
+        # Instantiate the cache
+        $CACHES{$name} = $cache_class->new( {
+            namespace           => $name,
+            default_expires_in  => $DefaultExpiresIn,
+            auto_purge_on_get   => 1,
+            } );
+    }
+
     return $CACHES{$name};
 }
 
@@ -98,10 +111,22 @@ ratio, you'll get all that benefit for free.
 
 =over
 
-=item B<Socialtext::Cache-E<gt>cache($name)>
+=item B<Socialtext::Cache-E<gt>cache($name, $opts)>
 
 Retrieves the given named cache object.  Its created automatically if it
 doesn't already exist.
+
+An optional hash-ref of C<$opts> can be used to specify other cache creation
+options:
+
+=over
+
+=item class
+
+Name of the underlying caching driver to use.  Defaults to
+C<Socialtext::Cache::Hash> unless explicitly provided.
+
+=back
 
 =item B<Socialtext::Cache-E<gt>clear($name)>
 
