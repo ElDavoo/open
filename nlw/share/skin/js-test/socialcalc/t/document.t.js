@@ -13,11 +13,11 @@ t.runAsync([
 
     function() {
         t.click('#st-preview-button-link');
-        t.callNextStepOn('#st-spreadsheet-preview #cell_A1');
+        t.callNextStepOn("#st-spreadsheet-preview td:contains('test')");
     },
 
     function() {
-        t.is(t.$('#st-spreadsheet-preview #cell_A1').text(), 'test', 'Preview');
+        t.is(t.$("#st-spreadsheet-preview td:contains('test')").text(), 'test', 'Preview');
         t.click('#st-preview-button-link');
         t.callNextStepOn('#st-spreadsheet-edit #e-cell_A1');
     },
@@ -47,10 +47,6 @@ t.runAsync([
 
     function() {
         t.click('#st-save-button-link');
-        t.callNextStepOn('#st-display-mode-container');
-    },
-
-    function() {
         t.pass('Save');
         t.endAsync();
     }
