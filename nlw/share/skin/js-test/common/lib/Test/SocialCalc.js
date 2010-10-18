@@ -43,7 +43,7 @@ proto.doCheckAttr = function(key, value, msg, coord) {
 proto.doCheckText = function(text, msg, coord) {
     var t = this;
     return function() {
-        t.is(t.curCell(coord).text().replace(/^\s+|\s+$/g, ''), text, msg);
+        t.is(t.curCell(coord).text().replace(/^[\xA0\s]+|[\xA0\s]+$/g, ''), text, msg);
         t.callNextStep();
     };
 }
