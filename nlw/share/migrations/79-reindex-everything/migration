@@ -5,13 +5,12 @@ use warnings;
 use Socialtext::Migration::Utils qw/create_job_for_each_workspace create_job/;
 use Socialtext::Workspace;
 
-# Create jobs to re-index workspaces using Solr
 create_job_for_each_workspace('ReIndexWorkspace', -64,
     except => [ Socialtext::Workspace->Help_workspaces ],
 );
 
-create_job('ReindexPeople');
-create_job('ReindexGroups');
-create_job('ReindexSignals');
+create_job('ReindexPeople',  -64);
+create_job('ReindexGroups',  -64);
+create_job('ReindexSignals', -64);
 
 exit 0;
