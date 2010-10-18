@@ -43,8 +43,8 @@ t.runAsync([
     t.doCheckText('1,234', 'Set Format'),
 
     function() {
-        t.is(t.$("#st-spreadsheet-preview td").css('color').replace(/,\s+/g, ','), 'rgb(255,0,0)', 'Text Color');
-        t.is(t.$("#st-spreadsheet-preview td").css('background-color').replace(/,\s+/g, ','), 'rgb(204,0,0)', 'Background Color');
+        t.like(t.$("#st-spreadsheet-preview td").css('color').replace(/,\s+/g, ','), /#ff0000|rgb\(255,0,0\)/i, 'Text Color');
+        t.like(t.$("#st-spreadsheet-preview td").css('background-color').replace(/,\s+/g, ','), /#cc0000|rgb\(204,0,0\)/i, 'Background Color');
         t.pass('Swap Color'); // Passed implicitly by color/bgcolor above
         t.endAsync();
     }
