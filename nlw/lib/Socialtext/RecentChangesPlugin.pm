@@ -153,7 +153,7 @@ sub new_changes {
     my $order_by = $self->ui_sort_to_order_by();
 
     my $ws_id = $self->hub->current_workspace->workspace_id;
-    my $pages_ref = Socialtext::Model::Pages->All_active(
+    my %args = (
         hub => $self->hub,
         workspace_id => $ws_id,
         do_not_need_tags => 1,
@@ -161,6 +161,13 @@ sub new_changes {
         offset => $offset,
         order_by => $order_by,
     );
+    my $pages_ref;
+    if ($category) {
+        $pages_ref = Socialtext::Model::Pages->By_tag(%args, tag => $category);
+    }
+    else {
+        $pages_ref = Socialtext::Model::Pages->All_active(%args);
+    }
 
     my $total = Socialtext::Model::Pages->ActiveCount(workspace => $ws_id);
     my $changed_total = $self->count_by_seconds_limit();
