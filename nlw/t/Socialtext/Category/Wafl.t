@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 12;
+use Test::Socialtext tests => 14;
 fixtures( 'admin_with_ordered_pages', 'foobar_with_ordered_pages' );
 
 BEGIN {
