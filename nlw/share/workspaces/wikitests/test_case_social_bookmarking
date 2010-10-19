@@ -1,0 +1,75 @@
+| *Comment* | Test Case: Social Bookmarking |
+
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Social Bookmarking Setup Account, Workspace |  |
+| set | acct | social-acct-%%start_time%% |  |
+| set | ws | social-ws-%%start_time%% |  |
+| st-admin | create-account --name %%acct%% | was created |
+| st-admin | create-workspace --name %%ws%% --title %%ws%% | was created |
+| enable-acct-plugin | signals | %%acct%% |
+
+| *Comment* | Test Case: Social Bookmarking Setup Users |  |
+| set | a_username | `a-social-%%start_time%%@ken.socialtext.net` |
+| set | z_username | `z-social-%%start_time%%@ken.socialtext.net` |
+| st-admin | create-user --e %%a_username%% -password %%password%% --account %%acct%% |  |
+| st-admin | create-user --e %%z_username%% -password %%password%% --account %%acct%% |  |
+| st-admin | add-member --e %%a_username%% --workspace %%ws%% | now has the role of 'member' in the |
+
+| *Comment* | Test Case: Social Bookmarking |  |
+| st-logoutin | %%a_username%% | %%password%% |
+
+| *Comment* | Test Case: Signals Search. Standardize tags |  |
+| set | tag1 | #tag1%%start_time%% |
+| set | tag2 | #tag2%%start_time%% |
+| set | tag3 | #tag3%%start_time%% |
+| set | tag4 | #tag4%%start_time%% |
+| set | tag5 | #tag5%%start_time%% |
+| set | tag_unpopular1 | #tag6b%%start_time%% |
+| set | tag_unpopular2 | #tag6b%%start_time%% |
+
+
+| *Comment* | Test Case: Signals Search. Standardize links |
+| set | wspage | social_page_%%start_time%% |
+| st-admin | update-page --email %%a_username%% --workspace %%ws%% --page "%%wspage%%" < %%wikitest_client_files%%wikitest.txt | page has been created. |
+| set | wslink | "has a wiki page"{link: %%ws% [%%wspage%%]} |
+| set | link_one | "Xndev website"<http://www.xndev.com> |
+| set | link_two | "Xndev blog"<http://xndev.blogspot.com> |
+| set | link_three | "Socialtext Blog"<http://www.socialtext.com/blog/> |
+| set | link_four | "Customers Tab"<http://www.socialtext.com/customers> |
+| set | link_five | "News Tab"<http://www.socialtext.com/news> |
+| set | link_six | "Let me google that for you"<http://lmgtfy.com/?q=software+testing> |
+| set | link_seven | "Apple"<http://www.apple.com/> |
+| set | link_eight | "Good blogs"<http://www.joelonsoftware.com/> |
+
+| *Comment* | Test Case: Social Bookmarking. Send 6 signals %%z_username%% |  |
+| http-user-pass | %%z_username%% | %%password%% |
+| post-signal | %%tag1%% the info you were looking for %%wslink%% check it out |  |
+| post-signal | %%tag2%% Check out the %%link_one%% for more info |  |
+| post-signal | %%tag3%% Of course there is the %%link_two%% |  |
+| post-signal | %%tag4%% Don't miss the %%link_three%% |  |
+| post-signal | %%tag5%% Conpany %%link_four%% |  |
+| post-signal | %%tag_unpopular1%% Info in the wiki: %%wspage%% |  |
+
+| *Comment* | Test Case: Social Bookmarking. Send 6 signals %%a_username%% |  |
+| http-user-pass | %%a_username%% | %%password%% |
+| post-signal | %%tag1%% It's in the wiki! %%wslink%% |  |
+| post-signal | %%tag2%% That's on the company %%link_five%% |  |
+| post-signal | %%tag3%% Software Testing? %%link_six%% |  |
+| post-signal | %%tag4%% I could use a new %%link_seven%% |  |
+| post-signal | %%tag5%% You can find that on the %%link_one%% |  |
+| post-signal | %%tag_unpopular2%% %%link_eight%% for readin' |  |
+
+| *Comment* | Test Case: Social Bookmarking. Process Jobs |  |
+
+| st_process_jobs | SignalIndex |  |
+
+| *Comment* | Test Case: Social Bookmarking. Check out the expolore tab |  |
+| wait_for_element_visible_ok | link=Explore | 30000 |
+| click_and_wait | link=Explore | 30000 |
+| pause | 300000 |
+
+| *Comment* | Test Case: Social Bookmarking. TEARDown |  |
+| st-admin | delete-workspace --name %%ws%% --no-export | has been deleted |
+
+| *Comment* | Test Case: Social Bookmarking. COMPLETED |
