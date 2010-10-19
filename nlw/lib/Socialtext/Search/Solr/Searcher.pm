@@ -52,11 +52,11 @@ my %DocTypeToFieldBoost = (
     person => 'name_pf_t^2 sounds_like^0.5 *_pf_rt^0.1 tag^0.3',
 );
 
-# Use a negative bq to mod down attachment's score when
-# it's matched along with other doctypes.
+# Use a negative-boosting bq to mod down attachment's relative score
+# when it's matched along with other doctypes.
 my %DocTypeToBoostQuery = (
-    '' => "(*:* -doctype:attachment)^1.25",             #   1/0.8
-    'signal' => "(*:* -doctype:signal_attachment)^1.5", # 1.2/0.8
+    '' => "(*:* -doctype:attachment)^6",               # 24 * ((  1/0.8)-1)
+    'signal' => "(*:* -doctype:signal_attachment)^12", # 24 * ((1.2/0.8)-1)
 );
 
 # Perform a search and return the results.
