@@ -45,11 +45,18 @@ has_inflated 'query_parser' =>
      handles => [qw/parse/]);
 
 my %DocTypeToFieldBoost = (
-    '' => 'title^4 tag^3', # not doing the filename^2 boost as it's v.slow
-    page => 'title^4 tag^3',
-    attachment => 'filename^2 body^0.8',
-    signal => 'body^1.2 tag^3 filename^1.1',
-    person => 'name_pf_t^3 sounds_like^1.5 *_pf_rt^1.1 tag^1.3',
+    '' => 'title^3 tag^2',
+    page => 'title^3 tag^2',
+    attachment => 'filename^1',
+    signal => 'body^0.2 tag^2 filename^0.375',
+    person => 'name_pf_t^2 sounds_like^0.5 *_pf_rt^0.1 tag^0.3',
+);
+
+# Use a negative bq to mod down attachment's score when
+# it's matched along with other doctypes.
+my %DocTypeToBoostQuery = (
+    '' => "(*:* -doctype:attachment)^1.25",             #   1/0.8
+    'signal' => "(*:* -doctype:signal_attachment)^1.5", # 1.2/0.8
 );
 
 # Perform a search and return the results.
@@ -110,6 +117,7 @@ sub _search {
 
     my @filter_query;
     my $field_boosts;
+    my $boost_query;
 
     # No $opts{doctype} indicates workspace search (legacy, could be changed)
     if ($workspaces and @$workspaces) {
@@ -120,9 +128,11 @@ sub _search {
                 map { Socialtext::Workspace->new(name => $_)->workspace_id }
                     @$workspaces) . ")";
         $field_boosts = $DocTypeToFieldBoost{''}; # default = attachment + page
+        $boost_query = $DocTypeToBoostQuery{''};
     }
     elsif ($opts{doctype}) {
         $field_boosts = $DocTypeToFieldBoost{$opts{doctype}};
+        $boost_query = $DocTypeToBoostQuery{$opts{doctype}};
 
         if ($opts{doctype} eq 'signal') {
             push @filter_query, "(doctype:signal OR doctype:signal_attachment)";
@@ -175,6 +185,9 @@ sub _search {
 
         # pf = Phrase Fields (Boost)
         ($field_boosts ? (pf => "$field_boosts all") : ()),
+
+        # bq = Boosting Query
+        ($boost_query ? (bq => $boost_query) : ()),
 
         # mm = Minimum words that must match in a multi-word "dismax" query.
         # The default is 100% (all words must match), but we relax this to
