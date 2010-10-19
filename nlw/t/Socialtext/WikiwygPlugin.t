@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use YAML;
-use Test::Socialtext tests => 108;
+use Test::Socialtext tests => 116;
 
 fixtures(qw( empty ));
 
