@@ -28,7 +28,7 @@
 | st-name-widget | 1 | signals_widget |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. values for ".. within <group>" filter shows account and group |  |
-| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[1]/a[text()='All my groups'] | 5000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[1]/a | 5000 |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[2]/a | 5000 |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[3]/a | 5000 |
 
@@ -48,6 +48,7 @@
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Choose within %%group_name%% |  |
 | *Comment* | Test Case: Groups UI Send Signal to Group. Post to should automagically become %%group_name%% |  |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[3]/a | 5000 |
 | click_ok | //ul[@id='st-dropdown-2-list']/li[3]/a |  |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Send and check %%group_signal%% |  |
@@ -83,8 +84,8 @@
 | st_text_unlike_in_activities_widget | signals_widget | %%account_signal%% |
 
 | *Comment* | Test Case: Groups UI Send Signal to Group. Select within All my groups |  |
-| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[1]/a[text()='All my groups'] | 20000 |
-| click_ok | //ul[@id='st-dropdown-2-list']/li[1]/a[text()='All my groups'] |  |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[1]/a | 20000 |
+| click_ok | //ul[@id='st-dropdown-2-list']/li[1]/a |  |
 
 | open_ok | /st/dashboard |  |
 | wait_for_text_present_ok | Welcome, New User | 30000 |

@@ -49,7 +49,7 @@
 | text_like | //body | %%signal2%% |
 
 | *Comment* | Test Case: People Dashboard Plugins Disable Signals, see only pages, people tags |  |
-| st-admin | disable-plugin --plugin signals --account %%acct%% | is now disabled |
+| st-admin | disable-plugin --plugin signals --account %%acct%% | The signals plugin is now disabled |
 | refresh |  |  |
 | st-name-widget | 1 | activities_widget |
 | wait_for_text_present_ok | edited %%page1%% in %%ws%% | 30000 |

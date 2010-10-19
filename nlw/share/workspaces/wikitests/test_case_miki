@@ -128,6 +128,7 @@
 | wait_for_text_present_ok | %%signal1%% | 30000 |
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 | text_like | People I follow |  |
+
 | include | [Test Case: Miki Pagination] |  |
 
 | *Comment* | Test case: Miki Click 'Workspaces' in global nav |  |
@@ -205,7 +206,7 @@
 | text_like | Recent changes in tag: Caps Test Blog %%start_time%% Blog |  |
 
 | *Comment* | Test Case: Miki Open the blog without caps |  |
-| open_ok | /m/tag/%%workspace%%/caps test blog %%start_time%% log |  |
+| open_ok | /m/tag/%%workspace%%/caps test blog %%start_time%% blog |  |
 | text_like | link=First Post in Caps Test Blog %%start_time%% Blog | First Post in Caps Test Blog %%start_time%% Blog |
 | text_like | Recent changes in tag: caps test blog %%start_time%% blog |  |
 

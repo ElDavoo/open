@@ -12,7 +12,8 @@
 | *Comment* | Test Case: All Pages name sorting |  |
 | open_ok | /%%new_ws%%/index.cgi?action=changes&changes=all |  |
 
-| text_like | contentContainer | All Pages ( |
+| text_like | contentContainer | All Pages |
+| text_like | contentContainer | Showing 1 - 20 of |
 | click_and_wait | link=allpages 0001%%start_time%% |  |
 | text_like | st-page-titletext | allpages 0001%%start_time%% |
 
@@ -39,7 +40,7 @@
 | text_like | contentContainer | qr/allpages 0004%%start_time%%.+allpages 0005%%start_time%%/ |
 
 | *Comment* | Test Case: All Pages revision sort |  |
-| open_ok | /%%new_ws%%/index.cgi?action=changes&changes=all |
+| open_ok | /%%new_ws%%/index.cgi?action=changes&changes=all |  |
 | click_and_wait | link=allpages 0004%%start_time%% |  |
 
 | wait_for_element_visible_ok | st-edit-button-link |  |

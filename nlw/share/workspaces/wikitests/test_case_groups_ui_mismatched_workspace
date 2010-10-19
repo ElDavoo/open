@@ -11,16 +11,16 @@
 | set | group_self_join | grp-self-join-%%start_time%% |  |
 | st-create-group | %%group_self_join%% | group description | self-join-radio |
 
-| wait_for_element_visible_ok | create-group | 30000 |  |
+| wait_for_element_visible_ok | create-group | 30000 |
 | wait_for_text_present_ok | Information | 10000 |
 | wait_for_text_present_ok | Workspaces | 10000 |
 | wait_for_text_present_ok | Members | 10000 |
-| st-name-widget | 2 | workspaces_widget |  |
-| st-select-widget-frame | workspaces_widget |  |  |
-| wait_for_text_present_ok | At the moment, self-join groups can't have workspaces associated with them. We will be adding the ability to add workspaces to this group soon. | 30000 |  |
-| select-frame | relative=parent |  |  |
-| click_and_wait | create-group |  |  |
-| get_id_from_url | first_group_id |  |  |
+| st-name-widget | 2 | workspaces_widget |
+| st-select-widget-frame | workspaces_widget |  |
+| text_like | qr/Use the input above to select workspaces to associate with this group. You can only associate self-join workspaces with a self-join group. All of the members in the Group account can see the workspace content. You must be an Admin of the workspace in order to associate it with this group./ism |  |
+| select-frame | relative=parent |  |
+| click_and_wait | create-group |  |
+| get_id_from_url | first_group_id |  |
 
 | *Comment* | Test Case: Groups UI mismatched Workspace Group is created |  |
 | wait_for_text_present_ok | Information | 10000 |
@@ -81,7 +81,7 @@
 | select-frame | relative=parent |  |
 | click_and_wait | st-cancel-create-group |  |
 
-| *Comment* | Test Case: Groups UI mismatched Workspace (Group that became a) private Group Does not show change button when a ws is added |  |
+| *Comment* | Test Case: Groups UI mismatched Workspace (Group that became a) private Group Does show change button |  |
 
 | st-admin | add-member --g %%first_group_id%% --w %%ws_private%% |  |
 | open_ok | / |  |
@@ -98,9 +98,7 @@
 
 | wait_for_element_visible_ok | name | 30000 |
 | wait_for_element_visible_ok | description | 30000 |
-| wait_for_element_not_present_ok | permission-change | 30000 |
-| pause | 12000 | this is an important pause |
-| text_like | //div[@class='empty_message'] | Currently, you cannot change a group's permission settings |
+| wait_for_element_visible_ok | permission-change | 30000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups UI mismatched Workspace SETUP Private Group becomes Self-join |  |  |
@@ -143,10 +141,11 @@
 
 | st-name-widget | 2 | workspaces_widget |  |
 | st-select-widget-frame | workspaces_widget |  |  |
-| wait_for_text_present_ok | At the moment, self-join groups can't have workspaces associated with them. | 30000 |  |
-| wait_for_text_present_ok | We will be adding the ability to add workspaces to this group soon. | 30000 |  |
+| wait_for_text_present_ok | You can only associate self-join workspaces with a self-join group. | 30000 |  |
 | select-frame | relative=parent |  |  |
 | click_and_wait | create-group |  |  |
+
+TODO: add second workspace to group that belongs to a different group, then try to change group type. Should not be possible.
 
 | *Comment* | Test Case: Groups UI mismatched Workspace TEARDOWN |  |
 | st-admin | delete-group --g %%first_group_id%% | Deleted group id |

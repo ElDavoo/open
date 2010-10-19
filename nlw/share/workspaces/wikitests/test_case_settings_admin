@@ -86,22 +86,22 @@
 
 | *Comment* | Test Case: Settings: Admin test weblog sort order using newspace-%%start_time%% |  |
 | text_like | contentContainer | qr/post2 %%start_time%%.+first post/ |
-| open_ok | /newspace-%%start_time%%/index.cgi?action=display;page_name=first_post_in_%%start_time%%_weblog;caller_action=weblog_display;category=%%start_time%%_weblog;js=show_edit_div#edit |  |
+| open_ok | /newspace-%%start_time%%/index.cgi?action=display;page_name=first_post_in_%%start_time%%_blog;caller_action=blog_display;category=%%start_time%%_blog;js=show_edit_div#edit |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | edit |
+| type_ok | wikiwyg_wikitext_textarea | Editing the content of First Post in %%start_time%% Blog |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | st-page-save |  |  |
 
-| text_like | contentContainer | qr/edit.+post2 %%start_time%%/ |
+| text_like | contentContainer | qr/ First Post in %%start_time%% Blog.+post2 %%start_time%%/ |
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Workspace Features |  |
 | click_ok | document.forms[1].sort_weblogs_by_create[1] |  |
 | click_and_wait | link=Save |  |
 
 | click_and_wait | link=Blogs |  |
-| text_like | contentContainer | qr/post2 %%start_time%%.+edit/ |
+| text_like | contentContainer | qr/post2 %%start_time%%.+ First Post in %%start_time%% Blog/ |
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Workspace Features |  |
 | click_ok | document.forms[1].sort_weblogs_by_create[0] |  |

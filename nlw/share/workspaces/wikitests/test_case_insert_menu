@@ -71,7 +71,7 @@ verifyValue | wikiwyg_wikitext_textarea | foo |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
 
 | click_ok | link=A Person's Blog |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{weblog: ----}/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{blog: ----}/s` |
 | click_ok | link=A Person's Blog |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
 
@@ -92,7 +92,7 @@ verifyValue | wikiwyg_wikitext_textarea | foo |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
 
 | click_ok | link=Blog Postings |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{weblog_list: ----}/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{blog_list: ----}/s` |
 | click_ok | link=Blog Postings |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
 

@@ -26,7 +26,8 @@
 | *Comment* | Test Case: Calc All Pages name sorting |  |
 | open_ok | /%%new_ws%%/index.cgi?action=changes&changes=all |  |
 
-| text_like | contentContainer | All Pages ( |
+| text_like | contentContainer | All Pages |
+| text_like | contentContainer | Showing 1 - 20 of |
 | click_and_wait | link=allpages spreadsheet0001%%start_time%% |  |
 | text_like | st-page-titletext | allpages spreadsheet0001%%start_time%% |
 
@@ -110,7 +111,7 @@ For some reason, IE 6 blows up when open_ok is used in some places. We avoid it.
 | select_and_wait | sort-picker | label=Last Edited By (↓) |
 | text_like | contentContainer | qr/allpages spreadsheet0001%%start_time%%.+allpages spreadsheet0003%%start_time%%/ |
 
-| *Comment* | Test Case: Calc All Pages Teardown. No need to login again. |  |
+| *Comment* | Test Case: Calc All Pages TEARDOWN. No need to login again. |  |
 
 | st-admin | delete-workspace --workspace %%new_ws%% --no-export | has been deleted |
 

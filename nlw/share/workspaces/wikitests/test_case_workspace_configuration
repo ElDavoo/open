@@ -68,7 +68,7 @@ st-admin | set_workspace_config --workspace %%workspace%% homepage_is_dashboard 
 | type_ok | wikiwyg_wikitext_textarea | Order post 1 content %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | st-page-save |  |  |
-| open_ok | /%%workspace%%/index.cgi?action=display;page_name=first_post_in_order_%%start_time%%_weblog;caller_action=weblog_display;category=order_%%start_time%%_weblog;js=show_edit_div#edit |  |
+| open_ok | /%%workspace%%/index.cgi?action=display;page_name=first_post_in_order_%%start_time%%_blog;caller_action=blog_display;category=order_%%start_time%%_blog;js=show_edit_div#edit |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |

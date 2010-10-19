@@ -69,7 +69,7 @@
 | click_and_wait | link=foo bar %%start_time%% |  |
 
 | *Comment* | Test Case: Calc Tagging tag list view: tag foo bar %%start_time%% |  |
-| text_like | link=foo bar %%start_time%% as a weblog | foo bar %%start_time%% as a weblog |
+| text_like | link=foo bar %%start_time%% as a blog | foo bar %%start_time%% as a blog |
 
 Add any other tag to three different pages | tag is added
 
