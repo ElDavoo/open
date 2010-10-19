@@ -231,7 +231,7 @@ PARSE_WIDGET_file: {
 }
 
 PARSE_WIDGET_weblog: {
-    my $widgetds = YAML::LoadFile($yaml_path);
+    my $widgets = YAML::LoadFile($yaml_path);
     my $wafl = '"label"{weblog: workspace; name}';
     my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'weblog', 'weblog widget id' );
