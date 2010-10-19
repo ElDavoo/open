@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 31;
+use Test::Socialtext tests => 33;
 fixtures(qw( empty ));
 
 use Socialtext::Formatter::LinkDictionary;
