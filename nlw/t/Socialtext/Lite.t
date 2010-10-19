@@ -131,8 +131,8 @@ like( $html,
 
 like( $html, qr{\Qtitle="tag link" href="/m/tag/admin/help">help</a>},
     'tag link links right place' );
-like( $html, qr{\Qtitle="weblog link" href="/m/changes/admin/help">help</a>},
-    'weblog link links right place' );
+like( $html, qr{\Qtitle="blog link" href="/m/changes/admin/help">help</a>},
+    'blog link links right place' );
 
 # exercise contention handling
 eval {
