@@ -173,7 +173,7 @@ Set the NLW cookie to the given $cookie
 sub set_nlw_cookie {
     my ($self, $cookie) = @_;
     require Socialtext::HTTP::Cookie;
-    my $name = Socialtext::HTTP::Cookie::USER_DATA_COOKIE;
+    my $name = Socialtext::HTTP::Cookie::USER_DATA_COOKIE();
     $self->{_cookie} = "$name=$cookie";
 }
 
