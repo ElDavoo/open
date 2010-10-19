@@ -197,12 +197,12 @@ have fundamentally different models, perfect translation is
 very difficult.
 
 =cut
-use Apache::Cookie;
+use Apache;
 use File::Temp;
 use LWP::UserAgent;
 use RTF::Writer qw(rtfesc);
 use RTF::Writer::TableRowDecl;
-use Socialtext::HTTP::Cookie;
+use Socialtext::CredentialsExtractor::Client::Sync;
 
 my $InHref = 0;
 my $In_Table = 0;
@@ -377,7 +377,9 @@ sub _get_remote_image {
 
     my $ua = LWP::UserAgent->new;
 
-    $self->_proxy_cookies( $src, $ua );
+    # Proxy Authen related headers if the URI is local to ourself.
+    my $self_uri = Socialtext::URI::uri();
+    $self->_proxy_authen_headers($ua) if ($src =~ /^\Q$self_uri\E/);
 
     my $response = $ua->get($src);
     if ( $response->is_success ) {
@@ -413,32 +415,17 @@ sub _gif_to_png {
     return $png_string;
 }
 
-
-# If $uri is on our own host, add the User Authentication information cookie
-# to $ua's headers.
-sub _proxy_cookies {
-    my ( $self, $uri, $ua ) = @_;
-
-    my $self_uri = Socialtext::URI::uri();
-    if ( $uri =~ /^\Q$self_uri\E/ && Apache::Cookie->can('fetch') ) {
-
-        # FIXME: Don't call Apache::Cookie here, use CGI::Cookie or get
-        # the cookie out of the hub->rest object somehow.
-        # FIXME: The cookie getting code belongs abstracted into WebHelpers or
-        # (more probably), into Rug.  Since the latter is not done but
-        # presumably on the way, I'll leave this in here for the time being.
-        # -mml 2007-01-16
-        my $cookies = Apache::Cookie->fetch;
-        if ($cookies) {
-            my $cookie_name = Socialtext::HTTP::Cookie->cookie_name();
-            my $cookie      = $cookies->{$cookie_name};
-            if ($cookie) {
-                # Cookie is UA-specific (see ST:HTTP::Cookie), *HAVE* to pass
-                # along the UA as well as the cookie itself.
-                $ua->default_header( 'Cookie' => $cookie->as_string );
-                $ua->agent( $ENV{HTTP_USER_AGENT} );
-            }
-        }
+sub _proxy_authen_headers {
+    my ($self, $ua) = @_;
+    my $client   = Socialtext::CredentialsExtractor::Client::Sync->new();
+    my $req      = Apache->request();
+    my %env      = (
+        $req->cgi_env,
+        AUTHORIZATION => $req->header_in('Authorization'),
+    );
+    my $to_proxy = $client->extract_desired_headers(\%env);
+    while (my ($key, $val) = each %{$to_proxy}) {
+        $ua->default_header($key, $val);
     }
 }
 
