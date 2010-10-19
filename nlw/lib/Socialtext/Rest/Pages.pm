@@ -225,7 +225,7 @@ sub _searched_pages {
                 use_index => $index,
                 limit => $count,
             );
-        $self->total_result_count($count);
+        $self->total_result_count($hits_count);
         for my $hit (grep { $_->isa('Socialtext::Search::PageHit') } @$hits) {
             push @{$page_ids_by_workspace{$hit->workspace_name} ||= []}, $hit->page_uri;
         }
