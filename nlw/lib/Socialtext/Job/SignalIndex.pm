@@ -1,5 +1,7 @@
 package Socialtext::Job::SignalIndex;
 # @COPYRIGHT@
+use Socialtext::Signal::Topic;
+use Socialtext::SQL qw/sql_txn/;
 use Moose;
 use namespace::clean -except => 'meta';
 
@@ -11,6 +13,9 @@ sub do_work {
     my $indexer = $self->indexer or return;
 
     if (my $signal = $self->signal) {
+        $self->_rebuild_signal_topics($signal)
+            if $self->arg->{rebuild_topics};
+
         $indexer->index_signal($signal);
     }
     else {
@@ -18,6 +23,26 @@ sub do_work {
     }
 
     $self->completed();
+}
+
+sub _rebuild_signal_topics {
+    my $self   = shift;
+    my $signal = shift;
+
+    sql_txn {
+        Socialtext::Signal::Topic->Delete_all_for_signal(
+            signal_id => $signal->signal_id,
+            'Yes, I really, really mean it.' => 1,
+        );
+
+        my (undef,undef,$topics) = $signal->ParseSignalBody(
+            $signal->body, $signal->user);
+
+        for my $topic (@$topics) {
+            $topic->signal($signal);
+            $topic->_insert();
+        }
+    };
 }
 
 __PACKAGE__->meta->make_immutable;
