@@ -1,9 +1,0 @@
-#!/usr/bin/perl
-# @COPYRIGHT@
-use strict;
-use warnings;
-use Socialtext::Migration::Utils qw/create_job/;
-
-create_job('ReparseSignalTopics',  -64);
-
-exit 0;
