@@ -750,7 +750,9 @@ sub _modify_wrapper {
         my $dbh = get_dbh();
         local $dbh->{RaiseError} = 1;
         local $dbh->{TraceLevel} = ($self->trace) ? 3 : $dbh->{TraceLevel};
-        $dbh->do(q{LOCK user_set_include,user_set_path IN SHARE MODE});
+        $dbh->do(q{
+            LOCK user_set_include,user_set_path IN SHARE ROW EXCLUSIVE MODE
+        });
         $self->$code($dbh, @args);
     };
 }
