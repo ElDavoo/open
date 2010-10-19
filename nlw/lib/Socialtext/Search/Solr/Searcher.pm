@@ -55,8 +55,8 @@ my %DocTypeToFieldBoost = (
 # Use a negative-boosting bq to mod down attachment's relative score
 # when it's matched along with other doctypes.
 my %DocTypeToBoostQuery = (
-    '' => "(*:* -doctype:attachment)^6",               # 24 * ((  1/0.8)-1)
-    'signal' => "(*:* -doctype:signal_attachment)^12", # 24 * ((1.2/0.8)-1)
+    '' => "(*:* -doctype:attachment)^25",              # 50 * ((  1/0.8)-1)
+    'signal' => "(*:* -doctype:signal_attachment)^50", # 100 * ((1.2/0.8)-1)
 );
 
 # Perform a search and return the results.
@@ -217,7 +217,7 @@ sub _search {
             raw_query  => $raw_query_string,
             hits       => $num_hits,
             solr_query => {
-                map { $_ => $query_hash->{$_} } qw/sort qt q fq qf start/
+                map { $_ => $query_hash->{$_} } qw/sort qt q fq qf bq start/
             },
         });
 
