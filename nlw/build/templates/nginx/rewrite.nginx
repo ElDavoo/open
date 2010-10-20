@@ -114,7 +114,16 @@
         proxy_redirect https://[% config.nlw_web_hostname %]/ /;
 [%- END %]
 
-    # Rate Limit slow requests
+    # Rewrite API POST|PUT|DELETEs so they are not rate limited
+    if ($method_uri ~ ^(POST|PUT|DELETE)/data/) {
+        rewrite "/(.+)$" "/MODMETHOD/$1" break;
+    }
+    location ~ ^/MODMETHOD/data/ {
+        rewrite "/MODMETHOD/(.+)$" "/$1" break;
+        [% pass_to_backend() %]
+    }
+
+    # rate-limit GET /data/signals /data/events
     location ~ ^/data/(signals|events) {
         limit_req zone=slowapi burst=10;
         [% pass_to_backend() %]

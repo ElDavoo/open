@@ -11,6 +11,8 @@
     error_page 504 /static/html/502.html;
 [%- END %]
 
+    set $method_uri "$request_method$uri";
+
 [%- IF config.is_appliance || config.is_dev %]
      location /console {
          proxy_pass http://localhost:[% config.backend_ports.console %];
@@ -26,9 +28,8 @@
 
     [%- BLOCK image_cache %]
         # image cache: [% cache_name %]
-        set $matcher "$request_method$uri";
         set $cache_match "no-match";
-        if ($matcher ~* ^GET[% rest_pattern %]) {
+        if ($method_uri ~* ^GET[% rest_pattern %]) {
             set $cache_match $1;
         }
         if (-f [% config.cache_dir %]/[% cache_name %]/$cache_match[% file_suffix %]) {
