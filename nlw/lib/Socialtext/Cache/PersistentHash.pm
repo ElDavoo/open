@@ -1,4 +1,5 @@
 package Socialtext::Cache::PersistentHash;
+# @COPYRIGHT@
 
 use strict;
 use warnings;
