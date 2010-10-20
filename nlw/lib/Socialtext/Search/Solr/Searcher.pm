@@ -45,8 +45,8 @@ has_inflated 'query_parser' =>
      handles => [qw/parse/]);
 
 my %DocTypeToFieldBoost = (
-    '' => 'title^3 tag^2',
-    page => 'title^3 tag^2',
+    '' => 'title^3 tag^1.25',
+    page => 'title^3 tag^1.25',
     attachment => 'filename^1',
     signal => 'body^0.2 tag^2 filename^0.375',
     person => 'name_pf_t^2 sounds_like^0.5 *_pf_rt^0.1 tag^0.3',
