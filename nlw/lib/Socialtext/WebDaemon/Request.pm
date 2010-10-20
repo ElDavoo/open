@@ -16,10 +16,19 @@ has 'log_params' => (is => 'rw', isa => 'HashRef', default => sub {{}});
 has 'started_at' => (is => 'rw', isa => 'Num');
 has '_pid' => (is => 'rw', isa => 'Int');
 
-has '_r' => (is => 'ro', isa => 'Feersum::Connection', required => 1,
-    clearer => '_clear_r', predicate => 'alive');
 has 'ident' => (is => 'rw', isa => 'Str', default => '??', writer => '_ident');
 has 'responding' => (is => 'ro', isa => 'Bool', writer => '_responding');
+
+has '_r' => (is => 'ro', isa => 'Feersum::Connection', required => 1,
+    clearer => '_clear_r', predicate => 'alive');
+has '_w' => (
+    is => 'rw', isa => 'Feersum::Connection::Writer',
+    clearer => '_clear_w',
+    predicate => 'streaming',
+    handles => {
+        stream_write => 'write',
+    },
+);
 
 sub BUILD {
     my $self = shift;
@@ -85,18 +94,13 @@ sub simple_response {
     return;
 }
 
-sub respond {
-    my ($self, $message, $hdrs, $content, $cb) = @_;
+sub _finishing {
+    my ($self, $code, $cb) = @_;
 
-    unless ($self->alive && !$self->responding) {
-        confess "attempted to respond twice to a request";
-        return;
-    }
-    my $r = $self->_r;
-    $self->_clear_r;
-
-    no warnings 'numeric';
-    my $code = 0 + $message;
+    # This is faster assuming neither of these are lazy-built (but breaks
+    # encapsulation):
+    my $r = delete $self->{_r}; # break encapsulation for speed
+    my $w = delete $self->{_w}; # break encapsulation for speed
 
     # replace the default guard so we can log a completion message (strong
     # reference is OK).
@@ -108,6 +112,21 @@ sub respond {
         undef $self; # important reference closure.
     });
 
+    return ($r,$w);
+}
+
+sub respond {
+    my ($self, $message, $hdrs, $content, $cb) = @_;
+
+    unless ($self->alive && !$self->responding) {
+        confess "attempted to respond twice to a request";
+        return;
+    }
+
+    no warnings 'numeric';
+    my $code = 0 + $message;
+    my ($r,$w) = $self->_finishing($code, $cb);
+
     $r->send_response($message, $hdrs, $content);
     $self->_responding(1);
     trace "<= RESPONSE ".$self->ident.": ".$message.$/;
@@ -115,10 +134,20 @@ sub respond {
     return;
 }
 
-# Later:
-# sub start_response { my ($code,$headers) = @_; }
-# sub write { $_[0] }
-# sub end_response { }
+sub stream_start {
+    my ($self,$message,$headers) = @_;
+    my $w = $self->_r->start_streaming($message,$headers);
+    $self->_w($w);
+    $self->_responding(1);
+    trace "<= STREAM START ".$self->ident.": ".$message;
+}
+
+sub stream_end {
+    my ($self, $cb) = @_;
+    my ($r,$w) = $self->_finishing(200, $cb);
+    $w->close;
+    trace "<= STREAM END ".$self->ident;
+}
 
 __PACKAGE__->meta->make_immutable;
 1;
