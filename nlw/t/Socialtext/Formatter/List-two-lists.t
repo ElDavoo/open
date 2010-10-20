@@ -29,7 +29,7 @@ $_</div>
 }
 
 __DATA__
-=== Two lists should not have empty paragraph (<br>) between.
+=== Two lists should now have empty paragraph (<br>) preserved between.
 --- wiki
 * foo
 
@@ -38,6 +38,6 @@ __DATA__
 <ul>
 <li>foo</li>
 </ul>
-<ul>
+<br /><ul>
 <li>bar</li>
 </ul>
