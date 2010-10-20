@@ -3,10 +3,10 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Social Bookmarking Setup Account, Workspace |  |
-| set | acct | social-acct-%%start_time%% |  |
-| set | ws | social-ws-%%start_time%% |  |
+| set | acct | social-acct-%%start_time%% |
+| set | ws | social-ws-%%start_time%% |
 | st-admin | create-account --name %%acct%% | was created |
-| st-admin | create-workspace --name %%ws%% --title %%ws%% | was created |
+| st-admin | create-workspace --name %%ws%% --title %%ws%% --account %%acct%% | was created |
 | enable-acct-plugin | signals | %%acct%% |
 
 | *Comment* | Test Case: Social Bookmarking Setup Users |  |
@@ -32,7 +32,7 @@
 | *Comment* | Test Case: Signals Search. Standardize links |
 | set | wspage | social_page_%%start_time%% |
 | st-admin | update-page --email %%a_username%% --workspace %%ws%% --page "%%wspage%%" < %%wikitest_client_files%%wikitest.txt | page has been created. |
-| set | wslink | "has a wiki page"{link: %%ws% [%%wspage%%]} |
+| set | wslink | "has a wiki page"{link: %%ws%% [%%wspage%%]} |
 | set | link_one | "Xndev website"<http://www.xndev.com> |
 | set | link_two | "Xndev blog"<http://xndev.blogspot.com> |
 | set | link_three | "Socialtext Blog"<http://www.socialtext.com/blog/> |
@@ -41,6 +41,7 @@
 | set | link_six | "Let me google that for you"<http://lmgtfy.com/?q=software+testing> |
 | set | link_seven | "Apple"<http://www.apple.com/> |
 | set | link_eight | "Good blogs"<http://www.joelonsoftware.com/> |
+| set | link_nine | "YouTube"<http://www.youtube/> |
 
 | *Comment* | Test Case: Social Bookmarking. Send 6 signals %%z_username%% |  |
 | http-user-pass | %%z_username%% | %%password%% |
@@ -50,6 +51,7 @@
 | post-signal | %%tag4%% Don't miss the %%link_three%% |  |
 | post-signal | %%tag5%% Conpany %%link_four%% |  |
 | post-signal | %%tag_unpopular1%% Info in the wiki: %%wspage%% |  |
+| post-signal | %%tag1%% I'll bet you can find that on %%link_nine%%; don't you think? |  |
 
 | *Comment* | Test Case: Social Bookmarking. Send 6 signals %%a_username%% |  |
 | http-user-pass | %%a_username%% | %%password%% |
@@ -68,6 +70,19 @@
 | wait_for_element_visible_ok | link=Explore | 30000 |
 | click_and_wait | link=Explore | 30000 |
 | pause | 300000 |
+
+| *Comment* | Test Case: Social Bookmarking. TODO See my signals |
+| *Comment* | Test Case: Social Bookmarking. TODO See Error message for people I follow |
+| *Comment* | Test Case: Social Bookmarking. TODO See all signals |
+| *Comment* | Test Case: Social Bookmarking. TODO Follow %%z_username%% |
+| *Comment* | Test Case: Social Bookmarking. TODO Click people I follow, see %%z_username%%'s signals |
+| *Comment* | Test Case: Social Bookmarking. TODO Click people I follow, see %%z_username%%'s signals |
+| *Comment* | Test Case: Social Bookmarking. TODO Filter by Web Links. See only web links |
+| *Comment* | Test Case: Social Bookmarking. TODO Filter by Wiki Links. See only wiki links |
+| *Comment* | Test Case: Social Bookmarking. TODO Filter by tag. See only %%tag1%% links. See only %%tag1%% links |
+| *Comment* | Test Case: Social Bookmarking. TODO Click on mine, see only my %%tag1%% links. |
+| *Comment* | Test Case: Social Bookmarking. TODO Filter by group |
+| *Comment* | Test Case: Social Bookmarking. TODO Filter by person |
 
 | *Comment* | Test Case: Social Bookmarking. TEARDown |  |
 | st-admin | delete-workspace --name %%ws%% --no-export | has been deleted |
