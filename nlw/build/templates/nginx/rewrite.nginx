@@ -104,11 +104,22 @@
         rewrite "^/(?!index.cgi)([^/]+)(\?.+)?$" "/$1/$2" permanent;
         rewrite "^/(?!index.cgi)([^/]+)/?(\?.+)?$" "/$1/index.cgi$2" break;
     }
-    location / {
+
+[%- MACRO pass_to_backend BLOCK %]
         proxy_pass http://localhost:[% apache_perl_port %];
         # Rewrite upstream redirects correctly
         proxy_redirect http://[% config.nlw_server_hostname %]/ /;
         proxy_redirect http://[% config.nlw_web_hostname %]/ /;
         proxy_redirect https://[% config.nlw_server_hostname %]/ /;
         proxy_redirect https://[% config.nlw_web_hostname %]/ /;
+[%- END %]
+
+    # Rate Limit slow requests
+    location ~ ^/data/(signals|events) {
+        limit_req zone=slowapi burst=10;
+        [% pass_to_backend() %]
+    }
+
+    location / {
+        [% pass_to_backend() %]
     }

@@ -45,6 +45,11 @@ http {
   gzip_disable     "Mozilla/4(?!.*\bMSIE\s+[789])";
   gzip_disable     "Mozilla/4\.0[678](?!.*\bMSIE\s+[789])";
 
+  # 16k seems to be the smallest we can set this to.  Increase it
+  # conservatively if needed.
+  limit_req_zone  $nginx_version zone=slowapi:16k rate=5r/s;
+  limit_req_log_level notice;
+
   include [% config.nginx_etc_dir %]/proxy.conf;
   include [% config.nginx_etc_dir %]/mime.conf;
   include [% config.nginx_etc_dir %]/auto-generated.d/*.conf;
