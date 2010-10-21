@@ -247,9 +247,6 @@ sub auth_token_soft_limit {
 
     my $limit = $self->{config}{auth_token_soft_limit};
 
-    # "0" should mean "a really, really long time from now"; make it 1yr to
-    # match old behaviour
-    return 86400 * 365 if ($limit <= 0);
     return $limit;
 }
 
@@ -259,9 +256,6 @@ sub auth_token_hard_limit {
 
     my $limit = $self->{config}{auth_token_hard_limit};
 
-    # "0" should mean "a really, really long time from now"; make it 1yr to
-    # match old behaviour
-    return 86400 * 365 if ($limit <= 0);
     return $limit;
 }
 
