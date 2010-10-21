@@ -1452,7 +1452,7 @@ Returns true if NLW is running on an appliance.
 
 Returns true if NLW is running in a dev-env.
 
-Short-hand way of saying C<!Socialtext::AppConfig->is_appliance>
+Short-hand way of saying C<!Socialtext::AppConfig-E<gt>is_appliance>
 
 =head2 Socialtext::AppConfig->set( key => $value, ... )
 
