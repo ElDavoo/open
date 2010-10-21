@@ -271,12 +271,13 @@ sub stats_ticker {
     delete $rpt->{overall};
     my $active = $stats->{"current connections"};
 
-    $self->stats({"current connections" => $active});
     Socialtext::Timer->Reset();
 
     my $ucname = uc($NAME);
     st_log->info("$ucname,STATUS,ACTOR_ID:0,".encode_json($stats));
     st_timed_log('info',$ucname,'TIMERS',0,{},undef,$rpt);
+
+    %$stats = ("current connections" => $active);
 }
 
 sub _wrap_request {
