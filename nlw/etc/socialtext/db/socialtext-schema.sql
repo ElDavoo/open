@@ -1129,14 +1129,18 @@ CREATE TABLE topic_signal_page (
 );
 
 CREATE VIEW signal_asset AS
- ( SELECT topic_signal_link.signal_id, topic_signal_link.href, topic_signal_link.title, NULL AS workspace_id, NULL AS page_id, 0 AS attachment_id, 'weblink' AS "class"
-   FROM topic_signal_link
+ ( SELECT topic_signal_page.signal_id, (('/' || "Workspace".name::text) || '?') || topic_signal_page.page_id AS href, page.name AS title, topic_signal_page.workspace_id, topic_signal_page.page_id, 0 AS attachment_id, 'wikilink' AS "class"
+   FROM topic_signal_page
+   JOIN "Workspace" USING (workspace_id)
+   JOIN page USING (workspace_id, page_id)
 UNION ALL 
- SELECT topic_signal_page.signal_id, NULL AS href, NULL AS title, topic_signal_page.workspace_id, topic_signal_page.page_id, 0 AS attachment_id, 'wikilink' AS "class"
-   FROM topic_signal_page)
+ SELECT topic_signal_link.signal_id, topic_signal_link.href, topic_signal_link.title, NULL AS workspace_id, NULL AS page_id, 0 AS attachment_id, 'weblink' AS "class"
+   FROM topic_signal_link)
 UNION ALL 
- SELECT signal_attachment.signal_id, NULL AS href, NULL AS title, NULL AS workspace_id, NULL AS page_id, signal_attachment.attachment_id, 'attachment' AS "class"
-   FROM signal_attachment;
+ SELECT signal_attachment.signal_id, (('/data/signals/' || signal.hash::text) || '/attachments/') || signal_attachment.attachment_id::text AS href, attachment.filename AS title, NULL AS workspace_id, NULL AS page_id, signal_attachment.attachment_id, 'attachment' AS "class"
+   FROM signal_attachment
+   JOIN signal USING (signal_id)
+   JOIN attachment USING (attachment_id);
 
 CREATE SEQUENCE signal_id_seq
     INCREMENT BY 1

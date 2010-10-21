@@ -18,24 +18,37 @@ CREATE INDEX ix_topic_signal_link_forward
 CREATE INDEX ix_topic_signal_link_reverse
 	    ON topic_signal_link (signal_id);
 
+
 CREATE VIEW signal_asset AS
-  SELECT signal_id, href, title,
-         NULL AS workspace_id, NULL AS page_id,
-         0 AS attachment_id,
-         'weblink' AS class
-   FROM topic_signal_link
-UNION ALL 
-  SELECT signal_id, NULL AS href, NULL AS title,
-         workspace_id, page_id,
-         0 AS attachment_id,
-         'wikilink' AS class
-   FROM topic_signal_page
-UNION ALL 
-  SELECT signal_id, NULL AS href, NULL AS title,
-         NULL AS workspace_id, NULL AS page_id,
-         attachment_id,
-         'attachment' AS class
-    FROM signal_attachment;
+    SELECT topic_signal_page.signal_id,
+            '/' || "Workspace".name || '?' || topic_signal_page.page_id AS href,
+            page.name AS title,
+            topic_signal_page.workspace_id,
+            topic_signal_page.page_id,
+            0 AS attachment_id,
+            'wikilink' AS "class"
+       FROM topic_signal_page
+       JOIN "Workspace" USING (workspace_id)
+       JOIN page USING(workspace_id, page_id)
+UNION ALL
+    SELECT topic_signal_link.signal_id,
+           topic_signal_link.href,
+           topic_signal_link.title,
+           NULL::"unknown" AS workspace_id,
+           NULL::"unknown" AS page_id,
+           0 AS attachment_id,
+          'weblink' AS "class"
+      FROM topic_signal_link
+UNION ALL
+    SELECT signal_attachment.signal_id,
+           '/data/signals/' || hash || '/attachments/' || attachment_id AS href,
+           filename AS title,
+           NULL::"unknown" AS workspace_id,
+           NULL::"unknown" AS page_id,
+           signal_attachment.attachment_id, 'attachment' AS "class"
+      FROM signal_attachment
+      JOIN signal USING (signal_id)
+      JOIN attachment USING (attachment_id);
 
 CREATE VIEW conversation_tag AS
   SELECT tag.signal_id,
