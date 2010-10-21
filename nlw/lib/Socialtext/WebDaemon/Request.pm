@@ -168,29 +168,38 @@ __END__
 
 =head1 NAME
 
-Socialtext::Handler::Push::Request - pushd request object
+Socialtext::WebDaemon::Request - WebDaemon request object
 
 =head1 SYNOPSIS
 
-  http_server $host, $port, sub {
-      my ($handle, $env, $body_ref) = @_; # among others
-      my $req = Socialtext::Handler::Push->new(
-          handle => $handle, env => $env, body => $body_ref);
+    my $req = Socialtext::WebDaemon::Request->new(
+        env => $env, _r => $feersum_connection, body => $body
+    );
 
-      # pass around $req, then
+To give a simple response and close the connection:
 
-      my $resp = HTTP::Response->new(...);
-      $req->respond($resp, sub {
-          # called when done writing to the handle,
-          # clean things up, e.g.:
-          undef $handle;
-          undef $req;
-      });
-  };
+    $req->simple_response(403, 'go away'); # text/plain
+    $req->simple_response(403, '{"go":"away"}', 'JSON');
+
+To give a response with custom headers and a callback:
+
+    $req->respond(200, ['Content-Type'=>'application/json'],
+        \'{"this is":"the response body"}',
+        \&optional_completion_callback);
+
+To stream a response (works well with timers/events):
+
+    $req->stream_start(200, ['Content-Type'=>'text/html']);
+    $req->stream_write(\$header_and_start_of_body);
+    $req->trickle(2.0, "<!-- ignorable content -->");
+    $req->stream_end(\&optional_completion_callback);
 
 =head1 DESCRIPTION
 
-Abstracts the AnyEvent::Handle used under Socialtext::Async::HTTPD.  One of
-these objects per active Client in C<st-pushd>.
+Abstracts the L<Feersum::Connection> object for use in WebDaemons.  The
+streaming mode uses L<Feersum::Connection::Writer>.
+
+The trickle method will send some ignorable content every so often to keep the
+HTTP connection from timing out.
 
 =cut
