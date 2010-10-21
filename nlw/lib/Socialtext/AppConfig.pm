@@ -240,12 +240,16 @@ sub _default_solr_base {
 
 sub _default_auth_token_soft_limit { return 86400 * 13; }
 sub _default_auth_token_hard_limit { return 86400 * 14; }
+sub _minimum_auth_token_limit      { 86400 }
 
 sub auth_token_soft_limit {
     my $self = shift;
     $self = $self->instance() unless ref($self);
 
     my $limit = $self->{config}{auth_token_soft_limit};
+
+    # Force a minimum if they've tried to set to <=0
+    $limit = _minimum_auth_token_limit() if ($limit <= 0);
 
     return $limit;
 }
@@ -255,6 +259,9 @@ sub auth_token_hard_limit {
     $self = $self->instance() unless ref($self);
 
     my $limit = $self->{config}{auth_token_hard_limit};
+
+    # Force a minimum if they've tried to set to <=0
+    $limit = _minimum_auth_token_limit() if ($limit <= 0);
 
     return $limit;
 }
