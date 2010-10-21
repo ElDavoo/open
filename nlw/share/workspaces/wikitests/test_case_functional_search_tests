@@ -24,7 +24,7 @@ Note: Heavily dependent on the default content of current test-data workspace
 | st-result | Jabberwocky |  |
 | st-result | Project Plans |  |
 | st-result | Credit Card Payment |  |
-| st-result | Sample Excel 2007 file.xlsx, |  |
+| st-result | Sample Excel 2007 file.xlsx |  |
 | st-search | jabber |  |
 | st-result | 5 total |
 | text_like | //body | qr/jabber.+The Vorpal Sword.+Stemming test page 2.+beamish boy.+Jabberwocky/ |
@@ -213,14 +213,14 @@ Title searches
 | st-result | Jabberwocky |  |
 | st-result | Wock |  |
 | st-result | Project Plans |  |
-| st-result | Sample Excel 2007 file.xlsx, |  |
+| st-result | Sample Excel 2007 file.xlsx |  |
 | st-result | Credit Card Payment |  |
 | text_like | //body | qr/jabber.+Canonical Test Data Set/ |
 | text_like | //body | qr/jabber.+beamish boy/ |
 | text_like | //body | qr/jabber.+Project Plans/ |
 | text_like | //body | qr/jabber.+Wock/ |
 | text_like | //body | qr/jabber.+Credit Card Payment/ |
-| text_like | //body | qr/jabber.+Sample Excel 2007 file.xlsx,/ |
+| text_like | //body | qr/jabber.+Sample Excel 2007 file.xlsx/ |
 
 
 | st-search | =jabber OR 1.2 | Pages matching 'title:jabber OR 1.2' |
@@ -236,11 +236,11 @@ Title searches
 | st-result | Jabberwocky |  |
 | st-result | Project Plans |  |
 | st-result | Credit Card Payment |  |
-| st-result | Sample Excel 2007 file.xlsx, |  |
+| st-result | Sample Excel 2007 file.xlsx |  |
 | text_like | //body | qr/jabber.+Canonical Test Data Set/ |
 | text_like | //body | qr/jabber.+Jabberwocky/ |
 | text_like | //body | qr/jabber.+Project Plans/ |
-| text_like | //body | qr/jabber.+Sample Excel 2007 file.xlsx,/ |
+| text_like | //body | qr/jabber.+Sample Excel 2007 file.xlsx/ |
 | text_like | //body | qr/jabber.+Credit Card Payment/ |
 
 | st-result | Credit Card Payment |  |
