@@ -97,7 +97,7 @@ sub simple_response {
 sub _finishing {
     my ($self, $code, $cb) = @_;
 
-    # This is faster assuming neither of these are lazy-built (but breaks
+    # This is faster assuming none of these are lazy-built (but breaks
     # encapsulation):
     my $r = delete $self->{_r}; # break encapsulation for speed
     my $w = delete $self->{_w}; # break encapsulation for speed
@@ -118,10 +118,8 @@ sub _finishing {
 sub respond {
     my ($self, $message, $hdrs, $content, $cb) = @_;
 
-    unless ($self->alive && !$self->responding) {
-        confess "attempted to respond twice to a request";
-        return;
-    }
+    confess "attempted to respond twice to a request"
+        unless ($self->alive && !$self->responding);
 
     no warnings 'numeric';
     my $code = 0 + $message;
@@ -136,10 +134,25 @@ sub respond {
 
 sub stream_start {
     my ($self,$message,$headers) = @_;
+    confess "can't start streaming: a response is already started"
+        unless ($self->alive && !$self->responding);
     my $w = $self->_r->start_streaming($message,$headers);
+    confess "couldn't start streaming" unless $w;
     $self->_w($w);
     $self->_responding(1);
     trace "<= STREAM START ".$self->ident.": ".$message;
+}
+
+sub trickle {
+    my ($self, $every, $ignorable) = @_;
+    weaken $self;
+    my $w = $self->_w;
+    weaken $w;
+    my $t; $t = AE::timer($every, $every, sub {
+        # cancel if request was finished
+        return undef $t unless ($self && $w && $self->alive);
+        $w->write($ignorable);
+    });
 }
 
 sub stream_end {
