@@ -583,6 +583,23 @@ sub set {
         $self->{config}{$k} = $v;
         $self->{original_data}{$k} = $v;
     }
+
+    # Warn about potentially poor config values
+    foreach my $limit (qw( auth_token_soft_limit auth_token_hard_limit )) {
+        if (exists $p{$limit}) {
+            my $minimum = _minimum_auth_token_limit();
+            my $value   = $p{$limit};
+            if ($value < $minimum) {
+                warn qq{
+WARNING: You are over-riding the minimum value for '$limit';
+         this value is recorded here in *seconds*, not hours/days.
+
+         Minimum...: $minimum
+         Over-ride.: $value
+};
+            }
+        }
+    }
 }
 
 sub write {
