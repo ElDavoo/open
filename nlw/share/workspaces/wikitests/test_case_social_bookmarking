@@ -5,8 +5,11 @@
 | *Comment* | Test Case: Social Bookmarking Setup Account, Workspace |  |
 | set | acct | social-acct-%%start_time%% |
 | set | ws | social-ws-%%start_time%% |
+| set | invisible_ws | invisible-ws-%%start_time%% |
 | st-admin | create-account --name %%acct%% | was created |
 | st-admin | create-workspace --name %%ws%% --title %%ws%% --account %%acct%% | was created |
+| st-admin | create-workspace --name %%invisible_ws%% --title %%invisible_ws%% --account %%acct%% | was created |
+
 | enable-acct-plugin | signals | %%acct%% |
 
 | *Comment* | Test Case: Social Bookmarking Setup Users |  |
@@ -15,6 +18,7 @@
 | st-admin | create-user --e %%a_username%% -password %%password%% --account %%acct%% |  |
 | st-admin | create-user --e %%z_username%% -password %%password%% --account %%acct%% |  |
 | st-admin | add-member --e %%a_username%% --workspace %%ws%% | now has the role of 'member' in the |
+| st-admin | add-member --e %%z_username%% --workspace %%invisible_ws%% | now has the role of 'member' in the |
 
 | *Comment* | Test Case: Social Bookmarking |  |
 | st-logoutin | %%a_username%% | %%password%% |
@@ -27,9 +31,9 @@
 | set | tag5 | #tag5%%start_time%% |
 | set | tag_unpopular1 | #tag6b%%start_time%% |
 | set | tag_unpopular2 | #tag6b%%start_time%% |
+| set | tag_invisible | #taginvis%%start_time%% |
 
-
-| *Comment* | Test Case: Signals Search. Standardize links |
+| *Comment* | Test Case: Signals Search. Standardize links |  |
 | set | wspage | social_page_%%start_time%% |
 | st-admin | update-page --email %%a_username%% --workspace %%ws%% --page "%%wspage%%" < %%wikitest_client_files%%wikitest.txt | page has been created. |
 | set | wslink | "has a wiki page"{link: %%ws%% [%%wspage%%]} |
@@ -41,7 +45,8 @@
 | set | link_six | "Let me google that for you"<http://lmgtfy.com/?q=software+testing> |
 | set | link_seven | "Apple"<http://www.apple.com/> |
 | set | link_eight | "Good blogs"<http://www.joelonsoftware.com/> |
-| set | link_nine | "YouTube"<http://www.youtube/> |
+| set | link_nine | "YouTube"<http://www.youtube.com/> |
+| set | link_ten | "twitter"<http://www.twitter.com/> |
 
 | *Comment* | Test Case: Social Bookmarking. Send 6 signals %%z_username%% |  |
 | http-user-pass | %%z_username%% | %%password%% |
@@ -52,6 +57,13 @@
 | post-signal | %%tag5%% Conpany %%link_four%% |  |
 | post-signal | %%tag_unpopular1%% Info in the wiki: %%wspage%% |  |
 | post-signal | %%tag1%% I'll bet you can find that on %%link_nine%%; don't you think? |  |
+| post-signal | %%tag_invisible%% You should try %%link_ten%% - it's great |  |
+| post-signal | %%tag_invisible%% No seriously %%link_ten%% - is great |  |
+| post-signal | %%tag_invisible%% Because %%link_ten%% is all social-media-y |  |
+| post-signal | %%tag_invisible%% %%link_ten%% is good |  |
+| post-signal | %%tag_invisible%% %%link_ten%% is my favorite |  |
+| post-signal | %%link_ten%% is good - %%tag_invisible%% |  |
+
 
 | *Comment* | Test Case: Social Bookmarking. Send 6 signals %%a_username%% |  |
 | http-user-pass | %%a_username%% | %%password%% |
@@ -71,11 +83,13 @@
 | click_and_wait | link=Explore | 30000 |
 | pause | 300000 |
 
-| *Comment* | Test Case: Social Bookmarking. TODO See my signals |
+| *Comment* | Test Case: Social Bookmarking. DO NOT SEE %%link_ten%% |
+| *Comment* | Test Case: Social Bookmarking. TODO See my signals, not others |
+| *Comment* | Test Case: Social Bookmarking. TODO Click all, see others |
 | *Comment* | Test Case: Social Bookmarking. TODO See Error message for people I follow |
 | *Comment* | Test Case: Social Bookmarking. TODO See all signals |
 | *Comment* | Test Case: Social Bookmarking. TODO Follow %%z_username%% |
-| *Comment* | Test Case: Social Bookmarking. TODO Click people I follow, see %%z_username%%'s signals |
+| *Comment* | Test Case: Social Bookmarking. TODO Click people I follow, see %%z_username%%'s signals -- but not %%link_ten%% |
 | *Comment* | Test Case: Social Bookmarking. TODO Click people I follow, see %%z_username%%'s signals |
 | *Comment* | Test Case: Social Bookmarking. TODO Filter by Web Links. See only web links |
 | *Comment* | Test Case: Social Bookmarking. TODO Filter by Wiki Links. See only wiki links |
@@ -84,7 +98,10 @@
 | *Comment* | Test Case: Social Bookmarking. TODO Filter by group |
 | *Comment* | Test Case: Social Bookmarking. TODO Filter by person |
 
+
 | *Comment* | Test Case: Social Bookmarking. TEARDown |  |
 | st-admin | delete-workspace --name %%ws%% --no-export | has been deleted |
+| st-admin | delete-workspace --name %%invisible_ws%% --no-export | has been deleted |
+
 
 | *Comment* | Test Case: Social Bookmarking. COMPLETED |
