@@ -27,7 +27,11 @@ sub do_work {
             # Ignore errors for individual signals.
             eval {
                 my $signal = Socialtext::Signal->Get(signal_id => $row->[0]);
-                Socialtext::JobCreator->index_signal($signal, priority => 60);
+                Socialtext::JobCreator->index_signal(
+                    $signal,
+                    priority => 60,
+                    rebuild_topics => 1,
+                );
             };
         }
     };

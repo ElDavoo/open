@@ -2,8 +2,12 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Socialtext::Migration::Utils qw/create_job_for_each_workspace create_job/;
 use Socialtext::Workspace;
+use Socialtext::Migration::Utils qw/create_job_for_each_workspace
+                                    create_job
+                                    ensure_socialtext_schema/;
+
+ensure_socialtext_schema(127);
 
 create_job_for_each_workspace('ReIndexWorkspace', -64,
     except => [ Socialtext::Workspace->Help_workspaces ],
