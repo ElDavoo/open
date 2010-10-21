@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>4.5.1</version>
-  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.5.1.air</url>
-  <description><![CDATA[[4.5.1 - Fri Oct  1 02:05:31 PDT 2010]
+  <version>4.5.1.1</version>
+  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.5.1.1.air</url>
+  <description><![CDATA[[4.5.1.1 - Wed Oct 20 16:11:10 PDT 2010]
+(Enhancements)
+* Signals: Bubbling-up after posting a reply now works again for ST 4.5.0.8+. {bz: 4530}
+* Performance: Fetch /data/signals with a reasonable ?after limit when re-synchronizing from push failure.
+* Performance: Switching to "All My Groups" for the first time is now much faster. {bz: 4432}
+
+[4.5.1 - Fri Oct  1 02:05:31 PDT 2010]
 (Features)
 * Auto-renew the time-limited login cookie every 24 hours for server version 4.5.0+.
 

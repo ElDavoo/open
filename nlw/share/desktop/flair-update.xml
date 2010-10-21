@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>349</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-349.air</url>
-<description><![CDATA[[Build 349 - Fri Oct  1 02:02:25 PDT 2010]
+  <version>354</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-354.air</url>
+<description><![CDATA[[Build 354 - Wed Oct 20 16:40:35 PDT 2010]
+* When server returns 503, retry the request in 1sec.
+* When restarting push client, use backoff_timeout to avoid overwhelming the server.
+
+[Build 353 - Wed Oct 20 16:07:23 PDT 2010]
+* Use ?after whe re-syncing /data/signals as per [Story: push clients sync using ?after].
+
+[Build 352 - Wed Oct 20 05:24:37 PDT 2010]
+* Bubbling-up after posting a reply now works again for ST 4.5.0.8+. {bz: 4530}
+
+[Build 351 - Mon Oct 18 10:10:16 PDT 2010]
+* Update to jQuery 1.4.3 for memory and speed wins; no functional changes.
+
+[Build 350 - Tue Oct 12 09:27:03 PDT 2010]
+* Switching to "All My Groups" for the first time is now much faster. {bz: 4432}
+
+[Build 349 - Fri Oct  1 02:02:25 PDT 2010]
 * Workspaces: Restore page preview and loading functionality (regression in build 347).
 
 [Build 348 - Thu Sep 30 04:44:48 PDT 2010]
