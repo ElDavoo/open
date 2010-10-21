@@ -159,7 +159,7 @@ sub _search {
     # Turn "tag:" search with non-word chars into "tag_exact:", as it's
     # unlikely for them to match under normal "tag:" semantics.
     my $punct = "*?()";
-    $query =~ s{\btag:"\s*([^\"\s$punct]*[^\"\w\s$punct][^\"\s$punct]*)\s*"}{tag_exact:"$1"}g;
+    $query =~ s{\btag:"\s*([^\"\s$punct]*[^\"\w$punct][^\"\s$punct]*)\s*"}{tag_exact:"$1"}g;
     $query =~ s{\btag:(?!")([^\s$punct]*[^\w\s$punct][^\s$punct]*)}{tag_exact:$1}g;
 
     my @sort = $self->_sort_opts($opts{order}, $opts{direction}, $query_type);
