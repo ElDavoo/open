@@ -13,6 +13,8 @@ widgets:
   - tag_list
   - blog
   - blog_list
+  - weblog
+  - weblog_list
   - fetchrss
   - fetchatom
   - search
@@ -208,6 +210,33 @@ widget:
     label: Blog Link
     color: purple
     pattern: '"%label"{blog: %workspace_id; %blog_name}'
+    fields: [label, blog_name, workspace_id ]
+    pdfields: [label, workspace_id]
+    title: Link to blog '$blog_name'. Click to edit.
+    labels:
+       workspace_id: Blog on
+    input:
+       workspace_id: radio
+    desc: Display a link to a blog. Use this form to edit the properties of the link.
+    more_desc: Optional properties include link text, and the name of a different workspace for the blog.
+    parse:
+      regexp: '?workspace-value'
+      no_match: blog_name
+      fields: [workspace_id, blog_name]
+    required: [blog_name]
+    title_and_id:
+      workspace_id:
+        id:
+        title:
+    image_text:
+        - { field: label, text: "blog: %label" }
+        - { field: default, text: "blog: %blog_name" }
+
+  weblog:
+    id: weblog
+    label: Blog Link
+    color: purple
+    pattern: '"%label"{weblog: %workspace_id; %blog_name}'
     fields: [label, blog_name, workspace_id ]
     pdfields: [label, workspace_id]
     title: Link to blog '$blog_name'. Click to edit.
@@ -463,6 +492,34 @@ widget:
     label: Blog List
     color: forestgreen
     pattern: '{blog_list: <%workspace_id> %blog_name}'
+    fields: [workspace_id, blog_name]
+    pdfields: [workspace_id]
+    input:
+       workspace_id: radio
+    labels:
+       workspace_id: in
+    title:
+      default: Include the blog '$blog_name'. Click to edit.
+      full: Display the blog '$blog_name'. Click to edit.
+    desc: Display a list of the most recent entries from a blog in a workspace. By default only the blog entry names are displayed. Use this form to edit the list properties.
+    more_desc: Optional parameters include specifying which workspace to use and whether to display page titles or whole pages.
+    required: [blog_name]
+    parse:
+      regexp: '^(?:<(\S+)>)?\s*(.*?)?\s*$'
+      fields: [workspace_id, blog_name]
+    full: off
+    title_and_id:
+      workspace_id:
+        id:
+        title:
+    image_text:
+        - { field: default, text: "blog list: %blog_name" }
+
+  weblog_list:
+    id: weblog_list
+    label: Blog List
+    color: forestgreen
+    pattern: '{weblog_list: <%workspace_id> %blog_name}'
     fields: [workspace_id, blog_name]
     pdfields: [workspace_id]
     input:
