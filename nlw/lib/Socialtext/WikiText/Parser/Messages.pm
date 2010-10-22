@@ -38,6 +38,19 @@ sub create_grammar {
         };
     }
 
+    # Fix {bz: 4496} using ([^"]+) instead of (.+?) in quoted strings.
+    $grammar->{waflphrase}{match} = qr/
+        (?:^|(?<=[\s\-]))
+        (?:"([^"]+)")?
+        \{
+        ([\w-]+)
+        (?=[\:\ \}])
+        (?:\s*:)?
+        \s*(.*?)\s*
+        \}
+        (?=[^A-Za-z0-9]|\z)
+    /x;
+
     # NOTE: if you add phrases here, be sure to update %markup in
     # ST::WT::Emitter::Canonicalize. Order matters
     @$phrases = ('a', 'waflphrase', 'asis', 'b', 'i', 'del', 'hashmark');
