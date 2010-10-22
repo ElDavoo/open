@@ -1340,8 +1340,6 @@ valid and I<not> require the User to re-authenticate themselves.  Once this
 authentication token will still be considered to be valid but the User I<will>
 be prompted to re-authenticate if they perform an interruptable action.
 
-Setting this to "0" (zero) is deemed to mean "a long time from now" (1yr).
-
 Defaults to 13d.
 
 =for code default => _default_auth_token_soft_limit
@@ -1353,8 +1351,6 @@ Defaults to 13d.
 The duration, in seconds, that authentication tokens are considered to be
 valid.  Once this limit has been reached, the authentication token will be
 considered invalid and the User will be required to re-authenticate.
-
-Setting this to "0" (zero) is deemed to mean "a long time from now" (1yr).
 
 Defaults to 14d.
 
