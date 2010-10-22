@@ -19,15 +19,5 @@ override '_pref_name' => sub {
     return 'watchlist_notify_frequency';
 };
 
-
-sub _get_applicable_user_ids {
-    my $self = shift;
-
-    # find the users that have this page watched.
-    return Socialtext::Watchlist->Users_watching_page(
-        $self->workspace->workspace_id, $self->page->id,
-    );
-}
-
 __PACKAGE__->meta->make_immutable;
 1;

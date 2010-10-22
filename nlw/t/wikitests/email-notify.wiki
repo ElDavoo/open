@@ -213,6 +213,7 @@ Set things back to "normal"
 
 job doesn't run yet:
 
+| job-count            | EmailNotifyUser | 1                            |
 | st-fast-forward-jobs | 3               |                              |
 | st-process-jobs      |                 |                              |
 | job-count            | EmailNotifyUser | 1                            |

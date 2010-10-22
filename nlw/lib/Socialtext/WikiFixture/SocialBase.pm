@@ -2606,6 +2606,8 @@ sub st_fast_forward_jobs {
     ok !$@, "fast-forwarded jobs by $minutes minutes";
 }
 
+sub ceq_read { system("ceq-read") }
+
 sub st_account_type_is {
     my $self = shift;
     my $name = shift;

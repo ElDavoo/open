@@ -24,53 +24,32 @@ sub _pref_name {
     return 'notify_frequency';
 }
 
-sub _freq_for_user {
-    my $self = shift;
-    my $ws_id = shift;
-    my $user_id = shift;
-
-    my $pref_name = $self->_pref_name;
-    my $pref_blob = Socialtext::PreferencesPlugin->Get_blob_matching(
-        $ws_id, $user_id, qq{"$pref_name"},
-    );
-    my $freq = $self->_default_freq;
-    if ($pref_blob and $pref_blob =~ m/"\Q$pref_name\E":"(\d+)"/) {
-        $freq = $1;
-    }
-    return $freq * 60;
-}
-sub _get_applicable_user_ids {
-    my $self = shift;
-    return $self->workspace->user_ids;
-}
-
 sub do_work {
     my $self = shift;
     my $page = $self->page or return;
     my $ws = $self->workspace or return;
     my $hub = $self->hub;
 
-    my $t = $self->arg->{modified_time};
-    die "no modified_time supplied" unless defined $t;
+    my $pages_after = $self->arg->{modified_time};
+    die "no modified_time supplied" unless defined $pages_after;
 
     my $ws_id = $ws->workspace_id;
 
     return $self->completed unless $self->workspace->email_notify_is_enabled;
 
     return $self->completed if $page->is_system_page;
-    local $Socialtext::Page::REFERENCE_TIME = $t;
+    local $Socialtext::Page::REFERENCE_TIME = $pages_after;
     return $self->completed unless $page->is_recently_modified;
 
-    $hub->log->info( "Sending recent changes notifications from ".$ws->name );
- 
-    my @jobs;
-    my $user_ids = $self->_get_applicable_user_ids();
-    my $job_class = $self->_user_job_class;
-    for my $user_id (@$user_ids) {
-        my $freq = $self->_freq_for_user($ws_id, $user_id);
-        next unless $freq;
 
-        my $after = $t + $freq;
+    $hub->log->info( "Sending recent changes notifications from ".$ws->name );
+
+    my @jobs;
+    my $job_class = $self->_user_job_class;
+    my $create_job = sub {
+        my $user_id = shift;
+        my $freq = shift;
+        my $after = $pages_after + $freq;
         my $job = TheSchwartz::Moosified::Job->new(
             funcname => $job_class,
             priority => -64,
@@ -79,11 +58,36 @@ sub do_work {
             arg => {
                 user_id => $user_id,
                 workspace_id => $ws_id,
-                pages_after => $t,
+                pages_after => $pages_after,
             }
         );
         push @jobs, $job if $job;
+    };
+
+    # Grab all the users with no workspace preference
+    my $no_pref
+        = Socialtext::PreferencesPlugin->Users_with_no_prefs_for_ws($ws_id);
+    my $default_freq = $self->_default_freq * 60;
+    for my $user_id (@$no_pref) {
+        $create_job->($user_id, $default_freq);
     }
+
+    # Now grab all the users that do have workspace prefs
+    # Note: this may grab users that are not in the workspace, but this
+    # condition will be tested by the job itself.
+    my $prefs = Socialtext::PreferencesPlugin->Prefblobs_for_ws($ws_id);
+    my $pref_name = $self->_pref_name;
+    for my $pref (@$prefs) {
+        my ($user_id, $blob) = @$pref;
+
+        my $freq = $default_freq;
+        if ($blob and $blob =~ m/"\Q$pref_name\E":"(\d+)"/) {
+            $freq = $1 * 60;
+        }
+        $create_job->($user_id, $freq);
+    }
+
+    warn("Creating " . scalar(@jobs) . " new $job_class jobs");
     $hub->log->info("Creating " . scalar(@jobs) . " new $job_class jobs");
 
     $self->job->client->insert($_) for @jobs;

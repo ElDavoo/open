@@ -11,6 +11,7 @@ use Socialtext::JSON qw/decode_json encode_json/;
 use Socialtext::SQL qw(:exec :txn);
 use Socialtext::Log qw/st_log/;
 use Socialtext::Cache;
+use Socialtext::UserSet qw/:const/;
 
 sub class_id { 'preferences' }
 field objects_by_class => {};
@@ -77,6 +78,8 @@ sub _load_all_for_user {
     $cache->set($cache_key => $prefs);
     return $prefs;
 }
+
+
 
 sub Prefs_for_user {
     my $class_or_self = shift;
@@ -165,18 +168,42 @@ sub Store_prefs_for_user {
     $class_or_self->_cache->clear();
 }
 
-sub Get_blob_matching {
+sub Users_with_no_prefs_for_ws {
     my $class_or_self = shift;
     my $ws_id = shift;
-    my $user_id = shift;
-    my $match_str = shift;
 
-    my $blob = sql_singlevalue( qq{
-        SELECT pref_blob FROM user_workspace_pref
-         WHERE workspace_id = ? AND user_id = ?
-           AND pref_blob LIKE '\%$match_str\%'
-        }, $ws_id, $user_id);
-    return $blob;
+    my $user_ids = sql_execute( qq{
+        SELECT DISTINCT(from_set_id) as user_id
+            FROM user_set_path
+            WHERE from_set_id }. PG_USER_FILTER .qq{
+              AND into_set_id = ?
+              AND from_set_id NOT IN (
+                SELECT DISTINCT(user_id) FROM user_workspace_pref
+                   WHERE workspace_id = ?
+                 )
+        }, $ws_id + WKSP_OFFSET, $ws_id);
+    return [
+        map { $_->[0] }
+        @{ $user_ids->fetchall_arrayref }
+    ];
+};
+
+sub Prefblobs_for_ws {
+    my $class_or_self = shift;
+    my $ws_id = shift;
+
+    # This may return users that are not a member of the workspace anymore.
+    # Callers should have appropriate checks in place.
+    my $prefs = sql_execute( qq{
+    SELECT user_id, pref_blob FROM user_workspace_pref
+       WHERE workspace_id = ?
+         AND user_id IN (
+            SELECT DISTINCT(from_set_id) FROM user_set_path
+                WHERE from_set_id }. PG_USER_FILTER .qq{
+                  AND into_set_id = ?
+         )
+    }, $ws_id, $ws_id + WKSP_OFFSET);
+    return $prefs->fetchall_arrayref;
 }
 
 package Socialtext::Preference;
