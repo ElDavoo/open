@@ -4711,3 +4711,40 @@ ul.dropdownOptions li.disabled a:hover {
     line-height: 16px;
 }
 
+/* Social bookmarking tabs */
+#exploreTabs {
+    border-bottom: 1px solid #676767;
+    height: 25px;
+}
+#exploreTabs ul {
+    position: relative;
+    top: 5px;
+}
+#exploreTabs .tab {
+    float: left;
+    margin-left: 8px;
+
+    text-align: center;
+    background-color:#DDDDDD;
+    border: 1px solid #AAAAAA;
+    border-bottom: 1px solid #676767;
+    color: #000000;
+    cursor: pointer;
+    padding: 2px;
+    width: 100px;
+    height: 15px;
+}
+#exploreTabs .selected {
+    background-color: #FFF;
+    border: 1px solid #676767;
+    border-bottom: 1px solid #FFF;
+    color: #3366CC;
+    cursor: default;
+    font-weight: bold;
+}
+#exploreTopTags {
+    border-bottom: 1px solid #676767;
+    background-color: #FFF;
+    text-align: center;
+    padding: 4px 0;
+}
