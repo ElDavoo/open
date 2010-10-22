@@ -762,7 +762,7 @@ $(function() {
             ) + '" />'
         ).css({
             width: '400px',
-            height: '260px',
+            height: '140px',
             position: (
                 ($.browser.msie && $.browser.version < 7)
                     ? 'absolute' // IE6

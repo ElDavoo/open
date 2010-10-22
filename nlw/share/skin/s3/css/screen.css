@@ -4533,7 +4533,7 @@ ul#network-list, ul#signal_network-list {
 ul.dropdownOptions {
     position: absolute;
     display: none;
-    z-index: 300;
+    z-index: 3500; /* above the signalthis iframe */
     display: block;
     background-color: #FFF;
     padding: 0;
