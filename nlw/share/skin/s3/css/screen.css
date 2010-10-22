@@ -4723,6 +4723,7 @@ ul.dropdownOptions li.disabled a:hover {
 #exploreTabs .tab {
     float: left;
     margin-left: 8px;
+    position: relative;
 
     text-align: center;
     background-color:#DDDDDD;
