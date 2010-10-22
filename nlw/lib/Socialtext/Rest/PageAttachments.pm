@@ -71,6 +71,12 @@ sub POST {
             . '/files/'
             . $attachment->filename
     );
+
+    # {bz: 4286}: Record edit_save events for attachment uploads via ReST too.
+    $self->page->update_from_remote(
+        content => $self->page->content
+    );
+
     return '';
 }
 
