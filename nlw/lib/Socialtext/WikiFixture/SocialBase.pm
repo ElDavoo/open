@@ -380,20 +380,24 @@ sub _get_random_page_content {
     return split/\n/, $lines;
 }
 
-=head2 st_create_pages($workspace, $numberpages)
+=head2 st_create_pages($workspace, $numberpages, optional $pageprefix)
 
 Creates $numpages number of pages in $workspace
 
 =cut
 
 sub st_create_pages {
-    my ($self, $workspace, $numberpages) = @_;
+    my ($self, $workspace, $numberpages, $pageprefix) = @_;
 
     my $user = Socialtext::User->new(username => $self->{'username'});
     my $hub = new_hub($workspace);
     my @lines = $self->_get_random_page_content;
     for (my $idx=0; $idx<$numberpages;$idx++) {
-        my $title = "test page " . $idx;
+        if (!defined($pageprefix) or length($pageprefix)<1) {
+           $pageprefix = "test page ";
+        }
+        my $title = $pageprefix . $idx;
+  
         my $content = shift @lines;
         push @lines, $content;
         Socialtext::Page->new(hub => $hub)->create(
