@@ -27,7 +27,16 @@ sub parse {
     my $query_string = shift;
 
     # Fix the raw query string.  Mostly manipulating "field:"-like strings.
-    $query_string = $self->munge_raw_query_string($query_string, @_);
+    my @tokens = split(/("[^"]+")/, $query_string);
+    $query_string = '';
+    for my $token ( @tokens ) {
+        # {bz: 4545}: Don't munge within quoted phrases. 
+        if ($token =~ /^"[^"]+"$/) {
+            $query_string .= $token;
+            next;
+        }
+        $query_string .= $self->munge_raw_query_string($token, @_);
+    }
 
     return $query_string;
 }
