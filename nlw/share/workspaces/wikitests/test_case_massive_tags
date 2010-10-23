@@ -4219,7 +4219,7 @@
 | st-result | osi-%%start_time%%-237 |
 | st-search | tag: universal AND osi-%%start_time%%-237 |
 | st-result | osi-%%start_time%%-237 |
-| st-search | tag: |
+| st-search | tag: odd AND osi-%%start_time%%-237 |
 | st-result | osi-%%start_time%%-237 |
 
 
