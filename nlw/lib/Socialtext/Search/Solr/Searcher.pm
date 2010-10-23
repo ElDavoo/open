@@ -169,8 +169,15 @@ sub _search {
     # Turn "tag:" search with non-word chars into "tag_exact:", as it's
     # unlikely for them to match under normal "tag:" semantics.
     my $punct = "*?()";
-    $query =~ s{\btag:"\s*([^\"$punct]*[^\"\w$punct][^\"$punct]*?)\s*"}{tag_exact:"$1"}g;
-    $query =~ s{\btag:(?!")([^\s$punct]*[^\w\s$punct][^\s$punct]*)}{tag_exact:$1}g;
+    $query =~ s{\btag:"\s*([^\"$punct]*[^\"[:alnum:]$punct][^\"$punct]*?)\s*"}{tag_exact:"$1"}g;
+    $query =~ s{\btag:(?!")([^\s$punct]*[^[:alnum:]\s$punct][^\s$punct]*)}{tag_exact:$1}g;
+
+    # {bz: 4545}: Escape : and \ in quoted strings used for field queries.
+    $query =~ s{\b(\w+):"\s*([^\"$punct]*[\\:][^\"$punct]*?)\s*"}{
+        my ($field, $quoted) = ($1, $2);
+        $quoted =~ s/([\\:])/\\$1/g;
+        qq[$field:"$quoted"];
+    }eg;
 
     my @sort = $self->_sort_opts($opts{order}, $opts{direction}, $query_type);
     my $query_hash = {
