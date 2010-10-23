@@ -367,22 +367,40 @@ sub st_open_noeval {
     $self->handle_command('pause',20000);
 }
 
-=head2 st_create_pages($workspace, $numberpages)
+sub _get_random_page_content {
+    my $self = shift;
+    my $filename =  "t/share/pagecontent.txt";
+    local *INF;
+    open(INF, '<', $filename);
+    local $/;
+    my $lines = <INF>;
+    close(INF);
+    return split/\n/, $lines;
+}
+
+=head2 st_create_pages($workspace, $numberpages, optional $pageprefix)
 
 Creates $numpages number of pages in $workspace
 
 =cut
 
 sub st_create_pages {
-    my ($self, $workspace, $numberpages) = @_;
+    my ($self, $workspace, $numberpages, $pageprefix) = @_;
 
     my $user = Socialtext::User->new(username => $self->{'username'});
     my $hub = new_hub($workspace);
+    my @lines = $self->_get_random_page_content;
     for (my $idx=0; $idx<$numberpages;$idx++) {
-        my $title = "test page " . $idx;
+        if (!defined($pageprefix) or length($pageprefix)<1) {
+           $pageprefix = "test page ";
+        }
+        my $title = $pageprefix . $idx;
+  
+        my $content = shift @lines;
+        push @lines, $content;
         Socialtext::Page->new(hub => $hub)->create(
                                   title => $title,
-                                  content => 'This is a sample page',
+                                  content => $content,
                                   creator => $user);
     }
     ok 1, "Created $numberpages of pages in $workspace";
@@ -399,7 +417,6 @@ sub stub_page {
                               content => $content,
                               creator => Socialtext::User->SystemUser);
 }
-
 
 =head2 st_search_for($searchtype, $searchvalue)
 
