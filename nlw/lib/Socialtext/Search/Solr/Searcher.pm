@@ -162,8 +162,8 @@ sub _search {
     $query =~ s{\btag:"\s*([^\"$punct]*[^\"[:alnum:]$punct][^\"$punct]*?)\s*"}{tag_exact:"$1"}g;
     $query =~ s{\btag:(?!")([^\s$punct]*[^[:alnum:]\s$punct][^\s$punct]*)}{tag_exact:$1}g;
 
-    # {bz: 4545}: Escape : and \ in quoted strings used for field queries.
-    $query =~ s{\b(\w+):"\s*([^\"$punct]*[\\:][^\"$punct]*?)\s*"}{
+    # {bz: 4545}: Escape : and \ in quoted strings used for tag_exact queries.
+    $query =~ s{\b(tag_exact):"\s*([^\"$punct]*[\\:][^\"$punct]*?)\s*"}{
         my ($field, $quoted) = ($1, $2);
         $quoted =~ s/([\\:])/\\$1/g;
         qq[$field:"$quoted"];
