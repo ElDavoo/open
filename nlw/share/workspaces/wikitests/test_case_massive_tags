@@ -1,10 +1,10 @@
 | *Comment* | Test Case: Massive Tags |
 
 | set | ws | ws-osi-%%start_time%% |  |
-| st-admin | create-workspace --name %%ws%% --title %%ws%% | was created |  |
+| st-admin | create-workspace --name %%ws%% --title %%ws%% --empty | was created |  |
 | st-admin | add-member --e %%username%% --w %%ws%% | now has the role of 'member' |  |
 | st_create_pages | %%ws%% | 242 | osi-%%start_time%%- |
-| open_ok | /%%ws%% / |  |  |
+| open_ok | /%%ws%%/index.cgi?osi-%%start_time%%-0 |  |  |
 
 | *Comment* | Test Case: Massive Tags /data/workspaces/%%ws%%/pages/osi-%%start_time%%-0/tags |  |  |
 | POST | /data/workspaces/%%ws%%/pages/osi-%%start_time%%-0/tags | Content-Type=text/plain | Support Notes |
@@ -88,7 +88,6 @@
 | POST | /data/workspaces/%%ws%%/pages/osi-%%start_time%%-12/tags | Content-Type=text/plain | universal |
 | POST | /data/workspaces/%%ws%%/pages/osi-%%start_time%%-12/tags | Content-Type=text/plain | even |
 
-| POST | /data/workspaces/%%ws%%/pages/osi-%%start_time%%-13/tags | Content-Type=text/plain | Welcome |
 | POST | /data/workspaces/%%ws%%/pages/osi-%%start_time%%-13/tags | Content-Type=text/plain | MDUS |
 | POST | /data/workspaces/%%ws%%/pages/osi-%%start_time%%-13/tags | Content-Type=text/plain | PI RDBMS Interface |
 | POST | /data/workspaces/%%ws%%/pages/osi-%%start_time%%-13/tags | Content-Type=text/plain | universal |
@@ -519,7 +518,6 @@
 
 | POST | /data/workspaces/%%ws%%/pages/osi-%%start_time%%-82/tags | Content-Type=text/plain | TSA |
 | POST | /data/workspaces/%%ws%%/pages/osi-%%start_time%%-82/tags | Content-Type=text/plain | Team Foundation Server (TFS) |
-| POST | /data/workspaces/%%ws%%/pages/osi-%%start_time%%-82/tags | Content-Type=text/plain | Template |
 | POST | /data/workspaces/%%ws%%/pages/osi-%%start_time%%-82/tags | Content-Type=text/plain | universal |
 | POST | /data/workspaces/%%ws%%/pages/osi-%%start_time%%-82/tags | Content-Type=text/plain | even |
 
@@ -1657,8 +1655,6 @@
 | st-search | tag: even AND osi-%%start_time%%-12 |
 | st-result | osi-%%start_time%%-12 |
 
-| st-search | tag: Welcome |
-| st-result | osi-%%start_time%%-13 |
 | st-search | tag: MDUS |
 | st-result | osi-%%start_time%%-13 |
 | st-search | tag: "PI RDBMS Interface" |
@@ -2447,8 +2443,6 @@
 | st-search | tag: TSA |
 | st-result | osi-%%start_time%%-82 |
 | st-search | tag: "Team Foundation Server (TFS)" |
-| st-result | osi-%%start_time%%-82 |
-| st-search | tag: Template |
 | st-result | osi-%%start_time%%-82 |
 | st-search | tag: universal AND osi-%%start_time%%-82 |
 | st-result | osi-%%start_time%%-82 |
