@@ -97,9 +97,19 @@ sub _build_sql_where {
     my $self = shift;
     my $filter = $self->filter;
 
+    my %where = (
+        '-or'  => [
+            'lower(first_name)'      => { '-like' => $filter },
+            'lower(last_name)'       => { '-like' => $filter },
+            'lower(email_address)'   => { '-like' => $filter },
+            'lower(driver_username)' => { '-like' => $filter },
+            'lower(display_name)'    => { '-like' => $filter },
+        ],
+    );
+
     # get sql/bindings for Users that are actually visible to us
-    my ($vis_sql, @vis_bind);
-    {
+    if (!$self->all) {
+        my ($vis_sql, @vis_bind);
         $vis_sql = q{
             EXISTS (
                 SELECT 1
@@ -114,18 +124,10 @@ sub _build_sql_where {
             )
         };
         @vis_bind = ($self->viewer->user_id);
+        $where{'-nest'} = \[ $vis_sql, @vis_bind ],
     }
 
-    return {
-        '-nest' => \[ $vis_sql, @vis_bind ],
-        '-or'  => [
-            'lower(first_name)'      => { '-like' => $filter },
-            'lower(last_name)'       => { '-like' => $filter },
-            'lower(email_address)'   => { '-like' => $filter },
-            'lower(driver_username)' => { '-like' => $filter },
-            'lower(display_name)'    => { '-like' => $filter },
-        ],
-    };
+    return \%where;
 }
 
 has 'sql_order' => ( is => 'ro', isa => 'HashRef', lazy_build => 1 );
