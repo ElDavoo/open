@@ -27,11 +27,11 @@ sub parse {
     my $query_string = shift;
 
     # Fix the raw query string.  Mostly manipulating "field:"-like strings.
-    my @tokens = split(/("[^"]+")/, $query_string);
+    my @tokens = split(/(tag(?:_exact)?:\s*"[^"]+")/i, $query_string);
     $query_string = '';
     for my $token ( @tokens ) {
-        # {bz: 4545}: Don't munge within quoted phrases. 
-        if ($token =~ /^"[^"]+"$/) {
+        # {bz: 4545}: Don't munge within quoted tag/tag_exact field values. 
+        if ($token =~ /^tag(?:_exact)?:\s*"[^"]+"$/i) {
             $query_string .= $token;
             next;
         }
