@@ -35,6 +35,8 @@ use LWP::UserAgent;
 use Socialtext::l10n qw(loc);
 use YAML qw/LoadFile/;
 use DateTime;
+use File::Basename;
+use File::Spec;
 
 # mix-in some commands from the Socialtext fixture
 # XXX move bodies to SocialBase?
@@ -369,9 +371,16 @@ sub st_open_noeval {
     $self->handle_command('pause',20000);
 }
 
+sub _relative_filename_to_absolute {
+    my $self = shift;
+    my $filename = shift;
+    return $filename if File::Spec->file_name_is_absolute($filename);
+    return File::Spec->rel2abs(dirname(__FILE__) . "/../../../" . $filename);
+}
+
 sub _get_random_page_content {
     my $self = shift;
-    my $filename =  "t/share/pagecontent.txt";
+    my $filename = $self->_relative_filename_to_absolute("t/share/pagecontent.txt");
     local *INF;
     open(INF, '<', $filename);
     local $/;
@@ -419,7 +428,6 @@ sub stub_page {
                               content => $content,
                               creator => Socialtext::User->SystemUser);
 }
-
 
 =head2 st_search_for($searchtype, $searchvalue)
 
@@ -1640,7 +1648,7 @@ sub put_sheet {
     my $uri      = shift;
     my $filename = shift;
 
-    my $dir = "t/wikitests/test-data/socialcalc";
+    my $dir = $self->_relative_filename_to_absolute("t/wikitests/test-data/socialcalc");
     my $file = "$dir/$filename";
     die "Can't find spreadsheet at $file" unless -e $file;
     my $content = Socialtext::File::get_contents($file);
@@ -2261,7 +2269,7 @@ Imitates sending an email to a workspace
 sub deliver_email {
     my ($self, $workspace, $email_name) = @_;
 
-    my $in = Socialtext::File::get_contents("t/test-data/email/$email_name");
+    my $in = Socialtext::File::get_contents($self->_relative_filename_to_absolute("t/test-data/email/$email_name"));
     $in =~ s{^Subject: (.*)}{Subject: $1 $^T}m;
 
     my ($out, $err);
@@ -2304,7 +2312,7 @@ sub set_from_subject {
     my $self = shift;
     my $name = shift || die "email-name is mandatory for set-from-email";
     my $email_name = shift || die "name is mandatory for set-from-email";
-    my $in = Socialtext::File::get_contents("t/test-data/email/$email_name");
+    my $in = Socialtext::File::get_contents($self->_relative_filename_to_absolute("t/test-data/email/$email_name"));
     if ($in =~ m{^Subject: (.*)}m) {
         ($self->{$name} = "$1 $^T") =~ s{^Re: }{};
     }

@@ -1,8 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>354</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-354.air</url>
-<description><![CDATA[[Build 354 - Wed Oct 20 16:40:35 PDT 2010]
+  <version>359</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-359.air</url>
+<description><![CDATA[[Build 359 - Fri Oct 22 03:47:13 PDT 2010]
+* Only refresh when push is actually desynchronized.
+
+[Build 358 - Thu Oct 21 08:54:04 PDT 2010]
+* Workspaces: "System User" no longer shows a broken avatar. {bz: 4473}
+* "Log me in automatically" now works more consistently.
+
+[Build 357 - Wed Oct 20 23:01:03 PDT 2010]
+* Hide the "More" button in Signal/Search as it doesn't work (yet).
+
+[Build 356 - Wed Oct 20 22:48:58 PDT 2010]
+* Search/Signals should not affect Search/All's spinner anymore.
+
+[Build 355 - Wed Oct 20 22:45:09 PDT 2010]
+* Repeated searches in Signal/Search tab now works again. (regression in build 347).
+
+[Build 354 - Wed Oct 20 16:40:35 PDT 2010]
 * When server returns 503, retry the request in 1sec.
 * When restarting push client, use backoff_timeout to avoid overwhelming the server.
 

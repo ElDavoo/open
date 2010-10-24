@@ -510,6 +510,8 @@ sub st_search {
     
     $sel->wait_for_page_to_load_ok($self->{selenium_timeout});
     
+    $opt2 = '' unless defined $opt2;
+
     if ($self->{'skin'} eq 's2') {
         $self->{selenium}->text_like('id=st-list-title', qr/\Q$opt2\E/);
     } elsif ($self->{'skin'} eq 's3') {

@@ -18,7 +18,7 @@
 | code-is   | 201                                                    |                        |                                                               |
 | PUT       | /data/workspaces/%%workspace%%/pages/quote_3/tags/quote  |                        |                                                               |
 | code-is   | 201                                                    |                        |                                                               |
-| PUT       | /data/workspaces/%%workspace%%/pages/quote_4/tags/Socialtext+Blog  |                        |                                                               |
+| PUT       | /data/workspaces/%%workspace%%/pages/quote_4/tags/Socialtext%20Weblog  |                        |                                                               |
 | code-is   | 201                                                    |                        |                                                               |
 | job-count | PageIndex                                              | 12                     |                                                               |
 
