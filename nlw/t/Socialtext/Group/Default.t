@@ -59,7 +59,7 @@ retrieve_default_group: {
         '... with matching primary_account_id';
     is $retrieved->created_by_user_id, $group->created_by_user_id,
         '... with matching created_by_user_id';
-    is $retrieved->creation_datetime, $group->creation_datetime,
+    is ''.$retrieved->creation_datetime, ''.$group->creation_datetime,
         '... with matching creation_datetime';
 }
 
