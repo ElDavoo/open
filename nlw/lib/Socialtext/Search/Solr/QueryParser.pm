@@ -61,7 +61,7 @@ sub _build_searchable_fields {
     ]
 }
 
-around 'munge_raw_query_string' => sub {
+around 'parse' => sub {
     my $orig = shift;
 
     my $query = $orig->(@_);
