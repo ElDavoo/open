@@ -27,12 +27,14 @@ sub parse {
     my $query_string = shift;
 
     # Fix the raw query string.  Mostly manipulating "field:"-like strings.
-    my @tokens = split(/(tag(?:_exact)?:\s*"[^"]+")/i, $query_string);
+    my @tokens = split(/\b((?:category|tag(?:_exact)?):\s*"[^"]+")/i, $query_string);
     $query_string = '';
     for my $token ( @tokens ) {
         # {bz: 4545}: Don't munge within quoted tag/tag_exact field values. 
-        if ($token =~ /^tag(?:_exact)?:\s*"[^"]+"$/i) {
-            $query_string .= $token;
+        if ($token =~ /^(category|tag(?:_exact)?):\s*("[^"]+")$/i) {
+            my ($field, $value) = (lc $1, $2);
+            $field = 'tag' if $field eq 'category';
+            $query_string .= "$field:$value";
             next;
         }
         $query_string .= $self->munge_raw_query_string($token, @_);
