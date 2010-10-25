@@ -3643,7 +3643,9 @@ body#dashBoard .widget .widgetHeaderTitle img {
     margin-right: 10px;
     vertical-align: bottom;
 }
-body#dashBoard .widget .widgetHeaderTitle span {
+
+body#dashBoard .tan .widgetHeaderTitle {
+    color: #0C5A9C;
 }
 
 body#dashBoard .widget .widgetHeaderTitle {
