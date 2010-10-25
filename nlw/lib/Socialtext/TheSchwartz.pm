@@ -1,9 +1,10 @@
 package Socialtext::TheSchwartz;
 # @COPYRIGHT@
 use Moose;
-use Socialtext::SQL (); # call $dbh-> methods in this class.
+use Socialtext::SQL qw/:txn/; # call $dbh-> methods in this class.
 use TheSchwartz::Moosified;
 use Carp qw/croak/;
+use List::MoreUtils qw/any/;
 use namespace::clean -except => 'meta';
 
 extends qw/TheSchwartz::Moosified/;
@@ -228,6 +229,46 @@ sub move_jobs_by {
               AND grabbed_until <= $unixtime
         });
         $sth->execute($args->{seconds}, $funcid, $args->{uniqkey});
+    }
+}
+
+sub bulk_insert {
+    my $self = shift;
+    my $protojob = shift;
+    my $jobs = shift;
+    my $dbh = Socialtext::SQL::get_dbh();
+
+    my $funcid = $self->funcname_to_id($dbh, $protojob->funcname);
+    die "can't use ref-args in bulk_insert" if any { ref $_->{arg} } @$jobs;
+    die "can't use tabbed-args in bulk_insert" if any { $_->{arg} =~ /\t/ } @$jobs;
+
+    my @cols = qw(
+        funcid arg uniqkey insert_time run_after grabbed_until priority coalesce
+    );
+    my $cols = join(', ',@cols);
+    my $now = time;
+    $protojob->insert_time($now);
+    $protojob->funcid($funcid);
+    my @protorow = %{$protojob->as_hashref};
+
+    my $table_job = $self->prefix . 'job';
+
+    # if these INSERTs are too slow, try COPY IN to a temp table then INSERT
+    # ... SELECT ... WHERE (doesnt_violate_constraints).
+    my $sth = $dbh->prepare(
+        "INSERT INTO $table_job ($cols) VALUES (?,?,?,?,?,?,?,?)");
+
+    for my $job (@$jobs) {
+        my $row = { @protorow, %$job, grabbed_until => 0 };
+        eval {
+            sql_begin_work();
+            $sth->execute(map { defined $row->{$_} ?  $row->{$_} : '' } @cols);
+            sql_commit();
+        };
+        if ($@) {
+            warn $@;
+            sql_rollback();
+        }
     }
 }
 
