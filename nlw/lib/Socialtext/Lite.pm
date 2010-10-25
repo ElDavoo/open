@@ -11,6 +11,8 @@ use Socialtext::l10n qw(loc);
 use Socialtext::Timer;
 use Socialtext::Session;
 use Socialtext::Formatter::LiteLinkDictionary;
+use Socialtext::Encode;
+use Socialtext::Model::Pages;
 
 use namespace::clean -except => 'meta';
 
@@ -325,8 +327,15 @@ sub _pages_for_tag {
     my $self = shift;
     my $tag = shift;
 
-    # In the future, use category->_get_pages_for_listview, which is fast
-    my $rows = $self->hub->category->get_page_info_for_category($tag);
+    $tag = Socialtext::Encode::ensure_is_utf8($tag);
+    my $rows = Socialtext::Model::Pages->By_tag(
+        hub          => $self->hub,
+        workspace_id => $self->hub->current_workspace->workspace_id,
+        tag          => $tag,
+        order_by     => 'last_edit_time DESC',
+        do_not_need_tags => 1,
+    );
+
     return $self->_process_template(
         $TAG_TEMPLATE,
         title     => loc("Tag [_1]", $tag),

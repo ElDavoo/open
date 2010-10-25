@@ -5,8 +5,8 @@
     [% row = load_row_times(row) %]
     <li>
         <a title="[% row.Subject | html %]"
-            href="/m/page/[% row.workspace_name || ws.name %]/[% row.page_uri %]">[% row.Subject |html %]</a>
-        - [% row.DateLocal %]
+            href="/m/page/[% row.workspace_name || ws.name %]/[% row.page_id %]">[% row.name | html %]</a>
+        - [% row.datetime_for_user %]
     </li>
 [% END -%]
 </ul>
