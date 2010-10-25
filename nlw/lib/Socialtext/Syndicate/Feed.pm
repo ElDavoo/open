@@ -7,6 +7,7 @@ use DateTime;
 use DateTime::Format::W3CDTF;
 use Socialtext::Timer;
 use Socialtext::URI;
+use Socialtext::l10n qw(loc);
 
 our $VERSION = 0.01;
 
@@ -114,6 +115,9 @@ sub _item_as_html {
     }
     Socialtext::Timer->Pause('_item_as_html_tags');
 
+    my $create_time = $page->original_revision->datetime_for_user;
+
+    push @html_headers, "<div>".loc('Originally created').": ". $create_time."</div>";
     if (my $summary = $page->edit_summary) {
         if ($summary ne '(comment)') {
             push @html_headers, "<div>$summary</div>";
