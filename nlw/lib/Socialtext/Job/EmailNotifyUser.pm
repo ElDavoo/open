@@ -12,6 +12,15 @@ override 'retry_delay' => sub { 0 };
 
 sub do_work {
     my $self = shift;
+
+    # For performance, we flatten ->arg into a single scalar when bulk-adding
+    # these jobs.  But the gap protector will create them as normal.
+    if (!ref($self->arg)) {
+        my ($user_id, $ws_id, $pages_after) = split m/-/, $self->arg;
+        $self->arg({ user_id => $user_id, workspace_id => $ws_id,
+            pages_after => $pages_after });
+    }
+
     my $user = $self->user or return;
     my $ws   = $self->workspace or return;
     my $hub  = $self->hub or return;
@@ -135,6 +144,7 @@ sub _frequency_pref {
     my $prefs = shift;
     return $prefs->{notify_frequency}->value * 60;
 }
+
 
 __PACKAGE__->meta->make_immutable;
 1;

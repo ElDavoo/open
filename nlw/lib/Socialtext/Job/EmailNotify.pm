@@ -51,18 +51,11 @@ sub do_work {
         my $user_id = shift;
         my $freq = shift;
         my $after = $pages_after + $freq;
-        my $job = TheSchwartz::Moosified::Job->new(
-            funcname => $job_class,
-            priority => -64,
+        push @jobs, {
             run_after => $after,
             uniqkey => "$ws_id-$user_id",
-            arg => {
-                user_id => $user_id,
-                workspace_id => $ws_id,
-                pages_after => $pages_after,
-            }
-        );
-        push @jobs, $job if $job;
+            arg => "$user_id-$ws_id-$pages_after",
+        };
     };
 
     my $default_freq = $self->_default_freq * 60;
@@ -98,9 +91,14 @@ sub do_work {
 
     Inserting_jobs: {
         my $t = time_scope 'insert_jobs';
-        warn("Creating " . scalar(@jobs) . " new $job_class jobs");
         $hub->log->info("Creating " . scalar(@jobs) . " new $job_class jobs");
-        $self->job->client->insert($_) for @jobs;
+        $self->job->client->bulk_insert(
+            TheSchwartz::Moosified::Job->new(
+                funcname => $job_class,
+                priority => -64,
+            ),
+            \@jobs
+        );
     }
 
     $self->completed;
