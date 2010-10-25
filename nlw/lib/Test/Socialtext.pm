@@ -282,6 +282,7 @@ sub ceqlotron_run_synchronously() {
         diag $message;
     }
     my @jobid;
+    local $ENV{ST_JOBS_VERBOSE} = 1;
     while (my $job = Socialtext::Jobs->find_job_for_workers()) {
         diag "Running ceq job " . Socialtext::Jobs->job_to_string($job) . "\n" unless $quiet;
         if ($funcname and ($job->funcname || '') !~ /$funcname$/i) {
