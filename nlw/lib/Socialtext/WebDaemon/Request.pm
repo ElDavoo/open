@@ -10,13 +10,17 @@ use namespace::clean -except => 'meta';
 has 'env' => (is => 'ro', isa => 'HashRef', required => 1);
 has 'query' => (is => 'rw', isa => 'HashRef', lazy_build => 1);
 has 'body' => (is => 'ro', isa => 'Maybe[ScalarRef]', required => 1);
-has 'for_user_id' => (is => 'rw', isa => 'Int', default => 0);
+has 'for_user_id' => (is => 'rw', isa => 'Int', default => 0,
+    trigger => \&update_ident);
 
 has 'log_params' => (is => 'rw', isa => 'HashRef', default => sub {{}});
 has 'started_at' => (is => 'rw', isa => 'Num');
 has '_pid' => (is => 'rw', isa => 'Int');
 
-has 'ident' => (is => 'rw', isa => 'Str', default => '??', writer => '_ident');
+has 'ident' => (
+    is => 'ro', isa => 'ScalarRef',
+    default => sub {my $x=''; \$x},
+);
 has 'responding' => (is => 'ro', isa => 'Bool', writer => '_responding');
 
 has '_r' => (is => 'ro', isa => 'Feersum::Connection', required => 1,
@@ -34,20 +38,18 @@ sub BUILD {
     my $self = shift;
     weaken $self;
 
-    $self->_ident("fd=".$self->_r->fileno().
-        ', user_id='.$self->for_user_id);
+    my $ident_ref = $self->update_ident;
 
     DAEMON()->stats->{"current connections"}++;
     $self->_r->response_guard(guard {
-        my $ident = defined $self ? $self->ident : '??';
-        trace "=> DROP $ident\n";
+        trace "=> DROP $$ident_ref\n";
         DAEMON()->stats->{"current connections"}--;
     });
 
     $self->started_at(AE::now);
     my $env = $self->env;
     $self->_pid($$); # for detecting forks
-    trace "=> REQUEST ".$self->ident.": ".
+    trace "=> REQUEST ".$$ident_ref.": ".
         "$env->{REQUEST_METHOD} $env->{PATH_INFO} $env->{QUERY_STRING}\n";
 }
 
@@ -58,6 +60,14 @@ sub _build_query {
     return { nowait => 0, client_id => '', @qp }
         if (@qp % 2 == 0);
     return {};
+}
+
+sub update_ident {
+    my $self = shift;
+    my $user_id = shift || $self->for_user_id;
+    my $ident_ref = $self->ident;
+    $$ident_ref = "fd=".$self->_r->fileno().', user_id='.$user_id;
+    return $ident_ref;
 }
 
 sub log_start {
@@ -127,7 +137,7 @@ sub respond {
 
     $r->send_response($message, $hdrs, $content);
     $self->_responding(1);
-    trace "<= RESPONSE ".$self->ident.": ".$message.$/;
+    trace "<= RESPONSE ".${$self->ident}.": ".$message.$/;
 
     return;
 }
@@ -140,7 +150,7 @@ sub stream_start {
     confess "couldn't start streaming" unless $w;
     $self->_w($w);
     $self->_responding(1);
-    trace "<= STREAM START ".$self->ident.": ".$message;
+    trace "<= STREAM START ".${$self->ident}.": ".$message;
 }
 
 sub trickle {
@@ -148,10 +158,17 @@ sub trickle {
     weaken $self;
     my $w = $self->_w;
     weaken $w;
+    my $ident_ref = $self->ident;
     my $t; $t = AE::timer($every, $every, sub {
         # cancel if request was finished
         return undef $t unless ($self && $w && $self->alive);
-        $w->write($ignorable);
+        try {
+            $w->write($ignorable);
+        }
+        catch {
+            trace "<= STREAM FAIL ".$$ident_ref." $_";
+            $self->_finishing(499);
+        };
     });
 }
 
@@ -159,7 +176,7 @@ sub stream_end {
     my ($self, $cb) = @_;
     my ($r,$w) = $self->_finishing(200, $cb);
     $w->close;
-    trace "<= STREAM END ".$self->ident;
+    trace "<= STREAM END ".${$self->ident};
 }
 
 __PACKAGE__->meta->make_immutable;
