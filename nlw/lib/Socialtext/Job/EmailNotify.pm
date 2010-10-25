@@ -3,6 +3,7 @@ package Socialtext::Job::EmailNotify;
 use Moose;
 use Socialtext::PreferencesPlugin;
 use Socialtext::EmailNotifyPlugin;
+use Socialtext::Timer qw/time_scope/;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
@@ -64,33 +65,44 @@ sub do_work {
         push @jobs, $job if $job;
     };
 
-    # Grab all the users with no workspace preference
-    my $no_pref
-        = Socialtext::PreferencesPlugin->Users_with_no_prefs_for_ws($ws_id);
     my $default_freq = $self->_default_freq * 60;
-    for my $user_id (@$no_pref) {
-        $create_job->($user_id, $default_freq);
+
+    # Grab all the users with no workspace preference
+    No_workspace_pref: {
+        my $t = time_scope 'no_ws_pref';
+        my $no_pref
+            = Socialtext::PreferencesPlugin->Users_with_no_prefs_for_ws($ws_id);
+        for my $user_id (@$no_pref) {
+            $create_job->($user_id, $default_freq);
+        }
     }
 
     # Now grab all the users that do have workspace prefs
     # Note: this may grab users that are not in the workspace, but this
     # condition will be tested by the job itself.
-    my $prefs = Socialtext::PreferencesPlugin->Prefblobs_for_ws($ws_id);
-    my $pref_name = $self->_pref_name;
-    for my $pref (@$prefs) {
-        my ($user_id, $blob) = @$pref;
+    Has_workspace_pref: {
+        my $t = time_scope 'has_ws_pref';
+        my $prefs = Socialtext::PreferencesPlugin->Prefblobs_for_ws($ws_id);
+        my $pref_name = $self->_pref_name;
+        for my $pref (@$prefs) {
+            my ($user_id, $blob) = @$pref;
 
-        my $freq = $default_freq;
-        if ($blob and $blob =~ m/"\Q$pref_name\E":"(\d+)"/) {
-            $freq = $1 * 60;
+            my $freq = $default_freq;
+            if ($blob and $blob =~ m/"\Q$pref_name\E":"(\d+)"/) {
+                $freq = $1 * 60;
+            }
+            $create_job->($user_id, $freq);
         }
-        $create_job->($user_id, $freq);
     }
 
-    warn("Creating " . scalar(@jobs) . " new $job_class jobs");
-    $hub->log->info("Creating " . scalar(@jobs) . " new $job_class jobs");
 
-    $self->job->client->insert($_) for @jobs;
+    Inserting_jobs: {
+        my $t = time_scope 'insert_jobs';
+        warn("Creating " . scalar(@jobs) . " new $job_class jobs");
+        $hub->log->info("Creating " . scalar(@jobs) . " new $job_class jobs");
+        $self->job->client->insert($_) for @jobs;
+    }
+
     $self->completed;
 }
 
