@@ -17,45 +17,83 @@ This test case assumes a logged in user.
 
 | comment         | STARTING Test case: REST event activites |
 
-| comment         | set up fixture    |                                      |             |
-| set             | workspace         | foobar%%start_time%%                 |             |
-| create-workspace | %%workspace%% |
-| set             | account           | a%%start_time%%                      |             |
-| create-account  | %%account%%       |                                      |             |
-| set             | username          | u%%start_time%%@ken.socialtext.net   |             |
-| create-user     | %%username%%      | password                             | %%account%% |
-| add-member      | %%username%%      | %%workspace%%                        |             |
-| set-user-id     | theuser_id        | %%username%%                         |             |
-| http-user-pass  | %%username%%      | password                             |             |
-| set             | otherusername     | u2-%%start_time%%@ken.socialtext.net |             |
-| create-user     | %%otherusername%% | password                             | %%account%% |
-| add-member      | %%otherusername%% | %%workspace%%                        |             |
-| set-user-id     | otheruser_id      | %%otherusername%%                    |             |
+| comment          | set up fixture    |                                      |             |
+| set              | workspace         | foobar%%start_time%%                 |             |
+| create-workspace | %%workspace%%     |                                      |             |
+| set              | account           | a%%start_time%%                      |             |
+| create-account   | %%account%%       |                                      |             |
+| set              | username          | u%%start_time%%@ken.socialtext.net   |             |
+| create-user      | %%username%%      | password                             | %%account%% |
+| add-member       | %%username%%      | %%workspace%%                        |             |
+| set-user-id      | theuser_id        | %%username%%                         |             |
+| http-user-pass   | %%username%%      | password                             |             |
+| set              | otherusername     | u2-%%start_time%%@ken.socialtext.net |             |
+| create-user      | %%otherusername%% | password                             | %%account%% |
+| add-member       | %%otherusername%% | %%workspace%%                        |             |
+| set-user-id      | otheruser_id      | %%otherusername%%                    |             |
+| set              | thirdusername     | u3-%%start_time%%@ken.socialtext.net |             |
+| create-user      | %%thirdusername%% | password                             | %%account%% |
+| add-member       | %%thirdusername%% | %%workspace%%                        |             |
+| set-user-id      | thirduser_id      | %%thirdusername%%                    |             |
 
 | st-create-pages | %%workspace%% | 2 |
 | set | page | test_page_1 |
 
 | st-clear-events |
 
-| comment   | check that we're starting clean                 |
-| get       | /data/events                                    | application/json |
-| code-is   | 200                                             |
-| body-like | []                                              |
+| comment   | check that we're starting clean |                  |
+| get       | /data/events                    | application/json |
+| code-is   | 200                             |                  |
+| body-like | []                              |                  |
 
-| comment   | no activities yet                               |
+| comment   | no activities yet                    |                  |
 | get       | /data/events/activities/%%username%% | application/json |
-| code-is   | 200                                             |
-| body-like | []                                              |
+| code-is   | 200                                  |                  |
+| body-like | []                                   |                  |
 
-| comment         | check that signals are included in activities |                      |
-| post-json       | /data/signals                                 | {"signal":"*booya*"} |
-| code-is         | 201                                           |                      |
-| get             | /data/events/activities/%%username%%          | application/json     |
-| code-is         | 200                                           |                      |
-| body-like       | qr/"html":".+<b>booya<\/b>.+"/                |                      |
-| json-parse      |                                               |                      |
-| json-array-size | 1                                             |                      |
+####################################
+| *Comment* | Signal Conversations |
+####################################
 
+| set | mention | <a href="/st/profile/%%theuser_id%%">u%%start_time%%</a> |
+
+# From the user
+| post-json | /data/signals | {"signal":"*booya*"} |
+| code-is   | 201           |                      |
+
+# From the user in reply
+| http-user-pass   | %%otherusername%% | password                                                               |
+| post-json        | /data/signals     | {"signal":"Starting some thread"}                                      |
+| code-is          | 201               |                                                                        |
+| set-from-content | signal_id         | qr/"signal_id":"(\d+)"/                                                |
+| http-user-pass   | %%username%%      | password                                                               |
+| post-json        | /data/signals     | {"signal":"I'm replying", "in_reply_to":{"signal_id":"%%signal_id%%"}} |
+| code-is          | 201               |                                                                        |
+
+# Mentions from other users
+| http-user-pass | %%otherusername%% | password                                       |
+| post-json      | /data/signals     | {"signal":"Mentioning {user: %%theuser_id%%}"} |
+| code-is        | 201               |                                                |
+
+# Mentions in replies
+| http-user-pass   | %%otherusername%% | password                                                                                  |
+| post-json        | /data/signals     | {"signal":"Starting a thread"}                                                            |
+| code-is          | 201               |                                                                                           |
+| set-from-content | signal_id         | qr/"signal_id":"(\d+)"/                                                                   |
+| http-user-pass   | %%thirdusername%% | password                                                                                  |
+| post-json        | /data/signals     | {"signal":"in reply {user: %%theuser_id%%}", "in_reply_to":{"signal_id":"%%signal_id%%"}} |
+
+# Verify
+| get-json         | /data/events/activities/%%username%%?html=0 | application/json       |
+| json-response-is | 200                                         | 4                      |
+| json-path-is     | $[0].context.body                           | in reply %%mention%%   |
+| json-path-is     | $[1].context.body                           | Mentioning %%mention%% |
+| json-path-is     | $[2].context.body                           | I'm replying           |
+| json-path-is     | $[3].context.body                           | <b>booya</b>           |
+
+####### Done conversation tests ########
+
+| http-user-pass   | %%username%%      | password                                                               |
 | st-clear-events |
 
 | comment | post a person event | . | .. |
