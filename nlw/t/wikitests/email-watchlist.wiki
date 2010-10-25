@@ -10,9 +10,8 @@
 
 | Comment | Turn off regular email notify to simplify testing |
 | post-form | /%%workspace%%/index.cgi | action=preferences_settings&preferences_class_id=email_notify&email_notify__notify_frequency=0&email_notify__links_only=condensed&email_notify__sort_order=name&Button=save |
-| code-is   | 200                      |                                                                                                                                                                             |
-| body-like | Preferences saved        |                                                                                                                                                                             |
-
+| code-is   | 200               |
+| body-like | Preferences saved |
 
 | set | pref_prefix | action=preferences_settings&preferences_class_id=watchlist&Button=save&watchlist__watchlist_notify_frequency |
 
@@ -38,6 +37,7 @@ edit a page, wait, get an email
 | job-exists  | WatchlistNotify | %%workspace_id%%-foo |                  |
 | job-exists  | WatchlistNotify | %%workspace_id%%-baz |                  |
 | job-exists  | WatchlistNotify | %%workspace_id%%-bar |                  |
+| job-count   | WatchlistNotifyUser | 0                    |                  |
 
 | Comment | process jobs and check that we have notifications for the future |
 
@@ -53,6 +53,7 @@ edit a page, wait, get an email
 | st-process-jobs      |                     |   |
 | job-count            | WatchlistNotifyUser | 1 |
 | email-like           | __NO CONTENT!__     |   |
+
 
 | Comment | move time to process the user jobs |
 
