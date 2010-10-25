@@ -142,26 +142,6 @@ div#mainNav ul.level2 li {
     background: none;
 }
 
-/* IE6-specific hacks to readjust widget header margins */
-* html div.widgetHeader a.close {
-    -margin-right: 8px;
-}
-
-* html div.widgetHeader div.widgetHeaderTitle {
-    -margin-top: 7px;
-    -margin-left: -20px;
-}
-
-body#dashBoard div.widget.tan div.widgetHeader div.widgetHeaderTitle {
-    -margin-left: -11px;
-}
-
-* html div.widget.regular div.widgetHeader h4 span {
-    /* Make the spaces above widget titles draggable for IE6: {bz: 1323} */
-    -padding-top: 9px !important;
-    -padding-bottom: 9px !important;
-}
-
 /* IE6-specific parts of {bz: 1338} */
 
 body#workSpace div#controls div#st-editing-tools-edit h1,
@@ -218,11 +198,6 @@ html>body#settingsPage div.widget div.widgetBottomRight {
 }
 html>body#contentPage div.widget div.widgetBottom {
         margin-left: -1px;
-}
-
-/* Give IE6 a reasonable size for widget title that won't cause wrapping */
-.widgetHeaderTitleBox {
-    -width: 170px;
 }
 
 #page-control-category-selector {
@@ -309,11 +284,6 @@ div.pagination-container .paging-forward {
 /* Purely a hack to counter {bz: 2930} */
 div#contentContainer {
     border-bottom: 1px solid transparent;
-}
-
-div.group_directory .widgetHeaderTitle {
-    position: static;
-    float: none;
 }
 
 #st-page-content .wiki br.st-last-br, #st-revision-display .wiki br.st-last-br {

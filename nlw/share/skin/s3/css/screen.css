@@ -1194,14 +1194,6 @@ body#settingsPage  div.widget div.widgetHeader h4 {
 	line-height: 25px;
 }
 
-body#dashBoard div.widget div.widgetHeader h4 {
-	line-height: 35px;
-	color: #505156;
-	font-weight: normal;
-	font-size: 14px;
-	float: left;
-}
-
 body#dashBoard div.widget.tan div.widgetHeader h4,
 body#dashBoard div.widget.gray div.widgetHeader h4 {
 	margin-left: 12px;
@@ -2287,7 +2279,7 @@ body#dashBoard div#lastsignal {
     color: #666;
     padding: 10px 20px 10px 10px; 
     margin: 0;
-    display: block;
+    display: none;
     text-align:center;
     background:#FFFFFF url(../images/contentContainerTile.png) repeat-x scroll left top;
     border-left: 1px solid #759FB1;
@@ -3647,27 +3639,29 @@ span.st-weblog-nextentries:before {
     width: 89px;
 }
 
-.widgetHeaderTitle {
-    height: 28px;
-    overflow: hidden;
-    float: left;
+body#dashBoard .widget .widgetHeaderTitle img {
+    margin-right: 10px;
+    vertical-align: bottom;
+}
+body#dashBoard .widget .widgetHeaderTitle span {
+}
+
+body#dashBoard .widget .widgetHeaderTitle {
     position: absolute;
-}
-
-.widgetHeaderTitle img {
-    height: 23px;
-}
-
-.widgetHeaderTitleBox {
+    font-size: 14px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    padding-right: 3px;
+    padding: 10px 3px 0 15px;
 }
 
-.widgetHeader {
+body#dashBoard .widget .widgetHeader {
     white-space: nowrap;
     overflow: hidden;
+
+    color: #505156;
+    font-weight: normal;
+    font-size: 14px;
 }
 
 .widgetContent {
