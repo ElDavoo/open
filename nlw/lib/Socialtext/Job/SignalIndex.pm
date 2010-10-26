@@ -2,6 +2,7 @@ package Socialtext::Job::SignalIndex;
 # @COPYRIGHT@
 use Socialtext::Signal::Topic;
 use Socialtext::SQL qw/sql_txn/;
+use Socialtext::JSON qw/encode_json/;
 use Moose;
 use namespace::clean -except => 'meta';
 
@@ -35,10 +36,17 @@ sub _rebuild_signal_topics {
             'Yes, I really, really mean it.' => 1,
         );
 
-        my (undef,undef,$topics) = $signal->ParseSignalBody(
-            $signal->body, $signal->user);
+        # ignore any errors generating topics.
+        my (undef,undef,$topics) = eval {
+            $signal->ParseSignalBody($signal->body, $signal->user);
+        };
 
+        # De-dupe topics.
+        my %seen_topic;
         for my $topic (@$topics) {
+            my %attrs = map {$_=>$topic->$_} $topic->_Hash_attrs;
+            my $id = encode_json({ %attrs, signal_id => 0 });
+            next if $seen_topic{$id}++;
             $topic->signal($signal);
             $topic->_insert();
         }
