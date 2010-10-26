@@ -17,8 +17,8 @@ my $top = -1;
 my $debug = 0;
 GetOptions(
     'file:s' => \$file,
-    'first:s' => \$first,
-    'last:s' => \$last,
+    'start|first:s' => \$first,
+    'end|last:s' => \$last,
     'exclude:s' => \@exclude,
     'include:s' => \@include,
     'interval:s' => \$interval,
@@ -137,17 +137,29 @@ st-nlwlogotcsv --file [--last --first --min --top --interval --exclude --include
 
 =over 4
 
+=item B<--exclude>
+
+Exclude a URL from the stats. You can use more than one --exclude parameter. If you specify an exclude you cannot specify an include.
+
 =item B<--file>
 
 Name of the log file to parse
 
-=item B<--last>
-
-The last time to include in the CSV file. Format is HH:MM:SS. If not included the CSV file will end with the last entry in the log file.
-
 =item B<--first>
 
 The first time to include in the CSV file. Format is HH:MM:SS. If not included the CSV file will start with the first entry in the log file.
+
+=item B<--include>
+
+Include only the URL from the stats. You can use more than one --include parameter. If you specify an include you cannot specify an exclude.
+
+=item B<--interval>
+
+Specify m if you want to group calls by the minute, s if by the second. Default is s
+
+=item B<--last>
+
+The last time to include in the CSV file. Format is HH:MM:SS. If not included the CSV file will end with the last entry in the log file.
 
 =item B<--min>
 
@@ -156,18 +168,6 @@ The minimum number of requests, over the time period of the CSV file, for a URL 
 =item B<--top>
 
 Restrict the output to the top N calls; e.g. --top 5 will only output the top 5 calls.
-
-=item B<--interval>
-
-Specify m if you want to group calls by the minute, s if by the second. Default is s
-
-=item B<--exclude>
-
-Exclude a URL from the stats. You can use more than one --exclude parameter. If you specify an exclude you cannot specify an include.
-
-=item B<--include>
-
-Include only the URL from the stats. You can use more than one --include parameter. If you specify an include you cannot specify an exclude.
 
 =item B<--debug>
 
