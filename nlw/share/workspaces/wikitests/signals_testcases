@@ -19,7 +19,6 @@ A convenience testset for running all of our Signals tests
 * [Test Case: Signal From Private Group]
 * [Test Case: Signal From Profile]
 
-* [Test Case: Signal to Networks]
 * [Test Case: Signals Activities Interaction]
 * [Test Case: Signals Follow Filter With Pagination]
 

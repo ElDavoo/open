@@ -16,7 +16,6 @@ Report Testcases needs to run in a pristine environment to pass
 
 * [Test Case: RSS Icons]
 * [Test Case: Table Info]
-* [Test Case: Signal to Networks]
 * [Test Case: Signals Search]
 * [Test Case: Signals Search Pagination]
 * [Test Case: Signals Activities Interaction]

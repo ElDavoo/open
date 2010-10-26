@@ -6,7 +6,6 @@ Removed `Test case: Business Control Panel` as unnecessary overhead for CI
 * [Test Case: RSS Icons]
 * [Test Case: Gadgets Galore]
 * [Test Case: Table Info]
-* [Test Case: Signal to Networks]
 * [Test Case: Signals Search]
 * [Test Case: Signals Search Pagination]
 * [Test Case: Signals Activities Interaction]
