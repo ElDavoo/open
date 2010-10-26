@@ -27,7 +27,7 @@
 | open_ok | /%%new_ws%%/index.cgi?action=changes&changes=all |  |
 
 | text_like | contentContainer | All Pages |
-| text_like | contentContainer | Showing 1 - 20 of |
+| text_like | contentContainer | Showing 1 - 4 of 4 |
 | click_and_wait | link=allpages spreadsheet0001%%start_time%% |  |
 | text_like | st-page-titletext | allpages spreadsheet0001%%start_time%% |
 
