@@ -4747,3 +4747,8 @@ ul.dropdownOptions li.disabled a:hover {
     text-align: center;
     padding: 4px 0;
 }
+
+#st-signal-this-frame {
+    min-height: 120px;
+    -height: 120px; /* For IE6 */
+}
