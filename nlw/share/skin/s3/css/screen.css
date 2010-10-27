@@ -4727,8 +4727,11 @@ ul.dropdownOptions li.disabled a:hover {
     color: #000000;
     cursor: pointer;
     padding: 2px;
-    width: 100px;
+    width: 110px;
     height: 15px;
+}
+#exploreTabs .first {
+    margin-left: 38px;
 }
 #exploreTabs .selected {
     background-color: #FFF;
