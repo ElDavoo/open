@@ -30,7 +30,6 @@
         - {dir: 'skin/common/javascript', file: 'Socialtext/socialtext-api.js'}
         - 's3.js'
         - 'people-avatar.js'
-        - 'dragiframe.min.js'
 'info.js':
     parts:
         - { template: 'template/info.js', config: '../info.yaml' }
