@@ -772,6 +772,11 @@ $(function() {
                 '-moz-box-shadow': '5px 5px 3px rgba(0, 0, 0, 0.3)',
                 '-webkit-box-shadow': '5px 5px 3px rgba(0, 0, 0, 0.3)'
             })
+            .append(
+                $('<img/>')
+                    .addClass('loader')
+                    .attr('src', "/static/skin/common/images/ajax-loader.gif")
+            )
             .appendTo($('body'))
             .fadeIn('fast');
 
