@@ -4752,3 +4752,7 @@ ul.dropdownOptions li.disabled a:hover {
     min-height: 120px;
     -height: 120px; /* For IE6 */
 }
+
+#st-signal-this-frame .loader {
+    margin-top: 55px;
+}
