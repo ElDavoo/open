@@ -100,7 +100,6 @@ sub import_workspace {
         );
         $self->_import_data_dirs();
         $self->_fixup_page_symlinks();
-        $self->_set_permissions();
         $self->_populate_db_metadata();
         $self->_rebuild_page_links();
 
@@ -204,9 +203,10 @@ sub _create_workspace {
     for my $plugin (keys %{ $info->{plugins}}) {
         eval { $ws->enable_plugin($plugin) };
     }
-    $adapter->hook('nlw.import_workspace', $ws, $info);
 
     $self->{workspace} = $ws;
+    $self->_set_permissions();
+    $adapter->hook('nlw.import_workspace', $ws, $info);
 }
 
 sub _workspace_info_file { $_[0]->{old_name} . '-info.yaml' }
