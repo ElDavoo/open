@@ -243,6 +243,7 @@ export_succeeds_when_profile_hidden: {
     );
 }
 
+###############################################################################
 # Test that signals to a group in this account is included.
 Export_signals_to_group: {
     my $account = create_test_account_bypassing_factory();
@@ -252,9 +253,9 @@ Export_signals_to_group: {
     $account->add_group(group => $group);
 
     my $sig = Socialtext::Signal->Create(
-        body => 'o hai',
-        group_ids => [$group->group_id],
-        user_id => $user->user_id,
+        body      => 'o hai',
+        group_ids => [ $group->group_id ],
+        user_id   => $user->user_id,
     );
     $sig->clear_user; # remove the ref to $user, so we re-create it later.
 
