@@ -534,7 +534,7 @@ sub original_revision {
     my $orig_id  = ($self->all_revision_ids)[0];
     return $self if !$page_id || !$orig_id || $page_id eq $orig_id;
 
-    my $orig_page = ref($self)->new(hub => $self->hub, id => $page_id);
+    my $orig_page = Socialtext::Page->new(hub => $self->hub, id => $page_id);
     $orig_page->revision_id( $orig_id );
     $orig_page->load;
     return $orig_page;
