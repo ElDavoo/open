@@ -4729,6 +4729,14 @@ ul.dropdownOptions li.disabled a:hover {
     padding: 2px;
     width: 110px;
     height: 15px;
+
+    /* Rounded cornders */
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 #exploreTabs .first {
     margin-left: 38px;
