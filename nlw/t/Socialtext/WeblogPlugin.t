@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use utf8;
 
-use Test::Socialtext tests => 21;
+use Test::Socialtext tests => 19;
 fixtures(qw( empty ));
 
 BEGIN {
@@ -24,16 +24,13 @@ WEBLOG_CACHE: {
 CREATE_BLOG: {
     my $hub = new_hub('empty');
 
-    my $category = $hub->weblog->create_weblog('foo');
-    check_category($hub, $category, 'foo Blog');
+    my $category = $hub->weblog->create_weblog($$);
+    check_category($hub, $category, "$$ Blog");
 
-    $category = $hub->weblog->create_weblog('foo blog');
-    check_category($hub, $category, 'foo blog');
-    
-    $category = $hub->weblog->create_weblog('bar Blog');
-    check_category($hub, $category, 'bar Blog');
+    $category = $hub->weblog->create_weblog("bar $$ Blog");
+    check_category($hub, $category, "bar $$ Blog");
 
-    $category = $hub->weblog->create_weblog('bar blog');
+    $category = $hub->weblog->create_weblog("bar $$ blog");
     is ($category, undef, 'error condition when repeat name');
     ok ((grep /There is already/, @{$hub->weblog->errors} ), 'error message correct when repeat name');
 
