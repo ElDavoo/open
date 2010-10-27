@@ -799,7 +799,10 @@ $(function() {
                 draggable: {
                     handle: '.top'
                 },
+<<<<<<< HEAD:nlw/share/skin/s3/javascript/s3.js
                 overlap: true,
+=======
+>>>>>>> 66b8a93... Construct a proper Activities.Widget object for signalthis {bz: 4534}:nlw/share/skin/s3/javascript/s3.js
                 instance_id: "0",
                 node: $div.get(0),
                 prefix: 'st-signalthis',
