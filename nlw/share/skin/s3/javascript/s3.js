@@ -753,30 +753,72 @@ $(function() {
             return;
         }
 
-        $('<iframe id="st-signal-this-frame" name="st-signal-this-frame" scrolling="no" src="/st/signalthis'
-            + '?status=%20'
-            + ';default_network=account-' + Socialtext.current_workspace_account_id
-            + ';workspace_id=' + encodeURIComponent(Socialtext.wiki_id)
-            + ';signal_this=' + encodeURIComponent(
-                '{link: ' + Socialtext.wiki_id + '[' + Socialtext.page_title + ']}'
-            ) + '" />'
-        ).css({
-            width: '400px',
-            height: '140px',
-            position: (
-                ($.browser.msie && $.browser.version < 7)
-                    ? 'absolute' // IE6
-                    : 'fixed'
-            ),
-            right: '15px',
-            top: '15px',
-            display: 'none',
-            border: '1px solid #999',
-            'z-index': '3000',
-            'box-shadow': '5px 5px 3px rgba(0, 0, 0, 0.3)',
-            '-moz-box-shadow': '5px 5px 3px rgba(0, 0, 0, 0.3)',
-            '-webkit-box-shadow': '5px 5px 3px rgba(0, 0, 0, 0.3)'
-        }).appendTo($('body')).fadeIn('fast');
+        var $div = $('<div id="st-signal-this-frame"></div>')
+            .addClass('activitiesWidget')
+            .css({
+                backgroundColor: '#FFF',
+                width: '400px',
+                position: (
+                    ($.browser.msie && $.browser.version < 7)
+                        ? 'absolute' // IE6
+                        : 'fixed'
+                ),
+                right: '15px',
+                top: '15px',
+                display: 'none',
+                border: '1px solid #999',
+                zIndex: '3000',
+                boxShadow: '5px 5px 3px rgba(0, 0, 0, 0.3)',
+                '-moz-box-shadow': '5px 5px 3px rgba(0, 0, 0, 0.3)',
+                '-webkit-box-shadow': '5px 5px 3px rgba(0, 0, 0, 0.3)'
+            })
+            .appendTo($('body'))
+            .fadeIn('fast');
+
+        var base_uri = location.protocol + '//' + location.host;
+        var uri = '/widgets/javascript/socialtext-container.js';
+
+        $.getScript(nlw_make_plugin_path(uri), function() {
+            gadgets.config.init({
+                "core.io" : {
+                    jsonProxyUrl : "/nlw/" + Socialtext.version + "/json-proxy"
+                },
+                "rpc" : {
+                    "parentRelayUrl" : "/nlw/plugin/widgets/rpc_relay.html",
+                    "useLegacyProtocol" : false
+                }
+            }, true);
+            var activities = new Activities.Widget({
+                ui_template: "ui.signalthis.tt2",
+                draggable: {
+                    handle: '.top'
+                },
+                instance_id: "0",
+                node: $div.get(0),
+                prefix: 'st-signalthis',
+                base_uri: base_uri,
+                share: nlw_make_plugin_path('/widgets'),
+                static_path: base_uri + nlw_make_static_path(''),
+                viewer: Socialtext.userid,
+                viewer_id: Socialtext.real_user_id,
+                viewer_name: Socialtext.username,
+                owner: Socialtext.userid,
+                owner_id: Socialtext.real_user_id,
+                owner_name: Socialtext.username,
+                default_network:
+                    "account-" + Socialtext.current_workspace_account_id,
+                signal_this:
+                    '{link: ' + Socialtext.wiki_id 
+                        + '[' + Socialtext.page_title + ']}',
+                workspace_id: Socialtext.wiki_id,
+                fixed_action: 'action-signals',
+                signals_only: '1',
+
+                mention_user_id: '',
+                mention_user_name: ''
+            });
+            activities.start();
+        });
     });
 
     // Watch handler for single-page view
