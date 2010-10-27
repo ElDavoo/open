@@ -778,6 +778,7 @@ $(function() {
                     .attr('src', "/static/skin/common/images/ajax-loader.gif")
             )
             .appendTo($('body'))
+            .createSelectOverlap({noPadding: true})
             .fadeIn('fast');
 
         var base_uri = location.protocol + '//' + location.host;
@@ -798,6 +799,7 @@ $(function() {
                 draggable: {
                     handle: '.top'
                 },
+                overlap: true,
                 instance_id: "0",
                 node: $div.get(0),
                 prefix: 'st-signalthis',
