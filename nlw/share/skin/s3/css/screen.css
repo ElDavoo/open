@@ -4483,12 +4483,14 @@ table.st-ss th span {
     display: none !important;
 }
 
-.groupsTitle {
+.groupsTitle,
+.exploreTitle {
     position: static;
     margin-top: 18px;
     margin-left: 5px;
 }
 
+.exploreTitle .prefix,
 .groupsTitle .prefix {
     background:#999;
     color:#fff;
