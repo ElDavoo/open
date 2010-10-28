@@ -4716,6 +4716,7 @@ ul.dropdownOptions li.disabled a:hover {
 #exploreTabs ul {
     position: relative;
     top: 5px;
+    padding-left: 38px;
 }
 #exploreTabs .tab {
     float: left;
@@ -4739,9 +4740,6 @@ ul.dropdownOptions li.disabled a:hover {
     -moz-border-radius-topright: 5px;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-}
-#exploreTabs .first {
-    margin-left: 38px;
 }
 #exploreTabs .selected {
     background-color: #FFF;
