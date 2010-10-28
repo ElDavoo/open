@@ -47,7 +47,7 @@ mmm -2 degrees between today - tomorrow
 === Huggy markers around WAFLs work (dash)
 --- wiki
 _{date: 2010-09-15 10:36:30 GMT}_
---- match: <em><span class="nlw_phrase">Sep 15 3:36am<!-- wiki: {date: 2010-=09-=15 10:36:30 GMT} --></span></em>
+--- match: <em><span class="nlw_phrase">Sep 15, 2010 3:36am<!-- wiki: {date: 2010-=09-=15 10:36:30 GMT} --></span></em>
 
 === Huggy begin-phrase markers should have effect. (asterisk)
 --- wiki
@@ -67,7 +67,7 @@ mmm *2 degrees between today * tomorrow
 === Huggy markers around WAFLs work (asterisk)
 --- wiki
 _{date: 2010-09-15 10:36:30 GMT}_
---- match: <em><span class="nlw_phrase">Sep 15 3:36am<!-- wiki: {date: 2010-=09-=15 10:36:30 GMT} --></span></em>
+--- match: <em><span class="nlw_phrase">Sep 15, 2010 3:36am<!-- wiki: {date: 2010-=09-=15 10:36:30 GMT} --></span></em>
 
 === Huggy begin-phrase markers should have effect. (underscore)
 --- wiki
@@ -87,5 +87,5 @@ mmm _2 degrees between today _ tomorrow
 === Huggy markers around WAFLs work (underscore)
 --- wiki
 _{date: 2010-09-15 10:36:30 GMT}_
---- match: <em><span class="nlw_phrase">Sep 15 3:36am<!-- wiki: {date: 2010-=09-=15 10:36:30 GMT} --></span></em>
+--- match: <em><span class="nlw_phrase">Sep 15, 2010 3:36am<!-- wiki: {date: 2010-=09-=15 10:36:30 GMT} --></span></em>
 
