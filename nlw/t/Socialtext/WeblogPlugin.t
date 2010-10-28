@@ -5,8 +5,8 @@ use strict;
 use warnings;
 use utf8;
 
-use Test::Socialtext tests => 21;
-fixtures(qw( empty ));
+use Test::Socialtext tests => 20;
+fixtures(qw( clean empty ));
 
 BEGIN {
     use_ok( 'Socialtext::WeblogPlugin' );
@@ -28,7 +28,8 @@ CREATE_BLOG: {
     check_category($hub, $category, 'foo Blog');
 
     $category = $hub->weblog->create_weblog('foo blog');
-    check_category($hub, $category, 'foo blog');
+    is ($category, undef, 'error condition when repeat name');
+    ok ((grep /There is already/, @{$hub->weblog->errors} ), 'error message correct when repeat name');
     
     $category = $hub->weblog->create_weblog('bar Blog');
     check_category($hub, $category, 'bar Blog');
