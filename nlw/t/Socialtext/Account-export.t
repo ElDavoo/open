@@ -42,6 +42,7 @@ sub dump_group {
         driver_group_name    => $group->driver_group_name,
         created_by_username  => $group->creator->username,
         permission_set       => $group->permission_set,
+        photo                => ignore(),
         role_name            => ignore(),
         users                => ignore(),
         description          => ignore(),
@@ -71,7 +72,7 @@ sub dump_signal {
 ###############################################################################
 # Helper function; export Account, check if the User/Group is in the exported
 # data.
-sub account_export_contains {
+sub account_export_contains { # MARK
     my %args    = @_;
     my $account = $args{account};
     my $groups  = $args{groups} || [];
@@ -105,7 +106,6 @@ sub account_export_contains {
     # CLEANUP
     rmtree [$tempdir], 0;
 }
-
 
 ###############################################################################
 # TEST: Account export includes Users who have the Account as their Primary
