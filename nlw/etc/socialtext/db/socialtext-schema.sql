@@ -731,34 +731,6 @@ CREATE SEQUENCE container_id
     NO MINVALUE
     CACHE 1;
 
-CREATE TABLE signal (
-    signal_id bigint NOT NULL,
-    "at" timestamptz DEFAULT now(),
-    user_id bigint NOT NULL,
-    body text NOT NULL,
-    in_reply_to_id bigint,
-    recipient_id bigint,
-    hidden boolean DEFAULT false,
-    hash character(32) NOT NULL,
-    anno_blob text
-);
-
-CREATE TABLE signal_tag (
-    signal_id bigint NOT NULL,
-    tag text NOT NULL
-);
-
-CREATE VIEW conversation_tag AS
-  SELECT tag.signal_id, tag.tag, signal.user_id
-   FROM signal_tag tag
-   JOIN signal USING (signal_id)
-  WHERE NOT signal.hidden
-UNION ALL 
- SELECT signal.in_reply_to_id AS signal_id, tag.tag, signal.user_id
-   FROM signal_tag tag
-   JOIN signal USING (signal_id)
-  WHERE signal.in_reply_to_id IS NOT NULL AND NOT signal.hidden;
-
 CREATE SEQUENCE default_gadget_id
     INCREMENT BY 1
     NO MAXVALUE
@@ -1111,42 +1083,49 @@ CREATE TABLE sessions (
     last_updated timestamptz NOT NULL
 );
 
+CREATE TABLE signal (
+    signal_id bigint NOT NULL,
+    "at" timestamptz DEFAULT now(),
+    user_id bigint NOT NULL,
+    body text NOT NULL,
+    in_reply_to_id bigint,
+    recipient_id bigint,
+    hidden boolean DEFAULT false,
+    hash character(32) NOT NULL,
+    anno_blob text
+);
+
+CREATE TABLE signal_asset (
+    signal_id bigint NOT NULL,
+    href text NOT NULL,
+    title text,
+    workspace_id integer,
+    page_id text,
+    attachment_id integer,
+    "class" text NOT NULL
+);
+
 CREATE TABLE signal_attachment (
     attachment_id integer NOT NULL,
     signal_id bigint NOT NULL
 );
-
-CREATE TABLE topic_signal_link (
-    signal_id integer NOT NULL,
-    href text NOT NULL,
-    title text
-);
-
-CREATE TABLE topic_signal_page (
-    signal_id integer NOT NULL,
-    workspace_id integer NOT NULL,
-    page_id text NOT NULL
-);
-
-CREATE VIEW signal_asset AS
- ( SELECT topic_signal_page.signal_id, (('/' || "Workspace".name::text) || '?') || topic_signal_page.page_id AS href, page.name AS title, topic_signal_page.workspace_id, topic_signal_page.page_id, 0 AS attachment_id, 'wikilink' AS "class"
-   FROM topic_signal_page
-   JOIN "Workspace" USING (workspace_id)
-   JOIN page USING (workspace_id, page_id)
-UNION ALL 
- SELECT topic_signal_link.signal_id, topic_signal_link.href, topic_signal_link.title, NULL AS workspace_id, NULL AS page_id, 0 AS attachment_id, 'weblink' AS "class"
-   FROM topic_signal_link)
-UNION ALL 
- SELECT signal_attachment.signal_id, (('/data/signals/' || signal.hash::text) || '/attachments/') || signal_attachment.attachment_id::text AS href, attachment.filename AS title, NULL AS workspace_id, NULL AS page_id, signal_attachment.attachment_id, 'attachment' AS "class"
-   FROM signal_attachment
-   JOIN signal USING (signal_id)
-   JOIN attachment USING (attachment_id);
 
 CREATE SEQUENCE signal_id_seq
     INCREMENT BY 1
     NO MAXVALUE
     NO MINVALUE
     CACHE 1;
+
+CREATE TABLE signal_tag (
+    signal_id bigint NOT NULL,
+    tag text NOT NULL
+);
+
+CREATE TABLE signal_thread_tag (
+    signal_id bigint NOT NULL,
+    tag text NOT NULL,
+    user_id bigint NOT NULL
+);
 
 CREATE TABLE signal_user_set (
     signal_id bigint NOT NULL,
@@ -1162,6 +1141,18 @@ CREATE SEQUENCE tag_id_seq
 CREATE TABLE tag_people__person_tags (
     person_id integer NOT NULL,
     tag_id integer NOT NULL
+);
+
+CREATE TABLE topic_signal_link (
+    signal_id integer NOT NULL,
+    href text NOT NULL,
+    title text
+);
+
+CREATE TABLE topic_signal_page (
+    signal_id integer NOT NULL,
+    workspace_id integer NOT NULL,
+    page_id text NOT NULL
 );
 
 CREATE TABLE topic_signal_user (
@@ -1622,6 +1613,9 @@ CREATE INDEX idx_opensocial_appdata_app_user
 CREATE UNIQUE INDEX idx_opensocial_appdata_app_user_field
 	    ON opensocial_appdata (app_id, user_id, field);
 
+CREATE INDEX idx_signal_tag_lower_tag
+	    ON signal_tag (lower(tag) text_pattern_ops);
+
 CREATE INDEX idx_signal_tag_signal_id
 	    ON signal_tag (signal_id);
 
@@ -1836,6 +1830,33 @@ CREATE INDEX ix_rollup_user_signal_user
 CREATE INDEX ix_session_last_updated
 	    ON sessions (last_updated);
 
+CREATE INDEX ix_sigasset_attid
+	    ON signal_asset (attachment_id);
+
+CREATE INDEX ix_sigasset_ch
+	    ON signal_asset ("class", href);
+
+CREATE INDEX ix_sigasset_chs
+	    ON signal_asset ("class", href, signal_id);
+
+CREATE INDEX ix_sigasset_class
+	    ON signal_asset ("class");
+
+CREATE INDEX ix_sigasset_classsigid
+	    ON signal_asset ("class", signal_id);
+
+CREATE INDEX ix_sigasset_href
+	    ON signal_asset (href);
+
+CREATE INDEX ix_sigasset_pageid
+	    ON signal_asset (workspace_id, page_id);
+
+CREATE INDEX ix_sigasset_sigid
+	    ON signal_asset (signal_id);
+
+CREATE INDEX ix_sigasset_sigidclass
+	    ON signal_asset (signal_id, "class");
+
 CREATE INDEX ix_signal_at
 	    ON signal ("at");
 
@@ -1872,11 +1893,26 @@ CREATE INDEX ix_signal_uset_wksps
 	    ON signal_user_set (signal_id, user_set_id)
 	    WHERE ((user_set_id >= (B'00100000000000000000000000000001'::"bit")::integer) AND (user_set_id <= (B'00110000000000000000000000000000'::"bit")::integer));
 
-CREATE INDEX ix_topic_signal_link_forward
-	    ON topic_signal_link (href);
+CREATE INDEX ix_sigthrtag_sigid
+	    ON signal_thread_tag (signal_id);
 
-CREATE INDEX ix_topic_signal_link_reverse
-	    ON topic_signal_link (signal_id);
+CREATE INDEX ix_sigthrtag_tagsig
+	    ON signal_thread_tag (tag, signal_id);
+
+CREATE INDEX ix_sigthrtag_tagtpo
+	    ON signal_thread_tag (tag text_pattern_ops);
+
+CREATE INDEX ix_sigthrtag_tagusersigtpo
+	    ON signal_thread_tag (tag text_pattern_ops, user_id);
+
+CREATE UNIQUE INDEX ix_sigthrtag_unique
+	    ON signal_thread_tag (tag, user_id, signal_id);
+
+CREATE INDEX ix_sigthrtag_usersig
+	    ON signal_thread_tag (user_id, signal_id);
+
+CREATE UNIQUE INDEX ix_topic_signal_link_reverse
+	    ON topic_signal_link (href, signal_id);
 
 CREATE INDEX ix_topic_signal_page_forward
 	    ON topic_signal_page (workspace_id, page_id);
@@ -1940,9 +1976,6 @@ CREATE UNIQUE INDEX search_sets___owner_user_id___owner_user_id___name
 
 CREATE INDEX signal_hidden
 	    ON signal (hidden);
-
-CREATE INDEX tags_lower_tag
-	    ON signal_tag (lower(tag) text_pattern_ops);
 
 CREATE INDEX user_plugin_pref_idx
 	    ON user_plugin_pref (user_id, plugin);
@@ -2327,6 +2360,21 @@ ALTER TABLE ONLY rollup_user_signal
             FOREIGN KEY (user_id)
             REFERENCES users(user_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY signal_asset
+    ADD CONSTRAINT signal_asset_attach_fk
+            FOREIGN KEY (attachment_id)
+            REFERENCES attachment(attachment_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY signal_asset
+    ADD CONSTRAINT signal_asset_signal_fk
+            FOREIGN KEY (signal_id)
+            REFERENCES signal(signal_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY signal_asset
+    ADD CONSTRAINT signal_asset_ws_fk
+            FOREIGN KEY (workspace_id)
+            REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
+
 ALTER TABLE ONLY signal_attachment
     ADD CONSTRAINT signal_attachment_attachment_fk
             FOREIGN KEY (attachment_id)
@@ -2347,6 +2395,16 @@ ALTER TABLE ONLY signal
             FOREIGN KEY (recipient_id)
             REFERENCES users(user_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY signal_thread_tag
+    ADD CONSTRAINT signal_thread_tag_signal_fk
+            FOREIGN KEY (signal_id)
+            REFERENCES signal(signal_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY signal_thread_tag
+    ADD CONSTRAINT signal_thread_tag_user_fk
+            FOREIGN KEY (user_id)
+            REFERENCES users(user_id) ON DELETE RESTRICT;
+
 ALTER TABLE ONLY signal
     ADD CONSTRAINT signal_user_id_fk
             FOREIGN KEY (user_id)
@@ -2361,6 +2419,11 @@ ALTER TABLE ONLY tag_people__person_tags
     ADD CONSTRAINT tag_people_fk
             FOREIGN KEY (tag_id)
             REFERENCES person_tag(id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY topic_signal_link
+    ADD CONSTRAINT topic_signal_link_signal_fk
+            FOREIGN KEY (signal_id)
+            REFERENCES signal(signal_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY topic_signal_page
     ADD CONSTRAINT topic_signal_page_reverse
