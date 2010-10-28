@@ -33,9 +33,8 @@ sub do_work {
         return;
     }
 
-    my $response = $ua->post( $args->{hook}{url},
-        { json_payload => $payload },
-    );
+    my $response = $self->_make_webhook_request($args->{hook});
+
     st_log()->info("Triggered webhook '$args->{hook}{id}': "
                     . $response->status_line);
 
@@ -45,6 +44,15 @@ sub do_work {
     else {
         $self->failed($response->status_line, 255);
     }
+}
+
+sub _make_webhook_request {
+    my $self = shift;
+    my $hook = shift;
+
+    return $ua->post( $hook->{url},
+        { json_payload => $payload },
+    );
 }
 
 __PACKAGE__->meta->make_immutable;
