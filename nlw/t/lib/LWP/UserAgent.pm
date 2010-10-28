@@ -6,6 +6,7 @@ use HTTP::Response;
 
 our $VERSION = 3.0;
 our %RESULTS;
+our %ARGS;
 
 sub new {
     my ($class, %args) = @_;
@@ -19,13 +20,11 @@ sub agent {
     return $self->{_agent} = $agent_string;
 }
 
-sub head {
-    my ($self, $url) = @_;
-    return HTTP::Response->new($RESULTS{$url} || 404);
-}
-
+*head = \&get;
+*post = \&get;
 sub get {
-    my ($self, $url) = @_;
+    my ($self, $url, $args) = @_;
+    $ARGS{$url} = $args;
     return HTTP::Response->new($RESULTS{$url} || 404);
 }
 
