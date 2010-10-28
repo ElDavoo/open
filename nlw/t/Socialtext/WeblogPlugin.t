@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use utf8;
 
-use Test::Socialtext tests => 19;
+use Test::Socialtext tests => 18;
 fixtures(qw( empty ));
 
 BEGIN {
