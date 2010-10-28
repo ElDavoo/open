@@ -104,5 +104,5 @@
 
 ## CLEANUP
 | *Comment*     | Set the CredsExtractors back to their default value so we don't pollute other tests |
-| st-config     | set credentials_extractors BasicAuth:Default:Guest                                  |
+| st-config     | set credentials_extractors BasicAuth:Cookie:Guest                                   |
 | restart-userd |                                                                                     |
