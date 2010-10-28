@@ -176,8 +176,10 @@
         if (this.window !== window) {
             // XXX: container specific
             var offset = this.$('iframe[name='+window.name+']').offset();
-            left += offset.left;
-            top += offset.top;
+            if (offset) {
+                left += offset.left;
+                top += offset.top;
+            }
 
             // Map unload to remove the lookahead, otherwise it can hang
             // around after we move a widget
