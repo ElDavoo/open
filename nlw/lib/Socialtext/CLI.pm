@@ -482,10 +482,14 @@ sub import_account {
         warn $@ if $@;
     }
 
-    $account->finish_import(
+    # Finish the import, which'll call the plugin hooks.  THAT will then warn
+    # any fatal errors and return back to us (so _we_ don't have to output the
+    # error as its already been spat out to the screen).
+    my $err = $account->finish_import(
         hub => $hub,
         dir => $dir,
     );
+    $self->_error() if ($err);
 
     $self->_success(
         "\n" . loc("[_1] account imported.", $account->name));
