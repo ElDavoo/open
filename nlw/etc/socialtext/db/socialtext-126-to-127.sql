@@ -32,15 +32,17 @@ create table signal_asset (
 
 INSERT INTO signal_asset
     SELECT topic_signal_page.signal_id,
-            '/' || "Workspace".name || '?' || topic_signal_page.page_id AS href,
-            page.name AS title,
-            topic_signal_page.workspace_id,
-            topic_signal_page.page_id,
-            NULL AS attachment_id,
-            'wikilink' AS "class"
-       FROM topic_signal_page
-       JOIN "Workspace" USING (workspace_id)
-       JOIN page USING(workspace_id, page_id);
+           '/' || "Workspace".name || '?' || topic_signal_page.page_id AS href,
+           page.name AS title,
+           topic_signal_page.workspace_id,
+           topic_signal_page.page_id,
+           NULL AS attachment_id,
+           'wikilink' AS "class"
+      FROM topic_signal_page
+      JOIN signal USING (signal_id)
+      JOIN "Workspace" USING (workspace_id)
+      JOIN page USING(workspace_id, page_id)
+     WHERE NOT hidden;
 
 INSERT INTO signal_asset
     SELECT topic_signal_link.signal_id,
@@ -50,11 +52,13 @@ INSERT INTO signal_asset
            NULL AS page_id,
            NULL AS attachment_id,
           'weblink' AS "class"
-      FROM topic_signal_link;
+      FROM topic_signal_link
+      JOIN signal USING (signal_id)
+     WHERE NOT hidden;
 
 INSERT INTO signal_asset
     SELECT signal_attachment.signal_id,
-           '/data/signals/' || hash || '/attachments/' || attachment_id AS href,
+           '/data/signals/' || hash || '/attachments/' || filename AS href,
            filename AS title,
            NULL AS workspace_id,
            NULL AS page_id,
@@ -62,7 +66,8 @@ INSERT INTO signal_asset
            'attachment' AS "class"
       FROM signal_attachment
       JOIN signal USING (signal_id)
-      JOIN attachment USING (attachment_id);
+      JOIN attachment USING (attachment_id)
+     WHERE NOT hidden;
 
 -- TODO: which of these are actually needed?
 CREATE INDEX ix_sigasset_sigid ON signal_asset (signal_id);
@@ -98,15 +103,15 @@ CREATE TABLE signal_thread_tag (
 );
 
 INSERT INTO signal_thread_tag
- SELECT tag.signal_id, lower(tag.tag), signal.user_id
+ SELECT DISTINCT signal_id, lower(tag), user_id
    FROM signal_tag tag
    JOIN signal USING (signal_id)
   WHERE NOT signal.hidden
 UNION
- SELECT signal.in_reply_to_id AS signal_id, lower(tag.tag), signal.user_id
+ SELECT DISTINCT in_reply_to_id AS signal_id, lower(tag), user_id
    FROM signal_tag tag
    JOIN signal USING (signal_id)
-  WHERE signal.in_reply_to_id IS NOT NULL AND NOT signal.hidden;
+  WHERE NOT signal.hidden AND signal.in_reply_to_id IS NOT NULL;
 
 CREATE UNIQUE INDEX ix_sigthrtag_unique
     ON signal_thread_tag (tag, user_id, signal_id);
