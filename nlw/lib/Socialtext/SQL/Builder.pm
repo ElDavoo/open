@@ -114,21 +114,34 @@ B<Caution>: No validation is done on the keys or values of the hashref.
 
 sub sql_insert {
     my $table = shift;
-    my $p = shift;
+    my $cols = shift;
+    my $opts = shift;
 
     die "no table name" unless $table;
-    die "nothing to update" unless ($p and %$p);
+    die "nothing to update" unless ($cols and %$cols);
 
-    my @keys = sort keys %$p;
+    my @keys = sort keys %$cols;
     my $fields = join(',', @keys);
+    my @bind = (map {$cols->{$_}} @keys);
+
     my $placeholders = '?,' x @keys;
     chop $placeholders;
 
-    my $sql = "INSERT INTO $table ($fields) VALUES ($placeholders)";
+    my $sql = "INSERT INTO $table ($fields)\n";
+    if (my $safe = $opts->{safe}) {
+        $sql .= "SELECT $placeholders\n";
+        $sql .= "WHERE NOT EXISTS ( SELECT 1 FROM $table WHERE ";
+        $sql .= join(' AND ', map { "$_ = ?" } @$safe);
+        $sql .= " )\n";
+        push @bind, map { $cols->{$_} } @$safe;
+    }
+    else {
+        $sql .= "VALUES ($placeholders)";
+    }
 
     local $Socialtext::SQL::Level = $Socialtext::SQL::Level + 1;
     my $sth;
-    eval { $sth = sql_execute($sql, (map {$p->{$_}} @keys)) };
+    eval { $sth = sql_execute($sql, @bind) };
     if ($@) {
         croak $@;
     }
