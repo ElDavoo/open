@@ -693,6 +693,7 @@ sub serialize_for_export {
         primary_account_name    => $self->primary_account->name,
         driver_group_name       => $self->driver_group_name,
         description             => $self->description,
+        creation_datetime       => sql_format_timestamptz($self->creation_datetime),
         created_by_username     => $self->creator->username,
         group_id                => $self->group_id, 
         permission_set          => $self->permission_set,
