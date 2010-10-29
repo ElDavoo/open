@@ -29,7 +29,7 @@ create table signal_asset (
 );
 ALTER TABLE ONLY signal_asset
     ADD CONSTRAINT signal_asset_pkey
-            PRIMARY KEY (class, href, signal_id);
+            PRIMARY KEY (class, href, signal_id, title);
 
 -- TODO: which of these are actually needed?
 CREATE INDEX ix_sigasset_sigid ON signal_asset (signal_id);
@@ -40,6 +40,7 @@ CREATE INDEX ix_sigasset_href ON signal_asset (href);
 CREATE INDEX ix_sigasset_classsigid ON signal_asset (class, signal_id);
 CREATE INDEX ix_sigasset_sigidclass ON signal_asset (signal_id, class);
 CREATE INDEX ix_sigasset_ch ON signal_asset (class, href);
+CREATE INDEX ix_sigasset_chs ON signal_asset (class, href, signal_id);
 
 ALTER TABLE ONLY signal_asset
     ADD CONSTRAINT signal_asset_signal_fk

@@ -1098,8 +1098,8 @@ CREATE TABLE signal (
 CREATE TABLE signal_asset (
     signal_id bigint NOT NULL,
     href text NOT NULL,
-    title text,
-    workspace_id integer,
+    title text NOT NULL,
+    workspace_id bigint,
     page_id text,
     attachment_id integer,
     "class" text NOT NULL
@@ -1471,6 +1471,10 @@ ALTER TABLE ONLY signal_attachment
 ALTER TABLE ONLY signal_attachment
     ADD CONSTRAINT sigattach_ukey2
             UNIQUE (signal_id, attachment_id);
+
+ALTER TABLE ONLY signal_asset
+    ADD CONSTRAINT signal_asset_pkey
+            PRIMARY KEY ("class", href, signal_id, title);
 
 ALTER TABLE ONLY signal
     ADD CONSTRAINT signal_pkey
