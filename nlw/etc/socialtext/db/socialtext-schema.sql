@@ -1098,7 +1098,7 @@ CREATE TABLE signal (
 CREATE TABLE signal_asset (
     signal_id bigint NOT NULL,
     href text NOT NULL,
-    title text NOT NULL,
+    title text DEFAULT '' NOT NULL,
     workspace_id bigint,
     page_id text,
     attachment_id integer,
@@ -1146,7 +1146,7 @@ CREATE TABLE tag_people__person_tags (
 CREATE TABLE topic_signal_link (
     signal_id integer NOT NULL,
     href text NOT NULL,
-    title text
+    title text DEFAULT '' NOT NULL
 );
 
 CREATE TABLE topic_signal_page (
@@ -1494,7 +1494,7 @@ ALTER TABLE ONLY tag_people__person_tags
 
 ALTER TABLE ONLY topic_signal_link
     ADD CONSTRAINT topic_signal_link_pk
-            PRIMARY KEY (signal_id, href);
+            PRIMARY KEY (signal_id, href, title);
 
 ALTER TABLE ONLY topic_signal_page
     ADD CONSTRAINT topic_signal_page_pk
@@ -1915,7 +1915,7 @@ CREATE UNIQUE INDEX ix_sigthrtag_unique
 CREATE INDEX ix_sigthrtag_usersig
 	    ON signal_thread_tag (user_id, signal_id);
 
-CREATE UNIQUE INDEX ix_topic_signal_link_reverse
+CREATE INDEX ix_topic_signal_link_hreffy
 	    ON topic_signal_link (href, signal_id);
 
 CREATE INDEX ix_topic_signal_page_forward

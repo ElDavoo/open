@@ -3,25 +3,25 @@ BEGIN;
 CREATE TABLE topic_signal_link (
     signal_id integer NOT NULL,
     href text NOT NULL,
-    title text
+    title text NOT NULL DEFAULT ''
 );
 
 ALTER TABLE ONLY topic_signal_link
     ADD CONSTRAINT topic_signal_link_pk
-            PRIMARY KEY (signal_id, href);
+            PRIMARY KEY (signal_id, href, title);
 
 ALTER TABLE ONLY topic_signal_link
     ADD CONSTRAINT topic_signal_link_signal_fk
             FOREIGN KEY (signal_id)
             REFERENCES signal(signal_id) ON DELETE CASCADE;
 
-CREATE UNIQUE INDEX ix_topic_signal_link_reverse
+CREATE INDEX ix_topic_signal_link_hreffy
 	    ON topic_signal_link (href, signal_id);
 
 create table signal_asset (
     signal_id     bigint  NOT NULL,
     href          text    NOT NULL,
-    title         text    ,
+    title         text    NOT NULL DEFAULT '',
     workspace_id  bigint  ,
     page_id       text    ,
     attachment_id integer ,
