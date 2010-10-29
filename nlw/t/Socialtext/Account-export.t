@@ -40,6 +40,7 @@ sub dump_group {
         group_id             => $group->group_id,
         primary_account_name => $group->primary_account->name,
         driver_group_name    => $group->driver_group_name,
+        creation_datetime    => ignore(),
         created_by_username  => $group->creator->username,
         permission_set       => $group->permission_set,
         photo                => ignore(),
