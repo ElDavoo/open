@@ -382,23 +382,14 @@ sub _relative_filename_to_absolute {
 
 sub _get_random_page_content {
     my $self = shift;
-    return split /\n/, << '.';
-In the days when Sussman was a novice Minsky once came to him as he sat hacking at the PDP-6.
-
+    return split /\n/, qq/In the days when Sussman was a novice Minsky once came to him as he sat hacking at the PDP-6.
 "What are you doing?", asked Minsky.
-
 "I am training a randomly wired neural net to play Tic-Tac-Toe."
-
 "Why is the net wired randomly?", inquired Minsky.
-
 "I do not want it to have any preconceptions of how to play".
-
 At this Minsky shut his eyes, and Sussman asked his teacher "Why do you close your eyes?"
-
 "So that the room will be empty."
-
-At that moment, Sussman was enlightened.
-.
+At that moment, Sussman was enlightened./;
 }
 
 =head2 st_create_pages($workspace, $numberpages, optional $pageprefix)
