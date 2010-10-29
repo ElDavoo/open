@@ -20,15 +20,16 @@ CREATE UNIQUE INDEX ix_topic_signal_link_reverse
 
 create table signal_asset (
     signal_id     bigint  NOT NULL,
--- TODO at
--- TODO recipient_id
     href          text    NOT NULL,
     title         text    ,
-    workspace_id  integer ,
-    page_id       text    , -- TODO: is this column needed?
-    attachment_id integer , -- TODO: is this column needed?
+    workspace_id  bigint  ,
+    page_id       text    ,
+    attachment_id integer ,
     class         text    NOT NULL
 );
+ALTER TABLE ONLY signal_asset
+    ADD CONSTRAINT signal_asset_pkey
+            PRIMARY KEY (class, href, signal_id);
 
 -- TODO: which of these are actually needed?
 CREATE INDEX ix_sigasset_sigid ON signal_asset (signal_id);
@@ -38,7 +39,6 @@ CREATE INDEX ix_sigasset_class ON signal_asset (class);
 CREATE INDEX ix_sigasset_href ON signal_asset (href);
 CREATE INDEX ix_sigasset_classsigid ON signal_asset (class, signal_id);
 CREATE INDEX ix_sigasset_sigidclass ON signal_asset (signal_id, class);
-CREATE INDEX ix_sigasset_chs ON signal_asset (class, href, signal_id);
 CREATE INDEX ix_sigasset_ch ON signal_asset (class, href);
 
 ALTER TABLE ONLY signal_asset
