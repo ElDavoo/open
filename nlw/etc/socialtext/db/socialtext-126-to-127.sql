@@ -30,45 +30,6 @@ create table signal_asset (
     class         text    NOT NULL
 );
 
-INSERT INTO signal_asset
-    SELECT topic_signal_page.signal_id,
-           '/' || "Workspace".name || '?' || topic_signal_page.page_id AS href,
-           page.name AS title,
-           topic_signal_page.workspace_id,
-           topic_signal_page.page_id,
-           NULL AS attachment_id,
-           'wikilink' AS "class"
-      FROM topic_signal_page
-      JOIN signal USING (signal_id)
-      JOIN "Workspace" USING (workspace_id)
-      JOIN page USING(workspace_id, page_id)
-     WHERE NOT hidden;
-
-INSERT INTO signal_asset
-    SELECT topic_signal_link.signal_id,
-           topic_signal_link.href,
-           topic_signal_link.title,
-           NULL AS workspace_id,
-           NULL AS page_id,
-           NULL AS attachment_id,
-          'weblink' AS "class"
-      FROM topic_signal_link
-      JOIN signal USING (signal_id)
-     WHERE NOT hidden;
-
-INSERT INTO signal_asset
-    SELECT signal_attachment.signal_id,
-           '/data/signals/' || hash || '/attachments/' || filename AS href,
-           filename AS title,
-           NULL AS workspace_id,
-           NULL AS page_id,
-           signal_attachment.attachment_id,
-           'attachment' AS "class"
-      FROM signal_attachment
-      JOIN signal USING (signal_id)
-      JOIN attachment USING (attachment_id)
-     WHERE NOT hidden;
-
 -- TODO: which of these are actually needed?
 CREATE INDEX ix_sigasset_sigid ON signal_asset (signal_id);
 CREATE INDEX ix_sigasset_pageid ON signal_asset (workspace_id, page_id);
