@@ -23,7 +23,7 @@ proto.show = function () {
     var self = this;
     if (!jQuery('#st-email-lightbox').size()) {
         Socialtext.loc = loc;
-        Socialtext.full_uri = location.href.replace(/#.*$/, '').replace(/index\.cgi\?/, '?');
+        Socialtext.full_uri = encodeURI(location.href.replace(/#.*$/, '').replace(/index\.cgi\?/, '?'));
 
         jQuery('<div class="lightbox" id="st-email-lightbox" />')
             .appendTo('body')
