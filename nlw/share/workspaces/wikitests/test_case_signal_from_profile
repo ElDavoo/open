@@ -69,6 +69,8 @@
 | st-widget-title-like | activities | Activities |
 
 | *Comment* | Test Case: Signal From Profile. Send a private mention |  |
+|  *Comment* |  NOTE: FAILS IN IE 6 even though Se checks the box,  |  |
+| *Comment* | the check is not sensed and a private message is not sent |  |
 | st-send-signal-in-activities-widget | %%private%% | PRIVATE |
 
 | *Comment* | Test Case: Signal From Profile. VERIFY after private signal that private checkbox is unchecked |  |

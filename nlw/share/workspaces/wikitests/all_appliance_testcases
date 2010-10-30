@@ -7,29 +7,26 @@ Socialcalc enabled is required because we run Calc Testcases
 
 * [Test Case: A Enable LDAP]
 
-Report Testcases needs to run in a pristine environment to pass
-
-* [Report Testcases]
 * [Control Panel Testcases]
 * [Core Testcases]
-* [Test Case: change signal limit]
+* [User Groups UI Testcases]
+* [Signals Testcases]
 
-* [Test Case: RSS Icons]
-* [Test Case: Table Info]
-* [Test Case: Signals Search]
-* [Test Case: Signals Search Pagination]
-* [Test Case: Signals Activities Interaction]
+Test Case: Replies is Firefox-specific because we load IE without wikiwyg while using Se
+
+* [Test Case: Replies]
 * [Calc Testcases]
 * [File Testcases]
 * [Localization Testcases]
-* [Test case: Account Types]
+* [Test Case: RSS Icons]
+* [Test Case: Table Info]
 
 LDAP Testcases will Enable LDAP and use a known LDAP user instead of a Default user where required
 
 * [LDAP Testcases]
 
 Default User Testcases will Disable LDAP so it can test wiki functions that only work for the Default user
-It should be the last testset in this run, but it will re-enable LDAP when it finishes.
+It will re-enable LDAP when it finishes.
 
 * [Default User Testcases]
 
@@ -38,13 +35,15 @@ People and Dasboard plugin tests. Keep these two cases together in alpha order.
 * [Test Case: People Dashboard Plugins]
 * [Test Case: People Dashboard Plugins Reset]
 
-Dashboard, People, and Signals tests
+People tests
 
-* [Widgets Testcases]
-* [Test Case: Gadgets Galore]
 * [Profile Testcases]
 * [Test Case: People Search]
 
+Dashboard tests
+
+* [Widgets Testcases]
+* [Test Case: Gadgets Galore]
 * [Test Case: Upload Update Gallery Widgets]
 * [Test Case: Add Remove Gallery Widgets]
 * [Test Case: Administer Dashboards]

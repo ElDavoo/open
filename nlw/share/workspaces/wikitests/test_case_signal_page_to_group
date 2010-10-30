@@ -1,5 +1,6 @@
 | *Comment* | Test Case: Signal Page To Group |
 
+
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Signal Page To Group SETUP Account |  |
@@ -21,14 +22,16 @@
 | create-group | %%group2%% | %%acct%% | %%username%% |
 | set | group2_id | %%group_id%% |  |
 | set | signalpage | Signal Page %%start_time%% |  |
-| st-admin | update-page --w %%ws%% --e %%email%% --p "%%signalpage%%" < %%wikitest_client_files%%wikitest.txt | has been created |  |
+
+
+| st-create-page | %%ws%% | %%signalpage%% |
+
 
 | *Comment* | Test Case: Signal Page To Group - click link then cancel |  |
 | open_ok | /%%ws%%/index.cgi?%%signalpage%% |  |
 | wait_for_element_visible_ok | st-signalthis-indicator | 30000 |
 | click_ok | st-signalthis-indicator |  |
-| pause | 5000 |  |
-| select-frame | st-signal-this-frame |  |
+| wait_for_element_present_ok | //div[@id='st-signal-this-frame'] | 30000 |
 | wait_for_text_present_ok | Send a signal with a link to this page | 30000 |
 | wait_for_element_visible_ok | //img[@title='Close this window'] | 30000 |
 | click_ok | //img[@title='Close this window'] |  |
@@ -38,15 +41,14 @@
 | open_ok | /%%ws%%/index.cgi?%%signalpage%% |  |
 | wait_for_element_visible_ok | st-signalthis-indicator | 30000 |
 | click_ok | st-signalthis-indicator |  |
-| pause | 5000 |  |
-| select-frame | st-signal-this-frame |  |
+| wait_for_element_present_ok | //div[@id='st-signal-this-frame'] | 30000 |
 | wait_for_text_present_ok | Send a signal with a link to this page | 30000 |
 | st-send-page-signal | Check out this page, it's great: %%start_time%% |  |
 
 | *Comment* | Test Case: Signal Page To Group - see signal on signals page for %%acct%% |  |
 | open_ok | /st/signals/ |  |
-| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[1]/a[text()='All my groups'] | 30000 |
-| click_ok | //ul[@id='st-dropdown-2-list']/li[1]/a[text()='All my groups'] |  |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[1]/a | 30000 |
+| click_ok | //ul[@id='st-dropdown-2-list']/li[1]/a |  |
 | wait_for_text_present_ok | Check out this page, it's great: %%start_time%% | 30000 |
 | wait_for_text_present_ok | %%signalpage%% | 30000 |
 | wait_for_element_visible_ok | link=%%signalpage%% | 30000 |

@@ -1,5 +1,3 @@
-Done:
-
 * [Test Case: Groups Home]
 * [Test Case: User Creates Group]
 * [Test Case: Self Join Group]
@@ -10,8 +8,6 @@ Done:
 * [Test Case: Groups UI Filter Search Results by Group]
 * [Test Case: Groups UI Acct 2 Group Web UI]
 * [Test Case: Groups UI Edit an Existing Group]
-
-FF3 only, not Safari, not IE: {bz: 3471} (IE: Selenium: Unable to send signals from Profile, Groups home)
 
 * [Test Case: Groups UI Signal from group home]
 * [Test Case: Groups UI Send Signal to Group]
@@ -29,8 +25,8 @@ New as of self-join groups and workspaces
 Broken due to selenium issues:
 
 Test Case: Groups UI AddRemove Members From Group
+Test Case: Groups UI Delegate Membership
 
 ToDo:
 
-Test Case: Groups UI Delegate Membership
 Test Case: Groups UI Search Signals by Group
