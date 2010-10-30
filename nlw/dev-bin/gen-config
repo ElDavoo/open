@@ -606,6 +606,7 @@ sub nginx_params {
     my $appconfig = Socialtext::AppConfig->new;
     $config{ssl_only} = $appconfig->ssl_only();
     $config{custom_http_port} = $appconfig->custom_http_port();
+    $config{disable_mobile_redirect} = $appconfig->disable_mobile_redirect();
 
     if ($config{ssl_only} && !$config{ssl_name}) {
         die "Configured for SSL only, but no SSL certificate found/detected!\n";

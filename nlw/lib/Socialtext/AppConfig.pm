@@ -1239,6 +1239,14 @@ Default: 1
 
 =for code type => BOOLEAN_TYPE
 
+=head2 disable_mobile_redirect
+
+Set this to true in order to disable the mobile UI
+
+Default: 0
+
+=for code type => BOOLEAN_TYPE
+
 =head2 debug
 
 Setting this to true turns on debugging output for NLW.
