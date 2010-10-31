@@ -321,8 +321,9 @@ sub forgot_password {
     $user->set_confirmation_info( is_password_change => 1 );
     $user->send_password_change_email();
 
+    my $from_address = 'noreply@socialtext.com';
     $self->session->add_message( 
-        loc('An email with instructions on changing your password has been sent to [_1].', $user->username)
+      loc('An email with instructions on changing your password has been sent to [_1].', $user->username) . "\n<p>\n" . loc('The email will come from [_1]. To ensure you receive it, please add [_1] to your address book or safe list.', $from_address) . "\n</p>\n"
     );
 
     $self->session->save_args( username => $user->username() );
