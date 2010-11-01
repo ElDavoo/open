@@ -4,6 +4,7 @@ use Moose;
 use Socialtext::Signal;
 use Socialtext::JobCreator;
 use Socialtext::SQL qw/sql_execute/;
+use Socialtext::Log qw/st_log/;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
@@ -18,25 +19,24 @@ sub do_work {
         priority => 60,
     );
 
-    eval {
-        # First, delete all the signals from Solr.
-        my $factory = Socialtext::Search::Solr::Factory->new;
-        my $indexer = $factory->create_indexer();
-        $indexer->delete_signals();
+    # First, delete all the signals from Solr.
+    my $factory = Socialtext::Search::Solr::Factory->new;
+    my $indexer = $factory->create_indexer();
+    $indexer->delete_signals();
 
-        # Now create jobs to index each signal
-        my $sth = sql_execute(
-            'SELECT signal_id FROM signal order by signal_id DESC');
-        my @jobs;
-        while (my ($id) = $sth->fetchrow_array) {
-            push @jobs, {
-                coalesce => "$id-reindex", # don't coalesce with normal jobs
-                arg => $id."-1-1"
-            };
-        }
-        Socialtext::JobCreator->bulk_insert($template_job, \@jobs);
-    };
-    $self->hub->log->error($@) if $@;
+    # Now create jobs to index each signal
+    my $sth = sql_execute(
+        'SELECT signal_id FROM signal order by signal_id DESC');
+    my @jobs;
+    while (my ($id) = $sth->fetchrow_array) {
+        push @jobs, {
+            coalesce => "$id-reindex", # don't coalesce with normal jobs
+            arg => $id."-1-1"
+        };
+    }
+    st_log()->info("going to insert ".scalar(@jobs)." SignalIndex jobs");
+    Socialtext::JobCreator->bulk_insert($template_job, \@jobs);
+    st_log()->info("done SignalIndex bulk_insert");
 
     $self->completed();
 }
