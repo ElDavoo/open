@@ -142,7 +142,7 @@ sub add_role {
     my $role  = $p{role} || $self->role_default($thing);
 
     $self->role_change_check($p{actor},'add',$thing,$role)
-        unless $p{is_initial_role};
+        unless $p{force};
     eval { $self->user_set->add_object_role($thing, $role) };
     if ($@) {
         if ($@ =~ /constraint/i) {
