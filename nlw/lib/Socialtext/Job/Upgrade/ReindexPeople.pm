@@ -2,25 +2,23 @@ package Socialtext::Job::Upgrade::ReindexPeople;
 # @COPYRIGHT@
 use Moose;
 use Socialtext::People::Profile;
+use Socialtext::Log qw/st_log/;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
 
 sub do_work {
     my $self = shift;
-    my $ws   = $self->workspace or return;
-    my $hub  = $self->hub or return;
 
-    eval {
-        # First, delete all the people from Solr.
+    # First, delete all the people from Solr.
+    unless ($self->arg && $self->arg->{no_delete}) {
+        st_log()->info("deleting all people profiles from solr");
         my $factory = Socialtext::Search::Solr::Factory->new;
-        my $indexer = $factory->create_indexer();
-        $indexer->delete_people();
+        $factory->create_indexer()->delete_people();
+    }
 
-        # Now create new jobs for each person.
-        Socialtext::People::Profile->IndexPeople();
-    };
-    $self->hub->log->error($@) if $@;
+    # Now create new jobs for each person.
+    Socialtext::People::Profile->IndexPeople();
 
     $self->completed();
 }

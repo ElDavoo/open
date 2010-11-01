@@ -2,17 +2,20 @@ package Socialtext::Job::Upgrade::ReindexGroups;
 # @COPYRIGHT@
 use Moose;
 use Socialtext::Group;
+use Socialtext::Log qw/st_log/;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
 
 sub do_work {
     my $self = shift;
-    my $ws   = $self->workspace or return;
-    my $hub  = $self->hub or return;
 
-    eval { Socialtext::Group->IndexGroups() };
-    $self->hub->log->error($@) if $@;
+    unless ($self->arg && $self->arg->{no_index}) {
+        st_log()->info("removing all groups from solr");
+        my $factory = Socialtext::Search::Solr::Factory->new;
+        $factory->create_indexer()->delete_groups();
+    }
+    Socialtext::Group->IndexGroups();
 
     $self->completed();
 }
@@ -22,7 +25,7 @@ __PACKAGE__->meta->make_immutable;
 
 =head1 NAME
 
-Socialtext::Job::Upgrade::ReindexGroups - Delete groups from Solr & reindex
+Socialtext::Job::Upgrade::ReindexGroups - delete and reindex groups in solr
 
 =head1 SYNOPSIS
 

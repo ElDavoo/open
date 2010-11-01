@@ -11,18 +11,29 @@ extends 'Socialtext::Job';
 
 sub do_work {
     my $self = shift;
-    my $ws   = $self->workspace or return;
-    my $hub  = $self->hub or return;
 
+    # First, delete all the signals from Solr.
+    unless ($self->arg && $self->arg->{no_delete}) {
+        st_log()->info("deleting all signals from solr");
+        my $factory = Socialtext::Search::Solr::Factory->new;
+        $factory->create_indexer()->delete_signals();
+    }
+
+    # Now create jobs to index each signal
+    my $sth = sql_execute(
+        'SELECT signal_id FROM signal order by signal_id DESC');
+    my @jobs;
+    while (my ($id) = $sth->fetchrow_array) {
+        push @jobs, {
+            coalesce => "$id-reindex", # don't coalesce with normal jobs
+            arg => $id."-1-1"
+        };
+    }
+    st_log()->info("going to insert ".scalar(@jobs)." SignalIndex jobs");
     my $template_job = TheSchwartz::Moosified::Job->new(
         funcname => 'Socialtext::Job::SignalIndex',
         priority => 60,
     );
-
-    # First, delete all the signals from Solr.
-    my $factory = Socialtext::Search::Solr::Factory->new;
-    my $indexer = $factory->create_indexer();
-    $indexer->delete_signals();
 
     # Now create jobs to index each signal
     my $sth = sql_execute(
