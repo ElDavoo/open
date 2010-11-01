@@ -228,9 +228,10 @@ sub create {
     my $user = $class->meta->new_object(homunculus => $homunculus);
 
     # scribble UserMetadata
-    my %metadata_p = %p; # copy
-    $metadata_p{email_address_at_import} = $user->email_address;
-    my $metadata = Socialtext::UserMetadata->create(%metadata_p);
+    my $metadata = Socialtext::UserMetadata->create(
+        email_address_at_import => $user->email_address,
+        %p,
+    );
     $user->_set_metadata($metadata);
 
     $user->_update_profile();
