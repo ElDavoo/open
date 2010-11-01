@@ -1,6 +1,7 @@
 A convenience testset for running all of our Signals tests
 
-* [Test Case: Replies]
+Test Case: Replies is Firefox only
+
 * [Test Case: Signals Bookmarklet]
 * [Signals Annotations Testcases]
 

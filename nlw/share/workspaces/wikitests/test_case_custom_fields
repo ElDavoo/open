@@ -96,7 +96,7 @@
 | wait_for_element_visible_ok | //input[@value='Create New Field'] | 10000 |
 | click_and_wait | //input[@value='Create New Field'] |  |
 | text_like | qr/Created profile field "%%cf_title%%".+This field is now visible in users' profiles./ |  |
-| text_like | qr/%%cf_title%%.+%%cf_name%%.*Regular.*No.*User.*(hide)/ |  |
+| text_like | `qr/%%cf_title%%.+%%cf_name%%.*Regular.*No.*User.*(hide)/` |  |
 
 | *Comment* | Test Case: Custom Fields. fill in new custom fields |  |
 | open_ok | /nlw/submit/logout |  |
@@ -117,7 +117,5 @@ TODO: un-hide hideme, fill it in, see it
 TODO: External source, see not editable
 
 | *Comment* | Test case: Custom Fields. TEARDOWN. Let %%username%% keep accounts admin privileges. |  |
-
-| pause | 10000 |
 
 | *Comment* | Test case: Custom Fields. COMPLETED |  |
