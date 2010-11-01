@@ -34,18 +34,6 @@ sub do_work {
         funcname => 'Socialtext::Job::SignalIndex',
         priority => 60,
     );
-
-    # Now create jobs to index each signal
-    my $sth = sql_execute(
-        'SELECT signal_id FROM signal order by signal_id DESC');
-    my @jobs;
-    while (my ($id) = $sth->fetchrow_array) {
-        push @jobs, {
-            coalesce => "$id-reindex", # don't coalesce with normal jobs
-            arg => $id."-1-1"
-        };
-    }
-    st_log()->info("going to insert ".scalar(@jobs)." SignalIndex jobs");
     Socialtext::JobCreator->bulk_insert($template_job, \@jobs);
     st_log()->info("done SignalIndex bulk_insert");
 
