@@ -77,10 +77,10 @@ Not a complete test of the combination of ordering/limit/offset,but a stab
 | body-like | qr/itemsPerPage/ | itemsPerPage present without filter |
 | body-like | qr/totalResults":754/ | totalresults present without filter |
 
-| GET | /data/workspaces/%%workspace%%/pages?q=light;count=3;startIndex=0 | application/json |
+| GET | /data/workspaces/%%workspace%%/pages?q=enlightened;count=3;startIndex=0 | application/json |
 | code-is | 200|
 | json-parse |
 | body-like | qr/startIndex/ | Start index present with q |
 | body-like | qr/itemsPerPage/ | itemsPerPage present with q |
-| body-like | qr/totalResults":75/ | totalresults present with q |
+| body-like | qr/totalResults":93/ | totalresults present with q |
 
