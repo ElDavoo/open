@@ -1,22 +1,40 @@
 package Socialtext::Job::SignalIndex;
 # @COPYRIGHT@
-use Socialtext::Signal::Topic;
-use Socialtext::SQL qw/sql_txn/;
-use Socialtext::JSON qw/encode_json/;
 use Moose;
+use Socialtext::SQL qw/sql_txn/;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
 with 'Socialtext::CoalescingJob', 'Socialtext::IndexingJob';
 
+# Called if the job argument isn't a reference type, usually because of bulk
+# insertion:
+override 'inflate_arg' => sub {
+    my $self = shift;
+    my $arg = $self->arg;
+    return unless $arg;
+    my ($signal_id, $rebuild_topics, $solr) = split '-', $arg;
+    $solr = 1 unless defined $solr;
+    $self->arg({
+        signal_id      => $signal_id,
+        rebuild_topics => $rebuild_topics,
+        solr           => $solr,
+    });
+};
+
 sub do_work {
-    my $self    = shift;
+    my $self = shift;
+
     my $indexer = $self->indexer or return;
 
     if (my $signal = $self->signal) {
-        $self->_rebuild_signal_topics($signal)
-            if $self->arg->{rebuild_topics};
-
+        if ($self->arg->{rebuild_topics}) {
+            eval { sql_txn { $self->_rebuild_signal_topics($signal) } };
+            if ($@) {
+                st_log()->error("rebuilt-signal-topics failed for ".
+                    $signal->signal_id.": $@");
+            }
+        }
         $indexer->index_signal($signal);
     }
     else {
@@ -30,6 +48,7 @@ sub _rebuild_signal_topics {
     my $self   = shift;
     my $signal = shift;
 
+    require Socialtext::Signal::Topic;
     # also clears the signal_asset table for this signal:
     Socialtext::Signal::Topic->Delete_all_for_signal(
         signal => $signal,

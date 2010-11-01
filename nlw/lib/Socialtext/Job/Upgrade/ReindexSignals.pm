@@ -13,6 +13,11 @@ sub do_work {
     my $ws   = $self->workspace or return;
     my $hub  = $self->hub or return;
 
+    my $template_job = TheSchwartz::Moosified::Job->new(
+        funcname => 'Socialtext::Job::SignalIndex',
+        priority => 60,
+    );
+
     eval {
         # First, delete all the signals from Solr.
         my $factory = Socialtext::Search::Solr::Factory->new;
@@ -21,19 +26,15 @@ sub do_work {
 
         # Now create jobs to index each signal
         my $sth = sql_execute(
-            'SELECT signal_id FROM signal order by signal_id ASC'
-        );
-        while (my $row = $sth->fetchrow_arrayref) {
-            # Ignore errors for individual signals.
-            eval {
-                my $signal = Socialtext::Signal->Get(signal_id => $row->[0]);
-                Socialtext::JobCreator->index_signal(
-                    $signal,
-                    priority => 60,
-                    rebuild_topics => 1,
-                );
+            'SELECT signal_id FROM signal order by signal_id DESC');
+        my @jobs;
+        while (my ($id) = $sth->fetchrow_array) {
+            push @jobs, {
+                coalesce => "$id-reindex", # don't coalesce with normal jobs
+                arg => $id."-1-1"
             };
         }
+        Socialtext::JobCreator->bulk_insert($template_job, \@jobs);
     };
     $self->hub->log->error($@) if $@;
 
