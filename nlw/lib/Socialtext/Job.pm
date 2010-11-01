@@ -66,6 +66,7 @@ sub work {
     my $job = shift;
     eval {
         my $self = $class->new(job => $job);
+        $self->inflate_arg unless ref $self->arg;
         $self->do_work();
     };
     if ($@) {
@@ -73,6 +74,14 @@ sub work {
         $job->failed($@, 255);
         die $@;
     }
+}
+
+sub inflate_arg {
+    my $self = shift;
+    my $arg = $self->arg;
+    return unless defined $arg;
+    my (%kv) = split('-',$arg);
+    $self->arg(\%kv);
 }
 
 sub _build_workspace {
