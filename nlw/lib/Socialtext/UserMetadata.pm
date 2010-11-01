@@ -5,10 +5,12 @@ use Socialtext::Cache;
 use Socialtext::Exceptions qw( data_validation_error param_error );
 use Socialtext::Role;
 use Socialtext::SQL 'sql_execute';
+use Socialtext::SQL::Builder qw(sql_insert);
 use Socialtext::Validate qw( validate SCALAR_TYPE BOOLEAN_TYPE ARRAYREF_TYPE 
                              WORKSPACE_TYPE );
 use DateTime;
 use DateTime::Format::Pg;
+use Readonly;
 use namespace::clean -except => 'meta';
 
 our $VERSION = '0.01';
@@ -22,6 +24,18 @@ has 'is_business_admin'       => (is => 'rw', isa => 'Bool');
 has 'is_technical_admin'      => (is => 'rw', isa => 'Bool');
 has 'is_system_created'       => (is => 'rw', isa => 'Bool');
 has 'primary_account_id'      => (is => 'rw', isa => 'Int');
+
+Readonly our @fields => qw(
+    user_id
+    creation_datetime
+    last_login_datetime
+    email_address_at_import
+    created_by_user_id
+    is_business_admin
+    is_technical_admin
+    is_system_created
+    primary_account_id
+);
 
 sub user_set_id { $_[0]->user_id }
 
@@ -98,23 +112,24 @@ sub create {
     require Socialtext::Account;        # lazy-load, to reduce startup impact
 
     $class->_validate_and_clean_data(%p);
-    $p{primary_account_id} ||= Socialtext::Account->Default->account_id;
-    $p{is_business_admin}  ||= 'f';
-    $p{is_technical_admin} ||= 'f';
-    $p{is_system_created}  ||= 'f';
-    sql_execute(
-        'INSERT INTO "UserMetadata"'
-        . ' (user_id, email_address_at_import,'
-        . ' created_by_user_id, is_business_admin,'
-        . ' is_technical_admin, is_system_created, primary_account_id)'
-        . ' VALUES (?,?,?,?,?,?,?)',
-        $p{user_id}, $p{email_address_at_import}, $p{created_by_user_id},
-        $p{is_business_admin}, $p{is_technical_admin}, $p{is_system_created},
-        $p{primary_account_id},
+    my %defaults = (
+        primary_account_id => Socialtext::Account->Default->account_id,
+        is_business_admin  => 0,
+        is_technical_admin => 0,
+        is_system_created  => 0,
     );
+    my %insert_args =
+        map  { $_ => $p{$_} }
+        grep { exists $p{$_} }
+        @fields;
+    foreach my $key (keys %defaults) {
+        $insert_args{$key} = $defaults{$key} unless defined $insert_args{$key};
+    }
+
+    sql_insert('"UserMetadata"', \%insert_args);
 
     # re-fetches out of the db
-    my $self = $class->new(user_id => $p{user_id});
+    my $self = $class->new(user_id => $insert_args{user_id});
 
     # Add the User to their Primary Account.
     #
@@ -126,7 +141,7 @@ sub create {
     # has one already).
     my $acct = Socialtext::Account->new(
         account_id => $self->primary_account_id);
-    my $is_system_user = $p{is_system_created} ne 'f';
+    my $is_system_user = $insert_args{is_system_created};
     unless ($is_system_user or $acct->has_user($self, direct => 1)) {
         $acct->add_user(
             user  => $self,
