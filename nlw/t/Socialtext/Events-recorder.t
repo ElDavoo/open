@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::More tests => 31;
+use Test::More tests => 41;
 use Test::Exception;
 use mocked 'Socialtext::Page';
 use mocked 'Socialtext::Headers';
@@ -175,5 +175,51 @@ Creating_events: {
     }
 }
 
+blacklist_events: {
+    Socialtext::Events->BlackList(
+        { a => 1 },
+    );
+    my $event = {a => 1};
+    is(Socialtext::Events->EventInBlackList($event), 1, 'Event in blacklist');
+    $event = {a => 2};
+    is(Socialtext::Events->EventInBlackList($event), 0, 'Event with same key but different value not in blacklist');
+    $event = {b => 2};
+    is(Socialtext::Events->EventInBlackList($event), 0, 'Event in no matching keys not in blacklist');
+    Socialtext::Events->BlackList(
+    );
+    $event = {a => 1};
+    is(Socialtext::Events->EventInBlackList($event), 0, 'Reset clears blacklist');
+    Socialtext::Events->BlackList(
+        {
+            a => 1,
+            b => 'bob',
+            c => 'Wild',
+        }
+    );
+    $event = {a => 1};
+    is(Socialtext::Events->EventInBlackList($event), 0, 'Only one key means not in blacklist');
+    $event = {a => 1, b => 'bob'};
+    is(Socialtext::Events->EventInBlackList($event), 0, 'Only two keys means not in blacklist');
+    $event = {a => 1, c=> 'Senators', b => 'bob'};
+    is(Socialtext::Events->EventInBlackList($event), 0, 'All keys, 2 matches, means not in blacklist');
+    $event = {a => 1, c=> 'Wild', b => 'bob'};
+    is(Socialtext::Events->EventInBlackList($event), 1, 'All the keys match so in the blacklist');
+    Socialtext::Events->BlackList(
+        {
+            a => 1,
+            b => 'backstrom',
+            c => 'Wild',
+        },
+        {
+            a => 1,
+            b => 'leclaire',
+            c => 'Senators',
+        }
+    );
+    $event = {a => 1, b=> 'backstrom', c => 'Senators'};
+    is(Socialtext::Events->EventInBlackList($event), 0, 'Match in multiple blacklist not found');
+    $event = {a => 1, b=> 'leclaire', c => 'Senators'};
+    is(Socialtext::Events->EventInBlackList($event), 1, 'Match found in multiple blacklist');
+}
 
 exit;
