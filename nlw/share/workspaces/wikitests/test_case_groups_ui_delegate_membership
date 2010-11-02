@@ -31,8 +31,8 @@
 | st-widget-title-like | members_widget | Members |
 | st-select-widget-frame | members_widget |  |
 | text_like | //body | qr/%%group_user_short%%\s+Member/ |
-| wait_for_element_present_ok | //a[@value='Admin'] | 30000 |
-| click_ok | //a[@value='Admin'] |  |
+| wait_for_element_present_ok | //a[@value='admin'] | 30000 |
+| click_ok | //a[@value='admin'] |  |
 | text_like | //body | qr/changed/ism |
 | text_like | //body | qr/%%group_user_short%%\s+Admin/ |
 | select-frame | relative=parent |  |
@@ -52,8 +52,8 @@
 | text_like | //body | qr/%%group_user_short%%\s+Admin/ |
 
 | *Comment* | Test Case: Groups UI Delegate Membership - Change back to Member, save takes |  |
-| wait_for_element_present_ok | //a[@value='Member'] | 30000 |
-| click_ok | //a[@value='Member'] |  |
+| wait_for_element_present_ok | //a[@value='member'] | 30000 |
+| click_ok | //a[@value='member'] |  |
 | text_like | //body | qr/changed/ism |
 | text_like | //body | qr/%%group_user_short%%\s+Member/ |
 | select-frame | relative=parent |  |
