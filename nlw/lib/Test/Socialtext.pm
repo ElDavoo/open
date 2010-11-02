@@ -681,6 +681,11 @@ my @Added_groups;
             primary_account_id => $opts{account}->account_id,
         } );
         push @Added_groups, $group->group_id;
+
+        if ($opts{refetch}) {
+            # optionally re-fetch Group from DB
+            $group = Socialtext::Group->GetGroup(group_id => $group->group_id);
+        }
         return $group;
     }
 
