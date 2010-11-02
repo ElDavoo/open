@@ -444,6 +444,11 @@ sub import_account {
     $self->_error(loc("No import directory specified.") . "\n") unless $dir;
     $self->_error(loc("Directory [_1] does not exist.", $dir) . "\n") unless -d $dir;
 
+    Socialtext::Events->BlackList(
+        { action => 'add_user', event_class => 'group'},
+        { action => 'add_to_workspace', event_class => 'group'},
+    );
+
     my ( $hub, $main ) = $self->_make_hub(
         Socialtext::NoWorkspace->new(),
         Socialtext::User->SystemUser(),
