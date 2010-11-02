@@ -259,7 +259,8 @@ sub bulk_insert {
         "INSERT INTO $table_job ($cols) VALUES (?,?,?,?,?,?,?,?)");
 
     for my $job (@$jobs) {
-        my $row = { @protorow, %$job, grabbed_until => 0, run_after => $now };
+        my $row = { @protorow, %$job, grabbed_until => 0 };
+        $row->{run_after} ||= $now;
         sql_txn { $sth->execute(map { $row->{$_} } @cols) };
     }
 }
