@@ -39,39 +39,33 @@ sub delete_recklessly {
         croak "can't delete system created users, even recklessly";
     }
 
-    # Re-assign all Workspaces that were "created by" this User so that
-    # they're now the responsibility of the System User.
+    # make these things "owned" by the System User
     Socialtext::SQL::sql_execute( q{
         UPDATE "Workspace"
            SET created_by_user_id = ?
          WHERE created_by_user_id = ?
-        }, $system_user->user_id, $user_id
-    );
-
-    # Re-assign all Pages that were "created by" this User so that they're now
-    # the responsibility of the System User.
+        }, $system_user->user_id, $user_id);
     Socialtext::SQL::sql_execute( q{
         UPDATE page
            SET creator_id = ?
          WHERE creator_id = ?
-        }, $system_user->user_id, $user_id
-    );
-
-    # Re-assign all Pages that were "last edited by" this User so that they're
-    # now the responsibility of the System User.
+        }, $system_user->user_id, $user_id);
     Socialtext::SQL::sql_execute( q{
         UPDATE page
            SET last_editor_id = ?
          WHERE last_editor_id = ?
-        }, $system_user->user_id, $user_id
-    );
-
-    # Delete all attachments and signals sent by this user
+        }, $system_user->user_id, $user_id);
     Socialtext::SQL::sql_execute( q{
-            DELETE FROM attachment
-             WHERE creator_id = ?
-        }, $user_id,
-    );
+        UPDATE page
+           SET creator_id = ?
+         WHERE creator_id = ?
+        }, $system_user->user_id, $user_id);
+
+    # Delete things owned/associated with this user
+    Socialtext::SQL::sql_execute(
+        q{DELETE FROM attachment WHERE creator_id = ?}, $user_id);
+    Socialtext::SQL::sql_execute(
+        q{DELETE FROM signal_thread_tag WHERE user_id = ?}, $user_id);
 
     # Delete the User from the DB, and let this cascade across all other DB
     # tables, nuking data from the DB as it goes.

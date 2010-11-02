@@ -29,7 +29,7 @@
 | open_ok | /%%workspace%%/index.cgi?Email Spreadsheet %%start_time%% |  |
 | text_like | st-page-titletext | Email Spreadsheet %%start_time%% |
 | text_like | contentContainer | qr/Hello, this is a page from the workspace that I wanted you to see/ism |
-| wait_for_element_visible_ok | //a[contains(@href,'/%%workspace%%/?Car%20Loan')] |  |
+| wait_for_element_visible_ok | //a[contains(@href,'/%%workspace%%/?car_loan')] |  |
 
 | *Comment* | Test Case: Email Spreadsheet Teardown |  |
 

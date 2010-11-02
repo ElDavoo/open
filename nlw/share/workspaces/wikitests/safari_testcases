@@ -17,11 +17,9 @@ test env properly and are not testing the test-workspace
 * [Test Case: Global Navigation]
 * [Test Case: Miki]
 * [Test Case: Miki Authentication]
-* [Test Case: Authen Renewal]
 * [Test case: Invite Anonymous User]
 * [Test case: Self Register]
 * [Test case: Watchlist]
-
 * [Test Case: Recently Viewed]
 * [Test Case: Recent Changes]
 * [Test Case: Edit This Page]
@@ -99,14 +97,17 @@ Skipping - Test Case: Invite People to your network (is there a flashmob bug in 
 
 Skipping - Test Case: Created By Sorting
 Skipping - Test Case: Join - Appears to be a multi-window problem
-Skilling - Test Case: Weblog naming with Latin-1 character
+Skipping - Test Case: Weblog naming with Latin-1 character
 
 * [Test Case: Signal From Profile]
 * [Test Case: Profile Activity Widget]
 * [Test Case: People Dashboard Plugins]
 * [Edit Contention Testcases]
-* [Test Case: Miki]
-* [Test Case: Miki Authentication]
+
+Keep these two authen renewal cases together
+
+* [Test Case: Authen Renewal]
+* [Test Case: Authen Renewal Reset]
 
 * [Test Case: Email]
 * [Test Case: Email Attachment]

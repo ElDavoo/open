@@ -8,7 +8,7 @@ use DateTime::TimeZone;
 
 my $date_format = {
     'default' => DateTime::Format::Strptime->new(
-        pattern   => '%b %e',
+        pattern   => '%b %e, %Y',
         locale    => 'en',
     ),
 

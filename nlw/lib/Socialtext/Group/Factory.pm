@@ -170,13 +170,13 @@ sub CreateInitialRelationships {
     # Add the creator as an Admin of the Group
     my $creator = $group->creator;
     unless ($creator->is_system_created) {
-        # call add_role directly since add_$thing won't pass-through
-        # is_initial_role.
+        # call add_role directly, we already know the object is a user and
+        # add_user will not passthru the `force` param.
         $group->add_role(
-            role            => Socialtext::Role->Admin,
-            object          => $creator,
-            actor           => $creator,
-            is_initial_role => 1,
+            role   => Socialtext::Role->Admin,
+            object => $creator,
+            actor  => $creator,
+            force  => 1,
         );
     }
 

@@ -1,22 +1,41 @@
 package Socialtext::Job::SignalIndex;
 # @COPYRIGHT@
-use Socialtext::Signal::Topic;
-use Socialtext::SQL qw/sql_txn/;
-use Socialtext::JSON qw/encode_json/;
 use Moose;
+use Socialtext::SQL qw/sql_txn/;
+use Socialtext::Log qw/st_log/;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
 with 'Socialtext::CoalescingJob', 'Socialtext::IndexingJob';
 
+# Called if the job argument isn't a reference type, usually because of bulk
+# insertion:
+override 'inflate_arg' => sub {
+    my $self = shift;
+    my $arg = $self->arg;
+    return unless $arg;
+    my ($signal_id, $rebuild_topics, $solr) = split '-', $arg;
+    $solr = 1 unless defined $solr;
+    $self->arg({
+        signal_id      => $signal_id,
+        rebuild_topics => $rebuild_topics,
+        solr           => $solr,
+    });
+};
+
 sub do_work {
-    my $self    = shift;
+    my $self = shift;
+
     my $indexer = $self->indexer or return;
 
     if (my $signal = $self->signal) {
-        $self->_rebuild_signal_topics($signal)
-            if $self->arg->{rebuild_topics};
-
+        if ($self->arg->{rebuild_topics}) {
+            eval { sql_txn { $self->_rebuild_signal_topics($signal) } };
+            if ($@) {
+                st_log()->error("rebuilt-signal-topics failed for ".
+                    $signal->signal_id.": $@");
+            }
+        }
         $indexer->index_signal($signal);
     }
     else {
@@ -30,27 +49,29 @@ sub _rebuild_signal_topics {
     my $self   = shift;
     my $signal = shift;
 
-    sql_txn {
-        Socialtext::Signal::Topic->Delete_all_for_signal(
-            signal_id => $signal->signal_id,
-            'Yes, I really, really mean it.' => 1,
-        );
+    require Socialtext::Signal::Topic;
+    # also clears the signal_asset table for this signal:
+    Socialtext::Signal::Topic->Delete_all_for_signal(
+        signal => $signal,
+        'Yes, I really, really mean it.' => 1,
+    );
 
-        # ignore any errors generating topics.
-        my (undef,undef,$topics) = eval {
-            $signal->ParseSignalBody($signal->body, $signal->user);
-        };
-
-        # De-dupe topics.
-        my %seen_topic;
-        for my $topic (@$topics) {
-            my %attrs = map {$_=>$topic->$_} $topic->_Hash_attrs;
-            my $id = encode_json({ %attrs, signal_id => 0 });
-            next if $seen_topic{$id}++;
-            $topic->signal($signal);
-            $topic->_insert();
-        }
+    # ignore any errors generating topics.
+    my (undef,undef,$topics) = eval {
+        # XXX: this is duplicated work from the indexer? it uses
+        # render_signal_body which needs to parse it out.
+        $signal->ParseSignalBody($signal->body, $signal->user);
     };
+
+    # _insert will also do an insert to the signal_asset table if that topic
+    # is also an asset.
+    for my $topic (@{$topics||[]}) {
+        $topic->signal($signal);
+        $topic->_insert();
+    }
+
+    # attachments are assets too!
+    $_->_insert_asset() for @{$signal->attachments};
 }
 
 __PACKAGE__->meta->make_immutable;

@@ -5,6 +5,7 @@ use LWP::UserAgent;
 use Socialtext::Log qw/st_log/;
 use Socialtext::JSON qw/encode_json/;
 use Fatal qw/open close/;
+use URI;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
@@ -15,10 +16,6 @@ override 'retry_delay' => sub { 600 };
 
 sub do_work {
     my $self = shift;
-
-    # Set the timeout to be shorter than how long we grab the job for
-    my $ua = LWP::UserAgent->new(timeout => 300);
-    $ua->agent('Socialtext/WebHook');
 
     my $args = $self->arg;
     my $payload = ref($args->{payload}) ? encode_json($args->{payload})
@@ -33,9 +30,8 @@ sub do_work {
         return;
     }
 
-    my $response = $ua->post( $args->{hook}{url},
-        { json_payload => $payload },
-    );
+    my $response = $self->_make_webhook_request($args->{hook}, $payload);
+
     st_log()->info("Triggered webhook '$args->{hook}{id}': "
                     . $response->status_line);
 
@@ -45,6 +41,21 @@ sub do_work {
     else {
         $self->failed($response->status_line, 255);
     }
+}
+
+sub _make_webhook_request {
+    my $self = shift;
+    my $hook = shift;
+    my $payload = shift;
+
+    # Set the timeout to be shorter than how long we grab the job for
+    my $ua = LWP::UserAgent->new(timeout => 300);
+    $ua->agent('Socialtext/WebHook');
+
+    (my $uri_base = $hook->{url}) =~ s/\?.+//;
+    my $uri = URI->new($hook->{url});
+
+    return $ua->post($uri_base, [ $uri->query_form, json_payload => $payload ]);
 }
 
 __PACKAGE__->meta->make_immutable;

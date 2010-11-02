@@ -1,0 +1,121 @@
+| *Comment* | Test case: Custom Fields Set up data |  |
+
+| set | cf_acct | 0-custom-field-%%start_time%% |
+| set | cf_user | `customfield.%%start_time%%@ken.socialtext.net` |
+| set | cf_title | CF Title %%start_time%% |
+| set | cf_name | cf_%%start_time%% |
+| set | cf_entry | Entry for %%cf_title%% Test |
+| set | hideme_title | Hide Me Title %%start_time%% |
+| set | hideme_name | hideme_%%start_time%% |
+| set | hideme_entry | Entry for %%hideme_title%% Test |
+
+| st-admin | create-account --name %%cf_acct%% | was created |
+| st-admin | create-user --account %%cf_acct%% --e %%cf_user%% --p %%password%% --f Custom --l Field | created |
+| st-admin | enable-plugin --p people --account %%cf_acct%% |  |
+| st-admin | give-accounts-admin --u %%username%% |  |
+| open_ok | /nlw/control/account |  |
+
+| *Comment* | Test Case: Custom Fields. This section tests the custom Profile fields. |  |
+| wait_for_element_visible_ok | link=%%cf_acct%% |  |
+| click_and_wait | link=%%cf_acct%% |  |
+| wait_for_element_visible_ok | link=Profile Fields | 10000 |
+| click_and_wait | link=Profile Fields |  |
+
+| *Comment* | Test Case: Custom Fields. Sorting check all the Profile Fields info |  |
+| text_like | qr/Field Title.*Field Name.*Field Type.*Hidden.*Source.*Actions/ |  |
+| text_like | qr/AIM™.+(Edit).+aol_sn/ |  |
+| text_like | qr/Assistant.+(Edit).+assistant/ |  |
+| text_like | qr/Blog.+(Edit).+blog/ |  |
+| text_like | qr/Company.+(Edit).+company/ |  |
+| text_like | qr/Facebook™.+(Edit).+facebook_url/ |  |
+| text_like | qr/GTalk.+(Edit).+gtalk_sn/ |  |
+| text_like | qr/Home phone.+(Edit).+home_phone/ |  |
+| text_like | qr/Linkedin®.+(Edit).+linkedin_url/ |  |
+| text_like | qr/Location.+(Edit).+location/ |  |
+| text_like | qr/Mobile phone.+(Edit).+mobile_phone/ |  |
+| text_like | qr/Personal.+(Edit).+personal_url/ |  |
+| text_like | qr/Position.+(Edit).+position/ |  |
+| text_like | qr/Sametime®.+(Edit).+sametime_sn/ |  |
+| text_like | qr/Skype™.+(Edit).+skype_sn/ |  |
+| text_like | qr/Manager.+(Edit).+supervisor/ |  |
+| text_like | qr/Twitter.+(Edit).+twitter_sn/ |  |
+| text_like | qr/Work phone.+(Edit).+work_phone/ |  |
+| text_like | qr/Yahoo!™.+(Edit).+yahoo_sn/ |  |
+
+| *Comment* | Test Case: Custom Fields. check Save Field. Click the first Edit link |  |
+| click_and_wait | link=Edit |  |
+| wait_for_element_visible_ok | field-title-input | 30000 |
+| text_like | qr/Field Title.+Field Name.+Data Source.+Field Type.+Hidden/ |  |
+
+| *Comment* | Test Case: Custom Fields. Edit the existing AIM field |  |
+| open_ok | /nlw/control/account |  |
+| wait_for_element_visible_ok | link=%%cf_acct%% | 30000 |
+| click_and_wait | link=%%cf_acct%% |  |
+| wait_for_element_visible_ok | link=Profile Fields | 10000 |
+| click_and_wait | link=Profile Fields |  |
+| wait_for_element_visible_ok | link=Edit | 10000 |
+| click_and_wait | link=Edit |  |
+| wait_for_element_visible_ok | field-title-input | 10000 |
+| text_like | qr/Field Title.+Field Name.+Data Source.+Field Type.+Hidden/ |  |
+
+| *Comment* | Test Case: Custom Fields. can fail in IE unless you fill in the field title |  |
+| wait_for_element_visible_ok | field-title-input | 10000 |
+| type_ok | field-title-input | %%hideme_title%% |
+| wait_for_element_visible_ok | data-source-select | 10000 |
+| wait_for_element_visible_ok | field-type-select | 10000 |
+| select_ok | data-source-select | label=User |
+| select_ok | field-type-select | label=Regular |
+| wait_for_element_visible_ok | //input[@name='is_hidden' and @value='1'] | 10000 |
+| check_ok | //input[@name='is_hidden' and @value='1'] |  |
+| is_checked_ok | //input[@name='is_hidden' and @value='1'] |  |
+| wait_for_element_visible_ok | //input[@value='Save Field'] | 10000 |
+| click_and_wait | //input[@value='Save Field'] |  |
+| text_like | qr/Updated profile field.+This field is now hidden from users' profiles./ |  |
+| text_like | un-hide |  |
+
+| *Comment* | Test Case: Custom Fields. reopen UI to decouple from any previous failures |  |
+| click_and_wait | link=Accounts |  |
+| wait_for_element_visible_ok | link=%%cf_acct%% | 30000 |
+| click_and_wait | link=%%cf_acct%% |  |
+| wait_for_element_visible_ok | link=Profile Fields | 10000 |
+| click_and_wait | link=Profile Fields |  |
+
+| *Comment* | Test Case: Custom Fields. make new custom fields |  |
+| wait_for_element_visible_ok | link=Create New Field | 10000 |
+| click_and_wait | link=Create New Field |  |
+| wait_for_element_visible_ok | field-title-input | 10000 |
+| wait_for_element_visible_ok | field-name-input | 10000 |
+| type_ok | field-title-input | %%cf_title%% |
+| type_ok | field-name-input | %%cf_name%% |
+| wait_for_element_visible_ok | data-source-select | 10000 |
+| wait_for_element_visible_ok | field-type-select | 10000 |
+| select_ok | data-source-select | label=User |
+| select_ok | field-type-select | label=Regular |
+| wait_for_element_visible_ok | //input[@name='is_hidden' and @value='1'] | 10000 |
+| uncheck_ok | //input[@name='is_hidden' and @value='1'] |  |
+| wait_for_element_visible_ok | //input[@value='Create New Field'] | 10000 |
+| click_and_wait | //input[@value='Create New Field'] |  |
+| text_like | qr/Created profile field "%%cf_title%%".+This field is now visible in users' profiles./ |  |
+| text_like | `qr/%%cf_title%%.+%%cf_name%%.*Regular.*No.*User.*(hide)/` |  |
+
+| *Comment* | Test Case: Custom Fields. fill in new custom fields |  |
+| open_ok | /nlw/submit/logout |  |
+| st-login | %%cf_user%% | %%password%% |
+| open_ok | /st/edit_profile |  |
+| wait_for_element_visible_ok | //input[@name='%%cf_name%%'] | 10000 |
+| type_ok | //input[@name='%%cf_name%%'] | %%cf_entry%% |
+| wait_for_element_visible_ok | //input[@id='update_profile'] | 10000 |
+| click_and_wait | //input[@id='update_profile'] |  |
+
+| *Comment* | Test Case: Custom Fields. display new custom fields |  |
+| location_like | /st/profile |  |
+| text_like | //div[@class='profile'] | Custom |
+| text_like | //div[@class='profile'] | qr/%%cf_title%%.+%%cf_entry%%/ism |
+| text_unlike | //div[@class='profile'] | %%hideme_title%% |
+
+TODO: un-hide hideme, fill it in, see it
+TODO: External source, see not editable
+
+| *Comment* | Test case: Custom Fields. TEARDOWN. Let %%username%% keep accounts admin privileges. |  |
+
+| *Comment* | Test case: Custom Fields. COMPLETED |  |

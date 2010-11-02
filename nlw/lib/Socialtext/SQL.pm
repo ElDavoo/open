@@ -104,8 +104,8 @@ When forking a new process be sure to, C<disconnect_dbh()> first.
     }
 
     sub _connect_dbh {
-        cluck "Creating a new DBH" if $DEBUG;
         my %params = Socialtext::AppConfig->db_connect_params();
+        cluck "Creating a new DBH $params{db_name}" if $DEBUG;
         my $dsn = "dbi:Pg:database=$params{db_name}";
 
         $DBH = DBI->connect($dsn, $params{user}, "",  {

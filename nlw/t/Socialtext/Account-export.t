@@ -42,6 +42,7 @@ sub dump_group {
         driver_group_name    => $group->driver_group_name,
         created_by_username  => $group->creator->username,
         permission_set       => $group->permission_set,
+        photo                => ignore(),
         role_name            => ignore(),
         users                => ignore(),
         description          => ignore(),
@@ -71,7 +72,7 @@ sub dump_signal {
 ###############################################################################
 # Helper function; export Account, check if the User/Group is in the exported
 # data.
-sub account_export_contains {
+sub account_export_contains { # MARK
     my %args    = @_;
     my $account = $args{account};
     my $groups  = $args{groups} || [];
@@ -105,7 +106,6 @@ sub account_export_contains {
     # CLEANUP
     rmtree [$tempdir], 0;
 }
-
 
 ###############################################################################
 # TEST: Account export includes Users who have the Account as their Primary
@@ -243,6 +243,7 @@ export_succeeds_when_profile_hidden: {
     );
 }
 
+###############################################################################
 # Test that signals to a group in this account is included.
 Export_signals_to_group: {
     my $account = create_test_account_bypassing_factory();
@@ -252,9 +253,9 @@ Export_signals_to_group: {
     $account->add_group(group => $group);
 
     my $sig = Socialtext::Signal->Create(
-        body => 'o hai',
-        group_ids => [$group->group_id],
-        user_id => $user->user_id,
+        body      => 'o hai',
+        group_ids => [ $group->group_id ],
+        user_id   => $user->user_id,
     );
     $sig->clear_user; # remove the ref to $user, so we re-create it later.
 

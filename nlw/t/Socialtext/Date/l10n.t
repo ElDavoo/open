@@ -9,7 +9,7 @@ use Socialtext::Date::l10n;
 my @locale = qw( en unknown );
 my @date_key = ('mm_dd', 'unknown');
 my %strftime_date_formats = ( 'mm_dd'   => '%m-%d',
-                              'unknown' => '%b %{day}',
+                              'unknown' => '%b %{day}, %Y',
 );
 my %date_map = ( 'mm_dd' => 'yyyy_mm_dd',
                  'unknown' => 'unknown',

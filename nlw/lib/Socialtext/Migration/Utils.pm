@@ -61,9 +61,10 @@ sub create_job {
     my $class = shift || die 'A job class is mandatory';
     my $prio  = shift;
     $prio = 31 unless defined $prio;
+    my $arg = shift || {};
     my $job_class = 'Socialtext::Job::Upgrade::' . $class;
 
-    Socialtext::JobCreator->insert( $job_class, {job => {coalesce => 'only', priority => $prio}} );
+    Socialtext::JobCreator->insert( $job_class, {%$arg, job => {coalesce => 'only', priority => $prio}} );
 
     print "Inserted $job_class job\n";
 }

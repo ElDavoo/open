@@ -34,7 +34,7 @@
 | ws-search | cows | 1 |
 | ws-search | abc123 | 1 |
 | ws-search | 2.1.x | 1 |
-| ws-search | like | 0 |
+| ws-search | like | 1 |
 | ws-search | crap | 1 |
 |
 | edit-page | %%workspace%% | token | Part 3245lk234-1234h3214-34kk3142 sux |
@@ -47,7 +47,7 @@
 | ws-search | BaR | 1 |
 | ws-search | BaZ | 1 |
 | ws-search | COWS | 1 |
-| ws-search | like | 0 |
+| ws-search | like | 1 |
 | ws-search | The | 0 |
 | ws-search | man | 1 |
 | ws-search | MadE | 1 |
@@ -70,7 +70,7 @@
 | ws-search | €100 | 1 |
 | ws-search | and | 0 |
 I
-| ws-search | like | 0 |
+| ws-search | like | 1 |
 | ws-search | the | 0 |
 | ws-search | website | 1 |
 | ws-search | 43folders | 1 |

@@ -526,3 +526,6 @@ t/wikitests/signals/data_signals_assets-tagfilter.wiki
 service/st-userd/supervise
 lib/Socialtext/Handler/JSONProxy.pm
 t/wikitests/signals/data_signals_many.wiki
+t/Socialtext/Account-export-gadgets.t
+lib/Socialtext/Signal/Asset/Finder.pm
+lib/Socialtext/Signal.pm.orig

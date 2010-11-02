@@ -3745,6 +3745,7 @@ table.widgetUserPrefs select {
     margin:10px;
     display:none;
     float: left;
+    margin-right: 0px;
 }
 
 #st-tags-listing a.tag_name {
@@ -4483,12 +4484,14 @@ table.st-ss th span {
     display: none !important;
 }
 
-.groupsTitle {
+.groupsTitle,
+.exploreTitle {
     position: static;
     margin-top: 18px;
     margin-left: 5px;
 }
 
+.exploreTitle .prefix,
 .groupsTitle .prefix {
     background:#999;
     color:#fff;
@@ -4589,7 +4592,7 @@ ul.dropdownOptions li.disabled a:hover {
 .attachmentPopup, .weblinkPopup, .wikilinkPopup {
     position: absolute;
     background-color: #fff;
-    z-index: 1000;
+    z-index: 3000;
     margin: 1px 5% 0px 5%;
     padding: 5px;
     text-align: left;
@@ -4714,6 +4717,7 @@ ul.dropdownOptions li.disabled a:hover {
 #exploreTabs ul {
     position: relative;
     top: 5px;
+    padding-left: 38px;
 }
 #exploreTabs .tab {
     float: left;
@@ -4729,9 +4733,14 @@ ul.dropdownOptions li.disabled a:hover {
     padding: 2px;
     width: 110px;
     height: 15px;
-}
-#exploreTabs .first {
-    margin-left: 38px;
+
+    /* Rounded cornders */
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 #exploreTabs .selected {
     background-color: #FFF;

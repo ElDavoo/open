@@ -15,11 +15,9 @@ Socialcalc enabled is required because we run Calc Testcases
 Test Case: Replies is Firefox-specific because we load IE without wikiwyg while using Se
 
 * [Test Case: Replies]
-
 * [Calc Testcases]
 * [File Testcases]
 * [Localization Testcases]
-
 * [Test Case: RSS Icons]
 * [Test Case: Table Info]
 
@@ -32,9 +30,7 @@ It will re-enable LDAP when it finishes.
 
 * [Default User Testcases]
 
-Plugins tests
-
-Keep these two Plugins cases together in alpha order.
+People and Dasboard plugin tests. Keep these two cases together in alpha order.
 
 * [Test Case: People Dashboard Plugins]
 * [Test Case: People Dashboard Plugins Reset]
@@ -52,9 +48,3 @@ Dashboard tests
 * [Test Case: Add Remove Gallery Widgets]
 * [Test Case: Administer Dashboards]
 * [Test Case: Reset to Default Dashboard]
-
-All pages tagged 'Testcase' (only a list, visit the pages above for tests)
-
-Tests do not run out of the list since it isn't really here.
-
-{search: tag:testcase}

@@ -13,8 +13,8 @@ create_job_for_each_workspace('ReIndexWorkspace', -64,
     except => [ Socialtext::Workspace->Help_workspaces ],
 );
 
-create_job('ReindexPeople',  -64);
-create_job('ReindexGroups',  -64);
-create_job('ReindexSignals', -64);
+create_job('ReindexPeople',  -64, {no_delete => 1});
+create_job('ReindexGroups',  -64, {no_delete => 1});
+create_job('ReindexSignals', -64, {no_delete => 1});
 
 exit 0;

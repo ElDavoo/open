@@ -375,19 +375,21 @@ sub st_open_noeval {
 sub _relative_filename_to_absolute {
     my $self = shift;
     my $filename = shift;
+    return $filename if -e $filename;
     return $filename if File::Spec->file_name_is_absolute($filename);
     return File::Spec->rel2abs(dirname(__FILE__) . "/../../../" . $filename);
 }
 
 sub _get_random_page_content {
     my $self = shift;
-    my $filename = $self->_relative_filename_to_absolute("t/share/pagecontent.txt");
-    local *INF;
-    open(INF, '<', $filename);
-    local $/;
-    my $lines = <INF>;
-    close(INF);
-    return split/\n/, $lines;
+    return split /\n/, qq/In the days when Sussman was a novice Minsky once came to him as he sat hacking at the PDP-6.
+"What are you doing?", asked Minsky.
+"I am training a randomly wired neural net to play Tic-Tac-Toe."
+"Why is the net wired randomly?", inquired Minsky.
+"I do not want it to have any preconceptions of how to play".
+At this Minsky shut his eyes, and Sussman asked his teacher "Why do you close your eyes?"
+"So that the room will be empty."
+At that moment, Sussman was enlightened./;
 }
 
 =head2 st_create_pages($workspace, $numberpages, optional $pageprefix)

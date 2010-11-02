@@ -13,7 +13,7 @@ use namespace::clean -except => 'meta';
 has_inflated '_client' => (
     is => 'ro', isa => 'Socialtext::TheSchwartz',
     lazy_build => 1,
-    handles => qr/(?:list|find|get_server_time|func|move_jobs_by|cancel_job)/,
+    handles => qr/(?:list|find|get_server_time|func|move_jobs_by|cancel_job|bulk_insert)/,
 );
 
 sub insert {

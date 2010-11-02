@@ -238,9 +238,9 @@ creator, dm_recip
 | get             | /data/signals?q=mention%3A%%recipient_id%% | application/json |
 | code-is         | 200                                      |                  |
 | json-parse      |                                          |                  |
-| json-array-size | 2                                        |                  |
+| json-array-size | 1                                        |                  |
 | body-like       | how are you |
-| body-like       | superb |
+| body-unlike       | superb |
 
 | get             | /data/signals?q=reply_to%3A%%user1_id%% | application/json |
 | code-is         | 200                                  |                  |

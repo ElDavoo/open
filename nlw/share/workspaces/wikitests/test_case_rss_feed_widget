@@ -22,7 +22,7 @@
 | wait_for_element_visible_ok | link=Agile Project Management | 30000 |
 | wait_for_element_visible_ok | link=Emerson | 3000 |
 | wait_for_element_visible_ok | link=... | 3000 |
-| text_like | //body | the new Highsmith book |
+| wait_for_text_present_ok | the new Highsmith book | 30000 |
 | text_unlike | //body | the book is best framed as an introduction |
 | select-frame | relative=parent |  |
 
@@ -37,9 +37,9 @@
 | *Comment* | Test Case: RSS Feed Widget. See unlimited view |  |
 | st-select-widget-frame | rss_feed |  |
 | wait_for_element_visible_ok | link=Agile Project Management | 30000 |
-| wait_for_element_visible_ok | link=Emerson | 3000 |
-| text_like | //body | the new Highsmith book |
-| text_like | //body | the book is best framed as an introduction |
+| wait_for_element_visible_ok | link=Emerson | 30000 |
+| wait_for_text_present_ok | the new Highsmith book | 30000 |
+| wait_for_text_present_ok | the book is best framed as an introduction | 30000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: RSS Feed Widget COMPLETED |

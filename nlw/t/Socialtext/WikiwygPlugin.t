@@ -237,7 +237,7 @@ PARSE_WIDGET_weblog: {
     is( $widget->{id}, 'weblog', 'weblog widget id' );
     is( $widget->{label}, 'label', 'weblog has label' );
     is( $widget->{workspace_id}, 'workspace', 'weblog workspace id' );
-    is( $widget->{weblog_name}, 'name', 'weblog name' );
+    is( $widget->{weblog_name}, undef, 'weblog name' );
 }
 
 PARSE_WIDGET_blog: {
@@ -335,7 +335,7 @@ PARSE_WIDGET_weblog_list: {
     my $widget = $hub->wikiwyg->parse_widget($wafl, $widgets);
     is( $widget->{id}, 'weblog_list', 'weblog_list widget id' );
     is( $widget->{workspace_id}, 'workspace', 'weblog_list workspace' );
-    is( $widget->{weblog_name}, 'name', 'weblog_list name' );
+    is( $widget->{weblog_name}, undef, 'weblog_list name' );
     is( $widget->{full}, '0', 'weblog_list defaults to not full' );
 }
 

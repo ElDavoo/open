@@ -73,12 +73,20 @@
 | st-admin | add-member --e %%nopermuser%% --group %%group_id%% | is now a member of the |
 | open_ok | /?group/%%group_id%% |  |
 
+
 | *Comment* | Test Case: Groups Home. Check Information Widget |  |
+| st-name-widget | 1 | info |
+| st-select-widget-frame | info |  |
 | wait_for_text_present_ok | %%groupname%% | 30000 |
+| select_frame | relative=parent |  |
+
 
 | *Comment* | Test Case: Groups Home Check Workspaces Widget |  |
+| st-name-widget | 2 | workspaces |
+| st-select-widget-frame | workspaces |  |
 | wait_for_element_visible_ok | link=%%wsname%% | 30000 |
 | wait_for_element_visible_ok | link=%%wsname2%% | 30000 |
+| select_frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups Home. Check Activity Widget |  |
 | wait_for_text_present_ok | within %%groupname%% | 30000 |
@@ -96,8 +104,11 @@
 | text_like | //body | qr/System User.+minute.+ago.+added.+%%short_permuser%%.+to.+%%groupname%%/ism |
 
 | *Comment* | Test Case: Groups Home. Check People Widget |  |
+| st-name-widget | 3 | membership |
+| st-select-widget-frame | membership |  |
 | wait_for_text_present_ok | %%short_permuser%% | 30000 |
 | wait_for_text_present_ok | %%short_nopermuser%% | 30000 |
+| select_frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups Home TEARDOWN |  |
 | st-admin | delete-workspace --w %%wsname%% --no-export | has been deleted |

@@ -84,7 +84,7 @@ sub do_work {
             if ($blob and $blob =~ m/"\Q$pref_name\E":"(\d+)"/) {
                 $freq = $1 * 60;
             }
-            $create_job->($user_id, $freq);
+            $create_job->($user_id, $freq) if $freq;
         }
     }
 

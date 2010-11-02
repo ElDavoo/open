@@ -112,7 +112,7 @@ Click on Post to this tag by Email to get email popup
 
 Click on View As Weblog to see weblog view of tag
 
-| clickAndWait | link=Welcome as a weblog |  |
+| clickAndWait | link=Welcome as a blog |  |
 | *Comment* | SEE Weblog:Welcome |  |
 | pause | %%pt%% |  |
 
