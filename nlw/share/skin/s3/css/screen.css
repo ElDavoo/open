@@ -3745,6 +3745,7 @@ table.widgetUserPrefs select {
     margin:10px;
     display:none;
     float: left;
+    margin-right: 0px;
 }
 
 #st-tags-listing a.tag_name {
