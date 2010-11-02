@@ -2,6 +2,7 @@ package Socialtext::Job::SignalIndex;
 # @COPYRIGHT@
 use Moose;
 use Socialtext::SQL qw/sql_txn/;
+use Socialtext::Log qw/st_log/;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
