@@ -11,7 +11,6 @@ sub maketext {
         unless ($token =~ /^(?:<|quant$)/) {
             $token =~ s/[[:upper:]]/X/g;
             $token =~ s/[[:lower:]]/x/g;
-            $token =~ s/[[:digit:]]/0/g;
         }
 
         $result .= $token;
