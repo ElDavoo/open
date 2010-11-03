@@ -1,5 +1,6 @@
 package Socialtext::Locales;
 # @COPYRIGHT@
+use utf8;
 use strict;
 use warnings;
 use base 'Exporter';
@@ -35,6 +36,7 @@ sub valid_code {
 
     # Add sekret locales
     $available->{xx} = 'Hax0r (auto-generated)';
+    $available->{xq} = '«Quoted» (auto-generated)';
     $available->{zz} = 'Hax0r';
     $available->{zj} = 'Japanese Hax0r';
     $available->{zl} = 'LOL Cat';
