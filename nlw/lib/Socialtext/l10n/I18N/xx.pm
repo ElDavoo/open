@@ -5,10 +5,10 @@ our %Lexicon = ( _AUTO => 1 );
 
 sub maketext {
     my $self   = shift;
-    my @tokens = split(/(<[^<]*|quant)/, shift);
+    my @tokens = split(/(&\w+;|<[^<]*|quant)/, shift);
     my $result = '';
     for my $token (@tokens) {
-        unless ($token =~ /^(?:<|quant$)/) {
+        unless ($token =~ /^(?:<|&\w+;|quant$)/) {
             $token =~ s/[[:upper:]]/X/g;
             $token =~ s/[[:lower:]]/x/g;
         }
