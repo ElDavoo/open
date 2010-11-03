@@ -169,24 +169,28 @@ sub record_event {
     my $user = Socialtext::User->new(user_id => $p->{actor});
 
     my $body = "$p->{event_class} $p->{action}";
-    my $searchfor = '';
+    my $searchfor;
     if ($p->{workspace} && $p->{page}) {
         my $ws = Socialtext::Workspace->new(workspace_id => $p->{workspace});
         $body .= " {link: ".$ws->name." [$p->{page}]}";
-        $searchfor .= "anno:activity|workspace|$p->{workspace} AND ".
+        $searchfor = "anno:activity|workspace|$p->{workspace} AND ".
             "anno:activity|page|$p->{page}";
     }
-    if ($p->{person}) {
-        $body .= " {user: $p->{person}}";
-    }
+
     if ($p->{group}) {
         $body .= " {group: $p->{group}}";
+        # group joins maybe shouldn't be threaded?
+        $searchfor = "anno:activity|group|$p->{group}";
+    }
+    elsif ($p->{person}) {
+        $body .= " {user: $p->{person}}";
+        # should these even thread at all? maybe just events within the
+        # last week?
+        $searchfor = "anno:activity|person|$p->{person}";
     }
     $body .= " \"$summary\"" if $summary;
     $body .= " {hashtag: $p->{tag}}" if $p->{tag};
 
-    # TODO: make it in reply to an annotation search See
-    # lib/Socialtext/Rest/Signals.pm +431
     my $in_reply_to;
     if ($searchfor) {
         eval {
