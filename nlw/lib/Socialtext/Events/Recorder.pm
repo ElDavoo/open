@@ -155,19 +155,26 @@ sub record_event {
 
     # create a signal for this event
     require Socialtext::Signal;
+    $p->{_checked_context} ||= {};
+    my $summary = $p->{_checked_context}{summary};
     my %anno = (
         event_class => $p->{event_class},
         action      => $p->{action},
-        %{$p->{_checked_context}||{}},
+        %{$p->{_checked_context}},
     );
     for (qw(person page workspace tag group)) {
         $anno{$_} = $p->{$_} if defined $p->{$_};
     }
 
+    my $user = Socialtext::User->new(user_id => $p->{actor});
+
     my $body = "$p->{event_class} $p->{action}";
+    my $searchfor = '';
     if ($p->{workspace} && $p->{page}) {
         my $ws = Socialtext::Workspace->new(workspace_id => $p->{workspace});
         $body .= " {link: ".$ws->name." [$p->{page}]}";
+        $searchfor .= "anno:activity|workspace|$p->{workspace} AND ".
+            "anno:activity|page|$p->{page}";
     }
     if ($p->{person}) {
         $body .= " {user: $p->{person}}";
@@ -175,15 +182,45 @@ sub record_event {
     if ($p->{group}) {
         $body .= " {group: $p->{group}}";
     }
+    $body .= " \"$summary\"" if $summary;
     $body .= " {hashtag: $p->{tag}}" if $p->{tag};
 
     # TODO: make it in reply to an annotation search See
     # lib/Socialtext/Rest/Signals.pm +431
+    my $in_reply_to;
+    if ($searchfor) {
+        eval {
+            my ($results,undef) = Socialtext::Signal::Search->Search(
+                search_term => $searchfor,
+                viewer => $user,
+                limit => 1,
+                offset => 0,
+                order => 'newest',
+            );
+            if ($results && @$results) {
+                $in_reply_to = $results->[0]->signal;
+            }
+        };
+        if ($@) {
+            warn "while searching for parent: $@";
+        }
+        if ($in_reply_to) {
+            # don't reply to a reply, but reply to the real parent
+            $in_reply_to = $in_reply_to->in_reply_to
+                if $in_reply_to->in_reply_to_id;
+        }
+    }
 
     Socialtext::Signal->Create(
         at => $p->{at},
         user_id => $p->{actor},
         body => $body,
+        ($in_reply_to ? (
+            in_reply_to => $in_reply_to,
+            in_reply_to_id => $in_reply_to->signal_id,
+            group_ids => $in_reply_to->group_ids || [],
+            account_ids => $in_reply_to->account_ids || [],
+        ) : ()),
         annotations => [{'activity' => \%anno}],
     );
 
