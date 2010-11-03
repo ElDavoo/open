@@ -34,6 +34,7 @@ sub valid_code {
     my $available = available_locales();
 
     # Add sekret locales
+    $available->{xx} = 'Hax0r (auto-generated)';
     $available->{zz} = 'Hax0r';
     $available->{zj} = 'Japanese Hax0r';
     $available->{zl} = 'LOL Cat';
