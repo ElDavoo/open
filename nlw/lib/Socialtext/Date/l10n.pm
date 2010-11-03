@@ -75,9 +75,9 @@ sub _delegate {
     my $method = shift;
     my $locale = shift;
 
+    local $@;
     my $class = 'Socialtext::Date::l10n::' . $locale;
-    eval "use $class";
-    $class = 'Socialtext::Date::l10n::en' if $@;
+    $class = 'Socialtext::Date::l10n::en' unless eval { require "Socialtext/Date/l10n/$locale.pm" };
     return $class->$method(@_);
 }
 
