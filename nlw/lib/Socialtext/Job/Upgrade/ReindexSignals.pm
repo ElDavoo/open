@@ -32,7 +32,7 @@ sub do_work {
     st_log()->info("going to insert ".scalar(@jobs)." SignalIndex jobs");
     my $template_job = TheSchwartz::Moosified::Job->new(
         funcname => 'Socialtext::Job::SignalIndex',
-        priority => 60,
+        priority => -30,
     );
     Socialtext::JobCreator->bulk_insert($template_job, \@jobs);
     st_log()->info("done SignalIndex bulk_insert");
