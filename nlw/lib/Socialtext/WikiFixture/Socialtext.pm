@@ -905,6 +905,21 @@ sub st_ldap {
     _run_command("st-bootstrap-openldap $options", $verify);
 }
 
+=head2 st_ldap_vanilla ($command_options )
+
+Run st_ldap, not st_bootstrap_openldap.
+
+=cut
+
+sub st_ldap_vanilla {
+    my $self = shift;
+    my $options = shift || '';
+    my $verify = shift;
+    $verify = $self->quote_as_regex($verify) if $verify;
+    diag "st-ldap $options";
+    _run_command("st-ldap $options", $verify);
+}
+
 =head2 st_config( $command_options )
 
 Runs st_config command line script with the supplied options.
