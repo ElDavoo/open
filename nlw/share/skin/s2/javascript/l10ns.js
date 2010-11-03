@@ -7,6 +7,22 @@ function loc() {
     var l10n = dict[str];
     var nstr = "";
 
+    if (locale == 'xx') {
+        l10n = str.replace(/[A-Z]/g, 'X').replace(/[a-z]/g, 'x');
+    }
+    else if (locale == 'xq') {
+        l10n = "«" + str + "»";
+    }
+    else if (locale == 'xr') {
+        l10n = str.replace(/a/g, '4')
+                  .replace(/e/g, '3')
+                  .replace(/o/g, '0')
+                  .replace(/t/g, '7')
+                  .replace(/b/g, '8')
+                  .replace(/qu4n7/g, 'quant')
+                  .replace(/<4 hr3f/g, '<a href');
+    }
+
     if (!l10n) {
         /* If the hash-lookup failed, convert " into \\\" and try again. */
         nstr = str.replace(/\"/g, "\\\"");
