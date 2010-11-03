@@ -5,13 +5,17 @@ our %Lexicon = ( _AUTO => 1 );
 
 sub maketext {
     my $self   = shift;
-    my %leet   = ( a => 4, e => 3, o => 0, t => 7, b => 8 );
-    my $c      = 0;
-    my $result = join "", map { ( $c++ % 2 ) ? uc($_) : $_ }
-        map { defined( $leet{$_} ) ? $leet{$_} : $_ }
-        map lc, split //, shift;
-    $result =~ s/qu4n7/quant/gi;
-    $result =~ s/<4 hr3f/<a href/gi;
+    my @tokens = split(/(<[^<]*|quant)/, shift);
+    my $result = '';
+    for my $token (@tokens) {
+        unless ($token =~ /^(?:<|quant$)/) {
+            $token =~ s/[[:upper:]]/X/g;
+            $token =~ s/[[:lower:]]/x/g;
+            $token =~ s/[[:digit:]]/0/g;
+        }
+
+        $result .= $token;
+    }
     return $self->SUPER::maketext($result, @_);
 }
 
