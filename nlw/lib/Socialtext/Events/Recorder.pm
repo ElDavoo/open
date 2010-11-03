@@ -5,6 +5,7 @@ use strict;
 use Socialtext::SQL qw/sql_execute/;
 use Socialtext::JSON qw/encode_json decode_json/;
 use Socialtext::Encode;
+use Carp;
 
 sub new {
     my $class = shift;
@@ -99,6 +100,7 @@ sub record_event {
     my $p = shift || die 'Requires Event parameters';
 
     #warn "EVENT: $p->{event_class}:$p->{action}\n";
+    return if ($p->{event_class} eq 'signal');
 
     $p->{at} ||= $p->{timestamp}; # compatibility alias
     $p->{at} ||= "now";
@@ -120,7 +122,7 @@ sub record_event {
         $self->_validate_insert_params($p);
     };
     if ($@) {
-        die "Event validation failure: $@";
+        croak "Event validation failure: $@";
     }
 
     # order: column, parameter, placeholder
@@ -146,7 +148,46 @@ sub record_event {
     my $sql = "INSERT INTO $table ( $fields ) VALUES ( $placeholders )";
     sql_execute($sql, @values);
 
-    return; # don't leak the $sth returned from sql_execute
+    my %skip_actions = map {$_=>1} qw(
+        view edit_start edit_contention
+    );
+    return if ($p->{signal} or $p->{event_class} eq 'signal' or $skip_actions{$p->{action}});
+
+    # create a signal for this event
+    require Socialtext::Signal;
+    my %anno = (
+        event_class => $p->{event_class},
+        action      => $p->{action},
+        %{$p->{_checked_context}||{}},
+    );
+    for (qw(person page workspace tag group)) {
+        $anno{$_} = $p->{$_} if defined $p->{$_};
+    }
+
+    my $body = "$p->{event_class} $p->{action}";
+    if ($p->{workspace} && $p->{page}) {
+        my $ws = Socialtext::Workspace->new(workspace_id => $p->{workspace});
+        $body .= " {link: ".$ws->name." [$p->{page}]}";
+    }
+    if ($p->{person}) {
+        $body .= " {user: $p->{person}}";
+    }
+    if ($p->{group}) {
+        $body .= " {group: $p->{group}}";
+    }
+    $body .= " {hashtag: $p->{tag}}" if $p->{tag};
+
+    # TODO: make it in reply to an annotation search See
+    # lib/Socialtext/Rest/Signals.pm +431
+
+    Socialtext::Signal->Create(
+        at => $p->{at},
+        user_id => $p->{actor},
+        body => $body,
+        annotations => [{'activity' => \%anno}],
+    );
+
+    return;
 }
 
 sub _translate_ref_to_id {
