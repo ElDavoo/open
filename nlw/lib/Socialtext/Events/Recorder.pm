@@ -100,7 +100,7 @@ sub record_event {
     my $p = shift || die 'Requires Event parameters';
 
     #warn "EVENT: $p->{event_class}:$p->{action}\n";
-    return if ($p->{event_class} eq 'signal');
+    #return if ($p->{event_class} eq 'signal');
 
     $p->{at} ||= $p->{timestamp}; # compatibility alias
     $p->{at} ||= "now";
@@ -151,8 +151,7 @@ sub record_event {
     my %skip_actions = map {$_=>1} qw(
         view edit_start edit_contention
     );
-    return if ($p->{signal} or $p->{event_class} eq 'signal' or $skip_actions{$p->{action}});
-
+    return if ($skip_actions{$p->{action}} || $p->{is_from_event});
     # create a signal for this event
     require Socialtext::Signal;
     $p->{_checked_context} ||= {};
