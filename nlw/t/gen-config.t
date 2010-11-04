@@ -1,5 +1,3 @@
-#!/usr/bin/perl
-# @COPYRIGHT@
 use strict;
 use warnings;
 use Test::More tests => 31;
@@ -56,7 +54,7 @@ Appliance: {
         MinSpareServers     => 2,
         MaxSpareServers     => 4,
         StartServers        => 3,
-        MaxClients          => 22,
+        MaxClients          => 18,
         MaxRequestsPerChild => 1000,
     );
 }
