@@ -142,22 +142,45 @@ v.hub.current_workspace.uri = "[% hub.current_workspace.uri %]";
 v.hub.current_workspace.enable_spreadsheet = true;
 [% END %]
 
-if (typeof localStorage != 'undefined') {
+if (typeof localStorage != 'undefined' && !(/^#draft-\d+$/.test(location.hash || ''))) {
   $(function(){
     try {
-      var all_drafts = $.secureEvalJSON(localStorage.getItem('st-drafts'));
+      var all_drafts = $.secureEvalJSON(localStorage.getItem('st-drafts-' + Socialtext.real_user_id));
       for (var key in all_drafts) {
         var draft = all_drafts[key];
-        alert(draft);
-        var last_updated = new Date(draft.last_updated);
-        $('#contentColumns').prepend(
-          $('<div />', { css: { background: '#ffff80', textAlign: 'center' } })
-            .text(loc("You have unsaved draft on page [_1] in workspace [_2], last updated at: [_3]", draft.page_title, draft.workspace_id, last_updated.toString()))
-            .append('&nbsp;&nbsp;')
-            .append($('<a />').text(loc('[Resume]')))
-            .append('&nbsp;&nbsp;')
-            .append($('<a />').text(loc('[Discard]')))
-         );
+          alert((new Date()).getTime() - draft.last_updated);
+        if (((new Date()).getTime() - draft.last_updated) > 30 * 1000)  {
+          $('#contentColumns').prepend(
+            $('<div />', { id: "st-draft-notice-" + key, css: { background: '#ffff80', textAlign: 'center', padding: '2px', borderBottom: '1px solid #ccc' } })
+              .text(loc("You have an unsaved draft on page [_1] in workspace [_2]:", draft.page_title, draft.workspace_id))
+              .append('&nbsp;')
+              .append(
+                $('<a />')
+                  .text(loc('Resume'))
+                  .attr('href', '/'+draft.workspace_id+'/?action=edit;page_name='+nlw_name_to_id(draft.page_title)+'#draft-'+key)
+              )
+              .append('&nbsp;or&nbsp;')
+              .append(
+                $('<a />')
+                  .text(loc('Discard'))
+                  .attr('href', '#')
+                  .attr('id', 'st-discard-draft-' + key)
+                  .click(function(){
+                    if (confirm(loc("Are you sure you want to discard the draft?"))) {
+                      var key = $(this).attr('id').replace(/^st-discard-draft-/, '');
+                      $('#st-draft-notice-' + key).fadeOut();
+                      try {
+                        var all_drafts = $.secureEvalJSON(localStorage.getItem('st-drafts'));
+                        delete all_drafts[key];
+                        localStorage.setItem('st-drafts', $.toJSON(all_drafts));
+                      } catch (e) {}
+                    }
+                    return false;
+                  })
+              )
+              .append('?')
+           );
+        }
       }
     } catch (e) {}
   });

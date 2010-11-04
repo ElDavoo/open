@@ -934,19 +934,19 @@ proto.editMode = function() {
 }
 
 proto.saveDraft = function() {
-    try {
-        var wikitext = this.get_current_wikitext();
-        if (wikitext && wikitext.length) {
-            var drafts = $.secureEvalJSON(localStorage.getItem('st-drafts') || "{}");
-            drafts[this.saveDraftKey] = {
+    var self = this;
+    this.current_mode.toHtml(function(html){
+        if (html && html.length) { try {
+            var drafts = $.secureEvalJSON(localStorage.getItem('st-drafts-' + Socialtext.real_user_id) || "{}");
+            drafts[self.saveDraftKey] = {
                 page_title: $('#st-newpage-pagename-edit').val() || $('#st-page-editing-pagename').val(),
                 workspace_id: Socialtext.wiki_id,
-                wikitext: wikitext.replace(/\r/g, ''),
+                html: html,
                 last_updated: (new Date()).getTime()
             };
-            localStorage.setItem('st-drafts', $.toJSON(drafts));
-        }
-    } catch (e) {}
+            localStorage.setItem('st-drafts-' + Socialtext.real_user_id, $.toJSON(drafts));
+        } catch (e) {} }
+    });
 }
 
 proto.discardDraft = function() {
@@ -954,8 +954,22 @@ proto.discardDraft = function() {
         clearInterval(this.saveDraftInterval);
     }
     try {
-        var drafts = localStorage.getItem('st-drafts') || {};
-        delete drafts[this.saveDraftKey];
+        var drafts = $.secureEvalJSON(localStorage.getItem('st-drafts-' + Socialtext.real_user_id) || "{}");
+        var keys_to_delete = [];
+        var page_title = $('#st-newpage-pagename-edit').val() || $('#st-page-editing-pagename').val();
+        var workspace_id = Socialtext.wiki_id;
+        for (var key in drafts) {
+            if (this.saveDraftKey == key) {
+                keys_to_delete.push(key);
+            }
+            else if (drafts[key].page_title == page_title && drafts[key].workspace_id == workspace_id) {
+                keys_to_delete.push(key);
+            }
+        }
+        for (var i = 0; i < keys_to_delete.length; i++) {
+            delete drafts[keys_to_delete[i]];
+        }
+        localStorage.setItem('st-drafts-' + Socialtext.real_user_id, $.toJSON(drafts));
     } catch (e) {}
 }
 
@@ -1272,6 +1286,31 @@ this.addGlobal().setup_wikiwyg = function() {
 
             Attachments.reset_new_attachments();
 
+            if (typeof localStorage != 'undefined') {
+                try {
+                    var drafts = $.secureEvalJSON(localStorage.getItem('st-drafts-' + Socialtext.real_user_id) || "{}");
+                    ww.saveDraftKey = null;
+
+                    if (location.hash && /^#draft-\d+$/.test(location.hash)) {
+                        var key = location.hash.toString().replace(/^#draft-/, '');
+                        var draft = drafts[key];
+                        if (draft) {
+                            ww.saveDraftKey = key;
+                            Page.html = draft.html;
+                        }
+                    }
+
+                    if (!ww.saveDraftKey) {
+                        localStorage.setItem('st-drafts-' + Socialtext.real_user_id, $.toJSON(drafts));
+                        ww.saveDraftKey = (new Date()).getTime();
+                    }
+
+                    ww.saveDraftInterval = setInterval(function(){
+                        ww.saveDraft();
+                    }, 30000);
+                } catch (e) {}
+            }
+
 // We used to use this line:
 //          myDiv.innerHTML = $('st-page-content').innerHTML;
 // But IE likes to take our non XHTML formatted lists and make them XHTML.
@@ -1303,17 +1342,6 @@ this.addGlobal().setup_wikiwyg = function() {
                     title: loc("Socialtext has limited editing capabilities in Safari."),
                     body: loc("<a target=\"_blank\" href=\"http://www.mozilla.com/firefox/\">Download Firefox</a> for richer Socialtext editing functionality.")
                 });
-            }
-
-            if (typeof localStorage != 'undefined') {
-                try {
-                    var drafts = $.secureEvalJSON(localStorage.getItem('st-drafts') || "{}");
-                    localStorage.setItem('st-drafts', $.toJSON(drafts));
-                    ww.saveDraftKey = (new Date()).getTime();
-                    ww.saveDraftInterval = setInterval(function(){
-                        ww.saveDraft();
-                    }, 60000);
-                } catch (e) {}
             }
 
             if (firstMode == WW_SIMPLE_MODE) {
