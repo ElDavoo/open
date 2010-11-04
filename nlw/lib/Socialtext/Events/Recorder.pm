@@ -149,9 +149,10 @@ sub record_event {
     sql_execute($sql, @values);
 
     my %skip_actions = map {$_=>1} qw(
-        view edit_start edit_contention
+        view edit_start edit_contention signal
     );
     return if ($skip_actions{$p->{action}} || $p->{is_from_event});
+
     # create a signal for this event
     require Socialtext::Signal;
     $p->{_checked_context} ||= {};
