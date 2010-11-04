@@ -3,7 +3,7 @@ package Socialtext::Group::Photo;
 use Moose;
 use namespace::clean -except => 'meta';
 
-use constant ROLES => ('Socialtext::Avatar');
+use constant ROLES => ('Socialtext::Avatar', 'Socialtext::Avatar::Common');
 
 # Required by Socialtext::Avatar:
 use constant cache         => 'group-photo';
@@ -26,41 +26,10 @@ sub Resize {
 has 'group' => (
     is => 'ro', isa => 'Socialtext::Group',
     required => 1,
-    handles => [ 'group_id' ],
-);
-
-has 'id' => (
-    is => 'ro', isa => 'Int',
-    lazy_build => 1,
-);
-
-sub _build_id {
-    my $self = shift;
-    return $self->group_id;
-}
-
-# The rest is copied from ST::People::ProfilePhoto
-has 'large' => (
-    is => 'rw', isa => 'ScalarRef',
-    lazy_build => 1,
-);
-sub _build_large { $_[0]->load('large') }
-
-has 'small' => (
-    is => 'rw', isa => 'ScalarRef',
-    lazy_build => 1,
-);
-sub _build_small { $_[0]->load('small') }
-
-has 'versions' => (
-    is => 'ro', isa => 'ArrayRef',
-    default => sub {[qw( small large )]},
-    auto_deref => 1,
+    handles => { group_id => 'group_id', 'id' => 'group_id' },
 );
 
 with(ROLES);
-
-no Moose;
 __PACKAGE__->meta->make_immutable;
 1;
 

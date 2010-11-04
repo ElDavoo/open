@@ -17,6 +17,7 @@ use constant table => 'account_logo';
 use constant id_column => 'account_id';
 use constant default_logo => 'logo.png';
 use constant default_skin => 'common';
+use constant versions => qw(logo);
 
 sub Resize {
     my ($class, $size, $file) = @_;
@@ -31,32 +32,14 @@ has 'account' => (
     is => 'ro', isa => 'Socialtext::Account',
     required => 1,
     weak_ref => 1,
-    handles => [qw(account_id)],
+    handles => { account_id => 'account_id', id => 'account_id' },
 );
 
-has 'id' => (
-    is => 'ro', isa => 'Int',
-    lazy_build => 1,
-);
-sub _build_id { $_[0]->account_id }
-
-has 'synonyms' => (
-    is => 'ro', isa => 'ArrayRef',
-    auto_deref => 1,
-    lazy_build => 1,
-);
-
-sub _build_synonyms {
+sub synonyms {
     my $self = shift;
     my $default = Socialtext::Account->Default();
     return $default->account_id == $self->account_id ? [0] : [];
 }
-
-has 'versions' => (
-    is => 'ro', isa => 'ArrayRef',
-    default => sub {['logo']},
-    auto_deref => 1,
-);
 
 has 'logo' => (
     is => 'rw', isa => 'ScalarRef',
