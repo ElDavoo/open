@@ -4757,11 +4757,6 @@ ul.dropdownOptions li.disabled a:hover {
     padding: 4px 0;
 }
 
-#st-signal-this-frame {
-    min-height: 120px;
-    -height: 120px; /* For IE6 */
-}
-
 #st-signal-this-frame .loader {
     margin-top: 55px;
 }
