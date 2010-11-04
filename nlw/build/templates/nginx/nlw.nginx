@@ -199,6 +199,7 @@ server {
 
     ssl_ciphers HIGH:MEDIUM:!ADH;
     ssl_protocols SSLv3 TLSv1;
+    ssl_session_cache shared:SSLTLS:10m;
 
     [% server_common( config.backend_ports.https, 1 ) %]
 }
