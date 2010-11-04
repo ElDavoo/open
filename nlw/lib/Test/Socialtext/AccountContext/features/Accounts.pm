@@ -17,7 +17,7 @@ sub prepare {
 
     isa_ok $other, 'Socialtext::Account', 'other account is created';
 
-    return +{
+    return +{ # return the stuff we want to share with other features.
         export => $export,
         other  => $other,
     };
@@ -31,7 +31,7 @@ sub validate {
 
     my $export = $self->_validate();
 
-    return +{
+    return +{ # return the stuff we want to share with other features.
         export => $export,
         other  => $other,
     };

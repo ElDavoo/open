@@ -31,6 +31,7 @@ sub _validate {
     ok $role, 'account user has role in account';
     is $role->name, 'member', '... is a member role';
 
+    # return the stuff we want to share with other features.
     return +{account_user=>$account_user};
 }
 
