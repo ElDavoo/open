@@ -555,7 +555,7 @@ proto.newpage_save = function(page_name, pagename_editfield) {
 }
 
 proto.isOffline = function () {
-    typeof navigator == 'object' && typeof navigator.onLine == 'boolean' && !navigator.onLine;
+    return (typeof navigator == 'object' && typeof navigator.onLine == 'boolean' && !navigator.onLine);
 }
 
 proto.saveContent = function() {
