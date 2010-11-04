@@ -55,7 +55,7 @@ if ($last) {
     $last_seconds = time_bucket($last, $interval);
 }
 
-my $parse_command = qq!grep DATA $file | awk 'BEGIN { FS = "[ ,]" } ; {print \$9 " " \$3 }'!;
+my $parse_command = qq!grep DATA $file | awk 'BEGIN { FS = "[ ,]+" } ; {print \$9 " " \$3 }'!;
 
 warn "$parse_command\n" if $debug;
 my $records = `$parse_command`;
