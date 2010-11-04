@@ -14,7 +14,8 @@ PAUSE=0
 UPDATE_WIDGETS=1
 ST_USERS=0
 MINIFY_JS=1
-while getopts "hmbpws" OPT; do
+CONTEXTUAL=0
+while getopts "hmbpwsc" OPT; do
   case $OPT in
     h) HELPEN=1;;
     m) FIXTURE=admin_no_pages;;
@@ -22,6 +23,7 @@ while getopts "hmbpws" OPT; do
     p) PAUSE=1;;
     w) UPDATE_WIDGETS=0;;
     s) ST_USERS=1;;
+    c) CONTEXTUAL=1;;
   esac
 done
 
@@ -89,6 +91,7 @@ dev-bin/make-test-fixture --home_dir $HOME --fixture clean
 dev-bin/make-test-fixture --home_dir $HOME --fixture base_config
 dev-bin/make-test-fixture --home_dir $HOME --fixture $FIXTURE
 [ $HELPEN == 1 ] && dev-bin/make-test-fixture --home_dir $HOME --fixture help
+[ $CONTEXTUAL == 1 ] && dev-bin/build-contextual-account --name ContextualAccount
 
 # Setup robots.txt file to prevent dev-env heat death
 perl -le 'print "User-agent: *\nDisallow: /"' > ~/.nlw/root/docroot/robots.txt
