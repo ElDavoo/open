@@ -382,5 +382,5 @@
 </div>
 
 <iframe style="height: 1px; position: absolute; top: -2px;" frameborder="0" id="pastebin" src="[% wiki.skin_uri() %]/html/wikiwyg.html"></iframe>
-<iframe style="height: 1px; position: absolute; top: -2px;" frameborder="0" id="st-save-frame" name="st-save-frame" src="[% wiki.skin_uri() %]/html/blank.html"></iframe>
+<iframe style="height: 1px; position: absolute; top: -2px;" frameborder="0" id="st-save-frame" name="st-save-frame" src="/static/html/blank.html"></iframe>
 
