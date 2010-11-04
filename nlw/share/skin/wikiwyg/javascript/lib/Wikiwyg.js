@@ -362,6 +362,11 @@ proto.preview_link_text = loc('Preview');
 proto.preview_link_more = loc('Edit More');
 
 proto.preview_link_action = function() {
+    if (this.isOffline()) {
+        alert(loc("The browser is currently offline; please connect to the internet and try again."));
+        return;
+    }
+
     var preview = this.modeButtonMap[WW_PREVIEW_MODE];
     var current = this.current_mode;
 
@@ -549,9 +554,18 @@ proto.newpage_save = function(page_name, pagename_editfield) {
     return saved;
 }
 
+proto.isOffline = function () {
+    typeof navigator == 'object' && typeof navigator.onLine == 'boolean' && !navigator.onLine;
+}
+
 proto.saveContent = function() {
     if (jQuery('#st-save-button-link').is(':hidden')) {
         // Don't allow "Save" to be clicked while saving: {bz: 1718}
+        return;
+    }
+
+    if (this.isOffline()) {
+        alert(loc("The browser is currently offline; please connect to the internet and try again."));
         return;
     }
 
@@ -692,6 +706,21 @@ proto.saveChanges = function() {
         var saver = function() {
             Socialtext.prepare_attachments_before_save();
 
+            jQuery('#st-save-frame').unbind('load').load(function(){
+                try {
+                    if ($('#st-save-frame').get(0).contentWindow.Socialtext.page_id) {
+                        window.location = '?' + jQuery('#st-page-editing-pagename').val();
+                        return;
+                    }
+                }
+                catch (e) {};
+
+                alert(loc("Saving failed due to server error; please try again later."));
+
+                jQuery("#st-edit-summary").show();
+                jQuery('#st-editing-tools-edit ul').show();
+                jQuery('#saving-message').remove();
+            });
             jQuery('#st-page-editing-pagebody').val(wikitext);
             jQuery('#st-page-editing-form').trigger('submit');
             return true;

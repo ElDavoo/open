@@ -80,7 +80,7 @@
                         </div>
                     </div>
                 </div>
-                <form id="st-page-editing-form" name="st-page-editing-form" method="post" enctype="multipart/form-data" action="index.cgi">
+                <form id="st-page-editing-form" target="st-save-frame" name="st-page-editing-form" method="post" enctype="multipart/form-data" action="index.cgi">
                     <input id="st-page-editing-pagename"  type="hidden" name="page_name" value="[% page.title | html_encode %]"/>
                     <input id="st-page-editing-revisionid"  type="hidden" name="revision_id" value="[% page.revision_id %]" />
                     <input id="st-page-editing-pagetype"  type="hidden" name="page_type" value="[% page.page_type %]" />
@@ -382,4 +382,5 @@
 </div>
 
 <iframe style="height: 1px; position: absolute; top: -2px;" frameborder="0" id="pastebin" src="[% wiki.skin_uri() %]/html/wikiwyg.html"></iframe>
+<iframe style="height: 1px; position: absolute; top: -2px;" frameborder="0" id="st-save-frame" name="st-save-frame" src="[% wiki.skin_uri() %]/html/blank.html"></iframe>
 
