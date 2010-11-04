@@ -684,6 +684,7 @@ proto.saveNewPage = function() {
 }
 
 proto.saveChanges = function() {
+    var self = this;
     this.disableLinkConfirmations();
 
     jQuery('#st-page-editing-summary')
@@ -720,6 +721,8 @@ proto.saveChanges = function() {
                 jQuery("#st-edit-summary").show();
                 jQuery('#st-editing-tools-edit ul').show();
                 jQuery('#saving-message').remove();
+
+                self.discardDraft();
             });
             jQuery('#st-page-editing-pagebody').val(wikitext);
             jQuery('#st-page-editing-form').trigger('submit');
@@ -739,7 +742,6 @@ proto.saveChanges = function() {
         submit_changes(wikitext);
         return;
     }
-    var self = this;
     this.current_mode.toHtml(
         function(html) {
             var wikitext_mode = self.modeByName(WW_ADVANCED_MODE);
@@ -807,6 +809,7 @@ proto.enableLinkConfirmations = function() {
     var self = this;
     window.onunload = function(ev) {
         self.signal_edit_cancel();
+        self.discardDraft();
         Attachments.delete_new_attachments();
     }
 
@@ -929,6 +932,33 @@ proto.editMode = function() {
     if (!this.config.noToolbar) this.toolbarObject.resetModeSelector();
     this.current_mode.enableThis();
 }
+
+proto.saveDraft = function() {
+    try {
+        var wikitext = this.get_current_wikitext();
+        if (wikitext && wikitext.length) {
+            var drafts = $.secureEvalJSON(localStorage.getItem('st-drafts') || "{}");
+            drafts[this.saveDraftKey] = {
+                page_title: $('#st-newpage-pagename-edit').val() || $('#st-page-editing-pagename').val(),
+                workspace_id: Socialtext.wiki_id,
+                wikitext: wikitext.replace(/\r/g, ''),
+                last_updated: (new Date()).getTime()
+            };
+            localStorage.setItem('st-drafts', $.toJSON(drafts));
+        }
+    } catch (e) {}
+}
+
+proto.discardDraft = function() {
+    if (this.saveDraftInterval) {
+        clearInterval(this.saveDraftInterval);
+    }
+    try {
+        var drafts = localStorage.getItem('st-drafts') || {};
+        delete drafts[this.saveDraftKey];
+    } catch (e) {}
+}
+
 
 // Class level helper methods
 Wikiwyg.unique_id_base = 0;
@@ -1141,6 +1171,7 @@ this.addGlobal().setup_wikiwyg = function() {
 
     ww.cancel_nlw_wikiwyg = function () {
         ww.confirmed = true;
+        ww.discardDraft();
         Attachments.delete_new_attachments();
         if (Socialtext.new_page) {
             window.location = '?action=homepage';
@@ -1272,6 +1303,17 @@ this.addGlobal().setup_wikiwyg = function() {
                     title: loc("Socialtext has limited editing capabilities in Safari."),
                     body: loc("<a target=\"_blank\" href=\"http://www.mozilla.com/firefox/\">Download Firefox</a> for richer Socialtext editing functionality.")
                 });
+            }
+
+            if (typeof localStorage != 'undefined') {
+                try {
+                    var drafts = $.secureEvalJSON(localStorage.getItem('st-drafts') || "{}");
+                    localStorage.setItem('st-drafts', $.toJSON(drafts));
+                    ww.saveDraftKey = (new Date()).getTime();
+                    ww.saveDraftInterval = setInterval(function(){
+                        ww.saveDraft();
+                    }, 60000);
+                } catch (e) {}
             }
 
             if (firstMode == WW_SIMPLE_MODE) {

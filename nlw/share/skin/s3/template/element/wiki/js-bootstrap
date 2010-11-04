@@ -142,5 +142,26 @@ v.hub.current_workspace.uri = "[% hub.current_workspace.uri %]";
 v.hub.current_workspace.enable_spreadsheet = true;
 [% END %]
 
+if (typeof localStorage != 'undefined') {
+  $(function(){
+    try {
+      var all_drafts = $.secureEvalJSON(localStorage.getItem('st-drafts'));
+      for (var key in all_drafts) {
+        var draft = all_drafts[key];
+        alert(draft);
+        var last_updated = new Date(draft.last_updated);
+        $('#contentColumns').prepend(
+          $('<div />', { css: { background: '#ffff80', textAlign: 'center' } })
+            .text(loc("You have unsaved draft on page [_1] in workspace [_2], last updated at: [_3]", draft.page_title, draft.workspace_id, last_updated.toString()))
+            .append('&nbsp;&nbsp;')
+            .append($('<a />').text(loc('[Resume]')))
+            .append('&nbsp;&nbsp;')
+            .append($('<a />').text(loc('[Discard]')))
+         );
+      }
+    } catch (e) {}
+  });
+}
+
 })();
 </script>
