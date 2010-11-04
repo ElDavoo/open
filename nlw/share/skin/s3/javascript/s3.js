@@ -102,6 +102,7 @@ Socialtext.show_signal_network_dropdown = function(prefix, width) {
             prefix: prefix,
             width: width,
             user: Socialtext.userid,
+            workspace_id: Socialtext.wiki_id,
             account_id: Socialtext.current_workspace_account_id
         });
         dropdown.show();
