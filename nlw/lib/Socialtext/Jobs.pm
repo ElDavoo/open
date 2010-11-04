@@ -64,6 +64,9 @@ sub job_to_string {
         $string .= ";uniqkey=".$job->uniqkey;
     }
 
+    unless (ref($job->arg)) {
+        $job->inflate_arg;
+    };
     return $string unless ref($job->arg) eq 'HASH';
 
     if (my $ws_id = $job->arg->{workspace_id}) {
