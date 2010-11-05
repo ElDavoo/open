@@ -710,6 +710,7 @@ proto.saveChanges = function() {
             jQuery('#st-save-frame').unbind('load').load(function(){
                 try {
                     if ($('#st-save-frame').get(0).contentWindow.Socialtext.page_id) {
+                        self.discardDraft();
                         window.location = '?' + jQuery('#st-page-editing-pagename').val();
                         return;
                     }
@@ -721,8 +722,6 @@ proto.saveChanges = function() {
                 jQuery("#st-edit-summary").show();
                 jQuery('#st-editing-tools-edit ul').show();
                 jQuery('#saving-message').remove();
-
-                self.discardDraft();
             });
             jQuery('#st-page-editing-pagebody').val(wikitext);
             jQuery('#st-page-editing-form').trigger('submit');
