@@ -30,7 +30,11 @@ sub _build_userd_uri {
     return "http://$host\:$port$path";
 }
 
-sub cache { Socialtext::Cache->cache('creds-extractor-client'); };
+sub cache {
+    Socialtext::Cache->cache('creds-extractor-client', {
+        class => 'Socialtext::Cache::PersistentHash',
+    } );
+};
 
 sub extract_desired_headers {
     my $self = shift;
