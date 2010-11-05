@@ -69,6 +69,7 @@ sub handle_request {
         # ... *DON'T* block here; this has to be wikkid fast
         # Otherwise, enqueue a worker to extract the results and add it to my
         # cache.
+        $req->log_successes(0) unless $ENV{ST_DEBUG_ASYNC}; # don't spew
         my $now = AE::time;
         $self->extract_q->enqueue( [$params, $req, $now] );
     }
