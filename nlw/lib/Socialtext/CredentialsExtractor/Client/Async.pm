@@ -80,7 +80,7 @@ sub extract_credentials {
                     }
                     else {
                         $creds = decode_json($resp_body);
-                        $self->store_credentials_in_cache($resp_hdrs, $creds);
+                        $self->store_credentials_in_cache($hdrs_to_send, $creds);
                     }
                 }
                 catch {
