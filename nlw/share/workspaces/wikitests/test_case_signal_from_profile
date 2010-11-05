@@ -69,9 +69,9 @@
 | st-widget-title-like | activities | Activities |
 
 | *Comment* | Test Case: Signal From Profile. Send a private mention |  |
-|  *Comment* |  NOTE: FAILS IN IE 6 even though Se checks the box,  |  |
+| *Comment* | NOTE: FAILS IN IE 6 even though Se checks the box, |  |
 | *Comment* | the check is not sensed and a private message is not sent |  |
-| st-send-signal-in-activities-widget | %%private%% | PRIVATE |
+| st-send-signal-in-activities-widget | %%private%% | 1 |
 
 | *Comment* | Test Case: Signal From Profile. VERIFY after private signal that private checkbox is unchecked |  |
 | st-unchecked-ok | //input[@class='toggle-private'] |  |
@@ -114,6 +114,8 @@
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | st-name-widget | 1 | other_user_activities |
 | st-verify-text-in-activities-widget | other_user_activities | %%signal%% |
+
+| *Comment* | Test Case: Signal From Profile. Note: Private fails in IE6, it's a selenium failure, don't worry. |  |
 | st-text-unlike-in-activities-widget | other_user_activities | %%private%% |
 | st-verify-text-in-activities-widget | other_user_activities | %%public%% |
 

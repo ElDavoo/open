@@ -87,6 +87,9 @@
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | wait_for_text_present_ok | Editing: | 10000 |
+
+
+| *Comment* | Test Case: Link Interface Fails in IE6, known and documented as {bz: 4624} |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/"Socialtext"<http\:\/\/www\.socialtext\.com\/?>/` |
 
 | *Comment* | Test Case: Link Interface make a section link |  |
