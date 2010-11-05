@@ -39,6 +39,7 @@ sub fetch_feature_share {
         _diag("resolving '$name' dependency");
         $feature->prepare if $self->state eq 'preparing';
         $feature->validate if $self->state eq 'validating';
+        _diag("resolved '$name' dependency");
         $Depth--;
 
         return $self->fetch_feature_share($name, $index, 1);
@@ -70,6 +71,8 @@ sub _safe_do_work {
     $feature->clear_share();
     $feature->_share($work->($feature));
     $feature->_state($done);
+
+    _diag("$class is $done") unless $Depth;
 }
 
 sub _die {
