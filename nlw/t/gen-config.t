@@ -1,3 +1,5 @@
+#!/usr/bin/perl
+# @COPYRIGHT@
 use strict;
 use warnings;
 use Test::More tests => 31;
