@@ -8,7 +8,7 @@ use Socialtext::File;
 use Socialtext::Model::Pages;
 use Socialtext::Timer;
 use Socialtext::SQL::Builder qw(sql_insert_many);
-use Socialtext::SQL qw(sql_execute);
+use Socialtext::SQL qw(sql_execute sql_txn);
 use namespace::clean -except => 'meta';
 
 =head1 NAME
@@ -120,20 +120,24 @@ sub update {
         }
     );
 
-    sql_execute('
-        DELETE FROM page_link
-         WHERE from_workspace_id = ?
-           AND from_page_id = ?
-    ', $workspace_id, $page_id);
+    sql_txn {
+        sql_execute('
+            DELETE FROM page_link
+             WHERE from_workspace_id = ?
+               AND from_page_id = ?
+        ', $workspace_id, $page_id);
 
-    my %seen;
-    my @cols = qw(from_workspace_id from_page_id to_workspace_id to_page_id);
-    if (@$links) {
-        my @values = map {
-            [ $workspace_id, $page_id, $_->{workspace_id}, $_->{page_id} ]
-        } grep { not $seen{ $_->{workspace_id} }{ $_->{page_id} }++ } @$links;
-        sql_insert_many('page_link' => \@cols, \@values);
-    }
+        my %seen;
+        my @cols
+            = qw(from_workspace_id from_page_id to_workspace_id to_page_id);
+        if (@$links) {
+            my @values = map {
+                [ $workspace_id, $page_id, $_->{workspace_id}, $_->{page_id} ]
+                } grep { not $seen{ $_->{workspace_id} }{ $_->{page_id} }++ }
+                @$links;
+            sql_insert_many('page_link' => \@cols, \@values);
+        }
+    };
     Socialtext::Timer->Pause('update_page_links');
 } 
 
