@@ -1310,7 +1310,7 @@ Optional.
 
 =head2 self_registration
 
-Set this to true to enable users to self-register with accounts accounts.
+Set this to true to enable users to self-register with accounts.
 
 Default: 0
 
