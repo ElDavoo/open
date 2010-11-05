@@ -841,7 +841,7 @@ proto.enableThis = function() {
 
     var self = this;
     var ready = function() {
-        if (!self.wikiwyg.previous_mode) {
+        if (!self.wikiwyg.previous_mode && !Wikiwyg.is_gecko) {
             self.fromHtml( self.wikiwyg.div.innerHTML );
         }
         if (Wikiwyg.is_gecko) {
@@ -860,6 +860,10 @@ proto.enableThis = function() {
                         self.get_edit_document().execCommand(
                             "enableInlineTableEditing", false, false
                         );
+
+                        if (!self.wikiwyg.previous_mode) {
+                            self.fromHtml( self.wikiwyg.div.innerHTML );
+                        }
                     }
                     catch(e){
                         setTimeout(doEnableDesignMode, 100);
