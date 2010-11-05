@@ -9,6 +9,10 @@ use Socialtext::EmailSender::Factory;
 use Clone qw/clone/;
 use namespace::clean -except => 'meta';
 
+# Note: if you'd like to write a recurring monitor job, you should be
+# consuming the new Socialtext::Job::Upgrade::Monitor role. Please see
+# Socialtext::Job::Upgrade::MakeExplorePublic for an example.
+
 extends 'Socialtext::Job';
 
 # Try this every 2 minutes.
