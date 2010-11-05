@@ -85,7 +85,7 @@ sub extract_credentials {
                 }
                 catch {
                     $creds = { error =>
-                        "extract credentials eror: $_" };
+                        "extract credentials error: $_" };
                 };
                 eval { $cb->($creds) };
             };
