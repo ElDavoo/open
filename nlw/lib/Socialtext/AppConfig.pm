@@ -1310,9 +1310,9 @@ Optional.
 
 =head2 self_registration
 
-Set this to false to prevent users from registering user accounts.
+Set this to true to enable users to self-register with accounts accounts.
 
-Default: 1
+Default: 0
 
 =for code type => BOOLEAN_TYPE
 
