@@ -929,7 +929,7 @@ proto.enableThis = function() {
             var win = self.get_edit_window();
             var loaded = false;
             try {
-                loaded = win.Socialtext.body_loaded;
+                loaded = self.edit_iframe.contentWindow.Socialtext.body_loaded;
             } catch (e) {}
             if (!loaded) return false;
 
