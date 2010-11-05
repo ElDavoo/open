@@ -30,11 +30,14 @@ BEGIN {
     delete $ENV{NLW_APPCONFIG};
 }
 
-plan tests => 68;
+plan tests => 69;
 
 my $user = getpwuid($>);
 
 ok( Socialtext::AppConfig->is_default('user_factories'), 'using the default value' );
+
+is( Socialtext::AppConfig->self_registration, 0, 'Self-registraction is off by default' );
+
 is( Socialtext::AppConfig->file, $config_file, 'config file is taken from ENV' );
 
 for my $k ( sort keys %config_data ) {
