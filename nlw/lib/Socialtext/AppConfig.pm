@@ -1382,6 +1382,14 @@ Default: 1000
 
 =for code type => POSITIVE_INT_TYPE
 
+=head2 explore_is_public
+
+Make Signals Explorer links visible to users.
+
+Default: 1
+
+=for code type => BOOLEAN_TYPE
+
 =head2 advertise_push
 
 Make /data/config claim that push support is available (assuming you've got the push plugin installed).
