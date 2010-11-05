@@ -1604,7 +1604,7 @@ sub disable_email_notify {
     # probably ok for now
     $hub->preferences()->store(
         $user,
-        email_notify => { notify_frequency => 0 }
+        email_notify => { notify_frequency => "0" }
     );
 
     $self->_success( 'Email notify has been disabled for '
