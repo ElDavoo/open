@@ -3,6 +3,6 @@
     <head>
         [% PROCESS element/css_links wikiwyg_mode=1 %]
     </head>
-<body class="wiki">
+<body class="wiki" onload="window.Socialtext = { body_loaded: true }">
 </body>
 </html>

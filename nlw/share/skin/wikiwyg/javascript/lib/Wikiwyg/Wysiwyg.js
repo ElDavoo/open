@@ -926,6 +926,13 @@ proto.enableThis = function() {
 
     jQuery.poll(
         function() {
+            var win = self.get_edit_window();
+            var loaded = false;
+            try {
+                loaded = win.Socialtext.body_loaded;
+            } catch (e) {}
+            if (!loaded) return false;
+
             var doc = self.get_edit_document();
             if (!doc) return false;
             if (jQuery.browser.msie && doc.readyState != 'interactive' && doc.readyState != 'complete') {
