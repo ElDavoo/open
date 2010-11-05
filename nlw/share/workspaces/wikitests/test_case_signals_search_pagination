@@ -162,14 +162,11 @@ wait_for_text_present_ok | Pagination %%start_time%% 3 | 30000 |
 
 | *Comment* | Test Case: Signals Search Pagination. Delete irrelevant signal and search again |  |
 | open_ok | /st/signals |  |
-| st-name-widget | 1 | signals_widget |
-| st-select-widget-frame | signals_widget |  |
-| wait_for_text_present_ok | Showing signals from | 30000 |
+| wait_for_text_present_ok | Showing | 30000 |
 | wait_for_text_present_ok | LessRelevant %%start_time%% 64 | 30000 |
 | click_ok | //a[@class='hideLink'] |  |
 | verifyConfirmation | Are you sure you want to delete this Signal?\nYou cannot undelete it. |  |
 | wait_for_text_not_present_ok | LessRelevant %%start_time%% 64 | 20000 |
-| select_frame | relative=parent |  |
 
 | st-process-jobs | SignalIndex |
 
@@ -191,10 +188,7 @@ wait_for_text_present_ok | Pagination %%start_time%% 3 | 30000 |
 | *Comment* | Test Case: Signals Search Pagination. Verify no delete for non-sender %%z_username%% |  |
 | st-logoutin | %%x_username%% | %%password%% |
 | open_ok | /?signals |  |
-| st-name-widget | 1 | signals_widget |
-| st-select-widget-frame | signals_widget |  |
 | wait_for_element_not_present_ok | //a[@class='hideLink'] | 5000 |
-| selectFrame | relative=parent |  |
 
 | *Comment* | Test Case: Signals Search Pagination TEARDOWN |
 | st-admin | remove-member --e %%username%% --account %%sspacct%% | no longer |

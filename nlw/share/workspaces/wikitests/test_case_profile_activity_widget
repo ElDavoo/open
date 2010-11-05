@@ -58,7 +58,7 @@
 | st-name-widget | 3 | activitieswidget |
 | st-widget-title-like | activitieswidget | Activities |
 | wait_for_text_present_ok | Showing | 10000 |
-| text_like | qr/Showing all events.*from.+%%tuser%%.*within/ism |  |
+| text_like | qr/Showing.*all.*events.*from.+%%tuser%%.*within/ism |  |
 
 | *Comment* | Test Case: Profile Activity Widget. The widget defaults to mentioning the viewed user when clicked |  |
 | wait_for_element_present_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] | 10000 |
@@ -87,10 +87,11 @@
 | text_like | //div[@class='message mention'] | You are composing a message |
 
 | *Comment* | Test Case: Profile Activity Widget. "Post to" |  |
+| wait_for_text_present_ok | Showing | 10000 |
 | text_like | qr/Post to/ism |  |
 
 | *Comment* | Test Case: Profile Activity Widget. list values for "from <feed-type>" filter is only the user's name |  |
-| text_like | qr/Showing all events.*from.+%%tuser%%.*within/ism |  |
+| text_like | qr/Showing.*all.*events.*from.+%%tuser%%.*within/ism |  |
 
 | *Comment* | Test Case: Profile Activity Widget. ... and cannot be changed |  |
 | wait_for_element_not_present_ok | //span[@id='feed']/a | 5000 |
@@ -122,7 +123,7 @@
 | st-name-widget | 3 | activitieswidget |
 | st-widget-title-like | activitieswidget | Activities |
 | wait_for_text_present_ok | Showing | 10000 |
-| text_like | qr/Showing all events.*from %%short_luser%%.*within/ism |  |
+| text_like | qr/Showing.*all.*events.*from.+%%short_luser%%.*within/ism |  |
 
 | *Comment* | Test Case: Profile Activity Widget. ... no "you are composing a message to ..." message appears |  |
 | *Comment* | Test Case: Profile Activity Widget. ... you don't mention yourself |  |
