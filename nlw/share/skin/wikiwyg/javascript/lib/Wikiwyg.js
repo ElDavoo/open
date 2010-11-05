@@ -935,13 +935,15 @@ proto.editMode = function() {
 proto.saveDraft = function() {
     var self = this;
     this.current_mode.toHtml(function(html){
+        if (!self.contentIsModified()) return;
         if (html && html.length) { try {
             var drafts = $.secureEvalJSON(localStorage.getItem('st-drafts-' + Socialtext.real_user_id) || "{}");
             drafts[self.saveDraftKey] = {
                 page_title: $('#st-newpage-pagename-edit').val() || $('#st-page-editing-pagename').val(),
                 workspace_id: Socialtext.wiki_id,
                 html: html,
-                last_updated: (new Date()).getTime()
+                last_updated: (new Date()).getTime(),
+                is_new_page: Socialtext.new_page
             };
             localStorage.setItem('st-drafts-' + Socialtext.real_user_id, $.toJSON(drafts));
         } catch (e) {} }
@@ -1285,7 +1287,7 @@ this.addGlobal().setup_wikiwyg = function() {
 
             Attachments.reset_new_attachments();
 
-            if (typeof localStorage != 'undefined') {
+            if (typeof localStorage != 'undefined' && !Socialtext.new_page) {
                 try {
                     var drafts = $.secureEvalJSON(localStorage.getItem('st-drafts-' + Socialtext.real_user_id) || "{}");
                     ww.saveDraftKey = null;
