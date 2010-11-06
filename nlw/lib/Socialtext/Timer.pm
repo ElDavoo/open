@@ -52,6 +52,15 @@ sub ExtendedReport {
     return \%report;
 }
 
+sub Add {
+    my $class = shift;
+    my $timed = shift;
+    my $how_long = shift;
+    $Timings->{$timed}->{how_many}++;
+    $Timings->{$timed}->{timer} ||= 0;
+    $Timings->{$timed}->{timer} += $how_long;
+}
+
 sub Start {
     my $class = shift;
     my $timed = shift;

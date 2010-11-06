@@ -5,6 +5,7 @@ use warnings;
 use List::MoreUtils qw(uniq);
 
 use Socialtext::AppConfig;
+use Socialtext::Timer qw/time_scope/;
 use base qw( Socialtext::MultiPlugin );
 
 sub base_package {
@@ -27,6 +28,7 @@ sub _drivers {
 sub ExtractCredentials {
     my $class = shift;
     my $hdrs  = shift;
+    my $t = time_scope 'extract_credentials';
     return $class->_first('extract_credentials', $hdrs);
 }
 

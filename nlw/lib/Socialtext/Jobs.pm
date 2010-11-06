@@ -64,34 +64,36 @@ sub job_to_string {
         $string .= ";uniqkey=".$job->uniqkey;
     }
 
-    unless (ref($job->arg)) {
-        $job->inflate_arg;
-    };
-    return $string unless ref($job->arg) eq 'HASH';
+    my $arg = $job->arg;
 
-    if (my $ws_id = $job->arg->{workspace_id}) {
-        $opts->{ws_names} ||= {};
-        eval {
-            $opts->{ws_names}{$ws_id} ||=
-                Socialtext::Workspace->new( workspace_id => $ws_id )->name;
-            $string .= ";ws=$opts->{ws_names}{$ws_id}";
-        };
-        if ($@) {
-            $string .= ";ws=$ws_id";
+    if (ref($arg) eq 'HASH') {
+        if (my $ws_id = $job->arg->{workspace_id}) {
+            $opts->{ws_names} ||= {};
+            eval {
+                $opts->{ws_names}{$ws_id} ||=
+                    Socialtext::Workspace->new( workspace_id => $ws_id )->name;
+                $string .= ";ws=$opts->{ws_names}{$ws_id}";
+            };
+            if ($@) {
+                $string .= ";ws=$ws_id";
+            }
+        }
+        $string .= ";page=".$job->arg->{page_id}
+            if $job->arg->{page_id};
+        $string .= ";user=".$job->arg->{user_id}
+            if $job->arg->{user_id};
+        $string .= ";group=".$job->arg->{group_id}
+            if $job->arg->{group_id};
+        $string .= ";solr=".$job->arg->{solr}
+            if $job->arg->{solr};
+
+        if ($shortname eq 'Cmd') {
+            $string .= ";cmd=".$job->arg->{cmd};
+            $string .= ";args=".join(',',@{$job->arg->{args} || []});
         }
     }
-    $string .= ";page=".$job->arg->{page_id}
-        if $job->arg->{page_id};
-    $string .= ";user=".$job->arg->{user_id}
-        if $job->arg->{user_id};
-    $string .= ";group=".$job->arg->{group_id}
-        if $job->arg->{group_id};
-    $string .= ";solr=".$job->arg->{solr}
-        if $job->arg->{solr};
-
-    if ($shortname eq 'Cmd') {
-        $string .= ";cmd=".$job->arg->{cmd};
-        $string .= ";args=".join(',',@{$job->arg->{args} || []});
+    elsif (!ref($arg)) {
+        $string .= ';fastargs='.$arg if defined $arg;
     }
 
     if (my $prio = $job->priority) {

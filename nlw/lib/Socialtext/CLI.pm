@@ -444,6 +444,11 @@ sub import_account {
     $self->_error(loc("No import directory specified.") . "\n") unless $dir;
     $self->_error(loc("Directory [_1] does not exist.", $dir) . "\n") unless -d $dir;
 
+    Socialtext::Events->BlackList(
+        { action => 'add_user', event_class => 'group'},
+        { action => 'add_to_workspace', event_class => 'group'},
+    );
+
     my ( $hub, $main ) = $self->_make_hub(
         Socialtext::NoWorkspace->new(),
         Socialtext::User->SystemUser(),
@@ -467,7 +472,7 @@ sub import_account {
         hub   => $hub,
         dir   => $dir,
     ) };
-    $self->_error($@) if ($@);
+    $self->_alert_error($@) if ($@);
 
     for my $tarball (glob "$dir/*.1.tar.gz") {
         print loc("Importing workspace from $tarball ..."), "\n";
@@ -482,17 +487,25 @@ sub import_account {
         warn $@ if $@;
     }
 
-    # Finish the import, which'll call the plugin hooks.  THAT will then warn
-    # any fatal errors and return back to us (so _we_ don't have to output the
-    # error as its already been spat out to the screen).
-    my $err = $account->finish_import(
-        hub => $hub,
-        dir => $dir,
-    );
-    $self->_error() if ($err);
+    eval {
+        $account->finish_import(
+            hub => $hub,
+            dir => $dir,
+        );
+    };
+    $self->_alert_error($@) if $@;
 
     $self->_success(
         "\n" . loc("[_1] account imported.", $account->name));
+}
+
+sub _alert_error {
+    my $self = shift;
+    my $message = shift;
+
+    my $snowflakes = '*' x 78;
+    my $storm = "$snowflakes\n" x 3;
+    $self->_error("\n$storm\n$message\n$storm\n");
 }
 
 sub list_accounts {
@@ -1591,7 +1604,7 @@ sub disable_email_notify {
     # probably ok for now
     $hub->preferences()->store(
         $user,
-        email_notify => { notify_frequency => 0 }
+        email_notify => { notify_frequency => "0" }
     );
 
     $self->_success( 'Email notify has been disabled for '

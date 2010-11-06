@@ -43,6 +43,7 @@ for (1..2) {
 
 kill_kill_pid($pid);
 
+sleep 1; # let the log flush
 my @log_lines = grep /\[$pid\]: \[$<\]/, `tail -n 25 $nlw_log_file`;
 chomp @log_lines;
 

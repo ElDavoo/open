@@ -55,6 +55,7 @@ sub handle_request {
 
     my $path = $req->env->{PATH_INFO};
     if ($path eq '/ping') {
+        $self->stats->{"pings"}++;
         $req->simple_response(
             "200 Pong",
             qq({"ping":"ok", "service":"st-userd"}),
@@ -62,14 +63,18 @@ sub handle_request {
         );
     }
     elsif ($path eq '/stuserd') {
+        $self->stats->{"client conns"}++;
         my $params = decode_json(${$req->body});
         # If we've got cached results, use those right away
         # ... *DON'T* block here; this has to be wikkid fast
         # Otherwise, enqueue a worker to extract the results and add it to my
         # cache.
-        $self->extract_q->enqueue( [$params, $req] );
+        $req->log_successes(0) unless $ENV{ST_DEBUG_ASYNC}; # don't spew
+        my $now = AE::time;
+        $self->extract_q->enqueue( [$params, $req, $now] );
     }
     else {
+        $self->stats->{"bad requests"}++;
         $req->simple_response(
             "400 Bad Request",
             qq(You send a request this server didn't understand),
@@ -86,8 +91,9 @@ sub _build_extract_q {
         name => 'extract',
         prio => Coro::PRIO_LOW(),
         cb => exception_wrapper(sub {
-            my ($params,$req) = @_;
+            my ($params,$req,$queued_at) = @_;
             return unless $self;
+            Socialtext::Timer->Add('queued_for',AE::time-$queued_at);
             $self->extract_creds($params,$req);
         }, 'extract queue error'),
 
@@ -112,12 +118,15 @@ sub extract_creds {
     my ($self, $params, $req) = @_;
     my $result;
     try {
+        my $t = time_scope 'work_extract';
         $result = worker_extract_creds($params);
+        $self->stats->{"extracted"}++;
     }
     catch {
         my $e = $_;
         trace $e;
         st_log()->error('when trying to extract creds: '.$e);
+        $self->stats->{"extract failure"}++;
         $result = {
             code => 500,
             body => {

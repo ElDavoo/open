@@ -75,6 +75,7 @@ Moose::Exporter->setup_import_methods(
 our $IN_WORKER = 0;
 our @AT_FORK;
 our $VMEM_LIMIT = 512 * 2**20; # MiB
+our $REPORT_EVERY = 3600; # seconds
 
 =head1 CLASS METHODS
 
@@ -179,6 +180,11 @@ sub _InWorker {
     package Socialtext::Async::Wrapper::Worker;
     use Moose;
     use Try::Tiny;
+    use Socialtext::Log qw/st_timed_log/;
+    use namespace::clean -except => 'meta';
+
+    has 'last_report' => (is => 'rw', isa => 'Num', default => \&AE::time);
+    has 'name' => (is => 'rw', isa => 'Str');
 
     sub BUILD {
         my $self = shift;
@@ -191,7 +197,16 @@ sub _InWorker {
         $Socialtext::Log::Instance->info("async worker $$ stopping");
     }
 
+    sub report {
+        my $self = shift;
+        my $rpt = Socialtext::Timer->ExtendedReport();
+        delete $rpt->{overall};
+        Socialtext::Timer->Reset();
+        st_timed_log('info',uc($self->name),'TIMERS',0,{},undef,$rpt);
+    }
+
     sub before_each {
+        my $self = shift;
         try {
             # most of these copied from Socialtext::Handler::Cleanup
             Socialtext::Cache->clear();
@@ -209,12 +224,17 @@ sub _InWorker {
         $self->before_each();
         Socialtext::SQL::get_dbh();
         $Socialtext::Log::Instance->debug("async worker is OK");
+        my $now = AE::time;
+        if ($now - $self->last_report >=
+            $Socialtext::Async::Wrapper::REPORT_EVERY)
+        {
+            $self->last_report($now);
+            $self->report;
+        }
         return {'PING'=>'PONG'}
     }
 
     # other methods get installed here by worker_wrap and worker_function.
-
-    no Moose; # remove sugar
 }
 
 =head1 EXPORTS
@@ -320,13 +340,17 @@ methods/functions you need.
 
 =cut
 
+our $ae_worker;
+
 sub worker_make_immutable {
+    my $name = shift;
     Socialtext::Async::Wrapper::Worker->meta->make_immutable(
         inline_constructor => 1);
+    _setup_ae_worker($name) unless $ae_worker;
 }
 
-our $ae_worker;
 sub _setup_ae_worker {
+    my $name = shift || 'async-worker';
     die 'IO::AIO shouldnt be loaded' if $INC{'IO/AIO.pm'};
     st_log()->info("async worker starting...");
 
@@ -341,6 +365,7 @@ sub _setup_ae_worker {
     );
     my %child_args = (
         class => 'Socialtext::Async::Wrapper::Worker',
+        args => [{name => $name}],
     );
 
     my $old_desc = $Coro::current->{desc};

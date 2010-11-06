@@ -74,7 +74,7 @@ Wikiwyg - Primary Wikiwyg base class
  =============================================================================*/
 
 // Constructor and class methods
-Class('Wikiwyg', function() {
+Class('Wikiwyg -nostrict', function() {
 
 var proto = this.prototype;
 

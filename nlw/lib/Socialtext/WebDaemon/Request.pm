@@ -17,6 +17,8 @@ has 'log_params' => (is => 'rw', isa => 'HashRef', default => sub {{}});
 has 'started_at' => (is => 'rw', isa => 'Num');
 has '_pid' => (is => 'rw', isa => 'Int');
 
+has 'log_successes' => (is => 'rw', isa => 'Bool', default => 1);
+
 has 'ident' => (
     is => 'ro', isa => 'ScalarRef',
     default => sub {my $x=''; \$x},
@@ -82,6 +84,7 @@ sub log_start {
 
 sub log_done {
     my ($self,$code) = @_;
+    return if ((200 <= $code && $code <= 399) && !$self->log_successes);
     $self->log_params->{timers} = 'overall(1):'.
         sprintf('%0.3f', AE::now - $self->started_at);
     st_log->info(join(',',

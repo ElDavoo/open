@@ -56,7 +56,7 @@ Appliance: {
         MinSpareServers     => 2,
         MaxSpareServers     => 4,
         StartServers        => 3,
-        MaxClients          => 22,
+        MaxClients          => 18,
         MaxRequestsPerChild => 1000,
     );
 }

@@ -138,8 +138,8 @@
 #   368640 == 360MB
 PerlSetVar st_max_unshared_size 368640
 [%- ELSE %]
-#   296960 == 290MB
-PerlSetVar st_max_unshared_size 296960
+#   327680 == 320MB
+PerlSetVar st_max_unshared_size 327680
 [%- END %]
 
 # This sets the minimum amount of shared memory the process must have.

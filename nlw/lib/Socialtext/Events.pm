@@ -7,7 +7,10 @@ use Class::Field qw(const);
 use Socialtext::HTTP ':codes';
 use Socialtext::Events::Recorder;
 use Socialtext::Events::Reporter;
+use List::MoreUtils qw/all/;
 use Carp qw/croak/;
+
+our @BlackList;
 
 sub Get {
     my $class = shift;
@@ -42,9 +45,31 @@ sub GetGroupActivities {
         @_, group_id => $group);
 }
 
+sub BlackList {
+    my $class = shift;
+    @BlackList = @_;
+}
+
+sub EventInBlackList {
+    my $class = shift;
+    my $event = shift;
+
+    return 0 unless @BlackList;
+
+    for my $item (@BlackList) {
+        return 1 if all {
+            defined $event->{$_} and $event->{$_} eq $item->{$_}
+        } keys %$item;
+    }
+
+    return 0;
+}
+
 sub Record {
     my $class = shift;
     my $ev = shift;
+
+    return if $class->EventInBlackList($ev);
 
     my $signal = $ev->{signal};
     if ($signal && ref $signal) {

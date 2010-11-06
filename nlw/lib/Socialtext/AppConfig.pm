@@ -1310,9 +1310,9 @@ Optional.
 
 =head2 self_registration
 
-Set this to false to prevent users from registering user accounts.
+Set this to true to enable users to self-register with accounts.
 
-Default: 1
+Default: 0
 
 =for code type => BOOLEAN_TYPE
 
@@ -1381,6 +1381,14 @@ Set this to limit the maximum size of signals posted to this servers. Accounts m
 Default: 1000
 
 =for code type => POSITIVE_INT_TYPE
+
+=head2 explore_is_public
+
+Make Signals Explorer links visible to users.
+
+Default: 1
+
+=for code type => BOOLEAN_TYPE
 
 =head2 advertise_push
 

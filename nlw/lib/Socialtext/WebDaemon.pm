@@ -28,9 +28,6 @@ BEGIN {
     }
 }
 
-use Socialtext::Async;
-use Socialtext::Log qw/st_log/;
-
 use Socialtext::HTTP::Ports;
 
 use EV;
@@ -202,7 +199,7 @@ sub run {
 
 
     if ($self->NeedsWorker) {
-        Socialtext::Async::Wrapper::worker_make_immutable();
+        Socialtext::Async::Wrapper::worker_make_immutable($NAME);
         $self->guards->{worker_pinger} =
             AE::timer $self->worker_ping_period, $self->worker_ping_period,
             exception_wrapper {

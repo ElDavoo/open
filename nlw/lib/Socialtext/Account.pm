@@ -519,6 +519,8 @@ sub import_file {
     }
 
     $hub->pluggable->hook('nlw.import_account', $account, $hash, \%opts);
+    die $hub->pluggable->hook_error if ($hub->pluggable->hook_error);
+
     $account->{_import_hash} = $hash;
 
     # Create all the profiles after so that user references resolve.
@@ -574,6 +576,7 @@ sub finish_import {
     }
 
     $hub->pluggable->hook('nlw.finish_import_account', $self, $meta, \%opts);
+    die $hub->pluggable->hook_error if ($hub->pluggable->hook_error);
 }
 
 sub all_users_workspaces {

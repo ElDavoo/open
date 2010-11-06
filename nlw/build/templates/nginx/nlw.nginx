@@ -36,7 +36,7 @@
           rewrite ^[% rest_pattern %] /[% cache_name %]/$cache_match[%file_suffix%];
         }
 
-        [%- IF alias %]
+        [%- IF define %]
             location /[% cache_name %] {
               internal;
               root [% config.cache_dir %];
@@ -47,11 +47,14 @@
         [%- END %]
     [%- END %]
 
-    [% PROCESS image_cache cache_name="avatar"           rest_pattern="/data/people/([^/]+)/photo"             file_suffix="-large.png" alias=0 %]
-    [% PROCESS image_cache cache_name="avatar"           rest_pattern="/data/people/([^/]+)/small_photo"       file_suffix="-small.png" alias=1 %]
-    [% PROCESS image_cache cache_name="wafl"             rest_pattern="/data/wafl/(.*)"                        file_suffix=".png"       alias=1 %]
-    [% PROCESS image_cache cache_name="account_logo"     rest_pattern="/data/accounts/([^/]+)/logo"            file_suffix="-logo.png"  alias=1 %]
-    [% PROCESS image_cache cache_name="widget_thumbnail" rest_pattern="/data/gadgets/gadget/([^/]+)/thumbnail" file_suffix=".png"       alias=1 %]
+    [% PROCESS image_cache cache_name="avatar"      rest_pattern="/data/people/([^/]+)/photo"       file_suffix="-large.png" define=0 %]
+    [% PROCESS image_cache cache_name="avatar"      rest_pattern="/data/people/([^/]+)/small_photo" file_suffix="-small.png" define=1 %]
+    [% PROCESS image_cache cache_name="group-photo" rest_pattern="/data/groups/([^/]+)/photo"       file_suffix="-large.png" define=0 %]
+    [% PROCESS image_cache cache_name="group-photo" rest_pattern="/data/groups/([^/]+)/small_photo" file_suffix="-small.png" define=1 %]
+
+    [% PROCESS image_cache cache_name="wafl"             rest_pattern="/data/wafl/(.*)"                        file_suffix=".png"       define=1 %]
+    [% PROCESS image_cache cache_name="account_logo"     rest_pattern="/data/accounts/([^/]+)/logo"            file_suffix="-logo.png"  define=1 %]
+    [% PROCESS image_cache cache_name="widget_thumbnail" rest_pattern="/data/gadgets/gadget/([^/]+)/thumbnail" file_suffix=".png"       define=1 %]
 
 [%# The rewrite file must come before any of the redirect confs below %]
 [% PROCESS 'nginx/rewrite.nginx' %]

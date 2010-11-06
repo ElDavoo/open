@@ -29,13 +29,13 @@ sub do_work {
             arg => $id."-1-1"
         };
     }
-    st_log()->info("going to insert ".scalar(@jobs)." SignalIndex jobs");
+    st_log()->info("going to insert ".scalar(@jobs)." SignalReIndex jobs");
     my $template_job = TheSchwartz::Moosified::Job->new(
-        funcname => 'Socialtext::Job::SignalIndex',
-        priority => 60,
+        funcname => 'Socialtext::Job::SignalReIndex',
+        priority => -30,
     );
     Socialtext::JobCreator->bulk_insert($template_job, \@jobs);
-    st_log()->info("done SignalIndex bulk_insert");
+    st_log()->info("done SignalReIndex bulk_insert");
 
     $self->completed();
 }

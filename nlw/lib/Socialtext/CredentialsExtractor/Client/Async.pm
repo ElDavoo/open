@@ -30,7 +30,11 @@ sub _build_userd_uri {
     return "http://$host\:$port$path";
 }
 
-sub cache { Socialtext::Cache->cache('creds-extractor-client'); };
+sub cache {
+    Socialtext::Cache->cache('creds-extractor-client', {
+        class => 'Socialtext::Cache::PersistentHash',
+    } );
+};
 
 sub extract_desired_headers {
     my $self = shift;
@@ -76,12 +80,12 @@ sub extract_credentials {
                     }
                     else {
                         $creds = decode_json($resp_body);
-                        $self->store_credentials_in_cache($resp_hdrs, $creds);
+                        $self->store_credentials_in_cache($hdrs_to_send, $creds);
                     }
                 }
                 catch {
                     $creds = { error =>
-                        "extract credentials eror: $_" };
+                        "extract credentials error: $_" };
                 };
                 eval { $cb->($creds) };
             };

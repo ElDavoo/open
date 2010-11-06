@@ -261,6 +261,12 @@ sub hooked_template_vars {
     return %vars;
 }
 
+sub hook_error {
+    my $self = shift;
+    return $self->{hook_error};
+}
+
+
 sub hook {
     my ( $self, $name, @args ) = @_;
     my @output;
@@ -290,7 +296,8 @@ sub hook {
             if ($@) {
                 (my $err = $@) =~ s/\n.+//sm;
                 warn $@;
-                return $err;
+                $self->{hook_error} = $@;
+                return;
             }
 
             last if $plugin->last;

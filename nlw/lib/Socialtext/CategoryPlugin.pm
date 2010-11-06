@@ -483,14 +483,17 @@ sub weight_categories {
     );
 
     my $tag_args = join(',', map { '?' } @lower_tags);
-    my $tag_in = @lower_tags ? "AND LOWER(tag) IN ($tag_args)" : '';
+    my $tag_in = @lower_tags ? "AND LOWER(page_tag.tag) IN ($tag_args)" : '';
     my $dbh = sql_execute(<<EOT, 
-SELECT tag AS name, count(page_id) AS page_count 
+SELECT page_tag.tag AS name, count(page_tag.page_id) AS page_count 
     FROM page_tag
-    WHERE workspace_id = ?
+    JOIN page ON page.workspace_id = page_tag.workspace_id
+             AND page.page_id = page_tag.page_id
+             AND NOT page.deleted
+    WHERE page_tag.workspace_id = ?
       $tag_in
-    GROUP BY tag
-    ORDER BY count(page_id) DESC, tag
+    GROUP BY page_tag.tag
+    ORDER BY count(page_tag.page_id) DESC, page_tag.tag
 EOT
         $self->hub->current_workspace->workspace_id, @lower_tags,
     );

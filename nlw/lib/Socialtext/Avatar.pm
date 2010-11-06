@@ -126,7 +126,7 @@ sub _save_db {
         }
         else {
             my $cols = join ', ', $self->versions, $id_column;
-            my $ques = join ', ', map('?', 0 .. scalar @{$self->versions});
+            my $ques = join ', ', map('?', 0 .. scalar $self->versions);
             $sth = $dbh->prepare("INSERT INTO $table ($cols) VALUES ($ques)");
         }
 
@@ -201,7 +201,30 @@ sub ClearCache {
     remove_tree($temp_dir);
 }
 
-no Moose::Role;
+{
+    package Socialtext::Avatar::Common;
+    use Moose::Role;
+
+    requires qw(load);
+    use constant versions => qw(small large);
+
+    has 'small' => (
+        is => 'rw', isa => 'ScalarRef',
+        lazy_build => 1,
+    );
+    sub _build_small { $_[0]->load('small') }
+
+    has 'large' => (
+        is => 'rw', isa => 'ScalarRef',
+        lazy_build => 1,
+    );
+    sub _build_large { $_[0]->load('large') }
+
+    no Moose::Role;
+}
+
+package Socialtext::Avatar;
+
 1;
 
 __END__
