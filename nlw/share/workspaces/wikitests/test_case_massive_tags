@@ -2920,6 +2920,10 @@
 | st-result | osi-%%start_time%%-237 |
 | st-search | tag: uninstall |
 | st-result | osi-%%start_time%%-237 |
+| st-search | tag: universal AND osi-%%start_time%%-237 |
+| st-result | osi-%%start_time%%-237 |
+| st-search | tag: odd AND osi-%%start_time%%-237 |
+| st-result | osi-%%start_time%%-237 |
 
 | st-search | tag: unresponsive |
 | st-result | osi-%%start_time%%-238 |
@@ -2944,6 +2948,6 @@
 
 | *Comment* | Test Case: Massive Tags TEARDOWN |
 
-st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
+| st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Massive Tags COMPLETED |
