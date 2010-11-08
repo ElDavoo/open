@@ -1,4 +1,4 @@
-package Socialtext::Job::Upgrade::Monitor;
+package Socialtext::MonitorJob;
 # @COPYRIGHT@
 use Moose::Role;
 use Socialtext::JobCreator;
@@ -53,14 +53,14 @@ sub do_work {
 
 =head1 NAME
 
-Socialtext::Job::Upgrade::Monitor - A Moose Role that upgrade jobs can consume
+Socialtext::MonitorJob - A Moose Role that upgrade jobs can consume
 when they need to monitor the activity of one or more other types of job.
 
 =head1 SYNOPSIS
 
     package MyMonitorJob
 
-    with 'Socialtext::Job::Upgrade::Monitor'
+    with 'Socialtext::MonitorJob'
 
     sub Monitor_job_types { ... }
     sub finish_work { ... }

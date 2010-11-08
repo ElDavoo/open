@@ -7,7 +7,7 @@ use Socialtext::Helpers;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
-with 'Socialtext::Job::Upgrade::Monitor';
+with 'Socialtext::MonitorJob';
 
 sub Monitor_job_types {qw/SignalReIndex Upgrade::ReindexSignals/}
 sub Job_delay {15 * 60} # 15 mins.
