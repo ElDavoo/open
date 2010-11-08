@@ -50,3 +50,26 @@ sub do_work {
 }
 
 1;
+
+=head1 NAME
+
+Socialtext::Job::Upgrade::Monitor - A Moose Role that upgrade jobs can consume
+when they need to monitor the activity of one or more other types of job.
+
+=head1 SYNOPSIS
+
+    package MyMonitorJob
+
+    with 'Socialtext::Job::Upgrade::Monitor'
+
+    sub Monitor_job_types { ... }
+    sub finish_work { ... }
+    sub Job_delay { ... }
+
+=head1 DESCRIPTION
+
+When turning on new services such as Solr or Explore, we don't want them to
+activate before we build up our dataset. This role exists so that, through
+monitoring jobs, we can detect when our dataset is ready to be used.
+
+=cut
