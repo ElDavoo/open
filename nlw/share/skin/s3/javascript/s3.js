@@ -819,6 +819,7 @@ $(function() {
                     '{link: ' + Socialtext.wiki_id 
                         + '[' + Socialtext.page_title + ']}',
                 workspace_id: Socialtext.wiki_id,
+                initial_text: ' ',
                 fixed_action: 'action-signals',
                 signals_only: '1',
 
