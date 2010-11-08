@@ -15,27 +15,11 @@
 
 | open_ok | /st/signals |  |
 
-| *Comment* | Test Case: Signals Wiki Link buttons are present |  |
-| wait_for_element_visible_ok | //a[contains(@class,'insertWikilink')] | 30000 |
-
 | *Comment* | Test Case: Signals Wiki Link. Click Insert Wiki Link |  |
+| wait_for_element_visible_ok | //a[contains(@class,'insertWikilink')] | 30000 |
 | click_ok | //a[contains(@class,'insertWikilink')] |  |
 
 | *Comment* | Test Case: Signals Wiki Link. Verify visible elements |  |
-| wait_for_element_visible_ok | //div[@class='wikilinkPopup'] | 30000 |
-| wait_for_element_visible_ok | //input[@name='label'] | 5000 |
-| wait_for_element_visible_ok | //input[@name='workspace'] | 5000 |
-| wait_for_element_visible_ok | //a[@class='btn done'] | 5000 |
-| wait_for_element_visible_ok | //a[@class='btn cancel'] | 5000 |
-| text_like | Choose a workspace then search for the wikipage you want linked. |  |
-
-| *Comment* | Test Case: Signals Wiki Link. Click Cancel. Verify text is gone |  |
-| click_ok | //a[@class='btn cancel'] |  |
-| wait_for_text_not_present_ok | Choose a workspace then search for the wikipage you want linked. | 30000 |
-
-| *Comment* | Test Case: Signals Wiki Link. Click Insert Again, re-verify |  |
-| wait_for_element_visible_ok | //a[contains(@class,'insertWikilink')] | 30000 |
-| click_ok | //a[contains(@class,'insertWikilink')] |  |
 | wait_for_element_visible_ok | //div[@class='wikilinkPopup'] | 30000 |
 | wait_for_element_visible_ok | //input[@name='label'] | 5000 |
 | wait_for_element_visible_ok | //input[@name='workspace'] | 5000 |
@@ -43,8 +27,18 @@
 | wait_for_element_visible_ok | //input[@name='section'] | 5000 |
 | wait_for_element_visible_ok | //a[@class='btn done'] | 5000 |
 | wait_for_element_visible_ok | //a[@class='btn cancel'] | 5000 |
+| text_like | Choose a workspace then search for the wikipage you want linked. |  |
 
-|  | *Comment* | Test Case: Signals Wiki Link setSpeed 3000 to allow for type-in |  |
+| *Comment* | Test Case: Signals Wiki Link. Click Cancel. Verify popup is gone |  |
+| click_ok | //a[@class='btn cancel'] |  |
+| wait_for_element_not_visible_ok | //div[@class='wikilinkPopup'] | 10000 |
+
+| *Comment* | Test Case: Signals Wiki Link. Click Insert Again, re-verify |  |
+| wait_for_element_visible_ok | //a[contains(@class,'insertWikilink')] | 30000 |
+| click_ok | //a[contains(@class,'insertWikilink')] |  |
+| wait_for_element_visible_ok | //div[@class='wikilinkPopup'] | 30000 |
+
+| *Comment* | Test Case: Signals Wiki Link setSpeed 3000 to allow for type-in |  |
 | setSpeed | 3000 |  |
 | type_ok | //input[@name='label'] | %%text%% |
 | type_ok | //input[@name='workspace'] | %%wiki%% |
