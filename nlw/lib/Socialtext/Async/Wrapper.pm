@@ -179,12 +179,18 @@ sub _InWorker {
 {
     package Socialtext::Async::Wrapper::Worker;
     use Moose;
+    use Data::Dumper;
     use Try::Tiny;
-    use Socialtext::Log qw/st_timed_log/;
+    use Guard;
+    use Socialtext::Log qw/st_log st_timed_log/;
     use namespace::clean -except => 'meta';
 
     has 'last_report' => (is => 'rw', isa => 'Num', default => \&AE::time);
     has 'name' => (is => 'rw', isa => 'Str');
+
+    # When do we consider worker requests having taken "too long" and should
+    # log them? (in seconds)
+    our $TOO_LONG = 1.0;
 
     sub BUILD {
         my $self = shift;
@@ -206,7 +212,7 @@ sub _InWorker {
     }
 
     sub before_each {
-        my $self = shift;
+        my ($self, $timer, $argref) = @_;
         try {
             # most of these copied from Socialtext::Handler::Cleanup
             Socialtext::Cache->clear();
@@ -216,7 +222,20 @@ sub _InWorker {
         catch {
             warn "in before_each: $_";
         };
-        return;
+
+        Socialtext::Timer->Continue($timer);
+        my $t_st = AE::time;
+        my $guard = guard {
+            Socialtext::Timer->Pause($timer);
+            my $t_diff = AE::time - $t_st;
+            if ($t_diff > $TOO_LONG) {
+                st_log->info("long running worker '$timer' - $t_diff");
+                local $Data::Dumper::Indent=0;
+                warn Dumper({"long running worker '$timer'" => $argref}) . "\n";
+            }
+        };
+
+        return $guard;
     }
 
     sub worker_ping {
@@ -274,8 +293,7 @@ sub worker_wrap {
         package_name => 'Socialtext::Async::Wrapper::Worker',
         body => sub {
             my $self = shift;
-            $self->before_each();
-            my $t = time_scope $worker_name;
+            my $guard = $self->before_each($worker_name => \@_);
             my $class_or_obj = shift;
             return $class_or_obj->$orig_method(@_);
         },
@@ -310,8 +328,7 @@ sub worker_function {
         package_name => 'Socialtext::Async::Wrapper::Worker',
         body => sub {
             my $self = shift; # instance of Socialtext::Async::Wrapper::Worker
-            $self->before_each();
-            my $t = time_scope $worker_name;
+            my $guard = $self->before_each($worker_name => \@_);
             shift; # undef
             return $code->(@_);
         },
