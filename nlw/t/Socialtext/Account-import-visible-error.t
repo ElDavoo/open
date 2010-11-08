@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext;
+use Test::Socialtext tests => 3;
 use Test::Socialtext::CLIUtils qw/expect_failure expect_success/;
 
 fixtures(qw/db/);
