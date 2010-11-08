@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use List::MoreUtils qw(first_index);
+use List::MoreUtils qw(first_index last_index);
 use Test::Socialtext tests => 15;
 use Test::Socialtext::Ceqlotron;
 use Socialtext::JobCreator;
@@ -104,7 +104,7 @@ long_jobs_dont_stall_entire_queue: {
     #     was running.
     my @interleave = grep { /lived job/ } @lines;
     my $idx_start  = first_index { /start long-lived/ } @interleave;
-    my $idx_finish = first_index { /finish long-lived/ } @interleave;
+    my $idx_finish = last_index { /finish long-lived/ } @interleave;
     ok $idx_finish > 0, '... ran a long-lived job';
 
     splice @interleave, $idx_finish-1;
