@@ -74,10 +74,12 @@ sub Pause {
     my $class = shift;
     my $timed = shift;
     local $@;
-    if (ref($Timings->{$timed}->{timer}) 
-        && $Timings->{$timed}->{counter} <= 1) {
+
+    if (ref($Timings->{$timed}->{timer})) {
         $Timings->{$timed}->{counter}--;
-        $class->Stop($timed);
+        if ($Timings->{$timed}->{counter} < 1) {
+            $class->Stop($timed);
+        }
     }
 }
 
