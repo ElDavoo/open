@@ -65,7 +65,7 @@ sub ceq_get_log_until {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     my $cond_re = shift;
     my $log   = _nlw_log();
-    my $tries = 17;
+    my $tries = 7;
     my @lines;
 
     while ($tries-- > 0) {
