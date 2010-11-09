@@ -27,7 +27,8 @@
 | type_ok | st-newpage-duplicate-pagename | np %%start_time%% 2 |
 | wait_for_element_visible_ok | st-newpage-duplicate-okbutton | 30000 |
 | click_and_wait | st-newpage-duplicate-okbutton |  |
-| location_like | /%%workspace%%/index.cgi?np_%%start_time%%_2 |  |
+| wait_for_element_visible_ok | st-page-titletext | 30000 |
+| text_like | st-page-titletext | np %%start_time%% 2 |
 
 | *Comment* | Test Case: New Page. Create another new page in Wiki Text mode |  |
 | *Comment* | Test Case: New Page. Click on Save options, then cancel |  |

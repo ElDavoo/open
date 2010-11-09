@@ -1,0 +1,15 @@
+| *Comment* | Test Case: Explore Create Some Users |  |
+| set | user1 | user1_%%start_time%%@socialtext.com |
+| set | user2 | user2_%%start_time%%@socialtext.com |
+| create_user | %%user1%% | password1 |
+| create_user | %%user2%% | password2 |
+
+| *Comment* | Test Case: Explore Create Some Groups and Add Users |  |
+| set | group1 | group1_%%start_time%% |
+| set | group2 | group2_%%start_time%% |
+| create-group | %%group1%% |  |
+| add-user-to-group | %%user1%% | %%group_id%% |
+| create-group | %%group2%% |  |
+| add-user-to-group | %%user2%% | %%group_id%% |
+
+| include | [Test Case: Signals Tag] |  |
