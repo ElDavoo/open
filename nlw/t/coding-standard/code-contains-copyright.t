@@ -6,6 +6,9 @@ use strict;
 use Test::More;
 use File::Slurp qw( read_file );
 
+# Skip these tests, per discussion in standup.
+plan skip_all => 'This test is currently disabled';
+
 BEGIN {
     eval 'use File::Next 0.30';
     plan skip_all => 'This test requires File::Next' if $@;
