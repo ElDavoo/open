@@ -126,22 +126,12 @@ sub _build_indexer {
 
     my $ws = $self->workspace;
 
-    require Socialtext::Search::AbstractFactory;
     require Socialtext::Search::Solr::Factory;
 
-    my $indexer;
-    eval {
-        my $factory = $self->arg->{solr}
-            ? Socialtext::Search::Solr::Factory->new
-            : Socialtext::Search::AbstractFactory->GetFactory;
-
-        my $config_type = $self->arg->{search_config} || 'live';
-        $indexer = $factory->create_indexer(
-            ($ws ? ($ws->name, config_type => $config_type)
-                 : ()
-            )
-        );
-    };
+    my $indexer = Socialtext::Search::Solr::Factory->new->create_indexer(
+            ($ws ? ($ws->name) : ()
+        )
+    );
     unless ($indexer) {
         my $err = $@ || 'unknown error';
         my $msg = "Couldn't create an indexer: $@";
