@@ -1,6 +1,7 @@
 | *Comment* | Test Case: Inter Workspace Search |  |
 
 | *Comment* | This test relies on the presence of test-data and deliberately overwrites fixed workspace names so subsequent runs will work with `workspaces:*` |  |
+
 | *Comment* | Test Case: Inter Workspace Search Clone test-data twice so we don't have to deal with ceq issues |  |
 
 | st-admin | delete-workspace --workspace test-data2 --no-export |  |
@@ -11,7 +12,21 @@
 | st-admin | clone-workspace --workspace test-data --target test-data3 | The test-data workspace has been cloned to test-data3 |
 | st-admin | set-workspace-config --workspace test-data3 title test-data3 | The workspace config for test-data3 has been updated. |
 
-| *Comment* | Test Case: Inter Workspace Search Search all the workspaces where %%username%% is a member |  |
+| *Comment* | Test Case: Inter Workspace Search. Select My Workspaces in Dashboard-context |  |
+| open_ok | /st/dashboard |  |
+| select_ok | st-search-action | label=Search My Workspaces: |
+| st-search | wiki | Pages matching 'wiki' |
+| is_selected_ok | st-search-action | label=Search My Workspaces: |
+
+| *Comment* | Test Case: Inter Workspace Search in People Context |  |
+| open_ok | /?action=people |  |
+| select_ok | st-search-action | label=Search My Workspaces: |
+| st-search | wiki | Pages matching 'wiki' |
+| is_selected_ok | st-search-action | label=Search My Workspaces: |
+
+
+| *Comment* | Test Case: Inter Workspace Search Search all the workspaces where %%username%% is a member - in WS Context |  |
+| open_ok | /%%workspace%%/ |  |
 | select_ok | st-search-action | label=Search My Workspaces: |
 | st-search | jabber | Pages matching 'jabber' |
 | st-result | 15 total |  |
