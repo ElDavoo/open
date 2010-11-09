@@ -10,15 +10,7 @@ extends 'Socialtext::Job';
 sub do_work {
     my $self = shift;
 
-    # First, delete all the people from Solr.
-    unless ($self->arg && $self->arg->{no_delete}) {
-        st_log()->info("deleting all people profiles from solr");
-        my $factory = Socialtext::Search::Solr::Factory->new;
-        $factory->create_indexer()->delete_people();
-    }
-
-    # Now create new jobs for each person.
-    Socialtext::People::Profile->IndexPeople();
+    Socialtext::People::Profile->IndexPeople($self->arg);
 
     $self->completed();
 }
