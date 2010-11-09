@@ -3,8 +3,8 @@ package Socialtext::Job::SignalReIndex;
 use Moose;
 use namespace::clean -except => 'meta';
 
-# Really, this class is just an alias for SignalIndex.
 extends 'Socialtext::Job::SignalIndex';
+with 'Socialtext::ReIndexJob';
 
 __PACKAGE__->meta->make_immutable;
 1;
