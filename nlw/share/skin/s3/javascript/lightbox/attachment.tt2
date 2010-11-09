@@ -1,5 +1,5 @@
 <div class="lightbox" id="st-attachments-attachinterface">
-  <iframe style="display:none" id="st-attachments-attach-formtarget" class="st-action-formtarget" name="st-attachments-attach-formtarget" src="[% wiki.static_path %]/html/blank.html"></iframe>
+  <iframe style="display:none" id="st-attachments-attach-formtarget" class="st-action-formtarget" name="st-attachments-attach-formtarget" src="/static/html/blank.html"></iframe>
   <form id="st-attachments-attach-form" name="attachForm" method="post" action="index.cgi" enctype="multipart/form-data" target="st-attachments-attach-formtarget">
     <input type="hidden" name="page_name" value="[% page_id %]"/>
     <input type="hidden" name="action" value="attachments_upload"/>
