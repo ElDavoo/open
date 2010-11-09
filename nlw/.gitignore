@@ -530,3 +530,5 @@ t/Socialtext/Account-export-gadgets.t
 lib/Socialtext/Signal/Asset/Finder.pm
 lib/Socialtext/Signal.pm.orig
 t/wikitests/socialpoint/impersonator.wiki
+lib/Socialtext/Handler/Activities.pm
+lib/Socialtext/Handler/Activities/Mobile.pm
