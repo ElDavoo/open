@@ -492,11 +492,14 @@ sub GetProtoGroup {
 
 sub IndexGroups {
     my $class = shift;
+    my $opts  = shift || {};
 
-    require Socialtext::Search::Solr::Factory;
-    my $factory = Socialtext::Search::Solr::Factory->new;
-    my $indexer = $factory->create_indexer();
-    $indexer->delete_groups();
+    unless ($opts->{no_delete}) {
+        require Socialtext::Search::Solr::Factory;
+        my $factory = Socialtext::Search::Solr::Factory->new;
+        my $indexer = $factory->create_indexer();
+        $indexer->delete_groups();
+    }
 
     sql_begin_work();
     my $all_groups = sql_execute('SELECT group_id FROM groups');
