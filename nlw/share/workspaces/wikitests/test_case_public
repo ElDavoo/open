@@ -1,7 +1,8 @@
 | *Comment* | Test Case: Public. Log out |  |
 
+| st-config | set self_registration 1 |  |
+| st-config | set allow_network_invitation 1 |  |
 | click_and_wait | link=Log out |  |
-
 | set | auth_w | test-case-public-%%start_time%% |
 
 | *Comment* | Test Case: Public. Create a public workspace with no members |  |

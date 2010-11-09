@@ -1,5 +1,7 @@
 | *Comment* | Test Case: Public Read Only |  |
 
+| st-config | set self_registration 1 |  |
+| st-config | set allow_network_invitation 1 |  |
 | set | auth_w | public-read-%%start_time%% |
 | st-admin | create-workspace --name %%auth_w%% --title %%auth_w%% |  |
 | st-admin | set-permissions --workspace %%auth_w%% --permissions public-read-only | The permissions for the %%auth_w%% workspace have been changed to public-read-only. |

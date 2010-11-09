@@ -5,6 +5,8 @@
 | *Comment* | Logged out user, existing member |  |
 | *Comment* | Logged in user, existing member |  |
 
+| st-config | set self_registration 1 |  |
+| st-config | set allow_network_invitation 1 |  |
 | set | auth_w | public-auth-%%start_time%% |
 | st-admin | create-workspace --name %%auth_w%% --title "%%auth_w%% Title" |  |
 | st-admin | set-permissions --workspace %%auth_w%% --permissions public-join-to-edit | The permissions for the %%auth_w%% workspace have been changed to public-join-to-edit. |
