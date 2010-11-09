@@ -1,16 +1,16 @@
 * Fixture: SocialWidgets
 
-| *Comment* | Test Case: Activities Widget Tag SETUP |  |
+| *Comment* | Test Case: Signals Tag SETUP |  |
 | set | tag | awsb-TAG-%%start_time%% |
 | open_ok | /st/signals |  |
 
-| *Comment* | Test Case: Activities Widget Tag button is present |  |
+| *Comment* | Test Case: Signals Tag button is present |  |
 | wait_for_element_visible_ok | //a[@class='setupWikiwyg insertTag'] | 30000 |
 
-| *Comment* | Test Case: Activities Widget click Tag |  |
+| *Comment* | Test Case: Signals click Tag |  |
 | click_ok | //a[@class='setupWikiwyg insertTag'] |  |
 
-| *Comment* | Test Case: Activities Widget Tag setSpeed 3000 to allow for lookahead |  |
+| *Comment* | Test Case: Signals Tag setSpeed 3000 to allow for lookahead |  |
 | set_Speed | 3000 |  |
 | type-lookahead-ok | //input[@class='lookahead-prompt'] | %%tag%% |
 | wait_for_element_visible_ok | //a[@class='insert btn'] | 30000 |
@@ -18,7 +18,7 @@
 | click_ok | //a[@class='insert btn'] |  |
 | wait_for_element_not_visible_ok | //input[@class='lookahead-prompt'] | 5000 |
 
-| *Comment* | Test Case: Activities Widget Tag setSpeed zero |  |
+| *Comment* | Test Case: Signals Tag setSpeed zero |  |
 | set_Speed | 0 |  |
 | wait_for_element_visible_ok | link=Post | 30000 |
 | pause | 3000 |  |
@@ -26,4 +26,4 @@
 | wait_for_element_visible_ok | link=%%tag%% | 30000 |
 | wait_for_text_present_ok | #%%tag%% | 30000 |
 
-| *Comment* | Test Case: Activities Widget Tag COMPLETED |
+| *Comment* | Test Case: Signals Tag COMPLETED |
