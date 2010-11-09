@@ -87,6 +87,7 @@ sub log_done {
     return if ((200 <= $code && $code <= 399) && !$self->log_successes);
     $self->log_params->{timers} = 'overall(1):'.
         sprintf('%0.3f', AE::now - $self->started_at);
+    DAEMON()->stats->{"error responses"}++ if $code >= 400;
     st_log->info(join(',',
         'WEB',$self->env->{REQUEST_METHOD},
         uc($self->env->{PATH_INFO}),

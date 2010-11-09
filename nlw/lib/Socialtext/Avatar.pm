@@ -117,21 +117,22 @@ sub _save_db {
             SELECT 1 FROM $table WHERE $id_column = ?
         }, $self->id);
 
+        my @versions = $self->versions;
         my $sth;
         if ($exists) {
-            my $sets = join ", ", map { "$_ = ?" } $self->versions;
+            my $sets = join ", ", map { "$_ = ?" } @versions;
             $sth = $dbh->prepare(
                 "UPDATE $table SET $sets WHERE $id_column = ?"
             );
         }
         else {
             my $cols = join ', ', $self->versions, $id_column;
-            my $ques = join ', ', map('?', 0 .. scalar $self->versions);
+            my $ques = join ', ', map('?', 0 .. scalar(@versions));
             $sth = $dbh->prepare("INSERT INTO $table ($cols) VALUES ($ques)");
         }
 
         my $n = 1;
-        for my $version ($self->versions) {
+        for my $version (@versions) {
             $sth->bind_param($n++, ${$blobs{$version}}, {pg_type => PG_BYTEA});
         }
         $sth->bind_param($n++, $self->id);

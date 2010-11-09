@@ -1318,9 +1318,9 @@ Default: 0
 
 =head2 allow_network_invitation
 
-Set this to false to prevent users from sending invite emails for other people to join their accounts.
+Set this to true to enable users to send invite emails for other people to join their accounts.
 
-Default: 1
+Default: 0
 
 =for code type => BOOLEAN_TYPE
 

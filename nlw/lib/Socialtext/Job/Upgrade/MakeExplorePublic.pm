@@ -7,7 +7,7 @@ use Socialtext::Helpers;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
-with 'Socialtext::Job::Upgrade::Monitor';
+with 'Socialtext::MonitorJob';
 
 sub Monitor_job_types {qw/SignalReIndex Upgrade::ReindexSignals/}
 sub Job_delay {15 * 60} # 15 mins.
@@ -29,3 +29,23 @@ sub finish_work {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+=head1 NAME
+
+Socialtext::Job::Upgrade::MakeExplorePublic - When signals have been
+re-indexed, turn on the signals explorer for users.
+
+=head1 SYNOPSIS
+
+    use Socialtext::JobCreator;
+
+    Socialtext::JobCreator->insert(
+        'Socialtext::Job::Upgrade::MakeExplorePublic'
+    );
+
+=head1 DESCRIPTION
+
+Checks for outstanding Socialtext::Job::SignalReIndex jobs. Upon finding that
+no such jobs remain in the queue, make the Explore link available for users.
+
+=cut

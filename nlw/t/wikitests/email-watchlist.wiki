@@ -136,6 +136,7 @@ This also tests the email notify sort order and the display details prefs.
 | email-like           | __NO CONTENT!__     |                              |
 
 | Comment | but after another few days or so... |
+| clear-email   |
 
 | st-fast-forward-jobs | 3500                |   |
 | st-process-jobs      |                     |   |
