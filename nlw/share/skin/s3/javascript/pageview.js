@@ -219,8 +219,8 @@ Page = {
         $.ajax({
             type: "PUT",
             url: this.tagUrl(tag),
-            data: {},
-            complete: function () {
+            data: { '': '' }, // {bz: 4588}: Use an non-empty payload to avoid "411 Length required"
+            complete: function (xhr) {
                 Page.refreshTags();
                 $('#st-tags-field').val('');
             }
