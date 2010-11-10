@@ -240,7 +240,8 @@ sub _default_solr_base {
 
 sub _default_auth_token_soft_limit { return 86400 * 13; }
 sub _default_auth_token_hard_limit { return 86400 * 14; }
-sub _minimum_auth_token_limit      { 86400 }
+sub minimum_auth_token_limit       { return 86400; }
+sub maximum_auth_token_limit       { return 86400 * 365; }
 
 sub auth_token_soft_limit {
     my $self = shift;
@@ -249,7 +250,12 @@ sub auth_token_soft_limit {
     my $limit = $self->{config}{auth_token_soft_limit};
 
     # Force a minimum if they've tried to set to <=0
-    $limit = _minimum_auth_token_limit() if ($limit <= 0);
+    # - allow for low values, though, to facilitate testing
+    $limit = minimum_auth_token_limit() if ($limit <= 0);
+
+    # Enforce maximum value
+    my $max = maximum_auth_token_limit();
+    $limit = $max if ($limit > $max);
 
     return $limit;
 }
@@ -261,7 +267,12 @@ sub auth_token_hard_limit {
     my $limit = $self->{config}{auth_token_hard_limit};
 
     # Force a minimum if they've tried to set to <=0
-    $limit = _minimum_auth_token_limit() if ($limit <= 0);
+    # - allow for low values, though, to facilitate testing
+    $limit = minimum_auth_token_limit() if ($limit <= 0);
+
+    # Enforce maximum value
+    my $max = maximum_auth_token_limit();
+    $limit = $max if ($limit > $max);
 
     return $limit;
 }
@@ -587,7 +598,7 @@ sub set {
     # Warn about potentially poor config values
     foreach my $limit (qw( auth_token_soft_limit auth_token_hard_limit )) {
         if (exists $p{$limit}) {
-            my $minimum = _minimum_auth_token_limit();
+            my $minimum = minimum_auth_token_limit();
             my $value   = $p{$limit};
             if ($value < $minimum) {
                 warn qq{
@@ -1348,7 +1359,7 @@ valid and I<not> require the User to re-authenticate themselves.  Once this
 authentication token will still be considered to be valid but the User I<will>
 be prompted to re-authenticate if they perform an interruptable action.
 
-Defaults to 13d.
+Minimum allowable value is "1d".  Maximum is "365d".  Defaults to "13d".
 
 =for code default => _default_auth_token_soft_limit
 
@@ -1360,7 +1371,7 @@ The duration, in seconds, that authentication tokens are considered to be
 valid.  Once this limit has been reached, the authentication token will be
 considered invalid and the User will be required to re-authenticate.
 
-Defaults to 14d.
+Minimum allowable value is "1d".  Maximum is "365d".  Defaults to "14d".
 
 =for code default => _default_auth_token_hard_limit
 
