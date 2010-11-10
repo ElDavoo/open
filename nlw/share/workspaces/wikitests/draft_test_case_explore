@@ -12,4 +12,17 @@
 | create-group | %%group2%% |  |
 | add-user-to-group | %%user2%% | %%group_id%% |
 
-| include | [Test Case: Signals Tag] |  |
+| *Comment* | Test Case: Explore Send a Signal with Attachments from User 1 |  |
+| set | att_signaler | %%user1%% |
+| set | att_signaler_pw | password1 |
+| include | [Test Case: Signals Attachment] |  |
+
+| *Comment* | Test Case: Explore Send a Signal with Wikilink from User 2 |  |
+| set | wl_signaler | %%user2%% |
+| set | wl_signaler_pw | password2 |
+| include | [Test Case: Signals Wiki Link] |  |
+
+| *Comment* | Test Case: Explore Send a Signal with Weblink from User 1 |  |
+| set | www_signaler | %%user1%% |
+| set | www_signaler_pw | password1 |
+| include | [Test Case: Signals Web Link] |  |

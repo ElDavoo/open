@@ -2,9 +2,12 @@
 
 | *Comment* | Test Case: Signals Web Link SETUP |  |
 
+| set_default | www_signaler | %%username%% |
+| set_default | www_signaler_pw | d3vnu11l |
 | set | text | Signals Web Link Text %%start_time%% |
 | set | url | `http://ken.socialtext.net.%%start_time%%` |
 
+| st-logoutin | %%www_signaler%% | %%www_signaler_pw%% |
 | open_ok | /st/signals |  |
 
 | *Comment* | Test Case: Signals Web Link buttons are present |  |

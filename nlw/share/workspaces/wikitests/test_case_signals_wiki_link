@@ -2,6 +2,8 @@
 
 | *Comment* | Test Case: Signals Wiki Link SETUP |  |
 
+| set_default | wl_signaler | %%username%% |
+| set_default | wl_signaler_pw | d3vnu11l |
 | set | text | Signals Link Text %%start_time%% |
 | set | wiki | signals-wiki-%%start_time%% |
 | set | title | Signals-Wiki-%%start_time%% |
@@ -9,10 +11,11 @@
 | set | section | signals_section_%%start_time%% |
 
 | st-admin | create-workspace --empty --name %%wiki%% --title %%title%% | created |
-| st-admin | add-member --workspace %%wiki%% --u %%username%% | now has the role |
+| st-admin | add-member --workspace %%wiki%% --u %%wl_signaler%% | now has the role |
 
 | set | stranger | `devnull1@socialtext.com` |
 
+| st-logoutin | %%wl_signaler%% | %%wl_signaler_pw%% |
 | open_ok | /st/signals |  |
 
 | *Comment* | Test Case: Signals Wiki Link. Click Insert Wiki Link |  |
@@ -69,8 +72,7 @@
 | wait_for_element_visible_ok | link=%%text%% | 10000 |
 | text_like | //body | %%text%% |
 
-| *Comment* | Test Case: Signals Wiki Link TEARDOWN |
-
-| st-admin | delete-workspace --workspace %%wiki%% --no-export | deleted |
+| *Comment* | In order to make this test work as an include, the teardown had to be removed. |
+| *Comment* | To tear down this test, run [Test Case: Signals Wiki Link Teardown] |
 
 | *Comment* | Test Case: Signals Wiki Link COMPLETED |
