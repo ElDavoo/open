@@ -385,8 +385,6 @@ sub st_send_page_signal {
    my ($self, $signaltosend) = @_;
 
    $self->handle_command('set_Speed',4000);
-   $self->handle_command('wait_for_element_present_ok', '//div[@class="clearHandler"]', 5000);
-   $self->handle_command('click_ok', '//div[@class="clearHandler"]');
    $self->st_type_signal($signaltosend);
    $self->handle_command('wait_for_element_visible_ok','//a[@class="btn post"]', 5000);
    $self->handle_command('click_ok', '//a[@class="btn post"]');
