@@ -1,8 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>359</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-359.air</url>
-<description><![CDATA[[Build 359 - Fri Oct 22 03:47:13 PDT 2010]
+  <version>364</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-364.air</url>
+<description><![CDATA[[Build 364 - Tue Nov  9 02:39:06 PST 2010]
+* Clicking "More" in per-group threadview no longer results in large time gaps. {bz: 4590}
+
+[Build 363 - Mon Nov  8 20:25:29 PST 2010]
+* Entries in Name and Tag lookaheads now shows up consistently. {bz: 4649}
+* On resync of threaded Signals view, check for !visible for threads in viewport only,
+  to avoid overlong URLs.  (Ken)
+
+[Build 362 - Sun Oct 31 01:30:43 PDT 2010]
+* Typing in thread-reply window is now faster. {bz: 4563}
+
+[Build 361 - Fri Oct 29 00:24:02 PDT 2010]
+* Correctly resume push client after server upgrade. {bz: 4556}
+
+[Build 360 - Tue Oct 26 11:52:35 PDT 2010]
+* The "X New" alert now goes away after sending a reply. {bz: 4530}
+
+[Build 359 - Fri Oct 22 03:47:13 PDT 2010]
 * Only refresh when push is actually desynchronized.
 
 [Build 358 - Thu Oct 21 08:54:04 PDT 2010]
