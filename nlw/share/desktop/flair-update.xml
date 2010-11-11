@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>364</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-364.air</url>
-<description><![CDATA[[Build 364 - Tue Nov  9 02:39:06 PST 2010]
+  <version>365</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-365.air</url>
+<description><![CDATA[[Build 365 - Thu Nov 11 00:48:21 PST 2010]
+* Update our push-client.js to fix periodic out-of-sync issue. {bz: 4548}
+
+[Build 364 - Tue Nov  9 02:39:06 PST 2010]
 * Clicking "More" in per-group threadview no longer results in large time gaps. {bz: 4590}
 
 [Build 363 - Mon Nov  8 20:25:29 PST 2010]
