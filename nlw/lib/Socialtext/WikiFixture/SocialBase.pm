@@ -1763,7 +1763,8 @@ sub set_date_from_interval {
     my $self = shift;
     my $name = shift;
     my $interval = shift;
-    my $dt = DateTime->now();
+    my $tz = DateTime::TimeZone->new( name => 'local' );
+    my $dt = DateTime->now(time_zone => $tz);
 
     if ($interval) {
         my $do = $interval =~ s/^\-// ? 'subtract' : 'add';
