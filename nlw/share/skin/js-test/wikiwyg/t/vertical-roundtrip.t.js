@@ -1,9 +1,15 @@
 var t = new Test.Wikiwyg();
 
-t.plan(17);
+t.plan(18);
 t.run_roundtrip('wikitext');
 
 /*
+=== Consecutive HRs
+--- wikitext
+----
+----
+----
+
 === Whitespace around HR (1)
 --- wikitext
 white
