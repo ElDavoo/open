@@ -122,7 +122,8 @@ sub _process {
     }
 
     if ($class_id eq 'pluggable' and !(defined $html and length $html)) {
-        return $self->no_plugin_action ;
+        $html = $self->pluggable->hook_error();
+        return $self->no_plugin_action unless $html;
     }
     
     # Safari's JS doesn't properly handled raw utf8 data.
