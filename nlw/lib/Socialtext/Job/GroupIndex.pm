@@ -6,6 +6,15 @@ use namespace::clean -except => 'meta';
 extends 'Socialtext::Job';
 with 'Socialtext::CoalescingJob', 'Socialtext::IndexingJob';
 
+# Called if the job argument isn't a reference type, usually because of bulk
+# insertion:
+override 'inflate_arg' => sub {
+    my $self = shift;
+    my $arg = $self->arg;
+    return unless $arg;
+    $self->arg({ group_id => $arg });
+};
+
 sub do_work {
     my $self    = shift;
     my $indexer = $self->indexer or return;

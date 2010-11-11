@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+# @COPYRIGHT@
 package Foo;    # so we can use the Async::Wrapper here in the test
 use strict;
 use warnings;

@@ -492,21 +492,35 @@ sub GetProtoGroup {
 
 sub IndexGroups {
     my $class = shift;
+    my $opts  = shift || {};
 
-    require Socialtext::Search::Solr::Factory;
-    my $factory = Socialtext::Search::Solr::Factory->new;
-    my $indexer = $factory->create_indexer();
-    $indexer->delete_groups();
+    unless ($opts->{no_delete}) {
+        require Socialtext::Search::Solr::Factory;
+        my $factory = Socialtext::Search::Solr::Factory->new;
+        my $indexer = $factory->create_indexer();
+        $indexer->delete_groups();
+    }
 
     sql_begin_work();
-    my $all_groups = sql_execute('SELECT group_id FROM groups');
-    my $i = 0;
-    while ( my ($group_id) = $all_groups->fetchrow_array ) {
-        Socialtext::JobCreator->index_group($group_id);
-        $i++;
+    my $sth = sql_execute('SELECT group_id FROM groups');
+    my @jobs;
+    while (my ($group_id) = $sth->fetchrow_array) {
+        push @jobs, {
+            coalesce => "$group_id-reindex", # don't coalesce with normal jobs
+            arg => $group_id,
+        };
     }
+
+    st_log()->info("going to insert ".scalar(@jobs)." GroupReIndex jobs");
+    my $template_job = TheSchwartz::Moosified::Job->new(
+        funcname => 'Socialtext::Job::GroupReIndex',
+        priority => -30,
+    );
+    Socialtext::JobCreator->bulk_insert($template_job, \@jobs);
+    st_log()->info("done GroupReIndex bulk_insert");
+
     sql_commit();
-    return $i;
+    return scalar(@jobs);
 }
 
 ###############################################################################

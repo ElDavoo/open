@@ -63,16 +63,14 @@ sub index_attachment_by_ids {
 
     # order here is relevant: least-specific to most-specific:
     my $co_key = "$wksp_id-$page_id-$attach_id";
-    my $solr = ($search_config and $search_config eq 'solr') ? 1 : 0;
 
     return $self->insert($job_class => {
         workspace_id => $wksp_id,
         page_id => $page_id,
         attach_id => $attach_id,
-        ($solr ? (solr => 1) : (search_config => $search_config)),
         job => {
             priority => $priority,
-            coalesce => ($solr ? 'solr-' : 'kino-') . $co_key,
+            coalesce => $co_key,
         },
     });
 }
@@ -99,23 +97,19 @@ sub index_page {
 
     my $wksp_id = $page->hub->current_workspace->workspace_id;
     my $page_id = $page->id;
-    for my $indexer (@{ $opts{indexers} }) {
-        my $solr = ref($indexer) =~ m/solr/i;
 
-        # order here is relevant: least-specific to most-specific:
-        my $co_key = "$wksp_id-$page_id";
+    # order here is relevant: least-specific to most-specific:
+    my $co_key = "$wksp_id-$page_id";
 
-        my $job_id = $self->insert($opts{page_job_class} => {
-            workspace_id => $wksp_id,
-            page_id => $page_id,
-            ($solr ? (solr => 1) : (search_config => $search_config)),
-            job => {
-                priority => $opts{priority} || 63,
-                coalesce => ($solr ? 'solr-' : 'kino-') . $co_key,
-            },
-        });
-        push @job_ids, $job_id;
-    }
+    my $job_id = $self->insert($opts{page_job_class} => {
+        workspace_id => $wksp_id,
+        page_id => $page_id,
+        job => {
+            priority => $opts{priority} || 63,
+            coalesce => $co_key,
+        },
+    });
+    push @job_ids, $job_id;
 
     # Tests need the cache cleared
     $page->hub->attachments->cache->clear();
@@ -224,7 +218,6 @@ sub index_signal {
     my $job_id = $self->insert(
         'Socialtext::Job::SignalIndex' => {
             %p,
-            solr => 1,
             signal_id => $id,
             job => {
                 priority => $priority,
@@ -248,7 +241,6 @@ sub index_group {
 
     my $job_id = $self->insert(
         'Socialtext::Job::GroupIndex' => {
-            solr => 1,
             group_id => $id,
             job => {
                 priority => $p{priority},
@@ -271,7 +263,6 @@ sub index_person {
     unless ($self->_cache('personindex')->get($user_id)) {
         $job_id = $self->insert(
             'Socialtext::Job::PersonIndex' => {
-                solr => 1,
                 user_id => $user_id,
                 job => {
                     priority => $p{priority},
@@ -319,7 +310,6 @@ sub _index_related_people {
         eval {
             $self->insert(
                 'Socialtext::Job::PersonIndex' => {
-                    solr => 1,
                     user_id => $other_user_id,
                     job => {
                         priority => $p{priority},

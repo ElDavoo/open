@@ -2415,7 +2415,6 @@ proto.format_br = function(elem) {
 
 proto.format_hr = function(elem) {
     if (this.has_parent(elem, 'LI')) return '';
-    elem.top_level_block = true;
     return '----\n';
 }
 

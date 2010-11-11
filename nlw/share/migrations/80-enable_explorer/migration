@@ -8,7 +8,4 @@ use Socialtext::Migration::Utils qw/create_job/;
 # turn off explorer link
 shell_run('st-appliance-set-config explore_is_public 0');
 
-# create a monitoring job
-create_job('MakeExplorePublic', -30);
-
 exit 0;

@@ -50,8 +50,6 @@ sub create_job_for_each_workspace {
         $job_count++;
     }
 
-    # And add one more job to clean up global prefs
-    Socialtext::JobCreator->insert( $job_class, { workspace_id => 0 } );
     $job_count++;
 
     print "Inserted $job_count $job_class jobs\n";

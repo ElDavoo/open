@@ -10,12 +10,7 @@ extends 'Socialtext::Job';
 sub do_work {
     my $self = shift;
 
-    unless ($self->arg && $self->arg->{no_index}) {
-        st_log()->info("removing all groups from solr");
-        my $factory = Socialtext::Search::Solr::Factory->new;
-        $factory->create_indexer()->delete_groups();
-    }
-    Socialtext::Group->IndexGroups();
+    Socialtext::Group->IndexGroups($self->arg);
 
     $self->completed();
 }
