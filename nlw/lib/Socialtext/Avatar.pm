@@ -55,7 +55,7 @@ sub set {
 
     eval {
         my %blobs;
-        for my $version ($self->versions) {
+        for my $version (@{$self->versions}) {
             my ($fh, $filename) = tempfile;
             print $fh $$blob_ref;
             close $fh or die "Invalid image: $!";
@@ -92,7 +92,7 @@ sub purge {
     # Remove from cache
     my $cache_dir = $self->cache_dir;
     my $lock_fh = Socialtext::File::write_lock("$cache_dir/.lock");
-    for my $version ($self->versions) {
+    for my $version (@{$self->versions}) {
         unlink "$cache_dir/$id-$version.png";
         if ($self->can('synonyms')) {
             my @symlinks = map { s#/#\%2f#g; "$cache_dir/$_-$version.png" }
@@ -117,7 +117,7 @@ sub _save_db {
             SELECT 1 FROM $table WHERE $id_column = ?
         }, $self->id);
 
-        my @versions = $self->versions;
+        my @versions = @{$self->versions};
         my $sth;
         if ($exists) {
             my $sets = join ", ", map { "$_ = ?" } @versions;
@@ -126,8 +126,8 @@ sub _save_db {
             );
         }
         else {
-            my $cols = join ', ', $self->versions, $id_column;
-            my $ques = join ', ', map('?', 0 .. scalar(@versions));
+            my $cols = join ', ', @versions, $id_column;
+            my $ques = join ', ', map('?', 0 .. scalar @versions);
             $sth = $dbh->prepare("INSERT INTO $table ($cols) VALUES ($ques)");
         }
 
@@ -207,7 +207,7 @@ sub ClearCache {
     use Moose::Role;
 
     requires qw(load);
-    use constant versions => qw(small large);
+    use constant versions => [qw(small large)];
 
     has 'small' => (
         is => 'rw', isa => 'ScalarRef',
