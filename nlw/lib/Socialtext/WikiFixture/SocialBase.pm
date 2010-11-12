@@ -2099,8 +2099,9 @@ sub json_array_size {
         cmp_ok $count, $comparator, $size,
             $self->{http}->name . " array is $comparator $size" ;
         if ($comparator eq '==' and $count != $size) {
-            use Data::Dumper;
-            diag Dumper $json;
+            use YAML ();
+            use Clone ();
+            diag YAML::Dump([map { my $x = Clone::clone($_); delete $x->{html}; $x } @$json]);
         }
     }
 }
