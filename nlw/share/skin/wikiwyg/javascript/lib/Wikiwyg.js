@@ -710,7 +710,7 @@ proto.saveChanges = function() {
             jQuery('#st-save-frame').unbind('load').load(function(){
                 try {
                     if ($('#st-save-frame').get(0).contentWindow.Socialtext.page_id) {
-                        self.discardDraft();
+                        self.discardDraft('edit_save');
                         window.location = '?' + jQuery('#st-page-editing-pagename').val();
                         return;
                     }
@@ -808,7 +808,7 @@ proto.enableLinkConfirmations = function() {
     var self = this;
     window.onunload = function(ev) {
         self.signal_edit_cancel();
-        self.discardDraft();
+        self.discardDraft('edit_cancel');
         Attachments.delete_new_attachments();
     }
 
@@ -936,26 +936,53 @@ proto.saveDraft = function() {
     var self = this;
     this.current_mode.toHtml(function(html){
         if (!self.contentIsModified()) return;
-        if (html && html.length) { try {
-            var drafts = $.secureEvalJSON(localStorage.getItem('st-drafts-' + Socialtext.real_user_id) || "{}");
-            drafts[self.saveDraftKey] = {
-                page_title: $('#st-newpage-pagename-edit').val() || $('#st-page-editing-pagename').val(),
-                workspace_id: Socialtext.wiki_id,
-                html: html,
-                last_updated: (new Date()).getTime(),
-                is_new_page: Socialtext.new_page
-            };
-            localStorage.setItem('st-drafts-' + Socialtext.real_user_id, $.toJSON(drafts));
-        } catch (e) {} }
+        if (html && html.length) {
+            self._with_drafts(function(drafts) {
+                alert(JSON.stringify({
+                    page_title: $('#st-newpage-pagename-edit').val() || $('#st-page-editing-pagename').val(),
+                    workspace_id: Socialtext.wiki_id,
+                    html: html,
+                    tags: $('input[name=add_tag]').map(function(){return $(this).val()}).toArray(),
+                    attachments: Attachments.get_new_attachments(),
+                    last_updated: (new Date()).getTime(),
+                    is_new_page: Socialtext.new_page
+                }));
+
+                drafts[self.saveDraftKey] = {
+                    page_title: $('#st-newpage-pagename-edit').val() || $('#st-page-editing-pagename').val(),
+                    workspace_id: Socialtext.wiki_id,
+                    html: html,
+                    tags: $('input[name=add_tag]').map(function(){return $(this).val()}).toArray(),
+                    attachments: Attachments.get_new_attachments(),
+                    last_updated: (new Date()).getTime(),
+                    is_new_page: Socialtext.new_page
+                };
+            });
+        }
     });
 }
 
-proto.discardDraft = function() {
+proto._with_drafts = function(cb) {
+    var drafts;
+    try {
+        drafts = $.secureEvalJSON(localStorage.getItem('st-drafts-' + Socialtext.real_user_id) || "{}");
+    } catch (e) {};
+
+    if (drafts) {
+        cb(drafts);
+    }
+
+    try {
+        localStorage.setItem('st-drafts-' + Socialtext.real_user_id, $.toJSON(drafts));
+    } catch (e) {};
+}
+
+proto.discardDraft = function(event_type) {
     if (this.saveDraftInterval) {
         clearInterval(this.saveDraftInterval);
     }
-    try {
-        var drafts = $.secureEvalJSON(localStorage.getItem('st-drafts-' + Socialtext.real_user_id) || "{}");
+
+    self._with_drafts(function(drafts){
         var keys_to_delete = [];
         var page_title = $('#st-newpage-pagename-edit').val() || $('#st-page-editing-pagename').val();
         var workspace_id = Socialtext.wiki_id;
@@ -963,15 +990,18 @@ proto.discardDraft = function() {
             if (this.saveDraftKey == key) {
                 keys_to_delete.push(key);
             }
-            else if (drafts[key].page_title == page_title && drafts[key].workspace_id == workspace_id) {
+            else if (
+                (event_type == 'edit_save')
+                && (drafts[key].page_title == page_title)
+                && (drafts[key].workspace_id == workspace_id)
+            ) {
                 keys_to_delete.push(key);
             }
         }
         for (var i = 0; i < keys_to_delete.length; i++) {
             delete drafts[keys_to_delete[i]];
         }
-        localStorage.setItem('st-drafts-' + Socialtext.real_user_id, $.toJSON(drafts));
-    } catch (e) {}
+    });
 }
 
 
@@ -1186,7 +1216,7 @@ this.addGlobal().setup_wikiwyg = function() {
 
     ww.cancel_nlw_wikiwyg = function () {
         ww.confirmed = true;
-        ww.discardDraft();
+        ww.discardDraft('edit_cancel');
         Attachments.delete_new_attachments();
         if (Socialtext.new_page) {
             window.location = '?action=homepage';
@@ -1288,8 +1318,7 @@ this.addGlobal().setup_wikiwyg = function() {
             Attachments.reset_new_attachments();
 
             if (typeof localStorage != 'undefined' && !Socialtext.new_page) {
-                try {
-                    var drafts = $.secureEvalJSON(localStorage.getItem('st-drafts-' + Socialtext.real_user_id) || "{}");
+                ww._with_drafts(function(drafts) {
                     ww.saveDraftKey = null;
 
                     if (location.hash && /^#draft-\d+$/.test(location.hash)) {
@@ -1302,14 +1331,13 @@ this.addGlobal().setup_wikiwyg = function() {
                     }
 
                     if (!ww.saveDraftKey) {
-                        localStorage.setItem('st-drafts-' + Socialtext.real_user_id, $.toJSON(drafts));
                         ww.saveDraftKey = (new Date()).getTime();
                     }
 
                     ww.saveDraftInterval = setInterval(function(){
                         ww.saveDraft();
                     }, 30000);
-                } catch (e) {}
+                });
             }
 
 // We used to use this line:
