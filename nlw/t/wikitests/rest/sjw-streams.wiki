@@ -307,18 +307,21 @@ All Activity thus far (most recent first):
 
 | *Comment* | AcctUser - events for a group |
 | GET-json | /data/events?html=0;group_id=%%sjg_id%% |
-| json-response-is | 200 | 6 |
+| json-response-is | 200 | 7 |
 | json-path-is | $[0].signal_id   | %%edit_via_sjg_id%%     |
 | json-path-is | $[1].signal_id   | %%edit_via_acct_id%%    |
 | json-path-is | $[2].signal_id   | %%mention_via_sjg_id%%  |
 | json-path-is | $[3].event_class | page                    |
 | json-path-is | $[3].action      | edit_save               |
+# seems that this add_to_workspace wasn't showing up due to a bug? maybe an indication of something else wrong?
 | json-path-is | $[4].event_class | group                   |
-| json-path-is | $[4].action      | add_user                |
-| json-path-is | $[4].person.id   | %%membart_id%%          |
+| json-path-is | $[4].action      | add_to_workspace        |
 | json-path-is | $[5].event_class | group                   |
 | json-path-is | $[5].action      | add_user                |
-| json-path-is | $[5].person.id   | %%adminia_id%%          |
+| json-path-is | $[5].person.id   | %%membart_id%%          |
+| json-path-is | $[6].event_class | group                   |
+| json-path-is | $[6].action      | add_user                |
+| json-path-is | $[6].person.id   | %%adminia_id%%          |
 
 | *Comment* | AcctUser - events for a group containing a signal |
 | GET-json | /data/events?html=0;group_id=%%sjg_id%%;signals=1 |
@@ -344,11 +347,17 @@ All Activity thus far (most recent first):
 | *Comment* | AcctUser - groups event feed |
 | GET-json | /data/events/groups/%%sjg_id%% |
 | json-response-is | 200 | 7 |
+| json-path-is | $[0].event_class | page |
 | json-path-is | $[0].signal_id   | %%edit_via_sjg_id%%     |
+| json-path-is | $[1].event_class | page |
 | json-path-is | $[1].signal_id   | %%edit_via_acct_id%%    |
+| json-path-is | $[2].event_class | signal |
+| json-path-is | $[2].action | signal |
 | json-path-is | $[2].signal_id   | %%mention_via_sjg_id%%  |
 | json-path-is | $[3].event_class | page                    |
 | json-path-is | $[3].action      | edit_save               |
+| json-path-is | $[3].context.revision_count | 1 |
+
 | json-path-is | $[4].event_class | group                   |
 | json-path-is | $[4].action      | add_to_workspace        |
 | json-path-is | $[5].event_class | group                   |
@@ -522,21 +531,21 @@ All Activity thus far (most recent first):
 
 | *Comment* | Member - events for an account |
 | GET-json | /data/events?html=0;account_id=%%main_acct_id%% |
-| json-response-is | 200 | 7 |
+| json-response-is | 200 | 4 |
 | json-path-is | $[0].signal_id   | %%edit_via_sjg_id%%     |
 | json-path-is | $[1].signal_id   | %%edit_via_acct_id%%    |
 | json-path-is | $[2].signal_id   | %%mention_via_acct_id%%  |
 | json-path-is | $[3].event_class | page                    |
 | json-path-is | $[3].action      | edit_save               |
-| *Comment* | Member - BUG events for an account; groups shouldn't be here |
-| json-path-is | $[4].event_class | group                   |
-| json-path-is | $[4].action      | add_to_workspace        |
-| json-path-is | $[5].event_class | group                   |
-| json-path-is | $[5].action      | add_user                |
-| json-path-is | $[5].person.id   | %%membart_id%%          |
-| json-path-is | $[6].event_class | group                   |
-| json-path-is | $[6].action      | add_user                |
-| json-path-is | $[6].person.id   | %%adminia_id%%          |
+Used to be a bug that these group events showed up in this feed.  They shouldn't since the filter is for the account (not groups under that account).
+# | json-path-is | $[4].event_class | group                   |
+# | json-path-is | $[4].action      | add_to_workspace        |
+# | json-path-is | $[5].event_class | group                   |
+# | json-path-is | $[5].action      | add_user                |
+# | json-path-is | $[5].person.id   | %%membart_id%%          |
+# | json-path-is | $[6].event_class | group                   |
+# | json-path-is | $[6].action      | add_user                |
+# | json-path-is | $[6].person.id   | %%adminia_id%%          |
 
 | *Comment* | Member - events for an account containing a signal |
 | GET-json | /data/events?html=0;account_id=%%main_acct_id%%;signals=1 |
@@ -647,7 +656,7 @@ All Activity thus far (most recent first):
 # Create a group event
 | add-user-to-group | %%membart%% | %%indirect_group_id%% |
 | http-user-pass | %%otis%% | password |
-| GET-json | /data/events?html=0;account_id=%%indirect_acct_id%% |
+| GET-json | /data/events?html=0;group_id=%%indirect_group_id%% |
 | json-response-is | 200 | 3 |
 # group add_to_workspace event goes here
 | json-path-is | $[0].event_class | group                   |
@@ -660,13 +669,12 @@ All Activity thus far (most recent first):
 | json-path-is | $[1].person.id   | %%otis_id%%          |
 
 | remove-user-from-group | %%otis%% | %%indirect_group_id%% |
-| GET-json | /data/events?html=0;account_id=%%indirect_acct_id%% |
-| json-response-is | 200 | 0 |
+| GET-json | /data/events?html=0;group_id=%%indirect_group_id%% |
+| code-is | 403 |
 
 | remove-user-from-account | %%otis%% | %%indirect_acct%% |
 
 # spot-check Adminia
-
 
 | *Comment* | Adminia - conversations should see membart's|
 | http-user-pass | %%adminia%% | password |
