@@ -543,15 +543,16 @@ sub visibility_sql {
 }
 
 my $VISIBLE_WORKSPACES = q{
-    SELECT into_set_id - }.PG_WKSP_OFFSET.q{ AS workspace_id FROM user_set_include_tc WHERE from_set_id = ? AND into_set_id }.PG_WKSP_FILTER;
+    SELECT into_set_id - }.PG_WKSP_OFFSET.q{ AS workspace_id
+      FROM user_set_include_tc
+     WHERE from_set_id = ? AND into_set_id }.PG_WKSP_FILTER;
 
 my $PUBLIC_WORKSPACES = <<'EOSQL';
     SELECT workspace_id
     FROM "WorkspaceRolePermission" wrp
     JOIN "Role" r USING (role_id)
     JOIN "Permission" p USING (permission_id)
-    WHERE
-        r.name = 'guest' AND p.name = 'read'
+    WHERE r.name = 'guest' AND p.name = 'read'
 EOSQL
 
 sub _limit_ws_to_account {
@@ -703,8 +704,7 @@ sub _options_include_class {
 
 
 sub _build_standard_sql {
-    my $self = shift;
-    my $opts = shift;
+    my ($self, $opts) = @_;
 
     my $table = $self->table;
 
@@ -757,9 +757,7 @@ sub _build_standard_sql {
         }
 
         unless ($self->_skip_visibility) {
-            $self->add_outer_condition(
-                $self->visibility_sql($opts)
-            );
+            $self->add_outer_condition($self->visibility_sql($opts));
         }
 
         if ($opts->{followed}) {
@@ -863,10 +861,7 @@ sub _get_events {
     my $self   = shift;
     my $opts = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
 
-    if (my $ld_class = $opts->{link_dictionary}) {
-        my $class = "Socialtext::Formatter::${ld_class}LinkDictionary";
-        $self->link_dictionary($class->new);
-    }
+    my $t = time_scope 'get_events';
 
     # Try to shortcut a pure signals query.
     # "just signal events or just signal actions or the magic signals flag":
@@ -887,17 +882,15 @@ sub _get_events {
         return [] if $self->no_signals_are_visible($opts);
     }
 
+    if (my $ld_class = $opts->{link_dictionary}) {
+        my $class = "Socialtext::Formatter::${ld_class}LinkDictionary";
+        $self->link_dictionary($class->new);
+    }
+
     my ($sql, $args) = $self->_build_standard_sql($opts);
 
-    Socialtext::Timer->Continue('get_events');
-    #$Socialtext::SQL::PROFILE_SQL = 1;
     my $sth = sql_execute($sql, @$args);
-    #$Socialtext::SQL::PROFILE_SQL = 0;
-    my $result = $self->decorate_event_set($sth);
-    Socialtext::Timer->Pause('get_events');
-
-    return @$result if wantarray;
-    return $result;
+    return $self->decorate_event_set($sth);
 }
 
 my %can_negate = map {$_=>1} qw(
@@ -1018,7 +1011,8 @@ sub get_events {
     {
         return $self->get_events_page_contribs($opts);
     }
-    return $self->_get_events($opts);
+    my $evs = $self->_get_events($opts);
+    return wantarray ? @$evs : $evs;
 }
 
 # Switches the query generator to use the `event_page_contrib` table rather
@@ -1047,21 +1041,18 @@ sub get_events_page_contribs {
     my $self = shift;
     my $opts = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
 
+    my $t = time_scope 'get_page_contribs';
+
     $self->use_event_page_contrib();
     my $filtered_opts = _filter_opts($opts, 
         qw(limit count offset before after action followed account_id group_id)
     );
     my ($sql, $args) = $self->_build_standard_sql($filtered_opts);
 
-    Socialtext::Timer->Continue('get_page_contribs');
-    #$Socialtext::SQL::PROFILE_SQL = 1;
     my $sth = sql_execute($sql, @$args);
-    #$Socialtext::SQL::PROFILE_SQL = 0;
     my $result = $self->decorate_event_set($sth);
-    Socialtext::Timer->Pause('get_page_contribs');
 
-    return @$result if wantarray;
-    return $result;
+    return wantarray ? @$result : $result;
 }
 
 around 'get_events_activities' => \&_discovery_wrapper;
@@ -1069,11 +1060,11 @@ sub get_events_activities {
     my $self = shift;
     my $opts = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
 
+    my $t = time_scope 'get_activity';
+
     my $user = delete $opts->{actor_id}; # discovery hack
     $user = Socialtext::User->Resolve($user)
         unless blessed($user);
-
-    Socialtext::Timer->Continue('get_activity');
 
     # First we need to get the user id in case this was email or username used
 
@@ -1153,16 +1144,15 @@ sub get_events_activities {
     my $cond_sql = join(' OR ', map {"($_)"} @conditions);
     $self->add_condition($cond_sql, ($user->user_id) x $user_ids);
     my $evs = $self->_get_events(@_);
-    Socialtext::Timer->Pause('get_activity');
 
-    return @$evs if wantarray;
-    return $evs;
+    return wantarray ? @$evs : $evs;
 }
 
 around 'get_events_group_activities' => \&_discovery_wrapper;
 sub get_events_group_activities {
     my $self     = shift;
     my $opts     = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
+    my $t = time_scope 'get_gactivity';
 
     my $group = delete $opts->{group_id}; # discovery hack
     $group = Socialtext::Group->GetGroup(group_id => $group)
@@ -1170,15 +1160,11 @@ sub get_events_group_activities {
     my $group_id = $group->group_id;
     my $group_set_id = $group->user_set_id;
 
-    Socialtext::Timer->Continue('get_gactivity');
-
     unless ($opts->{after}) {
         my $created = $group->creation_datetime;
         my $cut_off = DateTime->now - DateTime::Duration->new(weeks => 4);
-        if ($created > $cut_off) {
-            my $lower_bound = sql_format_timestamptz($created);
-            $opts->{after} = $lower_bound;
-        }
+        $opts->{after} = sql_format_timestamptz($created)
+            if ($created > $cut_off);
     }
 
     my @binds = ();
@@ -1189,21 +1175,21 @@ sub get_events_group_activities {
         \@binds, 'e');
 
     $self->add_condition(q{
+        -- events for group
         ( event_class = 'group' AND group_id = ? )
         OR (
             event_class = 'page'
             AND is_page_contribution(action)
             AND EXISTS ( -- the event's actor is in this group
-                SELECT 1
-                  FROM user_set_path
+                SELECT 1 FROM user_set_path
                  WHERE from_set_id = e.actor_id
                    AND into_set_id = ?
             )
             AND EXISTS ( -- the group is in the event's workspace(s)
-                SELECT 1
-                  FROM user_set_path usp
+                SELECT 1 FROM user_set_path usp
                  WHERE e.page_workspace_id = into_set_id - }.PG_WKSP_OFFSET.q{
                    AND from_set_id = ?
+                   -- unless it's via an AUW
                    AND NOT EXISTS (
                       SELECT 1
                         FROM user_set_path_component uspc
@@ -1219,22 +1205,20 @@ sub get_events_group_activities {
 
     $self->_skip_standard_opts(1);
     my $evs = $self->_get_events($opts);
-    Socialtext::Timer->Pause('get_gactivity');
 
-    return @$evs if wantarray;
-    return $evs;
+    return wantarray ? @$evs : $evs;
 }
 
 around 'get_events_workspace_activities' => \&_discovery_wrapper;
 sub get_events_workspace_activities {
     my $self     = shift;
     my $opts     = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
+
+    my $t = time_scope 'get_wactivity';
     
     my $workspace = delete $opts->{page_workspace_id}; # discovery hack
     $workspace = Socialtext::Workspace->new(workspace_id => $workspace)
         unless blessed($workspace);
-
-    Socialtext::Timer->Continue('get_wactivity');
 
     $self->add_condition(q{
         (
@@ -1253,10 +1237,7 @@ sub get_events_workspace_activities {
 
     $self->_skip_standard_opts(1);
     my $evs = $self->_get_events(@_);
-    Socialtext::Timer->Pause('get_wactivity');
-
-    return @$evs if wantarray;
-    return $evs;
+    return wantarray ? @$evs : $evs;
 }
 
 sub _conversations_where {
@@ -1350,6 +1331,7 @@ sub get_events_conversations {
     my $self = shift;
     my $maybe_user = shift;
     my $opts = (@_==1) ? $_[0] : {@_};
+    my $t = time_scope 'get_convos';
 
     # First we need to get the user id in case this was email or username used
     my $user = Socialtext::User->Resolve($maybe_user);
@@ -1360,22 +1342,15 @@ sub get_events_conversations {
 
     return [] unless $sql;
 
-    Socialtext::Timer->Continue('get_convos');
-
-    #$Socialtext::SQL::PROFILE_SQL = 1;
     my $sth = sql_execute($sql, @$args);
-    #$Socialtext::SQL::PROFILE_SQL = 0;
     my $result = $self->decorate_event_set($sth);
-
-    Socialtext::Timer->Pause('get_convos');
-
-    return @$result if wantarray;
-    return $result;
+    return wantarray ? @$result : $result;
 }
 
 sub get_events_followed {
     my $self = shift;
     my $opts = (@_ == 1) ? $_[0] : {@_};
+    my $t = time_scope 'get_followed_events';
 
     $opts->{followed} = 1;
     $opts->{contributions} = 1;
@@ -1383,18 +1358,15 @@ sub get_events_followed {
 
     my ($followed_sql, $followed_args) = $self->_build_standard_sql($opts);
 
-    Socialtext::Timer->Continue('get_followed_events');
-    #$Socialtext::SQL::PROFILE_SQL = 1;
     my $sth = sql_execute($followed_sql, @$followed_args);
-    #$Socialtext::SQL::PROFILE_SQL = 0;
     my $result = $self->decorate_event_set($sth);
-    Socialtext::Timer->Pause('get_followed_events');
     return $result;
 }
 
 sub get_page_contention_events {
     my $self = shift;
     my $opts = (@_==1) ? shift : {@_};
+    my $t = time_scope 'get_page_contention_events';
     
     $self->_skip_standard_opts(1);
     $self->_skip_visibility(1);
@@ -1402,11 +1374,7 @@ sub get_page_contention_events {
     $opts->{action} = [qw(edit_start edit_cancel)];
     my ($sql, $args) = $self->_build_standard_sql($opts);
 
-    Socialtext::Timer->Continue('get_page_contention_events');
-    #$Socialtext::SQL::PROFILE_SQL = 1;
     my $sth = sql_execute($sql, @$args);
-    #$Socialtext::SQL::PROFILE_SQL = 0;
-    Socialtext::Timer->Pause('get_page_contention_events');
     my $result = $self->decorate_event_set($sth);
     return $result;
 }
