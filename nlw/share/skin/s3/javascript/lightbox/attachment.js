@@ -159,18 +159,23 @@ proto.onTargetLoad = function (iframe) {
             }
         }
 
-        $('#st-attachments-attach-list')
-            .show()
-            .html('')
-            .append(
-                $('<span></span>')
-                    .attr('class', 'st-attachments-attach-listlabel')
-                    .html(loc('Uploaded files:') + 
-                        '&nbsp;' + self.attachmentList()
-                    )
-            );
+        self.refreshUploadedAttachmentsList();
     });
     Page.refreshPageContent();
+}
+
+proto.refreshUploadedAttachmentsList = function (){
+    var self = this;
+    $('#st-attachments-attach-list')
+        .show()
+        .html('')
+        .append(
+            $('<span></span>')
+                .attr('class', 'st-attachments-attach-listlabel')
+                .html(loc('Uploaded files:') + 
+                    '&nbsp;' + self.attachmentList()
+                )
+        );
 }
 
 proto.onChangeFilename = function () {
@@ -331,6 +336,7 @@ proto.showUploadInterface = function () {
 
     if (!$('#st-attachments-attachinterface').size()) {
         this.process('attachment.tt2');
+        Attachments.refreshUploadedAttachmentsList();
     }
     
     // Make sure the duplicate attachment warnings are hidden.

@@ -2754,11 +2754,11 @@ proto.insert_image = function (src, widget, widget_element, cb) {
                             .replace(/'/g, "\\'")
                             .replace(/\\/g, "\\\\");
         html += 'if (!window.image_dimension_cache) window.image_dimension_cache = {};';
-        html += 'window.image_dimension_cache[' + "'";
+        html += 'if (this.offsetWidth && this.offsetHeight) { window.image_dimension_cache[' + "'";
         html += srcEscaped;
         html += "'" + '] = [ this.offsetWidth, this.offsetHeight ]; ';
         html += "this.style.width = this.offsetWidth + 'px'; this.style.height = this.offsetHeight + 'px'";
-        html += '"';
+        html += '}"';
     }
 
     html += ' src="' + src +
