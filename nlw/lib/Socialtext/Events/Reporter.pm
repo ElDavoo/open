@@ -3,7 +3,7 @@ package Socialtext::Events::Reporter;
 use Moose;
 use Clone qw/clone/;
 use Socialtext::Encode ();
-use Socialtext::SQL qw/sql_execute sql_format_timestamptz :txn/;
+use Socialtext::SQL qw/:exec :txn sql_format_timestamptz sql_ensure_temp/;
 use Socialtext::JSON qw/decode_json/;
 use Socialtext::User;
 use Socialtext::Pluggable::Adapter;
@@ -344,93 +344,89 @@ sub decorate_event_set {
 }
 
 sub signal_vis_sql {
-    my $self = shift;
-    my $evtable = shift;
-    my $path_table = shift;
-    my $bind_ref = shift;
-    my $opts = shift;
+    my ($self, $bind_ref, $opts, $evt_table, $evt_field) = @_;
 
     my $direct = $opts->{direct} || 'both';
+
+    # Used to support 'sent' and 'received' as paramaters here, but these
+    # weren't getting covered by tests and the implementation was broken,
+    # so just complain about the parameter rather than throwing an SQL
+    # exception.
+    die "Invalid direct parameter: $direct"
+        unless ($direct eq 'both' or $direct eq 'none');
+
     my $dm_sql = 'FALSE';
     if ($direct ne 'none') {
-        my $dir_sql = join(" OR ",
-            $direct =~ /^(?:received|both)$/ ? "$evtable.person_id = ?" : (),
-            $direct =~ /^(?:sent|both)$/ ? "$evtable.actor_id = ?" : (),
-        );
-        die "Invalid direct parameter: $direct" unless $dir_sql;
-
+        my $field = ($evt_field eq 'actor_id') ? 'person_id' : 'actor_id';
         $dm_sql = qq{
             -- the signal is direct
-            ($dir_sql)
-
-            -- and the filtered network contains both users
+            ($evt_table.person_id = ? OR $evt_table.actor_id = ?)
+            -- and the selected network contains the other user too
             AND EXISTS (
-                SELECT 1
-                FROM user_sets_for_user usfu
-                WHERE usfu.user_id = $evtable.person_id
-                  AND $path_table.user_set_id = usfu.user_set_id
+                SELECT 1 FROM user_sets_for_user us_p
+                WHERE us_p.user_id = $evt_table.$field
+                  AND us_p.user_set_id = a_path.user_set_id
             )
         };
         push @$bind_ref, ($self->viewer->user_id) x 2;
     }
 
-    return qq{ 
-        AND ((
-                $evtable.person_id IS NULL
-                AND EXISTS (
-                    SELECT 1
-                     FROM signal_user_set sua
-                    WHERE sua.signal_id = $evtable.signal_id
-                      AND sua.user_set_id = $path_table.user_set_id
-                )
+    return qq{ AND (
+        -- signal_vis_sql
+        (
+            -- the signal isn't direct and is to a network we're filtering for
+            $evt_table.person_id IS NULL
+            AND EXISTS (
+                SELECT 1 FROM signal_user_set sua
+                WHERE sua.signal_id = $evt_table.signal_id
+                  AND sua.user_set_id IN
+                    (SELECT user_set_id FROM t_displayable_sets)
             )
-            OR ( $dm_sql )
         )
-    };
+        OR
+        ($dm_sql)
+        -- end signal_vis_sql
+    )};
 };
 
 sub visible_exists {
-    my $self = shift;
-    my $plugin = shift;
-    my $event_field = shift;
-    my $opts = shift;
-    my $bind_ref = shift;
-    my $evt_table = shift || 'evt';
+    my ($self, $plugin, $opts, $bind_ref, $evt_table, $evt_field) = @_;
+    $evt_table ||= 'evt';
+    $evt_field ||= 'actor_id';
+
+    my $display_restriction = '';
+    if ($opts->{account_id} or $opts->{group_id}) {
+        $display_restriction = qq{AND a_path.user_set_id = ?};
+        push @$bind_ref, $opts->{account_id}
+            ? $opts->{account_id}+ACCT_OFFSET
+            : $opts->{group_id}+GROUP_OFFSET;
+    }
+    else {
+        $display_restriction = qq{AND EXISTS (
+               SELECT 1 FROM t_displayable_sets tr
+                WHERE tr.user_set_id = a_path.user_set_id)};
+    }
 
     my $sql = qq{
-       EXISTS (
-            SELECT 1
-              -- "viewer and event-record user share some user set..."
-              FROM user_sets_for_user v_path
-              JOIN user_sets_for_user o_path USING (user_set_id)
-             WHERE v_path.user_id = ? -- viewer
-               AND o_path.user_id = $event_field
-               -- "...and that common user set has access to some plugin"
-               AND EXISTS (
-                   SELECT 1
-                     FROM user_set_plugin_tc plug
-                    WHERE plugin = '$plugin'
-                      AND plug.user_set_id = o_path.user_set_id
-               )
+    -- visible_exists $plugin $evt_table.$evt_field
+    EXISTS (
+        SELECT 1 FROM user_sets_for_user a_path
+         WHERE a_path.user_id = $evt_table.$evt_field
+           -- it's a set we want to display
+           $display_restriction
+           -- and that set can use this plugin
+           AND EXISTS (
+               SELECT 1 FROM user_set_plugin_tc plug
+                WHERE plugin = '$plugin'
+                  AND plug.user_set_id = a_path.user_set_id
+           )
     };
-    push @$bind_ref, $self->viewer_id;
 
-    my $account_id = $opts->{account_id};
-    my $group_id = $opts->{group_id};
-    if ($account_id) {
-        $sql .= "\nAND user_set_id = ?\n";
-        push @$bind_ref, $account_id + ACCT_OFFSET;
-    }
-    elsif ($group_id) {
-        $sql .= "\nAND user_set_id = ?\n";
-        push @$bind_ref, $group_id + GROUP_OFFSET;
-    }
+    $sql .= $self->signal_vis_sql($bind_ref, $opts, $evt_table, $evt_field)
+        if $plugin eq 'signals';
 
-    if ($plugin eq 'signals') {
-        $sql .= $self->signal_vis_sql($evt_table, 'v_path', $bind_ref, $opts);
-    }
-
-    $sql .= "\n)";
+    $sql .= qq{)
+    -- end visible_exists $plugin $evt_table.$evt_field\n};
     return $sql;
 }
 
@@ -460,9 +456,9 @@ sub visibility_sql {
     ) {
         push @parts,
             "(evt.event_class <> 'person' OR (".
-                $self->visible_exists('people','evt.actor_id',$opts,\@bind).
-                "AND".
-                $self->visible_exists('people','evt.person_id',$opts,\@bind).
+                $self->visible_exists('people',$opts,\@bind,'evt','actor_id').
+                " AND ".
+                $self->visible_exists('people',$opts,\@bind,'evt','person_id').
             '))';
     }
     else {
@@ -473,20 +469,18 @@ sub visibility_sql {
         and $self->viewer->can_use_plugin('signals') 
         and not $self->no_signals_are_visible($opts)
     ) {
-        my $class_restriction = "evt.event_class <> 'signal' OR ";
-        if ($opts->{signals}) {
+        my $class_restriction = '';
+        unless ($opts->{signals}) {
             # If we limit to signal-bearing events, then the signal must be
             # visible with the group_id/account_id filter; this addresses the
             # case where a hybrid edit/signal or comment/signal event sends
             # to somewhere other than the workspace (W)'s primary account (A);
-            # when filtering to "group G's signals", we need to ignore that event
-            # even if G has W as an associated workspace.
-            $class_restriction = '';
+            # when filtering to "group G's signals", we need to ignore that
+            # event even if G has W as an associated workspace.
+            $class_restriction = "evt.event_class <> 'signal' OR ";
         }
-        push @parts,
-            "( $class_restriction".
-                $self->visible_exists('signals','evt.actor_id',$opts,\@bind).
-            ')';
+        push @parts, "( $class_restriction".
+            $self->visible_exists('signals',$opts,\@bind).' )';
     }
     else {
         push @parts, "(evt.event_class <> 'signal')";
@@ -496,8 +490,8 @@ sub visibility_sql {
         and $self->viewer->can_use_plugin('widgets') 
     ) {
         push @parts,
-            "( evt.event_class <> 'widget' OR".
-                $self->visible_exists('widgets','evt.actor_id',$opts,\@bind).
+            "( evt.event_class <> 'widget' OR ".
+                $self->visible_exists('widgets',$opts,\@bind).
             ')';
     }
     else {
@@ -507,25 +501,19 @@ sub visibility_sql {
     if (_options_include_class($opts, 'group')
         and $self->viewer->can_use_plugin('groups') 
     ) {
-        # TODO BUG: groups should be limited to those in any account_id params
         my $i_am_connected_to_that_group = q{
-            SELECT 1
-              FROM user_set_path grp_usp
-             WHERE grp_usp.from_set_id = ?
-               AND grp_usp.into_set_id = evt.group_id + }.PG_GROUP_OFFSET.q{
-        };
-        push @bind, $self->viewer_id;
+            SELECT 1 FROM t_displayable_sets gtv
+             WHERE gtv.user_set_id = evt.group_id + }.PG_GROUP_OFFSET;
 
         if ($opts->{account_id}) {
             # limit to groups in the selected account
             $i_am_connected_to_that_group .= q{
-              AND EXISTS(
-                SELECT 1 FROM
-                    user_set_path acct_usp
-                    WHERE acct_usp.from_set_id = grp_usp.into_set_id
-                    AND acct_usp.into_set_id = ? + }.PG_ACCT_OFFSET.q{
-              )};
-            push @bind, $opts->{account_id};
+               AND EXISTS (
+                 SELECT 1 FROM user_set_path acct_usp
+                  WHERE acct_usp.from_set_id = gtv.user_set_id
+                    AND acct_usp.into_set_id = ?
+               )};
+            push @bind, $opts->{account_id} + ACCT_OFFSET;
         }
 
         push @parts,
@@ -536,9 +524,7 @@ sub visibility_sql {
         push @parts, "(evt.event_class <> 'group')";
     }
 
-    my $sql;
-    $sql = "\n(\n".join(" AND ",@parts)."\n)\n";
-
+    my $sql = "\n(\n".join(" AND ",@parts)."\n)\n";
     return $sql,@bind;
 }
 
@@ -702,6 +688,51 @@ sub _options_include_class {
     return 0;
 }
 
+sub _standard_ws_filter {
+    my ($self, $opts) = @_;
+    my $t = time_scope 'std_ws_filter';
+
+    sql_ensure_temp(t_visible_ws => 'workspace_id int', 
+        q{CREATE INDEX t_visible_ws_idx ON t_visible_ws (workspace_id)});
+
+    my $visible_ws = q{
+        SELECT user_set_id - }.PG_WKSP_OFFSET.q{ AS workspace_id
+          FROM t_displayable_sets
+    };
+    if ($self->_include_public_ws) {
+        $visible_ws .= ' UNION ALL '.$PUBLIC_WORKSPACES;
+    }
+
+    my @insert_bind = ();
+    if ($opts->{account_id}) {
+        $visible_ws = _limit_ws_to_account($visible_ws);
+        push @insert_bind, $opts->{account_id};
+    }
+    elsif ($opts->{group_id}) {
+        $visible_ws = _limit_ws_to_group($visible_ws);
+        push @insert_bind, $opts->{group_id} + GROUP_OFFSET;
+    }
+    sql_execute("INSERT INTO t_visible_ws ".$visible_ws, @insert_bind);
+
+    my $sig_sql = '';
+    my @bind;
+    # For "all events in group G" or "account A, ignore the visible_ws check
+    # if the hybrid signal is specifically sent to the group/account.
+    if (($opts->{group_id} || $opts->{account_id}) and
+        ($opts->{activity} && $opts->{activity} eq 'all-combined'))
+    {
+        my $ve = $self->visible_exists('signals',$opts,\@bind,'e');
+        $sig_sql .= " OR (signal_id IS NOT NULL AND $ve)";
+    }
+
+    $self->prepend_condition(qq{
+        -- start "can_view_this_ws"
+        page_workspace_id IS NULL OR EXISTS (
+            SELECT 1 FROM t_visible_ws WHERE workspace_id = page_workspace_id
+        ) $sig_sql
+        -- end "can_view_this_ws"
+    }, @bind);
+}
 
 sub _build_standard_sql {
     my ($self, $opts) = @_;
@@ -711,49 +742,11 @@ sub _build_standard_sql {
     $self->_process_before_after($opts);
 
     unless ($self->_skip_standard_opts) {
-        if (!$opts->{signals}) {
-            my $visible_ws = $VISIBLE_WORKSPACES;
-            if ($self->_include_public_ws) {
-                $visible_ws .= ' UNION ALL '.$PUBLIC_WORKSPACES;
-            }
-            my @bind = ($self->viewer_id);
-            my $do_add_sig_sql;
-            if ($opts->{account_id}) {
-                $visible_ws = _limit_ws_to_account($visible_ws);
-                push @bind, $opts->{account_id};
-
-                # For "all events in account A", ignore the visible_ws check
-                # if the hybrid signal specifically sends to the account.
-                if ($opts->{activity} and $opts->{activity} eq 'all-combined') {
-                    $do_add_sig_sql = 1;
-                }
-            }
-            elsif ($opts->{group_id}) {
-                $visible_ws = _limit_ws_to_group($visible_ws);
-                push @bind, $opts->{group_id} + GROUP_OFFSET;
-
-                # For "all events in group G", ignore the visible_ws check
-                # if the hybrid signal specifically sends to the group.
-                if ($opts->{activity} and $opts->{activity} eq 'all-combined') {
-                    $do_add_sig_sql = 1;
-                }
-            }
-
-            my $sig_sql = '';
-            if ($do_add_sig_sql) {
-                $sig_sql .= 'OR (signal_id IS NOT NULL AND '
-                          . $self->visible_exists('signals','e.actor_id', $opts, \@bind, 'e')
-                          . ')';
-            }
-
-            my $can_use_this_ws = qq{
-                -- start "can_use_this_ws"
-                page_workspace_id IS NULL OR page_workspace_id IN (
-                    $visible_ws
-                ) $sig_sql
-                -- end "can_use_this_ws"
-            };
-            $self->prepend_condition($can_use_this_ws => @bind);
+        if ($opts->{signals}) {
+            $self->add_condition(q{signal_id IS NOT NULL});
+        }
+        else {
+            $self->_standard_ws_filter($opts);
         }
 
         unless ($self->_skip_visibility) {
@@ -773,24 +766,10 @@ sub _build_standard_sql {
             }
         }
 
-        if ($opts->{signals}) {
-            $self->add_condition('signal_id IS NOT NULL');
-        }
-
         if ($opts->{group_id} and $table ne 'event_page_contrib') {
             $self->add_condition(
                 "event_class <> 'group' OR group_id = ?", $opts->{group_id}
             );
-            if ($opts->{_discovering_group}) {
-                # Exclude the viewer, who has just a temporary role, from the
-                # event display.  If this causes other problems, maybe
-                # groups/self-join.wiki and PM needs to accept that the viewer
-                # will be displayed?
-                $self->add_condition(q{ NOT (
-                    event_class IN ('person','group')
-                    AND person_id = ?
-                )}, $self->viewer_id);
-            }
         }
 
         if ($opts->{activity} and $opts->{activity} eq 'all-combined') {
@@ -935,7 +914,6 @@ sub _discovery_wrapper {
             $group->user_can(user=>$viewer, permission=>$read))
         {
             push @temps, $group;
-            $opts->{_discovering_group} = 1;
         }
     }
 
@@ -992,13 +970,86 @@ sub _discovery_wrapper {
         }
     }
 
-    for my $container (@temps) {
-        $container->add_temporary_role($viewer);
-    }
-    @temps = ();
+    my $user_set_ids = [ map { $_->user_set_id } @temps ];
+    push @$user_set_ids, $self->viewer_id;
 
-    scope_guard { sql_rollback() };
+    $self->_setup_visible_sets($opts, $user_set_ids);
+
+    scope_guard { sql_rollback() }; # nothing permanent should happen here
     return $code->($self,$opts);
+}
+
+sub _setup_visible_sets {
+    my ($self, $opts, $sets) = @_;
+    $sets ||= [$self->viewer_id];
+
+    sql_ensure_temp(t_readable_sets => 'user_set_id int', 
+        q{CREATE INDEX t_readable_sets_idx ON t_readable_sets (user_set_id)});
+
+    sql_execute_array(q{INSERT INTO t_readable_sets VALUES (?)}, {},
+        $sets);
+
+    # expand transitive memberships
+    sql_execute(q{
+        INSERT INTO t_readable_sets
+        SELECT DISTINCT into_set_id
+          FROM user_set_path
+          WHERE from_set_id IN (SELECT * FROM t_readable_sets)
+    });
+
+    # figure out which readable sets to display:
+    sql_ensure_temp(t_displayable_sets => 'user_set_id int', 
+        q{CREATE INDEX t_displayable_sets_idx ON t_displayable_sets (user_set_id)});
+
+    # discovery wrapper makes these objects sometimes.
+    my $group_id = blessed($opts->{group_id})
+        ? $opts->{group_id}->group_id
+        : $opts->{group_id};
+    my $account_id = blessed($opts->{account_id})
+        ? $opts->{account_id}->account_id
+        : $opts->{account_id};
+    my $workspace_id = blessed($opts->{page_workspace_id})
+        ? $opts->{page_workspace_id}->workspace_id
+        : $opts->{page_workspace_id};
+
+
+    my ($acct_sql, $group_sql, $wksp_sql) =
+        (PG_ACCT_FILTER, PG_GROUP_FILTER, PG_WKSP_FILTER);
+    my @display_binds;
+
+    if ($account_id) {
+        $acct_sql  = '= ?';
+        $group_sql = '= 0'; # i.e. no groups
+        push @display_binds, $account_id + ACCT_OFFSET;
+    }
+    elsif ($group_id) {
+        $acct_sql  = '= 0'; # i.e. no accounts
+        $group_sql = '= ?';
+        push @display_binds, $group_id + GROUP_OFFSET;
+    }
+
+    if ($workspace_id) {
+        $wksp_sql = '= ?';
+        push @display_binds, $workspace_id + WKSP_OFFSET;
+    }
+
+    sql_execute(qq{
+        INSERT INTO t_displayable_sets
+        SELECT user_set_id FROM t_readable_sets
+        WHERE user_set_id $acct_sql
+           OR user_set_id $group_sql
+           OR user_set_id $wksp_sql
+    }, @display_binds);
+
+# uncomment for debugging
+#     {
+#         my $sth = sql_execute('SELECT * FROM t_readable_sets');
+#         my @all = map { $_->[0] } @{ $sth->fetchall_arrayref || [] };
+#         warn "readable sets: ".join(',',@all);
+#         $sth = sql_execute('SELECT * FROM t_displayable_sets');
+#         @all = map { $_->[0] } @{ $sth->fetchall_arrayref || [] };
+#         warn "displayable sets: ".join(',',@all);
+#     }
 }
 
 around 'get_events' => \&_discovery_wrapper;
@@ -1168,11 +1219,8 @@ sub get_events_group_activities {
     }
 
     my @binds = ();
-    my $groupsig_sql = $self->visible_exists('signals','e.actor_id', 
-        {
-            group_id => $group_id
-        }, 
-        \@binds, 'e');
+    my $sig_sql =
+        $self->visible_exists('signals',{group_id => $group_id},\@binds,'e');
 
     $self->add_condition(q{
         -- events for group
@@ -1198,9 +1246,8 @@ sub get_events_group_activities {
                    )
             )
         )
-       OR (
-        }.$groupsig_sql.q{
-        )
+        OR ( }.$sig_sql.q{ )
+        -- end events for group
     }, $group_id, $group_set_id, $group_set_id, @binds);
 
     $self->_skip_standard_opts(1);
@@ -1356,6 +1403,7 @@ sub get_events_followed {
     $opts->{contributions} = 1;
     die "no limit?!" unless $opts->{count};
 
+    $self->_setup_visible_sets($opts);
     my ($followed_sql, $followed_args) = $self->_build_standard_sql($opts);
 
     my $sth = sql_execute($followed_sql, @$followed_args);
@@ -1372,6 +1420,7 @@ sub get_page_contention_events {
     $self->_skip_visibility(1);
     $opts->{event_class} = 'page';
     $opts->{action} = [qw(edit_start edit_cancel)];
+    $self->_setup_visible_sets($opts);
     my ($sql, $args) = $self->_build_standard_sql($opts);
 
     my $sth = sql_execute($sql, @$args);
