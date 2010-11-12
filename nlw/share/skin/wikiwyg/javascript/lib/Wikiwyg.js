@@ -938,16 +938,6 @@ proto.saveDraft = function() {
         if (!self.contentIsModified()) return;
         if (html && html.length) {
             self._with_drafts(function(drafts) {
-                alert(JSON.stringify({
-                    page_title: $('#st-newpage-pagename-edit').val() || $('#st-page-editing-pagename').val(),
-                    workspace_id: Socialtext.wiki_id,
-                    html: html,
-                    tags: $('input[name=add_tag]').map(function(){return $(this).val()}).toArray(),
-                    attachments: Attachments.get_new_attachments(),
-                    last_updated: (new Date()).getTime(),
-                    is_new_page: Socialtext.new_page
-                }));
-
                 drafts[self.saveDraftKey] = {
                     page_title: $('#st-newpage-pagename-edit').val() || $('#st-page-editing-pagename').val(),
                     workspace_id: Socialtext.wiki_id,
@@ -978,8 +968,10 @@ proto._with_drafts = function(cb) {
 }
 
 proto.discardDraft = function(event_type) {
-    if (this.saveDraftInterval) {
-        clearInterval(this.saveDraftInterval);
+    var self = this;
+
+    if (self.saveDraftInterval) {
+        clearInterval(self.saveDraftInterval);
     }
 
     self._with_drafts(function(drafts){
@@ -1004,6 +996,39 @@ proto.discardDraft = function(event_type) {
     });
 }
 
+proto.addTag = function (tag) {
+    var rand = (''+Math.random()).replace(/\./, '');
+
+    jQuery("#st-page-editing-files")
+        .append(jQuery('<input type="hidden" name="add_tag" id="st-tagqueue-' + rand +'" />').val(tag));
+
+    jQuery('#st-tagqueue-list').show();
+
+    jQuery("#st-tagqueue-list")
+        .append(
+            jQuery('<span class="st-tagqueue-taglist-name" id="st-taglist-'+rand+'" />')
+            .text(
+                (jQuery('.st-tagqueue-taglist-name').size() ? ', ' : '')
+                + tag
+            )
+        );
+
+    jQuery("#st-taglist-" + rand)
+        .append(
+            jQuery('<a href="#" class="st-tagqueue-taglist-delete" />')
+                .attr('title', loc("Remove [_1] from the queue", tag))
+                .click(function () {
+                    jQuery('#st-taglist-'+rand).remove();
+                    jQuery('#st-tagqueue-'+rand).remove();
+                    if (!jQuery('.st-tagqueue-taglist-name').size())
+                        jQuery('#st-tagqueue-list').hide();
+                    return false;
+                })
+                .html(
+                    '<img src="/static/skin/common/images/delete.png" width="16" height="16" border="0" />'
+                )
+        );
+}
 
 // Class level helper methods
 Wikiwyg.unique_id_base = 0;
@@ -1327,6 +1352,13 @@ this.addGlobal().setup_wikiwyg = function() {
                         if (draft) {
                             ww.saveDraftKey = key;
                             Page.html = draft.html;
+                            $.each((draft.attachments || []), function () {
+                                if (this.deleted) return;
+                                Attachments.addNewAttachment(this);
+                            });
+                            $.each((draft.tags || []), function () {
+                                ww.addTag(this);
+                            });
                         }
                     }
 
@@ -1582,7 +1614,8 @@ this.addGlobal().setup_wikiwyg = function() {
     jQuery('#st-edit-mode-tagbutton').click(function() {
         jQuery.showLightbox({
             content:'#st-tagqueue-interface',
-            close:'#st-tagqueue-close'
+            close:'#st-tagqueue-close',
+            focus:'#st-tagqueue-field'
         });
         return false;
     });
@@ -1597,7 +1630,6 @@ this.addGlobal().setup_wikiwyg = function() {
         });
 
     var add_tag = function() {
-        var rand = (''+Math.random()).replace(/\./, '');
         var input_field = jQuery('#st-tagqueue-field');
         var tag = input_field.val();
         if (tag == '') return false;
@@ -1614,35 +1646,7 @@ this.addGlobal().setup_wikiwyg = function() {
 
         if ( skip ) { return false; }
 
-        jQuery("#st-page-editing-files")
-            .append(jQuery('<input type="hidden" name="add_tag" id="st-tagqueue-' + rand +'" />').val(tag));
-
-        jQuery('#st-tagqueue-list').show();
-
-        jQuery("#st-tagqueue-list")
-            .append(
-                jQuery('<span class="st-tagqueue-taglist-name" id="st-taglist-'+rand+'" />')
-                .text(
-                    (jQuery('.st-tagqueue-taglist-name').size() ? ', ' : '')
-                    + tag
-                )
-            );
-
-        jQuery("#st-taglist-" + rand)
-            .append(
-                jQuery('<a href="#" class="st-tagqueue-taglist-delete" />')
-                    .attr('title', loc("Remove [_1] from the queue", tag))
-                    .click(function () {
-                        jQuery('#st-taglist-'+rand).remove();
-                        jQuery('#st-tagqueue-'+rand).remove();
-                        if (!jQuery('.st-tagqueue-taglist-name').size())
-                            jQuery('#st-tagqueue-list').hide();
-                        return false;
-                    })
-                    .html(
-                        '<img src="/static/skin/common/images/delete.png" width="16" height="16" border="0" />'
-                    )
-            );
+        ww.addTag(tag);
 
        return false;
     };
