@@ -5,14 +5,17 @@
 | *Comment* | Test Case: Signals Attachment SETUP |  |
 | *Comment* | wikitest_client_files at %%wikitest_client_files%% |  |
 
-| set | jpg | wikitest.jpg |
-| set | txt | wikitest.txt |
-| set | zip | wikitestzip.zip |
-| set | jpg_file | %%wikitest_client_files%%%%jpg%% |
-| set | txt_file | %%wikitest_client_files%%%%txt%% |
-| set | zip_file | %%wikitest_client_files%%%%zip%% |
-| set | signal | TC: Signals Attachment %%start_time%% |
+| set_default | att_signaler | %%username%% |
+| set_default | att_signaler_pw | d3vnu11l |
+| set_default | jpg | wikitest.jpg |
+| set_default | txt | wikitest.txt |
+| set_default | zip | wikitestzip.zip |
+| set_default | jpg_file | %%wikitest_client_files%%%%jpg%% |
+| set_default | txt_file | %%wikitest_client_files%%%%txt%% |
+| set_default | zip_file | %%wikitest_client_files%%%%zip%% |
+| set_default | signal | TC: Signals Attachment %%start_time%% |
 
+| st-logoutin | %%att_signaler%% | %%att_signaler_pw%% |
 | open_ok | /st/signals |  |
 
 | *Comment* | Test Case: Signals Attachment. Insert file button |  |

@@ -1,0 +1,61 @@
+| *Comment* | Test Case: Explore Create Some Users |  |
+| set | user1 | user1_%%start_time%%@socialtext.com |
+| set | user2 | user2_%%start_time%%@socialtext.com |
+| set | user2_short | user2 %%start_time%% |
+| set | user3 | user3_%%start_time%%@socialtext.com |
+| create_user | %%user1%% | %%password%% |
+| create_user | %%user2%% | %%password%% |
+| create_user | %%user3%% | %%password%% |
+
+| *Comment* | Test Case: Explore Create a Group and Add User |  |
+| set | group1 | group1_%%start_time%% |
+| create-group | %%group1%% |  |
+| add-user-to-group | %%user1%% | %%group_id%% |
+
+| *Comment* | Test Case: Explore Send a Signal with Attachments from User 1 |  |
+| set | att_signaler | %%user1%% |
+| set | att_signaler_pw | %%password%% |
+| include | [Test Case: Signals Attachment] |  |
+
+| *Comment* | Test Case: Explore Send a Signal with Wikilink from User 2 |  |
+| set | wl_signaler | %%user2%% |
+| set | wl_signaler_pw | %%password%% |
+| include | [Test Case: Signals Wiki Link] |  |
+
+| *Comment* | Test Case: Explore Send a Signal with Weblink from User 3 |  |
+| set | www_signaler | %%user3%% |
+| set | www_signaler_pw | %%password%% |
+| include | [Test Case: Signals Web Link] |  |
+
+| *Comment* | Test Case: Explore User 1 follows User 2 |  |
+| st-logoutin | %%user1%% | %%password%% |
+| st_process_jobs | PersonIndex |  |
+| wait_for_element_visible_ok | link=People | 60000 |
+| click_and_wait | link=People |  |
+| text_like | All People |  |
+| wait_for_element_visible_ok | st-search-term | 60000 |
+| type_ok | st-search-term | %%user2%% |
+| click_and_wait | st-search-submit |  |
+| wait_for_element_visible_ok | link=%%user2_short%% | 60000 |
+| click_and_wait | link=%%user2_short%% |  |
+| wait_for_element_visible_ok | link=Follow this person | 60000 |
+| pause | 5000 | needed for IE7 |
+| click_ok | link=Follow this person |  |
+| wait_for_element_visible_ok | link=Stop following this person | 60000 |
+
+| *Comment* | Test Case: Explore Just My Signals |  |
+| open_ok | /st/explore |  |
+| wait_for_element_present_ok | link=%%jpg%% | 60000 |
+| wait_for_element_present_ok | link=%%txt%% | 60000 |
+| wait_for_element_present_ok | link=%%zip%% | 60000 |
+| wait_for_element_not_present_ok | link=%%link_text%% | 60000 |
+| wait_for_element_not_present_ok | link=%%url%% | 60000 |
+
+| *Comment* | Test Case: Explore People I Follow Signals |  |
+| click_ok | link=People I follow |  |
+| wait_for_element_present_ok | link=%%link_text%% | 60000 |
+| wait_for_element_not_present_ok | link=%%url%% | 60000 |
+
+| *Comment* | Test Case: Explore Everyone's Signals |  |
+| click_ok | link=All People | 60000 |
+| wait_for_element_present_ok | link=%%url%% | 60000 |

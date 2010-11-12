@@ -9,6 +9,7 @@
 
 | include | [Test Case: Signals Attachment] |
 | include | [Test Case: Signals Wiki Link] |
+| include | [Test Case: Signals Wiki Link Teardown] |
 | include | [Test Case: Signals Web Link] |
 | include | [Test Case: Signals Tag] |
 
