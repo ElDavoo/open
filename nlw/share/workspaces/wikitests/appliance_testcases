@@ -1,5 +1,6 @@
 These testcases are specific to the appliance.
 
+* [Test Case: Privacy Defaults]
 * [Test Case: change signal limit]
 * [Test case: Account Types]
 * [Test Case: User Settings: First Last locale order]
