@@ -4,17 +4,19 @@
 
 | set_default | wl_signaler | %%username%% |
 | set_default | wl_signaler_pw | %%password%% |
+| st-admin | create-account --name wl_account_%%start_time%% | was created |
+| set_default | acct | wl_account_%%start_time%% |
 | set | link_text | Signals Link Text %%start_time%% |
 | set | wiki | signals-wiki-%%start_time%% |
 | set | title | Signals-Wiki-%%start_time%% |
 | set | page | %%title%% |
 | set | section | signals_section_%%start_time%% |
 
-| st-admin | create-workspace --empty --name %%wiki%% --title %%title%% | created |
+| st-admin | create-workspace --empty --name %%wiki%% --title %%title%% --account %%acct%% | created |
 | st-admin | add-member --workspace %%wiki%% --u %%wl_signaler%% | now has the role |
 | st-admin | update-page --email %%email%% --workspace %%wiki%% --page %%page%% < %%wikitest_client_files%%wikitest.txt | created |
 
-| set | stranger | `devnull1@socialtext.com` |
+| set_default | stranger | `devnull1@socialtext.com` |
 
 | st-logoutin | %%wl_signaler%% | %%wl_signaler_pw%% |
 | open_ok | /st/signals |  |
@@ -62,7 +64,8 @@
 | wait_for_element_visible_ok | //a[contains(@href,'#%%section%%')] | 30000 |
 
 | *Comment* | Test Case: Signals Wiki Link login as a stranger who can't see signal because not a WS member |  |
-| st-logoutin | %%stranger%% | %%password%% |
+| open_ok | /nlw/submit/logout |  |
+| st-login | %%stranger%% | %%password%% |
 | open_ok | /st/signals |  |
 | wait_for_element_not_present_ok | link=%%link_text%% | 10000 |
 | text_unlike | //body | %%link_text%% |
