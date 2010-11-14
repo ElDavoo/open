@@ -93,6 +93,39 @@ Socialtext.prepare_attachments_before_save = function() {
     }
 }
 
+Socialtext.set_save_error_resume_handler = function(cb) {
+    jQuery('#st-save-frame').unbind('load').load(function(){
+        var errorMessage = null;
+        try {
+            var win = $('#st-save-frame').get(0).contentWindow;
+            if (win.Socialtext.page_id) {
+                if (win.$ && win.$('#contentContainer .error-message').length) {
+                    errorMessage = win.$('#contentContainer .error-message').text();
+                }
+                else {
+                    if (window.wikiwyg || (window.ss && window.ss.wikiwyg)) {
+                        (window.wikiwyg || window.ss.wikiwyg).discardDraft('edit_save');
+                    }
+                    window.location = '?' + jQuery('#st-page-editing-pagename').val();
+                    return;
+                }
+            }
+        }
+        catch (e) { };
+
+        if (errorMessage) {
+            errorMessage += "\n\n";
+            errorMessage += loc("Please copy your changes, and click Cancel to return to the page.");
+            alert(errorMessage);
+        }
+        else {
+            alert(loc("Saving failed due to server error; please try again later."));
+        }
+
+        if (cb) { cb() }
+    });
+}
+
 Socialtext.show_signal_network_dropdown = function(prefix, width) {
     prefix = prefix || '';
     var url = '/widgets/javascript/socialtext-network-dropdown.js';

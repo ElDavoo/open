@@ -685,7 +685,7 @@ proto.saveNewPage = function() {
 
 proto.saveChanges = function() {
     var self = this;
-    this.disableLinkConfirmations();
+    self.disableLinkConfirmations();
 
     jQuery('#st-page-editing-summary')
         .val(this.edit_summary());
@@ -707,37 +707,15 @@ proto.saveChanges = function() {
         var saver = function() {
             Socialtext.prepare_attachments_before_save();
 
-            jQuery('#st-save-frame').unbind('load').load(function(){
-                var errorMessage = null;
-                try {
-                    var win = $('#st-save-frame').get(0).contentWindow;
-                    if (win.Socialtext.page_id) {
-                        if (win.$ && win.$('#contentContainer .error-message').length) {
-                            errorMessage = win.$('#contentContainer .error-message').text();
-                        }
-                        else {
-                            self.discardDraft('edit_save');
-                            window.location = '?' + jQuery('#st-page-editing-pagename').val();
-                            return;
-                        }
-                    }
-                }
-                catch (e) {};
-
-
-                if (errorMessage) {
-                    errorMessage += "\n\n";
-                    errorMessage += loc("Please copy your changes, and click Cancel to return to the page.");
-                    alert(errorMessage);
-                }
-                else {
-                    alert(loc("Saving failed due to server error; please try again later."));
-                }
-
+            var originalWikitext = self.originalWikitext;
+            Socialtext.set_save_error_resume_handler(function(){
+                self.enableLinkConfirmations();
+                self.originalWikitext = originalWikitext;
                 jQuery("#st-edit-summary").show();
                 jQuery('#st-editing-tools-edit ul').show();
                 jQuery('#saving-message').remove();
             });
+
             jQuery('#st-page-editing-pagebody').val(wikitext);
             jQuery('#st-page-editing-form').trigger('submit');
             return true;
