@@ -708,16 +708,31 @@ proto.saveChanges = function() {
             Socialtext.prepare_attachments_before_save();
 
             jQuery('#st-save-frame').unbind('load').load(function(){
+                var errorMessage = null;
                 try {
-                    if ($('#st-save-frame').get(0).contentWindow.Socialtext.page_id) {
-                        self.discardDraft('edit_save');
-                        window.location = '?' + jQuery('#st-page-editing-pagename').val();
-                        return;
+                    var win = $('#st-save-frame').get(0).contentWindow;
+                    if (win.Socialtext.page_id) {
+                        if (win.$ && win.$('#contentContainer .error-message').length) {
+                            errorMessage = win.$('#contentContainer .error-message').text();
+                        }
+                        else {
+                            self.discardDraft('edit_save');
+                            window.location = '?' + jQuery('#st-page-editing-pagename').val();
+                            return;
+                        }
                     }
                 }
                 catch (e) {};
 
-                alert(loc("Saving failed due to server error; please try again later."));
+
+                if (errorMessage) {
+                    errorMessage += "\n\n";
+                    errorMessage += loc("Please copy your changes, and click Cancel to return to the page.");
+                    alert(errorMessage);
+                }
+                else {
+                    alert(loc("Saving failed due to server error; please try again later."));
+                }
 
                 jQuery("#st-edit-summary").show();
                 jQuery('#st-editing-tools-edit ul').show();
@@ -941,6 +956,8 @@ proto.saveDraft = function() {
                 drafts[self.saveDraftKey] = {
                     page_title: $('#st-newpage-pagename-edit').val() || $('#st-page-editing-pagename').val(),
                     workspace_id: Socialtext.wiki_id,
+                    revision_id: Socialtext.revision_id,
+                    page_type: Socialtext.page_type,
                     html: html,
                     tags: $('input[name=add_tag]').map(function(){return $(this).val()}).toArray(),
                     attachments: Attachments.get_new_attachments(),
@@ -1352,6 +1369,11 @@ this.addGlobal().setup_wikiwyg = function() {
                         if (draft) {
                             ww.saveDraftKey = key;
                             Page.html = draft.html;
+
+                            Socialtext.revision_id = draft.revision_id;
+                            Socialtext.wikiwyg_variables.page.revision_id = draft.revision_id;
+                            $('#st-page-editing-revisionid').val(draft.revision_id);
+
                             $.each((draft.attachments || []), function () {
                                 if (this.deleted) return;
                                 Attachments.addNewAttachment(this);
