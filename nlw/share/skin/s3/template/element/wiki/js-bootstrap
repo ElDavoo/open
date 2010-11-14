@@ -169,9 +169,9 @@ if (typeof localStorage != 'undefined' && !(/^#draft-\d+$/.test(location.hash ||
                       var key = $(this).attr('id').replace(/^st-discard-draft-/, '');
                       $('#st-draft-notice-' + key).fadeOut();
                       try {
-                        var all_drafts = $.secureEvalJSON(localStorage.getItem('st-drafts'));
+                        var all_drafts = $.secureEvalJSON(localStorage.getItem('st-drafts-' + Socialtext.real_user_id));
                         delete all_drafts[key];
-                        localStorage.setItem('st-drafts', $.toJSON(all_drafts));
+                        localStorage.setItem('st-drafts-' + Socialtext.real_user_id, $.toJSON(all_drafts));
                       } catch (e) {}
                     }
                     return false;
