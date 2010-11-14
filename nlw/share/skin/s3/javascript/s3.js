@@ -462,7 +462,13 @@ $(function() {
             },
             dataType: 'json',
             success: function(data) {
-                if (data.user_link) {
+                if (data.user_id) {
+                    if (location.hash && /^#draft-\d+$/.test(location.hash)) {
+                        // If recovering from a draft, don't show edit contention
+                        // if the contention was from the same editing user
+                        if (data.user_id == Socialtext.real_user_id) return;
+                    }
+
                     get_lightbox("edit_check", function() {
                         $("body").append(
                             Jemplate.process("edit_check.tt2", data)

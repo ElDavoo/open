@@ -1990,6 +1990,7 @@ sub edit_in_progress {
         for my $evt (@edits) {
             my $user = Socialtext::User->new(user_id => $evt->{actor}{id});
             return {
+                user_id => $user->user_id,
                 username => $user->best_full_name,
                 email_address => $user->email_address,
                 user_business_card => $self->hub->pluggable->hook(
