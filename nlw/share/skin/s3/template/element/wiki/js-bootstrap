@@ -149,7 +149,7 @@ if (typeof localStorage != 'undefined' && !(/^#draft-\d+$/.test(location.hash ||
       var all_drafts = $.secureEvalJSON(localStorage.getItem('st-drafts-' + Socialtext.real_user_id));
       for (var key in all_drafts) {
         var draft = all_drafts[key];
-        if (((new Date()).getTime() - draft.last_updated) > 3 * 1000)  {
+        if (((new Date()).getTime() - draft.last_updated) > 30 * 1000)  {
           $('#contentColumns').prepend(
             $('<div />', { id: "st-draft-notice-" + key, css: { background: '#ffff80', textAlign: 'center', padding: '2px', borderBottom: '1px solid #ccc' } })
               .text(loc('You have an unsaved draft of "[_1]" in the "[_2]" ([_3]) workspace:', draft.page_title, draft.workspace_title, draft.workspace_id))

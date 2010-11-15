@@ -800,9 +800,9 @@ proto.enableLinkConfirmations = function() {
 
     var self = this;
     window.onunload = function(ev) {
-//        self.signal_edit_cancel();
-//        self.discardDraft('edit_cancel');
-//        Attachments.delete_new_attachments();
+        self.signal_edit_cancel();
+        self.discardDraft('edit_cancel');
+        Attachments.delete_new_attachments();
     }
 
     /* Handle the Home link explicitly instead of relying on
@@ -1369,7 +1369,7 @@ this.addGlobal().setup_wikiwyg = function() {
 
                     ww.saveDraftInterval = setInterval(function(){
                         ww.saveDraft();
-                    }, 3000);
+                    }, 30000);
                 });
             }
 
