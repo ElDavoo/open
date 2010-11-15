@@ -860,10 +860,8 @@ proto.contentIsModified = function() {
     if (this.originalWikitext == null) {
         return true;
     }
-    // XXX This could be done more upstream...
-    var current_wikitext = this.get_current_wikitext().replace(
-        /\r/g, ''
-    );
+
+    var current_wikitext = this.get_current_wikitext();
 
     /* The initial clearing of "Replace this text with your own." shouldn't
      * count as modification -- {bz: 2232} */
@@ -879,7 +877,7 @@ proto.diffContent = function () {
         jQuery.showLightbox('There is no originalWikitext');
     }
     else if (this.contentIsModified()) {
-        var current_wikitext = this.get_current_wikitext().replace(/\r/g, '');
+        var current_wikitext = this.get_current_wikitext();
         jQuery.ajax({
             type: 'POST',
             url: location.pathname,

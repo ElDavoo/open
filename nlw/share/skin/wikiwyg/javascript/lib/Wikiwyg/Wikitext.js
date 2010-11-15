@@ -1662,10 +1662,9 @@ proto.convert_html_to_wikitext = function(html, isWholeDocument) {
 //     if (String(location).match(/\?.*dump$/))
 //         throw yyy(dom_copy);
 
-    var wikitext = this.walk(dom).replace(/[\xa0\s\n]*$/, '\n');
+    return this.walk(dom).replace(/[\xa0\s\n]*$/, '\n').replace(/\r/g, '');
 //     if (String(location).match(/\?.*dump2$/))
 //         throw yyy(copyDom(dom));
-    return wikitext;
 }
 
 proto.walk = function(elem) {
