@@ -10,7 +10,7 @@ extends 'Socialtext::Job';
 with 'Socialtext::MonitorJob';
 
 sub Monitor_job_types {qw/SignalReIndex Upgrade::ReindexSignals/}
-sub Job_delay {15 * 60} # 15 mins.
+sub Job_delay {1 * 60} # Every minute
 
 override 'retry_delay' => \&Job_delay;
 override 'max_retries' => sub {0x7fffffff};
