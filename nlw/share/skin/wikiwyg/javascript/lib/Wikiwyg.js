@@ -939,25 +939,25 @@ proto.editMode = function() {
 
 proto.saveDraft = function() {
     var self = this;
-    this.current_mode.toHtml(function(html){
-        if (!self.contentIsModified()) return;
-        if (html && html.length) {
-            self._with_drafts(function(drafts) {
-                drafts[self.saveDraftKey] = {
-                    page_title: $('#st-newpage-pagename-edit').val() || $('#st-page-editing-pagename').val(),
-                    workspace_id: Socialtext.wiki_id,
-                    workspace_title: Socialtext.wiki_title,
-                    revision_id: Socialtext.revision_id,
-                    page_type: Socialtext.page_type,
-                    html: html,
-                    tags: $('input[name=add_tag]').map(function(){return $(this).val()}).toArray(),
-                    attachments: Attachments.get_new_attachments(),
-                    last_updated: (new Date()).getTime(),
-                    is_new_page: Socialtext.new_page
-                };
-            });
-        }
-    });
+    if (!self.contentIsModified()) { return; }
+
+    var wikitext = self.get_current_wikitext();
+    if (wikitext && wikitext.length) {
+        self._with_drafts(function(drafts) {
+            drafts[self.saveDraftKey] = {
+                page_title: $('#st-newpage-pagename-edit').val() || $('#st-page-editing-pagename').val(),
+                workspace_id: Socialtext.wiki_id,
+                workspace_title: Socialtext.wiki_title,
+                revision_id: Socialtext.revision_id,
+                page_type: Socialtext.page_type,
+                wikitext: wikitext,
+                tags: $('input[name=add_tag]').map(function(){return $(this).val()}).toArray(),
+                attachments: Attachments.get_new_attachments(),
+                last_updated: (new Date()).getTime(),
+                is_new_page: Socialtext.new_page
+            };
+        });
+    }
 }
 
 proto._with_drafts = function(cb) {
@@ -1358,20 +1358,24 @@ this.addGlobal().setup_wikiwyg = function() {
                         var key = location.hash.toString().replace(/^#draft-/, '');
                         var draft = drafts[key];
                         if (draft) {
-                            ww.saveDraftKey = key;
-                            Page.html = draft.html;
+                            ww.modeByName(WW_ADVANCED_MODE).convertWikitextToHtml(
+                                draft.wikitext,
+                                function(new_html) {
+                                    Page.html = new_html;
+                                    ww.saveDraftKey = key;
+                                    Socialtext.revision_id = draft.revision_id;
+                                    Socialtext.wikiwyg_variables.page.revision_id = draft.revision_id;
+                                    $('#st-page-editing-revisionid').val(draft.revision_id);
 
-                            Socialtext.revision_id = draft.revision_id;
-                            Socialtext.wikiwyg_variables.page.revision_id = draft.revision_id;
-                            $('#st-page-editing-revisionid').val(draft.revision_id);
-
-                            $.each((draft.attachments || []), function () {
-                                if (this.deleted) return;
-                                Attachments.addNewAttachment(this);
-                            });
-                            $.each((draft.tags || []), function () {
-                                ww.addTag(this);
-                            });
+                                    $.each((draft.attachments || []), function () {
+                                        if (this.deleted) return;
+                                        Attachments.addNewAttachment(this);
+                                    });
+                                    $.each((draft.tags || []), function () {
+                                        ww.addTag(this);
+                                    });
+                                }
+                            );
                         }
                     }
 
