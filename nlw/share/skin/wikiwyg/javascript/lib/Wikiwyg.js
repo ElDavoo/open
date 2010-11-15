@@ -268,15 +268,21 @@ proto.displayMode = function() {
         });
 }
 
-proto.switchMode = function(new_mode_key) {
+proto.switchMode = function(new_mode_key, cb) {
     var new_mode = this.modeByName(new_mode_key);
     var old_mode = this.current_mode;
     var self = this;
-    jQuery("#st-edit-summary").hide();
-    new_mode.enableStarted();
-    old_mode.disableStarted();
-    old_mode.toHtml(
+
+    var method = 'toHtml';
+    if (/Preview/.test(new_mode.classname)) {
+        method = 'toNormalizedHtml';
+    }
+
+    old_mode[method](
         function(html) {
+            jQuery("#st-edit-summary").hide();
+            new_mode.enableStarted();
+            old_mode.disableStarted();
             self.previous_mode = old_mode;
             new_mode.fromHtml(html);
             old_mode.disableThis();
@@ -286,6 +292,8 @@ proto.switchMode = function(new_mode_key) {
             self.current_mode = new_mode;
 
             jQuery("#st-edit-summary").show();
+
+            if (cb) { cb(); }
         }
     );
 }
@@ -362,47 +370,52 @@ proto.preview_link_text = loc('Preview');
 proto.preview_link_more = loc('Edit More');
 
 proto.preview_link_action = function() {
+    var self = this;
+
     if (this.isOffline()) {
         alert(loc("The browser is currently offline; please connect to the internet and try again."));
         return;
     }
 
-    var preview = this.modeButtonMap[WW_PREVIEW_MODE];
-    var current = this.current_mode;
+    var preview = self.modeButtonMap[WW_PREVIEW_MODE];
+    var current = self.current_mode;
 
-    preview.innerHTML = this.preview_link_more;
-    jQuery("#st-edit-mode-toolbar").hide();
-    this.showScrollbars();
-
-    var self = this;
-    jQuery(preview)
-        .unbind('click')
-        .click(this.button_disabled_func());
-    this.enable_edit_more = function() {
+    self.enable_edit_more = function() {
         jQuery(preview)
             .html(loc('Edit More'))
             .unbind('click')
             .click( function () {
-                if (jQuery("#contentRight").is(":visible")) 
-                    jQuery('#st-page-maincontent')
-                        .css({ 'margin-right': '240px'});
-                self.switchMode(current.classname);
-                self.preview_link_reset();
+                self.switchMode(current.classname, function(){
+                    if (jQuery("#contentRight").is(":visible")) 
+                        jQuery('#st-page-maincontent')
+                            .css({ 'margin-right': '240px'});
+                    self.preview_link_reset();
 
-                // This timeout is for IE so the iframe is ready - {bz: 1358}.
-                setTimeout(function() {
-                    self.resizeEditor();
-                    self.hideScrollbars();
-                }, 50);
+                    // This timeout is for IE so the iframe is ready - {bz: 1358}.
+                    setTimeout(function() {
+                        self.resizeEditor();
+                        self.hideScrollbars();
+                    }, 50);
+                });
 
                 return false;
             });
-    }
-    this.modeByName(WW_PREVIEW_MODE).div.innerHTML = "";
-    this.switchMode(WW_PREVIEW_MODE)
-    this.disable_button(current.classname);
+    };
 
-    jQuery('#st-page-maincontent').attr('marginRight', '0px');
+    this.modeByName(WW_PREVIEW_MODE).div.innerHTML = "";
+    this.switchMode(WW_PREVIEW_MODE, function(){
+        preview.innerHTML = self.preview_link_more;
+        jQuery("#st-edit-mode-toolbar").hide();
+        self.showScrollbars();
+
+        jQuery(preview)
+            .unbind('click')
+            .click(self.button_disabled_func());
+        self.enable_edit_more();
+        self.disable_button(current.classname);
+
+        jQuery('#st-page-maincontent').attr('marginRight', '0px');
+    });
     return false;
 }
 
@@ -438,14 +451,15 @@ proto.button_enabled_func = function(mode_name) {
             return false;
         }
         self.message.clear();
-        self.switchMode(mode_name);
-        for (var mode in self.modeButtonMap) {
-            if (mode != mode_name)
-                self.enable_button(mode);
-        }
-        self.preview_link_reset();
-        Cookie.set('first_wikiwyg_mode', mode_name);
-        self.setFirstModeByName(mode_name);
+        self.switchMode(mode_name, function() {
+            for (var mode in self.modeButtonMap) {
+                if (mode != mode_name)
+                    self.enable_button(mode);
+            }
+            self.preview_link_reset();
+            Cookie.set('first_wikiwyg_mode', mode_name);
+            self.setFirstModeByName(mode_name);
+        });
         return false;
     }
 }
@@ -1765,6 +1779,25 @@ var proto = this.prototype;
 
 // Fix {bz: 2339} 'this.init is not a function'
 proto.init = function() {}
+
+// Turns HTML into Wikitext, then to HTML again
+proto.toNormalizedHtml = function(cb) {
+    var self = this;
+    self.toHtml(function(html){
+        var wikitext_mode = self.wikiwyg.modeByName('Wikiwyg.Wikitext');
+        wikitext_mode.convertHtmlToWikitext(
+            html,
+            function(wikitext) {
+                wikitext_mode.convertWikitextToHtml(
+                    wikitext,
+                    function(new_html) {
+                        cb(new_html);
+                    }
+                );
+            }
+        );
+    });
+}
 
 proto.enableThis = function() {
     this.div.style.display = 'block';

@@ -1293,6 +1293,10 @@ proto.enableThis = function() {
 
 }
 
+proto.toNormalizedHtml = function(func) {
+    return this.toHtml(func);
+}
+
 proto.toHtml = function(func) {
     var wikitext = this.wikiwyg.current_wikitext = this.canonicalText();
     this.convertWikitextToHtml(wikitext, func);
@@ -1338,7 +1342,7 @@ proto.convertWikitextToHtml = function(wikitext, func) {
     var postdata = 'action=wikiwyg_wikitext_to_html;content=' +
         encodeURIComponent(wikitext);
 
-    var post = jQuery.ajax({
+    jQuery.ajax({
         url: uri,
         async: false,
         type: 'POST',
@@ -1346,10 +1350,14 @@ proto.convertWikitextToHtml = function(wikitext, func) {
             action: 'wikiwyg_wikitext_to_html',
             page_name: jQuery('#st-newpage-pagename-edit, #st-page-editing-pagename').val(),
             content: wikitext
+        },
+        success: function(_data, _status, xhr) {
+            func(xhr.responseText);
+        },
+        error: function() {
+            alert(loc("Operation failed due to server error; please try again later."));
         }
     });
-
-    func(post.responseText);
 }
 
 proto.href_is_really_a_wiki_link = function(href) {
