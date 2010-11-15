@@ -11,6 +11,7 @@ Socialtext.new_page = [% IF is_new %] true; [% ELSE %] false; [% END %]
 Socialtext.accept_encoding = '[% accept_encoding %]';
 Socialtext.loc_lang = '[% loc_lang %]';
 Socialtext.wiki_id = '[% wiki.name.replace('\'', '\\\'') %]';
+Socialtext.wiki_title = '[% wiki.title.replace('\'', '\\\'') %]';
 Socialtext.start_in_edit_mode = [% IF start_in_edit_mode %] true; [% ELSE %] false; [% END %]
 
 [%# XXX Fix these values so they match other parts of the system! %]
@@ -151,14 +152,14 @@ if (typeof localStorage != 'undefined' && !(/^#draft-\d+$/.test(location.hash ||
         if (((new Date()).getTime() - draft.last_updated) > 30 * 1000)  {
           $('#contentColumns').prepend(
             $('<div />', { id: "st-draft-notice-" + key, css: { background: '#ffff80', textAlign: 'center', padding: '2px', borderBottom: '1px solid #ccc' } })
-              .text(loc('You have an unsaved draft of "[_1]" in the "[_2]" workspace:', draft.page_title, draft.workspace_id))
+              .text(loc('You have an unsaved draft of "[_1]" in the "[_2]" ([_3]) workspace:', draft.page_title, draft.workspace_title, draft.workspace_id))
               .append('&nbsp;')
               .append(
                 $('<a />')
                   .text(loc('Resume'))
                   .attr('href', '/'+draft.workspace_id+'/?action=edit;page_name='+nlw_name_to_id(draft.page_title)+'#draft-'+key)
               )
-              .append('&nbsp;or&nbsp;')
+              .append(loc('&nbsp;or&nbsp;'))
               .append(
                 $('<a />')
                   .text(loc('Discard'))
@@ -177,7 +178,7 @@ if (typeof localStorage != 'undefined' && !(/^#draft-\d+$/.test(location.hash ||
                     return false;
                   })
               )
-              .append('?')
+              .append(loc('?'))
            );
         }
       }

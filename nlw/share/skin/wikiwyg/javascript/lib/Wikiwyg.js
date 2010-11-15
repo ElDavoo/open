@@ -934,6 +934,7 @@ proto.saveDraft = function() {
                 drafts[self.saveDraftKey] = {
                     page_title: $('#st-newpage-pagename-edit').val() || $('#st-page-editing-pagename').val(),
                     workspace_id: Socialtext.wiki_id,
+                    workspace_title: Socialtext.wiki_title,
                     revision_id: Socialtext.revision_id,
                     page_type: Socialtext.page_type,
                     html: html,
