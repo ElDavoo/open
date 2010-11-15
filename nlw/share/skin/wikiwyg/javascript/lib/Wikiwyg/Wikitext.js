@@ -2474,6 +2474,11 @@ proto.has_parent = function(elem, name) {
                 }
             }
 
+            // Do not markup empty text: {bz: 4677}
+            if (!(/\S/.test(wikitext))) {
+                return wikitext;
+            }
+
             // Finally, move whitespace outward so only non-whitespace
             // characters are put into markup.
             // Example: "x<b> y </b>z" becomes "x *y* z".
