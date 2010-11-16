@@ -567,6 +567,35 @@ sub st_message {
 }
 
 
+=head2 st_stop_webserver
+
+Stops the webserver ON AN APPLIANCE ONLY
+    
+=cut
+
+sub st_stop_webserver {
+    my ($self) = @_;
+    diag "/etc/init.d/apache-perl stop";
+    my $output = `sudo /etc/init.d/apache-perl stop`;
+    ok($output=~/done/, 'apache-perl is stopped');
+    $self->pause(5000);
+}
+
+=head2 st_start_webserver 
+   
+   Starts the webserver ON AN APPLIANCE ONLY
+
+=cut
+
+sub st_start_webserver {
+    my ($self) = @_;
+    diag "/etc/init.d/apache-perl start";
+    my $output = `sudo /etc/init.d/apache-perl start`;
+    ok($output=~/done/, 'apache-perl is started');
+    $self->pause(5000);
+}
+
+
 
 =head2 st_watch_page( $watch_on, $page_name, $verify_only )
 

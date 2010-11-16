@@ -1,0 +1,57 @@
+| *Comment* | Test Case: Save Race Conditions |
+
+| *Comment* | Test Case: Save Race Conditions Variables |  |
+| set | ws | race-ws-%%start_time%% |
+| set | acct | race-acct-%%start_time%% |
+| set | pageone | pageoe-%%start_time%% |
+| set | lockmepage | lockmepage-%%start_time%% |
+| set | lockuser | lockuser-%%start_time%%@matt.socialtext.net |
+
+| *Comment* | Test Case: Save Race Conditions Create acct, user, ws |  |
+| st-admin | create-account --name %%acct%% | was created |
+| st-admin | create-user --e %%lockuser%% --p %%password%% --account %%acct%% | was created |
+| st-admin | create-workspace --name %%ws%% --title %%ws%% | was created |
+| st-admin | add-member --e %%lockuser%% --w %%ws%% | now has the role of 'member' in the |
+| st-admin | add-workspace-admin --e %%username%% --w %%ws%% | now has the role of 'admin' |
+
+| *Comment* | Test Case: Save Race Conditions Create pages |  |
+| st-admin | update-page --w %%ws%% --e %%username%% --p "%%pageone%%" < %%wikitest_client_files%%wikitest.txt | has been created |
+| st-admin | update-page --w %%ws%% --e %%username%% --p "%%lockmepage%%" < %%wikitest_client_files%%wikitest.txt | has been created |
+
+| *Comment* | Test Case: Save Race Conditions - Save Button but webserver is down Wiki Page |  |
+| open_ok | /%%ws%%/?%%pageone%% |  |
+| wait_for_element_visible_ok | st-edit-button-link | 30000 |
+| click_ok | st-edit-button-link |  |
+| wait_for_element_visible_ok | st-save-button-link | 30000 |
+| type_ok | wikiwyg_wikitext_textarea | inserting some text |
+
+| st-stop-webserver |  |  |
+| pause | 8000 | wait for webserver to stop |
+| click_ok | st-save-button-link |  |
+| verifyAlert | Operation failed due to server error; please try again later. |  |
+| st-start-webserver |  |  |
+| wait_for_element_visible_ok | st-save-button-link | 30000 |
+| click_and_wait | st-save-button-link |  |
+| wait_for_element_visible_ok | st-edit-button-link | 30000 |
+| wait_for_text_present_ok | inserting some text | 30000 |
+
+
+| *Comment* | Test Case: Save Race Conditions - Save Button, webserver is down SocialCalc Page |  |
+| open_ok | /%%ws%%/index.cgi?action=display;page_type=spreadsheet;page_name=ns%20%%start_time%%#edit |  |
+| wait_for_element_visible_ok | st-save-button-link |  |
+| st-stop-webserver |  |  |
+| pause | 8000 | wait for webserver to stop |
+| click_ok | st-save-button-link |  |
+| verifyAlert | Operation failed due to server error; please try again later. |  |
+| st-start-webserver |  |  |
+| st-page-save |  |  |
+| wait_for_element_visible_ok | st-edit-button-link | 30000 |
+| wait_for_element_present_ok | link=Export to CSV | 30000 |
+
+
+| *Comment* | Test Case: Save Race Conditions - Save Button but page is locked |  |
+
+| *Comment* | Test Case: Save Race Conditions TEARDOWN |  |
+| st-admin | delete-workspace --w %%ws%% --no-export | has been deleted |
+
+| *Comment* | Test Case: Save Race Conditions COMPLETED |
