@@ -187,6 +187,16 @@ Clear the NLW cookie
 =cut
 sub clear_nlw_cookie { $_[0]->{_cookie} = "" }
 
+=head2 set_cookie ($cookie)
+
+Sets a cookie for subsequent HTTP requests
+=cut
+
+sub set_cookie {
+    my ($self, $cookie) = @_;
+    $self->{_cookie} = $cookie;
+}
+
 =head2 http_user_pass ( $username, $password )
 
 Set the HTTP username and password.
