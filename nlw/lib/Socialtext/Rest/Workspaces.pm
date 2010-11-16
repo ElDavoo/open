@@ -152,6 +152,13 @@ sub POST {
         # Do initial error checking outside the transaction to avoid creating
         # the workspaces if possible
         for my $meta (@$request) {
+
+            unless ($meta->{account_id}) {
+                die Socialtext::Exception::DataValidation->new(
+                    "You must specify a valid account for this workspace."
+                );
+            }
+
             if (my $members = $meta->{members}) {
                 die Socialtext::Exception::Auth->new(
                     'Must be a business admin to set members of a workspace'
