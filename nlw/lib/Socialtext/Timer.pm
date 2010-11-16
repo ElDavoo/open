@@ -85,7 +85,7 @@ sub Pause {
 
 sub Continue {
     my $class = shift;
-    my $timed = shift;
+    my $timed = shift or do { Carp::carp("Empty timer!"); return };
     local $@;
     if (ref($Timings->{$timed}->{timer})) {
         $class->Stop($timed);
@@ -97,7 +97,7 @@ sub Continue {
 
 sub Stop {
     my $class = shift;
-    my $timed = shift;
+    my $timed = shift or do { Carp::carp("Empty timer!"); return };
     local $@;
     $Timings->{$timed}->{timer} = $Timings->{$timed}->{timer}->elapsed()
         if ref($Timings->{$timed}->{timer});

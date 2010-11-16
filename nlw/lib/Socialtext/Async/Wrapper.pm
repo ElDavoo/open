@@ -240,7 +240,7 @@ sub _InWorker {
 
     sub worker_ping {
         my $self = shift;
-        $self->before_each();
+        $self->before_each('worker_ping');
         Socialtext::SQL::get_dbh();
         $Socialtext::Log::Instance->debug("async worker is OK");
         my $now = AE::time;
