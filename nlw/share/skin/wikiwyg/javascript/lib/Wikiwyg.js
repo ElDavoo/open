@@ -937,40 +937,6 @@ proto.editMode = function() {
     this.current_mode.enableThis();
 }
 
-proto.addTag = function (tag) {
-    var rand = (''+Math.random()).replace(/\./, '');
-
-    jQuery("#st-page-editing-files")
-        .append(jQuery('<input type="hidden" name="add_tag" id="st-tagqueue-' + rand +'" />').val(tag));
-
-    jQuery('#st-tagqueue-list').show();
-
-    jQuery("#st-tagqueue-list")
-        .append(
-            jQuery('<span class="st-tagqueue-taglist-name" id="st-taglist-'+rand+'" />')
-            .text(
-                (jQuery('.st-tagqueue-taglist-name').size() ? ', ' : '')
-                + tag
-            )
-        );
-
-    jQuery("#st-taglist-" + rand)
-        .append(
-            jQuery('<a href="#" class="st-tagqueue-taglist-delete" />')
-                .attr('title', loc("Remove [_1] from the queue", tag))
-                .click(function () {
-                    jQuery('#st-taglist-'+rand).remove();
-                    jQuery('#st-tagqueue-'+rand).remove();
-                    if (!jQuery('.st-tagqueue-taglist-name').size())
-                        jQuery('#st-tagqueue-list').hide();
-                    return false;
-                })
-                .html(
-                    '<img src="/static/skin/common/images/delete.png" width="16" height="16" border="0" />'
-                )
-        );
-}
-
 // Class level helper methods
 Wikiwyg.unique_id_base = 0;
 Wikiwyg.createUniqueId = function() {
@@ -1571,7 +1537,7 @@ this.addGlobal().setup_wikiwyg = function() {
 
         if ( skip ) { return false; }
 
-        ww.addTag(tag);
+        Socialtext.addNewTag(tag);
 
        return false;
     };
