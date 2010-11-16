@@ -32,7 +32,7 @@ sub do_work {
 
     my $response = $self->_make_webhook_request($args->{hook}, $payload);
 
-    st_log()->info("Triggered webhook '$args->{hook}{id}': "
+    st_log()->info("Triggered webhook $args->{hook}{id} - $args->{hook}{url}: "
                     . $response->status_line);
 
     if ($response->code =~ m/^2\d\d$/) {
