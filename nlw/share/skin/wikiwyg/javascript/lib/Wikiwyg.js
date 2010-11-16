@@ -815,7 +815,7 @@ proto.enableLinkConfirmations = function() {
     var self = this;
     window.onunload = function(ev) {
         self.signal_edit_cancel();
-        self.discardDraft('edit_cancel');
+        Socialtext.discardDraft('edit_cancel');
         Attachments.delete_new_attachments();
     }
 
@@ -935,73 +935,6 @@ proto.editMode = function() {
     this.current_mode.fromHtml(this.div.innerHTML);
     if (!this.config.noToolbar) this.toolbarObject.resetModeSelector();
     this.current_mode.enableThis();
-}
-
-proto.saveDraft = function() {
-    var self = this;
-    if (!self.contentIsModified()) { return; }
-
-    var wikitext = self.get_current_wikitext();
-    if (wikitext && wikitext.length) {
-        self._with_drafts(function(drafts) {
-            drafts[self.saveDraftKey] = {
-                page_title: $('#st-newpage-pagename-edit').val() || $('#st-page-editing-pagename').val(),
-                workspace_id: Socialtext.wiki_id,
-                workspace_title: Socialtext.wiki_title,
-                revision_id: Socialtext.revision_id,
-                page_type: Socialtext.page_type,
-                wikitext: wikitext,
-                tags: $('input[name=add_tag]').map(function(){return $(this).val()}).toArray(),
-                attachments: Attachments.get_new_attachments(),
-                last_updated: (new Date()).getTime(),
-                is_new_page: Socialtext.new_page
-            };
-        });
-    }
-}
-
-proto._with_drafts = function(cb) {
-    var drafts;
-    try {
-        drafts = $.secureEvalJSON(localStorage.getItem('st-drafts-' + Socialtext.real_user_id) || "{}");
-    } catch (e) {};
-
-    if (drafts) {
-        cb(drafts);
-    }
-
-    try {
-        localStorage.setItem('st-drafts-' + Socialtext.real_user_id, $.toJSON(drafts));
-    } catch (e) {};
-}
-
-proto.discardDraft = function(event_type) {
-    var self = this;
-
-    if (self.saveDraftInterval) {
-        clearInterval(self.saveDraftInterval);
-    }
-
-    self._with_drafts(function(drafts){
-        var keys_to_delete = [];
-        var page_title = $('#st-newpage-pagename-edit').val() || $('#st-page-editing-pagename').val();
-        var workspace_id = Socialtext.wiki_id;
-        for (var key in drafts) {
-            if (this.saveDraftKey == key) {
-                keys_to_delete.push(key);
-            }
-            else if (
-                (event_type == 'edit_save')
-                && (drafts[key].page_title == page_title)
-                && (drafts[key].workspace_id == workspace_id)
-            ) {
-                keys_to_delete.push(key);
-            }
-        }
-        for (var i = 0; i < keys_to_delete.length; i++) {
-            delete drafts[keys_to_delete[i]];
-        }
-    });
 }
 
 proto.addTag = function (tag) {
@@ -1249,7 +1182,7 @@ this.addGlobal().setup_wikiwyg = function() {
 
     ww.cancel_nlw_wikiwyg = function () {
         ww.confirmed = true;
-        ww.discardDraft('edit_cancel');
+        Socialtext.discardDraft('edit_cancel');
         Attachments.delete_new_attachments();
         if (Socialtext.new_page) {
             window.location = '?action=homepage';
@@ -1350,44 +1283,19 @@ this.addGlobal().setup_wikiwyg = function() {
 
             Attachments.reset_new_attachments();
 
-            if (typeof localStorage != 'undefined') {
-                ww._with_drafts(function(drafts) {
-                    ww.saveDraftKey = null;
-
-                    if (location.hash && /^#draft-\d+$/.test(location.hash)) {
-                        var key = location.hash.toString().replace(/^#draft-/, '');
-                        var draft = drafts[key];
-                        if (draft) {
-                            ww.modeByName(WW_ADVANCED_MODE).convertWikitextToHtml(
-                                draft.wikitext,
-                                function(new_html) {
-                                    Page.html = new_html;
-                                    ww.saveDraftKey = key;
-                                    Socialtext.revision_id = draft.revision_id;
-                                    Socialtext.wikiwyg_variables.page.revision_id = draft.revision_id;
-                                    $('#st-page-editing-revisionid').val(draft.revision_id);
-
-                                    $.each((draft.attachments || []), function () {
-                                        if (this.deleted) return;
-                                        Attachments.addNewAttachment(this);
-                                    });
-                                    $.each((draft.tags || []), function () {
-                                        ww.addTag(this);
-                                    });
-                                }
-                            );
-                        }
+            Socialtext.maybeLoadDraft(function(draft) {
+                ww.modeByName(WW_ADVANCED_MODE).convertWikitextToHtml(
+                    draft.content,
+                    function(new_html) {
+                        Page.html = new_html;
                     }
+                );
+            });
 
-                    if (!ww.saveDraftKey) {
-                        ww.saveDraftKey = (new Date()).getTime();
-                    }
-
-                    ww.saveDraftInterval = setInterval(function(){
-                        ww.saveDraft();
-                    }, 25 * 1000);
-                });
-            }
+            Socialtext.startAutoSave(function(){
+                if (!ww.contentIsModified()) { return; }
+                return ww.get_current_wikitext();
+            });
 
 // We used to use this line:
 //          myDiv.innerHTML = $('st-page-content').innerHTML;

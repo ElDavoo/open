@@ -103,9 +103,7 @@ Socialtext.set_save_error_resume_handler = function(cb) {
                     errorMessage = win.$('#contentContainer .error-message').text();
                 }
                 else {
-                    if (window.wikiwyg || (window.ss && window.ss.wikiwyg)) {
-                        (window.wikiwyg || window.ss.wikiwyg).discardDraft('edit_save');
-                    }
+                    Socialtext.discardDraft('edit_save');
                     window.location = '?' + jQuery('#st-page-editing-pagename').val();
                     return;
                 }
@@ -139,6 +137,108 @@ Socialtext.show_signal_network_dropdown = function(prefix, width) {
             account_id: Socialtext.current_workspace_account_id
         });
         dropdown.show();
+    });
+}
+
+Socialtext._with_drafts = function(cb) {
+    if (typeof localStorage == 'undefined') { return; }
+
+    var drafts;
+    try {
+        drafts = $.secureEvalJSON(localStorage.getItem('st-drafts-' + Socialtext.real_user_id) || "{}");
+    } catch (e) {};
+
+    if (drafts) {
+        cb(drafts);
+    }
+
+    try {
+        localStorage.setItem('st-drafts-' + Socialtext.real_user_id, $.toJSON(drafts));
+    } catch (e) {};
+}
+
+Socialtext.startAutoSave = function(get_content) {
+    if (typeof localStorage == 'undefined') { return; }
+    Socialtext._autoSaveIntervalId = setInterval(function() {
+        Socialtext.saveDraftWithContent(get_content());
+    }, 25 * 1000);
+}
+
+Socialtext.saveDraftWithContent = function(content) {
+    if (!(content && content.length)) { return; }
+
+    if (!Socialtext._autoSaveKey) {
+        Socialtext._autoSaveKey = (new Date()).getTime();
+    }
+
+    Socialtext._with_drafts(function(drafts) {
+        drafts[Socialtext._autoSaveKey] = {
+            page_title: $('#st-newpage-pagename-edit').val() || $('#st-page-editing-pagename').val(),
+            workspace_id: Socialtext.wiki_id,
+            workspace_title: Socialtext.wiki_title,
+            revision_id: Socialtext.revision_id,
+            page_type: Socialtext.page_type,
+            content: content,
+            tags: $('input[name=add_tag]').map(function(){return $(this).val()}).toArray(),
+            attachments: Attachments.get_new_attachments(),
+            last_updated: (new Date()).getTime(),
+            is_new_page: Socialtext.new_page
+        };
+    });
+}
+
+Socialtext.maybeLoadDraft = function(cb) {
+    Socialtext._autoSaveKey = null;
+    Socialtext._with_drafts(function(drafts) {
+        if (!(location.hash && /^#draft-\d+$/.test(location.hash))) { return; }
+
+        var key = location.hash.toString().replace(/^#draft-/, '');
+        var draft = drafts[key];
+        if (!draft) { return; }
+
+        Socialtext._autoSaveKey = key;
+        Socialtext.revision_id = draft.revision_id;
+        Socialtext.wikiwyg_variables.page.revision_id = draft.revision_id;
+        $('#st-page-editing-revisionid').val(draft.revision_id);
+
+        $.each((draft.attachments || []), function () {
+            if (this.deleted) { return; }
+            Attachments.addNewAttachment(this);
+        });
+        $.each((draft.tags || []), function () {
+            ww.addTag(this);
+        });
+
+        cb(draft);
+    });
+}
+
+Socialtext.discardDraft = function(event_type) {
+    if (Socialtext._autoSaveIntervalId) {
+        clearInterval(Socialtext._autoSaveIntervalId);
+    }
+
+    if (!Socialtext._autoSaveKey) { return; }
+
+    Socialtext._with_drafts(function(drafts) {
+        var keys_to_delete = [];
+        var page_title = $('#st-newpage-pagename-edit').val() || $('#st-page-editing-pagename').val();
+        var workspace_id = Socialtext.wiki_id;
+        for (var key in drafts) {
+            if (Socialtext._autoSaveKey == key) {
+                keys_to_delete.push(key);
+            }
+            else if (
+                (event_type == 'edit_save')
+                && (drafts[key].page_title == page_title)
+                && (drafts[key].workspace_id == workspace_id)
+            ) {
+                keys_to_delete.push(key);
+            }
+        }
+        for (var i = 0; i < keys_to_delete.length; i++) {
+            delete drafts[keys_to_delete[i]];
+        }
     });
 }
 
