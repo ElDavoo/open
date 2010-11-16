@@ -71,6 +71,7 @@ sub to_hash {
 
 sub delete {
     my $self = shift;
+    st_log->info("DELETE,WEBHOOK,id:" . $self->id . ",class:" . $self->class);
     sql_execute(q{DELETE FROM webhook WHERE id = ?}, $self->id);
 }
 
@@ -156,6 +157,8 @@ sub Create {
         $h->url,
         ($h->group_id     ? $h->group_id     : undef ),
     );
+
+    st_log->info("CREATE,WEBHOOK,id:" . $h->id . ",class:" . $h->class);
     return $h;
 }
 
