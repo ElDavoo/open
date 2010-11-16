@@ -12,6 +12,7 @@ use Socialtext::User;
 use Socialtext::Page;
 use Socialtext::JSON qw/decode_json encode_json/;
 use Socialtext::Log qw/st_log/;
+use Socialtext::Timer qw/time_scope/;
 use List::MoreUtils qw/any/;
 use namespace::clean -except => 'meta';
 
@@ -163,6 +164,7 @@ sub Add_webhooks {
     my %p = @_;
     $p{account_ids} ||= [];
 
+    my $payload;
     eval {
         my $hooks = $class->Find( class => $p{class} );
         HOOK: for my $h (@$hooks) {
@@ -225,13 +227,19 @@ sub Add_webhooks {
                 }
             }
 
+            # Should only need to calculate the payload once
+            unless ($payload) {
+                time_scope 'webhook_payload';
+                $payload = $p{payload_thunk}->();
+            }
+
             Socialtext::JobCreator->insert(
                 'Socialtext::Job::WebHook' => {
                     hook => {
                         id => $h->id,
                         url => $h->url,
                     },
-                    payload => $p{payload_thunk}->(),
+                    payload => $payload,
                 },
             );
         }
