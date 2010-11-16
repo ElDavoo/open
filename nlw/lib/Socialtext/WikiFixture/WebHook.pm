@@ -3,6 +3,7 @@ package Socialtext::WikiFixture::WebHook;
 use Socialtext::AppConfig;
 use Socialtext::System qw/shell_run/;
 use Socialtext::File qw/get_contents_utf8/;
+use Socialtext::JSON qw/decode_json/;
 use Test::More;
 use Moose;
 
@@ -42,6 +43,14 @@ sub webhook_unlike {
 
     my $contents = $self->_get_webhook_contents;
     unlike $contents, qr/$expected/, 'webhook contents';
+}
+
+sub webhook_payload_parse {
+    my $self = shift;
+    my $contents = $self->_get_webhook_contents;
+    $contents =~ s/^URI:.+$//m;
+    my $json = decode_json($contents);
+    ok $self->{json} = $json, "JSON parsed";
 }
 
 
