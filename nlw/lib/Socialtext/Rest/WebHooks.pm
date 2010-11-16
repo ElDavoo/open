@@ -96,6 +96,11 @@ sub POST_json {
         return $self->not_authorized unless $allowed;
     }
 
+    if ($object->{details}{page_id} and !$object->{workspace_id}) {
+        $rest->header( -status => HTTP_400_Bad_Request );
+        return "page_id requires a workspace_id filter";
+    }
+
     my $hook;
     eval { 
         $object->{creator_id} = $rest->user->user_id;

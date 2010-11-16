@@ -193,6 +193,15 @@ sub Add_webhooks {
                 } @{$p{tags}};
             }
 
+            # Page specific filters
+            if ($p{class} =~ m/^page\./) {
+                # Filter by page_id
+                if (my $page_id = $h->details->{page_id}) {
+                    next HOOK unless $page_id eq $p{page_id};
+                }
+            }
+
+            # Signal specific filters
             if ($p{class} =~ m/^signal\./) {
                 next HOOK unless $hcreator->is_business_admin
                               or $p{signal}->is_visible_to($hcreator);
