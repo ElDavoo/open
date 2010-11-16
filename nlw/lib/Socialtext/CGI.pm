@@ -149,6 +149,9 @@ sub page_name {
       ? $page_name
       : $self->default_page_name;
 
+    $self->{page_name} =~ s/^\s+//;
+    $self->{page_name} =~ s/\s+$//;
+
     return $self->{page_name};
 }
 
