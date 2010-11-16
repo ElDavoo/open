@@ -1350,7 +1350,7 @@ this.addGlobal().setup_wikiwyg = function() {
 
             Attachments.reset_new_attachments();
 
-            if (typeof localStorage != 'undefined' && !Socialtext.new_page) {
+            if (typeof localStorage != 'undefined') {
                 ww._with_drafts(function(drafts) {
                     ww.saveDraftKey = null;
 
@@ -1385,7 +1385,7 @@ this.addGlobal().setup_wikiwyg = function() {
 
                     ww.saveDraftInterval = setInterval(function(){
                         ww.saveDraft();
-                    }, 30000);
+                    }, 25 * 1000);
                 });
             }
 

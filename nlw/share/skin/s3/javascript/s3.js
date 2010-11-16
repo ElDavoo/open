@@ -881,7 +881,11 @@ $(function() {
         );
     });
 
-    if ( Socialtext.new_page && Socialtext.page_title != loc("Untitled Page") && Socialtext.page_title != loc("Untitled Spreadsheet") &&!location.href.toString().match(/action=display;/)) {
+    if ( Socialtext.new_page
+            && Socialtext.page_title != loc("Untitled Page")
+            && Socialtext.page_title != loc("Untitled Spreadsheet")
+            && !location.href.toString().match(/action=display;/)
+            && !/^#draft-\d+$/.test(location.hash) ) {
         $("#st-create-content-link").trigger("click", { title: Socialtext.page_title })
     }
     else if (Socialtext.new_page||

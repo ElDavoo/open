@@ -150,6 +150,11 @@ if (typeof localStorage != 'undefined' && !(/^#draft-\d+$/.test(location.hash ||
       for (var key in all_drafts) {
         var draft = all_drafts[key];
         if (((new Date()).getTime() - draft.last_updated) > 30 * 1000)  {
+          var resume_link = '/'+draft.workspace_id+'/'
+                          + '?action=edit'
+                          + ';page_name=' + encodeURIComponent(draft.page_title)
+                          + ';page_type=' + draft.page_type
+                          + '#draft-'+key;
           $('#contentColumns').prepend(
             $('<div />', { id: "st-draft-notice-" + key, css: { background: '#ffff80', textAlign: 'center', padding: '2px', borderBottom: '1px solid #ccc' } })
               .text(loc('You have an unsaved draft of "[_1]" in the "[_2]" ([_3]) workspace:', draft.page_title, draft.workspace_title, draft.workspace_id))
@@ -157,7 +162,7 @@ if (typeof localStorage != 'undefined' && !(/^#draft-\d+$/.test(location.hash ||
               .append(
                 $('<a />')
                   .text(loc('Resume'))
-                  .attr('href', '/'+draft.workspace_id+'/?action=edit;page_name='+nlw_name_to_id(draft.page_title)+'#draft-'+key)
+                  .attr('href', resume_link)
               )
               .append(loc('&nbsp;or&nbsp;'))
               .append(
