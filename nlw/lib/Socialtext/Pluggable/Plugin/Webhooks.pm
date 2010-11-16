@@ -59,6 +59,7 @@ sub pagetags_changed {
         class         => 'page.tag',
         account_ids   => [ $wksp->account->account_id ],
         workspace_id  => $wksp->workspace_id,
+        tags          => $page->metadata->Category,
         payload_thunk => sub {
             my $editor = Socialtext::User->new(
                 email_address => $page->metadata->From);

@@ -180,9 +180,19 @@ sub Add_webhooks {
                     next HOOK unless $hook_matches;
                 }
             }
+
+            # Filter by workspace
             if (my $h_ws_id = $h->{workspace_id}) {
                 next HOOK unless $p{workspace_id} == $h_ws_id;
             }
+
+            # Filter by tag
+            if (my $htag = $h->details->{tag}) {
+                next HOOK unless any {
+                    lc(ref($_) ? $_->tag : $_) eq lc($htag)
+                } @{$p{tags}};
+            }
+
             if ($p{class} =~ m/^signal\./) {
                 next HOOK unless $hcreator->is_business_admin
                               or $p{signal}->is_visible_to($hcreator);
@@ -217,9 +227,6 @@ sub Add_webhooks {
                         }
                     }
                     next HOOK unless $matches;
-                }
-                if (my $htag = $h->details->{tag}) {
-                    next HOOK unless any {lc($_->tag) eq lc($htag)} @{$p{tags}};
                 }
                 if (my $huser_id = $h->details->{to_user}) {
                     next HOOK unless $p{recipient_id} == $huser_id

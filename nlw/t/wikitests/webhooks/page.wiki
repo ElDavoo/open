@@ -59,6 +59,18 @@
 | code-is          | 201                                         |                    |                |
 | job-count        | WebHook                                     | 0                  |                |
 
+| comment        | Use a page_tag filtered webhook                          |               |                                     |
+| clear-webhooks |                                                          |               |                                     |
+| st-clear-jobs  |                                                          |               |                                     |
+| add-webhook    | page.tag                                                 | http://tou.ch | {"details":{"tag":"fubar"}} |
+| job-count      | WebHook                                                  | 0             |                                     |
+| PUT            | /data/workspaces/%%bar_workspace%%/pages/Foo/tags/foobar |               |                                     |
+| code-is        | 201                                                      |               |                                     |
+| job-count      | WebHook                                                  | 0             |                                     |
+| PUT            | /data/workspaces/%%bar_workspace%%/pages/Foo/tags/fubar  |               |                                     |
+| code-is        | 201                                                      |               |                                     |
+| job-count      | WebHook                                                  | 1             |                                     |
+
 | comment            | Create a workspace_id filtered webhook as a non-badmin     |               |                                         |
 | set-business-admin | %%bar_email_address%%                                      | 0             |                                         |
 | clear-webhooks     |                                                            |               |                                         |
@@ -98,4 +110,3 @@
 | POST_json          | /data/webhooks                      | {"class":"page.nothing","url":"http://example.com"} |
 | code-is            | 400                                 |                                                     |
 | body-like          | not a valid webhook                 |                                                     |
-
