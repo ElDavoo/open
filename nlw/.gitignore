@@ -530,3 +530,9 @@ t/Socialtext/Account-export-gadgets.t
 lib/Socialtext/Signal/Asset/Finder.pm
 lib/Socialtext/Signal.pm.orig
 bin/setup-provisioning-proxy
+lib/Socialtext/Handler/MultiLogin.pm
+lib/Socialtext/MultiLogin/Cookie.pm
+lib/Socialtext/Pluggable/Plugin/MultiLogin.pm
+t/wikitests/multilogin/login.wiki
+etc/socialtext/uri_map.d/multilogin.yaml
+t/wikitests/multilogin/reset-password.wiki
