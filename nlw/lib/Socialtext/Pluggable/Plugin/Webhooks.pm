@@ -62,22 +62,30 @@ sub pagetags_changed {
         payload_thunk => sub {
             my $editor = Socialtext::User->new(
                 email_address => $page->metadata->From);
+            my $editor_blob = {
+                id             => $editor->user_id,
+                best_full_name => $editor->best_full_name,
+            };
             return {
-                tags_added   => $p{tags_added}   || [],
-                tags_deleted => $p{tags_deleted} || [],
-                action       => 'tag',
-                workspace_title => $wksp->title,
-                workspace_name  => $wksp->name,
-                page_id         => $page->id,
-                page_name       => $page->metadata->Subject,
-                page_uri        => $page->full_uri,
-                edit_summary    => $page->edit_summary,
-                tags            => $page->metadata->Category,
-                edit_time       => $page->metadata->Date,
-                editor          => {
-                    user_id => $editor->user_id,
-                    bfn     => $editor->best_full_name,
-                },
+                class  => 'page.tag',
+                actor  => $editor_blob,
+                at     => $page->metadata->Date,
+                object => {
+                    workspace => {
+                        title => $wksp->title,
+                        name  => $wksp->name,
+                    },
+                    id           => $page->id,
+                    name         => $page->metadata->Subject,
+                    uri          => $page->full_uri,
+                    edit_summary => $page->edit_summary,
+                    tags         => $page->metadata->Category,
+                    tags_added   => $p{tags_added} || [],
+                    tags_deleted => $p{tags_deleted} || [],
+                    edit_time    => $page->metadata->Date,
+                    type         => $page->metadata->Type,
+                    editor       => $editor_blob,
+                }
             };
         },
     );
