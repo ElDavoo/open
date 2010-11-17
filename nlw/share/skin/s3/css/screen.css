@@ -4778,6 +4778,11 @@ ul.dropdownOptions li.disabled a:hover {
     cursor: default;
     font-weight: bold;
 }
+#exploreTabs #exploreSort {
+    margin-right: 4%;
+    margin-top: 2px;
+    float: right;
+}
 #exploreTopTags {
     background-color: #fffce0;
     border-top: 1px solid #929292;
