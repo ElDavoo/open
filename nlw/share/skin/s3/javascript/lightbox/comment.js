@@ -68,20 +68,25 @@ GuiEdit.prototype.show = function () {
 
     jQuery('.saveButton', this.container).one('click', function () {
         var doSignal = $('#st-comment-st-edit-summary-signal-checkbox').is(':checked');
-        jQuery.post('/' + self.workspace + '/index.cgi?action=submit_comment',
-            {
+        jQuery.ajax({
+            url: '/' + self.workspace + '/index.cgi?action=submit_comment',
+            type: 'POST',
+            data: {
                 action: 'submit_comment',
                 page_name: self.page_id,
                 comment: jQuery('textarea', self.container).val(),
                 signal_comment_to_network: doSignal ? $('#st-comment-st-edit-summary-signal-to').val() : ''
             },
-            function () {
+            success: function () {
                 if (self.oncomplete) {
                     self.oncomplete.call(self);
                 }
                 self.close();
+            },
+            error: function() {
+                alert(loc("Saving failed due to server error; please try again later."));
             }
-        );
+        });
         return false;
     });
 
