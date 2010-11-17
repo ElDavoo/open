@@ -6,6 +6,7 @@
 | edit-page           | %%bar_workspace%%     | Foo | Sample Content |
 | edit-page           | %%bar_workspace%%     | Bar | Sample Content |
 | clear-webhooks      |                   |     |                |
+| clear-webhook       |                   |     |                |
 
 | comment |  Tag a page, verify no webhooks fired |
 | st-clear-jobs |               |     |                |

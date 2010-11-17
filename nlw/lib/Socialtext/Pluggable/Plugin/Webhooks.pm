@@ -37,9 +37,42 @@ sub signal_new {
         class => 'signal.create',
         signal => $signal,
         payload_thunk => sub { 
-            my $h = $signal->as_hash;
-            $h->{action} = 'create';
-            return $h;
+            return {
+                class => 'signal.create',
+                actor => {
+                    id             => $signal->user->user_id,
+                    best_full_name => $signal->user->best_full_name,
+                },
+                at     => $signal->at,
+                object => {
+                    id          => $signal->signal_id,
+                    create_time => $signal->at,
+                    attachments => [ $signal->attachments_as_hashes ],
+                    uri         => $signal->uri,
+                    group_ids   => $signal->group_ids || [],
+                    account_ids => $signal->account_ids || [],
+                    annotations => $signal->annotations || [],
+                    topics      => $signal->topics_as_hashes || [],
+                    body        => $signal->body,
+                    hash        => $signal->hash,
+                    hidden      => $signal->is_hidden ? 1 : 0,
+                    tags => [ map { $_->tag } @{ $signal->tags } ],
+                    (
+                        $signal->recipient_id
+                        ? (recipient_id => $signal->recipient_id)
+                        : (),
+                    ),
+                    (
+                        $signal->in_reply_to ? (
+                            in_reply_to => {
+                                map { $_ => $signal->in_reply_to->$_ }
+                                    qw(signal_id user_id uri)
+                            }
+                            )
+                        : ()
+                    ),
+                },
+            };
         },
         account_ids => $signal->account_ids,
         group_ids   => $signal->group_ids,
