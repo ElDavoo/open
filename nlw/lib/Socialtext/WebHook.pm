@@ -211,7 +211,7 @@ sub Add_webhooks {
 
                 if (my $hanno = $h->details->{annotation}) {
                     next HOOK unless ref($hanno) eq 'ARRAY';
-                    my $annos = $p{annotations};
+                    my $annos = $p{signal}->annotations;
                     next HOOK unless @$annos;
                     my $matches = 0;
                     my ($type, $field, $value) = @$hanno;
@@ -240,9 +240,21 @@ sub Add_webhooks {
                     }
                     next HOOK unless $matches;
                 }
+
+                # Filter by to_user
                 if (my $huser_id = $h->details->{to_user}) {
-                    next HOOK unless $p{recipient_id} == $huser_id
-                                  or any { $_ == $huser_id } @{$p{user_topics}};
+                    my $uts = [
+                        grep    {defined}
+                            map { $_->user_id } $p{signal}->user_topics
+                    ];
+                    next HOOK
+                        unless $p{signal}->recipient_id == $huser_id
+                        or any { $_ == $huser_id } @$uts;
+                }
+
+                # Filter by sender_id
+                if (my $user_id = $h->details->{sender_id}) {
+                    next HOOK unless $p{signal}->user->user_id == $user_id;
                 }
             }
 
