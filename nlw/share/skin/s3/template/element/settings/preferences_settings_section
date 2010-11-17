@@ -5,11 +5,11 @@
   <dt><label>[% loc('Preferences') %]</label></dt>
 </dl>
 [% FOREACH preference = preference_list %]
-  <div style="padding-bottom:5px">
+  <div style="padding-bottom:5px"><label>
     [% IF preference.query %]
       [% loc(preference.query) %]
     [% END %]
     [% preference.form_element %]
-  </div>
+  </label></div>
 [% END %]
 [% PROCESS element/settings/stop %]
