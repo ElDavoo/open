@@ -536,3 +536,5 @@ lib/Socialtext/Pluggable/Plugin/MultiLogin.pm
 t/wikitests/multilogin/login.wiki
 etc/socialtext/uri_map.d/multilogin.yaml
 t/wikitests/multilogin/reset-password.wiki
+t/wikitests/signals/data_signals_assets-order.wiki
+t/wikitests/people/invite-link-disabled-globally.wiki
