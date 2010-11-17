@@ -4724,7 +4724,7 @@ ul.dropdownOptions li.disabled a:hover {
 #exploreTabs ul {
     position: relative;
     top: 5px;
-    padding-left: 38px;
+    padding-left: 27%;
 }
 #exploreTabs .tab {
     float: left;
