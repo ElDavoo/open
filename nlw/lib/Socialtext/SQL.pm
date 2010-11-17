@@ -39,7 +39,7 @@ Provides methods with extra error checking and connections to the database.
 =cut
 
 our @EXPORT_OK = qw(
-    get_dbh disconnect_dbh invalidate_dbh
+    get_dbh disconnect_dbh invalidate_dbh with_local_dbh
     sql_execute sql_execute_array sql_selectrow sql_singlevalue 
     sql_commit sql_begin_work sql_rollback sql_in_transaction
     sql_txn
@@ -57,16 +57,18 @@ our %EXPORT_TAGS = (
                   sql_rollback sql_in_transaction)],
 );
 
-
+# Feel free to access these globals directly
 our $DEBUG = 0;
 our $TRACE_SQL = 0;
 our $PROFILE_SQL = 0;
 our $COUNT_SQL = 0;
 our $Level = 2;
 
-protect_the_dbh: {
-    my $DBH;
-    my $NEEDS_PING = 1;
+# ⚠  Don't access these globals directly; use get_dbh(). They're only globals
+# ⚠  (and not lexically scoped via "my") so that with_local_dbh() can work.
+# ⚠  Code in this module is not an exception! It should use get_dbh too.
+our $_dbh;
+our $_needs_ping;
 
 =head1 Connection
 
@@ -78,53 +80,53 @@ When forking a new process be sure to, C<disconnect_dbh()> first.
 
 =cut
 
-    sub get_dbh {
-        if ($DBH && !$NEEDS_PING) {
-            warn "Returning cached connection" if $DEBUG;
-            return $DBH
+sub get_dbh {
+    if ($_dbh && !$_needs_ping) {
+        warn "Returning cached connection" if $DEBUG;
+        return $_dbh
+    }
+
+    Socialtext::Timer->Continue('get_dbh');
+    eval {
+        if (!$_dbh) {
+            warn "No connection" if $DEBUG;
+            _connect_dbh();
         }
+        elsif ($_needs_ping && !$_dbh->ping()) {
+            warn "dbh ping failed\n";
+            disconnect_dbh();
+            _connect_dbh();
+        }
+    };
+    my $err = $@;
+    Socialtext::Timer->Pause('get_dbh');
 
-        Socialtext::Timer->Continue('get_dbh');
-        eval {
-            if (!$DBH) {
-                warn "No connection" if $DEBUG;
-                _connect_dbh();
-            }
-            elsif ($NEEDS_PING && !$DBH->ping()) {
-                warn "dbh ping failed\n";
-                disconnect_dbh();
-                _connect_dbh();
-            }
-        };
-        my $err = $@;
-        Socialtext::Timer->Pause('get_dbh');
+    croak $err if $@;
+    return $_dbh;
+}
 
-        croak $err if $@;
-        return $DBH;
-    }
+sub _connect_dbh {
+    my %params = Socialtext::AppConfig->db_connect_params();
+    cluck "Creating a new DBH $params{db_name}" if $DEBUG;
+    my $dsn = "dbi:Pg:database=$params{db_name}";
 
-    sub _connect_dbh {
-        my %params = Socialtext::AppConfig->db_connect_params();
-        cluck "Creating a new DBH $params{db_name}" if $DEBUG;
-        my $dsn = "dbi:Pg:database=$params{db_name}";
+    $_dbh = DBI->connect($dsn, $params{user}, "",  {
+            AutoCommit => 1,
+            pg_enable_utf8 => 1,
+            PrintError => 0,
+            RaiseError => 0,
+        });
 
-        $DBH = DBI->connect($dsn, $params{user}, "",  {
-                AutoCommit => 1,
-                pg_enable_utf8 => 1,
-                PrintError => 0,
-                RaiseError => 0,
-            });
+    die "Could not connect to database with dsn: $dsn: $!\n" unless $_dbh;
 
-        die "Could not connect to database with dsn: $dsn: $!\n" unless $DBH;
+    $_dbh->do("SET client_min_messages TO 'WARNING'");
+    $_dbh->{'private_Socialtext::SQL'} = {
+        txn_stack => [],
+        temps => {},
+    };
 
-        $DBH->do("SET client_min_messages TO 'WARNING'");
-        $DBH->{'private_Socialtext::SQL'} = {
-            txn_stack => [],
-            temps => {},
-        };
-
-        $NEEDS_PING = 0;
-    }
+    $_needs_ping = 0;
+}
 
 =head2 disconnect_dbh
 
@@ -132,17 +134,17 @@ Forces the DBI connection to close.  Useful for scripts to avoid deadlocks.
 
 =cut
 
-    sub disconnect_dbh {
-        warn "Disconnecting dbh" if $DEBUG;
-        if ($DBH && !$DBH->{AutoCommit}) {
-            carp "WARNING: Transaction left dangling at disconnect";
-            _dump_txn_stack($DBH);
-        }
-        $DBH->disconnect if $DBH;
-        undef $DBH;
-        undef $NEEDS_PING;
-        return;
+sub disconnect_dbh {
+    warn "Disconnecting dbh" if $DEBUG;
+    if ($_dbh && !$_dbh->{AutoCommit}) {
+        carp "WARNING: Transaction left dangling at disconnect";
+        _dump_txn_stack($_dbh);
     }
+    $_dbh->disconnect if $_dbh;
+    undef $_dbh;
+    undef $_needs_ping;
+    return;
+}
 
 =head2 invalidate_dbh
 
@@ -153,16 +155,29 @@ apache request boundaries)
 
 =cut
 
-    sub invalidate_dbh {
-        warn "Invalidating dbh" if $DEBUG;
-        if ($DBH && !$DBH->{AutoCommit}) {
-            carp "WARNING: Transaction left dangling at end of request, ".
-                 "rolling back";
-            _dump_txn_stack($DBH);
-            $DBH->rollback();
-        }
-        $NEEDS_PING = 1
+sub invalidate_dbh {
+    warn "Invalidating dbh" if $DEBUG;
+    if ($_dbh && !$_dbh->{AutoCommit}) {
+        carp "WARNING: Transaction left dangling at end of request, ".
+             "rolling back";
+        _dump_txn_stack($_dbh);
+        $_dbh->rollback();
     }
+    $_needs_ping = 1
+}
+
+=head2 with_local_dbh {}
+
+Execute the code block with a separate db connection (get_dbh returns a
+different handle from within this block of code).  If any handle exists prior
+to calling this function, it will not be disconnected or invalidated.
+
+=cut
+
+sub with_local_dbh (&) {
+    local $_dbh;
+    local $_needs_ping;
+    $_[0]->();
 }
 
 =head1 Transactions
