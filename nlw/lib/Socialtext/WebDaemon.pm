@@ -199,6 +199,7 @@ sub run {
 
 
     if ($self->NeedsWorker) {
+        require Socialtext::Async::Wrapper;
         Socialtext::Async::Wrapper::worker_make_immutable($NAME);
         $self->guards->{worker_pinger} =
             AE::timer $self->worker_ping_period, $self->worker_ping_period,

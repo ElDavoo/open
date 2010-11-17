@@ -10,11 +10,14 @@ use Guard;
 use AnyEvent::Worker;
 use Carp qw/carp croak/;
 use Scalar::Util qw/blessed/;
-use Socialtext::Timer qw/time_scope/;
 use Try::Tiny;
-use Socialtext::TimestampedWarnings;
 use BSD::Resource qw/setrlimit get_rlimits/;
+
+use Socialtext::TimestampedWarnings;
+use Socialtext::Timer qw/time_scope/;
 use Socialtext::Log qw/st_log/;
+use Socialtext::SQL qw/with_local_dbh/;
+
 use namespace::clean -except => 'meta';
 
 =head1 NAME
@@ -388,7 +391,9 @@ sub _setup_ae_worker {
     my $old_desc = $Coro::current->{desc};
     my $coro = async {
         $Coro::current->{desc} = "AnyEvent::Worker";
-        $ae_worker = AnyEvent::Worker->new(\%child_args, %parent_args);
+        with_local_dbh {
+            $ae_worker = AnyEvent::Worker->new(\%child_args, %parent_args);
+        };
     };
     $coro->cede_to;
     $coro->join;
