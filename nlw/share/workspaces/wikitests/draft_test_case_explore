@@ -1,9 +1,10 @@
 | *Comment* | Test Case: Explore Create Some Accounts, Users |  |
 | set | ex_acct | explore_account_%%start_time%% |
-| set | user1 | user1_%%start_time%%@socialtext.com |
-| set | user2 | user2_%%start_time%%@socialtext.com |
+| set | user1 | `user1_%%start_time%%@socialtext.com` |
+| set | user1_short | user1 %%start_time%% |
+| set | user2 | `user2_%%start_time%%@socialtext.com` |
 | set | user2_short | user2 %%start_time%% |
-| set | user3 | user3_%%start_time%%@socialtext.com |
+| set | user3 | `user3_%%start_time%%@socialtext.com` |
 | create-account | %%ex_acct%% | was created |
 | st-admin | create-user --email %%user1%% --password %%password%% --account %%ex_acct%% | was created |
 | st-admin | create-user --email %%user2%% --password %%password%% --account %%ex_acct%% | was created |
@@ -51,19 +52,75 @@
 | open_ok | /st/explore |  |
 | wait_for_element_visible_ok | //a[@class='close genericOrangeButton'] | 30000 |
 | click_ok | //a[@class='close genericOrangeButton'] |  |
+| click_ok | //li[@id='mine'] |  |
 | wait_for_element_present_ok | link=%%jpg%% | 30000 |
 | wait_for_element_present_ok | link=%%txt%% | 30000 |
 | wait_for_element_present_ok | link=%%zip%% | 30000 |
-| wait_for_element_not_present_ok | link=%%link_text%% | 30000 |
+| wait_for_element_not_present_ok | link=%%title%% | 30000 |
 | wait_for_element_not_present_ok | link=%%url%% | 30000 |
 
 | *Comment* | Test Case: Explore People I Follow Signals |  |
 | click_ok | //li[@id='follows'] |  |
 | wait_for_element_present_ok | link=%%title%% | 30000 |
 | wait_for_element_not_present_ok | link=%%url%% | 30000 |
+| wait_for_element_not_present_ok | link=%%jpg%% | 30000 |
+| wait_for_element_not_present_ok | link=%%txt%% | 30000 |
+| wait_for_element_not_present_ok | link=%%zip%% | 30000 |
 
 | *Comment* | Test Case: Explore Everyone's Signals |  |
-| click_ok | //li[@id='all'] | 30000 |
+| click_ok | //li[@id='all'] |  |
 | wait_for_element_present_ok | link=%%url%% | 30000 |
+| wait_for_element_present_ok | link=%%jpg%% | 30000 |
+| wait_for_element_present_ok | link=%%txt%% | 30000 |
+| wait_for_element_present_ok | link=%%zip%% | 30000 |
+| wait_for_element_present_ok | link=%%title%% | 30000 |
+
+| *Comment* | Test Case: Explore Just Attachments |  |
+| click_ok | //li[@id='attachment'] |  |
+| wait_for_element_not_present_ok | link=%%url%% | 30000 |
+| wait_for_element_not_present_ok | link=%%title%% | 30000 |
+| wait_for_element_present_ok | link=%%jpg%% | 30000 |
+| wait_for_element_present_ok | link=%%txt%% | 30000 |
+| wait_for_element_present_ok | link=%%zip%% | 30000 |
+
+| *Comment* | Test Case: Explore Just Workspace Links |  |
+| click_ok | //li[@id='wikilink'] |  |
+| wait_for_element_not_present_ok | link=%%jpg%% | 30000 |
+| wait_for_element_not_present_ok | link=%%txt%% | 30000 |
+| wait_for_element_not_present_ok | link=%%zip%% | 30000 |
+| wait_for_element_not_present_ok | link=%%url%% | 30000 |
+| wait_for_element_present_ok | link=%%title%% | 30000 |
+
+| *Comment* | Test Case: Explore Just Web Links |  |
+| click_ok | //li[@id='weblink'] |  |
+| wait_for_element_not_present_ok | link=%%title%% | 30000 |
+| wait_for_element_not_present_ok | link=%%jpg%% | 30000 |
+| wait_for_element_not_present_ok | link=%%txt%% | 30000 |
+| wait_for_element_not_present_ok | link=%%zip%% | 30000 |
+| wait_for_element_present_ok | link=%%url%% | 30000 |
+
+| *Comment* | Test Case: Explore Filter By People |  |
+| click_ok | //li[@id='everything'] |  |
+| wait_for_element_present_ok | link=%%url%% | 30000 |
+| wait_for_element_present_ok | link=%%jpg%% | 30000 |
+| wait_for_element_present_ok | link=%%txt%% | 30000 |
+| wait_for_element_present_ok | link=%%zip%% | 30000 |
+| wait_for_element_present_ok | link=%%title%% | 30000 |
+| wait_for_element_visible_ok | //div[@class='filterSection people']/input | 30000 |
+| type_ok | //div[@class='filterSection people']/input | %%user1_short%% |
+| wait_for_element_present_ok | link=%%user1_short%% | 30000 |
+| click_ok | link=%%user1_short%% |  |
+| wait_for_element_not_present_ok | link=%%url%% | 30000 |
+| wait_for_element_not_present_ok | link=%%title%% | 30000 |
+| wait_for_element_present_ok | link=%%jpg%% | 30000 |
+| wait_for_element_present_ok | link=%%txt%% | 30000 |
+| wait_for_element_present_ok | link=%%zip%% | 30000 |
+
+| *Comment* | Test Case: Explore Teardown |  |
+| include | [Test Case: Signals Wiki Link Teardown] |  |
+| st-admin | deactivate-user --email %%user1%% |  |
+| st-admin | deactivate-user --email %%user2%% |  |
+| st-admin | deactivate-user --email %%user3%% |  |
+| st-admin | delete-group --group %%group_id%% | Deleted group |
 
 | *Comment* | Test Case: Explore COMPLETED |
