@@ -4710,13 +4710,6 @@ ul.dropdownOptions li.disabled a:hover {
 }
 
 /* Social bookmarking tabs */
-#exploreTopTags {
-    background-color: #fffce0;
-    border-top: 1px solid #929292;
-    border-bottom: 1px solid #929292;
-    margin-bottom: 10px;
-}
-
 #exploreTabs {
     border-bottom: 1px solid #676767;
     height: 25px;
@@ -4758,9 +4751,10 @@ ul.dropdownOptions li.disabled a:hover {
     font-weight: bold;
 }
 #exploreTopTags {
-    border-bottom: 1px solid #676767;
-    background-color: #FFF;
-    text-align: center;
+    background-color: #fffce0;
+    border-top: 1px solid #929292;
+    border-bottom: 1px solid #929292;
+    margin-bottom: 10px;
     padding: 4px 0;
 }
 
