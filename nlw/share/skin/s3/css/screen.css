@@ -4712,11 +4712,11 @@ ul.dropdownOptions li.disabled a:hover {
 /* Social bookmarking tabs */
 #exploreTabs {
     border-bottom: 1px solid #676767;
-    height: 30px;
+    height: 26px;
+    padding-top: 5px;
 }
 #exploreTabs ul {
     position: relative;
-    top: 4px;
     padding-left: 27%;
 }
 #exploreTabs .tab {
@@ -4731,6 +4731,7 @@ ul.dropdownOptions li.disabled a:hover {
     color: #000000;
     cursor: pointer;
     padding: 5px 0;
+    height: 15px;
 
     /* Rounded cornders */
     -webkit-border-top-left-radius: 5px;
