@@ -31,7 +31,7 @@ has 'creator'   => (is => 'ro', isa => 'Maybe[Object]',  lazy_build => 1);
 has 'details'   => (is => 'ro', isa => 'HashRef', lazy_build => 1);
 
 my %valid_classes = map { $_ => 1 }
-    qw/page.tag signal.create/;
+    qw/page.create page.update page.tag signal.create/;
 
 sub _build_workspace {
     my $self = shift;

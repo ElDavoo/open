@@ -15,6 +15,7 @@ sub register {
 
     $self->add_hook("nlw.user.deactivate"   => \&deactivate_user);
     $self->add_hook("nlw.signal.new"        => \&signal_new);
+    $self->add_hook("nlw.page.update"       => \&page_update);
     $self->add_hook("nlw.page.tags_added"   => \&pagetags_changed);
     $self->add_hook("nlw.page.tags_deleted" => \&pagetags_changed);
 }
@@ -75,6 +76,56 @@ sub signal_new {
                         : ()
                     ),
                 },
+            };
+        },
+    );
+}
+
+sub page_update {
+    my ($self, $page, %p) = @_;
+    my $wksp = $p{workspace} or die "workspace is mandatory!";
+
+    my $class = 'page.update';
+    if ($page->revision_count == 1 or $page->restored) {
+        $class = 'page.create';
+    }
+
+    Socialtext::WebHook->Add_webhooks(
+        class         => $class,
+        account_ids   => [ $wksp->account->account_id ],
+        workspace_id  => $wksp->workspace_id,
+        tags          => $page->metadata->Category,
+        page_id       => $page->id,
+        payload_thunk => sub {
+            my $editor = Socialtext::User->new(
+                email_address => $page->metadata->From);
+            my $editor_blob = {
+                id             => $editor->user_id,
+                best_full_name => $editor->best_full_name,
+            };
+            return {
+                class  => $class,
+                actor  => $editor_blob,
+                at     => $page->metadata->Date,
+                object => {
+                    workspace => {
+                        title => $wksp->title,
+                        name  => $wksp->name,
+                    },
+                    id           => $page->id,
+                    name         => $page->metadata->Subject,
+                    uri          => $page->full_uri,
+                    edit_summary => $page->edit_summary,
+                    tags         => $page->metadata->Category,
+                    tags_added   => $p{tags_added} || [],
+                    tags_deleted => $p{tags_deleted} || [],
+                    edit_time    => $page->metadata->Date,
+                    create_time  => $page->original_revision->metadata->Date,
+                    type         => $page->metadata->Type,
+                    editor       => $editor_blob,
+                    revision_count => $page->revision_count,
+                    revision_id    => $page->revision_id,
+                }
             };
         },
     );
