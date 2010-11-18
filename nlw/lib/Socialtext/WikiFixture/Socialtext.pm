@@ -579,11 +579,12 @@ sub st_stop_webserver {
         diag "/etc/init.d/apache-perl stop";
         my $output = `sudo /etc/init.d/apache-perl stop`;
         ok($output=~/done/, 'apache-perl is stopped');
-        $self->pause(5000);
     }
     else {
-        _run_command("nlwctl -1 stop", 'ignore output');
+        _run_command("killall apache", 'ignore output');
+        _run_command("killall -9 apache", 'ignore output');
     }
+    $self->pause(5000);
 }
 
 =head2 st_start_webserver 
@@ -599,11 +600,11 @@ sub st_start_webserver {
         diag "/etc/init.d/apache-perl start";
         my $output = `sudo /etc/init.d/apache-perl start`;
         ok($output=~/done/, 'apache-perl is started');
-        $self->pause(5000);
     }
     else {
         _run_command("nlwctl -1 start", 'ignore output');
     }
+    $self->pause(5000);
 }
 
 
