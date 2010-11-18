@@ -2169,9 +2169,16 @@ sub edit_page {
     my $workspace = shift;
     my $page_name = shift;
     my $content = shift;
+    my @tags = split qr/\s*,\s*/, shift(@_) || '';
+
+    my $blob = {
+        content => $content,
+        from => $self->{http_username},
+        tags => \@tags,
+    };
     $self->put("/data/workspaces/$workspace/pages/$page_name",
-        'Accept=text/html,Content-Type=text/x.socialtext-wiki',
-        $content,
+        'Accept=text/html,Content-Type=application/json',
+        encode_json($blob),
     );
     my $code = $self->{http}->response->code;
     my $success = $code == 201 || $code == 204;
