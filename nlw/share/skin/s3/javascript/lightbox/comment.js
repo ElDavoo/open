@@ -66,7 +66,11 @@ GuiEdit.prototype.show = function () {
         })
         .click(function () { self['do_'+this.name].call(self) })
 
-    jQuery('.saveButton', this.container).one('click', function () {
+    jQuery('.saveButton', this.container).click(function () {
+        var $saveButton = $(this);
+        if ($saveButton.parent().is('.disabled')) { return; }
+        $saveButton.parent().addClass('disabled');
+
         var doSignal = $('#st-comment-st-edit-summary-signal-checkbox').is(':checked');
         jQuery.ajax({
             url: '/' + self.workspace + '/index.cgi?action=submit_comment',
@@ -85,6 +89,7 @@ GuiEdit.prototype.show = function () {
             },
             error: function() {
                 alert(loc("Saving failed due to server error; please try again later."));
+                $saveButton.parent().removeClass('disabled');
             }
         });
         return false;
