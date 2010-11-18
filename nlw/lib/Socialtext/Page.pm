@@ -904,6 +904,10 @@ sub _perform_store_actions {
     Socialtext::JobCreator->send_page_notifications($self);
     $self->_log_page_action();
     $self->_cache_html();
+
+    $self->hub->pluggable->hook( 'nlw.page.update', $self,
+        workspace => $self->hub->current_workspace,
+    );
 }
 
 sub update_db_metadata {
