@@ -569,30 +569,41 @@ sub st_message {
 
 =head2 st_stop_webserver
 
-Stops the webserver ON AN APPLIANCE ONLY
+Stops the webserver.
     
 =cut
 
 sub st_stop_webserver {
     my ($self) = @_;
-    diag "/etc/init.d/apache-perl stop";
-    my $output = `sudo /etc/init.d/apache-perl stop`;
-    ok($output=~/done/, 'apache-perl is stopped');
-    $self->pause(5000);
+    if ($self->_is_appliance) {
+        diag "/etc/init.d/apache-perl stop";
+        my $output = `sudo /etc/init.d/apache-perl stop`;
+        ok($output=~/done/, 'apache-perl is stopped');
+        $self->pause(5000);
+    }
+    else {
+        _run_command("nlwctl -1 stop", 'ignore output');
+    }
 }
 
 =head2 st_start_webserver 
    
-   Starts the webserver ON AN APPLIANCE ONLY
+   Starts the webserver
 
 =cut
 
 sub st_start_webserver {
     my ($self) = @_;
-    diag "/etc/init.d/apache-perl start";
-    my $output = `sudo /etc/init.d/apache-perl start`;
-    ok($output=~/done/, 'apache-perl is started');
-    $self->pause(5000);
+    if ($self->_is_appliance) {
+        # Appliance-specific
+        diag "/etc/init.d/apache-perl start";
+        my $output = `sudo /etc/init.d/apache-perl start`;
+        ok($output=~/done/, 'apache-perl is started');
+        $self->pause(5000);
+    }
+    else {
+        _run_command("nlwctl -1 start", 'ignore output');
+    }
 }
 
 
@@ -1131,6 +1142,11 @@ sub _click_user_row {
 
 sub _run_command {
     Socialtext::WikiFixture::SocialBase->can('_run_command')->(@_);
+}
+
+sub _is_appliance {
+    my $self = shift;
+    return($self->{browser_url} !~ /:2\d\d\d\d/);
 }
 
 =head1 AUTHOR
