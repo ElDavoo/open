@@ -902,8 +902,21 @@ sub _perform_store_actions {
     $self->hub->backlinks->update($self);
     Socialtext::JobCreator->index_page($self);
     Socialtext::JobCreator->send_page_notifications($self);
+    $self->_ensure_page_assets();
     $self->_log_page_action();
     $self->_cache_html();
+}
+
+sub _ensure_page_assets {
+    my $self = shift;
+
+    return unless $self->revision_count == 1;
+
+    require Socialtext::Signal::Topic;
+    Socialtext::Signal::Topic::Page->EnsureAssetsFor(
+        page_id => $self->id,
+        workspace_id => $self->hub->current_workspace->workspace_id,
+    );
 }
 
 sub update_db_metadata {
