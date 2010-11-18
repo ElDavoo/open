@@ -1,0 +1,35 @@
+| *Comment* | Test Case: Functional Search Additional Indexes |
+
+| st-search | filename:aa.txt | Pages matching 'filename:aa.txt' |
+| st-result | 1 total |  |
+| st-result | aa.txt |  |
+
+| st-search | filename_ext:docx | Pages matching 'filename_ext:docx' |
+| st-result | In the Beginning was a word document.docx |  |
+| st-result | 1 total |  |
+
+| st-search | filename:aa | Pages matching 'filename:aa' |
+| st-result | aa.txt |  |
+| st-result | 1 total |  |
+
+| st-search | tag_exact:"carroll's poem" | Pages matching 'tag_exact:"carroll's poem"' |
+| st-result | 2 total |  |
+| st-result | Jabberwocky |  |
+| st-result | beamish boy |  |
+
+
+| st-search | tag_count:[3 to 4] | Pages matching 'tag_count:[3 to 4]' |
+| st-result | 6 total |  |
+| st-result | House Payment |  |
+| st-result | Another Salary |  |
+| st-result | Kinosearch test page: truth & falsity |  |
+| st-result | Kinosearch test page: politics |  |
+| st-result | jabber |  |
+
+
+| st-search | tag_count:4 | Pages matching 'tag_count:4' |
+| st-result | Another Salary |  |
+| st-result | Kinosearch test page: politics |  |
+
+
+| *Comment* | Test Case: Functional Search Additional Indexes COMPLETED |

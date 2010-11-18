@@ -6,7 +6,7 @@
 | *Comment* | wikitest_client_files at %%wikitest_client_files%% |  |
 
 | set_default | att_signaler | %%username%% |
-| set_default | att_signaler_pw | d3vnu11l |
+| set_default | att_signaler_pw | %%password%% |
 | set_default | jpg | wikitest.jpg |
 | set_default | txt | wikitest.txt |
 | set_default | zip | wikitestzip.zip |

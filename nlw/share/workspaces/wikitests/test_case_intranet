@@ -2,6 +2,7 @@
 
 | st-config | set self_registration 1 |  |
 | st-config | set allow_network_invitation 1 |  |
+| st-admin | set-account-config --account "%%hostname%%" allow_invitation 1 | has been updated |
 | set | auth_w | test-case-intranet-%%start_time%% |
 
 | *Comment* | Test Case: Intranet. Create an Intranet workspace |  |

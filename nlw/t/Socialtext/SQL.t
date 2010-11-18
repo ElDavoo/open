@@ -3,14 +3,15 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 60;
+use Test::Socialtext tests => 64;
 use Test::Exception;
+use Scalar::Util qw/refaddr/;
 
 fixtures( 'db' );
 
 BEGIN {
     use_ok 'Socialtext::SQL', qw( 
-        get_dbh disconnect_dbh invalidate_dbh
+        get_dbh disconnect_dbh invalidate_dbh with_local_dbh
         :exec :bool :txn :time
         sql_ensure_temp
     );
@@ -293,6 +294,22 @@ ensure_temp: {
         $results = $sth->fetchall_arrayref;
     } 'outer transaction is ok';
     is_deeply $results, [[42]];
+}
+
+with_local: {
+    invalidate_dbh();
+    my $addr = refaddr(get_dbh());
+    my $pgpid = get_dbh()->{pg_pid};
+    with_local_dbh {
+        my $addr2 = refaddr(get_dbh());
+        isnt $addr, $addr2, "it's local!";
+        my $pgpid2 = get_dbh()->{pg_pid};
+        isnt $pgpid, $pgpid2, "different pg backend (i.e. conn is unique)";
+    };
+    my $addr3 = refaddr(get_dbh());
+    my $pgpid3 = get_dbh()->{pg_pid};
+    is $addr, $addr3, "it didn't get changed!";
+    is $pgpid, $pgpid3, "same backend pid";
 }
 
 pass 'done';

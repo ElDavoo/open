@@ -3,7 +3,7 @@
 | *Comment* | Test Case: Signals Web Link SETUP |  |
 
 | set_default | www_signaler | %%username%% |
-| set_default | www_signaler_pw | d3vnu11l |
+| set_default | www_signaler_pw | %%password%% |
 | set | text | Signals Web Link Text %%start_time%% |
 | set | url | `http://ken.socialtext.net.%%start_time%%` |
 

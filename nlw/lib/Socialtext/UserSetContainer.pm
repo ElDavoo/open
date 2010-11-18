@@ -156,15 +156,6 @@ sub add_role {
     return;
 }
 
-sub add_temporary_role {
-    my ($self,$thing,$role) = @_;
-    $role ||= Socialtext::Role->Member;
-    die "can't add temporary role without an active transaction"
-        unless sql_in_transaction();
-    $self->user_set->add_object_role($thing, $role);
-    return;
-}
-
 sub assign_role {
     my $self = shift;
     my %p = (@_==1) ? %{$_[0]} : @_;

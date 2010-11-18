@@ -17,7 +17,7 @@ use constant table => 'account_logo';
 use constant id_column => 'account_id';
 use constant default_logo => 'logo.png';
 use constant default_skin => 'common';
-use constant versions => qw(logo);
+use constant versions => [qw(logo)];
 
 sub Resize {
     my ($class, $size, $file) = @_;

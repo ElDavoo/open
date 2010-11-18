@@ -3,6 +3,7 @@ package Socialtext::Account;
 use Moose;
 use Carp qw(croak);
 use Readonly;
+use Socialtext::Authz;
 use Socialtext::Cache;
 use Socialtext::Exceptions qw( data_validation_error );
 use Socialtext::Schema;
@@ -350,6 +351,14 @@ around 'plugins_enabled' => sub {
     my ($orig, $self, @args) = @_;
     $orig->($self, direct => 1, @args);
 };
+
+sub user_can {
+    my $self = shift;
+    my %p = @_; # pass straight through to authz checker.
+
+    my $authz = Socialtext::Authz->new;
+    return $authz->user_has_permission_for_account(%p, account=>$self);
+}
 
 sub all_users_as_hash {
     my $self  = shift;

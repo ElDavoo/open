@@ -1,61 +1,126 @@
-| *Comment* | Test Case: Explore Create Some Users |  |
-| set | user1 | user1_%%start_time%%@socialtext.com |
-| set | user2 | user2_%%start_time%%@socialtext.com |
+| *Comment* | Test Case: Explore Create Some Accounts, Users |  |
+| set | ex_acct | explore_account_%%start_time%% |
+| set | user1 | `user1_%%start_time%%@socialtext.com` |
+| set | user1_short | user1 %%start_time%% |
+| set | user2 | `user2_%%start_time%%@socialtext.com` |
 | set | user2_short | user2 %%start_time%% |
-| set | user3 | user3_%%start_time%%@socialtext.com |
-| create_user | %%user1%% | password1 |
-| create_user | %%user2%% | password2 |
-| create_user | %%user3%% | password3 |
+| set | user3 | `user3_%%start_time%%@socialtext.com` |
+| create-account | %%ex_acct%% | was created |
+| st-admin | create-user --email %%user1%% --password %%password%% --account %%ex_acct%% | was created |
+| st-admin | create-user --email %%user2%% --password %%password%% --account %%ex_acct%% | was created |
+| st-admin | create-user --email %%user3%% --password %%password%% --account %%ex_acct%% | was created |
 
 | *Comment* | Test Case: Explore Create a Group and Add User |  |
 | set | group1 | group1_%%start_time%% |
-| create-group | %%group1%% |  |
+| create-group | %%group1%% | %%ex_acct%% |
 | add-user-to-group | %%user1%% | %%group_id%% |
 
 | *Comment* | Test Case: Explore Send a Signal with Attachments from User 1 |  |
 | set | att_signaler | %%user1%% |
-| set | att_signaler_pw | password1 |
+| set | att_signaler_pw | %%password%% |
 | include | [Test Case: Signals Attachment] |  |
 
 | *Comment* | Test Case: Explore Send a Signal with Wikilink from User 2 |  |
+| set | acct | %%ex_acct%% |
 | set | wl_signaler | %%user2%% |
-| set | wl_signaler_pw | password2 |
+| set | wl_signaler_pw | %%password%% |
+| set | stranger | %%user1%% |
 | include | [Test Case: Signals Wiki Link] |  |
 
 | *Comment* | Test Case: Explore Send a Signal with Weblink from User 3 |  |
 | set | www_signaler | %%user3%% |
-| set | www_signaler_pw | password3 |
+| set | www_signaler_pw | %%password%% |
 | include | [Test Case: Signals Web Link] |  |
 
 | *Comment* | Test Case: Explore User 1 follows User 2 |  |
-| st-logoutin | %%user1%% | password1 |
+| st-logoutin | %%user1%% | %%password%% |
 | st_process_jobs | PersonIndex |  |
-| wait_for_element_visible_ok | link=People | 60000 |
+| wait_for_element_visible_ok | link=People | 30000 |
 | click_and_wait | link=People |  |
 | text_like | All People |  |
-| wait_for_element_visible_ok | st-search-term | 60000 |
+| wait_for_element_visible_ok | st-search-term | 30000 |
 | type_ok | st-search-term | %%user2%% |
 | click_and_wait | st-search-submit |  |
-| wait_for_element_visible_ok | link=%%user2_short%% | 60000 |
+| wait_for_element_visible_ok | link=%%user2_short%% | 30000 |
 | click_and_wait | link=%%user2_short%% |  |
-| wait_for_element_visible_ok | link=Follow this person | 60000 |
+| wait_for_element_visible_ok | link=Follow this person | 30000 |
 | pause | 5000 | needed for IE7 |
 | click_ok | link=Follow this person |  |
-| wait_for_element_visible_ok | link=Stop following this person | 60000 |
+| wait_for_element_visible_ok | link=Stop following this person | 30000 |
 
 | *Comment* | Test Case: Explore Just My Signals |  |
 | open_ok | /st/explore |  |
-| wait_for_element_present_ok | link=%%jpg%% | 60000 |
-| wait_for_element_present_ok | link=%%txt%% | 60000 |
-| wait_for_element_present_ok | link=%%zip%% | 60000 |
-| wait_for_element_not_present_ok | link=%%link_text%% | 60000 |
-| wait_for_element_not_present_ok | link=%%url%% | 60000 |
+| wait_for_element_visible_ok | //a[@class='close genericOrangeButton'] | 30000 |
+| click_ok | //a[@class='close genericOrangeButton'] |  |
+| click_ok | //li[@id='mine'] |  |
+| wait_for_element_present_ok | link=%%jpg%% | 30000 |
+| wait_for_element_present_ok | link=%%txt%% | 30000 |
+| wait_for_element_present_ok | link=%%zip%% | 30000 |
+| wait_for_element_not_present_ok | link=%%title%% | 30000 |
+| wait_for_element_not_present_ok | link=%%url%% | 30000 |
 
 | *Comment* | Test Case: Explore People I Follow Signals |  |
-| click_ok | link=People I follow |  |
-| wait_for_element_present_ok | link=%%link_text%% | 60000 |
-| wait_for_element_not_present_ok | link=%%url%% | 60000 |
+| click_ok | //li[@id='follows'] |  |
+| wait_for_element_present_ok | link=%%title%% | 30000 |
+| wait_for_element_not_present_ok | link=%%url%% | 30000 |
+| wait_for_element_not_present_ok | link=%%jpg%% | 30000 |
+| wait_for_element_not_present_ok | link=%%txt%% | 30000 |
+| wait_for_element_not_present_ok | link=%%zip%% | 30000 |
 
 | *Comment* | Test Case: Explore Everyone's Signals |  |
-| click_ok | link=All People | 60000 |
-| wait_for_element_present_ok | link=%%url%% | 60000 |
+| click_ok | //li[@id='all'] |  |
+| wait_for_element_present_ok | link=%%url%% | 30000 |
+| wait_for_element_present_ok | link=%%jpg%% | 30000 |
+| wait_for_element_present_ok | link=%%txt%% | 30000 |
+| wait_for_element_present_ok | link=%%zip%% | 30000 |
+| wait_for_element_present_ok | link=%%title%% | 30000 |
+
+| *Comment* | Test Case: Explore Just Attachments |  |
+| click_ok | //li[@id='attachment'] |  |
+| wait_for_element_not_present_ok | link=%%url%% | 30000 |
+| wait_for_element_not_present_ok | link=%%title%% | 30000 |
+| wait_for_element_present_ok | link=%%jpg%% | 30000 |
+| wait_for_element_present_ok | link=%%txt%% | 30000 |
+| wait_for_element_present_ok | link=%%zip%% | 30000 |
+
+| *Comment* | Test Case: Explore Just Workspace Links |  |
+| click_ok | //li[@id='wikilink'] |  |
+| wait_for_element_not_present_ok | link=%%jpg%% | 30000 |
+| wait_for_element_not_present_ok | link=%%txt%% | 30000 |
+| wait_for_element_not_present_ok | link=%%zip%% | 30000 |
+| wait_for_element_not_present_ok | link=%%url%% | 30000 |
+| wait_for_element_present_ok | link=%%title%% | 30000 |
+
+| *Comment* | Test Case: Explore Just Web Links |  |
+| click_ok | //li[@id='weblink'] |  |
+| wait_for_element_not_present_ok | link=%%title%% | 30000 |
+| wait_for_element_not_present_ok | link=%%jpg%% | 30000 |
+| wait_for_element_not_present_ok | link=%%txt%% | 30000 |
+| wait_for_element_not_present_ok | link=%%zip%% | 30000 |
+| wait_for_element_present_ok | link=%%url%% | 30000 |
+
+| *Comment* | Test Case: Explore Filter By People |  |
+| click_ok | //li[@id='everything'] |  |
+| wait_for_element_present_ok | link=%%url%% | 30000 |
+| wait_for_element_present_ok | link=%%jpg%% | 30000 |
+| wait_for_element_present_ok | link=%%txt%% | 30000 |
+| wait_for_element_present_ok | link=%%zip%% | 30000 |
+| wait_for_element_present_ok | link=%%title%% | 30000 |
+| wait_for_element_visible_ok | //div[@class='filterSection people']/input | 30000 |
+| type_ok | //div[@class='filterSection people']/input | %%user1_short%% |
+| wait_for_element_present_ok | link=%%user1_short%% | 30000 |
+| click_ok | link=%%user1_short%% |  |
+| wait_for_element_not_present_ok | link=%%url%% | 30000 |
+| wait_for_element_not_present_ok | link=%%title%% | 30000 |
+| wait_for_element_present_ok | link=%%jpg%% | 30000 |
+| wait_for_element_present_ok | link=%%txt%% | 30000 |
+| wait_for_element_present_ok | link=%%zip%% | 30000 |
+
+| *Comment* | Test Case: Explore Teardown |  |
+| include | [Test Case: Signals Wiki Link Teardown] |  |
+| st-admin | deactivate-user --email %%user1%% |  |
+| st-admin | deactivate-user --email %%user2%% |  |
+| st-admin | deactivate-user --email %%user3%% |  |
+| st-admin | delete-group --group %%group_id%% | Deleted group |
+
+| *Comment* | Test Case: Explore COMPLETED |

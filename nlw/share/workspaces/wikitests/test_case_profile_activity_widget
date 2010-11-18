@@ -34,11 +34,17 @@
 | st-name-widget | 3 | activitieswidget |
 | st-widget-title-like | activitieswidget | Activities |
 
-| *Comment* | Test Case: Profile Activity Widget. Send and check signals |  |
+| *Comment* | Test Case: Profile Activity Widget. Send and check public signal |  |
 | st_send_signal_via_activities_widget | activitieswidget | Public signal to %%tuser%% at %%start_time%% WHOOPEE |
 | st_find_user | %%tuser%% |  |
 
+| *Comment* | Test Case: Profile Activity Widget. Send and check private signal |  |  |
 | st_send_signal_via_activities_widget | activitieswidget | Private signal to %%tuser%% at %%start_time%% HURRAY | private |
+| wait_for_text_present_ok | Your Signal was successfully sent. | 30000 |  |
+| wait_for_element_visible_ok | //a[@class='clearFilters'] | 30000 |  |
+| text-like | qr/Your Signal was successfully sent. Click.*here.*to automatically adjust your filters to show the new signal/ism |  |  |
+| click_ok | //a[@class='clearFilters'] |  |  |
+| wait_for_text_not_present_ok | Your Signal was successfully sent | 10000 |  |
 
 | *Comment* | Test Case: Profile Activity Widget. Check without /qr first to invoke wait_for |  |
 | st-verify-text-in-activities-widget | activitieswidget | Private signal to %%tuser%% at %%start_time%% HURRAY |

@@ -187,6 +187,16 @@ Clear the NLW cookie
 =cut
 sub clear_nlw_cookie { $_[0]->{_cookie} = "" }
 
+=head2 set_cookie ($cookie)
+
+Sets a cookie for subsequent HTTP requests
+=cut
+
+sub set_cookie {
+    my ($self, $cookie) = @_;
+    $self->{_cookie} = $cookie;
+}
+
 =head2 http_user_pass ( $username, $password )
 
 Set the HTTP username and password.
@@ -2099,8 +2109,9 @@ sub json_array_size {
         cmp_ok $count, $comparator, $size,
             $self->{http}->name . " array is $comparator $size" ;
         if ($comparator eq '==' and $count != $size) {
-            use Data::Dumper;
-            diag Dumper $json;
+            use YAML ();
+            use Clone ();
+            diag YAML::Dump([map { my $x = Clone::clone($_); delete $x->{html}; $x } @$json]);
         }
     }
 }

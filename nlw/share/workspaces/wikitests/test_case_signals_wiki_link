@@ -2,20 +2,23 @@
 
 | *Comment* | Test Case: Signals Wiki Link SETUP |  |
 
-| set_default | wl_signaler | %%username%% |
-| set_default | wl_signaler_pw | d3vnu11l |
+| set_default | wl_signaler | `wls_%%start_time%%@ken.socialtext.net` |
+| st-admin | create-user --email %%wl_signaler%% --password %%password%% |  |
+
+| set_default | acct | wl_account_%%start_time%% |
+| st-admin | create-account --name %%acct%% |  |
+
 | set | link_text | Signals Link Text %%start_time%% |
 | set | wiki | signals-wiki-%%start_time%% |
-| set | title | Signals-Wiki-%%start_time%% |
+| set | title | Signals-Wiki-Page-%%start_time%% |
 | set | page | %%title%% |
 | set | section | signals_section_%%start_time%% |
 
-| st-admin | create-workspace --empty --name %%wiki%% --title %%title%% | created |
+| st-admin | create-workspace --empty --name %%wiki%% --title %%title%% --account %%acct%% | created |
 | st-admin | add-member --workspace %%wiki%% --u %%wl_signaler%% | now has the role |
+| st-admin | update-page --email %%email%% --workspace %%wiki%% --page %%page%% < %%wikitest_client_files%%wikitest.txt | created |
 
-| set | stranger | `devnull1@socialtext.com` |
-
-| st-logoutin | %%wl_signaler%% | %%wl_signaler_pw%% |
+| st-logoutin | %%wl_signaler%% | %%password%% |
 | open_ok | /st/signals |  |
 
 | *Comment* | Test Case: Signals Wiki Link. Click Insert Wiki Link |  |
@@ -32,15 +35,6 @@
 | wait_for_element_visible_ok | //a[@class='btn cancel'] | 5000 |
 | text_like | Choose a workspace then search for the wikipage you want linked. |  |
 
-| *Comment* | Test Case: Signals Wiki Link. Click Cancel. Verify popup is gone |  |
-| click_ok | //a[@class='btn cancel'] |  |
-| wait_for_element_not_visible_ok | //div[@class='wikilinkPopup'] | 10000 |
-
-| *Comment* | Test Case: Signals Wiki Link. Click Insert Again, re-verify |  |
-| wait_for_element_visible_ok | //a[contains(@class,'insertWikilink')] | 30000 |
-| click_ok | //a[contains(@class,'insertWikilink')] |  |
-| wait_for_element_visible_ok | //div[@class='wikilinkPopup'] | 30000 |
-
 | *Comment* | Test Case: Signals Wiki Link setSpeed 3000 to allow for type-in |  |
 | setSpeed | 3000 |  |
 | type_ok | //input[@name='label'] | %%link_text%% |
@@ -50,7 +44,7 @@
 | setSpeed | 0 |  |
 
 | *Comment* | Test Case: Signals Wiki Link setSpeed zero, click OK |  |
-| click_ok | //a[@class='btn done'] | 5000 |
+| click_ok | //a[@class='btn done'] |  |
 | wait_for_element_not_visible_ok | //div[@class='wikilinkPopup'] | 5000 |
 
 | *Comment* | Test Case: Signals Wiki Link post signal the hard way |  |
@@ -60,8 +54,11 @@
 | wait_for_element_visible_ok | link=%%link_text%% | 30000 |
 | wait_for_element_visible_ok | //a[contains(@href,'#%%section%%')] | 30000 |
 
+| set_default | stranger | `devnull1@socialtext.com` |
+
 | *Comment* | Test Case: Signals Wiki Link login as a stranger who can't see signal because not a WS member |  |
-| st-logoutin | %%stranger%% | %%password%% |
+| open_ok | /nlw/submit/logout |  |
+| st-login | %%stranger%% | %%password%% |
 | open_ok | /st/signals |  |
 | wait_for_element_not_present_ok | link=%%link_text%% | 10000 |
 | text_unlike | //body | %%link_text%% |
@@ -69,7 +66,7 @@
 | *Comment* | Test Case: Signals Wiki Link add stranger, now see signal |  |
 | st-admin | add-member --w %%wiki%% --e %%stranger%% | now has the role |
 | open_ok | /st/signals |  |
-| wait_for_element_visible_ok | link=%%link_text%% | 10000 |
+| wait_for_element_visible_ok | link=%%link_text%% | 30000 |
 | text_like | //body | %%link_text%% |
 
 | *Comment* | In order to make this test work as an include, the teardown had to be removed. |

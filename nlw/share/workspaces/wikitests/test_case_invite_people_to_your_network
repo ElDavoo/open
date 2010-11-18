@@ -19,6 +19,7 @@
 | st-admin | set-account-config --account %%rest_acct%% restrict_to_domain %%domain%% |  |
 | st-admin | create-user --email %%emailok%% --password %%password%% --account %%rest_acct%% |  |
 | st-config | set allow_network_invitation 1 |  |
+| st-admin | set-account-config --account %%rest_acct%% allow_invitation 1 | has been updated |
 | st-admin | enable-plugin --account %%rest_acct%% --plugin people |  |
 
 THIS TEST SHOULD NOT USE DASHBOARD
