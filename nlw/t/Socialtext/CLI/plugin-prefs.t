@@ -7,7 +7,7 @@ use Cwd;
 use File::Path qw(rmtree);
 use File::Spec;
 use File::Temp qw(tempdir);
-use Test::Socialtext tests => 12;
+use Test::Socialtext tests => 20;
 use Socialtext::CLI;
 use Socialtext::SQL qw(:exec);
 use Test::Socialtext::CLIUtils qw(expect_success expect_failure);
@@ -27,8 +27,32 @@ Set_pref: {
             Socialtext::CLI->new( argv => [qw(--plugin test key value)] )
                 ->set_plugin_pref();
         },
-        qr/Preferences for the test plugin have been updated./,
+        qr/Preferences for the test plugin\(s\) have been updated./,
         'set-plugin-pref',
+    );
+}
+
+Set_pref_multi_plugin: {
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => [qw(--plugin test --plugin default key value)]
+            )->set_plugin_pref();
+        },
+        qr/Preferences for the default, test plugin\(s\) have been updated./,
+        'set-plugin-pref multi-plugin',
+    );
+}
+
+Set_pref_all_plugin: {
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => [qw(--plugin all key value)]
+            )->set_plugin_pref();
+        },
+        qr/Preferences for the [a-z,\s]+ plugin\(s\) have been updated./,
+        'set-plugin-pref multi-plugin',
     );
 }
 
@@ -43,13 +67,35 @@ Get_prefs: {
     );
 }
 
+Get_prefs_accepts_single_plugin: {
+    expect_failure(
+        sub {
+            Socialtext::CLI->new(
+                argv => [qw(--plugin test --plugin default)]
+            )->show_plugin_prefs();
+        },
+        qr/show-plugin-prefs only works on a single plugin/,
+        'show-plugin-prefs with multiple --plugin',
+    );
+
+    expect_failure(
+        sub {
+            Socialtext::CLI->new(
+                argv => [qw(--plugin all)]
+            )->show_plugin_prefs();
+        },
+        qr/show-plugin-prefs only works on a single plugin/,
+        'show-plugin-prefs with all plugins',
+    );
+}
+
 Set_another_pref: {
     expect_success(
         sub {
             Socialtext::CLI->new( argv => [qw(--plugin test ape monkey)] )
                 ->set_plugin_pref();
         },
-        qr/Preferences for the test plugin have been updated./,
+        qr/Preferences for the test plugin\(s\) have been updated./,
         'set-plugin-pref',
     );
 }
@@ -71,7 +117,7 @@ Clear_prefs: {
             Socialtext::CLI->new( argv => [qw(--plugin test)] )
                 ->clear_plugin_prefs();
         },
-        qr/Preferences for the test plugin have been cleared./,
+        qr/Preferences for the test plugin\(s\) have been cleared./,
         'clear-plugin-prefs',
     );
 

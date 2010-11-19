@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 31;
+use Test::Socialtext tests => 37;
 use Socialtext::Account;
 use Sys::Hostname;
 use Cwd;
@@ -85,6 +85,19 @@ account_plugins: {
         qr/The dashboard plugin is now disabled for all accounts/,
         'disable plugin for all account',
     );
+
+    # Multi-plugin functionality is also exercised in plugin-pref.t
+    expect_failure(
+        call_cli_argv(enable_plugin => qw(--all-accounts --plugin socialcalc)),
+        qr/The socialcalc plugin can not be set at the account scope/,
+        'out of scope account plugin fails'
+    );
+
+    expect_success(
+        call_cli_argv(enable_plugin => qw(--all-accounts --plugin all)),
+        qr/The [-a-z]+ plugin is now enabled for all accounts/,
+        'enable all plugins on all accounts works'
+    );
 }
 
 my $ws = create_test_workspace(account => $acct);
@@ -139,5 +152,12 @@ workspace_plugins: {
         ),
         qr/modules_installed\s+:/,
         'show workspace config displays enabled plugins',
+    );
+
+    # Multi-plugin functionality is also exercised in plugin-pref.t
+    expect_success(
+        call_cli_argv(enable_plugin => qw(--all-workspaces --plugin all)),
+        qr/The [-a-z]+ plugin is now enabled for all workspaces/,
+        'enable all plugins on all workspaces works'
     );
 }

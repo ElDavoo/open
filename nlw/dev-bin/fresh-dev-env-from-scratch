@@ -118,10 +118,8 @@ else
 fi
 
 
-st-admin enable-plugin --all-accounts --plugin dashboard
-st-admin enable-plugin --all-accounts --plugin signals
-st-admin enable-plugin --all-accounts --plugin groups
-st-admin enable-plugin --all-accounts --plugin push
+st-admin enable-plugin --all-accounts --plugin dashboard \
+    --plugin signals --plugin groups --plugin push
 
 if [ $UPDATE_WIDGETS == 1 ]; then
     set -x

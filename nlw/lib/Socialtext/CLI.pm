@@ -12,7 +12,7 @@ use File::Spec;
 use File::Temp;
 use File::Path qw/rmtree/;
 use File::Slurp qw(slurp);
-use List::MoreUtils qw(uniq);
+use List::MoreUtils qw(uniq any);
 use Getopt::Long qw( :config pass_through );
 use Socialtext::AppConfig;
 use Pod::Usage;
@@ -231,19 +231,23 @@ sub _plugin_after {
 
 sub enable_plugin {
     my $self = shift;
-    my $plugin  = $self->_require_plugin;
+    my $plugins  = $self->_require_plugin;
     my %opts = $self->_get_options('account:s', 'all-accounts', 'workspace:s', 'all-workspaces');
 
-    my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class($plugin);
+    if (!ref($plugins) && $plugins eq 'all') {
+        $plugins = $self->_in_scope_plugins(%opts);
+    }
 
     if ($opts{'all-accounts'}) {
         $self->_plugin_before(%opts);
-        Socialtext::Account->EnablePluginForAll($plugin);
+        eval { Socialtext::Account->EnablePluginForAll($_) for @$plugins; };
+        $self->_error($@) if $@;
         return $self->_plugin_after(%opts);
     }
     elsif ($opts{'all-workspaces'}) {
         $self->_plugin_before(%opts);
-        Socialtext::Workspace->EnablePluginForAll($plugin);
+        eval { Socialtext::Workspace->EnablePluginForAll($_) for @$plugins; };
+        $self->_error($@) if $@;
         return $self->_plugin_after(%opts);
     }
     elsif ($opts{account}) {
@@ -252,7 +256,7 @@ sub enable_plugin {
            loc("The account [_1] does not exist", $opts{account}) )
            unless $account;
         $self->_plugin_before(%opts);
-        eval { $account->enable_plugin($plugin); };
+        eval { $account->enable_plugin($_) for @$plugins; };
         return $self->_error($@) if $@;
         return $self->_plugin_after(%opts);
     }
@@ -262,7 +266,7 @@ sub enable_plugin {
            loc("The workspace [_1] does not exist", $opts{workspace}) )
            unless $workspace;
         $self->_plugin_before(%opts);
-        eval { $workspace->enable_plugin($plugin); };
+        eval { $workspace->enable_plugin($_) for @$plugins; };
         $self->_error($@) if $@;
         return $self->_plugin_after(%opts);
     }
@@ -276,30 +280,36 @@ sub enable_plugin {
 
 sub disable_plugin {
     my $self = shift;
-    my $plugin  = $self->_require_plugin;
+    my $plugins  = $self->_require_plugin;
     my %opts = $self->_get_options('account:s', 'all-accounts', 'workspace:s', 'all-workspaces');
-    my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class($plugin);
+
+    if (!ref($plugins) && $plugins eq 'all') {
+        $plugins = $self->_in_scope_plugins(%opts);
+    }
 
     if ($opts{'all-accounts'}) {
         $self->_plugin_before(%opts);
-        Socialtext::Account->DisablePluginForAll($plugin);
+        eval { Socialtext::Account->DisablePluginForAll($_) for @$plugins; };
+        $self->_error($@) if $@;
         return $self->_plugin_after(%opts);
     }
     if ($opts{'all-workspaces'}) {
         $self->_plugin_before(%opts);
-        Socialtext::Workspace->DisablePluginForAll($plugin);
+        eval { Socialtext::Workspace->DisablePluginForAll($_) for @$plugins; };
+        $self->_error($@) if $@;
         return $self->_plugin_after(%opts);
     }
     elsif ($opts{account}) {
         my $account = $self->_load_account($opts{account});
         $self->_plugin_before(%opts);
-        $account->disable_plugin($plugin);
+        eval { $account->disable_plugin($_) for @$plugins; };
+        $self->_error($@) if $@;
         return $self->_plugin_after(%opts);
     }
     elsif ($opts{workspace}) {
         my $workspace = Socialtext::Workspace->new( name => $opts{workspace} );
         $self->_plugin_before(%opts);
-        eval { $workspace->disable_plugin($plugin); };
+        eval { $workspace->disable_plugin($_) for @$plugins; };
         $self->_error($@) if $@;
         return $self->_plugin_after(%opts);
     }
@@ -311,16 +321,42 @@ sub disable_plugin {
     }
 }
 
+sub _in_scope_plugins {
+    my $self = shift;
+    my %opts = @_;
+
+    my @all = Socialtext::Pluggable::Adapter->plugins();
+    return [map { $_->name } @all] unless %opts;
+
+    # Assume that %opts will always contain 'workspace' or 'account' like
+    # indeces, if it exists.
+    my $scope = (any { $_ =~ /account/ } keys %opts)
+        ? 'account' : 'workspace';
+        
+    return [
+        map { $_->name }
+        grep { $_->scope eq $scope }
+        @all
+    ];
+}
+
 sub _require_plugin {
     my $self = shift;
-    my %opts = $self->_get_options('plugin:s');
+    my %opts = $self->_get_options('plugin:s@');
     my $plugin = shift || $opts{plugin};
-    $self->_error(loc("You must specify a plugin.")) unless $plugin;
+
+    $self->_error(loc("You must specify a plugin."))
+        unless scalar(@$plugin);
 
     my $adapter = Socialtext::Pluggable::Adapter->new;
-    if (!$adapter->plugin_exists($plugin)) {
-        $self->_error(loc("Plugin [_1] does not exist!", $plugin));
+
+    return 'all' if $plugin->[0] eq 'all';
+
+    for my $p (@$plugin) {
+        $self->_error(loc("Plugin [_1] does not exist!", $p))
+            unless $adapter->plugin_exists($p);
     }
+
     return $plugin;
 }
 
@@ -332,28 +368,46 @@ sub list_plugins {
 
 sub set_plugin_pref {
     my $self = shift;
-    my $plugin  = $self->_require_plugin;
+    my $plugins  = $self->_require_plugin;
+    $plugins = $plugins eq 'all' ? $self->_in_scope_plugins : $plugins;
 
-    my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class($plugin);
-    $plugin_class->set_plugin_prefs(@{ $self->{argv} });
-    $self->_success(loc('Preferences for the [_1] plugin have been updated.',
-                        $plugin));
+    for my $p (@$plugins) {
+        my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class($p);
+        next unless $plugin_class;
+        $plugin_class->set_plugin_prefs(@{$self->{argv}});
+    }
+
+    my $to_string = join(', ', sort @$plugins);
+    $self->_success(
+        loc('Preferences for the [_1] plugin(s) have been updated.', $to_string)
+    );
 }
 
 sub clear_plugin_prefs {
     my $self = shift;
-    my $plugin  = $self->_require_plugin;
+    my $plugins  = $self->_require_plugin;
+    $plugins = $plugins eq 'all' ? $self->_in_scope_plugins : $plugins;
+    
+    for my $p (@$plugins) {
+        my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class($p);
+        $plugin_class->clear_plugin_prefs();
+    }
 
-    my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class($plugin);
-    $plugin_class->clear_plugin_prefs();
-    $self->_success(loc('Preferences for the [_1] plugin have been cleared.',
-                        $plugin));
+    my $to_string = join(', ', @$plugins);
+    $self->_success(
+        loc('Preferences for the [_1] plugin(s) have been cleared.', $to_string)
+    );
 }
 
 sub show_plugin_prefs {
     my $self = shift;
     my $plugin  = $self->_require_plugin;
 
+    # only accept a single `--plugin` param
+    $self->_error(loc('show-plugin-prefs only works on a single plugin'))
+         if (!ref($plugin) or scalar(@$plugin) > 1);
+
+    $plugin = $plugin->[0];
     my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class($plugin);
     my $prefs = $plugin_class->get_plugin_prefs();
     my $msg = loc("Preferences for the [_1] plugin:", $plugin);
@@ -4599,15 +4653,27 @@ Enable a plugin for the specified account (perhaps all) or workspace.
 
 Enabling for all accounts will also enable the plugin for accounts created in the future.
 
+You may pass in multiple `--plugin` params if you wish to enable multiple
+plugins. Additionally, you may pass in `all` as a value to `--plugin` and
+enable all plugins for the account(s) or workspace(s) specified.
+
 =head2 disable-plugin --plugin [--account | --all-accounts | --workspace ]
 
 Disable a plugin for the specified account (perhaps all) or workspace.
 
 Disabling for all accounts will also disable the plugin for accounts created in the future.
 
+You may pass in multiple `--plugin` params if you'd like to disable multiple
+plugins. Additionally, you may pass in `all` as a value to `--plugin` and
+disable all plugins for the account(s) or workspace(s) specified.
+
 =head2 set-plugin-pref --plugin PluginName KEY VALUE
 
 Sets a server-wide preference for the specified plugin.
+
+You may pass in multiple `--plugin` params if you'd like to set the same pref
+for multiple plugins. If you pass in `all` as a param, you will set a pref for
+all plugins.
 
 =head2 show-plugin-prefs --plugin PluginName
 
@@ -4616,6 +4682,10 @@ Shows all preferences set for the specified plugin.
 =head2 clear-plugin-prefs --plugin PluginName
 
 Clears all preferences set for the specified plugin.
+
+If you wish, you may pass in multiple `--plugin` params if you wish to clear
+the params for multiple plugins. Additionally, you may pass in `all` as a
+param, you can clear the prefs for all your plugins.
 
 =head2 add-profile-field --name [--account] [--title] [--field-class] [--source] [--visible | --hidden]
 
