@@ -210,6 +210,10 @@ sub DELETE {
     return $self->no_workspace()   unless $self->workspace;
     my $lock_check_failed = $self->page_lock_permission_fail();
     return $lock_check_failed if ($lock_check_failed);
+    if ($self->page->deleted) {
+        $rest->header( -status => HTTP_409_Conflict );
+        return 'Page is already deleted.';
+    }
 
     $self->if_authorized(
         DELETE => sub {
