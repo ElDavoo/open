@@ -1,9 +1,6 @@
 BEGIN;
 
--- Found several missing indexes on TheSchwartz' tables that resulted in long
--- query times.  For example idx_job_func_coalesce_prio is for the "grab jobs
--- in the same class with the same coalescing key" that our CoalescingJob
--- Moose::Role executes.
+-- Swap sides for the explore widget and its filters
 
 UPDATE gadget_instance
    SET col = 1

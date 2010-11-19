@@ -27,7 +27,7 @@ Note: Heavily dependent on the default content of current test-data workspace
 | st-result | Sample Excel 2007 file.xlsx |  |
 | st-search | jabber |  |
 | st-result | 5 total |
-| text_like | //body | qr/jabber.+The Vorpal Sword.+Stemming test page 2.+beamish boy.+Jabberwocky/ |
+| text_like | //body | qr/jabber.+The Vorpal Sword.+beamish boy.+Stemming test page 2.+Jabberwocky/ |
 
 | *Comment* | Test case: Functional Search Word, Excel, PPT 2007 format |  |
 | st-search | lorem AND ipsum |  |

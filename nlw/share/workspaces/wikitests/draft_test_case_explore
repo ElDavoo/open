@@ -20,6 +20,11 @@
 | set | att_signaler_pw | %%password%% |
 | include | [Test Case: Signals Attachment] |  |
 
+| *Comment* | Test Case: Explore Send a Signal To Group |  |
+| set | group_link | http://david.%%start_time%%.com |
+| http-user-pass | %%user1%% | %%password%% |
+| post-signal | %%group_link%% | {"group_ids":[%%group_id%%],"account_ids":[]} |
+
 | *Comment* | Test Case: Explore Send a Signal with Wikilink from User 2 |  |
 | set | acct | %%ex_acct%% |
 | set | wl_signaler | %%user2%% |
@@ -53,11 +58,12 @@
 | wait_for_element_visible_ok | //a[@class='close genericOrangeButton'] | 30000 |
 | click_ok | //a[@class='close genericOrangeButton'] |  |
 | click_ok | //li[@id='mine'] |  |
+| wait_for_element_not_present_ok | link=%%title%% | 30000 |
+| wait_for_element_not_present_ok | link=%%url%% | 30000 |
 | wait_for_element_present_ok | link=%%jpg%% | 30000 |
 | wait_for_element_present_ok | link=%%txt%% | 30000 |
 | wait_for_element_present_ok | link=%%zip%% | 30000 |
-| wait_for_element_not_present_ok | link=%%title%% | 30000 |
-| wait_for_element_not_present_ok | link=%%url%% | 30000 |
+| wait_for_element_present_ok | link=%%group_link%% | 30000 |
 
 | *Comment* | Test Case: Explore People I Follow Signals |  |
 | click_ok | //li[@id='follows'] |  |
@@ -66,9 +72,11 @@
 | wait_for_element_not_present_ok | link=%%jpg%% | 30000 |
 | wait_for_element_not_present_ok | link=%%txt%% | 30000 |
 | wait_for_element_not_present_ok | link=%%zip%% | 30000 |
+| wait_for_element_not_present_ok | link=%%group_link%% | 30000 |
 
 | *Comment* | Test Case: Explore Everyone's Signals |  |
 | click_ok | //li[@id='all'] |  |
+| wait_for_element_present_ok | link=%%group_link%% | 30000 |
 | wait_for_element_present_ok | link=%%url%% | 30000 |
 | wait_for_element_present_ok | link=%%jpg%% | 30000 |
 | wait_for_element_present_ok | link=%%txt%% | 30000 |
@@ -77,6 +85,7 @@
 
 | *Comment* | Test Case: Explore Just Attachments |  |
 | click_ok | //li[@id='attachment'] |  |
+| wait_for_element_not_present_ok | link=%%group_link%% | 30000 |
 | wait_for_element_not_present_ok | link=%%url%% | 30000 |
 | wait_for_element_not_present_ok | link=%%title%% | 30000 |
 | wait_for_element_present_ok | link=%%jpg%% | 30000 |
@@ -89,15 +98,18 @@
 | wait_for_element_not_present_ok | link=%%txt%% | 30000 |
 | wait_for_element_not_present_ok | link=%%zip%% | 30000 |
 | wait_for_element_not_present_ok | link=%%url%% | 30000 |
+| wait_for_element_not_present_ok | link=%%group_link%% | 30000 |
 | wait_for_element_present_ok | link=%%title%% | 30000 |
 
 | *Comment* | Test Case: Explore Just Web Links |  |
 | click_ok | //li[@id='weblink'] |  |
+| wait_for_element_present_ok | link=%%url%% | 30000 |
+| wait_for_element_present_ok | link=%%group_link%% | 30000 |
 | wait_for_element_not_present_ok | link=%%title%% | 30000 |
 | wait_for_element_not_present_ok | link=%%jpg%% | 30000 |
 | wait_for_element_not_present_ok | link=%%txt%% | 30000 |
 | wait_for_element_not_present_ok | link=%%zip%% | 30000 |
-| wait_for_element_present_ok | link=%%url%% | 30000 |
+
 
 | *Comment* | Test Case: Explore Filter By People |  |
 | click_ok | //li[@id='everything'] |  |
@@ -106,21 +118,36 @@
 | wait_for_element_present_ok | link=%%txt%% | 30000 |
 | wait_for_element_present_ok | link=%%zip%% | 30000 |
 | wait_for_element_present_ok | link=%%title%% | 30000 |
+| wait_for_element_present_ok | link=%%group_link%% | 30000 |
 | wait_for_element_visible_ok | //div[@class='filterSection people']/input | 30000 |
-| type_ok | //div[@class='filterSection people']/input | %%user1_short%% |
-| wait_for_element_present_ok | link=%%user1_short%% | 30000 |
-| click_ok | link=%%user1_short%% |  |
+| type_lookahead_ok | //div[@class='filterSection people']/input | user1 |
+| wait_for_element_visible_ok | //a[@class='lookaheadItem'] | 10000 |
+| click_ok | //a[@class='lookaheadItem'] | 10000 |
 | wait_for_element_not_present_ok | link=%%url%% | 30000 |
 | wait_for_element_not_present_ok | link=%%title%% | 30000 |
 | wait_for_element_present_ok | link=%%jpg%% | 30000 |
 | wait_for_element_present_ok | link=%%txt%% | 30000 |
 | wait_for_element_present_ok | link=%%zip%% | 30000 |
+| wait_for_element_present_ok | link=%%group_link%% | 30000 |
+
+| *Comment* | Test Case: Explore Filter by Group |  |
+| wait_for_element_visible_ok | //div[@class='filterSection networks']/input | 30000 |
+| type_lookahead_ok | //div[@class='filterSection networks']/input | %%group1%% |
+| wait_for_element_visible_ok | //a[@class='lookaheadItem'] | 10000 |
+| click_ok | //a[@class='lookaheadItem'] | 10000 |
+| wait_for_element_not_present_ok | link=%%jpg%% | 30000 |
+| wait_for_element_not_present_ok | link=%%txt%% | 30000 |
+| wait_for_element_not_present_ok | link=%%zip%% | 30000 |
+| wait_for_element_present_ok | link=%%group_link%% | 30000 |
+| wait_for_element_not_present_ok | link=%%url%% | 30000 |
+| wait_for_element_not_present_ok | link=%%title%% | 30000 |
 
 | *Comment* | Test Case: Explore Teardown |  |
-| include | [Test Case: Signals Wiki Link Teardown] |  |
-| st-admin | deactivate-user --email %%user1%% |  |
-| st-admin | deactivate-user --email %%user2%% |  |
-| st-admin | deactivate-user --email %%user3%% |  |
-| st-admin | delete-group --group %%group_id%% | Deleted group |
+
+ include | [Test Case: Signals Wiki Link Teardown] | |
+st-admin | deactivate-user --email %%user1%% | |
+st-admin | deactivate-user --email %%user2%% | |
+st-admin | deactivate-user --email %%user3%% | |
+st-admin | delete-group --group %%group_id%% | Deleted group |
 
 | *Comment* | Test Case: Explore COMPLETED |

@@ -757,9 +757,8 @@ sub st_create_health_report {
 
     if ( ($output=~/Uploaded/) && ($output=~/_health.+\d\d\d\d.+\d+.+\d+$/)) {
         ok(1, 'output of st-appliance-health-report indicates the report was created');
-        if ($output=~/(http.+\d\d\d\d\_\d+\_\d+$)/) {
+        if ($output=~/Uploaded: (http.+\d\d\d\d\_\d+\_\d+$)/) {
             my $url = $1;
-            $self->{health_report_url} = $url;
         } else {
             ok(0, "failed in match 1 of st_create_health_report: '$output'\n");
         }
