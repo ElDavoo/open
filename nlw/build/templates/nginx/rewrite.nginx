@@ -68,6 +68,9 @@
 
     rewrite ^/control/   /nlw/control/  redirect;
 
+    # Redirect all /ig over to google permanently
+    rewrite ^/ig/(.+)   http://www.google.com/ig/$1 permanent;
+
     # Fix {bz: 2963} where extra slashes are added during /:ws/?:pname rewrite
     rewrite ^/lite/+page/+([^/]+)/+(.*)  /m/page/$1/$2  redirect;
 
