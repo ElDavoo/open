@@ -4,7 +4,7 @@
 | set | ws | race-ws-%%start_time%% |
 | set | acct | race-acct-%%start_time%% |
 | set | pageone | pageoe-%%start_time%% |
-| set | lockmepage | lockmepage-%%start_time%% |
+| set | lockmepage | lockmepage%%start_time%% |
 | set | lockuser | lockuser-%%start_time%%@matt.socialtext.net |
 
 | *Comment* | Test Case: Save Race Conditions Create acct, user, ws |  |
@@ -62,8 +62,8 @@
 
 
 | *Comment* | Test Case: Save Race Conditions - Now try to save a locked page |  |
-| st-logoutin | %%lockuser%% | password |
-| open_ok | /%%ws%%/?%%pageone%% |  |
+| st-logoutin | %%lockuser%% | %%password%% |
+| open_ok | /%%ws%%/?%%lockmepage%% |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 | click_ok | st-edit-button-link |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
@@ -71,7 +71,7 @@
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | some new text |
-| st-admin | lock-page --workspace %%ws%% --page %%pageone%% | Page '%%pageone%%' in workspace '%%ws%%' has been locked. |
+| st-admin | lock-page --workspace %%ws%% --page %%lockmepage%% | Page '%%lockmepage%%' in workspace '%%ws%%' has been locked. |
 | click_ok | st-save-button-link |  |
 | pause | 10000 | needed to make sure alert pops up |
 | verifyAlert | An administrator has locked this document since you opened it for editing. You will not be able to save it.
