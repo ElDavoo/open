@@ -30,8 +30,10 @@ has 'group'     => (is => 'ro', isa => 'Maybe[Object]',  lazy_build => 1);
 has 'creator'   => (is => 'ro', isa => 'Maybe[Object]',  lazy_build => 1);
 has 'details'   => (is => 'ro', isa => 'HashRef', lazy_build => 1);
 
-my %valid_classes = map { $_ => 1 }
-    qw/page.create page.update page.tag signal.create/;
+my %valid_classes = map { $_ => 1 } (
+    (map { "page.$_" } qw/create delete update tag watch/),
+    qw/signal.create/,
+);
 
 sub _build_workspace {
     my $self = shift;

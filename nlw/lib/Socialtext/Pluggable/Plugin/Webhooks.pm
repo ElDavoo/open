@@ -88,11 +88,13 @@ sub _fire_page_webhooks {
     my %p     = @_;
     my $wksp  = $p{workspace} or die "workspace is mandatory!";
 
+    $p{tags} ||= $page->metadata->Category;
+
     Socialtext::WebHook->Add_webhooks(
         class         => $class,
         account_ids   => [ $wksp->account->account_id ],
         workspace_id  => $wksp->workspace_id,
-        tags          => $page->metadata->Category,
+        tags          => $p{tags},
         page_id       => $page->id,
         payload_thunk => sub {
             my $editor = Socialtext::User->new(
@@ -135,6 +137,10 @@ sub page_update {
     my $class = 'page.update';
     if ($page->revision_count == 1 or $page->restored) {
         $class = 'page.create';
+    }
+    if ($page->deleted) {
+        $class = 'page.delete';
+        $p{tags} = $page->prev_revision->metadata->Category;
     }
 
     $self->_fire_page_webhooks($class, $page, %p);
