@@ -2182,7 +2182,7 @@ sub edit_page {
     );
     my $code = $self->{http}->response->code;
     my $success = $code == 201 || $code == 204;
-    ok( $success, "Code is $code");
+    ok( $success, "Edited $workspace/$page_name");
 
     if ($success) {
         diag "Edited page $workspace/[$page_name]";
@@ -2190,6 +2190,15 @@ sub edit_page {
     else {
         diag "Failed to edit page $workspace/[$page_name]";
     }
+}
+
+sub delete_page {
+    my $self = shift;
+    my $workspace = shift;
+    my $page_name = shift;
+    $self->delete("/data/workspaces/$workspace/pages/$page_name");
+    my $code = $self->{http}->response->code;
+    ok( $code == 204, "Deleted $workspace/$page_name" );
 }
 
 sub comment_page {
