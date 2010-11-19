@@ -534,11 +534,27 @@ sub original_revision {
     my $orig_id  = ($self->all_revision_ids)[0];
     return $self if !$page_id || !$orig_id || $page_id eq $orig_id;
 
-    my $orig_page = Socialtext::Page->new(hub => $self->hub, id => $page_id);
+    return $self->_load_revision($orig_id);
+}
+
+sub _load_revision {
+    my $self = shift;
+    my $orig_id = shift;
+    my $orig_page = Socialtext::Page->new(hub => $self->hub, id => $self->id);
     $orig_page->revision_id( $orig_id );
     $orig_page->load;
     return $orig_page;
 }
+
+sub prev_revision {
+    my $self = shift;
+    for my $rev_id (reverse $self->all_revision_ids) {
+        next if $rev_id == $self->revision_id;
+        return $self->_load_revision($rev_id);
+    }
+    return $self;
+}
+
 
 sub attachments {
     my $self = shift;
