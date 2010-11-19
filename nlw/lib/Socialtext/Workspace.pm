@@ -1781,7 +1781,7 @@ sub DisablePluginForAll {
 
 around 'PluginsEnabledForAll' => sub {
     my $orig = shift;
-    return $orig->($_[0], 'Account');
+    return $orig->($_[0], 'Workspace');
 };
 
 around 'plugins_enabled' => sub {
