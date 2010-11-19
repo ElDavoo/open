@@ -81,14 +81,12 @@ sub signal_new {
     );
 }
 
-sub page_update {
-    my ($self, $page, %p) = @_;
-    my $wksp = $p{workspace} or die "workspace is mandatory!";
-
-    my $class = 'page.update';
-    if ($page->revision_count == 1 or $page->restored) {
-        $class = 'page.create';
-    }
+sub _fire_page_webhooks {
+    my $self  = shift;
+    my $class = shift;
+    my $page  = shift;
+    my %p     = @_;
+    my $wksp  = $p{workspace} or die "workspace is mandatory!";
 
     Socialtext::WebHook->Add_webhooks(
         class         => $class,
@@ -120,9 +118,9 @@ sub page_update {
                     tags_added   => $p{tags_added} || [],
                     tags_deleted => $p{tags_deleted} || [],
                     edit_time    => $page->metadata->Date,
-                    create_time  => $page->original_revision->metadata->Date,
                     type         => $page->metadata->Type,
                     editor       => $editor_blob,
+                    create_time  => $page->original_revision->metadata->Date,
                     revision_count => $page->revision_count,
                     revision_id    => $page->revision_id,
                 }
@@ -131,46 +129,20 @@ sub page_update {
     );
 }
 
-sub pagetags_changed {
+sub page_update {
     my ($self, $page, %p) = @_;
-    my $wksp = $p{workspace} or die "workspace is mandatory!";
 
-    Socialtext::WebHook->Add_webhooks(
-        class         => 'page.tag',
-        account_ids   => [ $wksp->account->account_id ],
-        workspace_id  => $wksp->workspace_id,
-        tags          => $page->metadata->Category,
-        page_id       => $page->id,
-        payload_thunk => sub {
-            my $editor = Socialtext::User->new(
-                email_address => $page->metadata->From);
-            my $editor_blob = {
-                id             => $editor->user_id,
-                best_full_name => $editor->best_full_name,
-            };
-            return {
-                class  => 'page.tag',
-                actor  => $editor_blob,
-                at     => $page->metadata->Date,
-                object => {
-                    workspace => {
-                        title => $wksp->title,
-                        name  => $wksp->name,
-                    },
-                    id           => $page->id,
-                    name         => $page->metadata->Subject,
-                    uri          => $page->full_uri,
-                    edit_summary => $page->edit_summary,
-                    tags         => $page->metadata->Category,
-                    tags_added   => $p{tags_added} || [],
-                    tags_deleted => $p{tags_deleted} || [],
-                    edit_time    => $page->metadata->Date,
-                    type         => $page->metadata->Type,
-                    editor       => $editor_blob,
-                }
-            };
-        },
-    );
+    my $class = 'page.update';
+    if ($page->revision_count == 1 or $page->restored) {
+        $class = 'page.create';
+    }
+
+    $self->_fire_page_webhooks($class, $page, %p);
+}
+
+sub pagetags_changed {
+    my $self = shift;
+    $self->_fire_page_webhooks('page.tag', @_);
 }
 
 1;
