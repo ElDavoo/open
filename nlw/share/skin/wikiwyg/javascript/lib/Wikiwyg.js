@@ -709,6 +709,14 @@ proto.saveChanges = function() {
     jQuery('#st-page-editing-signal-to')
         .val( $('#st-edit-summary-signal-to').val() );
 
+    var originalWikitext = self.originalWikitext;
+    var on_error = function() {
+        self.enableLinkConfirmations();
+        self.originalWikitext = originalWikitext;
+        jQuery("#st-edit-summary").show();
+        jQuery('#st-editing-tools-edit ul').show();
+        jQuery('#saving-message').remove();
+    };
     var submit_changes = function(wikitext) {
         /*
         if ( Wikiwyg.is_safari ) {
@@ -720,15 +728,7 @@ proto.saveChanges = function() {
 
         var saver = function() {
             Socialtext.prepare_attachments_before_save();
-
-            var originalWikitext = self.originalWikitext;
-            Socialtext.set_save_error_resume_handler(function(){
-                self.enableLinkConfirmations();
-                self.originalWikitext = originalWikitext;
-                jQuery("#st-edit-summary").show();
-                jQuery('#st-editing-tools-edit ul').show();
-                jQuery('#saving-message').remove();
-            });
+            Socialtext.set_save_error_resume_handler(on_error);
 
             jQuery('#st-page-editing-pagebody').val(wikitext);
             jQuery('#st-page-editing-form').trigger('submit');
@@ -755,7 +755,8 @@ proto.saveChanges = function() {
                 html,
                 function(wikitext) { submit_changes(wikitext) }
             );
-        }
+        },
+        on_error
     );
 }
 

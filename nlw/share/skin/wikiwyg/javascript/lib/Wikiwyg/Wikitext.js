@@ -1297,9 +1297,9 @@ proto.toNormalizedHtml = function(func) {
     return this.toHtml(func);
 }
 
-proto.toHtml = function(func) {
+proto.toHtml = function(func, onError) {
     var wikitext = this.wikiwyg.current_wikitext = this.canonicalText();
-    this.convertWikitextToHtml(wikitext, func);
+    this.convertWikitextToHtml(wikitext, func, onError);
 }
 
 proto.fromHtml = function(html) {
@@ -1332,7 +1332,7 @@ proto.do_www = Wikiwyg.Wikitext.make_do('www');
 proto.do_attach = Wikiwyg.Wikitext.make_do('attach');
 proto.do_image = Wikiwyg.Wikitext.make_do('image');
 
-proto.convertWikitextToHtml = function(wikitext, func) {
+proto.convertWikitextToHtml = function(wikitext, func, onError) {
     // TODO: This could be as simple as:
     //    func((new Document.Parser.Wikitext()).parse(wikitext, new Document.Emitter.HTML()));
     // But we need to ensure newer wikitext features, such has (sortable) tables,
@@ -1354,8 +1354,9 @@ proto.convertWikitextToHtml = function(wikitext, func) {
         success: function(_data, _status, xhr) {
             func(xhr.responseText);
         },
-        error: function() {
+        error: function(xhr) {
             alert(loc("Operation failed due to server error; please try again later."));
+            if (onError) { onError(xhr); }
         }
     });
 }
