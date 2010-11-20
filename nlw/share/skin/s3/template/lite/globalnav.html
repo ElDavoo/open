@@ -4,7 +4,7 @@
 [% ELSE %]
 <div data-role="header">
 [% END %]
-<div class="[% IF bottom %]bottom[% END %] globalnav" data-role="navbar">
+<div class="[% IF bottom %]bottom[% END %]" data-role="navbar">
 <ul>
 [% IF user.is_guest %]
     [% IF ws %]
@@ -13,6 +13,16 @@
         <li><a href="/challenge?/m/workspace_list">[% loc('Log in') %]</a></li>
     [% END %]
 [% ELSE %]
+
+    [% IF bottom %]
+<li>
+    <a rel="external" href="/nlw/submit/logout?redirect_to=/m/login">[% loc('Log out') %]</a>
+</li>
+[% ELSE %]
+<li><div style="background: #17417F; height: 34px">
+        <img src="[% skin_uri('images/miki-logo.png') %]" style="margin: 2px; max-width: 98%; max-height: 28px">
+</div></li>
+    [% END %]
     [% IF bottom %]
         [% FILTER decorate('lite_nav_activities_bottom') %]
         [% END %]
@@ -45,11 +55,6 @@
     [% END %]
 </li>
 
-    [% IF bottom %]
-<li>
-    <a href="/nlw/submit/logout?redirect_to=/m/login">[% loc('Log out') %]</a>
-</li>
-    [% END %]
 [% END %]
 </ul>
 </div>

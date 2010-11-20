@@ -1,9 +1,11 @@
 [%# @COPYRIGHT@ -%]
 [%# vim: set et sts=2 sw=2: %]
 <form id="st-login-form" name="login" method="post" action="/nlw/submit/login">
+<div data-role="fieldcontain">
   <input type="hidden" name="redirect_to" value="[% redirect_to | html %]" />
   <input type="hidden" name="lite" value="[% lite | html %]" />
 
+    <fieldset data-role="controlgroup">
   [% IF target_workspace %]
     <input type="hidden" name="workspace_name" value="[% target_workspace.name%]" />
   [% END %]
@@ -27,8 +29,8 @@
   </div>
 
   [% IF lite %]
-  <br/>
-  <input type="submit" value="[% loc('Log in') %]"/>
+  </fieldset><fieldset>
+  <input data-theme="b" data-icon="arrow-r" type="submit" value="[% loc('Log in') %]"/>
   [% ELSE %]
   <div class="hidesubmit"><input type="submit"/></div>
   <div class="loginButtons">
@@ -43,6 +45,8 @@
   </div>
   [% END %]
 
+    </fieldset>
+</div>
 </form>
 
 <script type="text/javascript">
