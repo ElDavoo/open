@@ -1,16 +1,11 @@
 [% IF base_uri.match('\?'); char = '&'; ELSE; char = '?'; END %]
-<div class="paging">
+<div class="paging" data-role="controlgroup" data-type="horizontal">
     [% IF pagenum > 0 %]
-    <a href="[% base_uri %][% char %]page=[% pagenum - 1 %]">[% loc('&lt;&lt; Previous page') %]</a> |
-    <a href="[% base_uri %]">[% loc('First page') %]</a> |
-    [% ELSE %]
-    <span>[% loc('&lt;&lt; Previous page') %]</span> |
-    <span>[% loc('First page') %]</span> |
+    <a data-icon="back" data-role="button" href="[% base_uri %]">[% loc('First page') %]</a>
+    <a data-icon="arrow-l" data-role="button" href="[% base_uri %][% char %]page=[% pagenum - 1 %]">[% loc('Previous') %]</a>
     [% END %]
 
     [% IF more %]
-    <a href="[% base_uri %][% char %]page=[% pagenum + 1 %]">[% loc('Next page &gt;&gt;') %]</a>
-    [% ELSE %]
-    <span>[% loc('Next page &gt;&gt;') %]</span>
+    <a data-icon="arrow-r" data-role="button" href="[% base_uri %][% char %]page=[% pagenum + 1 %]">[% loc('Next') %]</a>
     [% END %]
 </div>

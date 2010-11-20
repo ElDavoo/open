@@ -1,20 +1,20 @@
 [%# @COPYRIGHT@ -%]
 [% PROCESS lite/header.html %]
 [% IF tags %]
-    <div class="content">
-        <h4>[% loc("List of tags in the [_1] workspace.", ws.title) %]</h4>
-        <ul>
+    <div data-role="header" data-inline="true" data-position="inline" data-theme="d">
+    <h4>[% loc("All tags", ws.title) %]</h4>
+    </div>
+    <ul data-role="listview">
         [% FOREACH tag = tags %]
             <li><a href="/m/tag/[% ws.name %]/[% tag | uri | html %]">[% tag | html %]</a></li>
         [% END %]
-        </ul>
-    </div>
+    </ul>
 [% ELSE %]
-    <div class="content">
         [% SET escaped_str = tag | html %]
-        <h4>[% loc("Recent changes in tag: [_1]", escaped_str) %]</h4>
+    <ul data-role="listview">
+        <li data-role="list-divider">[% loc("Tag: [_1]", escaped_str) %]</li>
+    </ul>
         [% PROCESS lite/page_list.html %]
-    </div>
 [% END %]
 [% PROCESS lite/footer.html %]
 

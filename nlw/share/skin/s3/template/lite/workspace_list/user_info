@@ -1,8 +1,10 @@
 [%# @COPYRIGHT@ -%]
 [%# vim: set et sts=2 sw=2: %]
 [% IF user AND NOT user.is_guest %]
+<!--
   <p>
     [% loc('Hello, [_1]', '<b>' _ user.best_full_name _ '</b>') %]
   </p>
+  -->
   [% login_logout %]
 [% END %]
