@@ -19,9 +19,9 @@
     <a rel="external" href="/nlw/submit/logout?redirect_to=/m/login">[% loc('Log out') %]</a>
 </li>
 [% ELSE %]
-<li><div style="background: #17417F; height: 34px">
-        <img src="[% skin_uri('images/miki-logo.png') %]" style="margin: 2px; max-width: 98%; max-height: 28px">
-</div></li>
+<li><div style="background: #17417F; height: 34px"><table border=0 height="34" width="100%"><tr><td valign="middle">
+        <img src="[% skin_uri('images/miki-logo.png') %]" style="max-width: 98%; max-height: 26px; ">
+</td></tr></table></div></li>
     [% END %]
     [% IF bottom %]
         [% FILTER decorate('lite_nav_activities_bottom') %]
