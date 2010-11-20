@@ -9,11 +9,12 @@
         <link rel="stylesheet" href="/static/skin/common/css/jquery.mobile-1.0a2.min.css" />
         <script src="/static/skin/common/javascript/jquery-1.4.4.min.js"></script>
         <script>
-        if (/\/login\b/.test(location.href)) {
-            $(document).bind("mobileinit", function(){
-                $.extend($.mobile , { ajaxFormsEnabled: false });
-            });
-        }
+        $(document).bind("mobileinit", function(){
+            if (/\/login\b/.test(location.href)) {
+                $.extend($.mobile, { ajaxFormsEnabled: false });
+            }
+            $.extend($.mobile, { defaultTransition: 'fade' });
+        });
         </script>
         <script src="/static/skin/common/javascript/jquery.mobile-1.0a2.min.js"></script>
         [% INCLUDE element/css_links %]
