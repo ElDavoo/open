@@ -7,6 +7,9 @@
         <a title="[% row.Subject || row.name | html %]"
             href="/m/page/[% row.workspace_name || ws.name %]/[% row.page_id %]">[% row.Subject || row.name | html %]
         </a>
+        <span class="ui-li-count">
+            [% row.DateLocal %]
+        </span>
     </li>
 [% END -%]
 </ul>
