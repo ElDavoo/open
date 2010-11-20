@@ -1,12 +1,12 @@
 [%# @COPYRIGHT@ -%]
 [%- IF rows.size %]
-<ul data-role="listview">
+<ul>
 [%- FOREACH row = rows %]
     [% row = load_row_times(row) %]
     <li>
         <a title="[% row.Subject || row.name | html %]"
-            href="/m/page/[% row.workspace_name || ws.name %]/[% row.page_id %]">[% row.Subject || row.name | html %]
-        </a>
+            href="/m/page/[% row.workspace_name || ws.name %]/[% row.page_id %]">[% row.Subject || row.name | html %]</a>
+        - [% row.datetime_for_user %]
     </li>
 [% END -%]
 </ul>

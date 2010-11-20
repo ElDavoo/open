@@ -1,18 +1,14 @@
 [% USE decorate %] 
-[% IF bottom %]
-<div data-role="footer">
-[% ELSE %]
-<div data-role="header">
-[% END %]
-<div class="[% IF bottom %]bottom[% END %] globalnav" data-role="navbar">
-<ul>
+<div class="[% IF bottom %]bottom[% END %] globalnav">
 [% IF user.is_guest %]
     [% IF ws %]
-        <li><a href="/challenge?/m/page/[% ws.name %]/[% page.uri %]">[% loc('Log in') %]</a></li>
+        <a href="/challenge?/m/page/[% ws.name %]/[% page.uri %]">[% loc('Log in') %]</a>
     [% ELSE %]
-        <li><a href="/challenge?/m/workspace_list">[% loc('Log in') %]</a></li>
+        <a href="/challenge?/m/workspace_list">[% loc('Log in') %]</a>
     [% END %]
 [% ELSE %]
+
+
     [% IF bottom %]
         [% FILTER decorate('lite_nav_activities_bottom') %]
         [% END %]
@@ -21,13 +17,12 @@
         [% END %]
     [% END %]
 
-<li>
     [% IF section == 'activities' %]
-        <a class="ui-btn-active current">[% loc('Activity') %]</a>
+        <span class="current">[% loc('Activity') %]</span>
     [% ELSE %]
         <a id="[% IF bottom %]bottom-[% END %]mobile-activities" href="/m/activities">[% loc('Activity') %]</a>
     [% END %]
-</li>
+        |
 
     [% IF bottom %]
         [% FILTER decorate('lite_nav_workspaces_bottom') %]
@@ -37,23 +32,15 @@
         [% END %]
     [% END %]
 
-<li>
     [% IF section == 'workspaces' %]
-        <a class="ui-btn-active current">[% loc('Workspaces') %]</a>
+        <span class="current">[% loc('Workspaces') %]</span>
     [% ELSE %]
         <a id="[% IF bottom %]bottom-[% END %]mobile-workspace_list" href="/m/workspace_list">[% loc('Workspaces') %]</a>
     [% END %]
-</li>
 
     [% IF bottom %]
-<li>
+    | 
     <a href="/nlw/submit/logout?redirect_to=/m/login">[% loc('Log out') %]</a>
-</li>
     [% END %]
 [% END %]
-</ul>
 </div>
-</div>
-[% IF !bottom %]
-
-[% END %]
