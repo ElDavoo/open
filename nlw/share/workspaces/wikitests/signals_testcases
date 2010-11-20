@@ -27,8 +27,8 @@ Test Case: Replies is Firefox only
 
 * [Test Case: Private Signal]
 
-And the MONSTER:
-
 * [Test Case: Activities Widget]
+
+* [Draft: Test Case: Explore]
 
 Test Case: change signal limit - Moved to all_appliance_testcases because it uses /console now
