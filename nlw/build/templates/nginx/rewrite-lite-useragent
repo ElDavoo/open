@@ -25,6 +25,8 @@
     rewrite ^/+([^/]+)/*$ /m/page/$1/ redirect;
     # rewrite: /:ws/index.cgi?:page => /m/pages/:ws/:page
     rewrite ^/+([^/]+)/+index.cgi$ /m/page/$1/? redirect;
+    # rewrite: /(st|m)/signals/:id?args /m/signals/:id?args
+    rewrite ^/(st|m)/signals(/[^/]+)?$ /st/m/signals$2 redirect;
   }
 [% END %]
 [% END %]
