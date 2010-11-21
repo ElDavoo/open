@@ -24,7 +24,7 @@ Fetches types of events for miki signals and activities.
 sub activities {
     my $self = shift;
     return $self->events(
-        'action!' => 'edit_start,edit_cancel,watch_add,watch_delete',
+        'action!' => 'edit_start,edit_cancel,watch_add,watch_delete,signal',
         title => 'Activities',
         section => 'activities',
         @_,
@@ -40,10 +40,9 @@ sub events {
     my %event_args = (
         ($args{event_class} ? (event_class => $args{event_class}) : ()),
         ($args{action} ? (action => $args{action}) : ()),
-        ($args{signals} ? (signals => $args{signals}) : ()),
+        ($args{signals} ? (signals => $args{signals}, with_my_signals => 1) : ()),
         offset => $pagenum * $page_size,
         count => $page_size + 1,
-        with_my_signals => 1,
     );
     my $reporter = Socialtext::Events::Reporter->new(
         viewer => $viewer,
@@ -66,6 +65,7 @@ sub events {
         $base_uri = "/m/$args{section}?all=1";
         if ($args{section} eq 'activities') {
             $event_args{activity} = 'all-combined';
+            $event_args{'action!'} = 'signal';
         }
 
         $events = $reporter->get_events(\%event_args);
