@@ -29,7 +29,7 @@
 [% END %]
 
   # rewrite: /(st|m)/signals/:id?args /m/signals/:id?args
-  if ($http_user_agent ~ "WebKit|Gecko") {
+  if ($http_user_agent ~ "Gecko") {
     rewrite ^/(st|m)/signals(/[^/]+)?$ /st/m/signals$2 redirect;
   }
 
