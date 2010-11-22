@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 
 # Make sure nginx is up and running.

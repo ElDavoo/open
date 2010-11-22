@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 # @COPYRIGHT@
 
 # All of this functionality can get easily folded into File::Next,

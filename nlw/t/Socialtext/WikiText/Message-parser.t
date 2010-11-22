@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 # This test is for the parser events, not the formatting per se.
 # SEE ALSO t/formatter/signals-html.t

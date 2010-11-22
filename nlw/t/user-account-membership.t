@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 
 # This test was created to aid in refactoring the 'account_user' view into a

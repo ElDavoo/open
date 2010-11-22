@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 
 # this is _very_ similar to t/Socialtext/People/Profilephoto.

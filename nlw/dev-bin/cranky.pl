@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 use warnings FATAL => 'all';
 use strict;

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 
 # NOTE: Test::Socialtext now cleans up all ceq jobs after each run.

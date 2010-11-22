@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 #
 # st-apache       Start the Apache HTTP server with Socialtext configuration.

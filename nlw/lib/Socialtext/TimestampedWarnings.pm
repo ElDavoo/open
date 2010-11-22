@@ -21,7 +21,7 @@ Socialtext::TimestampedWarnings
 
 =head1 SYNOPSIS
 
-    #!/usr/bin/perl
+    #!/usr/bin/env perl
     use Socialtext::TimestampedWarnings;
     warn "oh shi...";
     warn "mul","ti","ple"," args"; # warns "multiple args"
