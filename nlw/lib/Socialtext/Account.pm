@@ -64,7 +64,9 @@ foreach my $column ( @ACCT_COLS ) {
 }
 
 with 'Socialtext::UserSetContainer' => {
-    excludes => [qw( add_account assign_role_to_account )],
+    # Moose 0.89 renamed to -excludes and -alias
+    ($Moose::VERSION >= 0.89 ? '-excludes' : 'excludes')
+        => [qw( add_account assign_role_to_account )],
 };
 
 

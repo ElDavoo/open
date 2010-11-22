@@ -126,7 +126,9 @@ has 'permissions' => (
 
 with 'Socialtext::UserSetContainer',
      'Socialtext::UserSetContained' => {
-        excludes => [qw(sorted_workspace_roles)]
+        # Moose 0.89 renamed to -excludes and -alias
+        ($Moose::VERSION >= 0.89 ? '-excludes' : 'excludes')
+            => [qw(sorted_workspace_roles)]
      };
 
 # for workspace exports:

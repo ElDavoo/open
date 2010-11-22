@@ -62,9 +62,10 @@ has $_.'_count' => (
 
 with 'Socialtext::UserSetContained',
      'Socialtext::UserSetContainer' => {
-        excludes => [qw(enable_plugin disable_plugin
-                        add_account assign_role_to_account
-        )],
+        # Moose 0.89 renamed to -excludes and -alias
+        ($Moose::VERSION >= 0.89 ? '-excludes' : 'excludes')
+            => [qw(enable_plugin disable_plugin
+                   add_account assign_role_to_account)],
      };
 sub enable_plugin { die "cannot enable a plugin for a group" }
 sub disable_plugin { die "cannot disable a plugin for a group" }
