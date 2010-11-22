@@ -58,6 +58,9 @@ sub events {
     }
     elsif ($args{followed}) {
         $base_uri = "/m/$args{section}?followed=1";
+        if ($args{section} eq 'activities') {
+            $event_args{'action!'} = 'signal';
+        }
         $events = $reporter->get_events_followed(\%event_args);
         $error = loc("There are no [_1] to display, either because you aren't following anyone yet, or the people you're following haven't created any. Visit the profiles of your colleagues, and click 'Follow this person' to start following colleagues.", $args{section}) unless @$events;
     }
