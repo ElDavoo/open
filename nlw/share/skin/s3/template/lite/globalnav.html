@@ -35,7 +35,7 @@
 
 <li>
     [% IF section == 'activities' %]
-        <a class="ui-btn-active current">[% loc('Activity') %]</a>
+        <a id="[% IF bottom %]bottom-[% END %]mobile-activities" class="ui-btn-active current">[% loc('Activity') %]</a>
     [% ELSE %]
         <a id="[% IF bottom %]bottom-[% END %]mobile-activities" href="/m/activities">[% loc('Activity') %]</a>
     [% END %]
@@ -51,7 +51,7 @@
 
 <li>
     [% IF section == 'workspaces' %]
-        <a class="ui-btn-active current">[% loc('Workspaces') %]</a>
+        <a id="[% IF bottom %]bottom-[% END %]mobile-workspace_list" class="ui-btn-active current">[% loc('Workspaces') %]</a>
     [% ELSE %]
         <a id="[% IF bottom %]bottom-[% END %]mobile-workspace_list" href="/m/workspace_list">[% loc('Workspaces') %]</a>
     [% END %]
