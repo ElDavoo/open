@@ -31,10 +31,10 @@
   if ($http_user_agent ~ "Gecko") {
       set $is_gecko 1;
   }
-  set $ua_redirect "$http_user_agent-$is_gecko";
+  set $ua_redirect "$http_user_agent-$is_gecko-$request_method";
 
   # rewrite: /(st|m)/signals/:id?args /m/signals/:id?args
-  if ($ua_redirect ~ "[% ua %].*-1$") {
+  if ($ua_redirect ~ "[% ua %].*-1-GET$") {
     rewrite ^/(st|m)/signals(/[^/]+)?$ /st/m/signals$2 redirect;
   }
 
