@@ -26,11 +26,17 @@
     # rewrite: /:ws/index.cgi?:page => /m/pages/:ws/:page
     rewrite ^/+([^/]+)/+index.cgi$ /m/page/$1/? redirect;
   }
-[% END %]
+
+  set $is_gecko 0;
+  if ($http_user_agent ~ "Gecko") {
+      set $is_gecko 1;
+  }
+  set $ua_redirect "$http_user_agent-$is_gecko";
 
   # rewrite: /(st|m)/signals/:id?args /m/signals/:id?args
-  if ($http_user_agent ~ "Gecko") {
+  if ($ua_redirect ~ "[% ua %].*-1$") {
     rewrite ^/(st|m)/signals(/[^/]+)?$ /st/m/signals$2 redirect;
   }
 
+[% END %]
 [% END %]
