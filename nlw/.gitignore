@@ -545,3 +545,5 @@ lib/Socialtext/Lite/z
 t/wikitests/google-url-proxy.wiki
 t/wikitests/signals/data_signals_assets-corner-cases.wiki
 t/Socialtext/Signal/Asset-incipient-links.t
+t/wikitests/push/link-dictionary.wiki
+t/wikitests/widgets/proxy-rss.wiki
