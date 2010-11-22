@@ -48,7 +48,7 @@ sub revision_list {
     $self->screen_template('view/page_revision_list');
     $self->render_screen(
         revision_count => $page->revision_count,
-        edit_summary_maxlength => EDIT_SUMMARY_MAXLENGTH,
+        edit_summary_maxlength => EDIT_SUMMARY_MAXLENGTH(),
         $page->all,
         page           => $page,
         display_title  => $self->html_escape( $page->title ),
@@ -102,7 +102,7 @@ sub revision_view {
         human_readable_revision => $revision,
         tags => [ $page->html_escaped_categories ],
         edit_summary => $edit_summary,
-        edit_summary_maxlength => EDIT_SUMMARY_MAXLENGTH,
+        edit_summary_maxlength => EDIT_SUMMARY_MAXLENGTH(),
         display_title    => $self->html_escape( $page->title ),
         display_title_decorator  => loc("Revision [_1]", $revision),
         print                   => $output,
