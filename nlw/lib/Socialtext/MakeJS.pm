@@ -238,6 +238,7 @@ sub _shindig_feature_to_text {
     my $feature = Socialtext::Gadgets::Features->new(
         feature_dir => "$CWD/$part->{feature_dir}",
         type => $part->{type},
+        minify => $MINIFY_JS,
     );
     my $text;
     if ($part->{shindig_feature} eq 'default') {
@@ -425,8 +426,10 @@ sub _widget_jemplate_to_text {
 sub write_compressed {
     my ($target, $text) = @_;
 
-    warn "Minifying $target...\n" if $VERBOSE;
-    $text = minify($text) if $MINIFY_JS;
+    if ($MINIFY_JS) {
+        warn "Minifying $target...\n" if $VERBOSE;
+        $text = minify($text)
+    }
 
     warn "Gzipping $target...\n" if $VERBOSE;
     my $gzipped = Compress::Zlib::memGzip($text);
