@@ -263,7 +263,7 @@ sub Add_webhooks {
             # Should only need to calculate the payload once
             unless ($payload) {
                 time_scope 'webhook_payload';
-                $payload = $p{payload_thunk}->();
+                $payload = $p{payload_thunk}->(%p);
             }
 
             Socialtext::JobCreator->insert(
