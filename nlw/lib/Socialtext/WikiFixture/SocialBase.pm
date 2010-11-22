@@ -1967,6 +1967,38 @@ sub json_response_is {
         if defined $expected_array_size;
 }
 
+=head2 json-proxy-response-is
+
+Lise json-response-is, but for json-proxy requests.
+
+| json-proxy-response-is | GET | JSON | http://ok.com | numEntries=1 | 200 |
+
+This will fetch data from ok.com using the JSON proxy. Since we are proxying
+JSON data, the JSON data in body will end up being accessible to json-path-*
+commands after the status is checked to match the value passed as $status.
+
+=cut
+
+sub json_proxy_response_is {
+    my ($self, $method, $type, $url, $opts, $status) = @_;
+    $self->{json} = undef;
+
+    my $proxy_url = "/nlw/json-proxy?url=" . uri_escape($url);
+    $proxy_url .= "&httpMethod=$method&contentType=$type";
+    $proxy_url .= '&' . $opts if $opts;
+
+    $self->get_json($proxy_url);
+    $self->code_is(200);
+    $self->json_parse;
+
+    $self->{json} = $self->{json}{$url};
+
+    $self->json_path_is('$.rc', $status);
+
+    # If we're fetching JSON, parse the json body
+    $self->json_path_parse('$.body') if $type eq 'JSON' or $type eq 'FEED';
+}
+
 =head2 json-like
 
 Confirm that the resulting body is a JSON object which is like (ignoring order
