@@ -25,11 +25,8 @@ sub deactivate_user {
     my $self = shift;
     my $user = shift;
 
-    # Delete all signals created by this user
-    my $hooks = Socialtext::WebHook->Find(creator_id => $user->user_id);
-    for my $h (@$hooks) {
-        $h->delete;
-    }
+    # Delete all webhooks created by this user
+    $_->delete for Socialtext::WebHook->Find(creator_id => $user->user_id);
 }
 
 sub signal_new {
