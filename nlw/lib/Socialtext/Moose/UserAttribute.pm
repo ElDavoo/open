@@ -5,46 +5,58 @@ use strict;
 use Moose::Exporter ();
 
 Moose::Exporter->setup_import_methods(
-    with_caller => ['has_user'],
+    $Moose::VERSION >= 0.89 # added with_meta
+        ? (with_meta => ['has_user'])
+        : (with_caller => ['has_user'])
 );
 
 sub has_user {
-    my ($class, $field, %args) = @_;
+    my ($class_or_meta, $field, %args) = @_;
     use Carp ();
     local $SIG{__WARN__} = \&Carp::cluck; # make warnings here extra-noisy
-    my $meta = Class::MOP::Class->initialize($class);
+
+    my $meta = ($Moose::VERSION >= 0.89) # added with_meta
+        ? $class_or_meta
+        : Moose::Util::find_meta($class_or_meta);
+
+    # this method moved some time after 0.72.  Makes the added attributes
+    # appear to be from where 'has_user' was invoked.
+    my $definition_context = $Moose::VERSION > 0.72
+        ? Moose::Util::_caller_info(1)
+        : Moose::_caller_info(1);
 
     my $id_field = $field.'_id';
+    my $writer = "_$id_field";
+    my $builder = "_build_$field";
+
     my $required = delete $args{required} || 0;
     my $is = delete $args{is} || 'ro';
     my $maybe = delete $args{st_maybe} || 0;
     my $weak = delete $args{weak_ref} || 0;
 
-    my $isa = 'Socialtext::User';
-    $isa = "Maybe[$isa]" if $maybe;
-    my $definition_context = Moose::_caller_info(1);
+    my $isa = $maybe ? 'Maybe[Socialtext::User]' : 'Socialtext::User';
 
-    my %id_field_args = (is => 'rw', isa => 'Int',
+    my %id_field_args = (
         definition_context => $definition_context,
-        writer => "_$id_field",
+        is => 'rw', isa => 'Int',
+        writer => $writer,
         required => $required,
     );
 
-    my %field_args = (%args,
-        definition_context => $definition_context,
+    my %field_args = (
+        %args, definition_context => $definition_context,
         is => $is, isa => $isa,
-        lazy_build => 1, weak_ref => $weak);
-
-    {
-        my $meth = "_$id_field";
-        $field_args{trigger} = sub { $_[0]->$meth($_[1]->user_id) };
-    }
+        lazy_build => 1, weak_ref => $weak,
+        # update the id field when the object field updates
+        trigger => sub { $_[0]->$writer($_[1]->user_id) }
+    );
 
     if ($required) {
-        Moose::around($class, 'BUILDARGS' => sub {
+        # force the ID field to be in sync with the construction parameter
+        $meta->add_around_method_modifier('BUILDARGS' => sub {
             my $code = shift;
             my $clazz = shift;
-            my $p = {@_};
+            my $p = ref $_[0] ? $_[0] : {@_};
             if ($p->{$field} && !$p->{$id_field}) {
                 $p->{$id_field} = $p->{$field}->user_id;
             }
@@ -52,20 +64,19 @@ sub has_user {
         });
     }
 
-    Moose::has($class, $field    => %field_args   );
-    Moose::has($class, $id_field => %id_field_args);
-
-    my $builder = sub { 
-        require Socialtext::User;
-        my $self = shift;
-        Socialtext::User->new(user_id => $self->$id_field);
-    };
-    my $method = Moose::Meta::Method->wrap(
-        name                 => "_build_$field",
-        package_name         => $class,
-        body                 => $builder,
+    my $builder_method = Moose::Meta::Method->wrap(
+        name         => $builder,
+        package_name => $meta->name,
+        body         => sub { 
+            Socialtext::User->new(user_id => $_[0]->$id_field);
+        },
     );
-    $meta->add_method("_build_$field" => $method);
+
+    require Socialtext::User;
+    $meta->add_attribute($field => %field_args);
+    $meta->add_attribute($id_field => %id_field_args);
+    $meta->add_method($builder => $builder_method);
+
     return;
 }
 
