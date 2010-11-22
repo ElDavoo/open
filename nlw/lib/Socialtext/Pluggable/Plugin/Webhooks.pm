@@ -136,6 +136,9 @@ sub _fire_page_webhooks {
     if ((@$tags_added or @$tags_deleted) and $class ne 'page.tag') {
         Socialtext::WebHook->Add_webhooks(%hook_opts, class => 'page.tag');
     }
+    if ($class eq 'page.create') {
+        Socialtext::WebHook->Add_webhooks(%hook_opts, class => 'page.update');
+    }
 }
 
 sub page_update {
