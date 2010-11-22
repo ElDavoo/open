@@ -199,6 +199,10 @@ server {
     ssl on;
     ssl_certificate [% config.ssl_base_dir %]/certs/[% config.ssl_name%].crt;
     ssl_certificate_key [% config.ssl_base_dir %]/private/[% config.ssl_name %].key;
+    [%- IF config.ssl_client_cert %]
+        ssl_client_certificate [% config.ssl_base_dir %]/certs/[% config.ssl_client_cert %].crt;
+        ssl_verify_client on;
+    [%- END %]
 
     ssl_ciphers HIGH:MEDIUM:!ADH;
     ssl_protocols SSLv3 TLSv1;

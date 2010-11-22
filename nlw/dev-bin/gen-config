@@ -602,14 +602,23 @@ sub nginx_params {
         ssl_base => $dirs{ssl_base},
         search   => [ $config{nlw_web_hostname}, $config{nlw_server_hostname} ],
     );
+    $config{ssl_client_cert} = _ssl_name(
+        ssl_base => $dirs{ssl_base},
+        search   => [ "$config{nlw_web_hostname}.client", "$config{nlw_server_hostname}.client" ],
+    );
 
     my $appconfig = Socialtext::AppConfig->new;
     $config{ssl_only} = $appconfig->ssl_only();
     $config{custom_http_port} = $appconfig->custom_http_port();
     $config{disable_mobile_redirect} = $appconfig->disable_mobile_redirect();
 
-    if ($config{ssl_only} && !$config{ssl_name}) {
-        die "Configured for SSL only, but no SSL certificate found/detected!\n";
+    if ($config{ssl_only}) {
+        die "Configured for SSL only, but no SSL certificate found/detected!\n"
+            unless $config{ssl_name};
+    }
+    else {
+        die "Client cert verification requires ssl_only setup\n"
+            if $config{ssl_client_cert};
     }
 
     return \%config;
