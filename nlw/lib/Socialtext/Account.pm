@@ -21,7 +21,7 @@ use Socialtext::l10n qw(loc);
 use Socialtext::SystemSettings qw( get_system_setting );
 use Socialtext::Skin;
 use Socialtext::Timer qw/time_scope/;
-use Socialtext::Pluggable::Adapter;
+require Socialtext::Pluggable::Adapter;
 use Socialtext::AccountLogo;
 use Socialtext::Account::Roles;
 use Socialtext::Role;
