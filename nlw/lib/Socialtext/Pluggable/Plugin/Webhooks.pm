@@ -4,6 +4,7 @@ use warnings;
 use strict;
 use Socialtext::WebHook;
 use base 'Socialtext::Pluggable::Plugin';
+use List::MoreUtils qw/all/;
 
 use constant scope => 'account';
 use constant hidden => 1; # hidden to admins
@@ -87,60 +88,86 @@ sub _fire_page_webhooks {
     my $page  = shift;
     my %p     = @_;
     my $wksp  = $p{workspace} or die "workspace is mandatory!";
+    my $tags_added = $p{tags_added} || [];
+    my $tags_deleted = $p{tags_deleted} || [];
 
-    $p{tags} ||= $page->metadata->Category;
+    my $thunk = sub {
+        my %p = @_;
+        my $editor = Socialtext::User->new(
+            email_address => $page->metadata->From);
+        my $editor_blob = {
+            id             => $editor->user_id,
+            best_full_name => $editor->best_full_name,
+        };
+        return {
+            class  => $p{class},
+            actor  => $editor_blob,
+            at     => $page->metadata->Date,
+            object => {
+                workspace => {
+                    title => $wksp->title,
+                    name  => $wksp->name,
+                },
+                id           => $page->id,
+                name         => $page->metadata->Subject,
+                uri          => $page->full_uri,
+                edit_summary => $page->edit_summary,
+                tags         => $page->metadata->Category,
+                tags_added   => $tags_added,
+                tags_deleted => $tags_deleted,
+                edit_time    => $page->metadata->Date,
+                type         => $page->metadata->Type,
+                editor       => $editor_blob,
+                create_time  => $page->original_revision->metadata->Date,
+                revision_count => $page->revision_count,
+                revision_id    => $page->revision_id,
+            }
+        };
+    };
 
-    Socialtext::WebHook->Add_webhooks(
-        class         => $class,
+    my %hook_opts = (
         account_ids   => [ $wksp->account->account_id ],
         workspace_id  => $wksp->workspace_id,
-        tags          => $p{tags},
+        tags          => $p{tags} || $page->metadata->Category,
         page_id       => $page->id,
-        payload_thunk => sub {
-            my $editor = Socialtext::User->new(
-                email_address => $page->metadata->From);
-            my $editor_blob = {
-                id             => $editor->user_id,
-                best_full_name => $editor->best_full_name,
-            };
-            return {
-                class  => $class,
-                actor  => $editor_blob,
-                at     => $page->metadata->Date,
-                object => {
-                    workspace => {
-                        title => $wksp->title,
-                        name  => $wksp->name,
-                    },
-                    id           => $page->id,
-                    name         => $page->metadata->Subject,
-                    uri          => $page->full_uri,
-                    edit_summary => $page->edit_summary,
-                    tags         => $page->metadata->Category,
-                    tags_added   => $p{tags_added} || [],
-                    tags_deleted => $p{tags_deleted} || [],
-                    edit_time    => $page->metadata->Date,
-                    type         => $page->metadata->Type,
-                    editor       => $editor_blob,
-                    create_time  => $page->original_revision->metadata->Date,
-                    revision_count => $page->revision_count,
-                    revision_id    => $page->revision_id,
-                }
-            };
-        },
+        payload_thunk => $thunk,
     );
+    Socialtext::WebHook->Add_webhooks(%hook_opts, class => $class);
+    if ((@$tags_added or @$tags_deleted) and $class ne 'page.tag') {
+        Socialtext::WebHook->Add_webhooks(%hook_opts, class => 'page.tag');
+    }
 }
 
 sub page_update {
     my ($self, $page, %p) = @_;
 
     my $class = 'page.update';
-    if ($page->revision_count == 1 or $page->restored) {
+    if ($page->revision_count == 1) {
         $class = 'page.create';
+        $p{tags_added} = $page->metadata->Category;
     }
-    if ($page->deleted) {
+    elsif ($page->deleted) {
         $class = 'page.delete';
         $p{tags} = $page->prev_revision->metadata->Category;
+    }
+    else {
+        $class = 'page.create' if $page->restored;
+
+        # Look for page tag changes
+        my %prev_tags = map { $_ => 1 } @{ $page->prev_revision->metadata->Category };
+        my %now_tags  = map { $_ => 1 } @{ $page->metadata->Category };
+
+        my (@added, @deleted);
+        for my $t (keys %prev_tags) {
+            next if $now_tags{$t};
+            push @deleted, $t;
+        }
+        for my $t (keys %now_tags) {
+            next if $prev_tags{$t};
+            push @added, $t;
+        }
+        $p{tags_added} = \@added;
+        $p{tags_deleted} = \@deleted;
     }
 
     $self->_fire_page_webhooks($class, $page, %p);

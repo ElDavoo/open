@@ -39,10 +39,10 @@
 
 | comment               | Delete a tag, verify webhook fires                    |   |
 | st-clear-jobs         |                                                       |   |
+| clear-webhook         |                                                       |   |
 | DELETE                | /data/workspaces/%%bar_workspace%%/pages/Foo/tags/baz |   |
 | code-is               | 204                                                   |   |
 | job-count             | WebHook                                               | 1 |
-| clear-webhook         |                                                       |   |
 | st-process-jobs       |                                                       |   |
 | job-count             | WebHook                                               | 0 |
 | webhook-payload-parse |                                                       |   |
@@ -50,6 +50,49 @@
 | json-like             | {"object":{"tags":[]}}                                |   |
 | json-like             | {"object":{"tags_added":[]}}                          |   |
 | json-like             | {"object":{"tags_deleted":["baz"]}}                   |   |
+
+| Comment               | Create a page with tag, verify webhook fires |          |             |          |
+| st-clear-jobs         |                                              |          |             |          |
+| clear-webhook         |                                              |          |             |          |
+| edit-page             | %%bar_workspace%%                            | Tarvunty | new content | tarvuism |
+| job-count             | WebHook                                      | 1        |             |          |
+| st-process-jobs       |                                              |          |             |          |
+| job-count             | WebHook                                      | 0        |             |          |
+| webhook-payload-parse |                                              |          |             |          |
+| json-like             | {"class":"page.tag"}                      |          |             |          |
+| json-like             | {"object":{"tags":["tarvuism"]}}                       |          |             |          |
+| json-like             | {"object":{"tags_added":["tarvuism"]}}       |          |             |          |
+| json-like             | {"object":{"tags_deleted":[]}}               |          |             |          |
+
+| Comment               | Update a page and add a tag, verify webhook fires |          |               |          |
+| st-clear-jobs         |                                                   |          |               |          |
+| clear-webhook         |                                                   |          |               |          |
+| edit-page             | %%bar_workspace%%                                 | Tarvunty | other content | octopusology |
+| job-count             | WebHook                                           | 1        |               |          |
+| st-process-jobs       |                                                   |          |               |          |
+| job-count             | WebHook                                           | 0        |               |          |
+| webhook-payload-parse |                                                   |          |               |          |
+| json-like             | {"class":"page.tag"}                              |          |               |          |
+| json-like             | {"object":{"tags":[]}}                            |          |               |          |
+| json-like             | {"object":{"tags":["tarvuism","octopusology"]}}   |          |               |          |
+| json-like             | {"object":{"tags_added":["octopusology"]}}        |          |               |          |
+| json-like             | {"object":{"tags_deleted":[]}}                    |          |               |          |
+
+| Comment               | Restore a page and add a tag at the same time           |          |                  |       |
+| st-clear-jobs         |                                                         |          |                  |       |
+| clear-webhook         |                                                         |          |                  |       |
+| delete-page           | %%bar_workspace%%                                       | Tarvunty |                  |       |
+| job-count             | WebHook                                                 | 0        |                  |       |
+| edit-page             | %%bar_workspace%%                                       | Tarvunty | restored content | hebbo |
+| job-count             | WebHook                                                 | 1        |                  |       |
+| st-process-jobs       |                                                         |          |                  |       |
+| job-count             | WebHook                                                 | 0        |                  |       |
+| webhook-payload-parse |                                                         |          |                  |       |
+| json-like             | {"class":"page.tag"}                                    |          |                  |       |
+| json-like             | {"object":{"tags":[]}}                                  |          |                  |       |
+| json-like             | {"object":{"tags":["hebbo"]}} |          |                  |       |
+| json-like             | {"object":{"tags_added":["hebbo"]}}                     |          |                  |       |
+| json-like             | {"object":{"tags_deleted":[]}}                          |          |                  |       |
 
 | comment          | Tag a page in a different workspace         |                    |                |
 | set              | ws2                                         | ws2-%%start_time%% |                |
