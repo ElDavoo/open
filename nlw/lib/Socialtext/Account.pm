@@ -18,7 +18,7 @@ use Socialtext::MultiCursor;
 use Socialtext::Validate qw( validate SCALAR_TYPE );
 use Socialtext::Log qw( st_log );
 use Socialtext::l10n qw(loc);
-use Socialtext::SystemSettings qw( get_system_setting );
+use Socialtext::SystemSettings qw(set_system_setting get_system_setting);
 use Socialtext::Skin;
 use Socialtext::Timer qw/time_scope/;
 require Socialtext::Pluggable::Adapter;
@@ -59,9 +59,10 @@ Readonly our @ACCT_COLS => qw(
 
 my %ACCT_COLS = map { $_ => 1 } @ACCT_COLS;
 
-foreach my $column ( @ACCT_COLS ) {
+foreach my $column ( grep !/^skin_name$/, @ACCT_COLS ) {
     has $column => (is => 'rw', isa => 'Any');
 }
+has 'skin_name' => (is => 'rw', isa => 'Str', lazy_build => 1);
 
 with 'Socialtext::UserSetContainer' => {
     # Moose 0.89 renamed to -excludes and -alias
@@ -104,10 +105,7 @@ sub EnsureRequiredDataIsPresent {
         $acct->enable_plugin('dashboard');
         $acct->enable_plugin('widgets');
 
-        require Socialtext::SystemSettings;
-        Socialtext::SystemSettings::set_system_setting(
-            'default-account', $acct->account_id,
-        );
+        set_system_setting('default-account', $acct->account_id);
     }
 }
 
@@ -135,8 +133,7 @@ sub EnablePluginForAll {
     while (my $account = $all->next) {
         $account->enable_plugin($plugin);
     }
-    require Socialtext::SystemSettings;
-    Socialtext::SystemSettings::set_system_setting( "$plugin-enabled-all", 1 );
+    set_system_setting( "$plugin-enabled-all", 1 );
 }
 
 sub DisablePluginForAll {
@@ -145,18 +142,10 @@ sub DisablePluginForAll {
     while (my $account = $all->next) {
         $account->disable_plugin($plugin);
     }
-    require Socialtext::SystemSettings;
-    Socialtext::SystemSettings::set_system_setting( "$plugin-enabled-all", 0 );
+    set_system_setting( "$plugin-enabled-all", 0 );
 }
 
-sub skin_name {
-    my ($self, $skin) = @_;
-
-    if (defined $skin) {
-        $self->{skin_name} = $skin;
-    }
-    return $self->{skin_name} || get_system_setting('default-skin');
-}
+sub _build_skin_name { get_system_setting('default-skin') }
 
 has 'logo' => (
     is => 'ro', isa => 'Socialtext::AccountLogo',
@@ -217,7 +206,7 @@ sub reset_skin {
     while (my $workspace = $workspaces->next) {
         $workspace->update(skin_name => '');
     }
-    return $self->{skin_name};
+    return $self->skin_name;
 }
 
 sub workspaces {
@@ -738,14 +727,11 @@ sub create {
 
 sub _enable_default_plugins {
     my $self = shift;
-    require Socialtext::SystemSettings;
     for (Socialtext::Pluggable::Adapter->plugins) {
         next unless $_->scope eq 'account';
         my $plugin = $_->name;
         $self->enable_plugin($plugin)
-            if Socialtext::SystemSettings::get_system_setting(
-                "$plugin-enabled-all"
-            );
+            if get_system_setting("$plugin-enabled-all");
     }
 
     if ($self->account_type eq 'Free 50') {

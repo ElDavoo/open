@@ -112,9 +112,10 @@ use constant real => 1;
 # Hash for quick lookup of columns
 my %COLUMNS = map { $_ => 1 } @COLUMNS;
 
-foreach my $column (@COLUMNS) {
+foreach my $column ( grep !/^skin_name$/, @COLUMNS ) {
     has $column => (is => 'rw', isa => 'Any');
 }
+has 'skin_name' => (is => 'rw', isa => 'Str', default => '');
 
 has 'permissions' => (
     is => 'rw', isa => 'Socialtext::Workspace::Permissions',
@@ -510,17 +511,6 @@ sub _update {
     }
 
     return $self;
-}
-
-sub skin_name {
-    my $self = shift;
-    my $value = shift;
-
-    if (defined $value) {
-        $self->{skin_name} = $value;
-        return $value;
-    }
-    return $self->{skin_name} || '';
 }
 
 # turn a workspace into a hash suitable for JSON and such things.
@@ -1930,13 +1920,13 @@ use constant real                       => 0;
 use constant is_plugin_enabled          => 0;
 use constant drop_breadcrumb            => undef;
 
-sub created_by_user_id { Socialtext::User->SystemUser->user_id }
+override 'new' => sub { return bless {}, __PACKAGE__ };
 
-sub new { return bless {}, __PACKAGE__ }
+sub created_by_user_id { Socialtext::User->SystemUser->user_id }
 
 sub impersonation_ok { return } # false
 
-__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
 
 __END__
