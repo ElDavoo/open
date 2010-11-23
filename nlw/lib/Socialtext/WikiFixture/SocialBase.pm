@@ -2255,6 +2255,18 @@ sub tag_page {
     }
 }
 
+sub untag_page {
+    my $self = shift;
+    my $workspace = shift;
+    my $page_name = shift;
+    my @tags = split qr/\s*,\s*/, shift(@_) || '';
+
+    for my $t (@tags) {
+        $self->delete("/data/workspaces/$workspace/pages/$page_name/tags/$t");
+        $self->code_is(204);
+    }
+}
+
 sub delete_page {
     my $self = shift;
     my $workspace = shift;
