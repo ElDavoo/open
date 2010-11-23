@@ -2243,6 +2243,18 @@ sub unwatch_page {
     ok( $code == 200, "Stopped watching $workspace/$page_name" );
 }
 
+sub tag_page {
+    my $self = shift;
+    my $workspace = shift;
+    my $page_name = shift;
+    my @tags = split qr/\s*,\s*/, shift(@_) || '';
+
+    for my $t (@tags) {
+        $self->put("/data/workspaces/$workspace/pages/$page_name/tags/$t");
+        $self->code_is(201);
+    }
+}
+
 sub delete_page {
     my $self = shift;
     my $workspace = shift;
