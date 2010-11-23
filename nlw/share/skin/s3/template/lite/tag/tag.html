@@ -6,7 +6,7 @@
     </div>
     <ul data-role="listview">
         [% FOREACH tag = tags %]
-            <li><a href="/m/tag/[% ws.name %]/[% tag | uri | html %]">[% tag | html %]</a></li>
+            <li><a href="/m/tag/[% ws.name %]/[% tag.name | uri | html %]">[% tag.name | html %]</a><span class="ui-li-count">[% tag.page_count %]</span></li>
         [% END %]
     </ul>
 [% ELSE %]
@@ -16,5 +16,6 @@
     </div>
         [% PROCESS lite/page_list.html %]
 [% END %]
+    [% PROCESS lite/paging.html %]
 [% PROCESS lite/footer.html %]
 

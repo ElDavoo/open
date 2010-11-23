@@ -296,3 +296,11 @@ li.divider {
 .ui-mobile-viewport #mobile-header .ui-btn-left {
     display: none;
 }
+
+.ui-li-count {
+    display: none;
+}
+
+.ui-mobile-viewport .ui-li-count {
+    display: inline;
+}

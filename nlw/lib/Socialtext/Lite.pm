@@ -312,20 +312,22 @@ links to all the pages in the tag.
 
 =cut 
 sub tag {
-    my $self = shift;
-    my $tag = $self->_utf8_decode(shift);
+    my ($self, %args) = @_;
+    my $tag = $self->_utf8_decode($args{tag});
 
     if ($tag) {
-        return $self->_pages_for_tag($tag);
+        return $self->_pages_for_tag(%args);
     }
     else {
-        return $self->_all_tags();
+        return $self->_all_tags(%args);
     }
 }
 
 sub _pages_for_tag {
-    my $self = shift;
-    my $tag = shift;
+    my ($self, %args) = @_;
+    my $tag = $args{tag};
+    my $pagenum = $args{pagenum} ||  0;
+    my $page_size = 20;
 
     $tag = Socialtext::Encode::ensure_is_utf8($tag);
     my $rows = Socialtext::Model::Pages->By_tag(
@@ -333,15 +335,21 @@ sub _pages_for_tag {
         workspace_id => $self->hub->current_workspace->workspace_id,
         tag          => $tag,
         order_by     => 'last_edit_time DESC',
+        limit        => $page_size+1,
+        offset       => $pagenum * $page_size,
         do_not_need_tags => 1,
     );
+    my $more = pop @$rows if @$rows > $page_size;
 
     return $self->_process_template(
         $TAG_TEMPLATE,
         title     => loc("Tag [_1]", $tag),
         section   => 'tag',
+        base_uri  => '/m/tag/'.$self->hub->current_workspace->name.'/'.$tag,
         rows      => $rows,
         tag       => $tag,
+        pagenum   => $pagenum,
+        more      => $more ? 1 : 0,
         load_row_times => sub {
             return Socialtext::Query::Plugin::load_row_times(@_);
         },
@@ -349,13 +357,29 @@ sub _pages_for_tag {
 }
 
 sub _all_tags {
-    my $self = shift;
+    my ($self, %args) = @_;
+
+    my %weighted = $self->hub->category->weight_categories;
+    my $tags = $weighted{tags};
+
+    my @rows = sort { $a->{name} cmp $b->{name} } grep {
+        $_->{page_count} > 0
+    } @$tags;
+
+    my $page_size = 20;
+    my $pagenum = $args{pagenum} ||  0;
+    @rows = @rows[($pagenum*$page_size) .. (($pagenum+1)*$page_size)];
+    my $more = pop @rows if @rows > $page_size;
+    pop @rows while @rows and !$rows[-1];
 
     return $self->_process_template(
         $TAG_TEMPLATE,
+        base_uri => '/m/tag/'.$self->hub->current_workspace->name,
         title    => loc('Tags'),
         section  => 'tags',
-        tags     => [ $self->hub->category->all ],
+        tags     => \@rows,
+        pagenum  => $pagenum,
+        more     => $more ? 1 : 0,
     );
 }
 

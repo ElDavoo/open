@@ -156,7 +156,7 @@ sub tag {
         'GET',
         sub {
             my $content = Socialtext::Lite->new( hub => $self->hub )
-                ->tag( $self->_tag_from_uri );
+                ->tag( tag => $self->_tag_from_uri, pagenum => $rest->query->param('page') );
             $rest->header(
                 -status => HTTP_200_OK,
                 -type   => 'text/html' . '; charset=UTF-8'
