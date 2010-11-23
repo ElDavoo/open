@@ -7,7 +7,7 @@ use Net::LDAP::Util qw(ldap_explode_dn);
 
 sub uses_headers {
     return qw(
-        X_SSL_CLIENT_SUBJECT_DN
+        X_SSL_CLIENT_SUBJECT
     );
 }
 
@@ -15,7 +15,7 @@ sub extract_credentials {
     my ($class, $hdrs) = @_;
 
     # Get the Subject DN from the headers, and normalize its format.
-    my $subject = $hdrs->{X_SSL_CLIENT_SUBJECT_DN};
+    my $subject = $hdrs->{X_SSL_CLIENT_SUBJECT};
     $subject =~ s{^/\s*}{}g;        # eliminate leading '/'s
     $subject =~ s{/\s*}{, }g;       # convert '/'s to ','s
     # XXX: doesn't accommodate "..., ..., .../..." (embedded slashes)
