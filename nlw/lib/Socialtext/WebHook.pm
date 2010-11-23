@@ -213,6 +213,13 @@ sub Add_webhooks {
 
             # Page specific filters
             if ($p{class} =~ m/^page\./) {
+                if (!$hcreator->is_business_admin) {
+                    # Run-time check that the user can still see this workspace
+                    my $ws = Socialtext::Workspace->new(
+                        workspace_id => $p{workspace_id});
+                    next HOOK unless $ws->has_user($hcreator);
+                }
+
                 # Filter by page_id
                 if (my $page_id = $h->details->{page_id}) {
                     next HOOK unless $page_id eq $p{page_id};

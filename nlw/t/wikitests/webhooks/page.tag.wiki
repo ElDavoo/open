@@ -1,10 +1,10 @@
 * Fixture: WebHook
 
-| standard-test-setup | foo               |     |                |
-| standard-test-setup | bar               |     |                |
-| set-business-admin  | %%bar_email_address%% | 1   |                |
-| edit-page           | %%bar_workspace%%     | Foo | Sample Content |
-| edit-page           | %%bar_workspace%%     | Bar | Sample Content |
+| standard-test-setup | foo                   | no-group |                |
+| standard-test-setup | bar                   | no-group |                |
+| set-business-admin  | %%bar_email_address%% | 1        |                |
+| edit-page           | %%bar_workspace%%     | Foo      | Sample Content |
+| edit-page           | %%bar_workspace%%     | Bar      | Sample Content |
 
 | new-webhook-testcase |  Tag a page, verify no webhooks fired |
 | PUT | /data/workspaces/%%bar_workspace%%/pages/Foo/tags/bar | | |
@@ -97,7 +97,6 @@
 
 | new-webhook-testcase        | Use a page_tag filtered webhook                          |               |                                     |
 | add-webhook    | page.tag                                                 | http://tou.ch | {"details":{"tag":"fubar"}} |
-| job-count      | WebHook                                                  | 0             |                                     |
 | PUT            | /data/workspaces/%%bar_workspace%%/pages/Foo/tags/foobar |               |                                     |
 | code-is        | 201                                                      |               |                                     |
 | job-count      | WebHook                                                  | 0             |                                     |
@@ -118,12 +117,24 @@
 | code-is        | 201                                                      |               |                                     |
 | job-count      | WebHook                                                  | 1             |                                     |
 
-| new-webhook-testcase            | Create a workspace_id filtered webhook as a non-badmin     |               |                                         |
-| set-business-admin | %%bar_email_address%%                                      | 0             |                                         |
-| add-webhook        | page.tag                                                   | http://tou.ch | {"workspace_id":"%%bar_workspace_id%%"} |
-| PUT                | /data/workspaces/%%bar_workspace%%/pages/Foo/tags/bazafraz |               |                                         |
-| code-is            | 201                                                        |               |                                         |
-| job-count          | WebHook                                                    | 1             |                                         |
+| new-webhook-testcase | Create a workspace_id filtered webhook as a non-badmin        |                   |                                         |
+| set-business-admin   | %%bar_email_address%%                                         | 0                 |                                         |
+| http-user-pass       | %%bar_email_address%%                                         | %%bar_password%%  |                                         |
+| add-webhook          | page.tag                                                      | http://tou.ch     | {"workspace_id":"%%bar_workspace_id%%"} |
+| PUT                  | /data/workspaces/%%bar_workspace%%/pages/Foo/tags/bazafraz    |                   |                                         |
+| code-is              | 201                                                           |                   |                                         |
+| job-count            | WebHook                                                       | 1                 |                                         |
+| st-clear-jobs        |                                                               |                   |                                         |
+| comment              | Now remove the user from that workspace                       |                   |                                         |
+| remove-member        | %%bar_email_address%%                                         | %%bar_workspace%% |                                         |
+| add-member           | %%foo_email_address%%                                         | %%bar_workspace%% |                                         |
+| http-user-pass       | %%foo_email_address%%                                         | %%foo_password%%  |                                         |
+| PUT                  | /data/workspaces/%%bar_workspace%%/pages/Foo/tags/bizzlefrizz |                   |                                         |
+| code-is              | 201                                                           |                   |                                         |
+| job-count            | WebHook                                                       | 0                 |                                         |
+| add-member           | %%bar_email_address%%                                         | %%bar_workspace%% |                                         |
+| remove-member        | %%foo_email_address%%                                         | %%bar_workspace%% |                                         |
+| http-user-pass       | %%bar_email_address%%                                         | %%bar_password%%  |                                         |
 
 | new-webhook-testcase   | Creating an workspace_id filtered webhook as a user not in that workspace |                                                                                  |
 | POST_json | /data/webhooks                                                            | {"class":"page.tag","url":"http://tou.ch","workspace_id":"%%foo_workspace_id%%"} |
