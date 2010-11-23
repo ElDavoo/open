@@ -28,18 +28,12 @@
 | json-parse |
 | json-array-size | 6 |
 
-| Comment | reg users can see things they are a member of or are addressed to |
+| Comment | reg users cannot see things they are a member of or are addressed to, unless they are the creator |
 | http-user-pass | %%foo_username%% | %%foo_password%% |
 | GET_json | /data/webhooks |
 | code-is | 200 |
 | json-parse |
-| json-array-size | 4 |
-
-| remove-user-from-group | %%foo_username%% | %%foo_group_id%% |
-| GET_json | /data/webhooks |
-| code-is | 200 |
-| json-parse |
-| json-array-size | 3 |
+| json-array-size | 0 |
 
 | set-business-admin | %%foo_username%% | 1 |
 | GET_json | /data/webhooks |

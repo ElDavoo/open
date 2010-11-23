@@ -38,17 +38,7 @@ sub GET_json {
     my $is_badmin = $user->is_business_admin;
     HOOK: for my $h (@$hooks) {
         unless ($is_badmin or $h->creator_id == $user->user_id) {
-            my $can_see = 0;
-            for my $container (qw/workspace account group/) {
-                my $c = $h->$container();
-                next unless $c;
-                next HOOK unless $c->has_user($user);
-                $can_see++;
-            }
-            if (my $user_id = $h->details->{to_user}) {
-                $can_see++ if $user_id == $user->user_id;
-            }
-            next HOOK unless $can_see;
+            next;
         }
         push @$result, $h->to_hash;
     }
