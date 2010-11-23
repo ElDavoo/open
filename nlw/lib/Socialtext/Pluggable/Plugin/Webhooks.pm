@@ -17,8 +17,6 @@ sub register {
     $self->add_hook("nlw.user.deactivate"   => \&deactivate_user);
     $self->add_hook("nlw.signal.new"        => \&signal_new);
     $self->add_hook("nlw.page.update"       => \&page_update);
-    $self->add_hook("nlw.page.tags_added"   => \&pagetags_changed);
-    $self->add_hook("nlw.page.tags_deleted" => \&pagetags_changed);
     $self->add_hook("nlw.page.watch"        => \&page_watch);
     $self->add_hook("nlw.page.unwatch"      => \&page_unwatch);
 }
@@ -173,11 +171,6 @@ sub page_update {
     }
 
     $self->_fire_page_webhooks($class, $page, %p);
-}
-
-sub pagetags_changed {
-    my $self = shift;
-    $self->_fire_page_webhooks('page.tag', @_);
 }
 
 sub page_watch {
