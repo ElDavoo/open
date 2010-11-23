@@ -1,0 +1,51 @@
+| *Comment* | Test Case: Explore 2 This Test is Contingent Upon Being Run in a Dev-Env that has the new Demo server wiki imports |  |
+
+| *Comment* | Test Case: Explore 2 Login as Demo User |  |
+| set | demo_user | socialtextdemo1@gmail.com |
+| set | demo_pass | socialtext |
+| set | refresh_link | http://refresh.%%start_time%%.com |
+| set | refresh_tag | refresh_tag_%%start_time%% |
+| st-logoutin | %%demo_user%% | %%demo_pass%% |
+
+| *Comment* | Test Case: Explore 2 Verify Explore page with no filters |  |
+| open_ok | /st/explore |  |
+| wait_for_element_present_ok | link=Great Trends in Solar Panels and Solar Energy | 30000 |
+| wait_for_element_present_ok | link=Project Status Review | 30000 |
+
+| *Comment* | Test Case: Explore 2 Test Date Filter |  |
+| open_ok | /?action=workspaces_listall |  |
+| open_ok | /st/explore#everything/all/2010-10-15/2010-11-03/any/any/any/any/recency |  |
+| wait_for_element_present_ok | link=Holiday Party Page | 30000 |
+| wait_for_element_present_ok | link=home_solar_panels.jpg | 30000 |
+| wait_for_element_present_ok | link=BigCo | 30000 |
+| wait_for_element_not_present_ok | link=Great Trends in Solar Panels and Solar Energy | 30000 |
+| wait_for_element_not_present_ok | link=Project Status Review | 30000 |
+
+| *Comment* | Test Case: Explore 2 Test Group Filter |  |
+| open_ok | /?action=workspaces_listall |  |
+| open_ok | /st/explore#everything/all/anytime/now/3/any/any/any/recency |  |
+| wait_for_element_present_ok | link=Application Developers Webinar | 30000 |
+| wait_for_element_present_ok | link=Team Calendar | 30000 |
+| wait_for_element_present_ok | link=Sunpowered Systems | 30000 |
+| wait_for_element_not_present_ok | link=Great Trends in Solar Panels and Solar Energy | 30000 |
+| wait_for_element_not_present_ok | link=Project Status Review | 30000 |
+
+| *Comment* | Test Case: Explore 2 Test People Filter |  |
+| open_ok | /?action=workspaces_listall |  |
+| open_ok | /st/explore#everything/34/anytime/now/any/any/any/any/recency |  |
+| wait_for_element_present_ok | link=Alternative Energy Tech | 30000 |
+| wait_for_element_present_ok | link=Inventory Status Report | 30000 |
+| wait_for_element_present_ok | link=Bay Area Home Owners Association | 30000 |
+| wait_for_element_not_present_ok | link=Great Trends in Solar Panels and Solar Energy | 30000 |
+| wait_for_element_not_present_ok | link=Project Status Review | 30000 |
+
+| *Comment* | Test Case: Explore 2 Test Refresh Button CAN PAUSE BE REPLACED WITH PROCESS JOBS? |  |
+| open_ok | /?action=workspaces_listall |  |
+| open_ok | /st/explore |  |
+| http-user-pass | %%demo_user%% | %%demo_pass%% |
+| post-signal | %%refresh_link%% #%%refresh_tag%% |  |
+| pause | 30000 |  |
+| wait_for_element_not_present_ok | link=%%refresh_link%% | 30000 |
+| wait_for_element_present_ok | explore-refresh | 30000 |
+| click_ok | explore-refresh |  |
+| wait_for_element_present_ok | link=%%refresh_link%% | 30000 |
