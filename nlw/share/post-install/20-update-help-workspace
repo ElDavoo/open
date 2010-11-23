@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 SHAREDIR=`dirname $0`/../l10n/help/

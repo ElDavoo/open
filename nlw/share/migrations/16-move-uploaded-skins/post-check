@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Strip off the path info to find the name of this script
 SCRIPT_NAME=`perl -e 'my $n = shift; $n =~ s#.+/##; print $n' $0`

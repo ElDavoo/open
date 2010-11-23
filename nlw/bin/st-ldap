@@ -151,7 +151,7 @@ into Socialtext can be performed by creating a cronjob which executes
 "C<st-ldap load-users>" on a regular basis.  Easiest way to do this is to
 create F</etc/cron.daily/st-ldap-load-users> as follows:
 
-  #!/bin/sh
+  #!/bin/bash
   st-ldap load-users
 
 =item B<list-groups>

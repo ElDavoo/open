@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 # These are now *also* run as part of the libsocialtext-reports-perl post-install.

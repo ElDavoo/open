@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 DB=`st-config echo db_name`
 DB_USER=`st-config echo db_user`

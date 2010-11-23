@@ -1,2 +1,2 @@
-#!/bin/sh
+#!/bin/bash
 exit 0; # This migration is done asynchronously by TheCeq, so nothing to check here.

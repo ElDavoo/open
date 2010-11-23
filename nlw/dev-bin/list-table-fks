@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # @COPYRIGHT@
 table=${1:-users} # users default
 db=${2:-${PGDATABASE}}

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # @COPYRIGHT@
 
 rm -rf `bin/st-config echo formatter_cache_dir`
