@@ -19,8 +19,6 @@ sub GET_json {
     my $user = $self->rest->user;
     my $is_badmin = $user->is_business_admin;
     HOOK: for my $h (@$all_hooks) {
-        use Data::Dumper;
-        warn Dumper $h;
         unless ($is_badmin or $h->creator_id == $user->user_id) {
             my $can_see = 0;
             for my $container (qw/workspace account group/) {
