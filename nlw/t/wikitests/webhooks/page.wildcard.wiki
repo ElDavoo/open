@@ -44,7 +44,7 @@
 | st-process-jobs       |                         |               |                                         |
 | job-count             | WebHook                 | 0             |                                         |
 | webhook-payload-parse |                         |               |                                         |
-| json-like             | {"class":"page.update"} |               |                                         |
+| Bn-like             | {"class":"page.update"} |               |                                         |
 | json-like             | {"object":{"tags_added":["Tarvu"]}} |               |                                         |
 
 | new-webhook-testcase  | page.* fires for untag                |               |                                         |

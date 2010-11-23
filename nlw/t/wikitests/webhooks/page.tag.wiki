@@ -24,18 +24,18 @@
 | st-process-jobs       |                                                                                     |               |                                         |
 | job-count             | WebHook                                                                             | 0             |                                         |
 | webhook-payload-parse |                                                                                     |               |                                         |
-| json-like             | {"class":"page.tag"}                                                                |               |                                         |
-| json-like             | {"actor":{"id":%%user_id%%,"best_full_name":"bar user %%start_time%%"}}             |               |                                         |
-| json-like             | {"object":{"editor":{"id":%%user_id%%,"best_full_name":"bar user %%start_time%%"}}} |               |                                         |
-| json-like             | {"object":{"workspace":{"title":"%%bar_workspace%%","name":"%%bar_workspace%%"}}}   |               |                                         |
-| json-like             | {"object":{"id":"foo"}}                                                             |               |                                         |
-| json-like             | {"object":{"name":"Foo"}}                                                           |               |                                         |
-| json-like             | {"object":{"uri":"%%browser_url%%/%%bar_workspace%%/index.cgi?foo"}}                |               |                                         |
-| json-like             | {"object":{"edit_summary":""}}                                                      |               |                                         |
-| json-like             | {"object":{"tags":["baz"]}}                                                         |               |                                         |
-| json-like             | {"object":{"tags_added":["baz"]}}                                                   |               |                                         |
-| json-like             | {"object":{"tags_deleted":[]}}                                                      |               |                                         |
-| json-like             | {"object":{"type":"wiki"}}                                                          |               |                                         |
+| json-like             | [{"class":"page.tag"}]                                                                |               |                                         |
+| json-like             | [{"actor":{"id":%%user_id%%,"best_full_name":"bar user %%start_time%%"}}]             |               |                                         |
+| json-like             | [{"object":{"editor":{"id":%%user_id%%,"best_full_name":"bar user %%start_time%%"}}}] |               |                                         |
+| json-like             | [{"object":{"workspace":{"title":"%%bar_workspace%%","name":"%%bar_workspace%%"}}}]   |               |                                         |
+| json-like             | [{"object":{"id":"foo"}}]                                                             |               |                                         |
+| json-like             | [{"object":{"name":"Foo"}}]                                                           |               |                                         |
+| json-like             | [{"object":{"uri":"%%browser_url%%/%%bar_workspace%%/index.cgi?foo"}}]                |               |                                         |
+| json-like             | [{"object":{"edit_summary":""}}]                                                      |               |                                         |
+| json-like             | [{"object":{"tags":["baz"]}}]                                                         |               |                                         |
+| json-like             | [{"object":{"tags_added":["baz"]}}]                                                   |               |                                         |
+| json-like             | [{"object":{"tags_deleted":[]}}]                                                      |               |                                         |
+| json-like             | [{"object":{"type":"wiki"}}]                                                          |               |                                         |
 
 | comment               | Delete a tag, verify webhook fires                    |   |
 | st-clear-jobs         |                                                       |   |
@@ -46,10 +46,10 @@
 | st-process-jobs       |                                                       |   |
 | job-count             | WebHook                                               | 0 |
 | webhook-payload-parse |                                                       |   |
-| json-like             | {"class":"page.tag"}                                  |   |
-| json-like             | {"object":{"tags":[]}}                                |   |
-| json-like             | {"object":{"tags_added":[]}}                          |   |
-| json-like             | {"object":{"tags_deleted":["baz"]}}                   |   |
+| json-like             | [{"class":"page.tag"}]                                  |   |
+| json-like             | [{"object":{"tags":[]}}]                                |   |
+| json-like             | [{"object":{"tags_added":[]}}]                          |   |
+| json-like             | [{"object":{"tags_deleted":["baz"]}}]                   |   |
 
 | Comment               | Create a page with tag, verify webhook fires |          |             |          |
 | st-clear-jobs         |                                              |          |             |          |
@@ -59,10 +59,10 @@
 | st-process-jobs       |                                              |          |             |          |
 | job-count             | WebHook                                      | 0        |             |          |
 | webhook-payload-parse |                                              |          |             |          |
-| json-like             | {"class":"page.tag"}                      |          |             |          |
-| json-like             | {"object":{"tags":["tarvuism"]}}                       |          |             |          |
-| json-like             | {"object":{"tags_added":["tarvuism"]}}       |          |             |          |
-| json-like             | {"object":{"tags_deleted":[]}}               |          |             |          |
+| json-like             | [{"class":"page.tag"}]                      |          |             |          |
+| json-like             | [{"object":{"tags":["tarvuism"]}}]                       |          |             |          |
+| json-like             | [{"object":{"tags_added":["tarvuism"]}}]       |          |             |          |
+| json-like             | [{"object":{"tags_deleted":[]}}]               |          |             |          |
 
 | Comment               | Update a page and add a tag, verify webhook fires |          |               |          |
 | st-clear-jobs         |                                                   |          |               |          |
@@ -72,11 +72,11 @@
 | st-process-jobs       |                                                   |          |               |          |
 | job-count             | WebHook                                           | 0        |               |          |
 | webhook-payload-parse |                                                   |          |               |          |
-| json-like             | {"class":"page.tag"}                              |          |               |          |
-| json-like             | {"object":{"tags":[]}}                            |          |               |          |
-| json-like             | {"object":{"tags":["tarvuism","octopusology"]}}   |          |               |          |
-| json-like             | {"object":{"tags_added":["octopusology"]}}        |          |               |          |
-| json-like             | {"object":{"tags_deleted":[]}}                    |          |               |          |
+| json-like             | [{"class":"page.tag"}]                              |          |               |          |
+| json-like             | [{"object":{"tags":[]}}]                            |          |               |          |
+| json-like             | [{"object":{"tags":["tarvuism","octopusology"]}}]   |          |               |          |
+| json-like             | [{"object":{"tags_added":["octopusology"]}}]        |          |               |          |
+| json-like             | [{"object":{"tags_deleted":[]}}]                    |          |               |          |
 
 | Comment               | Restore a page and add a tag at the same time           |          |                  |       |
 | st-clear-jobs         |                                                         |          |                  |       |
@@ -88,11 +88,11 @@
 | st-process-jobs       |                                                         |          |                  |       |
 | job-count             | WebHook                                                 | 0        |                  |       |
 | webhook-payload-parse |                                                         |          |                  |       |
-| json-like             | {"class":"page.tag"}                                    |          |                  |       |
-| json-like             | {"object":{"tags":[]}}                                  |          |                  |       |
-| json-like             | {"object":{"tags":["hebbo"]}} |          |                  |       |
-| json-like             | {"object":{"tags_added":["hebbo"]}}                     |          |                  |       |
-| json-like             | {"object":{"tags_deleted":[]}}                          |          |                  |       |
+| json-like             | [{"class":"page.tag"}]                                    |          |                  |       |
+| json-like             | [{"object":{"tags":[]}}]                                  |          |                  |       |
+| json-like             | [{"object":{"tags":["hebbo"]}}] |          |                  |       |
+| json-like             | [{"object":{"tags_added":["hebbo"]}}]                     |          |                  |       |
+| json-like             | [{"object":{"tags_deleted":[]}}]                          |          |                  |       |
 
 | comment          | Tag a page in a different workspace         |                    |                |
 | set              | ws2                                         | ws2-%%start_time%% |                |

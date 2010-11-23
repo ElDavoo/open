@@ -21,6 +21,10 @@ sub do_work {
     my $payload = ref($args->{payload}) ? encode_json($args->{payload})
                                         : $args->{payload};
 
+    # "box-car" webhook calls into an array, even though we currently
+    # send them out one at a time
+    $payload = '[' . $payload . ']';
+
     # For testing
     if (my $file = $ENV{ST_WEBHOOK_TO_FILE}) {
         open(my $fh, ">>$file");
