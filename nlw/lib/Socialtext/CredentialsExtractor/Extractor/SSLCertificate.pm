@@ -25,6 +25,10 @@ sub extract_credentials {
         map  { $_->{$user_field} }
         grep { exists $_->{$user_field} }
         @{$fields};
+    unless ($username) {
+        my $msg = "invalid certificate subject or no '$user_field' field found";
+        return $class->invalid_creds(reason => $msg);
+    }
 
     my $user_id = $class->username_to_user_id($username);
     return $class->valid_creds(user_id => $user_id) if ($user_id);
