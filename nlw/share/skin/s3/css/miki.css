@@ -169,6 +169,10 @@ div.clear {
     padding-left: 5px;
 }
 
+.ui-mobile-viewport .nav-hint {
+    display: none;
+}
+
 .ui-mobile-viewport .permalink {
     text-decoration: underline;
 }
