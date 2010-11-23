@@ -15,7 +15,7 @@ sub extract_credentials {
     my ($class, $hdrs) = @_;
 
     my $fields     = $class->_explode_subject($hdrs->{X_SSL_CLIENT_SUBJECT});
-    my $user_field = 'CN';
+    my $user_field = $class->_username_field();
     my ($username) =
         map  { $_->{$user_field} }
         grep { exists $_->{$user_field} }
@@ -24,6 +24,10 @@ sub extract_credentials {
     my $user_id = $class->username_to_user_id($username);
     return $class->valid_creds(user_id => $user_id) if ($user_id);
     return $class->invalid_creds(reason => "invalid username: $username");
+}
+
+sub _username_field {
+    return 'CN';
 }
 
 sub _explode_subject {
