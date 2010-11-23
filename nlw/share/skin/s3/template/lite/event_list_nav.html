@@ -1,47 +1,50 @@
-<div class="tabs">
+[% IF section == "activities" %]
+<div data-role="header" data-inline="true" data-position="inline" data-theme="c">
+  <h4>
+    [% loc('Recent Activities') %]
+  </h4>
+</div>
+[% END %]
+<div class="tabs" data-role="navbar"><ul>
     [% IF section == "activities" %]
-        [% INCLUDE conversations_tab %] |
-        [% INCLUDE followed_tab %] |
+        [% INCLUDE conversations_tab %]
+        [% INCLUDE followed_tab %]
         [% INCLUDE all_tab %]
     [% ELSIF section == "signals" %]
-        [% INCLUDE all_tab %] |
-        [% INCLUDE followed_tab %] |
+        [% INCLUDE all_tab %]
+        [% INCLUDE followed_tab %]
         [% INCLUDE mine_tab %]
     [% END %]
-</div>
+</ul></div>
 
 [% BLOCK mine_tab %]
     [% IF mine %]
-        <span class="current">[% loc("Mine") %]</span>
-        (<a href="/m/[% section %]?mine=1">[% loc("refresh") %]</a>)
+        <li><a rel="" class="ui-btn-active" href="#">[% loc("Mine") %]</a></li>
     [% ELSE %]
-        <a href="/m/[% section %]?mine=1">[% loc("Mine") %]</a>
+        <li><a rel="" href="/m/[% section %]?mine=1">[% loc("Mine") %]</a></li>
     [% END %]
 [% END %]
 
 [% BLOCK all_tab %]
     [% IF all %]
-        <span class="current">[% loc("All") %]</span>
-        (<a href="/m/[% section %]?all=1">[% loc("refresh") %]</a>)
+        <li><a rel="" class="ui-btn-active" href="#">[% loc('All') %]</a></li>
     [% ELSE %]
-        <a href="/m/[% section %]?all=1">[% loc("All") %]</a>
+        <li><a rel="" href="/m/[% section %]?all=1">[% loc("All") %]</a></li>
     [% END %]
 [% END %]
 
 [% BLOCK conversations_tab %]
     [% IF all || followed %]
-        <a href="/m/[% section %]">[% loc("My Conversations") %]</a>
+        <li><a rel="" href="/m/[% section %]">[% loc("My Conversations") %]</a></li>
     [% ELSE %]
-        <span class="current">[% loc("My Conversations") %]</span>
-        (<a href="/m/[% section %]">[% loc("refresh") %]</a>)
+        <li><a rel="" class="ui-btn-active" href="#">[% loc("My Conversations") %]</a></li>
     [% END %]
 [% END %]
 
 [% BLOCK followed_tab %]
     [% IF followed %]
-        <span class="current">[% loc('People I follow') %]</span>
-        (<a href="/m/[% section %]?followed=1">[% loc("refresh") %]</a>)
+        <li><a rel="" class="ui-btn-active" href="#">[% loc("People I follow") %]</a></li>
     [% ELSE %]
-        <a href="/m/[% section %]?followed=1">[% loc("People I follow") %]</a>
+        <li><a rel="" href="/m/[% section %]?followed=1">[% loc("People I follow") %]</a></li>
     [% END %]
 [% END %]

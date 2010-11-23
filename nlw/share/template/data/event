@@ -30,7 +30,13 @@
         [%- UNLESS miki -%]
             <span class="ago_raw" style="display:none">[% event.at %]</span>
         [%- END -%]
+        [%- IF miki && event.context.uri -%]
+            <a rel="external" style="font-weight: normal; color: #666" href="[%- event.context.uri.replace('^/st/signals', '/st/m/signals') -%]">
+        [%- END -%]
         <span class="ago"><span class="ago_text">[% ago_text(minutes_ago(event.at)) %]</span></span>
+        [%- IF miki && event.context.uri -%]
+            </a>
+        [%- END -%]
     [%- END -%]
 [%- ELSE -%]
     [%- MACRO actor GET event.actor.best_full_name %]

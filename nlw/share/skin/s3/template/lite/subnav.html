@@ -1,35 +1,40 @@
 [% IF ws %]
-    <div class="[% class %] subnav">
+    <div class="[% class %] subnav" data-role="navbar">
+    <ul>
         [% IF section == 'workspace' %]
-        <span class="current">[% ws.title %]</span>
+        <li><a class="current ui-btn-active">[% ws.title %]</a></li>
         [% ELSE %]
-        <a href="/m/page/[% ws.name %]/">[% ws.title %]</a>
+        <li><a href="/m/page/[% ws.name %]/">[% ws.title %]</a></li>
         [% END %]
         [% IF section == 'recent_changes' %]
-        | <span class="current">[% loc("What's new") %]</span>
+        <li><a class="current ui-btn-active">[% loc("What's new") %]</a></li>
         [% ELSE %]
-        | <a href="/m/changes/[% ws.name %]/">[% loc("What's New") %]</a>
+        <li><a href="/m/changes/[% ws.name %]/">[% loc("What's New") %]</a></li>
         [% END %]
         [% IF section == 'tags' %]
-        | <span class="current">[% loc('Tags') %]</span>
+        <li><a class="current ui-btn-active">[% loc('Tags') %]</a></li>
         [% ELSE %]
-        | <a href="/m/tag/[% ws.name %]/">[% loc('Tags') %]</a>
+        <li><a href="/m/tag/[% ws.name %]/">[% loc('Tags') %]</a></li>
         [% END %]
         [% IF section == 'search' %]
-        | <span class="current">[% loc('Search') %]</span>
+        <li><a class="current ui-btn-active">[% loc('Search') %]</a></li>
         [% ELSE %]
-        | <a href="/m/search/[% ws.name %]/">[% loc('Search') %]</a>
-        [% END %]
-        [% IF page AND page.metadata.Type == 'wiki' %]
-            [% IF user_can_edit_page %]
-            | <a href="/m/page/[% ws.name %]/[% page.uri %]?action=edit">[% loc('Edit') %]</a>
-            [% ELSIF user_can_join_to_edit_page %]
-            | <a href="/m/page/[% ws.name %]/[% page.uri %]?action=join_to_edit">[% loc('Join to Edit') %]</a>
-            [% END %]
-        [% END %]
-
-        [% IF cancel_edit %]
-            | <a href="/m/page/[% ws.name %]/[% cancel_edit %]">[% loc('Cancel Edit') %]</a>
+        <li><a href="/m/search/[% ws.name %]/">[% loc('Search') %]</a></li>
         [% END %]
     </div>
+        </ul>
+[% IF page AND page.metadata.Type == 'wiki' %]
+        <div data-role="header" data-position="inline" data-theme="d">
+            <h4>[% page.title %]</h4>
+            [% IF user_can_edit_page %]
+            <a data-role="button" class="ui-btn-right" data-icon="arrow-d" href="/m/page/[% ws.name %]/[% page.uri %]?action=edit">[% loc('Edit') %]</a>
+            [% ELSIF user_can_join_to_edit_page %]
+            <a data-role="button" class="ui-btn-right" data-icon="plus" href="/m/page/[% ws.name %]/[% page.uri %]?action=join_to_edit">[% loc('Join to Edit') %]</a>
+            [% END %]
+
+        [% IF cancel_edit %]
+            <a data-role="button" class="ui-btn-right" data-icon="back" href="/m/page/[% ws.name %]/[% cancel_edit %]">[% loc('Cancel') %]</a>
+        [% END %]
+        </div>
+        [% END %]
 [% END %]

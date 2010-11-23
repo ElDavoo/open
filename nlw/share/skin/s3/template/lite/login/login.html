@@ -2,15 +2,16 @@
 [%# @COPYRIGHT@ -%]
 [% PROCESS lite/html_begin.html %]
 
+<div data-role="header" data-position="inline">
+    <h4>[% loc('Socialtext Login') %]</h4>
+</div>
 <div class="content">
   [% INCLUDE 'errors_and_messages' %]
   [% INCLUDE 'authen/element/login_form' lite=1 %]
-
-  <p>
-    <a href="/m/forgot_password">[% loc("I don't know my password.") %]</a>
+  <p data-role="controlgroup">
+    <a data-role="button" href="/m/forgot_password">[% loc("I don't know my password.") %]</a>
   </p>
 
-  <hr/>
   [% INCLUDE 'lite/workspace_list/public_workspaces' %]
 </div>
 
