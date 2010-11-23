@@ -1,12 +1,21 @@
 [% IF base_uri.match('\?'); char = '&'; ELSE; char = '?'; END %]
 <div class="paging" data-role="controlgroup" data-type="horizontal" style="text-align: center">
     [% IF pagenum > 1 %]
-    <a data-icon="back" data-role="button" href="[% base_uri %]"><span class="nav-hint">&lt;&lt;&nbsp;</span>[% loc('First page') %]</a>
+    <a id="mobile-paging-first" data-icon="back" data-role="button" href="[% base_uri %]"><span class="nav-hint">&lt;&lt;&nbsp;</span>[% loc('First page') %]</a>
+    [% ELSIF pagenum > 0 %]
+    <a id="mobile-paging-first" class="nav-hint" href="[% base_uri %]"><span class="nav-hint">&lt;&lt;&nbsp;</span>[% loc('First page') %]</a>
+    [% ELSE %]
+    <span class="nav-hint">&lt;&lt;&nbsp;[% loc('First page') %]</a></span>
     [% END %]
+
     [% IF pagenum > 0 %]
-    <a data-icon="arrow-l" data-role="button" href="[% base_uri %][% char %]page=[% pagenum - 1 %]"><span class="nav-hint">&lt;&nbsp;</span>[% loc('Previous') %]</a>
+    <a id="mobile-paging-previous" data-icon="arrow-l" data-role="button" href="[% base_uri %][% char %]page=[% pagenum - 1 %]"><span class="nav-hint">&lt;&nbsp;</span>[% loc('Previous') %]</a>
+    [% ELSE %]
+    <span class="nav-hint">&lt;&nbsp;[% loc('Previous') %]</span>
     [% END %]
     [% IF more %]
-    <a data-icon="arrow-r" data-role="button" href="[% base_uri %][% char %]page=[% pagenum + 1 %]">[% loc('Next') %]<span class="nav-hint">&nbsp;&gt;</span></a>
+    <a id="mobile-paging-next" data-icon="arrow-r" data-role="button" href="[% base_uri %][% char %]page=[% pagenum + 1 %]">[% loc('Next') %]<span class="nav-hint">&nbsp;&gt;</span></a>
+    [% ELSE %]
+    <span class="nav-hint">[% loc('Next') %]&nbsp;&gt;</span>
     [% END %]
 </div>
