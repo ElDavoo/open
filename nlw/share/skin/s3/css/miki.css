@@ -169,6 +169,14 @@ div.clear {
     padding-left: 5px;
 }
 
+.ui-mobile-viewport .permalink {
+    text-decoration: underline;
+}
+
+.permalink {
+    text-decoration: none;
+}
+
 .ui-mobile-viewport .postsignal {
     text-align: center;
 }
