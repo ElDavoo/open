@@ -12,7 +12,7 @@
 
   <dl class="form">
     <dt> <label for="username">[% username_label %]</label> </dt>
-    <dd> <input id="username" name="username" type="text" size="30" value="[% username %]" /> </dd>
+    <dd> <input id="username" name="username" type="text" size="30" value="[% username %]" autofocus /> </dd>
 
     <dt> <label for="password">[% loc('Password:') %]</label> </dt>
     <dd> <input id="password" name="password" type="password" size="30" value="" /> </dd>

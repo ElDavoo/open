@@ -237,3 +237,16 @@ div.clear {
     font-size: 11px;
     white-space: nowrap;
 }
+
+.ui-mobile-viewport #st-login-form dd {
+    margin-left: 5%;
+}
+
+.ui-mobile-viewport #st-login-form dd input {
+    width: 80%;
+}
+
+.ui-mobile-viewport #st-login-form .ui-checkbox {
+    margin-left: 2%;
+    width: 93%;
+}
