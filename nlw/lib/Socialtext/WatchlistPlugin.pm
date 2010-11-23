@@ -127,6 +127,12 @@ sub add_to_watchlist {
         action => 'watch_add',
         page => $page,
     });
+
+    # Ideally this should be in Socialtext::Watchlist, but it doesn't have
+    # a hub or know the actor.
+    $self->hub->pluggable->hook( 'nlw.page.watch', $page,
+        workspace => $self->hub->current_workspace,
+    );
     return '1';
 }
 
@@ -160,6 +166,9 @@ sub remove_from_watchlist {
 sub _record_watch_delete {
     my ($self, $page) = @_;
 
+    # Ideally this should be in Socialtext::Watchlist, but it doesn't have
+    # a hub or know the actor.
+
     Socialtext::Events->Record({
         event_class => 'page',
         action => 'watch_delete',
@@ -169,6 +178,10 @@ sub _record_watch_delete {
         revision_count => $page->revision_count,
         revision_id => $page->revision_id,
     });
+
+    $self->hub->pluggable->hook( 'nlw.page.unwatch', $page,
+        workspace => $self->hub->current_workspace,
+    );
 }
 
 sub watchlist {

@@ -31,7 +31,7 @@ has 'creator'   => (is => 'ro', isa => 'Maybe[Object]',  lazy_build => 1);
 has 'details'   => (is => 'ro', isa => 'HashRef', lazy_build => 1);
 
 my %valid_classes = map { $_ => 1 } (
-    (map { "page.$_" } qw/create delete update tag watch/),
+    (map { "page.$_" } qw/create delete update tag watch unwatch/),
     qw/signal.create/,
 );
 
