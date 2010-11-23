@@ -1,6 +1,6 @@
-| *Comment* | STARTING Test Case: Miki |  |
+| *Comment* | STARTING Test Case: Miki IE |  |
 
-| *Comment* | Test Case: Miki Create new account, workspace, user, add user |  |
+| *Comment* | Test Case: Miki IE Create new account, workspace, user, add user |  |
 | set | ws | `miki-ws-%%start_time%%` |
 | set | mikiacct | mikiacct-%%start_time%% |
 | set | mikiuser | `mikiuser%%start_time%%@ken.socialtext.net` |
@@ -17,7 +17,7 @@
 | enable_acct_plugin | people | %%mikiacct%% |
 | enable_acct_plugin | signals | %%mikiacct%% |
 
-| *Comment* | Test Case: Multiple Account Signal |  |
+| *Comment* | Test Case: Miki IE Multiple Account Signal |  |
 | set | othermikiacct | `othermikiacct-%%start_time%%` |
 | set | otherws | `other-miki-ws-%%start_time%%` |
 
@@ -32,8 +32,8 @@
 
 | st-logoutin | %%othermikiuser%% | %%password%% |
 
-| *Comment* | Test case: Miki Open global nav, should be signals |  |
-| open_ok | /m/ |  |
+| *Comment* | Test case: Miki IE Open global nav, should be signals |  |
+| open_ok | /m/signals |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
 | wait_for_element_visible_ok | link=Activity | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
@@ -42,7 +42,7 @@
 | add_member | %%mikiuser%% | %%otherws%% |
 | add_member | %%othermikiuser%% | %%otherws%% |
 
-| open_ok | /m/ |  |
+| open_ok | /m/signals |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
 | wait_for_element_visible_ok | link=Activity | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
@@ -52,7 +52,7 @@
 | text_like | Signals |  |
 | text_like | What are you working on? |  |
 
-| *Comment* | Test case: Miki Send Signals |  |
+| *Comment* | Test case: Miki IE Send Signals |  |
 | text_like | //body | People I follow |
 | wait_for_element_visible_ok | link=Mine | 30000 |
 | wait_for_element_visible_ok | st-signal-text | 30000 |
@@ -64,7 +64,7 @@
 | wait_for_text_present_ok | %%signal1%% | 30000 |
 | text_like | //body | qr/%%othershortuser%%.+minute.+to %%mikiacct%%.+%%signal1%%/ism |
 
-| *Comment* | Test case: Miki Send MULTI Signals |  |
+| *Comment* | Test case: Miki IE Send MULTI Signals |  |
 | select_ok | st-select-network | %%mikiacct%% (primary, 2 users) |
 | select_ok | st-select-network | %%othermikiacct%% (2 users) |
 
@@ -75,13 +75,13 @@
 | wait_for_text_present_ok | %%multisignal%% | 30000 |
 | text_like | //body | qr/%%othershortuser%%.+minute.+%%multisignal%%/ism |
 
-| *Comment* | Test case: Miki Log In as 'main' user, see global nav |  |
+| *Comment* | Test case: Miki IE Log In as 'main' user, see global nav |  |
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | click_and_wait | link=Log out |  |
 | wait_for_element_visible_ok | link=I don't know my password. | 30000 |
 | st-login | %%mikiuser%% | %%password%% |
 
-| open_ok | /m/ |  |
+| open_ok | /m/signals |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
 | wait_for_element_visible_ok | link=Activity | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
@@ -91,7 +91,7 @@
 | wait_for_element_visible_ok | st-select-network | 30000 |
 | text_like | //body | Signal to |
 
-| *Comment* | Test case: Miki As 'main' user, see old signals, send some |  |
+| *Comment* | Test case: Miki IE As 'main' user, see old signals, send some |  |
 | wait_for_element_visible_ok | link=Mine | 30000 |
 | click_and_wait | link=Mine |  |
 | text_unlike | //body | %%signal1%% |
@@ -100,7 +100,7 @@
 
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 
-| *Comment* | Test case: Miki Find 'followed' user with MIKI search, click through, follow |  |
+| *Comment* | Test case: Miki IE Find 'followed' user with MIKI search, click through, follow |  |
 | st_process_jobs | SignalIndex |  |
 | click_and_wait | link=People |  |
 | wait_for_element_visible_ok | st-search-text | 30000 |
@@ -111,7 +111,7 @@
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 | click_and_wait | link=%%othershortuser%% |  |
 
-| *Comment* | Test Case: Follow. Make %%mikiuser%% Follow %%othershortuser%% |  |
+| *Comment* | Test Case: Miki IE. Follow. Make %%mikiuser%% Follow %%othershortuser%% |  |
 | wait_for_element_visible_ok | link=Follow | 30000 |
 | click_and_wait | link=Follow |  |
 | wait_for_element_visible_ok | link=Stop following | 30000 |
@@ -119,7 +119,7 @@
 | wait_for_element_visible_ok | link=Follow | 30000 |
 | click_and_wait | link=Follow |  |
 | wait_for_element_visible_ok | link=Stop following | 30000 |
-| open_ok | /m/ |  |
+| open_ok | /m/signals |  |
 
 | st_process_jobs | PersonIndex |
 | pause | 30000 |  |
@@ -127,9 +127,9 @@
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 | text_like | People I follow |  |
 
-| include | [Test Case: Miki Pagination] |  |
+| include | [Test Case: Miki IE. Pagination] |  |
 
-| *Comment* | Test case: Miki Click 'Workspaces' in global nav |  |
+| *Comment* | Test case: Miki IE. Click 'Workspaces' in global nav |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
 | click_and_wait | link=Workspaces |  |
 | wait_for_element_visible_ok | link=Activity | 30000 |
@@ -142,7 +142,7 @@
 | text_like | Hello, %%short_mikiuser%% |  |
 | text_like | Workspaces you belong to: |  |
 
-| *Comment* | Test case: Miki Click 'Activity' in global nav |  |
+| *Comment* | Test case: Miki IE. Click 'Activity' in global nav |  |
 | click_and_wait | link=Activity |  |
 | wait_for_element_visible_ok | link=All | 30000 |
 | wait_for_element_visible_ok | link=People I follow | 30000 |
@@ -151,7 +151,7 @@
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | text_like | My Conversations |  |
 
-| *Comment* | Test case: Miki Click 'All' within 'Activity' in global nav |  |
+| *Comment* | Test case: Miki IE. Click 'All' within 'Activity' in global nav |  |
 | click_and_wait | Link=All |  |
 | wait_for_element_visible_ok | link=People I follow | 30000 |
 | wait_for_element_visible_ok | link=refresh | 30000 |
@@ -160,7 +160,7 @@
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | text_like | All |  |
 
-| *Comment* | Test case: Miki Click 'People I follow' within 'Activity' in global nav |  |
+| *Comment* | Test case: Miki IE. Click 'People I follow' within 'Activity' in global nav |  |
 | click_and_wait | link=People I follow |  |
 | wait_for_element_visible_ok | link=My Conversations | 30000 |
 | wait_for_element_visible_ok | link=refresh | 30000 |
@@ -169,13 +169,13 @@
 | text_like | People I follow |  |
 | click_and_wait | link=My Conversations |  |
 
-| *Comment* | Test Case: Miki change enabled-ness, see different global nav |  |
+| *Comment* | Test Case: Miki IE. change enabled-ness, see different global nav |  |
 | disable-acct-plugin | signals | %%mikiacct%% |
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | click_and_wait | link=Log out |  |
 | wait_for_element_visible_ok | link=I don't know my password. | 30000 |
 | st-login | %%mikiuser%% | %%password%% |
-| open_ok | /m/ |  |
+| open_ok | /m/signals |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
 | click_and_wait | link=Workspaces |  |
 | wait_for_element_visible_ok | link=%%ws%% | 30000 |
@@ -188,22 +188,22 @@
 | click_and_wait | link=Log out |  |
 | wait_for_element_visible_ok | link=I don't know my password. | 30000 |
 
-| *Comment* | Test Case: Miki traditional Miki verification as %%username%% |  |
+| *Comment* | Test Case: Miki IE. traditional Miki verification as %%username%% |  |
 | st-login | %%username%% | %%password%% |
 | open_ok | /%%workspace%%/ |  |
 
-| *Comment* | Test Case: Miki create test blog for capitalization test |  |
+| *Comment* | Test Case: Miki IE. create test blog for capitalization test |  |
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=Create New Blog |  |
 | type_ok | weblog_title | Caps Test Blog %%start_time%% |
 | click_and_wait | link=Save |  |
 
-| *Comment* | Test Case: Miki Open the blog with caps |  |
+| *Comment* | Test Case: Miki IE. Open the blog with caps |  |
 | open_ok | /m/tag/%%workspace%%/Caps Test Blog %%start_time%% Blog |  |
 | text_like | link=First Post in Caps Test Blog %%start_time%% Blog | First Post in Caps Test Blog %%start_time%% Blog |
 | text_like | Recent changes in tag: Caps Test Blog %%start_time%% Blog |  |
 
-| *Comment* | Test Case: Miki Open the blog without caps |  |
+| *Comment* | Test Case: Miki IE. Open the blog without caps |  |
 | open_ok | /m/tag/%%workspace%%/caps test blog %%start_time%% blog |  |
 | text_like | link=First Post in Caps Test Blog %%start_time%% Blog | First Post in Caps Test Blog %%start_time%% Blog |
 | text_like | Recent changes in tag: caps test blog %%start_time%% blog |  |
@@ -214,9 +214,9 @@
 | click_and_wait | link=First Post in Caps Test Blog %%start_time%% Blog |  |
 | text_like | This is the first post in Caps Test Blog %%start_time%% Blog |  |
 
-| *Comment* | Test Case: Miki TEARDOWN |  |
+| *Comment* | Test Case: Miki IE. TEARDOWN |  |
 | st-process-jobs |  |  |
 | st-admin | delete_workspace --no-export --w %%ws%% | has been deleted |
 | st-admin | delete_workspace --no-export --w %%otherws%% | has been deleted |
 
-| *Comment* | Test Case: Miki COMPLETED |  |
+| *Comment* | Test Case: Miki IE. COMPLETED |  |
