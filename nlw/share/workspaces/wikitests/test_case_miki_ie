@@ -127,7 +127,7 @@
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 | text_like | People I follow |  |
 
-| include | [Test Case: Miki IE. Pagination] |  |
+| include | [Test Case: Miki Pagination IE] |  |
 
 | *Comment* | Test case: Miki IE. Click 'Workspaces' in global nav |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
@@ -140,13 +140,13 @@
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | text_like | Workspaces |  |
 | text_like | Hello, %%short_mikiuser%% |  |
-| text_like | Workspaces you belong to: |  |
+| text_like | My Workspaces |  |
+| text_like | %%ws%% |  |
 
 | *Comment* | Test case: Miki IE. Click 'Activity' in global nav |  |
 | click_and_wait | link=Activity |  |
 | wait_for_element_visible_ok | link=All | 30000 |
 | wait_for_element_visible_ok | link=People I follow | 30000 |
-| wait_for_element_visible_ok | link=refresh | 30000 |
 | wait_for_element_visible_ok | link=People | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | text_like | My Conversations |  |
@@ -154,7 +154,6 @@
 | *Comment* | Test case: Miki IE. Click 'All' within 'Activity' in global nav |  |
 | click_and_wait | Link=All |  |
 | wait_for_element_visible_ok | link=People I follow | 30000 |
-| wait_for_element_visible_ok | link=refresh | 30000 |
 | wait_for_element_visible_ok | link=My Conversations | 30000 |
 | wait_for_element_visible_ok | link=People | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
@@ -163,7 +162,6 @@
 | *Comment* | Test case: Miki IE. Click 'People I follow' within 'Activity' in global nav |  |
 | click_and_wait | link=People I follow |  |
 | wait_for_element_visible_ok | link=My Conversations | 30000 |
-| wait_for_element_visible_ok | link=refresh | 30000 |
 | wait_for_element_visible_ok | link=People | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | text_like | People I follow |  |
@@ -181,9 +179,7 @@
 | wait_for_element_visible_ok | link=%%ws%% | 30000 |
 | text_like | Workspaces |  |
 | text_like | Hello, %%short_mikiuser%% |  |
-| text_like | Workspaces you belong to: |  |
-| text_like | You have free access to view and |  |
-| text_like | contribute to any of these public wikis: |  |
+| text_like | My Workspaces |  |
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | click_and_wait | link=Log out |  |
 | wait_for_element_visible_ok | link=I don't know my password. | 30000 |
@@ -201,12 +197,11 @@
 | *Comment* | Test Case: Miki IE. Open the blog with caps |  |
 | open_ok | /m/tag/%%workspace%%/Caps Test Blog %%start_time%% Blog |  |
 | text_like | link=First Post in Caps Test Blog %%start_time%% Blog | First Post in Caps Test Blog %%start_time%% Blog |
-| text_like | Recent changes in tag: Caps Test Blog %%start_time%% Blog |  |
+
 
 | *Comment* | Test Case: Miki IE. Open the blog without caps |  |
 | open_ok | /m/tag/%%workspace%%/caps test blog %%start_time%% blog |  |
 | text_like | link=First Post in Caps Test Blog %%start_time%% Blog | First Post in Caps Test Blog %%start_time%% Blog |
-| text_like | Recent changes in tag: caps test blog %%start_time%% blog |  |
 
 | *Comment* | Test Case: Miki |  |
 | wait_for_element_visible_ok | link=What's New | 30000 |

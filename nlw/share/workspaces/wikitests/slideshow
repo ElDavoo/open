@@ -626,8 +626,8 @@ Lightbox screens:
 | pause | %%pt%% |  |
 
 | *Comment* | Set up to SEE Miki in standard browser |  |
-| open_ok | /m |  |
 | include | [MikiShow] |  |
+| include | [MikiShowIE] |  |
 
 | include | [ControlShow] |  |
 | include | [PaginateShow] |  |

@@ -3,16 +3,12 @@
 
 | set_default | pt | 5000 | defaults to five seconds |
 
-
-| open_ok | /st/dashboard/ |  |
-| wait_for_element_visible_ok | link=Mobile | 30000 |
-| click_and_wait | link=Mobile |  |
+| wait_for_element_visible_ok | link=Workspaces | 30000 |
 
 | *Comment* | SEE MIKI Home |
-| wait_for_element_visible_ok | link=Workspaces | 30000 |
 | pause | %%pt%% |
-| clickAndWait | link=Workspaces |
 
+| clickAndWait | link=Workspaces |
 | *Comment* | SEE MIKI Workspace List |
 | pause | %%pt%% |
 

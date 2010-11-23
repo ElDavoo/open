@@ -88,7 +88,7 @@
 
 | *Comment* | Test case: Miki Pagination IE - Page Two |  |
 | wait_for_element_visible_ok | link=Next > | 30000 |
-| click_and_wait | link=Next page > |  |
+| click_and_wait | link=Next > |  |
 | wait_for_element_visible_ok | link=%%baseusername%%21 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%30 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%35 | 30000 |
@@ -126,7 +126,7 @@
 
 | *Comment* | Test case: Miki Pagination IE - Back to page 1 |  |
 | wait_for_element_visible_ok | link=<< First page | 30000 |
-| click_and_wait | link=First page |  |
+| click_and_wait | link=<< First page |  |
 | wait_for_element_visible_ok | link=%%baseusername%%01 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%05 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%06 | 30000 |
