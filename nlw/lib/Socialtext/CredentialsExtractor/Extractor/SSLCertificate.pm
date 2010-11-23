@@ -14,7 +14,12 @@ sub uses_headers {
 sub extract_credentials {
     my ($class, $hdrs) = @_;
 
-    my $fields     = $class->_explode_subject($hdrs->{X_SSL_CLIENT_SUBJECT});
+    # Decline processing unless we've got a Client-Side-SSL Cert to use.
+    my $subject = $hdrs->{X_SSL_CLIENT_SUBJECT};
+    return unless $subject;
+
+    # Get the Username out of the Certificate Subject.
+    my $fields     = $class->_explode_subject($subject);
     my $user_field = $class->_username_field();
     my ($username) =
         map  { $_->{$user_field} }
@@ -33,6 +38,7 @@ sub _username_field {
 sub _explode_subject {
     my $class   = shift;
     my $subject = shift;
+
     $subject =~ s{^/\s*}{}g;        # eliminate leading '/'s
     $subject =~ s{/\s*}{, }g;       # convert '/'s to ','s
     # XXX: doesn't accommodate "..., ..., .../..." (embedded slashes)
