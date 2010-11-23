@@ -87,30 +87,13 @@ Readonly my $FORGOT_PASSWORD_TEMPLATE => 'lite/forgot_password/forgot_password.h
 Creates a new Socialtext::Lite object. If no hub is passed, the Socialtext::Lite
 object will be unable to perform.
 
-=cut
-sub new {
-    my $class = shift;
-    my %p     = @_;
-
-    $class = ref($class) || $class;
-
-    my $self = bless {}, $class;
-
-    $self->{hub} = $p{hub};
-
-    return $self;
-}
-
 =head2 hub
 
 Returns the hub that will be used to find classes and data. Currently
 only an accessor.
 
 =cut
-sub hub {
-    my $self = shift;
-    return $self->{hub};
-}
+has 'hub' => (is => 'rw', isa => 'Socialtext::Hub', required => 1);
 
 =head2 login()
 
@@ -522,7 +505,9 @@ sub _get_attachments {
     return \@attachments;
 }
 
+__PACKAGE__->meta->make_immutable(inline_constructor => 1);
 1;
+__END__
 
 =head1 AUTHOR
 
@@ -536,6 +521,3 @@ This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
 =cut
-
-__PACKAGE__->meta->make_immutable;
-
