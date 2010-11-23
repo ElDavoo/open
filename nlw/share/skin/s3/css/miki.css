@@ -169,10 +169,13 @@ div.clear {
     padding-left: 5px;
 }
 
+.ui-mobile-viewport .postsignal {
+    text-align: center;
+}
+
 .postsignal {
     padding: 5px;
     border-bottom: 1px solid #666;
-    text-align: center;
 }
 .postsignal form {
     padding: 0;
@@ -249,4 +252,19 @@ div.clear {
 .ui-mobile-viewport #st-login-form .ui-checkbox {
     margin-left: 2%;
     width: 93%;
+}
+
+.tabs ul, .tabs li, .paging a {
+    display: inline;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+.ui-mobile-viewport .tabs ul, .ui-mobile-viewport .tabs li, .ui-mobile-viewport .paging a {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+h4 {
+    margin: 0;
 }
