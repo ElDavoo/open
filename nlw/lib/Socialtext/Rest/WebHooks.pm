@@ -15,10 +15,28 @@ sub GET_json {
     my $self = shift;
 
     my $result = [];
-    my $all_hooks = Socialtext::WebHook->All;
+    my $hooks;
+    if (my $class = $self->rest->query->param('class')) {
+        if ($class =~ m/^(?:signal|page)$/) {
+            $class .= '%';
+        }
+        else {
+            eval {
+                Socialtext::WebHook->ValidateWebHookClass($class);
+            };
+            if ($@) {
+                $self->rest->header( -status => HTTP_400_Bad_Request );
+                return $@;
+            }
+        }
+        $hooks = Socialtext::WebHook->Find(class => $class);
+    }
+    else {
+        $hooks = Socialtext::WebHook->All;
+    }
     my $user = $self->rest->user;
     my $is_badmin = $user->is_business_admin;
-    HOOK: for my $h (@$all_hooks) {
+    HOOK: for my $h (@$hooks) {
         unless ($is_badmin or $h->creator_id == $user->user_id) {
             my $can_see = 0;
             for my $container (qw/workspace account group/) {

@@ -97,7 +97,8 @@ sub Find {
     my (@bind, @where);
     for my $field (qw/class creator_id account_id workspace_id group_id/) {
         if (my $val = $args{$field}) {
-            push @where, "$field = ?";
+            my $op = $val =~ m/%/ ? 'like' : '=';
+            push @where, "$field $op ?";
             push @bind, $val;
 
             if ($field eq 'class' and $args{wildcard}) {
@@ -143,12 +144,19 @@ sub _new_from_db {
     return $class->new($hashref);
 }
 
+sub ValidateWebHookClass {
+    my $pkg_class = shift;
+    my $class = shift;
+
+    die "'$class' is not a valid webhook class.\n"
+        unless $valid_classes{$class};
+}
+
 sub Create {
     my $class = shift;
     my %args  = @_;
 
-    die "'$args{class}' is not a valid webhook class.\n"
-        unless $valid_classes{$args{class}};
+    $class->ValidateWebHookClass($args{class});
 
     my $h = $class->new(
         %args,

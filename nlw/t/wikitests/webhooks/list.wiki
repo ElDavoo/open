@@ -1,13 +1,10 @@
-* Fixture: SocialRest
+* Fixture: WebHook
 
-| st-clear-jobs |
-| clear-webhooks |
 | standard-test-setup | foo |
 | standard-test-setup | bar |
 | set-business-admin | %%bar_username%% | 1 |
 
-Create a bunch of webhooks, make sure permissions are correct.
-
+| new-webhook-testcase | Create a bunch of webhooks, make sure permissions are correct. |
 | add-webhook | page.tag | http://tou.ch |
 | set-from-header | global_hook_url | Location |
 | add-webhook | signal.create | http://tou.ch |
@@ -75,3 +72,76 @@ User Deactivation
 | code-is | 200 |
 | json-parse |
 | json-array-size | 0 |
+
+
+| new-webhook-testcase | Listing by class |               |
+| http-user-pass | %%foo_username%% | %%foo_password%% |
+| set-business-admin | %%foo_username%% | 1 |
+| add-webhook          | page.*           | http://tou.ch |
+| add-webhook          | page.create      | http://tou.ch |
+| add-webhook          | page.update      | http://tou.ch |
+| add-webhook          | page.tag         | http://tou.ch |
+| add-webhook          | page.delete      | http://tou.ch |
+| add-webhook          | page.watch       | http://tou.ch |
+| add-webhook          | page.unwatch     | http://tou.ch |
+| add-webhook          | signal.create    | http://tou.ch |
+
+| GET_json        | /data/webhooks |
+| code-is         | 200            |
+| json-parse      |                |
+| json-array-size | 8              |
+
+| GET_json        | /data/webhooks?class=page |
+| code-is         | 200            |
+| json-parse      |                |
+| json-array-size | 7              |
+
+| GET_json        | /data/webhooks?class=page.* |
+| code-is         | 200            |
+| json-parse      |                |
+| json-array-size | 1              |
+
+| GET_json        | /data/webhooks?class=page.create |
+| code-is         | 200            |
+| json-parse      |                |
+| json-array-size | 1              |
+
+| GET_json        | /data/webhooks?class=page.update |
+| code-is         | 200            |
+| json-parse      |                |
+| json-array-size | 1              |
+
+| GET_json        | /data/webhooks?class=page.tag |
+| code-is         | 200            |
+| json-parse      |                |
+| json-array-size | 1              |
+
+| GET_json        | /data/webhooks?class=page.tag |
+| code-is         | 200            |
+| json-parse      |                |
+| json-array-size | 1              |
+
+| GET_json        | /data/webhooks?class=page.delete |
+| code-is         | 200            |
+| json-parse      |                |
+| json-array-size | 1              |
+
+| GET_json        | /data/webhooks?class=page.watch |
+| code-is         | 200            |
+| json-parse      |                |
+| json-array-size | 1              |
+
+| GET_json        | /data/webhooks?class=page.unwatch |
+| code-is         | 200            |
+| json-parse      |                |
+| json-array-size | 1              |
+
+| GET_json        | /data/webhooks?class=signal |
+| code-is         | 200            |
+| json-parse      |                |
+| json-array-size | 1              |
+
+| GET_json        | /data/webhooks?class=signal.create |
+| code-is         | 200            |
+| json-parse      |                |
+| json-array-size | 1              |
