@@ -266,17 +266,29 @@ div.clear {
     width: 93%;
 }
 
-.tabs ul, .tabs li, .paging a {
+.tabs ul, .tabs li, .subnav ul, .subnav li, .paging a {
     display: inline;
     padding-left: 3px;
     padding-right: 3px;
 }
 
-.ui-mobile-viewport .tabs ul, .ui-mobile-viewport .tabs li, .ui-mobile-viewport .paging a {
+.ui-mobile-viewport .tabs ul, .ui-mobile-viewport .tabs li,
+.ui-mobile-viewport .subnav ul, .ui-mobile-viewport .subnav li,
+.ui-mobile-viewport .paging a {
     padding-left: 0px;
     padding-right: 0px;
 }
 
 h4 {
     margin: 0;
+}
+
+li.divider {
+    list-style: none;
+    margin-left: -20px;
+    font-weight: bold;
+}
+
+.ui-mobile-viewport li.divider {
+    margin-left: 0;
 }

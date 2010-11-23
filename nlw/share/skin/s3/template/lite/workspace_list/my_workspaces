@@ -2,7 +2,7 @@
 [%# vim: set et sts=2 sw=2: %]
 [% IF my_workspaces AND (my_workspaces.size > 0)%]
   <ul data-role="listview">
-    <li data-role="list-divider">[% loc('My Workspaces') %]</li>
+    <li class="divider" data-role="list-divider">[% loc('My Workspaces') %]</li>
     [% FOREACH ws IN my_workspaces %]
       <li><a href="/m/page/[% ws.0 | html %]/">[% ws.1 | html %]</a></li>
     [% END %]

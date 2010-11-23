@@ -11,9 +11,9 @@
     </ul>
 [% ELSE %]
         [% SET escaped_str = tag | html %]
-    <ul data-role="listview">
-        <li data-role="list-divider">[% loc("Tag: [_1]", escaped_str) %]</li>
-    </ul>
+    <div data-role="header" data-inline="true" data-position="inline" data-theme="d">
+    <h4>[% loc("Tag: [_1]", escaped_str) %]</h4>
+    </div>
         [% PROCESS lite/page_list.html %]
 [% END %]
 [% PROCESS lite/footer.html %]
