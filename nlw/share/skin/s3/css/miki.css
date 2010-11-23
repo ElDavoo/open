@@ -292,3 +292,7 @@ li.divider {
 .ui-mobile-viewport li.divider {
     margin-left: 0;
 }
+
+.ui-mobile-viewport #mobile-header .ui-btn-left {
+    display: none;
+}

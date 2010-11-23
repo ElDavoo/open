@@ -1,8 +1,8 @@
 [% USE decorate %] 
 [% IF bottom %]
-<div data-role="footer" class="tabs">
+<div id="mobile-footer" data-role="footer" class="tabs">
 [% ELSE %]
-<div data-role="header" class="tabs">
+<div id="mobile-header" data-role="header" class="tabs">
 [% END %]
 <div class="[% IF bottom %]bottom[% END %]" data-role="navbar" style="min-height: 34px">
 <ul>
@@ -17,9 +17,11 @@
 [% ELSE %]
 
     [% IF bottom %]
+<div id="mobile-bottom-logout">
 <li>
     <a rel="external" href="/nlw/submit/logout?redirect_to=/m/login">[% loc('Log out') %]</a>
 </li>
+</div>
 [% ELSE %]
 <li><div style="background: #17417F; height: 34px"><table border=0 height="34" width="100%"><tr><td valign="middle">
         <img src="[% skin_uri('images/miki-logo.png') %]" style="max-width: 98%; max-height: 26px; ">
