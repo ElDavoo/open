@@ -1,5 +1,8 @@
 package Socialtext::l10n::I18N::xq;
+
 use utf8;
+use strict;
+use warnings;
 use base 'Locale::Maketext';
 
 our %Lexicon = ( _AUTO => 1 );

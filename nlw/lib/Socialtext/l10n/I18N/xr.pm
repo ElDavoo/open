@@ -1,4 +1,7 @@
 package Socialtext::l10n::I18N::xr;
+
+use strict;
+use warnings;
 use base 'Locale::Maketext';
 
 our %Lexicon = ( _AUTO => 1 );
