@@ -22,11 +22,10 @@ sub clear_webhook {
 
 sub _get_webhook_contents {
     my $self = shift;
-    my $contents = '__NO CONTENT!__';
     if (-f $self->webhook_file) {
-        $contents = get_contents_utf8($self->webhook_file);
+        return get_contents_utf8($self->webhook_file);
     }
-    return $contents;
+    return '';
 }
 
 sub webhook_like {
@@ -48,11 +47,14 @@ sub webhook_unlike {
 sub webhook_payload_parse {
     my $self = shift;
     my $contents = $self->_get_webhook_contents;
+    unless ($contents) {
+        fail "No webhook was received, can't parse contents!";
+        return;
+    }
     $contents =~ s/^URI:.+$//m;
     my $json = decode_json($contents);
     ok $self->{json} = $json, "JSON parsed";
 }
-
 
 around 'st_process_jobs' => sub {
     my $orig = shift;
@@ -60,6 +62,16 @@ around 'st_process_jobs' => sub {
 
     local $ENV{ST_WEBHOOK_TO_FILE} = $self->webhook_file;
     return $self->$orig(@_);
+};
+
+sub new_webhook_testcase {
+    my $self = shift;
+
+    $self->st_clear_jobs;
+    $self->clear_webhook;
+    $self->clear_webhooks;
+
+    $self->comment(@_);
 };
 
 1;
