@@ -2223,6 +2223,26 @@ sub edit_page {
     }
 }
 
+sub watch_page {
+    my $self = shift;
+    my $workspace = shift;
+    my $page_name = shift;
+
+    $self->get("/$workspace/?action=add_to_watchlist;page=$page_name");
+    my $code = $self->{http}->response->code;
+    ok( $code == 200, "Watched $workspace/$page_name" );
+}
+
+sub unwatch_page {
+    my $self = shift;
+    my $workspace = shift;
+    my $page_name = shift;
+
+    $self->get("/$workspace/?action=remove_from_watchlist;page=$page_name");
+    my $code = $self->{http}->response->code;
+    ok( $code == 200, "Stopped watching $workspace/$page_name" );
+}
+
 sub delete_page {
     my $self = shift;
     my $workspace = shift;
