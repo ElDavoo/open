@@ -129,10 +129,18 @@ sub _fire_page_webhooks {
         page_id       => $page->id,
         payload_thunk => $thunk,
     );
-    Socialtext::WebHook->Add_webhooks(%hook_opts, class => $class);
-    if ((@$tags_added or @$tags_deleted) and $class ne 'page.tag') {
+
+    # Main hook will also call the wildcard
+    Socialtext::WebHook->Add_webhooks(
+        %hook_opts, 
+        wildcard => 'page.*',
+        class => $class,
+    );
+
+    if (@$tags_added or @$tags_deleted) {
         Socialtext::WebHook->Add_webhooks(%hook_opts, class => 'page.tag');
     }
+
     if ($class eq 'page.create') {
         Socialtext::WebHook->Add_webhooks(%hook_opts, class => 'page.update');
     }

@@ -31,7 +31,7 @@ has 'creator'   => (is => 'ro', isa => 'Maybe[Object]',  lazy_build => 1);
 has 'details'   => (is => 'ro', isa => 'HashRef', lazy_build => 1);
 
 my %valid_classes = map { $_ => 1 } (
-    (map { "page.$_" } qw/create delete update tag watch unwatch/),
+    (map { "page.$_" } qw/create delete update tag watch unwatch */),
     qw/signal.create/,
 );
 
@@ -99,6 +99,11 @@ sub Find {
         if (my $val = $args{$field}) {
             push @where, "$field = ?";
             push @bind, $val;
+
+            if ($field eq 'class' and $args{wildcard}) {
+                $where[-1] = "($where[-1] OR class = ?)";
+                push @bind, $args{wildcard};
+            }
         }
     }
 
@@ -171,7 +176,7 @@ sub Add_webhooks {
 
     my $payload;
     eval {
-        my $hooks = $class->Find( class => $p{class} );
+        my $hooks = $class->Find( class => $p{class}, wildcard => $p{wildcard} );
         HOOK: for my $h (@$hooks) {
             my $hcreator = $h->creator;
             for my $container (qw/account group/) {
