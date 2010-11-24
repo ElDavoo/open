@@ -69,10 +69,12 @@ sub init {
     $self->{pushd_port}         = Socialtext::HTTP::Ports->pushd_port();
 
     if (_is_wikiwyg()  ) {
+        $self->{miki_signal_disclaimer} = 'Post to';
         $self->{miki_signal_text} = 'Post to';
         $self->{miki_signal_submit} = '//a[@aria-label="submit"]';
         $self->{st_mobile_account_select} = 'mobile_network';
     } else {
+        $self->{miki_signal_disclaimer} = 'Signal to';
         $self->{miki_signal_text} = 'What are you working on?';
         $self->{miki_signal_submit} = 'st-signal-submit';
         $self->{st_mobile_account_select} = 'st-select-network';
