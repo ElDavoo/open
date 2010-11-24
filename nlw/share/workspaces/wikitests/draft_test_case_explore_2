@@ -3,18 +3,20 @@
 | *Comment* | Test Case: Explore 2 Login as Demo User |  |
 | set | demo_user | socialtextdemo1@gmail.com |
 | set | demo_pass | socialtext |
+| set | group | Engineering |
+| set | group_prefix | Engin |
+| set | group_suffix | eering |
+| set | person | Caroline Sheppard |
+| set | person_prefix | Caroline |
+| set | person_suffix | Sheppard |
 | set | refresh_link | http://refresh.%%start_time%%.com |
 | set | refresh_tag | refresh_tag_%%start_time%% |
 | st-logoutin | %%demo_user%% | %%demo_pass%% |
 
-| *Comment* | Test Case: Explore 2 Verify Explore page with no filters |  |
-| open_ok | /st/explore |  |
-| wait_for_element_present_ok | link=Great Trends in Solar Panels and Solar Energy | 30000 |
-| wait_for_element_present_ok | link=Project Status Review | 30000 |
-
 | *Comment* | Test Case: Explore 2 Test Date Filter |  |
-| open_ok | /?action=workspaces_listall |  |
 | open_ok | /st/explore#everything/all/2010-10-15/2010-11-03/any/any/any/any/recency |  |
+| wait_for_text_present_ok | TODAY | 30000 |
+| wait_for_element_visible_ok | //a[contains(text(),'mention')] | 30000 |
 | wait_for_element_present_ok | link=Holiday Party Page | 30000 |
 | wait_for_element_present_ok | link=home_solar_panels.jpg | 30000 |
 | wait_for_element_present_ok | link=BigCo | 30000 |
@@ -23,7 +25,13 @@
 
 | *Comment* | Test Case: Explore 2 Test Group Filter |  |
 | open_ok | /?action=workspaces_listall |  |
-| open_ok | /st/explore#everything/all/anytime/now/3/any/any/any/recency |  |
+| open_ok | /st/explore |  |
+| wait_for_text_present_ok | TODAY | 30000 |
+| wait_for_element_visible_ok | //a[contains(text(),'mention')] | 30000 |
+| wait_for_element_visible_ok | //div[@class='filterSection networks']/input | 30000 |
+| type_lookahead_ok | //div[@class='filterSection networks']/input | %%group_prefix%% |
+| wait_for_element_visible_ok | //a[@class='lookaheadItem' and contains(text(),'%%group_suffix%%')] | 10000 |
+| click_ok | //a[@class='lookaheadItem' and contains(text(),'%%group_suffix%%')] | 10000 |
 | wait_for_element_present_ok | link=Application Developers Webinar | 30000 |
 | wait_for_element_present_ok | link=Team Calendar | 30000 |
 | wait_for_element_present_ok | link=Sunpowered Systems | 30000 |
@@ -32,20 +40,31 @@
 
 | *Comment* | Test Case: Explore 2 Test People Filter |  |
 | open_ok | /?action=workspaces_listall |  |
-| open_ok | /st/explore#everything/34/anytime/now/any/any/any/any/recency |  |
+| open_ok | /st/explore |  |
+| wait_for_text_present_ok | TODAY | 30000 |
+| wait_for_element_visible_ok | //a[contains(text(),'mention')] | 30000 |
+| wait_for_element_visible_ok | //div[@class='filterSection people']/input | 30000 |
+| type_lookahead_ok | //div[@class='filterSection people']/input | %%person_prefix%% |
+| wait_for_element_visible_ok | //a[@class='lookaheadItem' and contains(text(),'%%person_suffix%%')] | 10000 |
+| click_ok | //a[@class='lookaheadItem' and contains(text(),'%%person_suffix%%')] | 10000 |
 | wait_for_element_present_ok | link=Alternative Energy Tech | 30000 |
 | wait_for_element_present_ok | link=Inventory Status Report | 30000 |
 | wait_for_element_present_ok | link=Bay Area Home Owners Association | 30000 |
 | wait_for_element_not_present_ok | link=Great Trends in Solar Panels and Solar Energy | 30000 |
 | wait_for_element_not_present_ok | link=Project Status Review | 30000 |
 
-| *Comment* | Test Case: Explore 2 Test Refresh Button CAN PAUSE BE REPLACED WITH PROCESS JOBS? |  |
+| *Comment* | Test Case: Explore 2 Test Refresh Button |  |
 | open_ok | /?action=workspaces_listall |  |
 | open_ok | /st/explore |  |
+| wait_for_text_present_ok | TODAY | 30000 |
+| wait_for_element_visible_ok | //a[contains(text(),'mention')] | 30000 |
 | http-user-pass | %%demo_user%% | %%demo_pass%% |
 | post-signal | %%refresh_link%% #%%refresh_tag%% |  |
-| pause | 30000 |  |
-| wait_for_element_not_present_ok | link=%%refresh_link%% | 30000 |
-| wait_for_element_present_ok | explore-refresh | 30000 |
+| pause | 3000 |  |
+| st_process_jobs | SignalIndex |  |
+| wait_for_element_visible_ok | explore-refresh | 30000 |
+
+| *Comment* | Test Case: Explore 2 Test must wait at least 30 seconds |  |
+| pause | 45000 |  |
 | click_ok | explore-refresh |  |
-| wait_for_element_present_ok | link=%%refresh_link%% | 30000 |
+| wait_for_element_visible_ok | link=%%refresh_link%% | 30000 |
