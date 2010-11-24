@@ -1111,6 +1111,18 @@ sub st_uneditable_ok {
     ok !$self->is_editable($locator), "$locator is not editable";
 }
 
+sub st_mobile_account_select_ok {
+    my ($self, $accountdesc) = @_;
+    if ($self->_is_wikiwyg()) { 
+        $self->wait_for_element_present_ok("link=$accountdesc",30000);
+        $self->click_ok("link=$accountdesc");
+        $self->wait_for_element_visible_ok("link=$accountdesc");
+     } else {
+        $self->wait_for_element_visible_ok($self->{st_mobile_account_select}, 30000);
+        $self->select_ok($self->{st_mobile_account_select}, $accountdesc);
+     }
+}
+
 sub _click_user_row {
     my ($self, $email, $method_name, $click_col) = @_;
     my $sel = $self->{selenium};
