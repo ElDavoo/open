@@ -10,22 +10,24 @@
         <script src="/static/skin/common/javascript/jquery-1.4.4.min.js"></script>
         <script>
         $(document).bind("mobileinit", function(){
+            // Disable Ajax link transitions under Selenium.
+            var isSelenium = (
+                (typeof seleniumAlert != 'undefined' && seleniumAlert)
+                || (typeof Selenium != 'undefined' && Selenium)
+                || ((typeof window.top != 'undefined' && window.top)
+                    && (window.top.selenium_myiframe
+                        || window.top.seleniumLoggingFrame)
+                || ((typeof window.top.opener != 'undefined' && window.top.opener)
+                    && (window.top.opener.selenium_myiframe
+                        || window.top.opener.seleniumLoggingFrame))
+                )
+            );
+
             $.extend($.mobile, {
                 defaultTransition: 'fade',
                 ajaxFormsEnabled: false,
+                ajaxLinksEnabled: !isSelenium,
                 gradeA: function(){
-                    // Disable Ajax transitions under Selenium.
-                    if (
-                            (typeof seleniumAlert != 'undefined' && seleniumAlert)
-                            || (typeof Selenium != 'undefined' && Selenium)
-                            || ((typeof window.top != 'undefined' && window.top)
-                                && (window.top.selenium_myiframe
-                                    || window.top.seleniumLoggingFrame)
-                            || ((typeof window.top.opener != 'undefined' && window.top.opener)
-                                && (window.top.opener.selenium_myiframe
-                                    || window.top.opener.seleniumLoggingFrame))
-                            )
-                        ) { return false; }
                     return(
                         $.support.mediaquery
                             && ($.browser.webkit || $.browser.mozilla)
