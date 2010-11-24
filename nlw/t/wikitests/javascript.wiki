@@ -1,0 +1,15 @@
+
+* Fixture: SocialRest
+
+# JS API
+
+# jquery
+| get        | /js/jquery-1.4.2.js              |                            |
+| body-like  | jQuery JavaScript Library v1.4.2 |                            |
+| has-header | content-disposition              | filename="jquery-1.4.2.js" |
+
+# push-client.js
+| get        | /js/push-client.js       |                           |
+| body-like  | PushClient.prototype = { |                           |
+| has-header | content-disposition      | filename="push-client.js" |
+
