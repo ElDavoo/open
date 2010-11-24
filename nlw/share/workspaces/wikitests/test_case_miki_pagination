@@ -80,53 +80,51 @@
 | wait_for_element_visible_ok | link=%%baseusername%%20 | 30000 |
 | wait_for_element_not_present_ok | link=%%baseusername%%21 | 5000 |
 | wait_for_element_not_present_ok | link=%%baseusername%%41 | 5000 |
-| wait_for_element_visible_ok | link=Next page >> | 30000 |
-| wait_for_element_not_present_ok | link=<< Previous page | 5000 |
-| wait_for_element_not_present_ok | link=First page | 5000 |
-| text_like | //body | Next page >> |
-| text_like | //body | First page |
+| wait_for_element_visible_ok | mobile-paging-next | 30000 |
+| wait_for_element_not_present_ok | mobile-paging-previous | 5000 |
+| wait_for_element_not_present_ok | mobile-paging-first | 5000 |
+
 
 | *Comment* | Test case: Miki Pagination - Page Two |  |
-| wait_for_element_visible_ok | link=Next page >> | 30000 |
-| click_and_wait | link=Next page >> |  |
+| wait_for_element_visible_ok | mobile-paging-next | 30000 |
+| click_and_wait | mobile-paging-next |  |
 | wait_for_element_visible_ok | link=%%baseusername%%21 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%30 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%35 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%40 | 30000 |
 | wait_for_element_not_present_ok | link=%%baseusername%%01 | 5000 |
 | wait_for_element_not_present_ok | link=%%baseusername%%41 | 5000 |
-| wait_for_element_visible_ok | link=Next page >> | 30000 |
-| wait_for_element_visible_ok | link=<< Previous page | 30000 |
-| wait_for_element_visible_ok | link=First page | 30000 |
+| wait_for_element_visible_ok | mobile-paging-next | 30000 |
+| wait_for_element_visible_ok | mobile-paging-previous | 30000 |
+| wait_for_element_visible_ok | mobile-paging-first | 30000 |
 
 | *Comment* | Test case: Miki Pagination - Page Three |  |
-| wait_for_element_visible_ok | link=Next page >> | 30000 |
-| click_and_wait | link=Next page >> |  |
+| wait_for_element_visible_ok | mobile-paging-next | 30000 |
+| click_and_wait | mobile-paging-next |  |
 | wait_for_element_visible_ok | link=%%baseusername%%41 | 30000 |
 | wait_for_element_not_present_ok | link=%%baseusername%%01 | 5000 |
 | wait_for_element_not_present_ok | link=%%baseusername%%21 | 5000 |
 | wait_for_element_not_present_ok | link=%%baseusername%%30 | 5000 |
 | wait_for_element_not_present_ok | link=%%baseusername%%35 | 5000 |
 | wait_for_element_not_present_ok | link=%%baseusername%%40 | 5000 |
-| wait_for_element_not_present_ok | link=Next page >> | 5000 |
-| text_like | //body | Next page >> |
-| wait_for_element_visible_ok | link=First page | 30000 |
+| wait_for_element_not_present_ok | mobile-paging-next | 5000 |
+| wait_for_element_visible_ok | mobile-paging-first | 30000 |
 
 | *Comment* | Test case: Miki Pagination - Back to Page 2 |  |
-| wait_for_element_visible_ok | link=<< Previous page | 30000 |
-| click_and_wait | link=<< Previous page |  |
+| wait_for_element_visible_ok | mobile-paging-previous | 30000 |
+| click_and_wait | mobile-paging-previous |  |
 | wait_for_element_visible_ok | link=%%baseusername%%21 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%30 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%35 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%40 | 30000 |
 | wait_for_element_not_present_ok | link=%%baseusername%%01 | 5000 |
 | wait_for_element_not_present_ok | link=%%baseusername%%41 | 5000 |
-| wait_for_element_visible_ok | link=Next page >> | 30000 |
-| wait_for_element_visible_ok | link=<< Previous page | 30000 |
+| wait_for_element_visible_ok | mobile-paging-next | 30000 |
+| wait_for_element_visible_ok | mobile-paging-previous | 30000 |
 
 | *Comment* | Test case: Miki Pagination - Back to page 1 |  |
-| wait_for_element_visible_ok | link=First page | 30000 |
-| click_and_wait | link=First page |  |
+| wait_for_element_visible_ok | mobile-paging-first | 30000 |
+| click_and_wait | mobile-paging-first |  |
 | wait_for_element_visible_ok | link=%%baseusername%%01 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%05 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%06 | 30000 |
@@ -134,8 +132,6 @@
 | wait_for_element_visible_ok | link=%%baseusername%%20 | 30000 |
 | wait_for_element_not_present_ok | link=%%baseusername%%21 | 5000 |
 | wait_for_element_not_present_ok | link=%%baseusername%%41 | 5000 |
-| wait_for_element_visible_ok | link=Next page >> | 30000 |
-| wait_for_element_not_present_ok | link=<< Previous page | 5000 |
-| wait_for_element_not_present_ok | link=First page | 5000 |
-| text_like | //body | Next page >> |
-| text_like | //body | First page |
+| wait_for_element_visible_ok | mobile-paging-next | 30000 |
+| wait_for_element_not_present_ok | mobile-paging-previous | 5000 |
+| wait_for_element_not_present_ok | mobile-paging-first | 5000 |

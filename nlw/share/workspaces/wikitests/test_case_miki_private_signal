@@ -20,6 +20,7 @@
 | st-logoutin | %%miki_user_prv%% | %%password%% |  |
 
 | *Comment* | Test case: Miki Private Signal Get to other user's profile |  |
+| st_process_jobs | PersonIndex |  |
 | open_ok | /st/m/signals |  |
 | wait_for_element_visible_ok | mobile-activities | 30000 |
 | wait_for_element_not_present_ok | mobile_post | 30000 |
@@ -38,11 +39,13 @@
 
 | *Comment* | Test case: Miki Private Signal Open global nav add secondary account with signals enabled, now YES private link |  |
 | st-admin | add-member --account %%other_acct%% --e %%miki_user_prv%% | now has the role of |
+| st_process_jobs | PersonIndex |  |
 | refresh |  |  |
 | wait_for_element_visible_ok | mobile-profile-privmsg | 30000 |
 
 | *Comment* | Test case: Miki Private Signal Open global nav enable signals on primary account, see private link |  |
 | enable_acct_plugin | people | %%miki_acct_prv%% |
+| st_process_jobs | PersonIndex |  |
 | refresh |  |  |
 | wait_for_element_visible_ok | mobile-profile-privmsg | 30000 |
 

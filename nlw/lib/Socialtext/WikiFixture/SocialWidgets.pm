@@ -395,22 +395,27 @@ sub st_send_page_signal {
 
 =head2 st_type_signal 
 
-Parameters: You pass in the signal text.  
+Parameters: You pass in the signal text, followed by 1 if this is a mobile signal 
 
 =cut
 
 sub st_type_signal {
-    my ($self, $signaltosend) = @_;
-
-    my $browser = $ENV{'selenium_browser'} || 'chrome';
-    if ($browser=~/safari|chrome|firefox/ig) { #wikiwyg
+    my ($self, $signaltosend, $is_mobile) = @_;
+   
+    if ($self->_is_wikiwyg() ) { #wikiwyg
         $self->handle_command('wait_for_element_visible_ok', 'signalFrame', 5000);
         $self->handle_command('selectFrame', 'signalFrame');
         $self->handle_command('type_ok' ,'//body', $signaltosend);
         $self->handle_command('select-frame' ,'relative=parent');
-    } else { #IE. When IE is driven by Selenium, we start it without wikiwyg
-        $self->handle_command('wait_for_element_visible_ok','wikiwyg_wikitext_textarea', 5000);
-        $self->handle_command('type_ok','wikiwyg_wikitext_textarea',$signaltosend);
+     } else { #IE. When IE is driven by Selenium, we start it without wikiwyg
+         my $textbox_name;
+         if ($is_mobile) {
+             $textbox_name = 'st-signal-text';
+         } else {
+             $textbox_name = 'wikiwyg_wikitext_textarea';
+         }
+         $self->handle_command('wait_for_element_visible_ok',$textbox_name, 5000);
+         $self->handle_command('type_ok',$textbox_name,$signaltosend);
     }
 }
 

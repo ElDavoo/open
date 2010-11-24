@@ -1,5 +1,7 @@
 | *Comment* | STARTING Test Case: Miki |  |
 
+* Fixture: SocialWidgets
+
 | *Comment* | Test Case: Miki Create new account, workspace, user, add user |  |
 | set | ws | `miki-ws-%%start_time%%` |
 | set | mikiacct | mikiacct-%%start_time%% |
@@ -37,7 +39,7 @@
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
 | wait_for_element_visible_ok | link=Activity | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
-| text_unlike | //body | Signal to |
+| text_unlike | //body | %%miki_signal_disclaimer%% |
 
 | add_member | %%mikiuser%% | %%otherws%% |
 | add_member | %%othermikiuser%% | %%otherws%% |
@@ -46,30 +48,30 @@
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
 | wait_for_element_visible_ok | link=Activity | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
-| wait_for_element_visible_ok | st-select-network | 30000 |
+| wait_for_element_visible_ok | %%st_mobile_account_select%% | 30000 |
 
-| text_like | //body | Signal to |
+| text_like | //body | %%miki_signal_disclaimer%% |
 | text_like | Signals |  |
-| text_like | What are you working on? |  |
+| text_like | %%miki_signal_text%% |  |
 
 | *Comment* | Test case: Miki Send Signals |  |
 | text_like | //body | People I follow |
 | wait_for_element_visible_ok | link=Mine | 30000 |
-| wait_for_element_visible_ok | st-signal-text | 30000 |
-| wait_for_element_visible_ok | st-signal-submit | 30000 |
-| type_ok | st-signal-text | %%signal1%% |
-| click_and_wait | st-signal-submit |  |
+| st-type-signal | %%signal1%% | 1 |
+| wait_for_element_visible_ok | %%miki_signal_submit%% | 30000 |
+| click_and_wait | %%miki_signal_submit%% |  |
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 | wait_for_text_present_ok | less than a minute ago | 30000 |
 | wait_for_text_present_ok | %%signal1%% | 30000 |
 | text_like | //body | qr/%%othershortuser%%.+minute.+to %%mikiacct%%.+%%signal1%%/ism |
 
 | *Comment* | Test case: Miki Send MULTI Signals |  |
-| select_ok | st-select-network | %%mikiacct%% (primary, 2 users) |
-| select_ok | st-select-network | %%othermikiacct%% (2 users) |
+| st_mobile_account_select_ok | %%mikiacct%% (primary, 2 users) |  |
+| st_mobile_account_select_ok | %%othermikiacct%% (2 users) |
 
-| type_ok | st-signal-text | %%multisignal%% |
-| click_and_wait | st-signal-submit |  |
+| st-type-signal | %%multisignal%% | 1 |
+| wait_for_element_visible_ok | %%miki_signal_submit%% | 30000 |
+| click_and_wait | %%miki_signal_submit%% |  |
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 | wait_for_text_present_ok | less than a minute ago | 30000 |
 | wait_for_text_present_ok | %%multisignal%% | 30000 |
@@ -87,9 +89,9 @@
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | wait_for_element_visible_ok | link=People | 30000 |
 | text_like | //body | Signals |
-| text_like | //body | What are you working on? |
+| text_like | //body | %%miki_signal_text%% |
 | wait_for_element_visible_ok | st-select-network | 30000 |
-| text_like | //body | Signal to |
+| text_like | //body | %%miki_signal_disclaimer%% |
 
 | *Comment* | Test case: Miki As 'main' user, see old signals, send some |  |
 | wait_for_element_visible_ok | link=Mine | 30000 |
@@ -121,7 +123,7 @@
 | wait_for_element_visible_ok | link=Stop following | 30000 |
 | open_ok | /m/ |  |
 
-| st_process_jobs | PersonIndex |
+| st_process_jobs | PersonIndex |  |
 | pause | 30000 |  |
 | wait_for_text_present_ok | %%signal1%% | 30000 |
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
@@ -140,13 +142,12 @@
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | text_like | Workspaces |  |
 | text_like | Hello, %%short_mikiuser%% |  |
-| text_like | Workspaces you belong to: |  |
+| text_like | My Workspaces |  |
 
 | *Comment* | Test case: Miki Click 'Activity' in global nav |  |
 | click_and_wait | link=Activity |  |
 | wait_for_element_visible_ok | link=All | 30000 |
 | wait_for_element_visible_ok | link=People I follow | 30000 |
-| wait_for_element_visible_ok | link=refresh | 30000 |
 | wait_for_element_visible_ok | link=People | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | text_like | My Conversations |  |
@@ -154,7 +155,6 @@
 | *Comment* | Test case: Miki Click 'All' within 'Activity' in global nav |  |
 | click_and_wait | Link=All |  |
 | wait_for_element_visible_ok | link=People I follow | 30000 |
-| wait_for_element_visible_ok | link=refresh | 30000 |
 | wait_for_element_visible_ok | link=My Conversations | 30000 |
 | wait_for_element_visible_ok | link=People | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
@@ -163,7 +163,6 @@
 | *Comment* | Test case: Miki Click 'People I follow' within 'Activity' in global nav |  |
 | click_and_wait | link=People I follow |  |
 | wait_for_element_visible_ok | link=My Conversations | 30000 |
-| wait_for_element_visible_ok | link=refresh | 30000 |
 | wait_for_element_visible_ok | link=People | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | text_like | People I follow |  |
@@ -181,9 +180,8 @@
 | wait_for_element_visible_ok | link=%%ws%% | 30000 |
 | text_like | Workspaces |  |
 | text_like | Hello, %%short_mikiuser%% |  |
-| text_like | Workspaces you belong to: |  |
-| text_like | You have free access to view and |  |
-| text_like | contribute to any of these public wikis: |  |
+| text_like | My Workspaces |  |
+| text_like | Public workspaces |  |
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | click_and_wait | link=Log out |  |
 | wait_for_element_visible_ok | link=I don't know my password. | 30000 |
@@ -201,12 +199,12 @@
 | *Comment* | Test Case: Miki Open the blog with caps |  |
 | open_ok | /m/tag/%%workspace%%/Caps Test Blog %%start_time%% Blog |  |
 | text_like | link=First Post in Caps Test Blog %%start_time%% Blog | First Post in Caps Test Blog %%start_time%% Blog |
-| text_like | Recent changes in tag: Caps Test Blog %%start_time%% Blog |  |
+| text_like | Tag: Caps Test Blog %%start_time%% Blog |  |
 
 | *Comment* | Test Case: Miki Open the blog without caps |  |
 | open_ok | /m/tag/%%workspace%%/caps test blog %%start_time%% blog |  |
 | text_like | link=First Post in Caps Test Blog %%start_time%% Blog | First Post in Caps Test Blog %%start_time%% Blog |
-| text_like | Recent changes in tag: caps test blog %%start_time%% blog |  |
+| text_like | Tag: caps test blog %%start_time%% blog |  |
 
 | *Comment* | Test Case: Miki |  |
 | wait_for_element_visible_ok | link=What's New | 30000 |

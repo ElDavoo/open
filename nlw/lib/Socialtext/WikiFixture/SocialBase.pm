@@ -67,7 +67,17 @@ sub init {
     $self->{backend_https_port} = Socialtext::HTTP::Ports->backend_https_port();
     $self->{userd_port}         = Socialtext::HTTP::Ports->userd_port();
     $self->{pushd_port}         = Socialtext::HTTP::Ports->pushd_port();
-    
+
+    if (_is_wikiwyg()  ) {
+        $self->{miki_signal_text} = 'Post to';
+        $self->{miki_signal_submit} = '//a[@aria-label="submit"]';
+        $self->{st_mobile_account_select} = 'mobile_network';
+    } else {
+        $self->{miki_signal_text} = 'What are you working on?';
+        $self->{miki_signal_submit} = 'st-signal-submit';
+        $self->{st_mobile_account_select} = 'st-select-network';
+    }
+
     my $def = Socialtext::Account->Default;
     $self->{default_account} = $def->name;
     $self->{default_account_id} = $def->account_id;
@@ -83,6 +93,8 @@ sub init {
     # Set up the Test::HTTP object initially
     $self->http_user_pass($self->{username}, $self->{password});
 }
+
+
 
 sub _munge_command_and_opts {
     my $self = shift;
@@ -3396,4 +3408,12 @@ sub jsmake {
     }
 }
 
+sub _is_wikiwyg {
+    my $browser = $ENV{'selenium_browser'} || 'chrome';
+    if ($browser=~/safari|chrome|firefox/ig)  {
+        return 1;
+    } else {
+        return 0;
+    }
+}
 1;
