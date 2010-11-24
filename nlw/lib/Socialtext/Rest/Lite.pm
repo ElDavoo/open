@@ -173,8 +173,11 @@ sub search {
         'GET',
         sub {
             my $search_term = $rest->query->param('search_term');
-            my $content
-                = Socialtext::Lite->new( hub => $self->hub )->search($search_term);
+            my $pagenum = $rest->query->param('page');
+            my $content = Socialtext::Lite->new( hub => $self->hub )->search(
+                search_term => $search_term,
+                pagenum => $pagenum,
+            );
             $rest->header(
                 -status => HTTP_200_OK,
                 -type   => 'text/html' . '; charset=UTF-8'

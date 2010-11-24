@@ -268,15 +268,21 @@ to pages.
 
 =cut 
 sub search {
-    my $self = shift;
-    my $search_term = $self->_utf8_decode(shift);
+    my ($self, %args) = @_;
+    my $search_term = $self->_utf8_decode($args{search_term});
     my $search_results;
     my $title = 'Search';
     my $error = '';
+    my $pagenum = $args{pagenum} ||  0;
+    my $page_size = 20;
 
     if ( $search_term ) {
         eval {
-            $search_results = $self->hub->search->get_result_set(search_term => $search_term);
+            $search_results = $self->hub->search->get_result_set(
+                search_term => $search_term,
+                offset => $pagenum * $page_size,
+                limit => $page_size,
+            );
         };
         if ($@) {
             $error = $@;
@@ -287,9 +293,15 @@ sub search {
         }
     }
 
+    my $more = 0;
     if ($search_results->{too_many}) {
         $error = loc('The search term you have entered is too general; [_1] pages and/or attachments matched your query. Please add additional search terms that you expect your documents contain.', $search_results->{hits});
     }
+    elsif ($search_results->{hits} > (($pagenum+1) * $page_size)) {
+        $more = 1;
+    }
+
+    use URI::Escape 'uri_escape_utf8';
 
     return $self->_process_template(
         $SEARCH_TEMPLATE,
@@ -297,6 +309,9 @@ sub search {
         search_term   => $search_term,
         title         => $title,
         search_error  => $error,
+        pagenum       => $pagenum,
+        more          => $more,
+        base_uri      => '/m/search/'.$self->hub->current_workspace->name.'?search_term='.uri_escape_utf8($search_term),
         load_row_times => sub {
             return Socialtext::Query::Plugin::load_row_times(@_);
         },

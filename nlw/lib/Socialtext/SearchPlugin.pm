@@ -283,6 +283,8 @@ sub _new_search {
     Socialtext::Timer->Continue('search_on_behalf');
     $self->{_current_search_term} = $query{search_term};
     $self->{_current_scope} = $query{scope} || '_';
+    my $offset = defined($query{offset}) ? $query{offset} : $self->cgi->offset;
+
     my ($hits, $hit_count) = search_on_behalf(
         $self->hub->current_workspace->name,
         $query{search_term},
@@ -290,7 +292,7 @@ sub _new_search {
         $self->hub->current_user,
         sub { },    # FIXME: We'd rather message the user than ignore these.
         sub { },    # FIXME: We'd rather message the user than ignore these.
-        offset => $self->cgi->offset || 0,
+        offset => $offset || 0,
         order => $sortby,
         direction => $direction,
         use_index => $query{use_index},
@@ -327,6 +329,7 @@ sub get_result_set {
     $self->{_current_search_term} = $query{search_term};
     $self->{_current_scope} = $query{scope};
     $self->{_current_limit} = $query{limit};
+    $self->{_current_offset} = $query{offset};
     if (!$self->{_current_search_term}) {
         $self->result_set($self->new_result_set());
     }
@@ -345,6 +348,7 @@ sub default_result_set {
         search_term => $self->{_current_search_term},
         scope => $self->{_current_scope},
         limit => $self->{_current_limit},
+        offset => $self->{_current_offset},
         use_index => scalar $self->cgi->index,
     );
     return $self->result_set;
