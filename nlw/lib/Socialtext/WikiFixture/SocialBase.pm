@@ -3379,4 +3379,21 @@ sub restart_userd {
     fail "userd could not be restarted";
 }
 
+sub jsmake {
+    my ($self, $target, $dir) = @_;
+    require Socialtext::MakeJS;
+    if ($target eq 'all') {
+        Socialtext::MakeJS->BuildAll;
+    }
+    elsif ($target eq 'cleanall') {
+        Socialtext::MakeJS->CleanAll;;
+    }
+    elsif ($target eq 'clean') {
+        Socialtext::MakeJS->CleanDir($dir);
+    }
+    else {
+        Socialtext::MakeJS->Build($dir, $target);
+    }
+}
+
 1;

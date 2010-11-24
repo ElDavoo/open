@@ -4,44 +4,62 @@ use Moose;
 use Socialtext::HTTP ':codes';
 use Socialtext::MakeJS;
 use Socialtext::AppConfig;
+use File::Basename qw(basename);
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest';
 my $code_base = Socialtext::AppConfig->code_base;
 
-sub GET {
-    my ($self, $rest) = @_;
-    my $name = $self->name;
-    my $type = $self->type;
-    my $file = $self->__file__;
+has 'path' => (
+    is => 'ro', isa => 'Maybe[Str]', lazy_build => 1,
+);
+
+my %MAPPING = (
+    'jquery-1.4.2.js' => 'skin/common/jquery-1.4.2.js',
+    'push-client.js' => 'plugin/widgets/push-client.js',
+);
+
+sub _build_path {
+    my $self = shift;
+
+    # Get the mapped version of the file
+    my $file = $MAPPING{$self->__file__} || $self->__file__;
+
+    # Parse the path to make sure we know what it means
+    $file =~ m{^(skin|plugin)/([^/]+)/(.*)} or return;
+    my $type = $1;
+    my $name = $2;
+    my $path = $3;
 
     my $dir;
-    if ($type eq 'skin') {
-        $dir = "skin/$name/javascript";
-    }
-    elsif ($type eq 'plugin') {
-        $dir = "plugin/$name/share/javascript";
-    }
-    else {
-        die "Don't know how to build $type javascript.";
-    }
+    $dir = "$type/$name/javascript"       if $type eq 'skin';
+    $dir = "$type/$name/share/javascript" if $type eq 'plugin';
 
-    Socialtext::MakeJS->Build($dir, $file);
-    
-    my $path = "$code_base/$dir/$file";
-    my $url = "/nlw/static/$dir/$file";
+    Socialtext::MakeJS->Build($dir, $path) if $ENV{NLW_DEV_MODE};
+
+    return "$dir/$path";
+}
+
+sub GET {
+    my ($self, $rest) = @_;
+
+    my $path = $self->path || return $self->no_resource('Invalid path');
+    my $url = "/nlw/static/$path";
+    $path = "$code_base/$path";
+
     unless (-f $path) {
         warn "Don't know how to build $path";
-        return $self->no_resource($file);
+        return $self->no_resource($path);
     }
 
+    my $filename = basename($path);
     $rest->header(
         -status               => HTTP_200_OK,
         '-content-length'     => -s $path,
         -type                 => 'application/javascript',
         -pragma               => undef,
         '-cache-control'      => undef,
-        'Content-Disposition' => "filename=\"$file\"",
+        'Content-Disposition' => "filename=\"$filename\"",
         '-X-Accel-Redirect'   => $url,
     );
 }
