@@ -96,7 +96,7 @@
 | wait_for_element_not_present_ok | link=%%baseusername%%41 | 5000 |
 | wait_for_element_visible_ok | mobile-paging-next | 30000 |
 | wait_for_element_visible_ok | mobile-paging-previous | 30000 |
-| wait_for_element_visible_ok | mobile-paging-first | 30000 |
+
 
 | *Comment* | Test case: Miki Pagination - Page Three |  |
 | wait_for_element_visible_ok | mobile-paging-next | 30000 |
@@ -123,8 +123,7 @@
 | wait_for_element_visible_ok | mobile-paging-previous | 30000 |
 
 | *Comment* | Test case: Miki Pagination - Back to page 1 |  |
-| wait_for_element_visible_ok | mobile-paging-first | 30000 |
-| click_and_wait | mobile-paging-first |  |
+| click_and_wait | mobile-paging-previous |  |
 | wait_for_element_visible_ok | link=%%baseusername%%01 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%05 | 30000 |
 | wait_for_element_visible_ok | link=%%baseusername%%06 | 30000 |

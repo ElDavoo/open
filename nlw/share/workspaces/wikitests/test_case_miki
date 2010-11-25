@@ -57,11 +57,10 @@
 | *Comment* | Test case: Miki Send Signals |  |
 | st-type-signal | %%signal1%% | 1 |
 | wait_for_element_visible_ok | %%miki_signal_submit%% | 30000 |
-| click_and_wait | %%miki_signal_submit%% |  |
-| wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
+| click_and_pause | %%miki_signal_submit%% |  |
 | wait_for_text_present_ok | less than a minute ago | 30000 |
 | wait_for_text_present_ok | %%signal1%% | 30000 |
-| text_like | //body | qr/%%othershortuser%%.+minute.+to %%mikiacct%%.+%%signal1%%/ism |
+| text_like | //body | qr/minute.+to %%mikiacct%%.+%%signal1%%/ism |
 
 | *Comment* | Test case: Miki Send MULTI Signals |  |
 | st_mobile_account_select_ok | %%mikiacct%% (primary, 2 users) |  |
@@ -69,11 +68,10 @@
 
 | st-type-signal | %%multisignal%% | 1 |
 | wait_for_element_visible_ok | %%miki_signal_submit%% | 30000 |
-| click_and_wait | %%miki_signal_submit%% |  |
-| wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
+| click_and_pause | %%miki_signal_submit%% |  |
 | wait_for_text_present_ok | less than a minute ago | 30000 |
 | wait_for_text_present_ok | %%multisignal%% | 30000 |
-| text_like | //body | qr/%%othershortuser%%.+minute.+%%multisignal%%/ism |
+| text_like | //body | qr/minute.+%%multisignal%%/ism |
 
 | *Comment* | Test case: Miki Log In as 'main' user, see global nav |  |
 | wait_for_element_visible_ok | link=Log out | 30000 |
@@ -87,18 +85,9 @@
 | wait_for_element_visible_ok | link=Log out | 30000 |
 | wait_for_element_visible_ok | link=People | 30000 |
 | text_like | //body | Signals |
-| text_like | //body | %%miki_signal_text%% |
-| wait_for_element_visible_ok | st-select-network | 30000 |
-| text_like | //body | %%miki_signal_disclaimer%% |
 
-| *Comment* | Test case: Miki As 'main' user, see old signals, send some |  |
-| wait_for_element_visible_ok | link=Mine | 30000 |
-| click_and_wait | link=Mine |  |
-| text_unlike | //body | %%signal1%% |
-| click_and_wait | link=All | 30000 |
-| wait_for_text_present_ok | %%signal1%% | 30000 |
-
-| wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
+| *Comment* | Test case: Miki As 'main' user, see old signals |  |
+| st_if_ie_check_mobile_signaltypes |  |  |
 
 | *Comment* | Test case: Miki Find 'followed' user with MIKI search, click through, follow |  |
 | st_process_jobs | SignalIndex |  |

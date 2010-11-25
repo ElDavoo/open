@@ -11,8 +11,9 @@
 | *Comment* | SEE MIKI Home |  |
 | pause | %%pt%% |  |
 
-| *Comment* | SEE THIS IS OK - People I Follow Link is PRESENT! |  |
+| *Comment* | SEE THIS IS OK - People I Follow/Mine Links ARE PRESENT! |  |
 | wait_for_element_visible_ok | link=People I follow | 30000 |
+| wait_for_element_visible_ok | link=Mine | 30000 |
 | pause | %%pt%% |  |
 
 | clickAndWait | link=Workspaces |
