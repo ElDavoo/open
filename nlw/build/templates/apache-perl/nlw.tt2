@@ -27,9 +27,11 @@
     PerlSetEnv APACHE_LOG_DIR [% config.log_dir %]
 
 [%- IF config.is_dev %]
-    PerlSetVar ReloadAll Off
-    PerlSetVar ReloadModules "Socialtext::WebApp Socialtext::WebApp::* Socialtext::* Socialtext::Handler Socialtext::Handler::* Socialtext::RequestContext"
-    PerlInitHandler  +Apache::Reload
+# disabled for lucid (tries to reload with every invocation, which dies hard
+# with Moose).
+#   PerlSetVar ReloadAll Off
+#   PerlSetVar ReloadModules "Socialtext::WebApp Socialtext::WebApp::* Socialtext::* Socialtext::Handler Socialtext::Handler::* Socialtext::RequestContext"
+#   PerlInitHandler  +Apache::Reload
 [%- END %]
 
 [%- IF config.apache_status %]
