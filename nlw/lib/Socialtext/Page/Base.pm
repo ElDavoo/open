@@ -845,11 +845,28 @@ sub _log_page_action {
         || $action eq 'submit_comment'
         || $action eq 'attachments_upload';
 
-    if ($action eq 'edit_content' || $action eq 'rename_page') {
-         return unless ($self->restored || $self->revision_count == 1);
+    my $log_action;
+    if ($action eq 'delete_page') {
+        $log_action = 'DELETE';
+    }
+    elsif ($action eq 'rename_page') {
+        $log_action = ($self->revision_count == 1) ? 'CREATE' : 'RENAME';
+    }
+    elsif ($action eq 'edit_content') {
+        if ($self->restored) {
+            $log_action = 'RESTORE';
+        }
+        elsif ($self->revision_count == 1) {
+            $log_action = 'CREATE';
+        }
+        else {
+            $log_action = 'EDIT';
+        }
+    }
+    else {
+        $log_action = 'CREATE';
     }
 
-    my $log_action = ($action eq 'delete_page') ? 'DELETE' : 'CREATE';
     my $ws         = $self->hub->current_workspace;
     my $user       = $self->hub->current_user;
 

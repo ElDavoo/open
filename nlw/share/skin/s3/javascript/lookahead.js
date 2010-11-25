@@ -93,7 +93,8 @@
                 }
                 if (self.lookahead && self.lookahead.is(':visible')) {
                     if (e.keyCode == KEYCODES.TAB) {
-                        self.clickCurrent();
+                        // tab complete rather than select
+                        self.selectDown();
                         return false;
                     }
                     else if (e.keyCode == KEYCODES.ENTER) {
@@ -309,9 +310,6 @@
                         return false;
                     })
                     .appendTo(li);
-                if (i==0) {
-                    self.select_element(li, true);
-                }
             });
             this.show();
         }

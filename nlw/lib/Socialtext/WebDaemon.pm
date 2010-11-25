@@ -6,7 +6,7 @@ use MooseX::StrictConstructor;
 
 use FindBin;
 use Getopt::Long;
-use Carp qw/carp croak/;
+use Carp qw/carp croak cluck/;
 
 use Socialtext::TimestampedWarnings;
 use Socialtext::AppConfig;
@@ -33,6 +33,7 @@ use Socialtext::HTTP::Ports;
 use EV;
 use Feersum;
 use Socket qw/SOMAXCONN/;
+use IO::Socket::INET;
 use Socialtext::Async;
 use Socialtext::Async::WorkQueue;
 
@@ -138,7 +139,7 @@ sub Configure {
     $SINGLETON = $class->new(\%args);
 
     if ($class->NeedsWorker) {
-        Socialtext::Async::Wrapper->RegisterAtFork(sub{$SINGLETON->at_fork});
+        Socialtext::Async::Wrapper->RegisterAtFork(sub{$SINGLETON->_at_fork});
     }
     return;
 }
@@ -148,55 +149,56 @@ sub Run {
 
     try { $class->Configure(@args) }
     catch {
-        carp "could not configure $class: $_";
+        croak "could not configure $class: $_";
     };
 
-    try { $SINGLETON->run; }
+    try { $SINGLETON->_startup }
     catch {
-        st_log->error("$PROC_NAME stopping due to exception: $_");
-        carp "$PROC_NAME stopping due to exception: $_";
+        my $msg = "$PROC_NAME stopping, startup error: $_";
+        st_log->error($msg);
+        croak $msg;
     };
+
+    my $main_e;
+    try { $SINGLETON->cv->recv } catch { $main_e = $_ };
+
+    $SINGLETON->_running(0);
+    try { $SINGLETON->_cleanup() }
+    catch { cluck "during $NAME cleanup: $_" };
+
+    if ($main_e) {
+        my $msg = "$PROC_NAME stopping, runtime error: $main_e";
+        st_log->error($msg);
+        croak $msg;
+    }
 
     st_log->info("$PROC_NAME done");
     exit 0;
 }
 
-# called by Run above.
-sub run {
+sub startup { } # override in subclass
+sub _startup {
     my $self = shift;
     weaken $self;
 
+    $self->cv->begin; # match in _shutdown()
+
     st_log()->info("$PROC_NAME starting on ".$self->host." port ".$self->port);
-    trace "$PROC_NAME starting on ".$self->host." port ".$self->port." Feersum $Feersum::VERSION";
-
-    $self->cv->begin; # match in shutdown()
-
-    require IO::Socket::INET;
-    require Socket;
-    my $socket = IO::Socket::INET->new(
-        LocalAddr => $self->host.':'.$self->port,
-        ReuseAddr => 1,
-        Proto => 'tcp',
-        Listen => Socket::SOMAXCONN(),
-        Blocking => 0,
-    );
-    die "can't create socket: $!" unless $socket;
-
-    Feersum->endjinn->request_handler(sub { $self->_wrap_request(@_) });
-    Feersum->endjinn->use_socket($socket);
+    trace "$PROC_NAME starting on ".$self->host." port ".$self->port.
+        " Feersum $Feersum::VERSION";
+    $self->listen();
 
     $self->guards->{stats_ticker} =
         AE::timer $self->stats_period, $self->stats_period,
         exception_wrapper { $self->stats_ticker() } "Ticker error";
 
     my $shutdown_handler = exception_wrapper {
-        $self->shutdown()
+        $self->_shutdown()
     } "shutdown signal error";
 
     for my $sig (qw(HUP TERM INT QUIT)) {
         $self->guards->{"sig_$sig"} = AE::signal $sig, $shutdown_handler;
     }
-
 
     if ($self->NeedsWorker) {
         require Socialtext::Async::Wrapper;
@@ -214,34 +216,29 @@ sub run {
             } 'Worker Pinger error';
     }
 
-    inner();
-
-    my $main_e;
-    try { $self->cv->recv } catch { $main_e = $_ };
-
-    $self->_running(0);
-    try { $self->cleanup }
-    catch { Carp::cluck "during $NAME cleanup: $_" };
-
-    die $main_e if $main_e;
+    $self->startup();
 }
 
-sub cleanup {
+sub cleanup {} # override in subclass
+sub _cleanup {
     my $self = shift;
     $self->_destroy_guards;
-    # do this after so we don't conflict with EV
+    # do this after destroying guards so we don't conflict with EV
     $SIG{$_} = 'IGNORE' for qw(TERM INT QUIT);
-    inner();
+    $self->cleanup();
 }
 
-sub at_fork {
+sub at_fork {} # override in subclass
+sub _at_fork {
     my $self = shift;
     $self->_destroy_guards;
     $self->_running(0); # don't run in forked kid.
-    inner();
+    Feersum->endjinn->unlisten(); # don't service requests in the kid
+    $self->at_fork();
 }
 
-sub shutdown {
+sub shutdown {} # override in subclass
+sub _shutdown {
     my $self = shift;
     return if $self->guards->{shutdown_timer};
     $self->_running(0);
@@ -252,12 +249,27 @@ sub shutdown {
         $self->cv->end; # match in run()
     });
 
-    inner();
+    $self->shutdown();
 
     $self->guards->{shutdown_timer} = AE::timer $self->shutdown_delay,0,
         exception_wrapper {
             $self->cv->croak("timeout during shutdown");
         } "Shutdown timer error";
+}
+
+sub listen {
+    my $self = shift;
+    my $socket = IO::Socket::INET->new(
+        LocalAddr => $self->host.':'.$self->port,
+        ReuseAddr => 1,
+        Proto => 'tcp',
+        Listen => Socket::SOMAXCONN(),
+        Blocking => 0,
+    );
+    die "can't create socket: $!" unless $socket;
+
+    Feersum->endjinn->request_handler(sub { $self->_wrap_request(@_) });
+    Feersum->endjinn->use_socket($socket);
 }
 
 sub stats_ticker {

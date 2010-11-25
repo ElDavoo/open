@@ -8,10 +8,10 @@
 | wait_for_element_visible_ok | link=Mobile | 30000 |
 | click_and_wait | link=Mobile |  |
 
-| *Comment* | SEE MIKI Home |
+| *Comment* | SEE MIKI Home |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
-| pause | %%pt%% |
-| clickAndWait | link=Workspaces |
+| pause | %%pt%% |  |
+| clickAndWait | link=Workspaces |  |
 
 | *Comment* | SEE MIKI Workspace List |
 | pause | %%pt%% |
@@ -49,7 +49,7 @@
 | *Comment* | SEE MIKI Edit |
 | pause | %%pt%% |
 
-| clickAndWait | link=Cancel Edit |
+| clickAndWait | link=Cancel |
 | *Comment* | SEE MIKI Edit Cancelled |
 | pause | %%pt%% |
 

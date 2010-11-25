@@ -1,12 +1,20 @@
-| *Comment* | MikiShow. Watch the Mobile UI |  |
+| *Comment* | MikiShow IE. Watch the Mobile UI |  |
 | *Comment* | MikiShow expects to start at the Mobile home page |  |
 
 | set_default | pt | 5000 | defaults to five seconds |
 
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
 
-| *Comment* | SEE MIKI Home |
-| pause | %%pt%% |
+| open_ok | /st/dashboard/ |  |
+| wait_for_element_visible_ok | link=Mobile | 30000 |
+| click_and_wait | link=Mobile |  |
+| *Comment* | SEE MIKI Home |  |
+| pause | %%pt%% |  |
+
+| *Comment* | SEE THIS IS OK - People I Follow/Mine Links ARE PRESENT! |  |
+| wait_for_element_visible_ok | link=People I follow | 30000 |
+| wait_for_element_visible_ok | link=Mine | 30000 |
+| pause | %%pt%% |  |
 
 | clickAndWait | link=Workspaces |
 | *Comment* | SEE MIKI Workspace List |
@@ -45,7 +53,7 @@
 | *Comment* | SEE MIKI Edit |
 | pause | %%pt%% |
 
-| clickAndWait | link=Cancel Edit |
+| clickAndWait | link=Cancel |
 | *Comment* | SEE MIKI Edit Cancelled |
 | pause | %%pt%% |
 
@@ -76,4 +84,4 @@
 | *Comment* | SEE MIKI logged in |
 | pause | %%pt%% |
 
-| *Comment* | MikShow COMPLETED |  |
+| *Comment* | MikShowIE COMPLETED |  |

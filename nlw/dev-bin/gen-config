@@ -602,12 +602,13 @@ sub nginx_params {
         ssl_base => $dirs{ssl_base},
         search   => [ $config{nlw_web_hostname}, $config{nlw_server_hostname} ],
     );
+
+    my $appconfig = Socialtext::AppConfig->new;
     $config{ssl_client_cert} = _ssl_name(
         ssl_base => $dirs{ssl_base},
         search   => [ "$config{nlw_web_hostname}.client", "$config{nlw_server_hostname}.client" ],
-    );
+    ) if ($appconfig->credentials_extractors =~ /\bSSLCertificate\b/);
 
-    my $appconfig = Socialtext::AppConfig->new;
     $config{ssl_only} = $appconfig->ssl_only();
     $config{custom_http_port} = $appconfig->custom_http_port();
     $config{disable_mobile_redirect} = $appconfig->disable_mobile_redirect();

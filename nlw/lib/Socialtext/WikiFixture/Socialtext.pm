@@ -1111,6 +1111,31 @@ sub st_uneditable_ok {
     ok !$self->is_editable($locator), "$locator is not editable";
 }
 
+sub st_mobile_account_select_ok {
+    my ($self, $accountdesc) = @_;
+    if ($self->_is_wikiwyg()) { 
+        $self->wait_for_element_present_ok("link=$accountdesc",30000);
+        $self->click_ok("link=$accountdesc");
+        $self->wait_for_element_visible_ok("link=$accountdesc");
+     } else {
+        $self->wait_for_element_visible_ok($self->{st_mobile_account_select}, 30000);
+        $self->select_ok($self->{st_mobile_account_select}, $accountdesc);
+     }
+}
+
+sub st_if_ie_check_mobile_signaltypes {
+   my ($self) = @_;
+   if (! ($self->_is_wikiwyg()) ) {
+      $self->handle_command('wait_for_element_visible_ok','link=Mine','30000'); 
+      $self->handle_command('click_and_wait','link=Mine');
+      $self->handle_command('text_unlike','//body','%%signal1%%');
+      $self->handle_command('click_and_wait','link=All','30000');
+      $self->handle_command('wait_for_text_present_ok','%%signal1%%', 30000); 
+      $self->handle_command('wait_for_element_visible_ok','link=%%othershortuser%%');
+   }
+}
+
+
 sub _click_user_row {
     my ($self, $email, $method_name, $click_col) = @_;
     my $sel = $self->{selenium};
