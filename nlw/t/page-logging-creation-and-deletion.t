@@ -4,13 +4,13 @@
 use strict;
 use warnings;
 use mocked 'Socialtext::Log', qw( :tests );
-use Test::Socialtext tests => 10;
+use Test::Socialtext tests => 11;
 use Socialtext::Page;
 use Socialtext::User;
 use Socialtext::Workspace;
 use Socialtext::String ();
 
-fixtures(qw( empty ));
+fixtures(qw( clean empty ));
 
 my $workspace  = 'empty';
 my $user       = Socialtext::User->SystemUser;
@@ -44,7 +44,7 @@ Page_create_delete_restore_edit: {
             creator          => $user,
             title            => $page_title,
         );
-        logged_like('info', 'CREATE,PAGE,');
+        logged_like('info', 'RESTORE,PAGE,');
     }
 
     Test_page_edit: {
@@ -59,6 +59,7 @@ Page_create_delete_restore_edit: {
             user => $user,
             original_page_id => Socialtext::String::title_to_id($page_title),
         );
+        logged_like('info', 'EDIT,PAGE,');
         logged_not_like('info', 'CREATE,PAGE,');
     }
 }
@@ -69,7 +70,7 @@ Page_create_rename_rename: {
     Create_page: {
         clear_log();
         create_page($workspace, $page_title);
-        logged_like('info', 'CREATE,PAGE,');
+        logged_like('info', 'CREATE,PAGE,', 'Test setup for rename');
     }
 
     Rename_page: {
@@ -82,7 +83,7 @@ Page_create_rename_rename: {
             '',
             0
         );
-        logged_like('info', 'CREATE,PAGE,');
+        logged_like('info', 'RENAME,PAGE,');
     }
 
     Rename_again: {
@@ -105,7 +106,7 @@ Page_create_duplicate_duplicate: {
     Create_page: {
         clear_log();
         create_page($workspace, $page_title);
-        logged_like('info', 'CREATE,PAGE,');
+        logged_like('info', 'CREATE,PAGE,', 'Test setup for duplicate');
     }
 
     Duplicate_page: {
@@ -119,7 +120,7 @@ Page_create_duplicate_duplicate: {
             '',
             0
         );
-        logged_like('info', 'CREATE,PAGE,');
+        logged_like('info', 'CREATE,PAGE,', 'Duplicate has correct log entry');
     }
 
     Duplicate_again: {
