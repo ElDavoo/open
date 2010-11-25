@@ -35,6 +35,7 @@
 
 | *Comment* | Test case: Miki Private Signal Open global nav add secondary account with signals enabled, now YES private link |  |
 | st-admin | add-member --account %%other_acct%% --e %%miki_user_prv%% | now has the role of |
+| st-admin | add-member --account %%other_acct%% --e %%other_miki_user_prv%% | now has the role of |
 | st_process_jobs | PersonIndex |  |
 | refresh |  |  |
 | wait_for_element_visible_ok | mobile-profile-privmsg | 30000 |
@@ -46,17 +47,17 @@
 | wait_for_element_visible_ok | mobile-profile-privmsg | 30000 |
 
 | *Comment* | Test case: Miki Private Signal Send private signal |  |
-| click_ok | //a[@id='mobile-profile-privmsg'] |  |
+| click_ok | mobile-profile-privmsg |  |
 | wait_for_element_visible_ok | st-signal-text | 30000 |
 | wait_for_element_visible_ok | st-signal-submit | 30000 |
 | type_ok | st-signal-text | %%prv_signal%% |
 | submit | st-signal-form | 30000 |
 | wait_for_text_present_ok | Private message sent. | 30000 |
-| wait_for_element_visible_ok | link=Signals | 30000 |
-| click_ok | link=Signals |  |
+| wait_for_element_visible_ok | mobile-profile-signals | 30000 |
+| click_ok | mobile-profile-signals |  |
 | wait_for_text_present_ok | %%prv_signal%% | 30000 |
-| text_like | //body | qr/You.+minute.+ago private to %%other_short_miki_user_prv%% |
-
+| text_like | //body | qr/%%short_mikiuser_prv%%.+minute.+ago/ |
+| text_like | //body | qr/private signal to %%other_short_miki_user_prv%%/ |
 
 | *Comment* | Test case: Miki Private Signal Send private signal |  |
 | open_ok | /st/dashboard |  |
