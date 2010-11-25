@@ -130,15 +130,12 @@ sub Configure {
         $class->ConfigForDevEnv(\%args);
     }
 
-    if ($class->NeedsWorker) {
-        require Socialtext::Async::Wrapper;
-        Socialtext::Async::Wrapper->RegisterCoros();
-    }
-
     $0 = $PROC_NAME;
     $SINGLETON = $class->new(\%args);
 
     if ($class->NeedsWorker) {
+        require Socialtext::Async::Wrapper;
+        Socialtext::Async::Wrapper->RegisterCoros();
         Socialtext::Async::Wrapper->RegisterAtFork(sub{$SINGLETON->_at_fork});
     }
     return;

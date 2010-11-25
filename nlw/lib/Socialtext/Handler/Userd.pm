@@ -36,7 +36,6 @@ override 'shutdown' => sub {
     }
 };
 
-my $CRLF = "\015\012";
 sub handle_request {
     my ($self,$req) = @_;
 
