@@ -233,6 +233,7 @@ sub _at_fork {
     my $self = shift;
     $self->_destroy_guards;
     $self->_running(0); # don't run in forked kid.
+    Feersum->endjinn->unlisten(); # don't service requests in the kid
     $self->at_fork();
 }
 
