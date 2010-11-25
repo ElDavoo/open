@@ -17,6 +17,7 @@ use Socialtext::TimestampedWarnings;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::Log qw/st_log/;
 use Socialtext::SQL qw/with_local_dbh/;
+use Socialtext::Moose::Util;
 
 use namespace::clean -except => 'meta';
 
@@ -71,7 +72,7 @@ throw an exception.
 =cut
 
 Moose::Exporter->setup_import_methods(
-    with_caller => [qw(worker_wrap worker_function)],
+    compat_with_meta(qw(worker_wrap worker_function)),
     as_is => [qw(worker_make_immutable call_orig_in_worker ping_worker)],
 );
 
