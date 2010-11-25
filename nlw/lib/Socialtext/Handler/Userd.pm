@@ -27,26 +27,13 @@ sub ConfigForDevEnv {
     my ($class, $args) = @_;
 }
 
-augment 'run' => sub {
-    my $self = shift;
-    # nothing to do here yet
-    inner();
-};
-
-augment 'at_fork' => sub {
-    my $self = shift;
-    # nothing to do here yet
-    inner();
-};
-
-augment 'shutdown' => sub {
+override 'shutdown' => sub {
     my $self = shift;
     if ($self->has_extract_q) {
         # cancel the existing guard and allow pending jobs to be processed
         $self->guards->{extract_queue}->cancel();
         $self->extract_q->shutdown_nowait();
     }
-    inner();
 };
 
 my $CRLF = "\015\012";
