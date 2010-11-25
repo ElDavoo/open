@@ -21,15 +21,11 @@
 
 | *Comment* | Test case: Miki Private Signal Get to other user's profile |  |
 | st_process_jobs | PersonIndex |  |
-| open_ok | /st/m/signals |  |
-| wait_for_element_visible_ok | mobile-activities | 30000 |
-| wait_for_element_not_present_ok | mobile_post | 30000 |
-| wait_for_element_visible_ok | mobile-people | 30000 |
-| click_ok | link=People |  |
+| open_ok | /m/people |  |
 | wait_for_element_visible_ok | st-search-text | 30000 |
 | wait_for_element_visible_ok | st-search-submit | 30000 |
 | type_ok | st-search-text | %%other_short_miki_user_prv%% |
-| click_ok | st-search-submit | 30000 |
+| submit | st-people-form | 30000 |
 | wait_for_element_visible_ok | link=%%other_short_miki_user_prv%% | 30000 |
 | click_ok | link=%%other_short_miki_user_prv%% |
 
@@ -54,7 +50,7 @@
 | wait_for_element_visible_ok | st-signal-text | 30000 |
 | wait_for_element_visible_ok | st-signal-submit | 30000 |
 | type_ok | st-signal-text | %%prv_signal%% |
-| click_ok | st-signal-text |  |
+| submit | st-signal-form | 30000 |
 | wait_for_text_present_ok | Private message sent. | 30000 |
 | wait_for_element_visible_ok | link=Signals | 30000 |
 | click_ok | link=Signals |  |
