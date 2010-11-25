@@ -37,7 +37,9 @@ sub _build_path {
     $dir = "$type/$name/javascript"       if $type eq 'skin';
     $dir = "$type/$name/share/javascript" if $type eq 'plugin';
 
-    Socialtext::MakeJS->Build($dir, $path) if $ENV{NLW_DEV_MODE};
+    if ($ENV{NLW_DEV_MODE} and Socialtext::MakeJS->Exists($dir, $path)) {
+        Socialtext::MakeJS->Build($dir, $path);
+    }
 
     return "$dir/$path";
 }
