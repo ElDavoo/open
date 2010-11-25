@@ -19,32 +19,32 @@
 
 [% BLOCK mine_tab %]
     [% IF mine %]
-        <li><a rel="" class="ui-btn-active">[% loc("Mine") %]</a></li>
+        <li><a id="mobile-activity-mine" rel="" class="ui-btn-active">[% loc("Mine") %]</a></li>
     [% ELSE %]
-        <li><a rel="" href="/m/[% section %]?mine=1">[% loc("Mine") %]</a></li>
+        <li><a id="mobile-activity-mine" rel="" href="/m/[% section %]?mine=1">[% loc("Mine") %]</a></li>
     [% END %]
 [% END %]
 
 [% BLOCK all_tab %]
     [% IF all %]
-        <li><a rel="" class="ui-btn-active">[% loc('All') %]</a></li>
+        <li><a id="mobile-activity-all" rel="" class="ui-btn-active">[% loc('All') %]</a></li>
     [% ELSE %]
-        <li><a rel="" href="/m/[% section %]?all=1">[% loc("All") %]</a></li>
+        <li><a id="mobile-activity-all" rel="" href="/m/[% section %]?all=1">[% loc("All") %]</a></li>
     [% END %]
 [% END %]
 
 [% BLOCK conversations_tab %]
     [% IF all || followed %]
-        <li><a rel="" href="/m/[% section %]">[% loc("My Conversations") %]</a></li>
+        <li><a id="mobile-activity-conversations" rel="" href="/m/[% section %]">[% loc("My Conversations") %]</a></li>
     [% ELSE %]
-        <li><a rel="" class="ui-btn-active">[% loc("My Conversations") %]</a></li>
+        <li><a id="mobile-activity-conversations" rel="" class="ui-btn-active">[% loc("My Conversations") %]</a></li>
     [% END %]
 [% END %]
 
 [% BLOCK followed_tab %]
     [% IF followed %]
-        <li><a rel="" class="ui-btn-active">[% loc("People I follow") %]</a></li>
+        <li><a id="mobile-activity-followed" rel="" class="ui-btn-active">[% loc("People I follow") %]</a></li>
     [% ELSE %]
-        <li><a rel="" href="/m/[% section %]?followed=1">[% loc("People I follow") %]</a></li>
+        <li><a id="mobile-activity-followed" rel="" href="/m/[% section %]?followed=1">[% loc("People I follow") %]</a></li>
     [% END %]
 [% END %]
