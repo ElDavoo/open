@@ -25,6 +25,8 @@ sub _build_path {
     # Get the mapped version of the file
     my $file = $MAPPING{$self->__file__} || $self->__file__;
 
+    $file = "skin/common/$file" if $file =~ m{^[^/]+\.js$};
+
     # Parse the path to make sure we know what it means
     $file =~ m{^(skin|plugin)/([^/]+)/(.*)} or return;
     my $type = $1;
