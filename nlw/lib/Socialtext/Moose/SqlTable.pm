@@ -2,48 +2,66 @@ package Socialtext::Moose::SqlTable;
 
 use Moose;
 use Moose::Exporter;
+use Socialtext::Moose::Util;
 
 use Socialtext::Moose::SqlTable::Meta::Class::Trait::DbTable;
 use Socialtext::Moose::SqlTable::Meta::Attribute::Trait::DbColumn;
 
 Moose::Exporter->setup_import_methods(
-    with_caller => [qw( has_column has_table has_unique_key )],
+    compat_with_meta(qw(has_column has_table has_unique_key)),
 );
 
 sub init_meta {
     my ($junk, %options) = @_;
     Moose->init_meta(%options);
-    Moose::Util::MetaRole::apply_metaclass_roles(
-        for_class       => $options{for_class},
-        metaclass_roles => [qw( Socialtext::Moose::SqlTable::Meta::Class::Trait::DbTable )],
-    );
-    Moose::Util::MetaRole::apply_base_class_roles(
-        for_class => $options{for_class},
-        roles     => [qw( Socialtext::Moose::SqlTable::Role::SqlTable )],
-    );
-    return $options{for_class}->meta();
+
+    my $clazz = $options{for_class};
+    if ($Moose::VERSION < 0.94) {
+        Moose::Util::MetaRole::apply_metaclass_roles(
+            for_class       => $clazz,
+            metaclass_roles => ['Socialtext::Moose::SqlTable::Meta::Class::Trait::DbTable'],
+        );
+        Moose::Util::MetaRole::apply_base_class_roles(
+            for_class => $clazz,
+            roles     => ['Socialtext::Moose::SqlTable::Role::SqlTable'],
+        );
+    }
+    else {
+        Moose::Util::MetaRole::apply_metaroles(
+            'for' => $clazz,
+            class_metaroles => {
+                class => ['Socialtext::Moose::SqlTable::Meta::Class::Trait::DbTable'],
+            },
+        );
+        Moose::Util::MetaRole::apply_base_class_roles(
+            'for' => $clazz,
+            roles => ['Socialtext::Moose::SqlTable::Role::SqlTable'],
+        );
+    }
+
+    return $clazz->meta();
 }
 
 sub has_column {
-    my ($caller, $name, %options) = @_;
-
-    # add Trait to mark this as a DbColumn
+    my ($c_or_m, $name, %options) = @_;
+    my $meta = compat_meta_arg($c_or_m);
     $options{traits} ||= [];
-    unshift @{$options{traits}}, 'Socialtext::Moose::SqlTable::Meta::Attribute::Trait::DbColumn';
-
-    Moose::Meta::Class->initialize($caller)->add_attribute($name, %options);
+    unshift @{$options{traits}},
+        'Socialtext::Moose::SqlTable::Meta::Attribute::Trait::DbColumn';
+    $options{definition_context} = caller_info();
+    $meta->add_attribute($name, %options);
 }
 
 sub has_table {
-    my ($caller, $name) = @_;
-    $caller->meta->table($name);
+    my ($c_or_m, $name) = @_;
+    my $meta = compat_meta_arg($c_or_m);
+    $meta->table($name);
 }
 
 sub has_unique_key {
-    my ($caller, @attr_names) = @_;
-    my $keys = $caller->meta->unique_keys();
-    push @{$keys}, [@attr_names];
-    $caller->meta->unique_keys($keys);
+    my ($c_or_m, @attr_names) = @_;
+    my $meta = compat_meta_arg($c_or_m);
+    push @{$meta->unique_keys}, [@attr_names];
 }
 
 no Moose;

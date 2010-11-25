@@ -3,13 +3,12 @@ package Socialtext::Moose::SqlTable::Meta::Class::Trait::DbTable;
 use Moose::Role;
 
 has 'table' => (
-    is  => 'rw',
-    isa => 'Str',
+    is  => 'rw', isa => 'Str',
 );
 
 has 'unique_keys' => (
-    is  => 'rw',
-    isa => 'ArrayRef[ArrayRef[Str]]',
+    is  => 'rw', isa => 'ArrayRef[ArrayRef[Str]]',
+    default => sub{[]}
 );
 
 sub get_primary_key_attributes {

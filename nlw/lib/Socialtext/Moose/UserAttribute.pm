@@ -3,27 +3,20 @@ package Socialtext::Moose::UserAttribute;
 use warnings;
 use strict;
 use Moose::Exporter ();
+use Socialtext::Moose::Util;
 
 Moose::Exporter->setup_import_methods(
-    $Moose::VERSION >= 0.89 # added with_meta
-        ? (with_meta => ['has_user'])
-        : (with_caller => ['has_user'])
+    compat_with_meta('has_user'),
 );
 
 sub has_user {
-    my ($class_or_meta, $field, %args) = @_;
+    my ($c_or_m, $field, %args) = @_;
     use Carp ();
     local $SIG{__WARN__} = \&Carp::cluck; # make warnings here extra-noisy
 
-    my $meta = ($Moose::VERSION >= 0.89) # added with_meta
-        ? $class_or_meta
-        : Moose::Util::find_meta($class_or_meta);
+    my $meta = compat_meta_arg($c_or_m);
 
-    # this method moved some time after 0.72.  Makes the added attributes
-    # appear to be from where 'has_user' was invoked.
-    my $definition_context = $Moose::VERSION > 0.72
-        ? Moose::Util::_caller_info(1)
-        : Moose::_caller_info(1);
+    my $definition_context = caller_info();
 
     my $id_field = $field.'_id';
     my $writer = "_$id_field";

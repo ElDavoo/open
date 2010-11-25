@@ -1,6 +1,5 @@
 package Socialtext::Group::Homunculus;
 # @COPYRIGHT@
-
 use Moose;
 use Socialtext::Moose::SqlTable;
 use Socialtext::MooseX::Types::Pg;
