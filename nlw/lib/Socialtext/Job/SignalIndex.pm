@@ -74,7 +74,7 @@ sub _rebuild_signal_topics {
     $_->_insert_asset() for @{$signal->attachments};
 }
 
-__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable(inline_constructor => 1);
 1;
 
 =head1 NAME

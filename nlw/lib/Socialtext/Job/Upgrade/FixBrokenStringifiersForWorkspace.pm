@@ -47,7 +47,7 @@ sub _attachments_for {
 }
 
 no Moose;
-__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable(inline_constructor => 1);
 1;
 
 =head1 NAME

@@ -87,7 +87,7 @@ EOT
     );
 }
 
-__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable(inline_constructor => 1);
 1;
 
 =head1 NAME

@@ -62,5 +62,5 @@ sub _make_webhook_request {
     return $ua->post($uri_base, [ $uri->query_form, json_payload => $payload ]);
 }
 
-__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable(inline_constructor => 1);
 1;
