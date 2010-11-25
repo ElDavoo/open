@@ -5,7 +5,7 @@ use Moose;
 extends 'Socialtext::Job', 'Socialtext::Job::AttachmentIndex::Base';
 with 'Socialtext::CoalescingJob', 'Socialtext::IndexingJob';
 
-__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable(inline_constructor => 1);
 no Moose;
 
 package Socialtext::Job::AttachmentIndex::Base;
@@ -42,7 +42,7 @@ sub do_work {
     $self->completed();
 }
 
-__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable(inline_constructor => 1);
 no Moose;
 1;
 __END__

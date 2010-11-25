@@ -19,5 +19,5 @@ override '_pref_name' => sub {
     return 'watchlist_notify_frequency';
 };
 
-__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable(inline_constructor => 1);
 1;

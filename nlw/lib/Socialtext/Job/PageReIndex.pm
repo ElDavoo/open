@@ -8,7 +8,7 @@ with 'Socialtext::ReIndexJob', 'Socialtext::IndexingJob';
 
 override unlink_cached_wikitext_linkers => sub {};
 
-__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable(inline_constructor => 1);
 no Moose;
 1;
 __END__

@@ -54,5 +54,5 @@ override '_frequency_pref' => sub {
     return $prefs->{watchlist_notify_frequency}->value * 60;
 };
 
-__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable(inline_constructor => 1);
 1;

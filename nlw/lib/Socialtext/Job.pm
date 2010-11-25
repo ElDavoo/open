@@ -1,9 +1,17 @@
 package Socialtext::Job;
 # @COPYRIGHT@
 use Moose;
+use TheSchwartz::Moosified::Worker;
 use namespace::clean -except => 'meta';
 
-extends 'TheSchwartz::Moosified::Worker';
+# TS:M:W doesn't inherit from Moose::Object as of 0.005_05. To get constructor
+# inlining to work properly under newer versions of Moose, we extend it here.
+BEGIN {
+    my @ext = 'TheSchwartz::Moosified::Worker';
+    unshift @ext, 'Moose::Object'
+        unless TheSchwartz::Moosified::Worker->isa('Moose::Object');
+    extends @ext;
+}
 
 # By default, jobs are deemed to be "short running".
 # XXX: this'd be *far* better done using MooseX::ClassAttribute
@@ -192,5 +200,5 @@ sub to_hash {
     return $hash;
 }
 
-__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable(inline_constructor => 1);
 1;
