@@ -310,9 +310,6 @@
                         return false;
                     })
                     .appendTo(li);
-                if (i==0) {
-                    self.select_element(li, true);
-                }
             });
             this.show();
         }
