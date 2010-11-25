@@ -8,8 +8,12 @@
 | open_ok | /st/dashboard/ |  |
 | wait_for_element_visible_ok | link=Mobile | 30000 |
 | click_and_wait | link=Mobile |  |
-| *Comment* | SEE MIKI Home |
-| pause | %%pt%% |
+| *Comment* | SEE MIKI Home |  |
+| pause | %%pt%% |  |
+
+| *Comment* | SEE THIS IS OK - People I Follow Link is PRESENT! |  |
+| wait_for_element_visible_ok | link=People I follow | 30000 |
+| pause | %%pt%% |  |
 
 | clickAndWait | link=Workspaces |
 | *Comment* | SEE MIKI Workspace List |

@@ -55,8 +55,6 @@
 | text_like | %%miki_signal_text%% |  |
 
 | *Comment* | Test case: Miki Send Signals |  |
-| text_like | //body | People I follow |
-| wait_for_element_visible_ok | link=Mine | 30000 |
 | st-type-signal | %%signal1%% | 1 |
 | wait_for_element_visible_ok | %%miki_signal_submit%% | 30000 |
 | click_and_wait | %%miki_signal_submit%% |  |
@@ -127,7 +125,6 @@
 | pause | 30000 |  |
 | wait_for_text_present_ok | %%signal1%% | 30000 |
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
-| text_like | People I follow |  |
 
 | include | [Test Case: Miki Pagination] |  |
 

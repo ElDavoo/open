@@ -46,7 +46,7 @@
 | wait_for_element_visible_ok | mobile-profile-privmsg | 30000 |
 
 | *Comment* | Test case: Miki Private Signal Send private signal |  |
-| click_ok | mobile-profile-privmsg |  |
+| click_ok | //a[@id='mobile-profile-privmsg'] |  |
 | wait_for_element_visible_ok | st-signal-text | 30000 |
 | wait_for_element_visible_ok | st-signal-submit | 30000 |
 | type_ok | st-signal-text | %%prv_signal%% |
