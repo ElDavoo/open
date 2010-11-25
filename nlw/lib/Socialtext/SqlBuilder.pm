@@ -1,5 +1,6 @@
 package Socialtext::SqlBuilder;
 use Moose::Role;
+use Moose::Util ();
 use Socialtext::SQL qw(:exec :time);
 use Socialtext::SQL::Builder qw(sql_abstract);
 use List::MoreUtils qw(all);
@@ -17,8 +18,7 @@ sub _short_sql_builds_for {
 
 sub _get_for_meta {
     my $class = shift;
-    Class::MOP::load_class($class->Builds_sql_for);
-    return $class->Builds_sql_for->meta;
+    Moose::Util::find_meta($class->Builds_sql_for);
 }
 
 sub _CoerceBindings {

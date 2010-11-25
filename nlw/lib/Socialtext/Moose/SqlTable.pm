@@ -48,6 +48,7 @@ sub has_column {
     $options{traits} ||= [];
     unshift @{$options{traits}},
         'Socialtext::Moose::SqlTable::Meta::Attribute::Trait::DbColumn';
+    $options{definition_context} = caller_info();
     $meta->add_attribute($name, %options);
 }
 
@@ -60,8 +61,7 @@ sub has_table {
 sub has_unique_key {
     my ($c_or_m, @attr_names) = @_;
     my $meta = compat_meta_arg($c_or_m);
-    my $keys = $meta->unique_keys();
-    push @{$keys}, [@attr_names];
+    push @{$meta->unique_keys}, [@attr_names];
 }
 
 no Moose;

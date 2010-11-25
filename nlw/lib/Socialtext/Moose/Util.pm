@@ -40,15 +40,15 @@ This is needed due to Moose API changes in version 0.90.
 
 =cut
 
-sub compat_with_meta (@);
+sub compat_with_meta;
 *compat_with_meta = ($Moose::VERSION < 0.90)
-? sub (@) { with_caller => \@_ }
-: sub (@) { with_meta => \@_ };
+? sub { return with_caller => [@_] }
+: sub { return with_meta => [@_] };
 
-sub compat_meta_arg ($);
+sub compat_meta_arg;
 *compat_meta_arg = ($Moose::VERSION < 0.90)
-? sub ($) { Moose::Util::find_meta($_[0]) }
-: sub ($) { $_[0] };
+? sub { Moose::Util::find_meta($_[0]) }
+: sub { $_[0] };
 
 =item caller_info
 
