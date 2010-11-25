@@ -162,7 +162,8 @@ sub _new {
     my ( $class, %args ) = @_;
 
     my $sth;
-    if (my $name = lc $args{name}) {
+    if ($args{name}) {
+        my $name = lc $args{name};
         if (my $ws = $class->cache->get("name:$name")) {
             return $ws;
         }
