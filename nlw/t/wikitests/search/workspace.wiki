@@ -3,7 +3,6 @@
 # Set up 2 workspaces with similar content
 
 | standard-test-setup |
-| set-searcher | Solr |
 
 | edit-page | %%workspace%%                                          | Phrase 1               | Wise saying: The greatest achievement is selflessness.        |
 | edit-page | %%workspace%%                                          | Phrase 2               | The greatest worth is self-mastery.                           |
@@ -174,6 +173,3 @@
 | code-is     | 200                                                                |
 | body-unlike | Statement 9                                                        |
 
-* Cleanup
-
-| set-searcher | KinoSearch |

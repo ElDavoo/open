@@ -39,33 +39,22 @@ L</GetFactory> produces the correct factory, and that factory can produce
 searcher and indexer objects which operate on the current fulltext search
 implementation.
 
-Switching between fulltext search implementations is accomplished by setting
-L<Socialtext::AppConfig/search_factory_class>.
-
 =head1 CLASS METHODS
 
 =head2 GetFactory()
 
-Returns an instance of the class configured in
-L<Socialtext::AppConfig/search_factory_class>, by C<require>ing and calling
-C<new()> on this class.  If there are troubles loading or instantiating, the
-method will C<die> with a string beginning C<<
-Socialtext::Search::AbstractFactory->GetFactory: >>.
+Returns an instance of the configured search factory.
+
+Historically, this was configured via 
+L<Socialtext::AppConfig/search_factory_class>
 
 =cut
 
 sub GetFactory {
     my ( $class, %p ) = @_;
 
-    my $factory_class = Socialtext::AppConfig->search_factory_class;
-    if ($p{use_index}) {
-        if ($p{use_index} eq 'solr') {
-            $factory_class = 'Socialtext::Search::Solr::Factory';
-        }
-        elsif ($p{use_index} eq 'kino') {
-            $factory_class = 'Socialtext::Search::KinoSearch::Factory';
-        }
-    }
+    # Currently this is hard-coded, but :
+    my $factory_class = 'Socialtext::Search::Solr::Factory';
 
     eval "require $factory_class";
     die __PACKAGE__, "->GetFactory: $@" if $@;
@@ -85,10 +74,8 @@ Returns an array of indexer objects for the current active indexers.
 sub GetIndexers {
     my ( $class, $ws_name ) = @_;
 
-    my @classes = (Socialtext::AppConfig->search_factory_class);
-    if ($classes[0] !~ m/solr/i) {
-        push @classes, 'Socialtext::Search::Solr::Factory';
-    }
+    # Currently this is hard-coded:
+    my @classes = ('Socialtext::Search::Solr::Factory');
 
     my @indexers;
     for my $class_name (@classes) {

@@ -7,7 +7,6 @@
 # Create lots of pages and then page through them
 
 | standard-test-setup |
-| set-searcher | Solr |
 
 | edit-page       | %%workspace%% | page 1001  | Content 1  |
 | edit-page       | %%workspace%% | page 1002  | Content 2  |
@@ -138,6 +137,3 @@
 | body-like | page 1042 |
 | body-like | page 1043 |
 
-* Cleanup
-
-| set-searcher | KinoSearch |

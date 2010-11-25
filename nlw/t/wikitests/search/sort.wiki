@@ -7,7 +7,6 @@
 # Sort pages in different ways
 
 | standard-test-setup |
-| set-searcher | Solr |
 
 | edit-page       | %%workspace%% | page 1001  | Content 1  |
 | edit-page       | %%workspace%% | page 1002  | Content 2  |
@@ -88,6 +87,3 @@
 | body-unlike   | page 1016 |
 | body-unlike   | page 1018 |
 
-* Cleanup
-
-| set-searcher | KinoSearch |

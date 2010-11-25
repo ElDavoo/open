@@ -17,8 +17,7 @@ require Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(init delete_page search_for_term
                  search_for_term_in_attach confirm_term_in_result
-                 create_and_confirm_page turn_on_rampup
-                 turn_off_rampup);
+                 create_and_confirm_page);
 
 if (Socialtext::AppConfig->syslog_level ne 'debug') {
     Socialtext::AppConfig->set('syslog_level' => 'debug');
@@ -156,49 +155,5 @@ sub create_and_confirm_page {
     }
 }
 
-sub turn_on_rampup {
-    my $dir = File::Spec->catdir(
-        Socialtext::AppConfig->test_dir(),
-        'etc/socialtext/search',
-    );
-    my $rampup_yaml = <<EOY;
----
-version: 9999
-index_type: combined
-search_engine: kinosearch
-directory_pattern: %system_plugin_directory%/woot
-query_parser_method: _parse_query
-hits_processor_method: _process_hits
-key_generator: composite_key
-field_spec:
-    key:
-        analyzed: 0
-
-    title:
-        stored: 0
-        boost: 4
-
-    tag:
-        stored: 0
-        boost: 2
-
-    text:
-        stored: 0
-
-EOY
-
-    open RAMPUP, ">" . File::Spec->catfile( $dir, "rampup.yaml" ) || die "I just can't! $!\n";
-    print RAMPUP $rampup_yaml;
-    close RAMPUP;
-}
-
-sub turn_off_rampup {
-    my $cfgfile = File::Spec->catfile(
-        Socialtext::AppConfig->test_dir(),
-        'etc/socialtext/search/rampup.yaml',
-    );
-    unlink $cfgfile;
-    #rmtree( File::Spec->catdir( Socialtext::Paths::system_plugin_directory, 'woot' ) );
-}
 
 1;

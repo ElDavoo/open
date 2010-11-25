@@ -76,17 +76,6 @@ sub new {
     return $self;
 }
 
-# I don't think this is necessary anymore, as Kinosearch is the default
-sub _setup_kinosearch {
-    my $self = shift;
-    my $dir = $self->nlw_root_dir;
-    my $kino_class = 'Socialtext::Search::KinoSearch::Factory';
-    my $st_conf = qq{$dir/etc/socialtext/socialtext.conf};
-    warn "# Enabling KinoSearch in $st_conf\n";
-    system(qq{$^X -pi -e 's/^# (search_factory_class:) .+/\$1 $kino_class/m' }
-           . $st_conf);
-}
-
 sub test {
     my $self = shift;
     my %opts = @_;

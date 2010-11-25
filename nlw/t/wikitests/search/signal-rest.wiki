@@ -4,7 +4,6 @@
 
 | standard-test-setup |       |                                         |
 | set                 | origuser_id | %%user_id%% |
-| set-searcher        | Solr  |                                         |
 | set                 | userZ | zzz_%%start_time%%@ken.socialtext.net |
 | create-user         | %%userZ%% | abc123 | %%account%% |
 | set                 | userY | yyy_%%start_time%%@ken.socialtext.net |
@@ -116,7 +115,3 @@
 | body-like | yyy |
 | body-like | zzz |
 
-# Timeout
-
-| *Comment*    | Cleanup; put things back the way they were.  |
-| set-searcher | KinoSearch |

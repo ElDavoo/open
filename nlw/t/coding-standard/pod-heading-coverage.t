@@ -211,17 +211,6 @@ my %ToDoModules = map { $_ => 1 } qw(
     Socialtext::Search::Basic::Searcher
     Socialtext::Search::Config
     Socialtext::Search::Hit
-    Socialtext::Search::KinoSearch::Analyzer
-    Socialtext::Search::KinoSearch::Analyzer::Base
-    Socialtext::Search::KinoSearch::Analyzer::Ja::Tokenize
-    Socialtext::Search::KinoSearch::Analyzer::Ja::mecabif
-    Socialtext::Search::KinoSearch::Analyzer::LowerCase
-    Socialtext::Search::KinoSearch::Analyzer::Stem
-    Socialtext::Search::KinoSearch::Analyzer::Tokenize
-    Socialtext::Search::KinoSearch::Factory
-    Socialtext::Search::KinoSearch::Indexer
-    Socialtext::Search::KinoSearch::QueryParser
-    Socialtext::Search::KinoSearch::Searcher
     Socialtext::Search::Set
     Socialtext::Search::Utils
     Socialtext::SearchPlugin

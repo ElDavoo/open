@@ -274,12 +274,6 @@ sub _add_attachment_doc {
     $self->_add_doc(WebService::Solr::Document->new(@fields));
 }
 
-# Make sure the text we index is not bigger than 20 million characters, which
-# is about 20 MB.  Unicode might screw us here with its multibyte characters,
-# but I'm not too worried about it.
-# 
-# The 20 MB figure was arrived at by history which is no longer relevant.
-#
 # See {link dev-tasks [KinoSearch - Maximum File Size Cap]} for more
 # information.
 sub _truncate {

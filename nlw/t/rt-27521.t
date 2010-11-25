@@ -28,7 +28,7 @@ use warnings;
 use mocked 'Apache::Cookie';
 use Test::Socialtext tests => 7;
 
-BEGIN { use_ok("Socialtext::Search::KinoSearch::Factory") }
+BEGIN { use_ok("Socialtext::Search::Solr::Factory") }
 fixtures( 'admin', 'foobar' );
 
 our $term_hub = new_hub('admin');
@@ -100,8 +100,7 @@ sub index_ok {
 }
 
 sub indexer {
-    my $hub     = shift;
-    my $ws      = $hub->current_workspace;
-    my $ws_name = $ws->name;
-    return Socialtext::Search::KinoSearch::Factory->create_indexer($ws_name);
+    my $hub = shift;
+    my $ws  = $hub->current_workspace;
+    return Socialtext::Search::Solr::Factory->create_indexer($ws->name);
 }
