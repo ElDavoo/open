@@ -14,9 +14,16 @@ my $STUB = '/C=US/ST=CA/L=Palo Alto/O=Socialtext';
 my $action = shift;
 usage() unless $action;
 
-my $name  = '';
-my $force = 0;
-GetOptions('username=s'=>\$name, 'force'=>\$force);
+my $name   = '';
+my $server = '';
+my $force  = 0;
+my $dryrun = 0;
+GetOptions(
+    'username=s' => \$name,
+    'server=s'   => \$server,
+    'force'      => \$force,
+    'dry-run'    => \$dryrun,
+);
 
 my $ca_cert = 'ca/cert';
 my $ca_key  = 'ca/key.nopass';
@@ -36,7 +43,7 @@ if ($action eq 'init') {
 
     message("Initialization Complete");
 }
-elsif ($action eq 'cert') {
+elsif ($action eq 'client') {
     usage() unless $name;
     error("This doesn't look like a CA directory")
         unless -e $ca_cert;
@@ -54,7 +61,7 @@ elsif ($action eq 'cert') {
     shell_run("openssl genrsa -out $key");
     shell_run("openssl req -new -key $key -out $csr -subj '$subj'");
     shell_run("openssl x509 -req -in $csr -CA $ca_cert -CAkey $ca_key -CAcreateserial -out $cert");
-    shell_run("openssl pkcs12 -export -clcerts -in $cert -inkey $key -passout 'pass:' -out $binary");
+    shell_run("openssl pkcs12 -export -name 'client $name TEST' -clcerts -in $cert -inkey $key -passout 'pass:' -out $binary");
     shell_run("rm $csr");
     print color('reset');
 
@@ -64,7 +71,7 @@ elsif ($action eq 'install') {
     error("This doesn't look like a CA directory")
         unless -e $ca_cert;
 
-    my $server = hostname();
+    $server ||= hostname();
     my $key = "working/$server.key";
     my $csr = "working/$server.csr";
     my $cert = "working/$server.crt";
@@ -77,14 +84,21 @@ elsif ($action eq 'install') {
     shell_run("openssl genrsa -out $key");
     shell_run("openssl req -new -key $key -out $csr -subj '$subj'");
     shell_run("openssl x509 -req -in $csr -CA $ca_cert -CAkey $ca_key -CAcreateserial -out $cert");
-    shell_run("mkdir -p $path/etc/ssl/{certs,private}");
-    shell_run("mv $cert $path/etc/ssl/certs/");
-    shell_run("mv $key $path/etc/ssl/private/");
-    shell_run("cp $ca_cert $path/etc/ssl/certs/$server.client.crt");
+
+    unless ($dryrun) {
+        shell_run("mkdir -p $path/etc/ssl/{certs,private}");
+        shell_run("cp $cert $path/etc/ssl/certs/");
+        shell_run("cp $key $path/etc/ssl/private/");
+        shell_run("cp $ca_cert $path/etc/ssl/certs/$server.client.crt");
+    }
+
     shell_run("rm $csr");
     print color('reset');
 
     message("Installed certs");
+}
+elsif ($action eq 'help') {
+    usage();
 }
 else {
     message("Action '$action' is not valid", 'red');
@@ -106,7 +120,25 @@ sub error {
 
 sub usage {
     print <<EOT;
-  USAGE: $0 init|cert [--username] [--force]
+  USAGE: $0 init|client|install [--username] [--server] [--force] [--dry-run]
+
+  Manage a very simple CA.
+
+  COMMANDS:
+    init: Initialize your CA. More specific, make a passwordless key and
+          self-sign it. If you've already got a CA cert, you can
+          re-initialize by passing this command the `--force` option.
+          Doing so will invalidate any existing client or server certs.
+
+    client: Create a client cert. Requires the `--username` param. You may
+         re-create a client cert with the `--force` option.
+
+    install: Install the CA cert and a custom server cert in a dev-env or
+         VE for testing. By default, the command will create a server cert
+         with the same name as the machine is running on. You can override
+         this by passing in a `--server` param. The certs will not be
+         copied into place if a `--dry-run` param is passed in.
+
 EOT
     exit;
 }
