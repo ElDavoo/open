@@ -67,22 +67,22 @@
         location ~ "^/nlw/plugin/([^/]+)/javascript/(.*)" {
             proxy_pass http://localhost:[% apache_perl_port %]/js/plugin/$1/$2;
         }
-
-        location /nlw/static/ {
-            internal;
-            alias [% config.static_dir %]/;
-            expires 1y;
-        }
-
-        location ~ "^/nlw/static/(.+.js.gz)$" {
-            alias [% config.static_dir %]/$1;
-            expires 1y;
-            types {}
-            default_type application/javascript;
-            add_header Content-Encoding "gzip";
-            gzip off;
-        }
     [%- END %]
+
+    location /nlw/static/ {
+        internal;
+        alias [% config.static_dir %]/;
+        expires 1y;
+    }
+
+    location ~ "^/nlw/static/(.+.js.gz)$" {
+        alias [% config.static_dir %]/$1;
+        expires 1y;
+        types {}
+        default_type application/javascript;
+        add_header Content-Encoding "gzip";
+        gzip off;
+    }
 
     location ~ "^/static/(.+.js.gz)$" {
         alias [% config.static_dir %]/$1;
