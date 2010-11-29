@@ -63,7 +63,7 @@
 | *Comment* | Test case: Miki Private Signal Send private signal |  |
 | open_ok | /?action=workspace_list | |
 | st-logoutin | %%third_user%% | %%password%% |
-| open_ok | /m |  |
+| st_open_noeval | /m |  |
 | wait_for_text_not_present_ok | private | 30000 |
 | text_unlike | //body | private |
 | text_unlike | //body | %%prv_signal%% |
