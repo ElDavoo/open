@@ -1,0 +1,114 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use Getopt::Long;
+use Socialtext::System qw/shell_run/;
+use Term::ANSIColor;
+use Sys::Hostname;
+use Socialtext::AppConfig;
+#use List::MoreUtils qw/all/;
+
+my $STUB = '/C=US/ST=CA/L=Palo Alto/O=Socialtext';
+
+my $action = shift;
+usage() unless $action;
+
+my $name  = '';
+my $force = 0;
+GetOptions('username=s'=>\$name, 'force'=>\$force);
+
+my $ca_cert = 'ca/cert';
+my $ca_key  = 'ca/key.nopass';
+
+if ($action eq 'init') {
+    error("CA directory exists, use --force")
+        if -e $ca_cert && !$force;
+
+    my $subj = $STUB .'/CN=ca@ken.socialtext.net/';
+
+    print color('magenta');
+    shell_run('-rm -Rf {cert,ca,working,binary}') if $force;
+    shell_run('-mkdir {cert,ca,working,binary}');
+    shell_run("openssl genrsa -out $ca_key");
+    shell_run("openssl req -x509 -new -key $ca_key -out $ca_cert -subj '$subj'");
+    print color('reset');
+
+    message("Initialization Complete");
+}
+elsif ($action eq 'cert') {
+    usage() unless $name;
+    error("This doesn't look like a CA directory")
+        unless -e $ca_cert;
+
+    my $key    = "cert/$name.key.nopass";
+    my $csr    = "working/$name.csr";
+    my $cert   = "cert/$name.crt";
+    my $binary = "binary/$name.p12";
+    my $subj   = "$STUB/CN=$name/";
+
+    error("Cert '$name' already exists, use --force")
+        if -e $cert && !$force;
+
+    print color('magenta');
+    shell_run("openssl genrsa -out $key");
+    shell_run("openssl req -new -key $key -out $csr -subj '$subj'");
+    shell_run("openssl x509 -req -in $csr -CA $ca_cert -CAkey $ca_key -CAcreateserial -out $cert");
+    shell_run("openssl pkcs12 -export -clcerts -in $cert -inkey $key -passout 'pass:' -out $binary");
+    shell_run("rm $csr");
+    print color('reset');
+
+    message("Signed cert is in '$cert'");
+}
+elsif ($action eq 'install') {
+    error("This doesn't look like a CA directory")
+        unless -e $ca_cert;
+
+    my $server = hostname();
+    my $key = "working/$server.key";
+    my $csr = "working/$server.csr";
+    my $cert = "working/$server.crt";
+    my $subj = "$STUB/CN=$server/";
+
+    my $path = Socialtext::AppConfig->is_appliance()
+        ? '' : $ENV{HOME} . '/.nlw';
+
+    print color('magenta');
+    shell_run("openssl genrsa -out $key");
+    shell_run("openssl req -new -key $key -out $csr -subj '$subj'");
+    shell_run("openssl x509 -req -in $csr -CA $ca_cert -CAkey $ca_key -CAcreateserial -out $cert");
+    shell_run("mkdir -p $path/etc/ssl/{certs,private}");
+    shell_run("mv $cert $path/etc/ssl/certs/");
+    shell_run("mv $key $path/etc/ssl/private/");
+    shell_run("cp $ca_cert $path/etc/ssl/certs/$server.client.crt");
+    shell_run("rm $csr");
+    print color('reset');
+
+    message("Installed certs");
+}
+else {
+    message("Action '$action' is not valid", 'red');
+    usage();
+}
+
+exit;
+
+sub message {
+    my $msg = shift;
+    my $color = shift || 'cyan';
+    print color($color), "\n$msg", color('reset'), "\n\n";
+}
+
+sub error {
+    my $msg = shift;
+    die color('red'), "\n$msg", color('reset'), "\n\n";
+}
+
+sub usage {
+    print <<EOT;
+  USAGE: $0 init|cert [--username] [--force]
+EOT
+    exit;
+}
+
+die $action;
