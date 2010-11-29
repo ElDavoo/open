@@ -13,10 +13,10 @@
                 href: "/?action=workspaces_listall"
             },
             {
-                url: "/data/workspaces?minimal=1",
+                data: Socialtext.workspaces,
                 defaultId: 'default-workspace-link',
                 href: function(w) { return '/' + w.name },
-                title: function(w) { return w.title },
+                title: function(w) { return w.label },
                 sort: function(a,b) {
                     if (a['default']) return -1;
                     if (b['default']) return 1;
