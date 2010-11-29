@@ -811,7 +811,8 @@ CREATE TABLE gadget (
     thumbnail text,
     scrolling boolean DEFAULT false,
     height integer,
-    description text
+    description text,
+    xml text
 );
 
 CREATE SEQUENCE gadget_id
@@ -2530,4 +2531,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '128');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '129');
