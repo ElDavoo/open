@@ -31,9 +31,7 @@
                     });
                 --></script>
             [% END %]
-            [% IF gadget.has_prefs %]
-                <a class="settings" href="#" id="st-widget-settings[% gadget.id %]" onclick="gadgets.container.toggleSetup('[% gadget.id %]'); return false"></a>
-            [% END %]
+            <a class="settings" [% UNLESS gadget.has_prefs %]style="display:none"[% END %] href="#" id="st-widget-settings[% gadget.id %]" onclick="gadgets.container.toggleSetup('[% gadget.id %]'); return false"></a>
             [% IF editing %]
                 <a class="fix [% gadget.fixed ? "fixed" : "unfixed" %]" href="#" onclick="gadgets.container.fix('[% gadget.id %]'); return false"></a>
             [% END %]
