@@ -569,7 +569,25 @@ proto.newpage_save = function(page_name, pagename_editfield) {
 }
 
 proto.isOffline = function () {
-    return (typeof navigator == 'object' && typeof navigator.onLine == 'boolean' && !navigator.onLine);
+    // IE4+, FF3+
+    if (!$.browser.webkit && typeof navigator == 'object' && typeof navigator.onLine == 'boolean') {
+        return !navigator.onLine;
+    }
+
+    // WebKit's navigator.onLine is unreliable when VMWare or Parallels is
+    // installed - https://bugs.webkit.org/show_bug.cgi?id=32327
+    // Do a GET on blank.html to determine onlineness instead.
+    var onLine = false;
+    $.ajax({
+        async: false,
+        type: 'GET',
+        url: '/static/html/blank.html?_=' + Math.random(),
+        timeout: 10 * 1000,
+        success: function(data) {
+            onLine = data;
+        }
+    });
+    return !onLine;
 }
 
 proto.saveContent = function() {
