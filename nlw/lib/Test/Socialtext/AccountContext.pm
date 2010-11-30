@@ -86,3 +86,24 @@ sub _all_features_do {
 no Moose;
 __PACKAGE__->meta->make_immutable;
 1;
+
+=head1 NAME
+
+Test::Socialtext::AccountContext - A means for accurately managing an Account
+for exporting/importing.
+
+=head1 SYNOPSIS
+
+    use Test::Socialtext::AccountContext;
+
+    my $context = Test::Socialtext::AccountContext->new(export_name=>$name);
+    $context->prepare();
+
+=head1 DESCRIPTION
+
+Using "features", one can create one or more accounts and ensure that all of
+the data they need is present. The account(s) can then be exported,
+re-imported, then re-validated to make sure that the export/import procedure
+is not lossy.
+
+=cut

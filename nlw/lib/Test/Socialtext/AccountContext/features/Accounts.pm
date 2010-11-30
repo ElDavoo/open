@@ -47,3 +47,23 @@ sub _validate {
 
 __PACKAGE__->meta->make_immutable();
 1;
+
+=head1 NAME
+
+Test::Socialtext::AccountContext::features::Accounts - An Accounts feature for
+contextual Accounts.
+
+=head1 SYNOPSIS
+
+    use Test::Socialtext::AccountContext;
+
+    my $context = Test::Socialtext::AccountContext->new(export_name=>$name);
+    my $users = $context->registry->{Accounts};
+
+    ...
+
+=head1 DESCRIPTION
+
+A Feature for contextual Accounts that can be used to manage Accounts.
+
+=cut
