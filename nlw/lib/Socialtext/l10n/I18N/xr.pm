@@ -19,3 +19,19 @@ sub maketext {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::l10n::I18N::xr
+
+=head1 SYNOPSIS
+
+  loc("Blah");
+
+=head1 DESCRIPTION
+
+xr is a l33t sp34k locale.
+
+=cut

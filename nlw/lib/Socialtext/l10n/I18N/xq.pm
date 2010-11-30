@@ -14,3 +14,19 @@ sub maketext {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::l10n::I18N::xq
+
+=head1 SYNOPSIS
+
+  loc("Blah");
+
+=head1 DESCRIPTION
+
+Put smart quotes around the real text.
+
+=cut
