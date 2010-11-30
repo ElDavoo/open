@@ -63,7 +63,7 @@ elsif ($action eq 'client') {
     shell_run("openssl genrsa -out $key");
     shell_run("openssl req -new -key $key -out $csr -subj '$subj'");
     shell_run("openssl x509 -req -in $csr -CA $ca_cert -CAkey $ca_key -CAcreateserial -out $cert");
-    shell_run("openssl pkcs12 -export -name 'client $name TEST' -clcerts -in $cert -inkey $key -passout 'pass:' -out $binary");
+    shell_run("openssl pkcs12 -export -name 'client $name TEST' -clcerts -in $cert -inkey $key -passout 'pass:password' -out $binary");
     shell_run("rm $csr");
     print color('reset');
 
