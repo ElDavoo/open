@@ -73,6 +73,8 @@ Test case for `/data/workspaces`; the Workspace list
 ## POST to a workspace, Using the creator's account_id
 | *Comment* | POST to a workspace, Using the creator's account_id |                                      |
 | POST-json | /data/workspaces                                    | {"name":"%%viola%%","title":"Viola"} |
+| code-is   | 400                                                 |                                      |
+| POST-json | /data/workspaces                                    | {"name":"%%viola%%","title":"Viola","account_id":"%%non_default_acct_id%%"} |
 | code-is   | 201                                                 |                                      |
 | GET-json  | /data/workspaces?q=all                              |                                      |
 | code-is   | 200                                                 |                                      |
@@ -89,17 +91,17 @@ Test case for `/data/workspaces`; the Workspace list
 ## POST, authenticated user
 | *Comment*      | POST, authenticated user |                                      |
 | http-user-pass | %%auth_user%%            | password                             |
-| POST-json      | /data/workspaces         | {"name":"%%cello%%","title":"Cello"} |
+| POST-json      | /data/workspaces         | {"name":"%%cello%%","title":"Cello","account_id":"%%default_account_id%%"} |
 | code-is        | 201                      |                                      |
 
 ## POST, create multiple workspaces
 | *Comment* | POST, create multiple workspaces |                                                                                                 |
-| POST-json | /data/workspaces                 | [{"name":"%%double_bass%%","title":"Double Bass"},{"name":"%%octo_bass%%","title":"Octo Bass"}] |
+| POST-json | /data/workspaces                 | [{"name":"%%double_bass%%","title":"Double Bass","account_id":"%%default_account_id%%"},{"name":"%%octo_bass%%","title":"Octo Bass","account_id":"%%default_account_id%%"}] |
 | code-is   | 201                              |                                                                                                 |
 
 ## POST, create workspace, add a group
 | *Comment* | POST, create workspace, add a group |                                                                           |
-| POST-json | /data/workspaces                    | {"name":"%%tuba%%","title":"Tuba","groups":{"group_id":"%%trumpet_id%%"}} |
+| POST-json | /data/workspaces                    | {"name":"%%tuba%%","title":"Tuba","groups":{"group_id":"%%trumpet_id%%"},"account_id":"%%default_account_id%%"} |
 | code-is   | 201                                 |                                                                           |
 | GET-json  | /data/workspaces                    |                                                                           |
 | code-is   | 200                                 |                                                                           |
@@ -108,12 +110,12 @@ Test case for `/data/workspaces`; the Workspace list
 
 ## POST, create workspace using invalid permission_set param
 | *Comment* | POST, create workspace using permission_set param |
-| POST-json | /data/workspaces | {"name":"bad-workspace","title":"Bad Bad Bad","permission_set":"ENOSUCHSET"} |
+| POST-json | /data/workspaces | {"name":"bad-workspace","title":"Bad Bad Bad","permission_set":"ENOSUCHSET","account_id":"%%default_account_id%%"} |
 | code-is | 400 |
 
 ## POST, create workspace using valid permission_set param
 | *Comment* | POST, create workspace using permission_set param |
-| POST-json | /data/workspaces | {"name":"%%sousaphone%%","title":"Sousaphone Hero","permission_set":"public"} |
+| POST-json | /data/workspaces | {"name":"%%sousaphone%%","title":"Sousaphone Hero","permission_set":"public","account_id":"%%default_account_id%%"} |
 | code-is      | 201                             |        |
 | GET-json     | /data/workspaces/%%sousaphone%% |        |
 | code-is      | 200                             |        |
