@@ -1,0 +1,8 @@
+A testset for Testing the functionality of Explore
+
+Note that tests 2 and 3 require you to first import the account located at /home/kenpier/anycorp.small.export into your dev-env.
+
+
+* [Test Case: Explore 1]
+* [Test Case: Explore 2]
+* [Test Case: Explore 3]
