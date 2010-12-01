@@ -14,6 +14,7 @@
 | set | signal1 | hello from a different user at %%start_time%% |
 | set | signal2 | and I say goodbye from the main user at %%start_time%% |
 | set | multisignal | You say potato, I say potatoe |
+| set | emergent_signal | hello %%start_time%% this is an emergent signal |
 
 | enable_acct_plugin | dashboard | %%mikiacct%% |
 | enable_acct_plugin | people | %%mikiacct%% |
@@ -23,7 +24,7 @@
 | set | othermikiacct | `othermikiacct-%%start_time%%` |
 | set | otherws | `other-miki-ws-%%start_time%%` |
 
-| create_account | %%othermikiacct%% |  |
+| create_account | %%othermikiacct%% | |
 | create_workspace | %%otherws%% | %%othermikiacct%% |
 
 | create_workspace | %%ws%% | %%mikiacct%% |  |
@@ -35,11 +36,17 @@
 | st-logoutin | %%othermikiuser%% | %%password%% |
 
 | *Comment* | Test case: Miki Open global nav, should be signals |  |
-| open_ok | /m/ |  |
+| open_ok | /st/dashboard/ |  |
+| wait_for_element_present_ok | link=Mobile | 30000 |
+| click_and_wait | link=Mobile | |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
 | wait_for_element_visible_ok | link=Activity | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
-| text_unlike | //body | %%miki_signal_disclaimer%% |
+
+| *Comment* | Test case: Miki Open global nav has emergent checking |  |
+| http-user-pass | %%othermikiuser%% | %%password%% |
+| post-signal | %%emergent_signal%% |  |
+| wait_for_text_present_ok | %%emergent_signal%% | 120000 |
 
 | add_member | %%mikiuser%% | %%otherws%% |
 | add_member | %%othermikiuser%% | %%otherws%% |
