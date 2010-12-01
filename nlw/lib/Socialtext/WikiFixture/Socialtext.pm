@@ -1144,6 +1144,22 @@ sub st_expect_firstpage_link_by_browser {
    }
 }
 
+=head st_check_emergent_signal_wikiwyg_mobile 
+
+Sends a signal and waits to see if in the miki ... if and only if you are on a "smart mobile" browser
+
+=cut
+
+sub st_check_emergent_signal_wikiwyg_mobile {
+    my ($self) = @_;
+    if ( $self->_is_wikiwyg() ) {
+        $self->handle_command('Comment', 'Test case: Miki Open global nav has emergent checking');
+        $self->handle_command('set', 'emergent_signal','hello %%start_time%% this is an emergent signal');
+        $self->handle_command('http-user-pass','%%othermikiuser%%','%%password%%');
+        $self->handle_command('post-signal','%%emergent_signal%%');
+        $self->handle_command('wait_for_text_present_ok','%%emergent_signal%%', 120000);
+    }
+}
 
 =head st_if_ie_check_mobile_signaltypes  
 

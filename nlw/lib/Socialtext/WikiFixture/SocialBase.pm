@@ -74,7 +74,7 @@ sub init {
         $self->{miki_signal_submit} = 'mobile_post';
         $self->{st_mobile_account_select} = 'mobile_network';
     } else {
-        $self->{miki_signal_disclaimer} = 'Signal to';
+        $self->{miki_signal_disclaimer} = 'Post to';
         $self->{miki_signal_text} = 'What are you working on?';
         $self->{miki_signal_submit} = 'st-signal-submit';
         $self->{st_mobile_account_select} = 'st-select-network';
