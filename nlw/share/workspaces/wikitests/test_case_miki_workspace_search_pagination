@@ -1,0 +1,30 @@
+| *Comment* | Test Case: Miki Workspace Search Pagination |
+
+| set | pws | pagemiki-workspace-%%start_time%% |  |
+| st-admin | create-workspace --name %%pws%% --title %%pws%% |  |  |
+| st-admin | add-member --username %%username%% --workspace %%pws%% |  |  |
+| st-create-pages | %%pws%% | 200 | hello  |
+| st_process_jobs |  |  |
+
+| *Comment* | Test Case: Miki Workspace Searhc Pagination: Click and Do Search |
+| open_ok | /m/search/%%pws%%/ |
+| wait_for_element_visible_ok | st-search-text | 30000 |
+| wait_for_element_visible_ok | st-search-submit |
+| type_ok | st-search-text | hello |
+| submit | searchform | |
+| pause | 30000 |
+
+
+| *Comment* | Test Case: Miki Workspace Search Pagination TODO: What's New Should link to all by date. Does not yet. |
+| open_ok | /%%pws%%/ |
+| wait_for_element_visible_ok | link=Mobile | 30000 |
+| click_and_wait | link=Mobile | |
+| wait_for_element_visible_ok | link=What's New | 3000 |
+| click_ok | link=What's New | |
+
+
+
+| *Comment* | Test Case: Miki Workspace Search Pagination TEARDOWN |
+
+
+| *Comment* | Test Case: Miki Workspace Search Pagination COMPLETED |
