@@ -1,0 +1,32 @@
+| *Comment* | Test Case: Mobile Replies Checker. Imported variables |  |
+| *Comment* | %%shared_account%% %%topic_signal%% %%reply_prefix%% |  |
+
+| *Comment* | Test Case: Replies Checker Setup and login |  |
+| set | my_acct | %%shared_account%% |
+| set | my_user | `%%my_acct%%_mobile_checker@david.socialtext.net` |
+| st-admin | create-user --account %%my_acct%% --e %%my_user%% --p %%password%% |  |
+| st-login | %%my_user%% | %%password%% |
+
+| *Comment* | Test Case: Mobile Replies Checker Checks for only two most recent replies |  |
+| open_ok | /st/m/signals |  |
+| wait_for_text_present_ok | %%topic_signal%% | 30000 |
+| wait_for_text_present_ok | %%reply_prefix%%-3 | 30000 |
+| wait_for_text_present_ok | %%reply_prefix%%-4 | 30000 |
+| wait_for_text_not_present_ok | %%reply_prefix%%-0-0 | 30000 |
+| wait_for_text_not_present_ok | %%reply_prefix%%-0-1 | 30000 |
+| wait_for_text_not_present_ok | %%reply_prefix%%-0-2 | 30000 |
+| wait_for_text_not_present_ok | %%reply_prefix%%-1 | 30000 |
+| wait_for_text_not_present_ok | %%reply_prefix%%-2 | 30000 |
+
+| *Comment* | Test Case: Mobile Replies Checker. Open the Replies and Check |  |
+| wait_for_element_visible_ok | //div[@class='older'][last()] | 30000 |
+| click_ok | //div[@class='older'][last()] |  |
+| wait_for_text_present_ok | %%reply_prefix%%-0-0 | 30000 |
+| wait_for_text_present_ok | %%reply_prefix%%-0-1 | 30000 |
+| wait_for_text_present_ok | %%reply_prefix%%-0-2 | 30000 |
+| wait_for_text_present_ok | %%reply_prefix%%-1 | 30000 |
+| wait_for_text_present_ok | %%reply_prefix%%-2 | 30000 |
+| wait_for_text_present_ok | %%reply_prefix%%-3 | 30000 |
+| wait_for_text_present_ok | %%reply_prefix%%-4 | 30000 |
+
+| *Comment* | Test Case: Mobile Replies Checker COMPLETED |  |

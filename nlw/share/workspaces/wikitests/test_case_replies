@@ -14,4 +14,7 @@
 | open_ok | /nlw/submit/logout |  |
 | include | [Test Case: Replies Checker] |  |
 
+| open_ok | /nlw/submit/logout |  |
+| include | [Test Case: Mobile Replies Checker] |  |
+
 | *Comment* | Test Case: Replies COMPLETED |  |
