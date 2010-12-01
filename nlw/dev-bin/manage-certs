@@ -9,7 +9,6 @@ use Socialtext::System qw/shell_run/;
 use Term::ANSIColor;
 use Sys::Hostname;
 use Socialtext::AppConfig;
-#use List::MoreUtils qw/all/;
 
 my $STUB = '/C=US/ST=CA/L=Palo Alto/O=Socialtext';
 
