@@ -1123,6 +1123,35 @@ sub st_mobile_account_select_ok {
      }
 }
 
+
+=head st_expect_firstpage_link_by_browser  
+
+This function should be called on the first or second page of search results.
+
+On IE, expect to see a link to the first page.  DO NOT expect this on FF3 or other browers
+
+
+=cut
+
+sub st_expect_firstpage_link_by_browser {
+   my ($self) = @_;
+   if ( $self->_is_wikiwyg() ) {   
+       #Must be FF3, GoogleChrome, or Safari
+       $self->handle_command('wait_for_element_not_visible_ok','mobile-paging-first',5000);
+   } else {
+       #IE
+       $self->handle_command('wait_for_element_visible_ok','mobile-paging-first',30000);
+   }
+}
+
+
+=head st_if_ie_check_mobile_signaltypes  
+
+IE contains hard links to display only certain signal types.  Other browsers do not.
+
+=cut
+
+
 sub st_if_ie_check_mobile_signaltypes {
    my ($self) = @_;
    if (! ($self->_is_wikiwyg()) ) {
