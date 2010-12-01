@@ -1,6 +1,6 @@
-| *Comment* | STARTING Test Case: Miki Search Pagination Mobile |  |
+| *Comment* | STARTING Test Case: Miki People Search Pagination |  |
 
-| *Comment* | Test Case: Miki Search Pagination Create new account, workspace, user, add user |  |
+| *Comment* | Test Case: Miki People Search Pagination Create new account, workspace, user, add user |  |
 | set | mikiacctsrch | mikiacct-%%start_time%% |
 | set | mikiusersrch | `mikiuser%%start_time%%@matt.socialtext.net` |
 | set | short_mikiusersrch | mikiuser%%start_time%% |
@@ -13,13 +13,15 @@
 
 | st-logoutin | %%mikiusersrch%% | %%password%% |
 
-| *Comment* | Test case: Miki Open global nav, should be signals |  |
-| open_ok | /m/ |  |
+| *Comment* | Test case: Miki People Search Pagination Open global nav, should be signals |  |
+| open_ok | /st/dashboard/ |  |
+| wait_for_element_visible_ok | link=Mobile | 30000 |
+| click_and_wait | link=Mobile |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
 | wait_for_element_visible_ok | link=Activity | 30000 |
 
 
-| *Comment* | Test Case: Miki Search Pagination Mobile Create Extra Users |  |  |
+| *Comment* | Test Case: Miki People Search Pagination Create Extra Users |  |  |
 | set | base_user_name_srch | bbbbasemiki%%start_time%% |  |
 | create_user | %%base_user_name_srch%%01@ken.socialtext.net | %%password%% | %%mikiacctsrch%% |
 | create_user | %%base_user_name_srch%%02@ken.socialtext.net | %%password%% | %%mikiacctsrch%% |
@@ -84,7 +86,7 @@
 | create_user | %%base_user_name_srch%%61@ken.socialtext.net | %%password%% | %%mikiacctsrch%% |
 | create_user | %%base_user_name_srch%%62@ken.socialtext.net | %%password%% | %%mikiacctsrch%% |
 
-| *Comment* | Test case: Miki Pagination Mobile - Test Search Button |  |
+| *Comment* | Test case: Miki People Search Pagination - Test Search Button |  |
 | st_process_jobs | PersonIndex |  |
 | wait_for_element_visible_ok | link=People | 30000 |
 | click_and_wait | link=People |  |
@@ -93,7 +95,7 @@
 | type_ok | st-search-text | %%base_user_name_srch%% |
 | click_and_wait | st-search-submit | 30000 |
 
-| *Comment* | Test case: Miki Search Pagination Mobile - First Page |  |
+| *Comment* | Test case: Miki People Search Pagination - First Page |  |
 | wait_for_element_visible_ok | link=%%base_user_name_srch%%01 | 30000 |
 | wait_for_element_visible_ok | link=%%base_user_name_srch%%05 | 30000 |
 | wait_for_element_visible_ok | link=%%base_user_name_srch%%06 | 30000 |
@@ -106,7 +108,7 @@
 | wait_for_element_not_present_ok | mobile-paging-first | 5000 |
 
 
-| *Comment* | Test case: Miki Search Pagination Mobile - Page Two |  |
+| *Comment* | Test case: Miki People Search Pagination - Page Two |  |
 | wait_for_element_visible_ok | mobile-paging-next | 30000 |
 | click_and_pause | mobile-paging-next |  |
 | wait_for_element_visible_ok | link=%%base_user_name_srch%%21 | 30000 |
@@ -117,7 +119,7 @@
 | wait_for_element_visible_ok | mobile-paging-previous | 30000 |
 | wait_for_element_not_present_ok | link=First Page | 30000 |
 
-| *Comment* | Test case: Miki Search Pagination Mobile - Page And Four |  |
+| *Comment* | Test case: Miki People Search Pagination - Page And Four |  |
 | click_and_pause | mobile-paging-next |  |
 | wait_for_element_visible_ok | link=%%base_user_name_srch%%41 | 30000 |
 | wait_for_element_not_present_ok | link=%%base_user_name_srch%%61 | 30000 |
@@ -126,7 +128,7 @@
 | wait_for_element_visible_ok | mobile-paging-previous | 30000 |
 | click_and_pause | mobile-paging-previous |  |
 
-| *Comment* | Test case: Miki Search Pagination Mobile - Back to Page 2 |  |
+| *Comment* | Test case: Miki People Search Pagination - Back to Page 2 |  |
 | wait_for_element_visible_ok | mobile-paging-previous | 30000 |
 | click_and_pause | mobile-paging-previous |  |
 | wait_for_element_visible_ok | link=%%base_user_name_srch%%21 | 30000 |
@@ -134,7 +136,7 @@
 | wait_for_element_visible_ok | link=%%base_user_name_srch%%35 | 30000 |
 | wait_for_element_visible_ok | link=%%base_user_name_srch%%40 | 30000 |
 
-| *Comment* | Test case: Miki Search Pagination Mobile - Back to page 1 |  |
+| *Comment* | Test case: Miki People Search Pagination - Back to page 1 |  |
 | click_and_pause | mobile-paging-previous |  |
 | wait_for_element_visible_ok | link=%%base_user_name_srch%%01 | 30000 |
 | wait_for_element_visible_ok | link=%%base_user_name_srch%%05 | 30000 |
@@ -145,5 +147,5 @@
 | wait_for_element_not_present_ok | link=%%base_user_name_srch%%41 | 5000 |
 
 
-| *Comment* | Test case: Miki Search Pagination Mobile - No teardown needed - no workspaces! |  |
-| *Comment* | Test case: Miki Search Pagination Mobile - COMPLETED |  |
+| *Comment* | Test case: Miki People Search Pagination - No teardown needed - no workspaces! |  |
+| *Comment* | Test case: Miki People Search Pagination - COMPLETED |  |
