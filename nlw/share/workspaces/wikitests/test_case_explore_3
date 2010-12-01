@@ -1,6 +1,5 @@
-| *Comment* | Test Case: Explore 3 This Test is Contingent Upon Being Run in a Dev-Env that has run st-admin import-account --dir /home/kenpier/anycorp.small.export |  |
-
 | *Comment* | Test Case: Explore 3 Login as Demo User |  |
+| st-admin | import-account --dir /temp/wikitests/anycorp.small |  |
 | set | demo_user | socialtextdemo1@gmail.com |
 | set | demo_pass | socialtext |
 | set | person | Caroline Sheppard |
