@@ -715,6 +715,10 @@
         'GET':                  [Socialtext::Rest::Lite, login]
         '*':                    [Socialtext::Rest::Lite, bad_method]
 -
+    '/m/nologin':
+        'GET':                  [Socialtext::Rest::Lite, nologin]
+        '*':                    [Socialtext::Rest::Lite, bad_method]
+-
     '/m/forgot_password':
         'GET':                  [Socialtext::Rest::Lite, forgot_password]
         '*':                    [Socialtext::Rest::Lite, bad_method]

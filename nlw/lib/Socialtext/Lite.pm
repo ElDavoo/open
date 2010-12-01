@@ -70,6 +70,7 @@ the _frame_page method.
 
 # The templates we display with
 Readonly my $LOGIN_TEMPLATE          => 'lite/login/login.html';
+Readonly my $NOLOGIN_TEMPLATE        => 'lite/login/nologin.html';
 Readonly my $DISPLAY_TEMPLATE        => 'lite/page/display.html';
 Readonly my $EDIT_TEMPLATE           => 'lite/page/edit.html';
 Readonly my $CONTENTION_TEMPLATE     => 'lite/page/contention.html';
@@ -130,6 +131,24 @@ sub login {
         username_label    => Socialtext::Authen->username_label,
         public_workspaces =>
             [ $self->hub->workspace_list->public_workspaces ],
+    );
+}
+
+sub nologin {
+    my $self = shift;
+
+    my $messages;
+    my $file = Socialtext::AppConfig->login_message_file();
+    if ( $file and -r $file ) {
+        eval {$messages = Socialtext::File::get_contents_utf8($file)};
+        warn $@ if $@;
+    }
+    $messages ||= '<p>'. loc('Login has been Disabled') .'</p>';
+
+    return $self->_process_template(
+        $NOLOGIN_TEMPLATE,
+        title             => loc('Login Disabled'),
+        messages          => [ $messages ],
     );
 }
 

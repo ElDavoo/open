@@ -113,6 +113,17 @@ sub login {
     return $content;
 }
 
+sub nologin {
+    my ($self, $rest) = @_;
+
+    my $content = Socialtext::Lite->new(hub => $self->hub)->nologin();
+    $rest->header(
+        -status => HTTP_200_OK,
+        -type   => 'text/html' . '; charset=UTF-8'
+    );
+    return $content;
+}
+
 sub forgot_password {
     my ($self, $rest) = @_;
 
