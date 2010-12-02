@@ -202,6 +202,10 @@ server {
     [%- IF config.ssl_client_cert %]
         ssl_client_certificate [% config.ssl_base_dir %]/certs/[% config.ssl_client_cert %].crt;
         ssl_verify_client optional;
+        error_page 495 = $uri;    # ignore "ssl cert is invalid" error and continue
+        if ($ssl_client_verify = 'SUCCESS') {
+            set $valid_cert_subject $ssl_client_s_dn; # see proxy.conf
+        }
     [%- END %]
 
     ssl_ciphers HIGH:MEDIUM:!ADH;
