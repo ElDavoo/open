@@ -1,0 +1,254 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+use File::Basename qw/dirname/;
+use File::Copy qw/copy move/;
+use File::Path qw/mkpath/;
+use List::MoreUtils qw/all/;
+use Socialtext::AppConfig;
+use Socialtext::Log qw/st_log/;
+use Socialtext::System qw/backtick/;
+use Sys::Hostname;
+use Term::ANSIColor;
+use Getopt::Long;
+
+# ToDo:
+# * make ssl/cert_auth autodetect if certs are in place.
+# * refactor ssl/cert_auth
+
+my $VERBOSE = $ENV{VERBOSE};
+
+st_log->info('ST-LOGIN-SETUP: '. join(' ', @ARGV));
+
+my $cmd = shift;
+usage() unless $cmd;
+
+my %Commands = (
+    'help' => \&usage,
+    'ssl' => \&ssl,
+    'cert-auth' => \&cert_auth,
+    'default' => \&default,
+);
+
+my $todo = $Commands{$cmd};
+error("Unknown command: '$cmd'") unless $todo;
+
+$todo->();
+
+exit;
+################################################################################
+
+sub default {
+    my $port;
+    GetOptions('http-port=s'=>\$port);
+
+    update_config(
+        credentials_extractors => 'BasicAuth:Cookie:Guest',
+        challenger             => 'STLogin',
+        ssl_only               => 0,
+        ($port ? (custom_http_port=>$port) : ()),
+    );
+
+    clear_ssl_files();
+    reconfigure();
+    success();
+}
+
+sub ssl {
+    with_ssl_setup(
+        needed_certs => [qw/key cert/],
+        configs => {
+            credentials_extractors => 'BasicAuth:Cookie:Guest',
+            challenger             => 'STLogin',
+        },
+        switches => {
+            optional => sub {my $v=shift; return (ssl_only => !$v);},
+        },
+    );
+}
+
+sub cert_auth {
+    with_ssl_setup(
+        needed_certs => [qw/key cert ca/],
+        configs => {
+            credentials_extractors => 'SSLCertificate:Guest',
+            challenger             => 'NoLogin',
+            ssl_only               => 1,
+        },
+    );
+}
+
+sub with_ssl_setup {
+    my %param = @_;
+    my $needed   = delete $param{needed_certs};
+    my $switches = delete $param{switches} || {};
+    my $configs  = delete $param{configs} || {};
+
+    my $collated = collate_certs($needed);
+
+    my $certs = $collated->{needed};
+    my $on_off = { map { $_ => '' } keys %$switches };
+    my ($http_port,$https_port); # these are always required.
+    GetOptions(
+        'https-port=s' => \$https_port,
+        'http-port=s'  => \$http_port,
+        (map { $_."=s" => \$certs->{$_} } keys %$certs),
+        (map { $_ => \$on_off->{$_} } keys %$on_off),
+    );
+
+    error("Cannot find required certs\n.. Try `$0 help` for more.")
+        unless all { $certs->{$_} && -f $certs->{$_} } keys %$certs;
+
+    # Hard to express simply, but $switches->{$_} returns a coderef
+    # that takes one arg, $on_off->{$_}. The ref munges that code into
+    # a key/value pair that can be passed to update_config.
+    my %options = map {
+        $switches->{$_}->($on_off->{$_})
+    } keys %$switches;
+
+    update_config(
+        %$configs,
+        %options,
+        ($http_port ? (custom_http_port=>$http_port) : ()),
+        ($https_port ? (ssl_port=>$https_port) : ()),
+    );
+
+    my @to_clear = keys %{$collated->{excluded}};
+    clear_ssl_files(@to_clear) if @to_clear;
+    write_ssl_files(%$certs);
+    reconfigure();
+    success();
+}
+
+sub collate_certs {
+    my $needed = shift;
+    my $all = list_ssl_files();
+   
+    my %mapped = map { $_ => 1 } @$needed;
+    my $collated = {needed => {}, excluded => {}};
+    for my $ix (keys %$all) {
+        my $key = $mapped{$ix} ? 'needed' : 'excluded';
+        $collated->{$key}{$ix} = $all->{$ix};
+    }
+
+    return $collated;
+}
+
+sub clear_ssl_files {
+    my @ixs = @_;
+    my $files = list_ssl_files();
+
+    my $appliance = Socialtext::AppConfig->is_appliance;
+    my @to_clear = @ixs ? @ixs : keys %$files;
+    for my $ix (@to_clear) {
+        my $v = $files->{$ix};
+        next unless -f $v;
+
+        message("Clear SSL: '$ix' => '$v'", 'magenta') if $VERBOSE;
+        message("$v will be regenerated, so this is a no-op", 'yellow')
+            unless $appliance || $ix eq 'ca';
+
+        move($v, "$v.old");
+    }
+}
+
+sub write_ssl_files {
+    my %param = @_;
+    my $files = list_ssl_files();
+
+    for my $ix (keys %param) {
+        my $src  = $param{$ix};
+        my $dest = $files->{$ix};
+
+        if ($src eq $dest) { # file is already in place.
+            message("Write SSL: skipping '$ix' => '$dest'", 'magenta') if $VERBOSE;
+            next;
+        }
+        error("No SSL destination for $src ($ix)") unless $dest;
+
+        message("Write SSL: '$ix' => '$dest'", 'magenta') if $VERBOSE;
+        mkpath(dirname($dest)) unless -d dirname($dest);
+        copy($src, $dest) or error("Copy: $src => $dest: $!");
+    }
+}
+
+sub list_ssl_files {
+    my @ixs = @_;
+
+    my $config = Socialtext::AppConfig->new();
+    my $path = $config->is_appliance
+        ? '/etc/ssl' : $ENV{HOME} . '/.nlw/etc/ssl';
+    my $name = $config->web_hostname;
+
+    my $ssl_files = {
+        cert => "$path/certs/$name.crt",
+        key  => "$path/private/$name.key",
+        ca   => "$path/certs/$name.client.crt",
+    };
+
+    my @to_list = @ixs ? @ixs : keys %$ssl_files;
+    return {
+        map { $_ => $ssl_files->{$_} } @to_list
+    };
+}
+
+sub update_config {
+    my %to_update = @_;
+
+    my $config = Socialtext::AppConfig->new();
+    for my $ix (keys %to_update) {
+        my $v = $to_update{$ix};
+        message("Update Config: '$ix' => '$v'", 'magenta') if $VERBOSE;
+        $config->set($ix, $to_update{$ix});
+    }
+    $config->write();
+}
+
+sub success {
+    my $restart = Socialtext::AppConfig->is_appliance()
+        ? 'sudo st-appliance-ctl' : 'nlwctl';
+
+    message("\nDone. Run `$restart restart` to restart services.\n", 'green');
+}
+
+sub run_quietly {
+    my $shhh = shift;
+    print color('magenta');
+    $shhh->();
+    print color('reset');
+}
+
+sub reconfigure {
+    if (Socialtext::AppConfig->is_appliance()) {
+        backtick('dpkg-reconfigure st-webserver');
+    }
+    else { # dev-env
+        backtick('gen-config');
+    }
+}
+
+sub error {
+    my $error = shift;
+    message("Error: $error", 'red');
+    exit 1;
+}
+
+sub message {
+    my $message = shift;
+    my $color = shift;
+
+    print color($color) if $color;
+    print "$message\n";
+    print color('reset') if $color;
+}
+
+sub usage {
+    print <<EOT;
+  USAGE: $0 <command>
+EOT
+    exit;
+}
