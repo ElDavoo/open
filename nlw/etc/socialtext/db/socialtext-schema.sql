@@ -875,7 +875,9 @@ CREATE TABLE gallery (
     last_update timestamptz DEFAULT now() NOT NULL,
     account_id bigint,
     CONSTRAINT gallery_id_or_account_id
-            CHECK (((gallery_id = 0) AND (account_id IS NULL)) OR ((gallery_id <> 0) AND (account_id IS NOT NULL)))
+            CHECK (((gallery_id = 0) AND (account_id IS NULL)) OR ((gallery_id <> 0) AND (account_id IS NOT NULL))),
+    CONSTRAINT gallery_id_zero_or_account_id
+            CHECK ((gallery_id = 0) OR (gallery_id = account_id))
 );
 
 CREATE TABLE gallery_gadget (
@@ -886,12 +888,6 @@ CREATE TABLE gallery_gadget (
     socialtext boolean DEFAULT false,
     "global" boolean DEFAULT false
 );
-
-CREATE SEQUENCE gallery_id
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
 
 CREATE TABLE group_photo (
     group_id integer NOT NULL,
@@ -2231,14 +2227,14 @@ ALTER TABLE ONLY gallery
             REFERENCES "Account"(account_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY gallery_gadget
-    ADD CONSTRAINT gallery_gadget_account_fk
-            FOREIGN KEY (gallery_id)
-            REFERENCES gallery(gallery_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY gallery_gadget
     ADD CONSTRAINT gallery_gadget_fk
             FOREIGN KEY (gadget_id)
             REFERENCES gadget(gadget_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY gallery_gadget
+    ADD CONSTRAINT gallery_gadget_gallery_id_fk
+            FOREIGN KEY (gallery_id)
+            REFERENCES gallery(gallery_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY group_photo
     ADD CONSTRAINT group_photo_group_id_fk
