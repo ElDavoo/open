@@ -14,16 +14,21 @@ has 'path' => (
     is => 'ro', isa => 'Maybe[Str]', lazy_build => 1,
 );
 
-my %MAPPING = (
-    'jquery-1.4.2.js' => 'skin/common/jquery-1.4.2.js',
-    'push-client.js' => 'plugin/widgets/push-client.js',
+my %DIR = (
+    'jquery-1.4.2.js' => 'skin/common',
+    'jquery-1.4.2.min.js' => 'skin/common',
+    'jquery-1.4.4.js' => 'skin/common',
+    'jquery-1.4.4.min.js' => 'skin/common',
+    'push-client.js' => 'plugin/widgets',
 );
 
 sub _build_path {
     my $self = shift;
 
     # Get the mapped version of the file
-    my $file = $MAPPING{$self->__file__} || $self->__file__;
+    my $file = $DIR{$self->__file__}
+        ? $DIR{$self->__file__} . '/' . $self->__file__
+        : $self->__file__;
 
     $file = "skin/common/$file" if $file =~ m{^[^/]+\.js$};
 

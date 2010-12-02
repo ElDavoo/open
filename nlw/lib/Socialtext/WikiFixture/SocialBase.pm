@@ -3410,6 +3410,15 @@ sub jsmake {
     }
 }
 
+sub download_ok {
+    my ($self, $path, $body_re) = @_;
+    my $basename = File::Basename::basename($path);
+    $self->get($path);
+    $self->code_is(200);
+    $self->body_like($body_re);
+    $self->has_header('content-disposition', qq{filename="$basename"});
+}
+
 sub _is_wikiwyg {
     my $browser = $ENV{'selenium_browser'} || 'chrome';
     if ($browser=~/safari|chrome|firefox/ig)  {
