@@ -11,7 +11,7 @@ use File::Path qw/mkpath/;
 use List::MoreUtils qw/all/;
 use Socialtext::AppConfig;
 use Socialtext::Log qw/st_log/;
-use Socialtext::System qw/backtick/;
+use Socialtext::System qw/shell_run/;
 use Sys::Hostname;
 use Term::ANSIColor;
 use Getopt::Long;
@@ -224,10 +224,10 @@ sub run_quietly {
 
 sub reconfigure {
     if (Socialtext::AppConfig->is_appliance()) {
-        backtick('dpkg-reconfigure st-webserver');
+        shell_run('dpkg-reconfigure st-webserver');
     }
     else { # dev-env
-        backtick('gen-config');
+        shell_run('gen-config');
     }
 }
 
