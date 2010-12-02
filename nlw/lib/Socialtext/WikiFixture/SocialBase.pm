@@ -73,11 +73,17 @@ sub init {
         $self->{miki_signal_text} = 'Post to';
         $self->{miki_signal_submit} = 'mobile_post';
         $self->{st_mobile_account_select} = 'mobile_network';
+        $self->{miki_mysignals_link_name} = 'myself';
+        $self->{miki_people_i_follow} = 'people I follow';
+        $self->{miki_everyone} = 'everyone';
     } else {
         $self->{miki_signal_disclaimer} = 'Post to';
         $self->{miki_signal_text} = 'What are you working on?';
         $self->{miki_signal_submit} = 'st-signal-submit';
         $self->{st_mobile_account_select} = 'st-select-network';
+        $self->{miki_mysignals_link_name} = 'Mine';
+        $self->{miki_people_i_follow} = 'People I follow';
+        $self->{miki_everyone} = 'All';
     }
 
     my $def = Socialtext::Account->Default;

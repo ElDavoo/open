@@ -7,19 +7,20 @@
 | add_member | %%username%% | %%mws%% |
 
 | *Comment* | Test Case: Mobile Workspaces open Mobile Workspaces, check for boilerplate |  |
-| open_ok | /m |  |
+| open_ok | /st/dashboard |  |
+| wait_for_element_visible_ok | link=Mobile | 2000 |
+| click_and_wait | link=Mobile |  |
+
 | wait_for_element_visible_ok | link=Workspaces | 2000 |
 | wait_for_element_visible_ok | link=Activity | 2000 |
 | wait_for_element_visible_ok | link=People | 2000 |
 | wait_for_element_visible_ok | link=Log out | 2000 |
-| wait_for_element_not_present_ok | link=Signals | 2000 |
 
 | *Comment* | Test Case: Mobile Workspaces open Mobile Workspaces, check for WS links |  |
 | click_and_wait | link=Workspaces |  |
 | wait_for_element_visible_ok | link=%%title%% | 2000 |
 | wait_for_element_visible_ok | link=%%mws%% | 2000 |
 | wait_for_element_visible_ok | link=Socialtext Documentation | 2000 |
-| text_like | Workspaces you belong to |  |
 
 | *Comment* | Test Case: Mobile Workspaces remove ws, ws link should be gone |  |
 | st-admin | delete-workspace --no-export --w %%mws%% | has been deleted |

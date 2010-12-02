@@ -2,173 +2,57 @@
 
 | *Comment* | Test Case: Mobile Signals |  |
 
-| open_ok | /m/signals |  |
+| open_ok | /st/dashboard |  |
+| wait_for_element_visible_ok | link=Mobile | 30000 |
+| click_and_wait | link=Mobile |  |
 
 | *Comment* | Test Case: Mobile Signals. Word but not Link |  |
-| wait_for_text_present_ok | What are you working on | 30000 |
+| wait_for_text_present_ok | %%miki_signal_text%% | 30000 |  |
 | wait_for_text_present_ok | Signals | 3000 |
-| wait_for_text_present_ok | People I follow | 3000 |
-| wait_for_text_present_ok | Previous page | 3000 |
-| wait_for_text_present_ok | First page | 3000 |
-| wait_for_text_present_ok | Next page | 3000 |
 
 | *Comment* | Test Case: Mobile Signals. Send a signal |  |
-| wait_for_element_present_ok | st-signal-text | 3000 |
-| wait_for_element_present_ok | st-signal-submit | 3000 |
-| type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% Sig |
-| click_and_wait | st-signal-submit |  |
+| wait_for_element_present_ok | %%miki_signal_submit%% | 3000 |
+| st-type-signal | Siggy Siggy Siggy %%start_time%% Sig | 1 |
+| click_and_pause | %%miki_signal_submit%% |  |
+
 | wait_for_text_present_ok | less than a minute ago | 3000 |
-| wait_for_element_present_ok | //a[contains(text(),'%%short_username%%')] | 3000 |
 | wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
 
-| click_and_wait | link=Mine |  |
-| wait_for_element_present_ok | //a[contains(text(),'%%short_username%%')] | 30000 |
+| click_and_pause | link=%%miki_mysignals_link_name%% |  |
 | wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
 
-| click_and_wait | link=People I follow |  |
-| wait_for_element_present_ok | //a[contains(text(),'%%short_username%%')] | 30000 |
+| click_and_pause | link=%%miki_people_i_follow%% |  |
 | wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
 
 | *Comment* | Test Case: Mobile Signals. Send 10 more signals |  |
-| type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% 01 |
-| click_and_wait | st-signal-submit |  |
-| type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% 02 |
-| click_and_wait | st-signal-submit |  |
-| type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% 03 |
-| click_and_wait | st-signal-submit |  |
-| type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% 04 |
-| click_and_wait | st-signal-submit |  |
-| type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% 05 |
-| click_and_wait | st-signal-submit |  |
-| type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% 06 |
-| click_and_wait | st-signal-submit |  |
-| type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% 07 |
-| click_and_wait | st-signal-submit |  |
-| type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% 08 |
-| click_and_wait | st-signal-submit |  |
-| type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% 09 |
-| click_and_wait | st-signal-submit |  |
-| type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% 10 |
-| click_and_wait | st-signal-submit |  |
+| st-type-signal | Siggy Siggy Siggy %%start_time%% 01 | 1 |
+| click_and_pause | %%miki_signal_submit%% |  |
+| st-type-signal | Siggy Siggy Siggy %%start_time%% 02 | 1 |
+| click_and_pause | %%miki_signal_submit%% |  |
+| st-type-signal | Siggy Siggy Siggy %%start_time%% 03 | 1 |
+| click_and_pause | %%miki_signal_submit%% |  |
+| st-type-signal | Siggy Siggy Siggy %%start_time%% 04 | 1 |
+| click_and_pause | %%miki_signal_submit%% |  |
+| st-type-signal | Siggy Siggy Siggy %%start_time%% 05 | 1 |
+| click_and_pause | %%miki_signal_submit%% |  |
+| st-type-signal | Siggy Siggy Siggy %%start_time%% 06 | 1 |
+| click_and_pause | %%miki_signal_submit%% |  |
+| st-type-signal | Siggy Siggy Siggy %%start_time%% 07 | 1 |
+| click_and_pause | %%miki_signal_submit%% |  |
+| st-type-signal | Siggy Siggy Siggy %%start_time%% 08 | 1 |
+| click_and_pause | %%miki_signal_submit%% |  |
+| st-type-signal | Siggy Siggy Siggy %%start_time%% 09 | 1 |
+| click_and_pause | %%miki_signal_submit%% |  |
+| st-type-signal | Siggy Siggy Siggy %%start_time%% 10 | 1 |
+| click_and_pause | %%miki_signal_submit%% |  |
 
-| click_and_wait | link=All |  |
-| wait_for_element_visible_ok | link=Next page >> | 3000 |
-| click_and_wait | link=Next page >> |  |
-| wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
-| wait_for_text_not_present_ok | Siggy Siggy Siggy %%start_time%% 01 | 3000 |
-| wait_for_element_visible_ok | link=First page | 3000 |
+| click_and_pause | link=%%miki_everyone%% |  |
 
-| wait_for_element_visible_ok | link=<< Previous page | 3000 |
-| click_and_wait | link=<< Previous page |  |
-| wait_for_text_not_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
-| wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% 10 | 3000 |
-| wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% 01 | 3000 |
-| wait_for_element_not_present_ok | link=First page | 3000 |
-| wait_for_element_not_present_ok | link=<< Previous page | 3000 |
+| include | [Test Case: Miki Dropdowns WikiWyg] |
+| include | [Test Case: Miki Dropdowns IE] |
 
-| wait_for_element_visible_ok | link=Next page >> | 3000 |
-| click_and_wait | link=Next page >> |  |
-| wait_for_element_visible_ok | link=First page | 3000 |
-| click_and_wait | link=First page |  |
-| wait_for_text_not_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
-| wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% 10 | 3000 |
-| wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% 01 | 3000 |
-| wait_for_element_not_present_ok | link=First page | 3000 |
-| wait_for_element_not_present_ok | link=<< Previous page | 3000 |
-| wait_for_element_visible_ok | link=Next page >> | 3000 |
 
-| *Comment* | Test Case: Mobile Signals. Send another 10 signals |  |
-| type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% 11 |
-| click_and_wait | st-signal-submit |  |
-| type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% 12 |
-| click_and_wait | st-signal-submit |  |
-| type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% 13 |
-| click_and_wait | st-signal-submit |  |
-| type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% 14 |
-| click_and_wait | st-signal-submit |  |
-| type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% 15 |
-| click_and_wait | st-signal-submit |  |
-| type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% 16 |
-| click_and_wait | st-signal-submit |  |
-| type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% 17 |
-| click_and_wait | st-signal-submit |  |
-| type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% 18 |
-| click_and_wait | st-signal-submit |  |
-| type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% 19 |
-| click_and_wait | st-signal-submit |  |
-| type_ok | st-signal-text | Siggy Siggy Siggy %%start_time%% 20 |
-| click_and_wait | st-signal-submit |  |
 
-| *Comment* | Test Case: Mobile Signals. Verify Next Page and First Page |  |
-| click_and_wait | link=Mine |  |
-| wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% 20 | 3000 |
-| click_and_wait | link=Next page >> |  |
-| wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% 10 | 3000 |
-| click_and_wait | link=Next page >> |  |
-| wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
-| click_and_wait | link=First page |  |
-| wait_for_text_not_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
-| wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% 11 | 3000 |
 
-| *Comment* | Test Case: Mobile Signals. Send signal to groups |  |
-
-| set | msacct | mobile-signals-%%start_time%% |
-| set | common_user | ms%%start_time%%@ken.socialtext.net |
-
-| *Comment* | Test Case: Mobile Signals. Create two accounts. Add %%common_user%% to both |  |
-| st-admin | create-account --name %%msacct%%-A | A new account named "%%msacct%%-A" was created |
-| st-admin | create-account --name %%msacct%%-B | A new account named "%%msacct%%-B" was created |
-| st-admin | enable-plugin --plugin signals --account %%msacct%%-A |  |
-| st-admin | enable-plugin --plugin signals --account %%msacct%%-B |  |
-
-| st-admin | create-user --e %%common_user%% --p %%password%% --account %%msacct%%-A | A new user |
-| st-admin | add-member --account %%msacct%%-B --u %%common_user%% | now has the role of 'member' in the %%msacct%%-B |
-
-| *Comment* | Test Case: Mobile Signals. Login as %%common_user%% to create a predictable "within" menu |  |
-| open_ok | /nlw/submit/logout |  |
-| st-login | %%common_user%% | %%password%% |
-
-| open_ok | /m/signals |  |
-| wait_for_element_visible_ok | st-select-network | 30000 |
-
-| *Comment* | Test Case: Mobile Signals. Signal to %%msacct%%-A |  |
-| select_ok | st-select-network | label=%%msacct%%-A (primary, 1 user) |
-| type_ok | st-signal-text | Signal to %%msacct%%-A |
-| click_and_wait | st-signal-submit |  |
-| text_like | Signal to %%msacct%%-A |  |
-
-| *Comment* | Test Case: Mobile Signals. Signal to %%msacct%%-B |  |
-| select_ok | st-select-network | label=%%msacct%%-B (1 user) |
-| type_ok | st-signal-text | Signal to %%msacct%%-B |
-| click_and_wait | st-signal-submit |  |
-| text_like | Signal to %%msacct%%-B |  |
-
-| *Comment* | Test Case: Mobile Signals. Verify signal to groups |  |
-| open_ok | /st/signals |  |
-| text_like | st-editing-tools-edit | Signals |
-| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[1]/a | 20000 |
-| click_ok | //ul[@id='st-dropdown-2-list']/li[1]/a | 20000 |
-
-| refresh |  |  |
-| wait_for_text_present_ok | Signal to %%msacct%%-B | 20000 |
-| wait_for_text_present_ok | Signal to %%msacct%%-A | 20000 |
-
-| *Comment* | Test Case: Mobile Signals. See only one signal to A |  |
-
-| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[2]/a | 20000 |
-| click_ok | //ul[@id='st-dropdown-2-list']/li[2]/a | 20000 |
-
-| refresh |  |  |
-| wait_for_text_present_ok | Signal to %%msacct%%-A | 20000 |
-| text_unlike | //body | Signal to %%msacct%%-B |
-
-| *Comment* | Test Case: Mobile Signals. See only one signal to B |  |
-
-| wait_for_element_present_ok | //ul[@id='st-dropdown-2-list']/li[3]/a | 20000 |
-| click_ok | //ul[@id='st-dropdown-2-list']/li[3]/a | 20000 |
-
-| refresh |  |  |
-| wait_for_text_present_ok | Signal to %%msacct%%-B | 20000 |
-| text_unlike | //body | Signal to %%msacct%%-A |
 
 | *Comment* | Test Case: Mobile Signals COMPLETED |  |
