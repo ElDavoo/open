@@ -523,6 +523,19 @@ ul li a.genericBlueButton:hover {
 	text-decoration: none;
 }
 
+/* Add styles for the disabled flexButtonBlue */
+ul li.flexButtonBlue.disabled {
+    opacity: .4;
+    filter: alpha(opacity = 40);
+}
+ul li.flexButtonBlue.disabled:hover {
+    background-position: bottom right;
+}
+ul li.disabled a.genericBlueButton:hover {
+    background-position: top left;
+    cursor: default;
+}
+
 
 ul li.flexButton.editing a.editButton, ul li.flexButton.editing a.editButton:hover {
         visibility: hidden;
@@ -613,6 +626,7 @@ li.flexButton {
 	background-position: bottom right;
         white-space: nowrap;
 }
+
 
 li.flexButton:hover {
 	background: url(../images/flexButton.png) no-repeat;
