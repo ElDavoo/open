@@ -552,3 +552,8 @@ lib/Socialtext/Handler/Container/WidgetEditor.pm
 lib/Socialtext/Gadgets/Container/WidgetEditor.pm
 lib/Socialtext/Handler/Gadget/WidgetEditor.pm
 lib/Socialtext/Pluggable/Plugin/Twilio.pm
+lib/Socialtext/Job/TwilioNotify.pm
+etc/socialtext/uri_map.d/twilio.yaml
+lib/Socialtext/Rest/Twilio.pm
+lib/Socialtext/Twilio.pm
+lib/WWW/Twilio/API.pm
