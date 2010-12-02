@@ -16,11 +16,11 @@ use Sys::Hostname;
 use Term::ANSIColor;
 use Getopt::Long;
 
-# ToDo:
-# * make ssl/cert_auth autodetect if certs are in place.
-# * refactor ssl/cert_auth
-
 my $VERBOSE = $ENV{VERBOSE};
+
+if (Socialtext::AppConfig->is_appliance() && $>) {
+    error("Must run this command as root.");
+}
 
 st_log->info('ST-LOGIN-SETUP: '. join(' ', @ARGV));
 
@@ -28,10 +28,10 @@ my $cmd = shift;
 usage() unless $cmd;
 
 my %Commands = (
-    'help' => \&usage,
-    'ssl' => \&ssl,
-    'cert-auth' => \&cert_auth,
-    'default' => \&default,
+    'default'     => \&default,
+    'ssl'         => \&ssl,
+    'client-auth' => \&client_auth,
+    'help'        => \&usage,
 );
 
 my $todo = $Commands{$cmd};
@@ -71,7 +71,7 @@ sub ssl {
     );
 }
 
-sub cert_auth {
+sub client_auth {
     with_ssl_setup(
         needed_certs => [qw/key cert ca/],
         configs => {
@@ -92,7 +92,7 @@ sub with_ssl_setup {
 
     my $certs = $collated->{needed};
     my $on_off = { map { $_ => '' } keys %$switches };
-    my ($http_port,$https_port); # these are always required.
+    my ($http_port,$https_port); # these are always optional.
     GetOptions(
         'https-port=s' => \$https_port,
         'http-port=s'  => \$http_port,
@@ -215,13 +215,6 @@ sub success {
     message("\nDone. Run `$restart restart` to restart services.\n", 'green');
 }
 
-sub run_quietly {
-    my $shhh = shift;
-    print color('magenta');
-    $shhh->();
-    print color('reset');
-}
-
 sub reconfigure {
     if (Socialtext::AppConfig->is_appliance()) {
         shell_run('dpkg-reconfigure st-webserver');
@@ -248,7 +241,65 @@ sub message {
 
 sub usage {
     print <<EOT;
-  USAGE: $0 <command>
+  USAGE: $0 command [command options]
+
+  st-login-setup is a command that can be used to simplify the appliance's
+  login process. There are many steps involved in configuring your appliance's
+  login, using this tool can oftentimes reduce things into a simple call.
+
+  COMMANDS
+
+    default: The simplest setup. Standard HTTP logins; this is how your
+        appliance is set up by default. Accepts an optional `--http-port`
+        parameter.
+
+    ssl: Configures your appliance to run with SSL set up. Accepts a required
+        (most of the time) `--key` and `--cert` parameter, as well as optional
+        `--http-port`, `--https-port` and `--optional` parameters.
+
+    client-auth: Configure your appliance to with SSL set up. Additionally,
+        clients, eg web-browsers, will need to provide a certificate in order
+        to authenticate themselves. Accepts a required (most of the time)
+        `--key` and `--cert` parameter, as well as optional `--http-port`,
+        `--https-port` and `--optional` parameters.
+
+    help: What you are reading now.
+
+   OPTIONS
+
+     --http-port: The port that your HTTP server will run on. This is
+         completely optional and no ports will be changed if this is not passed.
+         When using an SSL-only setup, all this changes is the HTTP port that
+         will redirect to HTTPS.
+
+     --https-port: This port that your HTTPS server will run on. This is not
+         used in the `default` command. This is completely optional and will
+         not change anything if it is not passed.
+
+     --optional: This will make SSL optional on your appliance. This is used
+         only in the `ssl` command and, if passed, will configure your machine
+         to run on both HTTP and HTTPS ports.
+
+     --key: The path to the key file for your HTTPS certificate. This file will
+         be copied into place. This is available for the `ssl` and
+         `client-auth` commands. If you do not pass this param to the command,
+         we will assume you'd like to use the key file that is already in
+         place, otherwise we will exit the operation with an error.
+
+     --cert: The path to your HTTPS certificate file. This file will be copied
+         into place. This is available for the `ssl` and `client-auth`
+         commands. Like `--key`, we will try to use and existing file if this
+         parameter is not passed.
+
+     --ca: The path to the signing certificate for your Client-Side certs. This
+         file will be copied into place. This is available for only the
+         `client-auth` command. Like `--key`, we will try to use and existing
+         file if this parameter is not passed.
+
+   ENVIRONMENT VARIABLES
+
+      VERBOSE: Setting this to 1 will increase the verbosity of your output.
+
 EOT
     exit;
 }
