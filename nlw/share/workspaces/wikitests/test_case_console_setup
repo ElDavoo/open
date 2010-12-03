@@ -37,6 +37,8 @@
 | is_element_present_ok | setup-support-href |  |
 | is_element_present_ok | setup-login-message |  |
 | is_element_present_ok | desktop_update_enabled |  |
+| is_element_present_ok | login_message |  |
+| wait_for_element_visible_ok | setup-login-message | 30000 |
 
 | *Comment* | Test Case: Console Setup. Set the server signal limit |  |
 | wait_for_element_visible_ok | signals_size_limit | 30000 |
@@ -144,6 +146,13 @@
 | wait_for_element_visible_ok | link=Setup | 60000 |
 | click_and_wait | link=Setup |  |
 
+| *Comment* | Set Login Message |  |
+| wait_for_element_visible_ok | login_message | 30000 |
+| set | message | Display this before login ( %%start_time%% ) |
+| type_ok | login_message | %%message%% |
+| wait_for_element_visible_ok | setup-login-message | 30000 |
+| click_and_wait | setup-login-message |  |
+
 | *Comment* | Test Case: Console Setup. TEARDOWN |  |
 | type_ok | timeserver |  |
 | click_and_wait | timeserver_config |  |
@@ -153,5 +162,11 @@
 
 | *Comment* | Test Case: Console Setup. make sure the default setting is ntp.ubuntu.com |  |
 | value_is | timeserver | ntp.ubuntu.com |
+
+| *Comment* | Test Case: Console Setup. Test Login Message. |  |
+| open_ok | /st/dashboard |  |
+| st-logout |  |  |
+| refresh |  |  |
+| wait_for_text_present_ok | %%message%% | 30000 |
 
 | *Comment* | Test Case: Console Setup COMPLETED |  |
