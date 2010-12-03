@@ -293,7 +293,7 @@ sub usage {
          to run on both HTTP and HTTPS ports.
 
      --message: Set a custom "Login Disabled" message using a file on the
-         system. The file used should be an HTML snippe. This is available for
+         system. The file used should be an HTML snippet. This is available for
          only the `client-auth` command. If the param is not passed, we will
          use the default login disabled message.
 
