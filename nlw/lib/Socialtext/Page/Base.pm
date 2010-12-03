@@ -863,6 +863,12 @@ sub _log_page_action {
             $log_action = 'EDIT';
         }
     }
+    elsif ($action eq 'revision_restore') {
+        $log_action = 'RESTORE';
+    }
+    elsif ($action eq 'undelete_page') {
+        $log_action = 'RESTORE';
+    }
     else {
         $log_action = 'CREATE';
     }
