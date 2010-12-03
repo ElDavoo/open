@@ -79,6 +79,15 @@ sub client_auth {
             challenger             => 'NoLogin',
             ssl_only               => 1,
         },
+        more => {
+            message => sub {
+                my $msg = shift;
+                if ($msg) {
+                    error("Message file '$msg' does not exist") unless -f $msg;
+                }
+                return (login_message_file => $msg);
+            },
+        },
     );
 }
 
@@ -86,18 +95,21 @@ sub with_ssl_setup {
     my %param = @_;
     my $needed   = delete $param{needed_certs};
     my $switches = delete $param{switches} || {};
+    my $more     = delete $param{more} || {};
     my $configs  = delete $param{configs} || {};
 
     my $collated = collate_certs($needed);
 
     my $certs = $collated->{needed};
     my $on_off = { map { $_ => '' } keys %$switches };
+    my $addtl = {map { $_ => '' } keys %$more},
     my ($http_port,$https_port); # these are always optional.
     GetOptions(
         'https-port=s' => \$https_port,
         'http-port=s'  => \$http_port,
         (map { $_."=s" => \$certs->{$_} } keys %$certs),
         (map { $_ => \$on_off->{$_} } keys %$on_off),
+        (map { $_."=s" => \$addtl->{$_} } keys %$addtl),
     );
 
     error("Cannot find required certs\n.. Try `$0 help` for more.")
@@ -106,13 +118,13 @@ sub with_ssl_setup {
     # Hard to express simply, but $switches->{$_} returns a coderef
     # that takes one arg, $on_off->{$_}. The ref munges that code into
     # a key/value pair that can be passed to update_config.
-    my %options = map {
-        $switches->{$_}->($on_off->{$_})
-    } keys %$switches;
+    my %options = map { $switches->{$_}->($on_off->{$_}) } keys %$switches;
+    my %addtl = map { $more->{$_}->($addtl->{$_}) } keys %$more;
 
     update_config(
         %$configs,
         %options,
+        %addtl,
         ($http_port ? (custom_http_port=>$http_port) : ()),
         ($https_port ? (ssl_port=>$https_port) : ()),
     );
@@ -261,7 +273,7 @@ sub usage {
         clients, eg web-browsers, will need to provide a certificate in order
         to authenticate themselves. Accepts a required (most of the time)
         `--key` and `--cert` parameter, as well as optional `--http-port`,
-        `--https-port` and `--optional` parameters.
+        `--https-port` and `--optional` and `--message` parameters.
 
     help: What you are reading now.
 
@@ -279,6 +291,11 @@ sub usage {
      --optional: This will make SSL optional on your appliance. This is used
          only in the `ssl` command and, if passed, will configure your machine
          to run on both HTTP and HTTPS ports.
+
+     --message: Set a custom "Login Disabled" message using a file on the
+         system. The file used should be an HTML snippe. This is available for
+         only the `client-auth` command. If the param is not passed, we will
+         use the default login disabled message.
 
      --key: The path to the key file for your HTTPS certificate. This file will
          be copied into place. This is available for the `ssl` and
