@@ -429,7 +429,7 @@ Creates $numpages number of pages in $workspace
 =cut
 
 sub st_create_pages {
-    my ($self, $workspace, $numberpages, $pageprefix) = @_;
+    my ($self, $workspace, $numberpages, $pageprefix, $text) = @_;
 
     my $user = Socialtext::User->new(username => $self->{'username'});
     my $hub = new_hub($workspace);
@@ -440,8 +440,14 @@ sub st_create_pages {
         }
         my $title = $pageprefix . $idx;
   
-        my $content = shift @lines;
-        push @lines, $content;
+        my $content;
+        if (defined($text) && length($text)>1) {
+           $content = $text;
+        } else { 
+            $content = shift @lines; 
+            push @lines, $content;
+        }
+
         Socialtext::Page->new(hub => $hub)->create(
                                   title => $title,
                                   content => $content,
