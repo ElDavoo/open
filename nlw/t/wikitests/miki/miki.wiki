@@ -2,7 +2,7 @@
 
 | standard-test-setup |
 
-| edit_page | %%workspace%% | otherpage | |
+| edit_page | %%workspace%% | otherpage | Legos ᴙ Us |
 | Comment   | Global nav should show on workspace all pages            |
 | GET       | /m/page/%%workspace%%/                                   |
 | code-is   | 200                                                      |
@@ -19,16 +19,16 @@
 | body-like | qr/href="\/m\/page\/%%workspace%%\/">%%workspace%%<\/a>/ |
 
 
-| GET       | /m/workspace_list               |
-| code-is   | 200                             |
-| body-like | Workspaces                      |
-| body-like | People                          |
-| body-like | Signals                         |
-| body-like | Log out                         |
+| GET       | /m/workspace_list                 |
+| code-is   | 200                               |
+| body-like | Workspaces                        |
+| body-like | People                            |
+| body-like | Signals                           |
+| body-like | Log out                           |
 | body-like | Hello, <b>user %%start_time%%</b> |
-| body-like | Workspaces you belong to:       |
-| body-like | You have free access            |
-| body-like | %%workspace%%                   |
+| body-like | My Workspaces                     |
+| body-like | Public workspaces                 |
+| body-like | %%workspace%%                     |
 
 | GET       | /m/changes/%%workspace%% |
 | code-is   | 200                      |
@@ -69,11 +69,10 @@
 | code-is     | 200                      |                           |
 | body-like   | What are you working on? |                           |
 | body-like   | I can haz /m             |                           |
-| body-like   | &lt;&lt; Previous page</span>             |                           |
-| body-like   | First page</span>            |                           |
-| body-unlike | Next page &gt;&gt;</a>       |                           |
-| body-like   | Next page &gt;&gt;</span>    |                           |
-| body-like   | refresh                  |                           |
+| body-like   | Previous page</span>     |                           |
+| body-like   | First page</span>        |                           |
+| body-unlike | Next page</a>            |                           |
+| body-like   | Next page</span>         |                           |
 
 | Comment     | Pagination               |                        |
 | post-json   | /data/signals            | {"signal":"signal '1'"}  |
@@ -115,7 +114,7 @@
 | body-unlike | signal '10'              |
 | body-like   | Previous page</span>     |
 | body-like   | First page</span>        |
-| body-like   | Next page &gt;&gt;</a>   |
+| body-like   | Next page</a>            |
 | body-like   | refresh                  |
 | GET         | /m/signals/?page=1       |
 | code-is     | 200                      |
@@ -133,7 +132,7 @@
 | body-unlike | signal '1'               |
 | body-like   | Previous page</a>        |
 | body-like   | First page</a>           |
-| body-like   | Next page &gt;&gt;</a>   |
+| body-like   | Next page</a>            |
 | body-like   | refresh                  |
 
 | Comment     | Post a signal via miki |                |
@@ -144,27 +143,24 @@
 | code-is     | 200                    |                |
 | body-like   | o hai                  |                |
 
-| Comment     | Test the signals tabs |
-| GET         | /m/signals            |
-| code-is     | 200                   |
-| body-like   | >People I follow</a>  |
-| body-unlike | >All</a>              |
-| body-like   | >All</span>           |
-| body-like   | >Mine</a>             |
+| Comment   | Test the signals tabs         |
+| GET       | /m/signals                    |
+| code-is   | 200                           |
+| body-like | >People I follow</a>          |
+| body-like | class="ui-btn-active">All</a> |
+| body-like | >Mine</a>                     |
 
-| GET         | /m/signals/?followed=1  |
-| code-is     | 200                     |
-| body-unlike | >People I follow</a>    |
-| body-like   | >People I follow</span> |
-| body-like   | >All</a>                |
-| body-like   | >Mine</a>               |
+| GET       | /m/signals/?followed=1                    |
+| code-is   | 200                                       |
+| body-like | class="ui-btn-active">People I follow</a> |
+| body-like | >All</a>                                  |
+| body-like | >Mine</a>                                 |
 
-| GET         | /m/signals/?mine=1   |
-| code-is     | 200                  |
-| body-like   | >People I follow</a> |
-| body-like   | >All</a>             |
-| body-unlike | >Mine</a>            |
-| body-like   | >Mine</span>         |
+| GET       | /m/signals/?mine=1             |
+| code-is   | 200                            |
+| body-like | >People I follow</a>           |
+| body-like | >All</a>                       |
+| body-like | class="ui-btn-active">Mine</a> |
 
 | Comment   | activities       |
 | GET       | /m/activities    |
