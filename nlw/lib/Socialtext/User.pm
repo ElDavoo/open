@@ -53,6 +53,7 @@ has 'homunculus' => (
         driver_unique_id
         cached_at
         missing
+        private_external_id
     )],
 );
 
