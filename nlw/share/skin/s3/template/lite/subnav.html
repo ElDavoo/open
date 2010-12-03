@@ -2,24 +2,24 @@
     <div class="[% class %] subnav" data-role="navbar">
     <ul>
         [% IF section == 'workspace' %]
-        <li><a class="current ui-btn-active">[% ws.title %]</a></li>
+        <li><a id="mobile-workspace-home" class="current ui-btn-active">[% ws.title %]</a></li>
         [% ELSE %]
-        <li><a href="/m/page/[% ws.name %]/">[% ws.title %]</a></li>
+        <li><a id="mobile-workspace-home" href="/m/page/[% ws.name %]/">[% ws.title %]</a></li>
         [% END %]
         [% IF section == 'recent_changes' %]
-        <li><a class="current ui-btn-active">[% loc("What's new") %]</a></li>
+        <li><a id="mobile-workspace-changes" class="current ui-btn-active">[% loc("What's new") %]</a></li>
         [% ELSE %]
-        <li><a href="/m/changes/[% ws.name %]/">[% loc("What's New") %]</a></li>
+        <li><a id="mobile-workspace-changes" href="/m/changes/[% ws.name %]/">[% loc("What's New") %]</a></li>
         [% END %]
         [% IF section == 'tags' %]
-        <li><a class="current ui-btn-active">[% loc('Tags') %]</a></li>
+        <li><a id="mobile-workspace-tags" class="current ui-btn-active">[% loc('Tags') %]</a></li>
         [% ELSE %]
-        <li><a href="/m/tag/[% ws.name %]/">[% loc('Tags') %]</a></li>
+        <li><a id="mobile-workspace-tags" href="/m/tag/[% ws.name %]/">[% loc('Tags') %]</a></li>
         [% END %]
         [% IF section == 'search' %]
-        <li><a class="current ui-btn-active">[% loc('Search') %]</a></li>
+        <li><a id="mobile-workspace-search" class="current ui-btn-active">[% loc('Search') %]</a></li>
         [% ELSE %]
-        <li><a href="/m/search/[% ws.name %]/">[% loc('Search') %]</a></li>
+        <li><a id="mobile-workspace-search" href="/m/search/[% ws.name %]/">[% loc('Search') %]</a></li>
         [% END %]
     </div>
         </ul>
