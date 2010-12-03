@@ -2012,6 +2012,9 @@ CREATE INDEX users_lower_username
 CREATE UNIQUE INDEX users_lower_username_driver_key
 	    ON users (lower(driver_username), driver_key);
 
+CREATE UNIQUE INDEX users_private_external_id
+	    ON users (private_external_id);
+
 CREATE INDEX users_that_are_hidden
 	    ON users (user_id)
 	    WHERE is_profile_hidden;
