@@ -3,7 +3,7 @@
 | click_and_wait | mobile-paging-next |  |
 | wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
 | wait_for_text_not_present_ok | Siggy Siggy Siggy %%start_time%% 01 | 3000 |
-| st_expect_firstpage_link_by_browser |  |  |
+| wait_for_element_visible_ok | mobile-paging-first | 30000 |
 
 | wait_for_element_visible_ok | mobile-paging-previous | 3000 |
 | click_and_wait | mobile-paging-previous |  |
@@ -14,8 +14,8 @@
 
 | wait_for_element_visible_ok | mobile-paging-next | 3000 |
 | click_and_wait | mobile-paging-next |  |
-| st_expect_firstpage_link_by_browser |  |  |
-| st_miki_click_first_by_browser |  |  |
+| wait_for_element_visible_ok | mobile-paging-first | 30000 | 
+| click_and_wait | mobile_paging_first |  |
 | wait_for_text_not_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
 | wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% 10 | 3000 |
 | wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% 01 | 3000 |

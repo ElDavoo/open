@@ -25,6 +25,8 @@
 | type_ok | st-search-text | hello |
 | submit | searchform | |
 
+| pause | 120000 | |
+
 | *Comment* | Test case: Miki Workspace Search - Pagination First Page | |
 | wait_for_element_visible_ok | mobile-paging-next | 30000 |
 | wait_for_element_not_present_ok | mobile-paging-previous | 5000 |
@@ -34,7 +36,7 @@
 | wait_for_element_visible_ok | mobile-paging-next | 30000 |
 | click_and_pause | mobile-paging-next |  |
 | wait_for_element_visible_ok | mobile-paging-previous | 30000 |
-| st_expect_firstpage_link_by_browser | |
+| wait_for_element_visible_ok | mobile-paging-first | 30000 | 
 
 | *Comment* | Test Case: Miki Workspace Search - Pagination Page Three And Four |  |
 | click_and_pause | mobile-paging-next |  |
@@ -49,7 +51,7 @@
 | *Comment* | Test case: Miki Workspace Search - Pagination Back to Page 2 |  |
 | wait_for_element_visible_ok | mobile-paging-previous | 30000 |
 | click_and_pause | mobile-paging-previous |  |
-| st_expect_firstpage_link_by_browser | |
+| wait_for_element_visible_ok | mobile-paging-first | 30000 |
 
 | *Comment* | Test case: Miki Workspace Search - Pagination Back to page 1 |  |
 | click_and_pause | mobile-paging-previous |  |
