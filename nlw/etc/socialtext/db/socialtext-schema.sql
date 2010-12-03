@@ -1390,7 +1390,7 @@ ALTER TABLE ONLY gallery_gadget
             UNIQUE (gallery_id, gadget_id);
 
 ALTER TABLE ONLY gallery
-    ADD CONSTRAINT gallery_pk
+    ADD CONSTRAINT gallery_pkey
             PRIMARY KEY (gallery_id);
 
 ALTER TABLE ONLY group_photo
