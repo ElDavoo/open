@@ -297,7 +297,10 @@ sub search {
 
     if ( $search_term ) {
         eval {
-            $search_results = $self->hub->search->get_result_set(
+            my $search = $self->hub->search;
+            $search->sortby($search->preferences->default_search_order->value);
+            $search->_direction($search->preferences->direction->value);
+            $search_results = $search->get_result_set(
                 search_term => $search_term,
                 offset => $pagenum * $page_size,
                 limit => $page_size,
