@@ -1,4 +1,5 @@
 [%# @COPYRIGHT@ -%]
+[% USE decorate %]
 [% PROCESS lite/header.html %]
 [% MACRO user_link BLOCK %]
     [% name | decorate('user_link') %]
@@ -6,6 +7,25 @@
 
 <div class="content">
     [% page_html %]
+</div>
+<hr>
+<div class="comment" data-role="content">
+<form name="commentform"
+        method="post"
+        action="/m/page/[% ws.name %]/[% page.uri %]"
+        enctype="application/x-www-form-urlencoded">
+<div>
+<img align="left" src="[% user.small_photo || "/data/people/$user.user_id/small_photo" %]"/>
+<b style="margin-left: 3px; line-height: 30px">Add your own comment:</b>
+</div>
+<textarea name="comment_body" id="comment_textarea" class="comment_text_area" rows="2" cols="75">
+</textarea>
+<input type="hidden" name="subject" value="[% page.title %]" />
+<input type="hidden" name="revision" value="[% page.metadata.Revision %]" />
+<input type="hidden" name="revision_id" value="[% page.revision_id %]" />
+<input type="hidden" name="action" value="comment" />
+<input id="st-miki-comment-submit" type="submit" data-theme="b" data-role="button" value="[% loc('Save comment') %]" />
+</form>
 </div>
 <div class="pageinfo">
     [% SET author = user_link(name=page.last_edited_by.user_id) %]
