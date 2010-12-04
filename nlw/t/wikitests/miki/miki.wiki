@@ -115,7 +115,6 @@
 | body-like   | Previous page</span>                                  |
 | body-like   | First page</span>                                     |
 | body-like   | Next page<span class="nav-hint">&nbsp;&gt;</span></a> |
-| body-like   | refresh                                               |
 | GET         | /m/signals/?page=1                                    |
 | code-is     | 200                                                   |
 | body-like   | What are you working on?                              |
@@ -133,7 +132,6 @@
 | body-like   | Previous page</a>                                     |
 | body-like   | First page</a>                                        |
 | body-like   | Next page<span class="nav-hint">&nbsp;&gt;</span></a> |
-| body-like   | refresh                                               |
 
 | Comment     | Post a signal via miki |                |
 | POST_form   | /m/signals             | signal=o%20hai |
