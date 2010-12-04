@@ -399,7 +399,7 @@ sub _all_tags {
     my %weighted = $self->hub->category->weight_categories;
     my $tags = $weighted{tags};
 
-    my @rows = sort { $a->{name} cmp $b->{name} } grep {
+    my @rows = sort { lc $a->{name} cmp lc $b->{name} } grep {
         $_->{page_count} > 0
     } @$tags;
 
