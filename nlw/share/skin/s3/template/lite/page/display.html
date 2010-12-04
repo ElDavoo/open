@@ -11,12 +11,13 @@
 <hr>
 <div class="comment" data-role="content">
 <form name="commentform"
+      id="st-miki-comment-form"
         method="post"
         action="/m/page/[% ws.name %]/[% page.uri %]"
         enctype="application/x-www-form-urlencoded">
 <div>
 <img align="left" src="[% user.small_photo || "/data/people/$user.user_id/small_photo" %]"/>
-<b style="margin-left: 3px; line-height: 30px">Add your own comment:</b>
+<b style="margin-left: 3px; line-height: 30px">[% loc('Add your own comment:') %]</b>
 </div>
 <textarea name="comment_body" id="comment_textarea" class="comment_text_area" rows="2" cols="75">
 </textarea>
