@@ -216,7 +216,13 @@ sub edit_save {
     my $page = $p{page};
     delete $p{page};
 
-    eval { $page->update_from_remote(%p); };
+    if ($p{action} eq 'comment') {
+        eval { $page->add_comment($p{comment}) };
+    }
+    else {
+        eval { $page->update_from_remote(%p); };
+    }
+
     if ( $@ =~ /^Contention:/ ) {
         return $self->_handle_contention( $page, $p{subject}, $p{content} );
     }

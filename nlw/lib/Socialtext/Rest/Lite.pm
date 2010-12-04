@@ -278,7 +278,9 @@ sub edit_page {
     my $page = $self->_get_page();
     my $content = Socialtext::Lite->new( hub => $self->hub )->edit_save(
         page        => $page,
+        action      => $rest->query->param('action') || 'edit_save',
         content     => $rest->query->param('page_body') || '',
+        comment     => $rest->query->param('comment_body') || '',
         revision_id => $rest->query->param('revision_id') || '',
         revision    => $rest->query->param('revision') || '',
         subject     => $rest->query->param('subject') || '',
