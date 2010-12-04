@@ -528,7 +528,7 @@ sub _process_template {
         skin_uri    => sub { "$skin_uri/$_[0]" },
         pluggable   => $self->hub->pluggable,
         user        => $user,
-        minutes_ago => sub { int((time - str2time(shift)) / 60) },
+        minutes_ago => sub { int((time - str2time(shift, 'UTC')) / 60) },
         %ws_vars,
         %vars,
     );
