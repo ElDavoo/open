@@ -166,7 +166,7 @@ Automated backup and restore testing
 | wait_for_text_present_ok | Many features are within easy reach | 10000 |
 
 | *Comment* | Test Case: Console Backup and Restore: TEARDOWN |  |
-| st-process-jobs |  |  |
+| st-process-jobs | PageIndex | admin |
 | st-admin | delete-workspace --no-export --w empty-%%start_time%% | has been deleted |
 | st-admin | purge-page --w admin --p backup_restore_%%start_time%% | was purged |
 | st-admin | purge-page --w admin --p backup_restore_3_%%start_time%% | was purged |
