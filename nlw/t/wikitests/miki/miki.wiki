@@ -59,20 +59,20 @@
 | code-is     | 302                                 |            |
 | header-like | Location                            | /m         |
 
-| Comment     | signals                  |                           |
-| GET         | /m/signals               |                           |
-| code-is     | 200                      |                           |
-| body-like   | What are you working on? |                           |
-| post-json   | /data/signals            | {"signal":"I can haz /m"} |
-| code-is     | 201                      |                           |
-| GET         | /m/signals               |                           |
-| code-is     | 200                      |                           |
-| body-like   | What are you working on? |                           |
-| body-like   | I can haz /m             |                           |
-| body-like   | Previous page</span>     |                           |
-| body-like   | First page</span>        |                           |
-| body-unlike | Next page</a>            |                           |
-| body-like   | Next page</span>         |                           |
+| Comment     | signals                    |                           |
+| GET         | /m/signals                 |                           |
+| code-is     | 200                        |                           |
+| body-like   | What are you working on?   |                           |
+| post-json   | /data/signals              | {"signal":"I can haz /m"} |
+| code-is     | 201                        |                           |
+| GET         | /m/signals                 |                           |
+| code-is     | 200                        |                           |
+| body-like   | What are you working on?   |                           |
+| body-like   | I can haz /m               |                           |
+| body-like   | Previous page</span>       |                           |
+| body-like   | First page</span>          |                           |
+| body-unlike | Next page&nbsp;&gt;</a>    |                           |
+| body-like   | Next page&nbsp;&gt;</span> |                           |
 
 | Comment     | Pagination               |                        |
 | post-json   | /data/signals            | {"signal":"signal '1'"}  |
@@ -97,43 +97,43 @@
 | post-json   | /data/signals            | {"signal":"signal '20'"} |
 | post-json   | /data/signals            | {"signal":"signal '21'"} |
 
-| GET         | /m/signals               |
-| code-is     | 200                      |
-| body-like   | What are you working on? |
-| body-like   | signal '21'              |
-| body-like   | signal '20'              |
-| body-like   | signal '19'              |
-| body-like   | signal '18'              |
-| body-like   | signal '17'              |
-| body-like   | signal '16'              |
-| body-like   | signal '15'              |
-| body-like   | signal '14'              |
-| body-like   | signal '13'              |
-| body-like   | signal '12'              |
-| body-unlike | signal '11'              |
-| body-unlike | signal '10'              |
-| body-like   | Previous page</span>     |
-| body-like   | First page</span>        |
-| body-like   | Next page</a>            |
-| body-like   | refresh                  |
-| GET         | /m/signals/?page=1       |
-| code-is     | 200                      |
-| body-like   | What are you working on? |
-| body-like   | signal '11'              |
-| body-like   | signal '10'              |
-| body-like   | signal '9'               |
-| body-like   | signal '8'               |
-| body-like   | signal '7'               |
-| body-like   | signal '6'               |
-| body-like   | signal '5'               |
-| body-like   | signal '4'               |
-| body-like   | signal '3'               |
-| body-like   | signal '2'               |
-| body-unlike | signal '1'               |
-| body-like   | Previous page</a>        |
-| body-like   | First page</a>           |
-| body-like   | Next page</a>            |
-| body-like   | refresh                  |
+| GET         | /m/signals                                            |
+| code-is     | 200                                                   |
+| body-like   | What are you working on?                              |
+| body-like   | signal '21'                                           |
+| body-like   | signal '20'                                           |
+| body-like   | signal '19'                                           |
+| body-like   | signal '18'                                           |
+| body-like   | signal '17'                                           |
+| body-like   | signal '16'                                           |
+| body-like   | signal '15'                                           |
+| body-like   | signal '14'                                           |
+| body-like   | signal '13'                                           |
+| body-like   | signal '12'                                           |
+| body-unlike | signal '11'                                           |
+| body-unlike | signal '10'                                           |
+| body-like   | Previous page</span>                                  |
+| body-like   | First page</span>                                     |
+| body-like   | Next page<span class="nav-hint">&nbsp;&gt;</span></a> |
+| body-like   | refresh                                               |
+| GET         | /m/signals/?page=1                                    |
+| code-is     | 200                                                   |
+| body-like   | What are you working on?                              |
+| body-like   | signal '11'                                           |
+| body-like   | signal '10'                                           |
+| body-like   | signal '9'                                            |
+| body-like   | signal '8'                                            |
+| body-like   | signal '7'                                            |
+| body-like   | signal '6'                                            |
+| body-like   | signal '5'                                            |
+| body-like   | signal '4'                                            |
+| body-like   | signal '3'                                            |
+| body-like   | signal '2'                                            |
+| body-unlike | signal '1'                                            |
+| body-like   | Previous page</a>                                     |
+| body-like   | First page</a>                                        |
+| body-like   | Next page<span class="nav-hint">&nbsp;&gt;</span></a> |
+| body-like   | refresh                                               |
 
 | Comment     | Post a signal via miki |                |
 | POST_form   | /m/signals             | signal=o%20hai |
