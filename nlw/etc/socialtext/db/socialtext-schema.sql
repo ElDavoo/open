@@ -940,7 +940,7 @@ CREATE TABLE note (
 
 CREATE TABLE opensocial_appdata (
     app_id bigint NOT NULL,
-    user_id bigint NOT NULL,
+    user_set_id bigint NOT NULL,
     field text NOT NULL,
     value text
 );
@@ -1414,6 +1414,10 @@ ALTER TABLE ONLY note
     ADD CONSTRAINT note_pkey
             PRIMARY KEY (jobid, notekey);
 
+ALTER TABLE ONLY opensocial_appdata
+    ADD CONSTRAINT opensocial_appdata_pk
+            PRIMARY KEY (app_id, user_set_id, field);
+
 ALTER TABLE ONLY page_link
     ADD CONSTRAINT page_link_unique
             UNIQUE (from_workspace_id, from_page_id, to_workspace_id, to_page_id);
@@ -1610,10 +1614,10 @@ CREATE INDEX idx_job_ready_coalesce_prefix
 	    ON job (funcid, "coalesce" text_pattern_ops, grabbed_until, run_after);
 
 CREATE INDEX idx_opensocial_appdata_app_user
-	    ON opensocial_appdata (app_id, user_id);
+	    ON opensocial_appdata (app_id, user_set_id);
 
 CREATE UNIQUE INDEX idx_opensocial_appdata_app_user_field
-	    ON opensocial_appdata (app_id, user_id, field);
+	    ON opensocial_appdata (app_id, user_set_id, field);
 
 CREATE INDEX idx_signal_tag_lower_tag
 	    ON signal_tag (lower(tag) text_pattern_ops);
@@ -2265,11 +2269,6 @@ ALTER TABLE ONLY opensocial_appdata
             FOREIGN KEY (app_id)
             REFERENCES gadget_instance(gadget_instance_id) ON DELETE CASCADE;
 
-ALTER TABLE ONLY opensocial_appdata
-    ADD CONSTRAINT opensocial_app_data_user_id
-            FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
-
 ALTER TABLE ONLY page
     ADD CONSTRAINT page_creator_id_fk
             FOREIGN KEY (creator_id)
@@ -2531,4 +2530,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '130');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '131');
