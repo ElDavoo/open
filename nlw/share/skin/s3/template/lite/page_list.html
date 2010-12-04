@@ -3,6 +3,21 @@
 [% USE Number.Format %]
 [%- USE decorate -%]
 
+[%- MACRO ago_text(minutes) BLOCK -%]
+    [%- IF minutes < 1 -%][% loc('less than a minute ago') -%]
+    [%- ELSIF minutes == 1 -%][% loc('one minute ago') -%]
+    [%- ELSIF minutes < 50 -%][% loc('[_1] minutes ago', minutes) -%]
+    [%- ELSIF minutes < 90 -%][% loc('about one hour ago') -%]
+    [%- ELSIF minutes < 1080 -%]
+      [%- hours = minutes / 60 | round(0) -%]
+      [% loc('[_1] hours ago', hours) -%]
+    [%- ELSIF minutes < 1440 -%][% loc('one day ago') -%]
+    [%- ELSIF minutes < 2880 -%][% loc('about one day ago') -%]
+    [%- ELSE -%]
+      [%- days = minutes / 1440 | round(0) -%]
+      [% loc('[_1] days ago', days) -%]
+    [%- END -%]
+[%- END -%]
 [%- IF rows.size %]
 <ul data-role="listview">
 [%- FOREACH row = rows %]
@@ -13,7 +28,7 @@
         </a>
         [% IF row.last_edit_time %]
         <span class="ui-li-count">
-            [% row.datetime_for_user %]
+            [% ago_text(minutes_ago(row.last_edit_time)) %]
         </span>
         [% END %]
     </li>
