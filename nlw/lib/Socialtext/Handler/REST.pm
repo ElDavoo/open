@@ -50,7 +50,7 @@ sub handler ($$) {
         # non-suppressable re-authenticate dialog that doesn't work
         # well for Socialtext Desktop, so handle it as a special case.
         return $class->_webkit_air_unauthorized_handler($r)
-            if ($ua =~ /\bAppleWebKit\b.*\bAdobeAIR\b/);
+            if ($ua =~ /\bAppleWebKit\b.*\bAdobeAIR\b.*\bSocialtext\s*Desktop\b/);
         $user = $class->guest($r, $auth_info);
     }
 
