@@ -108,6 +108,11 @@ Socialtext.set_save_error_resume_handler = function(cb) {
                     return;
                 }
             }
+            else if (win.Socialtext.action == 'blog_display') {
+                Socialtext.discardDraft('edit_save');
+                window.location = win.location;
+                return;
+            }
         }
         catch (e) { };
 
