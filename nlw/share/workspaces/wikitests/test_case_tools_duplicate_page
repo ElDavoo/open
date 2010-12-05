@@ -77,8 +77,8 @@
 | text_like | contentContainer | Duplicate This Page %%start_time%% content |
 | text_like | contentContainer | Duplicate This Page %%start_time%% NEW content |
 
-| *Comment* | Test Case: Tools: Duplicate Page Teardown |  |
-
+| *Comment* | Test Case: Tools: Duplicate Page TEARDOWN |  |
+| st-process-jobs | PageIndex | %%workspace%% |
 | st-admin | purge-page --w %%workspace%% --page duplicate_this_page_%%start_time%% | was purged |
 | st-admin | purge-page --w %%workspace%% --page page_duplicated_%%start_time%% | was purged |
 

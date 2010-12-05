@@ -21,7 +21,7 @@
 | st-admin | disable-plugin --plugin signals --all-accounts | The signals plugin is now disabled for all accounts |
 | st-admin | disable-plugin --plugin people --all-accounts | The people plugin is now disabled for all accounts |
 | st-admin | disable-plugin --plugin dashboard --all-accounts | The dashboard plugin is now disabled for all accounts |
-| st-admin | disable-plugin --plugin socialcalc --all-workspaces | No changes were made |
+| st-admin | disable-plugin --plugin socialcalc --all-workspaces | The socialcalc plugin is now disabled for all workspaces |
 
 | *Comment* | Test Case: Command Line Tests OTHER test enable/disable for one account |  |
 | st-admin | enable-plugin --account %%cmdline_account%% --plugin dashboard | The dashboard plugin is now enabled for account %%cmdline_account%% |
@@ -42,7 +42,7 @@
 | st-admin | enable-plugin --plugin signals --all-accounts | No changes |
 
 | st-admin | enable-plugin --plugin socialcalc --all-accounts | qr/The socialcalc plugin can not be set at the account scope/ |
-| st-admin | enable-plugin --plugin socialcalc --all-workspace | No changes were made |
+| st-admin | enable-plugin --plugin socialcalc --all-workspace | The socialcalc plugin is now enabled for all workspaces |
 
 | st-admin | --help | qr/plugin/ |
 

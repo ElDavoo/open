@@ -12,21 +12,23 @@
 | st-page-save |  |  |
 
 | *Comment* | Test Case: Add Comment top comment button |  |
+| wait_for_element_visible_ok | st-comment-button-link | 30000 |
 | click_ok | st-comment-button-link |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | Comment 1 %%start_time%% |
+| wait_for_element_visible_ok | link=Save | 30000 |
 | click_ok | link=Save |  |
 | pause | 10000 |
 | text_like | contentContainer | Comment 1 %%start_time%% |
 
 | *Comment* | Test Case: Add Comment bottom Comment button |  |
+| wait_for_element_visible_ok | st-comment-button-link-bottom | 30000 |
 | click_ok | st-comment-button-link-bottom |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | Comment 2 %%start_time%% |
+| wait_for_element_visible_ok | link=Save | 30000 |
 | click_ok | link=Save |  |
 | pause | 10000 |
-
- open_ok | /%%workspace%%/?Comment Test Page %%start_time%% | |
 
 | text_like | contentContainer | qr/Comment 1.+Comment 2/ |
 | text_like | contentContainer | qr/contributed by/i |
@@ -35,6 +37,8 @@
 | click_ok | st-comment-button-link-bottom |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | Comment Cancel %%start_time%% |
+
+| wait_for_element_visible_ok | link=Cancel | 30000 |
 | click_ok | link=Cancel |  |
 | pause | 5000 |
 | text_like | contentContainer | qr/Comment 1.+Comment 2/ |
@@ -42,7 +46,8 @@
 
 TODO: write an entire new test for Add Comment editing buttons similar to Insert Menu test
 
-| *Comment* | Test Case: Add Comment Teardown |  |
+| *Comment* | Test Case: Add Comment TEARDOWN |  |
+| st-process-jobs | PageIndex | %%workspace%% |
 | st-admin | purge-page --w %%workspace%% --p comment_test_page_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Add Comment COMPLETED |

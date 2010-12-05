@@ -18,7 +18,7 @@
 
 | *Comment* | Test Case: Connections. Four RSS/ATOM feeds, one at a time ELSE timeout |
 
-| *Comment* | Test Case: Connections. ATOM 1.0 |
+| *Comment* | Test Case: Connections. ATOM 1.0 |  |
 | click_ok | link=Edit |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
@@ -29,7 +29,7 @@
 | wait_for_text_present_ok | Atom | 120000 |
 | text_like | qr/AtomEnabled\.org.+AtomEnabled\.org.+AtomEnabled\.org.+AtomEnabled\.org/ims |  |
 
-| *Comment* | Test Case: Connections. RSS 2.0 |
+| *Comment* | Test Case: Connections. RSS 2.0 |  |
 | click_ok | link=Edit |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text | RSS |
@@ -40,7 +40,7 @@
 | wait_for_text_present_ok | RSS 2.0 | 120000 |
 | text_like | qr/Socialtext News.+Socialtext News.+Socialtext News.+Socialtext News/ims |  |
 
-| *Comment* | Test Case: Connections. RSS 1.0 |
+| *Comment* | Test Case: Connections. RSS 1.0 |  |
 | click_ok | link=Edit |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
@@ -51,7 +51,7 @@
 | wait_for_text_present_ok | RSS 1.0 | 120000 |
 | text_like | qr/Macromedia Developer Center.+Macromedia Developer Center.+Macromedia Developer Center.+Macromedia Developer Center/ims |  |
 
-| *Comment* | Test Case: Connections. RSS .91 |
+| *Comment* | Test Case: Connections. RSS .91 |  |
 | click_ok | link=Edit |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
@@ -62,8 +62,8 @@
 | wait_for_text_present_ok | RSS .91 | 120000 |
 | text_like | qr/Bretton Woods Project.+Bretton Woods Project.+Bretton Woods Project.+Bretton Woods Project/ims |  |
 
-| *Comment* | Test Case: Connections Teardown |  |
-
+| *Comment* | Test Case: Connections TEARDOWN |  |
+| st-process-jobs | PageIndex | %%workspace%% |
 | st-admin | purge-page --w %%workspace%% --p connections_testpage_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Connections COMPLETED |

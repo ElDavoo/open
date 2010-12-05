@@ -39,9 +39,10 @@
 | *Comment* | Test Case: Untitled Page save attempt using legal title |  |
 | type_ok | st-newpage-save-pagename | untitled page %%start_time%% |
 | click_and_wait | st-newpage-save-savebutton |  |
-| text_like | contentContainer | untitled page %%start_time%% content |
+| wait_for_text_present_ok | untitled page %%start_time%% content | 30000 |
 
-| *Comment* | Test Case: Untitled Page Teardown |  |
+| *Comment* | Test Case: Untitled Page TEARDOWN |  |
+| st-process-jobs | PageIndex | %%workspace%% |
 | st-admin | purge-page --w %%workspace%% --p untitled_page_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Untitled Page COMPLETED |  |
