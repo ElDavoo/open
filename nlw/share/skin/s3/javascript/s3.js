@@ -104,7 +104,7 @@ Socialtext.set_save_error_resume_handler = function(cb) {
                 }
                 else {
                     Socialtext.discardDraft('edit_save');
-                    window.location = '?' + jQuery('#st-page-editing-pagename').val();
+                    window.location = win.location;
                     return;
                 }
             }
