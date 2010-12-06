@@ -1126,7 +1126,7 @@ sub st_mobile_account_select_ok {
 
 
 
-=head st_check_emergent_signal_wikiwyg_mobile 
+=head2 st_check_emergent_signal_wikiwyg_mobile
 
 Sends a signal and waits to see if in the miki ... if and only if you are on a "smart mobile" browser
 
@@ -1143,7 +1143,7 @@ sub st_check_emergent_signal_wikiwyg_mobile {
     }
 }
 
-=head st_if_ie_check_mobile_signaltypes  
+=head2 st_if_ie_check_mobile_signaltypes
 
 IE contains hard links to display only certain signal types.  Other browsers do not.
 
