@@ -1057,23 +1057,6 @@ CREATE TABLE rollup_user_signal (
     sent_count bigint DEFAULT 0 NOT NULL
 );
 
-CREATE TABLE search_set_workspaces (
-    search_set_id bigint NOT NULL,
-    workspace_id bigint NOT NULL
-);
-
-CREATE TABLE search_sets (
-    search_set_id bigint NOT NULL,
-    name varchar(40) NOT NULL,
-    owner_user_id bigint NOT NULL
-);
-
-CREATE SEQUENCE search_sets___search_set_id
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
 CREATE TABLE sessions (
     id character(32) NOT NULL,
     a_session text NOT NULL,
@@ -1457,10 +1440,6 @@ ALTER TABLE ONLY recent_signal
 ALTER TABLE ONLY recent_signal_user_set
     ADD CONSTRAINT recent_signal_user_set_pkey
             PRIMARY KEY (signal_id, user_set_id);
-
-ALTER TABLE ONLY search_sets
-    ADD CONSTRAINT search_sets_pkey
-            PRIMARY KEY (search_set_id);
 
 ALTER TABLE ONLY sessions
     ADD CONSTRAINT sessions_pkey
@@ -1973,12 +1952,6 @@ CREATE INDEX profile_relationship_other_user_id
 
 CREATE INDEX recent_signal_hidden
 	    ON recent_signal (hidden);
-
-CREATE UNIQUE INDEX search_set_workspaces___search_set_id___search_set_id___workspa
-	    ON search_set_workspaces (search_set_id, workspace_id);
-
-CREATE UNIQUE INDEX search_sets___owner_user_id___owner_user_id___name
-	    ON search_sets (owner_user_id, lower((name)::text));
 
 CREATE INDEX signal_hidden
 	    ON signal (hidden);
@@ -2530,4 +2503,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '131');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '132');
