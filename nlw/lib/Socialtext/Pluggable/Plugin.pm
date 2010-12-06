@@ -39,6 +39,7 @@ field 'session', -init => 'Socialtext::Session->new()';
 
 const scope => 'account';
 const hidden => 1; # hidden to admins
+const paid => 0; # Only show the paid alert for certain plugins
 const read_only => 0; # cannot be disabled/enabled in the control panel
 const valid_account_prefs => (); # none by default, override in a child.
 
