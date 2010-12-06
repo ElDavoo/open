@@ -803,11 +803,11 @@ sub _require_create_user_params {
 
     my %opts = $self->_get_options(
         'username:s',
-        'email:s',
+        'email|e:s',
         'password:s',
         'first-name:s',
         'last-name:s',
-        'external-id:s',
+        'external-id|X:s',
     );
 
     for my $key ( grep { defined $opts{$_} } 'first-name', 'last-name' ) {
