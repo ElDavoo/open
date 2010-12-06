@@ -279,7 +279,7 @@ C<call_orig_in_worker> after perhaps doing some parent-process caching.
 =cut
 
 sub worker_wrap {
-    my $caller = shift;
+    my $caller_or_meta = shift;
     my $replacement = shift;
     my $method_to_wrap = shift;
     my %args = @_;
@@ -287,10 +287,12 @@ sub worker_wrap {
     no warnings 'redefine';
     no strict 'refs';
 
+    my $meta = compat_meta_arg($caller_or_meta);
+
     (my $orig_pkg = $method_to_wrap) =~ s/::.+?$//;
     my $orig_method = \&{$method_to_wrap};
     my $worker_name = "worker_$replacement";
-    my $replacement_method = \&{$caller.'::'.$replacement};
+    my $replacement_method = $meta->find_method_by_name($replacement)->body;
 
     # Install a method to call the original, "real" method.  This
     # worker_method will be called in the AnyEvent::Worker sub-process.
@@ -324,9 +326,11 @@ will actually run in the worker process.
 =cut
 
 sub worker_function {
-    my $caller = shift;
+    my $caller_or_meta = shift;
     my $name = shift;
     my $code = shift;
+
+    my $meta = compat_meta_arg($caller_or_meta);
 
     my $worker_name = "worker_$name";
     my $worker_method = Moose::Meta::Method->wrap(
@@ -344,13 +348,12 @@ sub worker_function {
 
     my $method = Moose::Meta::Method->wrap(
         name => $name,
-        package_name => $caller,
+        package_name => $meta->name,
         body => sub {
             return call_orig_in_worker($name, undef, @_);
         },
     );
 
-    my $meta = Class::MOP::Class->initialize($caller);
     $meta->add_method($name => $method);
     return;
 }
