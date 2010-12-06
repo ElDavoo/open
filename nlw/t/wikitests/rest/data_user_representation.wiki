@@ -14,6 +14,7 @@ Tests the ReST representations for Users
 | add-user-to-group   | %%dave%%            | %%group_id%%                         |
 | create-account      | %%start_time%%other |                                      |
 | set                 | other_id            | %%account_id%%                       |
+| set                 | private_id          | %%start_time%%abc123                 |
 
 | *Comment* | As HTML                                                        |
 | GET       | /data/users/%%username%%                                       |
@@ -61,5 +62,21 @@ Tests the ReST representations for Users
 
 | *Comment* | Business admin can update user |
 | http-user-pass | %%bob%% | password |
-| PUT-json | /data/users/%%username%% | {"primary_account_id":%%other_id%%} |
+| PUT-json | /data/users/%%username%% | {"private_external_id":"%%private_id%%"} |
 | code-is |  204 |
+
+| *Comment* | Non-business admin cannot see private fields |
+| http-user-pass | %%username%% | password |
+| GET-json | /data/users/%%username%%?want_private_fields=1 |
+| code-is | 200 |
+| json-parse |
+| json-path-exists | $.private_external_id |
+| json-path-is | $.private_external_id |  |
+
+| *Comment* | Business admin can request private fields |
+| http-user-pass | %%bob%% | password |
+| GET-json | /data/users/%%username%%?want_private_fields=1 |
+| code-is | 200 |
+| json-parse |
+| json-path-exists | $.private_external_id |
+| json-path-is | $.private_external_id | %%private_id%% |
