@@ -290,8 +290,12 @@ sub copy {
 
     $self->assert_dirpath($targetpath);
 
-    File::Copy::copy("$sourcepath/$sourcefile", "$targetpath")
-        or die "Can't copy $sourcepath/$sourcefile into $targetpath: $!";
+    # This used to be just "$targetpath" as the dest, but fully-qualifying it
+    # seems to fix a bug that only happens under Lucid so far -- don't
+    # understand why that is, so feel free to change this if you get it ;)
+    # ~stash
+    File::Copy::copy("$sourcepath/$sourcefile", "$targetpath/$targetfile")
+        or die "Can't copy $sourcepath/$sourcefile into $targetpath/$targetfile: $!";
 
     chmod(0755, $targetpath);
 }
@@ -320,7 +324,7 @@ sub store {
 
     my $md5;
     open IN, '<', "$file_path/$db_filename"
-      or die "Can't open $file_path/$db_filename for MD5 checksum: $!";
+      or Carp::confess "Can't open $file_path/$db_filename for MD5 checksum: $!";
     binmode IN;
     $md5 = Digest::MD5->new->addfile(*IN)->b64digest;
     close IN;
