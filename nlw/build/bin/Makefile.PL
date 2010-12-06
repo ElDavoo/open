@@ -27,15 +27,7 @@ GetOptions(
     'verbose',
 );
 
-my $LIST_DEPS
-   = "$^X $DEV_BIN/list-module-deps";
-
 @ARGV = grep { !/^--/ } @ARGV;
-
-my $prereqs = do {
-    my $VAR1; # Data::Dumper gives us "$VAR1 = { hash guts }"
-    eval qx($LIST_DEPS --dump);
-};
 
 CREATE_TMP: {
     # This is how ExtUtils::Command does it: files thru @ARGV
@@ -49,8 +41,6 @@ my $mm_args = {
     AUTHOR       => 'Socialtext <socialtext@socialtext.com>',
     VERSION_FROM => 'lib/Socialtext.pm',
     EXE_FILES    => [ chomp_list(qx($DEV_BIN/perl-bin-files bin/)) ],
-    PREREQ_FATAL => 1,
-    PREREQ_PM    => $prereqs,
     PL_FILES     => {},
     MAKEFILE     => $MAKEFILE,
     NO_META      => 1,  # No META.yml
@@ -72,70 +62,6 @@ if ( $@ ) {
     die "$error\n";
 }
 munge_makefile();
-
-# Install missing dependencies
-sub install_deps {
-    my @missing = chomp_list(qx($LIST_DEPS -u));
-    if (@missing) {
-        print "The following modules are missing, or you may have older versions:\n\n";
-        print_cols( @missing );
-        print "\n";
-        if ($ENV{ST_GIT} || $ENV{ST_HAXORS}) {
-            print <<COMPLAINT;
-YOU SEEM TO BE A SOCIALTEXT EMPLOYEE...
-
-If you aren't, please unset ST_GIT and ST_HAXORS in your environment and try
-again.
-
-If you are, please package up and install these dependencies as debian packages.
-
-COMPLAINT
-
-            return;
-        }
-
-        my $ans = prompt("Install these missing dependencies from CPAN?", "n");
-        if ( $ans =~ /^y(es)?$/i ) {
-            s/\s.*// for @missing; # Chomp the trailing version number
-            system( 'sudo', $^X, '-MCPAN', '-e', 'CPAN::Shell->install(@ARGV)',
-                @missing );
-            my $rc = $? >> 8;
-            if ($rc == 1) {
-                print "\nSudo returned 1.  No permission to install dependencies.\n\n";
-                return;
-            }
-            # Rerun this script to recheck prereqs.  Can't just call WriteMakefile
-            # again b/c MakeMaker breaks.
-            exec($^X, $0, @original_argv);
-        }
-    }
-}
-
-sub print_cols {
-    my @list = @_;
-
-    my $width = 0;
-    for (@list) {
-        $width = length if $width < length;
-    }
-    my $maxcols = int(78/$width);
-
-    my $ncols = int((@list-1)/10)+1;
-    $ncols = $maxcols if $ncols > $maxcols;
-
-    my $nrows = int((@list-1)/$ncols)+1;
-
-    my @cols;
-    for my $colno ( 1..$ncols ) {
-        push( @cols, [ splice(@list,0,$nrows) ] );
-    }
-
-    my $mask = join( "  ", ("%-${width}.${width}s")x$ncols );
-    for my $rowno ( 0..$nrows-1 ) {
-        my @row = map { defined($_) ? $_ : "" } map { shift @{$cols[$_]} } 0..$ncols - 1;
-        printf( "  $mask\n", @row );
-    }
-}
 
 # If you chomp() a list, each element is chomped, and the total number of
 # characters removed is returned.  chomp_list() is similar 'cept it returns

@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 # @COPYRIGHT@
 
-require 5.008003;
+require 5.012002;
 use strict;
 use warnings;
 use Data::Dumper;
@@ -115,12 +115,6 @@ sub invoke_make_maker {
     my @cmd = (
         $settings{perl}->{value},
         $mm,
-        "DESTDIR=" . $settings{destdir}->{value},
-        "PREFIX=$prefix",
-        "INSTALLSCRIPT=$prefix" . $settings{bindir}->{value},
-        "INSTALLSITELIB=$prefix" . $settings{libdir}->{value},
-        "INSTALLSITEMAN1DIR=$prefix" . $settings{man1dir}->{value},
-        "INSTALLSITEMAN3DIR=$prefix" . $settings{man3dir}->{value},
         "--socialtext-open=$osr",
         "--dev=$dev",
     );
