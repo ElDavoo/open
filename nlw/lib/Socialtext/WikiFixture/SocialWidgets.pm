@@ -567,7 +567,7 @@ sub st_verify_link_in_activities_widget {
     eval {
         $self->handle_command('st-select-widget-frame', $widgetname);
         $self->handle_command('pause', 3000);
-        $self->handle_command('wait_for_element_present_ok', $linktofind);
+        $self->handle_command('wait_for_element_visible_ok', $linktofind);
         $self->handle_command('select-frame', 'relative=parent');
     };
     ok(!$@, 'st-verify-link-in-activities-widget');
@@ -586,9 +586,9 @@ sub st_create_group {
     $self->handle_command('set_Speed',4000);
     $self->handle_command('wait_for_element_present_ok','link=Create Group...',30000);
     $self->handle_command('click_ok','link=Create Group...');
-    $self->handle_command('wait_for_element_present_ok','st-create-group-next', 30000);
-    $self->handle_command('wait_for_element_present_ok','st-lightbox-cancel-create-group');
-    $self->handle_command('wait_for_element_present_ok', $radiotype);
+    $self->handle_command('wait_for_element_visible_ok','st-create-group-next', 30000);
+    $self->handle_command('wait_for_element_visible_ok','st-lightbox-cancel-create-group');
+    $self->handle_command('wait_for_element_visible_ok', $radiotype);
     $self->handle_command('check_ok', $radiotype);
     $self->handle_command('click_ok','st-create-group-next');
     $self->handle_command('wait_for_element_not_present_ok','st-create-group-next', 30000);
@@ -618,11 +618,12 @@ sub st_find_user {
     my ($self, $user_id) = @_;
     eval {
         $self->handle_command('open_ok','/?action=people');
-        $self->handle_command('wait_for_element_present_ok','st-search-action', 30000);
-        $self->handle_command('wait_for_element_present_ok', 'st-search-term', 30000);
-        $self->handle_command('wait_for_element_present_ok', 'st-search-submit', 30000);
+        $self->handle_command('wait_for_element_visible_ok','st-search-action', 30000);
+        $self->handle_command('wait_for_element_visible_ok', 'st-search-term', 30000);
+        $self->handle_command('wait_for_element_visible_ok', 'st-search-submit', 30000);
         $self->handle_command('select_ok', 'st-search-action', 'Search People:');
         $self->handle_command('type_ok', 'st-search-term', $user_id);
+        $self->handle_command('pause', '1000');
         $self->handle_command('click_and_wait', 'st-search-submit');
         $self->handle_command('wait-for-element-visible-ok', "link=$user_id", 30000);
         $self->handle_command('click_and_wait',"link=$user_id");

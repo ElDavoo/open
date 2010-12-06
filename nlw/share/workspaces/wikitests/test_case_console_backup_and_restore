@@ -54,11 +54,11 @@ Automated backup and restore testing
 | verifyValue | smbpass | il8jeeNg |
 
 | *Comment* | Test Case: Console Backup and Restore: Do the Backup |  |
-| click_and_wait | //input[@value='Backup'] |  |
-| text_like | Backup is in progress |  |
+| click_ok | //input[@value='Backup'] |  |
 
 | *Comment* | WAIT FOR BACKUP TO START, THEN TO FINISH |  |
-| pause | 5000 |  |
+| wait_for_text_present_ok | Backup is in progress | 120000 |
+| pause | 30000 |  |
 | wait_for_backup_to_finish |  |  |
 
 | *Comment* | Test Case: Console Backup and Restore: create a second test page in admin. It should be gone after restore. |  |
@@ -71,8 +71,13 @@ Automated backup and restore testing
 | *Comment* | Test Case: Console Backup and Restore: Navigate away and come back to Backup page |  |
 | open_ok | /console/index.cgi?rm=Setup |  |
 | open_ok | /console/index.cgi?rm=Backup |  |
+| wait_for_text_present_ok | Last manual backup was | 30000 |
 | wait_for_element_visible_ok | link=Refresh file list | 30000 |
 | click_and_wait | link=Refresh file list |  |
+| wait_for_text_present_ok | Refreshing the backup list | 60000 |
+| wait_for_element_visible_ok | link=Refresh this page | 30000 |
+| click_and_wait | link=Refresh this page |  |
+| wait_for_element_visible_ok | link=Refresh file list | 30000 |
 
 | *Comment* | Test Case: Console Backup and Restore: Select most recent element |  |
 | wait_for_element_visible_ok | restore_id | 30000 |
@@ -80,7 +85,8 @@ Automated backup and restore testing
 | click_ok | //input[@value='Restore'] |  |
 
 | *Comment* | WAIT FOR RESTORE TO START, THEN TO FINISH |  |
-| pause | 5000 |  |
+| wait_for_text_present_ok | Restore in progress | 120000 |
+| pause | 30000 |  |
 | wait_for_restore_to_finish |  |  |
 
 | *Comment* | Test Case: Console Backup and Restore: Execute a command that will re-establish DBH connection |  |
@@ -160,6 +166,7 @@ Automated backup and restore testing
 | wait_for_text_present_ok | Many features are within easy reach | 10000 |
 
 | *Comment* | Test Case: Console Backup and Restore: TEARDOWN |  |
+| st-process-jobs | PageIndex | admin |
 | st-admin | delete-workspace --no-export --w empty-%%start_time%% | has been deleted |
 | st-admin | purge-page --w admin --p backup_restore_%%start_time%% | was purged |
 | st-admin | purge-page --w admin --p backup_restore_3_%%start_time%% | was purged |

@@ -187,7 +187,6 @@ sub revision_restore {
     }
 
     if ( $self->hub->checker->check_permission('edit')) {
-        warn "restoring page";
         $page->restore_revision(
             revision_id => $self->cgi->revision_id,
             user => $self->hub->current_user

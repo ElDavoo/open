@@ -35,16 +35,21 @@
 | st-logoutin | %%othermikiuser%% | %%password%% |
 
 | *Comment* | Test case: Miki Open global nav, should be signals |  |
-| open_ok | /m/ |  |
+| open_ok | /st/dashboard/ |  |
+| wait_for_element_present_ok | link=Mobile | 30000 |
+| click_and_wait | link=Mobile |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
 | wait_for_element_visible_ok | link=Activity | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
-| text_unlike | //body | %%miki_signal_disclaimer%% |
+
+| st_check_emergent_signal_wikiwyg_mobile |  |  |
 
 | add_member | %%mikiuser%% | %%otherws%% |
 | add_member | %%othermikiuser%% | %%otherws%% |
 
-| open_ok | /m/ |  |
+| open_ok | /st/dashboard |  |
+| wait_for_element_visible_ok | link=Mobile | 30000 |
+| click_and_wait | link=Mobile |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
 | wait_for_element_visible_ok | link=Activity | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
@@ -79,7 +84,9 @@
 | wait_for_element_visible_ok | link=I don't know my password. | 30000 |
 | st-login | %%mikiuser%% | %%password%% |
 
-| open_ok | /m/ |  |
+| open_ok | /st/dashboard/ |  |
+| wait_for_element_present_ok | link=Mobile | 30000 |
+| click_and_wait | link=Mobile |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
 | wait_for_element_visible_ok | link=Activity | 30000 |
 | wait_for_element_visible_ok | link=Log out | 30000 |
@@ -108,10 +115,11 @@
 | wait_for_element_visible_ok | link=Follow | 30000 |
 | click_and_wait | link=Follow |  |
 | wait_for_element_visible_ok | link=Stop following | 30000 |
-| open_ok | /m/ |  |
 
+| open_ok | /st/dashboard/ |  |
+| wait_for_element_present_ok | link=Mobile | 30000 |
+| click_and_wait | link=Mobile |  |
 | st_process_jobs | PersonIndex |  |
-| pause | 30000 |  |
 | wait_for_text_present_ok | %%signal1%% | 30000 |
 | wait_for_element_visible_ok | link=%%othershortuser%% | 30000 |
 
@@ -160,7 +168,10 @@
 | click_and_wait | link=Log out |  |
 | wait_for_element_visible_ok | link=I don't know my password. | 30000 |
 | st-login | %%mikiuser%% | %%password%% |
-| open_ok | /m/ |  |
+
+| open_ok | /st/dashboard/ |  |
+| wait_for_element_present_ok | link=Mobile | 30000 |
+| click_and_wait | link=Mobile |  |
 | wait_for_element_visible_ok | link=Workspaces | 30000 |
 | click_and_wait | link=Workspaces |  |
 | wait_for_element_visible_ok | link=%%ws%% | 30000 |

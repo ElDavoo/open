@@ -523,6 +523,19 @@ ul li a.genericBlueButton:hover {
 	text-decoration: none;
 }
 
+/* Add styles for the disabled flexButtonBlue */
+ul li.flexButtonBlue.disabled {
+    opacity: .4;
+    filter: alpha(opacity = 40);
+}
+ul li.flexButtonBlue.disabled:hover {
+    background-position: bottom right;
+}
+ul li.disabled a.genericBlueButton:hover {
+    background-position: top left;
+    cursor: default;
+}
+
 
 ul li.flexButton.editing a.editButton, ul li.flexButton.editing a.editButton:hover {
         visibility: hidden;
@@ -613,6 +626,7 @@ li.flexButton {
 	background-position: bottom right;
         white-space: nowrap;
 }
+
 
 li.flexButton:hover {
 	background: url(../images/flexButton.png) no-repeat;
@@ -3958,6 +3972,12 @@ body#dashBoard #st-editing-tools-edit #lastsignal {
     color: #D00;
 }
 
+.notice pre.error {
+    text-align: left;
+    margin: auto;
+    width: 50%;
+}
+
 ul li.flexButtonBlue a.addButton {
     background: url(../images/addFlexButtonBlue.png) no-repeat;
 }
@@ -4266,6 +4286,7 @@ body#dashBoard .widget.regular .widgetHeader {
     cursor: move;
 }
 
+body#dashBoard ul.stuck .widget.regular .widgetHeader,
 body#dashBoard .widget.tan .widgetHeader,
 body#dashBoard .widget.gray .widgetHeader {
     cursor: default;

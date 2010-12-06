@@ -69,41 +69,30 @@
 | post    | /data/people/%%other%%/tags | someTag | tag_name=MyTagName |
 | code-is | 204                         |         |                    |
 
-| GET       | /m/activities?all=1 |
-| code-is   | 200                 |
-| body-like | signal '1'          |
-| body-like | signal '2'          |
-| body-like | signal '3'          |
-| body-like | signal '4'          |
-| body-like | signal '5'          |
-| body-like | qr/tagged.*<a.*href="\/m\/profile\/%%other_id%%">.*MyTagName/ |
+| GET         | /m/activities?all=1 |
+| code-is     | 200                 |
+| body-unlike | signal '1'          |
+| body-like   | qr/tagged.*<a.*href="\/m\/profile\/%%other_id%%">.*MyTagName/ |
 
-| body-like | <span>&lt;&lt; Previous page</span> |
-| body-like | <span>First page</span>             |
-| body-like | <span>Next page &gt;&gt;</span>     |
+| body-like | Previous page |
+| body-like | First page    |
+| body-like | Next page     |
 
-| Comment     | Test the activities tabs                               |
-| GET         | /m/activities                                          |
-| code-is     | 200                                                    |
-| body-unlike | >My Conversations</a>                                  |
-| body-like   | >My Conversations</span>                               |
-| body-like   | (<a href="/m/activities">refresh</a>)                  |
-| body-like   | <a href="/m/activities?followed=1">People I follow</a> |
-| body-like   | <a href="/m/activities?all=1">All</a>                  |
+| Comment   | Test the activities tabs                            |
+| GET       | /m/activities                                       |
+| code-is   | 200                                                 |
+| body-like | class="ui-btn-active">My Conversations</a>          |
+| body-like | href="/m/activities?followed=1">People I follow</a> |
+| body-like | href="/m/activities?all=1">All</a>                  |
 
-| GET         | /m/activities?followed=1                         |
-| code-is     | 200                                              |
-| body-like   | <a href="/m/activities">My Conversations</a>     |
-| body-unlike | >People I follow</a>                             |
-| body-like   | >People I follow</span>                          |
-| body-like   | (<a href="/m/activities?followed=1">refresh</a>) |
-| body-like   | <a href="/m/activities?all=1">All</a>            |
+| GET       | /m/activities?followed=1                  |
+| code-is   | 200                                       |
+| body-like | href="/m/activities">My Conversations</a> |
+| body-like | class="ui-btn-active">People I follow</a> |
+| body-like | href="/m/activities?all=1">All</a>        |
 
-| GET         | /m/activities?all=1                                    |
-| code-is     | 200                                                    |
-| body-like   | <a href="/m/activities">My Conversations</a>           |
-| body-like   | <a href="/m/activities?followed=1">People I follow</a> |
-| body-unlike | >All</a>                                               |
-| body-like   | >All</span>                                            |
-| body-like   | (<a href="/m/activities?all=1">refresh</a>)            |
-
+| GET       | /m/activities?all=1                                 |
+| code-is   | 200                                                 |
+| body-like | href="/m/activities">My Conversations</a>           |
+| body-like | href="/m/activities?followed=1">People I follow</a> |
+| body-like | class="ui-btn-active">All</a>                       |

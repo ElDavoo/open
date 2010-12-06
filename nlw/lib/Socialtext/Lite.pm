@@ -70,6 +70,7 @@ the _frame_page method.
 
 # The templates we display with
 Readonly my $LOGIN_TEMPLATE          => 'lite/login/login.html';
+Readonly my $NOLOGIN_TEMPLATE        => 'lite/login/nologin.html';
 Readonly my $DISPLAY_TEMPLATE        => 'lite/page/display.html';
 Readonly my $EDIT_TEMPLATE           => 'lite/page/edit.html';
 Readonly my $CONTENTION_TEMPLATE     => 'lite/page/contention.html';
@@ -113,6 +114,24 @@ sub login {
         username_label    => Socialtext::Authen->username_label,
         public_workspaces =>
             [ $self->hub->workspace_list->public_workspaces ],
+    );
+}
+
+sub nologin {
+    my $self = shift;
+
+    my $messages;
+    my $file = Socialtext::AppConfig->login_message_file();
+    if ( $file and -r $file ) {
+        eval {$messages = Socialtext::File::get_contents_utf8($file)};
+        warn $@ if $@;
+    }
+    $messages ||= '<p>'. loc('Login has been Disabled') .'</p>';
+
+    return $self->_process_template(
+        $NOLOGIN_TEMPLATE,
+        title             => loc('Login Disabled'),
+        messages          => [ $messages ],
     );
 }
 
@@ -180,7 +199,13 @@ sub edit_save {
     my $page = $p{page};
     delete $p{page};
 
-    eval { $page->update_from_remote(%p); };
+    if ($p{action} eq 'comment') {
+        eval { $page->add_comment($p{comment}) };
+    }
+    else {
+        eval { $page->update_from_remote(%p); };
+    }
+
     if ( $@ =~ /^Contention:/ ) {
         return $self->_handle_contention( $page, $p{subject}, $p{content} );
     }
@@ -261,7 +286,10 @@ sub search {
 
     if ( $search_term ) {
         eval {
-            $search_results = $self->hub->search->get_result_set(
+            my $search = $self->hub->search;
+            $search->sortby($search->preferences->default_search_order->value);
+            $search->_direction($search->preferences->direction->value);
+            $search_results = $search->get_result_set(
                 search_term => $search_term,
                 offset => $pagenum * $page_size,
                 limit => $page_size,
@@ -360,7 +388,7 @@ sub _all_tags {
     my %weighted = $self->hub->category->weight_categories;
     my $tags = $weighted{tags};
 
-    my @rows = sort { $a->{name} cmp $b->{name} } grep {
+    my @rows = sort { lc $a->{name} cmp lc $b->{name} } grep {
         $_->{page_count} > 0
     } @$tags;
 
@@ -489,7 +517,7 @@ sub _process_template {
         skin_uri    => sub { "$skin_uri/$_[0]" },
         pluggable   => $self->hub->pluggable,
         user        => $user,
-        minutes_ago => sub { int((time - str2time(shift)) / 60) },
+        minutes_ago => sub { int((time - str2time(shift, 'UTC')) / 60) },
         %ws_vars,
         %vars,
     );

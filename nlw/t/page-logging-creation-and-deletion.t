@@ -138,6 +138,26 @@ Page_create_duplicate_duplicate: {
     }
 }
 
+Page_undelete: {
+    my $page_title = 'Undelete page';
+
+    create_page($workspace, $page_title);
+    
+    my $hub = setup_hub($workspace, $page_title, 'delete_page');
+    $hub->pages->current->delete( user => $user );
+
+    Test_page_undelete: {
+        my $hub = setup_hub($workspace, $page_title, 'undelete_page');
+        $hub->rest->query->param( page_id => 'undelete_page' );
+        clear_log();
+
+        $hub->delete_page->undelete_page();
+
+        logged_like('info', 'RESTORE,PAGE,');
+        logged_not_like('info', 'CREATE,PAGE,');
+    }
+}
+
 #########
 # helpers
 #########

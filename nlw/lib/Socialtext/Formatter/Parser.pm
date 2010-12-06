@@ -11,6 +11,8 @@ use Socialtext::Formatter::Block;
 use Socialtext::Formatter::Phrase;
 use Socialtext::Log qw( st_log );
 use Socialtext::Statistics 'stat_call';
+use Encode ();
+use Digest::MD5 ();
 use Storable;
 
 const top_class    => 'Socialtext::Formatter::Top';
@@ -194,7 +196,8 @@ sub get_cached_tree {
     my $page_id = $page->id;
 
     my $cache_dir = $self->cache_dir($workspace_id);
-    my $cache_file = "$cache_dir/$page_id";
+    my $text_md5 = $text ? Digest::MD5::md5_hex(Encode::encode_utf8($text)) : '';
+    my $cache_file = "$cache_dir/$text_md5" . '_' . $page_id;
     my $parsed;
 
     # Added test for size of $cache_file in order to stop
@@ -219,6 +222,7 @@ sub get_cached_tree {
             st_log( error => $@ ) if $@;
         }
     }
+
     return $parsed;
 }
 

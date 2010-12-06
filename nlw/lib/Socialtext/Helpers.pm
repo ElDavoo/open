@@ -158,6 +158,9 @@ sub _get_workspace_list_for_template {
     my $self = shift;
     return $self->{_workspacelist} if $self->{_workspacelist};
 
+    require Socialtext::Workspace;      # lazy-load, to reduce startup impact
+    my $ws = Socialtext::Workspace->Default;
+
     my @workspaces = 
     return $self->{_workspacelist} = [
         sort { lc($a->{label}) cmp lc($b->{label})} 
@@ -166,6 +169,7 @@ sub _get_workspace_list_for_template {
             name => $_->name,
             account => $_->account->name,
             id => $_->workspace_id,
+            ($ws and $ws->name eq $_->name) ? (default => 1) : (),
         }} $self->hub->current_user->workspaces->all
     ];
 }

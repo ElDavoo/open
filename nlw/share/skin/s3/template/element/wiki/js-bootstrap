@@ -20,6 +20,9 @@ Socialtext.userid = '[% user.userid.replace('\'', '\\\'')  %]';
 Socialtext.username = '[% user.username.replace('\'', '\\\'') %]';
 Socialtext.email_address = '[% user.email_address.replace('\'', '\\\'') %]';
 
+Socialtext.workspaces = [% workspaceslist.json %];
+Socialtext.accounts = [% user.accounts.json %];
+
 Socialtext.dev_env = [% IF dev_mode %]true[% ELSE %]false[% END %];
 
 Socialtext.page_id = '[% page.id %]';

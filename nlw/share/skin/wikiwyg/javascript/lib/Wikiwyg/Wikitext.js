@@ -1342,6 +1342,7 @@ proto.convertWikitextToHtml = function(wikitext, func, onError) {
     var postdata = 'action=wikiwyg_wikitext_to_html;content=' +
         encodeURIComponent(wikitext);
 
+    var isSuccess = false;
     jQuery.ajax({
         url: uri,
         async: false,
@@ -1352,13 +1353,17 @@ proto.convertWikitextToHtml = function(wikitext, func, onError) {
             content: wikitext
         },
         success: function(_data, _status, xhr) {
-            func(xhr.responseText);
-        },
-        error: function(xhr) {
-            alert(loc("Operation failed due to server error; please try again later."));
-            if (onError) { onError(xhr); }
+            if (xhr.responseText && /\S/.test(xhr.responseText)) {
+                isSuccess = true;
+                func(xhr.responseText);
+            }
         }
     });
+
+    if (!isSuccess) {
+        alert(loc("Operation failed due to server error; please try again later."));
+        if (onError) { onError(xhr); }
+    }
 }
 
 proto.href_is_really_a_wiki_link = function(href) {

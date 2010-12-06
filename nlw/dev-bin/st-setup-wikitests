@@ -1,5 +1,6 @@
 #!/bin/bash
 
+WIKITESTS="$ST_CURRENT/nlw/share/workspaces/wikitests/"
 NLW_BIN="$ST_CURRENT/nlw/bin"
 NLW_DEVBIN="$ST_CURRENT/nlw/dev-bin"
 NLW_LIB="$ST_CURRENT/nlw/lib"
@@ -30,6 +31,11 @@ echo "No longer populating reports DB"
 #echo Populating reports DB
 #export PGUSER=`st-config echo db_user`
 #$NLW_DEVBIN/st-populate-reports-db
+
+mkdir -p /tmp/wikitests/anycorp.small
+cd /tmp/wikitests/anycorp.small/
+tar -zxf  $WIKITESTS/anycorp.small.account.tar.gz
+
 
 cd $NLW_LIB
 $APPLIANCE_SBIN/st-appliance-config set captcha_enabled 0

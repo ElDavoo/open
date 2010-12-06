@@ -1,3 +1,4 @@
+[% USE JSON %]
 [%- IF col.borderless;
         class = "borderless";
     ELSIF gadget.class;
@@ -31,9 +32,7 @@
                     });
                 --></script>
             [% END %]
-            [% IF gadget.has_prefs %]
-                <a class="settings" href="#" id="st-widget-settings[% gadget.id %]" onclick="gadgets.container.toggleSetup('[% gadget.id %]'); return false"></a>
-            [% END %]
+            <a class="settings" [% UNLESS gadget.has_prefs %]style="display:none"[% END %] href="#" id="st-widget-settings[% gadget.id %]" onclick="gadgets.container.toggleSetup('[% gadget.id %]'); return false"></a>
             [% IF editing %]
                 <a class="fix [% gadget.fixed ? "fixed" : "unfixed" %]" href="#" onclick="gadgets.container.fix('[% gadget.id %]'); return false"></a>
             [% END %]
@@ -43,8 +42,12 @@
 
     <div class="widgetContent" id="[% gadget.id %]">
         <div id="[% gadget.id %]-setup" class="[% IF gadget.incomplete %]visible[% ELSE %]hidden[% END %]">
-            [% INCLUDE widget/setup %]
         </div>
+        <script><!--
+            jQuery(function(){
+                gadgets.container.renderPreferences('[% gadget.id %]', [% gadget.preferences.json %]);
+            });
+        --></script>
         <div id="[% gadget.id %]-content" class="[% IF gadget.incomplete %]hidden[% ELSE %]visible[% END %]">
             [% IF gadget.content_type == 'inline'; INCLUDE widget/inline; ELSE; INCLUDE widget/iframe; END %]
             <div class="clear"></div>

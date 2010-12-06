@@ -113,6 +113,17 @@ sub login {
     return $content;
 }
 
+sub nologin {
+    my ($self, $rest) = @_;
+
+    my $content = Socialtext::Lite->new(hub => $self->hub)->nologin();
+    $rest->header(
+        -status => HTTP_200_OK,
+        -type   => 'text/html' . '; charset=UTF-8'
+    );
+    return $content;
+}
+
 sub forgot_password {
     my ($self, $rest) = @_;
 
@@ -267,7 +278,9 @@ sub edit_page {
     my $page = $self->_get_page();
     my $content = Socialtext::Lite->new( hub => $self->hub )->edit_save(
         page        => $page,
+        action      => $rest->query->param('action') || 'edit_save',
         content     => $rest->query->param('page_body') || '',
+        comment     => $rest->query->param('comment_body') || '',
         revision_id => $rest->query->param('revision_id') || '',
         revision    => $rest->query->param('revision') || '',
         subject     => $rest->query->param('subject') || '',

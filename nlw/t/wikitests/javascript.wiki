@@ -4,12 +4,14 @@
 # JS API
 
 # jquery
-| get        | /js/jquery-1.4.2.js              |                            |
-| body-like  | jQuery JavaScript Library v1.4.2 |                            |
-| has-header | content-disposition              | filename="jquery-1.4.2.js" |
+| download-ok | /js/jquery-1.4.2.js     | jQuery JavaScript Library v1.4.2 |
+| download-ok | /js/jquery-1.4.2.min.js | jQuery JavaScript Library v1.4.2 |
+| download-ok | /js/jquery-1.4.4.js     | jQuery JavaScript Library v1.4.4 |
+| download-ok | /js/jquery-1.4.4.min.js | jQuery JavaScript Library v1.4.4 |
+
+# jquery plugins
+| download-ok | /js/jquery.dataTables.min.js | j.fn.dataTable= |
 
 # push-client.js
-| get        | /js/push-client.js       |                           |
-| body-like  | PushClient.prototype = { |                           |
-| has-header | content-disposition      | filename="push-client.js" |
+| download-ok | /js/push-client.js | PushClient.prototype = { |
 

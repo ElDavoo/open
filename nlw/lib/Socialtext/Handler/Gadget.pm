@@ -21,10 +21,7 @@ sub _build_gadget {
 
 around 'if_authorized_to_view' => sub {
     my ($orig, $self, $cb) = @_;
-    unless ($self->gadget) {
-        $self->rest->header(-status => HTTP_404_Not_Found);
-        return 'No gadget';
-    }
+    return $self->not_found unless $self->gadget;
     return $orig->($self, $cb);
 };
 
@@ -41,9 +38,10 @@ sub GET_json {
 
 sub GET_html {
     my $self = shift;
-    $self->rest->header(-type => 'text/html; charset=utf-8');
-    my $gadget = $self->gadget;
-    return $gadget->expanded_content;
+    $self->if_authorized_to_view(sub {
+        $self->rest->header(-type => 'text/html; charset=utf-8');
+        return $self->gadget->expanded_content;
+    });
 }
 
 sub DELETE {

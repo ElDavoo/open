@@ -14,7 +14,7 @@ use IO::All;
 $| = 1;
 srand(time);
 
-my $hub = new_hub('admin');
+my $hub = new_hub($ENV{MAKE_LOTS_WS} || 'admin');
 my $page;
 my $pages = 5000;
 my $tags  = 100;

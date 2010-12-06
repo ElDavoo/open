@@ -739,7 +739,7 @@ sub clear_workspace_prefs {
 
 sub _user_plugin_pt {
     my $self = shift;
-    my $user_id = $self->hub->current_user->user_id || die "No user";
+    my $user_id = shift || $self->hub->current_user->user_id || die "No user";
     return Socialtext::PrefsTable->new(
         table    => 'user_plugin_pref',
         identity => {

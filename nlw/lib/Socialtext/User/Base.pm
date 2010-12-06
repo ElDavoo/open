@@ -24,6 +24,7 @@ has 'cached_at'         => (is => 'rw', isa => 'Pg.DateTime',
                             coerce => 1, required => 1);
 has 'is_profile_hidden' => (is => 'rw', isa => 'Bool');
 has 'missing'           => (is => 'ro', isa => 'Bool');
+has 'private_external_id' => (is => 'rw', isa => 'Maybe[Str]');
 
 # All fields/attributes that a "Socialtext::User::*" has.
 Readonly our @fields => qw(
@@ -41,6 +42,7 @@ Readonly our @other_fields => qw(
     cached_at
     is_profile_hidden
     missing
+    private_external_id
 );
 Readonly our @all_fields => (@fields, @other_fields);
 Readonly our %all_fields => map {$_=>1} @all_fields;

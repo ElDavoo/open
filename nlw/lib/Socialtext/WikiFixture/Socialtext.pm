@@ -313,6 +313,7 @@ sub get_id_from_url {
 sub st_page_save {
     my ($self) = @_;
     st_pause_click($self, 3000, 'st-save-button-link', 'andWait');
+    $self->handle_command('wait_for_element_visible_ok', 'st-edit-button-link');
 }
 
 =head2 st_pause_click
@@ -1119,9 +1120,35 @@ sub st_mobile_account_select_ok {
         $self->wait_for_element_visible_ok("link=$accountdesc");
      } else {
         $self->wait_for_element_visible_ok($self->{st_mobile_account_select}, 30000);
-        $self->select_ok($self->{st_mobile_account_select}, $accountdesc);
+        $self->select_ok($self->{st_mobile_account_select}, "label=" . $accountdesc);
      }
 }
+
+
+
+=head2 st_check_emergent_signal_wikiwyg_mobile
+
+Sends a signal and waits to see if in the miki ... if and only if you are on a "smart mobile" browser
+
+=cut
+
+sub st_check_emergent_signal_wikiwyg_mobile {
+    my ($self) = @_;
+    if ( $self->_is_wikiwyg() ) {
+        $self->handle_command('Comment', 'Test case: Miki Open global nav has emergent checking');
+        $self->handle_command('set', 'emergent_signal','hello %%start_time%% this is an emergent signal');
+        $self->handle_command('http-user-pass','%%othermikiuser%%','%%password%%');
+        $self->handle_command('post-signal','%%emergent_signal%%');
+        $self->handle_command('wait_for_text_present_ok','%%emergent_signal%%', 120000);
+    }
+}
+
+=head2 st_if_ie_check_mobile_signaltypes
+
+IE contains hard links to display only certain signal types.  Other browsers do not.
+
+=cut
+
 
 sub st_if_ie_check_mobile_signaltypes {
    my ($self) = @_;

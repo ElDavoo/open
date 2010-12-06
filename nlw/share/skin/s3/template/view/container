@@ -44,7 +44,8 @@
     <div id="contentColumns">
         [% FOR col = container.columns %]
             [% SET i = loop.index %]
-            <ul class="widgetColumn" id="col[% i %]" style="[% col.style %]">
+            [% class = col.stuck ? 'stuck' : 'draggable' %]
+            <ul class="widgetColumn [% class %]" id="col[% i %]" style="[% col.style %]">
             [% FOR gadget = container.gadgets.$i %]
                 [% INCLUDE 'widget/element' gadget=gadget num=num col=col %]
                 [% num = num + 1 %]

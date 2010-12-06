@@ -104,9 +104,14 @@ Socialtext.set_save_error_resume_handler = function(cb) {
                 }
                 else {
                     Socialtext.discardDraft('edit_save');
-                    window.location = '?' + jQuery('#st-page-editing-pagename').val();
+                    window.location = win.location;
                     return;
                 }
+            }
+            else if (win.Socialtext.action == 'blog_display') {
+                Socialtext.discardDraft('edit_save');
+                window.location = win.location;
+                return;
             }
         }
         catch (e) { };
@@ -370,6 +375,16 @@ $(function() {
         $('#st-attachment-listing li').mouseout(function() {
             $(this).removeClass("hover");
         });
+
+        // {bz: 4714}: IE6 doesn't grok this :hover rule in screen.css,
+        //             so code its equivalent using jQuery here.
+        $('ul.buttonRight li.submenu, #controlsRight ul.level1 li.submenu')
+            .mouseover(function(){
+                $('ul.level2', this).show();
+            })
+            .mouseout(function(){
+                $('ul.level2', this).hide();
+            });
     }
 
     $('#st-attachments-uploadbutton').unbind('click').click(function () {

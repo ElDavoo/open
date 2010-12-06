@@ -811,7 +811,8 @@ CREATE TABLE gadget (
     thumbnail text,
     scrolling boolean DEFAULT false,
     height integer,
-    description text
+    description text,
+    xml text
 );
 
 CREATE SEQUENCE gadget_id
@@ -874,7 +875,9 @@ CREATE TABLE gallery (
     last_update timestamptz DEFAULT now() NOT NULL,
     account_id bigint,
     CONSTRAINT gallery_id_or_account_id
-            CHECK (((gallery_id = 0) AND (account_id IS NULL)) OR ((gallery_id <> 0) AND (account_id IS NOT NULL)))
+            CHECK (((gallery_id = 0) AND (account_id IS NULL)) OR ((gallery_id <> 0) AND (account_id IS NOT NULL))),
+    CONSTRAINT gallery_id_zero_or_account_id
+            CHECK ((gallery_id = 0) OR (gallery_id = account_id))
 );
 
 CREATE TABLE gallery_gadget (
@@ -885,12 +888,6 @@ CREATE TABLE gallery_gadget (
     socialtext boolean DEFAULT false,
     "global" boolean DEFAULT false
 );
-
-CREATE SEQUENCE gallery_id
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
 
 CREATE TABLE group_photo (
     group_id integer NOT NULL,
@@ -943,7 +940,7 @@ CREATE TABLE note (
 
 CREATE TABLE opensocial_appdata (
     app_id bigint NOT NULL,
-    user_id bigint NOT NULL,
+    user_set_id bigint NOT NULL,
     field text NOT NULL,
     value text
 );
@@ -1230,7 +1227,8 @@ CREATE TABLE users (
     last_profile_update timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
     is_profile_hidden boolean DEFAULT false NOT NULL,
     display_name text NOT NULL,
-    missing boolean DEFAULT false NOT NULL
+    missing boolean DEFAULT false NOT NULL,
+    private_external_id text
 );
 
 CREATE SEQUENCE users___user_id
@@ -1393,7 +1391,7 @@ ALTER TABLE ONLY gallery_gadget
             UNIQUE (gallery_id, gadget_id);
 
 ALTER TABLE ONLY gallery
-    ADD CONSTRAINT gallery_pk
+    ADD CONSTRAINT gallery_pkey
             PRIMARY KEY (gallery_id);
 
 ALTER TABLE ONLY group_photo
@@ -1415,6 +1413,10 @@ ALTER TABLE ONLY job
 ALTER TABLE ONLY note
     ADD CONSTRAINT note_pkey
             PRIMARY KEY (jobid, notekey);
+
+ALTER TABLE ONLY opensocial_appdata
+    ADD CONSTRAINT opensocial_appdata_pk
+            PRIMARY KEY (app_id, user_set_id, field);
 
 ALTER TABLE ONLY page_link
     ADD CONSTRAINT page_link_unique
@@ -1612,10 +1614,10 @@ CREATE INDEX idx_job_ready_coalesce_prefix
 	    ON job (funcid, "coalesce" text_pattern_ops, grabbed_until, run_after);
 
 CREATE INDEX idx_opensocial_appdata_app_user
-	    ON opensocial_appdata (app_id, user_id);
+	    ON opensocial_appdata (app_id, user_set_id);
 
 CREATE UNIQUE INDEX idx_opensocial_appdata_app_user_field
-	    ON opensocial_appdata (app_id, user_id, field);
+	    ON opensocial_appdata (app_id, user_set_id, field);
 
 CREATE INDEX idx_signal_tag_lower_tag
 	    ON signal_tag (lower(tag) text_pattern_ops);
@@ -2014,6 +2016,9 @@ CREATE INDEX users_lower_username
 CREATE UNIQUE INDEX users_lower_username_driver_key
 	    ON users (lower(driver_username), driver_key);
 
+CREATE UNIQUE INDEX users_private_external_id
+	    ON users (private_external_id);
+
 CREATE INDEX users_that_are_hidden
 	    ON users (user_id)
 	    WHERE is_profile_hidden;
@@ -2230,14 +2235,14 @@ ALTER TABLE ONLY gallery
             REFERENCES "Account"(account_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY gallery_gadget
-    ADD CONSTRAINT gallery_gadget_account_fk
-            FOREIGN KEY (gallery_id)
-            REFERENCES gallery(gallery_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY gallery_gadget
     ADD CONSTRAINT gallery_gadget_fk
             FOREIGN KEY (gadget_id)
             REFERENCES gadget(gadget_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY gallery_gadget
+    ADD CONSTRAINT gallery_gadget_gallery_id_fk
+            FOREIGN KEY (gallery_id)
+            REFERENCES gallery(gallery_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY group_photo
     ADD CONSTRAINT group_photo_group_id_fk
@@ -2263,11 +2268,6 @@ ALTER TABLE ONLY opensocial_appdata
     ADD CONSTRAINT opensocial_app_data_app_id
             FOREIGN KEY (app_id)
             REFERENCES gadget_instance(gadget_instance_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY opensocial_appdata
-    ADD CONSTRAINT opensocial_app_data_user_id
-            FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY page
     ADD CONSTRAINT page_creator_id_fk
@@ -2530,4 +2530,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '128');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '131');

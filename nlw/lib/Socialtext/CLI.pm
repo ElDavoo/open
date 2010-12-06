@@ -643,6 +643,21 @@ sub get_user_account {
     );
 }
 
+sub set_external_id {
+    my $self = shift;
+    my $user = $self->_require_user;
+    my $id   = $self->_get_options('external-id');
+
+    eval { $user->update_store(private_external_id => $id) };
+    if (my $e = $@) {
+        $self->_error($@);
+    }
+
+    $self->_success(
+        loc("External ID for '[_1]' set to '[_2]'.", $user->username, $id)
+    );
+}
+
 sub show_profile {
     my $self = shift;
     my $user = $self->_require_user;
@@ -792,6 +807,7 @@ sub _require_create_user_params {
         'password:s',
         'first-name:s',
         'last-name:s',
+        'external-id:s',
     );
 
     for my $key ( grep { defined $opts{$_} } 'first-name', 'last-name' ) {
@@ -804,9 +820,10 @@ sub _require_create_user_params {
         }
     }
 
-    $opts{email_address} = delete $opts{email};
-    $opts{first_name}    = delete $opts{'first-name'};
-    $opts{last_name}     = delete $opts{'last-name'};
+    $opts{email_address}       = delete $opts{email};
+    $opts{first_name}          = delete $opts{'first-name'};
+    $opts{last_name}           = delete $opts{'last-name'};
+    $opts{private_external_id} = delete $opts{'external-id'};
 
     return %opts;
 }
@@ -3966,7 +3983,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
 
   USERS
 
-  create-user [--account] --email [--username] --password [--first-name --last-name]
+  create-user [--account] --email [--username] --password [--first-name --last-name --external-id]
   invite-user --email --workspace --from [--secure]
   confirm-user --email --password
   deactivate-user [--username or --email]
@@ -3990,6 +4007,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   set-user-names [--username or --email] --first-name --last-name
   set-user-account [--username or --email] --account
   get-user-account [--username or --email]
+  set-external-id [--username or --email] --external-id
   show-profile [--username or --email]
   hide-profile [--username or --email]
   can-lock-pages [--username or --email] --workspace
@@ -4128,7 +4146,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
 
 The following commands are provided:
 
-=head2 create-user [--account] --email [--username] --password [--first-name --last-name]
+=head2 create-user [--account] --email [--username] --password [--first-name --last-name --external-id]
 
 Creates a new user, optionally in a specified account. An email address and
 password are required. If no username is specified, then the email address
@@ -4252,6 +4270,10 @@ Set the primary account of the specified user.
 =head2 get-user-account [--email or --username]
 
 Print the primary account of the specified user.
+
+=head2 set-external-id [--email or --username] --external-id
+
+Set the external ID for a user.
 
 =head2 show-profile [--email or --username]
 

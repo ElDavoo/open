@@ -73,11 +73,17 @@ sub init {
         $self->{miki_signal_text} = 'Post to';
         $self->{miki_signal_submit} = 'mobile_post';
         $self->{st_mobile_account_select} = 'mobile_network';
+        $self->{miki_mysignals_link_name} = 'myself';
+        $self->{miki_people_i_follow} = 'people I follow';
+        $self->{miki_everyone} = 'everyone';
     } else {
-        $self->{miki_signal_disclaimer} = 'Signal to';
+        $self->{miki_signal_disclaimer} = 'Post to';
         $self->{miki_signal_text} = 'What are you working on?';
         $self->{miki_signal_submit} = 'st-signal-submit';
         $self->{st_mobile_account_select} = 'st-select-network';
+        $self->{miki_mysignals_link_name} = 'Mine';
+        $self->{miki_people_i_follow} = 'People I follow';
+        $self->{miki_everyone} = 'All';
     }
 
     my $def = Socialtext::Account->Default;
@@ -423,7 +429,7 @@ Creates $numpages number of pages in $workspace
 =cut
 
 sub st_create_pages {
-    my ($self, $workspace, $numberpages, $pageprefix) = @_;
+    my ($self, $workspace, $numberpages, $pageprefix, $text) = @_;
 
     my $user = Socialtext::User->new(username => $self->{'username'});
     my $hub = new_hub($workspace);
@@ -434,8 +440,14 @@ sub st_create_pages {
         }
         my $title = $pageprefix . $idx;
   
-        my $content = shift @lines;
-        push @lines, $content;
+        my $content;
+        if (defined($text) && length($text)>1) {
+           $content = $text;
+        } else { 
+            $content = shift @lines; 
+            push @lines, $content;
+        }
+
         Socialtext::Page->new(hub => $hub)->create(
                                   title => $title,
                                   content => $content,
@@ -3408,6 +3420,15 @@ sub jsmake {
     else {
         Socialtext::MakeJS->Build($dir, $target);
     }
+}
+
+sub download_ok {
+    my ($self, $path, $body_re) = @_;
+    my $basename = File::Basename::basename($path);
+    $self->get($path);
+    $self->code_is(200);
+    $self->body_like($body_re);
+    $self->has_header('content-disposition', qq{filename="$basename"});
 }
 
 sub _is_wikiwyg {

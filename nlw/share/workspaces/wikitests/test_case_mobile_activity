@@ -54,24 +54,21 @@
 | wait_for_text_present_ok | All | 30000 |
 | wait_for_text_present_ok | My Conversations | 3000 |
 | wait_for_text_present_ok | People I follow | 3000 |
-| wait_for_text_present_ok | Previous page | 3000 |
-| wait_for_text_present_ok | First page | 3000 |
-| wait_for_text_present_ok | Next page | 3000 |
 
 | *Comment* | Test Case: Mobile Activity. Check All activity |  |
 | wait_for_element_present_ok | link=All | 3000 |
 | click_and_wait | link=All |  |
-| wait_for_element_visible_ok | link=Next page >> | 30000 |
-| click_and_wait | link=Next page >> |  |
+| wait_for_element_visible_ok | mobile-paging-next | 30000 |
+| click_and_wait | mobile-paging-next |  |
 | wait_for_element_visible_ok | link=Mobile Activity %%start_time%% 0001 | 3000 |
-| wait_for_element_visible_ok | link=<< Previous page | 3000 |
-| click_and_wait | link=<< Previous page |  |
+| wait_for_element_visible_ok | mobile-paging-previous | 3000 |
+| click_and_wait | mobile-paging-previous |  |
 | wait_for_element_visible_ok | link=Mobile Activity %%start_time%% 0011 | 3000 |
 | wait_for_element_visible_ok | link=Mobile Activity %%start_time%% 0005 | 3000 |
-| click_and_wait | link=Next page >> |  |
+| click_and_wait | mobile-paging-next |  |
 | wait_for_element_not_present_ok | link=Mobile Activity %%start_time%% 0011 | 3000 |
 | wait_for_element_not_present_ok | link=Mobile Activity %%start_time%% 0005 | 3000 |
-| click_and_wait | link=First page |  |
+| click_and_wait | mobile-paging-previous |  |
 | wait_for_element_visible_ok | link=Mobile Activity %%start_time%% 0010 | 3000 |
 | wait_for_element_visible_ok | link=Mobile Activity %%start_time%% 0004 | 3000 |
 
@@ -83,18 +80,18 @@
 | click_and_wait | link=%%maus%% |  |
 | wait_for_element_visible_ok | link=Follow | 3000 |
 | click_and_wait | link=Follow |  |
-| wait_for_element_visible_ok | link=Stop Following | 3000 |
+| wait_for_element_visible_ok | link=Stop following | 3000 |
 | click_and_wait | link=Activity |  |
 | click_and_wait | link=People I follow |  |
 | wait_for_element_visible_ok | link=%%maus%% | 3000 |
 | text_like | qr/%%maus%%.+edited.+Mobile Activity %%start_time%% 0000.+in.+%%ma%%/ism |  |
-| click_and_wait | link=Next page >> |  |
+| click_and_wait | mobile-paging-next |  |
 | text_like | qr/%%maus%%.+edited.+Mobile Activity %%start_time%% 0001.+in.+%%ma%%/ism |  |
 
 | *Comment* | Test Case: Mobile Activity. Stop following and verify |  |
 | click_and_wait | link=%%maus%% |  |
-| wait_for_element_visible_ok | link=Stop Following | 3000 |
-| click_and_wait | link=Stop Following |  |
+| wait_for_element_visible_ok | link=Stop following | 3000 |
+| click_and_wait | link=Stop following |  |
 | wait_for_element_visible_ok | link=Follow | 3000 |
 | click_and_wait | link=Activity |  |
 | click_and_wait | link=People I follow |  |

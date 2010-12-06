@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 38;
+use Test::Socialtext tests => 42;
 use Socialtext::Account;
 use File::Slurp qw(write_file);
 
@@ -215,5 +215,41 @@ MASS_ADD_USERS: {
             'mass-add-users failed with invalid file'
         );
         unlink $csvfile;
+    }
+
+    private_external_id: {
+        my $name1 = Test::Socialtext::create_unique_id() . '@example.com';
+        my $name2 = Test::Socialtext::create_unique_id() . '@example.com';
+        my $id = 'abc123';
+        my $csvfile = Cwd::abs_path(
+            (File::Temp::tempfile(SUFFIX=>'.csv', OPEN=>0))[1]
+        );
+        write_file $csvfile,
+            "username,email_address,private_external_id\n"
+            ."$name1,$name1,$id\n";
+
+        expect_success(
+            sub {
+                Socialtext::CLI->new(
+                    argv => ['--csv', $csvfile],
+                )->mass_add_users();
+            },
+            qr/Added user \Q$name1\E/,
+            'mass-add-users with external ID passes',
+        );
+
+        # mass-add with a colliding external ID
+        write_file $csvfile,
+            "username,email_address,private_external_id\n"
+            ."$name2,$name2,$id\n";
+        expect_failure(
+            sub {
+                Socialtext::CLI->new(
+                    argv => ['--csv', $csvfile],
+                )->mass_add_users();
+            },
+            qr/The private external id you provided \([^\)]+\) is already in use./,
+            'mass-add-users with colliding external ID fails',
+        );
     }
 }

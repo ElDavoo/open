@@ -87,3 +87,25 @@ sub _diag {
 }
 
 1;
+
+=head1 NAME
+
+Test::Socialtext::AccountContext::features - A Moose role for Contextual
+Account features.
+
+=head1 SYNOPSIS
+
+    package MyFeature;
+    use Moose;
+
+    with 'Test::Socialtext::AccountContext::features';
+
+    ...
+
+=head1 DESCRIPTION
+
+A Moose Role to be used by proper Features. Its main function is to wrap some
+of the required methods to make sure that we don't hit a circular dependency
+when looking up inter-feature shares.
+
+=cut

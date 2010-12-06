@@ -61,9 +61,10 @@
 | text_like | //body | qr/private signal to %%other_short_miki_user_prv%%/ |
 
 | *Comment* | Test case: Miki Private Signal Send private signal |  |
-| open_ok | /?action=workspace_list | |
+| open_ok | /?action=workspace_list |  |
 | st-logoutin | %%third_user%% | %%password%% |
-| open_ok | /m |  |
+| wait_for_element_visible_ok | link=Mobile | 30000 |
+| click_and_wait | link=Mobile |  |
 | wait_for_text_not_present_ok | private | 30000 |
 | text_unlike | //body | private |
 | text_unlike | //body | %%prv_signal%% |

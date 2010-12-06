@@ -165,6 +165,7 @@ install-debian:
 	$(MKDIR) $(ST_INSTALL_DIR)/debian/bin/
 	$(INSTALL_ROOT) dev-bin/create-db-user $(ST_INSTALL_DIR)/debian/bin/
 	$(INSTALL_ROOT) dev-bin/gen-config $(ST_INSTALL_DIR)/debian/bin/
+	$(INSTALL_ROOT) dev-bin/manage-certs $(ST_INSTALL_DIR)/debian/bin/
 	$(INSTALL_ROOT) dev-bin/setup-postgres-permissions $(ST_INSTALL_DIR)/debian/bin/
 	$(INSTALL_ROOT) build/bin/db-login-test $(ST_INSTALL_DIR)/debian/bin/
 	$(INSTALL_ROOT) dev-bin/st-bootstrap-openldap $(ST_BIN_DIR)/

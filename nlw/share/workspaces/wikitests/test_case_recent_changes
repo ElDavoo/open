@@ -63,9 +63,11 @@
 | st-page-save |  |  |
 
 | *comment* | Test Case: Recent Changes Comment on a page |  |
+| wait_for_element_visible_ok | link=Comment | 30000 |
 | click_ok | link=Comment |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | see, I commented |
+| wait_for_element_visible_ok | link=Save | 30000 |
 | click_ok | link=Save |
 
 | *comment* | Test Case: Recent Changes check |  |
@@ -81,9 +83,11 @@
 
 | *comment* | Test Case: Recent Changes Comment on a page |  |
 | open_ok | /%%newspace%%/?Created Page 3 |  |
+| wait_for_element_visible_ok | link=Comment | 30000 |
 | click_ok | link=Comment |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | see, I commented |
+| wait_for_element_visible_ok | link=Save | 30000 |
 | click_ok | link=Save |  |
 | pause | 5000 |  |
 
@@ -91,7 +95,8 @@
 | open_ok | /%%newspace%%/?action=recent_changes |  |
 | text_like | qr/Page 3.+Page 5.+Page 4.+Page 2.+Page 1/ |  |
 
-| *Comment* | Test Case: Recent Changes Teardown |  |
+| *Comment* | Test Case: Recent Changes TEARDOWN |  |
+| st-process-jobs | PageIndex | %%newspace%% |
 | st-admin | delete-workspace --workspace %%newspace%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Recent Changes COMPLETED |

@@ -304,3 +304,42 @@ li.divider {
 .ui-mobile-viewport .ui-li-count {
     display: inline;
 }
+
+/* Work around Mobile WebKit bug: {bz: 4717} */
+
+.ui-btn-active .ui-btn-inner {
+    border: 0px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    background: transparent;
+}
+
+.ui-btn-active .ui-btn-text {
+    border: 0px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: inline-block;
+    background: transparent;
+}
+
+.ui-btn-active .ui-btn-up-c {
+    background: transparent;
+    height: 0px;
+    border: 0px;
+}
+
+.ui-btn-inner {
+    max-height: 1em;
+}
+
+.edit_text_area {
+    font-family: monaco, consolas, droid sans mono, monospace !important;
+    width: 90% !important;
+    height: 400px !important;
+}
+
+.comment_text_area {
+    font-family: monaco, consolas, droid sans mono, monospace !important;
+    width: 90% !important;
+    height: 50px !important;
+}

@@ -198,7 +198,9 @@ sub _get_html {
 
     my $html = "<html><head><title>"
         . $page->metadata->Subject
-        . "</title></head><body>"
+        . "</title></head><body><h1>"
+        . $page->metadata->Subject
+        . "</h1>"
         . $content
         . "</body></html>";
     $self->hub->current_workspace($initial_ws) if ($initial_ws->name ne $workspace_name);

@@ -10,6 +10,7 @@
 | st-page-save |  |  |
 
 | *Comment* | Test Case: Email attachment open the email-page |  |
+| wait_for_element_visible_ok | link=Email | 30000 |
 | click_ok | link=Email |  |
 
 | *Comment* | Test Case: Email attachment add receipients |  |
@@ -22,9 +23,11 @@
 | *Comment* | Test Case: Email attachment Email Note and Attachments |  |
 | text_like | email_page_add_note | Hello, this is a page from the workspace that I wanted you to see. This page is also available for viewing or editing on the web at: |
 | text_like | email_page_add_note | /%%workspace%%/?email_subject_%%start_time%% |
+| wait_for_element_visible_ok | email_page_add_note | 30000 |
 | type_ok | email_page_add_note | Note %%start_time%% from Test Case: Email attachment |
 
 | *Comment* | Test Case: Email attachment email sending page to %%workspace%%@%%wikiemail%% |  |
+| wait_for_element_visible_ok | email_send | 30000 |
 | click_ok | email_send |  |
 
 | *Comment* | Pausing 90 seconds for email delivery, then index page |  |
@@ -49,14 +52,14 @@
 
 | *Comment* | Test Case: Email attachment Search for attachment page and verify no attachment |  |
 | *Comment* | Test Case: Email attachment Process jobs |  |
-| st-process-jobs | PageIndex |  |
+| st-process-jobs | PageIndex | %%workspace%% |
 
 | type_ok | st-search-term | "Note %%start_time%%" |
 | click_and_wait | st-search-submit |  |
 | text_like | contentContainer | Email subject %%start_time%% |
 | text_unlike | contentContainer | qr/attached to page Email subject %%start_time%%/i |
 
-| *Comment* | Test Case: Email attachment Teardown |  |
+| *Comment* | Test Case: Email attachment TEARDOWN |  |
 | st-admin | purge-page --w %%workspace%% --page email_subject_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Email attachment COMPLETED |

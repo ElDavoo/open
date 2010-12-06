@@ -133,6 +133,19 @@ sub handler ($$) {
             }
            $vars = {%{$self->{args}}, %$vars}; # for refilling the form fields
         }
+        if ($uri eq 'nologin.html') { # The NoLogin challenger
+            return $self->_redirect('/m/nologin') if ($self->_is_mobile);
+
+            my $file = Socialtext::AppConfig->login_message_file();
+            if ( $file and -r $file ) {
+                eval {
+                    $vars->{messages}
+                        = Socialtext::File::get_contents_utf8($file);
+                };
+                warn $@ if $@;
+            }
+            $vars->{messages} ||= '<p>'. loc("Login has been disabled") .'</p>';
+        }
 
         if ($self->{args}{workspace_name}) {
             $vars->{target_workspace} = Socialtext::Workspace->new(name => $self->{args}{workspace_name});

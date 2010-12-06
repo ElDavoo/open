@@ -8,8 +8,9 @@
         action="/m/search/[% ws.name %]"
         enctype="application/x-www-form-urlencoded">
     <div class="search" data-role="fieldcontain">
-        <input name="search_term" data-inline="true" type="search" value="[% search_term | html %]" />
-        <input data-inline="true" name="search" value="Search" type="submit" />
+        <input id="st-search-text" name="search_term" data-inline="true" type="search" value="[% search_term | html %]" />
+        <input data-inline="true" name="search" id="st-search-submit" value="Search" type="submit" />
+        <script>$(function(){ $('#st-search-text').focus() });</script>
 [% IF search_error %]
 <div>[% loc("Error:") %] [% search_error %]</div>
 [% END %]

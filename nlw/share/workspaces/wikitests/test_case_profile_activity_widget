@@ -31,8 +31,6 @@
 | text_like | Profile |  |
 | text_like | Tags |  |
 | text_like | Activities |  |
-| st-name-widget | 3 | activitieswidget |
-| st-widget-title-like | activitieswidget | Activities |
 
 | *Comment* | Test Case: Profile Activity Widget. Send and check public signal |  |
 | st_send_signal_via_activities_widget | activitieswidget | Public signal to %%tuser%% at %%start_time%% WHOOPEE |
@@ -61,8 +59,6 @@
 | text_like | Profile |  |
 | text_like | Tags |  |
 | text_like | Activities |  |
-| st-name-widget | 3 | activitieswidget |
-| st-widget-title-like | activitieswidget | Activities |
 | wait_for_text_present_ok | Showing | 10000 |
 | text_like | qr/Showing.*all.*events.*from.+%%tuser%%.*within/ism |  |
 
@@ -126,10 +122,8 @@
 | text_like | Profile |  |
 | text_like | Tags |  |
 | text_like | Activities |  |
-| st-name-widget | 3 | activitieswidget |
-| st-widget-title-like | activitieswidget | Activities |
 | wait_for_text_present_ok | Showing | 10000 |
-| text_like | qr/Showing.*all.*events.*from.+%%short_luser%%.*within/ism |  |
+| text_like | qr/Showing.*all.*events.*from.+myself.*within/ism |  |
 
 | *Comment* | Test Case: Profile Activity Widget. ... no "you are composing a message to ..." message appears |  |
 | *Comment* | Test Case: Profile Activity Widget. ... you don't mention yourself |  |

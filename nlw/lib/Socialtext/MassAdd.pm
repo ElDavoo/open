@@ -13,7 +13,7 @@ use List::MoreUtils qw/mesh/;
 
 our $Has_People_Installed;
 our @Required_fields = qw/username email_address/;
-our @User_fields = qw/first_name last_name password/;
+our @User_fields = qw/first_name last_name password private_external_id/;
 
 # Note: these fields may not be created, now that fields are treated
 # differently.  Please do some poking around before you change these. (See:
@@ -145,11 +145,11 @@ sub add_user {
     my $changed_user = 0;
     my $added_user = 0;
 
-    my $user = eval { Socialtext::User->Resolve($args{username}) };
+    my $user = eval { Socialtext::User->new(username => $args{username}) };
     if ($user) {
         my $acct = $self->{account};
         # If an account is specified, add the user to that account if they are
-        # not already a mamber.
+        # not already a member.
         if ($acct && !$acct->has_user($user)) {
             $acct->add_user(user => $user);
             $changed_user++;

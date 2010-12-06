@@ -108,7 +108,9 @@ sub GetHomunculus {
     my $return_raw_proto_user = shift || 0;
 
     my $where;
-    if ($id_key eq 'user_id' || $id_key eq 'driver_unique_id') {
+    if (   ($id_key eq 'user_id')
+        || ($id_key eq 'driver_unique_id')
+        || ($id_key eq 'private_external_id')) {
         $where = $id_key;
     }
     elsif ($id_key eq 'username' || $id_key eq 'email_address') {
@@ -257,7 +259,7 @@ sub ExpireUserRecord {
 # exception.
 {
     Readonly my @required_fields   => qw(username email_address);
-    Readonly my @unique_fields     => qw(username email_address);
+    Readonly my @unique_fields     => qw(username email_address private_external_id);
     Readonly my @lowercased_fields => qw(username email_address);
     sub ValidateAndCleanData {
         my ($self, $user, $p) = @_;
@@ -297,7 +299,9 @@ sub ExpireUserRecord {
             # value has to be unique if either (a) we're creating a new User,
             # or (b) we're changing the value for an existing User.
             if (defined $p->{$field}) {
-                if ($is_create or ($p->{$field} ne $user->{$field})) {
+                if (   $is_create
+                    or !defined $user->{$field}
+                    or ($p->{$field} ne $user->{$field})) {
                     push @errors, $self->_validate_check_unique_value($field, $p);
                 }
             }
