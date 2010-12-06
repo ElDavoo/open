@@ -738,15 +738,15 @@ sub _get_inc {
     my @inc;
 
     if ( $is_dev_install ) {
-        opendir my $dh, 'modules';
-
-        # Find uppercased dirnames, build lib dirs out of them, and make
-        # sure that they actually exist.
-        @inc =
-            grep { -d }
-            map { Cwd::abs_path("modules/$_/lib") }
-            grep { /^[A-Z]/ } readdir $dh;
-        closedir $dh;
+        if (opendir my $dh, 'modules') {
+            # Find uppercased dirnames, build lib dirs out of them, and make
+            # sure that they actually exist.
+            @inc =
+                grep { -d }
+                map { Cwd::abs_path("modules/$_/lib") }
+                grep { /^[A-Z]/ } readdir $dh;
+            closedir $dh;
+        }
 
         push @inc, Cwd::abs_path('lib');
     }
