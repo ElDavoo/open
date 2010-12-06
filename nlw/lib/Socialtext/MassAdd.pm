@@ -149,7 +149,7 @@ sub add_user {
     if ($user) {
         my $acct = $self->{account};
         # If an account is specified, add the user to that account if they are
-        # not already a mamber.
+        # not already a member.
         if ($acct && !$acct->has_user($user)) {
             $acct->add_user(user => $user);
             $changed_user++;
