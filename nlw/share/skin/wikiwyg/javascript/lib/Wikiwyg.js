@@ -569,9 +569,8 @@ proto.newpage_save = function(page_name, pagename_editfield) {
 }
 
 proto.isOffline = function () {
-    // IE4+, FF3+
-    if (!$.browser.webkit && typeof navigator == 'object' && typeof navigator.onLine == 'boolean') {
-        return !navigator.onLine;
+    if (typeof navigator == 'object' && typeof navigator.onLine == 'boolean' && !navigator.onLine) {
+        return true;
     }
 
     // WebKit's navigator.onLine is unreliable when VMWare or Parallels is
