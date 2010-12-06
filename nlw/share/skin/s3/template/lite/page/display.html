@@ -8,6 +8,7 @@
 <div class="content">
     [% page_html %]
 </div>
+[% IF user_can_comment_on_page %]
 <hr>
 <div class="comment" data-role="content">
 <form name="commentform"
@@ -28,6 +29,7 @@
 <input id="st-miki-comment-submit" type="submit" data-theme="b" data-role="button" value="[% loc('Save comment') %]" />
 </form>
 </div>
+[% END %]
 <div class="pageinfo">
     [% SET author = user_link(name=page.last_edited_by.user_id) %]
     [% SET time = page.datetime_for_user %]

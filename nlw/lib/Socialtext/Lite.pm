@@ -484,6 +484,11 @@ sub _frame_page {
             $self->hub->checker->check_permission('edit') &&
             $self->hub->checker->can_modify_locked($page)
         ),
+        user_can_comment_on_page => (
+            $self->hub->checker->check_permission('comment') &&
+            $self->hub->checker->can_modify_locked($page) &&
+            ($page->metadata->{Type} eq 'wiki')
+        ),
         user_can_join_to_edit_page => $self->user_can_join_to_edit_page($page),
         %args,
     );
