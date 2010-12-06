@@ -1276,9 +1276,7 @@ Default: Socialtext::Search::Solr::Factory
 
 =head2 interwiki_search_set
 
-This allows an administrator to establish a set of workspaces to be searched
-as a default collection. Specified as a colon-separated list of workspace
-names.
+Deprecated.
 
 =for code default => '' 
 

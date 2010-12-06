@@ -9,7 +9,6 @@ use Socialtext;
 use base 'Socialtext::Base';
 use Socialtext::File;
 use Socialtext::Search::Config;
-use Socialtext::Search::Set;
 use Socialtext::TT2::Renderer;
 use Socialtext::l10n qw/loc/;
 use Socialtext::Stax;
@@ -270,11 +269,6 @@ sub global_template_vars {
         $thunker->(customjs  => sub { $hub->skin->customjs }),
         $thunker->(skin_name => sub { $hub->skin->skin_name }),
         $thunker->('search_box_snippet', sub { 
-            my $show_search_set = (
-                ( $cur_user->is_authenticated )
-                    || ( $cur_user->is_guest
-                    && Socialtext::AppConfig->interwiki_search_set )
-            );
             my $snippet = Socialtext::Search::Config->new->search_box_snippet;
             my $renderer = Socialtext::TT2::Renderer->instance();
             return $renderer->render(
@@ -282,10 +276,6 @@ sub global_template_vars {
                 paths => $hub->skin->template_paths,
                 vars => {
                     current_workspace => $cur_ws,
-                    show_search_set   => $show_search_set,
-                    search_sets       => [Socialtext::Search::Set->AllForUser(
-                        $cur_user
-                    )->all],
                 }
             );
         }),

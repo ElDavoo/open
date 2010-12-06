@@ -2180,89 +2180,6 @@ sub set_workspace_config {
 }
 
 
-sub create_search_set {
-    require Socialtext::Search::Set;
-    my $self = shift;
-
-    my $user = $self->_require_user;
-    my %opts = $self->_get_options( 'name:s' );
-
-    Socialtext::Search::Set->create(
-        name => $opts{name},
-        user => $user ) || die "Cannot create search set.";
-
-    $self->_success( "A search set named '$opts{name}' was created for user "
-            . $user->username() . "." );
-}
-
-sub delete_search_set {
-    my $self = shift;
-
-    my $set = $self->_require_search_set;
-    my $name = $set->name;
-    $set->delete;
-
-    $self->_success( "The search set named '$name' was deleted for user "
-            . $self->_require_user->username() . "." );
-}
-
-sub list_search_sets {
-    require Socialtext::Search::Set;
-    my $self = shift;
-
-    my $user = $self->_require_user;
-
-    my $sets = Socialtext::Search::Set->AllForUser( $user );
-
-    while (my $set = $sets->next) {
-        print '  ', $set->name, "\n";
-    }
-}
-
-sub add_workspace_to_search_set {
-    my $self = shift;
-
-    my $search_set = $self->_require_search_set;
-    my $ws         = $self->_require_workspace;
-
-    $search_set->add_workspace_name( $ws->name );
-    $self->_success( "'"
-            . $ws->name
-            . "' was added to search set '"
-            . $search_set->name
-            . "' for user "
-            . $self->_require_user->username()
-            . "." );
-}
-
-sub remove_workspace_from_search_set {
-    my $self = shift;
-
-    my $search_set = $self->_require_search_set;
-    my $ws         = $self->_require_workspace;
-
-    $search_set->remove_workspace_name( $ws->name );
-    $self->_success( "'"
-            . $ws->name
-            . "' was removed from search set '"
-            . $search_set->name
-            . "' for user "
-            . $self->_require_user->username()
-            . "." );
-}
-
-sub list_workspaces_in_search_set {
-    my $self = shift;
-
-    my $search_set = $self->_require_search_set;
-
-    my $workspace_names = $search_set->workspace_names;
-
-    while ( my $workspace_name = $workspace_names->next ) {
-        print "  $workspace_name\n";
-    }
-}
-
 sub set_logo_from_file {
     my $self = shift;
 
@@ -3841,18 +3758,6 @@ sub _require_string {
     return $opts{$name};
 }
 
-sub _require_search_set {
-    require Socialtext::Search::Set;
-    my $self = shift;
-
-    my $user = $self->_require_user;
-    my $name = $self->_require_string('name');
-
-    return Socialtext::Search::Set->new(
-        name => $name,
-        user => $user ) || die "Cannot find search set.";
-}
-
 sub _optional_string {
     my $self = shift;
     my $name = shift;
@@ -4093,12 +3998,6 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
 
   SEARCH
 
-  create-search-set --name [--username or --email]
-  delete-search-set --name [--username or --email]
-  list-search-sets [--username or --email]
-  add-workspace-to-search-set --name --workspace [--username or --email]
-  remove-workspace-from-search-set --name --workspace [--username or --email]
-  list-workspaces-in-search-set --name [--username or --email]
   index-people
   index-groups
   index-signals
@@ -4535,30 +4434,6 @@ attachment must be specified by its id and its page's id.
 =head2 index-people
 
 (Re-)indexes all active people.
-
-=head2 create-search-set --name [--username or --email]
-
-Creates a named search set for the given user.
-
-=head2 delete-search-set --name [--username or --email]
-
-Deletes the named search set for the given user.
-
-=head2 list-search-sets [--username or --email]
-
-Lists the search sets for the given user.
-
-=head2 add-workspace-to-search-set --name --workspace [--username or --email]
-
-Adds a workspace to the named search set for the given user.
-
-=head2 remove-workspace-from-search-set --name --workspace [--username or --email]
-
-Removes the named workspace from the named search set for the given user.
-
-=head2 list-workspaces-in-search-set --name [--username or --email]
-
-Lists all workspaces in the named search set for the given user.
 
 =head2 set-logo-from-file --workspace --file /path/to/file.jpg
 

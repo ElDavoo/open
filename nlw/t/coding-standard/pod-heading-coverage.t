@@ -211,7 +211,6 @@ my %ToDoModules = map { $_ => 1 } qw(
     Socialtext::Search::Basic::Searcher
     Socialtext::Search::Config
     Socialtext::Search::Hit
-    Socialtext::Search::Set
     Socialtext::Search::Utils
     Socialtext::SearchPlugin
     Socialtext::ShortcutLinksPlugin
