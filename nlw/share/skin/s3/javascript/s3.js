@@ -375,6 +375,16 @@ $(function() {
         $('#st-attachment-listing li').mouseout(function() {
             $(this).removeClass("hover");
         });
+
+        // {bz: 4714}: IE6 doesn't grok this :hover rule in screen.css,
+        //             so code its equivalent using jQuery here.
+        $('ul.buttonRight li.submenu, #controlsRight ul.level1 li.submenu')
+            .mouseover(function(){
+                $('ul.level2', this).show();
+            })
+            .mouseout(function(){
+                $('ul.level2', this).hide();
+            });
     }
 
     $('#st-attachments-uploadbutton').unbind('click').click(function () {
