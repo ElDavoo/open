@@ -58,7 +58,6 @@ sub to_string {
         'audio/mpeg'                    => 'audio_mpeg',
         'application/pdf'               => 'application_pdf',
         'application/postscript'        => 'application_postscript',
-        'application/vnd.ms-powerpoint' => 'application_vnd_ms_powerpoint',
         'application/vnd.ms-excel'      => 'application_vnd_ms_excel',
         'application/x-msword'          => 'application_msword',
         'application/msword'            => 'application_msword',
@@ -77,13 +76,13 @@ sub to_string {
         'application/x-python'          => 'text_plain',
         'application/x-sh'              => 'text_plain',
         'text/html'                     => 'text_html',
-        'text/x-component'       => 'text_html', # .htc
+        'text/x-component'              => 'text_html', # .htc
         'text/rtf'                      => 'text_rtf',
         'text/xml'                      => 'text_xml',
         'text/pgp'                      => undef,
         'message/rfc822'                => 'text_plain',
         'message/news'                  => 'text_plain',
-        'application/x-awk' => 'text_plain', # .vcf, usually
+        'application/x-awk'             => 'text_plain', # .vcf, usually
     );
 
     sub Load_class_by_mime_type {
@@ -110,6 +109,9 @@ sub to_string {
                 $converter = 'text_xml';
             }
             elsif ($type =~ m#^application/vnd.openxmlformats-officedocument#) {
+                $converter = 'Tika';
+            }
+            elsif ($type =~ m#^application/(?:x-|vnd\.)?ms-?powerpoint#) {
                 $converter = 'Tika';
             }
             elsif ($type =~
