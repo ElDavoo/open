@@ -145,7 +145,7 @@ sub add_user {
     my $changed_user = 0;
     my $added_user = 0;
 
-    my $user = eval { Socialtext::User->Resolve($args{username}) };
+    my $user = eval { Socialtext::User->new(username => $args{username}) };
     if ($user) {
         my $acct = $self->{account};
         # If an account is specified, add the user to that account if they are
