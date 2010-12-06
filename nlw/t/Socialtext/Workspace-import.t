@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Socialtext::AppConfig;
-use Test::Socialtext tests => 16;
+use Test::Socialtext tests => 17;
 use Test::Socialtext::User;
 fixtures( 'admin', 'destructive' );
 
@@ -18,6 +18,7 @@ $admin->set_logo_from_uri( uri => 'http://example.com/logo.gif' );
 
 my $user = $hub->current_user;
 my $singapore = join '', map { chr($_) } 26032, 21152, 22369;
+my $external_id = Test::Socialtext->create_unique_id();
 # Perl will treat a string with 0xF6 as not UTF8 unless we force it to
 # "upgrade" the string to utf8.
 my $dot_net = Encode::decode( 'latin-1', 'd' . chr( 0xF6 ) . 't net' );
@@ -26,7 +27,9 @@ $user->update_store(
     first_name => $singapore,
     last_name  => $dot_net,
     # Used to test that password survives export/import
-    password   => 'something or other'
+    password   => 'something or other',
+    # Private Ids need to be preserved across export/import too
+    private_external_id => $external_id,
 );
 
 my $page = $hub->pages->new_from_name('Admin Wiki');
@@ -68,6 +71,7 @@ Socialtext::Workspace->ImportFromTarball( tarball => $tarball );
 
     is( $user->first_name(), $singapore, 'user first name is Singapore (in Chinese)' );
     is( $user->last_name(), $dot_net, 'user last name is dot net (umlauts on o)' );
+    is $user->private_external_id, $external_id, 'private/external id preserved';
     ok( $user->password_is_correct('something or other'), 'password survived import' );
 
     ok( Socialtext::EmailAlias::find_alias('admin'), 'email alias exists for admin workspace' );
