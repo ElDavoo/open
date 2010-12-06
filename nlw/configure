@@ -22,7 +22,6 @@ generate_from_in_files();
 my $ok = $options{dev} || sanity_checks();
 if ( $ok ) {
     invoke_make_maker();
-    system( catfile( this_dir(), 'build', 'bin', 'check-optional-tools' ) );
     print_ok("Type 'make' to continue.");
 }
 else {
