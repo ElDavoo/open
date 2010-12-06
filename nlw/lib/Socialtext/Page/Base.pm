@@ -401,7 +401,6 @@ sub _stock_answers {
 
     # Which link dictionary is always the first question
     my $ld = ref($self->hub->viewer->link_dictionary);
-    $ld =~ s/.+:://;
     push @answers, $ld;
 
     # Which formatter is always the second question
