@@ -86,6 +86,9 @@ my @minimal_interface = qw(
     email_address_at_import created_by_user_id is_business_admin
     is_technical_admin is_system_created primary_account_id
 );
+my @private_interface = qw(
+    private_external_id
+);
 
 sub base_package { return __PACKAGE__ }
 
@@ -555,8 +558,11 @@ sub to_hash {
         };
     }
 
+    my @fields = @minimal_interface;
+    push @fields, @private_interface if ($args{want_private_fields});
+
     my $hash = {};
-    foreach my $attr ( @minimal_interface ) {
+    foreach my $attr (@fields) {
         my $value = $self->$attr;
         $value = "" unless defined $value;
         $hash->{$attr} = "$value";
