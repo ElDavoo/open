@@ -10,11 +10,10 @@ fixtures(qw( empty ));
 
 ###############################################################################
 # SETUP: create a Test User and assign them an EDIPIN.
-my $test_user     = create_test_user();
+my $edipin        = Test::Socialtext->create_unique_id();
+my $test_user     = create_test_user(private_external_id => $edipin);
 my $test_username = $test_user->username;
 my $test_user_id  = $test_user->user_id;
-my $edipin        = Test::Socialtext->create_unique_id();
-$test_user->update_store(private_external_id => $edipin);
 
 Socialtext::AppConfig->set(credentials_extractors => 'CAC:Guest');
 
