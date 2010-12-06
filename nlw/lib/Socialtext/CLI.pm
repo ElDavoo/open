@@ -3968,7 +3968,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
 
   USERS
 
-  create-user [--account] --email [--username] --password [--first-name --last-name]
+  create-user [--account] --email [--username] --password [--first-name --last-name --external-id]
   invite-user --email --workspace --from [--secure]
   confirm-user --email --password
   deactivate-user [--username or --email]
@@ -4130,7 +4130,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
 
 The following commands are provided:
 
-=head2 create-user [--account] --email [--username] --password [--first-name --last-name]
+=head2 create-user [--account] --email [--username] --password [--first-name --last-name --external-id]
 
 Creates a new user, optionally in a specified account. An email address and
 password are required. If no username is specified, then the email address
