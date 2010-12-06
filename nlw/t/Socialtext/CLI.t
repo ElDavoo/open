@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 316;
+use Test::Socialtext tests => 320;
 use File::Path qw(rmtree);
 use Socialtext::Account;
 use Socialtext::SQL qw/sql_execute/;
@@ -1872,6 +1872,39 @@ GET_SET_USER_ACCOUNT: {
     );
 }
 
+SET_EXTERNAL_ID: {
+    my $user1 = create_test_user;
+    my $user2 = create_test_user;
+    my $external_id = 'abc123';
+
+    # Simple test
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => [
+                    '--email'       => $user1->email_address,
+                    '--external-id' => $external_id,
+                ],
+            )->set_external_id();
+        },
+        qr/External ID for '[^']+' set to '[^']+'\./,
+        'set external ID for user'
+    );
+
+    # Colliding external ID
+    expect_failure(
+        sub {
+            Socialtext::CLI->new(
+                argv => [
+                    '--email' => $user2->email_address,
+                    '--external-id' => $external_id,
+                ],
+            )->set_external_id();
+        },
+        qr/The private external id you provided \([^\)]+\) is already in use\./,
+        'set external ID for user fails on ID collision',
+    );
+}
 
 SHOW_MEMBERS: {
     my $output = '';

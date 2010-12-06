@@ -643,6 +643,21 @@ sub get_user_account {
     );
 }
 
+sub set_external_id {
+    my $self = shift;
+    my $user = $self->_require_user;
+    my $id   = $self->_get_options('external-id');
+
+    eval { $user->update_store(private_external_id => $id) };
+    if (my $e = $@) {
+        $self->_error($@);
+    }
+
+    $self->_success(
+        loc("External ID for '[_1]' set to '[_2]'.", $user->username, $id)
+    );
+}
+
 sub show_profile {
     my $self = shift;
     my $user = $self->_require_user;
@@ -3992,6 +4007,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   set-user-names [--username or --email] --first-name --last-name
   set-user-account [--username or --email] --account
   get-user-account [--username or --email]
+  set-external-id [--username or --email] --external-id
   show-profile [--username or --email]
   hide-profile [--username or --email]
   can-lock-pages [--username or --email] --workspace
@@ -4254,6 +4270,10 @@ Set the primary account of the specified user.
 =head2 get-user-account [--email or --username]
 
 Print the primary account of the specified user.
+
+=head2 set-external-id [--email or --username] --external-id
+
+Set the external ID for a user.
 
 =head2 show-profile [--email or --username]
 
