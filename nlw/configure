@@ -109,13 +109,11 @@ sub invoke_make_maker {
     my $mm = catfile( this_dir(), 'build', 'bin', 'Makefile.PL' );
     print_ok('Creating build system that installs the Perl libraries:');
 
-    my $osr = $settings{'socialtext-open'}->{value} || 0;
     my $dev = $options{dev} || 0;
     my $prefix = $settings{prefix}->{value} || "";
     my @cmd = (
         $settings{perl}->{value},
         $mm,
-        "--socialtext-open=$osr",
         "--dev=$dev",
     );
     push( @cmd, @{$options{MM_ARGS}} ) if $options{MM_ARGS};

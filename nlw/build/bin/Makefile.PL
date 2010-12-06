@@ -17,11 +17,9 @@ my $DEV_BIN = catdir(dirname(__FILE__), updir, updir, 'dev-bin');
 my @original_argv = @ARGV;
 
 my %option;
-$option{'socialtext-open'} = 0;
 
 GetOptions(
     \%option,
-    'socialtext-open:i',
     'dev:i',
     'quiet',
     'verbose',
@@ -36,11 +34,11 @@ CREATE_TMP: {
 }
 
 my $mm_args = {
-    NAME         => 'Socialtext-Open',
-    ABSTRACT     => 'Socialtext Open',
+    NAME         => 'Socialtext',
+    ABSTRACT     => 'Socialtext',
     AUTHOR       => 'Socialtext <socialtext@socialtext.com>',
     VERSION_FROM => 'lib/Socialtext.pm',
-    EXE_FILES    => [ chomp_list(qx($DEV_BIN/perl-bin-files bin/)) ],
+    EXE_FILES    => [ glob("bin/*") ], # handled by debian build system
     PL_FILES     => {},
     MAKEFILE     => $MAKEFILE,
     NO_META      => 1,  # No META.yml
@@ -48,7 +46,7 @@ my $mm_args = {
         DIST_CP => 'cp', # Has to be cp, not best or ln, because we modify the written files
     },
     clean => {
-        FILES => 'Socialtext-Open* share/wsdl/0.9.wsdl.test',
+        FILES => '',
     },
 };
 
@@ -62,22 +60,6 @@ if ( $@ ) {
     die "$error\n";
 }
 munge_makefile();
-
-# If you chomp() a list, each element is chomped, and the total number of
-# characters removed is returned.  chomp_list() is similar 'cept it returns
-# the modified list instead.
-sub chomp_list {
-    map { chomp; $_ } (@_);
-}
-
-# Non-portable, but better than 'which' or some of the other options.
-sub check_for_file_in_path {
-    my $file = shift;
-    foreach my $path ( split( ':', $ENV{PATH} ) ) {
-        return $path if ( -x catfile( $path, $file ) );
-    }
-    return 0;
-}
 
 # MakeMaker *really* wants the Makefile.PL to be in the CWD, but it is not
 # going to be.  So munge the generated Makefile to point to the real location
