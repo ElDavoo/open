@@ -223,12 +223,6 @@ sub main {
     }
 
     if ( is_target_for( "app" ) ) {
-        my $search_template = 'socialtext/search/search_config.yaml.tt2'; 
-        my $live_dest_file = File::Spec->catdir($dirs{socialtext_etc},
-                                                'search/live.yaml');
-        my $src_ver = _get_search_config_version(
-            File::Spec->catdir( _get_template_root(), $search_template ) );
-
         if (!$is_dev_install && $opts{appliance}) {
 
             # This will set up the config for the postgres DB.
@@ -276,11 +270,6 @@ sub main {
             $is_dev_install ? 'overwrite' : 0
             ],
             [
-            $search_template => $live_dest_file,
-            { },
-            'overwrite'
-            ],
-            [
             'socialtext/event_listeners.yaml.tt2' => "$dirs{socialtext_etc}/event_listeners.yaml",
             { },
             $is_dev_install ? 'overwrite' : 0
@@ -319,14 +308,6 @@ sub main {
     generate_config( @files );
     copy_static_files( \%dirs )
         if is_target_for( "ssl", "apache", "nginx", "apache-perl" );
-}
-
-sub _get_search_config_version {
-    my $file = shift;
-
-    my $yaml = LoadFile( $file );
-    my $version = $yaml->{version} || 0;
-    return $version;
 }
 
 sub local_dirs {
