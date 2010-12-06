@@ -217,7 +217,7 @@ appliance_conf_tests: {
     logged_like qr/timeout/;
 
     my $fakepid = fork_and_exec(
-        q{/usr/bin/perl -e "sleep 5; st-appliance-update"});
+        $^X.q{ -e "sleep 5; st-appliance-update"});
     test_monitor('/bin/false', '--config proxy' => 'lives');
     kill 15, $fakepid;
     reap($fakepid);
