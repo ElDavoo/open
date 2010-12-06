@@ -15,6 +15,7 @@ use Socialtext::System qw/shell_run/;
 use Sys::Hostname;
 use Term::ANSIColor;
 use Getopt::Long;
+use Pod::Usage;
 
 my $VERBOSE = $ENV{VERBOSE};
 
@@ -25,13 +26,13 @@ if (Socialtext::AppConfig->is_appliance() && $>) {
 st_log->info('ST-LOGIN-SETUP: '. join(' ', @ARGV));
 
 my $cmd = shift;
-usage() unless $cmd;
+pod2usage(1) unless $cmd;
 
 my %Commands = (
     'default'     => \&default,
     'ssl'         => \&ssl,
     'client-auth' => \&client_auth,
-    'help'        => \&usage,
+    'help'        => sub { pod2usage(-exitstatus=>0, -verbose=>2) },
 );
 
 my $todo = $Commands{$cmd};
@@ -257,72 +258,134 @@ sub message {
     print color('reset') if $color;
 }
 
-sub usage {
-    print <<EOT;
-  USAGE: $0 command [command options]
+=head1 NAME
 
-  st-login-setup is a command that can be used to simplify the appliance's
-  login process. There are many steps involved in configuring your appliance's
-  login, using this tool can oftentimes reduce things into a simple call.
+st-login-setup - Quick setup of common login configurations
 
-  COMMANDS
+=head1 SYNOPSIS
 
-    default: The simplest setup. Standard HTTP logins; this is how your
-        appliance is set up by default. Accepts an optional `--http-port`
-        parameter.
+  st-login-setup <command> [options]
 
-    ssl: Configures your appliance to run with SSL set up. Accepts a required
-        (most of the time) `--key` and `--cert` parameter, as well as optional
-        `--http-port`, `--https-port` and `--optional` parameters.
+  Commands:
+    default             Default login configuration
+        --http-port <port>      Custom HTTP port to use
 
-    client-auth: Configure your appliance to with SSL set up. Additionally,
-        clients, eg web-browsers, will need to provide a certificate in order
-        to authenticate themselves. Accepts a required (most of the time)
-        `--key` and `--cert` parameter, as well as optional `--http-port`,
-        `--https-port` and `--optional` and `--message` parameters.
+    ssl                 Default configuration, with SSL enabled
+        --http-port <port>      Custom HTTP port to use
+        --https-port <port>     Custom HTTPS port to use
+        --key <file>            File containing key for SSL Server Certificate
+        --cert <file>           File containing SSL Server Certificate
+        --optional              Allow SSL to be optional
 
-    help: What you are reading now.
+    client-auth         Authenticate via Client-Side SSL Certificates
+        --http-port <port>      Custom HTTP port to use
+        --https-port <port>     Custom HTTPS port to use
+        --key <file>            File containing key for SSL Server Certificate
+        --cert <file>           File containing SSL Server Certificate
+        --ca <file>             File containing SSL Signing Certificates
+        --message <file>        Custom login message file
+        --cac                   Enable use of CAC formatted certificates
 
-   OPTIONS
+    help                Displays help and documentation.
 
-     --http-port: The port that your HTTP server will run on. This is
-         completely optional and no ports will be changed if this is not passed.
-         When using an SSL-only setup, all this changes is the HTTP port that
-         will redirect to HTTPS.
+=head1 DESCRIPTION
 
-     --https-port: This port that your HTTPS server will run on. This is not
-         used in the `default` command. This is completely optional and will
-         not change anything if it is not passed.
+This script provides a simple way to configure the most common authentication
+scenarios.  There are many steps involved in configuring your Appliance's
+login, and using this tool can often times reduce things to a single command.
 
-     --optional: This will make SSL optional on your appliance. This is used
-         only in the `ssl` command and, if passed, will configure your machine
-         to run on both HTTP and HTTPS ports.
+=head1 ARGUMENTS
 
-     --message: Set a custom "Login Disabled" message using a file on the
-         system. The file used should be an HTML snippet. This is available for
-         only the `client-auth` command. If the param is not passed, we will
-         use the default login disabled message.
+=over
 
-     --key: The path to the key file for your HTTPS certificate. This file will
-         be copied into place. This is available for the `ssl` and
-         `client-auth` commands. If you do not pass this param to the command,
-         we will assume you'd like to use the key file that is already in
-         place, otherwise we will exit the operation with an error.
+=item B<default>
 
-     --cert: The path to your HTTPS certificate file. This file will be copied
-         into place. This is available for the `ssl` and `client-auth`
-         commands. Like `--key`, we will try to use and existing file if this
-         parameter is not passed.
+Creates a default login configuration; no SSL, login via username/password.
 
-     --ca: The path to the signing certificate for your Client-Side certs. This
-         file will be copied into place. This is available for only the
-         `client-auth` command. Like `--key`, we will try to use and existing
-         file if this parameter is not passed.
+=item B<ssl>
 
-   ENVIRONMENT VARIABLES
+Creates an SSL-enabled configuration.
 
-      VERBOSE: Setting this to 1 will increase the verbosity of your output.
+By default, SSL is B<required> for all connections, but this can be made
+optional by use of the C<--optional> argument.
 
-EOT
-    exit;
-}
+=item B<client-auth>
+
+Creates an SSL-enabled configuration which requires the use of Client-Side SSL
+Certificates to authenticate the User.
+
+=item B<help>
+
+Displays a lengthy help message, including information on all available
+options.
+
+=back
+
+=head1 AVAILABLE OPTIONS
+
+=over
+
+=item --http-port <port>
+
+Specifies the port that the HTTP server should run on.
+
+=item --https-port <port>
+
+Specifies the port that the HTTPS server should run on.
+
+=item --key <file>
+
+Specifies the path to a file containing the key for the SSL Server
+Certificate.  This file will be automatically installed into its expected
+location.
+
+=item --cert <file>
+
+Specifies the path to a file containing the SSL Server Certificate.  This file
+will be automatically installed into its expected location.
+
+=item --ca <file>
+
+Specifies the path to a file containing a concatenated list of SSL Signing
+Certificates, to be used to verify Client-Side SSL Certificates.  This file
+will be automatically installed into its expected location.
+
+=item --optional
+
+Allows for SSL to be considered "optional".  By default, the C<ssl> command
+configures the system such that SSL is B<required> (non-SSL requests are
+automatically redirected to the HTTPS server).
+
+By passing this option, the configuration will be generated such that you can
+connect to I<either> the HTTP or HTTPS server.
+
+=item --message <file>
+
+Specifies a file containing a custom "Login Disabled" message that should be
+displayed to the User when credentials are not provided by their browser.
+
+The contents of the file should be an HTML snippet.
+
+=item --cac
+
+Enables CAC authentication.  When enabled, the SSL Certificates provided by
+the browser are expected to contain a Subject that adheres to the CAC standard
+and which contains an embedded EDIPIN.
+
+=back
+
+=head1 ENVIRONMENT VARIABLES
+
+=over
+
+=item VERBOSE
+
+Setting this to a non-zero value will increase the verbosity of the output.
+
+=back
+
+=head1 COPYRIGHT
+
+Copyright 2010 Socialtext, Inc.,  All Rights Reserved.
+
+=cut
