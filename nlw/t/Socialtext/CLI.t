@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 310;
+use Test::Socialtext tests => 316;
 use File::Path qw(rmtree);
 use Socialtext::Account;
 use Socialtext::SQL qw/sql_execute/;
@@ -195,6 +195,40 @@ CREATE_USER: {
     my $user2 = Socialtext::User->new( username => 'account-test@example.com' );
     is $user2->primary_account->name, Socialtext::Account->Socialtext->name,
         'primary account set';
+
+    # User with external private ID
+    my $email = Test::Socialtext::create_unique_id() . '@ken.socialtext.net';
+    my $external_id = 'abc123';
+    expect_success(
+        sub {
+            Socialtext::CLI->new(
+                argv => ['--email' => $email,
+                         '--password' => 'password',
+                         '--external-id' => $external_id,
+                ],
+            )->create_user();
+        },
+        qr/A new user with the username "[^"]+" was created./,
+        'created user with a private external id',
+    );
+    $user = Socialtext::User->new(email_address => $email);
+    isa_ok $user, 'Socialtext::User', 'got a user';
+    is $user->private_external_id, $external_id, '... with external ID';
+
+    # User with conflicting external private ID (ID recycled from above)
+    $email = Test::Socialtext::create_unique_id() . '@ken.socialtext.net';
+    expect_failure(
+        sub {
+            Socialtext::CLI->new(
+                argv => ['--email' => $email,
+                         '--password' => 'password',
+                         '--external-id' => $external_id,
+                ],
+            )->create_user();
+        },
+        qr/The private external id you provided \([^\)]+\) is already in use./,
+        'failed to create user with a conflicting external id',
+    );
 
     expect_failure(
         sub {

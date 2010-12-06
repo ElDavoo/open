@@ -792,6 +792,7 @@ sub _require_create_user_params {
         'password:s',
         'first-name:s',
         'last-name:s',
+        'external-id:s',
     );
 
     for my $key ( grep { defined $opts{$_} } 'first-name', 'last-name' ) {
@@ -804,9 +805,10 @@ sub _require_create_user_params {
         }
     }
 
-    $opts{email_address} = delete $opts{email};
-    $opts{first_name}    = delete $opts{'first-name'};
-    $opts{last_name}     = delete $opts{'last-name'};
+    $opts{email_address}       = delete $opts{email};
+    $opts{first_name}          = delete $opts{'first-name'};
+    $opts{last_name}           = delete $opts{'last-name'};
+    $opts{private_external_id} = delete $opts{'external-id'};
 
     return %opts;
 }
