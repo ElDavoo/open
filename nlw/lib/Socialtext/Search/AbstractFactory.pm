@@ -45,15 +45,11 @@ implementation.
 
 Returns an instance of the configured search factory.
 
-Historically, this was configured via 
-L<Socialtext::AppConfig/search_factory_class>
-
 =cut
 
 sub GetFactory {
     my ( $class, %p ) = @_;
 
-    # Currently this is hard-coded, but :
     my $factory_class = 'Socialtext::Search::Solr::Factory';
 
     eval "require $factory_class";
@@ -74,7 +70,6 @@ Returns an array of indexer objects for the current active indexers.
 sub GetIndexers {
     my ( $class, $ws_name ) = @_;
 
-    # Currently this is hard-coded:
     my @classes = ('Socialtext::Search::Solr::Factory');
 
     my @indexers;

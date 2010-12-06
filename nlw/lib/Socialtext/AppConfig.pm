@@ -1268,8 +1268,7 @@ Default: 0
 
 =head2 search_factory_class
 
-This points the system at different fulltext search implementations.  See
-L<Socialtext::Search::AbstractFactory> for more details.
+Deprecated.
 
 Default: Socialtext::Search::Solr::Factory
 

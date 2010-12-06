@@ -91,9 +91,7 @@ sub search {
     my $self = shift;
     my $timer = Socialtext::Timer->new;
     my $index = $self->cgi->index;
-    my $search_factory = Socialtext::Search::AbstractFactory->GetFactory(
-        ($index ? (use_index => $index) : ()),
-    );
+    my $search_factory = Socialtext::Search::AbstractFactory->GetFactory();
 
     if (my $cgi_sortby = $self->cgi->sortby) {
         if (my $default_dir = $self->sortdir->{$cgi_sortby}) {
@@ -295,7 +293,6 @@ sub _new_search {
         offset => $offset || 0,
         order => $sortby,
         direction => $direction,
-        use_index => $query{use_index},
         limit => $query{limit},
     );
     Socialtext::Timer->Pause('search_on_behalf');
@@ -349,7 +346,6 @@ sub default_result_set {
         scope => $self->{_current_scope},
         limit => $self->{_current_limit},
         offset => $self->{_current_offset},
-        use_index => scalar $self->cgi->index,
     );
     return $self->result_set;
 }
