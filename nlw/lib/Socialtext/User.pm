@@ -80,11 +80,13 @@ has 'metadata' => (
 
 with 'Socialtext::UserSetContained';
 
-my @minimal_interface = qw(
+our @public_interface = qw(
     user_id username email_address password first_name last_name
     display_name creation_datetime last_login_datetime
     email_address_at_import created_by_user_id is_business_admin
     is_technical_admin is_system_created primary_account_id
+);
+our @private_interface = qw(
     private_external_id
 );
 
@@ -556,8 +558,8 @@ sub to_hash {
         };
     }
 
-    my @fields = @minimal_interface;
-    @fields = grep { !/private/ } @fields unless ($args{want_private_fields});
+    my @fields = @public_interface;
+    push @fields, @private_interface if ($args{want_private_fields});
 
     my $hash = {};
     foreach my $attr (@fields) {
@@ -584,7 +586,7 @@ sub Create_user_from_hash {
     $creator ||= Socialtext::User->SystemUser();
 
     my %create;
-    for my $attr (@minimal_interface) {
+    for my $attr (@public_interface, @private_interface) {
         $create{$attr} = Encode::encode_utf8( $info->{$attr} )
             if exists $info->{$attr};
     }

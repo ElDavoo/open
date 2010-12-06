@@ -5,6 +5,7 @@ use warnings;
 
 use Socialtext::File::Stringify::Default;
 use Socialtext::System;
+use Socialtext::Log qw/st_log/;
 
 sub to_string {
     my ( $class, $buf_ref, $file, $mime ) = @_;

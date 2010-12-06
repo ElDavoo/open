@@ -90,7 +90,7 @@ sub PUT_json {
 
     my @todo; # figure out what to do, we'll do it in a txn below.
     if ($object->{private_external_id}) {
-        return $self->not_authorized unless $rest->user->is_technical_admin;
+        return $self->not_authorized unless $rest->user->is_business_admin;
         my $external_id = $object->{private_external_id};
         push @todo, sub {
             $user->update_store(private_external_id => $external_id) };
