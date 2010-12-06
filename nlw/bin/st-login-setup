@@ -75,9 +75,15 @@ sub client_auth {
     with_ssl_setup(
         needed_certs => [qw/key cert ca/],
         configs => {
-            credentials_extractors => 'SSLCertificate:Guest',
-            challenger             => 'NoLogin',
-            ssl_only               => 1,
+            challenger => 'NoLogin',
+            ssl_only   => 1,
+        },
+        switches => {
+            cac => sub {
+                my $v  = shift;
+                my $ce = $v ? 'CAC' : 'SSLCertificate';
+                return (credentials_extractors => "$ce\:Guest");
+            }
         },
         more => {
             message => sub {
