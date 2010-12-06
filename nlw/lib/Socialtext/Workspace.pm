@@ -1389,7 +1389,7 @@ sub _dump_user_to_hash {
     my $plugin_prefs = {};
     $adapter->hook('nlw.export_user_prefs', $plugin_prefs);
 
-    my $dump = $user->to_hash;
+    my $dump = $user->to_hash(want_private_fields => 1);
     delete $dump->{user_id};
     $dump->{plugin_prefs} = $plugin_prefs if keys %$plugin_prefs;
 
