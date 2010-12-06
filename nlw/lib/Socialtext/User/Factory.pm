@@ -261,6 +261,7 @@ sub ExpireUserRecord {
     Readonly my @required_fields   => qw(username email_address);
     Readonly my @unique_fields     => qw(username email_address private_external_id);
     Readonly my @lowercased_fields => qw(username email_address);
+    Readonly my @optional_fields   => qw(private_external_id);
     sub ValidateAndCleanData {
         my ($self, $user, $p) = @_;
         my @errors;
@@ -291,6 +292,17 @@ sub ExpireUserRecord {
             # record, or (b) we were given a value to update with
             if ($is_create or exists $p->{$field}) {
                 push @errors, $self->_validate_check_required_field($field, $p);
+            }
+        }
+
+        # Set optional fields explicitly to "undef", so internal hash
+        # structures are equivalent regardless of whether this was a newly
+        # created User or one that was being pulled up out of the DB.
+        if ($is_create) {
+            foreach my $field (@optional_fields) {
+                unless (defined $p->{$field}) {
+                    $p->{$field} = undef;
+                }
             }
         }
 
