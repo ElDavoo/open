@@ -20,7 +20,8 @@
 | set | private | Private Hello to %%psshort_two%% from %%psshort%% |
 | set | public | Public Hello after Private to %%psshort_two%% from %%psshort%% |
 
-| open_ok | /st/signals |  |
+| wait_for_element_visible_ok | link=Signals | 30000 |
+| click_and_wait | link=Signals |  |
 | text_like | st-editing-tools-edit | Signals |
 | st-send-signal-in-activities-widget | %%signal%% |  |
 
@@ -29,8 +30,8 @@
 | click_ok | //div[@class='private'] |  |
 | wait_for_element_visible_ok | //input[@class='lookahead-prompt'] | 5000 |
 | type-lookahead-ok | //input[@class='lookahead-prompt'] | %%psshort_two%% |
-| wait_for_element_visible_ok | //a[@class='insert btn'] | 5000 |
-| st_pause_click | 1000 | //a[@class='insert btn'] |
+| wait_for_element_visible_ok | //a[@class='lookaheadItem'] | 5000 |
+| st_pause_click | 1000 | //a[@class='lookaheadItem'] |
 
 | *Comment* | Test Case: Private Signal. %%psshort%% looks for Private message confirmation |  |
 | wait-for-element-visible-ok | //div[@class='message private'] | 5000 |
@@ -67,8 +68,8 @@
 | click_ok | //div[@class='private'] |  |
 | wait_for_element_visible_ok | //input[@class='lookahead-prompt'] | 5000 |
 | type-lookahead-ok | //input[@class='lookahead-prompt'] | %%psshort%% |
-| wait_for_element_visible_ok | //a[@class='insert btn'] | 5000 |
-| st_pause_click | 1000 | //a[@class='insert btn'] |
+| wait_for_element_visible_ok | //a[@class='lookaheadItem'] | 5000 |
+| st_pause_click | 1000 | //a[@class='lookaheadItem'] |
 | wait-for-element-visible-ok | //div[@class='message private'] | 5000 |
 | text_like | //div[@class='message private'] | You are composing a private message to %%psshort%% |
 
