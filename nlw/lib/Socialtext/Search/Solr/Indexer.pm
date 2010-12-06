@@ -242,8 +242,6 @@ sub _add_attachment_doc {
         $att->to_string(\$body);
         $key = $self->page_key($att->page_id);
 
-        # KinoSearch would exit unless there's a body. Don't do that here so
-        # that we can still index metadata.
         if (length $body) {
             _scrub_field(\$body);
             $self->_truncate( $id, \$body );
@@ -274,7 +272,7 @@ sub _add_attachment_doc {
     $self->_add_doc(WebService::Solr::Document->new(@fields));
 }
 
-# See {link dev-tasks [KinoSearch - Maximum File Size Cap]} for more
+# See {link dev-tasks [Maximum File Size Cap]} for more
 # information.
 sub _truncate {
     my ( $self, $id, $text_ref ) = @_;
