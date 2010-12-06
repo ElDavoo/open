@@ -621,10 +621,12 @@ sub new_font {
     my $self = shift;
     my $type = shift;
 
+    # See also: Socialtext::Rest::Wafl
     my $font = Imager::Font->new(
         file => $font_path . '/' . $font_table[$type]{font},
         size => $font_table[$type]{size},
         utf8 => 1,
+        type => 'ft2',
     );
     unless ($font) {
         die "Cannot load $font_path ", Imager->errstr, "#";

@@ -172,6 +172,7 @@ sub new_font {
     my $self = shift;
     my $type = shift;
 
+    # see also: WikiwygPlugin
     my $font = Imager::Font->new(
         file => $font_path . '/' . $font_table[$type]{font},
         size => $font_table[$type]{size},
