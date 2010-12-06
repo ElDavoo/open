@@ -4,12 +4,16 @@ Tests the ReST representations for Users
 
 | standard-test-setup |
 
-| create-user         | bob      |              |
-| add-user-to-account | %%bob%%  | %%account%%  |
-| create-user         | carl     |              |
-| add-user-to-group   | %%carl%% | %%group_id%% |
-| create-user         | dave     |              |
-| add-user-to-group   | %%dave%% | %%group_id%% |
+| set                 | bob                 | bob%%start_time%%@ken.socialtext.net |
+| create-user         | %%bob%%             |                                      |
+| add-user-to-account | %%bob%%             | %%account%%                          |
+| set_business_admin  | %%bob%%             | 1                                    |
+| create-user         | carl                |                                      |
+| add-user-to-group   | %%carl%%            | %%group_id%%                         |
+| create-user         | dave                |                                      |
+| add-user-to-group   | %%dave%%            | %%group_id%%                         |
+| create-account      | %%start_time%%other |                                      |
+| set                 | other_id            | %%account_id%%                       |
 
 | *Comment* | As HTML                                                        |
 | GET       | /data/users/%%username%%                                       |
@@ -45,4 +49,17 @@ Tests the ReST representations for Users
 | body_like | "last_login_datetime":"-infinity"        |                  |
 
 | json-parse |
-| json-like | {"accounts":[{"account_name":"%%account%%","user_count":"4"}],"groups":[{"name":"%%group%%","primary_account_id":"%%account_id%%","account_ids":[%%account_id%%],"user_count":"3"}]} |
+| json-path-size | $.accounts | 1 |
+| json-path-is | $.accounts[0].account_name | %%account%% |
+| json-path-size | $.groups | 1 |
+| json-path-is |  $.groups[0].name | %%group%% |
+
+| *Comment* | Non-business admin cannot update user |
+| http-user-pass | %%username%% |
+| PUT-json | /data/users/%%username%% | {"primary_account_id":%%other_id%%} |
+| code-is |  401 |
+
+| *Comment* | Business admin can update user |
+| http-user-pass | %%bob%% | password |
+| PUT-json | /data/users/%%username%% | {"primary_account_id":%%other_id%%} |
+| code-is |  204 |

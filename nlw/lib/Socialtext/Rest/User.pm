@@ -6,6 +6,7 @@ use base 'Socialtext::Rest::Entity';
 use Socialtext::Functional 'hgrep';
 use Socialtext::User;
 use Socialtext::HTTP ':codes';
+use Socialtext::SQL 'sql_txn';
 use Socialtext::JSON qw/decode_json/;
 
 our $k;
@@ -87,23 +88,37 @@ sub PUT_json {
         return 'Content should be a JSON hash.';
     }
 
-    my $new_acct_id = $object->{primary_account_id};
-    unless ($new_acct_id) {
-        $rest->header( -status => HTTP_400_Bad_Request );
-        return 'No primary_account_id specified!';
+    my @todo; # figure out what to do, we'll do it in a txn below.
+    if ($object->{private_external_id}) {
+        return $self->not_authorized unless $rest->user->is_technical_admin;
+        my $external_id = $object->{private_external_id};
+        push @todo, sub {
+            $user->update_store(private_external_id => $external_id) };
     }
 
-    my $acct = Socialtext::Account->new(account_id => $new_acct_id);
-    unless ($acct) {
-        $rest->header( -status => HTTP_400_Bad_Request );
-        return 'Invalid account ID';
+    if ($object->{primary_account_id}) {
+        my $new_acct_id = $object->{primary_account_id};
+        my $acct = Socialtext::Account->new(account_id => $new_acct_id);
+        unless ($acct) {
+            $rest->header( -status => HTTP_400_Bad_Request );
+            return 'Invalid account ID';
+        }
+
+        push @todo, sub { $user->primary_account($acct) };
     }
 
-    eval { $user->primary_account($acct) };
-    if ($@) {
-        warn $@;
+    if (!@todo) {
+        $rest->header(-status => HTTP_400_Bad_Request);
+        return "Nothing to Update";
+    }
+
+
+    eval {
+        sql_txn { $_->() for @todo; };
+    };
+    if (my $e = $@) {
         $rest->header( -status => HTTP_400_Bad_Request );
-        return $@;
+        return $e;
     }
 
     $rest->header(
