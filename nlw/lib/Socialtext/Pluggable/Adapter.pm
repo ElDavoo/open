@@ -219,12 +219,12 @@ sub account_preferences {
 }
 
 sub registered {
-    my ($self, $name) = @_;
+    my ($self, $name, $config) = @_;
     if ( my $hooks = $hooks{$name} ) {
         return 0 unless ref $hooks eq 'ARRAY';
         for my $hook (@$hooks) {
             my $plugin = $self->plugin_object($hook->{class});
-            return 1 if $plugin->is_hook_enabled($name);
+            return 1 if $plugin->is_hook_enabled($name, $config);
         }
     }
     return 0;
@@ -268,7 +268,7 @@ sub hook_error {
 
 
 sub hook {
-    my ( $self, $name, @args ) = @_;
+    my ( $self, $name, $text, $config ) = @_;
     my @output;
     if ( my $hooks = $hooks{$name} ) {
         return unless ref $hooks eq 'ARRAY';
@@ -277,7 +277,7 @@ sub hook {
             my $plugin = $self->plugin_object($hook->{class});
             my $type = $hook->{type};
 
-            my $enabled = $plugin->is_hook_enabled($name);
+            my $enabled = $plugin->is_hook_enabled($name, $config);
             next unless $enabled;
                          
             eval {
@@ -285,7 +285,7 @@ sub hook {
                     ($name =~ /^action\./) ? $plugin->name : undef;
                 $plugin->declined(undef);
                 $plugin->last($ONCE_TYPES{$type});
-                my $results = $plugin->$method(@args);
+                my $results = $plugin->$method($text, $config);
                 if ($plugin->declined) {
                     $plugin->last(undef);
                 }
