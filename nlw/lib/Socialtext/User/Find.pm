@@ -78,17 +78,22 @@ sub _build_sql_cols {
     my $self = shift;
     my @cols = ('DISTINCT users.user_id', 'display_name');
     if ($self->minimal < 2) {
-        if ($self->show_pvt) {
-            push @cols, $self->viewer->is_business_admin
-                ? @Socialtext::User::private_interface
-                : map { "NULL AS $_" } @Socialtext::User::private_interface;
-        }
-
-        push @cols, 'first_name', 'last_name',
-            'email_address', 'driver_username';
+        push @cols,
+            qw/first_name last_name email_address driver_username/,
+            $self->_private_sql_cols;
     }
 
     return \@cols;
+}
+
+sub _private_sql_cols {
+    my $self = shift;
+    return () unless $self->show_pvt;
+
+    return $self->viewer->is_business_admin
+        ? @Socialtext::User::private_interface
+        : map { "NULL AS $_" } @Socialtext::User::private_interface;
+
 }
 
 has 'sql_count' => (
