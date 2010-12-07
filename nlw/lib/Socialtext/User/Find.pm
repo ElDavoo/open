@@ -78,12 +78,16 @@ sub _build_sql_cols {
     my $self = shift;
     my @cols = ('DISTINCT users.user_id', 'display_name');
     if ($self->minimal < 2) {
-        push @cols, @Socialtext::User::private_interface
-            if $self->show_pvt;
+        if ($self->show_pvt) {
+            push @cols, $self->viewer->is_business_admin
+                ? @Socialtext::User::private_interface
+                : map { "NULL AS $_" } @Socialtext::User::private_interface;
+        }
 
         push @cols, 'first_name', 'last_name',
             'email_address', 'driver_username';
     }
+
     return \@cols;
 }
 
@@ -211,10 +215,6 @@ sub typeahead_find {
             $row->{email} = $row->{email_address};
             $row->{username} = $row->{driver_username};
         }
-        if ($self->show_pvt && !$self->viewer->is_business_admin) {
-            $row->{$_} = undef for @Socialtext::User::private_interface;
-        }
-
         push @results, $row;
     }
     return \@results;
