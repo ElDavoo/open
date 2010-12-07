@@ -1,7 +1,7 @@
 | *Comment* | Test Case: Appliance Health Report |  |
 
 | *Comment* | Test Case: Appliance Health Report SETUP |  |
-| st-admin | add-member --e %%username%% --w st-health | now has the role of 'member' |
+| st-admin | add-member --e %%username%% --w st-health | has the role of 'member' |
 
 | *Comment* | Test Case: Appliance Health Report Create local report |  |
 | st_create_health_report |  |  |

@@ -22,6 +22,7 @@ test env properly and are not testing the test-workspace
 * [Test case: functional search tests]
 * [Test Case: Phrase search]
 * [Test Case: stemming]
+* [Test Case: Functional Search Additional Indexes]
 * [Test Case: Double Click to Edit]
 * [Test Case: Preview Format]
 * [Test Case: Signals Workspace Privacy Rules]

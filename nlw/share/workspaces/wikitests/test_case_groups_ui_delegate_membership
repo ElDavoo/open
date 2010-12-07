@@ -6,56 +6,46 @@
 | st-setup-a-group | 1 | 1 | 1 |
 | enable-acct-plugin | signals | %%group_acct%% |  |
 
-| set | grp_mbr_short | guimbr%%start_time%% |
-| set | grp_mbr_bestfull | guimbr%%start_time%% |
-| set | grp_mbr | %%grp_mbr_short%%@matt.socialtext.net |
+| set | group_mbr_short | guimbr%%start_time%% |
+| set | group_mbr_bestfull | guimbr%%start_time%% |
+| set | group_mbr | %%group_mbr_short%%@ken.socialtext.net |
 
-| create-user | %%grp_mbr%% | %%password%% | %%group_acct%% |
+| create-user | %%group_mbr%% | %%password%% | %%group_acct%% |
 
 | set | mbr_user_id | %%user_id%% |
-| st-admin | add-member --group %%group_id%% --email %%grp_mbr%% | is now a member of the %%group_name%% Group |
+| st-admin | add-member --group %%group_id%% --email %%group_mbr%% | is now a member of the %%group_name%% Group |
 | st-admin | add-group-admin --e %%username%% --g %%group_id%% |  |
 
-| *Comment* | Test Case: Groups UI ADelegate Membership - Open The Group |  |
-| open_ok | /st/group/%%group_id%%/ |  |
-| setSpeed | 3000 |  |
-| st-name-widget | 1 | information_widget |
-| st-widget-title-like | information_widget | Information |
-| st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_and_wait | link=(Edit) |  |
-| select-frame | relative=parent |  |
+| *Comment* | Test Case: Groups UI Delegate Membership - Open The Group |  |
+| open_ok | /st/edit_group/%%group_id%% |  |
+| wait_for_text_present_ok | Edit Group |  |
 
-| *Comment* | Test Case: Groups UI Delegate Membership - Make %%group_user%% an admin |  |
+| *Comment* | Test Case: Groups UI Delegate Membership - Make %%group_mbr%% an admin |  |
 | st-name-widget | 3 | members_widget |
 | st-widget-title-like | members_widget | Members |
 | st-select-widget-frame | members_widget |  |
-| text_like | //body | qr/%%group_user_short%%\s+Member/ |
-| wait_for_element_present_ok | //a[@value='admin'] | 30000 |
+| text_like | //body | qr/%%group_mbr_short%%.*Member/ |
+| wait_for_element_present_ok | //a[@value='Admin'] | 30000 |
 | click_ok | //a[@value='admin'] |  |
 | text_like | //body | qr/changed/ism |
-| text_like | //body | qr/%%group_user_short%%\s+Admin/ |
+| text_like | //body | qr/%%group_mbr_short%%\s+Admin/ |
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | create-group | 30000 |
 | click_and_wait | create-group |  |
 
-| *Comment* | Test Case: Groups UI Delegate Membership - Check to make sure %%group_user%% is an admin |  |
-| st-name-widget | 1 | information_widget |
-| st-widget-title-like | information_widget | Information |
-| st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_and_wait | link=(Edit) |  |
-| select-frame | relative=parent |  |
+| *Comment* | Test Case: Groups UI Delegate Membership - Check to make sure %%group_mbr%% is an admin |  |
+| open_ok | /st/edit_group/%%group_id%% |  |
+| wait_for_text_present_ok | Edit Group |  |
 | st-name-widget | 3 | members_widget |
 | st-widget-title-like | members_widget | Members |
 | st-select-widget-frame | members_widget |  |
-| text_like | //body | qr/%%group_user_short%%\s+Admin/ |
+| text_like | //body | qr/%%group_mbr_short%%\s+Admin/ |
 
 | *Comment* | Test Case: Groups UI Delegate Membership - Change back to Member, save takes |  |
 | wait_for_element_present_ok | //a[@value='member'] | 30000 |
 | click_ok | //a[@value='member'] |  |
 | text_like | //body | qr/changed/ism |
-| text_like | //body | qr/%%group_user_short%%\s+Member/ |
+| text_like | //body | qr/%%group_mbr_short%%\s+Member/ |
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | create-group | 30000 |
 | click_and_wait | create-group |  |
@@ -68,18 +58,19 @@
 | st-name-widget | 3 | members_widget |
 | st-widget-title-like | members_widget | Members |
 | st-select-widget-frame | members_widget |  |
-| text_like | //body | qr/%%group_user_short%%\s+Member/ |
+| text_like | //body | qr/%%group_mbr_short%%\s+Member/ |
 | select-frame | relative=parent |  |
 | click_and_wait | create-group |  |
 
 | *Comment* | Test Case: Groups UI Delegate Membership - You can not remove all admins |  |
 | st-admin | remove-member --g %%group_id%% --email %%username%% |  |
-| st-admin | remove-member --g %%group_id%% --email %%grp_mbr%% |  |
-| st-admin | add-group-admin --e %%group_user%% --g %%group_id%% |  |
+| st-admin | add-group-admin --g %%group_id%% --email %%group_user%% |  |
+
+^ END
 
 | *Comment* | Test Case: Groups UI Delegate Membership Set single element to Admin, click member, still see Admin! |  |
-| st-logoutin | %%group_user%% | %%password%% |
-| open_ok | /st/group/%%group_id%%/ |  |
+| st-logoutin | %%group_mbr%% | %%password%% |
+| open_ok | /st/group/%%group_id%% |  |
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
