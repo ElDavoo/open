@@ -260,4 +260,9 @@ Test for {bz: 3959} - biz admins & self-join (biz-admin-ness should take precede
 | json-array-size        | 1                                     |                       |            |           |           |
 | body-like              | %%jenny%%                             |                       |            |           |           |
 
-
+| *Comment* | Business admins can see private fields |
+| st-admin | set-external-id --email %%jenny%% --external-id %%jenny%% |
+| GET-json | /data/groups/%%group_id%%/users?want_private_fields=1;all=1 |
+| json-response-is | 200 | 1 |
+| json-path-is | $[0].email_address       | %%jenny%% |
+| json-path-is | $[0].private_external_id | %%jenny%% |

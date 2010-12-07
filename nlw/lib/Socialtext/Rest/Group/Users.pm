@@ -59,6 +59,7 @@ sub _build_user_find {
         direct    => $q->param('direct') || undef,
         order     => $q->param('order') || '',
         reverse   => $q->param('reverse') || undef,
+        show_pvt  => $q->param('want_private_fields') || 0,
         # these may get changed by 'just_visiting':
         filter    => $q->param('filter') || undef,
         all       => $q->param('all') || undef,
