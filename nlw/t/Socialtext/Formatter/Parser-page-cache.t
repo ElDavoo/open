@@ -9,11 +9,14 @@ use Test::Exception;
 fixtures('workspaces', 'public');
 
 use Socialtext::Pages;
+use Socialtext::Page::Base;
 use File::Path ();
 use File::Spec;
 use File::Temp ();
 use Storable ();
 use Socialtext::Formatter::Parser;
+use Digest::MD5 qw/md5_hex/;
+use Encode qw/encode_utf8/;
 
 my $cache_dir = Socialtext::AppConfig->formatter_cache_dir;
 my $page_name = 'cache page';
@@ -24,16 +27,16 @@ if ( -e $cache_dir ) {
 }
 
 my $hub = new_hub('admin');
-my $page = Socialtext::Page->new( hub => $hub )->create(
-    title   => $page_name,
-    content => <<'EOF',
+my $text = <<'EOF';
 This is the page.
 
 {link public [welcome]}
 
 {link foobar [welcome]}
-
 EOF
+my $page = Socialtext::Page->new( hub => $hub )->create(
+    title   => $page_name,
+    content => $text,
     creator => $hub->current_user,
 );
 
@@ -45,9 +48,10 @@ SECOND_PARSE_USES_CACHE: {
 
     # the cache is only used if its last mod time is _greater_ than the
     # page file (not if they're the same)
-    my $cache_file
-        = File::Spec->catfile( $cache_dir, $hub->current_workspace->workspace_id,
-        $page->id );
+    my $text_md5 = md5_hex(encode_utf8($text));
+    my $cache_file = File::Spec->catfile(
+        $cache_dir, $hub->current_workspace->workspace_id,
+        $text_md5 . '_' . $page->id );
 
     my $parser = Socialtext::Formatter::Parser->new(
         table      => $hub->formatter->table,
