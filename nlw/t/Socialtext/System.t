@@ -10,6 +10,8 @@ use Socialtext::File qw/set_contents/;
 my $in = "obase=16\n912559\n65261\n";
 my $expected = "DECAF\nFEED\n";
 
+die "bc is necessary" unless -x '/usr/bin/bc';
+
 Backtick: {
     my $out;
     $out = backtick("uggle");
