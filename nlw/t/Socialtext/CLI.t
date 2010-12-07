@@ -1875,7 +1875,7 @@ GET_SET_USER_ACCOUNT: {
 SET_EXTERNAL_ID: {
     my $user1 = create_test_user;
     my $user2 = create_test_user;
-    my $external_id = 'abc123';
+    my $external_id = 'abc456';
 
     # Simple test
     expect_success(
