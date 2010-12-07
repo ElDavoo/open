@@ -424,6 +424,29 @@ sub show_plugin_prefs {
     $self->_success($msg);
 }
 
+sub set_account_plugin_pref {
+    my $self = shift;
+    my $account = $self->_require_account;
+    my $plugins = $self->_require_plugin;
+    die 'A single plugin is required' unless @$plugins == 1;
+    my $plugin = Socialtext::Pluggable::Adapter->plugin_class($plugins->[0]);
+
+    my ($key, $val) = @{$self->{argv}};
+    die 'key, val required' unless $key and defined $val;
+
+    $plugin->CheckAccountPluginPrefs({ $key => $val });
+
+    my $prefs = $plugin->GetAccountPluginPrefTable($account->account_id);
+    $prefs->set($key => $val);
+
+    # Clear the json cache so activities widgets get the new limit
+    Socialtext::JSON::Proxy::Helper->ClearForAccount($account->account_id);
+
+    $self->_success(
+        loc('Preferences for the [_1] plugin have been updated.', $plugin)
+    );
+}
+
 sub _require_account {
     my $self     = shift;
     my $optional = shift;
