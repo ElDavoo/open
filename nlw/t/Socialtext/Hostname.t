@@ -32,6 +32,11 @@ my %TestHosts = (
         domain   => 'socialtext.net',
         fqdn     => 'borax.socialtext.net',
     },
+    'lucite.socialtext.net' => {
+        hostname => 'lucite',
+        domain   => 'socialtext.net',
+        fqdn     => 'lucite.socialtext.net',
+    },
 );
 
 my %DevHosts;
