@@ -644,6 +644,7 @@ sub request {
 
 sub DefaultAccountPluginPrefs { +{} }
 sub CheckAccountPluginPrefs { +{} }
+sub LimitAccountPluginPrefs { +{} }
 
 sub GetAccountPluginPrefTable {
     my $class = shift;

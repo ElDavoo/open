@@ -212,7 +212,7 @@ sub account_preferences {
     my $data = $table->get;
     while (my ($plugin, $prefs) = each %$data) {
         my $class = $self->plugin_class($plugin);
-        $class->CheckAccountPluginPrefs($prefs);
+        $class->LimitAccountPluginPrefs($prefs);
     }
 
     return $data;
