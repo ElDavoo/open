@@ -448,7 +448,6 @@ QUICK_TESTS = \
 	t/Socialtext/Log-shortcut.t \
 	t/Socialtext/Log-syslog-not-running.t \
 	t/Socialtext/Log.t \
-	t/Socialtext/mecabif.t \
 	t/Socialtext/Migration.t \
 	t/Socialtext/Migration/Utils.t \
 	t/Socialtext/Model/Pages.t \
