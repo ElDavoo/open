@@ -8,13 +8,14 @@ use Socialtext::String;
 use Socialtext::User;
 use namespace::clean -except => 'meta';
 
-has 'viewer'  => (is => 'rw', isa => 'Socialtext::User', required => 1);
-has 'limit'   => (is => 'rw', isa => 'Maybe[Int]');
-has 'offset'  => (is => 'rw', isa => 'Maybe[Int]');
-has 'filter'  => (is => 'rw', isa => 'Maybe[Str]');
-has 'order'   => (is => 'rw', isa => 'Maybe[Str]', writer => '_order');
-has 'reverse' => (is => 'ro', isa => 'Bool', default => undef);
-has 'all'     => (is => 'rw', isa => 'Bool', default => undef, writer => '_all');
+has 'viewer'   => (is => 'rw', isa => 'Socialtext::User', required => 1);
+has 'limit'    => (is => 'rw', isa => 'Maybe[Int]');
+has 'offset'   => (is => 'rw', isa => 'Maybe[Int]');
+has 'filter'   => (is => 'rw', isa => 'Maybe[Str]');
+has 'show_pvt' => (is => 'ro', isa => 'Bool', default => 0 );
+has 'order'    => (is => 'rw', isa => 'Maybe[Str]', writer => '_order');
+has 'reverse'  => (is => 'ro', isa => 'Bool', default => undef);
+has 'all'      => (is => 'rw', isa => 'Bool', default => undef, writer => '_all');
 
 # 0 = full representation
 # 1 = limited representation
@@ -77,6 +78,9 @@ sub _build_sql_cols {
     my $self = shift;
     my @cols = ('DISTINCT users.user_id', 'display_name');
     if ($self->minimal < 2) {
+        push @cols, @Socialtext::User::private_interface
+            if $self->show_pvt;
+
         push @cols, 'first_name', 'last_name',
             'email_address', 'driver_username';
     }
@@ -207,6 +211,10 @@ sub typeahead_find {
             $row->{email} = $row->{email_address};
             $row->{username} = $row->{driver_username};
         }
+        if ($self->show_pvt && !$self->viewer->is_business_admin) {
+            $row->{$_} = undef for @Socialtext::User::private_interface;
+        }
+
         push @results, $row;
     }
     return \@results;
