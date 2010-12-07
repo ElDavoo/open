@@ -646,7 +646,7 @@ sub get_user_account {
 sub set_external_id {
     my $self = shift;
     my $user = $self->_require_user;
-    my %p    = $self->_get_options('external-id:s');
+    my %p    = $self->_get_options('external-id|X:s');
 
     eval { $user->update_store(private_external_id => $p{'external-id'}) };
     if (my $e = $@) {
