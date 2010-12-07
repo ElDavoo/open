@@ -99,7 +99,7 @@ sub _build_sql_group {
     if ($self->minimal < 2) {
         push @group_cols,
             qw(first_name last_name email_address driver_username display_name),
-            $self->show_pvt ? @Socialtext::User::private_interface : ();
+            $self->_private_sql_cols;
     }
     if ($self->minimal < 1) {
         push @group_cols, qw(
