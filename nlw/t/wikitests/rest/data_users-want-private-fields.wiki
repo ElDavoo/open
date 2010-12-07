@@ -32,17 +32,13 @@
 | json-path-missing | $[2].private_external_id |
 | json-path-missing | $[3].private_external_id |
 
-| *Comment* | Non business admin cannot see private fields |
+| *Comment* | Non business admin cannot see private fields when requesting |
 | GET-json | /data/users?want_private_fields=1 |
 | json-response-is | 200 | 4 |
-| json-path-exists | $[0].private_external_id |
-| json-path-is     | $[0].private_external_id |
-| json-path-exists | $[1].private_external_id |
-| json-path-is     | $[1].private_external_id |
-| json-path-exists | $[2].private_external_id |
-| json-path-is     | $[2].private_external_id |
-| json-path-exists | $[3].private_external_id |
-| json-path-is     | $[3].private_external_id |
+| json-path-missing | $[0].private_external_id |
+| json-path-missing | $[1].private_external_id |
+| json-path-missing | $[2].private_external_id |
+| json-path-missing | $[3].private_external_id |
 
 | *Comment* | Business admin does not see private fields by default |
 | http-user-pass | %%albert%% | password |

@@ -88,12 +88,9 @@ sub _build_sql_cols {
 
 sub _private_sql_cols {
     my $self = shift;
-    return () unless $self->show_pvt;
 
-    return $self->viewer->is_business_admin
-        ? @Socialtext::User::private_interface
-        : map { "NULL AS $_" } @Socialtext::User::private_interface;
-
+    return $self->show_pvt
+        ? @Socialtext::User::private_interface : ();
 }
 
 has 'sql_count' => (

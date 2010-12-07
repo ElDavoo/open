@@ -70,8 +70,7 @@ Tests the ReST representations for Users
 | GET-json | /data/users/%%username%%?want_private_fields=1 |
 | code-is | 200 |
 | json-parse |
-| json-path-exists | $.private_external_id |
-| json-path-is | $.private_external_id |  |
+| json-path-missing | $.private_external_id |
 
 | *Comment* | Business admin can request private fields |
 | http-user-pass | %%bob%% | password |

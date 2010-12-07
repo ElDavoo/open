@@ -30,6 +30,9 @@ sub _build_user_find {
     my $workspace = $self->_workspace;
     die "invalid workspace" unless $workspace;
 
+    my $show_pvt = $query->param('want_private_fields')
+        && $self->rest->user->is_business_admin;
+
     return Socialtext::User::Find::Container->new(
         viewer => $self->rest->user,
         limit  => $self->items_per_page,
@@ -41,7 +44,7 @@ sub _build_user_find {
         order => $query->param('order') || '',
         reverse => $query->param('reverse') || 0,
         all => $query->param('all') || 0,
-        show_pvt => $query->param('want_private_fields') || 0,
+        show_pvt => $show_pvt,
     )
 }
 

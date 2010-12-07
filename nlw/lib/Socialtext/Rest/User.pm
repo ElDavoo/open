@@ -39,7 +39,7 @@ sub get_resource {
     my $badmin = $acting_user->is_business_admin;
     return undef if $all and !$badmin;
 
-    my $show_pvt = $query->param('want_private_fields') ? 1 : 0;
+    my $show_pvt = $query->param('want_private_fields') && $badmin ? 1 : 0;
 
     my $repr = {};
     if ($all) {
@@ -71,11 +71,6 @@ sub get_resource {
                     } $user->shared_groups($acting_user, 1, 'ignore badmin')
             ],
         };
-    }
-
-    # for consistency with people profile fields.
-    if ($show_pvt && !$badmin) {
-        $repr->{$_} = undef for @Socialtext::User::private_interface;
     }
 
     return $repr;

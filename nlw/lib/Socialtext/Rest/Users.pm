@@ -92,6 +92,9 @@ sub _build_user_find {
     my $filter = $self->rest->query->param('filter');
     my $query = $self->rest->query;
 
+    my $show_pvt = $query->param('want_private_fields')
+        && $self->rest->user->is_business_admin;
+       
     # Instantiate the User Finder
     my $user_find;
     eval {
@@ -102,7 +105,7 @@ sub _build_user_find {
             filter => $filter,
             order  => $query->param('order') || '',
             all    => $query->param('all') || 0,
-            show_pvt => ($query->param('want_private_fields') ? 1 : 0),
+            show_pvt => $show_pvt,
         );
     };
     if ($@) {
