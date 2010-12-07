@@ -646,15 +646,15 @@ sub get_user_account {
 sub set_external_id {
     my $self = shift;
     my $user = $self->_require_user;
-    my $id   = $self->_get_options('external-id');
+    my %p    = $self->_get_options('external-id:s');
 
-    eval { $user->update_store(private_external_id => $id) };
+    eval { $user->update_store(private_external_id => $p{'external-id'}) };
     if (my $e = $@) {
         $self->_error($@);
     }
 
     $self->_success(
-        loc("External ID for '[_1]' set to '[_2]'.", $user->username, $id)
+        loc("External ID for '[_1]' set to '[_2]'.", $user->username, $p{'external-id'})
     );
 }
 
