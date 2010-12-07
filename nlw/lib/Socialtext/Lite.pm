@@ -224,10 +224,10 @@ sub edit_save {
     }
 
     if ( $@ =~ /^Contention:/ ) {
-        return $self->_handle_contention( $page, $p{subject}, $p{content} );
+        return $self->_handle_contention( $page, $p{subject}, ($p{action} eq 'comment') ? $p{comment} : $p{content} );
     }
     elsif ($@ =~ /Page is locked/) {
-        return $self->_handle_lock( $page, $p{subject}, $p{content} );
+        return $self->_handle_lock( $page, $p{subject}, ($p{action} eq 'comment') ? $p{comment} : $p{content} );
     }
     elsif ($@) {
         # rethrow

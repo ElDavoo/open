@@ -746,6 +746,18 @@ sub add_comment {
     my $self     = shift;
     my $wikitext = shift;
     my $signal_edit_to_network = shift;
+    my $user = $self->hub->current_user;
+
+    if (!$self->hub->checker->can_modify_locked($self)) {
+        my $ws = $self->hub->current_workspace;
+        st_log->info(
+            'LOCK_EDIT,PAGE,lock_edit,'
+            . 'workspace:' . $ws->name . '(' . $ws->workspace_id . '),'
+            . 'user:' . $user->email_address . '(' . $user->user_id . '),'
+            . 'page:' . $self->id
+        );
+        die "Page is locked and cannot be edited\n";
+    }
 
     my $timer = Socialtext::Timer->new;
 
@@ -758,7 +770,6 @@ sub add_comment {
             . $self->_comment_attribution );
 
     $self->metadata->update( user => $self->hub->current_user );
-    my $user = $self->hub->current_user;
 
     $self->metadata->RevisionSummary(loc('(comment)'));
     my $signal = $self->store(
