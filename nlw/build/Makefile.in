@@ -467,7 +467,6 @@ QUICK_TESTS = \
 	t/Socialtext/RevisionPlugin-side-by-side-diff.t \
 	t/Socialtext/RtfExportPlugin-gif-to-png.t \
 	t/Socialtext/Schema.t \
-	t/Socialtext/Search/AbstractFactory.t \
 	t/Socialtext/Search/SimpleAttachmentHit.t \
 	t/Socialtext/Search/SimplePageHit.t \
 	t/Socialtext/Sheet.t \
