@@ -1,15 +1,15 @@
 * Fixture: SocialWidgets
 
-| *Comment* | Test Case: Mobile Replies Checker. Imported variables |  |
+| *Comment* | Test Case: Mobile Replies Imported variables |  |
 | *Comment* | %%shared_account%% %%topic_signal%% %%reply_prefix%% |  |
 
-| *Comment* | Test Case: Mobile Replies Checker Setup and login |  |
+| *Comment* | Test Case: Mobile Replies Setup and login |  |
 | set | my_acct | %%shared_account%% |
 | set | my_user | `%%my_acct%%_mobile_checker@david.socialtext.net` |
 | st-admin | create-user --account %%my_acct%% --e %%my_user%% --p %%password%% |  |
 | st-login | %%my_user%% | %%password%% |
 
-| *Comment* | Test Case: Mobile Replies Checker Checks for only two most recent replies |  |
+| *Comment* | Test Case: Mobile Replies Checks for only two most recent replies |  |
 | open_ok | /st/m/signals |  |
 | wait_for_text_present_ok | %%topic_signal%% | 30000 |
 | text_like | qr/%%topic_signal%%.+%%reply_prefix%%-3.+%%reply_prefix%%-4/ |  |
@@ -19,30 +19,46 @@
 | wait_for_text_not_present_ok | %%reply_prefix%%-1 | 30000 |
 | wait_for_text_not_present_ok | %%reply_prefix%%-2 | 30000 |
 
-| *Comment* | Test Case: Mobile Replies Checker Open the Replies and Check |  |
+| *Comment* | Test Case: Mobile Replies Open the Replies and Check |  |
 | wait_for_element_visible_ok | `//div[@class='older'][last()]` | 30000 |
 | click_ok | `//div[@class='older'][last()]` |  |
 | wait_for_text_present_ok | %%reply_prefix%%-0-0 | 30000 |
 | text_like | qr/%%reply_prefix%%-0-0.+%%reply_prefix%%-0-1.+%%reply_prefix%%-0-2.+%%reply_prefix%%-1.+%%reply_prefix%%-2.+%%reply_prefix%%-3.+%%reply_prefix%%-4/ |  |
 
-| *Comment* | Test Case: Mobile Replies Checker Check Permalink View |  |
+| *Comment* | Test Case: Mobile Replies Check Permalink View |  |
 | wait_for_element_present_ok | //a[contains(text(),'minute')] | 30000 |
 | click_and_wait | //a[contains(text(),'minute')] |  |
 | wait_for_text_present_ok | %%topic_signal%% | 30000 |
 | wait_for_text_present_ok | All Replies | 30000 |
 | text_like | qr/%%reply_prefix%%-0-0.+%%reply_prefix%%-0-1.+%%reply_prefix%%-0-2.+%%reply_prefix%%-1.+%%reply_prefix%%-2.+%%reply_prefix%%-3.+%%reply_prefix%%-4/ |  |
 
-| *Comment* | Test Case: Mobile Replies Checker Post New Signal from Mobile UI |  |
+| *Comment* | Test Case: Mobile Replies Post New Signal from Mobile UI |  |
 | open_ok | /st/m/signals |  |
 | wait_for_text_present_ok | %%topic_signal%% | 30000 |
 | st-send-page-signal | new_signal_%%start_time%% |  |
 | wait_for_text_present_ok | new_signal_%%start_time%% | 30000 |
 | text_like | qr/You.+new_signal_%%start_time%%/ism |  |
 
-| *Comment* | Test Case: Mobile Replies Checker Check that new signal is above old signal |  |
+| *Comment* | Test Case: Mobile Replies Check that new signal is above old signal |  |
 | text_like | qr/You.+replies %%start_time%% seeder/ism |  |
 
-| *Comment* | Test Case: Mobile Replies Checker Use [Test Case: Replies Include] to Reply to original signal |  |
+| *Comment* | Test Case: Mobile Replies use Mobile UI to Post reply to new signal |  |
+| wait_for_element_visible_ok | //a[@class='replyLink'] | 30000 |
+| click_ok | //a[@class='replyLink'] |  |
+| wait_for_element_visible_ok | //div[@class='replies']//iframe[@name='signalFrame'] | 30000 |
+| pause | %%frame_pause%% |  |
+| select_frame | //div[@class='replies']//iframe[@name='signalFrame'] |  |
+| click_ok | //body |  |
+| type_ok | //body | new_signal_reply_%%start_time%% |
+| select_frame | relative=parent |  |
+| wait_for_element_visible_ok | //a[@class='btn post postReply'] | 5000 |
+| pause | %%post_pause%% |  |
+| click_ok | //a[@class='btn post postReply'] |  |
+| pause | %%my_wait%% |  |
+| wait_for_text_present_ok | new_signal_reply_%%start_time%% | 30000 |
+| text_like | qr/new_signal_%%start_time%%.+new_signal_reply_%%start_time%%/ |  |
+
+| *Comment* | Test Case: Mobile Replies Use [Test Case: Replies Include] to Reply to original signal |  |
 | open_ok | /?action=people |  |
 | wait_for_element_visible_ok | link=replies %%start_time%% seeder | 30000 |
 | click_and_wait | link=replies %%start_time%% seeder |  |
@@ -53,12 +69,21 @@
 | set | i | 5 |
 | include | [Test Case: Replies Include] |  |
 
-| *Comment* | Test Case: Mobile Replies Checker Check that old signal is now on top |  |
+| *Comment* | Test Case: Mobile Replies Check that old signal is now on top |  |
 | open_ok | /st/m/signals |  |
 | wait_for_text_present_ok | %%reply_prefix%%-5 | 30000 |
 | wait_for_element_present_ok | link=replies %%start_time%% seeder | 30000 |
 | wait_for_text_present_ok | You | 30000 |
 | text_like | qr/replies %%start_time%% seeder.+You/ |  |
 
+| *Comment* | Test Case: Mobile Replies Check that Reply to Conversation link works |  |
+| wait_for_element_visible_ok | //div[@class='clearHandler'] | 30000 |
+| click_ok | //div[@class='clearHandler'] |  |
+| wait_for_element_visible_ok | //div[@class='replies']//iframe[@name='signalFrame'] | 30000 |
+| pause | %%frame_pause%% |  |
+| select_frame | //div[@class='replies']//iframe[@name='signalFrame'] |  |
+| click_ok | //body |  |
+| type_ok | //body | test_only_%%start_time%% |
+| select_frame | relative=parent |  |
 
-| *Comment* | Test Case: Mobile Replies Checker COMPLETED |  |
+| *Comment* | Test Case: Mobile Replies COMPLETED |  |
