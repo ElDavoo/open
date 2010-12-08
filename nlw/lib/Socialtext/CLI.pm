@@ -366,15 +366,36 @@ sub list_plugins {
     print "$_\n" for $adapter->plugin_list;
 }
 
+sub _pluginPrefTable {
+    my ($self, $plugin_class, $account) = @_;
+    if ($account) {
+        return $plugin_class->GetAccountPluginPrefTable($account->account_id);
+    }
+    else {
+        return Socialtext::PrefsTable->new(
+            table    => 'plugin_pref',
+            identity => {
+                plugin  => $plugin_class->name,
+            }
+        );
+    }
+}
+
 sub set_plugin_pref {
     my $self = shift;
+    my $account  = $self->_require_account(1);
     my $plugins  = $self->_require_plugin;
     $plugins = $plugins eq 'all' ? $self->_in_scope_plugins : $plugins;
 
     for my $p (@$plugins) {
         my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class($p);
-        next unless $plugin_class;
-        $plugin_class->set_plugin_prefs(@{$self->{argv}});
+        return unless $plugin_class;
+
+        my $table = $self->_pluginPrefTable($plugin_class, $account);
+        if ($account) {
+            $plugin_class->CheckAccountPluginPrefs({ @{$self->{argv}} });
+        }
+        $table->set(@{$self->{argv}});
     }
 
     my $to_string = join(', ', sort @$plugins);
@@ -385,12 +406,14 @@ sub set_plugin_pref {
 
 sub clear_plugin_prefs {
     my $self = shift;
+    my $account  = $self->_require_account(1);
     my $plugins  = $self->_require_plugin;
     $plugins = $plugins eq 'all' ? $self->_in_scope_plugins : $plugins;
     
     for my $p (@$plugins) {
         my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class($p);
-        $plugin_class->clear_plugin_prefs();
+        my $table = $self->_pluginPrefTable($plugin_class, $account);
+        $table->clear();
     }
 
     my $to_string = join(', ', @$plugins);
@@ -402,6 +425,7 @@ sub clear_plugin_prefs {
 sub show_plugin_prefs {
     my $self = shift;
     my $plugin  = $self->_require_plugin;
+    my $account  = $self->_require_account(1);
 
     # only accept a single `--plugin` param
     $self->_error(loc('show-plugin-prefs only works on a single plugin'))
@@ -409,8 +433,11 @@ sub show_plugin_prefs {
 
     $plugin = $plugin->[0];
     my $plugin_class = Socialtext::Pluggable::Adapter->plugin_class($plugin);
-    my $prefs = $plugin_class->get_plugin_prefs();
-    my $msg = loc("Preferences for the [_1] plugin:", $plugin);
+    my $table = $self->_pluginPrefTable($plugin_class, $account);
+    my $prefs = $table->get();
+    my $msg = $account
+        ? loc("Preferences for the [_1] plugin in the [_2] account", $plugin, $account->name)
+        : loc("Preferences for the [_1] plugin:", $plugin);
     $msg .= "\n";
     if (%$prefs) {
         for my $key (sort keys %$prefs) {
@@ -428,18 +455,13 @@ sub set_account_plugin_pref {
     my $self = shift;
     my $account = $self->_require_account;
     my $plugins = $self->_require_plugin;
-    die 'A single plugin is required' unless @$plugins == 1;
+
+    # only accept a single `--plugin` param
+    $self->_error(loc('set-account-plugin-pref only works on a single plugin'))
+         if (!ref($plugins) or scalar(@$plugins) > 1);
+
     my $plugin = Socialtext::Pluggable::Adapter->plugin_class($plugins->[0]);
 
-    my ($key, $val) = @{$self->{argv}};
-    die 'key, val required' unless $key and defined $val;
-
-    $plugin->CheckAccountPluginPrefs({ $key => $val });
-
-    my $prefs = $plugin->GetAccountPluginPrefTable($account->account_id);
-    $prefs->set($key => $val);
-
-    # Clear the json cache so activities widgets get the new limit
     Socialtext::JSON::Proxy::Helper->ClearForAccount($account->account_id);
 
     $self->_success(
@@ -4104,9 +4126,9 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
                  --plugin <name>
   disable-plugin [--account | --all-accounts | --workspace]
                  --plugin <name>
-  set-plugin-pref    --plugin <name> KEY VALUE
-  show-plugin-prefs  --plugin <name>
-  clear-plugin-prefs --plugin <name>
+  set-plugin-pref    --plugin <name> [ --account <name> ] KEY VALUE
+  show-plugin-prefs  --plugin <name> [ --account <name> ]
+  clear-plugin-prefs --plugin <name> [ --account <name> ]
 
   EMAIL
 
