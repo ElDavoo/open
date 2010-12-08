@@ -48,8 +48,8 @@ END_OF_HELP
     exit 1;
 }
 
-my (%apache_command, %ceqlotron_command, %appliance_command,
-    %pushd_command, %userd_command, $nginx, $apache_perl);
+my (%apache_command, %ceqlotron_command, %appliance_command, %pushd_command,
+    %userd_command, %jsonproxy_command, $nginx, $apache_perl);
 
 # Options
 my $use_test_server  = 0;
@@ -94,9 +94,6 @@ $appliance_please = $ceqlotron_please = $nginx_please = $apache1_please
           || $userd_please
           || $jsonproxy_please );
 
-my $jsonproxy = "$FindBin::Bin/../../plugins/widgets/etc/init.d/json-proxy";
-$jsonproxy_please = 0 unless -e $jsonproxy;
-
 # These servers don't run in test mode
 if ($use_test_server) {
     # XXX: does jsonproxy belong here too?
@@ -130,7 +127,7 @@ sub dispatch {
             $appliance_command{$verb}->() if $appliance_please;
             $pushd_command{$verb}->() if $pushd_please;
             $userd_command{$verb}->() if $userd_please;
-            shell_run "$jsonproxy $verb" if $jsonproxy_please;
+            $jsonproxy_command{$verb}->() if $jsonproxy_please;
         }
         else {
             warn "nlwctl: Skipping unknown command '$verb'.\n";
@@ -193,7 +190,7 @@ sub init_commands {
     );
 
     my $appliance_svc_dir
-        = "$FindBin::Bin/../../appliance/libsocialtext-appliance-perl/service";
+        = "$ENV{ST_CURRENT}/appliance/libsocialtext-appliance-perl/service";
     %appliance_command = (
         start => sub {
             print "Starting appliance console.\n";
@@ -209,7 +206,7 @@ sub init_commands {
     );
 
     my $pushd_svc_dir
-        = "$FindBin::Bin/../../plugins/push/service";
+        = "$ENV{ST_CURRENT}/plugins/push/service";
     %pushd_command = (
         start => sub {
             print "Starting pushd service.\n";
@@ -225,7 +222,7 @@ sub init_commands {
     );
 
     my $userd_svc_dir
-        = "$FindBin::Bin/../service/st-userd";
+        = "$ENV{ST_CURRENT}/nlw/service/st-userd";
     %userd_command = (
         start => sub {
             print "Starting userd service.\n";
@@ -237,6 +234,22 @@ sub init_commands {
         },
         hup     => sub { },
         restart => sub { $userd_command{$_}->(@_) for qw( stop start ) },
+        ports   => sub { },
+    );
+
+    my $jsonproxy_svc_dir
+        = "$ENV{ST_CURRENT}/plugins/widgets/service";
+    %jsonproxy_command = (
+        start => sub {
+            print "Starting jsonproxy service.\n";
+            shell_run("svc -u $jsonproxy_svc_dir");
+        },
+        stop => sub {
+            print "Stopping jsonproxy service.\n";
+            shell_run("svc -d $jsonproxy_svc_dir");
+        },
+        hup     => sub { },
+        restart => sub { $jsonproxy_command{$_}->(@_) for qw( stop start ) },
         ports   => sub { },
     );
 }
