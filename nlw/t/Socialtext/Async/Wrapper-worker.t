@@ -3,7 +3,7 @@
 package Foo;    # so we can use the Async::Wrapper here in the test
 use strict;
 use warnings;
-use Test::Socialtext tests => 9;
+use Test::Socialtext tests => 8;
 use Moose;
 use File::Temp qw(tempfile);
 use List::MoreUtils qw(part);

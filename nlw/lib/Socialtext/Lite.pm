@@ -268,11 +268,11 @@ sub workspace_list {
     );
 }
 
-=head2 search([$search_term])
+=head2 search([search_term => $search_term, page_num => $page_num])
 
 Returns a form for searching the current workspace. If $search_term 
 is defined, the results of that search are provided as a list of links
-to pages.
+to pages, with $page_num specifing the 0-based page index.
 
 =cut 
 sub search {
@@ -330,11 +330,12 @@ sub search {
     );
 }
 
-=head2 tag([$tag])
+=head2 tag([tag => $tag, pagenum => $pagenum])
 
 If $tag is not defined, provide a list of links to all categories
 in the current workspace. If $tag is defined, provide a list of
-links to all the pages in the tag.
+links to all the pages in the tag, with $page_num specifing the
+0-based page index.
 
 =cut 
 sub tag {

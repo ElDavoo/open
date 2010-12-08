@@ -33,11 +33,15 @@
 | type_ok | st-attachments-attach-filename | %%wikitest_files%%wikitest.jpg |
 | wait_for_text_present_ok | Uploaded files: | 30000 |
 
+| pause | 5000 |
+
 | *Comment* | Test Case: All Files wikitest.jpg upload waits for the Done button |  |
 | wait_for_element_visible_ok | st-attachments-attach-closebutton | 120000 |
 | wait_for_element_visible_ok | st-attachments-attach-filename | 30000 |
 | type_ok | st-attachments-attach-filename | %%wikitest_files%%wikitest.doc |
 | wait_for_text_present_ok | Uploaded files: | 30000 |
+
+| pause | 5000 |
 
 | *Comment* | Test Case: All Files wikitest.doc upload waits for the Done button |  |
 | wait_for_element_visible_ok | st-attachments-attach-closebutton | 120000 |

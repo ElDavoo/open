@@ -6,8 +6,7 @@
 | st-setup-a-group | 1 | 1 | 1 |
 | enable-acct-plugin | signals | %%group_acct%% |  |
 
-| set | group_mbr_short | guimbr%%start_time%% |
-| set | group_mbr_bestfull | guimbr%%start_time%% |
+| set | group_mbr_short | grpmbr%%start_time%% |
 | set | group_mbr | %%group_mbr_short%%@ken.socialtext.net |
 
 | create-user | %%group_mbr%% | %%password%% | %%group_acct%% |
@@ -19,14 +18,18 @@
 | *Comment* | Test Case: Groups UI Delegate Membership - Open The Group |  |
 | open_ok | /st/edit_group/%%group_id%% |  |
 | wait_for_text_present_ok | Edit Group |  |
+| wait_for_element_visible_ok | create-group | 30000 |
+| pause | 5000 |  |
 
 | *Comment* | Test Case: Groups UI Delegate Membership - Make %%group_mbr%% an admin |  |
 | st-name-widget | 3 | members_widget |
 | st-widget-title-like | members_widget | Members |
 | st-select-widget-frame | members_widget |  |
 | text_like | //body | qr/%%group_mbr_short%%.*Member/ |
-| wait_for_element_present_ok | //a[@value='Admin'] | 30000 |
-| click_ok | //a[@value='admin'] |  |
+| select-frame | relative=parent |  |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-7-list'] | 30000 |
+| click_ok | //*[@id='st-dropdown-7-list']/li[2]/a |  |
+| st-select-widget-frame | members_widget |  |
 | text_like | //body | qr/changed/ism |
 | text_like | //body | qr/%%group_mbr_short%%\s+Admin/ |
 | select-frame | relative=parent |  |
@@ -36,29 +39,33 @@
 | *Comment* | Test Case: Groups UI Delegate Membership - Check to make sure %%group_mbr%% is an admin |  |
 | open_ok | /st/edit_group/%%group_id%% |  |
 | wait_for_text_present_ok | Edit Group |  |
+| wait_for_element_visible_ok | create-group | 30000 |
+| pause | 5000 |  |
 | st-name-widget | 3 | members_widget |
 | st-widget-title-like | members_widget | Members |
 | st-select-widget-frame | members_widget |  |
-| text_like | //body | qr/%%group_mbr_short%%\s+Admin/ |
+| text_like | //body | qr/%%group_mbr_short%%.*Admin/ |
 
-| *Comment* | Test Case: Groups UI Delegate Membership - Change back to Member, save takes |  |
-| wait_for_element_present_ok | //a[@value='member'] | 30000 |
-| click_ok | //a[@value='member'] |  |
+| *Comment* | Test Case: Groups UI Delegate Membership - Change back to Member |  |
+| select-frame | relative=parent |  |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-7-list'] | 30000 |
+| click_ok | //*[@id='st-dropdown-7-list']/li[1]/a |  |
+| st-select-widget-frame | members_widget |  |
 | text_like | //body | qr/changed/ism |
 | text_like | //body | qr/%%group_mbr_short%%\s+Member/ |
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | create-group | 30000 |
 | click_and_wait | create-group |  |
-| st-name-widget | 1 | information_widget |
-| st-widget-title-like | information_widget | Information |
-| st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_and_wait | link=(Edit) |  |
-| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Groups UI Delegate Membership - Check that %%group_mbr%% is back to member |  |
+| open_ok | /st/edit_group/%%group_id%% |  |
+| wait_for_text_present_ok | Edit Group |  |
+| wait_for_element_visible_ok | create-group | 30000 |
+| pause | 5000 |  |
 | st-name-widget | 3 | members_widget |
 | st-widget-title-like | members_widget | Members |
 | st-select-widget-frame | members_widget |  |
-| text_like | //body | qr/%%group_mbr_short%%\s+Member/ |
+| text_like | //body | qr/%%group_mbr_short%%.*Member/ |
 | select-frame | relative=parent |  |
 | click_and_wait | create-group |  |
 
@@ -66,43 +73,25 @@
 | st-admin | remove-member --g %%group_id%% --email %%username%% |  |
 | st-admin | add-group-admin --g %%group_id%% --email %%group_user%% |  |
 
-^ END
-
-| *Comment* | Test Case: Groups UI Delegate Membership Set single element to Admin, click member, still see Admin! |  |
-| st-logoutin | %%group_mbr%% | %%password%% |
-| open_ok | /st/group/%%group_id%% |  |
-| st-name-widget | 1 | information_widget |
-| st-widget-title-like | information_widget | Information |
-| st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_and_wait | link=(Edit) |  |
-| select-frame | relative=parent |  |
-| st-name-widget | 3 | members_widget |
-| st-widget-title-like | members_widget | Members |
-| st-select-widget-frame | members_widget |  |
-| text_like | //body | qr/%%group_user_short%%\s+Admin/ |
-| wait_for_element_present_ok | //a[@value='Member'] | 30000 |
-| click_ok | //a[@value='Member'] |  |
-| pause | 3000 |  |
-| verifyAlert | There should always be at least one admin for this group. |  |
-| text_like | //body | qr/%%group_user_short%%\s+Admin/ |
-| select-frame | relative=parent |  |
-
-| *Comment* | Test Case: Groups UI Delegate Membership - Save, Edit, Still see still see Admin! |  |
-| click_and_wait | create-group |  |
-| st-name-widget | 1 | information_widget |
-| st-widget-title-like | information_widget | Information |
-| st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_and_wait | link=(Edit) |  |
-| select-frame | relative=parent |  |
+| *Comment* | Test Case: Groups UI Delegate Membership attempt to remove the last Admin |  |
+| st-logoutin | %%group_user%% | %%password%% |
+| open_ok | /st/edit_group/%%group_id%% |  |
+| wait_for_text_present_ok | Edit Group |  |
+| wait_for_element_visible_ok | create-group | 30000 |
+| pause | 5000 |  |
 | st-name-widget | 3 | members_widget |
 | st-widget-title-like | members_widget | Members |
 | st-select-widget-frame | members_widget |  |
 | text_like | //body | qr/%%group_user_short%%\s+Admin/ |
 | select-frame | relative=parent |  |
-| click_and_wait | create-group |  |
-| setSpeed | 0 |  |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-3-list'] | 30000 |
+| click_ok | //*[@id='st-dropdown-3-list']/li[1]/a |  |
+| st-select-widget-frame | members_widget |  |
+| wait_for_text_present_ok | Groups need at least one admin | 30000 |
+| wait_for_text_not_present_ok | Groups need at least one admin | 30000 |
+| pause | 2000 |  |
+| text_like | //body | qr/%%group_user_short%%\s+Admin/ |
+| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups UI Delegate Membership. TEARDOWN |
 | delete-group | %%group_id%% |

@@ -58,7 +58,7 @@ like(
     'page display includes correct content'
 );
 like(
-    $html, qr{<a href="/nlw/submit/logout\?redirect_to=[^"]+">Log out</a>},
+    $html, qr{<a rel="external" href="/nlw/submit/logout\?redirect_to=[^"]+">Log out</a>},
     'page display includes log out button'
 );
 
@@ -165,20 +165,20 @@ $html = $lite->recent_changes();
 # be what's shown
 like( $html, qr{\Q<title>Admin Wiki : Recent Changes</title>},
     'recent changes page has correct title' );
-like( $html, qr{<ul>\s+<li>\s+<a title="Stronger Than Dust\?"},
+like( $html, qr{<ul data-role="listview">\s+<li>\s+<a title="Stronger Than Dust\?"},
     'most recently changed page is the most recently listed page' );
 
 # get the search page
 $html = $lite->search();
-like( $html, qr{\Q<input name="search_term" value="" />},
+like( $html, qr{\Q<input id="st-search-text" name="search_term" data-inline="true" type="search" value="" />},
     'search form presents when no query' );
 
 # index the content we created
 ceqlotron_run_synchronously();
 
 # do a word search
-$html = $lite->search('title:dust');
-like( $html, qr{\Q<input name="search_term" value="title:dust" />},
+$html = $lite->search(search_term => 'title:dust');
+like( $html, qr{\Q<input id="st-search-text" name="search_term" data-inline="true" type="search" value="title:dust" />},
     'search form presents with search_term' );
 like( $html, qr{<li>.*<a.*href="/m/page/admin/stronger_than_dust"}ms, 
     'search results include expected page' );
@@ -202,8 +202,8 @@ like( $html, qr{<li>\s*<a.*href="/m/tag/admin/Welcome".*>\s*Welcome\s*</a>},
     'tag Welcome is listed with correct url and name' );
 
 # get a specific tag
-my $html_from_lc_tag = $lite->tag('welcome');
-$html = $lite->tag('Welcome');
+my $html_from_lc_tag = $lite->tag(tag => 'welcome');
+$html = $lite->tag(tag => 'Welcome');
 
 is ( lc($html_from_lc_tag), lc($html), 'case of tag does not change content' );
 # XXX case is odd

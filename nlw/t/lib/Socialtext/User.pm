@@ -21,8 +21,12 @@ sub new {
     my $type = shift;
     my $value = shift || '';
     if (defined $type) {
-        if ($type eq 'username' and $value =~ m/^bad/) {
-            return undef;
+        if ($type eq 'username') {
+            return undef if $value =~ m/^bad/;
+            if (exists $Users{$value} and !@_) {
+                # warn "RETURNING cached user for $value";
+                return $Users{$value};
+            }
         }
         elsif ($type eq 'user_id') {
             return undef if $value =~ m/^\d+$/ and $value >= USER_END;
@@ -32,7 +36,12 @@ sub new {
             }
         }
     }
-    my $self = { $type ? ($type => $value) : (), @_ };
+    return $class->_new( $type ? ($type => $value) : (), @_ );
+}
+
+sub _new {
+    my $class = shift;
+    my $self = { @_ };
     bless $self, $class;
     return $self;
 }

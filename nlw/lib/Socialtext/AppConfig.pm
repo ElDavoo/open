@@ -1248,6 +1248,22 @@ Set this to false disables the javascript minifier.
 
 Default: 1
 
+=for code type => SCALAR_TYPE
+
+=head2 analytics_id
+
+Server-wide Google Analytics
+
+Optional.
+
+=for code type => SCALAR_TYPE
+
+=head2 analytics_domains
+
+Server-wide Google Analytics - domains
+
+Optional.
+
 =for code type => BOOLEAN_TYPE
 
 =head2 disable_mobile_redirect

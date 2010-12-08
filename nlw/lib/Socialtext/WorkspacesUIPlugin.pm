@@ -13,6 +13,7 @@ use Socialtext::Role;
 use Socialtext::l10n qw(loc);
 use Socialtext::File::Copy::Recursive qw(dircopy);
 use Socialtext::Log 'st_log';
+use Socialtext::Group ();
 use YAML qw(LoadFile);
 
 sub class_id { 'workspaces_ui' }
@@ -499,6 +500,7 @@ sub _workspace_clone_or_create {
     my $settings_section = $self->template_process(
         "element/settings/$section",
         workspace => $self->hub->current_workspace,
+        can_create_groups => Socialtext::Group->User_can_create_group($self->hub->current_user),
         $self->status_messages_for_template,
     );
 

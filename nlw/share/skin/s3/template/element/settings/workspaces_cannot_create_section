@@ -4,21 +4,24 @@
   <dt><label>[% loc('Create New Workspace') %]</label></dt>
   <dd>
     <p>
-      In order to create a workspace, the Workspace must belong to a Group.
-      You can create a new Group, or add a workspace to an existing Group.
+      [% loc('In order to create a workspace, the Workspace must belong to a Group.') %]
     </p>
+    [% IF can_create_groups %]
     <p>
-      <em>To add a workspace to an <strong>existing group,</strong></em> go to
-      the <a href="/st/groups">"Group Directory"</a> under the Groups pulldown
-      in the main navigation above, go to your chosen group, click "Edit" and
-      create the workspace. Currently, you can create a new workspace only for
-      a private group.
+         [% loc('You can create a new Group, or add a workspace to an existing Group.') %]
     </p>
+    [% END %]
     <p>
-      <em>To add a workspace to a <strong>new group,</strong></em> go to
-      <a href="#" onclick="showCreateGroupLightbox(); return false">"Create Group"</a>
-      under the Groups pulldown in the main navigation above. From there, use
-      the "Workspaces" section to create your workspace.
+      [% loc('<em>To add a workspace to an <strong>existing group,</strong></em> go to the <a href="/st/groups">"Group Directory"</a> under the Groups pulldown in the main navigation above, go to your chosen group, click "Edit" and create the workspace.') %]
     </p>
+    [% IF can_create_groups %]
+    <p>
+      [% loc('<em>To add a workspace to a <strong>new group,</strong></em> go to <a href="#" onclick="showCreateGroupLightbox(); return false">"Create Group"</a> under the Groups pulldown in the main navigation above. From there, use the "Workspaces" section to create your workspace.') %]
+    </p>
+    [% ELSE %]
+    <p>
+      [% loc('Your appliance is configured so that only account administrators can create new groups.') %]
+    </p>
+    [% END %]
   </dd>
 </dl>
