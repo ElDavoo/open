@@ -929,7 +929,7 @@ sub _call_hook {
     require Socialtext::Pluggable::Adapter;
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub($self);
-    $adapter->hook($hclass => $self);
+    $adapter->hook($hclass => [$self]);
 }
 
 # Class methods

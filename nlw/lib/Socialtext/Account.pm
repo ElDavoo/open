@@ -340,7 +340,7 @@ sub export {
             [ map { $_->name } @{ $self->all_users_workspaces } ],
         (map { $_ => $self->$_ } grep {/^desktop_/} @ACCT_COLS),
     };
-    $hub->pluggable->hook('nlw.export_account', $self, $data, \%opts);
+    $hub->pluggable->hook('nlw.export_account', [$self, $data, \%opts]);
 
     DumpFile($export_file, $data);
     return $export_file;
@@ -527,7 +527,7 @@ sub import_file {
         }
     }
 
-    $hub->pluggable->hook('nlw.import_account', $account, $hash, \%opts);
+    $hub->pluggable->hook('nlw.import_account', [$account, $hash, \%opts]);
     die $hub->pluggable->hook_error if ($hub->pluggable->hook_error);
 
     $account->{_import_hash} = $hash;
@@ -584,7 +584,7 @@ sub finish_import {
         $ws->assign_role_to_account(account => $self, role => 'member');
     }
 
-    $hub->pluggable->hook('nlw.finish_import_account', $self, $meta, \%opts);
+    $hub->pluggable->hook('nlw.finish_import_account', [$self, $meta, \%opts]);
     die $hub->pluggable->hook_error if ($hub->pluggable->hook_error);
 }
 
@@ -644,7 +644,7 @@ after 'role_change_event' => sub {
     if ($to_hook) {
         my $adapter = Socialtext::Pluggable::Adapter->new();
         $adapter->make_hub( Socialtext::User->SystemUser() );
-        $adapter->hook($to_hook, $self, $thing, $role);
+        $adapter->hook($to_hook, [$self, $thing, $role]);
     }
 };
 

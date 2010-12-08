@@ -268,7 +268,11 @@ sub hook_error {
 
 
 sub hook {
-    my ( $self, $name, @args ) = @_;
+    my ( $self, $name, $args, $config ) = @_;
+
+    if ($args and ref $args ne 'ARRAY') {
+        croak "hook arguments must be passed by reference!";
+    }
 
     my @output;
     if ( my $hooks = $hooks{$name} ) {
@@ -278,7 +282,7 @@ sub hook {
             my $plugin = $self->plugin_object($hook->{class});
             my $type = $hook->{type};
 
-            my $enabled = $plugin->is_hook_enabled($name, @args);
+            my $enabled = $plugin->is_hook_enabled($name, $config);
             next unless $enabled;
                          
             eval {
@@ -286,7 +290,7 @@ sub hook {
                     ($name =~ /^action\./) ? $plugin->name : undef;
                 $plugin->declined(undef);
                 $plugin->last($ONCE_TYPES{$type});
-                my $results = $plugin->$method(@args);
+                my $results = $plugin->$method(@$args);
                 if ($plugin->declined) {
                     $plugin->last(undef);
                 }

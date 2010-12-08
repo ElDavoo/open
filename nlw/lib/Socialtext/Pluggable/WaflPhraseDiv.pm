@@ -15,7 +15,7 @@ field wafl_id => 'pluggable_waflphrasediv';
 sub html {
     my $self = shift;
     my $wafl = $self->method;
-    return $self->hub->pluggable->hook("wafl.$wafl",$self->arguments);
+    return $self->hub->pluggable->hook("wafl.$wafl",[$self->arguments]);
 }
 
 1;

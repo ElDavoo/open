@@ -909,8 +909,8 @@ sub _perform_store_actions {
     $self->_log_page_action();
     $self->_cache_html();
 
-    $self->hub->pluggable->hook( 'nlw.page.update', $self,
-        workspace => $self->hub->current_workspace,
+    $self->hub->pluggable->hook( 'nlw.page.update',
+        [$self, workspace => $self->hub->current_workspace],
     );
 }
 
@@ -2014,9 +2014,9 @@ sub edit_in_progress {
                 username => $user->best_full_name,
                 email_address => $user->email_address,
                 user_business_card => $self->hub->pluggable->hook(
-                    'template.user_business_card.content', $user->user_id),
+                    'template.user_business_card.content', [$user->user_id]),
                 user_link => $self->hub->pluggable->hook(
-                    'template.open_user_link.content', $user->user_id
+                    'template.open_user_link.content', [$user->user_id]
                 ),
                 minutes_ago   => int((time - str2time($evt->{at})) / 60 ),
             };

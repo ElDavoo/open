@@ -130,8 +130,8 @@ sub add_to_watchlist {
 
     # Ideally this should be in Socialtext::Watchlist, but it doesn't have
     # a hub or know the actor.
-    $self->hub->pluggable->hook( 'nlw.page.watch', $page,
-        workspace => $self->hub->current_workspace,
+    $self->hub->pluggable->hook( 'nlw.page.watch',
+        [$page, workspace => $self->hub->current_workspace]
     );
     return '1';
 }
@@ -179,8 +179,8 @@ sub _record_watch_delete {
         revision_id => $page->revision_id,
     });
 
-    $self->hub->pluggable->hook( 'nlw.page.unwatch', $page,
-        workspace => $self->hub->current_workspace,
+    $self->hub->pluggable->hook( 'nlw.page.unwatch',
+        [$page, workspace => $self->hub->current_workspace]
     );
 }
 
