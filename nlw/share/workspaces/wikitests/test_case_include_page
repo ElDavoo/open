@@ -48,10 +48,11 @@ Repeat test using Miki/Lite access.
 | text_like | //div[@class='wiki-include-content'] | %%content%% |
 
 | *Comment* | Test Case: Include Page. Open the included page for editing |  |
-| click_and_wait | //a[@class="smallEditButton"] |  |
+
+| click_and_wait | link=Edit |  |
 | wait_for_element_visible_ok | edit_textarea | 30000 |
-| wait_for_element_visible_ok | link=Cancel Edit | 30000 |
-| verifyValue | edit_textarea | %%content%% |
+| wait_for_element_visible_ok | link=Cancel | 30000 |
+| verifyValue | edit_textarea | `{include: [%%title%%]}` |
 
 Include a page in a public wiki page when logged in. Test for content and edit button.
 Repeat test using Miki/Lite access.
@@ -80,20 +81,18 @@ Repeat test using Miki/Lite access.
 | text_like | //div[@class='wiki-include-content'] | %%content%% |
 
 | *Comment* | Test Case: Include Page. PUBLIC MIKI Open the included page for editing |  |
-| click_and_wait | //a[@class="smallEditButton"] |  |
+| click_and_wait | link=Edit |  |
 | wait_for_element_visible_ok | edit_textarea | 30000 |
-| wait_for_element_visible_ok | link=Cancel Edit | 30000 |
-| verifyValue | edit_textarea | %%content%% |
-| click_and_wait | link=Cancel Edit |  |
+| wait_for_element_visible_ok | link=Cancel | 30000 |
+| verifyValue | edit_textarea | `{include: [%%title%%]}` |
+| click_and_wait | link=Cancel |  |
 
 Logout from Miki. Test for content and edit button in page view.
 Repeat test using Miki/Lite access.
 
 | *Comment* | Test Case: Include Page. PUBLIC MIKI. LOGOUT from Miki |  |
-| click_and_wait | link=Log out |  |
-| wait_for_element_visible_ok | st-login-form |  |
-| text_like | You have free |  |
-| text_like | these public wikis |  |
+| open_ok | /st/dashboard |  |
+| st-logout |  |  |
 
 | *Comment* | Test Case: Include Page. PUBLIC LOGGED OUT. Open page in page view while logged out |  |
 | open_ok | /%%tcipw%%/?TC Include Page %%start_time%% |  |
@@ -117,10 +116,10 @@ Repeat test using Miki/Lite access.
 | text_like | //div[@class='wiki-include-content'] | %%content%% |
 
 | *Comment* | Test Case: Include Page. PUBLIC MIKI LOGGED OUT. Open the included page for editing |  |
-| click_and_wait | //a[@class="smallEditButton"] |  |
+| click_and_wait | link=Edit |  |
 | wait_for_element_visible_ok | edit_textarea | 30000 |
-| wait_for_element_visible_ok | link=Cancel Edit | 30000 |
-| verifyValue | edit_textarea | %%content%% |
+| wait_for_element_visible_ok | link=Cancel | 30000 |
+| verifyValue | edit_textarea | `{include: [%%title%%]}` |
 
 | *Comment* | Test Case: Include Page. AUTH. Login. Open the included page for editing |  |
 | st-admin | set-permissions --w %%tcipw%% --p public-join-to-edit | The permissions for the %%tcipw%% workspace have been changed to public-join-to-edit. |
@@ -146,11 +145,11 @@ Repeat test using Miki/Lite access.
 | text_like | //div[@class='wiki-include-content'] | %%content%% |
 
 | *Comment* | Test Case: Include Page. AUTH MIKI Open the included page for editing |  |
-| click_and_wait | //a[@class="smallEditButton"] |  |
+| click_and_wait | link=Edit |  |
 | wait_for_element_visible_ok | edit_textarea | 30000 |
-| wait_for_element_visible_ok | link=Cancel Edit | 30000 |
-| verifyValue | edit_textarea | %%content%% |
-| click_and_wait | link=Cancel Edit |  |
+| wait_for_element_visible_ok | link=Cancel | 30000 |
+| verifyValue | edit_textarea | `{include: [%%title%%]}` |
+| click_and_wait | link=Cancel |  |
 
 Logout from Miki. Test for content and edit button in page view.
 Repeat test using Miki/Lite access.
@@ -158,8 +157,7 @@ Repeat test using Miki/Lite access.
 | *Comment* | Test Case: Include Page. AUTH MIKI. LOGOUT from Miki |  |
 | click_and_wait | link=Log out |  |
 | wait_for_element_visible_ok | st-login-form |  |
-| text_like | You have free |  |
-| text_like | these public wikis |  |
+
 
 | *Comment* | Test Case: Include Page. AUTH LOGGED OUT. Open page in page view while logged out |  |
 | open_ok | /%%tcipw%%/?TC Include Page %%start_time%% |  |
@@ -168,7 +166,7 @@ Repeat test using Miki/Lite access.
 | text_like | //div[@class='wiki-include-content'] | %%content%% |
 
 | *Comment* | Test Case: Include Page. AUTH LOGGED OUT. CANNOT Open the included page for editing |  |
-| wait_for_element_not_present_ok | //a[@class="smallEditButton"] | 10000 |
+| wait_for_element_not_present_ok | link=Edit | 10000 |
 
 | *Comment* | Test Case: Include Page. AUTH MIKI LOGGED OUT. Run the same test in Miki |  |
 | open_ok | /m/page/%%tcipw%%/tc_include_page_%%start_time%% |  |
@@ -178,7 +176,7 @@ Repeat test using Miki/Lite access.
 | text_like | //div[@class='wiki-include-content'] | %%content%% |
 
 | *Comment* | Test Case: Include Page. AUTH MIKI LOGGED OUT. CANNOT Open the included page for editing |  |
-| wait_for_element_not_present_ok | //a[@class="smallEditButton"] | 10000 |
+| wait_for_element_not_present_ok | link=Edit | 10000 |
 
 Incipient include works in browser and MIKI
 
@@ -229,11 +227,13 @@ repeat in Miki
 
 | *Comment* | Test Case: Include Page MIKI. Open the incipient included page for editing using the Edit button |  |
 | *Comment* | Test Case: Include Page MIKI. Page opens for editing |  |
-| click_and_wait | //a[@class="smallEditButton"] |  |
+| click_and_wait | link=%%tcipii%% |  |
+| wait_for_element_visible_ok | link=Edit | 30000 |
+| click_and_wait | link=Edit |  |
 | wait_for_element_visible_ok | edit_textarea | 30000 |
-| wait_for_element_visible_ok | link=Cancel Edit | 30000 |
+| wait_for_element_visible_ok | link=Cancel | 30000 |
 | verifyValue | edit_textarea | qr/^$/ |
-| click_and_wait | link=Cancel Edit |  |
+| click_and_wait | link=Cancel |  |
 
 | *Comment* | Test Case: Include Page MIKI. Open the incipient included page for editing using the link |  |
 | *Comment* | Test Case: Include Page MIKI. Page appears but not in edit mode. Use Edit link. |  |

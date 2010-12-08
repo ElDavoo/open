@@ -456,6 +456,26 @@ sub st_create_pages {
     ok 1, "Created $numberpages of pages in $workspace";
 }
 
+=head st_massive_tags (post URL, start tags with, end tag with - examples 'aa' and 'az' would  make 26 tags.)
+
+Automates multiple runs of POSTING an add tag to a workspace
+Actually, it can automate pretty much any post.  To automate tagging, your URL should look something like his:
+
+/data/workspaces/%%ws%%/pages/pagname/tags
+
+Where %%ws%% is the workspace name and pagename is the actual page name.
+
+=cut
+
+sub st_massive_tags {
+    my ($self, $url, $tagstart, $tagend) = @_;
+    for (my $idx=$tagstart; $idx lt $tagend; $idx++) {
+       $self->handle_command('POST',$url,'Content-Type=text/plain', $idx);
+    }
+    ok(1, 'Finished call to st_massive_tags');
+    
+}
+
 sub st_create_page {
     my ($self, $workspace, $title) = @_;
     my $user = Socialtext::User->new(username => $self->{'username'});
@@ -674,7 +694,7 @@ sub create_user {
 
     # Special mode that DTRT
     if ($arg_count == 1) {
-        my $name = $email;
+        $name = $email;
         unless ($email =~ /@/) {
             $email = $name . $self->{start_time} . '@ken.socialtext.net';
         }
