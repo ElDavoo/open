@@ -69,6 +69,7 @@ Add_from_hash: {
             username => 'ronnie',
             primary_account_id => $default_acct_id,
         );
+        die "User needs to exist now" unless $user;
         local $Socialtext::User::Users{ronnie} = $user;
         my @successes;
         my @failures;
@@ -178,7 +179,7 @@ Add_one_user_csv: {
 }
 
 Add_user_already_added: {
-    local $Socialtext::User::Users{guybrush} = Socialtext::User->new(
+    local $Socialtext::User::Users{guybrush} = Socialtext::User->_new(
         username => 'guybrush',
     );
 
