@@ -119,7 +119,10 @@ fi
 
 
 st-admin enable-plugin --all-accounts --plugin dashboard \
-    --plugin signals --plugin groups --plugin push
+    --plugin signals --plugin groups --plugin push --plugin analytics
+
+st-config set analytics_id UA-20106506-1
+st-config set analytics_domains multiple-domains
 
 if [ $UPDATE_WIDGETS == 1 ]; then
     set -x
