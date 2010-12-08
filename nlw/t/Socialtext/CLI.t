@@ -12,7 +12,7 @@ use Cwd;
 BEGIN { use_ok 'Socialtext::CLI' }
 use Test::Socialtext::CLIUtils qw/expect_failure expect_success/;
 
-fixtures(qw(workspaces_with_extra_pages destructive public));
+fixtures(qw(workspaces_with_extra_pages destructive public empty));
 
 our $NEW_WORKSPACE = 'new-ws-' . $<;
 our $NEW_WORKSPACE2 = 'new-ws2-'. $<;
@@ -574,13 +574,13 @@ ADD_REMOVE_USER_TO_ACCOUNT: {
 LIST_WORKSPACES: {
     expect_success(
         sub { Socialtext::CLI->new()->list_workspaces(); },
-        "admin\nauth-to-edit\nexchange\nfoobar\nhelp-en\npublic\nsale\n",
+        "admin\nauth-to-edit\nempty\nexchange\nfoobar\nhelp-en\npublic\nsale\n",
         'list-workspaces by name'
     );
 
     expect_success(
         sub { Socialtext::CLI->new( argv => ['--ids'] )->list_workspaces(); },
-        qr/\A\d+\n\d+\n\d+\n\d+\n\d+\n\d+\n\d+\n\z/,
+        qr/\A\d+\n\d+\n\d+\n\d+\n\d+\n\d+\n\d+\n\d+\n\z/,
         'list-workspaces by id'
     );
 }
