@@ -603,14 +603,12 @@ sub search {
 }
 
 sub is_hook_enabled {
-    my ($self, $hook_name, $config) = @_;
+    my ($self, $hook_name, $text, %config) = @_;
 
     # Allow us to bypass user scoping by passing a scope object which is
     # something like an account. This is mainly for control panel stuff
-    if ($config and ref($config) eq 'HASH') {
-        if (my $scope = $config->{scope}) {
-            return $scope->is_plugin_enabled($self->name);
-        }
+    if (my $scope = $config{scope}) {
+        return $scope->is_plugin_enabled($self->name);
     }
 
     if ($self->scope eq 'always') {

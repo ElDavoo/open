@@ -38,11 +38,11 @@ sub filter {
         %DecorateCache = ();
     }
 
-    if ($pluggable->registered("template.$name.content", $config)) {
-        $text = $pluggable->hook("template.$name.content", $text, $config);
+    if ($pluggable->registered("template.$name.content", %$config)) {
+        $text = $pluggable->hook("template.$name.content", $text, %$config);
     }
-    my $prepend = $pluggable->hook("template.$name.prepend", $text, $config);
-    my $append  = $pluggable->hook("template.$name.append", $text, $config);
+    my $prepend = $pluggable->hook("template.$name.prepend", $text, %$config);
+    my $append  = $pluggable->hook("template.$name.append", $text, %$config);
 
     my $result = "${prepend}${text}${append}";
     $DecorateCache{$cache_key} = $result;
