@@ -39,6 +39,7 @@ field 'session', -init => 'Socialtext::Session->new()';
 
 const scope => 'account';
 const hidden => 1; # hidden to admins
+const paid => 0; # Only show the paid alert for certain plugins
 const read_only => 0; # cannot be disabled/enabled in the control panel
 const valid_account_prefs => (); # none by default, override in a child.
 
@@ -602,8 +603,14 @@ sub search {
 }
 
 sub is_hook_enabled {
-    my $self = shift;
-    my $hook_name = shift; # throw away here
+    my ($self, $hook_name, $config) = @_;
+
+    # Allow us to bypass user scoping by passing a scope object which is
+    # something like an account. This is mainly for control panel stuff
+    if (my $scope = $config->{scope}) {
+        return $scope->is_plugin_enabled($self->name);
+    }
+
     if ($self->scope eq 'always') {
         return 1;
     }
@@ -643,6 +650,7 @@ sub request {
 
 sub DefaultAccountPluginPrefs { +{} }
 sub CheckAccountPluginPrefs { +{} }
+sub LimitAccountPluginPrefs { +{} }
 
 sub GetAccountPluginPrefTable {
     my $class = shift;

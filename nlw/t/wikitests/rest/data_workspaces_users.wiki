@@ -229,6 +229,15 @@
 | body-like   | user5%%start_time%%@q.q                   |
 | body-like   | user6%%start_time%%@q.q                   |
 
+| *Comment* | Business admin can see private data |
+| set-business-admin | user1%%start_time%%@q.q |
+| st-admin | set-external-id --email user1%%start_time%%@q.q --external-id %%start_time%%user1 |
+| http-user-pass | user1%%start_time%%@q.q | password |
+| GET-json    | /data/workspaces/%%shiny%%/users?want_private_fields=1 |
+| json-response-is | 200 | 6 |
+| json-path-is | $[0].email_address | user1%%start_time%%@q.q |
+| json-path-is | $[0].private_external_id | %%start_time%%user1 |
+
 | *Comment*         | Pageable Data                                           |                         |
 | GET-json          | /data/workspaces/%%awesome%%/users?startIndex=3&count=2 |                         |
 | code-is           | 200                                                     |                         |

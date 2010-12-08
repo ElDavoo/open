@@ -59,17 +59,23 @@ sub if_authorized {
 
 sub _build_user_find {
     my $self = shift;
+    my $query = $self->rest->query;
+
+    my $show_pvt = $query->param('want_private_fields') 
+        && $self->rest->user->is_business_admin;
+
     return Socialtext::User::Find::Container->new(
         viewer => $self->rest->user,
         limit  => $self->items_per_page,
         offset => $self->start_index,
-        filter => $self->rest->query->param('filter') || undef,
+        filter => $query->param('filter') || undef,
         container => $self->account,
-        direct => $self->rest->query->param('direct') || 0,
-        minimal => $self->rest->query->param('minimal') || 0,
-        order => $self->rest->query->param('order') || '',
-        reverse => $self->rest->query->param('reverse') || 0,
-        all => $self->rest->query->param('all') || 0,
+        direct => $query->param('direct') || 0,
+        minimal => $query->param('minimal') || 0,
+        order => $query->param('order') || '',
+        reverse => $query->param('reverse') || 0,
+        all => $query->param('all') || 0,
+        show_pvt => $show_pvt,
     )
 }
 

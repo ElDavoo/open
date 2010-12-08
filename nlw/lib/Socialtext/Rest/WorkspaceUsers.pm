@@ -25,9 +25,13 @@ sub _build__workspace {
 
 sub _build_user_find {
     my $self = shift;
-    my $filter = $self->rest->query->param('filter');
+    my $query = $self->rest->query;
+    my $filter = $query->param('filter');
     my $workspace = $self->_workspace;
     die "invalid workspace" unless $workspace;
+
+    my $show_pvt = $query->param('want_private_fields')
+        && $self->rest->user->is_business_admin;
 
     return Socialtext::User::Find::Container->new(
         viewer => $self->rest->user,
@@ -35,11 +39,12 @@ sub _build_user_find {
         offset => $self->start_index,
         filter => $filter,
         container => $workspace,
-        direct => $self->rest->query->param('direct') || 0,
-        minimal => $self->rest->query->param('minimal') || 0,
-        order => $self->rest->query->param('order') || '',
-        reverse => $self->rest->query->param('reverse') || 0,
-        all => $self->rest->query->param('all') || 0,
+        direct => $query->param('direct') || 0,
+        minimal => $query->param('minimal') || 0,
+        order => $query->param('order') || '',
+        reverse => $query->param('reverse') || 0,
+        all => $query->param('all') || 0,
+        show_pvt => $show_pvt,
     )
 }
 

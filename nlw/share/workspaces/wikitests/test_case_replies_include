@@ -5,8 +5,6 @@
 
 | *Comment* | Test Case: Replies Include. Included loop %%i%% |  |
 
-| set | speed | 4000 |
-
 | *Comment* | Test Case: Replies Include. The somewhat tortured xpath expressions here work in IE |  |
 
 | *Comment* | Test Case: Replies Include. Click the ostensibly last Reply To Conversation link |  |
@@ -29,7 +27,5 @@
 | *Comment* | Test Case: Replies Include. Wait for the reply to appear |  |
 | pause | %%my_wait%% |  |
 | wait_for_text_present_ok | %%reply_signal%% | 30000 |
-
-| set | speed | 0 |
 
 | *Comment* | Test Case: Replies Include %%i%% COMPLETED |  |

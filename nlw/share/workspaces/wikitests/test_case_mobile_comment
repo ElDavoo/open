@@ -32,7 +32,6 @@
 | wait_for_text_present_ok | %%comment_text%% | 30000 |
 
 | *Comment* | Test Case: Mobile Comment Make permissions public join-to-edit, do not see comment, join, see comment |  |
-| *Comment* | Test Case: Mobile Comment NOTE CURRENTLY FAILS |  |
 | st-admin | remove-member --w %%cws%% --e %%cmikiuser%% | no longer has the role of |
 | st-admin | set-permissions --p public-join-to-edit --w %%cws%% | have been changed |
 | st_open_noeval | /%%cws%%/index.cgi?new_%%start_time%% |  |

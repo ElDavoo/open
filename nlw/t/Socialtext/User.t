@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 63;
+use Test::Socialtext tests => 66;
 fixtures(qw( clean db ));
 use Socialtext::User;
 use Socialtext::Role;
@@ -379,6 +379,62 @@ dont_load_workspace: {
 AllTechnicalUsers: {
     my $users = Socialtext::User->AllTechnicalAdmins();
     is $users->count, 1, 'found 1 technical user!';
+}
+
+# TEST: to_hash() interface
+to_hash: {
+    my $private_id = Test::Socialtext->create_unique_id();
+    my $user       = create_test_user(private_external_id => $private_id);
+
+    # List of fields we expect in each of the hash reprs
+    my @minimal_fields = qw(
+        user_id username best_full_name
+    );
+    my @standard_fields = qw(
+        user_id username email_address password
+        first_name last_name display_name
+        creation_datetime last_login_datetime
+        email_address_at_import created_by_user_id
+        is_business_admin is_technical_admin is_system_created
+        primary_account_id
+    );
+    my @with_private_fields = (
+        @standard_fields,
+        qw(
+            private_external_id
+        )
+    );
+
+    # Helper method to build the hash repr for the User
+    my $make_hash = sub {
+        my $user   = shift;
+        my @fields = @_;
+        my $data   = { map { $_ => $user->$_() } @fields };
+        $data->{creator_username}     = $user->creator->username;
+        $data->{primary_account_name} = $user->primary_account->name;
+        return $data;
+    };
+
+    # Minimal
+    minimal: {
+        my $data   = $user->to_hash(minimal => 1);
+        my $expect = { map { $_ => $user->$_() } @minimal_fields };
+        is_deeply $data, $expect, 'Minimal hash repr for User';
+    }
+
+    # Standard
+    standard: {
+        my $data   = $user->to_hash();
+        my $expect = $make_hash->($user, @standard_fields);
+        is_deeply $data, $expect, 'Standard hash repr for User';
+    }
+
+    # With Private Fields
+    with_private_fields: {
+        my $data   = $user->to_hash(want_private_fields => 1);
+        my $expect = $make_hash->($user, @with_private_fields);
+        is_deeply $data, $expect, 'Extended/private hash repr for User';
+    }
 }
 
 pass 'done';

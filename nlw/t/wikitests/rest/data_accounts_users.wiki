@@ -176,3 +176,16 @@ Adding users as admins!
 | json-array-size | 3              |              |
 | json-path-is    | $[0].username  | %%admin%% |
 | json-path-is    | $[0].role_name | member       |
+
+| *Comment* | business admin can see private user fields |
+| set-business-admin | %%admin%%                                                           |          |
+| st-admin           | set-external-id --email %%admin%% --external-id %%start_time%%admin |          |
+| http-user-pass     | %%admin%%                                                           | password |
+
+| GET-json | /data/accounts/%%account%%/users?want_private_fields=1 |
+| json-response-is | 200                      | 4                   |
+| json-path-is     | $[0].email_address       | %%admin%%           |
+| json-path-is     | $[0].private_external_id | %%start_time%%admin |
+| json-path-exists | $[1].private_external_id |                     |
+| json-path-exists | $[2].private_external_id |                     |
+| json-path-exists | $[3].private_external_id |                     |

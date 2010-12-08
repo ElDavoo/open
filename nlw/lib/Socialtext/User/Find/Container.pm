@@ -40,7 +40,9 @@ sub _build_sql_cols {
     if ($self->minimal < 2) {
         push @cols,
             qw(first_name last_name email_address driver_username),
-            'array_accum(DISTINCT "Role".name) AS role_names';
+            'array_accum(DISTINCT "Role".name) AS role_names',
+            $self->_private_sql_cols;
+
     }
     if ($self->minimal < 1) {
         push @cols,
@@ -95,9 +97,9 @@ sub _build_sql_group {
     my $self = shift;
     my @group_cols = qw(user_id display_name);
     if ($self->minimal < 2) {
-        push @group_cols, qw(
-            first_name last_name email_address driver_username display_name
-        );
+        push @group_cols,
+            qw(first_name last_name email_address driver_username display_name),
+            $self->_private_sql_cols;
     }
     if ($self->minimal < 1) {
         push @group_cols, qw(

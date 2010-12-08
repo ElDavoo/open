@@ -35,6 +35,8 @@ Make sure that the "Email this page" popup works correctly with LDAP users
 
 * [Test Case: Email page shows LDAP emails]
 
+* [Test Case: Manager's Name in LDAP]
+
 Special test for LDAP user deletion.
 
 * [Test Case: LDAP Deleted User]

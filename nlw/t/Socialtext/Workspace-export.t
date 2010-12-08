@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 32;
+use Test::Socialtext tests => 33;
 fixtures(qw( empty ));
 
 use File::Basename ();
@@ -13,9 +13,13 @@ use YAML ();
 use Socialtext::Account;
 use Socialtext::AppConfig;
 
-my $hub = new_hub('empty');
-my $ws  = $hub->current_workspace;
+my $hub  = new_hub('empty');
+my $ws   = $hub->current_workspace;
+my $user = $hub->current_user;
 my $test_dir = Socialtext::AppConfig->test_dir();
+
+my $private_id = Test::Socialtext->create_unique_id();
+$user->update_store(private_external_id => $private_id);
 
 Data_paths_exist: {
     ok( scalar ( grep { m{data/empty} } $ws->_data_dir_paths() ),
@@ -68,6 +72,8 @@ Export_users_dumped: {
         'check email address for first user in user dump' );
     is( $users_dump->[0]{creator_username}, 'system-user',
         'check creator name for first user in user dump' );
+    is( $users_dump->[0]{private_external_id}, $private_id,
+        'check private/external id for first user in user dump' );
     if ( $users_dump->[0]{user_id} ) {
         fail( "user_id should not exist in dump file." );
     }

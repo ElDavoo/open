@@ -49,8 +49,7 @@ update_private_external_id: {
 # TEST: Look up a User record by private external Id
 lookup_by_private_external_id: {
     my $private_id = time . "-$$-external-id";
-    my $user       = create_test_user();
-    my $rc         = $user->update_store(private_external_id => $private_id);
+    my $user       = create_test_user(private_external_id => $private_id);
 
     my $lookup = Socialtext::User->new(private_external_id => $private_id);
     isa_ok $lookup, 'Socialtext::User', 'Found User by private id';

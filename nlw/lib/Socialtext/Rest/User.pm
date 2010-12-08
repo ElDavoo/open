@@ -26,7 +26,8 @@ sub attribute_table_row {
 sub get_resource {
     my ( $self, $rest ) = @_;
 
-    my $acting_user = $self->rest->user;
+    my $query = $rest->query;
+    my $acting_user = $rest->user;
     my $user = Socialtext::User->new( username => $self->username );
 
     # REVIEW: A permissions issue at this stage will result in a 404
@@ -34,13 +35,17 @@ sub get_resource {
     # in an information hiding sort of way, but....
     return undef unless $user;
 
-    my $all = $self->rest->query->param('all');
+    my $all = $query->param('all');
     my $badmin = $acting_user->is_business_admin;
     return undef if $all and !$badmin;
 
+    my $show_pvt = $query->param('want_private_fields') && $badmin ? 1 : 0;
+
+    my $repr = {};
     if ($all) {
-        return +{
-            ( hgrep { $k ne 'password' } %{ $user->to_hash } ),
+        $repr = +{
+            ( hgrep { $k ne 'password' }
+                %{ $user->to_hash(want_private_fields => $show_pvt) } ),
             accounts => [
                 map { $_->hash_representation(user_count=>1) }
                 $user->accounts
@@ -53,8 +58,9 @@ sub get_resource {
         };
     }
     elsif (my @shared_accts = $user->shared_accounts($acting_user)) {
-        return +{
-            ( hgrep { $k ne 'password' } %{ $user->to_hash } ),
+        $repr = +{
+            ( hgrep { $k ne 'password' }
+                %{ $user->to_hash(want_private_fields => $show_pvt) } ),
             accounts => [
                 map { $_->hash_representation(user_count=>1) }
                 @shared_accts
@@ -66,7 +72,8 @@ sub get_resource {
             ],
         };
     }
-    return undef;
+
+    return $repr;
 }
 
 sub PUT_json {

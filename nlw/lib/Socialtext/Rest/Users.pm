@@ -90,7 +90,11 @@ has 'user_find' => (
 sub _build_user_find {
     my $self = shift;
     my $filter = $self->rest->query->param('filter');
+    my $query = $self->rest->query;
 
+    my $show_pvt = $query->param('want_private_fields')
+        && $self->rest->user->is_business_admin;
+       
     # Instantiate the User Finder
     my $user_find;
     eval {
@@ -99,8 +103,9 @@ sub _build_user_find {
             limit  => $self->items_per_page,
             offset => $self->start_index,
             filter => $filter,
-            order  => $self->rest->query->param('order') || '',
-            all    => $self->rest->query->param('all') || 0,
+            order  => $query->param('order') || '',
+            all    => $query->param('all') || 0,
+            show_pvt => $show_pvt,
         );
     };
     if ($@) {

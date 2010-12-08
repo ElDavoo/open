@@ -359,8 +359,10 @@ sub _render_user_frame {
     my $can_invite = $self->hub->pluggable->hook('template_var.invite_url');
     $can_invite = ($can_invite ? 1 : 0);
 
+    my $can_create_group = !$is_guest && Socialtext::Group->User_can_create_group($self->hub->current_user);
+
     my $frame_dir = "$frame_path/$user_prefix/$user_id";
-    my $tmpl_name = "user_frame.$loc_lang.$is_guest.$can_invite";
+    my $tmpl_name = "user_frame.$loc_lang.$is_guest.$can_invite.$can_create_group";
     my $frame_tmpl = "$user_prefix/$user_id/$tmpl_name";
     my $frame_file = "$frame_dir/$tmpl_name";
 

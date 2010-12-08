@@ -1,30 +1,24 @@
-| *Comment* | Test Case: Captcha* |
-| *Comment* | Test Case: Captcha Appliance only |
+| *Comment* | Test Case: Captcha |
+
+| st-config | set self_registration 1 | Wrote updated config file |
 
 | *Comment* | Test Case: Captcha Register, see no captcha |  |
-| st-toggle-captcha | 0 |  |
-| open_ok | /st/dashboard |  |
-| st-logout |  |  |
+| st-appliance-config | set captcha_enabled 0 |  |
+| open_ok | /nlw/submit/logout |  |
 | wait_for_element_visible_ok | link=Register | 30000 |
 | click_and_wait | link=Register |  |
 | wait_for_element_not_present_ok | recaptcha_table | 30000 |
 
 | *Comment* | Test Case: Captcha Change values, see captcha |  |
-| open_ok | /st/dashboard |  |
-| st-login | %%username%% | %%password%% |
-| st-toggle-captcha | 1 |  |
-| open_ok | /st/dashboard |  |
-| st-logout |  |  |
+| st-appliance-config | set captcha_enabled 1 |  |
+| open_ok | /nlw/submit/login |  |
 | wait_for_element_visible_ok | link=Register | 30000 |
 | click_and_wait | link=Register |  |
 | wait_for_element_visible_ok | recaptcha_table | 30000 |
 
 | *Comment* | Test Case: Captcha Change values back, see no captcha |  |
-| st-login | %%username%% | %%password%% |
-| open_ok | /st/dashboard |  |
-| st-toggle-captcha | 0 |  |
-| open_ok | /st/dashboard |  |
-| st-logout |  |  |
+| st-appliance-config | set captcha_enabled 0 |  |
+| open_ok | /nlw/submit/login |  |
 | wait_for_element_visible_ok | link=Register | 30000 |
 | click_and_wait | link=Register |  |
 | wait_for_element_not_present_ok | recaptcha_table | 30000 |

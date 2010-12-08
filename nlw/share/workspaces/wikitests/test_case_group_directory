@@ -95,8 +95,8 @@
 | st-admin | delete-workspace --w %%group_ws%% --no-export | has been deleted |
 | delete-group | %%group_id%% |  |
 | delete-group | %%private_group_id%% |  |
-| delete-group | %%alpha_second_selfjoin%% |  |
-| delete-group | %%alpha_first_selfjoin%% |  |
+| delete-group | %%second_sj_group_id%% |  |
+| delete-group | %%first_sj_group_id%% |  |
 | delete-group | %%isolated_group_id%% |  |
 
 | *Comment* | Test Case: Group Directory COMPLETED |

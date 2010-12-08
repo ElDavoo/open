@@ -552,8 +552,8 @@ sub to_hash {
 
     if ($args{minimal}) {
         return {
-            user_id => $self->user_id,
-            username => $self->username,
+            user_id        => $self->user_id,
+            username       => $self->username,
             best_full_name => $self->best_full_name,
         };
     }

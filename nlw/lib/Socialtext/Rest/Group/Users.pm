@@ -51,6 +51,9 @@ sub _build_user_find {
     my $viewer = $self->rest->user;
     my $q = $self->rest->query;
 
+    my $show_pvt = $q->param('want_private_fields')
+        && $viewer->is_business_admin;
+
     my %args = (
         viewer    => $viewer,
         limit     => $self->items_per_page,
@@ -59,6 +62,7 @@ sub _build_user_find {
         direct    => $q->param('direct') || undef,
         order     => $q->param('order') || '',
         reverse   => $q->param('reverse') || undef,
+        show_pvt  => $show_pvt,
         # these may get changed by 'just_visiting':
         filter    => $q->param('filter') || undef,
         all       => $q->param('all') || undef,

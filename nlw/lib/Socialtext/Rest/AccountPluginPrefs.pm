@@ -3,7 +3,7 @@ package Socialtext::Rest::AccountPluginPrefs;
 use Moose;
 use Socialtext::AppConfig;
 use Socialtext::HTTP ':codes';
-use Socialtext::Pluggable::Plugin::Signals;
+use Socialtext::Pluggable::Adapter;
 use Socialtext::JSON 'decode_json';
 use Socialtext::Log 'st_log';
 use Socialtext::JSON::Proxy::Helper;
@@ -31,10 +31,12 @@ sub PUT_json {
 
     $self->can_admin(sub {
         my $rest    = $self->rest;
-        my $signals = 'Socialtext::Pluggable::Plugin::Signals';
+        my $adapter = Socialtext::Pluggable::Adapter->new;
+        $adapter->make_hub($self->rest->user);
+        my $plugin  = $adapter->plugin_object($self->plugin);
         my $acct    = $self->account;
         my $data    = eval { decode_json($self->rest->getContent()) };
-        my %valid   = map { $_ => 1 } $signals->valid_account_prefs();
+        my %valid   = map { $_ => 1 } $plugin->valid_account_prefs();
 
         if (!$data or ref($data) ne 'HASH') {
             $rest->header( -status => HTTP_400_Bad_Request );
@@ -46,29 +48,22 @@ sub PUT_json {
             return 'Unrecognized JSON key';
         }
 
-        if (exists $data->{signals_size_limit}) {
-            my $limit = $data->{signals_size_limit};
-
-            if ($limit !~ /^\d+$/ || $limit <= 0) { # limit is a pos int
-                $rest->header( -status => HTTP_400_Bad_Request );
-                return "Size Limit must be a positive integer";
-            }
-
-            if ($limit > Socialtext::AppConfig->signals_size_limit) {
-                $rest->header( -status => HTTP_403_Forbidden );
-                return "Size Limit Exceeds Server Max";
-            }
+        eval { $plugin->CheckAccountPluginPrefs($data) };
+        if ($@) {
+            $rest->header( -status => HTTP_400_Bad_Request );
+            return $@;
         }
 
-        my $prefs = $signals->GetAccountPluginPrefTable($acct->account_id);
+        my $prefs = $plugin->GetAccountPluginPrefTable($acct->account_id);
         $prefs->set(%$data);
 
         # Clear the json cache so activities widgets get the new limit
         Socialtext::JSON::Proxy::Helper->ClearForAccount($acct->account_id);
 
+        my $plugin_name = $self->plugin;
         st_log()->info(
             $rest->user->username 
-            . "changed signals preferences for " 
+            . "changed $plugin_name preferences for " 
             . $acct->name
         );
 
