@@ -97,8 +97,8 @@ empty_page_content: {
 
     my $pdf;
     my $rc = $hub->pdf_export->multi_page_export([ $page->name ], \$pdf);
-    ok !$rc, '... which we are unable to convert to PDF';
-    ok !$pdf, '... resulting in no PDF content';
+    ok $rc, '... which we are able to convert to PDF';
+    looks_like_pdf_ok $pdf, '... resulting in some PDF content';
 }
 
 
