@@ -293,8 +293,7 @@ to pages, with $page_num specifing the 0-based page index.
 
 =cut 
 sub search {
-    my $self = shift;
-    my %args = ((@_ == 1) ? (search_term => $_[0]) : @_);
+    my ($self, %args) = @_;
     my $search_term = $self->_utf8_decode($args{search_term});
     my $search_results;
     my $title = 'Search';
@@ -348,11 +347,12 @@ sub search {
     );
 }
 
-=head2 tag([$tag])
+=head2 tag([tag => $tag, pagenum => $pagenum])
 
 If $tag is not defined, provide a list of links to all categories
 in the current workspace. If $tag is defined, provide a list of
-links to all the pages in the tag.
+links to all the pages in the tag, with $page_num specifing the
+0-based page index.
 
 =cut 
 sub tag {
