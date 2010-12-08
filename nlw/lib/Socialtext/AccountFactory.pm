@@ -14,7 +14,7 @@ sub create {
 
     my $acct = Socialtext::Account->create( %p );
 
-    $self->hub->pluggable->hook('nlw.finish_account_create', $acct);
+    $self->hub->pluggable->hook('nlw.finish_account_create', [$acct]);
 
     return $acct;
 }

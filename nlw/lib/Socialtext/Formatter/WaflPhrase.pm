@@ -594,7 +594,7 @@ sub cell_value {
 
     $cell_ref = uc($cell_ref);
     my $html = $page->hub->pluggable->hook(
-        'render.sheet_include.html' => $page, $cell_ref);
+        'render.sheet_include.html' => [$page, $cell_ref]);
     return $cell_ref unless length($html);
     return $html;
 
