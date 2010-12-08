@@ -19,6 +19,7 @@ use Socialtext::UserSet qw(ACCT_OFFSET GROUP_OFFSET);
 use Socialtext::Cache;
 use Socialtext::Workspace;
 use Socialtext::Encode qw/ensure_is_utf8/;
+use Encode;
 use File::LogReader;
 use File::Path qw(rmtree);
 use File::Temp qw(tempfile);
@@ -2248,6 +2249,7 @@ sub edit_page {
     my $content = shift;
     my @tags = split qr/\s*,\s*/, shift(@_) || '';
 
+    Encode::_utf8_on($content);
     my $blob = {
         content => $content,
         from => $self->{http_username},
