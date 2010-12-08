@@ -346,7 +346,7 @@ sub _require_plugin {
     my $plugin = shift || $opts{plugin};
 
     $self->_error(loc("You must specify a plugin."))
-        unless scalar(@$plugin);
+        unless $plugin and scalar(@$plugin);
 
     my $adapter = Socialtext::Pluggable::Adapter->new;
 
@@ -379,6 +379,33 @@ sub _pluginPrefTable {
             }
         );
     }
+}
+
+sub set_google_analytics {
+    my $self = shift;
+    my $account  = $self->_require_account;
+    my %opts     = $self->_get_options('code=s');
+    $self->_error("--code required.") unless $opts{code};
+    $self->{argv} = [
+        '--account', $account->name,
+        '--plugin', 'analytics',
+        'ga_id', $opts{code}
+    ];
+    $self->set_plugin_pref;
+}
+
+sub clear_google_analytics {
+    my $self = shift;
+    my $account  = $self->_require_account;
+    $self->{argv} = [ '--account', $account->name, '--plugin', 'analytics' ];
+    $self->clear_plugin_prefs;
+}
+
+sub show_google_analytics {
+    my $self = shift;
+    my $account  = $self->_require_account;
+    $self->{argv} = [ '--account', $account->name, '--plugin', 'analytics' ];
+    $self->show_plugin_prefs;
 }
 
 sub set_plugin_pref {
@@ -4129,6 +4156,11 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   set-plugin-pref    --plugin <name> [ --account <name> ] KEY VALUE
   show-plugin-prefs  --plugin <name> [ --account <name> ]
   clear-plugin-prefs --plugin <name> [ --account <name> ]
+
+  GOOGLE ANALYTICS
+  add-google-analytics    --account <name> --code <code>
+  remove-google-analytics --account <name>
+  show-google-analytics   --account <name>
 
   EMAIL
 
