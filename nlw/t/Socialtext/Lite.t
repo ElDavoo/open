@@ -177,7 +177,7 @@ like( $html, qr{\Q<input id="st-search-text" name="search_term" data-inline="tru
 ceqlotron_run_synchronously();
 
 # do a word search
-$html = $lite->search('title:dust');
+$html = $lite->search(search_term => 'title:dust');
 like( $html, qr{\Q<input id="st-search-text" name="search_term" data-inline="true" type="search" value="title:dust" />},
     'search form presents with search_term' );
 like( $html, qr{<li>.*<a.*href="/m/page/admin/stronger_than_dust"}ms, 
@@ -202,8 +202,8 @@ like( $html, qr{<li>\s*<a.*href="/m/tag/admin/Welcome".*>\s*Welcome\s*</a>},
     'tag Welcome is listed with correct url and name' );
 
 # get a specific tag
-my $html_from_lc_tag = $lite->tag('welcome');
-$html = $lite->tag('Welcome');
+my $html_from_lc_tag = $lite->tag(tag => 'welcome');
+$html = $lite->tag(tag => 'Welcome');
 
 is ( lc($html_from_lc_tag), lc($html), 'case of tag does not change content' );
 # XXX case is odd
