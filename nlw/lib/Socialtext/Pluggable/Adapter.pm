@@ -268,7 +268,8 @@ sub hook_error {
 
 
 sub hook {
-    my ( $self, $name, $text, $config ) = @_;
+    my ( $self, $name, $text, @args ) = @_;
+    my $config = $args[0];
     my @output;
     if ( my $hooks = $hooks{$name} ) {
         return unless ref $hooks eq 'ARRAY';
@@ -285,7 +286,7 @@ sub hook {
                     ($name =~ /^action\./) ? $plugin->name : undef;
                 $plugin->declined(undef);
                 $plugin->last($ONCE_TYPES{$type});
-                my $results = $plugin->$method($text, $config);
+                my $results = $plugin->$method($text, @args);
                 if ($plugin->declined) {
                     $plugin->last(undef);
                 }
