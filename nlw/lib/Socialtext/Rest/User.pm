@@ -43,7 +43,7 @@ sub get_resource {
 
     my $repr = {};
     if ($all) {
-        $repr = +{
+        return +{
             ( hgrep { $k ne 'password' }
                 %{ $user->to_hash(want_private_fields => $show_pvt) } ),
             accounts => [
@@ -58,7 +58,7 @@ sub get_resource {
         };
     }
     elsif (my @shared_accts = $user->shared_accounts($acting_user)) {
-        $repr = +{
+        return +{
             ( hgrep { $k ne 'password' }
                 %{ $user->to_hash(want_private_fields => $show_pvt) } ),
             accounts => [
@@ -73,7 +73,7 @@ sub get_resource {
         };
     }
 
-    return $repr;
+    return undef;
 }
 
 sub PUT_json {
