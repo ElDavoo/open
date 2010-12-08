@@ -3414,7 +3414,7 @@ sub restart_userd {
         'http://localhost:'.$self->{userd_port}.'/ping',
         [Accept => 'application/json']);
     # assumes graceful shutdown delay is 5 seconds:
-    for (1..12) {
+    for (1..18) {
         my $resp = $ua->request($req);
         if ($resp->is_success) {
             pass "userd restarted";
