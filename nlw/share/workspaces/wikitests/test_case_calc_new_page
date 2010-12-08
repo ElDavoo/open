@@ -14,7 +14,6 @@
 | open_ok | /%%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=ns%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link |  |
 | st-page-save |  |  |
-| wait_for_element_visible_ok | st-edit-button-link | 30000 |
 | wait_for_element_present_ok | link=Export to CSV | 30000 |
 
 | *Comment* | Test Case: Calc New Page. try to save with existing page title: np ss %%start_time%% |  |
@@ -33,6 +32,8 @@
 | type_ok | st-newspreadsheet-duplicate-pagename | np ss %%start_time%% Two |
 | wait_for_element_present_ok | st-newpage-duplicate-okbutton | 30000 |
 | click_and_wait | st-newspreadsheet-duplicate-okbutton |  |
+| wait_for_element_visible_ok | st-page-titletext | 30000 |
+| text_like | st-page-titletext | np ss %%start_time%% Two |
 | location_like | /%%workspace%%/index.cgi?np_ss_%%start_time%%_two |  |
 
 | *Comment* | Test Case: Calc New Page. try to save with existing page title: np ss %%start_time%% Two |  |
@@ -52,7 +53,8 @@
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
 | text_like | st-page-titletext | qr/%%short_username%%.+np ss %%start_time%% Two/ism |
 
-| *Comment* | Test Case: Calc New Page Teardown |  |
+| *Comment* | Test Case: Calc New Page TEARDOWN |  |
+| st-process-jobs | PageIndex | %%workspace%% |
 | st-admin | purge-page --workspace %%workspace%% --page ns_%%start_time%% | was purged |
 
 | *Comment* | TODO: Make this test like test_case_new_page for wikitests. That will first require that the editing conflict {bz: 596} bug be fixed. |  |

@@ -12,10 +12,11 @@ Navigate to a page known to have zero incoming links | system displays "There ar
 | type_ok | st-newpage-pagename-edit | TC Incoming Links %%start_time%% |
 | type_ok | wikiwyg_wikitext_textarea | [TC Incoming Links New Page %%start_time%%] |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| clickAndWait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Sidebar: Incoming Links. no incoming links |  |
-| text_like | link=TC Incoming Links New Page %%start_time%% | TC Incoming Links New Page %%start_time%% |
+| wait_for_text_present_ok | TC Incoming Links %%start_time%% | 30000 |
+| wait_for_element_visible_ok | link=TC Incoming Links New Page %%start_time%% | 10000 |
 | text_like | contentRight | There are no pages that link to this page yet |
 
 Click non-existent link | new page appears ready for editing
@@ -30,10 +31,11 @@ edit and save new page | existing page appears in new page incoming links
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | TC Incoming Links New Page %%start_time%% content |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| clickAndWait | st-save-button-link |  |
+| st-page-save |  |  |
 
 | *Comment* | Test Case: Sidebar: Incoming Links. verify backlink |  |
-| text_like | link=TC Incoming Links %%start_time%% | TC Incoming Links %%start_time%% |
+| wait_for_element_visible_ok | link=TC Incoming Links %%start_time%% | 10000 |
+| text_like | contentRight | TC Incoming Links %%start_time%% |
 
 navigate to and delete existing page | page is gone
 navigate to new page | Incoming link to old page is gone
@@ -67,6 +69,7 @@ Help workspace central page is a good page
 | text_like | link=Stop Words | Stop Words |
 
 | *Comment* | Test Case : Sidebar: Incoming Links TEARDOWN |  |
+| st-process-jobs | PageIndex | %%workspace%% |
 | st-admin | purge-page --w %%workspace%% --page tc_incoming_links_%%start_time%% | was purged |
 | st-admin | purge-page --w %%workspace%% --page tc_incoming_links_new_page_%%start_time%% | was purged |
 

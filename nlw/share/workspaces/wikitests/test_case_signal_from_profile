@@ -5,13 +5,14 @@
 | *Comment* | Test Case: Signal From Profile - create two users |  |
 | set | spshort | spuser%%start_time%% |
 | set | spuser | %%spshort%%@ken.socialtext.net |
+| set | spuser_regexp | %%spshort%%\@ken.socialtext.net |
 | set | spshort_two | spusertwo%%start_time%% |
 | set | spusertwo | %%spshort_two%%@ken.socialtext.net |
 
 | create-user | %%spuser%% | %%password%% |
 | create-user | %%spusertwo%% | %%password%% |
 
-| st-admin | enable-plugin --all-accounts --plugin signals |  |
+| st-admin | enable-plugin --all-accounts --plugin %%hostname%% |  |
 | st-logoutin | %%spuser%% |  |
 
 | *Comment* | Test Case: Signal From Profile. logged in user has empty "lastsignal" |  |
@@ -25,6 +26,7 @@
 | *Comment* | Test Case: Signal From Profile. it is safe to let the other user be wikitester@ken.socialtext.net |  |
 
 | set | signal | Public Hello to wikitester from %%spuser%% |
+| set | sigregexp | qr/Public.+Hello.+to.+wikitester.+from.+%%spuser_regexp%%/ism |
 
 | st-find-user | wikitester |  |
 | wait_for_text_present_ok | Activities | 30000 |
@@ -33,7 +35,10 @@
 | st-send-signal-via-activities-widget | activities | %%signal%% |
 
 | *Comment* | Test Case: Signal From Profile. Public mention appears in wikitester profile activities widget |  |
-| st-verify-text-in-activities-widget | activities | %%signal%% |
+| wait_for_element_visible_ok | //a[@class='clearFilters'] | 10000 |
+| click_ok | //a[@class='clearFilters'] |  |
+| wait_for_text_present_ok | %%spuser%% | 30000 |
+| st-verify-text-in-activities-widget | activities | %%sigregexp%% |
 
 | *Comment* | Test Case: Signal From Profile. Public mention appears in %%spuser%% profile activities widget |  |
 | wait_for_element_visible_ok | link=%%spshort%% | 30000 |
