@@ -11,8 +11,8 @@ Readonly my %markup => (
     b    => [ '',  '' ],
     i    => [ '',  '' ],
     del  => [ '',  '' ],
-    a    => [ '"',  '"<HREF>' ],
-    hashmark => ['',''],
+    hyperlink => [ '"',  '"<HREF>' ],
+    hashmark  => ['',''],
 );
 
 sub msg_markup_table { return \%markup }
@@ -59,13 +59,13 @@ sub markup_node {
     my $is_end = shift;
     my $ast = shift;
 
-    if ($ast->{type} eq 'a' and $is_end) {
+    if ($ast->{type} eq 'hyperlink' and $is_end) {
         my $output = $self->msg_markup_table->{$ast->{type}}->[$is_end];
         if (($ast->{text}||'') eq $ast->{attributes}{href}) {
             $output =~ s/<HREF>//;
         }
         else {
-            $output =~ s/HREF/$ast->{attributes}{href}/;
+            $output =~ s/HREF/$ast->{attributes}{target}/;
         }
         $self->{output} .= $output;
         return;
