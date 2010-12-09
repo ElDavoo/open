@@ -97,4 +97,4 @@
 | delete-group | %%group_id%% |
 | st-admin | delete-workspace --w %%group_ws%% --no-export |
 
-| *Comment* | Test Case: Groups UU Delegate Membership. COMPLETED |  |  |
+| *Comment* | Test Case: Groups UI Delegate Membership. COMPLETED |

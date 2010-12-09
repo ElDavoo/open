@@ -3,7 +3,7 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Groups UI AddRemove Members From Group: Setup |  |  |
-| *Comment* | Test Case: Groups UI AddRemove Members From Group: Emails cannot have dashes due to {bz: 3037}: Page lookahead fails on punctuation |  |  |
+| *Comment* | Test Case: Groups UI AddRemove Members From Group: Emails cannot have dashes due to {bz: 3037} : Page lookahead fails on punctuation |  |  |
 | st-setup-a-group | 1 | 1 | 1 |
 | enable-acct-plugin | signals | %%group_acct%% |  |
 | set | short_grp_mbr | guimbr%%start_time%% |  |
@@ -14,6 +14,15 @@
 | set | non_grp_mbr_prefix | guinonmbr |  |
 | set | non_grp_mbr_suffix | %%start_time%% |  |
 | set | non_grp_mbr | %%short_non_grp_mbr%%@matt.socialtext.net |  |
+| set | email_ws | emailws%%start_time%% |  |
+| set | email_user | %%email_ws%%@%%wikiemail%% |  |
+| set | email_user_prefix | emailws |  |
+| set | email_user_suffix | %%start_time%% |  |
+| set | invite | invitation_text_%%start_time%% |  |
+| create-user | %%email_user%% | %%password%% | %%group_acct%% |
+| st-admin | create-workspace --empty --name %%email_ws%% --title "%%email_ws%%" --account "%%group_acct%%" | created |  |
+| st-admin | add-permission --w %%email_ws%% --role guest --p email_in | has been granted |  |
+| st-admin | add-workspace-admin --w %%email_ws%% --u %%username%% |  |  |
 | create-user | %%grp_mbr%% | %%password%% | %%group_acct%% |
 | set | mbr_user_id | %%user_id%% |  |
 | create-user | %%non_grp_mbr%% | %%password%% | %%group_acct%% |
@@ -111,9 +120,44 @@
 | text_unlike | //body | %%grp_mbr%% |
 | select-frame | relative=parent |  |
 
+| *Comment* | Test Case: Groups UI AddRemover Members From Group Invite %%email_user%% with custom message |  |
+| open_ok | /st/edit_group/%%group_id%% |  |
+| wait_for_text_present_ok | Edit Group |  |
+| wait_for_element_visible_ok | create-group | 30000 |
+| pause | 5000 |  |
+| st-name-widget | 3 | membership_widget |
+| st-widget-title-like | membership_widget | Members |
+| st-select-widget-frame | membership_widget |  |
+| wait_for_element_visible_ok | //*[@id='message'] | 30000 |
+| type_ok | //*[@id='message'] | %%invite%% |
+| wait_for_element_visible_ok | lookahead | 30000 |
+| type_lookahead_ok | lookahead | %%email_user_prefix%% |
+| select-frame | relative=parent |  |
+| wait_for_element_present_ok | //a[@class='lookaheadItem' and contains(text(),'%%email_user_suffix%%')] | 30000 |
+| click_ok | //a[@class='lookaheadItem' and contains(text(),'%%email_user_suffix%%')] | 10000 |
+| st-select-widget-frame | membership_widget |  |
+| wait_for_element_visible_ok | link=%%email_ws%% | 30000 |
+| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | create-group | 30000 |
+| wait_for_element_visible_ok | st-cancel-create-group | 30000 |
+| click_and_wait | create-group |  |
+
+| *Comment* | Test Case: Groups UI AddRemover Members From Group view custom invite in %%email_ws%% workspace |  |
+| open_ok | /%%email_ws%%/ |  |
+| wait_for_element_visible_ok | //*[@id='st-create-content-cancellink'] | 30000 |
+| click_ok | //*[@id='st-create-content-cancellink'] |  |
+
+| *Comment* | Test Case: Join. Navigate to the confirmation email |  |
+| text_like | workspaceName | %%email_ws%% |
+| *Comment* | Wait 90 seconds for the confirmation email to arrive |  |
+| pause | 90000 |  |
+
+
 
 | *Comment* | Test Case: Groups UI AddRemove Members From Group. TEARDOWN |
-| delete-group | %%group_id%% |
-| st-admin | delete-workspace --w %%group_ws%% --no-export |
+
+delete-group | %%group_id%% |
+st-admin | delete-workspace --w %%group_ws%% --no-export |
+st-admin | delete-workspace --w %%email_ws%% --no-export |
 
 | *Comment* | Test Case: Groups UI AddRemove Members From Group. COMPLETED |  |  |

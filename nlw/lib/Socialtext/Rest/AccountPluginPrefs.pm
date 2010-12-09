@@ -51,6 +51,7 @@ sub PUT_json {
         eval { $plugin->CheckAccountPluginPrefs($data) };
         if ($@) {
             $rest->header( -status => HTTP_400_Bad_Request );
+            chomp $@;
             return $@;
         }
 

@@ -88,7 +88,7 @@ Remove all pages from watchlist; watchlist displays "No watchlist for USER ID in
 Set up to check sorting.
 
 | open_ok | /%%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=watchlist%20aaa%20spreadsheet%20%%start_time%% |
-
+| wait_for_element_visible_ok | link=My Watchlist | 30000 |
 | click_and_wait | link=My Watchlist |  |
 
 | *Comment* | Test case: Calc Watchlist CHECKING SORTING VIEWS |
@@ -96,6 +96,7 @@ Set up to check sorting.
 Set up to check sorting. (↑) (↓)
 
 | *Comment* | Test case: Calc Watchlist title sort |  |
+| wait_for_element_visible_ok | sort-picker | 30000 |
 | select_and_wait | sort-picker | label=Title |
 | text_like | contentContainer | qr/watchlist aaa spreadsheet %%start_time%%.+watchlist bbb spreadsheet %%start_time%%.+watchlist ccc spreadsheet %%start_time%%/ |
 
@@ -122,11 +123,14 @@ add a new page for date and revision sorting
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | pause | 5000 | I hate pause; needed for save |
 | st-page-save |  |
+
+| wait_for_element_visible_ok | link=My Watchlist | 30000 |
 | click_and_wait | link=My Watchlist |  |
 
 title sort
 
 | *Comment* | Test case: Calc Watchlist sort by title |  |
+| wait_for_element_visible_ok | sort-picker | 30000 |
 | select_and_wait | sort-picker | label=Title |
 | text_like | contentContainer | qr/watchlist aaa spreadsheet %%start_time%%.+watchlist bbb spreadsheet %%start_time%%.+watchlist ccc spreadsheet %%start_time%%.+watchlist newpage spreadsheet %%start_time%%/ |
 
@@ -191,12 +195,14 @@ Last Edited By sort
 | *Comment* | label=Last Edited By (↑) |  |
 | select_and_wait | sort-picker | label=Last Edited By (↑) |
 
-cleanup so that Watchlist does not fill up
+| *Comment* | Test case: Calc Watchlist TEARDOWN |  |
 
+| st-process-jobs | PageIndex | %%workspace%% |
 | st-admin | purge-page --w %%workspace%% --p watchlist_aaa_spreadsheet_%%start_time%% | was purged |
 | st-admin | purge-page --w %%workspace%% --p watchlist_bbb_spreadsheet_%%start_time%% | was purged |
 | st-admin | purge-page --w %%workspace%% --p watchlist_ccc_spreadsheet_%%start_time%% | was purged |
 | st-admin | purge-page --w %%workspace%% --p watchlist_newpage_spreadsheet_%%start_time%% | was purged |
+
 | *Comment* | Test case: Calc Watchlist COMPLETED |
 
 ^ DONE_TESTING
