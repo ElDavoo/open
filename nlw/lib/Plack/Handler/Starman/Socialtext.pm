@@ -46,6 +46,10 @@ Plack::Handler::Starman::Socialtext - Socialtext custom Plack::Handler::Starman
 
   plackup -s Starman::Socialtext ...
 
+=head1 DESCRIPTION
+
+Custom handler to wrap Starman's.
+
 =head1 COPYRIGHT
 
 Portions derived from L<Plack::Handler::Starman> are copyright the respective
