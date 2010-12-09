@@ -84,8 +84,8 @@ merge_default_group_on_workspace_import: {
     );
 
     # VERIFY: Group membership list was merged
-    my @expected = map { $_->username } ($user_one, $user_two);
-    my @received = map { $_->username } $group->users->all;
+    my @expected = map { $_->username } sort { $a->user_id <=> $b->user_id } ($user_one, $user_two);
+    my @received = map { $_->username } sort { $a->user_id <=> $b->user_id } $group->users->all;
     eq_or_diff \@received, \@expected,
         'Group membership list merged on Workspace import';
 }
