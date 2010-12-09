@@ -6,12 +6,14 @@ use warnings;
 use lib 'lib';
 
 use Cwd ();
-use Test::Base 0.52 -Base;
+#use Test::Base 0.52 -Base;
+use base 'Test::Builder::Module';
+use Carp qw/croak/;
 use Socialtext::Base;
-use Test::Builder;
+#use Test::Builder;
 use Test::Socialtext::Environment;
 use Test::Socialtext::User;
-use Test::Socialtext::Account;
+use Test::Socialtext::Account ();
 use Test::Socialtext::Group;
 use Test::Socialtext::Workspace;
 use Socialtext::Account;
@@ -26,6 +28,7 @@ use YAML;
 use File::Temp qw/tempdir/;
 use File::Spec;
 use Socialtext::System qw/shell_run/;
+use Test::More;
 
 BEGIN {
     use Socialtext::Pluggable::Adapter;
@@ -44,7 +47,7 @@ BEGIN {
 # warning.
 our $Order_doesnt_matter = 0;
 
-our @EXPORT = qw(
+our @EXPORT = (qw(
     fixtures
     new_hub
     create_test_hub
@@ -68,7 +71,7 @@ our @EXPORT = qw(
     timer_report
     set_as_default_account
     looks_like_pdf_ok
-);
+), @Test::More::EXPORT);
 
 our @EXPORT_OK = qw(
     content_pane 
@@ -77,8 +80,8 @@ our @EXPORT_OK = qw(
     check_manifest
 );
 
+my $builder = Test::Builder->new();
 {
-    my $builder = Test::Builder->new();
     my $fh = $builder->output();
     # Get around syntax checking warnings
     if (defined $fh) {
@@ -88,7 +91,7 @@ our @EXPORT_OK = qw(
 }
 
 our $DB_AVAILABLE = 0;
-sub fixtures () {
+sub fixtures {
     $ENV{SKIP_PUSHD_TICKLE} = 1 unless defined $ENV{SKIP_PUSHD_TICKLE};
 
     # point directly to where the config file is going to go; if we have to
@@ -119,7 +122,7 @@ sub fixtures () {
     _store_initial_state();
 }
 
-sub run_smarter_like() {
+sub run_smarter_like {
     (my ($self), @_) = find_my_self(@_);
     my $string_section = shift;
     my $regexp_section = shift;
@@ -134,7 +137,7 @@ sub run_smarter_like() {
     }
 }
 
-sub smarter_like() {
+sub smarter_like {
     my $str = shift;
     my $re = shift;
     my $name = shift;
@@ -167,10 +170,10 @@ sub smarter_like() {
             return;
         }
     }
-    ok 1, "$name - success";
+    $builder->pass("$name - success");
 }
 
-sub smarter_unlike() {
+sub smarter_unlike {
     my $str = shift;
     my $re = shift;
     my $name = shift;
@@ -190,7 +193,7 @@ sub smarter_unlike() {
     pass( "$name - success" );
 }
 
-sub formatted_like() {
+sub formatted_like {
     my $wikitext = shift;
     my $re       = shift;
     my $name     = shift;
@@ -203,7 +206,7 @@ sub formatted_like() {
     like $formatted, $re, $name;
 }
 
-sub formatted_unlike() {
+sub formatted_unlike {
     my $wikitext = shift;
     my $re       = shift;
     my $name     = shift;
@@ -238,7 +241,7 @@ sub formatted_unlike() {
     }
 }
 
-sub ceqlotron_run_synchronously() {
+sub ceqlotron_run_synchronously {
     my $funcname = shift;
     my $workspace_name_or_id = shift || '';
     my $quiet = shift || 0;
@@ -279,12 +282,14 @@ sub ceqlotron_run_synchronously() {
                 $message = "Waiting for all jobs to clear\n";
             }
         }
-        diag $message;
+        $builder->diag($message);
     }
     my @jobid;
     local $ENV{ST_JOBS_VERBOSE} = 1;
     while (my $job = Socialtext::Jobs->find_job_for_workers()) {
-        diag "Running ceq job " . Socialtext::Jobs->job_to_string($job) . "\n" unless $quiet;
+        $builder->diag(
+            "Running ceq job " . Socialtext::Jobs->job_to_string($job) . "\n"
+        ) unless $quiet;
         if ($funcname and ($job->funcname || '') !~ /$funcname$/i) {
             next;
         }
@@ -365,7 +370,7 @@ sub timer_clear {
 sub timer_report {
     return unless ($ENV{TEST_VERBOSE} and not $ENV{TEST_LESS_VERBOSE});
 
-    diag "Socialtext::Timer report\n";
+    $builder->diag("Socialtext::Timer report\n");
     my $report = Socialtext::Timer->ExtendedReport();
     if (%{$report}) {
         foreach my $key (sort { $report->{$b}->{duration} <=> $report->{$a}->{duration} } keys %{$report}) {
@@ -373,11 +378,11 @@ sub timer_report {
             my $cnt = $report->{$key}->{count};
             my $avg = $report->{$key}->{average};
             my $str = sprintf( '%30s => %0.3f  (%5d times, avg %0.3f)', $key, $dur, $cnt, $avg );
-            diag $str;
+            $builder->diag($str);
         }
     }
     else {
-        diag "\treport empty; no timers called";
+        $builder->diag("\treport empty; no timers called");
     }
 }
 
@@ -548,14 +553,14 @@ sub _teardown_cleanup {
     }
 }
 
-sub test_more_fail() {
+sub test_more_fail {
     my $str = shift;
     my $test_name = shift || '';
     warn $str; # This doesn't get shown unless in verbose mode.
     Test::More::fail($test_name); # to get the counts right.
 }
 
-sub run_manifest() {
+sub run_manifest {
     (my ($self), @_) = find_my_self(@_);
     for my $block ($self->blocks) {
         $self->check_manifest($block) 
@@ -577,7 +582,7 @@ sub check_manifest {
     ok(0 == scalar @unfound, $message);
 }
 
-sub new_hub() {
+sub new_hub {
     no warnings 'once';
     my $name     = shift or die "No name provided to new_hub\n";
     my $username = shift;
@@ -589,7 +594,7 @@ sub new_hub() {
     return $hub;
 }
 
-sub ensure_workspace_with_name() {
+sub ensure_workspace_with_name {
     my $name = shift;
     return if Socialtext::Workspace->new( name => $name );
 
@@ -715,10 +720,10 @@ sub looks_like_pdf_ok($;$) {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     my $pdf_start = $pdf =~ qr/\A%PDF-\d+\.\d+/;
     my $pdf_end   = $pdf =~ qr/%%EOF\Z/;
-    ok $pdf_start && $pdf_end, $msg;
+    $builder->ok($pdf_start && $pdf_end, $msg);
 }
 
-sub SSS() {
+sub SSS {
     my $sh = $ENV{SHELL} || 'sh';
     system("$sh > `tty`");
     return @_;
@@ -850,97 +855,6 @@ sub dump_roles {
         }
     }
     print "=========\n\n";
-}
-
-package Test::Socialtext::Filter;
-use strict;
-use warnings;
-
-use base 'Test::Base::Filter';
-
-# Add Test::Base filters that are specific to NLW here. If they are really
-# generic and interesting I'll move them into Test::Base
-
-sub interpolate_global_scalars {
-    map {
-        s/"/\\"/g;
-        s/@/\\@/g;
-        $_ = eval qq{"$_"};
-        die "Error interpolating '$_': $@" 
-          if $@;
-        $_;
-    } @_;
-}
-
-# Regexps with the '#' character seem to get messed up.
-sub literal_lines_regexp {
-    $self->assert_scalar(@_);
-    my @lines = $self->lines(@_);
-    @lines = $self->chomp(@lines);
-    my $string = join '', map {
-        # REVIEW: This is fragile and needs research.
-        s/([\$\@\}])/\\$1/g;
-        "\\Q$_\\E.*?\n";
-    } @lines;
-    my $flags = $Test::Base::Filter::arguments;
-    $flags = 'xs' unless defined $flags;
-
-    my $regexp = eval "qr{$string}$flags";
-    die $@ if $@;
-    return $regexp;
-}
-
-sub wiki_to_html {
-    $self->assert_scalar(@_);
-    Test::Socialtext::main_hub()->formatter->text_to_html(shift);
-}
-
-sub wrap_p_tags {
-    $self->assert_scalar(@_);
-    sprintf qq{<p>\n%s<\/p>\n}, shift;
-}
-
-sub wrap_wiki_div {
-    $self->assert_scalar(@_);
-    sprintf qq{<div class="wiki">\n%s<\/div>\n}, shift;
-}
-
-sub new_page {
-    $self->assert_scalar(@_);
-    my $hub = Test::Socialtext::main_hub();
-    my $page = $hub->pages->new_page_from_any(shift);
-    $page->metadata->update( user => $hub->current_user );
-    return $page;
-}
-
-sub store_new_page {
-    $self->assert_scalar(@_);
-    my $page = $self->new_page(shift);
-    $page->store( user => Test::Socialtext::main_hub()->current_user );
-    return $page;
-}
-
-sub content_pane {
-    my $html = shift;
-    $html =~ s/
-        .*(
-        <div\ id="page-container">
-        .*
-        <td\ class="page-center-control-sidebar-cell"
-        ).*
-    /$1/xs;
-    $html
-}
-
-sub _cleanerr() {
-    my $output = shift;
-    $output =~ s/^.*index.cgi: //gm;
-    my @lines = split /\n/, $output;
-    pop @lines;
-    if (@lines > 15) {
-        push @lines, "\n...more above\n", @lines[0..15]
-    }
-    join "\n", @lines;
 }
 
 1;

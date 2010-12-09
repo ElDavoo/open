@@ -2,13 +2,14 @@ package Test::Socialtext::Account;
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Exporter;
+#use base 'Test::Builder::Module';
 use Socialtext::CLI;
 use File::Temp qw(tempdir);
 use File::Path qw(rmtree);
 use Test::Socialtext::CLIUtils qw(expect_success);
 use Test::Differences qw/eq_or_diff/;
 use Test::Output qw(combined_from);
+use base 'Exporter';
 
 our @EXPORT_OK = qw/delete_recklessly import_account_ok export_account export_and_reimport_account/;
 
