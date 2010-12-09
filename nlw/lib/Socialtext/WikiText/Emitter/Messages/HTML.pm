@@ -13,9 +13,8 @@ Readonly my %markup => (
     b    => [ '<b>',             '</b>' ],
     i    => [ '<i>',             '</i>' ],
     del  => [ '<del>',           '</del>' ],
-    a    => [ '<a href="HREF">', '</a>' ],
-    hyperlink    => [ '<a href="HREF">', '</a>' ],
-    hashmark => undef, # handled by overriding markup_node()
+    hyperlink => [ '<a href="HREF">', '</a>' ],
+    hashmark  => undef, # handled by overriding markup_node()
 );
 
 sub link_dictionary {
