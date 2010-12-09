@@ -2,7 +2,7 @@ package Test::Socialtext::Account;
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Exporter;
+use base 'Exporter';
 use Socialtext::CLI;
 use File::Temp qw(tempdir);
 use File::Path qw(rmtree);

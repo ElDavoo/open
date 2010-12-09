@@ -1,8 +1,8 @@
 package Test::Socialtext::SQL;
 # @COPYRIGHT@
-
 use strict;
 use warnings;
+use base 'Exporter';
 use Test::Builder;
 use Test::Differences;
 use Socialtext::SQL qw(get_dbh);
