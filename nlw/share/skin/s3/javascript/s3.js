@@ -108,6 +108,18 @@ Socialtext.set_save_error_resume_handler = function(cb) {
                     return;
                 }
             }
+            else if (win.$ && win.$('#contentContainer #errors-and-messages .error').length) {
+                errorMessage = win.$('#contentContainer #errors-and-messages .error').text();
+
+                if (win.$('#loginPage').length) {
+                    errorMessage += "\n\n";
+                    errorMessage += loc("(Your edit was successfully saved.)");
+                    alert(errorMessage);
+                    Socialtext.discardDraft('edit_save');
+                    window.location = win.location;
+                    return;
+                }
+            }
             else if (win.Socialtext.action == 'blog_display') {
                 Socialtext.discardDraft('edit_save');
                 window.location = win.location;
