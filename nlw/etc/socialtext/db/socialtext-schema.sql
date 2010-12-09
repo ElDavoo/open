@@ -319,6 +319,17 @@ CREATE FUNCTION rboolop(query_int, integer[]) RETURNS boolean
     AS '$libdir/_int', 'rboolop'
     LANGUAGE c STRICT;
 
+CREATE FUNCTION signal_hide() RETURNS "trigger"
+    AS $$
+BEGIN
+  IF NEW.hidden = TRUE and OLD.hidden = FALSE THEN
+    DELETE FROM signal_asset WHERE signal_asset.signal_id = NEW.signal_id;
+  END IF;
+  RETURN NEW;
+END;
+$$
+    LANGUAGE plpgsql;
+
 CREATE FUNCTION signal_sent() RETURNS "trigger"
     AS $$
     BEGIN
@@ -2062,6 +2073,11 @@ CREATE TRIGGER signal_before_insert
     FOR EACH ROW
     EXECUTE PROCEDURE auto_hash_signal();
 
+CREATE TRIGGER signal_hide
+    AFTER UPDATE ON signal
+    FOR EACH ROW
+    EXECUTE PROCEDURE signal_hide();
+
 CREATE TRIGGER signal_insert
     AFTER INSERT ON signal
     FOR EACH ROW
@@ -2523,4 +2539,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '131');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '132');
