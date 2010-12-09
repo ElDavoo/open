@@ -38,8 +38,10 @@ open_ok | /%%workspace%%/index.cgi?action=weblog_display&category=test_%%start_t
 | type_ok | st-newpage-pagename-edit | Post 1 %%start_time%% |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | Post 1 Content %%start_time%% |
-| wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+| wait_for_element_visible_ok | st-save-button-link |  |
+| st-pause-click | 2000 | st-save-button-link |
+
+| wait_for_text_present_ok | Permalink | 30000 |
 | text_like | contentContainer | qr/Post 1 %%start_time%%.+Post 1 Content %%start_time%%.+Comment.+Edit this post.+Permalink/smi |
 
 | *Comment* | Test Case: Weblogs add comment |  |
@@ -47,6 +49,7 @@ open_ok | /%%workspace%%/index.cgi?action=weblog_display&category=test_%%start_t
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | Comment 1 %%start_time%% |
 | click_ok | link=Save |  |
+
 | *Comment* | Just SAVED comment |  |
 | wait_for_text_present_ok | Comment 1 %%start_time%% | 30000 |
 | click_and_wait | link=Edit this post |  |
@@ -55,9 +58,14 @@ open_ok | /%%workspace%%/index.cgi?action=weblog_display&category=test_%%start_t
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | Edit 1 %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-| st-page-save |  |  |
+| st-pause-click | 2000 | st-save-button-link |
+
+| pause | 10000 |  |
+
+| wait_for_element_visible_ok | link=Permalink | 30000 |
 | text_like | contentContainer | Edit 1 %%start_time%% |
 | click_and_wait | link=Permalink |  |
+| wait_for_text_present_ok | Edit 1 %%start_time%% | 30000 |
 | text_like | contentContainer | Edit 1 %%start_time%% |
 
 | *Comment* | Test Case: Weblogs weblogs that differ only by square brackets cause error |  |
