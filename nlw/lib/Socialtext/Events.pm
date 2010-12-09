@@ -7,6 +7,7 @@ use Class::Field qw(const);
 use Socialtext::HTTP ':codes';
 use Socialtext::Events::Recorder;
 use Socialtext::Events::Reporter;
+use Socialtext::Signal::Render;
 use List::MoreUtils qw/all/;
 use Carp qw/croak/;
 
