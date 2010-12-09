@@ -457,7 +457,7 @@ sub st_create_pages {
     ok 1, "Created $numberpages of pages in $workspace";
 }
 
-=head st_massive_tags (post URL, start tags with, end tag with - examples 'aa' and 'az' would  make 26 tags.)
+=head2 st_massive_tags (post URL, start tags with, end tag with - examples 'aa' and 'az' would  make 26 tags.)
 
 Automates multiple runs of POSTING an add tag to a workspace
 Actually, it can automate pretty much any post.  To automate tagging, your URL should look something like his:
