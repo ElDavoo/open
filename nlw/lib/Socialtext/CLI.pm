@@ -399,6 +399,7 @@ sub set_google_analytics {
 sub clear_google_analytics {
     my $self = shift;
     my $account  = $self->_require_account;
+    $account->disable_plugin('analytics');
     $self->{argv} = [ '--account', $account->name, '--plugin', 'analytics' ];
     $self->clear_plugin_prefs;
 }
