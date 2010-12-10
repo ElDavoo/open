@@ -54,10 +54,6 @@ sub make_prog_list {
     my @skips = @_;
     my %skips = map {($_,1)} @skips;
 
-    my $cmd = catfile($BASE_DIR, "dev-bin", "perl-bin-files");
-    $dir = catdir($BASE_DIR, $dir);
-    my @progs = `$cmd $dir`;
-    chomp(@progs);
-
-    return grep { !$skips{ basename($_) } } @progs;
+    my @progs = grep { !$skips{ basename($_) } } glob("$BASE_DIR/bin/*");
+    return grep { qx(head -n 1 $_) =~ m/perl/ } @progs;
 }
