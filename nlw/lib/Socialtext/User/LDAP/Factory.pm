@@ -313,21 +313,18 @@ sub _vivify {
     $proto_user->{password}  = '*no-password*'; # placeholder password
 
     # separate out "core" fields from "profile" fields
-    my ($user_keys, $extra_keys) = 
-        part { $Socialtext::User::Base::all_fields{$_} ? 0 : 1 }
-        keys %$proto_user;
-    my %user_attrs  = map { $_ => $proto_user->{$_} } @$user_keys;
-    my %extra_attrs = map { $_ => $proto_user->{$_} } @$extra_keys;
+    my ($user_attrs, $extra_attrs) = 
+        Socialtext::User::Base->UserFields($proto_user);
 
     # XXX: some fields are explicitly set to '' elsewhere
     # (ST:U:Def:Factory:create, ST:U:Factory:NewUserRecord), and we're going
     # to do the same here.  Yes, this should be refactored and cleaned up, no,
     # I'm not doing that just yet.
-    $user_attrs{first_name} ||= '';
-    $user_attrs{last_name}  ||= '';
+    $user_attrs->{first_name} ||= '';
+    $user_attrs->{last_name}  ||= '';
 
     # don't encrypt the placeholder password; just store it as-is
-    $user_attrs{no_crypt} = 1;
+    $user_attrs->{no_crypt} = 1;
 
     # depending on whether or not this User exists in the DB already, we're
     # either updating an existing User or creating a new one.
@@ -344,12 +341,12 @@ sub _vivify {
         # If this fails, use the "last known good" cached data for the User;
         # we know *that* data was good at some point.
         eval {
-            $user_attrs{user_id} = $user_id;
-            $user_attrs{missing} = $cached_homey->{missing};
-            $self->ValidateAndCleanData($cached_homey, \%user_attrs);
+            $user_attrs->{user_id} = $user_id;
+            $user_attrs->{missing} = $cached_homey->{missing};
+            $self->ValidateAndCleanData($cached_homey, $user_attrs);
             $self->_check_cache_for_conflict(
                 user_id => $cached_homey->{user_id},
-                %user_attrs,
+                %$user_attrs,
             );
         };
         if (my $e = Exception::Class->caught("Socialtext::Exception::DataValidation")) {
@@ -375,12 +372,12 @@ sub _vivify {
 
         # Update cached User record in DB
         my $old_name = $cached_homey->{display_name};
-        my $new_name = $user_attrs{display_name}; # set by Validate above
-        $user_attrs{driver_username} = delete $user_attrs{username};    # map "object -> DB"
-        $self->UpdateUserRecord(\%user_attrs);
-        $self->_mark_as_found(\%user_attrs);
+        my $new_name = $user_attrs->{display_name}; # set by Validate above
+        $user_attrs->{driver_username} = delete $user_attrs->{username};    # map "object -> DB"
+        $self->UpdateUserRecord($user_attrs);
+        $self->_mark_as_found($user_attrs);
         Socialtext::JobCreator->index_person(
-            $user_attrs{user_id},
+            $user_attrs->{user_id},
             run_after        => 10,
             priority         => 60,
             name_is_changing => ($old_name ne $new_name),
@@ -390,29 +387,29 @@ sub _vivify {
         ### Create new User record
 
         # validate/clean the data we got from LDAP
-        $self->ValidateAndCleanData(undef, \%user_attrs);
+        $self->ValidateAndCleanData(undef, $user_attrs);
 
         # create User record, and update cached data
-        $user_attrs{driver_username} = delete $user_attrs{username};    # map "object -> DB"
-        $self->NewUserRecord(\%user_attrs);
+        $user_attrs->{driver_username} = delete $user_attrs->{username};    # map "object -> DB"
+        $self->NewUserRecord($user_attrs);
 
         # set up the UserMetadata for the new User record.
         my $user_metadata = Socialtext::UserMetadata->create(
-            user_id                 => $user_attrs{user_id},
-            email_address_at_import => $user_attrs{email_address},
+            user_id                 => $user_attrs->{user_id},
+            email_address_at_import => $user_attrs->{email_address},
             created_by_user_id      => Socialtext::User->SystemUser->user_id,
         );
 
         # trigger an initial indexing of the User record
         Socialtext::JobCreator->index_person(
-            $user_attrs{user_id},
+            $user_attrs->{user_id},
             run_after => 10,
         );
     }
 
-    $user_attrs{username} = delete $user_attrs{driver_username};        # map "DB -> object"
-    $user_attrs{extra_attrs} = \%extra_attrs;
-    %$proto_user = %user_attrs;
+    $user_attrs->{username} = delete $user_attrs->{driver_username};        # map "DB -> object"
+    $user_attrs->{extra_attrs} = $extra_attrs;
+    %$proto_user = %$user_attrs;
     return;
 }
 

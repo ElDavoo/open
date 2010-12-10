@@ -7,6 +7,7 @@ use Socialtext::Validate qw(validate SCALAR_TYPE);
 use Socialtext::l10n qw(loc);
 use Socialtext::MooseX::Types::Pg;
 use Socialtext::MooseX::Types::UniStr;
+use List::MoreUtils qw(part);
 use namespace::clean -except => 'meta';
 
 has 'user_id' => (is => 'rw', isa => 'Int', writer => '_set_user_id');
@@ -46,6 +47,20 @@ Readonly our @other_fields => qw(
 );
 Readonly our @all_fields => (@fields, @other_fields);
 Readonly our %all_fields => map {$_=>1} @all_fields;
+
+sub UserFields {
+    my $class = shift;
+    my $proto_user = shift;
+
+    # whatever is left in all is _not_ a Socialtext::User field.
+    my %all = %$proto_user;
+    my %user = 
+       map { $_ => delete $all{$_} }
+       grep { $all{$_} }
+       @all_fields;
+
+    return wantarray ? (\%user, \%all) : \%user;
+}
 
 sub driver_name {
     my $self = shift;
