@@ -511,6 +511,10 @@ include $self->{schemadir}/nis.schema
 # logging
 pidfile $self->{statedir}/slapd-$self->{port}.pid
 argsfile $self->{statedir}/slapd-$self->{port}.args
+# auth requirements
+$requires_auth
+# raw config additions
+$self->{raw_conf}
 # database
 database bdb
 suffix "$self->{base_dn}"
@@ -520,10 +524,6 @@ directory "$self->{datadir}"
 cachesize 50000
 index default pres,eq
 index objectClass,mail,cn
-# auth requirements
-$requires_auth
-# raw config additions
-$self->{raw_conf}
 END_SLAPD_CONF
         close $fout;
     }
