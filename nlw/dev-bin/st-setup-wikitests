@@ -33,11 +33,18 @@ echo "No longer populating reports DB"
 #$NLW_DEVBIN/st-populate-reports-db
 
 if [ ! -e $HOME/wikitests/anycorp.small ]; then
+    echo "Unpacking AnyCorp archive"
     mkdir -p $HOME/wikitests/anycorp.small
     cd $HOME/wikitests/anycorp.small/
     tar -zxf  $WIKITESTS/anycorp.small.account.tar.gz
+fi
+
+HASANYCORP=`$NLW_BIN/st-admin list-accounts | grep -o AnyCorp`
+echo HASANYCORP is $HASANYCORP
+
+if [ ! "$HASANYCORP" ]; then
     echo "Importing account anycorp in background"
-    $NLW_BIN/st-admin import-account --dir $HOME/wikitests/anycorp.small >& $HOME/anycorp.log &
+    $NLW_BIN/st-admin import-account --dir $HOME/wikitests/anycorp.small >&$HOME/anycorp.log &
 fi
 
 cd $NLW_LIB
