@@ -1538,6 +1538,11 @@ proto.convert_html_to_wikitext = function(html, isWholeDocument) {
             }
         } while (foundVisualBR);
 
+        // {bz: 4738}: Don't run _format_one_line on top-level tables, HRs and PREs.
+        $(dom).find('td, hr, pre')
+            .parents('span, a, h1, h2, h3, h4, h5, h6, b, strong, i, em, strike, del, s, tt, code, kbd, samp, var, u')
+            .addClass('_st_format_div');
+
         $(dom).find('._st_walked').removeClass('_st_walked');
 
         // This needs to be done by hand for IE.
@@ -1713,6 +1718,12 @@ proto.walk = function(elem) {
         var method = 'format_' + part.nodeName.toLowerCase();
         if (method != 'format_blockquote' && part.is_indented)
             method = 'format_indent';
+
+        // {bz: 4738}: Don't run _format_one_line on top-level TABLEs, HRs and PREs.
+        if (/\b_st_format_div\b/.test(part.className)) {
+            method = 'format_div';
+        }
+
 //         window.XXX_method = method = method.replace(/#/, '');
         method = method.replace(/#/, '');
         try {
