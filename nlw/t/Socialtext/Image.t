@@ -7,8 +7,8 @@ use warnings;
 use Test::Socialtext;
 
 BEGIN {
-    unless ( eval { require Image::Magick; require Image::Size; require MIME::Base64; 1 } ) {
-        plan skip_all => 'These tests require Image::Magick, Image::Size and MIME::Base64 to run.';
+    unless ( eval { require Image::Size; require MIME::Base64; 1 } ) {
+        plan skip_all => 'These tests require Image::Size and MIME::Base64 to run.';
     }
     if ($^O eq 'darwin') {
         plan 'skip_all';
