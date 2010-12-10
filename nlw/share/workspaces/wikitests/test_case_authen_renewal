@@ -103,7 +103,8 @@
 | type-ok | wikiwyg_wikitext_textarea | Edit This Page %%start_time%% |
 | wait-for-element-visible-ok | st-save-button-link | 30000 |
 | st-pause-click | 2000 | st-save-button-link |
-| wait_for_text_present_ok | Login session has expired; please re-authenticate | 30000 |
+| pause | 10000 | time for alert to pop up |
+| verifyAlert | Login session has expired; please re-authenticate |  |
 | st-logoutin |  |  |
 | open-ok | /%%workspace%%/index.cgi |  |
 | text-like | //body | Edit This Page %%start_time%% |
