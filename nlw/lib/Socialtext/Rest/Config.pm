@@ -46,7 +46,7 @@ sub make_getter {
             ( map { $_ => Socialtext::AppConfig->$_() } @PUBLIC_CONFIG_KEYS ),
         };
 
-        $self->hub->pluggable->hook('nlw.get_rest_config', $config);
+        $self->hub->pluggable->hook('nlw.get_rest_config', [$config]);
 
         # Get simple key/value pair without the "---" line
         local $YAML::UseHeader = 0;

@@ -1186,7 +1186,7 @@ sub _user_role_changed {
         $adapter->make_hub($actor, $self);
         $adapter->hook(
             'nlw.add_user_account_role',
-            $self->account, $user, Socialtext::Role->Affiliate(),
+            [$self->account, $user, Socialtext::Role->Affiliate()]
         );
     }
     elsif ($change eq 'remove') {
@@ -1196,7 +1196,7 @@ sub _user_role_changed {
         $adapter->make_hub($actor, $self);
         $adapter->hook(
             'nlw.remove_user_account_role',
-            $self->account, $user, Socialtext::Role->Affiliate(),
+            [$self->account, $user, Socialtext::Role->Affiliate()]
         );
     }
 }
@@ -1312,7 +1312,7 @@ sub _dump_to_yaml_file {
 
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub(Socialtext::User->SystemUser(), $self);
-    $adapter->hook('nlw.export_workspace', $self, \%dump);
+    $adapter->hook('nlw.export_workspace', [$self, \%dump]);
 
     _dump_yaml( $file, \%dump );
 }
@@ -1375,7 +1375,7 @@ sub _dump_users_to_yaml_file {
 
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub(Socialtext::User->SystemUser(), $self);
-    $adapter->hook('nlw.export_workspace_users', $self, \@dump);
+    $adapter->hook('nlw.export_workspace_users', [$self, \@dump]);
 
     _dump_yaml( $file, \@dump );
 }
@@ -1387,7 +1387,7 @@ sub _dump_user_to_hash {
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub($user);
     my $plugin_prefs = {};
-    $adapter->hook('nlw.export_user_prefs', $plugin_prefs);
+    $adapter->hook('nlw.export_user_prefs', [$plugin_prefs]);
 
     my $dump = $user->to_hash(want_private_fields => 1);
     delete $dump->{user_id};

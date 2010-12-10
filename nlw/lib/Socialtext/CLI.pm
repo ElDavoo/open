@@ -384,12 +384,14 @@ sub _pluginPrefTable {
 sub set_google_analytics {
     my $self = shift;
     my $account  = $self->_require_account;
-    my %opts     = $self->_get_options('code=s');
+    my %opts     = $self->_get_options('code=s', 'domains=s');
+    $account->enable_plugin('analytics');
     $self->_error("--code required.") unless $opts{code};
     $self->{argv} = [
         '--account', $account->name,
         '--plugin', 'analytics',
-        'ga_id', $opts{code}
+        'ga_id', $opts{code},
+        $opts{domains} ? ('ga_domains', $opts{domains}) : (),
     ];
     $self->set_plugin_pref;
 }
@@ -397,6 +399,7 @@ sub set_google_analytics {
 sub clear_google_analytics {
     my $self = shift;
     my $account  = $self->_require_account;
+    $account->disable_plugin('analytics');
     $self->{argv} = [ '--account', $account->name, '--plugin', 'analytics' ];
     $self->clear_plugin_prefs;
 }
@@ -476,24 +479,6 @@ sub show_plugin_prefs {
     }
     $msg .= "\n";
     $self->_success($msg);
-}
-
-sub set_account_plugin_pref {
-    my $self = shift;
-    my $account = $self->_require_account;
-    my $plugins = $self->_require_plugin;
-
-    # only accept a single `--plugin` param
-    $self->_error(loc('set-account-plugin-pref only works on a single plugin'))
-         if (!ref($plugins) or scalar(@$plugins) > 1);
-
-    my $plugin = Socialtext::Pluggable::Adapter->plugin_class($plugins->[0]);
-
-    Socialtext::JSON::Proxy::Helper->ClearForAccount($account->account_id);
-
-    $self->_success(
-        loc('Preferences for the [_1] plugin have been updated.', $plugin)
-    );
 }
 
 sub _require_account {
@@ -4158,9 +4143,10 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   clear-plugin-prefs --plugin <name> [ --account <name> ]
 
   GOOGLE ANALYTICS
-  add-google-analytics    --account <name> --code <code>
-  remove-google-analytics --account <name>
-  show-google-analytics   --account <name>
+  set-google-analytics   --account <name> --code <code>
+            [--domains <single | multiple-subdomains | multiple-domains>]
+  clear-google-analytics --account <name>
+  show-google-analytics  --account <name>
 
   EMAIL
 

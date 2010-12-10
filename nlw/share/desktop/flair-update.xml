@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>366</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-366.air</url>
-<description><![CDATA[[Build 366 - Thu Nov 11 17:56:11 PST 2010]
+  <version>369</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-369.air</url>
+<description><![CDATA[[Build 369 - Tue Dec  7 04:38:19 PST 2010]
+* Signals: Sub-tabs are now lazily populated.
+* Signals: The "Private Messages" subtab is now populated with backlogged entries.
+
+[Build 368 - Thu Dec  2 18:53:44 PST 2010]
+* Signals: Save the "Post to" network choice across restarts. (Matt)
+* Activity: Start fetching activities if the user started at that tab.
+
+[Build 367 - Thu Dec  2 04:59:26 PST 2010]
+* Activity: Sub-tabs are now lazily populated.
+* Signals: Sub-tabs (except for "Private") are now populated with backlogged entries.
+* Workspace: A new per-page "Tags" sub-tab for display, add and deletion of tags.
+
+[Build 366 - Thu Nov 11 17:56:11 PST 2010]
 * Update to the latest wiki.css for inline Wiki views. {bz: 4666}
 
 [Build 365 - Thu Nov 11 00:48:21 PST 2010]

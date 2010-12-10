@@ -574,6 +574,9 @@ sub to_hash {
         ? $self->primary_account->name
         : undef;
 
+    # This field should never default to ''
+    delete $hash->{private_external_id} unless $hash->{private_external_id};
+
     return $hash;
 }
 
@@ -929,7 +932,7 @@ sub _call_hook {
     require Socialtext::Pluggable::Adapter;
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub($self);
-    $adapter->hook($hclass => $self);
+    $adapter->hook($hclass => [$self]);
 }
 
 # Class methods

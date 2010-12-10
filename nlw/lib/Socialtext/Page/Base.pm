@@ -70,7 +70,7 @@ sub to_html {
     my $page = shift;
     $content = '' unless defined $content;
 
-    return $self->hub->pluggable->hook('render.sheet.html', \$content, $self)
+    return $self->hub->pluggable->hook('render.sheet.html', [\$content, $self])
         if $self->is_spreadsheet;
 
     if ($DISABLE_CACHING) {

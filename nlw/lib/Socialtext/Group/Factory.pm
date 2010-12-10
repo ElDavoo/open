@@ -191,7 +191,7 @@ sub CreateInitialRelationships {
     $adapter->make_hub(Socialtext::User->SystemUser);
     $adapter->hook(
         'nlw.add_group_account_role',
-        $pri_account, $group, Socialtext::Role->Member,
+        [$pri_account, $group, Socialtext::Role->Member],
     );
 }
 

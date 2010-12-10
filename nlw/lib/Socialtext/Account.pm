@@ -327,7 +327,7 @@ sub export {
         is_system_created          => $self->is_system_created,
         skin_name                  => $self->skin_name,
         email_addresses_are_hidden => $self->email_addresses_are_hidden,
-        users                      => $self->all_users_as_hash,
+        users                      => $self->all_users_as_hash(want_private_fields => 1),
         logo                       => MIME::Base64::encode($$logo_ref),
         allow_invitation           => $self->allow_invitation,
         plugins                    => [ $self->plugins_enabled ],
@@ -340,7 +340,7 @@ sub export {
             [ map { $_->name } @{ $self->all_users_workspaces } ],
         (map { $_ => $self->$_ } grep {/^desktop_/} @ACCT_COLS),
     };
-    $hub->pluggable->hook('nlw.export_account', $self, $data, \%opts);
+    $hub->pluggable->hook('nlw.export_account', [$self, $data, \%opts]);
 
     DumpFile($export_file, $data);
     return $export_file;
@@ -362,26 +362,29 @@ sub user_can {
 
 sub all_users_as_hash {
     my $self  = shift;
+    my %args  = @_;
     my $iter  = $self->users(show_hidden => 1);
-    my @users = map { $self->_dump_user_to_hash($_) } $iter->all();
+    my @users = map { $self->_dump_user_to_hash($_,%args) } $iter->all();
     return \@users;
 }
 
 sub users_as_hash {
     my $self  = shift;
+    my %args  = @_;
     my $iter  = $self->users(primary_only => 1);
-    my @users = map { $self->_dump_user_to_hash($_) } $iter->all();
+    my @users = map { $self->_dump_user_to_hash($_,%args) } $iter->all();
     return \@users;
 }
 
 sub _dump_user_to_hash {
     my $self = shift;
     my $user = shift;
-    my $hash = $user->to_hash;
+    my %args = @_;
+    my $hash = $user->to_hash(%args);
     delete $hash->{user_id};
     delete $hash->{primary_account_id};
     $hash->{primary_account_name} = $user->primary_account->name;
-    $hash->{profile} = $self->_dump_profile($user);
+    $hash->{profile} = $self->_dump_profile($user, %args);
 
     my $user_accounts = $user->accounts;
     for my $acct (@$user_accounts) {
@@ -395,13 +398,14 @@ sub _dump_user_to_hash {
 sub _dump_profile {
     my $self = shift;
     my $user = shift;
+    my %args = @_;
 
     eval "require Socialtext::People::Profile";
     return {} if $@;
 
     my $profile = Socialtext::People::Profile->GetProfile($user);
     return {} unless $profile;
-    return $profile->to_hash;
+    return $profile->to_hash(%args);
 }
 
 sub import_file {
@@ -527,7 +531,7 @@ sub import_file {
         }
     }
 
-    $hub->pluggable->hook('nlw.import_account', $account, $hash, \%opts);
+    $hub->pluggable->hook('nlw.import_account', [$account, $hash, \%opts]);
     die $hub->pluggable->hook_error if ($hub->pluggable->hook_error);
 
     $account->{_import_hash} = $hash;
@@ -584,7 +588,7 @@ sub finish_import {
         $ws->assign_role_to_account(account => $self, role => 'member');
     }
 
-    $hub->pluggable->hook('nlw.finish_import_account', $self, $meta, \%opts);
+    $hub->pluggable->hook('nlw.finish_import_account', [$self, $meta, \%opts]);
     die $hub->pluggable->hook_error if ($hub->pluggable->hook_error);
 }
 
@@ -644,7 +648,7 @@ after 'role_change_event' => sub {
     if ($to_hook) {
         my $adapter = Socialtext::Pluggable::Adapter->new();
         $adapter->make_hub( Socialtext::User->SystemUser() );
-        $adapter->hook($to_hook, $self, $thing, $role);
+        $adapter->hook($to_hook, [$self, $thing, $role]);
     }
 };
 
@@ -1308,15 +1312,23 @@ workspaces that use that skin.
 
 Returns the given attribute for the account.
 
-=item $account->all_users_as_hash()
+=item $account->all_users_as_hash(%args)
 
 Returns a list of all the Users that have a Role in this Account as a hash,
 suitable for serializing.
 
-=item $account->users_as_hash()
+Accepts a hash of C<%args> that get passed through to help control the amount
+of User data contained in the hashes returned.  Refer to
+C<Socialtext::User->to_hash()> for more information on acceptable C<%args>.
+
+=item $account->users_as_hash(%args)
 
 Returns a list of all the users for whom this is their primary account
 as a hash, suitable for serializing.
+
+Accepts a hash of C<%args> that get passed through to help control the amount
+of User data contained in the hashes returned.  Refer to
+C<Socialtext::User->to_hash()> for more information on acceptable C<%args>.
 
 =item $account->workspace_count()
 

@@ -78,6 +78,7 @@ sub client_auth {
         configs => {
             challenger => 'NoLogin',
             ssl_only   => 1,
+            allow_network_invitation => 0,
         },
         switches => {
             cac => sub {

@@ -152,7 +152,7 @@ sub create {
 
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub(Socialtext::User->SystemUser(), undef);
-    $adapter->hook('nlw.add_user_account_role', $acct, $self);
+    $adapter->hook('nlw.add_user_account_role', [$acct, $self]);
 
     return $self;
 }

@@ -1,6 +1,8 @@
-| *Comment* | Test Case: Explore 2 Login as Demo User |  |
-| st-admin | import-account --dir /tmp/wikitests/anycorp.small |  |
+| *Comment* | Call ceq-rm on SignalIndex, which doesn't always remove all the jobs |  |
+| pause | 30000 |  |
 | st-ceq-rm | SignalIndex |  |
+
+| *Comment* | Test Case: Explore 2 set variables |  |
 | set | demo_user | socialtextdemo1@gmail.com |
 | set | demo_pass | socialtext |
 | set | group1 | Engineering |
@@ -23,6 +25,8 @@
 | set | tag2_suffix | tition |
 | set | refresh_link | http://refresh.%%start_time%%.com |
 | set | refresh_tag | refresh_tag_%%start_time%% |
+
+| *Comment* | Test Case: Explore 2 Login as Demo User |  |
 | st-logoutin | %%demo_user%% | %%demo_pass%% |
 
 | *Comment* | Test Case: Explore 2 Test Refresh Button |  |
