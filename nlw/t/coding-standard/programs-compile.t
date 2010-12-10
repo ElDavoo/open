@@ -9,6 +9,7 @@ use File::Basename qw(basename dirname);
 use File::Spec::Functions qw(catdir catfile);
 use Cwd qw(abs_path getcwd);
 
+$ENV{IGNORE_WIN32_LOCALE} = 1;
 my $BASE_DIR = abs_path(catdir(dirname(__FILE__), '../..'));
 
 BEGIN {
