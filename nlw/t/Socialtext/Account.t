@@ -192,12 +192,13 @@ Exporting_account_people: {
     is $data->{name}, 'Test Account', 'name is in export';
     is $data->{is_system_created}, 0, 'is_system_created is in export';
     is scalar(@{ $data->{users} }), 3, 'users exported in test account';
-    is $data->{users}[0]{username}, 'dummy1', 'user 1 username';
-    is $data->{users}[0]{email_address}, 'devnull1@example.com', 'user 1 email';
-    is $data->{users}[1]{username}, 'dummy2', 'user 2 username';
-    is $data->{users}[1]{email_address}, 'devnull2@example.com', 'user 2 email';
-    is $data->{users}[2]{username}, 'dummy3', 'user 3 username';
-    is $data->{users}[2]{email_address}, 'devnull3@example.com', 'user 3 email';
+    my @users = sort { $a->{username} cmp $b->{username} } @{ $data->{users} };
+    is $users[0]{username}, 'dummy1', 'user 1 username';
+    is $users[0]{email_address}, 'devnull1@example.com', 'user 1 email';
+    is $users[1]{username}, 'dummy2', 'user 2 username';
+    is $users[1]{email_address}, 'devnull2@example.com', 'user 2 email';
+    is $users[2]{username}, 'dummy3', 'user 3 username';
+    is $users[2]{email_address}, 'devnull3@example.com', 'user 3 email';
 
     {
         use bytes;
