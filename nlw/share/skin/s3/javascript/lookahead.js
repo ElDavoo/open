@@ -449,6 +449,30 @@
             if (selitem.length && selitem.attr('value')) {
                 this.accept(selitem.attr('value'));
             }
+            else if (this._items.length == 1) {
+                // Only one candidate - accept it
+                this.accept(0);
+            }
+            else {
+                var val = $(this.input).val();
+                var fullMatchIndex = null;
+
+                $.each(this._items, function(i) {
+                    var item = this || {};
+                    if (item.bolded_title == ('<b>'+item.title+'</b>')) {
+                        if (fullMatchIndex) {
+                            // Two or more full matches - do nothing
+                            return;
+                        }
+                        fullMatchIndex = i;
+                    }
+                });
+
+                // Only one full match - accept it
+                if (fullMatchIndex != null) {
+                    this.accept(fullMatchIndex);
+                }
+            }
         }
     };
 

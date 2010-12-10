@@ -549,6 +549,11 @@ ul li.flexButton.disabled a.genericOrangeButton, ul li.flexButton.disabled a.gen
         visibility: hidden;
 }
 
+ul li.flexButton.loading {
+        background: url(../images/ajax-loader.gif) no-repeat right;
+}
+
+
 ul li a.genericOrangeButton {
 	display: block;
 	color: #fff;

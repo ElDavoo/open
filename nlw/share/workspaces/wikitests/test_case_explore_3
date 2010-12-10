@@ -1,5 +1,4 @@
 | *Comment* | Test Case: Explore 3 Login as Demo User |  |
-| st-admin | import-account --dir /tmp/wikitests/anycorp.small |  |
 | st-ceq-rm | SignalIndex |  |
 | set | demo_user | socialtextdemo1@gmail.com |
 | set | demo_pass | socialtext |

@@ -574,6 +574,9 @@ sub to_hash {
         ? $self->primary_account->name
         : undef;
 
+    # This field should never default to ''
+    delete $hash->{private_external_id} unless $hash->{private_external_id};
+
     return $hash;
 }
 

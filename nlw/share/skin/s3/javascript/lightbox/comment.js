@@ -69,7 +69,7 @@ GuiEdit.prototype.show = function () {
     jQuery('.saveButton', this.container).click(function () {
         var $saveButton = $(this);
         if ($saveButton.parent().is('.disabled')) { return; }
-        $saveButton.parent().addClass('disabled');
+        $saveButton.parent().addClass('disabled').addClass('loading');
 
         var doSignal = $('#st-comment-st-edit-summary-signal-checkbox').is(':checked');
         jQuery.ajax({
@@ -89,7 +89,7 @@ GuiEdit.prototype.show = function () {
             },
             error: function() {
                 alert(loc("Saving failed due to server error; please try again later."));
-                $saveButton.parent().removeClass('disabled');
+                $saveButton.parent().removeClass('disabled').removeClass('loading');
             }
         });
         return false;
