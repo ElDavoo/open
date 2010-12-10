@@ -1,8 +1,3 @@
-| *Comment* | Test Case: Explore 2 import AnyCorp account from /tmp/wikitests/anycorp.small |  |
-
-| *Comment* | This can take minutes. Be Patient |  |
-| st-admin | import-account --dir /tmp/wikitests/anycorp.small |  |
-
 | *Comment* | Call ceq-rm on SignalIndex, which doesn't always remove all the jobs |  |
 | pause | 30000 |  |
 | st-ceq-rm | SignalIndex |  |

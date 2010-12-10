@@ -32,10 +32,13 @@ echo "No longer populating reports DB"
 #export PGUSER=`st-config echo db_user`
 #$NLW_DEVBIN/st-populate-reports-db
 
-mkdir -p /tmp/wikitests/anycorp.small
-cd /tmp/wikitests/anycorp.small/
-tar -zxf  $WIKITESTS/anycorp.small.account.tar.gz
-
+if [ ! -e $HOME/wikitests/anycorp.small ]; then
+    mkdir -p $HOME/wikitests/anycorp.small
+    cd $HOME/wikitests/anycorp.small/
+    tar -zxf  $WIKITESTS/anycorp.small.account.tar.gz
+    echo "Importing account anycorp in background"
+    $NLW_BIN/st-admin import-account --dir $HOME/wikitests/anycorp.small >& $HOME/anycorp.log &
+fi
 
 cd $NLW_LIB
 $APPLIANCE_SBIN/st-appliance-config set captcha_enabled 0
