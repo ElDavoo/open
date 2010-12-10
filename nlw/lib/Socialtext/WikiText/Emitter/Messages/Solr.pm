@@ -61,7 +61,7 @@ sub markup_node {
 
     if ($ast->{type} eq 'hyperlink' and $is_end) {
         my $output = $self->msg_markup_table->{$ast->{type}}->[$is_end];
-        if (($ast->{text}||'') eq $ast->{attributes}{href}) {
+        if (($ast->{text}||'') eq $ast->{attributes}{target}) {
             $output =~ s/<HREF>//;
         }
         else {
