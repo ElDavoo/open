@@ -1105,11 +1105,10 @@ $(function() {
     if (focus_field)
         jQuery(focus_field).select().focus();
 
+    // Workaround IE bug in {bz: 4595} by repainting buttons on image load
     if ($.browser.msie && $('div.wiki img').length > 0) {
         $('div.wiki img').load(function(){
-            setTimeout(function(){
-                Page._repaintBottomButtons();
-            }, 100);
+            Page._repaintBottomButtons();
         });
         setTimeout(function(){
             Page._repaintBottomButtons();
