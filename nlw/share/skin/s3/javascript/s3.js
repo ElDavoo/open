@@ -1104,4 +1104,15 @@ $(function() {
     }
     if (focus_field)
         jQuery(focus_field).select().focus();
+
+    if ($.browser.msie && $('div.wiki img').length > 0) {
+        $('div.wiki img').load(function(){
+            setTimeout(function(){
+                Page._repaintBottomButtons();
+            }, 100);
+        });
+        setTimeout(function(){
+            Page._repaintBottomButtons();
+        }, 100);
+    }
 });
