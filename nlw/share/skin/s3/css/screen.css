@@ -4766,9 +4766,9 @@ ul.dropdownOptions li.disabled a:hover {
     border-top-right-radius: 5px;
 }
 
-#exploreTabs #attachment.tab,
-#exploreTabs #wikilink.tab,
-#exploreTabs #weblink.tab {
+#exploreTabs #attachment,
+#exploreTabs #wikilink,
+#exploreTabs #weblink {
     padding-left: 15px;
 }
 #exploreTabs #attachment.selected,
@@ -4777,18 +4777,18 @@ ul.dropdownOptions li.disabled a:hover {
     padding-left: 20px;
 }
 
-#exploreTabs #everything.tab {
+#exploreTabs #everything {
     width: 75px;
 }
-#exploreTabs #attachment.tab {
+#exploreTabs #attachment {
     background: #ddd url(../../../plugin/signals/share/images/attachment.gif) no-repeat 2px 2px;
     width: 90px;
 }
-#exploreTabs #wikilink.tab {
+#exploreTabs #wikilink {
     background: #ddd url(../../../plugin/signals/share/images/wikilink.gif) no-repeat 2px 2px;
     width: 115px;
 }
-#exploreTabs #weblink.tab {
+#exploreTabs #weblink {
     background: #ddd url(../../../plugin/signals/share/images/weblink.gif) no-repeat 2px 2px;
     width: 80px;
 }
