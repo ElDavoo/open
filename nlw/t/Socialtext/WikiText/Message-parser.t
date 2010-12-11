@@ -5,18 +5,13 @@
 use strict;
 use warnings;
 # do *not* `use utf8` here
-use Test::More tests => 6 + 7 + 4 + 3*45 + 7;
+use Test::More tests => 5 + 7 + 4 + 3*45 + 7;
 
 use ok 'WikiText::Socialtext';
 use ok 'Socialtext::WikiText::Parser::Messages';
 use ok 'Socialtext::WikiText::Emitter::Messages::Solr';
 use ok 'Socialtext::WikiText::Emitter::Messages::Canonicalize';
 use ok 'Socialtext::WikiText::Emitter::Messages::HTML';
-
-# there will be things that need fixing ("a"-phrases, for example) if we move
-# beyond 0.14.  Nothing insurmountable, just want to make sure we address it
-# and not just blindly upgrade.
-is $WikiText::Socialtext::VERSION, '0.14', 'WikiText::Socialtext 0.15 and above break our stuff :(';
 
 my @noun_links;
 my @href_links;
@@ -95,21 +90,21 @@ for my $type (qw(Solr Canonicalize HTML)) {
 
     {
         is scalar(@href_links), 4, "$type got href links";
-        is $href_links[0]{type}, 'a', "$type a phrase";
+        is $href_links[0]{type}, 'hyperlink', "$type hyperlink phrase";
         is $href_links[0]{text}, '', "$type label is empty";
-        is $href_links[0]{attributes}{href}, 'http://example.com/1', "$type href";
+        is $href_links[0]{attributes}{target}, 'http://example.com/1', "$type href";
 
-        is $href_links[1]{type}, 'a', "$type a phrase";
+        is $href_links[1]{type}, 'hyperlink', "$type hyperlink phrase";
         is $href_links[1]{text}, 'awesomeness', "$type label is not empty";
-        is $href_links[1]{attributes}{href}, 'http://awesome.com/2', "$type href";
+        is $href_links[1]{attributes}{target}, 'http://awesome.com/2', "$type href";
 
-        is $href_links[2]{type}, 'a', "$type a phrase";
+        is $href_links[2]{type}, 'hyperlink', "$type hyperlink phrase";
         is $href_links[2]{text}, 'wikked', "$type label";
-        is $href_links[2]{attributes}{href}, 'http://google.com/3', "$type href";
+        is $href_links[2]{attributes}{target}, 'http://google.com/3', "$type href";
 
-        is $href_links[3]{type}, 'a', "$type a phrase";
+        is $href_links[3]{type}, 'hyperlink', "$type hyperlink phrase";
         is $href_links[3]{text}, '', "$type label is empty";
-        is $href_links[3]{attributes}{href}, 'http://example.com/4', "$type href";
+        is $href_links[3]{attributes}{target}, 'http://example.com/4', "$type href";
     }
 }
 
