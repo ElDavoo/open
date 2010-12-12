@@ -43,6 +43,20 @@ body {
 ol, ul {
 	list-style: none;
 }
+
+tr.st-refcard-table-row ol {
+	list-style: inside decimal;
+}
+
+tr.st-refcard-table-row ul {
+	list-style: inside disc;
+}
+
+tr.st-refcard-table-row ol ol,
+tr.st-refcard-table-row ul ul {
+	padding-left: 10px;
+}
+
 /* tables still need 'cellspacing="0"' in the markup */
 table {
 	border-collapse: separate;
