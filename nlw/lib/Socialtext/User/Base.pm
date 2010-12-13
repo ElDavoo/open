@@ -56,7 +56,7 @@ sub UserFields {
     my %all = %$proto_user;
     my %user = 
        map { $_ => delete $all{$_} }
-       grep { $all{$_} }
+       grep { exists $all{$_} }
        @all_fields;
 
     return wantarray ? (\%user, \%all) : \%user;
