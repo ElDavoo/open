@@ -852,7 +852,7 @@ sub create_group {
         });
     };
     if (my $err = $@) {
-        if ($err =~ m/duplicate key violates/) {
+        if ($err =~ m/duplicate key value violates/) {
             diag "Group $group_name already exists";
             return;
         }

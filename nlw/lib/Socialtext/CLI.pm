@@ -3424,7 +3424,7 @@ sub create_group {
         });
     };
     if (my $err = $@) {
-        if ($err =~ m/duplicate key violates/) {
+        if ($err =~ m/duplicate key value violates/) {
             $self->_error(
                 loc("The [_1] Group has already been added to the system.",
                     $name,
