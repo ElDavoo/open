@@ -45,12 +45,12 @@ sub RefreshUsers {
 
     # Refresh each of the LDAP Users
     foreach my $row (@{$rows_aref}) {
-        my ($driver_key, $driver_unique_id, $driver_username) = @{$row};
+        my ($driver_key, $unique_id, $driver_username) = @{$row};
 
         # refresh the user data from the Factory
         st_log->info( "... refreshing: $driver_username" );
         my $homunculus = eval {
-            Socialtext::User->new(driver_unique_id => $driver_unique_id)
+            sql_txn { Socialtext::User->new(driver_unique_id => $unique_id) };
         };
         if ($@) {
             st_log->error($@);
@@ -157,7 +157,9 @@ sub LoadUsers {
     my $users_loaded = 0;
     foreach my $email (@emails) {
         st_log->info("... loading: $email");
-        my $user = eval { Socialtext::User->new(email_address => $email) };
+        my $user = eval {
+            sql_txn { Socialtext::User->new(email_address => $email) };
+        };
         if ($@) {
             st_log->error($@);
         }
