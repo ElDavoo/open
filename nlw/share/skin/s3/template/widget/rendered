@@ -1,6 +1,8 @@
 [% USE html_encode %]
 <html>
     <head>
+        <base target="_top" /> <!-- iframe widgets open in the main window -->
+
         [% FOR script = features %]
             <script src="[% script %]"></script>
         [% END %]
