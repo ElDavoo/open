@@ -2,7 +2,7 @@ Tests for [Story: Groups ReST API]
 
 * Fixture: SocialRest
 
-| standard-test-setup |
+| standard-test-setup | | no-group |
 
 # Create a new group, make sure it shows up
 
@@ -14,11 +14,11 @@ Tests for [Story: Groups ReST API]
 | code-is | 200 |
 | header-like | Cache-Control | private |
 | json-parse | |
-| Body-like | "group_id":"%%group_id%%" |
-| Body-like | "name":"%%group_name%%" |
-| Body-like | "uri":"/data/groups/%%group_id%%" |
-| Body-like | "user_count":"1" |
-| Body-like | "workspace_count":"0" |
+| json-like | [{"group_id":"%%group_id%%"}] |
+| json-like | [{"name":"%%group_name%%"}] |
+| json-like | [{"uri":"/data/groups/%%group_id%%"}] |
+| json-like | [{"user_count":"1"}] |
+| json-like | [{"workspace_count":"0"}] |
 # Just check to make sure fields are present
 | Body-like | "creation_date": |
 | Body-like | "created_by_user_id": |
@@ -33,10 +33,10 @@ Tests for [Story: Groups ReST API]
 | code-is | 200 |
 | header-like | Cache-Control | private |
 | json-parse | |
-| Body-like | "group_id":"%%group_id%%" |
-| Body-like | "name":"%%group_name%%" |
-| body-like | "user_count":"1" |
-| body-like | "workspace_count":"0" |
+| json-like | {"group_id":"%%group_id%%"} |
+| json-like | {"name":"%%group_name%%"} |
+| json-like | {"user_count":"1"} |
+| json-like | {"workspace_count":"0"} |
 | body-unlike | "members" |
 # Just check to make sure fields are present
 | Body-like | "creation_date": |
@@ -52,11 +52,11 @@ Tests for [Story: Groups ReST API]
 | code-is | 200 |
 | header-like | Cache-Control | private |
 | json-parse | |
-| Body-like | "group_id":"%%group_id%%" |
-| Body-like | "name":"%%group_name%%" |
-| body-like | "user_count":"1" |
-| body-like | "workspace_count":"0" |
-| body-like | "members":[] |
+| json-like | {"group_id":"%%group_id%%"} |
+| json-like | {"name":"%%group_name%%"} |
+| json-like | {"user_count":"1"} |
+| json-like | {"workspace_count":"0"} |
+| json-like | {"members":[]} |
 
 ## ... visible by Business Admin (Business Admin can see all Groups)
 
@@ -69,7 +69,7 @@ Tests for [Story: Groups ReST API]
 | code-is            | 200                       |         |
 | header-like        | Cache-Control             | private |
 | json-parse         |                           |         |
-| body-like          | "group_id":"%%group_id%%"          |         |
+| json-like          | {"group_id":"%%group_id%%"}          |         |
 
 | set-business-admin | %%badmin%%                | 0       |
 | GET                | /data/groups/%%group_id%% |         |
@@ -92,6 +92,6 @@ Tests for [Story: Groups ReST API]
 | code-is           | 200                       |              |
 | header-like       | Cache-Control             | private      |
 | json-parse        |                           |              |
-| Body-like         | "group_id":"%%group_id%%" |              |
-| body-like         | "user_count":"2"          |              |
+| json-like         | {"group_id":"%%group_id%%"} |              |
+| json-like         | {"user_count":"2"}          |              |
 
