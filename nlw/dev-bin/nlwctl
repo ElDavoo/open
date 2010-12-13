@@ -157,7 +157,7 @@ sub init_commands {
     %apache_command = (
         start   => sub { $_[0]->start },
         stop    => sub { $_[0]->stop },
-        hup     => sub { $_[0]->hup },
+        hup     => sub { $apache_command{$_}->(@_) for qw( stop start ) },
         restart => sub { $apache_command{$_}->(@_) for qw( stop start ) },
         ports   => sub {
             foreach my $port ($_[0]->ports) {
