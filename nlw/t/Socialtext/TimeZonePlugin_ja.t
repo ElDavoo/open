@@ -4,6 +4,8 @@
 use strict;
 use warnings;
 use utf8;
+binmode STDOUT, ':utf8';
+binmode STDERR, ':utf8';
 
 use Test::Socialtext;
 fixtures(qw( empty ));
@@ -153,7 +155,10 @@ sub run_tests
             $strftime .= $strftime_time_formats{ $prefs->time_display_12_24->value };
         }
 
-        is( $tz->date_local( $test->{string} ), $dt->strftime($strftime),
+        my $sturfed = $dt->strftime($strftime);
+        $sturfed =~ s/AM/午前/;
+        $sturfed =~ s/PM/午後/;
+        is( $tz->date_local( $test->{string} ), $sturfed,
             "Formatting of $test->{string} (strftime = $strftime, dst = $dst_pref, zone = $tz_pref, 12/24 = $time_display_pref)" );
     }
 }
