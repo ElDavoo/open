@@ -8,7 +8,7 @@ use warnings;
 use WWW::Mechanize ();
 
 use Test::More;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use Socialtext::WikiFixture::TestUtils;
 use Data::Dumper;
 use mocked 'Socialtext::User';
@@ -292,13 +292,13 @@ EOT
 
 Missing_args: {
     my %args = ( selenium => Test::WWW::Selenium->new );
-    throws_ok { Socialtext::WikiFixture::Socialtext->new(%args) }
+    like exception { Socialtext::WikiFixture::Socialtext->new(%args) },
               qr/workspace is mandatory/;
     $args{workspace} = 1;
-    throws_ok { Socialtext::WikiFixture::Socialtext->new(%args) }
+    like exception { Socialtext::WikiFixture::Socialtext->new(%args) },
               qr/username is mandatory/;
     $args{username} = 1;
-    throws_ok { Socialtext::WikiFixture::Socialtext->new(%args) }
+    like exception { Socialtext::WikiFixture::Socialtext->new(%args) },
               qr/password is mandatory/;
 }
 

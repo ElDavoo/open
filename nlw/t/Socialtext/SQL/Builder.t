@@ -4,7 +4,7 @@ use strict;
 use warnings FATAL => 'all';
 
 use Test::More tests => 36;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use mocked 'Socialtext::SQL', ':test';
 
 use_ok 'Socialtext::SQL::Builder', ':all';
@@ -22,15 +22,13 @@ nextval: {
 }
 
 update_invalid_calls: {
-    dies_ok sub { sql_update('') };
-    dies_ok sub { sql_update(undef) };
-    dies_ok sub { sql_update('mytable') }, 'missing args';
-
-    dies_ok sub { sql_update('mytable', undef, 'id') }, 'missing params';
-    dies_ok sub { sql_update('mytable', {}, 'id') }, 'empty params';
-
-    dies_ok sub { sql_update('mytable', {foo=>12}, 'id') }, 'missing key';
-    dies_ok sub { sql_update('mytable', {foo=>undef}, 'foo') }, 'undef value';
+    ok exception { sql_update('') };
+    ok exception { sql_update(undef) };
+    ok exception { sql_update('mytable') }, 'missing args';
+    ok exception { sql_update('mytable', undef, 'id') }, 'missing params';
+    ok exception { sql_update('mytable', {}, 'id') }, 'empty params';
+    ok exception { sql_update('mytable', {foo=>12}, 'id') }, 'missing key';
+    ok exception { sql_update('mytable', {foo=>undef}, 'foo') }, 'undef value';
 
     ok !@Socialtext::SQL::SQL, 'no sql got run';
 }
@@ -72,11 +70,11 @@ update_works_with_composite_key: {
 }
 
 insert_invalid_calls: {
-    dies_ok sub { sql_insert('') };
-    dies_ok sub { sql_insert(undef) };
-    dies_ok sub { sql_insert('mytable') }, 'missing args';
-    dies_ok sub { sql_insert('mytable', undef) }, 'missing params';
-    dies_ok sub { sql_insert('mytable', {}) }, 'empty params';
+    ok exception { sql_insert('') };
+    ok exception { sql_insert(undef) };
+    ok exception { sql_insert('mytable') }, 'missing args';
+    ok exception { sql_insert('mytable', undef) }, 'missing params';
+    ok exception { sql_insert('mytable', {}) }, 'empty params';
 
     ok !@Socialtext::SQL::SQL, 'no sql got run';
 }
@@ -114,10 +112,10 @@ insert_many: {
 }
 
 insert_many_fail: {
-    dies_ok sub { sql_insert_many('') };
-    dies_ok sub { sql_insert_many('table') };
-    dies_ok sub { sql_insert_many('table', []) };
-    dies_ok sub { sql_insert_many('table', [], []) };
-    dies_ok sub { sql_insert_many('table', [1], []) };
-    dies_ok sub { sql_insert_many('table', [], [1]) };
+    ok exception { sql_insert_many('') };
+    ok exception { sql_insert_many('table') };
+    ok exception { sql_insert_many('table', []) };
+    ok exception { sql_insert_many('table', [], []) };
+    ok exception { sql_insert_many('table', [1], []) };
+    ok exception { sql_insert_many('table', [], [1]) };
 }

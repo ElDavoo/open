@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use Test::Socialtext tests => 121;
 use Test::Socialtext::User;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use Test::Differences;
 use Socialtext::File;
 use MIME::Base64 ();
@@ -43,10 +43,10 @@ ok( $socialtext->is_system_created, 'Unknown account is system-created' );
 users_are($socialtext, []);
 eq_or_diff [ sort @{$socialtext->user_ids} ], [], 'user_ids() works';
 
-throws_ok { Socialtext::Account->create(name => 'Test Account') }
+like exception { Socialtext::Account->create(name => 'Test Account') },
     qr/already in use/, 'cannot create two accounts with the same name';
 
-throws_ok { $unknown->update(name => 'new name') }
+like exception { $unknown->update(name => 'new name') },
     qr/cannot change/, 'cannot change the name of a system-created account';
 
 my $ws = Socialtext::Workspace->create(
@@ -96,7 +96,7 @@ Rename_account: {
     $account = Socialtext::Account->new(name => $new_name);
     is $account->name, $new_name,
         'account name was changed after db round-trip';
-    dies_ok { $account->update(name => 'Socialtext') }
+    ok exception { $account->update(name => 'Socialtext') },
         'cannot rename account to an existing name';
     is $account->name, $new_name,
         'account name unchanged after attempt to duplicate rename';
@@ -171,7 +171,7 @@ my $logo_ref;
 Set_a_logo: {
     my $orig_logo = Socialtext::File::get_contents_binary(
         "t/test-data/discoverppl.jpg");
-    lives_ok { $test->logo->set(\$orig_logo) } 'set the account logo';
+    ok !exception { $test->logo->set(\$orig_logo) }, 'set the account logo';
     $logo_ref = $test->logo->logo;
     ok $logo_ref, 'logo ref was set';
     ok !$test->logo->is_default, 'logo is no longer the default';
@@ -306,7 +306,7 @@ restrict_to_domain: {
     my $account = create_test_account_bypassing_factory();
 
     # valid domain.
-    lives_ok { $account->update(restrict_to_domain => 'socialtext.com') }
+    ok !exception { $account->update(restrict_to_domain => 'socialtext.com') },
         'updated restrict_to_domain with valid value';
 
     ok $account->email_passes_domain_filter('me@socialtext.com'), 'me@socialtext.com passes';
@@ -314,11 +314,11 @@ restrict_to_domain: {
     ok !$account->email_passes_domain_filter('socialtext.com@example.com'), 'socialtext.com@example.com does not pass';
 
     # invalid domain.
-    throws_ok { $account->update(restrict_to_domain => 'valid!@.com') }
+    like exception { $account->update(restrict_to_domain => 'valid!@.com') },
         qr/is not valid/, 'restrict_to_domain has invalid value';
 
     # remove restriction
-    lives_ok { $account->update( restrict_to_domain => '' ); }
+    ok !exception { $account->update( restrict_to_domain => '' ); },
         'unsetting restrict_to_domain';
 }
 
@@ -328,26 +328,26 @@ free50_accounts: {
 
     my $acct = create_test_account_bypassing_factory();
     my $ws   = create_test_workspace( account => $acct );
-    lives_ok {
+    ok !exception {
         $acct->update(
             restrict_to_domain  => 'valid.com',
             account_type        => 'Free 50',
         );
         $ws->add_account(account => $acct);
-    };
+    },;
 
     $lookup = Socialtext::Account->Free50ForDomain('valid.com');
     is $acct->account_id, $lookup->account_id, 'got correct Free 50 account';
 
     my $other    = create_test_account_bypassing_factory();
     my $other_ws = create_test_workspace( account => $other );
-    lives_ok {
+    ok !exception {
         $other->update(
             restrict_to_domain  => 'valid.com',
             account_type        => 'Free 50',
         );
         $other_ws->add_account(account => $other);
-    };
+    },;
 
     $lookup = Socialtext::Account->Free50ForDomain('valid.com');
 

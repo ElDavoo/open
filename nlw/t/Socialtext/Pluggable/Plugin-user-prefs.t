@@ -7,7 +7,7 @@ use Test::More tests => 12;
 use Test::Socialtext;
 use Socialtext::Account;
 use Socialtext::User;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 fixtures(qw(plugin));
 
 my $hub = create_test_hub;
@@ -19,54 +19,54 @@ my $plugin = Socialtext::Pluggable::Plugin::Prefsetter->new;
 $plugin->hub($hub);
 
 Getter_setter: {
-    lives_ok {
+    ok !exception {
         $plugin->set_user_prefs(
             number => 43,
             string => 'hi',
             'ref' => ['ignored'],
         );
-    } "set_user_prefs";
+    }, "set_user_prefs";
 
     is_deeply $plugin->get_user_prefs,
               { number => 43, string => 'hi' },
               'get_user_prefs';
 
-    lives_ok {
+    ok !exception {
         $plugin->set_user_prefs(
             number => 44,
             other => 'ho',
         );
-    } "set_user_prefs with a subset";
+    }, "set_user_prefs with a subset";
 
     is_deeply $plugin->get_user_prefs,
               { number => 44, string => 'hi', other => 'ho' },
               'get_user_prefs';
 
-    lives_ok {
+    ok !exception {
         $plugin->clear_user_prefs();
-    } "clear_user_prefs";
+    }, "clear_user_prefs";
 
     is_deeply $plugin->get_user_prefs, {}, 'get_user_prefs after clear';
 }
 
 User_scoped: {
-    lives_ok { $plugin->set_user_prefs(number => 38) }
+    ok !exception { $plugin->set_user_prefs(number => 38) },
              "set_user_prefs(number => SCALAR)";
     $hub->current_user($user2);
-    lives_ok { $plugin->set_user_prefs(number => 32) }
+    ok !exception { $plugin->set_user_prefs(number => 32) },
              "set_user_prefs(number => SCALAR)";
     is_deeply $plugin->get_user_prefs,
               { number => 32 },
               "prefs are user scoped";
     $hub->current_user($user1);
-    lives_ok { $plugin->set_user_prefs(number => 38) }
+    ok !exception { $plugin->set_user_prefs(number => 38) },
              "set_user_prefs(number => SCALAR)";
 }
 
 No_user: {
     $hub->current_user(undef);
 
-    dies_ok { $plugin->get_user_prefs } "user is required"
+    ok exception { $plugin->get_user_prefs }, "user is required"
 }
 
 Plugin_scoped: {

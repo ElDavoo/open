@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use Test::Socialtext tests => 74;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use Socialtext::SQL qw/sql_txn/;
 BEGIN {
     use_ok 'Socialtext::Group';
@@ -34,15 +34,15 @@ Bad_cases: {
 
         my $user_id1 = $usr->user_id;
         my $user_id2 = $usr2->user_id;
-        throws_ok {
+        like exception {
             $uset->add_role($user_id1, $user_id2, $member);
-        } qr/can't add things to users/, "cannot add user to a user";
-        throws_ok {
+        }, qr/can't add things to users/, "cannot add user to a user";
+        like exception {
             $uset->remove_role($user_id1, $user_id2);
-        } qr/edge $user_id1,$user_id2/, "cannot remove user from a user";
-        throws_ok {
+        }, qr/edge $user_id1,$user_id2/, "cannot remove user from a user";
+        like exception {
             $uset->update_role($user_id1, $user_id2, $member);
-        } qr/can't add things to users/, "cannot update user to a user";
+        }, qr/can't add things to users/, "cannot update user to a user";
     }
 
     Add_workspace_to_workspace: {
@@ -50,26 +50,26 @@ Bad_cases: {
         my $wksp2 = create_test_workspace();
 
         my $error = qr/Workspace user_sets cannot/;
-        throws_ok {
+        like exception {
             $wksp1->add_role(
                 actor => Socialtext::User->SystemUser,
                 object => $wksp2,
                 role => $member,
             );
-        } $error, "cannot add wksp to a wksp";
-        throws_ok {
+        }, $error, "cannot add wksp to a wksp";
+        like exception {
             $wksp1->assign_role(
                 actor => Socialtext::User->SystemUser,
                 object => $wksp2,
                 role => $member,
             );
-        } $error, "cannot remove wksp from a wksp";
-        throws_ok {
+        }, $error, "cannot remove wksp from a wksp";
+        like exception {
             $wksp1->remove_role(
                 actor => Socialtext::User->SystemUser,
                 object => $wksp2,
             );
-        } $error, "cannot update wksp to a wksp";
+        }, $error, "cannot update wksp to a wksp";
     }
 
     Add_account_to_account: {
@@ -77,46 +77,46 @@ Bad_cases: {
         my $acct2 = create_test_account_bypassing_factory();
 
         my $error = qr/Account user_sets cannot/;
-        throws_ok {
+        like exception {
             $acct1->add_role(
                 actor => Socialtext::User->SystemUser,
                 object => $acct2,
                 role => $member,
             );
-        } $error, "cannot add acct to a acct";
-        throws_ok {
+        }, $error, "cannot add acct to a acct";
+        like exception {
             $acct1->assign_role(
                 actor => Socialtext::User->SystemUser,
                 object => $acct2,
                 role => $member,
             );
-        } $error, "cannot remove acct from a acct";
+        }, $error, "cannot remove acct from a acct";
     }
 
     Add_group_to_group: {
         my $grp1 = create_test_group();
         my $grp2 = create_test_group();
 
-        lives_ok {
+        ok !exception {
             $grp1->add_role(
                 actor => Socialtext::User->SystemUser,
                 object => $grp2,
                 role => $member,
             );
-        } "can add grp to a grp";
-        lives_ok {
+        }, "can add grp to a grp";
+        ok !exception {
             $grp1->assign_role(
                 actor => Socialtext::User->SystemUser,
                 object => $grp2,
                 role => $member,
             );
-        } "can remove grp from a grp";
-        lives_ok {
+        }, "can remove grp from a grp";
+        ok !exception {
             $grp1->remove_role(
                 actor => Socialtext::User->SystemUser,
                 object => $grp2,
             );
-        } "can update grp to a grp";
+        }, "can update grp to a grp";
     }
 
     Add_system_created_user_to_anything: {
@@ -129,13 +129,12 @@ Bad_cases: {
         my $err   = qr/Cannot give a role to a system-created user/;
 
         for my $ctr ($acct, $wksp, $group) {
-            throws_ok {
+            like exception {
                 $ctr->add_role(actor => $actor, user => $user, role => $member)
-            } $err, "cannot add a system created user";
-
-            throws_ok {
+            }, $err, "cannot add a system created user";
+            like exception {
                 $ctr->add_role(actor => $actor, user => $user, role  => $member)
-            } $err, "cannot add a system created user";
+            }, $err, "cannot add a system created user";
         }
     }
 }
@@ -145,8 +144,10 @@ nested_txn: {
     my $user1 = create_test_user();
     my $user2 = create_test_user();
     sql_txn {
-        lives_ok { $grp->add_user(user => $user1) } 'added first user in txn';
-        lives_ok { $grp->add_user(user => $user2) } 'added second user in txn';
+        ok !exception { $grp->add_user(user => $user1) },
+            'added first user in txn';
+        ok !exception { $grp->add_user(user => $user2) },
+            'added second user in txn';
     };
 
     ok $grp->has_user($user1);
@@ -162,9 +163,8 @@ sub check_api_for_container {
     is $uset->owner_id, $cont->user_set_id, "same set id";
     is $uset->owner, $cont, "owner assigned";
 
-    lives_ok {
-        $uset->add_object_role($usr, $member);
-    } "added user to the container";
+    ok !exception { $uset->add_object_role($usr, $member) },
+        "added user to the container";
 
     ok  $uset->connected($usr->user_id,     $cont->user_set_id),
         "user is in the container";
@@ -174,15 +174,11 @@ sub check_api_for_container {
     ok $uset->has_role($usr->user_id, $cont->user_set_id, $member);
     ok $uset->has_direct_role($usr->user_id, $cont->user_set_id, $member);
 
-    lives_ok {
-        $uset->update_object_role($usr, $admin);
-    } "role updated";
+    ok !exception { $uset->update_object_role($usr, $admin) }, "role updated";
     ok !$uset->has_role($usr->user_id, $cont->user_set_id, $member);
     ok  $uset->has_role($usr->user_id, $cont->user_set_id, $admin);
 
-    lives_ok {
-        $uset->remove_object_role($usr);
-    } "role updated";
+    ok !exception { $uset->remove_object_role($usr) }, "role updated";
     ok !$uset->has_role($usr->user_id, $cont->user_set_id, $member);
     ok !$uset->has_role($usr->user_id, $cont->user_set_id, $admin);
     ok !$uset->connected($usr->user_id, $cont->user_set_id);

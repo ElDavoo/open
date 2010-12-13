@@ -25,6 +25,7 @@
 | st-admin | add-workspace-admin --w %%to_ws%% --u %%username%% |  |
 | st-config | set self_registration 1 | Wrote updated config file |
 | st-config | set allow_network_invitation 1 | Wrote updated config file |
+| st-appliance-config | set captcha_enabled 0 | Set captcha_enabled to 'UNDEF' |
 | st-admin | set-account-config --account "%%acct%%" allow_invitation 1 | has been updated |
 
 | *Comment* | Test Case: Join. Logged-in user joins immediately. |  |

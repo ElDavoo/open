@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 17;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use Socialtext::SQL qw/:exec get_dbh/;
 
 fixtures('db');
@@ -13,9 +13,9 @@ BEGIN {
     use_ok 'Socialtext::JobCreator';
 }
 
-lives_ok {
+ok !exception {
     Socialtext::Jobs->clear_jobs();
-} 'cleared all jobs';
+}, 'cleared all jobs';
 
 my $job_creator = Socialtext::JobCreator->instance;
 ok $job_creator;
@@ -58,9 +58,9 @@ cleanup: {
         'and some other job';
 
     my @cleaned;
-    lives_ok {
+    ok !exception {
         $jobs->cleanup_job_tables(sub { push @cleaned, $_[0] });
-    } 'cleaned up tables';
+    }, 'cleaned up tables';
     is_deeply \@cleaned, ['Socialtext::Job::Other'], 'just the other type';
 
     my $after_id = $jobs->funcname_to_id(get_dbh(), 'Socialtext::Job::Other');

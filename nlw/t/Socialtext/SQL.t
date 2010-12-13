@@ -3,8 +3,8 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 64;
-use Test::Exception;
+use Test::Socialtext tests => 63;
+use Test::Socialtext::Fatal;
 use Scalar::Util qw/refaddr/;
 
 fixtures( 'db' );
@@ -17,12 +17,8 @@ BEGIN {
     );
 }
 
-lives_ok {
-    disconnect_dbh()
-} "can disconnect okay";
-lives_ok {
-    get_dbh()
-} "can connect okay";
+ok !exception { disconnect_dbh() }, "can disconnect okay";
+ok !exception { get_dbh() }, "can connect okay";
 
 sql_execute: {
     my $sth;
@@ -46,29 +42,29 @@ sql_execute: {
 
 old_school_transactions: {
     my @warnings;
-    lives_ok {
+    ok !exception {
         local $SIG{__WARN__} = sub {push @warnings, $_[0]};
         sql_rollback();
-    } "rollback outside of transaction is not fatal";
+    }, "rollback outside of transaction is not fatal";
     ok @warnings == 1, "got a warning";
     @warnings = ();
 
-    lives_ok {
+    ok !exception {
         local $SIG{__WARN__} = sub {push @warnings, $_[0]};
         sql_commit();
-    } "outside of transaction is not fatal";
+    }, "outside of transaction is not fatal";
     ok @warnings == 1, "got a warning";
     @warnings = ();
 
     ok get_dbh->{AutoCommit}, "AutoCommit it turned on";
     ok !sql_in_transaction(), 'not in transaction';
 
-    lives_ok { sql_begin_work() } 'begin';
+    ok !exception { sql_begin_work() }, 'begin';
 
     ok !get_dbh->{AutoCommit}, "AutoCommit becomes disabled";
     ok sql_in_transaction(), 'in transaction';
 
-    lives_ok { sql_rollback() } 'rollback';
+    ok !exception { sql_rollback() }, 'rollback';
 
     ok get_dbh->{AutoCommit}, "AutoCommit it turned on again";
     ok !sql_in_transaction(), 'not in transaction';
@@ -77,25 +73,25 @@ old_school_transactions: {
         CREATE TEMPORARY TABLE goes_away (id bigint NOT NULL) ON COMMIT DROP
     };
 
-    dies_ok {
+    ok exception {
         sql_execute($tt);
         sql_singlevalue("SELECT * FROM goes_away LIMIT 1");
-    } "should die because no txn started";
+    }, "should die because no txn started";
 
     sql_begin_work();
-    lives_ok {
+    ok !exception {
         sql_execute($tt);
         sql_singlevalue("SELECT * FROM goes_away LIMIT 1");
-    } "should be fine because txn in progress";
+    }, "should be fine because txn in progress";
     sql_commit();
 
     sql_begin_work();
     sql_execute($tt);
 
-    lives_ok {
+    ok !exception {
         local $SIG{__WARN__} = sub {push @warnings, join('',@_)};
         invalidate_dbh();
-    } "invalidating while in txn is not fatal";
+    }, "invalidating while in txn is not fatal";
     ok @warnings == 2, "get a set of warnings";
     @warnings = ();
     ok !sql_in_transaction(), 'not in transaction';
@@ -141,19 +137,18 @@ sql_execute_array_errors: {
     sql_execute_array('INSERT INTO parent values (?)', {}, [1,2,3,4,5]);
     my $dbh = get_dbh;
     $dbh->pg_savepoint('foo');
-    dies_ok {
+    like exception {
         sql_execute_array(
             'INSERT INTO child values (?, ?)', {},
             [1,2,3,4,5], [1,2,3,7,5],
         );
-    } "foreign key constraint violation";
-    like $@, qr{violates foreign key constraint "parent_id_fk"},
-         "Eror is propogated";
+    }, qr{violates foreign key constraint "parent_id_fk"},
+        "foreign key constraint violation";
     $dbh->pg_rollback_to('foo');
 
-    lives_ok {
+    ok !exception {
         sql_execute("SELECT * FROM parent");
-    } "savepoint worked okay";
+    }, "savepoint worked okay";
 
     sql_rollback();
 }
@@ -197,12 +192,12 @@ txn_block: {
         sql_execute(
             q{INSERT INTO "System" (field,value) VALUES ('first','ok')});
 
-        dies_ok {
+        ok exception {
             sql_txn {
                 is sql_in_transaction(), 2, "two nestings";
                 sql_execute(q{INSERT INTO "Barf"});
             };
-        } 'non-existant table causes exception';
+        }, 'non-existant table causes exception';
 
         $val = sql_singlevalue(q{
             SELECT value FROM "System" WHERE field = 'first'});
@@ -229,9 +224,9 @@ txn_block: {
         }
     }
     my $mtt = MyTransactionalThing->new;
-    dies_ok {
+    ok exception {
         $mtt->do_a_txn('param!');
-    } 'exception propagates up';
+    }, 'exception propagates up';
 
     $val = sql_singlevalue(q{
         SELECT value FROM "System" WHERE field = 'first'});
@@ -257,17 +252,17 @@ txn_block: {
 }
 
 dangling_txn: {
-    lives_ok {
+    ok !exception {
         sql_begin_work();
         sql_begin_work();
         sql_rollback();
-    } 'two begins, one rollback';
+    }, 'two begins, one rollback';
     my @warnings;
-    lives_ok {
+    ok !exception {
         local $SIG{__WARN__} = sub {
             push @warnings, $_[0]};
         Socialtext::SQL::disconnect_dbh();
-    } "outside of transaction is not fatal";
+    }, "outside of transaction is not fatal";
     ok @warnings == 2, "got two warnings";
     like $warnings[0], qr/Transaction left dangling/, 'dangling warning';
     like $warnings[1], qr{at t/Socialtext/SQL\.t line \d+ \(.+\)}m,
@@ -276,7 +271,7 @@ dangling_txn: {
 
 ensure_temp: {
     my $results = [];
-    lives_ok {
+    ok !exception {
         sql_txn {
             eval {
                 sql_txn {
@@ -292,7 +287,7 @@ ensure_temp: {
         };
         my $sth = sql_execute("SELECT * FROM my_temp");
         $results = $sth->fetchall_arrayref;
-    } 'outer transaction is ok';
+    }, 'outer transaction is ok';
     is_deeply $results, [[42]];
 }
 

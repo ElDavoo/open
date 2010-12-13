@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 45;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use Test::Socialtext::Ceqlotron;
 
 BEGIN {
@@ -130,9 +130,9 @@ Once_mode: {
     is scalar(@start_with), $NUM_JOBS, 'start with a bunch of jobs';
 
     ceq_fast_forward();
-    lives_ok {
+    ok !exception {
         ceq_start('--foreground --once');
-    } 'ran ceqlotron in foreground in once mode';
+    }, 'ran ceqlotron in foreground in once mode';
     my @lines = ceq_get_log_until(qr/master: exiting/);
 
     my @leftovers = Socialtext::Jobs->list_jobs(
@@ -158,9 +158,9 @@ Fail_and_tempfail: {
     {
         local $ENV{TEST_JOB_RETRIES} = 1;
         ceq_fast_forward();
-        lives_ok {
+        ok !exception {
             ceq_start('--foreground --once');
-        } 'ran ceqlotron in foreground in once mode';
+        }, 'ran ceqlotron in foreground in once mode';
         my @lines = ceq_get_log_until(qr/master: exiting/);
 
         my @leftovers = Socialtext::Jobs->list_jobs(
@@ -174,9 +174,9 @@ Fail_and_tempfail: {
 
     {
         ceq_fast_forward();
-        lives_ok {
+        ok !exception {
             ceq_start('--foreground --once');
-        } 'ran ceqlotron in foreground in once mode';
+        }, 'ran ceqlotron in foreground in once mode';
         my @lines = ceq_get_log_until(qr/master: exiting/);
 
         my @leftovers = Socialtext::Jobs->list_jobs(

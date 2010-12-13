@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 use Test::More tests => 122;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use File::Basename qw(dirname);
 use File::Temp;
 use File::Copy;
@@ -58,9 +58,9 @@ sub has_danish_content ($$;$) {
 missing: {
     my $filename = $base_dir .'/does-not-exist.html';
     my $buf;
-    lives_ok {
+    ok !exception {
         to_str(\$buf, $filename, 'text/html; charset=UTF-8');
-    } 'stringify with explicit charset';
+    }, 'stringify with explicit charset';
     ok $buf eq '', "empty buffer on missing file";
 }
 
@@ -79,108 +79,108 @@ oom_fail: {
 utf8: {
     my $filename = $base_dir .'/japanese-utf8.html';
     my $buf;
-    lives_ok {
+    ok !exception {
         to_str(\$buf, $filename, 'text/html; charset=UTF-8');
-    } 'stringify with explicit charset';
+    }, 'stringify with explicit charset';
     has_japanese_content($buf, 'UTF-8');
 }
 
 utf8_with_guess: {
     my $filename = $base_dir .'/japanese-utf8.html';
     my $buf;
-    lives_ok {
+    ok !exception {
         to_str(\$buf, $filename, 'text/html');
-    } 'stringify with absent charset (derived by meta header), guess utf8';
+    }, 'stringify with absent charset (derived by meta header), guess utf8';
     has_japanese_content($buf, 'UTF-8', "UTF-8-guessed");
 }
 
 utf8_with_unknown: {
     my $filename = $base_dir .'/japanese-utf8.html';
     my $buf;
-    lives_ok {
+    ok !exception {
         to_str(\$buf, $filename, 'text/html; charset=unknown');
-    } 'stringify with "unknown" charset (derived by meta header), guess utf8';
+    }, 'stringify with "unknown" charset (derived by meta header), guess utf8';
     has_japanese_content($buf, 'UTF-8', "UTF-8-from-unknown");
 }
 
 utf16_no_guess: {
     my $filename = $base_dir .'/japanese-utf16.html';
     my $buf;
-    lives_ok {
+    ok !exception {
         to_str(\$buf, $filename, 'text/html; charset=UTF-16BE');
-    } 'stringify with explicit UTF-16 charset';
+    }, 'stringify with explicit UTF-16 charset';
     has_japanese_content($buf, 'UTF-16', "UTF-16BE");
 }
 
 utf16le_no_guess: {
     my $filename = $base_dir .'/japanese-utf16le.html';
     my $buf;
-    lives_ok {
+    ok !exception {
         to_str(\$buf, $filename, 'text/html; charset=UTF-16LE');
-    } 'stringify with explicit UTF-16 charset';
+    }, 'stringify with explicit UTF-16 charset';
     has_japanese_content($buf, 'UTF-16', "UTF-16LE");
 }
 
 utf16_guess: {
     my $filename = $base_dir .'/japanese-utf16.html';
     my $buf;
-    lives_ok {
+    ok !exception {
         to_str(\$buf, $filename, 'text/html');
-    } 'stringify UTF-16 with absent charset (derived by BOM)';
+    }, 'stringify UTF-16 with absent charset (derived by BOM)';
     has_japanese_content($buf, 'UTF-16', "UTF-16BE-BOM-guessed");
 }
 
 utf16le_guess: {
     my $filename = $base_dir .'/japanese-utf16le.html';
     my $buf;
-    lives_ok {
+    ok !exception {
         to_str(\$buf, $filename, 'text/html');
-    } 'stringify UTF-16 with absent charset (derived by BOM)';
+    }, 'stringify UTF-16 with absent charset (derived by BOM)';
     has_japanese_content($buf, 'UTF-16', "UTF-16LE-BOM-guessed");
 }
 
 sjis: {
     my $filename = $base_dir .'/japanese-shiftjis.html';
     my $buf;
-    lives_ok {
+    ok !exception {
         to_str(\$buf, $filename, 'text/html; charset=Shift_JIS');
-    } 'stringify with explicit Shift_JIS charset';
+    }, 'stringify with explicit Shift_JIS charset';
     has_japanese_content($buf, 'Shift-JIS', 'Shift_JIS');
 }
 
 sjis_with_guess: {
     my $filename = $base_dir .'/japanese-shiftjis.html';
     my $buf;
-    lives_ok {
+    ok !exception {
         to_str(\$buf, $filename, 'text/html');
-    } 'stringify with absent charset (derived by meta header), guess sjis';
+    }, 'stringify with absent charset (derived by meta header), guess sjis';
     has_japanese_content $buf, 'Shift-JIS', 'Shift_JIS-guessed';
 }
 
 danish_utf8_with_guess: {
     my $filename = $base_dir .'/danish-utf8.html';
     my $buf;
-    lives_ok {
+    ok !exception {
         to_str(\$buf, $filename, 'text/html');
-    } 'stringify with absent charset (derived by meta header), guess utf8';
+    }, 'stringify with absent charset (derived by meta header), guess utf8';
     has_danish_content($buf, 'UTF-8', "UTF-8-danish");
 }
 
 danish_iso_8859_1_with_guess: {
     my $filename = $base_dir .'/danish-iso-8859-1.html';
     my $buf;
-    lives_ok {
+    ok !exception {
         to_str(\$buf, $filename, 'text/html');
-    } 'stringify with absent charset (derived by meta header), guess iso';
+    }, 'stringify with absent charset (derived by meta header), guess iso';
     has_danish_content($buf, 'ISO-8859-1', "ISO-8859-1-danish");
 }
 
 danish_iso_8859_1_with_bogus_charset: {
     my $filename = $base_dir .'/danish-iso-8859-1.html';
     my $buf;
-    lives_ok {
+    ok !exception {
         to_str(\$buf, $filename, 'text/html; charset=bogus');
-    } 'stringify with bogus charset (derived by meta header), guess iso';
+    }, 'stringify with bogus charset (derived by meta header), guess iso';
     has_danish_content($buf, 'ISO-8859-1', "ISO-8859-1-danish-bogus");
 }
 
@@ -189,9 +189,9 @@ danish_utf8_with_low_limit: {
     no warnings 'redefine';
     *Socialtext::AppConfig::stringify_max_length = sub { 16 };
     my $buf;
-    lives_ok {
+    ok !exception {
         to_str(\$buf, $filename, 'text/html; charset=UTF-8');
-    } 'stringify with absent charset (derived by meta header), guess utf8';
+    }, 'stringify with absent charset (derived by meta header), guess utf8';
     ok $buf !~ /<html>/, 'low-string limit did not use Default';
     ok $buf eq 'Dansk søgeord ', 'content was truncated just fine';
 }

@@ -5,7 +5,7 @@ use strict;
 use mocked 'Socialtext::Log', qw(:tests);
 use Test::Socialtext tests => 35;
 use Test::More;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 BEGIN { 
     use_ok 'Socialtext::UserSet', qw/:const/;
     use_ok 'Socialtext::UserSetContainer';
@@ -182,21 +182,21 @@ system_created_no_roles: {
     my $a_sys_user = create_test_user(is_system_created => 1, account => $acct);
     ok $a_sys_user, 'created a system user';
 
-    dies_ok {
+    ok exception {
         $c->add_user(actor => $actor, user => $a_sys_user);
-    } "can't add system-created users";
+    }, "can't add system-created users";
 
-    dies_ok {
+    ok exception {
         $c->assign_user(actor => $actor, user => $a_sys_user);
-    } "can't add system-created users";
+    }, "can't add system-created users";
 
-    lives_ok {
+    ok !exception {
         $c->user_set->add_object_role($a_sys_user, $member->role_id);
-    } 'super low-level interface is OK';
+    }, 'super low-level interface is OK';
     ok $c->has_user($a_sys_user), 'added via super-low-level interface';
 
-    lives_ok {
+    ok !exception {
         $c->remove_user(actor => $actor, user => $a_sys_user);
-    } "can remove them though (if they did get added somehow)";
+    }, "can remove them though (if they did get added somehow)";
     ok !$c->has_user($a_sys_user), 'removed via high-level interface';
 }

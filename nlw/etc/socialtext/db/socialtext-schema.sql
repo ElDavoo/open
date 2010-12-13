@@ -30,13 +30,16 @@ CREATE FUNCTION _int_contained(integer[], integer[]) RETURNS boolean
     LANGUAGE c IMMUTABLE STRICT
     AS '$libdir/_int', '_int_contained';
 
+
 CREATE FUNCTION _int_contains(integer[], integer[]) RETURNS boolean
     LANGUAGE c IMMUTABLE STRICT
     AS '$libdir/_int', '_int_contains';
 
+
 CREATE FUNCTION _int_different(integer[], integer[]) RETURNS boolean
     LANGUAGE c IMMUTABLE STRICT
     AS '$libdir/_int', '_int_different';
+
 
 CREATE FUNCTION _int_inter(integer[], integer[]) RETURNS integer[]
     LANGUAGE c IMMUTABLE STRICT
@@ -46,9 +49,11 @@ CREATE FUNCTION _int_overlap(integer[], integer[]) RETURNS boolean
     LANGUAGE c IMMUTABLE STRICT
     AS '$libdir/_int', '_int_overlap';
 
+
 CREATE FUNCTION _int_same(integer[], integer[]) RETURNS boolean
     LANGUAGE c IMMUTABLE STRICT
     AS '$libdir/_int', '_int_same';
+
 
 CREATE FUNCTION _int_union(integer[], integer[]) RETURNS integer[]
     LANGUAGE c IMMUTABLE STRICT
@@ -322,6 +327,38 @@ CREATE FUNCTION querytree(query_int) RETURNS text
 CREATE FUNCTION rboolop(query_int, integer[]) RETURNS boolean
     LANGUAGE c IMMUTABLE STRICT
     AS '$libdir/_int', 'rboolop';
+
+
+CREATE FUNCTION signal_hide() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW.hidden = TRUE and OLD.hidden = FALSE THEN
+    DELETE FROM signal_asset WHERE signal_asset.signal_id = NEW.signal_id;
+    UPDATE event
+       SET hidden = TRUE
+     WHERE event.signal_id = NEW.signal_id;
+
+    DELETE FROM signal_thread_tag WHERE signal_id = NEW.signal_id;
+
+    IF NEW.in_reply_to_id IS NOT NULL then
+      DELETE FROM signal_thread_tag where signal_id = NEW.in_reply_to_id;
+
+      INSERT INTO signal_thread_tag (signal_id, tag, user_id)
+        SELECT DISTINCT NEW.in_reply_to_id, lower(tag), user_id
+          FROM signal_tag tag JOIN signal USING (signal_id)
+          WHERE signal.signal_id = NEW.in_reply_to_id AND NOT signal.hidden
+        UNION
+        SELECT DISTINCT NEW.in_reply_to_id, lower(tag), user_id
+          FROM signal_tag tag JOIN signal USING (signal_id)
+          WHERE
+            signal.in_reply_to_id = NEW.in_reply_to_id
+            AND NOT signal.hidden;
+    END IF;
+  END IF;
+  RETURN NEW;
+END;
+$$
 
 CREATE FUNCTION signal_sent() RETURNS trigger
     LANGUAGE plpgsql

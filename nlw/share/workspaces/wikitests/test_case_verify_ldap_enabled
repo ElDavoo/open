@@ -9,6 +9,10 @@ This testcase traverses the UI to all the places that differ from the Default UI
 | set | password | ldapd3v |
 | set | email_esc | devnullx\@socialtext.com |
 
+| st-config | set self_registration 1 |  |
+| st-config | set allow_network_invitation 1 |  |
+| st-appliance-config | set captcha_enabled 0 | Set captcha_enabled to 'UNDEF' |
+
 | *Comment* | %%username%% : %%password%% : %%email%% |  |
 
 | st-logout |  |  |
