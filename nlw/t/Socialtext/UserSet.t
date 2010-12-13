@@ -628,15 +628,13 @@ transactions_and_temp_tables: {
     ok !connected(1,2), 'not connected before';
     ok !exception {
         sql_txn {
-            eval {
+            ok exception {
                 sql_txn {
                     # temp table gets lazy-created by this first call:
                     insert(3,4,$member);
                     insert(3,4,$member);
                 };
-            };
-            ok $@, 'dup insert died';
-            undef $@; # for Test::Exception
+            }, 'dup insert died';
 
             # Because of the rollback above, this call was incorrectly
             # assuming that the "to_copy" table existed.
