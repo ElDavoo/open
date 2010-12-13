@@ -30,16 +30,13 @@ CREATE FUNCTION _int_contained(integer[], integer[]) RETURNS boolean
     LANGUAGE c IMMUTABLE STRICT
     AS '$libdir/_int', '_int_contained';
 
-
 CREATE FUNCTION _int_contains(integer[], integer[]) RETURNS boolean
     LANGUAGE c IMMUTABLE STRICT
     AS '$libdir/_int', '_int_contains';
 
-
 CREATE FUNCTION _int_different(integer[], integer[]) RETURNS boolean
     LANGUAGE c IMMUTABLE STRICT
     AS '$libdir/_int', '_int_different';
-
 
 CREATE FUNCTION _int_inter(integer[], integer[]) RETURNS integer[]
     LANGUAGE c IMMUTABLE STRICT
@@ -49,11 +46,9 @@ CREATE FUNCTION _int_overlap(integer[], integer[]) RETURNS boolean
     LANGUAGE c IMMUTABLE STRICT
     AS '$libdir/_int', '_int_overlap';
 
-
 CREATE FUNCTION _int_same(integer[], integer[]) RETURNS boolean
     LANGUAGE c IMMUTABLE STRICT
     AS '$libdir/_int', '_int_same';
-
 
 CREATE FUNCTION _int_union(integer[], integer[]) RETURNS integer[]
     LANGUAGE c IMMUTABLE STRICT
@@ -328,7 +323,6 @@ CREATE FUNCTION rboolop(query_int, integer[]) RETURNS boolean
     LANGUAGE c IMMUTABLE STRICT
     AS '$libdir/_int', 'rboolop';
 
-
 CREATE FUNCTION signal_hide() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
@@ -358,7 +352,7 @@ BEGIN
   END IF;
   RETURN NEW;
 END;
-$$
+$$;
 
 CREATE FUNCTION signal_sent() RETURNS trigger
     LANGUAGE plpgsql
@@ -2099,6 +2093,8 @@ CREATE TRIGGER materialize_event_view_on_insert AFTER INSERT ON event FOR EACH R
 CREATE TRIGGER sessions_insert AFTER INSERT ON sessions FOR EACH STATEMENT EXECUTE PROCEDURE cleanup_sessions();
 
 CREATE TRIGGER signal_before_insert BEFORE INSERT ON signal FOR EACH ROW EXECUTE PROCEDURE auto_hash_signal();
+
+CREATE TRIGGER signal_hide AFTER UPDATE ON signal FOR EACH ROW EXECUTE PROCEDURE signal_hide();
 
 CREATE TRIGGER signal_insert AFTER INSERT ON signal FOR EACH ROW EXECUTE PROCEDURE signal_sent();
 
