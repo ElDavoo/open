@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 13;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 fixtures('workspaces', 'public');
 
 use Socialtext::Pages;
@@ -132,8 +132,7 @@ CACHE_DIR_UNWRITEABLE: {
 
     Socialtext::AppConfig->set( formatter_cache_dir => $dir );
 
-    throws_ok
-        sub { check_with_user( user => 'devnull1@socialtext.com' ) },
+    like exception { check_with_user( user => 'devnull1@socialtext.com' ) },
         qr/Failed to cache using questions.*(not writable|Permission denied)/,
         'Page caching dies when dir is not writable';
 }

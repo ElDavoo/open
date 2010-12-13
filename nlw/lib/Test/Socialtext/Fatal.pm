@@ -2,7 +2,6 @@ package Test::Socialtext::Fatal;
 use warnings;
 use strict;
 use base 'Exporter';
-use Scalar::Util qw/blessed/;
 
 our @EXPORT = qw/exception/;
 
@@ -18,10 +17,8 @@ sub exception (&) {
     return if $ok;
 
     return "<undef>" unless defined $@;
-    if (!blessed($@)) {
-        return $@ eq '' ? "<empty-string>" : "$@ but true";
-    }
-    return $@;
+    return $@ if $@;
+    return $@ eq '' ? "<empty-string>" : "$@ but true";
 }
 
 1;

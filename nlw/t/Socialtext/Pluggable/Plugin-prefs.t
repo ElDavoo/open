@@ -7,7 +7,7 @@ use Test::More tests => 5;
 use Test::Socialtext;
 use Socialtext::Account;
 use Socialtext::User;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 fixtures(qw(plugin));
 
 my $hub = create_test_hub;
@@ -22,26 +22,26 @@ $plugin->clear_plugin_prefs;
 
 # Get/Set
 {
-    lives_ok {
+    ok !exception {
         $plugin->set_plugin_prefs(
             number => 43,
             string => 'hi',
             array => ['some','crap'], # will be ignored
             object => $user1, # ditto
         );
-    } "set_plugin_prefs";
+    }, "set_plugin_prefs";
 
     is_deeply $plugin->get_plugin_prefs,
               { number => 43, string => 'hi' },
               'get_plugin_prefs';
 
-    lives_ok {
+    ok !exception {
         $plugin->set_plugin_prefs(
             number => 44,
             other => 'ho',
             array => ['more','crap'],
         );
-    } "set_plugin_prefs with a subset";
+    }, "set_plugin_prefs with a subset";
 
     is_deeply $plugin->get_plugin_prefs,
               { number => 44, string => 'hi', other => 'ho' },

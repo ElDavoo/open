@@ -5,7 +5,7 @@ use warnings;
 
 use Test::More tests => 10;
 use Test::Socialtext;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 fixtures(qw(plugin));
 
 my $hub = create_test_hub;
@@ -23,32 +23,32 @@ $plugin->hub($hub);
 Getter_setter: {
     $hub->current_workspace($workspace1);
 
-    lives_ok {
+    ok !exception {
         $plugin->set_workspace_prefs(
             number => 43,
             string => 'hi',
             ignored => [qw(some ref value)],
         );
-    } "set_workspace_prefs";
+    }, "set_workspace_prefs";
 
     is_deeply $plugin->get_workspace_prefs,
               { number => 43, string => 'hi' },
               'get_workspace_prefs';
 
-    lives_ok {
+    ok !exception {
         $plugin->set_workspace_prefs(
             number => 44,
             other => 'ho',
         );
-    } "set_workspace_prefs with a subset";
+    }, "set_workspace_prefs with a subset";
 
     is_deeply $plugin->get_workspace_prefs,
               { number => 44, string => 'hi', other => 'ho' },
               'get_workspace_prefs';
 
-    lives_ok {
+    ok !exception {
         $plugin->clear_workspace_prefs();
-    } "clear_workspace_prefs()";
+    }, "clear_workspace_prefs()";
 
     is_deeply $plugin->get_workspace_prefs, { },
               'clear_workspace_prefs';
@@ -56,7 +56,7 @@ Getter_setter: {
 
 Workspace_scoped: {
     $hub->current_workspace($workspace2);
-    lives_ok { $plugin->set_workspace_prefs(number => 32) }
+    ok !exception { $plugin->set_workspace_prefs(number => 32) },
              "set_workspace_prefs(number => SCALAR)";
     is_deeply $plugin->get_workspace_prefs,
               { number => 32 },
@@ -66,7 +66,7 @@ Workspace_scoped: {
 No_workspace: {
     $hub->current_workspace(undef);
 
-    dies_ok { $plugin->get_workspace_prefs } "workspace is required"
+    ok exception { $plugin->get_workspace_prefs }, "workspace is required"
 }
 
 Plugin_scope: {

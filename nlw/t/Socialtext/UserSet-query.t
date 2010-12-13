@@ -5,7 +5,7 @@ use strict;
 
 use Test::More tests => 23;
 use Test::Differences;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use Socialtext::UserSet;
 
 sub squash ($) {
@@ -230,14 +230,14 @@ mux_roles: {
 }
 
 omit_role: {
-    dies_ok {
+    like exception {
         Socialtext::UserSet->RoleViewSQL(
             into => 'groups',
             from => 'users',
             omit_roles => 1,
             mux_roles => 1,
         );
-    } "can't omit and mux roles";
+    }, qr/can't omit and mux roles/, "can't omit and mux roles";
 
     my $query = Socialtext::UserSet->RoleViewSQL(
         into => 'groups',
