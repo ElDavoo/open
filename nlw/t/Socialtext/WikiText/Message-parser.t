@@ -5,7 +5,7 @@
 use strict;
 use warnings;
 # do *not* `use utf8` here
-use Test::More tests => 5 + 7 + 4 + 3*45 + 7;
+use Test::More tests => 5 + 7 + 4 + 4 + 3*45 + 7;
 
 use ok 'WikiText::Socialtext';
 use ok 'Socialtext::WikiText::Parser::Messages';
@@ -34,7 +34,15 @@ check_nongreedy_a_in_solr: {
     my $content = $parser->parse('"http://example.com/1"<http://example.com/2>');
     ok $content, 'parsed';
     is $content, '"http://example.com/1"<http://example.com/2>';
-    is scalar(@href_links), 1;
+    is scalar(@href_links), 1, 'one href';
+}
+
+canonicalize_hyperlinks: {
+    my $parser = make_parser('Canonicalize');
+    my $content = $parser->parse('this is a link: http://www.google.com');
+    ok $content, 'parsed';
+    is $content, 'this is a link: "http://www.google.com"<http://www.google.com>';
+    is scalar(@href_links), 1, 'one href';
 }
 
 for my $type (qw(Solr Canonicalize HTML)) {
