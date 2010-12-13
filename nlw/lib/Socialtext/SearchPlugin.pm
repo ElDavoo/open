@@ -54,7 +54,14 @@ sub register {
     $registry->add( preference => $self->default_search_order_pref );
     $registry->add( preference => $self->show_summaries_pref );
     $registry->add( preference => $self->direction_pref );
+    $registry->add( action => 'search_workspace' );
+    $registry->add( action => 'search_workspaces' );
 }
+
+# Wrappers around search() so we can use actions to determine scope rather
+# than passing the scope parameter
+sub search_workspace { $_[0]->search('_') }
+sub search_workspaces { $_[0]->search('*') }
 
 # These preference is updated whenever you change your sorting. It does not
 # have a settings page like most other workspace preferences.
@@ -89,6 +96,7 @@ sub direction_pref {
 
 sub search {
     my $self = shift;
+    my $scope = shift || $self->cgi->scope || '_';
     my $timer = Socialtext::Timer->new;
     my $index = $self->cgi->index;
     my $search_factory = Socialtext::Search::AbstractFactory->GetFactory(
@@ -110,7 +118,6 @@ sub search {
     }
 
     my $search_term;
-    my $scope = $self->cgi->scope || '_';
 
     if ($self->cgi->defined('search_term')) {
         $search_term = $self->cgi->search_term;
