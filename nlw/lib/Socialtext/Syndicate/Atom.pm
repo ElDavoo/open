@@ -17,7 +17,8 @@ use Socialtext::l10n qw/loc/;
 
 $XML::Atom::DefaultVersion = "1.0";
 
-# Perl 5.12.2 stopped including newlines and other whitespace in IsPrint.
+# Perl 5.11.0 stopped including newlines and other whitespace in IsPrint.
+# (See perldoc perl5110delta).
 # Override this so that entries with newlines (i.e. almost all of them) don't
 # get mangled as base64.
 {
