@@ -133,8 +133,10 @@ sub GetGroupHomunculus {
     else {
         # Wasn't in DB; INSERT
         $proto_group = $refreshed;
-        $self->NewGroupRecord( $proto_group );
-        $self->CreateInitialRelationships( $proto_group );
+        sql_txn {
+            $self->NewGroupRecord( $proto_group );
+            $self->CreateInitialRelationships( $proto_group );
+        };
     }
 
     # Re-index the freshly created/updated group.
