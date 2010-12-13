@@ -354,8 +354,6 @@ sub ListGroups {
     }
 }
 
-around qr/^[A-Z]/ => \&sql_txn;
-
 1;
 
 =head1 NAME
