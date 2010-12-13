@@ -417,7 +417,7 @@ sub render_signal_body {
             callbacks => {
                 href_link => sub {
                     my $ast = shift;
-                    my $link = $ast->{attributes}{href};
+                    my $link = $ast->{attributes}{target};
                     push @external_links, $link;
                 },
                 noun_link => sub {
