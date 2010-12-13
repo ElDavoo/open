@@ -2,6 +2,7 @@
 
 | st-config | set self_registration 1 |  |
 | st-config | set allow_network_invitation 1 |  |
+| st-appliance-config | set captcha_enabled 0 | Set captcha_enabled to 'UNDEF' |
 | st-logout |  |  |
 | open_ok | /nlw/register.html |  |
 | text_like | Click here to log in with an existing account |  |
