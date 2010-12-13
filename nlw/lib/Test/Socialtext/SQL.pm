@@ -79,13 +79,14 @@ sub get_indices_for_table {
     return $indices;
 }
 
-# Normalize a row of data by removing internal "pg_*" columns and ensuring
+# Normalize a row of data by removing internal columns and ensuring
 # that all "*_NAME" columns are normalized.
 sub _normalize_row {
     my $row = shift;
     my %normalized;
     foreach my $key (keys %{$row}) {
         next if ($key =~ /^pg_/);
+        next if ($key eq 'PAGES'); # pg 9.0
 
         my $val = $row->{$key};
         $val = $Normalizer->($val) if ($key =~ /_NAME/);
