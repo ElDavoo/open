@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use Test::More;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 
 BEGIN {
     if (!-e 't/lib/Socialtext/People/Profile.pm') {
@@ -148,9 +148,9 @@ add_user_to_account_again: {
         fail_cb => sub { },
     );
 
-    lives_ok {
+    ok !exception {
         $mass_add->add_user(%userinfo);
-    } 'user is added without incident';
+    }, 'user is added without incident';
 }
 
 my $PIRATE_CSV = <<'EOT';

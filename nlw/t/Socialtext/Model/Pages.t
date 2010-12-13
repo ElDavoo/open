@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use Test::More tests => 133;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use mocked 'Socialtext::SQL', qw/:test/;
 use mocked 'Socialtext::Page';
 use mocked 'Socialtext::User';
@@ -177,14 +177,14 @@ EOT
     }
 
     Neither_seconds_nor_since: {
-        dies_ok {
+        like exception {
             Socialtext::Model::Pages->By_seconds_limit(
                 where => 'cows fly',
                 count => 20,
                 tag => 'foo',
                 workspace_id => 9,
             );
-        };
+        }, qr/seconds or count parameter is required/;
         ok_no_more_sql();
     }
 

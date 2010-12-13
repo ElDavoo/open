@@ -2,8 +2,8 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::More tests => 23;
-use Test::Exception;
+use Test::More tests => 21;
+use Test::Socialtext::Fatal;
 use Socialtext::System;
 use Socialtext::File qw/set_contents/;
 
@@ -22,10 +22,10 @@ Backtick: {
 
     my $temp = "t/run.t-$$";
     set_contents($temp, $in);
-    lives_ok { $out = backtick('bc', $temp) };
+    $out = backtick('bc', $temp);
+    is($@, '', 'backtick should not emit errors if nothing went wrong');
     unlink $temp or die "Can't unlink $temp: $!";
 
-    is($@, '', 'backtick should not emit errors if nothing went wrong');
     is($out, $expected, 'backtick output correct');
 }
 
@@ -43,11 +43,10 @@ Quote_args: {
 }
 
 Run: {
-    lives_ok { shell_run('/bin/date > /dev/null') };
-    is $@, '', 'single arg';
-
-    lives_ok { shell_run('-/bin/false') };
-    is $@, '', 'prevented die';
+    ok !exception { shell_run('/bin/date > /dev/null') }, 'single arg';
+    like exception { shell_run('/bin/false') },
+        qr/child exited with value 1/, "non-suppressed";
+    ok !exception { shell_run('-/bin/false') }, "suppressed";
 }
 
 Backticks_timeout: {

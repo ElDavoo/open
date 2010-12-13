@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 79;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 
 ################################################################################
 # Fixtures: db
@@ -188,7 +188,7 @@ remove_non_member_user_from_group: {
 
     # Removing a non-member User from the Group shouldn't choke.  No errors,
     # no warnings, no fatal exceptions... its basically a no-op
-    lives_ok { $group->remove_user(user => $user) }
+    ok !exception { $group->remove_user(user => $user) },
         "... removing non-member User from Group doesn't choke";
 }
 
@@ -205,56 +205,56 @@ private_group_self_actions: {
     is $group->users->count(), 0, 'Group has no Users in it (yet)';
 
     # Add the User to the Group
-    lives_ok {
+    ok !exception {
         $group->add_user(actor => $badmin, user => $user);
-    } "business admin can add a user";
+    }, "business admin can add a user";
     is $group->users->count(), 1, 'still just one user';
 
-    dies_ok {
+    ok exception {
         $group->add_user(actor => $user, user => $other_user);
-    } "non admin can't add a user";
+    }, "non admin can't add a user";
 
-    dies_ok {
+    ok exception {
         $group->add_role(actor => $user, object => $other_user, role => 'member');
-    } "non admin can't add a user";
+    }, "non admin can't add a user";
 
-    dies_ok {
+    ok exception {
         $group->add_role(actor => $user, object => $other_user, role => 'admin');
-    } "non admin can't add a user";
+    }, "non admin can't add a user";
 
-    dies_ok {
+    ok exception {
         $group->add_user(actor => $user, user => $other_user, role => 'admin');
-    } "non admin can't add a user";
+    }, "non admin can't add a user";
 
     is $group->users->count(), 1, 'still just one user';
 
-    lives_ok {
+    ok !exception {
         $group->assign_role_to_user(
             actor => $badmin, role => 'admin', user => $user);
-    } "badmin made a group admin";
+    }, "badmin made a group admin";
 
-    lives_ok {
+    ok !exception {
         $group->add_user(actor => $user, user => $other_user);
-    } "can now add as an admin";
+    }, "can now add as an admin";
 
     is $group->users->count(), 2, 'ok, added that time';
 
     $badmin->set_business_admin(0);
     $badmin->set_technical_admin(0);
 
-    dies_ok {
+    ok exception {
         $group->add_user(actor => $badmin, user => $yet_another_user);
-    } "demoted badmin can't add";
+    }, "demoted badmin can't add";
 
     is $group->role_for_user($other_user,direct=>1)->name, 'member', 'passenger on-board';
-    lives_ok {
+    ok !exception {
         $group->remove_user(actor => $other_user, user => $other_user);
-    } "passenger can abandon ship";
+    }, "passenger can abandon ship";
     is $group->users->count(), 1, ".. head count";
 
-    lives_ok {
+    ok !exception {
         $group->remove_user(actor => $user, user => $user);
-    } "captain can abandon ship (last-admin checks are done in the ReST layer)";
+    }, "captain can abandon ship (last-admin checks are done in the ReST layer)";
     is $group->users->count(), 0, "nobody left on-board";
 }
 
@@ -271,77 +271,77 @@ self_join_group_self_actions: {
 
     is $group->users->count, 0;
 
-    dies_ok {
+    ok exception {
         $group->add_user(user => $outsider, actor => $outsider);
-    } "outsider can't join self-join group";
+    }, "outsider can't join self-join group";
     is $group->users->count, 0;
 
-    lives_ok {
+    ok !exception {
         $group->add_user(user => $user, actor => $user);
-    } "person in same account can self-join";
+    }, "person in same account can self-join";
     is $group->role_for_user($user,direct=>1)->name, 'member', '.. role';
     is $group->users->count, 1, '.. count';
         
-    dies_ok {
+    ok exception {
         $group->add_user(user => $peer, actor => $peer, role => 'admin');
-    } "can't request an admin role";
+    }, "can't request an admin role";
     is $group->users->count, 1, '.. count';
     
-    lives_ok {
+    ok !exception {
         $group->assign_role(object => $user, role => 'admin',
             actor => Socialtext::User->SystemUser);
-    } "system-user can give someone admin";
+    }, "system-user can give someone admin";
     is $group->users->count, 1, '.. count';
     is $group->role_for_user($user,direct=>1)->name, 'admin', '.. role';
 
-    lives_ok {
+    ok !exception {
         $group->add_role(object => $peer, role => 'member',
             actor => Socialtext::User->SystemUser);
-    } "system-user can add a user";
+    }, "system-user can add a user";
     is $group->users->count, 2, '.. count';
     is $group->role_for_user($peer,direct=>1)->name, 'member', '.. role';
 
-    lives_ok {
+    ok !exception {
         $group->add_user(user => $outsider, actor => $user);
-    } "group admin can bring in an outsider";
+    }, "group admin can bring in an outsider";
     is $group->users->count, 3, '.. count';
     is $group->role_for_user($outsider,direct=>1)->name, 'member', '.. role';
 
-    lives_ok {
+    ok !exception {
         $group->remove_user(user => $outsider); # default sys-user
-    } 'system-user can remove outsider';
+    }, 'system-user can remove outsider';
     ok !$group->has_user($outsider), '... actually removed';
     is $group->users->count, 2, '.. count';
 
-    dies_ok {
+    ok exception {
         $group->add_user(actor => $peer, role => 'admin', user => $outsider);
-    } "member can't bring someone in as admin";
+    }, "member can't bring someone in as admin";
     is $group->users->count, 2, '.. count';
 
-    lives_ok {
+    ok !exception {
         $group->add_user(actor => $user, role => 'admin', user => $outsider);
-    } "group admin can bring in an outsider as an admin";
+    }, "group admin can bring in an outsider as an admin";
     is $group->users->count, 3, '.. count';
     is $group->role_for_user($outsider,direct=>1)->name, 'admin', '.. role';
 
-    lives_ok {
+    ok !exception {
         $group->assign_role_to_user(actor => $user, role => 'member', user => $outsider);
-    } "admin can demote a member";
+    }, "admin can demote a member";
     is $group->role_for_user($outsider,direct=>1)->name, 'member', '.. role';
 
-    lives_ok {
+    ok !exception {
         $group->remove_user(user => $outsider, actor => $outsider);
-    } "passenger can abandon ship";
+    }, "passenger can abandon ship";
     is $group->users->count, 2, '.. count';
 
-    lives_ok {
+    ok !exception {
         $group->remove_user(user => $peer, actor => $peer);
-    } "administrative crew can be cowards (if they're quick; i.e. not the last admin)";
+    }, "administrative crew can be cowards (if they're quick; i.e. not the last admin)";
     is $group->users->count, 1, '.. count';
 
-    lives_ok {
+    ok !exception {
         $group->remove_user(user => $user, actor => $user);
-    } "the captain *can* abandon ship (last-admin checks are done higher-up in the ReST layer)";
+    }, "the captain *can* abandon ship (last-admin checks are done higher-up in the ReST layer)";
     is $group->users->count, 0, '.. count';
 
 }

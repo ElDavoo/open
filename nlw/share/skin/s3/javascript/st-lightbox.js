@@ -34,7 +34,7 @@ ST.Lightbox.prototype = {
         $(self.sel + ' .error').html('');
 
         $(self.sel + ' form').submit(function () {
-            $(self.sel + ' a[class~=submit]').parent().addClass('disabled');
+            $(self.sel + ' a[class~=submit]').parent().addClass('disabled').addClass('loading');
 
             var formdata = $(this).serializeArray();
             var new_title = this.new_title.value;
@@ -46,7 +46,7 @@ ST.Lightbox.prototype = {
                 dataType: 'json',
                 async: false,
                 success: function (data) {
-                    $(self.sel + ' a[class~=submit]').parent().removeClass('disabled');
+                    $(self.sel + ' a[class~=submit]').parent().removeClass('disabled').removeClass('loading');
 
                     var error = self.errorString(data, new_title);
                     if (error) {
@@ -65,7 +65,7 @@ ST.Lightbox.prototype = {
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     $(self.sel + ' .error').html(textStatus).show();
-                    $(self.sel + ' a[class~=submit]').parent().removeClass('disabled');
+                    $(self.sel + ' a[class~=submit]').parent().removeClass('disabled').removeClass('loading');
                 }
             });
 

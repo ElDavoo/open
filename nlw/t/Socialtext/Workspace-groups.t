@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 24;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 
 ###############################################################################
 # Fixtures: db
@@ -30,7 +30,7 @@ incompatible_permissions: {
     my $grp = create_test_group();
 
     $ws->permissions->set(set_name => 'public-join-to-edit');
-    dies_ok { $ws->assign_role_to_group(group => $grp); }
+    ok exception { $ws->assign_role_to_group(group => $grp); },
         'workspace and group have incompatible permissions';
 }
 
@@ -194,6 +194,6 @@ remove_non_member_group_from_workspace: {
 
     # Removing a non-member Group from the Workspace shouldn't choke.  No
     # errors, no warnings, no fatal exceptions... its basically a no-op.
-    lives_ok { $workspace->remove_group(group => $group) }
+    ok !exception { $workspace->remove_group(group => $group) },
         "... removing non-member Group from Workspace doesn't choke";
 }

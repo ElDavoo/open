@@ -3,7 +3,6 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 85;
-use Test::Exception;
 use Test::Differences;
 use Socialtext::SQL qw/:exec/;
 

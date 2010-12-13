@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Test::More tests => 8;
 use Test::Differences;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use utf8;
 
 use ok 'Socialtext::JSON', qw/encode_json decode_json decode_json_utf8/;
@@ -20,7 +20,7 @@ is encode_json(qq{illégale: " et \n}),
    Encode::encode_utf8(q{"illégale: \" et \n"}),
    "escaped illegal json chars in plain string mode (with utf8-encoding)";
 
-dies_ok { decode_json('"foo"') } "can't decode non-refs";
+ok exception { decode_json('"foo"') }, "can't decode non-refs";
 
 eq_or_diff decode_json_utf8('["föø"]'), ["föø"], "utf8-containing string decodes";
 eq_or_diff decode_json_utf8(Encode::encode_utf8('["föø"]')), ["föø"], "utf8-containing string decodes (from bytes)";

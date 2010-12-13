@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 24;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use Socialtext::Cache ();
 
 fixtures('db', 'foobar');
@@ -21,9 +21,9 @@ my $foobar = $hub->current_workspace;
 ok $foobar, "loaded foobar workspace";
 
 my $jobs = Socialtext::Jobs->instance;
-lives_ok {
+ok !exception {
      $jobs->clear_jobs();
-} "can clear jobs";
+}, "can clear jobs";
 
 my $acct = create_test_account_bypassing_factory();
 
@@ -38,15 +38,15 @@ my $prof_a = Socialtext::People::Profile->GetProfile($user_a);
 ok $prof_a, "got a profile for the primary user";
 my $user_b = create_test_user(account => $acct);
 my $user_c = create_test_user(account => $acct);
-lives_ok {
+ok !exception {
     $prof_a->set_reln('assistant', $user_b);
     $prof_a->set_reln($field->name, $user_c);
     $prof_a->save();
-} "set custom field and assistant";
+}, "set custom field and assistant";
 
 direct: {
     Socialtext::Cache->clear;
-    lives_ok { Socialtext::Jobs->clear_jobs() } 'cleared out all jobs';
+    ok !exception { Socialtext::Jobs->clear_jobs() }, 'cleared out all jobs';
 
     is scalar(Socialtext::JobCreator->list_jobs( funcname => 'Socialtext::Job::PersonIndex' )), 0;
 
@@ -61,7 +61,7 @@ direct: {
 
 indirect: {
     Socialtext::Cache->clear;
-    lives_ok { Socialtext::Jobs->clear_jobs() } 'cleared out all jobs';
+    ok !exception { Socialtext::Jobs->clear_jobs() }, 'cleared out all jobs';
     is scalar(Socialtext::JobCreator->list_jobs( funcname => 'Socialtext::Job::PersonIndex' )), 0;
 
     $user_a->update_store(first_name => "An", last_name => "User");

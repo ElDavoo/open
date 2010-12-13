@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use mocked qw(Socialtext::l10n system_locale); # Has to come firstest.
 use Test::Socialtext tests => 121;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use strict;
 use warnings;
 
@@ -779,9 +779,9 @@ Rudimentary_Plugin_Test: {
     is_deeply([ $ws->plugins_enabled ], [],
         'list enabled plugins');
 
-    dies_ok { $ws->enable_plugin('people') } 'cannot enable people';
+    ok exception { $ws->enable_plugin('people') }, 'cannot enable people';
     ok(!$ws->is_plugin_enabled('people'), 'people did not get enabled');
-    dies_ok { $ws->enable_plugin('whatevs') } 'cannot enable whatevs';
+    ok exception { $ws->enable_plugin('whatevs') }, 'cannot enable whatevs';
     ok(!$ws->is_plugin_enabled('whatevs'), 'fake plugin did not get enabled');
 }
 

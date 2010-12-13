@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use Test::Socialtext tests => 23;
 use Socialtext::Role;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 
 ###############################################################################
 # Fixtures: db
@@ -207,7 +207,7 @@ cant_remove_user_from_primary_account: {
     ok $account->has_user($user), 'User has Role in his Primary Account';
 
     # Can't remove the User from his Primary Account
-    throws_ok { $account->remove_user(user => $user) }
+    like exception { $account->remove_user(user => $user) },
         qr/Cannot remove a user from their primary account/;
     ok $account->has_user($user), '... User maintains Role in Primary Account';
 }

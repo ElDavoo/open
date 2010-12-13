@@ -4,7 +4,6 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 3;
-use Test::Exception;
 
 fixtures(qw( db ));
 

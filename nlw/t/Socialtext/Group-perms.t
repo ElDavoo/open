@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Test::Socialtext tests => 40;
 use Test::Socialtext::Account qw/export_account export_and_reimport_account/;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use YAML qw/LoadFile/;
 
 fixtures(qw( db ));
@@ -18,7 +18,7 @@ update_perms_controlling_ws: {
     $ws->add_group(group => $grp);
     is $ws->group_count, 1, 'group is only one in workspace';
 
-    lives_ok { $grp->update_store({permission_set => 'self-join'}); }
+    ok !exception { $grp->update_store({permission_set => 'self-join'}); },
         'update group permissions lives';
 
     is $grp->permission_set, 'self-join', 'group permission is updated';
@@ -42,7 +42,7 @@ update_perms_ws_has_users: {
     $ws->add_user(user => $user);
     is $ws->user_count, 1, 'workspace has a user';
 
-    lives_ok { $grp->update_store({permission_set => 'self-join'}); }
+    ok !exception { $grp->update_store({permission_set => 'self-join'}); },
         'update group permissions lives';
 
     is $grp->permission_set, 'self-join', 'group permission is updated';
@@ -61,7 +61,7 @@ update_perms_ws_not_controlled: {
     $ws->add_group(group => $other);
     is $ws->group_count, 2, 'workspace has two groups';
 
-    dies_ok { $grp->update_store({permission_set => 'self-join'}); }
+    ok exception { $grp->update_store({permission_set => 'self-join'}); },
         'update group permissions dies when workspace has other groups';
 
     is $grp->permission_set, 'private', 'group permission unchanged';

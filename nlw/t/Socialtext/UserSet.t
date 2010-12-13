@@ -5,7 +5,7 @@ use strict;
 
 use Test::Socialtext tests => 143;
 use Test::Differences;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use List::Util qw/shuffle/;
 use Socialtext::SQL qw/get_dbh sql_txn/;
 BEGIN {
@@ -87,7 +87,7 @@ bipartite: {
     # 2 -> 3    5 -> 6
 
     del(5,6);
-    dies_ok { del(5,6) } "second delete dies";
+    ok exception { del(5,6) }, "second delete dies";
     is connected(5,6), 0, "edge removed";
     is connected(2,3), 1, "first one still there";
 }
@@ -322,7 +322,7 @@ triangle: {
     ok has_role(1,3 => $member);
 
     # bogus update has no effect, "1,1" is a virtual role:
-    dies_ok { update(1,1 => $guest) };
+    ok exception { update(1,1 => $guest) }, "can't update virtual role";
     ok has_role(1,1 => $member), "bogus role update has no effect";
     ok has_role(2,1 => $member), "bogus role update has no effect";
     ok has_role(3,1 => $member), "bogus role update has no effect";
@@ -506,12 +506,12 @@ delete_accuracy: {
 
 remove_set: {
     reset_graph();
-    lives_ok {
+    ok !exception {
         insert(1,2);
         insert(2,3);
         insert(3,4);
         insert(5,4);
-    } "created graph for testing set removal";
+    }, "created graph for testing set removal";
     
     is_graph_tc(
         [1,2 => 1,2],
@@ -523,9 +523,9 @@ remove_set: {
         [5,4 => 5,4],
     );
 
-    dies_ok {
+    ok exception {
         del_set(7);
-    } "can't delete a set that doesn't exist";
+    }, "can't delete a set that doesn't exist";
 
     $dbh->do(q{INSERT INTO user_set_plugin (user_set_id, plugin)
                VALUES (?,?)}, {}, 3+$OFFSET, 'foo');
@@ -537,9 +537,9 @@ remove_set: {
         3+$OFFSET);
     is $plug, 'foo';
 
-    lives_ok {
+    ok !exception {
         del_set(3, roles_only => 1);
-    } "deleted set 3";
+    }, "deleted set 3";
 
     my ($plug2) = $dbh->selectrow_array(
         q{SELECT plugin FROM user_set_plugin WHERE user_set_id = ?}, {},
@@ -551,9 +551,9 @@ remove_set: {
         [5,4 => 5,4],
     );
 
-    lives_ok {
+    ok !exception {
         del_set(4);
-    } "deleted set 4, not just roles";
+    }, "deleted set 4, not just roles";
 
     my ($plug3) = $dbh->selectrow_array(
         q{SELECT plugin FROM user_set_plugin WHERE user_set_id = ?}, {},
@@ -626,32 +626,30 @@ transactions_and_temp_tables: {
     $dbh = get_dbh();
 
     ok !connected(1,2), 'not connected before';
-    lives_ok {
+    ok !exception {
         sql_txn {
-            eval {
+            ok exception {
                 sql_txn {
                     # temp table gets lazy-created by this first call:
                     insert(3,4,$member);
                     insert(3,4,$member);
                 };
-            };
-            ok $@, 'dup insert died';
-            undef $@; # for Test::Exception
+            }, 'dup insert died';
 
             # Because of the rollback above, this call was incorrectly
             # assuming that the "to_copy" table existed.
             insert(1,2,$member);
         };
-    } 'dup insert dies';
+    }, 'dup insert dies';
     ok connected(1,2), 'before inner rollback ok';
     ok !connected(3,4), 'rollback ok';
 
-    lives_ok {
+    ok !exception {
         sql_txn {
             insert(3,4,$member);
             insert(4,5,$member);
         };
-    } 'normal insert is ok';
+    }, 'normal insert is ok';
 
     ok connected(1,2), 'normal insert path ok';
     ok connected(3,5), 'normal insert path ok';

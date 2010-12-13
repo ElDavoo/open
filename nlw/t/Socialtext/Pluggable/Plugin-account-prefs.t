@@ -5,7 +5,7 @@ use warnings;
 
 use Test::More tests => 9;
 use Test::Socialtext;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 fixtures(qw(empty plugin));
 
 my $hub = create_test_hub;
@@ -22,41 +22,41 @@ $plugin->hub($hub);
 
 Getter_setter: {
 
-    lives_ok {
+    ok !exception {
         $plugin->set_account_prefs(
             account => $account1,
             number => 43,
             string => 'hi',
             ignored => [qw(some ref value)],
         );
-    } "set_account_prefs";
+    }, "set_account_prefs";
 
     is_deeply $plugin->get_account_prefs(account => $account1),
               { number => 43, string => 'hi' },
               'get_account_prefs';
 
-    lives_ok {
+    ok !exception {
         $plugin->set_account_prefs(
             account => $account1,
             number => 44,
             other => 'ho',
         );
-    } "set_account_prefs with a subset";
+    }, "set_account_prefs with a subset";
 
     is_deeply $plugin->get_account_prefs(account => $account1),
               { number => 44, string => 'hi', other => 'ho' },
               'get_account_prefs';
 
-    lives_ok {
+    ok !exception {
         $plugin->clear_account_prefs(account => $account1);
-    } "clear_account_prefs()";
+    }, "clear_account_prefs()";
 
     is_deeply $plugin->get_account_prefs(account => $account1), { },
               'clear_account_prefs';
 }
 
 Account_scoped: {
-    lives_ok { $plugin->set_account_prefs(account => $account2, number => 32) }
+    ok !exception { $plugin->set_account_prefs(account => $account2, number => 32) },
              "set_account_prefs(number => SCALAR)";
     is_deeply $plugin->get_account_prefs(account => $account2),
               { number => 32 },

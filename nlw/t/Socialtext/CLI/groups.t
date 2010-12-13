@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 use Test::Socialtext tests => 45;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 BEGIN { use_ok 'Socialtext::CLI'; }
 use Test::Socialtext::CLIUtils qw/is_last_exit/;
 use Test::Output qw(combined_from);
@@ -22,9 +22,11 @@ no_groups: {
 }
 
 my ($ga, $gb);
-lives_ok { $ga = create_test_group(account => $ab, unique_id => 'Group A') };
+ok !exception {
+    $ga = create_test_group(account => $ab, unique_id => 'Group A') };
 my $ga_id = $ga->group_id;
-lives_ok { $gb = create_test_group(account => $aa, unique_id => 'Group B') };
+ok !exception {
+    $gb = create_test_group(account => $aa, unique_id => 'Group B') };
 my $gb_id = $gb->group_id;
 $ga->add_user(user => create_test_user());
 

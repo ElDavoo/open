@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>369</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-369.air</url>
-<description><![CDATA[[Build 369 - Tue Dec  7 04:38:19 PST 2010]
+  <version>370</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-370.air</url>
+<description><![CDATA[[Build 370 - Fri Dec 10 21:13:28 PST 2010]
+* Activity: "Refresh" button now works again. (Was broken in build 367)
+
+[Build 369 - Tue Dec  7 04:38:19 PST 2010]
 * Signals: Sub-tabs are now lazily populated.
 * Signals: The "Private Messages" subtab is now populated with backlogged entries.
 

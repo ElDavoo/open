@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use YAML;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use Test::Differences;
 use File::Path 'mkpath';
 use Socialtext::Paths;
@@ -65,8 +65,9 @@ $schema->recreate('schema-file' => 't/test-data/socialtext-schema.sql');
 
 # Check each schema
 for ( $START_SCHEMA+1 .. $latest_schema ) {
-    lives_ok { $schema->sync( to_version => $_, no_dump => 1, no_create => 1) }
-             "Schema migration $_";
+    ok !exception {
+        $schema->sync( to_version => $_, no_dump => 1, no_create => 1)
+    }, "Schema migration $_";
     if ($@) {
         system("tail -n 20 $log_dir/st-db.log");
         die "Can't continue";

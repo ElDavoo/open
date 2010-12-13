@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use Test::More tests => 19;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use mocked 'Time::HiRes';
 
 # Note: This module uses a mocked Time::HiRes so that we can test with
@@ -91,11 +91,11 @@ Time_this: {
     Socialtext::Timer::time_this {
         my $x = 1;
     } 'rock';
-    throws_ok {
+    like exception {
         Socialtext::Timer::time_this {
             die "what the";
         } 'rock';
-    } qr#what the at t/Socialtext/Timer.t#;
+    }, qr#what the at t/Socialtext/Timer.t#;
 
     my $timings = Socialtext::Timer->Report();
     is $timings->{overall}, '5.000',
@@ -106,15 +106,15 @@ Time_this: {
 Time_scope: {
     Socialtext::Timer->Reset();
 
-    lives_ok {
+    ok !exception {
         my $t = Socialtext::Timer::time_scope('kick_it');
         return 1;
-    } 'normal return';
+    }, 'normal return';
 
-    dies_ok {
+    ok exception {
         my $t = Socialtext::Timer::time_scope('kick_it');
         die "ZOMG";
-    } 'exception';
+    }, 'exception';
 
     my $timings = Socialtext::Timer->Report();
     is $timings->{overall}, '5.000',

@@ -5,7 +5,7 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 39;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use Test::Warn;
 
 use Socialtext::User;
@@ -21,9 +21,9 @@ use_ok 'Socialtext::Account';
 deprecated: {
     my $acct = create_test_account_bypassing_factory();
     my $ws   = create_test_workspace(account => $acct);
-    dies_ok {
+    ok exception {
         $acct->update(all_users_workspace => $ws->workspace_id);
-    } 'updating an account with an AUW is deprecated';
+    }, 'updating an account with an AUW is deprecated';
 }
 
 ################################################################################
@@ -44,9 +44,9 @@ set_workspace_not_in_account: {
     my $acct = create_test_account_bypassing_factory();
     my $ws   = create_test_workspace();
 
-    dies_ok {
+    ok exception {
         $ws->add_account(account => $acct);
-    } 'dies when workspace is not in account';
+    }, 'dies when workspace is not in account';
 
     ok !$acct->has_all_users_workspaces, '... all users workspace not updated';
 }
