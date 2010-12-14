@@ -66,7 +66,7 @@ rm_dir "formatter_cache_dir";
 set -x
 NLWCTL_QUIET=1 dev-bin/nlwctl stop
 dev-bin/setup-supervisors stop
-dev-bin/st-bootstrap-openldap stop
+bin/st-bootstrap-openldap stop
 
 # when switching to nginx you might have apache2 running still
 killall /usr/sbin/apache2 >/dev/null 2>&1 || true;
