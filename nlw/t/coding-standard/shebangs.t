@@ -9,8 +9,9 @@ plan tests => 2;
 my @perlfail;
 my @shfail;
 my $p_erl = '/usr/bin/p'.'erl';
+my $local_p_erl = '/usr/local/bin/p'.'erl';
 my $s_h = '/bin/s'.'h';
-my $perl_re = qr/$p_erl/;
+my $perl_re = qr/(?:$p_erl|$local_p_erl)/;
 my $sh_re = qr/$s_h/;
 
 my %IGNORE_PERL = map {$_ => 1} qw(
