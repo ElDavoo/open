@@ -323,6 +323,37 @@ CREATE FUNCTION rboolop(query_int, integer[]) RETURNS boolean
     LANGUAGE c IMMUTABLE STRICT
     AS '$libdir/_int', 'rboolop';
 
+CREATE FUNCTION signal_hide() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+  IF NEW.hidden = TRUE and OLD.hidden = FALSE THEN
+    DELETE FROM signal_asset WHERE signal_asset.signal_id = NEW.signal_id;
+    UPDATE event
+       SET hidden = TRUE
+     WHERE event.signal_id = NEW.signal_id;
+
+    DELETE FROM signal_thread_tag WHERE signal_id = NEW.signal_id;
+
+    IF NEW.in_reply_to_id IS NOT NULL then
+      DELETE FROM signal_thread_tag where signal_id = NEW.in_reply_to_id;
+
+      INSERT INTO signal_thread_tag (signal_id, tag, user_id)
+        SELECT DISTINCT NEW.in_reply_to_id, lower(tag), user_id
+          FROM signal_tag tag JOIN signal USING (signal_id)
+          WHERE signal.signal_id = NEW.in_reply_to_id AND NOT signal.hidden
+        UNION
+        SELECT DISTINCT NEW.in_reply_to_id, lower(tag), user_id
+          FROM signal_tag tag JOIN signal USING (signal_id)
+          WHERE
+            signal.in_reply_to_id = NEW.in_reply_to_id
+            AND NOT signal.hidden;
+    END IF;
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
 CREATE FUNCTION signal_sent() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
@@ -2062,6 +2093,8 @@ CREATE TRIGGER materialize_event_view_on_insert AFTER INSERT ON event FOR EACH R
 CREATE TRIGGER sessions_insert AFTER INSERT ON sessions FOR EACH STATEMENT EXECUTE PROCEDURE cleanup_sessions();
 
 CREATE TRIGGER signal_before_insert BEFORE INSERT ON signal FOR EACH ROW EXECUTE PROCEDURE auto_hash_signal();
+
+CREATE TRIGGER signal_hide AFTER UPDATE ON signal FOR EACH ROW EXECUTE PROCEDURE signal_hide();
 
 CREATE TRIGGER signal_insert AFTER INSERT ON signal FOR EACH ROW EXECUTE PROCEDURE signal_sent();
 
