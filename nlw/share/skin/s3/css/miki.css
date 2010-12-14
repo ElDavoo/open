@@ -209,7 +209,7 @@ div.clear {
 .profile .info {
     padding-bottom: 10px;
     padding-left: 70px;
-    height: 75px;
+    min-height: 75px;
     border-bottom: 1px solid #666;
 }
 .profile .section {
