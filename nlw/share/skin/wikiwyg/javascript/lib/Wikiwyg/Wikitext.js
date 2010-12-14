@@ -1347,6 +1347,7 @@ proto.convertWikitextToHtml = function(wikitext, func, onError) {
         url: uri,
         async: false,
         type: 'POST',
+        timeout: 30 * 1000,
         data: {
             action: 'wikiwyg_wikitext_to_html',
             page_name: jQuery('#st-newpage-pagename-edit, #st-page-editing-pagename').val(),
