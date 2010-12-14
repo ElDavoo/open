@@ -139,45 +139,6 @@ sub check_required {
     return $self->add_error( _humanify($param) . ' is a required field.' );
 }
 
-sub check_id {
-    my $self = shift;
-    my $param = shift;
-    my $value = $self->$param;
-    unless ( $value =~ /^[a-z0-9\-]+$/ ) {
-        return $self->add_error( _humanify($param)
-                . ' may only contain letters, numbers, and dashes.' );
-    }
-    return 1;
-}
-
-sub check_title {
-    my $self = shift;
-    my $param = shift;
-    my $value = $self->$param;
-    unless ( $value =~ /^[\p{Letter}\p{Number}\p{ConnectorPunctuation}\pM\'\,\:\!\;\-\.\ ]+$/ ) {
-        return $self->add_error( _humanify($param)
-                . " may only contain letters, numbers, spaces "
-                . " and these: '.,:;!-" );
-    }
-    return 1;
-}
-
-sub check_length {
-    my $self = shift;
-    my $param = shift;
-    my $value = $self->$param;
-    my ( $min, $max ) = @_;
-    $min ||= 0;
-    $max ||= 99999;
-    return $self->add_error(
-        _humanify($param) . " should be at least $min characters long." )
-        unless length($value) >= $min;
-    return $self->add_error(
-        _humanify($param) . " should be at most $max characters long." )
-        unless length($value) <= $max;
-    return 1;
-}
-
 sub add_error {
     my $self = shift;
     my $error_message = shift;
