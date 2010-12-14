@@ -766,7 +766,7 @@ sub add_comment {
 
     $self->content( $self->content
             . "\n---\n"
-            . $wikitext
+            . Socialtext::Encode::ensure_is_utf8($wikitext)
             . $self->_comment_attribution );
 
     $self->metadata->update( user => $self->hub->current_user );
