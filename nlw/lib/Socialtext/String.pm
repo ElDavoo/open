@@ -160,6 +160,11 @@ sub title_to_id {
     #                                                         #
     # NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE #
 
+    # other places this function shows up:
+    # * share/skin/s3/javascript/s3.js
+    # * share/skin/common/javascript/Socialtext/lib/Socialtext/Workspace.js
+    # * lib/Socialtext/Template/Plugin/flatten.pm
+
     $id = '' if not defined $id;
     $id =~ s/^\s+//;
     $id =~ s/\s+$//;
