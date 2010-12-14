@@ -129,13 +129,15 @@ Tests for `/data/groups/:group_id/workspaces`, implemented to help fix {bz: 3450
 | *Comment* | POST, add to a workpsace            |                                  |
 | POST-json | /data/groups/%%post_id%%/workspaces | {"workspace_id":"%%silver_id%%"} |
 | code-is   | 201                                 |                                  |
-| body-like | "workspace_count":"1"               |                                  |
+| json-parse |
+| json-like | {"workspace_count":"1"}               |                                  |
 
 ## POST, add to a workspace as admin
 | *Comment* | POST, add to a workspace as admin   |                                               |
 | POST-json | /data/groups/%%post_id%%/workspaces | {"workspace_id":"%%gold_id%%","role":"admin"} |
 | code-is   | 201                                 |                                               |
-| body-like | "workspace_count":"2"               |                                               |
+| json-parse |
+| json-like | {"workspace_count":"2"}               |                                               |
 
 ## Make user an admin of some more workspaces
 | add-member | %%admin%% | %%bronze%% | admin |
@@ -145,7 +147,8 @@ Tests for `/data/groups/:group_id/workspaces`, implemented to help fix {bz: 3450
 | *Comment* | POST, multiple                      |                                                                     |
 | POST-json | /data/groups/%%post_id%%/workspaces | [{"workspace_id":"%%bronze_id%%"},{"workspace_id":"%%copper_id%%"}] |
 | code-is   | 201                                 |                                                                     |
-| body-like | "workspace_count":"4"               |                                                                     |
+| json-parse |
+| json-like | {"workspace_count":"4"}               |                                                                     |
 
 ## POST, group already has role
 | *Comment* | POST, group already has role        |                                |
