@@ -104,11 +104,6 @@ Skipping - Test Case: Weblog naming with Latin-1 character
 * [Test Case: People Dashboard Plugins]
 * [Edit Contention Testcases]
 
-Keep these two authen renewal cases together
-
-* [Test Case: Authen Renewal]
-* [Test Case: Authen Renewal Reset]
-
 * [Test Case: Email]
 * [Test Case: Email Attachment]
 * [Test Case: Email Spreadsheet]
