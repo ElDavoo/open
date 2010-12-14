@@ -471,12 +471,10 @@ sub dropdb {
         eval {
             shell_run("sudo -u postgres /usr/local/sbin/kill_pg_backends");
         };
+        warn "Error with kill_pg_backends: $@" if $@;
     }
 
-    eval {
-        $self->_db_shell_run("$sudo dropdb $c{db_name}");
-    };
-    warn "Error dropping: $@" if $@;
+    $self->_db_shell_run("$sudo dropdb $c{db_name}");
 }
 
 sub _log_file { Socialtext::Paths::log_directory() . '/st-db.log' }
