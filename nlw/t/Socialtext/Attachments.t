@@ -77,7 +77,7 @@ __DATA__
 
 ===
 --- in: foo
---- mime_type: text/plain; charset=us-ascii
+--- mime_type: text/plain
 --- should_popup: 0
 
 ===
