@@ -17,10 +17,14 @@ my %IGNORE_PERL = map {$_ => 1} qw(
     nlw/docs/INSTALL.apache-perl
     nlw/docs/INSTALL.troubleshooting
     nlw/docs/INSTALL.st-dev
+    plugins/VimColor/debian/rules
+    plugins/Latex/debian/rules
 );
 
 my %IGNORE_SH = map {$_=>1} qw(
     socialtext-reports/Makefile
+    appliance/libsocialtext-appliance-perl/Makefile
+    nlw/build/tmp/Makefile.perl
 );
 
 chdir $ENV{ST_CURRENT};
