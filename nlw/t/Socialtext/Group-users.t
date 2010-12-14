@@ -49,9 +49,9 @@ group_has_users_get_user_ids: {
     $group->add_user(user => $user_one);
     $group->add_user(user => $user_two);
 
-    my $user_ids = $group->user_ids();
+    my $user_ids = [ sort @{ $group->user_ids() } ];
     is_deeply $user_ids, [ $user_one->user_id, $user_two->user_id ],
-        'Got User Ids, in correct order';
+        'Got User Ids';
 }
 
 ################################################################################
