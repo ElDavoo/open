@@ -173,6 +173,10 @@ div.clear {
     display: none;
 }
 
+.ui-mobile-viewport .menu-padding {
+    display: none;
+}
+
 .ui-mobile-viewport .permalink {
     text-decoration: underline;
 }
