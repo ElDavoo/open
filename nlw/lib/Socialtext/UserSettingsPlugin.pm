@@ -66,9 +66,12 @@ sub users_settings {
 
 sub _obfuscate_passwords {
     my $self = shift;
-    $self->cgi->param('old_password') = 'xxxxx' if $self->cgi->old_password;
-    $self->cgi->param('new_password') = 'xxxxx' if $self->cgi->new_password;
-    $self->cgi->param('new_password_retype') = 'xxxxx' if $self->cgi->new_password_retype;
+    $self->hub->rest->query->param(-name => 'old_password', -value => 'xxx')
+        if $self->cgi->old_password;
+    $self->hub->rest->query->param(-name => 'new_password', -value => 'xxx')
+        if $self->cgi->new_password;
+    $self->hub->rest->query->param(-name => 'new_password_retype', -value => 'xxx')
+        if $self->cgi->new_password_retype;
 }
 
 sub _update_current_user {
