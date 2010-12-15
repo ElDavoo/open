@@ -64,6 +64,13 @@ sub users_settings {
     );
 }
 
+sub _obfuscate_passwords {
+    my $self = shift;
+    $self->cgi->param('old_password') = 'xxxxx' if $self->cgi->old_password;
+    $self->cgi->param('new_password') = 'xxxxx' if $self->cgi->new_password;
+    $self->cgi->param('new_password_retype') = 'xxxxx' if $self->cgi->new_password_retype;
+}
+
 sub _update_current_user {
     my $self = shift;
     my $user = $self->hub->current_user;
@@ -78,15 +85,21 @@ sub _update_current_user {
             unless $self->cgi->new_password eq
             $self->cgi->new_password_retype;
 
-        return if $self->input_errors_found;
+        if ($self->input_errors_found) {
+            $self->_obfuscate_passwords;
+            return;
+        }
 
         $update{password} = $self->cgi->new_password;
     }
+
+    $self->_obfuscate_passwords;
 
     $update{first_name} = $self->cgi->first_name;
     $update{last_name}  = $self->cgi->last_name;
 
     eval { $user->update_store(%update) };
+
     if ( my $e
         = Exception::Class->caught('Socialtext::Exception::DataValidation') )
     {
