@@ -265,6 +265,7 @@ sub global_template_vars {
         dev_mode           => $ENV{NLW_DEV_MODE},
 
         $thunker->(css       => sub { $hub->skin->css_info }),
+        $thunker->(skin_info => sub { $hub->skin->skin_info }),
         $thunker->(user      => sub { $self->_get_user_info }),
         $thunker->(wiki      => sub { $self->_get_wiki_info }),
         $thunker->(customjs  => sub { $hub->skin->customjs }),

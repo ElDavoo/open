@@ -430,6 +430,8 @@ PostCondition: Signal is sent,frame focus remains on widget
 
 sub st_prepare_signal_within_activities_widget {
     my ($self, $signaltosend, $private) = @_;
+    # The next two commands are REQUIRED to expose either the signalFrame or
+    # the wikiwyg_wikitext_textarea before sending the signal
     $self->handle_command('wait_for_element_present_ok', '//div[@class=' . "'mainWikiwyg setupWikiwyg wikiwyg']", 5000);
     $self->handle_command('click_ok', '//div[@class=' . "'mainWikiwyg setupWikiwyg wikiwyg']");
 

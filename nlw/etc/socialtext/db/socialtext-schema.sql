@@ -721,12 +721,12 @@ CREATE TABLE user_set_path (
 );
 
 CREATE VIEW user_sets_for_user AS
- SELECT user_set_path.from_set_id AS user_id, user_set_path.into_set_id AS user_set_id
+  SELECT user_set_path.from_set_id AS user_id, user_set_path.into_set_id AS user_set_id
    FROM user_set_path
   WHERE user_set_path.from_set_id <= B'00010000000000000000000000000000'::"bit"::integer;
 
 CREATE VIEW accounts_for_user AS
- SELECT user_sets_for_user.user_id, user_sets_for_user.user_set_id, user_sets_for_user.user_set_id - B'00110000000000000000000000000000'::"bit"::integer AS account_id
+  SELECT user_sets_for_user.user_id, user_sets_for_user.user_set_id, user_sets_for_user.user_set_id - B'00110000000000000000000000000000'::"bit"::integer AS account_id
    FROM user_sets_for_user
   WHERE user_sets_for_user.user_set_id >= B'00110000000000000000000000000001'::"bit"::integer AND user_sets_for_user.user_set_id <= B'01000000000000000000000000000000'::"bit"::integer;
 
@@ -947,7 +947,7 @@ CREATE SEQUENCE groups___group_id
     CACHE 1;
 
 CREATE VIEW groups_for_user AS
- SELECT user_sets_for_user.user_id, user_sets_for_user.user_set_id, user_sets_for_user.user_set_id - B'00010000000000000000000000000000'::"bit"::integer AS group_id
+  SELECT user_sets_for_user.user_id, user_sets_for_user.user_set_id, user_sets_for_user.user_set_id - B'00010000000000000000000000000000'::"bit"::integer AS group_id
    FROM user_sets_for_user
   WHERE user_sets_for_user.user_set_id >= B'00010000000000000000000000000001'::"bit"::integer AND user_sets_for_user.user_set_id <= B'00100000000000000000000000000000'::"bit"::integer;
 
@@ -1077,7 +1077,7 @@ CREATE TABLE recent_signal_user_set (
 );
 
 CREATE VIEW roles_for_user AS
- SELECT user_set_path.from_set_id AS user_id, user_set_path.into_set_id AS user_set_id, user_set_path.role_id
+  SELECT user_set_path.from_set_id AS user_id, user_set_path.into_set_id AS user_set_id, user_set_path.role_id
    FROM user_set_path
   WHERE user_set_path.from_set_id <= B'00010000000000000000000000000000'::"bit"::integer;
 
@@ -1204,7 +1204,7 @@ CREATE TABLE user_set_include (
 );
 
 CREATE VIEW user_set_include_tc AS
- SELECT DISTINCT user_set_path.from_set_id, user_set_path.into_set_id, user_set_path.role_id
+  SELECT DISTINCT user_set_path.from_set_id, user_set_path.into_set_id, user_set_path.role_id
    FROM user_set_path
   ORDER BY user_set_path.from_set_id, user_set_path.into_set_id, user_set_path.role_id;
 
@@ -1226,7 +1226,7 @@ CREATE TABLE user_set_plugin_pref (
 );
 
 CREATE VIEW user_set_plugin_tc AS
- SELECT user_set_plugin.user_set_id, user_set_plugin.plugin
+  SELECT user_set_plugin.user_set_id, user_set_plugin.plugin
    FROM user_set_plugin
 UNION ALL 
  SELECT path.from_set_id AS user_set_id, plug.plugin
@@ -1234,7 +1234,7 @@ UNION ALL
    JOIN user_set_plugin plug ON path.into_set_id = plug.user_set_id;
 
 CREATE VIEW user_use_plugin AS
- SELECT user_set_path.from_set_id AS user_id, user_set_path.into_set_id AS user_set_id, user_set_plugin.plugin
+  SELECT user_set_path.from_set_id AS user_id, user_set_path.into_set_id AS user_set_id, user_set_plugin.plugin
    FROM user_set_path
    JOIN user_set_plugin ON user_set_path.into_set_id = user_set_plugin.user_set_id;
 
@@ -1269,13 +1269,13 @@ CREATE SEQUENCE users___user_id
     CACHE 1;
 
 CREATE VIEW users_share_plugin AS
- SELECT v_path.user_id AS viewer_id, o_path.user_id AS other_id, v_path.user_set_id, plug.plugin
+  SELECT v_path.user_id AS viewer_id, o_path.user_id AS other_id, v_path.user_set_id, plug.plugin
    FROM user_sets_for_user v_path
    JOIN user_set_plugin plug USING (user_set_id)
    JOIN user_sets_for_user o_path USING (user_set_id);
 
 CREATE VIEW users_share_plugin_tc AS
- SELECT v_path.user_id AS viewer_id, o_path.user_id AS other_id, v_path.user_set_id, plug.plugin
+  SELECT v_path.user_id AS viewer_id, o_path.user_id AS other_id, v_path.user_set_id, plug.plugin
    FROM user_sets_for_user v_path
    JOIN user_set_plugin_tc plug USING (user_set_id)
    JOIN user_sets_for_user o_path USING (user_set_id);
@@ -1313,7 +1313,7 @@ CREATE SEQUENCE webhook___webhook_id
     CACHE 1;
 
 CREATE VIEW workspaces_for_user AS
- SELECT user_sets_for_user.user_id, user_sets_for_user.user_set_id, user_sets_for_user.user_set_id - B'00100000000000000000000000000000'::"bit"::integer AS workspace_id
+  SELECT user_sets_for_user.user_id, user_sets_for_user.user_set_id, user_sets_for_user.user_set_id - B'00100000000000000000000000000000'::"bit"::integer AS workspace_id
    FROM user_sets_for_user
   WHERE user_sets_for_user.user_set_id >= B'00100000000000000000000000000001'::"bit"::integer AND user_sets_for_user.user_set_id <= B'00110000000000000000000000000000'::"bit"::integer;
 

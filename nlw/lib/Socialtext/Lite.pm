@@ -517,6 +517,17 @@ sub _process_template {
         );
     }
 
+    my $template_vars = $self->template_vars;
+
+    my $user = $self->hub->current_user;
+    return $self->hub->template->process(
+        $template, %$template_vars, %ws_vars, %vars,
+    );
+}
+
+sub template_vars {
+    my $self = shift;
+
     my $warning;
     my $ua = $ENV{HTTP_USER_AGENT} || '';
     if (my ($version) = $ua =~ m{^BlackBerry[^/]+/(\d+\.\d+)}) {
@@ -525,25 +536,30 @@ sub _process_template {
         }
     }
 
-    my $skin_name  = shift;
-    my $skin_uri = Socialtext::Skin->new(name => 's3')->skin_uri();
+    my $skin_info = $self->hub->skin->skin_info;
+    my $s3 = Socialtext::Skin->new(name => 's3');
 
     my $user = $self->hub->current_user;
-    return $self->hub->template->process(
-        $template,
+    return {
         warning     => $warning,
         miki        => 1,
         css         => $self->hub->skin->css_info,
+        skin_info   => $skin_info,
         user        => $self->hub->current_user,
-        brand_stamp => $self->hub->main->version_tag,
+        brand_stamp => $self->hub->main ? $self->hub->main->version_tag: '',
         static_path => Socialtext::Helpers::static_path,
-        skin_uri    => sub { "$skin_uri/$_[0]" },
+        s3_uri    => sub { $s3->skin_uri . "/$_[0]" },
+        skin_uri    => sub { 
+            if ("$_[0]" =~ m{/images/asset-icons/}) {
+                return $s3->skin_uri . "/$_[0]";
+            }
+            return $self->hub->skin->skin_uri . "/$_[0]"
+        },
         pluggable   => $self->hub->pluggable,
         user        => $user,
         minutes_ago => sub { int((time - str2time(shift, 'UTC')) / 60) },
-        %ws_vars,
-        %vars,
-    );
+        enable_jquery_mobile => ($ENV{HTTP_USER_AGENT} =~ /Gecko/),
+    };
 }
 
 sub _get_attachments {
