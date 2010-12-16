@@ -567,24 +567,29 @@ proto.newpage_save = function(page_name, pagename_editfield) {
 }
 
 proto.saveContent = function() {
+    var self = this;
+
     if (jQuery('#st-save-button-link').is(':hidden')) {
         // Don't allow "Save" to be clicked while saving: {bz: 1718}
         return;
     }
 
-    var self = this;
-    Wikiwyg.ensureOnline(function(){
-        jQuery("#st-edit-summary").hide();
-        jQuery('#st-editing-tools-edit ul').hide();
-        jQuery('<div id="saving-message" />')
-            .html(loc('Saving...'))
-            .css('color', 'red')
-            .appendTo('#st-editing-tools-edit');
+    jQuery("#st-edit-summary").hide();
+    jQuery('#st-editing-tools-edit ul').hide();
+    jQuery('<div id="saving-message" />')
+        .html(loc('Saving...'))
+        .css('color', 'red')
+        .appendTo('#st-editing-tools-edit');
 
+    Wikiwyg.ensureOnline(function(){
         setTimeout(function(){
             self.saveChanges();
         }, 1);
-    })
+    }, function(){
+        jQuery("#st-edit-summary").show();
+        jQuery('#st-editing-tools-edit ul').show();
+        jQuery('#saving-message').remove();
+    });
 }
 
 
@@ -1036,9 +1041,10 @@ Wikiwyg.is_safari_unknown = (
     Wikiwyg.ua.indexOf("version/") == -1
 );
 
-Wikiwyg.ensureOnline = function (cb) {
+Wikiwyg.ensureOnline = function (cbOnline, cbOffline) {
     if (typeof navigator == 'object' && typeof navigator.onLine == 'boolean' && !navigator.onLine) {
         alert(loc("The browser is currently offline; please connect to the internet and try again."));
+        if (cbOffline) { cbOffline(); }
         return false;
     }
 
@@ -1056,10 +1062,11 @@ Wikiwyg.ensureOnline = function (cb) {
         },
         complete: function(){
             if (onLine) {
-                cb();
+                cbOnline();
             }
             else {
                 alert(loc("The browser is currently offline; please connect to the internet and try again."));
+                if (cbOffline) { cbOffline(); }
             }
         }
     });
