@@ -10,11 +10,19 @@ use File::Find 'find';
 use File::Basename qw(basename);
 use Socialtext::System qw/shell_run/;
 use Term::ANSIColor;
+use Getopt::Long;
+
+my $lib_only = 0;
+GetOptions(
+    'help' => \&usage,
+    'lib-only' => $lib_only,
+);
+usage() unless @ARGV;
 
 sub usage {
     my $msg = shift;
     warn "$msg\n" if $msg;
-    die "USAGE: $0 <plugin list>\n\n";
+    die "USAGE: $0 [--lib-only] <plugin list>\n\n";
 }
 
 sub link_directory {
@@ -60,13 +68,22 @@ sub link_directory {
     }, "$fromdir/$subdir");
 }
 
-usage unless @ARGV;
 while (my $plugin = shift) {
     warn "Linking the $plugin plugin\n";
-    chdir "$ENV{ST_CURRENT}/nlw" or die "Can't cdnlw! $?";
+    if (-d './nlw') {
+        chdir './nlw';
+    }
+    elsif ($ENV{ST_CURRENT} && -d $ENV{ST_CURRENT}) {
+        chdir "$ENV{ST_CURRENT}/nlw";
+    }
+    else {
+        die "no ./nlw or ST_CURRENT env-var";
+    }
+
     my $plugin_dir = "$FindBin::Bin/../../plugins/$plugin";
     usage("plugin $plugin doesn't exist") unless -d $plugin_dir;
     link_directory($plugin_dir, "$FindBin::Bin/..", 'lib');
+    next if $lib_only;
     link_directory($plugin_dir, "$FindBin::Bin/..", 'bin');
     link_directory($plugin_dir, "$FindBin::Bin/..", 't');
     link_directory($plugin_dir, "$FindBin::Bin/..", 'build');
