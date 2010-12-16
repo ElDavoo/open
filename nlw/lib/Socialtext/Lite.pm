@@ -549,7 +549,12 @@ sub template_vars {
         brand_stamp => $self->hub->main ? $self->hub->main->version_tag: '',
         static_path => Socialtext::Helpers::static_path,
         s3_uri    => sub { $s3->skin_uri . "/$_[0]" },
-        skin_uri    => sub { $self->hub->skin->skin_uri . "/$_[0]" },
+        skin_uri    => sub { 
+            if ("$_[0]" =~ m{/images/asset-icons/}) {
+                return $s3->skin_uri . "/$_[0]";
+            }
+            return $self->hub->skin->skin_uri . "/$_[0]"
+        },
         pluggable   => $self->hub->pluggable,
         user        => $user,
         minutes_ago => sub { int((time - str2time(shift, 'UTC')) / 60) },
