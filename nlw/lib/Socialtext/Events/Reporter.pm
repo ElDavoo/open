@@ -1162,7 +1162,22 @@ sub get_events_activities {
         # "signal_id IS NOT NULL" here
 
         # from the user, mentioning the user or to the user (?!)
-        push @conditions, q{
+        push @conditions, $self->_mention_or_actor_sql;
+        $user_ids += 5;
+    }
+
+    my $cond_sql = join(' OR ', map {"($_)"} @conditions);
+    $self->add_condition($cond_sql, ($user->user_id) x $user_ids);
+    my $evs = $self->_get_events(@_);
+
+    return wantarray ? @$evs : $evs;
+}
+
+sub _mention_or_actor_sql {
+    my $self = shift;
+    # Bump user_ids by 5
+    return q{
+        (
             event_class = 'signal' AND (
                 actor_id = ?
                 OR EXISTS (
@@ -1175,7 +1190,8 @@ sub get_events_activities {
                 OR EXISTS (
                     SELECT 1
                       FROM signal root
-                      JOIN signal reply ON (root.signal_id = reply.in_reply_to_id)
+                      JOIN signal reply
+                        ON (root.signal_id = reply.in_reply_to_id)
                      WHERE reply.signal_id = e.signal_id
                        AND (
                         root.user_id = ?
@@ -1188,15 +1204,8 @@ sub get_events_activities {
                     )
                 )
             )
-        };
-        $user_ids += 5;
-    }
-
-    my $cond_sql = join(' OR ', map {"($_)"} @conditions);
-    $self->add_condition($cond_sql, ($user->user_id) x $user_ids);
-    my $evs = $self->_get_events(@_);
-
-    return wantarray ? @$evs : $evs;
+        )
+    };
 }
 
 around 'get_events_group_activities' => \&_discovery_wrapper;
@@ -1289,7 +1298,7 @@ sub get_events_workspace_activities {
 
 sub _conversations_where {
     my $visible_ws = shift || $VISIBLE_WORKSPACES;
-    return qq{
+    return qq{(
         e.actor_id <> ?
         AND page_workspace_id IN (
             $visible_ws
@@ -1324,7 +1333,7 @@ sub _conversations_where {
                   AND my_contribs.at < e.at
             )
         ) -- end convos clause
-    };
+    )};
 }
 
 sub _build_convos_sql {
@@ -1332,9 +1341,6 @@ sub _build_convos_sql {
     my $opts = shift;
 
     my $user_id = $opts->{user_id};
-
-    $self->use_event_page_contrib();
-    $self->_skip_standard_opts(1);
 
     # filter the options to a subset of what's usually allowed
     my $filtered_opts = _filter_opts($opts, qw(
@@ -1367,9 +1373,36 @@ sub _build_convos_sql {
     }
     push @bind, @ws_bind;
 
-    my $conv_where = _conversations_where($visible_ws);
+    my @where;
+    push @where, _conversations_where($visible_ws);
     push @bind, ($user_id) x 3;
+
+    $opts->{activity} ||= '';
+    $opts->{action} ||= [];
+    $opts->{action} = [ $opts->{action} ] unless ref $opts->{action};
+    my %action = map { $_ => 1 } @{ $opts->{action} };
+
+    if ($opts->{activity} eq 'all-combined' or $action{signal}) {
+        # from the user, mentioning the user or to the user (?!)
+        push @where, $self->_mention_or_actor_sql;
+        push @bind, ($user_id) x 5;
+    }
+    my $conv_where = join(' OR ', @where);
     $self->prepend_condition($conv_where, @bind);
+
+    my @classes;
+    if ($action{signal}) {
+        push @classes, 'signal';
+    }
+    elsif (%action) {
+        push @classes, 'page';
+    }
+    if (@classes) {
+       my $qs = join(',', ('?') x @classes);
+       $self->add_outer_condition(
+           "evt.event_class IN ($qs)", @classes
+       );
+    }
 
     return $self->_build_standard_sql($filtered_opts);
 }
@@ -1385,6 +1418,7 @@ sub get_events_conversations {
     my $user_id = $user->user_id;
     $opts->{user_id} = $user_id;
 
+    $self->_setup_visible_sets($opts);
     my ($sql, $args) = $self->_build_convos_sql($opts);
 
     return [] unless $sql;
