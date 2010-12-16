@@ -221,15 +221,18 @@ st-check-search-stickyness | label=Search My Workspaces: | test-data |
 =cut
 
 sub st_check_search_stickyness {
-   my ($self, $label, $workspace) = @_;
-   my $url = '';
+   my ($self, $label, $workspace, $url) = @_;
    my $comment = 'Test Case: Search Selector - ';
-   if (defined($workspace) && length($workspace)>2) {
-       $url = "/$workspace";
-       $comment.="Sticky test within the $workspace workspace for $label";
-   } else {
-       $url = '/st/dashboard/';
-       $comment.="Sticky test at the dashboard level for $label";
+   if (!defined($url) || length($url)<2) {
+       if (defined($workspace) && length($workspace)>2) {
+          $url = "/$workspace";
+          $comment.="Sticky test within the $workspace workspace for $label";
+       } else {
+          $url = '/st/dashboard/';
+          $comment.="Sticky test at the dashboard level for $label";
+       }
+  } else {
+     $comment.="Sticky test within $url\n";
   }
 
   $self->handle_command('comment',$comment);
@@ -243,6 +246,32 @@ sub st_check_search_stickyness {
   $self->handle_command('st-logoutin');
   $self->handle_command('open_ok',$url);  
   $self->handle_command('is_selected_ok','st-search-action',$label);
+}
+
+
+sub st_check_people_stickyness {
+   my ($self, $label) = @_;
+   $self->st_check_search_stickyness($label, '','/?action=people');
+}
+
+sub st_check_group_stickyness {
+    my ($self, $label) = @_;
+    $self->st_check_search_stickyness($label, '','/st/groups');
+}
+
+sub st_check_explore_stickyness {
+    my ($self, $label) = @_;
+    $self->st_check_search_stickyness($label, '','/st/explore');
+}
+
+sub st_check_signals_stickyness {
+    my ($self, $label) = @_; 
+    $self->st_check_search_stickyness($label, '','/st/signals');
+}
+
+sub st_check_workspaces_stickyness {
+    my ($self, $label) = @_;
+    $self->st_check_search_stickyness($label, '','/?action=workspaces_listall');
 }
 
 
