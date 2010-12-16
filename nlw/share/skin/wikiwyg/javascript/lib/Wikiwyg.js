@@ -1038,6 +1038,7 @@ Wikiwyg.is_safari_unknown = (
 
 Wikiwyg.ensureOnline = function (cb) {
     if (typeof navigator == 'object' && typeof navigator.onLine == 'boolean' && !navigator.onLine) {
+        alert(loc("The browser is currently offline; please connect to the internet and try again."));
         return false;
     }
 
@@ -1054,7 +1055,12 @@ Wikiwyg.ensureOnline = function (cb) {
             onLine = data;
         },
         complete: function(){
-            if (onLine) { cb(); }
+            if (onLine) {
+                cb();
+            }
+            else {
+                alert(loc("The browser is currently offline; please connect to the internet and try again."));
+            }
         }
     });
 }
