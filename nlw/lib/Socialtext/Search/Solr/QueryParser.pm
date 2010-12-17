@@ -27,6 +27,7 @@ sub _build_field_map {
         given_name    => 'first_name_pf_s',
         last_name     => 'last_name_pf_s',
         family_name   => 'last_name_pf_s',
+        preferred_name => 'preferred_name_pf_s',
         email         => 'email_address_pf_s',
         email_address => 'email_address_pf_s',
         url           => 'personal_url_pf_h',
