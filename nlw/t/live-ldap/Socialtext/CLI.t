@@ -13,7 +13,7 @@ use Test::Socialtext::CLIUtils qw(expect_failure expect_success call_cli_argv);
 BEGIN {
     require Socialtext::People::Profile;
     plan skip_all => 'People is not linked in' if ($@);
-    plan tests => 80;
+    plan tests => 90;
 }
 
 fixtures( 'db', 'destructive' );
@@ -305,4 +305,69 @@ remove_user_from_ldap_group: {
 
     # Clean up after ourselves
     Test::Socialtext::Group->delete_recklessly( $group );
+}
+
+###############################################################################
+ldap_sourced_profile_fields_cannot_be_set: {
+    local $Socialtext::People::Fields::AutomaticStockFields    = 1;
+    local $Socialtext::Pluggable::Plugin::People::Asynchronous = 0;
+
+    # Test data
+    my $field      = 'work_phone';
+    my $username   = 'John Doe';
+    my $real_value = '+1 234 555-1212';
+    my $new_value  = '+1 416 123-4567';
+
+    # Create an Account to test in, and enable People Plugin for that Account
+    my $account = create_test_account_bypassing_factory();
+    $account->enable_plugin('people');
+
+    # Bootstrap LDAP, and map a People Profile field to be LDAP sourced
+    my $ldap = bootstrap_openldap();
+    {
+        my $people  = Socialtext::Pluggable::Adapter->plugin_class('people');
+        $people->SetProfileField( {
+            name    => $field,
+            source  => 'external',
+            account => $account,
+        } );
+
+        my $ldap_config = $ldap->ldap_config();
+        $ldap_config->{attr_map}{work_phone} = 'telephoneNumber';
+        Socialtext::LDAP::Config->save($ldap_config);
+    }
+
+    # Load up an LDAP User, and put them in a People enabled Account
+    my $user = Socialtext::User->new(username => $username);
+    isa_ok $user, 'Socialtext::User', 'Got LDAP sourced User';
+    $user->primary_account($account);
+
+    # Refresh the User, so we know that we've pulled their Profile Data from
+    # LDAP.
+    $user->homunculus->expire();
+    $user = Socialtext::User->new(username => $username);
+    {
+        my $profile = Socialtext::People::Profile->GetProfile($user->user_id);
+        ok $profile, '... and found their People Profile';
+
+        my $phone = $profile->get_attr($field);
+        is $phone, '+1 234 555-1212', '... ... with value pulled from LDAP';
+    }
+
+    # TEST: should *not* be able to set LDAP sourced profile field via CLI
+    cannot_set_profile_field: {
+        expect_failure(
+            call_cli_argv(set_user_profile =>
+                '--username' => $username,
+                $field, $new_value,
+            ),
+            qr/Profile Field '$field' is externally sourced/,
+            '... and which cannot be updated as its externally sourced',
+        );
+
+        # refresh Profile, make sure the value did *NOT* get set
+        my $profile = Socialtext::People::Profile->GetProfile($user->user_id);
+        is $profile->get_attr($field), $real_value,
+            '... ... and which did not get updated';
+    }
 }

@@ -737,6 +737,13 @@ sub set_user_profile {
         );
     }
 
+    unless ($field->is_user_editable) {
+        # externally sourced, cannot be set
+        $self->_error(
+            loc("Profile Field '[_1]' is externally sourced and cannot be updated.", $key)
+        );
+    }
+
     $profile->set_attr($key, $val);
     $profile->save();
     $self->_success(
