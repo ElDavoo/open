@@ -6,6 +6,7 @@
     <head>
         <title>[% "$ws.title : " IF ws.title %][%- title | html %]</title>
         <link rel="apple-touch-icon" href="/static/skin/common/images/apple-touch-icon.png"/>
+        [% IF enable_jquery_mobile %]
         <link rel="stylesheet" href="/static/skin/common/css/jquery.mobile-1.0a2.min.css" />
         <script src="/static/skin/common/javascript/jquery-1.4.4.min.js"></script>
         <script>
@@ -37,8 +38,9 @@
         });
         </script>
         <script src="/static/skin/common/javascript/jquery.mobile-1.0a2.min.js"></script>
+        [% END %]
         [% INCLUDE element/css_links %]
-    <meta name = "viewport" content = "width = device-width">
+    <meta name = "viewport" content = "width=device-width, minimum-scale=1, maximum-scale=1">
     </head>
     <body>
         [% FILTER decorate('body_begin') %]

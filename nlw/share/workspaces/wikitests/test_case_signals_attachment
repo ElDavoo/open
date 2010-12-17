@@ -1,5 +1,4 @@
 * HighPermissions
-
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Signals Attachment SETUP |  |
@@ -15,31 +14,39 @@
 | set_default | zip_file | %%wikitest_client_files%%%%zip%% |
 | set_default | signal | TC: Signals Attachment %%start_time%% |
 
+| *Comment* | Test Case: Signals Attachment wait to logout or triggers authen dialog |  |
+| pause | 8000 |  |
+
+| *Comment* | Test Case: Signals Attachment login as | %%att_signaler%% |
 | st-logoutin | %%att_signaler%% | %%att_signaler_pw%% |
 | open_ok | /st/signals |  |
 
 | *Comment* | Test Case: Signals Attachment. Insert file button |  |
 | wait_for_element_visible_ok | //a[contains(@class,'insertFile')] | 120000 |
 | click_ok | //a[contains(@class,'insertFile')] |  |
+| wait_for_element_visible_ok | //form[@name='attachForm']//input | 10000 |
 
-| *Comment* | Test Case: Signals Attachment. setSpeed 3000 for type-in, upload three files |  |
+| *Comment* | Test Case: Signals Attachment. setSpeed 3000 for type-in, time to upload three files |  |
 | set_Speed | 3000 |  |
 | text_like | //body | select an image or file to upload |
 | type-lookahead-ok | //form[@name='attachForm']//input | %%jpg_file%% |
+| wait_for_text_present_ok | Uploaded files: %%jpg%% | 10000 |
 | type-lookahead-ok | //form[@name='attachForm']//input | %%txt_file%% |
+| wait_for_text_present_ok | Uploaded files: %%jpg%%, %%txt%% | 10000 |
 | type-lookahead-ok | //form[@name='attachForm']//input | %%zip_file%% |
+| wait_for_text_present_ok | Uploaded files: %%jpg%%, %%txt%%, %%zip%% | 10000 |
 | set_Speed | 0 |  |
 
 | *Comment* | Test Case: Signals Attachment. click Done |  |
 | wait_for_text_present_ok | Uploaded files: %%jpg%%, %%txt%%, %%zip%% | 120000 |
+| wait_for_element_visible_ok | //a[@class='btn'] | 10000 |
 | click_ok | //a[@class='btn'] |  |
 | wait_for_element_not_visible_ok | //form[@name='attachForm'] | 30000 |
-| text_unlike | //body | select an image or file to upload |
 
 | *Comment* | Test Case: Signals Attachment. post %%signal%%. Only works in Firefox |  |
 | wait_for_element_visible_ok | signalFrame | 5000 |
 | select_frame | signalFrame |  |
-| type_ok | //body | %%signal%% |  |
+| type_ok | //body | %%signal%% |
 | select_frame | relative=parent |  |
 | wait_for_element_visible_ok | link=Post | 5000 |
 | click_ok | link=Post |  |

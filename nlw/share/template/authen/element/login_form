@@ -49,6 +49,7 @@
 </div>
 </form>
 
+[% UNLESS miki %]
 <script type="text/javascript">
   if (typeof(jQuery) != 'undefined') {
     function authen_focus() {
@@ -70,3 +71,4 @@
     jQuery(document).ready(authen_focus);
   }
 </script>
+[% END %]

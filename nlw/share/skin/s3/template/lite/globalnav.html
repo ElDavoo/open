@@ -20,11 +20,16 @@
 <div id="mobile-bottom-logout">
 <li>
     <a rel="external" href="/nlw/submit/logout?redirect_to=/m/login">[% loc('Log out') %]</a>
+    <span class="menu-padding"><hr /></span>
 </li>
 </div>
 [% ELSE %]
-<li><div style="background: #17417F; height: 34px"><table border=0 height="34" width="100%"><tr><td valign="middle">
-        <img src="[% skin_uri('images/miki-logo.png') %]" style="max-width: 98%; max-height: 26px; ">
+<li><div style="background: [% skin_info.mobile.logo.backgroundColor || '#17417F' %]; height: 34px; text-align: center"><table border=0 height="34" width="100%"><tr><td valign="middle">
+        [% SET logo = skin_info.mobile.logo.url
+            ? skin_uri(skin_info.mobile.logo.url)
+            : s3_uri('images/miki-logo.png')
+         %]
+        <img src="[% logo %]" style="max-width: 98%; max-height: 26px;"/>
 </td></tr></table></div></li>
     [% END %]
     [% IF bottom %]
@@ -34,7 +39,6 @@
         [% FILTER decorate('lite_nav_activities') %]
         [% END %]
     [% END %]
-
 <li>
     [% IF section == 'activities' %]
         <a id="[% IF bottom %]bottom-[% END %]mobile-activities" class="ui-btn-active current">[% loc('Activity') %]</a>

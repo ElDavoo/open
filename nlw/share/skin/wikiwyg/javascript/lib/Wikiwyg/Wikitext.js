@@ -1347,6 +1347,7 @@ proto.convertWikitextToHtml = function(wikitext, func, onError) {
         url: uri,
         async: false,
         type: 'POST',
+        timeout: 30 * 1000,
         data: {
             action: 'wikiwyg_wikitext_to_html',
             page_name: jQuery('#st-newpage-pagename-edit, #st-page-editing-pagename').val(),
@@ -1540,7 +1541,7 @@ proto.convert_html_to_wikitext = function(html, isWholeDocument) {
 
         // {bz: 4738}: Don't run _format_one_line on top-level tables, HRs and PREs.
         $(dom).find('td, hr, pre')
-            .parents('span, a, h1, h2, h3, h4, h5, h6, b, strong, i, em, strike, del, s, tt, code, kbd, samp, var, u')
+            .parents('span:not(.nlw_phrase), a, h1, h2, h3, h4, h5, h6, b, strong, i, em, strike, del, s, tt, code, kbd, samp, var, u')
             .addClass('_st_format_div');
 
         $(dom).find('._st_walked').removeClass('_st_walked');

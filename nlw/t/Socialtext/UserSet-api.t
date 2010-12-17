@@ -130,10 +130,12 @@ Bad_cases: {
 
         for my $ctr ($acct, $wksp, $group) {
             like exception {
-                $ctr->add_role(actor => $actor, user => $user, role => $member)
+                $ctr->add_role(
+                    object=>$user, actor=>$actor, user=>$user, role=>$member)
             }, $err, "cannot add a system created user";
             like exception {
-                $ctr->add_role(actor => $actor, user => $user, role  => $member)
+                $ctr->add_role(
+                    object=>$user, actor=>$actor, user=>$user, role=>$member)
             }, $err, "cannot add a system created user";
         }
     }

@@ -12,7 +12,7 @@
 | create-user | %%spuser%% | %%password%% |
 | create-user | %%spusertwo%% | %%password%% |
 
-| st-admin | enable-plugin --all-accounts --plugin %%hostname%% |  |
+| st-admin | enable-plugin --plugin signals --account %%hostname%% |  |
 | st-logoutin | %%spuser%% |  |
 
 | *Comment* | Test Case: Signal From Profile. logged in user has empty "lastsignal" |  |

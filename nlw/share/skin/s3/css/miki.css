@@ -61,6 +61,10 @@ div.clear {
     padding: 3px 2px;
 }
 
+.ui-mobile-viewport .tabs {
+    padding: 0;
+}
+
 .tabs .letter_set {
     white-space: normal;
 }
@@ -173,6 +177,10 @@ div.clear {
     display: none;
 }
 
+.ui-mobile-viewport .menu-padding {
+    display: none;
+}
+
 .ui-mobile-viewport .permalink {
     text-decoration: underline;
 }
@@ -209,7 +217,7 @@ div.clear {
 .profile .info {
     padding-bottom: 10px;
     padding-left: 70px;
-    height: 75px;
+    min-height: 75px;
     border-bottom: 1px solid #666;
 }
 .profile .section {

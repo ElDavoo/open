@@ -98,7 +98,6 @@
 
 | *Comment* | Test case: Business Control Panel Account. Enable Dashboard |  |
 | click_ok | toggle_plugin_dashboard |  |
-| verifyConfirmation | Socialtext Dashboard is a paid option. For more information about fees, contact your sales representative.\n\nPress 'OK' to enable this module or 'Cancel' to exit. |  |
 | wait_for_element_not_present_ok | toggle_plugin_dashboard |  |
 
 | *Comment* | Test case: Business Control Panel Account rename account |  |

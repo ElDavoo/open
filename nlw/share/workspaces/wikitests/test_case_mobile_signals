@@ -7,7 +7,7 @@
 | click_and_wait | link=Mobile |  |
 
 | *Comment* | Test Case: Mobile Signals. Word but not Link |  |
-| wait_for_text_present_ok | %%miki_signal_text%% | 30000 |  |
+| wait_for_text_present_ok | %%miki_signal_text%% | 30000 |
 | wait_for_text_present_ok | Signals | 3000 |
 
 | *Comment* | Test Case: Mobile Signals. Send a signal |  |

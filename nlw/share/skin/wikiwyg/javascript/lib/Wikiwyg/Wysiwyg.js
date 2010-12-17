@@ -824,7 +824,7 @@ proto._unbindHandler = function(event_name) {
 }
 
 proto._bindHandler = function(event_name, callback) {
-    if (Wikiwyg.is_ie && event_name == 'blur') {
+    if ((Wikiwyg.is_ie || $.browser.webkit) && event_name == 'blur') {
         jQuery(this.get_edit_window()).bind(event_name, callback);
     }
     else {
