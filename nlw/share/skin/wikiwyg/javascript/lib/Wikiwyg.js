@@ -1953,6 +1953,68 @@ proto.prompt_for_table_dimensions = function() {
     return [ rows, columns ];
 }
 
+proto.do_widget_pre = function(widget_element) {
+    return this._do_insert_block_dialog(
+        widget_element,
+        loc('Insert Preformatted Text'),
+        loc('Use the text area below to compose your preformatted text block.')
+    );
+}
+
+proto._do_insert_block_dialog = function(widget_element, title_text, prompt_text) {
+    var self = this;
+
+    if (!jQuery('#st-widget-block-dialog').size()) {
+        Socialtext.wikiwyg_variables.loc = loc;
+        jQuery('body').append(
+            Jemplate.process(
+                "add-a-block.html",
+                Socialtext.wikiwyg_variables
+            )
+        );
+    }
+
+    $('#st-widget-block-title').text(title_text);
+    $('#st-widget-block-prompt').text(prompt_text);
+    $('#st-widget-block-content').text('');
+
+    $('#add-a-block-form')
+        .unbind('reset')
+        .unbind('submit')
+        .bind('reset', function() {
+            jQuery.hideLightbox();
+            Wikiwyg.Widgets.widget_editing = 0;
+            return false;
+        })
+        .submit(function() {
+            if (jQuery.browser.msie)
+                jQuery("<input type='text' />").appendTo('body').focus().remove();
+
+            var close = function() {
+                jQuery.hideLightbox();
+                Wikiwyg.Widgets.widget_editing = 0;
+                alert("TODO: Actually insert the block")
+            }
+
+            if (jQuery.browser.msie)
+                setTimeout(close, 50);
+            else
+                close();
+
+            return false;
+        });
+
+    $('#st-widget-block-save').unbind('click').click(function(){
+        $('#add-a-block-form').trigger('submit');
+    });
+
+    jQuery.showLightbox({
+        content: '#st-widget-block-dialog',
+        focus: '#st-widget-block-content',
+        close: '#st-widget-block-cancel'
+    })
+}
+
 proto._do_link = function(widget_element) {
     var self = this;
 

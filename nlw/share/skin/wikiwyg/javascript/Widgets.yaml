@@ -631,7 +631,6 @@ widget:
     id: pre
     color: indianred
     title: Preformatted text. Click to edit.
-    uneditable: true
     use_title_as_text: true
 
   html:
