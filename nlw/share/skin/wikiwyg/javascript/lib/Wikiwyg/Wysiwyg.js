@@ -2784,6 +2784,10 @@ proto.insert_image = function (src, widget, widget_element, cb) {
         cb();
 }
 
+proto.insert_block = function (text) {
+    alert("Not yet implemented");
+}
+
 proto.insert_widget = function(widget, widget_element, cb) {
     var self = this;
 

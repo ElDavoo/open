@@ -1391,6 +1391,13 @@ proto.make_table_wikitext = function(rows, columns) {
     return text;
 }
 
+proto.insert_block = function (text) {
+    this.markup_line_alone([
+        "block",
+        text
+    ]);
+}
+
 proto.do_table = function() {
     var result = this.prompt_for_table_dimensions();
     if (! result) return false;
