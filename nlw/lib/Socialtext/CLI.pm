@@ -715,6 +715,37 @@ sub set_external_id {
     );
 }
 
+sub set_user_profile {
+    my $self = shift;
+    my $user = $self->_require_user;
+    my ($key, $val) = @{ $self->{argv} };
+
+    my $profile = $self->_get_profile($user);
+
+    unless ($profile->valid_attr($key)) {
+        # non-existent field
+        $self->_error(
+            loc("Unknown Profile Field '[_1]'.", $key)
+        );
+    }
+
+    my $field = $profile->fields->by_name($key);
+    if ($field->is_hidden) {
+        # field hidden
+        $self->_error(
+            loc("Profile Field '[_1]' is hidden and cannot be updated.",$key)
+        );
+    }
+
+    $profile->set_attr($key, $val);
+    $profile->save();
+    $self->_success(
+        loc("Profile field '[_1]' set to '[_2]' for User '[_3]'",
+            $key, $val, $user->username,
+        )
+    );
+}
+
 sub show_profile {
     my $self = shift;
     my $user = $self->_require_user;
@@ -4065,6 +4096,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   set-user-account [--username or --email] --account
   get-user-account [--username or --email]
   set-external-id [--username or --email] --external-id
+  set-user-profile [--username or --email] KEY VALUE
   show-profile [--username or --email]
   hide-profile [--username or --email]
   can-lock-pages [--username or --email] --workspace
@@ -4337,6 +4369,10 @@ Print the primary account of the specified user.
 =head2 set-external-id [--email or --username] --external-id
 
 Set the external ID for a user.
+
+=head2 set-user-profile [--email or --username] KEY VALUE
+
+Sets the People Profile field to the given value, for the specified User.
 
 =head2 show-profile [--email or --username]
 
