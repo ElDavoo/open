@@ -1,35 +1,33 @@
 
 
- add-account-admin [--username or --email] --account
-remove-account-admin [--username or --email] --account
 
- set-external-id [--username or --email] --external-id
 
- mass-add-users --csv --account
+
+
+
 
  WORKSPACES
 
 
- purge-signal-attachment --signal --attachment
 
 
- rebuild-pagelinks --workspace
+
+
 
 
 
  ACCOUNTS
 
 
- import-account --directory [--overwrite] [--name] [--noindex]
+
 
 
  PLUGINS
 
- list-plugins
 
- set-plugin-pref --plugin <name> [ --account <name> ] KEY VALUE
-show-plugin-prefs --plugin <name> [ --account <name> ]
-clear-plugin-prefs --plugin <name> [ --account <name> ]
+
+
+
 
 
 
