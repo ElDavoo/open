@@ -15,7 +15,7 @@ use Getopt::Long;
 my $lib_only = 0;
 GetOptions(
     'help' => \&usage,
-    'lib-only' => $lib_only,
+    'lib-only' => \$lib_only,
 );
 usage() unless @ARGV;
 
