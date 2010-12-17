@@ -69,7 +69,7 @@ TODO: find a way to check the best full name
 | text_like | globalNav | Welcome |
 
 | *Comment* | Test Case: Global Navigation Search |  |
-| text_like | st-search-form | qr/Search This Workspace:.*Search My Workspaces:.*Search People:/i |
+| text_like | st-search-form | qr/Search This Workspace:.*Search My Workspaces:.*Search People:.*Search Groups:.*Search Signals:/ism |
 
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | type_ok | st-search-term | wiki |
