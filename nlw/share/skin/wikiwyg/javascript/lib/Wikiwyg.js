@@ -1993,7 +1993,10 @@ proto._do_insert_block_dialog = function(widget_element, title_text, prompt_text
             var close = function() {
                 jQuery.hideLightbox();
                 Wikiwyg.Widgets.widget_editing = 0;
-                self.insert_block(".pre\n" + $('#st-widget-block-content').val().replace(/\n?$/, "\n.pre\n"));
+                self.insert_block(
+                    ".pre\n" + $('#st-widget-block-content').val().replace(/\n?$/, "\n.pre\n"),
+                    loc("Preformatted text. Click to edit.")
+                );
             }
 
             if (jQuery.browser.msie)
