@@ -2784,10 +2784,11 @@ proto.insert_image = function (src, widget, widget_element, cb) {
         cb();
 }
 
-proto.insert_block = function (text, label) {
+proto.insert_block = function (text, label, elem) {
     this.insert_image(
         this.getWidgetImageUrl(label),
-        text
+        text,
+        elem
     );
 }
 
@@ -3189,6 +3190,10 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
         this.do_link(widget_element);
         jQuery('#add-web-link').select();
         jQuery('#web-link-text').focus();
+        return;
+    }
+    else if (widget == 'pre') {
+        this.do_widget_pre(widget_element);
         return;
     }
 

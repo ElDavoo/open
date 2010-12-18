@@ -1954,14 +1954,16 @@ proto.prompt_for_table_dimensions = function() {
 }
 
 proto.do_widget_pre = function(widget_element) {
-    return this._do_insert_block_dialog(
-        widget_element,
-        loc('Insert Preformatted Text'),
-        loc('Use the text area below to compose your preformatted text block.')
-    );
+    return this._do_insert_block_dialog({
+        wafl_id: 'pre',
+        dialog_title: loc('Insert Preformatted Text'),
+        dialog_prompt: loc('Use the text area below to compose your preformatted text block.'),
+        edit_label: loc("Preformatted text. Click to edit."),
+        widget_element: widget_element
+    });
 }
 
-proto._do_insert_block_dialog = function(widget_element, title_text, prompt_text) {
+proto._do_insert_block_dialog = function(opts) {
     var self = this;
 
     if (!jQuery('#st-widget-block-dialog').size()) {
@@ -1974,9 +1976,18 @@ proto._do_insert_block_dialog = function(widget_element, title_text, prompt_text
         );
     }
 
-    $('#st-widget-block-title').text(title_text);
-    $('#st-widget-block-prompt').text(prompt_text);
-    $('#st-widget-block-content').text('');
+    $('#st-widget-block-title').text(opts.dialog_title);
+    $('#st-widget-block-prompt').text(opts.dialog_prompt);
+
+    if (opts.widget_element) {
+        var widget = this.parseWidgetElement(opts.widget_element) || { widget : '' };
+        $('#st-widget-block-content').val(
+            (widget.widget || '').replace(/^\.\w+\n/, '').replace(/\n\.\w+\n?$/, '')
+        );
+    }
+    else {
+        $('#st-widget-block-content').val('');
+    }
 
     $('#add-a-block-form')
         .unbind('reset')
@@ -1992,10 +2003,12 @@ proto._do_insert_block_dialog = function(widget_element, title_text, prompt_text
 
             var close = function() {
                 jQuery.hideLightbox();
-                Wikiwyg.Widgets.widget_editing = 0;
                 self.insert_block(
-                    ".pre\n" + $('#st-widget-block-content').val().replace(/\n?$/, "\n.pre\n"),
-                    loc("Preformatted text. Click to edit.")
+                    "." + opts.wafl_id + "\n"
+                        + $('#st-widget-block-content').val()
+                            .replace(/\n?$/, "\n." + opts.wafl_id + "\n"),
+                    loc("Preformatted text. Click to edit."),
+                    opts.widget_element
                 );
             }
 
@@ -2011,7 +2024,7 @@ proto._do_insert_block_dialog = function(widget_element, title_text, prompt_text
         $('#add-a-block-form').trigger('submit');
     });
 
-    jQuery.showLightbox({
+    self.showWidgetEditingLightbox({
         content: '#st-widget-block-dialog',
         focus: '#st-widget-block-content',
         close: '#st-widget-block-cancel'
@@ -2133,21 +2146,10 @@ proto._do_link = function(widget_element) {
 
     jQuery('#add-a-link-error').hide();
 
-    jQuery.showLightbox({
+    self.showWidgetEditingLightbox({
         content: '#st-widget-link-dialog',
         close: '#st-widget-link-cancelbutton'
     })
-
-    var self = this;
-
-    // Set the unload handle explicitly so when user clicks the overlay gray
-    // area to close lightbox, widget_editing will still be set to false.
-    jQuery('#lightbox').bind('lightbox-unload', function(){
-        Wikiwyg.Widgets.widget_editing = 0;
-        if (self.wikiwyg && self.wikiwyg.current_mode && self.wikiwyg.current_mode.set_focus) {
-            self.wikiwyg.current_mode.set_focus();
-        }
-    });
 
     this.load_add_a_link_focus_handlers("add-wiki-link");
     this.load_add_a_link_focus_handlers("add-web-link");
@@ -2156,6 +2158,19 @@ proto._do_link = function(widget_element) {
     var callback = function(element) {
         var form    = jQuery("#add-a-link-form").get(0);
     }
+}
+
+proto.showWidgetEditingLightbox = function(opts) {
+    var self = this;
+    $.showLightbox(opts);
+    // Set the unload handle explicitly so when user clicks the overlay gray
+    // area to close lightbox, widget_editing will still be set to false.
+    $('#lightbox').one('lightbox-unload', function(){
+        Wikiwyg.Widgets.widget_editing = 0;
+        if (self.wikiwyg && self.wikiwyg.current_mode && self.wikiwyg.current_mode.set_focus) {
+            self.wikiwyg.current_mode.set_focus();
+        }
+    });
 }
 
 proto.load_add_a_link_focus_handlers = function(radio_id) {
