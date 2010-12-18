@@ -231,6 +231,11 @@
         return typeof (lt) == 'string' ? lt : lt[0];
     };
 
+    Lookahead.prototype.linkDesc = function (item) {
+        var lt = this.opts.linkText(item);
+        return typeof (lt) == 'string' ? '' : lt[2];
+    };
+
     Lookahead.prototype.linkValue = function (item) {
         var lt = this.opts.linkText(item);
         return typeof (lt) == 'string' ? lt : lt[1];
@@ -256,12 +261,16 @@
             if (filtered.length >= self.opts.count) return;
 
             var title = self.linkTitle(item);
-            if (title.match(re)) {
+            var desc = self.linkDesc(item) || '';
+
+            if (title.match(re) || desc.match(re)) {
                 if (self.opts.grep && !self.opts.grep(item)) return;
 
                 filtered.push({
                     bolded_title: title.replace(re, '<b>$1</b>'),
                     title: title,
+                    bolded_desc: desc.replace(re, '<b>$1</b>'),
+                    desc: desc,
                     value: self.linkValue(item),
                     orig: item
                 });
@@ -281,15 +290,23 @@
             $.each(data, function (i) {
                 var item = this || {};
                 var li = self.$('<li></li>')
-                    .css({ padding: '3px 5px' })
+                    .css({
+                        padding: '3px 5px',
+                        height: '15px' // overridden when there are thumbnails
+                    })
                     .appendTo(lookaheadList);
                 if (self.opts.getEntryThumbnail) {
+                    li.height(30); // lookaheads with thumbnails are taller
                     var src = self.opts.getEntryThumbnail(item); 
                     self.$('<img/>')
                         .css({
                             'vertical-align': 'middle',
+                            'marginRight': '5px',
                             'border': '1px solid #666',
-                            'cursor': 'pointer'
+                            'cursor': 'pointer',
+                            'float': 'left',
+                            'width': '27px',
+                            'height': '27px'
                         })
                         .click(function() {
                             self.accept(i);
@@ -298,18 +315,7 @@
                         .attr('src', src)
                         .appendTo(li);
                 }
-                self.$('<a class="lookaheadItem" href="#"></a>')
-                    .css({
-                        marginLeft: '5px',
-                        whiteSpace: 'nowrap'
-                    })
-                    .html(item.bolded_title)
-                    .attr('value', i)
-                    .click(function() {
-                        self.accept(i);
-                        return false;
-                    })
-                    .appendTo(li);
+                self.itemNode(item, i).appendTo(li);
             });
             this.show();
         }
@@ -320,6 +326,38 @@
                 .css({padding: '3px 5px'});
             this.show();
         }
+    };
+
+    Lookahead.prototype.itemNode = function(item, index) {
+        var self = this;
+        var $node = self.$('<div class="lookaheadItem"></div>')
+            .css({
+                'float': 'left',
+                'paddingTop': '6px' // align middle the title
+            });
+
+        $node.append(
+            self.$('<a href="#"></a>')
+                .css({
+                    whiteSpace: 'nowrap'
+                })
+                .html(item.bolded_title)
+                .attr('value', index)
+                .click(function() {
+                    self.accept(index);
+                    return false;
+                })
+        );
+
+        if (item.desc) {
+            $node.css('paddingTop', '0'); // Make room for the description
+            $node.append(
+                self.$('<div></div>')
+                    .html(item.bolded_desc)
+                    .css('whiteSpace', 'nowrap')
+            );
+        }
+        return $node
     };
 
     Lookahead.prototype.show = function () {
@@ -411,7 +449,7 @@
 
     Lookahead.prototype.select_element = function (el, provisional) {
         this._highlight_element(el);
-        var value = el.children('a').attr('value');
+        var value = el.find('a').attr('value');
         var item = this._items[value];
         this.select(item, provisional);
     }
