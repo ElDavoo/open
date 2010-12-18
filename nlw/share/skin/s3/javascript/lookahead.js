@@ -8,14 +8,19 @@
     var DEFAULTS = {
         count: 10,
         filterName: 'filter',
-        filterPrefix: '\\b',
-        filterPostfix: '',
+        filterType: 'sql',
         requireMatch: false,
         params: { 
             order: 'alpha',
             count: 30, // for fetching
             minimal: 1
         }
+    };
+
+    var FILTER_TYPES = {
+        plain: '$1',
+        sql: '\\b$1',
+        solr: '$1* OR $1'
     };
 
     var KEYCODES = {
@@ -553,6 +558,19 @@
         if (this.request) this.request.abort();
     };
 
+    Lookahead.prototype.createFilterValue = function (val) {
+        if (this.opts.filterValue) {
+            return this.opts.filterValue(val);
+        }
+        else {
+            var filter = FILTER_TYPES[this.opts.filterType];
+            if (!filter) {
+                throw new Error('invalid filterType: ' + this.opts.filterType);
+            }
+            return val.replace(/^(.*)$/, filter);
+        }
+    };
+
     Lookahead.prototype.onchange = function () {
         var self = this;
         if (this._loading_lookahead) {
@@ -578,10 +596,7 @@
                 ? this.opts.url() : this.opts.url;
 
         var params = this.opts.params;
-        if (this.opts.filterValue)
-            val = this.opts.filterValue(val);
-        params[this.opts.filterName] = this.opts.filterPrefix + val
-                                     + this.opts.filterPostfix
+        params[this.opts.filterName] = this.createFilterValue(val);
 
         this._loading_lookahead = true;
         this.request = $.ajax({
