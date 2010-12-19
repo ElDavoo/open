@@ -1958,6 +1958,7 @@ proto.do_widget_pre = function(widget_element) {
         wafl_id: 'pre',
         dialog_title: loc('Insert Preformatted Text'),
         dialog_prompt: loc('Use the text area below to compose your preformatted text block.'),
+        dialog_hint: loc('(Preformatted Text is plain text displayed exactly as entered.)'),
         edit_label: loc("Preformatted text. Click to edit."),
         widget_element: widget_element
     });
@@ -1978,6 +1979,7 @@ proto._do_insert_block_dialog = function(opts) {
 
     $('#st-widget-block-title').text(opts.dialog_title);
     $('#st-widget-block-prompt').text(opts.dialog_prompt);
+    $('#st-widget-block-hint').text(opts.dialog_hint);
 
     if (opts.widget_element) {
         var widget = this.parseWidgetElement(opts.widget_element) || { widget : '' };

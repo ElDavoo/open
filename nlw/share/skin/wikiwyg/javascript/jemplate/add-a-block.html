@@ -1,7 +1,11 @@
 <div id="st-widget-block-dialog" class="lightbox">
     <span id="st-widget-block-title" class="title"></span>
     <form id="add-a-block-form" action="#" onsubmit="return false">
-        <p id="st-widget-block-prompt"></p>
+        <p>
+            <span id="st-widget-block-prompt"></span>
+            <br />
+            <span style="font-style: italic" id="st-widget-block-hint"></span>
+        </p>
         <fieldset style="padding: 5px; border: 1px solid #ccc; width: 460px">
             <legend style="padding: 3px">[% loc('Content') %]</legend>
             <textarea id="st-widget-block-content" style="font-family: monaco, consolas, 'droid sans mono', monospace; width: 450px; height: 140px" name="content"></textarea>
