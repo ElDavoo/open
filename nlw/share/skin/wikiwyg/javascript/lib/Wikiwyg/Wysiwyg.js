@@ -2785,11 +2785,13 @@ proto.insert_image = function (src, widget, widget_element, cb) {
 }
 
 proto.insert_block = function (text, label, elem) {
+    if (!elem) { this.insert_html('<br />'); }
     this.insert_image(
         this.getWidgetImageUrl(label),
         text,
         elem
     );
+    if (!elem) { this.insert_html('<br />'); }
 }
 
 proto.insert_widget = function(widget, widget_element, cb) {
