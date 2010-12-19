@@ -1953,6 +1953,17 @@ proto.prompt_for_table_dimensions = function() {
     return [ rows, columns ];
 }
 
+proto.do_widget_html = function(widget_element) {
+    return this._do_insert_block_dialog({
+        wafl_id: 'html',
+        dialog_title: loc('Insert HTML'),
+        dialog_prompt: loc('Use the text area below to compose your HTML block.'),
+        dialog_hint: loc('(Note: HTML fragments are not guaranteed to work and may break the UI.)'),
+        edit_label: loc("Raw HTML block. Click to edit."),
+        widget_element: widget_element
+    });
+}
+
 proto.do_widget_pre = function(widget_element) {
     return this._do_insert_block_dialog({
         wafl_id: 'pre',
@@ -2009,7 +2020,7 @@ proto._do_insert_block_dialog = function(opts) {
                     "." + opts.wafl_id + "\n"
                         + $('#st-widget-block-content').val()
                             .replace(/\n?$/, "\n." + opts.wafl_id),
-                    loc("Preformatted text. Click to edit."),
+                    opts.edit_label,
                     opts.widget_element
                 );
             }

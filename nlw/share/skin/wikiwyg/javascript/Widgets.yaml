@@ -637,7 +637,6 @@ widget:
     id: html
     color: indianred
     title: Raw HTML block. Click to edit.
-    uneditable: true
     use_title_as_text: true
 
   sharepoint:

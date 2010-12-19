@@ -3196,6 +3196,10 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
         this.do_widget_pre(widget_element);
         return;
     }
+    else if (widget == 'html') {
+        this.do_widget_html(widget_element);
+        return;
+    }
 
     var template = 'widget_' + widget + '_edit.html';
     var html = Jemplate.process(template, this.currentWidget);
