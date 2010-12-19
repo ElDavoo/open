@@ -2008,7 +2008,7 @@ proto._do_insert_block_dialog = function(opts) {
                 self.insert_block(
                     "." + opts.wafl_id + "\n"
                         + $('#st-widget-block-content').val()
-                            .replace(/\n?$/, "\n." + opts.wafl_id + "\n"),
+                            .replace(/\n?$/, "\n." + opts.wafl_id),
                     loc("Preformatted text. Click to edit."),
                     opts.widget_element
                 );

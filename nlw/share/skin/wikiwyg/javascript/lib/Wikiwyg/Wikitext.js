@@ -1394,7 +1394,7 @@ proto.make_table_wikitext = function(rows, columns) {
 proto.insert_block = function (text) {
     this.markup_line_alone([
         "block",
-        text
+        "\n" + text + "\n"
     ]);
 }
 
