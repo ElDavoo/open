@@ -197,6 +197,13 @@ sub _update_profile {
         if $people;
 }
 
+# Quick little method to get the People Profile for the User.
+sub _profile {
+    my $self = shift;
+    return unless $self->can_use_plugin('people');
+    return Socialtext::People::Profile->GetProfile($self->user_id);
+}
+
 sub new {
     my $class = shift;
     my $t = time_scope('user_new');
