@@ -637,7 +637,7 @@ sub _get_full_name {
 
         return $name if length $name;
 
-        return $self->guess_real_name 
+        return $self->guess_real_name
             unless ($p{workspace} && $p{workspace}->workspace_id != 0);
 
         return $self->_masked_email_address($p{workspace});
