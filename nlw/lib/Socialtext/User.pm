@@ -640,14 +640,25 @@ sub _get_full_name {
         my $self = shift;
         my %p = validate( @_, $spec );
 
-        my $name = _get_full_name($self->first_name, $self->last_name);
+        my $preferred = $self->_preferred_name;
+        return $preferred if ($preferred);
 
+        my $name = _get_full_name($self->first_name, $self->last_name);
         return $name if length $name;
 
         return $self->guess_real_name
             unless ($p{workspace} && $p{workspace}->workspace_id != 0);
 
         return $self->_masked_email_address($p{workspace});
+    }
+}
+
+sub _preferred_name {
+    my $self = shift;
+    my $profile = $self->_profile;
+    if ($profile) {
+        my $preferred = $profile->get_attr('preferred_name');
+        return $preferred if ($preferred && ($preferred !~ /^\s*$/));
     }
 }
 
@@ -745,6 +756,9 @@ sub guess_sortable_name {
     my $self = shift;
     my $name;
 
+    my $preferred = $self->_preferred_name;
+    return $preferred if ($preferred);
+
     my $fn = $self->first_name || '';
     my $ln = $self->last_name || '';
     if ($self->email_address eq $fn) {
@@ -764,6 +778,9 @@ sub guess_sortable_name {
 sub guess_real_name {
     my $self = shift;
     my $name;
+
+    my $preferred = $self->_preferred_name;
+    return $preferred if ($preferred);
 
     my $fn = $self->first_name;
     if ($self->email_address eq $fn) {
