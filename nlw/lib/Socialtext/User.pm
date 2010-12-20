@@ -78,6 +78,17 @@ has 'metadata' => (
     )],
 );
 
+has profile => (
+    is         => 'ro',
+    isa        => 'Maybe[Socialtext::People::Profile]',
+    lazy_build => 1,
+);
+sub _build_profile {
+    my $self = shift;
+    return unless $self->can_use_plugin('people');
+    return Socialtext::People::Profile->GetProfile($self->user_id);
+}
+
 with 'Socialtext::UserSetContained';
 
 our @public_interface = qw(
@@ -195,13 +206,6 @@ sub _update_profile {
     my $people = Socialtext::Pluggable::Adapter->plugin_class('people');
     $people->UpdateProfileFields($self => $attrs, {source => 'directory'})
         if $people;
-}
-
-# Quick little method to get the People Profile for the User.
-sub _profile {
-    my $self = shift;
-    return unless $self->can_use_plugin('people');
-    return Socialtext::People::Profile->GetProfile($self->user_id);
 }
 
 sub new {
@@ -655,7 +659,7 @@ sub _get_full_name {
 
 sub _preferred_name {
     my $self = shift;
-    my $profile = $self->_profile;
+    my $profile = $self->profile;
     if ($profile) {
         my $preferred = $profile->get_attr('preferred_name');
         return $preferred if ($preferred && ($preferred !~ /^\s*$/));

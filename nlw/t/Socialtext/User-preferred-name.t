@@ -17,11 +17,14 @@ get_profile: {
     my $acct = create_test_account_bypassing_factory();
     my $user = create_test_user(account => $acct);
 
-    my $profile = $user->_profile();
+    my $profile = $user->profile();
     ok !$profile, 'No profile available when People is not enabled.';
 
     $acct->enable_plugin('people');
-    $profile = $user->_profile();
+
+    # Refresh User object and verify that the Profile is now available.
+    $user = Socialtext::User->new(username => $user->username);
+    $profile = $user->profile();
     ok $profile, '... but is available when People is enabled';
 }
 
@@ -40,7 +43,7 @@ best_full_name: {
     my $old_bfn = $user->best_full_name();
     is $old_bfn, 'Davey Jones', 'BFN is FN/LN when no Preferred Name present';
 
-    my $profile = $user->_profile();
+    my $profile = $user->profile();
     $profile->set_attr('preferred_name', 'Bubba Bo Bob Brain');
     $profile->save();
 
@@ -63,7 +66,7 @@ guess_real_name: {
     my $old_bfn = $user->best_full_name();
     is $old_bfn, 'Sam Gamgee', 'GRN is FN/LN when no Preferred Name present';
 
-    my $profile = $user->_profile();
+    my $profile = $user->profile();
     $profile->set_attr('preferred_name', 'Bubba Bo Bob Brain');
     $profile->save();
 
@@ -86,7 +89,7 @@ guess_sortable_name: {
     my $old_bfn = $user->best_full_name();
     is $old_bfn, 'Oscar Peterson', 'GRN is FN/LN when no Preferred Name present';
 
-    my $profile = $user->_profile();
+    my $profile = $user->profile();
     $profile->set_attr('preferred_name', 'Bubba Bo Bob Brain');
     $profile->save();
 
