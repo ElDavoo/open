@@ -4,15 +4,12 @@ use warnings;
 use strict;
 use Test::More;
 
-plan tests => 2;
+plan tests => 3;
 
-my @perlfail;
-my @shfail;
-my $p_erl = '/usr/bin/p'.'erl';
-my $local_p_erl = '/usr/local/bin/p'.'erl';
-my $s_h = '/bin/s'.'h';
-my $perl_re = qr/(?:$p_erl|$local_p_erl)/;
-my $sh_re = qr/$s_h/;
+my (@perlfail, @megaperlfail, @shfail);
+my $perl_re = qr{/usr(?:/local)?/bin/perl};
+my $megaperl_re = qr{/opt/perl/[^/]+/bin/perl};
+my $sh_re = qr{/bin/\bsh};
 
 my %IGNORE_PERL = map {$_ => 1} qw(
     nlw/docs/INSTALL.apache-perl
@@ -20,18 +17,35 @@ my %IGNORE_PERL = map {$_ => 1} qw(
     nlw/docs/INSTALL.st-dev
     plugins/VimColor/debian/rules
     plugins/Latex/debian/rules
+    nlw/t/coding-standard/shebangs.t
+);
+
+my %IGNORE_MEGAPERL = map { $_ => 1 } qw(
+    appliance/debian/rules
+    appliance/st-appliance-update/debian/postinst
+    appliance/st-appliance-update/debian/rules
+    appliance/st-perf-tools/debian/rules
+    plugins/debian/rules
+    socialtext-reports/debian/postinst
+    appliance/libsocialtext-appliance-perl/debian/rules
+    appliance/libsocialtext-appliance-perl/debian/postinst
+    socialtext-skins/debian/rules
 );
 
 my %IGNORE_SH = map {$_=>1} qw(
     socialtext-reports/Makefile
     appliance/libsocialtext-appliance-perl/Makefile
-    nlw/build/tmp/Makefile.perl
 );
 
 chdir $ENV{ST_CURRENT};
 local $/ = "\0"; # nulls
 my @files = `find . -type f -print0`;
 chomp @files; # strip nulls
+
+sub gitignored {
+    my $f = shift;
+    `git ls-files --ignored -o --exclude "$f"` ? 1 : 0;
+}
 
 $/ = undef; # input slurp
 for my $f (@files) {
@@ -47,11 +61,14 @@ for my $f (@files) {
 
     my $text = do { local @ARGV = $f; <> };
 
-    push @perlfail,$f if (!$IGNORE_PERL{$f} && $text =~ $perl_re);
-    push @shfail,$f   if (!$IGNORE_SH{$f}   && $text =~ $sh_re);
+    push @perlfail,$f if (!$IGNORE_PERL{$f} && $text =~ $perl_re && !gitignored($f));
+    push @megaperlfail,$f if (!$IGNORE_MEGAPERL{$f} && $text =~ $megaperl_re && !gitignored($f));
+    push @shfail,$f if (!$IGNORE_SH{$f} && $text =~ $sh_re && !gitignored($f));
 }
 
-is scalar(@perlfail),0,"no $p_erl"
+is scalar(@perlfail),0,"no hard-coded perl paths"
     or do { diag "Failing files:"; diag "\t$_" for @perlfail; };
-is scalar(@shfail),0,"no $s_h"
+is scalar(@megaperlfail),0,"no hard-coded megaperl paths"
+    or do { diag "Failing files:"; diag "\t$_" for @megaperlfail; };
+is scalar(@shfail),0,"no /bin/"."sh"
     or do { diag "Failing files:"; diag "\t$_" for @shfail; };
