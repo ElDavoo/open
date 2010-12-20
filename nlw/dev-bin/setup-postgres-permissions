@@ -21,5 +21,7 @@ AFTER=`md5sum $PG_HBA | awk '{print $1}'`
 
 if [ "$BEFORE" != "$AFTER" ]; then
     echo "$PG_HBA changed.  Restarting PostgreSQL $VER"
-    /etc/init.d/postgresql-$VER restart
+    SUFFIX=''
+    [ "$VER" == "9.0" ] || SUFFIX="-$VER"
+    /etc/init.d/postgresql$SUFFIX restart
 fi
