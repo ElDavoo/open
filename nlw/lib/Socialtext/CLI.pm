@@ -4381,6 +4381,9 @@ Set the external ID for a user.
 
 Sets the People Profile field to the given value, for the specified User.
 
+The KEY provided must be the underlying name for the Profile Field, not its
+visible/display representation.
+
 =head2 show-profile [--email or --username]
 
 =head2 hide-profile [--email or --username]
