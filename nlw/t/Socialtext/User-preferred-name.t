@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 8;
+use Test::Socialtext tests => 10;
 
 fixtures(qw( db ));
 
@@ -26,6 +26,31 @@ get_profile: {
     $user = Socialtext::User->new(username => $user->username);
     $profile = $user->profile();
     ok $profile, '... but is available when People is enabled';
+}
+
+###############################################################################
+# TEST: Preferred Name is missing if no People Profile is available
+no_preferred_name_when_people_not_enabled: {
+    my $acct = create_test_account_bypassing_factory();
+    my $user = create_test_user(account => $acct);
+
+    my $name = $user->preferred_name;
+    ok !$name, 'No Preferred Name when People is not enabled';
+}
+
+###############################################################################
+# TEST: Preferred Name is available in Profile
+preferred_name_available: {
+    my $acct = create_test_account_bypassing_factory();
+    my $user = create_test_user(account => $acct);
+    $acct->enable_plugin('people');
+
+    my $profile = $user->profile();
+    $profile->set_attr('preferred_name', 'Bubba Bo Bob Brain');
+    $profile->save();
+
+    my $name = $user->preferred_name;
+    is $name, 'Bubba Bo Bob Brain', 'Preferred Name curries';
 }
 
 ###############################################################################
