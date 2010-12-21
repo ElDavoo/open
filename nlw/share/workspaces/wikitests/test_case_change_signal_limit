@@ -1,7 +1,12 @@
 * Fixture: SocialWidgets
 
-| *Comment* | Test Case: Change Signal Limit |
-| *Comment* | If this test dies in the middle, you may need to go to /console, click setup tab, and change the default signal size to 400 in order to get it to start passing again. Also this test only runs on an appliance. |
+| *Comment* | Test Case: Change Signal Limit set initial serverwide 400 char limit |  |
+| st-admin | give-system-admin --email %%username%% |  |
+| open_ok | /console/?rm=Setup |  |
+| wait_for_element_visible_ok | signals_size_limit | 30000 |
+| wait_for_element_visible_ok | set_signals_size_limit | 30000 |
+| type_ok | signals_size_limit | 400 |
+| click_and_wait | set_signals_size_limit |  |
 
 | *Comment* | Test Case: Change Signal Limit Create two accounts and two users |  |
 | set | onehundredlimit | one-hundred-limit-%%start_time%% |
@@ -44,7 +49,6 @@
 | st-text-unlike-in-activities-widget | nonsense | %%fourfortysignal%% |
 
 | *Comment* | Test Case: Change Signal Limit set serverwide 300 char limit - see limit |  |
-| st-admin | give-system-admin --email %%username%% |  |
 | open_ok | /console/?rm=Setup |  |
 | wait_for_element_visible_ok | signals_size_limit | 30000 |
 | wait_for_element_visible_ok | set_signals_size_limit | 30000 |
@@ -60,10 +64,10 @@
 | wait_for_element_visible_ok | link=%%twohundredlimit%% | 30000 |
 | click_and_wait | link=%%twohundredlimit%% |  |
 | wait_for_text_present_ok | Maximum value for this appliance is | 30000 |
-| wait_for_element_visible_ok | st-signals-size-limit-submit | 30000 |
 | wait_for_element_visible_ok | signals_size_limit | 30000 |
+| wait_for_element_visible_ok | signals-prefs-submit | 30000 |
 | type_ok | signals_size_limit | 200 |
-| click_ok | st-signals-size-limit-submit |  |
+| click_ok | signals-prefs-submit |  |
 | wait_for_text_present_ok | Maximum value for this appliance is | 30000 |
 | verifyValue | signals_size_limit | 200 |
 
@@ -94,14 +98,14 @@
 | wait_for_element_visible_ok | link=%%twohundredlimit%% | 30000 |
 | click_and_wait | link=%%twohundredlimit%% |  |
 | wait_for_text_present_ok | Maximum value for this appliance is | 30000 |
-| wait_for_element_visible_ok | st-signals-size-limit-submit | 30000 |
+| wait_for_element_visible_ok | signals-prefs-submit | 30000 |
 | wait_for_element_visible_ok | signals_size_limit | 30000 |
 | type_ok | signals_size_limit | 200 |
-| click_ok | st-signals-size-limit-submit |  |
+| click_ok | signals-prefs-submit |  |
 | wait_for_text_present_ok | Maximum value for this appliance is | 30000 |
 | verifyValue | signals_size_limit | 200 |
 | type_ok | signals_size_limit | 50000 |
-| click_ok | st-signals-size-limit-submit |  |
+| click_ok | signals-prefs-submit |  |
 | wait_for_text_present_ok | Maximum value for this appliance is | 30000 |
 
 | st-search-cp-account | %%twohundredlimit%% |  |
@@ -114,10 +118,10 @@
 | wait_for_element_visible_ok | link=%%onehundredlimit%% | 30000 |
 | click_and_wait | link=%%onehundredlimit%% |  |
 | wait_for_text_present_ok | Maximum value for this appliance is | 30000 |
-| wait_for_element_visible_ok | st-signals-size-limit-submit | 30000 |
+| wait_for_element_visible_ok | signals-prefs-submit | 30000 |
 | wait_for_element_visible_ok | signals_size_limit | 30000 |
 | type_ok | signals_size_limit | 100 |
-| click_ok | st-signals-size-limit-submit |  |
+| click_ok | signals-prefs-submit |  |
 
 | st-search-cp-account | %%onehundredlimit%% |  |
 | wait_for_element_visible_ok | link=%%onehundredlimit%% | 30000 |
