@@ -74,6 +74,16 @@ sub UserFields {
     return wantarray ? (\%user, \%all) : \%user;
 }
 
+sub preferred_name {
+    my $self    = shift;
+    my $profile = $self->profile;
+    if ($profile) {
+        return if $profile->fields->by_name('preferred_name')->is_hidden;
+        return $profile->get_attr('preferred_name');
+    }
+    return;
+}
+
 sub driver_name {
     my $self = shift;
     my ($name, $id) = split /:/, $self->driver_key();

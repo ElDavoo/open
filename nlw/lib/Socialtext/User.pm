@@ -57,6 +57,7 @@ has 'homunculus' => (
 
         can_use_plugin
         profile
+        preferred_name
     )],
 );
 
@@ -80,16 +81,6 @@ has 'metadata' => (
         primary_account_id
     )],
 );
-
-sub preferred_name {
-    my $self    = shift;
-    my $profile = $self->profile;
-    if ($profile) {
-        return if $profile->fields->by_name('preferred_name')->is_hidden;
-        return $profile->get_attr('preferred_name');
-    }
-    return;
-}
 
 with 'Socialtext::UserSetContained';
 
