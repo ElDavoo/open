@@ -367,18 +367,22 @@ sub ExpireUserRecord {
         my $user = shift;
         my $p    = shift;
 
-        my $first_name = defined $p->{first_name} ? $p->{first_name} 
-                            : $user ? $user->first_name : undef;
-        my $last_name  = defined $p->{last_name} ? $p->{last_name} 
-                            : $user ? $user->last_name : undef;
-        my $email = defined $p->{email_address} ? $p->{email_address} 
-                            : $user ? $user->email_address : undef;
-
-        {
-            no warnings 'uninitialized';
-            my $name = join ' ', grep {length} $first_name, $last_name;
-            ($name = $email) =~ s/@.+// unless $name;
-            $p->{display_name} = $name;
+        if ($user) {
+            # Have a User, so get their Real Name (which will include their
+            # Preferred Name if its enabled and they have one set).
+            $p->{display_name} = $user->guess_real_name();
+        }
+        else {
+            # No User, so calculate it as best we can from the data provided.
+            my $first_name = $p->{first_name};
+            my $last_name  = $p->{last_name};
+            my $email      = $p->{email_address};
+            {
+                no warnings 'uninitialized';
+                my $name = join ' ', grep {length} $first_name, $last_name;
+                ($name = $email) =~ s/@.+// unless $name;
+                $p->{display_name} = $name;
+            }
         }
     }
 
