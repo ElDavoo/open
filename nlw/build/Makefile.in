@@ -27,7 +27,6 @@ INSTALL_ROOT = $(INSTALL)
 INSTALL_ST   = $(INSTALL) -o $(ST_USER) -g $(ST_GROUP)
 
 # Install locations
-INIT_D_DIR      = $(PREFIX)@INIT_D@
 ST_INSTALL_DIR  = $(PREFIX)@SHAREDIR@
 INSTALL_LIB     = $(PREFIX)@LIBDIR@
 INSTALLSCRIPT   = $(PREFIX)@BINDIR@
@@ -49,12 +48,6 @@ POST_INSTALL   = $(PERL) bin/st-post-install
 STCONFIG       = $(PERL) dev-bin/st-config-wrapper
 GENCONFIG      = $(PERL) dev-bin/gen-config
 CREATE_DB_USER = $(PERL) dev-bin/create-db-user
-
-# Init scripts called to stop/start services during 'make upgrade'.
-APACHE_SCRIPT    = $(INIT_D_DIR)/apache-perl
-NGINX_SCRIPT     = $(INIT_D_DIR)/nginx
-CEQLOTRON_SCRIPT = $(INIT_D_DIR)/ceqlotron
-SERVICE_SCRIPTS  = $(APACHE_SCRIPT) $(NGINX_SCRIPT) $(CEQLOTRON_SCRIPT)
 
 # File sets that can be installed (use install-files to get all files)
 INSTALL_BASE = install-html       \
@@ -90,8 +83,7 @@ CRON_DIR         = $(PREFIX)/etc/cron.d
 SPOOL_DIR        = $(PREFIX)@SPOOLDIR@
 ST_CONFIG_DIR	 = $(PREFIX)/etc/socialtext
 SCHEMA_DIR	 = $(ST_CONFIG_DIR)/db
-INSTALLED_DIRS   = $(INIT_D_DIR)       \
-                   $(ST_INSTALL_DIR)   \
+INSTALLED_DIRS   = $(ST_INSTALL_DIR)   \
                    $(DATA_ROOT_DIR)    \
 		   $(STORAGE_DIR)      \
                    $(DOCUMENT_ROOT)    \
@@ -172,7 +164,6 @@ install-appliance-bin: install-ok
 # Used by OSR installs
 install: install-ok         \
          shared-install     \
-         install-init-d     \
          osr-apache
 
 shared-install: install-ok  \
@@ -259,13 +250,6 @@ mecab:
 favicon: install-ok $(DATA_ROOT_DIR)
 	$(INSTALL_ST) share/favicon.ico $(DATA_ROOT_DIR)/favicon.ico
 
-install-init-d: install-ok etc/init.d/ceqlotron
-	$(INSTALL_ROOT) \
-	   $(shell find etc/init.d -type f -not -name '*.in' | grep -v .svn) $(INIT_D_DIR)
-
-install-st-init-d: install-ok etc/init.d/ceqlotron
-	$(INSTALL_ROOT) etc/init.d/ceqlotron $(INIT_D_DIR)
-
 install-bin: install-ok
 
 # Install all the dirs in one go, but allow per dir dependencies.
@@ -280,18 +264,6 @@ run-post-install: install-ok
 
 install-cron-jobs: install-ok
 	$(INSTALL_ROOT) -m 644 etc/cron/* $(CRON_DIR)
-
-stop-start: stop-services start-services
-
-stop-services:
-	$(APACHE_SCRIPT) stop
-	$(NGINX_SCRIPT) stop
-	$(CEQLOTRON_SCRIPT) stop
-
-start-services:
-	for script in $(SERVICE_SCRIPTS); do \
-	   $$script start; \
-	done
 
 clean-temps: install-ok clean-cache
 
@@ -325,7 +297,6 @@ wipe: stop-services realclean uninstall
 uninstall: remove-old-install clean-temps
 	# XXX: Don't hard code this stuff.
 	$(RM_DIR) /var/{run,www,spool,cache}/socialtext
-	$(RM) /etc/init.d/ceqlotron
 	$(RM) /etc/aliases.deliver
 
 dev-cpan:
@@ -520,8 +491,6 @@ critic:
         install-eventspace-forms \
         install-base             \
         favicon                  \
-        install-init-d           \
-        install-st-init-d        \
         install-bin              \
         install-dirs             \
         install-appliance-bin    \
