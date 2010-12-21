@@ -58,6 +58,7 @@ has 'homunculus' => (
         can_use_plugin
         profile
         preferred_name
+        guess_real_name
     )],
 );
 
@@ -744,42 +745,6 @@ sub guess_sortable_name {
     return $name if length $name;
 
     return $self->_guess_nonreal_name;
-}
-
-sub guess_real_name {
-    my $self = shift;
-    my $name;
-
-    my $preferred = $self->preferred_name;
-    return $preferred if ($preferred);
-
-    my $fn = $self->first_name;
-    if ($self->email_address eq $fn) {
-        $fn =~ s/\@.+$//;
-    }
-
-    $name = _get_full_name($fn, $self->last_name);
-    $name =~ s/^\s+//;
-    $name =~ s/\s+$//;
-    return $name if length $name;
-    return $self->_guess_nonreal_name;
-}
-
-sub _guess_nonreal_name {
-    my $self = shift;
-    my $name = $self->username || '';
-    $name =~ s/\@.+$//;
-    $name =~ s/[[:punct:]]+/ /g;
-    $name =~ s/^\s+//;
-    $name =~ s/\s+$//;
-    return $name if length $name;
-
-    $name = $self->email_address;
-    $name =~ s/\@.+$//;
-    $name =~ s/[[:punct:]]+/ /g;
-    $name =~ s/^\s+//;
-    $name =~ s/\s+$//;
-    return $name;
 }
 
 sub workspace_count {
@@ -2108,12 +2073,6 @@ email headers.
 Returns a guess at the user's sortable name, using the first name and/or last
 name from the DBMS if possible.  Goal is to end up with a name for the user
 that can be sorted alphabetically by last name, then first name.
-
-=head2 $user->guess_real_name()
-
-Returns the a guess at the user's real name, using the first name
-and/or last name from the DBMS if possible. Otherwise it simply uses
-the portion of the email address up to the at (@) symbol.
 
 =head2 $user->creation_datetime_object()
 

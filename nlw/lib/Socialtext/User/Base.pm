@@ -84,6 +84,42 @@ sub preferred_name {
     return;
 }
 
+sub guess_real_name {
+    my $self = shift;
+    my $name;
+
+    my $preferred = $self->preferred_name;
+    return $preferred if ($preferred);
+
+    my $fn = $self->first_name;
+    if ($self->email_address eq $fn) {
+        $fn =~ s/\@.+$//;
+    }
+
+    $name = Socialtext::User::Base->GetFullName($fn, $self->last_name);
+    $name =~ s/^\s+//;
+    $name =~ s/\s+$//;
+    return $name if length $name;
+    return $self->_guess_nonreal_name;
+}
+
+sub _guess_nonreal_name {
+    my $self = shift;
+    my $name = $self->username || '';
+    $name =~ s/\@.+$//;
+    $name =~ s/[[:punct:]]+/ /g;
+    $name =~ s/^\s+//;
+    $name =~ s/\s+$//;
+    return $name if length $name;
+
+    $name = $self->email_address;
+    $name =~ s/\@.+$//;
+    $name =~ s/[[:punct:]]+/ /g;
+    $name =~ s/^\s+//;
+    $name =~ s/\s+$//;
+    return $name;
+}
+
 sub GetFullName {
     my $class      = shift;
     my $first_name = shift;
@@ -240,6 +276,12 @@ and should usually be removed before passing the hash over the threshold.
 
 Returns a boolean indicating whether or not the User can use the given
 C<$plugin>.  See also C<Socialtext::Account::is_plugin_enabled()>.
+
+=item B<guess_real_name()>
+
+Returns the a guess at the user's real name, using the first name
+and/or last name from the DBMS if possible. Otherwise it simply uses
+the portion of the email address up to the at (@) symbol.
 
 =item B<expire()>
 
