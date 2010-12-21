@@ -2,6 +2,7 @@ package Socialtext::User::Base;
 # @COPYRIGHT@
 use Moose;
 use Readonly;
+use Socialtext::Authz;
 use Socialtext::SQL qw(sql_parse_timestamptz);
 use Socialtext::Validate qw(validate SCALAR_TYPE);
 use Socialtext::l10n qw(loc);
@@ -82,6 +83,16 @@ sub to_hash {
         $hash->{$name} = "$value";  # to_string on some objects
     }
     return $hash;
+}
+
+sub can_use_plugin {
+    my ($self, $plugin_name) = @_;
+
+    my $authz = Socialtext::Authz->new();
+    return $authz->plugin_enabled_for_user(
+        plugin_name => $plugin_name,
+        user => $self
+    );
 }
 
 # Expires the user, so that any cached data is no longer considered fresh.
@@ -186,6 +197,11 @@ but we can't find him there any more.
 Returns a hash reference representation of the user, suitable for using with
 JSON, YAML, etc.  B<WARNING:> The encrypted password is included in this hash,
 and should usually be removed before passing the hash over the threshold.
+
+=item B<can_use_plugin($name)>
+
+Returns a boolean indicating whether or not the User can use the given
+C<$plugin>.  See also C<Socialtext::Account::is_plugin_enabled()>.
 
 =item B<expire()>
 

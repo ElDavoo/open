@@ -54,6 +54,8 @@ has 'homunculus' => (
         cached_at
         missing
         private_external_id
+
+        can_use_plugin
     )],
 );
 
@@ -1743,18 +1745,6 @@ sub email_confirmation {
     return Socialtext::User::EmailConfirmation->new( $self->user_id );
 }
 
-sub can_use_plugin {
-    my ($self, $plugin_name) = @_;
-
-    my $authz = ($self->hub && $self->hub->authz)
-        ? $self->hub->authz 
-        : Socialtext::Authz->new();
-    return $authz->plugin_enabled_for_user(
-        plugin_name => $plugin_name,
-        user => $self
-    );
-}
-
 sub is_plugin_enabled {
     my $self = shift;
     $self->can_use_plugin(@_);
@@ -2216,11 +2206,6 @@ supplied, otherwise it returns the primary account for this user.
 =head2 $user->primary_account_id()
 
 Returns the primary account ID for this user.
-
-=head2 $user->can_use_plugin( $name )
-
-Returns a boolean indicating whether the user can use the given plugin.
-See also C<Socialtext::Account::is_plugin_enabled>
 
 =head2 $user->can_use_plugin_with( $name => $buddy )
 
