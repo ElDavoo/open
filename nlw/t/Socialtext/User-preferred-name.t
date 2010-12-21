@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 10;
+use Test::Socialtext tests => 11;
 
 fixtures(qw( db ));
 
@@ -36,6 +36,29 @@ no_preferred_name_when_people_not_enabled: {
 
     my $name = $user->preferred_name;
     ok !$name, 'No Preferred Name when People is not enabled';
+}
+
+###############################################################################
+# TEST: Preferred Name is missing if field is hidden
+no_preferred_name_when_field_is_hidden: {
+    my $acct = create_test_account_bypassing_factory();
+    my $user = create_test_user(account => $acct);
+    $acct->enable_plugin('people');
+
+    my $profile = $user->profile();
+    $profile->set_attr('preferred_name', 'Bubba Bo Bob Brain');
+    $profile->save();
+
+    my $adapter = Socialtext::Pluggable::Adapter->new();
+    my $plugin  = $adapter->plugin_class('people');
+    $plugin->SetProfileField( {
+        name      => 'preferred_name',
+        is_hidden => 1,
+        account   => $acct,
+    } );
+
+    my $name = $user->preferred_name;
+    ok !$name, 'No Preferred Name when field is hidden';
 }
 
 ###############################################################################

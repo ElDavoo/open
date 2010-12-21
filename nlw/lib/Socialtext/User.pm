@@ -92,7 +92,11 @@ sub _build_profile {
 sub preferred_name {
     my $self    = shift;
     my $profile = $self->profile;
-    return $profile->get_attr('preferred_name') if $profile;
+    if ($profile) {
+        return if $profile->fields->by_name('preferred_name')->is_hidden;
+        return $profile->get_attr('preferred_name');
+    }
+    return;
 }
 
 with 'Socialtext::UserSetContained';
