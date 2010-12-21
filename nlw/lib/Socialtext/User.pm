@@ -59,6 +59,7 @@ has 'homunculus' => (
         profile
         preferred_name
         guess_real_name
+        guess_sortable_name
         name_and_email
     )],
 );
@@ -716,29 +717,6 @@ sub FormattedEmail {
     else {
             return $email_address;
     }
-}
-
-sub guess_sortable_name {
-    my $self = shift;
-    my $name;
-
-    my $preferred = $self->preferred_name;
-    return $preferred if ($preferred);
-
-    my $fn = $self->first_name || '';
-    my $ln = $self->last_name || '';
-    if ($self->email_address eq $fn) {
-        $fn =~ s/\@.+$//;
-    }
-
-    # Desired result: sort is caseless and alphabetical by first name -- {bz: 1246}
-    $name = "$fn $ln";
-    $name =~ s/^\s+//;
-    $name =~ s/\s+$//;
-    # TODO: unicode casefolding?
-    return $name if length $name;
-
-    return $self->_guess_nonreal_name;
 }
 
 sub workspace_count {
@@ -2056,12 +2034,6 @@ members of any common accounts where email_addresses_are_masked is 0
 
 Returns the user's name and email, in a format suitable for use in
 email headers.
-
-=head2 $user->guess_sortable_name()
-
-Returns a guess at the user's sortable name, using the first name and/or last
-name from the DBMS if possible.  Goal is to end up with a name for the user
-that can be sorted alphabetically by last name, then first name.
 
 =head2 $user->creation_datetime_object()
 

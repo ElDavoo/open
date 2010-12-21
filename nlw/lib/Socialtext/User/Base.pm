@@ -103,6 +103,29 @@ sub guess_real_name {
     return $self->_guess_nonreal_name;
 }
 
+sub guess_sortable_name {
+    my $self = shift;
+    my $name;
+
+    my $preferred = $self->preferred_name;
+    return $preferred if ($preferred);
+
+    my $fn = $self->first_name || '';
+    my $ln = $self->last_name || '';
+    if ($self->email_address eq $fn) {
+        $fn =~ s/\@.+$//;
+    }
+
+    # Desired result: sort is caseless and alphabetical by first name -- {bz: 1246}
+    $name = "$fn $ln";
+    $name =~ s/^\s+//;
+    $name =~ s/\s+$//;
+    # TODO: unicode casefolding?
+    return $name if length $name;
+
+    return $self->_guess_nonreal_name;
+}
+
 sub _guess_nonreal_name {
     my $self = shift;
     my $name = $self->username || '';
@@ -289,6 +312,12 @@ C<$plugin>.  See also C<Socialtext::Account::is_plugin_enabled()>.
 Returns the a guess at the user's real name, using the first name
 and/or last name from the DBMS if possible. Otherwise it simply uses
 the portion of the email address up to the at (@) symbol.
+
+=item B<guess_sortable_name()>
+
+Returns a guess at the user's sortable name, using the first name and/or last
+name from the DBMS if possible.  Goal is to end up with a name for the user
+that can be sorted alphabetically by last name, then first name.
 
 =item B<name_and_email()>
 
