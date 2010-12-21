@@ -28,6 +28,17 @@ has 'is_profile_hidden' => (is => 'rw', isa => 'Bool');
 has 'missing'           => (is => 'ro', isa => 'Bool');
 has 'private_external_id' => (is => 'rw', isa => 'Maybe[Str]');
 
+has profile => (
+    is         => 'ro',
+    isa        => 'Maybe[Socialtext::People::Profile]',
+    lazy_build => 1,
+);
+sub _build_profile {
+    my $self = shift;
+    return unless $self->can_use_plugin('people');
+    return Socialtext::People::Profile->GetProfile($self->user_id);
+}
+
 # All fields/attributes that a "Socialtext::User::*" has.
 Readonly our @fields => qw(
     user_id

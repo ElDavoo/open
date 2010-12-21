@@ -56,6 +56,7 @@ has 'homunculus' => (
         private_external_id
 
         can_use_plugin
+        profile
     )],
 );
 
@@ -79,17 +80,6 @@ has 'metadata' => (
         primary_account_id
     )],
 );
-
-has profile => (
-    is         => 'ro',
-    isa        => 'Maybe[Socialtext::People::Profile]',
-    lazy_build => 1,
-);
-sub _build_profile {
-    my $self = shift;
-    return unless $self->can_use_plugin('people');
-    return Socialtext::People::Profile->GetProfile($self->user_id);
-}
 
 sub preferred_name {
     my $self    = shift;
