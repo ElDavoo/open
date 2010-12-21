@@ -187,11 +187,6 @@ Returns a hash reference representation of the user, suitable for using with
 JSON, YAML, etc.  B<WARNING:> The encrypted password is included in this hash,
 and should usually be removed before passing the hash over the threshold.
 
-=item B<new_from_hash()>
-
-Create a new homunculus from a hash-ref of parameters.  Uses the C<driver_key>
-to determine the class of the homunculus.
-
 =item B<expire()>
 
 Expires this user in the database.  May be a no-op for some homunculus types.
