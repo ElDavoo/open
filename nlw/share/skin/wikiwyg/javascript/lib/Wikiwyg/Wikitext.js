@@ -1822,8 +1822,14 @@ proto.assert_trailing_space = function(part, text) {
         this.wikitext = this.wikitext.replace(/\n$/, '');
     }
 
-    if (! text.match(/^\s/))
+    if (/^\s/.test(text)) return;
+
+    if (part.top_level_block) {
+        this.wikitext += '\n';
+    }
+    else {
         this.wikitext += ' ';
+    }
 }
 
 proto._css_to_px = function(val) {
