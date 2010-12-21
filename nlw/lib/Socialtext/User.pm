@@ -734,10 +734,10 @@ sub MaskEmailAddress {
 }
 
 sub name_and_email {
-    my $self = shift;
-
-    return __PACKAGE__->FormattedEmail( $self->first_name, $self->last_name,
-        $self->email_address );
+    my $self  = shift;
+    my $name  = $self->guess_real_name;
+    my $email = $self->email_address;
+    return "$name <$email>";
 }
 
 sub FormattedEmail {
