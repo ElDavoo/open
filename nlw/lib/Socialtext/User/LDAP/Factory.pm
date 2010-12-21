@@ -334,7 +334,7 @@ sub _vivify {
 
         # Pull existing User record out of DB
         my @user_drivers = Socialtext::User->_drivers();
-        my $cached_homey = $self->GetHomunculus('user_id', $user_id, \@user_drivers, 1);
+        my $cached_homey = $self->GetHomunculus('user_id', $user_id, \@user_drivers);
 
         # Mark the User as cached, so that if we trigger any hooks/plugins
         # during validation/saving that they don't try to re-query the User
