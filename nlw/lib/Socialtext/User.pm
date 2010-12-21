@@ -614,23 +614,6 @@ sub Create_user_from_hash {
     return $user;
 }
 
-sub _get_full_name {
-    my $full_name;
-    my $first_name = shift;
-    my $last_name = shift;
-
-    if (system_locale() eq 'ja') {
-        $full_name = join ' ', grep { defined and length }
-            $last_name, $first_name;
-    }
-    else {
-        $full_name = join ' ', grep { defined and length }
-        $first_name, $last_name;
-    }
-    return $full_name;
-}
-
-
 {
     Readonly my $spec => { workspace => WORKSPACE_TYPE( default => undef ) };
     sub best_full_name {
@@ -640,7 +623,7 @@ sub _get_full_name {
         my $preferred = $self->preferred_name;
         return $preferred if ($preferred);
 
-        my $name = _get_full_name($self->first_name, $self->last_name);
+        my $name = Socialtext::User::Base->GetFullName($self->first_name, $self->last_name);
         return $name if length $name;
 
         return $self->guess_real_name
@@ -726,7 +709,7 @@ sub name_and_email {
 sub FormattedEmail {
     my ( $class, $first_name, $last_name, $email_address ) = @_;
 
-    my $name = _get_full_name($first_name, $last_name);
+    my $name = Socialtext::User::Base->GetFullName($first_name, $last_name);
 
     # Dave suggested this improvement, but many of our templates anticipate
     # the previous format, so is being temporarily reverted

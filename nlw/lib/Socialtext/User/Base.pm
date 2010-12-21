@@ -5,7 +5,7 @@ use Readonly;
 use Socialtext::Authz;
 use Socialtext::SQL qw(sql_parse_timestamptz);
 use Socialtext::Validate qw(validate SCALAR_TYPE);
-use Socialtext::l10n qw(loc);
+use Socialtext::l10n qw(system_locale loc);
 use Socialtext::MooseX::Types::Pg;
 use Socialtext::MooseX::Types::UniStr;
 use List::MoreUtils qw(part);
@@ -82,6 +82,23 @@ sub preferred_name {
         return $profile->get_attr('preferred_name');
     }
     return;
+}
+
+sub GetFullName {
+    my $class      = shift;
+    my $first_name = shift;
+    my $last_name  = shift;
+    my $full_name;
+
+    if (system_locale() eq 'ja') {
+        $full_name = join ' ', grep { defined and length }
+            $last_name, $first_name;
+    }
+    else {
+        $full_name = join ' ', grep { defined and length }
+        $first_name, $last_name;
+    }
+    return $full_name;
 }
 
 sub driver_name {
