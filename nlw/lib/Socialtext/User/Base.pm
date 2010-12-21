@@ -120,6 +120,13 @@ sub _guess_nonreal_name {
     return $name;
 }
 
+sub name_and_email {
+    my $self  = shift;
+    my $name  = $self->guess_real_name;
+    my $email = $self->email_address;
+    return "$name <$email>";
+}
+
 sub GetFullName {
     my $class      = shift;
     my $first_name = shift;
@@ -282,6 +289,11 @@ C<$plugin>.  See also C<Socialtext::Account::is_plugin_enabled()>.
 Returns the a guess at the user's real name, using the first name
 and/or last name from the DBMS if possible. Otherwise it simply uses
 the portion of the email address up to the at (@) symbol.
+
+=item B<name_and_email()>
+
+Returns the user's name and email address in a format suitable for use
+in email headers, such as C<< "John Doe" <john@example.com> >>.
 
 =item B<expire()>
 

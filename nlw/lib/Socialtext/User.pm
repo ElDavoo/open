@@ -59,6 +59,7 @@ has 'homunculus' => (
         profile
         preferred_name
         guess_real_name
+        name_and_email
     )],
 );
 
@@ -698,13 +699,6 @@ sub MaskEmailAddress {
     }
 
     return $email;
-}
-
-sub name_and_email {
-    my $self  = shift;
-    my $name  = $self->guess_real_name;
-    my $email = $self->email_address;
-    return "$name <$email>";
 }
 
 sub FormattedEmail {
@@ -2038,11 +2032,6 @@ Updates the is_business_admin for the user to $value (0 or 1).
 =head2 $user->record_login()
 
 Updates the last_login_datetime for the user to the current datetime.
-
-=head2 $user->name_and_email()
-
-Returns the user's name and email address in a format suitable for use
-in email headers, such as C<< "John Doe" <john@example.com> >>.
 
 =head2 $user->best_full_name( workspace => $workspace )
 
