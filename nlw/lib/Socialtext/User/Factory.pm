@@ -125,6 +125,7 @@ sub GetHomunculus {
 
 
     my ($where_clause, @bindings);
+    my $was_deleted;
 
     if ($where eq 'user_id') {
         # if we don't check this for being an integer here, the SQL query will
@@ -148,7 +149,7 @@ sub GetHomunculus {
             chop $placeholders;
             $where_clause = qq{driver_key NOT IN ($placeholders) AND $where=?};
             @bindings = (@$driver_key, $id_val);
-            $driver_key = 'Deleted'; # if we get any results, make it Deleted
+            $was_deleted = 1;
         }
     }
 
@@ -162,7 +163,7 @@ sub GetHomunculus {
 
     # Always set this; the query returns the same value *except* when we're
     # looking for Deleted users.
-    $row->{driver_key} = $driver_key;
+    $row->{driver_key} = 'Deleted' if ($was_deleted);
 
     $row->{username} = delete $row->{driver_username};
     return ($return_raw_proto_user) ? $row : $class->NewHomunculus($row);
