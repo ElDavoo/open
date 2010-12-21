@@ -336,6 +336,15 @@ sub _vivify {
         my @user_drivers = Socialtext::User->_drivers();
         my $cached_homey = $self->GetHomunculus('user_id', $user_id, \@user_drivers, 1);
 
+        # Mark the User as cached, so that if we trigger any hooks/plugins
+        # during validation/saving that they don't try to re-query the User
+        # record again because he looks stale.
+        $cached_homey->{cached_at} = $self->Now();
+        $self->UpdateUserRecord( {
+            user_id   => $cached_homey->{user_id},
+            cached_at => $cached_homey->{cached_at},
+        } );
+
         # Validate data from LDAP as changes to cached User record
         #
         # If this fails, use the "last known good" cached data for the User;
@@ -355,12 +364,6 @@ sub _vivify {
             foreach my $err ($e->messages) {
                 st_log->warning(" * $err");
             }
-            # mark User as cached, so we don't refetch constantly
-            $cached_homey->{cached_at} = $self->Now();
-            $self->UpdateUserRecord( {
-                user_id   => $cached_homey->{user_id},
-                cached_at => $cached_homey->{cached_at},
-            } );
             # return "last known good" cached data for the User
             %{$proto_user} = %{$cached_homey};
             return;
