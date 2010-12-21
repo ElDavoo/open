@@ -370,6 +370,12 @@ sub ExpireUserRecord {
         if ($user) {
             # Have a User, so get their Real Name (which will include their
             # Preferred Name if its enabled and they have one set).
+            #
+            # BUT... we want to take the given "$p" data into consideration,
+            # so localize that when we Guess the User's Real Name.
+            local $user->{first_name}    = $p->{first_name}    if ($p->{first_name});
+            local $user->{last_name}     = $p->{last_name}     if ($p->{last_name});
+            local $user->{email_address} = $p->{email_address} if ($p->{email_address});
             $p->{display_name} = $user->guess_real_name();
         }
         else {
