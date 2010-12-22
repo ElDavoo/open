@@ -124,8 +124,8 @@
 | st-admin | delete-group --group %%group_id%% | Deleted group id: %%group_id%% |
 | st-admin | delete-group --group %%group_id%% | No group with ID %%group_id%%. |
 
-
-
 | *Comment* | Test Case: Command Line: NEW Teardown |
 | st-admin | deactivate-user --email %%cmd_user%% |
 | st-admin | delete-workspace --workspace %%cmd_ws%% |
+
+| *Comment* | Test Case: Command Line: NEW COMPLETED |
