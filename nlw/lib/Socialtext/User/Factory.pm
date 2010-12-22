@@ -356,17 +356,13 @@ sub ExpireUserRecord {
 
         # ensure that we're noting who created this User
         $self->_validate_assign_created_by($p) if ($is_create);
-
-        $self->_recreate_display_name($user, $p)
-            if $p->{first_name} or $p->{last_name} or $p->{email_address};
-
+        $self->_recreate_display_name($user, $p);
     }
 
     sub _recreate_display_name {
         my $self = shift;
         my $user = shift;
         my $p    = shift;
-
         if ($user) {
             # Have a User, so get their Real Name (which will include their
             # Preferred Name if its enabled and they have one set).
