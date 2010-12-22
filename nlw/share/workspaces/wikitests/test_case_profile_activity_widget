@@ -55,7 +55,7 @@
 | text_like | Tags |  |
 | text_like | Activities |  |
 | wait_for_text_present_ok | Showing | 10000 |
-| text_like | qr/Showing\s*all\s*events\s*from.+%%tuser%%\s*within/ism |  |
+| text_like | qr/Showing\s*all\s*events.+from.+%%tuser%%\s*within/ism |  |
 
 | *Comment* | Test Case: Profile Activity Widget. The widget defaults to mentioning the viewed user when clicked |  |
 | wait_for_element_present_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] | 10000 |
@@ -88,7 +88,7 @@
 | text_like | qr/Post to/ism |  |
 
 | *Comment* | Test Case: Profile Activity Widget. list values for "from <feed-type>" filter is only the user's name |  |
-| text_like | qr/Showing\s*all\s*events\s*from.+%%tuser%%\s*within/ism |  |
+| text_like | qr/Showing\s*all\s*events.+from.+%%tuser%%\s*within/ism |  |
 
 | *Comment* | Test Case: Profile Activity Widget. ... and cannot be changed |  |
 | wait_for_element_not_present_ok | //span[@id='feed']/a | 5000 |
