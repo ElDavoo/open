@@ -222,6 +222,15 @@ sub expire {
     }
 }
 
+sub factory {
+    my $self          = shift;
+    my $driver_name   = $self->driver_name;
+    my $driver_id     = $self->driver_id;
+    my $factory_class = "Socialtext::User::${driver_name}::Factory";
+    my $factory       = $factory_class->new($driver_id);
+    return $factory;
+}
+
 __PACKAGE__->meta->make_immutable(inline_constructor => 1);
 1;
 

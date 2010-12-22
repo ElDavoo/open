@@ -17,19 +17,9 @@ sub _build_cached_at {
     return DateTime::Infinite::Future->new;
 }
 
-sub _factory {
-    # Get an instance of a Factory object for our data store
-    #
-    # XXX: this only works because we ONLY HAVE one "Default" factory.  Once
-    #      we have multiple "Default" factories, this method will need to be
-    #      reworked to grab the specific factory for this user record.
-    require Socialtext::User::Default::Factory;
-    return Socialtext::User::Default::Factory->new();
-}
-
 sub update {
     my ($self, %p) = @_;
-    my $factory = $self->_factory();
+    my $factory = $self->factory();
     return $factory->update( $self, %p );
 }
 
