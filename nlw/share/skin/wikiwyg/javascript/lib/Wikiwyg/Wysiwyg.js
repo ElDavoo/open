@@ -2482,6 +2482,12 @@ proto.setTitleAndId = function (widget) {
 proto.parseWidgetElement = function(element) {
     var widget = element.getAttribute('alt').replace(/^st-widget-/, '');
     if (Wikiwyg.is_ie) widget = Wikiwyg.htmlUnescape( widget );
+    if ($.browser.webkit) widget = widget.replace(
+        /&#x([a-fA-F\d]{2,5});/g, 
+        function($_, $1) { 
+            return String.fromCharCode(parseInt($1, 16));
+        }
+    );
     return this.parseWidget(widget);
 }
 

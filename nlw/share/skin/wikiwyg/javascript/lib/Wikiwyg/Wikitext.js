@@ -2014,6 +2014,12 @@ proto.format_img = function(elem) {
     if (/^st-widget-/.test(widget)) {
         widget = widget.replace(/^st-widget-/, '');
         if (Wikiwyg.is_ie) widget = Wikiwyg.htmlUnescape( widget );
+        if ($.browser.webkit) widget = widget.replace(
+            /&#x([a-fA-F\d]{2,5});/g, 
+            function($_, $1) { 
+                return String.fromCharCode(parseInt($1, 16));
+            }
+        );
         if (widget.match(/^\.\w+\n/))
             elem.top_level_block = true;
         else
