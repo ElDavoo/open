@@ -150,6 +150,23 @@ sub name_and_email {
     return "$name <$email>";
 }
 
+sub update_display_name {
+    my $self = shift;
+    # Update the "display_name" in the DB directly, *regardless* of whether
+    # this is a Default or LDAP user (can't call 'update_store()' on LDAP
+    # Users).
+    my $factory = $self->factory;
+    if ($factory) {
+        my $display_name = $self->guess_real_name;
+        $factory->UpdateUserRecord( {
+            user_id      => $self->user_id,
+            cached_at    => undef,
+            display_name => $display_name,
+        } );
+        $self->display_name($display_name);
+    }
+}
+
 sub GetFullName {
     my $class      = shift;
     my $first_name = shift;

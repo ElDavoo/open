@@ -61,6 +61,7 @@ has 'homunculus' => (
         guess_real_name
         guess_sortable_name
         name_and_email
+        update_display_name
     )],
 );
 
