@@ -2705,7 +2705,8 @@ proto.replace_widget = function(elem) {
 
     widget_image = Wikiwyg.createElementWithAttrs('img', {
         'src': src,
-        'alt': 'st-widget-' + (Wikiwyg.is_ie? Wikiwyg.htmlEscape(widget) : widget)
+        'alt': 'st-widget-' + (Wikiwyg.is_ie? Wikiwyg.htmlEscape(widget) : widget),
+        'title': this.getWidgetTooltip(widget)
     });
     elem.parentNode.replaceChild(widget_image, elem);
     return widget_image;
@@ -2879,6 +2880,21 @@ proto.getWidgetImageLocalizeText = function(widget, text) {
         }
     }
     return newtext;
+}
+
+proto.getWidgetTooltip = function(widget_text) {
+    var uneditable = false;
+    try {
+        var widget = this.parseWidget(widget_text);
+        uneditable = widget_data[widget.id].uneditable;
+        widget_text = this.getWidgetImageText(widget_text, widget);
+    }
+    catch (e) {
+        // parseWidget can throw an error
+        // Just ignore and set the text to be the widget text
+    }
+
+    return widget_text;
 }
 
 proto.getWidgetImageUrl = function(widget_text) {
