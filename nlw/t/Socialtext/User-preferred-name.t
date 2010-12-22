@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 11;
+use Test::Socialtext tests => 13;
 
 fixtures(qw( db ));
 
@@ -143,4 +143,28 @@ guess_sortable_name: {
 
     my $bfn = $user->guess_sortable_name();
     is $bfn, 'Bubba Bo Bob Brain', 'Guess Sortable Name contains preferred_name';
+}
+
+###############################################################################
+# TEST: User's "proper_name" is always "first/last"
+proper_name: {
+    my $acct = create_test_account_bypassing_factory();
+    $acct->enable_plugin('people');
+
+    my $user = create_test_user(
+        first_name => 'Oscar',
+        last_name  => 'Peterson',
+        account    => $acct,
+    );
+
+    my $proper    = 'Oscar Peterson';
+    my $preferred = 'Bob Bitchin';
+
+    is $user->proper_name, $proper, 'Proper Name is FN/LN when no Preferred Name present';
+
+    my $profile = $user->profile();
+    $profile->set_attr('preferred_name', $preferred);
+    $profile->save();
+
+    is $user->proper_name, $proper, 'Proper Name is still FN/LN when Preferred Name is present';
 }

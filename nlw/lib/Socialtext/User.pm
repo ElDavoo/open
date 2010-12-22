@@ -57,6 +57,7 @@ has 'homunculus' => (
 
         can_use_plugin
         profile
+        proper_name
         preferred_name
         guess_real_name
         guess_sortable_name
@@ -633,7 +634,7 @@ sub Create_user_from_hash {
         my $preferred = $self->preferred_name;
         return $preferred if ($preferred);
 
-        my $name = Socialtext::User::Base->GetFullName($self->first_name, $self->last_name);
+        my $name = $self->proper_name;
         return $name if length $name;
 
         return $self->guess_real_name

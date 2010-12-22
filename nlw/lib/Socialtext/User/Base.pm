@@ -74,6 +74,13 @@ sub UserFields {
     return wantarray ? (\%user, \%all) : \%user;
 }
 
+sub proper_name {
+    my $self  = shift;
+    my $first = $self->first_name;
+    my $last  = $self->last_name;
+    return Socialtext::User::Base->GetFullName($first, $last);
+}
+
 sub preferred_name {
     my $self    = shift;
     my $profile = $self->profile;
