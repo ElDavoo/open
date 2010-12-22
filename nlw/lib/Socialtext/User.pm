@@ -212,8 +212,14 @@ sub new {
     my $homunculus = $class->new_homunculus(@_);
     return unless $homunculus;
 
-    my $self = $class->meta->new_object(homunculus => $homunculus);
-    my $um = Socialtext::UserMetadata->create_if_necessary($self);
+    return $class->new_from_homunculus($homunculus);
+}
+
+sub new_from_homunculus {
+    my $class      = shift;
+    my $homunculus = shift;
+    my $self       = $class->meta->new_object(homunculus => $homunculus);
+    my $um         = Socialtext::UserMetadata->create_if_necessary($self);
     $self->_set_metadata($um);
     $self->_update_profile();
 
