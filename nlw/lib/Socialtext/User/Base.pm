@@ -36,7 +36,7 @@ has profile => (
 sub _build_profile {
     my $self = shift;
     return unless $self->can_use_plugin('people');
-    return Socialtext::People::Profile->GetProfile($self->user_id);
+    return Socialtext::People::Profile->GetProfile($self);
 }
 
 # All fields/attributes that a "Socialtext::User::*" has.
