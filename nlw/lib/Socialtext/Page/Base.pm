@@ -372,8 +372,6 @@ sub _cache_using_questions {
     return $html_ref;
 }
 
-
-
 sub _users_modified_since {
     my $self = shift;
     my $q_str = shift;
