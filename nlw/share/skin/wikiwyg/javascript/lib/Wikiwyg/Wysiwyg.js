@@ -2228,11 +2228,24 @@ proto.toHtml = function(func) {
             var br = "<br class=\"p\"/>";
 
             html = self.remove_padding_material(html);
-            html = html
-                .replace(/\n*<p>\n?/ig, "")
-                .replace(/<\/p>(?:<br class=padding>)?/ig, br)
 
-            func(html);
+            /* {bz: 4812}: Don't replace <p> and <br> tags inside WAFL alt text */
+            var separator = '<<<'+Math.random()+'>>>';
+            var chunks = .replace(/\balt="st-widget-[^"]*"/ig, separator + '$&' + separator).split(separator);
+            var escapedHtml = '';
+            for(var i=0;i<chunks.length;i++) {
+                var chunk = chunks[i];
+                if (/^alt="st-widget-/.test(chunk) && /"$/.test(chunk)) {
+                    escapedHtml += chunk;
+                }
+                else {
+                    escapedHtml += chunk
+                        .replace(/\n*<p>\n?/ig, "")
+                        .replace(/<\/p>(?:<br class=padding>)?/ig, br)
+                }
+            }
+
+            func(escapedHtml);
         });
     }
     else {
