@@ -2231,7 +2231,7 @@ proto.toHtml = function(func) {
 
             /* {bz: 4812}: Don't replace <p> and <br> tags inside WAFL alt text */
             var separator = '<<<'+Math.random()+'>>>';
-            var chunks = .replace(/\balt="st-widget-[^"]*"/ig, separator + '$&' + separator).split(separator);
+            var chunks = html.replace(/\balt="st-widget-[^"]*"/ig, separator + '$&' + separator).split(separator);
             var escapedHtml = '';
             for(var i=0;i<chunks.length;i++) {
                 var chunk = chunks[i];
