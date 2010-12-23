@@ -273,6 +273,7 @@
                             self.opts.showAll(val)
                         }
                     });
+                    return false; // Break out of the $.each loop
                 }
                 return;
             }
