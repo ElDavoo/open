@@ -5,9 +5,7 @@
 | set | maus | ma %%start_time%% |
 
 | *Comment* | Test Case: Mobile Activity create WS, add member |  |
-
-| create_user | %%mau%% | %%password%% | %%hostname%% |  |
-
+| st-admin | create-user --e %%mau%% --p %%password%% --account %%hostname%% | was created |
 | create_workspace | %%ma%% | %%hostname%% |
 | add_member | %%username%% | %%ma%% |
 | add_member | %%mau%% | %%ma%% |
