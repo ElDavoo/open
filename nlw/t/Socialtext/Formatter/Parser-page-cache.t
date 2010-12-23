@@ -45,7 +45,6 @@ FIRST_PARSE: {
 }
 
 SECOND_PARSE_USES_CACHE: {
-
     # the cache is only used if its last mod time is _greater_ than the
     # page file (not if they're the same)
     my $text_md5 = md5_hex(encode_utf8($text));
@@ -127,14 +126,15 @@ CACHE_DIR_UNWRITEABLE: {
 
     chmod 0400, $cache_subdir or die "Cannot chmod $cache_subdir to 0400: $!";
 
-    # Without this it won't get cleaned up because of the chmod
-    END { chmod 0700, $cache_subdir }
-
     Socialtext::AppConfig->set( formatter_cache_dir => $dir );
 
     like exception { check_with_user( user => 'devnull1@socialtext.com' ) },
         qr/Failed to cache using questions.*(not writable|Permission denied)/,
         'Page caching dies when dir is not writable';
+
+    # Without this it won't get cleaned up because of the chmod
+    END { chmod 0700, $cache_subdir }
+    chmod 0700, $cache_subdir;
 }
 
 
