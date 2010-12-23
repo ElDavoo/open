@@ -1,6 +1,0 @@
-| *Comment* | Test Case: Search Selection is Sticky |  |
-
-| open_ok | /st/dashboard |  |
-| verifyValue | st-search-action | search_signals |
-| select_ok | st-search-action | label=Search People: |
-| verifyValue | st-search-action | search_people |
