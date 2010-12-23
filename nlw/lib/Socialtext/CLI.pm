@@ -3613,7 +3613,7 @@ sub show_group_config {
     my $group = $self->_require_group();
 
     my %group = (
-        'Group Name'           => $group->driver_name,
+        'Group Name'           => $group->driver_group_name,
         'Group ID'             => $group->group_id,
         'Number Of Users'      => $group->user_count,
         'Primary Account ID'   => $group->primary_account_id,
@@ -3621,7 +3621,7 @@ sub show_group_config {
         'Source'               => $group->driver_key
     );
 
-    my $msg = loc("Config for group [_1]:", $group->driver_name) . "\n\n";
+    my $msg = loc("Config for group [_1]:", $group->driver_group_name) . "\n\n";
     $msg .= join("\n",
         map { sprintf('%-21s: %s', $_, $group{$_}) } sort keys %group );
 
