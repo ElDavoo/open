@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 13;
+use Test::Socialtext tests => 17;
 use Test::Socialtext::Fatal;
 fixtures('workspaces', 'public');
 
@@ -137,6 +137,40 @@ CACHE_DIR_UNWRITEABLE: {
     chmod 0700, $cache_subdir;
 }
 
+user_updates_invalidate_cache: {
+    my $user    = create_test_user();
+    my $email   = $user->email_address;
+
+    my $ws_name = "workspace_" . time;
+    my $hub     = new_hub($ws_name, $user->username);
+
+    my $title   = 'user_updates_invalidate_cache';
+    my $page    = Socialtext::Page->new(hub => $hub)->create(
+        title   => $title,
+        content => "This page has a {user: $email} wafl in it",
+        creator => $user,
+    );
+    $hub->pages->current($page);
+
+    my $before      = $hub->pages->new_from_name($title)->to_html_or_default;
+    my $before_name = $user->display_name;
+    like $before, qr/$before_name/, 'Page renders with Display Name';
+
+    # sleep a tiny bit so the "page render" and "update the user" don't happen
+    # within the same second.
+    sleep 2;
+
+    $user->update_store(
+        first_name => 'Jane',
+        last_name  => 'Smith',
+    );
+    my $after_name = $user->display_name;
+    isnt $after_name, $before_name, "User's Display Name has changed";
+
+    my $after = $hub->pages->new_from_name($title)->to_html_or_default;
+    isnt $after, $before, 'Page contents change when User data changes';
+    like $after, qr/$after_name/, '... with new Display Name for User';
+}
 
 sub check_with_user {
     my %p = @_;
