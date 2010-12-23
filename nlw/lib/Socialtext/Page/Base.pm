@@ -379,7 +379,7 @@ sub _users_modified_since {
 
     my @found_users;
     my @user_ids;
-    while ($q_str =~ m/(?:^|-)u(\d+)(?:-|$)/g) {
+    while ($q_str =~ m/(?:^|-)u(\d+)(?:-|$)/gm) {
         push @user_ids, $1;
     }
     return 0 unless @user_ids;
