@@ -61,7 +61,10 @@ my $schema = Socialtext::Schema->new(%$schema_config);
 $schema->{no_add_required_data} = $schema->{quiet} = 1;
 
 diag "Recreating schema...\n";
-$schema->recreate('schema-file' => 't/test-data/socialtext-schema.sql');
+$schema->recreate(
+    'schema-file'    => 't/test-data/socialtext-schema.sql',
+    'no_die_on_drop' => 1,
+);
 
 # Check each schema
 for ( $START_SCHEMA+1 .. $latest_schema ) {
