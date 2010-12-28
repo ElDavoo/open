@@ -1,6 +1,8 @@
 | *Comment* | Test Case: Privacy Defaults |
 
-| *Comment* | The Privacy Defaults testcase checks to see whether a newly built appliance has self-join setting OFF. It will only succeed if the appliance has been newly built. |
+| *Comment* | Checks to see whether appliance has self-join Setting OFF. |  |
+| *Comment* | It may not succeed if the appliance has had any use or testing. |  |
+| *Comment* | It should always succeed on a newly-built appliance. |  |
 
 
 | open_ok | /nlw/control/settings |  |
