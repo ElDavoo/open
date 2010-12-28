@@ -83,7 +83,8 @@ for ( $START_SCHEMA+1 .. $latest_schema ) {
 my $generated_schema = "$test_dir/generated-schema.sql";
 shell_run "dump-schema $generated_schema";
 
-my $diff = qx{diff -du $real_dir/socialtext-schema.sql $generated_schema};
+# Note: whitespace amount changes are ignored with -b
+my $diff = qx{diff -dub $real_dir/socialtext-schema.sql $generated_schema};
 is $diff, '', "Zero length diff";
 
 if ($ENV{INSTALL_SCHEMA}) {
