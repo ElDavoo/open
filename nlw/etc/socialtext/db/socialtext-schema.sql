@@ -224,12 +224,14 @@ BEGIN
 
   IF TG_OP = 'INSERT' OR TG_OP = 'UPDATE' THEN
     UPDATE users
-       SET users.last_profile_update = current_timestamp
-     WHERE users.user_id = NEW.user_id;
+       SET last_profile_update = current_timestamp
+     WHERE user_id = NEW.user_id;
+    RETURN NEW;
   ELSIF TG_OP = 'DELETE' THEN
     UPDATE users
-       SET users.last_profile_update = current_timestamp
-     WHERE users.user_id = OLD.user_id;
+       SET last_profile_update = current_timestamp
+     WHERE user_id = OLD.user_id;
+    RETURN OLD;
   END IF;
 END;
 $$
