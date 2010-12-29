@@ -1437,12 +1437,12 @@ proto.insert_table_html = function(rows, columns, options) {
             if ($table.prev().length == 0) {
                 // Table is the first element in document - add a <br/> so
                 // navigation is possible beyond the table.
-                $('<br />').insertBefore( $table );
+                $table.before('<br />');
             }
             if ($table.next().length == 0) {
                 // Table is the last element in document - add a <br/> so
                 // navigation is possible beyond the table.
-                $('<br />').insertAfter( $table );
+                $table.after('<br />');
             }
         },
         500, 10000
@@ -2444,14 +2444,14 @@ proto.sanitize_dom = function(dom) {
     // navigation is possible beyond the table.
     var $firstTable = $('table:first', dom);
     if ($firstTable.length && ($firstTable.prev().length == 0)) {
-        $('<br />').insertBefore( $firstTable );
+        $firstTable.before('<br />');
     }
 
     // Table is the last element in document - append a <br/> so
     // navigation is possible beyond the table.
     var $lastTable = $('table:last', dom);
     if ($lastTable.length && ($lastTable.next().length == 0)) {
-        $('<br />').insertAfter( $lastTable );
+        $firstTable.after('<br />');
     }
 }
 
