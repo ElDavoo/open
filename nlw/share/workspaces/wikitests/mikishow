@@ -28,6 +28,8 @@
 | *Comment* | SEE MIKI Tag List |
 | pause | %%pt%% |
 
+
+| clickAndWait | mobile-paging-next |  |
 | clickAndWait | link=Welcome |
 | *Comment* | SEE MIKI Pages in welcome category |
 | pause | %%pt%% |
