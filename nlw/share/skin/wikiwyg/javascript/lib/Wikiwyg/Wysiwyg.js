@@ -666,6 +666,10 @@ proto.enable_table_navigation_bindings = function() {
     if (jQuery.browser.mozilla && navigator.oscpu.match(/Mac/)) {
         event_name = "keypress";
     }
+    if (jQuery.browser.msie && jQuery.browser.version > 6) {
+        event_name = "keypress";
+    }
+
     self.bind( event_name, function (e) {
         if (e.metaKey || e.ctrlKey) { return; }
         switch (e.keyCode) {
