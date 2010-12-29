@@ -901,6 +901,50 @@ proto.enableThis = function() {
         }
 
         self.enable_keybindings();
+
+        self.get_keybinding_area().addEventListener(
+            'keypress', function (e) {
+                switch (e.keyCode) {
+                    case 9: {
+                        var $cell = self.find_table_cell_with_cursor();
+                        if (!$cell) { return; }
+
+                        e.preventDefault();
+
+                        var $new_cell;
+                        if (e.shiftKey) {
+                            $new_cell = $cell.prev('td');
+                            if (!$new_cell.length) {
+                                $new_cell = $cell.parents('tr:first').prev('tr').find('td:last');
+                                if (!$new_cell.length) {
+                                    return;
+                                }
+                            }
+                        }
+                        else {
+                            $new_cell = $cell.next('td');
+                            if (!$new_cell.length) {
+                                $new_cell = $cell.parents('tr:first').next('tr').find('td:first');
+                                if (!$new_cell.length) {
+                                    // Extend the table now we're at the last cell
+                                    var doc = self.get_edit_document();
+                                    var $tr = jQuery(doc.createElement('tr'));
+                                    $cell.parents("tr").find("td").each(function() {
+                                        $tr.append('<td style="border: 1px solid black; padding: 0.2em;">&nbsp;</td>');
+                                    });
+                                    $tr.insertAfter( $cell.parents("tr") );
+                                    $new_cell = $tr.find('td:first');
+                                }
+                            }
+                        }
+
+                        self.set_focus_on_cell($new_cell);
+                        break;
+                    }
+                }
+            }, true
+        );
+
         self.enable_pastebin();
         if (!self.wikiwyg.config.noAutoFocus) {
             self.set_focus();
@@ -1467,6 +1511,37 @@ proto.find_table_cell_with_cursor = function() {
     return $cell;
 }
 
+proto.set_focus_on_cell = function($new_cell) {
+    var self = this;
+    self.set_focus();
+
+    if (Wikiwyg.is_gecko) {
+        var $span = $new_cell.find("span");
+        if ($span.length > 0) {
+            if ($span.html() == '') {
+                $span.html('&nbsp;');
+            }
+        }
+        else {
+            $span = $new_cell;
+        }
+
+        var r = self.get_edit_document().createRange();
+        r.setStart( $span.get(0), 0 );
+        r.setEnd( $span.get(0), 0 );
+
+        var s = self.get_edit_window().getSelection();
+        s.removeAllRanges();
+        s.addRange(r);
+    }
+    else if (jQuery.browser.msie) {
+        var r = self.get_edit_document().selection.createRange();
+        r.moveToElementText( $new_cell.get(0) );
+        r.collapse(true);
+        r.select();
+    }
+}
+
 proto._do_table_manip = function(callback) {
     var self = this;
     setTimeout(function() {
@@ -1477,32 +1552,7 @@ proto._do_table_manip = function(callback) {
 
         if ($new_cell) {
             $cell = $new_cell;
-            self.set_focus();
-            if (Wikiwyg.is_gecko) {
-                var $span = $new_cell.find("span");
-                if ($span.length > 0) {
-                    if ($span.html() == '') {
-                        $span.html('&nbsp;');
-                    }
-                }
-                else {
-                    $span = $new_cell;
-                }
-
-                var r = self.get_edit_document().createRange();
-                r.setStart( $span.get(0), 0 );
-                r.setEnd( $span.get(0), 0 );
-
-                var s = self.get_edit_window().getSelection();
-                s.removeAllRanges();
-                s.addRange(r);
-            }
-            else if (jQuery.browser.msie) {
-                var r = self.get_edit_document().selection.createRange();
-                r.moveToElementText( $new_cell.get(0) );
-                r.collapse(true);
-                r.select();
-            }
+            self.set_focus_on_cell($new_cell);
         }
 
         setTimeout(function() {
