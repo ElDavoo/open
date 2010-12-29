@@ -662,7 +662,11 @@ proto.on_key_enter = function(e) {
 
 proto.enable_table_navigation_bindings = function() {
     var self = this;
-    self.bind( 'keypress', function (e) {
+    var event_name = "keydown";
+    if (jQuery.browser.mozilla && navigator.oscpu.match(/Mac/)) {
+        event_name = "keypress";
+    }
+    self.bind( event_name, function (e) {
         if (e.metaKey || e.ctrlKey) { return; }
         switch (e.keyCode) {
             case 9: { // Tab
