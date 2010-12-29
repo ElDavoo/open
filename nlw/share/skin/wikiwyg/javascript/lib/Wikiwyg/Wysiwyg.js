@@ -660,6 +660,84 @@ proto.on_key_enter = function(e) {
     }
 }
 
+proto.enable_table_navigation_bindings = function() {
+    var self = this;
+    self.bind( 'keypress', function (e) {
+        if (e.metaKey || e.ctrlKey) { return; }
+        switch (e.keyCode) {
+            case 9: { // Tab
+                var $cell = self.find_table_cell_with_cursor();
+                if (!$cell) { return; }
+                e.preventDefault();
+
+                var $new_cell;
+                if (e.shiftKey) {
+                    $new_cell = $cell.prev('td');
+                    if (!$new_cell.length) {
+                        $new_cell = $cell.parents('tr:first').prev('tr').find('td:last');
+                        if (!$new_cell.length) {
+                            return;
+                        }
+                    }
+                }
+                else {
+                    $new_cell = $cell.next('td');
+                    if (!$new_cell.length) {
+                        $new_cell = $cell.parents('tr:first').next('tr').find('td:first');
+                        if (!$new_cell.length) {
+                            // Extend the table now we're at the last cell
+                            var doc = self.get_edit_document();
+                            var $tr = jQuery(doc.createElement('tr'));
+                            $cell.parents("tr").find("td").each(function() {
+                                $tr.append('<td style="border: 1px solid black; padding: 0.2em;">&nbsp;</td>');
+                            });
+                            $tr.insertAfter( $cell.parents('tr:first') );
+                            $new_cell = $tr.find('td:first');
+                        }
+                    }
+                }
+
+                self.set_focus_on_cell($new_cell);
+                break;
+            }
+            case 38: { // Up
+                self._do_table_up_or_down(e, 'prev', ':first');
+                break;
+            }
+            case 40: { // Down
+                self._do_table_up_or_down(e, 'next', ':last');
+                break;
+            }
+        }
+    });
+}
+
+proto._do_table_up_or_down = function(e, direction, selector) {
+    var self = this;
+    if (e.shiftKey) { return; }
+
+    var $cell = self.find_table_cell_with_cursor();
+    if (!$cell) { return; }
+
+    var col = self._find_column_index($cell);
+    if (!col) { return; }
+
+    var $tr = $cell.parents('tr:first')[direction]('tr:first');
+    var $new_cell;
+    if ($tr.length) {
+        var tds = $tr.find('td');
+        $new_cell = $(tds[col-1]);
+        e.preventDefault();
+    }
+    else {
+        // At the top/bottom row - move to the first/last cell,
+        // and do not preventDefault, so we can move outside the table
+        $new_cell = $cell.parents('table:first').find('tr'+selector+' td'+selector);
+    }
+
+    self.set_focus_on_cell($new_cell);
+}
+
 proto.enable_pastebin = function () {
     var self = this;
 
@@ -901,49 +979,7 @@ proto.enableThis = function() {
         }
 
         self.enable_keybindings();
-
-        self.get_keybinding_area().addEventListener(
-            'keypress', function (e) {
-                switch (e.keyCode) {
-                    case 9: {
-                        var $cell = self.find_table_cell_with_cursor();
-                        if (!$cell) { return; }
-
-                        e.preventDefault();
-
-                        var $new_cell;
-                        if (e.shiftKey) {
-                            $new_cell = $cell.prev('td');
-                            if (!$new_cell.length) {
-                                $new_cell = $cell.parents('tr:first').prev('tr').find('td:last');
-                                if (!$new_cell.length) {
-                                    return;
-                                }
-                            }
-                        }
-                        else {
-                            $new_cell = $cell.next('td');
-                            if (!$new_cell.length) {
-                                $new_cell = $cell.parents('tr:first').next('tr').find('td:first');
-                                if (!$new_cell.length) {
-                                    // Extend the table now we're at the last cell
-                                    var doc = self.get_edit_document();
-                                    var $tr = jQuery(doc.createElement('tr'));
-                                    $cell.parents("tr").find("td").each(function() {
-                                        $tr.append('<td style="border: 1px solid black; padding: 0.2em;">&nbsp;</td>');
-                                    });
-                                    $tr.insertAfter( $cell.parents("tr") );
-                                    $new_cell = $tr.find('td:first');
-                                }
-                            }
-                        }
-
-                        self.set_focus_on_cell($new_cell);
-                        break;
-                    }
-                }
-            }, true
-        );
+        self.enable_table_navigation_bindings();
 
         self.enable_pastebin();
         if (!self.wikiwyg.config.noAutoFocus) {
@@ -1394,6 +1430,16 @@ proto.insert_table_html = function(rows, columns, options) {
             var $table = jQuery('#'+id, self.get_edit_document());
             $table.removeAttr('id');
             self.applyTableOptions($table, options);
+            if ($table.prev().length == 0) {
+                // Table is the first element in document - add a <br/> so
+                // navigation is possible beyond the table.
+                $('<br />').insertBefore( $table );
+            }
+            if ($table.next().length == 0) {
+                // Table is the last element in document - add a <br/> so
+                // navigation is possible beyond the table.
+                $('<br />').insertAfter( $table );
+            }
         },
         500, 10000
     );
@@ -1659,10 +1705,10 @@ proto.do_add_row_below = function() {
     this._do_table_manip(function($cell) {
         var doc = this.get_edit_document();
         var $tr = jQuery(doc.createElement('tr'));
-        $cell.parents("tr").find("td").each(function() {
+        $cell.parents("tr:first").find("td").each(function() {
             $tr.append('<td style="border: 1px solid black; padding: 0.2em;">&nbsp;</td>');
         });
-        $tr.insertAfter( $cell.parents("tr") );
+        $tr.insertAfter( $cell.parents("tr:first") );
     });
 }
 
@@ -1672,10 +1718,10 @@ proto.do_add_row_above = function() {
         var doc = this.get_edit_document();
         var $tr = jQuery(doc.createElement('tr'));
 
-        $cell.parents("tr").find("td").each(function() {
+        $cell.parents("tr:first").find("td").each(function() {
             $tr.append('<td style="border: 1px solid black; padding: 0.2em;">&nbsp;</td>');
         });
-        $tr.insertBefore( $cell.parents("tr") );
+        $tr.insertBefore( $cell.parents("tr:first") );
     });
 }
 
@@ -2389,6 +2435,20 @@ proto.revert_widget_images = function() {
 proto.sanitize_dom = function(dom) {
     Wikiwyg.Mode.prototype.sanitize_dom.call(this, dom);
     this.widget_walk(dom);
+
+    // Table is the first element in document - prepend a <br/> so
+    // navigation is possible beyond the table.
+    var $firstTable = $('table:first', dom);
+    if ($firstTable.length && ($firstTable.prev().length == 0)) {
+        $('<br />').insertBefore( $firstTable );
+    }
+
+    // Table is the last element in document - append a <br/> so
+    // navigation is possible beyond the table.
+    var $lastTable = $('table:last', dom);
+    if ($lastTable.length && ($lastTable.next().length == 0)) {
+        $('<br />').insertAfter( $lastTable );
+    }
 }
 
 proto.attachTooltip = function(elem) {
