@@ -12,16 +12,19 @@
 | create-group | %%cmd_grp%% | %%cmd_acct%% |
 
 | *Comment* | Test Case: Command Line: NEW add-account-admin |  |
+| *Comment* | Test Case: Command Line: NEW {bz: 4816} |  |
+
 | st-admin | add-account-admin | The command you called (add-account-admin) requires a user to be specified. |
 | st-admin | add-account-admin --email %%cmd_user%% | The command you called (add-account-admin) requires an account to be specified. |
 | st-admin | add-account-admin --email %%cmd_user%% --account %%cmd_acct%% | %%cmd_user%% now has the role of 'admin' in the %%cmd_acct%% Account |
 | st-admin | add-account-admin --email %%cmd_user%% --account %%cmd_acct%% | %%cmd_user%% already has the role of 'admin' in the %%cmd_acct%% Account |
 
 | *Comment* | Test Case: Command Line: NEW remove-account-admin only passes as long as {bz: 4800} is unfixed |  |
+| *Comment* | Test Case: Command Line: NEW {bz: 4816} |  |
 | st-admin | remove-account-admin | The command you called (remove-account-admin) requires a user to be specified. |
 | st-admin | remove-account-admin --email %%cmd_user%% | The command you called (remove-account-admin) requires an account to be specified. |
-| st-admin | remove-account-admin --email %%cmd_user%% --account %%cmd_acct%% | %%cmd_user_short%% no longer has the role of 'admin' in the %%cmd_acct%% Account. |
-| st-admin | remove-account-admin --email %%cmd_user%% --account %%cmd_acct%% | %%cmd_user_short%% does not have the role of 'admin' in the %%cmd_acct%% Account. |
+| st-admin | remove-account-admin --email %%cmd_user%% --account %%cmd_acct%% | %%cmd_user%% no longer has the role of 'admin' in the %%cmd_acct%% Account. |
+| st-admin | remove-account-admin --email %%cmd_user%% --account %%cmd_acct%% | %%cmd_user%% does not have the role of 'admin' in the %%cmd_acct%% Account. |
 
 | *Comment* | Test Case: Command Line: NEW set-external-id Only passes as long as {bz: 4790} is unfixed |  |
 | st-admin | set-external-id | The command you called (set-external-id) requires a user to be specified. |
@@ -96,15 +99,17 @@
 
 | *Comment* | Test Case: Command Line: NEW show-group-config only passes as long as {bz: 4799} is unfixed |  |
 | st-admin | show-group-config | The command you called (show-group-config) requires a '--group' parameter. |
-| st-admin | show-group-config --group %%group_id%% | Config for group Default: |
+| st-admin | show-group-config --group %%group_id%% | Config for group %cmd_grp%%: |
 
 | *Comment* | Test Case: Command Line: NEW add-account-impersonator |  |
+| *Comment* | Test Case: Command Line: NEW {bz: 4816} |  |
 | st-admin | add-account-impersonator | The command you called (add-account-impersonator) requires one of --username --email --group and one of --account |
 | st-admin | add-account-impersonator --email %%cmd_user%% --account %%cmd_acct%% | %%cmd_user%% now has the role of 'impersonator' in the %%cmd_acct%% Account |
 
 | *Comment* | Test Case: Command Line: NEW remove-account-impersonator |  |
+| *Comment* | Test Case: Command Line: NEW {bz: 4816} |  |
 | st-admin | remove-account-impersonator | The command you called (remove-account-impersonator) requires one of --username --email --group and one of --account |
-| st-admin | remove-account-impersonator --email %%cmd_user%% --account %%cmd_acct%% | %%cmd_user_short%% no longer has the role of 'impersonator' in the %%cmd_acct%% Account. |
+| st-admin | remove-account-impersonator --email %%cmd_user%% --account %%cmd_acct%% | %%cmd_user%% no longer has the role of 'impersonator' in the %%cmd_acct%% Account. |
 
 | *Comment* | Test Case: Command Line: NEW add-group-admin |  |
 | st-admin | add-group-admin | The command you called (add-group-admin) requires a user to be specified. |
