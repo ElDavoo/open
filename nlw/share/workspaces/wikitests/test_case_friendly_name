@@ -17,6 +17,7 @@
 | st-widget-title-like | profile_widget | Profile |
 | st-select-widget-frame | profile_widget |  |
 | wait_for_text_present_ok | %%fname%% | 30000 |
+| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Friendly Name teardown |  |
 | st-admin | deactivate-user --email %%fname_user%% |  |
