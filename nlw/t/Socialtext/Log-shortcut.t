@@ -16,7 +16,7 @@ fixtures( 'base_layout' );
 
 Readonly my $LEVEL         => 'emergency';
 Readonly my $MESSAGE       => 'fnord';
-Readonly my @EXPECTED_ARGS => ( 'EMERG', '%s', "[$>] $MESSAGE" );
+Readonly my @EXPECTED_ARGS => ( 'EMERG', "[$>] $MESSAGE" );
 
 my @last_syslog_args;
 

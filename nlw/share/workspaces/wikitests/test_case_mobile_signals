@@ -7,7 +7,7 @@
 | click_and_wait | link=Mobile |  |
 
 | *Comment* | Test Case: Mobile Signals. Word but not Link |  |
-| wait_for_text_present_ok | %%miki_signal_text%% | 30000 |  |
+| wait_for_text_present_ok | %%miki_signal_text%% | 30000 |
 | wait_for_text_present_ok | Signals | 3000 |
 
 | *Comment* | Test Case: Mobile Signals. Send a signal |  |
@@ -16,9 +16,6 @@
 | click_and_pause | %%miki_signal_submit%% |  |
 
 | wait_for_text_present_ok | less than a minute ago | 3000 |
-| wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
-
-| click_and_pause | link=%%miki_mysignals_link_name%% |  |
 | wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
 
 | click_and_pause | link=%%miki_people_i_follow%% |  |

@@ -48,7 +48,7 @@
 | open_ok | /nlw/control/group |
 | wait_for_element_visible_ok | link=Users |
 
-| click_ok | groupTable-orderBy-1 |
+| click_ok | groupTable-orderBy-3 |
 | *Comment* | SEE Sorted by # of users, asc |
 | pause | %%gpt%% |
 
@@ -71,8 +71,7 @@
 | *Comment* | Add a lot of groups ... |  |
 | create-multi-groups | biggrouplist | 65 |
 | open_ok | /nlw/control/group/ |  |
-| *Comment* | SEE PAGINATION ... |  |
-| text_like | //body | Showing 1 - 20 of |
+| *Comment* | SEE PAGINATION ... 1-20 of, right? |  |
 | wait_for_element_visible_ok | link=2 | 30000 |
 | pause | %%gpt%% |  |
 | click_ok | link=2 |  |

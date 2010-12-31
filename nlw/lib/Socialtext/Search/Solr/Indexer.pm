@@ -417,7 +417,7 @@ sub render_signal_body {
             callbacks => {
                 href_link => sub {
                     my $ast = shift;
-                    my $link = $ast->{attributes}{href};
+                    my $link = $ast->{attributes}{target};
                     push @external_links, $link;
                 },
                 noun_link => sub {
@@ -486,8 +486,11 @@ sub _add_person_doc {
         [last_name_pf_s => $user->last_name],
         [email_address_pf_s => $user->email_address],
         [username_pf_s => $user->username],
-        # allow fuzzy/stem searching on the full name, for fun.
-        [name_pf_t => $user->best_full_name],
+        # allow fuzzy/stem searching on the full name
+        [name_pf_t => $user->proper_name],      # first/last
+        [name_pf_t => $user->best_full_name],   # calculated; preferred, proper, guess
+        # explicitly specify how we want to sort Users by name
+        [name_asort => $user->best_full_name],
     );
 
     my $profile = eval {

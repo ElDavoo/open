@@ -384,12 +384,14 @@ sub _pluginPrefTable {
 sub set_google_analytics {
     my $self = shift;
     my $account  = $self->_require_account;
-    my %opts     = $self->_get_options('code=s');
+    my %opts     = $self->_get_options('code=s', 'domains=s');
+    $account->enable_plugin('analytics');
     $self->_error("--code required.") unless $opts{code};
     $self->{argv} = [
         '--account', $account->name,
         '--plugin', 'analytics',
-        'ga_id', $opts{code}
+        'ga_id', $opts{code},
+        $opts{domains} ? ('ga_domains', $opts{domains}) : (),
     ];
     $self->set_plugin_pref;
 }
@@ -397,6 +399,7 @@ sub set_google_analytics {
 sub clear_google_analytics {
     my $self = shift;
     my $account  = $self->_require_account;
+    $account->disable_plugin('analytics');
     $self->{argv} = [ '--account', $account->name, '--plugin', 'analytics' ];
     $self->clear_plugin_prefs;
 }
@@ -476,24 +479,6 @@ sub show_plugin_prefs {
     }
     $msg .= "\n";
     $self->_success($msg);
-}
-
-sub set_account_plugin_pref {
-    my $self = shift;
-    my $account = $self->_require_account;
-    my $plugins = $self->_require_plugin;
-
-    # only accept a single `--plugin` param
-    $self->_error(loc('set-account-plugin-pref only works on a single plugin'))
-         if (!ref($plugins) or scalar(@$plugins) > 1);
-
-    my $plugin = Socialtext::Pluggable::Adapter->plugin_class($plugins->[0]);
-
-    Socialtext::JSON::Proxy::Helper->ClearForAccount($account->account_id);
-
-    $self->_success(
-        loc('Preferences for the [_1] plugin have been updated.', $plugin)
-    );
 }
 
 sub _require_account {
@@ -727,6 +712,44 @@ sub set_external_id {
 
     $self->_success(
         loc("External ID for '[_1]' set to '[_2]'.", $user->username, $p{'external-id'})
+    );
+}
+
+sub set_user_profile {
+    my $self = shift;
+    my $user = $self->_require_user;
+    my ($key, $val) = @{ $self->{argv} };
+
+    my $profile = $self->_get_profile($user);
+
+    unless ($profile->valid_attr($key)) {
+        # non-existent field
+        $self->_error(
+            loc("Unknown Profile Field '[_1]'.", $key)
+        );
+    }
+
+    my $field = $profile->fields->by_name($key);
+    if ($field->is_hidden) {
+        # field hidden
+        $self->_error(
+            loc("Profile Field '[_1]' is hidden and cannot be updated.",$key)
+        );
+    }
+
+    unless ($field->is_user_editable) {
+        # externally sourced, cannot be set
+        $self->_error(
+            loc("Profile Field '[_1]' is externally sourced and cannot be updated.", $key)
+        );
+    }
+
+    $profile->set_attr($key, $val);
+    $profile->save();
+    $self->_success(
+        loc("Profile field '[_1]' set to '[_2]' for User '[_3]'",
+            $key, $val, $user->username,
+        )
     );
 }
 
@@ -3439,7 +3462,7 @@ sub create_group {
         });
     };
     if (my $err = $@) {
-        if ($err =~ m/duplicate key violates/) {
+        if ($err =~ m/duplicate key value violates/) {
             $self->_error(
                 loc("The [_1] Group has already been added to the system.",
                     $name,
@@ -3507,7 +3530,7 @@ sub show_group_config {
     my $group = $self->_require_group();
 
     my %group = (
-        'Group Name'           => $group->driver_name,
+        'Group Name'           => $group->driver_group_name,
         'Group ID'             => $group->group_id,
         'Number Of Users'      => $group->user_count,
         'Primary Account ID'   => $group->primary_account_id,
@@ -3515,7 +3538,7 @@ sub show_group_config {
         'Source'               => $group->driver_key
     );
 
-    my $msg = loc("Config for group [_1]:", $group->driver_name) . "\n\n";
+    my $msg = loc("Config for group [_1]:", $group->driver_group_name) . "\n\n";
     $msg .= join("\n",
         map { sprintf('%-21s: %s', $_, $group{$_}) } sort keys %group );
 
@@ -3985,6 +4008,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   set-user-account [--username or --email] --account
   get-user-account [--username or --email]
   set-external-id [--username or --email] --external-id
+  set-user-profile [--username or --email] KEY VALUE
   show-profile [--username or --email]
   hide-profile [--username or --email]
   can-lock-pages [--username or --email] --workspace
@@ -4063,9 +4087,10 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   clear-plugin-prefs --plugin <name> [ --account <name> ]
 
   GOOGLE ANALYTICS
-  add-google-analytics    --account <name> --code <code>
-  remove-google-analytics --account <name>
-  show-google-analytics   --account <name>
+  set-google-analytics   --account <name> --code <code>
+            [--domains <single | multiple-subdomains | multiple-domains>]
+  clear-google-analytics --account <name>
+  show-google-analytics  --account <name>
 
   EMAIL
 
@@ -4250,6 +4275,13 @@ Print the primary account of the specified user.
 =head2 set-external-id [--email or --username] --external-id
 
 Set the external ID for a user.
+
+=head2 set-user-profile [--email or --username] KEY VALUE
+
+Sets the People Profile field to the given value, for the specified User.
+
+The KEY provided must be the underlying name for the Profile Field, not its
+visible/display representation.
 
 =head2 show-profile [--email or --username]
 

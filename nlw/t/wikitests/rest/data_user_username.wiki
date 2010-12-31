@@ -49,9 +49,9 @@ Tests for setting a user's primary account.
 | body-like | Content should be a JSON hash |    |
 
 * no primary account
-| PUT_json  | %%uri%%                         | {} |
-| code-is   | 400                             |    |
-| body-like | No primary_account_id specified |    |
+| PUT_json  | %%uri%%           | {} |
+| code-is   | 400               |    |
+| body-like | Nothing to Update |    |
 
 * bad account_id
 | PUT_json  | %%uri%%            | {"primary_account_id":"999999"} |

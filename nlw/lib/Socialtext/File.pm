@@ -497,14 +497,17 @@ Finally, if no better type could be found using the above two checks, the
 
 # application/msword is detected for a number of OLE-type documents it seems.
 our $is_basic_type = qr{^(?:
-    text/plain |
-    text/html |
+    text/(?:plain|html) | # non-anchored
     application/(?:
-        octet-stream |
-        msword | # magic db calls all OLE documents this
-        x-zip # magic db calls all ZIP magic this
-    )$
+        octet-stream | # aka "binary"
+        xml | # another basic type for lucid
+        vnd\.ms-office | # lucid's magic db calls all OLE docs this
+        zip | # lucid calls ZIP containers this
+        msword | # dapper's magic db calls OLE docs this
+        x-zip # dapper's magic db calls all ZIP magic this
+    )$ # anchored
 )}x;
+
 sub mime_type {
     my ($path_to_file, $filename, $type_hint) = @_;
 
@@ -515,6 +518,8 @@ sub mime_type {
     };
     chomp $magic_type if defined $magic_type;
     if ($magic_type) {
+        $magic_type =~ s/; charset=(?:binary|us-ascii)$//;
+            # Lucid's file adds this and is usually wrong when it does
         return $magic_type unless $magic_type =~ $is_basic_type;
     }
 

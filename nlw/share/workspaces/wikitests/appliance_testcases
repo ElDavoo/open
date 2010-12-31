@@ -12,3 +12,8 @@ Test Case: Privacy Defaults can only succeed if it is the first test run by All 
 * [Test case: Business Control Panel Settings]
 * [Test Case: Captcha]
 * [Test Case: Data Jobs]
+
+Keep these two authen renewal cases together
+
+* [Test Case: Authen Renewal]
+* [Test Case: Authen Renewal Reset]

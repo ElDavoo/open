@@ -1,5 +1,6 @@
 | *comment* | Test Case: Business Control Panel User Remove Workspaces |  |
-| set | bcpur_user | bcpuser-%%start_time%%@matt.socialtext.com |
+| set | bcpur_user | bcpuser_%%start_time%%@matt.socialtext.com |
+| set | short_bcpur | bcpuser %%start_time%% |
 | set | other_admin | other-admin-%%start_time%%@matt.socialtext.com |
 | set | bcpws_1 | bcpws-1-%%start_time%% |
 | set | bcpws_2 | bcpws-2-%%start_time%% |
@@ -22,8 +23,8 @@
 
 | *comment* | Test Case: Business Control Panel User Go to /CP, see user, remove a workspace |  |
 | st-search-cp-users | %%bcpur_user%% |  |
-| wait_for_element_visible_ok | link=%%bcpur_user%% | 30000 |
-| click_and_wait | link=%%bcpur_user%% |  |
+| wait_for_element_visible_ok | link=%%short_bcpur%% <%%bcpur_user%%> | 30000 |
+| click_and_wait | link=%%short_bcpur%% <%%bcpur_user%%> |  |
 | wait_for_text_present_ok | Workspaces (4) | 30000 |
 | text_like | //body | %%bcpws_1%% |
 | wait_for_element_visible_ok | workspaceTable-action-0 | 30000 |
@@ -33,8 +34,8 @@
 | verifyConfirmation | Remove this user from 1 selected workspace? |  |
 | wait_for_text_present_ok | Workspaces (3) | 30000 |
 | st-search-cp-users | %%bcpur_user%% |  |
-| wait_for_element_visible_ok | link=%%bcpur_user%% | 30000 |
-| click_and_wait | link=%%bcpur_user%% |  |
+| wait_for_element_visible_ok | link=%%short_bcpur%% <%%bcpur_user%%> | 30000 |
+| click_and_wait | link=%%short_bcpur%% <%%bcpur_user%%> |  |
 | wait_for_text_present_ok | Workspaces (3) | 30000 |
 | text_unlike | //body | %%bcpws_1%% |
 | text_like | //body | %%bcpws_2%% |
@@ -45,14 +46,14 @@
 | verifyConfirmation | Remove this user from 2 selected workspaces? |  |
 | wait_for_text_present_ok | Workspaces (1) | 30000 |
 | st-search-cp-users | %%bcpur_user%% |  |
-| wait_for_element_visible_ok | link=%%bcpur_user%% | 30000 |
-| click_and_wait | link=%%bcpur_user%% |  |
+| wait_for_element_visible_ok | link=%%short_bcpur%% <%%bcpur_user%%> | 30000 |
+| click_and_wait | link=%%short_bcpur%% <%%bcpur_user%%> |  |
 | wait_for_text_present_ok | Workspaces (1) | 30000 |
 | text_unlike | //body | %%bcpws_2%% |
 | text_unlike | //body | %%bcpws_3%% |
 | st-search-cp-users | %%bcpur_user%% |  |
-| wait_for_element_visible_ok | link=%%bcpur_user%% | 30000 |
-| click_and_wait | link=%%bcpur_user%% |  |
+| wait_for_element_visible_ok | link=%%short_bcpur%% <%%bcpur_user%%> | 30000 |
+| click_and_wait | link=%%short_bcpur%% <%%bcpur_user%%> |  |
 | wait_for_text_present_ok | Workspaces (1) | 30000 |
 | text_unlike | //body | %%bcpws_1%% |
 | text_unlike | //body | %%bcpws_2%% |

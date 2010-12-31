@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use HTTP::Response;
 
-our $VERSION = 3.0;
+our $VERSION = 5.999;
 our %RESULTS;
 our %ARGS;
 

@@ -7,6 +7,7 @@ use Socialtext::LDAP::Config;
 use Socialtext::User::LDAP::Factory;
 use Socialtext::Log qw(st_log);
 use DateTime::Duration;
+use Socialtext::SQL qw(sql_txn);
 use Net::LDAP::Util qw(escape_filter_value);
 use Socialtext::IntSet;
 use namespace::clean -except => 'meta';
@@ -312,7 +313,14 @@ sub _update_group_members {
         # OR 
         # we did get a user_id, but the user isn't in the group.
 
-        my $user = eval { Socialtext::User->new(driver_unique_id => $dn) };
+        my $user;
+        eval {
+            sql_txn { 
+                $user = Socialtext::User->new(driver_unique_id => $dn);
+                $user->primary_account($group->primary_account, no_hooks => 1)
+                    if $user && !$user_id; # newly created user
+            };
+        };
         if (my $e = Exception::Class->caught(
                 'Socialtext::Exception::DataValidation'))
         {
@@ -329,14 +337,6 @@ sub _update_group_members {
         }
 
         if ($user) {
-            if (!$user_id) {
-                # This user was _just_ created, we should set the user's
-                # primary account to that of the group, and we do not need to
-                # call the hooks as the user has not created any dashboards
-                # yet.
-                $user->primary_account($group->primary_account, no_hooks => 1);
-            }
-
             $user_id = $user->user_id;
             TU && warn "$dn IS ID $user_id (no shortcut)";
             $seen_set->set($user_id);

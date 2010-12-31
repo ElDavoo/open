@@ -12,21 +12,17 @@ use POSIX ();
 my $cmd = shift || 'start';
 
 my %services = (
-    console => "$FindBin::Bin/../../appliance/libsocialtext-appliance-perl/service",
-    pushd   => "$FindBin::Bin/../../plugins/push/service",
-    userd   => "$FindBin::Bin/../service/st-userd",
+    console => "appliance/libsocialtext-appliance-perl/service",
+    pushd =>   "plugins/push/service",
+    proxy =>   "plugins/widgets/service",
+    userd =>   "nlw/service/st-userd",
 );
 
 my $pid_dir = Socialtext::AppConfig->pid_file_dir;
 my $log_dir = Socialtext::Paths::log_directory();
 
-# old version of this script sets up just one supervisor for console
-if (-f "$pid_dir/supervise.pid") {
-    system("kill `cat $pid_dir/supervise.pid`");
-    unlink "$pid_dir/supervise.pid";
-}
-
 while (my ($name, $sdir) = each %services) {
+    $sdir = "$ENV{ST_CURRENT}/$sdir";
     unless (-d $sdir) {
         warn "Can't find service directory for $name: $sdir\n";
         next;

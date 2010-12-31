@@ -20,7 +20,7 @@ sub extract_credentials {
     # logs out it is possible to still have an SM_USER header, but there won't
     # be an active Session any more.
     unless ($hdrs->{$SESS_HEADER}) {
-        $class->log('debug', 'No active SiteMinder session; skipping');
+        $class->log('info', 'No active SiteMinder session; skipping');
         return;
     }
 
@@ -28,7 +28,7 @@ sub extract_credentials {
     my $username = $hdrs->{$USER_HEADER};
     $username =~ s/^[^\\]+\\// if $username; # remove a DOMAIN\ prefix if any
     unless ($username) {
-        $class->log('debug', "SiteMinder $USER_HEADER missing or empty");
+        $class->log('info', "SiteMinder $USER_HEADER missing or empty");
         return;
     }
 

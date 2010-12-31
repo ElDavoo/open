@@ -206,7 +206,7 @@ sub _create_workspace {
 
     $self->{workspace} = $ws;
     $self->_set_permissions();
-    $adapter->hook('nlw.import_workspace', $ws, $info);
+    $adapter->hook('nlw.import_workspace', [$ws, $info]);
 }
 
 sub _workspace_info_file { $_[0]->{old_name} . '-info.yaml' }
@@ -455,7 +455,7 @@ sub _import_users {
         if (keys %$plugin_prefs) {
             my $adapter = Socialtext::Pluggable::Adapter->new;
             $adapter->make_hub($user);
-            $adapter->hook('nlw.import_user_prefs', $plugin_prefs);
+            $adapter->hook('nlw.import_user_prefs', [$plugin_prefs]);
         }
     }
 

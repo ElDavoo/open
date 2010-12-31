@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 19;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use List::Util qw/shuffle/;
 
 fixtures('db');
@@ -15,9 +15,7 @@ BEGIN {
 }
 
 my $jobs = Socialtext::Jobs->instance;
-lives_ok {
-     $jobs->clear_jobs();
-} "can clear jobs";
+ok !exception { $jobs->clear_jobs() }, "can clear jobs";
 
 # Because TheSchwartz takes the top "N" jobs ordered by priority and then
 # shuffles those, limit "N" to 1 for testing.

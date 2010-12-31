@@ -75,6 +75,7 @@
 | is_checked_ok | document.forms[0].self_join[0] |  |
 
 | *Comment* | Test Case: Business Control Panel Settings - Logout, see register link, login |  |
+| st-appliance-config | set captcha_enabled 0 | UNDEF |
 | open_ok | /nlw/submit/logout |
 | wait_for_element_visible_ok | link=Register | 30000 |
 | click_and_wait | link=Register |  |

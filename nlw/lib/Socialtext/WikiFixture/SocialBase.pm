@@ -19,6 +19,7 @@ use Socialtext::UserSet qw(ACCT_OFFSET GROUP_OFFSET);
 use Socialtext::Cache;
 use Socialtext::Workspace;
 use Socialtext::Encode qw/ensure_is_utf8/;
+use Encode;
 use File::LogReader;
 use File::Path qw(rmtree);
 use File::Temp qw(tempfile);
@@ -456,7 +457,7 @@ sub st_create_pages {
     ok 1, "Created $numberpages of pages in $workspace";
 }
 
-=head st_massive_tags (post URL, start tags with, end tag with - examples 'aa' and 'az' would  make 26 tags.)
+=head2 st_massive_tags (post URL, start tags with, end tag with - examples 'aa' and 'az' would  make 26 tags.)
 
 Automates multiple runs of POSTING an add tag to a workspace
 Actually, it can automate pretty much any post.  To automate tagging, your URL should look something like his:
@@ -805,6 +806,7 @@ sub st_create_health_report {
         ok(1, 'output of st-appliance-health-report indicates the report was created');
         if ($output=~/Uploaded: (http.+\d\d\d\d\_\d+\_\d+$)/) {
             my $url = $1;
+            $self->{health_report_url}=$1;
         } else {
             ok(0, "failed in match 1 of st_create_health_report: '$output'\n");
         }
@@ -850,7 +852,7 @@ sub create_group {
         });
     };
     if (my $err = $@) {
-        if ($err =~ m/duplicate key violates/) {
+        if ($err =~ m/duplicate key value violates/) {
             diag "Group $group_name already exists";
             return;
         }
@@ -2248,6 +2250,7 @@ sub edit_page {
     my $content = shift;
     my @tags = split qr/\s*,\s*/, shift(@_) || '';
 
+    Encode::_utf8_on($content);
     my $blob = {
         content => $content,
         from => $self->{http_username},
@@ -3414,7 +3417,7 @@ sub restart_userd {
         'http://localhost:'.$self->{userd_port}.'/ping',
         [Accept => 'application/json']);
     # assumes graceful shutdown delay is 5 seconds:
-    for (1..12) {
+    for (1..18) {
         my $resp = $ua->request($req);
         if ($resp->is_success) {
             pass "userd restarted";

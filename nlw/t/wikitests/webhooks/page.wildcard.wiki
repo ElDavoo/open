@@ -11,19 +11,19 @@
 | st-process-jobs       |                                                                                     |               |                                         |
 | job-count             | WebHook                                                                             | 0             |                                         |
 | webhook-payload-parse |                                                                                     |               |                                         |
-| json-like             | {"class":"page.create"}                                                             |               |                                         |
-| json-like             | {"actor":{"id":%%user_id%%,"best_full_name":"bar user %%start_time%%"}}             |               |                                         |
-| json-like             | {"object":{"editor":{"id":%%user_id%%,"best_full_name":"bar user %%start_time%%"}}} |               |                                         |
-| json-like             | {"object":{"workspace":{"title":"%%bar_workspace%%","name":"%%bar_workspace%%"}}}   |               |                                         |
-| json-like             | {"object":{"id":"foo"}}                                                             |               |                                         |
-| json-like             | {"object":{"name":"Foo"}}                                                           |               |                                         |
-| json-like             | {"object":{"uri":"%%browser_url%%/%%bar_workspace%%/index.cgi?foo"}}                |               |                                         |
-| json-like             | {"object":{"edit_summary":""}}                                                      |               |                                         |
-| json-like             | {"object":{"tags":[]}}                                                              |               |                                         |
-| json-like             | {"object":{"tags_added":[]}}                                                        |               |                                         |
-| json-like             | {"object":{"tags_deleted":[]}}                                                      |               |                                         |
-| json-like             | {"object":{"type":"wiki"}}                                                          |               |                                         |
-| json-like             | {"object":{"revision_count":"1"}}                                                   |               |                                         |
+| json-like             | [{"class":"page.create"}]                                                             |               |                                         |
+| json-like             | [{"actor":{"id":%%user_id%%,"best_full_name":"bar user %%start_time%%"}}]             |               |                                         |
+| json-like             | [{"object":{"editor":{"id":%%user_id%%,"best_full_name":"bar user %%start_time%%"}}}] |               |                                         |
+| json-like             | [{"object":{"workspace":{"title":"%%bar_workspace%%","name":"%%bar_workspace%%"}}}]   |               |                                         |
+| json-like             | [{"object":{"id":"foo"}}]                                                             |               |                                         |
+| json-like             | [{"object":{"name":"Foo"}}]                                                           |               |                                         |
+| json-like             | [{"object":{"uri":"%%browser_url%%/%%bar_workspace%%/index.cgi?foo"}}]                |               |                                         |
+| json-like             | [{"object":{"edit_summary":""}}]                                                      |               |                                         |
+| json-like             | [{"object":{"tags":[]}}]                                                              |               |                                         |
+| json-like             | [{"object":{"tags_added":[]}}]                                                        |               |                                         |
+| json-like             | [{"object":{"tags_deleted":[]}}]                                                      |               |                                         |
+| json-like             | [{"object":{"type":"wiki"}}]                                                          |               |                                         |
+| json-like             | [{"object":{"revision_count":"1"}}]                                                   |               |                                         |
 | webhook-like          | "revision_id":"\d+"                                                                 |               |                                         |
 | webhook-like          | "edit_time"                                                                         |               |                                         |
 | webhook-like          | "create_time"                                                                       |               |                                         |
@@ -35,7 +35,7 @@
 | st-process-jobs       |                         |               |                                         |
 | job-count             | WebHook                 | 0             |                                         |
 | webhook-payload-parse |                         |               |                                         |
-| json-like             | {"class":"page.update"} |               |                                         |
+| json-like             | [{"class":"page.update"}] |               |                                         |
 
 | new-webhook-testcase | page.* fires for tag |
 | add-webhook           | page.*                  | http://tou.ch | {"workspace_id":"%%bar_workspace_id%%"} |
@@ -44,8 +44,8 @@
 | st-process-jobs       |                         |               |                                         |
 | job-count             | WebHook                 | 0             |                                         |
 | webhook-payload-parse |                         |               |                                         |
-| Bn-like             | {"class":"page.update"} |               |                                         |
-| json-like             | {"object":{"tags_added":["Tarvu"]}} |               |                                         |
+| json-like             | [{"class":"page.update"}] |               |                                         |
+| json-like             | [{"object":{"tags_added":["Tarvu"]}}] |               |                                         |
 
 | new-webhook-testcase  | page.* fires for untag                |               |                                         |
 | add-webhook           | page.*                                | http://tou.ch | {"workspace_id":"%%bar_workspace_id%%"} |
@@ -54,8 +54,8 @@
 | st-process-jobs       |                                       |               |                                         |
 | job-count             | WebHook                               | 0             |                                         |
 | webhook-payload-parse |                                       |               |                                         |
-| json-like             | {"class":"page.update"}               |               |                                         |
-| json-like             | {"object":{"tags_deleted":["Tarvu"]}} |               |                                         |
+| json-like             | [{"class":"page.update"}]               |               |                                         |
+| json-like             | [{"object":{"tags_deleted":["Tarvu"]}}] |               |                                         |
 
 | new-webhook-testcase | page.* fires for delete |
 | add-webhook           | page.*                  | http://tou.ch | {"workspace_id":"%%bar_workspace_id%%"} |
@@ -64,7 +64,7 @@
 | st-process-jobs       |                         |               |                                         |
 | job-count             | WebHook                 | 0             |                                         |
 | webhook-payload-parse |                         |               |                                         |
-| json-like             | {"class":"page.delete"} |               |                                         |
+| json-like             | [{"class":"page.delete"}] |               |                                         |
 
 | new-webhook-testcase | page.* fires for watch |
 | add-webhook           | page.*                  | http://tou.ch | {"workspace_id":"%%bar_workspace_id%%"} |
@@ -73,7 +73,7 @@
 | st-process-jobs       |                         |               |                                         |
 | job-count             | WebHook                 | 0             |                                         |
 | webhook-payload-parse |                         |               |                                         |
-| json-like             | {"class":"page.watch"} |               |                                         |
+| json-like             | [{"class":"page.watch"}] |               |                                         |
 
 | new-webhook-testcase | page.* fires for unwatch |
 | add-webhook           | page.*                  | http://tou.ch | {"workspace_id":"%%bar_workspace_id%%"} |
@@ -82,7 +82,7 @@
 | st-process-jobs       |                         |               |                                         |
 | job-count             | WebHook                 | 0             |                                         |
 | webhook-payload-parse |                         |               |                                         |
-| json-like             | {"class":"page.unwatch"} |               |                                         |
+| json-like             | [{"class":"page.unwatch"}] |               |                                         |
 
 # For other filter tests, see t/wikitests/webhooks/page.tag.wiki
 # The code flow is the same, so these tests are omitted

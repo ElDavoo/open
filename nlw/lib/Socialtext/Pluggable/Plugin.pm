@@ -35,6 +35,7 @@ field hub => -weak;
 field 'rest';
 field 'declined';
 field 'last';
+field 'scope_obj';
 field 'session', -init => 'Socialtext::Session->new()';
 
 const scope => 'account';
@@ -604,14 +605,14 @@ sub search {
 
 sub is_hook_enabled {
     my ($self, $hook_name, $config) = @_;
-
+    
     # Allow us to bypass user scoping by passing a scope object which is
     # something like an account. This is mainly for control panel stuff
-    if ($config and ref($config) eq 'HASH') {
-        if (my $scope = $config->{scope}) {
-            return $scope->is_plugin_enabled($self->name);
-        }
+    if (my $scope = $config->{scope}) {
+        $self->scope_obj($scope);
+        return $scope->is_plugin_enabled($self->name);
     }
+    $self->scope_obj(undef);
 
     if ($self->scope eq 'always') {
         return 1;

@@ -24,12 +24,15 @@ sub init {
 sub filter {
     my $id = $_[1];
     $id = '' if not defined $id;
+
+    # duplicated in Socialtext::String::title_to_id
     $id =~ s/[^\p{Letter}\p{Number}\p{ConnectorPunctuation}\pM]+/_/g;
     $id =~ s/_+/_/g;
     $id =~ s/^_(?=.)//;
     $id =~ s/(?<=.)_$//;
     $id =~ s/^0$/_/;
     $id = lc($id);
+
     return URI::Escape::uri_escape_utf8($id);
 }
 

@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 62;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 
 fixtures('foobar');
 
@@ -20,9 +20,7 @@ my $foobar = $hub->current_workspace;
 ok $foobar, "loaded foobar workspace";
 
 my $jobs = Socialtext::Jobs->instance;
-lives_ok {
-     $jobs->clear_jobs();
-} "can clear jobs";
+ok !exception { $jobs->clear_jobs() }, "can clear jobs";
 
 Load_jobs: {
     my @job_types = $jobs->job_types;
@@ -40,14 +38,12 @@ Queue_job: clear_and_run {
     is scalar(@jobs), 0, 'no jobs to start with';
 
     my @job_args = ('Socialtext::Job::Test' => {test => 1} );
-    dies_ok {
-        $jobs->insert(@job_args);
-    } "can't create jobs directly";
+    ok exception { $jobs->insert(@job_args) }, "can't create jobs directly";
 
     my $jh;
-    lives_ok {
+    ok !exception {
         $jh = Socialtext::JobCreator->insert(@job_args);
-    } "used the job creator interface";
+    }, "used the job creator interface";
     ok $jh;
 
     @jobs = $jobs->list_jobs({
@@ -159,9 +155,9 @@ Cant_index_untitled_page_attachments: clear_and_run {
     ok $att, 'made attachment';
 
     my $handle;
-    lives_ok {
+    ok !exception {
         $handle = Socialtext::JobCreator->index_attachment($att, 'live')
-    } 'fails silently';
+    }, 'fails silently';
     ok !$handle, 'job wasn\'t created';
 };
 
@@ -170,7 +166,7 @@ Existing_untitled_page_jobs_fail: clear_and_run {
 
     # simulate adding a pre-existing job for untitled_page
     my $handle;
-    lives_ok {
+    ok !exception {
         $handle = Socialtext::JobCreator->insert(
             'Socialtext::Job::AttachmentIndex' => {
                 workspace_id => $foobar->workspace_id,
@@ -179,7 +175,7 @@ Existing_untitled_page_jobs_fail: clear_and_run {
                 search_config => 'live',
             }
         );
-    } 'insert of bad att.index job';
+    }, 'insert of bad att.index job';
     ok $handle;
 
     $jobs->can_do('Socialtext::Job::AttachmentIndex');

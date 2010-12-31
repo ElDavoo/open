@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 use Test::More tests => 41;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use mocked 'Socialtext::Page';
 use mocked 'Socialtext::Headers';
 use mocked 'Socialtext::CGI';
@@ -56,10 +56,10 @@ Creating_events: {
         );
 
         foreach my $key (qw(event_class action actor page workspace)) {
-            dies_ok {
+            ok exception {
                 local $ev{$key} = undef;
                 Socialtext::Events->Record(\%ev);
-            } 'no event_class parameter';
+            }, 'no event_class parameter';
             ok_no_more_sql();
         }
 
@@ -67,18 +67,18 @@ Creating_events: {
         delete $ev{page};
         delete $ev{workspace};
 
-        dies_ok {
+        ok exception {
             Socialtext::Events->Record(\%ev);
-        } 'no person parameter';
+        }, 'no person parameter';
         ok_no_more_sql();
 
 
         $ev{person} = 2;
         $ev{context} = "invalid json";
 
-        dies_ok {
+        ok exception {
             Socialtext::Events->Record(\%ev);
-        } 'invalid json';
+        }, 'invalid json';
         ok_no_more_sql();
     }
 

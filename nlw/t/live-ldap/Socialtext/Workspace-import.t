@@ -11,7 +11,7 @@ use Socialtext::Workspace;
 use Test::Socialtext::Bootstrap::OpenLDAP;
 use Test::Socialtext tests => 26;
 use Test::Socialtext::User;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 
 ###############################################################################
 # FIXTURE: foobar
@@ -120,7 +120,7 @@ deleted_ldap_user_shouldnt_prevent_workspace_import: {
     # Import the workspace
 
     # shouldn't fail catastrophically
-    lives_ok { Socialtext::Workspace->ImportFromTarball(tarball=>$tarball) } 'workspace imported without error';
+    ok !exception { Socialtext::Workspace->ImportFromTarball(tarball=>$tarball) }, 'workspace imported without error';
     $ws = Socialtext::Workspace->new( name => 'foobar' );
     isa_ok $ws, 'Socialtext::Workspace';
 

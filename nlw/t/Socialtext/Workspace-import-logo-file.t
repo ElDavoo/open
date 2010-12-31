@@ -5,12 +5,6 @@ use warnings;
 use Socialtext::AppConfig;
 use Test::Socialtext;
 
-BEGIN {
-    unless ( eval { require Image::Magick; 1 } ) {
-        plan skip_all => 'These tests require Image::Magick to run.';
-    }
-}
-
 use Digest::MD5 ();
 
 plan tests => 2;
@@ -25,9 +19,6 @@ $ws->set_logo_from_file(
     filename   => $image,
 );
 
-# We need to get this sum because the image is different from the
-# original when passed through Image::Magick, even if we don't end up
-# resizing it.
 my $md5 = md5_checksum( $ws->logo_filename() );
 
 my $tarball = $ws->export_to_tarball(dir => $test_dir);

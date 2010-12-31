@@ -126,13 +126,6 @@
    compress
 }
 
-/var/log/st-update.log {
-    rotate 6
-    monthly
-    missingok
-    compress
-}
-
 /var/log/st-reports.log {
     rotate 14
     daily

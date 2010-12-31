@@ -145,7 +145,7 @@ proto.onTargetLoad = function (iframe) {
 
     $('#st-attachments-attach-uploadmessage').html(loc('Upload Complete'));
     $('#st-attachments-attach-filename').attr('disabled', false).val('');
-    $('#st-attachments-attach-closebutton').removeClass('disabled');
+    $('#st-attachments-attach-closebutton').removeClass('disabled').removeClass('loading');
 
     this.refreshAttachments(function (list) {
         // Add the freshly-uploaded file to the
@@ -214,7 +214,7 @@ proto.onChangeFilename = function () {
             });
 
             $('#st-attachments-attach-form').submit();
-            $('#st-attachments-attach-closebutton').addClass('disabled');
+            $('#st-attachments-attach-closebutton').addClass('disabled').addClass('loading');
             $(this).attr('disabled', true);
         };
 

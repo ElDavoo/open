@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 8;
+use Test::Socialtext tests => 10;
 use Test::Socialtext::User;
 use Socialtext::LDAP::Operations;
 
@@ -71,9 +71,11 @@ load_users_populates_profiles: {
     # us).
     my $ariel_dn = 'cn=Ariel Young,ou=related,dc=example,dc=com';
     my $ariel_id = Socialtext::User->ResolveId(driver_unique_id => $ariel_dn);
+    ok $ariel_id, 'Resolved UserId for Ariel';
 
     my $adrian_dn = 'cn=Adrian Harris,ou=related,dc=example,dc=com';
     my $adrian_id = Socialtext::User->ResolveId(driver_unique_id => $adrian_dn);
+    ok $adrian_id, 'Resolved UserId for Adrian';
 
     my $profile = Socialtext::People::Profile->_fetch_profile($ariel_id);
     ok $profile, 'Ariel has a profile';

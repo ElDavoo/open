@@ -1,0 +1,22 @@
+| *Comment* | Test Case: Friendly Name |  |
+
+* Fixture: SocialWidgets
+
+| set | fname_user | fname_user_%%start_time%%@david.socialtext.net |
+| set | fname | Bob_%%start_time%% |
+| st-admin | create-user --email %%fname_user%% --password %%password%% | was created |
+| st-logoutin | %%fname_user%% | %%password%% |
+
+| *Comment* | Test Case: Friendly Name edit preferred name |  |
+| open_ok | /st/edit_profile |  |
+| wait_for_element_visible_ok | field_preferred_name | 30000 |
+| type_ok | field_preferred_name | %%fname%% |
+| wait_for_element_visible_ok | update_profile | 30000 |
+| click_and_wait | update_profile | 30000 |
+| st-name-widget | 1 | profile_widget |
+| st-widget-title-like | profile_widget | Profile |
+| st-select-widget-frame | profile_widget |  |
+| wait_for_text_present_ok | %%fname%% | 30000 |
+
+| *Comment* | Test Case: Friendly Name teardown |  |
+| st-admin | deactivate-user --email %%fname_user%% |  |

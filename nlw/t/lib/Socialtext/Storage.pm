@@ -2,7 +2,6 @@ package Socialtext::Storage;
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Carp qw(croak);
 
 our %DATA;
 our $ALLOW_NOT_PRELOADED = {};

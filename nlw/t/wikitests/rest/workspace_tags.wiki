@@ -55,8 +55,9 @@ Tests for Workspace Tags via the REST API
 | Comment   | workspace with one workspace tag, two page tags |                  |
 | GET       | %%tags_uri%%                                    | text/plain       |
 | code-is   | 200                                             |                  |
-| body-like | Bar\nFoo\n                                      |                  |
-| GET       | %%tags_uri%%                                    | application/json |
+| body-like | Bar                                      |                  |
+| body-like | Foo                                      |                  |
+| GET       | %%tags_uri%%?order=alpha                        | application/json |
 | code-is   | 200                                             |                  |
 | body-like | [{"page_count":1,"value":"bar","name":"Bar","uri":"tags/Bar"},{"page_count":1,"value":"foo","name":"Foo","uri":"tags/Foo"}] |  |
 

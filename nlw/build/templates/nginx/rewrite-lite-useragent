@@ -2,7 +2,7 @@
 
 # rewrite: /:ws/?args => /m/pages/:ws/?args
 [% IF !config.disable_mobile_redirect %]
-[% mobile_agents = ['^BlackBerry', '^Nokia', 'Palm', 'SymbianOS', 'Windows CE',
+[% mobile_agents = ['BlackBerry', '^Nokia', 'Palm', 'SymbianOS', 'Windows CE',
                     '^hiptop', 'iPhone', 'Android'] %]
 [% FOR ua IN mobile_agents %]
   if ($http_user_agent ~ "[% ua %]") {

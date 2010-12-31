@@ -7,7 +7,6 @@ use warnings;
 use Test::More;
 use File::Find qw(find);
 use Socialtext::TT2::Renderer;
-use Test::Exception;
 use Socialtext::File qw(get_contents);
 
 my $template_dir = 'share/skin/s3/template';

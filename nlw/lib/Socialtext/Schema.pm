@@ -106,7 +106,7 @@ sub recreate {
     my %opts = @_;
 
     eval { $self->dump } unless $opts{no_dump};
-    $self->dropdb;
+    $self->dropdb(%opts);
     $self->createdb;
     my $file = $opts{'schema-file'} || $self->_schema_filename;
     $self->run_sql_file($file);
@@ -423,11 +423,12 @@ sub createdb {
     disconnect_dbh();
     eval {
         my $sudo = _sudo('postgres');
-        $self->_db_shell_run("$sudo createdb -E UTF8 -O $c{user} $c{db_name}");
+        $self->_db_shell_run("$sudo createdb -T template0 -E UTF8 -O $c{user} $c{db_name}");
     };
-    my $createdb_err = $@;
+    if (my $e = $@) {
+        die $e;
+    }
     $self->_createlang;
-    die $createdb_err if $createdb_err;
 }
 
 # sets up plpgsql for the database schema
@@ -460,7 +461,9 @@ Removes the current database, without dumping it.
 =cut
 
 sub dropdb {
-    my $self = shift;
+    my $self   = shift;
+    my %opts   = @_;
+    my $no_die = $opts{no_die_on_drop} ? '-' : '';
     my %c = $self->connect_params();
 
     disconnect_dbh(); # disconnect so as not to kill self
@@ -471,12 +474,10 @@ sub dropdb {
         eval {
             shell_run("sudo -u postgres /usr/local/sbin/kill_pg_backends");
         };
+        warn "Error with kill_pg_backends: $@" if $@;
     }
 
-    eval {
-        $self->_db_shell_run("$sudo dropdb $c{db_name}");
-    };
-    warn "Error dropping: $@" if $@;
+    $self->_db_shell_run("$no_die$sudo dropdb $c{db_name}");
 }
 
 sub _log_file { Socialtext::Paths::log_directory() . '/st-db.log' }

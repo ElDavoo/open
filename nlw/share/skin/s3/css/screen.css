@@ -43,6 +43,20 @@ body {
 ol, ul {
 	list-style: none;
 }
+
+tr.st-refcard-table-row ol {
+	list-style: inside decimal;
+}
+
+tr.st-refcard-table-row ul {
+	list-style: inside disc;
+}
+
+tr.st-refcard-table-row ol ol,
+tr.st-refcard-table-row ul ul {
+	padding-left: 10px;
+}
+
 /* tables still need 'cellspacing="0"' in the markup */
 table {
 	border-collapse: separate;
@@ -537,7 +551,8 @@ ul li.disabled a.genericBlueButton:hover {
 }
 
 
-ul li.flexButton.editing a.editButton, ul li.flexButton.editing a.editButton:hover {
+ul li.flexButton.editing a.editButton,
+ul li.flexButton.editing a.editButton:hover {
         visibility: hidden;
 }
 ul li.flexButton.editing {
@@ -547,9 +562,11 @@ ul li.flexButton.editing {
 ul li.flexButton.disabled a.genericOrangeButton, ul li.flexButton.disabled a.genericOrangeButton:hover {
         visibility: hidden;
 }
-ul li.flexButton.disabled {
+
+ul li.flexButton.loading {
         background: url(../images/ajax-loader.gif) no-repeat right;
 }
+
 
 ul li a.genericOrangeButton {
 	display: block;
@@ -4763,9 +4780,9 @@ ul.dropdownOptions li.disabled a:hover {
     border-top-right-radius: 5px;
 }
 
-#exploreTabs #attachment.tab,
-#exploreTabs #wikilink.tab,
-#exploreTabs #weblink.tab {
+#exploreTabs #attachment,
+#exploreTabs #wikilink,
+#exploreTabs #weblink {
     padding-left: 15px;
 }
 #exploreTabs #attachment.selected,
@@ -4774,18 +4791,18 @@ ul.dropdownOptions li.disabled a:hover {
     padding-left: 20px;
 }
 
-#exploreTabs #everything.tab {
+#exploreTabs #everything {
     width: 75px;
 }
-#exploreTabs #attachment.tab {
+#exploreTabs #attachment {
     background: #ddd url(../../../plugin/signals/share/images/attachment.gif) no-repeat 2px 2px;
     width: 90px;
 }
-#exploreTabs #wikilink.tab {
+#exploreTabs #wikilink {
     background: #ddd url(../../../plugin/signals/share/images/wikilink.gif) no-repeat 2px 2px;
     width: 115px;
 }
-#exploreTabs #weblink.tab {
+#exploreTabs #weblink {
     background: #ddd url(../../../plugin/signals/share/images/weblink.gif) no-repeat 2px 2px;
     width: 80px;
 }

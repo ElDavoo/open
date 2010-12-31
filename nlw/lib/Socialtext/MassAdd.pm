@@ -264,11 +264,18 @@ sub _update_user_store {
     # build a list of fields to update; only those fields that we were
     # actually given a value for *and* that are different are suitable for
     # update.
-    my %update_slice =
-        map { $_ => $args{$_} }             # field and its updated value
-        grep { $user->$_() ne $args{$_} }   # different than current value
-        grep { length($args{$_}) > 0 }      # only fields with a value
-        @User_fields;
+    my %update_slice;
+    foreach my $f (@User_fields) {
+        my $new_val = $args{$f};
+
+        next unless (defined $new_val);    # skip missing fields
+        next if (length($new_val) == 0);   # skip blank fields
+
+        my $old_val = $user->$f();
+        next if ($old_val && ($old_val eq $new_val));  # skip unchanged fields
+
+        $update_slice{$f} = $new_val;
+    }
 
     # SPECIAL CASE: password; have to call a fcn to check to see if its the
     # same as what we've got already.

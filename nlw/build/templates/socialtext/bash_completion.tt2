@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 # @COPYRIGHT@
 
 _st_admin_list_comp()

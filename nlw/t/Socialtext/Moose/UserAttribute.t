@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use Test::Socialtext tests => 23;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 fixtures('db');
 
 my $user = create_test_user();
@@ -22,9 +22,9 @@ my $non_user_id = $user_id+1;
 
 test_rw_mode: {
     my $c;
-    lives_ok {
+    ok !exception {
         $c = MyClass->new(someuser_id => $user_id);
-    } 'constructed';
+    }, 'constructed';
     ok $c->can('someuser'), 'has someuser accessor';
     ok $c->can('clear_someuser'), 'has a clearer';
     ok $c->can('has_someuser'), 'has a predicate';
@@ -51,14 +51,14 @@ test_rw_mode: {
 
 test_ro_mode: {
     my $c;
-    lives_ok {
+    ok !exception {
         $c = MyClass2->new(xyzzy_id => $user_id);
-    } 'constructed with ID';
+    }, 'constructed with ID';
     is $c->xyzzy->user_id, $user_id, 'auto-built user';
 
-    lives_ok {
+    ok !exception {
         $c = MyClass2->new(xyzzy => $user);
-    } 'constructed with object';
+    }, 'constructed with object';
     is $c->xyzzy_id, $user_id, 'auto-built user_id';
 }
 
@@ -72,19 +72,19 @@ test_ro_mode: {
 
 required_mode: {
     my $c;
-    lives_ok {
+    ok !exception {
         $c = MyClass3->new(foo => $user);
-    } 'constructed with object';
+    }, 'constructed with object';
     is $c->foo_id, $user_id, 'constructed the right user_id';
 
-    lives_ok {
+    ok !exception {
         $c = MyClass3->new(foo_id => $user_id);
-    } 'constructed with object';
+    }, 'constructed with object';
     is $c->foo->user_id, $user_id, 'auto-built the right user';
 
-    dies_ok {
+    ok exception {
         $c = MyClass3->new();
-    } 'failed construction without object or id';
+    }, 'failed construction without object or id';
 }
 
 {
@@ -97,9 +97,9 @@ required_mode: {
 
 maybe_mode: {
     my $c;
-    lives_ok {
+    ok !exception {
         $c = MyClass4->new(bar_id => 0);
-    } 'non-existant user constructs OK';
+    }, 'non-existant user constructs OK';
     ok !$c->has_bar, "bar slot not here yet";
     is $c->bar, undef, 'lazy-build produces no user';
     ok $c->has_bar, "bar slot exists";

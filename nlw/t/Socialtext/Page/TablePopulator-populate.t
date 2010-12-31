@@ -6,7 +6,7 @@ use warnings;
 use File::Path qw(rmtree);
 use File::Copy qw(move);
 use Test::Socialtext tests => 15;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use Socialtext;
 use Socialtext::Hub;
 use Socialtext::Account;
@@ -62,7 +62,7 @@ populate_recreating_from_scratch: {
     my $populator = Socialtext::Page::TablePopulator->new(
         workspace_name => $ws->name,
     );
-    lives_ok sub { $populator->populate(recreate => 1) },
+    ok !exception { $populator->populate(recreate => 1) },
         're-populated Page table';
 
     # Re-query the pages in the Workspace; we should have one less page than
@@ -132,7 +132,7 @@ populate_only_fill_in_missing_pages: {
     my $populator = Socialtext::Page::TablePopulator->new(
         workspace_name => $ws->name,
     );
-    lives_ok sub { $populator->populate() }, 're-populated Page table';
+    ok !exception { $populator->populate() }, 're-populated Page table';
 
     # Re-query the pages in the Workspace; we should have one more page than
     # we did before (as we pretended to create a new page on disk).

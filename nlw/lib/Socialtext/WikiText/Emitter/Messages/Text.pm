@@ -11,8 +11,8 @@ Readonly my %markup => (
     b    => [ '',  '' ],
     i    => [ '',  '' ],
     del  => [ '',  '' ],
-    a    => [ '"',  '"' ],
-    hashmark => ['#',''],
+    hyperlink => [ '"',  '"' ],
+    hashmark  => ['#',''],
 );
 
 sub msg_markup_table { return \%markup }

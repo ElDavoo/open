@@ -2,8 +2,8 @@
 
 | *Comment* | Test Case: Active Content Setup. Create objects. Use st-admin to avoid wikiD code errors. |  |
 | st-admin | create_user -e %%conv_email%% -p %%password%% |  |
-| st-admin | create_workspace -n %%acw%% -t %%acw%% --empty |  |
-| st-admin | create_workspace -n %%acwnoresults%% -t %%acwnoresults%% --empty |  |
+| st-admin | create_workspace -n %%acw%% -t %%acw%% |  |
+| st-admin | create_workspace -n %%acwnoresults%% -t %%acwnoresults%% |  |
 | st-admin | add-member -u %%username%% -w %%acw%% |  |
 | st-admin | add-member -e %%conv_email%% -w %%acw%% |  |
 | st-admin | add-member -u %%username%% -w %%acwnoresults%% |  |

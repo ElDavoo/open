@@ -627,11 +627,17 @@ widget:
     image_text:
         - { field: default, text: "unformatted: %asis_content" }
 
+  pre:
+    id: pre
+    color: indianred
+    title: Preformatted text. Click to edit.
+    use_title_as_text: true
+
   html:
     id: html
     color: indianred
-    title: Raw HTML section. Edit in Wiki Text mode.
-    uneditable: true
+    title: Raw HTML block. Click to edit.
+    use_title_as_text: true
 
   sharepoint:
     id: sharepoint

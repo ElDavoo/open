@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 27;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 
 fixtures('db');
 
@@ -19,19 +19,19 @@ ok $sys_acct->has_user($regular), 'role for regular user in its primary acct';
 
 workspace: {
     my $ws = create_test_workspace;
-    dies_ok {
+    ok exception {
         $ws->add_user(user => $guest, role => $member)
-    } 'add system-user to a workspace dies';
+    }, 'add system-user to a workspace dies';
     ok !$ws->has_user($guest), '... user was not added to workspace';
-    lives_ok {
+    ok !exception {
         $ws->add_user(user => $regular, role => $member)
-    } 'added regular user just fine';
+    }, 'added regular user just fine';
     ok $ws->has_user($regular), '... user was added to workspace';
 
     my $auw = create_test_workspace(account => $sys_acct);
-    lives_ok {
+    ok !exception {
         $auw->add_account(account => $sys_acct, role => $member);
-    } 'add system account to workspace is fine';
+    }, 'add system account to workspace is fine';
     ok !$auw->has_user($guest),
         '... HOWEVER user was not added to workspace';
     ok $auw->has_user($regular),
@@ -40,26 +40,26 @@ workspace: {
 
 account: {
     my $account = create_test_account_bypassing_factory();
-    dies_ok {
+    ok exception {
         $account->add_user(user => $guest, role => $member)
-    } 'add system-user to an account dies';
+    }, 'add system-user to an account dies';
     ok !$account->has_user($guest, {direct=>1}),
         '... user was not added to account';
-    lives_ok {
+    ok !exception {
         $account->add_user(user => $regular, role => $member)
-    } 'add regular to an account lives';
+    }, 'add regular to an account lives';
     ok $account->has_user($regular, {direct=>1}), '... user was added to account';
 
-    dies_ok {
+    ok exception {
         $guest->primary_account($account->account_id)
-    } 'change a system-user primary account dies';
+    }, 'change a system-user primary account dies';
     ok !$account->has_user($guest, {direct=>1}),
         '... user role was not added to account';
     ok $guest->primary_account_id == $sys_acct->account_id,
         '... user primary account was not changed';
-    lives_ok {
+    ok !exception {
         $regular->primary_account($account->account_id)
-    } 'change a regular primary account lives';
+    }, 'change a regular primary account lives';
     ok $account->has_user($regular, {direct=>1}),
         '... user role was added to account';
     ok $regular->primary_account_id == $account->account_id,
@@ -68,22 +68,22 @@ account: {
 
 group: {
     my $group = create_test_group();
-    dies_ok {
+    ok exception {
         $group->add_user(user => $guest, role => $member)
-    } 'cannot add system-user to a group';
+    }, 'cannot add system-user to a group';
     ok !$group->has_user($guest, {direct=>1}),
         '... user was not added to group';
-    lives_ok {
+    ok !exception {
         $group->add_user(user => $regular, role => $member)
-    } 'can add system-user to a group';
+    }, 'can add system-user to a group';
     ok $group->has_user($regular, {direct=>1}),
         '... user was added to group';
 }
 
 sys_admin: {
-    dies_ok { $guest->set_business_admin(1) } 'no bus admin';
-    dies_ok { $guest->set_business_admin(0) } 'no bus admin';
-    dies_ok { $guest->set_technical_admin(1) } 'no tech admin';
-    dies_ok { $guest->set_technical_admin(0) } 'no tech admin';
+    ok exception { $guest->set_business_admin(1) }, 'no bus admin';
+    ok exception { $guest->set_business_admin(0) }, 'no bus admin';
+    ok exception { $guest->set_technical_admin(1) }, 'no tech admin';
+    ok exception { $guest->set_technical_admin(0) }, 'no tech admin';
 }
 

@@ -69,7 +69,6 @@ sub _build_driver_id {
 
 # Retrieves a Group from the DB, managed by this Factory instance, and returns
 # a Group Homunculus object for the Group back to the caller.
-around 'GetGroupHomunculus' => \&sql_txn;
 sub GetGroupHomunculus {
     my ($self, %p) = @_;
 
@@ -134,8 +133,10 @@ sub GetGroupHomunculus {
     else {
         # Wasn't in DB; INSERT
         $proto_group = $refreshed;
-        $self->NewGroupRecord( $proto_group );
-        $self->CreateInitialRelationships( $proto_group );
+        sql_txn {
+            $self->NewGroupRecord( $proto_group );
+            $self->CreateInitialRelationships( $proto_group );
+        };
     }
 
     # Re-index the freshly created/updated group.
@@ -191,7 +192,7 @@ sub CreateInitialRelationships {
     $adapter->make_hub(Socialtext::User->SystemUser);
     $adapter->hook(
         'nlw.add_group_account_role',
-        $pri_account, $group, Socialtext::Role->Member,
+        [$pri_account, $group, Socialtext::Role->Member],
     );
 }
 

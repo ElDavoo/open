@@ -660,6 +660,92 @@ proto.on_key_enter = function(e) {
     }
 }
 
+proto.enable_table_navigation_bindings = function() {
+    var self = this;
+    var event_name = "keydown";
+    if (jQuery.browser.mozilla && navigator.oscpu.match(/Mac/)) {
+        event_name = "keypress";
+    }
+    if (jQuery.browser.msie && jQuery.browser.version > 7) {
+        event_name = "keypress";
+    }
+
+    self.bind( event_name, function (e) {
+        if (e.metaKey || e.ctrlKey) { return true; }
+        switch (e.keyCode) {
+            case 9: { // Tab
+                var $cell = self.find_table_cell_with_cursor();
+                if (!$cell) { return; }
+                e.preventDefault();
+
+                var $new_cell;
+                if (e.shiftKey) {
+                    $new_cell = $cell.prev('td');
+                    if (!$new_cell.length) {
+                        $new_cell = $cell.parents('tr:first').prev('tr').find('td:last');
+                        if (!$new_cell.length) {
+                            return;
+                        }
+                    }
+                }
+                else {
+                    $new_cell = $cell.next('td');
+                    if (!$new_cell.length) {
+                        $new_cell = $cell.parents('tr:first').next('tr').find('td:first');
+                        if (!$new_cell.length) {
+                            // Extend the table now we're at the last cell
+                            var doc = self.get_edit_document();
+                            var $tr = jQuery(doc.createElement('tr'));
+                            $cell.parents("tr").find("td").each(function() {
+                                $tr.append('<td style="border: 1px solid black; padding: 0.2em;">&nbsp;</td>');
+                            });
+                            $tr.insertAfter( $cell.parents('tr:first') );
+                            $new_cell = $tr.find('td:first');
+                        }
+                    }
+                }
+
+                self.set_focus_on_cell($new_cell);
+                break;
+            }
+            case 38: { // Up
+                self._do_table_up_or_down(e, 'prev', ':first');
+                break;
+            }
+            case 40: { // Down
+                self._do_table_up_or_down(e, 'next', ':last');
+                break;
+            }
+        }
+    });
+}
+
+proto._do_table_up_or_down = function(e, direction, selector) {
+    var self = this;
+    if (e.shiftKey) { return; }
+
+    var $cell = self.find_table_cell_with_cursor();
+    if (!$cell) { return; }
+
+    var col = self._find_column_index($cell);
+    if (!col) { return; }
+
+    var $tr = $cell.parents('tr:first')[direction]('tr:first');
+    var $new_cell;
+    if ($tr.length) {
+        var tds = $tr.find('td');
+        $new_cell = $(tds[col-1]);
+        e.preventDefault();
+    }
+    else {
+        // At the top/bottom row - move to the first/last cell,
+        // and do not preventDefault, so we can move outside the table
+        $new_cell = $cell.parents('table:first').find('tr'+selector+' td'+selector);
+    }
+
+    self.set_focus_on_cell($new_cell);
+}
+
 proto.enable_pastebin = function () {
     var self = this;
 
@@ -824,7 +910,7 @@ proto._unbindHandler = function(event_name) {
 }
 
 proto._bindHandler = function(event_name, callback) {
-    if (Wikiwyg.is_ie && event_name == 'blur') {
+    if ((Wikiwyg.is_ie || $.browser.webkit) && event_name == 'blur') {
         jQuery(this.get_edit_window()).bind(event_name, callback);
     }
     else {
@@ -901,6 +987,8 @@ proto.enableThis = function() {
         }
 
         self.enable_keybindings();
+        self.enable_table_navigation_bindings();
+
         self.enable_pastebin();
         if (!self.wikiwyg.config.noAutoFocus) {
             self.set_focus();
@@ -1350,6 +1438,16 @@ proto.insert_table_html = function(rows, columns, options) {
             var $table = jQuery('#'+id, self.get_edit_document());
             $table.removeAttr('id');
             self.applyTableOptions($table, options);
+            if ($table.prev().length == 0) {
+                // Table is the first element in document - add a <br/> so
+                // navigation is possible beyond the table.
+                $table.before('<br />');
+            }
+            if ($table.next().length == 0) {
+                // Table is the last element in document - add a <br/> so
+                // navigation is possible beyond the table.
+                $table.after('<br />');
+            }
         },
         500, 10000
     );
@@ -1467,6 +1565,37 @@ proto.find_table_cell_with_cursor = function() {
     return $cell;
 }
 
+proto.set_focus_on_cell = function($new_cell) {
+    var self = this;
+    self.set_focus();
+
+    if (Wikiwyg.is_gecko) {
+        var $span = $new_cell.find("span");
+        if ($span.length > 0) {
+            if ($span.html() == '') {
+                $span.html('&nbsp;');
+            }
+        }
+        else {
+            $span = $new_cell;
+        }
+
+        var r = self.get_edit_document().createRange();
+        r.setStart( $span.get(0), 0 );
+        r.setEnd( $span.get(0), 0 );
+
+        var s = self.get_edit_window().getSelection();
+        s.removeAllRanges();
+        s.addRange(r);
+    }
+    else if (jQuery.browser.msie) {
+        var r = self.get_edit_document().selection.createRange();
+        r.moveToElementText( $new_cell.get(0) );
+        r.collapse(true);
+        r.select();
+    }
+}
+
 proto._do_table_manip = function(callback) {
     var self = this;
     setTimeout(function() {
@@ -1477,32 +1606,7 @@ proto._do_table_manip = function(callback) {
 
         if ($new_cell) {
             $cell = $new_cell;
-            self.set_focus();
-            if (Wikiwyg.is_gecko) {
-                var $span = $new_cell.find("span");
-                if ($span.length > 0) {
-                    if ($span.html() == '') {
-                        $span.html('&nbsp;');
-                    }
-                }
-                else {
-                    $span = $new_cell;
-                }
-
-                var r = self.get_edit_document().createRange();
-                r.setStart( $span.get(0), 0 );
-                r.setEnd( $span.get(0), 0 );
-
-                var s = self.get_edit_window().getSelection();
-                s.removeAllRanges();
-                s.addRange(r);
-            }
-            else if (jQuery.browser.msie) {
-                var r = self.get_edit_document().selection.createRange();
-                r.moveToElementText( $new_cell.get(0) );
-                r.collapse(true);
-                r.select();
-            }
+            self.set_focus_on_cell($new_cell);
         }
 
         setTimeout(function() {
@@ -1609,10 +1713,10 @@ proto.do_add_row_below = function() {
     this._do_table_manip(function($cell) {
         var doc = this.get_edit_document();
         var $tr = jQuery(doc.createElement('tr'));
-        $cell.parents("tr").find("td").each(function() {
+        $cell.parents("tr:first").find("td").each(function() {
             $tr.append('<td style="border: 1px solid black; padding: 0.2em;">&nbsp;</td>');
         });
-        $tr.insertAfter( $cell.parents("tr") );
+        $tr.insertAfter( $cell.parents("tr:first") );
     });
 }
 
@@ -1622,10 +1726,10 @@ proto.do_add_row_above = function() {
         var doc = this.get_edit_document();
         var $tr = jQuery(doc.createElement('tr'));
 
-        $cell.parents("tr").find("td").each(function() {
+        $cell.parents("tr:first").find("td").each(function() {
             $tr.append('<td style="border: 1px solid black; padding: 0.2em;">&nbsp;</td>');
         });
-        $tr.insertBefore( $cell.parents("tr") );
+        $tr.insertBefore( $cell.parents("tr:first") );
     });
 }
 
@@ -2228,11 +2332,24 @@ proto.toHtml = function(func) {
             var br = "<br class=\"p\"/>";
 
             html = self.remove_padding_material(html);
-            html = html
-                .replace(/\n*<p>\n?/ig, "")
-                .replace(/<\/p>(?:<br class=padding>)?/ig, br)
 
-            func(html);
+            /* {bz: 4812}: Don't replace <p> and <br> tags inside WAFL alt text */
+            var separator = '<<<'+Math.random()+'>>>';
+            var chunks = html.replace(/\balt="st-widget-[^"]*"/ig, separator + '$&' + separator).split(separator);
+            var escapedHtml = '';
+            for(var i=0;i<chunks.length;i++) {
+                var chunk = chunks[i];
+                if (/^alt="st-widget-/.test(chunk) && /"$/.test(chunk)) {
+                    escapedHtml += chunk;
+                }
+                else {
+                    escapedHtml += chunk
+                        .replace(/\n*<p>\n?/ig, "")
+                        .replace(/<\/p>(?:<br class=padding>)?/ig, br)
+                }
+            }
+
+            func(escapedHtml);
         });
     }
     else {
@@ -2326,6 +2443,20 @@ proto.revert_widget_images = function() {
 proto.sanitize_dom = function(dom) {
     Wikiwyg.Mode.prototype.sanitize_dom.call(this, dom);
     this.widget_walk(dom);
+
+    // Table is the first element in document - prepend a <br/> so
+    // navigation is possible beyond the table.
+    var $firstTable = $('table:first', dom);
+    if ($firstTable.length && ($firstTable.prev().length == 0)) {
+        $firstTable.before('<br />');
+    }
+
+    // Table is the last element in document - append a <br/> so
+    // navigation is possible beyond the table.
+    var $lastTable = $('table:last', dom);
+    if ($lastTable.length && ($lastTable.next().length == 0)) {
+        $firstTable.after('<br />');
+    }
 }
 
 proto.attachTooltip = function(elem) {
@@ -2482,6 +2613,12 @@ proto.setTitleAndId = function (widget) {
 proto.parseWidgetElement = function(element) {
     var widget = element.getAttribute('alt').replace(/^st-widget-/, '');
     if (Wikiwyg.is_ie) widget = Wikiwyg.htmlUnescape( widget );
+    if ($.browser.webkit) widget = widget.replace(
+        /&#x([a-fA-F\d]{2,5});/g, 
+        function($_, $1) { 
+            return String.fromCharCode(parseInt($1, 16));
+        }
+    );
     return this.parseWidget(widget);
 }
 
@@ -2683,21 +2820,24 @@ proto.replace_widget = function(elem) {
     var widget_image;
     var src;
 
-    if ( (matches = widget.match(/^"([\s\S]+?)"<(.+?)>$/m)) || // Named Links
-        (matches = widget.match(/^(?:"([\s\S]*)")?\{(\w+):?\s*([\s\S]*?)\s*\}$/m))) {
-        // For labeled links or wafls, remove all newlines/returns
-        widget = widget.replace(/[\r\n]/g, ' ');
-    }
-    if (widget.match(/^{image:/)) {
-        var orig = elem.firstChild;
-        if (orig.src) src = orig.src;
+    if (/nlw_phrase/.test(elem.className)) {
+        if ( (matches = widget.match(/^"([\s\S]+?)"<(.+?)>$/m)) || // Named Links
+            (matches = widget.match(/^(?:"([\s\S]*)")?\{(\w+):?\s*([\s\S]*?)\s*\}$/m))) {
+            // For labeled links or wafls, remove all newlines/returns
+            widget = widget.replace(/[\r\n]/g, ' ');
+        }
+        if (widget.match(/^{image:/)) {
+            var orig = elem.firstChild;
+            if (orig.src) src = orig.src;
+        }
     }
 
     if (!src) src = this.getWidgetImageUrl(widget);
 
     widget_image = Wikiwyg.createElementWithAttrs('img', {
         'src': src,
-        'alt': 'st-widget-' + (Wikiwyg.is_ie? Wikiwyg.htmlEscape(widget) : widget)
+        'alt': 'st-widget-' + (Wikiwyg.is_ie? Wikiwyg.htmlEscape(widget) : widget),
+        'title': this.getWidgetTooltip(widget)
     });
     elem.parentNode.replaceChild(widget_image, elem);
     return widget_image;
@@ -2784,6 +2924,16 @@ proto.insert_image = function (src, widget, widget_element, cb) {
         cb();
 }
 
+proto.insert_block = function (text, label, elem) {
+    if (!elem) { this.insert_html('<br />'); }
+    this.insert_image(
+        this.getWidgetImageUrl(label),
+        text,
+        elem
+    );
+    if (!elem) { this.insert_html('<br />'); }
+}
+
 proto.insert_widget = function(widget, widget_element, cb) {
     var self = this;
 
@@ -2813,9 +2963,9 @@ proto.insert_widget = function(widget, widget_element, cb) {
 
 proto.getWidgetImageText = function(widget_text, widget) {
     var text = widget_text;
-    // XXX Hack for html block. Should key off of 'uneditable' flag.
-    if (widget.id == 'html') {
-        text = widget_data.html.title;
+    var config = widget_data[ widget.id ];
+    if (config && config.use_title_as_text) {
+        text = config.title;
     }
     else if (widget_text.match(/^"([^"]+)"{/)) {
         text = RegExp.$1;
@@ -2861,6 +3011,21 @@ proto.getWidgetImageLocalizeText = function(widget, text) {
         }
     }
     return newtext;
+}
+
+proto.getWidgetTooltip = function(widget_text) {
+    var uneditable = false;
+    try {
+        var widget = this.parseWidget(widget_text);
+        uneditable = widget_data[widget.id].uneditable;
+        widget_text = this.getWidgetImageText(widget_text, widget);
+    }
+    catch (e) {
+        // parseWidget can throw an error
+        // Just ignore and set the text to be the widget text
+    }
+
+    return widget_text;
 }
 
 proto.getWidgetImageUrl = function(widget_text) {
@@ -3182,6 +3347,14 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
         this.do_link(widget_element);
         jQuery('#add-web-link').select();
         jQuery('#web-link-text').focus();
+        return;
+    }
+    else if (widget == 'pre') {
+        this.do_widget_pre(widget_element);
+        return;
+    }
+    else if (widget == 'html') {
+        this.do_widget_html(widget_element);
         return;
     }
 

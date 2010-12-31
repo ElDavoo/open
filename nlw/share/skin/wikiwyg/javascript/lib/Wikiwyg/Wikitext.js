@@ -1347,6 +1347,7 @@ proto.convertWikitextToHtml = function(wikitext, func, onError) {
         url: uri,
         async: false,
         type: 'POST',
+        timeout: 30 * 1000,
         data: {
             action: 'wikiwyg_wikitext_to_html',
             page_name: jQuery('#st-newpage-pagename-edit, #st-page-editing-pagename').val(),
@@ -1388,6 +1389,13 @@ proto.make_table_wikitext = function(rows, columns) {
         text += row.join(' ') + '\n';
     }
     return text;
+}
+
+proto.insert_block = function (text) {
+    this.markup_line_alone([
+        "block",
+        "\n" + text + "\n"
+    ]);
 }
 
 proto.do_table = function() {
@@ -1537,6 +1545,11 @@ proto.convert_html_to_wikitext = function(html, isWholeDocument) {
                 cur.className += (cur.className ? ' ' : '') + 'st_walked';
             }
         } while (foundVisualBR);
+
+        // {bz: 4738}: Don't run _format_one_line on top-level tables, HRs and PREs.
+        $(dom).find('td, hr, pre')
+            .parents('span:not(.nlw_phrase), a, h1, h2, h3, h4, h5, h6, b, strong, i, em, strike, del, s, tt, code, kbd, samp, var, u')
+            .addClass('_st_format_div');
 
         $(dom).find('._st_walked').removeClass('_st_walked');
 
@@ -1713,6 +1726,12 @@ proto.walk = function(elem) {
         var method = 'format_' + part.nodeName.toLowerCase();
         if (method != 'format_blockquote' && part.is_indented)
             method = 'format_indent';
+
+        // {bz: 4738}: Don't run _format_one_line on top-level TABLEs, HRs and PREs.
+        if (/\b_st_format_div\b/.test(part.className)) {
+            method = 'format_div';
+        }
+
 //         window.XXX_method = method = method.replace(/#/, '');
         method = method.replace(/#/, '');
         try {
@@ -1796,15 +1815,22 @@ proto.assert_trailing_space = function(part, text) {
 
     if (this.wikitext.match(/ $/)) return;
 
-    if (this.wikitext.match(/\n$/)) {
+    if (/\n$/.test(this.wikitext)) {
         if (part.previousSibling &&
             part.previousSibling.nodeName == 'BR'
         ) return;
+        if (part.top_level_block) return;
         this.wikitext = this.wikitext.replace(/\n$/, '');
     }
 
-    if (! text.match(/^\s/))
+    if (/^\s/.test(text)) return;
+
+    if (part.top_level_block) {
+        this.wikitext += '\n';
+    }
+    else {
         this.wikitext += ' ';
+    }
 }
 
 proto._css_to_px = function(val) {
@@ -1988,6 +2014,12 @@ proto.format_img = function(elem) {
     if (/^st-widget-/.test(widget)) {
         widget = widget.replace(/^st-widget-/, '');
         if (Wikiwyg.is_ie) widget = Wikiwyg.htmlUnescape( widget );
+        if ($.browser.webkit) widget = widget.replace(
+            /&#x([a-fA-F\d]{2,5});/g, 
+            function($_, $1) { 
+                return String.fromCharCode(parseInt($1, 16));
+            }
+        );
         if (widget.match(/^\.\w+\n/))
             elem.top_level_block = true;
         else

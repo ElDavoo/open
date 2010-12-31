@@ -47,15 +47,17 @@
 
 
 | *Comment* | Test Case: Mobile Signals. Verify Next Page and First Page |  |
-| click_and_wait | link=%%miki_mysignals_link_name%% |  |
-| wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% 20 | 3000 |
-| click_and_wait | mobile-paging-next |  |
-| wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% 10 | 3000 |
-| click_and_wait | mobile-paging-next |  |
-| wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
-| click_and_wait | mobile-paging-first |  |
-| wait_for_text_not_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
-| wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% 11 | 3000 |
+| *Comment* | myself link removed |  |
+
+ click_and_wait | link=%%miki_mysignals_link_name%% | |
+wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% 20 | 3000 |
+click_and_wait | mobile-paging-next | |
+wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% 10 | 3000 |
+click_and_wait | mobile-paging-next | |
+wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
+click_and_wait | mobile-paging-first | |
+wait_for_text_not_present_ok | Siggy Siggy Siggy %%start_time%% Sig | 3000 |
+wait_for_text_present_ok | Siggy Siggy Siggy %%start_time%% 11 | 3000 |
 
 | *Comment* | Test Case: Mobile Signals. Send signal to groups |  |
 

@@ -125,6 +125,7 @@ sub GetHomunculus {
 
 
     my ($where_clause, @bindings);
+    my $was_deleted;
 
     if ($where eq 'user_id') {
         # if we don't check this for being an integer here, the SQL query will
@@ -148,7 +149,7 @@ sub GetHomunculus {
             chop $placeholders;
             $where_clause = qq{driver_key NOT IN ($placeholders) AND $where=?};
             @bindings = (@$driver_key, $id_val);
-            $driver_key = 'Deleted'; # if we get any results, make it Deleted
+            $was_deleted = 1;
         }
     }
 
@@ -162,7 +163,7 @@ sub GetHomunculus {
 
     # Always set this; the query returns the same value *except* when we're
     # looking for Deleted users.
-    $row->{driver_key} = $driver_key;
+    $row->{driver_key} = 'Deleted' if ($was_deleted);
 
     $row->{username} = delete $row->{driver_username};
     return ($return_raw_proto_user) ? $row : $class->NewHomunculus($row);
@@ -355,29 +356,35 @@ sub ExpireUserRecord {
 
         # ensure that we're noting who created this User
         $self->_validate_assign_created_by($p) if ($is_create);
-
-        $self->_recreate_display_name($user, $p)
-            if $p->{first_name} or $p->{last_name} or $p->{email_address};
-
+        $self->_recreate_display_name($user, $p);
     }
 
     sub _recreate_display_name {
         my $self = shift;
         my $user = shift;
         my $p    = shift;
-
-        my $first_name = defined $p->{first_name} ? $p->{first_name} 
-                            : $user ? $user->first_name : undef;
-        my $last_name  = defined $p->{last_name} ? $p->{last_name} 
-                            : $user ? $user->last_name : undef;
-        my $email = defined $p->{email_address} ? $p->{email_address} 
-                            : $user ? $user->email_address : undef;
-
-        {
-            no warnings 'uninitialized';
-            my $name = join ' ', grep {length} $first_name, $last_name;
-            ($name = $email) =~ s/@.+// unless $name;
-            $p->{display_name} = $name;
+        if ($user) {
+            # Have a User, so get their Real Name (which will include their
+            # Preferred Name if its enabled and they have one set).
+            #
+            # BUT... we want to take the given "$p" data into consideration,
+            # so localize that when we Guess the User's Real Name.
+            local $user->{first_name}    = $p->{first_name}    if ($p->{first_name});
+            local $user->{last_name}     = $p->{last_name}     if ($p->{last_name});
+            local $user->{email_address} = $p->{email_address} if ($p->{email_address});
+            $p->{display_name} = $user->guess_real_name();
+        }
+        else {
+            # No User, so calculate it as best we can from the data provided.
+            my $first_name = $p->{first_name};
+            my $last_name  = $p->{last_name};
+            my $email      = $p->{email_address};
+            {
+                no warnings 'uninitialized';
+                my $name = join ' ', grep {length} $first_name, $last_name;
+                ($name = $email) =~ s/@.+// unless $name;
+                $p->{display_name} = $name;
+            }
         }
     }
 

@@ -372,50 +372,48 @@ proto.preview_link_more = loc('Edit More');
 proto.preview_link_action = function() {
     var self = this;
 
-    if (this.isOffline()) {
-        alert(loc("The browser is currently offline; please connect to the internet and try again."));
-        return;
-    }
+    Wikiwyg.ensureOnline(function(){
+        var preview = self.modeButtonMap[WW_PREVIEW_MODE];
+        var current = self.current_mode;
 
-    var preview = self.modeButtonMap[WW_PREVIEW_MODE];
-    var current = self.current_mode;
+        self.enable_edit_more = function() {
+            jQuery(preview)
+                .html(loc('Edit More'))
+                .unbind('click')
+                .click( function () {
+                    self.switchMode(current.classname, function(){
+                        if (jQuery("#contentRight").is(":visible")) 
+                            jQuery('#st-page-maincontent')
+                                .css({ 'margin-right': '240px'});
+                        self.preview_link_reset();
 
-    self.enable_edit_more = function() {
-        jQuery(preview)
-            .html(loc('Edit More'))
-            .unbind('click')
-            .click( function () {
-                self.switchMode(current.classname, function(){
-                    if (jQuery("#contentRight").is(":visible")) 
-                        jQuery('#st-page-maincontent')
-                            .css({ 'margin-right': '240px'});
-                    self.preview_link_reset();
+                        // This timeout is for IE so the iframe is ready - {bz: 1358}.
+                        setTimeout(function() {
+                            self.resizeEditor();
+                            self.hideScrollbars();
+                        }, 50);
+                    });
 
-                    // This timeout is for IE so the iframe is ready - {bz: 1358}.
-                    setTimeout(function() {
-                        self.resizeEditor();
-                        self.hideScrollbars();
-                    }, 50);
+                    return false;
                 });
+        };
 
-                return false;
-            });
-    };
+        self.modeByName(WW_PREVIEW_MODE).div.innerHTML = "";
+        self.switchMode(WW_PREVIEW_MODE, function(){
+            preview.innerHTML = self.preview_link_more;
+            jQuery("#st-edit-mode-toolbar").hide();
+            self.showScrollbars();
 
-    this.modeByName(WW_PREVIEW_MODE).div.innerHTML = "";
-    this.switchMode(WW_PREVIEW_MODE, function(){
-        preview.innerHTML = self.preview_link_more;
-        jQuery("#st-edit-mode-toolbar").hide();
-        self.showScrollbars();
+            jQuery(preview)
+                .unbind('click')
+                .click(self.button_disabled_func());
+            self.enable_edit_more();
+            self.disable_button(current.classname);
 
-        jQuery(preview)
-            .unbind('click')
-            .click(self.button_disabled_func());
-        self.enable_edit_more();
-        self.disable_button(current.classname);
-
-        jQuery('#st-page-maincontent').attr('marginRight', '0px');
+            jQuery('#st-page-maincontent').attr('marginRight', '0px');
+        });
     });
+
     return false;
 }
 
@@ -568,35 +566,11 @@ proto.newpage_save = function(page_name, pagename_editfield) {
     return saved;
 }
 
-proto.isOffline = function () {
-    if (typeof navigator == 'object' && typeof navigator.onLine == 'boolean' && !navigator.onLine) {
-        return true;
-    }
-
-    // WebKit's navigator.onLine is unreliable when VMWare or Parallels is
-    // installed - https://bugs.webkit.org/show_bug.cgi?id=32327
-    // Do a GET on blank.html to determine onlineness instead.
-    var onLine = false;
-    $.ajax({
-        async: false,
-        type: 'GET',
-        url: '/static/html/blank.html?_=' + Math.random(),
-        timeout: 10 * 1000,
-        success: function(data) {
-            onLine = data;
-        }
-    });
-    return !onLine;
-}
-
 proto.saveContent = function() {
+    var self = this;
+
     if (jQuery('#st-save-button-link').is(':hidden')) {
         // Don't allow "Save" to be clicked while saving: {bz: 1718}
-        return;
-    }
-
-    if (this.isOffline()) {
-        alert(loc("The browser is currently offline; please connect to the internet and try again."));
         return;
     }
 
@@ -607,10 +581,15 @@ proto.saveContent = function() {
         .css('color', 'red')
         .appendTo('#st-editing-tools-edit');
 
-    var self = this;
-    setTimeout(function(){
-        self.saveChanges();
-    }, 1);
+    Wikiwyg.ensureOnline(function(){
+        setTimeout(function(){
+            self.saveChanges();
+        }, 1);
+    }, function(){
+        jQuery("#st-edit-summary").show();
+        jQuery('#st-editing-tools-edit ul').show();
+        jQuery('#saving-message').remove();
+    });
 }
 
 
@@ -1061,6 +1040,37 @@ Wikiwyg.is_safari_unknown = (
     Wikiwyg.is_safari &&
     Wikiwyg.ua.indexOf("version/") == -1
 );
+
+Wikiwyg.ensureOnline = function (cbOnline, cbOffline) {
+    if (typeof navigator == 'object' && typeof navigator.onLine == 'boolean' && !navigator.onLine) {
+        alert(loc("The browser is currently offline; please connect to the internet and try again."));
+        if (cbOffline) { cbOffline(); }
+        return false;
+    }
+
+    // WebKit's navigator.onLine is unreliable when VMWare or Parallels is
+    // installed - https://bugs.webkit.org/show_bug.cgi?id=32327
+    // Do a GET on blank.html to determine onlineness instead.
+    var onLine = false;
+    $.ajax({
+        async: true,
+        type: 'GET',
+        url: '/static/html/blank.html?_=' + Math.random(),
+        timeout: 10 * 1000,
+        success: function(data) {
+            onLine = data;
+        },
+        complete: function(){
+            if (onLine) {
+                cbOnline();
+            }
+            else {
+                alert(loc("The browser is currently offline; please connect to the internet and try again."));
+                if (cbOffline) { cbOffline(); }
+            }
+        }
+    });
+}
 
 this.addGlobal().setup_wikiwyg = function() {
     if (! Wikiwyg.browserIsSupported) return;
@@ -1943,6 +1953,98 @@ proto.prompt_for_table_dimensions = function() {
     return [ rows, columns ];
 }
 
+proto.do_widget_html = function(widget_element) {
+    return this._do_insert_block_dialog({
+        wafl_id: 'html',
+        dialog_title: loc('Insert HTML'),
+        dialog_prompt: loc('Use the text area below to compose your HTML block.'),
+        dialog_hint: loc('(Note: HTML fragments are not guaranteed to work and may break the UI.)'),
+        edit_label: loc("Raw HTML block. Click to edit."),
+        widget_element: widget_element
+    });
+}
+
+proto.do_widget_pre = function(widget_element) {
+    return this._do_insert_block_dialog({
+        wafl_id: 'pre',
+        dialog_title: loc('Insert Preformatted Text'),
+        dialog_prompt: loc('Use the text area below to compose your preformatted text block.'),
+        dialog_hint: loc('(Preformatted Text is plain text displayed exactly as entered.)'),
+        edit_label: loc("Preformatted text. Click to edit."),
+        widget_element: widget_element
+    });
+}
+
+proto._do_insert_block_dialog = function(opts) {
+    var self = this;
+
+    if (!jQuery('#st-widget-block-dialog').size()) {
+        Socialtext.wikiwyg_variables.loc = loc;
+        jQuery('body').append(
+            Jemplate.process(
+                "add-a-block.html",
+                Socialtext.wikiwyg_variables
+            )
+        );
+    }
+
+    $('#st-widget-block-title').text(opts.dialog_title);
+    $('#st-widget-block-prompt').text(opts.dialog_prompt);
+    $('#st-widget-block-hint').text(opts.dialog_hint);
+
+    if (opts.widget_element) {
+        var widget = this.parseWidgetElement(opts.widget_element) || { widget : '' };
+        $('#st-widget-block-content').val(
+            (widget.widget || '').replace(/^\.\w+\n/, '').replace(/\n\.\w+\n?$/, '')
+        );
+    }
+    else {
+        $('#st-widget-block-content').val('');
+    }
+
+    $('#add-a-block-form')
+        .unbind('reset')
+        .unbind('submit')
+        .bind('reset', function() {
+            jQuery.hideLightbox();
+            Wikiwyg.Widgets.widget_editing = 0;
+            return false;
+        })
+        .submit(function() {
+            if (jQuery.browser.msie)
+                jQuery("<input type='text' />").appendTo('body').focus().remove();
+
+            var close = function() {
+                jQuery.hideLightbox();
+                self.insert_block(
+                    "." + opts.wafl_id + "\n"
+                        + $('#st-widget-block-content').val()
+                            .replace(/\n?$/, "\n." + opts.wafl_id),
+                    opts.edit_label,
+                    opts.widget_element
+                );
+            }
+
+            if (jQuery.browser.msie)
+                setTimeout(close, 50);
+            else
+                close();
+
+            return false;
+        });
+
+    $('#st-widget-block-save').unbind('click').click(function(){
+        $('#add-a-block-form').trigger('submit');
+        return false;
+    });
+
+    self.showWidgetEditingLightbox({
+        content: '#st-widget-block-dialog',
+        focus: '#st-widget-block-content',
+        close: '#st-widget-block-cancel'
+    })
+}
+
 proto._do_link = function(widget_element) {
     var self = this;
 
@@ -2058,21 +2160,10 @@ proto._do_link = function(widget_element) {
 
     jQuery('#add-a-link-error').hide();
 
-    jQuery.showLightbox({
+    self.showWidgetEditingLightbox({
         content: '#st-widget-link-dialog',
         close: '#st-widget-link-cancelbutton'
     })
-
-    var self = this;
-
-    // Set the unload handle explicitly so when user clicks the overlay gray
-    // area to close lightbox, widget_editing will still be set to false.
-    jQuery('#lightbox').bind('lightbox-unload', function(){
-        Wikiwyg.Widgets.widget_editing = 0;
-        if (self.wikiwyg && self.wikiwyg.current_mode && self.wikiwyg.current_mode.set_focus) {
-            self.wikiwyg.current_mode.set_focus();
-        }
-    });
 
     this.load_add_a_link_focus_handlers("add-wiki-link");
     this.load_add_a_link_focus_handlers("add-web-link");
@@ -2081,6 +2172,19 @@ proto._do_link = function(widget_element) {
     var callback = function(element) {
         var form    = jQuery("#add-a-link-form").get(0);
     }
+}
+
+proto.showWidgetEditingLightbox = function(opts) {
+    var self = this;
+    $.showLightbox(opts);
+    // Set the unload handle explicitly so when user clicks the overlay gray
+    // area to close lightbox, widget_editing will still be set to false.
+    $('#lightbox').one('lightbox-unload', function(){
+        Wikiwyg.Widgets.widget_editing = 0;
+        if (self.wikiwyg && self.wikiwyg.current_mode && self.wikiwyg.current_mode.set_focus) {
+            self.wikiwyg.current_mode.set_focus();
+        }
+    });
 }
 
 proto.load_add_a_link_focus_handlers = function(radio_id) {

@@ -8,7 +8,7 @@ use Test::Socialtext tests => 66;
 fixtures(qw( clean db ));
 use Socialtext::User;
 use Socialtext::Role;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 
 my $user;
 
@@ -324,7 +324,7 @@ deactivate_user: {
     # purge the user's roles, confirm we can still deactivate
     Socialtext::UserSet->new->remove_set($user->user_id, roles_only => 1);
 
-    lives_ok { $user->deactivate() } 'can deactivate after accidental purge';
+    ok !exception { $user->deactivate() }, 'can deactivate after accidental purge';
     ok $deleted->has_user($user), 'user has a role in deleted account';
     ok !$new_account->has_user($user), 'user removed from old account';
 }

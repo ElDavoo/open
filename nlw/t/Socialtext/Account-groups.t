@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 20;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 
 ###############################################################################
 # Fixtures: db
@@ -128,6 +128,6 @@ remove_non_member_group_from_account: {
 
     # Removing a non-member Group from the Account shouldn't choke.  No
     # errors, no warnings, no fatal exceptions... its basically a no-op.
-    lives_ok { $account->remove_group(group => $group) }
+    ok !exception { $account->remove_group(group => $group) },
         "... removing non-member Group from Account doesn't choke";
 }

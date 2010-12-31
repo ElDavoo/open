@@ -12,7 +12,7 @@
 | create-user | %%spuser%% | %%password%% |
 | create-user | %%spusertwo%% | %%password%% |
 
-| st-admin | enable-plugin --all-accounts --plugin %%hostname%% |  |
+| st-admin | enable-plugin --plugin signals --account %%hostname%% |  |
 | st-logoutin | %%spuser%% |  |
 
 | *Comment* | Test Case: Signal From Profile. logged in user has empty "lastsignal" |  |
@@ -35,8 +35,6 @@
 | st-send-signal-via-activities-widget | activities | %%signal%% |
 
 | *Comment* | Test Case: Signal From Profile. Public mention appears in wikitester profile activities widget |  |
-| wait_for_element_visible_ok | //a[@class='clearFilters'] | 10000 |
-| click_ok | //a[@class='clearFilters'] |  |
 | wait_for_text_present_ok | %%spuser%% | 30000 |
 | st-verify-text-in-activities-widget | activities | %%sigregexp%% |
 

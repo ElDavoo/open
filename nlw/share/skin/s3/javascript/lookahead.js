@@ -8,14 +8,19 @@
     var DEFAULTS = {
         count: 10,
         filterName: 'filter',
-        filterPrefix: '\\b',
-        filterPostfix: '',
+        filterType: 'sql',
         requireMatch: false,
         params: { 
             order: 'alpha',
             count: 30, // for fetching
             minimal: 1
         }
+    };
+
+    var FILTER_TYPES = {
+        plain: '$1',
+        sql: '\\b$1',
+        solr: '$1* OR $1'
     };
 
     var KEYCODES = {
@@ -231,6 +236,11 @@
         return typeof (lt) == 'string' ? lt : lt[0];
     };
 
+    Lookahead.prototype.linkDesc = function (item) {
+        var lt = this.opts.linkText(item);
+        return typeof (lt) == 'string' ? '' : lt[2];
+    };
+
     Lookahead.prototype.linkValue = function (item) {
         var lt = this.opts.linkText(item);
         return typeof (lt) == 'string' ? lt : lt[1];
@@ -253,15 +263,32 @@
         var re = this.filterRE(val);
 
         $.each(data, function(i, item) {
-            if (filtered.length >= self.opts.count) return;
+            if (filtered.length >= self.opts.count) {
+                if (self.opts.showAll) {
+                    filtered.push({
+                        title: loc("Show all results..."),
+                        displayAs: val,
+                        noThumbnail: true,
+                        onAccept: function() {
+                            self.opts.showAll(val)
+                        }
+                    });
+                    return false; // Break out of the $.each loop
+                }
+                return;
+            }
 
             var title = self.linkTitle(item);
-            if (title.match(re)) {
+            var desc = self.linkDesc(item) || '';
+
+            if (title.match(re) || desc.match(re)) {
                 if (self.opts.grep && !self.opts.grep(item)) return;
 
                 filtered.push({
                     bolded_title: title.replace(re, '<b>$1</b>'),
                     title: title,
+                    bolded_desc: desc.replace(re, '<b>$1</b>'),
+                    desc: desc,
                     value: self.linkValue(item),
                     orig: item
                 });
@@ -281,15 +308,27 @@
             $.each(data, function (i) {
                 var item = this || {};
                 var li = self.$('<li></li>')
-                    .css({ padding: '3px 5px' })
+                    .css({
+                        padding: '3px 5px',
+                        height: '15px', // overridden when there are thumbnails
+                        lineHeight: '15px'
+                    })
                     .appendTo(lookaheadList);
-                if (self.opts.getEntryThumbnail) {
+                if (self.opts.getEntryThumbnail && !item.noThumbnail) {
+                    // lookaheads with thumbnails are taller
+                    li.height(30);
+                    if (!item.desc) li.css('line-height', '30px');
+
                     var src = self.opts.getEntryThumbnail(item); 
                     self.$('<img/>')
                         .css({
                             'vertical-align': 'middle',
+                            'marginRight': '5px',
                             'border': '1px solid #666',
-                            'cursor': 'pointer'
+                            'cursor': 'pointer',
+                            'float': 'left',
+                            'width': '27px',
+                            'height': '27px'
                         })
                         .click(function() {
                             self.accept(i);
@@ -298,18 +337,7 @@
                         .attr('src', src)
                         .appendTo(li);
                 }
-                self.$('<a class="lookaheadItem" href="#"></a>')
-                    .css({
-                        marginLeft: '5px',
-                        whiteSpace: 'nowrap'
-                    })
-                    .html(item.bolded_title)
-                    .attr('value', i)
-                    .click(function() {
-                        self.accept(i);
-                        return false;
-                    })
-                    .appendTo(li);
+                self.itemNode(item, i).appendTo(li);
             });
             this.show();
         }
@@ -320,6 +348,32 @@
                 .css({padding: '3px 5px'});
             this.show();
         }
+    };
+
+    Lookahead.prototype.itemNode = function(item, index) {
+        var self = this;
+        var $node = self.$('<div class="lookaheadItem"></div>')
+            .css({ 'float': 'left' });
+
+        $node.append(
+            self.$('<a href="#"></a>')
+                .css({ whiteSpace: 'nowrap' })
+                .html(item.bolded_title || item.title)
+                .attr('value', index)
+                .click(function() {
+                    self.accept(index);
+                    return false;
+                })
+        );
+
+        if (item.desc) {
+            $node.append(
+                self.$('<div></div>')
+                    .html(item.bolded_desc)
+                    .css('whiteSpace', 'nowrap')
+            );
+        }
+        return $node
     };
 
     Lookahead.prototype.show = function () {
@@ -378,13 +432,19 @@
 
         this.clearLookahead();
 
-        if (this.opts.onAccept) {
+        if (item.onAccept) {
+            item.onAccept.call(this.input, value, item);
+        }
+        else if (this.opts.onAccept) {
             this.opts.onAccept.call(this.input, value, item);
         }
     }
 
     Lookahead.prototype.displayAs = function (item) {
-        if ($.isFunction(this.opts.displayAs)) {
+        if (item && item.displayAs) {
+            return item.displayAs;
+        }
+        else if ($.isFunction(this.opts.displayAs)) {
             return this.opts.displayAs(item);
         }
         else if (item) {
@@ -411,7 +471,7 @@
 
     Lookahead.prototype.select_element = function (el, provisional) {
         this._highlight_element(el);
-        var value = el.children('a').attr('value');
+        var value = el.find('a').attr('value');
         var item = this._items[value];
         this.select(item, provisional);
     }
@@ -448,6 +508,30 @@
             var selitem = jQuery('li.selected a', this.lookahead);
             if (selitem.length && selitem.attr('value')) {
                 this.accept(selitem.attr('value'));
+            }
+            else if (this._items.length == 1) {
+                // Only one candidate - accept it
+                this.accept(0);
+            }
+            else {
+                var val = $(this.input).val();
+                var fullMatchIndex = null;
+
+                $.each(this._items, function(i) {
+                    var item = this || {};
+                    if (item.bolded_title == ('<b>'+item.title+'</b>')) {
+                        if (fullMatchIndex) {
+                            // Two or more full matches - do nothing
+                            return;
+                        }
+                        fullMatchIndex = i;
+                    }
+                });
+
+                // Only one full match - accept it
+                if (fullMatchIndex != null) {
+                    this.accept(fullMatchIndex);
+                }
             }
         }
     };
@@ -491,6 +575,19 @@
         if (this.request) this.request.abort();
     };
 
+    Lookahead.prototype.createFilterValue = function (val) {
+        if (this.opts.filterValue) {
+            return this.opts.filterValue(val);
+        }
+        else {
+            var filter = FILTER_TYPES[this.opts.filterType];
+            if (!filter) {
+                throw new Error('invalid filterType: ' + this.opts.filterType);
+            }
+            return val.replace(/^(.*)$/, filter);
+        }
+    };
+
     Lookahead.prototype.onchange = function () {
         var self = this;
         if (this._loading_lookahead) {
@@ -516,10 +613,7 @@
                 ? this.opts.url() : this.opts.url;
 
         var params = this.opts.params;
-        if (this.opts.filterValue)
-            val = this.opts.filterValue(val);
-        params[this.opts.filterName] = this.opts.filterPrefix + val
-                                     + this.opts.filterPostfix
+        params[this.opts.filterName] = this.createFilterValue(val);
 
         this._loading_lookahead = true;
         this.request = $.ajax({

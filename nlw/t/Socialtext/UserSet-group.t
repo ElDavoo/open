@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use Test::Socialtext tests => 12;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use Socialtext::SQL qw/get_dbh/;
 BEGIN {
     use_ok 'Socialtext::UserSet';
@@ -34,7 +34,7 @@ plugin: {
 
 user_in_group: {
     my $uset = Socialtext::UserSet->new();
-    lives_ok { $uset->add_role($usr->user_id => $grp->user_set_id, $member); } "added role";
+    ok !exception { $uset->add_role($usr->user_id => $grp->user_set_id, $member); }, "added role";
 
     ok $uset->connected($usr->user_id => $grp->user_set_id), "user is a member";
 

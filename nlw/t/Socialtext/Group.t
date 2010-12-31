@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use Test::Socialtext tests => 42;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use Socialtext::SQL qw/:exec/;
 
 ###############################################################################
@@ -203,9 +203,9 @@ query_all_groups: {
 ###############################################################################
 # TEST: instantiate Group Factory with bogus driver_key
 instantiate_factory_bogus_driver_key: {
-    dies_ok {
+    ok exception {
         Socialtext::Group->Factory(driver_key => 'Bogus:123');
-    } 'Instantiation dies on bogus driver_key';
+    }, 'Instantiation dies on bogus driver_key';
 }
 
 ###############################################################################
@@ -221,6 +221,6 @@ alias_display_name: {
 # TEST: Can't enable plugins for groups
 enable_disable_plugin: {
     my $group = create_test_group( unique_id => 'Meh' );
-    throws_ok { $group->enable_plugin('test') } qr/cannot enable/;
-    throws_ok { $group->disable_plugin('test') } qr/cannot disable/;
+    like exception { $group->enable_plugin('test') }, qr/cannot enable/;
+    like exception { $group->disable_plugin('test') }, qr/cannot disable/;
 }

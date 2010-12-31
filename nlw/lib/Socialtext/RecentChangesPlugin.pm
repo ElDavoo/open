@@ -147,7 +147,7 @@ sub new_changes {
     Socialtext::Timer->Continue('RCP_new_changes');
     $self->result_set($self->new_result_set($type));
 
-    my $limit = $self->cgi->limit || Socialtext::Pageset::PAGE_SIZE;
+    my $limit = $count || $self->cgi->limit || Socialtext::Pageset::PAGE_SIZE;
     $limit = min($limit, Socialtext::Pageset::MAX_PAGE_SIZE);
     my $offset = $self->cgi->offset || 0;
     my $order_by = $self->ui_sort_to_order_by();

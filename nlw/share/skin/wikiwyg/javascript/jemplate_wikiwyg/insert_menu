@@ -52,7 +52,11 @@
       <li><a do="do_widget_date" onclick="return false;" href="#">Local Date &amp; Time</a></li>
      </ul>
     </li>
+    <li><a do="do_widget_pre" onclick="return false;" href="#">Preformatted Text...</a></li>
     <li><a do="do_widget_asis" onclick="return false;" href="#">Unformatted Text...</a></li>
+[%- IF hub.current_workspace.allows_html_wafl -%]
+    <li><a do="do_widget_html" onclick="return false;" href="#">HTML...</a></li>
+[%- END -%]
    </ul>
   </li>
  </ul>

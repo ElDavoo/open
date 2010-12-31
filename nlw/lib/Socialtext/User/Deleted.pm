@@ -26,6 +26,11 @@ sub new {
     return $class->SUPER::new( \%proto_user );
 }
 
+sub factory {
+    # there is *NO* factory for Deleted Users.
+    return;
+}
+
 sub password {
     return '*no-password*';
 }

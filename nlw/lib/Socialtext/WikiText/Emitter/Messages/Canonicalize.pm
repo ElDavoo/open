@@ -11,7 +11,7 @@ Readonly my %markup => (
     b    => [ '*',  '*' ],
     i    => [ '_',  '_' ],
     del  => [ '-',  '-' ],
-    a    => [ '"',  '"<HREF>' ],
+    hyperlink => [ '"',  '"<HREF>' ],
     hashmark => [ '{hashtag: ', '}' ],
 );
 

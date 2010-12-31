@@ -66,7 +66,7 @@ rm_dir "formatter_cache_dir";
 set -x
 NLWCTL_QUIET=1 dev-bin/nlwctl stop
 dev-bin/setup-supervisors stop
-dev-bin/st-bootstrap-openldap stop
+bin/st-bootstrap-openldap stop
 
 # when switching to nginx you might have apache2 running still
 killall /usr/sbin/apache2 >/dev/null 2>&1 || true;
@@ -121,8 +121,7 @@ fi
 st-admin enable-plugin --all-accounts --plugin dashboard \
     --plugin signals --plugin groups --plugin push --plugin analytics
 
-st-config set analytics_id UA-20106506-1
-st-config set analytics_domains multiple-domains
+st-config set analytics_id UA-20106506-1 analytics_domains multiple-domains
 
 if [ $UPDATE_WIDGETS == 1 ]; then
     set -x

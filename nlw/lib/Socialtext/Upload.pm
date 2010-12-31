@@ -3,19 +3,19 @@ package Socialtext::Upload;
 use Moose;
 use Socialtext::Moose::UserAttribute;
 use Socialtext::MooseX::Types::Pg;
-use Data::UUID;
 use Socialtext::SQL qw/:exec sql_txn sql_format_timestamptz/;
 use Socialtext::SQL::Builder qw/sql_nextval sql_insert sql_update/;
-use File::Copy qw/copy move/;
-use File::Path qw/make_path/;
-use Fatal qw/copy move rename open close unlink/;
-use Try::Tiny;
-use Moose::Util::TypeConstraints;
 use Socialtext::Exceptions qw/no_such_resource_error data_validation_error/;
 use Socialtext::Encode qw/ensure_is_utf8/;
 use Socialtext::File ();
 use Socialtext::Log qw/st_log/;
 use Socialtext::JSON qw/encode_json/;
+use Socialtext::UUID qw/new_uuid/;
+use File::Copy qw/copy move/;
+use File::Path qw/make_path/;
+use Fatal qw/copy move rename open close unlink/;
+use Try::Tiny;
+use Moose::Util::TypeConstraints;
 use Guard;
 use namespace::clean -except => 'meta';
 
@@ -68,7 +68,7 @@ sub Create {
     my $creator_id = $creator ? $creator->user_id : $p{creator_id};
 
     my $id = sql_nextval('attachment_id_seq');
-    my $uuid = $p{uuid} || $class->NewUUID();
+    my $uuid = $p{uuid} || new_uuid;
 
     my $filename = $p{filename};
     my $content_length = $p{content_length} || 0;
@@ -129,8 +129,6 @@ sub Create {
 
     return $self;
 }
-
-sub NewUUID { return Data::UUID->new->create_str() }
 
 sub Get {
     my ($class, %p) = @_;

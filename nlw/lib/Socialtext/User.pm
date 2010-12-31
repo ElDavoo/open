@@ -54,6 +54,15 @@ has 'homunculus' => (
         cached_at
         missing
         private_external_id
+
+        can_use_plugin
+        profile
+        proper_name
+        preferred_name
+        guess_real_name
+        guess_sortable_name
+        name_and_email
+        update_display_name
     )],
 );
 
@@ -204,8 +213,14 @@ sub new {
     my $homunculus = $class->new_homunculus(@_);
     return unless $homunculus;
 
-    my $self = $class->meta->new_object(homunculus => $homunculus);
-    my $um = Socialtext::UserMetadata->create_if_necessary($self);
+    return $class->new_from_homunculus($homunculus);
+}
+
+sub new_from_homunculus {
+    my $class      = shift;
+    my $homunculus = shift;
+    my $self       = $class->meta->new_object(homunculus => $homunculus);
+    my $um         = Socialtext::UserMetadata->create_if_necessary($self);
     $self->_set_metadata($um);
     $self->_update_profile();
 
@@ -574,6 +589,9 @@ sub to_hash {
         ? $self->primary_account->name
         : undef;
 
+    # This field should never default to ''
+    delete $hash->{private_external_id} unless $hash->{private_external_id};
+
     return $hash;
 }
 
@@ -607,34 +625,19 @@ sub Create_user_from_hash {
     return $user;
 }
 
-sub _get_full_name {
-    my $full_name;
-    my $first_name = shift;
-    my $last_name = shift;
-
-    if (system_locale() eq 'ja') {
-        $full_name = join ' ', grep { defined and length }
-            $last_name, $first_name;
-    }
-    else {
-        $full_name = join ' ', grep { defined and length }
-        $first_name, $last_name;
-    }
-    return $full_name;
-}
-
-
 {
     Readonly my $spec => { workspace => WORKSPACE_TYPE( default => undef ) };
     sub best_full_name {
         my $self = shift;
         my %p = validate( @_, $spec );
 
-        my $name = _get_full_name($self->first_name, $self->last_name);
+        my $preferred = $self->preferred_name;
+        return $preferred if ($preferred);
 
+        my $name = $self->proper_name;
         return $name if length $name;
 
-        return $self->guess_real_name 
+        return $self->guess_real_name
             unless ($p{workspace} && $p{workspace}->workspace_id != 0);
 
         return $self->_masked_email_address($p{workspace});
@@ -707,17 +710,10 @@ sub MaskEmailAddress {
     return $email;
 }
 
-sub name_and_email {
-    my $self = shift;
-
-    return __PACKAGE__->FormattedEmail( $self->first_name, $self->last_name,
-        $self->email_address );
-}
-
 sub FormattedEmail {
     my ( $class, $first_name, $last_name, $email_address ) = @_;
 
-    my $name = _get_full_name($first_name, $last_name);
+    my $name = Socialtext::User::Base->GetFullName($first_name, $last_name);
 
     # Dave suggested this improvement, but many of our templates anticipate
     # the previous format, so is being temporarily reverted
@@ -729,59 +725,6 @@ sub FormattedEmail {
     else {
             return $email_address;
     }
-}
-
-sub guess_sortable_name {
-    my $self = shift;
-    my $name;
-
-    my $fn = $self->first_name || '';
-    my $ln = $self->last_name || '';
-    if ($self->email_address eq $fn) {
-        $fn =~ s/\@.+$//;
-    }
-
-    # Desired result: sort is caseless and alphabetical by first name -- {bz: 1246}
-    $name = "$fn $ln";
-    $name =~ s/^\s+//;
-    $name =~ s/\s+$//;
-    # TODO: unicode casefolding?
-    return $name if length $name;
-
-    return $self->_guess_nonreal_name;
-}
-
-sub guess_real_name {
-    my $self = shift;
-    my $name;
-
-    my $fn = $self->first_name;
-    if ($self->email_address eq $fn) {
-        $fn =~ s/\@.+$//;
-    }
-
-    $name = _get_full_name($fn, $self->last_name);
-    $name =~ s/^\s+//;
-    $name =~ s/\s+$//;
-    return $name if length $name;
-    return $self->_guess_nonreal_name;
-}
-
-sub _guess_nonreal_name {
-    my $self = shift;
-    my $name = $self->username || '';
-    $name =~ s/\@.+$//;
-    $name =~ s/[[:punct:]]+/ /g;
-    $name =~ s/^\s+//;
-    $name =~ s/\s+$//;
-    return $name if length $name;
-
-    $name = $self->email_address;
-    $name =~ s/\@.+$//;
-    $name =~ s/[[:punct:]]+/ /g;
-    $name =~ s/^\s+//;
-    $name =~ s/\s+$//;
-    return $name;
 }
 
 sub workspace_count {
@@ -929,7 +872,7 @@ sub _call_hook {
     require Socialtext::Pluggable::Adapter;
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub($self);
-    $adapter->hook($hclass => $self);
+    $adapter->hook($hclass => [$self]);
 }
 
 # Class methods
@@ -1711,18 +1654,6 @@ sub email_confirmation {
     return Socialtext::User::EmailConfirmation->new( $self->user_id );
 }
 
-sub can_use_plugin {
-    my ($self, $plugin_name) = @_;
-
-    my $authz = ($self->hub && $self->hub->authz)
-        ? $self->hub->authz 
-        : Socialtext::Authz->new();
-    return $authz->plugin_enabled_for_user(
-        plugin_name => $plugin_name,
-        user => $self
-    );
-}
-
 sub is_plugin_enabled {
     my $self = shift;
     $self->can_use_plugin(@_);
@@ -2088,11 +2019,6 @@ Updates the is_business_admin for the user to $value (0 or 1).
 
 Updates the last_login_datetime for the user to the current datetime.
 
-=head2 $user->name_and_email()
-
-Returns the user's name and email address in a format suitable for use
-in email headers, such as C<< "John Doe" <john@example.com> >>.
-
 =head2 $user->best_full_name( workspace => $workspace )
 
 If the user has a first name and/or last name in the DBMS, then this
@@ -2116,18 +2042,6 @@ members of any common accounts where email_addresses_are_masked is 0
 
 Returns the user's name and email, in a format suitable for use in
 email headers.
-
-=head2 $user->guess_sortable_name()
-
-Returns a guess at the user's sortable name, using the first name and/or last
-name from the DBMS if possible.  Goal is to end up with a name for the user
-that can be sorted alphabetically by last name, then first name.
-
-=head2 $user->guess_real_name()
-
-Returns the a guess at the user's real name, using the first name
-and/or last name from the DBMS if possible. Otherwise it simply uses
-the portion of the email address up to the at (@) symbol.
 
 =head2 $user->creation_datetime_object()
 
@@ -2184,11 +2098,6 @@ supplied, otherwise it returns the primary account for this user.
 =head2 $user->primary_account_id()
 
 Returns the primary account ID for this user.
-
-=head2 $user->can_use_plugin( $name )
-
-Returns a boolean indicating whether the user can use the given plugin.
-See also C<Socialtext::Account::is_plugin_enabled>
 
 =head2 $user->can_use_plugin_with( $name => $buddy )
 

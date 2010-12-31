@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use mocked qw(Socialtext::l10n system_locale); # Has to come firstest.
 use Test::Socialtext tests => 121;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use strict;
 use warnings;
 
@@ -21,8 +21,6 @@ use Socialtext::Cache;
 use utf8;
 
 Socialtext::Cache->clear('authz_plugin');
-
-my $has_image_magick = eval { require Image::Magick; 1 };
 
 {
     is( Socialtext::Workspace->Count(), 1, 'Only help workspace in DBMS yet' );
@@ -332,13 +330,10 @@ EMAIL_NOTIFICATION_FROM_ADDRESS:
         );
     };
 
-    SKIP: {
-        skip 'Image::Magick not installed.', 1 unless $has_image_magick;
-        like(
-            $@, qr/\QLogo file must be a gif, jpeg, or png file\E/,
-            'cannot set logo with non image file posing as one'
-        );
-    }
+    like(
+        $@, qr/\QLogo file must be a gif, jpeg, or png file\E/,
+        'cannot set logo with non image file posing as one'
+    );
 
     $ws->set_logo_from_uri( uri => 'http://example.com/image.png' );
     is( $ws->logo_uri, 'http://example.com/image.png', 'logo_uri has changed' );
@@ -779,9 +774,9 @@ Rudimentary_Plugin_Test: {
     is_deeply([ $ws->plugins_enabled ], [],
         'list enabled plugins');
 
-    dies_ok { $ws->enable_plugin('people') } 'cannot enable people';
+    ok exception { $ws->enable_plugin('people') }, 'cannot enable people';
     ok(!$ws->is_plugin_enabled('people'), 'people did not get enabled');
-    dies_ok { $ws->enable_plugin('whatevs') } 'cannot enable whatevs';
+    ok exception { $ws->enable_plugin('whatevs') }, 'cannot enable whatevs';
     ok(!$ws->is_plugin_enabled('whatevs'), 'fake plugin did not get enabled');
 }
 

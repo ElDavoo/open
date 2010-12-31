@@ -2,11 +2,13 @@ package Socialtext::User::Base;
 # @COPYRIGHT@
 use Moose;
 use Readonly;
+use Socialtext::Authz;
 use Socialtext::SQL qw(sql_parse_timestamptz);
 use Socialtext::Validate qw(validate SCALAR_TYPE);
-use Socialtext::l10n qw(loc);
+use Socialtext::l10n qw(system_locale loc);
 use Socialtext::MooseX::Types::Pg;
 use Socialtext::MooseX::Types::UniStr;
+use List::MoreUtils qw(part);
 use namespace::clean -except => 'meta';
 
 has 'user_id' => (is => 'rw', isa => 'Int', writer => '_set_user_id');
@@ -25,6 +27,17 @@ has 'cached_at'         => (is => 'rw', isa => 'Pg.DateTime',
 has 'is_profile_hidden' => (is => 'rw', isa => 'Bool');
 has 'missing'           => (is => 'ro', isa => 'Bool');
 has 'private_external_id' => (is => 'rw', isa => 'Maybe[Str]');
+
+has profile => (
+    is         => 'ro',
+    isa        => 'Maybe[Socialtext::People::Profile]',
+    lazy_build => 1,
+);
+sub _build_profile {
+    my $self = shift;
+    return unless $self->can_use_plugin('people');
+    return Socialtext::People::Profile->GetProfile($self);
+}
 
 # All fields/attributes that a "Socialtext::User::*" has.
 Readonly our @fields => qw(
@@ -46,6 +59,138 @@ Readonly our @other_fields => qw(
 );
 Readonly our @all_fields => (@fields, @other_fields);
 Readonly our %all_fields => map {$_=>1} @all_fields;
+
+sub UserFields {
+    my $class = shift;
+    my $proto_user = shift;
+
+    # whatever is left in all is _not_ a Socialtext::User field.
+    my %all = %$proto_user;
+    my %user = 
+       map { $_ => delete $all{$_} }
+       grep { exists $all{$_} }
+       @all_fields;
+
+    return wantarray ? (\%user, \%all) : \%user;
+}
+
+sub proper_name {
+    my $self  = shift;
+    my $first = $self->first_name;
+    my $last  = $self->last_name;
+    return Socialtext::User::Base->GetFullName($first, $last);
+}
+
+sub preferred_name {
+    my $self    = shift;
+    my $profile = $self->profile;
+    if ($profile) {
+        my $pref_name = $profile->fields->by_name('preferred_name');
+        return if !$pref_name || $pref_name->is_hidden;
+        return $profile->get_attr('preferred_name');
+    }
+    return;
+}
+
+sub guess_real_name {
+    my $self = shift;
+    my $name;
+
+    my $preferred = $self->preferred_name;
+    return $preferred if ($preferred);
+
+    my $fn = $self->first_name;
+    if ($self->email_address eq $fn) {
+        $fn =~ s/\@.+$//;
+    }
+
+    $name = Socialtext::User::Base->GetFullName($fn, $self->last_name);
+    $name =~ s/^\s+//;
+    $name =~ s/\s+$//;
+    return $name if length $name;
+    return $self->_guess_nonreal_name;
+}
+
+sub guess_sortable_name {
+    my $self = shift;
+    my $name;
+
+    my $preferred = $self->preferred_name;
+    return $preferred if ($preferred);
+
+    my $fn = $self->first_name || '';
+    my $ln = $self->last_name || '';
+    if ($self->email_address eq $fn) {
+        $fn =~ s/\@.+$//;
+    }
+
+    # Desired result: sort is caseless and alphabetical by first name -- {bz: 1246}
+    $name = "$fn $ln";
+    $name =~ s/^\s+//;
+    $name =~ s/\s+$//;
+    # TODO: unicode casefolding?
+    return $name if length $name;
+
+    return $self->_guess_nonreal_name;
+}
+
+sub _guess_nonreal_name {
+    my $self = shift;
+    my $name = $self->username || '';
+    $name =~ s/\@.+$//;
+    $name =~ s/[[:punct:]]+/ /g;
+    $name =~ s/^\s+//;
+    $name =~ s/\s+$//;
+    return $name if length $name;
+
+    $name = $self->email_address;
+    $name =~ s/\@.+$//;
+    $name =~ s/[[:punct:]]+/ /g;
+    $name =~ s/^\s+//;
+    $name =~ s/\s+$//;
+    return $name;
+}
+
+sub name_and_email {
+    my $self  = shift;
+    my $name  = $self->guess_real_name;
+    my $email = $self->email_address;
+    return "$name <$email>";
+}
+
+sub update_display_name {
+    my $self = shift;
+    # Update the "display_name" in the DB directly, *regardless* of whether
+    # this is a Default or LDAP user (can't call 'update_store()' on LDAP
+    # Users).
+    my $factory = $self->factory;
+    if ($factory) {
+        my $display_name = $self->guess_real_name;
+        $factory->UpdateUserRecord( {
+            user_id      => $self->user_id,
+            cached_at    => undef,
+            display_name => $display_name,
+        } );
+        $self->display_name($display_name);
+    }
+}
+
+sub GetFullName {
+    my $class      = shift;
+    my $first_name = shift;
+    my $last_name  = shift;
+    my $full_name;
+
+    if (system_locale() eq 'ja') {
+        $full_name = join ' ', grep { defined and length }
+            $last_name, $first_name;
+    }
+    else {
+        $full_name = join ' ', grep { defined and length }
+        $first_name, $last_name;
+    }
+    return $full_name;
+}
 
 sub driver_name {
     my $self = shift;
@@ -69,6 +214,16 @@ sub to_hash {
     return $hash;
 }
 
+sub can_use_plugin {
+    my ($self, $plugin_name) = @_;
+
+    my $authz = Socialtext::Authz->new();
+    return $authz->plugin_enabled_for_user(
+        plugin_name => $plugin_name,
+        user => $self
+    );
+}
+
 # Expires the user, so that any cached data is no longer considered fresh.
 sub expire {
     my $self = shift;
@@ -90,6 +245,15 @@ sub expire {
 
         return;
     }
+}
+
+sub factory {
+    my $self          = shift;
+    my $driver_name   = $self->driver_name;
+    my $driver_id     = $self->driver_id;
+    my $factory_class = "Socialtext::User::${driver_name}::Factory";
+    my $factory       = $factory_class->new($driver_id);
+    return $factory;
 }
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 1);
@@ -172,10 +336,27 @@ Returns a hash reference representation of the user, suitable for using with
 JSON, YAML, etc.  B<WARNING:> The encrypted password is included in this hash,
 and should usually be removed before passing the hash over the threshold.
 
-=item B<new_from_hash()>
+=item B<can_use_plugin($name)>
 
-Create a new homunculus from a hash-ref of parameters.  Uses the C<driver_key>
-to determine the class of the homunculus.
+Returns a boolean indicating whether or not the User can use the given
+C<$plugin>.  See also C<Socialtext::Account::is_plugin_enabled()>.
+
+=item B<guess_real_name()>
+
+Returns the a guess at the user's real name, using the first name
+and/or last name from the DBMS if possible. Otherwise it simply uses
+the portion of the email address up to the at (@) symbol.
+
+=item B<guess_sortable_name()>
+
+Returns a guess at the user's sortable name, using the first name and/or last
+name from the DBMS if possible.  Goal is to end up with a name for the user
+that can be sorted alphabetically by last name, then first name.
+
+=item B<name_and_email()>
+
+Returns the user's name and email address in a format suitable for use
+in email headers, such as C<< "John Doe" <john@example.com> >>.
 
 =item B<expire()>
 

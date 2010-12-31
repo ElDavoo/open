@@ -17,16 +17,15 @@
 * [Test Case: Group Home At Different Levels]
 * [Test Case: Groups UI mismatched Workspace]
 * [Test Case: Group Directory]
+* [Test Case: Groups UI AddRemove Members From Group]
+* [Test Case: Groups UI Delegate Membership]
 
 New as of self-join groups and workspaces
 
 * [Test Case: Restrict Self-Join Workspaces]
 * [Test Case: Group No Change Link]
 
-Broken due to selenium issues:
 
-Test Case: Groups UI AddRemove Members From Group
-Test Case: Groups UI Delegate Membership
 
 ToDo:
 

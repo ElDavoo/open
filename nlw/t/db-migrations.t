@@ -4,9 +4,10 @@ use strict;
 use warnings;
 
 use YAML;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use Test::Differences;
 use File::Path 'mkpath';
+use File::Copy qw/copy/;
 use Socialtext::Paths;
 use Socialtext::System qw/shell_run/;
 use Socialtext::Schema;
@@ -24,8 +25,8 @@ my $real_dir      = 'etc/socialtext/db';
 my $fake_dir      = "$test_dir/etc/socialtext/db";
 my $log_dir       = Socialtext::Paths::log_directory();
 my $backup_dir    = Socialtext::Paths::storage_directory('db-backups');
-my $START_SCHEMA  = 2;
-my $latest_schema = $START_SCHEMA;
+my $START_SCHEMA  = 131; # the version in the pg-9 schema file
+my $latest_schema = $START_SCHEMA; # default, will change to actual latest below
 
 # Set up directories and copy schema migrations into our test directory
 {
@@ -48,9 +49,11 @@ my $latest_schema = $START_SCHEMA;
         }
         close $out or die "Can't write to $fake_dir/$file: $!";
     }
+
+    copy "$real_dir/socialtext-pg-9.sql" => "$fake_dir/socialtext-pg-9.sql";
 }
 
-plan tests => ($latest_schema - $START_SCHEMA) + 1;
+plan tests => ($latest_schema - $START_SCHEMA) + 2;
 
 # Set up the initial database
 diag "loading config...\n";
@@ -61,12 +64,18 @@ my $schema = Socialtext::Schema->new(%$schema_config);
 $schema->{no_add_required_data} = $schema->{quiet} = 1;
 
 diag "Recreating schema...\n";
-$schema->recreate('schema-file' => 't/test-data/socialtext-schema.sql');
+
+ok -r "$fake_dir/socialtext-pg-9.sql", "base postgres 9 schema exists";
+$schema->recreate(
+    'schema-file'    => "$fake_dir/socialtext-pg-9.sql",
+    'no_die_on_drop' => 1,
+);
 
 # Check each schema
 for ( $START_SCHEMA+1 .. $latest_schema ) {
-    lives_ok { $schema->sync( to_version => $_, no_dump => 1, no_create => 1) }
-             "Schema migration $_";
+    ok !exception {
+        $schema->sync( to_version => $_, no_dump => 1, no_create => 1)
+    }, "Schema migration $_";
     if ($@) {
         system("tail -n 20 $log_dir/st-db.log");
         die "Can't continue";
@@ -77,7 +86,8 @@ for ( $START_SCHEMA+1 .. $latest_schema ) {
 my $generated_schema = "$test_dir/generated-schema.sql";
 shell_run "dump-schema $generated_schema";
 
-my $diff = qx{diff -du $real_dir/socialtext-schema.sql $generated_schema};
+# Note: whitespace amount changes are ignored with -b
+my $diff = qx{diff -dub $real_dir/socialtext-schema.sql $generated_schema};
 is $diff, '', "Zero length diff";
 
 if ($ENV{INSTALL_SCHEMA}) {

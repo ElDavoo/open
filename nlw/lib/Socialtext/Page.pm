@@ -235,6 +235,7 @@ sub update_from_remote {
     my $subject     = $self->utf8_decode($p{subject});
     my $edit_summary = $self->utf8_decode($p{edit_summary});
     my $tags        = $p{tags};
+    my $type        = $p{type};
     my $locked      = exists($p{locked}) ? $p{locked} : $self->locked;
 
     if ($tags) {
@@ -275,6 +276,7 @@ sub update_from_remote {
     $revision_id  ||= $self->revision_id;
     $revision     ||= $self->metadata->Revision || 0;
     $subject      ||= $self->title,
+    $type         ||= $self->metadata->Type,
     $edit_summary ||= '';
 
     $self->load;
@@ -306,8 +308,8 @@ sub update_from_remote {
         user             => $user,
         edit_summary     => $edit_summary,
         locked           => $locked,
+        type             => $type,
         $p{date} ? (date => $p{date}) : (),
-        $p{type} ? (type => $p{type}) : (),
         # don't signal-this-edit via update() so we can tie it to the event
     );
 
@@ -766,7 +768,7 @@ sub add_comment {
 
     $self->content( $self->content
             . "\n---\n"
-            . $wikitext
+            . Socialtext::Encode::ensure_is_utf8($wikitext)
             . $self->_comment_attribution );
 
     $self->metadata->update( user => $self->hub->current_user );
@@ -909,8 +911,8 @@ sub _perform_store_actions {
     $self->_log_page_action();
     $self->_cache_html();
 
-    $self->hub->pluggable->hook( 'nlw.page.update', $self,
-        workspace => $self->hub->current_workspace,
+    $self->hub->pluggable->hook( 'nlw.page.update',
+        [$self, workspace => $self->hub->current_workspace],
     );
 }
 
@@ -2014,9 +2016,9 @@ sub edit_in_progress {
                 username => $user->best_full_name,
                 email_address => $user->email_address,
                 user_business_card => $self->hub->pluggable->hook(
-                    'template.user_business_card.content', $user->user_id),
+                    'template.user_business_card.content', [$user->user_id]),
                 user_link => $self->hub->pluggable->hook(
-                    'template.open_user_link.content', $user->user_id
+                    'template.open_user_link.content', [$user->user_id]
                 ),
                 minutes_ago   => int((time - str2time($evt->{at})) / 60 ),
             };

@@ -557,3 +557,6 @@ etc/socialtext/uri_map.d/twilio.yaml
 lib/Socialtext/Rest/Twilio.pm
 lib/Socialtext/Twilio.pm
 lib/WWW/Twilio/API.pm
+t/wikitests/analytics.wiki
+t/wikitests/signals/data_signals_assets-mentions.wiki
+t/wikitests/people/rest/data_people_best_full_name.wiki

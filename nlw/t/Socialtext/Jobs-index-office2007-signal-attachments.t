@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Exception;
+use Test::Socialtext::Fatal;
 use Test::Socialtext tests => 8;
 use File::Basename qw(basename);
 use Socialtext::Jobs;
@@ -34,7 +34,7 @@ schedule_for_reindex: {
     ok $hit_signal, 'created "Hit" signal';
 
     # clear Ceq queue
-    lives_ok { Socialtext::Jobs->clear_jobs() } 'cleared out queued jobs';
+    ok !exception { Socialtext::Jobs->clear_jobs() }, 'cleared out queued jobs';
 
     # run the upgrade job
     my $upgrade_job_type = 'Socialtext::Job::Upgrade::IndexOffice2007SignalAttachments';

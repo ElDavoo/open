@@ -345,7 +345,7 @@ sub role_change_event {
     require Socialtext::Pluggable::Adapter;
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub($actor);
-    $adapter->hook('nlw.roles.changed' => $self,$actor,$change,$thing,$role);
+    $adapter->hook('nlw.roles.changed' => [$self,$actor,$change,$thing,$role]);
 }
 
 sub _mk_method ($&) {
