@@ -6,8 +6,10 @@
 
 | set | to_acct | gui-to-acct-%%start_time%% |
 | set | group_acct_two | grps-acct-two-%%start_time%% |
-| set | user_two | grps-user-two-%%start_time%%@matt.socialtext.net |
-| set | user_three | grps-user-three-%%start_time%%@matt.socialtext.net |
+| set | user_two | grpsusertwo%%start_time%%@matt.socialtext.net |
+| set | short_user_two | grpsusertwo%%start_time%% |
+| set | user_three | grpsuserthree%%start_time%%@matt.socialtext.net |
+| set | short_user_three | grpsuserthree%%start_time%% |
 | create-account | %%group_acct_two%% |  |
 | create-account | %%to_acct%% |  |
 | set | to_acct_id | %%account_id%% |
@@ -36,9 +38,9 @@
 | wait_for_element_visible_ok | link=%%group_acct%% | 30000 |
 | wait_for_element_visible_ok | link=%%group_acct%% | 30000 |
 | open_ok | nlw/control/account/%%to_acct_id%% |  |
-| wait_for_element_visible_ok | link=%%user_two%% | 30000 |
-| wait_for_element_visible_ok | link=%%user_three%% | 30000 |
-| wait_for_element_visible_ok | link=%%group_user%% | 30000 |
+| wait_for_element_visible_ok | link=%%short_user_two%% <%%user_two%%> | 30000 |
+| wait_for_element_visible_ok | link=%%short_user_three%% <%%user_three%%> | 30000 |
+| wait_for_element_visible_ok | link=%%group_user_short%% <%%group_user%%> | 30000 |
 | wait_for_text_present_ok | Users (3) | 30000 |
 | wait_for_text_present_ok | Groups (2) | 30000 |
 | wait_for_element_visible_ok | link=%%group_acct%% | 30000 |
@@ -46,7 +48,7 @@
 | wait_for_text_present_ok | Workspaces (1) | 30000 |
 | wait_for_element_visible_ok | link=%%group_ws%% | 30000 |
 | click_and_wait | link=%%group_acct%% |  |
-| wait_for_element_visible_ok | link=%%group_user%% | 30000 |
+| wait_for_element_visible_ok | link=%%group_user_short%% <%%group_user%%> | 30000 |
 | wait_for_text_present_ok | Users (1) | 10000 |
 
 | *Comment* | Test Case: Groups UI Acct 2 Group Web UI - Overlapping acct from/to, see error |  |

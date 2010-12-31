@@ -324,6 +324,7 @@ update_user_via_factory: {
 
     # yank user out of DB again and verify update
     my $found = $factory->GetUser( username => 'bleargh' );
+    $found->profile; # Trigger profile instantiation (since it is lazy)
     isa_ok $found, 'Socialtext::User::Default', '... found updated user';
     is_deeply $found, $homunculus, '... homunculus matches';
     is $found->user_id, $user->user_id, '... same user_id';
@@ -358,6 +359,7 @@ update_user_via_user: {
 
     # yank user out of DB again and verify update
     my $found = $factory->GetUser( email_address => 'foo@example.com' );
+    $found->profile; # Trigger profile instantiation (since it is lazy)
     isa_ok $found, 'Socialtext::User::Default', '... found updated user';
     is_deeply $found, $homunculus, '... homunculus matches';
     is $found->user_id, $user->user_id, '... same user_id';

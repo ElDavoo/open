@@ -142,6 +142,10 @@ v.hub = {};
 v.hub.current_workspace = {};
 v.hub.current_workspace.uri = "[% hub.current_workspace.uri %]";
 
+[% IF current_workspace.allows_html_wafl %]
+v.hub.current_workspace.allows_html_wafl = true;
+[% END %]
+
 [% IF current_workspace.enable_spreadsheet %]
 v.hub.current_workspace.enable_spreadsheet = true;
 [% END %]

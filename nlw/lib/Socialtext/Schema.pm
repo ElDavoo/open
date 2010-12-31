@@ -106,7 +106,7 @@ sub recreate {
     my %opts = @_;
 
     eval { $self->dump } unless $opts{no_dump};
-    $self->dropdb;
+    $self->dropdb(%opts);
     $self->createdb;
     my $file = $opts{'schema-file'} || $self->_schema_filename;
     $self->run_sql_file($file);
@@ -461,7 +461,9 @@ Removes the current database, without dumping it.
 =cut
 
 sub dropdb {
-    my $self = shift;
+    my $self   = shift;
+    my %opts   = @_;
+    my $no_die = $opts{no_die_on_drop} ? '-' : '';
     my %c = $self->connect_params();
 
     disconnect_dbh(); # disconnect so as not to kill self
@@ -475,7 +477,7 @@ sub dropdb {
         warn "Error with kill_pg_backends: $@" if $@;
     }
 
-    $self->_db_shell_run("$sudo dropdb $c{db_name}");
+    $self->_db_shell_run("$no_die$sudo dropdb $c{db_name}");
 }
 
 sub _log_file { Socialtext::Paths::log_directory() . '/st-db.log' }

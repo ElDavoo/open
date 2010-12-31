@@ -24,7 +24,7 @@ include | [Test Case: People Search Edit A Profile] | |
 
 | *Comment* | Test Case: People Search Field Search Access People. |  |
 | open_ok | /?action=people |  |
-| wait_for_element_visible_ok | st-search-term | 30000 |
+| select_ok | st-search-action | label=Search People: |
 
 | *Comment* | Test Case: People Search Field Search. Search each field |  |
 | st-search | name:"%%first%% %%last%%" | Showing 1 - 1 of 1 total |

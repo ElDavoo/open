@@ -32,6 +32,9 @@
 | *Comment* | SEE MIKI Tag List |
 | pause | %%pt%% |
 
+| wait_for_element_visible_ok | link=Next page > | 30000 |
+| clickAndWait | link=Next page > |  |
+| wait_for_element_visible_ok | link=Welcome | 30000 |
 | clickAndWait | link=Welcome |
 | *Comment* | SEE MIKI Pages in welcome category |
 | pause | %%pt%% |

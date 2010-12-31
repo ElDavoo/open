@@ -19,16 +19,16 @@
 
 | *Comment* | Test Case: Preview Format verify_value does not seem to work any more |  |
 
- verify_value | wikiwyg_wikitext_textarea | qr/\^ head1.+{toc: }.+\^\^ head2.+\^\^\^ head3/ |
+verify_value | wikiwyg_wikitext_textarea | qr/\^ head1.+{toc: }.+\^\^ head2.+\^\^\^ head3/ |
 
 | *Comment* | Test Case: Preview Format click Preview button |  |
 | text_like | st-preview-button-link | Preview |
 | click_ok | st-preview-button-link |  |
-| wait_for_element_visible_ok | link=Edit More | 30000 |
-| wait_for_element_not_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| wait_for_text_present_ok | head | 30000 |
 
 | *Comment* | Test Case: Preview Format check that all the headings are displayed, and the links to all the headings as well |  |
 | *Comment* | Test Case: Preview Format If TOC were broken, "head" links would not appear |  |
+| wait_for_text_present_ok | head2 | 30000 |
 | text_like | qr/head1.+head1.+head2.+head3.+head2.+head3/ |  |
 
 | *Comment* | Test Case: Preview Format Check that the links exist |  |
@@ -47,6 +47,7 @@
 | wait_for_text_present_ok | head | 30000 |
 
 | *Comment* | Test Case: Preview Format Check that TOC is OK in Preview coming from Simple mode |  |
+| pause | 5000 | wait for render |
 | text_like | qr/head1.+head1.+head2.+head3.+head2.+head3/ |  |
 | text_like | st-preview-button-link | Edit More |
 

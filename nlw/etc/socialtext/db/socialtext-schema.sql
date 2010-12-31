@@ -216,6 +216,40 @@ BEGIN
 END;
 $$;
 
+CREATE FUNCTION mark_user_as_updated_when_profile_changes() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+
+  IF TG_OP = 'INSERT' OR TG_OP = 'UPDATE' THEN
+    UPDATE users
+       SET last_profile_update = current_timestamp
+     WHERE user_id = NEW.user_id;
+    RETURN NEW;
+  ELSIF TG_OP = 'DELETE' THEN
+    UPDATE users
+       SET last_profile_update = current_timestamp
+     WHERE user_id = OLD.user_id;
+    RETURN OLD;
+  END IF;
+END;
+$$;
+
+CREATE FUNCTION mark_user_as_updated_when_user_changes() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        NEW.last_profile_update := current_timestamp;
+    ELSE
+        IF NEW.last_profile_update = OLD.last_profile_update THEN
+            NEW.last_profile_update := current_timestamp;
+        END IF;
+    END IF;
+  RETURN NEW;
+END;
+$$;
+
 CREATE FUNCTION materialize_event_view() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
@@ -2090,6 +2124,12 @@ CREATE TRIGGER group_user_set_delete AFTER DELETE ON groups FOR EACH ROW EXECUTE
 
 CREATE TRIGGER materialize_event_view_on_insert AFTER INSERT ON event FOR EACH ROW EXECUTE PROCEDURE materialize_event_view();
 
+CREATE TRIGGER profile_attr_mark_user_updated_when_changed BEFORE INSERT OR DELETE OR UPDATE ON profile_attribute FOR EACH ROW EXECUTE PROCEDURE mark_user_as_updated_when_profile_changes();
+
+CREATE TRIGGER profile_photo_mark_user_updated_when_changed BEFORE INSERT OR DELETE OR UPDATE ON profile_photo FOR EACH ROW EXECUTE PROCEDURE mark_user_as_updated_when_profile_changes();
+
+CREATE TRIGGER profile_rel_mark_user_updated_when_changed BEFORE INSERT OR DELETE OR UPDATE ON profile_relationship FOR EACH ROW EXECUTE PROCEDURE mark_user_as_updated_when_profile_changes();
+
 CREATE TRIGGER sessions_insert AFTER INSERT ON sessions FOR EACH STATEMENT EXECUTE PROCEDURE cleanup_sessions();
 
 CREATE TRIGGER signal_before_insert BEFORE INSERT ON signal FOR EACH ROW EXECUTE PROCEDURE auto_hash_signal();
@@ -2109,6 +2149,8 @@ CREATE TRIGGER user_set_path_insert AFTER INSERT ON user_set_path FOR EACH ROW E
 CREATE TRIGGER user_user_set_delete AFTER DELETE ON users FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
 
 CREATE TRIGGER users_insert AFTER INSERT ON users FOR EACH ROW EXECUTE PROCEDURE auto_vivify_user_rollups();
+
+CREATE TRIGGER users_mark_as_updated_when_changed BEFORE INSERT OR UPDATE ON users FOR EACH ROW EXECUTE PROCEDURE mark_user_as_updated_when_user_changes();
 
 CREATE TRIGGER workspace_user_set_delete AFTER DELETE ON "Workspace" FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
 
@@ -2533,4 +2575,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '132');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '133');

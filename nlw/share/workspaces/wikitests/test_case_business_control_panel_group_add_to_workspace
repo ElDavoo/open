@@ -20,7 +20,8 @@
 | create-group | %%group%% | %%account%% | %%username%% |
 
 | *Comment* | Test Case: Business Control Panel Group Add to Workspace Test User In Group |  |
-| set | testuseringroup | `testusering-%%start_time%%@ken.socialtext.net` |
+| set | testuseringroup | `testusering%%start_time%%@ken.socialtext.net` |
+| set | short_testuser | testusering%%start_time%% |
 | create-user | %%testuseringroup%% | %%password%% |
 | add-user-to-group | %%testuseringroup%% | %%group_id%% |
 
@@ -32,7 +33,7 @@
 | *Comment* | Visual inspection of add to workspace |  |
 | open-ok | /nlw/control/group/%%group_id%% |  |
 | wait_for_element_visible_ok | add-workspace | 30000 |
-| wait_for_element_visible_ok | link=%%testuseringroup%% | 30000 |
+| wait_for_element_visible_ok | link=%%short_testuser%% <%%testuseringroup%%> | 30000 |
 | wait_for_text_present_ok | Workspaces (0) | 10000 |
 | wait_for_text_present_ok | Users (2) | 10000 |
 | wait_for_element_visible_ok | add-workspace | 30000 |
@@ -50,7 +51,7 @@
 | click-and-wait | //input[@value='Add to Workspace'] |  |
 
 | *Comment* | Test Case: Business Control Panel Group Add to Workspace Verify redirect, message |  |
-| wait_for_element_visible_ok | link=%%testuseringroup%% | 30000 |
+| wait_for_element_visible_ok | link=%%short_testuser%% <%%testuseringroup%%> | 30000 |
 | wait_for_element_visible_ok | link=%%ws%% | 30000 |
 | wait_for_text_present_ok | %%group%% Group | 10000 |
 | wait_for_text_present_ok | Workspaces (1) | 10000 |
@@ -68,7 +69,7 @@
 
 | *Comment* | Test Case: Business Control Panel Group Add to Workspace Add as admin |  |
 | open-ok | /nlw/control/group/%%group_id%% |  |
-| wait_for_element_visible_ok | link=%%testuseringroup%% | 30000 |
+| wait_for_element_visible_ok | link=%%short_testuser%% <%%testuseringroup%%> | 30000 |
 | wait_for_text_present_ok | Workspaces (1) | 10000 |
 | wait_for_text_present_ok | Users (2) | 10000 |
 
@@ -87,7 +88,7 @@
 | wait_for_element_visible_ok | //input[@value='Add to Workspace'] | 30000 |
 | click-and-wait | //input[@value='Add to Workspace'] |  |
 
-| wait_for_element_visible_ok | link=%%testuseringroup%% | 30000 |
+| wait_for_element_visible_ok | link=%%short_testuser%% <%%testuseringroup%%> | 30000 |
 | wait_for_element_visible_ok | link=%%workspaceforadmin%% | 30000 |
 | wait_for_text_present_ok | %%group%% Group | 10000 |
 | wait_for_text_present_ok | Workspaces (2) | 10000 |

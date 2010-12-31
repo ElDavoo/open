@@ -66,7 +66,10 @@ $schema->{no_add_required_data} = $schema->{quiet} = 1;
 diag "Recreating schema...\n";
 
 ok -r "$fake_dir/socialtext-pg-9.sql", "base postgres 9 schema exists";
-$schema->recreate('schema-file' => "$fake_dir/socialtext-pg-9.sql");
+$schema->recreate(
+    'schema-file'    => "$fake_dir/socialtext-pg-9.sql",
+    'no_die_on_drop' => 1,
+);
 
 # Check each schema
 for ( $START_SCHEMA+1 .. $latest_schema ) {

@@ -1,15 +1,19 @@
 | *Comment* | Test Case: Control Panel Create Group |  |
 
 | set | email1 | group1%%start_time%%@ken.socialtext.net |
+| set | short_email1 | group1%%start_time%% |
 | create_user | %%email1%% | %%password%% |
 | set | user1 | %%user_id%% |
 | set | email2 | group2%%start_time%%@ken.socialtext.net |
+| set | short_email2 | group2%%start_time%% |
 | create_user | %%email2%% | %%password%% |
 | set | user2 | %%user_id%% |
 | set | email3 | group3%%start_time%%@ken.socialtext.net |
+| set | short_email3 | group3%%start_time%% |
 | create_user | %%email3%% | %%password%% |
 | set | user3 | %%user_id%% |
 | set | email4 | group4%%start_time%%@ken.socialtext.net |
+| set | short_email4 | group4%%start_time%% |
 | create_user | %%email4%% | %%password%% |
 | set | user4 | %%user_id%% |
 | set | email5 | group5%%start_time%%@ken.socialtext.net |
@@ -81,10 +85,10 @@
 | click_and_wait | invite-button |  |
 
 | *Comment* | Test case: Control Panel Create Group Contains new members |  |
-| wait_for_element_visible_ok | link=%%email1%% | 30000 |
-| wait_for_element_visible_ok | link=%%email2%% | 30000 |
-| wait_for_element_visible_ok | link=%%email3%% | 30000 |
-| wait_for_element_visible_ok | link=%%email4%% | 30000 |
+| wait_for_element_visible_ok | link=%%short_email1%% <%%email1%%> | 30000 |
+| wait_for_element_visible_ok | link=%%short_email2%% <%%email2%%> | 30000 |
+| wait_for_element_visible_ok | link=%%short_email3%% <%%email3%%> | 30000 |
+| wait_for_element_visible_ok | link=%%short_email4%% <%%email4%%> | 30000 |
 | text_like | //body | You successfully added 4 users to 1 group. |
 | text_like | //body | Users (5) |
 | text_like | //body | %%groupname%% |
@@ -135,9 +139,9 @@
 
 | *Comment* | Test Case: Control Panel Groups Confirm Add |  |
 | open_ok | /nlw/control/group/%%group_id%% |  |
-| wait_for_element_visible_ok | link=%%email1%% | 30000 |
-| wait_for_element_visible_ok | link=%%email2%% | 30000 |
-| wait_for_element_visible_ok | link=%%email3%% | 30000 |
+| wait_for_element_visible_ok | link=%%short_email1%% <%%email1%%> | 30000 |
+| wait_for_element_visible_ok | link=%%short_email2%% <%%email2%%> | 30000 |
+| wait_for_element_visible_ok | link=%%short_email3%% <%%email3%%> | 30000 |
 | text_like | //body | Users (3) |
 | text_like | //body | %%groupexists%% |
 
@@ -165,9 +169,9 @@
 | click_ok | //input[@type='button' and @value="Remove from group"] |  |
 
 | wait_for_text_present_ok | Group role changes were successful. | 30000 |
-| wait_for_element_visible_ok | link=%%email2%% | 30000 |
-| wait_for_element_not_present_ok | link=%%email1%% | 30000 |
-| wait_for_element_not_present_ok | link=%%email3%% | 30000 |
+| wait_for_element_visible_ok | link=%%short_email2%% <%%email2%%> | 30000 |
+| wait_for_element_not_present_ok | link=%%short_email1%% <%%email1%%> | 30000 |
+| wait_for_element_not_present_ok | link=%%short_email3%% <%%email3%%> | 30000 |
 
 | *Comment* | Test Case: Control Panel Create Group Teardown |
 | delete_created_groups |  |

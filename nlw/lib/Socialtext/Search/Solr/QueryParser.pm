@@ -22,18 +22,21 @@ extends 'Socialtext::Search::QueryParser';
 sub _build_field_map {
     my $self = shift;
     return {
-        name          => 'name_pf_t',
-        first_name    => 'first_name_pf_s',
-        given_name    => 'first_name_pf_s',
-        last_name     => 'last_name_pf_s',
-        family_name   => 'last_name_pf_s',
-        email         => 'email_address_pf_s',
-        email_address => 'email_address_pf_s',
-        url           => 'personal_url_pf_h',
-        facebook      => 'facebook_url_pf_h',
-        linkedin      => 'linkedin_url_pf_h',
-        (map { $_ => $_ . "_sn_pf_s" } 
-            qw/aol yahoo gtalk skype twitter sametime/),
+        name           => 'name_pf_t',
+        first_name     => 'first_name_pf_s',
+        given_name     => 'first_name_pf_s',
+        last_name      => 'last_name_pf_s',
+        family_name    => 'last_name_pf_s',
+        preferred_name => 'preferred_name_pf_t',
+        email          => 'email_address_pf_s',
+        email_address  => 'email_address_pf_s',
+        url            => 'personal_url_pf_h',
+        facebook       => 'facebook_url_pf_h',
+        linkedin       => 'linkedin_url_pf_h',
+        (
+            map { $_ => $_ . "_sn_pf_s" }
+                qw/aol yahoo gtalk skype twitter sametime/
+        ),
         manager       => 'supervisor_pf_rt',
         manager_id    => 'supervisor_pf_i',
         supervisor_id => 'supervisor_pf_i',
@@ -42,7 +45,7 @@ sub _build_field_map {
     };
 }
 
-sub _build_searchable_fields { 
+sub _build_searchable_fields {
     my $self = shift;
     [
         # General fields - multi-type

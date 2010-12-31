@@ -16,19 +16,33 @@ DEFAULT
 
   [% ELSE %]
 
-  [% SET search = container.search %]
-  [% IF action == 'search' && scope == '_' && current_workspace.real; search = 'workspace'; END %]
-  [% IF action == 'search' && !search; search = 'workspaces'; END %]
-
   <select id="st-[%sid%]-action" name="action" class="searchSelect">
     [% IF workspace_present %]
-    <option value="search" id="st-[%sid%]-this-ws" [% IF search == "workspace" %]selected="selected" [% END %]>[% loc("Search This Workspace:") %]</option>
+    <option value="search_workspace" id="st-[%sid%]-this-ws" [% IF search == "workspace" %]selected="selected" [% END %]>[% loc("Search This Workspace:") %]</option>
     [% END %]
-    <option value="search" id="st-[%sid%]-all-ws" class="scopeStar" [% IF search == "workspaces"  %]selected="selected" [% END %]>[% loc("Search My Workspaces:") %]</option>
+    <option value="search_workspaces" id="st-[%sid%]-all-ws" [% IF search == "workspaces"  %]selected="selected" [% END %]>[% loc("Search My Workspaces:") %]</option>
     [% FILTER decorate('search_box') %][% END %]
   </select>
-  <input type="hidden" value="[% scope %]" name="scope" class="searchScope"/>
+  [% IF action == 'search' AND scope == '_'; search = 'workspace';
+     ELSIF action == 'search' AND scope == '*'; search = 'workspaces';
+     ELSE; search = action.match('search_(.*)').0;
+     END
+   %]
+  [% IF search; search_scope = search;
+     ELSIF container.search; search_scope = container.search;
+     ELSIF action == 'people'; search_scope = 'people';
+     ELSIF action == 'display'; search_scope = 'workspace';
+     ELSIF action == 'workspaces_listall'; search_scope = 'workspaces';
+     END
+   %]
+  <script>
+      Socialtext.stickySearch({
+          scope: "[% search_scope %]",
 
+          // Search pages should not be sticky
+          sticky: [% search_scope && !search ? 'true' : 'false' %]
+      });
+  </script>
   [% END %]
 
   <input id="st-[%sid%]-term" name="search_term" class="searchText" type="text" [% IF html_escaped_search_term %]value="[% html_escaped_search_term %]"[% END %] />

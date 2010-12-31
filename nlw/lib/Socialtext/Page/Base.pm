@@ -322,8 +322,8 @@ sub _cache_using_questions {
             ) ? 1 : 0;
         }
         elsif (my $user_id = $q->{user_id}) {
-            my $user = Socialtext::User->new(user_id => $user_id) or next;
-            push @short_q, 'u' . $user_id;
+            my $user = eval { Socialtext::User->Resolve($user_id) } or next;
+            push @short_q, 'u' . $user->user_id;
             push @answers, 1; # All users are linkable.
         }
         elsif ($ws = $q->{allows_html_wafl}) {
@@ -372,8 +372,6 @@ sub _cache_using_questions {
     return $html_ref;
 }
 
-
-
 sub _users_modified_since {
     my $self = shift;
     my $q_str = shift;
@@ -381,7 +379,7 @@ sub _users_modified_since {
 
     my @found_users;
     my @user_ids;
-    while ($q_str =~ m/(?:^|-)u(\d+)(?:-|$)/g) {
+    while ($q_str =~ m/(?:^|-)u(\d+)(?:-|$)/gm) {
         push @user_ids, $1;
     }
     return 0 unless @user_ids;

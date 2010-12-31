@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 42;
+use Test::Socialtext tests => 43;
 use Socialtext::Account;
 use File::Slurp qw(write_file);
 
@@ -20,9 +20,9 @@ MASS_ADD_USERS: {
             (File::Temp::tempfile(SUFFIX=>'.csv', OPEN=>0))[1]
         );
         write_file $csvfile,
-            join(',', qw{username email_address first_name last_name password position company location work_phone mobile_phone home_phone}) . "\n",
-            join(',', qw{csvtest1 csvtest1@example.com John Doe passw0rd position company location work_phone mobile_phone home_phone}) . "\n",
-            join(',', qw{csvtest2 csvtest2@example.com Jane Smith password2 position2 company2 location2 work_phone2 mobile_phone2 home_phone2}) . "\n";
+            join(',', qw{username email_address first_name last_name password position company location work_phone mobile_phone home_phone preferred_name}) . "\n",
+            join(',', qw{csvtest1 csvtest1@example.com John Doe passw0rd position company location work_phone mobile_phone home_phone JohnDoe}) . "\n",
+            join(',', qw{csvtest2 csvtest2@example.com Jane Smith password2 position2 company2 location2 work_phone2 mobile_phone2 home_phone2 JaneSmith}) . "\n";
 
         # do mass-add
         expect_success(
@@ -65,6 +65,8 @@ MASS_ADD_USERS: {
                 '... ... mobile_phone was set';
             is $profile->get_attr('home_phone'), 'home_phone',
                 '... ... home_phone was set';
+            is $profile->get_attr('preferred_name'), 'JohnDoe',
+                '... ... preferred_name was set';
         }
 
         # verify second user was added, but presume fields were added ok

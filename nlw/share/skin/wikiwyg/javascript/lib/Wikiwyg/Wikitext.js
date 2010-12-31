@@ -1391,6 +1391,13 @@ proto.make_table_wikitext = function(rows, columns) {
     return text;
 }
 
+proto.insert_block = function (text) {
+    this.markup_line_alone([
+        "block",
+        "\n" + text + "\n"
+    ]);
+}
+
 proto.do_table = function() {
     var result = this.prompt_for_table_dimensions();
     if (! result) return false;
@@ -1808,15 +1815,22 @@ proto.assert_trailing_space = function(part, text) {
 
     if (this.wikitext.match(/ $/)) return;
 
-    if (this.wikitext.match(/\n$/)) {
+    if (/\n$/.test(this.wikitext)) {
         if (part.previousSibling &&
             part.previousSibling.nodeName == 'BR'
         ) return;
+        if (part.top_level_block) return;
         this.wikitext = this.wikitext.replace(/\n$/, '');
     }
 
-    if (! text.match(/^\s/))
+    if (/^\s/.test(text)) return;
+
+    if (part.top_level_block) {
+        this.wikitext += '\n';
+    }
+    else {
         this.wikitext += ' ';
+    }
 }
 
 proto._css_to_px = function(val) {
@@ -2000,6 +2014,12 @@ proto.format_img = function(elem) {
     if (/^st-widget-/.test(widget)) {
         widget = widget.replace(/^st-widget-/, '');
         if (Wikiwyg.is_ie) widget = Wikiwyg.htmlUnescape( widget );
+        if ($.browser.webkit) widget = widget.replace(
+            /&#x([a-fA-F\d]{2,5});/g, 
+            function($_, $1) { 
+                return String.fromCharCode(parseInt($1, 16));
+            }
+        );
         if (widget.match(/^\.\w+\n/))
             elem.top_level_block = true;
         else

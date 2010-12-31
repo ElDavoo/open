@@ -235,6 +235,7 @@ sub update_from_remote {
     my $subject     = $self->utf8_decode($p{subject});
     my $edit_summary = $self->utf8_decode($p{edit_summary});
     my $tags        = $p{tags};
+    my $type        = $p{type};
     my $locked      = exists($p{locked}) ? $p{locked} : $self->locked;
 
     if ($tags) {
@@ -275,6 +276,7 @@ sub update_from_remote {
     $revision_id  ||= $self->revision_id;
     $revision     ||= $self->metadata->Revision || 0;
     $subject      ||= $self->title,
+    $type         ||= $self->metadata->Type,
     $edit_summary ||= '';
 
     $self->load;
@@ -306,8 +308,8 @@ sub update_from_remote {
         user             => $user,
         edit_summary     => $edit_summary,
         locked           => $locked,
+        type             => $type,
         $p{date} ? (date => $p{date}) : (),
-        $p{type} ? (type => $p{type}) : (),
         # don't signal-this-edit via update() so we can tie it to the event
     );
 

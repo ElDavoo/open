@@ -120,10 +120,15 @@ hello
 .pre
 --- match
 <div class="wiki">
-<pre>
+<div class="wafl_block"><pre>
 hello
     again
-</pre>
+</pre><!-- wiki:
+.pre
+hello
+    again
+.pre
+--></div>
 </div>
 
 === html wafl block
