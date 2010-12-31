@@ -2035,6 +2035,7 @@ proto._do_insert_block_dialog = function(opts) {
 
     $('#st-widget-block-save').unbind('click').click(function(){
         $('#add-a-block-form').trigger('submit');
+        return false;
     });
 
     self.showWidgetEditingLightbox({
