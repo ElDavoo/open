@@ -31,7 +31,8 @@ sub create_job_for_each_workspace {
     $prio = 31 unless defined $prio;
     my $except = $opts{except} || [];
 
-    my $job_class = 'Socialtext::Job::Upgrade::' . $class;
+    my $class_path = $opts{not_upgrade} ? 'Socialtext::Job::' : 'Socialtext::Job::Upgrade::';
+    my $job_class = $class_path . $class;
 
     my $all = Socialtext::Workspace->All;
     my $job_count = 0;
