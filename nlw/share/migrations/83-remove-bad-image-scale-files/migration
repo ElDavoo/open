@@ -6,6 +6,10 @@ use Socialtext::Migration::Utils qw/ensure_socialtext_schema
                                     create_job_for_each_workspace
                                     create_job/;
 
-create_job_for_each_workspace('RemoveNonImageScaling');
+create_job_for_each_workspace(
+    'RemoveNonImageScaling',
+    31,
+    not_upgrade => 1,
+);
 
 exit 0;
