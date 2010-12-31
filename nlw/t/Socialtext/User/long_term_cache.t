@@ -4,7 +4,7 @@ use strict;
 use warnings FATAL => 'all';
 use mocked 'Net::LDAP';
 use mocked 'Socialtext::Log', qw(:tests);
-use Test::Socialtext tests => 132;
+use Test::Socialtext tests => 131;
 use Socialtext::SQL qw(sql_execute sql_singlevalue);
 
 fixtures( 'ldap_anonymous' );
@@ -97,6 +97,7 @@ autovivify_cache_value: {
     my $cached = get_cache(driver_username => $username);
     ok $cached, "got a cached user";
     $cached_at = delete $cached->{cached_at};
+    my $last_profile_update = delete $cached->{last_profile_update};
     is_deeply $cached, {
         user_id             => $user_id,
         driver_username     => $username,
@@ -107,17 +108,16 @@ autovivify_cache_value: {
         last_name           => 'Once',
         display_name        => 'Onlyuse Once',
         password            => '*no-password*',
-        last_profile_update => '-infinity',
         is_profile_hidden   => '0',
         missing             => '0',
         private_external_id => undef,
     };
 
     # not strictly necessary, but a nice sanity check:
+    $cached->{cached_at} = $cached_at;
+    $cached->{last_profile_update} = $last_profile_update;
     my $cached2 = get_cache(user_id => $user_id);
-    my $cached_at2 = delete $cached2->{cached_at};
     is_deeply $cached, $cached2, "cached copies are identical";
-    is $cached_at, $cached_at2, "cached_at time is identical";
 }
 
 my %user_tests = (
@@ -270,6 +270,7 @@ sub db_cache_ok {
 
     my $cached = get_cache(user_id => $user_id);
     delete $cached->{cached_at};
+    delete $cached->{last_profile_update};
     is_deeply $cached, {
         user_id             => $user_id,
         driver_key          => $driver_key,
@@ -279,7 +280,6 @@ sub db_cache_ok {
         first_name          => $TEST_USERS[$user_num]{gn},
         last_name           => $TEST_USERS[$user_num]{sn},
         password            => '*no-password*',
-        last_profile_update => '-infinity',
         is_profile_hidden   => '0',
         display_name        => join(' ', @{ $TEST_USERS[$user_num] }{qw/gn sn/}),
         missing             => '0',
