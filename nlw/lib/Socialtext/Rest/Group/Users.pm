@@ -69,9 +69,15 @@ sub _build_user_find {
         minimal   => $q->param('minimal') || 0,
     );
 
+    # {bz: 4492}: Private group's user list is always accessible to business admins.
+    if ($viewer->is_business_admin) {
+        $args{all} = 1;
+    }
+
     # {bz: 4510}: Admins should be regarded as visitors for non-"?all=1" cases,
     # otherwise they can't see members from related self-join groups.
     $self->user_can_admin(0) unless $args{all};
+
     $args{just_visiting} = 1 if $self->user_is_visitor;
 
     return Socialtext::User::Find::Container->new(\%args);
