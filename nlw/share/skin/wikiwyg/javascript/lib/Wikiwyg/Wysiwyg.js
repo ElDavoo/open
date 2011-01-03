@@ -1485,8 +1485,8 @@ proto.do_new_table = function() {
         self.closeTableDialog();
     }
     var setup = function() {
-        jQuery('.table-create input[name=columns]').focus();
-        jQuery('.table-create input[name=columns]').select();
+        jQuery('.table-create input[name=rows]').focus();
+        jQuery('.table-create input[name=rows]').select();
         jQuery('.table-create .save')
             .unbind("click")
             .bind("click", function() {
