@@ -37,7 +37,7 @@
             });
 
             // {bz: 4791}: Tapping an item in a list should highlight the item
-            // with the same styling as "keydown".
+            // with the same styling as "mousedown".
             if ($.support.mediaquery && ($.browser.webkit || $.browser.mozilla)) {
                 $(".ui-btn").live({
                     click: function() {
