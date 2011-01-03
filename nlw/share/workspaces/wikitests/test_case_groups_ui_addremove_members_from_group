@@ -59,8 +59,8 @@
 | wait_for_element_visible_ok | lookahead | 30000 |
 | type_lookahead_ok | lookahead | %%non_grp_mbr_prefix%% |
 | select-frame | relative=parent |  |
-| wait_for_element_present_ok | //a[@class='lookaheadItem' and contains(text(),'%%non_grp_mbr_suffix%%')] | 30000 |
-| click_ok | //a[@class='lookaheadItem' and contains(text(),'%%non_grp_mbr_suffix%%')] | 10000 |
+| wait_for_element_present_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%non_grp_mbr_suffix%%')] | 30000 |
+| click_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%non_grp_mbr_suffix%%')] | 10000 |
 | st-select-widget-frame | membership_widget |  |
 | wait_for_element_visible_ok | link=%%short_non_grp_mbr%% | 30000 |
 | wait_for_element_visible_ok | %%non_mbr_user_id%% | 30000 |
@@ -99,8 +99,8 @@
 | wait_for_element_visible_ok | lookahead | 30000 |
 | type_lookahead_ok | lookahead | %%grp_mbr_prefix%% |
 | select-frame | relative=parent |  |
-| wait_for_element_present_ok | //a[@class='lookaheadItem' and contains(text(),'%%grp_mbr_suffix%%')] | 30000 |
-| click_ok | //a[@class='lookaheadItem' and contains(text(),'%%grp_mbr_suffix%%')] | 10000 |
+| wait_for_element_present_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%grp_mbr_suffix%%')] | 30000 |
+| click_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%grp_mbr_suffix%%')] | 10000 |
 | st-select-widget-frame | membership_widget |  |
 | wait_for_element_visible_ok | link=%%short_grp_mbr%% | 30000 |
 | wait_for_element_visible_ok | %%mbr_user_id%% | 30000 |
@@ -131,8 +131,8 @@
 | wait_for_element_visible_ok | lookahead | 30000 |
 | type_lookahead_ok | lookahead | %%email_user_prefix%% |
 | select-frame | relative=parent |  |
-| wait_for_element_present_ok | //a[@class='lookaheadItem' and contains(text(),'%%email_user_suffix%%')] | 30000 |
-| click_ok | //a[@class='lookaheadItem' and contains(text(),'%%email_user_suffix%%')] | 10000 |
+| wait_for_element_present_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%email_user_suffix%%')] | 30000 |
+| click_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%email_user_suffix%%')] | 10000 |
 | st-select-widget-frame | membership_widget |  |
 | wait_for_element_visible_ok | //*[@id='message'] | 30000 |
 | type_ok | //*[@id='message'] | %%invite%% |

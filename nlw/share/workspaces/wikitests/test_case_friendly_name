@@ -4,11 +4,16 @@
 * Fixture: SocialWidgets
 
 | set | fname_user | fname_user_%%start_time%%@david.socialtext.net |  |
-| set | fname | Bob_%%start_time%% |  |
+| set_default | fname | Bob_%%start_time%% |  |
+| set_default | fname_first_letter | B |  |
+| set_default | fname_prefix | Bob_ |  |
+| set_default | fname_suffix | %%start_time%% |  |
 | set | fname_checker | fname_checker_%%start_time%%@david.socialtext.net |  |
 | set | fname_acct | fname_account_%%start_time%% |  |
 | set | fname_wiki | fname_wiki_%%start_time%% |  |
 | set | fname_group | fname_group_%%start_time%% |  |
+| set | fname_group_2 | fname_group_2_%%start_time%% |  |
+| set | fname_page | fname_page_%%start_time%% |  |
 | st-admin | create-account --name %%fname_acct%% | was created |  |
 | st-admin | create-workspace --name %%fname_wiki%% --title %%fname_wiki%% --account %%fname_acct%% | was created |  |
 | st-admin | create-user --email %%fname_user%% --password %%password%% --account %%fname_acct%% | was created |  |
@@ -16,7 +21,10 @@
 | st-admin | add-member --email %%fname_user%% --workspace %%fname_wiki%% | now has the role |  |
 | st-admin | add-member --email %%fname_checker%% --workspace %%fname_wiki%% | now has the role |  |
 | create-group | %%fname_group%% | %%fname_acct%% | %%fname_user%% |
-| st-admin | add-member --email %%fname_checker%% --group %%group_id%% | is now a member |  |
+| set | fname_group_id | %%group_id%% |  |
+| create-group | %%fname_group_2%% | %%fname_acct%% | %%fname_checker%% |
+| set | fname_group_2_id | %%group_id%% |  |
+| st-admin | add-member --email %%fname_checker%% --group %%fname_group_id%% | is now a member |  |
 | st-logoutin | %%fname_user%% | %%password%% |  |
 
 | *Comment* | Test Case: Friendly Name edit preferred name |  |
@@ -38,7 +46,7 @@
 | st_process_jobs | SignalIndex |  |
 
 | *Comment* | Test Case Friendly Name edit a page |  |
-| open_ok | /%%fname_wiki%%/index.cgi?page_%%start_time%% |  |
+| open_ok | /%%fname_wiki%%/index.cgi?%%fname_page%% |  |
 | wait_for_element_visible_ok | st-create-content-savelink | 30000 |
 | click_and_wait | st-create-content-savelink |  |
 | wait_for_element_visible_ok | st-mode-wikitext-button | 30000 |
@@ -61,10 +69,16 @@
 
 
 
-
+| *Comment* | Test Case: Friendly Name check rich mobile interface |  |
+| st-logoutin | %%fname_checker%% | %%password%% |
+| open_ok | /st/m/signals |  |
+| wait_for_element_visible_ok | link=%%fname%% | 30000 |
+| open_ok | /m/people?letter=%%fname_first_letter%% |  |
+| wait_for_element_visible_ok | link=%%fname%% | 30000 |
+| open_ok | /m/page/%%fname_wiki%%/%%fname_page%% |  |
+| wait_for_element_visible_ok | link=%%fname%% | 30000 |
 
 | *Comment* | Test Case: Friendly Name Check signal |  |
-| st-logoutin | %%fname_checker%% | %%password%% |
 | open_ok | /st/signals |  |
 | wait_for_element_present_ok | link=%%fname%% | 30000 |
 
@@ -77,7 +91,7 @@
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Friendly Name check wiki page |  |
-| open_ok | /%%fname_wiki%%/index.cgi?page_%%start_time%% |  |
+| open_ok | /%%fname_wiki%%/index.cgi?%%fname_page%% |  |
 | wait_for_text_present_ok | page text | 30000 |
 | wait_for_text_present_ok | comment text | 30000 |
 | wait_for_text_present_ok | contributed by %%fname%% | 30000 |
@@ -94,7 +108,7 @@
 | wait_for_element_visible_ok | link=%%fname%% | 30000 |
 
 | *Comment* | Test Case: Friendly Name check group page |  |
-| open_ok | /st/group/%%group_id%% |  |
+| open_ok | /st/group/%%fname_group_id%% |  |
 | st-name-widget | 1 | info_widget |
 | st-widget-title-like | info_widget | Information |
 | st-select-widget-frame | info_widget |  |
@@ -109,6 +123,26 @@
 | *Comment* | Test Case: Friendly Name check wiki members |  |
 | open_ok | /%%fname_wiki%%/?action=users_listall |  |
 | wait_for_text_present_ok | %%fname%% | 30000 |
+
+| *Comment* | Test Case: Friendly Name check add user to group lookahead |  |
+| open_ok | /st/edit_group/%%fname_group_2_id%% |  |
+| st-name-widget | 3 | members_widget |
+| st-widget-title-like | members_widget | Members |
+| st-select-widget-frame | members_widget |  |
+| wait_for_element_visible_ok | lookahead | 30000 |
+| type_lookahead_ok | lookahead | %%fname_prefix%% |
+| select-frame | relative=parent |  |
+| wait_for_element_present_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%fname_suffix%%')] | 30000 |
+
+| *Comment* | Test Case: Friendly Name check mention user in signal lookahead |  |
+| open_ok | /st/signals |  |
+| wait_for_element_visible_ok | //a[@title='Mention another person'] | 30000 |
+| click_ok | //a[@title='Mention another person'] |  |
+| wait_for_element_visible_ok | //div[@class='lookaheadDiv'] | 30000 |
+| type_lookahead_ok | //div[@class='lookaheadDiv'] | %%fname_prefix%% |
+| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%fname_suffix%%')] | 30000 |
+
+
 
 
 
@@ -130,5 +164,6 @@
 | *Comment* | Test Case: Friendly Name teardown |  |
 | st-admin | deactivate-user --email %%fname_user%% |  |
 | st-admin | deactivate-user --email %%fname_checker%% |  |
-| st-admin | delete-group --group %%group_id%% |  |
+| st-admin | delete-group --group %%fname_group_id%% |  |
+| st-admin | delete-group --group %%fname_group_2_id%% |  |
 | st-admin | delete-workspace --workspace %%fname_wiki%% |  |
