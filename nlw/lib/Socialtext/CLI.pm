@@ -1427,6 +1427,12 @@ sub _remove_user_from_group {
                 $user->username, $group->driver_group_name)
         );
     }
+    elsif ($role->name eq 'member' && $p{downgrade}) {
+        $self->_success(
+            loc("[_1] is already a non-admin member of [_2]",
+                $user->username, $group->driver_group_name)
+        );
+    }
     else {
         $group->remove_user( user => $user );
         $self->_success(
