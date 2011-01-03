@@ -705,6 +705,11 @@ sub set_external_id {
     my $user = $self->_require_user;
     my %p    = $self->_get_options('external-id|X:s');
 
+    if (not defined $p{'external-id'}) {
+        $self->_error(
+            "The command you called ($self->{command}) requires an external ID to be specified with the --external-id option.\n");
+    }
+
     eval { $user->update_store(private_external_id => $p{'external-id'}) };
     if (my $e = $@) {
         $self->_error($@);
