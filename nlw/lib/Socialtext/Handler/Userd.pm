@@ -2,11 +2,8 @@ package Socialtext::Handler::Userd;
 # @COPYRIGHT@
 use Moose;
 BEGIN { extends 'Socialtext::WebDaemon'; }
-use Socialtext::User;
 use Socialtext::WebDaemon::Util; # auto-exports
 use Socialtext::Async::Wrapper; # auto-exports
-use Socialtext::SQL qw/get_dbh sql_execute sql_singlevalue/;
-use Socialtext::UserSet ':const';
 use Socialtext::CredentialsExtractor;
 
 use namespace::clean -except => 'meta';
@@ -36,7 +33,6 @@ override 'shutdown' => sub {
     }
 };
 
-my $CRLF = "\015\012";
 sub handle_request {
     my ($self,$req) = @_;
 
@@ -73,7 +69,7 @@ sub handle_request {
 
 sub _build_extract_q {
     my $self = shift;
-    Scalar::Util::weaken $self;
+    weaken $self;
     my $wq; $wq = Socialtext::Async::WorkQueue->new(
         name => 'extract',
         prio => Coro::PRIO_LOW(),
@@ -129,21 +125,21 @@ sub extract_creds {
 
 worker_function worker_extract_creds => sub {
     my $params = shift;
-    my $creds  = eval {
-        Socialtext::CredentialsExtractor->ExtractCredentials($params)
-    };
-    if ($@) {
-        my $e = $@;
+    my $creds;
+    my $code = 200;
+    try {
+        $creds = Socialtext::CredentialsExtractor->ExtractCredentials($params)
+    }
+    catch {
+        my $e = $_;
         st_log()->error('when trying to extract creds: '.$e);
-        return {
-            code  => 500,
-            error => $@,
+        $code = 500;
+        $creds = {
+            error => 'Credentials extractor failure',
+            details => $e,
         };
-    }
-    return {
-        code => 200,
-        body => $creds,
-    }
+    };
+    return { code => $code, body => $creds };
 };
 
 1;
