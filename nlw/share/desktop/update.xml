@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>4.5.2.4</version>
-  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.5.2.4.air</url>
-  <description><![CDATA[[4.5.2.4 - Fri Dec 10 21:15:34 PST 2010]
+  <version>4.5.3</version>
+  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.5.3.air</url>
+  <description><![CDATA[[4.5.3 - Tue Jan  4 10:07:43 PST 2011]
+(Enhancements)
+* Refresh the initial Activity tab if the user switch to it with hotkey (C-2).
+
+[4.5.2.4 - Fri Dec 10 21:15:34 PST 2010]
 (Features)
 * Activities: Sub-tabs start loading when first switched to them to improve overall performance.
 * Signals: Sub-tabs start loading when first switched to them to improve overall performance.
