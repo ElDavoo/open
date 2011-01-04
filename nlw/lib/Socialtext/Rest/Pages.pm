@@ -79,13 +79,6 @@ sub _get_entities {
 sub resource_to_json { 
     my $self = shift;
     my $resource = shift;
-
-    if ($self->{_too_many}) {
-        $resource = {
-            hit_count => $self->{_too_many},
-            message => loc('The search term you have entered is too general.'),
-        };
-    }
     return encode_json($resource);
 }
 
@@ -230,16 +223,6 @@ sub _searched_pages {
             push @{$page_ids_by_workspace{$hit->workspace_name} ||= []}, $hit->page_uri;
         }
     };
-    if ($@ and $@->isa('Socialtext::Exception::TooManyResults')) {
-        if ($self->{_content_type} ne 'application/json') {
-            $self->rest->header(
-                -status => HTTP_400_Bad_Request,
-                -type => 'text/plain',
-            );
-        }
-        $self->{_too_many} = $@->num_results;
-        return ();
-    }
     elsif ($@) { die $@ }
 
     my @all_pages;

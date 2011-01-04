@@ -89,9 +89,6 @@ sub search_on_behalf {
             $e->rethrow unless defined $authz_handler;
             $authz_handler->($e) if defined $authz_handler;
         }
-        elsif ($e->isa('Socialtext::Exception::TooManyResults')) {
-            $num_hits += $e->{num_results};
-        }
         else {
             $e->rethrow;
         }

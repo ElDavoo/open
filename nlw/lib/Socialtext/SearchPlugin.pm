@@ -264,11 +264,6 @@ sub search_for_term {
             # they're not authorized to see. -mml 20070504
             $self->error_message(
                   "You are not authorized to perform the requested search." );
-        } elsif ($@->isa('Socialtext::Exception::TooManyResults')) {
-            $result_set->{hits} = $@->num_results;
-            $result_set->{search_term} = $search_term;
-            $result_set->{scope} = $scope;
-            $result_set->{too_many} = 1;
         } elsif ($@->isa('Socialtext::Exception::SearchTimeout')) {
             $result_set->{hits} = 0;
             $result_set->{search_term} = $search_term;
