@@ -11,6 +11,20 @@ use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
 
+=head1 NAME
+
+Socialtext::Job::RmeoveNonImageScaling
+
+=head1 SYNOPSIS
+
+  Check for attachments in a single workspace that were scaled but should not have been and remove the scaled directories.
+
+=head1 DESCRIPTION
+
+Delete bad scaled directories
+
+=cut
+
 sub do_work {
     my $self = shift;
     my $ws   = $self->workspace;

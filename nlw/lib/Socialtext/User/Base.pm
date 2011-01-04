@@ -85,7 +85,8 @@ sub preferred_name {
     my $self    = shift;
     my $profile = $self->profile;
     if ($profile) {
-        return if $profile->fields->by_name('preferred_name')->is_hidden;
+        my $pref_name = $profile->fields->by_name('preferred_name');
+        return if !$pref_name || $pref_name->is_hidden;
         return $profile->get_attr('preferred_name');
     }
     return;

@@ -705,6 +705,11 @@ sub set_external_id {
     my $user = $self->_require_user;
     my %p    = $self->_get_options('external-id|X:s');
 
+    if (not defined $p{'external-id'}) {
+        $self->_error(
+            "The command you called ($self->{command}) requires an external ID to be specified with the --external-id option.\n");
+    }
+
     eval { $user->update_store(private_external_id => $p{'external-id'}) };
     if (my $e = $@) {
         $self->_error($@);
@@ -1419,6 +1424,12 @@ sub _remove_user_from_group {
         );
         $self->_success(
             loc("[_1] is now a member of [_2]",
+                $user->username, $group->driver_group_name)
+        );
+    }
+    elsif ($role->name eq 'member' && $p{downgrade}) {
+        $self->_success(
+            loc("[_1] is already a non-admin member of [_2]",
                 $user->username, $group->driver_group_name)
         );
     }

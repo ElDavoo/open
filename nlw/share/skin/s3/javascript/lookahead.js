@@ -284,10 +284,22 @@
             if (title.match(re) || desc.match(re)) {
                 if (self.opts.grep && !self.opts.grep(item)) return;
 
+                /* Add <b></b> and escape < and > in original text */
+                var _Mark_ = String.fromCharCode(0xFFFC);
+                var _Done_ = String.fromCharCode(0xFFFD);
+
                 filtered.push({
-                    bolded_title: title.replace(re, '<b>$1</b>'),
+                    bolded_title: title.replace(re, _Mark_ + '$1' + _Done_)
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;")
+                        .replace(new RegExp(_Mark_, 'g'), '<b>')
+                        .replace(new RegExp(_Done_, 'g'), '</b>'),
                     title: title,
-                    bolded_desc: desc.replace(re, '<b>$1</b>'),
+                    bolded_desc: desc.replace(re, _Mark_ + '$1' + _Done_)
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;")
+                        .replace(new RegExp(_Mark_, 'g'), '<b>')
+                        .replace(new RegExp(_Done_, 'g'), '</b>'),
                     desc: desc,
                     value: self.linkValue(item),
                     orig: item
@@ -519,7 +531,7 @@
 
                 $.each(this._items, function(i) {
                     var item = this || {};
-                    if (item.bolded_title == ('<b>'+item.title+'</b>')) {
+                    if (item.bolded_title == ('<b>'+item.title.replace(/</g, "&lt;").replace(/>/g, "&gt;") +'</b>')) {
                         if (fullMatchIndex) {
                             // Two or more full matches - do nothing
                             return;

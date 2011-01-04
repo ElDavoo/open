@@ -57,6 +57,7 @@ has 'homunculus' => (
 
         can_use_plugin
         profile
+        clear_profile
         proper_name
         preferred_name
         guess_real_name
