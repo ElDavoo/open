@@ -31,7 +31,6 @@ has 'private_external_id' => (is => 'rw', isa => 'Maybe[Str]');
 has profile => (
     is         => 'ro',
     isa        => 'Maybe[Socialtext::People::Profile]',
-    clearer    => 'clear_profile',
     lazy_build => 1,
 );
 sub _build_profile {
