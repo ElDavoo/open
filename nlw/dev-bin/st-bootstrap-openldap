@@ -425,6 +425,16 @@ cn: Lemmy Kilmister
 userPassword: ld@pu53r
 telephoneNumber: 604-555-1212
 
+dn: cn=Killironimous,dc=socialtext,dc=com
+objectClass: inetOrgPerson
+mail: lesty@socialtext.com
+gn: Lester
+sn: Killingsworth
+cn: Killironimous
+userPassword: ld@pu53r
+telephoneNumber: 605-555-1212
+
+
 dn: cn=Phil Taylor,dc=socialtext,dc=com
 objectClass: inetOrgPerson
 mail: phil@socialtext.com
