@@ -426,6 +426,16 @@ displayName: Mr Rock and Roll
 userPassword: ld@pu53r
 telephoneNumber: 604-555-1212
 
+dn: cn=Killingsworthy,dc=socialtext,dc=com
+objectClass: inetOrgPerson
+mail: Killingsworthy@socialtext.com
+gn: Robert
+sn: Costello
+cn: Killingsworthy
+displayName: Software Dev Manager
+UserPassword: ld@pu53r
+telephoneNumber: 605-555-1212
+
 dn: cn=Phil Taylor,dc=socialtext,dc=com
 objectClass: inetOrgPerson
 mail: phil@socialtext.com
