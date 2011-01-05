@@ -10,7 +10,17 @@ Not a perfect test case since we aren't counting the actual number of total page
 | GET | /data/workspaces/%%workspace%%/pages | application/json |
 | code-is | 200|
 | json-parse |
-| json-array-size | 500 |
+| json-array-size | 25 |
+
+| GET | /data/workspaces/%%workspace%%/pages?count=100 | application/json |
+| code-is | 200|
+| json-parse |
+| json-array-size | 100 |
+
+| GET | /data/workspaces/%%workspace%%/pages?count=999 | application/json |
+| code-is | 200|
+| json-parse |
+| json-array-size | 100 |
 
 | GET | /data/workspaces/%%workspace%%/pages?count=34 | application/json |
 | code-is | 200|
@@ -44,11 +54,20 @@ Not a complete test of the combination of ordering/limit/offset,but a stab
 | json-array-size | 34 |
 | body-like | qr/pagenew3.*pagenew2.*pagenew1/ |
 | body-unlike | pagenew4 |
-| body-unlike | qr/startIndex/ | old limit,count params  means no startIndex |
-| body-unlike | qr/itemsPerPage/ | old limit,count params  means no itemsPerPage |
-| body-unlike | qr/totalResults/ | old limit,count params  means No totalResults |
+| body-unlike | qr/startIndex/ | old limit,offset params  means no startIndex |
+| body-unlike | qr/itemsPerPage/ | old limit,offset params  means no itemsPerPage |
+| body-unlike | qr/totalResults/ | old limit,offset params  means No totalResults |
 
 | GET | /data/workspaces/%%workspace%%/pages?order=newest;count=34;offset=1 | application/json |
+| code-is | 200|
+| json-parse |
+| json-array-size | 34 |
+| body-like | qr/pagenew3.*pagenew2.*pagenew1/ |
+| body-unlike | pagenew4 |
+
+| st-process-jobs | PageIndex | | quiet |
+
+| GET | /data/workspaces/%%workspace%%/pages?order=newest;count=34;offset=1;q=test | application/json |
 | code-is | 200|
 | json-parse |
 | json-array-size | 34 |
@@ -69,7 +88,6 @@ Not a complete test of the combination of ordering/limit/offset,but a stab
 | body-like | qr/itemsPerPage/ | itemsPerPage present with skipTotalResults |
 | body-unlike | qr/totalResults/ | No totalResults entry with skipTotalResults |
 
-| st-process-jobs | PageIndex | | quiet |
 | GET | /data/workspaces/%%workspace%%/pages?order=newest;count=3;startIndex=0 | application/json |
 | code-is | 200|
 | json-parse |

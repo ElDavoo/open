@@ -31,7 +31,6 @@ sub _build_start_index {
 has 'items_per_page' => ( is => 'ro', isa => 'Maybe[Int]', lazy_build => 1 );
 sub _build_items_per_page {
     my $self = shift;
-    return unless $self->pageable;
     my $count = $self->rest->query->param('count');
     $count = $self->rest->query->param('limit') unless defined $count;
     $count = $self->default_page_size
