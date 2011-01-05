@@ -19,6 +19,12 @@ $JSON::UTF8 = 1;
 
 has 'total_result_count' => ( is => 'rw', isa => 'Int', default => 0 );
 
+# /data/workspaces/:wksp_id/pages supported limit and offset,
+# but the OpenSocial-style payload is triggerd by the "startIndex" index,
+# so it's still safe to say we're always pageable.
+# (This simplifies the logic so ->items_per_page can always be used.)
+sub _build_pageable { 1 }
+
 sub _get_entities {
     my $self = shift;
     my $rest = shift;
