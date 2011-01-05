@@ -1,7 +1,7 @@
 package Socialtext::Template::Plugin::JSON;
 # @COPYRIGHT@
 use Moose;
-use JSON ();
+use JSON::XS ();
 use Socialtext::Encode 'ensure_is_utf8';
 use Carp qw/croak/;
 
@@ -43,7 +43,7 @@ sub BUILDARGS {
 sub _build_json_converter {
         my $self = shift;
 
-        my $json = JSON->new->allow_nonref(1);
+        my $json = JSON::XS->new->allow_nonref(1);
 
         my $args = $self->json_args;
 
