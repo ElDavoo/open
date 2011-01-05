@@ -7,10 +7,10 @@
 | set | fname_user | fname_user_%%start_time%%@david.socialtext.net |  |
 | set_default | fname | Bob_%%start_time%% |  |
 | set_default | fname_first_letter | B |  |
-| set_default | fname_prefix | Bob_ |  |
-| set_default | fname_suffix | %%start_time%% |  |
+| set_default | fname_prefix | Bob |  |
+| set_default | fname_suffix | _%%start_time%% |  |
 | set | fname_checker | fname_checker_%%start_time%%@david.socialtext.net |  |
-| set | fname_acct | fname_account_%%start_time%% |  |
+| set | fname_acct | 1_fname_account_%%start_time%% |  |
 | set | fname_wiki | fname-wiki-%%start_time%% |  |
 | set | fname_wiki_2 | fname-wiki-2-%%start_time%% |  |
 | set | fname_group | fname_group_%%start_time%% |  |
@@ -21,9 +21,9 @@
 | set | fname_acct_id | %%account_id%% |  |
 | st-admin | create-workspace --name %%fname_wiki%% --title %%fname_wiki%% --account %%fname_acct%% | was created |  |
 | st-admin | create-user --email %%fname_user%% --password %%password%% --account %%fname_acct%% | was created |  |
-| st-admin | create-user --email %%fname_checker%% --password %%password%% --account %%fname_acct%% | was created |  |
 | st-admin | add-workspace-admin --email %%fname_user%% --workspace %%fname_wiki%% | now has the role |  |
-| st-admin | add-member --email %%fname_checker%% --workspace %%fname_wiki%% | now has the role |  |
+| st-admin | invite-user --email %%fname_checker%% --workspace %%fname_wiki%% --from %%fname_user%% | has been sent |  |
+| st-admin | confirm-user --email %%fname_checker%% --password %%password%% |
 | st-admin | give-accounts-admin --email %%fname_checker%% | now has accounts |  |
 | create-group | %%fname_group%% | %%fname_acct%% | %%fname_user%% |
 | set | fname_group_id | %%group_id%% |  |
@@ -68,18 +68,6 @@
 | type_ok | //textarea[@name='comment'] | comment text |
 | wait_for_element_visible_ok | //a[@class='saveButton genericOrangeButton'] | 30000 |
 | click_ok | //a[@class='saveButton genericOrangeButton'] |  |
-
-| *Comment* | Test Case: Friendly Name create a wiki |  |
-
-| st-admin | give-account-admin --account %%fname_acct%% --e %%fname_user%% | now has the role of 'admin' |
-| open_ok | /%%fname_wiki%%/?action=workspaces_create |  |
-| wait_for_element_visible_ok | //input[@name='title'] | 30000 |
-| type_ok | //input[@name='title'] | %%fname_wiki_2%% |
-| wait_for_element_visible_ok | //input[@name='name'] | 30000 |
-| type_ok | //input[@name='name'] | %%fname_wiki_2%% |
-| click_and_wait | savelink |  |
-| wait_for_text_present_ok | You have just created "%%fname_2_wiki%%" |  |
-| st-admin | remove-account-admin --account %%fname_acct%% --e %%fname_user%% | no longer has the role of 'admin' |
 
 | *Comment* | Test Case: Friendly Name check rich mobile interface |  |
 | st-logoutin | %%fname_checker%% | %%password%% |
@@ -152,9 +140,6 @@
 | click_ok | //a[@title='Mention another person'] |  |
 | wait_for_element_visible_ok | //div[@class='lookaheadDiv']/input | 30000 |
 | type_lookahead_ok | //div[@class='lookaheadDiv']/input | %%fname_prefix%% |
-
-| wait_for_element_visible_ok | //div[@class='lookaheadItem'] | 30000 |
-| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a | 30000 |
 | wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%fname_suffix%%')] | 30000 |
 
 | *Comment* | Test Case: Friendly Name check send private signal lookahead |  |
@@ -163,9 +148,6 @@
 | click_ok | //a[@title='Send a private message'] |  |
 | wait_for_element_visible_ok | //div[@class='lookaheadDiv']/input | 30000 |
 | type_lookahead_ok | //div[@class='lookaheadDiv']/input | %%fname_prefix%% |
-
-| wait_for_element_visible_ok | //div[@class='lookaheadItem'] | 30000 |
-| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a | 30000 |
 | wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%fname_suffix%%')] | 30000 |
 
 | *Comment* | Test Case: Friendly Name check send page by email lookahead |  |
@@ -191,8 +173,60 @@
 | type_lookahead_ok | addUserLookahead | %%fname_prefix%% |
 | wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%fname_suffix%%')] | 30000 |
 
+| *Comment* | Test Case: Friendly Name create a wiki *needs to run after checking activities widget* |  |
+| open_ok | /st/dashboard |  |
+| st-logoutin | %%fname_user%% | %%password%% |
+| st-admin | add-account-admin --account %%fname_acct%% --e %%fname_user%% | now has the role of 'admin' |
+| open_ok | /%%fname_wiki%%/?action=workspaces_create |  |
+| wait_for_element_visible_ok | //input[@name='title'] | 30000 |
+| type_ok | //input[@name='title'] | %%fname_wiki_2%% |
+| wait_for_element_visible_ok | //input[@name='name'] | 30000 |
+| type_ok | //input[@name='name'] | %%fname_wiki_2%% |
+| wait_for_element_visible_ok | -savelink | 30000 |
+| click_and_wait | -savelink |  |
+| wait_for_text_present_ok | You have just created "%%fname_wiki_2%%" |  |
+| st-admin | remove-account-admin --account %%fname_acct%% --e %%fname_user%% | no longer has the role of 'admin' |
+| add-group-to-workspace | %%fname_group_id%% | %%fname_wiki_2%% |
+| st-logoutin | %%fname_checker%% | %%password%% |
+
 | *Comment* | Test Case: Friendly Name check Control Panel account page |  |
 | open_ok | /nlw/control/account/%%fname_acct_id%% |  |
+| wait_for_text_present_ok | %%fname%% | 30000 |
+| text_like | workspaces | %%fname%% |
+| text_like | userTable | %%fname%% |
+
+ text_like | //table[3] | %%fname%% |
+
+| *Comment* | Test Case: Friendly Name check Control Panel workspace page |  |
+| open_ok | /nlw/control/account/%%fname_acct_id%% |  |
+| wait_for_element_visible_ok | link=%%fname_wiki_2%% | 30000 |
+| click_and_wait | link=%%fname_wiki_2%% |  |
+| wait_for_text_present_ok | %%fname%% | 30000 |
+| text_like | Created by: %%fname%% |  |
+| text_like | userTable | %%fname%% |
+| text_like | groupTable | %%fname%% |
+
+| *Comment* | Test Case: Friendly Name check Control Panel workspaces list |  |
+| open_ok | /nlw/control/workspace |  |
+| wait_for_text_present_ok | %%fname%% | 30000 |
+| text_like | workspaces | %%fname%% |
+
+| *Comment* | Test Case: Friendly Name check Control Panel group page |  |
+| open_ok | /nlw/control/group/%%fname_group_id%% |  |
+| wait_for_text_present_ok | %%fname%% | 30000 |
+| text_like | Created By: %%fname%% |  |
+| text_like | userTable | %%fname%% |
+
+ text_like | //table[3] | %%fname%% |
+
+| *Comment* | Test Case: Friendly Name check Control Panel user list |  |
+| open_ok | /nlw/control/user |  |
+| wait_for_element_visible_ok | user-sort-account | 30000 |
+| click_and_wait | user-sort-account |  |
+| wait_for_text_present_ok | %%fname%% | 30000 |
+| text_like | users | %%fname%% |
+
+
 
 
 
@@ -201,20 +235,22 @@
 
 
 | *Comment* | Test Case: Friendly Name check people dropdown *RUN THIS LAST* |  |
-| open_ok | /?action=people |  |
-| wait_for_element_visible_ok | link=%%fname%% | 30000 |
-| click_and_wait | link=%%fname%% |  |
-| wait_for_element_visible_ok | link=Follow this person | 60000 |
-| pause | 5000 | needed for IE7 |
-| click_ok | link=Follow this person |  |
-| wait_for_element_visible_ok | link=Stop following this person | 60000 |
-| open_ok | /%%fname_wiki%%/index.cgi?%%fname_wiki%% |  |
-| wait_for_element_present_ok | link=%%fname%% | 30000 |
+
+ open_ok | /?action=people | |
+wait_for_element_visible_ok | link=%%fname%% | 30000 |
+click_and_wait | link=%%fname%% | |
+wait_for_element_visible_ok | link=Follow this person | 60000 |
+pause | 5000 | needed for IE7 |
+click_ok | link=Follow this person | |
+wait_for_element_visible_ok | link=Stop following this person | 60000 |
+open_ok | /%%fname_wiki%%/index.cgi?%%fname_wiki%% | |
+wait_for_element_present_ok | link=%%fname%% | 30000 |
 
 | *Comment* | Test Case: Friendly Name teardown |  |
-| st-admin | deactivate-user --email %%fname_user%% |  |
-| st-admin | deactivate-user --email %%fname_checker%% |  |
-| st-admin | delete-group --group %%fname_group_id%% |  |
-| st-admin | delete-group --group %%fname_group_2_id%% |  |
-| st-admin | delete-workspace --workspace %%fname_wiki%% |  |
-| st-admin | delete-workspace --workspace %%fname_wiki_2%% |  |
+
+ st-admin | deactivate-user --email %%fname_user%% | |
+st-admin | deactivate-user --email %%fname_checker%% | |
+st-admin | delete-group --group %%fname_group_id%% | |
+st-admin | delete-group --group %%fname_group_2_id%% | |
+st-admin | delete-workspace --workspace %%fname_wiki%% | |
+st-admin | delete-workspace --workspace %%fname_wiki_2%% | |
