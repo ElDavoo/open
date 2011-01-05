@@ -1,6 +1,7 @@
 
 | *Comment* | Test Case: Friendly Name |  |
 
+
 * Fixture: SocialWidgets
 
 | set | fname_user | fname_user_%%start_time%%@david.socialtext.net |  |
@@ -10,16 +11,20 @@
 | set_default | fname_suffix | %%start_time%% |  |
 | set | fname_checker | fname_checker_%%start_time%%@david.socialtext.net |  |
 | set | fname_acct | fname_account_%%start_time%% |  |
-| set | fname_wiki | fname_wiki_%%start_time%% |  |
+| set | fname_wiki | fname-wiki-%%start_time%% |  |
+| set | fname_wiki_2 | fname-wiki-2-%%start_time%% |  |
 | set | fname_group | fname_group_%%start_time%% |  |
 | set | fname_group_2 | fname_group_2_%%start_time%% |  |
 | set | fname_page | fname_page_%%start_time%% |  |
-| st-admin | create-account --name %%fname_acct%% | was created |  |
+| set | fname_tag | fname_tag_%%start_time%% |  |
+| create-account | %%fname_acct%% |  |  |
+| set | fname_acct_id | %%account_id%% |  |
 | st-admin | create-workspace --name %%fname_wiki%% --title %%fname_wiki%% --account %%fname_acct%% | was created |  |
 | st-admin | create-user --email %%fname_user%% --password %%password%% --account %%fname_acct%% | was created |  |
 | st-admin | create-user --email %%fname_checker%% --password %%password%% --account %%fname_acct%% | was created |  |
-| st-admin | add-member --email %%fname_user%% --workspace %%fname_wiki%% | now has the role |  |
+| st-admin | add-workspace-admin --email %%fname_user%% --workspace %%fname_wiki%% | now has the role |  |
 | st-admin | add-member --email %%fname_checker%% --workspace %%fname_wiki%% | now has the role |  |
+| st-admin | give-accounts-admin --email %%fname_checker%% | now has accounts |  |
 | create-group | %%fname_group%% | %%fname_acct%% | %%fname_user%% |
 | set | fname_group_id | %%group_id%% |  |
 | create-group | %%fname_group_2%% | %%fname_acct%% | %%fname_checker%% |
@@ -64,10 +69,17 @@
 | wait_for_element_visible_ok | //a[@class='saveButton genericOrangeButton'] | 30000 |
 | click_ok | //a[@class='saveButton genericOrangeButton'] |  |
 
+| *Comment* | Test Case: Friendly Name create a wiki |  |
 
-
-
-
+| st-admin | give-account-admin --account %%fname_acct%% --e %%fname_user%% | now has the role of 'admin' |
+| open_ok | /%%fname_wiki%%/?action=workspaces_create |  |
+| wait_for_element_visible_ok | //input[@name='title'] | 30000 |
+| type_ok | //input[@name='title'] | %%fname_wiki_2%% |
+| wait_for_element_visible_ok | //input[@name='name'] | 30000 |
+| type_ok | //input[@name='name'] | %%fname_wiki_2%% |
+| click_and_wait | savelink |  |
+| wait_for_text_present_ok | You have just created "%%fname_2_wiki%%" |  |
+| st-admin | remove-account-admin --account %%fname_acct%% --e %%fname_user%% | no longer has the role of 'admin' |
 
 | *Comment* | Test Case: Friendly Name check rich mobile interface |  |
 | st-logoutin | %%fname_checker%% | %%password%% |
@@ -138,11 +150,49 @@
 | open_ok | /st/signals |  |
 | wait_for_element_visible_ok | //a[@title='Mention another person'] | 30000 |
 | click_ok | //a[@title='Mention another person'] |  |
-| wait_for_element_visible_ok | //div[@class='lookaheadDiv'] | 30000 |
-| type_lookahead_ok | //div[@class='lookaheadDiv'] | %%fname_prefix%% |
+| wait_for_element_visible_ok | //div[@class='lookaheadDiv']/input | 30000 |
+| type_lookahead_ok | //div[@class='lookaheadDiv']/input | %%fname_prefix%% |
+
+| wait_for_element_visible_ok | //div[@class='lookaheadItem'] | 30000 |
+| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a | 30000 |
 | wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%fname_suffix%%')] | 30000 |
 
+| *Comment* | Test Case: Friendly Name check send private signal lookahead |  |
+| open_ok | /st/signals |  |
+| wait_for_element_visible_ok | //a[@title='Send a private message'] | 30000 |
+| click_ok | //a[@title='Send a private message'] |  |
+| wait_for_element_visible_ok | //div[@class='lookaheadDiv']/input | 30000 |
+| type_lookahead_ok | //div[@class='lookaheadDiv']/input | %%fname_prefix%% |
 
+| wait_for_element_visible_ok | //div[@class='lookaheadItem'] | 30000 |
+| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a | 30000 |
+| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%fname_suffix%%')] | 30000 |
+
+| *Comment* | Test Case: Friendly Name check send page by email lookahead |  |
+| open_ok | /%%fname_wiki%%/index.cgi?%%fname_page%% |  |
+| wait_for_element_visible_ok | st-pagetools-email | 30000 |
+| click_ok | st-pagetools-email |  |
+| wait_for_element_visible_ok | email_recipient | 30000 |
+| type_lookahead_ok | email_recipient | %%fname_prefix%% |
+| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%fname_suffix%%')] | 30000 |
+
+| *Comment* | Test Case: Friendly Name check add this tag to someone |  |
+| tag_profile | %%fname_checker%% | %%fname_tag%% |
+| open_ok | ?action=people;tag=%%fname_tag%% |  |
+| wait_for_element_present_ok | link=Add this tag to someone | 30000 |
+| click_ok | link=Add this tag to someone |  |
+| wait_for_element_visible_ok | add_tag_person | 30000 |
+| type_lookahead_ok | add_tag_person | %%fname_prefix%% |
+| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%fname_suffix%%')] | 30000 |
+
+| *Comment* | Test Case: Friendly Name check add user to group in Control Panel |  |
+| open_ok | /nlw/control/group/%%fname_group_2_id%% |  |
+| wait_for_element_visible_ok | addUserLookahead | 30000 |
+| type_lookahead_ok | addUserLookahead | %%fname_prefix%% |
+| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%fname_suffix%%')] | 30000 |
+
+| *Comment* | Test Case: Friendly Name check Control Panel account page |  |
+| open_ok | /nlw/control/account/%%fname_acct_id%% |  |
 
 
 
@@ -167,3 +217,4 @@
 | st-admin | delete-group --group %%fname_group_id%% |  |
 | st-admin | delete-group --group %%fname_group_2_id%% |  |
 | st-admin | delete-workspace --workspace %%fname_wiki%% |  |
+| st-admin | delete-workspace --workspace %%fname_wiki_2%% |  |
