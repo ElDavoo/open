@@ -1,10 +1,9 @@
 package Socialtext::Rest::TaggedPages;
 # @COPYRIGHT@
 
-use warnings;
-use strict;
+use Moose;
 
-use base 'Socialtext::Rest::Pages';
+extends 'Socialtext::Rest::Pages';
 
 # REVIEW: This need to be different depending on the query?
 sub collection_name {
@@ -19,14 +18,12 @@ sub element_list_item {
         . "</a></li>\n";
 }
 
-# Generates an unordered, unsorted list of pages which satisfy the query
-# parameters.
+# Generates an list of pages which satisfy the query parameters, ordered
+# by the last edit time.
 sub _entities_for_query {
     my $self = shift;
 
-    my $limit = $self->rest->query->param('limit')
-                || $self->rest->query->param('count')
-                || 500;
+    my $limit = $self->items_per_page || 500;
     my $type = $self->rest->query->param('type');
 
     my $pagesref = [];
@@ -37,9 +34,16 @@ sub _entities_for_query {
             seconds          => $seconds,
             hub              => $self->hub,
             limit            => $limit,
+            offset           => $self->start_index,
             do_not_need_tags => 1,
             workspace_id     => $self->hub->current_workspace->workspace_id,
             type             => $type,
+        );
+        $self->total_result_count(
+            Socialtext::Model::Pages->ChangedCount(
+                workspace_id => $self->hub->current_workspace->workspace_id,
+                duration => $seconds,
+            )
         );
     }
     else {
@@ -48,7 +52,11 @@ sub _entities_for_query {
             tag          => $self->tag,
             workspace_id => $self->hub->current_workspace->workspace_id,
             limit        => $limit,
+            offset       => $self->start_index,
             type         => $type,
+        );
+        $self->total_result_count(
+            $self->hub->category->page_count($self->tag)
         );
     }
     return @$pagesref;
