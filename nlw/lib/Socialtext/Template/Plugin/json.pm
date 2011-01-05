@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Template::Plugin::Filter;
 use Socialtext::JSON ();
+use Socialtext::Encode 'ensure_is_utf8';
 use base 'Template::Plugin::Filter';
 
 sub init {
@@ -13,7 +14,9 @@ sub init {
     return $self;
 }
 
-sub filter { return Socialtext::JSON::encode_json($_[1]); }
+# {bz: 4826}: Our templates use Unicode-strings, so we need to decode the
+# octets back into unicode strings to avoid mojibake.
+sub filter { return ensure_is_utf8(Socialtext::JSON::encode_json($_[1])); }
 
 1;
 __END__
