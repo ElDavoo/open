@@ -201,7 +201,7 @@ sub typeahead_find {
 
             # {bz: 4811}: If preferred name does not match, return first+last name
             # as "display_name" so client-side lookahead can highlight them instead.
-            if (length $prefix and index(lc $_->{display_name}, $prefix) == -1) {
+            if (length $prefix and substr(lc $_->{display_name}, 0, length $prefix) ne $prefix) {
                 $_->{display_name} = $user->proper_name;
             }
 
@@ -222,7 +222,7 @@ sub typeahead_find {
         # {bz: 4811}: If preferred name does not match, return first+last name
         # as "display_name" so client-side lookahead can highlight them instead.
         my $user;
-        if (length $prefix and index(lc $row->{display_name}, $prefix) == -1) {
+        if (length $prefix and substr(lc $row->{display_name}, 0, length $prefix) ne $prefix) {
             $user = Socialtext::User->new(user_id => $row->{user_id});
             $row->{display_name} = $user->proper_name;
         }
