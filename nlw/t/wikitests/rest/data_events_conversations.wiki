@@ -228,6 +228,21 @@ When another person makes a contribution *after* your contribution, it should sh
 | body-like   | "tk":"221" |
 | body-unlike   | "tk":"230" |
 
+Test the all-combined feed does not accidentally show edit_cancel and edit_start as well.
+
+| comment        | get the all-combined feed and check | .      |
+| http-user-pass | %%user_c%%                          | qwerty |
+| get              | /data/events/conversations/%%user_c%%?activity=all-combined;with_my_signals=1;limit=100;direct=both | application/json |
+| code-is         | 200 |
+| json-parse      |     |
+| json-array-size | 18  |
+
+| body-unlike | "tk":"100"             |
+| body-like   | "tk":"101"             |
+| body-unlike | "tk":"101-start"       |
+| body-unlike | "tk":"101-cancel"      |
+| body-unlike | "tk":"101-start-again" |
+
 Allow filtering on the event actions.
 
 | comment         | get the conversations and check action filtering | |
