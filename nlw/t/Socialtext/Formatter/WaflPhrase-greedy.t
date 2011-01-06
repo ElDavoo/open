@@ -36,5 +36,5 @@ __DATA__
 --- match
 <div class="wiki">
 <p>
-<a target="_blank" title="(external link)" href="http://www.example.com">Click me</a> and <span class="nlw_phrase"><a title="section link" href="#ape">win</a><!-- wiki: "win"{link: ape} --></span></p>
+<a target="_blank" rel="nofollow" title="(external link)" href="http://www.example.com">Click me</a> and <span class="nlw_phrase"><a title="section link" href="#ape">win</a><!-- wiki: "win"{link: ape} --></span></p>
 </div>
