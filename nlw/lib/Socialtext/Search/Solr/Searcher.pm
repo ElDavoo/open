@@ -285,6 +285,10 @@ sub _sort_opts {
     elsif ($order eq 'oldest') {
         $order = 'date'; $direction = 'asc';
     }
+    # Sugar for Workspace Pages search
+    elsif ($order eq 'alpha') {
+        $order = 'title';
+    }
 
     # If no valid sort order is supplied, then we use either a date sort or a
     # score sort.

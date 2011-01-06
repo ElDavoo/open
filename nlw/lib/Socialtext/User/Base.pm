@@ -155,7 +155,7 @@ sub name_and_email {
     my $self  = shift;
     my $name  = $self->guess_real_name;
     my $email = $self->email_address;
-    return "$name <$email>";
+    return "\"$name\" <$email>";
 }
 
 sub update_display_name {

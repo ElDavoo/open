@@ -19,21 +19,6 @@ $JSON::UTF8 = 1;
 
 has 'total_result_count' => ( is => 'rw', isa => 'Int', default => 0 );
 
-# /data/workspaces/:wksp_id/pages supported limit and offset so
-# including those should not trigger a pageable result
-sub _build_pageable {
-    my $self = shift;
-
-    return 0 if (defined $self->rest->query->param('minimal_pages'));
-    if (defined($self->rest->query->param('startIndex')) ||
-        defined($self->rest->query->param('count'))) {
-        return 1;
-    }
-    else {
-        return 0;
-    }
-}
-
 sub _get_entities {
     my $self = shift;
     my $rest = shift;
@@ -42,7 +27,6 @@ sub _get_entities {
 
     # If we're filtering, get that from the DB directly
     my $filter  = $self->rest->query->param('filter');
-    my $count   = $self->rest->query->param('count') || 100;
     my $type    = $self->rest->query->param('type');
     my $minimal = $self->rest->query->param('minimal_pages');
 
@@ -57,22 +41,11 @@ sub _get_entities {
         return Socialtext::Model::Pages->Minimal_by_name(
             workspace_id => $self->hub->current_workspace->workspace_id,
             page_filter  => $page_filter,
-            limit        => $count,
+            limit        => $self->items_per_page,
             type         => $type,
         );
     }
 
-    my $search_query = $self->rest->query->param('q');
-
-    if (defined $search_query and length $search_query) {
-        my $rv;
-        try { $rv = $self->SUPER::get_resource() }
-        catch {
-            warn "Page query failed, returning empty result set: $_";
-            $rv = [];
-        };
-        return $rv;
-    }
     return [$self->_hashes_for_query];
 }
 
@@ -199,27 +172,57 @@ sub _entities_for_query {
     return @entities;
 }
 
+around _build_default_page_size => sub {
+    my $orig = shift;
+    my $self = shift;
+
+    # If q= or filter= is set, default to 100 rows per page
+    my $search_query = $self->rest->query->param('q')
+                     || $self->rest->query->param('filter');
+    if (defined $search_query and length $search_query) {
+        return 100;
+    }
+
+    # If not querying, use the default page size
+    return $self->$orig(@_);
+};
+
 sub _searched_pages {
     my ( $self, $search_query ) = @_;
 
     my $t = time_scope 'searched_pages';
 
     my %page_ids_by_workspace;
-    my $index = $self->rest->query->param('index');
-    my $count = $self->rest->query->param('count') || 100;
-    my ($hits, $hits_count) = search_on_behalf(
-            $self->hub->current_workspace->name,
-            $search_query,
-            ($self->rest->query->param('scope') || '_'),
-            $self->hub->current_user,
-            undef,
-            undef,
-            use_index => $index,
-            limit => $count,
-        );
-    $self->total_result_count($hits_count);
-    for my $hit (grep { $_->isa('Socialtext::Search::PageHit') } @$hits) {
-        push @{$page_ids_by_workspace{$hit->workspace_name} ||= []}, $hit->page_uri;
+    eval { 
+        my $index = $self->rest->query->param('index');
+        my $count = $self->items_per_page;
+        my ($hits, $hits_count) = search_on_behalf(
+                $self->hub->current_workspace->name,
+                $search_query,
+                ($self->rest->query->param('scope') || '_'),
+                $self->hub->current_user,
+                undef,
+                undef,
+                use_index => $index,
+                limit => $count,
+                offset => $self->start_index,
+                order => ($self->rest->query->param('order') || ''),
+                direction => ($self->rest->query->param('direction') || ''),
+            );
+        $self->total_result_count($hits_count);
+        for my $hit (grep { $_->isa('Socialtext::Search::PageHit') } @$hits) {
+            push @{$page_ids_by_workspace{$hit->workspace_name} ||= []}, $hit->page_uri;
+        }
+    };
+    if ($@ and $@->isa('Socialtext::Exception::TooManyResults')) {
+        if ($self->{_content_type} ne 'application/json') {
+            $self->rest->header(
+                -status => HTTP_400_Bad_Request,
+                -type => 'text/plain',
+            );
+        }
+        $self->{_too_many} = $@->num_results;
+        return ();
     }
 
     my @all_pages;

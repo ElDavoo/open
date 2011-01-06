@@ -365,6 +365,7 @@ sub standard_test_setup {
     $self->{"${prefix}email_address"} = $user_name;
     $self->{"${prefix}username"} = $user_name;
     $self->{"${prefix}user_id"} = $user->user_id;
+    $self->{"${prefix}user_name_and_email"} = $user->name_and_email;
     $self->{"${prefix}password"} = $password;
 
     unless ($no_group) {

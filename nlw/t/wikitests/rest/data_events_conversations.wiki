@@ -107,6 +107,12 @@ Note that page x20 should show up as the 'created' special case and not because 
 | http-user-pass | %%user_a%% | qwerty |
 | post-json | /data/events | {"context":{"tk":"100"},"page":{"id":"x00", "workspace_name":"%%ws%%"},"action":"edit_save","event_class":"page"} |
 | code-is | 201 |  |
+| post-json | /data/events | {"context":{"tk":"101-start"},"page":{"id":"x01", "workspace_name":"%%ws%%"},"action":"edit_start","event_class":"page"} |
+| code-is | 201 |  |
+| post-json | /data/events | {"context":{"tk":"100-cancel"},"page":{"id":"x01", "workspace_name":"%%ws%%"},"action":"edit_cancel","event_class":"page"} |
+| code-is | 201 |  |
+| post-json | /data/events | {"context":{"tk":"100-start-again"},"page":{"id":"x01", "workspace_name":"%%ws%%"},"action":"edit_start","event_class":"page"} |
+| code-is | 201 |  |
 | post-json | /data/events | {"context":{"tk":"101"},"page":{"id":"x01", "workspace_name":"%%ws%%"},"action":"edit_save","event_class":"page"} |
 | code-is | 201 |  |
 | post-json | /data/events | {"context":{"tk":"105"},"page":{"id":"x05", "workspace_name":"%%ws%%"},"action":"edit_save","event_class":"page"} |
@@ -190,6 +196,9 @@ When another person makes a contribution *after* your contribution, it should sh
 | comment     | check that the first user's events show up |
 | body-unlike | "tk":"100" |
 | body-like   | "tk":"101" |
+| body-unlike | "tk":"101-start"       |
+| body-unlike | "tk":"101-cancel"      |
+| body-unlike | "tk":"101-start-again" |
 | body-like   | "tk":"105" |
 | body-like   | "tk":"106" |
 | body-like   | "tk":"107" |
@@ -218,6 +227,21 @@ When another person makes a contribution *after* your contribution, it should sh
 | body-like   | "tk":"220" |
 | body-like   | "tk":"221" |
 | body-unlike   | "tk":"230" |
+
+Test the all-combined feed does not accidentally show edit_cancel and edit_start as well.
+
+| comment        | get the all-combined feed and check | .      |
+| http-user-pass | %%user_c%%                          | qwerty |
+| get              | /data/events/conversations/%%user_c%%?activity=all-combined;with_my_signals=1;limit=100;direct=both | application/json |
+| code-is         | 200 |
+| json-parse      |     |
+| json-array-size | 18  |
+
+| body-unlike | "tk":"100"             |
+| body-like   | "tk":"101"             |
+| body-unlike | "tk":"101-start"       |
+| body-unlike | "tk":"101-cancel"      |
+| body-unlike | "tk":"101-start-again" |
 
 Allow filtering on the event actions.
 
