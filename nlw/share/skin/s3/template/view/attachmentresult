@@ -6,8 +6,8 @@
     <div id='error'>[% error %]</div>
     [% END %]
     <div id='attachments'>
-    [% FOR file = files.keys %]
-        <input type="hidden" name="[% file %]" value="[% files.$file %]"/>
+    [% FOR file = files %]
+        <input type="hidden" name="[% file.filename %]" value="[% file.id %]"/>
     [% END %]
     </div>
 </body>

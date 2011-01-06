@@ -104,7 +104,7 @@ sub attachments_upload {
 
     return $self->_finish(
         error => $error,
-        files => $self->{_attachment_info},
+        files => [ values %{$self->{_attachment_info}} ],
     );
 }
 
@@ -194,7 +194,10 @@ sub save_attachment {
             creator  => $self->hub->current_user,
         );
         for my $file (@files) {
-            $self->{_attachment_info}{$file->filename} = $file->id;
+            $self->{_attachment_info}{$file->filename} = {
+                filename => $file->filename,
+                id => $file->id,
+            };
         }
     };
 
