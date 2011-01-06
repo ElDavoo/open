@@ -513,6 +513,7 @@ sub _add_person_doc {
 
         my $prof_fields = $profile->fields->to_hash;
         for my $field ($profile->fields->all) {
+            next if $field->is_hidden;
             my $solr_field = $field->solr_field_name;
             my $value;
             if ($field->is_relationship) {
