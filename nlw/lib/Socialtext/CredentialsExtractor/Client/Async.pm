@@ -1,6 +1,5 @@
 package Socialtext::CredentialsExtractor::Client::Async;
 # @COPYRIGHT@
-
 use Moose;
 use AnyEvent::HTTP qw(http_request);
 use Try::Tiny;
@@ -22,6 +21,8 @@ has 'userd_path' => (
 has 'userd_uri' => (
     is => 'ro', isa => 'Str', lazy_build => '1',
 );
+has 'timeout' => ( is => 'rw', isa => 'Int', default => 30 );
+
 sub _build_userd_uri {
     my $self = shift;
     my $host = $self->userd_host;
@@ -70,7 +71,7 @@ sub extract_credentials {
                 'User-Agent' => __PACKAGE__,
             },
             body    => $body,
-            timeout => 30,
+            timeout => $self->timeout,
             sub {
                 my ($resp_body, $resp_hdrs) = @_;
                 my $creds;
