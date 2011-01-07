@@ -5,11 +5,15 @@
 * Fixture: SocialWidgets
 
 | set | fname_user | fname_user_%%start_time%%@david.socialtext.net |  |
+| set | fname_user_regexp | fname_user_%%start_time%%\@david.socialtext.net |  |
 | set_default | fname | Bob_%%start_time%% |  |
 | set_default | fname_first_letter | B |  |
 | set_default | fname_prefix | Bob |  |
 | set_default | fname_suffix | _%%start_time%% |  |
+| set | first_name | Robert_%%start_time%% |  |
+| set | last_name | Jones_%%start_time%% |  |
 | set | fname_checker | fname_checker_%%start_time%%@david.socialtext.net |  |
+| set | fname_checker_regexp | fname_checker_%%start_time%%\@david.socialtext.net |  |
 | set | fname_acct | 1_fname_account_%%start_time%% |  |
 | set | fname_wiki | fname-wiki-%%start_time%% |  |
 | set | fname_wiki_2 | fname-wiki-2-%%start_time%% |  |
@@ -20,7 +24,8 @@
 | create-account | %%fname_acct%% |  |  |
 | set | fname_acct_id | %%account_id%% |  |
 | st-admin | create-workspace --name %%fname_wiki%% --title %%fname_wiki%% --account %%fname_acct%% | was created |  |
-| st-admin | create-user --email %%fname_user%% --password %%password%% --account %%fname_acct%% | was created |  |
+| create-user | %%fname_user%% | %%password%% | %%fname_acct%% |
+| set | fname_user_id | %%user_id%% |  |
 | st-admin | add-workspace-admin --email %%fname_user%% --workspace %%fname_wiki%% | now has the role |  |
 | st-admin | invite-user --email %%fname_checker%% --workspace %%fname_wiki%% --from %%fname_user%% | has been sent |  |
 | st-admin | confirm-user --email %%fname_checker%% --password %%password%% |
@@ -32,10 +37,12 @@
 | st-admin | add-member --email %%fname_checker%% --group %%fname_group_id%% | is now a member |  |
 | st-logoutin | %%fname_user%% | %%password%% |  |
 
-| *Comment* | Test Case: Friendly Name edit preferred name |  |
+| *Comment* | Test Case: Friendly Name edit profile |  |
 | open_ok | /st/edit_profile |  |
 | wait_for_element_visible_ok | field_preferred_name | 30000 |
 | type_ok | field_preferred_name | %%fname%% |
+| wait_for_element_visible_ok | field_work_phone | 30000 |
+| type_ok | field_work_phone | 555-123-4567 |
 | wait_for_element_visible_ok | update_profile | 30000 |
 | click_and_wait | update_profile | 30000 |
 | st-name-widget | 1 | profile_widget |
@@ -44,20 +51,34 @@
 | wait_for_text_present_ok | %%fname%% | 30000 |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Friendly Name send Signal |  |
+| *Comment* | Test Case: Friendly Name check new user edit profile prompt |  |
+| open_ok | /st/dashboard |  |
+| wait_for_text_present_ok | Welcome %%fname%% | 30000 |
+| wait_for_element_not_present_ok | link=your profile | 30000 |
+
+| *Comment* | Test Case: Friendly Name edit profile more |  |
+| open_ok | /st/edit_profile |  |
+| wait_for_element_visible_ok | field_first_name | 30000 |
+| type_ok | field_first_name | %%first_name%% |
+| wait_for_element_visible_ok | field_last_name | 30000 |
+| type_ok | field_last_name | %%last_name%% |
+| wait_for_element_visible_ok | update_profile | 30000 |
+| click_and_wait | update_profile | 30000 |
+
+| *Comment* | Test Case: Friendly Name send Signal with user wafl |  |
 | http-user-pass | %%fname_user%% | %%password%% |
-| post-signal | signal text |  |
+| post-signal | {user: %%fname_user_id%%} |  |
 | pause | 3000 |  |
 | st_process_jobs | SignalIndex |  |
 
-| *Comment* | Test Case Friendly Name edit a page |  |
+| *Comment* | Test Case Friendly Name edit a page with user wafl |  |
 | open_ok | /%%fname_wiki%%/index.cgi?%%fname_page%% |  |
 | wait_for_element_visible_ok | st-create-content-savelink | 30000 |
 | click_and_wait | st-create-content-savelink |  |
 | wait_for_element_visible_ok | st-mode-wikitext-button | 30000 |
 | click_ok | st-mode-wikitext-button |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | page text |
+| type_ok | wikiwyg_wikitext_textarea | user wafl {user: %%fname_user%%} |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | click_and_wait | st-save-button-link |  |
 
@@ -78,9 +99,11 @@
 | open_ok | /m/page/%%fname_wiki%%/%%fname_page%% |  |
 | wait_for_element_visible_ok | link=%%fname%% | 30000 |
 
-| *Comment* | Test Case: Friendly Name Check signal |  |
+| *Comment* | Test Case: Friendly Name Check signal and user wafl |  |
 | open_ok | /st/signals |  |
 | wait_for_element_present_ok | link=%%fname%% | 30000 |
+| text_like | //div[@class='metadata'] | qr/%%fname%%.+to %%fname_acct%%/ |
+| text_like | //div[@class='signal_body'] | %%fname%% |
 
 | *Comment* | Test Case: Friendly Name Check activities widget |  |
 | open_ok | /st/dashboard |  |
@@ -90,13 +113,13 @@
 | wait_for_element_present_ok | link=%%fname%% | 30000 |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Friendly Name check wiki page |  |
+| *Comment* | Test Case: Friendly Name check wiki page and user wafl |  |
 | open_ok | /%%fname_wiki%%/index.cgi?%%fname_page%% |  |
-| wait_for_text_present_ok | page text | 30000 |
 | wait_for_text_present_ok | comment text | 30000 |
 | wait_for_text_present_ok | contributed by %%fname%% | 30000 |
 | wait_for_text_present_ok | Created by %%fname%% | 30000 |
 | wait_for_text_present_ok | Updated by %%fname%% | 30000 |
+| text_like | st-page-content | user wafl %%fname%% |
 
 | *Comment* | Test Case: Friendly Name check Hcard popup |  |
 | wait_for_element_visible_ok | //span[@id='create-attribution']//a | 30000 |
@@ -243,6 +266,16 @@
  wait_for_element_visible_ok | link=%%fname%% | 30000 |
 | text_like | Invited by: "%%fname%%" | |
 text_like | workspaceTable | %%fname%% |
+
+| *Comment* | Test Case: Friendly Name check Control Panel other user page |  |
+| open_ok | /nlw/control/user/%%fname_user_id%% |  |
+| wait_for_text_present_ok | %%fname%% | 30000 |
+| text_like | qr/%%first_name%%.+%%last_name%%.+Prefers to be called: %%fname%%/ |  |
+
+| *Comment* | Test Case: Friendly Name check People directory sorting |  |
+| open_ok | /?action=people |  |
+| wait_for_element_visible_ok | link=%%fname%% |  |
+| text_like | contentContainer | qr/%%fname_user_regexp%%.+%%fname_checker_regexp%%/ |
 
 
 
