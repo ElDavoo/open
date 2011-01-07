@@ -1396,7 +1396,9 @@ sub _build_convos_sql {
     if ($action{signal}) {
         push @classes, 'signal';
         if (keys %action > 1) {
-            push @classes, 'page';
+            # {bz: 4840} - We had not extended mention logic to "edit_save" and "comment" yet.
+            # For now on "action=signal,edit_save,comment" we simply limit action to "signal" only.
+            # push @classes, 'page';
         }
     }
     elsif (%action) {
@@ -1421,7 +1423,7 @@ sub _build_convos_sql {
         # don't accidentally display the edit_start and edit_cancel events.
         if (!@classes or grep { $_ eq 'page' } @classes) {
             $self->add_outer_condition(
-                "evt.action NOT IN ('edit_start', 'edit_cancel')", @classes
+                "evt.action NOT IN ('edit_start', 'edit_cancel')"
             );
         }
     }

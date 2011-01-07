@@ -43,7 +43,7 @@ Can_send_without_exception: {
 my @cases = ( { label        => 'non-appliance',
                 is_appliance => 0,
                 username     => 'devnull8@socialtext.com',
-                tests        => [ qr/From: devnull1 <devnull1\@socialtext\.com>/,
+                tests        => [ qr/From: "devnull1" <devnull1\@socialtext\.com>/,
                                   qr/to join Empty Wiki/,
                                   qr{/submit/confirm_email},
                                 ],
