@@ -243,6 +243,13 @@ Test the all-combined feed does not accidentally show edit_cancel and edit_start
 | body-unlike | "tk":"101-cancel"      |
 | body-unlike | "tk":"101-start-again" |
 
+| comment        | get the signal-only feed and check | .      |
+| http-user-pass | %%user_c%%                          | qwerty |
+| get              | /data/events/conversations/%%user_c%%?action=signal,comment,edit_save;signals=1;with_my_signals=1;limit=100;direct=both | application/json |
+| code-is         | 200 |
+| json-parse      |     |
+| json-array-size | 0   |
+
 Allow filtering on the event actions.
 
 | comment         | get the conversations and check action filtering | |
