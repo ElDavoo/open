@@ -59,7 +59,7 @@
 | st-process-jobs      |                 |   |
 | job-count            | EmailNotifyUser | 1 |
 
-| email-like   | To: %%email_address%%                              |
+| email-like   | To: %%user_name_and_email%%                        |
 | email-like   | Subject: Recent Changes In %%workspace%% Workspace |
 | email-like   | From: "%%workspace%%" <noreply@socialtext.com>     |
 | email-like   | Foo                                                |

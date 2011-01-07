@@ -1990,7 +1990,7 @@ proto._do_insert_block_dialog = function(opts) {
 
     $('#st-widget-block-title').text(opts.dialog_title);
     $('#st-widget-block-prompt').text(opts.dialog_prompt);
-    $('#st-widget-block-hint').text(opts.dialog_hint);
+//    $('#st-widget-block-hint').text(opts.dialog_hint);
 
     if (opts.widget_element) {
         var widget = this.parseWidgetElement(opts.widget_element) || { widget : '' };

@@ -13,7 +13,7 @@ use Crypt::OpenToken;
 use Socialtext::Challenger::OpenToken;
 use File::Slurp qw(write_file);
 use Socialtext::User;
-use Test::Socialtext tests => 27;
+use Test::Socialtext tests => 30;
 
 ###############################################################################
 # Create our test fixtures *OUT OF PROCESS* as we're using a mocked Hub.
@@ -262,6 +262,27 @@ preserve_challenge_uri_query_params: {
     my $redirect_uri = $webapp->{redirect};
     like $redirect_uri, qr/TARGET=/, '... containing TARGET';
     like $redirect_uri, qr/foo=bar/, '... preserving query params';
+}
+
+###############################################################################
+# Valid tokens for unknown Users generate an error message.
+valid_token_but_unknown_user: {
+    my $user = Socialtext::User->Guest;
+    my $rc   = _issue_challenge(
+        with_user       => $user,
+        with_token      => 1,
+        with_token_data => {
+            subject => 'this-user-does-not-exist-anywhere@ken.socialtext.net',
+        },
+    );
+    ok !$rc, 'challenge was declined';
+
+    # make sure an error was recorded
+    my $app = Socialtext::WebApp->instance();
+    $app->called_pos_ok(2, '_handle_error', '... error was thrown');
+    my ($self, %args) = $app->call_args(2);
+    like $args{'error'}, qr/valid token.*unknown user.*this-user-does-not/,
+        '... ... about valid token but unknown user';
 }
 
 exit;

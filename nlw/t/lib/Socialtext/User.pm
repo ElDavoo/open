@@ -194,6 +194,8 @@ sub can_use_plugin {
 
 sub profile_is_visible_to { 1 }
 
+sub clear_profile { }
+
 sub avatar_is_visible { 1 }
 
 sub Guest {

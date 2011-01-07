@@ -1438,6 +1438,10 @@ proto.insert_table_html = function(rows, columns, options) {
             var $table = jQuery('#'+id, self.get_edit_document());
             $table.removeAttr('id');
             self.applyTableOptions($table, options);
+
+            // Skip the <br/> padding around tables for Selenium so we can test with the cursor in tables.
+            if (Wikiwyg.is_selenium) { return; } 
+
             if ($table.prev().length == 0) {
                 // Table is the first element in document - add a <br/> so
                 // navigation is possible beyond the table.
@@ -1485,8 +1489,8 @@ proto.do_new_table = function() {
         self.closeTableDialog();
     }
     var setup = function() {
-        jQuery('.table-create input[name=columns]').focus();
-        jQuery('.table-create input[name=columns]').select();
+        jQuery('.table-create input[name=rows]').focus();
+        jQuery('.table-create input[name=rows]').select();
         jQuery('.table-create .save')
             .unbind("click")
             .bind("click", function() {
@@ -2444,13 +2448,15 @@ proto.sanitize_dom = function(dom) {
     Wikiwyg.Mode.prototype.sanitize_dom.call(this, dom);
     this.widget_walk(dom);
 
+    // Skip the <br/> padding around tables for Selenium so we can test with the cursor in tables.
+    if (Wikiwyg.is_selenium) { return; } 
+
     // Table is the first element in document - prepend a <br/> so
     // navigation is possible beyond the table.
     var $firstTable = $('table:first', dom);
     if ($firstTable.length && ($firstTable.prev().length == 0)) {
         $firstTable.before('<br />');
     }
-
     // Table is the last element in document - append a <br/> so
     // navigation is possible beyond the table.
     var $lastTable = $('table:last', dom);
@@ -2821,6 +2827,12 @@ proto.replace_widget = function(elem) {
     var src;
 
     if (/nlw_phrase/.test(elem.className)) {
+        if ($.browser.webkit) widget = widget.replace(
+            /&#x([a-fA-F\d]{2,5});/g, 
+            function($_, $1) { 
+                return String.fromCharCode(parseInt($1, 16));
+            }
+        );
         if ( (matches = widget.match(/^"([\s\S]+?)"<(.+?)>$/m)) || // Named Links
             (matches = widget.match(/^(?:"([\s\S]*)")?\{(\w+):?\s*([\s\S]*?)\s*\}$/m))) {
             // For labeled links or wafls, remove all newlines/returns

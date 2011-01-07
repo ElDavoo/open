@@ -35,6 +35,17 @@
                     );
                 }
             });
+
+            // {bz: 4791}: Tapping an item in a list should highlight the item
+            // with the same styling as "mousedown".
+            if ($.support.mediaquery && ($.browser.webkit || $.browser.mozilla)) {
+                $(".ui-btn").live({
+                    click: function() {
+                        var theme = $(this).attr( "data-theme" );
+                        $(this).removeClass( "ui-btn-up-" + theme ).addClass( "ui-btn-down-" + theme );
+                    }
+                });
+            }
         });
         </script>
         <script src="/static/skin/common/javascript/jquery.mobile-1.0a2.min.js"></script>

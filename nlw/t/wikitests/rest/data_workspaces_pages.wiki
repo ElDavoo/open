@@ -74,13 +74,18 @@ Not a complete test of the combination of ordering/limit/offset,but a stab
 | code-is | 200|
 | json-parse |
 | body-like | qr/startIndex/ | startIndex present without filter |
-| body-like | qr/itemsPerPage/ | itemsPerPage present without filter |
+| body-like | qr/itemsPerPage":3/ | itemsPerPage present without filter |
 | body-like | qr/totalResults":754/ | totalresults present without filter |
 
 | GET | /data/workspaces/%%workspace%%/pages?q=enlightened;count=3;startIndex=0 | application/json |
 | code-is | 200|
 | json-parse |
 | body-like | qr/startIndex/ | Start index present with q |
-| body-like | qr/itemsPerPage/ | itemsPerPage present with q |
+| body-like | qr/itemsPerPage":3/ | itemsPerPage present with q - {bz: 4827} |
 | body-like | qr/totalResults":93/ | totalresults present with q |
+
+| GET | /data/workspaces/%%workspace%%/pages?count=34;q=test | application/json |
+| code-is | 200|
+| json-parse |
+| json-array-size | 34 |
 
