@@ -2827,6 +2827,12 @@ proto.replace_widget = function(elem) {
     var src;
 
     if (/nlw_phrase/.test(elem.className)) {
+        if ($.browser.webkit) widget = widget.replace(
+            /&#x([a-fA-F\d]{2,5});/g, 
+            function($_, $1) { 
+                return String.fromCharCode(parseInt($1, 16));
+            }
+        );
         if ( (matches = widget.match(/^"([\s\S]+?)"<(.+?)>$/m)) || // Named Links
             (matches = widget.match(/^(?:"([\s\S]*)")?\{(\w+):?\s*([\s\S]*?)\s*\}$/m))) {
             // For labeled links or wafls, remove all newlines/returns
