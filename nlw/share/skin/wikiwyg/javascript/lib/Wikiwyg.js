@@ -1998,6 +1998,26 @@ proto._do_insert_block_dialog = function(opts) {
             (widget.widget || '').replace(/^\.\w+\n/, '').replace(/\n\.\w+\n?$/, '')
         );
     }
+    else if (self.get_lines && self.get_selection_text() && self.get_lines() && self.sel) {
+        // {bz: 4843}: In Wikitext mode, if there is some text selected,
+        // and that text begins with .html/.pre and ends with .html/.pre,
+        // then we simply strip the markers and keep the content selected.
+        var text = self.sel.replace(/\r/g, '');
+        var len = 2+opts.wafl_id.length;
+        if (text.substr(0, len) == "." + opts.wafl_id + "\n") {
+            if (text.substr(text.length - len, len) == "\n." + opts.wafl_id) {
+                self.selection_mangle(function(that){
+                    that.sel = text.substr(len, text.length - (2*len));
+                    return true;
+                });
+                return false;
+            }
+        }
+
+        // Otherwise, if there is some text selected, we open the lightbox
+        // with the content pre-filled with the selection.
+        $('#st-widget-block-content').val(self.sel);
+    }
     else {
         $('#st-widget-block-content').val('');
     }
@@ -2006,6 +2026,7 @@ proto._do_insert_block_dialog = function(opts) {
         .unbind('reset')
         .unbind('submit')
         .bind('reset', function() {
+            $('#st-widget-block-content').val('');
             jQuery.hideLightbox();
             Wikiwyg.Widgets.widget_editing = 0;
             return false;
@@ -2015,11 +2036,12 @@ proto._do_insert_block_dialog = function(opts) {
                 jQuery("<input type='text' />").appendTo('body').focus().remove();
 
             var close = function() {
+                var text = $('#st-widget-block-content').val();
+                $('#st-widget-block-content').val('');
                 jQuery.hideLightbox();
                 self.insert_block(
                     "." + opts.wafl_id + "\n"
-                        + $('#st-widget-block-content').val()
-                            .replace(/\n?$/, "\n." + opts.wafl_id),
+                        + text.replace(/\n?$/, "\n." + opts.wafl_id),
                     opts.edit_label,
                     opts.widget_element
                 );

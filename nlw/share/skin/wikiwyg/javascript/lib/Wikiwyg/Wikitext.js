@@ -1392,6 +1392,22 @@ proto.make_table_wikitext = function(rows, columns) {
 }
 
 proto.insert_block = function (text) {
+    if (this.get_selection_text()) {
+        this.selection_mangle(function(that){
+            // Add surrounding newlines only when needed
+            that.sel = "";
+            if (that.start && !(/(^|\r?\n)\r?\n$/.test(that.start))) {
+                that.sel += "\n";
+            }
+            that.sel += text;
+            if (that.finish && !(/^\r?\n(\r?\n|$)/.test(that.finish))) {
+                that.sel += "\n";
+            }
+            return true;
+        });
+        return;
+    }
+
     this.markup_line_alone([
         "block",
         "\n" + text + "\n"
