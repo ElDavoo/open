@@ -34,6 +34,7 @@ use EV;
 use Feersum;
 use Socket qw/SOMAXCONN/;
 use IO::Socket::INET;
+use POSIX ();
 use Socialtext::Async;
 use Socialtext::Async::WorkQueue;
 
@@ -151,6 +152,7 @@ sub Configure {
 sub Run {
     my ($class, @args) = @_;
 
+    POSIX::setsid();
     try { $class->Configure(@args) }
     catch {
         croak "could not configure $class: $_";
