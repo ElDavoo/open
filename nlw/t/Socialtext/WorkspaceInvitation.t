@@ -10,7 +10,7 @@ BEGIN {
         plan skip_all => 'These tests require Email::Send::Test to run.';
     }
     else {
-        plan tests => 25;
+        plan tests => 27;
     }
 }
 
@@ -148,16 +148,20 @@ EOF
 
     # create a user in a new account
     my $account = Socialtext::Account->create(name => "fuzz");
-    my $user = Socialtext::User->create(
-        username      => 'deleted@ken.socialtext.net',
-        first_name    => 'Dele',
-        last_name     => 'Ted',
-        email_address => 'deleted@ken.socialtext.net',
-        password      => 'd3vnu11l'
-    );
 
-    $user->deactivate;
-    is $user->primary_account_id, $deleted->account_id, "User is deleted";
+    {
+        my $user = Socialtext::User->create(
+            username      => 'deleted@ken.socialtext.net',
+            first_name    => 'Dele',
+            last_name     => 'Ted',
+            email_address => 'deleted@ken.socialtext.net',
+            password      => 'd3vnu11l'
+        );
+
+        $user->deactivate;
+        is($user->primary_account_id, $deleted->account_id, "User is deleted");
+        ok(!$user->requires_confirmation, "Password confirmation mail has not been sent");
+    }
 
     my $invitation = Socialtext::WorkspaceInvitation->new(
         workspace  => $workspace,
@@ -167,8 +171,12 @@ EOF
     );
     $invitation->send();
 
-    is(Socialtext::User->Resolve( 'deleted@ken.socialtext.net' )->primary_account_id, $workspace->account_id,
-        "User's primary account is re-assigned to workspace's account on re-invite");
+    {
+        my $user = Socialtext::User->Resolve( 'deleted@ken.socialtext.net' );
+        is($user->primary_account_id, $workspace->account_id,
+            "User's primary account is re-assigned to workspace's account on re-invite");
+        ok($user->requires_confirmation, "Password confirmation mail has been sent");
+    }
 }
 
 sub _confirm_user_if_neccessary {

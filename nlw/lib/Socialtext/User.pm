@@ -857,6 +857,10 @@ sub reactivate {
     # Add the user to a new primary _before_ deleting the old
     $self->primary_account( $p{account_id} );
     $deleted->remove_user( user => $self );
+
+    unless ($self->is_externally_sourced) {
+        $self->set_confirmation_info(is_password_change => 1);
+    }
 }
 
 sub _index {
