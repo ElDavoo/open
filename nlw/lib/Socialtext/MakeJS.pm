@@ -16,7 +16,6 @@ use File::Find qw(find);
 use File::Basename qw(basename dirname);
 use Clone qw(clone);
 use Carp qw(confess);
-use lib dirname(__FILE__)."/../../../plugins/widgets/lib";
 
 use namespace::clean -except => 'meta';
 
