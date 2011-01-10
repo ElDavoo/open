@@ -1114,4 +1114,53 @@ $(function() {
             Page._repaintBottomButtons();
         }, 100);
     }
+
+    // Offer to restore unsaved drafts
+    if (typeof localStorage != 'undefined' && !(/^#draft-\d+$/.test(location.hash || ''))) {
+      $(function(){
+        try {
+          var all_drafts = $.secureEvalJSON(localStorage.getItem('st-drafts-' + Socialtext.real_user_id));
+          for (var key in all_drafts) {
+            var draft = all_drafts[key];
+            if (((new Date()).getTime() - draft.last_updated) > 30 * 1000)  {
+              var resume_link = '/'+draft.workspace_id+'/'
+                              + '?action=edit'
+                              + ';page_name=' + encodeURIComponent(draft.page_title)
+                              + ';page_type=' + draft.page_type
+                              + '#draft-'+key;
+              $('#contentColumns').prepend(
+                $('<div />', { id: "st-draft-notice-" + key, css: { background: '#ffff80', textAlign: 'center', padding: '2px', borderBottom: '1px solid #ccc' } })
+                  .text(loc('You have an unsaved draft of "[_1]" in the "[_2]" ([_3]) workspace:', draft.page_title, draft.workspace_title, draft.workspace_id))
+                  .append('&nbsp;')
+                  .append(
+                    $('<a />')
+                      .text(loc('Resume'))
+                      .attr('href', resume_link)
+                  )
+                  .append(loc('&nbsp;or&nbsp;'))
+                  .append(
+                    $('<a />')
+                      .text(loc('Discard'))
+                      .attr('href', '#')
+                      .attr('id', 'st-discard-draft-' + key)
+                      .click(function(){
+                        if (confirm(loc("Are you sure you want to discard the draft?"))) {
+                          var key = $(this).attr('id').replace(/^st-discard-draft-/, '');
+                          $('#st-draft-notice-' + key).fadeOut();
+                          try {
+                            var all_drafts = $.secureEvalJSON(localStorage.getItem('st-drafts-' + Socialtext.real_user_id));
+                            delete all_drafts[key];
+                            localStorage.setItem('st-drafts-' + Socialtext.real_user_id, $.toJSON(all_drafts));
+                          } catch (e) {}
+                        }
+                        return false;
+                      })
+                  )
+                  .append(loc('?'))
+               );
+            }
+          }
+        } catch (e) {}
+      });
+    }
 });
