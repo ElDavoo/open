@@ -94,6 +94,8 @@
 | st-logoutin | %%fname_checker%% | %%password%% |
 | open_ok | /st/m/signals |  |
 | wait_for_element_visible_ok | link=%%fname%% | 30000 |
+| text_like | //div[@class='metadata'][1] | %%fname%% |
+| text_like | //div[@class='signal_body'][1] | %%fname%% |
 | open_ok | /m/people?letter=%%fname_first_letter%% |  |
 | wait_for_element_visible_ok | link=%%fname%% | 30000 |
 | open_ok | /m/page/%%fname_wiki%%/%%fname_page%% |  |
@@ -223,7 +225,7 @@
 | open_ok | /nlw/control/account/%%fname_acct_id%% |  |
 | wait_for_text_present_ok | %%fname%% | 30000 |
 | text_like | workspaces | %%fname%% |
-| text_like | userTable | %%fname%% |
+| text_like | //div[@id='userTable'] | %%fname%% |
 | text_like | groups | %%fname%% |
 
 | *Comment* | Test Case: Friendly Name check Control Panel workspace page |  |
@@ -232,8 +234,8 @@
 | click_and_wait | link=%%fname_wiki_2%% |  |
 | wait_for_text_present_ok | %%fname%% | 30000 |
 | text_like | Created by: "%%fname%%" |  |
-| text_like | userTable | %%fname%% |
-| text_like | groupTable | %%fname%% |
+| text_like | //div[@id='userTable'] | %%fname%% |
+| text_like | //div[@id='groupTable'] | %%fname%% |
 
 | *Comment* | Test Case: Friendly Name check Control Panel workspaces list |  |
 | open_ok | /nlw/control/workspace |  |
@@ -244,7 +246,7 @@
 | open_ok | /nlw/control/group/%%fname_group_id%% |  |
 | wait_for_text_present_ok | %%fname%% | 30000 |
 | text_like | Created By: %%fname%% |  |
-| text_like | userTable | %%fname%% |
+| text_like | //div[@id='userTable'] | %%fname%% |
 | text_like | workspaces | %%fname%% |
 
 | *Comment* | Test Case: Friendly Name check Control Panel user list |  |
@@ -277,9 +279,33 @@ text_like | workspaceTable | %%fname%% |
 | wait_for_element_visible_ok | link=%%fname%% |  |
 | text_like | contentContainer | qr/%%fname_user_regexp%%.+%%fname_checker_regexp%%/ |
 
+| *Comment* | Test Case: Friendly Name check non-workspace Search |  |
+| wait_for_element_visible_ok | st-search-term | 30000 |
+| type_ok | st-search-term | %%first_name%% |
+| wait_for_element_visible_ok | st-search-submit | 30000 |
+| click_and_wait | st-search-submit |  |
+| wait_for_element_visible_ok | link=%%fname%% | 30000 |
+| wait_for_element_visible_ok | st-search-term | 30000 |
+| type_ok | st-search-term | %%fname%% |
+| wait_for_element_visible_ok | st-search-submit | 30000 |
+| click_and_wait | st-search-submit |  |
+| wait_for_element_visible_ok | link=%%fname%% | 30000 |
 
-
-
+| *Comment* | Test Case: Friendly Name check workspace Search |  |
+| open_ok | /%%fname_wiki%%/index.cgi?%%fname_wiki%% |  |
+| wait_for_element_visible_ok | st-search-action | 30000 |
+| select_ok | st-search-action | label=Search People: |
+| wait_for_element_visible_ok | st-search-term | 30000 |
+| type_ok | st-search-term | %%first_name%% |
+| wait_for_element_visible_ok | st-search-submit | 30000 |
+| click_and_wait | st-search-submit |  |
+| wait_for_element_visible_ok | link=%%fname%% | 30000 |
+| open_ok | /%%fname_wiki%%/index.cgi?%%fname_wiki%% |  |
+| wait_for_element_visible_ok | st-search-term | 30000 |
+| type_ok | st-search-term | %%fname%% |
+| wait_for_element_visible_ok | st-search-submit | 30000 |
+| click_and_wait | st-search-submit |  |
+| wait_for_element_visible_ok | link=%%fname%% | 30000 |
 
 
 
