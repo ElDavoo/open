@@ -3,6 +3,7 @@
    <li><a onclick="return false" href="#">Insert</a>
     <ul>
      <li><a do="do_widget_image" onclick="return false;" href="#">Image</a></li>
+     <li><a do="do_widget_video" onclick="return false;" href="#">Video</a></li>
      <li><a do="do_table" onclick="return false;" href="#">Table</a></li>
      <li><a do="do_hr" onclick="return false;" href="#">Horizontal Line</a></li>
      <li><a onclick="return false" href="#" class="daddy">A Link To...</a>

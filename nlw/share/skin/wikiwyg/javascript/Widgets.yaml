@@ -3,6 +3,7 @@ widgets:
   - link2_hyperlink
   - link2_section
   - image
+  - video
   - file
   - toc
   - include
@@ -173,6 +174,26 @@ widget:
     image_text:
         - { field: label, text: "image: %label" }
         - { field: default, text: "image: %image_name" }
+
+  video:
+    id: video
+    label: Video
+    color: red
+    pattern: '{video: %url size=%size}'
+    fields: [url, size]
+    pdfields: []
+    extra_fields: []
+    input:
+       size: size
+    labels:
+      url: Video URL
+      size: Size
+    title: Embed video to '$url'. Click to edit.
+    desc: Display an embedded video on this page.
+    more_desc: "Optional properties include the size for displaying this video."
+    required: [url]
+    image_text:
+        - { field: url, text: "video: %url" }
 
   file:
     id: file

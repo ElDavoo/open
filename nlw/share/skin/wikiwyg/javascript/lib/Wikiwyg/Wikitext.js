@@ -1173,6 +1173,7 @@ eval(WW_ADVANCED_MODE).prototype.setup_widgets = function() {
         p.markupRules['widget_' + widget] =
             widget_data[widget].markup ||
             ['bound_phrase', '{' + widget + ': ', '}'];
+            console.log(widget);
         p['do_widget_' + widget] = Wikiwyg.Wikitext.make_do('widget_' + widget);
     }
 }
@@ -1237,7 +1238,8 @@ proto.markupRules = {
     h6: ['start_line', '^^^^^^ '],
     www: ['bound_phrase', '"', '"<http://...>'],
     attach: ['bound_phrase', '{file: ', '}'],
-    image: ['bound_phrase', '{image: ', '}']
+    image: ['bound_phrase', '{image: ', '}'],
+    video: ['bound_phrase', '{video: ', '}']
 }
 
 for (var ii in proto.markupRules) {
@@ -1331,6 +1333,7 @@ proto.setHeightOfEditor = function() {
 proto.do_www = Wikiwyg.Wikitext.make_do('www');
 proto.do_attach = Wikiwyg.Wikitext.make_do('attach');
 proto.do_image = Wikiwyg.Wikitext.make_do('image');
+proto.do_video = Wikiwyg.Wikitext.make_do('video');
 
 proto.convertWikitextToHtml = function(wikitext, func, onError) {
     // TODO: This could be as simple as:

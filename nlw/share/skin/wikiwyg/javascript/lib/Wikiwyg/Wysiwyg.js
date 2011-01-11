@@ -1263,6 +1263,10 @@ proto.do_image = function() {
     this.do_widget_image();
 }
 
+proto.do_video = function() {
+    this.do_widget_video();
+}
+
 proto.do_link = function(widget_element) {
     this._do_link(widget_element);
 }
