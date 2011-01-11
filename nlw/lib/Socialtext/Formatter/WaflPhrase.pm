@@ -951,24 +951,36 @@ sub html {
     my ($video_uri, $size) = $self->arguments =~ $self->wafl_reference_parse;
 
     my $embed_uri;
+    my $aspect_ratio = 1080/1920;
+    my $toolbar_height = 0;
 
     if ($video_uri =~ m{://youtu\.be/([-\w]+)}i
             or $video_uri =~ m{://(?:www\.)?youtube\.com/.*?\bv=([-\w]+)}i
             or $video_uri =~ m{://(?:www\.)?youtube\.com/embed/([-\w]+)}i
     ) {
         $embed_uri = "http://www.youtube.com/embed/$1?rel=0";
-        return qq{<iframe type="text/html" width="640" height="400" src="http://www.youtube.com/embed/$1?rel=0" frameborder="0"></iframe>};
+        $toolbar_height = 45;
     }
     elsif ($video_uri =~ m{://(?:www\.)?vimeo\.com/(\d+)}i) {
         $embed_uri = "http://player.vimeo.com/video/$1";
     }
-
-    if ($embed_uri) {
-        return qq{<iframe type='text/html' width='640' height='400' src='$embed_uri' frameborder='0'></iframe>};
+    else {
+        $self->syntax_error("The URL to this video is hosted on an unsupported service.");
     }
 
-    return $self->syntax_error;
+    my $width = {
+        small => 240,
+        medium => 480,
+        large => 640
+    }->{$size || 'medium'} || int($size) || 480;
 
+    $width = 1080 if $width > 1080;
+    $width = 100 if $width < 100;
+
+    my $height = $width * $aspect_ratio;
+    $height += $toolbar_height;
+
+    return qq{<iframe type='text/html' width='$width' height='$height' src='$embed_uri' frameborder='0'></iframe>};
 }
 
 
