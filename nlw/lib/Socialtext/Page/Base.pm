@@ -136,6 +136,7 @@ sub _cache_html {
         Socialtext::Wikiwyg::FormattingTestRunAll
         Socialtext::Wikiwyg::FormattingTest
         Socialtext::ShortcutLinks::Wafl
+        Socialtext::CodeSyntaxPlugin::Wafl
     /;
     my %not_cacheable_wafls = map { $_ => 1 } qw/
         Socialtext::Formatter::SpreadsheetInclusion
