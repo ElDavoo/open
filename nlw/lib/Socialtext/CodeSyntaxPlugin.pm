@@ -31,17 +31,17 @@ sub register {
     my $self = shift;
     my $registry = shift;
     for my $key (%Brushes) {
-        $registry->add(
-            wafl => "${key}_code" => 'Socialtext::CodeSyntaxPlugin::Wafl');
+        my $pkg = "Socialtext::CodeSyntaxPlugin::Wafl::$key";
+
+        no strict 'refs';
+        push @{"$pkg\::ISA"}, 'Socialtext::Formatter::WaflBlock';
+        *{"$pkg\::html"} = \&__html__;
+        *{"$pkg\::wafl_id"} = sub { "${key}_code" };
+        $registry->add(wafl => $pkg->wafl_id => $pkg);
     }
 }
 
-package Socialtext::CodeSyntaxPlugin::Wafl;
-use base 'Socialtext::Formatter::WaflBlock';
-use strict;
-use warnings;
-
-sub html {
+sub __html__ {
     my $self = shift;
     my $method = $self->method;
     (my $type = $method) =~ s/^(.+?)_code$/$1/;
@@ -49,6 +49,9 @@ sub html {
     my $js_base  = "/static/skin/common/javascript/SyntaxHighlighter";
     my $css_base = "/static/skin/common/css/SyntaxHighlighter";
     my $brush = $Socialtext::CodeSyntaxPlugin::Brushes{$type};
+
+    # Skip traversing
+    $self->units([]);
 
     return <<EOT;
 <script type="text/javascript" src="$js_base/shCore.js"></script>
