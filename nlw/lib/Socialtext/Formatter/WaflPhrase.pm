@@ -935,5 +935,41 @@ sub _parse_page_for_headers {
     );
 }
 
+################################################################################
+package Socialtext::Formatter::Video;
+
+use base 'Socialtext::Formatter::WaflPhraseDiv';
+use Class::Field qw( const );
+use Socialtext::Timer qw/time_scope/;
+
+const wafl_id => 'video';
+const wafl_reference_parse => qr/^\s*(@{[Socialtext::Formatter::HyperLink->pattern_start]})\s*(?:size=(.+))?\s*$/;
+
+sub html {
+    my $self = shift;
+    my $t = time_scope 'wafl_image';
+    my ($video_uri, $size) = $self->arguments =~ $self->wafl_reference_parse;
+
+    my $embed_uri;
+
+    if ($video_uri =~ m{://youtu\.be/([-\w]+)}i
+            or $video_uri =~ m{://(?:www\.)?youtube\.com/.*?\bv=([-\w]+)}i
+            or $video_uri =~ m{://(?:www\.)?youtube\.com/embed/([-\w]+)}i
+    ) {
+        $embed_uri = "http://www.youtube.com/embed/$1?rel=0";
+        return qq{<iframe type="text/html" width="640" height="400" src="http://www.youtube.com/embed/$1?rel=0" frameborder="0"></iframe>};
+    }
+    elsif ($video_uri =~ m{://(?:www\.)?vimeo\.com/(\d+)}i) {
+        $embed_uri = "http://player.vimeo.com/video/$1";
+    }
+
+    if ($embed_uri) {
+        return qq{<iframe type='text/html' width='640' height='400' src='$embed_uri' frameborder='0'></iframe>};
+    }
+
+    return $self->syntax_error;
+
+}
+
 
 1;

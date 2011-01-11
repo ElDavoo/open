@@ -45,7 +45,7 @@ sub wafl_classes {
     $self->hub->current_workspace->enable_spreadsheet
       ? (qw(SpreadsheetInclusion)) : (),
     qw(
-        Image File HtmlPage CSS InterWikiLink TradeMark
+        Image Video File HtmlPage CSS InterWikiLink TradeMark
         WeblogLink BlogLink CategoryLink TagLink TeleType Toc
     );
 }
