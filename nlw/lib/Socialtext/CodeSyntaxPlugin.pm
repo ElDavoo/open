@@ -57,6 +57,7 @@ sub register {
         my $pkg = "Socialtext::CodeSyntaxPlugin::Wafl::$key";
 
         no strict 'refs';
+        no warnings 'redefine';
         push @{"$pkg\::ISA"}, 'Socialtext::Formatter::WaflBlock';
         *{"$pkg\::html"} = \&__html__;
         *{"$pkg\::wafl_id"} = sub { "${key}_code" };
