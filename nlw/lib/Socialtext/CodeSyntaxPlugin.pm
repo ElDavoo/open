@@ -9,22 +9,45 @@ sub class_id { 'code' }
 const class_title    => 'CodeSyntaxPlugin';
 
 our %Brushes = (
+    as3 => 'AS3',
+    actionscript3 => 'AS3',
     bash => 'Bash',
     shell => 'Bash',
+    cf => 'ColdFusion',
+    coldfusion => 'ColdFusion',
     csharp => 'CSharp',
     cpp => 'Cpp',
     c => 'Cpp',
     css => 'Css',
+    delphi => 'Delphi',
+    pascal => 'Delphi',
     diff => 'Diff',
+    patch => 'Diff',
+    erlang => 'Erlang',
+    groovy => 'Groovy',
     js => 'JScript',
     javascript => 'JScript',
     java => 'Java',
+    javafx => 'JavaFX',
     perl => 'Perl',
     php => 'Php',
+    powershell => 'PowerShell',
+    py => 'Python',
     python => 'Python',
     ruby => 'Ruby',
+    scala => 'Scala',
     sql => 'Sql',
+    vb => 'Vb',
     xml => 'Xml',
+    html => 'Xml',
+    xhtml => 'Xml',
+    xslt => 'Xml',
+    yaml => 'Yaml',
+    json => 'Yaml',
+);
+
+our %Brush_aliases = (
+    json => 'yaml',
 );
 
 sub register {
@@ -49,6 +72,9 @@ sub __html__ {
     my $js_base  = "/static/skin/common/javascript/SyntaxHighlighter";
     my $css_base = "/static/skin/common/css/SyntaxHighlighter";
     my $brush = $Socialtext::CodeSyntaxPlugin::Brushes{$type};
+    if (my $t = $Brush_aliases{$type}) {
+        $type = $t;
+    }
 
     # Skip traversing
     $self->units([]);
