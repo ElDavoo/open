@@ -609,6 +609,25 @@ sub st_result {
 
 }
 
+=head st_match_text ($match, $variable_name) 
+
+does a text_like on $match and sticks the results in $variable
+
+=cut
+
+sub st_match_text {
+    my ($self, $match, $variable) = @_;
+   
+    my $text = $self->{selenium}->get_text('//body');
+    if ($text=~ qr/$match/) {
+        $self->{$variable} = $1;
+        ok(1, 'st_match_text matched $match');
+    } else {
+        ok(0,'st_match_text failed to match the parens in $match');
+        print "text is \n ( $text ) \n";
+    }
+}
+
 =head2 st_submit()
 
 Submits the current form

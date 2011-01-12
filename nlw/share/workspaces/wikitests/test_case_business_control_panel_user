@@ -1,7 +1,9 @@
 | *Comment* | Test case: Business Control Panel USER |  |
 | set | new_acct | acct-usertest-%%start_time%% |
 | set | new_workspace | user-test%%start_time%% |
-| set | cli_user | cli_user_test%%start_time%%@ken.socialtext.net |
+| set | cli_user | cliusertest%%start_time%%@ken.socialtext.net |
+| set | cli_user_escaped | cliusertest%%start_time%%\@ken.socialtext.net |
+| set | short_cli_user | cliusertest%%start_time%% |
 
 | st-admin | create-account --name '%%new_acct%%' | was created |
 | st-admin | create-workspace --empty --name %%new_workspace%% --title %%new_workspace%% --account '%%new_acct%%' | was created |
@@ -91,6 +93,17 @@
 | type_ok | username | %%cli_user%% |
 | st-submit |  |  |
 | text_like | Showing 1 - 1 of 1 total. |  |
+| wait_for_element_visible_ok | link="Wiki CLI" <%%cli_user%%> | 30000 |
+| click_and_wait | link="Wiki CLI" <%%cli_user%%> |  |
+
+| *Comment* | Test case: Business Control Panel Reset Password - FAILS UNDER LDAP BY DESIGN |  |
+| wait_for_element_visible_ok | //input[@value='Reset password'] | 30000 |
+| click_and_wait | //input[@value='Reset password'] |  |
+| text_like | //body | qr/The password for user %%cli_user_escaped%% has been changed to \'.*'/ |
+| st_match_text | has been changed to \'(.*)\' | new_password |
+| open_ok | /st/dashboard |
+| st-logoutin | %%cli_user%% | %%new_password%% |
+
 
 TODO: remove user from Workspace and remove user from Account
 
