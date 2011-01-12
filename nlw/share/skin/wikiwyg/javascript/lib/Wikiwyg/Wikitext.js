@@ -1173,7 +1173,6 @@ eval(WW_ADVANCED_MODE).prototype.setup_widgets = function() {
         p.markupRules['widget_' + widget] =
             widget_data[widget].markup ||
             ['bound_phrase', '{' + widget + ': ', '}'];
-            console.log(widget);
         p['do_widget_' + widget] = Wikiwyg.Wikitext.make_do('widget_' + widget);
     }
 }
