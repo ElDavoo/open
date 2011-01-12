@@ -3410,14 +3410,6 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
     var self = this;
     var form = jQuery('#widget-' + widget + ' form').get(0);
 
-    // When the lightbox is closed, decrement widget_editing so lightbox can pop up again. 
-    jQuery('#lightbox').bind("lightbox-unload", function(){
-        Wikiwyg.Widgets.widget_editing--;
-        if (self.wikiwyg && self.wikiwyg.current_mode && self.wikiwyg.current_mode.set_focus) {
-            self.wikiwyg.current_mode.set_focus();
-        }
-    });
-
     var intervalId = setInterval(function () {
         jQuery('#'+widget+'_wafl_text')
             .html(
@@ -3427,6 +3419,15 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
                 '</span> '
             );
     }, 500);
+
+    // When the lightbox is closed, decrement widget_editing so lightbox can pop up again. 
+    jQuery('#lightbox').unbind('lightbox-unload').bind("lightbox-unload", function(){
+        clearInterval(intervalId);
+        Wikiwyg.Widgets.widget_editing--;
+        if (self.wikiwyg && self.wikiwyg.current_mode && self.wikiwyg.current_mode.set_focus) {
+            self.wikiwyg.current_mode.set_focus();
+        }
+    });
 
     jQuery('#st-widgets-moreoptions').unbind('click').toggle(
         function () {
