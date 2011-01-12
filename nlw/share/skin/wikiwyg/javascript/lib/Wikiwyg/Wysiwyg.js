@@ -2737,32 +2737,35 @@ for (var i = 0; i < widgets_list.length; i++) {
             if (! (data.field || data.parse)) {
                 data.field = data.fields[0];
             }
-
             if (data.field) {
                 widget_parse[ data.field ] = widget_args;
-                return widget_parse;
             }
 
-            var widgetFields = data.parse.fields || data.fields;
-            var regexp = data.parse.regexp;
-            var regexp2 = regexp.replace(/^\?/, '');
-            if (regexp != regexp2)
-                regexp = Wikiwyg.Widgets.regexps[regexp2];
-            var tokens = widget_args.match(regexp);
-            if (tokens) {
-                for (var i = 0; i < widgetFields.length; i++)
-                    widget_parse[ widgetFields[i] ] = tokens[i+1];
+            var widgetFields = data.parse ? (data.parse.fields || data.fields) : data.fields;
+
+            if (data.parse) {
+                var regexp = data.parse.regexp;
+                var regexp2 = regexp.replace(/^\?/, '');
+                if (regexp != regexp2)
+                    regexp = Wikiwyg.Widgets.regexps[regexp2];
+                var tokens = widget_args.match(regexp);
+                if (tokens) {
+                    for (var i = 0; i < widgetFields.length; i++)
+                        widget_parse[ widgetFields[i] ] = tokens[i+1];
+                }
+                else {
+                    if (data.parse.no_match)
+                        widget_parse[ data.parse.no_match ] = widget_args;
+                }
             }
-            else {
-                if (data.parse.no_match)
-                    widget_parse[ data.parse.no_match ] = widget_args;
-            }
+
             if (widget_parse.size) {
                 if (widget_parse.size.match(/^(\d+)(?:x(\d+))?$/)) {
                     widget_parse.width = RegExp.$1 || '';
                     widget_parse.height = RegExp.$2 || '';
                 }
             }
+
             if (widget_parse.search_term) {
                 var term = widget_parse.search_term;
                 var term2 = term.replace(/^(tag|category|title):/, '');
@@ -3065,8 +3068,8 @@ proto.create_wafl_string = function(widget, form) {
 
     var values = this.form_values(widget, form);
     var fields =
-        data.field ? [ data.field ] :
         data.fields ? data.fields :
+        data.field ? [ data.field ] :
         [];
     if (data.other_fields) {
         jQuery.each(data.other_fields, function (){ fields.push(this) });
@@ -3104,8 +3107,8 @@ for (var i = 0; i < widgets_list.length; i++) {
 proto.form_values = function(widget, form) {
     var data = widget_data[widget];
     var fields =
-        data.field ? [ data.field ] :
         data.fields ? data.fields :
+        data.field ? [ data.field ] :
         [];
     var values = {};
 
