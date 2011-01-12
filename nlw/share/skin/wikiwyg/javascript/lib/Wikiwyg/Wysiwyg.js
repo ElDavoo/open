@@ -3514,12 +3514,12 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
 
     if (form.size) {
         jQuery(form.width).click(function (){
-            form.size[4].checked = true;
+            form.size[form.size.length-1].checked = true;
             disable(form.height);
             enable(form.width);
         });
         jQuery(form.height).click(function () {
-            form.size[4].checked = true;
+            form.size[form.size.length-1].checked = true;
             disable(form.width);
             enable(form.height);
         });

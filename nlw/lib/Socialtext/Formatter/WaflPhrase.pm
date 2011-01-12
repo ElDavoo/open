@@ -1006,20 +1006,33 @@ SERVICES:
         $self->syntax_error("The URL to this video is not found in our supported hosts: " . join(', ', sort keys %Services));
     }
 
+    no warnings 'numeric';
+
     my $width = {
         small => 240,
         medium => 480,
         large => 640
     }->{$size || 'medium'} || int($size) || 480;
 
+    if ($size =~ /(\d+)x(\d+)/ and $2) {
+        my $height = $2;
+        $width = $1;
+        if ($embed_html =~ s/__HEIGHT\+(\d+)__/$height/eg) {
+            $height -= $1;
+        }
+        else {
+            $embed_html =~ s/__HEIGHT__/$height/g;
+        }
+        $width ||= int($height / $aspect_ratio);
+    }
+
     $width = 1080 if $width > 1080;
     $width = 100 if $width < 100;
-
-    my $height = $width * $aspect_ratio;
-
     $embed_html =~ s/__WIDTH__/$width/g;
-    $embed_html =~ s/__HEIGHT\+(\d+)__/$height+$1/eg;
-    $embed_html =~ s/__HEIGHT__/$height/g;
+
+    my $default_height = int($width * $aspect_ratio);
+    $embed_html =~ s/__HEIGHT\+(\d+)__/$default_height+$1/eg;
+    $embed_html =~ s/__HEIGHT__/$default_height/g;
 
     return $embed_html;
 }
