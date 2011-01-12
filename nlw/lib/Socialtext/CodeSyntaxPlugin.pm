@@ -68,7 +68,7 @@ sub __html__ {
     my $self = shift;
     my $method = $self->method;
     (my $type = $method) =~ s/^(.+?)_code$/$1/;
-    chomp(my $string = $self->html_unescape($self->block_text));
+    my $string = $self->block_text;
     my $js_base  = "/static/skin/common/javascript/SyntaxHighlighter";
     my $css_base = "/static/skin/common/css/SyntaxHighlighter";
     my $brush = $Socialtext::CodeSyntaxPlugin::Brushes{$type};
