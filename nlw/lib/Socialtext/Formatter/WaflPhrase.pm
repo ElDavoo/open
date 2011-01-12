@@ -943,7 +943,7 @@ use Class::Field qw( const );
 use Socialtext::Timer qw/time_scope/;
 
 const wafl_id => 'video';
-const wafl_reference_parse => qr/^\s*(@{[Socialtext::Formatter::HyperLink->pattern_start]})\s*(?:size=(.+))?\s*$/;
+const wafl_reference_parse => qr/^\s*<?(@{[Socialtext::Formatter::HyperLink->pattern_start]})>?\s*(?:size=(.+))?\s*$/;
 
 our %Services = (
     YouTube => {
