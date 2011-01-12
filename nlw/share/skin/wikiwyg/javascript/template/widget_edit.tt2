@@ -75,6 +75,8 @@
 <! PROCESS RADIO -!>
 <! ELSIF widget.input.$field == 'size' -!>
 <! PROCESS SIZE -!>
+<! ELSIF widget.input.$field == 'video_size' -!>
+<! PROCESS VIDEO_SIZE -!>
 <! ELSE -!>
 <tr>
 <td class="label">[% loc('<! widget.labels.$field || data.fields.$field !>:') %]</td>
@@ -132,6 +134,51 @@
           <input type="radio" name="size" value="[% choice.0 %]"
             [% IF choice.0 == size %] checked="1" [% END %]/>
           [% loc(choice.1) %]
+        </td>
+        <td style="color:#999999">
+          [% IF choice.2 %]
+            [% loc('width: [_1]', choice.2) %]
+          [% END %]
+        </td>
+      </tr>
+    [% END %]
+      <tr>
+        <td>
+          <input type="radio" [% IF width OR height %]checked="1"[% END %]
+                 name="size" value="custom"/>
+          [% loc('Custom') %]
+        </td>
+        <td style="color:#999999">
+          [% loc('width:') %]
+          <input size="3" name="width" value="[% width %]"/>
+        </td>
+      </td>
+    </table>
+  </td>
+</tr>
+<! END -!>
+
+<! BLOCK VIDEO_SIZE -!>
+<tr>
+  <td class="label">
+    [% loc('<! widget.labels.$field || data.fields.$field !>:') %]
+  </td>
+  <td class="st-widget-dialog-editfield">
+    [% IF !size %][% size='medium' %][% END %]
+    [% sizes = [
+        ['small', 'Small', 240],
+        ['medium', 'Medium', 480],
+        ['large', 'Large', 640],
+       ]
+    %]
+    <table>
+    [% FOR choice = sizes %]
+      <tr>
+        <td>
+          <input type="radio" name="size" value="[% choice.0 %]"
+            [% IF choice.0 == size %] checked="1" [% END %]/>
+          [% loc(choice.1) %]
+          &nbsp;
         </td>
         <td style="color:#999999">
           [% IF choice.2 %]
