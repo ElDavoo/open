@@ -945,27 +945,65 @@ use Socialtext::Timer qw/time_scope/;
 const wafl_id => 'video';
 const wafl_reference_parse => qr/^\s*(@{[Socialtext::Formatter::HyperLink->pattern_start]})\s*(?:size=(.+))?\s*$/;
 
+our %Services = (
+    YouTube => {
+        match => [
+            qr{://youtu\.be/([-\w]+)}i,
+            qr{://(?:www\.)?youtube\.com/.*?\bv=([-\w]{11,})}i,
+            qr{://(?:www\.)?youtube\.com/user/.*\/([-\w]{11,})}i,
+            qr{://(?:www\.)?youtube\.com/embed/([-\w]{11,})}i,
+        ],
+        html => q{<iframe src='https://www.youtube.com/embed/__ID__?rel=0'
+                          type='text/html'
+                          width='__WIDTH__'
+                          height='__HEIGHT+45__'
+                          frameborder='0'></iframe>},
+    },
+    Vimeo => {
+        match => [
+            qr{://(?:www\.)?vimeo\.com/(\d+)}i,
+            qr{://player\.vimeo\.com/video/(\d+)}i,
+        ],
+        html => q{<iframe src='http://player.vimeo.com/video/__ID__'
+                          type='text/html'
+                          width='__WIDTH__'
+                          height='__HEIGHT__'
+                          frameborder='0'></iframe>},
+    },
+    GoogleVideo => {
+        match => [
+            qr{://video\.google\.com/.*\bdocid=([-\w]+)}i,
+        ],
+        html => q{<embed src='http://video.google.com/googleplayer.swf?docid=__ID__&fs=true'
+                         style='width:__WIDTH__px;height:__HEIGHT+25__px'
+                         allowFullScreen='true' allowScriptAccess='always'
+                         type='application/x-shockwave-flash'></embed> },
+    },
+);
+
 sub html {
     my $self = shift;
     my $t = time_scope 'wafl_image';
     my ($video_uri, $size) = $self->arguments =~ $self->wafl_reference_parse;
 
-    my $embed_uri;
     my $aspect_ratio = 1080/1920;
     my $toolbar_height = 0;
+    my $embed_html;
 
-    if ($video_uri =~ m{://youtu\.be/([-\w]+)}i
-            or $video_uri =~ m{://(?:www\.)?youtube\.com/.*?\bv=([-\w]+)}i
-            or $video_uri =~ m{://(?:www\.)?youtube\.com/embed/([-\w]+)}i
-    ) {
-        $embed_uri = "http://www.youtube.com/embed/$1?rel=0";
-        $toolbar_height = 45;
+SERVICES:
+    for my $service (values %Services) {
+        for my $re (@{$service->{match}}) {
+            $video_uri =~ $re or next;
+            my $id = $1;
+            $embed_html = $service->{html};
+            $embed_html =~ s/__ID__/$id/g;
+            $embed_html =~ s/\n\s+/ /g;
+            last SERVICES;
+        }
     }
-    elsif ($video_uri =~ m{://(?:www\.)?vimeo\.com/(\d+)}i) {
-        $embed_uri = "http://player.vimeo.com/video/$1";
-    }
-    else {
-        $self->syntax_error("The URL to this video is hosted on an unsupported service.");
+
+    if (!$embed_html) {
+        $self->syntax_error("The URL to this video is not found in our supported hosts: " . join(', ', sort keys %Services));
     }
 
     my $width = {
@@ -978,9 +1016,12 @@ sub html {
     $width = 100 if $width < 100;
 
     my $height = $width * $aspect_ratio;
-    $height += $toolbar_height;
 
-    return qq{<iframe type='text/html' width='$width' height='$height' src='$embed_uri' frameborder='0'></iframe>};
+    $embed_html =~ s/__WIDTH__/$width/g;
+    $embed_html =~ s/__HEIGHT\+(\d+)__/$height+$1/eg;
+    $embed_html =~ s/__HEIGHT__/$height/g;
+
+    return $embed_html;
 }
 
 
