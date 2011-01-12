@@ -1014,7 +1014,7 @@ SERVICES:
         large => 640
     }->{$size || 'medium'} || int($size) || 480;
 
-    if ($size =~ /(\d+)x(\d+)/ and $2) {
+    if ($size and $size =~ /(\d+)x(\d+)/ and $2) {
         my $height = $2;
         $width = $1;
         if ($embed_html =~ s/__HEIGHT\+(\d+)__/$height/eg) {
