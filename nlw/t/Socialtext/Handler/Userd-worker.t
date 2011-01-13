@@ -83,7 +83,7 @@ $cv->begin;
 my $waiter = AE::child $pid, sub {
     my ($child_pid, $status) = @_;
     scope_guard {$cv->end};
-    is $status, 0, "st-userd $pid exited with 0";
+    is $status, 9, "st-userd $pid exited with self-inflicted kill -9";
     undef $pid;
 };
 
