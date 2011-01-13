@@ -1,4 +1,4 @@
-package Socialtext::Template::Plugin::json;
+package Socialtext::Template::Plugin::json_filter;
 # @COPYRIGHT@
 use strict;
 use warnings;
