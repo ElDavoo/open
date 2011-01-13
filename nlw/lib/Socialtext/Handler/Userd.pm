@@ -11,6 +11,8 @@ use Socialtext::CredentialsExtractor;
 
 use namespace::clean -except => 'meta';
 
+our $VERSION = 1.1;
+
 has '+port' => (default => 8084);
 
 has 'extract_q' => (
@@ -27,16 +29,6 @@ sub ConfigForDevEnv {
     my ($class, $args) = @_;
 }
 
-override 'shutdown' => sub {
-    my $self = shift;
-    if ($self->has_extract_q) {
-        # cancel the existing guard and allow pending jobs to be processed
-        $self->guards->{extract_queue}->cancel();
-        $self->extract_q->shutdown_nowait();
-    }
-};
-
-my $CRLF = "\015\012";
 sub handle_request {
     my ($self,$req) = @_;
 
@@ -49,13 +41,9 @@ sub handle_request {
             'JSON'
         );
     }
-    elsif ($path eq '/stuserd') {
+    elsif ($path eq '/stuserd' && $req->env->{REQUEST_METHOD} eq 'POST') {
         $self->stats->{"client conns"}++;
         my $params = decode_json(${$req->body});
-        # If we've got cached results, use those right away
-        # ... *DON'T* block here; this has to be wikkid fast
-        # Otherwise, enqueue a worker to extract the results and add it to my
-        # cache.
         $req->log_successes(0) unless $ENV{ST_DEBUG_ASYNC}; # don't spew
         my $now = AE::time;
         $self->extract_q->enqueue( [$params, $req, $now] );
@@ -73,32 +61,18 @@ sub handle_request {
 
 sub _build_extract_q {
     my $self = shift;
-    Scalar::Util::weaken $self;
-    my $wq; $wq = Socialtext::Async::WorkQueue->new(
+    weaken $self;
+    my $cb = exception_wrapper {
+        my ($params,$req,$queued_at) = @_;
+        return unless $self;
+        Socialtext::Timer->Add('queued_for',AE::time-$queued_at);
+        $self->extract_creds($params,$req);
+    } 'extract queue error';
+    return Socialtext::Async::WorkQueue->new(
         name => 'extract',
         prio => Coro::PRIO_LOW(),
-        cb => exception_wrapper(sub {
-            my ($params,$req,$queued_at) = @_;
-            return unless $self;
-            Socialtext::Timer->Add('queued_for',AE::time-$queued_at);
-            $self->extract_creds($params,$req);
-        }, 'extract queue error'),
-
-        after_shutdown => sub {
-            $self->cv->end if $self;
-        }
+        cb => $cb,
     );
-
-    $self->cv->begin;
-    {
-        my $wwq = $wq;
-        weaken $wwq;
-        $self->guards->{extract_queue} = guard {
-            $wwq->drop_pending();
-            $wwq->shutdown_nowait();
-        };
-    }
-    return $wq;
 }
 
 sub extract_creds {
@@ -137,7 +111,7 @@ worker_function worker_extract_creds => sub {
         st_log()->error('when trying to extract creds: '.$e);
         return {
             code  => 500,
-            error => $@,
+            body => {error => $@},
         };
     }
     return {
