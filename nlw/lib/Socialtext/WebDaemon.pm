@@ -175,12 +175,15 @@ sub Run {
     if ($main_e) {
         my $msg = "$PROC_NAME stopping, runtime error: $main_e";
         st_log->error($msg);
-        croak $msg;
+        cluck $msg;
+        kill -9 => 0; # Terminate all workers in our process group - see "perldoc -f kill"
     }
 
     trace "done";
     st_log->info("$PROC_NAME done");
-    exit 0;
+
+    kill -9 => 0; # Terminate all workers in the our process group - see "perldoc -f kill"
+    #exit 0; # not reached
 }
 
 sub startup { } # override in subclass
