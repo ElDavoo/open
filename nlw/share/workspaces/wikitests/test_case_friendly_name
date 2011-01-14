@@ -10,8 +10,11 @@
 | set_default | fname_first_letter | B |  |
 | set_default | fname_prefix | Bob |  |
 | set_default | fname_suffix | _%%start_time%% |  |
-| set | first_name | Robert_%%start_time%% |  |
-| set | last_name | Jones_%%start_time%% |  |
+| set_default | first_name | Bobert_%%start_time%% |  |
+| set_default | first_name_prefix | Bobert |  |
+| set_default | last_name | Jones_%%start_time%% |  |
+| set_default | shared_name | Bob |  |
+| set_default | first_letter_after_shared | e |  |
 | set | fname_checker | fname_checker_%%start_time%%@david.socialtext.net |  |
 | set | fname_checker_regexp | fname_checker_%%start_time%%\@david.socialtext.net |  |
 | set | fname_acct | 1_fname_account_%%start_time%% |  |
@@ -189,6 +192,25 @@
 | type_lookahead_ok | email_recipient | %%fname_prefix%% |
 | wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%fname_suffix%%')] | 30000 |
 
+| *Comment* | Test Case: Friendly Name check advanced lookahead functions in send page by email lookahead |  |
+| open_ok | /%%fname_wiki%%/index.cgi?%%fname_page%% |  |
+| wait_for_element_visible_ok | st-pagetools-email | 30000 |
+| click_ok | st-pagetools-email |  |
+| wait_for_element_visible_ok | email_recipient | 30000 |
+| type_lookahead_ok | email_recipient | %%first_name_prefix%% |
+| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%last_name%%')] | 30000 |
+| open_ok | /%%fname_wiki%%/index.cgi?%%fname_page%% |  |
+| wait_for_element_visible_ok | st-pagetools-email | 30000 |
+| click_ok | st-pagetools-email |  |
+| wait_for_element_visible_ok | email_recipient | 30000 |
+| type_lookahead_ok | email_recipient | %%shared_name%% |
+| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%fname_suffix%%')] | 30000 |
+
+ type_lookahead_ok | email_recipient | %%first_letter_after_shared%% |
+wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%last_name%%')] | 30000 |
+
+
+
 | *Comment* | Test Case: Friendly Name check add this tag to someone |  |
 | tag_profile | %%fname_checker%% | %%fname_tag%% |
 | open_ok | ?action=people;tag=%%fname_tag%% |  |
@@ -306,6 +328,8 @@ text_like | workspaceTable | %%fname%% |
 | wait_for_element_visible_ok | st-search-submit | 30000 |
 | click_and_wait | st-search-submit |  |
 | wait_for_element_visible_ok | link=%%fname%% | 30000 |
+
+
 
 
 
