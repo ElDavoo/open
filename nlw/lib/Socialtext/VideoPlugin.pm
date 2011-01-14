@@ -7,6 +7,7 @@ use Class::Field qw(const);
 use Socialtext::l10n 'loc';
 use Socialtext::JSON qw/encode_json/;
 use Socialtext::Formatter::Phrase ();
+use Socialtext::String ();
 
 const class_id    => 'video';
 const class_title => 'VideoPlugin';
@@ -21,18 +22,21 @@ our %Services = (
             qr{://(?:www\.)?youtube\.com/embed/([-\w]{11,})}i,
         ],
         url => "http://www.youtube.com/watch?v=__ID__",
+        oembed => "http://www.youtube.com/oembed?format=json&url=__URL__",
         html => q{<iframe src='https://www.youtube.com/embed/__ID__?rel=0'
                           type='text/html'
                           width='__WIDTH__'
-                          height='__HEIGHT+45__'
+                          height='__HEIGHT__'
                           frameborder='0'></iframe>},
     },
     Vimeo => {
         match => [
+            qr{://(?:www\.)?vimeo\.com/groups/.*/videos/(\d+)}i,
             qr{://(?:www\.)?vimeo\.com/(\d+)}i,
             qr{://player\.vimeo\.com/video/(\d+)}i,
         ],
         url => "http://www.vimeo.com/__ID__",
+        oembed => "http://vimeo.com/api/oembed.json?url=__URL__",
         html => q{<iframe src='http://player.vimeo.com/video/__ID__'
                           type='text/html'
                           width='__WIDTH__'
@@ -44,16 +48,18 @@ our %Services = (
             qr{://video\.google\.com/.*\bdocid=([-\w]+)}i,
         ],
         url => "http://video.google.com/videoplay?docid=__ID__",
+        oembed => "http://api.embed.ly/1/oembed?format=json;url=__URL__",
         html => q{<embed src='http://video.google.com/googleplayer.swf?docid=__ID__&fs=true'
-                         style='width:__WIDTH__px;height:__HEIGHT+25__px'
+                         style='width:__WIDTH__px;height:__HEIGHT__px'
                          allowFullScreen='true' allowScriptAccess='always'
-                         type='application/x-shockwave-flash'></embed> },
+                         type='application/x-shockwave-flash'></embed>},
     },
     SlideShare => {
         match => [
             qr{^(\w+://(?:www\.)?slideshare\.net/.*)$}i,
         ],
         url => "__ID__",
+        oembed => "http://www.slideshare.net/api/oembed/1?format=json;url=__URL__",
         html => q|
             <div id="__UNIQUE__"></div>
             <script>
@@ -69,7 +75,8 @@ our %Services = (
                 }
             </script>
             <script src="http://www.slideshare.net/api/oembed/1?format=jsonp;callback=__UNIQUE__;url=__ID__"></script>
-        |
+        |,
+        html => "__HTML__",
     },
 );
 
@@ -92,7 +99,10 @@ sub check_video_url {
     for my $service (values %Services) {
         for my $re (@{$service->{match}}) {
             $url =~ $re or next;
-            return encode_json({ ok => $url });
+            my $oembed = $service->{oembed};
+            my $escaped_url = Socialtext::String::uri_escape($url);
+            $oembed =~ s/__URL__/$escaped_url/g;
+            return encode_json({ ok => $oembed });
         }
     }
 
