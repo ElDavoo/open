@@ -3556,11 +3556,15 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
             form.size[form.size.length-1].checked = true;
             disable(form.height);
             enable(form.width);
+        }).focus(function() {
+            $(this).triggerHandler('click');
         });
         jQuery(form.height).click(function () {
             form.size[form.size.length-1].checked = true;
             disable(form.width);
             enable(form.height);
+        }).focus(function() {
+            $(this).triggerHandler('click');
         });
         if (!Number(form.height.value))
             disable(form.height);
