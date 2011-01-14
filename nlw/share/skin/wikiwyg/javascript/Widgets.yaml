@@ -188,6 +188,7 @@ widget:
     labels:
       url: Video URL
       size: Size
+    checks: [require_valid_video_url]
     title: Embed video to '$video_url'. Click to edit.
     desc: "Embed a video from YouTube, Vimeo, or GoogleVideo on this page."
     more_desc: "Optional properties include the size for displaying this video."

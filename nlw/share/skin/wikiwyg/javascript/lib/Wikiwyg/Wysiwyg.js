@@ -3212,6 +3212,38 @@ proto.validate_fields = function(widget, values) {
     }
 }
 
+proto.require_valid_video_url = function(values) {
+    if (!values.video_url || !values.video_url.length) {
+        throw(loc("Video URL is required"));
+    }
+
+    var error = null;
+    jQuery.ajax({
+        type: 'get',
+        async: false,
+        url: 'index.cgi',
+        dataType: 'json',
+        data: {
+            action: 'check_video_url',
+            video_url: values.video_url.replace(/^<|>$/g, '')
+        },
+        success: function(data) {
+            if (!data.ok) {
+                error = data.error || loc("An error occured; please try later.");
+            }
+        },
+        error: function(xhr) {
+            error = loc("An error occured; please try later.");
+        }
+    });
+
+    if (error) {
+        throw(error);
+    }
+
+    return true;
+}
+
 proto.require_page_if_workspace = function(values) {
     if (values.spreadsheet_title) {
         return this.require_spreadsheet_if_workspace(values);
