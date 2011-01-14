@@ -130,11 +130,11 @@
     <table>
     [% FOR choice = sizes %]
       <tr>
-        <td>
+        <td><label>
           <input type="radio" name="size" value="[% choice.0 %]"
             [% IF choice.0 == size %] checked="1" [% END %]/>
           [% loc(choice.1) %]
-        </td>
+        </label></td>
         <td style="color:#999999">
           [% IF choice.2 %]
             [% loc('width: [_1]', choice.2) %]
@@ -143,11 +143,11 @@
       </tr>
     [% END %]
       <tr>
-        <td>
+        <td><label>
           <input type="radio" [% IF width OR height %]checked="1"[% END %]
                  name="size" value="custom"/>
           [% loc('Custom') %]
-        </td>
+        </label></td>
         <td style="color:#999999">
           [% loc('width:') %]
           <input size="3" name="width" value="[% width %]"/>
@@ -175,12 +175,12 @@
     <table>
     [% FOR choice = sizes %]
       <tr>
-        <td>
+        <td><label>
           <input type="radio" name="size" value="[% choice.0 %]"
             [% IF choice.0 == size %] checked="1" [% END %]/>
           [% loc(choice.1) %]
           &nbsp;
-        </td>
+        </label></td>
         <td style="color:#999999">
           [% IF choice.2 %]
             [% loc('width: [_1]', choice.2) %]
@@ -189,11 +189,11 @@
       </tr>
     [% END %]
       <tr>
-        <td>
+        <td><label>
           <input type="radio" [% IF width OR height %]checked="1"[% END %]
                  name="size" value="custom"/>
           [% loc('Custom') %]
-        </td>
+        </abel></td>
         <td style="color:#999999">
           [% loc('width:') %]
           <input size="3" name="width" value="[% width %]"/>
