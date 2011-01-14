@@ -20,6 +20,7 @@ our %Services = (
             qr{://(?:www\.)?youtube\.com/user/.*\/([-\w]{11,})}i,
             qr{://(?:www\.)?youtube\.com/embed/([-\w]{11,})}i,
         ],
+        url => "http://www.youtube.com/watch?v=__ID__",
         html => q{<iframe src='https://www.youtube.com/embed/__ID__?rel=0'
                           type='text/html'
                           width='__WIDTH__'
@@ -31,6 +32,7 @@ our %Services = (
             qr{://(?:www\.)?vimeo\.com/(\d+)}i,
             qr{://player\.vimeo\.com/video/(\d+)}i,
         ],
+        url => "http://www.vimeo.com/__ID__",
         html => q{<iframe src='http://player.vimeo.com/video/__ID__'
                           type='text/html'
                           width='__WIDTH__'
@@ -41,10 +43,33 @@ our %Services = (
         match => [
             qr{://video\.google\.com/.*\bdocid=([-\w]+)}i,
         ],
+        url => "http://video.google.com/videoplay?docid=__ID__",
         html => q{<embed src='http://video.google.com/googleplayer.swf?docid=__ID__&fs=true'
                          style='width:__WIDTH__px;height:__HEIGHT+25__px'
                          allowFullScreen='true' allowScriptAccess='always'
                          type='application/x-shockwave-flash'></embed> },
+    },
+    SlideShare => {
+        match => [
+            qr{^(\w+://(?:www\.)?slideshare\.net/.*)$}i,
+        ],
+        url => "__ID__",
+        html => q|
+            <div id="__UNIQUE__"></div>
+            <script>
+                function __UNIQUE__ (data) {
+                    if (!data.html) { return; }
+                    var match = data.html.match(/(<embed.*?<\/embed>)/);
+                    if (!match) { return; }
+                    document.getElementById('__UNIQUE__').innerHTML = match[1].replace(
+                        /\bwidth="\d+"/g, 'width="__WIDTH__"'
+                    ).replace(
+                        /\bheight="\d+"/g, 'height="__HEIGHT__"'
+                    );
+                }
+            </script>
+            <script src="http://www.slideshare.net/api/oembed/1?format=jsonp;callback=__UNIQUE__;url=__ID__"></script>
+        |
     },
 );
 
@@ -108,6 +133,8 @@ SERVICES:
             $url =~ $re or next;
             my $id = $1;
             $embed_html = $service->{html};
+            my $unique = "st_unique_".int(rand(10000));
+            $embed_html =~ s/__UNIQUE__/$unique/g;
             $embed_html =~ s/__ID__/$id/g;
             $embed_html =~ s/\n\s+/ /g;
             last SERVICES;
