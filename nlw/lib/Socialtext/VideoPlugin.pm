@@ -22,8 +22,8 @@ our %Services = (
             qr{://(?:www\.)?youtube\.com/embed/([-\w]{11,})}i,
         ],
         url => "http://www.youtube.com/watch?v=__ID__",
-        oembed => "http://api.embed.ly/1/oembed?format=json;url=__URL__",
-        #oembed => "http://www.youtube.com/oembed?format=json&url=__URL__",
+        #oembed => "http://api.embed.ly/1/oembed?format=json;url=__URL__",
+        oembed => "http://www.youtube.com/oembed?format=json;url=__URL__",
         html => q{<iframe src='https://www.youtube.com/embed/__ID__?rel=0'
                           type='text/html'
                           width='__WIDTH__'
@@ -79,6 +79,12 @@ our %Services = (
             <script src="http://www.slideshare.net/api/oembed/1?format=jsonp;callback=__UNIQUE__;url=__ID__"></script>
         |,
         html => "__HTML__",
+        html_filter => sub {
+            my $html = shift;
+            $html =~ s/<strong\b[^>]*>.*?<\/strong>//i;
+            $html =~ s!(<embed\b[^>]*)>\s*</embed>!$1 />!i;
+            return $html;
+        }
     },
 );
 
@@ -116,7 +122,19 @@ sub get_oembed_data {
 
             try { $payload = decode_json( LWP::Simple::get($oembed_api) ) };
 
-            if ($payload and $payload->{title}) {
+            if ($payload and $payload->{title} and $payload->{width} and $payload->{height} and $payload->{html}) {
+                my $html = $service->{html};
+                $html =~ s/__ID__/$id/g;
+                $html =~ s/__URL__/$escaped_url/g;
+                $html =~ s/__HTML__/$payload->{html}/g;
+                if ($service->{html_filter}) {
+                    $html = $service->{html_filter}->($html);
+                }
+                $html =~ s/\bwidth=["']?\d+["']?/width="__WIDTH__"/g;
+                $html =~ s/\bheight=["']?\d+["']?/height="__HEIGHT__"/g;
+                $html =~ s/\bwidth:\s*\d+/width: __WIDTH__/g;
+                $html =~ s/\bheight:\s*\d+/height: __HEIGHT__/g;
+                $payload->{html} = $html;
                 return $payload;
             }
             return { error => loc("Sorry, this URL does not appear to link to an embeddable video.") };
@@ -153,66 +171,46 @@ const wafl_reference_parse => qr/^\s*<?(@{[
     Socialtext::Formatter::HyperLink->pattern_start
 ]})>?\s*(?:size=(.+))?\s*$/;
 
-
 sub html {
     my $self = shift;
     my ($url, $size) = $self->arguments =~ $self->wafl_reference_parse;
+    my $data = $self->hub->video->get_oembed_data($url);
 
-    my $aspect_ratio = 1080/1920;
-    my $toolbar_height = 0;
-    my $embed_html;
-
-SERVICES:
-    for my $service (values %Socialtext::VideoPlugin::Services) {
-        for my $re (@{$service->{match}}) {
-            $url =~ $re or next;
-            my $id = $1;
-            $embed_html = $service->{html};
-            my $unique = "st_unique_".int(rand(10000));
-            $embed_html =~ s/__UNIQUE__/$unique/g;
-            $embed_html =~ s/__ID__/$id/g;
-            $embed_html =~ s/\n\s+/ /g;
-            last SERVICES;
-        }
+    if ($data->{error}) {
+        return $self->syntax_error($data->{error});
     }
 
-    if (!$embed_html) {
-        $self->syntax_error(loc(
-            "Error: [_1] is not hosted on any of our supported services ([_2]).",
-            $url,
-            join(', ', sort keys %Socialtext::VideoPlugin::Services)
-        ));
-    }
+    my ($orig_width, $orig_height, $html) = @{$data}{qw( width height html )};
+    my $aspect_ratio = $orig_height / $orig_width;
 
     no warnings 'numeric';
-
     my $width = {
         small => 240,
         medium => 480,
-        large => 640
-    }->{$size || 'medium'} || int($size) || 480;
+        large => 640,
+        original => $orig_width,
+    }->{$size || 'original'} || int($size) || $orig_width;
+
+    my $height;
 
     if ($size and $size =~ /(\d+)x(\d+)/ and $2) {
-        my $height = $2;
-        $width = $1;
-        if ($embed_html =~ s/__HEIGHT\+(\d+)__/$height/eg) {
-            $height -= $1;
-        }
-        else {
-            $embed_html =~ s/__HEIGHT__/$height/g;
-        }
-        $width ||= int($height / $aspect_ratio);
+        $height = $2;
+        $height = 1080 if $height > 1080;
+        $height = 100 if $height < 100;
+        $width = $1 || int($height / $aspect_ratio);
     }
 
     $width = 1080 if $width > 1080;
     $width = 100 if $width < 100;
-    $embed_html =~ s/__WIDTH__/$width/g;
+    $height ||= int($width * $aspect_ratio);
 
-    my $default_height = int($width * $aspect_ratio);
-    $embed_html =~ s/__HEIGHT\+(\d+)__/$default_height+$1/eg;
-    $embed_html =~ s/__HEIGHT__/$default_height/g;
+    $aspect_ratio = $height / $width;
 
-    return $embed_html;
+    $html =~ s/__WIDTH__/$width/g;
+    $html =~ s/__HEIGHT__/$height/g;
+    $html =~ s/\n\s*/ /g;
+
+    return $html;
 }
 
 package Socialtext::VideoPlugin::CGI;
