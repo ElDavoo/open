@@ -192,8 +192,10 @@ sub _cache_html {
                     my ($ws_name) = $wafl->parse_wafl_category;
                     $interwiki{$ws_name}++ if $ws_name;
                 }
-                elsif ($wafl_class eq 'Socialtext::FetchRSS::Wafl') {
-                    # Feeds are cached for 1 hour, so we can cache this render for 1h
+                elsif ($wafl_class eq 'Socialtext::FetchRSS::Wafl'
+                    or $wafl_class eq 'Socialtext::VideoPlugin::Wafl'
+                ) {
+                    # Feeds and videos are cached for 1 hour, so we can cache this render for 1h
                     # There may be an edge case initially where a feed
                     # ends up getting cached for at most 2 hours if the Question
                     # had not yet been generated.
