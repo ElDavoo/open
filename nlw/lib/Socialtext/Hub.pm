@@ -410,6 +410,7 @@ BEGIN {
             Socialtext::WorkspaceListPlugin
             Socialtext::PageActivityPlugin
             Socialtext::CodeSyntaxPlugin
+            Socialtext::VideoPlugin
         ),
         # keep this last if you want pluggable plugins
         # to be able to override wafls, etc!
