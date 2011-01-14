@@ -3228,8 +3228,11 @@ proto.require_valid_video_url = function(values) {
             video_url: values.video_url.replace(/^<|>$/g, '')
         },
         success: function(data) {
-            if (!data.ok) {
-                error = data.error || loc("An error occured; please try later.");
+            if (data.title) {
+                return true;
+            }
+            else {
+                error = data.error || loc("Sorry, this URL does not appear to link to an embeddable video.");
             }
         },
         error: function(xhr) {

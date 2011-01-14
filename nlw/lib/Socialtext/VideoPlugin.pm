@@ -5,7 +5,7 @@ use warnings;
 use base 'Socialtext::Plugin';
 use Class::Field qw(const);
 use Socialtext::l10n 'loc';
-use Socialtext::JSON qw/encode_json/;
+use Socialtext::JSON qw/encode_json decode_json/;
 use Socialtext::Formatter::Phrase ();
 use Socialtext::String ();
 
@@ -16,13 +16,14 @@ const cgi_class   => 'Socialtext::VideoPlugin::CGI';
 our %Services = (
     YouTube => {
         match => [
-            qr{://youtu\.be/([-\w]+)}i,
+            qr{://youtu\.be/([-\w]{11,})}i,
             qr{://(?:www\.)?youtube\.com/.*?\bv=([-\w]{11,})}i,
             qr{://(?:www\.)?youtube\.com/user/.*\/([-\w]{11,})}i,
             qr{://(?:www\.)?youtube\.com/embed/([-\w]{11,})}i,
         ],
         url => "http://www.youtube.com/watch?v=__ID__",
-        oembed => "http://www.youtube.com/oembed?format=json&url=__URL__",
+        oembed => "http://api.embed.ly/1/oembed?format=json;url=__URL__",
+        #oembed => "http://www.youtube.com/oembed?format=json&url=__URL__",
         html => q{<iframe src='https://www.youtube.com/embed/__ID__?rel=0'
                           type='text/html'
                           width='__WIDTH__'
@@ -36,7 +37,8 @@ our %Services = (
             qr{://player\.vimeo\.com/video/(\d+)}i,
         ],
         url => "http://www.vimeo.com/__ID__",
-        oembed => "http://vimeo.com/api/oembed.json?url=__URL__",
+        #oembed => "http://vimeo.com/api/oembed.json?url=__URL__",
+        oembed => "http://api.embed.ly/1/oembed?format=json;url=__URL__",
         html => q{<iframe src='http://player.vimeo.com/video/__ID__'
                           type='text/html'
                           width='__WIDTH__'
@@ -87,32 +89,55 @@ sub register {
     $registry->add(wafl => video => 'Socialtext::VideoPlugin::Wafl');
 }
 
-sub check_video_url {
+sub get_oembed_data {
     my $self = shift;
-    my $url = $self->cgi->video_url;
-    $self->hub->rest->header(-type => 'application/json; charset=UTF-8');
+    my $url = shift;
 
     unless ($url =~ Socialtext::Formatter::HyperLink->pattern_start) {
-        return encode_json({ error => loc("[_1] is not a valid URL.", $url) });
+        return { error => loc("[_1] is not a valid URL.", $url) };
     }
 
     for my $service (values %Services) {
         for my $re (@{$service->{match}}) {
             $url =~ $re or next;
-            my $oembed = $service->{oembed};
-            my $escaped_url = Socialtext::String::uri_escape($url);
-            $oembed =~ s/__URL__/$escaped_url/g;
-            return encode_json({ ok => $oembed });
+
+            my $id = $1;
+            my $oembed_url = $service->{url};
+            $oembed_url =~ s/__ID__/$id/g;
+
+            my $escaped_url = Socialtext::String::uri_escape($oembed_url);
+            my $oembed_api = $service->{oembed};
+            $oembed_api =~ s/__URL__/$escaped_url/g;
+
+            use Try::Tiny;
+            use LWP::Simple;
+
+            my $payload;
+
+            try { $payload = decode_json( LWP::Simple::get($oembed_api) ) };
+
+            if ($payload and $payload->{title}) {
+                return $payload;
+            }
+            return { error => loc("Sorry, this URL does not appear to link to an embeddable video.") };
         }
     }
 
-    return encode_json({
+    return {
         error => loc(
             "[_1] is not hosted on any of our supported services ([_2]).",
             $url,
             join(', ', sort keys %Socialtext::VideoPlugin::Services)
         )
-    });
+    };
+}
+
+sub check_video_url {
+    my $self = shift;
+    $self->hub->rest->header(-type => 'application/json; charset=UTF-8');
+    return encode_json(
+        $self->get_oembed_data($self->cgi->video_url)
+    );
 }
 
 
