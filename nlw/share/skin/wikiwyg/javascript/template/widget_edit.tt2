@@ -164,11 +164,12 @@
     [% loc('<! widget.labels.$field || data.fields.$field !>:') %]
   </td>
   <td class="st-widget-dialog-editfield">
-    [% IF !size %][% size='medium' %][% END %]
+    [% IF !size %][% size='original' %][% END %]
     [% sizes = [
         ['small', 'Small', 240],
         ['medium', 'Medium', 480],
         ['large', 'Large', 640],
+        ['original', 'Original Size', 0],
        ]
     %]
     <table>
