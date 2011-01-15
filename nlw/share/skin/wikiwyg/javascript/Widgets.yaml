@@ -190,7 +190,7 @@ widget:
       size: Size
     checks: [require_valid_video_url]
     title: Embed video to '$video_url'. Click to edit.
-    desc: "Embed a video from YouTube, Vimeo, or GoogleVideo on this page."
+    desc: "Embed video from YouTube, Vimeo, SlideShare or GoogleVideo on this page."
     more_desc: "Optional properties include the size for displaying this video."
     required: [video_url]
     image_text:
