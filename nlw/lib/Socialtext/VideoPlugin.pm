@@ -5,10 +5,19 @@ use warnings;
 use base 'Socialtext::Plugin';
 use Class::Field qw(const);
 use Socialtext::l10n 'loc';
-use Socialtext::JSON qw/encode_json decode_json/;
+use Socialtext::JSON qw/encode_json decode_json_utf8/;
 use Socialtext::Formatter::Phrase ();
 use Socialtext::String ();
+use Cache::MemoryCache;
+
+use Try::Tiny;
+use LWP::UserAgent;
 use List::Util qw/max min/;
+
+our $Cache = Cache::MemoryCache->new({
+    'namespace' => 'oembed_api',
+    'default_expires_in' => 60 * 60
+});
 
 const class_id    => 'video';
 const class_title => 'VideoPlugin';
@@ -115,12 +124,25 @@ sub get_oembed_data {
             my $oembed_api = $service->{oembed};
             $oembed_api =~ s/__URL__/$escaped_url/g;
 
-            use Try::Tiny;
-            use LWP::Simple;
+            my $payload = $Cache->get($oembed_api);
 
-            my $payload;
+            if (!$payload) {
+                try {
+                    my $ua = LWP::UserAgent->new;
+                    $ua->timeout(30);
+                    my $response = $ua->get($oembed_api);
 
-            try { $payload = decode_json( LWP::Simple::get($oembed_api) ) };
+                    if ($response->is_success) {
+                        $payload = decode_json_utf8($response->decoded_content);
+                        if ($payload and ref($payload) eq 'HASH') {
+                            $Cache->set($oembed_api => $payload);
+                        }
+                        else {
+                            undef $payload;
+                        }
+                    }
+                }
+            }
 
             if ($payload and $payload->{title} and $payload->{width} and $payload->{height} and $payload->{html}) {
                 my $html = $service->{html};
@@ -159,6 +181,7 @@ sub _do_normalize_size {
     my ($orig_width, $orig_height, $html) = @{$payload}{qw( width height html )};
     my $aspect_ratio = $orig_height / $orig_width;
 
+    no warnings qw(uninitialized numeric);
     $width = int($width);
     $height = int($height);
 
