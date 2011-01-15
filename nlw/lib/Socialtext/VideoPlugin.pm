@@ -8,6 +8,7 @@ use Socialtext::l10n 'loc';
 use Socialtext::JSON qw/encode_json decode_json/;
 use Socialtext::Formatter::Phrase ();
 use Socialtext::String ();
+use List::Util qw/max min/;
 
 const class_id    => 'video';
 const class_title => 'VideoPlugin';
@@ -96,8 +97,7 @@ sub register {
 }
 
 sub get_oembed_data {
-    my $self = shift;
-    my $url = shift;
+    my ($self, $url, $width, $height) = @_;
 
     unless ($url =~ Socialtext::Formatter::HyperLink->pattern_start) {
         return { error => loc("[_1] is not a valid URL.", $url) };
@@ -134,7 +134,11 @@ sub get_oembed_data {
                 $html =~ s/\bheight=["']?\d+["']?/height="__HEIGHT__"/g;
                 $html =~ s/\bwidth:\s*\d+/width: __WIDTH__/g;
                 $html =~ s/\bheight:\s*\d+/height: __HEIGHT__/g;
+
                 $payload->{html} = $html;
+
+                $self->_do_normalize_size($payload, $width, $height);
+
                 return $payload;
             }
             return { error => loc("Sorry, this URL does not appear to link to an embeddable video.") };
@@ -150,11 +154,45 @@ sub get_oembed_data {
     };
 }
 
+sub _do_normalize_size {
+    my ($self, $payload, $width, $height) = @_;
+    my ($orig_width, $orig_height, $html) = @{$payload}{qw( width height html )};
+    my $aspect_ratio = $orig_height / $orig_width;
+
+    $width = int($width);
+    $height = int($height);
+
+    if ($width > 0) {
+        $width = min(1080, max(100, $width));
+        $height ||= int($width * $aspect_ratio);
+    }
+
+    if ($height > 0) {
+        $height = min(1080, max(100, $height));
+        $width ||= int($height / $aspect_ratio);
+    }
+
+    $width ||= $orig_width;
+    $height ||= $orig_height;
+
+    # Now check again just in case that the orig. size is too large/small
+    $width = min(1080, max(100, $width));
+    $height = min(1080, max(100, $height));
+
+    $html =~ s/__WIDTH__/$width/g;
+    $html =~ s/__HEIGHT__/$height/g;
+    $html =~ s/\n\s*/ /g;
+
+    @{$payload}{qw( width height html )} = ($width || $orig_width, $height || $orig_height, $html);
+
+    return $payload;
+}
+
 sub check_video_url {
     my $self = shift;
     $self->hub->rest->header(-type => 'application/json; charset=UTF-8');
     return encode_json(
-        $self->get_oembed_data($self->cgi->video_url)
+        $self->get_oembed_data($self->cgi->video_url, $self->cgi->width, $self->cgi->height)
     );
 }
 
@@ -174,43 +212,29 @@ const wafl_reference_parse => qr/^\s*<?(@{[
 sub html {
     my $self = shift;
     my ($url, $size) = $self->arguments =~ $self->wafl_reference_parse;
-    my $data = $self->hub->video->get_oembed_data($url);
-
-    if ($data->{error}) {
-        return $self->syntax_error($data->{error});
-    }
-
-    my ($orig_width, $orig_height, $html) = @{$data}{qw( width height html )};
-    my $aspect_ratio = $orig_height / $orig_width;
 
     no warnings 'numeric';
     my $width = {
         small => 240,
         medium => 480,
         large => 640,
-        original => $orig_width,
-    }->{$size || 'original'} || int($size) || $orig_width;
+        original => 0
+    }->{$size || 'original'};
+    
+    $width = int($size) unless defined $width;
 
     my $height;
-
     if ($size and $size =~ /(\d+)x(\d+)/ and $2) {
-        $height = $2;
-        $height = 1080 if $height > 1080;
-        $height = 100 if $height < 100;
-        $width = $1 || int($height / $aspect_ratio);
+        ($width, $height) = ($1, $2);
     }
 
-    $width = 1080 if $width > 1080;
-    $width = 100 if $width < 100;
-    $height ||= int($width * $aspect_ratio);
+    my $data = $self->hub->video->get_oembed_data($url, $width, $height);
 
-    $aspect_ratio = $height / $width;
+    if ($data->{error}) {
+        return $self->syntax_error($data->{error});
+    }
 
-    $html =~ s/__WIDTH__/$width/g;
-    $html =~ s/__HEIGHT__/$height/g;
-    $html =~ s/\n\s*/ /g;
-
-    return $html;
+    return $data->{html};
 }
 
 package Socialtext::VideoPlugin::CGI;
@@ -219,5 +243,7 @@ use base 'Socialtext::CGI';
 use Socialtext::CGI qw( cgi );
 
 cgi 'video_url';
+cgi 'width';
+cgi 'height';
 
 1;
