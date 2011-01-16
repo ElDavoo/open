@@ -15,6 +15,7 @@ Readonly my %markup => (
     del  => [ '<del>',           '</del>' ],
     a    => [ '<a href="HREF">', '</a>' ],
     hashmark => undef, # handled by overriding markup_node()
+    video    => undef, # handled by overriding markup_node()
 );
 
 sub link_dictionary {
@@ -68,6 +69,19 @@ sub msg_format_hashtag {
     return "$prefix$ast->{text}</a>";
 }
 
+sub msg_format_video {
+    my $self = shift;
+    my $ast = shift;
+    my $is_end = shift;
+    my $url = Socialtext::String::html_escape($ast->{text});
+
+    my $prefix = qq{<a href="$url">};
+    if (defined $is_end) {
+        return $is_end ? "</a>" : $prefix;
+    }
+    return "$prefix$url</a>";
+}
+
 sub msg_format_user {
     my $self = shift;
     my $ast = shift;
@@ -94,6 +108,10 @@ sub markup_node {
 
     if ($ast->{type} && $ast->{type} eq 'hashmark') {
         $self->{output} .= $self->msg_format_hashtag($ast,$is_end);
+        return;
+    }
+    elsif ($ast->{type} && $ast->{type} eq 'video') {
+        $self->{output} .= $self->msg_format_video($ast,$is_end);
         return;
     }
     return $self->SUPER::markup_node($is_end,$ast,@_);

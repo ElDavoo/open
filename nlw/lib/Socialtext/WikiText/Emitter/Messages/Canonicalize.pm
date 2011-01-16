@@ -13,6 +13,7 @@ Readonly my %markup => (
     del  => [ '-',  '-' ],
     a    => [ '"',  '"<HREF>' ],
     hashmark => [ '{hashtag: ', '}' ],
+    video => [ '{video: ', '}' ],
 );
 
 sub msg_markup_table { return \%markup }
@@ -36,6 +37,12 @@ sub msg_format_hashtag {
     my $self = shift;
     my $ast = shift;
     return "{hashtag: $ast->{text}}";
+}
+
+sub msg_format_video {
+    my $self = shift;
+    my $ast = shift;
+    return "{video: $ast->{text}}";
 }
 
 sub msg_format_user {

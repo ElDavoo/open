@@ -13,6 +13,7 @@ Readonly my %markup => (
     del  => [ '',  '' ],
     a    => [ '"',  '"' ],
     hashmark => ['#',''],
+    video  => [ '',  '' ],
 );
 
 sub msg_markup_table { return \%markup }

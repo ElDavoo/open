@@ -179,9 +179,9 @@ sub handle_waflphrase {
         });
         return;
     }
-    elsif ($match->{2} eq 'hashtag') {
+    elsif ($match->{2} eq 'hashtag' or $match->{2} eq 'video') {
         $self->{receiver}->insert({
-            wafl_type   => 'hashtag',
+            wafl_type   => $match->{2},
             text => $match->{3},
             wafl_length => $length
         });
