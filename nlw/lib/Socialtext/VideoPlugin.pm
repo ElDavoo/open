@@ -8,6 +8,7 @@ use Socialtext::l10n 'loc';
 use Socialtext::JSON qw/encode_json decode_json_utf8/;
 use Socialtext::Formatter::Phrase ();
 use Socialtext::String ();
+use Socialtext::HTTP ':codes';
 use Cache::MemoryCache;
 
 use Try::Tiny;
@@ -102,6 +103,7 @@ sub register {
     my $self = shift;
     my $registry = shift;
     $registry->add(action => 'check_video_url');
+    $registry->add(action => 'get_video_thumbnail');
     $registry->add(wafl => video => 'Socialtext::VideoPlugin::Wafl');
 }
 
@@ -219,6 +221,17 @@ sub check_video_url {
     );
 }
 
+sub get_video_thumbnail {
+    my $self = shift;
+    my $data = $self->get_oembed_data($self->cgi->video_url);
+    if ($data->{thumbnail_url}) {
+        $self->hub->rest->header(-status => HTTP_302_Found);
+        $self->hub->rest->header(-Location => $data->{thumbnail_url});
+        return '';
+    }
+    $self->hub->rest->header(-status => HTTP_404_Not_Found);
+    return '';
+}
 
 ################################################################################
 package Socialtext::VideoPlugin::Wafl;
