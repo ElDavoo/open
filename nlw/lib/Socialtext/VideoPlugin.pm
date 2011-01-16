@@ -73,27 +73,9 @@ our %Services = (
         ],
         url => "__ID__",
         oembed => "http://www.slideshare.net/api/oembed/1?format=json;url=__URL__",
-        html => q|
-            <div id="__UNIQUE__"></div>
-            <script>
-                function __UNIQUE__ (data) {
-                    if (!data.html) { return; }
-                    var match = data.html.match(/(<embed.*?<\/embed>)/);
-                    if (!match) { return; }
-                    document.getElementById('__UNIQUE__').innerHTML = match[1].replace(
-                        /\bwidth="\d+"/g, 'width="__WIDTH__"'
-                    ).replace(
-                        /\bheight="\d+"/g, 'height="__HEIGHT__"'
-                    );
-                }
-            </script>
-            <script src="http://www.slideshare.net/api/oembed/1?format=jsonp;callback=__UNIQUE__;url=__ID__"></script>
-        |,
-        html => "__HTML__",
         html_filter => sub {
             my $html = shift;
             $html =~ s/<strong\b[^>]*>.*?<\/strong>//i;
-            $html =~ s!(<embed\b[^>]*)>\s*</embed>!$1 />!i;
             return $html;
         }
     },
@@ -103,6 +85,7 @@ sub register {
     my $self = shift;
     my $registry = shift;
     $registry->add(action => 'check_video_url');
+    $registry->add(action => 'get_video_html');
     $registry->add(action => 'get_video_thumbnail');
     $registry->add(wafl => video => 'Socialtext::VideoPlugin::Wafl');
 }
@@ -147,13 +130,13 @@ sub get_oembed_data {
             }
 
             if ($payload and $payload->{title} and $payload->{width} and $payload->{height} and $payload->{html}) {
-                my $html = $service->{html};
+                my $html = $service->{html} || $payload->{html};
                 $html =~ s/__ID__/$id/g;
                 $html =~ s/__URL__/$escaped_url/g;
-                $html =~ s/__HTML__/$payload->{html}/g;
                 if ($service->{html_filter}) {
                     $html = $service->{html_filter}->($html);
                 }
+                $html =~ s!(<embed\b[^>]*)>\s*</embed>!$1 />!i;
                 $html =~ s/\bwidth=["']?\d+["']?/width="__WIDTH__"/g;
                 $html =~ s/\bheight=["']?\d+["']?/height="__HEIGHT__"/g;
                 $html =~ s/\bwidth:\s*\d+/width: __WIDTH__/g;
@@ -171,7 +154,7 @@ sub get_oembed_data {
 
     return {
         error => loc(
-            "[_1] is not hosted on any of our supported services ([_2]).",
+            "Sorry, this URL is not hosted on any of our supported services ([_2]).",
             $url,
             join(', ', sort keys %Socialtext::VideoPlugin::Services)
         )
@@ -219,6 +202,19 @@ sub check_video_url {
     return encode_json(
         $self->get_oembed_data($self->cgi->video_url, $self->cgi->width, $self->cgi->height)
     );
+}
+
+sub get_video_html {
+    my $self = shift;
+    my $data = $self->get_oembed_data($self->cgi->video_url, $self->cgi->width, $self->cgi->height);
+    if ($data->{html}) {
+        return $data->{html};
+    }
+    elsif ($data->{error}) {
+        return $data->{error};
+    }
+    $self->hub->rest->header(-status => HTTP_404_Not_Found);
+    return '';
 }
 
 sub get_video_thumbnail {
