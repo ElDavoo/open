@@ -42,7 +42,10 @@ sub msg_format_hashtag {
 sub msg_format_video {
     my $self = shift;
     my $ast = shift;
-    return "{video: $ast->{text}}";
+    if ($ast->{text} ne $ast->{href}) {
+        return qq("$ast->{text}"{video: $ast->{href}});
+    }
+    return "{video: $ast->{href}}";
 }
 
 sub msg_format_user {

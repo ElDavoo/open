@@ -73,13 +73,14 @@ sub msg_format_video {
     my $self = shift;
     my $ast = shift;
     my $is_end = shift;
-    my $url = Socialtext::String::html_escape($ast->{text});
+    my $url = Socialtext::String::html_escape($ast->{href});
+    my $text = Socialtext::String::html_escape($ast->{text});
 
     my $prefix = qq{<a href="$url">};
     if (defined $is_end) {
         return $is_end ? "</a>" : $prefix;
     }
-    return "$prefix$url</a>";
+    return "$prefix$text</a>";
 }
 
 sub msg_format_user {
