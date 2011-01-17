@@ -16,6 +16,9 @@
     margin: auto;
     font-size: 12px;
     font-family: Helvetica, Arial, sans-serif;
+    border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
 }
 
 .lightbox td, .lightbox th {
