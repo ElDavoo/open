@@ -31,7 +31,6 @@ our %Services = (
             qr{://(?:www\.)?youtube\.com/embed/([-\w]{11,})}i,
         ],
         url => "http://www.youtube.com/watch?v=__ID__",
-        #oembed => "http://api.embed.ly/1/oembed?format=json;url=__URL__",
         oembed => "http://www.youtube.com/oembed?format=json;url=__URL__",
         html => q{<iframe src='https://www.youtube.com/embed/__ID__?rel=0;autoplay=__AUTOPLAY__'
                           type='text/html'
@@ -59,7 +58,27 @@ our %Services = (
             qr{://video\.google\.com/.*\bdocid=([-\w]+)}i,
         ],
         url => "http://video.google.com/videoplay?docid=__ID__",
-        oembed => "http://api.embed.ly/1/oembed?format=json;url=__URL__",
+        #oembed => "http://api.embed.ly/1/oembed?format=json;url=__URL__",
+        oembed => "http://video.google.com/videoplay?docid=__ID__",
+        oembed_decoder => sub {
+            my $html = shift;
+            my %data = ( type => 'video' );
+            $html =~ m{<title>\s*(.*?)\s*</title>}i or return;
+            $data{title} = Socialtext::String::html_unescape($1);
+
+            $html =~ m{(&lt;embed id="VideoPlayback".*?&lt;/embed&gt;)}i or return;
+            $data{html} = Socialtext::String::html_unescape($1);
+            $data{html} =~ m{width:(\d+)px} or return;
+            $data{width} = $1;
+            $data{html} =~ m{height:(\d+)px} or return;
+            $data{height} = $1;
+
+            $html =~ m{thumbnailUrl\\x3d(.*?)\\x26}i or return;
+            $data{thumbnail_url} = Socialtext::String::uri_unescape(
+                Socialtext::String::html_unescape($1)
+            );
+            return \%data;
+        },
         html_filter => sub {
             my ($html, $width, $height, $autoplay) = @_;
             if ($autoplay) {
@@ -115,6 +134,7 @@ sub get_oembed_data {
 
             my $escaped_url = Socialtext::String::uri_escape($oembed_url);
             my $oembed_api = $service->{oembed};
+            $oembed_api =~ s/__ID__/$id/g;
             $oembed_api =~ s/__URL__/$escaped_url/g;
 
             my $payload = $Cache->get($oembed_api);
@@ -126,7 +146,12 @@ sub get_oembed_data {
                     my $response = $ua->get($oembed_api);
 
                     if ($response->is_success) {
-                        $payload = decode_json_utf8($response->decoded_content);
+                        if ($service->{oembed_decoder}) {
+                            $payload = $service->{oembed_decoder}->($response->decoded_content);
+                        }
+                        else {
+                            $payload = decode_json_utf8($response->decoded_content);
+                        }
                         if ($payload and ref($payload) eq 'HASH') {
                             $Cache->set($oembed_api => $payload);
                         }
