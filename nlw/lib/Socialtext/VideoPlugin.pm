@@ -45,8 +45,7 @@ our %Services = (
             qr{://player\.vimeo\.com/video/(\d+)}i,
         ],
         url => "http://www.vimeo.com/__ID__",
-        #oembed => "http://vimeo.com/api/oembed.json?url=__URL__",
-        oembed => "http://api.embed.ly/1/oembed?format=json;url=__URL__",
+        oembed => "http://oohembed.com/oohembed/?format=json;url=__URL__",
         html => q{<iframe src='http://player.vimeo.com/video/__ID__?autoplay=__AUTOPLAY__'
                           type='text/html'
                           width='__WIDTH__'
@@ -58,7 +57,6 @@ our %Services = (
             qr{://video\.google\.com/.*\bdocid=([-\w]+)}i,
         ],
         url => "http://video.google.com/videoplay?docid=__ID__",
-        #oembed => "http://api.embed.ly/1/oembed?format=json;url=__URL__",
         oembed => "http://video.google.com/videoplay?docid=__ID__",
         oembed_decoder => sub {
             my $html = shift;
