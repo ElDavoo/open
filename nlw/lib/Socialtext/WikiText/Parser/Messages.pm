@@ -185,6 +185,7 @@ sub handle_waflphrase {
             text => $match->{3},
             wafl_length => $length
         });
+        return;
     }
     elsif ($match->{2} eq 'video') {
         $self->{receiver}->insert({
