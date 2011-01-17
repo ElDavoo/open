@@ -146,14 +146,15 @@ sub get_oembed_data {
                     $html = $service->{html_filter}->($html, $width, $height, $autoplay);
                 }
                 $html =~ s!(<embed\b[^>]*)>\s*</embed>!$1 />!i;
-                $html =~ s/\bwidth=["']?\d+(px)?["']?/width="__WIDTH__$1"/g;
-                $html =~ s/\bheight=["']?\d+(px)?["']?/height="__HEIGHT__$1"/g;
+                $html =~ s/\bwidth=["']?\d+((?:px)?)["']?/width="__WIDTH__$1"/g;
+                $html =~ s/\bheight=["']?\d+((?:px)?)["']?/height="__HEIGHT__$1"/g;
                 $html =~ s/\bwidth:\s*\d+/width: __WIDTH__/g;
                 $html =~ s/\bheight:\s*\d+/height: __HEIGHT__/g;
 
                 $payload->{html} = $html;
 
                 $self->_do_normalize_size($payload, $width, $height);
+                $payload->{thumbnail_url} ||= $payload->{thumbnail};
 
                 return $payload;
             }
