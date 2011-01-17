@@ -9,16 +9,14 @@ use Socialtext::JSON qw/encode_json decode_json_utf8/;
 use Socialtext::Formatter::Phrase ();
 use Socialtext::String ();
 use Socialtext::HTTP ':codes';
+use Socialtext::Paths ();
 use Cache::MemoryCache;
 
 use Try::Tiny;
 use LWP::UserAgent;
 use List::Util qw/max min/;
 
-our $Cache = Cache::MemoryCache->new({
-    'namespace' => 'oembed_api',
-    'default_expires_in' => 60 * 60
-});
+our $Cache;
 
 const class_id    => 'video';
 const class_title => 'VideoPlugin';
@@ -100,6 +98,12 @@ sub get_oembed_data {
     unless ($url =~ Socialtext::Formatter::HyperLink->pattern_start) {
         return { error => loc("[_1] is not a valid URL.", $url) };
     }
+
+    $Cache ||= Cache::FileCache->new({
+        namespace => 'oembed_api',
+        default_expires_in => 60 * 60,
+        cache_root => Socialtext::Paths::cache_directory($self->class_id),
+    });
 
     for my $service (values %Services) {
         for my $re (@{$service->{match}}) {
