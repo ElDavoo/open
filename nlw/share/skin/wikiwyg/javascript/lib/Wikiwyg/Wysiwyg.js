@@ -3442,6 +3442,10 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
                     : '#st-widget-' + field;
                 jQuery(selector).select().focus();
             }
+
+            if (widget == 'video') {
+                self._preload_video_dimensions();
+            }
         }
     });
 
@@ -3449,6 +3453,9 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
     var form = jQuery('#widget-' + widget + ' form').get(0);
 
     var intervalId = setInterval(function () {
+        if (widget == 'video') {
+            $('#st-widget-video_url').triggerHandler('change');
+        }
         jQuery('#'+widget+'_wafl_text')
             .html(
                 ' <span>' +
@@ -3572,4 +3579,59 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
             disable(form.width);
     }
 }
+
+proto._preload_video_dimensions = function() {
+    var previousURL = null;
+    var loading = false;
+    var queued = false;
+
+    $('#st-widget-video_url').unbind('change').change(function(){
+        var url = $(this).val();
+        if (!/:\/\//.test(url)) {
+            $('#st-widget-video-original-width').text('');
+            url = null;
+        }
+        if (url == previousURL) { return; }
+        previousURL = url;
+
+        if (loading) { queued = true; return; }
+        queued = false;
+
+        if (!url) { return; }
+        loading = true;
+
+        $('#st-widget-video-original-width').text(loc('Loading...'));
+        $('#video_widget_edit_error_msg').text('').hide();
+
+        jQuery.ajax({
+            type: 'get',
+            async: true,
+            url: 'index.cgi',
+            dataType: 'json',
+            data: {
+                action: 'check_video_url',
+                video_url: url.replace(/^<|>$/g, '')
+            },
+            success: function(data) {
+                loading = false;
+                if (queued) {
+                    $('#st-widget-video_url').triggerHandler('change');
+                    return;
+                }
+                if (data.title) {
+                    $('#st-widget-video-original-width').text(
+                        loc('width: [_1]', data.width)
+                            + ' ' +
+                        loc('height: [_1]', data.height)
+                    );
+                }
+                else if (data.error) {
+                    $('#st-widget-video-original-width').text(loc('Error!'));
+                    $('#video_widget_edit_error_msg').text(data.error).show();
+                }
+            }
+        });
+    });
+}
+
 

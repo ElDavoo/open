@@ -184,6 +184,8 @@
         <td style="color:#999999">
           [% IF choice.2 %]
             [% loc('width: [_1]', choice.2) %]
+          [% ELSE %]
+            <span id="st-widget-video-original-width">&nbsp;</span>
           [% END %]
         </td>
       </tr>
