@@ -35,7 +35,7 @@ our %Services = (
         url => "http://www.youtube.com/watch?v=__ID__",
         #oembed => "http://api.embed.ly/1/oembed?format=json;url=__URL__",
         oembed => "http://www.youtube.com/oembed?format=json;url=__URL__",
-        html => q{<iframe src='https://www.youtube.com/embed/__ID__?rel=0'
+        html => q{<iframe src='https://www.youtube.com/embed/__ID__?rel=0;autoplay=__AUTOPLAY__'
                           type='text/html'
                           width='__WIDTH__'
                           height='__HEIGHT__'
@@ -50,7 +50,7 @@ our %Services = (
         url => "http://www.vimeo.com/__ID__",
         #oembed => "http://vimeo.com/api/oembed.json?url=__URL__",
         oembed => "http://api.embed.ly/1/oembed?format=json;url=__URL__",
-        html => q{<iframe src='http://player.vimeo.com/video/__ID__'
+        html => q{<iframe src='http://player.vimeo.com/video/__ID__?autoplay=__AUTOPLAY__'
                           type='text/html'
                           width='__WIDTH__'
                           height='__HEIGHT__'
@@ -62,10 +62,13 @@ our %Services = (
         ],
         url => "http://video.google.com/videoplay?docid=__ID__",
         oembed => "http://api.embed.ly/1/oembed?format=json;url=__URL__",
-        html => q{<embed src='http://video.google.com/googleplayer.swf?docid=__ID__&fs=true'
-                         style='width:__WIDTH__px;height:__HEIGHT__px'
-                         allowFullScreen='true' allowScriptAccess='always'
-                         type='application/x-shockwave-flash'></embed>},
+        html_filter => sub {
+            my ($html, $width, $height, $autoplay) = @_;
+            if ($autoplay) {
+                $html =~ s/\?docid=/?autoplay=true&docid=/;
+            }
+            return $html;
+        }
     },
     SlideShare => {
         match => [
@@ -91,7 +94,8 @@ sub register {
 }
 
 sub get_oembed_data {
-    my ($self, $url, $width, $height) = @_;
+    my ($self, $url, $width, $height, $autoplay) = @_;
+    $autoplay = ($autoplay ? 1 : 0);
 
     unless ($url =~ Socialtext::Formatter::HyperLink->pattern_start) {
         return { error => loc("[_1] is not a valid URL.", $url) };
@@ -133,12 +137,13 @@ sub get_oembed_data {
                 my $html = $service->{html} || $payload->{html};
                 $html =~ s/__ID__/$id/g;
                 $html =~ s/__URL__/$escaped_url/g;
+                $html =~ s/__AUTOPLAY__/$autoplay/g;
                 if ($service->{html_filter}) {
-                    $html = $service->{html_filter}->($html);
+                    $html = $service->{html_filter}->($html, $width, $height, $autoplay);
                 }
                 $html =~ s!(<embed\b[^>]*)>\s*</embed>!$1 />!i;
-                $html =~ s/\bwidth=["']?\d+["']?/width="__WIDTH__"/g;
-                $html =~ s/\bheight=["']?\d+["']?/height="__HEIGHT__"/g;
+                $html =~ s/\bwidth=["']?\d+(px)?["']?/width="__WIDTH__$1"/g;
+                $html =~ s/\bheight=["']?\d+(px)?["']?/height="__HEIGHT__$1"/g;
                 $html =~ s/\bwidth:\s*\d+/width: __WIDTH__/g;
                 $html =~ s/\bheight:\s*\d+/height: __HEIGHT__/g;
 
@@ -200,13 +205,13 @@ sub check_video_url {
     my $self = shift;
     $self->hub->rest->header(-type => 'application/json; charset=UTF-8');
     return encode_json(
-        $self->get_oembed_data($self->cgi->video_url, $self->cgi->width, $self->cgi->height)
+        $self->get_oembed_data(map { scalar $self->cgi->$_ } qw( video_url width height autoplay ))
     );
 }
 
 sub get_video_html {
     my $self = shift;
-    my $data = $self->get_oembed_data($self->cgi->video_url, $self->cgi->width, $self->cgi->height);
+    my $data = $self->get_oembed_data(map { scalar $self->cgi->$_ } qw( video_url width height autoplay ));
     if ($data->{html}) {
         return $data->{html};
     }
@@ -277,5 +282,6 @@ use Socialtext::CGI qw( cgi );
 cgi 'video_url';
 cgi 'width';
 cgi 'height';
+cgi 'autoplay';
 
 1;
