@@ -6,6 +6,7 @@ use Socialtext::SQL qw/sql_execute sql_singlevalue/;
 use Socialtext::SQL::Builder qw/sql_abstract/;
 use Socialtext::String;
 use Socialtext::User;
+use Socialtext::Encode 'ensure_is_utf8';
 use namespace::clean -except => 'meta';
 
 has 'viewer'   => (is => 'rw', isa => 'Socialtext::User', required => 1);
@@ -189,15 +190,29 @@ sub typeahead_find {
         die "Only Business Admin's can search for Users across all Accounts.\n";
     }
 
+    my $prefix = lc ensure_is_utf8($self->filter);
+    $prefix =~ s/%$//;
+    my $prefix_re;
+    if (length $prefix) {
+        $prefix_re = qr/\b$prefix/i;
+    }
+
     my $rows = $self->get_results;
     my $min = $self->minimal;
     if ($min >= 2) {
         return [ map { 
             my $user = Socialtext::User->new(user_id => $_->{user_id});
+
+            # {bz: 4811}: If preferred name does not match, return first+last name
+            # as "display_name" so client-side lookahead can highlight them instead.
+            if ($prefix_re and $_->{display_name} !~ $prefix_re) {
+                $_->{display_name} = $user->proper_name;
+            }
+
             +{
                 best_full_name => $user->guess_real_name,
                 user_id => $_->{user_id}, 
-                display_name => $_->{display_name} 
+                display_name => $_->{display_name}
             } 
         } @$rows ];
     }
@@ -207,8 +222,17 @@ sub typeahead_find {
         next if Socialtext::User::Default::Users->IsDefaultUser(
             username => $row->{driver_username},
         );
+
+        # {bz: 4811}: If preferred name does not match, return first+last name
+        # as "display_name" so client-side lookahead can highlight them instead.
+        my $user;
+        if ($prefix_re and $row->{display_name} !~ $prefix_re) {
+            $user = Socialtext::User->new(user_id => $row->{user_id});
+            $row->{display_name} = $user->proper_name;
+        }
+
         unless ($min) {
-            my $user = Socialtext::User->new(user_id => $row->{user_id});
+            $user ||= Socialtext::User->new(user_id => $row->{user_id});
             $row->{best_full_name} = $user->guess_real_name;
             $row->{name} = $row->{driver_username};
             $row->{uri} = "/data/users/$row->{driver_username}";

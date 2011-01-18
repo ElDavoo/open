@@ -19,16 +19,16 @@
 | st-admin | add-account-admin --email %%cmd_user%% --account %%cmd_acct%% | %%cmd_user%% now has the role of 'admin' in the %%cmd_acct%% Account |
 | st-admin | add-account-admin --email %%cmd_user%% --account %%cmd_acct%% | %%cmd_user%% already has the role of 'admin' in the %%cmd_acct%% Account |
 
-| *Comment* | Test Case: Command Line: NEW remove-account-admin only passes as long as {bz: 4800} is unfixed |  |
-| *Comment* | Test Case: Command Line: NEW {bz: 4816} |  |
+| *Comment* | Test Case: Command Line: NEW remove-account-admin |  |
+| *Comment* | Test Case: Command Line: NEW only passes until {bz: 4816} is fixed |  |
 | st-admin | remove-account-admin | The command you called (remove-account-admin) requires a user to be specified. |
 | st-admin | remove-account-admin --email %%cmd_user%% | The command you called (remove-account-admin) requires an account to be specified. |
-| st-admin | remove-account-admin --email %%cmd_user%% --account %%cmd_acct%% | %%cmd_user%% no longer has the role of 'admin' in the %%cmd_acct%% Account. |
-| st-admin | remove-account-admin --email %%cmd_user%% --account %%cmd_acct%% | %%cmd_user%% does not have the role of 'admin' in the %%cmd_acct%% Account. |
+| st-admin | remove-account-admin --email %%cmd_user%% --account %%cmd_acct%% | %%cmd_user_short%% no longer has the role of 'admin' in the %%cmd_acct%% Account. |
+| st-admin | remove-account-admin --email %%cmd_user%% --account %%cmd_acct%% | %%cmd_user_short%% does not have the role of 'admin' in the %%cmd_acct%% Account. |
 
-| *Comment* | Test Case: Command Line: NEW set-external-id Only passes as long as {bz: 4790} is unfixed |  |
+| *Comment* | Test Case: Command Line: NEW set-external-id |  |
 | st-admin | set-external-id | The command you called (set-external-id) requires a user to be specified. |
-| st-admin | set-external-id --email %%cmd_user%% | External ID for '%%cmd_user%%' set to ''. |
+| st-admin | set-external-id --email %%cmd_user%% | The command you called (set-external-id) requires an external ID to be specified with the --external-id option |
 | st-admin | set-external-id --email %%cmd_user%% --external-id %%start_time%% | External ID for '%%cmd_user%%' set to '%%start_time%%'. |
 
 | *Comment* | Test Case: Command Line: NEW mass-add-users |  |
@@ -97,9 +97,10 @@
 | st-admin | create-group --name %%cmd_grp_2%% | --email must be supplied to create a group. |
 | st-admin | create-group --name %%cmd_grp_2%% --email %%cmd_user%% | %%cmd_grp_2%% Group has been created (Group Id: |
 
-| *Comment* | Test Case: Command Line: NEW show-group-config only passes as long as {bz: 4799} is unfixed |  |
+| *Comment* | Test Case: Command Line: NEW show group config |  |
 | st-admin | show-group-config | The command you called (show-group-config) requires a '--group' parameter. |
-| st-admin | show-group-config --group %%group_id%% | Config for group %cmd_grp%%: |
+| st-admin | show-group-config --group %%group_id%% | Config for group %%cmd_grp%%: |
+| st-admin | show-group-config --group %%group_id%% | Group Name |
 
 | *Comment* | Test Case: Command Line: NEW add-account-impersonator |  |
 | *Comment* | Test Case: Command Line: NEW {bz: 4816} |  |
@@ -109,7 +110,7 @@
 | *Comment* | Test Case: Command Line: NEW remove-account-impersonator |  |
 | *Comment* | Test Case: Command Line: NEW {bz: 4816} |  |
 | st-admin | remove-account-impersonator | The command you called (remove-account-impersonator) requires one of --username --email --group and one of --account |
-| st-admin | remove-account-impersonator --email %%cmd_user%% --account %%cmd_acct%% | %%cmd_user%% no longer has the role of 'impersonator' in the %%cmd_acct%% Account. |
+| st-admin | remove-account-impersonator --email %%cmd_user%% --account %%cmd_acct%% | no longer has the role of 'impersonator' in the %%cmd_acct%% Account. |
 
 | *Comment* | Test Case: Command Line: NEW add-group-admin |  |
 | st-admin | add-group-admin | The command you called (add-group-admin) requires a user to be specified. |
@@ -121,8 +122,7 @@
 | st-admin | remove-group-admin | The command you called (remove-group-admin) requires a user to be specified. |
 | st-admin | remove-group-admin --email %%cmd_user%% | The command you called (remove-group-admin) requires a '--group' parameter. |
 | st-admin | remove-group-admin --email %%cmd_user%% --group %%group_id%% | %%cmd_user%% is now a member of %%cmd_grp%% |
-| st-admin | remove-group-admin --email %%cmd_user%% --group %%group_id%% | %%cmd_user%% is no longer a member of %%cmd_grp%% |
-| st-admin | remove-group-admin --email %%cmd_user%% --group %%group_id%% | %%cmd_user%% is not a member of %%cmd_grp%% |
+| st-admin | remove-group-admin --email %%cmd_user%% --group %%group_id%% | %%cmd_user%% is already a non-admin member of %%cmd_grp%% |
 
 | *Comment* | Test Case: Command Line: NEW delete-group |  |
 | st-admin | delete-group | The command you called (delete-group) requires a '--group' parameter. |

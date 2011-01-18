@@ -244,10 +244,6 @@ sub element_list_item {
 sub resource_to_html {
     my ( $self, $resource ) = @_;
 
-    if ($self->{_too_many}) {
-        return loc('The search term you have entered is too general.');
-    }
-
     my $name = $self->collection_name;
     my $body = join '', map { $self->element_list_item($_) } @$resource;
     return (<< "END_OF_HEADER" . $body . << "END_OF_TRAILER");
@@ -270,10 +266,6 @@ sub resource_to_text { $_[0]->_resource_to_text($_[1]) }
 sub _resource_to_text { 
     my $self = shift;
     my $resource = shift;
-
-    if ($self->{_too_many}) {
-        return loc('The search term you have entered is too general.');
-    }
 
     return join '', map { "$_->{name}\n" } @$resource;
 }

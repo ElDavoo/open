@@ -31,7 +31,7 @@ sub insert {
     }
 
     if ($self->{callbacks}{noun_link} &&
-        $type =~ m{^(?:link|user|hashtag|hashmark)$})
+        $type =~ m{^(?:link|user|hashtag|hashmark|video)$})
     {
         # make hashmark look like hashtag to the callback.
         $ast->{wafl_type} = 'hashtag' if $type eq 'hashmark';
@@ -51,6 +51,9 @@ sub insert {
     elsif ( $type eq 'hashtag' ) {
         $self->{output} .= $self->msg_format_hashtag($ast);
     }
+    elsif ( $type eq 'video' ) {
+        $self->{output} .= $self->msg_format_video($ast);
+    }
     else {
         $self->{output} .= "{$type: $ast->{wafl_string}}";
     }
@@ -62,6 +65,7 @@ sub msg_markup_table { die 'subclass must override msg_markup_table' }
 sub msg_format_user { die 'subclass must override msg_format_user' }
 sub msg_format_link { die 'subclass must override msg_format_link' }
 sub msg_format_hashtag { die 'subclass must override msg_format_hashtag' }
+sub msg_format_video { die 'subclass must override msg_format_video' }
 
 sub begin_node { my $self=shift; $self->markup_node(0,@_) }
 sub end_node   { my $self=shift; $self->markup_node(1,@_) }

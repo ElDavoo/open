@@ -34,13 +34,13 @@
 
 | *Comment* | Test case: Business Control Panel Socialtext Account exists |  |
 | open_ok | /nlw/control/account |  |
-| text_like | Accounts |  |
+| text_like | st-display-mode-container | Accounts |
 | wait_for_element_visible_ok | st-search-by-name | 30000 |
 | type_ok | st-search-by-name | Socialtext |
 | wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
 | click_and_wait | st-submit-search-by-name |  |
-| wait_for_element_visible_ok | link=Socialtext | 30000 |
-| click_and_wait | link=Socialtext |  |
+| wait_for_element_visible_ok | //a[@title='view Socialtext'] | 30000 |
+| click_and_wait | //a[@title='view Socialtext'] |  |
 | text_like | Socialtext account |  |
 
 | *Comment* | Test case: Business Control Panel Account Create and verify new account |  |

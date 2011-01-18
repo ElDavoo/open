@@ -2,7 +2,7 @@
 'socialtext-s3.js':
     compress: 1
     parts:
-        - {dir: 'skin/common/javascript', file: 'jquery-1.4.2.js'}
+        - {dir: 'skin/common/javascript', file: 'jquery-1.4.4.min.js'}
         - {dir: 'skin/common/javascript', file: 'jquery-json-1.3.js'}
         - {dir: 'skin/common/javascript', file: 'utf8.js'}
         - 'info.js'

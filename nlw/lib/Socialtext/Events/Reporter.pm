@@ -1382,10 +1382,12 @@ sub _build_convos_sql {
     $opts->{action} = [ $opts->{action} ] unless ref $opts->{action};
     my %action = map { $_ => 1 } @{ $opts->{action} };
 
+    my $show_signals;
     if ($opts->{activity} eq 'all-combined' or $action{signal}) {
         # from the user, mentioning the user or to the user (?!)
         push @where, $self->_mention_or_actor_sql;
         push @bind, ($user_id) x 5;
+        $show_signals = 1;
     }
     my $conv_where = join(' OR ', @where);
     $self->prepend_condition($conv_where, @bind);
@@ -1393,15 +1395,37 @@ sub _build_convos_sql {
     my @classes;
     if ($action{signal}) {
         push @classes, 'signal';
+        if (keys %action > 1) {
+            # {bz: 4840} - We had not extended mention logic to "edit_save" and "comment" yet.
+            # For now on "action=signal,edit_save,comment" we simply limit action to "signal" only.
+            # push @classes, 'page';
+        }
     }
     elsif (%action) {
         push @classes, 'page';
     }
-    if (@classes) {
-       my $qs = join(',', ('?') x @classes);
-       $self->add_outer_condition(
-           "evt.event_class IN ($qs)", @classes
-       );
+
+    # If we are not showing signals, use the materialized "event_page_contrib"
+    # table since it's much, much faster.
+    if (("@classes" eq 'page') or (!@classes and !$show_signals)) {
+        $self->use_event_page_contrib();
+        $self->_skip_standard_opts(1);
+    }
+    else {
+        if (@classes) {
+           my $qs = join(',', ('?') x @classes);
+           $self->add_outer_condition(
+               "evt.event_class IN ($qs)", @classes
+           );
+        }
+
+        # If we are showing page events off the main events table, make sure we
+        # don't accidentally display the edit_start and edit_cancel events.
+        if (!@classes or grep { $_ eq 'page' } @classes) {
+            $self->add_outer_condition(
+                "evt.action NOT IN ('edit_start', 'edit_cancel')"
+            );
+        }
     }
 
     return $self->_build_standard_sql($filtered_opts);

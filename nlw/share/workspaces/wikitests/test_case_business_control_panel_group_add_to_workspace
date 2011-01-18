@@ -52,7 +52,8 @@
 
 | *Comment* | Test Case: Business Control Panel Group Add to Workspace Verify redirect, message |  |
 | wait_for_element_visible_ok | link=%%short_testuser%% <%%testuseringroup%%> | 30000 |
-| wait_for_element_visible_ok | link=%%ws%% | 30000 |
+| wait_for_element_present_ok | link=%%ws%% | 30000 |
+| text_like | workspaces | %%ws%% |
 | wait_for_text_present_ok | %%group%% Group | 10000 |
 | wait_for_text_present_ok | Workspaces (1) | 10000 |
 | wait_for_text_present_ok | Users (2) | 10000 |
@@ -89,7 +90,8 @@
 | click-and-wait | //input[@value='Add to Workspace'] |  |
 
 | wait_for_element_visible_ok | link=%%short_testuser%% <%%testuseringroup%%> | 30000 |
-| wait_for_element_visible_ok | link=%%workspaceforadmin%% | 30000 |
+| wait_for_element_present_ok | link=%%workspaceforadmin%% | 30000 |
+| text_like | workspaces | %%workspaceforadmin%% |
 | wait_for_text_present_ok | %%group%% Group | 10000 |
 | wait_for_text_present_ok | Workspaces (2) | 10000 |
 | wait_for_text_present_ok | Users (2) | 10000 |
@@ -100,8 +102,9 @@
 | st-admin | show-members -w %%workspaceforadmin%% | admin |
 
 | *Comment* | Test Case: Business Control Panel Group Add to Workspace TEARDOWN |  |
-| st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
-| st-admin | delete-workspace --workspace %%workspaceforadmin%% --no-export | has been deleted |
-| delete-group | %%group_id%% |  |
+
+ st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
+st-admin | delete-workspace --workspace %%workspaceforadmin%% --no-export | has been deleted |
+delete-group | %%group_id%% | |
 
 | *Comment* | Test Case: Business Control Panel Group Add to Workspace COMPLETED |

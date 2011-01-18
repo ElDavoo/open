@@ -34,6 +34,7 @@ use EV;
 use Feersum;
 use Socket qw/SOMAXCONN/;
 use IO::Socket::INET;
+use POSIX ();
 use Socialtext::Async;
 use Socialtext::Async::WorkQueue;
 
@@ -79,6 +80,9 @@ has 'stats' => (is => 'rw', isa => 'HashRef', default => sub {{}});
 has 'shutdown_delay'     => (is => 'rw', isa => 'Num', default => 15);
 has 'stats_period'       => (is => 'rw', isa => 'Num', default => 900);
 has 'worker_ping_period' => (is => 'rw', isa => 'Num', default => 60);
+# Feersum sets a default of 5 seconds. http_read_timeout is a timeout between
+# read() system calls.
+has 'http_read_timeout'  => (is => 'rw', isa => 'Num', default => 30);
 
 has 'guards' => (
     is => 'ro', isa => 'HashRef',
@@ -119,6 +123,7 @@ sub Configure {
         \%opts,
         $class->Getopts(),
         'shutdown-delay=i',
+        'http-read-timeout=i',
         'port=i',
     );
 
@@ -144,6 +149,7 @@ sub Configure {
 sub Run {
     my ($class, @args) = @_;
 
+    POSIX::setsid();
     try { $class->Configure(@args) }
     catch {
         croak "could not configure $class: $_";
@@ -166,11 +172,15 @@ sub Run {
     if ($main_e) {
         my $msg = "$PROC_NAME stopping, runtime error: $main_e";
         st_log->error($msg);
-        croak $msg;
+        cluck $msg;
+        kill -9 => 0; # Terminate all workers in our process group - see "perldoc -f kill"
     }
 
+    trace "done";
     st_log->info("$PROC_NAME done");
-    exit 0;
+
+    kill -9 => 0; # Terminate all workers in the our process group - see "perldoc -f kill"
+    #exit 0; # not reached
 }
 
 sub startup { } # override in subclass
@@ -181,7 +191,7 @@ sub _startup {
     $self->cv->begin; # match in _shutdown()
 
     st_log()->info("$PROC_NAME starting on ".$self->host." port ".$self->port);
-    trace "$PROC_NAME starting on ".$self->host." port ".$self->port.
+    trace "starting on ".$self->host." port ".$self->port.
         " Feersum $Feersum::VERSION";
     $self->listen();
 
@@ -240,6 +250,7 @@ sub _shutdown {
     return if $self->guards->{shutdown_timer};
     $self->_running(0);
 
+    trace("shutting down...");
     st_log()->info("$PROC_NAME shutting down");
 
     Feersum->endjinn->graceful_shutdown(sub {
@@ -265,8 +276,10 @@ sub listen {
     );
     die "can't create socket: $!" unless $socket;
 
-    Feersum->endjinn->request_handler(sub { $self->_wrap_request(@_) });
-    Feersum->endjinn->use_socket($socket);
+    my $e = Feersum->endjinn;
+    $e->read_timeout($self->http_read_timeout);
+    $e->request_handler(sub { $self->_wrap_request(@_) });
+    $e->use_socket($socket);
 }
 
 sub stats_ticker {

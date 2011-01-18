@@ -4627,7 +4627,7 @@ ul.dropdownOptions li.disabled a:hover {
 }
 
 /* Activities widget popups */
-.attachmentPopup, .weblinkPopup, .wikilinkPopup {
+.attachmentPopup, .weblinkPopup, .wikilinkPopup, .videoPopup {
     position: absolute;
     background-color: #fff;
     z-index: 3000;
@@ -4637,7 +4637,7 @@ ul.dropdownOptions li.disabled a:hover {
     border: 1px solid black;
 }
 
-.attachmentPopup a.btn, .weblinkPopup a.btn, .wikilinkPopup a.btn {
+.attachmentPopup a.btn, .weblinkPopup a.btn, .wikilinkPopup a.btn, .videoPopup a.btn {
     text-decoration: none;
     color: #000;
     background-color: #EEE;
@@ -4648,16 +4648,18 @@ ul.dropdownOptions li.disabled a:hover {
 }
 .attachmentPopup a.btn:hover,
 .weblinkPopup a.btn:hover,
+.videoPopup a.btn:hover,
 .wikilinkPopup a.btn:hover {
     background: #EEEECC;
 }
 
-.weblinkPopup, .wikilinkPopup {
+.weblinkPopup, .wikilinkPopup, .videoPopup {
     width: 70%;
     left: 60;
 }
 
 * html .weblinkPopup,
+* html .videoPopup,
 * html .wikilinkPopup {
     width: 100%;
 }
@@ -4678,6 +4680,7 @@ ul.dropdownOptions li.disabled a:hover {
 }
 
 .weblinkPopup .input,
+.videoPopup .input,
 .wikilinkPopup .input {
     margin: 5px 0px;
     text-align: right;
@@ -4688,13 +4691,27 @@ ul.dropdownOptions li.disabled a:hover {
     width: 40%;
 }
 
+.videoPopup .input {
+    width: 90%;
+}
+
+.videoPopup .input span {
+    width: 150px;
+}
+
+.videoPopup .input input {
+    width: 75%;
+}
+
 .wikilinkPopup .buttons,
+.videoPopup .buttons,
 .weblinkPopup .buttons {
     padding: 3px;
     text-align: right;
 }
 
 * html .wikilinkPopup .buttons,
+* html .videoPopup .buttons,
 * html .weblinkPopup .buttons {
     top: 18px;
     padding: 6px;

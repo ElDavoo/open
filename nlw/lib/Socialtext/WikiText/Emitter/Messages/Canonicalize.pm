@@ -13,6 +13,7 @@ Readonly my %markup => (
     del  => [ '-',  '-' ],
     hyperlink => [ '"',  '"<HREF>' ],
     hashmark => [ '{hashtag: ', '}' ],
+    video => [ '{video: ', '}' ],
 );
 
 sub msg_markup_table { return \%markup }
@@ -36,6 +37,15 @@ sub msg_format_hashtag {
     my $self = shift;
     my $ast = shift;
     return "{hashtag: $ast->{text}}";
+}
+
+sub msg_format_video {
+    my $self = shift;
+    my $ast = shift;
+    if ($ast->{text} ne $ast->{href}) {
+        return qq("$ast->{text}"{video: $ast->{href}});
+    }
+    return "{video: $ast->{href}}";
 }
 
 sub msg_format_user {

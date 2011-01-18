@@ -11,6 +11,9 @@
         <script src="/static/skin/common/javascript/jquery-1.4.4.min.js"></script>
         <script>
         $(document).bind("mobileinit", function(){
+            // Avoid JS error on our default welcome screen
+            window.Socialtext = window.Socialtext || {};
+
             // Disable Ajax link transitions under Selenium.
             var isSelenium = (
                 (typeof seleniumAlert != 'undefined' && seleniumAlert)
@@ -35,6 +38,30 @@
                     );
                 }
             });
+
+            if ($.support.mediaquery && ($.browser.webkit || $.browser.mozilla)) {
+                // {bz: 4791}: Tapping an item in a list should highlight the item
+                // with the same styling as "mousedown".
+                $(".ui-btn").live({
+                    click: function() {
+                        var theme = $(this).attr( "data-theme" );
+                        $(this).removeClass( "ui-btn-up-" + theme ).addClass( "ui-btn-down-" + theme );
+                    }
+                });
+
+                // {bz: 4848}: Make clicking relative links in TOCs scroll
+                // to the section header, instead of triggering hashchange.
+                $('div.wiki a[href^="#"]').live({
+                    click: function(e) {
+                        e.stopImmediatePropagation();
+                        var offset = $($(this).attr('href')).offset();
+                        if (offset) {
+                            window.scrollTo(0, offset.top);
+                        }
+                        return false;
+                    }
+                });
+            }
         });
         </script>
         <script src="/static/skin/common/javascript/jquery.mobile-1.0a2.min.js"></script>

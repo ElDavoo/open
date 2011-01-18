@@ -8,6 +8,7 @@ use Crypt::OpenToken;
 use URI;
 use MIME::Base64;
 use Socialtext::Apache::User;
+use Socialtext::l10n qw(loc);
 use Socialtext::Log qw(st_log);
 use Socialtext::OpenToken::Config;
 use Socialtext::User;
@@ -130,9 +131,9 @@ sub challenge {
     unless ($user) {
         my $err = loc("Have valid token, but for unknown user '[_1]'.", $username);
         st_log->warning("ST::Challenger::OpenToken: $err");
-        $app->session->add_error($err);
         return $app->_handle_error(
-            path => '/nlw/error.html',
+            error => $err,
+            path  => '/nlw/error.html',
         );
     }
 

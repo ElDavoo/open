@@ -133,7 +133,7 @@ qr{\Qhello</a>\E}
 --- text: http://foo.example.com/
 --- regexps
 qr{\Qtitle="(external link)"\E}
-qr{<a\s+title}
+qr{<a\s+rel="nofollow"\s+title}
 qr{\Qhref="http://foo.example.com/"\E}
 
 ===
@@ -141,7 +141,7 @@ qr{\Qhref="http://foo.example.com/"\E}
 --- text: https://bar.example.com/
 --- regexps
 qr{\Qtitle="(external link)"\E}
-qr{<a\s+title}
+qr{<a\s+rel="nofollow"\s+title}
 qr{\Qhref="https://bar.example.com/"\E}
 
 ===
@@ -149,6 +149,6 @@ qr{\Qhref="https://bar.example.com/"\E}
 --- text: ftp://ftp.example.com/
 --- regexps
 qr{\Qtitle="(external link)"\E}
-qr{<a\s+title}
+qr{<a\s+rel="nofollow"\s+title}
 qr{\Qhref="ftp://ftp.example.com/"\E}
 

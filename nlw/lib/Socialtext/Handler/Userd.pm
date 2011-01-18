@@ -2,14 +2,13 @@ package Socialtext::Handler::Userd;
 # @COPYRIGHT@
 use Moose;
 BEGIN { extends 'Socialtext::WebDaemon'; }
-use Socialtext::User;
 use Socialtext::WebDaemon::Util; # auto-exports
 use Socialtext::Async::Wrapper; # auto-exports
-use Socialtext::SQL qw/get_dbh sql_execute sql_singlevalue/;
-use Socialtext::UserSet ':const';
 use Socialtext::CredentialsExtractor;
 
 use namespace::clean -except => 'meta';
+
+our $VERSION = 1.1;
 
 has '+port' => (default => 8084);
 
@@ -48,13 +47,9 @@ sub handle_request {
             'JSON'
         );
     }
-    elsif ($path eq '/stuserd') {
+    elsif ($path eq '/stuserd' && $req->env->{REQUEST_METHOD} eq 'POST') {
         $self->stats->{"client conns"}++;
         my $params = decode_json(${$req->body});
-        # If we've got cached results, use those right away
-        # ... *DON'T* block here; this has to be wikkid fast
-        # Otherwise, enqueue a worker to extract the results and add it to my
-        # cache.
         $req->log_successes(0) unless $ENV{ST_DEBUG_ASYNC}; # don't spew
         my $now = AE::time;
         $self->extract_q->enqueue( [$params, $req, $now] );
@@ -72,32 +67,18 @@ sub handle_request {
 
 sub _build_extract_q {
     my $self = shift;
-    Scalar::Util::weaken $self;
-    my $wq; $wq = Socialtext::Async::WorkQueue->new(
+    weaken $self;
+    my $cb = exception_wrapper {
+        my ($params,$req,$queued_at) = @_;
+        return unless $self;
+        Socialtext::Timer->Add('queued_for',AE::time-$queued_at);
+        $self->extract_creds($params,$req);
+    } 'extract queue error';
+    return Socialtext::Async::WorkQueue->new(
         name => 'extract',
         prio => Coro::PRIO_LOW(),
-        cb => exception_wrapper(sub {
-            my ($params,$req,$queued_at) = @_;
-            return unless $self;
-            Socialtext::Timer->Add('queued_for',AE::time-$queued_at);
-            $self->extract_creds($params,$req);
-        }, 'extract queue error'),
-
-        after_shutdown => sub {
-            $self->cv->end if $self;
-        }
+        cb => $cb,
     );
-
-    $self->cv->begin;
-    {
-        my $wwq = $wq;
-        weaken $wwq;
-        $self->guards->{extract_queue} = guard {
-            $wwq->drop_pending();
-            $wwq->shutdown_nowait();
-        };
-    }
-    return $wq;
 }
 
 sub extract_creds {
@@ -128,21 +109,20 @@ sub extract_creds {
 
 worker_function worker_extract_creds => sub {
     my $params = shift;
-    my $creds  = eval {
-        Socialtext::CredentialsExtractor->ExtractCredentials($params)
-    };
-    if ($@) {
-        my $e = $@;
+    my $creds;
+    my $code = 200;
+    try {
+        $creds = Socialtext::CredentialsExtractor->ExtractCredentials($params)
+    }
+    catch {
+        my $e = $_;
         st_log()->error('when trying to extract creds: '.$e);
         return {
             code  => 500,
-            error => $@,
+            body => {error => $@},
         };
-    }
-    return {
-        code => 200,
-        body => $creds,
-    }
+    };
+    return { code => $code, body => $creds };
 };
 
 1;

@@ -1237,7 +1237,8 @@ proto.markupRules = {
     h6: ['start_line', '^^^^^^ '],
     www: ['bound_phrase', '"', '"<http://...>'],
     attach: ['bound_phrase', '{file: ', '}'],
-    image: ['bound_phrase', '{image: ', '}']
+    image: ['bound_phrase', '{image: ', '}'],
+    video: ['bound_phrase', '{video: ', '}']
 }
 
 for (var ii in proto.markupRules) {
@@ -1331,6 +1332,7 @@ proto.setHeightOfEditor = function() {
 proto.do_www = Wikiwyg.Wikitext.make_do('www');
 proto.do_attach = Wikiwyg.Wikitext.make_do('attach');
 proto.do_image = Wikiwyg.Wikitext.make_do('image');
+proto.do_video = Wikiwyg.Wikitext.make_do('video');
 
 proto.convertWikitextToHtml = function(wikitext, func, onError) {
     // TODO: This could be as simple as:
@@ -1392,6 +1394,22 @@ proto.make_table_wikitext = function(rows, columns) {
 }
 
 proto.insert_block = function (text) {
+    if (this.get_selection_text()) {
+        this.selection_mangle(function(that){
+            // Add surrounding newlines only when needed
+            that.sel = "";
+            if (that.start && !(/(^|\r?\n)\r?\n$/.test(that.start))) {
+                that.sel += "\n";
+            }
+            that.sel += text;
+            if (that.finish && !(/^\r?\n(\r?\n|$)/.test(that.finish))) {
+                that.sel += "\n";
+            }
+            return true;
+        });
+        return;
+    }
+
     this.markup_line_alone([
         "block",
         "\n" + text + "\n"

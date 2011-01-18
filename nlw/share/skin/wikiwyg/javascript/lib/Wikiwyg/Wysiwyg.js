@@ -1263,6 +1263,10 @@ proto.do_image = function() {
     this.do_widget_image();
 }
 
+proto.do_video = function() {
+    this.do_widget_video();
+}
+
 proto.do_link = function(widget_element) {
     this._do_link(widget_element);
 }
@@ -1438,6 +1442,10 @@ proto.insert_table_html = function(rows, columns, options) {
             var $table = jQuery('#'+id, self.get_edit_document());
             $table.removeAttr('id');
             self.applyTableOptions($table, options);
+
+            // Skip the <br/> padding around tables for Selenium so we can test with the cursor in tables.
+            if (Wikiwyg.is_selenium) { return; } 
+
             if ($table.prev().length == 0) {
                 // Table is the first element in document - add a <br/> so
                 // navigation is possible beyond the table.
@@ -1485,8 +1493,8 @@ proto.do_new_table = function() {
         self.closeTableDialog();
     }
     var setup = function() {
-        jQuery('.table-create input[name=columns]').focus();
-        jQuery('.table-create input[name=columns]').select();
+        jQuery('.table-create input[name=rows]').focus();
+        jQuery('.table-create input[name=rows]').select();
         jQuery('.table-create .save')
             .unbind("click")
             .bind("click", function() {
@@ -2444,13 +2452,15 @@ proto.sanitize_dom = function(dom) {
     Wikiwyg.Mode.prototype.sanitize_dom.call(this, dom);
     this.widget_walk(dom);
 
+    // Skip the <br/> padding around tables for Selenium so we can test with the cursor in tables.
+    if (Wikiwyg.is_selenium) { return; } 
+
     // Table is the first element in document - prepend a <br/> so
     // navigation is possible beyond the table.
     var $firstTable = $('table:first', dom);
     if ($firstTable.length && ($firstTable.prev().length == 0)) {
         $firstTable.before('<br />');
     }
-
     // Table is the last element in document - append a <br/> so
     // navigation is possible beyond the table.
     var $lastTable = $('table:last', dom);
@@ -2727,32 +2737,35 @@ for (var i = 0; i < widgets_list.length; i++) {
             if (! (data.field || data.parse)) {
                 data.field = data.fields[0];
             }
-
             if (data.field) {
                 widget_parse[ data.field ] = widget_args;
-                return widget_parse;
             }
 
-            var widgetFields = data.parse.fields || data.fields;
-            var regexp = data.parse.regexp;
-            var regexp2 = regexp.replace(/^\?/, '');
-            if (regexp != regexp2)
-                regexp = Wikiwyg.Widgets.regexps[regexp2];
-            var tokens = widget_args.match(regexp);
-            if (tokens) {
-                for (var i = 0; i < widgetFields.length; i++)
-                    widget_parse[ widgetFields[i] ] = tokens[i+1];
+            var widgetFields = data.parse ? (data.parse.fields || data.fields) : data.fields;
+
+            if (data.parse) {
+                var regexp = data.parse.regexp;
+                var regexp2 = regexp.replace(/^\?/, '');
+                if (regexp != regexp2)
+                    regexp = Wikiwyg.Widgets.regexps[regexp2];
+                var tokens = widget_args.match(regexp);
+                if (tokens) {
+                    for (var i = 0; i < widgetFields.length; i++)
+                        widget_parse[ widgetFields[i] ] = tokens[i+1];
+                }
+                else {
+                    if (data.parse.no_match)
+                        widget_parse[ data.parse.no_match ] = widget_args;
+                }
             }
-            else {
-                if (data.parse.no_match)
-                    widget_parse[ data.parse.no_match ] = widget_args;
-            }
+
             if (widget_parse.size) {
                 if (widget_parse.size.match(/^(\d+)(?:x(\d+))?$/)) {
                     widget_parse.width = RegExp.$1 || '';
                     widget_parse.height = RegExp.$2 || '';
                 }
             }
+
             if (widget_parse.search_term) {
                 var term = widget_parse.search_term;
                 var term2 = term.replace(/^(tag|category|title):/, '');
@@ -2821,6 +2834,12 @@ proto.replace_widget = function(elem) {
     var src;
 
     if (/nlw_phrase/.test(elem.className)) {
+        if ($.browser.webkit) widget = widget.replace(
+            /&#x([a-fA-F\d]{2,5});/g, 
+            function($_, $1) { 
+                return String.fromCharCode(parseInt($1, 16));
+            }
+        );
         if ( (matches = widget.match(/^"([\s\S]+?)"<(.+?)>$/m)) || // Named Links
             (matches = widget.match(/^(?:"([\s\S]*)")?\{(\w+):?\s*([\s\S]*?)\s*\}$/m))) {
             // For labeled links or wafls, remove all newlines/returns
@@ -3049,8 +3068,8 @@ proto.create_wafl_string = function(widget, form) {
 
     var values = this.form_values(widget, form);
     var fields =
-        data.field ? [ data.field ] :
         data.fields ? data.fields :
+        data.field ? [ data.field ] :
         [];
     if (data.other_fields) {
         jQuery.each(data.other_fields, function (){ fields.push(this) });
@@ -3088,8 +3107,8 @@ for (var i = 0; i < widgets_list.length; i++) {
 proto.form_values = function(widget, form) {
     var data = widget_data[widget];
     var fields =
-        data.field ? [ data.field ] :
         data.fields ? data.fields :
+        data.field ? [ data.field ] :
         [];
     var values = {};
 
@@ -3191,6 +3210,41 @@ proto.validate_fields = function(widget, values) {
             this[check].call(this, values);
         }
     }
+}
+
+proto.require_valid_video_url = function(values) {
+    if (!values.video_url || !values.video_url.length) {
+        throw(loc("Video URL is required"));
+    }
+
+    var error = null;
+    jQuery.ajax({
+        type: 'get',
+        async: false,
+        url: 'index.cgi',
+        dataType: 'json',
+        data: {
+            action: 'check_video_url',
+            video_url: values.video_url.replace(/^<|>$/g, '')
+        },
+        success: function(data) {
+            if (data.title) {
+                return true;
+            }
+            else {
+                error = data.error || loc("Sorry, this URL does not appear to link to an embeddable video.");
+            }
+        },
+        error: function(xhr) {
+            error = loc("An error occured; please try later.");
+        }
+    });
+
+    if (error) {
+        throw(error);
+    }
+
+    return true;
 }
 
 proto.require_page_if_workspace = function(values) {
@@ -3388,21 +3442,20 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
                     : '#st-widget-' + field;
                 jQuery(selector).select().focus();
             }
+
+            if (widget == 'video') {
+                self._preload_video_dimensions();
+            }
         }
     });
 
     var self = this;
     var form = jQuery('#widget-' + widget + ' form').get(0);
 
-    // When the lightbox is closed, decrement widget_editing so lightbox can pop up again. 
-    jQuery('#lightbox').bind("lightbox-unload", function(){
-        Wikiwyg.Widgets.widget_editing--;
-        if (self.wikiwyg && self.wikiwyg.current_mode && self.wikiwyg.current_mode.set_focus) {
-            self.wikiwyg.current_mode.set_focus();
-        }
-    });
-
     var intervalId = setInterval(function () {
+        if (widget == 'video') {
+            $('#st-widget-video_url').triggerHandler('change');
+        }
         jQuery('#'+widget+'_wafl_text')
             .html(
                 ' <span>' +
@@ -3411,6 +3464,15 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
                 '</span> '
             );
     }, 500);
+
+    // When the lightbox is closed, decrement widget_editing so lightbox can pop up again. 
+    jQuery('#lightbox').unbind('lightbox-unload').bind("lightbox-unload", function(){
+        clearInterval(intervalId);
+        Wikiwyg.Widgets.widget_editing--;
+        if (self.wikiwyg && self.wikiwyg.current_mode && self.wikiwyg.current_mode.set_focus) {
+            self.wikiwyg.current_mode.set_focus();
+        }
+    });
 
     jQuery('#st-widgets-moreoptions').unbind('click').toggle(
         function () {
@@ -3498,14 +3560,18 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
 
     if (form.size) {
         jQuery(form.width).click(function (){
-            form.size[4].checked = true;
+            form.size[form.size.length-1].checked = true;
             disable(form.height);
             enable(form.width);
+        }).focus(function() {
+            $(this).triggerHandler('click');
         });
         jQuery(form.height).click(function () {
-            form.size[4].checked = true;
+            form.size[form.size.length-1].checked = true;
             disable(form.width);
             enable(form.height);
+        }).focus(function() {
+            $(this).triggerHandler('click');
         });
         if (!Number(form.height.value))
             disable(form.height);
@@ -3513,4 +3579,59 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
             disable(form.width);
     }
 }
+
+proto._preload_video_dimensions = function() {
+    var previousURL = null;
+    var loading = false;
+    var queued = false;
+
+    $('#st-widget-video_url').unbind('change').change(function(){
+        var url = $(this).val();
+        if (!/:\/\//.test(url)) {
+            $('#st-widget-video-original-width').text('');
+            url = null;
+        }
+        if (url == previousURL) { return; }
+        previousURL = url;
+
+        if (loading) { queued = true; return; }
+        queued = false;
+
+        if (!url) { return; }
+        loading = true;
+
+        $('#st-widget-video-original-width').text(loc('Loading...'));
+        $('#video_widget_edit_error_msg').text('').hide();
+
+        jQuery.ajax({
+            type: 'get',
+            async: true,
+            url: 'index.cgi',
+            dataType: 'json',
+            data: {
+                action: 'check_video_url',
+                video_url: url.replace(/^<|>$/g, '')
+            },
+            success: function(data) {
+                loading = false;
+                if (queued) {
+                    $('#st-widget-video_url').triggerHandler('change');
+                    return;
+                }
+                if (data.title) {
+                    $('#st-widget-video-original-width').text(
+                        loc('width: [_1]', data.width)
+                            + ' ' +
+                        loc('height: [_1]', data.height)
+                    );
+                }
+                else if (data.error) {
+                    $('#st-widget-video-original-width').text(loc('Error!'));
+                    $('#video_widget_edit_error_msg').text(data.error).show();
+                }
+            }
+        });
+    });
+}
+
 

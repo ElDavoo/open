@@ -422,8 +422,19 @@ mail: lemmy@socialtext.com
 gn: Lemmy
 sn: Kilmister
 cn: Lemmy Kilmister
+displayName: Mr Rock and Roll
 userPassword: ld@pu53r
 telephoneNumber: 604-555-1212
+
+dn: cn=Killingsworthy,dc=socialtext,dc=com
+objectClass: inetOrgPerson
+mail: Killingsworthy@socialtext.com
+gn: Robert
+sn: Costello
+cn: Killingsworthy
+displayName: Software Dev Manager
+UserPassword: ld@pu53r
+telephoneNumber: 605-555-1212
 
 dn: cn=Phil Taylor,dc=socialtext,dc=com
 objectClass: inetOrgPerson
@@ -431,6 +442,7 @@ mail: phil@socialtext.com
 gn: Phil
 sn: Taylor
 cn: Phil Taylor
+displayName: Filthy Phil
 userPassword: ld@pu53r
 telephoneNumber: 250-123-4567
 
@@ -440,6 +452,7 @@ mail: eddie@socialtext.com
 gn: Eddie
 sn: Clarke
 cn: Eddie Clarke
+displayName: Fast Eddie
 userPassword: ld@pu53r
 telephoneNumber: 416-987-6543
 
@@ -472,5 +485,6 @@ mail: ozzy@socialtext.com
 gn: Ozzy
 sn: Osbourne
 cn: Ozzy Osbourne
+displayName: The Prince of Darkness
 userPassword: ld@pu53r
 manager: cn=Sharon Osbourne,dc=socialtext,dc=com

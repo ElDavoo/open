@@ -3,6 +3,7 @@ widgets:
   - link2_hyperlink
   - link2_section
   - image
+  - video
   - file
   - toc
   - include
@@ -173,6 +174,27 @@ widget:
     image_text:
         - { field: label, text: "image: %label" }
         - { field: default, text: "image: %image_name" }
+
+  video:
+    id: video
+    label: Video
+    color: red
+    pattern: '{video: %video_url size=%size}'
+    fields: [video_url, size]
+    pdfields: []
+    extra_fields: []
+    input:
+       size: video_size
+    labels:
+      url: Video URL
+      size: Size
+    checks: [require_valid_video_url]
+    title: Embed video to '$video_url'. Click to edit.
+    desc: "Embed video from YouTube, Vimeo, SlideShare or GoogleVideo on this page."
+    more_desc: "Optional properties include the size for displaying this video."
+    required: [video_url]
+    image_text:
+        - { field: video_url, text: "video: %video_url" }
 
   file:
     id: file
@@ -706,6 +728,7 @@ fields:
   tag_name: Tag name
   rss_url: RSS feed URL
   atom_url: Atom feed URL
+  video_url: Video URL
   aim_id: AIM screen name
   yahoo_id: Yahoo! ID
   skype_id: Skype name

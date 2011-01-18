@@ -10,7 +10,7 @@ BEGIN {
         plan skip_all => 'These tests require Email::Send::Test to run.';
     }
     else {
-        plan tests => 23;
+        plan tests => 27;
     }
 }
 
@@ -43,7 +43,7 @@ Can_send_without_exception: {
 my @cases = ( { label        => 'non-appliance',
                 is_appliance => 0,
                 username     => 'devnull8@socialtext.com',
-                tests        => [ qr/From: devnull1 <devnull1\@socialtext\.com>/,
+                tests        => [ qr/From: "devnull1" <devnull1\@socialtext\.com>/,
                                   qr/to join Empty Wiki/,
                                   qr{/submit/confirm_email},
                                 ],
@@ -140,6 +140,43 @@ EOF
           'html body contains extra text as html' );
     like( $html_body, qr{<li>\s*A list},
           'html body contains list items' );
+}
+
+{
+    # {bz: 4767}: Re-invited user is not assigned to the correct account
+    my $deleted = Socialtext::Account->Deleted();
+
+    # create a user in a new account
+    my $account = Socialtext::Account->create(name => "fuzz");
+
+    {
+        my $user = Socialtext::User->create(
+            username      => 'deleted@ken.socialtext.net',
+            first_name    => 'Dele',
+            last_name     => 'Ted',
+            email_address => 'deleted@ken.socialtext.net',
+            password      => 'd3vnu11l'
+        );
+
+        $user->deactivate;
+        is($user->primary_account_id, $deleted->account_id, "User is deleted");
+        ok(!$user->requires_confirmation, "Password confirmation mail has not been sent");
+    }
+
+    my $invitation = Socialtext::WorkspaceInvitation->new(
+        workspace  => $workspace,
+        from_user  => $current_user,
+        invitee    => 'deleted@ken.socialtext.net',
+        viewer     => $viewer,
+    );
+    $invitation->send();
+
+    {
+        my $user = Socialtext::User->Resolve( 'deleted@ken.socialtext.net' );
+        is($user->primary_account_id, $workspace->account_id,
+            "User's primary account is re-assigned to workspace's account on re-invite");
+        ok($user->requires_confirmation, "Password confirmation mail has been sent");
+    }
 }
 
 sub _confirm_user_if_neccessary {

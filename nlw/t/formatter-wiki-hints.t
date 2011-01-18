@@ -189,7 +189,7 @@ http:index.cgi
 --- match
 <div class="wiki">
 <p>
-<span class="nlw_phrase"><a target="_blank" title="(external link)" href="index.cgi">index.cgi</a><!-- wiki: http:index.cgi --></span></p>
+<span class="nlw_phrase"><a target="_blank" rel="nofollow" title="(external link)" href="index.cgi">index.cgi</a><!-- wiki: http:index.cgi --></span></p>
 </div>
 
 === bracketed relative urls
@@ -198,7 +198,7 @@ http:index.cgi
 --- match
 <div class="wiki">
 <p>
-<span class="nlw_phrase"><a target="_blank" title="(external link)" href="index.cgi">home</a><!-- wiki: "home"<http:index.cgi> --></span></p>
+<span class="nlw_phrase"><a target="_blank" rel="nofollow" title="(external link)" href="index.cgi">home</a><!-- wiki: "home"<http:index.cgi> --></span></p>
 </div>
 
 === wiki links (unhinted)

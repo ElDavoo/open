@@ -75,6 +75,8 @@
 <! PROCESS RADIO -!>
 <! ELSIF widget.input.$field == 'size' -!>
 <! PROCESS SIZE -!>
+<! ELSIF widget.input.$field == 'video_size' -!>
+<! PROCESS VIDEO_SIZE -!>
 <! ELSE -!>
 <tr>
 <td class="label">[% loc('<! widget.labels.$field || data.fields.$field !>:') %]</td>
@@ -128,11 +130,11 @@
     <table>
     [% FOR choice = sizes %]
       <tr>
-        <td>
+        <td><label>
           <input type="radio" name="size" value="[% choice.0 %]"
             [% IF choice.0 == size %] checked="1" [% END %]/>
           [% loc(choice.1) %]
-        </td>
+        </label></td>
         <td style="color:#999999">
           [% IF choice.2 %]
             [% loc('width: [_1]', choice.2) %]
@@ -141,11 +143,59 @@
       </tr>
     [% END %]
       <tr>
-        <td>
+        <td><label>
           <input type="radio" [% IF width OR height %]checked="1"[% END %]
                  name="size" value="custom"/>
           [% loc('Custom') %]
+        </label></td>
+        <td style="color:#999999">
+          [% loc('width:') %]
+          <input size="3" name="width" value="[% width %]"/>
         </td>
+      </td>
+    </table>
+  </td>
+</tr>
+<! END -!>
+
+<! BLOCK VIDEO_SIZE -!>
+<tr>
+  <td class="label">
+    [% loc('<! widget.labels.$field || data.fields.$field !>:') %]
+  </td>
+  <td class="st-widget-dialog-editfield">
+    [% IF !size %][% size='original' %][% END %]
+    [% sizes = [
+        ['small', 'Small', 240],
+        ['medium', 'Medium', 480],
+        ['large', 'Large', 640],
+        ['original', 'Original Size', 0],
+       ]
+    %]
+    <table>
+    [% FOR choice = sizes %]
+      <tr>
+        <td><label>
+          <input type="radio" name="size" value="[% choice.0 %]"
+            [% IF choice.0 == size %] checked="1" [% END %]/>
+          [% loc(choice.1) %]
+          &nbsp;
+        </label></td>
+        <td style="color:#999999">
+          [% IF choice.2 %]
+            [% loc('width: [_1]', choice.2) %]
+          [% ELSE %]
+            <span id="st-widget-video-original-width">&nbsp;</span>
+          [% END %]
+        </td>
+      </tr>
+    [% END %]
+      <tr>
+        <td><label>
+          <input type="radio" [% IF width OR height %]checked="1"[% END %]
+                 name="size" value="custom"/>
+          [% loc('Custom') %]
+        </abel></td>
         <td style="color:#999999">
           [% loc('width:') %]
           <input size="3" name="width" value="[% width %]"/>
