@@ -1,6 +1,5 @@
 package Socialtext::CredentialsExtractor::Client::Async;
 # @COPYRIGHT@
-
 use Moose;
 use AnyEvent::HTTP qw(http_request);
 use Try::Tiny;
@@ -22,12 +21,12 @@ has 'userd_path' => (
 has 'userd_uri' => (
     is => 'ro', isa => 'Str', lazy_build => '1',
 );
+has 'cache_enabled' => ( is => 'ro', isa => 'Bool', reader => 'can_cache' );
+has 'timeout' => ( is => 'rw', isa => 'Int', default => 30 );
+
 sub _build_userd_uri {
     my $self = shift;
-    my $host = $self->userd_host;
-    my $port = $self->userd_port;
-    my $path = $self->userd_path;
-    return "http://$host\:$port$path";
+    return "http://".$self->userd_host.":".$self->userd_port.$self->userd_path;
 }
 
 sub cache {
@@ -51,14 +50,17 @@ sub extract_desired_headers {
 sub extract_credentials {
     my ($self, $hdrs, $cb) = @_;
 
+    my $can_cache = $self->can_cache;
     try {
         # minimal headers needing to be send to st-userd
         my $hdrs_to_send = $self->extract_desired_headers($hdrs);
 
         # see if we have valid cached credentials
-        if (my $creds = $self->get_cached_credentials($hdrs_to_send)) {
-            eval { $cb->($creds) };
-            return;
+        if ($can_cache) {
+            if (my $creds = $self->get_cached_credentials($hdrs_to_send)) {
+                try { $cb->($creds) };
+                return;
+            }
         }
 
         my $body = encode_json($hdrs_to_send);
@@ -70,28 +72,29 @@ sub extract_credentials {
                 'User-Agent' => __PACKAGE__,
             },
             body    => $body,
-            timeout => 30,
+            timeout => $self->timeout,
             sub {
                 my ($resp_body, $resp_hdrs) = @_;
                 my $creds;
                 try {
-                    if ($resp_hdrs->{Status} >= 500) {
-                        die $resp_hdrs->{Reason};
+                    if ($resp_hdrs->{Status} != 200) {
+                        die "$resp_hdrs->{Status} $resp_hdrs->{Reason}\n";
                     }
                     else {
                         $creds = decode_json($resp_body);
-                        $self->store_credentials_in_cache($hdrs_to_send, $creds);
+                        $self->store_credentials_in_cache($hdrs_to_send, $creds)
+                            if $can_cache
                     }
                 }
                 catch {
                     $creds = { error =>
                         "extract credentials error: $_" };
                 };
-                eval { $cb->($creds) };
+                try { $cb->($creds) };
             };
     }
     catch {
-        eval { $cb->({error => $_}) };
+        try { $cb->({error => $_}) };
     };
     return;
 }
