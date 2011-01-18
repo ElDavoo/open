@@ -8,7 +8,7 @@ use Cwd ();
 use File::Basename ();
 use File::Spec ();
 use File::Path qw/mkpath/;
-use Sys::Hostname;
+use Socialtext::Hostname;
 use Socialtext::Validate qw(
     validate validate_with
     SCALAR_TYPE BOOLEAN_TYPE
@@ -963,11 +963,11 @@ was run.
 The hostname used when generating fully-qualified URIs inside NLW.
 
 Defaults to the system's hostname, as returned by
-C<Sys::Hostname::hostname()>.
+C<Socialtext::Hostname::fqdn()>.
 
 Optional.
 
-=for code default => Sys::Hostname::hostname()
+=for code default => Socialtext::Hostname::fqdn()
 
 =for code type => SCALAR_TYPE
 
@@ -976,11 +976,11 @@ Optional.
 The hostname used when generating email addresses inside NLW.
 
 Defaults to the system's hostname, as returned by
-C<Sys::Hostname::hostname()>.
+C<Socialtext::Hostname::fqdn()>.
 
 Optional.
 
-=for code default => Sys::Hostname::hostname()
+=for code default => Socialtext::Hostname::fqdn()
 
 =for code type => SCALAR_TYPE
 

@@ -96,9 +96,9 @@ sub EnsureRequiredDataIsPresent {
 
     if ($class->Default->name eq 'Unknown') {
         # Explicit requires here to avoid extra run-time dependencies
-        require Sys::Hostname;
+        require Socialtext::Hostname;
         my $acct = $class->create(
-            name => Sys::Hostname::hostname(),
+            name => Socialtext::Hostname::fqdn(),
             # This is not a system account, it is intended to be used.
             is_system_created => 0,
         );

@@ -9,7 +9,7 @@ use Class::Field qw( const );
 use File::Path ();
 use Socialtext::AppConfig;
 use Storable ();
-use Sys::Hostname ();
+use Socialtext::Hostname ();
 use YAML ();
 use Socialtext::EmailSender::Factory;
 use Socialtext::l10n qw(loc system_locale);
@@ -105,7 +105,7 @@ sub send_email {
     delete $report->{_90_hub};
     my $workspace = $report->{_15_workspace};
     my $user = eval { $self->hub->current_user };
-    my $hostname = Sys::Hostname::hostname();
+    my $hostname = Socialtext::Hostname::fqdn();
     my ($error) = $report->{_10_msg} =~ /([^\n]+)(?:\n|$)/;
 
     my $subject;

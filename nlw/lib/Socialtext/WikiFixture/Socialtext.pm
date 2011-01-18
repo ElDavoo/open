@@ -7,7 +7,6 @@ use base 'Socialtext::WikiFixture::Selenese';
 use Socialtext::Cache;
 use Socialtext::System qw/shell_run/;
 use Socialtext::Workspace;
-use Sys::Hostname;
 use Test::More;
 use Test::Socialtext;
 use IO::Scalar;
