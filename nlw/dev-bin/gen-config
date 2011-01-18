@@ -30,7 +30,6 @@ use Getopt::Long;
 use Socialtext::AppConfig;
 use Socialtext::HTTP::Ports;
 use Socialtext::Build qw(get_prefixed_dir get_build_setting);
-use Sys::Hostname;
 use Socialtext::Hostname;
 use Socialtext::Paths;
 use Socialtext::System qw(shell_run);
@@ -88,7 +87,7 @@ GetOptions(
     'help'             => sub { help() },
 ) or die "Try --help for help\n"; # If options are invalid, show help and exit
 
-my $hostname = $opts{hostname} || Sys::Hostname::hostname;
+my $hostname = $opts{hostname} || Socialtext::Hostname::fqdn;
 my $user     = getpwuid($<);
 
 my $is_dev_install
