@@ -4687,9 +4687,20 @@ ul.dropdownOptions li.disabled a:hover {
 }
 
 .weblinkPopup input,
-.videoPopup .input,
 .wikilinkPopup input {
     width: 40%;
+}
+
+.videoPopup .input {
+    width: 90%;
+}
+
+.videoPopup .input span {
+    width: 150px;
+}
+
+.videoPopup .input input {
+    width: 75%;
 }
 
 .wikilinkPopup .buttons,
