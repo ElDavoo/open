@@ -88,3 +88,5 @@
 | type_ok | //textarea[@name='comment'] | comment text |
 | wait_for_element_visible_ok | //a[@class='saveButton genericOrangeButton'] | 30000 |
 | click_ok | //a[@class='saveButton genericOrangeButton'] |  |
+| wait_for_element_not_present_ok | //textarea[@name='comment'] | 30000 |
+| wait_for_element_not_present_ok | //a[@class='saveButton genericOrangeButton'] | 30000 |

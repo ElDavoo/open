@@ -44,6 +44,5 @@
 
 | *Comment* | Test Case: Control Panel Group Add To Account TEARDOWN |  |
 | delete-group | %%group_id%% |  |
-| st-admin | remove-accounts-admin --e %%email%% | no longer has accounts admin access |
 
 | *Comment* | Test Case: Control Panel Group Add To Account COMPLETED |

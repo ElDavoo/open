@@ -13,7 +13,7 @@
 | open_ok | /nlw/control/user |  |
 | st-admin | create-user --email %%cli_user%% --password wikicli --first-name Wiki --last-name CLI --account '%%new_acct%%' | A new user with the username "%%cli_user%%" was created |
 | st-admin | add-workspace-admin --email %%cli_user%% --workspace %%new_workspace%% |  |
-| click_and_wait | link=Workspaces |  |
+| click_and_wait | //a[@title='workspaces'] |  |
 | wait_for_element_visible_ok | name | 30000 |
 | type_ok | name | %%new_workspace%% |
 | st-submit |  |  |

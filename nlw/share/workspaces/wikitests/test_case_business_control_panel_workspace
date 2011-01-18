@@ -70,7 +70,7 @@ wait_for_text_present_ok | %%wsname%% workspace | 30000 |
 | text_like | Account: Socialtext |  |
 
 | *Comment* | Test case: Business Control Panel Workspace Search for a non-existent workspace |  |
-| click_and_wait | link=Workspaces |  |
+| click_and_wait | //a[@title='workspaces'] |  |
 | wait_for_element_visible_ok | name | 30000 |
 | type_ok | name | zildjian |
 | st-submit |  |  |

@@ -38,7 +38,8 @@
 | wait_for_element_visible_ok | name | 30000 |
 | type_ok | name | %%ws%% |
 | st-submit |  |  |
-| click_and_wait | link=%%ws%% |  |
+| wait_for_element_visible_ok | //a[@title='view %%ws%%'] | 30000 |
+| click_and_wait | //a[@title='view %%ws%%'] |  |
 | wait-for-text-present-ok | %%ws%% workspace | 30000 |
 | wait-for-text-present-ok | Groups (4) | 30000 |
 | text_like | //body | qr/ID.*Name.*Role.*Workspaces.*Users.*Primary Account.*Created.*Creator/ism |
@@ -96,7 +97,8 @@
 | wait_for_element_visible_ok | name | 30000 |
 | type_ok | name | %%ws%% |
 | st-submit |  |  |
-| click_and_wait | link=%%ws%% |  |
+| wait_for_element_visible_ok | //a[@title='view %%ws%%'] | 30000 |
+| click_and_wait | //a[@title='view %%ws%%'] |  |
 
 | set | group5 | groupe%%start_time%% |  |
 | create-group | %%group5%% | %%account%% | %%username%% |

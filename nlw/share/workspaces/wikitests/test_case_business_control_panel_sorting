@@ -49,7 +49,7 @@
 | text_like | qr/0 sort 1 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 3 account %%start_time%%/ |  |
 
 | *Comment* | Test Case: Business Control Panel Sorting Workspaces display |  |
-| click_and_wait | link=Workspaces |  |
+| click_and_wait | //a[@title='workspaces'] |  |
 | wait_for_element_visible_ok | name | 30000 |
 | wait_for_element_visible_ok | st-ws-search-submit | 30000 |
 | type_ok | name | %%start_time%% |
