@@ -151,7 +151,6 @@ sub create {
     $page->metadata->Subject($args{title});
     $page->metadata->Category($args{categories});
     $page->metadata->update( user => $args{creator} );
-    $page->{revision_id} = time;
 
     if ($args{date}) {
         $self->metadata->Date($args{date}->strftime('%Y-%m-%d %H:%M:%S GMT'));
@@ -863,8 +862,7 @@ sub store {
     else {
         $metadata->Control('Deleted');
     }
-    $self->{revision_id} = time;
-
+    $self->create_new_revision_id;
     $self->_perform_store_actions();
 
     $self->_log_edit_summary($p{user}) if $self->metadata->RevisionSummary;
@@ -1914,7 +1912,7 @@ sub headers {
     return $headers;
 }
 
-sub new_revision_id {
+sub create_new_revision_id {
     my $self = shift;
     my ($sec,$min,$hour,$mday,$mon,$year) = gmtime(time);
     my $id = sprintf(
@@ -1936,8 +1934,7 @@ sub new_revision_id {
         return $id;
     }
     sleep 1;
-    return $self->new_revision_id();
-
+    return $self->{revision_id} = $self->create_new_revision_id();
 }
 
 sub formatted_date {
