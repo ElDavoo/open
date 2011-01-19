@@ -26,7 +26,6 @@ sub hit_counter_increment {
 
     return unless $action eq 'display' or $action eq 'display_page';
 
-    warn "Incrementing hit counter";
     sql_execute(
         "UPDATE page SET views=views+1 WHERE workspace_id = ? AND page_id = ?",
         $self->hub->current_workspace->workspace_id,
