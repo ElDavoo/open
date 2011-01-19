@@ -46,12 +46,6 @@ sub key_order {
     )
 }
 
-our @EXPORT_OK = qw(
-    EDIT_SUMMARY_MAXLENGTH
-);
-our @EXPORT = @EXPORT_OK;
-sub EDIT_SUMMARY_MAXLENGTH { 250 }
-
 sub add_category {
     my $self = shift;
     my $category = shift;

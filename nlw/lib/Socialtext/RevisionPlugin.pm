@@ -9,7 +9,8 @@ use Class::Field qw( const );
 use Socialtext::String;
 use Socialtext::Encode;
 use Socialtext::l10n qw( loc );
-use Socialtext::PageMeta qw( EDIT_SUMMARY_MAXLENGTH );
+
+sub EDIT_SUMMARY_MAXLENGTH { 250 }
 
 sub class_id { 'revision' }
 const cgi_class => 'Socialtext::Revision::CGI';
