@@ -1078,7 +1078,7 @@ CREATE TABLE page_link (
 CREATE TABLE page_revision (
     workspace_id bigint NOT NULL,
     page_id text NOT NULL,
-    revision_id text NOT NULL,
+    revision_id bigint NOT NULL,
     name text,
     editor_id bigint NOT NULL,
     edit_time timestamptz NOT NULL,
@@ -1533,6 +1533,10 @@ ALTER TABLE ONLY page_link
 ALTER TABLE ONLY page
     ADD CONSTRAINT page_pkey
             PRIMARY KEY (workspace_id, page_id);
+
+ALTER TABLE ONLY page_revision
+    ADD CONSTRAINT page_revision_pkey
+            PRIMARY KEY (workspace_id, page_id, revision_id);
 
 ALTER TABLE ONLY person_tag
     ADD CONSTRAINT person_tag_pkey

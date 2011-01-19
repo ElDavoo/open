@@ -1037,7 +1037,7 @@ CREATE TABLE page (
 CREATE TABLE page_revision (
     workspace_id bigint NOT NULL,
     page_id text NOT NULL,
-    revision_id text NOT NULL,
+    revision_id bigint NOT NULL,
     name text,
     editor_id bigint NOT NULL,
     edit_time timestamptz NOT NULL,
@@ -1047,7 +1047,8 @@ CREATE TABLE page_revision (
     edit_summary text,
     locked boolean DEFAULT false NOT NULL,
     tags text[],
-    body text NOT NULL
+    body text NOT NULL,
+    PRIMARY KEY (workspace_id, page_id, revision_id)
 );
 
 CREATE TABLE page_link (
