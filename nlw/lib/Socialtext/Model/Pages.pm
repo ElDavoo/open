@@ -7,6 +7,27 @@ use Socialtext::SQL qw/sql_execute sql_singlevalue/;
 use Socialtext::Timer qw/time_scope/;
 use Carp qw/croak/;
 
+our $MODEL_FIELDS = <<EOT;
+    page.workspace_id, 
+    "Workspace".name AS workspace_name, 
+    "Workspace".title AS workspace_title, 
+    page.page_id, 
+    page.name, 
+    page.last_editor_id AS last_editor_id, 
+    -- _utc suffix is to prevent performance-impacing naming collisions:
+    page.last_edit_time AT TIME ZONE 'UTC' AS last_edit_time_utc,
+    page.creator_id,
+    -- _utc suffix is to prevent performance-impacing naming collisions:
+    page.create_time AT TIME ZONE 'UTC' AS create_time_utc,
+    page.current_revision_id, 
+    page.current_revision_num, 
+    page.revision_count, 
+    page.page_type, 
+    page.deleted, 
+    page.summary,
+    page.edit_summary
+EOT
+
 sub By_seconds_limit {
     my $class         = shift;
     my $t             = time_scope 'By_seconds_limit';
@@ -234,25 +255,7 @@ sub _fetch_pages {
     $p{where} = "AND $p{where}" if $p{where};
     my $sth = sql_execute(
         <<EOT,
-SELECT page.workspace_id, 
-       "Workspace".name AS workspace_name, 
-       "Workspace".title AS workspace_title, 
-       page.page_id, 
-       page.name, 
-       page.last_editor_id AS last_editor_id, 
-       -- _utc suffix is to prevent performance-impacing naming collisions:
-       page.last_edit_time AT TIME ZONE 'UTC' AS last_edit_time_utc,
-       page.creator_id,
-       -- _utc suffix is to prevent performance-impacing naming collisions:
-       page.create_time AT TIME ZONE 'UTC' AS create_time_utc,
-       page.current_revision_id, 
-       page.current_revision_num, 
-       page.revision_count, 
-       page.page_type, 
-       page.deleted, 
-       page.summary,
-       page.edit_summary
-    FROM page 
+SELECT $MODEL_FIELDS FROM page 
         JOIN "Workspace" USING (workspace_id)
         $more_join
     WHERE $deleted
@@ -266,10 +269,9 @@ EOT
         @{ $p{bind} },
     );
 
-    my @pages = map { Socialtext::Model::Page->new_from_row($_) }
-        map { $_->{hub} = $p{hub}; $_ } @{ $sth->fetchall_arrayref( {} ) };
-    return \@pages if $p{do_not_need_tags};
-    return \@pages if @pages == 0;
+    my $pages = $class->load_pages_from_sth($sth, $p{hub});
+    return $pages if $p{do_not_need_tags};
+    return $pages if @$pages == 0;
 
     # Fetch all the tags for these pages
     # We will fetch all the page_tag, and then filter out which pages
@@ -277,7 +279,7 @@ EOT
     # Alternatively, we could pass Pg in a potentially huge list of page_ids
     # we were interested in.  We ass-u-me this would be slower.
     my %ids;
-    for my $p (@pages) {
+    for my $p (@$pages) {
         $p->{tags} = [];
         my $key = "$p->{workspace_id}-$p->{page_id}";
         $ids{$key} = $p;
@@ -298,7 +300,17 @@ EOT
         }
     }
 
-    return \@pages;
+    return $pages;
+}
+
+sub load_pages_from_sth {
+    my $class = shift;
+    my $sth = shift;
+    my $hub = shift;
+    return [
+        map { Socialtext::Model::Page->new_from_row($_) }
+        map { $_->{hub} = $hub; $_ } @{ $sth->fetchall_arrayref({}) }
+    ];
 }
 
 sub Minimal_by_name {

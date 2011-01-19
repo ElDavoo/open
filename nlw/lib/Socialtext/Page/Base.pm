@@ -835,6 +835,21 @@ sub content_or_default {
         : ($self->content || loc('Replace this text with your own.') . '   ');
 }
 
+=head2 $page->app_uri()
+
+This builds a uri historically used in the app. YMMV
+
+=cut
+
+sub app_uri {
+    my $self = shift;
+    return $self->full_uri if $self->exists;
+
+    return $self->hub->current_workspace->uri
+        . Socialtext::AppConfig->script_name . "?"
+        . $self->id;
+}
+
 sub _log_page_action {
     my $self = shift;
 

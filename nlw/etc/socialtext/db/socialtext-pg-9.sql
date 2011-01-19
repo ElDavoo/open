@@ -764,6 +764,13 @@ CREATE SEQUENCE attachment_id_seq
     NO MAXVALUE
     CACHE 1;
 
+CREATE TABLE breadcrumb (
+    viewer_id integer NOT NULL,
+    workspace_id bigint NOT NULL,
+    page_id text NOT NULL,
+    last_viewed timestamptz NOT NULL
+);
+
 CREATE TABLE container (
     container_id bigint NOT NULL,
     container_type text NOT NULL,
@@ -1987,6 +1994,9 @@ CREATE INDEX job_funcid_runafter
 
 CREATE INDEX page_creator_time
 	    ON page (creator_id, create_time);
+
+CREATE INDEX breadcrumb_viewer_ws
+	    ON breadcrumb (viewer_id, workspace_id);
 
 CREATE INDEX page_link__to_page
 	    ON page_link (to_workspace_id, to_page_id);

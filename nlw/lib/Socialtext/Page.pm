@@ -511,18 +511,14 @@ sub hash_representation {
     # things and return values we don't want.  We can't just change the
     # original methods b/c they're part of the bedrock of our app and would
     # have far reaching changes, so we do it here.
-    my ( $name, $uri, $page_uri );
+    my ( $name, $uri );
     if ( $self->exists ) {
         $name     = $self->metadata->Subject;
         $uri      = $self->uri;
-        $page_uri = $self->full_uri;
     }
     else {
         $name     = $self->name;
         $uri      = $self->id;
-        $page_uri = $self->hub->current_workspace->uri
-            . Socialtext::AppConfig->script_name . "?"
-            . $self->id;
     }
 
     my $from = $self->metadata->From;
@@ -539,7 +535,7 @@ sub hash_representation {
         page_id  => $self->id,
 
         # REVIEW: This URI may eventually prove to be the wrong one
-        page_uri       => $page_uri,
+        page_uri       => $self->app_uri,
         tags           => $self->metadata->Category,
         last_editor    => $masked_email,
         last_edit_time => $self->metadata->Date,
