@@ -11,8 +11,8 @@
 | type_ok | st-search-by-name | Socialtext |
 | wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
 | click_and_wait | st-submit-search-by-name |  |
-| wait_for_element_visible_ok | link=Socialtext | 30000 |
-| click_and_wait | link=Socialtext |  |
+| wait_for_element_visible_ok | //a[@title='view Socialtext'] | 30000 |
+| click_and_wait | //a[@title='view Socialtext'] |  |
 | wait_for_element_visible_ok | link=Profile Fields | 30000 |
 | click_and_wait | link=Profile Fields |  |
 | wait_for_element_visible_ok | link=Edit | 30000 |
