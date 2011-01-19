@@ -7,7 +7,6 @@ use base 'Socialtext::Base';
 
 use Class::Field qw( const field );
 use Email::Valid;
-use Socialtext::File;
 use Socialtext::Log 'st_log';
 use Socialtext::Page;
 use Socialtext::Paths;

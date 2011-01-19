@@ -899,4 +899,25 @@ sub _log_page_action {
     );
 }
 
+sub content {
+    my $self = shift;
+    return $self->{content} = shift if @_;
+    return $self->{content} if defined $self->{content};
+    $self->load_content;
+    return $self->{content};
+}
+
+sub load_content {
+    my $self = shift;
+    my $content = sql_singlevalue(
+        'SELECT body FROM page_revision
+          WHERE workspace_id = ?
+            AND page_id = ?
+            AND revision_id = ?
+        ', $self->hub->current_workspace->workspace_id, $self->id, $self->revision_id,
+    );
+    $self->content($content || '');
+    return $self;
+}
+
 1;

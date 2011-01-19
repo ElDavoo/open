@@ -180,21 +180,6 @@ sub creator {
         ||= Socialtext::User->new( user_id => $self->{creator_id} );
 }
 
-# Content is still read from disk
-sub content {
-    my $self = shift;
-    my $file = $self->current_revision_file;
-    my $data = Socialtext::File::get_contents_utf8($file);
-    my $body = substr($data, index($data, "\n\n") + 2);
-    return $body;
-}
-
-sub current_revision_file {
-    my $self = shift;
-    my $revision_id = $self->{current_revision_id};
-    return $self->directory_path . "/$revision_id.txt";
-}
-
 # This is the on-disk directory pages are stored, nothing to do with
 # Postgresql
 sub database_directory {
