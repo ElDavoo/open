@@ -231,7 +231,7 @@ sub load_revision_metadata {
             $pagemeta->{RevisionSummary} || '',
             0,
             $tags,
-            Socialtext::Page::Legacy::read_and_decode_file($file, 1),
+            Socialtext::Page::Legacy::read_and_decode_file($file, 'content'),
         ];
     }
     closedir($dfh);
