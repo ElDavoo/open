@@ -1719,12 +1719,15 @@ sub load {
         return $self;
     }
 
-    $self->load_metadata;
+    $self->load_metadata($page_string);
     return $self;
 }
 
 sub load_metadata {
     my $self = shift;
+    my $revision_id = shift;
+
+    warn "This method does not yet respect the revision_id";
     my $metadata = $self->{metadata}
       or die "No metadata object in content object";
 
