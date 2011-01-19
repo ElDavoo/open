@@ -104,6 +104,7 @@ sub _fire_page_webhooks {
                 workspace => {
                     title => $wksp->title,
                     name  => $wksp->name,
+                    id    => $wksp->workspace_id,
                 },
                 id           => $page->id,
                 name         => $page->metadata->Subject,
