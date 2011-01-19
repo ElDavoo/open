@@ -222,6 +222,7 @@ sub load_revision_metadata {
             $self->{workspace}->workspace_id,
             $pg_dir,
             $revision_id,
+            $pagemeta->{Revision} || 1,
             $subject,
             editor_to_id($pagemeta->{From}),
             $pagemeta->{Date},

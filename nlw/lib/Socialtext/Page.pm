@@ -1009,17 +1009,17 @@ INSSQL
     # Insert this revision
     my $tags = $self->metadata->Category;
     my @revision_args = (
-        $wksp_id, $pg_id, $hash->{revision_id}, $hash->{name}, $editor_id,
-        $hash->{last_edit_time}, $hash->{type}, $deleted, $summary,
-        $edit_summary, $locked, $self->content, $tags,
+        $wksp_id, $pg_id, $hash->{revision_id}, $self->metadata->Revision,
+        $hash->{name}, $editor_id, $hash->{last_edit_time}, $hash->{type},
+        $deleted, $summary, $edit_summary, $locked, $self->content, $tags,
     );
     sql_execute(<<SQL, @revision_args);
         INSERT INTO page_revision (
-            workspace_id, page_id, revision_id, name, editor_id, edit_time,
+            workspace_id, page_id, revision_id, revision_num, name, editor_id, edit_time,
             page_type, deleted, summary, edit_summary, locked, body, tags
         )
         VALUES (
-            ?, ?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?, ?, ?,
             ?, ?, ?, ?, ?, ?, ?
         )
 SQL
@@ -1736,6 +1736,7 @@ sub load_metadata {
         hub => $self->hub,
         workspace_id => $self->hub->current_workspace->workspace_id,
         page_id => $self->id,
+        revision_id => $revision_id,
         no_die => 1,
     );
     return $self unless $page;

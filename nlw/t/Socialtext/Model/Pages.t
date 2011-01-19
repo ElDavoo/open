@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::More tests => 133;
+use Test::More tests => 136;
 use Test::Socialtext::Fatal;
 use mocked 'Socialtext::SQL', qw/:test/;
 use mocked 'Socialtext::Page';
@@ -840,6 +840,53 @@ EOT
         );
         ok_no_more_sql();
     }
+
+    specific_revision: {
+        local @Socialtext::SQL::RETURN_VALUES = (
+            { return => [{workspace_id => 9, page_id => 'monkey'}] },
+        );
+        Socialtext::Model::Pages->By_id(
+            workspace_id => 9,
+            page_id => 'monkey',
+            revision_id => 1234,
+        );
+        sql_ok(
+            name => 'by_id revision',
+            sql => <<EOT,
+SELECT page.workspace_id, 
+       "Workspace".name AS workspace_name, 
+       "Workspace".title AS workspace_title, 
+       page.page_id, 
+       page_revision.name, 
+       page_revision.editor_id AS last_editor_id, 
+       -- _utc suffix is to prevent performance-impacing naming collisions:
+       page_revision.edit_time AT TIME ZONE 'UTC' AS last_edit_time_utc, 
+       page.creator_id, 
+       -- _utc suffix is to prevent performance-impacing naming collisions:
+       page.create_time AT TIME ZONE 'UTC' AS create_time_utc, 
+       page_revision.revision_id AS current_revision_id, 
+       page_revision.revision_num AS current_revision_num, 
+       page.revision_count, 
+       page_revision.page_type, 
+       page_revision.deleted, 
+       page_revision.summary,
+       page_revision.edit_summary,
+       page_revision.tags
+    FROM page 
+        JOIN "Workspace" USING (workspace_id) 
+        JOIN page_revision USING (workspace_id, page_id)
+    WHERE NOT deleted 
+      AND page.workspace_id = ? 
+      AND page_id = ?
+      AND revision_id = ?
+EOT
+            args => [9,'monkey', 1234],
+        );
+        # Do not need a separate fetch for tags when you specify a specific
+        # revision
+        ok_no_more_sql();
+    }
+
 }
 
 Not_in_any_workspaces: {

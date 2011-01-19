@@ -1079,6 +1079,7 @@ CREATE TABLE page_revision (
     workspace_id bigint NOT NULL,
     page_id text NOT NULL,
     revision_id bigint NOT NULL,
+    revision_num integer NOT NULL,
     name text,
     editor_id bigint NOT NULL,
     edit_time timestamptz NOT NULL,
