@@ -5,12 +5,11 @@ use warnings;
 use Email::Valid;
 use Socialtext::Workspace;
 use Socialtext::Paths;
-use Socialtext::Page;
-use Socialtext::Page::Base;
 use Socialtext::Hub;
 use Socialtext::User;
 use Socialtext::File;
 use Socialtext::AppConfig;
+use Socialtext::Page::Legacy;
 use Socialtext::SQL qw(get_dbh :exec :txn);
 use Fatal qw/opendir closedir chdir open/;
 use Cwd   qw/abs_path/;
@@ -45,6 +44,10 @@ sub populate {
                 'DELETE FROM page WHERE workspace_id = ?',
                 $workspace->workspace_id,
             );
+            sql_execute(
+                'DELETE FROM page_revision WHERE workspace_id = ?',
+                $workspace->workspace_id,
+            );
         }
 
         # Grab all the Pages in the Workspace, figure out which ones we need
@@ -77,7 +80,7 @@ sub populate {
             my $workspace_id = $workspace->workspace_id;
 
             eval {
-                $page = $self->read_metadata($dir);
+                $page = $self->load_page_metadata($workspace_dir, $dir);
                 $last_editor  = editor_to_id($page->{last_editor});
                 $first_editor = editor_to_id($page->{creator_name});
             };
@@ -121,9 +124,12 @@ sub populate {
     die "Error during populate of $workspace_name: $@" if $@;
 }
 
-sub read_metadata {
-    my $self     = shift;
-    my $dir = shift;
+sub load_page_metadata {
+    my $self   = shift;
+    my $ws_dir = shift;
+    my $dir    = shift;
+
+    $self->load_revision_metadata($ws_dir, $dir);
 
     my $current_revision_file = find_current_revision( $dir );
     my $pagemeta = fetch_metadata($current_revision_file);
@@ -173,7 +179,7 @@ sub read_metadata {
         last_edit_time => $last_edit_time,
         revision_id => $revision_id,
         revision_count => $num_revisions,
-        revision_num => $pagemeta->{Revision},
+        revision_num => $pagemeta->{Revision} || 1,
         type => $pagemeta->{Type} || 'wiki',
         deleted => ($pagemeta->{Control} || '') eq 'Deleted' ? 1 : 0,
         tags => $tags,
@@ -181,6 +187,56 @@ sub read_metadata {
         creator_name => $orig_page->{From},
         create_time => $orig_page->{Date},
     };
+}
+
+sub load_revision_metadata {
+    my $self   = shift;
+    my $ws_dir = shift;
+    my $pg_dir = shift;
+
+    my @revisions;
+    opendir(my $dfh, "$ws_dir/$pg_dir");
+    REV: while (my $file = readdir($dfh)) {
+        $file = "$ws_dir/$pg_dir/$file";
+        next REV if -l $file;
+        next REV unless -f $file;
+
+        # Ignore really old pages that have invalid page_ids
+        next REV unless Socialtext::Encode::is_valid_utf8($file);
+        my $pagemeta = fetch_metadata($file);
+        (my $revision_id = $file) =~ s#.+/(.+)\.txt$#$1#;
+        my $tags = $pagemeta->{Category} || [];
+        $tags = [$tags] unless ref($tags);
+
+        my $subject = $pagemeta->{Subject} || '';
+        if (ref($subject)) { # Handle bad duplicate headers
+            $subject = shift @$subject;
+        }
+        my $summary = $pagemeta->{Summary} || '';
+        if (ref($summary) eq 'ARRAY') {
+            # work around a bug where a page has 2 Summary revisions.
+            $summary = $summary->[-1];
+        }
+
+        push @revisions, [
+            $self->{workspace}->workspace_id,
+            $pg_dir,
+            $revision_id,
+            $subject,
+            editor_to_id($pagemeta->{From}),
+            $pagemeta->{Date},
+            $pagemeta->{Type} || 'wiki',
+            ($pagemeta->{Control} || '') eq 'Deleted' ? 1 : 0,
+            $summary,
+            $pagemeta->{RevisionSummary} || '',
+            0,
+            $tags,
+            Socialtext::Page::Legacy::read_and_decode_file($file, 1),
+        ];
+    }
+    closedir($dfh);
+
+    add_to_db('page_revision', \@revisions);
 }
 
 # This method was copied from Socialtext::Page, to remove a dependency
@@ -273,7 +329,7 @@ sub fetch_metadata {
         }
     };
 
-    my $content = Socialtext::Page::read_and_decode_file($file);
+    my $content = Socialtext::Page::Legacy::read_and_decode_file($file);
     return parse_headers($content);
 }
 

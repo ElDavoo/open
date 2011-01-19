@@ -115,7 +115,7 @@ Return the count of revisions that a given page has.
 
 sub revision_count {
     my $self = shift;
-    return scalar $self->all_revision_ids();
+    return scalar($self->all_revision_ids()) || 1;
 }
 
 sub creator {
@@ -151,6 +151,7 @@ sub create {
     $page->metadata->Subject($args{title});
     $page->metadata->Category($args{categories});
     $page->metadata->update( user => $args{creator} );
+    $page->{revision_id} = time;
 
     if ($args{date}) {
         $self->metadata->Date($args{date}->strftime('%Y-%m-%d %H:%M:%S GMT'));
@@ -511,7 +512,7 @@ sub hash_representation {
         $uri      = $self->uri;
     }
     else {
-        $name     = $self->name;
+        $name     = $self->metadata->Subject || $self->name;
         $uri      = $self->id;
     }
 
@@ -1185,6 +1186,7 @@ sub size {
 sub modified_time {
     my $self = shift;
     (my $datestr = $self->metadata->Date) =~ s/ GMT$//;
+    return 0 unless $datestr;
     my $dt = DateTime::Format::Pg->parse_datetime( $datestr );
     return $dt->epoch;
 }
@@ -1474,6 +1476,9 @@ sub duplicate {
     $target_page->metadata->update( user => $dest_hub->current_user );
 
     $target_page->metadata->Type($self->metadata->Type);
+
+    # Copy the revision_id of the original page
+    $target_page->{revision_id} = $self->{revision_id};
 
     if ($keep_attachments) {
         my @attachments = $self->attachments();
