@@ -1034,6 +1034,21 @@ CREATE TABLE page (
     views integer DEFAULT 0 NOT NULL
 );
 
+CREATE TABLE page_revision (
+    workspace_id bigint NOT NULL,
+    page_id text NOT NULL,
+    revision_id text NOT NULL,
+    name text,
+    editor_id bigint NOT NULL,
+    edit_time timestamptz NOT NULL,
+    page_type text NOT NULL,
+    deleted boolean NOT NULL,
+    summary text,
+    edit_summary text,
+    locked boolean DEFAULT false NOT NULL,
+    body text NOT NULL
+);
+
 CREATE TABLE page_link (
     from_workspace_id bigint NOT NULL,
     from_page_id text NOT NULL,
@@ -1994,6 +2009,9 @@ CREATE INDEX job_funcid_runafter
 
 CREATE INDEX page_creator_time
 	    ON page (creator_id, create_time);
+
+CREATE INDEX page_revision__ws_page_rev
+	    ON page_revision (workspace_id, page_id, revision_id);
 
 CREATE INDEX breadcrumb_viewer_ws
 	    ON breadcrumb (viewer_id, workspace_id);

@@ -954,16 +954,18 @@ sub _do_update_db_metadata {
         $create_time = $orig_page->metadata->Date;
     }
 
+    my $editor_id = $self->last_edited_by->user_id;
+    my $deleted = $self->deleted ? 1 : 0;
+    my $summary = $self->metadata->Summary;
+    my $edit_summary = $self->metadata->RevisionSummary;
+    my $locked = $self->metadata->Locked ? 1 : 0;
     my @args = (
         $hash->{name},
-        $self->last_edited_by->user_id, $hash->{last_edit_time},
+        $editor_id, $hash->{last_edit_time},
         $creator_id, $create_time,
         $hash->{revision_id}, $self->metadata->Revision,
         $hash->{revision_count},
-        $hash->{type}, $self->deleted ? '1' : '0', 
-        $self->metadata->Summary,
-        $self->metadata->RevisionSummary,
-        $self->metadata->Locked ? '1' : '0',
+        $hash->{type}, $deleted, $summary, $edit_summary, $locked,
         $wksp_id, $pg_id
     );
     my $insert_or_update;
@@ -1008,6 +1010,23 @@ UPDSQL
 INSSQL
     }
     sql_execute($insert_or_update, @args);
+
+    # Insert this revision
+    my @revision_args = (
+        $wksp_id, $pg_id, $hash->{revision_id}, $hash->{name}, $editor_id,
+        $hash->{last_edit_time},
+        $hash->{type}, $deleted, $summary, $edit_summary, $locked, $self->content,
+    );
+    sql_execute(<<SQL, @revision_args);
+        INSERT INTO page_revision (
+            workspace_id, page_id, revision_id, name, editor_id, edit_time,
+            page_type, deleted, summary, edit_summary, locked, body
+        )
+        VALUES (
+            ?, ?, ?, ?, ?, ?,
+            ?, ?, ?, ?, ?, ?
+        )
+SQL
 
     my $tags = $self->metadata->Category;
     if (@$tags) {
