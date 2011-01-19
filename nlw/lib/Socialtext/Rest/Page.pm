@@ -11,7 +11,6 @@ use Socialtext::JSON;
 use Readonly;
 use Socialtext::HTTP ':codes';
 use Socialtext::Events;
-use Socialtext::PageMeta qw( EDIT_SUMMARY_MAXLENGTH );
 
 Readonly my $DEFAULT_LINK_DICTIONARY => 'REST';
 Readonly my $S2_LINK_DICTIONARY      => 'S2';
