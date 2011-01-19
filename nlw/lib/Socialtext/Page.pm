@@ -863,6 +863,7 @@ sub store {
     else {
         $metadata->Control('Deleted');
     }
+    $self->{revision_id} = time;
 
     $self->_perform_store_actions();
 
@@ -1476,9 +1477,6 @@ sub duplicate {
     $target_page->metadata->update( user => $dest_hub->current_user );
 
     $target_page->metadata->Type($self->metadata->Type);
-
-    # Copy the revision_id of the original page
-    $target_page->{revision_id} = $self->{revision_id};
 
     if ($keep_attachments) {
         my @attachments = $self->attachments();
