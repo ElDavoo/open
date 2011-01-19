@@ -798,6 +798,13 @@ CREATE SEQUENCE attachment_id_seq
     NO MAXVALUE
     CACHE 1;
 
+CREATE TABLE breadcrumb (
+    viewer_id integer NOT NULL,
+    workspace_id bigint NOT NULL,
+    page_id text NOT NULL,
+    last_viewed timestamptz NOT NULL
+);
+
 CREATE TABLE container (
     container_id bigint NOT NULL,
     container_type text NOT NULL,
@@ -1057,7 +1064,8 @@ CREATE TABLE page (
     deleted boolean NOT NULL,
     summary text,
     edit_summary text,
-    locked boolean DEFAULT false NOT NULL
+    locked boolean DEFAULT false NOT NULL,
+    views integer DEFAULT 0 NOT NULL
 );
 
 CREATE TABLE page_link (
@@ -1065,6 +1073,22 @@ CREATE TABLE page_link (
     from_page_id text NOT NULL,
     to_workspace_id bigint NOT NULL,
     to_page_id text NOT NULL
+);
+
+CREATE TABLE page_revision (
+    workspace_id bigint NOT NULL,
+    page_id text NOT NULL,
+    revision_id text NOT NULL,
+    name text,
+    editor_id bigint NOT NULL,
+    edit_time timestamptz NOT NULL,
+    page_type text NOT NULL,
+    deleted boolean NOT NULL,
+    summary text,
+    edit_summary text,
+    locked boolean DEFAULT false NOT NULL,
+    tags text[],
+    body text NOT NULL
 );
 
 CREATE TABLE page_tag (
@@ -1637,6 +1661,9 @@ CREATE INDEX "Workspace_account_id"
 CREATE UNIQUE INDEX account_user_set_id
 	    ON "Account" (user_set_id);
 
+CREATE INDEX breadcrumb_viewer_ws
+	    ON breadcrumb (viewer_id, workspace_id);
+
 CREATE UNIQUE INDEX container__type_name_set
 	    ON container (container_type, name, user_set_id);
 
@@ -2023,6 +2050,9 @@ CREATE INDEX page_creator_time
 
 CREATE INDEX page_link__to_page
 	    ON page_link (to_workspace_id, to_page_id);
+
+CREATE INDEX page_revision__ws_page_rev
+	    ON page_revision (workspace_id, page_id, revision_id);
 
 CREATE INDEX page_tag__page_ix
 	    ON page_tag (workspace_id, page_id);
