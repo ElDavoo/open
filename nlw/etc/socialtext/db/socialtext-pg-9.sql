@@ -1023,7 +1023,8 @@ CREATE TABLE page (
     deleted boolean NOT NULL,
     summary text,
     edit_summary text,
-    locked boolean DEFAULT false NOT NULL
+    locked boolean DEFAULT false NOT NULL,
+    views integer DEFAULT 0 NOT NULL
 );
 
 CREATE TABLE page_link (
