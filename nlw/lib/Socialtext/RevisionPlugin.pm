@@ -60,16 +60,24 @@ sub revision_list {
 sub revision_view {
     my $self = shift;
     my $page = $self->hub->pages->current;
-    unless ( -f $page->revision_file( $self->cgi->revision_id ) ) {
-        return $self->redirect( $page->uri );
-    }
-    $page->revision_id( $self->cgi->revision_id );
-    $page->load();
+    my $revision_id = $self->cgi->revision_id;
+
+    return $self->redirect( $page->uri ) unless $revision_id;
+
+    $page = Socialtext::Model::Pages->By_id(
+        workspace_id => $self->hub->current_workspace->workspace_id,
+        page_id => $page->id,
+        revision_id => $revision_id,
+        no_die => 1,
+        deleted_ok => 1,
+        hub => $self->hub,
+    );
+    return $self->redirect( $page->uri ) unless $page;
 
     # find the previous and next revision
     # if there is no previous revision, use the current revision
     # if there is no next revision, use the current revision
-    my $this_revision = $self->cgi->revision_id;
+    my $this_revision = $revision_id;
     my $previous_revision = $this_revision;
     my $next_revision = $this_revision;
     my $one_more_time = 0;
@@ -90,22 +98,18 @@ sub revision_view {
       ? do { local $_ = $self->html_escape( $page->content ); s/$/<br \/>/gm; $_ }
       : $page->to_html;
 
-    my $revision = $page->metadata->Revision;
-    my $edit_summary = $page->metadata->RevisionSummary;
-    my $from = $page->metadata->From;
-
     $self->screen_template('view/page/revision');
     $self->render_screen(
         $page->all,
-        from => $from,
+        from => $page->last_edited_by->email_address,
         previous_revision => $previous_revision,
         next_revision => $next_revision,
-        human_readable_revision => $revision,
+        human_readable_revision => $page->revision_num,
         tags => [ $page->html_escaped_categories ],
-        edit_summary => $edit_summary,
+        edit_summary => $page->edit_summary,
         edit_summary_maxlength => EDIT_SUMMARY_MAXLENGTH(),
         display_title    => $self->html_escape( $page->title ),
-        display_title_decorator  => loc("Revision [_1]", $revision),
+        display_title_decorator  => loc("Revision [_1]", $this_revision),
         print                   => $output,
     );
 }
