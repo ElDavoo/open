@@ -70,8 +70,17 @@ proto.fromHtml = function(html) {
     this.div.innerHTML = html;
     this.div.style.display = 'block';
     this.wikiwyg.enableLinkConfirmations();
-    if (typeof SyntaxHighlighter != 'undefined' && SyntaxHighlighter.highlight) {
-        SyntaxHighlighter.highlight();
+    if (/SyntaxHighlighter\.all/.test(html)) {
+        $('#st-page-preview script[src]').each(function(){
+            $.getScript($(this).attr('src'), function(){
+                var _alert = window.alert;
+                SyntaxHighlighter.vars.discoveredBrushes = null;
+                window.alert = function(){};
+                SyntaxHighlighter.highlight();
+                window.alert = _alert;
+            })
+        });
+
     }
 }
 
