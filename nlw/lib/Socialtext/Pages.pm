@@ -72,8 +72,8 @@ EOT
 
 =head2 $pages->all_ids_newest_first()
 
-Returns a list of all the directories in page_data_directory,
-sorted in reverse date order. Skips symlinks.
+Returns a list of all the page revision ids
+sorted in reverse date order.
 
 =cut
 

@@ -27,8 +27,7 @@ sub new {
     die "No such workspace $opts{workspace_name}\n"
         unless $self->{workspace};
 
-    $self->{workspace_dir} ||= 
-            Socialtext::Paths::page_data_directory($opts{workspace_name});
+    die "workspace_dir is a required option" unless $self->{workspace_dir};
     die "No such workspace directory $self->{workspace_dir}"
         unless -d $self->{workspace_dir};
 

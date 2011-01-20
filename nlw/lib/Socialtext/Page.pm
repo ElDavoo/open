@@ -60,8 +60,6 @@ field 'id';
 sub class_id { 'page' }
 field full_uri =>
       -init => '$self->hub->current_workspace->uri . Socialtext::AppConfig->script_name . "?" . $self->uri';
-field database_directory => -init =>
-    'Socialtext::Paths::page_data_directory( $self->hub->current_workspace->name )';
 
 sub _MAX_PAGE_ID_LENGTH () {
     return 255;

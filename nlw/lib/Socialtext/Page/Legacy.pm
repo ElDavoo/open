@@ -80,19 +80,4 @@ sub read_and_decode_file {
     return $buffer;
 }
 
-sub revision_file {
-    my $self = shift;
-    my $revision_id = shift;
-    my $filename = join '/', 
-        ( $self->database_directory, $self->id, $revision_id . '.txt' );
-    return $filename;
-}
-
-sub database_directory {
-    my $self = shift;
-    return Socialtext::Paths::page_data_directory(
-        $self->hub->current_workspace->name);
-}
-
-
 1;

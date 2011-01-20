@@ -183,14 +183,6 @@ sub creator {
         ||= Socialtext::User->new( user_id => $self->{creator_id} );
 }
 
-# This is the on-disk directory pages are stored, nothing to do with
-# Postgresql
-sub database_directory {
-    my $self = shift;
-    return Socialtext::Paths::page_data_directory( $self->{workspace_name} );
-
-}
-
 sub store {
     die 'Socialtext::Model::Page is currently a READ ONLY object';
 }
