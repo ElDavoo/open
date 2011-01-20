@@ -33,6 +33,7 @@ use Socialtext::SQL qw/:exec :txn get_dbh sql_parse_timestamptz/;
 use Socialtext::SQL::Builder qw/sql_insert_many/;
 use Socialtext::Permission 'ST_READ_PERM';
 use Socialtext::Model::Pages;
+use Socialtext::Cache;
 
 use Data::Dumper;
 use Carp ();
@@ -65,6 +66,7 @@ field database_directory => -init =>
 sub _MAX_PAGE_ID_LENGTH () {
     return 255;
 }
+field cache => -init => "Socialtext::Cache->cache('pages')";
 
 =head1 METHODS
 
@@ -1717,27 +1719,34 @@ sub load {
         return $self;
     }
 
-    $self->load_metadata($page_string);
+    $self->load_metadata;
     return $self;
 }
 
 sub load_metadata {
     my $self = shift;
-    my $revision_id = shift;
 
-    warn "This method does not yet respect the revision_id";
     my $metadata = $self->{metadata}
       or die "No metadata object in content object";
+    return $self unless $self->id;
 
-    # Load the metadata from the database
-    my $page = Socialtext::Model::Pages->By_id(
-        hub => $self->hub,
-        workspace_id => $self->hub->current_workspace->workspace_id,
-        page_id => $self->id,
-        revision_id => $revision_id,
-        no_die => 1,
-    );
-    return $self unless $page;
+    my $ws_id = $self->hub->current_workspace->workspace_id;
+    my $pg_id = $self->id;
+    my $rev_id = $self->{revision_id} || '0';
+    my $cache_key = "$ws_id-$pg_id-$rev_id";
+    my $page = $self->cache->get($cache_key);
+    unless ($page) {
+        $page = Socialtext::Model::Pages->By_id(
+            hub => $self->hub,
+            workspace_id => $ws_id,
+            page_id => $pg_id,
+            revision_id => $self->{revision_id},
+            no_die => 1,
+            deleted_ok => 1,
+        );
+        return $self unless $page;
+        $self->cache->set($cache_key, $page);
+    }
 
     # Nowadays PageMeta is just a legacy interface; it can go away
     $metadata->from_hash( {
