@@ -104,7 +104,7 @@ Socialtext.set_save_error_resume_handler = function(cb) {
                 }
                 else {
                     Socialtext.discardDraft('edit_save');
-                    window.location = win.location;
+                    window.location = (''+win.location).replace(/\/index\.cgi\?([^=]+)$/, '/$1');
                     return;
                 }
             }
