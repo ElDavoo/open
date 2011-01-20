@@ -21,7 +21,9 @@ use File::Path;
 use File::Spec;
 use File::Temp;
 use File::Find;
+use File::Map qw/map_file/;
 use Encode::Guess;
+use utf8;
 use List::Util qw/reduce/;
 
 # NOTE: Please don't add any Socialtext::* dependencies.  This module
@@ -90,7 +92,7 @@ sub set_contents_utf8 {
 
 sub set_contents_utf8_atomic {
     my $filename = shift;
-    my ($dir,$file) = ($filename =~ m#^((?:.+)/)?([^/]+)$#);
+    my ($dir,$file) = ($filename =~ m{^((?:.+)/)?([^/]+)$});
     $dir ||= '.';
     my (undef, $temp) = File::Temp::tempfile("$file.tmpXXXXXX", DIR => $dir);
     set_contents_utf8($temp, @_);
@@ -128,47 +130,28 @@ Slurp the contents of C<$filename> using C<$encoding> to transcode the chars.
 =head2 get_contents_or_empty( $filename, ... )
 
 Slurp the contents of a file, returning C<''> if there was any trouble (will
-not raise an exception).  Parameters are passed to L<get_contents>.
+not raise an exception but $@ will be set).  Parameters are passed to
+L<get_contents>.
 
 =head2 get_contents_binary ( $filename )
 
 Slurp a binary file.
 
-=head2 get_contents_binmode( $filename, $binmode )
-
-Slurp the contents of a file, using the requested C<$binmode> (which will have
-C<:mmap> prepended to it).  See L<PerlIO>.
-
 =cut
 
-sub get_contents_binmode {
-    my $filename = shift;
-    my $binmode  = shift || '';
-    $binmode = ":mmap$binmode";
-
-    my $fh;
-    open $fh, "<$binmode", $filename
-        or confess( "unable to open $filename: $!" );
-
-    if (wantarray) {
-        my @contents = <$fh>;
-        return @contents;
-    }
-    else {
-        local $/;
-        my $contents = <$fh>;
-        return $contents;
-    }
-}
-
 sub get_contents {
-    splice(@_,1,1, ($_[1]) ? ':utf8' : '');
-    goto &get_contents_binmode;
+    map_file my $contents, $_[0], '<';
+    utf8::decode($contents) if $_[1];
+    return split $/,$contents if wantarray;
+    return $contents;
 }
 
 sub get_contents_based_on_encoding {
-    splice(@_,1,1, ":encoding($_[1])");
-    goto &get_contents_binmode;
+    return get_contents_utf8($_[0]) if $_[1] eq 'utf8';
+    map_file my $raw, $_[0], '<';
+    my $contents = Encode::decode($_[1],$raw);
+    return split $/,$contents if wantarray;
+    return $contents;
 }
 
 sub get_contents_or_empty {
@@ -178,13 +161,16 @@ sub get_contents_or_empty {
 }
 
 sub get_contents_utf8 {
-    splice(@_,1,1, ':utf8');
-    goto &get_contents_binmode;
+    map_file my $contents, $_[0], '<';
+    utf8::decode($contents);
+    return split $/,$contents if wantarray;
+    return $contents;
 }
 
 sub get_contents_binary {
-    splice(@_,1,1,':mmap');
-    goto &get_contents_binmode;
+    map_file my $contents, $_[0], '<';
+    return split $/,$contents if wantarray;
+    return $contents;
 }
 
 my $locale_encoding_names = {
