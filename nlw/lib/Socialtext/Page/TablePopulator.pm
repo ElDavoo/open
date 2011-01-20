@@ -21,10 +21,16 @@ sub new {
 
     my $self = \%opts;
     bless $self, $class;
+
     $self->{workspace}
         = Socialtext::Workspace->new( name => $opts{workspace_name} );
     die "No such workspace $opts{workspace_name}\n"
         unless $self->{workspace};
+
+    $self->{workspace_dir} ||= 
+            Socialtext::Paths::page_data_directory($opts{workspace_name});
+    die "No such workspace directory $self->{workspace_dir}"
+        unless -d $self->{workspace_dir};
 
     return $self;
 }
@@ -52,8 +58,7 @@ sub populate {
 
         # Grab all the Pages in the Workspace, figure out which ones we need
         # to add to the DB, then add them all.
-        my $workspace_dir
-            = Socialtext::Paths::page_data_directory($workspace_name);
+        my $workspace_dir = $self->{workspace_dir};
         my $hub = $self->{hub}
             = Socialtext::Hub->new( current_workspace => $workspace );
         chdir $workspace_dir;
@@ -397,10 +402,6 @@ sub fix_relative_page_link {
         die "Could not find symlinked page ($abs_page)"
             unless -f $abs_page;
         Socialtext::File::safe_symlink($abs_page, "$dir/index.txt");
-        warn "Fixed relative symlink in $dir\n";
-        
-        my $mtime = (stat($abs_page))[9] || time;
-        Socialtext::Page::Base->set_mtime($mtime, "$dir/index.txt");
     }
 }
 
