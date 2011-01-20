@@ -283,7 +283,7 @@ sub _load_yaml {
 sub _import_data_dirs {
     my $self = shift;
     my $data_root = Socialtext::AppConfig->data_root_dir();
-    for my $dir (qw(plugin user data)) {
+    for my $dir (qw(plugin)) {
         my $src = Socialtext::File::catdir( $dir, $self->{old_name} );
         my $dest = Socialtext::File::catdir( $data_root, $dir, $self->{new_name} );
         Socialtext::File::Copy::Recursive::dircopy( $src, $dest )
@@ -381,7 +381,9 @@ sub _populate_db_metadata {
 
     Socialtext::Timer->Continue('populate_db');
     my $populator = Socialtext::Page::TablePopulator->new(
-        workspace_name => $self->{new_name} );
+        workspace_name => $self->{new_name},
+        workspace_dir  => "$CWD/data/" . $self->{workspace}->name,
+    );
     $populator->populate( recreate => 1 );
     Socialtext::Timer->Pause('populate_db');
 }
