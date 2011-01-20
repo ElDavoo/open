@@ -32,7 +32,9 @@ __DATA__
 <script type="text/javascript" src="/static/skin/common/javascript/SyntaxHighlighter/shBrushXml.js"></script>
 <link href="/static/skin/common/css/SyntaxHighlighter/shCore.css" rel="stylesheet" type="text/css" />
 <link href="/static/skin/common/css/SyntaxHighlighter/shThemeDefault.css" rel="stylesheet" type="text/css" />
-<pre class="brush: html">&lt;b&gt;some html&lt;/b&gt;
+<pre class="brush: html">
+&lt;b&gt;some html&lt;/b&gt;
+
 </pre>
 <script type="text/javascript">SyntaxHighlighter.all()</script>
 <!-- wiki:
@@ -53,7 +55,9 @@ p { font-style: italic }
 <script type="text/javascript" src="/static/skin/common/javascript/SyntaxHighlighter/shBrushCss.js"></script>
 <link href="/static/skin/common/css/SyntaxHighlighter/shCore.css" rel="stylesheet" type="text/css" />
 <link href="/static/skin/common/css/SyntaxHighlighter/shThemeDefault.css" rel="stylesheet" type="text/css" />
-<pre class="brush: css">p { font-style: italic }
+<pre class="brush: css">
+p { font-style: italic }
+
 </pre>
 <script type="text/javascript">SyntaxHighlighter.all()</script>
 <!-- wiki:
@@ -74,7 +78,9 @@ This is some plain text
 <script type="text/javascript" src="/static/skin/common/javascript/SyntaxHighlighter/shBrushPlain.js"></script>
 <link href="/static/skin/common/css/SyntaxHighlighter/shCore.css" rel="stylesheet" type="text/css" />
 <link href="/static/skin/common/css/SyntaxHighlighter/shThemeDefault.css" rel="stylesheet" type="text/css" />
-<pre class="brush: plain">This is some plain text
+<pre class="brush: plain">
+This is some plain text
+
 </pre>
 <script type="text/javascript">SyntaxHighlighter.all()</script>
 <!-- wiki:

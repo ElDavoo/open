@@ -92,7 +92,9 @@ sub __html__ {
 <script type="text/javascript" src="$js_base/shBrush${brush}.js"></script>
 <link href="$css_base/shCore.css" rel="stylesheet" type="text/css" />
 <link href="$css_base/shThemeDefault.css" rel="stylesheet" type="text/css" />
-<pre class="brush: $type">$string</pre>
+<pre class="brush: $type">
+$string
+</pre>
 <script type="text/javascript">SyntaxHighlighter.all()</script>
 EOT
 }
