@@ -8,7 +8,6 @@ use Encode;
 use Socialtext;
 use base 'Socialtext::Base';
 use Socialtext::File;
-use Socialtext::Search::Config;
 use Socialtext::TT2::Renderer;
 use Socialtext::l10n qw/loc/;
 use Socialtext::Stax;
@@ -269,17 +268,19 @@ sub global_template_vars {
         $thunker->(wiki      => sub { $self->_get_wiki_info }),
         $thunker->(customjs  => sub { $hub->skin->customjs }),
         $thunker->(skin_name => sub { $hub->skin->skin_name }),
+
+        # possibly this is only used for s2 skin stuff?
         $thunker->('search_box_snippet', sub { 
-            my $snippet = Socialtext::Search::Config->new->search_box_snippet;
             my $renderer = Socialtext::TT2::Renderer->instance();
             return $renderer->render(
-                template => \$snippet,
+                template => 'element/search_box_snippet',
                 paths => $hub->skin->template_paths,
                 vars => {
                     current_workspace => $cur_ws,
                 }
             );
         }),
+
         $thunker->(miki_url => sub { $self->miki_path }),
         $thunker->(desktop_url => sub {
             return '' unless $self->desktop_update_enabled;
