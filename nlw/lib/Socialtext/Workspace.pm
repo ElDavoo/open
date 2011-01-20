@@ -21,12 +21,10 @@ use Socialtext::AppConfig;
 use Socialtext::EmailAlias;
 use Socialtext::Events;
 use Socialtext::File;
-use Socialtext::File::Copy::Recursive qw(dircopy);
 use Socialtext::Helpers;
 use Socialtext::Image;
 use Socialtext::l10n qw(loc system_locale);
 use Socialtext::Log qw( st_log );
-use Socialtext::Paths;
 use Socialtext::SQL qw(:exec :txn);
 use Socialtext::SQL::Builder qw(sql_nextval);
 use Socialtext::String;
@@ -245,8 +243,6 @@ EOSQL
         $self->permissions->set( set_name => 'member-only' );
     };
 
-    $self->_make_fs_paths();
-
     if ( $clone_pages_from ) {
         $self->_clone_workspace_pages( $clone_pages_from );
     }
@@ -400,25 +396,6 @@ sub _main_and_hub {
     return ( $main, $hub );
 }
 
-sub _make_fs_paths {
-    my $self = shift;
-
-    for my $dir ( grep { ! -d } $self->_data_dir_paths() ) {
-        File::Path::mkpath( $dir, 0, 0755 );
-    }
-}
-
-sub _data_dir_paths {
-    my $self = shift;
-    my $name = shift || $self->name;
-
-    return (
-        Socialtext::Paths::page_data_directory( $name ),
-        Socialtext::Paths::plugin_directory( $name ),
-        Socialtext::Paths::user_directory( $name ),
-    );
-}
-
 sub _update_aliases_file {
     my $self = shift;
 
@@ -545,10 +522,6 @@ sub delete {
     my $ws_name = $self->name;
 
     $self->delete_search_index();
-
-    for my $dir ( $self->_data_dir_paths() ) {
-        File::Path::rmtree($dir);
-    }
 
     my $mc = $self->users();
     while ( my $user = $mc->next() ) {
@@ -784,38 +757,9 @@ sub NameIsValid {
         my $timer = Socialtext::Timer->new;
 
         my $old_name  = $self->name();
-        my @old_paths = $self->_data_dir_paths();
 
         local $self->{allow_rename_HACK} = 1;
         $self->update( name => $p{name} );
-
-        my @new_paths = $self->_data_dir_paths();
-
-        for ( my $x = 0; $x < @old_paths; $x++ ) {
-            CORE::rename $old_paths[$x] => $new_paths[$x]
-                or die "Cannot rename $old_paths[$x] => $new_paths[$x]: $!";
-        }
-
-        my @index_links;
-        File::Find::find(
-            sub {
-                push( @index_links, $File::Find::name )
-                    if -l && $_ eq 'index.txt';
-            },
-            Socialtext::Paths::page_data_directory( $self->name )
-        );
-
-        for my $link (@index_links) {
-            my $filename = File::Basename::basename( readlink $link );
-
-            unlink $link or die "Cannot unlink $link: $!";
-
-            my $new
-                = Socialtext::File::catfile( File::Basename::dirname($link),
-                $filename );
-            symlink $new => $link
-                or die "Cannot symlink $new to $link: $!";
-        }
 
         Socialtext::EmailAlias::delete_alias($old_name);
         $self->_update_aliases_file();
@@ -1266,22 +1210,7 @@ sub _create_export_tarball {
     run "tar cf $tarball *";
 
     # Copy all the data for export into a the tempdir.
-    local $CWD = Socialtext::AppConfig->data_root_dir();
-    for my $dir (qw(plugin user data)) {
-        if ($name eq $self->name) {
-            # We can append directly to the tarball to save a copy
-            run "tar rf $tarball "
-                . Socialtext::File::catdir( $dir, $self->name );
-        }
-        else {
-            # Copy the workspace data into the tmpdir, then add to the tarball
-            my $src  = Socialtext::File::catdir( $dir,     $self->name );
-            my $dest = Socialtext::File::catdir( $tmpdir, $dir, $name );
-            dircopy( $src, $dest ) or die "Can't copy $src to $dest: $!\n";
-            local $CWD = $tmpdir;
-            run "tar rf $tarball " . Socialtext::File::catdir( $dir, $name );
-        }
-    }
+    warn "TODO - data is not copied during workspace export";
 }
 
 sub _dump_to_yaml_file {
