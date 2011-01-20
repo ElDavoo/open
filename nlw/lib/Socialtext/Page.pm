@@ -1135,11 +1135,6 @@ sub categories_sorted {
     return sort {lc($a) cmp lc($b)} @{$self->metadata->Category};
 }
 
-sub html_escaped_categories {
-    my $self = shift;
-    return map { $self->html_escape($_) } $self->categories_sorted;
-}
-
 sub metadata {
     my $self = shift;
     return $self->{metadata} = shift if @_;
@@ -1269,16 +1264,6 @@ sub title_better {
         $self->{title} = $self->metadata->Subject || $self->hub->cgi->page_name;
     }
     return $self->{title};
-}
-
-sub all {
-    my $self = shift;
-    return (
-        page_uri => $self->uri,
-        page_title => $self->title,
-        page_title_uri_escaped => $self->uri_escape($self->title),
-        revision_id => $self->revision_id,
-    );
 }
 
 sub to_html_or_default {

@@ -20,8 +20,10 @@ use Socialtext::Log qw/st_log/;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw/sql_singlevalue sql_execute/;
 use Socialtext::l10n qw(loc);
+use Socialtext::String;
 use Digest::SHA1 'sha1_hex';
 use Carp ();
+use URI::Escape qw/uri_escape_utf8/;
 
 our $CACHING_DEBUG = 0;
 our $DISABLE_CACHING = 0;
@@ -491,6 +493,16 @@ sub exists {
     $self->id && $self->all_revision_ids;
 }
 
+sub all {
+    my $self = shift;
+    return (
+        page_uri => $self->uri,
+        page_title => $self->title,
+        page_title_uri_escaped => uri_escape_utf8($self->title),
+        revision_id => $self->revision_id,
+    );
+}
+
 =head2 $page->all_revision_ids()
 
 Returns a sorted list of all the revision ids for a given page.
@@ -502,7 +514,7 @@ In scalar context, returns only the count and doesn't bother sorting.
 sub all_revision_ids {
     my $self = shift;
 
-    if (wantarray) {
+    if (!wantarray) {
         return sql_singlevalue(
             'SELECT count(*) FROM page_revision
               WHERE workspace_id = ?
@@ -891,6 +903,11 @@ sub load_content {
     );
     $self->content($content || '');
     return $self;
+}
+
+sub html_escaped_categories {
+    my $self = shift;
+    return map { Socialtext::String::html_escape($_) } $self->categories_sorted;
 }
 
 1;
