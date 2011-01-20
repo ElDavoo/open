@@ -105,6 +105,8 @@ sub is_spreadsheet { $_[0]->{page_type} eq 'spreadsheet' }
 sub type           { $_[0]->{page_type} }
 sub current_revision_num { $_[0]->{current_revision_num} }
 sub revision_count { $_[0]->{revision_count} }
+sub revision_id    { $_[0]->{current_revision_id} }
+sub revision_num   { $_[0]->{current_revision_num} }
 sub locked         { $_[0]->{locked} }
 
 sub workspace_name  { $_[0]->{workspace_name} }
@@ -130,6 +132,7 @@ sub hash_representation {
         last_editor    => $editor->email_address,
         last_edit_time => "$self->{last_edit_time} GMT",
         revision_id    => $self->{current_revision_id},
+        revision_num   => $self->{current_revision_num},
         revision_count => $self->{revision_count},
         workspace_name => $self->{workspace_name},
         workspace_title => $self->{workspace_title},
