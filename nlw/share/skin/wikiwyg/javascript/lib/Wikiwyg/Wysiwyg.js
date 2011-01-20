@@ -3411,6 +3411,10 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
         this.do_widget_html(widget_element);
         return;
     }
+    else if (/^code(?:-\w+)?$/.test(widget)) {
+        this.do_widget_code(widget_element);
+        return;
+    }
 
     var template = 'widget_' + widget + '_edit.html';
     var html = Jemplate.process(template, this.currentWidget);

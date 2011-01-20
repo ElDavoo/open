@@ -1953,6 +1953,24 @@ proto.prompt_for_table_dimensions = function() {
     return [ rows, columns ];
 }
 
+proto.do_widget_code = function(widget_element) {
+    return this._do_insert_block_dialog({
+        wafl_id: 'code',
+        dialog_title: loc('Insert Code'),
+        dialog_prompt: loc('Use the text area to compose your code block, and optionally select a highlighting syntax.'),
+        dialog_hint: loc('(Note: HTML fragments are not guaranteed to work and may break the UI.)'),
+        edit_label_function: function(syntax) {
+            if (!syntax || syntax == 'plain') {
+                return loc("Code block. Click to edit.");
+            }
+            else {
+                return loc("Code block with [_1] syntax. Click to edit.", syntax);
+            }
+        },
+        widget_element: widget_element
+    });
+}
+
 proto.do_widget_html = function(widget_element) {
     return this._do_insert_block_dialog({
         wafl_id: 'html',
@@ -2001,22 +2019,26 @@ proto._do_insert_block_dialog = function(opts) {
     else if (self.get_lines && self.get_selection_text() && self.get_lines() && self.sel) {
         // {bz: 4843}: In Wikitext mode, if there is some text selected,
         // and that text begins with .html/.pre and ends with .html/.pre,
-        // then we simply strip the markers and keep the content selected.
+        // then we pre-fill the lightbox with the inner content.
         var text = self.sel.replace(/\r/g, '');
-        var len = 2+opts.wafl_id.length;
-        if (text.substr(0, len) == "." + opts.wafl_id + "\n") {
-            if (text.substr(text.length - len, len) == "\n." + opts.wafl_id) {
-                self.selection_mangle(function(that){
-                    that.sel = text.substr(len, text.length - (2*len));
-                    return true;
-                });
-                return false;
+        switch (opts.wafl_id) {
+            case 'code': {
+                text = text.replace(/^\.code(-\w+)?\n([\d\D]*\n)?\.code\1$/, '$2');
+                break;
+            }
+            case 'html': {
+                text = text.replace(/^\.html\n([\d\D]*\n)?\.html$/, '$1');
+                break;
+            }
+            case 'pre': {
+                text = text.replace(/^\.pre\n([\d\D]*\n)?\.pre$/, '$1');
+                break;
             }
         }
 
         // Otherwise, if there is some text selected, we open the lightbox
         // with the content pre-filled with the selection.
-        $('#st-widget-block-content').val(self.sel);
+        $('#st-widget-block-content').val(text);
     }
     else {
         $('#st-widget-block-content').val('');
@@ -2042,7 +2064,7 @@ proto._do_insert_block_dialog = function(opts) {
                 self.insert_block(
                     "." + opts.wafl_id + "\n"
                         + text.replace(/\n?$/, "\n." + opts.wafl_id),
-                    opts.edit_label,
+                    (opts.edit_label || opts.edit_label_function()),
                     opts.widget_element
                 );
             }
