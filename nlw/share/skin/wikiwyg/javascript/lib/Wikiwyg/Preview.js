@@ -70,5 +70,8 @@ proto.fromHtml = function(html) {
     this.div.innerHTML = html;
     this.div.style.display = 'block';
     this.wikiwyg.enableLinkConfirmations();
+    if (typeof SyntaxHighlighter != 'undefined' && SyntaxHighlighter.highlight) {
+        SyntaxHighlighter.highlight();
+    }
 }
 
