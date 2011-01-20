@@ -2010,11 +2010,13 @@ proto._do_insert_block_dialog = function(opts) {
     $('#st-widget-block-prompt').text(opts.dialog_prompt);
 //    $('#st-widget-block-hint').text(opts.dialog_hint);
 
+    var currentWidgetId;
     if (opts.widget_element) {
         var widget = this.parseWidgetElement(opts.widget_element) || { widget : '' };
         $('#st-widget-block-content').val(
-            (widget.widget || '').replace(/^\.\w+\n/, '').replace(/\n\.\w+\n?$/, '')
+            (widget.widget || '').replace(/^\.[-\w]+\n/, '').replace(/\n\.[-\w]+\n?$/, '')
         );
+        currentWidgetId = self.currentWidget.id;
     }
     else if (self.get_lines && self.get_selection_text() && self.get_lines() && self.sel) {
         // {bz: 4843}: In Wikitext mode, if there is some text selected,
@@ -2023,6 +2025,10 @@ proto._do_insert_block_dialog = function(opts) {
         var text = self.sel.replace(/\r/g, '');
         switch (opts.wafl_id) {
             case 'code': {
+                var match = text.match(/^\.(code(-\w+)?)\n(?:[\d\D]*\n)?\.code\2$/);
+                if (match) {
+                    currentWidgetId = match[1];
+                }
                 text = text.replace(/^\.code(-\w+)?\n([\d\D]*\n)?\.code\1$/, '$2');
                 break;
             }
@@ -2044,6 +2050,28 @@ proto._do_insert_block_dialog = function(opts) {
         $('#st-widget-block-content').val('');
     }
 
+    if (opts.wafl_id == 'code') {
+        $('#st-widget-block-syntax-div').show();
+        currentWidgetId = (currentWidgetId || '').replace(/^code-?/, '');
+        $('#st-widget-block-syntax option').each(function(){
+            if ($(this).attr('value') == currentWidgetId) {
+                $(this).show();
+                $(this).attr('selected', true);
+                return;
+            }
+            if ($(this).data('alias')) {
+                $(this).hide();
+            }
+            else {
+                $(this).show();
+            }
+        });
+    }
+    else {
+        $('#st-widget-block-syntax-div').hide();
+    }
+
+
     $('#add-a-block-form')
         .unbind('reset')
         .unbind('submit')
@@ -2061,10 +2089,16 @@ proto._do_insert_block_dialog = function(opts) {
                 var text = $('#st-widget-block-content').val();
                 $('#st-widget-block-content').val('');
                 jQuery.hideLightbox();
+                var id = opts.wafl_id;
+                if (id == 'code' && $('#st-widget-block-syntax').val()) {
+                    id += '-' + $('#st-widget-block-syntax').val();
+                }
                 self.insert_block(
-                    "." + opts.wafl_id + "\n"
-                        + text.replace(/\n?$/, "\n." + opts.wafl_id),
-                    (opts.edit_label || opts.edit_label_function()),
+                    "." + id + "\n"
+                        + text.replace(/\n?$/, "\n." + id),
+                        (opts.edit_label || opts.edit_label_function(
+                            $('#st-widget-block-syntax option:selected').text()
+                        )),
                     opts.widget_element
                 );
             }
