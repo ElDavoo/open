@@ -99,7 +99,6 @@ sub import_workspace {
             $self->{workspace}
         );
         $self->_import_data_dirs();
-        $self->_fixup_page_symlinks();
         $self->_populate_db_metadata();
         $self->_rebuild_page_links();
 
@@ -290,33 +289,6 @@ sub _import_data_dirs {
         Socialtext::File::Copy::Recursive::dircopy( $src, $dest )
             or die "Could not copy $src to $dest: $!\n";
     }
-}
-
-sub _fixup_page_symlinks {
-    my $self = shift;
-
-    File::Find::find(
-        {
-            no_chdir => 1,
-            wanted   => sub {
-                return unless -l $File::Find::name;
-
-                my $target = readlink $File::Find::name;
-
-                unlink $File::Find::name
-                    or die "Cannot unlink $File::Find::name: $!";
-
-                my $abs_target = Socialtext::File::catfile(
-                    File::Basename::dirname($File::Find::name),
-                    File::Basename::basename($target) );
-
-                symlink $abs_target => $File::Find::name
-                    or die
-                    "Cannot symlink $abs_target => $File::Find::name: $!";
-                }
-        },
-        Socialtext::Paths::page_data_directory( $self->{workspace}->name() )
-    );
 }
 
 sub _set_permissions {
