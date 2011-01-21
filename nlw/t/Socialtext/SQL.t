@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 63;
+use Test::Socialtext tests => 71;
 use Test::Socialtext::Fatal;
 use Scalar::Util qw/refaddr/;
 
@@ -281,6 +281,60 @@ with_local: {
     my $pgpid3 = get_dbh()->{pg_pid};
     is $addr, $addr3, "it didn't get changed!";
     is $pgpid, $pgpid3, "same backend pid";
+}
+
+blobs: {
+    invalidate_dbh();
+    ok get_dbh(), "got dbh for blob testing";
+    is exception {
+        sql_ensure_temp('test_blob' => q{
+            foo_id bigint NOT NULL PRIMARY KEY,
+            body bytea NOT NULL
+        });
+    }, undef, "made test_blob temp table";
+
+    my $valid_insert = q{
+        INSERT INTO test_blob (body, foo_id) VALUES ($1, $2)
+    };
+    my $valid_select = q{
+        SELECT body FROM test_blob WHERE foo_id = $1
+    };
+    my $blob = 'z' x 9000;
+
+    like exception {
+        sql_saveblob(undef, $valid_insert, $^T);
+    }, qr/undefined blob/, "error for undef blob";
+
+    like exception {
+        sql_saveblob(\$blob, $valid_insert.'OMGWTFBBQ', $^T);
+    }, qr/syntax error/, "error for invalid sql";
+
+    is exception {
+        sql_saveblob(\$blob, $valid_insert, $^T);
+    }, undef, "successful insert";
+
+    my ($fetched, $returned);
+
+    like exception {
+        sql_singleblob(undef, $valid_select, $^T);
+    }, qr/undefined blob/, "error for undef blob on fetch";
+
+    like exception {
+        sql_singleblob(\$fetched, $valid_select.'OMGWTFBBQ', $^T);
+    }, qr/syntax error/, "error for syntax on fetch";
+
+    is exception {
+        $returned = sql_singleblob(\$fetched, $valid_select, $^T);
+    }, undef, "successful fetch";
+    is refaddr($returned), refaddr(\$fetched), "same ref returned";
+    ok $fetched eq $blob, "fetched content matches input";
+
+    undef $fetched;
+    is exception {
+        $returned = sql_singleblob(\$fetched, $valid_select, $^T+1);
+    }, undef, "successful fetch of non-existent row";
+    is refaddr($returned), refaddr(\$fetched), "same ref returned";
+    ok !defined($fetched), "target scalar is undef";
 }
 
 pass 'done';

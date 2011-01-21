@@ -3,7 +3,7 @@ package Socialtext::SQL;
 use strict;
 use Socialtext::Date;
 use Socialtext::AppConfig;
-use Socialtext::Timer;
+use Socialtext::Timer qw/time_scope/;
 use DateTime::Format::Pg;
 use DBI;
 use Scalar::Util qw/blessed/;
@@ -113,6 +113,7 @@ sub _connect_dbh {
     $_dbh = DBI->connect($dsn, $params{user}, "",  {
             AutoCommit => 1,
             pg_enable_utf8 => 1,
+            pg_prepare_now => 1,
             PrintError => 0,
             RaiseError => 0,
         });
@@ -555,44 +556,73 @@ potential for some zero-copy aims via L<File::Map>.
 =cut
 
 sub sql_singleblob {
-    my ($dataref, $statement, @bindings) = @_;
-    local $Level = $Level + 1;
+    my $blob_ref = shift;
 
-    unless (ref($dataref)) {
-        unshift @bindings, $statement;
-        $statement = $dataref;
+    my $t = time_scope 'sql_singleblob';
+
+    croak "undefined blob reference" unless defined($blob_ref);
+
+    unless (ref($blob_ref)) {
+        unshift @_, $blob_ref;
+        # Make a new *writable* anonymous scalar reference:
         my $x;
-        $dataref = \$x;
+        $blob_ref = \$x;
     }
 
-    my $sth = sql_execute($statement, @bindings);
-    $sth->bind_col(1, $dataref, {pg_type => DBD::Pg::PG_BYTEA()});
+    local $Level = $Level + 1;
+    my $sth = sql_execute(@_);
+
+    if ($sth->rows == 0) {
+        $$blob_ref = undef;
+        return $blob_ref;
+    }
+
+    $sth->bind_col(1, $blob_ref, {pg_type => DBD::Pg::PG_BYTEA()})
+        or croak "sql_singleblob: can't bind blob output col: ".$sth->errstr;
     $sth->fetch();
-    warn "data is $$dataref";
-    return $dataref;
+
+    return $blob_ref;
 }
 
 =head2 sql_saveblob( $blob_ref, $UPDATE, @BIND )
 
-Execute the given UPDATE statement so the blob referred to by C<$blob_ref> is
-SET.
+Execute the given UPDATE or INSERT statement so the blob referred to by
+C<$blob_ref> is SET.
 
 The UPDATE statement must have the first placeholder be the blob column. For
-example:
+example (using numbered placeholders, which is faster for DBD::Pg):
 
    UPDATE foo SET body = $1 WHERE foo_id = $2
+
+Or, for INSERT
+
+    INSERT INTO foo (foo_id,body) VALUES ($2,$1)
 
 =cut
 
 sub sql_saveblob {
-    my ($dataref, $sql, @bind);
+    my $dataref = shift;
+    my $sql = shift;
+    # my @bind = @_;
+
+    my $t = time_scope 'sql_saveblob';
+
+    croak "undefined blob reference"
+        unless ($dataref and ref($dataref) eq 'SCALAR');
+
     my $dbh = get_dbh();
-    local $dbh->{RaiseError} = 1;
-    my $sth = $dbh->prepare($sql);
+    my $sth = $dbh->prepare($sql)
+        or croak "sql_saveblob: unable to prepare SQL: ".$dbh->errstr;
     my $n = 1;
-    $sth->bind_param($n++,$$dataref,{pg_type => DBD::Pg::PG_BYTEA()});
-    $sth->bind_param($n++,$_) for @bind;
-    $sth->execute();
+    $sth->bind_param($n++,$$dataref,{pg_type => DBD::Pg::PG_BYTEA()})
+        or croak "sql_saveblob: unable to bind blob param: ".$sth->errstr;
+    for (@_) {
+        $sth->bind_param($n++,$_)
+            or croak "sql_saveblob: unable to bind param ".
+            (--$n).": ".$sth->errstr;
+    }
+    $sth->execute()
+        or croak "sql_saveblob: execute failed: ".$sth->errstr;
     return $sth;
 }
 
