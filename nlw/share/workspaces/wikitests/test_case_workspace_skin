@@ -1,24 +1,36 @@
 * HighPermissions
 
-Test for the new Workspace Skin interface for uploading custom css.
-Need skin.tgz and badskin.tgz to be in wikitest_files directory.
-
 | *Comment* | Test Case: Workspace Skin |  |
 | *Comment* | Need skin.tgz and badskin.tgz to be in %%wikitest_files%% |  |
-| *Comment* | Test Case: Workspace Skin - First check that no allow skin upload show no link |  |
-| setTimeout | 120000 |  |
-| st-admin | set-workspace-config --workspace %%workspace%% allows_skin_upload 0 | has been updated |
+
+
+| *Comment* | Test Case: Workspace Skin make a scratch workspace |  |
+| set | sws | sws-%%start_time%% |
+| st-admin | create-workspace --name %%sws%% --title %%sws%% | created |
+| st-admin | add-member --w %%sws%% --u %%username%% | now has the role |
+| open_ok | /%%sws%%/ |  |
+
+| *Comment* | Test Case: Workspace Skin - disable skin upload |  |
+| st-admin | set-workspace-config --workspace %%sws%% allows_skin_upload 0 | has been updated |
 | click_and_wait | link=Settings |  |
 | text_unlike | //body | Workspace Skin |
-| st-admin | set-workspace-config --workspace %%workspace%% allows_skin_upload 1 | has been updated |
+
+| *Comment* | Test Case: Workspace Skin - enable skin upload, no link for non-admin |  |
+| st-admin | set-workspace-config --workspace %%sws%% allows_skin_upload 1 | has been updated |
+| click_and_wait | link=Settings |  |
+| text_unlike | //body | Workspace Skin |
+
+| *Comment* | Test Case: Workspace Skin - enable skin upload, promote to admin |  |
+| st-admin | add-workspace-admin --w %%sws%% --u %%username%% | now has the role |
 
 | *Comment* | Test Case: Workspace Skin Need skin.tgz and badskin.tgz in %%wikitest_files%% |  |
-| open_ok | /%%workspace%%/ |  |
 | click_and_wait | link=Settings |  |
 | text_like | Workspace Skin |  |
 | click_and_wait | link=Workspace Skin |  |
 | text_like | Default Skin |  |
 | text_like | Customized Skin |  |
+
+| setTimeout | 120000 |  |
 
 | *Comment* | Test Case: Workspace Skin upload button |  |
 | click_and_wait | st-workspaceskin-submit |  |
@@ -107,5 +119,8 @@ Need skin.tgz and badskin.tgz to be in wikitest_files directory.
 | type_ok | st-workspaceskin-file | xxxx |
 | click_and_wait | st-workspaceskin-submit |  |
 | text_like | contentRight | A custom skin file was not uploaded |
+
+| *Comment* | Test Case: Workspace Skin TEARDOWN |  |
+| st-admin | delete-workspace --w %%sws%% --no-export | deleted |
 
 | *Comment* | Test Case: Workspace Skin COMPLETED |  |
