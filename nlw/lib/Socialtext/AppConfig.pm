@@ -1266,6 +1266,22 @@ Optional.
 
 =for code type => BOOLEAN_TYPE
 
+=head2 analytics_masked
+
+Server-wide Google Analytics - mask urls
+
+Default: 1
+
+=for code type => SCALAR_TYPE
+
+=head2 socialtext_analytics_id
+
+Socialtext Google Analytics Code
+
+Optional.
+
+=for code type => BOOLEAN_TYPE
+
 =head2 disable_mobile_redirect
 
 Set this to true in order to disable the mobile UI
