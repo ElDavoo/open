@@ -3465,4 +3465,19 @@ sub _is_wikiwyg {
         return 0;
     }
 }
+
+sub masked_url_is {
+    my ($self, $url, $expected) = @_;
+    $self->get($url, 'text/html', "User-Agent=Gecko");
+    $self->code_is(200);
+    my $content = $self->{http}->response->content;
+    
+    if ($content =~ /Socialtext\.masked_url = "([^"]*)";/) {
+        is $1, $expected, "masked-url-is $expected";
+    }
+    else {
+        fail "No masked url found - $url";
+    }
+}
+
 1;
