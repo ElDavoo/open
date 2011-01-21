@@ -561,3 +561,4 @@ t/wikitests/analytics.wiki
 t/wikitests/signals/data_signals_assets-mentions.wiki
 t/wikitests/people/rest/data_people_best_full_name.wiki
 t/wikitests/people/rest/data_people_relationships.wiki
+t/Socialtext/Pluggable/Plugin/Analytics.t
