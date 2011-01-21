@@ -4,20 +4,6 @@ use strict;
 use warnings;
 
 use Socialtext::Encode;
-use Socialtext::File;
-use Socialtext::Paths;
-use Socialtext::PageMeta;
-use Socialtext::Search::AbstractFactory;
-use Socialtext::Timer qw/time_scope/;
-use Socialtext::EmailSender::Factory;
-use Socialtext::l10n qw(loc system_locale);
-use Socialtext::WikiText::Parser;
-use Socialtext::WikiText::Emitter::SearchSnippets;
-use Socialtext::String;
-use Socialtext::Events;
-use Socialtext::SQL qw/:exec :txn get_dbh sql_parse_timestamptz/;
-use Socialtext::SQL::Builder qw/sql_insert_many/;
-use Socialtext::Permission 'ST_READ_PERM';
 
 sub parse_headers {
     my $self = shift;
