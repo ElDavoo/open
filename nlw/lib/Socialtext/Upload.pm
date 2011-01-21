@@ -3,7 +3,7 @@ package Socialtext::Upload;
 use Moose;
 use Socialtext::Moose::UserAttribute;
 use Socialtext::MooseX::Types::Pg;
-use Socialtext::SQL qw/:exec sql_txn sql_format_timestamptz/;
+use Socialtext::SQL qw/:exec sql_txn sql_format_timestamptz get_dbh/;
 use Socialtext::SQL::Builder qw/sql_nextval sql_insert sql_update/;
 use Socialtext::Exceptions qw/no_such_resource_error data_validation_error/;
 use Socialtext::Encode qw/ensure_is_utf8/;
@@ -13,7 +13,8 @@ use Socialtext::JSON qw/encode_json/;
 use Socialtext::UUID qw/new_uuid/;
 use File::Copy qw/copy move/;
 use File::Path qw/make_path/;
-use Fatal qw/copy move rename open close unlink/;
+use File::Map qw/map_file advise/;
+use Fatal qw/copy move rename open close/;
 use Try::Tiny;
 use Moose::Util::TypeConstraints;
 use Guard;
@@ -90,17 +91,17 @@ sub Create {
     # wrapper.
     my $self = $class->Get(attachment_id => $id);
 
-    my $disk_filename = $self->temp_filename;
+    my $disk_temp_filename = $self->temp_filename;
     if ($temp_fh) {
         # copy can take fh or filename
-        copy($temp_fh, $disk_filename);
+        copy($temp_fh, $disk_temp_filename);
     }
 
     try {
         my $mime_type = Socialtext::File::mime_type(
-            $disk_filename, $self->filename, $type_hint);
+            $disk_temp_filename, $self->filename, $type_hint);
         my $is_image = ($mime_type =~ m#image/#) ? 1 : 0;
-        $content_length = -s $disk_filename;
+        $content_length = -s $disk_temp_filename;
         sql_execute(q{
             UPDATE attachment
                SET mime_type = ?, is_image = ?, content_length = ?
@@ -239,7 +240,8 @@ sub purge {
     my $actor = $p{actor} || Socialtext::User->SystemUser;
 
     # missing file is OK
-    try { unlink $self->disk_filename };
+    unlink $self->disk_filename;
+
     sql_execute(q{DELETE FROM attachment WHERE attachment_id = ?},
         $self->attachment_id);
 
@@ -266,29 +268,36 @@ sub make_permanent {
     my $src = $self->temp_filename;
     my $targ = $self->storage_filename;
 
-    (my $dir = $targ) =~ s#/[^/]+$##;
-    make_path($dir, {mode => 0774});
-    move($src => $targ.'.tmp');
+    map_file my $data, $src, '<';
+    advise $data, 'sequential';
+    $self->_store(\$data);
 
-    sql_execute(q{
+    my $sql = q{
         UPDATE attachment
-           SET is_temporary = false
-         WHERE attachment_id = ?
-    }, $self->attachment_id);
-    rename($targ.'.tmp' => $targ);
+           SET is_temporary = false,
+               body = $1 
+         WHERE attachment_id = $2 
+    };
+    try { sql_saveblob(\$data, $sql, $self->attachment_id) }
+    catch {
+        my $e = $_;
+        unlink $targ;
+        croak $e;
+    };
+
     $self->is_temporary(undef);
+    unlink $src;
 
     if ($p{guard}) {
-        # move it back unless this gets cancelled
+        # Move it back unless this gets cancelled. Assumes the db will get
+        # reverted in the scope of a larger transaction.
         return guard { 
             move($targ => "$src.tmp");
             rename("$src.tmp" => $src);
             $self->is_temporary(1);
         };
     }
-}
-after 'make_permanent' => sub {
-    my ($self, %p) = @_;
+
     my $actor = $p{actor} || Socialtext::User->SystemUser;
     st_log()->info(join(',', "UPLOAD,CONSUME",
         $self->is_image ? 'IMAGE' : 'FILE',
@@ -301,19 +310,66 @@ after 'make_permanent' => sub {
             'actor'     => $actor->username,
             'filename'  => $self->filename,
         })));
-};
+
+    return;
+}
+
+sub _store {
+    my ($self, $data_ref) = @_;
+    Carp::confess "undef data" unless defined($$data_ref);
+
+    my $targ = $self->storage_filename;
+    (my $dir = $targ) =~ s{/[^/]+$}{};
+    my $tmp = $targ.".tmp";
+    make_path($dir, {mode => 0774});
+
+    open my $fh, '>:raw', $tmp
+        or confess "can't open storage temp file $tmp: $!";
+
+    try {
+        local $!;
+        my $wrote = syswrite $fh, $$data_ref;
+        die "can't write to storage temp file: $!" if ($! or $wrote <= 0);
+        close $fh; # Fatal
+        rename $tmp => $targ; # Fatal
+    }
+    catch {
+        unlink $tmp;
+        die $_;
+    };
+    return;
+}
+
+sub _load_blob {
+    my ($self, $data_ref) = @_;
+    sql_singleblob($data_ref,
+        q{SELECT body FROM attachment WHERE attachment_id = $1},
+        $self->attachment_id);
+}
+
+sub ensure_stored {
+    my $self = shift;
+    croak "can't ensure storage on a temporary attachment"
+        if $self->is_temporary;
+    return if -f $self->storage_filename;
+
+    my $data;
+    $self->_load_blob(\$data);
+    $self->_store(\$data);
+
+    return;
+}
 
 sub binary_contents {
-    my ($self, $ref) = @_;
+    my ($self, $data_ref) = @_;
     my $filename = $self->disk_filename;
-
-    # read file in mmap'd slurp mode:
-    local $/;
-    open my $fh, "<:mmap", $filename;
-    $$ref = <$fh>;
-
-    close $fh;
-    return; # no leaking
+    if (-f $filename) {
+        map_file $$data_ref, $filename, '<';
+    }
+    else {
+        $self->_load_blob($data_ref);
+    }
+    return;
 }
 
 __PACKAGE__->meta->make_immutable;

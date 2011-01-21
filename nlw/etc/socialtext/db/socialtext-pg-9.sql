@@ -755,7 +755,8 @@ CREATE TABLE attachment (
     mime_type text NOT NULL,
     is_image boolean NOT NULL,
     is_temporary boolean DEFAULT false NOT NULL,
-    content_length integer NOT NULL
+    content_length integer NOT NULL,
+    body bytea
 );
 
 CREATE SEQUENCE attachment_id_seq
