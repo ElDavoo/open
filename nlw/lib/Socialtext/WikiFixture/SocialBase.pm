@@ -595,7 +595,9 @@ sub create_account {
     my $acct = create_test_account_bypassing_factory($name);
     my $ws = Socialtext::Workspace->new(name => 'admin');
     $acct->enable_plugin($_) for qw/people dashboard widgets signals groups/;
-    $ws->enable_plugin($_) for qw/socialcalc/;
+    if ($ws) {
+        $ws->enable_plugin($_) for qw/socialcalc/;
+    }
     $self->{account_id} = $acct->account_id;
     diag "Created account $name ($self->{account_id})";
     return $acct;

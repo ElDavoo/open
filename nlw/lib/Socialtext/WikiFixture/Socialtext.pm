@@ -111,7 +111,7 @@ sub handle_command {
     # Try the SocialBase commands first
     my @args = $self->_munge_command_and_opts(@_);
     eval { $self->SUPER::_handle_command(@args) };
-    return unless $@;
+    return unless $@; # Here we see an error and so it's run twice
 
     # Fallback to Selenese command processing
     $self->SUPER::handle_command(@_);
