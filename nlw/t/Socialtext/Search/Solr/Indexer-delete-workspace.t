@@ -9,7 +9,6 @@ BEGIN {
 
 use Test::Socialtext;
 use Test::Socialtext::Search;
-use Socialtext::Search::Config;
 
 plan tests => 1;
 ok "Test removed until we decide to implement Solr WS Search";
