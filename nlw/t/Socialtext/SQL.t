@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 71;
+use Test::Socialtext tests => 70;
 use Test::Socialtext::Fatal;
 use Scalar::Util qw/refaddr/;
 
@@ -283,9 +283,8 @@ with_local: {
     is $pgpid, $pgpid3, "same backend pid";
 }
 
+invalidate_dbh();
 blobs: {
-    invalidate_dbh();
-    ok get_dbh(), "got dbh for blob testing";
     is exception {
         sql_ensure_temp('test_blob' => q{
             foo_id bigint NOT NULL PRIMARY KEY,

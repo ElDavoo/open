@@ -1,14 +1,20 @@
-# @COPYRIGHT@
 package Socialtext::SQL;
+# @COPYRIGHT@
+use warnings;
 use strict;
-use Socialtext::Date;
-use Socialtext::AppConfig;
-use Socialtext::Timer qw/time_scope/;
 use DateTime::Format::Pg;
 use DBI;
+use DBD::Pg;
 use Scalar::Util qw/blessed/;
 use Carp qw/confess carp croak cluck/;
 use List::MoreUtils qw/any/;
+use Try::Tiny;
+use Guard;
+
+use Socialtext::Date;
+use Socialtext::AppConfig;
+use Socialtext::Timer qw/time_scope/;
+
 use base 'Exporter';
 
 =head1 NAME
@@ -85,27 +91,21 @@ sub get_dbh {
         warn "Returning cached connection" if $DEBUG;
         return $_dbh
     }
-
-    Socialtext::Timer->Continue('get_dbh');
-    eval {
-        if (!$_dbh) {
-            warn "No connection" if $DEBUG;
-            _connect_dbh();
-        }
-        elsif ($_needs_ping && !$_dbh->ping()) {
-            warn "dbh ping failed\n";
-            disconnect_dbh();
-            _connect_dbh();
-        }
-    };
-    my $err = $@;
-    Socialtext::Timer->Pause('get_dbh');
-
-    croak $err if $@;
+    my $t = time_scope 'get_dbh';
+    if (!$_dbh) {
+        warn "No connection" if $DEBUG;
+        _connect_dbh();
+    }
+    elsif ($_needs_ping && !$_dbh->ping()) {
+        warn "dbh ping failed\n";
+        disconnect_dbh();
+        _connect_dbh();
+    }
     return $_dbh;
 }
 
 sub _connect_dbh {
+    my $t = time_scope 'connect_dbh';
     my %params = Socialtext::AppConfig->db_connect_params();
     cluck "Creating a new DBH $params{db_name}" if $DEBUG;
     my $dsn = "dbi:Pg:database=$params{db_name}";
@@ -241,45 +241,21 @@ closing-over in the transaction block.
 =cut
 
 sub sql_txn (&;@) {
-    my $code = shift;
+    my ($code,@args) = @_;
 
     sql_begin_work([caller()]);
+    my $commit = guard(\&sql_commit);
 
-    # the following is based on code from Try::Tiny:
-    my $wa = wantarray;
-    my @rv;
-    my $e;
-    {
-        local $@; # preserve $@ outside of this call
-        eval {
-            if ($wa) { # call in list context
-                @rv = $code->(@_);
-            }
-            elsif (defined $wa) { # call in scalar context
-                $rv[0] = $code->(@_);
-            }
-            else { # call in void context
-                $code->(@_);
-            }
-            return 1; # successful call
-        };
-        $e = $@; # copy back out due to local $@
-    }
-
-    if ($e) {
+    return try { $code->(@args) }
+    catch {
+        my $e = $_;
+        $commit->cancel;
         carp "sql_txn rollback..." if $DEBUG;
-        eval { sql_rollback() };
-        $e .= "\nand during rollback: $@" if ($@ && !blessed($e));
-        $@ = $e; # make Test::Exception happy
+        my $e2;
+        try { sql_rollback() } catch { $e2 = $_ };
+        $e .= "\nand during rollback: $e2" if ($e2 && !blessed($e));
         die $e;
-    }
-    else {
-        carp "sql_txn committing..." if $DEBUG;
-        sql_commit();
-    }
-
-    return unless defined $wa;
-    return $wa ? @rv : $rv[0];
+    };
 }
 
 =head2 sql_in_transaction()
@@ -396,16 +372,13 @@ sub sql_execute {
     my $statement = shift;
     # rest of @_ are bindings, prevent making copies
     my $bind = \@_;
-
-    my $sth;
-    eval { $sth = _sql_execute($statement, 'execute', $bind) };
-
-    if (my $err = $@) {
+    return try { _sql_execute($statement, 'execute', $bind) }
+    catch {
+        my $e = $_;
         my $msg = "Error during sql_execute():\n$statement\n";
         $msg .= _list_bindings($bind);
-        confess "${msg}Error: $err";
-    }
-    return $sth;
+        confess "${msg}Error: $e";
+    };
 }
 
 =head2 sql_execute_array( $SQL, @BIND )
@@ -424,10 +397,9 @@ sub sql_execute_array {
     $opts->{ArrayTupleStatus} = \@status;
     unshift @$bind, $opts;
 
-    my $sth;
-    eval { $sth = _sql_execute($statement, 'execute_array', $bind) };
-
-    if ($@) {
+    return try { _sql_execute($statement, 'execute_array', $bind) }
+    catch {
+        my $e = $_;
         my $msg = "Error during sql_execute():\n$statement\n";
         $msg .= _list_bindings($bind);
         my %dups;
@@ -435,16 +407,15 @@ sub sql_execute_array {
                     grep { ref $_ and !$dups{$_->[1]}++ }
                          @status;
         my $err = join("\n", @errors);
-        croak "${msg}\nErrors: $@\n$err\n";
-    }
-    return $sth;
+        croak "${msg}\nErrors: $e\n$err\n";
+    };
 }
 
 sub _sql_execute {
     my ($statement, $exec_sub, $bind) = @_;
+    my $t = time_scope 'sql_execute';
 
     my $dbh = get_dbh();
-    Socialtext::Timer->Continue('sql_execute');
 
     my ($sth, $rv);
     if ($DEBUG or $TRACE_SQL) {
@@ -465,21 +436,11 @@ sub _sql_execute {
             . join('', map { "$_->[0]\n" } @$lines);
     }
 
-    eval {
-        _count_sql($statement) if $COUNT_SQL;
-        Socialtext::Timer->Continue('sql_prepare');
-        $sth = $dbh->prepare($statement);
-        Socialtext::Timer->Pause('sql_prepare');
-        $sth->$exec_sub(@$bind)
-            || die "$exec_sub failed: " . $sth->errstr . "\n";
-    };
+    _count_sql($statement) if $COUNT_SQL;
 
-    if (my $err = $@) {
-        Socialtext::Timer->Pause('sql_execute');
-        die "$@\n";
-    }
-
-    Socialtext::Timer->Pause('sql_execute');
+    $sth = $dbh->prepare($statement);
+    $sth->$exec_sub(@$bind)
+        || die "$exec_sub failed: " . $sth->errstr . "\n";
     return $sth;
 }
 
@@ -490,7 +451,7 @@ sub _count_sql {
 
     require Digest::SHA1;
     my $sql_file = '/tmp/sql-count';
-    open(my $fh, ">>$sql_file") or die "Can't open $sql_file: $!";
+    open(my $fh, ">>",$sql_file) or die "Can't open $sql_file: $!";
     print $fh Digest::SHA1::sha1_hex($sql), " $sql\n";
     close $fh;
 }
@@ -510,11 +471,10 @@ Wrapper around $sth->selectrow_array
 
 sub sql_selectrow {
     my ( $statement, @bindings ) = @_;
-
-    Socialtext::Timer->Continue('sql_selectrow');
-    my @result = get_dbh->selectrow_array($statement, undef, @bindings);
-    Socialtext::Timer->Pause('sql_selectrow');
-    return @result;
+    my $t = time_scope 'sql_selectrow';
+    my $dbh = get_dbh();
+    local $dbh->{RaiseError} = 1;
+    return $dbh->selectrow_array($statement, undef, @bindings);
 }
 
 =head2 sql_singlevalue( $SQL, @BIND )
@@ -535,6 +495,11 @@ sub sql_singlevalue {
     $value =~ s/\s+$// if defined $value;
     return $value;
 }
+
+=head1 Blobs
+
+Functions for working with large data blobs.  These are implemented as 'bytea'
+columns in PostgreSQL (instead of LOBs).
 
 =head2 $blob_ref = sql_singleblob( $SQL, @BIND )
 
@@ -697,7 +662,7 @@ sub sql_ensure_temp {
 
     my $needs_create = 0;
 
-    eval {
+    try {
         sql_txn {
             local $dbh->{RaiseError} = 0;
             carp "TRUNCATE-ing $table" if ($PROFILE_SQL||$TRACE_SQL||$DEBUG);
@@ -707,8 +672,10 @@ sub sql_ensure_temp {
             $needs_create = 1 if ($st eq '42P01'); # UNDEFINED TABLE
             die $dbh->errstr if $dbh->errstr;
         };
+    }
+    catch {
+        die $_ unless $needs_create;
     };
-    die $@ if ($@ && !$needs_create);
 
     return unless $needs_create;
     sql_txn {
