@@ -55,6 +55,7 @@ sub all_active {
 sub all_ids {
     my $self = shift;
     my %p = @_;
+    my $ws_id = $p{workspace_id} || $self->hub->current_workspace->workspace_id;
     my $t = time_scope 'all_ids';
     my $hide_deleted = $p{not_deleted} ? "AND NOT deleted" : '';
     my $sth = sql_execute(<<EOT,
@@ -64,7 +65,7 @@ SELECT page_id
         $hide_deleted
     ORDER BY last_edit_time DESC
 EOT
-        $self->hub->current_workspace->workspace_id,
+        $ws_id,
     );
     my $pages = $sth->fetchall_arrayref();
     return map { $_->[0] } @$pages;
