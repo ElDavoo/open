@@ -81,3 +81,19 @@ sub read_and_decode_file {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Page::Legacy - Code used for the old filesystem based page store.
+
+=head1 SYNOPSIS
+
+  Try not to use this.
+
+=head1 DESCRIPTION
+
+Old codes only used for importing old filesystem page store.
+
+=cut
