@@ -115,7 +115,8 @@ sub action {
 
     if (!$action) {
         return 'display' if $self->query_string;
-        return 'display' if $self->hub->rest->{__last_match_pattern} eq '/:ws/:pname';
+        my $last_match = $self->hub->rest->{__last_match_pattern} || '';
+        return 'display' if $last_match eq '/:ws/:pname';
     }
 
     return $action || $self->_truly_default_action;
@@ -129,7 +130,8 @@ sub page_name {
     my $page_name = $self->_get_cgi_param('page_name');
     $page_name = $self->uri_unescape($page_name);
 
-    if ($self->hub->rest->{__last_match_pattern} eq '/:ws/:pname') {
+    my $last_match = $self->hub->rest->{__last_match_pattern} || '';
+    if ($last_match eq '/:ws/:pname') {
         $page_name ||= $self->hub->rest->{__lastRegexMatches}[1];
     }
 
