@@ -40,7 +40,8 @@ Provides methods with extra error checking and connections to the database.
 
 our @EXPORT_OK = qw(
     get_dbh disconnect_dbh invalidate_dbh with_local_dbh
-    sql_execute sql_execute_array sql_selectrow sql_singlevalue 
+    sql_execute sql_execute_array sql_selectrow sql_singlevalue
+    sql_singleblob sql_saveblob
     sql_commit sql_begin_work sql_rollback sql_in_transaction
     sql_txn
     sql_convert_to_boolean sql_convert_from_boolean
@@ -49,7 +50,8 @@ our @EXPORT_OK = qw(
 );
 our %EXPORT_TAGS = (
     'exec' => [qw(sql_execute sql_execute_array
-                  sql_selectrow sql_singlevalue)],
+                  sql_selectrow sql_singlevalue
+                  sql_singleblob sql_saveblob)],
     'time' => [qw(sql_parse_timestamptz sql_format_timestamptz 
                   sql_timestamptz_now)],
     'bool' => [qw(sql_convert_to_boolean sql_convert_from_boolean)],
@@ -528,11 +530,72 @@ sub sql_singlevalue {
     local $Level = $Level + 1;
     my $sth = sql_execute($statement, @bindings);
     my $value;
-    $sth->bind_columns(undef, \$value);
+    $sth->bind_col(1, \$value);
     $sth->fetch();
     $sth->finish();
     $value =~ s/\s+$// if defined $value;
     return $value;
+}
+
+=head2 $blob_ref = sql_singleblob( $SQL, @BIND )
+
+=head2 $blob_ref = sql_singleblob( $blob_ref, $SQL, @BIND )
+
+Retrieves a postgresql bytea column from the database as a scalar reference.
+If the actual value is NULL, a reference to undef is returned;
+
+In the first mode, a new anonymous scalar is created and the blob is loaded
+into it.
+
+In the second mode, a scalar reference is supplied as the first argument.  The
+blob data will be loaded into that scalar.  For convenience, the same
+reference is returned.
+
+The first mode is Lazier, the second mode is slightly faster and has the
+potential for some zero-copy aims via L<File::Map>.
+
+=cut
+
+sub sql_singleblob {
+    my ($dataref, $statement, @bindings) = @_;
+    local $Level = $Level + 1;
+
+    unless (ref($dataref)) {
+        unshift @bindings, $statement;
+        $statement = $dataref;
+        my $x;
+        $dataref = \$x;
+    }
+
+    my $sth = sql_execute($statement, @bindings);
+    $sth->bind_col(1, $dataref, {pg_type => DBD::Pg::PG_BYTEA()});
+    $sth->fetch();
+    warn "data is $$dataref";
+    return $dataref;
+}
+
+=head2 sql_saveblob( $blob_ref, $UPDATE, @BIND )
+
+Execute the given UPDATE statement so the blob referred to by C<$blob_ref> is
+SET.
+
+The UPDATE statement must have the first placeholder be the blob column. For
+example:
+
+   UPDATE foo SET body = $1 WHERE foo_id = $2
+
+=cut
+
+sub sql_saveblob {
+    my ($dataref, $sql, @bind);
+    my $dbh = get_dbh();
+    local $dbh->{RaiseError} = 1;
+    my $sth = $dbh->prepare($sql);
+    my $n = 1;
+    $sth->bind_param($n++,$$dataref,{pg_type => DBD::Pg::PG_BYTEA()});
+    $sth->bind_param($n++,$_) for @bind;
+    $sth->execute();
+    return $sth;
 }
 
 =head1 Utility
