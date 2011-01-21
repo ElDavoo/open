@@ -44,7 +44,6 @@ our @EXPORT_OK = qw(
     sql_singleblob sql_saveblob
     sql_commit sql_begin_work sql_rollback sql_in_transaction
     sql_txn
-    sql_convert_to_boolean sql_convert_from_boolean
     sql_parse_timestamptz sql_format_timestamptz sql_timestamptz_now
     sql_ensure_temp
 );
@@ -54,7 +53,6 @@ our %EXPORT_TAGS = (
                   sql_singleblob sql_saveblob)],
     'time' => [qw(sql_parse_timestamptz sql_format_timestamptz 
                   sql_timestamptz_now)],
-    'bool' => [qw(sql_convert_to_boolean sql_convert_from_boolean)],
     'txn'  => [qw(sql_txn sql_commit sql_begin_work
                   sql_rollback sql_in_transaction)],
 );
@@ -599,32 +597,6 @@ sub sql_saveblob {
 }
 
 =head1 Utility
-
-=head2 sql_convert_to_boolean()
-
-Perl true-false to sql boolean.
-
-=cut
-
-sub sql_convert_to_boolean {
-    my $value= shift;
-    my $default = shift;
-
-    return $default if (!defined($value));
-    return $value ? 't' : 'f';
-}
-
-=head2 sql_convert_from_boolean()
-
-Maps SQL t/f to perl true-false.
-
-=cut
-
-sub sql_convert_from_boolean {
-    my $value= shift;
-
-    return $value eq 't' ? 1 : 0;
-}
 
 =head2 sql_parse_timestamptz()
 
