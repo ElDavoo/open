@@ -31,7 +31,45 @@ TODO: Selenium up to 9.2 only recognizes the first prompt for table size. Check 
 answerOnNextPrompt | 3 | |
 verifyPrompt | Please enter the number of table columns: | |
 
- *Comment* | Test Case: Insert Menu click on the icons for spreadsheet, image, HR, and table | |
+
+| *Comment* | Test Case: Insert Menu Insert Code Snippet |  |
+| wait_for_element_visible_ok | link=Code... | 30000 |
+| click_ok | link=Code... |  |
+| wait_for_element_visible_ok | st-widget-block-content | 30000 |
+| wait_for_element_visible_ok | st-widget-block-save | 30000 |
+| wait_for_element_visible_ok | st-widget-block-cancel | 30000 |
+| wait_for_element_visible_ok | st-widget-block-syntax | 30000 |
+| type_ok | st-widget-block-content | print "very semantic text output here $user\n"; |
+| select_ok | st-widget-block-syntax | label=Perl |
+| click_ok | st-widget-block-cancel |  |
+| pause | 5000 |  |
+| text_unlike | wikiwyg_wikitext_textarea | very semantic text output here |
+| click_ok | link=Code... |  |
+| wait_for_element_visible_ok | st-widget-block-content | 30000 |
+| wait_for_element_visible_ok | st-widget-block-save | 30000 |
+| wait_for_element_visible_ok | st-widget-block-cancel | 30000 |
+| wait_for_element_visible_ok | st-widget-block-syntax | 30000 |
+| type_ok | st-widget-block-content | print "very specific text output here $user"; |
+| select_ok | st-widget-block-syntax | label=Perl |
+| click_ok | st-widget-block-save |  |
+| pause | 30000 |  |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/.code-perl.+very specific text output here/s` |
+
+| wait_for_element_visible_ok | st-cancel-button-link | 30000 |
+| click_ok | st-cancel-button-link | 30000 |
+| confirmation_is | Are you sure you want to cancel?\n\nYou have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page. |  |
+| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
+| type_ok | st-newpage-pagename-edit | test case insert menu %%start_time%% |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| type_ok | wikiwyg_wikitext_textarea | foo |
+
+
+
+| *Comment* | Test Case: Insert Menu click on the icons for spreadsheet, image, HR, and table |  |
+
 click_ok | link=Spreadsheet | |
 verifyValue | wikiwyg_wikitext_textarea | `{ss: foo}` |
 click_ok | link=Spreadsheet | |
@@ -165,29 +203,5 @@ verifyValue | wikiwyg_wikitext_textarea | foo |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{{----}}/s` |
 | click_ok | link=Unformatted Text... |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
-
-| *Comment* | Test Case: Insert Menu "Code..." |  |
-| wait_for_element_visible_ok | link=Code... | 30000 |
-| click_ok | link=Code... |  |
-| wait_for_element_visible_ok | st-widget-block-content | 30000 |
-| wait_for_element_visible_ok | st-widget-block-save | 30000 |
-| wait_for_element_visible_ok | st-widget-block-cancel | 30000 |
-| wait_for_element_visible_ok | st-widget-block-syntax | 30000 |
-| type_ok | st-widget-block-content | moo |
-| select_ok | st-widget-block-syntax | label=Perl |
-| click_ok | st-widget-block-cancel |  |
-| pause | 5000 |  |
-| text_unlike | wikiwyg_wikitext_textarea | moo |
-| click_ok | link=Code... |  |
-| wait_for_element_visible_ok | st-widget-block-content | 30000 |
-| wait_for_element_visible_ok | st-widget-block-save | 30000 |
-| wait_for_element_visible_ok | st-widget-block-cancel | 30000 |
-| wait_for_element_visible_ok | st-widget-block-syntax | 30000 |
-| type_ok | st-widget-block-content | bar |
-| select_ok | st-widget-block-syntax | label=Perl |
-| pause | 5000 |  |
-| click_ok | st-widget-block-save |  |
-| pause | 5000 |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/.code-perl.+bar/s` |
 
 | *Comment* | Test Case: Insert Menu COMPLETED |  |
