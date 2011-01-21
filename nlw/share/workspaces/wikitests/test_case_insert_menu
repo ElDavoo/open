@@ -166,4 +166,28 @@ verifyValue | wikiwyg_wikitext_textarea | foo |
 | click_ok | link=Unformatted Text... |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
 
+| *Comment* | Test Case: Insert Menu "Code..." |  |
+| wait_for_element_visible_ok | link=Code... | 30000 |
+| click_ok | link=Code... |  |
+| wait_for_element_visible_ok | st-widget-block-content | 30000 |
+| wait_for_element_visible_ok | st-widget-block-save | 30000 |
+| wait_for_element_visible_ok | st-widget-block-cancel | 30000 |
+| wait_for_element_visible_ok | st-widget-block-syntax | 30000 |
+| type_ok | st-widget-block-content | foo |
+| select_ok | st-widget-block-syntax | label=Perl |
+| click_ok | st-widget-block-cancel |  |
+| pause | 5000 |  |
+| text_unlike | wikiwyg_wikitext_textarea | foo |
+| click_ok | link=Code... |  |
+| wait_for_element_visible_ok | st-widget-block-content | 30000 |
+| wait_for_element_visible_ok | st-widget-block-save | 30000 |
+| wait_for_element_visible_ok | st-widget-block-cancel | 30000 |
+| wait_for_element_visible_ok | st-widget-block-syntax | 30000 |
+| type_ok | st-widget-block-content | bar |
+| select_ok | st-widget-block-syntax | label=Perl |
+| pause | 5000 |  |
+| click_ok | st-widget-block-save |  |
+| pause | 5000 |  |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/.code-perl.+bar/s` |
+
 | *Comment* | Test Case: Insert Menu COMPLETED |  |
