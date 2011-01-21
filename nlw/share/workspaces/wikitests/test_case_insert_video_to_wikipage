@@ -1,0 +1,128 @@
+
+| *Comment* | STARTING Test Case: Insert Video to wikipage |  |
+
+| *Comment* | Test Case: Insert Video to wikipage |  |
+| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
+| type_ok | st-newpage-pagename-edit | test case insert video %%start_time%% |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| type_ok | wikiwyg_wikitext_textarea | foo |
+| wait_for_element_visible_ok | link=Rich Text | 30000 |
+| click_ok | link=Rich Text |  |
+| pause | 5000 | wait for the Rich Text editor to load |
+
+
+| *Comment* | Test Case: Insert Video to WikiPage - Check Cancel Button |  |
+| wait_for_element_visible_ok | wikiwyg_button_video | 30000 |
+| click_ok | wikiwyg_button_video | 30000 |
+| wait_for_element_visible_ok | st-widget-video_url | 30000 |
+| wait_for_element_visible_ok | st-widget-savebutton | 30000 |
+| wait_for_element_visible_ok | st-widget-cancelbutton | 30000 |
+| type_ok | st-widget-video_url | http://www.youtube.com/watch?v=lH4lcrxP8mo |
+| click_ok | st-widget-cancelbutton |  |
+| pause | 3000 | wait for dialog box to go away |
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| text_unlike | wikiwyg_wikitext_textarea | http://www.youtube.com/watch?v=lH4lcrxP8mo |
+| wait_for_element_visible_ok | link=Rich Text | 30000 |
+| click_ok | link=Rich Text |  |
+| pause | 5000 | wait for the Rich Text editor to load |
+
+
+| *Comment* | Test Case: Insert Video to WikiPage Bad URL |  |
+| wait_for_element_visible_ok | wikiwyg_button_video | 30000 |
+| click_ok | wikiwyg_button_video | 30000 |
+| wait_for_element_visible_ok | st-widget-video_url | 30000 |
+| wait_for_element_visible_ok | st-widget-savebutton | 30000 |
+| wait_for_element_visible_ok | st-widget-cancelbutton | 30000 |
+| type_ok | st-widget-video_url | thisisatest |
+| click_ok | st-widget-savebutton |  |
+| *Comment* | Test Case: Insert Video to WikiPage Can't sense the text but all the buttons are still present. |  |
+| wait_for_element_visible_ok | st-widget-video_url | 30000 |
+| wait_for_element_visible_ok | st-widget-savebutton | 30000 |
+| wait_for_element_visible_ok | st-widget-cancelbutton | 30000 |
+| click_ok | st-widget-cancelbutton |  |
+| pause | 3000 | wait for dialog box to go away |
+
+
+| *Comment* | Test Case: Insert Video to WikiPage Non-Video URL |  |
+| wait_for_element_visible_ok | wikiwyg_button_video | 30000 |
+| click_ok | wikiwyg_button_video | 30000 |
+| wait_for_element_visible_ok | st-widget-video_url | 30000 |
+| wait_for_element_visible_ok | st-widget-savebutton | 30000 |
+| wait_for_element_visible_ok | st-widget-cancelbutton | 30000 |
+| type_ok | st-widget-video_url | http://www.xndev.com/ |
+| pause | 2000 | wait_for_text_present fails. |
+| text_like | //body | Sorry, this URL is not hosted on any of our supported services (GoogleVideo, SlideShare, Vimeo, YouTube). |
+| wait_for_element_visible_ok | st-widget-video_url | 30000 |
+| wait_for_element_visible_ok | st-widget-savebutton | 30000 |
+| wait_for_element_visible_ok | st-widget-cancelbutton | 30000 |
+| click_ok | st-widget-cancelbutton |  |
+| pause | 3000 | wait for dialog box to go away |
+
+| *Comment* | Test Case: Insert Video to WikiPage Basic URL |  |
+| wait_for_element_visible_ok | wikiwyg_button_video | 30000 |
+| click_ok | wikiwyg_button_video | 30000 |
+| wait_for_element_visible_ok | st-widget-video_url | 30000 |
+| wait_for_element_visible_ok | st-widget-savebutton | 30000 |
+| wait_for_element_visible_ok | st-widget-cancelbutton | 30000 |
+| type_ok | st-widget-video_url | http://www.youtube.com/watch?v=lH4lcrxP8mo |
+| click_ok | st-widget-savebutton |  |
+| pause | 5000 | wait for insert |
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| pause | 5000 | wait for text to be populated |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/{video: http:\/\/www.youtube.com\/watch\?v=lH4lcrxP8mo size=original} foo/s` |
+
+
+| *Comment* | Test Case: Insert Video to WikiPage Different Size |  |
+| wait_for_element_visible_ok | st-cancel-button-link | 30000 |
+| click_ok | st-cancel-button-link | 30000 |
+| confirmation_is | Are you sure you want to cancel?\n\nYou have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page. |  |
+| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
+| type_ok | st-newpage-pagename-edit | test case insert video %%start_time%% |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| type_ok | wikiwyg_wikitext_textarea | foo |
+| wait_for_element_visible_ok | link=Rich Text | 30000 |
+| click_ok | link=Rich Text |  |
+| pause | 5000 | wait for the Rich Text editor to load |
+| wait_for_element_visible_ok | wikiwyg_button_video | 30000 |
+| click_ok | wikiwyg_button_video | 30000 |
+| wait_for_element_visible_ok | st-widget-video_url | 30000 |
+| wait_for_element_visible_ok | st-widget-savebutton | 30000 |
+| wait_for_element_visible_ok | st-widget-cancelbutton | 30000 |
+| type_ok | st-widget-video_url | http://www.slideshare.net/alikhan_nazeer80/better-software-classic-testing-mistakes-presentation |
+| click_ok | //input[@value="small" and @name="size"] |  |
+| click_ok | st-widget-savebutton |  |
+| pause | 5000 | wait for insert |
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| pause | 5000 | wait for insert |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/{video: http:\/\/www.slideshare.net\/alikhan_nazeer80\/better\-software\-classic\-testing\-mistakes\-presentation.+size\=small}/s` |
+
+| *Comment* | Test Case: Insert Video to WikiPage Basic WikiText Mode Wafl insert |  |
+| wait_for_element_visible_ok | st-cancel-button-link | 30000 |
+| click_ok | st-cancel-button-link | 30000 |
+| confirmation_is | Are you sure you want to cancel?\n\nYou have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page. |  |
+| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
+| type_ok | st-newpage-pagename-edit | test case insert menu %%start_time%% |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| type_ok | wikiwyg_wikitext_textarea | foo |
+| wait_for_element_visible_ok | link=Video | 30000 |
+| click_ok | link=Video |  |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/{video: foo}/s` |
+
+
+| *Comment* | Test Case: Insert Video to WikiPage COMPLETED |  |
