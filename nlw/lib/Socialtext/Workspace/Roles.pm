@@ -174,6 +174,7 @@ sub RolesForUserInWorkspace {
         my $offset        = $p{offset};
         my $direct        = $p{direct};
         my $exclude       = $p{exclude};
+        my $order_by      = $p{order_by};
         my $sort_order    = $p{sort_order};
         my $minimal       = $p{minimal};
 
@@ -223,6 +224,22 @@ sub RolesForUserInWorkspace {
             $group_by .= ', w.account_id';
         }
 
+        $order_by = lc($order_by);
+        if ($order_by eq 'alpha') {
+            $order_by = 'UPPER(w.title)';
+        } elsif ($order_by eq 'title' || $order_by eq 'name') {
+            $order_by = "UPPER(w.$order_by)";
+        } elsif ($order_by eq 'newest') {
+            $order_by = 'w.creation_datetime';
+            $sort_order = 'DESC';
+            $group_by .= ', w.creation_datetime';
+        } elsif ($order_by eq 'oldest') {
+            $order_by = 'w.creation_datetime';
+            $sort_order = 'ASC';
+            $group_by .= ', w.creation_datetime';
+        } elsif ($order_by eq 'id' || $order_by eq 'workspace_id') {
+            $order_by = 'w.workspace_id';
+        }      
         my $sql = qq{
             SELECT $fields
               FROM "Workspace" w
@@ -230,7 +247,7 @@ sub RolesForUserInWorkspace {
              WHERE from_set_id = ?
              $where_filter
              GROUP BY $group_by
-             ORDER BY UPPER(w.title) $sort_order
+             ORDER BY $order_by $sort_order
         };
         if ($limit) {
             $sql .= ' LIMIT ? ';

@@ -206,7 +206,7 @@
         <div class="widgetContent">
           <ul>
           [% FOR in = page.incoming %]
-            <li><a href="?[% in.page_id %]">[% in.page_title %]</a></li>
+            <li><a href="[% in.page_id %]">[% in.page_title %]</a></li>
           [% END %]
           </ul>
           [% IF page.incoming.size == 0 %]

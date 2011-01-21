@@ -114,12 +114,12 @@ sub _get_entities {
     if ($self->reverse) {
         @sorted = $order eq 'account_id'
             ? sort { $b->{$order} <=> $a->{$order} } @$accounts
-            : sort { $b->{$order} cmp $a->{$order} } @$accounts;
+            : sort { lc($b->{$order}) cmp lc($a->{$order}) } @$accounts;
     }
     else {
         @sorted = $order eq 'account_id'
             ? sort { $a->{$order} <=> $b->{$order} } @$accounts
-            : sort { $a->{$order} cmp $b->{$order} } @$accounts;
+            : sort { lc($a->{$order}) cmp lc($b->{$order}) } @$accounts;
     }
     return [
         $self->pageable

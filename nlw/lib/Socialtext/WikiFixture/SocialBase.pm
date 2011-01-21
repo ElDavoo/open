@@ -568,7 +568,7 @@ sub st_search_cp_users {
     $self->handle_command('type_ok','username',$searchfor);
     $self->handle_command('click_and_wait','st-username-search-submit');
     my $str = "Users matching " . '"' . $searchfor . '"';
-    $self->handle_command('wait_for_text_present_ok',$searchfor,30000);
+    $self->handle_command('wait_for_text_present_ok',$str,30000);
 }
 
 =head2 st_search_cp_account($searchfor)
@@ -595,7 +595,9 @@ sub create_account {
     my $acct = create_test_account_bypassing_factory($name);
     my $ws = Socialtext::Workspace->new(name => 'admin');
     $acct->enable_plugin($_) for qw/people dashboard widgets signals groups/;
-    $ws->enable_plugin($_) for qw/socialcalc/;
+    if ($ws) {
+        $ws->enable_plugin($_) for qw/socialcalc/;
+    }
     $self->{account_id} = $acct->account_id;
     diag "Created account $name ($self->{account_id})";
     return $acct;

@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 44;
+use Test::Socialtext tests => 48;
 use Test::Differences;
 
 ###############################################################################
@@ -295,9 +295,9 @@ get_roles_for_user_in_workspace: {
 workspaces_by_user_id: {
     my $user = create_test_user();
 
-    my $ws_one   = create_test_workspace();
-    my $ws_two   = create_test_workspace();
-    my $ws_three = create_test_workspace();
+    my $ws_one   = create_test_workspace(unique_id => 'workspace_c');
+    my $ws_two   = create_test_workspace(unique_id => 'workspace_f');
+    my $ws_three = create_test_workspace(unique_id => 'workspace_a');
 
     # User has access via explicit Role in the Workspace
     $ws_one->add_user(user => $user);
@@ -333,6 +333,34 @@ workspaces_by_user_id: {
         );
     }
 
+    ws_by_user_id_id_order: {
+        my $cursor = Socialtext::Workspace::Roles->WorkspacesByUserId(
+            user_id => $user->user_id,
+            order_by => 'id',
+        );
+        isa_ok $cursor, 'Socialtext::MultiCursor',
+            'list of Workspaces that User has access to';
+        eq_or_diff(
+            [ map { $_->workspace_id } $cursor->all ],
+            [ sort map { $_->workspace_id } ($ws_one, $ws_two, $ws_three) ],
+            '... WS returned ordered by id'
+        );
+    }
+
+    ws_by_user_id_create_order: {
+        my $cursor = Socialtext::Workspace::Roles->WorkspacesByUserId(
+            user_id => $user->user_id,
+            order_by => 'newest',
+        );
+        isa_ok $cursor, 'Socialtext::MultiCursor',
+            'list of Workspaces that User has access to';
+        eq_or_diff(
+            [ map { $_->creation_datetime } $cursor->all ],
+            [ sort { $b cmp $a } map { $_->creation_datetime } ($ws_one, $ws_two, $ws_three) ],
+            '... WS returned ordered by create timestamp'
+        );
+    }
+
     # Get list of Workspaces, limited
     ws_by_user_id_limited: {
         my $cursor = Socialtext::Workspace::Roles->WorkspacesByUserId(
@@ -342,7 +370,7 @@ workspaces_by_user_id: {
         isa_ok $cursor, 'Socialtext::MultiCursor',
             'list of Workspaces that User has access to';
         is $cursor->count(), 1, '... limited to *one* result';
-        is $cursor->next->name, $ws_one->name, '... the first WS';
+        is $cursor->next->name, $ws_three->name, '... the first WS by name';
     }
 
     # Get list of Workspaces, limit + offset
@@ -355,7 +383,7 @@ workspaces_by_user_id: {
         isa_ok $cursor, 'Socialtext::MultiCursor',
             'list of Workspaces that User has access to';
         is $cursor->count(), 1, '... limited to *one* result';
-        is $cursor->next->name, $ws_two->name, '... the second WS';
+        is $cursor->next->name, $ws_one->name, '... the second WS by name';
     }
 }
 

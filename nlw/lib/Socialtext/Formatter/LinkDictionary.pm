@@ -36,7 +36,7 @@ A free link is a link from one page in a workspace to another page in the
 same workspace. See L<Socialtext::Formatter::FreeLink>.
 
 =cut
-field free      => 'index.cgi?%{page_uri}';
+field free      => '%{page_uri}';
 
 =head2 interwiki
 
@@ -45,7 +45,7 @@ a different workspace. It is also used to make anchored links within
 and between pages. See L<Socialtext::Formatter::InterWikiLink>.
 
 =cut
-field interwiki => '/%{workspace}/index.cgi?%{page_uri}%{section}';
+field interwiki => '/%{workspace}/%{page_uri}%{section}';
 
 =head2 interwiki_edit
 
@@ -53,7 +53,7 @@ An interwiki_edit link links directly to the edit section of another
 page on another workspace.
 
 =cut
-field interwiki_edit => '/%{workspace}/index.cgi?page_name=%{page_uri};page_type=%{page_type}#edit';
+field interwiki_edit => '/%{workspace}/?page_name=%{page_uri};page_type=%{page_type}#edit';
 
 =head2 interwiki_edit_incipient
 
@@ -61,7 +61,7 @@ An interwiki_edit link links directly to the edit section of another
 page on another workspace with the incipient flag set.
 
 =cut
-field interwiki_edit_incipient => '/%{workspace}/index.cgi?is_incipient=1;page_name=%{page_uri};page_type=%{page_type}#edit';
+field interwiki_edit_incipient => '/%{workspace}/?is_incipient=1;page_name=%{page_uri};page_type=%{page_type}#edit';
 =head2 search_query, category_query, recent_chages_query
 
 Some forms of wikitext create a link to a set of search, category
@@ -69,10 +69,10 @@ or recent changes results.
 
 =cut
 field search_query =>
-    '/%{workspace}/index.cgi?action=search;search_term=%{search_term}';
+    '/%{workspace}/?action=search;search_term=%{search_term}';
 field category_query =>
-    '/%{workspace}/index.cgi?action=blog_display;category=%{category}';
-field recent_changes_query => '/%{workspace}/index.cgi?action=recent_changes';
+    '/%{workspace}/?action=blog_display;category=%{category}';
+field recent_changes_query => '/%{workspace}/?action=recent_changes';
 
 =head2 special_http
 
@@ -88,7 +88,7 @@ Links to the category display page.
 
 =cut
 field category             =>
-    '/%{workspace}/index.cgi?action=category_display;category=%{category}';
+    '/%{workspace}/?action=category_display;category=%{category}';
 
 =head2 tag
 
@@ -96,7 +96,7 @@ Alias of 'category'
 
 =cut
 field tag             =>
-    '/%{workspace}/index.cgi?action=category_display;category=%{category}';
+    '/%{workspace}/?action=category_display;category=%{category}';
 
 
 =head2 weblog
@@ -106,7 +106,7 @@ Links to weblog display. (Deprecated in favour of blog)
 =cut
 
 field weblog =>
-    '/%{workspace}/index.cgi?action=blog_display;category=%{category}';
+    '/%{workspace}/?action=blog_display;category=%{category}';
 
 =head2 blog
 
@@ -115,7 +115,7 @@ Links to blog display.
 =cut
 
 field blog =>
-    '/%{workspace}/index.cgi?action=blog_display;category=%{category}';
+    '/%{workspace}/?action=blog_display;category=%{category}';
 
 =head2 file
 
