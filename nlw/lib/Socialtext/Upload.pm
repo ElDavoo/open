@@ -288,16 +288,6 @@ sub make_permanent {
     $self->is_temporary(undef);
     unlink $src;
 
-    if ($p{guard}) {
-        # Move it back unless this gets cancelled. Assumes the db will get
-        # reverted in the scope of a larger transaction.
-        return guard { 
-            move($targ => "$src.tmp");
-            rename("$src.tmp" => $src);
-            $self->is_temporary(1);
-        };
-    }
-
     my $actor = $p{actor} || Socialtext::User->SystemUser;
     st_log()->info(join(',', "UPLOAD,CONSUME",
         $self->is_image ? 'IMAGE' : 'FILE',
@@ -310,6 +300,16 @@ sub make_permanent {
             'actor'     => $actor->username,
             'filename'  => $self->filename,
         })));
+
+    if ($p{guard}) {
+        # Move it back unless this gets cancelled. Assumes the db will get
+        # reverted in the scope of a larger transaction.
+        return guard { 
+            move($targ => "$src.tmp");
+            rename("$src.tmp" => $src);
+            $self->is_temporary(1);
+        };
+    }
 
     return;
 }
