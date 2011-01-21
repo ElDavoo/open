@@ -381,36 +381,6 @@ sub _pluginPrefTable {
     }
 }
 
-sub set_google_analytics {
-    my $self = shift;
-    my $account  = $self->_require_account;
-    my %opts     = $self->_get_options('code=s', 'domains=s');
-    $account->enable_plugin('analytics');
-    $self->_error("--code required.") unless $opts{code};
-    $self->{argv} = [
-        '--account', $account->name,
-        '--plugin', 'analytics',
-        'ga_id', $opts{code},
-        $opts{domains} ? ('ga_domains', $opts{domains}) : (),
-    ];
-    $self->set_plugin_pref;
-}
-
-sub clear_google_analytics {
-    my $self = shift;
-    my $account  = $self->_require_account;
-    $account->disable_plugin('analytics');
-    $self->{argv} = [ '--account', $account->name, '--plugin', 'analytics' ];
-    $self->clear_plugin_prefs;
-}
-
-sub show_google_analytics {
-    my $self = shift;
-    my $account  = $self->_require_account;
-    $self->{argv} = [ '--account', $account->name, '--plugin', 'analytics' ];
-    $self->show_plugin_prefs;
-}
-
 sub set_plugin_pref {
     my $self = shift;
     my $account  = $self->_require_account(1);
