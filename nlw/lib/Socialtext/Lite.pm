@@ -541,7 +541,7 @@ sub template_vars {
         pluggable   => $self->hub->pluggable,
         user        => $user,
         minutes_ago => sub { int((time - str2time(shift, 'UTC')) / 60) },
-        enable_jquery_mobile => ($ENV{HTTP_USER_AGENT} =~ /Gecko/),
+        enable_jquery_mobile => ($ENV{HTTP_USER_AGENT} =~ /Gecko/) || 0,
     };
 }
 
