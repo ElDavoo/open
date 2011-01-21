@@ -37,8 +37,8 @@ Create_from_row: {
         last_edit_time_utc => '2008-01-01 23:12:01',
         creator_id => 311,
         create_time_utc => '2007-01-01 23:12:01',
-        current_revision_id => 'current_revision_id',
-        current_revision_num => 'current_revision_num',
+        current_revision_id => 1234,
+        current_revision_num => 42,
         revision_count => 'revision_count',
         page_type => 'page_type',
         deleted => 'deleted',
@@ -53,7 +53,7 @@ Create_from_row: {
     # many of these fields are named after the mime-like file format
     is_deeply $page->to_result, {
         Type => 'page_type',
-        Revision => 'current_revision_num',
+        Revision => 42,
         Subject => 'name',
         Summary => 'summary',
         Date => '2008-01-01 23:12:01 GMT',
@@ -86,7 +86,8 @@ Create_from_row: {
         page_id         => 'page_id',
         last_editor     => 'editor@example.com',
         last_edit_time  => '2008-01-01 23:12:01 GMT',
-        revision_id     => 'current_revision_id',
+        revision_id     => 1234,
+        revision_num    => 42,
         revision_count  => 'revision_count',
         workspace_name  => 'workspace_name',
         workspace_title => 'workspace_title',
@@ -101,6 +102,7 @@ Create_from_row: {
     is_deeply [ $page->categories_sorted ], [qw/abba tag zed/];
 
     $Socialtext::Page::Base::DISABLE_CACHING = 1;
+    $page->{content} = "foo content\n";
     is $page->to_absolute_html, <<EOT;
 <div class="wiki">
 <p>
@@ -137,8 +139,8 @@ Lazy_load_tags: {
         last_edit_time_utc => '2008-01-01 23:12:01',
         creator_id => 311,
         create_time_utc => '2007-01-01 23:12:01',
-        current_revision_id => 'current_revision_id',
-        current_revision_num => 'current_revision_num',
+        current_revision_id => 1234,
+        current_revision_num => 42,
         revision_count => 'revision_count',
         page_type => 'page_type',
         deleted => 'deleted',
@@ -162,8 +164,8 @@ Resolve_non_default_usernames: {
         last_edit_time_utc => '2008-01-01 23:12:01',
         creator_id => 311,
         create_time_utc => '2007-01-01 23:12:01',
-        current_revision_id => 'current_revision_id',
-        current_revision_num => 'current_revision_num',
+        current_revision_id => 1234,
+        current_revision_num => 42,
         revision_count => 'revision_count',
         page_type => 'page_type',
         deleted => 'deleted',
