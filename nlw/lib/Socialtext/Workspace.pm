@@ -1206,11 +1206,59 @@ sub _create_export_tarball {
     $self->_export_logo_file($tmpdir);
     $self->_dump_meta_to_yaml_file($tmpdir);
     $self->_dump_user_workspace_prefs($tmpdir);
-    local $CWD = $tmpdir;
-    run "tar cf $tarball *";
 
     # Copy all the data for export into a the tempdir.
-    warn "TODO - data is not copied during workspace export";
+    $self->_dump_workspace_pages($tmpdir);
+    $self->_dump_workspace_attachments($tmpdir);
+
+    local $CWD = $tmpdir;
+    run "tar cf $tarball *";
+}
+
+sub _dump_workspace_pages {
+    my $self = shift;
+    my $tmpdir = shift;
+
+    my $sth = sql_execute(
+        q{SELECT *, edit_time AT TIME ZONE 'GMT' AS edit_time_gmt
+           FROM page_revision WHERE workspace_id = ?},
+        $self->workspace_id,
+    );
+    while (my $row = $sth->fetchrow_hashref) {
+        my $page_dir = "$tmpdir/data/" . $self->name . "/$row->{page_id}";
+        File::Path::mkpath($page_dir) or die "Cannot make $page_dir: $!";
+        my $filename = "$page_dir/$row->{revision_id}.txt";
+
+        my $deleted = $row->{deleted} ? 'Deleted' : '';
+        my $editor_email = Socialtext::User->new(user_id => $row->{editor_id})->email_address;
+        my $content = <<EOT;
+Subject: $row->{name}
+From: $editor_email
+Date: $row->{edit_time_gmt} GMT
+Revision: $row->{revision_num}
+Type: $row->{page_type}
+Summary: $row->{summary}
+RevisionSummary: $row->{edit_summary}
+Encoding: utf8
+Locked: $row->{locked}
+EOT
+        $content .= "Control: Deleted\n" if $row->{deleted};
+        for my $tag (@{ $row->{tags} }) {
+            $content .= "Category: $tag\n";
+        }
+
+        $content .= "\n" . $row->{body};
+        Socialtext::File::set_contents_utf8($filename, \$content);
+    }
+}
+
+
+sub _dump_workspace_attachments {
+    my $self = shift;
+    my $tmpdir = shift;
+
+    my $plugin_dir = "$tmpdir/plugin/" . $self->name;
+    File::Path::mkpath($plugin_dir) or die "Cannot make $plugin_dir: $!";
 }
 
 sub _dump_to_yaml_file {
