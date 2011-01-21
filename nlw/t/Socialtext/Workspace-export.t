@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 33;
+use Test::Socialtext tests => 30;
 fixtures(qw( empty ));
 
 use File::Basename ();
@@ -20,15 +20,6 @@ my $test_dir = Socialtext::AppConfig->test_dir();
 
 my $private_id = Test::Socialtext->create_unique_id();
 $user->update_store(private_external_id => $private_id);
-
-Data_paths_exist: {
-    ok( scalar ( grep { m{data/empty} } $ws->_data_dir_paths() ),
-        '_data_dir_paths() includes pages' );
-    ok( scalar ( grep { m{plugin/empty} } $ws->_data_dir_paths() ),
-        '_data_dir_paths() includes plugin' );
-    ok( scalar ( grep { m{user/empty} } $ws->_data_dir_paths() ),
-        '_data_dir_paths() includes user' );
-}
 
 Export_includes_meta_info: {
    $ws->_dump_meta_to_yaml_file( $test_dir );
