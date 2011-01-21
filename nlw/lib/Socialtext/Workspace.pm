@@ -1205,11 +1205,11 @@ sub _create_export_tarball {
     $self->_dump_permissions_to_yaml_file($tmpdir, $name);
     $self->_export_logo_file($tmpdir);
     $self->_dump_meta_to_yaml_file($tmpdir);
-    $self->_dump_user_workspace_prefs($tmpdir);
+    $self->_dump_user_workspace_prefs($tmpdir, $name);
 
     # Copy all the data for export into a the tempdir.
-    $self->_dump_workspace_pages($tmpdir);
-    $self->_dump_workspace_attachments($tmpdir);
+    $self->_dump_workspace_pages($tmpdir, $name);
+    $self->_dump_workspace_attachments($tmpdir, $name);
 
     local $CWD = $tmpdir;
     run "tar cf $tarball *";
@@ -1218,6 +1218,10 @@ sub _create_export_tarball {
 sub _dump_workspace_pages {
     my $self = shift;
     my $tmpdir = shift;
+    my $name   = shift;
+
+    my $ws_dir = "$tmpdir/data/$name";
+    File::Path::make_path($ws_dir);
 
     my $sth = sql_execute(
         q{SELECT *, edit_time AT TIME ZONE 'GMT' AS edit_time_gmt
@@ -1225,8 +1229,8 @@ sub _dump_workspace_pages {
         $self->workspace_id,
     );
     while (my $row = $sth->fetchrow_hashref) {
-        my $page_dir = "$tmpdir/data/" . $self->name . "/$row->{page_id}";
-        File::Path::mkpath($page_dir) or die "Cannot make $page_dir: $!";
+        my $page_dir = "$ws_dir/$row->{page_id}";
+        File::Path::make_path($page_dir);
         my $filename = "$page_dir/$row->{revision_id}.txt";
 
         my $deleted = $row->{deleted} ? 'Deleted' : '';
@@ -1256,8 +1260,9 @@ EOT
 sub _dump_workspace_attachments {
     my $self = shift;
     my $tmpdir = shift;
+    my $name   = shift;
 
-    my $plugin_dir = "$tmpdir/plugin/" . $self->name;
+    my $plugin_dir = "$tmpdir/plugin/$name";
     File::Path::mkpath($plugin_dir) or die "Cannot make $plugin_dir: $!";
 }
 
@@ -1311,8 +1316,10 @@ sub _dump_meta_to_yaml_file {
 sub _dump_user_workspace_prefs {
     my $self = shift;
     my $dir  = shift;
+    my $name = shift;
 
-    my $ws_dir = "$dir/user/" . $self->name;
+    my $ws_dir = "$dir/user/$name";
+    File::Path::mkpath($ws_dir) or die "Cannot make $ws_dir: $!";
     my $users = $self->users(direct => 1);
     while ( my $user = $users->next ) {
         my $prefs = Socialtext::PreferencesPlugin->Prefs_for_user($user, $self);
