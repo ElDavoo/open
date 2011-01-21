@@ -173,11 +173,11 @@ verifyValue | wikiwyg_wikitext_textarea | foo |
 | wait_for_element_visible_ok | st-widget-block-save | 30000 |
 | wait_for_element_visible_ok | st-widget-block-cancel | 30000 |
 | wait_for_element_visible_ok | st-widget-block-syntax | 30000 |
-| type_ok | st-widget-block-content | foo |
+| type_ok | st-widget-block-content | moo |
 | select_ok | st-widget-block-syntax | label=Perl |
 | click_ok | st-widget-block-cancel |  |
 | pause | 5000 |  |
-| text_unlike | wikiwyg_wikitext_textarea | foo |
+| text_unlike | wikiwyg_wikitext_textarea | moo |
 | click_ok | link=Code... |  |
 | wait_for_element_visible_ok | st-widget-block-content | 30000 |
 | wait_for_element_visible_ok | st-widget-block-save | 30000 |
