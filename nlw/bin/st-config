@@ -86,16 +86,21 @@ sub edit {
 }
 
 sub set {
-    my ($key, $value) = @_;
+    my @args = @_;
 
-    die "\n Config name '$key' does not exist.\n\n"
-        unless Socialtext::AppConfig->can( $key );
+    while (@args) {
+        my $key = shift @args;
+        my $value = shift @args;
 
-    Socialtext::AppConfig->set($key, $value);
+        die "\n Config name '$key' does not exist.\n\n"
+            unless Socialtext::AppConfig->can( $key );
+
+        Socialtext::AppConfig->set($key, $value);
+        st_log(info => "st-config: $key to '$value'");
+    }
+
     Socialtext::AppConfig->write;
-
     print "\n Wrote updated config file to ", Socialtext::AppConfig->file, "\n\n";
-    st_log(info => "st-config: $key to '$value'");
 }
 
 sub usage {
