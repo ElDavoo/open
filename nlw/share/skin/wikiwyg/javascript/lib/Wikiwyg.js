@@ -2050,27 +2050,27 @@ proto._do_insert_block_dialog = function(opts) {
         $('#st-widget-block-content').val('');
     }
 
+    $('#st-widget-block-syntax-div').hide();
+
     if (opts.wafl_id == 'code') {
-        $('#st-widget-block-syntax-div').show();
+        $('#st-widget-block-syntax option').remove();
         currentWidgetId = (currentWidgetId || '').replace(/^code-?/, '');
-        $('#st-widget-block-syntax option').each(function(){
+        $('#st-widget-block-syntax-options option').each(function(){
             if ($(this).attr('value') == currentWidgetId) {
-                $(this).show();
-                $(this).attr('selected', true);
+                $(this).clone().appendTo($('#st-widget-block-syntax'))
+                               .attr('selected', true);
                 return;
             }
-            if ($(this).data('alias')) {
-                $(this).hide();
+            else if ($(this).data('alias')) {
+                return;
             }
-            else {
-                $(this).show();
-            }
-        });
-    }
-    else {
-        $('#st-widget-block-syntax-div').hide();
-    }
 
+            $(this).clone().appendTo($('#st-widget-block-syntax'));
+        });
+        $('#st-widget-block-syntax-options').hide();
+        $('#st-widget-block-syntax').show();
+        $('#st-widget-block-syntax-div').show();
+    }
 
     $('#add-a-block-form')
         .unbind('reset')

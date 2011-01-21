@@ -10,7 +10,9 @@
         </fieldset>
         <div id="st-widget-block-syntax-div" style="padding-top: 5px; float: left; display: none">
             [% loc('Syntax highlight as:') %]
-            <select id="st-widget-block-syntax" name="st-widget-block-syntax">
+            <select id="st-widget-block-syntax" name="st-widget-block-syntax" style="display: none">
+            </select>
+            <select id="st-widget-block-syntax-options" name="st-widget-block-syntax-options" style="display: none">
                 <option value="">[% loc('Plain text') %]</option>
                 <option data-alias="actionscript3" value="as3">[% loc('ActionScript3') %]</option>
                 <option value="actionscript3">[% loc('ActionScript3') %]</option>
