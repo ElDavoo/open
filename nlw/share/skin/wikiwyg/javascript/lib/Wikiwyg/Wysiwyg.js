@@ -2640,8 +2640,8 @@ proto.parseWidget = function(widget) {
     if ((matches = widget.match(/^(aim|yahoo|ymsgr|skype|callme|callto|http|irc|file|ftp|https):([\s\S]*?)\s*$/)) ||
         (matches = widget.match(/^\{(\{([\s\S]+)\})\}$/)) || // AS-IS
         (matches = widget.match(/^"(.+?)"<(.+?)>$/)) || // Named Links
-        (matches = widget.match(/^(?:"(.*)")?\{(\w+):?\s*([\s\S]*?)\s*\}$/)) ||
-        (matches = widget.match(/^\.(\w+)\s*?\n([\s\S]*?)\1\s*?$/))
+        (matches = widget.match(/^(?:"(.*)")?\{([-\w]+):?\s*([\s\S]*?)\s*\}$/)) ||
+        (matches = widget.match(/^\.([-\w]+)\s*?\n([\s\S]*?)\1\s*?$/))
     ) {
         var widget_id = matches[1];
         var full = false;
@@ -2841,7 +2841,7 @@ proto.replace_widget = function(elem) {
             }
         );
         if ( (matches = widget.match(/^"([\s\S]+?)"<(.+?)>$/m)) || // Named Links
-            (matches = widget.match(/^(?:"([\s\S]*)")?\{(\w+):?\s*([\s\S]*?)\s*\}$/m))) {
+            (matches = widget.match(/^(?:"([\s\S]*)")?\{([-\w]+):?\s*([\s\S]*?)\s*\}$/m))) {
             // For labeled links or wafls, remove all newlines/returns
             widget = widget.replace(/[\r\n]/g, ' ');
         }
@@ -3086,9 +3086,9 @@ proto.create_wafl_string = function(widget, form) {
         replace(/\(\s*\)/, '').
         replace(/\s;\s/, ' ').
         replace(/\s\s+/g, ' ').
-        replace(/^\{(\w+)\: \}$/,'{$1}');
+        replace(/^\{([-\w]+)\: \}$/,'{$1}');
     if (values.full)
-        result = result.replace(/^(\{\w+)/, '$1_full');
+        result = result.replace(/^(\{[-\w]+)/, '$1_full');
     return result;
 }
 
@@ -3409,6 +3409,10 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
     }
     else if (widget == 'html') {
         this.do_widget_html(widget_element);
+        return;
+    }
+    else if (/^code(?:-\w+)?$/.test(widget)) {
+        this.do_widget_code(widget_element);
         return;
     }
 

@@ -25,6 +25,8 @@
     rewrite ^/+([^/]+)/*$ /m/page/$1/ redirect;
     # rewrite: /:ws/index.cgi?:page => /m/pages/:ws/:page
     rewrite ^/+([^/]+)/+index.cgi$ /m/page/$1/? redirect;
+    # rewrite: /:ws/:page => /m/pages/:ws/:page
+    rewrite ^/+(?!(?:nlw|challenge|data|feed|help|js|m|settings|soap|st|wsdl)/)([^/]+)/+([^/]+)$ /m/page/$1/$2 redirect;
   }
 
   set $is_gecko 0;

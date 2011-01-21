@@ -3,7 +3,6 @@ package Socialtext::AppConfig;
 use strict;
 use warnings;
 
-use Config;
 use Cwd ();
 use File::Basename ();
 use File::Spec ();
@@ -210,7 +209,7 @@ sub bin_path {
     if ( startup_user_is_human_user() ) {
         return File::Spec->catfile( _user_checkout_dir(), 'bin' );
     }
-    return $Config{installscript};
+    return '/usr/bin';
 }
 
 sub _default_db_name {

@@ -44,6 +44,7 @@ our %Brushes = (
     xslt => 'Xml',
     yaml => 'Yaml',
     json => 'Yaml',
+    plain => 'Plain',
 );
 
 our %Brush_aliases = (
@@ -60,7 +61,12 @@ sub register {
         no warnings 'redefine';
         push @{"$pkg\::ISA"}, 'Socialtext::Formatter::WaflBlock';
         *{"$pkg\::html"} = \&__html__;
-        *{"$pkg\::wafl_id"} = sub { "${key}_code" };
+        if ($key eq 'plain') {
+            *{"$pkg\::wafl_id"} = sub { 'code' };
+        }
+        else {
+            *{"$pkg\::wafl_id"} = sub { "code-$key" };
+        }
         $registry->add(wafl => $pkg->wafl_id => $pkg);
     }
 }
@@ -68,7 +74,8 @@ sub register {
 sub __html__ {
     my $self = shift;
     my $method = $self->method;
-    (my $type = $method) =~ s/^(.+?)_code$/$1/;
+    (my $type = $method) =~ s/^code(?:[-_](.+?))?$/$1 || 'plain'/e;
+
     my $string = $self->block_text;
     my $js_base  = "/static/skin/common/javascript/SyntaxHighlighter";
     my $css_base = "/static/skin/common/css/SyntaxHighlighter";
@@ -80,7 +87,7 @@ sub __html__ {
     # Skip traversing
     $self->units([]);
 
-    return <<EOT;
+    return <<"EOT";
 <script type="text/javascript" src="$js_base/shCore.js"></script>
 <script type="text/javascript" src="$js_base/shBrush${brush}.js"></script>
 <link href="$css_base/shCore.css" rel="stylesheet" type="text/css" />
@@ -88,9 +95,7 @@ sub __html__ {
 <pre class="brush: $type">
 $string
 </pre>
-<script type="text/javascript">
-     SyntaxHighlighter.all()
-</script>
+<script type="text/javascript">SyntaxHighlighter.all()</script>
 EOT
 }
 

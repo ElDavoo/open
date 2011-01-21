@@ -138,8 +138,11 @@ sub _cache_html {
         Socialtext::Wikiwyg::FormattingTestRunAll
         Socialtext::Wikiwyg::FormattingTest
         Socialtext::ShortcutLinks::Wafl
-        Socialtext::CodeSyntaxPlugin::Wafl
     /;
+    require Socialtext::CodeSyntaxPlugin;
+    for my $brush (keys %Socialtext::CodeSyntaxPlugin::Brushes) {
+        $cacheable_wafls{"Socialtext::CodeSyntaxPlugin::Wafl::$brush"} = 1;
+    }
     my %not_cacheable_wafls = map { $_ => 1 } qw/
         Socialtext::Formatter::SpreadsheetInclusion
         Socialtext::Formatter::PageInclusion

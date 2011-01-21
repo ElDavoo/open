@@ -79,7 +79,7 @@ sub get_resource {
             || $rest->user->is_business_admin;
     };
     my $peon_view
-        = sub { name => $workspace->name, title => $workspace->title };
+        = sub { workspace_id => $workspace->workspace_id, name => $workspace->name, title => $workspace->title };
     my $extra_data
         = sub { pages_uri => $self->full_url('/pages'), group_ids => $workspace->group_ids };
     my $extra_admin_data

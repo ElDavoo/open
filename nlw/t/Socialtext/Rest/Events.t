@@ -2,7 +2,6 @@
 # @COPYRIGHT@
 use warnings FATAL => 'all';
 use strict;
-use mocked 'Socialtext::Search::Config';
 use mocked 'Apache::Cookie';
 use mocked 'Socialtext::Events', 'event_ok', 'is_event_count';
 use Test::More tests => 31;

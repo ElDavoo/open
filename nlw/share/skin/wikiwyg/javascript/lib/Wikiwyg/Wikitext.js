@@ -1371,7 +1371,7 @@ proto.convertWikitextToHtml = function(wikitext, func, onError) {
 
 proto.href_is_really_a_wiki_link = function(href) {
     var query = href.split('?')[1];
-    if (!query) return false;
+    if (!query) return true;
     return ((! query.match(/=/)) || query.match(/action=display\b/));
 }
 

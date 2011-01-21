@@ -750,6 +750,9 @@
     '/:ws/index.cgi':
         '*':                    [Socialtext::Rest::App, handler]
 -
+    '/:ws/:pname':
+        '*':                    [Socialtext::Rest::App, handler]
+-
     '/index.cgi':
         '*':                    [Socialtext::Handler::Default, handler]
 -

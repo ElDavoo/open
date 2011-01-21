@@ -1953,6 +1953,24 @@ proto.prompt_for_table_dimensions = function() {
     return [ rows, columns ];
 }
 
+proto.do_widget_code = function(widget_element) {
+    return this._do_insert_block_dialog({
+        wafl_id: 'code',
+        dialog_title: loc('Insert Code'),
+        dialog_prompt: loc('Use the text area to compose your code block, and optionally select a highlighting syntax.'),
+        dialog_hint: loc('(Note: HTML fragments are not guaranteed to work and may break the UI.)'),
+        edit_label_function: function(syntax) {
+            if (!syntax || syntax == 'plain') {
+                return loc("Code block. Click to edit.");
+            }
+            else {
+                return loc("Code block with [_1] syntax. Click to edit.", syntax);
+            }
+        },
+        widget_element: widget_element
+    });
+}
+
 proto.do_widget_html = function(widget_element) {
     return this._do_insert_block_dialog({
         wafl_id: 'html',
@@ -1992,34 +2010,66 @@ proto._do_insert_block_dialog = function(opts) {
     $('#st-widget-block-prompt').text(opts.dialog_prompt);
 //    $('#st-widget-block-hint').text(opts.dialog_hint);
 
+    var currentWidgetId;
     if (opts.widget_element) {
         var widget = this.parseWidgetElement(opts.widget_element) || { widget : '' };
         $('#st-widget-block-content').val(
-            (widget.widget || '').replace(/^\.\w+\n/, '').replace(/\n\.\w+\n?$/, '')
+            (widget.widget || '').replace(/^\.[-\w]+\n/, '').replace(/\n\.[-\w]+\n?$/, '')
         );
+        currentWidgetId = self.currentWidget.id;
     }
     else if (self.get_lines && self.get_selection_text() && self.get_lines() && self.sel) {
         // {bz: 4843}: In Wikitext mode, if there is some text selected,
         // and that text begins with .html/.pre and ends with .html/.pre,
-        // then we simply strip the markers and keep the content selected.
+        // then we pre-fill the lightbox with the inner content.
         var text = self.sel.replace(/\r/g, '');
-        var len = 2+opts.wafl_id.length;
-        if (text.substr(0, len) == "." + opts.wafl_id + "\n") {
-            if (text.substr(text.length - len, len) == "\n." + opts.wafl_id) {
-                self.selection_mangle(function(that){
-                    that.sel = text.substr(len, text.length - (2*len));
-                    return true;
-                });
-                return false;
+        switch (opts.wafl_id) {
+            case 'code': {
+                var match = text.match(/^\.(code(-\w+)?)\n(?:[\d\D]*\n)?\.code\2$/);
+                if (match) {
+                    currentWidgetId = match[1];
+                }
+                text = text.replace(/^\.code(-\w+)?\n([\d\D]*\n)?\.code\1$/, '$2');
+                break;
+            }
+            case 'html': {
+                text = text.replace(/^\.html\n([\d\D]*\n)?\.html$/, '$1');
+                break;
+            }
+            case 'pre': {
+                text = text.replace(/^\.pre\n([\d\D]*\n)?\.pre$/, '$1');
+                break;
             }
         }
 
         // Otherwise, if there is some text selected, we open the lightbox
         // with the content pre-filled with the selection.
-        $('#st-widget-block-content').val(self.sel);
+        $('#st-widget-block-content').val(text);
     }
     else {
         $('#st-widget-block-content').val('');
+    }
+
+    $('#st-widget-block-syntax-div').hide();
+
+    if (opts.wafl_id == 'code') {
+        $('#st-widget-block-syntax option').remove();
+        currentWidgetId = (currentWidgetId || '').replace(/^code-?/, '');
+        $('#st-widget-block-syntax-options option').each(function(){
+            if ($(this).attr('value') == currentWidgetId) {
+                $(this).clone().appendTo($('#st-widget-block-syntax'))
+                               .attr('selected', true);
+                return;
+            }
+            else if ($(this).data('alias')) {
+                return;
+            }
+
+            $(this).clone().appendTo($('#st-widget-block-syntax'));
+        });
+        $('#st-widget-block-syntax-options').hide();
+        $('#st-widget-block-syntax').show();
+        $('#st-widget-block-syntax-div').show();
     }
 
     $('#add-a-block-form')
@@ -2039,10 +2089,16 @@ proto._do_insert_block_dialog = function(opts) {
                 var text = $('#st-widget-block-content').val();
                 $('#st-widget-block-content').val('');
                 jQuery.hideLightbox();
+                var id = opts.wafl_id;
+                if (id == 'code' && $('#st-widget-block-syntax').val()) {
+                    id += '-' + $('#st-widget-block-syntax').val();
+                }
                 self.insert_block(
-                    "." + opts.wafl_id + "\n"
-                        + text.replace(/\n?$/, "\n." + opts.wafl_id),
-                    opts.edit_label,
+                    "." + id + "\n"
+                        + text.replace(/\n?$/, "\n." + id),
+                        (opts.edit_label || opts.edit_label_function(
+                            $('#st-widget-block-syntax option:selected').text()
+                        )),
                     opts.widget_element
                 );
             }

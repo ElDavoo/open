@@ -37,7 +37,6 @@ sub match {
         =~ /\A(?:^\.([\w\-]+)\ *\n)((?:.*\n)*?)(?:^\.\1\ *\n|\z)/m;
     $self->set_match($2);
     my $method = lc $1;
-    $method =~ s/-/_/g;
     $self->method($method);
     $self->matched($2);
 }

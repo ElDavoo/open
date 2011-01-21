@@ -661,6 +661,222 @@ widget:
     title: Raw HTML block. Click to edit.
     use_title_as_text: true
 
+  code:
+    id: code
+    color: indianred
+    title: Code block. Click to edit.
+    use_title_as_text: true
+
+  code-as3:
+    id: code-as3
+    color: indianred
+    title: Code block with ActionScript3 syntax. Click to edit.
+    use_title_as_text: true
+
+  code-actionscript3:
+    id: code-actionscript3
+    color: indianred
+    title: Code block with ActionScript3 syntax. Click to edit.
+    use_title_as_text: true
+
+  code-bash:
+    id: code-bash
+    color: indianred
+    title: Code block with Bash syntax. Click to edit.
+    use_title_as_text: true
+
+  code-shell:
+    id: code-shell
+    color: indianred
+    title: Code block with Shell syntax. Click to edit.
+    use_title_as_text: true
+
+  code-cf:
+    id: code-cf
+    color: indianred
+    title: Code block with ColdFusion syntax. Click to edit.
+    use_title_as_text: true
+
+  code-coldfusion:
+    id: code-codefusion
+    color: indianred
+    title: Code block with ColdFusion syntax. Click to edit.
+    use_title_as_text: true
+
+  code-csharp:
+    id: code-csharp
+    color: indianred
+    title: Code block with C# syntax. Click to edit.
+    use_title_as_text: true
+
+  code-cpp:
+    id: code-cpp
+    color: indianred
+    title: Code block with C++ syntax. Click to edit.
+    use_title_as_text: true
+
+  code-c:
+    id: code-c
+    color: indianred
+    title: Code block with C syntax. Click to edit.
+    use_title_as_text: true
+
+  code-css:
+    id: code-css
+    color: indianred
+    title: Code block with CSS syntax. Click to edit.
+    use_title_as_text: true
+
+  code-delphi:
+    id: code-delphi
+    color: indianred
+    title: Code block with Delphi syntax. Click to edit.
+    use_title_as_text: true
+
+  code-pascal:
+    id: code-pascal
+    color: indianred
+    title: Code block with Pascal syntax. Click to edit.
+    use_title_as_text: true
+
+  code-diff:
+    id: code-diff
+    color: indianred
+    title: Code block with Diff syntax. Click to edit.
+    use_title_as_text: true
+
+  code-patch:
+    id: code-patch
+    color: indianred
+    title: Code block with Patch syntax. Click to edit.
+    use_title_as_text: true
+
+  code-erlang:
+    id: code-erlang
+    color: indianred
+    title: Code block with Erlang syntax. Click to edit.
+    use_title_as_text: true
+
+  code-groovy:
+    id: code-groovy
+    color: indianred
+    title: Code block with Groovy syntax. Click to edit.
+    use_title_as_text: true
+
+  code-js:
+    id: code-js
+    color: indianred
+    title: Code block with JavaScript syntax. Click to edit.
+    use_title_as_text: true
+
+  code-javascript:
+    id: code-javascript
+    color: indianred
+    title: Code block with JavaScript syntax. Click to edit.
+    use_title_as_text: true
+
+  code-java:
+    id: code-java
+    color: indianred
+    title: Code block with Java syntax. Click to edit.
+    use_title_as_text: true
+
+  code-javafx:
+    id: code-javafx
+    color: indianred
+    title: Code block with JavaFX syntax. Click to edit.
+    use_title_as_text: true
+
+  code-perl:
+    id: code-perl
+    color: indianred
+    title: Code block with Perl syntax. Click to edit.
+    use_title_as_text: true
+
+  code-php:
+    id: code-php
+    color: indianred
+    title: Code block with PHP syntax. Click to edit.
+    use_title_as_text: true
+
+  code-powershell:
+    id: code-powershell
+    color: indianred
+    title: Code block with PowerShell syntax. Click to edit.
+    use_title_as_text: true
+
+  code-py:
+    id: code-py
+    color: indianred
+    title: Code block with Python syntax. Click to edit.
+    use_title_as_text: true
+
+  code-python:
+    id: code-python
+    color: indianred
+    title: Code block with Python syntax. Click to edit.
+    use_title_as_text: true
+
+  code-ruby:
+    id: code-ruby
+    color: indianred
+    title: Code block with Ruby syntax. Click to edit.
+    use_title_as_text: true
+
+  code-scala:
+    id: code-scala
+    color: indianred
+    title: Code block with Scala syntax. Click to edit.
+    use_title_as_text: true
+
+  code-sql:
+    id: code-sql
+    color: indianred
+    title: Code block with SQL syntax. Click to edit.
+    use_title_as_text: true
+
+  code-vb:
+    id: code-vb
+    color: indianred
+    title: Code block with VisualBasic syntax. Click to edit.
+    use_title_as_text: true
+
+  code-xml:
+    id: code-xml
+    color: indianred
+    title: Code block with XML syntax. Click to edit.
+    use_title_as_text: true
+
+  code-html:
+    id: code-html
+    color: indianred
+    title: Code block with HTML syntax. Click to edit.
+    use_title_as_text: true
+
+  code-xhtml:
+    id: code-xhtml
+    color: indianred
+    title: Code block with XHTML syntax. Click to edit.
+    use_title_as_text: true
+
+  code-xslt:
+    id: code-xslt
+    color: indianred
+    title: Code block with XSLT syntax. Click to edit.
+    use_title_as_text: true
+
+  code-json:
+    id: code-json
+    color: indianred
+    title: Code block with JSON syntax. Click to edit.
+    use_title_as_text: true
+
+  code-yaml:
+    id: code-yaml
+    color: indianred
+    title: Code block with YAML syntax. Click to edit.
+    use_title_as_text: true
+
   sharepoint:
     id: sharepoint
     color: red

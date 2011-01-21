@@ -54,7 +54,7 @@ const pattern_block =>
         (?:
             (?:\^+|\#+|\*+|\-+)[\ ] |   # Headers or bullets (spaces mandatory)
             \> |                        # Quote marks (spaces optional)
-            \.\w+\s*\n |                # .wafl blocks
+            \.[-\w]+\s*\n |             # .wafl blocks
             \{[^\}\n]+\}\s*\n           # {wafl} phrases
         )
         )

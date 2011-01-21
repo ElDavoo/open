@@ -58,6 +58,7 @@
 [%- IF hub.current_workspace.allows_html_wafl -%]
     <li><a do="do_widget_html" onclick="return false;" href="#">HTML...</a></li>
 [%- END -%]
+    <li><a do="do_widget_code" onclick="return false;" href="#">Code...</a></li>
    </ul>
   </li>
  </ul>

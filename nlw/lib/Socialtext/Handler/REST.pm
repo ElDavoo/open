@@ -238,8 +238,8 @@ sub loadResource {
     # the keys is a URI template, see if the current path info matches that
     # template.  Save the parent matches for passing into the handler.
     for my $template (keys %{ $self->resourceHooks() }) {
-        my $regex = join "\\/",
-                    map {/^:__/ ? '(.+)' : /^:/ ? '([^\/]+)' : quotemeta $_}
+        my $regex = join "\\/+",
+                    map {/^:__/ ? '(.+)' : /^:ws$/ ? '(?!(?:nlw|challenge|data|feed|help|js|m|settings|soap|st|wsdl)/)([^\/]+)' : /^:/ ? '([^\/]+)' : quotemeta $_}
                     split m{/}, $template;
         $regex = "^(?:$regex)\\/?\$";
         if ($self->checkMatch($path, $regex)) {

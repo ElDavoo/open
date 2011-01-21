@@ -8,7 +8,7 @@
 | set_default | first_name_prefix | Bobert |  |
 | set_default | last_name | Jones_%%start_time%% |  |
 | set_default | shared_name | Bob |  |
-| set_default | first_letter_after_shared | e |  |
+| set_default | first_letters_after_shared | Bobe |  |
 | set_default | fname2 | Jack_%%start_time%% |  |
 | set | fname_checker | fname_checker_%%start_time%%@david.socialtext.net |  |
 | set | fname_checker_regexp | fname_checker_%%start_time%%\@david.socialtext.net |  |
@@ -33,7 +33,7 @@
 | create-group | %%fname_group_2%% | %%fname_acct%% | %%fname_checker%% |
 | set | fname_group_2_id | %%group_id%% |  |
 | st-admin | add-member --email %%fname_checker%% --group %%fname_group_id%% | is now a member |  |
-| open_ok | /nlw/submit/logout |  |
+| open_ok | /nlw/submit/logout |  |  |
 | st-login | %%fname_user%% | %%password%% |  |
 
 | *Comment* | Test Case: Friendly Name edit profile |  |

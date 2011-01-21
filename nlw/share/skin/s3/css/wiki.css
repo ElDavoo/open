@@ -226,6 +226,7 @@ html .wiki a:hover {
     border-collapse: collapse;
     margin-bottom: 1.4em;
     width: auto;
+    margin-left: 1px;
 }
 .wiki table.st-ss {
     border-collapse: inherit;

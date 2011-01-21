@@ -237,7 +237,7 @@ sub POST {
         -type     => 'application/json',
         -Location => Socialtext::URI::uri(path => $location),
     );
-    return 'created';
+    return '"created"';
 
 }
 
