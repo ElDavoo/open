@@ -6,7 +6,7 @@
 | st-setup-a-group | 1 | 1 | 1 |
 | st-logoutin | %%group_user%% | %%password%% |  |
 | set | new_group_name | New Group Name %%start_time%% |  |
-| set | new_group_description | This is group created for 'Test Case: Groups UI Edit an Existing Group' |  |
+| set | new_group_description | This is testing group New Group Name %%start_time%% |  |
 
 | *Comment* | Test Case: Groups UI Edit an Existing Group - Not Admin - No Edit Link |  |
 | open_ok | /?group/%%group_id%% |  |

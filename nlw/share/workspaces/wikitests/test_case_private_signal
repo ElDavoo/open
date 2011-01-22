@@ -26,21 +26,21 @@
 | st-send-signal-in-activities-widget | %%signal%% |  |
 
 | *Comment* | Test Case: Private Signal. %%psshort%% sends privmsg to %%psshort_two%% |  |
-| wait_for_element_present_ok | //div[@class='private'] | 5000 |
+| wait_for_element_present_ok | //div[@class='private'] | 10000 |
 | click_ok | //div[@class='private'] |  |
-| wait_for_element_visible_ok | //input[@class='lookahead-prompt'] | 5000 |
+| wait_for_element_visible_ok | //input[@class='lookahead-prompt'] | 10000 |
 | type-lookahead-ok | //input[@class='lookahead-prompt'] | %%psshort_two%% |
-| wait_for_element_visible_ok | //a[@class='lookaheadItem'] | 5000 |
-| st_pause_click | 1000 | //a[@class='lookaheadItem'] |
+| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a | 10000 |
+| st_pause_click | 1000 | //div[@class='lookaheadItem']/a |
 
 | *Comment* | Test Case: Private Signal. %%psshort%% looks for Private message confirmation |  |
-| wait-for-element-visible-ok | //div[@class='message private'] | 5000 |
+| wait-for-element-visible-ok | //div[@class='message private'] | 10000 |
 | text_like | //div[@class='message private'] | You are composing a private message to %%psshort_two%% |
 | st-type_signal | %%private%% |  |
 | click_ok | //a[@class='btn post'] |  |
 
 | *Comment* | Test Case: Private Signal. %%psshort%% sends pubmsg to %%psshort_two%% |  |
-| wait-for-element-not-present-ok | //div[@class='message private'] | 5000 |
+| wait-for-element-not-present-ok | //div[@class='message private'] | 10000 |
 | open_ok | /st/signals |  |
 | st-send-signal-in-activities-widget | %%public%% |  |
 
@@ -64,19 +64,19 @@
 | set | private | Private Hello to %%psshort%% from %%short_username%% |
 
 | *Comment* | Test Case: Private Signal. %%short_username%% initiates privmsg to %%psshort%% |  |
-| wait_for_element_present_ok | //div[@class='private'] | 5000 |
+| wait_for_element_present_ok | //div[@class='private'] | 10000 |
 | click_ok | //div[@class='private'] |  |
-| wait_for_element_visible_ok | //input[@class='lookahead-prompt'] | 5000 |
+| wait_for_element_visible_ok | //input[@class='lookahead-prompt'] | 10000 |
 | type-lookahead-ok | //input[@class='lookahead-prompt'] | %%psshort%% |
-| wait_for_element_visible_ok | //a[@class='lookaheadItem'] | 5000 |
-| st_pause_click | 1000 | //a[@class='lookaheadItem'] |
-| wait-for-element-visible-ok | //div[@class='message private'] | 5000 |
+| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a | 10000 |
+| st_pause_click | 1000 | //div[@class='lookaheadItem']/a |
+| wait-for-element-visible-ok | //div[@class='message private'] | 10000 |
 | text_like | //div[@class='message private'] | You are composing a private message to %%psshort%% |
 
 | *Comment* | Test Case: Private Signal cancel the private signal |  |
-| wait_for_element_visible_ok | //a[@class='cancel'] | 5000 |
+| wait_for_element_visible_ok | //a[@class='cancel'] | 10000 |
 | click_ok | //a[@class='cancel'] |  |
-| wait_for_element_not_present_ok | //div[@class='message private'] | 5000 |
+| wait_for_element_not_present_ok | //div[@class='message private'] | 10000 |
 | st-type_signal | %%cancel%% |  |
 | click_ok | //a[@class='btn post'] |  |
 
