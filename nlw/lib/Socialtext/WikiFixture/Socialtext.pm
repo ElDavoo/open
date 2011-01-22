@@ -189,7 +189,11 @@ Log out of the Socialtext wiki.
 sub st_logout {
     my $self = shift;
     diag "st-logout";
-    $self->click_and_wait('id=logout_btn', 'log out');
+
+    # go to Miki first to avoid the auto-refresh of watchlist/group in S3,
+    # which could trigger a 401 Basic Auth poupup upon logout.
+    $self->handle_command('open_ok', '/m/workspace_list');
+    $self->handle_command('open_ok', '/nlw/submit/logout');
 }
 
 =head2 st_logoutin()
