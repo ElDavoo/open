@@ -38,7 +38,6 @@
 | set_Speed | 0 |  |
 
 | *Comment* | Test Case: Signals Attachment. click Done |  |
-| wait_for_text_present_ok | Uploaded files: %%jpg%%, %%txt%%, %%zip%% | 120000 |
 | wait_for_element_visible_ok | //a[@class='btn'] | 10000 |
 | click_ok | //a[@class='btn'] |  |
 | wait_for_element_not_visible_ok | //form[@name='attachForm'] | 30000 |
