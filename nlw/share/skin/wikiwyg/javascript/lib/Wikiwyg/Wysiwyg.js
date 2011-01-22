@@ -3631,7 +3631,6 @@ proto._preload_video_dimensions = function() {
                 }
                 else if (data.error) {
                     $('#st-widget-video-original-width').text(loc('Error!'));
-                    $('#video_widget_edit_error_msg').text(data.error).show();
                 }
             }
         });
