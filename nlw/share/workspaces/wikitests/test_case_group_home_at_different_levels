@@ -38,7 +38,6 @@
 | text_like | //body | %%group_user_short%% |
 | select-frame | relative=parent |  |
 
-| open_ok | /st/dashboard |  |
 | st-logoutin | %%account_user%% | %%password%% |
 | st_open_noeval | /st/group/%%private_grp_id%% |  |
 | text_like | //body | The group you are trying to view does not exist. Please check with the group administrator or contact Socialtext Support. |
@@ -59,6 +58,7 @@
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
+| wait_for_text_present_ok | Group Type | 30000 |
 | text_like | //body | qr/Group Type.+Private/ism |
 | text_unlike | //body | qr/Group Type.+Self-join/ism |
 | wait_for_element_visible_ok | link=(Edit) | 30000 |
@@ -66,7 +66,8 @@
 
 | *Comment* | Group Home at Different Levels do not click Edit, wrong frame level |  |
 | open_ok | /st/edit_group/%%self_join_grp_id%% |  |
-
+| st-name-widget | 1 | information_widget |
+| st-select-widget-frame | information_widget |  |
 | wait_for_element_visible_ok | permission-change | 30000 |
 | click_ok | permission-change |  |
 | pause | 8000 |  |
