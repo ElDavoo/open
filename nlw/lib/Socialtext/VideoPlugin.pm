@@ -187,8 +187,7 @@ sub get_oembed_data {
 
     return {
         error => loc(
-            "Sorry, this URL is not hosted on any of our supported services ([_2]).",
-            $url,
+            "Sorry, this URL is not hosted on any of our supported services ([_1]).",
             join(', ', sort keys %Socialtext::VideoPlugin::Services)
         )
     };
