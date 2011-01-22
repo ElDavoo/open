@@ -58,7 +58,7 @@ my $REFERENCE_TIME = undef;
 field 'id';
 sub class_id { 'page' }
 field full_uri =>
-      -init => '$self->hub->current_workspace->uri . Socialtext::AppConfig->script_name . "?" . $self->uri';
+      -init => '$self->hub->current_workspace->uri . $self->uri';
 field database_directory => -init =>
     'Socialtext::Paths::page_data_directory( $self->hub->current_workspace->name )';
 
