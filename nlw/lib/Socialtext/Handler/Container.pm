@@ -49,18 +49,18 @@ sub get_html {
     my $self = shift;
     $self->if_authorized_to_view(sub {
         my $query = $self->rest->query;
-        if ($query->{add_widget}) {
+        if ($query->param('add_widget')) {
             $self->if_authorized_to_edit(sub {
                 return $self->install_gadget;
             });
         }
-        elsif ($query->{clear}) {
+        elsif ($query->param('clear')) {
             $self->if_authorized_to_edit(sub {
                 $self->container->delete_gadgets;
                 return $self->redirect($self->uri);
             });
         }
-        elsif ($query->{reset}) {
+        elsif ($query->param('reset')) {
             $self->if_authorized_to_edit(sub {
                 $self->container->delete;
                 return $self->redirect($self->uri);
