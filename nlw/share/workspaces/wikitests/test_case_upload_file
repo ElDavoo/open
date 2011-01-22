@@ -16,7 +16,7 @@
 
 | *Comment* | Test Case: Upload File Lightbox Text |  |
 | wait_for_text_present_ok | Upload Files | 30000 |
-| text_like | //body | Maximum file size: 50MB |
+| wait_for_text_present_ok | Maximum file size: 50MB | 30000 |
 
 | *Comment* | Test Case: Upload File Close Upload file lightbox |  |
 | wait_for_element_visible_ok | st-attachments-attach-closebutton | 120000 |
@@ -41,6 +41,7 @@
 
 | *Comment* | Test Case: Upload File verify doc upload |  |
 | wait_for_element_visible_ok | st-attachment-listing | 30000 |
+| wait_for_element_visible_ok | //a[contains(@href,'original/wikitest.doc')] | 30000 |
 | text_like | //a[contains(@href,'original/wikitest.doc')] | wikitest.doc |
 | text_like | contentRight | qr/wikitest.doc.+\w\w\w\s+\d+,\s+\d+\s+\d+\:\d\d[ap]m by %%short_username%%/ |
 
@@ -85,6 +86,7 @@
 | click_ok | link=Add |  |
 | wait_for_element_visible_ok | st-attachments-attach-closebutton | 30000 |
 | click_and_wait | st-attachments-attach-closebutton |  |
+| wait_for_element_not_visible_ok | st-attachments-attach-closebutton | 30000 |
 | pause | 5000 |
 | text_like | contentRight | qr/wikitest\.doc.+\w\w\w\s+\d+,\s+\d+\s+\d+\:\d\d[ap]m by %%short_username%%[\s\.]+wikitest\.doc[\s\.]+\w\w\w\s+\d+,\s+\d+\s+\d+\:\d\d[ap]m by %%short_username%%/ |
 
