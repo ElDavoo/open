@@ -171,7 +171,7 @@ proto.get_lines = function() {
 
     this.selection_start = this.find_left(our_text, selection_start, /[\r\n]/);
     this.selection_end = this.find_right(our_text, selection_end, /[\r\n]/);
-    this.setSelectionRange(selection_start, selection_end);
+    this.setSelectionRange(this.selection_start, this.selection_end);
     t.focus();
 
     this.start = our_text.substr(0,this.selection_start);
