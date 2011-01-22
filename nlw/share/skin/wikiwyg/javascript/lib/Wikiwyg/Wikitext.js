@@ -2038,7 +2038,7 @@ proto.format_img = function(elem) {
                 return String.fromCharCode(parseInt($1, 16));
             }
         );
-        if (widget.match(/^\.\w+\n/))
+        if (widget.match(/^\.[-\w]+\n/))
             elem.top_level_block = true;
         else
             elem.is_widget = true;
@@ -2067,7 +2067,7 @@ proto.format_img = function(elem) {
 
         text = this.handle_include(text, elem);
 
-        if (widget.match(/^\.\w+\n/))
+        if (widget.match(/^\.[-\w]+\n/))
             text = text.replace(/\n*$/, '\n');
 
         // Dirty hack for {{{ ... }}} wikitext
