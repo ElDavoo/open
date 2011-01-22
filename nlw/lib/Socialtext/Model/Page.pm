@@ -107,7 +107,7 @@ sub current_revision_num { $_[0]->{current_revision_num} }
 sub revision_count { $_[0]->{revision_count} }
 sub revision_id    { $_[0]->{current_revision_id} }
 sub revision_num   { $_[0]->{current_revision_num} }
-sub locked         { $_[0]->{locked} }
+sub locked         { $_[0]->{locked} ? 1 : 0 }
 
 sub workspace_name  { $_[0]->{workspace_name} }
 sub workspace_title { $_[0]->{workspace_title} }

@@ -25,7 +25,8 @@ our $MODEL_FIELDS = <<EOT;
     page.page_type, 
     page.deleted, 
     page.summary,
-    page.edit_summary
+    page.edit_summary,
+    page.locked
 EOT
 
 sub By_seconds_limit {
@@ -287,7 +288,8 @@ SELECT page.workspace_id,
     page_revision.deleted, 
     page_revision.summary,
     page_revision.edit_summary,
-    page_revision.tags
+    page_revision.tags,
+    page_revision.locked
     FROM page
         JOIN "Workspace" USING (workspace_id)
         JOIN page_revision USING (workspace_id, page_id)
