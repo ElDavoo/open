@@ -9,9 +9,12 @@
 | set_default | jpg | wikitest.jpg |
 | set_default | txt | wikitest.txt |
 | set_default | zip | wikitestzip.zip |
-| set_default | jpg_file | %%wikitest_client_files%%%%jpg%% |
-| set_default | txt_file | %%wikitest_client_files%%%%txt%% |
-| set_default | zip_file | %%wikitest_client_files%%%%zip%% |
+
+| set_default | scheme | http |
+| set_default | files_host | wikitest_files.topaz.socialtext.net |
+| set_default | jpg_file | %%scheme%%://%%files_host%%/%%jpg%% |
+| set_default | txt_file | %%scheme%%://%%files_host%%/%%txt%% |
+| set_default | zip_file | %%scheme%%://%%files_host%%/%%zip%% |
 | set_default | signal | TC: Signals Attachment %%start_time%% |
 
 | *Comment* | Test Case: Signals Attachment wait to logout or triggers authen dialog |  |
@@ -29,11 +32,11 @@
 | *Comment* | Test Case: Signals Attachment. setSpeed 3000 for type-in, time to upload three files |  |
 | set_Speed | 3000 |  |
 | text_like | //body | select an image or file to upload |
-| type-lookahead-ok | //form[@name='attachForm']//input | %%jpg_file%% |
+| attach_file_ok | //form[@name='attachForm']//input | %%jpg_file%% |
 | wait_for_text_present_ok | Uploaded files: %%jpg%% | 10000 |
-| type-lookahead-ok | //form[@name='attachForm']//input | %%txt_file%% |
+| attach_file_ok | //form[@name='attachForm']//input | %%txt_file%% |
 | wait_for_text_present_ok | Uploaded files: %%jpg%%, %%txt%% | 10000 |
-| type-lookahead-ok | //form[@name='attachForm']//input | %%zip_file%% |
+| attach_file_ok | //form[@name='attachForm']//input | %%zip_file%% |
 | wait_for_text_present_ok | Uploaded files: %%jpg%%, %%txt%%, %%zip%% | 10000 |
 | set_Speed | 0 |  |
 
