@@ -400,6 +400,19 @@ sub st_pause_click {
     $self->handle_command($cmd, $locator);
 }
 
+=head2 st_click_pause
+  | st_click_pause | button_locator | N | ANDWAIT |
+  Clicks the button_locator then pauses for N msec; needed to prevent race conditions after saving comments
+  uses click_and_wait if third arg is not empty
+=cut
+
+sub st_click_pause {
+    my ($self, $locator, $pause, $andwait) = @_;
+    my $cmd = $andwait ? 'click_and_wait' : 'click_ok';
+    $self->handle_command($cmd, $locator);
+    $self->handle_command('pause',$pause);
+}
+
 =head2 st_create_wikipage ( $workspace, pagename )
 
 Creates a plain-english page at server/workspace/pagname and leaves you in view mode.  

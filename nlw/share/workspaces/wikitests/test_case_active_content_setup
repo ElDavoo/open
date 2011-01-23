@@ -77,7 +77,8 @@
 | click_ok | link=Comment |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | %%conv_user%% comments |
-| click_ok | link=Save |  |
+| wait_for_element_visible_ok | link=Save | 30000 |
+| st_click_pause | link=Save |  | 5000 |
 | wait_for_element_visible_ok | link=Comment | 30000 |
 | st-page-multi-view | /%%acw%%/?Active Content Comment %%start_time%% | 5 |
 

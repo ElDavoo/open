@@ -37,7 +37,8 @@
 | click_ok | link=Comment |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | Hidden Email Comment %%start_time%% |
-| click_ok | link=Save |  |
+| wait_for_element_visible_ok | link=Save | 30000 |
+| st_click_pause | link=Save | 5000 |
 
 | *Comment* | Test Case: Hidden email Address for Public wiki create weblog |  |
 | click_and_wait | link=Settings |  |
@@ -99,7 +100,7 @@
 | text_unlike | contentContainer | %%he_name%% |
 | text_like | contentContainer | %%he_hidden%% |
 
-| *Comment* | Test Case: Hidden Email Address for Public wiki Teardown |  |
+| *Comment* | Test Case: Hidden Email Address for Public wiki TEARDOWN |  |
 | *Comment* | Process all jobs before deleting workspace to avoid hanging ceq jobs |  |
 | st-process-jobs |  |  |
 | st-admin | delete-workspace --workspace %%he_ws%% --no-export | deleted |

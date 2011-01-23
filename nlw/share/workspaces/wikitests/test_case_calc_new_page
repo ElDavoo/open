@@ -4,20 +4,20 @@
 | st-admin | update-page --email %%email%% --workspace %%workspace%% --page "np ss %%start_time%%" < %%wikitest_client_files%%wikitest.txt | The "np ss %%start_time%%" page has been created. |
 
 | *Comment* | Test Case: Calc New Page. Create SS ns %%start_time%% |  |
-| open_ok | /%%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=ns%20%%start_time%%#edit |  |
+| open_ok | /%%workspace%%/?action=display;page_type=spreadsheet;page_name=ns%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link |  |
 | st-page-save |  |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
 | wait_for_element_present_ok | link=Export to CSV | 30000 |
 
 | *Comment* | Test Case: Calc New Page. Re-open and Save ns %%start_time%% |  |
-| open_ok | /%%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=ns%20%%start_time%%#edit |  |
+| open_ok | /%%workspace%%/?action=display;page_type=spreadsheet;page_name=ns%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link |  |
 | st-page-save |  |  |
 | wait_for_element_present_ok | link=Export to CSV | 30000 |
 
 | *Comment* | Test Case: Calc New Page. try to save with existing page title: np ss %%start_time%% |  |
-| open_ok | /%%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=Untitled%20Spreadsheet#edit |  |
+| open_ok | /%%workspace%%/?action=display;page_type=spreadsheet;page_name=Untitled%20Spreadsheet#edit |  |
 | wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
 | type_ok | st-newpage-pagename-edit | np ss %%start_time%% |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
@@ -34,10 +34,10 @@
 | click_and_wait | st-newspreadsheet-duplicate-okbutton |  |
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
 | text_like | st-page-titletext | np ss %%start_time%% Two |
-| location_like | /%%workspace%%/index.cgi?np_ss_%%start_time%%_two |  |
+| location_like | /%%workspace%%/np_ss_%%start_time%%_two |  |
 
 | *Comment* | Test Case: Calc New Page. try to save with existing page title: np ss %%start_time%% Two |  |
-| open_ok | /%%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=Untitled%20Spreadsheet#edit |  |
+| open_ok | /%%workspace%%/?action=display;page_type=spreadsheet;page_name=Untitled%20Spreadsheet#edit |  |
 | wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
 | type_ok | st-newpage-pagename-edit | np ss %%start_time%% Two |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
