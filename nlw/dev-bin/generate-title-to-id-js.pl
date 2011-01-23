@@ -7,6 +7,32 @@ use lib "$FindBin::Bin/../lib";
 
 use Socialtext::IntSet; # if you don't have this, try vec() or Judy::1
 
+use Getopt::Long;
+
+my %opts = ( );
+
+my $result = GetOptions(
+    \%opts,
+    'dash!',
+    'help',
+);
+if ($opts{help}) {
+    print &usage;
+    exit 0;
+}
+sub usage {
+    return <<"HERE";
+
+    Usage: $0 [options] > page_to_id.js
+
+    where options include:
+       -d | --dash    Use dashes instead of underscores as filler
+
+       -h | --help    This help message
+
+HERE
+}
+
 # FROM Socialtext::String:
 my $invalid_re = qr/[^\p{Letter}\p{Number}\p{ConnectorPunctuation}\pM]+/;
 
@@ -66,6 +92,13 @@ my @ranges;
 }
 
 print "/* DO NOT EDIT THIS FUNCTION! run $0 instead */\n";
+my $char = '_';
+if ($opts{dash}) {
+    print "/* DO NOTE THAT FOR WORKSPACES WE USE DASH (-) INSTEAD OF UNDERSCORE (_) */\n";
+    $char = '-';
+}
+
+
 print "function page_title_to_page_id (str) {\n";
 print "    str = str.replace(/^\\s+/, '').replace(/\\s+\$/, '').replace(/[";
 while (my ($start,$stop) = splice @ranges,0,2) {
@@ -76,12 +109,12 @@ while (my ($start,$stop) = splice @ranges,0,2) {
         printf '\u%04X-\u%04X', $start, $stop;
     }
 }
-print "]+/g,'_');\n";
+print "]+/g,'$char');\n";
 print <<EOJS;
-    str = str.replace(/_+/g, '_');
-    str = str.replace(/(^_|_\$)/g, '');
-    if (str == '0') str = '_';
-    if (str == '') str = '_';
+    str = str.replace(/$char+/g, '$char');
+    str = str.replace(/(^$char|$char\$)/g, '');
+    if (str == '0') str = '$char';
+    if (str == '') str = '$char';
     return str.toLocaleLowerCase();
 } /* function page_title_to_page_id */
 EOJS
