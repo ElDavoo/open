@@ -40,7 +40,7 @@ TODO: upload a file and test for Keep Attachments
 
 | *Comment* | Test Case: Tools: Copy Page to Workspace. Should return to the same WS,
 NOT the target WS |  |
-| location_like | /%%workspace%%/index.cgi?copy_this_page_%%start_time%% |  |
+| location_like | /%%workspace%%/copy_this_page_%%start_time%% |  |
 | wait_for_element_visible_ok | contentRight | 30000 |
 | text_like | contentRight | Copy This Tag %%start_time%% |
 | text_like | st-page-titletext | Copy This Page %%start_time%% |

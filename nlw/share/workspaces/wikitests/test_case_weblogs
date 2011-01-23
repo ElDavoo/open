@@ -48,7 +48,8 @@ open_ok | /%%workspace%%/index.cgi?action=weblog_display&category=test_%%start_t
 | click_ok | link=Comment |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | Comment 1 %%start_time%% |
-| click_ok | link=Save |  |
+| wait_for_element_visible_ok | link=Save | 30000 |
+| st_click_pause | link=Save | 5000 |
 
 | *Comment* | Just SAVED comment |  |
 | wait_for_text_present_ok | Comment 1 %%start_time%% | 30000 |
