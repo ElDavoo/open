@@ -16,13 +16,16 @@
 | click_ok | link=Comment |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | this is a comment, which is a contribution |
+| wait_for_element_visible_ok | link=Save | 30000 |
 | click_ok | link=Save |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |
+
 | open_ok | /%%am_ws_1%%/index.cgi?%%createme_page1%% |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |
 | click_ok | link=Comment |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | this is a comment, which is a contribution |
+| wait_for_element_visible_ok | link=Save | 30000 |
 | click_ok | link=Save |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |
 
@@ -32,13 +35,16 @@
 | click_ok | link=Comment |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | this is a comment, which is a contribution |
+| wait_for_element_visible_ok | link=Save | 30000 |
 | click_ok | link=Save |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |
+
 | open_ok | /%%am_ws_2%%/index.cgi?%%createme_page1%% |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |
 | click_ok | link=Comment |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | this is a comment, which is a contribution |
+| wait_for_element_visible_ok | link=Save | 30000 |
 | click_ok | link=Save |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |
 

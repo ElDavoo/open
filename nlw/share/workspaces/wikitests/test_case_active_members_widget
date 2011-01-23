@@ -14,7 +14,7 @@
 | set | view_edit_email | view-edit-%%start_time%%@ken.socialtext.net |
 | set | view_edit_user | view edit %%start_time%% |
 | set | createme_page1 | members page 1 %%start_time%% |
-| set | createme_page2 | members page 1 %%start_time%% |
+| set | createme_page2 | members page 2 %%start_time%% |
 | set | am_ws_1 | active-memb-ws-1-%%start_time%% |
 | set | am_ws_2 | active-memb-ws-2-%%start_time%% |
 
