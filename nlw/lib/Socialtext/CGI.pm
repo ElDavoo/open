@@ -129,6 +129,7 @@ sub page_name {
     my $page_name = $self->_get_cgi_param('page_name');
     $page_name = $self->uri_unescape($page_name);
 
+    no warnings 'uninitialized';
     if ($self->hub->rest->{__last_match_pattern} eq '/:ws/:pname') {
         $page_name ||= $self->hub->rest->{__lastRegexMatches}[1];
     }
