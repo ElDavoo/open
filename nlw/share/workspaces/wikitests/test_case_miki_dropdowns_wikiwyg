@@ -37,12 +37,14 @@
 | *Comment* | Test Case: Mobile Signals. Signal to %%msacct%%-A |  |
 | st_mobile_account_select_ok | %%msacct%%-A (primary, 1 user) |
 | st-type-signal | Signal to %%msacct%%-A | 1 |
+| wait_for_element_visible_ok | %%miki_signal_submit%% | 20000 |
 | click_and_pause | %%miki_signal_submit%% |  |
 | text_like | Signal to %%msacct%%-A |  |
 
 | *Comment* | Test Case: Mobile Signals. Signal to %%msacct%%-B |  |
 | st_mobile_account_select_ok | %%msacct%%-B (1 user) |
 | st-type-signal | Signal to %%msacct%%-B | 1 |
+| wait_for_element_visible_ok | %%miki_signal_submit%% | 20000 |
 | click_and_pause | %%miki_signal_submit%% |  |
 | text_like | Signal to %%msacct%%-B |  |
 

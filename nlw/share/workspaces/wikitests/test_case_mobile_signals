@@ -2,16 +2,19 @@
 
 | *Comment* | Test Case: Mobile Signals |  |
 
+| *Comment* | Test Case: Mobile Signals. Click mobile from Dashboard, opens mobile signals |  |
 | open_ok | /st/dashboard |  |
 | wait_for_element_visible_ok | link=Mobile | 30000 |
 | click_and_wait | link=Mobile |  |
+
+| pause | 8000 | I Hate Pause |
 
 | *Comment* | Test Case: Mobile Signals. Word but not Link |  |
 | wait_for_text_present_ok | %%miki_signal_text%% | 30000 |
 | wait_for_text_present_ok | Signals | 3000 |
 
 | *Comment* | Test Case: Mobile Signals. Send a signal |  |
-| wait_for_element_present_ok | %%miki_signal_submit%% | 3000 |
+| wait_for_element_visible_ok | %%miki_signal_submit%% | 3000 |
 | st-type-signal | Siggy Siggy Siggy %%start_time%% Sig | 1 |
 | click_and_pause | %%miki_signal_submit%% |  |
 
