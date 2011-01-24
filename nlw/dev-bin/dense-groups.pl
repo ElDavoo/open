@@ -3,7 +3,8 @@ $|=1;
 
 use strict;
 use warnings;
-use lib 'lib';
+use FindBin;
+use lib "$FindBin::Bin/../lib";
 use Socialtext::Account;
 use Socialtext::Group;
 use Socialtext::Role;
