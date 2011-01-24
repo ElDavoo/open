@@ -171,11 +171,6 @@ sub main {
                 'nginx/empty.conf'
                     => "$socialtext_conf_d/include-empty.conf",
                 $params, 0,
-            ],
-            [
-                'nginx/under-resourced.tmpl'
-                    => "$dirs{root}/docroot/under-resourced.html",
-                $params, 0,
             ];
 
             my $template_root = _get_template_root();
@@ -834,6 +829,9 @@ sub copy_static_files {
         File::Copy::copy(@$pair)
             or die "Cannot copy $pair->[0] => $pair->[1]: $!";
     }
+    print "Copying static nginx html\n";
+    File::Copy::copy("$inc/static/nginx/under-resourced.html"
+        => "$dirs{root}/docroot/under-resourced.html");
 }
 
 sub help {
