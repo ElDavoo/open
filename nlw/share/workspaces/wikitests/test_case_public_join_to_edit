@@ -107,6 +107,7 @@ TODO: Join. See immediate editable and membership.
 | wait_for_element_visible_ok | st-page-titletext | 30000 |
 | text_like | st-page-titletext | %%auth_w%% Title |
 | st-logout |  |  |
+| open_ok | /%%auth_w%%/index.cgi |  |
 | wait_for_element_not_present_ok | link=Edit | 30000 |
 | wait_for_element_visible_ok | link=Join to edit | 30000 |
 
