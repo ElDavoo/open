@@ -145,6 +145,11 @@ sub main {
                 $params, 'overwrite',
             ],
             [
+                'nginx/unconfigured.nginx'
+                    => "$dirs{nginx_etc}/${app_prefix}nginx-unconfigured.conf",
+                $params, 'overwrite',
+            ],
+            [
                 'nginx/nlw.nginx'
                     => "$dirs{nginx_etc}/auto-generated.d/nlw.conf",
                 $params, 'overwrite',
@@ -830,8 +835,10 @@ sub copy_static_files {
             or die "Cannot copy $pair->[0] => $pair->[1]: $!";
     }
     print "Copying static nginx html\n";
-    File::Copy::copy("$inc/static/nginx/under-resourced.html"
-        => "$dirs{root}/docroot/under-resourced.html");
+    for my $file (qw/under-resourced unconfigured/) {
+        File::Copy::copy("$inc/static/nginx/$file.html"
+            => "$dirs{root}/docroot/$file.html");
+    }
 }
 
 sub help {
