@@ -938,7 +938,7 @@ $(function() {
                 }
                 else { // old default action
                     var href = $('#st-wikinav-register a').attr('href');
-                    $(window.location).attr('href', href);
+                    window.location = href;
                 }
             },
             dataType: 'json'
