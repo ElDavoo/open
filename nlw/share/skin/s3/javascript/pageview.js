@@ -29,7 +29,7 @@ Page = {
     },
 
     cgiUrl: function () {
-        return '/' + Socialtext.wiki_id + '/index.cgi';
+        return '/' + Socialtext.wiki_id + '/';
     },
 
     _repaintBottomButtons: function() {
