@@ -8,7 +8,7 @@ ST.Lightbox.prototype = {
     newUrl: function (page) {
         var ws = $(this.sel + ' #st-copy-workspace option:selected')
             .attr('name') || Socialtext.wiki_id;
-        return '/' + ws + '/index.cgi?' + page;
+        return '/' + ws + '/' + page;
     },
 
     process: function (template) {
