@@ -25,10 +25,10 @@ sub register {
 # should allow some way to do arguments here
 sub delete_page {
     my $self = shift;
-    return $self->redirect( $self->hub->pages->current->uri )
+    return $self->redirect( $self->hub->pages->current->full_uri )
         unless $self->hub->checker->check_permission('delete');
 
-    return $self->redirect($self->hub->pages->current->uri)
+    return $self->redirect($self->hub->pages->current->full_uri)
         unless $self->hub->checker->can_modify_locked($self->hub->pages->current);
 
     $self->hub->pages->current->delete( user => $self->hub->current_user );
@@ -40,12 +40,12 @@ sub undelete_page {
     my $page = $self->hub->pages->new_from_name(  
         Encode::decode("utf8", URI::Escape::uri_unescape($self->cgi->page_id )));
 
-    return $self->redirect( $page->uri ) if $page->active;
+    return $self->redirect( $page->full_uri ) if $page->active;
 
-    return $self->redirect( $page->uri )
+    return $self->redirect( $page->full_uri )
         unless $self->hub->checker->check_permission('edit');
 
-    return $self->redirect($page->uri)
+    return $self->redirect($page->full_uri)
         unless $self->hub->checker->can_modify_locked($page);
 
     my @rev_ids = $page->all_revision_ids;
@@ -57,13 +57,14 @@ sub undelete_page {
         revision_id => $rev_ids[-2],
         user        => $self->hub->current_user,
     );
-    $self->redirect( $page->uri );
+    $self->redirect( $page->full_uri );
 }
 
 sub finish {
     my $self = shift;
     my $id =  $self->hub->pages->current->uri;
-    $self->redirect("action=delete_epilogue&page_id=$id");
+    my $ws_id = $self->hub->current_workspace->name;
+    $self->redirect("/$ws_id/?action=delete_epilogue&page_id=$id");
 }
 
 sub delete_epilogue {
