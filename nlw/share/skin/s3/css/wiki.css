@@ -474,3 +474,7 @@ td .wafl_box {
 .wiki .syntaxhighlighter .toolbar {
     display: none !important;
 }
+
+.wiki .syntaxhighlighter {
+    overflow-y: hidden !important;
+}
