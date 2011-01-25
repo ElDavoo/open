@@ -29,7 +29,7 @@
 | click_and_wait | st-rename-savelink |  |
 
 | *Comment* | Test Case: Tools: Rename Page. verify rename |  |
-| location_like | `/%%workspace%%/index.cgi?Page_Renamed_%%start_time%%` |  |
+| location_like | `/%%workspace%%/Page_Renamed_%%start_time%%` |  |
 | wait_for_element_visible_ok | contentRight | 30000 |
 | text_like | contentRight | Rename This Tag %%start_time%% |
 | text_like | st-page-titletext | Page_Renamed_%%start_time%% |
@@ -71,7 +71,7 @@
 | click_and_wait | st-rename-savelink |  |
 
 | *Comment* | Test Case: Tools: Rename Page. verify 2nd rename using space-containing URL |  |
-| location_like | `/%%workspace%%/index.cgi?Page_Renamed_%%start_time%%` |  |
+| location_like | `/%%workspace%%/Page_Renamed_%%start_time%%` |  |
 
 | *Comment* | Test Case: Tools: Rename Page. verify rename of edited page |  |
 | open_ok | /%%workspace%%/index.cgi?action=revision_list;page_name=page_renamed_%%start_time%% |  |
