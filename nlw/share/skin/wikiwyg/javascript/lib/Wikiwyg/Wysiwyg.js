@@ -3591,7 +3591,7 @@ proto._preload_video_dimensions = function() {
 
     $('#st-widget-video_url').unbind('change').change(function(){
         var url = $(this).val();
-        if (!/:\/\//.test(url)) {
+        if (!/^[-+.\w]+:\/\/[^\/]+\//.test(url)) {
             $('#st-widget-video-original-width').text('');
             url = null;
         }

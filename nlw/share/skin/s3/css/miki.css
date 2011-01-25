@@ -351,3 +351,7 @@ li.divider {
     width: 90% !important;
     height: 50px !important;
 }
+
+.wiki .syntaxhighlighter .toolbar {
+    display: none !important;
+}

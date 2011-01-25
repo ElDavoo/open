@@ -6,6 +6,7 @@ use warnings;
 BEGIN { push @INC, 't/share/plugin/fakeplugin/lib' }
 
 use Test::More tests => 35;
+use mocked 'Socialtext::CGI';
 use mocked 'Socialtext::SQL';
 use mocked 'Socialtext::Page';
 use mocked 'Socialtext::Authz';
@@ -29,6 +30,7 @@ is $plug->uri, 'http://hostname/magic/index.cgi', 'uri';
 is $plug->code_base, $Socialtext::AppConfig::CODE_BASE, 'code_base';
 
 # CGI
+no warnings 'once';
 $Socialtext::CGI::QUERY = {a => 1, b => 2};
 is $plug->query_string, 'a=1;b=2', 'query_string';
 is $plug->query->param('a'), 1, 'query 1';

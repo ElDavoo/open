@@ -625,7 +625,7 @@ sub st_result {
 
 }
 
-=head st_match_text ($match, $variable_name) 
+=head2 st_match_text ($match, $variable_name) 
 
 does a text_like on $match and sticks the results in $variable
 

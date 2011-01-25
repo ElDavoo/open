@@ -37,14 +37,14 @@ $_<br /></div>
 #--- SKIP
 #--- wiki
 #{link: public [wiki 101]}
-#--- match: <span class="nlw_phrase"><a title="inter-workspace link: public" href="/public/index.cgi\?wiki_101">wiki 101</a><!-- wiki: {link: public [wiki 101]} --></span>
+#--- match: <span class="nlw_phrase"><a title="inter-workspace link: public" href="/public/wiki_101">wiki 101</a><!-- wiki: {link: public [wiki 101]} --></span>
 #
 
 __DATA__
 === Interwiki link, with permission
 --- wiki
 {link: foobar [Quick Start]}
---- match: <span class="nlw_phrase"><a title="inter-workspace link: foobar" href="/foobar/index.cgi?quick_start">Quick Start</a><!-- wiki: {link: foobar [Quick Start]} --></span>
+--- match: <span class="nlw_phrase"><a title="inter-workspace link: foobar" href="/foobar/quick_start">Quick Start</a><!-- wiki: {link: foobar [Quick Start]} --></span>
 
 === Interwiki link, without permission
 --- wiki
@@ -54,5 +54,5 @@ __DATA__
 === Interwiki link, with anchor
 --- wiki
 {link: foobar [Quick Start] anchor}
---- match: <span class="nlw_phrase"><a title="section link" href="/foobar/index.cgi?quick_start#anchor">Quick Start (anchor)</a><!-- wiki: {link: foobar [Quick Start] anchor} --></span>
+--- match: <span class="nlw_phrase"><a title="section link" href="/foobar/quick_start#anchor">Quick Start (anchor)</a><!-- wiki: {link: foobar [Quick Start] anchor} --></span>
 

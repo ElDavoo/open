@@ -57,8 +57,7 @@ _get_history_list_for_template: {
     my $historylist=$hub->helpers->_get_history_list_for_template;
     
     is scalar(@$historylist), 3, 'length of history list';
-    my $page_base_uri = $hub->current_workspace->uri
-        . Socialtext::AppConfig->script_name . "?";
+    my $page_base_uri = $hub->current_workspace->uri;
     is_deeply $historylist,
         [
         { label => "People",      link => $page_base_uri . "people" },

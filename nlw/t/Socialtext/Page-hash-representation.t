@@ -43,8 +43,8 @@ my $page_id   = Socialtext::String::title_to_id($page_name);
         'modified time looks like an epoch time';
     like $hash->{revision_id}, qr{^\d{14}$},
         'revision_id is correctly formatted';
-    like $hash->{page_uri}, qr{/empty/index.cgi\?$page_id},
-        'page_uri contains index.cgi';
+    like $hash->{page_uri}, qr{/empty/$page_id},
+        'page_uri contains page id';
 
     # update the page
     # first the obligatory sleep because our revisions ids are lame

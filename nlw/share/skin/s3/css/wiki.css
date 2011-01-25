@@ -471,3 +471,10 @@ td .wafl_box {
     background-image: url(../images/sort-down-hover.png);
 }
 
+.wiki .syntaxhighlighter .toolbar {
+    display: none !important;
+}
+
+.wiki .syntaxhighlighter {
+    overflow-y: hidden !important;
+}

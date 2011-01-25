@@ -5,6 +5,7 @@ use warnings;
 use Test::More tests => 8;
 
 use Data::Dumper;
+use mocked 'Socialtext::CGI';
 use mocked 'Socialtext::Events', qw/event_ok is_event_count/;
 use mocked 'Socialtext::Page';
 use mocked 'Socialtext::Formatter';

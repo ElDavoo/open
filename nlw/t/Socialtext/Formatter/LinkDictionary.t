@@ -10,15 +10,15 @@ fixtures(qw( empty ));
 use Socialtext::Formatter::LinkDictionary;
 
 my %DEFAULTLINKS = (
-    free => 'index.cgi?%{page_uri}',
-    interwiki => '/%{workspace}/index.cgi?%{page_uri}%{section}',
-    search_query => '/%{workspace}/index.cgi?action=search;search_term=%{search_term}',
-    category_query => '/%{workspace}/index.cgi?action=blog_display;category=%{category}',
-    recent_changes_query => '/%{workspace}/index.cgi?action=recent_changes',
+    free => '%{page_uri}',
+    interwiki => '/%{workspace}/%{page_uri}%{section}',
+    search_query => '/%{workspace}/?action=search;search_term=%{search_term}',
+    category_query => '/%{workspace}/?action=blog_display;category=%{category}',
+    recent_changes_query => '/%{workspace}/?action=recent_changes',
     special_http => '%{arg1}',
-    category => '/%{workspace}/index.cgi?action=category_display;category=%{category}',
-    weblog => '/%{workspace}/index.cgi?action=blog_display;category=%{category}',
-    blog => '/%{workspace}/index.cgi?action=blog_display;category=%{category}',
+    category => '/%{workspace}/?action=category_display;category=%{category}',
+    weblog => '/%{workspace}/?action=blog_display;category=%{category}',
+    blog => '/%{workspace}/?action=blog_display;category=%{category}',
     file => '/data/workspaces/%{workspace}/attachments/%{page_uri}:%{id}/original/%{filename}',
     image => '/data/workspaces/%{workspace}/attachments/%{page_uri}:%{id}/%{size}/%{filename}',
 );
@@ -73,9 +73,9 @@ my $hub = new_hub('empty');
 
     my $html = $hub->viewer->text_to_html($text);
 
-    like( $html, qr{"index.cgi\?[^"]+page_name=hello%20moto"},
+    like( $html, qr{"\?[^"]+page_name=hello%20moto"},
         'free link formats as expected' );
-    like( $html, qr{"/empty/index.cgi\?junkie#farter"},
+    like( $html, qr{"/empty/junkie#farter"},
         'interwiki link formats as expected' );
 }
 

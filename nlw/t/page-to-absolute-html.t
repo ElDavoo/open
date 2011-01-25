@@ -50,22 +50,22 @@ EOF
             qr{src="$server_root/data/workspaces/admin/attachments/formatter_test_for_html_page_wafl:[\d-]+\Q/scaled/socialtext-logo-30.gif},
         ],
         [ "[help]" =>
-            qr{href="$server_root/admin/index.cgi\?[^"]+page_name=help},
+            qr{href="$server_root/admin/\?[^"]+page_name=help},
         ],
         [ "{link public [welcome]}" =>
-            qr{href="$server_root\Q/public/index.cgi?welcome},
+            qr{href="$server_root\Q/public/welcome},
         ],
         [ "{link foobar [welcome]}" =>
-            qr{href="$server_root\Q/foobar/index.cgi?welcome},
+            qr{href="$server_root\Q/foobar/welcome},
         ],
         [ "{weblog help}" =>
-            qr{href="$server_root\Q/admin/index.cgi?action=blog},
+            qr{href="$server_root\Q/admin/?action=blog},
         ],
         [ "{blog help}" =>
-            qr{href="$server_root\Q/admin/index.cgi?action=blog},
+            qr{href="$server_root\Q/admin/?action=blog},
         ],
         [ "{category help}" =>
-            qr{href="$server_root\Q/admin/index.cgi?action=category},
+            qr{href="$server_root\Q/admin/?action=category},
         ],
         [ "http:base/images/docs/Browse-Collection_of_pages.png" =>
             qr{src="$server_root\Q/admin/base/images/docs/Browse-Collection_of_pages.png},
