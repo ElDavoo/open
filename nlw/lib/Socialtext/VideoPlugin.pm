@@ -24,6 +24,7 @@ const cgi_class   => 'Socialtext::VideoPlugin::CGI';
 
 our %Services = (
     YouTube => {
+        domains => [qw( youtu.be youtube.com www.youtube.com )],
         match => [
             qr{://youtu\.be/([-\w]{11,})}i,
             qr{://(?:www\.)?youtube\.com/.*?\bv=([-\w]{11,})}i,
@@ -39,6 +40,7 @@ our %Services = (
                           frameborder='0'></iframe>},
     },
     Vimeo => {
+        domains => [qw( vimeo.com www.vimeo.com player.vimeo.com )],
         match => [
             qr{://(?:www\.)?vimeo\.com/groups/.*/videos/(\d+)}i,
             qr{://(?:www\.)?vimeo\.com/(\d+)}i,
@@ -53,6 +55,7 @@ our %Services = (
                           frameborder='0'></iframe>},
     },
     GoogleVideo => {
+        domains => [qw( video.google.com )],
         match => [
             qr{://video\.google\.com/.*\bdocid=([-\w]+)}i,
         ],
@@ -86,6 +89,7 @@ our %Services = (
         }
     },
     SlideShare => {
+        domains => [qw( slideshare.net www.slideshare.net )],
         match => [
             qr{^(\w+://(?:www\.)?slideshare\.net/.*)$}i,
         ],
@@ -98,6 +102,7 @@ our %Services = (
         }
     },
 );
+our $DomainsRegex = join('|', map { quotemeta($_) } map { @{ $_->{domains} } } values %Services);
 
 sub register {
     my $self = shift;
@@ -183,6 +188,11 @@ sub get_oembed_data {
             }
             return { error => loc("Sorry, this URL does not appear to link to an embeddable video.") };
         }
+    }
+
+    if ($url =~ m{^\w+://(?:$DomainsRegex)/}o) {
+        # The user may be partially entering an URL; don't discourage them.
+        return { error => loc("Please enter the full video URL.") };
     }
 
     return {
