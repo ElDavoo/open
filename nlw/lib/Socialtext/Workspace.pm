@@ -1251,9 +1251,12 @@ EOT
             $content .= "Category: $tag\n";
         }
 
+        warn "Double check that the utf8 flag is turned on here";
         $content .= "\n" . $row->{body};
         Socialtext::File::set_contents_utf8($filename, \$content);
     }
+
+    warn "Need to write index.txt symlink for every page.";
 }
 
 
