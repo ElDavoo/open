@@ -209,7 +209,7 @@ sub main {
                         . "# be overwritten on upgrade.\n";
                 close $fh or die "Can't write $robots: $!";
             }
-            print "Copying static nginx html\n";
+            print "Copying static nginx html\n" unless $opts{quiet};
             for my $file (qw/under-resourced unconfigured/) {
                 File::Copy::copy("$inc/static/nginx/$file.html"
                     => "$dirs{root}/docroot/$file.html");
