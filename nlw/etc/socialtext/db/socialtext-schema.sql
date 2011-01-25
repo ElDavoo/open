@@ -68,7 +68,7 @@ CREATE FUNCTION auto_md5_attachment() RETURNS trigger
     AS $$
     BEGIN
         IF NEW.body IS NOT NULL THEN
-            NEW.md5 = md5(NEW.body);
+            NEW.md5 = encode(decode(md5(NEW.body),'hex'),'base64');
         ELSE
             NEW.md5 = ''
         END IF;
