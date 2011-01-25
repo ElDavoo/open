@@ -209,6 +209,11 @@ sub main {
                         . "# be overwritten on upgrade.\n";
                 close $fh or die "Can't write $robots: $!";
             }
+            print "Copying static nginx html\n";
+            for my $file (qw/under-resourced unconfigured/) {
+                File::Copy::copy("$inc/static/nginx/$file.html"
+                    => "$dirs{root}/docroot/$file.html");
+            }
     }
 
     if ( is_target_for('html') ) {
@@ -833,11 +838,6 @@ sub copy_static_files {
         File::Path::mkpath( File::Basename::dirname( $pair->[1], 0, 0755 ) );
         File::Copy::copy(@$pair)
             or die "Cannot copy $pair->[0] => $pair->[1]: $!";
-    }
-    print "Copying static nginx html\n";
-    for my $file (qw/under-resourced unconfigured/) {
-        File::Copy::copy("$inc/static/nginx/$file.html"
-            => "$dirs{root}/docroot/$file.html");
     }
 }
 

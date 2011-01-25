@@ -157,6 +157,8 @@ install-debian:
 	$(INSTALL_ROOT) build/bin/db-login-test $(ST_INSTALL_DIR)/debian/bin/
 	$(MKDIR) $(ST_INSTALL_DIR)/debian/build/
 	$(CP_DIR) build/templates $(ST_INSTALL_DIR)/debian/build
+	$(MKDIR) $(ST_INSTALL_DIR)/debian/build/static
+	$(CP_DIR) build/static/nginx $(ST_INSTALL_DIR)/debian/build/static
 
 install-appliance-bin: install-ok
 	$(INSTALL_ROOT) `$(FIND) appliance-bin/ -maxdepth 1 -type f` $(INSTALLSCRIPT)
