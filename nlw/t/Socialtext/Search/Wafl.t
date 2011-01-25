@@ -40,7 +40,7 @@ admin page one
 --- kwiki
 {search <foobar> title:page}
 --- htmlre
-foobar/index.cgi\?action=search;search_term=title%3Apage
+foobar/\?action=search;search_term=title%3Apage
 foobar page six
 foobar page five
 foobar page four

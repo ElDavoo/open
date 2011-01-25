@@ -73,7 +73,7 @@ see admin: {link: admin [quick start]}
 --- match
 <div class="wiki">
 <p>
-see admin: <span class="nlw_phrase"><a title="inter-workspace link: admin" href="/admin/index.cgi?quick_start">quick start</a><!-- wiki: {link: admin [quick start]} --></span></p>
+see admin: <span class="nlw_phrase"><a title="inter-workspace link: admin" href="/admin/quick_start">quick start</a><!-- wiki: {link: admin [quick start]} --></span></p>
 </div>
 
 === link wafl phrase no-exist
@@ -82,7 +82,7 @@ see admin: {link: admin [wiki 505]}
 --- match
 <div class="wiki">
 <p>
-see admin: <span class="nlw_phrase"><a title="inter-workspace link: admin" href="/admin/index.cgi?wiki%20505">wiki 505</a><!-- wiki: {link: admin [wiki 505]} --></span></p>
+see admin: <span class="nlw_phrase"><a title="inter-workspace link: admin" href="/admin/wiki%20505">wiki 505</a><!-- wiki: {link: admin [wiki 505]} --></span></p>
 </div>
 
 === link wafl phrase no-perm
@@ -207,7 +207,7 @@ http:index.cgi
 --- match
 <div class="wiki">
 <p>
-<a href="index.cgi?people" wiki_page=""  title="This is the people directory, a list of people working in this workspace. It is built by you, as a place to introduce yourself . Please add yourself below and then create your own homepage. Find out more: Introduce yourself . your name here (e.g. John or Jane Doe ) Meet your fellow socialtext users. You&#39;re not alone! Meet other Socialtext customers...">People</a></p>
+<a href="people" wiki_page=""  title="This is the people directory, a list of people working in this workspace. It is built by you, as a place to introduce yourself . Please add yourself below and then create your own homepage. Find out more: Introduce yourself . your name here (e.g. John or Jane Doe ) Meet your fellow socialtext users. You&#39;re not alone! Meet other Socialtext customers...">People</a></p>
 </div>
 
 === renamed wiki links
@@ -216,5 +216,5 @@ http:index.cgi
 --- match
 <div class="wiki">
 <p>
-<a href="index.cgi?people" wiki_page="People"  title="This is the people directory, a list of people working in this workspace. It is built by you, as a place to introduce yourself . Please add yourself below and then create your own homepage. Find out more: Introduce yourself . your name here (e.g. John or Jane Doe ) Meet your fellow socialtext users. You&#39;re not alone! Meet other Socialtext customers...">my todo list for today</a></p>
+<a href="people" wiki_page="People"  title="This is the people directory, a list of people working in this workspace. It is built by you, as a place to introduce yourself . Please add yourself below and then create your own homepage. Find out more: Introduce yourself . your name here (e.g. John or Jane Doe ) Meet your fellow socialtext users. You&#39;re not alone! Meet other Socialtext customers...">my todo list for today</a></p>
 </div>

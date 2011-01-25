@@ -2,6 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
+use mocked 'Socialtext::CGI';
 use mocked 'Apache::Cookie';
 use mocked 'Socialtext::Search::Config';
 use mocked 'Socialtext::Hub';
@@ -18,7 +19,7 @@ Central_page: {
     my $mock_hub = Socialtext::Hub->new;
     my $hp = Socialtext::HomepagePlugin->new( hub => $mock_hub );
     is $hp->homepage, '';
-    is $Socialtext::Headers::REDIRECT, 'full_uri?current';
+    is $Socialtext::Headers::REDIRECT, '/workspace_mock_workspace_name/current';
 }
 
 S2_Homepage: {

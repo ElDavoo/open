@@ -183,7 +183,7 @@ sub check_with_user {
     if ( $p{should_fail} ) {
         unlike(
             $output,
-            qr{\Qhref="/foobar/index.cgi?welcome"},
+            qr{\Qhref="/foobar/welcome"},
             'foobar link not present'
         );
         like(
@@ -207,12 +207,12 @@ sub check_with_user {
             if $p{from_cache};
         like(
             $output,
-            qr{\Qhref="/public/index.cgi?welcome"},
+            qr{\Qhref="/public/welcome"},
             'public link present'
         );
         like(
             $output,
-            qr{\Qhref="/foobar/index.cgi?welcome"},
+            qr{\Qhref="/foobar/welcome"},
             'foobar link present'
         );
     }
