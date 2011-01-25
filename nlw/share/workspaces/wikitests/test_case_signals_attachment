@@ -17,9 +17,6 @@
 | set_default | zip_file | %%scheme%%://%%files_host%%/%%zip%% |
 | set_default | signal | TC: Signals Attachment %%start_time%% |
 
-| *Comment* | Test Case: Signals Attachment wait to logout or triggers authen dialog |  |
-| pause | 8000 |  |
-
 | *Comment* | Test Case: Signals Attachment login as | %%att_signaler%% |
 | st-logoutin | %%att_signaler%% | %%att_signaler_pw%% |
 | open_ok | /st/signals |  |

@@ -32,12 +32,6 @@
 | set | empty_acct | %%am_acct_one%% |
 | set | empty_user | %%view_edit_email%% |
 
-
-
- include | [Test Case: Active Members Empty Messages] | |
-
-
-
 | *Comment* | Test Case: Active Members - %%view_edit_email%% Creates a page in %%am_ws_1%% |  |
 | st-logoutin | %%view_edit_email%% | %%password%% |
 

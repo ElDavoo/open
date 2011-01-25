@@ -1,7 +1,7 @@
 | *Comment* | Test Case: Replies Includer. Start |  |
 
-| set | frame_pause | 10 |
-| set | post_pause | 10 |
+| set-default | frame_pause | 5000 |
+| set_default | post_pause | 5000 |
 
 | *Comment* | Test Case: Replies Includer. frame_pause %%frame_pause%% post_pause %%post_pause%% |  |
 

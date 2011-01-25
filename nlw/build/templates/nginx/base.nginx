@@ -1,7 +1,7 @@
 [%- IF config.is_dev %]
 error_log [% config.log_dir %]/error.log notice;
 [%- ELSE %]
-error_log [% config.log_dir %]/error.log;
+error_log [% config.log_dir %]/error.log notice;
 [%- END %]
 
 [% IF !config.is_dev %]
