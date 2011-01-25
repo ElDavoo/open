@@ -63,6 +63,19 @@ CREATE FUNCTION auto_hash_signal() RETURNS trigger
     END
 $$;
 
+CREATE FUNCTION auto_md5_attachment() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+        IF NEW.body IS NOT NULL THEN
+            NEW.md5 = md5(NEW.body);
+        ELSE
+            NEW.md5 = ''
+        END IF;
+        return NEW;
+    END
+$$;
+
 CREATE FUNCTION auto_vivify_user_rollups() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
@@ -790,6 +803,7 @@ CREATE TABLE attachment (
     is_image boolean NOT NULL,
     is_temporary boolean DEFAULT false NOT NULL,
     content_length integer NOT NULL,
+    md5 text NOT NULL,
     body bytea
 );
 
@@ -1067,6 +1081,14 @@ CREATE TABLE page (
     edit_summary text,
     locked boolean DEFAULT false NOT NULL,
     views integer DEFAULT 0 NOT NULL
+);
+
+CREATE TABLE page_attachment (
+    id text NOT NULL,
+    workspace_id bigint NOT NULL,
+    page_id text NOT NULL,
+    attachment_id bigint NOT NULL,
+    deleted boolean NOT NULL
 );
 
 CREATE TABLE page_link (
@@ -1528,6 +1550,10 @@ ALTER TABLE ONLY opensocial_appdata
     ADD CONSTRAINT opensocial_appdata_pk
             PRIMARY KEY (app_id, user_set_id, field);
 
+ALTER TABLE ONLY page_attachment
+    ADD CONSTRAINT page_attachment_pkey
+            PRIMARY KEY (workspace_id, page_id, attachment_id);
+
 ALTER TABLE ONLY page_link
     ADD CONSTRAINT page_link_unique
             UNIQUE (from_workspace_id, from_page_id, to_workspace_id, to_page_id);
@@ -1717,6 +1743,12 @@ CREATE INDEX idx_attach_created_at_temp
 	    ON attachment (created_at)
 	    WHERE (NOT is_temporary);
 
+CREATE INDEX idx_attach_filename
+	    ON attachment (lower(filename) text_pattern_ops);
+
+CREATE INDEX idx_attach_filename_with_id
+	    ON attachment (attachment_id, lower(filename) text_pattern_ops);
+
 CREATE INDEX idx_job_func_coalesce_prio
 	    ON job (funcid, "coalesce", (COALESCE((priority)::integer, 0)));
 
@@ -1731,6 +1763,9 @@ CREATE INDEX idx_opensocial_appdata_app_user
 
 CREATE UNIQUE INDEX idx_opensocial_appdata_app_user_field
 	    ON opensocial_appdata (app_id, user_set_id, field);
+
+CREATE UNIQUE INDEX idx_page_att_id
+	    ON page_attachment (workspace_id, page_id, id);
 
 CREATE INDEX idx_signal_tag_lower_tag
 	    ON signal_tag (lower(tag) text_pattern_ops);
@@ -2057,9 +2092,6 @@ CREATE INDEX page_creator_time
 CREATE INDEX page_link__to_page
 	    ON page_link (to_workspace_id, to_page_id);
 
-CREATE INDEX page_revision__ws_page_rev
-	    ON page_revision (workspace_id, page_id, revision_id);
-
 CREATE INDEX page_tag__page_ix
 	    ON page_tag (workspace_id, page_id);
 
@@ -2155,6 +2187,10 @@ CREATE UNIQUE INDEX workspace_user_set_id
 	    ON "Workspace" (user_set_id);
 
 CREATE TRIGGER account_user_set_delete AFTER DELETE ON "Account" FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
+
+CREATE TRIGGER attachment_insert BEFORE INSERT ON attachment FOR EACH ROW EXECUTE PROCEDURE auto_md5_attachment();
+
+CREATE TRIGGER attachment_update BEFORE UPDATE ON attachment FOR EACH ROW EXECUTE PROCEDURE auto_md5_attachment();
 
 CREATE TRIGGER group_user_set_delete AFTER DELETE ON groups FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
 
@@ -2350,6 +2386,16 @@ ALTER TABLE ONLY opensocial_appdata
             FOREIGN KEY (app_id)
             REFERENCES gadget_instance(gadget_instance_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY page_attachment
+    ADD CONSTRAINT page_att_attachment
+            FOREIGN KEY (attachment_id)
+            REFERENCES attachment(attachment_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY page_attachment
+    ADD CONSTRAINT page_att_workspace_id_fk
+            FOREIGN KEY (workspace_id)
+            REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
+
 ALTER TABLE ONLY page
     ADD CONSTRAINT page_creator_id_fk
             FOREIGN KEY (creator_id)
@@ -2364,6 +2410,16 @@ ALTER TABLE ONLY page_link
     ADD CONSTRAINT page_link__from_page_id_fk
             FOREIGN KEY (from_workspace_id, from_page_id)
             REFERENCES page(workspace_id, page_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY page_revision
+    ADD CONSTRAINT page_rev_last_editor_id_fk
+            FOREIGN KEY (editor_id)
+            REFERENCES users(user_id) ON DELETE RESTRICT;
+
+ALTER TABLE ONLY page_revision
+    ADD CONSTRAINT page_rev_workspace_id_fk
+            FOREIGN KEY (workspace_id)
+            REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY page_tag
     ADD CONSTRAINT page_tag_workspace_id_page_id_fkey

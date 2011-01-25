@@ -63,6 +63,19 @@ CREATE FUNCTION auto_hash_signal() RETURNS trigger
     END
 $$;
 
+CREATE FUNCTION auto_md5_attachment() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+        IF NEW.body IS NOT NULL THEN
+            NEW.md5 = md5(NEW.body);
+        ELSE
+            NEW.md5 = ''
+        END IF;
+        return NEW;
+    END
+$$;
+
 CREATE FUNCTION auto_vivify_user_rollups() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
@@ -756,6 +769,7 @@ CREATE TABLE attachment (
     is_image boolean NOT NULL,
     is_temporary boolean DEFAULT false NOT NULL,
     content_length integer NOT NULL,
+    md5 text NOT NULL,
     body bytea
 );
 
@@ -1051,6 +1065,15 @@ CREATE TABLE page_revision (
     tags text[],
     body bytea NOT NULL,
     PRIMARY KEY (workspace_id, page_id, revision_id)
+);
+
+CREATE TABLE page_attachment (
+    id text NOT NULL,
+    workspace_id bigint NOT NULL,
+    page_id text NOT NULL, -- might not refer to an existing page
+    attachment_id bigint NOT NULL,
+    deleted boolean NOT NULL,
+    PRIMARY KEY (workspace_id, page_id, attachment_id)
 );
 
 CREATE TABLE page_link (
@@ -1673,6 +1696,12 @@ CREATE UNIQUE INDEX groups_user_set_id
 CREATE INDEX idx_attach_created_at
 	    ON attachment (created_at);
 
+CREATE INDEX idx_attach_filename
+	    ON attachment (lower(filename) text_pattern_ops);
+
+CREATE INDEX idx_attach_filename_with_id
+	    ON attachment (attachment_id, lower(filename) text_pattern_ops);
+
 CREATE INDEX idx_attach_created_at_temp
 	    ON attachment (created_at)
 	    WHERE (NOT is_temporary);
@@ -2014,9 +2043,6 @@ CREATE INDEX job_funcid_runafter
 CREATE INDEX page_creator_time
 	    ON page (creator_id, create_time);
 
-CREATE INDEX page_revision__ws_page_rev
-	    ON page_revision (workspace_id, page_id, revision_id);
-
 CREATE INDEX breadcrumb_viewer_ws
 	    ON breadcrumb (viewer_id, workspace_id);
 
@@ -2037,6 +2063,9 @@ CREATE INDEX page_tag__workspace_lower_tag_ix
 
 CREATE INDEX page_tag__workspace_tag_ix
 	    ON page_tag (workspace_id, tag);
+
+CREATE UNIQUE INDEX idx_page_att_id
+	    ON page_attachment (workspace_id, page_id, id);
 
 CREATE UNIQUE INDEX person_tag__name
 	    ON person_tag (name);
@@ -2144,6 +2173,9 @@ CREATE TRIGGER user_user_set_delete AFTER DELETE ON users FOR EACH ROW EXECUTE P
 CREATE TRIGGER users_insert AFTER INSERT ON users FOR EACH ROW EXECUTE PROCEDURE auto_vivify_user_rollups();
 
 CREATE TRIGGER workspace_user_set_delete AFTER DELETE ON "Workspace" FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
+
+CREATE TRIGGER attachment_insert BEFORE INSERT ON attachment FOR EACH ROW EXECUTE PROCEDURE auto_md5_attachment();
+CREATE TRIGGER attachment_update BEFORE UPDATE ON attachment FOR EACH ROW EXECUTE PROCEDURE auto_md5_attachment();
 
 ALTER TABLE ONLY account_logo
     ADD CONSTRAINT account_logo_account_fk
@@ -2315,6 +2347,11 @@ ALTER TABLE ONLY page
             FOREIGN KEY (last_editor_id)
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
+ALTER TABLE ONLY page_revision
+    ADD CONSTRAINT page_rev_last_editor_id_fk
+            FOREIGN KEY (editor_id)
+            REFERENCES users(user_id) ON DELETE RESTRICT;
+
 ALTER TABLE ONLY page_link
     ADD CONSTRAINT page_link__from_page_id_fk
             FOREIGN KEY (from_workspace_id, from_page_id)
@@ -2329,6 +2366,21 @@ ALTER TABLE ONLY page
     ADD CONSTRAINT page_workspace_id_fk
             FOREIGN KEY (workspace_id)
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY page_revision
+    ADD CONSTRAINT page_rev_workspace_id_fk
+            FOREIGN KEY (workspace_id)
+            REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY page_attachment
+    ADD CONSTRAINT page_att_workspace_id_fk
+            FOREIGN KEY (workspace_id)
+            REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY page_attachment
+    ADD CONSTRAINT page_att_attachment
+            FOREIGN KEY (attachment_id)
+            REFERENCES attachment(attachment_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY tag_people__person_tags
     ADD CONSTRAINT person_tags_fk
