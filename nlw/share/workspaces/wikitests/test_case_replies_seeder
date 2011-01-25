@@ -3,8 +3,8 @@ It should be included by the top-level replies testcase
 
 * Fixture: SocialWidgets
 
-| set | frame_pause | 3000 |
-| set | post_pause | 3000 |
+| set | frame_pause | 5000 |
+| set | post_pause | 5000 |
 
 | *Comment* | Test Case: Replies Seeder. frame_pause %%frame_pause%% post_pause %%post_pause%% |  |
 
