@@ -177,7 +177,7 @@ wait_for_text_present_ok so we've got to use text_like, which has no wait_for)
 sub click_and_pause {
   my ($self, $link) = @_;
   $self->click_ok($link);
-  $self->pause(10000);
+  $self->pause(15000);
 }
 
 
