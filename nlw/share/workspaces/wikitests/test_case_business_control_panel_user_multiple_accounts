@@ -1,4 +1,6 @@
+
 | *Comment* | Test Case: Business Control Panel User Multiple Accounts |
+
 
 | *Comment* | Test Case: Business Control Panel User Multiple Accounts Global Vars |  |
 | set | primacct | bcpprimacct%%start_time%% |
@@ -31,18 +33,18 @@
 | click_ok | link=Name |  |
 
 | *Comment* | Test Case: Business Control Panel User. Sort does not cause page load. Pause. |  |
-| pause | 3000 | Yes, pause is bad. Wait for javascript. text_like doesn't have a wait_for; wait_for_text_present_ok doesn't do regexps |
+| pause | 5000 | Yes, pause is bad. Wait for javascript. text_like doesn't have a wait_for; wait_for_text_present_ok doesn't do regexps |
 | text_like | //body | qr/%%primacct%%.+Primary Account.+%%acct2%%.+Member of Account/ |
 | wait_for_element_visible_ok | link=Name | 30000 |
 | click_ok | link=Name |  |
-| pause | 3000 | Yes, pause is bad. Wait for javascript. text_like doesn't have a wait_for; wait_for_text_present_ok doesn't do regexps |
-| text_like | //body | qr/%%primacct%%.+Primary Account.+%%acct2%%.+Member of Account/ |
+| pause | 5000 | Yes, pause is bad. Wait for javascript. text_like doesn't have a wait_for; wait_for_text_present_ok doesn't do regexps |
+| text_like | //body | qr/%%acct2%%.+Member of Account.+%%primacct%%.+Primary Account/ |
 
 | *Comment* | Test Case: Business Control Panel User TODO - Flip Primary-ness of accounts |  |
 
 | *Comment* | Test Case: Business Control Panel User Remove 2nd Account |  |
-| wait_for_element_visible_ok | accountTable-select-1 | 30000 |
-| click_ok | accountTable-select-1 |  |
+| wait_for_element_visible_ok | accountTable-select-0 | 30000 |
+| click_ok | accountTable-select-0 |  |
 | wait_for_element_visible_ok | //input[@type='button' and @value="Remove from account(s)"] | 30000 |
 | click_ok | //input[@type='button' and @value="Remove from account(s)"] |  |
 | wait_for_text_present_ok | Accounts (1) | 30000 |

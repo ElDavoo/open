@@ -35,12 +35,12 @@ It should be included by the top-level replies testcase
 | wait_for_text_present_ok | %%topic_signal%% | 30000 |
 
 | set | i | 0-0 |
-| include | `[Test Case: Replies Include]` |  |
+| include | [Test Case: Replies Include] |  |
 
 | set | i | 0-1 |
-| include | `[Test Case: Replies Include]` |  |
+| include | [Test Case: Replies Include] |  |
 
 | set | i | 0-2 |
-| include | `[Test Case: Replies Include]` |  |
+| include | [Test Case: Replies Include] |  |
 
 | *Comment* | Test Case: Replies Seeder COMPLETED |  |
