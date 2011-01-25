@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 use Data::Dumper;
+use mocked 'Socialtext::CGI';
 use mocked 'Apache::Cookie';
 use mocked 'Socialtext::Events', qw/event_ok/;
 use mocked 'Socialtext::WeblogPlugin';
