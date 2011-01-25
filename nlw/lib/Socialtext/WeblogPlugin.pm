@@ -312,8 +312,11 @@ sub weblog_display {
 	}
     } 'recent changes', (grep {/$blog_tag_suffix/o} @categories);
 
-    my @entries = $self->get_entries( weblog_id => $blog_id,
-        start => $blog_start_entry, limit => $blog_limit );
+    my @entries = $self->get_entries(
+        weblog_id => $blog_id,
+        start     => $blog_start_entry,
+        limit     => $blog_limit
+    );
 
     my @sections;
     my $prev_date = '';
