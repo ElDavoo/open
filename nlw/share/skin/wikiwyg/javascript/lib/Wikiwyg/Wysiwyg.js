@@ -3629,8 +3629,8 @@ proto._preload_video_dimensions = function() {
                         loc('height: [_1]', data.height)
                     );
                 }
-                else if (data.error) {
-                    $('#st-widget-video-original-width').text(loc('Error!'));
+                else {
+                    $('#st-widget-video-original-width').text('');
                 }
             }
         });
