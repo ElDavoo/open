@@ -31,34 +31,36 @@
 | click_and_wait | st-submit-search-by-name |  |
 | text_like | link=%%new_acct%% | %%new_acct%% |
 
-Work in progress for story_add_missing_create_workspace_links_in_cp
-*Comment* | Test case: Business Control Panel Workspace Create workspace | |
-open_ok | /nlw/control/workspace | |
-set | wsname | %%wsname%% |
-set | wstitle | %%wstitle%% |
-wait_for_element_visible_ok | //input[@value='Create a new Workspace'] | 30000 |
-click_ok | //input[@value='Create a new Workspace'] | 30000 |
-wait_for_element_visible_ok | new-workspace-next | 30000 |
-wait_for_element_visible_ok | new_workspace_title | 30000 |
-type_ok | new_workspace_title | %%wstitle%% |
-click_ok | new-workspace-next | |
-wait_for_element_visible_ok | new-workspace-next | 30000 |
-wait_for_element_visible_ok | new-workspace-cancel | 30000 |
-wait_for_element_visible_ok | new_workspace_name | 30000 |
-type_ok | new_workspace_name | %%wsname%% |
-click_ok | new-workspace-next | |
-wait_for_text_present_ok | %%wsname%% workspace | 30000 |
+
+| *Comment* | Test case: Business Control Panel Workspace Create workspace |  |
+| open_ok | /nlw/control/workspace |  |
+| set | wstitle | wstitle_%%start_time%% |
+| wait_for_element_visible_ok | //input[@value='Create a new Workspace'] | 30000 |
+| click_ok | //input[@value='Create a new Workspace'] | 30000 |
+| wait_for_element_visible_ok | create | 30000 |
+| wait_for_element_visible_ok | workspace_title | 30000 |
+| type_ok | workspace_title | %%wstitle%% |
+| wait_for_element_visible_ok | addUserLookahead | 30000 |
+| type-lookahead-ok | addUserLookahead | wiki |
+| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'tester')] | 30000 |
+| click_ok | //div[@class='lookaheadItem']/a[contains(text(),'tester')] |  |
+| wait_for_element_visible_ok | userTable-dropdown-2-0 | 30000 |
+| select_ok | userTable-dropdown-2-0 | label=Admin |
+| wait_for_text_present_ok | Updating | 15000 |
+| wait_for_text_not_present_ok | Updating | 15000 |
+| verifyValue | userTable-dropdown-2-0 | admin |
+| click_and_wait | create |  |
+| wait_for_text_present_ok | %%wstitle%% workspace | 30000 |
 
 | *Comment* | Test case: Business Control Panel Workspace Change new workspace account to Socialtext |  |
 | open_ok | /nlw/control/workspace |  |
-
 | wait_for_element_visible_ok | name | 30000 |
 | type_ok | name | %%new_workspace%% |
 | st-submit |  |  |
 | click_and_wait | link=%%new_workspace%% |  |
 | text_like | %%new_workspace%% |  |
-| wait_for_element_visible_ok | account_id | 30000 |
-| select_ok | account_id | Socialtext |
+| wait_for_element_visible_ok | st-assign-to-account | 30000 |
+| type_ok | st-assign-to-account | Socialtext |
 | wait_for_element_visible_ok | st-assign-to-account-submit | 30000 |
 | click_and_wait | st-assign-to-account-submit |  |
 | text_like | The %%new_workspace%% workspace is now part of the Socialtext account. |  |
@@ -84,5 +86,6 @@ wait_for_text_present_ok | %%wsname%% workspace | 30000 |
 
 | *Comment* | Test case: Business Control Panel Workspace TEARDOWN |  |
 | st-admin | delete-workspace --workspace %%new_workspace%% --no-export | has been deleted |
+| st-admin | delete-workspace --workspace %%wstitle%% --no-export | has been deleted |
 
 | *Comment* | Test case: Business Control Panel Workspace COMPLETED |  |
