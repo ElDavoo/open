@@ -37,16 +37,25 @@ sub bootstrap_openldap {
     $openldap->add_ldif('t/test-data/ldap/relationships.ldif');
 
     # Update the "supervisor" People Field in this Account so its LDAP sourced
+    my $config = $openldap->ldap_config();
     my $people = Socialtext::Pluggable::Adapter->plugin_class('people');
     $people->SetProfileField( {
         name    => 'supervisor',
         source  => 'external',
         account => $acct,
     } );
-
-    # Ensure that the LDAP config maps the "supervisor" field to an LDAP attr
-    my $config = $openldap->ldap_config();
     $config->{attr_map}{supervisor} = 'manager';
+
+    # Update the "preferred_name" People Field in this Account so its LDAP
+    # sourced.
+    $people->SetProfileField( {
+        name    => 'preferred_name',
+        source  => 'external',
+        account => $acct,
+    } );
+    $config->{attr_map}{preferred_name} = 'displayName';
+
+    # Save the changes we made to the LDAP config for field mapping
     Socialtext::LDAP::Config->save($config);
 
     return $openldap;
