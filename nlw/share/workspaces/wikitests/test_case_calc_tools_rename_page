@@ -23,7 +23,6 @@
 
 | *Comment* | Test Case: Calc Tools: Rename Page Test Rename popup, verify rename |  |
 
-0
 | location_like | `/%%workspace%%/Renamed_Spreadsheet_%%start_time%%` | |
 | wait_for_element_visible_ok | contentRight | 30000 |
 | text_like | contentRight | SC Rename Tag %%start_time%% |

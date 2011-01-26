@@ -197,7 +197,35 @@ Avatar.prototype = {
                 )
                 .appendTo(this.contentNode);
         }
-        
+
+        // Dynamic sametime script hack
+
+        var sametime_elem = this.popup.find('.sametime');
+        var sametime_elem_parent = sametime_elem.parent();
+        var sametime_sn = sametime_elem.text();
+        if (sametime_sn) {
+            $.getScript("http://localhost:59449/stwebapi/getStatus.js",
+                function () {
+                    sametime_elem.replaceWith(
+                        jQuery('<a></a>').
+                            css('cursor', 'pointer').
+                            text(sametime_sn).
+                            click(function() {
+                                sametime_invoke('chat', sametime_sn);
+                            })
+                    )
+                    sametime_elem = sametime_elem_parent.find('a');
+                    var sametime_obj = new sametime.livename(sametime_sn, null);
+                    updateStatus = function(contact) {
+                        sametime_elem.before(jQuery("<img></img>").
+                            attr('src', sametime_helper.getStatusImgUrl(contact.status)).
+                            attr('title', contact.statusMessage));
+                        sametime_elem.before(" ");
+                        sametime_elem.attr('title', contact.statusMessage);         
+                    }
+                    sametime_obj.runActionWithCallback('getstatus', 'updateStatus');
+                });
+        }    
         this.mouseOver();
     },
 

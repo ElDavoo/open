@@ -100,3 +100,23 @@ EOT
 }
 
 1;
+__END__
+
+=head1 NAME
+
+Socialtext::CodeSyntaxPlugin - Plugin for syntax highlighting in wiki pages.
+
+=head1 SYNOPSIS
+
+.perl
+
+my $something = 1;
+...
+
+.perl
+
+=head1 DESCRIPTION
+
+Provide for a syntax highlighting wafl in wiki pages.
+
+=cut

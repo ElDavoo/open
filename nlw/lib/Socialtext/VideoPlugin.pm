@@ -322,3 +322,18 @@ cgi 'height';
 cgi 'autoplay';
 
 1;
+__END__
+
+=head1 NAME
+
+Socialtext::VideoPlugin - Plugin for embedding videos in wiki pages.
+
+=head1 SYNOPSIS
+
+{video: http://www.youtube.com/watch?v=EwTZ2xpQwpA}
+
+=head1 DESCRIPTION
+
+Embed videos into wiki pages.
+
+=cut

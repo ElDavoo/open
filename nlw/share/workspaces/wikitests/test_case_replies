@@ -5,16 +5,16 @@
 | set | reply_prefix | Reply at %%start_time%% |
 | set | topic_signal | Topic for %%reply_prefix%% |
 
-| open_ok | /nlw/submit/logout |  |
+| st-logout |  |  |
 | include | [Test Case: Replies Seeder] |  |
 
-| open_ok | /nlw/submit/logout |  |
+| st-logout |  |  |
 | include | [Test Case: Replies Includer] |  |
 
-| open_ok | /nlw/submit/logout |  |
+| st-logout |  |  |
 | include | [Test Case: Replies Checker] |  |
 
-| open_ok | /nlw/submit/logout |  |
+| st-logout |  |  |
 | include | [Test Case: Mobile Replies] |  |
 
 | *Comment* | Test Case: Replies COMPLETED |  |

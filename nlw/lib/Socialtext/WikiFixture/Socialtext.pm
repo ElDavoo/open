@@ -176,7 +176,7 @@ wait_for_text_present_ok so we've got to use text_like, which has no wait_for)
 sub click_and_pause {
   my ($self, $link) = @_;
   $self->click_ok($link);
-  $self->pause(10000);
+  $self->pause(15000);
 }
 
 
@@ -1217,6 +1217,7 @@ sub st_uneditable_ok {
 sub st_mobile_account_select_ok {
     my ($self, $accountdesc) = @_;
     if ($self->_is_wikiwyg()) { 
+        $self->wait_for_element_visible_ok($self->{st_mobile_account_select}, 30000);
         $self->wait_for_element_present_ok("link=$accountdesc",30000);
         $self->click_ok("link=$accountdesc");
         $self->wait_for_element_visible_ok("link=$accountdesc");
