@@ -1206,6 +1206,7 @@ sub _create_export_tarball {
     $self->_export_logo_file($tmpdir);
     $self->_dump_meta_to_yaml_file($tmpdir);
     $self->_dump_user_workspace_prefs($tmpdir, $name);
+    $self->_dump_user_breadcrumbs($tmpdir, $name);
 
     # Copy all the data for export into a the tempdir.
     $self->_dump_workspace_pages($tmpdir, $name);
@@ -1213,6 +1214,34 @@ sub _create_export_tarball {
 
     local $CWD = $tmpdir;
     run "tar cf $tarball *";
+}
+
+sub _dump_user_breadcrumbs {
+    my $self   = shift;
+    my $tmpdir = shift;
+    my $name   = shift;
+
+    my $sth = sql_execute(
+        q{SELECT users.email_address AS email, page_id
+           FROM breadcrumb
+           JOIN users ON (breadcrumb.viewer_id = users.user_id)
+           WHERE breadcrumb.workspace_id = ?
+           ORDER BY last_viewed DESC
+       },
+        $self->workspace_id,
+    );
+    my %breadcrumbs;
+    while (my $row = $sth->fetchrow_hashref) {
+        push @{ $breadcrumbs{$row->{email}} }, $row->{page_id};
+    }
+
+    for my $email (keys %breadcrumbs) {
+        my $trail_dir = "$tmpdir/user/$name/$email";
+        File::Path::make_path($trail_dir);
+        my $trail_file = "$trail_dir/.trail";
+        Socialtext::File::set_contents_utf8($trail_file,
+            join("\n", @{ $breadcrumbs{$email} }) . "\n");
+    }
 }
 
 sub _dump_workspace_pages {
