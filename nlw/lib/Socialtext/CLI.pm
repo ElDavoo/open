@@ -4162,12 +4162,6 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   show-plugin-prefs  --plugin <name> [ --account <name> ]
   clear-plugin-prefs --plugin <name> [ --account <name> ]
 
-  GOOGLE ANALYTICS
-  set-google-analytics   --account <name> --code <code>
-            [--domains <single | multiple-subdomains | multiple-domains>]
-  clear-google-analytics --account <name>
-  show-google-analytics  --account <name>
-
   EMAIL
 
   send-email-notifications --workspace --page
