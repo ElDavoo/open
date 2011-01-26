@@ -28,7 +28,7 @@
 
 
 | *Comment* | Test case: Business Control Panel Account Account NOW do it all through CP |  |
-| st-admin | disable-plugin --plugin analytics --account %%acct%% |  |  |
+| st-admin | disable-plugin --plugin analytics --account %%acct%% |  |
 | open_ok | /nlw/control/account |  |
 | wait_for_element_visible_ok | st-search-by-name | 30000 |
 | type_ok | st-search-by-name | %%acct%% |
@@ -54,8 +54,13 @@
 | wait_for_element_visible_ok | st-multiple-domains | 30000 |
 | type_ok | ga_id | %%gaid%% |
 | click_ok | st-multiple-subdomains |  |
+| is_checked_ok | st-mask-analytics |  |
+| uncheck_ok | st-mask-analytics |  |
 | click_ok | analytics-prefs-submit |  |
+| pause | 15000 |  |
 | wait_for_text_present_ok | Done | 30000 |
+| pause | 15000 |  |
+
 | wait_for_text_present_ok | Google Analytics (click to disable) | 30000 |
 
 | *Comment* | Test case: Business Control Panel Account Account Google Analytics Re-Find Account, Confirm Values |  |
@@ -73,7 +78,11 @@
 | wait_for_element_visible_ok | st-multiple-subdomains | 30000 |
 | wait_for_element_visible_ok | st-single-domain | 30000 |
 | is_checked_ok | st-multiple-subdomains |  |
+| pause | 15000 |  |
+| st_unchecked_ok | st-mask-analytics |  |
 | wait_for_text_present_ok | Google Analytics (click to disable) | 30000 |
+
+
 
 | *Comment* | Test case: Business Control Panel Account Account Google Analytics Disable analytics, refresh, see disabled |  |
 | wait_for_element_visible_ok | toggle_plugin_analytics | 30000 |
@@ -88,6 +97,7 @@
 | click_and_wait | link=%%acct%% |  |
 | wait_for_element_not_present_ok | ga_id | 30000 |
 | wait_for_element_not_present_ok | analytics-prefs-submit | 30000 |
+
 
 
 | *Comment* | Test case: Business Control Panel Account Account Google Analytics COMPLETED |  |
