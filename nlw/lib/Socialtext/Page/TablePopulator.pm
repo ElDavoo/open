@@ -110,7 +110,8 @@ sub populate {
                 $page->{revision_num},
                 $page->{type}, $page->{deleted}, $page->{summary},
                 $page->{edit_summary} || '',
-                $page->{locked} || 0,
+                $page->{locked},
+                $page->{views},
             ];
 
             my %tags;
@@ -176,6 +177,11 @@ sub load_page_metadata {
         die "No Date found for $dir, skipping\n";
     }
 
+    # Attempt to load the COUNTER file for this page
+    (my $plugin_dir = $ws_dir) =~ s(/data/)(/plugin/);
+    my $counter_file = "$plugin_dir/counter/$dir/COUNTER";
+    my $views = -e $counter_file ? read_counter($counter_file) : 0;
+
     return {
         page_id => $dir,
         name => $subject,
@@ -190,6 +196,8 @@ sub load_page_metadata {
         summary => $summary,
         creator_name => $orig_page->{From},
         create_time => $orig_page->{Date},
+        locked => $pagemeta->{Locked} || 0,
+        views => $views,
     };
 }
 
@@ -234,7 +242,7 @@ sub load_revision_metadata {
             ($pagemeta->{Control} || '') eq 'Deleted' ? 1 : 0,
             $summary,
             $pagemeta->{RevisionSummary} || '',
-            0,
+            $pagemeta->{Locked} || 0,
             $tags,
             Socialtext::Page::Legacy::read_and_decode_file($file, 'content'),
         ];
@@ -402,6 +410,13 @@ sub fix_relative_page_link {
             unless -f $abs_page;
         Socialtext::File::safe_symlink($abs_page, "$dir/index.txt");
     }
+}
+
+sub read_counter {
+    my $file = shift;
+    my $contents = Socialtext::File::get_contents($file);
+    my (undef, $count) = split "\n", $contents;
+    return $count;
 }
 
 1;
