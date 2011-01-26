@@ -371,10 +371,17 @@ sub _render_in_workspace {
         my $link_dictionary = $original_hub->viewer->link_dictionary->clone;
         $link_dictionary->free($link_dictionary->interwiki);
         $hub->viewer->link_dictionary($link_dictionary);
-    }
 
-    $callback->($hub->pages->new_page($page_id));
-    return; # make above call void context
+        # {bz: 4881}: We need to disable the cache, as the link dictionary was modified.
+        local $Socialtext::Page::Base::DISABLE_CACHING = 1;
+
+        $callback->($hub->pages->new_page($page_id));
+        return; # make above call void context
+    }
+    else {
+        $callback->($hub->pages->new_page($page_id));
+        return; # make above call void context
+    }
 }
 
 sub html_for_page_in_workspace {

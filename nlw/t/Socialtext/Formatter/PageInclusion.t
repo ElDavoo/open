@@ -4,8 +4,8 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 11;
-fixtures( 'admin', 'foobar' );
+use Test::Socialtext tests => 13;
+fixtures(qw( clean admin foobar ));
 use Socialtext::Pages;
 
 my $hub = new_hub('admin');
@@ -80,4 +80,31 @@ like $incipient_content,
     qr{href="/admin/index.cgi\?this%20page%20isn't%20cool" class="incipient">}, 'href is double quoted';
 like $incipient_content,
     qr{href="/admin/index.cgi\?is_incipient=1;page_name=this%20page%20isn't%20cool;page_type=wiki#edit"}, 'href edit link is double quoted';
+
+
+my $a1 = Socialtext::Page->new( hub => $hub )->create(
+    title   => "A1",
+    content => "[A2]",
+    creator => $hub->current_user,
+);
+my $a2 = Socialtext::Page->new( hub => $hub )->create(
+    title   => "A2",
+    content => "This is A2",
+    creator => $hub->current_user,
+);
+
+my $free_link = $a1->to_html_or_default;
+like $free_link, qr{href="a2"}, "Freelink is relative";
+
+$hub->with_alternate_workspace(
+    Socialtext::Workspace->new( name => 'foobar' ), sub {
+        my $b1 = Socialtext::Page->new( hub => $hub )->create(
+            title   => "B1",
+            content => "Let's {include: admin [A1]}",
+            creator => $hub->current_user,
+        );
+        my $interwiki_link = $b1->to_html_or_default;
+        like $interwiki_link, qr{href="/admin/a2"}, "{bz: 4881}: Freelink through inclusion became absolute interwiki links";
+    }
+);
 
