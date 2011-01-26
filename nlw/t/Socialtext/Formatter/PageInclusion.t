@@ -108,3 +108,30 @@ $hub->with_alternate_workspace(
     }
 );
 
+
+my $a1 = Socialtext::Page->new( hub => $hub )->create(
+    title   => "A1",
+    content => "[A2]",
+    creator => $hub->current_user,
+);
+my $a2 = Socialtext::Page->new( hub => $hub )->create(
+    title   => "A2",
+    content => "This is A2",
+    creator => $hub->current_user,
+);
+
+my $free_link = $a1->to_html_or_default;
+like $free_link, qr{href="a2"}, "Freelink is relative";
+
+$hub->with_alternate_workspace(
+    Socialtext::Workspace->new( name => 'foobar' ), sub {
+        my $b1 = Socialtext::Page->new( hub => $hub )->create(
+            title   => "B1",
+            content => "Let's {include: admin [A1]}",
+            creator => $hub->current_user,
+        );
+        my $interwiki_link = $b1->to_html_or_default;
+        like $interwiki_link, qr{href="/admin/a2"}, "{bz: 4881}: Freelink through inclusion became absolute interwiki links";
+    }
+);
+
