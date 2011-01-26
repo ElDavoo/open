@@ -1222,10 +1222,13 @@ sub _dump_workspace_pages {
 
     my $ws_dir = "$tmpdir/data/$name";
     File::Path::make_path($ws_dir);
+    my $counter_dir = "$tmpdir/plugin/$name/counter";
 
     my $sth = sql_execute(
-        q{SELECT *, edit_time AT TIME ZONE 'GMT' AS edit_time_gmt
-           FROM page_revision WHERE workspace_id = ?},
+        q{SELECT page_revision.*, page_revision.edit_time AT TIME ZONE 'GMT' AS edit_time_gmt, page.views
+           FROM page_revision
+           JOIN page USING (workspace_id, page_id)
+           WHERE page_revision.workspace_id = ?},
         $self->workspace_id,
     );
     while (my $row = $sth->fetchrow_hashref) {
@@ -1254,9 +1257,13 @@ EOT
         warn "Double check that the utf8 flag is turned on here";
         $content .= "\n" . $row->{body};
         Socialtext::File::set_contents_utf8($filename, \$content);
-    }
 
-    warn "Need to write index.txt symlink for every page.";
+        my $page_counter_dir = "$counter_dir/$row->{page_id}";
+        File::Path::make_path($page_counter_dir);
+        Socialtext::File::set_contents("$page_counter_dir/COUNTER",
+            "#COUNTER-1.0\n$row->{views}\n",
+        );
+    }
 }
 
 
@@ -1266,7 +1273,11 @@ sub _dump_workspace_attachments {
     my $name   = shift;
 
     my $plugin_dir = "$tmpdir/plugin/$name";
-    File::Path::mkpath($plugin_dir) or die "Cannot make $plugin_dir: $!";
+    -d $plugin_dir
+        or File::Path::mkpath($plugin_dir)
+        or die "Cannot make $plugin_dir: $!";
+
+    warn "TODO - dump attachments from the DB";
 }
 
 sub _dump_to_yaml_file {
