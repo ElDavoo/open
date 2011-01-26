@@ -32,7 +32,6 @@
 | pause | 8000 |  |
 
 | *Comment* | Test Case: Miki Dropdowns WikiWyg. Signal to one of the accounts %%msacct%%-A |  |
-| wait_for_element_visible_ok | %%st_mobile_account_select%% | 30000 |
 | st_mobile_account_select_ok | %%msacct%%-A (primary, 1 user) |  |
 
 | setSpeed | 4000 |  |

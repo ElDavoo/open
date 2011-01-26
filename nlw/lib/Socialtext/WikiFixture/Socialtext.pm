@@ -1218,6 +1218,7 @@ sub st_uneditable_ok {
 sub st_mobile_account_select_ok {
     my ($self, $accountdesc) = @_;
     if ($self->_is_wikiwyg()) { 
+        $self->wait_for_element_visible_ok($self->{st_mobile_account_select}, 30000);
         $self->wait_for_element_present_ok("link=$accountdesc",30000);
         $self->click_ok("link=$accountdesc");
         $self->wait_for_element_visible_ok("link=$accountdesc");

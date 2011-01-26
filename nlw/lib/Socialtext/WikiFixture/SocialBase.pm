@@ -73,7 +73,7 @@ sub init {
         $self->{miki_signal_disclaimer} = 'Post to';
         $self->{miki_signal_text} = 'Post to';
         $self->{miki_signal_submit} = 'mobile_post';
-        $self->{st_mobile_account_select} = 'mobile_network';
+        $self->{st_mobile_account_select} = 'mobile_signal_network';
         $self->{miki_mysignals_link_name} = 'myself';
         $self->{miki_people_i_follow} = 'people I follow';
         $self->{miki_everyone} = 'everyone';
