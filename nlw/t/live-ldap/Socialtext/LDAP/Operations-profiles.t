@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 10;
+use Test::Socialtext tests => 13;
 use Test::Socialtext::User;
 use Socialtext::LDAP::Operations;
 
@@ -124,4 +124,30 @@ refresh_users_also_updates_profiles: {
     $ariel_profile = Socialtext::People::Profile->GetProfile($ariel, no_recurse=>1);
     is $ariel_profile->get_reln('supervisor'), $belinda->user_id,
         'Ariel has Belinda as a manager after RefreshUsers';
+}
+
+###############################################################################
+# TEST: Refresh LDAP Users that get their preferred_name from LDAP
+refresh_users_with_preferred_name: {
+    my $guard = Test::Socialtext::User->snapshot();
+    my $acct  = Socialtext::Account->Default;
+    my $ldap  = bootstrap_openldap(account => $acct);
+
+    # Load Users from LDAP into ST
+    my $ariel = Socialtext::User->new(username => 'Ariel Young');
+    ok $ariel, 'loaded Ariel user';
+
+    # Update the "preferred_name" for one of the Users
+    my $ariel_dn  = 'cn=Ariel Young,ou=related,dc=example,dc=com';
+
+    my $rc = $ldap->modify($ariel_dn, replace => ['displayName' => 'Little Mermaid']);
+    ok $rc, "updated LDAP to change Ariel's displayName";
+
+    # Refresh Users
+    Socialtext::LDAP::Operations->RefreshUsers(force => 1);
+
+    # Check that the Profiles got updated
+    my $ariel_profile = Socialtext::People::Profile->GetProfile($ariel, no_recurse=>1);
+    is $ariel_profile->get_attr('preferred_name'), 'Little Mermaid',
+        'Ariel has updated preferred_name from LDAP';
 }
