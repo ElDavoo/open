@@ -13,6 +13,7 @@ use Socialtext::Page::Legacy;
 use Socialtext::SQL qw(get_dbh :exec :txn);
 use Fatal qw/opendir closedir chdir open/;
 use Cwd   qw/abs_path/;
+use DateTime;
 
 sub new {
     my $class = shift;
@@ -27,9 +28,18 @@ sub new {
     die "No such workspace $opts{workspace_name}\n"
         unless $self->{workspace};
 
-    die "workspace_dir is a required option" unless $self->{workspace_dir};
-    die "No such workspace directory $self->{workspace_dir}"
-        unless -d $self->{workspace_dir};
+    die "data_dir is a required option" unless $self->{data_dir};
+    die "No such directory $self->{data_dir}"
+        unless -d $self->{data_dir};
+
+    $self->{old_name} ||= $self->{workspace_name};
+    $self->{workspace_data_dir} = "$self->{data_dir}/data/$self->{old_name}";
+    die "No such workspace directory $self->{workspace_data_dir}"
+        unless -d $self->{workspace_data_dir};
+    $self->{workspace_plugin_dir}
+        = "$self->{data_dir}/plugin/$self->{old_name}";
+    $self->{workspace_user_dir}
+        = "$self->{data_dir}/user/$self->{old_name}";
 
     return $self;
 }
@@ -53,11 +63,15 @@ sub populate {
                 'DELETE FROM page_revision WHERE workspace_id = ?',
                 $workspace->workspace_id,
             );
+            sql_execute(
+                'DELETE FROM breadcrumb WHERE workspace_id = ?',
+                $workspace->workspace_id,
+            );
         }
 
         # Grab all the Pages in the Workspace, figure out which ones we need
         # to add to the DB, then add them all.
-        my $workspace_dir = $self->{workspace_dir};
+        my $workspace_dir = $self->{workspace_data_dir};
         my $hub = $self->{hub}
             = Socialtext::Hub->new( current_workspace => $workspace );
         chdir $workspace_dir;
@@ -125,6 +139,8 @@ sub populate {
         # Now add all those pages and tags to the database
         add_to_db('page', \@pages);
         add_to_db('page_tag', \@page_tags);
+
+        $self->load_breadcrumbs();
     }};
     die "Error during populate of $workspace_name: $@" if $@;
 }
@@ -151,7 +167,7 @@ sub load_page_metadata {
     }
     my $summary = $pagemeta->{Summary} || '';
     unless ($summary) {
-        my $p = Socialtext::Page->new( 
+        my $p = Socialtext::Page->new(
             hub => $self->{hub}, id => $dir,
         );
         $summary = $p->preview_text;
@@ -178,8 +194,7 @@ sub load_page_metadata {
     }
 
     # Attempt to load the COUNTER file for this page
-    (my $plugin_dir = $ws_dir) =~ s(/data/)(/plugin/);
-    my $counter_file = "$plugin_dir/counter/$dir/COUNTER";
+    my $counter_file = "$self->{workspace_plugin_dir}/counter/$dir/COUNTER";
     my $views = -e $counter_file ? read_counter($counter_file) : 0;
 
     return {
@@ -253,7 +268,7 @@ sub load_revision_metadata {
 }
 
 # This method was copied from Socialtext::Page, to remove a dependency
-# should that module change in the future.  
+# should that module change in the future.
 # (One less thing to think about then.)
 sub parse_headers {
     my $headers = shift;
@@ -353,7 +368,7 @@ sub fetch_metadata {
     sub editor_to_id {
         my $email_address = shift || '';
         unless ( $userid_cache{ $email_address } ) {
-            # We have some very bogus data on our system, so we need to 
+            # We have some very bogus data on our system, so we need to
             # be very cautious.
             unless ( Email::Valid->address($email_address) ) {
                 my ($name) = $email_address =~ /([\w-]+)/;
@@ -369,7 +384,7 @@ sub fetch_metadata {
             };
             unless ($user) {
                 warn "Creating user account for '$email_address'\n";
-                eval { 
+                eval {
                     $user = Socialtext::User->create(
                         email_address => $email_address,
                         username      => $email_address,
@@ -418,5 +433,44 @@ sub read_counter {
     my (undef, $count) = split "\n", $contents;
     return $count;
 }
+
+sub load_breadcrumbs {
+    my $self  = shift;
+    my $ws_id = $self->{workspace}->workspace_id;
+
+    my $ws_user_dir = $self->{workspace_user_dir};
+    return unless -d $ws_user_dir;
+
+    # The .trail files do not contain dates, so we will sythesize dates
+    # to provide order. We will start at midnight of today and add a second
+    # for each breadcrumb
+    my $date = DateTime->now;
+    $date->set_hour(0);
+    $date->set_minute(0);
+
+    my @breadcrumbs;
+    opendir(my $dfh, $ws_user_dir);
+    while (my $user_dir = readdir($dfh)) {
+        next unless -d "$ws_user_dir/$user_dir";
+        next if $user_dir =~ m/^\./;
+        my $trail = "$ws_user_dir/$user_dir/.trail";
+        next unless -e $trail;
+
+        my $user = Socialtext::User->new(email_address => $user_dir);
+        next unless $user;
+
+        my @page_ids =
+            map { Socialtext::String::title_to_id($_) }
+                split "\n", Socialtext::File::get_contents_utf8($trail);
+
+        my $i = 0;
+        for my $id (@page_ids) {
+            $date->set_second($i++);
+            push @breadcrumbs, [ $user->user_id, $ws_id, $id, $date->iso8601 ];
+        }
+    }
+    add_to_db('breadcrumb', \@breadcrumbs) if @breadcrumbs;
+}
+
 
 1;
