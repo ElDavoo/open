@@ -63,19 +63,6 @@ CREATE FUNCTION auto_hash_signal() RETURNS trigger
     END
 $$;
 
-CREATE FUNCTION auto_md5_attachment() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-    BEGIN
-        IF NEW.body IS NOT NULL THEN
-            NEW.md5 = encode(decode(md5(NEW.body),'hex'),'base64');
-        ELSE
-            NEW.md5 = '';
-        END IF;
-        return NEW;
-    END
-$$;
-
 CREATE FUNCTION auto_vivify_user_rollups() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
@@ -769,7 +756,6 @@ CREATE TABLE attachment (
     is_image boolean NOT NULL,
     is_temporary boolean DEFAULT false NOT NULL,
     content_length integer NOT NULL,
-    md5 text NOT NULL,
     body bytea
 );
 
@@ -1073,7 +1059,8 @@ CREATE TABLE page_attachment (
     page_id text NOT NULL, -- might not refer to an existing page
     attachment_id bigint NOT NULL,
     deleted boolean NOT NULL,
-    PRIMARY KEY (workspace_id, page_id, attachment_id)
+    PRIMARY KEY (workspace_id, page_id, attachment_id),
+    UNIQUE (workspace_id, page_id, id)
 );
 
 CREATE TABLE page_link (
@@ -2173,9 +2160,6 @@ CREATE TRIGGER user_user_set_delete AFTER DELETE ON users FOR EACH ROW EXECUTE P
 CREATE TRIGGER users_insert AFTER INSERT ON users FOR EACH ROW EXECUTE PROCEDURE auto_vivify_user_rollups();
 
 CREATE TRIGGER workspace_user_set_delete AFTER DELETE ON "Workspace" FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
-
-CREATE TRIGGER attachment_insert BEFORE INSERT ON attachment FOR EACH ROW EXECUTE PROCEDURE auto_md5_attachment();
-CREATE TRIGGER attachment_update BEFORE UPDATE ON attachment FOR EACH ROW EXECUTE PROCEDURE auto_md5_attachment();
 
 ALTER TABLE ONLY account_logo
     ADD CONSTRAINT account_logo_account_fk
