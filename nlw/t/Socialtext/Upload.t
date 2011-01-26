@@ -1,15 +1,37 @@
 #!perl
 use warnings;
 use strict;
-use Test::Socialtext tests => 28;
+use Test::Socialtext tests => 29;
 use Test::Socialtext::Fatal;
-use Socialtext::SQL qw/:txn/;
+use Socialtext::SQL qw/:txn :exec/;
 use File::Temp qw/tempdir tempfile/;
 use File::Copy qw/copy move/;
 
 use ok 'Socialtext::Upload';
 
 fixtures(qw(db));
+
+check_fk_constraints: {
+    my $sth = sql_execute(q{
+        SELECT DISTINCT constraint_name
+        FROM information_schema.referential_constraints
+        NATURAL JOIN information_schema.constraint_table_usage
+        NATURAL JOIN information_schema.constraint_column_usage
+        WHERE table_name = 'attachment'
+          AND column_name = 'attachment_id'
+          AND delete_rule <> 'RESTRICT'
+    });
+    my $rows = $sth->fetchall_arrayref({}) || [];
+    is(@$rows, 0,
+        "all FKs on attachment.attachment_id are ON DELETE RESTRICT");
+    if (@$rows) {
+        diag "\n";
+        diag "The following constraints don't specify ON DELETE RESTRICT.\n";
+        diag "Please change them so that they do and check Perl codes\n\n";
+        diag "* $_->{constraint_name}" for @$rows;
+        diag "\n";
+    }
+}
 
 my $user = create_test_user();
 my $tmp = File::Temp->new(CLEANUP => 1);

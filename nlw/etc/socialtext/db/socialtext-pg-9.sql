@@ -70,7 +70,7 @@ CREATE FUNCTION auto_md5_attachment() RETURNS trigger
         IF NEW.body IS NOT NULL THEN
             NEW.md5 = encode(decode(md5(NEW.body),'hex'),'base64');
         ELSE
-            NEW.md5 = ''
+            NEW.md5 = '';
         END IF;
         return NEW;
     END
@@ -2380,7 +2380,7 @@ ALTER TABLE ONLY page_attachment
 ALTER TABLE ONLY page_attachment
     ADD CONSTRAINT page_att_attachment
             FOREIGN KEY (attachment_id)
-            REFERENCES attachment(attachment_id) ON DELETE CASCADE;
+            REFERENCES attachment(attachment_id) ON DELETE RESTRICT;
 
 ALTER TABLE ONLY tag_people__person_tags
     ADD CONSTRAINT person_tags_fk
@@ -2455,7 +2455,7 @@ ALTER TABLE ONLY rollup_user_signal
 ALTER TABLE ONLY signal_asset
     ADD CONSTRAINT signal_asset_attach_fk
             FOREIGN KEY (attachment_id)
-            REFERENCES attachment(attachment_id) ON DELETE CASCADE;
+            REFERENCES attachment(attachment_id) ON DELETE RESTRICT;
 
 ALTER TABLE ONLY signal_asset
     ADD CONSTRAINT signal_asset_signal_fk
@@ -2470,7 +2470,7 @@ ALTER TABLE ONLY signal_asset
 ALTER TABLE ONLY signal_attachment
     ADD CONSTRAINT signal_attachment_attachment_fk
             FOREIGN KEY (attachment_id)
-            REFERENCES attachment(attachment_id) ON DELETE CASCADE;
+            REFERENCES attachment(attachment_id) ON DELETE RESTRICT;
 
 ALTER TABLE ONLY signal_attachment
     ADD CONSTRAINT signal_attachment_signal_fk
