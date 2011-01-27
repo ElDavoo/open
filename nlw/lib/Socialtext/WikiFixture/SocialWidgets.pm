@@ -384,7 +384,6 @@ So you don't need as much of the prepare signal function.
 sub st_send_page_signal {
    my ($self, $signaltosend) = @_;
 
-   $self->handle_command('set_Speed',4000);
    $self->st_type_signal($signaltosend);
    $self->handle_command('wait_for_element_visible_ok','//a[@class="btn post"]', 5000);
    $self->handle_command('click_ok', '//a[@class="btn post"]');
@@ -401,6 +400,7 @@ Parameters: You pass in the signal text, followed by 1 if this is a mobile signa
 
 sub st_type_signal {
     my ($self, $signaltosend, $is_mobile) = @_;
+    $self->handle_command('set_Speed',4000);
    
     if ($self->_is_wikiwyg() ) { #wikiwyg
         $self->handle_command('wait_for_element_visible_ok', 'signalFrame', 5000);
@@ -435,7 +435,6 @@ sub st_prepare_signal_within_activities_widget {
     $self->handle_command('wait_for_element_present_ok', '//div[@class=' . "'mainWikiwyg setupWikiwyg wikiwyg']", 5000);
     $self->handle_command('click_ok', '//div[@class=' . "'mainWikiwyg setupWikiwyg wikiwyg']");
 
-    $self->handle_command('set_Speed',4000);
     $self->st_type_signal($signaltosend);
 
     if ($private) {
