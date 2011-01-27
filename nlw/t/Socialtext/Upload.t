@@ -1,7 +1,7 @@
 #!perl
 use warnings;
 use strict;
-use Test::Socialtext tests => 29;
+use Test::Socialtext tests => 32;
 use Test::Socialtext::Fatal;
 use Socialtext::SQL qw/:txn :exec/;
 use File::Temp qw/tempdir tempfile/;
@@ -33,80 +33,103 @@ check_fk_constraints: {
     }
 }
 
+my $test_body = "Some attachment data\n$^T\n";
 my $user = create_test_user();
 my $tmp = File::Temp->new(CLEANUP => 1);
-print $tmp "Some attachment data $^T\n";
+print $tmp $test_body;
 close $tmp;
 
-my $ul;
-is exception { 
-    $ul = Socialtext::Upload->Create(
-        creator => $user,
-        temp_filename => "$tmp",
-        filename => "fancy-pants.txt",
-        mime_type => 'text/plain; charset=UTF-8',
-    );
-}, undef, "created upload";
-isa_ok $ul, 'Socialtext::Upload';
-ok $ul->is_temporary, "is temporary";
-is $ul->filename, "fancy-pants.txt";
+create_fails_without_tempfile: {
+    like exception {
+        my $blah = Socialtext::Upload->Create(
+            creator => $user,
+            filename => "fancy pants.txt",
+            mime_type => 'text/plain; charset=UTF-8',
+        );
+    }, qr/temp_filename/, "can't create Uploads without a tempfile";
+}
 
-check_temp_upload: {
-    is $ul->disk_filename, $ul->temp_filename;
-    ok -f $ul->temp_filename, "temp upload exists";
-    my $data = do { local (@ARGV,$/) = ($ul->temp_filename); <> };
-    is $data, "Some attachment data $^T\n", "temp contents good";
+my $ul;
+create: {
+    is exception { 
+        $ul = Socialtext::Upload->Create(
+            creator => $user,
+            temp_filename => "$tmp",
+            filename => "ultra super happy go-time fancy pants.txt",
+            mime_type => 'text/plain; charset=UTF-8',
+        );
+    }, undef, "created upload";
+    isa_ok $ul, 'Socialtext::Upload';
+    ok $ul->is_temporary, "is temporary";
+    is $ul->filename, "ultra super happy go-time fancy pants.txt";
+    # doesn't really test much:
+    is $ul->clean_filename, "ultra super happy go-time fancy pants.txt";
+    ok -f $ul->disk_filename, "file exists in storage";
+    is -s $ul->disk_filename, length($test_body),
+        "storage file has all the content";
+    my $data = do { local (@ARGV,$/) = ($ul->disk_filename); <> };
+    is $data, $test_body, "file has exact contents";
+
+    my $blahb;
+    sql_singleblob(\$blahb,q{
+        SELECT body FROM attachment WHERE attachment_id = ?
+    }, $ul->attachment_id);
+    is $blahb, $test_body, "db has all the content";
 }
 
 make_permanent_fails: {
     # the idea here is that the calling code will stage the upload then try to
     # do something else.  If that fails, the guard is triggered, otherwise the
     # caller should ->cancel the guard.
+    ok $ul->is_temporary;
     is exception {
         sql_txn {
-            my $guard = $ul->make_permanent(guard=>1);
-            die "rollback\n";
+            my $guard = $ul->make_permanent(actor => $user, guard=>1);
+            die "rollback $^T\n";
         };
-    }, "rollback\n";
-    ok $ul->is_temporary;
-    ok !-f $ul->storage_filename, "file didn't get written to storage";
-    ok -f $ul->temp_filename, "tempfile is still present";
+    }, "rollback $^T\n", "make_permanent fails";
+    ok $ul->is_temporary, "still temporary";
+    ok !-f $ul->disk_filename, "file got removed from storage";
 }
 
 make_permanent: {
-    is exception {
-        $ul->make_permanent();
-    }, undef, "made permanent";
-    ok !$ul->is_temporary, "no longer temporary";
-    is $ul->disk_filename, $ul->storage_filename;
-    ok !-f $ul->temp_filename, "tempfile is gone";
+    unlink $ul->disk_filename; # pretend to be tmpreaper
+    ok $ul->is_temporary, "temporary before make_permanent";
 
-    ok -f $ul->storage_filename, "make_permanent cached contents to disk";
+    is exception {
+        $ul->make_permanent(actor => $user);
+    }, undef, "made permanent";
+
+    ok !$ul->is_temporary, "no longer temporary";
+    ok -f $ul->disk_filename, "make_permanent cached contents to disk";
     my $data = do { local (@ARGV,$/) = ($ul->disk_filename); <> };
-    is $data, "Some attachment data $^T\n", "slurped contents are good";
+    is $data, $test_body, "slurped contents are good";
 
     my $data2;
     $ul->binary_contents(\$data2);
-    is $data2, "Some attachment data $^T\n", "binary contents are good";
+    is $data2, $test_body, "binary contents are good";
 }
 
 ensure_stored: {
-    my $dir = tempdir(CLEANUP => 1);
-    local $Socialtext::Upload::STORAGE_DIR = "$dir";
-    like $ul->storage_filename, qr{^\Q$dir}, "storage filename reflects local";
-    ok !-f $ul->storage_filename, "upload isn't on disk";
-    is $ul->disk_filename, $ul->storage_filename;
+    unlink $ul->disk_filename;
 
     is exception { $ul->ensure_stored }, undef, "ensured storage";
     ok -f $ul->disk_filename && -s _, "upload restored to disk";
     my $data = do { local (@ARGV,$/) = ($ul->disk_filename); <> };
-    is $data, "Some attachment data $^T\n", "stored contents are good";
+    is $data, $test_body, "stored contents are good";
 
+}
+
+binary_contents: {
     unlink $ul->disk_filename;
     my $data2;
-    $ul->binary_contents(\$data2);
-    is $data2, "Some attachment data $^T\n", "blob is good (auto vivified)";
-    ok !-f $ul->storage_filename, "upload NOT restored by binary_contents";
+    is exception { $ul->binary_contents(\$data2) }, undef;
+    is $data2, $test_body, "blob is good";
+    ok !-f $ul->disk_filename, "file is NOT restored by binary_contents";
+
+    $ul->ensure_stored();
+    is exception { $ul->binary_contents(\$data2) }, undef;
+    is $data2, $test_body, "blob is good after ensure_stored";
 }
 
 pass "done";
