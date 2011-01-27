@@ -49,6 +49,7 @@ fi
 
 cd $NLW_LIB
 $APPLIANCE_SBIN/st-appliance-config set captcha_enabled 0
+$APPLIANCE_SBIN/st-appliance-config set max_objects_for_control_panel 999
 cd $ST_CURRENT
 
 echo Done setting up wikitests

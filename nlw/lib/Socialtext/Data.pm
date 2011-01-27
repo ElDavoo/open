@@ -7,9 +7,6 @@ use warnings;
 sub Classes {
     return map { 'Socialtext::' . $_ }
            qw( Account
-               Permission
-               Role
-               User::Default::Factory
                UserMetadata
                Workspace
                Pluggable::Adapter

@@ -3,13 +3,18 @@
 | set | new_acct | acct wstest %%start_time%% |
 | set | new_workspace | wksp-test%%start_time%% |
 | set | cli_user | cli_test%%start_time%%@ken.socialtext.net |
+| set | cli_user_prefix | cli |
+| set | cli_user_suffix | test%%start_time%% |
 
 | st-admin | create-account --name '%%new_acct%%' |  |
 | st-admin | create-workspace --empty --name %%new_workspace%% --title %%new_workspace%% --account '%%new_acct%%' |  |
+| st-admin | create-user --email %%cli_user%% --password %%password%% |  |
 
 | *Comment* | Test case: Business Control Panel Workspace Verify workspace in account |  |
 
-| st-admin | give-accounts-admin --u %%username%% |  |
+| st-admin | give-accounts-admin --u %%cli_user%% |  |
+| open_ok | /nlw/submit/logout |  |
+| st-login | %%cli_user%% | %%password%% |
 | open_ok | /nlw/control |  |
 | wait_for_element_visible_ok | link=Accounts | 3000 |
 | click_and_wait | link=Accounts |  |
@@ -31,27 +36,30 @@
 | click_and_wait | st-submit-search-by-name |  |
 | text_like | link=%%new_acct%% | %%new_acct%% |
 
-Work in progress for story_add_missing_create_workspace_links_in_cp
-*Comment* | Test case: Business Control Panel Workspace Create workspace | |
-open_ok | /nlw/control/workspace | |
-set | wsname | %%wsname%% |
-set | wstitle | %%wstitle%% |
-wait_for_element_visible_ok | //input[@value='Create a new Workspace'] | 30000 |
-click_ok | //input[@value='Create a new Workspace'] | 30000 |
-wait_for_element_visible_ok | new-workspace-next | 30000 |
-wait_for_element_visible_ok | new_workspace_title | 30000 |
-type_ok | new_workspace_title | %%wstitle%% |
-click_ok | new-workspace-next | |
-wait_for_element_visible_ok | new-workspace-next | 30000 |
-wait_for_element_visible_ok | new-workspace-cancel | 30000 |
-wait_for_element_visible_ok | new_workspace_name | 30000 |
-type_ok | new_workspace_name | %%wsname%% |
-click_ok | new-workspace-next | |
-wait_for_text_present_ok | %%wsname%% workspace | 30000 |
+
+| *Comment* | Test case: Business Control Panel Workspace Create workspace |  |
+| open_ok | /nlw/control/workspace |  |
+| set | wstitle | wstitle_%%start_time%% |
+| wait_for_element_visible_ok | //input[@value='Create a new Workspace'] | 30000 |
+| click_ok | //input[@value='Create a new Workspace'] | 30000 |
+| wait_for_element_visible_ok | create | 30000 |
+| wait_for_element_visible_ok | workspace_title | 30000 |
+| type_ok | workspace_title | %%wstitle%% |
+| wait_for_element_visible_ok | addUserLookahead | 30000 |
+| type-lookahead-ok | addUserLookahead | %%cli_user_prefix%% |
+| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%cli_user_suffix%%')] | 30000 |
+| click_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%cli_user_suffix%%')] |  |
+| wait_for_element_visible_ok | link=%%cli_user%% | 30000 |
+| wait_for_element_visible_ok | userTable-dropdown-2-0 | 30000 |
+| select_ok | userTable-dropdown-2-0 | label=Admin |
+| wait_for_text_present_ok | Updating | 15000 |
+| wait_for_text_not_present_ok | Updating | 15000 |
+| verifyValue | userTable-dropdown-2-0 | admin |
+| click_and_wait | create |  |
+| wait_for_text_present_ok | %%wstitle%% workspace | 30000 |
 
 | *Comment* | Test case: Business Control Panel Workspace Change new workspace account to Socialtext |  |
 | open_ok | /nlw/control/workspace |  |
-
 | wait_for_element_visible_ok | name | 30000 |
 | type_ok | name | %%new_workspace%% |
 | st-submit |  |  |
@@ -84,5 +92,7 @@ wait_for_text_present_ok | %%wsname%% workspace | 30000 |
 
 | *Comment* | Test case: Business Control Panel Workspace TEARDOWN |  |
 | st-admin | delete-workspace --workspace %%new_workspace%% --no-export | has been deleted |
+| st-admin | delete-workspace --workspace %%wstitle%% --no-export | has been deleted |
+| st-admin | deactivate-user --email %%cli_user%% | has been removed |
 
 | *Comment* | Test case: Business Control Panel Workspace COMPLETED |  |

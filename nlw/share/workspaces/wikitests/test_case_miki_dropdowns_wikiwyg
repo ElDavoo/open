@@ -1,4 +1,6 @@
+
 | *Comment* | Test Case: Miki Dropdowns WikiWyg |
+
 
 * Fixture: SocialWidgets
 
@@ -34,11 +36,11 @@
 | *Comment* | Test Case: Miki Dropdowns WikiWyg. Signal to one of the accounts %%msacct%%-A |  |
 | st_mobile_account_select_ok | %%msacct%%-A (primary, 1 user) |  |
 
-| setSpeed | 4000 |  |
 | st-type-signal | Signal to %%msacct%%-A | 1 |
 | wait_for_element_visible_ok | %%miki_signal_submit%% | 20000 |
 | click_ok | %%miki_signal_submit%% |  |
 | setSpeed | 0 |  |
+| Comment | st-type-signal clients must setSpeed 0 |  |
 
 | wait_for_text_present_ok | Signal to %%msacct%%-A | 30000 |
 | text_like | //div[@id='mobile_main'] | Signal to %%msacct%%-A |
@@ -46,11 +48,11 @@
 | *Comment* | Test Case: Miki Dropdowns WikiWyg. Signal to the other account: %%msacct%%-B |  |
 | st_mobile_account_select_ok | %%msacct%%-B (1 user) |  |
 
-| setSpeed | 4000 |  |
 | st-type-signal | Signal to %%msacct%%-B | 1 |
 | wait_for_element_visible_ok | %%miki_signal_submit%% | 20000 |
 | click_ok | %%miki_signal_submit%% |  |
 | setSpeed | 0 |  |
+| Comment | st-type-signal clients must setSpeed 0 |  |
 
 | wait_for_text_present_ok | Signal to %%msacct%%-B | 30000 |
 | text_like | //div[@id='mobile_main'] | Signal to %%msacct%%-B |
