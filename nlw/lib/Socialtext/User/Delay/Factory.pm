@@ -36,7 +36,7 @@ sub GetUser {
     my $val  = shift;
     st_log->debug( "ST::User::Delay::Factory->GetUser($key => $val)" );
     sleep( $DELAY );
-    return undef;
+    return;
 }
 
 sub Search {
@@ -44,7 +44,7 @@ sub Search {
     my $term = shift;
     st_log->debug( "ST::User::Delay::Factory->Search($term)" );
     sleep( $DELAY );
-    return undef;
+    return;
 }
 
 1;
