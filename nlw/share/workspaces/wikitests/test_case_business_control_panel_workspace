@@ -93,5 +93,6 @@
 | *Comment* | Test case: Business Control Panel Workspace TEARDOWN |  |
 | st-admin | delete-workspace --workspace %%new_workspace%% --no-export | has been deleted |
 | st-admin | delete-workspace --workspace %%wstitle%% --no-export | has been deleted |
+| st-admin | deactivate-user --email %%cli_user%% | has been removed |
 
 | *Comment* | Test case: Business Control Panel Workspace COMPLETED |  |
