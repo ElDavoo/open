@@ -6,27 +6,30 @@ use warnings;
 
 use base qw(Socialtext::User::Factory);
 
-use Class::Field qw(const);
+use Class::Field qw(const field);
 use Time::HiRes qw(sleep);
 use Socialtext::Log qw(st_log);
 
-# time delay to add to all User lookups/requests, in seconds
-our $DELAY = 0.10;
-
 const 'driver_name' => 'Delay';
-const 'driver_key'  => 'Delay';
-const 'driver_id'   => undef;
+field 'driver_key', -init => '$self->driver_name . ":" . $self->driver_id';
+field 'driver_id', -init => '0.10';
 
 sub new {
-    my $proto = shift;
-    my $class = ref($proto) || $proto;
-    my $self  = { };
+    my ($class, $delay) = @_;
+    my $self  = { driver_id => $delay };
     bless $self, $class;
 }
 
+sub _do_delay {
+    my $self  = shift;
+    my $delay = $self->driver_id;
+    sleep( $delay );
+}
+
 sub Count {
+    my $self = shift;
     st_log->debug( "ST::User::Delay::Factory->Count()" );
-    sleep( $DELAY );
+    $self->_do_delay();
     return 0;
 }
 
@@ -35,7 +38,7 @@ sub GetUser {
     my $key  = shift;
     my $val  = shift;
     st_log->debug( "ST::User::Delay::Factory->GetUser($key => $val)" );
-    sleep( $DELAY );
+    $self->_do_delay();
     return;
 }
 
@@ -43,7 +46,7 @@ sub Search {
     my $self = shift;
     my $term = shift;
     st_log->debug( "ST::User::Delay::Factory->Search($term)" );
-    sleep( $DELAY );
+    $self->_do_delay();
     return;
 }
 
