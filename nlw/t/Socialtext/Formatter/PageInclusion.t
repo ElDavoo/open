@@ -94,7 +94,7 @@ my $a2 = Socialtext::Page->new( hub => $hub )->create(
 );
 
 my $free_link = $a1->to_html_or_default;
-like $free_link, qr{href="a2"}, "Freelink is relative";
+like $free_link, qr{href="index.cgi\?a2"}, "Freelink is relative";
 
 $hub->with_alternate_workspace(
     Socialtext::Workspace->new( name => 'foobar' ), sub {
@@ -104,7 +104,7 @@ $hub->with_alternate_workspace(
             creator => $hub->current_user,
         );
         my $interwiki_link = $b1->to_html_or_default;
-        like $interwiki_link, qr{href="/admin/a2"}, "{bz: 4881}: Freelink through inclusion became absolute interwiki links";
+        like $interwiki_link, qr{href="/admin/index.cgi\?a2"}, "{bz: 4881}: Freelink through inclusion became absolute interwiki links";
     }
 );
 
