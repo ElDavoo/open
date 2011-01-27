@@ -3,6 +3,7 @@ package Socialtext::Moose::UserAttribute;
 use warnings;
 use strict;
 use Moose::Exporter ();
+use Carp ();
 use Socialtext::Moose::Util;
 
 Moose::Exporter->setup_import_methods(
@@ -11,7 +12,7 @@ Moose::Exporter->setup_import_methods(
 
 sub has_user {
     my ($c_or_m, $field, %args) = @_;
-    use Carp ();
+    require Socialtext::User;
     local $SIG{__WARN__} = \&Carp::cluck; # make warnings here extra-noisy
 
     my $meta = compat_meta_arg($c_or_m);
@@ -65,7 +66,6 @@ sub has_user {
         },
     );
 
-    require Socialtext::User;
     $meta->add_attribute($field => %field_args);
     $meta->add_attribute($id_field => %id_field_args);
     $meta->add_method($builder => $builder_method);
