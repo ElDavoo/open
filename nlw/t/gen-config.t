@@ -24,7 +24,7 @@ Usage: {
 Dev_env: {
     my $output = run_test("--root $test_root --dev=0");
     my @files = qw(
-        nginx/nlw-nginx.conf
+        nginx/nlw-nginx-live.conf
         nginx/mime.conf
         nginx/proxy.conf
         nginx/auto-generated.d/nlw.conf

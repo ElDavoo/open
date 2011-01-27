@@ -1,7 +1,10 @@
+
 | *Comment* | Test Case: Replies Includer. Start |  |
 
-| set | frame_pause | 10 |
-| set | post_pause | 10 |
+
+
+| set-default | frame_pause | 5000 |
+| set_default | post_pause | 5000 |
 
 | *Comment* | Test Case: Replies Includer. frame_pause %%frame_pause%% post_pause %%post_pause%% |  |
 
@@ -34,15 +37,9 @@
 | *Comment* | Test Case: Replies Includer. Use [Test Case: Replies Include] N times |  |
 
 | set | i | 1 |
-| include | `[Test Case: Replies Include]` |  |
+| include | [Test Case: Replies Include] |  |
 
 | set | i | 2 |
-| include | `[Test Case: Replies Include]` |  |
-
-| set | i | 3 |
-| include | `[Test Case: Replies Include]` |  |
-
-| set | i | 4 |
-| include | `[Test Case: Replies Include]` |  |
+| include | [Test Case: Replies Include] |  |
 
 | *Comment* | Test Case: Replies Includer COMPLETED |  |

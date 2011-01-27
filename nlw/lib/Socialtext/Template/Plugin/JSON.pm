@@ -75,6 +75,20 @@ sub BUILD {
 
 __PACKAGE__;
 
+=head1 NAME
+
+Socialtext::Template::Plugin::JSON
+
+=head1 SYNOPSIS
+
+[% use JSON %]
+
+this is [% something.json %]
+
+=head1 DESCRIPTION
+
+Port this to use ST's JSON libs.
+
 =head1 COPYRIGHT & LICENSE
 
 Copyright (c) 2006, 2008 Infinity Interactive, Yuval Kogman.

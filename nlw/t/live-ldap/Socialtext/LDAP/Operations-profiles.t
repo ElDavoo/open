@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 10;
+use Test::Socialtext tests => 17;
 use Test::Socialtext::User;
 use Socialtext::LDAP::Operations;
 
@@ -37,16 +37,33 @@ sub bootstrap_openldap {
     $openldap->add_ldif('t/test-data/ldap/relationships.ldif');
 
     # Update the "supervisor" People Field in this Account so its LDAP sourced
+    my $config = $openldap->ldap_config();
     my $people = Socialtext::Pluggable::Adapter->plugin_class('people');
     $people->SetProfileField( {
         name    => 'supervisor',
         source  => 'external',
         account => $acct,
     } );
-
-    # Ensure that the LDAP config maps the "supervisor" field to an LDAP attr
-    my $config = $openldap->ldap_config();
     $config->{attr_map}{supervisor} = 'manager';
+
+    # Update the "assistant" People Field in this Account so its LDAP sourced
+    $people->SetProfileField( {
+        name    => 'assistant',
+        source  => 'external',
+        account => $acct,
+    } );
+    $config->{attr_map}{assistant} = 'secretary';
+
+    # Update the "preferred_name" People Field in this Account so its LDAP
+    # sourced.
+    $people->SetProfileField( {
+        name    => 'preferred_name',
+        source  => 'external',
+        account => $acct,
+    } );
+    $config->{attr_map}{preferred_name} = 'displayName';
+
+    # Save the changes we made to the LDAP config for field mapping
     Socialtext::LDAP::Config->save($config);
 
     return $openldap;
@@ -115,4 +132,58 @@ refresh_users_also_updates_profiles: {
     $ariel_profile = Socialtext::People::Profile->GetProfile($ariel, no_recurse=>1);
     is $ariel_profile->get_reln('supervisor'), $belinda->user_id,
         'Ariel has Belinda as a manager after RefreshUsers';
+}
+
+###############################################################################
+# TEST: Refresh LDAP Users that get their preferred_name from LDAP
+refresh_users_with_preferred_name: {
+    my $guard = Test::Socialtext::User->snapshot();
+    my $acct  = Socialtext::Account->Default;
+    my $ldap  = bootstrap_openldap(account => $acct);
+
+    # Load Users from LDAP into ST
+    my $ariel = Socialtext::User->new(username => 'Ariel Young');
+    ok $ariel, 'loaded Ariel user';
+
+    # Update the "preferred_name" for one of the Users
+    my $ariel_dn  = 'cn=Ariel Young,ou=related,dc=example,dc=com';
+
+    my $rc = $ldap->modify($ariel_dn, replace => ['displayName' => 'Little Mermaid']);
+    ok $rc, "updated LDAP to change Ariel's displayName";
+
+    # Refresh Users
+    Socialtext::LDAP::Operations->RefreshUsers(force => 1);
+
+    # Check that the Profiles got updated
+    my $ariel_profile = Socialtext::People::Profile->GetProfile($ariel, no_recurse=>1);
+    is $ariel_profile->get_attr('preferred_name'), 'Little Mermaid',
+        'Ariel has updated preferred_name from LDAP';
+}
+
+###############################################################################
+# TEST: LDAP Users with circular relationships.
+# - most importantly, we want to *not* end up w/deep recursion errors here
+circular_managerial_relationships: {
+    my $guard = Test::Socialtext::User->snapshot();
+    my $acct  = Socialtext::Account->Default;
+    my $ldap  = bootstrap_openldap(account => $acct);
+
+    # Load Users from LDAP into ST
+    my $ariel = Socialtext::User->new(username => 'Ariel Young');
+    ok $ariel, 'loaded Ariel user';
+    my $adrian = Socialtext::User->new(username => 'Adrian Harris');
+    ok $adrian, 'loaded Adrian user';
+
+    # Update the User's so that they've got a circular managerial relationship
+    my $ariel_dn  = 'cn=Ariel Young,ou=related,dc=example,dc=com';
+    my $adrian_dn = 'cn=Adrian Harris,ou=related,dc=example,dc=com';
+
+    my $rc = $ldap->modify($ariel_dn, replace => ['manager' => $adrian_dn]);
+    ok $rc, "Updated LDAP to change Ariel's manager to Adrian";
+
+    $rc = $ldap->modify($adrian_dn, replace => ['secretary' => $ariel_dn]);
+    ok $rc, "Updated LDAP to change Adrian's secretary to Ariel";
+
+    # Refresh Users
+    Socialtext::LDAP::Operations->RefreshUsers(force => 1);
 }

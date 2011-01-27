@@ -136,7 +136,17 @@ sub main {
         push @files,
             [
                 'nginx/base.nginx'
-                    => "$dirs{nginx_etc}/${app_prefix}nginx.conf",
+                    => "$dirs{nginx_etc}/${app_prefix}nginx-live.conf",
+                $params, 'overwrite',
+            ],
+            [
+                'nginx/under-resourced.nginx'
+                    => "$dirs{nginx_etc}/${app_prefix}nginx-under-resourced.conf",
+                $params, 'overwrite',
+            ],
+            [
+                'nginx/unconfigured.nginx'
+                    => "$dirs{nginx_etc}/${app_prefix}nginx-unconfigured.conf",
                 $params, 'overwrite',
             ],
             [
@@ -179,6 +189,13 @@ sub main {
                 ]
             }
 
+            # Symlink nginx-live to nginx
+            my $cfg = "$dirs{nginx_etc}/${app_prefix}nginx.conf";
+            unlink $cfg if -e $cfg;
+            symlink "$dirs{nginx_etc}/${app_prefix}nginx-live.conf", $cfg
+                or die "Cannot symlink nginx-live.conf to $cfg: $!";
+
+
             # If necessary, create a robots.txt
             my $docroot = "$dirs{root}/docroot";
             my $robots = "$docroot/robots.txt";
@@ -191,6 +208,11 @@ sub main {
                 print $fh "# Add any robot rules here, this file will not\n"
                         . "# be overwritten on upgrade.\n";
                 close $fh or die "Can't write $robots: $!";
+            }
+            print "Copying static nginx html\n" unless $opts{quiet};
+            for my $file (qw/under-resourced unconfigured/) {
+                File::Copy::copy("$inc/static/nginx/$file.html"
+                    => "$dirs{root}/docroot/$file.html");
             }
     }
 

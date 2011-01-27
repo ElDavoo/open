@@ -59,7 +59,7 @@ my $REFERENCE_TIME = undef;
 field 'id';
 sub class_id { 'page' }
 field full_uri =>
-      -init => '$self->hub->current_workspace->uri . Socialtext::AppConfig->script_name . "?" . $self->uri';
+      -init => '$self->hub->current_workspace->uri . $self->uri';
 
 sub _MAX_PAGE_ID_LENGTH () {
     return 255;
@@ -173,6 +173,10 @@ sub _signal_edit_summary {
 
     # Trim trailing whitespaces first
     $edit_summary =~ s/\s+$//;
+
+    # If edit summary starts with a symbol (e.g. #tag or {wafl}), prepend a space
+    # so the syntax won't be blocked by the leading double-quote.
+    $edit_summary =~ s/^([^\s\w])/ $1/;
 
     $edit_summary = Socialtext::String::word_truncate($edit_summary, ($is_comment ? $SignalCommentLength : $SignalEditLength));
     my $page_link = sprintf "{link: %s [%s]}", $workspace->name, $self->title;

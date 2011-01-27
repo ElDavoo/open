@@ -60,19 +60,6 @@
 | st-admin | clear-plugin-prefs | You must specify a plugin. |
 | st-admin | clear-plugin-prefs --plugin dashboard | Preferences for the dashboard plugin(s) have been cleared. |
 
-| *Comment* | Test Case: Command Line: NEW set-google-analytics |  |
-| st-admin | set-google-analytics | The command you called (set-google-analytics) requires an account to be specified. |
-| st-admin | set-google-analytics --account %%cmd_acct%% | --code required. |
-| st-admin | set-google-analytics --account %%cmd_acct%% --code %%start_time%% | Preferences for the analytics plugin(s) have been updated. |
-
-| *Comment* | Test Case: Command Line: NEW show-google-analytics |  |
-| st-admin | show-google-analytics | The command you called (show-google-analytics) requires an account to be specified. |
-| st-admin | show-google-analytics --account %%cmd_acct%% | Preferences for the analytics plugin in the %%cmd_acct%% account |
-
-| *Comment* | Test Case: Command Line: NEW clear-google-analytics |  |
-| st-admin | clear-google-analytics | The command you called (clear-google-analytics) requires an account to be specified. |
-| st-admin | clear-google-analytics --account %%cmd_acct%% | Preferences for the analytics plugin(s) have been cleared. |
-
 | *Comment* | Test Case: Command Line: NEW index-people |  |
 | st-admin | index-people | Scheduled people for re-indexing. |
 

@@ -16,14 +16,17 @@
 | click_ok | link=Comment |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | this is a comment, which is a contribution |
-| click_ok | link=Save |  |
+| wait_for_element_visible_ok | link=Save | 30000 |
+| st_click_pause | link=Save | 5000 |
 | wait_for_element_visible_ok | link=Comment | 30000 |
+
 | open_ok | /%%am_ws_1%%/index.cgi?%%createme_page1%% |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |
 | click_ok | link=Comment |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | this is a comment, which is a contribution |
-| click_ok | link=Save |  |
+| wait_for_element_visible_ok | link=Save | 30000 |
+| st_click_pause | link=Save | 5000 |
 | wait_for_element_visible_ok | link=Comment | 30000 |
 
 | *Comment* | Test Case: Active Members Actions - A couple Edits in workspace 2 |  |
@@ -32,14 +35,17 @@
 | click_ok | link=Comment |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | this is a comment, which is a contribution |
-| click_ok | link=Save |  |
+| wait_for_element_visible_ok | link=Save | 30000 |
+| st_click_pause | link=Save | 5000 |
 | wait_for_element_visible_ok | link=Comment | 30000 |
+
 | open_ok | /%%am_ws_2%%/index.cgi?%%createme_page1%% |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |
 | click_ok | link=Comment |  |
 | wait_for_element_visible_ok | comment | 30000 |
 | type_ok | comment | this is a comment, which is a contribution |
-| click_ok | link=Save |  |
+| wait_for_element_visible_ok | link=Save | 30000 |
+| st_click_pause | link=Save | 5000 |
 | wait_for_element_visible_ok | link=Comment | 30000 |
 
 | *Comment* | Test Case: Active Members Actions - Page View |  |

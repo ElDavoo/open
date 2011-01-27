@@ -17,11 +17,15 @@
 | *Comment* | Test Case: Workspace Widget. link to %%title%% is hidden in Workspaces dropdown |  |
 | is_element_present_ok | contentContainer | link=%%title%% |
 
-| *Comment* | Remove member, see if workspace is gone |  |
+| *Comment* | Test Case: Workspace Widget. Remove member, see if workspace is gone |  |
 | st-admin | remove-member --username %%username%% --workspace workspacewidget-%%start_time%% | no longer has the role of 'member' |
 | st-clear-json-cache |  |  |
 
+| *Comment* | Test Case: Workspace Widget. Navigate away, come back |  |
+| open_ok | /?action=workspaces_listall |  |
 | open_ok | /st/dashboard | 60000 |
+
+| *Comment* | Test Case: Workspace Widget. Does Workspaces Widget have the right content? |  |
 | wait_for_text_present_ok | changes | 30000 |
 | wait_for_text_present_ok | views | 30000 |
 | wait_for_element_visible_ok | link=new page | 30000 |
@@ -30,6 +34,7 @@
 | text_unlike | contentContainer | Workspace Widget %%start_time%% |
 
 | *Comment* | Test Case: Workspace Widget TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | delete-workspace --workspace workspacewidget-%%start_time%% --no-export | has been deleted |
 
 | *Comment* | Test Case: Workspace Widget COMPLETED |  |

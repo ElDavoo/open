@@ -33,7 +33,7 @@
 
 | *Comment* | Test Case: Calc Tools: Copy Page to Workspace. Should return to the same WS,
 NOT the target WS |  |
-| location_like | /%%workspace%%/index.cgi?copy_page_spreadsheet_%%start_time%% |  |
+| location_like | /%%workspace%%/copy_page_spreadsheet_%%start_time%% |  |
 | wait_for_element_visible_ok | contentRight | 30000 |
 | wait_for_element_visible_ok | link=Copy Spreadsheet Tag %%start_time%% | 30000 |
 

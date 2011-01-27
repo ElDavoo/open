@@ -11,6 +11,7 @@ sn: Harris
 mail: adrian.harris@example.com
 userPassword: abc123
 telephoneNumber: 250-555-1212
+displayName: Adrian "The Dog" Harris
 
 dn: cn=Ariel Young,ou=related,dc=example,dc=com
 objectClass: inetOrgPerson
@@ -21,6 +22,7 @@ mail: ariel.young@example.com
 userPassword: abc123
 manager: cn=Adrian Harris,ou=related,dc=example,dc=com
 telephoneNumber: 604-123-4567
+displayName: Ariel "Little Mermaid" Young
 
 dn: cn=Belinda King,ou=related,dc=example,dc=com
 objectClass: inetOrgPerson

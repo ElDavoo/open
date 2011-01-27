@@ -1,7 +1,7 @@
 | *Comment* | Test Case: Tools: Rename Page |
 
 | *Comment* | Test Case: Tools: Rename Page Create test page |  |
-| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
+| open_ok | /%%workspace%%/?action=new_page |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
@@ -29,7 +29,7 @@
 | click_and_wait | st-rename-savelink |  |
 
 | *Comment* | Test Case: Tools: Rename Page. verify rename |  |
-| location_like | `/%%workspace%%/index.cgi?Page_Renamed_%%start_time%%` |  |
+| location_like | `/%%workspace%%/Page_Renamed_%%start_time%%` |  |
 | wait_for_element_visible_ok | contentRight | 30000 |
 | text_like | contentRight | Rename This Tag %%start_time%% |
 | text_like | st-page-titletext | Page_Renamed_%%start_time%% |
@@ -71,10 +71,10 @@
 | click_and_wait | st-rename-savelink |  |
 
 | *Comment* | Test Case: Tools: Rename Page. verify 2nd rename using space-containing URL |  |
-| location_like | `/%%workspace%%/index.cgi?Page_Renamed_%%start_time%%` |  |
+| location_like | `/%%workspace%%/Page_Renamed_%%start_time%%` |  |
 
 | *Comment* | Test Case: Tools: Rename Page. verify rename of edited page |  |
-| open_ok | /%%workspace%%/index.cgi?action=revision_list;page_name=page_renamed_%%start_time%% |  |
+| open_ok | /%%workspace%%/?action=revision_list;page_name=page_renamed_%%start_time%% |  |
 | text_like | contentContainer | qr/revision 2/i |
 | click_and_wait | link=Compare Revisions |  |
 | text_like | contentContainer | Rename This Page %%start_time%% content |
@@ -82,6 +82,7 @@
 
 | *Comment* | Test Case: Tools: Rename Page Teardown |  |
 
+| st-process-jobs | PageIndex | %%workspace%% |
 | st-admin | purge-page --w %%workspace%% --page rename_this_page_%%start_time%% | was purged |
 | st-admin | purge-page --w %%workspace%% --page page_renamed_%%start_time%% | was purged |
 

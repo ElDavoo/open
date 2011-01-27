@@ -15,6 +15,7 @@ L<Socialtext::Rest::Collection>
 =cut
 
 use Socialtext::JSON;
+use Socialtext::Encode;
 use YAML qw/Dump/;
 use base 'Socialtext::Rest';
 use Socialtext::HTTP ':codes';
@@ -195,7 +196,7 @@ sub form_to_resource {
             $res_key = $after;
         }
 
-        $res->{$res_key} = $params{$key};
+        $res->{$res_key} = Socialtext::Encode::guess_decode($params{$key});
     }
 
     return $resource;

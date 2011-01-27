@@ -4,8 +4,8 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 11;
-fixtures( 'admin', 'foobar' );
+use Test::Socialtext tests => 13;
+fixtures(qw( clean admin foobar ));
 use Socialtext::Pages;
 
 my $hub = new_hub('admin');
@@ -22,11 +22,11 @@ my $page_one = Socialtext::Page->new( hub => $hub )->create(
 
 $content_one = $page_one->to_html_or_default;
 
-like $content_one, qr{Page One.*href="/admin/index.cgi\?page%20two"\s+class="incipient"}sm,
+like $content_one, qr{Page One.*href="/admin/page%20two"\s+class="incipient"}sm,
     'page one should contain a link to incipient page two (w/ incipient class)';
 like $content_one, qr{Replace this text with your own}sm,
     'page one should contain default text for page two';
-like $content_one, qr{href="/foobar/index.cgi\?not%20here"\s+class="incipient"}sm,
+like $content_one, qr{href="/foobar/not%20here"\s+class="incipient"}sm,
     'page one should contain a link to incipient not here page in foobar';
 
 my $page_two = Socialtext::Page->new( hub => $hub )->create(
@@ -43,7 +43,7 @@ like $content_one, qr{Page One.*Page Two.*include: \[page one\]}sm,
 like $content_two, qr{Page Two.*Page One.*include: \[page two\]}sm,
     'page two should have page one but not recurse';
 
-like $content_two, qr{foobar/index.cgi\?people},
+like $content_two, qr{foobar/people},
     'page two should include welcome from foobar with links to people';
 
 
@@ -77,7 +77,34 @@ my $page_incipient = Socialtext::Page->new( hub => $hub )->create(
 
 my $incipient_content = $page_incipient->to_html_or_default;
 like $incipient_content,
-    qr{href="/admin/index.cgi\?this%20page%20isn%27t%20cool" class="incipient">}, 'href is double quoted';
+    qr{href="/admin/this%20page%20isn't%20cool" class="incipient">}, 'href is double quoted';
 like $incipient_content,
-    qr{href="/admin/index.cgi\?is_incipient=1;page_name=this%20page%20isn%27t%20cool;page_type=wiki#edit"}, 'href edit link is double quoted';
+    qr{href="/admin/\?is_incipient=1;page_name=this%20page%20isn't%20cool;page_type=wiki#edit"}, 'href edit link is double quoted';
+
+
+my $a1 = Socialtext::Page->new( hub => $hub )->create(
+    title   => "A1",
+    content => "[A2]",
+    creator => $hub->current_user,
+);
+my $a2 = Socialtext::Page->new( hub => $hub )->create(
+    title   => "A2",
+    content => "This is A2",
+    creator => $hub->current_user,
+);
+
+my $free_link = $a1->to_html_or_default;
+like $free_link, qr{href="a2"}, "Freelink is relative";
+
+$hub->with_alternate_workspace(
+    Socialtext::Workspace->new( name => 'foobar' ), sub {
+        my $b1 = Socialtext::Page->new( hub => $hub )->create(
+            title   => "B1",
+            content => "Let's {include: admin [A1]}",
+            creator => $hub->current_user,
+        );
+        my $interwiki_link = $b1->to_html_or_default;
+        like $interwiki_link, qr{href="/admin/a2"}, "{bz: 4881}: Freelink through inclusion became absolute interwiki links";
+    }
+);
 

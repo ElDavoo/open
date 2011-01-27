@@ -110,7 +110,7 @@ my $pid='';
 if ($pidfile) {
     ($pid) = slurp($pidfile);
 } else {
-    my $svcinfo = `/usr/bin/svstat /var/lib/svscan/${config_prefix}`;
+    my $svcinfo = `/usr/bin/svstat /var/lib/svscan/${procname}`;
     if ($svcinfo =~ /\(pid (\d+)\)/) {
         $pid = $1;
     }

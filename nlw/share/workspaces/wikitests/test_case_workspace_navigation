@@ -16,7 +16,7 @@
 | click_and_wait | link=Settings | navigate away |
 | text_like | contentLeft | Settings |
 | click_and_wait | link=%%ws_title%% |  |
-| location_like | /%%ws%%/index.cgi? |  |
+| location_like | /%%ws%% |  |
 | text_like | contentTitle | %%ws_title%% |
 
 | *Comment* | Test Case: Workspace Navigation What's New |  |

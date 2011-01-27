@@ -3591,7 +3591,7 @@ proto._preload_video_dimensions = function() {
 
     $('#st-widget-video_url').unbind('change').change(function(){
         var url = $(this).val();
-        if (!/:\/\//.test(url)) {
+        if (!/^[-+.\w]+:\/\/[^\/]+\//.test(url)) {
             $('#st-widget-video-original-width').text('');
             url = null;
         }
@@ -3629,9 +3629,8 @@ proto._preload_video_dimensions = function() {
                         loc('height: [_1]', data.height)
                     );
                 }
-                else if (data.error) {
-                    $('#st-widget-video-original-width').text(loc('Error!'));
-                    $('#video_widget_edit_error_msg').text(data.error).show();
+                else {
+                    $('#st-widget-video-original-width').text('');
                 }
             }
         });

@@ -176,7 +176,7 @@ wait_for_text_present_ok so we've got to use text_like, which has no wait_for)
 sub click_and_pause {
   my ($self, $link) = @_;
   $self->click_ok($link);
-  $self->pause(10000);
+  $self->pause(15000);
 }
 
 
@@ -189,7 +189,11 @@ Log out of the Socialtext wiki.
 sub st_logout {
     my $self = shift;
     diag "st-logout";
-    $self->click_and_wait('id=logout_btn', 'log out');
+
+    # go to Miki first to avoid the auto-refresh of watchlist/group in S3,
+    # which could trigger a 401 Basic Auth poupup upon logout.
+    $self->handle_command('open_ok', '/m/workspace_list');
+    $self->handle_command('open_ok', '/nlw/submit/logout');
 }
 
 =head2 st_logoutin()
@@ -393,6 +397,19 @@ sub st_pause_click {
     $self->handle_command('pause',$pause);
     my $cmd = $andwait ? 'click_and_wait' : 'click_ok';
     $self->handle_command($cmd, $locator);
+}
+
+=head2 st_click_pause
+  | st_click_pause | button_locator | N | ANDWAIT |
+  Clicks the button_locator then pauses for N msec; needed to prevent race conditions after saving comments
+  uses click_and_wait if third arg is not empty
+=cut
+
+sub st_click_pause {
+    my ($self, $locator, $pause, $andwait) = @_;
+    my $cmd = $andwait ? 'click_and_wait' : 'click_ok';
+    $self->handle_command($cmd, $locator);
+    $self->handle_command('pause',$pause);
 }
 
 =head2 st_create_wikipage ( $workspace, pagename )
@@ -608,7 +625,7 @@ sub st_result {
 
 }
 
-=head st_match_text ($match, $variable_name) 
+=head2 st_match_text ($match, $variable_name) 
 
 does a text_like on $match and sticks the results in $variable
 
@@ -1200,6 +1217,7 @@ sub st_uneditable_ok {
 sub st_mobile_account_select_ok {
     my ($self, $accountdesc) = @_;
     if ($self->_is_wikiwyg()) { 
+        $self->wait_for_element_visible_ok($self->{st_mobile_account_select}, 30000);
         $self->wait_for_element_present_ok("link=$accountdesc",30000);
         $self->click_ok("link=$accountdesc");
         $self->wait_for_element_visible_ok("link=$accountdesc");

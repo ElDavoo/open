@@ -44,7 +44,7 @@ sub homepage {
 sub central_page {
     my $self = shift;
     my $title = $self->hub->current_workspace->title;
-    my $uri = $self->hub->pages->new_from_name($title)->uri;
+    my $uri = $self->hub->pages->new_from_name($title)->full_uri;
     return $self->redirect($uri);
 }
 

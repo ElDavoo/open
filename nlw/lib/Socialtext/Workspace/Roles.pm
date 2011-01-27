@@ -10,6 +10,8 @@ use Socialtext::User;
 use Socialtext::UserSet qw/:const/;
 use Socialtext::Validate qw(validate SCALAR_TYPE BOOLEAN_TYPE ARRAYREF_TYPE);
 use Socialtext::Timer;
+use Socialtext::HTTP ':codes';
+use Socialtext::Exceptions;
 use Readonly;
 
 ###############################################################################
@@ -239,7 +241,12 @@ sub RolesForUserInWorkspace {
             $group_by .= ', w.creation_datetime';
         } elsif ($order_by eq 'id' || $order_by eq 'workspace_id') {
             $order_by = 'w.workspace_id';
-        }      
+        } else {
+            Socialtext::Exception->throw(
+                error => "Invalid sort specified",
+                http_status => HTTP_400_Bad_Request,
+            );
+        }
         my $sql = qq{
             SELECT $fields
               FROM "Workspace" w

@@ -660,3 +660,7 @@ a.smallEditButton {
     display: none;
 }
 
+.wiki .syntaxhighlighter .toolbar {
+    display: none !important;
+}
+

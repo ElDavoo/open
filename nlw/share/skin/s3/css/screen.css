@@ -2496,6 +2496,7 @@ html>body #st-page-details {
     font-weight: bold;
     font-family: Helvetica,Arial,sans-serif;
     width: 60px;
+    padding-left: 5px;
     float: left;
 }
 
@@ -2809,8 +2810,13 @@ div#bootstrap-loader {
     font-weight: bold;
     z-index: 1500;
     float: left;
-    width: 9em;
+    width: 70px;
 }
+
+#wikiwyg_toolbar img.wikiwyg_separator {
+    width: 10px;
+}
+
 #st-page-editing-tagbutton {
     float: left;
     width: 90px;
@@ -3952,8 +3958,8 @@ body#dashBoard #st-editing-tools-edit #lastsignal {
 
 /* toolbar refactor */
 #st-page-editing-button-toolbar {
-    width: 198px;
     float: right;
+    margin-right: 20px;
 }
 
 #st-page-editing-toolbar {

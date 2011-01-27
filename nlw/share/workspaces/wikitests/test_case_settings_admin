@@ -59,7 +59,7 @@
 | type_ok | title | New Title %%start_time%% |
 | click_and_wait | link=Save |  |
 | open_ok | /newspace-%%start_time%% |  |
-| location_like | /newspace-%%start_time%%/index.cgi?New%20Title%20%%start_time%% |  |
+| location_like | /newspace-%%start_time%%/New%20Title%20%%start_time%% |  |
 
 | *Comment* | Test Case: Settings: Admin test Workspace Features using newspace-%%start_time%% |  |
 | *Comment* | Test Case: Settings: Admin set up testing weblog |  |

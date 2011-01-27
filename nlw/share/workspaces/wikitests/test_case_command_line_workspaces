@@ -172,7 +172,7 @@ the `--dir` option is not being tested. Testing it would require specifying a di
 | st-admin | add-member --w %%cmdline_workspace%%-clone --e %%email%% |  |
 | pause | 5000 | open_ok was failing with no notice; matt inserted a modes pause |
 | open_ok | /%%cmdline_workspace%%-clone/index.cgi |  |
-| location_like | /%%cmdline_workspace%%-clone/index.cgi |  |
+| location_like | /%%cmdline_workspace%%-clone |  |
 
 html-archive --workspace --file
 mass-copy-pages --workspace --target [--prefix]

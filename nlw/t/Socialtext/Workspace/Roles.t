@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 48;
+use Test::Socialtext tests => 49;
 use Test::Differences;
 
 ###############################################################################
@@ -345,6 +345,16 @@ workspaces_by_user_id: {
             [ sort map { $_->workspace_id } ($ws_one, $ws_two, $ws_three) ],
             '... WS returned ordered by id'
         );
+    }
+
+    ws_by_user_id_invalid_order: {
+        eval {
+            Socialtext::Workspace::Roles->WorkspacesByUserId(
+                user_id => $user->user_id,
+                order_by => 'JJsksksjK',
+            );
+        };
+        ok($@, 'Invalid order_by throws an exception');
     }
 
     ws_by_user_id_create_order: {

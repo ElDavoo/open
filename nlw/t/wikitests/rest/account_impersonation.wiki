@@ -47,7 +47,9 @@ Create a standard test setup, with a desired user, an ws impersonator and an acc
 | create-user         | acct-imp-%%username%% | password      | %%account%%  |
 | set                 | acct_imp_user_id      | %%user_id%%   |              |
 | create-user         | plain-%%username%%    | password      | %%account%%  |
+| set                 | plain_user_id         | %%user_id%%   |              |
 | create-user         | ba-%%username%%       | password      | %%account%%  |
+| set                 | ba_user_id            | %%user_id%%   |              |
 | set-business-admin  | ba-%%username%%       |               |              |
 | add-member          | desired-%%username%%  | %%workspace%% |              |
 | add-member          | ws-imp-%%username%%   | %%workspace%% | impersonator |
@@ -55,6 +57,7 @@ Create a standard test setup, with a desired user, an ws impersonator and an acc
 
 | set | ctwiki | Content-Type=text/x.socialtext-wiki |
 | set | ctjson | Content-Type=application/json       |
+| set | ajson | Accept=application/json       |
 | set | xobo   | X-on-behalf-of=desired-%%username%% |
 | set | xobog  | X-on-behalf-of=guest                |
 | set | xobos  | X-on-behalf-of=system               |
@@ -130,9 +133,21 @@ Put a signal as a user
 
 
 | Comment        | Non-Primary Impersonator Can't Signal |                     |                          |
-| http-user-pass | %%secondary_username%%                | secondary_password            |                          |
-| post           | /data/signals                         | %%xobo%%,%%ctjson%% | {"signal":"I am sneaky"} |
-| code-is        | 403                                   |                     |                          |
+| http-user-pass | %%secondary_username%% | secondary_password  |                          |
+| post           | /data/signals          | %%xobo%%,%%ctjson%% | {"signal":"I am sneaky"} |
+| code-is        | 403                    |                     |                          |
+
+*Make sure we can see a private signal*
+| Comment        | Impersonator can view a private signal                      |                     |                                                               |
+| http-user-pass | desired-%%username%%                                        | password            |                                                               |
+| post           | /data/signals                                               | %%ctjson%%          | {"signal":"I am sekrit","recipient":{"id":%%plain_user_id%%}} |
+| code-is        | 201                                                         |                     |                                                               |
+| http-user-pass | acct-imp-%%username%%                                       | password            |                                                               |
+| get            | /data/signals?on-behalf-of=desired-%%username%%;direct=sent | application/json    |                                                               |
+| code-is        | 200                                                         |                     |                                                               |
+| json-parse     |                                                             |                     |                                                               |
+| json-path-is   | $[0].user_id                                                | %%desired_user_id%% |                                                               |
+| json-path-is   | $[0].recipient.id                                           | %%plain_user_id%%   |                                                               |
 
 *Other negative test cases*
 

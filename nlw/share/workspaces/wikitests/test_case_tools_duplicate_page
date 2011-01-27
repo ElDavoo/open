@@ -1,7 +1,7 @@
 | *Comment* | Test Case: Tools: Duplicate Page |
 
 | *Comment* | Test Case: Tools: Duplicate Page Create test page |  |
-| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
+| open_ok | /%%workspace%%/?action=new_page |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
@@ -29,7 +29,7 @@
 | click_and_wait | st-duplicate-savelink |  |
 
 | *Comment* | Test Case: Tools: Duplicate Page. verify duplicate |  |
-| location_like | `/%%workspace%%/index.cgi?Page_Duplicated_%%start_time%%` |  |
+| location_like | `/%%workspace%%/Page_Duplicated_%%start_time%%` |  |
 | wait_for_element_visible_ok | contentRight | 30000 |
 | text_like | contentRight | Duplicate This Tag %%start_time%% |
 | text_like | st-page-titletext | Page_Duplicated_%%start_time%% |
@@ -68,10 +68,10 @@
 | click_and_wait | st-duplicate-savelink |  |
 
 | *Comment* | Test Case: Tools: Duplicate Page. verify 2nd duplicate using space-containing URL |  |
-| location_like | `/%%workspace%%/index.cgi?Page_Duplicated_%%start_time%%` |  |
+| location_like | `/%%workspace%%/Page_Duplicated_%%start_time%%` |  |
 
 | *Comment* | Test Case: Tools: Duplicate Page. verify duplicate of edited page |  |
-| open_ok | /%%workspace%%/index.cgi?action=revision_list;page_name=page_duplicated_%%start_time%% |  |
+| open_ok | /%%workspace%%/?action=revision_list;page_name=page_duplicated_%%start_time%% |  |
 | text_like | contentContainer | qr/revision 2/i |
 | click_and_wait | link=Compare Revisions |  |
 | text_like | contentContainer | Duplicate This Page %%start_time%% content |

@@ -11,8 +11,9 @@
         <script src="/static/skin/common/javascript/jquery-1.4.4.min.js"></script>
         <script>
         $(document).bind("mobileinit", function(){
-            // Avoid JS error on our default welcome screen
+            [% FILTER decorate('socialtext_js_vars') %]
             window.Socialtext = window.Socialtext || {};
+            [% END %]
 
             // Disable Ajax link transitions under Selenium.
             var isSelenium = (

@@ -28,5 +28,5 @@ __DATA__
 ----
 --- match
 <div class="wiki">
-<span class="nlw_phrase"><a title="inter-workspace link: foobar" href="/foobar/index.cgi?quick_start">Quick Start</a><!-- wiki: {link: foobar [Quick Start]} --></span><br /><br /><hr />
+<span class="nlw_phrase"><a title="inter-workspace link: foobar" href="/foobar/quick_start">Quick Start</a><!-- wiki: {link: foobar [Quick Start]} --></span><br /><br /><hr />
 </div>

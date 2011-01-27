@@ -94,6 +94,16 @@ sub EnsureRequiredDataIsPresent {
         $acct->enable_plugin('widgets');
     }
 
+    foreach my $mod (qw( Permission Role User::Default::Factory )) {
+        my $class = "Socialtext::$mod";
+        eval "require $class";
+        die $@ if $@;
+
+        if ($class->can('EnsureRequiredDataIsPresent')) {
+            $class->EnsureRequiredDataIsPresent;
+        }
+    }
+
     if ($class->Default->name eq 'Unknown') {
         # Explicit requires here to avoid extra run-time dependencies
         require Socialtext::Hostname;
@@ -720,6 +730,7 @@ sub create {
     $class->_create_full(%p);
     my $self = $class->new(%p);
     $self->_enable_default_plugins;
+    $self->_create_central_workspace;
 
     my $msg = 'CREATE,ACCOUNT,account:' . $self->name
               . '(' . $self->account_id . '),'
@@ -728,6 +739,37 @@ sub create {
     st_log()->info($msg);
     return $self;
 }
+
+sub _create_central_workspace {
+    my $self = shift;
+
+    # Don't create a central workspace for these default workspaces that don't
+    # have real users
+    return
+        if $self->name eq 'Unknown'
+        or $self->name eq 'Deleted'
+        or $self->name eq 'Socialtext';
+
+    my $user = Socialtext::User->SystemUser();
+
+    # Find a valid name
+    my ($title, $name, $ws);
+    for (my $i = 0; !$i or defined $ws; $i++) {
+        # XXX: Bad for i18n:
+        $title = $self->name . ' Central' . ($i ? " $i" : "");
+        $name = Socialtext::String::title_to_id($title);
+        $ws = Socialtext::Workspace->new(name => $name)
+    }
+
+    my $wksp = Socialtext::Workspace->create(
+        name       => $name,
+        title      => $title,
+        account_id => $self->account_id,
+        created_by_user_id => $user->user_id(),
+    );
+    $wksp->assign_role_to_account(account => $self);
+}
+
 
 sub _enable_default_plugins {
     my $self = shift;

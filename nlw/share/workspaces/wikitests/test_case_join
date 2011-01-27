@@ -95,7 +95,7 @@
 | type_ok | username | %%to_ws_user%% |
 | type_ok | password | %%password%% |
 | click_and_wait | login_btn |  |
-| location_like | /%%acct_ws%%/index.cgi |  |
+| location_like | /%%acct_ws%% |  |
 | wait_for_element_visible_ok | link=Edit | 5000 |
 | wait_for_element_visible_ok | link=Comment | 5000 |
 | st-admin | get-user-account --u %%to_ws_user%% | Primary account for "%%to_ws_user%%" is %%acct%%. |

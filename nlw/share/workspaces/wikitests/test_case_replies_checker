@@ -16,14 +16,29 @@ It should be included by the top-level replies testcase
 | *Comment* | Test Case; Replies Checker. Checks up to four replies and a Topic |  |
 | open_ok | /st/signals |  |
 
-| *Comment* | Test Case: Replies Checker. Open the Accordion |  |
+| *Comment* | Test Case: Replies Checker. Open the Accordion. See topic and all replies |  |
 | wait_for_element_visible_ok | //div[@class='older'][last()] | 30000 |
 | click_ok | //div[@class='older'][last()] |  |
 
-| st-verify-text-within-activities-widget | %%topic_signal%% |  |
-| st-verify-text-within-activities-widget | %%reply_prefix%%-1 |  |
-| st-verify-text-within-activities-widget | %%reply_prefix%%-2 |  |
-| st-verify-text-within-activities-widget | %%reply_prefix%%-3 |  |
-| st-verify-text-within-activities-widget | %%reply_prefix%%-4 |  |
+| wait_for_text_present_ok | %%topic_signal%% | 10000 |
+
+| wait_for_text_present_ok | %%reply_prefix%%-0-0 | 10000 |
+| wait_for_text_present_ok | %%reply_prefix%%-0-1 | 10000 |
+| wait_for_text_present_ok | %%reply_prefix%%-0-2 | 10000 |
+| wait_for_text_present_ok | %%reply_prefix%%-1 | 10000 |
+| wait_for_text_present_ok | %%reply_prefix%%-2 | 10000 |
+
+| *Comment* | Test Case: Replies Checker. Close the Accordion. See topic and last two replies |  |
+| wait_for_element_visible_ok | //div[@class='older'][last()] | 30000 |
+| click_ok | //div[@class='older'][last()] |  |
+
+
+| wait_for_text_not_present_ok | %%reply_prefix%%-0-0 | 10000 |
+| wait_for_text_not_present_ok | %%reply_prefix%%-0-1 | 10000 |
+| wait_for_text_not_present_ok | %%reply_prefix%%-0-2 | 10000 |
+
+| wait_for_text_present_ok | %%topic_signal%% | 10000 |
+| wait_for_text_present_ok | %%reply_prefix%%-1 | 10000 |
+| wait_for_text_present_ok | %%reply_prefix%%-2 | 10000 |
 
 | *Comment* | Test Case: Replies Checker COMPLETED |  |

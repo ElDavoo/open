@@ -1,4 +1,6 @@
+
 | *Comment* | Test Case: Activities Widget Conversations |  |
+
 
 * Fixture: SocialWidgets
 
@@ -6,7 +8,6 @@
 
 | set | actor | actor%%start_time%%@ken.socialtext.net |
 | set | actorshort | You |
-
 | set | wrkspc | act-conv-ws%%start_time%% |
 | set | convuser | convuser%%start_time%%@ken.socialtext.net |
 | set | convusershort | convuser%%start_time%% |
@@ -19,6 +20,7 @@
 | set | notconvpagetwo | notconvpagetwo%%start_time%% |
 | set | mentioncode | this is a mention %%start_time%% |
 
+| *Comment* | Test Case: Activities Widget Conversations create WS and members |  |
 | st-admin | create-workspace --empty --name %%wrkspc%% --title %%wrkspc%% |  |
 | st-admin | create-user --email %%convuser%% --password %%password%% |  |
 | st-admin | create-user --email %%isolateduser%% --password %%password%% |  |
@@ -30,24 +32,20 @@
 | st-admin | update-page --email %%isolateduser%% --workspace %%wrkspc%% --page %%mycommentedpagename%% < %%wikitest_client_files%%wikitest.txt | has been created |
 | st-admin | update-page --email %%isolateduser%% --workspace %%wrkspc%% --page %%watchedpagename%% < %%wikitest_client_files%%wikitest.txt | has been created |
 
-| *Comment* | Test Case: Activities Widget Conversations - logout explicitly |  |
-| open_ok | /nlw/submit/logout |  |
+| *Comment* | Test Case: Activities Widget Conversations - %%actor%% creates a page, comments on a page, watches a page |  |
+| st-logoutin | %%actor%% | %%password%% |
 
 | *Comment* | Test Case: Activities Widget Conversations - %%actor%% creates a page, comments on a page, watches a page |  |
-| st-login | %%actor%% | %%password%% |
-
-| *Comment* | Test Case: Activities Widget Conversations - other person creates a page, comments |  |
 | st-create-wikipage | %%wrkspc%% | %%mypagename%% |
 | st-comment-on-page | /%%wrkspc%%/?%%mycommentedpagename%% | Leaving a comment |
 | open_ok | /%%wrkspc%%/?%%watchedpagename%% |  |
 | wait_for_element_present_ok | st-watchlist-indicator | 30000 |
 | st-watch-page | 1 |  |
 
-
-| *Comment* | Test Case: Activities Widget Conversations - %%convuser%% edits, comments, makes a conversation (plus two pages that are not conversations) |  |
+| *Comment* | Test Case: Activities Widget Conversations - %%convuser%% logs in |  |
 | st-logoutin | %%convuser%% | %%password%% |
 
-| *Comment* | Test Case: Activities Widget Conversations - Mention of me by someone else |  |
+| *Comment* | Test Case: Activities Widget Conversations - Mention of %%actor%% by %%convuser%% |  |
 | open_ok | /st/dashboard |
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
 | wait_for_text_present_ok | Activities | 30000 |
@@ -58,12 +56,14 @@
 | st-name-widget | 1 | signals_widget |
 | st-send-signal-via-activities-widget | signals_widget | {user: %%actor%%} %%mentioncode%% |
 
+| *Comment* | Test Case: Activities Widget Conversations - %%convuser%% edits, comments, makes a conversation (plus two pages that are not conversations) |  |
 | st-create-wikipage | %%wrkspc%% | %%notconvpage%% |
 | st-edit-page | /%%wrkspc%%/?%%mypagename%% | this is an edit by %%convuser%% |
 | st-edit-page | /%%wrkspc%%/?%%mycommentedpagename%% | this is another comment by %%convuser%% |
 | st-comment-on-page | /%%wrkspc%%/?%%watchedpagename%% | Comment on watched page by %%convuser%% |
 | st-create-wikipage | %%wrkspc%% | %%notconvpagetwo%% |
 
+| *Comment* | Test Case: Activities Widget Conversations - %%actor%% logs in |  |
 | st-logoutin | %%actor%% | %%password%% |
 | st-clear-json-cache |  |  |
 
@@ -94,13 +94,24 @@
 
 | *Comment* | %%r1%%.+%%r2%%.+%%r3%%.+%%r4%%.+%%r5%%.+%%r6%%.+%%r7%% |  |
 
+| wait_for_text_present_ok | %%notconvpagetwo%% | 30000 |
+| wait_for_text_present_ok | %%watchedpagename%% | 30000 |
+
+| *Comment* | %%r1%% |  |
 | st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%r1%%/ism |
+| *Comment* | %%r2%% |  |
 | st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%r2%%/ism |
+| *Comment* | %%r3%% |  |
 | st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%r3%%/ism |
+| *Comment* | %%r4%% |  |
 | st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%r4%%/ism |
+| *Comment* | %%r5%% |  |
 | st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%r5%%/ism |
+| *Comment* | %%r6%% |  |
 | st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%r6%%/ism |
+| *Comment* | %%r7%% |  |
 | st_verify_text_in_activities_widget | activities_widget | qr/Showing.+%%r7%%/ism |
+| *Comment* | %%mentioncode%% |  |
 | st_verify_text_in_activities_widget | activities_widget | %%mentioncode%% |
 
 | *Comment* | Test Case: Activities Widget Conversations Changes to convos only, verify Edits, Comments, NOT PRESENTs - mention /is/ present |  |
@@ -119,7 +130,7 @@
 
 
 | *Comment* | Test Case: Activities Widget Conversations TEARDOWN |  |
-
+| st-process-jobs |  |  |
 | st-admin | delete-workspace --no-export --w %%wrkspc%% | has been deleted |
 
 | *Comment* | Test Case: Activities Widget Conversations COMPLETED |  |

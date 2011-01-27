@@ -35,7 +35,7 @@ sub resource_to_html {
     my ($self, $jobs) = @_;
 
     my @columns = qw(jobid uniqkey priority insert_time run_after grabbed_until coalesce);
-    if ($self->rest->query->{'verbose'}) {
+    if ($self->rest->query->param('verbose')) {
         for my $j (@$jobs) {
             $j->{arg} = YAML::Dump($j->{arg});
             $j->{arg} =~ s/^---\n//;
