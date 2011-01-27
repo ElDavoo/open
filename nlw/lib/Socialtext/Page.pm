@@ -1673,8 +1673,7 @@ sub is_in_category {
 
 sub locked {
     my $self = shift;
-
-    return $self->metadata->Locked;
+    return $self->metadata->Locked ? 1 : 0;
 }
 
 sub deleted {
