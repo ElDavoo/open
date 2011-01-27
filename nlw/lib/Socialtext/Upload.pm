@@ -4,6 +4,7 @@ use Moose;
 use File::Copy qw/copy move/;
 use File::Path qw/make_path/;
 use File::Map qw/map_file map_handle advise/;
+use File::Temp ();
 use Fatal qw/copy move rename open close/;
 use Try::Tiny;
 use Guard;
@@ -93,14 +94,12 @@ sub Create {
     my $g = guard { local $!; unlink $tmp_store };
     # these will die from Fatal:
     copy($temp_fh, $tmp_store);
-    rename $tmp_store => $disk_filename;
-    $g->cancel;
-    my $content_length = -s $disk_filename;
+    my $content_length = -s $tmp_store;
 
     my ($mime_type, $is_image);
     try {
         $mime_type = Socialtext::File::mime_type(
-            $disk_filename, $filename, $type_hint);
+            $tmp_store, $filename, $type_hint);
         $is_image = ($mime_type =~ m#image/#) ? 1 : 0;
     }
     catch {
@@ -124,7 +123,15 @@ sub Create {
     # Moose type constraints can cause the create to fail here, hence the txn
     # wrapper.
     my $self = $class->Get(attachment_id => $id);
-    $self->_save_blob();
+    $self->_save_blob($tmp_store);
+
+    rename $tmp_store => $disk_filename;
+    $g->cancel;
+    {
+        my $time = $self->created_at->epoch;
+        utime $time, $time, $disk_filename
+            or warn "can't update timestamp on $disk_filename: $!";
+    }
 
     return $self if $p{no_log};
 
@@ -312,17 +319,20 @@ sub _store {
 
     my $targ = $self->disk_filename;
     _ensure_storage_dir($targ);
-    my $tmp = $targ.".tmp";
-
-    open my $fh, '>:raw', $tmp
-        or confess "can't open storage temp file $tmp: $!";
+    my $tmp = File::Temp->new(
+        TEMPLATE => "$targ.XXXXXX", SUFFIX => '.tmp',
+        CLEANUP => 1)
+        or confess "can't open storage temp file: $!";
+    binmode $tmp, ':raw';
+    my $time = $self->created_at->epoch;
 
     try {
         local $!;
-        my $wrote = syswrite $fh, $$data_ref;
+        my $wrote = syswrite $tmp, $$data_ref;
         die "can't write to storage temp file: $!" if ($! or $wrote <= 0);
-        close $fh; # Fatal
+        close $tmp; # Fatal
         rename $tmp => $targ; # Fatal
+        utime $time, $time, $targ; # not Fatal, but not a big deal
     }
     catch {
         unlink $tmp;

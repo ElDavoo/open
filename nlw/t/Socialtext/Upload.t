@@ -1,11 +1,12 @@
 #!perl
 use warnings;
 use strict;
-use Test::Socialtext tests => 32;
+use Test::Socialtext tests => 38;
 use Test::Socialtext::Fatal;
-use Socialtext::SQL qw/:txn :exec/;
+use Socialtext::SQL qw/:txn :exec :time/;
 use File::Temp qw/tempdir tempfile/;
 use File::Copy qw/copy move/;
+use DateTime;
 
 use ok 'Socialtext::Upload';
 
@@ -39,6 +40,15 @@ my $tmp = File::Temp->new(CLEANUP => 1);
 print $tmp $test_body;
 close $tmp;
 
+my $creation_dt = DateTime->new(
+    year => 2010, month => 1, day => 1,
+    hour => 0, minute => 0, second => 0,
+    nanosecond => '123000000', # to test round-tripping to/from Pg
+    time_zone => 'UTC',
+);
+my $creation_time = sql_format_timestamptz($creation_dt);
+my $creation_timestamp = $creation_dt->epoch;
+
 create_fails_without_tempfile: {
     like exception {
         my $blah = Socialtext::Upload->Create(
@@ -53,6 +63,7 @@ my $ul;
 create: {
     is exception { 
         $ul = Socialtext::Upload->Create(
+            created_at => $creation_time,
             creator => $user,
             temp_filename => "$tmp",
             filename => "ultra super happy go-time fancy pants.txt",
@@ -69,6 +80,10 @@ create: {
         "storage file has all the content";
     my $data = do { local (@ARGV,$/) = ($ul->disk_filename); <> };
     is $data, $test_body, "file has exact contents";
+
+    ok $ul->created_at == $creation_dt, "correct DateTime on object";
+    is((stat $ul->disk_filename)[9], $creation_timestamp,
+        "mtime on disk is correct");
 
     my $blahb;
     sql_singleblob(\$blahb,q{
@@ -104,10 +119,11 @@ make_permanent: {
     ok -f $ul->disk_filename, "make_permanent cached contents to disk";
     my $data = do { local (@ARGV,$/) = ($ul->disk_filename); <> };
     is $data, $test_body, "slurped contents are good";
-
     my $data2;
     $ul->binary_contents(\$data2);
     is $data2, $test_body, "binary contents are good";
+    is((stat $ul->disk_filename)[9], $creation_timestamp,
+        "mtime on cached file is correct");
 }
 
 ensure_stored: {
@@ -117,7 +133,8 @@ ensure_stored: {
     ok -f $ul->disk_filename && -s _, "upload restored to disk";
     my $data = do { local (@ARGV,$/) = ($ul->disk_filename); <> };
     is $data, $test_body, "stored contents are good";
-
+    is((stat $ul->disk_filename)[9], $creation_timestamp,
+        "mtime on cached file is correct");
 }
 
 binary_contents: {
@@ -128,8 +145,11 @@ binary_contents: {
     ok !-f $ul->disk_filename, "file is NOT restored by binary_contents";
 
     $ul->ensure_stored();
+    ok -f $ul->disk_filename, "file was restored by ensure_stored";
     is exception { $ul->binary_contents(\$data2) }, undef;
     is $data2, $test_body, "blob is good after ensure_stored";
+    is((stat $ul->disk_filename)[9], $creation_timestamp,
+        "mtime on cached file is correct");
 }
 
 pass "done";
