@@ -338,10 +338,12 @@ sub page_exists_in_workspace {
 }
 
 sub page_in_workspace {
-    my $self       = shift;
+    my $class_or_self = shift;
     my $page_title = shift;
     my $ws_name    = shift;
     my $main       = Socialtext->new();
+
+    # TODO: re-use the current hub if it's the same workspace.
 
     $main->load_hub(
         current_user      => Socialtext::User->SystemUser(),
