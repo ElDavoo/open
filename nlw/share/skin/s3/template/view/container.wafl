@@ -1,0 +1,13 @@
+[% INCLUDE element/container_head %]
+[% SET gadget = container.gadgets.0.0 %]
+[% SET num = 0 %]
+[% SET col = 0 %]
+<div class="widget" id="[% gadget.id %]">
+    <div id="[% gadget.id %]-setup" style="display:none">
+        <!-- No setup possible in full screen view -->
+    </div>
+    [% IF gadget.content_type == 'inline'; INCLUDE widget/inline; ELSE; INCLUDE widget/iframe; END %]
+</div>
+<script>
+    gadgets.container = new gadgets.Container();
+</script>
