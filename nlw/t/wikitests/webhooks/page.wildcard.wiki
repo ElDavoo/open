@@ -2,8 +2,12 @@
 
 | standard-test-setup | foo                   |     |                |
 | standard-test-setup | bar                   |     |                |
-| set-business-admin  | %%bar_email_address%% | 1   |                |
 
+* Explicit test for permissions for page.* webhook - customer reported this issue
+| new-webhook-testcase | create a page.* webhook as a non-admin |               |                                         |
+| add-webhook          | page.*                                 | http://tou.ch | {"workspace_id":"%%bar_workspace_id%%"} |
+
+ | set-business-admin  | %%bar_email_address%% | 1   |                |
 | new-webhook-testcase  | page.* should fire for a new page being created                                |               |                                         |
 | add-webhook           | page.*                                                                         | http://tou.ch | {"workspace_id":"%%bar_workspace_id%%"} |
 | edit-page             | %%bar_workspace%%                                                                   | Foo           | Sample Content                          |
