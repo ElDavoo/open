@@ -46,6 +46,7 @@ use Socialtext::Workspace::Permissions;
 use Socialtext::Workspace::Roles;
 use Socialtext::Timer;
 use Socialtext::Pluggable::Adapter;
+use Socialtext::JSON qw(decode_json);
 use Socialtext::JSON::Proxy::Helper;
 use URI;
 use YAML;
@@ -1901,6 +1902,45 @@ sub impersonation_ok {
     return unless $self->has_user($user);
     return $self->permissions->user_can(
         user => $actor, permission => ST_IMPERSONATE_PERM);
+}
+
+sub load_pages_from_disk {
+    my ($self, %opts) = @_;
+    my $dir = $opts{dir} || die "dir is required";
+    die "dir does not exist" unless -d $dir;
+
+    my $replaces = $opts{replace} || [];
+
+    my ( $main, $hub ) = $self->_main_and_hub();
+
+    my @files = glob("$dir/*.json");
+    for my $f (@files) {
+        my $data = decode_json(Socialtext::File::get_contents_utf8($f));
+        (my $content_file = $f) =~ s/\.json$//;
+        my $content = Socialtext::File::get_contents_utf8($content_file);
+
+        for my $r (keys %$replaces) {
+            $data->{name} =~ s{\Q$r\E}{$replaces->{$r}};
+        }
+
+        my $page = Socialtext::Page->new(hub => $hub)->create(
+            title => $data->{name},
+            content => $content,
+            creator => Socialtext::User->SystemUser,
+            categories => $data->{tags},
+        );
+
+        if ($data->{attachments}) {
+            for my $name (@{$data->{attachments}}) {
+                my $attachment = $hub->attachments->new_attachment(
+                    page_id => $page->id,
+                    filename => $name,
+                );
+                $attachment->save("$dir/attachments/$data->{page_id}/$name");
+                $attachment->store(user => Socialtext::User->SystemUser);
+            }
+        }
+    }
 }
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);

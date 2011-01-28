@@ -13,7 +13,7 @@
 | set | p_prgroup | p-pr-group-%%start_time%% |
 
 | *Comment* | Test Case: Permalink Refresh. create group %%p_prgroup%% |  |  |
-| create-group | %%p_prgroup%% | %%hostname%% | %%username%% |
+| create-group | %%p_prgroup%% | "%%defaultaccount%%" | %%username%% |
 | set | ps_id | %%group_id%% |  |
 
 | *Comment* | Test Case: Permalink Refresh. post a topic and two replies to %%p_prgroup%% |  |

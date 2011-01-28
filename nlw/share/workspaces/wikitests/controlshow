@@ -36,14 +36,14 @@ This test case is an aid to visually observing each screen type in the applicati
 | *Comment* | SEE Accounts |  |
 | pause | %%pt%% |  |
 
-| enable-acct-plugin | signals | %%hostname%% |
-| type_ok | name | %%hostname%% |
+| enable-acct-plugin | signals | "%%defaultaccount%%" |
+| type_ok | name | "%%defaultaccount%%" |
 | st-submit |  |  |
 | *Comment* | SEE ACCT search result |  |
 | pause | %%pt%% |  |
 
 | *Comment* | ACCOUNT INSPECTION |  |
-| click_and_wait | link=%%hostname%% |  |
+| click_and_wait | link="%%defaultaccount%%" |  |
 
 | *Comment* | SEE /Rename Account/Enable Export User Data |  |
 | *Comment* | SEE /Profile Fields/Disable Invitation to Group |  |
@@ -104,7 +104,7 @@ This test case is an aid to visually observing each screen type in the applicati
 | pause | %%pt%% |  |
 
 | click_and_wait | link=Usage Reports |  |
-| *Comment* | SEE %%hostname%% Usage Reports Page |  |
+| *Comment* | SEE "%%defaultaccount%%" Usage Reports Page |  |
 | *Comment* | SEE Usage ending midnight of UI |  |
 | *Comment* | SEE Printer Friendly Report |  |
 | *Comment* | SEE Export summary data as CSV |  |
@@ -115,7 +115,7 @@ This test case is an aid to visually observing each screen type in the applicati
 | click_and_wait | link=Back to the account page |  |
 | click_and_wait | link=Growth Reports |  |
 
-| *Comment* | SEE %%hostname%% Account Growth Report |  |
+| *Comment* | SEE "%%defaultaccount%%" Account Growth Report |  |
 | *Comment* | SEE Printer Friendly Report |  |
 | *Comment* | SEE Export data as CSV |  |
 | pause | %%pt%% |  |
@@ -206,7 +206,7 @@ This test case is an aid to visually observing each screen type in the applicati
 | pause | %%pt%% |  |
 | pause | %%pt%% |  |
 
-| *Comment* | SEE Primary Account: %%hostname%% |  |
+| *Comment* | SEE Primary Account: "%%defaultaccount%%" |  |
 | *Comment* | SEE Assign to a new primary account: |  |
 | pause | %%pt%% |  |
 | pause | %%pt%% |  |

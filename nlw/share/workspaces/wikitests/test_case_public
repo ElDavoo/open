@@ -2,7 +2,7 @@
 
 | st-config | set self_registration 1 |  |
 | st-config | set allow_network_invitation 1 |  |
-| st-admin | set-account-config --account "%%hostname%%" allow_invitation 1 | has been updated |
+| st-admin | set-account-config --account "%%defaultaccount%%" allow_invitation 1 | has been updated |
 | click_and_wait | link=Log out |  |
 | set | auth_w | test-case-public-%%start_time%% |
 

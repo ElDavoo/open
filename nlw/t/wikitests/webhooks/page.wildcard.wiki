@@ -2,8 +2,12 @@
 
 | standard-test-setup | foo                   |     |                |
 | standard-test-setup | bar                   |     |                |
-| set-business-admin  | %%bar_email_address%% | 1   |                |
 
+* Explicit test for permissions for page.* webhook - customer reported this issue
+| new-webhook-testcase | create a page.* webhook as a non-admin |               |                                         |
+| add-webhook          | page.*                                 | http://tou.ch | {"workspace_id":"%%bar_workspace_id%%"} |
+
+ | set-business-admin  | %%bar_email_address%% | 1   |                |
 | new-webhook-testcase  | page.* should fire for a new page being created                                |               |                                         |
 | add-webhook           | page.*                                                                         | http://tou.ch | {"workspace_id":"%%bar_workspace_id%%"} |
 | edit-page             | %%bar_workspace%%                                                                   | Foo           | Sample Content                          |
@@ -17,7 +21,7 @@
 | json-like             | [{"object":{"workspace":{"title":"%%bar_workspace%%","name":"%%bar_workspace%%"}}}]   |               |                                         |
 | json-like             | [{"object":{"id":"foo"}}]                                                             |               |                                         |
 | json-like             | [{"object":{"name":"Foo"}}]                                                           |               |                                         |
-| json-like             | [{"object":{"uri":"%%browser_url%%/%%bar_workspace%%/index.cgi?foo"}}]                |               |                                         |
+| json-like             | [{"object":{"uri":"%%browser_url%%/%%bar_workspace%%/foo"}}]                |               |                                         |
 | json-like             | [{"object":{"edit_summary":""}}]                                                      |               |                                         |
 | json-like             | [{"object":{"tags":[]}}]                                                              |               |                                         |
 | json-like             | [{"object":{"tags_added":[]}}]                                                        |               |                                         |
