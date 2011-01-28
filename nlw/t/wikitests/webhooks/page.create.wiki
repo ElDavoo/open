@@ -2,7 +2,6 @@
 
 | standard-test-setup | foo                   |     |                |
 | standard-test-setup | bar                   |     |                |
-| set-business-admin  | %%bar_email_address%% | 1   |                |
 | clear-webhooks      |                       |     |                |
 | clear-webhook       |                       |     |                |
 
@@ -58,21 +57,6 @@
 | edit-page        | %%ws2%%                                     | Foo2               | Sample Content |
 | job-count        | WebHook                                     | 0                  |                |
 
-| comment               | Use a page_tag filtered webhook                  |                              |                             |               |
-| clear-webhooks        |                                                  |                              |                             |               |
-| clear-webhook         |                                                  |                              |                             |               |
-| st-clear-jobs         |                                                  |                              |                             |               |
-| add-webhook           | page.create                                      | http://tou.ch                | {"details":{"tag":"fubar"}} |               |
-| edit-page             | %%bar_workspace%%                                | New page without tag         | New content                 |               |
-| edit-page             | %%bar_workspace%%                                | New page with matching tag   | New content                 | fubar, fubaz  |
-| edit-page             | %%bar_workspace%%                                | New page with different tags | New content                 | blubar, fubaz |
-| job-count             | WebHook                                          | 1                            |                             |               |
-| st-process-jobs       |                                                  |                              |                             |               |
-| job-count             | WebHook                                          | 0                            |                             |               |
-| webhook-payload-parse |                                                  |                              |                             |               |
-| json-like             | [{"object":{"name":"New page with matching tag"}}] |                              |                             |               |
-
-
 | comment         | Use a page_id filtered webhook |               |                                                                       |
 | clear-webhooks  |                                |               |                                                                       |
 | clear-webhook   |                                |               |                                                                       |
@@ -85,6 +69,24 @@
 | job-count       | WebHook                        | 0             |                                                                       |
 | webhook-like    | tarvu                          |               |                                                                       |
 | webhook-unlike  | barvu                          |               |                                                                       |
+
+| comment               | Use a page_tag filtered webhook                  |                              |                             |               |
+* We don't filter by account, workspace, so we need to be bizadmin now
+| set-business-admin    | %%bar_email_address%%                              | 1                            |                             |               |
+| clear-webhooks        |                                                    |                              |                             |               |
+| clear-webhook         |                                                    |                              |                             |               |
+| st-clear-jobs         |                                                    |                              |                             |               |
+| add-webhook           | page.create                                        | http://tou.ch                | {"details":{"tag":"fubar"}} |               |
+| edit-page             | %%bar_workspace%%                                  | New page without tag         | New content                 |               |
+| edit-page             | %%bar_workspace%%                                  | New page with matching tag   | New content                 | fubar, fubaz  |
+| edit-page             | %%bar_workspace%%                                  | New page with different tags | New content                 | blubar, fubaz |
+| job-count             | WebHook                                            | 1                            |                             |               |
+| st-process-jobs       |                                                    |                              |                             |               |
+| job-count             | WebHook                                            | 0                            |                             |               |
+| webhook-payload-parse |                                                    |                              |                             |               |
+| json-like             | [{"object":{"name":"New page with matching tag"}}] |                              |                             |               |
+
+
 
 # For other filter tests, see t/wikitests/webhooks/page.tag.wiki
 # The code flow is the same, so these tests are omitted

@@ -2,7 +2,6 @@
 
 | standard-test-setup | foo                   | no-group |                |
 | standard-test-setup | bar                   | no-group |                |
-| set-business-admin  | %%bar_email_address%% | 1        |                |
 | edit-page           | %%bar_workspace%%     | Foo      | Sample Content |
 | edit-page           | %%bar_workspace%%     | Bar      | Sample Content |
 
@@ -96,6 +95,7 @@
 | job-count        | WebHook                                     | 0                  |                |
 
 | new-webhook-testcase        | Use a page_tag filtered webhook                          |               |                                     |
+| set-business-admin  | %%bar_email_address%% | 1        |                |
 | add-webhook    | page.tag                                                 | http://tou.ch | {"details":{"tag":"fubar"}} |
 | PUT            | /data/workspaces/%%bar_workspace%%/pages/Foo/tags/foobar |               |                                     |
 | code-is        | 201                                                      |               |                                     |
@@ -105,6 +105,7 @@
 | job-count      | WebHook                                                  | 1             |                                     |
 
 | new-webhook-testcase        | Use a page_id filtered webhook                          |               |                                     |
+| set-business-admin  | %%bar_email_address%% | 1        |                |
 | POST_json          | /data/webhooks                      | {"class":"page.tag","url":"http://example.com","details":{"page_id":"foo"}} |
 | code-is            | 400                                 |                                                     |
 | body-like          | page_id requires a workspace_id filter |                                                  |
