@@ -776,7 +776,18 @@ sub _create_central_workspace {
         account_id => $self->account_id,
         created_by_user_id => $user->user_id(),
     );
+
     $wksp->assign_role_to_account(account => $self);
+
+    my $share_dir = Socialtext::AppConfig->new->code_base();
+    $wksp->load_pages_from_disk(
+        dir => "$share_dir/workspaces/central",
+        replace => {
+            # Replace all pages with YourCo in the title with this account's
+            # name
+            'YourCo' => $self->name,
+        },
+    );
 }
 
 
