@@ -18,7 +18,7 @@ use Socialtext::File;
 use Socialtext::l10n qw(loc);
 use Socialtext::Log qw/st_log/;
 use Socialtext::Timer qw/time_scope/;
-use Socialtext::SQL qw/sql_singlevalue sql_execute/;
+use Socialtext::SQL qw/sql_singlevalue sql_singleblob sql_execute/;
 use Socialtext::l10n qw(loc);
 use Socialtext::String;
 use Digest::SHA1 'sha1_hex';
@@ -897,14 +897,14 @@ sub content {
 sub load_content {
     my $self = shift;
     return '' unless $self->revision_id;
-    my $content = sql_singlevalue(
+    sql_singleblob(\$self->{content},
         'SELECT body FROM page_revision
           WHERE workspace_id = ?
             AND page_id = ?
             AND revision_id = ?
         ', $self->hub->current_workspace->workspace_id, $self->id, $self->revision_id,
     );
-    $self->content($content || '');
+    $self->content('') unless defined $self->{content};
     return $self;
 }
 

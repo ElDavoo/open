@@ -1013,17 +1013,15 @@ INSSQL
     my @revision_args = (
         $wksp_id, $pg_id, $hash->{revision_id}, $self->metadata->Revision,
         $hash->{name}, $editor_id, $hash->{last_edit_time}, $hash->{type},
-        $deleted, $summary, $edit_summary, $locked, $self->content, $tags,
+        $deleted, $summary, $edit_summary, $locked, $tags,
     );
-    sql_execute(<<SQL, @revision_args);
+    sql_saveblob(\$self->content, <<SQL, @revision_args);
         INSERT INTO page_revision (
-            workspace_id, page_id, revision_id, revision_num, name, editor_id, edit_time,
-            page_type, deleted, summary, edit_summary, locked, body, tags
+            body, workspace_id, page_id, revision_id, revision_num, name,
+            editor_id, edit_time, page_type, deleted, summary, edit_summary,
+            locked, tags
         )
-        VALUES (
-            ?, ?, ?, ?, ?, ?, ?,
-            ?, ?, ?, ?, ?, ?, ?
-        )
+        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
 SQL
 
     if (@$tags) {

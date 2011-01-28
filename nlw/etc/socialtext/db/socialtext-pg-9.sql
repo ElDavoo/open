@@ -1049,7 +1049,7 @@ CREATE TABLE page_revision (
     edit_summary text,
     locked boolean DEFAULT false NOT NULL,
     tags text[],
-    body text NOT NULL,
+    body bytea NOT NULL,
     PRIMARY KEY (workspace_id, page_id, revision_id)
 );
 

@@ -1090,7 +1090,7 @@ CREATE TABLE page_revision (
     edit_summary text,
     locked boolean DEFAULT false NOT NULL,
     tags text[],
-    body text NOT NULL
+    body bytea NOT NULL
 );
 
 CREATE TABLE page_tag (
