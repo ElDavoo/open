@@ -7,7 +7,6 @@ use base 'Socialtext::WikiFixture::Selenese';
 use Socialtext::Cache;
 use Socialtext::System qw/shell_run/;
 use Socialtext::Workspace;
-use Sys::Hostname;
 use Test::More;
 use Test::Socialtext;
 use IO::Scalar;
@@ -16,6 +15,7 @@ use Cwd;
 use Socialtext::AppConfig;
 use File::Slurp qw(slurp);
 use List::MoreUtils qw(before after);
+use Socialtext::Account;
 
 =head1 NAME
 
@@ -89,7 +89,9 @@ sub init {
     { # Talc/Topaz are configured to allow emailing into specific dev-envs
         (my $host = $self->{browser_url}) =~ s#^http.?://(.+):\d+#$1#;
         $self->{wikiemail} = $ENV{WIKIEMAIL} || "$ENV{USER}.$host";
+        $self->{defaultaccount} = Socialtext::Account->Default->name;
         diag "wikiemail:  $self->{wikiemail}";
+        diag "defaultaccount:  $self->{defaultaccount}";
     }
     for my $var (map { /^selenium_var_(.+)/ ? $1 : () } keys %ENV) {
         diag "[selenium_var] $var: ".$ENV{"selenium_var_$var"};
@@ -112,7 +114,7 @@ sub handle_command {
     # Try the SocialBase commands first
     my @args = $self->_munge_command_and_opts(@_);
     eval { $self->SUPER::_handle_command(@args) };
-    return unless $@;
+    return unless $@; # Here we see an error and so it's run twice
 
     # Fallback to Selenese command processing
     $self->SUPER::handle_command(@_);

@@ -2,7 +2,7 @@
 
 | st-config | set self_registration 1 |  |
 | st-config | set allow_network_invitation 1 |  |
-| st-admin | set-account-config --account "%%hostname%%" allow_invitation 1 | has been updated |
+| st-admin | set-account-config --account "%%defaultaccount%%" allow_invitation 1 | has been updated |
 | set | auth_w | public-comment-%%start_time%% |
 | st-admin | create-workspace --name %%auth_w%% --title %%auth_w%% |  |
 | st-admin | set-permissions --workspace %%auth_w%% --permissions public-comment-only | The permissions for the %%auth_w%% workspace have been changed to public-comment-only. |

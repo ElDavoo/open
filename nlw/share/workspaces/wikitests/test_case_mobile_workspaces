@@ -3,7 +3,7 @@
 | set | mws | mw-%%start_time%% |
 
 | *Comment* | Test Case: Mobile Workspaces create WS, add member |  |
-| create_workspace | %%mws%% | %%hostname%% |
+| create_workspace | %%mws%% | "%%defaultaccount%%" |
 | add_member | %%username%% | %%mws%% |
 
 | *Comment* | Test Case: Mobile Workspaces open Mobile Workspaces, check for boilerplate |  |
