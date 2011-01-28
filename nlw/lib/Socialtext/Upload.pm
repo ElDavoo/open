@@ -235,6 +235,17 @@ sub to_hash {
     return \%hash;
 }
 
+sub to_string {
+    my ($self, $buf_ref) = @_;
+    croak "must supply a buffer reference for to_string()"
+        unless $buf_ref && ref($buf_ref);
+    require Socialtext::File::Stringify;
+    $self->ensure_stored();
+    Socialtext::File::Stringify->to_string(
+        $buf_ref, $self->disk_filename, $self->mime_type);
+    return;
+}
+
 sub delete {
     my $self = shift;
     # missing file is OK; it's just a cache copy anyhow
@@ -311,17 +322,17 @@ sub _ensure_storage_dir {
     my $filename = shift;
     (my $dir = $filename) =~ s{/[^/]+$}{};
     make_path($dir, {mode => 0774});
+    return $dir;
 }
 
 sub _store {
-    my ($self, $data_ref) = @_;
+    my ($self, $data_ref, $filename) = @_;
     confess "undef data" unless defined($$data_ref);
 
-    my $targ = $self->disk_filename;
-    _ensure_storage_dir($targ);
+    $filename ||= $self->disk_filename;
+    my $dir = _ensure_storage_dir($filename);
     my $tmp = File::Temp->new(
-        TEMPLATE => "$targ.XXXXXX", SUFFIX => '.tmp',
-        CLEANUP => 1)
+        TEMPLATE => "$filename.XXXXXX", SUFFIX => '.tmp', CLEANUP => 1)
         or confess "can't open storage temp file: $!";
     binmode $tmp, ':raw';
     my $time = $self->created_at->epoch;
@@ -331,8 +342,8 @@ sub _store {
         my $wrote = syswrite $tmp, $$data_ref;
         die "can't write to storage temp file: $!" if ($! or $wrote <= 0);
         close $tmp; # Fatal
-        rename $tmp => $targ; # Fatal
-        utime $time, $time, $targ; # not Fatal, but not a big deal
+        rename $tmp => $filename; # Fatal
+        utime time, $time, $filename; # not Fatal, but not a big deal
     }
     catch {
         unlink $tmp;
@@ -360,11 +371,17 @@ sub _load_blob {
 }
 
 sub ensure_stored {
-    my $self = shift;
-    return if -f $self->disk_filename;
+    my ($self, $filename) = @_;
+    $filename ||= $self->disk_filename;
+    if (-f $filename) {
+        # "touch" the atime of the file so this can be used for pruning 
+        utime time, $self->created_at->epoch, $filename;
+        return;
+    }
+
     my $data;
     $self->_load_blob(\$data);
-    $self->_store(\$data);
+    $self->_store(\$data, $filename);
     return;
 }
 
@@ -380,6 +397,22 @@ sub binary_contents {
     return;
 }
 
+my $encoding_charset_map = {
+    'euc-jp' => 'EUC-JP',
+    'shiftjis' => 'Shift_JIS',
+    'iso-2022-jp' => 'ISO-2022-JP',
+    'utf8' => 'UTF-8',
+    'cp932' => 'CP932',
+    'iso-8859-1' => 'ISO-8859-1',
+};
+
+sub charset {
+    my $self = shift;
+    my $type = $self->mime_type;
+    my $charset = $type =~ /\bcharset=(.+?)[\s;]?/ ? $1 : 'UTF-8';
+    return $encoding_charset_map->{lc $charset} || $charset;
+}
+
 *CleanFilename = *clean_filename;
 sub clean_filename {
     my $class_or_self = shift;
@@ -390,6 +423,15 @@ sub clean_filename {
     # why would we do  ... => ~~.  ?
     $filename =~ s/(\.+)\./'~' x length($1) . '.'/ge;
     return $filename;
+}
+
+sub short_name {
+    my $self = shift;
+    my $name = $self->filename;
+    $name =~ s/ /_/g;
+    return $name
+      unless $name =~ /^(.{16}).{2,}(\..*)/;
+    return "$1..$2";
 }
 
 __PACKAGE__->meta->make_immutable;

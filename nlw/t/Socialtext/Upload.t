@@ -73,6 +73,7 @@ create: {
     isa_ok $ul, 'Socialtext::Upload';
     ok $ul->is_temporary, "is temporary";
     is $ul->filename, "ultra super happy go-time fancy pants.txt";
+    is $ul->short_name, "ultra_super_happ...txt";
     # doesn't really test much:
     is $ul->clean_filename, "ultra super happy go-time fancy pants.txt";
     ok -f $ul->disk_filename, "file exists in storage";

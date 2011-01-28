@@ -1,261 +1,231 @@
-# @COPYRIGHT@
 package Socialtext::Attachments;
-use strict;
-use warnings;
-use base 'Socialtext::Base';
+# @COPYRIGHT@
+use feature ':5.12';
+use Moose;
+use MooseX::StrictConstructor;
+use List::MoreUtils qw/uniq/;
+use Guard;
+use Carp;
 
-use Carp ();
-use Class::Field qw( field );
-use File::Copy ();
-use File::Path ();
-use Socialtext::Attachment;
-use Socialtext::ArchiveExtractor;
-use Socialtext::Encode;
-use Socialtext::File;
-use Socialtext::Indexes;
-use Socialtext::Page;
-use Readonly;
-use Socialtext::Validate qw( validate SCALAR_TYPE BOOLEAN_TYPE HANDLE_TYPE USER_TYPE );
 use Socialtext::Timer qw/time_scope/;
-use Socialtext::Cache;
-use Memoize;
-use Guard qw/scope_guard/;
+use Socialtext::SQL qw/:exec :txn/;
+use Socialtext::Attachment;
+use Socialtext::Permission 'ST_READ_PERM';
+
+use namespace::clean -except => 'meta';
+
+has 'hub' => (is => 'rw', isa => 'Socialtext::Hub',
+    weak_ref => 1, required => 1);
 
 sub class_id { 'attachments' }
 
-{
-    my $cache;
-    sub cache {
-        return $cache ||= Socialtext::Cache->cache('attachments');
+use constant COLUMNS =>
+    uniq(Socialtext::Attachment->COLUMNS, Socialtext::Upload->COLUMNS);
+use constant COLUMNS_STR => join ', ', COLUMNS;
+
+my @att_cols = qw(id workspace_id page_id deleted);
+
+sub _new_from_row {
+    my ($self, $upload_args) = @_;
+    my %att_args;
+    @att_args{@att_cols} = delete @$upload_args{@att_cols};
+    $att_args{upload} = Socialtext::Upload->new($upload_args);
+    $att_args{hub} = $self->hub;
+    return Socialtext::Attachment->new(\%att_args);
+}
+
+sub load {
+    my ($self, %args) = @_;
+    my $t = time_scope 'get_attach';
+    my $ws_id   = $self->hub->current_workspace->workspace_id;
+    my $page_id = $args{page_id} || $self->hub->pages->current_page->id;
+    my $ident = $args{id} or croak "must supply an attachment id";
+    my $deleted = $args{deleted_ok}
+        ? '' : "\n AND NOT pa.deleted";
+    my $sql = q{
+        SELECT }.COLUMNS_STR.q{ FROM page_attachment pa
+          JOIN attachment a USING (attachment_id)
+         WHERE workspace_id = $1 AND page_id = $2 AND pa.id = $3 }.
+         $deleted;
+    my $sth = sql_execute($sql, $ws_id, $page_id, $ident);
+    if ($sth->rows == 0) {
+        croak $args{deleted_ok}
+            ? "Attachment not found."
+            : "This attachment has been deleted.";
     }
+    return $self->_new_from_row($sth->fetchrow_hashref);
 }
 
 sub all {
     my $self = shift;
     my $t = time_scope 'all_attach';
-    my %p = @_;
-    my $page_id  = $p{page_id} || $self->hub->pages->current->id;
-    my $no_index = $p{no_index};
+    my $p = ref $_[0] ? $_[0] : {@_};
+    my $page_id  = $p->{page_id} || $self->hub->pages->current->id;
     my $ws_id    = $self->hub->current_workspace->workspace_id;
-    my $cache_key = join ':', $ws_id, $page_id;
 
-    if (my $set = $self->cache->get($cache_key)) {
-        return $set;
+    my $sql = q{
+        SELECT }.COLUMNS_STR.q{ FROM page_attachment pa
+          JOIN attachment a USING (attachment_id)
+         WHERE workspace_id = ? AND page_id = ?};
+    my @args = ($ws_id, $page_id);
+
+    if ($p->{filename}) {
+        $sql .= q{ AND lower(a.filename) = lower(?) };
+        push @args, $p->{filename};
     }
 
-    my @attachment_set;
-    for my $entry ( @{ $self->_all_for_page($page_id, $no_index) } ) {
-        my $attachment = $self->new_attachment(
-            id      => $entry->{id},
-            page_id => $page_id,
-        )->load;
-        next if $attachment->deleted;
-        next unless -f $attachment->full_path; 
-
-        push @attachment_set, $attachment;
+    given ($p->{order}) {
+        $sql .= ' ORDER BY lower(a.filename) ASC, a.created_at ASC' when "alpha_date";
+        $sql .= ' ORDER BY a.filename ASC' when "alpha";
+        $sql .= ' ORDER BY a.content_length DESC, a.created_at ASC' when "size";
+        $sql .= ' ORDER BY a.created_at ASC' when "date";
+        $sql .= ' ORDER BY a.created_at ASC';
     }
 
-    $self->cache->set($cache_key => \@attachment_set);
-    # Make sure our hub doesn't disappear
-    $self->cache->set("hub:$cache_key" => $self->hub);
+    if ($p->{limit}) {
+        $sql .= ' LIMIT ?';
+        push @args, $p->{limit};
+    }
+    if ($p->{offset}) {
+        $sql .= ' OFFSET ?';
+        push @args, $p->{offset};
+    }
+    my $sth = sql_execute($sql, @args);
 
-    return \@attachment_set;
+    my @attachments;
+    while (my $upload_args = $sth->fetchrow_hashref) {
+        push @attachments, $self->_new_from_row($upload_args);
+    }
+    return \@attachments;
+}
+
+sub latest_with_filename {
+    my $self = shift;
+    my $t = time_scope 'latest_attach';
+    my $p = ref $_[0] ? $_[0] : {@_};
+    my $page_id  = $p->{page_id} || $self->hub->pages->current->id;
+    my $ws_id    = $self->hub->current_workspace->workspace_id;
+    my $filename = $p->{filename};
+
+    my $sth = sql_execute(q{
+        SELECT }.COLUMNS_STR.q{ FROM page_attachment pa
+          JOIN attachment a USING (attachment_id)
+         WHERE workspace_id = $1 AND page_id = $2
+           AND lower(filename) = lower($3)
+           AND NOT pa.deleted
+         ORDER BY a.created_at ASC
+         LIMIT 1
+    }, $ws_id, $page_id, $filename);
+    return if $sth->rows == 0;
+    return $self->_new_from_row($sth->fetchrow_hashref);
 }
 
 sub attachment_exists {
-    my $self = shift;
-    my ($workspace, $page_id, $filename, $attach_id) = @_;
+    my ($self, $workspace, $page_id, $filename, $attach_id) = @_;
+    my $t = time_scope 'attach_exists';
 
-    my $old_ws = $self->hub->current_workspace;
-    my $g = scope_guard { $self->hub->current_workspace($old_ws) };
+    my $ws = Socialtext::Workspace->new(name => $workspace)
+        or return 0;
+    return 0 unless $self->hub->authz->user_has_permission_for_workspace(
+        user       => $self->hub->current_user,
+        permission => ST_READ_PERM,
+        workspace  => $ws,
+    );
 
-    use Socialtext::Permission 'ST_READ_PERM';
-    my $ws = Socialtext::Workspace->new(name => $workspace);
-    return 0 unless $ws && $self->hub->authz->user_has_permission_for_workspace(
-            user       => $self->hub->current_user,
-            permission => ST_READ_PERM,
-            workspace  => $ws,
-        );
-
-    $self->hub->current_workspace($ws);
-    my $attachments = $self->all(page_id => $page_id);
-    for my $att (@$attachments) {
-        if ($attach_id) {
-            if ($att->id eq $attach_id) {
-                return $att->exists || 0;
-            }
-        }
-        else {
-            if ($att->filename eq lc($filename)) {
-                return $att->exists || 0;
-            }
-        }
-    }
-    return 0;
+    my $n = sql_singlevalue(q{
+        SELECT count(1) FROM page_attachment pa
+          JOIN attachment a USING (attachment_id)
+         WHERE workspace_id = $1 AND page_id = $2 AND pa.id = $3
+           AND NOT pa.deleted
+           AND lower(a.filename) = lower($4)
+         LIMIT 1
+    }, $ws->workspace_id, $page_id, $attach_id, $filename);
+    return $n ? 1 : 0;
 }
 
-sub index {
-    my $self = shift;
-    $self->{index}
-        ||= Socialtext::Indexes->new_for_class( $self->hub, $self->class_id );
-}
+sub create {
+    my ($self, %args) = @_;
+    my $t = time_scope 'attach_create';
 
-sub new_attachment {
-    my $self = shift;
-    return Socialtext::Attachment->new(hub => $self->hub, @_);
-}
+    $args{page_id} ||= $self->hub->pages->current->id;
 
-{
-    Readonly my $spec => {
-        filename     => SCALAR_TYPE,
-        fh           => HANDLE_TYPE,
-        page_id      => SCALAR_TYPE( default => undef ),
-        creator      => USER_TYPE,
-        embed        => BOOLEAN_TYPE( default => 0 ),
-        Content_type => SCALAR_TYPE( default => undef ),
-        temporary    => SCALAR_TYPE( default => 0 ),
-    };
-    sub create {
-        my $self = shift;
-        my %args = validate( @_, $spec );
+    my $upload = Socialtext::Upload->Create(
+        creator        => $args{creator},
+        filename       => $args{filename},
+        temp_filename  => $args{fh},
+        content_length => -s $args{fh},
+        mime_type      => $args{'Content_type'},
+    );
+    warn "made upload. temp? ".$upload->is_temporary;
+    my $attachment = Socialtext::Attachment->new(
+        hub          => $self->hub,
+        upload       => $upload,
+        page_id      => $args{page_id},
+    );
+    warn "made attachment. temp? ".$upload->is_temporary;
 
-        $args{page_id} ||= $self->hub->pages->current->id;
-
-        my $attachment = $self->new_attachment(%args);
-        $attachment->save($args{fh});
-        $attachment->store( user => $args{creator} );
-        $attachment->inline( $args{page_id}, $args{creator} )
-            if $args{embed};
-        $self->cache->clear();
-        return $attachment;
-    }
-}
-
-sub index_generate {
-    my $self = shift;
-    my $hash = {};
-    for my $page_id ( $self->hub->pages->all_ids ) {
-        for my $attachment (
-            @{ $self->all( page_id => $page_id, no_index => 1 ) } ) {
-            next unless $attachment->id;
-            $hash->{$page_id}{ $attachment->id } = $attachment->serialize;
-        }
-    }
-    return $hash;
-}
-
-sub index_delete {
-    my $self = shift;
-    my ($hash, $attachment) = @_;
-    my $page_id = $attachment->page_id;
-    my $entry = $hash->{$page_id};
-    if (keys %$entry <= 1) {
-        delete $hash->{$page_id};
-        return;
-    }
-    delete $entry->{$attachment->id};
-    $hash->{$page_id} = $entry;
-    return;
-}
-
-sub index_add {
-    my $self = shift;
-    my ($hash, $attachment) = @_;
-    my $page_id = $attachment->page_id;
-    my $entry = $hash->{$page_id} || {};
-    $entry->{$attachment->id} = $attachment->serialize;
-    $hash->{$page_id} = $entry;
-    return;
-}
-
-sub all_serialized {
-    my $self = shift;
-    my $page_id = shift;
-
-    my @all_serialized;
-    for my $attachment (@{$self->all(page_id => $page_id)}) {
-        push @all_serialized, $attachment->serialize;
-    }
-    return \@all_serialized;
-}
-
-sub all_in_workspace {
-    my $self = shift;
-    my @attachments;
-    Socialtext::Timer->Continue('all_attach');
-    my $hash = $self->index->read_only_hash;
-    for my $page_id (keys %$hash) {
-        my $p = Socialtext::Page->new( hub => $self->hub, id => $page_id );
-        next unless $p->active;
-        my $entry = $hash->{$page_id};
-        $self->_add_attachment_from_index(\@attachments, $entry, $p);
-    }
-    Socialtext::Timer->Pause('all_attach');
-    return \@attachments;
+    $attachment->store(user => $args{creator});
+    warn "stored attachment. temp? ".$upload->is_temporary;
+    $attachment->inline($args{page_id}, $args{creator})
+        if $args{embed};
+    return $attachment;
 }
 
 sub all_attachments_in_workspace {
     my $self = shift;
-    return map {
-        $self->new_attachment( id => $_->{id}, page_id => $_->{page_id}, )
-            ->load
-    } @{ $self->all_in_workspace() };
-}
-
-sub _all_for_page {
-    my $self = shift;
-    my $page_id  = shift;
-    my $no_index = shift;
     my @attachments;
-
-    if ($no_index) {
-        my $directory = $self->plugin_directory . '/' . $page_id;
-
-        Socialtext::File::ensure_directory($directory);
-
-        for my $id ( Socialtext::File::all_directory_files($directory) ) {
-            next unless $id =~ s/(.*)\.txt$/$1/;
-            push @attachments, {id => $id};
-        }
+    my $t = time_scope 'all_attach';
+    my $sth = sql_execute(q{
+        SELECT }.COLUMNS_STR.q{ FROM page_attachment pa
+          JOIN attachment a USING (attachment_id)
+         WHERE pa.workspace_id = $1
+           AND NOT pa.deleted
+           AND EXISTS (
+              SELECT 1 FROM page p
+              WHERE p.workspace_id = pa.workspace_id
+                AND p.page_id = pa.page_id
+                AND NOT p.deleted
+           )
+         ORDER BY created_at
+    }, $self->hub->current_workspace->workspace_id);
+    while (my $row = $sth->fetchrow_hashref) {
+        push @attachments, $self->_new_from_row($row);
     }
-    else {
-        my $entry = $self->index->read($page_id);
-        $self->_add_attachment_from_index( \@attachments, $entry );
-    }
-    return [ sort {$a->{id} cmp $b->{id}} @attachments ];
+    return \@attachments;
 }
 
-sub _add_attachment_from_index {
-    my $self = shift;
-    my $attachments_ref = shift;
-    my $entry = shift;
-    my $page = shift;
+*IDForFilename = *id_for_filename;
+sub id_for_filename {
+    my ($class_or_self, %p) = @_;
 
-    push @$attachments_ref, map {
-        {
-            %$_,
-            from => $self->_extract_username_or_email_address( $_->{from} ),
-            page => $page,
-        }
-    } grep {
-        -e $self->plugin_directory . '/' . $_->{page_id} . '/' . $_->{id};
-    } grep {
-        ref($_) eq 'HASH'
-    } values %$entry;
-}
-
-memoize('_extract_username_or_email_address', NORMALIZER => sub { $_[1] });
-sub _extract_username_or_email_address {
-    my $self = shift;
-    my $from = shift;
-
-    my $user;
-    eval { $user = Socialtext::User->new( email_address => $_->{from} ) };
-    warn $@ if $@;
-    if ( $user ) {
-        return $user->username;
+    my $filename = $p{filename} or croak "must supply filename";
+    my $ws_id = blessed($p{workspace_id})
+        ? $p{workspace_id}->workspace_id : $p{workspace_id};
+    my $page_id = blessed($p{page_id}) ? $p{page_id}->id : $p{page_id};
+    if (blessed($class_or_self)) {
+        $ws_id //= $class_or_self->hub->current_workspace->workspace_id;
+        $page_id //= $class_or_self->hub->pages->current->id;
     }
-    return $from;
+
+    my $sth = sql_execute(q{
+        SELECT pa.id FROM page_attachment pa
+          JOIN attachment a USING (attachment_id)
+         WHERE pa.workspace_id = $1
+           AND NOT pa.deleted
+           AND EXISTS (
+              SELECT 1 FROM page p
+              WHERE p.workspace_id = pa.workspace_id
+                AND p.page_id = $2
+                AND NOT p.deleted
+           )
+           AND lower(pa.filename) = lower($3)
+         ORDER BY a.created_at DESC
+         LIMIT 1
+    }, $ws_id, $page_id, $filename);
+    return unless $sth->rows == 1;
+    my $id = $sth->fetchrow_arrayref;
+    return $id->[0];
 }
 
+__PACKAGE__->meta->make_immutable;
 1;

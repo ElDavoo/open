@@ -5,50 +5,39 @@ use warnings;
 use strict;
 
 use base 'Socialtext::Rest';
-use IO::File;
 use Socialtext::HTTP ':codes';
 use Socialtext::String ();
+use Try::Tiny;
 
 sub allowed_methods { 'GET, HEAD, DELETE' }
 sub permission { +{ GET => 'read', DELETE => 'attachments' } }
 
+# /data/workspaces/:ws/attachments/:attachment_id
+# /data/workspaces/:ws/attachments/:attachment_id/:version/:filename
+# subclass handles
+# /data/workspaces/:ws/pages/:pname/attachments/:filename
 sub GET {
     my ( $self, $rest ) = @_;
-
+    my $rv = '';
     return $self->no_workspace() unless $self->workspace;
     return $self->not_authorized() unless $self->user_can('read');
 
-    my $attachment = eval { $self->_get_attachment() };
-    my $file = $attachment->full_path( $self->params->{version} )
-        if $attachment;
+    my $attachment;
+    try { $attachment = $self->_get_attachment() or die "no such attachment\n" }
+    catch { $rv = $self->_invalid_attachment($rest, $_) };
 
-    unless (-e $file) {
-        return $self->_invalid_attachment($rest,
-            $self->params->{filename} . ': not found');
+    if ($attachment) {
+        my ($file,$size) = $attachment->prepare_to_serve(
+            $self->params->{version}, 'protected');
+        warn "FILE $file, SIZE $size";
+        try { $self->_serve_file($rest, $attachment, $file, $size) }
+        catch { 
+            $rv = $self->_invalid_attachment($rest, $_);
+        };
     }
-
-    unless (-r _) {
-        return $self->_invalid_attachment($rest,
-            $self->params->{filename} . ': cannot read');
-    }
-    my $file_size = -s _;
-
-    eval {
-        # eg:
-        # admin/attachments/admin_wiki/20091217174324-11-3042/video_60seconds.png 
-        my $data_dir = Socialtext::AppConfig->data_root_dir;
-        (my $file_path = $file) =~ s{^$data_dir/plugin}{/nlw/protected};
-        $self->_serve_file($rest, $attachment, $file_path, $file_size);
-    };
-    warn $@ if $@;
-
-    # REVIEW: would be nice to be able to toss some kind of exception
-    # all the way out to the browser
-    # Probably an invalid attachment id.
-    return $self->_invalid_attachment( $rest, $@ ) if $@;
 
     # The frontend will take care of sending the attachment.
-    return '';
+    return $rv;
 }
 
 sub DELETE {
@@ -77,23 +66,20 @@ sub DELETE {
 }
 
 sub _invalid_attachment {
-    my ( $self, $rest, $error ) = @_;
-
+    my ($self, $rest, $error) = @_;
+    warn $error;
     $rest->header( -status => HTTP_404_Not_Found, -type => 'text/plain' );
-    return "Invalid attachment ID: $error.\n";
+    $error =~ s/\n.+//m;
+    return "Invalid attachment ID. $error.\n";
 }
 
 sub _get_attachment {
     my $self = shift;
-    my ( $page_uri, $attachment_id ) = split /:/, $self->attachment_id;
-
-    my $page_id =  Socialtext::String::title_to_id($page_uri);
-
-    my $attachment = $self->hub->attachments->new_attachment(
+    my ($page_uri, $attachment_id) = split /:/, $self->attachment_id;
+    my $attachment = $self->hub->attachments->load(
         id      => $attachment_id,
-        page_id => $page_id,
-    )->load;
-
+        page_id => Socialtext::String::title_to_id($page_uri),
+    );
     return $attachment;
 }
 
