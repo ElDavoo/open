@@ -1720,18 +1720,19 @@ sub load_metadata {
     my $pg_id = $self->id;
     my $rev_id = $self->{revision_id} || '0';
     my $cache_key = "$ws_id-$pg_id-$rev_id";
-    my $page = $self->cache->get($cache_key);
+    # Only cache specific revisions, always fetch the latest page w/o rev
+    my $page = $rev_id ? $self->cache->get($cache_key) : undef;
     unless ($page) {
         $page = Socialtext::Model::Pages->By_id(
             hub => $self->hub,
             workspace_id => $ws_id,
             page_id => $pg_id,
-            revision_id => $self->{revision_id},
+            revision_id => $rev_id,
             no_die => 1,
             deleted_ok => 1,
         );
         return $self unless $page;
-        $self->cache->set($cache_key, $page);
+        $self->cache->set($cache_key, $page) if $rev_id;
     }
 
     # Nowadays PageMeta is just a legacy interface; it can go away
