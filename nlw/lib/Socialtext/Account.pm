@@ -739,7 +739,7 @@ sub create {
     $class->_create_full(%p);
     my $self = $class->new(%p);
     $self->_enable_default_plugins;
-    $self->_create_central_workspace;
+    $self->_account_create_hook;
 
     my $msg = 'CREATE,ACCOUNT,account:' . $self->name
               . '(' . $self->account_id . '),'
@@ -749,48 +749,23 @@ sub create {
     return $self;
 }
 
-sub _create_central_workspace {
+sub _account_create_hook {
     my $self = shift;
 
-    # Don't create a central workspace for these default workspaces that don't
-    # have real users
+    # Don't die trying to access the systemuser before it exists
     return
         if $self->name eq 'Unknown'
         or $self->name eq 'Deleted'
         or $self->name eq 'Socialtext';
 
-    my $user = Socialtext::User->SystemUser();
 
-    # Find a valid name
-    my ($title, $name, $ws);
-    for (my $i = 0; !$i or defined $ws; $i++) {
-        # XXX: Bad for i18n:
-        $title = $self->name . ' Central' . ($i ? " $i" : "");
-        $name = Socialtext::String::title_to_id($title);
-        $ws = Socialtext::Workspace->new(name => $name)
-    }
-
-    my $wksp = Socialtext::Workspace->create(
-        name                => $name,
-        title               => $title,
-        account_id          => $self->account_id,
-        created_by_user_id  => $user->user_id(),
-        allows_page_locking => 1,
-    );
-
-    $wksp->assign_role_to_account(account => $self);
-
-    my $share_dir = Socialtext::AppConfig->new->code_base();
-    $wksp->load_pages_from_disk(
-        dir => "$share_dir/workspaces/central",
-        replace => {
-            # Replace all pages with YourCo in the title with this account's
-            # name
-            'YourCo' => $self->name,
-        },
-    );
+    # Call the nlw.create_account event on all pluggable plugins
+    # Here is where the widgets plugin will set the central_workspace
+    # preference
+    my $adapter = Socialtext::Pluggable::Adapter->new;
+    $adapter->make_hub(Socialtext::User->SystemUser());
+    $adapter->hook('nlw.create_account', [$self]);
 }
-
 
 sub _enable_default_plugins {
     my $self = shift;
