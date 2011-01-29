@@ -1,7 +1,7 @@
 #!perl
 use warnings;
 use strict;
-use Test::Socialtext tests => 38;
+use Test::Socialtext tests => 43;
 use Test::Socialtext::Fatal;
 use Socialtext::SQL qw/:txn :exec :time/;
 use File::Temp qw/tempdir tempfile/;
@@ -11,6 +11,19 @@ use DateTime;
 use ok 'Socialtext::Upload';
 
 fixtures(qw(db));
+
+clean_filenames: {
+    my $filename = Socialtext::Upload->clean_filename('a.txt');
+    is 'a.txt', $filename, 'regular filename set ok';
+    $filename = Socialtext::Upload->clean_filename('bab\\a.txt');
+    is 'a.txt', $filename, 'pre-backslash trimmed';
+    $filename = Socialtext::Upload->clean_filename('bab\\a.txt\\');
+    is 'a.txt', $filename, 'trailing backslash trimmed';
+    $filename = Socialtext::Upload->clean_filename('bab/a.txt');
+    is 'a.txt', $filename, 'pre-slash trimmed';
+    $filename = Socialtext::Upload->clean_filename('bab/a.txt/');
+    is 'a.txt', $filename, 'trailing slash trimmed';
+}
 
 check_fk_constraints: {
     my $sth = sql_execute(q{

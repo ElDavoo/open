@@ -54,6 +54,7 @@ has 'upload' => (
     trigger => sub { $_[0]->_attachment_id($_[1]->attachment_id) },
 );
 *uploaded_by = *creator;
+*CleanFilename = *Socialtext::Upload::CleanFilename;
 
 use constant COLUMNS => qw(id workspace_id page_id attachment_id deleted);
 use constant COLUMNS_STR => join ', ', COLUMNS;
@@ -80,9 +81,9 @@ sub _build_workspace {
 }
 
 sub _build_upload {
-    my $self;
+    my $self = shift;
     my $att_id = $self->attachment_id;
-    croak "This Attachment hasn't been saved yet" unless $att_id;
+    confess "This Attachment hasn't been saved yet" unless $att_id;
     return Socialtext::Upload->Get(attachment_id => $att_id);
 }
 
