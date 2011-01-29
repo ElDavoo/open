@@ -153,7 +153,7 @@ sub create {
     $page->metadata->update( user => $args{creator} );
 
     if ($args{date}) {
-        $self->metadata->Date($args{date}->strftime('%Y-%m-%d %H:%M:%S GMT'));
+        $page->metadata->Date($args{date}->strftime('%Y-%m-%d %H:%M:%S GMT'));
     }
     $page->store( user => $args{creator} );
 
