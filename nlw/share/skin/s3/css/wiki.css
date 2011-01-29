@@ -478,3 +478,14 @@ td .wafl_box {
 .wiki .syntaxhighlighter {
     overflow-y: hidden !important;
 }
+
+.wiki div.widget {
+    max-width: 600px;
+}
+
+.wiki div.widget div.widgetHeaderTitle {
+    font-size: 11px;
+    padding-left: 12px;
+    padding-top: 6px;
+    font-weight: bold;
+}
