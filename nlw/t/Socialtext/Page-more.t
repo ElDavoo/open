@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 25;
+use Test::Socialtext tests => 23;
 # Fixtures:
 # - we're destructive; we create pages but don't clean up after ourselves.
 fixtures(qw( admin_with_extra_pages destructive ));
@@ -64,23 +64,6 @@ my $creator = Socialtext::User->new( username => 'devnull1@socialtext.com' );
         creator => $creator,
     );
     my $page = $hub->pages->new_from_name('dated');
-    my $fs_epoch = (stat $page->file_path)[9];
-    is $fs_epoch, $expected_date->epoch,
-        'filesystem date - needed for RecentChanges';
     is $page->metadata->Date, $stringified_expected,
         'metadata date - needed for display';
 }
-
-
-{ # handle newlines in Subject headers
-    my $page = Socialtext::Page->new( hub => $hub )->create(
-        title   => "new\nline",
-        content =>
-            'You are only young once, but you can stay immature indefinitely.',
-        creator => $creator,
-    );
-    $page = $hub->pages->new_from_name('new line');
-    is $page->metadata->Subject, 'new line',
-        'Page loads can handle newlines in Subjects - found in the wild';
-}
-
