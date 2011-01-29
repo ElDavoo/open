@@ -1,4 +1,4 @@
-[% INCLUDE element/container_head %]
+[% INCLUDE element/container_head share="/nlw/plugin/widgets" %]
 [% SET gadget = container.gadgets.0.0 %]
 [% SET num = 0 %]
 [% SET col = 0 %]
@@ -24,4 +24,6 @@
 <script>
 var gadgets = gadgets || {};
     gadgets.container = gadgets.container || new gadgets.Container();
+// TODO - Make PUT prefs work
+//   gadgets.container.base_url = '/st/dashboard';
 </script>
