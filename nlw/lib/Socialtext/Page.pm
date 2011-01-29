@@ -1015,6 +1015,7 @@ INSSQL
         $hash->{name}, $editor_id, $hash->{last_edit_time}, $hash->{type},
         $deleted, $summary, $edit_summary, $locked, $tags,
     );
+    # Also update SQL in Socialtext/Page/TablePopulator.pm if necessary
     sql_saveblob(\$self->content, <<SQL, @revision_args);
         INSERT INTO page_revision (
             body, workspace_id, page_id, revision_id, revision_num, name,

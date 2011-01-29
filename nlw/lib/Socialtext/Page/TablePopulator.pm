@@ -10,6 +10,7 @@ use Socialtext::User;
 use Socialtext::File;
 use Socialtext::AppConfig;
 use Socialtext::Page::Legacy;
+use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw(get_dbh :exec :txn);
 use Fatal qw/opendir closedir chdir open/;
 use Cwd   qw/abs_path/;
@@ -246,6 +247,7 @@ sub load_revision_metadata {
         }
 
         push @revisions, [
+            Socialtext::Page::Legacy::read_and_decode_file($file, 1, 1),
             $self->{workspace}->workspace_id,
             $pg_dir,
             $revision_id,
@@ -259,12 +261,24 @@ sub load_revision_metadata {
             $pagemeta->{RevisionSummary} || '',
             $pagemeta->{Locked} || 0,
             $tags,
-            Socialtext::Page::Legacy::read_and_decode_file($file, 'content'),
         ];
     }
     closedir($dfh);
 
-    add_to_db('page_revision', \@revisions);
+    # Review: Is it possible to do this more efficiently in bulk?
+    # It is not obvious how to do this with the BYTEA
+    for my $rev (@revisions) {
+        my $content_ref = shift @$rev;
+        # Also update SQL in Socialtext/Page.pm if necessary
+        sql_saveblob($content_ref, <<'EOSQL', @$rev);
+INSERT INTO page_revision (
+            body, workspace_id, page_id, revision_id, revision_num, name,
+            editor_id, edit_time, page_type, deleted, summary, edit_summary,
+            locked, tags
+        )
+        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
+EOSQL
+    }
 }
 
 # This method was copied from Socialtext::Page, to remove a dependency
@@ -291,6 +305,7 @@ sub parse_headers {
 sub add_to_db {
     my $table = shift;
     my $rows = shift;
+    my $t = time_scope "add_to_db $table";
 
     unless (@$rows) {
         warn "No rows to add to $table.\n";
@@ -317,6 +332,7 @@ sub page_exists_in_db {
     my $ws_id   = $opts{workspace_id} || die "workspace_id is required";
     my $page_id = $opts{page_id}      || die "page_id is required";
 
+    my $t = time_scope 'page_exists_in_db';
     my $exists_already = sql_singlevalue( q{
         SELECT true
           FROM page

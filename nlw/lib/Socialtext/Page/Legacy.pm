@@ -34,6 +34,7 @@ sub parse_headers {
 sub read_and_decode_file {
     my $filename       = shift;
     my $return_content = shift;
+    my $as_ref_pls     = shift;
     die "No such file $filename" unless -f $filename;
     die "File path contains '..', which is not allowed."
         if $filename =~ /\.\./;
@@ -63,7 +64,7 @@ sub read_and_decode_file {
 
     $buffer =~ s/\015\012/\n/g;
     $buffer =~ s/\015/\n/g;
-    return $buffer;
+    return $as_ref_pls ? \$buffer : $buffer;
 }
 
 1;
