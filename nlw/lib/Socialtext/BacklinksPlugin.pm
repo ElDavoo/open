@@ -9,7 +9,6 @@ use Socialtext::l10n qw(loc);
 use Socialtext::String();
 use Socialtext::Pageset;
 use Socialtext::PageLinks;
-use Fatal qw/opendir/;
 
 use base 'Socialtext::Query::Plugin';
 
