@@ -356,7 +356,7 @@ sub page_in_workspace {
 }
 
 my %in_progress = ();
-sub _render_in_workspace {
+sub render_in_workspace {
     my ($self, $page_id, $ws, $callback) = @_;
 
     my $page_key = $ws->workspace_id . ":$page_id";
@@ -393,7 +393,7 @@ sub html_for_page_in_workspace {
 
     my $ws = Socialtext::Workspace->new(name => $workspace_name);
     my $html;
-    $self->_render_in_workspace($page_id, $ws, sub {
+    $self->render_in_workspace($page_id, $ws, sub {
         my $page = shift;
         $html = $page->to_html_or_default;
     });
