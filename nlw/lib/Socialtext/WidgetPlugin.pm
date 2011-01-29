@@ -26,11 +26,11 @@ use Class::Field qw( const );
 use Socialtext::Formatter::Phrase ();
 
 const wafl_id => 'widget';
-const wafl_reference_parse => qr/^\s*([^\s#]+)(?:\s*#\s*(\d+))?\s*$/;
+const wafl_reference_parse => qr/^\s*([^\s#]+)(?:\s*#(\d+))?((?:\s+[^\s=]+=\S*)+)\s*$/;
 
 sub html {
     my $self = shift;
-    my ($widget, $serial) = $self->arguments =~ $self->wafl_reference_parse;
+    my ($widget, $serial, $encoded_prefs) = $self->arguments =~ $self->wafl_reference_parse;
 
     $serial ||= 1;
     $widget = "local:widgets:$widget" unless $widget =~ /:/;
@@ -41,6 +41,17 @@ sub html {
         viewer => $self->hub->current_user,
         name => "$widget##$page_id#$serial",
     );
+
+    my $gadget = $container->gadgets->[0];
+
+    my $original_prefs = $gadget->preference_hash;
+    for my $pref (split /\s+/, $encoded_prefs) {
+        $pref =~ /^([^\s=]+)=(\S*)/ or next;
+        my ($key, $val) = ($1, Socialtext::String::uri_unescape($2));
+        if (exists $original_prefs->{$key} and $original_prefs->{$key} ne $val) {
+            $gadget->set_preference($key => $val);
+        }
+    }
 
     return $self->hub->template->process($container->view_template,
         pluggable => $self->hub->pluggable,
