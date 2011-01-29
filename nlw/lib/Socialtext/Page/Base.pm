@@ -530,7 +530,7 @@ sub all_revision_ids {
         'SELECT revision_id FROM page_revision
           WHERE workspace_id = ?
             AND page_id = ?
-          ORDER BY edit_time DESC
+          ORDER BY revision_id ASC
         ',
         $self->hub->current_workspace->workspace_id,
         $self->id,
@@ -662,7 +662,7 @@ sub assert_revision_id {
         'SELECT revision_id FROM page_revision
           WHERE workspace_id = ?
             AND page_id = ?
-          ORDER BY edit_time DESC
+          ORDER BY revision_id DESC
           LIMIT 1
         ', $self->hub->current_workspace->workspace_id,
         $self->id,
@@ -896,13 +896,14 @@ sub content {
 
 sub load_content {
     my $self = shift;
-    return '' unless $self->revision_id;
+    my $rev_id = $self->revision_id;
+    return '' unless $rev_id;
     sql_singleblob(\$self->{content},
         'SELECT body FROM page_revision
           WHERE workspace_id = ?
             AND page_id = ?
             AND revision_id = ?
-        ', $self->hub->current_workspace->workspace_id, $self->id, $self->revision_id,
+        ', $self->hub->current_workspace->workspace_id, $self->id, $rev_id,
     );
     $self->content('') unless defined $self->{content};
     return $self;
