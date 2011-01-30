@@ -2036,15 +2036,24 @@ proto.do_opensocial_gallery = function() {
                         var $textRow = $('<tr />').appendTo($table);
                         $.each(this, function(){
                             var src = this.src;
-                            var $imgCell = $('<td />', { width: '50%' }).appendTo($imgRow);
+                            var $imgCell = $('<td />', { width: '25%' }).appendTo($imgRow);
                             $imgCell.append($('<img />', { width: '120', height: '60', src: '/data/gadgets/' + this.gadget_id + '/thumbnail' }));
-                            $imgCell.append($('<input />', { type: 'submit', value: loc('Insert') }).click(function(){
-                                // XXX - Check for same-named widget for #2 etc
-                                self.insert_widget('{widget: ' + src + '}');
+
+                            var $btnCell = $('<td />', { width: '25%' }).appendTo($imgRow);
+                            var $button = $('<div style="float: left" />')
+                                .append($('<ul class="widgetButton" style="float: left; margin-left: 15px; margin-top: 10px; cursor: pointer" />')
+                                    .append($('<li class="flexButtonGrey" style="float: left" />')
+                                        .append($('<a class="greyButton" />')
+                                            .text(loc('Insert')))));
+
+                            $btnCell.append($button.click(function(){
+                                $('#lightbox').unbind('lightbox-unload').bind('lightbox-unload', function(){
+                                    self.do_opensocial_setup(src);
+                                });
                                 jQuery.hideLightbox();
                             }));
 
-                            var $textCell = $('<td />', { width: '50%' }).appendTo($textRow);
+                            var $textCell = $('<td />', { width: '50%', colspan: '2' }).appendTo($textRow);
                             $textCell.append($('<div />', { css: { fontWeight: 'bold' } }).text(this.title));
                             $textCell.append($('<div />', { css: { marginTop: '3px', marginBottom: '10px', marginRight: '10px' } }).text(this.description));
                         });
@@ -2057,12 +2066,34 @@ proto.do_opensocial_gallery = function() {
 
     jQuery.showLightbox({
         content: '#st-widget-opensocial-gallery',
-        close: '#st-widget-opensocial-gallery-close'
+        close: '#st-widget-opensocial-gallery-cancel'
     });
 //    alert("Gallery");
 }
 
-proto.do_opensocial_setup = function(widget_element) {
+proto.do_opensocial_setup = function(src) {
+    if (!jQuery('#st-widget-opensocial-setup').size()) {
+        Socialtext.wikiwyg_variables.loc = loc;
+        jQuery('body').append(
+            Jemplate.process(
+                "opensocial-setup.html",
+                Socialtext.wikiwyg_variables
+            )
+        );
+        $('#st-widget-opensocial-setup-cancel').click(function(){
+            jQuery.hideLightbox();
+        });
+    }
+
+    jQuery.showLightbox({
+        content: '#st-widget-opensocial-setup',
+        close: '#st-widget-opensocial-setup-cancel'
+    });
+
+
+    $('#lightbox').unbind('lightbox-unload');
+    // XXX - Check for same-named widget for #2 etc
+    // self.insert_widget('{widget: ' + src + '}');
 //    alert("Setup:" + widget_element);
 }
 

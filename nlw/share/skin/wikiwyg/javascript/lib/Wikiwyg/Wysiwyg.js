@@ -3428,7 +3428,7 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
         return;
     }
     else if (widget == 'widget') {
-        this.do_opensocial_setup(widget_element);
+        this.do_opensocial_setup();
         return;
     }
 
