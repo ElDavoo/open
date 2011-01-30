@@ -36,10 +36,11 @@ sub html {
     $widget = "local:widgets:$widget" unless $widget =~ /:/;
 
     my $page_id = $self->current_page_id;
+    my $ws_name = $self->hub->current_workspace->name;
     my $container = Socialtext::Gadgets::Container::Wafl->Fetch(
         owner => $self->hub->current_workspace, 
         viewer => $self->hub->current_user,
-        name => "$widget##$page_id#$serial",
+        name => "$widget##$ws_name##$page_id##$serial",
     );
 
     my $gadget = $container->gadgets->[0];
@@ -81,7 +82,7 @@ has 'src' => (
 sub _build_src {
     my $self = shift;
     my $src = $self->name;
-    $src =~ s{(.*)##.*}{$1};
+    $src =~ s{^([^#]*)##.*}{$1};
     return $src;
 }
 
@@ -103,6 +104,30 @@ sub default_gadgets {
     );
 }
 
+################################################################################
+package Socialtext::Handler::Gadget::Wafl;
+
+# @COPYRIGHT@
+use Moose;
+use Socialtext;
+use Socialtext::JSON qw(decode_json);
+use namespace::clean -except => 'meta';
+
+sub _build_container {
+    my $self = shift;
+    my $cname = $self->params->{cname} or return;
+    my ($widget, $ws_name, $page_id, $serial) = split(/##/, $cname);
+    return Socialtext::Gadgets::Container::Wafl->Fetch(
+        owner => Socialtext::Workspace->new(name => $ws_name),
+        viewer => $self->rest->user,
+        name => $cname,
+    );
+}
+
+extends 'Socialtext::Handler::Container::Dashboard';
+with 'Socialtext::Handler::Gadget';
+
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
 __END__
 

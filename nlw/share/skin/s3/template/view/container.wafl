@@ -24,6 +24,5 @@
 <script>
 var gadgets = gadgets || {};
     gadgets.container = gadgets.container || new gadgets.Container();
-// TODO - Make PUT prefs work
-//   gadgets.container.base_url = '/st/dashboard';
+    gadgets.container.base_url = '/data/wafl-containers/[% container.name |uri %]';
 </script>
