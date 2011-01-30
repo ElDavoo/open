@@ -23,16 +23,20 @@ package Socialtext::WidgetPlugin::Wafl;
 
 use base 'Socialtext::Formatter::WaflPhraseDiv';
 use Class::Field qw( const );
+use Socialtext::l10n 'loc';
 use Socialtext::Formatter::Phrase ();
 
 const wafl_id => 'widget';
-const wafl_reference_parse => qr/^\s*([^\s#]+)(?:\s*#(\d+))?((?:\s+[^\s=]+=\S*)+)\s*$/;
+const wafl_reference_parse => qr/^\s*([^\s#]+)(?:\s*#(\d+))?((?:\s+[^\s=]+=\S*)*)\s*$/;
 
 sub html {
     my $self = shift;
     my ($widget, $serial, $encoded_prefs) = $self->arguments =~ $self->wafl_reference_parse;
 
+    return loc("Sorry, we cannot display this widget.") unless $widget;
+
     $serial ||= 1;
+    $encoded_prefs ||= '';
     $widget = "local:widgets:$widget" unless $widget =~ /:/;
 
     my $page_id = $self->current_page_id;
@@ -44,6 +48,10 @@ sub html {
     );
 
     my $gadget = $container->gadgets->[0];
+    if (!$gadget) {
+        $container->delete;
+        return loc("Sorry, we cannot display this widget.");
+    }
 
     my $original_prefs = $gadget->preference_hash;
     for my $pref (split /\s+/, $encoded_prefs) {
