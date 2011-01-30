@@ -2003,9 +2003,56 @@ proto.do_opensocial_gallery = function() {
                 Socialtext.wikiwyg_variables
             )
         );
-        // getJSON - http://borax.socialtext.net:22021/data/accounts/4/gallery?accept=application/json
-        // Filter with .src (maybe allow {widget: ID} too for widgets w/o src)?
-        // then do a insert_widget
+        $.ajax({
+            url: '/data/accounts/' + Socialtext.current_workspace_account_id + '/gallery',
+            dataType: 'json',
+            success: function(gallery) {
+                var tables = [
+                    { widgets: [], title: loc('Socialtext widgets') },
+                    { widgets: [], title: loc('Third Party widgets') }
+                ];
+                $.each(gallery.widgets, function(){
+                    if (this.removed) { return; }
+                    if (!this.src || this.src == 'local:widgets:activities') { return; }
+                    var ary = tables[this.socialtext ? 0 : 1].widgets;
+                    // 2-column layout
+                    if (ary.length && (ary[ary.length-1].length < 2)) {
+                        ary[ary.length-1].push(this);
+                    }
+                    else {
+                        ary.push([this]);
+                    }
+                });
+
+                var $gallery = $('#st-widget-opensocial-gallery-widgets');
+                $.each(tables, function(){
+                    $gallery.append($('<div />', { 'class': 'title' }).text(this.title));
+                    var $table = $('<table />', {
+                        'class': 'galleryWidget',
+                        css: { width: '99%', tableLayout: 'fixed' }
+                    });
+                    $.each(this.widgets, function(){
+                        var $imgRow = $('<tr />').appendTo($table);
+                        var $textRow = $('<tr />').appendTo($table);
+                        $.each(this, function(){
+                            var src = this.src;
+                            var $imgCell = $('<td />', { width: '50%' }).appendTo($imgRow);
+                            $imgCell.append($('<img />', { width: '120', height: '60', src: '/data/gadgets/' + this.gadget_id + '/thumbnail' }));
+                            $imgCell.append($('<input />', { type: 'submit', value: loc('Insert') }).click(function(){
+                                // XXX - Check for same-named widget for #2 etc
+                                self.insert_widget('{widget: ' + src + '}');
+                                jQuery.hideLightbox();
+                            }));
+
+                            var $textCell = $('<td />', { width: '50%' }).appendTo($textRow);
+                            $textCell.append($('<div />', { css: { fontWeight: 'bold' } }).text(this.title));
+                            $textCell.append($('<div />', { css: { marginTop: '3px', marginBottom: '10px', marginRight: '10px' } }).text(this.description));
+                        });
+                    });
+                    $gallery.append($table);
+                });
+            }
+        });
     }
 
     jQuery.showLightbox({
