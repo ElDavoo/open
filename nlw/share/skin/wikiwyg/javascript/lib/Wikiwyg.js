@@ -1994,6 +1994,24 @@ proto.do_widget_pre = function(widget_element) {
 }
 
 proto.do_opensocial_gallery = function() {
+    var self = this;
+    if (!jQuery('#st-widget-opensocial-gallery').size()) {
+        Socialtext.wikiwyg_variables.loc = loc;
+        jQuery('body').append(
+            Jemplate.process(
+                "opensocial-gallery.html",
+                Socialtext.wikiwyg_variables
+            )
+        );
+        // getJSON - http://borax.socialtext.net:22021/data/accounts/4/gallery?accept=application/json
+        // Filter with .src (maybe allow {widget: ID} too for widgets w/o src)?
+        // then do a insert_widget
+    }
+
+    jQuery.showLightbox({
+        content: '#st-widget-opensocial-gallery',
+        close: '#st-widget-opensocial-gallery-close'
+    });
 //    alert("Gallery");
 }
 
