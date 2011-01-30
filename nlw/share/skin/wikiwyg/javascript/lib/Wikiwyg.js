@@ -1993,6 +1993,14 @@ proto.do_widget_pre = function(widget_element) {
     });
 }
 
+proto.do_opensocial_gallery = function() {
+//    alert("Gallery");
+}
+
+proto.do_opensocial_setup = function(widget_element) {
+//    alert("Setup:" + widget_element);
+}
+
 proto._do_insert_block_dialog = function(opts) {
     var self = this;
 

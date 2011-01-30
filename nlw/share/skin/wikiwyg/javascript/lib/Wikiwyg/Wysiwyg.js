@@ -1271,6 +1271,18 @@ proto.do_link = function(widget_element) {
     this._do_link(widget_element);
 }
 
+proto.do_video = function() {
+    this.do_widget_video();
+}
+
+proto.do_widget = function(widget_element) {
+    if (widget_element && widget_element.nodeName) {
+        this.do_opensocial_setup(widget_element);
+        return;
+    }
+    this.do_opensocial_gallery();
+}
+
 proto.add_wiki_link = function(widget_element, dummy_widget) {
     var label     = jQuery("#wiki-link-text").val(); 
     var workspace = jQuery("#st-widget-workspace_id").val() || "";
@@ -3413,6 +3425,10 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
     }
     else if (/^code(?:-\w+)?$/.test(widget)) {
         this.do_widget_code(widget_element);
+        return;
+    }
+    else if (widget == 'widget') {
+        this.do_opensocial_setup(widget_element);
         return;
     }
 
