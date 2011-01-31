@@ -2075,6 +2075,21 @@ proto.do_opensocial_gallery = function() {
 proto.do_opensocial_setup = function(src) {
     var self = this;
 
+    var encoded_prefs = '';
+    var serial = '';
+    var widget_element = null;
+
+    if (!src) {
+        // We are editing an existing widget. Fun!
+        widget_element = self.currentWidget.element;
+        var matches = self.currentWidget.widget.match(/^\{widget:\s*([^\s#]+)(?:\s*#(\d+))?((?:\s+[^\s=]+=\S*)*)\s*\}$/);
+        if (!matches) { return false; }
+
+        src = matches[1];
+        serial = matches[2] || '';
+        encoded_prefs = matches[3] || '';
+    }
+
     if (!jQuery('#st-widget-opensocial-setup').size()) {
         Socialtext.wikiwyg_variables.loc = loc;
         jQuery('body').append(
@@ -2097,7 +2112,7 @@ proto.do_opensocial_setup = function(src) {
         });
 
         // XXX - Check for same-named widget for #2 etc
-        self.insert_widget('{widget: ' + args.join(' ') + '}');
+        self.insert_widget('{widget: ' + args.join(' ') + '}', widget_element);
 
         jQuery.hideLightbox();
         return false;
@@ -2108,7 +2123,9 @@ proto.do_opensocial_setup = function(src) {
             src: '/?action=widget_setup_screen'
                 + ';widget=' + encodeURIComponent(src)
                 + ';workspace_name=' + encodeURIComponent(Socialtext.wiki_id)
-                + ';page_id=' + encodeURIComponent(Socialtext.page_id),
+                + ';page_id=' + encodeURIComponent(Socialtext.page_id)
+                + ';serial=' + encodeURIComponent(serial)
+                + ';encoded_prefs=' + encodeURIComponent(encoded_prefs),
             width: '480px',
             height: '270px'
         })
