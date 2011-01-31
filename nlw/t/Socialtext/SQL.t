@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 70;
+use Test::Socialtext tests => 71;
 use Test::Socialtext::Fatal;
 use Scalar::Util qw/refaddr/;
 
@@ -249,14 +249,16 @@ ensure_temp: {
     my $results = [];
     ok !exception {
         sql_txn {
+            local $@;
             eval {
                 sql_txn {
                     sql_ensure_temp("my_temp","foo int");
+                    sql_execute("INSERT INTO my_temp VALUES (666)");
+                    pass 'inserted!';
                     die "oh crap";
                 };
             };
-            ok $@, 'inner transaction got rolled back, cancelling tbl create';
-            undef $@;
+            like $@, qr/oh crap/, 'inner transaction got rolled back, cancelling tbl create';
 
             sql_ensure_temp("my_temp","foo int");
             sql_execute("INSERT INTO my_temp VALUES (42)");
