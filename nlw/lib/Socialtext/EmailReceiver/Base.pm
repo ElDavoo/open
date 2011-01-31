@@ -7,9 +7,6 @@ use warnings;
 our $VERSION = '0.01';
 
 use Readonly;
-use Socialtext::Validate
-    qw( validate SCALAR_TYPE HANDLE_TYPE WORKSPACE_TYPE );
-
 require bytes;
 use DateTime;
 use Email::Address;
@@ -17,10 +14,13 @@ use Email::MIME;
 use Email::MIME::ContentType ();
 use Email::MIME::Modifier;    # provides walk_parts()
 use Fcntl qw( SEEK_SET );
-use Filesys::DfPortable ();
-use HTML::TreeBuilder   ();
-
+use HTML::TreeBuilder ();
+use Text::Flowed ();
+use DateTime::Format::Mail;
+use Data::Dumper;
 use HTML::WikiConverter ();
+use IO::Scalar;
+
 use Socialtext::Authz;
 use Socialtext::CategoryPlugin;
 use Socialtext::Exceptions qw( auth_error system_error data_validation_error );
@@ -29,11 +29,10 @@ use Socialtext::Permission qw( ST_EMAIL_IN_PERM );
 use Socialtext::User ();
 use Socialtext::Page ();
 use Socialtext::String ();
-use Text::Flowed     ();
 use Socialtext::File;
 use Socialtext::l10n qw(loc system_locale);
-use DateTime::Format::Mail;
-use Data::Dumper;
+use Socialtext::Validate
+    qw( validate SCALAR_TYPE HANDLE_TYPE WORKSPACE_TYPE );
 
 sub _new {
     my $class     = shift;
@@ -287,30 +286,15 @@ sub _save_attachment_from_part {
     # REVIEW - do we need to make sure this is just a filename
     # (without a path)?
     my $filename = $part->filename('force_filename');
+    my $page = $self->{page};
+    my $body_io = new IO::Scalar \$part->body();
 
-    my $attachment = $self->{page}->hub()->attachments()->new_attachment(
+    my $attachment = $page->hub->attachments->create(
+        fh => $body_io,
         filename => $filename,
-        page_id  => $self->{page}->id(),
+        page_id  => $page->id(),
+        user => $self->{user},
     );
-
-    my $tmpfh = File::Temp->new();
-    my $dir   = File::Basename::dirname( $tmpfh->filename() );
-
-    return
-        unless $self->_has_free_temp_space_for_attachment(
-        $dir,
-        bytes::length( $part->body() ),
-        $filename,
-        );
-
-    print $tmpfh $part->body();
-    close $tmpfh;
-
-    open '<', $tmpfh->filename()
-        or system_error "Cannot read " . $tmpfh->filename() . ": $!";
-
-    $attachment->save( $tmpfh->filename() );
-    $attachment->store( user => $self->{user} );
 
     push @{ $self->{attachments} }, $attachment;
 
@@ -347,41 +331,6 @@ sub _part_is_inline {
         or $type =~ m{^image};
 
     return 0;
-}
-
-{
-    Readonly my $OneMB => 1024**2;
-
-    sub _has_free_temp_space_for_attachment {
-        my $self     = shift;
-        my $dir      = shift;
-        my $size     = shift;
-        my $filename = shift;
-
-        my $free            = Filesys::DfPortable::dfportable($dir)->{bavail};
-        my $free_after_save = $free - $size;
-
-        if ( $free_after_save < $OneMB * 50 ) {
-            st_log(   warning => "Saving the $filename attachment in "
-                    . $self->{page}->title()
-                    . " from "
-                    . $self->{from}->address
-                    . " would leave less than 50MB free in $dir. Not saving."
-            );
-            return;
-        }
-        elsif ( $free_after_save < $OneMB * 500 ) {
-            my $mb_free = int( $free_after_save / $OneMB );
-
-            st_log(   warning => "Saving the $filename attachment in "
-                    . $self->{page}->title()
-                    . " from "
-                    . $self->{from}->address
-                    . " leaves ${mb_free}MB free in $dir." );
-        }
-
-        return 1;
-    }
 }
 
 sub _get_email_body {
