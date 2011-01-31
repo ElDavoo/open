@@ -690,7 +690,8 @@ my @Added_groups;
     }
 
     sub create_test_hub {
-        my $unique_id = create_unique_id;
+        my $unique_id = shift || '';
+        $unique_id .= create_unique_id;
 
         # create a new test User
         my $user = create_test_user(unique_id => $unique_id);
