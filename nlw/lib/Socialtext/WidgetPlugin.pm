@@ -46,12 +46,21 @@ sub get_container_for_gadget {
         return;
     }
 
-    my $original_prefs = $gadget->preference_hash;
-    for my $pref (split /\s+/, $encoded_prefs) {
-        $pref =~ /^([^\s=]+)=(\S*)/ or next;
-        my ($key, $val) = ($1, Socialtext::String::uri_unescape($2));
-        if (exists $original_prefs->{$key} and $original_prefs->{$key} ne $val) {
-            $gadget->set_preference($key => $val);
+    my %new_prefs;
+    for my $encoded_pref (split /\s+/, $encoded_prefs) {
+        $encoded_pref =~ /^([^\s=]+)=(\S*)/ or next;
+        $new_prefs{$1} = Socialtext::String::uri_unescape($2);
+    }
+
+    for my $pref (@{ $gadget->preferences || [] }) {
+        my $val = $new_prefs{$pref->{name}};
+        $val = $pref->{default_value} unless defined $val;
+
+        $val = $ws->name if $pref->{datatype} eq 'workspace';
+        $val = $ws->account->name if $pref->{datatype} eq 'account';
+
+        if ($pref->{value} ne $val) {
+            $gadget->set_preference($pref->{name} => $val);
         }
     }
 
@@ -70,8 +79,22 @@ sub widget_setup_screen {
         return '{"deleted": 1}';
     }
 
+    my $workspace = $container->owner;
+    my $account = $workspace->account;
+
     return $self->hub->template->process("view/container.setup",
         $self->hub->helpers->global_template_vars,
+        current_workspace => {
+            label => $workspace->title,
+            name => $workspace->name,
+            account => $account->name,
+            id => $workspace->workspace_id,
+        },
+        current_account => {
+            name => $account->name,
+            account_id => $account->account_id,
+            plugins => [$account->plugins_enabled],
+        },
         pluggable => $self->hub->pluggable,
         container => $container->template_vars,
     );

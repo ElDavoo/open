@@ -33,6 +33,10 @@ function nlw_make_static_path(rest) {
 function nlw_make_plugin_path(rest) {
       return "/static/".replace(/static/, 'nlw/plugin') + rest;
 }
+
+Socialtext.workspaces = [[% current_workspace.json %]];
+Socialtext.accounts = [[% current_account.json %]];
+
 </script>
 <style>
 
@@ -124,14 +128,14 @@ div.widgetBottomRight {
                 parent.$('#st-widget-opensocial-setup-save').data('prefHash', prefHash);
                 parent.$('#st-widget-opensocial-setup-buttons').show();
             }
-            $('#st-widget-settings[% gadget.id %]').show();
+            $('#st-widget-settings[% gadget.id %]').css('visibility', 'visible');
             return gadgets.Container.prototype[method].call(this, $widget, prefHash, callback);
         };
     });
     [% UNLESS gadget.incomplete %]
-        $('#st-widget-settings[% gadget.id %]').hide();
         gadgets.container.toggleSetup('[% gadget.id %]');
     [% END %]
+    $('#st-widget-settings[% gadget.id %]').css('visibility', 'hidden');
 [% ELSE %]
     if (parent.$ && parent.$('#st-widget-opensocial-setup-buttons').length) {
         parent.$('#st-widget-opensocial-setup-save').data('prefHash', {});
