@@ -2106,7 +2106,8 @@ proto.do_opensocial_setup = function(src) {
         });
     }
 
-    $('#st-widget-opensocial-setup-save').hide().unbind('click').click(function(){
+    $('#st-widget-opensocial-setup-buttons').hide();
+    $('#st-widget-opensocial-setup-save').unbind('click').click(function(){
         var prefHash = $(this).data('prefHash') || '';
 
         var srcField = src.replace(/^local:widgets:/, '');

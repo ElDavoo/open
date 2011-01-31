@@ -120,20 +120,22 @@ div.widgetBottomRight {
 [% IF gadget.has_prefs %]
     $.each(['setPreferences', 'setInlinePreferences'], function(_, method){
         gadgets.container[method] = function ($widget, prefHash, callback) {
-            if (parent.$ && parent.$('#st-widget-opensocial-setup-save').length) {
+            if (parent.$ && parent.$('#st-widget-opensocial-setup-buttons').length) {
                 parent.$('#st-widget-opensocial-setup-save').data('prefHash', prefHash);
-                parent.$('#st-widget-opensocial-setup-save').show();
+                parent.$('#st-widget-opensocial-setup-buttons').show();
             }
+            $('#st-widget-settings[% gadget.id %]').show();
             return gadgets.Container.prototype[method].call(this, $widget, prefHash, callback);
         };
     });
     [% UNLESS gadget.incomplete %]
+        $('#st-widget-settings[% gadget.id %]').hide();
         gadgets.container.toggleSetup('[% gadget.id %]');
     [% END %]
 [% ELSE %]
-    if (parent.$ && parent.$('#st-widget-opensocial-setup-save').length) {
+    if (parent.$ && parent.$('#st-widget-opensocial-setup-buttons').length) {
         parent.$('#st-widget-opensocial-setup-save').data('prefHash', {});
-        parent.$('#st-widget-opensocial-setup-save').show();
+        parent.$('#st-widget-opensocial-setup-buttons').show();
     }
 [% END %]
 </script>
