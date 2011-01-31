@@ -1350,7 +1350,9 @@ proto.do_www = Wikiwyg.Wikitext.make_do('www');
 proto.do_attach = Wikiwyg.Wikitext.make_do('attach');
 proto.do_image = Wikiwyg.Wikitext.make_do('image');
 proto.do_video = Wikiwyg.Wikitext.make_do('video');
-proto.do_widget = Wikiwyg.Wikitext.make_do('widget');
+proto.do_widget = function(command) {
+    this.do_opensocial_gallery();
+};
 
 proto.convertWikitextToHtml = function(wikitext, func, onError) {
     // TODO: This could be as simple as:
