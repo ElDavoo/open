@@ -33,6 +33,11 @@ has workspace => (
     lazy_build => 1,
 );
 
+has account => (
+    is => 'ro', isa => 'Maybe[Socialtext::Account]',
+    lazy_build => 1,
+);
+
 has hub => (
     is => 'ro', isa => 'Maybe[Socialtext::Hub]',
     lazy_build => 1,
@@ -109,6 +114,22 @@ sub _build_workspace {
 
     $self->hub->current_workspace($ws) if $self->has_hub;
     return $ws;
+}
+
+sub _build_account {
+    my $self = shift;
+    my $account_id = $self->arg->{account_id} || return;
+
+    require Socialtext::Account;
+
+    my $account = Socialtext::Account->new(account_id => $account_id);
+    if (!$account) {
+        my $msg = "account id=$account_id no longer exists";
+        $self->permanent_failure($msg);
+        die $msg;
+    }
+
+    return $account;
 }
 
 sub _build_hub {
