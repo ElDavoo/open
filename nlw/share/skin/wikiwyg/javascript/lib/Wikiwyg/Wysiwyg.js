@@ -2387,6 +2387,20 @@ proto.toHtml = function(func) {
     */
 }
 
+proto.getNextSerialForOpenSocialWidget = function(src) {
+    var max = 0;
+    var imgs = this.get_edit_document().getElementsByTagName('img');
+    for (var ii = 0; ii < imgs.length; ii++) {
+        var match = (imgs[ii].getAttribute('alt') || '').match(
+            /^st-widget-\{widget:\s*([^\s#]+)(?:\s*#(\d+))?((?:\s+[^\s=]+=\S*)*)\s*\}$/
+        );
+        if (match && match[1] == src) {
+            max = Math.max( max, (match[2] || 1) );
+        }
+    }
+    return max+1;
+}
+
 proto.setWidgetHandlers = function() {
     var self = this;
     if (this.wikiwyg.config.noWidgetHandlers) return;

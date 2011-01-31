@@ -2079,8 +2079,11 @@ proto.do_opensocial_setup = function(src) {
     var serial = '';
     var widget_element = null;
 
-    if (!src) {
-        // We are editing an existing widget. Fun!
+    if (src) {
+        serial = self.getNextSerialForOpenSocialWidget(src);
+    }
+    else {
+        // We are editing an existing widget.
         widget_element = self.currentWidget.element;
         var matches = self.currentWidget.widget.match(/^\{widget:\s*([^\s#]+)(?:\s*#(\d+))?((?:\s+[^\s=]+=\S*)*)\s*\}$/);
         if (!matches) { return false; }
@@ -2106,12 +2109,16 @@ proto.do_opensocial_setup = function(src) {
     $('#st-widget-opensocial-setup-save').hide().unbind('click').click(function(){
         var prefHash = $(this).data('prefHash') || '';
 
-        var args = [src.replace(/^local:widgets:/, '')];
+        var srcField = src.replace(/^local:widgets:/, '');
+        if (serial && serial > 1) {
+            srcField += '#' + serial;
+        }
+
+        var args = [srcField];
         $.each(prefHash, function(key, val) {
             args.push(key + '=' + encodeURI(val));
         });
 
-        // XXX - Check for same-named widget for #2 etc
         self.insert_widget('{widget: ' + args.join(' ') + '}', widget_element);
 
         jQuery.hideLightbox();

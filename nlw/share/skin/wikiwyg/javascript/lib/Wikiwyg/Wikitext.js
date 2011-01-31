@@ -281,6 +281,10 @@ proto.insert_widget = function (widget_string) {
     this.insert_text_at_cursor(widget_string + ' ', { assert_preceding_wordbreak: true });
 }
 
+proto.getNextSerialForOpenSocialWidget = function(src) {
+    return 1;
+}
+
 proto.insert_text_at_cursor = function(text, opts) {
     var t = this.area;
     var do_insert_from_parts = function (pre, mid, post) {
