@@ -137,40 +137,24 @@ sub edit_content {
         }
     }
 
+    my $g = $self->hub->pages->ensure_current($page);
+
     my %event = (
         event_class => 'page',
         action => 'edit_save',
         page => $page,
     );
 
-    # Move attachments uploaded to 'Untitled Page'/'Untitled Spreadsheet' to the actual page
     my @attach = $self->cgi->attachment;
-    for my $a (@attach) {
-        my ($id, $page_id) = split ':', $a;
-
-        my $source = $self->hub->attachments->new_attachment(
-            id => $id,
-            page_id => $page_id
-        )->load;
-
-        my $target = $self->hub->attachments->new_attachment(
-            id => $source->id,
-            filename => $source->filename,
-        );
-
-        # move attachments that were uploaded to the incorrect page
-        if ($page_id ne $self->hub->pages->current->id) {
-            my $target_dir = $self->hub->attachments->plugin_directory;
-            $target->copy($source, $target, $target_dir);
-            $target->store(
-                user => $self->hub->current_user,
-                dir => $target_dir,
-            );
-            $source->purge($source->page);
+    for my $att_id (@attach) {
+        if ($att_id =~ /^(.+?):(.+)$/) {
+            $att_id = $1;
+            die "not attached to this page!" if $2 ne $page->id;
         }
-
-        # Remove the temporary flag from the new file
-        $target->make_permanent(user => $self->hub->current_user);
+        my $att = $self->hub->attachments->load(id => $att_id);
+        die "attachment is not temporary!" unless $att->is_temporary;
+        $att->make_permanent(
+            page => $page, user => $self->hub->current_user);
     }
 
     my $signal = $page->store(

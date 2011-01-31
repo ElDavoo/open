@@ -13,6 +13,7 @@ use Socialtext::l10n qw(loc system_locale);
 use Socialtext::String;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::Pageset;
+use Socialtext::SQL qw/sql_txn/;
 use Memoize;
 use Try::Tiny;
 
@@ -89,111 +90,76 @@ sub attachments_upload {
     my $self = shift;
     my $t = time_scope 'upload_attachments';
 
-    my @files = $self->cgi->file;
-    my @embeds = $self->cgi->embed unless $self->cgi->editmode;
+    my $temp    = $self->cgi->editmode;
+    my @files   = $self->cgi->file;
+    my @embeds  = $self->cgi->embed;
     my @replace = $self->cgi->replace;
 
-    my $error = $self->process_attachments_upload(
-        files  => \@files,
-        embed  => \@embeds,
-        replace => \@replace,
-    );
-
-    Socialtext::Timer->Pause('upload_attachments');
-
-    return $self->_finish(
-        error => $error,
-        files => [ values %{$self->{_attachment_info}} ],
-    );
-}
-
-sub process_attachments_upload {
-    my $self = shift;
-    my %p    = @_;
-
-    my @files = @{$p{files}};
-    my @embeds = @{$p{embed}};
-    my @replace = @{$p{replace}};
-
     my $count = grep { -s $_->{handle} } @files;
+    my $page = $self->hub->pages->current;
 
     return loc('The file you are trying to upload does not exist')
         unless $count;
 
     return loc('You don\'t have permission to upload attachments')
-        unless $self->hub->checker->check_permission('attachments');
+        unless ($self->hub->checker->check_permission('attachments')
+            and $self->hub->checker->can_modify_locked($page));
 
-    return loc('You don\'t have permission to upload attachments')
-        unless $self->hub->checker->can_modify_locked($self->hub->pages->current);
+    my $atts = $self->hub->attachments;
+    my $errors = '';
+    my @uploaded;
 
-    my $error = '';
-    for (my $i=0; $i < $count; $i++) {
-        my $file = $files[$i];
-        if ($replace[$i]) {
-            my $filename = $file->{filename} . '';
-            $self->_delete_similar_attachments($filename);
-        }
-        my $error_code = $self->save_attachment(
-            $file,
-            $embeds[$i],
-        );
-        if ($error_code) {
-            $error_code =~ s/\. at.*//s;    # grr... stinkin auto-added backtrace.
-            $error .= $error_code;
-        }
+    # consume as we go to reduce resources
+    while (my $file = shift @files) {
+        my $replace = shift @replace;
+        my $embed   = shift @embeds;
 
+        next unless $file->{handle};
+        my $len = -s $file->{handle};
+        next unless $len;
+
+        # this stringification is to remove tied weirdness:
+        my $filename = "$file->{filename}";
+        $embed = 0 if ($temp || $page->is_spreadsheet);
+
+        sql_txn { 
+            if ($replace) {
+                my $with_name = $atts->all(filename => $filename);
+                for my $att (@$with_name) {
+                    $att->is_temporary ? $att->purge() : $att->delete();
+                }
+            }
+
+            try {
+                my $att = $atts->create(
+                    fh             => $file->{handle},
+                    filename       => $filename,
+                    creator        => $self->hub->current_user,
+                    embed          => $embed,
+                    temporary      => $temp,
+                    content_length => $len,
+                    # TODO: extract mime-type hint?
+                    # mime_type => $file->...->{'Content-Type'},
+                );
+                push @uploaded, $att->to_hash;
+            }
+            catch {
+                s/\. at.*//s;
+                chomp;
+                $errors .= "$_\n";
+            };
+        };
     }
-    return $error;
-}
 
-sub _delete_similar_attachments {
-    my ($self, $filename) = @_;
-    my $atts = $self->hub->attachments->all(filename => $filename);
-    for my $att (@$atts) {
-        $att->is_temporary ? $att->purge() : $att->delete();
-    }
-}
-
-sub _finish {
-    my ($self, %args) = @_;
     my $renderer = Socialtext::TT2::Renderer->instance;
     return $renderer->render(
         paths    => $self->hub->skin->template_paths,
         template => 'view/attachmentresult',
-        vars     => \%args,
+        vars     => {
+            error => $errors,
+            files => \@uploaded,
+        },
     );
-}
-
-sub save_attachment {
-    my $self = shift;
-    my $file = shift; # [in] File object/hash from CGI
-    my $embed = shift; # [in/optional] boolean - true if link to file should be embedded in page; default to true
-
-    $embed = 0
-        if ($self->hub->pages->current->metadata->Type eq 'spreadsheet');
-
-
-    my $filename;
-    eval {
-        $filename = $file->{filename} . '';
-        my @files = $self->hub->attachments->create(
-            fh     => $file->{handle},
-            embed  => $embed ? 1 : 0,
-            temporary => $self->cgi->editmode,
-
-            # this stringification is to remove tied weirdness:
-            filename => $filename,
-            creator  => $self->hub->current_user,
-        );
-        for my $file (@files) {
-            $self->{_attachment_info}{$file->filename} = {
-                filename => $file->filename,
-                id => $file->id,
-            };
-        }
-    };
-
-    return $@;
 }
 
 sub attachments_listall {
