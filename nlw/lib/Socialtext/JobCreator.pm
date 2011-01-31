@@ -34,12 +34,11 @@ sub index_attachment {
     my $search_config = shift;
     my %opts = @_;
 
-    my $wksp_id = $attachment->hub->current_workspace->workspace_id;
-    my $page_id = $attachment->page->id;
+    my $wksp_id = $attachment->workspace_id;
+    my $page_id = $attachment->page_id;
     my $attach_id = $attachment->id;
 
-    return if $attachment->page->is_bad_page_title($page_id);
-    return if ($attachment->loaded && $attachment->temporary);
+    return if $attachment->is_temporary;
 
     return $self->index_attachment_by_ids(
         workspace_id => $wksp_id,
@@ -110,9 +109,6 @@ sub index_page {
         },
     });
     push @job_ids, $job_id;
-
-    # Tests need the cache cleared
-    $page->hub->attachments->cache->clear();
 
     my $attachments = $page->hub->attachments->all( page_id => $page->id );
     foreach my $attachment (@$attachments) {

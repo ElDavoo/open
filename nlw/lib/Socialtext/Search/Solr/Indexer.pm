@@ -193,13 +193,12 @@ sub page_key {
 sub index_attachment {
     my ( $self, $page_id, $attachment_or_id ) = @_;
 
-    my $attachment = ref($attachment_or_id)
+    my $attachment = blessed($attachment_or_id)
         ? $attachment_or_id
-        : Socialtext::Attachment->new(
-            hub     => $self->hub,
+        : $self->hub->attachments->load(
             id      => $attachment_or_id,
             page_id => $page_id,
-        )->load;
+        );
     my $attachment_id = $attachment->id;
     _debug("Loaded attachment: page_id=$page_id attachment_id=$attachment_id");
 
