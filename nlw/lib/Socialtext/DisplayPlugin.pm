@@ -19,6 +19,7 @@ use Socialtext::File qw/get_contents_utf8 set_contents_utf8/;
 use Apache::Cookie;
 use Socialtext::Events;
 use File::Path qw/mkpath/;
+use List::MoreUtils qw/part/;
 
 sub class_id { 'display' }
 const class_title => loc('Screen Layout');
@@ -174,7 +175,6 @@ sub display {
         $self->hub->current_workspace->name,
     ) ? 0 : 1;
 
-    my @new_attachments = ();
     my @new_tags = ();
     if ($is_new_page) {
         my $page_type = $self->cgi->page_type || '';
@@ -189,23 +189,10 @@ sub display {
                 push @new_tags, grep { $_ !~ /^template$/i }
                                 @{ $tmpl_page->metadata->Category };
                 $page->content($tmpl_page->content);
-        
-                my $attachments = $self->hub->attachments->all(
-                    page_id => $tmpl_page->id
-                );
-                my $plugin_dir = $self->hub->attachments->plugin_directory;
-                for my $a (@$attachments) {
-                    my $target = $self->hub->attachments->new_attachment(
-                        id => $a->id,
-                        filename => $a->filename,
-                    );
-                    $target->copy($a, $target, $plugin_dir);
-                    $target->temporary(1);
-                    $target->store(user => $self->hub->current_user);
 
-                    # Keep track of temporary attachments for deletion
-                    push @new_attachments, $target;
-                }
+                # Attachments used to be copied to the new page here.  Since
+                # they can now exist in the database before the page is
+                # finalized, there's no longer this need.
             }
         }
     }
@@ -214,9 +201,7 @@ sub display {
     }
     $page->load;
 
-    if (!$is_new_page &&
-        !$page->is_untitled)
-    {
+    if (!$is_new_page && !$page->is_untitled) {
         eval {
             Socialtext::Events->Record({
                 event_class => 'page',
@@ -228,7 +213,7 @@ sub display {
     }
 
     return $self->_render_display($page, $is_new_page, $start_in_edit_mode,
-                                  \@new_tags, \@new_attachments);
+                                  \@new_tags);
 }
 
 sub _render_display {
@@ -237,7 +222,6 @@ sub _render_display {
     my $is_new_page = shift;
     my $start_in_edit_mode = shift;
     my $new_tags = shift;
-    my $new_attachments = shift;
 
     my $include_recent_changes
         = $self->preferences->include_in_pages->value;
@@ -265,17 +249,12 @@ sub _render_display {
         $cookies->{'st-page-accessories'}->value
     ) || 'show';
 
-    # Fake out a call to the REST API to get attachments.
-    # XXX - This should probably be more standard.
-    use Socialtext::Rest::Attachments;
-    my $rest_object = Socialtext::Rest::Attachments->new($self->hub->rest,
-        { ws => $self->hub->current_workspace->name });
+    my ($attachments, $new_attachments) =
+        part { $_->{is_temporary} ? 1 : 0 } 
+        map { $_->to_hash(formatted => 1) }
+        @{$self->hub->attachments->all(page_id => $page->id)};
 
-    my $all_attachments = [
-        map { $rest_object->_entity_hash($_) }
-        @{$self->hub->attachments->all(page_id => $page->id)},
-    ];
-
+    # TODO: Thunk like in global_template_vars?
     return $self->template_render(
         template => 'view/page/display',
         vars     => {
@@ -305,10 +284,8 @@ sub _render_display {
             is_incipient            => ($self->cgi->is_incipient ? 1 : 0),
             start_in_edit_mode      => $start_in_edit_mode,
             new_tags                => $new_tags,
-            attachments             => $all_attachments,
-            new_attachments         => [
-                map { $rest_object->_entity_hash($_) } @$new_attachments
-            ],
+            attachments             => $attachments,
+            new_attachments         => $new_attachments,
             watching                => $self->hub->watchlist->page_watched,
             login_and_edit_path => '/challenge?'
                 . $self->uri_escape(
@@ -319,8 +296,7 @@ sub _render_display {
             wikiwyg_double =>
                 $self->hub->wikiwyg->preferences->wikiwyg_double->value,
             Socialtext::BrowserDetect::safari()
-            ? ( raw_wikitext => $page->content )
-            : (),
+                ? ( raw_wikitext => $page->content ) : (),
             current_user_workspace_count =>
                 $self->hub->current_user->workspace_count,
             tools => $self->hub->registry->lookup->tool,

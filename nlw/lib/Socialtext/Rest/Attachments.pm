@@ -57,12 +57,7 @@ sub number_formatter {
 
 sub _entity_hash {
     my ($self, $att) = @_;
-    my $hash = $att->to_hash;
-    my $bytes = $att->content_length;
-    $hash->{size} = $bytes < 1024
-        ? "$bytes bytes" : $self->number_formatter->format_bytes($bytes);
-    $hash->{local_date} = $self->hub->timezone->get_date($att->created_at);
-    return $hash;
+    return $att->to_hash(formatted => 1);
 }
 
 1;

@@ -1,5 +1,6 @@
 package Socialtext::Attachment;
 # @COPYRIGHT@
+use feature ':5.12';
 use Moose;
 use MooseX::StrictConstructor;
 use Carp qw/croak confess/;
@@ -382,9 +383,10 @@ sub download_link {
 }
 
 sub to_hash {
-    my $self = shift;
+    my ($self, %p) = @_;
+    state $nf = Number::Format->new;
     my $user = $self->creator;
-    return +{
+    my $hash = {
         id   => $self->id,
         uuid => $self->attachment_uuid,
         name => $self->filename,
@@ -396,7 +398,17 @@ sub to_hash {
         uploader_name    => $user->display_name,
         uploader_id      => $user->user_id,
         'page-id'        => $self->page_id,
+        ($self->is_temporary ? (is_temporary => 1) : ()),
     };
+
+    if ($p{formatted}) {
+        my $bytes = $self->content_length;
+        $hash->{size} = $bytes < 1024
+            ? "$bytes bytes" : $nf->format_bytes($bytes);
+        $hash->{local_date} = $self->hub->timezone->get_date($self->created_at);
+    }
+
+    return $hash;
 }
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 1);
