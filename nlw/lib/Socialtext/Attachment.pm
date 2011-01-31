@@ -6,6 +6,7 @@ use Carp qw/croak confess/;
 use Scalar::Util qw/blessed/;
 use Try::Tiny;
 use Fcntl qw/LOCK_EX/;
+use File::Basename;
 
 use Socialtext::Upload;
 use Socialtext::File ();
@@ -48,8 +49,8 @@ has 'upload' => (
     lazy_build => 1,
     handles => [qw(
         attachment_uuid clean_filename content_length created_at
-        created_at_str creator creator_id ensure_stored filename is_image
-        is_temporary mime_type protected_uri short_name to_string
+        created_at_str creator creator_id disk_filename ensure_stored filename
+        is_image is_temporary mime_type protected_uri short_name to_string
     )],
     trigger => sub { $_[0]->_attachment_id($_[1]->attachment_id) },
 );
@@ -220,57 +221,46 @@ sub inline {
 
 sub extract {
     my $self = shift;
+    require Socialtext::ArchiveExtractor;
     my $t = time_scope 'attachment_extract';
+    my $cur_guard = $self->hub->pages->ensure_current($self->page_id);
 
-    die "TODO: unzip and add these too";
     # TODO: de-duplicate files by doing md5 lookups and multiply-assigning
     # Uploads to attachments.
 
-#     my $filename = join '/',
-#         $self->hub->attachments->plugin_directory,
-#         $self->page_id,
-#         $self->id,
-#         $self->db_filename;
-# 
-#     my $tmpdir = File::Temp::tempdir( CLEANUP => 1 );
-# 
-#     # Socialtext::ArchiveExtractor uses the extension to figure out how to extract the
-#     # archive, so that must be preserved here.
-#     my $basename = File::Basename::basename($filename);
-#     my $tmparchive = "$tmpdir/$basename";
-# 
-#     open my $tmpfh, '>', $tmparchive
-#         or die "Couldn't open $tmparchive for writing: $!";
-#     File::Copy::copy($filename, $tmpfh)
-#         or die "Cannot save $basename to $tmparchive: $!";
-#     close $tmpfh;
-# 
-#     my @files = Socialtext::ArchiveExtractor->extract( archive => $tmparchive );
-#     # If Socialtext::ArchiveExtractor couldn't extract anything we'll
-#     # attach the archive file itself.
-#     @files = $tmparchive unless @files;
-# 
-#     for my $file (@files) {
-#         open my $fh, '<', $file or die "Cannot read $file: $!";
-# 
-#         my $attachment = Socialtext::Attachment->new(
-#             hub      => $self->hub,
-#             filename => $file,
-#             fh       => $fh,
-#             creator  => $self->hub->current_user,
-#             page_id  => $self->page_id,
-#         );
-#         $attachment->save($fh);
-#         my $creator = $self->hub->current_user;
-#         $attachment->store(user => $creator);
-#         $attachment->inline( $self->page_id, $creator );
-#     }
-# 
-#     $self->hub->attachments->cache->clear();
-#     
-#     return;
-}
+    # Socialtext::ArchiveExtractor uses the extension to figure out how to
+    # extract the archive, so that must be preserved here.
+    my $tmpdir = File::Temp::tempdir(CLEANUP => 1);
+    my $archive = "$tmpdir/".$self->clean_filename;
 
+    $self->ensure_stored();
+    File::Copy::copy($self->disk_filename, $archive);
+
+    my @files = Socialtext::ArchiveExtractor->extract(archive => $archive);
+    # before everything-in-the-db this used to try to add the archive itself
+    return unless @files;
+
+    my $attachments = $self->hub->attachments;
+    sql_txn {
+        my @atts;
+        for my $file (@files) {
+            my $filename = File::Basename::basename($file);
+            my $att = $attachments->create(
+                filename  => $filename,
+                fh        => $file,
+                page_id   => $self->page_id,
+                embed     => 1,
+                temporary => 1,
+            );
+            push @atts, $att;
+        }
+        $_->make_permanent(user => $self->hub->current_user) for @atts;
+    };
+
+    $self->hub->attachments->cache->clear();
+
+    return;
+}
 
 sub dimensions {
     my ($self, $size) = @_;
@@ -361,10 +351,8 @@ sub should_popup {
 sub image_or_file_wafl {
     my $self = shift;
     my $filename = $self->filename;
-
-    return $self->is_image
-      ? "{image: $filename}\n\n"
-      : "{file: $filename}\n\n";
+    my $wafl = $self->is_image ? "image" : "file";
+    return "{$wafl\: $filename}\n\n";
 }
 
 my $ExcerptLength = 350;

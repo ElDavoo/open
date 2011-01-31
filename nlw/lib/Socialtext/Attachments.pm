@@ -143,32 +143,43 @@ sub attachment_exists {
     return $n ? 1 : 0;
 }
 
+around 'create' => \&sql_txn;
 sub create {
     my ($self, %args) = @_;
     my $t = time_scope 'attach_create';
+    my $hub = $self->hub;
+    $args{creator} ||= $hub->current_user;
+    $args{page_id} ||= $hub->pages->current->id;
 
-    $args{page_id} ||= $self->hub->pages->current->id;
+    my $cur_guard = $hub->pages->ensure_current($args{page_id});
 
-    my $upload = Socialtext::Upload->Create(
-        creator        => $args{creator},
-        filename       => $args{filename},
-        temp_filename  => $args{fh},
-        content_length => -s $args{fh},
-        mime_type      => $args{'Content_type'},
+    my $upload;
+    if ($args{attachment_uuid}) {
+        $upload = Socialtext::Upload->Get(
+            attachment_uuid => $args{attachment_uuid});
+    }
+    else {
+        my $ct = $args{mime_type} ||
+                 $args{content_type} ||
+                 $args{'Content_type'} ||
+                 $args{'content-type'};
+        $upload = Socialtext::Upload->Create(
+            creator        => $args{creator},
+            filename       => $args{filename},
+            temp_filename  => $args{fh},
+            content_length => -s $args{fh},
+            mime_type      => $ct,
+        );
+    }
+
+    my $att = Socialtext::Attachment->new(
+        upload  => $upload,
+        hub     => $hub,
+        page_id => $args{page_id},
     );
-    warn "made upload. temp? ".$upload->is_temporary;
-    my $attachment = Socialtext::Attachment->new(
-        hub          => $self->hub,
-        upload       => $upload,
-        page_id      => $args{page_id},
-    );
-    warn "made attachment. temp? ".$upload->is_temporary;
-
-    $attachment->store(user => $args{creator});
-    warn "stored attachment. temp? ".$upload->is_temporary;
-    $attachment->inline($args{page_id}, $args{creator})
-        if $args{embed};
-    return $attachment;
+    $att->store(user => $args{creator}, temporary => $args{temporary});
+    $att->inline($args{creator}) if $args{embed};
+    return $att;
 }
 
 sub all_attachments_in_workspace {
@@ -218,7 +229,7 @@ sub id_for_filename {
                 AND p.page_id = $2
                 AND NOT p.deleted
            )
-           AND lower(pa.filename) = lower($3)
+           AND lower(a.filename) = lower($3)
          ORDER BY a.created_at DESC
          LIMIT 1
     }, $ws_id, $page_id, $filename);

@@ -5,6 +5,7 @@ use warnings;
 
 use base 'Socialtext::Base';
 
+use Carp;
 use Class::Field qw( const field );
 use Email::Valid;
 use Socialtext::Log 'st_log';
@@ -20,7 +21,7 @@ use Socialtext::l10n qw( loc );
 use Socialtext::String ();
 use Socialtext::SQL qw/sql_execute sql_format_timestamptz/;
 use Scalar::Util qw/blessed/;
-use Guard qw/scope_guard/;
+use Guard qw/guard scope_guard/;
 
 sub class_id { 'pages' }
 const class_title => 'NLW Pages';
@@ -314,6 +315,7 @@ generated. A scabrous thing, but necessary in the current UI.
 Returns a L<Socialtext::Page> object.
 
 =cut
+
 sub create_new_page {
     my $self = shift;
 
@@ -437,6 +439,24 @@ sub page_with_spreadsheet_wikitext {
     }
     $new->content($wikitext);
     return $new;
+}
+
+# Ensures that the 'current' page is the specified one.
+#
+# If the current page is indeed the specified one, no action is taken.
+#
+# If it isn't current, the specified page is made current and a Guard is
+# returned that will set it back to the previously-current page.
+#
+# Note that if called in a void context this method will do nothing.
+sub ensure_current {
+    my ($self, $pg_or_id) = shift;
+    croak "don't call ensure_current in a void context"
+        unless defined wantarray;
+    my $page = blessed($pg_or_id) ? $pg_or_id : $self->new_page($pg_or_id);
+    my $cur = $self->current;
+    $self->current($page);
+    return guard { $self->current($cur) };
 }
 
 ################################################################################
