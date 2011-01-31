@@ -96,6 +96,128 @@ sub new_id {
     );
 }
 
+sub store {
+    my $self = shift;
+    my %p = @_;
+    $p{user} //= $self->has_hub ? $self->hub->current_user : undef;
+    my $is_temp = $p{temporary} ? 1 : 0;
+    confess('no user given to Socialtext::Attachment->store')
+        unless $p{user};
+
+    croak "Can't save an attachment without an associated Upload object"
+        unless $self->has_upload;
+    croak "Can't store once deleted (calling delete() does a store())"
+        if $self->deleted;
+
+    my %args = map { $_ => $self->$_ } COLUMNS;
+    $args{deleted} = 0;
+
+    try {
+        sql_txn {
+            my $guard = $self->upload->make_permanent(
+                actor => $p{user}, guard => 1
+            ) unless $is_temp;
+            sql_insert('page_attachment' => \%args);
+            $guard->cancel() if $guard;
+        };
+    }
+    catch {
+        croak "store page attachment failed: ".
+            "attachment already exists? error: $_"
+            if /primary.key/i;
+        die $_;
+    };
+
+    $self->reindex() unless $is_temp;
+    return;
+}
+
+sub reindex {
+    my $self = shift;
+    return if $self->is_temporary;
+    require Socialtext::JobCreator;
+    Socialtext::JobCreator->index_attachment($self);
+    return;
+}
+
+sub make_permanent {
+    my $self = shift;
+    my %p = @_;
+    $p{user} //= $self->has_hub ? $self->hub->current_user : undef;
+    confess('no user given to Socialtext::Attachment->make_permanent')
+        unless $p{user};
+
+    # Use a guard if anything tricky can happen between perma-fying and
+    # returning:
+    $self->upload->make_permanent(
+        actor => $p{user}, no_log => $p{no_log}, guard => 0);
+    $self->reindex();
+
+    return;
+}
+
+sub delete {
+    my $self = shift;
+    my %p = @_;
+    $p{user} //= $self->has_hub ? $self->hub->current_user : undef;
+    confess('no user given to Socialtext::Attachment->delete')
+        unless $p{user};
+    confess "can't delete an attachment that isn't saved yet"
+        unless $self->has_upload;
+
+    sql_txn {
+        sql_execute(q{
+            UPDATE page_attachment SET deleted = true WHERE attachment_id = ?
+        }, $self->attachment_id);
+        local $!;
+        $self->upload->delete(actor => $p{user});
+    };
+
+    $self->reindex();
+    return;
+}
+
+sub purge {
+    my $self = shift;
+
+    # clean up the index first
+    my $ws = $self->workspace;
+    my $ws_name = $ws->name;
+
+    my $u = $self->upload;
+    sql_txn {
+        sql_execute(q{
+            DELETE FROM page_attachment
+            WHERE workspace_id = ? AND page_id = ? AND attachment_id = ?
+        }, $ws->workspace_id, $self->page_id, $u->attachment_id);
+        $u->purge(actor => $self->hub->current_user);
+    };
+
+    # If solr/kino are slow, we may wish to do this async in a job.  Note that
+    # jobs generally require the attachment object to be available.
+    require Socialtext::Search::AbstractFactory;
+    my @indexers = Socialtext::Search::AbstractFactory->GetIndexers($ws_name);
+    for my $indexer (@indexers) {
+        $indexer->delete_attachment($self->page_id, $self->id);
+    }
+}
+
+sub inline {
+    my ($self, $user) = @_;
+    croak "can't inline without a hub" unless $self->has_hub;
+    $user //= $self->hub->current_user;
+
+    # a page object/id used to be the first parameter:
+    croak "user is required as the first argument"
+        unless blessed($user) && $user->isa('Socialtext::User');
+
+    my $page = $self->page;
+    my $guard = $self->hub->pages->ensure_current($page);
+    $page->metadata->update(user => $user);
+    $page->content($self->image_or_file_wafl() . $page->content);
+    $page->store(user => $user);
+}
+
 sub extract {
     my $self = shift;
     my $t = time_scope 'attachment_extract';
@@ -162,7 +284,7 @@ sub dimensions {
     return [$1 || 0, $2 || 0] if $size =~ /^(\d+)(?:x(\d+))?$/;
 }
 
-sub _prepare_to_serve_image {
+sub _prep_image {
     my ($self, $flavor) = @_;
 
     my $original = $self->disk_filename;
@@ -212,7 +334,7 @@ sub prepare_to_serve {
         ($uri) = $protected
             ? ($self->protected_uri.".$flavor")
             : ($self->download_uri($flavor));
-        $content_length = $self->_prepare_to_serve_image($flavor);
+        $content_length = $self->_prep_image($flavor);
     }
 
     if (!$content_length) {
@@ -223,97 +345,6 @@ sub prepare_to_serve {
 
     return ($uri, $content_length) if wantarray;
     return $uri;
-}
-
-sub store {
-    my $self = shift;
-    my %p = @_;
-    $p{user} //= $self->has_hub ? $self->hub->current_user : undef;
-    confess('no user given to Socialtext::Attachment->store')
-        unless $p{user};
-
-    croak "Can't save an attachment without an associated Upload object"
-        unless $self->has_upload;
-    croak "Can't store once deleted (calling delete() does a store())"
-        if $self->deleted;
-
-    my %args = map { $_ => $self->$_ } COLUMNS;
-    $args{deleted} = 0;
-
-    try {
-        sql_txn {
-            my $guard = $self->upload->make_permanent(actor => $p{user})
-                unless $p{temporary};
-            sql_insert('page_attachment' => \%args);
-        };
-    }
-    catch {
-        croak "store page attachment failed: attachment already exists?"
-            if (/primary.key/i);
-        die $_;
-    };
-
-    if ($p{temporary}) {
-        # Don't index the attachment, but make sure it's in the storage area
-        # on disk.
-        $self->ensure_stored();
-        return;
-    }
-
-    $self->reindex();
-    return;
-}
-
-sub reindex {
-    my $self = shift;
-    require Socialtext::JobCreator;
-    Socialtext::JobCreator->index_attachment($self);
-    return;
-}
-
-sub make_permanent {
-    my $self = shift;
-    my %p = @_;
-    $p{user} //= $self->has_hub ? $self->hub->current_user : undef;
-    confess('no user given to Socialtext::Attachment->make_permanent')
-        unless $p{user};
-    croak "attachment is not temporary!" unless $self->is_temporary;
-    my $guard = $self->upload->make_permanent(actor => $p{user});
-    $self->reindex();
-    return;
-}
-
-sub delete {
-    my $self = shift;
-    my %p = @_;
-    $p{user} //= $self->has_hub ? $self->hub->current_user : undef;
-    confess('no user given to Socialtext::Attachment->delete')
-        unless $p{user};
-    confess "can't delete an attachment that isn't saved yet"
-        unless $self->has_upload;
-
-    sql_txn {
-        sql_execute(q{
-            UPDATE page_attachment SET deleted = true WHERE attachment_id = ?
-        }, $self->attachment_id);
-        local $!;
-        $self->upload->delete(actor => $p{user});
-    };
-
-    $self->reindex();
-    return;
-}
-
-sub inline {
-    my ($self, $page, $user) = @_;
-    $user //= $self->has_hub ? $self->hub->current_user : undef;
-
-    croak "page argument isn't blessed" unless blessed($page);
-
-    $page->metadata->update(user => $user);
-    # prepend wafl
-    $page->content($self->image_or_file_wafl() . $page->content);
-    $page->store(user => $user);
 }
 
 sub should_popup {
@@ -344,30 +375,6 @@ sub preview_text {
     $excerpt = substr( $excerpt, 0, $ExcerptLength ) . '...'
         if length $excerpt > $ExcerptLength;
     return $excerpt;
-}
-
-sub purge {
-    my $self = shift;
-
-    # clean up the index first
-    my $ws = $self->workspace;
-    my $ws_name = $ws->name;
-
-    my $u = $self->upload;
-    sql_txn {
-        sql_execute(q{
-            DELETE FROM page_attachment
-            WHERE workspace_id = ? AND page_id = ? AND attachment_id = ?
-        }, $ws->workspace_id, $self->page_id, $u->attachment_id);
-        $u->purge(actor => $self->hub->current_user);
-    };
-
-    # If solr/kino are slow, we may wish to do this async in a job.
-    require Socialtext::Search::AbstractFactory;
-    my @indexers = Socialtext::Search::AbstractFactory->GetIndexers($ws_name);
-    for my $indexer (@indexers) {
-        $indexer->delete_attachment($self->page_id, $self->id);
-    }
 }
 
 sub download_uri {
