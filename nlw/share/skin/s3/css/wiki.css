@@ -246,6 +246,11 @@ html .wiki a:hover {
     border: 1px solid black;
     padding: 0.2em;
 }
+.wiki div.inlineWidget table th,
+.wiki div.inlineWidget table td {
+    border: 0px;
+    padding: inherit;
+}
 .wiki table.st-ss th,
 .wiki table.st-ss td {
     border: inherit;

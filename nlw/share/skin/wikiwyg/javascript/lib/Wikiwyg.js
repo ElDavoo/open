@@ -2048,6 +2048,7 @@ proto.do_opensocial_gallery = function() {
 
                             $btnCell.append($button.click(function(){
                                 $('#lightbox').unbind('lightbox-unload').bind('lightbox-unload', function(){
+                                    Wikiwyg.Widgets.widget_editing = 1;
                                     self.do_opensocial_setup(src);
                                 });
                                 jQuery.hideLightbox();
@@ -2095,7 +2096,9 @@ proto.do_opensocial_setup = function(src) {
             args.push(key + '=' + encodeURI(val));
         });
 
+        // XXX - Check for same-named widget for #2 etc
         self.insert_widget('{widget: ' + args.join(' ') + '}');
+
         jQuery.hideLightbox();
         return false;
     });
@@ -2117,10 +2120,9 @@ proto.do_opensocial_setup = function(src) {
     });
 
 
-    $('#lightbox').unbind('lightbox-unload');
-    // XXX - Check for same-named widget for #2 etc
-    // self.insert_widget('{widget: ' + src + '}');
-//    alert("Setup:" + widget_element);
+    $('#lightbox').unbind('lightbox-unload').bind('lightbox-unload', function(){
+        Wikiwyg.Widgets.widget_editing = 0;
+    });
 }
 
 proto._do_insert_block_dialog = function(opts) {
