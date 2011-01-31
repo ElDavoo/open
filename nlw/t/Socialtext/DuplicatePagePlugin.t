@@ -5,10 +5,13 @@ use warnings;
 use strict;
 
 use Test::Socialtext tests => 39;
-fixtures( 'admin', 'foobar', 'destructive' );
+use File::Temp;
+fixtures('db');
 
-my $admin = new_hub('admin');
-my $foobar = new_hub('foobar');
+my $admin = create_test_hub('admin');
+my $foobar = create_test_hub('foobar');
+$admin->current_workspace->add_user(user => $foobar->current_user);
+$foobar->current_workspace->add_user(user => $admin->current_user);
 
 {
     my $page = $admin->pages->new_from_name('interwiki copy test in admin');
@@ -58,10 +61,10 @@ my $foobar = new_hub('foobar');
     $page_admin->content('This page copy is supposed to fail');
     $page_admin->store( user => $admin->current_user );
     $page_foobar->content('This page copy is supposed to be clobbered');
-    $page_foobar->store( user => $admin->current_user );
+    $page_foobar->store( user => $foobar->current_user );
 
-    my $return = $page_admin->duplicate( $foobar->current_workspace, 'interwiki copy three',
-        '', '', 'interwiki copy three' );
+    my $return = $page_admin->duplicate( $foobar->current_workspace,
+        'interwiki copy three', '', '', 'interwiki copy three' );
 
     $page_admin = $admin->pages->new_from_name('interwiki copy three');
     $page_foobar = $foobar->pages->new_from_name('interwiki copy three');
@@ -144,20 +147,18 @@ my $foobar = new_hub('foobar');
     my $page_admin_two =
         $admin->pages->new_from_name('intrawiki copy four');
 
-    my $temp_file = "/tmp/attachment.$$";
-    open my $fh, '>', $temp_file
-        or die "Cannot write to $temp_file: $!";
-    print $fh 'my test content'
-        or die "Cannot write to $temp_file: $!";
-    close $fh;
+    my $temp_file = File::Temp->new(CLEANUP => 1);
+    print $temp_file 'my test content';
+    close $temp_file;
 
     $admin->pages->current($page_admin_one);
-    my $attachment = $admin->attachments->new_attachment(
-        filename => "/tmp/attachment.$$.txt");
-    $attachment->save("$temp_file");
-    $attachment->store( user => $admin->current_user );
+    my $attachment = $admin->attachments->create(
+        fh => "$temp_file",
+        filename => "/tmp/attachment.$$.txt",
+        user => $admin->current_user,
+    );
 
-    unlink $temp_file;
+    unlink $temp_file; undef $temp_file;
 
     $page_admin_one->content('This page copy is supposed to succeed');
     $page_admin_one->store( user => $admin->current_user );
@@ -222,11 +223,11 @@ my $foobar = new_hub('foobar');
     close $fh;
 
     $admin->pages->current($page_admin_one);
-    $admin->attachments;
-    my $attachment = $admin->attachments->new_attachment(
-        filename => "/tmp/space in name - $$");
-    $attachment->save("$temp_file");
-    $attachment->store( user => $admin->current_user );
+    my $attachment = $admin->attachments->create(
+        fh => $temp_file,
+        filename => "space in name - $$",
+        user => $admin->current_user,
+    );
 
     unlink $temp_file;
 
