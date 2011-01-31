@@ -1,0 +1,114 @@
+[%- USE html_encode -%]
+[%- USE decorate -%]
+[%- USE label_ellipsis -%]
+[%- USE JSON -%]
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    [% PROCESS element/css_links %]
+    [% IF loc_lang != 'en' %]
+    <script type="text/javascript" charset="utf-8"
+      src="/static/skin/s2/javascript/l10ns.js.gz">
+    </script>
+    [% END %]
+
+    <script type="text/javascript" charset="utf-8"
+      src="/static/skin/s3/javascript/socialtext-s3.js.gz">
+    </script>
+
+<script>
+function nlw_make_s2_path(rest) {
+      return "/static/skin/s2" + rest;
+}
+function nlw_make_s3_path(rest) {
+      return "/static/skin/s3" + rest;
+}
+function nlw_make_skin_path(rest) {
+      return "/static/skin/s3" + rest;
+}
+function nlw_make_static_path(rest) {
+      return "/static/" + rest;
+}
+
+function nlw_make_plugin_path(rest) {
+      return "/static/".replace(/static/, 'nlw/plugin') + rest;
+}
+</script>
+<style>
+body {
+    background-image: none; !important;
+    background-color: #f0f0f0; !important;
+}
+li.fixed {
+    list-style-type: none;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+div.widget {
+    background: url("/static/skin/s3/images/widgetTop.png") no-repeat scroll left top transparent !important;
+    width: 450px !important;
+}
+
+div.widgetHeaderTitle {
+    padding: 3px 3px 0 10px !important;
+}
+
+span.widgetHeaderTitleText {
+    color: black !important;
+    font-size: 11px !important;
+    font-weight: bold !important;
+}
+
+div.widgetContent {
+    background: url("/static/skin/s3/images/widgetRight.png") repeat-y scroll right top transparent !important;
+    border-left: 1px solid #DEDEDE !important;
+    padding: 5px 0 !important;
+}
+
+div.widgetHeader {
+    background: url("/static/skin/s3/images/widgetHeader.png") no-repeat scroll right top transparent !important;
+    height: 25px !important;
+}
+
+div.widgetBottom {
+    background: url("/static/skin/s3/images/widgetBottom.png") no-repeat scroll left bottom transparent !important;
+    height: 10px !important;
+}
+
+div.widgetBottomRight {
+    background: url("/static/skin/s3/images/widgetBottomRight.png") no-repeat scroll right bottom transparent !important;
+    height: 10px !important;
+}
+
+.widgetHeaderButtons .close, .widgetHeaderButtons .minimize, .widgetHeaderButtons .fix {
+    display: none !important;
+}
+
+.widgetHeaderButtons .settings {
+    top: 6px !important;
+    margin-right: 6px !important;
+}
+
+.widgetPush {
+    display: none;
+}
+</style>
+    [% INCLUDE element/container_head share="/nlw/plugin/widgets" %]
+  </head>
+  <body id="dashBoard">
+    <div id="mainWrap" style="width: 450px">
+      <div id="st-display-mode-container" class="st-content">
+    [% SET gadget = container.gadgets.0.0 %]
+    [% SET num = 0 %]
+    [% SET col = 0 %]
+    [% PROCESS widget/element editing=1 %]
+<script>
+var gadgets = gadgets || {};
+    gadgets.container = gadgets.container || new gadgets.Container();
+    gadgets.container.base_url = '/data/wafl-containers/[% container.name |uri %]';
+</script>
+      </div><!-- contentWrap END -->
+    </div><!-- mainWrap END -->
+  </body>
+</html>

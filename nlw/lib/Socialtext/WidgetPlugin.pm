@@ -11,12 +11,84 @@ use Socialtext::Paths ();
 
 const class_id    => 'widget';
 const class_title => 'WidgetPlugin';
+const cgi_class   => 'Socialtext::WidgetPlugin::CGI';
 
 sub register {
     my $self = shift;
     my $registry = shift;
+    $registry->add(action => 'widget_setup_screen');
     $registry->add(wafl => widget => 'Socialtext::WidgetPlugin::Wafl');
 }
+
+sub get_container_for_gadget {
+    my $self = shift;
+    my ($workspace_name, $page_id, $widget, $serial, $encoded_prefs) = @{$_[0]}{
+        qw( workspace_name page_id widget serial encoded_prefs )
+    };
+
+    return unless $widget and $workspace_name and $page_id;
+
+    $serial ||= 1;
+    $encoded_prefs ||= '';
+    $widget = "local:widgets:$widget" unless $widget =~ /:/;
+
+    my $ws = Socialtext::Workspace->new( name => $workspace_name ) or return;
+
+    my $container = Socialtext::Gadgets::Container::Wafl->Fetch(
+        owner => $ws,
+        viewer => $self->hub->current_user,
+        name => "$widget##$workspace_name##$page_id##$serial",
+    );
+
+    my $gadget = $container->gadgets->[0];
+    if (!$gadget) {
+        $container->delete;
+        return;
+    }
+
+    my $original_prefs = $gadget->preference_hash;
+    for my $pref (split /\s+/, $encoded_prefs) {
+        $pref =~ /^([^\s=]+)=(\S*)/ or next;
+        my ($key, $val) = ($1, Socialtext::String::uri_unescape($2));
+        if (exists $original_prefs->{$key} and $original_prefs->{$key} ne $val) {
+            $gadget->set_preference($key => $val);
+        }
+    }
+
+    return($container, $gadget);
+}
+
+sub widget_setup_screen {
+    my $self = shift;
+    my ($container, $gadget) = $self->get_container_for_gadget({
+        map { $_ => scalar $self->cgi->$_ }
+            qw( workspace_name page_id widget serial encoded_prefs )
+    }) or return;
+
+    if ($self->cgi->do_delete_container) {
+        $container->delete;
+        return '{"deleted": 1}';
+    }
+
+    return $self->hub->template->process("view/container.setup",
+        $self->hub->helpers->global_template_vars,
+        pluggable => $self->hub->pluggable,
+        container => $container->template_vars,
+    );
+}
+
+################################################################################
+package Socialtext::WidgetPlugin::CGI;
+
+use base 'Socialtext::CGI';
+use Socialtext::CGI qw( cgi );
+
+cgi 'workspace_name';
+cgi 'page_id';
+cgi 'widget';
+cgi 'serial';
+cgi 'encoded_prefs';
+cgi 'do_delete_container';
 
 ################################################################################
 package Socialtext::WidgetPlugin::Wafl;
@@ -32,35 +104,15 @@ const wafl_reference_parse => qr/^\s*([^\s#]+)(?:\s*#(\d+))?((?:\s+[^\s=]+=\S*)*
 sub html {
     my $self = shift;
     my ($widget, $serial, $encoded_prefs) = $self->arguments =~ $self->wafl_reference_parse;
+    my ($container, $gadget) = $self->hub->widget->get_container_for_gadget({
+        workspace_name => $self->hub->current_workspace->name,
+        page_id => $self->current_page_id,
+        widget => $widget,
+        serial => $serial,
+        encoded_prefs => $encoded_prefs,
+    });
 
-    return loc("Sorry, we cannot display this widget.") unless $widget;
-
-    $serial ||= 1;
-    $encoded_prefs ||= '';
-    $widget = "local:widgets:$widget" unless $widget =~ /:/;
-
-    my $page_id = $self->current_page_id;
-    my $ws_name = $self->hub->current_workspace->name;
-    my $container = Socialtext::Gadgets::Container::Wafl->Fetch(
-        owner => $self->hub->current_workspace, 
-        viewer => $self->hub->current_user,
-        name => "$widget##$ws_name##$page_id##$serial",
-    );
-
-    my $gadget = $container->gadgets->[0];
-    if (!$gadget) {
-        $container->delete;
-        return loc("Sorry, we cannot display this widget.");
-    }
-
-    my $original_prefs = $gadget->preference_hash;
-    for my $pref (split /\s+/, $encoded_prefs) {
-        $pref =~ /^([^\s=]+)=(\S*)/ or next;
-        my ($key, $val) = ($1, Socialtext::String::uri_unescape($2));
-        if (exists $original_prefs->{$key} and $original_prefs->{$key} ne $val) {
-            $gadget->set_preference($key => $val);
-        }
-    }
+    return loc("Sorry, we cannot display this widget.") unless $container and $widget;
 
     return $self->hub->template->process($container->view_template,
         pluggable => $self->hub->pluggable,
