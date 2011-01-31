@@ -1277,60 +1277,57 @@ sub is_spreadsheet { $_[0]->metadata->Type eq 'spreadsheet' }
 sub delete {
     my $self = shift;
     my %p = @_;
+    my $t = 'page_delete';
 
-    my $timer = Socialtext::Timer->new;
-
+    my $user = $p{user};
     Carp::confess('no user given to Socialtext::Page->delete')
         unless $p{user};
 
-    my @indexers = Socialtext::Search::AbstractFactory->GetIndexers(
-        $self->hub->current_workspace->name);
-    foreach my $attachment ( $self->attachments ) {
-        my @args = ($self->uri, $attachment->id);
-        for my $indexer (@indexers) {
-            $indexer->delete_attachment( @args );
-        }
-    }
-
     $self->load;
-    $self->content('');
-    $self->metadata->Category([]);
-    $self->store( user => $p{user} );
 
-    Socialtext::Events->Record({
-        event_class => 'page',
-        action => 'delete',
-        page => $self,
-    });
+    sql_txn {
+        my $atts = $self->hub->attachments->all(page_id => $self->id);
+        for my $att (@$atts) {
+            $att->delete(user => $user) unless $att->is_deleted;
+        }
+
+        $self->content('');
+        $self->metadata->Category([]);
+        $self->store(user => $user);
+
+        Socialtext::Events->Record({
+            event_class => 'page',
+            action => 'delete',
+            page => $self,
+        });
+    };
     return;
 }
 
 sub purge {
     my $self = shift;
+    my %p = @_;
+    my $t = 'page_purge';
+
+    my $user = $p{user} || Socialtext::User->SystemUser;
+    my $id = $self->id;
+    my $wksp_id = $self->hub->current_workspace->workspace_id;
 
     # clean up the index first
     my $indexer
         = Socialtext::Search::AbstractFactory->GetFactory->create_indexer(
         $self->hub->current_workspace->name );
-
-    foreach my $attachment ( $self->attachments ) {
-        $indexer->delete_attachment( $self->uri, $attachment->id );
-    }
-
     $indexer->delete_page( $self->uri);
 
-    my $hash    = $self->hash_representation;
-    my $wksp_id = $self->hub->current_workspace->workspace_id;
     sql_txn {
-        sql_execute('DELETE FROM page WHERE workspace_id = ? and page_id = ?',
-            $wksp_id, $hash->{page_id}
-        );
-        sql_execute('DELETE FROM page_revision WHERE workspace_id = ? and page_id = ?',
-            $wksp_id, $hash->{page_id}
-        );
-        sql_execute('DELETE FROM page_tag WHERE workspace_id = ? and page_id = ?',
-            $wksp_id, $hash->{page_id}
-        );
+        my $atts = $self->hub->attachments->all(page_id => $self->id);
+        for my $att (@$atts) {
+            $att->purge(user => $user);
+        }
+        sql_execute(
+            qq{DELETE FROM $_ WHERE workspace_id = ? and page_id = ?},
+            $wksp_id, $id
+        ) for qw(page_revision page_tag page);
     };
 }
 
