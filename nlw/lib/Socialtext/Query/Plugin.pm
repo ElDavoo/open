@@ -333,24 +333,24 @@ sub _make_row {
     my $document_title = $page->title;
     my $date = $page->last_edit_time;
     my $date_local = $page->datetime_for_user;
-    my $snippet = $hit->snippet || $page->summary;
+    my $snippet;
     my $id = $page->id;
-    my $attachment;
     if ( $hit->isa('Socialtext::Search::AttachmentHit') ) {
-        my $attachment_id = $hit->attachment_id;
-        $attachment = $hit_hub->attachments->new_attachment(
-            id      => $attachment_id,
+        my $att_id = $hit->attachment_id;
+        my $att = $hit_hub->attachments->load(
+            id      => $att_id,
             page_id => $page_uri,
-        )->load();
-
-        return {} if $attachment->deleted;
-        $snippet = $hit->snippet || $attachment->preview_text;
-        $document_title = $attachment->{filename};
-        $date = $attachment->{Date};
-        $date_local = $self->hub->timezone->date_local( $date );
-        $id = $attachment->id;
-        $author = $attachment->uploaded_by;
+        );
+        return {} if $att->is_deleted || $att->is_temporary;
+        $document_title = $att->filename;
+        $date = $att->created_at_str;
+        $date_local = $hit_hub->timezone->get_date($att->created_at);
+        $id = $att->id;
+        $author = $att->uploaded_by;
+        $snippet = $hit->snippet || $att->preview_text;
     }
+    # let the attachment snippet override the page snippet
+    $snippet //= $hit->snippet || $page->summary;
 
     return +{
         Relevance           => $hit->hit->{score},
