@@ -747,6 +747,11 @@ sub TitleIsValid {
     return @{$errors} > 0 ? 0 : 1;
 }
 
+sub NameIsIllegal {
+    my $class = shift;
+    my $name = shift;
+    return $name !~ /^[a-z0-9_\-]{3,30}$/;
+}
 
 sub NameIsValid {
     my $class = shift;
@@ -765,7 +770,7 @@ sub NameIsValid {
     my $name    = $p{name};
     my $errors  = $p{errors};
 
-    if ( $name !~ /^[a-z0-9_\-]{3,30}$/ ) {
+    if ( $class->NameIsIllegal($name) ) {
         push @{$errors},
             loc('Workspace name must be between 3 and 30 characters long, and must contain only upper- or lower-case letters, numbers, underscores, and dashes.');
     }
