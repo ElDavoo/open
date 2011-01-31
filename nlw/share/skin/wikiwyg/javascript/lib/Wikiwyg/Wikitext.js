@@ -286,6 +286,7 @@ proto.getNextSerialForOpenSocialWidget = function(src) {
     var matches = (this.canonicalText() || '').match(
         /\{widget:\s*[^\s#]+(?:\s*#\d+)?(?:\s+[^\s=]+=\S*)*\s*\}/g
     );
+    if (!matches) { return 1 }
     for (var ii = 0; ii < matches.length; ii++) {
         var match = (matches[ii] || '').match(
             /^\{widget:\s*([^\s#]+)(?:\s*#(\d+))?((?:\s+[^\s=]+=\S*)*)\s*\}$/
