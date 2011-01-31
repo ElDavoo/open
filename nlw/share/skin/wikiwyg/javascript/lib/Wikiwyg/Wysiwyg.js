@@ -2394,7 +2394,7 @@ proto.getNextSerialForOpenSocialWidget = function(src) {
         var match = (imgs[ii].getAttribute('alt') || '').match(
             /^st-widget-\{widget:\s*([^\s#]+)(?:\s*#(\d+))?((?:\s+[^\s=]+=\S*)*)\s*\}$/
         );
-        if (match && match[1] == src) {
+        if (match && match[1].replace(/^local:widgets:/, '') == src.replace(/^local:widgets:/, '')) {
             max = Math.max( max, (match[2] || 1) );
         }
     }

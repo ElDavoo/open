@@ -282,7 +282,19 @@ proto.insert_widget = function (widget_string) {
 }
 
 proto.getNextSerialForOpenSocialWidget = function(src) {
-    return 1;
+    var max = 0;
+    var matches = (this.canonicalText() || '').match(
+        /\{widget:\s*[^\s#]+(?:\s*#\d+)?(?:\s+[^\s=]+=\S*)*\s*\}/g
+    );
+    for (var ii = 0; ii < matches.length; ii++) {
+        var match = (matches[ii] || '').match(
+            /^\{widget:\s*([^\s#]+)(?:\s*#(\d+))?((?:\s+[^\s=]+=\S*)*)\s*\}$/
+        );
+        if (match && match[1].replace(/^local:widgets:/, '') == src.replace(/^local:widgets:/, '')) {
+            max = Math.max( max, (match[2] || 1) );
+        }
+    }
+    return max+1;
 }
 
 proto.insert_text_at_cursor = function(text, opts) {

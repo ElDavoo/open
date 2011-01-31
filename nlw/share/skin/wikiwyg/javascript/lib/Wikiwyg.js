@@ -2120,7 +2120,7 @@ proto.do_opensocial_setup = function(src) {
             args.push(key + '=' + encodeURI(val));
         });
 
-        self.insert_widget('{widget: ' + args.join(' ') + '}', widget_element);
+        self.wikiwyg.current_mode.insert_widget('{widget: ' + args.join(' ') + '}', widget_element);
 
         jQuery.hideLightbox();
         return false;
