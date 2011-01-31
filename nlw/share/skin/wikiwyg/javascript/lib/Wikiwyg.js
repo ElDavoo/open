@@ -2133,7 +2133,8 @@ proto.do_opensocial_setup = function(src) {
                 + ';workspace_name=' + encodeURIComponent(Socialtext.wiki_id)
                 + ';page_id=' + encodeURIComponent(Socialtext.page_id)
                 + ';serial=' + encodeURIComponent(serial)
-                + ';encoded_prefs=' + encodeURIComponent(encoded_prefs),
+                + ';encoded_prefs=' + encodeURIComponent(encoded_prefs)
+                + ';_=' + Math.random(),
             width: '480px',
             height: '270px'
         })
