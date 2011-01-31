@@ -2072,6 +2072,8 @@ proto.do_opensocial_gallery = function() {
 }
 
 proto.do_opensocial_setup = function(src) {
+    var self = this;
+
     if (!jQuery('#st-widget-opensocial-setup').size()) {
         Socialtext.wikiwyg_variables.loc = loc;
         jQuery('body').append(
@@ -2084,6 +2086,30 @@ proto.do_opensocial_setup = function(src) {
             jQuery.hideLightbox();
         });
     }
+
+    $('#st-widget-opensocial-setup-save').hide().unbind('click').click(function(){
+        var prefHash = $(this).data('prefHash') || '';
+
+        var args = [src.replace(/^local:widgets:/, '')];
+        $.each(prefHash, function(key, val) {
+            args.push(key + '=' + encodeURI(val));
+        });
+
+        self.insert_widget('{widget: ' + args.join(' ') + '}');
+        jQuery.hideLightbox();
+        return false;
+    });
+
+    $('#st-widget-opensocial-setup-widgets').html('').append(
+        $('<iframe />', {
+            src: '/?action=widget_setup_screen'
+                + ';widget=' + encodeURIComponent(src)
+                + ';workspace_name=' + encodeURIComponent(Socialtext.wiki_id)
+                + ';page_id=' + encodeURIComponent(Socialtext.page_id),
+            width: '480px',
+            height: '270px'
+        })
+    );
 
     jQuery.showLightbox({
         content: '#st-widget-opensocial-setup',
