@@ -1,25 +1,27 @@
 #!perl
 # @COPYRIGHT@
-
 use strict;
 use warnings;
-
 use Test::Socialtext tests => 6;
-fixtures('admin');
 use Socialtext::Encode;
+use IO::File;
 
-my $hub = new_hub('admin');
+fixtures('clean','db');
+my $hub = create_test_hub();
+my $user = $hub->current_user;
+my $ws_name = $hub->current_workspace->name;
 
 {
+    local $Socialtext::SQL::DEBUG =1;
     my $name = "Formatter Test for html-page wafl";
     my $page = $hub->pages->new_from_name($name);
 
-    my $attachment =
-        $hub->attachments->new_attachment( page_id => $page->id,
-                                       filename => 'html-page-wafl.html',
-                                     );
-    $attachment->save('t/attachments/html-page-wafl.html');
-    $attachment->store( user => $hub->current_user );
+    my $attachment = $hub->attachments->create(
+        fh => IO::File->new('t/attachments/html-page-wafl.html','r'),
+        page_id => $page->id,
+        filename => 'html-page-wafl.html',
+        user => $hub->current_user,
+    );
 
     $page->metadata->Subject($name);
     $page->metadata->update( user => $hub->current_user );
@@ -29,7 +31,7 @@ my $hub = new_hub('admin');
 
     my @tests =
         ( [ "{html-page html-page-wafl.html}\n" =>
-            qr{href="/data/workspaces/admin/attachments/formatter_test_for_html_page_wafl:\S+?/html-page-wafl.html},
+            qr{href="/data/workspaces/$ws_name/attachments/formatter_test_for_html_page_wafl:\S+?/html-page-wafl.html},
             qr{\Qhtml-page-wafl.html;as_page=1\E},
           ],
           [ "{html-page no-such-page.html}\n" =>
@@ -51,7 +53,7 @@ my $hub = new_hub('admin');
 
     my @tests =
         ( [ "{html-page [Formatter Test for html-page wafl] html-page-wafl.html}\n" =>
-            qr{href="/data/workspaces/admin/attachments/formatter_test_for_html_page_wafl:\S+?/html-page-wafl.html},
+            qr{href="/data/workspaces/$ws_name/attachments/formatter_test_for_html_page_wafl:\S+?/html-page-wafl.html},
             qr{\Qhtml-page-wafl.html;as_page=1\E},
           ],
         );
