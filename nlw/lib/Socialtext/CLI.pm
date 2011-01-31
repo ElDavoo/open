@@ -18,6 +18,8 @@ use Socialtext::AppConfig;
 use Pod::Usage;
 use Readonly;
 use Scalar::Util qw/blessed/;
+use Try::Tiny;
+
 use Socialtext::Search::AbstractFactory;
 use Socialtext::Validate qw( validate SCALAR_TYPE ARRAYREF_TYPE );
 use Socialtext::l10n qw( loc loc_lang system_locale );
@@ -3748,28 +3750,24 @@ sub _require_page_attachment {
 
     my %opts = $self->_get_options('attachment:s');
 
-    unless ( $opts{attachment} ) {
+    unless ($opts{attachment}) {
         $self->_error(
-            "The command you called ($self->{command}) requires an attachment to be specified.\n"
-                . "You can specify an attachment by id with the --attachment option."
+            "The command you called ($self->{command}) ".
+            "requires an attachment id to be specified.\n".
+            "You can specify an attachment with the --attachment option."
         );
     }
 
-    my $attachment = $page->hub()->attachments()->new_attachment(
-        id      => $opts{attachment},
-        page_id => $page->id(),
-    );
-
-    unless ( $attachment->exists() ) {
-        $self->_error(
-            qq|There is no attachment with the id "$opts{attachment}" in the |
-                . $page->hub()->current_workspace()->name()
-                . " workspace.\n" );
+    return try { 
+        $self->hub->attachments->load(
+            page => $page, page_id => $page->id,
+            id => $opts{attachment});
     }
-
-    $attachment->load();
-
-    return $attachment;
+    catch {
+        my $ws = $page->hub->current_workspace->name;
+        $self->_error(qq(There is no attachment with the id ).
+            qq("$opts{attachment}" in the $ws workspace\n"));
+    };
 }
 
 sub _require_permission {
