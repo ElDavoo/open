@@ -59,6 +59,7 @@ sub get_container_for_gadget {
         $val = $ws->name if $pref->{datatype} eq 'workspace';
         $val = $ws->account->name if $pref->{datatype} eq 'account';
 
+        no warnings 'uninitialized';
         if ($pref->{value} ne $val) {
             $gadget->set_preference($pref->{name} => $val);
         }
