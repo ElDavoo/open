@@ -44,10 +44,12 @@
 | wait-for-text-present-ok | Groups (4) | 30000 |
 | text_like | //body | qr/ID.*Name.*Role.*Workspaces.*Users.*Primary Account.*Created.*Creator/ism |
 
-| set | g1_match | `%%group1%%.+1.+2.+%%account%%.+\d\d\d\d.\d\d.\d\d.+%%short_username%%` |
-| set | g2_match | `%%group2%%.+1.+2.+%%account%%.+\d\d\d\d.\d\d.\d\d.+%%short_username%%` |
-| set | g3_match | `%%group3%%.+1.+2.+%%account%%.+\d\d\d\d.\d\d.\d\d.+%%short_username%%` |
-| set | g4_match | `%%group4%%.+1.+2.+%%account%%.+\d\d\d\d.\d\d.\d\d.+%%short_username%%` |
+| *Comment* | Test Case: Business Control Panel Groups in Workspace as of keyboardcat, every account has an AUW |  |
+| *Comment* | which is counted in every group WS count but not displayed in WS list |  |
+| set | g1_match | `%%group1%%.+2.+2.+%%account%%.+\d\d\d\d.\d\d.\d\d.+%%short_username%%` |
+| set | g2_match | `%%group2%%.+2.+2.+%%account%%.+\d\d\d\d.\d\d.\d\d.+%%short_username%%` |
+| set | g3_match | `%%group3%%.+2.+2.+%%account%%.+\d\d\d\d.\d\d.\d\d.+%%short_username%%` |
+| set | g4_match | `%%group4%%.+2.+2.+%%account%%.+\d\d\d\d.\d\d.\d\d.+%%short_username%%` |
 
 | text_like | //body | `qr/%%g1_match%%/ism` |
 | text_like | //body | `qr/%%g3_match%%/ism` |

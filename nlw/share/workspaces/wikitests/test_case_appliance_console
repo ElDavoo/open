@@ -16,8 +16,8 @@
 | *Comment* | *Login goes to overview tab* |  |
 
 | is_text_present_ok | Workspaces |  |
-| is_text_present_ok | To see a list of all the workspaces and users on the system, go to the Socialtext Accounts Admin tool. |  |
-| is_element_present_ok | link=Socialtext Accounts Admin |  |
+| is_text_present_ok | To view and manage the Workspaces, Accounts, Groups and Users on the system, go to the Control Panel tool. |  |
+| is_element_present_ok | link=Control Panel |  |
 | is_text_present_ok | Disk Usage |  |
 | is_text_present_ok | total |  |
 | is_text_present_ok | free |  |
@@ -26,7 +26,6 @@
 | is_element_present_ok | link=Setup |  |
 | is_element_present_ok | link=Shutdown |  |
 | is_element_present_ok | link=Report a Problem |  |
-| is_element_present_ok | link=Socialtext Accounts Admin |  |
 | is_element_present_ok | link=Socialtext, Inc. |  |
 
 | *Comment* | *Setup tab moved to separate Test Case: Console Setup* |  |

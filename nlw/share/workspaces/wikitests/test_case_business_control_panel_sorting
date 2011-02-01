@@ -1,4 +1,7 @@
+
 | *Comment* | Test case: Business Control Panel Sorting Set up data |  |
+
+
 
 | st-admin | create-account --name "0 sort 1 account %%start_time%%" | was created |
 | st-admin | create-account --name "0 sort 2 account %%start_time%%" | was created |
@@ -38,14 +41,9 @@
 | click_and_wait | link=Name |  |
 | text_like | qr/0 sort 1 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 3 account %%start_time%%/ |  |
 
-| click_and_wait | control-sort-workspace |  |
-| text_like | qr/0 sort 1 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 3 account %%start_time%%/ |  |
-| click_and_wait | control-sort-workspace |  |
+| click_and_wait | link=Name |  |
 | text_like | qr/0 sort 3 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 1 account %%start_time%%/ |  |
-
-| click_and_wait | control-sort-user |  |  |  |
-| text_like | qr/0 sort 3 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 1 account %%start_time%%/ |  |
-| click_and_wait | control-sort-user |  |  |  |
+| click_and_wait | control-sort-workspace |  |
 | text_like | qr/0 sort 1 account %%start_time%%.+0 sort 2 account %%start_time%%.+0 sort 3 account %%start_time%%/ |  |
 
 | *Comment* | Test Case: Business Control Panel Sorting Workspaces display |  |
@@ -133,7 +131,7 @@
 | text_like | Account |  |
 | text_like | Administrators |  |
 | text_like | Create a new workspace |  |
-| text_like | Invite To existing workspace(s) |  |
+| text_like | qr/Invite To existing workspace(s)/i |  |
 
 | *Comment* | Test Case: Business Control Panel Sorting radio buttons create or invite |  |
 | wait_for_element_visible_ok | todo-invite | 30000 |
