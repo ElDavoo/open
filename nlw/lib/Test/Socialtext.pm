@@ -620,13 +620,13 @@ my @Added_groups;
         my $unique_id = shift || create_unique_id;
         push @Added_accounts, $unique_id;
         my $hub       = main_hub();
-        return $hub->account_factory->create( name => $unique_id );
+        return $hub->account_factory->create( name => $unique_id, @_ );
     }
 
     sub create_test_account_bypassing_factory {
         my $unique_id = shift || create_unique_id;
         push @Added_accounts, $unique_id;
-        return Socialtext::Account->create(name => $unique_id);
+        return Socialtext::Account->create(name => $unique_id, @_);
     }
 
     sub create_test_user {

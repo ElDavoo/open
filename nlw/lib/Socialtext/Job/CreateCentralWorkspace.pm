@@ -14,33 +14,41 @@ sub do_work {
 
     my $user = Socialtext::User->SystemUser();
 
-    # Find a valid name
-    my ($title, $name, $ws);
-    for (my $i = 0; !$i or defined $ws; $i++) {
-        # XXX: Horrible for i18n:
-        my $suffix = ' Central' . ($i ? " $i" : "");
-        $title = $self->account->name . $suffix;
-        $name = Socialtext::String::title_to_id($title);
+    my $wksp;
 
-        $name =~ s/^st_//;
-        if ( Socialtext::Workspace->NameIsIllegal($name) ) {
-            # This can only be because the name is too long
+    if ($self->account->has_all_users_workspaces) {
+        # Use the existing AUW
+        $wksp = $self->account->all_users_workspaces->[0];
+    }
+    else {
+        # Find a valid name for a new workspace
+        my ($title, $name);
+        for (my $i = 0; !$i or defined $wksp; $i++) {
+            # XXX: Horrible for i18n:
+            my $suffix = ' Central' . ($i ? " $i" : "");
+            $title = $self->account->name . $suffix;
+            $name = Socialtext::String::title_to_id($title);
 
-            # Truncate the account name, saving room for $suffix
-            $name = substr($self->account->name, 0, 30 - length($suffix));
-            $name = Socialtext::String::title_to_id($name . $suffix);
+            $name =~ s/^st_//;
+            if ( Socialtext::Workspace->NameIsIllegal($name) ) {
+                # This can only be because the name is too long
+
+                # Truncate the account name, saving room for $suffix
+                $name = substr($self->account->name, 0, 30 - length($suffix));
+                $name = Socialtext::String::title_to_id($name . $suffix);
+            }
+
+            $wksp = Socialtext::Workspace->new(name => $name)
         }
 
-        $ws = Socialtext::Workspace->new(name => $name)
+        $wksp = Socialtext::Workspace->create(
+            name                => $name,
+            title               => $title,
+            account_id          => $self->account->account_id,
+            created_by_user_id  => $user->user_id(),
+            allows_page_locking => 1,
+        );
     }
-
-    my $wksp = Socialtext::Workspace->create(
-        name                => $name,
-        title               => $title,
-        account_id          => $self->account->account_id,
-        created_by_user_id  => $user->user_id(),
-        allows_page_locking => 1,
-    );
 
     $wksp->assign_role_to_account(account => $self->account);
 
@@ -50,7 +58,7 @@ sub do_work {
         replace => {
             # Replace all pages with YourCo in the title with this account's
             # name
-            'YourCo' => $self->account->name,
+            'YourCo Central' => $wksp->name,
         },
     );
 
@@ -65,7 +73,7 @@ sub do_work {
             user_set_id => $self->account->user_set_id,
         },
     );
-    $pref_table->set(central_workspace => $name);
+    $pref_table->set(central_workspace => $wksp->name);
 
     $self->completed();
 }
