@@ -1924,12 +1924,18 @@ sub load_pages_from_disk {
         (my $content_file = $f) =~ s/\.json$//;
         my $content = Socialtext::File::get_contents_utf8($content_file);
 
+        my $page_name = $data->{name};
+
         for my $r (keys %$replaces) {
-            $data->{name} =~ s{\Q$r\E}{$replaces->{$r}};
+            $page_name =~ s{\Q$r\E}{$replaces->{$r}};
         }
 
+        # Don't clobber existing pages
+        next unless $opts{clobber}
+            or !$hub->pages->new_from_name($page_name)->exists;
+
         my $page = Socialtext::Page->new(hub => $hub)->create(
-            title => $data->{name},
+            title => $page_name,
             content => $content,
             creator => Socialtext::User->SystemUser,
             categories => $data->{tags},

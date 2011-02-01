@@ -726,11 +726,13 @@ sub create {
     my ( $class, %p ) = @_;
     my $timer = Socialtext::Timer->new;
 
+    my $no_plugin_hooks = delete $p{no_plugin_hooks};
+
     $class->_validate_and_clean_data(\%p);
     $class->_create_full(%p);
     my $self = $class->new(%p);
     $self->_enable_default_plugins;
-    $self->_account_create_hook;
+    $self->_account_create_hook unless $no_plugin_hooks;
 
     my $msg = 'CREATE,ACCOUNT,account:' . $self->name
               . '(' . $self->account_id . '),'
@@ -748,7 +750,6 @@ sub _account_create_hook {
         if $self->name eq 'Unknown'
         or $self->name eq 'Deleted'
         or $self->name eq 'Socialtext';
-
 
     # Call the nlw.create_account event on all pluggable plugins
     # Here is where the widgets plugin will set the central_workspace
