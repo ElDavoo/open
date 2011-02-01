@@ -135,7 +135,8 @@ sub html {
         encoded_prefs => $encoded_prefs,
     });
 
-    return loc("Sorry, we cannot display this widget.") unless $container and $widget;
+    return loc("The settings for this widget have become corrupted. Please remove and re-insert the widget.")
+        unless $container and $widget;
 
     return $self->hub->template->process($container->view_template,
         pluggable => $self->hub->pluggable,
