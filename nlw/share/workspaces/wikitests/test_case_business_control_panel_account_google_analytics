@@ -7,28 +7,12 @@
 | set | gaid | UA-20106506-1 |
 
 
-| *Comment* | Test case: Business Control Panel Account Account Google Analytics Set an account via st-admin |  |
+| *Comment* | Test case: Business Control Panel Account Account Google Analytics Create Account |  |
 | set | cmdlineacct | GACMDacct%%start_time%% |
 | st-admin | create-account --name %%cmdlineacct%% | A new account named "%%cmdlineacct%%" was created |
-| st-admin | enable-plugin --plugin analytics --account %%cmdlineacct%% |  |
-| st-admin | set-google-analytics --account %%cmdlineacct%% --code UA-20106506-1 |  |
-| st-admin | show-google-analytics --account %%cmdlineacct%% | UA-20106506-1 |
-
-| *Comment* | Test case: Business Control Panel Account Account Google Analytics See st-admin commands in CP |  |
-| open_ok | /nlw/control/account |  |
-| wait_for_element_visible_ok | st-search-by-name | 30000 |
-| type_ok | st-search-by-name | %%cmdlineacct%% |
-| wait_for_element_visible_ok | st-submit-search-by-name | 30000 |
-| click_and_wait | st-submit-search-by-name |  |
-| wait_for_element_visible_ok | link=%%cmdlineacct%% | 30000 |
-| click_and_wait | link=%%cmdlineacct%% |  |
-| wait_for_element_visible_ok | analytics-prefs-submit | 30000 |
-| wait_for_element_visible_ok | ga_id | 30000 |
-| verifyValue | ga_id | %%gaid%% |
-
+| st-admin | disable-plugin --plugin analytics --account %%acct%% |  |
 
 | *Comment* | Test case: Business Control Panel Account Account NOW do it all through CP |  |
-| st-admin | disable-plugin --plugin analytics --account %%acct%% |  |
 | open_ok | /nlw/control/account |  |
 | wait_for_element_visible_ok | st-search-by-name | 30000 |
 | type_ok | st-search-by-name | %%acct%% |
