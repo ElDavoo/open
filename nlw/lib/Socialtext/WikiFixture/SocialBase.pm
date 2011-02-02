@@ -1386,13 +1386,24 @@ numbers. That is, the values "3" and 3 are considered equivalent (e.g.
 {"foo":3} and {"foo":"3"} are considered equivalent - this is a known bug in
 this fixture)
 
+=head2 json-unlike
+
+C<json-like> with negated result.
+
 =cut
 
+
+sub json_unlike {
+    my $self = shift;
+    my $candidate = shift;
+    return $self->json_like($candidate, 'is_negated');
+}
 
 sub json_like {
 
     my $self = shift;
     my $candidate = shift;
+    my $is_negated = shift;
 
     my $json = $self->{json};
 
@@ -1407,6 +1418,11 @@ sub json_like {
 
     my $result=0;
     $result = eval {$self->_compare_json($parsed_candidate, $json)};
+
+    if ($is_negated) {
+        $result = !$result;
+    }
+
     my $e = $@;
     ok !$e && $result,
     $self->{http}->name . " compared content and candidate";
