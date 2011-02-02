@@ -140,7 +140,7 @@ sub _with_admin_permission_do {
     return $self->$callback();
 }
 
-sub _admin_with_group_data_do {
+sub _admin_with_group_data_do_txn {
     my ($self, $callback) = @_;
     $self->_with_admin_permission_do(sub {
         my $group = Socialtext::Group->GetGroup(group_id => $self->group_id);
@@ -152,33 +152,51 @@ sub _admin_with_group_data_do {
             return loc('Malformed JSON passed to resource');
         }
 
-        $self->$callback($group, $data);
+        sql_begin_work();
+
+        local $@;
+        my $rv = eval { $self->$callback($group, $data) };
+
+        if ($@) {
+            sql_rollback();
+            $self->rest->header(-status => HTTP_400_Bad_Request);
+            $@ = $1 if $@ =~ /(.*) at /;
+            return loc('Could not process request: [_1]', $@);
+        }
+
+        sql_commit();
+        $self->rest->header(-status => HTTP_200_OK);
+        return $rv;
     });
 }
 
-sub POST_to_membership { $_[0]->_admin_with_group_data_do(sub {
+sub POST_to_membership { $_[0]->_admin_with_group_data_do_txn(sub {
     my ($self, $group, $data) = @_;
 
-    return [];
-}) }
+    for my $item (@$data) {
+        my $name_or_id = $item->{user_id} || $item->{username}
+            or die "Missing user_id/username";
+        my $role = $item->{role}
+            or die "Missing role";
 
-sub POST_to_trash { $_[0]->_admin_with_group_data_do(sub {
-    my ($self, $group, $data) = @_;
+        my $user = Socialtext::User->Resolve($name_or_id);
 
-    sql_begin_work();
-    eval {
-        for my $item (@$data) {
-            $self->_remove_item($item, $group);
-        }
-    };
-    if ($@) {
-        sql_rollback();
-        $self->rest->header(-status => HTTP_400_Bad_Request);
-        return loc('Could not process request');
+        $group->has_user($user)
+            or die "This group does not have $name_or_id as a user";
+
+        $group->add_user( user => $user, role => $role );
     }
 
-    sql_commit();
-    $self->rest->header(-status => HTTP_200_OK);
+    return '';
+}) }
+
+sub POST_to_trash { $_[0]->_admin_with_group_data_do_txn(sub {
+    my ($self, $group, $data) = @_;
+
+    for my $item (@$data) {
+        $self->_remove_item($item, $group);
+    }
+
     return '';
 }) }
 
