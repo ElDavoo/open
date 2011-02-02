@@ -1396,13 +1396,18 @@ C<json-like> with negated result.
 sub json_unlike {
     my $self = shift;
     my $candidate = shift;
-    local $self->{_is_negated} = 1;
-    return $self->json_like($candidate);
+    return $self->_json_test(unlike => $candidate);
 }
 
 sub json_like {
-
     my $self = shift;
+    my $candidate = shift;
+    return $self->_json_test(like => $candidate);
+}
+
+sub _json_test {
+    my $self = shift;
+    my $cmd = shift;
     my $candidate = shift;
 
     my $json = $self->{json};
@@ -1419,13 +1424,14 @@ sub json_like {
     my $result=0;
     $result = eval {$self->_compare_json($parsed_candidate, $json)};
 
-    if ($self->{_is_negated}) {
+    if ($cmd eq 'unlike') {
         $result = !$result;
+        undef $@;
     }
 
     my $e = $@;
     ok !$e && $result,
-    $self->{http}->name . " compared content and candidate";
+    $self->{http}->name . " compared content and candidate ($cmd)";
     unless (!$e && $result) {
         diag "Failure:   $e";
         diag "Candidate: $candidate\n";
