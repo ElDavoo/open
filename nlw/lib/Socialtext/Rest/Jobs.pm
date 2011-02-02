@@ -85,14 +85,14 @@ sub resource_to_html {
     }
     else {
         @column_order = qw(name queued delayed grabbed num_ok last_ok recent_completions
-            num_fail last_fail latest latest_nodelay);
+            num_fail last_fail latest latest_nodelay earliest earliest_nodelay);
         # append extra keys
         my %avail = map {$_=>1} keys %{ $job_stats->[0] };
         delete @avail{@column_order};
         push @column_order, sort keys %avail;
     }
 
-    for my $k (qw(last_ok last_fail latest latest_nodelay)) {
+    for my $k (qw(last_ok last_fail latest latest_nodelay earliest earliest_nodelay)) {
         next unless grep /^$k$/, @column_order;
         $_->{$k} = format_timestamp($_->{$k}) for @$job_stats;
     }

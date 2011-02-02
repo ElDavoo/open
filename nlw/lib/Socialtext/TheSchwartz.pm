@@ -96,7 +96,9 @@ sub _stat_jobs_per_dbh {
             COALESCE(delayed, 0) AS delayed,
             COALESCE(grabbed, 0) AS grabbed,
             COALESCE(latest, 0) AS latest,
+            COALESCE(earliest, 0) AS earliest,
             COALESCE(latest_nodelay, 0) AS latest_nodelay,
+            COALESCE(earliest_nodelay, 0) AS earliest_nodelay,
             COALESCE(num_ok, 0) AS num_ok,
             COALESCE(num_fail, 0) AS num_fail,
             COALESCE(last_ok, 0) AS last_ok,
@@ -105,11 +107,15 @@ sub _stat_jobs_per_dbh {
         FROM funcmap
         LEFT JOIN (
             SELECT funcid,
-                COUNT(jobid) AS queued,
                 COUNT(NULLIF(run_after > $1, 'f'::boolean)) AS delayed,
                 COUNT(NULLIF(grabbed_until > $1, 'f'::boolean)) AS grabbed,
                 MAX(insert_time) AS latest,
-                MAX( CASE WHEN run_after <= $1 THEN insert_time ELSE NULL END) AS latest_nodelay
+                MIN(insert_time) AS earliest,
+                MAX(CASE WHEN run_after <= $1 THEN insert_time ELSE NULL END)
+                    AS latest_nodelay,
+                MIN(CASE WHEN run_after <= $1 THEN insert_time ELSE NULL END)
+                    AS earliest_nodelay,
+                COUNT(jobid) AS queued
             FROM job
             GROUP BY funcid
         ) s USING (funcid)
