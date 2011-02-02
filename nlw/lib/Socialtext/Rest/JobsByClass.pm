@@ -24,7 +24,10 @@ sub get_resource {
     my $jobclass = $self->jobclass;
     my $funcname = $jobclass =~ /^Socialtext::Job::/ ? $jobclass :
         "Socialtext::Job::$jobclass";
-    my @jobs = map { Socialtext::Job->new(job => $_)->to_hash } 
+    my $now = time;
+    my @jobs = 
+        map { $_->{delayed} = ($_->{run_after} > $now) ? 1 : 0; $_ }
+        map { Socialtext::Job->new(job => $_)->to_hash } 
         Socialtext::Jobs->list_jobs(funcname => $funcname, limit => 1000);
     return \@jobs;
 }
