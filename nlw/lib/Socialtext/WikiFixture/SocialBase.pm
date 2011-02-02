@@ -1735,6 +1735,24 @@ sub put_sheet {
     $self->put($uri, 'Content-Type=application/json', $json);
 }
 
+=head2 put_sheet_csv( uri, sheet_filename )
+
+Put the contents of the specified file to the URI as a spreadsheet using CSV.
+
+=cut
+
+sub put_sheet_csv {
+    my $self     = shift;
+    my $uri      = shift;
+    my $filename = shift;
+
+    my $dir = $self->_relative_filename_to_absolute("t/wikitests/test-data/socialcalc");
+    my $file = "$dir/$filename";
+    die "Can't find spreadsheet at $file" unless -e $file;
+    my $content = Socialtext::File::get_contents($file);
+    $self->put($uri, 'Content-Type=text/csv', $content);
+}
+
 =head2 set_http_keepalive ( on_off )
 
 Enables/disables support for HTTP "Keep-Alive" connections (defaulting to I<off>).
