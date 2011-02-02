@@ -40,6 +40,7 @@ sub startup_user_is_human_user {
     # on any system that was compliant with its distro/OSs usre
     # numbering scheme.
     return 1 if $StartupUser->uid >= 500;
+    return 1 if $StartupUser->name eq 'hudson';
 
     return;
 }
