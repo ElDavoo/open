@@ -34,6 +34,7 @@ Page = {
 
     _repaintBottomButtons: function() {
         $('#bottomButtons').html($('#bottomButtons').html());
+        Avatar.createAll();
         $('#st-edit-button-link-bottom').click(function(){
             $('#st-edit-button-link').click();
             return false;
@@ -119,8 +120,6 @@ Page = {
                             }
                         });
                     }
-
-                    setTimeout(function() { Avatar.createAll() }, 1000);
                 }
             } 
         });
