@@ -1,0 +1,62 @@
+* Fixture: SocialRest
+
+| standard-test-setup |
+
+## Setup: Create a group, add an admin and two users (mercury, zinc); cobalt is not in the group.
+| *Comment*         | Set up Group, membership |                                            |       |
+| set               | group_name               | group%%start_time%%                        |       |
+| create-group      | %%group_name%%           | %%account%%                                |       |
+| set               | admin                    | admin%%start_time%%@ken.socialtext.net     |       |
+| create-user       | %%admin%%                | password                                   |       |
+| set               | admin_id                 | %%user_id%%                                |       |
+| add-user-to-group | %%admin_id%%             | %%group_id%%                               | admin |
+| set               | mercury                  | mercury%%start_time%%@ken.socialtext.net   |       |
+| create-user       | %%mercury%%              | password                                   |       |
+| set               | mercury_id               | %%user_id%%                                |       |
+| add-user-to-group | %%mercury_id%%           | %%group_id%%                               |       |
+| set               | zinc                     | zinc%%start_time%%@ken.socialtext.net      |       |
+| create-user       | %%zinc%%                 | password                                   |       |
+| set               | zinc_id                  | %%user_id%%                                |       |
+| add-user-to-group | %%zinc_id%%              | %%group_id%%                               |       |
+| set               | cobalt                   | cobalt%%start_time%%@ken.socialtext.net    |       |
+| create-user       | %%cobalt%%               | password                                   |       |
+| set               | cobalt_id                | %%user_id%%                                |       |
+################################################################################
+
+## POST, Group Not Found
+| *Comment* | POST, Group Not Found     |                                            |
+| POST-json | /data/groups/0/membership | {"user_id":"%%mercury_id%%", role:"admin"} |
+| code-is   | 404                       |                                            |
+
+## POST, User is not an Admin
+| *Comment* | POST, User devnull1 does not have admin privs |                                            |
+| POST-json | /data/groups/%%group_id%%/membership          | {"user_id":"%%mercury_id%%", role:"admin"} |
+| code-is   | 403                                           |                                            |
+
+## Log in as a Group admin
+| *Comment*      | Log in as a Group admin |          |
+| http-user-pass | %%admin%%               | password |
+
+## GET on /membership is just a 303 See Other for /users
+| *Comment* | Check Group for proper membership    |                                 |
+| GET-json  | /data/groups/%%group_id%%/membership |                                 |
+| code-is   | 303                                  |                                 |
+| header-is | Location                             | /data/groups/%%group_id%%/users |
+
+## Adjust Mercury's role via user_id
+| *Comment* | Adjust Mercury from member to admin  |                                            |
+| POST-json | /data/groups/%%group_id%%/membership | {"user_id":"%%mercury_id%%", role:"admin"} |
+| code-is   | 200                                  |                                            |
+
+## TODO: Check that Mercury is now an admin
+
+## Adjust Mercury's role via username
+| *Comment* | Adjust Mercury from admin to member  |                                           |
+| POST-json | /data/groups/%%group_id%%/membership | {"username":"%%mercury%%", role:"member"} |
+| code-is   | 200                                  |                                           |
+
+## TODO: Check that Mercury is now a member.
+
+## TODO: Adjust multiple users at once.
+
+## TODO: Adjust cobalt, which does not belong to the group.
