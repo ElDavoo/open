@@ -1396,14 +1396,14 @@ C<json-like> with negated result.
 sub json_unlike {
     my $self = shift;
     my $candidate = shift;
-    return $self->json_like($candidate, 'is_negated');
+    local $self->{_is_negated} = 1;
+    return $self->json_like($candidate);
 }
 
 sub json_like {
 
     my $self = shift;
     my $candidate = shift;
-    my $is_negated = shift;
 
     my $json = $self->{json};
 
@@ -1419,7 +1419,7 @@ sub json_like {
     my $result=0;
     $result = eval {$self->_compare_json($parsed_candidate, $json)};
 
-    if ($is_negated) {
+    if ($self->{_is_negated}) {
         $result = !$result;
     }
 
