@@ -48,7 +48,8 @@ sub create_error {
 }
 
 sub PUT_json { $_[0]->_with_admin_permission_do(sub {
-    my ($self, $rest) = @_;
+    my $self = shift;
+    my $rest = $self->rest;
 
     my $group = Socialtext::Group->GetGroup(group_id => $self->group_id);
     my $data  = eval { decode_json( $rest->getContent ) };
@@ -126,8 +127,7 @@ sub _has_request_error {
 }
 
 sub _with_admin_permission_do {
-    my $self = shift;
-    my $callback = shift;
+    my ($self, $callback) = @_;
 
     my $error = $self->_has_request_error(
         permissions => [ST_ADMIN_PERM]
@@ -137,26 +137,33 @@ sub _with_admin_permission_do {
         return $error->{message};
     }
 
-    return $self->$callback($self->rest);
+    return $self->$callback();
 }
 
-sub POST_to_membership { $_[0]->_with_admin_permission_do(sub {
-    my ($self, $rest) = @_;
+sub _admin_with_group_data_do {
+    my ($self, $callback) = @_;
+    $self->_with_admin_permission_do(sub {
+        my $group = Socialtext::Group->GetGroup(group_id => $self->group_id);
+        my $data  = eval{ decode_json($self->rest->getContent) };
+        $data = (ref($data) eq 'HASH') ? [$data] : $data;
+
+        unless ($data) {
+            $self->rest->header(-status => HTTP_400_Bad_Request);
+            return loc('Malformed JSON passed to resource');
+        }
+
+        $self->$callback($group, $data);
+    });
+}
+
+sub POST_to_membership { $_[0]->_admin_with_group_data_do(sub {
+    my ($self, $group, $data) = @_;
+
     return [];
 }) }
 
-sub POST_to_trash { $_[0]->_with_admin_permission_do(sub {
-    my $self  = shift;
-    my $rest  = shift;
-
-    my $group = Socialtext::Group->GetGroup(group_id => $self->group_id);
-    my $data  = eval{ decode_json($rest->getContent) };
-    $data = (ref($data) eq 'HASH') ? [$data] : $data;
-
-    unless ($data) {
-        $rest->header(-status => HTTP_400_Bad_Request);
-        return loc('Malformed JSON passed to resource');
-    }
+sub POST_to_trash { $_[0]->_admin_with_group_data_do(sub {
+    my ($self, $group, $data) = @_;
 
     sql_begin_work();
     eval {
@@ -166,12 +173,12 @@ sub POST_to_trash { $_[0]->_with_admin_permission_do(sub {
     };
     if ($@) {
         sql_rollback();
-        $rest->header(-status => HTTP_400_Bad_Request);
+        $self->rest->header(-status => HTTP_400_Bad_Request);
         return loc('Could not process request');
     }
 
     sql_commit();
-    $rest->header(-status => HTTP_200_OK);
+    $self->rest->header(-status => HTTP_200_OK);
     return '';
 }) }
 
