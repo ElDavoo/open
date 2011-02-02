@@ -563,6 +563,9 @@ Socialtext::Group - Socialtext Group object
   # add a User to the Group
   $group->add_user(user => $user, role => $role);
 
+  # update a user's role in the Group
+  $group->assign_role_to_user(user => $user, role => $role);
+
   # remove a User from a Group
   $group->remove_user(user => $user);
 
@@ -742,11 +745,16 @@ Returns a B<cached> count of Users who have a Role in this Group
 
 =item B<$group-E<gt>add_user(user=E<gt>$user, role=E<gt>$role)>
 
-Adds a given C<$user> to the Group with the specified C<$role>.  If no
-C<$role> is provided, a default Role will be used instead.
+Adds a given C<$user> to the Group with the specified C<$role>.
 
-If the User B<already> has a Role in the Group, the User's Role will be
-B<updated> to match the given C<$role>.
+If no C<$role> is provided, a default Role will be used instead.
+
+Throws an exception if the User B<already> has a Role in the Group.
+
+=item B<$group-E<gt>assign_role_to_user(user=E<gt>$user, role=E<gt>$role)>
+
+Same as C<add_user>, but if the User B<already> has a Role in the Group,
+the User's Role will be B<updated> to match the given C<$role>.
 
 =item B<$group-E<gt>remove_user(user=E<gt>$user)>
 
