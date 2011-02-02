@@ -9,7 +9,7 @@ use mocked 'Socialtext::User';
 use mocked 'Socialtext::Hub';
 
 BEGIN {
-    use_ok 'Socialtext::Model::Page';
+    use_ok 'Socialtext::Page';
 }
 
 my $ed = Socialtext::User->new(
@@ -46,8 +46,8 @@ Create_from_row: {
         tags => ['tag'],
         hub => Socialtext::Hub->new,
     };
-    my $page = Socialtext::Model::Page->new_from_row($data);
-    isa_ok $page, 'Socialtext::Model::Page';
+    my $page = Socialtext::Page->new_from_row($data);
+    isa_ok $page, 'Socialtext::Page';
 
     # to_result() is used to format pages into a row returned to a listview
     # many of these fields are named after the mime-like file format
@@ -147,8 +147,8 @@ Lazy_load_tags: {
         summary => 'summary',
         hub => Socialtext::Hub->new,
     };
-    my $page = Socialtext::Model::Page->new_from_row($data);
-    isa_ok $page, 'Socialtext::Model::Page';
+    my $page = Socialtext::Page->new_from_row($data);
+    isa_ok $page, 'Socialtext::Page';
 
     eval { $page->tags };
     like $@, qr/tags not loaded, and lazy loading is not yet supported/;
@@ -173,8 +173,8 @@ Resolve_non_default_usernames: {
         hub => Socialtext::Hub->new,
     };
 
-    my $page = Socialtext::Model::Page->new_from_row($data);
-    isa_ok $page, 'Socialtext::Model::Page';
+    my $page = Socialtext::Page->new_from_row($data);
+    isa_ok $page, 'Socialtext::Page';
 
     my $result = $page->to_result();
     ok $result, "converted to a result";

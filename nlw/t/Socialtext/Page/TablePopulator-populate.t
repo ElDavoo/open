@@ -42,7 +42,7 @@ populate_recreating_from_scratch: {
 
     # Count up the number of pages in the Workspace; when we remove one of
     # them we'll want to make sure that it gets removed from the DB.
-    my $all_pages = Socialtext::Model::Pages->All_active(
+    my $all_pages = Socialtext::Pages->All_active(
         hub          => $hub,
         workspace_id => $ws->workspace_id,
     );
@@ -51,7 +51,7 @@ populate_recreating_from_scratch: {
     # Purge one of the pages on-disk, so that when we re-feed the WS from the
     # on-disk representation it'll be missing.
     my $purged_page = $all_pages->[0];
-    isa_ok $purged_page, 'Socialtext::Model::Page';
+    isa_ok $purged_page, 'Socialtext::Page';
 
     my $page_path = $purged_page->directory_path();
     ok -d $page_path, 'page exists on disk';
@@ -67,7 +67,7 @@ populate_recreating_from_scratch: {
 
     # Re-query the pages in the Workspace; we should have one less page than
     # we did before (as we purged one from disk).
-    $all_pages = Socialtext::Model::Pages->All_active(
+    $all_pages = Socialtext::Pages->All_active(
         hub          => $hub,
         workspace_id => $ws->workspace_id,
     );
@@ -107,7 +107,7 @@ populate_only_fill_in_missing_pages: {
 
     # Count up the number of pages in the Workspace; when we're done we should
     # have one new page.
-    my $all_pages = Socialtext::Model::Pages->All_active(
+    my $all_pages = Socialtext::Pages->All_active(
         hub          => $hub,
         workspace_id => $ws->workspace_id,
     );
@@ -117,7 +117,7 @@ populate_only_fill_in_missing_pages: {
     # the effect of "one page in DB that isn't on disk any more *AND* a new
     # page on disk that isn't in the DB".
     my $renamed_page = $all_pages->[0];
-    isa_ok $renamed_page, 'Socialtext::Model::Page';
+    isa_ok $renamed_page, 'Socialtext::Page';
 
     my $page_path = $renamed_page->directory_path();
     ok -d $page_path, 'page exists on disk';
@@ -136,7 +136,7 @@ populate_only_fill_in_missing_pages: {
 
     # Re-query the pages in the Workspace; we should have one more page than
     # we did before (as we pretended to create a new page on disk).
-    $all_pages = Socialtext::Model::Pages->All_active(
+    $all_pages = Socialtext::Pages->All_active(
         hub          => $hub,
         workspace_id => $ws->workspace_id,
     );

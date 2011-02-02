@@ -12,7 +12,7 @@ use Socialtext::Timer;
 use Socialtext::Session;
 use Socialtext::Formatter::LiteLinkDictionary;
 use Socialtext::Encode;
-use Socialtext::Model::Pages;
+use Socialtext::Pages;
 
 use namespace::clean -except => 'meta';
 
@@ -357,7 +357,7 @@ sub _pages_for_tag {
     my $page_size = 20;
 
     $tag = Socialtext::Encode::ensure_is_utf8($tag);
-    my $rows = Socialtext::Model::Pages->By_tag(
+    my $rows = Socialtext::Pages->By_tag(
         hub          => $self->hub,
         workspace_id => $self->hub->current_workspace->workspace_id,
         tag          => $tag,

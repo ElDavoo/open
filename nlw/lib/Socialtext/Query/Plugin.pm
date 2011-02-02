@@ -263,7 +263,7 @@ sub _load_pages_for_hits {
         my $wksp_pages = $pages{$workspace_name};
         my $pages = [];
         eval {
-            $pages = Socialtext::Model::Pages->By_id(
+            $pages = Socialtext::Pages->By_id(
                 hub              => $hit_hub,
                 workspace_id     => $workspace->workspace_id,
                 page_id          => [ keys %$wksp_pages ],
@@ -321,7 +321,7 @@ sub _make_row {
     my $page_uri = $hit->page_uri;
     my $page;
     eval {
-        $page = $hit->{page} || Socialtext::Model::Pages->By_id(
+        $page = $hit->{page} || Socialtext::Pages->By_id(
             hub          => $hit_hub,
             workspace_id => $workspace->workspace_id,
             page_id      => $page_uri,

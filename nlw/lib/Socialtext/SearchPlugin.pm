@@ -8,7 +8,6 @@ use base 'Socialtext::Query::Plugin';
 use Class::Field qw( const field );
 use Socialtext::Search qw( search_on_behalf );
 use Socialtext::Search::AbstractFactory;
-use Socialtext::Model::Pages;
 use Socialtext::Workspace;
 use Socialtext::l10n qw(loc);
 use Socialtext::Log qw( st_log );

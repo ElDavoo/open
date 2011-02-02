@@ -4,7 +4,6 @@ use strict;
 use warnings;
 
 use base 'Socialtext::Plugin';
-use Socialtext::Model::Pages;
 use Socialtext::Watchlist;
 use Socialtext::l10n qw( loc );
 use URI::Escape;

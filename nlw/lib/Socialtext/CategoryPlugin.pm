@@ -16,7 +16,7 @@ use URI::Escape ();
 use Socialtext::l10n qw(loc);
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw/:exec/;
-use Socialtext::Model::Pages;
+use Socialtext::Pages;
 use List::Util qw/min/;
 
 sub class_id {'category'}
@@ -326,7 +326,7 @@ sub page_count {
     if (lc($tag) eq 'recent changes') {
         my $prefs = $self->hub->recent_changes->preferences;
         my $seconds = $prefs->changes_depth->value * 1440 * 60;
-        return Socialtext::Model::Pages->ChangedCount(
+        return Socialtext::Pages->ChangedCount(
             workspace_id => $self->hub->current_workspace->workspace_id,
             duration => $seconds,
         );
@@ -356,7 +356,7 @@ sub get_pages_for_category {
     # Load from the database, and then map into old-school page objects
     my $model_pages = [];
     if (lc($tag) eq 'recent changes') {
-        $model_pages = Socialtext::Model::Pages->All_active(
+        $model_pages = Socialtext::Pages->All_active(
             hub          => $self->hub,
             workspace_id => $self->hub->current_workspace->workspace_id,
             order_by     => $order_by,
@@ -366,7 +366,7 @@ sub get_pages_for_category {
     }
     else {
         $tag = Socialtext::Encode::ensure_is_utf8($tag);
-        $model_pages = Socialtext::Model::Pages->By_tag(
+        $model_pages = Socialtext::Pages->By_tag(
             hub          => $self->hub,
             workspace_id => $self->hub->current_workspace->workspace_id,
             tag          => $tag,
@@ -401,20 +401,20 @@ sub _get_pages_for_listview {
     );
 
     if (lc($tag) eq 'recent changes') {
-        $total = Socialtext::Model::Pages->ActiveCount(
+        $total = Socialtext::Pages->ActiveCount(
             workspace_id => $ws_id
         );
-        $model_pages = Socialtext::Model::Pages->All_active(@args);
+        $model_pages = Socialtext::Pages->All_active(@args);
     }
     else {
         $tag = Socialtext::Encode::ensure_is_utf8($tag);
         push @args, tag => $tag;
 
-        $total = Socialtext::Model::Pages->TaggedCount(
+        $total = Socialtext::Pages->TaggedCount(
             workspace_id => $ws_id,
             tag          => $tag
         );
-        $model_pages = Socialtext::Model::Pages->By_tag(@args);
+        $model_pages = Socialtext::Pages->By_tag(@args);
     }
 
     return {

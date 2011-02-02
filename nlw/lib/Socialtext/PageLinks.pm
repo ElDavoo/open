@@ -2,7 +2,7 @@ package Socialtext::PageLinks;
 # @COPYRIGHT@
 use Moose;
 use Socialtext::Paths;
-use Socialtext::Model::Pages;
+use Socialtext::Pages;
 use Socialtext::Timer;
 use Socialtext::SQL::Builder qw(sql_insert_many);
 use Socialtext::SQL qw(sql_execute sql_txn);
@@ -130,7 +130,7 @@ sub update {
 
 sub _create_page {
     my ($self, $workspace_id, $page_id) = @_;
-    my $page = Socialtext::Model::Pages->By_id(
+    my $page = Socialtext::Pages->By_id(
         hub => $self->hub,
         workspace_id => $workspace_id,
         do_not_need_tags => 1,

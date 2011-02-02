@@ -64,7 +64,7 @@ sub revision_view {
 
     return $self->redirect( $page->uri ) unless $revision_id;
 
-    $page = Socialtext::Model::Pages->By_id(
+    $page = Socialtext::Pages->By_id(
         workspace_id => $self->hub->current_workspace->workspace_id,
         page_id => $page->id,
         revision_id => $revision_id,

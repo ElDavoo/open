@@ -9,7 +9,7 @@ use mocked 'Socialtext::Page';
 use mocked 'Socialtext::User';
 
 BEGIN {
-    use_ok 'Socialtext::Model::Pages';
+    use_ok 'Socialtext::Pages';
 }
 
 my $COMMON_SELECT = <<EOSQL;
@@ -43,7 +43,7 @@ By_seconds_limit: {
                 return => [{workspace_id => 9, page_id => 'page_id'}],
             },
         );
-        Socialtext::Model::Pages->By_seconds_limit(
+        Socialtext::Pages->By_seconds_limit(
             seconds => 88,
             where => 'cows fly',
             count => 20,
@@ -80,7 +80,7 @@ EOT
                 return => [{workspace_id => 9, page_id => 'page_id'}],
             },
         );
-        Socialtext::Model::Pages->By_seconds_limit(
+        Socialtext::Pages->By_seconds_limit(
             seconds          => 88,
             where            => 'cows fly',
             count            => 20,
@@ -109,7 +109,7 @@ EOT
                 return => [{workspace_id => 9, page_id => 'page_id'}],
             },
         );
-        Socialtext::Model::Pages->By_seconds_limit(
+        Socialtext::Pages->By_seconds_limit(
             since => '2008-01-01 01:01:01',
             where => 'cows fly',
             count => 20,
@@ -146,7 +146,7 @@ EOT
                 return => [{workspace_id => 9, page_id => 'page_id'}],
             },
         );
-        Socialtext::Model::Pages->By_seconds_limit(
+        Socialtext::Pages->By_seconds_limit(
             since => '2008-01-01',
             where => 'cows fly',
             count => 20,
@@ -179,7 +179,7 @@ EOT
 
     Neither_seconds_nor_since: {
         like exception {
-            Socialtext::Model::Pages->By_seconds_limit(
+            Socialtext::Pages->By_seconds_limit(
                 where => 'cows fly',
                 count => 20,
                 tag => 'foo',
@@ -195,7 +195,7 @@ EOT
                 return => [{workspace_id => 9, page_id => 'page_id'}],
             },
         );
-        Socialtext::Model::Pages->By_seconds_limit(
+        Socialtext::Pages->By_seconds_limit(
             seconds => 88,
             where => 'cows fly',
             limit => 20,
@@ -232,7 +232,7 @@ EOT
                 return => [{workspace_id => 9, page_id => 'page_id'}],
             },
         );
-        Socialtext::Model::Pages->By_seconds_limit(
+        Socialtext::Pages->By_seconds_limit(
             seconds => 88,
             where => 'cows fly',
             count => 20,
@@ -271,7 +271,7 @@ All_active: {
                 return => [{workspace_id => 9, page_id => 'page_id'}],
             },
         );
-        Socialtext::Model::Pages->All_active(
+        Socialtext::Pages->All_active(
             hub => 'hub',
             count => 20,
             workspace_id => 9,
@@ -305,7 +305,7 @@ EOT
                 return => [{workspace_id => 9, page_id => 'page_id'}],
             },
         );
-        Socialtext::Model::Pages->All_active(
+        Socialtext::Pages->All_active(
             hub => 'hub',
             count => 20,
         );
@@ -335,7 +335,7 @@ EOT
                 return => [],
             },
         );
-        Socialtext::Model::Pages->All_active(
+        Socialtext::Pages->All_active(
             count => 20,
             workspace_id => 0,
         );
@@ -358,7 +358,7 @@ EOT
                 return => [{workspace_id => 9, page_id => 'page_id'}],
             },
         );
-        Socialtext::Model::Pages->All_active(
+        Socialtext::Pages->All_active(
             hub => 'hub',
             count => 20,
             workspace_id => 9,
@@ -385,7 +385,7 @@ EOT
                 return => [{workspace_id => 9, page_id => 'page_id'}],
             },
         );
-        Socialtext::Model::Pages->All_active(
+        Socialtext::Pages->All_active(
             hub => 'hub',
             count => 20,
             workspace_id => 9,
@@ -410,7 +410,7 @@ EOT
                 return => [{workspace_id => 9, page_id => 'page_id'}],
             },
         );
-        Socialtext::Model::Pages->All_active(
+        Socialtext::Pages->All_active(
             hub => 'hub',
             count => 20,
         );
@@ -440,7 +440,7 @@ EOT
                 return => [],
             },
         );
-        Socialtext::Model::Pages->All_active(
+        Socialtext::Pages->All_active(
             count => 20,
             workspace_id => 0,
         );
@@ -462,7 +462,7 @@ EOT
                 return => [{workspace_id => 9, page_id => 'page_id'}],
             },
         );
-        Socialtext::Model::Pages->All_active(
+        Socialtext::Pages->All_active(
             hub => 'hub',
             workspace_id => 9,
         );
@@ -493,7 +493,7 @@ EOT
                 return => [{workspace_id => 9, page_id => 'page_id'}],
             },
         );
-        Socialtext::Model::Pages->All_active(
+        Socialtext::Pages->All_active(
             hub => 'hub',
             count => -1,
             workspace_id => 9,
@@ -524,7 +524,7 @@ EOT
                 return => [{workspace_id => 9, page_id => 'page_id'}],
             },
         );
-        Socialtext::Model::Pages->All_active(
+        Socialtext::Pages->All_active(
             hub => 'hub',
             count => 100,
             workspace_id => 9,
@@ -558,7 +558,7 @@ EOT
                 return => [{workspace_id => 9, page_id => 'page_id'}],
             },
         );
-        Socialtext::Model::Pages->All_active(
+        Socialtext::Pages->All_active(
             hub => 'hub',
             count => -1,
             workspace_id => 9,
@@ -594,7 +594,7 @@ By_tag: {
                 return => [{workspace_id => 9, page_id => 'page_id'}],
             },
         );
-        Socialtext::Model::Pages->By_tag(
+        Socialtext::Pages->By_tag(
             workspace_id => 9,
             limit => 33,
             tag => 'foo',
@@ -628,7 +628,7 @@ EOT
                 return => [{workspace_id => 9, page_id => 'page_id'}],
             },
         );
-        Socialtext::Model::Pages->By_tag(
+        Socialtext::Pages->By_tag(
             workspace_id => 9,
             limit => 33,
             tag => 'foo',
@@ -649,7 +649,7 @@ EOT
     }
 
     Paged: {
-        Socialtext::Model::Pages->By_tag(
+        Socialtext::Pages->By_tag(
             workspace_id => 9,
             limit => 20,
             offset => 40,
@@ -673,7 +673,7 @@ EOT
     }
 
     Ordered_by_creator: {
-        Socialtext::Model::Pages->By_tag(
+        Socialtext::Pages->By_tag(
             workspace_id => 9,
             limit => 20,
             offset => 40,
@@ -700,7 +700,7 @@ EOT
     }
 
     Ordered_by_last_editor: {
-        Socialtext::Model::Pages->By_tag(
+        Socialtext::Pages->By_tag(
             workspace_id => 9,
             limit => 20,
             offset => 40,
@@ -735,7 +735,7 @@ By_id: {
                 return => [{workspace_id => 9, page_id => 'monkey'}],
             },
         );
-        Socialtext::Model::Pages->By_id(
+        Socialtext::Pages->By_id(
             workspace_id => 9,
             page_id => 'monkey',
         );
@@ -767,7 +767,7 @@ EOT
                 return => [{workspace_id => 9, page_id => 'monkey'}],
             },
         );
-        Socialtext::Model::Pages->By_id(
+        Socialtext::Pages->By_id(
             workspace_id => 9,
             page_id => ['monkey', 'ape', 'chimp'],
         );
@@ -799,7 +799,7 @@ EOT
                 return => [{workspace_id => 9, page_id => 'monkey'}],
             },
         );
-        Socialtext::Model::Pages->By_id(
+        Socialtext::Pages->By_id(
             workspace_id     => 9,
             page_id          => [ 'monkey', 'ape', 'chimp' ],
             do_not_need_tags => 1,
@@ -823,7 +823,7 @@ EOT
                 return => [{workspace_id => 10, page_id => 'orangutang'}],
             },
         );
-        Socialtext::Model::Pages->By_id(
+        Socialtext::Pages->By_id(
             workspace_id => 10,
             page_id => 'orangutang',
             deleted_ok => 1,
@@ -846,7 +846,7 @@ EOT
         local @Socialtext::SQL::RETURN_VALUES = (
             { return => [{workspace_id => 9, page_id => 'monkey'}] },
         );
-        Socialtext::Model::Pages->By_id(
+        Socialtext::Pages->By_id(
             workspace_id => 9,
             page_id => 'monkey',
             revision_id => 1234,
@@ -894,7 +894,7 @@ EOT
 Not_in_any_workspaces: {
     # We should only be going to the database if we're in some workspaces.
     local @Socialtext::SQL::RETURN_VALUES = ( sub { die "bad sql" } );
-    my $pages = Socialtext::Model::Pages->By_seconds_limit(
+    my $pages = Socialtext::Pages->By_seconds_limit(
         seconds => 88,
         where => 'cows fly',
         count => 20,
@@ -906,7 +906,7 @@ Not_in_any_workspaces: {
 
 Minimal_by_filtered_name: {
     Regular: {
-        Socialtext::Model::Pages->Minimal_by_name(
+        Socialtext::Pages->Minimal_by_name(
             workspace_id     => 9,
             page_filter   => 'monk',
         );
@@ -931,7 +931,7 @@ EOT
     }
 
     Limited: {
-        Socialtext::Model::Pages->Minimal_by_name(
+        Socialtext::Pages->Minimal_by_name(
             workspace_id => 9,
             page_filter  => 'monk',
             limit        => 100,
@@ -960,7 +960,7 @@ EOT
 
 
 Count_of_recent_changes: {
-    Socialtext::Model::Pages->ChangedCount(
+    Socialtext::Pages->ChangedCount(
         workspace_id => 9,
         duration     => 100,
     );
@@ -979,7 +979,7 @@ EOT
 }
 
 Limit_by_type: {
-    Socialtext::Model::Pages->Minimal_by_name(
+    Socialtext::Pages->Minimal_by_name(
         workspace_id => 9,
         page_filter  => 'monk',
         type         => 'wiki',
@@ -1005,7 +1005,7 @@ EOT
     ok_no_more_sql();
 
 
-    Socialtext::Model::Pages->By_tag(
+    Socialtext::Pages->By_tag(
         workspace_id => 9,
         limit => 33,
         tag => 'foo',
@@ -1025,7 +1025,7 @@ EOT
     );
     ok_no_more_sql();
 
-    Socialtext::Model::Pages->By_seconds_limit(
+    Socialtext::Pages->By_seconds_limit(
         seconds => 88,
         where => 'cows fly',
         count => 20,
@@ -1047,7 +1047,7 @@ EOT
     );
     ok_no_more_sql();
 
-    Socialtext::Model::Pages->All_active(
+    Socialtext::Pages->All_active(
         hub => 'hub',
         count => -1,
         workspace_id => 9,
