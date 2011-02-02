@@ -105,9 +105,7 @@ sub is_spreadsheet { $_[0]->{page_type} eq 'spreadsheet' }
 sub type           { $_[0]->{page_type} }
 sub current_revision_num { $_[0]->{current_revision_num} }
 sub revision_count { $_[0]->{revision_count} }
-sub revision_id    { $_[0]->{current_revision_id} }
-sub revision_num   { $_[0]->{current_revision_num} }
-sub locked         { $_[0]->{locked} ? 1 : 0 }
+sub locked         { $_[0]->{locked} }
 
 sub workspace_name  { $_[0]->{workspace_name} }
 sub workspace_title { $_[0]->{workspace_title} }
@@ -132,7 +130,6 @@ sub hash_representation {
         last_editor    => $editor->email_address,
         last_edit_time => "$self->{last_edit_time} GMT",
         revision_id    => $self->{current_revision_id},
-        revision_num   => $self->{current_revision_num},
         revision_count => $self->{revision_count},
         workspace_name => $self->{workspace_name},
         workspace_title => $self->{workspace_title},
@@ -181,6 +178,29 @@ sub creator {
     my $self = shift;
     return $self->{creator}
         ||= Socialtext::User->new( user_id => $self->{creator_id} );
+}
+
+# Content is still read from disk
+sub content {
+    my $self = shift;
+    my $file = $self->current_revision_file;
+    my $data = Socialtext::File::get_contents_utf8($file);
+    my $body = substr($data, index($data, "\n\n") + 2);
+    return $body;
+}
+
+sub current_revision_file {
+    my $self = shift;
+    my $revision_id = $self->{current_revision_id};
+    return $self->directory_path . "/$revision_id.txt";
+}
+
+# This is the on-disk directory pages are stored, nothing to do with
+# Postgresql
+sub database_directory {
+    my $self = shift;
+    return Socialtext::Paths::page_data_directory( $self->{workspace_name} );
+
 }
 
 sub store {

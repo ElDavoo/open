@@ -18,12 +18,10 @@ use Socialtext::File;
 use Socialtext::l10n qw(loc);
 use Socialtext::Log qw/st_log/;
 use Socialtext::Timer qw/time_scope/;
-use Socialtext::SQL qw/sql_singlevalue sql_singleblob sql_execute/;
+use Socialtext::SQL qw/sql_singlevalue/;
 use Socialtext::l10n qw(loc);
-use Socialtext::String;
 use Digest::SHA1 'sha1_hex';
 use Carp ();
-use URI::Escape qw/uri_escape_utf8/;
 
 our $CACHING_DEBUG = 0;
 our $DISABLE_CACHING = 0;
@@ -493,22 +491,27 @@ sub _questions_to_answers {
 
 sub exists {
     my $self = shift;
-    $self->id && $self->all_revision_ids;
+    $self->id && -e $self->file_path;
 }
 
-sub all {
+sub file_path {
     my $self = shift;
-    return (
-        page_uri => $self->uri,
-        page_title => $self->title,
-        page_title_uri_escaped => uri_escape_utf8($self->title),
-        revision_id => $self->revision_id,
+    return $self->directory_path;
+}
+
+sub directory_path {
+    my $self = shift;
+    my $id = $self->id
+        or Carp::confess( 'No ID for content object' );
+    return Socialtext::File::catfile(
+        $self->database_directory,
+        $id
     );
 }
 
 =head2 $page->all_revision_ids()
 
-Returns a sorted list of all the revision ids for a given page.
+Returns a sorted list of all the revision filenames for a given page.
 
 In scalar context, returns only the count and doesn't bother sorting.
 
@@ -516,28 +519,16 @@ In scalar context, returns only the count and doesn't bother sorting.
 
 sub all_revision_ids {
     my $self = shift;
+    return unless $self->exists;
 
-    if (!wantarray) {
-        return sql_singlevalue(
-            'SELECT count(*) FROM page_revision
-              WHERE workspace_id = ?
-                AND page_id = ?',
-            $self->hub->current_workspace->workspace_id,
-            $self->id,
-        );
-    }
-    my $sth = sql_execute(
-        'SELECT revision_id FROM page_revision
-          WHERE workspace_id = ?
-            AND page_id = ?
-          ORDER BY revision_id ASC
-        ',
-        $self->hub->current_workspace->workspace_id,
-        $self->id,
-    );
-    return (
-        map { $_->[0] } @{ $sth->fetchall_arrayref }
-    );
+    my $dirname = $self->id;
+    my $datadir = $self->directory_path;
+
+    my @files = Socialtext::File::all_directory_files( $datadir );
+    my @ids = grep defined, map { /(\d+)\.txt$/ ? $1 : () } @files;
+
+    # No point in sorting if the caller only wants a count.
+    return wantarray ? sort( @ids ) : scalar( @ids );
 }
 
 sub original_revision {
@@ -574,10 +565,26 @@ sub attachments {
     return @{ $self->hub->attachments->all( page_id => $self->id ) };
 }
 
+sub set_mtime {
+    my $self = shift;
+    my $mtime = shift;
+    my $filename = shift;
+
+    (my $dirpath = $filename) =~ s#(.+)/.+#$1#;
+
+    # Several parts of NLW look at the mtime of the page directory
+    # to determine the last edit.  So if we don't change the mtimes,
+    # notification emails (say) could be sent out.
+    utime $mtime, $mtime, $filename 
+        or warn "utime $mtime, $filename failed: $!";
+    utime $mtime, $mtime, $dirpath 
+        or warn "utime $mtime, $dirpath failed: $!";
+}
+
 sub _page_cache_basename {
     my $self = shift;
     my $cache_dir = $self->_cache_dir or return;
-    return "$cache_dir/" . $self->id . '-' . ($self->revision_id || 'no-revid');
+    return "$cache_dir/" . $self->id . '-' . $self->revision_id;
 }
 
 sub delete_cached_html {
@@ -644,8 +651,23 @@ sub revision_id {
         $self->{revision_id} = shift;
         return $self->{revision_id};
     }
-    $self->assert_revision_id;
-    return $self->{revision_id};
+    return $self->assert_revision_id;
+}
+
+sub _get_index_file {
+    my $self      = shift;
+    my $dir       = $self->directory_path;
+    my $filename  = "$dir/index.txt";
+
+    return $filename if -f $filename;
+    return '' unless my @revisions = $self->all_revision_ids;
+
+    # This is adding some fault-tolerance to the system. If the index.txt file
+    # doesn not exist, we're gonna re-create it rather than throw an error.
+    my $revision_file = $self->revision_file( pop @revisions ); 
+    Socialtext::File::safe_symlink($revision_file => $filename);
+
+    return $filename;
 }
 
 # XXX split this into a getter and setter to more
@@ -657,17 +679,11 @@ sub assert_revision_id {
     my $self = shift;
     my $revision_id = $self->{revision_id};
     return $revision_id if $revision_id;
+    return '' unless my $index_file = $self->_get_index_file;
 
-    $revision_id = sql_singlevalue(
-        'SELECT revision_id FROM page_revision
-          WHERE workspace_id = ?
-            AND page_id = ?
-          ORDER BY revision_id DESC
-          LIMIT 1
-        ', $self->hub->current_workspace->workspace_id,
-        $self->id,
-    );
-
+    $revision_id = readlink $index_file;
+    $revision_id =~ s/(?:.*\/)?(.*)\.txt$/$1/
+      or die "$revision_id is bad file name";
     $self->revision_id($revision_id);
 }
 
@@ -822,21 +838,6 @@ sub content_or_default {
         : ($self->content || loc('Replace this text with your own.') . '   ');
 }
 
-=head2 $page->app_uri()
-
-This builds a uri historically used in the app. YMMV
-
-=cut
-
-sub app_uri {
-    my $self = shift;
-    return $self->full_uri if $self->exists;
-
-    return $self->hub->current_workspace->uri
-        . Socialtext::AppConfig->script_name . "?"
-        . $self->id;
-}
-
 sub _log_page_action {
     my $self = shift;
 
@@ -884,34 +885,6 @@ sub _log_page_action {
                    . 'user:' . $user->username . '(' . $user->user_id . '),'
                    . '[NA]'
     );
-}
-
-sub content {
-    my $self = shift;
-    return $self->{content} = shift if @_;
-    return $self->{content} if defined $self->{content};
-    $self->load_content;
-    return $self->{content} || '';
-}
-
-sub load_content {
-    my $self = shift;
-    my $rev_id = $self->revision_id;
-    return '' unless $rev_id;
-    sql_singleblob(\$self->{content},
-        'SELECT body FROM page_revision
-          WHERE workspace_id = ?
-            AND page_id = ?
-            AND revision_id = ?
-        ', $self->hub->current_workspace->workspace_id, $self->id, $rev_id,
-    );
-    $self->content('') unless defined $self->{content};
-    return $self;
-}
-
-sub html_escaped_categories {
-    my $self = shift;
-    return map { Socialtext::String::html_escape($_) } $self->categories_sorted;
 }
 
 1;

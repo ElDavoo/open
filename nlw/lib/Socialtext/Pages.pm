@@ -5,9 +5,9 @@ use warnings;
 
 use base 'Socialtext::Base';
 
-use Carp;
 use Class::Field qw( const field );
 use Email::Valid;
+use Socialtext::File;
 use Socialtext::Log 'st_log';
 use Socialtext::Page;
 use Socialtext::Paths;
@@ -21,7 +21,7 @@ use Socialtext::l10n qw( loc );
 use Socialtext::String ();
 use Socialtext::SQL qw/sql_execute sql_format_timestamptz/;
 use Scalar::Util qw/blessed/;
-use Guard qw/guard scope_guard/;
+use Guard qw/scope_guard/;
 
 sub class_id { 'pages' }
 const class_title => 'NLW Pages';
@@ -56,7 +56,6 @@ sub all_active {
 sub all_ids {
     my $self = shift;
     my %p = @_;
-    my $ws_id = $p{workspace_id} || $self->hub->current_workspace->workspace_id;
     my $t = time_scope 'all_ids';
     my $hide_deleted = $p{not_deleted} ? "AND NOT deleted" : '';
     my $sth = sql_execute(<<EOT,
@@ -66,7 +65,7 @@ SELECT page_id
         $hide_deleted
     ORDER BY last_edit_time DESC
 EOT
-        $ws_id,
+        $self->hub->current_workspace->workspace_id,
     );
     my $pages = $sth->fetchall_arrayref();
     return map { $_->[0] } @$pages;
@@ -74,8 +73,8 @@ EOT
 
 =head2 $pages->all_ids_newest_first()
 
-Returns a list of all the page revision ids
-sorted in reverse date order.
+Returns a list of all the directories in page_data_directory,
+sorted in reverse date order. Skips symlinks.
 
 =cut
 
@@ -315,7 +314,6 @@ generated. A scabrous thing, but necessary in the current UI.
 Returns a L<Socialtext::Page> object.
 
 =cut
-
 sub create_new_page {
     my $self = shift;
 
@@ -340,12 +338,10 @@ sub page_exists_in_workspace {
 }
 
 sub page_in_workspace {
-    my $class_or_self = shift;
+    my $self       = shift;
     my $page_title = shift;
     my $ws_name    = shift;
     my $main       = Socialtext->new();
-
-    # TODO: re-use the current hub if it's the same workspace.
 
     $main->load_hub(
         current_user      => Socialtext::User->SystemUser(),
@@ -358,7 +354,7 @@ sub page_in_workspace {
 }
 
 my %in_progress = ();
-sub render_in_workspace {
+sub _render_in_workspace {
     my ($self, $page_id, $ws, $callback) = @_;
 
     my $page_key = $ws->workspace_id . ":$page_id";
@@ -395,7 +391,7 @@ sub html_for_page_in_workspace {
 
     my $ws = Socialtext::Workspace->new(name => $workspace_name);
     my $html;
-    $self->render_in_workspace($page_id, $ws, sub {
+    $self->_render_in_workspace($page_id, $ws, sub {
         my $page = shift;
         $html = $page->to_html_or_default;
     });
@@ -439,24 +435,6 @@ sub page_with_spreadsheet_wikitext {
     }
     $new->content($wikitext);
     return $new;
-}
-
-# Ensures that the 'current' page is the specified one.
-#
-# If the current page is indeed the specified one, no action is taken.
-#
-# If it isn't current, the specified page is made current and a Guard is
-# returned that will set it back to the previously-current page.
-#
-# Note that if called in a void context this method will do nothing.
-sub ensure_current {
-    my ($self, $pg_or_id) = shift;
-    croak "don't call ensure_current in a void context"
-        unless defined wantarray;
-    my $page = blessed($pg_or_id) ? $pg_or_id : $self->new_page($pg_or_id);
-    my $cur = $self->current;
-    $self->current($page);
-    return guard { $self->current($cur) };
 }
 
 ################################################################################
