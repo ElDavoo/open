@@ -38,11 +38,10 @@
 | *Comment*      | Log in as a Group admin |          |
 | http-user-pass | %%admin%%               | password |
 
-## GET on /membership is just a 303 See Other for /users
-| *Comment* | Check Group for proper membership    |                                 |
-| GET-json  | /data/groups/%%group_id%%/membership |                                 |
-| code-is   | 303                                  |                                 |
-| header-is | Location                             | /data/groups/%%group_id%%/users |
+## GET on /membership is a 405 Method Not Allowed.
+| *Comment* | GET membership returns a 405         |
+| GET-json  | /data/groups/%%group_id%%/membership |
+| code-is   | 405                                  |
 
 ## Check that Mercury is currently a member
 | GET-json   | /data/groups/%%group_id%%/users                 |
