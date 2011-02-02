@@ -1098,8 +1098,16 @@ CREATE TABLE page_revision (
     edit_summary text,
     locked boolean DEFAULT false NOT NULL,
     tags text[],
-    body bytea NOT NULL
+    body_length bigint DEFAULT 0 NOT NULL,
+    body bytea
 );
+
+CREATE SEQUENCE page_revision_id_seq
+    START WITH 30000000000000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 CREATE TABLE page_tag (
     workspace_id bigint NOT NULL,
