@@ -184,7 +184,7 @@ sub POST_to_membership { $_[0]->_admin_with_group_data_do_txn(sub {
         $group->has_user($user)
             or die "This group does not have $name_or_id as a user";
 
-        $group->add_user( user => $user, role => $role );
+        $group->assign_role_to_user( user => $user, role => $role );
     }
 
     return '';
