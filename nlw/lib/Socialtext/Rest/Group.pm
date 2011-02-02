@@ -47,16 +47,8 @@ sub create_error {
     return "Error updating group: $err";
 }
 
-sub PUT_json {
+sub PUT_json { $_[0]->_with_admin_permission_do(sub {
     my ($self, $rest) = @_;
-
-    my $error = $self->_has_request_error(
-        permissions => [ST_ADMIN_PERM],
-    );
-    if ($error) {
-        $rest->header(-status => $error->{status});
-        return $error->{message};
-    }
 
     my $group = Socialtext::Group->GetGroup(group_id => $self->group_id);
     my $data  = eval { decode_json( $rest->getContent ) };
@@ -95,7 +87,7 @@ sub PUT_json {
     }
 
     return undef;
-}
+}) }
 
 sub _has_request_error {
     my $self = shift;
@@ -133,18 +125,29 @@ sub _has_request_error {
     return undef;
 }
 
-sub POST_to_trash {
-    my $self  = shift;
-    my $rest  = shift;
-    my $actor = $rest->user;
+sub _with_admin_permission_do {
+    my $self = shift;
+    my $callback = shift;
 
     my $error = $self->_has_request_error(
         permissions => [ST_ADMIN_PERM]
     );
     if ($error) {
-        $rest->header(-status => $error->{status});
+        $self->rest->header(-status => $error->{status});
         return $error->{message};
     }
+
+    return $self->$callback($self->rest);
+}
+
+sub POST_to_membership { $_[0]->_with_admin_permission_do(sub {
+    my ($self, $rest) = @_;
+    return [];
+}) }
+
+sub POST_to_trash { $_[0]->_with_admin_permission_do(sub {
+    my $self  = shift;
+    my $rest  = shift;
 
     my $group = Socialtext::Group->GetGroup(group_id => $self->group_id);
     my $data  = eval{ decode_json($rest->getContent) };
@@ -170,7 +173,7 @@ sub POST_to_trash {
     sql_commit();
     $rest->header(-status => HTTP_200_OK);
     return '';
-}
+}) }
 
 sub _remove_item {
     my $self  = shift;
