@@ -183,13 +183,15 @@ sub add_tags {
     croak "PageRevision isn't mutable" unless $self->mutable;
     my $set = $self->tag_set;
     my $tags = $self->tags;
+    my @added;
     for my $tag (@$add) {
         my $lc_tag = lc(ensure_is_utf8($tag));
         next if $set->EXISTS($lc_tag);
         $set->Push($lc_tag => $tag);
+        push @added, $tag;
     }
     @$tags = $set->Values();
-    return $tags;
+    return \@added;
 }
 
 sub delete_tags {
@@ -198,12 +200,14 @@ sub delete_tags {
     croak "PageRevision isn't mutable" unless $self->mutable;
     my $set = $self->tag_set;
     my $tags = $self->tags;
+    my @deleted;
     for my $tag (@$del) {
         my $lc_tag = lc(ensure_is_utf8($tag));
-        $set->Delete($lc_tag);
+        my $was = $set->Delete($lc_tag);
+        push @deleted, $was if defined $was;
     }
     @$tags = $set->Values();
-    return $tags;
+    return \@deleted;
 }
 
 sub store {
