@@ -546,12 +546,14 @@ for my $thing_name (qw(user group account)) {
         my $t = time_scope("uset_${thing_name}_ids");
         my $table = $p{direct} ? 'user_set_include' : 'user_set_path';
         my $filter = $p{show_hidden} ? '' : $from_set_filter;
+        my $order = $p{order} ? 'ORDER BY from_set_id' : '';
         my $sth = sql_execute(qq{
             SELECT DISTINCT from_set_id
             FROM $table
             WHERE from_set_id $id_filter
               AND into_set_id = ?
               $filter
+              $order
         }, $self->user_set_id);
         return [map { $_->[0] - $id_offset } @{$sth->fetchall_arrayref || []}];
     };
@@ -560,7 +562,7 @@ for my $thing_name (qw(user group account)) {
     _mk_method "${thing_name}s" => sub {
         my $self = shift;
         my %p = (@_==1) ? %{$_[0]} : @_;
- 
+
         my $t = time_scope("uset_${thing_name}s");
         my $meth = "${thing_name}_ids";
         my $ids = $self->$meth(%p);

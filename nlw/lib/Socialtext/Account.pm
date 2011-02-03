@@ -364,7 +364,7 @@ sub user_can {
 sub all_users_as_hash {
     my $self  = shift;
     my %args  = @_;
-    my $iter  = $self->users(show_hidden => 1);
+    my $iter  = $self->users(show_hidden => 1, order => 1);
     my @users = map { $self->_dump_user_to_hash($_,%args) } $iter->all();
     return \@users;
 }
@@ -485,6 +485,7 @@ sub import_file {
     for my $user_hash (@{ $hash->{users} }) {
 
         next unless Socialtext::User::Default::Users->CanImportUser($user_hash);
+#warn "Importing user $hash->{name}\n";
 
         # Import this user into the new account we're creating. If they were
         # in some other account we'll fix that up below.
