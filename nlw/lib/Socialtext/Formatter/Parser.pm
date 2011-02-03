@@ -202,10 +202,9 @@ sub get_cached_tree {
 
     # Added test for size of $cache_file in order to stop
     # application errors based on 0 size cached files
-    if (    -f $page->current_revision_file
-        and -f $cache_file
+    if (    -f $cache_file
         and -s $cache_file
-        and ( ( stat _ )[9] > ( stat $page->current_revision_file )[9] ) ) {
+        and ( ( stat _ )[9] > $page->modified_time ) ) {
         stat_call( formatter_cache_hit_rate => 'observe', 0 );
 
         $parsed = Storable::retrieve($cache_file);

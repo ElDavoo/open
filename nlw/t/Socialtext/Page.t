@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use DateTime;
-use Test::Socialtext tests => 44;
+use Test::Socialtext tests => 45;
 
 fixtures(qw( db ));
 
@@ -21,9 +21,10 @@ APPEND: {
         content => 'First Paragraph',
         creator => $hub->current_user,
     );
+    Test::More::is($page->content, "First Paragraph\n", 'initial content');
     ok($page->is_recently_modified(), 'page is recently modified' );
     $page->append('Second Paragraph');
-    ok($page->content, "First Paragraph\n---\nSecond Paragraph");
+    Test::More::is($page->content, "First Paragraph\n\n---\nSecond Paragraph");
 }
 
 RENAME: {
@@ -44,7 +45,7 @@ RENAME: {
 
     $return = $page1->rename('My Renamed Page');
     is ($return, 1, 'Rename should return ok' );
-    is ($page1->content, "Page renamed to [My Renamed Page]\n", 'Original page content should point to new page' );
+    Test::More::is ($page1->content, "Page renamed to [My Renamed Page]\n", 'Original page content should point to new page' );
 }
 
 RENAME_CLOBBER: {
@@ -62,10 +63,10 @@ RENAME_CLOBBER: {
 
     my $return = $page1->rename('My Second Page', 1, 1, 'My Second Page');
     is ($return, 1, 'Return should be ok as existing page should be clobbered' );
-    is ($page1->content, "Page renamed to [My Second Page]\n", 'Original page content should point to new page' );
+    Test::More::is ($page1->content, "Page renamed to [My Second Page]\n", 'Original page content should point to new page' );
 
     $page2 = $hub->pages->new_from_name('My Second Page');
-    is ($page2->content, "First Paragraph\n", 'Exising page should have content of new page' );
+    Test::More::is ($page2->content, "First Paragraph\n", 'Exising page should have content of new page' );
 }
 
 RENAME_WITH_OVERLAPPING_IDS: {
@@ -79,8 +80,8 @@ RENAME_WITH_OVERLAPPING_IDS: {
     my $new_title = 'I Love Cows So Much I Could SCREAM!!!!!!!';
     my $return    = $page->rename($new_title);
     is( $return, 1, 'Rename of a page where new name has same page_id' );
-    is( $page->title,   $new_title );
-    is( $page->content, "COWS LOVE ME\n" );
+    Test::More::is( $page->title,   $new_title );
+    Test::More::is( $page->content, "COWS LOVE ME\n" );
 }
 
 PREPEND: {
@@ -92,7 +93,7 @@ PREPEND: {
     );
     ok($page->is_recently_modified(), 'page is recently modified' );
     $page->prepend('Second Paragraph');
-    ok($page->content, "Second Paragraph\n---\nFirst Paragraph");
+    Test::More::is($page->content, "Second Paragraph\n---\nFirst Paragraph\n");
 }
 
 LOAD_WITH_REVISION: {
@@ -109,11 +110,11 @@ LOAD_WITH_REVISION: {
     is (scalar(@ids), 2, 'Number of revisions');
     my $oldPage = Socialtext::Page->new( hub => $hub, id=>'revision_page' );
     $oldPage->load_revision($ids[0]);
-    is($oldPage->content,"First Paragraph\n", 'Content matches first revision');
+    Test::More::is($oldPage->content,"First Paragraph\n", 'Content matches first revision');
     $oldPage = Socialtext::Page->new( hub => $hub, id=>'revision_page' );
     $oldPage->load_revision($ids[1]);
-    is($oldPage->content,"First Paragraph\n\n---\nSecond Paragraph\n", 'Content matches latest revision');
-    is($oldPage->content, $page->content, 'Content matches latest revision');
+    Test::More::is($oldPage->content,"First Paragraph\n\n---\nSecond Paragraph\n", 'Content matches latest revision');
+    Test::More::is($oldPage->content, $page->content, 'Content matches latest revision');
 }
 
 IS_RECENTLY_MODIFIED: {

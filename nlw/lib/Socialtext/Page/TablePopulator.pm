@@ -5,15 +5,16 @@ use warnings;
 use Email::Valid;
 use Socialtext::Workspace;
 use Socialtext::Paths;
-use Socialtext::Page;
-use Socialtext::Page::Base;
 use Socialtext::Hub;
 use Socialtext::User;
 use Socialtext::File;
 use Socialtext::AppConfig;
+use Socialtext::Page::Legacy;
+use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw(get_dbh :exec :txn);
 use Fatal qw/opendir closedir chdir open/;
 use Cwd   qw/abs_path/;
+use DateTime;
 
 sub new {
     my $class = shift;
@@ -22,10 +23,24 @@ sub new {
 
     my $self = \%opts;
     bless $self, $class;
+
     $self->{workspace}
         = Socialtext::Workspace->new( name => $opts{workspace_name} );
     die "No such workspace $opts{workspace_name}\n"
         unless $self->{workspace};
+
+    die "data_dir is a required option" unless $self->{data_dir};
+    die "No such directory $self->{data_dir}"
+        unless -d $self->{data_dir};
+
+    $self->{old_name} ||= $self->{workspace_name};
+    $self->{workspace_data_dir} = "$self->{data_dir}/data/$self->{old_name}";
+    die "No such workspace directory $self->{workspace_data_dir}"
+        unless -d $self->{workspace_data_dir};
+    $self->{workspace_plugin_dir}
+        = "$self->{data_dir}/plugin/$self->{old_name}";
+    $self->{workspace_user_dir}
+        = "$self->{data_dir}/user/$self->{old_name}";
 
     return $self;
 }
@@ -45,12 +60,19 @@ sub populate {
                 'DELETE FROM page WHERE workspace_id = ?',
                 $workspace->workspace_id,
             );
+            sql_execute(
+                'DELETE FROM page_revision WHERE workspace_id = ?',
+                $workspace->workspace_id,
+            );
+            sql_execute(
+                'DELETE FROM breadcrumb WHERE workspace_id = ?',
+                $workspace->workspace_id,
+            );
         }
 
         # Grab all the Pages in the Workspace, figure out which ones we need
         # to add to the DB, then add them all.
-        my $workspace_dir
-            = Socialtext::Paths::page_data_directory($workspace_name);
+        my $workspace_dir = $self->{workspace_data_dir};
         my $hub = $self->{hub}
             = Socialtext::Hub->new( current_workspace => $workspace );
         chdir $workspace_dir;
@@ -77,7 +99,7 @@ sub populate {
             my $workspace_id = $workspace->workspace_id;
 
             eval {
-                $page = $self->read_metadata($dir);
+                $page = $self->load_page_metadata($workspace_dir, $dir);
                 $last_editor  = editor_to_id($page->{last_editor});
                 $first_editor = editor_to_id($page->{creator_name});
             };
@@ -103,7 +125,8 @@ sub populate {
                 $page->{revision_num},
                 $page->{type}, $page->{deleted}, $page->{summary},
                 $page->{edit_summary} || '',
-                $page->{locked} || 0,
+                $page->{locked},
+                $page->{views},
             ];
 
             my %tags;
@@ -117,13 +140,18 @@ sub populate {
         # Now add all those pages and tags to the database
         add_to_db('page', \@pages);
         add_to_db('page_tag', \@page_tags);
+
+        $self->load_breadcrumbs();
     }};
     die "Error during populate of $workspace_name: $@" if $@;
 }
 
-sub read_metadata {
-    my $self     = shift;
-    my $dir = shift;
+sub load_page_metadata {
+    my $self   = shift;
+    my $ws_dir = shift;
+    my $dir    = shift;
+
+    $self->load_revision_metadata($ws_dir, $dir);
 
     my $current_revision_file = find_current_revision( $dir );
     my $pagemeta = fetch_metadata($current_revision_file);
@@ -140,7 +168,7 @@ sub read_metadata {
     }
     my $summary = $pagemeta->{Summary} || '';
     unless ($summary) {
-        my $p = Socialtext::Page->new( 
+        my $p = Socialtext::Page->new(
             hub => $self->{hub}, id => $dir,
         );
         $summary = $p->preview_text;
@@ -166,6 +194,10 @@ sub read_metadata {
         die "No Date found for $dir, skipping\n";
     }
 
+    # Attempt to load the COUNTER file for this page
+    my $counter_file = "$self->{workspace_plugin_dir}/counter/$dir/COUNTER";
+    my $views = -e $counter_file ? read_counter($counter_file) : 0;
+
     return {
         page_id => $dir,
         name => $subject,
@@ -173,18 +205,84 @@ sub read_metadata {
         last_edit_time => $last_edit_time,
         revision_id => $revision_id,
         revision_count => $num_revisions,
-        revision_num => $pagemeta->{Revision},
+        revision_num => $pagemeta->{Revision} || 1,
         type => $pagemeta->{Type} || 'wiki',
         deleted => ($pagemeta->{Control} || '') eq 'Deleted' ? 1 : 0,
         tags => $tags,
         summary => $summary,
         creator_name => $orig_page->{From},
         create_time => $orig_page->{Date},
+        locked => $pagemeta->{Locked} || 0,
+        views => $views,
     };
 }
 
+sub load_revision_metadata {
+    my $self   = shift;
+    my $ws_dir = shift;
+    my $pg_dir = shift;
+
+    my @revisions;
+    opendir(my $dfh, "$ws_dir/$pg_dir");
+    REV: while (my $file = readdir($dfh)) {
+        $file = "$ws_dir/$pg_dir/$file";
+        next REV if -l $file;
+        next REV unless -f $file;
+
+        # Ignore really old pages that have invalid page_ids
+        next REV unless Socialtext::Encode::is_valid_utf8($file);
+        my $pagemeta = fetch_metadata($file);
+        (my $revision_id = $file) =~ s#.+/(.+)\.txt$#$1#;
+        my $tags = $pagemeta->{Category} || [];
+        $tags = [$tags] unless ref($tags);
+
+        my $subject = $pagemeta->{Subject} || '';
+        if (ref($subject)) { # Handle bad duplicate headers
+            $subject = shift @$subject;
+        }
+        my $summary = $pagemeta->{Summary} || '';
+        if (ref($summary) eq 'ARRAY') {
+            # work around a bug where a page has 2 Summary revisions.
+            $summary = $summary->[-1];
+        }
+
+        push @revisions, [
+            Socialtext::Page::Legacy::read_and_decode_file($file, 1, 1),
+            $self->{workspace}->workspace_id,
+            $pg_dir,
+            $revision_id,
+            $pagemeta->{Revision} || 1,
+            $subject,
+            editor_to_id($pagemeta->{From}),
+            $pagemeta->{Date},
+            $pagemeta->{Type} || 'wiki',
+            ($pagemeta->{Control} || '') eq 'Deleted' ? 1 : 0,
+            $summary,
+            $pagemeta->{RevisionSummary} || '',
+            $pagemeta->{Locked} || 0,
+            $tags,
+        ];
+    }
+    closedir($dfh);
+
+    # Review: Is it possible to do this more efficiently in bulk?
+    # It is not obvious how to do this with the BYTEA
+    for my $rev (@revisions) {
+        my $content_ref = shift @$rev;
+        # Also update SQL in Socialtext/Page.pm if necessary
+        sql_saveblob($content_ref, <<'EOSQL', @$rev);
+INSERT INTO page_revision (
+            body, workspace_id, page_id, revision_id, revision_num, name,
+            editor_id, edit_time, page_type, deleted, summary, edit_summary,
+            locked, tags
+        )
+        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
+EOSQL
+    }
+}
+
 # This method was copied from Socialtext::Page, to remove a dependency
-# should that module change in the future.  
+# should that module change in the future.
 # (One less thing to think about then.)
 sub parse_headers {
     my $headers = shift;
@@ -207,6 +305,7 @@ sub parse_headers {
 sub add_to_db {
     my $table = shift;
     my $rows = shift;
+    my $t = time_scope "add_to_db $table";
 
     unless (@$rows) {
         warn "No rows to add to $table.\n";
@@ -233,6 +332,7 @@ sub page_exists_in_db {
     my $ws_id   = $opts{workspace_id} || die "workspace_id is required";
     my $page_id = $opts{page_id}      || die "page_id is required";
 
+    my $t = time_scope 'page_exists_in_db';
     my $exists_already = sql_singlevalue( q{
         SELECT true
           FROM page
@@ -273,7 +373,7 @@ sub fetch_metadata {
         }
     };
 
-    my $content = Socialtext::Page::read_and_decode_file($file);
+    my $content = Socialtext::Page::Legacy::read_and_decode_file($file);
     return parse_headers($content);
 }
 
@@ -284,7 +384,7 @@ sub fetch_metadata {
     sub editor_to_id {
         my $email_address = shift || '';
         unless ( $userid_cache{ $email_address } ) {
-            # We have some very bogus data on our system, so we need to 
+            # We have some very bogus data on our system, so we need to
             # be very cautious.
             unless ( Email::Valid->address($email_address) ) {
                 my ($name) = $email_address =~ /([\w-]+)/;
@@ -300,7 +400,7 @@ sub fetch_metadata {
             };
             unless ($user) {
                 warn "Creating user account for '$email_address'\n";
-                eval { 
+                eval {
                     $user = Socialtext::User->create(
                         email_address => $email_address,
                         username      => $email_address,
@@ -340,11 +440,53 @@ sub fix_relative_page_link {
         die "Could not find symlinked page ($abs_page)"
             unless -f $abs_page;
         Socialtext::File::safe_symlink($abs_page, "$dir/index.txt");
-        warn "Fixed relative symlink in $dir\n";
-        
-        my $mtime = (stat($abs_page))[9] || time;
-        Socialtext::Page::Base->set_mtime($mtime, "$dir/index.txt");
     }
 }
+
+sub read_counter {
+    my $file = shift;
+    my $contents = Socialtext::File::get_contents($file);
+    my (undef, $count) = split "\n", $contents;
+    return $count;
+}
+
+sub load_breadcrumbs {
+    my $self  = shift;
+    my $ws_id = $self->{workspace}->workspace_id;
+
+    my $ws_user_dir = $self->{workspace_user_dir};
+    return unless -d $ws_user_dir;
+
+    # The .trail files do not contain dates, so we will sythesize dates
+    # to provide order. We will start at midnight of today and add a second
+    # for each breadcrumb
+    my $date = DateTime->now;
+    $date->set_hour(0);
+    $date->set_minute(0);
+
+    my @breadcrumbs;
+    opendir(my $dfh, $ws_user_dir);
+    while (my $user_dir = readdir($dfh)) {
+        next unless -d "$ws_user_dir/$user_dir";
+        next if $user_dir =~ m/^\./;
+        my $trail = "$ws_user_dir/$user_dir/.trail";
+        next unless -e $trail;
+
+        my $user = Socialtext::User->new(email_address => $user_dir);
+        next unless $user;
+
+        my @page_ids =
+            map { Socialtext::String::title_to_id($_) }
+                split "\n", Socialtext::File::get_contents_utf8($trail);
+
+        my $i = 0;
+        for my $id (@page_ids) {
+            $date->set_second($i++);
+            push @breadcrumbs, [ $user->user_id, $ws_id, $id, $date->iso8601 ];
+        }
+    }
+    add_to_db('breadcrumb', \@breadcrumbs) if @breadcrumbs;
+}
+
 
 1;

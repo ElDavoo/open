@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Socialtext::AppConfig;
-use Test::Socialtext tests => 17;
+use Test::Socialtext tests => 16;
 use Test::Socialtext::User;
 fixtures( 'admin', 'destructive' );
 
@@ -59,10 +59,6 @@ Socialtext::Workspace->ImportFromTarball( tarball => $tarball );
 
     is( $admin->logo_uri(), 'http://example.com/logo.gif',
         'check that logo_uri survived export/import' );
-
-    my @data_dirs = $admin->_data_dir_paths();
-    ok( ( grep { -d } @data_dirs ) == @data_dirs,
-        'all data dirs are present are a restore' );
 
     ok( $admin->user_count, 'admin workspace has users' );
 

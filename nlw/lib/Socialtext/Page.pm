@@ -15,7 +15,6 @@ use base 'Socialtext::Page::Base';
 use Socialtext::AppConfig;
 use Socialtext::JobCreator;
 use Socialtext::Encode;
-use Socialtext::File;
 use Socialtext::Formatter::Parser;
 use Socialtext::Formatter::Viewer;
 use Socialtext::Formatter::AbsoluteLinkDictionary;
@@ -33,6 +32,8 @@ use Socialtext::Events;
 use Socialtext::SQL qw/:exec :txn get_dbh sql_parse_timestamptz/;
 use Socialtext::SQL::Builder qw/sql_insert_many/;
 use Socialtext::Permission 'ST_READ_PERM';
+use Socialtext::Model::Pages;
+use Socialtext::Cache;
 
 use Data::Dumper;
 use Carp ();
@@ -41,9 +42,9 @@ use Cwd ();
 use DateTime;
 use DateTime::Duration;
 use DateTime::Format::Strptime;
+use DateTime::Format::Pg;
 use Date::Parse qw/str2time/;
 use Email::Valid;
-use File::Path;
 use Readonly;
 use Text::Autoformat;
 use Time::Duration::Object;
@@ -59,12 +60,11 @@ field 'id';
 sub class_id { 'page' }
 field full_uri =>
       -init => '$self->hub->current_workspace->uri . $self->uri';
-field database_directory => -init =>
-    'Socialtext::Paths::page_data_directory( $self->hub->current_workspace->name )';
 
 sub _MAX_PAGE_ID_LENGTH () {
     return 255;
 }
+field cache => -init => "Socialtext::Cache->cache('pages')";
 
 =head1 METHODS
 
@@ -115,7 +115,7 @@ Return the count of revisions that a given page has.
 
 sub revision_count {
     my $self = shift;
-    return scalar $self->all_revision_ids();
+    return scalar($self->all_revision_ids()) || 1;
 }
 
 sub creator {
@@ -152,13 +152,10 @@ sub create {
     $page->metadata->Category($args{categories});
     $page->metadata->update( user => $args{creator} );
 
-    # hard_set_date does its own store
     if ($args{date}) {
-        $page->hard_set_date( $args{date}, $args{creator} );
+        $page->metadata->Date($args{date}->strftime('%Y-%m-%d %H:%M:%S GMT'));
     }
-    else {
-        $page->store( user => $args{creator} );
-    }
+    $page->store( user => $args{creator} );
 
     return $page;
 }
@@ -434,13 +431,10 @@ various places where this has been done in the past.
         $self->content($args{content});
 
         $metadata->update( user => $args{user} );
-        # hard_set_date does its own store
         if ($args{date}) {
-            $self->hard_set_date( $args{date}, $args{user} );
+            $self->metadata->Date($args{date}->strftime('%Y-%m-%d %H:%M:%S GMT'));
         }
-        else {
-            $self->store( user => $args{user} );
-        }
+        $self->store( user => $args{user} );
 
         if ($args{signal_edit_summary}) {
             $self->_signal_edit_summary($args{user}, $args{edit_summary}, $args{signal_edit_to_network});
@@ -515,18 +509,14 @@ sub hash_representation {
     # things and return values we don't want.  We can't just change the
     # original methods b/c they're part of the bedrock of our app and would
     # have far reaching changes, so we do it here.
-    my ( $name, $uri, $page_uri );
+    my ( $name, $uri );
     if ( $self->exists ) {
         $name     = $self->metadata->Subject;
         $uri      = $self->uri;
-        $page_uri = $self->full_uri;
     }
     else {
-        $name     = $self->name;
+        $name     = $self->metadata->Subject || $self->name;
         $uri      = $self->id;
-        $page_uri = $self->hub->current_workspace->uri
-            . Socialtext::AppConfig->script_name . "?"
-            . $self->id;
     }
 
     my $from = $self->metadata->From;
@@ -543,7 +533,7 @@ sub hash_representation {
         page_id  => $self->id,
 
         # REVIEW: This URI may eventually prove to be the wrong one
-        page_uri       => $page_uri,
+        page_uri       => $self->app_uri,
         tags           => $self->metadata->Category,
         last_editor    => $masked_email,
         last_edit_time => $self->metadata->Date,
@@ -876,8 +866,7 @@ sub store {
     else {
         $metadata->Control('Deleted');
     }
-
-    $self->write_file();
+    $self->create_new_revision_id;
     $self->_perform_store_actions();
 
     $self->_log_edit_summary($p{user}) if $self->metadata->RevisionSummary;
@@ -962,16 +951,18 @@ sub _do_update_db_metadata {
         $create_time = $orig_page->metadata->Date;
     }
 
+    my $editor_id = $self->last_edited_by->user_id;
+    my $deleted = $self->deleted ? 1 : 0;
+    my $summary = $self->metadata->Summary;
+    my $edit_summary = $self->metadata->RevisionSummary;
+    my $locked = $self->metadata->Locked ? 1 : 0;
     my @args = (
         $hash->{name},
-        $self->last_edited_by->user_id, $hash->{last_edit_time},
+        $editor_id, $hash->{last_edit_time},
         $creator_id, $create_time,
         $hash->{revision_id}, $self->metadata->Revision,
         $hash->{revision_count},
-        $hash->{type}, $self->deleted ? '1' : '0', 
-        $self->metadata->Summary,
-        $self->metadata->RevisionSummary,
-        $self->metadata->Locked ? '1' : '0',
+        $hash->{type}, $deleted, $summary, $edit_summary, $locked,
         $wksp_id, $pg_id
     );
     my $insert_or_update;
@@ -1017,7 +1008,23 @@ INSSQL
     }
     sql_execute($insert_or_update, @args);
 
+    # Insert this revision
     my $tags = $self->metadata->Category;
+    my @revision_args = (
+        $wksp_id, $pg_id, $hash->{revision_id}, $self->metadata->Revision,
+        $hash->{name}, $editor_id, $hash->{last_edit_time}, $hash->{type},
+        $deleted, $summary, $edit_summary, $locked, $tags,
+    );
+    # Also update SQL in Socialtext/Page/TablePopulator.pm if necessary
+    sql_saveblob(\$self->content, <<SQL, @revision_args);
+        INSERT INTO page_revision (
+            body, workspace_id, page_id, revision_id, revision_num, name,
+            editor_id, edit_time, page_type, deleted, summary, edit_summary,
+            locked, tags
+        )
+        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
+SQL
+
     if (@$tags) {
         sql_insert_many( 
             page_tag => [qw/workspace_id page_id tag/],
@@ -1034,14 +1041,6 @@ sub is_system_page {
                $from eq $SYSTEM_EMAIL_ADDRESS
             or $from eq Socialtext::User->SystemUser()->email_address()
     );
-}
-
-sub content {
-    my $self = shift;
-    return $self->{content} = shift if @_;
-    return $self->{content} if defined $self->{content};
-    $self->load_content;
-    return $self->{content};
 }
 
 =head2 content_as_type(%p)
@@ -1137,11 +1136,6 @@ sub categories_sorted {
     return sort {lc($a) cmp lc($b)} @{$self->metadata->Category};
 }
 
-sub html_escaped_categories {
-    my $self = shift;
-    return map { $self->html_escape($_) } $self->categories_sorted;
-}
-
 sub metadata {
     my $self = shift;
     return $self->{metadata} = shift if @_;
@@ -1183,25 +1177,15 @@ sub last_edited_by {
 
 sub size {
     my $self = shift;
-    my $filename = $self->_index_path or return 0;
-    return scalar((stat($filename))[7]);
-}
-
-sub _index_path {
-    my $self = shift;
-    my $filename = readlink $self->_get_index_file;
-    return unless defined $filename;
-    return unless -f $filename;
-    return $filename;
+    return length($self->content);
 }
 
 sub modified_time {
     my $self = shift;
-    unless (defined $self->{modified_time}) {
-        my $path = $self->file_path;
-        $self->{modified_time} = (stat($path))[9] || time;
-    }
-    return $self->{modified_time};
+    (my $datestr = $self->metadata->Date) =~ s/ GMT$//;
+    return 0 unless $datestr;
+    my $dt = DateTime::Format::Pg->parse_datetime( $datestr );
+    return $dt->epoch;
 }
 
 =head2 is_recently_modified( [$limit] )
@@ -1249,23 +1233,6 @@ sub age_in_english {
     return $english;
 }
 
-=head2 hard_set_date( $date, $user )
-
-Forces the date for the revision to I<$date> for user I<$user>, and sets the
-file's timestamp in the filestamp.
-
-=cut
-
-sub hard_set_date {
-    my $self = shift;
-    my $date = shift;
-    my $user = shift;
-    $self->metadata->Date($date->strftime('%Y-%m-%d %H:%M:%S GMT'));
-    $self->store( user => $user );
-    utime $date->epoch, $date->epoch, $self->file_path;
-    $self->{modified_time} = $date->epoch;
-}
-
 sub datetime_for_user {
     my $self = shift;
     if (my $date = $self->metadata->Date) {
@@ -1298,16 +1265,6 @@ sub title_better {
         $self->{title} = $self->metadata->Subject || $self->hub->cgi->page_name;
     }
     return $self->{title};
-}
-
-sub all {
-    my $self = shift;
-    return (
-        page_uri => $self->uri,
-        page_title => $self->title,
-        page_title_uri_escaped => $self->uri_escape($self->title),
-        revision_id => $self->revision_id,
-    );
 }
 
 sub to_html_or_default {
@@ -1362,18 +1319,13 @@ sub purge {
 
     $indexer->delete_page( $self->uri);
 
-    my $page_path = $self->directory_path or die "Page has no directory path";
-    -d $page_path or die "$page_path does not exist";
-    my $attachment_path = join '/', $self->hub->attachments->plugin_directory, $self->id;
-    File::Path::rmtree($attachment_path)
-      if -e $attachment_path;
-    File::Path::rmtree($page_path);
-
     my $hash    = $self->hash_representation;
     my $wksp_id = $self->hub->current_workspace->workspace_id;
-
     sql_txn {
         sql_execute('DELETE FROM page WHERE workspace_id = ? and page_id = ?',
+            $wksp_id, $hash->{page_id}
+        );
+        sql_execute('DELETE FROM page_revision WHERE workspace_id = ? and page_id = ?',
             $wksp_id, $hash->{page_id}
         );
         sql_execute('DELETE FROM page_tag WHERE workspace_id = ? and page_id = ?',
@@ -1415,81 +1367,6 @@ sub preview_text_spreadsheet {
         if length $content > $ExcerptLength;
 
     return Socialtext::String::html_escape($content);
-}
-
-sub _store_preview_text {
-    my $self = shift;
-    my $preview_text; # Optional; defaults to $self->preview_text -- see below
-
-    return unless my $index_file = $self->_get_index_file;
-
-    my $filename = readlink $index_file;
-    if (not -f $filename) {
-        warn "$filename is no good for _store_preview_text";
-        return;
-    }
-
-    my $mtime = $self->modified_time;
-    my $data = $self->_get_contents_decoded_as_utf8($filename);
-    my $content = substr($data, 0, index($data, "\n\n") + 1);
-    my $old_length = length($content);
-    return if $content =~ /^Summary:\ +\S/m;
-    $content =~ s/^Summary:.*\n//mg;
-
-    if (@_) {
-        # If explicitly specified, use the specified text
-        $preview_text = shift;
-    }
-    else {
-        # Otherwise, generate preview based on the newly decoded data
-        $preview_text = $self->preview_text(substr($data, $old_length + 1));
-    }
-
-    $preview_text = '...' if $preview_text =~ /^\s*$/;
-    $preview_text =~ s/\s*\z//;
-    return if $preview_text =~ /\n/;
-    $content .= "Summary: $preview_text\n";
-    $content .= substr($data, $old_length);
-
-    Socialtext::File::set_contents_utf8_atomic($filename, \$content);
-    $self->set_mtime($mtime, $filename);
-}
-
-
-sub _get_contents_decoded_as_utf8 {
-    my $self = shift;
-    my $file = shift;
-
-    my $data = Socialtext::File::get_contents($file);
-    my $headers = substr($data, 0, index($data, "\n\n") + 1);
-    my $old_length = length($headers);
-
-    # If the page has an encoding, decode it as such.
-    if ($headers =~ /^Encoding:\ +utf8\n/m) {
-        # The common case is UTF-8, so just decode it.
-        return Encode::decode_utf8($data);
-    }
-    elsif ($headers =~ s/^Encoding:\ +(\S+)\n/Encoding: utf8\n/m) {
-        # Decode the page according to its declared encoding.
-        my $encoding = $1;
-        my $body = substr($data, $old_length);
-        return Encode::decode($encoding, $headers . $body);
-    }
-    else {
-        # Force conversion from legacy pages; first try UTF-8, then ISO-8859-1.
-        local $@;
-        my $data_from_utf8 = eval {
-            Encode::decode_utf8($data, Encode::FB_CROAK());
-        };
-        if ($@) {
-            # It was not UTF-8 -- fallback to ISO-8859-1.
-            return "Encoding: utf8\n" . Encode::decode('iso-8859-1', $data);
-        }
-        else {
-            # It was UTF-8, so simply prepend the correct header.
-            return "Encoding: utf8\n" . $data_from_utf8;
-        }
-    }
 }
 
 sub _to_plain_text {
@@ -1822,28 +1699,60 @@ sub load {
 
     my $headers;
     if ($page_string) {
+        # This method is used only by testing tools.
         $headers = $self->_read_page_string($page_string);
+        $metadata->from_hash($self->parse_headers($headers));
+        return $self;
     }
-    else {
-        $headers = $self->_read_page_file();
-    }
-    $metadata->from_hash($self->parse_headers($headers));
-    return $self;
-}
 
-sub load_content {
-    my $self = shift;
-    my $content = $self->_read_page_file(content => 1);
-    $self->content($content);
+    $self->load_metadata;
     return $self;
 }
 
 sub load_metadata {
     my $self = shift;
+
     my $metadata = $self->{metadata}
       or die "No metadata object in content object";
-    my $headers = $self->_read_page_file();
-    $metadata->from_hash($self->parse_headers($headers));
+    return $self unless $self->id;
+
+    my $ws_id = $self->hub->current_workspace->workspace_id;
+    my $pg_id = $self->id;
+    my $rev_id = $self->{revision_id} || '0';
+    my $cache_key = "$ws_id-$pg_id-$rev_id";
+    # Only cache specific revisions, always fetch the latest page w/o rev
+    my $page = $rev_id ? $self->cache->get($cache_key) : undef;
+    unless ($page) {
+        $page = Socialtext::Model::Pages->By_id(
+            hub => $self->hub,
+            workspace_id => $ws_id,
+            page_id => $pg_id,
+            revision_id => $rev_id,
+            no_die => 1,
+            deleted_ok => 1,
+        );
+        return $self unless $page;
+        $self->cache->set($cache_key, $page) if $rev_id;
+    }
+
+    # Nowadays PageMeta is just a legacy interface; it can go away
+    $metadata->from_hash( {
+        Control         => $page->deleted ? 'Deleted' : '',
+        Subject         => $page->title,
+        From            => $page->last_edited_by->email_address,
+        Date            => $page->last_edit_time . " GMT",
+        Revision        => $page->current_revision_num,
+        Type            => $page->type,
+        Summary         => $page->summary,
+        Category        => $page->tags,
+        Encoding        => 'utf8',
+        RevisionSummary => $page->edit_summary,
+        Locked          => $page->locked,
+
+        # These can go away
+#        Received        => undef,
+#        MessageID       => 0,
+    } );
     $metadata->{Type} ||= 'wiki';
     return $self;
 }
@@ -1874,7 +1783,6 @@ sub parse_headers {
     return $metadata;
 }
 
-# This method is used only by testing tool.
 sub _read_page_string {
     my $self = shift;
     my $string = shift;
@@ -1883,58 +1791,6 @@ sub _read_page_string {
     my ($headers, $content) = split "\n\n", $string, 2;
     $self->content($content);
     return $headers;
-}
-
-sub _read_page_file {
-    my $self   = shift;
-    my %p      = @_;
-    my $return_content = $p{content};
-
-    my $revision_id = $self->assert_revision_id;
-    return $self->_read_empty unless $revision_id;
-    my $filename = $self->current_revision_file;
-    return read_and_decode_file($filename, $return_content);
-}
-
-sub read_and_decode_file {
-    my $filename       = shift;
-    my $return_content = shift;
-    die "No such file $filename" unless -f $filename;
-    die "File path contains '..', which is not allowed."
-        if $filename =~ /\.\./;
-
-    # Note: avoid using '<:raw' here, it sucks for performance
-    open(my $fh, '<', $filename)
-        or die "Can't open $filename: $!";
-    binmode($fh); # will Encode bytes to characters later
-
-    my $buffer;
-    {
-        # slurp in the header only:
-        local $/ = "\n\n";
-        $buffer = <$fh>;
-    }
-
-    if ($return_content) { 
-        # slurp in the rest of the file:
-        local $/ = undef;
-        $buffer = <$fh> || '';
-    }
-
-    $buffer = Socialtext::Encode::noisy_decode(
-            input => $buffer,
-            blame => $filename
-    );
-
-    $buffer =~ s/\015\012/\n/g;
-    $buffer =~ s/\015/\n/g;
-    return $buffer;
-}
-
-sub _read_empty {
-    my $self = shift;
-    my $text = '';
-    $self->utf8_decode($text);
 }
 
 =head2 restore_revision( $id )
@@ -2052,34 +1908,7 @@ sub headers {
     return $headers;
 }
 
-sub write_file {
-    my $self = shift;
-    my $id = $self->id
-      or die "No id for content object";
-    my $revision_file = $self->revision_file( $self->new_revision_id );
-    my $page_path = join '/', Socialtext::Paths::page_data_directory( $self->hub->current_workspace->name ), $id;
-    Socialtext::File::ensure_directory($page_path, 0, 0755);
-    my $content = join "\n", $self->headers, $self->content;
-    Socialtext::File::set_contents_utf8_atomic($revision_file, \$content);
-
-    my $index_path = join '/', $page_path, 'index.txt';
-    Socialtext::File::safe_symlink($revision_file => $index_path);
-}
-
-sub current_revision_file {
-    my $self = shift;
-    $self->revision_file($self->assert_revision_id);
-}
-
-sub revision_file {
-    my $self = shift;
-    my $revision_id = shift;
-    my $filename = join '/', 
-        ( $self->database_directory, $self->id, $revision_id . '.txt' );
-    return $filename;
-}
-
-sub new_revision_id {
+sub create_new_revision_id {
     my $self = shift;
     my ($sec,$min,$hour,$mday,$mon,$year) = gmtime(time);
     my $id = sprintf(
@@ -2091,13 +1920,17 @@ sub new_revision_id {
     # indecision that the wrong way sticks around in pursuit of the 
     # right way. So here's something adequate that does not cascade 
     # changes in the rest of the code.
-    unless (-f $self->revision_file($id)) {
+    my $exists = sql_singlevalue(
+        'SELECT count(*) FROM page_revision
+          WHERE workspace_id = ? AND page_id = ? AND revision_id = ?
+        ', $self->hub->current_workspace->workspace_id, $self->id, $id,
+    );
+    if ($exists == 0) {
         $self->revision_id($id);
         return $id;
     }
     sleep 1;
-    return $self->new_revision_id();
-
+    return $self->{revision_id} = $self->create_new_revision_id();
 }
 
 sub formatted_date {

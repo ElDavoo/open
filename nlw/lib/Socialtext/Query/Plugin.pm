@@ -37,14 +37,6 @@ sub register {
     $registry->add(action => $self->class_id);
 }
 
-sub get_result_set_path {
-    my $self = shift;
-    join '/',
-        $self->user_plugin_directory( $self->hub->current_user->email_address ),
-        $self->class_id . '_result_set',
-    ;
-}
-
 sub push_result {
     my $self = shift;
     my $page = shift;
@@ -54,32 +46,16 @@ sub push_result {
 
 sub read_result_set {
     my $self = shift;
-    my $result_set_path = $self->get_result_set_path;
-    return $self->default_result_set
-        unless -f $result_set_path;
-
-    my $result_set = eval {
-        Storable::lock_retrieve($result_set_path)
-    };
-    return $result_set unless $@;
-
-    unlink $result_set_path;
-    $self->new_result_set;
+    # Never use result sets, they are not useful anymore
+    return $self->default_result_set;
 }
 
 sub write_result_set {
     my $self = shift;
-    Storable::lock_store(
-        $self->result_set,
-        $self->get_result_set_path,
-    );
+    return; # Never write result sets, they are not useful anymore
 }
 
-sub dont_use_cached_result_set {
-    my $self = shift;
-    my $result_set_path = $self->get_result_set_path;
-    unlink $result_set_path;
-}
+sub dont_use_cached_result_set { }
 
 sub _direction {
     my $self = shift;

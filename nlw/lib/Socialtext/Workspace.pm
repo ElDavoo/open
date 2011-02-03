@@ -21,12 +21,10 @@ use Socialtext::AppConfig;
 use Socialtext::EmailAlias;
 use Socialtext::Events;
 use Socialtext::File;
-use Socialtext::File::Copy::Recursive qw(dircopy);
 use Socialtext::Helpers;
 use Socialtext::Image;
 use Socialtext::l10n qw(loc system_locale);
 use Socialtext::Log qw( st_log );
-use Socialtext::Paths;
 use Socialtext::SQL qw(:exec :txn);
 use Socialtext::SQL::Builder qw(sql_nextval);
 use Socialtext::String;
@@ -246,8 +244,6 @@ EOSQL
         $self->permissions->set( set_name => 'member-only' );
     };
 
-    $self->_make_fs_paths();
-
     if ( $clone_pages_from ) {
         $self->_clone_workspace_pages( $clone_pages_from );
     }
@@ -401,25 +397,6 @@ sub _main_and_hub {
     return ( $main, $hub );
 }
 
-sub _make_fs_paths {
-    my $self = shift;
-
-    for my $dir ( grep { ! -d } $self->_data_dir_paths() ) {
-        File::Path::mkpath( $dir, 0, 0755 );
-    }
-}
-
-sub _data_dir_paths {
-    my $self = shift;
-    my $name = shift || $self->name;
-
-    return (
-        Socialtext::Paths::page_data_directory( $name ),
-        Socialtext::Paths::plugin_directory( $name ),
-        Socialtext::Paths::user_directory( $name ),
-    );
-}
-
 sub _update_aliases_file {
     my $self = shift;
 
@@ -546,10 +523,6 @@ sub delete {
     my $ws_name = $self->name;
 
     $self->delete_search_index();
-
-    for my $dir ( $self->_data_dir_paths() ) {
-        File::Path::rmtree($dir);
-    }
 
     my $mc = $self->users();
     while ( my $user = $mc->next() ) {
@@ -790,38 +763,9 @@ sub NameIsValid {
         my $timer = Socialtext::Timer->new;
 
         my $old_name  = $self->name();
-        my @old_paths = $self->_data_dir_paths();
 
         local $self->{allow_rename_HACK} = 1;
         $self->update( name => $p{name} );
-
-        my @new_paths = $self->_data_dir_paths();
-
-        for ( my $x = 0; $x < @old_paths; $x++ ) {
-            CORE::rename $old_paths[$x] => $new_paths[$x]
-                or die "Cannot rename $old_paths[$x] => $new_paths[$x]: $!";
-        }
-
-        my @index_links;
-        File::Find::find(
-            sub {
-                push( @index_links, $File::Find::name )
-                    if -l && $_ eq 'index.txt';
-            },
-            Socialtext::Paths::page_data_directory( $self->name )
-        );
-
-        for my $link (@index_links) {
-            my $filename = File::Basename::basename( readlink $link );
-
-            unlink $link or die "Cannot unlink $link: $!";
-
-            my $new
-                = Socialtext::File::catfile( File::Basename::dirname($link),
-                $filename );
-            symlink $new => $link
-                or die "Cannot symlink $new to $link: $!";
-        }
 
         Socialtext::EmailAlias::delete_alias($old_name);
         $self->_update_aliases_file();
@@ -1267,27 +1211,107 @@ sub _create_export_tarball {
     $self->_dump_permissions_to_yaml_file($tmpdir, $name);
     $self->_export_logo_file($tmpdir);
     $self->_dump_meta_to_yaml_file($tmpdir);
-    $self->_dump_user_workspace_prefs($tmpdir);
-    local $CWD = $tmpdir;
-    run "tar cf $tarball *";
+    $self->_dump_user_workspace_prefs($tmpdir, $name);
+    $self->_dump_user_breadcrumbs($tmpdir, $name);
 
     # Copy all the data for export into a the tempdir.
-    local $CWD = Socialtext::AppConfig->data_root_dir();
-    for my $dir (qw(plugin user data)) {
-        if ($name eq $self->name) {
-            # We can append directly to the tarball to save a copy
-            run "tar rf $tarball "
-                . Socialtext::File::catdir( $dir, $self->name );
-        }
-        else {
-            # Copy the workspace data into the tmpdir, then add to the tarball
-            my $src  = Socialtext::File::catdir( $dir,     $self->name );
-            my $dest = Socialtext::File::catdir( $tmpdir, $dir, $name );
-            dircopy( $src, $dest ) or die "Can't copy $src to $dest: $!\n";
-            local $CWD = $tmpdir;
-            run "tar rf $tarball " . Socialtext::File::catdir( $dir, $name );
-        }
+    $self->_dump_workspace_pages($tmpdir, $name);
+    $self->_dump_workspace_attachments($tmpdir, $name);
+
+    local $CWD = $tmpdir;
+    run "tar cf $tarball *";
+}
+
+sub _dump_user_breadcrumbs {
+    my $self   = shift;
+    my $tmpdir = shift;
+    my $name   = shift;
+
+    my $sth = sql_execute(
+        q{SELECT users.email_address AS email, page_id
+           FROM breadcrumb
+           JOIN users ON (breadcrumb.viewer_id = users.user_id)
+           WHERE breadcrumb.workspace_id = ?
+           ORDER BY last_viewed DESC
+       },
+        $self->workspace_id,
+    );
+    my %breadcrumbs;
+    while (my $row = $sth->fetchrow_hashref) {
+        push @{ $breadcrumbs{$row->{email}} }, $row->{page_id};
     }
+
+    for my $email (keys %breadcrumbs) {
+        my $trail_dir = "$tmpdir/user/$name/$email";
+        File::Path::make_path($trail_dir);
+        my $trail_file = "$trail_dir/.trail";
+        Socialtext::File::set_contents_utf8($trail_file,
+            join("\n", @{ $breadcrumbs{$email} }) . "\n");
+    }
+}
+
+sub _dump_workspace_pages {
+    my $self = shift;
+    my $tmpdir = shift;
+    my $name   = shift;
+
+    my $ws_dir = "$tmpdir/data/$name";
+    File::Path::make_path($ws_dir);
+    my $counter_dir = "$tmpdir/plugin/$name/counter";
+
+    my $sth = sql_execute(
+        q{SELECT page_revision.*, page_revision.edit_time AT TIME ZONE 'GMT' AS edit_time_gmt, page.views
+           FROM page_revision
+           JOIN page USING (workspace_id, page_id)
+           WHERE page_revision.workspace_id = ?},
+        $self->workspace_id,
+    );
+    while (my $row = $sth->fetchrow_hashref) {
+        my $page_dir = "$ws_dir/$row->{page_id}";
+        File::Path::make_path($page_dir);
+        my $filename = "$page_dir/$row->{revision_id}.txt";
+
+        my $deleted = $row->{deleted} ? 'Deleted' : '';
+        my $editor_email = Socialtext::User->new(user_id => $row->{editor_id})->email_address;
+        my $content = <<EOT;
+Subject: $row->{name}
+From: $editor_email
+Date: $row->{edit_time_gmt} GMT
+Revision: $row->{revision_num}
+Type: $row->{page_type}
+Summary: $row->{summary}
+RevisionSummary: $row->{edit_summary}
+Encoding: utf8
+Locked: $row->{locked}
+EOT
+        $content .= "Control: Deleted\n" if $row->{deleted};
+        for my $tag (@{ $row->{tags} }) {
+            $content .= "Category: $tag\n";
+        }
+
+        $content .= "\n" . $row->{body};
+        Socialtext::File::set_contents_utf8($filename, \$content);
+
+        my $page_counter_dir = "$counter_dir/$row->{page_id}";
+        File::Path::make_path($page_counter_dir);
+        Socialtext::File::set_contents("$page_counter_dir/COUNTER",
+            "#COUNTER-1.0\n$row->{views}\n",
+        );
+    }
+}
+
+
+sub _dump_workspace_attachments {
+    my $self = shift;
+    my $tmpdir = shift;
+    my $name   = shift;
+
+    my $plugin_dir = "$tmpdir/plugin/$name";
+    -d $plugin_dir
+        or File::Path::mkpath($plugin_dir)
+        or die "Cannot make $plugin_dir: $!";
+
+    warn "TODO - dump attachments from the DB";
 }
 
 sub _dump_to_yaml_file {
@@ -1340,8 +1364,10 @@ sub _dump_meta_to_yaml_file {
 sub _dump_user_workspace_prefs {
     my $self = shift;
     my $dir  = shift;
+    my $name = shift;
 
-    my $ws_dir = "$dir/user/" . $self->name;
+    my $ws_dir = "$dir/user/$name";
+    File::Path::mkpath($ws_dir) or die "Cannot make $ws_dir: $!";
     my $users = $self->users(direct => 1);
     while ( my $user = $users->next ) {
         my $prefs = Socialtext::PreferencesPlugin->Prefs_for_user($user, $self);

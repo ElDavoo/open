@@ -8,12 +8,10 @@ use base 'Socialtext::Query::Plugin';
 use Class::Field qw( const );
 use File::Basename ();
 use File::Path ();
-use Socialtext::AppConfig;
-use Socialtext::Pages;
-use Socialtext::File;
-use Socialtext::Paths;
 use Socialtext::l10n qw(loc);
-use Socialtext::String ();
+use Socialtext::SQL qw/get_dbh sql_execute/;
+use Socialtext::Model::Pages;
+use Socialtext::Timer qw/time_scope/;
 
 sub class_id { 'breadcrumbs' }
 const class_title => 'Recently Viewed';
@@ -86,14 +84,7 @@ sub default_result_set {
 
 sub breadcrumb_pages {
     my $self        = shift;
-    my $trail_parts = $self->_load_trail;
-    my @pages;
-    foreach my $page_name (@$trail_parts) {
-        my $page = $self->hub->pages->new_from_name($page_name);
-        next unless $page->active;
-        push @pages, $page;
-    }
-    return @pages;
+    return  @{ $self->_load_trail };
 }
 
 sub new_result_set {
@@ -106,79 +97,74 @@ sub new_result_set {
 sub breadcrumbs_html {
     my $self = shift;
     $self->template_process('breadcrumbs_box_filled.html',
-        breadcrumbs => $self->get_crumbs,
+        breadcrumbs => $self->get_crumbhash,
     );
+}
+
+sub get_crumbhash {
+    my $self = shift;
+
+    return [
+        map {
+            {
+                page_title => $_->title,
+                page_uri   => $_->uri,
+                page_full_uri => $_->app_uri,
+            }
+        } @{ $self->_load_trail }
+    ];
 }
 
 sub drop_crumb {
     my $self = shift;
-    my $page        = shift;
-    my $trail_parts = $self->_load_trail;
-    my $page_id     = $page->id;
-
+    my $page = shift;
     return unless $page->exists;
 
-    my @parts = grep { Socialtext::String::title_to_id($_) ne $page_id } @$trail_parts;
+    my $t = time_scope 'drop_crumb';
+    my $user_id = $self->hub->current_user->user_id;
+    my $wksp_id = $self->hub->current_workspace->workspace_id;
+    my $page_id = $page->id;
+    my $sth = get_dbh()->prepare(
+        "UPDATE breadcrumb SET last_viewed = 'now'::timestamptz
+          WHERE viewer_id = ? AND workspace_id = ? AND page_id = ?",
+    );
+    my $rv = $sth->execute($user_id, $wksp_id, $page_id);
+    if ($rv == 0) {
+        sql_execute(
+            "INSERT INTO breadcrumb VALUES (?,?,?,'now'::timestamptz)",
+            $user_id, $wksp_id, $page_id
+        );
 
-    $self->_save_trail( [ $page->title, @parts ] );
-}
-
-sub get_crumbs {
-    my $self = shift;
-    my $trail_parts = $self->_load_trail;
-    my $limit       = $HOW_MANY;
-
-    splice @$trail_parts, $limit
-        if @$trail_parts > $limit;
-
-    my @crumbs;
-    foreach my $page_name (@$trail_parts) {
-        my $page = $self->hub->pages->new_from_name($page_name);
-        my $pagehash=$page->hash_representation;
-        next unless $page->active;
-        push @crumbs, {
-            page_title => $page->title,
-            page_uri   => $page->uri,
-            page_full_uri => $pagehash->{page_uri}
-        };
+        sql_execute(<<EOT, $user_id, $wksp_id, $HOW_MANY);
+        DELETE FROM breadcrumb
+          WHERE viewer_id = \$1 AND workspace_id = \$2 
+            AND page_id NOT IN (
+                SELECT page_id FROM breadcrumb
+                 WHERE viewer_id = \$1 AND workspace_id = \$2
+                 ORDER BY last_viewed desc
+                 LIMIT \$3
+            )
+EOT
     }
-
-    return \@crumbs;
 }
 
 sub _load_trail {
     my $self = shift;
-    my $filename = $self->_trail_filename();
 
-    my $text = -e $filename
-        ? Socialtext::File::get_contents_utf8($filename)
-        : '';
-
-    return [split /\n/, $text];
-}
-
-sub _save_trail {
-    my $self = shift;
-    my $trail_parts = shift;
-
-    splice @$trail_parts, $HOW_MANY if @$trail_parts > $HOW_MANY;
-    my $trail = join('',map {"$_\n"} @$trail_parts);
-
-    my $filename = $self->_trail_filename;
-    my $dir = File::Basename::dirname($filename);
-    Socialtext::File::ensure_directory($dir);
-    Socialtext::File::set_contents_utf8($filename, $trail);
-}
-
-sub _trail_filename {
-    my $self = shift;
-    return Socialtext::File::catfile(
-            Socialtext::Paths::user_directory(
-                $self->hub->current_workspace->name,
-                $self->hub->current_user->email_address,
-            ),
-            '.trail'
+    my $t = time_scope 'load_crumbs';
+    my $ws_id = $self->hub->current_workspace->workspace_id;
+    my $sth = sql_execute(
+        qq{SELECT $Socialtext::Model::Pages::MODEL_FIELDS FROM page
+             JOIN "Workspace" USING (workspace_id)
+             JOIN breadcrumb  USING (workspace_id, page_id)
+            WHERE workspace_id = \$1
+              AND viewer_id = \$2
+              AND NOT deleted
+            ORDER BY last_viewed DESC
+        },
+        $ws_id, $self->hub->current_user->user_id,
     );
+    return Socialtext::Model::Pages->load_pages_from_sth($sth, $self->hub);
 }
 
 ######################################################################

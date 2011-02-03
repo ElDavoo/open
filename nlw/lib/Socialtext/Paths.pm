@@ -13,7 +13,6 @@ Socialtext::Paths - Returns directory and filenames for NLW
 
 =head1 SYNOPSIS
 
-  my $data_dir = Socialtext::Paths::page_data_directory( $ws_name );
   my $workspace_db = Socialtext::Paths::workspaces_db();
 
 =head1 DESCRIPTION
@@ -27,8 +26,6 @@ all.
 
 This module provides the following functions:
 
-=head2 page_data_directory($ws_name)
-
 =head2 htgroup_db_directory($ws_name)
 
 =head2 plugin_directory($ws_name)
@@ -38,7 +35,6 @@ workspace name.  If not given a name, they return the root for the
 specific type of directory.
 
 =cut
-sub page_data_directory      { _per_workspace_dir( 'data', @_ ) }
 sub plugin_directory         { _per_workspace_dir( 'plugin', @_ ) }
 sub change_event_queue_dir   { Socialtext::AppConfig->change_event_queue_dir }
 sub change_event_queue_lock  { change_event_queue_dir() . '/lock' }

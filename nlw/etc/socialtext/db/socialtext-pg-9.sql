@@ -755,7 +755,8 @@ CREATE TABLE attachment (
     mime_type text NOT NULL,
     is_image boolean NOT NULL,
     is_temporary boolean DEFAULT false NOT NULL,
-    content_length integer NOT NULL
+    content_length integer NOT NULL,
+    body bytea
 );
 
 CREATE SEQUENCE attachment_id_seq
@@ -763,6 +764,13 @@ CREATE SEQUENCE attachment_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
+
+CREATE TABLE breadcrumb (
+    viewer_id integer NOT NULL,
+    workspace_id bigint NOT NULL,
+    page_id text NOT NULL,
+    last_viewed timestamptz NOT NULL
+);
 
 CREATE TABLE container (
     container_id bigint NOT NULL,
@@ -1023,7 +1031,26 @@ CREATE TABLE page (
     deleted boolean NOT NULL,
     summary text,
     edit_summary text,
-    locked boolean DEFAULT false NOT NULL
+    locked boolean DEFAULT false NOT NULL,
+    views integer DEFAULT 0 NOT NULL
+);
+
+CREATE TABLE page_revision (
+    workspace_id bigint NOT NULL,
+    page_id text NOT NULL,
+    revision_id bigint NOT NULL,
+    revision_num int NOT NULL,
+    name text,
+    editor_id bigint NOT NULL,
+    edit_time timestamptz NOT NULL,
+    page_type text NOT NULL,
+    deleted boolean NOT NULL,
+    summary text,
+    edit_summary text,
+    locked boolean DEFAULT false NOT NULL,
+    tags text[],
+    body bytea NOT NULL,
+    PRIMARY KEY (workspace_id, page_id, revision_id)
 );
 
 CREATE TABLE page_link (
@@ -1986,6 +2013,12 @@ CREATE INDEX job_funcid_runafter
 
 CREATE INDEX page_creator_time
 	    ON page (creator_id, create_time);
+
+CREATE INDEX page_revision__ws_page_rev
+	    ON page_revision (workspace_id, page_id, revision_id);
+
+CREATE INDEX breadcrumb_viewer_ws
+	    ON breadcrumb (viewer_id, workspace_id);
 
 CREATE INDEX page_link__to_page
 	    ON page_link (to_workspace_id, to_page_id);

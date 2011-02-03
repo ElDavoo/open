@@ -7,6 +7,28 @@ use Socialtext::SQL qw/sql_execute sql_singlevalue/;
 use Socialtext::Timer qw/time_scope/;
 use Carp qw/croak/;
 
+our $MODEL_FIELDS = <<EOT;
+    page.workspace_id, 
+    "Workspace".name AS workspace_name, 
+    "Workspace".title AS workspace_title, 
+    page.page_id, 
+    page.name, 
+    page.last_editor_id AS last_editor_id, 
+    -- _utc suffix is to prevent performance-impacing naming collisions:
+    page.last_edit_time AT TIME ZONE 'UTC' AS last_edit_time_utc,
+    page.creator_id,
+    -- _utc suffix is to prevent performance-impacing naming collisions:
+    page.create_time AT TIME ZONE 'UTC' AS create_time_utc,
+    page.current_revision_id, 
+    page.current_revision_num, 
+    page.revision_count, 
+    page.page_type, 
+    page.deleted, 
+    page.summary,
+    page.edit_summary,
+    page.locked
+EOT
+
 sub By_seconds_limit {
     my $class         = shift;
     my $t             = time_scope 'By_seconds_limit';
@@ -111,6 +133,7 @@ sub By_id {
     my $hub              = $p{hub};
     my $workspace_id     = $p{workspace_id};
     my $page_id          = $p{page_id};
+    my $revision_id      = $p{revision_id};
     my $do_not_need_tags = $p{do_not_need_tags};
     my $no_die           = $p{no_die};
 
@@ -122,6 +145,10 @@ sub By_id {
         $where = 'page_id IN (' 
             . join(',', map { '?' } @$page_id) . ')';
         $bind = $page_id;
+    }
+    elsif ($p{revision_id}) {
+        $where = 'page_id = ? AND revision_id = ?';
+        $bind = [$page_id, $revision_id];
     }
     else {
         $where = 'page_id = ?';
@@ -135,6 +162,7 @@ sub By_id {
         bind             => $bind,
         do_not_need_tags => $p{do_not_need_tags},
         deleted_ok       => $p{deleted_ok},
+        revision_id      => $revision_id,
     );
     unless (@$pages) {
         return if $no_die;
@@ -159,6 +187,7 @@ sub _fetch_pages {
         do_not_need_tags => 0,
         deleted_ok       => undef,
         orphaned         => 0,
+        revision_id      => undef,
         @_,
     );
 
@@ -232,29 +261,44 @@ sub _fetch_pages {
                                    ? " AND page$workspace_filter"
                                    : '';
     $p{where} = "AND $p{where}" if $p{where};
-    my $sth = sql_execute(
-        <<EOT,
-SELECT page.workspace_id, 
-       "Workspace".name AS workspace_name, 
-       "Workspace".title AS workspace_title, 
-       page.page_id, 
-       page.name, 
-       page.last_editor_id AS last_editor_id, 
-       -- _utc suffix is to prevent performance-impacing naming collisions:
-       page.last_edit_time AT TIME ZONE 'UTC' AS last_edit_time_utc,
-       page.creator_id,
-       -- _utc suffix is to prevent performance-impacing naming collisions:
-       page.create_time AT TIME ZONE 'UTC' AS create_time_utc,
-       page.current_revision_id, 
-       page.current_revision_num, 
-       page.revision_count, 
-       page.page_type, 
-       page.deleted, 
-       page.summary,
-       page.edit_summary
-    FROM page 
+
+    my $select = <<EOT;
+SELECT $MODEL_FIELDS FROM page 
         JOIN "Workspace" USING (workspace_id)
         $more_join
+EOT
+    if ($p{revision_id}) {
+        $p{do_not_need_tags} = 1;
+        $select = <<EOT;
+SELECT page.workspace_id, 
+    "Workspace".name AS workspace_name, 
+    "Workspace".title AS workspace_title, 
+    page.page_id, 
+    page_revision.name, 
+    page_revision.editor_id AS last_editor_id, 
+    -- _utc suffix is to prevent performance-impacing naming collisions:
+    page_revision.edit_time AT TIME ZONE 'UTC' AS last_edit_time_utc,
+    page.creator_id,
+    -- _utc suffix is to prevent performance-impacing naming collisions:
+    page.create_time AT TIME ZONE 'UTC' AS create_time_utc,
+    page_revision.revision_id AS current_revision_id, 
+    page_revision.revision_num AS current_revision_num, 
+    page.revision_count, 
+    page_revision.page_type, 
+    page_revision.deleted, 
+    page_revision.summary,
+    page_revision.edit_summary,
+    page_revision.tags,
+    page_revision.locked
+    FROM page
+        JOIN "Workspace" USING (workspace_id)
+        JOIN page_revision USING (workspace_id, page_id)
+EOT
+    }
+
+
+    my $sth = sql_execute(<<EOT,
+$select
     WHERE $deleted
       $page_workspace_filter
       $p{where}
@@ -266,10 +310,9 @@ EOT
         @{ $p{bind} },
     );
 
-    my @pages = map { Socialtext::Model::Page->new_from_row($_) }
-        map { $_->{hub} = $p{hub}; $_ } @{ $sth->fetchall_arrayref( {} ) };
-    return \@pages if $p{do_not_need_tags};
-    return \@pages if @pages == 0;
+    my $pages = $class->load_pages_from_sth($sth, $p{hub});
+    return $pages if $p{do_not_need_tags};
+    return $pages if @$pages == 0;
 
     # Fetch all the tags for these pages
     # We will fetch all the page_tag, and then filter out which pages
@@ -277,7 +320,7 @@ EOT
     # Alternatively, we could pass Pg in a potentially huge list of page_ids
     # we were interested in.  We ass-u-me this would be slower.
     my %ids;
-    for my $p (@pages) {
+    for my $p (@$pages) {
         $p->{tags} = [];
         my $key = "$p->{workspace_id}-$p->{page_id}";
         $ids{$key} = $p;
@@ -298,7 +341,17 @@ EOT
         }
     }
 
-    return \@pages;
+    return $pages;
+}
+
+sub load_pages_from_sth {
+    my $class = shift;
+    my $sth = shift;
+    my $hub = shift;
+    return [
+        map { Socialtext::Model::Page->new_from_row($_) }
+        map { $_->{hub} = $hub; $_ } @{ $sth->fetchall_arrayref({}) }
+    ];
 }
 
 sub Minimal_by_name {

@@ -70,16 +70,11 @@ ALL_WORKSPACE_IDS_AND_NAMES: {
           'check workspace uri' );
 
     for my $dir (
-        Socialtext::Paths::page_data_directory('short-name'),
         Socialtext::Paths::plugin_directory('short-name'),
         Socialtext::Paths::user_directory('short-name'),
     ) {
         ok( -d $dir, "$dir exists after workspace is created" );
     }
-
-    my $page_dir =
-        Socialtext::File::catdir( Socialtext::Paths::page_data_directory('short-name'), 'quick_start' );
-    ok( -d $page_dir, "$page_dir exists after workspace is created" );
 
     Workspace_skin_should_override_account_skin: {
         $ws->update(skin_name => 'reds3');
@@ -184,7 +179,6 @@ Delete_a_workspace: {
     $ws->delete;
 
     for my $dir (
-        Socialtext::Paths::page_data_directory('short-name'),
         Socialtext::Paths::plugin_directory('short-name'),
         Socialtext::Paths::user_directory('short-name'),
     ) {
@@ -431,20 +425,6 @@ EMAIL_NOTIFICATION_FROM_ADDRESS:
         'The has-alias workspace exists' );
 }
 
-{
-    Socialtext::Workspace->create(
-        name               => 'no-pages',
-        title              => 'No Pages',
-        account_id         => Socialtext::Account->Socialtext()->account_id,
-        skip_default_pages => 1,
-    );
-
-    my $page_dir =
-        Socialtext::File::catdir( Socialtext::Paths::page_data_directory('no-pages'), 'quick_start' );
-    ok( ! -d $page_dir,
-        "$page_dir does not exist after workspace is created with skip_default_pages flag" );
-}
-
 Clone_from_workspace: {
     # put some non-default content in an empty workspace.
     my $to_clone_hub = new_hub('no-pages');
@@ -467,11 +447,6 @@ Clone_from_workspace: {
         account_id       => Socialtext::Account->Socialtext()->account_id,
         clone_pages_from => 'no-pages'
     );
-
-    # make sure that content is in the new workspace.
-    my $page_dir = Socialtext::File::catdir(
-        Socialtext::Paths::page_data_directory('cloned'), 'monkey_favorites');
-    ok( -d $page_dir, "$page_dir exists in a jumpstarted workspace." );
 
     # Make sure the new workspace 'inherits' the homepage.
     my $cloned_hub = new_hub( 'cloned' );

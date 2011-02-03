@@ -6,8 +6,6 @@ use strict;
 
 use base 'Socialtext::Rest::Collection';
 
-use Fcntl ':seek';
-use File::Temp 'tempfile';
 use Socialtext::HTTP ':codes';
 use Socialtext::Base ();
 use Number::Format;

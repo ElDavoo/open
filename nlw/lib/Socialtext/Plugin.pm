@@ -64,27 +64,6 @@ sub failure_message {
     return $self->hub->display->display();
 }
 
-sub user_plugin_directory {
-    my $self = shift;
-    my $email = shift;
-    my $no_create = shift;
-
-    my $dir = Socialtext::File::catdir(
-        Socialtext::Paths::user_directory(
-            $self->hub->current_workspace->name,
-            $email,
-        ),
-        $self->class_id
-    );
-    return $dir if $no_create;
-
-    if ( not -d $dir ) {
-        File::Path::mkpath($dir)
-            or die "Can't mkpath $dir:\n$!";
-    }
-    return $dir;
-}
-
 sub redirect {
     my $self = shift;
     # This uses Socialtext::WebHelpers::redirect

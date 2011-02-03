@@ -99,7 +99,6 @@ sub import_workspace {
             $self->{workspace}
         );
         $self->_import_data_dirs();
-        $self->_fixup_page_symlinks();
         $self->_populate_db_metadata();
         $self->_rebuild_page_links();
 
@@ -284,39 +283,12 @@ sub _load_yaml {
 sub _import_data_dirs {
     my $self = shift;
     my $data_root = Socialtext::AppConfig->data_root_dir();
-    for my $dir (qw(plugin user data)) {
+    for my $dir (qw(plugin)) {
         my $src = Socialtext::File::catdir( $dir, $self->{old_name} );
         my $dest = Socialtext::File::catdir( $data_root, $dir, $self->{new_name} );
         Socialtext::File::Copy::Recursive::dircopy( $src, $dest )
             or die "Could not copy $src to $dest: $!\n";
     }
-}
-
-sub _fixup_page_symlinks {
-    my $self = shift;
-
-    File::Find::find(
-        {
-            no_chdir => 1,
-            wanted   => sub {
-                return unless -l $File::Find::name;
-
-                my $target = readlink $File::Find::name;
-
-                unlink $File::Find::name
-                    or die "Cannot unlink $File::Find::name: $!";
-
-                my $abs_target = Socialtext::File::catfile(
-                    File::Basename::dirname($File::Find::name),
-                    File::Basename::basename($target) );
-
-                symlink $abs_target => $File::Find::name
-                    or die
-                    "Cannot symlink $abs_target => $File::Find::name: $!";
-                }
-        },
-        Socialtext::Paths::page_data_directory( $self->{workspace}->name() )
-    );
 }
 
 sub _set_permissions {
@@ -409,7 +381,10 @@ sub _populate_db_metadata {
 
     Socialtext::Timer->Continue('populate_db');
     my $populator = Socialtext::Page::TablePopulator->new(
-        workspace_name => $self->{new_name} );
+        workspace_name => $self->{new_name},
+        data_dir       => $CWD,
+        old_name       => $self->{old_name},
+    );
     $populator->populate( recreate => 1 );
     Socialtext::Timer->Pause('populate_db');
 }

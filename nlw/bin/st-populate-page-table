@@ -6,6 +6,7 @@ use Getopt::Long;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
 use Socialtext::Page::TablePopulator;
+use Socialtext::AppConfig;
 use Socialtext::SQL ':txn', 'sql_execute';
 
 my %opts;
@@ -13,9 +14,11 @@ GetOptions( \%opts,
     'workspace=s',
     'all',
     'recreate',
+    'dir=s',
 ) or usage();
 usage() unless $opts{workspace} or $opts{all};
 
+$opts{dir} ||= Socialtext::AppConfig->data_root_dir;
 
 if ($opts{workspace}) {
     populate_workspace(
@@ -36,7 +39,9 @@ sub populate_workspace {
 
     eval {
         my $populator = Socialtext::Page::TablePopulator->new(
-            workspace_name => $wksp->name);
+            workspace_name => $wksp->name,
+            data_dir => $opts{dir},
+        );
         $populator->populate(recreate => $opts{recreate});
     };
     if ($@) {

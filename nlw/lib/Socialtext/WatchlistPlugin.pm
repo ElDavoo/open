@@ -31,9 +31,6 @@ sub register {
 sub init {
     my $self = shift;
     $self->SUPER::init(@_);
-    $self->user_plugin_directory(
-        $self->hub->current_user->email_address
-    );
 }
 
 our $Default_notify_frequency = 1440;
