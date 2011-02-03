@@ -1271,6 +1271,18 @@ proto.do_link = function(widget_element) {
     this._do_link(widget_element);
 }
 
+proto.do_video = function() {
+    this.do_widget_video();
+}
+
+proto.do_widget = function(widget_element) {
+    if (widget_element && widget_element.nodeName) {
+        this.do_opensocial_setup(widget_element);
+        return;
+    }
+    this.do_opensocial_gallery();
+}
+
 proto.add_wiki_link = function(widget_element, dummy_widget) {
     var label     = jQuery("#wiki-link-text").val(); 
     var workspace = jQuery("#st-widget-workspace_id").val() || "";
@@ -2160,6 +2172,15 @@ var widget_data = Wikiwyg.Widgets.widget;
 proto.fromHtml = function(html) {
     if (typeof html != 'string') html = '';
 
+    html = html.replace(
+        new RegExp(
+            '(<!--[\\d\\D]*?-->)|(<(span|div)\\sclass="nlw_phrase">)[\\d\\D]*?(<!--\\swiki:\\s[\\d\\D]*?\\s--><\/\\3>)',
+            'g'
+        ), function(_, _1, _2, _3, _4) {
+            return(_1 ? _1 : _2 + _4);
+        }
+    );
+
     if (Wikiwyg.is_ie) {
         html = html.replace(/<DIV class=wiki>([\s\S]*)<\/DIV>/gi, "$1");
 
@@ -2373,6 +2394,20 @@ proto.toHtml = function(func) {
         delete this._white_page_fixer_interval_id;
     }
     */
+}
+
+proto.getNextSerialForOpenSocialWidget = function(src) {
+    var max = 0;
+    var imgs = this.get_edit_document().getElementsByTagName('img');
+    for (var ii = 0; ii < imgs.length; ii++) {
+        var match = (imgs[ii].getAttribute('alt') || '').match(
+            /^st-widget-\{widget:\s*([^\s#]+)(?:\s*#(\d+))?((?:\s+[^\s=]+=\S*)*)\s*\}$/
+        );
+        if (match && match[1].replace(/^local:widgets:/, '') == src.replace(/^local:widgets:/, '')) {
+            max = Math.max( max, (match[2] || 1) );
+        }
+    }
+    return max+1;
 }
 
 proto.setWidgetHandlers = function() {
@@ -2985,6 +3020,15 @@ proto.getWidgetImageText = function(widget_text, widget) {
     var config = widget_data[ widget.id ];
     if (config && config.use_title_as_text) {
         text = config.title;
+        if (/__title__/.test(text)) {
+            var match = widget_text.replace(/-=/g, '-').replace(/==/g, '=').match(/\s__title__=(\S+)[\s}]/);
+            if (match) {
+                text = text.replace(/__title__/g, decodeURI(match[1]));
+            }
+            else {
+                text = text.replace(/__title__\s+/g, '');
+            }
+        }
     }
     else if (widget_text.match(/^"([^"]+)"{/)) {
         text = RegExp.$1;
@@ -3413,6 +3457,10 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
     }
     else if (/^code(?:-\w+)?$/.test(widget)) {
         this.do_widget_code(widget_element);
+        return;
+    }
+    else if (widget == 'widget') {
+        this.do_opensocial_setup();
         return;
     }
 

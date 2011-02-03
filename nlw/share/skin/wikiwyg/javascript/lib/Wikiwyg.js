@@ -1295,7 +1295,7 @@ this.addGlobal().setup_wikiwyg = function() {
 //          myDiv.innerHTML = $('st-page-content').innerHTML;
 // But IE likes to take our non XHTML formatted lists and make them XHTML.
 // That messes up the wikiwyg formatter. So now we do this line:
-            myDiv.innerHTML =
+            var newHTML =
                 // This lines fixes
                 // https://bugs.socialtext.net:555/show_bug.cgi?id=540
                 "<span></span>" +
@@ -1303,6 +1303,15 @@ this.addGlobal().setup_wikiwyg = function() {
                 // And the variable above is undefined for new pages. This is
                 // what we fallback to.
                 || jQuery('#st-page-content').html());
+
+            myDiv.innerHTML = newHTML.replace(
+                new RegExp(
+                    '(<!--[\\d\\D]*?-->)|(<(span|div)\\sclass="nlw_phrase">)[\\d\\D]*?(<!--\\swiki:\\s[\\d\\D]*?\\s--><\/\\3>)',
+                    'g'
+                ), function(_, _1, _2, _3, _4) {
+                    return(_1 ? _1 : _2 + _4);
+                }
+            );
 
             ww.editMode();
             ww.preview_link_reset();
@@ -1990,6 +1999,175 @@ proto.do_widget_pre = function(widget_element) {
         dialog_hint: loc('(Preformatted Text is plain text displayed exactly as entered.)'),
         edit_label: loc("Preformatted text. Click to edit."),
         widget_element: widget_element
+    });
+}
+
+proto.do_opensocial_gallery = function() {
+    var self = this;
+    if (!jQuery('#st-widget-opensocial-gallery').size()) {
+        Socialtext.wikiwyg_variables.loc = loc;
+        jQuery('body').append(
+            Jemplate.process(
+                "opensocial-gallery.html",
+                Socialtext.wikiwyg_variables
+            )
+        );
+        $.ajax({
+            url: '/data/accounts/' + Socialtext.current_workspace_account_id + '/gallery',
+            dataType: 'json',
+            success: function(gallery) {
+                var tables = [
+                    { widgets: [], title: loc('Socialtext widgets') },
+                    { widgets: [], title: loc('Third Party widgets') }
+                ];
+                $.each(gallery.widgets, function(){
+                    if (this.removed) { return; }
+                    if (!this.src || this.src == 'local:widgets:activities') { return; }
+                    var ary = tables[this.socialtext ? 0 : 1].widgets;
+                    // 2-column layout
+                    if (ary.length && (ary[ary.length-1].length < 2)) {
+                        ary[ary.length-1].push(this);
+                    }
+                    else {
+                        ary.push([this]);
+                    }
+                });
+
+                var $gallery = $('#st-widget-opensocial-gallery-widgets');
+                $.each(tables, function(){
+                    $gallery.append($('<div />', { 'class': 'title' }).text(this.title));
+                    var $table = $('<table />', {
+                        'class': 'galleryWidget',
+                        css: { width: '99%', tableLayout: 'fixed' }
+                    });
+                    $.each(this.widgets, function(){
+                        var $imgRow = $('<tr />').appendTo($table);
+                        var $textRow = $('<tr />').appendTo($table);
+                        $.each(this, function(){
+                            var src = this.src;
+                            var $imgCell = $('<td />', { width: '20%' }).appendTo($imgRow);
+                            $imgCell.append($('<img />', { width: '90', height: '45', src: '/data/gadgets/' + this.gadget_id + '/thumbnail' }));
+
+                            var $btnCell = $('<td />', { width: '30%' }).appendTo($imgRow);
+                            var $button = $('<div style="float: left" />')
+                                .append($('<ul class="widgetButton" style="float: left; margin-left: 15px; margin-top: 10px; cursor: pointer" />')
+                                    .append($('<li class="flexButtonGrey" style="float: left" />')
+                                        .append($('<a class="greyButton" />')
+                                            .text(loc('Insert')))));
+
+                            $btnCell.append($button.click(function(){
+                                $('#lightbox').unbind('lightbox-unload').bind('lightbox-unload', function(){
+                                    Wikiwyg.Widgets.widget_editing = 1;
+                                    self.do_opensocial_setup(src);
+                                });
+                                jQuery.hideLightbox();
+                            }));
+
+                            var $textCell = $('<td />', { width: '50%', colspan: '2' }).appendTo($textRow);
+                            $textCell.append($('<div />', { css: { fontWeight: 'bold' } }).text(this.title));
+                            $textCell.append($('<div />', { css: { marginTop: '3px', marginBottom: '10px', marginRight: '10px' } }).text(this.description));
+                        });
+                    });
+                    $gallery.append($table);
+                });
+            }
+        });
+    }
+
+    jQuery.showLightbox({
+        content: '#st-widget-opensocial-gallery',
+        close: '#st-widget-opensocial-gallery-cancel',
+        width: '640px'
+    });
+//    alert("Gallery");
+}
+
+proto.do_opensocial_setup = function(src) {
+    var self = this;
+
+    var encoded_prefs = '';
+    var serial = '';
+    var widget_element = null;
+
+    if (src) {
+        serial = self.getNextSerialForOpenSocialWidget(src);
+    }
+    else {
+        // We are editing an existing widget.
+        widget_element = self.currentWidget.element;
+        var matches = self.currentWidget.widget.match(/^\{widget:\s*([^\s#]+)(?:\s*#(\d+))?((?:\s+[^\s=]+=\S*)*)\s*\}$/);
+        if (!matches) { return false; }
+
+        src = matches[1];
+        serial = matches[2] || '';
+        encoded_prefs = matches[3] || '';
+    }
+
+    if (!jQuery('#st-widget-opensocial-setup').size()) {
+        Socialtext.wikiwyg_variables.loc = loc;
+        jQuery('body').append(
+            Jemplate.process(
+                "opensocial-setup.html",
+                Socialtext.wikiwyg_variables
+            )
+        );
+        $('#st-widget-opensocial-setup-cancel').click(function(){
+            jQuery.hideLightbox();
+        });
+    }
+
+    if (encoded_prefs) {
+        var match = encoded_prefs.match(/\b__width__=(\d+)\b/);
+        if (match) {
+            $('#st-widget-opensocial-setup-width-options').val(match[1]);
+        }
+    }
+
+    $('#st-widget-opensocial-setup-buttons').hide();
+    $('#st-widget-opensocial-setup-save').unbind('click').click(function(){
+        var prefHash = $(this).data('prefHash') || '';
+
+        var srcField = src.replace(/^local:widgets:/, '');
+        if (serial && serial > 1) {
+            srcField += '#' + serial;
+        }
+
+        var title = $(this).data('title') || srcField;
+        var width = $('#st-widget-opensocial-setup-width-options').val();
+        var args = [srcField, '__title__='+encodeURI(title), '__width__='+encodeURI(width)];
+        $.each(prefHash, function(key, val) {
+            args.push(key + '=' + encodeURI(val));
+        });
+
+        self.wikiwyg.current_mode.insert_widget('{widget: ' + args.join(' ') + '}', widget_element);
+
+        jQuery.hideLightbox();
+        return false;
+    });
+
+    $('#st-widget-opensocial-setup-widgets').html('').append(
+        $('<iframe />', {
+            src: '/?action=widget_setup_screen'
+                + ';widget=' + encodeURIComponent(src)
+                + ';workspace_name=' + encodeURIComponent(Socialtext.wiki_id)
+                + ';page_id=' + encodeURIComponent(Socialtext.page_id)
+                + ';serial=' + encodeURIComponent(serial)
+                + ';encoded_prefs=' + encodeURIComponent(encoded_prefs)
+                + ';_=' + Math.random(),
+            width: '600px',
+            height: '400px'
+        })
+    );
+
+    jQuery.showLightbox({
+        content: '#st-widget-opensocial-setup',
+        close: '#st-widget-opensocial-setup-cancel',
+        width: '640px'
+    });
+
+
+    $('#lightbox').unbind('lightbox-unload').bind('lightbox-unload', function(){
+        Wikiwyg.Widgets.widget_editing = 0;
     });
 }
 

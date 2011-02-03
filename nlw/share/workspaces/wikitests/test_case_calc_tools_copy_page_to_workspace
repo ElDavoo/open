@@ -71,19 +71,8 @@ NOT the target WS |  |
 | click_ok | link=New Copy Page Spreadsheet %%start_time%% |  |
 | wait_for_element_visible_ok | link=Copy Spreadsheet Tag 2 %%start_time%% | 30000 |
 
-| *Comment* | Test Case: Calc Tools: Copy Page to Workspace. User with one WS cannot Copy |  |
-| st-admin | create-user --email newuser_%%start_time%%@ken.socialtext.net --password 123456 |  |
-| st-admin | add-member --email newuser_%%start_time%%@ken.socialtext.net --workspace %%newspace%% |  |
-| st-logout |  |  |
-| open_ok | /%%newspace%%/?New Copy Page Spreadsheet %%start_time%% |  |
-| type_ok | username | newuser_%%start_time%%@ken.socialtext.net |
-| type_ok | password | 123456 |
-| click_and_wait | login_btn |  |
-
-| *Comment* | Test Case: Calc Tools: Copy Page to Workspace. User has no copy to workspace menu item. |  |
-| text_unlike | //body | Copy Page to Workspace |
-
-| *Comment* | Test Case: Calc Tools: Copy Page to Workspace Teardown |  |
+| *Comment* | Test Case: Calc Tools: Copy Page to Workspace TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | purge-page --w %%workspace%% --page copy_page_spreadsheet_%%start_time%% | was purged |
 | st-admin | delete-workspace --workspace %%newspace%% --no-export | has been deleted |
 

@@ -753,6 +753,22 @@
     '/:ws/:pname':
         '*':                    [Socialtext::Rest::App, handler]
 -
+    '/data/wafl-containers/:cname/gadgets/:gadget_instance_id':
+        'GET':
+            '*/*':     &default [Socialtext::Handler::Gadget::Wafl, GET_html]
+            'text/html':        *default
+            'application/json': [Socialtext::Handler::Gadget::Wafl, GET_json]
+        'PUT':
+            '*/*':     &default [Socialtext::Handler::Gadget::Wafl, PUT]
+        '*':                    [Socialtext::Handler::Gadget::Wafl, bad_method]
+-
+    '/data/wafl-containers/:cname/gadgets/:gadget_instance_id/prefs':
+        'PUT':
+            '*/*':     &default [Socialtext::Handler::Gadget::Wafl, PUT_prefs]
+        'GET':
+            '*/*':     &default [Socialtext::Handler::Gadget::Wafl, GET_prefs]
+        '*':                    [Socialtext::Handler::Gadget::Wafl, bad_method]
+-
     '/index.cgi':
         '*':                    [Socialtext::Handler::Default, handler]
 -

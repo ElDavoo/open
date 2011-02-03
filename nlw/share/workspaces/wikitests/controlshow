@@ -12,9 +12,15 @@ This test case is an aid to visually observing each screen type in the applicati
 | st-admin | give-accounts-admin --e %%username%% |  |
 | st-admin | give-system-admin --e %%username%% |  |
 
+| open_ok | /nlw/control/settings |  |
+| wait_for_element_visible_ok | self_join | 30000 |
+| check_ok | self_join |  |
+| wait_for_element_visible_ok | self_join_update | 30000 |
+| click_and_wait | self_join_update |  |
+
 | open_ok | /nlw/control/account |  |
 
-| click_and_wait | link=Workspaces |  |
+| click_and_wait | //a[@title='workspaces'] |  |
 | *Comment* | SEE Workspaces |  |
 | pause | %%pt%% |  |
 
@@ -36,14 +42,14 @@ This test case is an aid to visually observing each screen type in the applicati
 | *Comment* | SEE Accounts |  |
 | pause | %%pt%% |  |
 
-| enable-acct-plugin | signals | "%%defaultaccount%%" |
-| type_ok | name | "%%defaultaccount%%" |
+| enable-acct-plugin | signals | %%defaultaccount%% |
+| type_ok | name | %%defaultaccount%% |
 | st-submit |  |  |
 | *Comment* | SEE ACCT search result |  |
 | pause | %%pt%% |  |
 
 | *Comment* | ACCOUNT INSPECTION |  |
-| click_and_wait | link="%%defaultaccount%%" |  |
+| click_and_wait | link=%%defaultaccount%% |  |
 
 | *Comment* | SEE /Rename Account/Enable Export User Data |  |
 | *Comment* | SEE /Profile Fields/Disable Invitation to Group |  |
@@ -192,7 +198,7 @@ This test case is an aid to visually observing each screen type in the applicati
 | click_and_wait | link=Users |  |
 | type_ok | username | %%username%% |
 | st-submit |  |  |
-| click_and_wait | link=%%username%% |  |
+| click_and_wait | link="%%short_username%%" <%%username%%> |  |
 
 | *Comment* | SEE %%username%% |  |
 | *Comment* | SEE Created: DATE |  |

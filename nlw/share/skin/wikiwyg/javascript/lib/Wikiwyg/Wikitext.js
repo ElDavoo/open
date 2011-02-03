@@ -281,6 +281,23 @@ proto.insert_widget = function (widget_string) {
     this.insert_text_at_cursor(widget_string + ' ', { assert_preceding_wordbreak: true });
 }
 
+proto.getNextSerialForOpenSocialWidget = function(src) {
+    var max = 0;
+    var matches = (this.canonicalText() || '').match(
+        /\{widget:\s*[^\s#]+(?:\s*#\d+)?(?:\s+[^\s=]+=\S*)*\s*\}/g
+    );
+    if (!matches) { return 1 }
+    for (var ii = 0; ii < matches.length; ii++) {
+        var match = (matches[ii] || '').match(
+            /^\{widget:\s*([^\s#]+)(?:\s*#(\d+))?((?:\s+[^\s=]+=\S*)*)\s*\}$/
+        );
+        if (match && match[1].replace(/^local:widgets:/, '') == src.replace(/^local:widgets:/, '')) {
+            max = Math.max( max, (match[2] || 1) );
+        }
+    }
+    return max+1;
+}
+
 proto.insert_text_at_cursor = function(text, opts) {
     var t = this.area;
     var do_insert_from_parts = function (pre, mid, post) {
@@ -1238,7 +1255,8 @@ proto.markupRules = {
     www: ['bound_phrase', '"', '"<http://...>'],
     attach: ['bound_phrase', '{file: ', '}'],
     image: ['bound_phrase', '{image: ', '}'],
-    video: ['bound_phrase', '{video: ', '}']
+    video: ['bound_phrase', '{video: ', '}'],
+    widget: ['bound_phrase', '{widget: ', '}']
 }
 
 for (var ii in proto.markupRules) {
@@ -1333,6 +1351,9 @@ proto.do_www = Wikiwyg.Wikitext.make_do('www');
 proto.do_attach = Wikiwyg.Wikitext.make_do('attach');
 proto.do_image = Wikiwyg.Wikitext.make_do('image');
 proto.do_video = Wikiwyg.Wikitext.make_do('video');
+proto.do_widget = function(command) {
+    this.do_opensocial_gallery();
+};
 
 proto.convertWikitextToHtml = function(wikitext, func, onError) {
     // TODO: This could be as simple as:

@@ -66,7 +66,7 @@
       <form id="st-listview-form" method="post" action="/[% current_workspace.name %]/">
       <input id="st-listview-action" name="action" value="" type="hidden">
       <input id="st-listview-filename" name="filename" value="" type="hidden">
-      <table class="dataTable pagelist" cellspacing="0">
+      <table class="dataTable" cellspacing="0">
         <tr>
           <th width="30" style="border-right: 0">
           <div class="selectall">
@@ -74,8 +74,24 @@
           </div>
           </th>
           <th class="toggle">
+          [% predicate_with_params = BLOCK %]?[% predicate %];scope=[% scope %];orig_search_term=[% search_term %];sortby=[% sortby %];direction=[% direction || sortdir.$sortby %][%- END %]
+          <div class="toggle">
+            [% loc('Show:') %]
+            [% IF summaries %]
+               <a href="[% predicate_with_params %];summaries=0;limit=[% limit %];offset=[% offset %]" [% IF ! summaries %] class="selected" [% END %]>[% loc('Titles') %]</a> | 
+               [% loc('Summaries') %]
+            [% ELSE %]
+               [% loc('Titles') %] |
+               <a href="[% predicate_with_params %];summaries=1;limit=[% limit %];offset=[% offset %]" [% IF summaries %] class="selected" [% END %]>[% loc('Summaries') %]</a>
+            [% END %]
+            [% IF pager %]
+            &mdash;
+            [% PROCESS list_pager %] 
+            [% END %]
+          </div>
+          </th>
           [% IF !hide_sort_widget %]
-          <div class="sort">
+          <th class="sort">
           [% loc('Sort by:') %]
             <select id="sort-picker" onchange="sort_by();">
               [% IF allow_relevance %]
@@ -93,24 +109,8 @@
               [% PROCESS sort_by_option name = loc('Date Created') field = 'create_time' %]
               [% PROCESS sort_by_option name = loc('Revisions') field = 'revision_count' %]
           </select>
-          </div>
-          [% END %]
-          [% predicate_with_params = BLOCK %]?[% predicate %];scope=[% scope %];orig_search_term=[% search_term %];sortby=[% sortby %];direction=[% direction || sortdir.$sortby %][%- END %]
-          <div class="toggle">
-            [% loc('Show:') %]
-            [% IF summaries %]
-               <a href="[% predicate_with_params %];summaries=0;limit=[% limit %];offset=[% offset %]" [% IF ! summaries %] class="selected" [% END %]>[% loc('Titles') %]</a> | 
-               [% loc('Summaries') %]
-            [% ELSE %]
-               [% loc('Titles') %] |
-               <a href="[% predicate_with_params %];summaries=1;limit=[% limit %];offset=[% offset %]" [% IF summaries %] class="selected" [% END %]>[% loc('Summaries') %]</a>
-            [% END %]
-            [% IF pager %]
-            &mdash;
-            [% PROCESS list_pager %] 
-            [% END %]
-          </div>
           </th>
+          [% END %]
           <script language="javascript">
             var query_start = "?[% predicate %];scope=[% scope %];"
                             + "orig_search_term=[% search_term %];"
@@ -125,7 +125,7 @@
       [% END %]
       [% IF ! offset; offset = 0; END %]
       [% IF ! last; last = rows.size; END %]
-    <table class="dataTable pagelist" cellspacing="0">
+    <table class="dataTable" cellspacing="0">
       [% FOREACH row = rows %]
         [% row = load_row_times(row) %]
         [% IF !partial_set AND loop.count - 1 < offset %][% NEXT %][% END %]
@@ -170,7 +170,7 @@
       [% END %]
     </table><!-- dataTable END -->
       [% IF pager && pager.total_entries %]
-    <table class="dataTable pagelist" cellspacing="0">
+    <table class="dataTable" cellspacing="0">
       <tr>
         <th width="30" style="border-right: 0">
         &nbsp;
