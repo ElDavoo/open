@@ -2045,10 +2045,10 @@ proto.do_opensocial_gallery = function() {
                         var $textRow = $('<tr />').appendTo($table);
                         $.each(this, function(){
                             var src = this.src;
-                            var $imgCell = $('<td />', { width: '25%' }).appendTo($imgRow);
-                            $imgCell.append($('<img />', { width: '120', height: '60', src: '/data/gadgets/' + this.gadget_id + '/thumbnail' }));
+                            var $imgCell = $('<td />', { width: '20%' }).appendTo($imgRow);
+                            $imgCell.append($('<img />', { width: '90', height: '45', src: '/data/gadgets/' + this.gadget_id + '/thumbnail' }));
 
-                            var $btnCell = $('<td />', { width: '25%' }).appendTo($imgRow);
+                            var $btnCell = $('<td />', { width: '30%' }).appendTo($imgRow);
                             var $button = $('<div style="float: left" />')
                                 .append($('<ul class="widgetButton" style="float: left; margin-left: 15px; margin-top: 10px; cursor: pointer" />')
                                     .append($('<li class="flexButtonGrey" style="float: left" />')
