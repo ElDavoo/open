@@ -246,6 +246,11 @@ html .wiki a:hover {
     border: 1px solid black;
     padding: 0.2em;
 }
+.wiki div.inlineWidget table th,
+.wiki div.inlineWidget table td {
+    border: 0px;
+    padding: inherit;
+}
 .wiki table.st-ss th,
 .wiki table.st-ss td {
     border: inherit;
@@ -477,4 +482,15 @@ td .wafl_box {
 
 .wiki .syntaxhighlighter {
     overflow-y: hidden !important;
+}
+
+.wiki div.widget {
+    max-width: 600px;
+}
+
+.wiki div.widget div.widgetHeaderTitle {
+    font-size: 11px;
+    padding-left: 12px;
+    padding-top: 6px;
+    font-weight: bold;
 }

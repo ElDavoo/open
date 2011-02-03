@@ -1993,6 +1993,164 @@ proto.do_widget_pre = function(widget_element) {
     });
 }
 
+proto.do_opensocial_gallery = function() {
+    var self = this;
+    if (!jQuery('#st-widget-opensocial-gallery').size()) {
+        Socialtext.wikiwyg_variables.loc = loc;
+        jQuery('body').append(
+            Jemplate.process(
+                "opensocial-gallery.html",
+                Socialtext.wikiwyg_variables
+            )
+        );
+        $.ajax({
+            url: '/data/accounts/' + Socialtext.current_workspace_account_id + '/gallery',
+            dataType: 'json',
+            success: function(gallery) {
+                var tables = [
+                    { widgets: [], title: loc('Socialtext widgets') },
+                    { widgets: [], title: loc('Third Party widgets') }
+                ];
+                $.each(gallery.widgets, function(){
+                    if (this.removed) { return; }
+                    if (!this.src || this.src == 'local:widgets:activities') { return; }
+                    var ary = tables[this.socialtext ? 0 : 1].widgets;
+                    // 2-column layout
+                    if (ary.length && (ary[ary.length-1].length < 2)) {
+                        ary[ary.length-1].push(this);
+                    }
+                    else {
+                        ary.push([this]);
+                    }
+                });
+
+                var $gallery = $('#st-widget-opensocial-gallery-widgets');
+                $.each(tables, function(){
+                    $gallery.append($('<div />', { 'class': 'title' }).text(this.title));
+                    var $table = $('<table />', {
+                        'class': 'galleryWidget',
+                        css: { width: '99%', tableLayout: 'fixed' }
+                    });
+                    $.each(this.widgets, function(){
+                        var $imgRow = $('<tr />').appendTo($table);
+                        var $textRow = $('<tr />').appendTo($table);
+                        $.each(this, function(){
+                            var src = this.src;
+                            var $imgCell = $('<td />', { width: '25%' }).appendTo($imgRow);
+                            $imgCell.append($('<img />', { width: '120', height: '60', src: '/data/gadgets/' + this.gadget_id + '/thumbnail' }));
+
+                            var $btnCell = $('<td />', { width: '25%' }).appendTo($imgRow);
+                            var $button = $('<div style="float: left" />')
+                                .append($('<ul class="widgetButton" style="float: left; margin-left: 15px; margin-top: 10px; cursor: pointer" />')
+                                    .append($('<li class="flexButtonGrey" style="float: left" />')
+                                        .append($('<a class="greyButton" />')
+                                            .text(loc('Insert')))));
+
+                            $btnCell.append($button.click(function(){
+                                $('#lightbox').unbind('lightbox-unload').bind('lightbox-unload', function(){
+                                    Wikiwyg.Widgets.widget_editing = 1;
+                                    self.do_opensocial_setup(src);
+                                });
+                                jQuery.hideLightbox();
+                            }));
+
+                            var $textCell = $('<td />', { width: '50%', colspan: '2' }).appendTo($textRow);
+                            $textCell.append($('<div />', { css: { fontWeight: 'bold' } }).text(this.title));
+                            $textCell.append($('<div />', { css: { marginTop: '3px', marginBottom: '10px', marginRight: '10px' } }).text(this.description));
+                        });
+                    });
+                    $gallery.append($table);
+                });
+            }
+        });
+    }
+
+    jQuery.showLightbox({
+        content: '#st-widget-opensocial-gallery',
+        close: '#st-widget-opensocial-gallery-cancel'
+    });
+//    alert("Gallery");
+}
+
+proto.do_opensocial_setup = function(src) {
+    var self = this;
+
+    var encoded_prefs = '';
+    var serial = '';
+    var widget_element = null;
+
+    if (src) {
+        serial = self.getNextSerialForOpenSocialWidget(src);
+    }
+    else {
+        // We are editing an existing widget.
+        widget_element = self.currentWidget.element;
+        var matches = self.currentWidget.widget.match(/^\{widget:\s*([^\s#]+)(?:\s*#(\d+))?((?:\s+[^\s=]+=\S*)*)\s*\}$/);
+        if (!matches) { return false; }
+
+        src = matches[1];
+        serial = matches[2] || '';
+        encoded_prefs = matches[3] || '';
+    }
+
+    if (!jQuery('#st-widget-opensocial-setup').size()) {
+        Socialtext.wikiwyg_variables.loc = loc;
+        jQuery('body').append(
+            Jemplate.process(
+                "opensocial-setup.html",
+                Socialtext.wikiwyg_variables
+            )
+        );
+        $('#st-widget-opensocial-setup-cancel').click(function(){
+            jQuery.hideLightbox();
+        });
+    }
+
+    $('#st-widget-opensocial-setup-buttons').hide();
+    $('#st-widget-opensocial-setup-save').unbind('click').click(function(){
+        var prefHash = $(this).data('prefHash') || '';
+
+        var srcField = src.replace(/^local:widgets:/, '');
+        if (serial && serial > 1) {
+            srcField += '#' + serial;
+        }
+
+        var args = [srcField];
+        $.each(prefHash, function(key, val) {
+            args.push(key + '=' + encodeURI(val));
+        });
+
+        self.wikiwyg.current_mode.insert_widget('{widget: ' + args.join(' ') + '}', widget_element);
+
+        jQuery.hideLightbox();
+        return false;
+    });
+
+    $('#st-widget-opensocial-setup-widgets').html('').append(
+        $('<iframe />', {
+            src: '/?action=widget_setup_screen'
+                + ';widget=' + encodeURIComponent(src)
+                + ';workspace_name=' + encodeURIComponent(Socialtext.wiki_id)
+                + ';page_id=' + encodeURIComponent(Socialtext.page_id)
+                + ';serial=' + encodeURIComponent(serial)
+                + ';encoded_prefs=' + encodeURIComponent(encoded_prefs)
+                + ';_=' + Math.random(),
+            width: '480px',
+            height: '270px'
+        })
+    );
+
+    jQuery.showLightbox({
+        content: '#st-widget-opensocial-setup',
+        close: '#st-widget-opensocial-setup-cancel'
+    });
+
+
+    $('#lightbox').unbind('lightbox-unload').bind('lightbox-unload', function(){
+        Wikiwyg.Widgets.widget_editing = 0;
+    });
+}
+
 proto._do_insert_block_dialog = function(opts) {
     var self = this;
 

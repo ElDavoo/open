@@ -1271,6 +1271,18 @@ proto.do_link = function(widget_element) {
     this._do_link(widget_element);
 }
 
+proto.do_video = function() {
+    this.do_widget_video();
+}
+
+proto.do_widget = function(widget_element) {
+    if (widget_element && widget_element.nodeName) {
+        this.do_opensocial_setup(widget_element);
+        return;
+    }
+    this.do_opensocial_gallery();
+}
+
 proto.add_wiki_link = function(widget_element, dummy_widget) {
     var label     = jQuery("#wiki-link-text").val(); 
     var workspace = jQuery("#st-widget-workspace_id").val() || "";
@@ -2375,6 +2387,20 @@ proto.toHtml = function(func) {
     */
 }
 
+proto.getNextSerialForOpenSocialWidget = function(src) {
+    var max = 0;
+    var imgs = this.get_edit_document().getElementsByTagName('img');
+    for (var ii = 0; ii < imgs.length; ii++) {
+        var match = (imgs[ii].getAttribute('alt') || '').match(
+            /^st-widget-\{widget:\s*([^\s#]+)(?:\s*#(\d+))?((?:\s+[^\s=]+=\S*)*)\s*\}$/
+        );
+        if (match && match[1].replace(/^local:widgets:/, '') == src.replace(/^local:widgets:/, '')) {
+            max = Math.max( max, (match[2] || 1) );
+        }
+    }
+    return max+1;
+}
+
 proto.setWidgetHandlers = function() {
     var self = this;
     if (this.wikiwyg.config.noWidgetHandlers) return;
@@ -3413,6 +3439,10 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
     }
     else if (/^code(?:-\w+)?$/.test(widget)) {
         this.do_widget_code(widget_element);
+        return;
+    }
+    else if (widget == 'widget') {
+        this.do_opensocial_setup();
         return;
     }
 

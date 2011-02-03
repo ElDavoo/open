@@ -1,0 +1,28 @@
+[% INCLUDE element/container_head share="/nlw/plugin/widgets" %]
+[% SET gadget = container.gadgets.0.0 %]
+[% SET num = 0 %]
+[% SET col = 0 %]
+<div class="widget" id="[% gadget.id %]">
+    <div class="widgetHeader">
+        <div id="[% gadget.id %]-title" class="widgetHeaderTitle">
+            [% IF !gadget.fixed %]<img class="icon" src="[% share %]/images/[% gadget.icon %].png" />[% END %]
+            <span id="[% gadget.id %]-title-text" class="widgetHeaderTitleText" title="[% gadget.title %]">
+                [% gadget.title %]
+            </span>
+        </div>
+    </div><!-- widgetHeader END -->
+    <div class="widgetContent" id="[% gadget.id %]">
+        <div id="[% gadget.id %]-setup" style="display:none">
+            <!-- No setup possible in full screen view -->
+        </div>
+        <div id="[% gadget.id %]-content">
+            [% IF gadget.content_type == 'inline'; INCLUDE widget/inline; ELSE; INCLUDE widget/iframe; END %]
+        </div>
+    </div><!-- widgetContent END -->
+    <div class="widgetBottom"><div class="widgetBottomRight"></div></div><!-- widgetBottom END -->
+</div>
+<script>
+var gadgets = gadgets || {};
+    gadgets.container = gadgets.container || new gadgets.Container();
+    gadgets.container.base_url = '/data/wafl-containers/[% container.name |uri %]';
+</script>
