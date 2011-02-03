@@ -1295,7 +1295,7 @@ this.addGlobal().setup_wikiwyg = function() {
 //          myDiv.innerHTML = $('st-page-content').innerHTML;
 // But IE likes to take our non XHTML formatted lists and make them XHTML.
 // That messes up the wikiwyg formatter. So now we do this line:
-            myDiv.innerHTML =
+            var newHTML =
                 // This lines fixes
                 // https://bugs.socialtext.net:555/show_bug.cgi?id=540
                 "<span></span>" +
@@ -1303,6 +1303,15 @@ this.addGlobal().setup_wikiwyg = function() {
                 // And the variable above is undefined for new pages. This is
                 // what we fallback to.
                 || jQuery('#st-page-content').html());
+
+            myDiv.innerHTML = newHTML.replace(
+                new RegExp(
+                    '(<!--[\\d\\D]*?-->)|(<(span|div)\\sclass="nlw_phrase">)[\\d\\D]*?(<!--\\swiki:\\s[\\d\\D]*?\\s--><\/\\3>)',
+                    'g'
+                ), function(_, _1, _2, _3, _4) {
+                    return(_1 ? _1 : _2 + _4);
+                }
+            );
 
             ww.editMode();
             ww.preview_link_reset();
