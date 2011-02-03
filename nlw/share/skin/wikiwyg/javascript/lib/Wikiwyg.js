@@ -2076,7 +2076,8 @@ proto.do_opensocial_gallery = function() {
 
     jQuery.showLightbox({
         content: '#st-widget-opensocial-gallery',
-        close: '#st-widget-opensocial-gallery-cancel'
+        close: '#st-widget-opensocial-gallery-cancel',
+        width: '640px'
     });
 //    alert("Gallery");
 }
@@ -2146,14 +2147,15 @@ proto.do_opensocial_setup = function(src) {
                 + ';serial=' + encodeURIComponent(serial)
                 + ';encoded_prefs=' + encodeURIComponent(encoded_prefs)
                 + ';_=' + Math.random(),
-            width: '480px',
+            width: '600px',
             height: '400px'
         })
     );
 
     jQuery.showLightbox({
         content: '#st-widget-opensocial-setup',
-        close: '#st-widget-opensocial-setup-cancel'
+        close: '#st-widget-opensocial-setup-cancel',
+        width: '640px'
     });
 
 
