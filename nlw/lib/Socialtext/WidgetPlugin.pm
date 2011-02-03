@@ -64,7 +64,7 @@ sub get_container_for_gadget {
         }
     }
 
-    return($container, $gadget);
+    return($container, $gadget, \%new_prefs);
 }
 
 sub widget_setup_screen {
@@ -127,7 +127,7 @@ const wafl_reference_parse => qr/^\s*([^\s#]+)(?:\s*#(\d+))?((?:\s+[^\s=]+=\S*)*
 sub html {
     my $self = shift;
     my ($widget, $serial, $encoded_prefs) = $self->arguments =~ $self->wafl_reference_parse;
-    my ($container, $gadget) = $self->hub->widget->get_container_for_gadget({
+    my ($container, $gadget, $pref) = $self->hub->widget->get_container_for_gadget({
         workspace_name => $self->hub->current_workspace->name,
         page_id => $self->current_page_id,
         widget => $widget,
@@ -140,6 +140,7 @@ sub html {
     return $self->hub->template->process($container->view_template,
         pluggable => $self->hub->pluggable,
         container => $container->template_vars,
+        width     => $pref->{__width__},
     );
 }
 

@@ -2124,7 +2124,9 @@ proto.do_opensocial_setup = function(src) {
             srcField += '#' + serial;
         }
 
-        var args = [srcField];
+        var title = $(this).data('title') || srcField;
+        var width = $('#st-widget-opensocial-setup-width-options').val();
+        var args = [srcField, '__title__='+encodeURI(title), '__width__='+encodeURI(width)];
         $.each(prefHash, function(key, val) {
             args.push(key + '=' + encodeURI(val));
         });

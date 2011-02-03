@@ -2,7 +2,13 @@
     <span id="st-widget-opensocial-setup-title" class="title">[% loc('Edit Widget') %]</span>
     <div id="st-widget-opensocial-setup-widgets" style="margin-top: 5px; padding: 5px; border: 1px solid #ccc; width: 480px; height: 270px; overflow: hidden; background: #f0f0f0">
     </div>
-    <div id="st-widget-opensocial-setup-width" style="padding-top: 5px; float: left; display: none">
+    <div id="st-widget-opensocial-setup-width" style="padding-top: 10px; float: left; height: 35px">
+        [% loc('Widget width:') %]
+        <select id="st-widget-opensocial-setup-width-options" name="st-widget-opensocial-setup-width-options">
+            <option value="300">[% loc('Small (300px)') %]</option>
+            <option value="450">[% loc('Medium (450px)') %]</option>
+            <option value="600" selected>[% loc('Large (600px)') %]</option>
+        </select>
     </div>
     <div style="float: right" id="st-widget-opensocial-setup-buttons">
         <ul class="widgetButton" style="float:left; padding:10px">
