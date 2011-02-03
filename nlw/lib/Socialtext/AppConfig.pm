@@ -31,6 +31,10 @@ my $StartupUser = getpwuid($>);
 my @obviously_not_human_users = qw( www-data wwwrun nobody daemon );
 my %obviously_not_human_users = map {($_,1)} @obviously_not_human_users;
 
+sub is_testrunner {
+    return $StartupUser->name eq 'hudson';
+}
+
 sub startup_user_is_human_user {
     return 0 if $obviously_not_human_users{ $StartupUser->name };
 
@@ -40,7 +44,7 @@ sub startup_user_is_human_user {
     # on any system that was compliant with its distro/OSs usre
     # numbering scheme.
     return 1 if $StartupUser->uid >= 500;
-    return 1 if $StartupUser->name eq 'hudson';
+    return 1 if is_testrunner();
 
     return;
 }
@@ -544,7 +548,7 @@ sub MAC_secret {
     # REVIEW - is there a better way to distinguish between a real
     # installation and a developer installation?
     die "Cannot generate a MAC secret once app has started except in dev environments"
-        unless $StartupUser->dir =~ m{^(?:/home|/Users)};
+        unless $StartupUser->dir =~ m{^(?:/home|/Users)} || is_testrunner();
 
     return $StartupUser->name . ' needs a better secret';
 }
