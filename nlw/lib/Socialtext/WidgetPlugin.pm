@@ -34,11 +34,11 @@ sub get_container_for_gadget {
 
     my $ws = Socialtext::Workspace->new( name => $workspace_name ) or return;
 
-    my $container = Socialtext::Gadgets::Container::Wafl->Fetch(
+    my $container = eval { Socialtext::Gadgets::Container::Wafl->Fetch(
         owner => $ws,
         viewer => $self->hub->current_user,
         name => "$widget##$workspace_name##$page_id##$serial",
-    );
+    ) } or return;
 
     my $gadget = $container->gadgets->[0];
     if (!$gadget) {
