@@ -2116,6 +2116,13 @@ proto.do_opensocial_setup = function(src) {
         });
     }
 
+    if (encoded_prefs) {
+        var match = encoded_prefs.match(/\b__width__=(\d+)\b/);
+        if (match) {
+            $('#st-widget-opensocial-setup-width-options').val(match[1]);
+        }
+    }
+
     $('#st-widget-opensocial-setup-buttons').hide();
     $('#st-widget-opensocial-setup-save').unbind('click').click(function(){
         var prefHash = $(this).data('prefHash') || '';
