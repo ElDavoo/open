@@ -16,6 +16,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><!-- UserFrame -->
   <head>
+    <script>
+      function onBlur() { window.hasFocus = false };
+      function onFocus(){ window.hasFocus = true };
+      if (/*@cc_on!@*/false) { // check for Internet Explorer
+          document.onfocusin = onFocus;
+          document.onfocusout = onBlur;
+      } else {
+          window.onfocus = onFocus;
+          window.onblur = onBlur;
+      }
+      if (window.focus) window.focus();
+    </script>
+
     [% IF firebug %]
     <script type='text/javascript' src='http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'></script>
     [% END %]
