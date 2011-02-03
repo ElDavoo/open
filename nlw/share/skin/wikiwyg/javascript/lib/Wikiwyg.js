@@ -2147,7 +2147,7 @@ proto.do_opensocial_setup = function(src) {
                 + ';encoded_prefs=' + encodeURIComponent(encoded_prefs)
                 + ';_=' + Math.random(),
             width: '480px',
-            height: '270px'
+            height: '400px'
         })
     );
 
