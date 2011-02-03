@@ -2188,7 +2188,14 @@ proto.fromHtml = function(html) {
     }
 
     var dom = document.createElement('div');
-    dom.innerHTML = html;
+    dom.innerHTML = html.replace(
+        new RegExp(
+            '(<!--[\\d\\D]*?-->)|(<(span|div)\\sclass="nlw_phrase">)[\\d\\D]*?(<!--\\swiki:\\s[\\d\\D]*?\\s--><\/\\3>)',
+            'g'
+        ), function(_, _1, _2, _3, _4) {
+            return(_1 ? _1 : _2 + _4);
+        }
+    );
     this.sanitize_dom(dom);
     this.set_inner_html(dom.innerHTML);
     this.setWidgetHandlers();
