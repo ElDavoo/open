@@ -133,6 +133,7 @@ div.widgetBottomRight {
                 $('#st-savebutton-[% gadget.id %]').data('clicked', false);
                 if (parent.$ && parent.$('#st-widget-opensocial-setup-buttons').length) {
                     parent.$('#st-widget-opensocial-setup-save').data('prefHash', prefHash);
+                    parent.$('#st-widget-opensocial-setup-save').data('title', [% gadget.title.json %]);
                     parent.$('#st-widget-opensocial-setup-buttons').show();
                 }
                 $('#st-widget-settings[% gadget.id %]').css('visibility', 'visible');
@@ -148,6 +149,7 @@ div.widgetBottomRight {
 [% ELSE %]
     if (parent.$ && parent.$('#st-widget-opensocial-setup-buttons').length) {
         parent.$('#st-widget-opensocial-setup-save').data('prefHash', {});
+        parent.$('#st-widget-opensocial-setup-save').data('title', [% gadget.title.json %]);
         parent.$('#st-widget-opensocial-setup-buttons').show();
     }
 [% END %]

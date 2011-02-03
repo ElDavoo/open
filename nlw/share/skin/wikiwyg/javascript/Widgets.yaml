@@ -664,7 +664,7 @@ widget:
   widget:
     id: widget
     color: indianred
-    title: OpenSocial Widget. Click to configure.
+    title: __title__ Widget. Click to configure.
     use_title_as_text: true
 
   code:

@@ -3020,6 +3020,15 @@ proto.getWidgetImageText = function(widget_text, widget) {
     var config = widget_data[ widget.id ];
     if (config && config.use_title_as_text) {
         text = config.title;
+        if (/__title__/.test(text)) {
+            var match = widget_text.replace(/-=/g, '-').replace(/==/g, '=').match(/\s__title__=(\S+)[\s}]/);
+            if (match) {
+                text = text.replace(/__title__/g, decodeURI(match[1]));
+            }
+            else {
+                text = text.replace(/__title__\s+/g, '');
+            }
+        }
     }
     else if (widget_text.match(/^"([^"]+)"{/)) {
         text = RegExp.$1;

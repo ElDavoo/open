@@ -2125,8 +2125,12 @@ proto.do_opensocial_setup = function(src) {
         }
 
         var title = $(this).data('title') || srcField;
+<<<<<<< HEAD:nlw/share/skin/wikiwyg/javascript/lib/Wikiwyg.js
         var width = $('#st-widget-opensocial-setup-width-options').val();
         var args = [srcField, '__title__='+encodeURI(title), '__width__='+encodeURI(width)];
+=======
+        var args = [srcField, '__title__='+encodeURI(title)];
+>>>>>>> 0177012... * Display widget title as part of lozenge text.:nlw/share/skin/wikiwyg/javascript/lib/Wikiwyg.js
         $.each(prefHash, function(key, val) {
             args.push(key + '=' + encodeURI(val));
         });
