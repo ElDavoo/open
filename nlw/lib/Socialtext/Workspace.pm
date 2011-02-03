@@ -1619,7 +1619,7 @@ sub _WorkspaceCursor {
                     FROM "Workspace",
                     (SELECT into_set_id,
                         COUNT(DISTINCT(from_set_id)) AS user_count
-                     FROM user_set_path
+                     FROM user_set_includes
                      WHERE from_set_id } . PG_USER_FILTER . qq{
                      GROUP BY into_set_id)
                     AS temp1
