@@ -27,7 +27,10 @@
     <div class="widgetBottom"><div class="widgetBottomRight"></div></div><!-- widgetBottom END -->
 </div>
 <script>
+var Socialtext = Socialtext || {};
 var gadgets = gadgets || {};
-    gadgets.container = gadgets.container || new gadgets.Container();
+gadgets.container = gadgets.container || new gadgets.Container();
+if (Socialtext.wiki_id && Socialtext.page_id ) {
     gadgets.container.base_url = '/data/wafl-containers/[% container.name |uri %]';
+}
 </script>
