@@ -46,7 +46,7 @@
 
 | *Comment* | Test Case: Control Panel Create Group. %%username%% is group admin. Group is assigned to account "%%defaultaccount%%" |  |
 | wait_for_element_visible_ok | //a[contains(text(),'%%short_username%%')] | 10000 |
-| wait_for_element_visible_ok | link="%%defaultaccount%%" | 10000 |
+| wait_for_element_visible_ok | link=%%defaultaccount%% | 10000 |
 | wait_for_text_present_ok | Users (1) | 10000 |
 | wait_for_text_present_ok | Accounts (1) | 10000 |
 

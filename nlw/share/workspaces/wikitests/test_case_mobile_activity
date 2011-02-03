@@ -6,7 +6,7 @@
 
 | *Comment* | Test Case: Mobile Activity create WS, add member |  |
 | st-admin | create-user --e %%mau%% --p %%password%% --account "%%defaultaccount%%" | was created |
-| create_workspace | %%ma%% | "%%defaultaccount%%" |
+| create_workspace | %%ma%% | %%defaultaccount%% |
 | add_member | %%username%% | %%ma%% |
 | add_member | %%mau%% | %%ma%% |
 

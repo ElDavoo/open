@@ -97,20 +97,9 @@ TODO: come back and finish this test when {bz: 1039} is fixed. Can't seem to cli
 | wait_for_element_visible_ok | link=Copy This Tag %%start_time%% | 30000 |
 | text_like | link=Copy This Tag %%start_time%% | Copy This Tag %%start_time%% |
 
-| *Comment* | Test Case: Tools: Copy Page to Workspace. User with one WS cannot Copy |  |
-| st-admin | create-user --email newuser_%%start_time%%@ken.socialtext.net --password 123456 |  |
-| st-admin | add-member --email newuser_%%start_time%%@ken.socialtext.net --workspace %%newspace%% |  |
-| st-logout |  |  |
-| open_ok | /%%newspace%%/?Page Copied %%start_time%% |  |
-| type_ok | username | newuser_%%start_time%%@ken.socialtext.net |
-| type_ok | password | 123456 |
-| click_and_wait | login_btn |  |
+| *Comment* | Test Case: Tools: Copy Page to Workspace TEARDOWN |  |
 
-| *Comment* | Test Case: Tools: Copy Page to Workspace. User has no copy to workspace menu item. |  |
-| text_unlike | //body | Copy Page to Workspace |
-
-| *Comment* | Test Case: Tools: Copy Page to Workspace Teardown |  |
-
+| st-process-jobs |  |  |
 | st-admin | purge-page --w %%workspace%% --page copy_this_page_%%start_time%% | was purged |
 | st-admin | delete-workspace --workspace %%newspace%% --no-export | has been deleted |
 

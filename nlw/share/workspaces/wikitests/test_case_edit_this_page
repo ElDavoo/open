@@ -102,7 +102,10 @@
 | wait_for_element_visible_ok | st-page-content | 30000 |
 | text_like | st-page-content | Edit This Page content %%start_time%% |
 
+| *Comment* | Test Case: Edit This Page navigate away and back |  |
+| open_ok | /%%workspace%% |  |
 | open_ok | /%%workspace%%/?Edit This Page %%start_time%% | needed for test to proceed |
+| pause | 8000 |  |
 
 | *Comment* | Test Case: Edit This Page navigate away Advanced mode |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
@@ -132,7 +135,10 @@
 
 | wait_for_text_present_ok | Welcome | 30000 |
 
+| *Comment* | Test Case: Edit This Page navigate away and back |  |
+| open_ok | /%%workspace%% |  |
 | open_ok | /%%workspace%%/?Edit This Page %%start_time%% |  |
+| pause | 8000 |  |
 
 | *Comment* | Test Case: Edit This Page Cancel Edit then keep Simple mode edits |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
@@ -162,7 +168,11 @@
 | verifyConfirmation | Are you sure you want to cancel?\n\nYou have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page. |  |
 | wait_for_element_visible_ok | st-page-content | 30000 |
 | text_like | st-page-content | Edit This Page content %%start_time%% |
+
+| *Comment* | Test Case: Edit This Page navigate away and back |  |
+| open_ok | /%%workspace%% |  |
 | open_ok | /%%workspace%%/?Edit This Page %%start_time%% | reload page for test to proceed |
+| pause | 8000 |  |
 
 | *Comment* | Test Case: Edit This Page navigate away Simple mode and cancel |  |
 | click_ok | st-edit-button-link |  |
@@ -196,6 +206,7 @@
 | wait_for_text_present_ok | Welcome | 30000 |
 
 | open_ok | /%%workspace%%/?Edit This Page %%start_time%% |  |
+| pause | 8000 |  |
 | wait_for_element_visible_ok | st-page-content | 30000 |
 | text_like | st-page-content | Edit This Page content %%start_time%% |
 

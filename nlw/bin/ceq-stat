@@ -17,31 +17,71 @@ use POSIX qw/strftime/;
 Socialtext::DaemonUtil->Check_and_drop_privs();
 
 my $skip_test = 1;
+my $verbose = 0;
 GetOptions(
     'h|help|?' => sub {pod2usage({-verbose => 1, -input => $0}); exit},
     'H|man'    => sub {pod2usage({-verbose => 2, -input => $0}); exit},
+    'v|verbose!' => \$verbose,
     'skip-test!' => \$skip_test,
 ) or die;
 
 my $Interval = shift;
 
-my %header = (
-    queued => loc('Queued'),
-    grabbed => loc('Grabbed'),
-    delayed => loc('Delayed'),
-    num_ok => loc('Num OK'),
-    num_fail => loc('Num Fail'),
-    last_ok => loc('Last OK'),
-    last_fail => loc('Last Fail'),
-    latest => loc('Latest'),
-    latest_nodelay => loc('Latest NoDelay'),
+my %label = (
+    queued => loc('Number of jobs enqueued'),
+    grabbed => loc('Number of jobs "grabbed" for work'),
+    delayed => loc('Number of jobs with a delayed start time'),
+    num_ok => loc('Successful job count'),
+    num_fail => loc('Failed job count'),
+    last_ok => loc('Most recent success time'),
+    last_fail => loc('Most recent failure time'),
+    latest => loc('Most recently (latest) enqueued time'),
+    latest_nodelay => loc('Most recently (latest) enqueued time, without a delayed start'),
+    earliest => loc('Earliest (oldest) enqueued time'),
+    earliest_nodelay => loc('Earliest (oldest) enqueued time, without a delayed start'),
 );
-my @stat_order = (qw(queued grabbed delayed num_ok last_ok num_fail last_fail latest latest_nodelay));
+
+my %header = (
+    queued => '#Job',
+    grabbed => '#Grb',
+    delayed => '#Dly',
+    num_ok => '#OK',
+    num_fail => '#Fail',
+    last_ok => 'Last-OK',
+    last_fail => 'Last-Fail',
+    latest => 'Latest',
+    latest_nodelay => 'Latest-NDly',
+    earliest => 'Earliest',
+    earliest_nodelay => 'Earliest-NDly',
+);
+
+my @stat_order = qw(queued grabbed delayed num_ok last_ok num_fail last_fail);
+push @stat_order, qw(latest latest_nodelay earliest earliest_nodelay)
+    if $verbose;
+
+# keep these in the same order as @stat_order:
 my @max_stats = grep /^(?:last_|latest)/, @stat_order;
-my @time_stats = grep /^(?:last_|latest)/, @stat_order;
-my @sum_stats = grep !/^(?:last_|latest)/, @stat_order;
+my @min_stats = grep /^(?:earliest)/, @stat_order;
+my @time_stats = grep /^(?:last_|latest|earliest)/, @stat_order;
+my @sum_stats = qw(queued grabbed delayed num_ok num_fail); 
+
 my $name_header = loc('Job Type');
 my $total = loc('Total');
+
+if ($verbose) {
+    print loc('Key:'),$/;
+    for my $key (@stat_order) {
+        print "\t$header{$key}: $label{$key}\n";
+    }
+    print "\n";
+}
+
+if ($verbose) {
+    print "ceq-stat\n";
+}
+else {
+    print "ceq-stat: ".loc('HINT try --verbose for a key and extra columns')."\n";
+}
 
 while (1) {
     print show_total();
@@ -60,6 +100,7 @@ sub show_total {
     my @table;
     my %total;
     $total{$_} = 0 for @max_stats;
+    $total{$_} = 0x7FFFFFFF for @min_stats;
     while (my ($job_name, $job_stats) = each %$stats) {
         next if ($skip_test && $job_name =~ /^Socialtext::Job::Test/);
 
@@ -72,6 +113,13 @@ sub show_total {
         for (@max_stats) {
             $total{$_} = $job_stats->{$_} if $job_stats->{$_} > $total{$_};
         }
+        for (@min_stats) {
+            $total{$_} = $job_stats->{$_} if $job_stats->{$_} < $total{$_};
+        }
+    }
+
+    for (@min_stats) {
+        $total{$_} = 0 if $total{$_} eq 0x7FFFFFFF;
     }
 
     @table = sort { $a->[0] cmp $b->[0] } @table;
@@ -81,13 +129,19 @@ sub show_total {
         my $i = first_index { $_ eq $stat } @stat_order;
         $i+=1; # offset for name
         for my $row (@table) {
-            $row->[$i] &&= strftime('%m/%d@%T',localtime($row->[$i]));
+            $row->[$i] = $row->[$i] > 0
+                ? strftime('%m/%d@%T',localtime($row->[$i]))
+                : loc('Never');
         }
     }
 
     unshift @table, [$name_header, map { $header{$_} } @stat_order];
 
-    my @width = _column_widths(\@table);
+    my $cols = 1 + scalar @stat_order;
+    my @width;
+    for my $col (0 .. $cols-1) {
+        push @width, max map {length($_->[$col]||'')} @table;
+    }
 
     # underline the header and data segments
     my $lines = [ map { '-' x $_ } @width ];
@@ -105,11 +159,6 @@ sub show_total {
 
 sub _column_widths {
     my $table = shift;
-    my @widths;
-    for my $col (0 .. $#$table) {
-        push @widths, max map {length($_->[$col]||'')} @$table;
-    }
-    return @widths;
 }
 
 =head1 NAME
@@ -126,6 +175,7 @@ ceqlotron's queue.
 
     --help      This help page
     --man       Manual page
+    --verbose   Display extra columns and a key
 
 An optional delay interval can be provided to repeat the output.
 

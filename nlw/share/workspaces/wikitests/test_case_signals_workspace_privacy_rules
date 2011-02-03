@@ -13,6 +13,8 @@
 | set | isouser | %%isouser_short%%@matt.socialtext.net |
 | st-admin | create-user --e %%isouser%% --p %%password%% --account %%acct%% | was created |
 | st-admin | add-member --w %%ws%% --e %%isouser%% | now has the role of |
+| set | default_user | default-user-%%start_time%%@ken.socialtext.net |
+| st-admin | create-user --e %%default_user%% --p %%password%% | was created |
 
 | *Comment* | Test Case: Signals Workspace Privacy Rules basic signal unshared workspace |  |
 | set | signal1 | test signal number one %%start_time%% {link: %%ws%% [%%ws%%]} |
@@ -28,6 +30,7 @@
 | post-signal | %%signal2%% |  |
 | post-signal | %%signal3%% |  |
 
+| st-logoutin | %%default_user%% | %%password%% |
 | open_ok | /st/dashboard |  |
 | st-name-widget | 4 | activities_widget |
 | st-widget-title-like | activities_widget | Activities |
@@ -39,7 +42,7 @@
 | st-element-not-present-in-activities-widget | activities_widget | link=fake_page%%start_time%% |
 
 | *Comment* | Test Case: Signals Workspace Privacy Rules Basic Signal with shared Workspace |  |
-| st-admin | add-member --e %%username%% --w %%ws%% | now has the role of |
+| st-admin | add-member --e %%default_user%% --w %%ws%% | now has the role of |
 | refresh |  |  |
 | wait_for_text_present_ok | %%signal1_text%% | 30000 |
 
@@ -60,7 +63,9 @@
 | *Comment* | Test Case: Signals Workspace Privacy Rules Basic (Reply button needs id) |
 
 | *Comment* | Test Case: Signals Workspace Privacy Rules TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | delete-workspace --w %%ws%% --no-export | has been deleted |
 | st-admin | deactivate-user --e %%isouser%% | removed |
+| st-admin | deactivate-user --e %%default_user%% | removed |
 
 | *Comment* | Test Case: Signals Workspace Privacy Rules COMPLETED |

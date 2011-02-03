@@ -147,6 +147,7 @@ sub _cache_html {
         Socialtext::RecentChanges::Wafl
         Socialtext::Category::Wafl
         Socialtext::Search::Wafl
+        Socialtext::WidgetPlugin::Wafl
     /;
     my @cache_questions;
     my %interwiki;

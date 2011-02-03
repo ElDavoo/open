@@ -9,9 +9,23 @@
 | st-admin | create-account --name %%acct%% | was created |
 | st-admin | create-user --e %%user%% --p %%password%% --account %%acct%% | was created |
 
-| *Comment* | Test Case: Bare Account Check for text |  |
+| *Comment* | Test Case: Bare Account Every account has a AUW so until that changes every account has edits |  |
 | st-logoutin | %%user%% | %%password%% |
 | open_ok | /st/dashboard |  |
-| wait_for_text_present_ok | There are no events to display because no events have been created. | 30000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-0-list']/li[1]/a[text()='all events'] | 5000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-0-list']/li[2]/a[text()='signals'] | 5000 |
+| click_ok | //ul[@id='st-dropdown-0-list']/li[2]/a[text()='signals'] |  |
+| wait_for_text_present_ok | There are no new signals in the last 30 days | 30000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-0-list']/li[3]/a[text()='contributions'] | 5000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-0-list']/li[4]/a[text()='edits'] | 5000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-0-list']/li[5]/a[text()='comments'] | 5000 |
+| click_ok | //ul[@id='st-dropdown-0-list']/li[5]/a[text()='comments'] |  |
+| wait_for_text_present_ok | There are no new comments in the last 30 days | 30000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-0-list']/li[6]/a[text()='page tags'] | 5000 |
+| click_ok | //ul[@id='st-dropdown-0-list']/li[6]/a[text()='page tags'] |  |
+| wait_for_text_present_ok | There are no new page tags in the last 30 days | 30000 |
+| wait_for_element_present_ok | //ul[@id='st-dropdown-0-list']/li[7]/a[text()='people events'] | 5000 |
+| click_ok | //ul[@id='st-dropdown-0-list']/li[7]/a[text()='people events'] |  |
+| wait_for_text_present_ok | There are no new people events in the last 30 days | 30000 |
 
 | *Comment* | Test Case: Bare Account COMPLETED |

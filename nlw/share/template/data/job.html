@@ -8,8 +8,9 @@
 [% INCLUDE data/jobs.css %]
 </style>
 <h1>[% entity_name %]</h1>
-<table class="job">
+<table class="job[% IF job.delayed %] jobdelay[%END%]">
 [% FOREACH col IN columns %]
+    [% IF col == 'delayed' %][% NEXT %][% END %]
     <tr>
         <th>
             [%- SWITCH col -%]

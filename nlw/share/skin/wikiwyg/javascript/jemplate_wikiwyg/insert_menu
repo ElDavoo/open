@@ -53,6 +53,7 @@
       <li><a do="do_widget_date" onclick="return false;" href="#">Local Date &amp; Time</a></li>
      </ul>
     </li>
+    <li><a do="do_opensocial_gallery" onclick="return false;" href="#">Widget...</a></li>
     <li><a do="do_widget_pre" onclick="return false;" href="#">Preformatted Text...</a></li>
     <li><a do="do_widget_asis" onclick="return false;" href="#">Unformatted Text...</a></li>
 [%- IF hub.current_workspace.allows_html_wafl -%]
