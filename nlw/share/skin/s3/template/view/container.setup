@@ -60,7 +60,7 @@ li.fixed {
 
 div.widget {
     background: url("/static/skin/s3/images/widgetTop.png") no-repeat scroll left top transparent !important;
-    width: 450px !important;
+    width: 560px !important;
 }
 
 div.widgetHeaderTitle {
