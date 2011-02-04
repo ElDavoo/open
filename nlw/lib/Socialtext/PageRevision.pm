@@ -3,7 +3,7 @@ use Moose;
 use MooseX::StrictConstructor;
 use Time::HiRes ();
 use Carp qw/croak carp/;
-use Moose::Util::TypeConstraints qw/enum/;
+use Moose::Util::TypeConstraints;
 use Tie::IxHash;
 
 use Socialtext::Moose::UserAttribute;
@@ -14,8 +14,11 @@ use Socialtext::SQL qw/:exec :txn :time/;
 use Socialtext::SQL::Builder qw/sql_nextval sql_insert/;
 use Socialtext::Encode qw/ensure_is_utf8 ensure_ref_is_utf8/;
 use Socialtext::String ();
+*title_to_id = *Socialtext::String::title_to_id;
 use Socialtext::Workspace;
 use Socialtext::Hub;
+use Socialtext::Exceptions qw/data_validation_error/;
+use Socialtext::l10n qw/loc/;
 
 use namespace::clean -except => 'meta';
 
@@ -35,7 +38,8 @@ has 'edit_time' => (is => 'rw', isa => 'Pg.DateTime', coerce => 1,
     default => sub { DateTime->from_epoch(epoch => Time::HiRes::time()) } );
 has 'page_type' => (is => 'rw', isa => 'PageType', default => 'wiki');
 has 'deleted' => (is => 'rw', isa => 'Bool');
-has 'summary' => (is => 'rw', isa => 'UniStr', coerce => 1, default => '');
+has 'summary' => (is => 'rw', isa => 'UniStr', coerce => 1, default => '',
+    clearer => 'clear_summary');
 has 'edit_summary' => (is => 'rw', isa => 'UniStr', coerce => 1, default => '');
 has 'locked' => (is => 'rw', isa => 'Bool');
 has 'tags' => (is => 'rw', isa => 'ArrayRef[Str]', default => sub {[]});
@@ -76,7 +80,7 @@ sub Get {
     my $ws_id = $p->{workspace_id}
         || $p->{hub}->current_workspace->workspace_id;
     my $page_id = $p->{page_id}
-        || $p->{hub}->pages->current->id;
+        || $p->{hub}->pages->current->page_id;
 
     my $sth = sql_execute(q{
         SELECT }.SELECT_COLUMNS_STR.q{
@@ -103,7 +107,7 @@ sub Blank {
     my $hub = $p{hub};
     $p{workspace_id} = $hub->current_workspace->workspace_id;
     $p{name} = $name;
-    $p{page_id} = Socialtext::String::title_to_id($name);
+    $p{page_id} = title_to_id($name);
     $p{revision_id} = $p{revision_num} = 0;
     $p{editor} = $hub->current_user;
     $p{editor_id} = $p{editor}->user_id;
@@ -111,9 +115,6 @@ sub Blank {
     
     return Socialtext::PageRevision->new(\%p);
 }
-
-sub is_spreadsheet { $_[0]->page_type eq 'spreadsheet' }
-sub is_wiki { $_[0]->page_type eq 'wiki' }
 
 sub _build_body_ref {
     my $self = shift;
@@ -128,7 +129,10 @@ sub _build_body_ref {
 
 sub _body_modded {
     my ($self, $newref, $oldref) = @_;
+    confess "body modified while PageRevision wasn't mutable"
+        unless $self->mutable;
     $self->body_modified((defined($newref) || defined($oldref))? 1 : undef);
+    $self->clear_summary();
     if ($newref && defined $$newref) {
         $self->body_length(length $$newref);
     }
@@ -140,6 +144,8 @@ sub pkey {
     return map { $self->$_ } qw(workspace_id page_id revision_id);
 }
 
+sub modified_time { $_[0]->edit_time->epoch };
+
 sub mutable_clone {
     my $self = shift;
     my $p = ref($_[0]) ? $_[0] : {@_};
@@ -149,19 +155,17 @@ sub mutable_clone {
 
     my %clone_args = map { $_ => $self->$_ } qw(
         page_id workspace_id revision_num name page_type deleted
-        locked
+        locked editor editor_id summary body_length
     );
-    $clone_args{revision_id} = 0;
+    $clone_args{revision_id} = sql_nextval('page_revision_id_seq');
     $clone_args{revision_num}++;
-    $clone_args{editor} = $p->{editor};
-    $clone_args{editor_id} = $p->{editor}->user_id;
-    $clone_args{tags} = [@{$self->tags}];
+    $clone_args{tags} = [@{$self->tags}]; # semi-deep copy
 
     if ($p->{copy_body}) {
-        my $body = ${$self->body_ref};
+        my $body = ${$self->body_ref}; # copy the bytes
         $clone_args{body_ref} = \$body;
-        $clone_args{summary} = $self->summary if $self->summary;
         $clone_args{edit_summary} = $self->edit_summary if $self->edit_summary;
+        $clone_args{body_modified} = 1;
     }
 
     $clone_args{prev} = $self;
@@ -210,13 +214,114 @@ sub delete_tags {
     return \@deleted;
 }
 
+sub has_tag {
+    my $self = shift;
+    my $tag = shift;
+    my $lc_tag = lc(ensure_is_utf8($tag));
+    return $self->tag_set->FETCH($lc_tag);
+}
+
+sub is_recently_modified {
+    my $self = shift;
+    my $limit = shift || 3600; # 1hr
+    return $self->age_in_seconds < $limit;
+}
+
+sub age_in_minutes {
+    my $self = shift;
+    $self->age_in_seconds / 60;
+}
+
+has 'age_in_seconds' => (is => 'ro', isa => 'Int', lazy_build => 1);
+sub _build_age_in_seconds {
+    my $self = shift;
+    my $time = $Socialtext::Page::REFERENCE_TIME || time;
+    return $time - $self->modified_time;
+}
+
+sub age_in_english {
+    my $self = shift;
+    my $age = $self->age_in_seconds;
+    my $english =
+        $age < 60 ? loc('[_1] seconds', $age) :
+        $age < 3600 ? loc('[_1] minutes', int($age / 60)) :
+        $age < 86400 ? loc('[_1] hours', int($age / 3600)) :
+        $age < 604800 ? loc('[_1] days', int($age / 86400)) :
+        $age < 2592000 ? loc('[_1] weeks', int($age / 604800)) :
+        loc('[_1] months', int($age / 2592000));
+    $english =~ s/^(1 .*)s$/$1/;
+    return $english;
+}
+
+sub is_spreadsheet { $_[0]->page_type eq 'spreadsheet' }
+sub is_wiki { $_[0]->page_type eq 'wiki' }
+
+sub is_untitled {
+    my $self = shift;
+    my $id = shift || $self->page_id;
+    if ($id eq 'untitled_page') {
+        return 'Untitled Page';
+    }
+    elsif ($id eq 'untitled_spreadsheet') {
+        return 'Untitled Spreadsheet';
+    }
+    return '';
+}
+
+sub is_bad_page_title {
+    my ( $self, $title ) = @_;
+    $title = defined($title) ? $title : "";
+
+    # No empty page titles.
+    return 1 if $title =~ /^\s*$/;
+    my $id = title_to_id($title);
+
+    return 1 if $self->is_untitled($id); # unlocalized
+
+    # Can't have a page named "Untitled Page" in the current locale
+    my $untitled_page = title_to_id( loc("Untitled Page") );
+    return 1 if $id eq $untitled_page;
+    my $untitled_spreadsheet = title_to_id( loc("Untitled Spreadsheet") );
+    return 1 if $id eq $untitled_spreadsheet;
+
+    return 0;
+}
+
 sub store {
     my $self = shift;
     croak "PageRevision isn't mutable" unless $self->mutable;
 
-    my $name_check = Socialtext::String::title_to_id($self->name); 
-    croak "Cannot change page name: requires a different page_id"
+    my @errors;
+
+    # Putting whacky whitespace in a page title can kill javascript on the
+    # front-end. This fixes {bz: 3475}.
+    {
+        my $name = $self->name;
+        $name =~ s/\s+/ /g; $name =~ s/^ //; $name =~ s/ $//;
+        $self->name($name);
+    }
+
+    my $name_check = title_to_id($self->name); 
+    push @errors, loc("Cannot change page name: requires a different page_id")
         unless $self->page_id eq $name_check;
+
+    # Fix for {bz 2099} -- guard against storing an "Untitled Page".
+    if (my $display_name = $self->is_untitled) {
+        push @errors, loc('"[_1]" is a reserved name. Please use a different name.', $display_name);
+    }
+
+    if ($self->is_bad_page_title($self->name)) {
+        push @errors, loc('"[_1]" is an invalid page title. Please use a different name.', $self->name);
+    }
+
+    if (Socialtext::String::MAX_PAGE_ID_LEN < length($self->page_id)) {
+        push @errors, loc("Page title is too long after URL encoding");
+    }
+
+    Socialtext::Exception::DataValidation->throw(
+        error => loc("Cannot store page revision"),
+        errors => \@errors
+    ) if @errors;
 
     $self->edit_summary(Socialtext::String::trim($self->edit_summary));
     $self->summary(Socialtext::String::trim($self->summary));
@@ -257,7 +362,7 @@ sub store {
         }
         else {
             # copy blob from Pg
-            my $prev_id = $self->prev_revision_id;
+            my $prev = $self->prev;
             sql_execute(q{
                 UPDATE page_revision
                   SET body = old_rev.body,
@@ -268,10 +373,10 @@ sub store {
                       WHERE workspace_id = $1 AND page_id = $2
                         AND revision_id = $3
                  ) old_rev
-                WHERE workspace_id = $1 AND page_id = $2
-                  AND revision_id = $4
-            }, @args{qw(workspace_id page_id)},
-               $prev_id => $args{revision_id});
+                WHERE workspace_id = $4 AND page_id = $5
+                  AND revision_id = $6
+            }, $prev->workspace_id, $prev->page_id, $prev->revision_id,
+               @args{qw(workspace_id page_id revision_id)});
         }
     };
 

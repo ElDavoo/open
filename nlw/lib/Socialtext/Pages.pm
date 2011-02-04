@@ -25,6 +25,7 @@ use Scalar::Util qw/blessed/;
 use Guard qw/scope_guard/;
 
 sub class_id { 'pages' }
+
 const class_title => 'NLW Pages';
 
 field current => 
@@ -36,6 +37,7 @@ Returns a list of all page objects that exist in the current workspace.
 This includes deleted pages.
 
 =cut
+
 sub all {
     my $self = shift;
     my $t = time_scope 'all_pages';
@@ -227,6 +229,7 @@ sub unset_current {
 sub new_page {
     my $self = shift;
     my $t = time_scope 'pages_new_page';
+    # TODO: check cache
     Socialtext::Page->new(hub => $self->hub, id => shift);
 }
 
@@ -374,7 +377,7 @@ sub _render_in_workspace {
         $hub->viewer->link_dictionary($link_dictionary);
 
         # {bz: 4881}: We need to disable the cache, as the link dictionary was modified.
-        local $Socialtext::Page::Base::DISABLE_CACHING = 1;
+        local $Socialtext::Page::DISABLE_CACHING = 1;
 
         $callback->($hub->pages->new_page($page_id));
         return; # make above call void context
@@ -478,7 +481,6 @@ sub By_seconds_limit {
         bind         => \@bind,
         order_by     => $order_by,
         workspace_id => $workspace_id,
-        do_not_need_tags => $p{do_not_need_tags},
         deleted_ok   => $p{deleted_ok},
     );
 }
@@ -490,7 +492,6 @@ sub All_active {
     my $hub          = $p{hub};
     my $limit        = $p{count} || $p{limit};
     my $workspace_id = $p{workspace_id};
-    my $no_tags      = $p{do_not_need_tags};
     my $order_by     = $p{order_by};
     my $offset       = $p{offset};
     my $type         = $p{type};
@@ -502,7 +503,6 @@ sub All_active {
         hub          => $hub,
         limit        => $limit,
         workspace_id => $workspace_id,
-        do_not_need_tags => $no_tags,
         ($order_by ? (order_by => "page.$order_by") : ()),
         offset       => $offset,
         type         => $type,
@@ -520,7 +520,6 @@ sub By_tag {
     my $offset       = $p{offset};
     my $tag          = $p{tag};
     my $order_by     = $p{order_by} || 'page.last_edit_time DESC';
-    my $no_tags      = $p{do_not_need_tags};
     my $type         = $p{type};
 
     return $class->_fetch_pages(
@@ -530,7 +529,6 @@ sub By_tag {
         offset           => $offset,
         tag              => $tag,
         order_by         => $order_by,
-        do_not_need_tags => $no_tags,
         type             => $type,
     );
 }
@@ -542,7 +540,6 @@ sub By_id {
     my $hub              = $p{hub};
     my $workspace_id     = $p{workspace_id};
     my $page_id          = $p{page_id};
-    my $do_not_need_tags = $p{do_not_need_tags};
     my $no_die           = $p{no_die};
 
     my $where;
@@ -587,7 +584,6 @@ sub _fetch_pages {
         order_by         => undef,
         limit            => undef,
         offset           => undef,
-        do_not_need_tags => 0,
         deleted_ok       => undef,
         orphaned         => 0,
         @_,
@@ -663,26 +659,10 @@ sub _fetch_pages {
                                    ? " AND page$workspace_filter"
                                    : '';
     $p{where} = "AND $p{where}" if $p{where};
-    my $sth = sql_execute(
+    my $sth = sql_execute(qq/
         <<EOT,
-SELECT page.workspace_id, 
-       "Workspace".name AS workspace_name, 
-       "Workspace".title AS workspace_title, 
-       page.page_id, 
-       page.name, 
-       page.last_editor_id AS last_editor_id, 
-       -- _utc suffix is to prevent performance-impacing naming collisions:
-       page.last_edit_time AT TIME ZONE 'UTC' AS last_edit_time_utc,
-       page.creator_id,
-       -- _utc suffix is to prevent performance-impacing naming collisions:
-       page.create_time AT TIME ZONE 'UTC' AS create_time_utc,
-       page.current_revision_id, 
-       page.current_revision_num, 
-       page.revision_count, 
-       page.page_type, 
-       page.deleted, 
-       page.summary,
-       page.edit_summary
+SELECT 
+    /.Socialtext::Page::SELECT_COLUMNS_STR().qq/
     FROM page 
         JOIN "Workspace" USING (workspace_id)
         $more_join
@@ -692,44 +672,14 @@ SELECT page.workspace_id,
     $order_by
     $limit
     $offset
-EOT
+/,
         @workspace_ids,
         @{ $p{bind} },
     );
 
     my @pages = map { Socialtext::Page->new_from_row($_) }
         map { $_->{hub} = $p{hub}; $_ } @{ $sth->fetchall_arrayref( {} ) };
-    return \@pages if $p{do_not_need_tags};
     return \@pages if @pages == 0;
-
-    # Fetch all the tags for these pages
-    # We will fetch all the page_tag, and then filter out which pages
-    # we're interested in ourselves.
-    # Alternatively, we could pass Pg in a potentially huge list of page_ids
-    # we were interested in.  We ass-u-me this would be slower.
-    my %ids;
-    for my $p (@pages) {
-        $p->{tags} = [];
-        my $key = "$p->{workspace_id}-$p->{page_id}";
-        $ids{$key} = $p;
-    }
-    my $pagetag_workspace_filter = $workspace_filter
-                                     ? " WHERE page_tag$workspace_filter"
-                                     : '';
-    $sth = sql_execute( <<EOT, @workspace_ids );
-SELECT workspace_id, page_id, tag 
-    FROM page_tag 
-    $pagetag_workspace_filter
-EOT
-    my $data = $sth->fetchall_arrayref;
-    for my $row (@$data) {
-        my $key = "$row->[0]-$row->[1]";
-        if ( my $page = $ids{$key} ) {
-            push @{ $page->{tags} }, $row->[2];
-        }
-    }
-
-    return \@pages;
 }
 
 sub Minimal_by_name {

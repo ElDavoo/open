@@ -25,7 +25,7 @@ Represents all of a page's links and backlinks
 =cut
 
 has 'page' => (
-    is => 'ro', isa => 'Socialtext::Page::Base',
+    is => 'ro', isa => 'Socialtext::Page',
     required => 1,
 );
 

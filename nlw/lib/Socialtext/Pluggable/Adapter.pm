@@ -15,13 +15,17 @@ use File::chdir;
 use Socialtext::HTTP ':codes';
 use Module::Pluggable search_path => ['Socialtext::Pluggable::Plugin'],
                       search_dirs => \@libs,
+                      require => 0,
                       sub_name => '_plugins';
 use Socialtext::Pluggable::WaflPhrase;
 use List::Util qw(first);
 use Memoize;
 
+sub class_id { 'pluggable' };
+sub class_title { 'Pluggable' };
+
 sub plugins { grep !/SUPER$/, _plugins() } # grep prevents a Pluggable bug?
-memoize('plugins', NORMALIZER => sub { '' } ); # memoize ignores args
+BEGIN { memoize('plugins', NORMALIZER => sub { '' } ) } # memoize ignores args
 
 # These hook types are executed only once, all other types are called as many
 # times as they are registered
@@ -93,9 +97,6 @@ sub DisablePlugin {
     my $class   = shift;
     $class->_CallPluginClassMethod('DisablePlugin',@_);
 }
-
-sub class_id { 'pluggable' };
-sub class_title { 'Pluggable' };
 
 sub make {
     my $class = shift;

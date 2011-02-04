@@ -82,7 +82,7 @@ sub revision_view {
     my $next_revision = $this_revision;
     my $one_more_time = 0;
 
-    for my $revision_id ( sort { $b cmp $a } $page->all_revision_ids ) {
+    for my $revision_id ($page->all_revision_ids) {
       if ($one_more_time) {
         $next_revision = $revision_id;
         last;
@@ -128,7 +128,7 @@ sub next_compare {
     my $next_revision_id = $old_revision_id;
     my $one_more_time = 0;
 
-    for my $revision_id ( sort { $a cmp $b } $page->all_revision_ids ) {
+    for my $revision_id ($page->all_revision_ids) {
       if ($one_more_time) {
         $next_revision_id = $revision_id;
         last;

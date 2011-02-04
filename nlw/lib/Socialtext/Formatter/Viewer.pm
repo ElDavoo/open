@@ -29,18 +29,20 @@ Readonly my $MAX_SIZE => 500_000;
 
 our $in_paragraph = 0;
 sub text_to_html {
-    my $self = shift;
+    my $self = $_[0];
+    my $text = ref($_[1]) ? $_[1] : \$_[1];
     $in_paragraph = 0;
-    $self->to_html( $self->parser->text_to_parsed(@_), $self->hub );
+    $self->to_html( $self->parser->text_to_parsed($text), $self->hub );
 }
 
 sub text_to_non_wrapped_html {
-    my $self = shift;
-    my $text = shift;
-    my $paragraph = shift || WITH_PARAGRAPH;
+    my $self = $_[0];
+    my $text = ref($_[1]) ? $_[1] : \$_[1];
+    my $paragraph = $_[2] || WITH_PARAGRAPH;
 
     $in_paragraph = 0;
-    my $html = $self->to_non_wrapped_html( $self->parser->text_to_parsed($text), $self->hub );
+    my $html = $self->to_non_wrapped_html(
+        $self->parser->text_to_parsed($text), $self->hub );
     if ($paragraph) {
         $html =~ s/^<p>//;
         $html =~ s/<\/p>\s*$//;
@@ -110,32 +112,23 @@ sub to_text {
 
 # special
 sub process {
-    my $self     = shift;
-    my $raw_text = shift;
-    my $page     = shift;
-    
+    my $self = $_[0];
+    my $text = ref($_[1]) ? $_[1] : \$_[1];
+    my $page = $_[2];
+
     my $timer = time_scope('viewer_process');
-    my $large_formatted = $self->_large_check(\$raw_text);
+    my $large_formatted = $self->_large_check($text);
     return $large_formatted if $large_formatted;
 
-    # XXX is there a difference between this and pages->current->id
-    $self->page_id($page->id) if $page;
+    $self->page_id($page->page_id) if $page;
 
-    # XXX note, if we assign to something before returning here,
-    # the cost of this sub SKYrockets
-    my $html = $self->to_html( $self->_get_parse_tree( $raw_text, $page ),
-        $self->hub );
-    return $html;
-}
-
-sub _get_parse_tree {
-    my $self = shift;
-    my ( $text, $page ) = @_;
-
-    return ( defined $page and $page )
-        ? $self->parser->get_cached_tree( $text, $page,
-            $self->hub->current_workspace->workspace_id )
+    my $parsed = $page
+        ? $self->parser->get_cached_tree($text, $page)
         : $self->parser->text_to_parsed($text);
+
+    # Return values are optimized-for heavily in Perl; do not assign this
+    # result to anything before returning.
+    return $self->to_html($parsed, $self->hub);
 }
 
 sub _detab {

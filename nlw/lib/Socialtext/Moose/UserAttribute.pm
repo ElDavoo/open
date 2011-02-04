@@ -21,6 +21,7 @@ sub has_user {
 
     my $id_field = $field.'_id';
     my $writer = "_$id_field";
+    my $predicate = "has_$id_field";
     my $builder = "_build_$field";
 
     my $required = delete $args{required} || 0;
@@ -34,6 +35,7 @@ sub has_user {
         definition_context => $definition_context,
         is => 'rw', isa => 'Int',
         writer => $writer,
+        predicate => $predicate,
         required => $required,
     );
 

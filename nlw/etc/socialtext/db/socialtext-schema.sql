@@ -1066,6 +1066,7 @@ CREATE TABLE page (
     summary text,
     edit_summary text,
     locked boolean DEFAULT false NOT NULL,
+    tags text[] NOT NULL,
     views integer DEFAULT 0 NOT NULL
 );
 
@@ -1097,7 +1098,7 @@ CREATE TABLE page_revision (
     summary text,
     edit_summary text,
     locked boolean DEFAULT false NOT NULL,
-    tags text[],
+    tags text[] NOT NULL,
     body_length bigint DEFAULT 0 NOT NULL,
     body bytea
 );

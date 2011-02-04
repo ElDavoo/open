@@ -5,14 +5,11 @@ use warnings;
 use strict;
 use DateTime;
 
+use ok 'Socialtext::Hub';
+use ok 'Socialtext::Page';
 use Test::Socialtext tests => 20;
 use Socialtext::SQL;
-fixtures(qw( empty ));
-
-BEGIN {
-    use_ok( 'Socialtext::Page' );
-    use_ok( 'Socialtext::String' );
-}
+fixtures(qw(empty destructive));
 
 my $hub       = new_hub('empty');
 my $page_name = 'update page ' . time();
@@ -27,12 +24,12 @@ UPDATE_AS_CREATE: {
     my $page = _page_object($page_name);
 
     $page->update(
-        content          => $content1,
-        original_page_id => Socialtext::String::title_to_id($page_name),
+        content_ref      => \$content1,
         revision         => 0,
         subject          => $page_name,
         user             => $hub->current_user,
     );
+    die;
 
     _validate_page(
         name      => $page_name,
@@ -46,7 +43,6 @@ UPDATE_PAGE: {
 
     $page->update(
         content          => $content2,
-        original_page_id => $page->id,
         revision         => $page->metadata->Revision,
         subject          => $page_name,
         user             => $hub->current_user,

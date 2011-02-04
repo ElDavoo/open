@@ -101,7 +101,7 @@ Create_from_row: {
     $page->add_tag('abba');
     is_deeply [ $page->categories_sorted ], [qw/abba tag zed/];
 
-    $Socialtext::Page::Base::DISABLE_CACHING = 1;
+    $Socialtext::Page::DISABLE_CACHING = 1;
     $page->{content} = "foo content\n";
     is $page->to_absolute_html, <<EOT;
 <div class="wiki">

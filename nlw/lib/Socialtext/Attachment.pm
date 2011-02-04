@@ -134,6 +134,28 @@ sub store {
     return;
 }
 
+sub clone {
+    my $self = shift;
+    my %p = @_;
+    my $page = delete $p{page};
+
+    my $upload = $self->upload;
+    my $target = $self->new(
+        hub => $page->hub,
+        page_id => $page->page_id,
+        workspace_id => $page->workspace_id,
+        upload => $upload,
+        attachment_id => $upload->attachment_id,
+        id => new_id(),
+        deleted => undef,
+        page => $page,
+        workspace => $page->workspace,
+    );
+    $target->store(temporary => 1); # so the upload doesn't make_permanent again
+    $target->reindex();
+    return $target;
+}
+
 sub reindex {
     my $self = shift;
     return if $self->is_temporary;
