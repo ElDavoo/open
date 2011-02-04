@@ -2,14 +2,14 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 58;
+use Test::Socialtext tests => 59;
 use Test::Socialtext::Fatal;
 use Socialtext::String;
 use utf8;
 require bytes;
 use ok 'Socialtext::PageRevision';
 
-fixtures(qw(clean db));
+fixtures(qw(db));
 
 my $hub = create_test_hub();
 
@@ -159,6 +159,12 @@ tags: {
     is_deeply $rev->tags, ['eeer'];
     $rev->tags([qw(bork BoRk bOrK)]);
     is_deeply $rev->tags, ['bork'], "setting tags de-dupes, but only from new";
+
+    my $created = Socialtext::PageRevision->Blank(
+        hub => $hub, name => "Animal or Not",
+        tags => ['A','a','ä',Encode::encode_utf8('Ä')],
+    );
+    is_deeply $created->tags, ['A','ä'], "created de-duped tags";
 }
 
 pass "done";

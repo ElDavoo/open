@@ -55,7 +55,7 @@ has $_ => (
 has 'tags' => (
     is => 'rw', isa => 'ArrayRef[Str]',
     default => sub {[]},
-    trigger => sub { $_[0]->_tags_changed($_[1], $_[2]) }
+    trigger => sub { $_[0]->_tags_changed($_[1],$_[2]) },
 );
 has 'tag_set' => (
     is => 'rw', isa => 'Tie::IxHash',
@@ -174,7 +174,7 @@ sub modified_time { $_[0]->edit_time->epoch };
 sub mutable_clone {
     my $self = shift;
     my $p = ref($_[0]) ? $_[0] : {@_};
-    croak "PageRevision is already mutable" if $self->mutable;
+    confess "PageRevision is already mutable" if $self->mutable;
 
     $p->{editor} //= $self->hub->current_user;
 
@@ -212,25 +212,31 @@ sub _build_tag_set {
 
 sub _tags_changed {
     my ($self, $new_tags, $old_tags) = @_;
-    croak "PageRevision isn't mutable" unless $self->mutable;
+
+    # Should only have $old_tags *after* construction. This is just a sanity
+    # check anyhow.
+    confess "PageRevision isn't mutable" if $old_tags && !$self->mutable;
+
     $self->clear_tag_set;
     return unless $new_tags && @$new_tags;
 
     my $set = Tie::IxHash->new;
     for my $tag (@$new_tags) {
-        my $lc_tag = lc(ensure_is_utf8($tag));
+        ensure_ref_is_utf8(\$tag);
+        my $lc_tag = lc($tag);
         next if $set->EXISTS($lc_tag);
         $set->Push($lc_tag => $tag);
     }
-    @$new_tags = $set->Values();
+    @{$self->tags} = $set->Values();
     $self->_tag_set($set);
+    return $self->tags;
 }
 
 *add_tag = *add_tags;
 sub add_tags {
     my $self = shift;
     my $add = ref($_[0]) ? $_[0] : [@_];
-    croak "PageRevision isn't mutable" unless $self->mutable;
+    confess "PageRevision isn't mutable" unless $self->mutable;
     my $set = $self->tag_set;
     my $tags = $self->tags;
     my @added;
@@ -248,7 +254,7 @@ sub add_tags {
 sub delete_tags {
     my $self = shift;
     my $del = ref($_[0]) ? $_[0] : [@_];
-    croak "PageRevision isn't mutable" unless $self->mutable;
+    confess "PageRevision isn't mutable" unless $self->mutable;
     my $set = $self->tag_set;
     my $tags = $self->tags;
     my @deleted;
@@ -334,9 +340,19 @@ sub is_bad_page_title {
     return 0;
 }
 
+sub datetime_for_user {
+    my $self = shift;
+    return $self->hub->timezone->get_date_user($self->edit_time);
+}
+
+sub datetime_utc {
+    my $self = shift;
+    return $self->edit_time->strftime('%Y-%m-%d %H:%M:%S GMT');
+}
+
 sub store {
     my $self = shift;
-    croak "PageRevision isn't mutable" unless $self->mutable;
+    confess "PageRevision isn't mutable" unless $self->mutable;
 
     my @errors;
 
