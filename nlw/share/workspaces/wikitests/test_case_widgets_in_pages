@@ -1,3 +1,5 @@
+*Failure is bug*
+
 | *Comment* | Test Case: Widgets In Pages |  |
 
 | set | wip_ws | widgets_wiki_%%start_time%% |
@@ -33,14 +35,30 @@
 
 | *Comment* | Test Case: Widgets in Pages add All People Tags *This test must assume that All People Tags is the first widget in the list* |  |
 | text_like | qr/All People Tags.+Active Content/ |  |
-| click_ok | link=Insert |  |
+| wait_for_element_visible_ok | //a[@class='greyButton' and contains(text(),'Insert')] | 30000 |
+| click_ok | //a[@class='greyButton' and contains(text(),'Insert')] |  |
 | wait_for_element_visible_ok | st-widget-opensocial-setup-width-options | 30000 |
-| wait_for_element_visible_ok | st-savebutton-41 | 30000 |
-| click_ok | st-savebutton-41 |  |
+| wait_for_element_visible_ok | //input[@class='searchButton st-savebutton'] | 30000 |
+| click_ok | //input[@class='searchButton st-savebutton'] |  |
 | wait_for_element_visible_ok | st-widget-opensocial-setup-save | 30000 |
 | click_ok | st-widget-opensocial-setup-save |  |
-| wait_for_text_present_ok | `{widget: local:people:all_tags __title__=All%20People%20Tags __width__=600 limit=all}` | 30000 |
+| wait_for_element_not_visible_ok | st-widget-opensocial-gallery-widgets | 15000 |
+| verifyValue | wikiwyg_wikitext_textarea | `{widget: local:people:all_tags __title__=All%20People%20Tags __width__=600 limit=all}` |
 
+| *Comment* | Test Case: Widgets in Pages add 2nd widget, see sequential number |  |
+| click_ok | link=Widget... |  |
+| wait_for_element_visible_ok | st-widget-opensocial-gallery-widgets | 30000 |
+| text_like | qr/Socialtext widgets.+Third Party widgets/ |  |
+| text_like | qr/All People Tags.+Active Content/ |  |
+| wait_for_element_visible_ok | //a[@class='greyButton' and contains(text(),'Insert')] | 30000 |
+| click_ok | //a[@class='greyButton' and contains(text(),'Insert')] |  |
+| wait_for_element_visible_ok | st-widget-opensocial-setup-width-options | 30000 |
+| wait_for_element_visible_ok | //input[@class='searchButton st-savebutton'] | 30000 |
+| click_ok | //input[@class='searchButton st-savebutton'] |  |
+| wait_for_element_visible_ok | st-widget-opensocial-setup-save | 30000 |
+| click_ok | st-widget-opensocial-setup-save |  |
+| wait_for_element_not_visible_ok | st-widget-opensocial-gallery-widgets | 15000 |
+| verifyValue | wikiwyg_wikitext_textarea | `{widget: local:people:all_tags#2 __title__=All%20People%20Tags __width__=600 limit=all}` |
 
 
 
