@@ -2,7 +2,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 999;
+use Test::Socialtext tests => 58;
 use Test::Socialtext::Fatal;
 use Socialtext::String;
 use utf8;
@@ -76,6 +76,7 @@ clone_to_edit: {
     $next = $next->mutable_clone(copy_body => 1);
     ok $next->mutable;
     ok $next->has_body_ref;
+    ok $next->body_modified, "body starts out as modified";
     is ${$next->body_ref}, 'My Pet Cat is teh awesome', "cloned body";
     ok !$next->revision_id, "no revision_id on the clone";
     is exception { $next->store() }, undef, "stored revision";
@@ -151,8 +152,13 @@ tags: {
         "first tag with this casing wins";
 
     $rev->delete_tags("AniMul",Encode::encode_utf8("ÉTIENNE"),"stephen");
-
     is_deeply $rev->tags, [qw(First ❤)], "after delete";
+
+    my $rev = Socialtext::PageRevision->Blank(
+        hub => $hub, name => "Sweedish", tags => ['eeer']);
+    is_deeply $rev->tags, ['eeer'];
+    $rev->tags([qw(bork BoRk bOrK)]);
+    is_deeply $rev->tags, ['bork'], "setting tags de-dupes, but only from new";
 }
 
 pass "done";

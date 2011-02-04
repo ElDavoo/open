@@ -27,41 +27,66 @@ enum 'PageType' => qw(wiki spreadsheet);
 has 'hub' => (is => 'rw', isa => 'Socialtext::Hub', weak_ref => 1);
 
 has 'workspace_id' => (is => 'rw', isa => 'Int');
-has 'page_id' => (is => 'rw', isa => 'Str');
-*id = *page_id; # legacy code may use this alias
-has 'revision_id' => (is => 'rw', isa => 'Int');
+has 'page_id'      => (is => 'rw', isa => 'Str');
+*id = *page_id; # legacy code uses this alias
+has 'revision_id'  => (is => 'rw', isa => 'Int');
 
 has 'revision_num' => (is => 'rw', isa => 'Int', default => 0);
-has 'name' => (is => 'rw', isa => 'UniStr', coerce => 1);
-has_user 'editor' => (is => 'rw');
-has 'edit_time' => (is => 'rw', isa => 'Pg.DateTime', coerce => 1,
-    default => sub { DateTime->from_epoch(epoch => Time::HiRes::time()) } );
-has 'page_type' => (is => 'rw', isa => 'PageType', default => 'wiki');
-has 'deleted' => (is => 'rw', isa => 'Bool');
-has 'summary' => (is => 'rw', isa => 'UniStr', coerce => 1, default => '',
-    clearer => 'clear_summary');
-has 'edit_summary' => (is => 'rw', isa => 'UniStr', coerce => 1, default => '');
-has 'locked' => (is => 'rw', isa => 'Bool');
-has 'tags' => (is => 'rw', isa => 'ArrayRef[Str]', default => sub {[]});
-has 'tag_set' => (is => 'ro', isa => 'Tie::IxHash', lazy_build => 1);
+has 'name'         => (is => 'rw', isa => 'UniStr', coerce => 1);
 
-has 'body_length' => (is => 'rw', isa => 'Int', default => 0);
-has 'body_ref' => (is => 'rw', isa => 'ScalarRef', lazy_build => 1,
-    trigger => sub { $_[0]->_body_modded($_[1],$_[2]) });
+has_user 'editor' => (is => 'rw');
+has 'edit_time'   => (
+    is => 'rw', isa => 'Pg.DateTime',
+    coerce => 1,
+    default => sub { DateTime->from_epoch(epoch => Time::HiRes::time()) },
+);
+
+has 'page_type' => (is => 'rw', isa => 'PageType', default => 'wiki');
+has 'deleted'   => (is => 'rw', isa => 'Bool');
+has 'locked'    => (is => 'rw', isa => 'Bool');
+
+has $_ => (
+    is => 'rw', isa => 'UniStr',
+    coerce  => 1,
+    default => '',
+    clearer => 'clear_'.$_,
+) for qw(summary edit_summary);
+
+has 'tags' => (
+    is => 'rw', isa => 'ArrayRef[Str]',
+    default => sub {[]},
+    trigger => sub { $_[0]->_tags_changed($_[1], $_[2]) }
+);
+has 'tag_set' => (
+    is => 'rw', isa => 'Tie::IxHash',
+    lazy_build => 1,
+    writer => '_tag_set',
+);
+
+has 'body_ref' => (
+    is => 'rw', isa => 'ScalarRef',
+    lazy_build => 1,
+    trigger => sub { $_[0]->_body_modded($_[1], $_[2]) }
+);
+has 'body_length'   => (is => 'rw', isa => 'Int', default => 0);
 has 'body_modified' => (is => 'rw', isa => 'Bool');
 
 has 'prev' => (
     is => 'rw', isa => 'Socialtext::PageRevision',
-    predicate => 'has_prev', clearer => 'clear_prev',
+    predicate => 'has_prev',
+    clearer => 'clear_prev',
     handles => {
         prev_revision_id  => 'revision_id',
         prev_revision_num => 'revision_num',
     },
 );
 
-# don't change this outside of this package!
-has 'mutable' => (is => 'rw', isa => 'Bool',
-    writer => '__mutable', init_arg => '__mutable');
+# don't modify __mutable this outside of this package, please!
+has 'mutable' => (
+    is => 'rw', isa => 'Bool',
+    writer => '__mutable',
+    init_arg => '__mutable',
+);
 
 use constant COLUMNS => qw(
     workspace_id page_id revision_id revision_num name editor_id edit_time
@@ -153,23 +178,27 @@ sub mutable_clone {
 
     $p->{editor} //= $self->hub->current_user;
 
-    my %clone_args = map { $_ => $self->$_ } qw(
-        page_id workspace_id revision_num name page_type deleted
-        locked editor editor_id summary body_length
-    );
-    $clone_args{revision_id} = sql_nextval('page_revision_id_seq');
+    # NOTE: exists breaks Moose encapsulation, but gets the job done in lieu
+    # of defining predicates for everything
+    my %clone_args = map { $_ => $self->$_ }
+        grep { exists $self->{$_} }
+        qw(page_id workspace_id revision_num name page_type deleted
+            locked summary body_length);
+
+    $clone_args{revision_id} = 0;
     $clone_args{revision_num}++;
     $clone_args{tags} = [@{$self->tags}]; # semi-deep copy
 
     if ($p->{copy_body}) {
         my $body = ${$self->body_ref}; # copy the bytes
-        $clone_args{body_ref} = \$body;
+        $clone_args{body_ref} = \$body; # will cause trigger to run
         $clone_args{edit_summary} = $self->edit_summary if $self->edit_summary;
-        $clone_args{body_modified} = 1;
     }
 
     $clone_args{prev} = $self;
     $clone_args{hub} = $self->hub;
+    $clone_args{editor_id} = $p->{editor}->user_id;
+    $clone_args{editor} = $p->{editor};
     $clone_args{__mutable} = 1;
     return Socialtext::PageRevision->new(\%clone_args);
 }
@@ -177,10 +206,27 @@ sub mutable_clone {
 sub _build_tag_set {
     my $self = shift;
     return Tie::IxHash->new(
-        map { my $x = $_; lc(ensure_is_utf8($x)) => $x } @{$self->tags}
+        map { my $x=$_; lc(ensure_is_utf8($x)) => $x } @{shift || $self->tags}
     );
 }
 
+sub _tags_changed {
+    my ($self, $new_tags, $old_tags) = @_;
+    croak "PageRevision isn't mutable" unless $self->mutable;
+    $self->clear_tag_set;
+    return unless $new_tags && @$new_tags;
+
+    my $set = Tie::IxHash->new;
+    for my $tag (@$new_tags) {
+        my $lc_tag = lc(ensure_is_utf8($tag));
+        next if $set->EXISTS($lc_tag);
+        $set->Push($lc_tag => $tag);
+    }
+    @$new_tags = $set->Values();
+    $self->_tag_set($set);
+}
+
+*add_tag = *add_tags;
 sub add_tags {
     my $self = shift;
     my $add = ref($_[0]) ? $_[0] : [@_];
@@ -198,6 +244,7 @@ sub add_tags {
     return \@added;
 }
 
+*delete_tag = *delete_tags;
 sub delete_tags {
     my $self = shift;
     my $del = ref($_[0]) ? $_[0] : [@_];
@@ -323,8 +370,9 @@ sub store {
         errors => \@errors
     ) if @errors;
 
-    $self->edit_summary(Socialtext::String::trim($self->edit_summary));
-    $self->summary(Socialtext::String::trim($self->summary));
+    for (qw(edit_summary summary)) {
+        $self->$_(Socialtext::String::trim($self->$_)) if defined $self->$_;
+    }
 
     my %args = map { $_ => $self->$_ } Socialtext::PageRevision::COLUMNS();
     $args{$_} = $args{$_} ? 1 : 0 for qw(locked deleted);
@@ -348,6 +396,7 @@ sub store {
     }
 
     sql_txn {
+        # paranoia: never insert with zeros for either of these two:
         $args{revision_id} ||= sql_nextval('page_revision_id_seq');
         $args{revision_num} ||= 1;
 
