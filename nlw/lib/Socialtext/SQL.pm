@@ -602,6 +602,8 @@ DateTime::Format::Pg)
 
 sub sql_parse_timestamptz {
     my $value = shift;
+    $value =~ s/(?<=\d)T(?=\d)/ /; # convert infix T to space
+    $value =~ s/Z$/+0000/; # zulu = +0000
     return DateTime::Format::Pg->parse_timestamptz($value);
 }
 

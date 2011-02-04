@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 71;
+use Test::Socialtext tests => 74;
 use Test::Socialtext::Fatal;
 use Scalar::Util qw/refaddr/;
 
@@ -336,6 +336,25 @@ blobs: {
     }, undef, "successful fetch of non-existent row";
     is refaddr($returned), refaddr(\$fetched), "same ref returned";
     ok !defined($fetched), "target scalar is undef";
+}
+
+time: {
+    sql_ensure_temp("fortime","thetime timestamptz");
+    sql_execute("INSERT INTO fortime (thetime) VALUES (now())");
+    my $t1 = sql_singlevalue(q{SELECT thetime FROM fortime});
+    my $t2 = sql_singlevalue(q{SELECT thetime AT TIME ZONE 'UTC' FROM fortime});
+    my $t3 = sql_singlevalue(q{SELECT thetime AT TIME ZONE 'UTC' || 'Z' FROM fortime});
+
+    my $dt1 = sql_parse_timestamptz($t1);
+    my $dt2 = sql_parse_timestamptz($t2);
+    my $dt3 = sql_parse_timestamptz($t3);
+
+    TODO: {
+        local $TODO = "won't work until we can detect the TZ on the dbh";
+        ok $dt1 == $dt2, "$t1 $t2";
+    }
+    ok $dt2 == $dt3, "$t2 $t3";
+    ok $dt1 == $dt3, "$t1 $t3";
 }
 
 pass 'done';
