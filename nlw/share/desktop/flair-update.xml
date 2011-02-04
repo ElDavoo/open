@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>380</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-380.air</url>
-<description><![CDATA[[Build 380 - Mon Jan 24 17:29:45 PST 2011]
+  <version>381</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-381.air</url>
+<description><![CDATA[[Build 381 - Thu Feb  3 23:08:25 PST 2011]
+
+[Build 380 - Mon Jan 24 17:29:45 PST 2011]
 * Signals: Errors in Insert Video is shown only after the domain part has been entered.
 * Signals: Support the new "video" annotation namespace.
 
