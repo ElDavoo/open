@@ -258,7 +258,7 @@ sub load_revision_metadata {
             $pagemeta->{Type} || 'wiki',
             ($pagemeta->{Control} || '') eq 'Deleted' ? 1 : 0,
             $summary,
-            $pagemeta->{RevisionSummary} || '',
+            $pagemeta->{'Revision-Summary'} || '',
             $pagemeta->{Locked} || 0,
             $tags,
         ];
