@@ -57,10 +57,7 @@ sub read_and_decode_file {
         $buffer = <$fh> || '';
     }
 
-    $buffer = Socialtext::Encode::noisy_decode(
-            input => $buffer,
-            blame => $filename
-    );
+    $buffer = Socialtext::Encode::guess_decode($buffer || '');
 
     $buffer =~ s/\015\012/\n/g;
     $buffer =~ s/\015/\n/g;
