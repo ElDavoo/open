@@ -225,6 +225,7 @@ sub load_revision_metadata {
     my @revisions;
     opendir(my $dfh, "$ws_dir/$pg_dir");
     REV: while (my $file = readdir($dfh)) {
+        next unless $file =~ m/^\d+\.txt$/;
         $file = "$ws_dir/$pg_dir/$file";
         next REV if -l $file;
         next REV unless -f $file;
