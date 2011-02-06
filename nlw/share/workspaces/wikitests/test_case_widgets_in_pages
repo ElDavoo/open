@@ -1,5 +1,3 @@
-*Failure is bug*
-
 | *Comment* | Test Case: Widgets In Pages |  |
 
 | set | wip_ws | widgets_wiki_%%start_time%% |
@@ -8,11 +6,7 @@
 | st-admin | add-member --workspace %%wip_ws%% --email %%username%% | now has the role |
 
 | *Comment* | Test Case: Widgets In Pages make a page |  |
-| open_ok | /%%wip_ws%% |  |
-| wait_for_element_visible_ok | st-create-content-link | 30000 |
-| click_ok | st-create-content-link |  |
-| wait_for_element_visible_ok | st-create-content-savelink | 30000 |
-| click_and_wait | st-create-content-savelink |  |
+| open_ok | /%%wip_ws%%/?action=new_page |  |
 | wait_for_element_visible_ok | st-mode-wikitext-button | 30000 |
 | click_ok | st-mode-wikitext-button |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
@@ -37,9 +31,11 @@
 | text_like | qr/All People Tags.+Active Content/ |  |
 | wait_for_element_visible_ok | //a[@class='greyButton' and contains(text(),'Insert')] | 30000 |
 | click_ok | //a[@class='greyButton' and contains(text(),'Insert')] |  |
+| wait_for_text_present_ok | Edit Widget | 30000 |
 | wait_for_element_visible_ok | st-widget-opensocial-setup-width-options | 30000 |
 | wait_for_element_visible_ok | //input[@class='searchButton st-savebutton'] | 30000 |
 | click_ok | //input[@class='searchButton st-savebutton'] |  |
+| wait_for_element_visible_ok | st-widget-opensocial-setup-cancel | 30000 |
 | wait_for_element_visible_ok | st-widget-opensocial-setup-save | 30000 |
 | click_ok | st-widget-opensocial-setup-save |  |
 | wait_for_element_not_visible_ok | st-widget-opensocial-gallery-widgets | 15000 |
@@ -52,17 +48,18 @@
 | text_like | qr/All People Tags.+Active Content/ |  |
 | wait_for_element_visible_ok | //a[@class='greyButton' and contains(text(),'Insert')] | 30000 |
 | click_ok | //a[@class='greyButton' and contains(text(),'Insert')] |  |
+| wait_for_text_present_ok | Edit Widget | 30000 |
 | wait_for_element_visible_ok | st-widget-opensocial-setup-width-options | 30000 |
 | wait_for_element_visible_ok | //input[@class='searchButton st-savebutton'] | 30000 |
 | click_ok | //input[@class='searchButton st-savebutton'] |  |
+| wait_for_element_visible_ok | st-widget-opensocial-setup-cancel | 30000 |
 | wait_for_element_visible_ok | st-widget-opensocial-setup-save | 30000 |
 | click_ok | st-widget-opensocial-setup-save |  |
 | wait_for_element_not_visible_ok | st-widget-opensocial-gallery-widgets | 15000 |
 | verifyValue | wikiwyg_wikitext_textarea | `{widget: local:people:all_tags#2 __title__=All%20People%20Tags __width__=600 limit=all}` |
 
-
-
-
-
 | *Comment* | Test Case: Widgets in Pages TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | delete-workspace --workspace %%wip_ws%% --no-export | has been deleted |
+
+| *Comment* | Test Case: Widgets in Pages COMPLETED |  |

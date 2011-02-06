@@ -4,13 +4,14 @@
 
 | open_ok | /st/signals |  |
 
-| *Comment* | Signals Annotations Test Cases. Tag, Attachment, Wiki Link, Web Link |  |
+| *Comment* | Signals Annotations Test Cases. Tag, Attachment, Wiki Link, Web Link, Video |  |
 
 
+| include | [Test Case: Signals Tag] |
 | include | [Test Case: Signals Attachment] |
 | include | [Test Case: Signals Wiki Link] |
 | include | [Test Case: Signals Wiki Link Teardown] |
 | include | [Test Case: Signals Web Link] |
-| include | [Test Case: Signals Tag] |
+| include | [Test Case: Signals Video Link] |
 
 | *Comment* | Signals Annotations Test Cases COMPLETED |  |
