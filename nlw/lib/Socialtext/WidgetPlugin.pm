@@ -30,7 +30,7 @@ sub get_container_for_gadget {
 
     $serial ||= 1;
     $encoded_prefs ||= '';
-    $widget = "local:widgets:$widget" unless $widget =~ /:/ or $widget =~ /^\d+$/;
+    $widget = "local:widgets:$widget" unless $widget =~ /:/;
 
     my $ws = Socialtext::Workspace->new( name => $workspace_name ) or return;
 
@@ -184,7 +184,7 @@ sub default_gadgets {
     my $self = shift;
     return (
         {
-            (($self->src =~ /^\d+$/) ? 'gadget_id' : 'src') => $self->src,
+            src => $self->src,
             col => 0, fixed => 1,
         },
     );

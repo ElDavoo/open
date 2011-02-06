@@ -2022,7 +2022,7 @@ proto.do_opensocial_gallery = function() {
                 ];
                 $.each(gallery.widgets, function(){
                     if (this.removed) { return; }
-                    if (this.src == 'local:widgets:activities') { return; }
+                    if (!this.src || this.src == 'local:widgets:activities') { return; }
                     var ary = tables[this.socialtext ? 0 : 1].widgets;
                     // 2-column layout
                     if (ary.length && (ary[ary.length-1].length < 2)) {
@@ -2044,7 +2044,7 @@ proto.do_opensocial_gallery = function() {
                         var $imgRow = $('<tr />').appendTo($table);
                         var $textRow = $('<tr />').appendTo($table);
                         $.each(this, function(){
-                            var src = this.src || this.gadget_id;
+                            var src = this.src;
                             var $imgCell = $('<td />', { width: '20%' }).appendTo($imgRow);
                             $imgCell.append($('<img />', { width: '90', height: '45', src: '/data/gadgets/' + this.gadget_id + '/thumbnail' }));
 
