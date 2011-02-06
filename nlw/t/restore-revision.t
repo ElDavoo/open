@@ -3,10 +3,10 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 24;
+use Test::Socialtext tests => 32;
 use Readonly;
 
-fixtures(qw( db ));
+fixtures(qw(db));
 
 my $hub = create_test_hub();
 isa_ok( $hub, 'Socialtext::Hub' ) or die;
@@ -27,14 +27,6 @@ believe to be useful or know to be beautiful."  You take things too
 literally, and you can quote me on that.
 --- Contributed by ingus
 END_OF_RANT
-
-    # The recent changes test at the end will sometimes fail unless
-    # we have this sleep. This is because the recent changes index
-    # contains the Date metadata field as the data, not the
-    # modified time of the index.txt link. We confilict with
-    # Admin Wiki in that index unless we wait. Not using the date=>
-    # because we are already in a sleep mode.
-    sleep( 1 );
 
     my $page = $hub->pages->new_from_name($TITLE);
     ok !$page->exists, "doesn't exist yet";
@@ -98,10 +90,10 @@ END_OF_RANT
     is $page->content, $CREED, 'After load/store, page content is restored.';
     is $page->summary, $creed_summary, "creed summary";
 
-    my $changes = $hub->recent_changes->get_recent_changes_in_category();
+    my $changes = $hub->recent_changes
+        ->get_recent_changes_in_category(limit => 1);
 
-    my $row     = $changes->{rows}->[0];
-    #use YAML; warn Dump($changes->{rows});
+    my $row = $changes->{rows}->[0];
     is($row->{Subject}, $TITLE, "most recently modified page is $TITLE" );
     is($row->{Revision}, 1, 'recent_changes revision number is restored.');
     is($row->{revision_count}, 3, 'recent_changes revision count is correct.');
@@ -125,3 +117,5 @@ package main;
     is $redirected_to, MockPage::uri(),
         'Socialtext::RevisionPlugin::revision_restore redirects to the current page URI.';
 }
+
+pass "done";

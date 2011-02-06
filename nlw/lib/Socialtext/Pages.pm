@@ -667,9 +667,11 @@ SELECT
         @{ $p{bind} },
     );
 
-    my @pages = map { Socialtext::Page->_new_from_row($_) }
-        map { $_->{hub} = $p{hub}; $_ } @{ $sth->fetchall_arrayref( {} ) };
-    return \@pages if @pages == 0;
+    return [
+        map { Socialtext::Page->_new_from_row($_) }
+        map { $_->{hub} = $p{hub}; $_ }
+        @{ $sth->fetchall_arrayref( {} ) }
+    ];
 }
 
 sub Minimal_by_name {
