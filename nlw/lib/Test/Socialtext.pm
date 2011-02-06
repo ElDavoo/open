@@ -907,18 +907,11 @@ sub wrap_wiki_div {
 }
 
 sub new_page {
-    $self->assert_scalar(@_);
-    my $hub = Test::Socialtext::main_hub();
-    my $page = $hub->pages->new_page_from_any(shift);
-    $page->metadata->update( user => $hub->current_user );
-    return $page;
+    Carp::confess "new_page removed; convert your test to construct a page via accessors, sorry";
 }
 
 sub store_new_page {
-    $self->assert_scalar(@_);
-    my $page = $self->new_page(shift);
-    $page->store( user => Test::Socialtext::main_hub()->current_user );
-    return $page;
+    Carp::confess "store_new_page removed; convert your test to construct a page via accessors, sorry";
 }
 
 sub content_pane {
