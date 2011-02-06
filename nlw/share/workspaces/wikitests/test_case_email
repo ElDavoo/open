@@ -25,7 +25,7 @@ TODO: find a way to test user chooser
 | wait_for_element_visible_ok | email_page_user_choices | 30000 |
 | wait_for_element_visible_ok | email_page_send_copy | 30000 |
 | verifyValue | email_recipient | Type an email address or user name |
-| text_like | email_page_user_choices | Use the Recipients box above to add recipients to this list |
+| text_like | email_page_user_choices | qr/Use the Recipients box above to\s+add\s+recipients to this list/ism |
 | is_checked_ok | email_page_send_copy |  |
 
 | *Comment* | Test Case: Email. No recipient, then cancel |  |

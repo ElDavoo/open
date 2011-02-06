@@ -67,7 +67,7 @@
 | wait_for_element_visible_ok | group-sort-workspaces | 3000 |
 | click_and_wait | group-sort-workspaces |  |
 | wait_for_text_present_ok | Users (5) | 30000 |
-| wait_for_text_present_ok | Workspaces (0) | 30000 |
+| wait_for_text_present_ok | Workspaces (1) | 30000 |
 | wait_for_text_present_ok | Groups (2) | 30000 |
 | text_like | qr/Groups \(2\)..+%%groupwithmember%%.+%%samplegroup1%%/ |  |
 

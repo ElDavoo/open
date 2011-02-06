@@ -12,7 +12,7 @@
 
 | *Comment* | Test Case: Workspace Navigation Title |  |
 | open_ok | /%%ws%%/ |  |
-| text_like | workspaceNav | Workspace: %%ws_title%% |
+| text_like | workspaceNav | qr/Workspace:\s+%%ws_title%%/sm |
 | click_and_wait | link=Settings | navigate away |
 | text_like | contentLeft | Settings |
 | click_and_wait | link=%%ws_title%% |  |

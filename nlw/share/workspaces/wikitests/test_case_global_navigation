@@ -23,7 +23,7 @@
 
 | *Comment* | Test Case: Global Navigation top links |  |
 | open_ok | /%%workspace%%/ |  |
-| text_like | workspaceNav | Workspace: %%title%% |
+| text_like | workspaceNav | qr/Private Workspace:\s+%%title%%/sm |
 | text_like | st-wikinav-profile | %%short_username%% |
 | text_like | st-wikinav-mobile | Mobile |
 | text_like | st-wikinav-setting | Settings |
