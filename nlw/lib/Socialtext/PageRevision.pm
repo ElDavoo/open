@@ -26,6 +26,7 @@ enum 'PageType' => qw(wiki spreadsheet);
 
 has 'hub' => (is => 'rw', isa => 'Socialtext::Hub', weak_ref => 1);
 
+# be careful to weaken if you add workspace/page lazy-accessors here:
 has 'workspace_id' => (is => 'rw', isa => 'Int');
 has 'page_id'      => (is => 'rw', isa => 'Str');
 *id = *page_id; # legacy code uses this alias
@@ -38,7 +39,7 @@ has_user 'editor' => (is => 'rw');
 has 'edit_time'   => (
     is => 'rw', isa => 'Pg.DateTime',
     coerce => 1,
-    default => sub { DateTime->from_epoch(epoch => Time::HiRes::time()) },
+    default => sub { Socialtext::Date->now(hires=>1) },
 );
 
 has 'page_type' => (is => 'rw', isa => 'PageType', default => 'wiki');
@@ -100,12 +101,13 @@ sub Get {
     my $class = shift;
     my $p = ref($_[0]) ? $_[0] : {@_};
     
-    croak "hub is required" unless $p->{hub};
+    my $hub = $p->{hub};
+    croak "hub is required" unless $hub;
     croak "revision_id is required" unless $p->{revision_id};
     my $ws_id = $p->{workspace_id}
-        || $p->{hub}->current_workspace->workspace_id;
+        || $hub->current_workspace->workspace_id;
     my $page_id = $p->{page_id}
-        || $p->{hub}->pages->current->page_id;
+        || $hub->pages->current->page_id;
 
     my $sth = sql_execute(q{
         SELECT }.SELECT_COLUMNS_STR.q{
@@ -114,11 +116,10 @@ sub Get {
     }, $ws_id, $page_id, $p->{revision_id});
 
     croak "unknown revision for page" unless $sth->rows == 1;
-    my $row = $sth->fetchrow_arrayref();
+    my $row = $sth->fetchrow_hashref();
     $row->{edit_time} = delete $row->{edit_time_utc};
-    my $rev = $class->new($row);
-    $rev->hub($p->{hub});
-    return $rev;
+    $row->{hub} = $p->{hub};
+    return $class->new($row);
 }
 
 sub Blank {

@@ -72,8 +72,11 @@ has 'revision_count' => (is => 'rw', isa => 'Int', default => 0);
 has 'views' => (is => 'rw', isa => 'Int', default => 0);
 
 has_user 'creator' => (is => 'rw');
-has 'create_time'  => (is => 'rw', isa => 'Pg.DateTime', coerce => 1,
-    default => sub { DateTime->from_epoch(epoch => Time::HiRes::time()) } );
+has 'create_time'  => (
+    is => 'rw', isa => 'Pg.DateTime',
+    coerce => 1,
+    default => sub { Socialtext::Date->now(hires=>1) },
+);
 
 has 'restored' => (is => 'rw', isa => 'Bool', writer => '_restored');
 has 'full_uri' => (is => 'rw', isa => 'Str', lazy_build => 1);
@@ -94,12 +97,13 @@ has 'rev' => (
             edit_summary locked tags tag_set body_length body_ref
             body_modified mutable is_spreadsheet is_wiki is_untitled
             is_bad_page_title has_tag is_recently_modified age_in_minutes
-            age_in_seconds age_in_english
+            age_in_seconds age_in_english datetime_for_user datetime_utc
         )),
     },
 );
 *title = *name;
 *is_in_category = *has_tag;
+*time_for_user = *datetime_for_user;
 
 has 'workspace' => (is => 'rw', isa => 'Socialtext::Workspace', lazy_build => 1);
 # SQL will select these out of the database, so we should use them if present:
@@ -336,18 +340,9 @@ sub createtime_for_user {
     my $self = shift;
     return $self->hub->timezone->get_date_user($self->create_time);
 }
-*time_for_user = *datetime_for_user;
-sub datetime_for_user {
-    my $self = shift;
-    return $self->hub->timezone->get_date_user($self->last_edit_time);
-}
 sub createtime_utc {
     my $self = shift;
     return $self->create_time->strftime('%Y-%m-%d %H:%M:%S GMT');
-}
-sub datetime_utc {
-    my $self = shift;
-    return $self->last_edit_time->strftime('%Y-%m-%d %H:%M:%S GMT');
 }
 
 Readonly my $SignalCommentLength => 250;
