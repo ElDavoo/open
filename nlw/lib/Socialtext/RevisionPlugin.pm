@@ -27,22 +27,26 @@ sub register {
 # XXX this method may not have test coverage
 sub revision_list {
     my $self = shift;
-    my $rows                  = [];
-    my $page                  = $self->hub->pages->current;
+    my $rows = [];
+    my $page = $self->hub->pages->current;
 
     for my $revision_id ( sort { $b cmp $a } $page->all_revision_ids ) {
-        my $revision = $self->hub->pages->new_page( $page->id );
-        $revision->revision_id($revision_id);
-        my $row = {};
-        $row->{id}     = $revision_id;
-        $row->{number} = $revision->metadata->Revision;
-        $row->{edit_summary} = $revision->metadata->RevisionSummary;
-        $row->{date}   = $revision->datetime_for_user;
-        $row->{from}   = $revision->metadata->From;
-        $row->{class} = @$rows % 2 ? 'trbg-odd' : 'trbg-even';
-
-        $rows->[-1]{next} = $row
-          if @$rows;
+        # TODO make this a SQL query (need to figure out how to produce
+        # timezone-preferred timestamp output directly from Pg)
+        my $rev = Socialtext::PageRevision->Get(
+            hub => $self->hub,
+            page_id => $page->page_id,
+            revision_id => $revision_id,
+        );
+        my $row = {
+            id           => $revision_id,
+            number       => $rev->revision_num,
+            edit_summary => $rev->edit_summary || '',
+            date         => $rev->datetime_for_user,
+            from         => $rev->editor->email_address,
+            class        => (@$rows % 2 ? 'trbg-odd' : 'trbg-even'),
+        };
+        $rows->[-1]{next} = $row if @$rows;
         push @$rows, $row;
     }
 
@@ -147,11 +151,10 @@ sub revision_compare {
     my $page     = $self->hub->pages->current;
     my $page_id  = $page->id;
     my $before_page = $self->hub->pages->new_page($page_id);
-    $before_page->revision_id( $self->cgi->old_revision_id );
-    $before_page->load();
     my $new_page = $self->hub->pages->new_page($page_id);
-    $new_page->revision_id( $self->cgi->new_revision_id );
-    $new_page->load();
+
+    $before_page->switch_rev($self->cgi->old_revision_id);
+    $new_page->switch_rev($self->cgi->new_revision_id);
 
     my $class = (defined $self->cgi->mode and $self->cgi->mode ne 'source')
         ? 'Socialtext::RenderedSideBySideDiff'
@@ -163,20 +166,20 @@ sub revision_compare {
         hub => $self->hub,
     );
 
-    my $old_revision = $before_page->metadata->Revision;
-    my $new_revision = $new_page->metadata->Revision;
+    my $old_revision = $before_page->revision_num;
+    my $new_revision = $new_page->revision_num;
 
     my ($next_id,$prev_id) = $self->next_compare();
 
     $self->screen_template('view/page/revision_compare');
     $self->render_screen(
         $page->all,
-        next_id => $next_id,
-        prev_id => $prev_id,
-        diff_rows => $differ->diff_rows,
-        header => $differ->header,
-        display_title    => $self->html_escape( $page->title ),
-        display_title_decorator  => loc("Compare Revisions [_1] and [_2]", $old_revision, $new_revision),
+        next_id       => $next_id,
+        prev_id       => $prev_id,
+        diff_rows     => $differ->diff_rows,
+        header        => $differ->header,
+        display_title => $self->html_escape($page->title),
+        display_title_decorator => loc("Compare Revisions [_1] and [_2]", $old_revision, $new_revision),
     );
 }
 
@@ -240,7 +243,7 @@ sub header {
     $tags{$self->after_page} = [ grep $_ ne 'Recent Changes', $self->after_page->html_escaped_categories ];
     for my $page ($self->before_page, $self->after_page) {
         my %col;
-        my $pretty_revision = $page->metadata->Revision;
+        my $pretty_revision = $page->revision_num;
         my $rev_text = loc('Revision [_1]', $pretty_revision);
         $col{link} = Socialtext::Helpers->script_link(
             "<strong>$rev_text</strong></a>",

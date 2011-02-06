@@ -67,6 +67,7 @@ has 'page_id' => (is => 'rw', isa => 'Str', required => 1);
 has 'revision_id' => (is => 'rw', isa => 'Int',
     trigger => sub { $_[0]->_revision_id_changed($_[1],$_[2]) },
 );
+*current_revision_id = *revision_id;
 
 has 'revision_count' => (is => 'rw', isa => 'Int', default => 0);
 has 'views' => (is => 'rw', isa => 'Int', default => 0);
@@ -101,6 +102,7 @@ has 'rev' => (
         )),
     },
 );
+*last_edited_by = *last_editor;
 *title = *name;
 *is_in_category = *has_tag;
 *time_for_user = *datetime_for_user;
@@ -114,16 +116,14 @@ has 'exists' => (is => 'rw', isa => 'Bool', lazy_build => 1, writer => '_exists'
 
 sub BUILDARGS {
     my $class = shift;
-    my %p = @_;
-    if (my $hub = $p{hub}) {
+    my $p = ref($_[0]) ? $_[0] : {@_};
+    if (my $hub = $p->{hub}) {
         my $ws = $hub->current_workspace;
-        $p{workspace_id} = $ws->workspace_id;
-        $p{workspace_name} = $ws->name;
-        $p{workspace_title} = $ws->title;
+        $p->{workspace_id} = $ws->workspace_id;
     }
-    $p{page_id} = delete $p{id} if $p{id};
-    $p{create_time} = delete $p{create_time_utc} if $p{create_time_utc};
-    return \%p;
+    $p->{page_id} = delete $p->{id} if $p->{id};
+    $p->{create_time} = delete $p->{create_time_utc} if $p->{create_time_utc};
+    return $p;
 }
 
 use constant SELECT_COLUMNS_STR => q{
@@ -145,39 +145,49 @@ use constant SELECT_COLUMNS_STR => q{
     page.deleted, 
     page.summary,
     page.edit_summary,
+    page.views,
     page.tags -- ordered array
 };
 
 # This should only get called as a result of somebody creating a page object
-# that didn't go through new_from_row() or when a revision_id isn't given to
+# that didn't go through _new_from_row() or when a revision_id isn't given to
 # the constructor.  This means *you*, Socialtext::Pages->new_page()
 sub _find_current {
     my $self = shift;
+
     my $sth = sql_execute(q{
         SELECT }.SELECT_COLUMNS_STR.q{
-          FROM page
-          JOIN "Workspace" USING (workspace_id)
+          FROM page JOIN "Workspace" USING (workspace_id)
          WHERE workspace_id = ? AND page_id = ? AND NOT deleted
     }, $self->workspace_id, $self->page_id);
     return unless $sth->rows == 1;
+
     my $db_row = $sth->fetchrow_hashref;
     my ($page_args, $rev_args) = _map_row($db_row);
     $rev_args->{hub} = $self->hub;
+
     my $rev = Socialtext::PageRevision->new($rev_args);
-    $self->clear_creator;
+
+    # creator_id is 'ro' (_creator_id is the writer):
+    $page_args->{creator} = Socialtext::User->new(
+        user_id => delete $page_args->{creator_id});
+
     $self->$_($page_args->{$_}) for keys %$page_args;
-    $self->rev($rev);
+    $self->rev($rev); # should assign this last
+
     return $rev;
 }
 
 sub _build_rev {
     my $self = shift;
     if ($self->revision_id) {
-        return Socialtext::PageRevision->Get(
+        my $rev = Socialtext::PageRevision->Get(
             hub => $self->hub,
             page_id => $self->page_id,
             revision_id => $self->revision_id,
         );
+        $self->_exists(1);
+        return $rev;
     }
     elsif (my $rev = $self->_find_current) {
         $self->_exists(1);
@@ -240,14 +250,16 @@ sub _map_row {
     return \%page_args, \%rev_args;
 }
 
-sub new_from_row {
+# Do not call this unless the page exists already (or clear exists so it'll
+# get lazy-built afterwards).
+sub _new_from_row {
     my ($class, $db_row) = @_;
     my $hub = delete $db_row->{hub};
     my ($page_args, $rev_args) = _map_row($db_row);
     $rev_args->{hub} = $page_args->{hub} = $hub;
     my $rev = Socialtext::PageRevision->new($rev_args);
     $page_args->{rev} = $rev;
-    $page_args->{exists} = 1;
+    $page_args->{exists} = 1; # it's in the database, so must exist
     return $class->new($page_args);
 }
 
@@ -571,7 +583,7 @@ sub to_result {
     my $self = shift;
     my $t = time_scope 'model_to_result';
 
-    my $editor = $self->last_edited_by;
+    my $editor = $self->last_editor;
     my $creator = $self->creator;
     my $result = {
         Date            => $self->datetime_utc,
@@ -675,6 +687,7 @@ sub _add_delete_tags {
     }
 }
 
+*add_tag = *add_tags;
 sub add_tags {
     my $self = shift;
     my @tags  = grep { length } @_;
@@ -740,6 +753,25 @@ sub add_comment {
     return;
 }
 
+sub _fixup_body {
+    my $self = shift;
+    my $rev = $self->rev;
+    my $body_ref = $rev->body_ref;
+    if ($body_ref && length($$body_ref)) {
+        if ($$body_ref =~ /(?:\r|\{now\}|\n*\z)/) {
+            my $nowdate = $self->formatted_date;
+            my $body = $$body_ref; # copy
+            $body =~ s/\r//g;
+            $body =~ s/\{now\}/$nowdate/egi;
+            $body =~ s/\n*\z/\n/;
+            $rev->body_ref(\$body);
+        }
+    }
+    else {
+        $rev->deleted(1);
+    }
+}
+
 sub store {
     my $self = shift;
     my %p = @_;
@@ -752,20 +784,8 @@ sub store {
     my $rev = $self->rev;
     $rev->editor($p{user}) if $p{user};
 
-    if (my $body_ref = $rev->body_ref) {
-        if (length($$body_ref)) {
-            if ($$body_ref =~ /(?:\r|\{now\}|\n*\z)/) {
-                my $nowdate = $self->formatted_date;
-                my $body = $$body_ref; # copy
-                $body =~ s/\r//g;
-                $body =~ s/\{now\}/$nowdate/egi;
-                $body =~ s/\n*\z/\n/;
-                $rev->body_ref(\$body);
-            }
-        }
-        else {
-            $rev->deleted(1);
-        }
+    if ($rev->body_modified) {
+        $self->_fixup_body();
     }
 
     my ($ws_id, $page_id) = map { $self->$_ } qw(workspace_id page_id);
@@ -776,35 +796,34 @@ sub store {
     );
 
     # set the creator and time so that preview_text() works
-    unless ($self->exists) {
+    my $existed = $self->exists;
+    unless ($existed) {
         $self->creator($rev->editor);
         $self->create_time($rev->edit_time);
     }
 
-    $rev->summary($self->preview_text) if $self->body_modified;
+    $rev->summary($self->preview_text()) if $self->body_modified;
 
-    my ($current_rev, $was_deleted);
+    my ($cur_rev_id, $was_deleted);
     sql_txn {
-        if ($self->exists) {
+        if ($existed) {
             my $sth = sql_execute(q{
                 SELECT current_revision_id, deleted FROM page
                  WHERE workspace_id = ? AND page_id = ?
                 FOR UPDATE
             }, $self->workspace_id, $self->page_id);
-            ($current_rev,$was_deleted) = $sth->fetchrow_array;
+            ($cur_rev_id,$was_deleted) = $sth->fetchrow_array;
+            Socialtext::Exception::Conflict->throw(
+                error => loc('Another person or process has written to this page already.')) if (!$p{skip_rev_check} && $cur_rev_id && $cur_rev_id != $self->revision_id);
         }
-
-        Socialtext::Exception::Conflict->throw(
-            error => loc('Another person or process has written to this page already.')) if ($current_rev && $current_rev != $self->current_revision_id);
-
-        unless ($current_rev) {
+        else {
             $rev->revision_num(1);
             $self->revision_count(0);
         }
 
         $rev->store();
 
-        $self->revision_id($rev->revision_id);
+        $self->revision_id($rev->revision_id); # rev-store can change this
         $self->revision_count($self->revision_count+1);
 
         while (my ($page_attr,$db_col) = each %PAGE_ROW_MAP) {
@@ -819,19 +838,19 @@ sub store {
             delete $args{last_edit_time_utc});
         $args{$_} //= 0 for qw(locked deleted);
 
-        if (!$current_rev) {
+        if (!$existed) {
             $args{create_time} = $args{last_edit_time};
             $args{creator_id} = $args{last_editor_id};
         }
 
-        if (!$current_rev) {
+        if (!$existed) {
             sql_insert(page => \%args);
         }
         else {
             sql_update(page => \%args, [qw(workspace_id page_id)]);
             # Nothing refers to the page_tag table so these should be safe to
             # delete.
-            sql_execute(qw{
+            sql_execute(qq{
                 DELETE FROM page_tag WHERE workspace_id = ? AND page_id = ?
             }, $ws_id, $page_id);
         }
@@ -897,9 +916,15 @@ sub is_system_page {
     return $self->creator_id == Socialtext::User->SystemUser->user_id;
 }
 
+# This sub isn't horribly inefficient if you've just got a
+# scalar and not a scalar-ref on-hand.  You really should be using body_ref()
+# instead.
+# XXX: returning content into a scalar will make a copy of that data, which
+# wastes RAM.
 sub content {
-    carp "don't use content(), especially to check if a page exists. use body_ref";
-    my $self = shift;
+    my $self = $_[0];
+    $self->body_ref(ref $_[1] ? $_[1] : \$_[1]) if (@_==2);
+    return unless defined wantarray; # void context
     return ${$self->body_ref};
 }
 
@@ -1680,7 +1705,10 @@ Readonly my $ExcerptLength => 350;
 Readonly my $ExcerptLengthInput => 2 * $ExcerptLength;
 sub preview_text {
     my $self = $_[0];
-    my $content_ref = ref($_[1]) ? $_[1] : \$_[1];
+    my $content_ref;
+    if (@_ == 2) {
+        $content_ref = ref($_[1]) ? $_[1] : \$_[1];
+    }
     $content_ref //= $self->body_ref;
     return '' unless $content_ref && length($$content_ref);
 
@@ -2021,10 +2049,21 @@ sub send_as_email {
 
         $self->switch_rev($p{revision_id});
         my $num = $self->revision_num;
+
         my $rev = $self->edit_rev(editor => $p{user});
+
+        # Give this rev a new ID, but use the old sequence number
+        $rev->revision_num($num);
+        $rev->revision_id(0);
+
+        # Re-use the old revision's content. Marking the body not-modified
+        # will trigger a row-to-row copy at the database level IFF the
+        # editing-revision has a previous revision (which this one does).
+        $rev->body_modified(0);
         $rev->edit_summary($rev->prev->edit_summary);
-        $rev->revision_num($num); # yes, we restore it
-        $self->store(user => $p{user});
+        $rev->summary($rev->prev->summary);
+
+        $self->store(user => $p{user}, skip_rev_check => 1);
     }
 }
 
@@ -2111,7 +2150,7 @@ sub all_revision_ids {
           FROM page_revision
          WHERE workspace_id = ? AND page_id = ?
          GROUP BY workspace_id, page_id
-    });
+    }, $self->workspace_id, $self->page_id);
     return sort {$a <=> $b} @$ids if wantarray;
     return $ids;
 }

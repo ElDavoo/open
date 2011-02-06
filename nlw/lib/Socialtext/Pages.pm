@@ -5,27 +5,27 @@ use warnings;
 
 use base 'Socialtext::Base';
 
+*_t2id = *Socialtext::String::title_to_id;
 use Carp qw/croak/;
 use Class::Field qw( const field );
 use Email::Valid;
+use Guard;
+use Readonly;
+use Scalar::Util qw/blessed/;
 use Socialtext::File;
 use Socialtext::Log 'st_log';
 use Socialtext::Page;
 use Socialtext::Paths;
-use Socialtext::WeblogUpdates;
-use Readonly;
+use Socialtext::SQL qw/:exec sql_format_timestamptz/;
+use Socialtext::String ();
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::User;
 use Socialtext::Validate qw( validate DIR_TYPE );
+use Socialtext::WeblogUpdates;
 use Socialtext::Workspace;
 use Socialtext::l10n qw( loc );
-use Socialtext::String ();
-use Socialtext::SQL qw/:exec sql_format_timestamptz/;
-use Scalar::Util qw/blessed/;
-use Guard qw/scope_guard/;
 
 sub class_id { 'pages' }
-
 const class_title => 'NLW Pages';
 
 field current => 
@@ -218,7 +218,7 @@ sub current_id {
     my $page_name = 
       $self->hub->cgi->page_name ||
       $self->hub->current_workspace->title;
-    Socialtext::String::title_to_id($page_name);
+    _t2id($page_name);
 }
 
 sub unset_current {
@@ -236,10 +236,12 @@ sub new_page {
 sub new_from_name {
     my $self = shift;
     my $page_name = shift;
-    my $id = Socialtext::String::title_to_id($page_name);
-    my $page = $self->new_page($id);
+    my $id = _t2id($page_name);
+    my $page = Socialtext::Page->new(hub => $self->hub, id => $id);
+    # TODO: check cache
     return unless $page;
-    $page->title($self->name_to_title($page_name));
+    # May cause a Blank revision to be created if none exists:
+    $page->title($page_name);
     return $page;
 }
 
@@ -252,29 +254,18 @@ sub new_from_uri {
 
     my $page = Socialtext::Page->new(
         hub => $self->hub,
-        id  => Socialtext::String::title_to_id($uri) );
+        id  => _t2id($uri) );
 
     die("Invalid page URI: $uri") unless $page;
 
-    my $return_id = Socialtext::String::title_to_id($page->title);
+    my $return_id = _t2id($page->title);
     $page->title( $uri ) unless $return_id eq $uri;
 
     return $page;
 }
 
 sub new_page_from_any {
-    my $self = shift;
-    my $any = shift;
-    my $page = Socialtext::Page->new(hub => $self->hub, id => '_');
-    $page->metadata($page->new_metadata('_'));
-    $page->load($any);
-    $page->id(Socialtext::String::title_to_id($page->metadata->Subject));
-    return $page;
-}
-
-sub new_page_from_file {
-    my $self = shift;
-    $self->new_page_from_any(shift);
+    croak "new_page_from_any removed; convert your test to construct a page with accessors, sorry";
 }
 
 sub new_page_title {
@@ -660,7 +651,6 @@ sub _fetch_pages {
                                    : '';
     $p{where} = "AND $p{where}" if $p{where};
     my $sth = sql_execute(qq/
-        <<EOT,
 SELECT 
     /.Socialtext::Page::SELECT_COLUMNS_STR().qq/
     FROM page 
@@ -677,7 +667,7 @@ SELECT
         @{ $p{bind} },
     );
 
-    my @pages = map { Socialtext::Page->new_from_row($_) }
+    my @pages = map { Socialtext::Page->_new_from_row($_) }
         map { $_->{hub} = $p{hub}; $_ } @{ $sth->fetchall_arrayref( {} ) };
     return \@pages if @pages == 0;
 }

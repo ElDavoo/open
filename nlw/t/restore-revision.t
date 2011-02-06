@@ -36,66 +36,73 @@ END_OF_RANT
     # because we are already in a sleep mode.
     sleep( 1 );
 
-    my $page = Socialtext::Page->new( hub => $hub )->create(
-        title   => $TITLE,
-        content => $CREED,
-        creator => $hub->current_user,
-    );
+    my $page = $hub->pages->new_from_name($TITLE);
+    ok !$page->exists, "doesn't exist yet";
+    $page->body_ref(\$CREED);
+    $page->store();
+
     isa_ok( $page, "Socialtext::Page" );
     is $page->revision_count, 1, 'Fresh page has exactly 1 revision id.';
-    is $page->metadata->Revision, 1, 'Fresh metadata is Revision 1';
+    is $page->revision_num, 1, 'Fresh page is Revision 1';
+    ok $page->exists, "now it exists";
+    my $creed_summary = $page->summary;
+    like $creed_summary, qr/^have nothing/i;
 
     my $original_revision_id = $page->revision_id;
+    ok $original_revision_id;
 
     # Replace the creed with the rant.
-    $page->content($RANT);
-    $page->metadata->update( user => $hub->current_user );
-    $page->store( user => $hub->current_user );
+    $page->edit_rev();
+    $page->body_ref(\$RANT);
+    $page->store();
+    my $rant_summary = $page->summary;
+    like $rant_summary, qr/^in literature/i;
+    isnt $page->revision_id, $original_revision_id, "revision id is new";
 
     # Should have two revisions now
     my @revision_ids = $page->all_revision_ids;
     is scalar @revision_ids, 2,
         '$page->store adds a revision id.';
 
+    # reload the page object via current
     $page = $pages->current( $pages->new_from_name($TITLE) );
     isa_ok( $page, "Socialtext::Page" );
+    is $page->content, $RANT, 'rant loaded';
+    is $page->summary, $rant_summary, "rant summary";
 
     is_deeply [ $page->all_revision_ids ], \@revision_ids,
         'new_from_name produces the same revision ids';
-    is $page->metadata->Revision, 2, 'metadata is Revision 2';
+    is $page->revision_num, 2, 'metadata is Revision 2';
 
-    $page->revision_id($original_revision_id);
+    $page->switch_rev($original_revision_id);
     is $page->revision_id, $original_revision_id, 'revision_id setter works.';
-    is $page->metadata->Revision, 2, 'metadata is still Revision 2 before load';
+    is $page->revision_num, 1, 'that revision was lazy-loaded';
+    is $page->content, $CREED, 'After switching, creed is loaded';
+    is $page->summary, $creed_summary, "creed summary";
 
-    $page->load;
-    is $page->revision_id, $original_revision_id,
-        'load does not molest revision_id.';
-    is $page->metadata->Revision, 1, 'metadata is back to  Revision 1';
     is_deeply [ $page->all_revision_ids ], \@revision_ids,
         'loading old content does not molest the revision id list.';
 
-    $page->store( user => $hub->current_user );
+    $page = $pages->current( $pages->new_from_name($TITLE) );
+    $page->restore_revision(
+        revision_id => $original_revision_id,
+        user        => $hub->current_user,
+    );
+
     @revision_ids = $page->all_revision_ids;
     is scalar @revision_ids, 3,
         '$page->store adds a revision id.';
-    is $page->metadata->Revision, 1, 'After load/store, Revision no. is 1.';
+    is $page->revision_num, 1, 'After load/store, Revision no. is 1.';
     ok $page->revision_id != $original_revision_id,
         '$page->store updates revision_id';
     is $page->content, $CREED, 'After load/store, page content is restored.';
-
-    # restore a revision and check its version:
-    my $orig = $page->original_revision;
-    is $orig->revision_id, $original_revision_id,
-        '$page->original_revision returns correct revision_id.';
-    ok $orig ne $page,
-        q{When there are multiple revisions, $page->original_revision returns an object distinct from $page.};
+    is $page->summary, $creed_summary, "creed summary";
 
     my $changes = $hub->recent_changes->get_recent_changes_in_category();
 
     my $row     = $changes->{rows}->[0];
     #use YAML; warn Dump($changes->{rows});
-    is( $row->{Subject}, $TITLE, "most recently modified page is $TITLE" );
+    is($row->{Subject}, $TITLE, "most recently modified page is $TITLE" );
     is($row->{Revision}, 1, 'recent_changes revision number is restored.');
     is($row->{revision_count}, 3, 'recent_changes revision count is correct.');
 }
