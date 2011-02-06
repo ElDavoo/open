@@ -1,6 +1,4 @@
-
 | *Comment* | Test Case: Business Control Panel Create Workspace from Account |  |
-
 
 | set | acct | acct-for-account-%%start_time%% |
 | set | wstitle | WS For Account %%start_time%% |
@@ -29,7 +27,7 @@
 | wait_for_text_present_ok | Create Workspace | 30000 |
 | wait_for_text_present_ok | Title: | 30000 |
 | text_like | //body | qr/Account:\s+%%acct%%.+(change)/ism |
-| text_like | //body | qr/URI:\s+ http[s]?:\/\/%%hostname%%/ism |
+| text_like | //body | qr/URI:\s+http[s]?:\/\/%%hostname%%/ism |
 
 | *Comment* | Test Case: Business Control Panel Create Workspace from Account - default case |  |
 | wait_for_element_visible_ok | workspace_title | 30000 |

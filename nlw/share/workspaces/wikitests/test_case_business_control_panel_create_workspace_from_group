@@ -92,7 +92,7 @@
 | select_ok | st-group-permission-set-selector | label=Self-Join: Non-Members can view the group but must become Members to contribute. |
 | st_pause_click | 2000 | st-group-permission-set-submit |
 | pause | 10000 |  |
-| is_text_present_ok | st-group-change-message | Done |
+| text_like | st-group-change-message | Done |
 | is_selected_ok | st-group-permission-set-selector | label=Self-Join: Non-Members can view the group but must become Members to contribute. |
 
 | *Comment* | Test Case: Business Control Panel Create Workspace from Group - add %%wsname%% to s-j group. |  |
