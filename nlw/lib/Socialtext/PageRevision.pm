@@ -148,6 +148,10 @@ sub _build_body_ref {
         SELECT body FROM page_revision
          WHERE workspace_id = $1 AND page_id = $2 AND revision_id = $3
     }, $self->workspace_id, $self->page_id, $self->revision_id);
+    if (!$blob || !defined($$blob)) {
+        my $empty = '';
+        $blob = \$empty;
+    }
     Encode::_utf8_on($$blob); # it should always be in the db as utf8
     $self->body_length(length $$blob);
     return $blob;
@@ -398,7 +402,7 @@ sub store {
     my $body;
     if ($self->body_modified) {
         $body = $self->body_ref;
-        $args{body_length} = length($body);
+        $args{body_length} = length($$body);
     }
     elsif (!$self->has_prev) {
         my $x = '';
