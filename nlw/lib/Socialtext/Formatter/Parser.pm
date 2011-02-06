@@ -41,7 +41,7 @@ sub text_to_parsed {
     my $t = time_scope 'text_to_parsed';
     my $parsed = $self->_parse(
         # body may be a ref; de-ref it before it's copied and munged
-        $self->top_class->new(text => ref($_[1]) ? $$_[1] : $_[1])
+        $self->top_class->new(text => (ref($_[1]) ? ${$_[1]} : $_[1]))
     );
     return $parsed;
 }
