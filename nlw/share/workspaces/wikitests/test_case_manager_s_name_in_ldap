@@ -1,13 +1,13 @@
-| *Comment* | Test Case: Manager's Name in LDAP |
-
-Requires LDAP to be enabled.
+| *Comment* | Test Case: Manager's Name in LDAP - requires LDAP enabled |
 
 * Fixture: SocialWidgets
 
+| *Comment* | Test Case: Manager's Name in LDAP - assumes default account %%defaultaccount%% is account ID 4 |
 | set | account_id | 4 |
+| set | manager_field_index | 19 |
 
 | *Comment* | Test Case: Manager's Name in LDAP My profile - Configure Manager name to be user-based in control panel |  |
-| open_ok | /nlw/control/account/%%account_id%%/edit_profile_field?profile_field_id=18 |  |
+| open_ok | /nlw/control/account/%%account_id%%/edit_profile_field?profile_field_id=%%manager_field_index%% |  |
 | wait_for_element_visible_ok | data-source-select | 30000 |
 | wait_for_element_visible_ok | //input[@value='Save Field'] | 30000 |
 | select_ok | data-source-select | label=User |
@@ -24,9 +24,9 @@ Requires LDAP to be enabled.
 | wait_for_element_present_ok | //input[@name='supervisor.id'] | 30000 |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Manager's Name in LDAP Configure Manager name in control panel |  |
+| *Comment* | Test Case: Manager's Name in LDAP Configure Manager name to be LDAP-based in control panel |  |
 | st-logoutin |  |  |
-| open_ok | /nlw/control/account/%%account_id%%/edit_profile_field?profile_field_id=18 |  |
+| open_ok | /nlw/control/account/%%account_id%%/edit_profile_field?profile_field_id=%%manager_field_index%% |  |
 | wait_for_element_visible_ok | data-source-select | 30000 |
 | wait_for_element_visible_ok | //input[@value='Save Field'] | 30000 |
 | select_ok | data-source-select | label=External |
@@ -34,7 +34,7 @@ Requires LDAP to be enabled.
 | open_ok | /st/dashboard |  |
 | st-ldap-vanilla | refresh-users --force |  |
 
-| *Comment* | Test Case: Manager's Name in LDAP My profile - Now manager |  |
+| *Comment* | Test Case: Manager's Name in LDAP My profile - Now Manager: Sharon Osbourne |  |
 | st-logoutin | Ozzy Osbourne | ld@pu53r |
 | open_ok | /st/profile |
 | st-name-widget | 1 | profile |
@@ -42,9 +42,7 @@ Requires LDAP to be enabled.
 | st-select-widget-frame | profile |  |
 | text_like | //body | Manager: Sharon Osbourne |
 | wait_for_element_visible_ok | link=Sharon Osbourne | 30000 |
-
 | select-frame | relative=parent |  |
-| open_ok | /st/dashboard |  |
 
 | *Comment* | Test Case: Manager's Name in LDAP My profile - Manager name is not field |  |
 | open_ok | /st/edit_profile |
@@ -57,7 +55,7 @@ Requires LDAP to be enabled.
 
 | *Comment* | Test Case: Manager's Name in LDAP Configure No Manager name in control panel |  |
 | st-logoutin |  |  |
-| open_ok | /nlw/control/account/%%account_id%%/edit_profile_field?profile_field_id=18 |  |
+| open_ok | /nlw/control/account/%%account_id%%/edit_profile_field?profile_field_id=%%manager_field_index%% |  |
 | wait_for_element_visible_ok | data-source-select | 30000 |
 | wait_for_element_visible_ok | //input[@value='Save Field'] | 30000 |
 | select_ok | data-source-select | label=User |
