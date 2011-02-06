@@ -97,9 +97,7 @@ sub category_delete_from_page {
 
     return unless $self->hub->checker->can_modify_locked($page);
 
-    $page->delete_tag($category);
-    $page->metadata->update(user => $self->hub->current_user);
-    $page->store( user => $self->hub->current_user );
+    $page->delete_tag($category); # automatically saves
 }
 
 sub all {
@@ -184,32 +182,6 @@ sub category_display {
         )->template_vars(),
         partial_set => 1,
     );
-}
-
-sub get_page_info_for_category {
-    my $self = shift;
-    my $category = shift;
-    my $sort_map = shift;
-
-    my $t = time_scope('get_category');
-    my $sort_sub = $self->_sort_closure($sort_map);
-
-    my @rows;
-    for my $page ( $self->get_pages_for_category( $category, 0 ) ) {
-        my $subject = $page->metadata->Subject;
-
-        # XXX some pages or page artifacts don't have subjects, too
-        # torrid to chase. protect against the problem here
-        next unless $subject;
-
-        my $disposition = $self->hub->pages->title_to_disposition($subject);
-
-        my $row = $page->to_result;
-        $row->{disposition} = $disposition;
-        push @rows, $row;
-    }
-
-    return [ sort $sort_sub @rows ];
 }
 
 # REVIEW - this is a somewhat nasty hack to use the sorting
@@ -448,20 +420,15 @@ sub get_pages_numeric_range {
 
         # Delete the tag on each page
         for my $page ( $self->get_pages_for_category($p{tag}) ) {
-            $page->metadata->Category([
-                grep { lc($_) ne lc($p{tag}) } @{ $page->metadata->Category }
-            ]);
-            $page->store( user => $p{user} );
+            $page->delete_tags($p{tag}); # automatically stores
         }
 
         # Delete any workspace tags
-        sql_execute( <<EOT,
-DELETE FROM page_tag 
-    WHERE workspace_id = ?
-      AND LOWER(tag) = LOWER(?)
-EOT
-            $self->hub->current_workspace->workspace_id, $p{tag},
-        );
+        sql_execute(q{
+            DELETE FROM page_tag 
+                WHERE workspace_id = ?
+                  AND LOWER(tag) = LOWER(?)
+        }, $self->hub->current_workspace->workspace_id, $p{tag});
     }
 }
 
