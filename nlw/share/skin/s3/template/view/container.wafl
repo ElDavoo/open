@@ -2,7 +2,7 @@
 [% SET gadget = container.gadgets.0.0 %]
 [% SET num = 0 %]
 [% SET col = 0 %]
-<div class="widget" id="[% gadget.id %]" style="width: [% width || 600 %]px">
+<div class="widget waflWidget" id="[% gadget.id %]" style="width: [% width || 600 %]px">
     <div class="widgetHeader">
         <div id="[% gadget.id %]-title" class="widgetHeaderTitle">
             [% IF !gadget.fixed %]<img class="icon" src="[% share %]/images/[% gadget.icon %].png" />[% END %]
