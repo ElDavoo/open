@@ -203,7 +203,6 @@ my %PAGE_ROW_MAP = (
     creator_id => 'creator_id',
     revision_count => 'revision_count',
     views => 'views',
-    # these should get excluded from inserts:
     workspace_name => 'workspace_name',
     workspace_title => 'workspace_title',
 
@@ -213,6 +212,7 @@ my %PAGE_ROW_SKIP = (
     workspace_title => 1,
     create_time => 1,
     creator_id => 1,
+    views => 1, # updated independently
 );
 
 my %REV_ROW_MAP = (
