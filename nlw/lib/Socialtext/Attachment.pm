@@ -237,8 +237,8 @@ sub inline {
 
     my $page = $self->page;
     my $guard = $self->hub->pages->ensure_current($page);
-    $page->metadata->update(user => $user);
-    $page->content($self->image_or_file_wafl() . $page->content);
+    $page->edit_rev();
+    $page->prepend($self->image_or_file_wafl());
     $page->store(user => $user);
 }
 
