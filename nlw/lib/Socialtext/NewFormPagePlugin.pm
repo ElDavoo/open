@@ -58,18 +58,16 @@ sub new_form_page_process {
         'new_form_page_output.wiki',
         $self->cgi->vars,
     );
+    my $rev = $page->edit_rev();
+    $page->body_ref(\$content);
 
-    $page->content($content);
-    $page->metadata->Subject($page_title);
     if ($self->cgi->category) {
-        $page->metadata->Category([$self->cgi->category]);
+        $page->tags([$self->cgi->category]);
     } else {
-        $page->metadata->Category(['People']);
+        $page->tags(['People']);
     }
 
     my $user = $self->hub->current_user;
-
-    $page->metadata->update( user => $user );
     $page->store( user => $user );
 
     $self->_set_user_info( $user, $first_name, $last_name )
