@@ -2,7 +2,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 63;
+use Test::Socialtext tests => 65;
 use Test::Socialtext::Fatal;
 use Socialtext::String;
 use utf8;
@@ -189,6 +189,21 @@ body_edit: {
     ok !$edit->has_body_ref;
     is ${$edit->body_ref}, "initial", "content gets lazy-copied";
     $edit->store();
+
+}
+
+body_is_utf8: {
+    my $rev = Socialtext::PageRevision->Blank(
+        hub => $hub, name => "Content Test");
+
+    like exception {
+        my $non_const = "oh \xdamnit";
+        $rev->body_ref(\$non_const);
+    }, qr/is not encoded as valid utf8/, "invalid utf8 barfs";
+
+    like exception {
+        $rev->body_ref(\"oh \xdamnit"); # ref to a string constant
+    }, qr/is not encoded as valid utf8/, "invalid utf8 barfs on const";
 }
 
 pass "done";

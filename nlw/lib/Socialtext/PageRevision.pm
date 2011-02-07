@@ -5,6 +5,7 @@ use Time::HiRes ();
 use Carp qw/croak carp/;
 use Moose::Util::TypeConstraints;
 use Tie::IxHash;
+use Try::Tiny;
 
 use Socialtext::Moose::UserAttribute;
 use Socialtext::MooseX::Types::Pg;
@@ -173,6 +174,27 @@ sub _body_modded {
     my ($self, $newref, $oldref) = @_;
     confess "body modified while PageRevision wasn't mutable"
         unless $self->mutable;
+
+    try {
+        unless ($newref && defined $$newref &&
+                Encode::is_utf8($$newref, Encode::FB_CROAK))
+        {
+            try {
+                $$newref = Encode::decode_utf8($$newref, Encode::FB_CROAK);
+            }
+            catch {
+                die $_ unless /Modification of a read-?only value/;
+                my $decoded = Encode::decode_utf8($$newref, Encode::FB_CROAK);
+                $newref = \$decoded;
+                # XXX: break Moose encapsulation so we don't recurse:
+                $self->{body_ref} = $newref;
+            };
+        }
+    }
+    catch {
+        confess "body is not encoded as valid utf8: $_";
+    };
+
     $self->body_modified((defined($newref) || defined($oldref))? 1 : undef);
     $self->clear_summary();
     if ($newref && defined $$newref) {
