@@ -634,7 +634,9 @@ my @Added_groups;
         my $uniq = delete $opts{unique_id} || create_unique_id;
         my $acct = delete $opts{account} || Socialtext::Account->Default;
 
-        $opts{email_address} = $opts{username} = $uniq.'@ken.socialtext.net';
+        $opts{email_address} = $uniq.'@ken.socialtext.net';
+        $opts{username} = delete $opts{username_isnt_email}
+            ? $uniq : $opts{email_address};
         $opts{created_by_user_id} ||= Socialtext::User->SystemUser->user_id;
 
         my $user = Socialtext::User->create(
