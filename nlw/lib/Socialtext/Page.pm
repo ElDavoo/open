@@ -97,7 +97,7 @@ has 'rev' => (
             name revision_num modified_time page_type deleted summary
             edit_summary locked tags tag_set body_length body_ref
             body_modified mutable is_spreadsheet is_wiki is_untitled
-            is_bad_page_title has_tag is_recently_modified age_in_minutes
+            is_bad_page_title has_tag tags_sorted is_recently_modified age_in_minutes
             age_in_seconds age_in_english datetime_for_user datetime_utc
         )),
     },
@@ -106,6 +106,7 @@ has 'rev' => (
 *title = *name;
 *is_in_category = *has_tag;
 *time_for_user = *datetime_for_user;
+*categories_sorted = *tags_sorted;
 
 has 'workspace' => (is => 'rw', isa => 'Socialtext::Workspace', lazy_build => 1);
 # SQL will select these out of the database, so we should use them if present:
@@ -294,16 +295,6 @@ sub _build_workspace_title {
     return $self->workspace->title;
 }
 
-sub _build_tags {
-    my $self = shift;
-    # avoid loading the rev if all we want is tags
-    return $self->rev->tags if $self->has_rev;
-    my $tags = sql_singlevalue(q{
-        SELECT tags FROM page
-         WHERE workspace_id = ? AND page_id = ?
-    }, $self->workspace_id, $self->page_id);
-    return $tags;
-}
 
 sub edit_rev {
     my $self = shift;
@@ -342,11 +333,6 @@ sub _revision_id_changed {
 sub load { carp "load() is now a no-op for Pages"; }
 sub load_content { carp "load_content() is now a no-op for Pages"; }
 
-*tags_sorted = *categories_sorted;
-sub categories_sorted {
-    my $self = shift;
-    return sort {lc($a) cmp lc($b)} @{$self->tags};
-}
 
 sub createtime_for_user {
     my $self = shift;

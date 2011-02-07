@@ -279,6 +279,11 @@ sub has_tag {
     return $self->tag_set->FETCH($lc_tag);
 }
 
+sub tags_sorted {
+    my $self = shift;
+    return sort {lc($a) cmp lc($b)} @{$self->tags};
+}
+
 sub is_recently_modified {
     my $self = shift;
     my $limit = shift || 3600; # 1hr

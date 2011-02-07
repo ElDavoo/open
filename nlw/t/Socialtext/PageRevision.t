@@ -167,4 +167,16 @@ tags: {
     is_deeply $created->tags, ['A','ä'], "created de-duped tags";
 }
 
+tag_revs: {
+    my $rev = Socialtext::PageRevision->Blank(
+        hub => $hub, name => "Tag Revisions");
+    $rev->tags(["foobar"]);
+    $rev->store();
+
+    my $edit = $rev->mutable_clone();
+    $edit->add_tag("bleh");
+    is_deeply $edit->tags, ['foobar','bleh'], "new tags";
+    is_deeply $rev->tags, ['foobar'], "orig tags unmodified";
+}
+
 pass "done";
