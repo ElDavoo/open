@@ -2022,7 +2022,7 @@ proto.do_opensocial_gallery = function() {
                 ];
                 $.each(gallery.widgets, function(){
                     if (this.removed) { return; }
-                    if (!this.src || this.src == 'local:widgets:activities') { return; }
+                    if (!this.src || this.src == 'local:widgets:activities' || this.src == 'http://www.google.com/ig/modules/calendar3.xml') { return; }
                     var ary = tables[this.socialtext ? 0 : 1].widgets;
                     // 2-column layout
                     if (ary.length && (ary[ary.length-1].length < 2)) {
