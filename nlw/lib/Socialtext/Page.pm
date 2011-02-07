@@ -98,7 +98,7 @@ has 'rev' => (
             name revision_num modified_time page_type deleted summary
             edit_summary locked tags tag_set body_length body_ref
             body_modified mutable is_spreadsheet is_wiki is_untitled
-            is_bad_page_title has_tag tags_sorted is_recently_modified age_in_minutes
+            has_tag tags_sorted is_recently_modified age_in_minutes
             age_in_seconds age_in_english datetime_for_user datetime_utc
         )),
     },
@@ -309,7 +309,7 @@ sub edit_rev {
     return $edit;
 }
 
-*load_revision = *switch_rev;
+*load_revision = *switch_rev; # grep: sub load_revision
 sub switch_rev {
     my ($self, $rev_id) = @_;
     croak "page is already mutable" if ($self->has_rev && $self->mutable);
@@ -958,6 +958,16 @@ sub _ensure_page_assets {
 sub is_system_page {
     my $self = shift;
     return $self->creator_id == Socialtext::User->SystemUser->user_id;
+}
+
+sub is_bad_page_title {
+    my $class_or_self = shift;
+    if (blessed($class_or_self)) {
+        return $class_or_self->rev->is_bad_page_title(@_);
+    }
+    else {
+        return Socialtext::PageRevision->is_bad_page_title(@_);
+    }
 }
 
 # This sub isn't horribly inefficient if you've just got a

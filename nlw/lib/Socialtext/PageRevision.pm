@@ -354,8 +354,8 @@ sub is_spreadsheet { $_[0]->page_type eq 'spreadsheet' }
 sub is_wiki { $_[0]->page_type eq 'wiki' }
 
 sub is_untitled {
-    my $self = shift;
-    my $id = shift || $self->page_id;
+    my $class_or_self = shift;
+    my $id = shift || $class_or_self->page_id;
     if ($id eq 'untitled_page') {
         return 'Untitled Page';
     }
@@ -366,14 +366,14 @@ sub is_untitled {
 }
 
 sub is_bad_page_title {
-    my ( $self, $title ) = @_;
+    my ( $class_or_self, $title ) = @_;
     $title = defined($title) ? $title : "";
 
     # No empty page titles.
     return 1 if $title =~ /^\s*$/;
     my $id = title_to_id($title);
 
-    return 1 if $self->is_untitled($id); # unlocalized
+    return 1 if $class_or_self->is_untitled($id); # unlocalized
 
     # Can't have a page named "Untitled Page" in the current locale
     my $untitled_page = title_to_id( loc("Untitled Page") );
