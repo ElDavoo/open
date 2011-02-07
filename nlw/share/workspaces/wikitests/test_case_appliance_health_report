@@ -1,3 +1,5 @@
+* Fixture: HealthReport
+
 | *Comment* | Test Case: Appliance Health Report |  |
 
 | *Comment* | Test Case: Appliance Health Report SETUP |  |
@@ -6,22 +8,6 @@
 | *Comment* | Test Case: Appliance Health Report Create local report |  |
 | st_create_health_report |  |  |
 | open_ok | %%health_report_url%% |  |
-| text_like | //body | General info about this report |
-| text_like | //body | Snapshot of the hardware state. |
-| text_like | //body | Socialtext Job Queue Snapshot |
-
-| *Comment* | Test Case: Appliance Health Report Log into www2 |  |
-| open_ok | http://www2.socialtext.net/nlw/login.html?redirect_to=%2Fst-health-test%2Findex.cgi%3Faction%3Drecent_changes |  |
-| wait_for_element_visible_ok | username | 30000 |
-| type_ok | username | %%username%% |
-| wait_for_element_visible_ok | password | 30000 |
-| type_ok | password | %%password%% |
-| wait_for_element_visible_ok | login_btn | 30000 |
-| click_and_wait | id=login_btn |  |
-
-| *Comment* | Test Case: Appliance Health Report Log See link to report, click it, see report (My gosh ... it's full of win) |  |
-| wait_for_element_visible_ok | link=%%health_name_www2%% | 30000 |
-| click_and_wait | link=%%health_name_www2%% |  |
 | text_like | //body | General info about this report |
 | text_like | //body | Snapshot of the hardware state. |
 | text_like | //body | Socialtext Job Queue Snapshot |
