@@ -74,7 +74,7 @@
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | pause | 5000 | wait for text to be populated |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/{video: http:\/\/www.youtube.com\/watch\?v=lH4lcrxP8mo size=original} original content/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/{video: http:\/\/www.youtube.com\/watch\?v=lH4lcrxP8mo size=original}/s` |
 
 | *Comment* | Test Case: Video In Pages cancel warning |  |
 | wait_for_element_visible_ok | st-cancel-button-link | 30000 |

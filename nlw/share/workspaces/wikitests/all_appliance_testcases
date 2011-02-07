@@ -49,6 +49,10 @@ Dashboard tests
 * [Test Case: Administer Dashboards]
 * [Test Case: Reset to Default Dashboard]
 
+Server down testcases
+
+* [Test Case: Save Race Conditions]
+
 Appliance testcases are run last because they do a backup/restore
 
 * [Appliance Testcases]

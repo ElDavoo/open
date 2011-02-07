@@ -44,3 +44,7 @@ Dashboard tests
 * [Test Case: Add Remove Gallery Widgets]
 * [Test Case: Administer Dashboards]
 * [Test Case: Reset to Default Dashboard]
+
+Server Down Testcases
+
+* [Test Case: Save Race Conditions]
