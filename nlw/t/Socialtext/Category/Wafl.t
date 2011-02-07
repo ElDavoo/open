@@ -60,7 +60,6 @@ foobar page two
 --- kwiki
 {category-list-full category 0}
 --- htmlre
-<!-- wiki: {include: \[admin page two\]} --></span>
 <!-- wiki: {category_list_full: category 0}
 --></div><br /></div>
 
@@ -68,7 +67,6 @@ foobar page two
 --- kwiki
 {tag-list-full category 0}
 --- htmlre
-<!-- wiki: {include: \[admin page two\]} --></span>
 <!-- wiki: {tag_list_full: category 0}
 --></div><br /></div>
 
@@ -76,7 +74,6 @@ foobar page two
 --- kwiki
 {category-list-full <foobar> category 0}
 --- htmlre
-<!-- wiki: {include: foobar \[foobar page two\]} --></span>
 <!-- wiki: {category_list_full: <foobar> category 0}
 --></div><br /></div>
 
