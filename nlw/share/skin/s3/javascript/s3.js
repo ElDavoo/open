@@ -1115,6 +1115,17 @@ $(function() {
         }, 100);
     }
 
+    if ($.browser.msie && $('div.wiki iframe').length > 0) {
+        $('div.wiki iframe').load(function(){
+            Page._repaintBottomButtons();
+        }).resize(function(){
+            Page._repaintBottomButtons();
+        });
+        setTimeout(function(){
+            Page._repaintBottomButtons();
+        }, 100);
+    }
+
     // Offer to restore unsaved drafts
     if (typeof localStorage != 'undefined' && !(/^#draft-\d+$/.test(location.hash || ''))) {
       $(function(){
