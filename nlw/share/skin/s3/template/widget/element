@@ -45,7 +45,7 @@
         </div>
         <script><!--
             jQuery(function(){
-                gadgets.container.renderPreferences('[% gadget.id %]', [% gadget.preferences.json %]);
+                gadgets.container.renderPreferences('[% gadget.id %]', [% gadget.preferences.json || '[]' %]);
             });
         --></script>
         <div id="[% gadget.id %]-content" class="[% IF gadget.incomplete %]hidden[% ELSE %]visible[% END %]">
