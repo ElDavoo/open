@@ -144,17 +144,29 @@ sub Blank {
 
 sub _build_body_ref {
     my $self = shift;
-    my $blob = sql_singleblob(q{
-        SELECT body FROM page_revision
-         WHERE workspace_id = $1 AND page_id = $2 AND revision_id = $3
-    }, $self->workspace_id, $self->page_id, $self->revision_id);
-    if (!$blob || !defined($$blob)) {
-        my $empty = '';
-        $blob = \$empty;
+    my $rev_id = $self->revision_id;
+
+    my $blob;
+    if (!$rev_id && $self->has_prev) {
+        if ($self->prev->has_body_ref) {
+            $blob = ${$self->prev->body_ref}; # copy bytes
+        }
+        else {
+            $rev_id = $self->prev->revision_id;
+        }
     }
-    Encode::_utf8_on($$blob); # it should always be in the db as utf8
-    $self->body_length(length $$blob);
-    return $blob;
+
+    if ($rev_id && !defined($blob)) {
+        sql_singleblob(\$blob, q{
+            SELECT body FROM page_revision
+             WHERE workspace_id = $1 AND page_id = $2 AND revision_id = $3
+        }, $self->workspace_id, $self->page_id, $rev_id);
+    }
+
+    $blob = '' unless defined $blob;
+    Encode::_utf8_on($blob); # it should always be in the db as utf8
+    $self->body_length(length $blob);
+    return \$blob;
 }
 
 sub _body_modded {

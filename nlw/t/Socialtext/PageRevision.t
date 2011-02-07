@@ -2,7 +2,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 59;
+use Test::Socialtext tests => 63;
 use Test::Socialtext::Fatal;
 use Socialtext::String;
 use utf8;
@@ -177,6 +177,18 @@ tag_revs: {
     $edit->add_tag("bleh");
     is_deeply $edit->tags, ['foobar','bleh'], "new tags";
     is_deeply $rev->tags, ['foobar'], "orig tags unmodified";
+}
+
+body_edit: {
+    my $rev = Socialtext::PageRevision->Blank(
+        hub => $hub, name => "Content Test");
+    $rev->body_ref(\"initial");
+    $rev->store();
+
+    my $edit = $rev->mutable_clone();
+    ok !$edit->has_body_ref;
+    is ${$edit->body_ref}, "initial", "content gets lazy-copied";
+    $edit->store();
 }
 
 pass "done";
