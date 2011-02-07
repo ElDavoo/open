@@ -1304,14 +1304,14 @@ this.addGlobal().setup_wikiwyg = function() {
                 // what we fallback to.
                 || jQuery('#st-page-content').html());
 
-            alert(myDiv.innerHTML = newHTML.replace(
+            myDiv.innerHTML = newHTML.replace(
                 new RegExp(
                     '(<!--[\\d\\D]*?-->)|(<(span|div)\\sclass="nlw_phrase">)[\\d\\D]*?(<!--\\swiki:\\s[\\d\\D]*?\\s--><\/\\3>)',
                     'g'
                 ), function(_, _1, _2, _3, _4) {
                     return(_1 ? _1 : _2 + '&nbsp;' + _4);
                 }
-            ));
+            );
 
             ww.editMode();
             ww.preview_link_reset();
