@@ -4,15 +4,12 @@ use strict;
 use warnings;
 
 use DateTime;
+use mocked 'Socialtext::Events';
 use Test::Socialtext tests => 45;
+use Test::Socialtext::Fatal;
+use ok 'Socialtext::Page';
 
 fixtures(qw( db ));
-
-BEGIN {
-    use_ok( 'Socialtext::Page' );
-}
-
-use Socialtext::l10n qw(loc);
 
 APPEND: {
     my $hub = create_test_hub();
@@ -21,67 +18,19 @@ APPEND: {
         content => 'First Paragraph',
         creator => $hub->current_user,
     );
-    Test::More::is($page->content, "First Paragraph\n", 'initial content');
-    ok($page->is_recently_modified(), 'page is recently modified' );
+    is $page->content, "First Paragraph\n", 'initial content';
+    is $page->content, "First Paragraph\n", 'initial content';
+    ok $page->is_recently_modified(), 'page is recently modified';
+    ok !$page->mutable;
+
+    like exception {
+        $page->append("Shouldn't append");
+    }, qr/page isn't mutable/, "can't append until page is open for edit";
+
+    $page->edit_rev(editor => $hub->current_user);
     $page->append('Second Paragraph');
-    Test::More::is($page->content, "First Paragraph\n\n---\nSecond Paragraph");
-}
-
-RENAME: {
-    my $hub   = create_test_hub();
-    my $page1 = Socialtext::Page->new( hub => $hub )->create(
-        title   => 'My First Page',
-        content => 'First Paragraph',
-        creator => $hub->current_user,
-    );
-    my $page2 = Socialtext::Page->new( hub => $hub )->create(
-        title   => 'My Second Page',
-        content => 'Another paragraph first',
-        creator => $hub->current_user,
-    );
-
-    my $return = $page1->rename('My Second Page');
-    is ($return, 0, 'Should not be able to rename since page with new name exists' );
-
-    $return = $page1->rename('My Renamed Page');
-    is ($return, 1, 'Rename should return ok' );
-    Test::More::is ($page1->content, "Page renamed to [My Renamed Page]\n", 'Original page content should point to new page' );
-}
-
-RENAME_CLOBBER: {
-    my $hub   = create_test_hub();
-    my $page1 = Socialtext::Page->new( hub => $hub )->create(
-        title   => 'My First Page',
-        content => 'First Paragraph',
-        creator => $hub->current_user,
-    );
-    my $page2 = Socialtext::Page->new( hub => $hub )->create(
-        title   => 'My Second Page',
-        content => 'Another paragraph first',
-        creator => $hub->current_user,
-    );
-
-    my $return = $page1->rename('My Second Page', 1, 1, 'My Second Page');
-    is ($return, 1, 'Return should be ok as existing page should be clobbered' );
-    Test::More::is ($page1->content, "Page renamed to [My Second Page]\n", 'Original page content should point to new page' );
-
-    $page2 = $hub->pages->new_from_name('My Second Page');
-    Test::More::is ($page2->content, "First Paragraph\n", 'Exising page should have content of new page' );
-}
-
-RENAME_WITH_OVERLAPPING_IDS: {
-    my $hub  = create_test_hub();
-    my $page = Socialtext::Page->new( hub => $hub )->create(
-        title   => 'I LOVE COWS SO MUCH I COULD SCREAM',
-        content => 'COWS LOVE ME',
-        creator => $hub->current_user,
-    );
-
-    my $new_title = 'I Love Cows So Much I Could SCREAM!!!!!!!';
-    my $return    = $page->rename($new_title);
-    is( $return, 1, 'Rename of a page where new name has same page_id' );
-    Test::More::is( $page->title,   $new_title );
-    Test::More::is( $page->content, "COWS LOVE ME\n" );
+    is $page->content, "First Paragraph\n\n---\nSecond Paragraph",
+        'appended';
 }
 
 PREPEND: {
@@ -91,10 +40,88 @@ PREPEND: {
         content => 'First Paragraph',
         creator => $hub->current_user,
     );
-    ok($page->is_recently_modified(), 'page is recently modified' );
+    is $page->content, "First Paragraph\n", 'initial content';
+    ok $page->is_recently_modified(), 'page is recently modified';
+    ok !$page->mutable;
+
+    like exception {
+        $page->prepend("Shouldn't prepend");
+    }, qr/page isn't mutable/, "can't prepend until page is open for edit";
+
+    $page->edit_rev(editor => $hub->current_user);
     $page->prepend('Second Paragraph');
-    Test::More::is($page->content, "Second Paragraph\n---\nFirst Paragraph\n");
+    is $page->content, "Second Paragraph\n---\nFirst Paragraph\n",
+        'prepended';
 }
+
+RENAME: {
+    my $hub   = create_test_hub();
+
+    my $page1 = Socialtext::Page->new( hub => $hub )->create(
+        title   => 'My First Page',
+        content => 'First Paragraph',
+        creator => $hub->current_user,
+    );
+    my $page2 = Socialtext::Page->new( hub => $hub )->create(
+        title   => 'My Second Page',
+        content => 'Another paragraph first',
+        creator => $hub->current_user,
+    );
+
+    my $return;
+    is exception {
+        $return = $page1->rename('My Second Page');
+    }, undef, "no exception";
+    is $return, 0, "Can't accidentally clobber";
+
+    is exception {
+        $return = $page1->rename('My Renamed Page');
+    }, undef, "no exception";
+    is $return, 1, 'Rename to another page should return ok';
+    is $page1->content, "Page renamed to [My Renamed Page]\n",
+        'Original page content should point to new page';
+}
+
+RENAME_CLOBBER: {
+    my $hub   = create_test_hub();
+    my $page1 = Socialtext::Page->new( hub => $hub )->create(
+        title   => 'My First Page',
+        content => 'First Paragraph',
+    );
+    my $page2 = Socialtext::Page->new( hub => $hub )->create(
+        title   => 'My Second Page',
+        content => 'Another paragraph first',
+    );
+
+    my $return;
+    is exception {
+        $return = $page1->rename('My Second Page', 1, 1, 'My Second Page');
+    }, undef, "no exception";
+    is $return, 1, 'Return should be ok as existing page should be clobbered';
+    is $page1->content, "Page renamed to [My Second Page]\n",
+        'Original page content should point to new page';
+
+    $page2 = $hub->pages->new_from_name('My Second Page');
+    is $page2->content, "First Paragraph\n",
+        'Exising page should have content of new page';
+}
+
+RENAME_WITH_OVERLAPPING_IDS: {
+    my $hub  = create_test_hub();
+    my $page = Socialtext::Page->new( hub => $hub )->create(
+        title   => 'I LOVE COWS SO MUCH I COULD SCREAM',
+        content => 'COWS LOVE ME',
+    );
+    my $old_id = $page->page_id;
+
+    my $new_title = 'I Love Cows So Much I Could SCREAM!!!!!!!';
+    my $return    = $page->rename($new_title);
+    is $return, 1, 'Rename of a page where new name has same page_id';
+    is $page->title,   $new_title, "title got changed";
+    is $page->content, "COWS LOVE ME\n", "same content";
+    is $page->page_id, $old_id, "same page id";
+}
+die;
 
 LOAD_WITH_REVISION: {
     my $hub  = create_test_hub();
@@ -264,6 +291,7 @@ INVALID_UTF8: {
 
     ok($@, "Check that our crap UTF8 generates an exception");
 }
+
 __DATA__
 I was takin' a trip out to LA
 Toolin' along in my Chevrolet

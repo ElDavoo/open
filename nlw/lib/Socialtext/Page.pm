@@ -45,6 +45,7 @@ use Readonly;
 use Text::Autoformat;
 use Time::Duration::Object;
 use List::MoreUtils qw/any/;
+use Try::Tiny;
 
 sub class_id { 'pages' }
 
@@ -123,9 +124,12 @@ sub BUILDARGS {
         $p->{workspace_id} = $ws->workspace_id;
     }
     $p->{page_id} = delete $p->{id} if $p->{id};
+    $p->{page_id} ||= ($p->{page_type} && $p->{page_type} eq 'spreadsheet')
+        ? 'untitled_spreadsheet' : 'untitled_page';
     $p->{create_time} = delete $p->{create_time_utc} if $p->{create_time_utc};
     return $p;
 }
+
 
 use constant SELECT_COLUMNS_STR => q{
     "Workspace".name AS workspace_name, 
@@ -266,18 +270,17 @@ sub _new_from_row {
 
 sub _build_exists {
     my $self = shift;
-    return 1 if $self->has_rev;
+    return 1 if $self->has_rev && !$self->rev->mutable;
     my $rev = $self->_find_current();
     return $rev ? 1 : 0;
 }
-
-
 
 sub active { ($_[0]->exists && !$_[0]->deleted) ? 1 : 0 }
 
 sub _build_full_uri {
     my $self = shift;
-    return Socialtext::URI::uri(path => $self->workspace_name).$self->uri;
+    my $ws_uri = Socialtext::URI::uri(path => $self->workspace_name);
+    return $ws_uri.'/'.$self->uri;
 }
 
 sub _build_workspace{
@@ -483,58 +486,7 @@ sub update_lock_status {
     });
 }
 
-{
-    Readonly my $spec => {
-        content          => { type => SCALAR, default => '' },
-        content_ref      => { type => SCALARREF, default => undef },
-        revision         => { type => SCALAR,   regex   => qr/^\d+$/ },
-        type             => { type => SCALAR,   regex   => qr/^(?:wiki|spreadsheet)$/, default => 'wiki' },
-        categories       => { type => ARRAYREF, default => [] },
-        subject             => SCALAR_TYPE,
-        user                => USER_TYPE,
-        date                => { can => [qw(strftime)], default => undef },
-        edit_summary        => { type => SCALAR, default => '' },
-        signal_edit_summary => { type => SCALAR, default => undef },
-        signal_edit_summary_from_comment => { type => SCALAR, default => undef },
-        signal_edit_to_network => { type => SCALAR, default => undef },
-    };
-    sub update {
-        my $self = shift;
-        my %p = validate( @_, $spec );
-
-        die "can't update; page is not mutable" unless $self->mutable;
-        my $rev = $self->rev;
-
-        if ($p{content_ref}) {
-            $rev->body_ref($p{content_ref});
-        }
-        elsif (length $p{content}) {
-            carp "caller should be using content_ref";
-            $rev->body_ref(\$p{content});
-        }
-
-        if (my $tags = $p{categories}) {
-            $tags = [map { ensure_is_utf8($_) } @$tags];
-            $rev->tags($tags);
-        }
-
-        $rev->revision_num($p{revision}) if $p{revision};
-        $rev->page_type($p{type}) if $p{type};
-        $rev->name($p{subject}) if $p{subject};
-        $rev->edit_summary($p{edit_summary}) if $p{edit_summary};
-        $rev->editor($p{user}) if $p{user};
-        $rev->edit_time($p{date}) if $p{date};
-
-        $self->store(user => $p{user});
-
-        return $self->_signal_edit_summary(
-            $p{user}, $p{edit_summary}, $p{signal_edit_to_network}
-        ) if $p{signal_edit_summary};
-
-        return;
-    }
-}
-
+*to_hash = *hash_representation;
 sub hash_representation {
     my $self = shift;
 
@@ -545,7 +497,8 @@ sub hash_representation {
 
     return +{
         edit_summary    => $self->edit_summary,
-        last_edit_time  => $self->last_edit_time,
+        summary         => $self->summary,
+        last_edit_time  => $self->datetime_utc,
         last_editor     => $masked_email,
         locked          => $self->locked,
         modified_time   => $self->modified_time,
@@ -554,6 +507,7 @@ sub hash_representation {
         page_uri        => $self->full_uri,
         revision_count  => $self->revision_count,
         revision_id     => $self->revision_id,
+        revision_num    => $self->revision_num,
         tags            => $self->tags,
         type            => $self->page_type,
         uri             => $self->uri,
@@ -629,7 +583,7 @@ sub prepend {
     my $self = $_[0];
     croak "page isn't mutable" unless $self->mutable;
     my $body_ref = $self->body_ref;
-    if ($body_ref && length($body_ref)) {
+    if ($body_ref && length($$body_ref)) {
         my $body = "$_[1]\n---\n$$body_ref"; # deliberate copy
         $body_ref = \$body;
     } else {
@@ -642,8 +596,8 @@ sub append {
     my $self = $_[0];
     croak "page isn't mutable" unless $self->mutable;
     my $body_ref = $self->body_ref;
-    if ($body_ref && length($body_ref)) {
-        my $body = "$$body_ref\n---\n$_[1]";
+    if ($body_ref && length($$body_ref)) {
+        my $body = "$$body_ref\n---\n$_[1]"; # deliberate copy
         $body_ref = \$body;
     } else {
         $body_ref = \$_[1];
@@ -758,6 +712,98 @@ sub _fixup_body {
     }
 }
 
+{
+    Readonly my $spec => {
+        content          => { type => SCALAR, default => '' },
+        content_ref      => { type => SCALARREF, default => undef },
+        revision         => { type => SCALAR,   regex   => qr/^\d+$/ },
+        type             => { type => SCALAR,   regex   => qr/^(?:wiki|spreadsheet)$/, default => 'wiki' },
+        categories       => { type => ARRAYREF, default => [] },
+        subject             => SCALAR_TYPE,
+        user                => USER_TYPE,
+        date                => { can => [qw(strftime)], default => undef },
+        edit_summary        => { type => SCALAR, default => '' },
+        signal_edit_summary => { type => SCALAR, default => undef },
+        signal_edit_summary_from_comment => { type => SCALAR, default => undef },
+        signal_edit_to_network => { type => SCALAR, default => undef },
+    };
+    sub update {
+        my $self = shift;
+        my %p = validate( @_, $spec );
+
+        die "can't update; page is not mutable" unless $self->mutable;
+        my $rev = $self->rev;
+
+        if ($p{content_ref}) {
+            $rev->body_ref($p{content_ref});
+        }
+        elsif (length $p{content}) {
+            carp "caller should be using content_ref";
+            $rev->body_ref(\$p{content});
+        }
+
+        if (my $tags = $p{categories}) {
+            $tags = [map { ensure_is_utf8($_) } @$tags];
+            $rev->tags($tags);
+        }
+
+        $rev->revision_num($p{revision}) if $p{revision};
+        $rev->page_type($p{type}) if $p{type};
+        $rev->name($p{subject}) if $p{subject};
+        $rev->edit_summary($p{edit_summary}) if $p{edit_summary};
+        $rev->editor($p{user}) if $p{user};
+        $rev->edit_time($p{date}) if $p{date};
+
+        $self->store(user => $p{user});
+
+        return $self->_signal_edit_summary(
+            $p{user}, $p{edit_summary}, $p{signal_edit_to_network}
+        ) if $p{signal_edit_summary};
+
+        return;
+    }
+}
+
+{
+    my $spec = {  
+        title      => SCALAR_TYPE,
+        content    => SCALAR_TYPE,
+        date       => { can => [qw(strftime)], default => undef },
+        categories => { type => ARRAYREF, default => []  },
+        creator    => { isa => 'Socialtext::User', default => undef },
+        hub        => { isa => 'Socialtext::Hub', default => undef },
+    };
+    # Use this method by doing Socialtext::Page->new(hub => $hub)->create(...)
+    sub create {
+        my $class_or_self = shift;
+        my %args = validate(@_,$spec);
+
+        my $hub = blessed($class_or_self) ? $class_or_self->hub : $args{hub};
+        croak "A hub is required to create() a page" unless $hub;
+
+        $args{date} ||= Socialtext::Date->now(hires=>1);
+        $args{creator} ||= $hub->current_user;
+
+        my $rev = Socialtext::PageRevision->Blank(
+            hub       => $hub,
+            name      => $args{title},
+            editor    => $args{creator},
+            edit_time => $args{date},
+            tags      => $args{categories},
+            body_ref  => \$args{content},
+        );
+        my $page = $class_or_self->new(
+            hub         => $hub,
+            page_id     => $rev->page_id,
+            creator     => $rev->editor,
+            create_time => $rev->edit_time,
+            rev         => $rev,
+        );
+        $page->store( user => $args{creator} );
+        return $page;
+    }
+}
+
 sub store {
     my $self = shift;
     my %p = @_;
@@ -792,7 +838,10 @@ sub store {
 
     my ($cur_rev_id, $was_deleted);
     sql_txn {
+
         if ($existed) {
+            # check that the page is actually there.  For the create
+            # (!$existed) case, the sql_insert below will fail instead.
             my $sth = sql_execute(q{
                 SELECT current_revision_id, deleted FROM page
                  WHERE workspace_id = ? AND page_id = ?
@@ -830,18 +879,27 @@ sub store {
         }
 
         if (!$existed) {
-            sql_insert(page => \%args);
+            # this or committing the transaction will fail if the page already
+            # exists:
+            my $sth = sql_insert(page => \%args);
+            die "Page creation failed. Maybe it already exists?"
+                unless $sth->rows == 1;
         }
         else {
-            sql_update(page => \%args, [qw(workspace_id page_id)]);
+            my $sth = sql_update(page => \%args, [qw(workspace_id page_id)]);
+            die "Page update failed. ".
+                "Maybe it's missing or was wrongly assumed to have existed?"
+                unless $sth->rows == 1;
+        }
+
+        my $tags = $rev->tags;
+        if ($existed) {
             # Nothing refers to the page_tag table so these should be safe to
             # delete.
             sql_execute(qq{
                 DELETE FROM page_tag WHERE workspace_id = ? AND page_id = ?
             }, $ws_id, $page_id);
         }
-
-        my $tags = $rev->tags;
         sql_execute_array(q{
             INSERT INTO page_tag (workspace_id, page_id, tag) VALUES (?,?,?)
         }, $ws_id, $page_id, $tags) if @$tags;
@@ -1138,7 +1196,7 @@ sub _chunk_it_up {
 
 sub to_absolute_html {
     my $self = $_[0];
-    my $content = ref($_[1]) ? $_[1] : \$_[1];
+    my $content = ref($_[1]) ? $_[1] : \$_[1]; # don't default this to body_ref
 
     my %p = @_[2..$#_];
     $p{link_dictionary}
@@ -1156,14 +1214,21 @@ sub to_absolute_html {
 
     # Don't assign these results to anything before returning. It will slow
     # down the program significantly.
-    return $self->to_html($content) if $content;
+    return $self->to_html($content) if defined($_[1]);
     return $self->to_html($self->body_ref, $self);
 }
 
 sub to_html {
     my ($self, $content_ref, $page) = @_;
 
-    $content_ref //= \$self->default_content;
+    if (@_ == 1) {
+        $content_ref = $self->body_length
+            ? $self->body_ref : \$self->default_content;
+        $page = $self;
+    }
+    elsif (!($content_ref || $$content_ref)) {
+        $content_ref = \$self->default_content;
+    }
 
     return $self->hub->pluggable->hook('render.sheet.html',
         [$content_ref, $self]
@@ -1786,6 +1851,9 @@ sub duplicate {
         ($dest_main, $dest_hub) =
             $dest_ws->_main_and_hub($self->hub->current_user); 
     }
+    else {
+        $dest_hub = $self->hub;
+    }
 
     die "user has no permission for workspace"
         unless $self->hub->authz->user_has_permission_for_workspace(
@@ -1803,8 +1871,8 @@ sub duplicate {
             );
     }
 
-
     my $target = $dest_hub->pages->new_from_name($target_title);
+    my $target_id = $target->page_id;
 
     # XXX need exception handling of better kind
     # Don't clobber an existing page if we aren't clobbering
@@ -1812,48 +1880,53 @@ sub duplicate {
         return 0
     }
 
-    my $target_id = $target->page_id;
+    return try { sql_txn {
+        my $rev = $self->rev->mutable_clone(editor => $user);
 
-    my $rev = $self->rev->mutable_clone(editor => $user);
+        # Attach the mutable revision to the target page. Since most of the
+        # properties will carry-over, we just need to modify the identity
+        # fields.
+        $rev->hub($dest_hub);
+        $rev->workspace_id($dest_ws->workspace_id);
+        $rev->page_id($target_id);
+        $rev->name($target_title);
+        $target->rev($rev);
 
-    # Attach the mutable revision to the target page. Since most of the
-    # properties will carry-over, we just need to modify the identity fields.
-    $rev->hub($dest_hub);
-    $rev->workspace_id($dest_ws->workspace_id);
-    $rev->page_id($target_id);
-    $rev->name($target_title);
-    $target->rev($rev);
+        # Make this the first revision_num unless we're clobbering.
+        $rev->revision_num($target->exists ? $target->revision_num+1 : 0);
 
-    # Make this the first revision_num unless we're clobbering.
-    $rev->revision_num($target->exists ? $target->revision_num+1 : 0);
+        $rev->tags([]) unless $keep_categories;
 
-    $rev->tags([]) unless $keep_categories;
-
-    if ($keep_attachments) {
-        my @attachments = $self->attachments();
-        for my $source_attachment (@attachments) {
-            $source_attachment->clone(page => $target);
+        if ($keep_attachments) {
+            my @attachments = $self->attachments();
+            for my $source_attachment (@attachments) {
+                $source_attachment->clone(page => $target);
+            }
         }
-    }
 
-    $target->store(user => $dest_hub->current_user);
-    $target->rev->clear_prev; # which still points to the old page
+        $target->store(user => $dest_hub->current_user);
+        $target->rev->clear_prev; # which still points to the old page
 
-    Socialtext::Events->Record({
-        event_class => 'page',
-        action => ($is_rename ? 'rename' : 'duplicate'),
-        page => $self,
-        target_workspace => $dest_hub->current_workspace,
-        target => $target,
-    });
+        Socialtext::Events->Record({
+            event_class => 'page',
+            action => ($is_rename ? 'rename' : 'duplicate'),
+            page => $self,
+            target_workspace => $dest_hub->current_workspace,
+            target => $target,
+        });
 
-    Socialtext::Events->Record({
-        event_class => 'page',
-        action => 'edit_save',
-        page => $target,
-    });
+        Socialtext::Events->Record({
+            event_class => 'page',
+            action => 'edit_save',
+            page => $target,
+        });
 
-    return 1; # success
+        return 1;
+    } }
+    catch {
+        carp "duplicate failed: $_";
+        return 0;
+    };
 }
 
 # REVIEW: We should consider throwing exceptions here rather than return codes.
@@ -1864,37 +1937,42 @@ sub rename {
     my $keep_attachments = shift;
     my $clobber = shift || '';
 
+
     # If the new title of the page has the same page-id as the old then just
     # change the title, and don't mess with the other bits.
     my $new_id = Socialtext::String::title_to_id($new_page_title);
     if ( $self->page_id eq $new_id ) {
-        my $rev = $self->edit_rev();
-        $rev->name($new_page_title);
-        $self->store();
-        return 1;
+        return sql_txn {
+            my $rev = $self->edit_rev();
+            $rev->name($new_page_title);
+            $self->store();
+            return 1;
+        };
     }
 
-    my $ok = $self->duplicate(
-        $self->hub->current_workspace,
-        $new_page_title,
-        $keep_categories,
-        $keep_attachments,
-        $clobber,
-        'rename'
-    );
+    return sql_txn {
+        my $ok = $self->duplicate(
+            $self->hub->current_workspace,
+            $new_page_title,
+            $keep_categories,
+            $keep_attachments,
+            $clobber,
+            'rename'
+        );
+        return 0 unless $ok;
 
-    if ($ok) {
-        my $rev = $self->edit_rev();
-        # XXX: is there a better way to put square brackets around the target
-        # name?  Maybe with [sprintf,...] somehow?
+        # XXX: is there a better way to put square brackets around the
+        # target name?  Maybe with [sprintf,...] somehow?
         my $localized_str = loc("Page renamed to <[_1]>", $new_page_title);
         $localized_str =~ tr/></][/;
+
+        my $rev = $self->edit_rev();
         $rev->body_ref(\$localized_str);
         $rev->page_type('wiki');
         $self->store();
-    }
 
-    return $ok;
+        return 1;
+    };
 }
 
 # REVIEW: Candidate for Socialtext::Validate
