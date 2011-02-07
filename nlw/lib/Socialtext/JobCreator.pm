@@ -16,6 +16,7 @@ has_inflated '_client' => (
     handles => qr/(?:list|find|get_server_time|func|move_jobs_by|cancel_job|bulk_insert)/,
 );
 
+
 sub insert {
     my $self = shift;
     my $job_class = shift;
@@ -156,24 +157,18 @@ sub send_page_email {
 }
 
 sub send_page_notifications {
-    my $self = shift;
-    my $page = shift;
-
-    my @tasks = (qw/WeblogPing EmailNotify WatchlistNotify/);
-    return $self->_send_page_notifications($page, \@tasks);
+    my ($self,$page) = @_;
+    return $self->_send_page_notifications($page, 
+        [qw/WeblogPing EmailNotify WatchlistNotify/]);
 }
 
 sub send_page_watchlist_emails {
-    my $self = shift;
-    my $page = shift;
-
+    my ($self,$page) = @_;
     return $self->_send_page_notifications($page, ['EmailNotify']);
 }
 
 sub send_page_email_notifications {
-    my $self = shift;
-    my $page = shift;
-
+    my ($self,$page) = @_;
     return $self->_send_page_notifications($page, ['WatchlistNotify']);
 }
 
