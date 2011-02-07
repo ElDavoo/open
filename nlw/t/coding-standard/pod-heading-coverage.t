@@ -121,7 +121,6 @@ my %ToDoModules = map { $_ => 1 } qw(
     Socialtext::Page::TablePopulator
     Socialtext::PageActivityPlugin
     Socialtext::PageAnchorsPlugin
-    Socialtext::PageMeta
     Socialtext::Pages
     Socialtext::Pageset
     Socialtext::PdfExport::LinkDictionary
