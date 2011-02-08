@@ -2020,10 +2020,19 @@ proto.do_opensocial_gallery = function() {
                     { widgets: [], title: loc('Socialtext widgets') },
                     { widgets: [], title: loc('Third Party widgets') }
                 ];
-                $.each(gallery.widgets, function(){
+                var widgets = gallery.widgets;
+                widgets.sort(function(a, b) {
+                    if (a.socialtext === b.socialtext) { return 0 }
+                    if (a.socialtext === null) { return -1 }
+                    if (b.socialtext === null) { return 1 }
+                    if (a.socialtext < b.socialtext) { return -1 }
+                    if (a.socialtext > b.socialtext) { return 1 }
+                    return 0;
+                });
+                $.each(widgets, function(){
                     if (this.removed) { return; }
                     if (!this.src || this.src == 'local:widgets:activities' || this.src == 'http://www.google.com/ig/modules/calendar3.xml') { return; }
-                    var ary = tables[this.socialtext ? 0 : 1].widgets;
+                    var ary = tables[(this.socialtext == true) ? 0 : 1].widgets;
                     // 2-column layout
                     if (ary.length && (ary[ary.length-1].length < 2)) {
                         ary[ary.length-1].push(this);
