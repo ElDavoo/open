@@ -91,7 +91,7 @@ sub POST_json {
     if (!$rest->user->is_business_admin) {
         my $allowed = 0;
         for my $class_prefix (keys %class_checks) {
-            if ($class =~ m/^\Q$class_prefix\E\.\w+$/) {
+            if ($class =~ m/^\Q$class_prefix\E\.(\w+|\*)$/) {
                 for my $param (@{ $class_checks{$class_prefix} }) {
                     next unless $checkers{$param}->($object);
                     $allowed = 1;

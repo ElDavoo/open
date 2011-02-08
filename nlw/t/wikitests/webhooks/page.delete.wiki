@@ -2,7 +2,6 @@
 
 | standard-test-setup | foo                   |     |                |
 | standard-test-setup | bar                   |     |                |
-| set-business-admin  | %%bar_email_address%% | 1   |                |
 | clear-webhooks      |                       |     |                |
 | clear-webhook       |                       |     |                |
 
@@ -29,7 +28,7 @@
 | json-like             | [{"object":{"workspace":{"title":"%%bar_workspace%%","name":"%%bar_workspace%%"}}}]   |               |                                         |
 | json-like             | [{"object":{"id":"foo"}}]                                                             |               |                                         |
 | json-like             | [{"object":{"name":"Foo"}}]                                                           |               |                                         |
-| json-like             | [{"object":{"uri":"%%browser_url%%/%%bar_workspace%%/index.cgi?foo"}}]                |               |                                         |
+| json-like             | [{"object":{"uri":"%%browser_url%%/%%bar_workspace%%/foo"}}]                |               |                                         |
 | json-like             | [{"object":{"edit_summary":""}}]                                                      |               |                                         |
 | json-like             | [{"object":{"tags":[]}}]                                                              |               |                                         |
 | json-like             | [{"object":{"tags_added":[]}}]                                                        |               |                                         |
@@ -50,7 +49,26 @@
 | edit-page | %%bar_workspace%%                            | Foo | This is just an update |
 | job-count | WebHook                                      | 0   |                        |
 
+
+| comment         | Use a workspace_id +page_id filtered webhook |               |                                                                       |
+| clear-webhooks  |                                |               |                                                                       |
+| clear-webhook   |                                |               |                                                                       |
+| st-clear-jobs   |                                |               |                                                                       |
+| add-webhook     | page.delete                    | http://tou.ch | {"workspace_id":"%%bar_workspace_id%%","details":{"page_id":"tarvu"}} |
+| edit-page       | %%bar_workspace%%              | Tarvu         | Tarvu is the best!                                                    |
+| edit-page       | %%bar_workspace%%              | Barvu         | Barvu is the best!                                                    |
+| delete-page     | %%bar_workspace%%              | Tarvu         |                                                                       |
+| delete-page     | %%bar_workspace%%              | Barvu         |                                                                       |
+| job-count       | WebHook                        | 1             |                                                                       |
+| st-process-jobs |                                |               |                                                                       |
+| job-count       | WebHook                        | 0             |                                                                       |
+| webhook-like    | tarvu                          |               |                                                                       |
+| webhook-unlike  | barvu                          |               |                                                                       |
+ 
+
 | comment               | Use a page_tag filtered webhook                  |                          |                             |               |
+* Need to set bizadmin because we are not including a workspace or account param
+| set-business-admin  | %%bar_email_address%% | 1   |                |
 | clear-webhooks        |                                                  |                          |                             |               |
 | clear-webhook         |                                                  |                          |                             |               |
 | st-clear-jobs         |                                                  |                          |                             |               |
@@ -68,21 +86,5 @@
 | job-count             | WebHook                                          | 0                        |                             |               |
 | webhook-payload-parse |                                                  |                          |                             |               |
 | json-like             | [{"object":{"name":"Page with matching tag"}}] |                          |                             |               |
-
-| comment         | Use a page_id filtered webhook |               |                                                                       |
-| clear-webhooks  |                                |               |                                                                       |
-| clear-webhook   |                                |               |                                                                       |
-| st-clear-jobs   |                                |               |                                                                       |
-| add-webhook     | page.delete                    | http://tou.ch | {"workspace_id":"%%bar_workspace_id%%","details":{"page_id":"tarvu"}} |
-| edit-page       | %%bar_workspace%%              | Tarvu         | Tarvu is the best!                                                    |
-| edit-page       | %%bar_workspace%%              | Barvu         | Barvu is the best!                                                    |
-| delete-page     | %%bar_workspace%%              | Tarvu         |                                                                       |
-| delete-page     | %%bar_workspace%%              | Barvu         |                                                                       |
-| job-count       | WebHook                        | 1             |                                                                       |
-| st-process-jobs |                                |               |                                                                       |
-| job-count       | WebHook                        | 0             |                                                                       |
-| webhook-like    | tarvu                          |               |                                                                       |
-| webhook-unlike  | barvu                          |               |                                                                       |
-
 # For other filter tests, see t/wikitests/webhooks/page.tag.wiki
 # The code flow is the same, so these tests are omitted

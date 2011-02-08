@@ -44,6 +44,7 @@ use Socialtext::Workspace::Permissions;
 use Socialtext::Workspace::Roles;
 use Socialtext::Timer;
 use Socialtext::Pluggable::Adapter;
+use Socialtext::JSON qw(decode_json);
 use Socialtext::JSON::Proxy::Helper;
 use URI;
 use YAML;
@@ -711,6 +712,11 @@ sub TitleIsValid {
     return @{$errors} > 0 ? 0 : 1;
 }
 
+sub NameIsIllegal {
+    my $class = shift;
+    my $name = shift;
+    return $name !~ /^[a-z0-9_\-]{3,30}$/;
+}
 
 sub NameIsValid {
     my $class = shift;
@@ -729,7 +735,7 @@ sub NameIsValid {
     my $name    = $p{name};
     my $errors  = $p{errors};
 
-    if ( $name !~ /^[a-z0-9_\-]{3,30}$/ ) {
+    if ( $class->NameIsIllegal($name) ) {
         push @{$errors},
             loc('Workspace name must be between 3 and 30 characters long, and must contain only upper- or lower-case letters, numbers, underscores, and dashes.');
     }
@@ -1926,6 +1932,51 @@ sub impersonation_ok {
     return unless $self->has_user($user);
     return $self->permissions->user_can(
         user => $actor, permission => ST_IMPERSONATE_PERM);
+}
+
+sub load_pages_from_disk {
+    my ($self, %opts) = @_;
+    my $dir = $opts{dir} || die "dir is required";
+    die "dir does not exist" unless -d $dir;
+
+    my $replaces = $opts{replace} || [];
+
+    my ( $main, $hub ) = $self->_main_and_hub();
+
+    my @files = glob("$dir/*.json");
+    for my $f (@files) {
+        my $data = decode_json(Socialtext::File::get_contents_utf8($f));
+        (my $content_file = $f) =~ s/\.json$//;
+        my $content = Socialtext::File::get_contents_utf8($content_file);
+
+        my $page_name = $data->{name};
+
+        for my $r (keys %$replaces) {
+            $page_name =~ s{\Q$r\E}{$replaces->{$r}};
+        }
+
+        # Don't clobber existing pages
+        next unless $opts{clobber}
+            or !$hub->pages->new_from_name($page_name)->exists;
+
+        my $page = Socialtext::Page->new(hub => $hub)->create(
+            title => $page_name,
+            content => $content,
+            creator => Socialtext::User->SystemUser,
+            categories => $data->{tags},
+        );
+
+        if ($data->{attachments}) {
+            for my $name (@{$data->{attachments}}) {
+                my $attachment = $hub->attachments->new_attachment(
+                    page_id => $page->id,
+                    filename => $name,
+                );
+                $attachment->save("$dir/attachments/$data->{page_id}/$name");
+                $attachment->store(user => Socialtext::User->SystemUser);
+            }
+        }
+    }
 }
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);

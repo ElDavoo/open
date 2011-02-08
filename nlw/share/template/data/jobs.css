@@ -51,3 +51,7 @@ table.job th {
     font-size: smaller;
     word-wrap: break-word;
 }
+
+.jobdelay .jobcolrun_after {
+    color: #880;
+}

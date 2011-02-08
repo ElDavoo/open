@@ -6,6 +6,7 @@ socialtext-reports/
 socialtext-skins/
 socialpoint/
 socialcalc/
+st-hudson/
 *.tar.gz
 *.tgz
 *.deb

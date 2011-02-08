@@ -39,7 +39,9 @@ sub _build_job {
 
 sub get_resource {
     my $self = shift;
-    return $self->job->to_hash;
+    my $job = $self->job->to_hash;
+    $job->{delayed} = ($job->{run_after} > time) ? 1 : 0;
+    return $job;
 }
 
 sub entity_name {

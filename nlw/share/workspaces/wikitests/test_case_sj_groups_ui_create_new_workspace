@@ -13,7 +13,7 @@
 | set | createme_ws_title | sjcreateme-title-%%start_time%% |  |
 
 | *Comment* | Test Case: SJ Groups UI Create New Workspace create %%test_delete_ws%% |  |  |
-| create_workspace | %%test_delete_ws%% | %%hostname%% | %%test_delete_ws_title%% |
+| create_workspace | %%test_delete_ws%% | %%defaultaccount%% | %%test_delete_ws_title%% |
 | set | delete_ws_id | %%workspace_id%% |  |
 | st-admin | add-member --w %%test_delete_ws%% --g %%group_id%% | now has the role of |  |
 | st-admin | add-workspace-admin --w %%test_delete_ws%% --e %%group_user%% |  |  |

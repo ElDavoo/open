@@ -5,7 +5,7 @@
 | *Comment* | Test Case: Signals Page |  |
 
 | set-default | mark | single |
-| set-default | group | %%hostname%% |
+| set-default | group | %%defaultaccount%% |
 
 | *Comment* | Test Case: Signals Page. Get to the Signals page. Wait for the widget to fully load |  |
 | st-admin | enable-plugin --all-accounts --p signals |  |

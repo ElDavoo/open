@@ -15,6 +15,7 @@ use Cwd;
 use Socialtext::AppConfig;
 use File::Slurp qw(slurp);
 use List::MoreUtils qw(before after);
+use Socialtext::Account;
 
 =head1 NAME
 
@@ -88,7 +89,9 @@ sub init {
     { # Talc/Topaz are configured to allow emailing into specific dev-envs
         (my $host = $self->{browser_url}) =~ s#^http.?://(.+):\d+#$1#;
         $self->{wikiemail} = $ENV{WIKIEMAIL} || "$ENV{USER}.$host";
+        $self->{defaultaccount} = Socialtext::Account->Default->name;
         diag "wikiemail:  $self->{wikiemail}";
+        diag "defaultaccount:  $self->{defaultaccount}";
     }
     for my $var (map { /^selenium_var_(.+)/ ? $1 : () } keys %ENV) {
         diag "[selenium_var] $var: ".$ENV{"selenium_var_$var"};

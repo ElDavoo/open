@@ -3764,6 +3764,10 @@ table.widgetUserPrefs {
     width: 95%;
 }
 
+table.widgetUserPrefs td.widgetUserPrefsButtons input.st-savebutton {
+    font-weight: bold;
+}
+
 table.widgetUserPrefs td.widgetUserPrefsButtons {
     text-align: center;
     padding-top: 5px;

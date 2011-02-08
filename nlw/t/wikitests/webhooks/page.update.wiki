@@ -2,7 +2,6 @@
 
 | standard-test-setup | foo                   |     |                |
 | standard-test-setup | bar                   |     |                |
-| set-business-admin  | %%bar_email_address%% | 1   |                |
 
 | new-webhook-testcase | Create a page, verify no webhooks fired |     |                |
 | edit-page            | %%bar_workspace%%                       | Bar | Sample Content |
@@ -21,7 +20,7 @@
 | json-like             | [{"object":{"workspace":{"title":"%%bar_workspace%%","name":"%%bar_workspace%%"}}}]   |               |                                         |
 | json-like             | [{"object":{"id":"foo"}}]                                                             |               |                                         |
 | json-like             | [{"object":{"name":"Foo"}}]                                                           |               |                                         |
-| json-like             | [{"object":{"uri":"%%browser_url%%/%%bar_workspace%%/index.cgi?foo"}}]                |               |                                         |
+| json-like             | [{"object":{"uri":"%%browser_url%%/%%bar_workspace%%/foo"}}]                |               |                                         |
 | json-like             | [{"object":{"edit_summary":""}}]                                                      |               |                                         |
 | json-like             | [{"object":{"tags":[]}}]                                                              |               |                                         |
 | json-like             | [{"object":{"tags_added":[]}}]                                                        |               |                                         |

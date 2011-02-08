@@ -35,7 +35,8 @@
             </thead>
             <tbody>
                 [% FOREACH job IN jobs %]
-                <tr class="jobrow">
+                [% SET delay = job.delayed ? "jobdelay" : "" %]
+                <tr class="jobrow [%delay%]">
                     [% FOREACH col IN columns -%]
                     <td class="jobcol[%col%]" [% IF col == 'arg' %]width="*"[% END %]>
                     [%- IF col == 'jobid' %]

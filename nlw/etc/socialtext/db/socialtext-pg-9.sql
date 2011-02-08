@@ -1514,10 +1514,6 @@ ALTER TABLE ONLY opensocial_appdata
     ADD CONSTRAINT opensocial_appdata_pk
             PRIMARY KEY (app_id, user_set_id, field);
 
-ALTER TABLE ONLY page_link
-    ADD CONSTRAINT page_link_unique
-            UNIQUE (from_workspace_id, from_page_id, to_workspace_id, to_page_id);
-
 ALTER TABLE ONLY page
     ADD CONSTRAINT page_pkey
             PRIMARY KEY (workspace_id, page_id);
@@ -2041,9 +2037,6 @@ CREATE INDEX page_creator_time
 
 CREATE INDEX breadcrumb_viewer_ws
 	    ON breadcrumb (viewer_id, workspace_id);
-
-CREATE INDEX page_link__to_page
-	    ON page_link (to_workspace_id, to_page_id);
 
 CREATE INDEX page_tag__page_ix
 	    ON page_tag (workspace_id, page_id);

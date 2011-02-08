@@ -2,7 +2,6 @@
 
 | standard-test-setup | foo                   |     |                |
 | standard-test-setup | bar                   |     |                |
-| set-business-admin  | %%bar_email_address%% | 1   |                |
 
 | new-webhook-testcase | Create a page, verify no webhooks fired |     |                |
 | edit-page            | %%bar_workspace%%                       | Bar | Sample Content |
@@ -26,7 +25,7 @@
 | json-like             | [{"object":{"workspace":{"title":"%%bar_workspace%%","name":"%%bar_workspace%%"}}}]   |               |                                         |
 | json-like             | [{"object":{"id":"foo"}}]                                                             |               |                                         |
 | json-like             | [{"object":{"name":"Foo"}}]                                                           |               |                                         |
-| json-like             | [{"object":{"uri":"%%browser_url%%/%%bar_workspace%%/index.cgi?foo"}}]                |               |                                         |
+| json-like             | [{"object":{"uri":"%%browser_url%%/%%bar_workspace%%/foo"}}]                |               |                                         |
 | json-like             | [{"object":{"edit_summary":""}}]                                                      |               |                                         |
 | json-like             | [{"object":{"tags":[]}}]                                                              |               |                                         |
 | json-like             | [{"object":{"tags_added":[]}}]                                                        |               |                                         |
@@ -55,7 +54,7 @@
 | json-like             | [{"object":{"workspace":{"title":"%%bar_workspace%%","name":"%%bar_workspace%%"}}}]  |               |                                         |
 | json-like             | [{"object":{"id":"foo"}}]                                                            |               |                                         |
 | json-like             | [{"object":{"name":"Foo"}}]                                                          |               |                                         |
-| json-like             | [{"object":{"uri":"%%browser_url%%/%%bar_workspace%%/index.cgi?foo"}}]               |               |                                         |
+| json-like             | [{"object":{"uri":"%%browser_url%%/%%bar_workspace%%/foo"}}]               |               |                                         |
 | json-like             | [{"object":{"edit_summary":""}}]                                                     |               |                                         |
 | json-like             | [{"object":{"tags":[]}}]                                                             |               |                                         |
 | json-like             | [{"object":{"tags_added":[]}}]                                                       |               |                                         |
@@ -79,7 +78,23 @@
 | unwatch-page       | %%ws2%%                                     | Foo2               | |
 | job-count        | WebHook                                     | 0                  |                |
 
+| new-webhook-testcase | Use a page_id filtered webhook |               |                                                                       |
+| add-webhook          | page.watch                     | http://tou.ch | {"workspace_id":"%%bar_workspace_id%%","details":{"page_id":"tarvu"}} |
+| add-webhook          | page.unwatch                   | http://tou.ch | {"workspace_id":"%%bar_workspace_id%%","details":{"page_id":"tarvu"}} |
+| edit-page            | %%bar_workspace%%              | Tarvu         | Tarvu is the best!                                                    |
+| watch-page           | %%bar_workspace%%              | Tarvu         |                                                                       |
+| unwatch-page         | %%bar_workspace%%              | Tarvu         |                                                                       |
+| edit-page            | %%bar_workspace%%              | Barvu         | Barvu is the best!                                                    |
+| watch-page           | %%bar_workspace%%              | Barvu         |                                                                       |
+| unwatch-page         | %%bar_workspace%%              | Barvu         |                                                                       |
+| job-count            | WebHook                        | 2             |                                                                       |
+| st-process-jobs      |                                |               |                                                                       |
+| job-count            | WebHook                        | 0             |                                                                       |
+| webhook-like         | tarvu                          |               |                                                                       |
+| webhook-unlike       | barvu                          |               |                                                                       |
+
 | new-webhook-testcase | Use a page_tag filtered webhook     |                              |                             |                   |
+| set-business-admin   | %%bar_email_address%%               | 1                            |                             |                   |
 | add-webhook          | page.watch                          | http://tou.ch                | {"details":{"tag":"fubar"}} |                   |
 | add-webhook          | page.unwatch                        | http://tou.ch                | {"details":{"tag":"fubar"}} |                   |
 | edit-page            | %%bar_workspace%%                   | New page without tag         | New content                 |                   |
@@ -95,21 +110,6 @@
 | st-process-jobs      |                                     |                              |                             |                   |
 | job-count            | WebHook                             | 0                            |                             |                   |
 | webhook-like         | "name":"New page with matching tag" |                              |                             |                   |
-
-| new-webhook-testcase | Use a page_id filtered webhook |               |                                                                       |
-| add-webhook          | page.watch                     | http://tou.ch | {"workspace_id":"%%bar_workspace_id%%","details":{"page_id":"tarvu"}} |
-| add-webhook          | page.unwatch                   | http://tou.ch | {"workspace_id":"%%bar_workspace_id%%","details":{"page_id":"tarvu"}} |
-| edit-page            | %%bar_workspace%%              | Tarvu         | Tarvu is the best!                                                    |
-| watch-page           | %%bar_workspace%%              | Tarvu         |                                                                       |
-| unwatch-page         | %%bar_workspace%%              | Tarvu         |                                                                       |
-| edit-page            | %%bar_workspace%%              | Barvu         | Barvu is the best!                                                    |
-| watch-page           | %%bar_workspace%%              | Barvu         |                                                                       |
-| unwatch-page         | %%bar_workspace%%              | Barvu         |                                                                       |
-| job-count            | WebHook                        | 2             |                                                                       |
-| st-process-jobs      |                                |               |                                                                       |
-| job-count            | WebHook                        | 0             |                                                                       |
-| webhook-like         | tarvu                          |               |                                                                       |
-| webhook-unlike       | barvu                          |               |                                                                       |
 
 # For other filter tests, see t/wikitests/webhooks/page.tag.wiki
 # The code flow is the same, so these tests are omitted

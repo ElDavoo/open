@@ -364,7 +364,7 @@ sub user_can {
 sub all_users_as_hash {
     my $self  = shift;
     my %args  = @_;
-    my $iter  = $self->users(show_hidden => 1);
+    my $iter  = $self->users(show_hidden => 1, order => 1);
     my @users = map { $self->_dump_user_to_hash($_,%args) } $iter->all();
     return \@users;
 }
@@ -485,6 +485,7 @@ sub import_file {
     for my $user_hash (@{ $hash->{users} }) {
 
         next unless Socialtext::User::Default::Users->CanImportUser($user_hash);
+#warn "Importing user $hash->{name}\n";
 
         # Import this user into the new account we're creating. If they were
         # in some other account we'll fix that up below.
@@ -726,11 +727,13 @@ sub create {
     my ( $class, %p ) = @_;
     my $timer = Socialtext::Timer->new;
 
+    my $no_plugin_hooks = delete $p{no_plugin_hooks};
+
     $class->_validate_and_clean_data(\%p);
     $class->_create_full(%p);
     my $self = $class->new(%p);
     $self->_enable_default_plugins;
-    $self->_create_central_workspace;
+    $self->_account_create_hook unless $no_plugin_hooks;
 
     my $msg = 'CREATE,ACCOUNT,account:' . $self->name
               . '(' . $self->account_id . '),'
@@ -740,36 +743,22 @@ sub create {
     return $self;
 }
 
-sub _create_central_workspace {
+sub _account_create_hook {
     my $self = shift;
 
-    # Don't create a central workspace for these default workspaces that don't
-    # have real users
+    # Don't die trying to access the systemuser before it exists
     return
         if $self->name eq 'Unknown'
         or $self->name eq 'Deleted'
         or $self->name eq 'Socialtext';
 
-    my $user = Socialtext::User->SystemUser();
-
-    # Find a valid name
-    my ($title, $name, $ws);
-    for (my $i = 0; !$i or defined $ws; $i++) {
-        # XXX: Bad for i18n:
-        $title = $self->name . ' Central' . ($i ? " $i" : "");
-        $name = Socialtext::String::title_to_id($title);
-        $ws = Socialtext::Workspace->new(name => $name)
-    }
-
-    my $wksp = Socialtext::Workspace->create(
-        name       => $name,
-        title      => $title,
-        account_id => $self->account_id,
-        created_by_user_id => $user->user_id(),
-    );
-    $wksp->assign_role_to_account(account => $self);
+    # Call the nlw.create_account event on all pluggable plugins
+    # Here is where the widgets plugin will set the central_workspace
+    # preference
+    my $adapter = Socialtext::Pluggable::Adapter->new;
+    $adapter->make_hub(Socialtext::User->SystemUser());
+    $adapter->hook('nlw.create_account', [$self]);
 }
-
 
 sub _enable_default_plugins {
     my $self = shift;

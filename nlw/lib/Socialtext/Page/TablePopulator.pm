@@ -225,43 +225,49 @@ sub load_revision_metadata {
     my @revisions;
     opendir(my $dfh, "$ws_dir/$pg_dir");
     REV: while (my $file = readdir($dfh)) {
+        next unless $file =~ m/^\d+\.txt$/;
         $file = "$ws_dir/$pg_dir/$file";
         next REV if -l $file;
         next REV unless -f $file;
 
         # Ignore really old pages that have invalid page_ids
         next REV unless Socialtext::Encode::is_valid_utf8($file);
-        my $pagemeta = fetch_metadata($file);
-        (my $revision_id = $file) =~ s#.+/(.+)\.txt$#$1#;
-        my $tags = $pagemeta->{Category} || [];
-        $tags = [$tags] unless ref($tags);
+        eval {
+            my $pagemeta = fetch_metadata($file);
+            (my $revision_id = $file) =~ s#.+/(.+)\.txt$#$1#;
+            my $tags = $pagemeta->{Category} || [];
+            $tags = [$tags] unless ref($tags);
 
-        my $subject = $pagemeta->{Subject} || '';
-        if (ref($subject)) { # Handle bad duplicate headers
-            $subject = shift @$subject;
-        }
-        my $summary = $pagemeta->{Summary} || '';
-        if (ref($summary) eq 'ARRAY') {
-            # work around a bug where a page has 2 Summary revisions.
-            $summary = $summary->[-1];
-        }
+            my $subject = $pagemeta->{Subject} || '';
+            if (ref($subject)) { # Handle bad duplicate headers
+                $subject = shift @$subject;
+            }
+            my $summary = $pagemeta->{Summary} || '';
+            if (ref($summary) eq 'ARRAY') {
+                # work around a bug where a page has 2 Summary revisions.
+                $summary = $summary->[-1];
+            }
 
-        push @revisions, [
-            Socialtext::Page::Legacy::read_and_decode_file($file, 1, 1),
-            $self->{workspace}->workspace_id,
-            $pg_dir,
-            $revision_id,
-            $pagemeta->{Revision} || 1,
-            $subject,
-            editor_to_id($pagemeta->{From}),
-            $pagemeta->{Date},
-            $pagemeta->{Type} || 'wiki',
-            ($pagemeta->{Control} || '') eq 'Deleted' ? 1 : 0,
-            $summary,
-            $pagemeta->{RevisionSummary} || '',
-            $pagemeta->{Locked} || 0,
-            $tags,
-        ];
+            push @revisions, [
+                Socialtext::Page::Legacy::read_and_decode_file($file, 1, 1),
+                $self->{workspace}->workspace_id,
+                $pg_dir,
+                $revision_id,
+                $pagemeta->{Revision} || 1,
+                $subject,
+                editor_to_id($pagemeta->{From}),
+                $pagemeta->{Date},
+                $pagemeta->{Type} || 'wiki',
+                ($pagemeta->{Control} || '') eq 'Deleted' ? 1 : 0,
+                $summary,
+                $pagemeta->{'Revision-Summary'} || '',
+                $pagemeta->{Locked} || 0,
+                $tags,
+            ];
+        };
+        if ($@) {
+            warn "Error parsing revision $ws_dir/$pg_dir/$file: $@, skipping\n";
+        }
     }
     closedir($dfh);
 

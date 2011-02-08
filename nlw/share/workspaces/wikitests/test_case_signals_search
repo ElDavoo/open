@@ -2,7 +2,7 @@
 
 * Fixture: SocialWidgets
 
-| enable-acct-plugin | signals | %%hostname%% |
+| enable-acct-plugin | signals | %%defaultaccount%% |
 
 | *Comment* | Test Case: Signals Search. Two users, lexicographically orderable |  |
 
@@ -12,8 +12,8 @@
 | set | a_name | Antiphonal Signaller %%start_time%% |
 | set | z_name | Zany Replier %%start_time%% |
 
-| create_user | %%a_username%% | %%password%% | %%hostname%% | %%a_name%% |
-| create_user | %%z_username%% | %%password%% | %%hostname%% | %%z_name%% |
+| create_user | %%a_username%% | %%password%% | %%defaultaccount%% | %%a_name%% |
+| create_user | %%z_username%% | %%password%% | %%defaultaccount%% | %%z_name%% |
 
 | st-logoutin | %%a_username%% | %%password%% |
 

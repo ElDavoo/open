@@ -8,7 +8,8 @@ use Socialtext::Workspace;
 use List::MoreUtils qw(any);
 use base 'Exporter'; 
 our @EXPORT_OK = qw/socialtext_schema_version ensure_socialtext_schema
-                    create_job_for_each_workspace create_job/;
+                    create_job_for_each_workspace create_job
+                    create_job_for_each_account/;
 
 sub socialtext_schema_version {
     my $schema = Socialtext::Schema->new;
@@ -25,23 +26,24 @@ sub ensure_socialtext_schema {
     $schema->sync( to_version => $max_version );
 }
 
-sub create_job_for_each_workspace {
-    my ($class, $prio, %opts) = @_;
+sub _create_job_for_all {
+    my ($all, $key, $class, $prio, %opts) = @_;
     die 'A job class is mandatory' unless $class;
     $prio = 31 unless defined $prio;
     my $except = $opts{except} || [];
 
-    my $class_path = $opts{not_upgrade} ? 'Socialtext::Job::' : 'Socialtext::Job::Upgrade::';
+    my $class_path = $opts{not_upgrade}
+        ? 'Socialtext::Job::'
+        : 'Socialtext::Job::Upgrade::';
     my $job_class = $class_path . $class;
 
-    my $all = Socialtext::Workspace->All;
     my $job_count = 0;
-    while (my $ws = $all->next) {
-        my $name = $ws->name;
+    while (my $obj = $all->next) {
+        my $name = $obj->name;
         next if any { $_ eq $name } @$except;
         Socialtext::JobCreator->insert( $job_class,
             { 
-                workspace_id => $ws->workspace_id,
+                $key => $obj->$key, # workspace_id or account_id
                 job => {
                     coalesce => $name,
                     ($prio ? (priority => $prio) : ()),
@@ -54,6 +56,14 @@ sub create_job_for_each_workspace {
     $job_count++;
 
     print "Inserted $job_count $job_class jobs\n";
+}
+
+sub create_job_for_each_workspace {
+    _create_job_for_all(Socialtext::Workspace->All, 'workspace_id', @_);
+}
+
+sub create_job_for_each_account {
+    _create_job_for_all(Socialtext::Account->All, 'account_id', @_);
 }
 
 sub create_job {

@@ -661,6 +661,12 @@ widget:
     title: Raw HTML block. Click to edit.
     use_title_as_text: true
 
+  widget:
+    id: widget
+    color: indianred
+    title: __title__ Widget. Click to configure.
+    use_title_as_text: true
+
   code:
     id: code
     color: indianred

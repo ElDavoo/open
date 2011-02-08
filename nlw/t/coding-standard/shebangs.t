@@ -22,6 +22,7 @@ my %IGNORE_PERL = map {$_ => 1} qw(
 
 my %IGNORE_MEGAPERL = map { $_ => 1 } qw(
     appliance/debian/rules
+    appliance/debian/socialtext.ceqlotron.init
     appliance/st-appliance-update/debian/postinst
     appliance/st-appliance-update/debian/rules
     appliance/st-perf-tools/debian/rules
