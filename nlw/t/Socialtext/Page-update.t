@@ -124,6 +124,6 @@ sub _validate_page {
     is( $page->metadata->Revision, $p{revision},
         "page revision should $p{revision}" );
     if ($p{tags}) {
-        is_deeply($page->metadata->Category, $p{tags}, 'tags are correct');
+        is_deeply($page->tags, $p{tags}, 'tags are correct');
     }
 }

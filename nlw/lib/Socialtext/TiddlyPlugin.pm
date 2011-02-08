@@ -183,7 +183,7 @@ sub _tiddler_representation {
         created  => $self->_make_tiddly_date(
             $page->original_revision->metadata->Date
         ),
-        tags     => $self->_make_tiddly_tags( $page->metadata->Category ),
+        tags     => $self->_make_tiddly_tags( $page->tags ),
         wikitext => $self->_escape_wikitext( $page->content ),
         workspace   => $self->hub->current_workspace->name(),
         page        => $page->uri,

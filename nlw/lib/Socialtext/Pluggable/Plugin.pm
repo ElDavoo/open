@@ -576,7 +576,7 @@ sub tags_for_page {
     my @tags = ();
     my $page = $self->get_page(%p);
     if (defined($page)) {
-        push @tags, @{$page->metadata->Category};
+        push @tags, @{$page->tags};
     }
     return ( grep { lc($_) ne 'recent changes' } @tags );
 }

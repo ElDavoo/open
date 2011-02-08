@@ -63,7 +63,7 @@ sub _revision {
     return +{
         revision_id => $revision->revision_id,
         revision_date => $revision->metadata->Date,
-        tags => $revision->metadata->Category,
+        tags => $revision->tags,
     };
 }
 

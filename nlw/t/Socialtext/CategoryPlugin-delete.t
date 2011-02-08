@@ -19,7 +19,7 @@ my $pages = $admin_hub->pages;
 
     my $page = $pages->new_from_name('Admin');
     $page->content('test content');
-    $page->metadata->Category([ @{ $page->metadata->Category }, $cat ]);
+    $page->metadata->Category([ @{ $page->tags }, $cat ]);
     $page->store(user => $user);
 
     is( ( scalar grep { $_->is_in_category($cat) } $pages->all), 1,
@@ -41,12 +41,12 @@ my $pages = $admin_hub->pages;
 
     my $page = $pages->new_from_name('Admin');
     $page->content('test content');
-    $page->metadata->Category( [ @{$page->metadata->Category}, $cat ] );
+    $page->metadata->Category( [ @{$page->tags}, $cat ] );
     $page->store( user => $user );
 
     $page = $pages->new_from_name('Conversations');
     $page->content('test content');
-    $page->metadata->Category( [ @{$page->metadata->Category}, $cat ] );
+    $page->metadata->Category( [ @{$page->tags}, $cat ] );
     $page->store( user => $user );
 
     is( ( scalar grep { $_->is_in_category($cat) } $pages->all ), 2,
@@ -68,7 +68,7 @@ caseless_delete: {
     my $page = $pages->new_from_name('Maxwell Banjo');
     $page->content('test content');
     $page->metadata->Category([
-        @{$page->metadata->Category}, 'Dog', # capitalized
+        @{$page->tags}, 'Dog', # capitalized
     ]);
     $page->store( user => $user );
 
@@ -76,7 +76,7 @@ caseless_delete: {
     $page = $pages->new_from_name('Warren Kaczynski');
     $page->content('test content');
     $page->metadata->Category([
-        @{$page->metadata->Category}, 'dog',
+        @{$page->tags}, 'dog',
     ]);
     $page->store( user => $user );
 

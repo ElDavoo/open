@@ -83,7 +83,7 @@ sub tests_for_email {
           qr/\Qlists.sourceforge.net ([66.35.250.206]\E\s+\Qhelo=sc8-sf-list1.sourceforge.net)\E/,
           'check that page metadata Received matches part of the Received header in email' );
 
-    my $categories = $page->metadata()->Category();
+    my $categories = $page->tags;
     ok( scalar @$categories, 'page has category metadata' );
     is_deeply( [ sort @$categories ],
                [ 'Email', 'ape', 'monkey' ],
@@ -224,7 +224,7 @@ EOF
     my $page = $hub->pages()->new_from_name('In New Cat');
     isa_ok( $page, 'Socialtext::Page' );
     is_deeply(
-        [ sort @{ $page->metadata()->Category() } ],
+        [ sort @{ $page->tags } ],
         [ 'Email', 'New Cat' ],
         'page is in Email and New Cat categories'
     );
@@ -245,7 +245,7 @@ EOF
     my $page = $hub->pages()->new_from_name('In New Cat2');
     isa_ok( $page, 'Socialtext::Page' );
     is_deeply(
-        [ sort @{ $page->metadata()->Category() } ],
+        [ sort @{ $page->tags } ],
         [ 'Email', 'New Cat2' ],
         'page is in Email and New Cat2 categories'
     );
@@ -266,7 +266,7 @@ EOF
     my $page = $hub->pages()->new_from_name('In New Cat3');
     isa_ok( $page, 'Socialtext::Page' );
     is_deeply(
-        [ sort @{ $page->metadata()->Category() } ],
+        [ sort @{ $page->tags } ],
         [ 'Email', 'New Cat3' ],
         'page is in Email and New Cat3 categories'
     );
@@ -289,7 +289,7 @@ EOF
     my $page = $hub->pages()->new_from_name('utf8 category');
     isa_ok( $page, 'Socialtext::Page' );
     is_deeply(
-        [ sort @{ $page->metadata()->Category() } ],
+        [ sort @{ $page->tags } ],
         [ 'Email', $singapore_category ],
         'page is in Email and {Singapore Blog} categories'
     );
@@ -310,7 +310,7 @@ EOF
     my $page = $hub->pages()->new_from_name('mixed case ws name');
     isa_ok( $page, 'Socialtext::Page' );
     is_deeply(
-        [ sort @{ $page->metadata()->Category() } ],
+        [ sort @{ $page->tags } ],
         [ 'Email', 'New Cat' ],
         'mixed case ws name - page is in Email and New Cat categories'
     );
@@ -337,7 +337,7 @@ EOF
     my $page = $hub->pages()->new_from_name('Cats in Body');
     isa_ok( $page, 'Socialtext::Page' );
     is_deeply(
-        [ sort @{ $page->metadata()->Category() } ],
+        [ sort @{ $page->tags } ],
         [ 'Cat1', 'Cat2', 'Cat3', 'Cat4', 'Email' ],
         'page is in Cat1, Cat2, Cat3, Cat4 & Email categories'
     );
@@ -363,7 +363,7 @@ EOF
 
     my $page = $hub->pages()->new_from_name('Tags in Body');
     is_deeply(
-        [ sort @{ $page->metadata()->Category() } ],
+        [ sort @{ $page->tags } ],
         [ 'Cat1', 'Cat2', 'Cat3', 'Cat4', 'Email' ],
         'page is in Cat1, Cat2, Cat3, Cat4 & Email categories'
     );
@@ -387,7 +387,7 @@ EOF
     my $page = $hub->pages()->new_from_name('Cats in Body2');
     isa_ok( $page, 'Socialtext::Page' );
     is_deeply(
-        [ sort @{ $page->metadata()->Category() } ],
+        [ sort @{ $page->tags } ],
         [ 'Cat1', 'Email' ],
         'page is in Cat1 & Email categories'
     );
@@ -417,7 +417,7 @@ BAD_FLOWED_CATEGORIES: {
         my $page = $hub->pages()->new_from_name("Bad Format=Flowed Category $num");
         isa_ok( $page, 'Socialtext::Page' );
         is_deeply(
-            [ sort @{ $page->metadata()->Category() } ],
+            [ sort @{ $page->tags } ],
             $tests{$num},
             "bad flowed $num is in correct categories"
         );
@@ -917,7 +917,7 @@ EOF
     my $page = $hub->pages()->new_from_name('In New Cat by Japanese');
     isa_ok( $page, 'Socialtext::Page' );
     is_deeply(
-        [ sort @{ $page->metadata()->Category() } ],
+        [ sort @{ $page->tags } ],
         [ 'Email', 'New タグ' ],
         'page is in Email and New Cat categories'
     );
@@ -938,7 +938,7 @@ EOF
     my $page = $hub->pages()->new_from_name('In New Cat2 by Japanese');
     isa_ok( $page, 'Socialtext::Page' );
     is_deeply(
-        [ sort @{ $page->metadata()->Category() } ],
+        [ sort @{ $page->tags } ],
         [ 'Email', 'New タグ' ],
         'page is in Email and New Cat2 categories'
     );
@@ -962,7 +962,7 @@ EOF
     my $page = $hub->pages()->new_from_name('Cats in Body by Japanese');
     isa_ok( $page, 'Socialtext::Page' );
     is_deeply(
-        [ sort @{ $page->metadata()->Category() } ],
+        [ sort @{ $page->tags } ],
         [ 'Email', 'タグ１', 'タグ２', 'タグ３', 'タグ４' ],
         'page is in  Email, タグ１, タグ２, タグ３ and タグ４ categories'
     );
@@ -988,7 +988,7 @@ EOF
 
     my $page = $hub->pages()->new_from_name('Tags in Body by Japanese');
     is_deeply(
-        [ sort @{ $page->metadata()->Category() } ],
+        [ sort @{ $page->tags } ],
         [ 'Email', 'タグ１', 'タグ２', 'タグ３', 'タグ４' ],
         'page is in  Email, タグ１, タグ２, タグ３ and タグ４ categories'
     );

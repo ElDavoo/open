@@ -149,7 +149,7 @@ sub _add_page_doc {
     my $title = $page->title;
     _scrub_field(\$title);
 
-    my $tags = $page->metadata->Category;
+    my $tags = $page->tags;
     my @fields = (
         [id => $id], # composite of workspace and page
         # it is important to call this 'w' instead of 'workspace_id', because

@@ -187,7 +187,7 @@ sub display {
             my $tmpl_page = $self->hub->pages->new_from_name($template);
             if ($tmpl_page->exists) {
                 push @new_tags, grep { $_ !~ /^template$/i }
-                                @{ $tmpl_page->metadata->Category };
+                                @{ $tmpl_page->tags };
                 $page->content($tmpl_page->content);
 
                 # Attachments used to be copied to the new page here.  Since
@@ -272,7 +272,7 @@ sub _render_display {
             title                   => $page->title,
             page                    => $self->_get_page_info($page),
             template_name           => $self->cgi->template || '',
-            tag_count               => scalar @{ $page->metadata->Category }, # counts recent changes!
+            tag_count               => scalar @{ $page->tags }, # counts recent changes!
             tags                    => $self->_getCurrentTags($page),
             initialtags             => $self->_getCurrentTagsJSON($page),
             workspacetags           => $self->_get_workspace_tags,
@@ -442,7 +442,7 @@ sub _getCurrentTags {
     my $self = shift;
     my $page = shift;
 
-    my $page_tags = $page->metadata->Category;
+    my $page_tags = $page->tags;
     my %weighted_tags = (tags => $page_tags);
     if (@$page_tags) {
         %weighted_tags = $self->hub->category->weight_categories(@$page_tags);

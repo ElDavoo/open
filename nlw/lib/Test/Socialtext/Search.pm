@@ -146,7 +146,7 @@ sub create_and_confirm_page {
         like( $page->content, qr{$content},
             'page content is correct');
         if (@$categories) {
-            my $page_categories = $page->metadata->Category;
+            my $page_categories = $page->tags;
             foreach my $category (grep !/recent changes/i, @$categories) {
                 ok((grep /\b$category\b/i, @$page_categories),
                     "page is in $category");

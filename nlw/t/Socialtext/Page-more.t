@@ -31,7 +31,7 @@ my $creator = Socialtext::User->new( username => 'devnull1@socialtext.com' );
         creator => $creator,
     );
     my $basic = $pages->new_from_name('basic usage');
-    is $basic->metadata->Category->[0], 'test', 'category saved';
+    is $basic->tags->[0], 'test', 'category saved';
 }
 
 {

@@ -110,7 +110,7 @@ sub _fire_page_webhooks {
                 name         => $page->metadata->Subject,
                 uri          => $page->full_uri,
                 edit_summary => $page->edit_summary,
-                tags         => $page->metadata->Category,
+                tags         => $page->tags,
                 tags_added   => $tags_added,
                 tags_deleted => $tags_deleted,
                 edit_time    => $page->metadata->Date,
@@ -126,7 +126,7 @@ sub _fire_page_webhooks {
     my %hook_opts = (
         account_ids   => [ $wksp->account->account_id ],
         workspace_id  => $wksp->workspace_id,
-        tags          => $p{tags} || $page->metadata->Category,
+        tags          => $p{tags} || $page->tags,
         page_id       => $page->id,
         payload_thunk => $thunk,
     );
@@ -153,18 +153,18 @@ sub page_update {
     my $class = 'page.update';
     if ($page->revision_count == 1) {
         $class = 'page.create';
-        $p{tags_added} = $page->metadata->Category;
+        $p{tags_added} = $page->tags;
     }
     elsif ($page->deleted) {
         $class = 'page.delete';
-        $p{tags} = $page->prev_revision->metadata->Category;
+        $p{tags} = $page->prev_revision->tags;
     }
     else {
         $class = 'page.create' if $page->restored;
 
         # Look for page tag changes
-        my %prev_tags = map { $_ => 1 } @{ $page->prev_revision->metadata->Category };
-        my %now_tags  = map { $_ => 1 } @{ $page->metadata->Category };
+        my %prev_tags = map { $_ => 1 } @{ $page->prev_revision->tags };
+        my %now_tags  = map { $_ => 1 } @{ $page->tags };
 
         my (@added, @deleted);
         for my $t (keys %prev_tags) {

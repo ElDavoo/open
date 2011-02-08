@@ -572,7 +572,7 @@ sub _set_page_categories {
         if defined $cat;
 
     my %categories = map { $_ => 1 }
-        grep {defined} @{ $self->{page}->metadata()->Category() },
+        grep {defined} @{ $self->{page}->tags },
         @{ $self->{categories} }, $cat;
 
     $self->{page}->metadata()->Category( [ keys %categories ] );
