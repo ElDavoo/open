@@ -612,9 +612,9 @@ sub _add_delete_tags {
     my $was_mutable = $self->mutable;
     my $rev = $self->edit_rev();
     my $changed = $is_add ? $rev->add_tags($tags) : $rev->delete_tags($tags);
-    if ($was_mutable) {
-        $rev->edit_summary('');
-        $rev->store();
+    unless ($was_mutable) {
+        $self->edit_summary('');
+        $self->store();
     }
 
     foreach my $tag (@$changed) {
@@ -902,7 +902,7 @@ sub store {
         }
         sql_execute_array(q{
             INSERT INTO page_tag (workspace_id, page_id, tag) VALUES (?,?,?)
-        }, $ws_id, $page_id, $tags) if @$tags;
+        }, {}, $ws_id, $page_id, $tags) if @$tags;
     };
 
     $self->_exists(1);
@@ -1891,7 +1891,8 @@ sub duplicate {
     }
 
     return try { sql_txn {
-        my $rev = $self->rev->mutable_clone(editor => $user);
+        my $rev = $self->mutable
+            ? $self->rev : $self->rev->mutable_clone(editor => $user);
 
         # Attach the mutable revision to the target page. Since most of the
         # properties will carry-over, we just need to modify the identity

@@ -5,24 +5,22 @@ use warnings;
 use strict;
 
 use Test::Socialtext tests => 8;
-fixtures( 'admin' );
+fixtures( 'db' );
 
-# The point of this test is to test page duplication without ever
-# loading the workspaces class
-
-my $admin_hub = new_hub('admin');
+my $admin_hub = create_test_hub();
 my $user = $admin_hub->current_user;
 my $pages = $admin_hub->pages;
 
-{
+try_delete: {
     my $cat = 'Category Delete Test';
 
     my $page = $pages->new_from_name('Admin');
+    $page->edit_rev();
     $page->content('test content');
-    $page->metadata->Category([ @{ $page->tags }, $cat ]);
-    $page->store(user => $user);
+    $page->tags([$cat]);
+    $page->store();
 
-    is( ( scalar grep { $_->is_in_category($cat) } $pages->all), 1,
+    is( ( grep { $_->is_in_category($cat) } $pages->all), 1,
         'There is one page in the "Category Delete Test" category');
 
     my $categories = $admin_hub->category;
@@ -40,14 +38,16 @@ my $pages = $admin_hub->pages;
     my $cat = 'Category Delete Test 2';
 
     my $page = $pages->new_from_name('Admin');
+    $page->edit_rev();
     $page->content('test content');
-    $page->metadata->Category( [ @{$page->tags}, $cat ] );
-    $page->store( user => $user );
+    $page->tags([$cat]);
+    $page->store();
 
     $page = $pages->new_from_name('Conversations');
-    $page->content('test content');
-    $page->metadata->Category( [ @{$page->tags}, $cat ] );
-    $page->store( user => $user );
+    $page->edit_rev();
+    $page->content('test content 2');
+    $page->tags([$cat]);
+    $page->store();
 
     is( ( scalar grep { $_->is_in_category($cat) } $pages->all ), 2,
         'There are two pages in the "Category Delete Test 2" category' );
@@ -66,18 +66,16 @@ my $pages = $admin_hub->pages;
 caseless_delete: {
     # Capitalized Tag
     my $page = $pages->new_from_name('Maxwell Banjo');
+    $page->edit_rev();
     $page->content('test content');
-    $page->metadata->Category([
-        @{$page->tags}, 'Dog', # capitalized
-    ]);
+    $page->tags([ 'Dog' ]); # Capitalized
     $page->store( user => $user );
 
     # lowercase tag
     $page = $pages->new_from_name('Warren Kaczynski');
+    $page->edit_rev();
     $page->content('test content');
-    $page->metadata->Category([
-        @{$page->tags}, 'dog',
-    ]);
+    $page->tags(['dog']); # lower-case
     $page->store( user => $user );
 
     # should delete 'Dog' and 'dog'.

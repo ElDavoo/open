@@ -6,18 +6,18 @@ use warnings;
 use base 'Socialtext::Query::Plugin';
 
 use Class::Field qw( const field );
-use Socialtext::File;
-use Socialtext::Paths;
-use POSIX ();
-use Readonly;
-use Socialtext::Permission qw( ST_ADMIN_WORKSPACE_PERM );
-use Socialtext::Validate qw( validate SCALAR_TYPE USER_TYPE );
-use URI::Escape ();
-use Socialtext::l10n qw(loc);
-use Socialtext::Timer qw/time_scope/;
-use Socialtext::SQL qw/:exec/;
-use Socialtext::Pages;
 use List::Util qw/min/;
+use Readonly;
+use URI::Escape ();
+
+use Socialtext::File;
+use Socialtext::Pages;
+use Socialtext::Paths;
+use Socialtext::Permission qw( ST_ADMIN_WORKSPACE_PERM );
+use Socialtext::SQL qw/:exec sql_txn/;
+use Socialtext::Timer qw/time_scope/;
+use Socialtext::Validate qw( validate SCALAR_TYPE USER_TYPE );
+use Socialtext::l10n qw(loc);
 
 sub class_id {'category'}
 const class_title => 'Category Managment';
@@ -325,10 +325,10 @@ sub get_pages_for_category {
                         ? 'last_edit_time DESC' 
                         : 'create_time DESC';
 
-    # Load from the database, and then map into old-school page objects
-    my $model_pages = [];
+    # Load from the database
+    my $pages = [];
     if (lc($tag) eq 'recent changes') {
-        $model_pages = Socialtext::Pages->All_active(
+        $pages = Socialtext::Pages->All_active(
             hub          => $self->hub,
             workspace_id => $self->hub->current_workspace->workspace_id,
             order_by     => $order_by,
@@ -338,20 +338,18 @@ sub get_pages_for_category {
     }
     else {
         $tag = Socialtext::Encode::ensure_is_utf8($tag);
-        $model_pages = Socialtext::Pages->By_tag(
+        $pages = Socialtext::Pages->By_tag(
             hub          => $self->hub,
             workspace_id => $self->hub->current_workspace->workspace_id,
             tag          => $tag,
             order_by     => $order_by,
             ($limit ? (limit => $limit) : ()),
             ($offset ? (offset => $offset) : ()),
-            do_not_need_tags => 1,
         );
     }
 
-    # XXX THIS IS REALLY SLOW, this should all be paginated in the DB
-    # _get_pages_for_listview is much faster.
-    return map { $self->hub->pages->new_page($_->id) } @$model_pages
+    return @$pages if wantarray;
+    return $pages;
 }
 
 sub _get_pages_for_listview {
@@ -417,18 +415,20 @@ sub get_pages_numeric_range {
     sub delete {
         my $self = shift;
         my %p    = validate( @_, $spec );
+        my $tag = $p{tag};
 
         # Delete the tag on each page
-        for my $page ( $self->get_pages_for_category($p{tag}) ) {
-            $page->delete_tags($p{tag}); # automatically stores
-        }
+        sql_txn {
+            for my $page ( $self->get_pages_for_category($tag) ) {
+                $page->delete_tags($tag); # automatically stores
+            }
 
-        # Delete any workspace tags
-        sql_execute(q{
-            DELETE FROM page_tag 
-                WHERE workspace_id = ?
-                  AND LOWER(tag) = LOWER(?)
-        }, $self->hub->current_workspace->workspace_id, $p{tag});
+            # Delete any workspace tags
+            sql_execute(q{
+                DELETE FROM page_tag 
+                 WHERE workspace_id = ? AND LOWER(tag) = LOWER(?)
+            }, $self->hub->current_workspace->workspace_id, $tag);
+        };
     }
 }
 
