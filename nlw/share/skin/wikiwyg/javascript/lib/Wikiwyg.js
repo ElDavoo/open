@@ -866,7 +866,7 @@ proto.contentIsModified = function() {
     if (this.originalWikitext.match(clearRegex) && current_wikitext.match(/^\n?$/)) {
         return false;
     }
-    return (current_wikitext != this.originalWikitext);
+    return (current_wikitext.replace(/\r/g, '') != this.originalWikitext.replace(/\r/g, ''));
 }
 
 proto.diffContent = function () {
