@@ -106,7 +106,7 @@ sub page_display_link_from_page {
     my $self = shift;
     my $page = shift;
     my $path = $self->script_path . '?' . $page->uri;
-    my $title = $self->html_escape($page->metadata->Subject);
+    my $title = $self->html_escape($page->name);
     return qq(<a href="$path">$title</a>);
 }
 

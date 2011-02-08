@@ -23,7 +23,7 @@ my $ws_name = $hub->current_workspace->name;
         user => $hub->current_user,
     );
 
-    $page->metadata->Subject($name);
+    $page->name($name);
     $page->metadata->update( user => $hub->current_user );
     # Put some dummy content in. run_tests() will replace it later.
     $page->content('foo');
@@ -46,7 +46,7 @@ my $ws_name = $hub->current_workspace->name;
 {
     my $page = $hub->pages->new_from_name('Another html-page wafl test page');
 
-    $page->metadata->Subject('Another html-page wafl test page');
+    $page->name('Another html-page wafl test page');
     $page->metadata->update( user => $hub->current_user );
     $page->content('foo');
     $page->store( user => $hub->current_user );

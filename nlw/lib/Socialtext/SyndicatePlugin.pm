@@ -398,7 +398,7 @@ sub _page_feed_title {
     my $page = shift;
 
     return $self->hub->current_workspace->title . ': '
-        . $page->metadata->Subject;
+        . $page->name;
 }
 
 sub _tag_html_link {

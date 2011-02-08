@@ -11,7 +11,7 @@ $JSON::UTF8 = 1;
 sub allowed_methods { 'GET' }
 
 sub collection_name {
-    'Tag History for  ' . $_[0]->page->metadata->Subject;
+    'Tag History for  ' . $_[0]->page->name;
 }
 
 sub _resource_to_text {

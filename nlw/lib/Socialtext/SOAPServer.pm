@@ -389,7 +389,7 @@ sub _getPage {
 
     my $page = $hub->pages->new_from_name($page_name);
     my $content = _format_page($hub, $page, $format);
-    my $subject = $page->metadata->Subject;
+    my $subject = $page->name;
 
     return SOAP::Data->name('page' => \SOAP::Data->value(
             SOAP::Data->name( 'pageContent' => $content )->type('string')

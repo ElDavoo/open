@@ -475,7 +475,7 @@ sub display_html {
     my $page = $self->hub->pages->current;
     $page->load;
     my $html = $page->to_html;
-    my $title = $page->metadata->Subject;
+    my $title = $page->name;
 
     $html = $self->qualify_links(
         $html, $self->hub->current_workspace->uri

@@ -167,7 +167,7 @@ sub _get_watchlist_info {
         } 
         my $updated_author = $page->last_edited_by || $page->hub->current_user;
         push @pages, {
-            title   => $self->hub->helpers->html_escape($page->metadata->Subject),
+            title   => $self->hub->helpers->html_escape($page->name),
             link    => $self->hub->helpers->page_display_path($_),
             date    => $page->datetime_for_user,
             author  => (  $updated_author

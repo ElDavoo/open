@@ -177,7 +177,7 @@ sub _tiddler_representation {
     my $page = shift;
 
     return +{
-        title => $page->metadata->Subject,
+        title => $page->name,
         modifier => $page->metadata->From, # REVIEW: adjust to best full name?
         modified => $self->_make_tiddly_date( $page->metadata->Date ),
         created  => $self->_make_tiddly_date(

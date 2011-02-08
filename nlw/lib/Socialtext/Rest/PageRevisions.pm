@@ -9,7 +9,7 @@ use base 'Socialtext::Rest::Pages';
 
 # REVIEW: This need to be different depending on the query?
 sub collection_name {
-    'Revisions for  ' . $_[0]->page->metadata->Subject;
+    'Revisions for  ' . $_[0]->page->name;
 }
 
 sub _resource_to_text {
