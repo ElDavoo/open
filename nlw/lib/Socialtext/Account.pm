@@ -1246,6 +1246,9 @@ has 'central_workspace' => (
 sub _build_central_workspace {
     my $self = shift;
 
+    my $user = Socialtext::User->SystemUser();
+    my $wksp;
+
     # Store the name of the workspace
     my $pref_table = Socialtext::PrefsTable->new(
         table    => 'user_set_plugin_pref',
@@ -1257,15 +1260,13 @@ sub _build_central_workspace {
 
     my $prefs = $pref_table->get();
     if ($prefs->{central_workspace}) {
-        return Socialtext::Workspace->new(name => $prefs->{central_workspace});
+        $wksp = Socialtext::Workspace->new(name => $prefs->{central_workspace});
     }
+
+    return $wksp if $wksp;
 
     # Enable the widgets plugin so we can set this preference
     $self->enable_plugin('widgets');
-
-    my $user = Socialtext::User->SystemUser();
-
-    my $wksp;
 
     # Find a valid name for a new workspace
     my ($title, $name);
