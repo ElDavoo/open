@@ -1299,6 +1299,7 @@ sub _build_central_workspace {
 
     my $share_dir = Socialtext::AppConfig->new->code_base();
     $wksp->load_pages_from_disk(
+        clobber => 1,
         dir => "$share_dir/workspaces/central",
         replace => {
             # Replace all pages with YourCo in the title with this account's
