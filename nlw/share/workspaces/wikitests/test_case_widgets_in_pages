@@ -2,8 +2,13 @@
 
 | set | wip_ws | widgets_wiki_%%start_time%% |
 | set | wip_page | widgets_page_%%start_time%% |
+| set | wip_user | wip_user_%%start_time%%@david.socialtext.net |
+| set | wip_tag | widget_tag_%%start_time%% |
 | create_workspace | %%wip_ws%% |  |
+| create_user | %%wip_user%% | %%password%% |
 | st-admin | add-member --workspace %%wip_ws%% --email %%username%% | now has the role |
+| st-admin | add-member --workspace %%wip_ws%% --email %%wip_user%% | now has the role |
+| tag_profile | %%wip_user%% | %%wip_tag%% |
 
 | *Comment* | Test Case: Widgets In Pages make a page |  |
 | open_ok | /%%wip_ws%%/?action=new_page |  |
@@ -58,8 +63,13 @@
 | wait_for_element_not_visible_ok | st-widget-opensocial-gallery-widgets | 15000 |
 | verifyValue | wikiwyg_wikitext_textarea | `{widget: local:people:all_tags#2 __title__=All%20People%20Tags __width__=600 limit=all}` |
 
+| *Comment* | Test Case: Widgets in Pages save page, check widgets |  |
+| click_and_wait | st-save-button-link |  |
+| wait_for_element_visible_ok | link=%%wip_tag%% | 30000 |
+
 | *Comment* | Test Case: Widgets in Pages TEARDOWN |  |
 | st-process-jobs |  |  |
 | st-admin | delete-workspace --workspace %%wip_ws%% --no-export | has been deleted |
+| st-admin | deactivate-user --email %%wip_user%% | deleted |
 
 | *Comment* | Test Case: Widgets in Pages COMPLETED |  |
