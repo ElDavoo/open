@@ -351,23 +351,22 @@ sub _add_workspace_pages {
     my $keep_categories = $params{keep_homepage_categories};
     my @pages           = @{ $params{pages} };
 
-    my ( $main, $hub ) = $self->_main_and_hub();
-
     # Duplicate the pages
     for my $page (@pages) {
-        my $title = $page->title;
+        $page->edit_rev();
+        my $title = $page->name;
 
-        if ( $page->id eq $top_page_id ) {
-            $title = $self->title;
-            my $content = $page->content;
-            my $content_formatted = $hub->template->process(
-                \$content,
+        if ($page->id eq $top_page_id) {
+            my ($main, $hub) = $self->_main_and_hub();
+            $title = $self->title;  # name it after this workspace
+            # don't assign process() output to a var for speed/space
+            $page->content($hub->template->process(
+                $page->body_ref,
                 workspace_title => $self->title
-            );
-            $page->content($content_formatted);
-
-            $page->metadata->Category([]) unless $keep_categories;
-        } else {
+            ));
+            $page->tags([]) unless $keep_categories;
+        }
+        else {
             $page->delete_tag("Top Page");
         }
 

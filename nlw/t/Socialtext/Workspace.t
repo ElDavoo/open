@@ -445,7 +445,7 @@ Clone_from_workspace: {
         name             => 'cloned',
         title            => 'Cloned from',
         account_id       => Socialtext::Account->Socialtext()->account_id,
-        clone_pages_from => 'no-pages'
+        clone_pages_from => $to_clone_hub->current_workspace->name,
     );
 
     # Make sure the new workspace 'inherits' the homepage.

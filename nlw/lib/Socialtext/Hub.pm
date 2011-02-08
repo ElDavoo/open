@@ -404,7 +404,6 @@ BEGIN {
             Socialtext::RenamePagePlugin
             Socialtext::RevisionPlugin
             Socialtext::ShortcutLinksPlugin
-            Socialtext::SOAPPlugin
             Socialtext::GoogleSearchPlugin
             Socialtext::SyndicatePlugin
             Socialtext::TiddlyPlugin

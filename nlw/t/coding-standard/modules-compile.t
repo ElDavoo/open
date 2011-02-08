@@ -50,7 +50,6 @@ main();
 __DATA__
 Socialtext::Handler::Cleanup
 Socialtext::MasonHandler
-Socialtext::SOAPServer
 Socialtext::WebApp::Authen
 Socialtext::Challenger::OpenId
 Socialtext::Handler::REST

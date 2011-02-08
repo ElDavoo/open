@@ -200,8 +200,6 @@ my %ToDoModules = map { $_ => 1 } qw(
     Socialtext::RevisionPlugin
     Socialtext::RtfExportPlugin
     Socialtext::SOAPGoogle
-    Socialtext::SOAPPlugin
-    Socialtext::SOAPServer
     Socialtext::Search::Basic::Factory
     Socialtext::Search::Basic::Indexer
     Socialtext::Search::Basic::Searcher

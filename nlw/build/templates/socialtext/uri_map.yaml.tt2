@@ -723,16 +723,9 @@
         'GET':                  [Socialtext::Rest::Lite, forgot_password]
         '*':                    [Socialtext::Rest::Lite, bad_method]
 -
-    '/wsdl/:wsdl':
-        'GET':                  [Socialtext::Rest::WSDL, GET]
-        '*':                    [Socialtext::Rest::WSDL, bad_method]
--
     '/feed/workspace/:ws':
         'GET':                  [Socialtext::Rest::Feed, GET]
         '*':                    [Socialtext::Rest::Feed, bad_method]
--
-    '/soap/:version':
-        'POST':                 [Socialtext::SOAPServer, POST]
 -
     '/challenge':
         '*':                    [Socialtext::Rest::Challenge, handler]
@@ -758,7 +751,3 @@
 -
     '/':
         '*':                    [Socialtext::Handler::Default, handler]
-# -
-#     '/hydra':
-#         'GET':                  [Socialtext::Rest::Hydra, GET]
-#         '*':                    [Socialtext::Rest::Hydra, bad_method]

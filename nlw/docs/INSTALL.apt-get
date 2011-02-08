@@ -93,28 +93,7 @@ as described in the main INSTALL document.
 
 === Install individual distributions ===
 
-You're now set to install new distributions.  If you want to install,
-say, SOAP::Lite, a particularly odious module to install, do so
-like this:
-
-    $ sudo apt-get install libsoap-lite-perl
-    Reading package lists... Done
-    Building dependency tree... Done
-    Recommended packages:
-      libnet-jabber-perl
-    The following packages will be upgraded:
-      libsoap-lite-perl
-    1 upgraded, 0 newly installed, 0 to remove and 14 not upgraded.
-    Need to get 0B/400kB of archives.
-    After unpacking 4096B of additional disk space will be used.
-    (Reading database ... 95312 files and directories currently installed.)
-    Preparing to replace libsoap-lite-perl 0.66-2 (using .../libsoap-lite-perl_0.68-2_all.deb) ...
-    Unpacking replacement libsoap-lite-perl ...
-    Setting up libsoap-lite-perl (0.68-2) ...
-
-Takes a few seconds to install the package, rather than a couple
-of minutes to download, configure, build, test and install the
-package from Perl's CPAN.
+You're now set to install new distributions.
 
 === Ubuntu Dapper and Breezy ===
 
