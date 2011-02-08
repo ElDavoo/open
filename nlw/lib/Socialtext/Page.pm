@@ -582,12 +582,13 @@ sub get_sections {
 sub prepend {
     my $self = $_[0];
     croak "page isn't mutable" unless $self->mutable;
+    my $new = ref($_[1]) ? $_[1] : \$_[1];
     my $body_ref = $self->body_ref;
     if ($body_ref && length($$body_ref)) {
-        my $body = "$_[1]\n---\n$$body_ref"; # deliberate copy
+        my $body = "$$new\n---\n$$body_ref"; # deliberate copy
         $body_ref = \$body;
     } else {
-        $body_ref = \$_[1];
+        $body_ref = $new;
     }
     $self->body_ref($body_ref);
 }
@@ -595,12 +596,13 @@ sub prepend {
 sub append {
     my $self = $_[0];
     croak "page isn't mutable" unless $self->mutable;
+    my $new = ref($_[1]) ? $_[1] : \$_[1];
     my $body_ref = $self->body_ref;
     if ($body_ref && length($$body_ref)) {
-        my $body = "$$body_ref\n---\n$_[1]"; # deliberate copy
+        my $body = "$$body_ref\n---\n$$new"; # deliberate copy
         $body_ref = \$body;
     } else {
-        $body_ref = \$_[1];
+        $body_ref = $new;
     }
     $self->body_ref($body_ref);
 }

@@ -1,6 +1,7 @@
 # @COPYRIGHT@
 package Socialtext::EmailReceiver::Base;
 
+use feature ':5.12';
 use strict;
 use warnings;
 
@@ -65,21 +66,13 @@ sub receive {
     my $email_address = $self->{from}->address();
 
     $self->_require_email_in_permission( $email_address );
-
     $self->_get_user_for_address( $email_address );
-
     $self->_load_hub();
-
     $self->_get_page_for_subject();
-
     $self->_lock_check();
-
     $self->_save_body_and_strip_attachments();
-
     $self->_get_email_body();
-
     $self->_save_html_bodies_as_attachments();
-
     $self->{hub}->attachments->cache->clear();
 
     # Must be done after we get the email body, because there may be
@@ -156,7 +149,6 @@ sub _lock_check {
     auth_error 'You do not have permission to overwrite the ' .
     $page->title . ' page in the ' . $self->{workspace}->name . ' workspace.' 
         unless $self->{hub}->checker->can_modify_locked( $page );
-
 }
 
 sub _get_user_for_address {
@@ -200,14 +192,7 @@ sub _get_page_for_subject {
         data_validation_error loc("Page title is too long after URL encoding");
         return;
     }
-    $page->load();
-
-    my $metadata = $page->metadata();
-    $metadata->Subject($subject)
-        unless grep { defined and length } $metadata->Subject();
-    $metadata->MessageID( $self->{email}->header('Message-Id') );
-    $metadata->Received( join '\\', $self->{email}->header('Received') );
-
+    $page->edit_rev();
     $self->{page} = $page;
 }
 
@@ -358,13 +343,8 @@ sub _get_text_body {
 
     return unless @lines;
 
-    # REVIEW - this is from NLW::EmailReceive but smells of "ancient
-    # feature no one uses nowadays".
-    my $now = DateTime->now( time_zone => 'UTC' )
-        ->strftime('%Y-%m-%d %H:%M:%S GMT');
-    s/{now}/$now/g for @lines;
-
-    $self->{body}      = join "\n", @lines;
+    my $body = join "\n",@lines;
+    $self->{body}      = \$body;
     $self->{body_type} = 'plain';
 
     return 1;
@@ -502,7 +482,7 @@ sub _get_html_body {
 
     $body =~ s/{image:\s+cid:(\S+?)}/$self->_wafl_for_cid($1)/eg;
 
-    $self->{body}      = $body;
+    $self->{body}      = \$body;
     $self->{body_type} = 'html';
 
     return 1;
@@ -571,11 +551,7 @@ sub _set_page_categories {
     $cat = Socialtext::CategoryPlugin->Decode_category_email($cat)
         if defined $cat;
 
-    my %categories = map { $_ => 1 }
-        grep {defined} @{ $self->{page}->tags },
-        @{ $self->{categories} }, $cat;
-
-    $self->{page}->metadata()->Category( [ keys %categories ] );
+    $self->{page}->add_tags([ grep {defined} @{$self->{categories}}, $cat ]);
 }
 
 sub _get_to_address_local_part {
@@ -607,63 +583,27 @@ sub _get_to_address_local_part {
     return $ws_name;
 }
 
-Readonly my $BodyPlacementMethod => {
-    replace => '_replace_body',
-    top     => '_append_to_top',
-    bottom  => '_append_to_bottom',
-};
-
 sub _update_page_body {
     my $self = shift;
 
-    # For new pages there's no body to replace
-    $self->{body_placement} = 'replace' if not $self->{page}->exists;
+    my $page = $self->{page};
+    my $body_ref = $self->_page_body_from_email();
+    given ($self->{body_placement}) {
+        $page->prepend($body_ref)  when 'top';
+        $page->append($body_ref)   when 'bottom';
+        $page->body_ref($body_ref);
+    }
 
-    my $meth = $BodyPlacementMethod->{ $self->{body_placement} };
-    $self->$meth();
-
-    $self->{page}->metadata()->update( user => $self->{user} );
-    $self->{page}->store( user => $self->{user} );
-}
-
-sub _replace_body {
-    my $self = shift;
-
-    $self->{page}->content( ${ $self->_page_body_from_email() } );
-}
-
-sub _append_to_top {
-    my $self = shift;
-
-    my $old_body = $self->{page}->content;
-    my $new_body = $self->_page_body_from_email();
-
-    ${$new_body} .= "\n---\n" . $old_body
-        if defined $old_body;
-
-    $self->{page}->content( ${$new_body} );
-}
-
-sub _append_to_bottom {
-    my $self = shift;
-
-    my $old_body = $self->{page}->content;
-    my $new_body = $self->_page_body_from_email();
-
-    ${$new_body} = $old_body . "\n---\n" . ${$new_body}
-        if defined $old_body;
-
-    $self->{page}->content( ${$new_body} );
+    $page->store();
 }
 
 sub _page_body_from_email {
     my $self = shift;
 
     my $header = $self->_make_page_header();
-    Encode::_utf8_on($header)         unless Encode::is_utf8($header);
-    Encode::_utf8_on( $self->{body} ) unless Encode::is_utf8( $self->{body} );
-    my $body = join '', @$header, $self->{body};
-
+    Encode::_utf8_on($header) unless Encode::is_utf8($header);
+    Socialtext::Encode::ensure_ref_is_utf8($self->{body});
+    my $body = join '', @$header, ${$self->{body}};
     return \$body;
 }
 
@@ -694,7 +634,7 @@ sub _make_page_header {
         my $wafl = $att->image_or_file_wafl();
         ( my $re = $wafl ) =~ s/\n//g;
 
-        next if $self->{body} =~ /\Q$re/s;
+        next if ${$self->{body}} =~ /\Q$re/s;
         next if $self->{no_wafl}{ $att->filename() };
 
         push @header, $wafl . "\n\n";
