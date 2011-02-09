@@ -105,15 +105,20 @@ sub Create {
     my $content_length = -s $tmp_store;
 
     my $mime_type;
-    try {
-        my $tm = time_scope 'upload_mime_type';
-        $mime_type = Socialtext::File::mime_type(
-            $tmp_store, $filename, $type_hint);
+    if ($type_hint && $p{trust_mime_type}) {
+        $mime_type = $type_hint;
     }
-    catch {
-        $mime_type = 'application/octet-stream';
-        warn "Could not detect mime_type of $filename: $_\n";
-    };
+    else {
+        my $tm = time_scope 'upload_mime_type';
+        try {
+            $mime_type = Socialtext::File::mime_type(
+                $tmp_store, $filename, $type_hint);
+        }
+        catch {
+            $mime_type = 'application/octet-stream';
+            warn "Could not detect mime_type of $filename: $_\n";
+        };
+    }
     my $is_image = ($mime_type =~ m#image/#) ? 1 : 0;
 
     sql_insert(attachment => {

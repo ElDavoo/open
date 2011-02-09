@@ -363,13 +363,19 @@ sub load_page_attachments {
                 db_only        => 1, # don't copy to storage area
             );
 
-            # use the Content-type header or -mime file as a hint, if present.
-            $args{mime_type} = $meta->{content_type} if $meta->{content_type};
             if (-f "$disk_filename-mime") {
                 my $hint = do { local (@ARGV,$_) = "$disk_filename-mime"; <> };
                 chomp $hint;
                 $args{mime_type} = $hint if $hint;
             }
+            elsif ($meta->{content_type}) {
+                $args{mime_type} = $meta->{content_type};
+            }
+
+            # Don't recalculate the mime_type (which requires a slow
+            # shell-out) if we have it at hand.  This saves about 40% time for
+            # help-en.
+            $args{trust_mime_type} = 1 if $args{mime_type}; # big for perf
 
             sql_txn {
                 my $t3 = time_scope 'upload_att';
