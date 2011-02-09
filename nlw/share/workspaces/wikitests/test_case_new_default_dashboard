@@ -1,0 +1,10 @@
+| *Comment* | Test Case: New Default Dashboard |  |
+
+| set | ndd_acct | ndd_account_%%start_time%% |  |
+| set | ndd_user | ndd_user_%%start_time%%@david.socialtext.net |  |
+| create_account | %%ndd_acct%% |  |  |
+| create_user | %%ndd_user%% | %%password%% | %%ndd_acct%% |
+
+| *Comment* | Test Case: New Default Dashboard log in to dashboard to trigger creation of central wiki |  |
+| st-logoutin | %%ndd_user%% | %%password%% |
+| open_ok | /st/dashboard |  |

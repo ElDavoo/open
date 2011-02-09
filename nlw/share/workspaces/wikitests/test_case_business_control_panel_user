@@ -1,9 +1,13 @@
+
 | *Comment* | Test case: Business Control Panel USER |  |
 | set | new_acct | acct-usertest-%%start_time%% |
 | set | new_workspace | user-test%%start_time%% |
 | set | cli_user | cliusertest%%start_time%%@ken.socialtext.net |
 | set | cli_user_escaped | cliusertest%%start_time%%\@ken.socialtext.net |
 | set | short_cli_user | cliusertest%%start_time%% |
+
+
+
 
 | st-admin | create-account --name '%%new_acct%%' | was created |
 | st-admin | create-workspace --empty --name %%new_workspace%% --title %%new_workspace%% --account '%%new_acct%%' | was created |
@@ -70,22 +74,22 @@
 
 | *Comment* | Test case: Business Control Panel User test account table |  |
 | text_like | qr/%%new_acct%%.+Primary Account, Via Workspace: %%new_workspace%%/ism |  |
-| text_like | Appliance Business Administrator? no |  |
-| text_like | Appliance Technical Administrator? no |  |
+| text_like | qr/Appliance Business Administrator\?\s*no/ism |  |
+| text_like | qr/Appliance Technical Administrator\?\s*no/ism |  |
 | click_and_Wait | //input[@value='Assign Appliance Business Administrator Role'] |  |
 | text_like | Assigned the Appliance Business Administrator role to %%cli_user%% |  |
-| text_like | Appliance Business Administrator? yes |  |
+| text_like | qr/Appliance Business Administrator\?\s*yes/ism |  |
 | click_and_wait | //input[@value='Remove Appliance Business Administrator Role'] |  |
 | text_like | Removed the Appliance Business Administrator role from %%cli_user%% |  |
-| text_like | Appliance Business Administrator? no |  |
+| text_like | qr/Appliance Business Administrator\?\s*no/ism |  |
 | click_and_wait | //input[@value='Assign Appliance Technical Administrator Role'] |  |
 | text_like | Assigned the Appliance Technical Administrator role to
 
 %%cli_user%% |  |
-| text_like | Appliance Technical Administrator? yes |  |
+| text_like | qr/Appliance Technical Administrator\?\s*yes/ism |  |
 | click_and_wait | //input[@value='Remove Appliance Technical Administrator Role'] |  |
 | text_like | Removed the Appliance Technical Administrator role from %%cli_user%% |  |
-| text_like | Appliance Technical Administrator? no |  |
+| text_like | qr/Appliance Technical Administrator\?\s*no/ism |  |
 
 | *Comment* | Test case: Business Control Panel User Search |  |
 | click_and_wait | link=Users |  |

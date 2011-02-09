@@ -2,7 +2,7 @@
 [% SET gadget = container.gadgets.0.0 %]
 [% SET num = 0 %]
 [% SET col = 0 %]
-<div class="widget" id="[% gadget.id %]" style="width: [% width || 600 %]px">
+<div class="widget waflWidget" id="[% gadget.id %]" style="width: [% width || 600 %]px">
     <div class="widgetHeader">
         <div id="[% gadget.id %]-title" class="widgetHeaderTitle">
             [% IF !gadget.fixed %]<img class="icon" src="[% share %]/images/[% gadget.icon %].png" />[% END %]
@@ -17,7 +17,7 @@
         </div>
         <script><!--
         jQuery(function(){
-            gadgets.container.renderPreferences('[% gadget.id %]', [% gadget.preferences.json %]);
+            gadgets.container.renderPreferences('[% gadget.id %]', [% gadget.preferences.json || '[]' %]);
         });
         --></script>
         <div id="[% gadget.id %]-content">
@@ -32,5 +32,6 @@ var gadgets = gadgets || {};
 gadgets.container = gadgets.container || new gadgets.Container();
 if (Socialtext.wiki_id && Socialtext.page_id ) {
     gadgets.container.base_url = '/data/wafl-containers/[% container.name |uri %]';
+    gadgets.container.registerServices();
 }
 </script>

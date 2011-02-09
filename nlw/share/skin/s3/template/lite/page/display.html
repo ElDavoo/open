@@ -4,6 +4,16 @@
 [% MACRO user_link BLOCK %]
     [% name | decorate('user_link') %]
 [% END %]
+[% USE JSON %]
+<script><!--
+var Socialtext = Socialtext || {};
+[% IF user %]
+Socialtext.username = [% user.username.json || '' %];
+[% END %]
+[% IF ws %]
+Socialtext.wiki_title = [% ws.title.json || '' %];
+[% END %]
+--></script>
 
 <div class="content">
     [% page_html %]

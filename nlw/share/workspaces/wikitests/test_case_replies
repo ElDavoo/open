@@ -1,4 +1,5 @@
 | *Comment* | Test Case: Replies. Start |  |
+| *Comment* | Test Case: Replies is Firefox-specific because we load IE without wikiwyg while using Se |  |
 
 * Fixture: SocialWidgets
 

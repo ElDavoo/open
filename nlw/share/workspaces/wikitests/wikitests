@@ -19,16 +19,17 @@ Working with wikitest files in a dev env is a bit tricky. In addition to observi
 * cdcur
 * refresh-branch (rb) to get the lastest code and wikitests
 * `wikitests-from-wiki` to dump any work that you have already performed in the wiki to the FS.
-* git diff (gd) to examine work to be committed AND TO SEE IF YOU HAVE INADVERTENTLY OVERWRITTEN new work.
-** git co FILE for any file you should not have overwritten.
+* `git diff` (`gd`) to examine work to be committed AND TO SEE IF YOU HAVE INADVERTENTLY OVERWRITTEN new work.
+** `git checkout FILE` for any file you should not have overwritten with an old copy from your /wikitests.
 * `wikitests-to-wiki` to put all the latest files into /wikitests, including your own
 * modify files in /wikitests during your working session.
-* `wikitests-from-wiki` to copy files from /wikitests to your working copy
 * `rb` AGAIN to fetch any work that might have occurred while you were in your working session.
-** resolve conflicts. This is important. `rb` and repeat until there are no new files brought up.
+* `wikitests-from-wiki` to copy files from /wikitests to your working copy
+** `git diff` (`gd`) to examine work to be committed AND TO SEE IF YOU HAVE INADVERTENTLY OVERWRITTEN new work.
+** `git checkout FILE` for any file you should not have overwritten with an old copy from your /wikitests.
 * `gciam` your new work and any resolved conflicts into your local repo
 * `guppy` to push your local changes to github
-* if the `rb` brought in new work by others, repeat `wikitests-to-wiki` to move it into /wikitests
+* if the `rb` brought in new work by others, `wikitests-to-wiki` to move it into /wikitests
 
 ^^^ Finding Orphan Testcases
 

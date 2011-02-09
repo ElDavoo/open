@@ -37,10 +37,12 @@ my $page_two = Socialtext::Page->new( hub => $hub )->create(
 $content_one = $page_one->to_html_or_default;
 $content_two = $page_two->to_html_or_default;
 
-like $content_one, qr{Page One.*Page Two.*include: \[page one\]}sm,
+# XXX these two used to check for the presence of the inclusion comment, but
+# that's gone now. These are weak checks and should be replaced with something
+# stronger
+like $content_one, qr{Page One.*Page Two}sm,
     'page one should have page two but not recurse';
-
-like $content_two, qr{Page Two.*Page One.*include: \[page two\]}sm,
+like $content_two, qr{Page Two.*Page One}sm,
     'page two should have page one but not recurse';
 
 like $content_two, qr{foobar/people},

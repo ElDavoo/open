@@ -27,7 +27,7 @@
 | wait_for_text_present_ok | Create Workspace | 30000 |
 | wait_for_text_present_ok | Title: | 30000 |
 | text_like | //body | qr/Account:\s+%%acct%%.+(change)/ism |
-| text_like | //body | qr/URI: http[s]?:\/\/%%hostname%%/ |
+| text_like | //body | qr/URI:\s+http[s]?:\/\/%%hostname%%/ism |
 
 | *Comment* | Test Case: Business Control Panel Create Workspace from Account - default case |  |
 | wait_for_element_visible_ok | workspace_title | 30000 |
@@ -57,7 +57,7 @@
 | wait_for_text_present_ok | Groups (0) | 30000 |
 | text_like | //body | qr/Group.+Add Group To Workspace/ism |
 
-| *Comment* | Test Case: Business Control Panel from Create Workspace from Account. go back to acct page |  |
+| *Comment* | Test Case: Business Control Panel Create Workspace from Account. go back to acct page |  |
 | wait_for_element_visible_ok | link=%%acct%% | 30000 |
 | click_ok | link=%%acct%% |  |
 
@@ -86,11 +86,11 @@
 | wait_for_element_visible_ok | create | 30000 |
 | st-pause-click | 5000 | create |
 
-| *Comment* | Test Case: Business Control Panel from Create Workspace from Account. verify alternate WS created |  |
+| *Comment* | Test Case: Business Control Panel Create Workspace from Account. verify alternate WS created |  |
 | wait_for_text_present_ok | %%altname%% workspace | 30000 |
 | location_like | /nlw/control/workspace |  |
 | wait_for_text_present_ok | Users (1) | 30000 |
-| text_like | //body | qr/Account: %%altacct%%/ism |
+| text_like | //body | qr/Account:\s+%%altacct%%/ism |
 | text_like | //body | qr/%%altname%% workspace/ism |
 | text_like | //body | qr/Group.+Add Group To Workspace/ism |
 
@@ -99,6 +99,7 @@ TODO: test the error conditions which were all buggy
 
 | *Comment* | Test Case: Business Control Panel Create Workspace from Account TEARDOWN |  |
 
+| st-process-jobs |  |  |
 | st-admin | delete-workspace --no-export --w %%wsname%% | has been deleted |
 | st-admin | delete-workspace --no-export --w %%altname%% | has been deleted |
 

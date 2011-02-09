@@ -261,7 +261,7 @@ sub html {
 
     my $href = $self->html_escape($match);
     my $output =
-        $match =~ /\.(gif|jpg|jpeg|jpe|png|pbm)(?:\?\S+)?$/i
+        $match =~ /\.(gif|jpg|jpeg|jpe|png|pbm|bmp)(?:\?\S+)?$/i
         ? qq{<img alt="$href" src="$href" border="0" />}
         : $match =~ /^irc:/
         ? "<a title=\"(" . loc('start irc session') . ")\" href=\"$href\">$href</a>"
@@ -323,7 +323,7 @@ sub html {
     my $href = $self->html_escape($match);
     my $escaped_text = $self->html_escape($text);
     my $output =
-        $match =~ /\.(gif|jpg|jpeg|jpe|png|pbm)$/i
+        $match =~ /\.(gif|jpg|jpeg|jpe|png|pbm|bmp)$/i
         ?  ( $text ? qq{<a href="$href">$text</a>} : qq{<img alt="$escaped_text" src="$href" border="0" />} )
         : $match =~ /^irc:/
         ? "<a title=\"(" . loc('start irc session') . "\" href=\"$href\">$escaped_text</a>"

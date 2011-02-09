@@ -13,9 +13,21 @@ has sender => (
     lazy_build => 1,
 );
 
+has workspace => (
+    is => 'ro', isa => 'Socialtext::Workspace',
+    lazy_build => 1,
+);
+
 sub _build_sender {
     my $self = shift;
     return Socialtext::User->new( user_id => $self->arg->{sender_id} );
+}
+
+sub _build_workspace {
+    my $self = shift;
+    return Socialtext::Workspace->new(
+        workspace_id => $self->arg->{workspace_id},
+    );
 }
 
 sub do_work {

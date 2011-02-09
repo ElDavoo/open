@@ -86,7 +86,7 @@ sub attachment_exists {
             }
         }
         else {
-            if ($att->filename eq lc($filename)) {
+            if (lc($att->filename) eq lc($filename)) {
                 return $att->exists || 0;
             }
         }

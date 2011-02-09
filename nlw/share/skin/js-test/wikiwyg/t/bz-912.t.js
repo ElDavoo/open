@@ -11,10 +11,10 @@ t.run_is('html', 'text');
 /* Test
 === Spaces around links when surrounded by word characters
 --- html
-x<a href="index.cgi?y">y</a>z<br/>
-x<a href="index.cgi?y">y</a> z<br/>
-x <a href="index.cgi?y">y</a>z<br/>
-x <a href="index.cgi?y">y</a> z<br class="p"/>
+x<a href="y">y</a>z<br/>
+x<a href="y">y</a> z<br/>
+x <a href="y">y</a>z<br/>
+x <a href="y">y</a> z<br class="p"/>
 --- text
 x [y] z
 x [y] z
@@ -23,7 +23,7 @@ x [y] z
 
 === No spaces around links when surrounded by non-word characters
 --- html
-!<a href="index.cgi?y">y</a>!
+!<a href="y">y</a>!
 --- text
 ![y]!
 

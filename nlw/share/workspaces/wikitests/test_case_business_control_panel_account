@@ -1,4 +1,9 @@
+
 | *Comment* | Test case: Business Control Panel Account |  |
+
+
+
+
 
 | st-admin | give-accounts-admin --email %%email%% | %%username%% now has accounts admin access |
 
@@ -62,9 +67,9 @@
 | wait_for_element_visible_ok | link=%%new_acct%% | 30000 |
 | click_and_wait | link=%%new_acct%% |  |
 | text_like | Custom Skins: Socialtext 3 default skin |  |
-| text_like | Socialtext People (click to enable) |  |
-| text_like | Socialtext Signals (click to enable) |  |
-| text_like | Socialtext Dashboard (click to enable) |  |
+| text_like | qr/Socialtext People\s+\(click to enable\)/ism |  |
+| text_like | qr/Socialtext Signals\s+\(click to enable\)/ism |  |
+| text_like | qr/Socialtext Dashboard\s+\(click to enable\)/ism |  |
 
 | *Comment* | Test case: Business Control Panel Account Add a user |  |
 | *Comment* | Test case: Business Control Panel Account don't use a hyphenated user so that BFN matches email |  |
@@ -80,21 +85,25 @@
 | *Comment* | Test case: Business Control Panel Account plugin one at a time, click the confirmation, validate that plugin is enabled. |  |
 | click_ok | toggle_plugin_people |  |
 | verifyConfirmation | Socialtext People is a paid option. For more information about fees, contact your sales representative.\n\nPress 'OK' to enable this module or 'Cancel' to exit. |  |
-| wait_for_text_present_ok | Socialtext People (click to disable) | 20000 |
+| wait_for_page_to_load | 30000 |  |
+| text_like | qr/Socialtext People\s+\(click to disable\)/ism |  |
 | *Comment* | As of 01/09, Signals is enabled when People is enabled |  |
-| text_like | Socialtext Signals (click to disable) |  |
+| text_like | qr/Socialtext Signals\s+\(click to disable\)/ism |  |
 
 | click_ok | toggle_plugin_signals |  |
 | verifyConfirmation | You are about to disable Socialtext Signals \n\n Press 'OK' to disable this module or 'Cancel' to exit. |  |
-| wait_for_text_present_ok | Socialtext Signals (click to enable) | 20000 |
+| wait_for_page_to_load | 30000 |  |
+| text_like | qr/Socialtext Signals\s+\(click to enable\)/ism |  |
 
 | *Comment* | Test case: Business Control Panel Account go the other way |  |
 | click_ok | toggle_plugin_people |  |
 | verifyConfirmation | You are about to disable Socialtext People \n\n Press 'OK' to disable this module or 'Cancel' to exit. |  |
-| wait_for_text_present_ok | Socialtext People (click to enable) | 20000 |
+| wait_for_page_to_load | 30000 |  |
+| text_like | qr/Socialtext People\s+\(click to enable\)/ism |  |
 | click_ok | toggle_plugin_signals |  |
 | verifyConfirmation | Socialtext Signals is a paid option. For more information about fees, contact your sales representative.\n\nPress 'OK' to enable this module or 'Cancel' to exit. |  |
-| wait_for_text_present_ok | Socialtext Signals (click to disable) | 20000 |
+| wait_for_page_to_load | 30000 |  |
+| text_like | qr/Socialtext Signals\s+\(click to disable\)/ism |  |
 
 | *Comment* | Test case: Business Control Panel Account. Enable Dashboard |  |
 | click_ok | toggle_plugin_dashboard |  |

@@ -42,7 +42,7 @@
 | st-stop-webserver |  |  |
 | click_ok | st-save-button-link |  |
 | pause | 10000 | required for popup |
-| verifyAlert | Operation failed due to server error; please try again later. |  |
+| verifyAlert | Saving failed due to server error; please try again later. |  |
 | st-start-webserver |  |  |
 | st-page-save |  |  |
 | wait_for_element_visible_ok | st-edit-button-link | 30000 |
@@ -57,7 +57,6 @@
 | check_ok | settings-lock-pages |
 | click_and_wait | -savelink |
 | text_like | Page locking is enabled. |
-
 
 | *Comment* | Test Case: Save Race Conditions - Now try to save a locked page |  |
 | st-logoutin | %%lockuser%% | %%password%% |
@@ -76,8 +75,6 @@
 
 Please copy your changes, and click Cancel to return to the page. |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
-
-
 
 | *Comment* | Test Case: Save Race Conditions TEARDOWN |  |
 | st-process-jobs | PageIndex | %%ws%% |

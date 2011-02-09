@@ -10,6 +10,7 @@ Test Case: Privacy Defaults can only succeed if it is the first test run by All 
 * [Test case: Console Setup]
 * [Test case: Console Backup and Restore]
 * [Test case: Business Control Panel Settings]
+* [Test case: Business Control Panel Account Google Analytics]
 * [Test Case: Captcha]
 * [Test Case: Data Jobs]
 

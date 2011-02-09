@@ -26,15 +26,6 @@ sub ConfigForDevEnv {
     my ($class, $args) = @_;
 }
 
-override 'shutdown' => sub {
-    my $self = shift;
-    if ($self->has_extract_q) {
-        # cancel the existing guard and allow pending jobs to be processed
-        $self->guards->{extract_queue}->cancel();
-        $self->extract_q->shutdown_nowait();
-    }
-};
-
 sub handle_request {
     my ($self,$req) = @_;
 

@@ -365,12 +365,15 @@ sub _render_user_frame {
     my $user_prefix = $1;
 
     my $loc_lang = $self->hub->display->preferences->locale->value || 0;
-    my $is_guest = $self->hub->current_user->is_guest || 0;
+    my $is_guest = $self->hub->current_user->is_guest ? 1 : 0;
 
     my $can_invite = $self->hub->pluggable->hook('template_var.invite_url');
     $can_invite = ($can_invite ? 1 : 0);
 
-    my $can_create_group = !$is_guest && Socialtext::Group->User_can_create_group($self->hub->current_user);
+    my $can_create_group = (
+        (!$is_guest && Socialtext::Group->User_can_create_group($self->hub->current_user))
+            ? 1 : 0
+    );
 
     my $frame_dir = "$frame_path/$user_prefix/$user_id";
     my $tmpl_name = "user_frame.$loc_lang.$is_guest.$can_invite.$can_create_group";

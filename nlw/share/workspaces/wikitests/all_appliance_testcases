@@ -6,7 +6,6 @@ The Privacy Defaults testcase checks to see whether a newly built appliance has 
 
 * [Test Case: Privacy Defaults]
 
-
 *It is possible to run Firefox testcases as the default LDAP user*
 *if you first run `xwt enable_ldap` to get LDAP enabled so the default LDAP user may successfully login.*
 
@@ -16,10 +15,6 @@ The Privacy Defaults testcase checks to see whether a newly built appliance has 
 * [Core Testcases]
 * [User Groups UI Testcases]
 * [Signals Testcases]
-
-Test Case: Replies is Firefox-specific because we load IE without wikiwyg while using Se
-
-* [Test Case: Replies]
 * [Calc Testcases]
 * [File Testcases]
 * [Localization Testcases]
@@ -53,6 +48,10 @@ Dashboard tests
 * [Test Case: Add Remove Gallery Widgets]
 * [Test Case: Administer Dashboards]
 * [Test Case: Reset to Default Dashboard]
+
+Server down testcases
+
+* [Test Case: Save Race Conditions]
 
 Appliance testcases are run last because they do a backup/restore
 

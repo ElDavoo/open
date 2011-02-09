@@ -9,7 +9,7 @@
 | text_like | qr/No stats.+for this page/ |  |
 | open_ok | %%workspace%%/index.cgi?action=page_stats_index;page_id=bogus |  |
 
-| text_like | qr/There was an error with your request.+An invalid page ID was given: bogus.+Please contact Socialtext support using the.+form and describe the the time the error occurred, and what you were attempting to do prior to the error./ |  |
+| text_like | qr/There was an error with your request.+An invalid page ID was given: bogus.*Please contact Socialtext support using the.+form and describe the the time the error occurred, and what you were attempting to do prior to the error./ |  |
 
 | open_ok | %%workspace%%/index.cgi?action=page_stats_index;page_id= |  |
 

@@ -15,13 +15,13 @@ t.run_roundtrip('wikitext');
 /* Test
 === table has only one line afterwards
 --- wikitext
-| foo |
+␤| foo |
 
 bar bar
 
 === table has only one line afterwards
 --- wikitext
-| foo |
+␤| foo |
 
 {rt: 12345}
 
