@@ -1,8 +1,18 @@
 package Socialtext::TheSchwartz;
 # @COPYRIGHT@
 use Moose;
-use Socialtext::SQL qw/:txn/; # call $dbh-> methods in this class.
+use Socialtext::SQL (); # call $dbh-> methods in this class.
+
+sub run_in_txn (&$);
+BEGIN {
+    # Override run_in_txn so that nested savepoints work correctly. Has to be
+    # done at BEGIN-time before TheSchwartz::Moosified is loaded.
+    no warnings 'redefine';
+    require TheSchwartz::Moosified::Utils;
+    *TheSchwartz::Moosified::Utils::run_in_txn = \&run_in_txn;
+}
 use TheSchwartz::Moosified;
+
 use Carp qw/croak/;
 use List::MoreUtils qw/any/;
 use namespace::clean -except => 'meta';
@@ -26,6 +36,13 @@ around 'list_jobs' => sub {
 # TheSchwartz will remove one job type for each job it fetches b/c of some
 # mySQL limitation.  Since we're Pg only, disable this.
 override 'temporarily_remove_ability' => sub {};
+
+sub run_in_txn (&$) {
+    my ($code, $dbh) = @_;
+    local $Socialtext::SQL::_dbh = $dbh;
+    local $dbh->{RaiseError} = 1;
+    return Socialtext::SQL::sql_txn(\&$code);
+}
 
 around 'insert' => sub {
     my $code = shift;
