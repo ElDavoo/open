@@ -1663,7 +1663,7 @@ sub _questions_to_answers {
 sub _page_cache_basename {
     my $self = shift;
     my $cache_dir = $self->_cache_dir or return;
-    return "$cache_dir/" . $self->page_id . '-' . $self->revision_id;
+    return "$cache_dir/" . $self->page_id . '-' . ($self->revision_id || '0');
 }
 
 sub delete_cached_html {
