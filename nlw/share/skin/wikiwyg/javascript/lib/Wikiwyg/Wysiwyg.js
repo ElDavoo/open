@@ -1357,7 +1357,7 @@ proto.make_web_link = function(url, link_text) {
 proto.make_link = function(label, page_name, url) {
 
     var text = label || page_name || url;
-    var href = url || "?" + encodeURIComponent(page_name);
+    var href = url || encodeURIComponent(page_name);
     var attr = "";
     if (page_name) {
         attr = " wiki_page=\"" + html_escape(page_name).replace(/"/g, "&quot;") + "\"";
@@ -1369,29 +1369,6 @@ proto.make_link = function(label, page_name, url) {
 
     this.set_focus(); // Need this before .insert_html
     this.insert_html(html);
-}
-
-proto.insert_element_at_cursor = function(ele) {
-    var selection = this.get_edit_window().getSelection();
-    if (selection.toString().length > 0) {
-        selection.deleteFromDocument();
-    }
-
-    selection  = this.get_edit_window().getSelection();
-    var anchor = selection.anchorNode;
-    var offset = selection.anchorOffset;
-
-    if (anchor.nodeName == '#text') {  // Insert into a text element.
-        var secondNode = anchor.splitText(offset);
-        anchor.parentNode.insertBefore(ele, secondNode);
-    } else {  // Insert at the start of the line.
-        var children = selection.anchorNode.childNodes;
-        if (children.length > offset) {
-            selection.anchorNode.insertBefore(ele, children[offset]);
-        } else {
-            anchor.appendChild(ele);
-        }
-    }
 }
 
 proto.use_advanced_mode_message = function(subject) {
