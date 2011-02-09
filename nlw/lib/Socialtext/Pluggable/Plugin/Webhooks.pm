@@ -90,8 +90,7 @@ sub _fire_page_webhooks {
 
     my $thunk = sub {
         my %p = @_;
-        my $editor = Socialtext::User->new(
-            email_address => $page->metadata->From);
+        my $editor = $page->last_editor;
         my $editor_blob = {
             id             => $editor->user_id,
             best_full_name => $editor->best_full_name,
@@ -99,7 +98,7 @@ sub _fire_page_webhooks {
         return {
             class  => $p{class},
             actor  => $editor_blob,
-            at     => $page->metadata->Date,
+            at     => $page->datetime_utc,
             object => {
                 workspace => {
                     title => $wksp->title,
@@ -113,10 +112,10 @@ sub _fire_page_webhooks {
                 tags         => $page->tags,
                 tags_added   => $tags_added,
                 tags_deleted => $tags_deleted,
-                edit_time    => $page->metadata->Date,
-                type         => $page->metadata->Type,
+                edit_time    => $page->datetime_utc,
+                type         => $page->page_type,
                 editor       => $editor_blob,
-                create_time  => $page->original_revision->metadata->Date,
+                create_time  => $page->createtime_utc,
                 revision_count => $page->revision_count,
                 revision_id    => $page->revision_id,
             }

@@ -103,6 +103,7 @@ has 'rev' => (
         )),
     },
 );
+*type = *page_type;
 *last_edited_by = *last_editor;
 *title = *name;
 *is_in_category = *has_tag;

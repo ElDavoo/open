@@ -158,7 +158,7 @@ sub _add_page_doc {
         [w => $ws_id],
         [w_title => $self->workspace->title],
         [doctype => 'page'], 
-        [pagetype => $page->type],
+        [pagetype => $page->page_type],
         [page_key => $self->page_key($page->id)],
         [title => $title],
         [editor => $editor_id],
