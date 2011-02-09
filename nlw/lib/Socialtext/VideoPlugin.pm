@@ -274,9 +274,10 @@ sub get_video_thumbnail {
 ################################################################################
 package Socialtext::VideoPlugin::Wafl;
 
-use base 'Socialtext::Formatter::WaflPhraseDiv';
 use Class::Field qw( const );
 use Socialtext::Formatter::Phrase ();
+use Socialtext::Formatter::WaflPhrase ();
+use base 'Socialtext::Formatter::WaflPhraseDiv';
 
 const wafl_id => 'video';
 const wafl_reference_parse => qr/^\s*<?(@{[
