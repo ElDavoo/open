@@ -2,7 +2,7 @@
 
 var t = tt = new Test.SocialCalc();
 
-t.plan(5);
+t.plan(4);
 
 t.runAsync([
     function() {
@@ -46,8 +46,6 @@ t.runAsync([
     },
 
     function() {
-        t.click('#st-save-button-link');
-        t.pass('Save');
         t.endAsync();
     }
 ]);

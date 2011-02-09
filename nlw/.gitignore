@@ -563,3 +563,7 @@ t/wikitests/people/rest/data_people_best_full_name.wiki
 lib/Socialtext/Appliance/Registration.pm
 t/wikitests/people/rest/data_people_relationships.wiki
 t/Socialtext/Pluggable/Plugin/Analytics.t
+t/wikitests/test-data/socialcalc/ohai.csv
+t/wikitests/socialcalc/csv-put.wiki
+lib/Socialtext/Migratomatic.pm
+t/wikitests/signals/search-groupscoped.wiki

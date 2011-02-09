@@ -48,11 +48,14 @@ our %Services = (
         ],
         url => "http://www.vimeo.com/__ID__",
         oembed => "http://oohembed.com/oohembed/?format=json;url=__URL__",
-        html => q{<iframe src='http://player.vimeo.com/video/__ID__?autoplay=__AUTOPLAY__'
-                          type='text/html'
-                          width='__WIDTH__'
-                          height='__HEIGHT__'
-                          frameborder='0'></iframe>},
+        html => '<object width="__WIDTH__" height="__HEIGHT__"><param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" /><param name="movie" value="http://vimeo.com/moogaloop.swf?clip_id=__ID__&amp;server=vimeo.com&amp;show_title=0&amp;show_byline=0&amp;show_portrait=0&amp;color=ffffff&amp;fullscreen=1&amp;autoplay=__AUTOPLAY__&amp;loop=0" /><embed src="http://vimeo.com/moogaloop.swf?clip_id=__ID__&amp;server=vimeo.com&amp;show_title=0&amp;show_byline=0&amp;show_portrait=0&amp;color=ffffff&amp;fullscreen=1&amp;autoplay=__AUTOPLAY__&amp;loop=0" type="application/x-shockwave-flash" allowfullscreen="true" allowscriptaccess="always" width="__WIDTH__" height="__HEIGHT__"></embed></object>',
+        ## {bz: 4926}: The new <iframe> code breaks under Adobe AIR (i.e. SD),
+        ## so we fallback using old <object> embed code for now.
+        #html => q{<iframe src='http://player.vimeo.com/video/__ID__?autoplay=__AUTOPLAY__'
+        #                  type='text/html'
+        #                  width='__WIDTH__'
+        #                  height='__HEIGHT__'
+        #                  frameborder='0'></iframe>},
     },
     GoogleVideo => {
         domains => [qw( video.google.com )],

@@ -1,6 +1,5 @@
 | *Comment* | Test Case: Signals Mentions |  |
 
-
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Signals Mentions SETUP |  |
@@ -9,7 +8,6 @@
 | set | actor | actor%%start_time%%@ken.socialtext.net |
 | set | actorshort | You |
 | set | search_for_actor | actor%%start_time%% |
-
 
 | set | convuser | convuser%%start_time%%@ken.socialtext.net |
 | set | convusershort | convuser%%start_time%% |
@@ -24,13 +22,13 @@
 | set | shouldnotappear_four | a fourth text that does not have a mention. Should also not appear as a 'conversation' %%start_time%% |
 | set | privatetext | this is a private signal %%start_time%% |
 
+| *Comment* | Test Case: Signals Mentions create account and users |  |
 | st-admin | create-account --name %%acct%% |  |
 | st-admin | create-user --email %%convuser%% --password %%password%% --account %%acct%% |  |
 | st-admin | create-user --email %%actor%% --password %%password%% --account %%acct%% |  |
 
-| *Comment* | Test Case: Signals Mentions - logout explicitly |  |
-| open-ok | /nlw/submit/logout |  |
-| st-login | %%convuser%% | %%password%% |
+| *Comment* | Test Case: Signals Mentions - login %%convuser%% |  |
+| st-logoutin | %%convuser%% | %%password%% |
 
 | *Comment* | Test Case: Signals Mentions - non-mention signal by someone else |  |
 | open_ok | /st/signals |  |
@@ -63,7 +61,6 @@
 | pause | 5000 |  |
 | wait_for_text_present_ok | %%replytext%% | 30000 |
 
-
 | *Comment* | Test Case: Signals Mentions - third non-mention signal by someone else |  |
 | open_ok | /st/signals |  |
 | st-send-signal-in-activities-widget | %%shouldnotappear_three%% |  |
@@ -78,7 +75,6 @@
 | *Comment* | Test Case: Signals Mentions - fourth non-mention signal by someone else |  |
 | open_ok | /st/signals |  |
 | st-send-signal-in-activities-widget | %%shouldnotappear_four%% |  |
-
 
 | *Comment* | Test Case: Signals Mentions - now check the results as a different user |  |
 | st-logoutin | %%actor%% | %%password%% |
@@ -99,12 +95,14 @@
 | *Comment* | Test Case: Signals Mentions reopen dashboard |  |
 | open_ok | /st/dashboard |  |
 
-| *Comment* | Test Case: Signals Mentions All the signals are there; no filtering yet |  |
+| *Comment* | Test Case: Signals Mentions First four signals are there; no filtering yet |  |
 
 | st_verify_text_in_activities_widget | activities_widget | %%mentioncode%% |
 | st_verify_text_in_activities_widget | activities_widget | %%replycode%% |
 | st_verify_text_in_activities_widget | activities_widget | %%shouldnotappear%% |
 | st_verify_text_in_activities_widget | activities_widget | %%replytext%% |
+
+| *Comment* | Test Case: Signals Mentions Second four signals are there; no filtering yet |  |
 | st_verify_text_in_activities_widget | activities_widget | %%privatetext%% |
 | st_verify_text_in_activities_widget | activities_widget | %%shouldnotappear_two%% |
 | st_verify_text_in_activities_widget | activities_widget | %%shouldnotappear_three%% |
@@ -122,6 +120,5 @@
 | st_text_unlike_in_activities_widget | activities_widget | %%shouldnotappear_two%% |
 | st_text_unlike_in_activities_widget | activities_widget | %%shouldnotappear_three%% |
 | st_text_unlike_in_activities_widget | activities_widget | %%shouldnotappear_four%% |
-
 
 | *Comment* | Test Case: Signals Mentions COMPLETED |  |

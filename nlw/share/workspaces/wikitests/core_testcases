@@ -1,4 +1,5 @@
 Core testcases should pass for any browser, for any user type (LDAP or Default), in any environment (dev env or appliance).
+
 If a testcase is browser-specific, put it in the corresponding {tag: browser testset} .
 If a testcase is Default user specific, put it in `[Default User Testcases]`
 If it is LDAP specific, put it in `[LDAP Testcases]`
@@ -77,6 +78,7 @@ test env properly and are not testing the test-workspace
 * [Test Case: Email Attachment]
 * [Test Case: Email Spreadsheet]
 * [Test Case: Include Page]
+* [Test Case: Video In Pages]
 * [Test Case: Create Content]
 * [Test Case: Edit Summaries]
 * [Test Case: Sticky Search Preferences]
@@ -86,7 +88,6 @@ test env properly and are not testing the test-workspace
 * [Test Case: Servername redirect to default ws]
 * [Test Case: Page Locking]
 * [Test Case: Created By Sorting]
-* [Test Case: Search Is Too General]
 * [Test Case: Join]
 * [Test Case: What's New Pagination]
 * [Test Case: User Settings no mojibake]
@@ -95,7 +96,7 @@ test env properly and are not testing the test-workspace
 * [Test Case: Profile Activity Widget]
 * [Test Case: People Dashboard Plugins]
 * [Test Case: Hidden Email Address for Public Wiki]
-* [Test Case: Friendly Names]
+* [Test Case: Friendly Name]
 * [Edit Contention Testcases]
 * [Mobile Testcases]
 * [Explore Testcases]
@@ -125,7 +126,3 @@ Return to last login fails when People and Dashboard are installed. Keep the tes
 we may test in a mode where People and Dashboard are not installed.
 
 * [Test Case: Return to last login]
-
-----
-
-{search: category:s3}

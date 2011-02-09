@@ -36,6 +36,13 @@ sub wikitext {
 
 sub html_start { '<span class="nlw_phrase">'}
 
+sub text_filter {
+    my $self = shift;
+    my $text = shift;
+    $text =~ s/<!--\s+wiki:.*?\s-->//sg;
+    $text;
+}
+
 sub html_end {
     my $self   = shift;
     my $widget = $self->wikitext;

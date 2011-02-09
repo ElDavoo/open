@@ -78,6 +78,18 @@ proto.is_no_harness = function() {
         this.is.apply(this, arguments);
 }
 
+proto.ok_no_harness = function() {
+    if (window.top.Test.Harness) {
+        this.builder.diag(
+            "Can't run test " + (this.builder.CurrTest + 1) + " in the harness"
+        );
+        this.builder.skip(arguments[2]);
+    }
+    else
+        this.ok.apply(this, arguments);
+}
+
+
 proto.create_user = function(params, callback) {
     var self = this;
 
@@ -463,6 +475,17 @@ proto._doEdit = function(check, button, mode_name) {
 
 proto.click = function(selector) {
     this.$(selector).click();
+};
+
+proto.doPreview = function() {
+    var t = this;
+    return function() {
+        t.$('#st-preview-button-link').click();
+        t.poll(
+            function() { return t.$('#st-page-preview').is(':visible') },
+            function() { t.callNextStep(500) }
+        );
+    };
 };
 
 proto.doRichtextEdit = function() {

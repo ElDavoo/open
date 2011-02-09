@@ -1,6 +1,4 @@
-These testcases exercise localization capabilities. For reasons we don't understand, they cause IE 6 to segfault.
-
-These tests can cause all subsequent tests to fail if they fail, so run them last.
+These tests are obsolete. This testset is a placeholder for future localization TCs
 
 * [Test Case: Perl Loc]
 * [Test Case: Js Loc]

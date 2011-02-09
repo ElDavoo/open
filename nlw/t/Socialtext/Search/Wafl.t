@@ -52,7 +52,6 @@ foobar page one
 --- kwiki
 {search-full title:admin}
 --- htmlre
-<!-- wiki: {include: \[admin page one\]} --></span>
 <!-- wiki: {search_full: title:admin}
 --></div><br /></div>
 
@@ -78,8 +77,6 @@ admin page one
 --- kwiki
 {search-full title:page workspaces:admin,foobar}
 --- htmlre
-<!-- wiki: {include: foobar \[foobar page one\]} --></span>
-<!-- wiki: {include: \[admin page one\]} --></span>
 <!-- wiki: {search_full: title:page workspaces:admin,foobar}
 --></div><br /></div>
 

@@ -191,11 +191,12 @@ Set default values if they are not defined by the caller
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | st-page-save |  |  |
 
-| *Comment* | Test Case: String Use: test for TOC blow up |  |
+| *Comment* | Test Case: String Use: test for TOC blow up (If this fails under IE, that's okay) |  |
 | pause | 10000 |  |
 | text_like | contentContainer | qr/does not have any headers/ |
 
-| *Comment* | Test Case: String Use: Teardown |  |
+| *Comment* | Test Case: String Use: TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | purge-page --w %%workspace%% --page %%test_id%%_pad | was purged |
 | st-admin | purge-page --w %%workspace%% --page %%test_id%%_dupe | was purged |
 | st-admin | purge-page --w %%workspace%% --page %%test_id%%_rename | was purged |
@@ -204,6 +205,7 @@ Set default values if they are not defined by the caller
 | *Comment* | Test Case: String Use RETURNING |
 
 ^ DONE_TESTING
+
 ^^ Possible TODO
 
 Use the string in Settings. Arbitrary nasty strings may not work in all places:

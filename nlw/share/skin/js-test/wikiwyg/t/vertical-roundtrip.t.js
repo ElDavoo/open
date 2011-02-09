@@ -1,6 +1,6 @@
 var t = new Test.Wikiwyg();
 
-t.plan(18);
+t.plan(16);
 t.run_roundtrip('wikitext');
 
 /*
@@ -64,23 +64,11 @@ white
 ␤␤␤# li␤# li
 ␤␤␤space
 
-=== Whitespace around H1 (1)
+=== Whitespace around H1
 --- wikitext
 white
 ␤^ H1
 ␤space
-
-=== Whitespace around H1 (2)
---- wikitext
-white
-␤␤^ H1
-␤␤space
-
-=== Whitespace around H1 (3)
---- wikitext
-white
-␤␤␤^ H1
-␤␤␤space
 
 === Whitespace between lists (1)
 --- wikitext

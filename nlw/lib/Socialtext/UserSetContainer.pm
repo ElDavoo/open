@@ -43,7 +43,8 @@ sub is_plugin_enabled {
     my $authz = Socialtext::Authz->new();
     return $authz->plugin_enabled_for_user_set(
         user_set    => $self,
-        plugin_name => $plugin_name
+        plugin_name => $plugin_name,
+        direct => 1,
     );
 }
 

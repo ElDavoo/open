@@ -113,8 +113,21 @@ sub _maybe_fetch {
         };
 
         if ( my $e = $@ ) {
-            warn "Output: $output\n" if $output;
-            die "Template Toolkit error: ($p{template})\n$e";
+            # {bz: 4925}: If user frame went away during rendering,
+            # recover with the default layout/html frame.
+            no warnings 'uninitialized';
+            if ($e =~ /file error - (\S*user_frame\S*): not found/ and $p{vars}{frame_name} eq $1) {
+                eval {
+                    $tt2->process( $p{template}, { %{ $p{vars} }, frame_name => 'layout/html' } , \$output )
+                        or die $tt2->error;
+                };
+                $e = $@;
+            }
+
+            if ($e) {
+                warn "Output: $output\n" if $output;
+                die "Template Toolkit error: ($p{template})\n$e";
+            }
         }
 
         return $output;

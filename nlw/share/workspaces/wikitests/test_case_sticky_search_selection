@@ -155,7 +155,8 @@
 | wait_for_element_visible_ok | st-search-action | 30000 |
 | verifyValue | st-search-action | search_signals |
 
-| *Comment* | Test Case: Search Selection is Sticky Teardown |  |
+| *Comment* | Test Case: Search Selection is Sticky TEARDOWN |  |
+| st-process-jobs |  |  |
 | delete-group | %%group_id%% |  |
 | st-admin | deactivate-user --email %%sticky_user%% |  |
 

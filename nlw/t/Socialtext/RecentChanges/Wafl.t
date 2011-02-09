@@ -57,7 +57,6 @@ foobar page one
 --- kwiki
 {recent-changes-full foobar}
 --- htmlre
-<!-- wiki: {include: foobar \[foobar page six\]
 <!-- wiki: {recent_changes_full: foobar}
 --></div><br /></div>
 
@@ -65,7 +64,6 @@ foobar page one
 --- kwiki
 {recent-changes-full <foobar>}
 --- htmlre
-<!-- wiki: {include: foobar \[foobar page six\]}
 <!-- wiki: {recent_changes_full: <foobar>}
 --></div><br /></div>
 

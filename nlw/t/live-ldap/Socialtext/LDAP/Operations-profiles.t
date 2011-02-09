@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 17;
+use Test::Socialtext tests => 19;
 use Test::Socialtext::User;
 use Socialtext::LDAP::Operations;
 
@@ -186,4 +186,12 @@ circular_managerial_relationships: {
 
     # Refresh Users
     Socialtext::LDAP::Operations->RefreshUsers(force => 1);
+
+    my $ariel_profile = Socialtext::People::Profile->GetProfile($ariel, no_recurse=>1);
+    is $ariel_profile->get_reln('supervisor'), $adrian->user_id,
+        "... Adrian is Ariel's supervisor";
+
+    my $adrian_profile = Socialtext::People::Profile->GetProfile($adrian, no_recurse=>1);
+    is $adrian_profile->get_reln('assistant'), $ariel->user_id,
+        "... Ariel is Adrian's assistant";
 }

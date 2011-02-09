@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 12;
+use Test::Socialtext tests => 9;
 use Test::Socialtext::Fatal;
 use Socialtext::SQL qw/get_dbh/;
 BEGIN {
@@ -21,16 +21,6 @@ my $usr = create_test_user();
 my $grp = create_test_group(account => $acct);
 ok $grp, "got a group";
 ok $grp->user_set_id, "has a user_set_id";
-
-plugin: {
-    my $uset = $grp->user_set;
-    ok $uset->connected($grp->user_set_id, $acct->user_set_id),
-        'group has some role in the account';
-    $acct->enable_plugin('test');
-    ok $grp->is_plugin_enabled('test'), 'has plugin enabled thru account';
-    $grp->primary_account->disable_plugin('test');
-    ok !$grp->is_plugin_enabled('test'), 'has plugin disabled thru account';
-}
 
 user_in_group: {
     my $uset = Socialtext::UserSet->new();

@@ -154,6 +154,13 @@
             })
             .resize();
 
+        // {bz: 4923}: Hide Flash objects before displaying lightbox, since we
+        // have no control over its original wmode. (Flash objects with wmode
+        // set to non-transparent will always overlap with the lightbox on Windows.)
+        $('div.wiki iframe:visible, div.wiki object:visible, div.wiki embed:visible')
+            .addClass('st-lightbox-hidden')
+            .css('visibility', 'hidden');
+
         $('#overlay')
             .fadeIn(opts.speed, function () {
                 $('#lightbox').fadeIn(function() {
@@ -174,6 +181,11 @@
             $('#lightbox').html('').hide();
             $('html').css('overflow', opts._originalHTMLOverflow);
             $('body').css('overflow', opts._originalBodyOverflow);
+
+            $('div.wiki iframe.st-lightbox-hidden, div.wiki object.st-lightbox-hidden, div.wiki embed.st-lightbox-hidden')
+                .removeClass('st-lightbox-hidden')
+                .css('visibility', 'visible');
+
             $('#lightbox').trigger('lightbox-unload');
         }
     };

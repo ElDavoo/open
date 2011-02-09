@@ -45,6 +45,10 @@ t.runAsync([
     function() {
         t.pass('Add Tag');
         t.click('#st-tagqueue-close');
+        t.callNextStep(1000);
+    },
+
+    function() {
         t.endAsync();
     }
 ]);

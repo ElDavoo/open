@@ -18,9 +18,9 @@ t.runAsync([
 
     function() {
         t.scrollTo(200);
-        t.is_no_harness(
-            t.$(".widget div.wiki strong").css("font-weight"),
-            "bold",
+        var fontWeight = t.$(".widget div.wiki strong").css("font-weight");
+        t.ok_no_harness(
+            ((fontWeight == "bold") || (fontWeight == 700)),
             "*strong* is strong"
         );
 

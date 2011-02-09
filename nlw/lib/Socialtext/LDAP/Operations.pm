@@ -2,6 +2,7 @@ package Socialtext::LDAP::Operations;
 # @COPYRIGHT@
 use Moose;
 
+use Guard qw(scope_guard);
 use List::MoreUtils qw(uniq);
 use Socialtext::LDAP;
 use Socialtext::Log qw(st_log);
@@ -46,6 +47,15 @@ sub RefreshUsers {
     # Refresh each of the LDAP Users
     foreach my $row (@{$rows_aref}) {
         my ($driver_key, $unique_id, $driver_username) = @{$row};
+
+        # Enable the general User cache (if its not already enabled), breaking
+        # possible recursion chains when chasing relationships).
+        #
+        # We want each User to get refreshed from LDAP (thus clearing the
+        # cache between lookups), but in any single lookups we only want a
+        # User to get looked up *once*) (thus enabling general User cache).
+        local $Socialtext::User::Cache::Enabled = 1;
+        scope_guard { Socialtext::User::Cache->Clear };
 
         # refresh the user data from the Factory
         st_log->info( "... refreshing: $driver_username" );

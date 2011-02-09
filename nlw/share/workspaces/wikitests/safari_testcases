@@ -1,155 +1,49 @@
-Copied Firefox Testcases to Safari Testcases and edited out all the TCs that use Rich Text
+*As many non-Appliance testcases as possible are run here*.
+Firefox is required because we run File Testcases
+Socialcalc enabled is required because we run Calc Testcases
 
-*It is possible to run testcases as the default LDAP user*
+*It is possible to run Firefox testcases as the default LDAP user*
 *if you first run `xwt enable_ldap` to get LDAP enabled so the default LDAP user may successfully login.*
 
 * [Test Case: A Enable LDAP]
 
-If Test Case: Verify Location fails, you have not configured your
-test env properly and are not testing the test-workspace
-
-* [Test Case: Verify Location]
-
-* [Control Panel Testcases]
-
-* [Test Case: Home]
-* [Test Case: Workspace Navigation]
-* [Test Case: Global Navigation]
-* [Test Case: Miki]
-* [Test Case: Miki Authentication]
-* [Test case: Invite Anonymous User]
-* [Test case: Self Register]
-* [Test case: Watchlist]
-* [Test Case: Recently Viewed]
-* [Test Case: Recent Changes]
-* [Test Case: Edit This Page]
-
-* [Test Case: Search Selector]
-* [Test case: functional search tests]
-
-* [Test Case: Phrase search]
-* [Test Case: stemming]
-* [Test Case: Double Click to Edit]
-* [Test Case: Preview Format]
-* [Test Case: New Page]
-* [Test Case: New Page No Overwrite]
-* [Test Case: Tags]
-* [Test Case: Tagging]
-* [Test Case: Tagging in the Editor]
-* [Test Case: Hide sidebar]
-* [Test Case: Sidebar: Incoming Links]
-* [Test Case: Orphans List]
-* [Test Case: Sidebar: Recently Viewed]
-* [Test Case: Sidebar: Recent Changes]
-* [Test Case: Revisions]
-* [Test Case: What's New]
-* [Test Case: All Pages]
-* [Test Case: Tools: Delete Page]
-* [Test Case: Tools: Export as HTML]
-* [Test Case: Weblog Archive and Navigation]
-* [Test Case: Connections]
-* [Test Case: Settings: User]
-* [Test Case: Settings: Admin]
-* [Test Case: User Settings Create Workspace]
-* [Test Case: Workspace Configuration]
-* [Test Case: Workspace Privacy]
-* [Test Case: Authenticated-User-Only]
-* [Test Case: Public Join to Edit]
-* [Test Case: Public-Read-Only]
-* [Test Case: Public-Comment-Only]
-* [Test Case: Public]
-* [Test Case: Intranet]
-* [Test Case: Settings: Email Notification]
-* [Test Case: Direct URI]
-* [Test Case: Inter Workspace Search]
-* [Test Case: Untitled Page]
-* [Test Case: Weblog Naming]
-* [Test Case: Page Open Errors]
-
-NOT READY YET - Test Case: Link Interface
-
-* [Test Case: Nasty Double Dashes]
-* [Test Case: Insert Menu]
-* [Test Case: Tagged Pages Sorting]
-* [Test case: Created By Sorting]
-* [Test Case: Tools: Duplicate Page]
-* [Test Case: Tools: Rename Page]
-* [Test Case: Tools: Copy Page to Workspace]
-* [Test Case: Add Comment]
-* [Test Case: Comment Form Fields]
-* [Test Case: Weblogs]
-
-* [Test Case: Strings]
-* [Test Case: Single Dash]
-
-Skipping - Test Case: Include Page
-Skipping - Test Case: Create Content
-Skipping - Test Case: Sticky Search Preferences
-Skipping - People Dashobard navigation
-Skipping - Test Case: Invite People to your network (is there a flashmob bug in there?)
-
-* [Test Case: Follow]
-* [Test Case: Servername redirect to default ws]
-* [Test Case: Page Locking]
-* [Test Case: Edit Summaries]
-* [Test Case: What's New Pagination]
-* [Test Case: User Settings no mojibake]
-
-Skipping - Test Case: Created By Sorting
-Skipping - Test Case: Join - Appears to be a multi-window problem
-Skipping - Test Case: Weblog naming with Latin-1 character
-
-* [Test Case: Signal From Profile]
-* [Test Case: Profile Activity Widget]
-* [Test Case: People Dashboard Plugins]
-* [Edit Contention Testcases]
-
-* [Test Case: Email]
-* [Test Case: Email Attachment]
-* [Test Case: Email Spreadsheet]
-* [Test Case: Search Is Too General]
+* [Core Testcases]
+* [User Groups UI Testcases]
+* [Signals Testcases]
+* [Calc Testcases]
+* [File Testcases]
+* [Localization Testcases]
+* [Test Case: RSS Icons]
+* [Test Case: Table Info]
 
 LDAP Testcases will Enable LDAP and use a known LDAP user instead of a Default user where required
 
 * [LDAP Testcases]
 
-Removed Default User Testcases from Safari since one of those testcases requires high permissions and it is sufficient to test Default User Testcases in the other browsers.
-Removed Localization Testcases from Safari since they are tested sufficiently in other browsers.
+Default User Testcases will Disable LDAP so it can test wiki functions that only work for the Default user
+It will re-enable LDAP when it finishes.
 
-Profile testcases
+* [Default User Testcases]
+
+People and Dasboard plugin tests. Keep these two cases together in alpha order.
+
+* [Test Case: People Dashboard Plugins]
+* [Test Case: People Dashboard Plugins Reset]
+
+People tests
 
 * [Profile Testcases]
 * [Test Case: People Search]
 
-Widgets testcases
+Dashboard tests
 
-NOTE: Safari Widgets Testcases may now be identical to Widgets Testcases, 2009-09-15
-
-* [Test Case: Groups Home]
-* [Test Case: Groups in Global Nav]
-* [Test Case: User Deactivates Group]
-
-* [Test Case: Signals Activities Interaction]
-* [Test Case: Signals Search]
-* [Test Case: Signals Search Pagination]
-* [Safari Widgets Testcases]
+* [Widgets Testcases]
 * [Test Case: Gadgets Galore]
+* [Test Case: Upload Update Gallery Widgets]
+* [Test Case: Add Remove Gallery Widgets]
+* [Test Case: Administer Dashboards]
+* [Test Case: Reset to Default Dashboard]
 
-* [Test Case: RSS Icons]
-* [Test Case: Table Info]
-* [Test Case: Signals Search]
+Server down testcases
 
-* [Test Case: Signals Activities Interaction]
-* [Calc Testcases]
-* [File Testcases]
-* [Localization Testcases]
-
-Non-Safari cases
-Test Case: Table Info (Keypress doesn't do what you'd expect in Safari. Sorry.)
-Test Case: Link Interface
-Test Case: Preview Format
-Test Case: RSS Icons
-Calc Testcases
-Default User Testcases
-
-Cannot run File Testcases because Safari does not display a file textbox and only allows file browsing
+* [Test Case: Save Race Conditions]

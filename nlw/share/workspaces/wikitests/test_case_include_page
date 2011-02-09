@@ -31,7 +31,7 @@ Repeat test using Miki/Lite access.
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | click_ok | link=Wiki Text |  |
-| text_like | st-editing-title | `Editing: %%title%%` |
+| text_like | st-editing-title | qr/Editing:\s+%%title%%/ism |
 | verifyValue | wikiwyg_wikitext_textarea | %%content%% |
 
 | *Comment* | Test Case: Include Page. Verify backlink to including page |  |
@@ -70,7 +70,7 @@ Repeat test using Miki/Lite access.
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | click_ok | link=Wiki Text |  |
-| text_like | st-editing-title | `Editing: %%title%%` |
+| text_like | st-editing-title | qr/Editing:\s+%%title%%/ism |
 | verifyValue | wikiwyg_wikitext_textarea | %%content%% |
 
 | *Comment* | Test Case: Include Page. PUBLIC MIKI Run the same test in Miki |  |
@@ -105,7 +105,7 @@ Repeat test using Miki/Lite access.
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| text_like | st-editing-title | `Editing: %%title%%` |
+| text_like | st-editing-title | qr/Editing:\s+%%title%%/ism |
 | verifyValue | wikiwyg_wikitext_textarea | %%content%% |
 
 | *Comment* | Test Case: Include Page. PUBLIC MIKI LOGGED OUT. Run the same test in Miki |  |
@@ -135,7 +135,7 @@ Repeat test using Miki/Lite access.
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| text_like | st-editing-title | `Editing: %%title%%` |
+| text_like | st-editing-title | qr/Editing:\s+%%title%%/ism |
 | verifyValue | wikiwyg_wikitext_textarea | %%content%% |
 
 | *Comment* | Test Case: Include Page. AUTH MIKI Run the same test in Miki |  |
@@ -203,7 +203,7 @@ Incipient include works in browser and MIKI
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| text_like | st-editing-title | `Editing: %%tcipii%%` |
+| text_like | st-editing-title | qr/Editing:\s+%%tcipii%%/ism |
 | verifyValue | wikiwyg_wikitext_textarea | qr/Replace this text with your own/ |
 
 | *Comment* | Test Case: Include Page. Open the incipient included page for editing using the link |  |
@@ -214,7 +214,7 @@ Incipient include works in browser and MIKI
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| text_like | st-editing-title | `Editing: %%tcipii%%` |
+| text_like | st-editing-title | qr/Editing:\s+%%tcipii%%/ism |
 | verifyValue | wikiwyg_wikitext_textarea | qr/Replace this text with your own/ |
 
 repeat in Miki

@@ -1638,7 +1638,7 @@ sub _WorkspaceCursor {
                     FROM "Workspace",
                     (SELECT into_set_id,
                         COUNT(DISTINCT(from_set_id)) AS user_count
-                     FROM user_set_path
+                     FROM user_set_include
                      WHERE from_set_id } . PG_USER_FILTER . qq{
                      GROUP BY into_set_id)
                     AS temp1
@@ -1960,23 +1960,24 @@ sub load_pages_from_disk {
         next unless $opts{clobber}
             or !$hub->pages->new_from_name($page_name)->exists;
 
-        my $page = Socialtext::Page->new(hub => $hub)->create(
-            title => $page_name,
-            content => $content,
-            creator => Socialtext::User->SystemUser,
-            categories => $data->{tags},
-        );
-
         if ($data->{attachments}) {
+            my $page_id = Socialtext::String::title_to_id($page_name);
             for my $name (@{$data->{attachments}}) {
                 my $attachment = $hub->attachments->new_attachment(
-                    page_id => $page->id,
+                    page_id => $page_id,
                     filename => $name,
                 );
                 $attachment->save("$dir/attachments/$data->{page_id}/$name");
                 $attachment->store(user => Socialtext::User->SystemUser);
             }
         }
+
+        Socialtext::Page->new(hub => $hub)->create(
+            title => $page_name,
+            content => $content,
+            creator => Socialtext::User->SystemUser,
+            categories => $data->{tags},
+        );
     }
 }
 

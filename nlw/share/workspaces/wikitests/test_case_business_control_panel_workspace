@@ -75,7 +75,7 @@
 | st-submit |  |  |
 | wait_for_element_visible_ok | link=%%new_workspace%% | 30000 |
 | click_and_wait | link=%%new_workspace%% |  |
-| text_like | Account: Socialtext |  |
+| text_like | qr/Account:\s+Socialtext/ism |  |
 
 | *Comment* | Test case: Business Control Panel Workspace Search for a non-existent workspace |  |
 | click_and_wait | //a[@title='workspaces'] |  |
@@ -91,6 +91,7 @@
 | wait_for_element_visible_ok | link=%%new_workspace%% | 30000 |
 
 | *Comment* | Test case: Business Control Panel Workspace TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | delete-workspace --workspace %%new_workspace%% --no-export | has been deleted |
 | st-admin | delete-workspace --workspace %%wstitle%% --no-export | has been deleted |
 | st-admin | deactivate-user --email %%cli_user%% | has been removed |
