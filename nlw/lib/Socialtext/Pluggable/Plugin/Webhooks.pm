@@ -156,13 +156,13 @@ sub page_update {
     }
     elsif ($page->deleted) {
         $class = 'page.delete';
-        $p{tags} = $page->prev_revision->tags;
+        $p{tags} = $page->prev_rev->tags;
     }
     else {
         $class = 'page.create' if $page->restored;
 
         # Look for page tag changes
-        my %prev_tags = map { $_ => 1 } @{ $page->prev_revision->tags };
+        my %prev_tags = map { $_ => 1 } @{ $page->prev_rev->tags };
         my %now_tags  = map { $_ => 1 } @{ $page->tags };
 
         my (@added, @deleted);
