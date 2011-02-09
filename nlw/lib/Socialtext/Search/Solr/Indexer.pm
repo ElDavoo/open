@@ -158,7 +158,7 @@ sub _add_page_doc {
         [w => $ws_id],
         [w_title => $self->workspace->title],
         [doctype => 'page'], 
-        [pagetype => $page->metadata->Type],
+        [pagetype => $page->type],
         [page_key => $self->page_key($page->id)],
         [title => $title],
         [editor => $editor_id],
@@ -168,10 +168,10 @@ sub _add_page_doc {
         (map { [ tag => $_ ] } @$tags),
         Socialtext::Search::Solr::BigField->new(body => \$body),
     );
-    if (my $mtime = _date_header_to_iso($page->metadata->Date)) {
+    if (my $mtime = _datetime_to_iso($page->last_edit_time)) {
         push @fields, [date => $mtime];
     }
-    if (my $ctime = _date_header_to_iso($page->original_revision->metadata->Date)) {
+    if (my $ctime = _datetime_to_iso($page->create_time)) {
         push @fields, [created => $ctime];
     }
 
@@ -227,8 +227,7 @@ sub _add_attachment_doc {
     my $id = join(':',$ws_id,$att->page_id,$att->id);
 
     st_log->debug("Indexing attachment doc $id <".$att->filename.">");
-    my $date = _date_header_to_iso($att->Date);
-    my $editor_id = $att->uploaded_by->user_id;
+    my $date = _datetime_to_iso($att->created_at);
 
     # XXX: this code assumes there's just one attachment revision
     # counteract the revisions boost by providing a dummy constant
@@ -260,8 +259,8 @@ sub _add_attachment_doc {
         [attach_id => $att->id],
         [filename => $filename],
         [filename_ext => $ext],
-        [editor => $editor_id],
-        [creator => $editor_id],
+        [editor => $att->editor_id],
+        [creator => $att->creator_id],
         [date => $date],
         [created => $date],
         [revisions => $revisions],
@@ -616,6 +615,7 @@ sub _pg_date_to_iso {
         server_tz => 'UTC',
     );
     my $utc_time = $dt->parse_timestamptz( $pgdate );
+    # rounds to second:
     my $date = DateTime->from_epoch( epoch => $utc_time->epoch );
     $date->set_time_zone('UTC');
     return $date->iso8601 . 'Z';
@@ -623,13 +623,6 @@ sub _pg_date_to_iso {
 
 sub _datetime_to_iso {
     my $date = shift || DateTime->now;
-    $date->set_time_zone('UTC');
-    return $date->iso8601 . 'Z';
-}
-
-sub _date_header_to_iso {
-    my $hdr = shift;
-    my $date = DateTime->from_epoch(epoch => str2time($hdr));
     $date->set_time_zone('UTC');
     return $date->iso8601 . 'Z';
 }

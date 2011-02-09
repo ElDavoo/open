@@ -57,6 +57,8 @@ has 'upload' => (
     trigger => sub { $_[0]->_attachment_id($_[1]->attachment_id) },
 );
 *uploaded_by = *creator;
+*editor_id = *creator_id;
+*editor = *creator;
 *CleanFilename = *Socialtext::Upload::CleanFilename;
 
 use constant COLUMNS => qw(id workspace_id page_id attachment_id deleted);
