@@ -47,7 +47,7 @@ use Time::Duration::Object;
 use List::MoreUtils qw/any/;
 use Try::Tiny;
 
-sub class_id { 'pages' }
+sub class_id { 'page' }
 
 Readonly my $SYSTEM_EMAIL_ADDRESS       => 'noreply@socialtext.com';
 Readonly my $WIKITEXT_TYPE              => 'text/x.socialtext-wiki';

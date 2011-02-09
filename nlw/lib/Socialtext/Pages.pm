@@ -354,7 +354,7 @@ sub page_in_workspace {
     $main->hub()->registry()->load();
 
     my $page = $main->hub->pages->new_from_name($page_title);
-    return ($page->metadata->Revision and $page->active) ? $page : undef;
+    return $page->active ? $page : undef;
 }
 
 my %in_progress = ();

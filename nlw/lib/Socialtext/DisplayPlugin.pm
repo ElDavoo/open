@@ -178,7 +178,7 @@ sub display {
     my @new_tags = ();
     if ($is_new_page) {
         my $page_type = $self->cgi->page_type || '';
-        $page->metadata->Type(
+        $page->page_type(
             $page_type eq 'spreadsheet' && 'spreadsheet' || 'wiki'
         );
         push @new_tags, $self->_new_tags_to_add();
@@ -199,7 +199,6 @@ sub display {
     else {
         $page->add_tags( $self->_new_tags_to_add() );
     }
-    $page->load;
 
     if (!$is_new_page && !$page->is_untitled) {
         eval {
@@ -345,10 +344,8 @@ sub content_only {
 sub _get_page_info {
     my ( $self, $page ) = @_;
 
-    my $original_revision = $page->original_revision;
-
     my $updated_author = $page->last_edited_by || $self->hub->current_user;
-    my $created_author = $original_revision->last_edited_by;
+    my $created_author = $page->exists ? $page->creator : $self->hub->current_user;
 
     Socialtext::Timer->Continue('s2_page_html');
     my $page_html = $page->to_html_or_default;
@@ -366,7 +363,7 @@ sub _get_page_info {
         content => $self->hub->wikiwyg->html_formatting_hack(
             $page_html
         ),
-        page_type => $page->metadata->Type,
+        page_type => $page->page_type,
         size      => $page->size,
         feeds     => $self->_feeds( $self->hub->current_workspace, $page ),
         revisions => $page->revision_count,
@@ -390,11 +387,9 @@ sub _get_page_info {
                     )
                 : undef
             ),
-            date => $original_revision->datetime_for_user || undef,
+            date => $page->createtime_for_user || undef,
         },
-        is_original => (  $page->revision_id
-                        ? ($page->revision_id == $original_revision->revision_id)
-                        : undef),
+        is_original => $page->revision_num <= 1 ? 1 : 0,
         incoming    => $self->hub->backlinks->all_backlinks_for_page($page),
         caller      => ($self->cgi->caller_action || ''),
         is_active   => $page->active,

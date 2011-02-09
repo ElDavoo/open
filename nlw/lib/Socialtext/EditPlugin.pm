@@ -6,7 +6,6 @@ use feature ':5.12';
 
 use base 'Socialtext::Plugin';
 
-use Socialtext::CGI;
 use Class::Field qw( const );
 use Socialtext::Pages;
 use Socialtext::Exceptions qw( data_validation_error );
@@ -16,7 +15,7 @@ use Socialtext::Log qw(st_log);
 use Socialtext::String ();
 use Socialtext::JSON qw/decode_json encode_json/;
 
-sub class_id { 'edit' }
+sub   class_id { 'edit' }
 const class_title => 'Editing Page';
 const cgi_class => 'Socialtext::Edit::CGI';
 
@@ -117,7 +116,7 @@ sub edit_content {
         $rev->add_tags(\@tags);
     }
 
-    my $g = $self->hub->pages->ensure_current($page);
+    my $g = $self->hub->pages->ensure_current($page->id);
 
     my %event = (
         event_class => 'page',

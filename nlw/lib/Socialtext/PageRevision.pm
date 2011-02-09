@@ -17,7 +17,6 @@ use Socialtext::Encode qw/ensure_is_utf8 ensure_ref_is_utf8/;
 use Socialtext::String ();
 *title_to_id = *Socialtext::String::title_to_id;
 use Socialtext::Workspace;
-use Socialtext::Hub;
 use Socialtext::Exceptions qw/data_validation_error/;
 use Socialtext::l10n qw/loc/;
 
