@@ -49,9 +49,10 @@ has 'upload' => (
     is => 'rw', isa => 'Socialtext::Upload',
     lazy_build => 1,
     handles => [qw(
-        attachment_uuid clean_filename content_length created_at
-        created_at_str creator creator_id disk_filename ensure_stored filename
-        is_image is_temporary mime_type protected_uri short_name to_string
+        attachment_uuid binary_contents cleanup_stored clean_filename
+        content_length created_at created_at_str creator creator_id
+        disk_filename ensure_stored filename is_image is_temporary mime_type
+        protected_uri short_name to_string
     )],
     trigger => sub { $_[0]->_attachment_id($_[1]->attachment_id) },
 );

@@ -20,6 +20,7 @@ use Socialtext::Encode qw/ensure_is_utf8/;
 use Socialtext::File ();
 use Socialtext::Log qw/st_log/;
 use Socialtext::JSON qw/encode_json/;
+use Socialtext::Timer qw/time_scope/;
 use Socialtext::UUID qw/new_uuid/;
 
 use namespace::clean -except => 'meta';
@@ -54,7 +55,7 @@ sub Create {
 
     # temp_filename can be either a handle or a name. copy() below will accept
     # either.
-    my $temp_fh = $p{temp_filename}; 
+    my $temp_fh = $p{fh} || $p{temp_filename}; 
 
     my $type_hint = $p{mime_type};
     if (my $field = $p{cgi_param}) {
@@ -88,24 +89,32 @@ sub Create {
 
     my $filename = $p{filename};
     my $disk_filename = $class->_build_disk_filename($uuid);
-    _ensure_storage_dir($disk_filename);
 
-    my $tmp_store = $disk_filename.".tmp";
-    my $g = guard { local $!; unlink $tmp_store };
-    # these will die from Fatal:
-    copy($temp_fh, $tmp_store);
+    my $g;
+    my $tmp_store;
+    if ($p{db_only}) {
+        $tmp_store = $temp_fh;
+    }
+    else {
+        _ensure_storage_dir($disk_filename);
+        $tmp_store = $disk_filename.".tmp";
+        $g = guard { local $!; unlink $tmp_store };
+        # these will die from Fatal:
+        copy($temp_fh, $tmp_store);
+    }
     my $content_length = -s $tmp_store;
 
-    my ($mime_type, $is_image);
+    my $mime_type;
     try {
+        my $tm = time_scope 'upload_mime_type';
         $mime_type = Socialtext::File::mime_type(
             $tmp_store, $filename, $type_hint);
-        $is_image = ($mime_type =~ m#image/#) ? 1 : 0;
     }
     catch {
-        ($mime_type, $is_image) = ('application/octet-stream', 0);
-        warn "Could not detect mime_type of $disk_filename: $_\n";
+        $mime_type = 'application/octet-stream';
+        warn "Could not detect mime_type of $filename: $_\n";
     };
+    my $is_image = ($mime_type =~ m#image/#) ? 1 : 0;
 
     sql_insert(attachment => {
         attachment_uuid => $uuid,
@@ -125,9 +134,9 @@ sub Create {
     my $self = $class->Get(attachment_id => $id);
     $self->_save_blob($tmp_store);
 
-    rename $tmp_store => $disk_filename;
-    $g->cancel;
-    {
+    unless ($p{db_only}) {
+        rename $tmp_store => $disk_filename;
+        $g->cancel if $g;
         my $time = $self->created_at->epoch;
         utime $time, $time, $disk_filename
             or warn "can't update timestamp on $disk_filename: $!";
@@ -299,7 +308,7 @@ sub make_permanent {
         UPDATE attachment SET is_temporary = false WHERE attachment_id = ?
     }, $self->attachment_id);
     $self->is_temporary(0);
-    $self->ensure_stored();
+    $self->ensure_stored() unless $p{db_only};
     $g->cancel() unless $p{guard};
 
     return $g if $p{no_log};
@@ -354,6 +363,7 @@ sub _store {
 
 sub _save_blob {
     my ($self, $from_filename) = @_;
+    my $t = time_scope 'upload_save_blob';
     $from_filename ||= $self->disk_filename;
     my $data;
     if (my $size = -s $from_filename) {
@@ -374,6 +384,12 @@ sub _load_blob {
     sql_singleblob($data_ref,
         q{SELECT body FROM attachment WHERE attachment_id = $1},
         $self->attachment_id);
+}
+
+# opposite of ensure_stored
+sub cleanup_stored {
+    my $self = shift;
+    unlink $self->disk_filename;
 }
 
 sub ensure_stored {
