@@ -508,17 +508,11 @@ sub update_lock_status {
 sub hash_representation {
     my $self = shift;
 
-    my $masked_email = $self->last_editor->masked_email_address(
-        user => $self->hub->current_user,
-        workspace => $self->hub->current_workspace,
-    );
-
-    return +{
+    my $hash = {
+        create_time     => $self->createtime_utc,
         edit_summary    => $self->edit_summary,
-        summary         => $self->summary,
         last_edit_time  => $self->datetime_utc,
-        last_editor     => $masked_email,
-        locked          => $self->locked,
+        locked          => $self->locked ? 1 : 0,
         modified_time   => $self->modified_time,
         name            => $self->name,
         page_id         => $self->page_id,
@@ -526,11 +520,40 @@ sub hash_representation {
         revision_count  => $self->revision_count,
         revision_id     => $self->revision_id,
         revision_num    => $self->revision_num,
+        summary         => $self->summary,
         tags            => $self->tags,
         type            => $self->page_type,
         uri             => $self->uri,
         workspace_name  => $self->workspace_name,
         workspace_title => $self->workspace_title,
+        ($self->deleted ? (deleted => 1) : ()),
+    };
+
+    $hash->{$_} = $self->$_->masked_email_address(
+        user => $self->hub->current_user,
+        workspace => $self->hub->current_workspace,
+    ) for qw(creator last_editor);
+
+    return $hash;
+}
+
+sub legacy_metadata_hash {
+    my $self = shift;
+    my $hash = shift || $self->to_hash;
+    # use dashes instead of camel-case, e.g.
+    # s/^([A-Z][a-z]+)([A-Z].*)$/$1-$2/;
+    return +{
+        ($hash->{deleted} ? ('Control' => 'Deleted') : ()),
+        Subject => $hash->{name},
+        From => $hash->{last_editor},
+        Date => $hash->{last_edit_time},
+        Revision => $hash->{revision_num},
+        Type => $hash->{type},
+        Summary => $hash->{summary},
+        Category => $hash->{tags},
+        Encoding => 'utf8',
+        'Revision-Summary' => $hash->{edit_summary},
+        'Locked' => $hash->{locked} ? 1 : 0,
     };
 }
 

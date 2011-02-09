@@ -5,8 +5,9 @@ use warnings;
 
 use DateTime;
 use mocked 'Socialtext::Events';
-use Test::Socialtext tests => 51;
+use Test::Socialtext tests => 54;
 use Test::Socialtext::Fatal;
+use Test::Deep;
 use ok 'Socialtext::Page';
 
 fixtures(qw( db ));
@@ -257,3 +258,78 @@ INVALID_UTF8: {
         "Check that bogus UTF8 generates an exception";
 }
 
+HASHES: {
+    my $hub = create_test_hub();
+    my $ws = $hub->current_workspace;
+    my $creator = $hub->current_user;
+    my $editor = create_test_user();
+    $ws->add_user(user => $editor);
+
+    my $date = DateTime->new(
+        year => 2011, month => 1, day => 1,
+        hour => 0, minute => 0, second => 0,
+        time_zone => 'UTC',
+    );
+    my $edit = DateTime->new(
+        year => 2011, month => 1, day => 23,
+        hour => 0, minute => 0, second => 0,
+        time_zone => 'UTC',
+    );
+    my $mtime = $edit->epoch;
+
+    my $page = Socialtext::Page->new( hub => $hub )->create(
+        title => 'Testing Hashes, Yo',
+        date => $date,
+        content => 'foo',
+    );
+
+    $hub->current_user($editor);
+    $page->edit_rev(editor => $editor, edit_time => $edit);
+    $page->edit_summary('changing to bar');
+    $page->content('bar');
+    $page->tags(['FOO','Bar']);
+    $page->store(user => $editor);
+
+    is $page->revision_count, 2;
+
+    $page = $hub->pages->new_from_name('testing_hashes_yo');
+
+    $hub->current_user($creator);
+
+    my $page_hash = $page->to_hash;
+    cmp_deeply $page_hash, {
+        create_time     => '2011-01-01 00:00:00 GMT',
+        creator         => $creator->email_address,
+        edit_summary    => 'changing to bar',
+        last_edit_time  => '2011-01-23 00:00:00 GMT',
+        last_editor     => $editor->email_address,
+        locked          => 0,
+        modified_time   => $mtime,
+        name            => 'Testing Hashes, Yo',
+        page_id         => 'testing_hashes_yo',
+        page_uri        => re('^https?.+testing_hashes_yo$'),
+        revision_count  => 2,
+        revision_id     => re('^\d+$'),
+        revision_num    => 2,
+        summary         => 'bar',
+        tags            => [ 'FOO', 'Bar' ],
+        type            => 'wiki',
+        uri             => 'testing_hashes_yo',
+        workspace_name  => $ws->name,
+        workspace_title => $ws->title,
+    }, 'page hash'; 
+
+    my $md_hash = $page->legacy_metadata_hash;
+    cmp_deeply $md_hash, {
+        'Revision-Summary' => 'changing to bar',
+        Category           => [ 'FOO', 'Bar' ],
+        Date               => '2011-01-23 00:00:00 GMT',
+        Encoding           => 'utf8',
+        From               => $editor->email_address,
+        Locked             => 0,
+        Revision           => 2,
+        Subject            => 'Testing Hashes, Yo',
+        Summary            => 'bar',
+        Type               => 'wiki',
+    }, 'md hash';
+}
