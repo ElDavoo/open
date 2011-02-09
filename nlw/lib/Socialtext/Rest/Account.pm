@@ -5,7 +5,6 @@ use Socialtext::Account;
 use Socialtext::JSON 'encode_json';
 use Socialtext::Role;
 use Socialtext::String;
-use Socialtext::Pluggable::Adapter;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Entity';
@@ -27,6 +26,7 @@ sub GET_json {
     my $self = shift;
 
     $self->can_view(sub {
+        require Socialtext::Pluggable::Adapter;
         my $acct = $self->account;
 
         my $data = {

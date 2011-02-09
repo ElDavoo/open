@@ -28,7 +28,7 @@ use File::Spec;
 use Socialtext::System qw/shell_run/;
 
 BEGIN {
-    use Socialtext::Pluggable::Adapter;
+    require Socialtext::Pluggable::Adapter;
     use Memoize qw/unmemoize/;
     unmemoize( \&Socialtext::Pluggable::Adapter::plugins );
 

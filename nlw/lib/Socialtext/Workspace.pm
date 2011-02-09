@@ -43,7 +43,6 @@ use Socialtext::Page;
 use Socialtext::Workspace::Permissions;
 use Socialtext::Workspace::Roles;
 use Socialtext::Timer;
-use Socialtext::Pluggable::Adapter;
 use Socialtext::JSON qw(decode_json);
 use Socialtext::JSON::Proxy::Helper;
 use URI;
@@ -405,6 +404,7 @@ sub _update_aliases_file {
 sub _enable_default_plugins {
     my $self = shift;
     require Socialtext::SystemSettings;
+    require Socialtext::Pluggable::Adapter;
     for my $p (Socialtext::Pluggable::Adapter->plugins) {
         next if $p->scope ne 'workspace';
         my $plugin = $p->name;
@@ -475,12 +475,8 @@ sub _update {
 
     my $new_account = $self->account;
     if ( $old_account->account_id != $new_account->account_id ) {
-        my $adapter = Socialtext::Pluggable::Adapter->new;
-        $adapter->make_hub(Socialtext::User->SystemUser(), $self);
-
         $old_account->user_set->remove_object_role($self);
         $new_account->user_set->add_object_role($self => 'member');
-
         my $users = $self->users;
         while ( my $user = $users->next ) {
             require Socialtext::JobCreator;
@@ -1107,6 +1103,8 @@ after 'role_change_event' => sub {
 sub _user_role_changed {
     my ($self,$actor,$change,$user,$role) = @_;
 
+    require Socialtext::Pluggable::Adapter;
+
     if ($change eq 'add') {
         # This is needed because of older appliances where users were put in
         # one of three accounts that are not optimal:
@@ -1332,6 +1330,7 @@ sub _dump_to_yaml_file {
     $dump{name} = $name;
     $dump{plugins} = { map { $_ => 1 } $self->plugins_enabled };
 
+    require Socialtext::Pluggable::Adapter;
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub(Socialtext::User->SystemUser(), $self);
     $adapter->hook('nlw.export_workspace', [$self, \%dump]);
@@ -1397,6 +1396,7 @@ sub _dump_users_to_yaml_file {
         push @dump, $dumped_user;
     }
 
+    require Socialtext::Pluggable::Adapter;
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub(Socialtext::User->SystemUser(), $self);
     $adapter->hook('nlw.export_workspace_users', [$self, \@dump]);
@@ -1408,6 +1408,7 @@ sub _dump_user_to_hash {
     my $self = shift;
     my $user = shift;
 
+    require Socialtext::Pluggable::Adapter;
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub($user);
     my $plugin_prefs = {};

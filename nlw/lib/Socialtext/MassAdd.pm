@@ -7,7 +7,6 @@ use Socialtext::Encode;
 use Socialtext::Log qw(st_log);
 use Socialtext::User;
 use Socialtext::l10n qw/loc/;
-use Socialtext::Pluggable::Adapter;
 use Socialtext::String;
 use List::MoreUtils qw/mesh/;
 
@@ -24,11 +23,10 @@ our @Profile_fields
 our @All_fields = (@Required_fields, @User_fields, @Profile_fields);
 our %Non_profile_fields = map {$_ => 1} (@Required_fields, @User_fields, 'account_id');
 
-BEGIN {
-    unless (defined $Has_People_Installed) {
-        $Has_People_Installed = 
-            Socialtext::Pluggable::Adapter->plugin_exists('people');
-    }
+unless (defined $Has_People_Installed) {
+    require Socialtext::Pluggable::Adapter;
+    $Has_People_Installed = 
+        Socialtext::Pluggable::Adapter->plugin_exists('people');
 }
 
 sub new {
@@ -298,6 +296,7 @@ sub _update_profile {
 
     local $Socialtext::People::Fields::AutomaticStockFields = 1;
 
+    require Socialtext::Pluggable::Adapter;
     my $people = Socialtext::Pluggable::Adapter->plugin_class('people');
     return 0 unless $people;
 
@@ -333,6 +332,7 @@ sub _fail {
 sub ProfileFieldsForAccount {
     my $class = shift;
     my $account = shift;
+    require Socialtext::Pluggable::Adapter;
     my $people = Socialtext::Pluggable::Adapter->plugin_class('people');
     return unless $people;
     local $Socialtext::People::Fields::AutomaticStockFields = 1;
