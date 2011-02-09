@@ -1287,10 +1287,10 @@ sub _build_central_workspace {
             $main_page_name = substr($self->title, 0, 30 - length($suffix)) . $suffix;
         }
 
+        $name =~ s/_/-/g;
         $wksp = Socialtext::Workspace->new(name => $name)
     }
 
-    warn "MPN: $main_page_name";
     $wksp = Socialtext::Workspace->create(
         name                => $name,
         title               => $title,
