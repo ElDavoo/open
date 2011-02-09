@@ -1,10 +1,24 @@
 | *Comment* | Test Case: New Default Dashboard |  |
 
-| set | ndd_acct | ndd_account_%%start_time%% |  |
+| set | ndd_acct | ndd-account-%%start_time%% |  |
 | set | ndd_user | ndd_user_%%start_time%%@david.socialtext.net |  |
 | create_account | %%ndd_acct%% |  |  |
 | create_user | %%ndd_user%% | %%password%% | %%ndd_acct%% |
 
-| *Comment* | Test Case: New Default Dashboard log in to dashboard to trigger creation of central wiki |  |
+| *Comment* | Test Case: New Default Dashboard check that central wiki has not been created |  |
+| open_ok | /nlw/control/workspace |  |
+| wait_for_element_visible_ok | link=%%workspace%% | 30000 |
+| wait_for_element_not_present_ok | link=%%ndd_acct%%-central | 30000 |
+
+| *Comment* | Test Case: New Default Dashboard login to dashboard to trigger creation of central wiki |  |
 | st-logoutin | %%ndd_user%% | %%password%% |
 | open_ok | /st/dashboard |  |
+| wait_for_element_visible_ok | link=%%ndd_acct%% Central | 30000 |
+| st-name-widget | 1 | wiki_page |
+| st-widget-title-like | wiki_page | Wiki Page |
+| st-select-widget-frame | wiki_page |  |
+| wait_for_element_visible_ok | link=%%ndd_acct%% Central | 30000 |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: New Default Dashboard TEARDOWN |  |
+| st-admin | deactivate-user --email %%ndd_user%% | removed |
