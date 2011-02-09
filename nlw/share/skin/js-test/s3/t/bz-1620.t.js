@@ -14,12 +14,12 @@ t.runAsync([
     },
             
     function() { 
-        var rss_link = t.$('a.rss-feed').get(0);
+        var $rss_link = t.$('a.rss-feed');
 
         t.is(
-            rss_link.getAttribute('target'),
-            '_blank',
-            "[RSS Feed] link opens in new window, not a child window"
+            $rss_link.attr('target'),
+            '',
+            "[RSS Feed] link opens in the same window, not a new window"
         );
 
         t.endAsync();
