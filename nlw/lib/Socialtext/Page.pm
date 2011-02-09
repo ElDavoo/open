@@ -155,6 +155,23 @@ use constant SELECT_COLUMNS_STR => q{
     page.tags -- ordered array
 };
 
+# use 'user' and 'date' instead of 'creator/editor', 'create_time/edit_time'
+sub Blank {
+    my ($class, %p) = @_;
+    die "no hub" unless $p{hub};
+    $p{editor} = delete $p{user} || $p{hub}->current_user;
+    $p{edit_time} = delete $p{date} if $p{date};
+    my $rev = Socialtext::PageRevision->Blank(\%p);
+    my $page = Socialtext::Page->new(
+        hub => $rev->hub,
+        page_id => $rev->page_id,
+        rev => $rev,
+        creator => $rev->editor,
+        create_time => $rev->edit_time,
+    );
+    return $page;
+}
+
 # This should only get called as a result of somebody creating a page object
 # that didn't go through _new_from_row() or when a revision_id isn't given to
 # the constructor.  This means *you*, Socialtext::Pages->new_page()
@@ -787,20 +804,13 @@ sub _fixup_body {
         $args{date} ||= Socialtext::Date->now(hires=>1);
         $args{creator} ||= $hub->current_user;
 
-        my $rev = Socialtext::PageRevision->Blank(
-            hub       => $hub,
+        my $page = $class_or_self->Blank(
+            hub => $hub,
             name      => $args{title},
             editor    => $args{creator},
             edit_time => $args{date},
             tags      => $args{categories},
             body_ref  => \$args{content},
-        );
-        my $page = $class_or_self->new(
-            hub         => $hub,
-            page_id     => $rev->page_id,
-            creator     => $rev->editor,
-            create_time => $rev->edit_time,
-            rev         => $rev,
         );
         $page->store( user => $args{creator} );
         return $page;

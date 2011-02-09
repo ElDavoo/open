@@ -237,6 +237,7 @@ sub mutable_clone {
     $clone_args{hub} = $self->hub;
     $clone_args{editor_id} = $p->{editor}->user_id;
     $clone_args{editor} = $p->{editor};
+    $clone_args{edit_time} = $p->{edit_time} if $p->{edit_time};
     $clone_args{__mutable} = 1;
     return Socialtext::PageRevision->new(\%clone_args);
 }

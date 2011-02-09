@@ -239,18 +239,28 @@ sub new_page {
     my $self = shift;
     my $t = time_scope 'pages_new_page';
     # TODO: check cache
-    Socialtext::Page->new(hub => $self->hub, id => shift);
+    Socialtext::Page->new(hub => $self->hub, page_id => shift);
 }
 
 sub new_from_name {
     my $self = shift;
     my $page_name = shift;
     my $id = _t2id($page_name);
-    my $page = Socialtext::Page->new(hub => $self->hub, id => $id);
-    # TODO: check cache
-    return unless $page;
-    # May cause a Blank revision to be created if none exists:
-    $page->title($page_name);
+    return if length($id) > Socialtext::String::MAX_PAGE_ID_LEN;
+
+    my $page = $self->By_id(
+        hub          => $self->hub,
+        workspace_id => $self->hub->current_workspace->workspace_id,
+        page_id      => $id,
+        deleted_ok   => 1,
+        no_die       => 1,
+    );
+
+    $page //= Socialtext::Page->Blank(
+        hub     => $self->hub, # will use current_user/workspace
+        name    => $page_name, # so it gets the right title
+        page_id => $id, # so we don't have to re-calc the id
+    );
     return $page;
 }
 
