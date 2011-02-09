@@ -26,10 +26,7 @@ t.runAsync([
         }
     },
 
-    function() { 
-        t.$('#st-preview-button-link').click();
-        t.callNextStep(2500);
-    },
+    t.doPreview(),
 
     function() { 
         t.is(t.$('div.wafl_items a').text(), '1', "No extra paren on toc wafl");

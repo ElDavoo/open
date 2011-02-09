@@ -465,6 +465,17 @@ proto.click = function(selector) {
     this.$(selector).click();
 };
 
+proto.doPreview = function() {
+    var t = this;
+    return function() {
+        t.$('#st-preview-button-link').click();
+        t.poll(
+            function() { return t.$('#st-page-preview').is(':visible') },
+            function() { t.callNextStep(500) }
+        );
+    };
+};
+
 proto.doRichtextEdit = function() {
     this.checkRichTextSupport();
     return this._doEdit(this.richtextModeIsReady, '#st-mode-wysiwyg-button', 'Wikiwyg.Wysiwyg');
