@@ -78,6 +78,18 @@ proto.is_no_harness = function() {
         this.is.apply(this, arguments);
 }
 
+proto.ok_no_harness = function() {
+    if (window.top.Test.Harness) {
+        this.builder.diag(
+            "Can't run test " + (this.builder.CurrTest + 1) + " in the harness"
+        );
+        this.builder.skip(arguments[2]);
+    }
+    else
+        this.ok.apply(this, arguments);
+}
+
+
 proto.create_user = function(params, callback) {
     var self = this;
 
