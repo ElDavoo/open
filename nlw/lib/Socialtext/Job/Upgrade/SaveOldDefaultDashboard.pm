@@ -36,8 +36,6 @@ sub do_work {
 
     my $account_id = $self->account->account_id;
 
-    Socialtext::Gadgets::Gadget->Install(@old_default_gadgets);
-
     # Check if the dashboard already exists
     my $container = Socialtext::Gadgets::Container::AccountDashboard->Fetch(
         viewer => Socialtext::User->SystemUser,
