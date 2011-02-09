@@ -1269,11 +1269,11 @@ sub _build_central_workspace {
     $self->enable_plugin('widgets');
 
     # Find a valid name for a new workspace
-    my ($title, $name);
+    my ($title, $name, $main_page_name);
     for (my $i = 0; !$i or defined $wksp; $i++) {
         # XXX: Horrible for i18n:
         my $suffix = ' Central' . ($i ? " $i" : "");
-        $title = $self->name . $suffix;
+        $main_page_name = $title = $self->name . $suffix;
         $name = Socialtext::String::title_to_id($title);
 
         $name =~ s/^st_//;
@@ -1283,11 +1283,14 @@ sub _build_central_workspace {
             # Truncate the account name, saving room for $suffix
             $name = substr($self->name, 0, 30 - length($suffix));
             $name = Socialtext::String::title_to_id($name . $suffix);
+
+            $main_page_name = substr($self->title, 0, 30 - length($suffix)) . $suffix;
         }
 
         $wksp = Socialtext::Workspace->new(name => $name)
     }
 
+    warn "MPN: $main_page_name";
     $wksp = Socialtext::Workspace->create(
         name                => $name,
         title               => $title,
@@ -1305,7 +1308,7 @@ sub _build_central_workspace {
         replace => {
             # Replace all pages with YourCo in the title with this account's
             # name
-            'YourCo Central' => $wksp->name,
+            'YourCo Central' => $main_page_name
         },
     );
 
