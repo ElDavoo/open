@@ -226,6 +226,10 @@ sub _xfer_workspaces {
     # we need to make sure that users/groups in these workspaces make it into
     # the new group.
     while (my $ws = $mc->next()) {
+        if ($ws->is_all_users_workspace) {
+            # Make this workspace not an all users workspace
+            $ws->remove_account(account => $ws->account);
+        }
         $ws->update(account_id => $self->into_account->account_id);
         $self->_xfer_users_and_groups(
             from       => $ws,
@@ -233,6 +237,7 @@ sub _xfer_workspaces {
             origin     => $origin,
             force_role => Socialtext::Role->Member(),
         );
+        $ws->add_group(group => $to_group);
     }
 }
 

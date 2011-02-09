@@ -7,7 +7,7 @@ t.run_roundtrip('wikitext');
 /* Test
 === A table and a wafl
 --- wikitext
-| a | table |
+␤| a | table |
 
 {rt: 11111}
 

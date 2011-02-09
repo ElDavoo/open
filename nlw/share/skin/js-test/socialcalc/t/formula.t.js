@@ -23,9 +23,8 @@ t.runAsync([
         t.click('#st-multiline-button-link');
         t.is(t.$('#wikiwyg_wikitext_textarea').height(), 64, 'Multi-line Input');
         t.ok(t.$('#st-apply-button-link').is(':visible'), 'Multi-line Apply');
-        t.click('#st-apply-button-link'),
-        t.click('#st-preview-button-link');
-        t.callNextStepOn('#st-spreadsheet-preview #cell_A1');
+        t.click('#st-apply-button-link');
+        t.callNextStepOnReady();
     },
 
     t.doCheckText('6', 'Quick Sum', 'A4'),
@@ -34,7 +33,6 @@ t.runAsync([
         t.click('#st-edit-mode-button-link');
         t.click('#st-oneline-button-link');
         t.is(t.$('#wikiwyg_wikitext_textarea').height(), 18, 'Single-line Input');
-        t.click('#st-save-button-link');
         t.endAsync();
     }
 ]);

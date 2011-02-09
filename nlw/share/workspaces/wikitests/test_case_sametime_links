@@ -6,7 +6,7 @@
 
 | set | sametime_user | st_user_%%start_time%%@david.socialtext.net |
 | set | sametime_user_short | st user %%start_time%% |
-| set | sametime_sn | socialtextuser5@socialtext.com |
+| set | sametime_sn | socialtextuser1@socialtext.com |
 | create_user | %%sametime_user%% | %%password%% |
 | set | sametime_userid | %%user_id%% |
 | st-admin | add-member --email %%sametime_user%% --workspace %%workspace%% | now has the role |

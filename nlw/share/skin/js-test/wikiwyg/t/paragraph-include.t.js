@@ -32,7 +32,6 @@ Don't tread on me.
 {include: [bogus page name]}
 
 
-
 Don't tread on me.
 
 === Include with other text
@@ -51,7 +50,6 @@ Don't tread on me.
 La la la
 
 {include: [bogus page name]}
-
 
 
 Don't tread on me.
@@ -74,7 +72,6 @@ Don't tread on me.
 !
 
 {include: [bogus page name]}
-
 this page.
 
 Don't tread on me.
@@ -97,7 +94,6 @@ Don't tread on me.
 DEE
 
 {include: [bogus page name]}
-
 DUM
 
 Don't tread on me.

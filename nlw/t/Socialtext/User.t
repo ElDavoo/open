@@ -293,7 +293,7 @@ deactivate_user: {
         account_id => $account->account_id,
     );
     $ws1->add_user(user => $user);
-    is $user->workspace_count(), 2, "user is in correct number of workspaces";
+    is $user->workspace_count(), 3, "user is in correct number of workspaces (2 + central)";
 
     # deactivate them
     $user->deactivate;
@@ -307,7 +307,7 @@ deactivate_user: {
     ok $deleted->has_user( $user ), 'user has a role in deleted account';
 
     # Check workspaces, password
-    is $user->workspace_count(), 0, "user was removed from their workspaces";
+    is $user->workspace_count(), 1, "user was removed from their workspaces (just central WS left)";
     is $user->password, '*no-password*', "user's password was 'deactivated'";
 
     # "Reactivate" the user
@@ -354,7 +354,8 @@ user_workspaces: {
 
     my @names = map { $_->name } 
         $user->workspaces()->all();
-    is_deeply \@names, \@to_create, 'correct workspaces in correct order';
+    my @ws_list = sort( @to_create, $account->central_workspace->name );
+    is_deeply \@names, \@ws_list, 'correct workspaces in correct order';
 
     @names = map { $_->name } 
         $user->workspaces( limit => 1 )->all();

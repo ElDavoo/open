@@ -42,7 +42,7 @@
 
 | *Comment* | regexs needed becausing whitespace is missing in the page layout |
 | text_like | IM |
-| text_like | qr/IM AIM.+AOL %%short_e_user%%/ |
+| text_like | qr/AIM.+AOL %%short_e_user%%/ |
 | wait_for_element_present_ok | //img[contains(@src,'api.oscar.aol.com')] | 5000 |
 | text_like | qr/Yahoo!.+Yahoo %%short_e_user%%/ |
 | wait_for_element_present_ok | //img[contains(@src,'opi.yahoo.com')] | 5000 |

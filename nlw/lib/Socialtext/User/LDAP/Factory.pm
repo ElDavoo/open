@@ -102,6 +102,11 @@ sub GetUser {
         }
     }
 
+    # Forcably re-enable local LDAP User cache; if we end up following any
+    # User lookups for things like profile relationship lookups, we *don't*
+    # want to end up chasing circular relationship.  So, break the chain now.
+    local $Socialtext::User::LDAP::Factory::CacheEnabled = 1;
+
     # Look the User up in LDAP
     local $self->{_user_not_found};
     my $proto_user = eval { $self->lookup($key => $val) };

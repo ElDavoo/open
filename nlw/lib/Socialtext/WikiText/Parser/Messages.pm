@@ -154,6 +154,7 @@ sub handle_waflphrase {
         if ($options =~ /^\s*([\w\-]+)\s*\[(.*)\]\s*(.*?)\s*$/) {
             my ($workspace_id, $page_id, $section) = ($1, $2, $3);
             my $text = $match->{text} || $page_id;
+            $page_id =~ tr/\//_/; # don't produce illegal URLs
             $page_id =
                 Socialtext::String::title_to_display_id($page_id, 'no-escape');
             $section =

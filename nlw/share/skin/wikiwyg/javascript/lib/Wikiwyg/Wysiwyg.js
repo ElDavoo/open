@@ -2132,7 +2132,7 @@ proto.fromHtml = function(html) {
             '(<!--[\\d\\D]*?-->)|(<(span|div)\\sclass="nlw_phrase">)[\\d\\D]*?(<!--\\swiki:\\s[\\d\\D]*?\\s--><\/\\3>)',
             'g'
         ), function(_, _1, _2, _3, _4) {
-            return(_1 ? _1 : _2 + _4);
+            return(_1 ? _1 : _2 + '&nbsp;' + _4);
         }
     );
 

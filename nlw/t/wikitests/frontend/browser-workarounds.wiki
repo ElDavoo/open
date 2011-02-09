@@ -26,6 +26,13 @@ Test many of the different browser workarounds.
 | Code-is        | 301                  |                                     |
 | header-like    | Location             | skin/s3/javascript/socialtext-s3.js |
 
+| *Comment* | iGoogle rewrite hacks |
+| GET       | /ig/ifpc_relay        |
+| code-is   | 302                   |
+| header-like | Location | /nlw/plugin/widgets/ifpc_relay.html |
+| GET     | /nlw/plugin/widgets/ifpc_relay.html |
+| code-is | 200                                 |
+
 | *Comment*      | Mobile browsers are redirected (Android) |            |
 | set-user-agent | %%android_ua%%                           |            |
 | GET            | /                                        |            |
@@ -45,13 +52,6 @@ Test many of the different browser workarounds.
 | GET | /data/workspaces/%%workspace%%/pages/hai/tags | text/plain |
 | code-is | 200 |
 | body-like | mojibake? |
-
-| *Comment* | iGoogle rewrite hacks |
-| GET       | /ig/ifpc_relay        |
-| code-is   | 302                   |
-| header-like | Location | /nlw/plugin/widgets/ifpc_relay.html |
-| GET     | /nlw/plugin/widgets/ifpc_relay.html |
-| code-is | 200                                 |
 
 | *Comment* | have an empty robots.txt |
 | set-user-agent | Wikid |

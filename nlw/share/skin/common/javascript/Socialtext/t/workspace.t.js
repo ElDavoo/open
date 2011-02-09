@@ -81,13 +81,26 @@ t.runAsync([
         t.createGroups(testGroups, t.nextStep());
     },
 
+    function() {
+        $.ajax({
+            type: 'GET',
+            url: '/data/users/devnull1@socialtext.com',
+            dataType: 'json',
+            success: function(data) {
+                t.__primary_account_id__ = data.primary_account_id;
+                t.callNextStep();
+            }
+        });
+    },
+
     /*
      * Create a Workspace
      */
     function() {
         Socialtext.Workspace.Create({
             title: workspaceTitle,
-            name: workspaceName
+            name: workspaceName,
+            account_id: t.__primary_account_id__
         }, function() {
             t.pass("Created Workspace");
             t.callNextStep();

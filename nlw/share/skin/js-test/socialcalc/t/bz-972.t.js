@@ -17,7 +17,6 @@ t.runAsync([
         var val = t.callEventHandler("#st-color-button-link", "click");
         t.is(val, false, "Event handler returns false");
 
-        t.callEventHandler("#st-save-button-link", "click");
         t.endAsync();
     }
 ]);

@@ -53,23 +53,20 @@
 | click_and_wait | link=%%mastergroupsacct%% |  |
 | wait_for_text_present_ok | Users (5) | 30000 |
 | wait_for_text_present_ok | Groups (2) | 30000 |
-| wait_for_text_present_ok | Workspaces (0) | 30000 |
-| text_like | qr/Users \(5\)..+%%e_isouser3%%.+%%e_groupsuser1%%.+%%e_isouser2%%.+%%e_isouser1%%.+Groups/ |  |
+| text_like | qr/Users \(5\).+%%e_isouser3%%.+%%e_groupsuser1%%.+%%e_isouser2%%.+%%e_isouser1%%.+Groups/ |  |
 | text_like | qr/Groups \(2\).+%%groupwithmember%%.+%%samplegroup1%%/ |  |
 
 | *Comment* | Test Case: Business Control Panel Groups In Account SORT By Number of Workspaces |  |
 | wait_for_element_visible_ok | group-sort-workspaces | 30000 |
 | click_and_wait | group-sort-workspaces |  |
 | wait_for_text_present_ok | Users (5) | 30000 |
-| wait_for_text_present_ok | Workspaces (0) | 30000 |
 | wait_for_text_present_ok | Groups (2) | 30000 |
 | text_like | qr/Groups \(2\).+%%samplegroup1%%.+%%groupwithmember%%/ |  |
 | wait_for_element_visible_ok | group-sort-workspaces | 3000 |
 | click_and_wait | group-sort-workspaces |  |
 | wait_for_text_present_ok | Users (5) | 30000 |
-| wait_for_text_present_ok | Workspaces (0) | 30000 |
 | wait_for_text_present_ok | Groups (2) | 30000 |
-| text_like | qr/Groups \(2\)..+%%groupwithmember%%.+%%samplegroup1%%/ |  |
+| text_like | qr/Groups \(2\).+%%groupwithmember%%.+%%samplegroup1%%/ |  |
 
 | *Comment* | Test Case: Business Control Panel Groups In Account - Click on a group |  |
 | wait_for_element_visible_ok | link=%%samplegroup1%% | 30000 |
@@ -107,9 +104,13 @@
 | text_like | qr/Users \(3\).+%%e_isouser3%%.+%%e_isouser2%%.+%%e_isouser1%%/ |  |
 
 | *Comment* | Test Case: Business Control Panel Groups In Account TEARDOWN |
+| st-process-jobs |  |  |
 | delete-created-groups |  |  |
 | st-admin | delete-workspace --no-export --w %%workspace1%% | has been deleted |
 | st-admin | delete-workspace --no-export --w %%workspace2%% | has been deleted |
 | st-admin | delete-workspace --no-export --w %%workspace3%% | has been deleted |
+| st-admin | deactivate-user --e %%isouser1%% | has been removed |
+| st-admin | deactivate-user --e %%isouser2%% | has been removed |
+| st-admin | deactivate-user --e %%isouser3%% | has been removed |
 
 | *Comment* | Test Case: Business Control Panel Groups In Account COMPLETED |

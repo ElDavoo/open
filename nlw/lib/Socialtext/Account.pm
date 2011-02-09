@@ -757,7 +757,6 @@ sub _account_create_hook {
     # preference
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub(Socialtext::User->SystemUser());
-    $adapter->hook('nlw.create_account', [$self]);
 }
 
 sub _enable_default_plugins {
@@ -1226,6 +1225,84 @@ sub impersonation_ok {
         account    => $self,
         permission => 'impersonate'
     );
+}
+
+has 'central_workspace' => (
+    is => 'ro', isa => 'Socialtext::Workspace',
+    lazy_build => 1,
+);
+
+sub _build_central_workspace {
+    my $self = shift;
+
+    my $user = Socialtext::User->SystemUser();
+    my $wksp;
+
+    # Store the name of the workspace
+    my $pref_table = Socialtext::PrefsTable->new(
+        table    => 'user_set_plugin_pref',
+        identity => {
+            plugin      => 'widgets',
+            user_set_id => $self->user_set_id,
+        },
+    );
+
+    my $prefs = $pref_table->get();
+    if ($prefs->{central_workspace}) {
+        $wksp = Socialtext::Workspace->new(name => $prefs->{central_workspace});
+    }
+
+    return $wksp if $wksp;
+
+    # Enable the widgets plugin so we can set this preference
+    $self->enable_plugin('widgets');
+
+    # Find a valid name for a new workspace
+    my ($title, $name, $main_page_name);
+    for (my $i = 0; !$i or defined $wksp; $i++) {
+        # XXX: Horrible for i18n:
+        my $suffix = ' Central' . ($i ? " $i" : "");
+        $main_page_name = $title = $self->name . $suffix;
+        $name = Socialtext::String::title_to_id($title);
+
+        $name =~ s/^st_//;
+        if ( Socialtext::Workspace->NameIsIllegal($name) ) {
+            # This can only be because the name is too long
+
+            # Truncate the account name, saving room for $suffix
+            $name = substr($self->name, 0, 30 - length($suffix));
+            $name = Socialtext::String::title_to_id($name . $suffix);
+
+            $main_page_name = substr($self->title, 0, 30 - length($suffix)) . $suffix;
+        }
+
+        $name =~ s/_/-/g;
+        $wksp = Socialtext::Workspace->new(name => $name)
+    }
+
+    $wksp = Socialtext::Workspace->create(
+        name                => $name,
+        title               => $title,
+        account_id          => $self->account_id,
+        created_by_user_id  => $user->user_id(),
+        allows_page_locking => 1,
+    );
+
+    $wksp->assign_role_to_account(account => $self);
+
+    my $share_dir = Socialtext::AppConfig->new->code_base();
+    $wksp->load_pages_from_disk(
+        clobber => 1,
+        dir => "$share_dir/workspaces/central",
+        replace => {
+            # Replace all pages with YourCo in the title with this account's
+            # name
+            'YourCo Central' => $main_page_name
+        },
+    );
+
+    $pref_table->set(central_workspace => $wksp->name);
+    return $wksp;
 }
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);

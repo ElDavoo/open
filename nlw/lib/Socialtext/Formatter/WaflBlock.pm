@@ -14,6 +14,13 @@ field 'arguments';
 
 sub html_start { '<div class="wafl_block">'}
 
+sub text_filter {
+    my $self = shift;
+    my $text = shift;
+    $text =~ s/<!--\s+wiki:.*?\s-->//sg;
+    $text;
+}
+
 sub html_end {
     my $self = shift;
     my $method  = $self->method;
@@ -75,7 +82,7 @@ const wafl_id => 'html';
 
 sub text_filter {
     my $self = shift;
-    my $text = shift;
+    my $text = $self->SUPER::text_filter(@_);
     $text =~ s/<(?=\/?(?i:html|head|body))/&lt;/g;
     $text;
 }

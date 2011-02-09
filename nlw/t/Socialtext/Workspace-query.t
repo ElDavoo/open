@@ -10,34 +10,46 @@ use Test::Socialtext tests => 28;
 ###############################################################################
 # Fixtures: clean populated_rdbms
 # - this test expects a known fresh/clean state to start with
-fixtures(qw( clean populated_rdbms ));
+fixtures(qw( clean populated_rdbms destructive ));
 
+sub workspace_names {
+    my $workspaces = shift;
+    return [map { $_->name } $workspaces->all()];
+}
+        
 {
     my $workspaces;
     $workspaces = Socialtext::Workspace->All();
+    # This is to remove the "central" AUWs
+    for my $ws ($workspaces->all) {
+        $ws->delete if $ws->name =~ /_central$/;
+    }
+
+
+    $workspaces = Socialtext::Workspace->All();
     is_deeply(
-        [ map { $_->name } $workspaces->all() ],
+        workspace_names($workspaces),
         [ map { ("workspace$_") } 0..9 ],
         'All() returns workspaces sorted by name by default',
     );
 
     $workspaces = Socialtext::Workspace->All( limit => 2 );
     is_deeply(
-        [ map { $_->name } $workspaces->all() ],
+        workspace_names($workspaces),
         [ qw( workspace0 workspace1 ) ],
         'All() limit of 2',
     );
 
     $workspaces = Socialtext::Workspace->All( limit => 2, offset => 2 );
     is_deeply(
-        [ map { $_->name } $workspaces->all() ],
+        workspace_names($workspaces),
         [ qw( workspace2 workspace3 ) ],
         'All() limit of 2, offset of 2',
     );
 
     $workspaces = Socialtext::Workspace->All( sort_order => 'DESC' );
     is_deeply(
-        [ map { $_->name } $workspaces->all() ],
+        workspace_names($workspaces),
         [ reverse map { ("workspace$_") } 0..9 ],
         'All() in DESC order',
     );
@@ -46,26 +58,26 @@ fixtures(qw( clean populated_rdbms ));
     # first, but sorted by name in ascending order.
     $workspaces = Socialtext::Workspace->All( order_by => 'user_count', sort_order => 'DESC' );
     is_deeply(
-        [ map { $_->name } $workspaces->all() ],
+        workspace_names($workspaces),
         [ map { ("workspace$_") } 6, 7, 8, 9, 5, 4, 2, 3, 1, 0 ],
         'All() sorted by DESC user_count',
     );
 
     $workspaces = Socialtext::Workspace->All( order_by => 'account_name' );
-    is join(',', map { $_->name } $workspaces->all() ),
+    is join(',', @{workspace_names($workspaces)} ),
        join(',', map { "workspace$_" } qw/0 2 4 6 8 1 3 5 7 9/),
        'All() sorted by account_name';
 
     $workspaces = Socialtext::Workspace->All( order_by => 'creation_datetime' );
     is_deeply(
-        [ map { $_->name } $workspaces->all() ],
+        workspace_names($workspaces),
         [ map { ("workspace$_") } 0..9 ],
         'All() sorted by creation_datetime',
     );
 
     $workspaces = Socialtext::Workspace->All( order_by => 'creator' );
     is_deeply(
-        [ map { $_->name } $workspaces->all() ],
+        workspace_names($workspaces),
         [ map { ("workspace$_") } 6, 5, 4, 3, 2, 9, 1, 8, 0, 7  ],
         'All() sorted by creator',
     );
@@ -75,7 +87,7 @@ fixtures(qw( clean populated_rdbms ));
     my $account_id = Socialtext::Account->new(name => 'Other 1')->account_id;
     my $workspaces = Socialtext::Workspace->ByAccountId( account_id => $account_id );
     is_deeply(
-        [ map { $_->name } $workspaces->all() ],
+        workspace_names($workspaces),
         [ map { ("workspace$_") } 0, 2, 4, 6, 8 ],
         'ByAccountId() returns workspaces sorted by name by default',
     );
@@ -85,7 +97,7 @@ fixtures(qw( clean populated_rdbms ));
         limit      => 2,
     );
     is_deeply(
-        [ map { $_->name } $workspaces->all() ],
+        workspace_names($workspaces),
         [ qw( workspace0 workspace2 ) ],
         'ByAccountId() limit of 2',
     );
@@ -96,7 +108,7 @@ fixtures(qw( clean populated_rdbms ));
         offset     => 2,
     );
     is_deeply(
-        [ map { $_->name } $workspaces->all() ],
+        workspace_names($workspaces),
         [ qw( workspace4 workspace6 ) ],
         'ByAccountId() limit of 2, offset of 2',
     );
@@ -106,7 +118,7 @@ fixtures(qw( clean populated_rdbms ));
         sort_order => 'DESC',
     );
     is_deeply(
-        [ map { $_->name } $workspaces->all() ],
+        workspace_names($workspaces),
         [ map { ("workspace$_") } 8, 6, 4, 2, 0 ],
         'ByAccountId() in DESC order',
     );
@@ -141,7 +153,7 @@ fixtures(qw( clean populated_rdbms ));
         order_by   => 'creation_datetime',
     );
     is_deeply(
-        [ map { $_->name } $workspaces->all() ],
+        workspace_names($workspaces),
         [ map { ("workspace$_") } 0, 2, 4, 6, 8 ],
         'ByAccountId() sorted by creation_datetime',
     );
@@ -151,7 +163,7 @@ fixtures(qw( clean populated_rdbms ));
         order_by   => 'creator',
     );
     is_deeply(
-        [ map { $_->name } $workspaces->all() ],
+        workspace_names($workspaces),
         [ map { ("workspace$_") } 6, 4, 2, 8, 0 ],
         'ByAccountId() sorted by creator',
     );
@@ -198,28 +210,28 @@ fixtures(qw( clean populated_rdbms ));
 
     my $workspaces = Socialtext::Workspace->ByName( name => '1' );
     is_deeply(
-        [ map { $_->name } $workspaces->all() ],
+        workspace_names($workspaces),
         [ qw( number-111 workspace1 workspace10 ) ],
         'ByName() returns workspaces sorted by name by default',
     );
 
     $workspaces = Socialtext::Workspace->ByName( name => '1', limit => 2  );
     is_deeply(
-        [ map { $_->name } $workspaces->all() ],
+        workspace_names($workspaces),
         [ qw( number-111 workspace1 ) ],
         'ByName() limit of 2',
     );
 
     $workspaces = Socialtext::Workspace->ByName( name => '1', limit => 2, offset => 1 );
     is_deeply(
-        [ map { $_->name } $workspaces->all() ],
+        workspace_names($workspaces),
         [ qw( workspace1 workspace10 ) ],
         'ByName() limit of 2, offset of 1',
     );
 
     $workspaces = Socialtext::Workspace->ByName( name => '1', sort_order => 'DESC' );
     is_deeply(
-        [ map { $_->name } $workspaces->all() ],
+        workspace_names($workspaces),
         [ qw( workspace10 workspace1 number-111 ) ],
         'ByName() in DESC order',
     );
@@ -263,22 +275,23 @@ fixtures(qw( clean populated_rdbms ));
 
     $workspaces = Socialtext::Workspace->ByName( name => '1', order_by => 'account_name' );
     is_deeply(
-        [ map { $_->name } $workspaces->all() ],
+        workspace_names($workspaces),
         [ qw( workspace10 number-111 workspace1 ) ],
         'ByName() sorted by account_name',
     );
 
     $workspaces = Socialtext::Workspace->ByName( name => '1', order_by => 'creation_datetime' );
     is_deeply(
-        [ map { $_->name } $workspaces->all() ],
+        workspace_names($workspaces),
         [ qw( number-111  workspace10 workspace1 ) ],
         'ByName() sorted by creation_datetime',
     );
 
     $workspaces = Socialtext::Workspace->ByName( name => '1', order_by => 'creator' );
     is_deeply(
-        [ map { $_->name } $workspaces->all() ],
+        workspace_names($workspaces),
         [ qw( workspace1 number-111 workspace10 ) ],
         'ByName() sorted by creator',
     );
 }
+

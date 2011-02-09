@@ -1040,16 +1040,24 @@ proto.squish_style_object_into_string = function(style) {
 proto.href_is_wiki_link = function(href) {
     if (! this.looks_like_a_url(href))
         return true;
-    if (! href.match(/\?/))
-        return false;
     if (href.match(/\/static\//) && href.match(/\/skin\/js-test\//))
         href = location.href;
-    var no_arg_input   = href.split('?')[0];
-    var no_arg_current = location.href.split('?')[0];
-    if (no_arg_current == location.href)
-        no_arg_current =
-          location.href.replace(new RegExp(location.hash), '');
-    return no_arg_input == no_arg_current;
+
+    // check that the url is in this workspace
+    var up_to_wksp = /^https?:\/\/[^\/]+\/[^\/#]+/;
+    var no_page_input   = href.match(up_to_wksp);
+    var no_page_current = location.href.match(up_to_wksp);
+
+    // This url is nothing like a wikilink
+    if (!no_page_input || !no_page_current) return false;
+
+    if (no_page_input[0] == no_page_current[0]) {
+        // We are on the current workspace
+        // Check to make sure CGI params aren't pointing to something else
+        var query = href.split('?')[1];
+        if (!query) return true;
+        return ((! query.match(/=/)) || query.match(/action=display\b/));
+    }
 }
 
 proto.looks_like_a_url = function(string) {
@@ -1386,14 +1394,8 @@ proto.convertWikitextToHtml = function(wikitext, func, onError) {
 
     if (!isSuccess) {
         alert(loc("Operation failed due to server error; please try again later."));
-        if (onError) { onError(xhr); }
+        if (onError) { onError(); }
     }
-}
-
-proto.href_is_really_a_wiki_link = function(href) {
-    var query = href.split('?')[1];
-    if (!query) return true;
-    return ((! query.match(/=/)) || query.match(/action=display\b/));
 }
 
 proto.href_label_similar = function(elem, href, label) {
@@ -1852,11 +1854,12 @@ proto.assert_trailing_space = function(part, text) {
         )
     ) return;
 
-    if (this.wikitext.match(/ $/)) return;
+    if (/ $/.test(this.wikitext)) return;
 
     if (/\n$/.test(this.wikitext)) {
         if (part.previousSibling &&
-            part.previousSibling.nodeName == 'BR'
+            (part.previousSibling.nodeName == 'BR'
+            || part.previousSibling.nodeName == 'HR')
         ) return;
         if (part.top_level_block) return;
         this.wikitext = this.wikitext.replace(/\n$/, '');
@@ -2418,10 +2421,7 @@ proto.is_italic = function(elem) {
 proto.elem_is_wiki_link = function (elem) {
     var href = elem.getAttribute('href') || ''
     return jQuery(elem).attr('wiki_page')
-        || (
-            this.href_is_wiki_link(href)
-            && this.href_is_really_a_wiki_link(href)
-          );
+        || this.href_is_wiki_link(href);
 }
 
 proto.make_wikitext_link = function(label, href, elem) {
@@ -2454,9 +2454,11 @@ proto.make_wikitext_link = function(label, href, elem) {
 }
 
 proto.handle_wiki_link = function(label, href, elem) {
+    var up_to_wksp = /^https?:\/\/[^\/]+\/[^\/]+/;
+
     var href_orig = href;
-    href = href.replace(/\baction=display;is_incipient=1;page_name=/, '');
-    href = href.replace(/.*\?/, '');
+    href = href.replace(/.*\baction=display;is_incipient=1;page_name=/, '');
+    href = href.replace(up_to_wksp, '');
     href = decodeURIComponent(href);
     href = href.replace(/_/g, ' ');
     // XXX more conversion/normalization poo

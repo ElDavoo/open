@@ -18,7 +18,6 @@ t.run_roundtrip('wikitext');
 See also: FormattingTest | [FormattingToDo] | [WikiwygFormattingTest] | [WikiwygFormattingToDo]
 
 ^^^^ Everything in this file should roundtrip flawlessy (clean diff -u)
-
 ----
 
 ^^ Whitespace issues go here:

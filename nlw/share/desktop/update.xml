@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>4.5.4</version>
-  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.5.4.air</url>
-  <description><![CDATA[[4.5.4 - Tue Feb  1 18:30:14 PST 2011]
+  <version>4.5.4.2</version>
+  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.5.4.2.air</url>
+  <description><![CDATA[[4.5.4.2 - Fri Feb  4 22:06:26 PST 2011]
 (Features)
-* Signals: Add a "insert video" icon for ST 4.5.4+.
+* Signals: Add an "insert video" icon for ST 4.5.4+.
 * People: Display emails in people's Colleagues sub-tab.
 * People: Added image smoothing and rounded corners for group icons and avatar icons.
 * People: Add a per-person Signals sub-tab to agree with Mobile UI.

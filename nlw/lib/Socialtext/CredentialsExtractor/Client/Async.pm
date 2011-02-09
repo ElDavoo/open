@@ -21,7 +21,9 @@ has 'userd_path' => (
 has 'userd_uri' => (
     is => 'ro', isa => 'Str', lazy_build => '1',
 );
-has 'cache_enabled' => ( is => 'ro', isa => 'Bool', reader => 'can_cache' );
+has 'cache_enabled' => (
+    is => 'ro', isa => 'Bool', reader => 'can_cache', default => 1,
+);
 has 'timeout' => ( is => 'rw', isa => 'Int', default => 30 );
 
 sub _build_userd_uri {
