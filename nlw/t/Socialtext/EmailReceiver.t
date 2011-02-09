@@ -542,7 +542,7 @@ ONE_ATTACHMENT: {
     like( $page->content(), qr/\Q{file: http-recorder}\E/,
           'check that page content contains link to attached file' );
 
-    my $all = $hub->attachments()->all_in_workspace();
+    my $all = $hub->attachments->all_attachments_in_workspace;
     is( @$all, 1,
         'only one attachment in workspace' );
 
@@ -1180,12 +1180,6 @@ sub tests_for_email {
           'content includes date from email headers' );
     like( $page->content(), qr{API changed},
           'content includes string "API changed"' );
-    is( $page->metadata()->MessageID(),
-        '<Pine.LNX.4.33.0409151241140.5203-100000@sharkey.morinda.com>',
-        'check that page metadata Message-ID matches the message id in email' );
-    like( $page->metadata()->Received(),
-          qr/\Qlists.sourceforge.net ([66.35.250.206]\E\s+\Qhelo=sc8-sf-list1.sourceforge.net)\E/,
-          'check that page metadata Received matches part of the Received header in email' );
 
     my $categories = $page->tags;
     ok( scalar @$categories, 'page has category metadata' );

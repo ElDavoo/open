@@ -73,7 +73,6 @@ sub receive {
     $self->_save_body_and_strip_attachments();
     $self->_get_email_body();
     $self->_save_html_bodies_as_attachments();
-    $self->{hub}->attachments->cache->clear();
 
     # Must be done after we get the email body, because there may be
     # "category: ..." commands in the body.
@@ -181,7 +180,7 @@ sub _get_page_for_subject {
     my $self = shift;
 
     my $subject = $self->_clean_subject();
-    if (length Socialtext::Page->uri_escape($subject) 
+    if (length Socialtext::String::uri_escape($subject) 
         > Socialtext::String::MAX_PAGE_ID_LEN ) {
         data_validation_error loc("Page title is too long after URL encoding");
         return;
@@ -551,7 +550,7 @@ sub _set_page_categories {
     $cat = Socialtext::CategoryPlugin->Decode_category_email($cat)
         if defined $cat;
 
-    $self->{page}->add_tags([ grep {defined} @{$self->{categories}}, $cat ]);
+    $self->{page}->rev->add_tags([grep {defined} @{$self->{categories}}, $cat]);
 }
 
 sub _get_to_address_local_part {
