@@ -46,8 +46,7 @@ sub create_zip {
         # a page what attachments it has?)
         $self->{hub}->pages->current($page);
 
-        my $metadata = $page->metadata;
-        my $title    = $metadata->Subject;
+        my $title = $page->name;
 
         # XXX Is this impervious to revisions (regarding caching)
         my $html = $viewer->process( $page->content );
@@ -61,11 +60,7 @@ sub create_zip {
             html_archive => $self,
         );
 
-        my $raw_date = $metadata->Date;
-        my ( $year, $mon, $mday, $hour, $min, $sec ) =
-          ( $raw_date =~ /(\d{4})-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)/ );
-        my $unix_time =
-          Time::Local::timegm( $sec, $min, $hour, $mday, $mon - 1, $year );
+        my $unix_time = $page->last_edit_time->epoch;
 
         my $file = Socialtext::File::catfile( $dir, "$page_id.htm" );
         open my $fh, '>:utf8', $file
