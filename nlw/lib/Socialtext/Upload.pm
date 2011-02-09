@@ -3,7 +3,7 @@ package Socialtext::Upload;
 use Moose;
 use File::Copy qw/copy move/;
 use File::Path qw/make_path/;
-use File::Map qw/map_file map_handle advise/;
+use File::Map qw/map_file advise/;
 use File::Temp ();
 use Fatal qw/copy move rename open close/;
 use Try::Tiny;
@@ -355,8 +355,14 @@ sub _store {
 sub _save_blob {
     my ($self, $from_filename) = @_;
     $from_filename ||= $self->disk_filename;
-    map_file my $data, $from_filename, '<';
-    advise $data, 'sequential';
+    my $data;
+    if (my $size = -s $from_filename) {
+        map_file $data, $from_filename, '<', 0, $size;
+        advise $data, 'sequential';
+    }
+    else {
+        $data = '';
+    }
     sql_saveblob(\$data, 
         q{UPDATE attachment SET body = $1 WHERE attachment_id = $2},
         $self->attachment_id);
@@ -389,7 +395,12 @@ sub binary_contents {
     my ($self, $data_ref) = @_;
     my $filename = $self->disk_filename;
     if (-f $filename) {
-        map_file $$data_ref, $filename, '<';
+        if (my $size = -s _) {
+            map_file $$data_ref, $filename, '<', 0, $size;
+        }
+        else {
+            $$data_ref = '';
+        }
     }
     else {
         $self->_load_blob($data_ref);
