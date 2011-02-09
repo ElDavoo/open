@@ -1901,22 +1901,6 @@ sub duplicate {
         $dest_hub = $self->hub;
     }
 
-    die "user has no permission for workspace"
-        unless $self->hub->authz->user_has_permission_for_workspace(
-            user => $user,
-            permission => ST_EDIT_PERM,
-            workspace => $dest_ws
-        );
-
-    if ($keep_attachments) {
-        die "user has no permission for workspace"
-            unless $self->hub->authz->user_has_permission_for_workspace(
-                user => $user,
-                permission => ST_ATTACHMENTS_PERM,
-                workspace => $dest_ws
-            );
-    }
-
     my $target = $dest_hub->pages->new_from_name($target_title);
     my $target_id = $target->page_id;
 
