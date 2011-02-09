@@ -203,7 +203,7 @@ sub _duplicate {
 }
 
 sub _page_title_bad {
-    my ( $self, $title ) = @_;
+    my ( $class_or_self, $title ) = @_;
     return Socialtext::Page->is_bad_page_title($title);
 }
 

@@ -31,6 +31,15 @@ const class_title => 'NLW Pages';
 field current => 
       -init => '$self->new_page($self->current_id)';
 
+sub ensure_current {
+    my ($self, $page_id) = @_;
+    my $old_current = $self->current;
+    my $g = guard { $self->current($old_current) };
+    my $page = $self->new_page($page_id);
+    $self->current($page);
+    return $g;
+}
+
 =head2 $page->all()
 
 Returns a list of all page objects that exist in the current workspace.

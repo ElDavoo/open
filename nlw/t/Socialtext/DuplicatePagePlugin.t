@@ -4,7 +4,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 39;
+use Test::Socialtext tests => 35;
 use File::Temp;
 fixtures('db');
 
@@ -13,46 +13,51 @@ my $foobar = create_test_hub('foobar');
 $admin->current_workspace->add_user(user => $foobar->current_user);
 $foobar->current_workspace->add_user(user => $admin->current_user);
 
-{
+new_target: {
     my $page = $admin->pages->new_from_name('interwiki copy test in admin');
+    ok $page->mutable, "page doesn't exist, thus mutable";
     $page->content('This is a test page for interwiki copy.');
     $page->store( user => $admin->current_user );
 
     my $same_page =
         $admin->pages->new_from_name('interwiki copy test in admin');
-    my $new_page =
-        $foobar->pages->new_from_name('interwiki copy test in foobar');
+    is $same_page->content, "This is a test page for interwiki copy.\n";
 
     my $return = $page->duplicate( $foobar->current_workspace, 'interwiki copy test in foobar' );
     ok( $return, 'duplication was successful' );
     ok( $same_page, 'original page was saved in admin workspace' );
-    ok( length $same_page->content, 'original page has some content' );
+
+    my $new_page =
+        $foobar->pages->new_from_name('interwiki copy test in foobar');
     ok( $new_page, 'copied page exists in foobar workspace' );
-    ok( length $new_page->content, 'new page has some content' );
     is( $new_page->content, $page->content,
         'copied page content is the same in both workspaces' );
 }
 
-{
+dont_auto_clobber: {
     my $page_admin = $admin->pages->new_from_name('interwiki copy two');
-    my $page_foobar = $foobar->pages->new_from_name('interwiki copy two');
-    
     $page_admin->content('This page copy is supposed to fail');
-    $page_admin->store( user => $admin->current_user );
+    $page_admin->store(user => $admin->current_user);
+    ok $page_admin->exists;
+
+    my $page_foobar = $foobar->pages->new_from_name('interwiki copy two');
     $page_foobar->content('This page copy is supposed to be clobbered');
-    $page_foobar->store( user => $admin->current_user );
+    $page_foobar->store(user => $admin->current_user);
+    ok $page_foobar->exists;
 
     my $return = $page_admin->duplicate( $foobar->current_workspace, 'interwiki copy two' );
 
+    # force reload
     $page_admin = $admin->pages->new_from_name('interwiki copy two');
     $page_foobar = $foobar->pages->new_from_name('interwiki copy two');
     
-    ok( $return == 0, 'copy denied, no flag');
-    isnt( $page_admin->content, $page_foobar->content,
-        'two pages are different as expected');
+    ok $return == 0, 'copy denied, no flag';
+    is $page_foobar->content, "This page copy is supposed to be clobbered\n";
+    isnt $page_admin->content, $page_foobar->content,
+        'two pages are different as expected';
 }
 
-{
+clobber: {
     my $page_admin =
         $admin->pages->new_from_name('interwiki copy three');
     my $page_foobar =
@@ -69,12 +74,12 @@ $foobar->current_workspace->add_user(user => $admin->current_user);
     $page_admin = $admin->pages->new_from_name('interwiki copy three');
     $page_foobar = $foobar->pages->new_from_name('interwiki copy three');
     
-    ok( $return, 'copy succeeded, flag was right' );
-    is( $page_admin->content, $page_foobar->content,
-        'two pages are the same as expected' );
+    ok $return, 'copy succeeded, flag was right';
+    is $page_admin->content, $page_foobar->content,
+        'two pages are the same as expected';
 }
 
-{
+invalid_clobber_id: {
     my $page_admin =
         $admin->pages->new_from_name('interwiki copy four');
     my $page_foobar =
@@ -85,6 +90,7 @@ $foobar->current_workspace->add_user(user => $admin->current_user);
     $page_foobar->content('This page copy is supposed to be clobbered');
     $page_foobar->store( user => $admin->current_user );
 
+    # note the clobber parameter (last one) is "three" instead of the correct "four"
     my $return = $page_admin->duplicate( $foobar->current_workspace, 'interwiki copy four',
         '', '', 'interwiki copy three' );
 
@@ -96,7 +102,7 @@ $foobar->current_workspace->add_user(user => $admin->current_user);
         'two pages are different, as expected' );
 }
 
-{
+again_invalid_clobber_id: {
     my $page_admin_one =
         $admin->pages->new_from_name('intrawiki copy one');
     my $page_admin_two =
@@ -118,7 +124,7 @@ $foobar->current_workspace->add_user(user => $admin->current_user);
         'two pages are different, as expected' );
 }
 
-{
+successful_clobber_diff_names: {
     my $page_admin_one =
         $admin->pages->new_from_name('intrawiki copy three');
     my $page_admin_two =
@@ -140,7 +146,6 @@ $foobar->current_workspace->add_user(user => $admin->current_user);
         'two pages are the same, as expected' );
 }
 
-
 {
     my $page_admin_one =
         $admin->pages->new_from_name('intrawiki copy three');
@@ -160,8 +165,11 @@ $foobar->current_workspace->add_user(user => $admin->current_user);
 
     unlink $temp_file; undef $temp_file;
 
+    $page_admin_one->edit_rev();
     $page_admin_one->content('This page copy is supposed to succeed');
     $page_admin_one->store( user => $admin->current_user );
+
+    $page_admin_two->edit_rev();
     $page_admin_two->content('This page copy is supposed to be clobbered');
     $page_admin_two->store( user => $admin->current_user );
 
@@ -255,21 +263,3 @@ $foobar->current_workspace->add_user(user => $admin->current_user);
         'correct id with attachment for dest');
 }
 
-BAD_PAGE_TITLE: {
-    my $class      = 'Socialtext::DuplicatePagePlugin';
-    my @bad_titles = (
-        "Untitled Page",
-        "Untitled ///////////////// Page",
-        "&&&& UNtiTleD ///////////////// PaGe",
-        "&&&& UNtiTleD ///////////////// PaGe *#\$*@!#*@!#\$*",
-        "Untitled_Page",
-        "",
-    );
-    for my $page (@bad_titles) {
-        ok(
-            $class->_page_title_bad("Untitled Page"),
-            "Invalid title: \"$page\""
-        );
-    }
-    ok( !$class->_page_title_bad("Cows Are Good"), "OK page title" );
-}
