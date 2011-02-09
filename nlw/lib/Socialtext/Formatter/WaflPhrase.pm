@@ -467,7 +467,6 @@ sub html {
     );
 
     my $page = Socialtext::Page->new(id => $page_uri, hub => $self->hub);
-    my $page_type = $page->metadata->Type;
 
     my $edit_url;
     if ($edit_perm) {
@@ -477,7 +476,7 @@ sub html {
                 workspace  => $workspace_name,
                 page_uri   => $page_uri_for_url,
                 url_prefix => $self->url_prefix,
-                page_type  => $page_type,
+                page_type  => $page->page_type,
             );
         };
     }
@@ -491,8 +490,8 @@ sub html {
         $edit_icon = $self->edit_icon($edit_url, $page_exists);
     }
 
-    my $activity_class = $page_type eq 'spreadsheet'
-        ? "st-include-activity$page_type"
+    my $activity_class = $page->is_spreadsheet
+        ? "st-include-activityspreadsheet"
         : "st-include-activity";
     my $activity =
         $self->hub->current_workspace->enable_spreadsheet
