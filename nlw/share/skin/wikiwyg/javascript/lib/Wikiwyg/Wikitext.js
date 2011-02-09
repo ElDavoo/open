@@ -1854,11 +1854,12 @@ proto.assert_trailing_space = function(part, text) {
         )
     ) return;
 
-    if (this.wikitext.match(/ $/)) return;
+    if (/ $/.test(this.wikitext)) return;
 
     if (/\n$/.test(this.wikitext)) {
         if (part.previousSibling &&
-            part.previousSibling.nodeName == 'BR'
+            (part.previousSibling.nodeName == 'BR'
+            || part.previousSibling.nodeName == 'HR')
         ) return;
         if (part.top_level_block) return;
         this.wikitext = this.wikitext.replace(/\n$/, '');
