@@ -1081,8 +1081,9 @@ sub all {
 
 sub to_html_or_default {
     my $self = shift;
+    my $ref = $self->body_ref; # Load the ref so we load the length
     $self->to_html(
-        $self->body_length ? $self->body_ref : \$self->default_content,
+        $self->body_length ? $ref : \$self->default_content,
         $self);
 }
 
