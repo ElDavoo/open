@@ -70,4 +70,6 @@ sub original_revision { shift } # hack - return ourself
 sub datetime_for_user { 'Mon 12 12:00am' }
 sub last_edited_by { Socialtext::User->new(username => 'mocked_user') }
 sub edit_summary { 'awesome' }
+
+sub full_uri { '/workspace_mock_workspace_name/current' }
 1;
