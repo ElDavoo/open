@@ -262,7 +262,7 @@ sub ExpireUserRecord {
     Readonly my @required_fields   => qw(username email_address);
     Readonly my @unique_fields     => qw(username email_address private_external_id);
     Readonly my @lowercased_fields => qw(username email_address);
-    Readonly my @optional_fields   => qw(private_external_id);
+    Readonly my @optional_fields   => qw(private_external_id middle_name);
     sub ValidateAndCleanData {
         my ($self, $user, $p) = @_;
         my @errors;
