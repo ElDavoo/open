@@ -26,8 +26,8 @@ WEIGHTED_CATEGORIES_FOR_PAGE: {
 
     # REVIEW: asymetry between add_tags and delete_tag, former does its own
     # store
+    $page2->edit_rev;
     $page2->delete_tag('tag1');
-    $page2->metadata->update(user => $hub->current_user);
     $page2->store( user => $hub->current_user );
     %tags = $hub->category->weight_categories(
         @{ $page1->tags } );
