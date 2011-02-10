@@ -229,7 +229,7 @@ sub _search {
         });
 
         st_log->info('SEARCH,SOLR,'
-            .'ACTOR_ID:'. $opts{viewer}->user_id .','
+            .'ACTOR_ID:'. ($opts{viewer} ? $opts{viewer}->user_id : '0') .','
             .$json_data
         );
     };
