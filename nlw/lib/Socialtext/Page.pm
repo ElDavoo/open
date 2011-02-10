@@ -462,10 +462,6 @@ sub update_from_remote {
     my $was_locked = $rev->locked;
     $rev->locked($p{locked}) if defined $p{locked};
     $rev->body_ref(\$p{content}) if exists $p{content};
-    $p{revision} //= $self->revision_num;
-    $p{subject}  //= $self->title;
-    $p{tags}     //= $self->tags;
-    $p{type}     //= $self->page_type;
 
     my $signal = $self->update(
         user         => $editor,
@@ -759,56 +755,39 @@ sub _fixup_body {
     }
 }
 
-{
-    Readonly my $spec => {
-        content          => { type => SCALAR, default => '' },
-        content_ref      => { type => SCALARREF, default => undef },
-        revision         => { type => SCALAR,   regex   => qr/^\d+$/ },
-        type             => { type => SCALAR,   regex   => qr/^(?:wiki|spreadsheet)$/, default => 'wiki' },
-        categories       => { type => ARRAYREF, default => [] },
-        subject             => SCALAR_TYPE,
-        user                => USER_TYPE,
-        date                => { can => [qw(strftime)], default => undef },
-        edit_summary        => { type => SCALAR, default => '' },
-        signal_edit_summary => { type => SCALAR, default => undef },
-        signal_edit_summary_from_comment => { type => SCALAR, default => undef },
-        signal_edit_to_network => { type => SCALAR, default => undef },
-    };
-    sub update {
-        my $self = shift;
-        my %p = validate( @_, $spec );
+sub update {
+    my ($self, %p) = @_;
 
-        die "can't update; page is not mutable" unless $self->mutable;
-        my $rev = $self->rev;
+    die "can't update; page is not mutable" unless $self->mutable;
+    my $rev = $self->rev;
 
-        if ($p{content_ref}) {
-            $rev->body_ref($p{content_ref});
-        }
-        elsif (length $p{content}) {
-            carp "caller should be using content_ref";
-            $rev->body_ref(\$p{content});
-        }
-
-        if (my $tags = $p{categories}) {
-            $tags = [map { ensure_is_utf8($_) } @$tags];
-            $rev->tags($tags);
-        }
-
-        $rev->revision_num($p{revision}) if $p{revision};
-        $rev->page_type($p{type}) if $p{type};
-        $rev->name($p{subject}) if $p{subject};
-        $rev->edit_summary($p{edit_summary}) if $p{edit_summary};
-        $rev->editor($p{user}) if $p{user};
-        $rev->edit_time($p{date}) if $p{date};
-
-        $self->store(user => $p{user});
-
-        return $self->_signal_edit_summary(
-            $p{user}, $p{edit_summary}, $p{signal_edit_to_network}
-        ) if $p{signal_edit_summary};
-
-        return;
+    if ($p{content_ref}) {
+        $rev->body_ref($p{content_ref});
     }
+    elsif (length $p{content}) {
+        carp "caller should be using content_ref";
+        $rev->body_ref(\$p{content});
+    }
+
+    if (my $tags = $p{categories}) {
+        $tags = [map { ensure_is_utf8($_) } @$tags];
+        $rev->tags($tags);
+    }
+
+    $rev->revision_num($p{revision}) if $p{revision};
+    $rev->page_type($p{type}) if $p{type};
+    $rev->name($p{subject}) if defined $p{subject};
+    $rev->edit_summary($p{edit_summary}) if $p{edit_summary};
+    $rev->editor($p{user}) if $p{user};
+    $rev->edit_time($p{date}) if $p{date};
+
+    $self->store(user => $p{user});
+
+    return $self->_signal_edit_summary(
+        $p{user}, $p{edit_summary}, $p{signal_edit_to_network}
+    ) if $p{signal_edit_summary};
+
+    return;
 }
 
 {
