@@ -162,7 +162,8 @@ sub page_update {
         $class = 'page.create' if $page->restored;
 
         # Look for page tag changes
-        my %prev_tags = map { $_ => 1 } @{ $page->prev_rev->tags };
+        my %prev_tags = $page->has_prev_rev ?
+            (map { $_ => 1 } @{ $page->prev_rev->tags }) : ();
         my %now_tags  = map { $_ => 1 } @{ $page->tags };
 
         my (@added, @deleted);
