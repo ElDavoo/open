@@ -365,7 +365,6 @@ QUICK_TESTS = \
 	t/Socialtext/Base.t \
 	t/Socialtext/Cache.t \
 	t/Socialtext/CategoryPlugin-email-address-encoding.t \
-	t/Socialtext/CategoryPlugin-html-escape.t \
 	t/Socialtext/CLI/fs-perm-check.t \
 	t/Socialtext/Config/Base.t \
 	t/Socialtext/CredentialsExtractor/Apache.t \
@@ -409,11 +408,8 @@ QUICK_TESTS = \
 	t/Socialtext/Log.t \
 	t/Socialtext/Migration.t \
 	t/Socialtext/Migration/Utils.t \
-	t/Socialtext/Model/Pages.t \
-	t/Socialtext/Model/Page.t \
 	t/Socialtext/MultiCursor.t \
 	t/Socialtext/NTLM/Config.t \
-	t/Socialtext/PageMeta.t \
 	t/Socialtext/People/Directories.t \
 	t/Socialtext/People/Fields.t \
 	t/Socialtext/People/Profile-lazy-field-init.t \
