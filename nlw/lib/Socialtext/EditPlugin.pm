@@ -206,6 +206,7 @@ sub save {
     $rev->tags(\@categories);
 
     $page->update(
+        subject          => $page->title,
         revision         => $self->cgi->revision || 0,
         user             => $self->hub->current_user,
         signal_edit_summary => 1,
