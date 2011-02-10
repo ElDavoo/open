@@ -90,19 +90,31 @@ sub Create {
     my $filename = $p{filename};
     my $disk_filename = $class->_build_disk_filename($uuid);
 
-    my $g;
-    my $tmp_store;
+    my ($g, $tmp_store, $content_length, $sref);
     if ($p{db_only}) {
         $tmp_store = $temp_fh;
+        $content_length = -s $tmp_store;
     }
     else {
         _ensure_storage_dir($disk_filename);
         $tmp_store = $disk_filename.".tmp";
         $g = guard { local $!; unlink $tmp_store };
-        # these will die from Fatal:
-        copy($temp_fh, $tmp_store);
+
+        # special-case IO::Scalar (well, a duck-type)
+        if (blessed($temp_fh) && $temp_fh->can('sref')) {
+            my $sref = $temp_fh->sref;
+            $content_length = bytes::length($$sref);
+            open my $fh, '>', $tmp_store;
+            binmode($fh);
+            print $fh $$sref;
+            close $fh;
+        }
+        else {
+            # these will die from Fatal:
+            copy($temp_fh, $tmp_store);
+            $content_length = -s $tmp_store;
+        }
     }
-    my $content_length = -s $tmp_store;
 
     my $mime_type;
     if ($type_hint && $p{trust_mime_type}) {
@@ -137,7 +149,7 @@ sub Create {
     # Moose type constraints can cause the create to fail here, hence the txn
     # wrapper.
     my $self = $class->Get(attachment_id => $id);
-    $self->_save_blob($tmp_store);
+    $self->_save_blob($tmp_store,$sref);
 
     unless ($p{db_only}) {
         rename $tmp_store => $disk_filename;
@@ -367,16 +379,17 @@ sub _store {
 }
 
 sub _save_blob {
-    my ($self, $from_filename) = @_;
+    my ($self, $from_filename, $data) = @_;
     my $t = time_scope 'upload_save_blob';
-    $from_filename ||= $self->disk_filename;
-    my $data;
-    if (my $size = -s $from_filename) {
-        map_file $data, $from_filename, '<', 0, $size;
-        advise $data, 'sequential';
-    }
-    else {
-        $data = '';
+    unless ($data) {
+        $from_filename ||= $self->disk_filename;
+        if (my $size = -s $from_filename) {
+            map_file $data, $from_filename, '<', 0, $size;
+            advise $data, 'sequential';
+        }
+        else {
+            $data = '';
+        }
     }
     sql_saveblob(\$data, 
         q{UPDATE attachment SET body = $1 WHERE attachment_id = $2},

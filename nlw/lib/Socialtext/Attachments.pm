@@ -167,7 +167,6 @@ sub create {
             creator        => $args{creator},
             filename       => $args{filename},
             temp_filename  => $args{fh},
-            content_length => -s $args{fh},
             mime_type      => $ct,
         );
     }
