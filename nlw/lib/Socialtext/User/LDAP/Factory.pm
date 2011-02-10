@@ -325,8 +325,9 @@ sub _vivify {
     # (ST:U:Def:Factory:create, ST:U:Factory:NewUserRecord), and we're going
     # to do the same here.  Yes, this should be refactored and cleaned up, no,
     # I'm not doing that just yet.
-    $user_attrs->{first_name} ||= '';
-    $user_attrs->{last_name}  ||= '';
+    $user_attrs->{first_name}  ||= '';
+    $user_attrs->{middle_name} ||= '';
+    $user_attrs->{last_name}   ||= '';
 
     # don't encrypt the placeholder password; just store it as-is
     $user_attrs->{no_crypt} = 1;

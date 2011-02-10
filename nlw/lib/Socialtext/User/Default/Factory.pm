@@ -100,6 +100,7 @@ sub create {
     $self->ValidateAndCleanData(undef, \%p);
 
     $p{first_name}         ||= '';
+    $p{middle_name}        ||= '';
     $p{last_name}          ||= '';
     $p{primary_account_id} ||= Socialtext::Account->Default()->account_id;
 
