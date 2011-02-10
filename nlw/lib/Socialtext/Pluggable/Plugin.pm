@@ -842,7 +842,7 @@ sub sheet_renderer {
         $hub         = $self->hub;
     }
     else {
-        $content_ref = $page_or_ref->content_ref;
+        $content_ref = $page_or_ref->body_ref;
         $hub         = $page_or_ref->hub;
     }
 
