@@ -1295,6 +1295,7 @@ CREATE TABLE users (
     email_address text DEFAULT '' NOT NULL,
     password text DEFAULT '*none*' NOT NULL,
     first_name text DEFAULT '' NOT NULL,
+    middle_name text DEFAULT '',
     last_name text DEFAULT '' NOT NULL,
     cached_at timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
     last_profile_update timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
