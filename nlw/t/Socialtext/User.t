@@ -392,7 +392,7 @@ to_hash: {
     );
     my @standard_fields = qw(
         user_id username email_address password
-        first_name last_name display_name
+        first_name middle_name last_name display_name
         creation_datetime last_login_datetime
         email_address_at_import created_by_user_id
         is_business_admin is_technical_admin is_system_created

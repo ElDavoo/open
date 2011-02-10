@@ -21,6 +21,7 @@ for my $password ($legacy_password, $modern_password) {
         username      => 'test-user',
         email_address => 'test-user@example.com',
         first_name    => 'First',
+        middle_name   => 'Middle',
         last_name     => 'Last',
         password      => $password,
         driver_name   => 'Default',
@@ -80,8 +81,8 @@ for my $password ($legacy_password, $modern_password) {
         isa_ok $user, 'Socialtext::User::Default';
 
         my $hashref = $user->to_hash();
-        my @fields  = qw(user_id username email_address first_name last_name
-            password display_name);
+        my @fields = qw(user_id username email_address first_name middle_name
+            last_name password display_name);
         my %expected = map { $_ => $TEST_USER{$_} } @fields;
         is_deeply $hashref, \%expected,
             'converted user to hash, with right structure';
