@@ -12,7 +12,7 @@
   [%- END -%]
 [%- END -%]
 
-<li><a href="[% workspace.uri %]?[% page.uri %]">[% page.metadata.Subject %]</a>  [%- IF include_editor %]
+<li><a href="[% workspace.uri %]?[% page.uri %]">[% page.title %]</a>  [%- IF include_editor %]
     <br />
     [%- IF user.username == page.last_edited_by.username %]
       [% SET escaped_name = loc('you') | html %]
@@ -21,7 +21,7 @@
     [%- END %]
     [%- SET escaped_editsummary = page.edit_summary | html %]
     [%- SET profile_uri = base_profile_uri _ page.last_edited_by.user_id %]
-    [%- IF page.metadata.Revision == 1 %]
+    [%- IF page.revision_num == 1 %]
       [%- SET action = loc('created by') %]
     [% ELSE %]
       [%- SET action = loc('last edited by') %]
