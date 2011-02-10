@@ -6,12 +6,15 @@ use Test::Socialtext tests => 19;
 use Socialtext::CLI;
 use Socialtext::Account;
 use Test::Socialtext::CLIUtils qw(:all);
+use Test::Socialtext::User;
 
 fixtures(qw( clean db ));
 
 ###############################################################################
 # TEST: Create User, make sure they got created.
 create_user: {
+    my $guard = Test::Socialtext::User->snapshot();
+
     expect_success(
         call_cli_argv(
             'create-user',
@@ -44,6 +47,8 @@ create_user: {
 ###############################################################################
 # TEST: Create User, into a specific Account
 create_user_specific_account: {
+    my $guard = Test::Socialtext::User->snapshot();
+
     expect_success(
         call_cli_argv(
             'create-user',
@@ -62,6 +67,7 @@ create_user_specific_account: {
 ###############################################################################
 # TEST: Create User with external Private ID
 create_user_private_id: {
+    my $guard = Test::Socialtext::User->snapshot();
     my $email = Test::Socialtext::create_unique_id() . '@ken.socialtext.net';
     my $external_id = 'abc123';
     expect_success(
@@ -95,6 +101,7 @@ create_user_private_id: {
 ###############################################################################
 # TEST: Check for required fields
 required_field_check: {
+    my $guard = Test::Socialtext::User->snapshot();
     expect_failure(
         call_cli_argv(
             'create-user',
