@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 20;
+use Test::Socialtext tests => 30;
 use Socialtext::CLI;
 use Test::Socialtext::CLIUtils qw(:all);
 use Test::Socialtext::User;
@@ -18,10 +18,11 @@ SET_USER_NAMES: {
     expect_success(
         call_cli_argv(
             'create-user',
-            '--email'      => $email,
-            '--password'   => 'foobar',
-            '--first-name' => 'John',
-            '--last-name'  => 'Doe',
+            '--email'       => $email,
+            '--password'    => 'foobar',
+            '--first-name'  => 'John',
+            '--middle-name' => 'Michael',
+            '--last-name'   => 'Doe',
         ),
         qr/new user.*created/,
         'created new User',
@@ -30,17 +31,19 @@ SET_USER_NAMES: {
     expect_success(
         call_cli_argv(
             'set-user-names',
-            '--email'      => $email,
-            '--first-name' => 'Jane',
-            '--last-name'  => 'Smith',
+            '--email'       => $email,
+            '--first-name'  => 'Jane',
+            '--middle-name' => 'Petunia',
+            '--last-name'   => 'Smith',
         ),
         qr/User "[^"]+" was updated/,
         'Names updated for User'
     );
 
     my $user = Socialtext::User->new(email_address => $email);
-    is $user->first_name, 'Jane',  '... first name updated';
-    is $user->last_name,  'Smith', '... last name updated';
+    is $user->first_name,  'Jane',    '... first name updated';
+    is $user->middle_name, 'Petunia', '... middle name updated';
+    is $user->last_name,   'Smith',   '... last name updated';
 }
 
 ###############################################################################
@@ -69,10 +72,11 @@ set_user_names_firstnameonly: {
     expect_success(
         call_cli_argv(
             'create-user',
-            '--email'      => $email,
-            '--password'   => 'foobar',
-            '--first-name' => 'John',
-            '--last-name'  => 'Doe',
+            '--email'       => $email,
+            '--password'    => 'foobar',
+            '--first-name'  => 'John',
+            '--middle-name' => 'Michael',
+            '--last-name'   => 'Doe',
         ),
         qr/new user.*created/,
         'created new User',
@@ -89,8 +93,44 @@ set_user_names_firstnameonly: {
     );
 
     my $user = Socialtext::User->new(email_address => $email);
-    is $user->first_name, 'Jane', '... first name updated';
-    is $user->last_name,  'Doe',  '... last name still the same';
+    is $user->first_name,  'Jane',    '... first name updated';
+    is $user->middle_name, 'Michael', '... middle name still the same';
+    is $user->last_name,   'Doe',     '... last name still the same';
+}
+
+###############################################################################
+# TEST: Set only the middle name
+set_user_names_middlenameonly: {
+    my $guard = Test::Socialtext::User->snapshot();
+    my $email = 'lastnameonly@example.com';
+
+    expect_success(
+        call_cli_argv(
+            'create-user',
+            '--email'       => $email,
+            '--password'    => 'foobar',
+            '--first-name'  => 'John',
+            '--middle-name' => 'Michael',
+            '--last-name'   => 'Doe',
+        ),
+        qr/new user.*created/,
+        'created new User',
+    );
+
+    expect_success(
+        call_cli_argv(
+            'set-user-names',
+            '--email'       => $email,
+            '--middle-name' => 'David',
+        ),
+        qr/User "[^"]+" was updated/,
+        'Last name updated for User'
+    );
+
+    my $user = Socialtext::User->new(email_address => $email);
+    is $user->first_name,  'John',  '... first name still the same';
+    is $user->middle_name, 'David', '... middle name updated';
+    is $user->last_name,   'Doe',   '... last name still the same';
 }
 
 ###############################################################################
@@ -102,10 +142,11 @@ set_user_names_lastnameonly: {
     expect_success(
         call_cli_argv(
             'create-user',
-            '--email'      => $email,
-            '--password'   => 'foobar',
-            '--first-name' => 'John',
-            '--last-name'  => 'Doe',
+            '--email'       => $email,
+            '--password'    => 'foobar',
+            '--first-name'  => 'John',
+            '--middle-name' => 'Michael',
+            '--last-name'   => 'Doe',
         ),
         qr/new user.*created/,
         'created new User',
@@ -122,6 +163,7 @@ set_user_names_lastnameonly: {
     );
 
     my $user = Socialtext::User->new(email_address => $email);
-    is $user->first_name, 'John',  '... first name still the same';
-    is $user->last_name,  'Smith', '... last name updated';
+    is $user->first_name,  'John',    '... first name still the same';
+    is $user->middle_name, 'Michael', '... middle name still the same';
+    is $user->last_name,   'Smith',   '... last name updated';
 }

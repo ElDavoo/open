@@ -636,7 +636,7 @@ sub set_user_names {
     my $self = shift;
     my $user = $self->_require_user;
     my %opts = $self->_require_set_user_names_params(shift);
-    
+
     $self->_error(
         loc("Remotely sourced Users cannot be updated via Socialtext.")
     ) unless $user->can_update_store();
@@ -778,10 +778,12 @@ sub _require_set_user_names_params {
 
     my %opts = $self->_get_options(
         'first-name:s',
+        'middle-name:s',
         'last-name:s'
     );
 
-    for my $key ( grep { defined $opts{$_} } 'first-name', 'last-name' ) {
+    my @utf8_fields = ('first-name', 'middle-name', 'last-name');
+    for my $key ( grep { defined $opts{$_} } @utf8_fields ) {
         my $val = $opts{$key};
 
         unless ( Encode::is_utf8($val) or $val =~ /^[\x00-\xff]*$/ ) {
@@ -791,6 +793,7 @@ sub _require_set_user_names_params {
 
     $opts{email_address} = $self->{user}->email_address;
     $opts{first_name}    = delete $opts{'first-name'} if (defined($opts{'first-name'}));
+    $opts{middle_name}   = delete $opts{'middle-name'} if (defined($opts{'middle-name'}));
     $opts{last_name}     = delete $opts{'last-name'} if (defined($opts{'last-name'}));
 
     return %opts;
@@ -3988,7 +3991,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   remove-group-admin [--username or --email] --group
   disable-email-notify [--username or --email] --workspace
   set-locale [--username or --email] --workspace --locale
-  set-user-names [--username or --email] --first-name --last-name
+  set-user-names [--username or --email] --first-name --middle-name --last-name
   set-user-account [--username or --email] --account
   get-user-account [--username or --email]
   set-external-id [--username or --email] --external-id
@@ -4238,9 +4241,9 @@ given user.
 Sets the language locale for user on a workspace.  Locale codes are 2 letter
 codes.  Eg: en, fr, ja, de
 
-=head2 set-user-names [--email or --username] --first-name --last-name
+=head2 set-user-names [--email or --username] --first-name --middle-name --last-name
 
-Set the first and last names for an existing user.
+Set the first, middle, and last names for an existing user.
 
 =head2 set-user-account [--email or --username] --account
 
