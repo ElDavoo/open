@@ -355,7 +355,7 @@ sub _make_row {
     return +{
         Relevance           => $hit->hit->{score},
         Date                => $date,
-        Revision            => $page->current_revision_num,
+        Revision            => $page->revision_num,
         Summary             => $snippet,
         document_title      => $document_title,
         Subject             => $page->title,
