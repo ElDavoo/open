@@ -17,6 +17,7 @@ sub user_set_id { $_[0]->user_id }
 has 'username'          => (is => 'rw', isa => 'Str');
 has 'email_address'     => (is => 'rw', isa => 'Str');
 has 'first_name'        => (is => 'rw', isa => 'UniStr', coerce => 1);
+has 'middle_name'       => (is => 'rw', isa => 'UniStr', coerce => 1);
 has 'last_name'         => (is => 'rw', isa => 'UniStr', coerce => 1);
 has 'password'          => (is => 'rw', isa => 'Maybe[Str]');
 has 'display_name'      => (is => 'rw', isa => 'UniStr', coerce => 1);
@@ -45,6 +46,7 @@ Readonly our @fields => qw(
     username
     email_address
     first_name
+    middle_name
     last_name
     password
     display_name
@@ -292,6 +294,10 @@ Returns the e-mail address for the user, in all lower-case.
 =item B<first_name()>
 
 Returns the first name for the user.
+
+=item B<middle_name()>
+
+Returns the middle name for the user (if one is known/available).
 
 =item B<last_name()>
 
