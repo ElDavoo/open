@@ -880,7 +880,8 @@ sub _require_create_user_params {
         'external-id|X:s',
     );
 
-    for my $key ( grep { defined $opts{$_} } 'first-name', 'last-name' ) {
+    my @utf8_fields = ('first-name', 'last-name');
+    for my $key ( grep { defined $opts{$_} } @utf8_fields ) {
         my $val = $opts{$key};
 
         unless ( Encode::is_utf8($val) or $val =~ /^[\x00-\xff]*$/ ) {
