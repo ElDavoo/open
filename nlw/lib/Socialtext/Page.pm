@@ -193,9 +193,11 @@ sub _find_current {
     my $rev = Socialtext::PageRevision->new($rev_args);
 
     # creator_id is 'ro' (_creator_id is the writer):
+    my $creator_id = delete $page_args->{creator_id};
     $page_args->{creator} = Socialtext::User->new(
-        user_id => delete $page_args->{creator_id});
+        user_id => $creator_id);
 
+    $self->_creator_id($creator_id);
     $self->$_($page_args->{$_}) for keys %$page_args;
     $self->rev($rev); # should assign this last
 
@@ -981,7 +983,7 @@ sub _ensure_page_assets {
 
 sub is_system_page {
     my $self = shift;
-    return $self->creator_id == Socialtext::User->SystemUser->user_id;
+    return ($self->creator_id || 0) == Socialtext::User->SystemUser->user_id;
 }
 
 sub is_bad_page_title {
