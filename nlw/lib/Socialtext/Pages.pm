@@ -32,10 +32,10 @@ field current =>
       -init => '$self->new_page($self->current_id)';
 
 sub ensure_current {
-    my ($self, $page_id) = @_;
+    my ($self, $page) = @_;
+    $page = $self->new_page($page) unless blessed($page);
     my $old_current = $self->current;
     my $g = guard { $self->current($old_current) };
-    my $page = $self->new_page($page_id);
     $self->current($page);
     return $g;
 }
@@ -232,7 +232,7 @@ sub current_id {
 
 sub unset_current {
     my $self = shift;
-    $self->{current} = undef;
+    delete $self->{current};
 }
 
 sub new_page {

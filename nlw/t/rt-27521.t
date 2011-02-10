@@ -26,10 +26,10 @@ use warnings;
 #    check value of current_workspace on hub is foo
 
 use mocked 'Apache::Cookie';
-use Test::Socialtext tests => 7;
+use Test::Socialtext tests => 11;
 
 BEGIN { use_ok("Socialtext::Search::Solr::Factory") }
-fixtures( 'admin', 'foobar' );
+fixtures(qw(admin foobar));
 
 our $term_hub = new_hub('admin');
 our $wafl_hub = new_hub('foobar');
@@ -41,7 +41,9 @@ my $term_page = Socialtext::Page->new( hub => $term_hub, id => "term_page" );
 my $wafl_page = Socialtext::Page->new( hub => $wafl_hub, id => "wafl_page" );
 
 render_ok( $wafl_hub, $wafl_page, qr/Search for morlangoo workspaces:admin/ );
+
 $term_page->delete( user => $term_hub->current_user );
+
 index_ok( $term_hub, $term_page->id );
 render_ok( $wafl_hub, $wafl_page, qr/Search for morlangoo workspaces:admin/ );
 is( $wafl_hub->current_workspace->name, "foobar",
@@ -51,6 +53,7 @@ sub render_ok {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
     my ( $hub, $page, $rx, $msg ) = @_;
     $hub->pages->current($page);
+    my $g = $hub->pages->ensure_current($page);
     my $output = eval { $hub->display->display() };
     like( $output, $rx, $msg );
 }
@@ -60,16 +63,19 @@ sub make_page_ok {
 
     my ( $hub, $title, $content, $tags ) = @_;
     my $page = $hub->pages->new_from_name($title);
+    $page->edit_rev();
     $page->update(
-        user             => $hub->current_user,
-        subject          => $title,
-        content          => $content,
-        categories       => $tags || [],
-        original_page_id => $page->id,
-        revision         => $page->metadata->Revision || 0,
+        user        => $hub->current_user,
+        content_ref => \$content,
+        subject => $title,
+        revision => $page->revision_num,
     );
-    index_ok( $hub, $page->id );
+    ok $page->exists, "made page $title";
 
+    my $p2 = $hub->pages->new_page($page->page_id);
+    ok $p2->exists, "new_page() exists";
+
+    index_ok( $hub, $page->page_id );
     return $page;
 }
 
@@ -78,7 +84,7 @@ sub index_ok {
     my $INDEX_MAX = 60*5;    # Maximum of 5 minutes to index page.
 
     my ( $hub, $page ) = @_;
-    my $id   = ref($page) ? $page->id : $page;
+    my $id   = ref($page) ? $page->page_id : $page;
 
     # Use a double eval in case the alarm() goes off in between returing from
     # the inner eval and before alarm(0) is executed.

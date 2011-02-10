@@ -70,13 +70,14 @@ has 'revision_id' => (is => 'rw', isa => 'Int',
 );
 *current_revision_id = *revision_id;
 
-has 'revision_count' => (is => 'rw', isa => 'Int', default => 0);
-has 'views' => (is => 'rw', isa => 'Int', default => 0);
+has 'revision_count' => (is => 'rw', isa => 'Int');
+has 'views' => (is => 'rw', isa => 'Int');
 
 has_user 'creator' => (is => 'rw');
 has 'create_time'  => (
     is => 'rw', isa => 'Pg.DateTime',
     coerce => 1,
+    lazy => 1, # so the default doesn't fire right away
     default => sub { Socialtext::Date->now(hires=>1) },
 );
 
@@ -181,7 +182,7 @@ sub _find_current {
     my $sth = sql_execute(q{
         SELECT }.SELECT_COLUMNS_STR.q{
           FROM page JOIN "Workspace" USING (workspace_id)
-         WHERE workspace_id = ? AND page_id = ? AND NOT deleted
+         WHERE workspace_id = ? AND page_id = ?
     }, $self->workspace_id, $self->page_id);
     return unless $sth->rows == 1;
 

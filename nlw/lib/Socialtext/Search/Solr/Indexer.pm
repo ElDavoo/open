@@ -588,7 +588,10 @@ sub _load_page {
     my ( $self, $page_id, $deleted_ok ) = @_;
     _debug("Loading $page_id");
     my $page = $self->hub->pages->new_page($page_id);
-    if ( not defined $page ) {
+    unless (eval { $page->rev; 1 }) {
+        _debug("Could not load latest page rev for $page_id");
+    }
+    if (!$page->exists) {
         _debug("Could not load page $page_id");
     }
     elsif ( !$deleted_ok and $page->deleted ) {

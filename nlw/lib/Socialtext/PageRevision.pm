@@ -69,7 +69,7 @@ has 'body_ref' => (
     lazy_build => 1,
     trigger => sub { $_[0]->_body_modded($_[1], $_[2]) }
 );
-has 'body_length'   => (is => 'rw', isa => 'Int', default => 0);
+has 'body_length'   => (is => 'rw', isa => 'Int');
 has 'body_modified' => (is => 'rw', isa => 'Bool');
 
 has 'prev' => (
@@ -238,6 +238,7 @@ sub mutable_clone {
     if ($p->{copy_body}) {
         my $body = ${$self->body_ref}; # copy the bytes
         $clone_args{body_ref} = \$body; # will cause trigger to run
+        $clone_args{body_length} = $self->body_length;
         $clone_args{edit_summary} = $self->edit_summary if $self->edit_summary;
     }
 
