@@ -1043,7 +1043,7 @@ sub _content_as_html {
         return $self->to_html;
     }
     else {
-        return $self->to_html( $self->content, $self );
+        return $self->to_html( $self->body_ref, $self );
     }
 }
 
