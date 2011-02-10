@@ -567,3 +567,5 @@ t/wikitests/test-data/socialcalc/ohai.csv
 t/wikitests/socialcalc/csv-put.wiki
 lib/Socialtext/Migratomatic.pm
 t/wikitests/signals/search-groupscoped.wiki
+t/wikitests/test-data/socialcalc/sample_ss2.csv
+t/wikitests/socialcalc/csv-forumulas-put.wiki
