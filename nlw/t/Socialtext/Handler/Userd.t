@@ -2,7 +2,8 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 13;
+use Test::More;
+use Test::Socialtext;
 use Test::Socialtext::Async;
 use Socialtext::JSON qw/decode_json/;
 use Socialtext::Paths;
@@ -43,28 +44,11 @@ for (1..2) {
 
 kill_kill_pid($pid);
 
-sleep 1; # let the log flush
-my @log_lines = grep /\[$pid\]: \[$<\]/, `tail -n 25 $nlw_log_file`;
-chomp @log_lines;
+wait_for_log_lines($nlw_log_file, 10, [
+    qr#\[$pid\]: \[$<\] \Qst-userd is starting up#,
+    qr#\[$pid\]: \[$<\] \Qst-userd starting on 127.0.0.1 port $port#,
+    qr#\[$pid\]: \[$<\] \QWEB,GET,/PING,200,ACTOR_ID:0,{"timers":"overall(1):0.000"}#,
+    qr#\[$pid\]: \[$<\] \Qst-userd shutting down#
+]);
 
-my @expect_lines = (
-    qr#\Qst-userd is starting up#,
-    qr#\Qst-userd starting on 127.0.0.1 port $port#,
-    qr#\QWEB,GET,/PING,200,ACTOR_ID:0,{"timers":"overall(1):0.000"}#,
-    qr#\Qst-userd shutting down#
-);
-
-good_logging: {
-    for my $expect (@expect_lines) {
-        my $found = '';
-        INNER: for my $line (@log_lines) {
-            if ($line =~ /nlw\[$pid\]: \[$<\] $expect/) {
-                $found = $line;
-                last INNER;
-            }
-        }
-        like $found, $expect, "found expected log line";
-    }
-}
-
-pass "done";
+done_testing;
