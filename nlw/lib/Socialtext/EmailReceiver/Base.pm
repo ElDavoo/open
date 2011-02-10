@@ -21,6 +21,7 @@ use DateTime::Format::Mail;
 use Data::Dumper;
 use HTML::WikiConverter ();
 use IO::Scalar;
+use Filesys::DfPortable ();
 
 use Socialtext::Authz;
 use Socialtext::CategoryPlugin;
@@ -273,6 +274,11 @@ sub _save_attachment_from_part {
     my $page = $self->{page};
     my $body_io = new IO::Scalar \$part->body();
 
+    return unless $self->_has_free_temp_space_for_attachment(
+        bytes::length(${$body_io->sref}),
+        $filename,
+    );
+
     my $attachment = $page->hub->attachments->create(
         fh => $body_io,
         filename => $filename,
@@ -315,6 +321,43 @@ sub _part_is_inline {
         or $type =~ m{^image};
 
     return 0;
+}
+
+{
+    Readonly my $OneMB => 1024**2;
+
+    sub _has_free_temp_space_for_attachment {
+        my $self     = shift;
+        my $size     = shift;
+        my $filename = shift;
+
+        my $dir = $Socialtext::Upload::STORAGE_DIR;
+        my $df = Filesys::DfPortable::dfportable($dir);
+        return 1 unless $df;
+        my $free = $df->{bavail};
+        my $free_after_save = $free - $size;
+
+        if ( $free_after_save < $OneMB * 50 ) {
+            st_log(   warning => "Saving the $filename attachment in "
+                    . $self->{page}->title()
+                    . " from "
+                    . $self->{from}->address
+                    . " would leave less than 50MB free in $dir. Not saving."
+            );
+            return;
+        }
+        elsif ( $free_after_save < $OneMB * 500 ) {
+            my $mb_free = int( $free_after_save / $OneMB );
+
+            st_log(   warning => "Saving the $filename attachment in "
+                    . $self->{page}->title()
+                    . " from "
+                    . $self->{from}->address
+                    . " leaves ${mb_free}MB free in $dir." );
+        }
+
+        return 1;
+    }
 }
 
 sub _get_email_body {
