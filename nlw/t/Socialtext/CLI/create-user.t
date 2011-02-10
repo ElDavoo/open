@@ -8,7 +8,7 @@ use Socialtext::Account;
 use Test::Socialtext::CLIUtils qw(:all);
 use Test::Socialtext::User;
 
-fixtures(qw( clean db ));
+fixtures(qw( db ));
 
 ###############################################################################
 # TEST: Create User, make sure they got created.
