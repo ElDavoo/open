@@ -876,6 +876,10 @@ sub store {
             $self->revision_count(0);
         }
 
+        if ($was_deleted and $self->body_modified) {
+            $rev->deleted(0);
+        }
+
         $rev->store();
 
         $self->revision_id($rev->revision_id); # rev-store can change this
