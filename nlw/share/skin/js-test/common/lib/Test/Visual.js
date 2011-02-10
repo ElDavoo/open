@@ -251,6 +251,11 @@ proto.setup_one_widget = function(params, callback) {
 
     var setup_widget = function() {
         $(self.iframe).one("load", function() {
+            self.doc = self.iframe.contentDocument
+                    || self.iframe.contentWindow.document;
+            self.win = self.iframe.contentWindow;
+            self.$ = self.iframe.contentWindow.jQuery;
+
             var widget = self._get_widget();
             if (params.noPoll) {
                 self.call_callback(callback, [widget]);
