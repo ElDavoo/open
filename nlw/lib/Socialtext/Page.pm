@@ -772,7 +772,7 @@ sub update {
 
     if (my $tags = $p{categories}) {
         $tags = [map { ensure_is_utf8($_) } @$tags];
-        $rev->tags($tags);
+        $rev->add_tags($tags);
     }
 
     $rev->revision_num($p{revision}) if $p{revision};
