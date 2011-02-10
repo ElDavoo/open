@@ -351,7 +351,7 @@ sub _prep_image {
 
 sub prepare_to_serve {
     my ($self, $flavor, $protected) = @_;
-    undef $flavor if $flavor eq 'original';
+    undef $flavor if ($flavor && $flavor eq 'original');
 
     my ($uri,$content_length);
     if ($self->is_image && $flavor) {
