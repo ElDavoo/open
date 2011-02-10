@@ -65,26 +65,26 @@ Create_from_row: {
     # to_result() is used to format pages into a row returned to a listview
     # many of these fields are named after the mime-like file format
     is_deeply $page->to_result, {
-        Type => 'wiki',
+        Date => '2008-01-01 23:12:01 GMT',
+        DateLocal => 'Jan 1, 2008 3:12pm',
+        Deleted => 1,
+        From => $editor->email_address,
+        Locked => 0,
         Revision => 42,
         Subject => 'Some Page ID',
         Summary => 'summary',
-        Date => '2008-01-01 23:12:01 GMT',
-        DateLocal => 'Jan 1, 2008 3:12pm',
-        From => $editor->email_address,
-        username => $editor->username,
-        page_uri => 'some_page_id',
-        page_id => 'some_page_id',
-        revision_count => 987,
-        is_spreadsheet => '',
-        edit_summary => 'edit summary',
-        Locked => 0,
-        Deleted => 1,
-        creator => $creator->username,
+        Type => 'wiki',
         create_time => '2007-01-01 23:12:01 GMT',
         create_time_local => 'Jan 1, 2007 3:12pm',
-        workspace_title => $ws_title,
+        creator => $creator->username,
+        edit_summary => 'edit summary',
+        is_spreadsheet => '',
+        page_id => 'some_page_id',
+        page_uri => 'some_page_id',
+        revision_count => 987,
+        username => $editor->username,
         workspace_name => $ws_name,
+        workspace_title => $ws_title,
     };
 
     my $hash = $page->hash_representation;
@@ -92,22 +92,25 @@ Create_from_row: {
         qr{/\Q$ws_name\E/(?:index\.cgi\?)?some_page_id$},
         "page_uri is the full_uri() function";
     is_deeply $hash, {
-        name            => 'Some Page ID',
-        uri             => 'some_page_id',
-        page_id         => 'some_page_id',
-        last_editor     => $editor->email_address,
+        create_time     => '2007-01-01 23:12:01 GMT',
+        creator         => $creator->email_address,
+        deleted         => 1,
+        edit_summary    => 'edit summary',
         last_edit_time  => '2008-01-01 23:12:01 GMT',
+        last_editor     => $editor->email_address,
+        locked          => 0,
+        modified_time   => 1199229121,     # edit time as epoch-seconds
+        name            => 'Some Page ID',
+        page_id         => 'some_page_id',
+        revision_count  => 987,
         revision_id     => 1234,
         revision_num    => 42,
-        revision_count  => 987,
+        summary         => 'summary',
+        tags            => ['tag'],
+        type            => 'wiki',
+        uri             => 'some_page_id',
         workspace_name  => $ws_name,
         workspace_title => $ws_title,
-        type            => 'wiki',
-        tags            => ['tag'],
-        modified_time   => '1199229121', # edit time as epoch-seconds
-        locked          => undef,
-        edit_summary    => 'edit summary',
-        summary         => 'summary',
     }, 'hash_representation is as expected';
 
     ok !$page->mutable;
