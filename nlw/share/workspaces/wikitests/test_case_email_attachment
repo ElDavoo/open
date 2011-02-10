@@ -40,8 +40,9 @@
 | text_like | contentContainer | Note %%start_time%% from Test Case: Email |
 | type_ok | st-search-term | "Note %%start_time%%" |
 | click_and_wait | st-search-submit |  |
-| text_like | contentContainer | Email subject %%start_time%% in %%title%% |
-| text_like | contentContainer | qr/attached to page Email subject %%start_time%%/i |
+| text_like | contentContainer | qr/Email\s*subject\s*%%start_time%%\s*in\s*%%title%%/ |
+| text_like | contentContainer | qr/attached\s*to\s*page\s*Email\s*subject\s*%%start_time%%/i |
+| pause | 10000 |  |
 
 | *Comment* | Test Case: Email attachment Deleting HTML attachment |  |
 | open_ok | /%%workspace%%/index.cgi?Email subject %%start_time%% |  |
