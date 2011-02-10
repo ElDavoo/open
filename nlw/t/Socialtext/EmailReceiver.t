@@ -560,7 +560,7 @@ ATTACHMENT_DF_CHECK: {
     my $email_receiver = Socialtext::EmailReceiver::Factory->create(
             {
                 locale => $test_locale,
-                handle    => $fh,,
+                handle    => $fh,
                 workspace => $ws
             });
     $email_receiver->receive();
@@ -666,12 +666,12 @@ BIG5_IN_BODY: {
             });
     $email_receiver->receive();
 
-    my $page = $hub->pages()->new_from_name('Big5 Email');
+    my $page = $hub->pages()->new_from_name('BIG5 EMAIL');
     isa_ok( $page, 'Socialtext::Page' );
 
     ok( $page->active(), "Found a page with the name of 'Big5 Email'" );
-    is( $page->title(), 'Big5 Email',
-        'check that page title matches subject' );
+    is( $page->title(), 'Big5 email',
+        'check that page title matches Subject of email' );
 
     my $singapore = join '', map { chr($_) } 26032, 21152, 22369;
 
