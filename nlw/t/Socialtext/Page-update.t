@@ -5,11 +5,11 @@ use warnings;
 use strict;
 use DateTime;
 
-use ok 'Socialtext::Hub';
-use ok 'Socialtext::Page';
 use Test::Socialtext tests => 20;
 use Socialtext::SQL;
 fixtures(qw(empty destructive));
+use_ok 'Socialtext::Hub';
+use_ok 'Socialtext::Page';
 
 my $hub       = new_hub('empty');
 my $page_name = 'update page ' . time();
@@ -29,7 +29,6 @@ UPDATE_AS_CREATE: {
         subject          => $page_name,
         user             => $hub->current_user,
     );
-    die;
 
     _validate_page(
         name      => $page_name,
@@ -41,9 +40,10 @@ UPDATE_AS_CREATE: {
 UPDATE_PAGE: {
     my $page = _page_object($page_name);
 
+    $page->edit_rev;
     $page->update(
-        content          => $content2,
-        revision         => $page->metadata->Revision,
+        content_ref      => \$content2,
+        revision         => $page->revision_num,
         subject          => $page_name,
         user             => $hub->current_user,
     );
@@ -60,7 +60,7 @@ UPDATE_FROM_REMOTE: {
     my $page = _page_object($page_name);
 
     $page->update_from_remote(
-        content          => $content3,
+        content  => $content3,
     );
 
     _validate_page(
@@ -117,11 +117,10 @@ sub _validate_page {
 
     my $page = $hub->pages->new_from_name( $p{name} );
 
-    # XXX name, title, metadata->Subject: How about just one?
     is( $page->title, $p{name}, "page title should be $p{name}" );
     is( $page->content, $p{content} . "\n",
         "page content should be $p{content}" );
-    is( $page->metadata->Revision, $p{revision},
+    is( $page->revision_num, $p{revision},
         "page revision should $p{revision}" );
     if ($p{tags}) {
         is_deeply($page->tags, $p{tags}, 'tags are correct');

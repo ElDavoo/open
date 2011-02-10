@@ -421,8 +421,8 @@ sub update_from_remote {
     my %p = @_;
     my $user = $self->hub->current_user;
 
-    my $revision_id = $p{revision_id} || $self->revision_id;
-    if ($self->revision_id ne $revision_id) {
+    my $revision_id = $p{revision_id} || $self->revision_id || '';
+    if (($self->revision_id || '') ne $revision_id) {
         Socialtext::Events->Record({
             event_class => 'page',
             action => 'edit_contention',
@@ -462,16 +462,20 @@ sub update_from_remote {
     my $was_locked = $rev->locked;
     $rev->locked($p{locked}) if defined $p{locked};
     $rev->body_ref(\$p{content}) if exists $p{content};
+    $p{revision} //= $self->revision_num;
+    $p{subject}  //= $self->title;
+    $p{tags}     //= $self->tags;
+    $p{type}     //= $self->page_type;
 
     my $signal = $self->update(
         user         => $editor,
         revision     => $p{revision},
         categories   => $p{tags},
-        edit_summary => $p{edit_summary},
+        edit_summary => $p{edit_summary} || '',
         type         => $p{type},
         subject      => $p{subject},
         $p{date} ? (date => $p{date}) : (),
-        signal_edit_summary => $p{signal_edit_summary},
+        signal_edit_summary => $p{signal_edit_summary} || '',
     );
 
     $self->update_lock_status($rev->locked, 'skip')
