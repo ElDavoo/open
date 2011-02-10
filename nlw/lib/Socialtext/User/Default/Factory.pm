@@ -302,6 +302,8 @@ considered an error.
 
 =item * first_name
 
+=item * middle_name
+
 =item * last_name
 
 =back
