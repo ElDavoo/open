@@ -69,7 +69,7 @@ has 'body_ref' => (
     lazy_build => 1,
     trigger => sub { $_[0]->_body_modded($_[1], $_[2]) }
 );
-has 'body_length'   => (is => 'rw', isa => 'Int');
+has 'body_length'   => (is => 'rw', isa => 'Int', lazy_build => 1);
 has 'body_modified' => (is => 'rw', isa => 'Bool');
 
 has 'prev' => (
@@ -150,7 +150,7 @@ sub Blank {
     return Socialtext::PageRevision->new(\%p);
 }
 
-sub _build_body_ref {
+sub _get_blob {
     my $self = shift;
     my $rev_id = $self->revision_id;
 
@@ -173,8 +173,30 @@ sub _build_body_ref {
 
     $blob = '' unless defined $blob;
     Encode::_utf8_on($blob); # it should always be in the db as utf8
-    $self->body_length(length $blob);
+
     return \$blob;
+}
+
+sub _build_body_length {
+    my $self = shift;
+    my $blobref;
+    if ($self->has_body_ref) {
+        # this branch shouldn't happen, but is here for defense
+        $blobref = $self->body_ref;
+    }
+    else {
+        $blobref = $self->_get_blob();
+        # break Moose encapsulation to avoid trigger:
+        $self->{body_ref} = $blobref;
+    }
+    return length $$blobref;
+}
+
+sub _build_body_ref {
+    my $self = shift;
+    my $blobref = $self->_get_blob();
+    $self->body_length(length($$blobref));
+    return $blobref;
 }
 
 sub _body_modded {

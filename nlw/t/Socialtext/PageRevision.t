@@ -2,7 +2,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 65;
+use Test::Socialtext tests => 70;
 use Test::Socialtext::Fatal;
 use Socialtext::String;
 use utf8;
@@ -48,7 +48,18 @@ simple: {
     is ${$rev->body_ref}, $content, "body is OK";
 
     $rev->clear_body_ref;
+    ok $rev->has_body_length, "body length sticks around";
     is ${$rev->body_ref}, $content, "body lazy-loaded from db";
+
+    # simulate an odd case where the body_length isn't set
+    is exception {
+        $rev->clear_body_ref;
+        $rev->clear_body_length;
+    }, undef, "ok clearing body ref and length";
+
+    ok $rev->body_length, "body length call first";
+    ok $rev->has_body_ref, "... sets the body ref too";
+    is ${$rev->body_ref}, $content, "body loaded correctly from db";
 }
 
 clone_to_edit: {
