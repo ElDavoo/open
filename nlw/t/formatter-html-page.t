@@ -12,9 +12,10 @@ my $user = $hub->current_user;
 my $ws_name = $hub->current_workspace->name;
 
 {
-    local $Socialtext::SQL::DEBUG =1;
     my $name = "Formatter Test for html-page wafl";
     my $page = $hub->pages->new_from_name($name);
+    $page->content('foo'); # run_tests will replace it later
+    $page->store();
 
     my $attachment = $hub->attachments->create(
         fh => IO::File->new('t/attachments/html-page-wafl.html','r'),
@@ -22,12 +23,6 @@ my $ws_name = $hub->current_workspace->name;
         filename => 'html-page-wafl.html',
         user => $hub->current_user,
     );
-
-    $page->name($name);
-    $page->metadata->update( user => $hub->current_user );
-    # Put some dummy content in. run_tests() will replace it later.
-    $page->content('foo');
-    $page->store( user => $hub->current_user );
 
     my @tests =
         ( [ "{html-page html-page-wafl.html}\n" =>
@@ -45,11 +40,8 @@ my $ws_name = $hub->current_workspace->name;
 
 {
     my $page = $hub->pages->new_from_name('Another html-page wafl test page');
-
-    $page->name('Another html-page wafl test page');
-    $page->metadata->update( user => $hub->current_user );
     $page->content('foo');
-    $page->store( user => $hub->current_user );
+    $page->store();
 
     my @tests =
         ( [ "{html-page [Formatter Test for html-page wafl] html-page-wafl.html}\n" =>
@@ -70,8 +62,9 @@ sub run_tests {
     $page->hub->pages->current($page);
 
     my $text = shift @$tests;
+    $page->edit_rev();
     $page->content($text);
-    $page->store(user => $hub->current_user);
+    $page->store();
 
     my $html = $page->to_html;
 
