@@ -10,6 +10,12 @@ field 'name';
 field 'id', -init => '$self->name';
 field 'uri', -init => '$self->id';
 
+const SELECT_COLUMNS_STR => q{fake AS fake, columns AS columns};
+
+sub _new_from_row {
+    bless {@_}, __PACKAGE__;
+}
+
 sub title { $_[0]->{title} || $_[0]->name || 'Mock page title' }
 
 sub is_untitled {

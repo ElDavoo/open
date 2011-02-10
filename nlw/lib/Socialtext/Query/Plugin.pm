@@ -267,7 +267,6 @@ sub _load_pages_for_hits {
                 hub              => $hit_hub,
                 workspace_id     => $workspace->workspace_id,
                 page_id          => [ keys %$wksp_pages ],
-                do_not_need_tags => 1,
             );
         };
         warn $@ if $@;
@@ -321,11 +320,7 @@ sub _make_row {
     my $page_uri = $hit->page_uri;
     my $page;
     eval {
-        $page = $hit->{page} || Socialtext::Pages->By_id(
-            hub          => $hit_hub,
-            workspace_id => $workspace->workspace_id,
-            page_id      => $page_uri,
-        );
+        $page = $hit->{page} || $hit_hub->pages->new_page($page_uri);
     };
     return {} if !$page or $page->deleted;
 

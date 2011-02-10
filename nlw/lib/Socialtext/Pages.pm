@@ -552,6 +552,8 @@ sub By_id {
     my $page_id          = $p{page_id};
     my $no_die           = $p{no_die};
 
+    croak 'By_id(... revision_id=>$n) is deprecated' if $p{revision_id};
+
     my $where;
     my $bind;
     if (ref($page_id) eq 'ARRAY') {
@@ -571,7 +573,6 @@ sub By_id {
         workspace_id     => $workspace_id,
         where            => $where,
         bind             => $bind,
-        do_not_need_tags => $p{do_not_need_tags},
         deleted_ok       => $p{deleted_ok},
     );
     unless (@$pages) {
@@ -670,8 +671,7 @@ sub _fetch_pages {
                                    : '';
     $p{where} = "AND $p{where}" if $p{where};
     my $sth = sql_execute(qq/
-SELECT 
-    /.Socialtext::Page::SELECT_COLUMNS_STR().qq/
+    SELECT /.Socialtext::Page::SELECT_COLUMNS_STR.qq/
     FROM page 
         JOIN "Workspace" USING (workspace_id)
         $more_join

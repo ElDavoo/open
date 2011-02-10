@@ -14,9 +14,9 @@ Socialtext::PageLinks
 
 =head1 SYNOPSIS
 
-my $page_links = Socialtext::PageLinks->new(page => $page);
-my @forward_links = $page_links->links;
-my @backlinks = $page_links->backlinks;
+    my $page_links = Socialtext::PageLinks->new(page => $page);
+    my @forward_links = $page_links->links;
+    my @backlinks = $page_links->backlinks;
 
 =head1 DESCRIPTION
 
@@ -133,7 +133,6 @@ sub _create_page {
     my $page = Socialtext::Pages->By_id(
         hub => $self->hub,
         workspace_id => $workspace_id,
-        do_not_need_tags => 1,
         no_die => 1,
         page_id => $page_id
     );

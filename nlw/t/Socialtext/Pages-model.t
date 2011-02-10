@@ -2,36 +2,15 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::More tests => 136;
+use Test::More tests => 91;
 use Test::Socialtext::Fatal;
-use mocked 'Socialtext::SQL', qw/:test/;
 use mocked 'Socialtext::Page';
+use mocked 'Socialtext::SQL', qw/:test/;
 use mocked 'Socialtext::User';
-
-BEGIN {
-    use_ok 'Socialtext::Pages';
-}
+use ok 'Socialtext::Pages';
 
 my $COMMON_SELECT = <<EOSQL;
-SELECT page.workspace_id, 
-       "Workspace".name AS workspace_name, 
-       "Workspace".title AS workspace_title, 
-       page.page_id, 
-       page.name, 
-       page.last_editor_id AS last_editor_id, 
-       -- _utc suffix is to prevent performance-impacing naming collisions:
-       page.last_edit_time AT TIME ZONE 'UTC' AS last_edit_time_utc, 
-       page.creator_id, 
-       -- _utc suffix is to prevent performance-impacing naming collisions:
-       page.create_time AT TIME ZONE 'UTC' AS create_time_utc, 
-       page.current_revision_id, 
-       page.current_revision_num, 
-       page.revision_count, 
-       page.page_type, 
-       page.deleted, 
-       page.summary,
-       page.edit_summary,
-       page.locked
+    SELECT fake AS fake, columns AS columns
     FROM page 
         JOIN "Workspace" USING (workspace_id) 
 EOSQL
@@ -49,44 +28,6 @@ By_seconds_limit: {
             count => 20,
             tag => 'foo',
             workspace_id => 9,
-        );
-        sql_ok(
-            name => 'by_seconds_limit',
-            sql => <<EOT,
-$COMMON_SELECT
-        JOIN page_tag USING (page_id, workspace_id) 
-    WHERE NOT deleted
-      AND page.workspace_id = ? 
-      AND last_edit_time > 'now'::timestamptz - ?::interval 
-      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
-EOT
-            args => [9,'88 seconds','foo', 20],
-        );
-        sql_ok(
-            name => 'by_seconds_limit',
-            sql => <<EOT,
-SELECT workspace_id, page_id, tag 
-    FROM page_tag 
-    WHERE page_tag.workspace_id = ?
-EOT
-            args => [9],
-        );
-        ok_no_more_sql();
-    }
-
-    Without_tags: {
-        local @Socialtext::SQL::RETURN_VALUES = (
-            {
-                return => [{workspace_id => 9, page_id => 'page_id'}],
-            },
-        );
-        Socialtext::Pages->By_seconds_limit(
-            seconds          => 88,
-            where            => 'cows fly',
-            count            => 20,
-            tag              => 'foo',
-            workspace_id     => 9,
-            do_not_need_tags => 1,
         );
         sql_ok(
             name => 'by_seconds_limit',
@@ -128,15 +69,6 @@ $COMMON_SELECT
 EOT
             args => [1,2,3,'2008-01-01 01:01:01','foo', 20],
         );
-        sql_ok(
-            name => 'by_seconds_limit',
-            sql => <<EOT,
-SELECT workspace_id, page_id, tag 
-    FROM page_tag 
-    WHERE page_tag.workspace_id IN (?,?,?)
-EOT
-            args => [1,2,3],
-        );
         ok_no_more_sql();
     }
 
@@ -164,15 +96,6 @@ $COMMON_SELECT
       AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
 EOT
             args => [9,'2008-01-01','foo', 20],
-        );
-        sql_ok(
-            name => 'by_seconds_limit',
-            sql => <<EOT,
-SELECT workspace_id, page_id, tag 
-    FROM page_tag 
-    WHERE page_tag.workspace_id = ?
-EOT
-            args => [9],
         );
         ok_no_more_sql();
     }
@@ -214,15 +137,6 @@ $COMMON_SELECT
 EOT
             args => [9,'88 seconds','foo', 20],
         );
-        sql_ok(
-            name => 'by_seconds_limit',
-            sql => <<EOT,
-SELECT workspace_id, page_id, tag 
-    FROM page_tag 
-    WHERE page_tag.workspace_id = ?
-EOT
-            args => [9],
-        );
         ok_no_more_sql();
     }
 
@@ -250,15 +164,6 @@ $COMMON_SELECT
       AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
 EOT
             args => [9,'88 seconds','foo',20],
-        );
-        sql_ok(
-            name => 'by_seconds_limit',
-            sql => <<EOT,
-SELECT workspace_id, page_id, tag 
-    FROM page_tag 
-    WHERE page_tag.workspace_id = ?
-EOT
-            args => [9],
         );
         ok_no_more_sql();
     }
@@ -288,15 +193,6 @@ $COMMON_SELECT
 EOT
             args => [9,20,15],
         );
-        sql_ok(
-            name => 'all_active',
-            sql => <<EOT,
-SELECT workspace_id, page_id, tag 
-    FROM page_tag 
-    WHERE page_tag.workspace_id = ?
-EOT
-            args => [9],
-        );
         ok_no_more_sql();
     }
     No_workspace_filter: {
@@ -317,14 +213,6 @@ $COMMON_SELECT
     LIMIT ?
 EOT
             args => [20],
-        );
-        sql_ok(
-            name => 'all_active',
-            sql => <<EOT,
-SELECT workspace_id, page_id, tag 
-    FROM page_tag 
-EOT
-            args => [],
         );
         ok_no_more_sql();
     }
@@ -362,7 +250,6 @@ EOT
             hub => 'hub',
             count => 20,
             workspace_id => 9,
-            do_not_need_tags => 1,
             orphaned => 1,
         );
         sql_ok(
@@ -378,30 +265,6 @@ EOT
         );
         ok_no_more_sql();
 
-    }
-    No_tags: {
-        local @Socialtext::SQL::RETURN_VALUES = (
-            {
-                return => [{workspace_id => 9, page_id => 'page_id'}],
-            },
-        );
-        Socialtext::Pages->All_active(
-            hub => 'hub',
-            count => 20,
-            workspace_id => 9,
-            do_not_need_tags => 1,
-        );
-        sql_ok(
-            name => 'all_active',
-            sql => <<EOT,
-$COMMON_SELECT
-    WHERE NOT deleted 
-      AND page.workspace_id = ? 
-    LIMIT ?
-EOT
-            args => [9,20],
-        );
-        ok_no_more_sql();
     }
 
     No_workspace_filter: {
@@ -422,14 +285,6 @@ $COMMON_SELECT
     LIMIT ?
 EOT
             args => [20],
-        );
-        sql_ok(
-            name => 'all_active',
-            sql => <<EOT,
-SELECT workspace_id, page_id, tag 
-    FROM page_tag 
-EOT
-            args => [],
         );
         ok_no_more_sql();
     }
@@ -476,15 +331,6 @@ $COMMON_SELECT
 EOT
             args => [9,500],
         );
-        sql_ok(
-            name => 'all_active',
-            sql => <<EOT,
-SELECT workspace_id, page_id, tag 
-    FROM page_tag 
-    WHERE page_tag.workspace_id = ?
-EOT
-            args => [9],
-        );
         ok_no_more_sql();
     }
     Unlimited: {
@@ -504,15 +350,6 @@ EOT
 $COMMON_SELECT
     WHERE NOT deleted 
       AND page.workspace_id = ? 
-EOT
-            args => [9],
-        );
-        sql_ok(
-            name => 'all_active',
-            sql => <<EOT,
-SELECT workspace_id, page_id, tag 
-    FROM page_tag 
-    WHERE page_tag.workspace_id = ?
 EOT
             args => [9],
         );
@@ -541,15 +378,6 @@ $COMMON_SELECT
 EOT
             args => [9,100,765],
         );
-        sql_ok(
-            name => 'all_active',
-            sql => <<EOT,
-SELECT workspace_id, page_id, tag 
-    FROM page_tag 
-    WHERE page_tag.workspace_id = ?
-EOT
-            args => [9],
-        );
         ok_no_more_sql();
     }
     DeepOffsetUnlimited: {
@@ -573,15 +401,6 @@ $COMMON_SELECT
     OFFSET ? 
 EOT
             args => [9,765],
-        );
-        sql_ok(
-            name => 'all_active',
-            sql => <<EOT,
-SELECT workspace_id, page_id, tag 
-    FROM page_tag 
-    WHERE page_tag.workspace_id = ?
-EOT
-            args => [9],
         );
         ok_no_more_sql();
     }
@@ -610,41 +429,6 @@ $COMMON_SELECT
 EOT
             args => [9,'foo',33],
         );
-        sql_ok(
-            name => 'by_tag',
-            sql => <<EOT,
-SELECT workspace_id, page_id, tag 
-    FROM page_tag 
-    WHERE page_tag.workspace_id = ?
-EOT
-            args => [9],
-        );
-        ok_no_more_sql();
-    }
-
-    No_tags: {
-        local @Socialtext::SQL::RETURN_VALUES = (
-            {
-                return => [{workspace_id => 9, page_id => 'page_id'}],
-            },
-        );
-        Socialtext::Pages->By_tag(
-            workspace_id => 9,
-            limit => 33,
-            tag => 'foo',
-            do_not_need_tags => 1,
-        );
-        sql_ok(
-            name => 'by_tag',
-            sql => <<EOT,
-$COMMON_SELECT
-        JOIN page_tag USING (page_id, workspace_id) 
-    WHERE NOT deleted 
-      AND page.workspace_id = ? 
-      AND LOWER(page_tag.tag) = LOWER(?) ORDER BY page.last_edit_time DESC, page.name asc LIMIT ?
-EOT
-            args => [9,'foo',33],
-        );
         ok_no_more_sql();
     }
 
@@ -654,7 +438,6 @@ EOT
             limit => 20,
             offset => 40,
             tag => 'foo',
-            do_not_need_tags => 1,
         );
         sql_ok(
             name => 'by_tag',
@@ -678,7 +461,6 @@ EOT
             limit => 20,
             offset => 40,
             tag => 'foo',
-            do_not_need_tags => 1,
             order_by => 'creator_id DESC',
         );
         sql_ok(
@@ -705,7 +487,6 @@ EOT
             limit => 20,
             offset => 40,
             tag => 'foo',
-            do_not_need_tags => 1,
             order_by => 'last_editor_id DESC',
         );
         sql_ok(
@@ -749,15 +530,6 @@ $COMMON_SELECT
 EOT
             args => [9,'monkey'],
         );
-        sql_ok(
-            name => 'by_id',
-            sql => <<EOT,
-SELECT workspace_id, page_id, tag 
-    FROM page_tag 
-    WHERE page_tag.workspace_id = ?
-EOT
-            args => [9],
-        );
         ok_no_more_sql();
     }
 
@@ -770,39 +542,6 @@ EOT
         Socialtext::Pages->By_id(
             workspace_id => 9,
             page_id => ['monkey', 'ape', 'chimp'],
-        );
-        sql_ok(
-            name => 'by_id',
-            sql => <<EOT,
-$COMMON_SELECT
-    WHERE NOT deleted 
-      AND page.workspace_id = ? 
-      AND page_id IN (?,?,?)
-EOT
-            args => [9,'monkey', 'ape', 'chimp'],
-        );
-        sql_ok(
-            name => 'by_id',
-            sql => <<EOT,
-SELECT workspace_id, page_id, tag 
-    FROM page_tag 
-    WHERE page_tag.workspace_id = ?
-EOT
-            args => [9],
-        );
-        ok_no_more_sql();
-    }
-
-    several_pages_no_tags: {
-        local @Socialtext::SQL::RETURN_VALUES = (
-            {
-                return => [{workspace_id => 9, page_id => 'monkey'}],
-            },
-        );
-        Socialtext::Pages->By_id(
-            workspace_id     => 9,
-            page_id          => [ 'monkey', 'ape', 'chimp' ],
-            do_not_need_tags => 1,
         );
         sql_ok(
             name => 'by_id',
@@ -827,7 +566,6 @@ EOT
             workspace_id => 10,
             page_id => 'orangutang',
             deleted_ok => 1,
-            do_not_need_tags => 1,
         );
         sql_ok(
             name => 'by_id',
@@ -839,53 +577,6 @@ $COMMON_SELECT
 EOT
             args => [10,'orangutang'],
         );
-        ok_no_more_sql();
-    }
-
-    specific_revision: {
-        local @Socialtext::SQL::RETURN_VALUES = (
-            { return => [{workspace_id => 9, page_id => 'monkey'}] },
-        );
-        Socialtext::Pages->By_id(
-            workspace_id => 9,
-            page_id => 'monkey',
-            revision_id => 1234,
-        );
-        sql_ok(
-            name => 'by_id revision',
-            sql => <<EOT,
-SELECT page.workspace_id, 
-       "Workspace".name AS workspace_name, 
-       "Workspace".title AS workspace_title, 
-       page.page_id, 
-       page_revision.name, 
-       page_revision.editor_id AS last_editor_id, 
-       -- _utc suffix is to prevent performance-impacing naming collisions:
-       page_revision.edit_time AT TIME ZONE 'UTC' AS last_edit_time_utc, 
-       page.creator_id, 
-       -- _utc suffix is to prevent performance-impacing naming collisions:
-       page.create_time AT TIME ZONE 'UTC' AS create_time_utc, 
-       page_revision.revision_id AS current_revision_id, 
-       page_revision.revision_num AS current_revision_num, 
-       page.revision_count, 
-       page_revision.page_type, 
-       page_revision.deleted, 
-       page_revision.summary,
-       page_revision.edit_summary,
-       page_revision.tags,
-       page_revision.locked
-    FROM page 
-        JOIN "Workspace" USING (workspace_id) 
-        JOIN page_revision USING (workspace_id, page_id)
-    WHERE NOT deleted 
-      AND page.workspace_id = ? 
-      AND page_id = ?
-      AND revision_id = ?
-EOT
-            args => [9,'monkey', 1234],
-        );
-        # Do not need a separate fetch for tags when you specify a specific
-        # revision
         ok_no_more_sql();
     }
 
@@ -1009,7 +700,6 @@ EOT
         workspace_id => 9,
         limit => 33,
         tag => 'foo',
-        do_not_need_tags => 1,
         type => 'wiki',
     );
     sql_ok(
@@ -1067,3 +757,4 @@ EOT
     );
     ok_no_more_sql();
 }
+

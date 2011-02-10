@@ -9,6 +9,7 @@ use Class::Field qw( const );
 use Socialtext::String;
 use Socialtext::Encode;
 use Socialtext::l10n qw( loc );
+use Try::Tiny;
 
 sub EDIT_SUMMARY_MAXLENGTH { 250 }
 
@@ -68,14 +69,7 @@ sub revision_view {
 
     return $self->redirect( $page->uri ) unless $revision_id;
 
-    $page = Socialtext::Pages->By_id(
-        workspace_id => $self->hub->current_workspace->workspace_id,
-        page_id => $page->id,
-        revision_id => $revision_id,
-        no_die => 1,
-        deleted_ok => 1,
-        hub => $self->hub,
-    );
+    $page = try { $page->switch_rev($revision_id) };
     return $self->redirect( $page->uri ) unless $page;
 
     # find the previous and next revision

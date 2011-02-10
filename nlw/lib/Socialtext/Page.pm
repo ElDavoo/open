@@ -333,7 +333,8 @@ sub edit_rev {
 *load_revision = *switch_rev; # grep: sub load_revision
 sub switch_rev {
     my ($self, $rev_id) = @_;
-    croak "page is already mutable" if ($self->has_rev && $self->mutable);
+    croak "page is being created, can't switch_rev()"
+        if ($self->has_rev && $self->mutable && !$self->exists);
     $self->revision_id($rev_id); # calls the _revision_id_changed trigger
     $self->rev; # runs _build_rev as needed
     return $self;
