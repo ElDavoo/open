@@ -97,6 +97,14 @@ use constant COLUMNS_STR => join(', ',COLUMNS());
 use constant SELECT_COLUMNS_STR => COLUMNS_STR.
     q{, edit_time AT TIME ZONE 'UTC' || 'Z' AS edit_time_utc};
 
+around 'BUILDARGS' => sub {
+    my $orig = shift;
+    my $class = shift;
+    my $args = shift;
+    $args->{summary} //= '';
+    return $orig->($class, $args);
+};
+
 sub Get {
     my $class = shift;
     my $p = ref($_[0]) ? $_[0] : {@_};
