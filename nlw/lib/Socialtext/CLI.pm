@@ -884,7 +884,7 @@ sub _require_create_user_params {
         'external-id|X:s',
     );
 
-    my @utf8_fields = ('first-name', 'last-name');
+    my @utf8_fields = ('first-name', 'middle-name', 'last-name');
     for my $key ( grep { defined $opts{$_} } @utf8_fields ) {
         my $val = $opts{$key};
 
