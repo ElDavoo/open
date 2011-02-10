@@ -1,6 +1,6 @@
 [% INCLUDE element/container_head share="/nlw/plugin/widgets" %]
 [% SET gadget = container.gadgets.0.0 %]
-[% SET num = 0 %]
+[% SET num = "wafl-" _ gadget.id %]
 [% SET col = 0 %]
 <div class="widget waflWidget" id="[% gadget.id %]" style="width: [% width || 600 %]px">
     <div class="widgetHeader">
@@ -33,5 +33,6 @@ gadgets.container = gadgets.container || new gadgets.Container();
 if (Socialtext.wiki_id && Socialtext.page_id ) {
     gadgets.container.base_url = '/data/wafl-containers/[% container.name |uri %]';
     gadgets.container.registerServices();
+    gadgets.container.updateIframeNames();
 }
 </script>
