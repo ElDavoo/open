@@ -44,6 +44,7 @@ has 'homunculus' => (
         password
         email_address
         first_name
+        middle_name
         last_name
         display_name
         password_is_correct
@@ -91,7 +92,7 @@ has 'metadata' => (
 with 'Socialtext::UserSetContained';
 
 our @public_interface = qw(
-    user_id username email_address password first_name last_name
+    user_id username email_address password first_name middle_name last_name
     display_name creation_datetime last_login_datetime
     email_address_at_import created_by_user_id is_business_admin
     is_technical_admin is_system_created primary_account_id
@@ -1902,6 +1903,8 @@ considered an error.
 
 =item * first_name
 
+=item * middle_name
+
 =item * last_name
 
 =item * creation_datetime - defaults to CURRENT_TIMESTAMP
@@ -1948,6 +1951,8 @@ workspace.
 =head2 $user->email_address()
 
 =head2 $user->first_name()
+
+=head2 $user->middle_name()
 
 =head2 $user->last_name()
 
