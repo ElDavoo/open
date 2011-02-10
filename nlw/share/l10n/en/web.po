@@ -22,43 +22,43 @@ msgstr ""
 #. (edit_summary)
 #: share/skin/s3/template/view/page/revision:62
 msgid "\"%1\""
-msgstr ""
+msgstr "revision.quote=summary"
 
 #. (html_escaped_category)
 #: share/skin/s3/template/element/category_display/action_weblog_view:3
 msgid "%1 as a blog"
-msgstr ""
+msgstr "blog.show=tag"
 
 #. (local_time(file.date)
 #. (local_time(file.date), user(file.uploader))
 #: share/skin/s3/template/element/page/display/attachments:43
 msgid "%1 by %2"
-msgstr ""
+msgstr "attachment.by=date,uploader"
 
 #. (days)
 #: share/skin/s3/template/lite/page_list.html:16 share/skin/s3/template/view/page/display:18
 msgid "%1 days ago"
-msgstr "ago=days"
+msgstr "date.ago=days"
 
 #. (hours)
 #: share/skin/s3/template/lite/page_list.html:12 share/skin/s3/template/view/page/display:13
 msgid "%1 hours ago"
-msgstr "ago=hours"
+msgstr "date.ago=hours"
 
 #. (minutes)
 #: share/skin/s3/template/lite/page_list.html:8
 msgid "%1 min. ago"
-msgstr "ago=mins"
+msgstr "date.ago=mins"
 
 #. (minutes)
 #: share/skin/s3/template/view/page/display:9
 msgid "%1 minutes ago"
-msgstr "ago=minutes"
+msgstr "date.ago=minutes"
 
 #. (display_title)
 #: share/skin/s3/template/view/page_revision_list:5
 msgid "%1: All Revisions"
-msgstr ""
+msgstr "revision.all"
 
 #. (user_count)
 #: share/skin/s3/template/element/listview_account_filter:13 share/skin/s3/template/element/listview_account_filter:22
@@ -82,15 +82,15 @@ msgstr "page.count=view"
 
 #: share/skin/s3/template/view/page/display:184
 msgid "&nbsp;+"
-msgstr ""
+msgstr "page.add-tag"
 
 #: share/skin/s3/template/element/main_nav/subnav/people:6
 msgid "...lists the people you are following. You must register or be logged in to use this feature."
-msgstr "nav.following"
+msgstr "nav.following-hint"
 
 #: share/skin/s3/template/element/main_nav/subnav/workspaces:4
 msgid "...lists the workspaces you belong to. You must be logged in to see your list."
-msgstr "nav.workspaces"
+msgstr "nav.workspaces-hint"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:147 share/skin/s3/template/element/settings/users_invite_search_section:153 share/skin/s3/template/element/settings/users_invite_section:102 share/skin/s3/template/element/settings/users_invite_section:108
 msgid "<Your personal message goes here.>"
@@ -99,29 +99,29 @@ msgstr "settings.personal-message"
 #. (workspace.name, workspace.title)
 #: share/skin/s3/template/workspaces_created_section.html:18
 msgid "<a href=\"/%1/\">Go to</a> the %2 home page."
-msgstr ""
+msgstr "workspace.home=name,title"
 
 #. (workspace.name, workspace.title)
 #: share/skin/s3/template/workspaces_created_section.html:19
 msgid "<a href=\"/%1/?action=users_invitation\">Invite</a> other people to %2."
-msgstr ""
+msgstr "workspace.invite=name,title"
 
 #: share/skin/s3/template/element/settings/workspaces_cannot_create_section:19
 msgid "<em>To add a workspace to a <strong>new group,</strong></em> go to <a href=\"#\" onclick=\"showCreateGroupLightbox(); return false\">\"Create Group\"</a> under the Groups pulldown in the main navigation above. From there, use the \"Workspaces\" section to create your workspace."
-msgstr ""
+msgstr "workspace.add-to-new-group"
 
 #: share/skin/s3/template/element/settings/workspaces_cannot_create_section:15
 msgid "<em>To add a workspace to an <strong>existing group,</strong></em> go to the <a href=\"/st/groups\">\"Group Directory\"</a> under the Groups pulldown in the main navigation above, go to your chosen group, click \"Edit\" and create the workspace."
-msgstr ""
+msgstr "workspace.add-to-existing-group"
 
 #. (invitation_filter)
 #: share/skin/s3/template/element/settings/users_invite_search_section:14 share/skin/s3/template/element/settings/users_invite_section:62
 msgid "A filter has been set on this workspace. All candidate email addresses must match this pattern: <span style=\"color: red\"> %1 </span>"
-msgstr ""
+msgstr "settings.set=filter"
 
 #: share/skin/s3/template/lite/globalnav.html:44 share/skin/s3/template/lite/globalnav.html:46
 msgid "Activity"
-msgstr ""
+msgstr "nav.activity"
 
 #: share/skin/s3/template/layout/html:145 share/skin/s3/template/layout/user_frame:150
 msgid "Add Members"
