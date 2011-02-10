@@ -584,7 +584,7 @@ sub html {
     my $content = $section_id;
     eval {
         # implements anti-recursion:
-        $self->hub->pages->_render_in_workspace($page_id, $ws, sub {
+        $self->hub->pages->render_in_workspace($page_id, $ws, sub {
             my $page = shift;
             $content =  $self->cell_value($page, $section_id);
         });
