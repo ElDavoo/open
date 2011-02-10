@@ -101,6 +101,14 @@ sub new_id {
     );
 }
 
+# Only call this from tests, please
+sub content {
+    my $self = shift;
+    my $blob;
+    $self->upload->binary_contents(\$blob);
+    return $blob;
+}
+
 sub store {
     my $self = shift;
     my %p = @_;
