@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 24;
+use Test::Socialtext tests => 25;
 use Socialtext::CLI;
 use Socialtext::Account;
 use Test::Socialtext::CLIUtils qw(:all);
@@ -112,11 +112,12 @@ required_field_check: {
 }
 
 ###############################################################################
-# TEST: Create user with first/last names
+# TEST: Create user with first/middle/last names
 create_user_with_names: {
     my $guard  = Test::Socialtext::User->snapshot();
     my $email  = Test::Socialtext::create_unique_id() . '@ken.socialtext.net';
     my $first  = 'Bubba';
+    my $middle = 'Bo Bob';
     my $last   = 'Brain';
 
     expect_success(
@@ -124,6 +125,7 @@ create_user_with_names: {
             'create-user',
             '--email'       => $email,
             '--first-name'  => $first,
+            '--middle-name' => $middle,
             '--last-name'   => $last,
             '--password'    => 'abc123',
         ),
@@ -134,5 +136,6 @@ create_user_with_names: {
     my $user = Socialtext::User->new(email_address => $email);
     ok $user, '... and can be found in the DB';
     is $user->first_name,  $first,  '... with correct first name';
+    is $user->middle_name, $middle, '... with correct middle name';
     is $user->last_name,   $last,   '... with correct last name';
 }

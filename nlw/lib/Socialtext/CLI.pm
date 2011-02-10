@@ -876,6 +876,7 @@ sub _require_create_user_params {
         'email|e:s',
         'password:s',
         'first-name:s',
+        'middle-name:s',
         'last-name:s',
         'external-id|X:s',
     );
@@ -893,6 +894,7 @@ sub _require_create_user_params {
 
     $opts{email_address}       = delete $opts{email};
     $opts{first_name}          = delete $opts{'first-name'};
+    $opts{middle_name}         = delete $opts{'middle-name'};
     $opts{last_name}           = delete $opts{'last-name'};
     $opts{private_external_id} = delete $opts{'external-id'};
 
@@ -3965,7 +3967,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
 
   USERS
 
-  create-user [--account] --email [--username] --password [--first-name --last-name --external-id]
+  create-user [--account] --email [--username] --password [--first-name --middle-name --last-name --external-id]
   invite-user --email --workspace --from [--secure]
   confirm-user --email --password
   deactivate-user [--username or --email]
@@ -4123,7 +4125,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
 
 The following commands are provided:
 
-=head2 create-user [--account] --email [--username] --password [--first-name --last-name --external-id]
+=head2 create-user [--account] --email [--username] --password [--first-name --middle-name --last-name --external-id]
 
 Creates a new user, optionally in a specified account. An email address and
 password are required. If no username is specified, then the email address
