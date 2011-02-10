@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 19;
+use Test::Socialtext tests => 24;
 use Socialtext::CLI;
 use Socialtext::Account;
 use Test::Socialtext::CLIUtils qw(:all);
@@ -109,4 +109,30 @@ required_field_check: {
         qr/Username is a required field.+Email address is a required field.+password is required/s,
         'create-user failed with no args'
     );
+}
+
+###############################################################################
+# TEST: Create user with first/last names
+create_user_with_names: {
+    my $guard  = Test::Socialtext::User->snapshot();
+    my $email  = Test::Socialtext::create_unique_id() . '@ken.socialtext.net';
+    my $first  = 'Bubba';
+    my $last   = 'Brain';
+
+    expect_success(
+        call_cli_argv(
+            'create-user',
+            '--email'       => $email,
+            '--first-name'  => $first,
+            '--last-name'   => $last,
+            '--password'    => 'abc123',
+        ),
+        qr/A new user with the username.*was created/,
+        'test User created successfully',
+    );
+
+    my $user = Socialtext::User->new(email_address => $email);
+    ok $user, '... and can be found in the DB';
+    is $user->first_name,  $first,  '... with correct first name';
+    is $user->last_name,   $last,   '... with correct last name';
 }
