@@ -58,7 +58,7 @@ msgstr "date.ago=minutes"
 #. (display_title)
 #: share/skin/s3/template/view/page_revision_list:5
 msgid "%1: All Revisions"
-msgstr "revision.all"
+msgstr "revision.all=page"
 
 #. (user_count)
 #: share/skin/s3/template/element/listview_account_filter:13 share/skin/s3/template/element/listview_account_filter:22
@@ -125,66 +125,66 @@ msgstr "nav.activity"
 
 #: share/skin/s3/template/layout/html:145 share/skin/s3/template/layout/user_frame:150
 msgid "Add Members"
-msgstr ""
+msgstr "workspace.add-members"
 
 #: share/skin/s3/template/view/page/display:176
 msgid "Add Tag"
-msgstr ""
+msgstr "page.add-tag"
 
 #: share/skin/s3/template/lite/page/display.html:31
 msgid "Add your own comment:"
-msgstr ""
+msgstr "page.add-comment"
 
 #: share/skin/s3/template/element/settings/users_listall_section:27
 msgid "Admin"
-msgstr ""
+msgstr "settings.admin"
 
 #: share/skin/s3/template/lite/event_list_nav.html:30 share/skin/s3/template/lite/event_list_nav.html:32
 msgid "All"
-msgstr ""
+msgstr "nav.all"
 
 #: share/skin/s3/template/element/listview_tabs:22 share/skin/s3/template/view/empty_watchlist:21
 msgid "All Files"
-msgstr ""
+msgstr "nav.all-files"
 
 #: share/skin/s3/template/element/listview_account_filter:5
 msgid "All Groups"
-msgstr ""
+msgstr "nav.all-groups"
 
 #: share/skin/s3/template/element/main_nav/subnav/history:4
 msgid "All My Recently Viewed"
-msgstr ""
+msgstr "nav.recently-viewed"
 
 #: share/skin/s3/template/element/main_nav/subnav/workspaces:12
 msgid "All My Workspaces"
-msgstr ""
+msgstr "nav.all-workspaces"
 
 #: share/skin/s3/template/element/listview_tabs:18 share/skin/s3/template/view/empty_watchlist:19
 msgid "All Pages"
-msgstr ""
+msgstr "nav.all-pages"
 
 #. (escaped_str)
 #: share/skin/s3/template/lite/changes/changes.html:15
 msgid "All Pages in %1"
-msgstr ""
+msgstr "nav.all-pages=workspace"
 
 #: share/skin/s3/template/view/page/revision:21 share/skin/s3/template/view/page/revision_compare:21
 msgid "All Revisions"
-msgstr ""
+msgstr "nav.all-revisions"
 
 #: share/skin/s3/template/element/listview_tabs:20 share/skin/s3/template/view/empty_watchlist:20
 msgid "All Tags"
-msgstr ""
+msgstr "nav.all-tags"
 
 #. (ws.title)
 #: share/skin/s3/template/lite/tag/tag.html:5
 msgid "All tags"
-msgstr ""
+msgstr "nav.all-tags=workspace"
 
 #. (type)
 #: share/skin/s3/template/view/page_locked:15
 msgid "An administrator has locked this %1 since you opened it for editing. You will not be able to save it."
-msgstr ""
+msgstr "page.locked=type"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:133 share/skin/s3/template/element/settings/users_invite_section:88
 msgid "And don't worry about breaking anything - previous versions of the page are saved, so there's always a backup copy of the page you're working on."
@@ -1738,7 +1738,7 @@ msgstr ""
 
 #: share/skin/s3/template/element/settings/start:28
 msgid "warning:"
-msgstr ""
+msgstr "settings.warning"
 
 #: share/skin/s3/template/layout/html:63 share/skin/s3/template/layout/simple_html:49 share/skin/s3/template/layout/user_frame:68
 msgid "wiki, business wiki, document management, enterprise wiki, intranet wiki, knowledge management, online collaboration, open source wiki, portal wiki, hosted wiki, collaboration, social software, social networking, dashboard, project collaboration, team collaboration, wiki appliance, wiki software, community"
