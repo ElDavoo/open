@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 255;
+use Test::Socialtext tests => 251;
 use Socialtext::Account;
 use Socialtext::Workspace;
 
@@ -76,15 +76,9 @@ sub tests_for_email {
           'content includes date from email headers' );
     like( $page->content(), qr{API changed},
           'content includes string "API changed"' );
-    is( $page->metadata()->MessageID(),
-        '<Pine.LNX.4.33.0409151241140.5203-100000@sharkey.morinda.com>',
-        'check that page metadata Message-ID matches the message id in email' );
-    like( $page->metadata()->Received(),
-          qr/\Qlists.sourceforge.net ([66.35.250.206]\E\s+\Qhelo=sc8-sf-list1.sourceforge.net)\E/,
-          'check that page metadata Received matches part of the Received header in email' );
 
     my $categories = $page->tags;
-    ok( scalar @$categories, 'page has category metadata' );
+    ok( scalar @$categories, 'page has tags' );
     is_deeply( [ sort @$categories ],
                [ 'Email', 'ape', 'monkey' ],
                'categories are ape, Email, & monkey' );
@@ -445,7 +439,7 @@ ONE_ATTACHMENT: {
     like( $page->content(), qr/\Q{file: http-recorder}\E/,
           'check that page content contains link to attached file' );
 
-    my $all = $hub->attachments()->all_in_workspace();
+    my $all = $hub->attachments->all_attachments_in_workspace();
     is( @$all, 1,
         'only one attachment in workspace' );
 
@@ -545,12 +539,12 @@ BIG5_IN_BODY: {
 
     receive_ok( handle => $fh );
 
-    my $page = $hub->pages()->new_from_name('Big5 Email');
+    my $page = $hub->pages()->new_from_name('bIG5 eMAIL');
     isa_ok( $page, 'Socialtext::Page' );
 
     ok( $page->active(), "Found a page with the name of 'Big5 Email'" );
-    is( $page->title(), 'Big5 Email',
-        'check that page title matches subject' );
+    is( $page->title(), 'Big5 email',
+        'check that page title matches subject in mail' );
 
     my $singapore = join '', map { chr($_) } 26032, 21152, 22369;
 
@@ -1018,7 +1012,7 @@ ONE_ATTACHMENT_JA: {
     like( $page->content(), qr/\Q{file: 日本語.doc}\E/,
           'check that page content contains link to attached file' );
 
-    my $all = $hub->attachments()->all_in_workspace();
+    my $all = $hub->attachments->all_attachments_in_workspace();
     is( @$all, 1+7,
         'only one attachment in workspace' );
 
@@ -1228,3 +1222,4 @@ sub receive_ok {
     $email_receiver->receive();
     return;
 }
+
