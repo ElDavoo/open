@@ -22,14 +22,13 @@
 | wait_for_element_visible_ok | //input[@name='destination'] | 5000 |
 | wait_for_element_visible_ok | //a[@class='btn done'] | 5000 |
 | wait_for_element_visible_ok | //a[@class='btn cancel'] | 5000 |
-| text_like | Paste or type your link's destination |  |
+| text_like | //body | qr/Paste\s*or\s*type\s*your\s*/ |
 
 | *Comment* | Test Case: Signals Web Link. Click Cancel. Verify invisible elements |  |
 | click_ok | //a[@class='btn cancel'] |  |
-| wait_for_text_not_present_ok | Paste or type your link's destination | 5000 |
+| st_ff_and_ie_wait_for_text_not_present | Paste or type your link's destination | 30000 |
 | wait_for_element_visible_ok | //a[contains(@class,'insertWeblink')] | 30000 |
 | click_ok | //a[contains(@class,'insertWeblink')] |  |
-
 | wait_for_element_visible_ok | //div[@class='weblinkPopup'] | 30000 |
 | wait_for_element_visible_ok | //input[@name='label'] | 5000 |
 | wait_for_element_visible_ok | //input[@name='destination'] | 5000 |

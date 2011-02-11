@@ -143,6 +143,9 @@ div.widgetBottomRight {
         return true;
     });
 
+    $(function(){
+        $('#st-savebutton-[% gadget.id %]').val("[% loc('Preview') %]");
+    });
     $('#[% gadget.id %]-content').hide();
     $('#[% gadget.id %]-setup').show();
     $('#st-widget-settings[% gadget.id %]').css('visibility', 'hidden');

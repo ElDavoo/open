@@ -1284,7 +1284,8 @@ sub _build_central_workspace {
             $name = substr($self->name, 0, 30 - length($suffix));
             $name = Socialtext::String::title_to_id($name . $suffix);
 
-            $main_page_name = substr($self->title, 0, 30 - length($suffix)) . $suffix;
+            $main_page_name = substr($self->name, 0, 30 - length($suffix))
+                            . $suffix;
         }
 
         $name =~ s/_/-/g;
