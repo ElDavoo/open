@@ -435,64 +435,64 @@ msgstr "nav.desktop"
 
 #: share/skin/s3/template/view/page/delete_epilogue:17
 msgid "Did you delete this page in error? If so, you can restore the page."
-msgstr ""
+msgstr "page.delete-epilogue"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:45
 msgid "Disable page locking. Any member who can edit pages can edit any page. If any pages were previously locked, those pages will be unlocked."
-msgstr ""
+msgstr "config.disable-locking"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:13
 msgid "Do you want to set up this workspace as:"
-msgstr ""
+msgstr "config.setup-workspace-as"
 
 #: share/skin/s3/template/view/page/display:84
 msgid "Duplicate Page"
-msgstr ""
+msgstr "page.duplicate"
 
 #: share/skin/s3/template/element/page/display/edit-button:13 share/skin/s3/template/element/page/display/edit-button:7 share/skin/s3/template/lite/subnav.html:40 share/skin/s3/template/view/weblog:98
 msgid "Edit"
-msgstr ""
+msgstr "page.edit"
 
 #. (page.title)
 #: share/skin/s3/template/lite/page/edit.html:2
 msgid "Edit %1"
-msgstr ""
+msgstr "page.edit=title"
 
 #: share/skin/s3/template/view/page_revision_list:46
 msgid "Edit Summary"
-msgstr ""
+msgstr "revision.summary"
 
 #: share/skin/s3/template/view/listview:154
 msgid "Edit summary"
-msgstr ""
+msgstr "nav.summary"
 
 #: share/skin/s3/template/view/weblog:78
 msgid "Edit this post"
-msgstr ""
+msgstr "blog.edit"
 
 #: share/skin/s3/template/view/page_revision_list:44
 msgid "Edited By"
-msgstr ""
+msgstr "revision.edited-by"
 
-#: share/skin/s3/template/element/settings/users_settings_section:8 share/skin/s3/template/view/page/display:79
+#: share/skin/s3/template/element/settings/users_settings_section:8
 msgid "Email"
-msgstr ""
+msgstr "config.email"
 
 #: share/skin/s3/template/element/settings/users_listall_section:26
 msgid "Email Address"
-msgstr ""
+msgstr "config.email-address"
 
 #: share/skin/s3/template/view/page/display:105 share/skin/s3/template/view/page/display:107
 msgid "Email To This Page"
-msgstr ""
+msgstr "page.email-to-this"
 
 #: share/skin/s3/template/view/page/display:102
 msgid "Email To This Workspace"
-msgstr ""
+msgstr "wiki.email-to-this"
 
 #: share/skin/s3/template/view/page/display:79
 msgid "Email this page"
-msgstr ""
+msgstr "hint.email-page"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:36
 msgid "Enable email notifications for this workspace?"
