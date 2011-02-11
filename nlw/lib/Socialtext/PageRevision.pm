@@ -531,3 +531,25 @@ sub store {
 
 __PACKAGE__->meta->make_immutable;
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::PageRevision - Page revision object
+
+=head1 SYNOPSIS
+
+  my $page = ...
+  $rev = $page->edit_rev(editor => $user);
+  $rev->body_ref(\$new_content);
+  $rev->summary($new_summary);
+  $rev->add_tags($tags_without_events_fired);
+  $page->store();
+
+=head1 DESCRIPTION
+
+Encapsulates a revision for a page.  You probably want to use the methods and
+accessors via L<Socialtext::Page> instead.
+
+=cut
