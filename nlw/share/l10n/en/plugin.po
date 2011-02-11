@@ -1,0 +1,2672 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. (account.account_type)
+#: share/plugin/control/template/control/account.html:53
+msgid " %1"
+msgstr ""
+
+#: share/plugin/groups/share/widgets/teaser/widget.html:2
+msgid " You will soon be able to associate workspaces with your group. For now, you can ask one of your administrators to link up a group to its workspaces through the administrative interface."
+msgstr ""
+
+#: share/plugin/signals/template/bookmarklet/index.html:4
+msgid "\"Signal This\" Bookmarklet"
+msgstr ""
+
+#. (asset.count)
+#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:26
+msgid "%1 %quant(%1,mention,mentions)"
+msgstr ""
+
+#. (asset.count)
+#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:8
+msgid "%1 %quant(%1,mention,mentions), click here to collapse"
+msgstr ""
+
+#. (asset.count)
+#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:8
+msgid "%1 %quant(%1,mention,mentions), click here to expand"
+msgstr ""
+
+#. (asset.count, asset.eventList.size || 5)
+#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:8
+msgid "%1 %quant(%1,mention,mentions), click here to see first %2"
+msgstr ""
+
+#. ($acct->name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1835
+msgid "%1 Account Growth Report"
+msgstr ""
+
+#. ($acct->name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1814
+msgid "%1 Account Usage Report"
+msgstr ""
+
+#. (group.driver_group_name)
+#: share/plugin/control/template/control/group.html:4
+msgid "%1 Group"
+msgstr ""
+
+#. ($group->driver_group_name,            $workspace->name,)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1492
+msgid "%1 Group has been removed from the Workspace"
+msgstr ""
+
+#. ($group->driver_group_name,                $workspace->name,)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1480
+msgid "%1 Group is not a member of this Workspace"
+msgstr ""
+
+#. ($w->name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1827
+msgid "%1 Workspace Growth Report"
+msgstr ""
+
+#. ($w->name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1822
+msgid "%1 Workspace Usage Report"
+msgstr ""
+
+#. (account.name)
+#: share/plugin/control/template/control/account.html:4 share/plugin/control/template/control/add_profile_field.html:2 share/plugin/control/template/control/add_user.html:2 share/plugin/control/template/control/add_users.html:2 share/plugin/control/template/control/design-account.html:2 share/plugin/control/template/control/desktop-account.html:8 share/plugin/control/template/control/edit_profile_field.html:2 share/plugin/control/template/control/fields-account.html:2 share/plugin/control/template/control/rename-account.html:2
+msgid "%1 account"
+msgstr ""
+
+#. (actor, widget_link(event.context), event.context.description)
+#: share/plugin/widgets/share/javascript/template/activities/widget.tt2:6
+msgid "%1 added the %2 widget. %3."
+msgstr ""
+
+#. (this.round(minutes / 1440))
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:9
+msgid "%1 days ago"
+msgstr ""
+
+#. (this.round(minutes / 60))
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:6
+msgid "%1 hours ago"
+msgstr ""
+
+#. (title)
+#: share/plugin/control/template/control/add_user.html:40
+msgid "%1 is calculated unless provided"
+msgstr ""
+
+#. (minutes)
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:4
+msgid "%1 minutes ago"
+msgstr ""
+
+#. (older)
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:22
+msgid "%1 older %quant(%1,reply,replies)..."
+msgstr ""
+
+#. (older)
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:20
+msgid "%1 other %quant(%1,reply,replies)..."
+msgstr ""
+
+#. (('<span class="numSelected">' _ numSelected _ '</span>'))
+#: share/plugin/control/share/javascript/template/control_table.tt2:0
+msgid "%1 rows selected:"
+msgstr ""
+
+#. ($signaler->best_full_name)
+#: share/plugin/signals/lib/Socialtext/Rest/Signals/Feed.pm:116
+msgid "%1 signalled"
+msgstr ""
+
+#. (custom_skin, custom_skins.$custom_skin)
+#: share/plugin/control/template/control/account.html:243
+msgid "%1 skin: workspace-level skin for '%2' workspace(s)"
+msgstr ""
+
+#. (actor, widget_link(event.context))
+#: share/plugin/widgets/share/javascript/template/activities/widget.tt2:9
+msgid "%1 updated the %2 widget."
+msgstr ""
+
+#. (workspace.name)
+#: share/plugin/control/template/control/workspace.html:3
+msgid "%1 workspace"
+msgstr ""
+
+#. ($user->best_full_name)
+#: share/plugin/signals/lib/Socialtext/Rest/Signals/Feed.pm:89
+msgid "%1's avatar"
+msgstr ""
+
+#. (a.user_count)
+#. (g.user_count)
+#: share/plugin/signals/template/lite/signals.html:57 share/plugin/signals/template/lite/signals.html:68
+msgid "%quant(%1,user)"
+msgstr ""
+
+#. ($name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1691
+msgid "'%1' is not a valid account name."
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:289
+msgid "'%1' is not a valid value for group_create."
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:255
+msgid "'%1' is not a valid value for self_join."
+msgstr ""
+
+#: share/plugin/signals/template/bookmarklet/too_long.html:13
+msgid "(Click [Cancel] to Signal privately to yourself.)"
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:742
+msgid "(Desktop users need to logout and login again to see the default logo.)"
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:729
+msgid "(Desktop users need to logout and login again to see the new logo.)"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:34
+msgid "(click here to collapse)"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:25
+msgid "(click here to expand)"
+msgstr ""
+
+#: share/plugin/control/template/control/report.html:127
+msgid "1 Month"
+msgstr ""
+
+#: share/plugin/control/template/control/report.html:128
+msgid "1 Quarter"
+msgstr ""
+
+#: share/plugin/control/template/control/report.html:126
+msgid "1 Week"
+msgstr ""
+
+#: share/plugin/signals/share/javascript/lightbox/explore-about.tt2:4
+msgid "<b>Socialtext Explore</b> makes it easy to learn about the files and links your colleagues have shared via Socialtext Signals. Use the tabs along the top to choose the asset type and the filters on the left to narrow down the information being displayed. <br /> <br /> Each item listed has one or more Signals conversations that mention it. Click on an item's title to open the link itself, or click on the square to the left of the title to see and reply to its conversations."
+msgstr ""
+
+#: share/plugin/control/share/javascript/lightbox/group-create.tt2:28
+msgid "<strong>Private:</strong> Only Members can see and access this group."
+msgstr ""
+
+#: share/plugin/control/share/javascript/lightbox/group-create.tt2:26
+msgid "<strong>Self-Join:</strong> Non-Members can view and join the group."
+msgstr ""
+
+#: share/plugin/control/template/control/group.html:77 share/plugin/control/template/control/workspace.html:10 share/plugin/control/template/control/workspace_invite.html:98 share/plugin/control/template/control/workspaces_new.html:20
+msgid "Account"
+msgstr ""
+
+#. ($old_name, $new_name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:912
+msgid "Account %1 renamed to %2"
+msgstr ""
+
+#: share/plugin/control/template/control/desktop-account.html:14
+msgid "Account Custom Desktop Skin"
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1108 share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1150
+msgid "Account ID was not supplied!"
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:231 share/plugin/control/template/control/design-account.html:8
+msgid "Account Logo"
+msgstr ""
+
+#: share/plugin/control/template/control/accounts_transform.html:8
+msgid "Account Name"
+msgstr ""
+
+#: share/plugin/control/template/control/fields-account.html:8
+msgid "Account Profile Fields"
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:39
+msgid "Account Settings"
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:53
+msgid "Account type"
+msgstr ""
+
+#: share/plugin/control/template/control/accounts.html:15
+msgid "Account type:"
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:430
+msgid "Account updated."
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1969 share/plugin/control/template/control/group.html:39 share/plugin/control/template/control/index.html:25
+msgid "Accounts"
+msgstr ""
+
+#. ("<span id=\"accountsCount\"></span>")
+#: share/plugin/control/template/control/user.html:94
+msgid "Accounts (%1)"
+msgstr ""
+
+#: share/plugin/control/template/control/index.html:26
+msgid "Accounts are large groupings of users, who have common access to a People directory, Signals conversations, and other content and features. A variety of options and settings can be configured for each account, including plugins, skins, and look-and-feel of Socialtext Desktop. You can also view usage and adoption reports for accounts."
+msgstr ""
+
+#. ($name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1955
+msgid "Accounts matching \"%1\""
+msgstr ""
+
+#: share/plugin/control/template/control/fields-account.html:32
+msgid "Actions"
+msgstr ""
+
+#: share/plugin/people/template/lite/profile.html:59 share/plugin/people/template/lite/profile.html:61
+msgid "Activities"
+msgstr ""
+
+#: share/plugin/widgets/template/mobile-signals.tt2:123
+msgid "Activity"
+msgstr ""
+
+#: share/plugin/control/template/control/workspace_invite.html:117 share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:55
+msgid "Add"
+msgstr ""
+
+#: share/plugin/control/template/control/workspace_invite.html:123
+msgid "Add All"
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:70
+msgid "Add Existing User: "
+msgstr ""
+
+#: share/plugin/control/template/control/group.html:0
+msgid "Add Group To A Workspace"
+msgstr ""
+
+#: share/plugin/control/template/control/workspace.html:183
+msgid "Add Group To Workspace"
+msgstr ""
+
+#: share/plugin/control/template/control/account_add_group.html:2 share/plugin/control/template/control/group_add_to_account.html:2
+msgid "Add Group to Account"
+msgstr ""
+
+#: share/plugin/control/template/control/group.html:41
+msgid "Add Group to Account: "
+msgstr ""
+
+#: share/plugin/control/template/control/group_add_to_workspace.html:2 share/plugin/control/template/control/workspace_add_group.html:2
+msgid "Add Group to Workspace"
+msgstr ""
+
+#: share/plugin/control/template/control/workspaces_new.html:43
+msgid "Add Group to Workspace: "
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:75
+msgid "Add Multiple Users"
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:74
+msgid "Add New User"
+msgstr ""
+
+#: share/plugin/control/template/control/add_user.html:8
+msgid "Add User"
+msgstr ""
+
+#: share/plugin/control/template/control/user.html:97
+msgid "Add User to Account: "
+msgstr ""
+
+#: share/plugin/control/template/control/group.html:29
+msgid "Add User to Group: "
+msgstr ""
+
+#: share/plugin/control/template/control/workspaces_new.html:33
+msgid "Add User to Workspace: "
+msgstr ""
+
+#: share/plugin/control/template/control/add_users.html:8
+msgid "Add Users"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:3
+msgid "Add Widget"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:31
+msgid "Add a Widget with URL:"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:118 share/plugin/widgets/share/javascript/template/activities/event.tt2:83
+msgid "Add a tag"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:121 share/plugin/widgets/share/javascript/template/activities/event.tt2:86
+msgid "Add a video link"
+msgstr ""
+
+#: share/plugin/control/template/control/account_add_group.html:27 share/plugin/control/template/control/group_add_to_account.html:25
+msgid "Add to Account"
+msgstr ""
+
+#: share/plugin/control/template/control/group_add_to_workspace.html:31 share/plugin/control/template/control/workspace_add_group.html:31
+msgid "Add to Workspace"
+msgstr ""
+
+#: share/plugin/control/template/control/add_user.html:56
+msgid "Add user"
+msgstr ""
+
+#. ($group->driver_group_name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1272
+msgid "Add users to %1 group"
+msgstr ""
+
+#. (group.driver_group_name, group.group_id)
+#: share/plugin/control/template/control/group_add_to_workspace.html:5
+msgid "Adding Group %1 (%2) to a Workspace"
+msgstr ""
+
+#. (group.driver_group_name, group.group_id)
+#: share/plugin/control/template/control/group_add_to_account.html:5
+msgid "Adding Group %1 (%2) to an Account"
+msgstr ""
+
+#. (account.name)
+#: share/plugin/control/template/control/account_add_group.html:5
+msgid "Adding Group to Account %1"
+msgstr ""
+
+#. (workspace.name)
+#: share/plugin/control/template/control/workspace_add_group.html:5
+msgid "Adding Group to Workspace %1"
+msgstr ""
+
+#. ($widget->{src})
+#: share/plugin/widgets/lib/Socialtext/Pluggable/Plugin/Widgets.pm:307
+msgid "Adding widget %1..."
+msgstr ""
+
+#: share/plugin/control/template/control/workspace_invite.html:105
+msgid "Administrators"
+msgstr ""
+
+#: share/plugin/groups/share/widgets/all_groups/widget.html:2
+msgid "All Available Groups"
+msgstr ""
+
+#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:276
+msgid "All People"
+msgstr ""
+
+#. ($tag)
+#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:276
+msgid "All People Tagged '%1'"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:32
+msgid "All Replies"
+msgstr ""
+
+#: share/plugin/signals/share/widgets/profile/widget.html:21
+msgid "All Shared Groups"
+msgstr ""
+
+#: share/plugin/control/template/control/design-account.html:64
+msgid "Also reset the logo after a fresh login to Socialtext Desktop."
+msgstr ""
+
+#: share/plugin/control/template/control/design-account.html:32
+msgid "Also use the logo after a fresh login to Socialtext Desktop."
+msgstr ""
+
+#. ($name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:476
+msgid "An account with this name (%1) already exists."
+msgstr ""
+
+#: share/plugin/control/template/control/user.html:64
+msgid "Appliance Business Administrator?"
+msgstr ""
+
+#: share/plugin/control/template/control/user.html:78
+msgid "Appliance Technical Administrator?"
+msgstr ""
+
+#: share/plugin/control/template/control/index.html:11
+msgid "Appliance Technical Administrators can use the <a href='/console'>Console</a> to manage technical aspects of the appliance, such as network and backup settings."
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:760
+msgid "Applied current account logo to Desktop. Desktop users need to logout and login again to see the new logo."
+msgstr ""
+
+#: share/plugin/control/template/control/report.html:105
+msgid "April"
+msgstr ""
+
+#: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:10
+msgid "Are you sure you want to delete this group?"
+msgstr ""
+
+#: share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:4
+msgid "Are you sure you want to revert to the Socialtext defaults?"
+msgstr ""
+
+#: share/plugin/control/template/control/user.html:75
+msgid "Assign Appliance Business Administrator Role"
+msgstr ""
+
+#: share/plugin/control/template/control/user.html:89
+msgid "Assign Appliance Technical Administrator Role"
+msgstr ""
+
+#: share/plugin/control/template/control/workspace.html:32
+msgid "Assign to a new account"
+msgstr ""
+
+#. (shift)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:584
+msgid "Assigned the Appliance Business Administrator role to %1"
+msgstr ""
+
+#. (shift)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:598
+msgid "Assigned the Appliance Technical Administrator role to %1"
+msgstr ""
+
+#: share/plugin/people/template/lite/profile.html:100
+msgid "Assistant"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:117 share/plugin/widgets/share/javascript/template/activities/event.tt2:82
+msgid "Attach a file"
+msgstr ""
+
+#: share/plugin/control/template/control/report.html:109
+msgid "August"
+msgstr ""
+
+#: share/plugin/control/template/control/group_invite.html:109
+msgid "Available groups"
+msgstr ""
+
+#: share/plugin/control/template/control/add_user.html:5 share/plugin/control/template/control/add_users.html:5 share/plugin/control/template/control/design-account.html:5 share/plugin/control/template/control/desktop-account.html:12 share/plugin/control/template/control/fields-account.html:6 share/plugin/control/template/control/rename-account.html:5
+msgid "Back"
+msgstr ""
+
+#: share/plugin/control/template/control/edit_profile_field.html:6
+msgid "Back to Account"
+msgstr ""
+
+#: share/plugin/control/template/control/add_profile_field.html:6
+msgid "Back to Account Fields"
+msgstr ""
+
+#: share/plugin/control/template/control/growth_report.html:11 share/plugin/control/template/control/report.html:145
+msgid "Back to the account page"
+msgstr ""
+
+#: share/plugin/control/template/control/report.html:143
+msgid "Back to the user page"
+msgstr ""
+
+#: share/plugin/control/template/control/growth_report.html:13 share/plugin/control/template/control/report.html:147
+msgid "Back to the workspace page"
+msgstr ""
+
+#. (account.skin_name)
+#: share/plugin/control/template/control/design-account.html:77
+msgid "Because a custom skin is in use, the account logo cannot be changed.  The skin in use is called '%1'"
+msgstr ""
+
+#. (a, app_name)
+#: share/plugin/people/template/email/invitation-body.html:37
+msgid "Because you already have %1 %2 account, the password is the same as the password you use for your other %2 groups."
+msgstr ""
+
+#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:28
+msgid "Before creating a group, you can search names and descriptions for existing groups."
+msgstr ""
+
+#: share/plugin/people/template/email/standard-footer.html:12
+msgid "Brought to you by Socialtext."
+msgstr ""
+
+#: share/plugin/control/template/control/add_users.html:18
+msgid "Browse ..."
+msgstr ""
+
+#: share/plugin/people/template/lite/profile.html:153
+msgid "CUSTOM"
+msgstr ""
+
+#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:40
+msgid "Can be seen in the Group Directory by everyone and anyone can join."
+msgstr ""
+
+#. ($url)
+#: share/plugin/widgets/lib/Socialtext/Gadgets/Gadget.pm:767
+msgid "Can't find thumbnail image: %1"
+msgstr ""
+
+#: share/plugin/signals/template/bookmarklet/index.html:64
+msgid "Can't see your Bookmarks Bar?"
+msgstr ""
+
+#: share/plugin/control/share/javascript/lightbox/group-create.tt2:66 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:47 share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:20 share/plugin/groups/share/javascript/lightbox/create-group.tt2:64 share/plugin/groups/share/javascript/lightbox/delete-group.tt2:20 share/plugin/groups/share/javascript/lightbox/leave-group.tt2:17 share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:18 share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:17 share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:23
+msgid "Cancel"
+msgstr ""
+
+#. ($from_class, $to_class)
+#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:766
+msgid "Cannot convert field class from '%1' to '%2'"
+msgstr ""
+
+#. ($name, $opts->{title}, $acct->name)
+#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:711
+msgid "Cannot create profile field: The field name '%1' (derived from title '%2') is already used in account '%3'"
+msgstr ""
+
+#. ($name, $opts->{title})
+#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:701
+msgid "Cannot create profile field: The field name '%1' (derived from title '%2') is reserved for Socialtext"
+msgstr ""
+
+#. ($opts->{name}, $acct->name)
+#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:714
+msgid "Cannot create profile field: The field name '%1' is already used in account '%2'"
+msgstr ""
+
+#. ($opts->{name})
+#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:704
+msgid "Cannot create profile field: The field name '%1' is reserved for Socialtext"
+msgstr ""
+
+#. ($opts->{field_class})
+#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:718
+msgid "Cannot create profile field: invalid field-class '%1'"
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Gadgets/Gallery.pm:200
+msgid "Cannot permanently remove non-account widgets."
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Gadgets/Gallery.pm:197
+msgid "Cannot remove socialtext widgets."
+msgstr ""
+
+#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:23
+msgid "Change Group Type"
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:56
+msgid "Change account type to:"
+msgstr ""
+
+#: share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:487 share/plugin/twilio/lib/Socialtext/Pluggable/Plugin/Twilio.pm:66
+msgid "Changes Saved"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:2
+msgid "Choose a workspace then search for the wikipage you want linked. You can change the link text and link to a subsection of the page."
+msgstr ""
+
+#: share/plugin/control/share/javascript/template/control_table.tt2:18
+msgid "Clear Selection"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:5
+msgid "Click \"Browse\" and select an image or file to upload."
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:6
+msgid "Click \"Done\" to close this window."
+msgstr ""
+
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:4
+msgid "Click <b>Save</b> below to make this the default dashboard for your account. All new users will have this dashboard when they first log in. To also force this dashboard for existing users, click the \"force update\" checkbox below."
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:164
+msgid "Click here to enable desktop notifications"
+msgstr ""
+
+#: share/plugin/signals/share/javascript/lightbox/explore-about.tt2:17 share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:62
+msgid "Close"
+msgstr ""
+
+#: share/plugin/control/template/control/user.html:51
+msgid "Confirm user"
+msgstr ""
+
+#. ($user_count, $ws_count)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2274
+msgid "Congratulations! You successfully added %quant(%1,user) to %quant(%2,workspace). They will receive an invitation message to each workspace."
+msgstr ""
+
+#. ($count,            $link)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2311
+msgid "Congratulations! You successfully created a new workspace with %quant(%1,user). They will receive an invitation message with a link to %2."
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Pluggable/Plugin/Widgets.pm:251
+msgid "Container already exists... Skipping..."
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:2
+msgid "Copy and paste the URL for the video below.  We support embedding video from YouTube, Vimeo, SlideShare and Google Video."
+msgstr ""
+
+#. ($new_type)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:454
+msgid "Could not change account type to %1."
+msgstr ""
+
+#. ($name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:489
+msgid "Could not create account %1."
+msgstr ""
+
+#. ($ws_title)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2298
+msgid "Could not create workspace %1"
+msgstr ""
+
+#: share/plugin/control/share/javascript/lightbox/group-create.tt2:65 share/plugin/control/template/control/report.html:130
+msgid "Create"
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:90 share/plugin/groups/share/javascript/lightbox/create-group.tt2:26
+msgid "Create Group"
+msgstr ""
+
+#: share/plugin/control/template/control/add_profile_field.html:8 share/plugin/control/template/control/fields-account.html:12
+msgid "Create New Field"
+msgstr ""
+
+#. (workspace.name)
+#: share/plugin/control/template/control/workspaces_new.html:3 share/plugin/control/template/control/workspaces_new.html:53
+msgid "Create Workspace"
+msgstr ""
+
+#: share/plugin/control/template/control/index.html:19
+msgid "Create a Group"
+msgstr ""
+
+#: share/plugin/control/template/control/accounts.html:10
+msgid "Create a New Account"
+msgstr ""
+
+#: share/plugin/control/template/control/index.html:18
+msgid "Create a User"
+msgstr ""
+
+#: share/plugin/control/template/control/index.html:20
+msgid "Create a Workspace"
+msgstr ""
+
+#: share/plugin/control/share/javascript/lightbox/group-create.tt2:10
+msgid "Create a new Socialtext group"
+msgstr ""
+
+#: share/plugin/control/template/control/workspaces.html:8
+msgid "Create a new Workspace"
+msgstr ""
+
+#: share/plugin/control/template/control/group.html:0
+msgid "Create a new Workspace for this Group"
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:0
+msgid "Create a new Workspace in this Account"
+msgstr ""
+
+#: share/plugin/control/template/control/group_invite.html:85
+msgid "Create a new group"
+msgstr ""
+
+#: share/plugin/control/template/control/workspace_invite.html:82
+msgid "Create a new workspace"
+msgstr ""
+
+#: share/plugin/control/template/control/groups.html:109
+msgid "Create new Group"
+msgstr ""
+
+#: share/plugin/control/template/control/group.html:80 share/plugin/control/template/control/user.html:16 share/plugin/control/template/control/workspace.html:38
+msgid "Created"
+msgstr ""
+
+#: share/plugin/control/template/control/group.html:83
+msgid "Created By"
+msgstr ""
+
+#. (creator.best_full_name)
+#: share/plugin/control/template/control/group.html:6
+msgid "Created By: %1"
+msgstr ""
+
+#. (create_time)
+#: share/plugin/control/template/control/group.html:7
+msgid "Created On: %1"
+msgstr ""
+
+#: share/plugin/control/template/control/workspace.html:41
+msgid "Created by"
+msgstr ""
+
+#. (shift->title)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:984
+msgid "Created profile field \"%1\""
+msgstr ""
+
+#: share/plugin/control/template/control/index.html:13
+msgid "Creating"
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:233
+msgid "Custom Desktop Skin"
+msgstr ""
+
+#. (skin_name)
+#: share/plugin/control/template/control/account.html:239
+msgid "Custom Skins: %1"
+msgstr ""
+
+#: share/plugin/control/template/control/fields-account.html:16
+msgid "Custom fields"
+msgstr ""
+
+#. ($user->username)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1850
+msgid "Dashboard Activity for user %1"
+msgstr ""
+
+#: share/plugin/control/template/control/user.html:27
+msgid "Deactivate user"
+msgstr ""
+
+#: share/plugin/control/template/control/report.html:113
+msgid "December"
+msgstr ""
+
+#: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:25
+msgid "Delete"
+msgstr ""
+
+#. (name)
+#: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:6
+msgid "Delete %1"
+msgstr ""
+
+#: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:2
+msgid "Delete Group"
+msgstr ""
+
+#: share/plugin/control/template/control/group.html:25
+msgid "Delete this group"
+msgstr ""
+
+#: share/plugin/control/template/control/desktop-account.html:27
+msgid "Description"
+msgstr ""
+
+#. (group.description)
+#: share/plugin/control/template/control/group.html:21
+msgid "Description: %1"
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:12
+msgid "Disable Export User Data"
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:24
+msgid "Disable Invitation to Group"
+msgstr ""
+
+#: share/plugin/control/template/control/fields-account.html:29
+msgid "Disabled"
+msgstr ""
+
+#: share/plugin/signals/share/javascript/lightbox/explore-about.tt2:10
+msgid "Do not show this information again"
+msgstr ""
+
+#. ($domain)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:427
+msgid "Domain (%1) is not valid."
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:19
+msgid "Done"
+msgstr ""
+
+#: share/plugin/control/template/control/add_user.html:24
+msgid "E-mail Address:"
+msgstr ""
+
+#: share/plugin/control/template/control/add_user.html:13
+msgid "E-mail address must be specified"
+msgstr ""
+
+#: share/plugin/control/template/control/fields-account.html:39
+msgid "Edit"
+msgstr ""
+
+#: share/plugin/control/template/control/edit_profile_field.html:8
+msgid "Edit Field"
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:15
+msgid "Enable Export User Data"
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:26
+msgid "Enable Invitation to Group"
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1520
+msgid "Error creating group."
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Gadgets/Gallery.pm:230
+msgid "Error removing account widget."
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Gadgets/Gallery.pm:277
+msgid "Error restoring account widget."
+msgstr ""
+
+#. ($err)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:266
+msgid "Error setting self register: %1"
+msgstr ""
+
+#. ($err)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:299
+msgid "Error setting users_can_create_groups %1"
+msgstr ""
+
+#: share/plugin/control/template/control/desktop-account.html:44
+msgid "Error: Image cannot be retrieved."
+msgstr ""
+
+#: share/plugin/control/template/control/growth_report.html:5
+msgid "Export data as CSV"
+msgstr ""
+
+#: share/plugin/control/template/control/report.html:136
+msgid "Export summary data as CSV"
+msgstr ""
+
+#: share/plugin/socialcalc/lib/Socialtext/Pluggable/Plugin/SocialCalc.pm:50
+msgid "Export to CSV"
+msgstr ""
+
+#: share/plugin/control/template/control/report.html:137
+msgid "Export user data as CSV"
+msgstr ""
+
+#. (exportable_accounts)
+#: share/plugin/control/template/control/accounts.html:24
+msgid "Export user data for %quant(%1,selected account)"
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Pluggable/Plugin/Widgets.pm:165
+msgid "Exporting account gallery ..."
+msgstr ""
+
+#. ($groups->count, $acct->name)
+#: share/plugin/groups/lib/Socialtext/Pluggable/Plugin/Groups.pm:69
+msgid "Exporting all groups (%1) for account '%2'..."
+msgstr ""
+
+#. ($ws->name)
+#: share/plugin/groups/lib/Socialtext/Pluggable/Plugin/Groups.pm:152
+msgid "Exporting all groups for workspace '%1'..."
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Pluggable/Plugin/Widgets.pm:111
+msgid "Exporting dashboard widgets ..."
+msgstr ""
+
+#: share/plugin/control/template/control/fields-account.html:44
+msgid "External"
+msgstr ""
+
+#: share/plugin/control/template/control/user.html:44
+msgid "External ID"
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:226
+msgid "Features And Skins"
+msgstr ""
+
+#: share/plugin/control/template/control/report.html:103
+msgid "February"
+msgstr ""
+
+#: share/plugin/control/template/control/fields-account.html:25
+msgid "Field Name"
+msgstr ""
+
+#: share/plugin/control/template/control/fields-account.html:24
+msgid "Field Title"
+msgstr ""
+
+#: share/plugin/control/template/control/fields-account.html:26
+msgid "Field Type"
+msgstr ""
+
+#: share/plugin/signals/template/bookmarklet/index.html:65
+msgid "Find and select \"Show Bookmarks Bar\" from the menu in your browser."
+msgstr ""
+
+#: share/plugin/control/template/control/add_user.html:28
+msgid "First name:"
+msgstr ""
+
+#: share/plugin/people/template/lite/profile.html:15
+msgid "Follow"
+msgstr ""
+
+#: share/plugin/signals/template/bookmarklet/index.html:53
+msgid "For all other browsers, simply drag the button below to your Bookmarks Bar."
+msgstr ""
+
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:31
+msgid "Force update this dashboard on existing users, too"
+msgstr ""
+
+#: share/plugin/control/template/control/index.html:8
+msgid "From here, Appliance Business Administrators can manage and monitor the use of the Socialtext application, including Accounts, Groups, Workspaces, Users, and Reports."
+msgstr ""
+
+#: share/plugin/control/template/control/group_add_to_workspace.html:27 share/plugin/control/template/control/workspace_add_group.html:28
+msgid "Give entire Group Admin privileges"
+msgstr ""
+
+#. (workspace.name)
+#: share/plugin/control/template/control/workspace.html:16
+msgid "Go to the %1 workspace"
+msgstr ""
+
+#: share/plugin/control/template/control/group.html:9
+msgid "Go to this group"
+msgstr ""
+
+#. ($group->display_name, $role->name, $workspace->name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1400
+msgid "Group '%1' now has the role of %2 in the %3 Workspace"
+msgstr ""
+
+#: share/plugin/control/share/javascript/lightbox/group-create.tt2:57
+msgid "Group Name:"
+msgstr ""
+
+#: share/plugin/control/share/javascript/lightbox/group-create.tt2:24
+msgid "Group Permissions:"
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1588
+msgid "Group has been added, User list is being refreshed..."
+msgstr ""
+
+#. ($account->name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1428
+msgid "Group is already a member of the %1 Account"
+msgstr ""
+
+#. ($workspace->name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1352
+msgid "Group is already a member of the %1 Workspace"
+msgstr ""
+
+#. ($account->name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1462
+msgid "Group is now a member of the %1 Account"
+msgstr ""
+
+#. ($search_term)
+#: share/plugin/groups/lib/Socialtext/Pluggable/Plugin/Groups.pm:354
+msgid "Group names and descriptions matching '%1'"
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2141 share/plugin/control/template/control/groups.html:4 share/plugin/control/template/control/index.html:29 share/plugin/control/template/control/workspace.html:180 share/plugin/control/template/control/workspaces_new.html:41
+msgid "Groups"
+msgstr ""
+
+#. (account.group_count)
+#: share/plugin/control/template/control/account.html:83
+msgid "Groups (%1)"
+msgstr ""
+
+#: share/plugin/control/template/control/index.html:30
+msgid "Groups are collections of users. Groups belong to accounts, and maybe associated with one or more Workspaces. Settings for a Group as well as User/Workspace associations are controlled here."
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:35 share/plugin/control/template/control/workspace.html:7
+msgid "Growth Reports"
+msgstr ""
+
+#: share/plugin/people/template/email/invitation-body.html:8
+msgid "Hi,"
+msgstr ""
+
+#: share/plugin/control/template/control/fields-account.html:28
+msgid "Hidden"
+msgstr ""
+
+#: share/plugin/people/lib/Socialtext/Lite/People.pm:169
+msgid "Home number"
+msgstr ""
+
+#. (acct_name, host)
+#: share/plugin/people/template/email/invitation-body.html:13
+msgid "I'm inviting you to join the %1 group at %2."
+msgstr ""
+
+#: share/plugin/people/template/lite/profile.html:108
+msgid "IM"
+msgstr ""
+
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:33
+msgid "If you choose to force update this dashboard, you will REPLACE the existing Dashboard for EVERYONE in this account."
+msgstr ""
+
+#: share/plugin/people/template/email/invitation-body.html:38
+msgid "If you don't remember it, follow this link to select a new password:"
+msgstr ""
+
+#. (support_link)
+#: share/plugin/people/template/email/standard-footer.html:7
+msgid "If you have questions about this email, please %1"
+msgstr ""
+
+#: share/plugin/control/template/control/design-account.html:25
+msgid "Image File:"
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Pluggable/Plugin/Widgets.pm:278
+msgid "Importing account gallery ..."
+msgstr ""
+
+#. ($acct->name)
+#: share/plugin/groups/lib/Socialtext/Pluggable/Plugin/Groups.pm:90
+msgid "Importing all groups for account '%1'..."
+msgstr ""
+
+#. ($ws->name)
+#: share/plugin/groups/lib/Socialtext/Pluggable/Plugin/Groups.pm:174
+msgid "Importing all groups for workspace '%1'..."
+msgstr ""
+
+#. ($email)
+#: share/plugin/widgets/lib/Socialtext/Pluggable/Plugin/Widgets.pm:235
+msgid "Importing dashboard for user %1"
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Pluggable/Plugin/Widgets.pm:238
+msgid "Importing default dashboard"
+msgstr ""
+
+#: share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:333
+msgid "Importing signals ..."
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Pluggable/Plugin/Widgets.pm:211
+msgid "Importing widget containers ..."
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:115 share/plugin/widgets/share/javascript/template/activities/event.tt2:80
+msgid "Insert:"
+msgstr ""
+
+#: share/plugin/signals/template/bookmarklet/index.html:47
+msgid "Install it as a bookmark (or favorite) and, when you find a page you want to signal or share, just click or select the bookmark and it will send a signal for you!"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/widget.tt2:2
+msgid "Install this widget"
+msgstr ""
+
+#: share/plugin/signals/template/bookmarklet/index.html:51
+msgid "Instructions: For Internet Explorer users, right-click the button below and select \"Add to Favorites\", then choose the \"Links\" folder."
+msgstr ""
+
+#: share/plugin/control/template/control/index.html:3
+msgid "Introduction"
+msgstr ""
+
+#. ($data->{ga_domains})
+#: share/plugin/analytics/lib/Socialtext/Pluggable/Plugin/Analytics.pm:31
+msgid "Invalid domains setting: %1"
+msgstr ""
+
+#. ($source)
+#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:677
+msgid "Invalid field source '%1'"
+msgstr ""
+
+#: share/plugin/control/template/control/group_invite.html:128 share/plugin/control/template/control/workspace_invite.html:161
+msgid "Invite"
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:86
+msgid "Invite Group to Account"
+msgstr ""
+
+#: share/plugin/control/template/control/group_invite.html:100
+msgid "Invite to existing group(s)"
+msgstr ""
+
+#: share/plugin/control/template/control/workspace_invite.html:138
+msgid "Invite to existing workspace(s)"
+msgstr ""
+
+#: share/plugin/control/template/control/user.html:40
+msgid "Invited by"
+msgstr ""
+
+#: share/plugin/control/template/control/report.html:102
+msgid "January"
+msgstr ""
+
+#: share/plugin/control/template/control/report.html:108
+msgid "July"
+msgstr ""
+
+#: share/plugin/control/template/control/report.html:107
+msgid "June"
+msgstr ""
+
+#: share/plugin/control/share/javascript/lightbox/group-create.tt2:45
+msgid "LDAP Driver:"
+msgstr ""
+
+#: share/plugin/control/template/control/user.html:36
+msgid "Last login"
+msgstr ""
+
+#: share/plugin/control/template/control/add_user.html:32
+msgid "Last name:"
+msgstr ""
+
+#: share/plugin/groups/share/javascript/lightbox/leave-group.tt2:11
+msgid "Leave"
+msgstr ""
+
+#: share/plugin/groups/share/javascript/lightbox/leave-group.tt2:3
+msgid "Leave Group"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:120 share/plugin/widgets/share/javascript/template/activities/event.tt2:85
+msgid "Link to a web page"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:119 share/plugin/widgets/share/javascript/template/activities/event.tt2:84
+msgid "Link to a wiki page"
+msgstr ""
+
+#: share/plugin/control/share/javascript/lightbox/group-create.tt2:38
+msgid "Load an existing group from LDAP"
+msgstr ""
+
+#. ($filename)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1144
+msgid "Loaded users from %1"
+msgstr ""
+
+#: share/plugin/widgets/template/mobile-signals.tt2:97
+msgid "Log out"
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:52
+msgid "Login session has expired; please re-authenticate."
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:720
+msgid "Logo has been updated. It should be visible immediately."
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:735
+msgid "Logo removed. The default should be visible immediately."
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:13
+msgid "Make this signal private"
+msgstr ""
+
+#: share/plugin/control/template/control/index.html:34
+msgid "Manage system-wide application settings."
+msgstr ""
+
+#: share/plugin/people/template/lite/profile.html:97
+msgid "Manager"
+msgstr ""
+
+#: share/plugin/control/template/control/workspaces_new.html:16
+msgid "Manually set URI: "
+msgstr ""
+
+#: share/plugin/control/template/control/report.html:104
+msgid "March"
+msgstr ""
+
+#. (this.max_filesize)
+#: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:8
+msgid "Maximum file size: %1MB"
+msgstr ""
+
+#: share/plugin/control/template/control/report.html:106
+msgid "May"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:116 share/plugin/widgets/share/javascript/template/activities/event.tt2:81
+msgid "Mention another person"
+msgstr ""
+
+#. ($group_info->{role_name})
+#: share/plugin/groups/lib/Socialtext/Pluggable/Plugin/Groups.pm:100 share/plugin/groups/lib/Socialtext/Pluggable/Plugin/Groups.pm:186
+msgid "Missing/unknown Role '%1'; using default Role"
+msgstr ""
+
+#: share/plugin/people/lib/Socialtext/Lite/People.pm:168
+msgid "Mobile number"
+msgstr ""
+
+#. ("${action}d")
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:881
+msgid "Module has been %1."
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:21 share/plugin/widgets/share/javascript/template/activities/ui.mobile-signals.tt2:21 share/plugin/widgets/share/javascript/template/activities/ui.viewer.tt2:17
+msgid "More"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:57
+msgid "More Mentions..."
+msgstr ""
+
+#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:735
+msgid "Must specify the name of the field to change"
+msgstr ""
+
+#: share/plugin/people/template/lite/people.html:11
+msgid "My Profile"
+msgstr ""
+
+#: share/plugin/people/lib/Socialtext/Gadgets/Container/ForbiddenProfile.pm:65
+msgid "NOTE: You do not share a group with this person and cannot view their profile information."
+msgstr ""
+
+#: share/plugin/control/template/control/desktop-account.html:25 share/plugin/control/template/control/group.html:71 share/plugin/control/template/control/group_invite.html:91 share/plugin/control/template/control/workspace_invite.html:144 share/plugin/control/template/control/workspace_invite.html:93
+msgid "Name"
+msgstr ""
+
+#: share/plugin/control/share/javascript/lightbox/group-create.tt2:14
+msgid "Name of group:"
+msgstr ""
+
+#: share/plugin/control/template/control/accounts.html:12
+msgid "Name:"
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2155
+msgid "New Workspace"
+msgstr ""
+
+#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:46 share/plugin/groups/share/javascript/lightbox/create-group.tt2:59
+msgid "Next"
+msgstr ""
+
+#: share/plugin/control/template/control/fields-account.html:43 share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:13 share/plugin/widgets/share/javascript/lightbox/remove-content.tt2:18
+msgid "No"
+msgstr ""
+
+#. ($account_name_or_id)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1420
+msgid "No Account identified by %1"
+msgstr ""
+
+#. ($workspace_name_or_id)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1344
+msgid "No Workspace identified by %1"
+msgstr ""
+
+#: share/plugin/people/lib/Socialtext/Lite/People.pm:91
+msgid "No activities"
+msgstr ""
+
+#: share/plugin/people/template/lite/profile.html:70
+msgid "No activities to display."
+msgstr ""
+
+#: share/plugin/people/template/lite/profile.html:164
+msgid "No additional profile data."
+msgstr ""
+
+#: share/plugin/people/template/lite/people.html:39
+msgid "No people matching this criteria."
+msgstr ""
+
+#: share/plugin/people/lib/Socialtext/Lite/People.pm:78
+msgid "No signals"
+msgstr ""
+
+#: share/plugin/people/template/lite/profile.html:72
+msgid "No signals to display."
+msgstr ""
+
+#: share/plugin/control/template/control/report.html:112
+msgid "Novemeber"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:17 share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:16 share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:22
+msgid "OK"
+msgstr ""
+
+#: share/plugin/people/template/lite/profile.html:95
+msgid "ORGANIZATION"
+msgstr ""
+
+#: share/plugin/control/template/control/report.html:111
+msgid "October"
+msgstr ""
+
+#: share/plugin/control/share/javascript/lightbox/group-create.tt2:41
+msgid "Once you create the group, it may some time for your LDAP group members to be displayed on the Group home page. If you don't see the members at first, wait a while and refresh the page"
+msgstr ""
+
+#: share/plugin/people/template/email/invitation-body.html:26
+msgid "Once you have confirmed your account, you will receive a second email with login details."
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/ui.signalthis.tt2:18
+msgid "Only members with permission to view this page will receive the signal."
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Gadgets/Gadget/XML.pm:80
+msgid "Only url and html are valid values for widget types"
+msgstr ""
+
+#: share/plugin/people/template/lite/profile.html:79
+msgid "PHONE"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:2
+msgid "Paste or type your link's destination (URL, e.g. http://socialtext.com) and text of the link below. Link destination is required."
+msgstr ""
+
+#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:72 share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:83 share/plugin/widgets/template/mobile-signals.tt2:119
+msgid "People"
+msgstr ""
+
+#. ($user->username)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1846
+msgid "People Activity for user %1"
+msgstr ""
+
+#: share/plugin/people/template/lite/people.html:9
+msgid "People Directory"
+msgstr ""
+
+#. ($unescaped_search_term)
+#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:322
+msgid "People matching '%1'"
+msgstr ""
+
+#. ($account->name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1012
+msgid "People plugin must be enabled for account %1"
+msgstr ""
+
+#. (group.permission_set)
+#: share/plugin/control/template/control/group.html:11
+msgid "Permission Set:"
+msgstr ""
+
+#: share/plugin/twilio/lib/Socialtext/Pluggable/Plugin/Twilio.pm:108
+msgid "Phone Services"
+msgstr ""
+
+#: share/plugin/twilio/lib/Socialtext/Pluggable/Plugin/Twilio.pm:79
+msgid "Pick one"
+msgstr ""
+
+#. (confirm_uri)
+#: share/plugin/people/template/email/invitation-body.html:22
+msgid "Please <a href=\"%1\">click on this link</a> to confirm your email address."
+msgstr ""
+
+#: share/plugin/control/template/control/desktop-account.html:45
+msgid "Please check again?"
+msgstr ""
+
+#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:33
+msgid "Please choose the group type, then click <b>Next</b>"
+msgstr ""
+
+#: share/plugin/control/template/control/account_add_group.html:10 share/plugin/control/template/control/workspace_add_group.html:14
+msgid "Please select a group"
+msgstr ""
+
+#: share/plugin/control/template/control/group_add_to_workspace.html:13
+msgid "Please select a workspace"
+msgstr ""
+
+#: share/plugin/control/template/control/group_add_to_account.html:14
+msgid "Please select an account"
+msgstr ""
+
+#: share/plugin/control/template/control/group_add_users.html:9
+msgid "Please select some users to add to the group."
+msgstr ""
+
+#: share/plugin/signals/template/bookmarklet/too_long.html:7
+msgid "Please try again:"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:101 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:148 share/plugin/widgets/share/javascript/template/activities/event.tt2:69
+msgid "Post"
+msgstr ""
+
+#: share/plugin/signals/template/lite/signals.html:45 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:137 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:90
+msgid "Post to"
+msgstr ""
+
+#: share/plugin/control/template/control/user.html:11
+msgid "Prefers to be called"
+msgstr ""
+
+#: share/plugin/control/template/control/accounts_transform.html:20
+msgid "Primary account for the new groups is:"
+msgstr ""
+
+#: share/plugin/control/template/control/growth_report.html:4 share/plugin/control/template/control/report.html:135
+msgid "Printer Friendly Report"
+msgstr ""
+
+#: share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:141
+msgid "Priv. Msg"
+msgstr ""
+
+#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:49
+msgid "Private Group"
+msgstr ""
+
+#. ($sender->best_full_name)
+#: share/plugin/signals/lib/Socialtext/Job/SignalDMNotify.pm:55 share/plugin/twilio/lib/Socialtext/Job/TwilioNotify.pm:55
+msgid "Private message from %1"
+msgstr ""
+
+#: share/plugin/people/lib/Socialtext/Lite/People.pm:104
+msgid "Private message sent."
+msgstr ""
+
+#. (p.best_full_name)
+#: share/plugin/people/template/lite/profile.html:169
+msgid "Private message to %1:"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:112
+msgid "Private to:"
+msgstr ""
+
+#: share/plugin/control/template/control/group.html:16
+msgid "Private: Only Members can access this group."
+msgstr ""
+
+#: share/plugin/people/template/lite/profile.html:54 share/plugin/people/template/lite/profile.html:56
+msgid "Profile"
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:20
+msgid "Profile Fields"
+msgstr ""
+
+#: share/plugin/control/template/control/fields-account.html:27
+msgid "Profile Section"
+msgstr ""
+
+#. ($opts->{name}, $acct->name)
+#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:754
+msgid "Profile field '%1' does not exist for account '%2'"
+msgstr ""
+
+#. ($opts->{profile_field_id}, $acct->name)
+#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:748
+msgid "Profile field ID '%1' does not exist for account '%2'"
+msgstr ""
+
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:9
+msgid "Pushing a widget to appear on the user's dashboard will cause it to appear at the top of your chosen column the next time each user loads the dashboard. It will be placed above any other widgets that already appear on the user's dashboard."
+msgstr ""
+
+#: share/plugin/control/template/control/workspace_invite.html:120
+msgid "Remove"
+msgstr ""
+
+#: share/plugin/control/template/control/workspace_invite.html:126
+msgid "Remove All"
+msgstr ""
+
+#: share/plugin/control/template/control/user.html:73
+msgid "Remove Appliance Business Administrator Role"
+msgstr ""
+
+#: share/plugin/control/template/control/user.html:87
+msgid "Remove Appliance Technical Administrator Role"
+msgstr ""
+
+#. (shift)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:587
+msgid "Removed the Appliance Business Administrator role from %1"
+msgstr ""
+
+#. (shift)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:601
+msgid "Removed the Appliance Technical Administrator role from %1"
+msgstr ""
+
+#. ($widget->{src})
+#: share/plugin/widgets/lib/Socialtext/Pluggable/Plugin/Widgets.pm:303
+msgid "Removing widget %1..."
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:6 share/plugin/control/template/control/rename-account.html:8
+msgid "Rename Account"
+msgstr ""
+
+#: share/plugin/signals/template/email/direct-message.html:24
+msgid "Reply privately to this signal."
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/event.tt2:74
+msgid "Reply to conversation..."
+msgstr ""
+
+#: share/plugin/control/template/control/report.html:124
+msgid "Report Period:"
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:32
+msgid "Reports"
+msgstr ""
+
+#: share/plugin/control/template/control/fields-account.html:31
+msgid "Required"
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:753
+msgid "Reset Desktop logo to default. Desktop users need to logout and login again to see the new logo."
+msgstr ""
+
+#: share/plugin/control/template/control/design-account.html:45
+msgid "Reset Logo to Default"
+msgstr ""
+
+#: share/plugin/control/template/control/user.html:32
+msgid "Reset password"
+msgstr ""
+
+#: share/plugin/control/template/control/desktop-account.html:162
+msgid "Reset to Current"
+msgstr ""
+
+#: share/plugin/control/template/control/desktop-account.html:163
+msgid "Reset to Default"
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:42
+msgid "Restrict Invites To Domain:"
+msgstr ""
+
+#. (group_name)
+#: share/plugin/control/template/control/group_add_users.html:11
+msgid "Return to %1 Group"
+msgstr ""
+
+#: share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:2
+msgid "Revert to default"
+msgstr ""
+
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:25
+msgid "Save"
+msgstr ""
+
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:2
+msgid "Save Confirmation"
+msgstr ""
+
+#: share/plugin/people/template/lite/people.html:7
+msgid "Search People"
+msgstr ""
+
+#: share/plugin/control/template/control/accounts.html:3 share/plugin/control/template/control/workspaces.html:3
+msgid "Search by name"
+msgstr ""
+
+#: share/plugin/control/template/control/group_add_users.html:4 share/plugin/control/template/control/users.html:4
+msgid "Search by username"
+msgstr ""
+
+#: share/plugin/control/template/control/workspace_invite.html:106
+msgid "Select one or more of the users below to become administrators of your new workspace."
+msgstr ""
+
+#: share/plugin/control/template/control/accounts_transform.html:3
+msgid "Select the Accounts that you wish to transform into Groups"
+msgstr ""
+
+#: share/plugin/control/template/control/add_users.html:16
+msgid "Select the CSV file containing users to add:"
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2094
+msgid "Selected Users"
+msgstr ""
+
+#. ($group_name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2093
+msgid "Selected Users to add to %1 group"
+msgstr ""
+
+#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:39
+msgid "Self-Join Group"
+msgstr ""
+
+#: share/plugin/control/template/control/group.html:14
+msgid "Self-Join: Non-Members can view the group but must become Members to contribute."
+msgstr ""
+
+#: share/plugin/people/template/lite/profile.html:173
+msgid "Send"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:113
+msgid "Send a private message"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/ui.signalthis.tt2:9
+msgid "Send a signal with a link to this page"
+msgstr ""
+
+#: share/plugin/signals/share/widgets/profile/widget.html:29
+msgid "Send as private message"
+msgstr ""
+
+#: share/plugin/control/template/control/account_add_group.html:23 share/plugin/control/template/control/group_add_to_account.html:21 share/plugin/control/template/control/group_add_to_workspace.html:20 share/plugin/control/template/control/workspace_add_group.html:21
+msgid "Send invitation email"
+msgstr ""
+
+#: share/plugin/control/template/control/report.html:110
+msgid "September"
+msgstr ""
+
+#: share/plugin/control/template/control/add_user.html:75
+msgid "Set by external Directory"
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1899 share/plugin/control/template/control/index.html:33
+msgid "Settings"
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:840
+msgid "Settings have been saved.  Desktop users need to logout and login again to apply the new skin."
+msgstr ""
+
+#: share/plugin/signals/template/bookmarklet/index.html:44
+msgid "Share any page on the web via Signals using this handy bookmarklet."
+msgstr ""
+
+#: share/plugin/signals/template/bookmarklet/too_long.html:12
+msgid "Share this link to your colleagues?"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:68
+msgid "Showing"
+msgstr ""
+
+#. (from, to, total)
+#: share/plugin/control/share/javascript/template/control_table.tt2:46
+msgid "Showing %1 - %2 of %3"
+msgstr ""
+
+#: share/plugin/control/share/javascript/template/control_table.tt2:58
+msgid "Showing all selected entries"
+msgstr ""
+
+#: share/plugin/people/template/email/invitation-body.html:15
+msgid "Sign in using the information below:"
+msgstr ""
+
+#: share/plugin/signals/template/bookmarklet/index.html:57
+msgid "Signal This!"
+msgstr ""
+
+#. ($computed_max_size)
+#: share/plugin/signals/lib/Socialtext/Rest/Signals.pm:621
+msgid "Signal length limit is %1, please edit your Signal."
+msgstr ""
+
+#. ($s->{signal_id}, $s->{username})
+#: share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:345
+msgid "Signal number %1 could not be imported: author '%2' not found"
+msgstr ""
+
+#. ($s->{signal_id}, $s->{recipient_username})
+#: share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:374
+msgid "Signal number %1 could not be imported: recipient '%2' not found for a direct signal"
+msgstr ""
+
+#. ($sig_old_id, $parent_old_id, $signal_id)
+#: share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:466
+msgid "Signal number %1 was originally in reply to signal %2, but that signal is not found.  This signal's new ID is %3"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/ui.signalthis.tt2:20
+msgid "Signal sent!"
+msgstr ""
+
+#: share/plugin/signals/share/widgets/profile/widget.html:19
+msgid "Signal to "
+msgstr ""
+
+#: share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:119 share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:129 share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:140 share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:507 share/plugin/widgets/template/mobile-signals.tt2:114 share/plugin/widgets/template/mobile-signals.tt2:116 share/plugin/widgets/template/mobile-signals.tt2:7
+msgid "Signals"
+msgstr ""
+
+#: share/plugin/widgets/template/mobile-signals.tt2:5
+msgid "Signals - Permalink"
+msgstr ""
+
+#. ($user->username)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1848
+msgid "Signals Activity for user %1"
+msgstr ""
+
+#: share/plugin/signals/template/bookmarklet/index.html:42
+msgid "Signals Bookmarklet"
+msgstr ""
+
+#. ($search_term)
+#: share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:656
+msgid "Signals matching '%1'"
+msgstr ""
+
+#. ($1)
+#: share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:653
+msgid "Signals tagged #%1"
+msgstr ""
+
+#. ($type)
+#: share/plugin/widgets/lib/Socialtext/Pluggable/Plugin/Widgets.pm:243
+msgid "Skipping %1 container..."
+msgstr ""
+
+#: share/plugin/widgets/template/activities.tt2:3
+msgid "Socialtext Activities"
+msgstr ""
+
+#: share/plugin/control/template/control/config.html:2
+msgid "Socialtext Admin Configuration"
+msgstr ""
+
+#: share/plugin/signals/share/javascript/lightbox/explore-about.tt2:2
+msgid "Socialtext Explore"
+msgstr ""
+
+#: share/plugin/control/template/control/add_users.html:10
+msgid "Socialtext enables you to add multiple users to your account. To add multiple users, download the sample data file, and add your user data. Then upload the file here.  Complete documentation about adding multiple users is available here: <a href=\"https://www.socialtext.net/help-adminguide/index.cgi?adding_and_updating_users#adding_multiple_users\">Adding Multiple Users to Socialtext</a>"
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Gadgets/Gallery.pm:308
+msgid "Socialtext widgets"
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:312
+msgid "Sorry, $key is not able to be changed."
+msgstr ""
+
+#. (_field_display_name($field)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2503
+msgid "Sort by %1 in %2 order"
+msgstr ""
+
+#: share/plugin/control/template/control/fields-account.html:30
+msgid "Source"
+msgstr ""
+
+#. (group.driver_key)
+#: share/plugin/control/template/control/group.html:8
+msgid "Source: %1"
+msgstr ""
+
+#: share/plugin/control/template/control/workspace_invite.html:145
+msgid "Start typing the name of a workspace: "
+msgstr ""
+
+#: share/plugin/control/template/control/workspace_invite.html:99
+msgid "Start typing the name of the account the new workspace should belong to."
+msgstr ""
+
+#: share/plugin/control/template/control/workspaces_new.html:5
+msgid "Step 1: Give your workspace a title."
+msgstr ""
+
+#: share/plugin/control/template/control/workspaces_new.html:28
+msgid "Step 2: Add one or more users, or a group of users to the workspace. You must make at least one an administrator."
+msgstr ""
+
+#: share/plugin/control/template/control/workspaces_new.html:51
+msgid "Step 3: Click the button to create the workspace"
+msgstr ""
+
+#: share/plugin/control/template/control/fields-account.html:15
+msgid "Stock fields"
+msgstr ""
+
+#: share/plugin/people/template/lite/profile.html:13
+msgid "Stop following"
+msgstr ""
+
+#: share/plugin/control/template/control/accounts.html:18 share/plugin/control/template/control/accounts.html:5 share/plugin/control/template/control/desktop-account.html:161 share/plugin/control/template/control/group_add_users.html:6 share/plugin/control/template/control/users.html:6 share/plugin/control/template/control/workspace.html:34 share/plugin/control/template/control/workspaces.html:5
+msgid "Submit"
+msgstr ""
+
+#: share/plugin/people/template/lite/profile.html:141
+msgid "TAGS"
+msgstr ""
+
+#: share/plugin/control/template/control/index.html:22
+msgid "Tabs"
+msgstr ""
+
+#: share/plugin/people/template/email/invitation-body.html:50
+msgid "Thanks,"
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Gadgets/Gallery.pm:144
+msgid "That widget already exists in this gallery."
+msgstr ""
+
+#. ($proto->{driver_group_name})
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1578
+msgid "The %1 Group has already been added"
+msgstr ""
+
+#. ($name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:494
+msgid "The %1 account has been created."
+msgstr ""
+
+#. ($account->name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:459
+msgid "The %1 account type has been changed."
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:505
+msgid "The %1 user was confirmed."
+msgstr ""
+
+#. ($ws->name, $account->name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:521
+msgid "The %1 workspace is now part of the %2 account."
+msgstr ""
+
+#. ($self->_file_or_url, $error)
+#: share/plugin/widgets/lib/Socialtext/Gadgets/Gadget/XML.pm:29
+msgid "The %1 you provided does not appear to be a valid widget XML file: %2\n"
+msgstr ""
+
+#. ($self->_file_or_url, $xml_error)
+#: share/plugin/widgets/lib/Socialtext/Gadgets/Gadget/XML.pm:35
+msgid "The %1 you provided does not appear to be valid XML: %2\n"
+msgstr ""
+
+#. ($self->_file_or_url, $url, $err)
+#: share/plugin/widgets/lib/Socialtext/Gadgets/Gadget.pm:788
+msgid "The %1 you provided does not contain a widget file. Please check the %1 and try again. The %1 specified was: %2. The specific error was %3"
+msgstr ""
+
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:12
+msgid "The following widgets will be pushed:"
+msgstr ""
+
+#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:54
+msgid "The group administrators can change this setting after the group is created."
+msgstr ""
+
+#. (Socialtext::AppConfig->support_address)
+#: share/plugin/groups/lib/Socialtext/Handler/Container/Group.pm:36
+msgid "The group you are trying to view does not exist.  Please check with the group administrator or contact <a href=\"%1\">Socialtext Support</a>."
+msgstr ""
+
+#. ($user->username, $new_password)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:572
+msgid "The password for user %1 has been changed to '%2'."
+msgstr ""
+
+#. (Socialtext::AppConfig->support_address)
+#: share/plugin/people/lib/Socialtext/Handler/Container/Profile.pm:38
+msgid "The person you are trying to view does not exist.  Please check with the system administrator or contact <a href=\"%1\">Socialtext Support</a>."
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:967
+msgid "The value of this field will be updated from the external source when user data is refreshed."
+msgstr ""
+
+#: share/plugin/control/template/control/desktop-account.html:85
+msgid "The values have been reset to current. Do you want to apply them now?"
+msgstr ""
+
+#: share/plugin/control/template/control/desktop-account.html:71
+msgid "The values have been reset to default. Do you want to apply them now?"
+msgstr ""
+
+#. (action.error_title || action.title)
+#: share/plugin/widgets/share/javascript/template/activities/empty.tt2:4
+msgid "There are no new %1 because you haven't engaged in conversations with your colleagues in the last 30 days."
+msgstr ""
+
+#. (action.error_title || action.title)
+#: share/plugin/widgets/share/javascript/template/activities/empty.tt2:2 share/plugin/widgets/share/javascript/template/activities/empty.tt2:8
+msgid "There are no new %1 in the last 30 days."
+msgstr ""
+
+#. (action.error_title || action.title)
+#: share/plugin/widgets/share/javascript/template/activities/empty.tt2:6
+msgid "There are no new %1, either because you aren't following anyone yet, or the people you're following haven't created any %1 in the last 30 days. Visit the profiles of your colleagues, and click 'Follow this person' to start following colleagues."
+msgstr ""
+
+#. ($user->username)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:567
+msgid "There was a problem changing password for user %1"
+msgstr ""
+
+#. ($user->username)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:548
+msgid "There was a problem deactivating user %1"
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:716
+msgid "There was an error processing your image; try uploading another image file?"
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Gadgets/Gallery.pm:312
+msgid "Third Party widgets"
+msgstr ""
+
+#: share/plugin/groups/share/javascript/lightbox/leave-group.tt2:5
+msgid "This action cannot be undone. Are you sure you'd like to leave this group?"
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:971
+msgid "This field is now hidden from users' profiles."
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:974
+msgid "This field is now visible in users' profiles."
+msgstr ""
+
+#: share/plugin/control/template/control/workspace_invite.html:94
+msgid "This is a short unique identifier used as  part of your workspace's web address and email address. It must consist of 3-30 lowercase letters, numbers, underscores, or dashes."
+msgstr ""
+
+#: share/plugin/control/template/control/workspace.html:25
+msgid "This is an all users workspace for the account:"
+msgstr ""
+
+#: share/plugin/control/template/control/group_invite.html:92
+msgid "This is the name of your group."
+msgstr ""
+
+#: share/plugin/control/template/control/workspace_invite.html:89
+msgid "This is the title of your workspace. It may be changed later if you want."
+msgstr ""
+
+#: share/plugin/signals/template/email/direct-message.html:28
+msgid "This message was sent from Socialtext Signals."
+msgstr ""
+
+#: share/plugin/signals/template/email/direct-message.html:14
+msgid "This signal had the following attachments:"
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Gadgets/Gadget/XML.pm:152
+msgid "This widget cannot be installed because it contains references to localization files that cannot be found"
+msgstr ""
+
+#: share/plugin/control/template/control/design-account.html:58
+msgid "This will also reset the logo after a fresh login to Socialtext Desktop."
+msgstr ""
+
+#: share/plugin/control/template/control/design-account.html:52
+msgid "This will reset the logo after a fresh login to Socialtext Desktop."
+msgstr ""
+
+#: share/plugin/control/template/control/workspace_invite.html:88 share/plugin/control/template/control/workspaces_new.html:9
+msgid "Title"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:9
+msgid "Title:"
+msgstr ""
+
+#: share/plugin/control/template/control/index.html:15
+msgid "To create an entity in the default account, use these links. To create an entity in a specific account, browse to the desired account via the <a href='/nlw/control/account'>Accounts</a> tab."
+msgstr ""
+
+#: share/plugin/signals/template/email/direct-message.html:29
+msgid "To stop receiving Socialtext Signals emails or to change your preferences, please visit"
+msgstr ""
+
+#: share/plugin/control/template/control/accounts_transform.html:7
+msgid "Transform"
+msgstr ""
+
+#. ($acct_name, $e)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2040
+msgid "Transform Account %1 to group failed: %2"
+msgstr ""
+
+#. ($acct_name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2044
+msgid "Transform Account %1 to group succeeded"
+msgstr ""
+
+#: share/plugin/control/template/control/accounts_transform.html:2
+msgid "Transform Accounts to Groups"
+msgstr ""
+
+#: share/plugin/control/template/control/accounts_transform.html:29
+msgid "Transform to Groups"
+msgstr ""
+
+#: share/plugin/control/template/control/workspace.html:14 share/plugin/control/template/control/workspaces_new.html:13
+msgid "URI"
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Gadgets/Gadget.pm:781
+msgid "URL"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:5
+msgid "URL:"
+msgstr ""
+
+#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:770
+msgid "Unable to change profile field."
+msgstr ""
+
+#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:721
+msgid "Unable to create profile field."
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1596
+msgid "Unable to locate Group while attempting to add to system."
+msgstr ""
+
+#. (join ", ", @add_errors)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:371
+msgid "Unable to make the following workspaces all users workspaces: %1"
+msgstr ""
+
+#. (join ", ", @remove_errors)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:372
+msgid "Unable to make the following workspaces no longer an all users workspaces: %1"
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Gadgets/Gadget/XML.pm:35
+msgid "Unknown error"
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:60 share/plugin/control/template/control/group.html:18 share/plugin/control/template/control/plugin_pref_form.html:6 share/plugin/signals/template/lite/signals.html:41 share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:55
+msgid "Update"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:3
+msgid "Update Widget"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:31
+msgid "Update a Widget from URL:"
+msgstr ""
+
+#. (shift->title)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:995
+msgid "Updated profile field \"%1\""
+msgstr ""
+
+#: share/plugin/control/template/control/add_users.html:19
+msgid "Upload"
+msgstr ""
+
+#: share/plugin/control/template/control/design-account.html:24
+msgid "Upload Account Logo (optional)"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:18
+msgid "Upload Widget XML File:"
+msgstr ""
+
+#: share/plugin/control/template/control/account.html:34 share/plugin/control/template/control/workspace.html:6
+msgid "Usage Reports"
+msgstr ""
+
+#: share/plugin/control/template/control/report.html:100
+msgid "Usage ending midnight of:"
+msgstr ""
+
+#: share/plugin/control/template/control/design-account.html:62 share/plugin/control/template/control/design-account.html:67
+msgid "Use Default Socialtext Logo"
+msgstr ""
+
+#: share/plugin/control/template/control/design-account.html:56
+msgid "Use Default Socialtext Logo for Desktop"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:44
+msgid "Use the Widget Editor"
+msgstr ""
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:3
+msgid "Use the filters below to narrow the results. Use the small 'x' by any of the Groups, Tags and People filters to remove them."
+msgstr ""
+
+#: share/plugin/control/template/control/index.html:28
+msgid "Use this screen to quickly invite Users to Groups and Workspaces."
+msgstr ""
+
+#: share/plugin/control/template/control/fields-account.html:44
+msgid "User"
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Pluggable/Plugin/Widgets.pm:231
+msgid "User $email hasn't been imported yet!!\n"
+msgstr ""
+
+#. ($user->username)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:542
+msgid "User %1 has been deactivated."
+msgstr ""
+
+#: share/plugin/control/template/control/user.html:58
+msgid "User is a system user."
+msgstr ""
+
+#: share/plugin/control/template/control/user.html:54
+msgid "User is confirmed"
+msgstr ""
+
+#: share/plugin/control/template/control/user.html:48
+msgid "User requires confirmation"
+msgstr ""
+
+#: share/plugin/control/template/control/user.html:14
+msgid "Username"
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2126 share/plugin/control/template/control/account.html:68 share/plugin/control/template/control/group.html:27 share/plugin/control/template/control/group.html:74 share/plugin/control/template/control/index.html:27 share/plugin/control/template/control/workspace.html:46 share/plugin/control/template/control/workspaces_new.html:31
+msgid "Users"
+msgstr ""
+
+#. ($name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2116
+msgid "Users matching \"%1\""
+msgstr ""
+
+#: share/plugin/control/template/control/desktop-account.html:26
+msgid "Value"
+msgstr ""
+
+#: share/plugin/people/template/lite/profile.html:119
+msgid "WEB"
+msgstr ""
+
+#: share/plugin/signals/lib/Socialtext/Handler/Container/Signals/Signal.pm:35
+msgid "We're sorry, but that Signal does not exist. You can use the signal search box above to find a particular signal."
+msgstr ""
+
+#. ('<b><a href="/st/profile">' . $self->user->guess_real_name . '</a></b>',        '<a href="/st/edit_profile">' . loc('(edit)
+#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:180
+msgid "Welcome %1 %2"
+msgstr ""
+
+#: share/plugin/control/template/control/index.html:5
+msgid "Welcome to the Socialtext Control Panel."
+msgstr ""
+
+#: share/plugin/signals/template/lite/signals.html:6
+msgid "What are you working on?"
+msgstr ""
+
+#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:24
+msgid "When making a Private group a Self-join group, any user in the group's Accounts will be able to join the group and then optionally invite others into the group. When changing a Self-join group to a Private group, it will no longer appear in the Group Directory and will become invite-only by the group administrators."
+msgstr ""
+
+#: share/plugin/control/template/control/group_add_users.html:10
+msgid "When you've made your decisions, click the 'Add Users' link."
+msgstr ""
+
+#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:50
+msgid "Will not be displayed in the Group Directory and new members must be invited by the group administrators."
+msgstr ""
+
+#: share/plugin/people/lib/Socialtext/Lite/People.pm:167
+msgid "Work number"
+msgstr ""
+
+#. ($user->username)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1844
+msgid "Workspace Activity for user %1"
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1885 share/plugin/control/template/control/index.html:31 share/plugin/control/template/control/user.html:210 share/plugin/control/template/control/workspace_invite.html:153 share/plugin/widgets/template/mobile-signals.tt2:129
+msgid "Workspaces"
+msgstr ""
+
+#. (account.workspace_count)
+#. (wksp_count)
+#: share/plugin/control/template/control/account.html:215 share/plugin/control/template/control/group.html:50
+msgid "Workspaces (%1)"
+msgstr ""
+
+#: share/plugin/control/template/control/index.html:32
+msgid "Workspaces are where wiki and document content is stored. Use this to create a new Workspace."
+msgstr ""
+
+#. ($name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1871
+msgid "Workspaces matching \"%1\""
+msgstr ""
+
+#: share/plugin/mediawiki/lib/Socialtext/Pluggable/Plugin/MediaWiki.pm:57
+msgid "Workspaces: This Workspace"
+msgstr ""
+
+#: share/plugin/control/template/control/fields-account.html:43 share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:8 share/plugin/widgets/share/javascript/lightbox/remove-content.tt2:11
+msgid "Yes"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/event.tt2:23 share/plugin/widgets/share/javascript/template/activities/reply.tt2:14
+msgid "You"
+msgstr ""
+
+#. (person)
+#: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:11
+msgid "You are composing a message to %1"
+msgstr ""
+
+#. (person)
+#: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:5 share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:9
+msgid "You are composing a private message to %1"
+msgstr ""
+
+#. (person)
+#: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:16
+msgid "You are composing a reply to %1"
+msgstr ""
+
+#: share/plugin/control/template/control/design-account.html:21
+msgid "You can choose an image to use as the Account logo. Use the form below to upload an image from your computer. If you don't select an image, the Socialtext logo will be used instead.  The size of the logo should be 201 pixels wide and 36 pixels high, otherwise your image will be transformed to fit.  The uploaded logo will be displayed immediately to users in the browser and (optionally) after a fresh login to Socialtext Desktop."
+msgstr ""
+
+#. (Socialtext::AppConfig->support_address)
+#: share/plugin/groups/lib/Socialtext/Handler/Container/Group.pm:41
+msgid "You do not have permission to view this group. Please check with the group administrator or contact <a href=\"%1\">Socialtext Support<I"
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Rest/Gadgets/Gallery.pm:35
+msgid "You do not share an account with this gallery."
+msgstr ""
+
+#. (('<a href="' _ webroot _ '/st/profile/' _ sender.user_id _ '">' _ sender.best_full_name _ '</a>'))
+#: share/plugin/signals/template/email/direct-message.html:0
+msgid "You have received a private message from %1:"
+msgstr ""
+
+#. ($removed, $group->driver_group_name)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1239
+msgid "You have successfully removed %quant(%1,user) from the %2 Group."
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:535
+msgid "You may not delete yourself."
+msgstr ""
+
+#: share/plugin/people/template/email/invitation-body.html:45
+msgid "You may want to keep this email for future reference."
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:470
+msgid "You must provide a name to create a new account."
+msgstr ""
+
+#. ($self->{uri})
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1723
+msgid "You must provide a user_id to this URI (%1)."
+msgstr ""
+
+#. ($self->{uri})
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1695
+msgid "You must provide a valid account_id or account_name to this URI (%1)."
+msgstr ""
+
+#. ($self->{uri})
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1670
+msgid "You must provide a valid group_id to this URI (%1)."
+msgstr ""
+
+#. ($self->{uri})
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1711
+msgid "You must provide a workspace to this URI (%1)"
+msgstr ""
+
+#. ($self->{uri})
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1738
+msgid "You must provide a workspace_id to this URI (%1)."
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:445
+msgid "You must provide an account type to change the type."
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Rest/Gadgets/Gadget.pm:23 share/plugin/widgets/lib/Socialtext/Rest/Gadgets/Gallery.pm:21
+msgid "You no longer have accounts administration privileges."
+msgstr ""
+
+#. (scalar(@$members)
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1563
+msgid "You successfully added %quant(%1,user) to %quant(%2,group). They will receive an invitation message to each workspace."
+msgstr ""
+
+#: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:14
+msgid "You will not be able to restore the group once it's deleted. Users will no longer be able to signal to this group and any access to workspaces through this group will be revoked."
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:18
+msgid "Your Signal was successfully sent. Click <a href=\"#\" class=\"clearFilters\">here</a> to automatically adjust your filters to show the new signal."
+msgstr ""
+
+#. (limit)
+#: share/plugin/signals/template/bookmarklet/too_long.html:6
+msgid "Your signal exceeded %1 characters"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:8
+msgid "about one day ago"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:5
+msgid "about one hour ago"
+msgstr ""
+
+#. (person, group)
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:11
+msgid "added %1 to the group %2."
+msgstr ""
+
+#. (group, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:15
+msgid "added %1 to the workspace %2."
+msgstr ""
+
+#. (page, workspace, event.context.summary.replace("[\n ]+$", ""))
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:16
+msgid "commented on %1 in %2, saying, \"%3\""
+msgstr ""
+
+#: share/plugin/signals/share/javascript/template/rightBar.tt2:26 share/plugin/widgets/share/javascript/template/activities/signal.icons.tt2:23
+msgid "delete"
+msgstr ""
+
+#. (page, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:14
+msgid "deleted %1 in %2."
+msgstr ""
+
+#. (page, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:10
+msgid "duplicated %1 in %2."
+msgstr ""
+
+#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1082
+msgid "e-mail address was not supplied!"
+msgstr ""
+
+#. (page, workspace, event.context.edit_summary)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:5
+msgid "edited %1 in %2, saying \"%3\"."
+msgstr ""
+
+#. (page, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:7
+msgid "edited %1 in %2."
+msgstr ""
+
+#. (person)
+#: share/plugin/widgets/share/javascript/template/activities/person.tt2:15
+msgid "edited %1's profile."
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/person.tt2:4
+msgid "edited their own profile."
+msgstr ""
+
+#: share/plugin/signals/share/javascript/template/rightBar.tt2:20 share/plugin/widgets/share/javascript/template/activities/signal.icons.tt2:17
+msgid "expunge"
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Gadgets/Gadget.pm:781
+msgid "file"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:72
+msgid "from"
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Rest/Gadgets/Gallery.pm:50 share/plugin/widgets/lib/Socialtext/Rest/Gadgets/Gallery.pm:64
+msgid "gadget_id is a required parameter"
+msgstr ""
+
+#: share/plugin/control/template/control/fields-account.html:45
+msgid "hide"
+msgstr ""
+
+#. (group)
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:4
+msgid "joined the group %1."
+msgstr ""
+
+#. (group)
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:6
+msgid "left the group %1."
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:2
+msgid "less than a minute ago"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:3
+msgid "more"
+msgstr ""
+
+#: share/plugin/control/template/control/user.html:68 share/plugin/control/template/control/user.html:82
+msgid "no"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:7
+msgid "one day ago"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:3
+msgid "one minute ago"
+msgstr ""
+
+#. (event.action, page, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:22
+msgid "performed action %1 on %2 in %3."
+msgstr ""
+
+#. (event.action, person)
+#: share/plugin/widgets/share/javascript/template/activities/person.tt2:25
+msgid "performed action '%1' on %2."
+msgstr ""
+
+#. (event.action)
+#: share/plugin/widgets/share/javascript/template/activities/person.tt2:10
+msgid "performed action '%1' on themself."
+msgstr ""
+
+#. (a.user_count)
+#: share/plugin/signals/template/lite/signals.html:55
+msgid "primary, %quant(%1,user)"
+msgstr ""
+
+#. (person)
+#: share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:8
+msgid "private to %1"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:6
+msgid "private to you"
+msgstr ""
+
+#. (person, group)
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:13
+msgid "removed %1 from the group %2."
+msgstr ""
+
+#. (group, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:17
+msgid "removed %1 from the workspace %2."
+msgstr ""
+
+#. (page_tag, page, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:20
+msgid "removed tag %1 from %2 in %3."
+msgstr ""
+
+#. (person_tag, person)
+#: share/plugin/widgets/share/javascript/template/activities/person.tt2:19
+msgid "removed the tag %1 from %2."
+msgstr ""
+
+#. (person_tag)
+#: share/plugin/widgets/share/javascript/template/activities/person.tt2:8
+msgid "removed their tag %1."
+msgstr ""
+
+#. (page, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:12
+msgid "renamed %1 in %2."
+msgstr ""
+
+#: share/plugin/signals/share/javascript/template/rightBar.tt2:8 share/plugin/widgets/share/javascript/template/activities/page.icons.tt2:12 share/plugin/widgets/share/javascript/template/activities/signal.icons.tt2:8
+msgid "reply"
+msgstr ""
+
+#: share/plugin/signals/share/javascript/template/rightBar.tt2:13
+msgid "reply privately"
+msgstr ""
+
+#: share/plugin/widgets/lib/Socialtext/Gadgets/Gadget.pm:780
+msgid "resource"
+msgstr ""
+
+#. (person)
+#: share/plugin/widgets/share/javascript/template/activities/person.tt2:21
+msgid "started following %1."
+msgstr ""
+
+#. (person)
+#: share/plugin/widgets/share/javascript/template/activities/person.tt2:23
+msgid "stopped following %1."
+msgstr ""
+
+#. (person, person_tag)
+#: share/plugin/widgets/share/javascript/template/activities/person.tt2:17
+msgid "tagged %1 %2."
+msgstr ""
+
+#. (page, workspace, page_tag)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:18
+msgid "tagged %1 in %2 as %3."
+msgstr ""
+
+#. (person_tag)
+#: share/plugin/widgets/share/javascript/template/activities/person.tt2:6
+msgid "tagged themself %1."
+msgstr ""
+
+#. (targets.0)
+#: share/plugin/widgets/share/javascript/template/activities/page.meta.tt2:9 share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:17
+msgid "to %1"
+msgstr ""
+
+#. (targets.size)
+#: share/plugin/widgets/share/javascript/template/activities/page.meta.tt2:5 share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:13
+msgid "to %1 groups"
+msgstr ""
+
+#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:30
+msgid "type your search here..."
+msgstr ""
+
+#: share/plugin/control/template/control/fields-account.html:45
+msgid "un-hide"
+msgstr ""
+
+#: share/plugin/people/template/email/invitation-body.html:31
+msgid "username:"
+msgstr ""
+
+#. (account.name)
+#: share/plugin/control/template/control/workspaces_new.html:22
+msgid "view %1"
+msgstr ""
+
+#: share/plugin/people/template/email/invitation-body.html:30
+msgid "web address:"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:76
+msgid "within"
+msgstr ""
+
+#: share/plugin/control/template/control/user.html:66 share/plugin/control/template/control/user.html:80
+msgid "yes"
+msgstr ""
+
+#: share/plugin/signals/template/email/direct-message.html:29
+msgid "your settings"
+msgstr ""

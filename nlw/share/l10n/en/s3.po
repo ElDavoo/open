@@ -86,15 +86,15 @@ msgstr "page.add-tag"
 
 #: share/skin/s3/template/element/main_nav/subnav/people:6
 msgid "...lists the people you are following. You must register or be logged in to use this feature."
-msgstr "hint.following"
+msgstr "info.following"
 
 #: share/skin/s3/template/element/main_nav/subnav/workspaces:4
 msgid "...lists the workspaces you belong to. You must be logged in to see your list."
-msgstr "hint.workspaces"
+msgstr "info.workspaces"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:147 share/skin/s3/template/element/settings/users_invite_search_section:153 share/skin/s3/template/element/settings/users_invite_section:102 share/skin/s3/template/element/settings/users_invite_section:108
 msgid "<Your personal message goes here.>"
-msgstr "config.personal-message"
+msgstr "invite.personal-message"
 
 #. (workspace.name, workspace.title)
 #: share/skin/s3/template/workspaces_created_section.html:18
@@ -108,16 +108,16 @@ msgstr "wiki.invite=name,title"
 
 #: share/skin/s3/template/element/settings/workspaces_cannot_create_section:19
 msgid "<em>To add a workspace to a <strong>new group,</strong></em> go to <a href=\"#\" onclick=\"showCreateGroupLightbox(); return false\">\"Create Group\"</a> under the Groups pulldown in the main navigation above. From there, use the \"Workspaces\" section to create your workspace."
-msgstr "wiki.add-to-new-group"
+msgstr "wiki.to-new-group"
 
 #: share/skin/s3/template/element/settings/workspaces_cannot_create_section:15
 msgid "<em>To add a workspace to an <strong>existing group,</strong></em> go to the <a href=\"/st/groups\">\"Group Directory\"</a> under the Groups pulldown in the main navigation above, go to your chosen group, click \"Edit\" and create the workspace."
-msgstr "wiki.add-to-existing-group"
+msgstr "wiki.to-existing-group"
 
 #. (invitation_filter)
 #: share/skin/s3/template/element/settings/users_invite_search_section:14 share/skin/s3/template/element/settings/users_invite_section:62
 msgid "A filter has been set on this workspace. All candidate email addresses must match this pattern: <span style=\"color: red\"> %1 </span>"
-msgstr "config.set=filter"
+msgstr "wiki.set=filter"
 
 #: share/skin/s3/template/lite/globalnav.html:44 share/skin/s3/template/lite/globalnav.html:46
 msgid "Activity"
@@ -137,7 +137,7 @@ msgstr "page.add-comment"
 
 #: share/skin/s3/template/element/settings/users_listall_section:27
 msgid "Admin"
-msgstr "config.admin"
+msgstr "user.admin"
 
 #: share/skin/s3/template/lite/event_list_nav.html:30 share/skin/s3/template/lite/event_list_nav.html:32
 msgid "All"
@@ -188,15 +188,15 @@ msgstr "page.locked=type"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:133 share/skin/s3/template/element/settings/users_invite_section:88
 msgid "And don't worry about breaking anything - previous versions of the page are saved, so there's always a backup copy of the page you're working on."
-msgstr "email.no-worries"
+msgstr "invite.no-worries"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:31
 msgid "Anyone can send email to this workspace."
-msgstr "config.anyone-can-email"
+msgstr "wiki.anyone-can-email"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:126 share/skin/s3/template/element/settings/users_invite_section:81
 msgid "Append the personal message below?"
-msgstr "config.append-message"
+msgstr "invite.append-message"
 
 #: share/skin/s3/template/element/page/display/attachments:9
 msgid "Attachments"
@@ -228,11 +228,11 @@ msgstr "blog.blogs"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:22
 msgid "Bottom of page"
-msgstr "config.bottom-of-page"
+msgstr "wiki.bottom-of-page"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_skin_section:32
 msgid "Browse ..."
-msgstr "config.browse"
+msgstr "skin.browse"
 
 #: share/skin/s3/template/view/page/revision_compare:63
 msgid "By:"
@@ -240,20 +240,20 @@ msgstr "revision.by"
 
 #: share/skin/s3/template/element/settings/start:22 share/skin/s3/template/element/settings/stop:12 share/skin/s3/template/lite/subnav.html:46
 msgid "Cancel"
-msgstr "config.cancel"
+msgstr "nav.cancel"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:54
 msgid "Central page"
-msgstr "config.central-page"
+msgstr "wiki.central-page"
 
 #: share/skin/s3/template/element/settings/users_settings_section:32
 msgid "Change Password"
-msgstr "config.change-password"
+msgstr "password.change"
 
 #. (user.driver_name)
 #: share/skin/s3/template/element/settings/users_settings_section:61
 msgid "Check with your %1 administrator."
-msgstr "config.contact=admin"
+msgstr "info.contact=admin"
 
 #. (page.uri)
 #: share/skin/s3/template/lite/page/contention.html:6
@@ -277,19 +277,19 @@ msgstr "page.go-back=type"
 
 #: share/skin/s3/template/element/page/display/comment-button:5
 msgid "Click this button to add a comment to the page"
-msgstr "hint.comment"
+msgstr "info.comment"
 
 #: share/skin/s3/template/view/weblog:33
 msgid "Click this button to create a new blog post"
-msgstr "hint.post"
+msgstr "info.post"
 
 #: share/skin/s3/template/element/page/display/edit-button:12 share/skin/s3/template/element/page/display/edit-button:6
 msgid "Click this button to edit the page"
-msgstr "hint.edit"
+msgstr "info.edit"
 
 #: share/skin/s3/template/view/page/display:279 share/skin/s3/template/view/page/display:280
 msgid "Click this button to save this page to your computer for offline use."
-msgstr "hint.unplug"
+msgstr "info.unplug"
 
 #: share/skin/s3/template/view/settings:44
 msgid "Clone This Workspace"
@@ -322,7 +322,7 @@ msgstr "revision.compare"
 
 #: share/skin/s3/template/workspaces_created_section.html:7
 msgid "Congratulations!"
-msgstr "config.congrats"
+msgstr "wiki.created-message"
 
 #: share/skin/s3/template/layout/html:85 share/skin/s3/template/layout/user_frame:90
 msgid "Control Panel"
@@ -334,15 +334,15 @@ msgstr "page.copy"
 
 #: share/skin/s3/template/element/settings/weblog_create:5
 msgid "Create A Blog"
-msgstr "config.create-blog"
+msgstr "blog.create"
 
 #: share/skin/s3/template/view/settings:68
 msgid "Create New Blog"
-msgstr "config.new-blog"
+msgstr "blog.new"
 
 #: share/skin/s3/template/element/settings/workspaces_cannot_create_section:4 share/skin/s3/template/view/settings:43 share/skin/s3/template/view/settings:46
 msgid "Create New Workspace"
-msgstr "config.new-workspace"
+msgstr "wiki.new"
 
 #: share/skin/s3/template/view/listview:24
 msgid "Create PDF document from checked pages"
@@ -367,7 +367,7 @@ msgstr "page.created=author,date"
 
 #: share/skin/s3/template/element/settings/users_settings_section:38
 msgid "Current password:"
-msgstr "config.current-password"
+msgstr "user.current-password"
 
 #: share/skin/s3/template/element/main_nav/subnav/workspaces:27
 msgid "Currently, you are not a member of any workspaces."
@@ -375,19 +375,19 @@ msgstr "nav.no-workspaces"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:21
 msgid "Custom"
-msgstr "config.custom"
+msgstr "wiki.custom-permission"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_skin_section:12
 msgid "Custom Skin Support"
-msgstr "config.skin-support"
+msgstr "skin.support"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_skin_section:47
 msgid "Customized Skin Files"
-msgstr "config.skin-files"
+msgstr "skin.files"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_skin_section:21
 msgid "Customized Skin."
-msgstr "config.skin-customized"
+msgstr "skin.customized"
 
 #: share/skin/s3/template/element/main_nav/standard:4
 msgid "Dashboard"
@@ -411,7 +411,7 @@ msgstr "nav.uploaded-date"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_skin_section:20
 msgid "Default Skin."
-msgstr "config.skin-default"
+msgstr "skin.default"
 
 #: share/skin/s3/template/view/page/display:91
 msgid "Delete Page"
@@ -439,11 +439,11 @@ msgstr "page.delete-epilogue"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:45
 msgid "Disable page locking. Any member who can edit pages can edit any page. If any pages were previously locked, those pages will be unlocked."
-msgstr "config.disable-locking"
+msgstr "wiki.disable-locking"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:13
 msgid "Do you want to set up this workspace as:"
-msgstr "config.setup-workspace-as"
+msgstr "wiki.permission-type"
 
 #: share/skin/s3/template/view/page/display:84
 msgid "Duplicate Page"
@@ -476,11 +476,11 @@ msgstr "revision.edited-by"
 
 #: share/skin/s3/template/element/settings/users_settings_section:8
 msgid "Email"
-msgstr "config.email"
+msgstr "user.email"
 
 #: share/skin/s3/template/element/settings/users_listall_section:26
 msgid "Email Address"
-msgstr "config.email-address"
+msgstr "user.email-address"
 
 #: share/skin/s3/template/view/page/display:105 share/skin/s3/template/view/page/display:107
 msgid "Email To This Page"
@@ -492,35 +492,35 @@ msgstr "wiki.email-to-this"
 
 #: share/skin/s3/template/view/page/display:79
 msgid "Email this page"
-msgstr "hint.email-page"
+msgstr "info.email-page"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:36
 msgid "Enable email notifications for this workspace?"
-msgstr ""
+msgstr "wiki.enable-email-notifications"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:41
 msgid "Enable page locking. A workspace administrator can choose to lock any page, and only admins will be able to edit the locked page. Use carefully, since workspaces gain more participation if members can easily edit pages."
-msgstr ""
+msgstr "wiki.enable-page-locking"
 
 #: share/skin/s3/template/element/settings/users_invite_section:11
 msgid "Enter a list of email addresses (one address per line) of people you would like to invite to this Workspace."
-msgstr ""
+msgstr "invite.enter-emails"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:7
 msgid "Enter part of a user's first or last name, or email address."
-msgstr ""
+msgstr "invite.lookahead"
 
 #: share/skin/s3/template/view/error:3 share/skin/s3/template/view/error:7
 msgid "Error"
-msgstr ""
+msgstr "nav.error"
 
 #: share/skin/s3/template/lite/search/search.html:15
 msgid "Error:"
-msgstr ""
+msgstr "search.error"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:19 share/skin/s3/template/element/settings/users_invite_section:67
 msgid "Example:"
-msgstr ""
+msgstr "invite.example"
 
 #: share/skin/s3/template/element/settings/workspace_clone_section:20 share/skin/s3/template/element/settings/workspaces_create_section:14 share/skin/s3/template/element/settings/workspaces_settings_appearance_section:13
 msgid "Example: Acme Widgets Product Development"
@@ -1019,7 +1019,7 @@ msgstr ""
 
 #: share/skin/s3/template/element/settings/users_listall_section:29
 msgid "Reset Password"
-msgstr ""
+msgstr "password.reset"
 
 #: share/skin/s3/template/view/page/delete_epilogue:26
 msgid "Restore Page"
@@ -1364,7 +1364,7 @@ msgstr ""
 
 #: share/skin/s3/template/element/settings/users_settings_section:50
 msgid "Type new Password again:"
-msgstr ""
+msgstr "password.again"
 
 #: share/skin/s3/template/view/page/display:96
 msgid "Unlock Page"
@@ -1638,7 +1638,7 @@ msgstr ""
 
 #: share/skin/s3/template/element/settings/start:31
 msgid "error:"
-msgstr ""
+msgstr "info.error"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:24
 msgid "example"
@@ -1738,7 +1738,7 @@ msgstr ""
 
 #: share/skin/s3/template/element/settings/start:28
 msgid "warning:"
-msgstr "config.warning"
+msgstr "info.warning"
 
 #: share/skin/s3/template/layout/html:63 share/skin/s3/template/layout/simple_html:49 share/skin/s3/template/layout/user_frame:68
 msgid "wiki, business wiki, document management, enterprise wiki, intranet wiki, knowledge management, online collaboration, open source wiki, portal wiki, hosted wiki, collaboration, social software, social networking, dashboard, project collaboration, team collaboration, wiki appliance, wiki software, community"
@@ -1746,12 +1746,12 @@ msgstr "nav.keywords"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:35
 msgid "workspace members"
-msgstr "config.workspace-members"
+msgstr "wiki.members"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:20
 msgid "your"
-msgstr "config.your"
+msgstr "invite.your"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:22 share/skin/s3/template/element/settings/users_invite_section:68
 msgid "your.friend@example.com"
-msgstr "config.example-address"
+msgstr "invite.example-address"
