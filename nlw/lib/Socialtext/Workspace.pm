@@ -1960,14 +1960,17 @@ sub load_pages_from_disk {
             or !$hub->pages->new_from_name($page_name)->exists;
 
         if ($data->{attachments}) {
+            my $attachments = $hub->attachments;
             my $page_id = Socialtext::String::title_to_id($page_name);
             for my $name (@{$data->{attachments}}) {
-                my $attachment = $hub->attachments->new_attachment(
+                open my $fh, "$dir/attachments/$data->{page_id}/$name"
+                    or die "Can't open $name: $!";
+                $attachments->create(
                     page_id => $page_id,
+                    creator => Socialtext::User->SystemUser,
                     filename => $name,
+                    fh => $fh,
                 );
-                $attachment->save("$dir/attachments/$data->{page_id}/$name");
-                $attachment->store(user => Socialtext::User->SystemUser);
             }
         }
 
