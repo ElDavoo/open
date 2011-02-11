@@ -146,25 +146,26 @@ guess_sortable_name: {
 }
 
 ###############################################################################
-# TEST: User's "proper_name" is always "first/last"
+# TEST: User's "proper_name" is always "first/middle/last"
 proper_name: {
     my $acct = create_test_account_bypassing_factory();
     $acct->enable_plugin('people');
 
     my $user = create_test_user(
-        first_name => 'Oscar',
-        last_name  => 'Peterson',
-        account    => $acct,
+        first_name  => 'Oscar',
+        middle_name => 'Emmanuel',
+        last_name   => 'Peterson',
+        account     => $acct,
     );
 
-    my $proper    = 'Oscar Peterson';
+    my $proper    = 'Oscar Emmanuel Peterson';
     my $preferred = 'Bob Bitchin';
 
-    is $user->proper_name, $proper, 'Proper Name is FN/LN when no Preferred Name present';
+    is $user->proper_name, $proper, 'Proper Name is first/middle/last when no Preferred Name present';
 
     my $profile = $user->profile();
     $profile->set_attr('preferred_name', $preferred);
     $profile->save();
 
-    is $user->proper_name, $proper, 'Proper Name is still FN/LN when Preferred Name is present';
+    is $user->proper_name, $proper, 'Proper Name is still first/middle/last when Preferred Name is present';
 }
