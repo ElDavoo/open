@@ -19,7 +19,7 @@
 <div id="controls">
   <div id="st-editing-tools-edit">
     <ul id="revision-tools">
-  [% IF page.metadata.Type != 'spreadsheet';
+  [% IF page.page_type != 'spreadsheet';
     PROCESS compare_revisions;
   END %]
       <li class="flexButtonBlue">
@@ -61,7 +61,7 @@
   <div class="clear"></div><!-- clear END -->
   <div id="bottomButtons">
     <ul>
-    [% IF page.metadata.Type != 'spreadsheet'; 
+    [% IF page.page_type != 'spreadsheet'; 
       PROCESS compare_revisions; 
     END %]
     </ul>
@@ -104,11 +104,11 @@
   <tr class="[% IF even %]even[% ELSE %]odd[% END %]Row">
     <td><input onclick="preventSameRevisionCompare()" name="old_revision_id" value="[% id %]" type="radio"
       [% IF check_old %] checked="checked"[% END %] 
-      [% UNLESS page.metadata.Type != 'spreadsheet' %] disabled="disabled"[% END %] />
+      [% UNLESS page.page_type != 'spreadsheet' %] disabled="disabled"[% END %] />
     </td>
     <td><input onclick="preventSameRevisionCompare()" name="new_revision_id" value="[% id %]" type="radio"
       [% IF check_new %] checked="checked"[% END %] 
-      [% UNLESS page.metadata.Type != 'spreadsheet' %] disabled="disabled"[% END %] />
+      [% UNLESS page.page_type != 'spreadsheet' %] disabled="disabled"[% END %] />
     </td>
     <td>
       <a href="[% script_name %]?action=revision_view;page_name=[% page_uri %];revision_id=[% id %]">

@@ -33,7 +33,7 @@ Socialtext.wiki_title = [% ws.title.json || '' %];
 <textarea name="comment_body" id="comment_textarea" class="comment_text_area" rows="2" cols="75">
 </textarea>
 <input type="hidden" name="subject" value="[% page.title %]" />
-<input type="hidden" name="revision" value="[% page.metadata.Revision %]" />
+<input type="hidden" name="revision" value="[% page.revision_num %]" />
 <input type="hidden" name="revision_id" value="[% page.revision_id %]" />
 <input type="hidden" name="action" value="comment" />
 <input id="st-miki-comment-submit" type="submit" data-theme="b" data-role="button" value="[% loc('Save comment') %]" />
