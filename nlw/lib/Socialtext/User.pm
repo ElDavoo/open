@@ -719,7 +719,7 @@ sub FormattedEmail {
     my $last_name     = shift;
     my $email_address = shift;
 
-    my $name = Socialtext::User::Base->GetFullName(
+    my $name = Socialtext::User::Base->FormatFullName(
         $first_name, $middle_name, $last_name,
     );
 

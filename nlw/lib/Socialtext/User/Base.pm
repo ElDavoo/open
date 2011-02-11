@@ -81,7 +81,7 @@ sub proper_name {
     my $first  = $self->first_name;
     my $middle = $self->middle_name;
     my $last   = $self->last_name;
-    return Socialtext::User::Base->GetFullName($first, $middle, $last);
+    return Socialtext::User::Base->FormatFullName($first, $middle, $last);
 }
 
 sub preferred_name {
@@ -107,7 +107,7 @@ sub guess_real_name {
         $fn =~ s/\@.+$//;
     }
 
-    $name = Socialtext::User::Base->GetFullName(
+    $name = Socialtext::User::Base->FormatFullName(
         $fn, $self->middle_name, $self->last_name,
     );
     $name =~ s/^\s+//;
@@ -180,7 +180,7 @@ sub update_display_name {
     }
 }
 
-sub GetFullName {
+sub FormatFullName {
     my $class       = shift;
     my $first_name  = shift;
     my $middle_name = shift;
