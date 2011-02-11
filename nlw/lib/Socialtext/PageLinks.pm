@@ -2,7 +2,7 @@ package Socialtext::PageLinks;
 # @COPYRIGHT@
 use Moose;
 use Socialtext::Paths;
-use Socialtext::Model::Pages;
+use Socialtext::Pages;
 use Socialtext::Timer;
 use Socialtext::SQL::Builder qw(sql_insert_many);
 use Socialtext::SQL qw(sql_execute sql_txn);
@@ -14,9 +14,9 @@ Socialtext::PageLinks
 
 =head1 SYNOPSIS
 
-my $page_links = Socialtext::PageLinks->new(page => $page);
-my @forward_links = $page_links->links;
-my @backlinks = $page_links->backlinks;
+    my $page_links = Socialtext::PageLinks->new(page => $page);
+    my @forward_links = $page_links->links;
+    my @backlinks = $page_links->backlinks;
 
 =head1 DESCRIPTION
 
@@ -25,7 +25,7 @@ Represents all of a page's links and backlinks
 =cut
 
 has 'page' => (
-    is => 'ro', isa => 'Socialtext::Page::Base',
+    is => 'ro', isa => 'Socialtext::Page',
     required => 1,
 );
 
@@ -130,10 +130,9 @@ sub update {
 
 sub _create_page {
     my ($self, $workspace_id, $page_id) = @_;
-    my $page = Socialtext::Model::Pages->By_id(
+    my $page = Socialtext::Pages->By_id(
         hub => $self->hub,
         workspace_id => $workspace_id,
-        do_not_need_tags => 1,
         no_die => 1,
         page_id => $page_id
     );

@@ -8,7 +8,7 @@ ST.Delete.prototype = new ST.Lightbox;
 ST.Delete.prototype.deleteLightbox = function () {
     this.process('delete.tt2');
     $("#st-delete-newname").val(
-        loc('[_1]', Socialtext.page_title)
+        Socialtext.page_title
     );
 
     $.showLightbox({

@@ -31,11 +31,12 @@ my $creator = Socialtext::User->new( username => 'devnull1@socialtext.com' );
         creator => $creator,
     );
     my $basic = $pages->new_from_name('basic usage');
-    is $basic->metadata->Category->[0], 'test', 'category saved';
+    is $basic->tags->[0], 'test', 'category saved';
 }
 
 {
     my $sample = $hub->pages->new_from_name('FormattingTest');
+    $sample->edit_rev;
     $sample->doctor_links_with_prefix('Foozle');
     like $sample->content, qr/\[FoozleFormattingToDo\]/,
         'doctor_links_with_prefix';
@@ -64,6 +65,6 @@ my $creator = Socialtext::User->new( username => 'devnull1@socialtext.com' );
         creator => $creator,
     );
     my $page = $hub->pages->new_from_name('dated');
-    is $page->metadata->Date, $stringified_expected,
+    is $page->datetime_utc, $stringified_expected,
         'metadata date - needed for display';
 }

@@ -9,7 +9,7 @@ ST.Rename.prototype.renameLightbox = function () {
     this.process('rename.tt2');
     this.sel = '#st-rename-lightbox';
     $("#st-rename-newname").val(
-        loc('[_1]', Socialtext.page_title)
+        Socialtext.page_title
     );
     this.show(
         true, // Do redirection

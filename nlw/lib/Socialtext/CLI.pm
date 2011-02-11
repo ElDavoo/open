@@ -18,6 +18,8 @@ use Socialtext::AppConfig;
 use Pod::Usage;
 use Readonly;
 use Scalar::Util qw/blessed/;
+use Try::Tiny;
+
 use Socialtext::Search::AbstractFactory;
 use Socialtext::Validate qw( validate SCALAR_TYPE ARRAYREF_TYPE );
 use Socialtext::l10n qw( loc loc_lang system_locale );
@@ -2569,7 +2571,7 @@ sub purge_page {
     my ( $hub, $main ) = $self->_require_hub();
     my $page = $self->_require_page($hub);
 
-    my $title = $page->metadata()->Subject();
+    my $title = $page->name;
     $page->purge();
 
     $self->_success( 
@@ -2606,7 +2608,7 @@ sub _toggle_page_lock {
 
     $self->_success(loc(
         "Page '[_1]' in workspace '[_2]' has been [_3].",
-        $page->metadata->Subject, $workspace->title(), $message
+        $page->name, $workspace->title(), $message
     ));
 }
 
@@ -2652,7 +2654,7 @@ sub purge_attachment {
     my $page = $self->_require_page($hub);
     my $attachment = $self->_require_page_attachment($page);
 
-    my $title = $page->metadata()->Subject();
+    my $title = $page->name;
     my $filename = $attachment->filename;
     $attachment->purge($page);
 
@@ -2847,7 +2849,7 @@ sub index_page {
     }
 
     $self->_success( 'The '
-            . $page->metadata()->Subject()
+            . $page->name
             . " page in the $ws_name workspace has been indexed." );
 }
 
@@ -2959,7 +2961,7 @@ sub send_email_notifications {
 #  $hub->email_notify()->maybe_send_notifications( $page->id() );
 
     $self->_success( 'Email notifications were sent for the '
-            . $page->metadata()->Subject()
+            . $page->name
             . ' page.' );
 }
 
@@ -2973,7 +2975,7 @@ sub send_watchlist_emails {
 #    $hub->watchlist()->maybe_send_notifications( $page->id() );
 
     $self->_success( 'Watchlist emails were sent for the '
-            . $page->metadata()->Subject()
+            . $page->name
             . ' page.' );
 }
 
@@ -2994,7 +2996,7 @@ sub send_blog_pings {
     Socialtext::WeblogUpdates->new( hub => $hub )->send_ping($page);
 
     $self->_success( 'Pings were sent for the '
-            . $page->metadata()->Subject()
+            . $page->name
             . ' page.' );
 }
 *send_weblog_pings = \&send_blog_pings;
@@ -3089,10 +3091,6 @@ sub update_page {
 
     $hub->current_user($user);
 
-    my $page = $hub->pages()->new_from_name($title);
-
-    $page->load();
-
     my $content = do { local $/; <STDIN> };
     unless ( defined $content and length $content ) {
         $self->_error(
@@ -3100,17 +3098,12 @@ sub update_page {
         return;
     }
 
-    my $revision = $page->metadata()->Revision() || 0;
+    my $page = $hub->pages()->new_from_name($title);
+    my $verb = $page->revision_num == 0 ? 'created' : 'updated';
+    my $rev = $page->edit_rev();
+    $rev->body_ref(\$content);
+    $page->update();
 
-    $page->update(
-        subject          => $title,
-        content          => $content,
-        revision         => $revision,
-        original_page_id => $page->id(),
-        user             => $hub->current_user,
-    );
-
-    my $verb = $revision == 0 ? 'created' : 'updated';
     $self->_success(qq|The "$title" page has been $verb.|);
 }
 
@@ -3754,28 +3747,24 @@ sub _require_page_attachment {
 
     my %opts = $self->_get_options('attachment:s');
 
-    unless ( $opts{attachment} ) {
+    unless ($opts{attachment}) {
         $self->_error(
-            "The command you called ($self->{command}) requires an attachment to be specified.\n"
-                . "You can specify an attachment by id with the --attachment option."
+            "The command you called ($self->{command}) ".
+            "requires an attachment id to be specified.\n".
+            "You can specify an attachment with the --attachment option."
         );
     }
 
-    my $attachment = $page->hub()->attachments()->new_attachment(
-        id      => $opts{attachment},
-        page_id => $page->id(),
-    );
-
-    unless ( $attachment->exists() ) {
-        $self->_error(
-            qq|There is no attachment with the id "$opts{attachment}" in the |
-                . $page->hub()->current_workspace()->name()
-                . " workspace.\n" );
+    return try { 
+        $self->hub->attachments->load(
+            page => $page, page_id => $page->id,
+            id => $opts{attachment});
     }
-
-    $attachment->load();
-
-    return $attachment;
+    catch {
+        my $ws = $page->hub->current_workspace->name;
+        $self->_error(qq(There is no attachment with the id ).
+            qq("$opts{attachment}" in the $ws workspace\n"));
+    };
 }
 
 sub _require_permission {

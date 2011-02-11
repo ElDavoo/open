@@ -1,0 +1,34 @@
+#!/usr/bin/env perl
+# @COPYRIGHT@
+use strict;
+use warnings;
+use FindBin qw/$Bin/;
+use lib "$Bin/../lib";
+use Locale::Maketext::Lexicon 0.85; # Ensures xgettext.pl terminates
+use Socialtext::System qw/shell_run/;
+chdir "$Bin/..";
+
+my %Sections = (
+    bin => 'bin',
+    lib => 'lib',
+    wikiwyg => 'share/skin/wikiwyg/javascript',
+    plugin => 'share/plugin',
+    s2 => ['share/skin/s2/template', 'share/skin/s2/javascript'],
+    s3 => ['share/skin/s3/template', 'share/skin/s3/javascript'],
+);
+
+# Cleanup temporary JS files before extracting S3
+shell_run("rm -rf share/skin/s3/javascript/socialtext-*");
+
+for my $key (sort keys %Sections) {
+    my $dir = $Sections{$key};
+    $dir = [$dir] unless ref $dir;
+
+    shell_run(
+        qw( xgettext.pl -now -P perl=* -P tt2=* ),
+        -o => "share/l10n/en/$key.po",
+        map { -D => $_ } @$dir
+    )
+}
+
+#shell_run("msgcat share/l10n/en/*.po > share/l10n/en.po");

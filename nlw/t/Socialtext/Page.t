@@ -4,15 +4,23 @@ use strict;
 use warnings;
 
 use DateTime;
-use Test::Socialtext tests => 45;
+use mocked 'Socialtext::Events';
+use Test::Socialtext tests => 54;
+use Test::Socialtext::Fatal;
+use Test::Deep;
+use ok 'Socialtext::Page';
 
 fixtures(qw( db ));
 
-BEGIN {
-    use_ok( 'Socialtext::Page' );
+NEWLINE: {
+    my $hub = create_test_hub();
+    my $page = Socialtext::Page->new(hub => $hub)->create(
+        title   => 'new page',
+        content => 'First Paragraph',
+        creator => $hub->current_user,
+    );
+    is $page->content, "First Paragraph\n", "newline got added";
 }
-
-use Socialtext::l10n qw(loc);
 
 APPEND: {
     my $hub = create_test_hub();
@@ -21,67 +29,19 @@ APPEND: {
         content => 'First Paragraph',
         creator => $hub->current_user,
     );
-    Test::More::is($page->content, "First Paragraph\n", 'initial content');
-    ok($page->is_recently_modified(), 'page is recently modified' );
+    is $page->content, "First Paragraph\n", 'initial content';
+    is $page->content, "First Paragraph\n", 'initial content';
+    ok $page->is_recently_modified(), 'page is recently modified';
+    ok !$page->mutable;
+
+    like exception {
+        $page->append("Shouldn't append");
+    }, qr/page isn't mutable/, "can't append until page is open for edit";
+
+    $page->edit_rev(editor => $hub->current_user);
     $page->append('Second Paragraph');
-    Test::More::is($page->content, "First Paragraph\n\n---\nSecond Paragraph");
-}
-
-RENAME: {
-    my $hub   = create_test_hub();
-    my $page1 = Socialtext::Page->new( hub => $hub )->create(
-        title   => 'My First Page',
-        content => 'First Paragraph',
-        creator => $hub->current_user,
-    );
-    my $page2 = Socialtext::Page->new( hub => $hub )->create(
-        title   => 'My Second Page',
-        content => 'Another paragraph first',
-        creator => $hub->current_user,
-    );
-
-    my $return = $page1->rename('My Second Page');
-    is ($return, 0, 'Should not be able to rename since page with new name exists' );
-
-    $return = $page1->rename('My Renamed Page');
-    is ($return, 1, 'Rename should return ok' );
-    Test::More::is ($page1->content, "Page renamed to [My Renamed Page]\n", 'Original page content should point to new page' );
-}
-
-RENAME_CLOBBER: {
-    my $hub   = create_test_hub();
-    my $page1 = Socialtext::Page->new( hub => $hub )->create(
-        title   => 'My First Page',
-        content => 'First Paragraph',
-        creator => $hub->current_user,
-    );
-    my $page2 = Socialtext::Page->new( hub => $hub )->create(
-        title   => 'My Second Page',
-        content => 'Another paragraph first',
-        creator => $hub->current_user,
-    );
-
-    my $return = $page1->rename('My Second Page', 1, 1, 'My Second Page');
-    is ($return, 1, 'Return should be ok as existing page should be clobbered' );
-    Test::More::is ($page1->content, "Page renamed to [My Second Page]\n", 'Original page content should point to new page' );
-
-    $page2 = $hub->pages->new_from_name('My Second Page');
-    Test::More::is ($page2->content, "First Paragraph\n", 'Exising page should have content of new page' );
-}
-
-RENAME_WITH_OVERLAPPING_IDS: {
-    my $hub  = create_test_hub();
-    my $page = Socialtext::Page->new( hub => $hub )->create(
-        title   => 'I LOVE COWS SO MUCH I COULD SCREAM',
-        content => 'COWS LOVE ME',
-        creator => $hub->current_user,
-    );
-
-    my $new_title = 'I Love Cows So Much I Could SCREAM!!!!!!!';
-    my $return    = $page->rename($new_title);
-    is( $return, 1, 'Rename of a page where new name has same page_id' );
-    Test::More::is( $page->title,   $new_title );
-    Test::More::is( $page->content, "COWS LOVE ME\n" );
+    is $page->content, "First Paragraph\n\n---\nSecond Paragraph",
+        'appended';
 }
 
 PREPEND: {
@@ -91,9 +51,86 @@ PREPEND: {
         content => 'First Paragraph',
         creator => $hub->current_user,
     );
-    ok($page->is_recently_modified(), 'page is recently modified' );
+    is $page->content, "First Paragraph\n", 'initial content';
+    ok $page->is_recently_modified(), 'page is recently modified';
+    ok !$page->mutable;
+
+    like exception {
+        $page->prepend("Shouldn't prepend");
+    }, qr/page isn't mutable/, "can't prepend until page is open for edit";
+
+    $page->edit_rev(editor => $hub->current_user);
     $page->prepend('Second Paragraph');
-    Test::More::is($page->content, "Second Paragraph\n---\nFirst Paragraph\n");
+    is $page->content, "Second Paragraph\n---\nFirst Paragraph\n",
+        'prepended';
+}
+
+RENAME: {
+    my $hub   = create_test_hub();
+
+    my $page1 = Socialtext::Page->new( hub => $hub )->create(
+        title   => 'My First Page',
+        content => 'First Paragraph',
+        creator => $hub->current_user,
+    );
+    my $page2 = Socialtext::Page->new( hub => $hub )->create(
+        title   => 'My Second Page',
+        content => 'Another paragraph first',
+        creator => $hub->current_user,
+    );
+
+    my $return;
+    is exception {
+        $return = $page1->rename('My Second Page');
+    }, undef, "no exception";
+    is $return, 0, "Can't accidentally clobber";
+
+    is exception {
+        $return = $page1->rename('My Renamed Page');
+    }, undef, "no exception";
+    is $return, 1, 'Rename to another page should return ok';
+    is $page1->content, "Page renamed to [My Renamed Page]\n",
+        'Original page content should point to new page';
+}
+
+RENAME_CLOBBER: {
+    my $hub   = create_test_hub();
+    my $page1 = Socialtext::Page->new( hub => $hub )->create(
+        title   => 'My First Page',
+        content => 'First Paragraph',
+    );
+    my $page2 = Socialtext::Page->new( hub => $hub )->create(
+        title   => 'My Second Page',
+        content => 'Another paragraph first',
+    );
+
+    my $return;
+    is exception {
+        $return = $page1->rename('My Second Page', 1, 1, 'My Second Page');
+    }, undef, "no exception";
+    is $return, 1, 'Return should be ok as existing page should be clobbered';
+    is $page1->content, "Page renamed to [My Second Page]\n",
+        'Original page content should point to new page';
+
+    $page2 = $hub->pages->new_from_name('My Second Page');
+    is $page2->content, "First Paragraph\n",
+        'Exising page should have content of new page';
+}
+
+RENAME_WITH_OVERLAPPING_IDS: {
+    my $hub  = create_test_hub();
+    my $page = Socialtext::Page->new( hub => $hub )->create(
+        title   => 'I LOVE COWS SO MUCH I COULD SCREAM',
+        content => 'COWS LOVE ME',
+    );
+    my $old_id = $page->page_id;
+
+    my $new_title = 'I Love Cows So Much I Could SCREAM!!!!!!!';
+    my $return    = $page->rename($new_title);
+    is $return, 1, 'Rename of a page where new name has same page_id';
+    is $page->title,   $new_title, "title got changed";
+    is $page->content, "COWS LOVE ME\n", "same content";
+    is $page->page_id, $old_id, "same page id";
 }
 
 LOAD_WITH_REVISION: {
@@ -101,20 +138,24 @@ LOAD_WITH_REVISION: {
     my $page = Socialtext::Page->new( hub => $hub )->create(
         title   => 'revision_page',
         content => 'First Paragraph',
-        creator => $hub->current_user,
     );
+    $page->edit_rev();
     $page->append('Second Paragraph');
-    sleep(2); # need the pause to the engine doesn't simply replace the last version with this one
     $page->store(user => $hub->current_user);
+
     my @ids = $page->all_revision_ids();
-    is (scalar(@ids), 2, 'Number of revisions');
+    is scalar(@ids), 2, 'Number of revisions';
+
     my $oldPage = Socialtext::Page->new( hub => $hub, id=>'revision_page' );
     $oldPage->load_revision($ids[0]);
-    Test::More::is($oldPage->content,"First Paragraph\n", 'Content matches first revision');
+    is $oldPage->content,"First Paragraph\n", 'Content matches first revision';
+
     $oldPage = Socialtext::Page->new( hub => $hub, id=>'revision_page' );
     $oldPage->load_revision($ids[1]);
-    Test::More::is($oldPage->content,"First Paragraph\n\n---\nSecond Paragraph\n", 'Content matches latest revision');
-    Test::More::is($oldPage->content, $page->content, 'Content matches latest revision');
+    is $oldPage->content,"First Paragraph\n\n---\nSecond Paragraph\n",
+        'Content matches latest revision';
+
+    is $oldPage->content, $page->content, 'Content matches latest revision';
 }
 
 IS_RECENTLY_MODIFIED: {
@@ -124,53 +165,23 @@ IS_RECENTLY_MODIFIED: {
         content => 'new page',
         creator => $hub->current_user,
     );
-    ok($page->is_recently_modified(), 'page is recently modified' );
+    ok $page->is_recently_modified(), 'page is recently modified';
 
-    my $four_hours_ago = DateTime->now->subtract( hours => 4 );
-    $page = Socialtext::Page->new( hub => $hub )->create(
-        title   => 'new page',
-        content => 'new page',
+    my $four_hours_ago = Socialtext::Date->now(hires=>1)
+        ->subtract(hours => 4);
+    my $page2 = Socialtext::Page->new( hub => $hub )->create(
+        title   => 'new page 2',
+        content => 'new page 2',
         date    => $four_hours_ago,
         creator => $hub->current_user,
     );
-    ok(!$page->is_recently_modified(), 'page is not recently modified' );
-    ok( $page->is_recently_modified( 60 * 60 * 5 ),
-        'page is recently modified' );
-}
-
-SET_TITLE_AND_NAME: {
-    my $page = Socialtext::Page->new();
-    isa_ok( $page, 'Socialtext::Page' );
-
-    $page->title( 'foo' );
-    is( $page->title, 'foo', 'Sets the title right the first time' );
-
-    # Make sure we can override it.  There was a bug where title wouldn't
-    # get set by the mutator if it was already set.
-    $page->title( 'bar' );
-    is( $page->title, 'bar', 'Sets the title right the second time' );
-
-    $page->name( 'Wombat' );
-    is( $page->name, 'Wombat', 'Sets the name right the first time' );
-
-    $page->name( 'Jackelope' );
-    is( $page->name, 'Jackelope', 'Sets the name right the second time' );
-}
-
-# Adapted from a failing test in t/restore-revision.t
-CREATE_PAGE: {
-    my $hub = create_test_hub();
-    isa_ok( $hub, 'Socialtext::Hub' ) or die;
-
-    my $lyrics = join( "", <DATA> );
-    my $page = Socialtext::Page->new( hub => $hub )->create(
-        title   => "Uneasy Rider",
-        content => $lyrics,
-        creator => $hub->current_user,
-    );
-    isa_ok( $page, "Socialtext::Page" );
-    is $page->revision_count, 1,
-        'Fresh page has exactly 1 revision id.';
+    is $page2->create_time->epoch, $page2->last_edit_time->epoch,
+        "create and edit dates are the same";
+    cmp_ok $page->create_time, '>', $page2->create_time,
+        'page created "before"';
+    ok !$page2->is_recently_modified(), 'page is not recently modified';
+    ok $page2->is_recently_modified(60 * 60 * 5),
+        'page is recently modified compared to 5hrs ago';
 }
 
 NOW_WAFL_EXPANSION: {
@@ -178,17 +189,18 @@ NOW_WAFL_EXPANSION: {
     isa_ok $hub, 'Socialtext::Hub';
 
     # create a new page, and track the time before+after the creation
-    my $t_before = DateTime->now();
+    my $t_before = DateTime->now;
     my $page = Socialtext::Page->new( hub => $hub )->create(
         title   => 'now wafl test',
         content => '{now}',
         creator => $hub->current_user,
     );
     isa_ok $page, 'Socialtext::Page';
-    my $t_after = DateTime->now();
+    my $t_after = DateTime->now;
 
     # make sure that the "{now}" wafl got expanded out to a timestamp
     # somewhere between the before+after times
+    unlike $page->content, qr/{now}/, "no raw wafl";
     my $formatter = DateTime::Format::Strptime->new( pattern => '%F %T %Z' );
     my $t_content = $formatter->parse_datetime( $page->content );
     isa_ok $t_content, 'DateTime', 'expanded+parsed {now} wafl';
@@ -198,39 +210,23 @@ NOW_WAFL_EXPANSION: {
 
 MAX_ID_LENGTH: {
     my $hub  = create_test_hub();
-    my $page = Socialtext::Page->new( hub => $hub )->create(
-        title   => 'max id length test',
-        content => 'foo',
-        creator => $hub->current_user,
-    );
-
-    eval {
-        my $title = 'x' x 256;
-        $page->update(
-            subject          => $title,
-            content          => 'blah blah',
-            original_page_id => $page->id,
-            revision         => $page->metadata->Revision,
-            user             => $hub->current_user,
+    my $title = 'z' x 256;
+    like exception {
+        Socialtext::Page->new( hub => $hub )->create(
+            title   => $title,
+            content => 'foo',
         );
-    };
-    like( $@, qr/Page title is too long/,
-          'get the expected exception when the page title is too long (> 255 bytes)' );
+    }, qr/Page title is too long/, 'too long';
 
-
-    eval {
-        my $title = 'x' x 254;
-        $title .= chr(22369); # the last character in Singapore
-        $page->update(
-            subject          => $title,
-            content          => 'blah blah',
-            original_page_id => $page->id,
-            revision         => $page->metadata->Revision,
-            user             => $hub->current_user,
+    # assumes the page id limit is 255
+    $title = 'x' x 254;
+    $title .= chr(22369); # the last character in Singapore
+    like exception {
+        Socialtext::Page->new( hub => $hub )->create(
+            title   => $title,
+            content => 'bar',
         );
-    };
-    like( $@, qr/Page title is too long/,
-          'get the expected exception when the page title is too long - with utf8 (> 255 bytes)' );
+    }, qr/Page title is too long/, 'too long with unicode';
 }
 
 BAD_PAGE_TITLE: {
@@ -243,131 +239,97 @@ BAD_PAGE_TITLE: {
         "Untitled_Page",
         "",
     );
-    for my $page (@bad_titles) {
-        ok(
-            $class->is_bad_page_title("Untitled Page"),
-            "Invalid title: \"$page\""
-        );
+    for my $title (@bad_titles) {
+        my $isbad = Socialtext::Page->is_bad_page_title($title);
+        ok $isbad, "Invalid title: \"$title\"";
     }
-    ok( !$class->is_bad_page_title("Cows Are Good"), "OK page title" );
+    ok !$class->is_bad_page_title("Cows Are Good"), "OK page title";
 }
 
 INVALID_UTF8: {
     my $hub = create_test_hub();
-    eval {
+    like exception {
         my $page = Socialtext::Page->new( hub => $hub )->create(
             title   => 'new page',
             content => "* hello\n** \xdamn\n",
             creator => $hub->current_user,
         );
-    };
-
-    ok($@, "Check that our crap UTF8 generates an exception");
+    }, qr/is not encoded as valid utf8/,
+        "Check that bogus UTF8 generates an exception";
 }
-__DATA__
-I was takin' a trip out to LA
-Toolin' along in my Chevrolet
-Tokin' on a number and diggin' on the radio...
-Just as I crossed the Mississippi line
-I heard that highway start to whine
-And I knew that left rear tire was about to go
 
-Well, the spare was flat and I got uptight
-'Cause there wasn't a fillin' station in sight
-So I just limped on down the shoulder on the rim
-I went as far as I could and when I stopped the car
-It was right in front of this little bar
-Kind of redneck lookin' joint, called the Dew Drop Inn
+HASHES: {
+    my $hub = create_test_hub();
+    my $ws = $hub->current_workspace;
+    my $creator = $hub->current_user;
+    my $editor = create_test_user();
+    $ws->add_user(user => $editor);
 
-Well, I stuffed my hair up under my hat
-And told the bartender that I had a flat
-And would he be kind enough to give me change for a one
-There was one thing I was sure proud to see
-There wasn't a soul in the place, 'cept for him and me
-And he just looked disgusted and pointed toward the telephone
+    my $date = DateTime->new(
+        year => 2011, month => 1, day => 1,
+        hour => 0, minute => 0, second => 0,
+        time_zone => 'UTC',
+    );
+    my $edit = DateTime->new(
+        year => 2011, month => 1, day => 23,
+        hour => 0, minute => 0, second => 0,
+        time_zone => 'UTC',
+    );
+    my $mtime = $edit->epoch;
 
-I called up the station down the road a ways
-And he said he wasn't very busy today
-And he could have somebody there in just 'bout ten minutes or so
-He said now you just stay right where you're at
-And I didn't bother tellin' the durn fool
-I sure as hell didn't have anyplace else to go
+    my $page = Socialtext::Page->new( hub => $hub )->create(
+        title => 'Testing Hashes, Yo',
+        date => $date,
+        content => 'foo',
+    );
 
-I just ordered up a beer and sat down at the bar
-When some guy walked in and said, "Who owns this car?
-With the peace sign, the mag wheels and four on the floor?"
-Well, he looked at me and I damn near died
-And I decided that I'd just wait outside
-So I laid a dollar on the bar and headed for the door
+    $hub->current_user($editor);
+    $page->edit_rev(editor => $editor, edit_time => $edit);
+    $page->edit_summary('changing to bar');
+    $page->content('bar');
+    $page->tags(['FOO','Bar']);
+    $page->store(user => $editor);
 
-Just when I thought I'd get outta there with my skin
-These five big dudes come strollin' in
-With this one old drunk chick and some fella with green teeth
-And I was almost to the door when the biggest one said
-"You tip your hat to this lady, son"
-And when I did all that hair fell out from underneath
+    is $page->revision_count, 2;
 
-Now the last thing I wanted was to get into a fight
-In Jackson, Mississippi on a Saturday night
-Especially when there was three of them and only one of me
-They all started laughin' and I felt kinda sick
-And I knew I'd better think of somethin' pretty quick
-So I just reached out and kicked old green-teeth right in the knee
+    $page = $hub->pages->new_from_name('testing_hashes_yo');
 
-He let out a yell that'd curl your hair
-But before he could move, I grabbed me a chair
-And said "Watch him folks, 'cause he's a thoroughly dangerous man
-Well, you may not know it, but this man's a spy
-He's an undercover agent for the FBI
-And he's been sent down here to infiltrate the Ku Klux Klan"
+    $hub->current_user($creator);
 
-He was still bent over, holdin' on to his knee
-But everyone else was lookin' and listenin' to me
-And I laid it on thicker and heavier as I went
-I said "Would you believe this man has gone as far
-As tearin' Wallace stickers off the bumpers of cars
-And he voted for George McGovern for President"
+    my $page_hash = $page->to_hash;
+    cmp_deeply $page_hash, {
+        create_time     => '2011-01-01 00:00:00 GMT',
+        creator         => $creator->email_address,
+        edit_summary    => 'changing to bar',
+        last_edit_time  => '2011-01-23 00:00:00 GMT',
+        last_editor     => $editor->email_address,
+        locked          => 0,
+        modified_time   => $mtime,
+        name            => 'Testing Hashes, Yo',
+        page_id         => 'testing_hashes_yo',
+        page_uri        => re('^https?.+testing_hashes_yo$'),
+        revision_count  => 2,
+        revision_id     => re('^\d+$'),
+        revision_num    => 2,
+        summary         => 'bar',
+        tags            => [ 'FOO', 'Bar' ],
+        type            => 'wiki',
+        uri             => 'testing_hashes_yo',
+        workspace_name  => $ws->name,
+        workspace_title => $ws->title,
+    }, 'page hash'; 
 
-"He's a friend of them long-haired, hippie type, pinko fags
-I betcha he's even got a Commie flag
-Tacked up on the wall, inside of his garage
-He's a snake in the grass, I tell ya guys
-He may look dumb, but that's just a disguise
-He's a mastermind in the ways of espionage"
-
-They all started lookin' real suspicious at him
-And he jumped up an' said "Now, just wait a minute, Jim
-You know he's lyin', I've been livin' here all of my life
-I'm a faithful follower of Brother John Birch
-And I belong to the Antioch Baptist Church
-And I ain't even got a garage, you can call home and ask my wife"
-
-Then he started sayin' somethin' 'bout the way I was dressed
-But I didn't wait around to hear the rest
-I was too busy movin' and hopin' I didn't run outta luck
-And when I hit the ground, I was makin' tracks
-And they were just takin' my car down off the jacks
-So I threw the man a twenty an' jumped in an' fired that mother up
-
-Mario Andretti woulda sure been proud
-Of the way I was movin' when I passed that crowd
-Comin' out the door and headin' toward me in a trot
-And I guess I shoulda gone ahead and run
-But somehow I just couldn't resist the fun
-Of chasin' them all just once around the parking lot
-
-Well, they're headin' for their car, but I hit the gas
-And spun around and headed them off at the pass
-I was slingin' gravel and puttin' a ton of dust in the air
-Well, I had 'em all out there steppin' and fetchin'
-Like their heads were on fire and their asses was catchin'
-But I figured I oughta go ahead an split before the cops got there
-
-When I hit the road I was really wheelin'
-Had gravel flyin' and rubber squealin'
-And I didn't slow down 'til I was almost to Arkansas
-Well, I think I'm gonna re-route my trip
-I wonder if anybody'd think I'd flipped
-If I went to LA...via Omaha
-
-    -- "Uneasy Rider", Charlie Daniels Band
+    my $md_hash = $page->legacy_metadata_hash;
+    cmp_deeply $md_hash, {
+        'Revision-Summary' => 'changing to bar',
+        Category           => [ 'FOO', 'Bar' ],
+        Date               => '2011-01-23 00:00:00 GMT',
+        Encoding           => 'utf8',
+        From               => $editor->email_address,
+        Locked             => 0,
+        Revision           => 2,
+        Subject            => 'Testing Hashes, Yo',
+        Summary            => 'bar',
+        Type               => 'wiki',
+    }, 'md hash';
+}

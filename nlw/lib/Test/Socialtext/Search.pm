@@ -97,26 +97,24 @@ sub confirm_term_in_result {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
     unless (defined $page_uri) {
-        fail("subject, content or category contains correct term ($term)");
+        fail("name, content or tag contains correct term ($term)");
         return;
     }
 
     my $page = $hub->pages->new_from_name($page_uri);
-    my $metadata = $page->metadata;
-    my $subject = $metadata->Subject;
-    my $content = $page->content;
-    my $categories = $metadata->Category;
-    $term =~ s/^category://;
-    $term =~ s/^title://;
+    my $name = $page->name;
+    my $body_ref = $page->body_ref;
+    my $tags = $page->tags;
+    $term =~ s/^(?:tag|category|title)://;
     $term =~ s/^=//;
     $term =~ s/^"//;
     $term =~ s/"$//;
 
     ok(
-        ($subject =~ /$term/i or
-        $content =~ /$term/i or
-        grep(/\b$term\b/i, @$categories)),
-        "subject, content or category contains correct term ($term)"
+        ($name =~ /$term/i or
+        $$body_ref =~ /$term/i or
+        grep(/\b$term\b/i, @$tags)),
+        "name, content or tag contains correct term ($term)"
     );
 }
 
@@ -146,7 +144,7 @@ sub create_and_confirm_page {
         like( $page->content, qr{$content},
             'page content is correct');
         if (@$categories) {
-            my $page_categories = $page->metadata->Category;
+            my $page_categories = $page->tags;
             foreach my $category (grep !/recent changes/i, @$categories) {
                 ok((grep /\b$category\b/i, @$page_categories),
                     "page is in $category");

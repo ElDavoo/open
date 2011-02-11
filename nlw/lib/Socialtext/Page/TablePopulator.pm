@@ -10,11 +10,16 @@ use Socialtext::User;
 use Socialtext::File;
 use Socialtext::AppConfig;
 use Socialtext::Page::Legacy;
+use Socialtext::PageRevision;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw(get_dbh :exec :txn);
 use Fatal qw/opendir closedir chdir open/;
 use Cwd   qw/abs_path/;
 use DateTime;
+use Try::Tiny;
+use IO::File ();
+
+our $Noisy = 1;
 
 sub new {
     my $class = shift;
@@ -52,7 +57,7 @@ sub populate {
     my $workspace = $self->{workspace};
     my $workspace_name = $self->{workspace_name};
 
-    eval { sql_txn {
+    try { sql_txn {
         # Start a transaction, and delete everything for this workspace.
         # if we're recreating the workspace from scratch, clean it out *first*
         if ($recreate) {
@@ -88,44 +93,45 @@ sub populate {
             next PAGE unless Socialtext::Encode::is_valid_utf8($dir);
 
             # Fix up relative links in the filesystem
-            eval { fix_relative_page_link($dir) };
-            if ($@) {
-                warn "Error fixing relative link: $@";
-                next PAGE;
-            }
+            next PAGE unless try { fix_relative_page_link($dir); 1 }
+            catch { chomp; warn "Error fixing relative link: $_\n"; 0 };
 
             # Get all the data we want on a page
-            my ($page, $last_editor, $first_editor);
             my $workspace_id = $workspace->workspace_id;
 
-            eval {
-                $page = $self->load_page_metadata($workspace_dir, $dir);
-                $last_editor  = editor_to_id($page->{last_editor});
-                $first_editor = editor_to_id($page->{creator_name});
+            my $page = try { $self->load_page_metadata($workspace_dir, $dir) }
+            catch {
+                chomp;
+                warn "Error populating $workspace_name, skipping $dir: $_\n";
             };
-            if ($@) {
-                warn "Error populating $workspace_name: $@";
-                next PAGE;
-            }
+            next PAGE unless $page;
 
             # Skip this page if it already exists in the DB
-            my $page_exists_already = page_exists_in_db(
+            my $page_exists_already = $recreate ? 0 : page_exists_in_db(
                 workspace_id => $workspace_id,
                 page_id      => $page->{page_id},
             );
             next PAGE if $page_exists_already;
 
+            try { $self->load_page_attachments($workspace_dir, $page) }
+            catch {
+                chomp;
+                warn "Error populating $workspace_name attachments: $_\n";
+            };
+
             # Add this page (and its tags) to the list of things to add to the
-            # DB.
+            # DB. NOTE these are in the same column-order as the actual table.
             push @pages, [
-                $workspace_id,        $page->{page_id}, $page->{name},
-                $last_editor,         $page->{last_edit_time},
-                $first_editor,        $page->{create_time},
-                $page->{revision_id}, $page->{revision_count},
+                $workspace_id, $page->{page_id}, $page->{name},
+                $page->{last_editor_id}, $page->{last_edit_time},
+                $page->{creator_id},     $page->{create_time},
+                $page->{revision_id},
+                $page->{revision_count},
                 $page->{revision_num},
-                $page->{type}, $page->{deleted}, $page->{summary},
-                $page->{edit_summary} || '',
+                $page->{page_type}, $page->{deleted},
+                $page->{summary}, $page->{edit_summary},
                 $page->{locked},
+                $page->{tags},
                 $page->{views},
             ];
 
@@ -142,87 +148,79 @@ sub populate {
         add_to_db('page_tag', \@page_tags);
 
         $self->load_breadcrumbs();
-    }};
-    die "Error during populate of $workspace_name: $@" if $@;
+    }}
+    catch {
+        die "Error during populate of $workspace_name: $_";
+    };
+    return;
 }
 
 sub load_page_metadata {
-    my $self   = shift;
-    my $ws_dir = shift;
-    my $dir    = shift;
+    my ($self, $ws_dir, $dir) = @_;
 
+    my $t = time_scope 'load_page_meta';
+
+    my $ws_id = $self->{workspace}->workspace_id;
     $self->load_revision_metadata($ws_dir, $dir);
+    my $sth;
 
-    my $current_revision_file = find_current_revision( $dir );
-    my $pagemeta = fetch_metadata($current_revision_file);
+    # Start with latest revision fields.  This *should* exclude "body".
+    $sth = sql_execute(q{
+        SELECT }.Socialtext::PageRevision::COLUMNS_STR.q{
+          FROM page_revision
+         WHERE workspace_id = ? AND page_id = ?
+         ORDER BY revision_id DESC
+         LIMIT 1
+    }, $ws_id, $dir);
+    my $page = $sth->fetchrow_hashref();
 
-    my $revision_id = $current_revision_file;
-    $revision_id =~ s#.+/(.+)\.txt$#$1#;
+    # and creation stats
+    $sth = sql_execute(q{
+        SELECT editor_id AS creator_id, edit_time AS create_time
+          FROM page_revision
+         WHERE workspace_id = ? AND page_id = ?
+         ORDER BY revision_id ASC
+         LIMIT 1
+    }, $ws_id, $dir);
+    @$page{qw(creator_id create_time)} = $sth->fetchrow_array();
 
-    my $tags = $pagemeta->{Category} || [];
-    $tags = [$tags] unless ref($tags);
+    # and a revision tally
+    $page->{revision_count} = sql_singlevalue(q{
+        SELECT count(1) AS revision_count
+          FROM page_revision
+         WHERE workspace_id = ? AND page_id = ?
+    }, $ws_id, $dir);
 
-    my $subject = $pagemeta->{Subject} || '';
-    if (ref($subject)) { # Handle bad duplicate headers
-	$subject = shift @$subject;
-    }
-    my $summary = $pagemeta->{Summary} || '';
-    unless ($summary) {
-        my $p = Socialtext::Page->new(
-            hub => $self->{hub}, id => $dir,
-        );
-        $summary = $p->preview_text;
-        if ($p->can('_store_preview_text')) {
-            # Store the preview text back in the file to save work for later
-            $p->_store_preview_text($summary);
-        }
-    }
-    if (ref($summary) eq 'ARRAY') {
-        # work around a bug where a page has 2 Summary revisions.
-        $summary = $summary->[-1];
-    }
-
-    my ($num_revisions, $orig_page) = load_original_revision($dir);
-    # This is special case for any extremely bad data on the system
-    $orig_page->{From} ||= $pagemeta->{From};
-    $orig_page->{Date} ||= $pagemeta->{Date};
-
-    my $last_edit_time = $pagemeta->{Date};
-    unless ($last_edit_time) {
-        # Proper thing to do here is to read the timestamp of the file
-        # and convert that into a date string
-        die "No Date found for $dir, skipping\n";
-    }
-
-    # Attempt to load the COUNTER file for this page
+    # Finally, attempt to load the COUNTER file for this page
     my $counter_file = "$self->{workspace_plugin_dir}/counter/$dir/COUNTER";
-    my $views = -e $counter_file ? read_counter($counter_file) : 0;
+    $page->{views} = -e $counter_file ? read_counter($counter_file) : 0;
 
-    return {
-        page_id => $dir,
-        name => $subject,
-        last_editor => $pagemeta->{From},
-        last_edit_time => $last_edit_time,
-        revision_id => $revision_id,
-        revision_count => $num_revisions,
-        revision_num => $pagemeta->{Revision} || 1,
-        type => $pagemeta->{Type} || 'wiki',
-        deleted => ($pagemeta->{Control} || '') eq 'Deleted' ? 1 : 0,
-        tags => $tags,
-        summary => $summary,
-        creator_name => $orig_page->{From},
-        create_time => $orig_page->{Date},
-        locked => $pagemeta->{Locked} || 0,
-        views => $views,
-    };
+    $page->{revision_count} ||= 0;
+    $page->{summary} //= '';
+    $page->{edit_summary} //= '';
+
+    $page->{last_editor_id} = delete $page->{editor_id};
+    $page->{last_edit_time} = delete $page->{edit_time};
+
+    delete $page->{body_length};
+
+    return $page;
 }
 
-sub load_revision_metadata {
-    my $self   = shift;
-    my $ws_dir = shift;
-    my $pg_dir = shift;
+my $page_rev_insert = do {
+    my $cols_str = join(',', 'body', Socialtext::PageRevision::COLUMNS());
+    my $ph = '?'; # body
+    $ph .= ',?' x scalar(Socialtext::PageRevision::COLUMNS());
+    qq{INSERT INTO page_revision ($cols_str) VALUES ($ph)};
+};
 
-    my @revisions;
+sub load_revision_metadata {
+    my ($self, $ws_dir, $pg_dir) = @_;
+    my $t = time_scope 'load_rev_metadata';
+
+    my $dbh = get_dbh();
+    my $sth = $dbh->prepare_cached($page_rev_insert) or die $dbh->errmsg;
+
     opendir(my $dfh, "$ws_dir/$pg_dir");
     REV: while (my $file = readdir($dfh)) {
         next unless $file =~ m/^\d+\.txt$/;
@@ -232,9 +230,13 @@ sub load_revision_metadata {
 
         # Ignore really old pages that have invalid page_ids
         next REV unless Socialtext::Encode::is_valid_utf8($file);
-        eval {
-            my $pagemeta = fetch_metadata($file);
+        try {
+            my $t2 = time_scope 'load_rev';
             (my $revision_id = $file) =~ s#.+/(.+)\.txt$#$1#;
+            my $pagemeta = fetch_metadata($file);
+            my $body_ref = Socialtext::Page::Legacy::read_and_decode_file(
+                $file, 1, 1); # "return content as ref"
+
             my $tags = $pagemeta->{Category} || [];
             $tags = [$tags] unless ref($tags);
 
@@ -248,42 +250,154 @@ sub load_revision_metadata {
                 $summary = $summary->[-1];
             }
 
-            push @revisions, [
-                Socialtext::Page::Legacy::read_and_decode_file($file, 1, 1),
-                $self->{workspace}->workspace_id,
-                $pg_dir,
-                $revision_id,
-                $pagemeta->{Revision} || 1,
-                $subject,
-                editor_to_id($pagemeta->{From}),
-                $pagemeta->{Date},
-                $pagemeta->{Type} || 'wiki',
-                ($pagemeta->{Control} || '') eq 'Deleted' ? 1 : 0,
-                $summary,
-                $pagemeta->{'Revision-Summary'} || '',
-                $pagemeta->{Locked} || 0,
-                $tags,
-            ];
-        };
-        if ($@) {
-            warn "Error parsing revision $ws_dir/$pg_dir/$file: $@, skipping\n";
+            my %cols = (
+                workspace_id => $self->{workspace}->workspace_id,
+                page_id => $pg_dir,
+                body_length => length($$body_ref),
+                revision_id => $revision_id,
+                revision_num => $pagemeta->{Revision}||1,
+                name => $subject,
+                editor_id => editor_to_id($pagemeta->{From}),
+                edit_time => $pagemeta->{Date},
+                page_type => $pagemeta->{Type}||'wiki',
+                deleted => (($pagemeta->{Control} || '') eq 'Deleted') ? 1 : 0,
+                summary => $summary,
+                edit_summary => $pagemeta->{'Revision-Summary'},
+                locked => $pagemeta->{Locked}||0,
+                tags => $tags,
+            );
+
+            local $dbh->{RaiseError} = 1;
+            my $n = 1;
+            $sth->bind_param($n++, $$body_ref, {pg_type => DBD::Pg::PG_BYTEA});
+            for my $col (Socialtext::PageRevision::COLUMNS()) {
+                $sth->bind_param($n++, $cols{$col});
+            };
+            $sth->execute;
+            die "failed to insert $revision_id" unless $sth->rows == 1;
         }
+        catch {
+            warn "Error parsing revision $ws_dir/$pg_dir/$file, skipping: $_\n";
+        };
     }
     closedir($dfh);
+}
 
-    # Review: Is it possible to do this more efficiently in bulk?
-    # It is not obvious how to do this with the BYTEA
-    for my $rev (@revisions) {
-        my $content_ref = shift @$rev;
-        # Also update SQL in Socialtext/Page.pm if necessary
-        sql_saveblob($content_ref, <<'EOSQL', @$rev);
-INSERT INTO page_revision (
-            body, workspace_id, page_id, revision_id, revision_num, name,
-            editor_id, edit_time, page_type, deleted, summary, edit_summary,
-            locked, tags
-        )
-        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
-EOSQL
+sub load_page_attachments {
+    my ($self, $ws_dir, $page_hash) = @_;
+    my $t = time_scope 'load_page_atts';
+
+    my $atts_dir = $self->{workspace_plugin_dir}."/attachments/".
+        $page_hash->{page_id};
+    return unless -d $atts_dir;
+
+    my $dbh = get_dbh();
+    my ($sth, $sth2);
+
+    opendir my $dh, $atts_dir or die "can't open dir $atts_dir: $!";
+  ATT:
+    while (my $file = readdir($dh)) {
+        next unless $file =~ m{([0-9-]+)\.txt$};
+        my $legacy_id = $1;
+        $file = "$atts_dir/$file";
+        next unless -f $file;
+
+        $sth //= $dbh->prepare_cached(q{
+            INSERT INTO page_attachment VALUES (?,?,?,?,?)
+        });
+        $sth2 //= $dbh->prepare_cached(q{
+            UPDATE attachment SET is_temporary = false WHERE attachment_id = ?
+        });
+
+        try {
+            my $t2 = time_scope 'load_page_att';
+            my $meta = fetch_metadata($file);
+
+            # lowercase and underscorify headers to get rid of inconsistencies.
+            $meta = { map {
+                my $k = $_;
+                $_ = lc($_);
+                tr/-/_/;
+                $_ => $meta->{$k};
+            } keys %$meta };
+            
+            # From: q@q.q
+            # Subject: Non-Hippie.jpg
+            # DB_Filename: Non-Hippie.jpg
+            # Date: 2011-02-08 22:19:01 GMT
+            # Content-Length: 50418
+            # Received: from 96.54.183.89
+            # Content-MD5: cs7LkgTlDfL2ZS9rGVmkSA==
+            # Content-type: image/jpeg
+            # Control: Deleted
+
+            $meta->{content_length} //= -1;
+            my $control = $meta->{control} || '';
+            my $deleted = $control eq 'Deleted' ? 1 : 0;
+
+            my $disk_filename = "$atts_dir/$legacy_id/$meta->{db_filename}";
+            my $disk_size = -s $disk_filename;
+            if (!-f _ || !-r _) {
+                die "attachment missing\n" if $Noisy;
+                return; # from the try
+            }
+            elsif (!$disk_size) {
+                die "zero-length attachment\n" if $Noisy;
+                return; # from the try
+            }
+            elsif ($meta->{content_length} != $disk_size) {
+                warn "attachment has unexpected size; ".
+                    "got $disk_size, expected $meta->{content_length}\n"
+                    if $Noisy;
+                # continue
+            }
+
+            my %args = (
+                temp_filename  => $disk_filename,
+                creator_id     => editor_to_id($meta->{from}),
+                created_at     => $meta->{date},
+                filename       => $meta->{subject},
+                content_length => $disk_size,
+                md5            => $meta->{content_md5}, # possibly ignored
+                no_log         => 1,
+                db_only        => 1, # don't copy to storage area
+            );
+
+            if (-f "$disk_filename-mime") {
+                my $hint = do { local (@ARGV,$_) = "$disk_filename-mime"; <> };
+                chomp $hint;
+                $args{mime_type} = $hint if $hint;
+            }
+            elsif ($meta->{content_type}) {
+                $args{mime_type} = $meta->{content_type};
+            }
+
+            # Don't recalculate the mime_type (which requires a slow
+            # shell-out) if we have it at hand.  This saves about 40% time for
+            # help-en.
+            $args{trust_mime_type} = 1 if $args{mime_type}; # big for perf
+
+            sql_txn {
+                my $t3 = time_scope 'upload_att';
+                my $upload = Socialtext::Upload->Create(%args);
+                undef $t3;
+
+                # page_attachment make_permanent:
+                # NOTE bind values must be same order as actual table
+                $sth->execute($legacy_id, @$page_hash{qw(workspace_id page_id)},
+                              $upload->attachment_id, $deleted);
+                die "insert failed" unless $sth->rows == 1;
+
+                # roughly Socialtext::Upload->make_permanent():
+                $sth2->execute($upload->attachment_id);
+                die "upload de-temping failed" unless $sth->rows == 1;
+                $upload->is_temporary(0); # just in case of cached
+            };
+        }
+        catch {
+            chomp;
+            warn "importing attachment $legacy_id failed, skipping: $_\n";
+        };
     }
 }
 
@@ -320,10 +434,10 @@ sub add_to_db {
 
     my $dbh = get_dbh();
 
-    my $vals = join ',', map { '?' } @{ $rows->[0] };
-    my $sth = $dbh->prepare(<<EOT);
-INSERT INTO $table VALUES ($vals);
-EOT
+    my $ph = '?,' x scalar @{ $rows->[0] }; chop $ph;
+    $table = $dbh->quote_identifier($table);
+    my $sth = $dbh->prepare_cached(qq{INSERT INTO $table VALUES ($ph)})
+        or die $dbh->errstr;
     my $row;
     for $row (@$rows) {
         $sth->execute(@$row)
@@ -347,22 +461,6 @@ sub page_exists_in_db {
         }, $ws_id, $page_id
     );
     return defined $exists_already ? 1 : 0;
-}
-
-sub load_original_revision {
-    my $page_dir = shift;
-
-    opendir my $dir, $page_dir or die "Couldn't open $page_dir";
-    my @ids = grep defined, map { /(\d+)\.txt$/; $1; } readdir $dir;
-    closedir $dir;
-
-    @ids = sort @ids;
-    my $orig_rev = shift @ids;
-
-    my $file = "$page_dir/$orig_rev.txt";
-    die "$file does not exist!" unless -e $file;
-    my $orig_metadata = fetch_metadata($file);
-    return (scalar(@ids), $orig_metadata);
 }
 
 sub fetch_metadata {
@@ -400,17 +498,20 @@ sub fetch_metadata {
 
             # Load or create a new user with the given email.
             # Email addresses are always written to disk, even for ldap users.
-            my $user;
-            eval {
-                $user = Socialtext::User->new(email_address => $email_address);
+            my $user = try {
+                Socialtext::User->new(email_address => $email_address);
             };
             unless ($user) {
                 warn "Creating user account for '$email_address'\n";
-                eval {
+                try {
                     $user = Socialtext::User->create(
                         email_address => $email_address,
                         username      => $email_address,
                     );
+                }
+                catch {
+                    warn "Failed to create user '$email_address', ".
+                         "defaulting to system-user\n";
                 };
                 $user ||= Socialtext::User->SystemUser();
             }
@@ -421,25 +522,17 @@ sub fetch_metadata {
     }
 }
 
-
-sub find_current_revision {
+sub fix_relative_page_link {
     my $dir = shift;
+    my $t = time_scope 'fix_rel_page_lnk';
 
     my $page_link_name = "$dir/index.txt";
-
     my $current_revision_file = ( -f $page_link_name )
         ? readlink( $page_link_name )
         : Socialtext::File::newest_directory_file( $dir );
 
     die "Couldn't find revision page for $page_link_name, skipping."
         unless $current_revision_file;
-
-}
-
-sub fix_relative_page_link {
-    my $dir = shift;
-
-    my $current_revision_file = find_current_revision( $dir );
 
     unless ($current_revision_file =~ m#^/#) {
         my $abs_page = abs_path("$dir/$current_revision_file");
@@ -451,6 +544,7 @@ sub fix_relative_page_link {
 
 sub read_counter {
     my $file = shift;
+    my $t = time_scope 'read_counter';
     my $contents = Socialtext::File::get_contents($file);
     my (undef, $count) = split "\n", $contents;
     return $count;
@@ -458,6 +552,7 @@ sub read_counter {
 
 sub load_breadcrumbs {
     my $self  = shift;
+    my $t = time_scope 'load_breadcrumbs';
     my $ws_id = $self->{workspace}->workspace_id;
 
     my $ws_user_dir = $self->{workspace_user_dir};

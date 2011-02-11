@@ -30,7 +30,7 @@ sub _entities_for_query {
     if (lc($self->tag) eq 'recent changes') {
         my $prefs = $self->hub->recent_changes->preferences;
         my $seconds = $prefs->changes_depth->value * 1440 * 60;
-        $pagesref = Socialtext::Model::Pages->By_seconds_limit(
+        $pagesref = Socialtext::Pages->By_seconds_limit(
             seconds          => $seconds,
             hub              => $self->hub,
             limit            => $limit,
@@ -40,14 +40,14 @@ sub _entities_for_query {
             type             => $type,
         );
         $self->total_result_count(
-            Socialtext::Model::Pages->ChangedCount(
+            Socialtext::Pages->ChangedCount(
                 workspace_id => $self->hub->current_workspace->workspace_id,
                 duration => $seconds,
             )
         );
     }
     else {
-        $pagesref = Socialtext::Model::Pages->By_tag(
+        $pagesref = Socialtext::Pages->By_tag(
             hub          => $self->hub,
             tag          => $self->tag,
             workspace_id => $self->hub->current_workspace->workspace_id,

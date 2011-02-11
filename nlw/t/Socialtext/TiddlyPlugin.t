@@ -53,7 +53,7 @@ while ($attributes =~ /([\w\.]+)="([^"]+)"/g) {
 # make sure we get the right name and such
 $page = $hub->pages->new_from_name($Title);
 
-is $attribute{'title'}, $page->metadata->Subject,
+is $attribute{'title'}, $page->name,
     'tiddler and subject are the same';
 is $attribute{'title'}, $Title, 'tiddler and given title are the same';
 is $attribute{'modifier'}, 'devnull1@socialtext.com',

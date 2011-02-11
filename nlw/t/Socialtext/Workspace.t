@@ -1,7 +1,7 @@
 #!perl
 # @COPYRIGHT@
 use mocked qw(Socialtext::l10n system_locale); # Has to come firstest.
-use Test::Socialtext tests => 121;
+use Test::Socialtext tests => 112;
 use Test::Socialtext::Fatal;
 use strict;
 use warnings;
@@ -68,13 +68,6 @@ ALL_WORKSPACE_IDS_AND_NAMES: {
     }
     like( $ws->uri, qr{\Qhttp://$hostname/short-name/\E}i,
           'check workspace uri' );
-
-    for my $dir (
-        Socialtext::Paths::plugin_directory('short-name'),
-        Socialtext::Paths::user_directory('short-name'),
-    ) {
-        ok( -d $dir, "$dir exists after workspace is created" );
-    }
 
     Workspace_skin_should_override_account_skin: {
         $ws->update(skin_name => 'reds3');
@@ -177,13 +170,6 @@ Undef_skin_name: {
 Delete_a_workspace: {
     my $ws = Socialtext::Workspace->new( name => 'short-name' );
     $ws->delete;
-
-    for my $dir (
-        Socialtext::Paths::plugin_directory('short-name'),
-        Socialtext::Paths::user_directory('short-name'),
-    ) {
-        ok( ! -d $dir, "$dir does not exist after workspace is deleted" );
-    }
 
     ok( ! Socialtext::EmailAlias::find_alias('short-name'),
         'alias for short-name-2 does not exist after workspace is deleted' );
@@ -445,7 +431,7 @@ Clone_from_workspace: {
         name             => 'cloned',
         title            => 'Cloned from',
         account_id       => Socialtext::Account->Socialtext()->account_id,
-        clone_pages_from => 'no-pages'
+        clone_pages_from => $to_clone_hub->current_workspace->name,
     );
 
     # Make sure the new workspace 'inherits' the homepage.

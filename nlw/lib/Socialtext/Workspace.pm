@@ -43,7 +43,6 @@ use Socialtext::Page;
 use Socialtext::Workspace::Permissions;
 use Socialtext::Workspace::Roles;
 use Socialtext::Timer;
-use Socialtext::Pluggable::Adapter;
 use Socialtext::JSON qw(decode_json);
 use Socialtext::JSON::Proxy::Helper;
 use URI;
@@ -352,23 +351,22 @@ sub _add_workspace_pages {
     my $keep_categories = $params{keep_homepage_categories};
     my @pages           = @{ $params{pages} };
 
-    my ( $main, $hub ) = $self->_main_and_hub();
-
     # Duplicate the pages
     for my $page (@pages) {
-        my $title = $page->title;
+        $page->edit_rev();
+        my $title = $page->name;
 
-        if ( $page->id eq $top_page_id ) {
-            $title = $self->title;
-            my $content = $page->content;
-            my $content_formatted = $hub->template->process(
-                \$content,
+        if ($page->id eq $top_page_id) {
+            my ($main, $hub) = $self->_main_and_hub();
+            $title = $self->title;  # name it after this workspace
+            # don't assign process() output to a var for speed/space
+            $page->content($hub->template->process(
+                $page->body_ref,
                 workspace_title => $self->title
-            );
-            $page->content($content_formatted);
-
-            $page->metadata->Category([]) unless $keep_categories;
-        } else {
+            ));
+            $page->tags([]) unless $keep_categories;
+        }
+        else {
             $page->delete_tag("Top Page");
         }
 
@@ -406,6 +404,7 @@ sub _update_aliases_file {
 sub _enable_default_plugins {
     my $self = shift;
     require Socialtext::SystemSettings;
+    require Socialtext::Pluggable::Adapter;
     for my $p (Socialtext::Pluggable::Adapter->plugins) {
         next if $p->scope ne 'workspace';
         my $plugin = $p->name;
@@ -476,12 +475,8 @@ sub _update {
 
     my $new_account = $self->account;
     if ( $old_account->account_id != $new_account->account_id ) {
-        my $adapter = Socialtext::Pluggable::Adapter->new;
-        $adapter->make_hub(Socialtext::User->SystemUser(), $self);
-
         $old_account->user_set->remove_object_role($self);
         $new_account->user_set->add_object_role($self => 'member');
-
         my $users = $self->users;
         while ( my $user = $users->next ) {
             require Socialtext::JobCreator;
@@ -567,7 +562,6 @@ my %ReservedNames = map { $_ => 1 } qw(
     superuser
     test-selenium
     workspace
-    wsdl
     user
 );
 
@@ -1108,6 +1102,8 @@ after 'role_change_event' => sub {
 sub _user_role_changed {
     my ($self,$actor,$change,$user,$role) = @_;
 
+    require Socialtext::Pluggable::Adapter;
+
     if ($change eq 'add') {
         # This is needed because of older appliances where users were put in
         # one of three accounts that are not optimal:
@@ -1333,6 +1329,7 @@ sub _dump_to_yaml_file {
     $dump{name} = $name;
     $dump{plugins} = { map { $_ => 1 } $self->plugins_enabled };
 
+    require Socialtext::Pluggable::Adapter;
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub(Socialtext::User->SystemUser(), $self);
     $adapter->hook('nlw.export_workspace', [$self, \%dump]);
@@ -1398,6 +1395,7 @@ sub _dump_users_to_yaml_file {
         push @dump, $dumped_user;
     }
 
+    require Socialtext::Pluggable::Adapter;
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub(Socialtext::User->SystemUser(), $self);
     $adapter->hook('nlw.export_workspace_users', [$self, \@dump]);
@@ -1409,6 +1407,7 @@ sub _dump_user_to_hash {
     my $self = shift;
     my $user = shift;
 
+    require Socialtext::Pluggable::Adapter;
     my $adapter = Socialtext::Pluggable::Adapter->new;
     $adapter->make_hub($user);
     my $plugin_prefs = {};

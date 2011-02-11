@@ -18,8 +18,6 @@ basics_and_ordering: {
         creator    => $hub->current_user,
     );
 
-    sleep(1); # owch - to set the <datestamp>.txt
-
     my $second_post = Socialtext::Page->new( hub => $hub )->create(
         title      => 'Going public tomorrow!',
         content    => 'We are all so excited to be changing the world /and/ getting rich!',
@@ -27,8 +25,6 @@ basics_and_ordering: {
         date       => DateTime->new( year => 2000, month => 2, day => 1 ),
         creator    => $hub->current_user,
     );
-
-    sleep(1); # oof
 
     my $third_post = Socialtext::Page->new( hub => $hub )->create(
         title      => 'Looking for job',
@@ -38,14 +34,9 @@ basics_and_ordering: {
         creator    => $hub->current_user,
     );
 
-    sleep(1); # ow
-
-    $second_post->content(
-        $second_post->content
-        . "\n---\nWhat happened to the going public thing?\n"
-    );
-    $second_post->metadata->update( user => $hub->current_user );
-    $second_post->store( user => $hub->current_user );
+    $second_post->edit_rev();
+    $second_post->append("What happened to the going public thing?\n");
+    $second_post->store();
 
     # Note that the following is actually testing a Socialtext::CategoryPlugin
     # method, but the blog is the only thing that uses the non-default right

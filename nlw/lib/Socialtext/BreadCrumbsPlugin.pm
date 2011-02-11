@@ -10,7 +10,7 @@ use File::Basename ();
 use File::Path ();
 use Socialtext::l10n qw(loc);
 use Socialtext::SQL qw/get_dbh sql_execute/;
-use Socialtext::Model::Pages;
+use Socialtext::Pages;
 use Socialtext::Timer qw/time_scope/;
 
 sub class_id { 'breadcrumbs' }
@@ -154,7 +154,7 @@ sub _load_trail {
     my $t = time_scope 'load_crumbs';
     my $ws_id = $self->hub->current_workspace->workspace_id;
     my $sth = sql_execute(
-        qq{SELECT $Socialtext::Model::Pages::MODEL_FIELDS FROM page
+        qq{SELECT $Socialtext::Pages::MODEL_FIELDS FROM page
              JOIN "Workspace" USING (workspace_id)
              JOIN breadcrumb  USING (workspace_id, page_id)
             WHERE workspace_id = \$1
@@ -164,7 +164,7 @@ sub _load_trail {
         },
         $ws_id, $self->hub->current_user->user_id,
     );
-    return Socialtext::Model::Pages->load_pages_from_sth($sth, $self->hub);
+    return Socialtext::Pages->load_pages_from_sth($sth, $self->hub);
 }
 
 ######################################################################

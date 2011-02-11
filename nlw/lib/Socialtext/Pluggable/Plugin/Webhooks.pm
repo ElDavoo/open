@@ -90,8 +90,7 @@ sub _fire_page_webhooks {
 
     my $thunk = sub {
         my %p = @_;
-        my $editor = Socialtext::User->new(
-            email_address => $page->metadata->From);
+        my $editor = $page->last_editor;
         my $editor_blob = {
             id             => $editor->user_id,
             best_full_name => $editor->best_full_name,
@@ -99,7 +98,7 @@ sub _fire_page_webhooks {
         return {
             class  => $p{class},
             actor  => $editor_blob,
-            at     => $page->metadata->Date,
+            at     => $page->datetime_utc,
             object => {
                 workspace => {
                     title => $wksp->title,
@@ -107,16 +106,16 @@ sub _fire_page_webhooks {
                     id    => $wksp->workspace_id,
                 },
                 id           => $page->id,
-                name         => $page->metadata->Subject,
+                name         => $page->name,
                 uri          => $page->full_uri,
                 edit_summary => $page->edit_summary,
-                tags         => $page->metadata->Category,
+                tags         => $page->tags,
                 tags_added   => $tags_added,
                 tags_deleted => $tags_deleted,
-                edit_time    => $page->metadata->Date,
-                type         => $page->metadata->Type,
+                edit_time    => $page->datetime_utc,
+                type         => $page->page_type,
                 editor       => $editor_blob,
-                create_time  => $page->original_revision->metadata->Date,
+                create_time  => $page->createtime_utc,
                 revision_count => $page->revision_count,
                 revision_id    => $page->revision_id,
             }
@@ -126,7 +125,7 @@ sub _fire_page_webhooks {
     my %hook_opts = (
         account_ids   => [ $wksp->account->account_id ],
         workspace_id  => $wksp->workspace_id,
-        tags          => $p{tags} || $page->metadata->Category,
+        tags          => $p{tags} || $page->tags,
         page_id       => $page->id,
         payload_thunk => $thunk,
     );
@@ -153,18 +152,19 @@ sub page_update {
     my $class = 'page.update';
     if ($page->revision_count == 1) {
         $class = 'page.create';
-        $p{tags_added} = $page->metadata->Category;
+        $p{tags_added} = $page->tags;
     }
     elsif ($page->deleted) {
         $class = 'page.delete';
-        $p{tags} = $page->prev_revision->metadata->Category;
+        $p{tags} = $page->prev_rev->tags;
     }
     else {
         $class = 'page.create' if $page->restored;
 
         # Look for page tag changes
-        my %prev_tags = map { $_ => 1 } @{ $page->prev_revision->metadata->Category };
-        my %now_tags  = map { $_ => 1 } @{ $page->metadata->Category };
+        my %prev_tags = $page->has_prev_rev ?
+            (map { $_ => 1 } @{ $page->prev_rev->tags }) : ();
+        my %now_tags  = map { $_ => 1 } @{ $page->tags };
 
         my (@added, @deleted);
         for my $t (keys %prev_tags) {

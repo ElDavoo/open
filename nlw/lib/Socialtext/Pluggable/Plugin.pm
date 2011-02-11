@@ -576,7 +576,7 @@ sub tags_for_page {
     my @tags = ();
     my $page = $self->get_page(%p);
     if (defined($page)) {
-        push @tags, @{$page->metadata->Category};
+        push @tags, @{$page->tags};
     }
     return ( grep { lc($_) ne 'recent changes' } @tags );
 }
@@ -842,8 +842,7 @@ sub sheet_renderer {
         $hub         = $self->hub;
     }
     else {
-        my $content = $page_or_ref->content;
-        $content_ref = \$content;
+        $content_ref = $page_or_ref->body_ref;
         $hub         = $page_or_ref->hub;
     }
 

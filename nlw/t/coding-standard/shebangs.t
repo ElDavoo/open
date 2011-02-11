@@ -31,6 +31,7 @@ my %IGNORE_MEGAPERL = map { $_ => 1 } qw(
     appliance/libsocialtext-appliance-perl/debian/rules
     appliance/libsocialtext-appliance-perl/debian/postinst
     socialtext-skins/debian/rules
+    socialtext-reports/Makefile
 );
 
 my %IGNORE_SH = map {$_=>1} qw(
@@ -56,7 +57,7 @@ for my $f (@files) {
         $f =~ m{\.sw[mnop]$} or # vim tempfile
         $f =~ m{\.(?:rej|orig|bak)$} or # tempfile
         $f =~ m{^~} or # tempfile
-        $f =~ m{/DEBIAN/} or # .deb temp stuff
+        $f =~ m{/(?:DEBIAN|debian)/} or # .deb temp stuff
         $f =~ m{(?:amd64|i386)\.build$}
     );
 

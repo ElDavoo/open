@@ -1,0 +1,1266 @@
+# @COPYRIGHT@
+msgid ""
+msgstr ""
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: \n"
+"PO-Revision-Date: \n"
+"Language-Team: Socialtext i18n team\n"
+"Last-Translator: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. (summary)
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1438 share/skin/wikiwyg/javascript/socialtext-editor-light.js:1635 share/skin/wikiwyg/javascript/socialtext-editor.js:5301
+msgid "\"%1\""
+msgstr ""
+
+#. (page_name)
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:543 share/skin/wikiwyg/javascript/socialtext-editor-light.js:740 share/skin/wikiwyg/javascript/socialtext-editor.js:4406
+msgid "\"%1\" is a reserved page name. Please use a different name"
+msgstr ""
+
+#. (msg)
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:757 share/skin/wikiwyg/javascript/socialtext-editor-light.js:954 share/skin/wikiwyg/javascript/socialtext-editor.js:4620
+msgid ""
+"%1\n"
+"\n"
+"You have unsaved changes.\n"
+"\n"
+"Press OK to continue, or Cancel to stay on the current page."
+msgstr ""
+
+#. (label)
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3201 share/skin/wikiwyg/javascript/socialtext-editor-light.js:8539 share/skin/wikiwyg/javascript/socialtext-editor.js:9829
+msgid "'%1' has an invalid value"
+msgstr ""
+
+#. (label)
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3169 share/skin/wikiwyg/javascript/socialtext-editor-light.js:8507 share/skin/wikiwyg/javascript/socialtext-editor.js:9797
+msgid "'%1' is a required field"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1970 share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1988 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2167 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2185 share/skin/wikiwyg/javascript/socialtext-editor.js:5833 share/skin/wikiwyg/javascript/socialtext-editor.js:5851
+msgid "(Note: HTML fragments are not guaranteed to work and may break the UI.)"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1999 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2196 share/skin/wikiwyg/javascript/socialtext-editor.js:5862
+msgid "(Preformatted Text is plain text displayed exactly as entered.)"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:211
+msgid "75"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/widget_html_edit.html:8
+msgid ":"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/template/widget_edit.tt2:4
+msgid "<! widget.desc !>"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/template/widget_edit.tt2:1
+msgid "<! widget.label !>"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/template/widget_edit.tt2:119 share/skin/wikiwyg/javascript/template/widget_edit.tt2:164 share/skin/wikiwyg/javascript/template/widget_edit.tt2:82 share/skin/wikiwyg/javascript/template/widget_edit.tt2:92
+msgid "<! widget.labels.$field || data.fields.$field !>:"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/template/widget_edit.tt2:24
+msgid "<! widget.more_desc !>"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1332 share/skin/wikiwyg/javascript/socialtext-editor-light.js:1529 share/skin/wikiwyg/javascript/socialtext-editor.js:5195
+msgid "<a target=\"_blank\" href=\"http://www.mozilla.com/firefox/\">Download Firefox</a> for richer Socialtext editing functionality."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/widget_resource.js:84
+msgid "AIM screen name"
+msgstr ""
+
+#. (aim_id)
+#: share/skin/wikiwyg/javascript/widget_resource.js:56
+msgid "AIM: %1"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:17 share/skin/wikiwyg/javascript/jemplate/add-a-block.html:18
+msgid "ActionScript3"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:124
+msgid "Add"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:111
+msgid "Add Tags"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/table-options.html:39
+msgid "Add a column left"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/table-options.html:40
+msgid "Add a column right"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-link.html:2
+msgid "Add a link"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/table-options.html:26
+msgid "Add a row above"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/table-options.html:27
+msgid "Add a row below"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:76
+msgid "Add tags..."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1226 share/skin/wikiwyg/javascript/socialtext-editor-light.js:6564 share/skin/wikiwyg/javascript/socialtext-editor.js:7854
+msgid "Advanced Content in Grey Border"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1382 share/skin/wikiwyg/javascript/socialtext-editor-light.js:6720 share/skin/wikiwyg/javascript/socialtext-editor.js:8010
+msgid "Advanced Mode"
+msgstr ""
+
+#. (advanced_link)
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1232 share/skin/wikiwyg/javascript/socialtext-editor-light.js:6570 share/skin/wikiwyg/javascript/socialtext-editor.js:7860
+msgid "Advanced content is shown inside a grey border. Switch to %1 to edit areas inside a grey border."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3238 share/skin/wikiwyg/javascript/socialtext-editor-light.js:8576 share/skin/wikiwyg/javascript/socialtext-editor.js:9866
+msgid "An error occured; please try later."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:136
+msgid "Append your text to the bottom of the existing page named:"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1393 share/skin/wikiwyg/javascript/socialtext-editor-light.js:1590 share/skin/wikiwyg/javascript/socialtext-editor.js:5256
+msgid "Are you sure you want to cancel?"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:769 share/skin/wikiwyg/javascript/socialtext-editor-light.js:966 share/skin/wikiwyg/javascript/socialtext-editor.js:4632
+msgid "Are you sure you want to navigate away from this page?"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/widget_resource.js:80
+msgid "Atom feed URL"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1259 share/skin/wikiwyg/javascript/socialtext-editor-light.js:6597 share/skin/wikiwyg/javascript/socialtext-editor.js:7887
+msgid "Attachments"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:19
+msgid "Bash"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:20
+msgid "C"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:21
+msgid "C#"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:22
+msgid "C++"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:25
+msgid "CSS"
+msgstr ""
+
+#. (skype_id)
+#: share/skin/wikiwyg/javascript/widget_resource.js:26
+msgid "Call '%1' using Skype. Click to edit."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1905 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2102 share/skin/wikiwyg/javascript/socialtext-editor.js:5768
+msgid "Can't have a 0 for a size."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:65 share/skin/wikiwyg/javascript/jemplate/add-a-link.html:75 share/skin/wikiwyg/javascript/jemplate/opensocial-gallery.html:10 share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:24 share/skin/wikiwyg/javascript/jemplate/table-create.html:50 share/skin/wikiwyg/javascript/jemplate/table-options.html:54 share/skin/wikiwyg/javascript/jemplate/widget_html_edit.html:37 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:14 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:148 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:168 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:377 share/skin/wikiwyg/javascript/template/widget_edit.tt2:69
+msgid "Cancel"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:76
+msgid "Click this button to add a tag to the page"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:72
+msgid "Click this button to upload a file to the page"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:122 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:179
+msgid "Close"
+msgstr ""
+
+#. (syntax)
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1976 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2173 share/skin/wikiwyg/javascript/socialtext-editor.js:5839
+msgid "Code block with %1 syntax. Click to edit."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1973 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2170 share/skin/wikiwyg/javascript/socialtext-editor.js:5836
+msgid "Code block. Click to edit."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:23 share/skin/wikiwyg/javascript/jemplate/add-a-block.html:24
+msgid "ColdFusion"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1448 share/skin/wikiwyg/javascript/socialtext-editor-light.js:6786 share/skin/wikiwyg/javascript/socialtext-editor.js:8076
+msgid "Columns is invalid."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1958 share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1456 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2155 share/skin/wikiwyg/javascript/socialtext-editor-light.js:6794 share/skin/wikiwyg/javascript/socialtext-editor.js:5821 share/skin/wikiwyg/javascript/socialtext-editor.js:8084
+msgid "Columns is too big. 35 maximum."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/table-create.html:15
+msgid "Columns:"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:8
+msgid "Content"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/table-create.html:1
+msgid "Create Table"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/table-options.html:15
+msgid "Current Column:"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/table-options.html:5
+msgid "Current Row:"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/template/widget_edit.tt2:149 share/skin/wikiwyg/javascript/template/widget_edit.tt2:197
+msgid "Custom"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/table-options.html:45
+msgid "Delete column"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/table-options.html:32
+msgid "Delete row"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:26
+msgid "Delphi"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:27
+msgid "Diff"
+msgstr ""
+
+#. (date_string)
+#: share/skin/wikiwyg/javascript/widget_resource.js:28
+msgid "Display '%1' in reader's time zone. Click to edit."
+msgstr ""
+
+#. (image_name)
+#: share/skin/wikiwyg/javascript/widget_resource.js:5
+msgid "Display image '%1'. Click to edit."
+msgstr ""
+
+#. (tag_name)
+#: share/skin/wikiwyg/javascript/widget_resource.js:14
+msgid "Display pages with the '%1' tag. Click to edit."
+msgstr ""
+
+#. (search_term)
+#: share/skin/wikiwyg/javascript/widget_resource.js:21
+msgid "Display result for searching '%1'. Click to edit."
+msgstr ""
+
+#. (weblog_name)
+#: share/skin/wikiwyg/javascript/widget_resource.js:17
+msgid "Display the weblog '%1'. Click to edit."
+msgstr ""
+
+#. (workspace_id)
+#: share/skin/wikiwyg/javascript/widget_resource.js:11
+msgid "Display what's new in the '%1' workspace. Click to edit."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:370 share/skin/wikiwyg/javascript/lib/Wikiwyg.js:381 share/skin/wikiwyg/javascript/socialtext-editor-light.js:567 share/skin/wikiwyg/javascript/socialtext-editor-light.js:578 share/skin/wikiwyg/javascript/socialtext-editor.js:4233 share/skin/wikiwyg/javascript/socialtext-editor.js:4244
+msgid "Edit More"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:357
+msgid "Edit Table"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:2
+msgid "Edit Widget"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:50 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:55
+msgid "Editing:"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:54
+msgid "Editing: "
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:160
+msgid "Enter a meaningful and distinctive title for your page."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:28
+msgid "Erlang"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:39
+msgid "Expand"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:39
+msgid "Expand edit area to fill browser window"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3487 share/skin/wikiwyg/javascript/socialtext-editor-light.js:8825 share/skin/wikiwyg/javascript/socialtext-editor.js:10115
+msgid "Fewer options"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/widget_resource.js:71
+msgid "File name"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/widget_resource.js:67
+msgid "Form name"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/template/widget_edit.tt2:52
+msgid "Full results:"
+msgstr ""
+
+#. (search_term)
+#: share/skin/wikiwyg/javascript/widget_resource.js:54
+msgid "Google: %1"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:29
+msgid "Groovy"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:30
+msgid "HTML"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-link.html:22
+msgid "If not current"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/widget_resource.js:66
+msgid "Image name"
+msgstr ""
+
+#. (atom_url)
+#: share/skin/wikiwyg/javascript/widget_resource.js:19
+msgid "Include the '%1' Atom feed. Click to edit."
+msgstr ""
+
+#. (rss_url)
+#: share/skin/wikiwyg/javascript/widget_resource.js:18
+msgid "Include the '%1' RSS feed. Click to edit."
+msgstr ""
+
+#. (page_title)
+#. (spreadsheete_title)
+#: share/skin/wikiwyg/javascript/widget_resource.js:31 share/skin/wikiwyg/javascript/widget_resource.js:8
+msgid "Include the page '%1'. Click to edit."
+msgstr ""
+
+#. (weblog_name)
+#: share/skin/wikiwyg/javascript/widget_resource.js:16
+msgid "Include the weblog '%1'. Click to edit."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:2065 share/skin/wikiwyg/javascript/lib/Wikiwyg/Toolbar.js:57 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2262 share/skin/wikiwyg/javascript/socialtext-editor.js:5928 share/skin/wikiwyg/javascript/socialtext-editor.js:6466
+msgid "Insert"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1968 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2165 share/skin/wikiwyg/javascript/socialtext-editor.js:5831
+msgid "Insert Code"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1986 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2183 share/skin/wikiwyg/javascript/socialtext-editor.js:5849
+msgid "Insert HTML"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1997 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2194 share/skin/wikiwyg/javascript/socialtext-editor.js:5860
+msgid "Insert Preformatted Text"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/opensocial-gallery.html:2
+msgid "Insert Widget"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/widget_html_edit.html:4
+msgid "Insert a block of raw HTML."
+msgstr ""
+
+#. (aim_id)
+#: share/skin/wikiwyg/javascript/widget_resource.js:24
+msgid "Instant message to '%1' using AIM. Click to edit."
+msgstr ""
+
+#. (yahoo_id)
+#: share/skin/wikiwyg/javascript/widget_resource.js:25
+msgid "Instant message to '%1' using Yahoo! Click to edit."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:35
+msgid "JSON"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:31
+msgid "Java"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:32
+msgid "JavaFX"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:33 share/skin/wikiwyg/javascript/jemplate/add-a-block.html:34
+msgid "JavaScript"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:10
+msgid "Large (600px)"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-link.html:50
+msgid "Link destination"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:227 share/skin/wikiwyg/javascript/widget_resource.js:72 share/skin/wikiwyg/javascript/widget_resource.js:83
+msgid "Link text"
+msgstr ""
+
+#. (workspace_id, page_title, section_name)
+#: share/skin/wikiwyg/javascript/widget_resource.js:2
+msgid "Link to %1: '%2' %3. Click to edit."
+msgstr ""
+
+#. (url)
+#: share/skin/wikiwyg/javascript/widget_resource.js:3 share/skin/wikiwyg/javascript/widget_resource.js:4
+msgid "Link to '%1'. Click to edit."
+msgstr ""
+
+#. (file_name)
+#: share/skin/wikiwyg/javascript/widget_resource.js:6
+msgid "Link to file '%1'. Click to edit."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:238
+msgid "Link to section"
+msgstr ""
+
+#. (tag_name)
+#: share/skin/wikiwyg/javascript/widget_resource.js:12
+msgid "Link to tag '%1'. Click to edit."
+msgstr ""
+
+#. (weblog_name)
+#: share/skin/wikiwyg/javascript/widget_resource.js:15
+msgid "Link to weblog '%1'. Click to edit."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-link.html:14 share/skin/wikiwyg/javascript/jemplate/add-a-link.html:45
+msgid "Linked text"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:27 share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1891 share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3610 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2088 share/skin/wikiwyg/javascript/socialtext-editor-light.js:8948 share/skin/wikiwyg/javascript/socialtext-editor.js:10238 share/skin/wikiwyg/javascript/socialtext-editor.js:5754
+msgid "Loading..."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:9
+msgid "Medium (450px)"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/widget_html_edit.html:18 share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3494 share/skin/wikiwyg/javascript/socialtext-editor-light.js:8832 share/skin/wikiwyg/javascript/socialtext-editor.js:10122 share/skin/wikiwyg/javascript/template/widget_edit.tt2:21
+msgid "More options"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/table-options.html:42
+msgid "Move column left"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/table-options.html:43
+msgid "Move column right"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/table-options.html:30
+msgid "Move row down"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/table-options.html:29
+msgid "Move row up"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:37
+msgid "Normal"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:141
+msgid "OK"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/element/edit_summary.html.tt2:14
+msgid "Only members with permission to view this page will receive the signal."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wikitext.js:1398 share/skin/wikiwyg/javascript/socialtext-editor-light.js:4141 share/skin/wikiwyg/javascript/socialtext-editor.js:11872
+msgid "Operation failed due to server error; please try again later."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:39
+msgid "PHP"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-link.html:25
+msgid "Page"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:131
+msgid "Page Already Exists"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:223 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:226 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:227 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:230
+msgid "Page Link"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3255 share/skin/wikiwyg/javascript/socialtext-editor-light.js:8593 share/skin/wikiwyg/javascript/socialtext-editor.js:9883
+msgid "Page Title required if Workspace Id specified"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:162
+msgid "Page Title:"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:234
+msgid "Page section name"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/widget_resource.js:74
+msgid "Page title"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:549 share/skin/wikiwyg/javascript/lib/Wikiwyg.js:683 share/skin/wikiwyg/javascript/socialtext-editor-light.js:746 share/skin/wikiwyg/javascript/socialtext-editor-light.js:880 share/skin/wikiwyg/javascript/socialtext-editor.js:4412 share/skin/wikiwyg/javascript/socialtext-editor.js:4546
+msgid "Page title is too long after URL encoding"
+msgstr ""
+
+#. (tag_name)
+#: share/skin/wikiwyg/javascript/widget_resource.js:13
+msgid "Pages with the '%1' tag. Click to edit."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:36
+msgid "Pascal"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:37
+msgid "Patch"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:38
+msgid "Perl"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:16
+msgid "Plain text"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1922 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2119 share/skin/wikiwyg/javascript/socialtext-editor.js:5785
+msgid "Please enter the number of table columns:"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1921 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2118 share/skin/wikiwyg/javascript/socialtext-editor.js:5784
+msgid "Please enter the number of table rows:"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1956 share/skin/wikiwyg/javascript/socialtext-editor-light.js:7294 share/skin/wikiwyg/javascript/socialtext-editor.js:8584
+msgid "Please select the text you would like to turn into a link."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:40
+msgid "PowerShell"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:2000 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2197 share/skin/wikiwyg/javascript/socialtext-editor.js:5863
+msgid "Preformatted text. Click to edit."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:11 share/skin/wikiwyg/javascript/lib/Wikiwyg.js:369 share/skin/wikiwyg/javascript/lib/Wikiwyg.js:428 share/skin/wikiwyg/javascript/socialtext-editor-light.js:566 share/skin/wikiwyg/javascript/socialtext-editor-light.js:625 share/skin/wikiwyg/javascript/socialtext-editor.js:4232 share/skin/wikiwyg/javascript/socialtext-editor.js:4291
+msgid "Preview"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:41 share/skin/wikiwyg/javascript/jemplate/add-a-block.html:42
+msgid "Python"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/widget_resource.js:79
+msgid "RSS feed URL"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/widget_html_edit.html:1
+msgid "Raw HTML Block"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1989 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2186 share/skin/wikiwyg/javascript/socialtext-editor.js:5852
+msgid "Raw HTML block. Click to edit."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/widget_resource.js:77
+msgid "Relative URL"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1121 share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1128 share/skin/wikiwyg/javascript/socialtext-editor-light.js:1318 share/skin/wikiwyg/javascript/socialtext-editor-light.js:1325 share/skin/wikiwyg/javascript/socialtext-editor.js:4984 share/skin/wikiwyg/javascript/socialtext-editor.js:4991
+msgid "Replace this text with your own."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-link.html:4
+msgid "Required fields are indicated by an"
+msgstr ""
+
+#. (labels.join(', ')
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3186 share/skin/wikiwyg/javascript/socialtext-editor-light.js:8524 share/skin/wikiwyg/javascript/socialtext-editor.js:9814
+msgid "Requires one of: %1"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:37
+msgid "Return edit area to normal view"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:19
+msgid "Rich Text"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1452 share/skin/wikiwyg/javascript/socialtext-editor-light.js:6790 share/skin/wikiwyg/javascript/socialtext-editor.js:8080
+msgid "Rows and Columns must be non-zero."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1446 share/skin/wikiwyg/javascript/socialtext-editor-light.js:6784 share/skin/wikiwyg/javascript/socialtext-editor.js:8074
+msgid "Rows is invalid."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1954 share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1454 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2151 share/skin/wikiwyg/javascript/socialtext-editor-light.js:6792 share/skin/wikiwyg/javascript/socialtext-editor.js:5817 share/skin/wikiwyg/javascript/socialtext-editor.js:8082
+msgid "Rows is too big. 100 maximum."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/table-create.html:6
+msgid "Rows:"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:43
+msgid "Ruby"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:46
+msgid "SQL"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1532 share/skin/wikiwyg/javascript/socialtext-editor-light.js:1729 share/skin/wikiwyg/javascript/socialtext-editor.js:5395
+msgid "Safari does not support Rich Text editing"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:58 share/skin/wikiwyg/javascript/jemplate/add-a-link.html:74 share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:17 share/skin/wikiwyg/javascript/jemplate/table-create.html:43 share/skin/wikiwyg/javascript/jemplate/table-options.html:53 share/skin/wikiwyg/javascript/jemplate/widget_html_edit.html:36 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:169 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:370 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:8 share/skin/wikiwyg/javascript/template/widget_edit.tt2:68
+msgid "Save"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:159
+msgid "Save Page As"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:135
+msgid "Save the page with the name \"<span id=\"st-newpage-duplicate-suggest\">XXX</span>\""
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:134
+msgid "Save with a different name:"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:580 share/skin/wikiwyg/javascript/socialtext-editor-light.js:777 share/skin/wikiwyg/javascript/socialtext-editor.js:4443
+msgid "Saving..."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:44
+msgid "Scala"
+msgstr ""
+
+#. (search_term)
+#: share/skin/wikiwyg/javascript/widget_resource.js:22
+msgid "Search Google for '%1'. Click to edit."
+msgstr ""
+
+#. (search_term)
+#: share/skin/wikiwyg/javascript/widget_resource.js:23
+msgid "Search Technorati for '%1'. Click to edit."
+msgstr ""
+
+#. (search_term)
+#: share/skin/wikiwyg/javascript/widget_resource.js:20
+msgid "Search for '%1'. Click to edit."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/widget_resource.js:64
+msgid "Search term"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/template/widget_edit.tt2:33
+msgid "Search type:"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-link.html:30 share/skin/wikiwyg/javascript/jemplate/add-a-link.html:65
+msgid "Section"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-link.html:61
+msgid "Section in current page"
+msgstr ""
+
+#. (section_name)
+#: share/skin/wikiwyg/javascript/widget_resource.js:9
+msgid "Section marker '%1'. Click to edit."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/widget_resource.js:70
+msgid "Section name"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:45
+msgid "Shell"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/table-create.html:33 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:364
+msgid "Show Cell Borders"
+msgstr ""
+
+#. (user_email)
+#: share/skin/wikiwyg/javascript/widget_resource.js:27
+msgid "Show full name for '%1'. Click to edit."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/element/edit_summary.html.tt2:11
+msgid "Signal this edit to"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/widget_resource.js:76
+msgid "Skype name"
+msgstr ""
+
+#. (skype_id)
+#: share/skin/wikiwyg/javascript/widget_resource.js:58
+msgid "Skype: %1"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:8
+msgid "Small (300px)"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1331 share/skin/wikiwyg/javascript/socialtext-editor-light.js:1528 share/skin/wikiwyg/javascript/socialtext-editor.js:5194
+msgid "Socialtext has limited editing capabilities in Safari."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:2020 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2217 share/skin/wikiwyg/javascript/socialtext-editor.js:5883
+msgid "Socialtext widgets"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:487 share/skin/wikiwyg/javascript/socialtext-editor-light.js:5825 share/skin/wikiwyg/javascript/socialtext-editor.js:7115
+msgid "Sorry, an edit error occured; please re-edit this page."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3234 share/skin/wikiwyg/javascript/socialtext-editor-light.js:8572 share/skin/wikiwyg/javascript/socialtext-editor.js:9862
+msgid "Sorry, this URL does not appear to link to an embeddable video."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3260 share/skin/wikiwyg/javascript/socialtext-editor-light.js:8598 share/skin/wikiwyg/javascript/socialtext-editor.js:9888
+msgid "Spreadsheet Title required if Workspace Id specified"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/widget_resource.js:81
+msgid "Spreadsheet cell"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/widget_resource.js:78
+msgid "Spreadsheet title"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/element/edit_summary.html.tt2:5
+msgid "Summarize your edit (optional)"
+msgstr ""
+
+#. (this.advanced_link_html()
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1377 share/skin/wikiwyg/javascript/socialtext-editor-light.js:6715 share/skin/wikiwyg/javascript/socialtext-editor.js:8005
+msgid "Switch to %1 to use this feature."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:12
+msgid "Syntax highlight as:"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1228 share/skin/wikiwyg/javascript/socialtext-editor-light.js:6566 share/skin/wikiwyg/javascript/socialtext-editor.js:7856
+msgid "Table & Advanced Editing"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1227 share/skin/wikiwyg/javascript/socialtext-editor-light.js:6565 share/skin/wikiwyg/javascript/socialtext-editor.js:7855
+msgid "Table Edit Tip"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/table-create.html:26 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:359
+msgid "Table is Sortable"
+msgstr ""
+
+#. (page_title)
+#: share/skin/wikiwyg/javascript/widget_resource.js:7
+msgid "Table of contents for '%1'. Click to edit."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/template/widget_edit.tt2:41
+msgid "Tag"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/widget_resource.js:65
+msgid "Tag name"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:113
+msgid "Tag:"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:117
+msgid "Tags to apply:"
+msgstr ""
+
+#. (search_term)
+#: share/skin/wikiwyg/javascript/widget_resource.js:55
+msgid "Technorati: %1"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/template/widget_edit.tt2:38
+msgid "Text"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1903 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2100 share/skin/wikiwyg/javascript/socialtext-editor.js:5766
+msgid "That doesn't appear to be a valid number."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1046 share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1068 share/skin/wikiwyg/javascript/socialtext-editor-light.js:1243 share/skin/wikiwyg/javascript/socialtext-editor-light.js:1265 share/skin/wikiwyg/javascript/socialtext-editor.js:4909 share/skin/wikiwyg/javascript/socialtext-editor.js:4931
+msgid "The browser is currently offline; please connect to the internet and try again."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:133
+msgid "There is <span id=\"st-newpage-duplicate-emphasis\">already a page</span> named <a id=\"st-newpage-duplicate-link\" href=\"#\" target=\"\">XXX</a>. Would you like to:"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:2021 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2218 share/skin/wikiwyg/javascript/socialtext-editor.js:5884
+msgid "Third Party widgets"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:2396 share/skin/wikiwyg/javascript/socialtext-editor-light.js:7734 share/skin/wikiwyg/javascript/socialtext-editor.js:9024
+msgid "This is not an editable widget. Please edit it in Wiki Text mode."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:164
+msgid "Tip: You'll be able to find this page later by using the title you choose."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/template/widget_edit.tt2:44
+msgid "Title"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:183
+msgid "To Get This..."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:184
+msgid "Type This"
+msgstr ""
+
+#. (widget)
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:2697 share/skin/wikiwyg/javascript/socialtext-editor-light.js:8035 share/skin/wikiwyg/javascript/socialtext-editor.js:9325
+msgid "Unexpected Widget >>%1<< in parseWidget"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/widget_resource.js:29
+msgid "Unformatted Content"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/widget_resource.js:82
+msgid "Unformatted content"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:72
+msgid "Upload..."
+msgstr ""
+
+#. (advanced_link)
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1233 share/skin/wikiwyg/javascript/socialtext-editor-light.js:6571 share/skin/wikiwyg/javascript/socialtext-editor.js:7861
+msgid "Use %1 to change the number of rows and columns in a table."
+msgstr ""
+
+#. (form_name)
+#: share/skin/wikiwyg/javascript/widget_resource.js:30
+msgid "Use %1 to generate a form. Click to edit."
+msgstr ""
+
+#. (subject)
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1376 share/skin/wikiwyg/javascript/socialtext-editor-light.js:6714 share/skin/wikiwyg/javascript/socialtext-editor.js:8004
+msgid "Use Advanced Mode for %1"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1987 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2184 share/skin/wikiwyg/javascript/socialtext-editor.js:5850
+msgid "Use the text area below to compose your HTML block."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1998 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2195 share/skin/wikiwyg/javascript/socialtext-editor.js:5861
+msgid "Use the text area below to compose your preformatted text block."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1969 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2166 share/skin/wikiwyg/javascript/socialtext-editor.js:5832
+msgid "Use the text area to compose your code block, and optionally select a highlighting syntax."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/widget_resource.js:73
+msgid "User's email"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3216 share/skin/wikiwyg/javascript/socialtext-editor-light.js:8554 share/skin/wikiwyg/javascript/socialtext-editor.js:9844
+msgid "Video URL is required"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:47
+msgid "VisualBasic"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-link.html:41
+msgid "Web link"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/widget_resource.js:69
+msgid "Weblog name"
+msgstr ""
+
+#. (workspace_id)
+#: share/skin/wikiwyg/javascript/widget_resource.js:10
+msgid "What's new in the '%1' workspace. Click to edit."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:6
+msgid "Widget width:"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:20
+msgid "Wiki Text"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-link.html:10
+msgid "Wiki link"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-link.html:19 share/skin/wikiwyg/javascript/widget_resource.js:75
+msgid "Workspace"
+msgstr ""
+
+#. (ws)
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:2372 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2569 share/skin/wikiwyg/javascript/socialtext-editor.js:6235
+msgid "Workspace \"%1\" does not exist on wiki"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:48
+msgid "XHTML"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:49
+msgid "XML"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:50
+msgid "XSLT"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:51
+msgid "YAML"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/widget_resource.js:68
+msgid "YYYY-MM-DD&nbsp;HH:MM:SS"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/widget_resource.js:85
+msgid "Yahoo! ID"
+msgstr ""
+
+#. (yahoo_id)
+#: share/skin/wikiwyg/javascript/widget_resource.js:57
+msgid "Yahoo! IM: %1"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/socialtext-editor-light.js:148 share/skin/wikiwyg/javascript/socialtext-editor.js:148
+msgid "You cannot compare a revision to itself."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:802 share/skin/wikiwyg/javascript/socialtext-editor-light.js:999 share/skin/wikiwyg/javascript/socialtext-editor.js:4665
+msgid "You have unsaved changes."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:614 share/skin/wikiwyg/javascript/socialtext-editor-light.js:811 share/skin/wikiwyg/javascript/socialtext-editor.js:4477
+msgid "You must select one of the options or click cancel"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/socialtext-editor-light.js:143 share/skin/wikiwyg/javascript/socialtext-editor.js:143
+msgid "You must select two revisions to compare."
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:537 share/skin/wikiwyg/javascript/socialtext-editor-light.js:734 share/skin/wikiwyg/javascript/socialtext-editor.js:4400
+msgid "You must specify a page name"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:192
+msgid "_italic words_"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:187
+msgid "bold words"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:188
+msgid "bold words*"
+msgstr ""
+
+#. (date_string)
+#: share/skin/wikiwyg/javascript/widget_resource.js:60
+msgid "date: %1"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:210
+msgid "dinette"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1438 share/skin/wikiwyg/javascript/socialtext-editor-light.js:1635 share/skin/wikiwyg/javascript/socialtext-editor.js:5301
+msgid "edited"
+msgstr ""
+
+#. (rss_url)
+#. (atom_url)
+#: share/skin/wikiwyg/javascript/widget_resource.js:51 share/skin/wikiwyg/javascript/widget_resource.js:52
+msgid "feed: %1"
+msgstr ""
+
+#. (label)
+#. (file_name)
+#: share/skin/wikiwyg/javascript/widget_resource.js:37 share/skin/wikiwyg/javascript/widget_resource.js:38
+msgid "file: %1"
+msgstr ""
+
+#. (form_name)
+#: share/skin/wikiwyg/javascript/widget_resource.js:62
+msgid "form: %1"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/template/widget_edit.tt2:202
+msgid "height:"
+msgstr ""
+
+#. (data.height)
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3632 share/skin/wikiwyg/javascript/socialtext-editor-light.js:8970 share/skin/wikiwyg/javascript/socialtext-editor.js:10260
+msgid "height: %1"
+msgstr ""
+
+#. (label)
+#. (image_name)
+#: share/skin/wikiwyg/javascript/widget_resource.js:35 share/skin/wikiwyg/javascript/widget_resource.js:36
+msgid "image: %1"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1436 share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1438 share/skin/wikiwyg/javascript/socialtext-editor-light.js:1633 share/skin/wikiwyg/javascript/socialtext-editor-light.js:1635 share/skin/wikiwyg/javascript/socialtext-editor.js:5299 share/skin/wikiwyg/javascript/socialtext-editor.js:5301
+msgid "in"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:238
+msgid "in the same page"
+msgstr ""
+
+#. (page_title)
+#: share/skin/wikiwyg/javascript/widget_resource.js:41
+msgid "include: %1"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:218
+msgid "indented"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:191
+msgid "italic words"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:218
+msgid "lines"
+msgstr ""
+
+#. (label)
+#. (section_name)
+#: share/skin/wikiwyg/javascript/widget_resource.js:32 share/skin/wikiwyg/javascript/widget_resource.js:34
+msgid "link: %1"
+msgstr ""
+
+#. (page_title, section_name)
+#: share/skin/wikiwyg/javascript/widget_resource.js:33
+msgid "link: %1 (%2 )"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:239
+msgid "link: Section} (note: headings are sections too)"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:199
+msgid "monospace"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:200
+msgid "monospace`"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/template/widget_edit.tt2:100
+msgid "or"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/widget_resource.js:44
+msgid "recent changes"
+msgstr ""
+
+#. (workspace_id)
+#: share/skin/wikiwyg/javascript/widget_resource.js:43
+msgid "recent changes: %1"
+msgstr ""
+
+#. (search_term)
+#: share/skin/wikiwyg/javascript/widget_resource.js:53
+msgid "search: %1"
+msgstr ""
+
+#. (section_name)
+#: share/skin/wikiwyg/javascript/widget_resource.js:42
+msgid "section: %1"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:235
+msgid "section:Name}"
+msgstr ""
+
+#. (spreadsheet_title, spreadsheet_cell)
+#: share/skin/wikiwyg/javascript/widget_resource.js:63
+msgid "ss: %1 (%2)"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:195
+msgid "strikeout"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:196
+msgid "strikeout-"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:206
+msgid "table"
+msgstr ""
+
+#. (tag_name)
+#: share/skin/wikiwyg/javascript/widget_resource.js:47
+msgid "tag list: %1"
+msgstr ""
+
+#. (label)
+#. (tag_name)
+#: share/skin/wikiwyg/javascript/widget_resource.js:45 share/skin/wikiwyg/javascript/widget_resource.js:46
+msgid "tag: %1"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/template/widget_edit.tt2:98
+msgid "the current page"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/template/widget_edit.tt2:96
+msgid "the current workspace"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/template/widget_edit.tt2:107
+msgid "the page titled"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/template/widget_edit.tt2:104
+msgid "the workspace named"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:230
+msgid "to different-workspace"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/widget_resource.js:40
+msgid "toc"
+msgstr ""
+
+#. (page_title)
+#: share/skin/wikiwyg/javascript/widget_resource.js:39
+msgid "toc: %1"
+msgstr ""
+
+#. (asis_content)
+#: share/skin/wikiwyg/javascript/widget_resource.js:61
+msgid "unformatted: %1"
+msgstr ""
+
+#. (user_email)
+#: share/skin/wikiwyg/javascript/widget_resource.js:59
+msgid "user: %1"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:207
+msgid "value"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1436 share/skin/wikiwyg/javascript/socialtext-editor-light.js:1633 share/skin/wikiwyg/javascript/socialtext-editor.js:5299
+msgid "wants you to know about an edit of"
+msgstr ""
+
+#. (weblog_name)
+#: share/skin/wikiwyg/javascript/widget_resource.js:50
+msgid "weblog list: %1"
+msgstr ""
+
+#. (label)
+#. (weblog_name)
+#: share/skin/wikiwyg/javascript/widget_resource.js:48 share/skin/wikiwyg/javascript/widget_resource.js:49
+msgid "weblog: %1"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/template/widget_edit.tt2:152 share/skin/wikiwyg/javascript/template/widget_edit.tt2:200
+msgid "width:"
+msgstr ""
+
+#. (data.width)
+#. (choice.2)
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3630 share/skin/wikiwyg/javascript/socialtext-editor-light.js:8968 share/skin/wikiwyg/javascript/socialtext-editor.js:10258 share/skin/wikiwyg/javascript/template/widget_edit.tt2:140 share/skin/wikiwyg/javascript/template/widget_edit.tt2:186
+msgid "width: %1"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate/widget_html_edit.html:29 share/skin/wikiwyg/javascript/template/widget_edit.tt2:61
+msgid "wiki text"
+msgstr ""
+
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:215
+msgid "|table|value|<br>|dinette|$75|<br>"
+msgstr ""

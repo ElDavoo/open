@@ -10,6 +10,7 @@ no Moose;
 
 package Socialtext::Job::AttachmentIndex::Base;
 use Moose;
+use Socialtext::Attachments;
 
 sub do_work {
     my $self = shift;
@@ -25,18 +26,16 @@ sub do_work {
         );
         return;
     }
-
-    my $attachment = Socialtext::Attachment->new(
-        hub     => $page->hub,
+    my $attachment = $page->hub->attachments->load(
         id      => $args->{attach_id},
         page_id => $page->id,
-    )->load();
+    );
 
     if ($attachment->deleted) {
-        $indexer->delete_attachment( $page->id, $attachment->id );
+        $indexer->delete_attachment($page->id, $attachment->id);
     }
     else {
-        $indexer->index_attachment( $page->id, $attachment );
+        $indexer->index_attachment($page->id, $attachment);
     }
 
     $self->completed();

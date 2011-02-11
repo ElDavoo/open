@@ -56,7 +56,7 @@ sub _entities_for_query {
     my $self = shift;
 
     return () if $self->page->content eq '';
-    return grep (lc($_) ne 'recent changes', @{$self->page->metadata->Category});
+    return grep (lc($_) ne 'recent changes', @{$self->page->tags});
 }
 
 sub add_text_element {

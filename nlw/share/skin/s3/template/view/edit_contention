@@ -1,7 +1,7 @@
 [%# @COPYRIGHT@ -%]
 [% WRAPPER $frame_name content_id = 'st-editcontention' %]
 
-[% IF page.metadata.Type == 'spreadsheet' %]
+[% IF page.page_type == 'spreadsheet' %]
   [% PROCESS contention_msg type="spreadsheet" %]
   [% page.to_html %]
 [% ELSE %]

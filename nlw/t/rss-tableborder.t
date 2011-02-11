@@ -15,7 +15,7 @@ $ENV{REQUEST_METHOD} = 'GET';
 my $hub = create_test_hub;
 
 # Verify that there are no pages in the workspace before we start
-my $pages_ref = Socialtext::Model::Pages->All_active(
+my $pages_ref = Socialtext::Pages->All_active(
     workspace_id => $hub->current_workspace->workspace_id,
 );
 is @$pages_ref, 0, 'no pages found to start';

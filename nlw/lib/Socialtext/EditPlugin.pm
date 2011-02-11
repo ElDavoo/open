@@ -2,10 +2,10 @@
 package Socialtext::EditPlugin;
 use strict;
 use warnings;
+use feature ':5.12';
 
 use base 'Socialtext::Plugin';
 
-use CGI;
 use Class::Field qw( const );
 use Socialtext::Pages;
 use Socialtext::Exceptions qw( data_validation_error );
@@ -15,7 +15,7 @@ use Socialtext::Log qw(st_log);
 use Socialtext::String ();
 use Socialtext::JSON qw/decode_json encode_json/;
 
-sub class_id { 'edit' }
+sub   class_id { 'edit' }
 const class_title => 'Editing Page';
 const cgi_class => 'Socialtext::Edit::CGI';
 
@@ -32,11 +32,6 @@ sub register {
     $registry->add(action => 'edit_check');
     $registry->add(action => 'edit_check_start');
     $registry->add(action => 'edit_contention_check');
-}
-
-sub edit_save {
-    my $self = shift;
-    $self->save;
 }
 
 sub _validate_pagename_length {
@@ -61,7 +56,7 @@ sub _set_page_lock {
 
     my $page_name = $self->cgi->page_name;
 
-    $self->_validate_pagename_length( $page_name );
+    $self->_validate_pagename_length($page_name);
 
     my $page = $self->hub->pages->new_from_name($page_name);
 
@@ -75,13 +70,11 @@ sub _set_page_lock {
 
 sub lock_page {
     my $self      = shift;
-
     return $self->_set_page_lock(1);
 }
 
 sub unlock_page {
     my $self      = shift;
-
     return $self->_set_page_lock(0);
 }
 
@@ -93,49 +86,37 @@ sub edit_content {
     $self->_validate_pagename_length($page_name);
 
     my $page = $self->hub->pages->new_from_name($page_name);
+    my $append_mode = $self->cgi->append_mode || '';
+
     return $self->to_display($page)
         unless $self->hub->checker->check_permission('edit');
-
-    $page->load;
 
     return $self->_page_locked_screen($page)
         unless $self->hub->checker->can_modify_locked($page);
 
-    my $append_mode = $self->cgi->append_mode || '';
-
     if ($self->_there_is_an_edit_contention($page, $self->cgi->revision_id)) {
-        if ($append_mode eq '') {
+        unless ($append_mode) {
             $self->_record_edit_contention($page);
             return $self->_edit_contention_screen($page);
         }
     }
 
-    my $metadata = $page->metadata;
+    my $rev = $page->edit_rev();
+    $rev->edit_summary($self->cgi->edit_summary||'');
+    $rev->name($page_name);
+    $rev->page_type($self->cgi->page_type||'wiki');
 
-    my $edit_summary = Socialtext::String::trim($self->cgi->edit_summary || '');
-
-    $metadata->loaded(1);
-    $metadata->update( user => $self->hub->current_user );
-    $metadata->Subject($page_name);
-    $metadata->Type($self->cgi->page_type);
-    $metadata->RevisionSummary($edit_summary);
-
-    $page->name($page_name);
-    if ($append_mode eq 'bottom') {
-        $page->append($content);
-    }
-    elsif ($append_mode eq 'top') {
-        $page->prepend($content);
-    }
-    else {
-        $page->content($content);
+    given ($append_mode) {
+        $page->append(\$content) when 'bottom';
+        $page->prepend(\$content) when 'top';
+        $page->body_ref(\$content);
     }
 
-    if ( my @tags = $self->cgi->add_tag ) {
-        foreach my $tag ( @tags ) {
-            $metadata->add_category($tag);
-        }
+    if (my @tags = $self->cgi->add_tag) {
+        $rev->add_tags(\@tags);
     }
+
+    my $g = $self->hub->pages->ensure_current($page->id);
 
     my %event = (
         event_class => 'page',
@@ -143,41 +124,22 @@ sub edit_content {
         page => $page,
     );
 
-    # Move attachments uploaded to 'Untitled Page'/'Untitled Spreadsheet' to the actual page
     my @attach = $self->cgi->attachment;
-    for my $a (@attach) {
-        my ($id, $page_id) = split ':', $a;
-
-        my $source = $self->hub->attachments->new_attachment(
-            id => $id,
-            page_id => $page_id
-        )->load;
-
-        my $target = $self->hub->attachments->new_attachment(
-            id => $source->id,
-            filename => $source->filename,
-        );
-
-        # move attachments that were uploaded to the incorrect page
-        if ($page_id ne $self->hub->pages->current->id) {
-            my $target_dir = $self->hub->attachments->plugin_directory;
-            $target->copy($source, $target, $target_dir);
-            $target->store(
-                user => $self->hub->current_user,
-                dir => $target_dir,
-            );
-            $source->purge($source->page);
+    for my $att_id (@attach) {
+        if ($att_id =~ /^(.+?):(.+)$/) {
+            $att_id = $1;
+            die "not attached to this page!" if $2 ne $page->id;
         }
-
-        # Remove the temporary flag from the new file
-        $target->make_permanent(user => $self->hub->current_user);
+        my $att = $self->hub->attachments->load(id => $att_id);
+        die "attachment is not temporary!" unless $att->is_temporary;
+        $att->make_permanent(
+            page => $page, user => $self->hub->current_user);
     }
 
     my $signal = $page->store(
         user => $self->hub->current_user,
         signal_edit_summary => scalar($self->cgi->signal_edit_summary),
         signal_edit_to_network => scalar($self->cgi->signal_edit_to_network),
-        edit_summary => $edit_summary,
     );
 
     if ($signal) {
@@ -198,6 +160,7 @@ sub edit {
     return $self->hub->display->display(1);
 }
 
+*edit_save = *save; # grep: sub edit_save
 sub save {
     my $self = shift;
     my $original_page_id = $self->cgi->original_page_id
@@ -208,8 +171,6 @@ sub save {
     return $self->to_display($page)
         unless $self->hub->checker->check_permission('edit');
 
-    $page->load;
-
     return $self->_page_locked_screen($page)
         unless $self->hub->checker->can_modify_locked($page);
 
@@ -219,34 +180,35 @@ sub save {
     }
 
     my $subject = $self->cgi->subject || $self->cgi->page_title;
-    # Err, this is an unreachable condition since we default to using
-    # the title as stored in a hidden form variable.
     unless ( defined $subject && length $subject ) {
         Socialtext::Exception::DataValidation->throw(
             errors => [loc('A page must have a title to be saved.')] );
     }
 
-    my $body = $self->cgi->page_body;
-    unless ( defined $body && length $body ) {
-        Socialtext::Exception::DataValidation->throw(
-            errors => [loc('A page must have a body to be saved.')] );
+    my $rev = $page->edit_rev();
+    $rev->name($subject);
+
+    {
+        my $body = $self->cgi->page_body;
+        unless ( defined $body && length $body ) {
+            Socialtext::Exception::DataValidation->throw(
+                errors => [loc('A page must have a body to be saved.')] );
+        }
+        $rev->body_ref(\$body);
     }
 
-    my $edit_summary
-        = Socialtext::String::trim($self->cgi->edit_summary || '');
+    $rev->edit_summary(Socialtext::String::trim($self->cgi->edit_summary||''));
 
     my @categories =
       sort keys %{+{map {($_, 1)} split /[\n\r]+/, $self->cgi->header}};
     my @tags = $self->cgi->add_tag;
     push @categories, @tags;
+    $rev->tags(\@categories);
+
     $page->update(
-        content => $body,
-        original_page_id => $self->cgi->original_page_id,
+        subject          => $page->title,
         revision         => $self->cgi->revision || 0,
-        categories       => \@categories,
-        subject          => $subject,
         user             => $self->hub->current_user,
-        edit_summary     => $edit_summary,
         signal_edit_summary => 1,
     );
     Socialtext::Events->Record({
@@ -305,7 +267,7 @@ sub _edit_contention_screen {
         display_title => $page->title,
         header_display_title => $page->title,
         attachment_count => scalar $self->hub->attachments->all,
-        revision_count => $self->hub->pages->current->metadata->Revision,
+        revision_count => $page->revision_num,
     );
 }
 
@@ -406,11 +368,8 @@ sub edit_contention_check {
     my $page = $self->hub->pages->new_from_name($page_name);
 
     if ($self->_there_is_an_edit_contention($page, $self->cgi->revision_id)) {
-        my $from = $page->metadata->From;
-        my $last_editor = Socialtext::User->new(email_address => $from);
-
         return encode_json( {
-            last_editor => $last_editor->to_hash(minimal => 1),
+            last_editor => $page->last_editor->to_hash(minimal => 1),
             revision_id => $page->revision_id,
         } );
     }

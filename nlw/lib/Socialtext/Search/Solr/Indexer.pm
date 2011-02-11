@@ -149,7 +149,7 @@ sub _add_page_doc {
     my $title = $page->title;
     _scrub_field(\$title);
 
-    my $tags = $page->metadata->Category;
+    my $tags = $page->tags;
     my @fields = (
         [id => $id], # composite of workspace and page
         # it is important to call this 'w' instead of 'workspace_id', because
@@ -158,7 +158,7 @@ sub _add_page_doc {
         [w => $ws_id],
         [w_title => $self->workspace->title],
         [doctype => 'page'], 
-        [pagetype => $page->metadata->Type],
+        [pagetype => $page->page_type],
         [page_key => $self->page_key($page->id)],
         [title => $title],
         [editor => $editor_id],
@@ -168,10 +168,10 @@ sub _add_page_doc {
         (map { [ tag => $_ ] } @$tags),
         Socialtext::Search::Solr::BigField->new(body => \$body),
     );
-    if (my $mtime = _date_header_to_iso($page->metadata->Date)) {
+    if (my $mtime = _datetime_to_iso($page->last_edit_time)) {
         push @fields, [date => $mtime];
     }
-    if (my $ctime = _date_header_to_iso($page->original_revision->metadata->Date)) {
+    if (my $ctime = _datetime_to_iso($page->create_time)) {
         push @fields, [created => $ctime];
     }
 
@@ -193,13 +193,12 @@ sub page_key {
 sub index_attachment {
     my ( $self, $page_id, $attachment_or_id ) = @_;
 
-    my $attachment = ref($attachment_or_id)
+    my $attachment = blessed($attachment_or_id)
         ? $attachment_or_id
-        : Socialtext::Attachment->new(
-            hub     => $self->hub,
+        : $self->hub->attachments->load(
             id      => $attachment_or_id,
             page_id => $page_id,
-        )->load;
+        );
     my $attachment_id = $attachment->id;
     _debug("Loaded attachment: page_id=$page_id attachment_id=$attachment_id");
 
@@ -228,8 +227,7 @@ sub _add_attachment_doc {
     my $id = join(':',$ws_id,$att->page_id,$att->id);
 
     st_log->debug("Indexing attachment doc $id <".$att->filename.">");
-    my $date = _date_header_to_iso($att->Date);
-    my $editor_id = $att->uploaded_by->user_id;
+    my $date = _datetime_to_iso($att->created_at);
 
     # XXX: this code assumes there's just one attachment revision
     # counteract the revisions boost by providing a dummy constant
@@ -261,8 +259,8 @@ sub _add_attachment_doc {
         [attach_id => $att->id],
         [filename => $filename],
         [filename_ext => $ext],
-        [editor => $editor_id],
-        [creator => $editor_id],
+        [editor => $att->editor_id],
+        [creator => $att->creator_id],
         [date => $date],
         [created => $date],
         [revisions => $revisions],
@@ -590,7 +588,10 @@ sub _load_page {
     my ( $self, $page_id, $deleted_ok ) = @_;
     _debug("Loading $page_id");
     my $page = $self->hub->pages->new_page($page_id);
-    if ( not defined $page ) {
+    unless (eval { $page->rev; 1 }) {
+        _debug("Could not load latest page rev for $page_id");
+    }
+    if (!$page->exists) {
         _debug("Could not load page $page_id");
     }
     elsif ( !$deleted_ok and $page->deleted ) {
@@ -617,6 +618,7 @@ sub _pg_date_to_iso {
         server_tz => 'UTC',
     );
     my $utc_time = $dt->parse_timestamptz( $pgdate );
+    # rounds to second:
     my $date = DateTime->from_epoch( epoch => $utc_time->epoch );
     $date->set_time_zone('UTC');
     return $date->iso8601 . 'Z';
@@ -624,13 +626,6 @@ sub _pg_date_to_iso {
 
 sub _datetime_to_iso {
     my $date = shift || DateTime->now;
-    $date->set_time_zone('UTC');
-    return $date->iso8601 . 'Z';
-}
-
-sub _date_header_to_iso {
-    my $hdr = shift;
-    my $date = DateTime->from_epoch(epoch => str2time($hdr));
     $date->set_time_zone('UTC');
     return $date->iso8601 . 'Z';
 }

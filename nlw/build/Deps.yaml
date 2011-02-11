@@ -135,8 +135,6 @@ REST::Application: 1.0.8
 REST::Google: 0.992
 RTF::Writer: 0
 Scalar::Util: 1.19
-SOAP::Lite: 0.67
-SOAP::Transport::HTTP: 0
 Storable: 2.15
 Sys::Hostname: 1.11
 Template: 2.19

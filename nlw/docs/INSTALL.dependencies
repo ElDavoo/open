@@ -57,19 +57,13 @@ you'll keep ending back up at a menu that looks like this:
 
     The following modules are missing, or you may have older versions:
 
-      SOAP::Lite 0.67
       XML::Atom 0.22
       XML::Feed 0.05
       REST::Application 0.94
 
     Install these missing dependencies from CPAN [y]?
 
-SOAP::Lite is particularly troublesome in that the current version (0.69) 
-will not install (the tests don't pass).  To install the correct version of SOAP::Lite, you can do the following:
-
-sudo cpan -i B/BY/BYRNE/SOAP/SOAP-Lite-0.67.tar.gz
-
-The exact list of modules may change, but the list should be relatively short
+The exact list of modules will change, but the list should be relatively short
 and you'll reach this point after having installed lots of other modules.
 These are modules which failed to pass their tests or in some way blew up on
 install.  We'll have to force install them, but again, your exact list may

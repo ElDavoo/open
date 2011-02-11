@@ -9,7 +9,7 @@ use Test::Socialtext::Fatal;
 fixtures('workspaces', 'public');
 
 use Socialtext::Pages;
-use Socialtext::Page::Base;
+use Socialtext::Page;
 use File::Path ();
 use File::Spec;
 use File::Temp ();

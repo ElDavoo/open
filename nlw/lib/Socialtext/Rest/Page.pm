@@ -144,7 +144,7 @@ sub GET_json {
                     -type   => 'application/json; charset=UTF-8',
                 );
                 $self->hub->pages->current($page);
-                my $page_hash      = $page->hash_representation();
+                my $page_hash = $page->hash_representation();
 
                 my $addtional_content = sub {
                     $page->content_as_type( type => $_[0],
@@ -175,8 +175,8 @@ sub GET_json {
                         $addtional_content->('text/x.socialtext-wiki');
                 }
 
-                $page_hash->{metadata} = $page->metadata->to_hash if $metadata;
-                $page_hash->{locked} = $page->locked;
+                $page_hash->{metadata} =
+                    $page->legacy_metadata_hash($page_hash);
 
                 $self->_record_view($page);
                 return encode_json($page_hash);

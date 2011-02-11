@@ -175,7 +175,7 @@ SAVE: {
     is($return, '', 'Nothing returned because OK save redirects');
 
     my $page = Socialtext::Page->new(hub => $hub, id => 'save_page')->load();
-    is($page->metadata->Category->[0], 'one', "chomped new line on addinga  tag");
+    is($page->tags->[0], 'one', "chomped new line on addinga  tag");
     is($page->revision_count, 2, '2 Revisions');
     is($page->content, "Hello\n", 'New content saved');
 }
