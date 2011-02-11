@@ -77,10 +77,11 @@ sub UserFields {
 }
 
 sub proper_name {
-    my $self  = shift;
-    my $first = $self->first_name;
-    my $last  = $self->last_name;
-    return Socialtext::User::Base->GetFullName($first, $last);
+    my $self   = shift;
+    my $first  = $self->first_name;
+    my $middle = $self->middle_name;
+    my $last   = $self->last_name;
+    return Socialtext::User::Base->GetFullName($first, $middle, $last);
 }
 
 sub preferred_name {
@@ -106,7 +107,9 @@ sub guess_real_name {
         $fn =~ s/\@.+$//;
     }
 
-    $name = Socialtext::User::Base->GetFullName($fn, $self->last_name);
+    $name = Socialtext::User::Base->GetFullName(
+        $fn, $self->middle_name, $self->last_name,
+    );
     $name =~ s/^\s+//;
     $name =~ s/\s+$//;
     return $name if length $name;
@@ -178,14 +181,15 @@ sub update_display_name {
 }
 
 sub GetFullName {
-    my $class      = shift;
-    my $first_name = shift;
-    my $last_name  = shift;
+    my $class       = shift;
+    my $first_name  = shift;
+    my $middle_name = shift;
+    my $last_name   = shift;
 
     my @components
         = system_locale() eq 'ja'
-        ? ($last_name, $first_name)
-        : ($first_name, $last_name);
+        ? ($last_name, $first_name, $middle_name)
+        : ($first_name, $middle_name, $last_name);
 
     my $full_name = join ' ', grep { defined and length } @components;
     return $full_name;

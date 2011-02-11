@@ -527,14 +527,15 @@ sub Search {
     require Socialtext::User;
     my @users;
     foreach my $rec ($mesg->entries()) {
-        my $email = $rec->get_value($attr_map->{email_address});
-        my $first = $rec->get_value($attr_map->{first_name});
-        my $last  = $rec->get_value($attr_map->{last_name});
+        my $email  = $rec->get_value($attr_map->{email_address});
+        my $first  = $rec->get_value($attr_map->{first_name});
+        my $middle = $rec->get_value($attr_map->{middle_name});
+        my $last   = $rec->get_value($attr_map->{last_name});
         push @users, {
             driver_name     => $self->driver_key(),
             email_address   => $email,
             name_and_email  => 
-                Socialtext::User->FormattedEmail($first, $last, $email),
+                Socialtext::User->FormattedEmail($first, $middle, $last, $email),
         };
     }
     return @users;

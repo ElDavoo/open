@@ -715,10 +715,13 @@ sub MaskEmailAddress {
 sub FormattedEmail {
     my $class         = shift;
     my $first_name    = shift;
+    my $middle_name   = shift;
     my $last_name     = shift;
     my $email_address = shift;
 
-    my $name = Socialtext::User::Base->GetFullName($first_name, $last_name);
+    my $name = Socialtext::User::Base->GetFullName(
+        $first_name, $middle_name, $last_name,
+    );
 
     if (length $name) {
         return $name . ' <' . $email_address . '>';
@@ -2138,7 +2141,7 @@ the user for operations where a user is needed but there is no end
 user, like operations done from the CLI (creating a workspace, for
 example).
 
-=head2 Socialtext::User->FormattedEmail($first_name, $last_name, $email_address)
+=head2 Socialtext::User->FormattedEmail($first_name, $middle_name, $last_name, $email_address)
 
 Returns a formatted email address from the parameters passed in. Will attempt
 to construct a "pretty" presentation:

@@ -153,7 +153,7 @@ sub Search {
     my $splat_term = lc "\%$search_term\%";
 
     my $sth = sql_execute(q{
-            SELECT first_name, last_name, email_address
+            SELECT first_name, middle_name, last_name, email_address
               FROM users
              WHERE (
                      LOWER( driver_username ) LIKE ? OR
@@ -176,7 +176,7 @@ sub Search {
             my $name = Socialtext::User->FormattedEmail(@$row);
             return {
                 driver_name    => $self->driver_key,
-                email_address  => $row->[2],
+                email_address  => $row->[3],
                 name_and_email => $name,
             };
         },
