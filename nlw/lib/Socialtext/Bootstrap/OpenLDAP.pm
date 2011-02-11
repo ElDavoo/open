@@ -327,6 +327,7 @@ sub _ldap_config {
             username        => 'cn',
             email_address   => 'mail',
             first_name      => 'givenName',
+            middle_name     => 'initials',
             last_name       => 'sn',
             supervisor      => 'manager',
             work_phone      => 'telephoneNumber',
