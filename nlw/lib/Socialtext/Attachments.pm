@@ -132,9 +132,8 @@ sub attachment_exists {
         workspace  => $ws,
     );
 
-    my (@bind, $where);
     my @bind = ($ws->workspace_id, $page_id, $filename);
-    $where = 'workspace_id = $1 AND page_id = $2';
+    my $where = 'workspace_id = $1 AND page_id = $2';
     if ($attach_id) {
         push @bind, $attach_id;
         $where .= ' AND pa.id = $4'
