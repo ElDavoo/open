@@ -39,9 +39,15 @@
 | code-is | 201                           |          |                               |
 
 # date ascending by default
-| GET-json         | %%url%%   |                  |
-| json-response-is | 200       | 3                |
-| json-path-is     | $[0].name | test.txt         |
+| GET-json         | %%url%%                |              |
+| json-response-is | 200                    | 3            |
+| json-path-is     | $[0].name              | test.txt     |
+| json-path-is     | $[0]['content-type']   | text/plain   |
+| json-path-is     | $[0]['content-length'] | 6            |
+| json-path-is     | $[0]['page-id']        | %%page%%     |
+| json-path-is     | $[0]['uploader']       | %%username%% |
+*TODO* Add id, uuid, uri, date, uploader_name, uploader_id, size, local_date
+
 | json-path-is     | $[1].name | Test.txt         |
 | json-path-is     | $[2].name | another-test.txt |
 
