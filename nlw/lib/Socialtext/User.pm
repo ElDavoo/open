@@ -642,7 +642,10 @@ sub Create_user_from_hash {
         return $self->guess_real_name
             unless ($p{workspace} && $p{workspace}->workspace_id != 0);
 
-        return $self->_masked_email_address($p{workspace});
+        return $self->MaskEmailAddress(
+            $self->email_address,
+            $p{workspace},
+        );
     }
 }
 
@@ -687,15 +690,6 @@ sub Create_user_from_hash {
         $email =~ s/\@.+$/\@hidden/ if $hidden;
         return $email;
     }
-}
-
-# REVIEW - in the old code, this always returned the unmasked address
-# if the viewing user was an admin
-sub _masked_email_address {
-    my $self = shift;
-    my $workspace = shift;
-
-    return $self->MaskEmailAddress( $self->email_address, $workspace );
 }
 
 sub MaskEmailAddress {
