@@ -645,7 +645,7 @@ sub set_user_names {
 
     my $result = $user->update_store(%opts);
     if ($result == 0) {
-        $self->_error('First name and last name match the current names for the user; no change to "' . $user->username() . '".');
+        $self->_error('Names provided match the current names for the user; no change to "' . $user->username() . '".');
     }
 
     $self->_success( loc('User "[_1]" was updated.', $user->username) );
