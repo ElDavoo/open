@@ -72,8 +72,9 @@ DELETE_TAG: {
     my $page       = new_hub('admin')->pages->new_from_name("Admin wiki");
     my $original_categories = $page->tags;
 
+    $page->edit_rev();
     $page->delete_tag($TAG);
-    $page->store( user => $page->hub->current_user );
+    $page->store();
 
     my $new_categories = $page->tags;
     ok( !grep ( { $_ eq $TAG } @$new_categories ),
