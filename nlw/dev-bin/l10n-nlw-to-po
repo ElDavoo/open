@@ -30,3 +30,5 @@ for my $key (sort keys %Sections) {
         map { -D => $_ } @$dir
     )
 }
+
+#shell_run("msgcat share/l10n/en/*.po > share/l10n/en.po");
