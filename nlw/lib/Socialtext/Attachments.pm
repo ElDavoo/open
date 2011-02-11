@@ -132,14 +132,22 @@ sub attachment_exists {
         workspace  => $ws,
     );
 
-    my $n = sql_singlevalue(q{
+    my (@bind, $where);
+    my @bind = ($ws->workspace_id, $page_id, $filename);
+    $where = 'workspace_id = $1 AND page_id = $2';
+    if ($attach_id) {
+        push @bind, $attach_id;
+        $where .= ' AND pa.id = $4'
+    }
+
+    my $n = sql_singlevalue(qq{
         SELECT count(1) FROM page_attachment pa
           JOIN attachment a USING (attachment_id)
-         WHERE workspace_id = $1 AND page_id = $2 AND pa.id = $3
+         WHERE $where
            AND NOT pa.deleted
-           AND lower(a.filename) = lower($4)
+           AND lower(a.filename) = lower(\$3)
          LIMIT 1
-    }, $ws->workspace_id, $page_id, $attach_id, $filename);
+    }, @bind);
     return $n ? 1 : 0;
 }
 
