@@ -351,6 +351,10 @@ sub instance {
     return $Self || $class->new();
 }
 
+sub clear_instance {
+    $Self = undef;
+}
+
 sub new {
     my $class = shift;
     my %p = @_;
@@ -1463,6 +1467,10 @@ the following methods are available.
 
 Returns an instance of the C<Socialtext::AppConfig> singleton. This does not
 accept any parameters.
+
+=head2 Socialtext::AppConfig->clear_instance()
+
+Clears any existing singleton instance.
 
 =head2 Socialtext::AppConfig->new()
 
