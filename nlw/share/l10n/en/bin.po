@@ -13,73 +13,73 @@ msgstr ""
 #. ($cleaned)
 #: bin/ceq-cleanup:20
 msgid "Done cleaning %1 job types."
-msgstr ""
+msgstr "job.cleaned=count"
 
 #: bin/ceq-stat:40
 msgid "Earliest (oldest) enqueued time"
-msgstr ""
+msgstr "job.oldest"
 
 #: bin/ceq-stat:41
 msgid "Earliest (oldest) enqueued time, without a delayed start"
-msgstr ""
+msgstr "job.oldest-without-delay"
 
 #: bin/ceq-stat:35
 msgid "Failed job count"
-msgstr ""
+msgstr "job.count-failed"
 
 #: bin/ceq-stat:83
 msgid "HINT try --verbose for a key and extra columns"
-msgstr ""
+msgstr "info.verbose"
 
 #: bin/ceq-stat:68
 msgid "Job Type"
-msgstr ""
+msgstr "job.type"
 
 #. ($job_name)
 #: bin/ceq-cleanup:18
 msgid "Job type %1 has been deprecated. Removing it."
-msgstr ""
+msgstr "job.deprecated=type"
 
 #: bin/ceq-stat:72
 msgid "Key:"
-msgstr ""
+msgstr "job.key:"
 
 #: bin/ceq-stat:37
 msgid "Most recent failure time"
-msgstr ""
+msgstr "job.last-failure"
 
 #: bin/ceq-stat:36
 msgid "Most recent success time"
-msgstr ""
+msgstr "job.last-success"
 
 #: bin/ceq-stat:38
 msgid "Most recently (latest) enqueued time"
-msgstr ""
+msgstr "job.newest"
 
 #: bin/ceq-stat:39
 msgid "Most recently (latest) enqueued time, without a delayed start"
-msgstr ""
+msgstr "job.newest-without-delay"
 
 #: bin/ceq-stat:134
 msgid "Never"
-msgstr ""
+msgstr "time.never"
 
 #: bin/ceq-stat:32
 msgid "Number of jobs \"grabbed\" for work"
-msgstr ""
+msgstr "job.count-grabbed"
 
 #: bin/ceq-stat:31
 msgid "Number of jobs enqueued"
-msgstr ""
+msgstr "job.count-enqueued"
 
 #: bin/ceq-stat:33
 msgid "Number of jobs with a delayed start time"
-msgstr ""
+msgstr "job.count-delay"
 
 #: bin/ceq-stat:34
 msgid "Successful job count"
-msgstr ""
+msgstr "job.count-success"
 
 #: bin/ceq-stat:69
 msgid "Total"
-msgstr ""
+msgstr "job.total"
