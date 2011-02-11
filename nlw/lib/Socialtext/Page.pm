@@ -153,6 +153,7 @@ use constant SELECT_COLUMNS_STR => q{
     page.summary,
     page.edit_summary,
     page.views,
+    page.locked,
     page.tags -- ordered array
 };
 
