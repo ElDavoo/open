@@ -10,7 +10,7 @@ use Socialtext::MooseX::Types::UniStr;
 
 use Socialtext::AppConfig;
 use Socialtext::EmailSender::Factory;
-use Socialtext::Encode qw/ensure_is_utf8/;
+use Socialtext::Encode qw/ensure_is_utf8 ensure_ref_is_utf8/;
 use Socialtext::Events;
 use Socialtext::File;
 use Socialtext::Formatter::AbsoluteLinkDictionary;
