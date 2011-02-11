@@ -192,12 +192,16 @@ sub _find_current {
 
     my $rev = Socialtext::PageRevision->new($rev_args);
 
-    # creator_id is 'ro' (_creator_id is the writer):
+    # update the creator if it's changing
     my $creator_id = delete $page_args->{creator_id};
-    $page_args->{creator} = Socialtext::User->new(
-        user_id => $creator_id);
-
+    if (($self->has_creator_id || $self->has_creator) &&
+        $self->creator->user_id != $creator_id)
+    {
+        $self->clear_creator; # so that creator gets rebuilt from creator_id
+    }
+    # the writer for creator_id is _creator_id:
     $self->_creator_id($creator_id);
+
     $self->$_($page_args->{$_}) for keys %$page_args;
     $self->rev($rev); # should assign this last
 
