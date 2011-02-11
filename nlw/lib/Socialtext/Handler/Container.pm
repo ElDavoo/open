@@ -18,7 +18,7 @@ with 'Socialtext::Handler::Base';
 requires '_build_container';
 
 has 'container' => (
-    is => 'ro', isa => 'Maybe[Socialtext::Gadgets::Container]',
+    is => 'ro', isa => 'Socialtext::Gadgets::Container',
     lazy_build => 1,
 );
 

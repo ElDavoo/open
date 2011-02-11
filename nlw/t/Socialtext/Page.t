@@ -5,12 +5,26 @@ use warnings;
 
 use DateTime;
 use mocked 'Socialtext::Events';
-use Test::Socialtext tests => 54;
+use Test::Socialtext tests => 59;
 use Test::Socialtext::Fatal;
 use Test::Deep;
 use ok 'Socialtext::Page';
 
 fixtures(qw( db ));
+
+URI: {
+    my $hub = create_test_hub();
+    my $page = $hub->pages->new_from_name("Some Page / Test");
+    ok $page->mutable, "page doesn't exist";
+    is $page->page_id, "some_page_test", "id";
+    is $page->uri, "Some%20Page%20%2F%20Test", "incipient uri (never existed)";
+    $page->store();
+    is $page->uri, "some_page_test", "exists-uri";
+    
+    #double check on reload
+    my $page = $hub->pages->new_from_name("Some Page     Test");
+    is $page->uri, "some_page_test", "exists-uri";
+}
 
 NEWLINE: {
     my $hub = create_test_hub();

@@ -1,7 +1,7 @@
 #!perl
 use warnings;
 use strict;
-use Test::Socialtext tests => 43;
+use Test::Socialtext tests => 47;
 use Test::Socialtext::Fatal;
 use Socialtext::SQL qw/:txn :exec :time/;
 use File::Temp qw/tempdir tempfile/;
@@ -164,6 +164,18 @@ binary_contents: {
     is $data2, $test_body, "blob is good after ensure_stored";
     is((stat $ul->disk_filename)[9], $creation_timestamp,
         "mtime on cached file is correct");
+}
+
+copy_to_file: {
+    unlink $ul->disk_filename;
+    my $tmp = File::Temp->new(UNLINK => 1);
+    is exception { $ul->copy_to_file("$tmp") }, undef;
+    is -s "$tmp", $ul->content_length, "copied the file from the db";
+
+    $ul->ensure_stored();
+    my $tmp2 = File::Temp->new(UNLINK => 1);
+    is exception { $ul->copy_to_file("$tmp2") }, undef;
+    is -s "$tmp", $ul->content_length, "copied the file from disk";
 }
 
 pass "done";

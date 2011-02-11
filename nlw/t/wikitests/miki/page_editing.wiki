@@ -53,7 +53,7 @@
 
 | *Comment* | Lock test page |
 | st-admin | set-workspace-config --workspace %%workspace%% allows_page_locking 1 |
-| st-admin | lock-page --workspace %%workspace%% --page %%page%% |
+| st-admin | lock-page --workspace %%workspace%% --page %%page%% | has been locked. |
 
 ## Run user tests again
 

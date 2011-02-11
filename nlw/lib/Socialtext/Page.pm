@@ -10,7 +10,7 @@ use Socialtext::MooseX::Types::UniStr;
 
 use Socialtext::AppConfig;
 use Socialtext::EmailSender::Factory;
-use Socialtext::Encode qw/ensure_is_utf8/;
+use Socialtext::Encode qw/ensure_is_utf8 ensure_ref_is_utf8/;
 use Socialtext::Events;
 use Socialtext::File;
 use Socialtext::Formatter::AbsoluteLinkDictionary;
@@ -64,7 +64,7 @@ has 'hub' => (
 
 has 'workspace_id' => (is => 'rw', isa => 'Int', required => 1);
 has 'page_id' => (is => 'rw', isa => 'Str', required => 1);
-*id = *uri = *page_id;
+*id = *page_id; # legacy alias
 has 'revision_id' => (is => 'rw', isa => 'Int',
     trigger => sub { $_[0]->_revision_id_changed($_[1],$_[2]) },
 );
@@ -153,6 +153,7 @@ use constant SELECT_COLUMNS_STR => q{
     page.summary,
     page.edit_summary,
     page.views,
+    page.locked,
     page.tags -- ordered array
 };
 
@@ -654,6 +655,13 @@ sub append {
         $body_ref = $new;
     }
     $self->body_ref($body_ref);
+}
+
+sub uri {
+    my $self = shift;
+    return $self->exists
+        ? $self->page_id
+        : Socialtext::String::title_to_display_id($self->name);
 }
 
 sub _add_delete_tags {

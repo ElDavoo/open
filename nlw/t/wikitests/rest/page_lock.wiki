@@ -25,7 +25,7 @@ Tests for Tag History for a page via the REST API
 | Comment   | Check for locked flag |                  |
 | GET       | %%page_uri%%          | application/json |
 | code-is   | 200                   |                  |
-| body-like | "locked":"0"          |                  |
+| body-like | "locked":0          |                  |
 
 | Comment | Admin can't set the lock state |
 | put-json | %%page_uri%%       | {"content":"Pairing is fun","locked":"1"} |
@@ -45,13 +45,22 @@ Tests for Tag History for a page via the REST API
 | http-user-pass | %%admin%%       | %%password%% |           |
 
 | Comment  | Set the lock state |                                           |
+| GET       | %%page_uri%% | application/json |
+| code-is   | 200                    |                  |
+| body-like | "locked":0           |                  |
+
 | put-json | %%page_uri%%       | {"content":"Pairing is fun","locked":"1"} |
 | code-is  | 204                |                                           |
 
 | Comment   | Check for locked flag  |                  |
+| GET       | %%page_uri%% | application/json |
+| code-is   | 200                    |                  |
+| body-like | "locked":1           |                  |
+
+| Comment   | Check for locked flag  |                  |
 | GET       | %%page_uri%%?verbose=1 | application/json |
 | code-is   | 200                    |                  |
-| body-like | "locked":"1"           |                  |
+| body-like | "locked":1           |                  |
 | body-like | Pairing is fun         |                  |
 
 | Comment | set html content   |                        |        |
@@ -61,7 +70,7 @@ Tests for Tag History for a page via the REST API
 | Comment   | Check for locked flag  |                  |
 | GET       | %%page_uri%%?verbose=1 | application/json |
 | code-is   | 200                    |                  |
-| body-like | "locked":"1"           |                  |
+| body-like | "locked":1           |                  |
 | body-like | insane                 |                  |
 
 | Comment | set wikitext content |
@@ -71,7 +80,7 @@ Tests for Tag History for a page via the REST API
 | Comment   | Check for locked flag  |                  |
 | GET       | %%page_uri%%?verbose=1 | application/json |
 | code-is   | 200                    |                  |
-| body-like | "locked":"1"           |                  |
+| body-like | "locked":1           |                  |
 | body-like | differnt               |                  |
 
 | Comment | Admin can tag a page |                         |         |
@@ -92,7 +101,7 @@ Tests for Tag History for a page via the REST API
 | Comment   | Check for locked flag |                  |
 | GET       | %%page_uri%%          | application/json |
 | code-is   | 200                   |                  |
-| body-like | "locked":"1"          |                  |
+| body-like | "locked":1          |                  |
 
 | Comment  | Set the lock state |                                           |
 | put-json | %%page_uri%%       | {"content":"Pairing is fun","locked":"1"} |
