@@ -66,7 +66,7 @@ create_fails_without_tempfile: {
     like exception {
         my $blah = Socialtext::Upload->Create(
             creator => $user,
-            filename => "fancy pants.txt",
+            filename => "/woah/fancy pants.txt",
             mime_type => 'text/plain; charset=UTF-8',
         );
     }, qr/temp_filename/, "can't create Uploads without a tempfile";
@@ -79,7 +79,7 @@ create: {
             created_at => $creation_time,
             creator => $user,
             temp_filename => "$tmp",
-            filename => "ultra super happy go-time fancy pants.txt",
+            filename => "/foo/\\/ultra super happy go-time fancy pants.txt/",
             mime_type => 'text/plain; charset=UTF-8',
         );
     }, undef, "created upload";
