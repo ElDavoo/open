@@ -9,3 +9,5 @@ ALTER TABLE ONLY page_link
 CREATE INDEX page_link__to_page
 	    ON page_link (to_workspace_id, to_page_id);
 
+-- ensure that all User's have a default value for their "middle_name"
+UPDATE users SET middle_name='';
