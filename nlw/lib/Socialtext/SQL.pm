@@ -606,7 +606,7 @@ sub sql_parse_timestamptz {
     $value =~ s/(?<=\d)T(?=\d)/ /; # convert infix T to space
     $value =~ s/Z$/+0000/; # zulu = +0000
     my $dt = $dt_fmt_pg->parse_timestamptz($value);
-    return bless $dt,'Socialtext::Date';
+    return $dt;
 }
 
 =head2 sql_format_timestamptz()
