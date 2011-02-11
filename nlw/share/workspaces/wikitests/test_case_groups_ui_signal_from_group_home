@@ -20,7 +20,7 @@
 | st-send-signal-in-activities-widget | %%mysignal_2%% |  |
 
 | st_verify_text_in_activities_widget | activity_widget | %%mysignal_1%% |
-| st_verify_text_in_activities_widget | activity_widget | qr/You.+minute.+ago to %%group_name%%/ |
+| st_verify_text_in_activities_widget | activity_widget | qr/You.*minute.*ago\s*to\s*%%group_name%%/ |
 | st_verify_text_in_activities_widget | activity_widget | %%mysignal_2%% |
 
 | *Comment* | Test Case: Groups UI Signal from group home Verify Signal in Signal Page |  |
@@ -42,7 +42,7 @@
 
 | st-name-widget | 1 | signals_widget |
 | st_verify_text_within_activities_widget | %%mysignal_1%% |  |
-| st_verify_text_within_activities_widget | qr/You.+minute.+ago to %%group_name%%/ |  |
+| st_verify_text_within_activities_widget | qr/You.*minute.*ago\s*to\s*%%group_name%%/ |  |
 | st_verify_text_within_activities_widget | %%mysignal_2%% |  |
 
 | *Comment* | Test Case: Groups UI Signal from group home - Disable signals, do not see signal option |  |
@@ -50,14 +50,14 @@
 | open_ok | /?group/%%group_id%% |  |
 | st-name-widget | 3 | activity_widget |
 | text_unlike | //body | What are you working on? |
-| text_like | within %%group_name%% |  |
+| text_like | //body | qr/within\s*%%group_name%%/ |  |
 
 | *Comment* | Test Case: Groups UI Signal from group home - Enable signals, see signal option |  |
 | st-admin | enable-plugin --plugin signals --all-accounts |  |
 | open_ok | /?group/%%group_id%% |  |
 | st-name-widget | 3 | activity_widget |
 | wait_for_text_present_ok | What are you working on? | 10000 |
-| wait_for_text_present_ok | within %%group_name%% | 10000 |
+| text_like | //body | qr/within\s*%%group_name%%/ | 10000 |
 
 | *Comment* | Test Case: Groups UI Signal from group home - Login as non group member, do not see signal |  |
 | st-admin | add-member --workspace %%group_ws%% --email %%username%% |  |
@@ -80,7 +80,7 @@
 
 | st-name-widget | 1 | signals_widget |
 | st_text_unlike_in_activities_widget | signals_widget | %%mysignal_1%% |
-| st_text_unlike_in_activities_widget | signals_widget | qr/%%group_user_short%%.+minute.+ago to %%group_name%%/ |
+| st_text_unlike_in_activities_widget | signals_widget | qr/%%group_user_short%%.*minute.*ago\s*to\s*%%group_name%%/ |
 | st_text_unlike_in_activities_widget | signals_widget | %%mysignal_2%% |
 
 | *Comment* | Test Case: Groups UI Signal from group home - Add member, see signal |  |
@@ -105,7 +105,7 @@
 | st-name-widget | 1 | signals_widget |
 | st_verify_text_in_activities_widget | signals_widget | qr/Showing\s*signals\s*from/i |
 | st_verify_text_in_activities_widget | signals_widget | %%mysignal_1%% |
-| st_verify_text_in_activities_widget | signals_widget | qr/%%group_user_short%%.+minute.+ago to %%group_name%%/ |
+| st_verify_text_in_activities_widget | signals_widget | qr/%%group_user_short%%.*minute.*ago\s*to\s*%%group_name%%/ |
 | st_verify_text_in_activities_widget | signals_widget | %%mysignal_2%% |
 
 | *Comment* | Test Case: Groups UI Signal from group home TEARDOWN |

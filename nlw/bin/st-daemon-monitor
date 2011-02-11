@@ -141,6 +141,11 @@ sub recover {
     if ($signal && $pid) {
         st_log()->info("st-daemon-monitor [$config_name]: sending $signal to $pid");
         kill $signal, -$pid, $pid;
+
+        # if "supervise" dies, we *need* to killall to ensure that the kill
+        # gets to all of the running processes (otherwise we end up with
+        # unsupervised but running processes)
+        system("killall -$signal $procname") if $procname;
     }
     elsif (!$pid && $daemontools) {
         st_log()->info("st-daemon-monitor [$config_name]: daemontools process has gone, trying to restart with svc/killall/svc combo");

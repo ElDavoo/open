@@ -1,5 +1,10 @@
+
 | *Comment* | Starting Test Case: Edit This Page |  |
 | *Comment* | %%username%% - %%email%% - %%short_username%% |  |
+
+
+
+
 
 | *Comment* | Test Case: Edit This Page wants Dashboard |  |
 | st-admin | enable-plugin --account %%hostname%% --p dashboard |  |
@@ -104,7 +109,7 @@
 
 | *Comment* | Test Case: Edit This Page navigate away and back |  |
 | open_ok | /%%workspace%% |  |
-| open_ok | /%%workspace%%/?Edit This Page %%start_time%% | needed for test to proceed |
+| open_ok | /%%workspace%%/?Edit This Page %%start_time%% |  |
 | pause | 8000 |  |
 
 | *Comment* | Test Case: Edit This Page navigate away Advanced mode |  |
@@ -171,7 +176,7 @@
 
 | *Comment* | Test Case: Edit This Page navigate away and back |  |
 | open_ok | /%%workspace%% |  |
-| open_ok | /%%workspace%%/?Edit This Page %%start_time%% | reload page for test to proceed |
+| open_ok | /%%workspace%%/?Edit This Page %%start_time%% |  |
 | pause | 8000 |  |
 
 | *Comment* | Test Case: Edit This Page navigate away Simple mode and cancel |  |
