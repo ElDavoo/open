@@ -562,7 +562,6 @@ my %ReservedNames = map { $_ => 1 } qw(
     superuser
     test-selenium
     workspace
-    wsdl
     user
 );
 

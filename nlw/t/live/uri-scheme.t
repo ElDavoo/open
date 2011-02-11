@@ -7,8 +7,6 @@ use Test::More tests => 4;
 use Socialtext::Hostname;
 use Socialtext::HTTP::Ports;
 
-# borrowed from wsdl-0.9.t
-
 my $live     = Test::Live->new();
 my $base_uri = $live->base_url;
 my $feed     = $base_uri . '/feed/workspace/admin?page=what_if_i_make_a_mistake';

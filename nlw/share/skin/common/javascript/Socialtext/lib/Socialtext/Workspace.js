@@ -199,7 +199,7 @@ Socialtext.Workspace.ReservedNames = [
     'account', 'administrate', 'administrator', 'atom', 'attachment',
     'attachments', 'category', 'control', 'console', 'data', 'feed', 'nlw',
     'noauth', 'page', 'recent-changes', 'rss', 'search', 'soap', 'static',
-    'st-archive', 'superuser', 'test-selenium', 'workspace', 'wsdl', 'user'
+    'st-archive', 'superuser', 'test-selenium', 'workspace', 'user'
 ];
 
 Socialtext.Workspace.AssertValidTitle = function (title) {

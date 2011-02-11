@@ -189,7 +189,6 @@ my %ToDoModules = map { $_ => 1 } qw(
     Socialtext::Rest::UserSharedAccounts
     Socialtext::Rest::Users
     Socialtext::Rest::Version
-    Socialtext::Rest::WSDL
     Socialtext::Rest::Wafl
     Socialtext::Rest::Workspace
     Socialtext::Rest::WorkspaceAttachments
