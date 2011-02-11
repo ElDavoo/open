@@ -64,7 +64,7 @@ has 'hub' => (
 
 has 'workspace_id' => (is => 'rw', isa => 'Int', required => 1);
 has 'page_id' => (is => 'rw', isa => 'Str', required => 1);
-*id = *uri = *page_id;
+*id = *page_id; # legacy alias
 has 'revision_id' => (is => 'rw', isa => 'Int',
     trigger => sub { $_[0]->_revision_id_changed($_[1],$_[2]) },
 );
@@ -654,6 +654,13 @@ sub append {
         $body_ref = $new;
     }
     $self->body_ref($body_ref);
+}
+
+sub uri {
+    my $self = shift;
+    return $self->exists
+        ? $self->page_id
+        : Socialtext::String::title_to_display_id($self->name);
 }
 
 sub _add_delete_tags {
