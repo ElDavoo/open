@@ -29,7 +29,18 @@ has 'hub' => (
 # pseudo-FK into the "page" table. The page may be in the process of being
 # created and thus may not "exist" until after this attachment gets stored.
 has 'page_id' => (is => 'ro', isa => 'Str', required => 1);
+has 'page' => (
+    is => 'rw', isa => 'Socialtext::Page',
+    lazy_build => 1,
+    writer => '_page',
+);
+
 has 'workspace_id' => (is => 'ro', isa => 'Int', required => 1);
+has 'workspace' => (
+    is => 'ro', isa => 'Socialtext::Workspace',
+    lazy_build => 1,
+    writer => '_workspace',
+);
 
 # FK into the "attachment" table. Used to build ->upload:
 has 'attachment_id' => (is => 'rw', isa => 'Int', writer => '_attachment_id');
@@ -42,15 +53,12 @@ has 'deleted' => (is => 'rw', isa => 'Bool',
     reader => 'is_deleted', writer => '_deleted');
 *deleted = *is_deleted;
 
-has 'page' => (is => 'ro', isa => 'Object', lazy_build => 1);
-has 'workspace' => (is => 'ro', isa => 'Socialtext::Workspace', lazy_build => 1);
-
 has 'upload' => (
     is => 'rw', isa => 'Socialtext::Upload',
     lazy_build => 1,
     handles => [qw(
         attachment_uuid binary_contents cleanup_stored clean_filename
-        content_length created_at created_at_str creator creator_id
+        content_length copy_to_file created_at created_at_str creator creator_id
         disk_filename ensure_stored filename is_image is_temporary mime_type
         protected_uri short_name to_string
     )],

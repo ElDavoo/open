@@ -59,6 +59,7 @@ Returns a list of all active page objects that exist in the current
 workspace and are active (not deleted).
 
 =cut
+
 sub all_active {
     my $self = shift;
     my $t = time_scope 'all_active';

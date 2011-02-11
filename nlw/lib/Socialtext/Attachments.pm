@@ -61,6 +61,7 @@ sub all {
     my $t = time_scope 'all_attach';
     my $p = ref $_[0] ? $_[0] : {@_};
     my $page_id  = $p->{page_id} || $self->hub->pages->current->id;
+    my $page = $p->{page};
     my $ws_id    = $self->hub->current_workspace->workspace_id;
 
     my $sql = q{
@@ -93,8 +94,10 @@ sub all {
     my $sth = sql_execute($sql, @args);
 
     my @attachments;
-    while (my $upload_args = $sth->fetchrow_hashref) {
-        push @attachments, $self->_new_from_row($upload_args);
+    while (my $att_args = $sth->fetchrow_hashref) {
+        my $att = $self->_new_from_row($att_args);
+        $att->_page($page) if $page;
+        push @attachments, $att;
     }
     return \@attachments;
 }
@@ -156,9 +159,22 @@ sub create {
     my $t = time_scope 'attach_create';
     my $hub = $self->hub;
     $args{creator} ||= $hub->current_user;
-    $args{page_id} ||= $hub->pages->current->id;
 
-    my $cur_guard = $hub->pages->ensure_current($args{page_id});
+    croak "just specify a page or a page_id, not both, to create an attachment"
+        if ($args{page} && $args{page_id});
+    
+    my $page;
+    if ($args{page}) {
+        $page = $args{page};
+    }
+    elsif ($args{page_id}) {
+        $page = $hub->pages->new_page($args{page_id});
+    }
+    else {
+        $page = $hub->pages->current;
+    }
+
+    my $cur_guard = $hub->pages->ensure_current($page);
 
     my $upload;
     if ($args{attachment_uuid}) {
@@ -181,7 +197,8 @@ sub create {
     my $att = Socialtext::Attachment->new(
         upload  => $upload,
         hub     => $hub,
-        page_id => $args{page_id},
+        page_id => $page->page_id,
+        page    => $page,
     );
     $att->store(user => $args{creator}, temporary => $args{temporary});
     $att->inline($args{creator}) if $args{embed};

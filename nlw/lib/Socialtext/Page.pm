@@ -360,8 +360,8 @@ sub _revision_id_changed {
     return;
 }
 
-sub load { carp "load() is now a no-op for Pages"; }
-sub load_content { carp "load_content() is now a no-op for Pages"; }
+sub load { Carp::cluck "load() is now a no-op for Pages"; }
+sub load_content { Carp::cluck "load_content() is now a no-op for Pages"; }
 
 
 sub createtime_for_user {
@@ -2255,7 +2255,8 @@ sub all_revision_ids {
 
 sub attachments {
     my $self = shift;
-    return @{ $self->hub->attachments->all( page_id => $self->page_id ) };
+    return @{$self->hub->attachments->all(
+        page => $self, page_id => $self->page_id)};
 }
 
 sub _log_page_action {

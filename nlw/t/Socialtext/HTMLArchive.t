@@ -4,43 +4,55 @@
 use warnings;
 use strict;
 use Socialtext::AppConfig;
-use Test::Socialtext;
+use Test::Socialtext tests => 15;
+use IO::File;
 
-fixtures( 'admin' );
+fixtures('db');
 
 use File::Path ();
-use Socialtext::HTMLArchive;
+use ok 'Socialtext::HTMLArchive';
 
-if ( `which zip` =~ /zip/ && `which unzip` =~ /unzip/ ) {
-    plan tests => 9;
-}
-else {
-    plan skip_all =>
-      'Socialtext::HTMLArchive tests requires zip and unzip binaries in path';
+my $hub = create_test_hub('admin');
+
+{
+    my $page = $hub->pages->new_from_name('Welcome');
+    $hub->pages->current($page);
+    my $rev = $page->edit_rev;
+    $page->content('Welcome!');
+    $page->store();
 }
 
-my $hub = new_hub('admin');
+{
+    my $page = $hub->pages->new_from_name('Quick-start');
+    my $g = $hub->pages->ensure_current($page);
+    $page->content('JFDI');
+    $page->store();
+}
+
+{
+    my $page = $hub->pages->new_from_name('Admin Wiki');
+    my $g = $hub->pages->ensure_current($page);
+    $page->tags(['Top Page']);
+    $page->content("I'm in ur pages, admining ur wikis\n");
+    $page->store();
+}
 
 # add attachments to a page so we can test that attachment/image links
 # are processed properly
 {
-    $hub->pages->current( $hub->pages->new_from_name('welcome') );
-
+    my $page = $hub->pages->current;
+    is $page->page_id, 'welcome';
     for my $att (qw( revolts.doc socialtext-logo-30.gif )) {
         my $path = "t/attachments/$att";
-        my $attachment = $hub->attachments->new_attachment( filename => $path );
-        $attachment->save($path);
-        $attachment->store( user => $hub->current_user );
+        my $fh = IO::File->new($path,'<');
+        my $attachment = $hub->attachments->create(
+            page     => $page,
+            filename => $path,
+            fh       => $fh,
+            embed    => 1,
+        );
+        ok $attachment, "created attachment for $att";
     }
-
-    my $content = $hub->pages->current->content;
-    $content .= <<"EOF";
-{file revolts.doc}
-{image socialtext-logo-30.gif}
-EOF
-
-    $hub->pages->current->content($content);
-    $hub->pages->current->store( user => $hub->current_user );
 }
 
 my $archive  = Socialtext::HTMLArchive->new( hub => $hub );
@@ -61,6 +73,7 @@ for my $f (
     map { "$dir/$_" }
     qw( admin_wiki.htm
     quick_start.htm
+    welcome.htm
     screen.css
     revolts.doc
     socialtext-logo-30.gif )
@@ -79,3 +92,4 @@ like $html, qr/href="revolts.doc"/, 'welcome.htm has valid link to revolts.doc';
 like $html, qr/src="socialtext-logo-30.gif"/,
   'welcome.htm has img link to socialtext-logo-30.gif';
 
+pass 'done';
