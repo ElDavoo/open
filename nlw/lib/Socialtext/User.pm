@@ -713,7 +713,10 @@ sub MaskEmailAddress {
 }
 
 sub FormattedEmail {
-    my ( $class, $first_name, $last_name, $email_address ) = @_;
+    my $class         = shift;
+    my $first_name    = shift;
+    my $last_name     = shift;
+    my $email_address = shift;
 
     my $name = Socialtext::User::Base->GetFullName($first_name, $last_name);
 
@@ -721,11 +724,11 @@ sub FormattedEmail {
     # the previous format, so is being temporarily reverted
     # return Email::Address->new($name, $email_address)->format;
 
-    if ( length $name ) {
-            return $name . ' <' . $email_address . '>';
+    if (length $name) {
+        return $name . ' <' . $email_address . '>';
     }
     else {
-            return $email_address;
+        return $email_address;
     }
 }
 
