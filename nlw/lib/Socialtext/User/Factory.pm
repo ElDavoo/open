@@ -228,9 +228,6 @@ sub UpdateUserRecord {
         # false/undef means "don't change cached_at in the db"
         delete $update_args{cached_at};
     }
-    elsif ($proto_user->{cached_at} eq 'infinity') {
-        $update_args{cached_at} = 'infinity';
-    }
     else {
         die "cached_at must be a DateTime object"
             unless (ref($proto_user->{cached_at}) && 

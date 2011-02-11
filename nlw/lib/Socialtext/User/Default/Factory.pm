@@ -119,7 +119,7 @@ sub update {
 
     $self->ValidateAndCleanData($user, \%p);
 
-    $p{cached_at} = 'infinity';
+    $p{cached_at} = DateTime::Infinite::Future->new();
     delete $p{driver_key}; # can't update, sorry
 
     $self->UpdateUserRecord( {
