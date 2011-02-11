@@ -181,16 +181,13 @@ sub GetFullName {
     my $class      = shift;
     my $first_name = shift;
     my $last_name  = shift;
-    my $full_name;
 
-    if (system_locale() eq 'ja') {
-        $full_name = join ' ', grep { defined and length }
-            $last_name, $first_name;
-    }
-    else {
-        $full_name = join ' ', grep { defined and length }
-        $first_name, $last_name;
-    }
+    my @components
+        = system_locale() eq 'ja'
+        ? ($last_name, $first_name)
+        : ($first_name, $last_name);
+
+    my $full_name = join ' ', grep { defined and length } @components;
     return $full_name;
 }
 
