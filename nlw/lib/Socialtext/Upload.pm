@@ -442,6 +442,16 @@ sub binary_contents {
     return;
 }
 
+sub copy_to_file {
+    my ($self, $target) = @_;
+    my $blob;
+    open my $fh, '>:raw', $target; # Fatal
+    $self->binary_contents(\$blob); # either maps or singleblobs
+    my $wrote = syswrite $fh, $blob;
+    die "failed to copy to file: $_" unless $wrote == length($blob);
+    close $fh; # Fatal
+}
+
 my $encoding_charset_map = {
     'euc-jp' => 'EUC-JP',
     'shiftjis' => 'Shift_JIS',
