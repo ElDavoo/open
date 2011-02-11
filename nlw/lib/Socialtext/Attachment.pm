@@ -1,202 +1,305 @@
-# @COPYRIGHT@
 package Socialtext::Attachment;
-use strict;
-use base 'Socialtext::Base';
-use Class::Field qw( field );
-use Email::Valid;
-use Socialtext::Encode;
+# @COPYRIGHT@
+use feature ':5.12';
+use Moose;
+use MooseX::StrictConstructor;
+use Carp qw/croak confess/;
+use Scalar::Util qw/blessed/;
+use Try::Tiny;
+use Fcntl qw/LOCK_EX/;
+use File::Basename;
+
+use Socialtext::Upload;
 use Socialtext::File ();
-use Socialtext::File::Stringify;
-use Socialtext::JobCreator;
-use Carp qw/croak/;
+use Socialtext::SQL qw/:exec :txn/;
+use Socialtext::SQL::Builder qw/sql_insert/;
+use Socialtext::String;
+use Socialtext::Timer qw/time_scope/;
+
+use namespace::clean -except => 'meta';
 
 my $MAX_WIDTH  = 600;
 my $MAX_HEIGHT = 600;
 
-my $encoding_charset_map = {
-    'euc-jp' => 'EUC-JP',
-    'shiftjis' => 'Shift_JIS',
-    'iso-2022-jp' => 'ISO-2022-JP',
-    'utf8' => 'UTF-8',
-    'cp932' => 'CP932',
-    'iso-8859-1' => 'ISO-8859-1',
+has 'hub' => (
+    is => 'ro', isa => 'Socialtext::Hub',
+    weak_ref => 1, predicate => 'has_hub'
+);
+
+# pseudo-FK into the "page" table. The page may be in the process of being
+# created and thus may not "exist" until after this attachment gets stored.
+has 'page_id' => (is => 'ro', isa => 'Str', required => 1);
+has 'workspace_id' => (is => 'ro', isa => 'Int', required => 1);
+
+# FK into the "attachment" table. Used to build ->upload:
+has 'attachment_id' => (is => 'rw', isa => 'Int', writer => '_attachment_id');
+
+# Legacy identifier, date-based:
+has 'id' => (is => 'rw', isa => 'Str', writer => '_id',
+    default => \&new_id);
+
+has 'deleted' => (is => 'rw', isa => 'Bool',
+    reader => 'is_deleted', writer => '_deleted');
+*deleted = *is_deleted;
+
+has 'page' => (is => 'ro', isa => 'Object', lazy_build => 1);
+has 'workspace' => (is => 'ro', isa => 'Socialtext::Workspace', lazy_build => 1);
+
+has 'upload' => (
+    is => 'rw', isa => 'Socialtext::Upload',
+    lazy_build => 1,
+    handles => [qw(
+        attachment_uuid binary_contents cleanup_stored clean_filename
+        content_length created_at created_at_str creator creator_id
+        disk_filename ensure_stored filename is_image is_temporary mime_type
+        protected_uri short_name to_string
+    )],
+    trigger => sub { $_[0]->_attachment_id($_[1]->attachment_id) },
+);
+*uploaded_by = *creator;
+*editor_id = *creator_id;
+*editor = *creator;
+*CleanFilename = *Socialtext::Upload::CleanFilename;
+
+use constant COLUMNS => qw(id workspace_id page_id attachment_id deleted);
+use constant COLUMNS_STR => join ', ', COLUMNS;
+
+override 'BUILDARGS' => sub {
+    my $class = shift;
+    my $p = ref($_[0]) eq 'HASH' ? $_[0] : {@_};
+    if (my $hub = $p->{hub}) {
+        $p->{workspace} = $hub->current_workspace;
+        $p->{workspace_id} = $p->{workspace}->workspace_id;
+    }
+    return $p;
 };
 
-sub class_id { 'attachment' }
-field 'id';
-field 'page_id';
-field 'filename';
-field 'db_filename';
-field 'loaded';
-field 'Control' => '';
-field 'From';
-field 'Subject';
-field 'DB_Filename';
-field 'Date';
-field 'Received';
-field 'Content_MD5';
-field 'Content_Length';
-field 'Content_type';
-field 'temporary';
-
-sub new {
+sub _build_page {
     my $self = shift;
-    $self = $self->SUPER::new(@_);
-    $self->id($self->new_id)
-      unless $self->id;
-    $self->page_id($self->hub->pages->current->id)
-      unless $self->page_id;
-    if (my $filename = $self->filename) {
-        $filename = $self->clean_filename($filename);
-        $self->filename($filename);
-        $self->db_filename($self->uri_escape($filename));
-    }
-    return $self;
+    croak "Can't build page: no hub on this Attachment" unless $self->has_hub;
+    $self->hub->pages->new_page($self->page_id);
 }
 
-sub clean_filename {
+sub _build_workspace {
     my $self = shift;
-    my $filename = shift;
-
-    require Socialtext::Upload;
-    return Socialtext::Upload->clean_filename($filename);
+    return Socialtext::Workspace->new(workspace_id => $self->workspace_id);
 }
 
-my $x = 0;
+sub _build_upload {
+    my $self = shift;
+    my $att_id = $self->attachment_id;
+    confess "This Attachment hasn't been saved yet" unless $att_id;
+    return Socialtext::Upload->Get(attachment_id => $att_id);
+}
+
+# legacy ID generator (new stuff should use UUIDs)
+my $id_counter = 0;
 sub new_id {
-    my $self = shift;
-    my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime(time);
-    $year += 1900;
-    my $id = sprintf('%4d%02d%02d%02d%02d%02d-%d-%d', 
-        $year, $mon+1, $mday, $hour, $min, $sec, $x++, $$
-    );
-    return $id;
-}
-
-sub load {
-    my $self = shift;
-    return $self if $self->loaded;
-
-    my $path = $self->_content_file;
-
-    unless (-e $path) {
-        $self->hub->log->warning("Attachment does not exist: '$path'");
-        $self->deleted(1);
-        return $self;
-    }
-
-    for ( Socialtext::File::get_contents_utf8($path) ) {
-        next unless /^(\w\S*):\s*(.*)$/;
-        my $value = $2;
-        ( my $key = $1 ) =~ s/-/_/g;
-        next unless $self->can($key);
-        $self->$key($value);
-    }
-
-    {
-        # This might be undef here, and lots of tests use -w which will cause
-        # confusing warnings from inside URI::Escape.  Harmless to remove this
-        # localized var, but it reduces some noise.
-        local $^W = 0; 
-        $self->filename( $self->Subject );
-        $self->db_filename( $self->DB_Filename
-                || $self->uri_escape( $self->Subject ) );
-    }
-
-    $self->loaded(1);
-    return $self;
-}
-
-sub _content_file {
-    my $self = shift;
-
-    return Socialtext::File::catfile(
-        $self->hub->attachments->plugin_directory,
-        $self->page_id,
-        $self->id . '.txt',
+    my ($sec, $min, $hour, $mday, $mon, $year) = gmtime(time);
+    return sprintf('%4d%02d%02d%02d%02d%02d-%d-%d',
+        $year+1900, $mon+1, $mday, $hour, $min, $sec, $id_counter++, $$
     );
 }
 
-sub save {
+# Only call this from tests, please
+sub content {
     my $self = shift;
-    my $tmp_file = shift;
-    my $id = $self->id;
-    my $db_filename = $self->db_filename;
-    my $page_id = $self->page_id;
+    my $blob;
+    $self->upload->binary_contents(\$blob);
+    return $blob;
+}
 
-    my $attachdir = $self->hub->attachments->plugin_directory;
-    my $file_path = "$attachdir/$page_id/$id";
-    $self->assert_dirpath($file_path);
-    my $dest = "$file_path/$db_filename";
-    File::Copy::copy($tmp_file, $dest)
-        or die "Couldn't copy from $tmp_file to $dest : $!";
-    chmod(0755, $dest)
-        or die "Couldn't set permissions on $dest : $!";
+sub store {
+    my $self = shift;
+    my %p = @_;
+    $p{user} //= $self->has_hub ? $self->hub->current_user : undef;
+    my $is_temp = $p{temporary} ? 1 : 0;
+    confess('no user given to Socialtext::Attachment->store')
+        unless $p{user};
+
+    croak "Can't save an attachment without an associated Upload object"
+        unless $self->has_upload;
+    croak "Can't store once deleted (calling delete() does a store())"
+        if $self->deleted;
+
+    my %args = map { $_ => $self->$_ } COLUMNS;
+    $args{deleted} = 0;
+
+    try {
+        sql_txn {
+            my $guard = $self->upload->make_permanent(
+                actor => $p{user}, guard => 1
+            ) unless $is_temp;
+            sql_insert('page_attachment' => \%args);
+            $guard->cancel() if $guard;
+        };
+    }
+    catch {
+        croak "store page attachment failed: ".
+            "attachment already exists? error: $_"
+            if /primary.key/i;
+        die $_;
+    };
+
+    $self->reindex() unless $is_temp;
+    return;
+}
+
+sub clone {
+    my $self = shift;
+    my %p = @_;
+    my $page = delete $p{page};
+
+    my $upload = $self->upload;
+    my $target = $self->new(
+        hub => $page->hub,
+        page_id => $page->page_id,
+        workspace_id => $page->workspace_id,
+        upload => $upload,
+        attachment_id => $upload->attachment_id,
+        id => new_id(),
+        deleted => undef,
+        page => $page,
+        workspace => $page->workspace,
+    );
+    $target->store(temporary => 1); # so the upload doesn't make_permanent again
+    $target->reindex();
+    return $target;
+}
+
+sub reindex {
+    my $self = shift;
+    return if $self->is_temporary;
+    require Socialtext::JobCreator;
+    Socialtext::JobCreator->index_attachment($self);
+    return;
+}
+
+sub make_permanent {
+    my $self = shift;
+    my %p = @_;
+    $p{user} //= $self->has_hub ? $self->hub->current_user : undef;
+    confess('no user given to Socialtext::Attachment->make_permanent')
+        unless $p{user};
+
+    # Use a guard if anything tricky can happen between perma-fying and
+    # returning:
+    $self->upload->make_permanent(
+        actor => $p{user}, no_log => $p{no_log}, guard => 0);
+    $self->reindex();
+
+    return;
+}
+
+sub delete {
+    my $self = shift;
+    my %p = @_;
+    $p{user} //= $self->has_hub ? $self->hub->current_user : undef;
+    confess('no user given to Socialtext::Attachment->delete')
+        unless $p{user};
+    confess "can't delete an attachment that isn't saved yet"
+        unless $self->has_upload;
+
+    sql_txn {
+        sql_execute(q{
+            UPDATE page_attachment SET deleted = true WHERE attachment_id = ?
+        }, $self->attachment_id);
+        local $!;
+        $self->upload->delete(actor => $p{user});
+    };
+
+    $self->reindex();
+    return;
+}
+
+sub purge {
+    my $self = shift;
+
+    # clean up the index first
+    my $ws = $self->workspace;
+    my $ws_name = $ws->name;
+
+    my $u = $self->upload;
+    sql_txn {
+        sql_execute(q{
+            DELETE FROM page_attachment
+            WHERE workspace_id = ? AND page_id = ? AND attachment_id = ?
+        }, $ws->workspace_id, $self->page_id, $u->attachment_id);
+        $u->purge(actor => $self->hub->current_user);
+    };
+
+    # If solr/kino are slow, we may wish to do this async in a job.  Note that
+    # jobs generally require the attachment object to be available.
+    require Socialtext::Search::AbstractFactory;
+    my @indexers = Socialtext::Search::AbstractFactory->GetIndexers($ws_name);
+    for my $indexer (@indexers) {
+        $indexer->delete_attachment($self->page_id, $self->id);
+    }
+}
+
+sub inline {
+    my ($self, $user) = @_;
+    croak "can't inline without a hub" unless $self->has_hub;
+    $user //= $self->hub->current_user;
+
+    # a page object/id used to be the first parameter:
+    croak "user is required as the first argument"
+        unless blessed($user) && $user->isa('Socialtext::User');
+
+    my $page = $self->page;
+    my $guard = $self->hub->pages->ensure_current($page);
+    $page->edit_rev();
+    $page->prepend($self->image_or_file_wafl());
+    $page->store(user => $user);
 }
 
 sub extract {
     my $self = shift;
+    require Socialtext::ArchiveExtractor;
+    my $t = time_scope 'attachment_extract';
+    my $cur_guard = $self->hub->pages->ensure_current($self->page_id);
 
-    my $filename = join '/',
-        $self->hub->attachments->plugin_directory,
-        $self->page_id,
-        $self->id,
-        $self->db_filename;
+    # TODO: de-duplicate files by doing md5 lookups and multiply-assigning
+    # Uploads to attachments.
 
-    my $tmpdir = File::Temp::tempdir( CLEANUP => 1 );
+    # Socialtext::ArchiveExtractor uses the extension to figure out how to
+    # extract the archive, so that must be preserved here.
+    my $tmpdir = File::Temp::tempdir(CLEANUP => 1);
+    my $archive = "$tmpdir/".$self->clean_filename;
 
-    # Socialtext::ArchiveExtractor uses the extension to figure out how to extract the
-    # archive, so that must be preserved here.
-    my $basename = File::Basename::basename($filename);
-    my $tmparchive = "$tmpdir/$basename";
+    $self->ensure_stored();
+    File::Copy::copy($self->disk_filename, $archive);
 
-    open my $tmpfh, '>', $tmparchive
-        or die "Couldn't open $tmparchive for writing: $!";
-    File::Copy::copy($filename, $tmpfh)
-        or die "Cannot save $basename to $tmparchive: $!";
-    close $tmpfh;
+    my @files = Socialtext::ArchiveExtractor->extract(archive => $archive);
+    # before everything-in-the-db this used to try to add the archive itself
+    return unless @files;
 
-    my @files = Socialtext::ArchiveExtractor->extract( archive => $tmparchive );
-    # If Socialtext::ArchiveExtractor couldn't extract anything we'll
-    # attach the archive file itself.
-    @files = $tmparchive unless @files;
-
-    for my $file (@files) {
-        open my $fh, '<', $file or die "Cannot read $file: $!";
-
-        my $attachment = Socialtext::Attachment->new(
-            hub      => $self->hub,
-            filename => $file,
-            fh       => $fh,
-            creator  => $self->hub->current_user,
-            page_id  => $self->page_id,
-        );
-        $attachment->save($fh);
-        my $creator = $self->hub->current_user;
-        $attachment->store(user => $creator);
-        $attachment->inline( $self->page_id, $creator );
-    }
+    my $attachments = $self->hub->attachments;
+    sql_txn {
+        my @atts;
+        for my $file (@files) {
+            my $filename = File::Basename::basename($file);
+            my $att = $attachments->create(
+                filename  => $filename,
+                fh        => $file,
+                page_id   => $self->page_id,
+                embed     => 1,
+                temporary => 1,
+            );
+            push @atts, $att;
+        }
+        $_->make_permanent(user => $self->hub->current_user) for @atts;
+    };
 
     $self->hub->attachments->cache->clear();
-    
+
     return;
-}
-
-
-sub attachdir {
-    my $self = shift;
-    return $self->{attachdir} if defined $self->{attachdir};
-
-    my $attachdir = $self->hub->attachments->plugin_directory;
-    my $page_id = $self->page_id;
-    my $id = $self->id;
-    return "$attachdir/$page_id/$id";
 }
 
 sub dimensions {
     my ($self, $size) = @_;
     $size ||= '';
-    return if $size eq 'scaled' and $self->hub->current_workspace->no_max_image_size;
+    return if $size eq 'scaled' and $self->workspace->no_max_image_size;
     return unless $size;
     return [0, 0] if $size eq 'scaled';
     return [100, 0] if $size eq 'small';
@@ -205,328 +308,67 @@ sub dimensions {
     return [$1 || 0, $2 || 0] if $size =~ /^(\d+)(?:x(\d+))?$/;
 }
 
-sub image_path {
-    my $self = shift;
-    my $size = shift;
+sub _prep_image {
+    my ($self, $flavor) = @_;
 
-    my $dimensions = $self->dimensions($size);
+    my $original = $self->disk_filename;
+    my $target = "$original.$flavor";
+    my $size;
+    if (-f $target && ($size = -s _)) {
+        # "touch" the atime of the file so this can be used for pruning 
+        utime time, $self->created_at->epoch, $target;
+        return $size;
+    }
 
-    my $paths = $self->{image_path};
+    $self->ensure_stored();
+    my $dimensions = $self->dimensions($flavor);
+    (my $dir = $target) =~ s{/[^/]+$}{};
 
-    my $attachdir = $self->attachdir;
-    my $db_filename = $self->db_filename;
+    try {
+        # file *must* have a .png suffix for resize() to work
+        my $tmp = File::Temp->new(CLEANUP => 1,
+            DIR => $dir, TEMPLATE => "resize-XXXXXX", SUFFIX => 'png');
+        die "can't create temp file: $!" unless $tmp;
 
-    my $original = $paths->{original} ||= 
-        join '/', $self->attachdir, $db_filename;
-
-    # Return original if the we have nothing to resize
-    return $original unless defined $dimensions and -f $original;
-
-    my $size_dir = join '/', $attachdir, $size;
-    my $path = $paths->{$size} ||= join '/', $size_dir, $db_filename;
-    mkdir $size_dir unless -d $size_dir;
-
-    return $path if -f $path;
-
-    # This can fail in a variety of ways, mostly related to
-    # the file not being what it says it is.
-    eval {
-        File::Copy::copy($original, $path)
-            or die "Could not copy $original to $path: $!\n";
         Socialtext::Image::resize(
-            new_width  => $dimensions->[0],
-            new_height => $dimensions->[1],
-            max_height => $MAX_HEIGHT,
-            max_width  => $MAX_WIDTH,
-            filename   => $path,
+            new_width   => $dimensions->[0],
+            new_height  => $dimensions->[1],
+            max_height  => $MAX_HEIGHT,
+            max_width   => $MAX_WIDTH,
+            filename    => $original,
+            to_filename => "$tmp", # force-stringify the glob
         );
+        rename "$tmp" => $target;
+        $size = -s $target;
+    }
+    catch {
+        warn "couldn't scale attachment ".$self->attachment_uuid.": $!";
+        $size = 0;
     };
-    # Return original on error
-    if ($@) {
-        warn "Reverting to original: $@"; 
-        unlink $path;
-        return $original;
+
+    return $size;
+}
+
+sub prepare_to_serve {
+    my ($self, $flavor, $protected) = @_;
+    undef $flavor if ($flavor && $flavor eq 'original');
+
+    my ($uri,$content_length);
+    if ($self->is_image && $flavor) {
+        ($uri) = $protected
+            ? ($self->protected_uri.".$flavor")
+            : ($self->download_uri($flavor));
+        $content_length = $self->_prep_image($flavor);
     }
 
-    return $path;
-}
-
-sub is_image {
-    my $self = shift;
-    return $self->{is_image} if defined $self->{is_image};
-    return $self->{is_image} = ($self->mime_type =~ /^image\//);
-}
-
-sub full_path {
-    my $self = shift;
-    return $self->image_path(@_) if $self->is_image;
-    return $self->_raw_path;
-}
-
-sub _raw_path {
-    my $self = shift;
-    return $self->{full_path} if defined $self->{full_path};
-    $self->{full_path} = join '/', $self->attachdir, $self->db_filename;
-    return $self->{full_path};
-}
-
-sub copy {
-    my $self = shift;
-    my $source = shift;
-    my $target = shift;
-    my $target_directory = shift;
-
-    my $sourcefile = $source->db_filename;
-    my $sourcedir = $source->hub->attachments->plugin_directory;
-    my $source_page_id = $source->page_id;
-    my $source_id = $source->id;
-    my $sourcepath = "$sourcedir/$source_page_id/$source_id";
-    $self->assert_dirpath($sourcepath);
-
-    my $targetfile = $target->db_filename;
-
-    my $target_page_id = $target->page_id; my $target_id = $target->id;
-    my $targetpath = "$target_directory/$target_page_id/$target_id";
-
-    $self->assert_dirpath($targetpath);
-
-    # This used to be just "$targetpath" as the dest, but fully-qualifying it
-    # seems to fix a bug that only happens under Lucid so far -- don't
-    # understand why that is, so feel free to change this if you get it ;)
-    # ~stash
-    File::Copy::copy("$sourcepath/$sourcefile", "$targetpath/$targetfile")
-        or die "Can't copy $sourcepath/$sourcefile into $targetpath/$targetfile: $!";
-
-    chmod(0755, $targetpath);
-}
-
-sub store {
-    my $self = shift;
-    my %p = @_;
-
-    Carp::confess('no user given to Socialtext::Attachment->store')
-        unless $p{user} && eval { $p{user}->can('email_address') };
-
-    my $target_dir = $p{dir};
-    my $id = $self->id;
-    my $filename = $self->filename;
-    my $db_filename = $self->db_filename;
-    my $page_id = $self->page_id;
-
-    my ($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = gmtime(time);
-    $year += 1900;
-    my $prt_date = sprintf("%4d-%02d-%02d %02d:%02d:%02d GMT",
-                        $year, $mon+1, $mday, $hour, $min, $sec
-                       );
-    my $attachdir = $target_dir || $self->hub->attachments->plugin_directory;
-    my $file_path = "$attachdir/$page_id/$id";
-    $self->assert_dirpath($file_path);
-
-    my $md5;
-    open IN, '<', "$file_path/$db_filename"
-      or Carp::confess "Can't open $file_path/$db_filename for MD5 checksum: $!";
-    binmode IN;
-    $md5 = Digest::MD5->new->addfile(*IN)->b64digest;
-    close IN;
-
-    #need test for command line invocation
-    my $remote_addr='';
-    if  ($ENV{REMOTE_ADDR}) {
-        $remote_addr = $ENV{REMOTE_ADDR};
+    if (!$content_length) {
+        $self->ensure_stored();
+        $uri = $protected ? $self->protected_uri : $self->download_uri;
+        $content_length = $self->content_length;
     }
 
-    my $from = $p{user}->email_address;
-
-    my $filesize = -s "$file_path/$db_filename";
-    open my $out, '>', "$file_path.txt"
-        or die "Can't open output file: $!";
-    binmode($out, ':utf8');
-    if ($self->deleted) {
-        print $out "Control: Deleted\n";
-    }
-    elsif ($self->temporary) {
-        print $out "Control: Temporary\n";
-    }
-    print $out "Content-type: ", $self->Content_type, "\n"
-        if $self->Content_type;
-    print $out $self->utf8_decode(<<"QUOTEDTEXT");
-From: $from
-Subject: $filename
-DB_Filename: $db_filename
-Date: $prt_date
-Received: from $remote_addr
-Content-MD5: $md5==
-Content-Length: $filesize
-
-QUOTEDTEXT
-    close $out;
-
-    # XXX: refactor into MetaDataObject with all metadata,
-    # XXX: including Subject, Received, Control
-    $self->filename($filename);
-    $self->db_filename($db_filename);
-    $self->Date($prt_date);
-    $self->Content_Length($filesize);
-    $self->Content_MD5("$md5==");
-    $self->From($from);
-
-    $self->hub->attachments->cache->clear();
-    $self->hub->attachments->index->add($self) unless $self->deleted;
-    Socialtext::JobCreator->index_attachment($self);
-}
-
-sub page {
-    my $self = shift;
-    $self->hub->pages->new_page($self->page_id);
-}
-
-# XXX - a copy of Socialtext::Page->last_edited_by()
-sub uploaded_by {
-    my $self = shift;
-    return unless $self->From;
-
-    my $email_address = $self->From;
-    # We have some very bogus data on our system, so this is a really
-    # horrible hack to fix it.
-    unless ( Email::Valid->address($email_address) ) {
-        my ($name) = $email_address =~ /([\w-]+)/;
-        $email_address = $name . '@example.com';
-    }
-
-    my $user = Socialtext::User->new( email_address => $email_address );
-
-    # XXX - there are many usernames for pages that were never in
-    # users.db or any htpasswd.db file. We need to have all users in
-    # the DBMS, so we assume that if they don't exist, they should be
-    # created. When we import pages into the DBMS, we'll need to
-    # create any non-existent users at the same time, for referential
-    # integrity.
-    $user ||= Socialtext::User->create(
-        username      => $email_address,
-        email_address => $email_address,
-    );
-
-    return $user;
-}
-
-sub short_name {
-    my $self = shift;
-    my $name = $self->Subject;
-    $name =~ s/ /_/g;
-    return $name
-      unless $name =~ /^(.{16}).{2,}(\..*)/;
-    return "$1..$2";
-}
-
-sub content {
-    my $self = shift;
-    Socialtext::File::get_contents($self->full_path);
-}
-
-sub deleted {
-    my $self = shift;
-    return $self->{deleted} = shift if @_;
-    return $self->{deleted} if defined $self->{deleted};
-    $self->load;
-    $self->{deleted} = $self->Control eq 'Deleted' ? 1 : 0;
-}
-
-sub temporary {
-    my $self = shift;
-    return $self->{temporary} = shift if @_;
-    return $self->{temporary} if defined $self->{temporary};
-    $self->load;
-    $self->{temporary} = $self->Control eq 'Temporary' ? 1 : 0;
-}
-
-sub delete {
-    my $self = shift;
-    my %p = @_;
-    Carp::confess('no user given to Socialtext::Attachment->delete')
-        unless $p{user};
-
-    $self->load;
-    $self->deleted(1);
-    $self->store(%p);
-    $self->hub->attachments->index->delete($self);
-    $self->hub->attachments->cache->clear();
-}
-
-sub make_permanent {
-    my $self = shift;
-    my %p = @_;
-    Carp::confess('no user given to Socialtext::Attachment->delete')
-        unless $p{user};
-
-    $self->load;
-    $self->temporary(0);
-    $self->store(%p);
-}
-
-sub exists {
-    return -f $_[0]->_content_file;
-}
-
-sub serialize {
-    my $self = shift;
-    return {
-        filename => $self->filename,
-        date     => $self->Date,
-        length   => $self->Content_Length,
-        md5      => $self->Content_MD5,
-        from     => $self->From,
-        page_id  => $self->page_id,
-        id       => $self->id,
-    };
-}
-
-sub inline {
-    my $self = shift;
-    my $page_id = shift;
-    my $user = shift;
-
-    my $page = $self->hub->pages->new_page($page_id);
-    $page->metadata->update( user => $user );
-
-    my $content = $page->content;
-    $content = $self->image_or_file_wafl . $content;
-    $page->content($content);
-    $page->store( user => $user );
-}
-
-sub mime_type {
-    my $self = shift;
-
-    return $self->{mime_type} if $self->{mime_type};
-
-    my $mime_type_file = $self->_raw_path . '-mime';
-    if (-e $mime_type_file) {
-        my $type = Socialtext::File::get_contents($mime_type_file);
-        return $self->{mime_type} = $type;
-    }
-
-    $self->{mime_type} = $self->Content_type ||
-        Socialtext::File::mime_type(
-            $self->_raw_path, $self->filename, 'application/binary');
-
-    eval {
-        Socialtext::File::set_contents($mime_type_file, $self->{mime_type});
-    }; #ignore failures
-
-    return $self->{mime_type};
-}
-
-sub charset {
-    my $self = shift;
-    my $locale = shift;
-
-    my $encoding = Socialtext::File::get_guess_encoding( $locale, $self->full_path );
-    my $charset = $encoding_charset_map->{$encoding};
-    if (! defined $charset ) {
-        $charset = 'UTF-8';
-    }
-
-    return $charset;
+    return ($uri, $content_length) if wantarray;
+    return $uri;
 }
 
 sub should_popup {
@@ -542,27 +384,14 @@ sub should_popup {
 
 sub image_or_file_wafl {
     my $self = shift;
-    my $filename = $self->utf8_decode($self->filename);
-
-    return $self->is_image
-      ? "{image: $filename}" . "\n\n"
-      : "{file: $filename}" . "\n\n";
+    my $filename = $self->filename;
+    my $wafl = $self->is_image ? "image" : "file";
+    return "{$wafl\: $filename}\n\n";
 }
 
-sub assert_dirpath {
-    my $self = shift;
-    my $path = shift;
-
-    File::Path::mkpath($path)
-        unless -d $path;
-}
-
+my $ExcerptLength = 350;
 sub preview_text {
     my $self = shift;
-    my $content = shift || $self->content;
-
-    my $ExcerptLength = 350;
-
     my $excerpt;
     $self->to_string(\$excerpt);
     $excerpt = substr( $excerpt, 0, $ExcerptLength ) . '...'
@@ -570,41 +399,50 @@ sub preview_text {
     return $excerpt;
 }
 
-sub to_string {
-    croak "must supply a buffer reference for to_string()" unless @_ == 2;
-    my ($self, $buf_ref) = @_;
-    Socialtext::File::Stringify->to_string(
-        $buf_ref, $self->full_path, $self->mime_type);
-    return;
+sub download_uri {
+    my ($self, $flavor) = @_;
+    $flavor ||= 'original'; # can also be 'files'
+    my $ws = $self->workspace->name;
+    my $filename_uri  = Socialtext::String::uri_escape($self->clean_filename);
+    my $uri = "/data/workspaces/$ws/attachments/".
+        $self->page->uri.':'.$self->id."/$flavor/$filename_uri";
 }
 
-sub purge {
-    my $self = shift;
-    my $page = shift;
-
-    # clean up the index first
-    my $ws_name = $self->hub->current_workspace->name;
-
-    # If solr/kino are slow, we may wish to do this async in a job.
-    require Socialtext::Search::AbstractFactory;
-    my @indexers = Socialtext::Search::AbstractFactory->GetIndexers($ws_name);
-    for my $indexer (@indexers) {
-        $indexer->delete_attachment( $page->uri, $self->id );
-    }
-
-    $self->delete(user => $self->hub->current_user());
-
-    my $attachment_path = join '/', $self->hub->attachments->plugin_directory, $page->id, $self->id;
-    my $attachment_txt = $attachment_path . ".txt";
-    
-    if ( -e $attachment_path ) {
-        unlink($attachment_txt);
-        File::Path::rmtree($attachment_path);
-    }
+sub download_link {
+    my ($self, $flavor) = @_;
+    my $uri = $self->download_uri($flavor);
+    my $filename_html = Socialtext::String::html_escape($self->filename);
+    return qq(<a href="$uri">$filename_html</a>);
 }
 
-# Currently the ID is close to a timestamp, but this may change in future
-# implementations.
-sub timestampish { shift->id }
+sub to_hash {
+    my ($self, %p) = @_;
+    state $nf = Number::Format->new;
+    my $user = $self->creator;
+    my $hash = {
+        id   => $self->id,
+        uuid => $self->attachment_uuid,
+        name => $self->filename,
+        uri  => $self->download_uri('original'),
+        'content-type'   => $self->mime_type,
+        'content-length' => $self->content_length,
+        date             => $self->created_at_str,
+        uploader         => $user->email_address,
+        uploader_name    => $user->display_name,
+        uploader_id      => $user->user_id,
+        'page-id'        => $self->page_id,
+        ($self->is_temporary ? (is_temporary => 1) : ()),
+    };
 
+    if ($p{formatted}) {
+        my $bytes = $self->content_length;
+        $hash->{size} = $bytes < 1024
+            ? "$bytes bytes" : $nf->format_bytes($bytes);
+        $hash->{local_date} = $self->hub->timezone->get_date($self->created_at);
+    }
+
+    return $hash;
+}
+
+__PACKAGE__->meta->make_immutable(inline_constructor => 1);
 1;

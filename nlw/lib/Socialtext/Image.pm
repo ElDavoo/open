@@ -16,14 +16,15 @@ use Socialtext::Validate qw( validate SCALAR_TYPE OPTIONAL_INT_TYPE HANDLE_TYPE 
         max_height => OPTIONAL_INT_TYPE,
         new_width  => OPTIONAL_INT_TYPE,
         new_height => OPTIONAL_INT_TYPE,
-        filename   => SCALAR_TYPE( default => '' ),
-        blob       => SCALAR_TYPE( default => '' ),
+        filename   => SCALAR_TYPE(default => ''),
+        to_filename   => SCALAR_TYPE(default => ''),
     };
 
     sub resize {
         my %p = validate( @_, $spec );
 
         my $file = $p{filename} || die "Filename is required";
+        my $to_file = $p{to_filename} || $file;
 
         ($p{img_width}, $p{img_height}) = get_dimensions($file);
         my ($new_width, $new_height) = get_proportions(%p);
@@ -35,7 +36,7 @@ use Socialtext::Validate qw( validate SCALAR_TYPE OPTIONAL_INT_TYPE HANDLE_TYPE 
             and ($new_height and ($new_height != $p{img_height}))
         ) {
             local $Socialtext::System::SILENT_RUN = 1;
-            convert($file, $file, scale => "${new_width}x${new_height}");
+            convert($file, $to_file, scale => "${new_width}x${new_height}");
         }
     }
 }
@@ -123,7 +124,6 @@ sub extract_rectangle {
 sub convert {
     my $in = shift;
     my $out = shift;
-
     my @opts;
     while (my ($k,$v) = splice(@_,0,2)) {
         push @opts, "-$k", $v;

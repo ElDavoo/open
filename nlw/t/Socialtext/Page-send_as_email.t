@@ -5,6 +5,7 @@ use warnings;
 use strict;
 
 use Test::Socialtext;
+use IO::File;
 fixtures( 'admin', 'foobar' );
 
 BEGIN {
@@ -49,13 +50,15 @@ EOF
     Email::Send::Test->clear;
 
     my $page = $pages->new_from_name($utf8_subject);
+    $pages->current($page);
 
-    my $attachment =
-        $hub->attachments->new_attachment( page_id => $page->id,
-                                           filename => 'socialtext-logo.gif',
-                                         );
-    $attachment->save('t/attachments/socialtext-logo-30.gif');
-    $attachment->store( user => $hub->current_user );
+    my $attachment = $hub->attachments->create(
+        fh => IO::File->new('t/attachments/socialtext-logo-30.gif', '<'),
+        filename => 'socialtext-logo.gif',
+        page => $page,
+        page_id => $page->id,
+        user => $hub->current_user,
+    );
 
     $page->send_as_email
         ( from => 'devnull1@socialtext.com',
@@ -94,6 +97,7 @@ EOF
     Email::Send::Test->clear;
 
     my $page = $pages->new_from_name($utf8_subject);
+    $pages->current($page);
 
     my $buncha_recipients = join ', ', map { "frog$_\@sharpsaw.org" } (0..10);
     $page->send_as_email(
@@ -146,6 +150,7 @@ EOF
     Email::Send::Test->clear;
 
     my $page = $pages->new_from_name($utf8_subject);
+    $pages->current($page);
 
     $page->send_as_email( from => 'devnull1@socialtext.com',
                           to   => 'devnull2@socialtext.com',
@@ -164,6 +169,7 @@ EOF
     Email::Send::Test->clear;
 
     my $page = $pages->new_from_name($utf8_subject);
+    $pages->current($page);
 
     $page->send_as_email
         ( from => 'devnull1@socialtext.com',
@@ -185,6 +191,7 @@ send_copy: {
     Email::Send::Test->clear;
 
     my $page = $pages->new_from_name($utf8_subject);
+    $pages->current($page);
 
     $page->send_as_email
         ( from => 'devnull1@socialtext.com',
@@ -209,6 +216,7 @@ send_copy_one_receiver: {
     Email::Send::Test->clear;
 
     my $page = $pages->new_from_name($utf8_subject);
+    $pages->current($page);
 
     $page->send_as_email
         ( from => 'devnull1@socialtext.com',
@@ -231,6 +239,7 @@ send_copy_duplicate_copy: {
     Email::Send::Test->clear;
 
     my $page = $pages->new_from_name($utf8_subject);
+    $pages->current($page);
 
     $page->send_as_email
         ( from => 'devnull1@socialtext.com',
@@ -256,6 +265,7 @@ send_copy_duplicate_copy: {
     Email::Send::Test->clear;
 
     my $page = $pages->new_from_name($utf8_subject);
+    $pages->current($page);
 
     $page->send_as_email
         ( from => 'devnull1@socialtext.com',
@@ -283,6 +293,7 @@ send_copy_duplicate_copy: {
     Email::Send::Test->clear;
 
     my $page = $pages->new_from_name($utf8_subject);
+    $pages->current($page);
 
     $page->send_as_email
         ( from => 'devnull1@socialtext.com',
@@ -315,6 +326,7 @@ EOF
     );
 
     my $page = $pages->new_from_name('Has Table');
+    $pages->current($page);
 
     $page->send_as_email(
         from => 'devnull1@socialtext.com',

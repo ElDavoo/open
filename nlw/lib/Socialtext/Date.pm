@@ -9,6 +9,15 @@ use DateTime::Format::Strptime;
 use DateTime::TimeZone;
 use Time::HiRes ();
 
+# for XXX-debugging:
+sub yaml_dump {
+    my $self = shift;
+    return {
+        iso8601 => $self->hires_iso8601,
+        epoch   => $self->hires_epoch,
+    };
+}
+
 sub parse {
     my ( $class, $format, $date ) = @_;
 
@@ -55,6 +64,8 @@ sub from_epoch {
     my %p = @_ == 1 ? ( epoch => $_[0] ) : @_;
     $class->SUPER::from_epoch(%p);
 }
+
+sub hires_iso8601 { $_[0]->strftime('%F %T.%6N%z') }
 
 sub format {
     my ( $self, $format ) = @_;

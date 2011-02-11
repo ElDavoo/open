@@ -1066,7 +1066,16 @@ CREATE TABLE page (
     summary text,
     edit_summary text,
     locked boolean DEFAULT false NOT NULL,
+    tags text[] NOT NULL,
     views integer DEFAULT 0 NOT NULL
+);
+
+CREATE TABLE page_attachment (
+    id text NOT NULL,
+    workspace_id bigint NOT NULL,
+    page_id text NOT NULL,
+    attachment_id bigint NOT NULL,
+    deleted boolean NOT NULL
 );
 
 CREATE TABLE page_link (
@@ -1089,9 +1098,17 @@ CREATE TABLE page_revision (
     summary text,
     edit_summary text,
     locked boolean DEFAULT false NOT NULL,
-    tags text[],
-    body bytea NOT NULL
+    tags text[] NOT NULL,
+    body_length bigint DEFAULT 0 NOT NULL,
+    body bytea
 );
+
+CREATE SEQUENCE page_revision_id_seq
+    START WITH 30000000000000
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 CREATE TABLE page_tag (
     workspace_id bigint NOT NULL,
@@ -1528,6 +1545,14 @@ ALTER TABLE ONLY opensocial_appdata
     ADD CONSTRAINT opensocial_appdata_pk
             PRIMARY KEY (app_id, user_set_id, field);
 
+ALTER TABLE ONLY page_attachment
+    ADD CONSTRAINT page_attachment_pkey
+            PRIMARY KEY (workspace_id, page_id, attachment_id);
+
+ALTER TABLE ONLY page_attachment
+    ADD CONSTRAINT page_attachment_workspace_id_page_id_id_key
+            UNIQUE (workspace_id, page_id, id);
+
 ALTER TABLE ONLY page_link
     ADD CONSTRAINT page_link_unique
             UNIQUE (from_workspace_id, from_page_id, to_workspace_id, to_page_id);
@@ -1717,6 +1742,12 @@ CREATE INDEX idx_attach_created_at_temp
 	    ON attachment (created_at)
 	    WHERE (NOT is_temporary);
 
+CREATE INDEX idx_attach_filename
+	    ON attachment (lower(filename) text_pattern_ops);
+
+CREATE INDEX idx_attach_filename_with_id
+	    ON attachment (attachment_id, lower(filename) text_pattern_ops);
+
 CREATE INDEX idx_job_func_coalesce_prio
 	    ON job (funcid, "coalesce", (COALESCE((priority)::integer, 0)));
 
@@ -1731,6 +1762,9 @@ CREATE INDEX idx_opensocial_appdata_app_user
 
 CREATE UNIQUE INDEX idx_opensocial_appdata_app_user_field
 	    ON opensocial_appdata (app_id, user_set_id, field);
+
+CREATE UNIQUE INDEX idx_page_att_id
+	    ON page_attachment (workspace_id, page_id, id);
 
 CREATE INDEX idx_signal_tag_lower_tag
 	    ON signal_tag (lower(tag) text_pattern_ops);
@@ -2057,9 +2091,6 @@ CREATE INDEX page_creator_time
 CREATE INDEX page_link__to_page
 	    ON page_link (to_workspace_id, to_page_id);
 
-CREATE INDEX page_revision__ws_page_rev
-	    ON page_revision (workspace_id, page_id, revision_id);
-
 CREATE INDEX page_tag__page_ix
 	    ON page_tag (workspace_id, page_id);
 
@@ -2350,6 +2381,16 @@ ALTER TABLE ONLY opensocial_appdata
             FOREIGN KEY (app_id)
             REFERENCES gadget_instance(gadget_instance_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY page_attachment
+    ADD CONSTRAINT page_att_attachment
+            FOREIGN KEY (attachment_id)
+            REFERENCES attachment(attachment_id) ON DELETE RESTRICT;
+
+ALTER TABLE ONLY page_attachment
+    ADD CONSTRAINT page_att_workspace_id_fk
+            FOREIGN KEY (workspace_id)
+            REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
+
 ALTER TABLE ONLY page
     ADD CONSTRAINT page_creator_id_fk
             FOREIGN KEY (creator_id)
@@ -2364,6 +2405,16 @@ ALTER TABLE ONLY page_link
     ADD CONSTRAINT page_link__from_page_id_fk
             FOREIGN KEY (from_workspace_id, from_page_id)
             REFERENCES page(workspace_id, page_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY page_revision
+    ADD CONSTRAINT page_rev_last_editor_id_fk
+            FOREIGN KEY (editor_id)
+            REFERENCES users(user_id) ON DELETE RESTRICT;
+
+ALTER TABLE ONLY page_revision
+    ADD CONSTRAINT page_rev_workspace_id_fk
+            FOREIGN KEY (workspace_id)
+            REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY page_tag
     ADD CONSTRAINT page_tag_workspace_id_page_id_fkey
@@ -2448,7 +2499,7 @@ ALTER TABLE ONLY rollup_user_signal
 ALTER TABLE ONLY signal_asset
     ADD CONSTRAINT signal_asset_attach_fk
             FOREIGN KEY (attachment_id)
-            REFERENCES attachment(attachment_id) ON DELETE CASCADE;
+            REFERENCES attachment(attachment_id) ON DELETE RESTRICT;
 
 ALTER TABLE ONLY signal_asset
     ADD CONSTRAINT signal_asset_signal_fk
@@ -2463,7 +2514,7 @@ ALTER TABLE ONLY signal_asset
 ALTER TABLE ONLY signal_attachment
     ADD CONSTRAINT signal_attachment_attachment_fk
             FOREIGN KEY (attachment_id)
-            REFERENCES attachment(attachment_id) ON DELETE CASCADE;
+            REFERENCES attachment(attachment_id) ON DELETE RESTRICT;
 
 ALTER TABLE ONLY signal_attachment
     ADD CONSTRAINT signal_attachment_signal_fk

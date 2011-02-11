@@ -197,9 +197,9 @@ sub _get_html {
     };
 
     my $html = "<html><head><title>"
-        . $page->metadata->Subject
+        . $page->name
         . "</title></head><body><h1>"
-        . $page->metadata->Subject
+        . $page->name
         . "</h1>"
         . $content
         . "</body></html>";

@@ -40,9 +40,9 @@ sub read_and_decode_file {
         if $filename =~ /\.\./;
 
     # Note: avoid using '<:raw' here, it sucks for performance
-    open(my $fh, '<', $filename)
+    # will Encode byte to char later.
+    open(my $fh, '<:mmap', $filename)
         or die "Can't open $filename: $!";
-    binmode($fh); # will Encode bytes to characters later
 
     my $buffer;
     {

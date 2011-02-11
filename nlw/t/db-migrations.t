@@ -60,16 +60,22 @@ diag "loading config...\n";
 my $schema_config = YAML::LoadFile("$real_dir/socialtext.yaml");
 
 diag "Creating schema object...\n";
-my $schema = Socialtext::Schema->new(%$schema_config);
+my $schema = Socialtext::Schema->new(%$schema_config, verbose => 1);
 $schema->{no_add_required_data} = $schema->{quiet} = 1;
 
 diag "Recreating schema...\n";
 
 ok -r "$fake_dir/socialtext-pg-9.sql", "base postgres 9 schema exists";
-$schema->recreate(
-    'schema-file'    => "$fake_dir/socialtext-pg-9.sql",
-    'no_die_on_drop' => 1,
-);
+eval {
+    $schema->recreate(
+        'schema-file'    => "$fake_dir/socialtext-pg-9.sql",
+        'no_die_on_drop' => 1,
+    );
+};
+if ($@) {
+    system("tail -n 20 $test_dir/log/st-db.log");
+    exit;
+}
 
 # Check each schema
 for ( $START_SCHEMA+1 .. $latest_schema ) {

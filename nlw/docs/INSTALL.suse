@@ -28,8 +28,6 @@ Create config
 
 Crypt::SSLeay doesn't build OK on its own
 
-SOAP::Lite has special stuff we need
-
 
 == Packages ==
 
@@ -38,4 +36,3 @@ perl-Crypt-SSLeay
 
 ** MAKE A PACKAGE LIST **
 
-The SOAP::Lite that is on SuSe 10.1 is 0.66, and we need at least 0.67.

@@ -55,6 +55,17 @@ other stuff, some special considerations have to be made.
 
 =cut
 
+# for helping with XXX.pm, but also affects YAML::Dumper. Hubs should never be
+# serialized anyway.
+sub yaml_dump {
+    my $self = shift;
+    return bless {
+        action => $self->action,
+        current_workspace => $self->current_workspace->name,
+        current_user => $self->current_user->username
+    }, __PACKAGE__;
+}
+
 # Override field 'hub' in Socialtext::Base to make sure we never reference
 # ourself
 sub hub {}
@@ -393,7 +404,6 @@ BEGIN {
             Socialtext::RenamePagePlugin
             Socialtext::RevisionPlugin
             Socialtext::ShortcutLinksPlugin
-            Socialtext::SOAPPlugin
             Socialtext::GoogleSearchPlugin
             Socialtext::SyndicatePlugin
             Socialtext::TiddlyPlugin

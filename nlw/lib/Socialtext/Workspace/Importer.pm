@@ -380,6 +380,7 @@ sub _populate_db_metadata {
     my $self = shift;
 
     Socialtext::Timer->Continue('populate_db');
+    local $Socialtext::Page::TablePopulator::Noisy = 0;
     my $populator = Socialtext::Page::TablePopulator->new(
         workspace_name => $self->{new_name},
         data_dir       => $CWD,

@@ -600,9 +600,13 @@ DateTime::Format::Pg)
 
 =cut
 
+my $dt_fmt_pg = DateTime::Format::Pg->new;
 sub sql_parse_timestamptz {
     my $value = shift;
-    return DateTime::Format::Pg->parse_timestamptz($value);
+    $value =~ s/(?<=\d)T(?=\d)/ /; # convert infix T to space
+    $value =~ s/Z$/+0000/; # zulu = +0000
+    my $dt = $dt_fmt_pg->parse_timestamptz($value);
+    return bless $dt,'Socialtext::Date';
 }
 
 =head2 sql_format_timestamptz()
@@ -613,7 +617,7 @@ Converts a DateTime object into a timestamptz column format.
 
 sub sql_format_timestamptz {
     my $dt = shift;
-    my $fmt = DateTime::Format::Pg->format_timestamptz($dt);
+    my $fmt = $dt_fmt_pg->format_timestamptz($dt);
     if (!$dt->is_finite) {
         # work around a DateTime::Format::Pg bug
         $fmt =~ s/infinite$/infinity/g;

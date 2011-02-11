@@ -13,8 +13,8 @@ use Socialtext::HTTP ':codes';
 =head2 POST
 
 Create a new attachment.  The name must be passed in using the C<name> CGI
-parameter.  server. If creation is successful, return 201 and the Location: of
-the new page
+parameter.  If creation is successful, return 201 and the Location: of
+the new attachment.
 
 =cut
 
@@ -26,10 +26,6 @@ sub POST {
     my $lock_check_failed = $self->page_lock_permission_fail();
     return $lock_check_failed if ($lock_check_failed);
 
-    # TODO: We presumably should do some kind magic header
-    # checking, but in the meantime, rather than doing a 500
-    # when we are unable to provide a content-type, return a 409
-    # explaining the need for a content-type header.
     my $content_type = $rest->request->header_in('Content-Type');
     unless ($content_type) {
         $rest->header(
@@ -38,53 +34,50 @@ sub POST {
         );
         return 'Content-type header required';
     }
+    my $page = $self->page;
 
-    my $content_fh = tempfile;
+    my $content_fh = tempfile(CLEANUP => 1);
     $content_fh->print($rest->getContent);
     seek $content_fh, 0, SEEK_SET;
 
-    my $name    = Apache::Request->new(Apache->request)->param('name')
+    # read the ?name= query parameter (REST::Application can't do this)
+    my $name = Apache::Request->new(Apache->request)->param('name')
         or return $self->_http_401(
             'You must supply a value for the "name" parameter.' );
 
-    # TODO Content-type handling here and in Socialtext::Attachment.
-    my $attachment = $self->hub->attachments->create(
-        fh           => $content_fh,
-        embed        => 0,
+    my $att = $self->hub->attachments->create(
         filename     => $name,
-        Content_type => $content_type,
+        fh           => $content_fh,
         creator      => $rest->user,
-        page_id      => $self->page->id, );
-
-    # REVIEW: We should be able to call "$self->parent_url(2)" or whatever and
-    # get the URL 2 levels above us.  $self->parent_url(0) would return our
-    # own URL (sans query params).  EXTRACT that to Socialtext::Rest.
+        Content_type => $content_type,
+        page         => $page,
+        page_id      => $page->id,
+        embed        => 0, # don't inline a wafl for the ReST API
+    );
 
     my $base = $self->rest->query->url( -base => 1 );
     $rest->header(
         -status   => HTTP_201_Created,
-        -Location => "$base/data/workspaces/"
-            . $self->ws
-            . "/attachments/"
-            . $self->page->uri . ':'
-            . $attachment->id
-            . '/files/'
-            . $attachment->filename
+        -Location => $base . $att->download_uri('files'),
     );
 
     # {bz: 4286}: Record edit_save events for attachment uploads via ReST too.
-    $self->page->update_from_remote(
-        content => $self->page->content
-    );
+    # XXX: UGH seriously? pass the page content all the way through?!
+    $page->update_from_remote(user => $rest->user, content => $page->content);
 
     return '';
 }
 
 sub allowed_methods { 'GET, HEAD, POST' }
 
-sub _entities_for_query {
+sub get_resource {
     my $self = shift;
-    return @{ $self->hub->attachments->all( page_id => $self->page->id ) };
+    my $q = $self->rest->query;
+    my $atts = $self->hub->attachments->all(
+        page_id => $self->page->id,
+        (map { $_ => scalar $q->param($_) } qw(order limit offset)),
+    );
+    return [ map { $self->_entity_hash($_) } @$atts ];
 }
 
 1;

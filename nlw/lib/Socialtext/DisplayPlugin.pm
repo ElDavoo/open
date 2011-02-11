@@ -19,6 +19,7 @@ use Socialtext::File qw/get_contents_utf8 set_contents_utf8/;
 use Apache::Cookie;
 use Socialtext::Events;
 use File::Path qw/mkpath/;
+use List::MoreUtils qw/part/;
 
 sub class_id { 'display' }
 const class_title => loc('Screen Layout');
@@ -174,11 +175,10 @@ sub display {
         $self->hub->current_workspace->name,
     ) ? 0 : 1;
 
-    my @new_attachments = ();
     my @new_tags = ();
     if ($is_new_page) {
         my $page_type = $self->cgi->page_type || '';
-        $page->metadata->Type(
+        $page->page_type(
             $page_type eq 'spreadsheet' && 'spreadsheet' || 'wiki'
         );
         push @new_tags, $self->_new_tags_to_add();
@@ -187,36 +187,20 @@ sub display {
             my $tmpl_page = $self->hub->pages->new_from_name($template);
             if ($tmpl_page->exists) {
                 push @new_tags, grep { $_ !~ /^template$/i }
-                                @{ $tmpl_page->metadata->Category };
+                                @{ $tmpl_page->tags };
                 $page->content($tmpl_page->content);
-        
-                my $attachments = $self->hub->attachments->all(
-                    page_id => $tmpl_page->id
-                );
-                my $plugin_dir = $self->hub->attachments->plugin_directory;
-                for my $a (@$attachments) {
-                    my $target = $self->hub->attachments->new_attachment(
-                        id => $a->id,
-                        filename => $a->filename,
-                    );
-                    $target->copy($a, $target, $plugin_dir);
-                    $target->temporary(1);
-                    $target->store(user => $self->hub->current_user);
 
-                    # Keep track of temporary attachments for deletion
-                    push @new_attachments, $target;
-                }
+                # Attachments used to be copied to the new page here.  Since
+                # they can now exist in the database before the page is
+                # finalized, there's no longer this need.
             }
         }
     }
     else {
         $page->add_tags( $self->_new_tags_to_add() );
     }
-    $page->load;
 
-    if (!$is_new_page &&
-        !$page->is_untitled)
-    {
+    if (!$is_new_page && !$page->is_untitled) {
         eval {
             Socialtext::Events->Record({
                 event_class => 'page',
@@ -228,7 +212,7 @@ sub display {
     }
 
     return $self->_render_display($page, $is_new_page, $start_in_edit_mode,
-                                  \@new_tags, \@new_attachments);
+                                  \@new_tags);
 }
 
 sub _render_display {
@@ -237,7 +221,6 @@ sub _render_display {
     my $is_new_page = shift;
     my $start_in_edit_mode = shift;
     my $new_tags = shift;
-    my $new_attachments = shift;
 
     my $include_recent_changes
         = $self->preferences->include_in_pages->value;
@@ -265,17 +248,12 @@ sub _render_display {
         $cookies->{'st-page-accessories'}->value
     ) || 'show';
 
-    # Fake out a call to the REST API to get attachments.
-    # XXX - This should probably be more standard.
-    use Socialtext::Rest::Attachments;
-    my $rest_object = Socialtext::Rest::Attachments->new($self->hub->rest,
-        { ws => $self->hub->current_workspace->name });
+    my ($attachments, $new_attachments) =
+        part { $_->{is_temporary} ? 1 : 0 } 
+        map { $_->to_hash(formatted => 1) }
+        @{$self->hub->attachments->all(page_id => $page->id)};
 
-    my $all_attachments = [
-        map { $rest_object->_entity_hash($_) }
-        @{$self->hub->attachments->all(page_id => $page->id)},
-    ];
-
+    # TODO: Thunk like in global_template_vars?
     return $self->template_render(
         template => 'view/page/display',
         vars     => {
@@ -293,7 +271,7 @@ sub _render_display {
             title                   => $page->title,
             page                    => $self->_get_page_info($page),
             template_name           => $self->cgi->template || '',
-            tag_count               => scalar @{ $page->metadata->Category }, # counts recent changes!
+            tag_count               => scalar @{ $page->tags }, # counts recent changes!
             tags                    => $self->_getCurrentTags($page),
             initialtags             => $self->_getCurrentTagsJSON($page),
             workspacetags           => $self->_get_workspace_tags,
@@ -305,10 +283,8 @@ sub _render_display {
             is_incipient            => ($self->cgi->is_incipient ? 1 : 0),
             start_in_edit_mode      => $start_in_edit_mode,
             new_tags                => $new_tags,
-            attachments             => $all_attachments,
-            new_attachments         => [
-                map { $rest_object->_entity_hash($_) } @$new_attachments
-            ],
+            attachments             => $attachments,
+            new_attachments         => $new_attachments,
             watching                => $self->hub->watchlist->page_watched,
             login_and_edit_path => '/challenge?'
                 . $self->uri_escape(
@@ -319,8 +295,7 @@ sub _render_display {
             wikiwyg_double =>
                 $self->hub->wikiwyg->preferences->wikiwyg_double->value,
             Socialtext::BrowserDetect::safari()
-            ? ( raw_wikitext => $page->content )
-            : (),
+                ? ( raw_wikitext => $page->content ) : (),
             current_user_workspace_count =>
                 $self->hub->current_user->workspace_count,
             tools => $self->hub->registry->lookup->tool,
@@ -369,10 +344,8 @@ sub content_only {
 sub _get_page_info {
     my ( $self, $page ) = @_;
 
-    my $original_revision = $page->original_revision;
-
     my $updated_author = $page->last_edited_by || $self->hub->current_user;
-    my $created_author = $original_revision->last_edited_by;
+    my $created_author = $page->exists ? $page->creator : $self->hub->current_user;
 
     Socialtext::Timer->Continue('s2_page_html');
     my $page_html = $page->to_html_or_default;
@@ -390,7 +363,7 @@ sub _get_page_info {
         content => $self->hub->wikiwyg->html_formatting_hack(
             $page_html
         ),
-        page_type => $page->metadata->Type,
+        page_type => $page->page_type,
         size      => $page->size,
         feeds     => $self->_feeds( $self->hub->current_workspace, $page ),
         revisions => $page->revision_count,
@@ -414,11 +387,9 @@ sub _get_page_info {
                     )
                 : undef
             ),
-            date => $original_revision->datetime_for_user || undef,
+            date => $page->createtime_for_user || undef,
         },
-        is_original => (  $page->revision_id
-                        ? ($page->revision_id == $original_revision->revision_id)
-                        : undef),
+        is_original => $page->revision_num <= 1 ? 1 : 0,
         incoming    => $self->hub->backlinks->all_backlinks_for_page($page),
         caller      => ($self->cgi->caller_action || ''),
         is_active   => $page->active,
@@ -466,7 +437,7 @@ sub _getCurrentTags {
     my $self = shift;
     my $page = shift;
 
-    my $page_tags = $page->metadata->Category;
+    my $page_tags = $page->tags;
     my %weighted_tags = (tags => $page_tags);
     if (@$page_tags) {
         %weighted_tags = $self->hub->category->weight_categories(@$page_tags);
@@ -499,7 +470,7 @@ sub display_html {
     my $page = $self->hub->pages->current;
     $page->load;
     my $html = $page->to_html;
-    my $title = $page->metadata->Subject;
+    my $title = $page->name;
 
     $html = $self->qualify_links(
         $html, $self->hub->current_workspace->uri

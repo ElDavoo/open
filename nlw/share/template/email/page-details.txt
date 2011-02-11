@@ -12,7 +12,7 @@
   [%- END -%]
 [%- END -%]
 
-[% page.metadata.Subject %]
+[% page.title %]
   [%+ workspace.uri %]?[% page.uri %]
  [%- IF include_editor %]
     [%- IF user.username == page.last_edited_by.username %]
@@ -20,7 +20,7 @@
     [%- ELSE -%]
       [%- SET user_name = page.last_edited_by.best_full_name( workspace => workspace ) -%]
     [%- END -%]
-    [%- IF page.metadata.Revision == 1 -%]
+    [%- IF page.revision_num == 1 -%]
       [%- SET action = loc('created by') -%]
     [%- ELSE -%]
       [%- SET action = loc('last edited by') -%]

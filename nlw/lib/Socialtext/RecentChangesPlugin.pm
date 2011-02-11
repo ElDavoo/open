@@ -3,7 +3,7 @@ package Socialtext::RecentChangesPlugin;
 use Socialtext::CategoryPlugin;
 use Socialtext::l10n qw/loc/;
 use Socialtext::Timer qw/time_scope/;
-use Socialtext::Model::Pages;
+use Socialtext::Pages;
 use Socialtext::Pageset;
 use strict;
 use warnings;
@@ -163,13 +163,13 @@ sub new_changes {
     );
     my $pages_ref;
     if ($category) {
-        $pages_ref = Socialtext::Model::Pages->By_tag(%args, tag => $category);
+        $pages_ref = Socialtext::Pages->By_tag(%args, tag => $category);
     }
     else {
-        $pages_ref = Socialtext::Model::Pages->All_active(%args);
+        $pages_ref = Socialtext::Pages->All_active(%args);
     }
 
-    my $total = Socialtext::Model::Pages->ActiveCount(workspace => $ws_id);
+    my $total = Socialtext::Pages->ActiveCount(workspace => $ws_id);
     my $changed_total = $self->count_by_seconds_limit();
 
     my $display_title;
@@ -183,7 +183,7 @@ sub new_changes {
     }
 
     Socialtext::Timer->Continue('new_changes_push_result');
-    local $Socialtext::Model::Page::No_result_times = 1;
+    local $Socialtext::Page::No_result_times = 1;
     for my $page (@$pages_ref) {
         $self->push_result($page);
     }
@@ -202,7 +202,7 @@ sub by_seconds_limit {
 
     my $prefs = $self->hub->recent_changes->preferences;
     my $seconds = $prefs->changes_depth->value * 1440 * 60;
-    my $pages = Socialtext::Model::Pages->By_seconds_limit(
+    my $pages = Socialtext::Pages->By_seconds_limit(
         seconds          => $seconds,
         hub              => $self->hub,
         count            => $self->preferences->sidebox_changes_depth->value,
@@ -218,7 +218,7 @@ sub count_by_seconds_limit {
 
     my $prefs = $self->hub->recent_changes->preferences;
     my $seconds = $prefs->changes_depth->value * 1440 * 60;
-    return Socialtext::Model::Pages->ChangedCount(
+    return Socialtext::Pages->ChangedCount(
         duration    => $seconds,
         workspace_id => $self->hub->current_workspace->workspace_id,
     );

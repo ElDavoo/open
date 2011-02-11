@@ -35,7 +35,7 @@ sub hacks_info {
 
     my $action = $self->hub->action;
 
-    my $tags = $self->hub->pages->current->metadata->Category;
+    my $tags = $self->hub->pages->current->tags;
 
     for my $entry (@$config) {
         next unless defined $entry->{hack};

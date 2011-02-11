@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use mocked 'Socialtext::CGI';
 use mocked 'Apache::Cookie';
+use mocked 'Socialtext::Page';
 use mocked 'Socialtext::Hub';
 use Test::Socialtext tests => 8;
 

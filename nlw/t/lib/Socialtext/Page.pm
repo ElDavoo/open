@@ -10,6 +10,12 @@ field 'name';
 field 'id', -init => '$self->name';
 field 'uri', -init => '$self->id';
 
+const SELECT_COLUMNS_STR => q{fake AS fake, columns AS columns};
+
+sub _new_from_row {
+    bless {@_}, __PACKAGE__;
+}
+
 sub title { $_[0]->{title} || $_[0]->name || 'Mock page title' }
 
 sub is_untitled {
@@ -60,17 +66,16 @@ sub add_tags {
     push @{ $self->{tags} }, @_;
 }
 
-sub is_spreadsheet { $_[0]->metadata->Type eq 'spreadsheet' }
+sub is_spreadsheet { $_[0]->page_type eq 'spreadsheet' }
 
-# Metadata
-sub metadata { shift } # hack - return ourself
-sub Subject { $_[0]->{title} }
-sub Type { $_[0]->{type} || 'page' }
-sub Revision { $_[0]{revision} || 'page_rev' }
-sub Category { $_[0]{category} || $_[0]{tags} || ['mock_category'] }
+sub page_type { $_[0]->{type} || 'page' }
+sub revision_num { $_[0]{revision} || 'page_rev' }
+sub tags { $_[0]{category} || $_[0]{tags} || ['mock_category'] }
 
 sub original_revision { shift } # hack - return ourself
 sub datetime_for_user { 'Mon 12 12:00am' }
 sub last_edited_by { Socialtext::User->new(username => 'mocked_user') }
 sub edit_summary { 'awesome' }
+
+sub full_uri { '/workspace_mock_workspace_name/current' }
 1;

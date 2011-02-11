@@ -1,163 +1,375 @@
-# @COPYRIGHT@
 package Socialtext::Page;
+# @COPYRIGHT@
+use Moose;
+use MooseX::StrictConstructor;
 
-=head1 NAME
+use Moose::Util::TypeConstraints;
+use Socialtext::Moose::UserAttribute;
+use Socialtext::MooseX::Types::Pg;
+use Socialtext::MooseX::Types::UniStr;
 
-Socialtext::Page - Base class for NLW pages
-
-=cut
-
-use strict;
-use warnings;
-
-use base 'Socialtext::Base';
-use base 'Socialtext::Page::Base';
 use Socialtext::AppConfig;
-use Socialtext::JobCreator;
-use Socialtext::Encode;
+use Socialtext::EmailSender::Factory;
+use Socialtext::Encode qw/ensure_is_utf8/;
+use Socialtext::Events;
+use Socialtext::File;
+use Socialtext::Formatter::AbsoluteLinkDictionary;
 use Socialtext::Formatter::Parser;
 use Socialtext::Formatter::Viewer;
-use Socialtext::Formatter::AbsoluteLinkDictionary;
-use Socialtext::Log qw( st_log );
+use Socialtext::JobCreator;
+use Socialtext::Log qw/st_log/;
+use Socialtext::PageRevision;
 use Socialtext::Paths;
-use Socialtext::PageMeta;
+use Socialtext::Permission qw/ST_READ_PERM ST_EDIT_PERM ST_ATTACHMENTS_PERM/;
+use Socialtext::SQL qw/:exec :txn :time/;
+use Socialtext::SQL::Builder qw/sql_insert sql_update/;
 use Socialtext::Search::AbstractFactory;
-use Socialtext::Timer qw/time_scope/;
-use Socialtext::EmailSender::Factory;
-use Socialtext::l10n qw(loc system_locale);
-use Socialtext::WikiText::Parser;
-use Socialtext::WikiText::Emitter::SearchSnippets;
 use Socialtext::String;
-use Socialtext::Events;
-use Socialtext::SQL qw/:exec :txn get_dbh sql_parse_timestamptz/;
-use Socialtext::SQL::Builder qw/sql_insert_many/;
-use Socialtext::Permission 'ST_READ_PERM';
-use Socialtext::Model::Pages;
-use Socialtext::Cache;
+use Socialtext::URI;
+use Socialtext::Timer qw/time_scope/;
+use Socialtext::Validate qw(validate :types SCALAR SCALARREF ARRAYREF UNDEF BOOLEAN);
+use Socialtext::WikiText::Emitter::SearchSnippets;
+use Socialtext::WikiText::Parser;
+use Socialtext::l10n qw(loc system_locale);
 
-use Data::Dumper;
-use Carp ();
-use Class::Field qw( field const );
+use Digest::SHA1 'sha1_hex';
+use Carp;
 use Cwd ();
 use DateTime;
 use DateTime::Duration;
 use DateTime::Format::Strptime;
-use DateTime::Format::Pg;
 use Date::Parse qw/str2time/;
 use Email::Valid;
+use File::Path;
 use Readonly;
 use Text::Autoformat;
 use Time::Duration::Object;
-use Socialtext::Validate qw(validate :types SCALAR ARRAYREF BOOLEAN POSITIVE_INT_TYPE USER_TYPE UNDEF);
+use List::MoreUtils qw/any/;
+use Try::Tiny;
+
+sub class_id { 'page' }
 
 Readonly my $SYSTEM_EMAIL_ADDRESS       => 'noreply@socialtext.com';
-Readonly my $IS_RECENTLY_MODIFIED_LIMIT => 60 * 60; # one hour
 Readonly my $WIKITEXT_TYPE              => 'text/x.socialtext-wiki';
 Readonly my $HTML_TYPE                  => 'text/html';
+
 my $REFERENCE_TIME = undef;
+our $CACHING_DEBUG = 0;
+our $DISABLE_CACHING = 0;
 
-field 'id';
-sub class_id { 'page' }
-field full_uri =>
-      -init => '$self->hub->current_workspace->uri . $self->uri';
+has 'hub' => (
+    is => 'rw', isa => 'Socialtext::Hub',
+    weak_ref => 1,
+);
 
-sub _MAX_PAGE_ID_LENGTH () {
-    return 255;
-}
-field cache => -init => "Socialtext::Cache->cache('pages')";
+has 'workspace_id' => (is => 'rw', isa => 'Int', required => 1);
+has 'page_id' => (is => 'rw', isa => 'Str', required => 1);
+*id = *uri = *page_id;
+has 'revision_id' => (is => 'rw', isa => 'Int',
+    trigger => sub { $_[0]->_revision_id_changed($_[1],$_[2]) },
+);
+*current_revision_id = *revision_id;
 
-=head1 METHODS
+has 'revision_count' => (is => 'rw', isa => 'Int');
+has 'views' => (is => 'rw', isa => 'Int');
 
-=head2 new( %args )
+has_user 'creator' => (is => 'rw');
+has 'create_time'  => (
+    is => 'rw', isa => 'Pg.DateTime',
+    coerce => 1,
+    lazy => 1, # so the default doesn't fire right away
+    default => sub { Socialtext::Date->now(hires=>1) },
+);
 
-Initializes a page object.  Automatically generates metadata.
+has 'restored' => (is => 'rw', isa => 'Bool', writer => '_restored');
+has 'full_uri' => (is => 'rw', isa => 'Str', lazy_build => 1);
 
-=cut
+has 'rev' => (
+    is => 'rw', isa => 'Socialtext::PageRevision',
+    lazy_build => 1,
+    handles => {
+        last_editor => 'editor',
+        last_editor_id => 'editor_id',
+        last_edit_time => 'edit_time',
+        prev_rev => 'prev',
+        has_prev_rev => 'has_prev',
+        clear_prev_rev => 'clear_prev',
+        # as-is mappings:
+        (map {$_=>$_} qw(
+            name revision_num modified_time page_type deleted summary
+            edit_summary locked tags tag_set body_length body_ref
+            body_modified mutable is_spreadsheet is_wiki is_untitled
+            has_tag tags_sorted is_recently_modified age_in_minutes
+            age_in_seconds age_in_english datetime_for_user datetime_utc
+        )),
+    },
+);
+*type = *page_type;
+*last_edited_by = *last_editor;
+*title = *name;
+*is_in_category = *has_tag;
+*time_for_user = *datetime_for_user;
+*categories_sorted = *tags_sorted;
 
-sub new {
+has 'workspace' => (is => 'rw', isa => 'Socialtext::Workspace', lazy_build => 1);
+# SQL will select these out of the database, so we should use them if present:
+has 'workspace_name' => (is => 'rw', isa => 'Str', lazy_build => 1);
+has 'workspace_title' => (is => 'rw', isa => 'Str', lazy_build => 1);
+
+has 'exists' => (is => 'rw', isa => 'Bool', lazy_build => 1, writer => '_exists');
+
+sub BUILDARGS {
     my $class = shift;
+    my $p = ref($_[0]) ? $_[0] : {@_};
+    if (my $hub = $p->{hub}) {
+        my $ws = $hub->current_workspace;
+        $p->{workspace_id} = $ws->workspace_id;
+    }
+    $p->{page_id} = delete $p->{id} if $p->{id};
+    $p->{page_id} ||= ($p->{page_type} && $p->{page_type} eq 'spreadsheet')
+        ? 'untitled_spreadsheet' : 'untitled_page';
+    $p->{create_time} = delete $p->{create_time_utc} if $p->{create_time_utc};
+    return $p;
+}
+
+
+use constant SELECT_COLUMNS_STR => q{
+    "Workspace".name AS workspace_name, 
+    "Workspace".title AS workspace_title, 
+    page.workspace_id, 
+    page.page_id, 
+    page.name, 
+    page.last_editor_id AS last_editor_id, 
+    -- _utc suffix is to prevent performance-impacing naming collisions:
+    page.last_edit_time AT TIME ZONE 'UTC' AS last_edit_time_utc,
+    page.creator_id,
+    -- _utc suffix is to prevent performance-impacing naming collisions:
+    page.create_time AT TIME ZONE 'UTC' AS create_time_utc,
+    page.current_revision_id, 
+    page.current_revision_num, 
+    page.revision_count, 
+    page.page_type, 
+    page.deleted, 
+    page.summary,
+    page.edit_summary,
+    page.views,
+    page.tags -- ordered array
+};
+
+# use 'user' and 'date' instead of 'creator/editor', 'create_time/edit_time'
+sub Blank {
+    my ($class, %p) = @_;
+    die "no hub" unless $p{hub};
+    $p{editor} = delete $p{user} || $p{hub}->current_user;
+    $p{edit_time} = delete $p{date} if $p{date};
+    my $rev = Socialtext::PageRevision->Blank(\%p);
+    my $page = Socialtext::Page->new(
+        hub => $rev->hub,
+        page_id => $rev->page_id,
+        rev => $rev,
+        creator => $rev->editor,
+        create_time => $rev->edit_time,
+    );
+    return $page;
+}
+
+# This should only get called as a result of somebody creating a page object
+# that didn't go through _new_from_row() or when a revision_id isn't given to
+# the constructor.  This means *you*, Socialtext::Pages->new_page()
+sub _find_current {
+    my $self = shift;
+
+    my $sth = sql_execute(q{
+        SELECT }.SELECT_COLUMNS_STR.q{
+          FROM page JOIN "Workspace" USING (workspace_id)
+         WHERE workspace_id = ? AND page_id = ?
+    }, $self->workspace_id, $self->page_id);
+    return unless $sth->rows == 1;
+
+    my $db_row = $sth->fetchrow_hashref;
+    my ($page_args, $rev_args) = _map_row($db_row);
+    $rev_args->{hub} = $self->hub;
+
+    my $rev = Socialtext::PageRevision->new($rev_args);
+
+    # update the creator if it's changing
+    my $creator_id = delete $page_args->{creator_id};
+    if (($self->has_creator_id || $self->has_creator) &&
+        $self->creator->user_id != $creator_id)
+    {
+        $self->clear_creator; # so that creator gets rebuilt from creator_id
+    }
+    # the writer for creator_id is _creator_id:
+    $self->_creator_id($creator_id);
+
+    $self->$_($page_args->{$_}) for keys %$page_args;
+    $self->rev($rev); # should assign this last
+
+    return $rev;
+}
+
+sub _build_rev {
+    my $self = shift;
+    if ($self->revision_id) {
+        my $rev = Socialtext::PageRevision->Get(
+            hub => $self->hub,
+            page_id => $self->page_id,
+            revision_id => $self->revision_id,
+        );
+        $self->_exists(1);
+        return $rev;
+    }
+    elsif (my $rev = $self->_find_current) {
+        $self->_exists(1);
+        return $rev;
+    }
+    else {
+        # must be creating the page
+        $self->_exists(0);
+        my $name = Socialtext::String::uri_unescape($self->page_id);
+        return Socialtext::PageRevision->Blank(
+            hub => $self->hub,
+            name => $name,
+            page_id => $self->page_id,
+        );
+    }
+}
+
+my %PAGE_ROW_MAP = (
+    workspace_id => 'workspace_id',
+    page_id => 'page_id',
+    revision_id => 'current_revision_id',
+    create_time => 'create_time_utc',
+    creator_id => 'creator_id',
+    revision_count => 'revision_count',
+    views => 'views',
+    workspace_name => 'workspace_name',
+    workspace_title => 'workspace_title',
+
+);
+my %PAGE_ROW_SKIP = (
+    workspace_name  => 1,
+    workspace_title => 1,
+    create_time => 1,
+    creator_id => 1,
+    views => 1, # updated independently
+);
+
+my %REV_ROW_MAP = (
+    workspace_id => 'workspace_id',
+    page_id => 'page_id',
+    revision_id => 'current_revision_id',
+    revision_num => 'current_revision_num',
+    name => 'name',
+    edit_time => 'last_edit_time_utc',
+    editor_id => 'last_editor_id',
+    page_type => 'page_type',
+    deleted => 'deleted',
+    summary => 'summary',
+    edit_summary => 'edit_summary',
+    locked => 'locked',
+    tags => 'tags',
+);
+
+sub _map_row {
+    my $db_row = shift;
+    my %page_args;
+    my %rev_args;
+    @page_args{keys %PAGE_ROW_MAP} = @$db_row{values %PAGE_ROW_MAP};
+    @rev_args{keys %REV_ROW_MAP} = @$db_row{values %REV_ROW_MAP};
+    return \%page_args, \%rev_args;
+}
+
+# Do not call this unless the page exists already (or clear exists so it'll
+# get lazy-built afterwards).
+sub _new_from_row {
+    my ($class, $db_row) = @_;
+    my $hub = delete $db_row->{hub};
+    my ($page_args, $rev_args) = _map_row($db_row);
+    $rev_args->{hub} = $page_args->{hub} = $hub;
+    my $rev = Socialtext::PageRevision->new($rev_args);
+    $page_args->{rev} = $rev;
+    $page_args->{exists} = 1; # it's in the database, so must exist
+    return $class->new($page_args);
+}
+
+sub _build_exists {
+    my $self = shift;
+    return 1 if $self->has_rev && !$self->rev->mutable;
+    my $rev = $self->_find_current();
+    return $rev ? 1 : 0;
+}
+
+sub active { ($_[0]->exists && !$_[0]->deleted) ? 1 : 0 }
+
+sub _build_full_uri {
+    my $self = shift;
+    my $ws_uri = Socialtext::URI::uri(path => $self->workspace_name);
+    return $ws_uri.'/'.$self->uri;
+}
+
+sub _build_workspace{
+    my $self = shift;
+    return $self->hub->current_workspace;
+}
+
+sub _build_workspace_name {
+    my $self = shift;
+    return $self->workspace->name;
+}
+
+sub _build_workspace_title {
+    my $self = shift;
+    return $self->workspace->title;
+}
+
+
+sub edit_rev {
+    my $self = shift;
     my %p = @_;
+    return $self->rev if ($self->has_rev && $self->mutable);
+    my $user = delete $p{user} || delete $p{editor} || $self->hub->current_user;
+    my $edit = $self->rev->mutable_clone(%p, editor => $user);
+    $self->rev($edit);
+    return $edit;
+}
 
-    return if $p{id} && length $p{id} > _MAX_PAGE_ID_LENGTH;
-
-    Socialtext::Timer->Continue('page_new');
-    my $self = $class->SUPER::new(%p);
-    $self->metadata($self->new_metadata($self->id));
-    Socialtext::Timer->Pause('page_new');
+*load_revision = *switch_rev; # grep: sub load_revision
+sub switch_rev {
+    my ($self, $rev_id) = @_;
+    croak "page is being created, can't switch_rev()"
+        if ($self->has_rev && $self->mutable && !$self->exists);
+    $self->revision_id($rev_id); # calls the _revision_id_changed trigger
+    $self->rev; # runs _build_rev as needed
     return $self;
 }
 
-sub new_metadata {
-    my $self = shift;
-    Socialtext::PageMeta->new(hub => $self->hub, id => $self->id);
+sub _revision_id_changed {
+    my ($self, $new, $old) = @_;
+
+    # No change, no big deal
+    return if (defined($old) && $old == $new);
+
+    # Something set it to what the rev already has, so just leave it loaded.
+    return if ($self->has_rev && $new == $self->rev->revision_id);
+
+    # otherwise, this is probably a revision_id()/load() pair, so clear out
+    # the rev slot so it can be lazy-loaded
+    $self->clear_rev;
+    return;
 }
 
-sub name_to_id {
+sub load { carp "load() is now a no-op for Pages"; }
+sub load_content { carp "load_content() is now a no-op for Pages"; }
+
+
+sub createtime_for_user {
     my $self = shift;
-    Carp::carp "Socialtext::Page->name_to_id() is deprecated; use Socialtext::String::title_to_id() instead";
-    return Socialtext::String::title_to_id(shift);
+    return $self->hub->timezone->get_date_user($self->create_time);
 }
-
-sub name {
+sub createtime_utc {
     my $self = shift;
-    $self->{name} = shift if @_;
-    if ( !defined( $self->{name} ) ) {
-        $self->{name} = $self->uri_unescape($self->id);
-    }
-    return $self->{name};
-}
-
-=head2 $page->revision_count()
-
-Return the count of revisions that a given page has.
-
-=cut
-
-sub revision_count {
-    my $self = shift;
-    return scalar($self->all_revision_ids()) || 1;
-}
-
-sub creator {
-    my $self = shift;
-    return $self->original_revision->last_edited_by
-        || Socialtext::User->SystemUser;
-}
-
-=head2 create( %args )
-
-Creates a page based on the arguments passed in.  If a I<date> arg is
-passed, the date is forced.
-
-=cut
-
-sub create {
-    my $self = shift;
-    my %args = validate(
-        @_,
-        {
-            title      => SCALAR_TYPE,
-            content    => SCALAR_TYPE,
-            date       => { can => [qw(strftime)], default => undef },
-            categories => { type => ARRAYREF, default => [] },
-            creator    => USER_TYPE,
-        }
-    );
-
-    # FIXME: it's possible for this call to return undef and
-    # we dont' trap it.
-    my $page = $self->hub->pages->new_from_name($args{title});
-    $page->content($args{content});
-    $page->metadata->Subject($args{title});
-    $page->metadata->Category($args{categories});
-    $page->metadata->update( user => $args{creator} );
-
-    if ($args{date}) {
-        $page->metadata->Date($args{date}->strftime('%Y-%m-%d %H:%M:%S GMT'));
-    }
-    $page->store( user => $args{creator} );
-
-    return $page;
+    return $self->create_time->strftime('%Y-%m-%d %H:%M:%S GMT');
 }
 
 Readonly my $SignalCommentLength => 250;
@@ -190,7 +402,7 @@ sub _signal_edit_summary {
         user  => $user,
         body  => $body,
         topic => {
-            page_id      => $self->id,
+            page_id      => $self->page_id,
             workspace_id => $workspace->workspace_id,
         },
         annotations => [
@@ -212,363 +424,188 @@ sub _signal_edit_summary {
     return;
 }
 
-=head2 update_from_remote( %args )
-
-Update or create a page with reasonable defaults for some options.
-This consolidates replicated code found elsewhere.
-
-The only required arg is 'content' containing the new content of
-the page.
-
-=cut
-
-# REVIEW: not sure of the correct spec handling for this
-# as much of it is optional. The call to update() does
-# verification.
-
 sub update_from_remote {
     my $self = shift;
     my %p = @_;
-
-    my $content     = $self->utf8_decode($p{content});
-    my $revision_id = $self->utf8_decode($p{revision_id});
-    my $revision    = $self->utf8_decode($p{revision});
-    my $subject     = $self->utf8_decode($p{subject});
-    my $edit_summary = $self->utf8_decode($p{edit_summary});
-    my $tags        = $p{tags};
-    my $type        = $p{type};
-    my $locked      = exists($p{locked}) ? $p{locked} : $self->locked;
-
-    if ($tags) {
-        $tags = [ map { $self->utf8_decode($_) } @$tags ];
-    }
-    else {
-        $tags = $self->metadata->Category;    # preserve categories
-    }
-
     my $user = $self->hub->current_user;
 
-    unless ($self->hub->checker->check_permission('admin_workspace')) {
-        delete $p{date};
-        delete $p{from};
-    }
-
-    # We've already check for permission to do this
-    if ( $p{from} ) {
-        $user = Socialtext::User->Resolve( $p{from} );
-        $user ||= Socialtext::User->create(
-            email_address => $p{from},
-            username      => $p{from}
-        );
-    }
-    die "A valid user is required to update a page\n" unless $user;
-
-    if (!$self->hub->checker->can_modify_locked($self)) {
-        my $ws = $self->hub->current_workspace;
-        st_log->info(
-            'LOCK_EDIT,PAGE,lock_edit,'
-            . 'workspace:' . $ws->name . '(' . $ws->workspace_id . '),'
-            . 'user:' . $user->email_address . '(' . $user->user_id . '),'
-            . 'page:' . $self->id
-        );
-        die "Page is locked and cannot be edited\n";
-    }
-
-    $revision_id  ||= $self->revision_id;
-    $revision     ||= $self->metadata->Revision || 0;
-    $subject      ||= $self->title,
-    $type         ||= $self->metadata->Type,
-    $edit_summary ||= '';
-
-    $self->load;
-    if ( $self->revision_id ne $revision_id ) {
+    my $revision_id = $p{revision_id} || $self->revision_id || '';
+    if (($self->revision_id || '') ne $revision_id) {
         Socialtext::Events->Record({
             event_class => 'page',
             action => 'edit_contention',
             page => $self,
         });
- 
-        my $ws = $self->hub->current_workspace;
-
-        st_log->info(
-            'EDIT_CONTENTION,PAGE,edit_contention,'
-            . 'workspace:' . $ws->name . '(' . $ws->workspace_id . '),'
-            . 'user:' . $user->email_address . '(' . $user->user_id . '),'
-            . 'page:' . $self->id
-        );
-
-        die "Contention: page has been updated since retrieved\n";
+        $self->_log_page_and_user('EDIT_CONTENTION,PAGE,edit_contention');
+        Socialtext::Exception::Conflict->throw(
+            error => "Contention: page has been updated since retrieved\n");
     }
 
-    $self->update(
-        original_page_id => $self->id,
-        content          => $content,
-        revision         => $revision,
-        subject          => $subject,
-        categories       => $tags,
-        user             => $user,
-        edit_summary     => $edit_summary,
-        locked           => $locked,
-        type             => $type,
+    if (!$self->hub->checker->can_modify_locked($self)) {
+        $self->_log_page_and_user('LOCK_EDIT,PAGE,lock_edit');
+        die "Page is locked and cannot be edited\n";
+    }
+
+    my $editor;
+    if ($self->hub->checker->check_permission('admin_workspace')) {
+        if ($p{from}) {
+            $editor = Socialtext::User->Resolve($p{from});
+            $editor ||= Socialtext::User->create(
+                email_address => $p{from},
+                username      => $p{from}
+            );
+        }
+        else {
+            $editor = $user;
+        }
+    }
+    else {
+        delete @p{qw(date from)};
+        $editor = $user;
+    }
+
+    die "A valid user is required to update a page\n" unless $editor;
+
+    my $rev = $self->edit_rev(editor => $editor);
+    my $was_locked = $rev->locked;
+    $rev->locked($p{locked}) if defined $p{locked};
+    $rev->body_ref(\$p{content}) if exists $p{content};
+
+    my $signal = $self->update(
+        user         => $editor,
+        revision     => $p{revision},
+        categories   => $p{tags},
+        edit_summary => $p{edit_summary} || '',
+        type         => $p{type},
+        subject      => $p{subject},
         $p{date} ? (date => $p{date}) : (),
-        # don't signal-this-edit via update() so we can tie it to the event
+        signal_edit_summary => $p{signal_edit_summary} || '',
     );
 
-    # XXX: record a lock/unlock event.
+    $self->update_lock_status($rev->locked, 'skip')
+        if ($was_locked xor $rev->locked);
 
-    my %event = (
+    Socialtext::Events->Record({
         event_class => 'page',
         action => 'edit_save',
         page => $self,
-    );
-
-    if ($p{signal_edit_summary}) {
-        $event{signal} = $self->_signal_edit_summary(
-            $user, $edit_summary, $p{signal_edit_to_network});
-    }
-
-    Socialtext::Events->Record(\%event);
+        ($p{signal_edit_summary} ? (signal => $signal) : ()),
+    });
     return; 
 }
 
-=head2 update_lock_status( $status )
-
-Update the lock status of the page.
-
-=cut
-
 sub update_lock_status {
-    my $self   = shift;
-    my $status = shift;
-    my $summary;
-    my $action;
+    my ($self, $status, $skip_edit) = @_;
 
-    if ( $status ) {
-        $summary = loc('Locking page.');
-        $action  = 'lock_page';
-    }
-    else {
-        $summary = loc('Unlocking page.');
-        $action  = 'unlock_page';
-    }
-
-    eval {
-        $self->update(
-            subject          => $self->metadata->Subject,
-            revision         => $self->metadata->Revision,
-            locked           => $status,
-            user             => $self->hub->current_user,
-            content          => $self->content,
-            original_page_id => $self->id,
-            type             => $self->metadata->Type,
-            edit_summary     => $summary,
-        );
-    };
-    if ($@) {
-        die "$@";
+    unless ($skip_edit) {
+        my $summary = $status ? loc('Locking page.') : loc('Unlocking page.');
+        my $rev = $self->edit_rev();
+        $rev->locked($status);
+        $rev->edit_summary($summary);
+        $self->update();
     }
 
     Socialtext::Events->Record({
         event_class => 'page',
-        action => $action,
+        action => $status ? 'lock_page' : 'unlock_page',
         page => $self,
     });
 }
 
-=head2 update( %args )
-
-Update or create the page. That is: edit a new or existing page
-to replace it's content and metadata. This method is to centralize
-various places where this has been done in the past.
-
-=cut
-{
-    Readonly my $spec => {
-        content          => { type => SCALAR, default => '' },
-        original_page_id => SCALAR_TYPE,
-        revision         => { type => SCALAR,   regex   => qr/^\d+$/ },
-        type             => { type => SCALAR,   regex   => qr/^(?:wiki|spreadsheet)$/, default => 'wiki' },
-        categories       => { type => ARRAYREF, default => [] },
-        subject             => SCALAR_TYPE,
-        user                => USER_TYPE,
-        date                => { can => [qw(strftime)], default => undef },
-        edit_summary        => { type => SCALAR, default => '' },
-        signal_edit_summary => { type => SCALAR, default => undef },
-        signal_edit_summary_from_comment => { type => SCALAR, default => undef },
-        signal_edit_to_network => { type => SCALAR, default => undef },
-        locked              => { type => SCALAR, default => undef },
-    };
-    sub update {
-        my $self = shift;
-        my %args = validate( @_, $spec );
-        # XXX validate these args
-
-        # explicitly set both id and name to predictable things _now_
-        $self->id(Socialtext::String::title_to_id($args{subject}));
-        $self->name($args{subject});
-
-        my $revision
-            = $self->id eq $args{original_page_id} ? $args{revision} : 0;
-
-
-        my $metadata = $self->metadata;
-        $metadata->Subject($args{subject});
-        $metadata->Revision($revision);
-        $metadata->Received(undef);
-        $metadata->MessageID('');
-        $metadata->RevisionSummary(Socialtext::String::trim($args{edit_summary}));
-        if (defined($args{locked})) {
-            $metadata->Locked($args{locked});
-        }
-        if (defined($args{type})) {
-            $metadata->Type($args{type});
-        }
-        $metadata->loaded(1);
-        foreach (@{$args{categories}}) {
-            $metadata->add_category($_);
-        }
-
-        $self->content($args{content});
-
-        $metadata->update( user => $args{user} );
-        if ($args{date}) {
-            $self->metadata->Date($args{date}->strftime('%Y-%m-%d %H:%M:%S GMT'));
-        }
-        $self->store( user => $args{user} );
-
-        if ($args{signal_edit_summary}) {
-            $self->_signal_edit_summary($args{user}, $args{edit_summary}, $args{signal_edit_to_network});
-        }
-    }
-}
-
-=head2 $page->hash_representation()
-
-Gets an anonymous hash representing a page. Useful for turning
-into JSON objects. Merges pieces of metadata that live on 
-L<Socialtext::Page> and L<Socialtext::PageMeta>. This suggests
-that perhaps PageMeta is either incomplete or redundant.
-
-The elements of the hash are:
-
-=over 4
-
-=item name
-
-The title of the page
-
-=item uri
-
-The (short) uri of the page
-
-=item page_id
-
-The id of the page
-
-=item page_uri
-
-The fully qualified uri of the page, as presented in the primary
-web-based UI
-
-=item tags
-
-A list of the tags which this page has
-
-=item last_editor
-
-The email address of the user that last edited the page
-
-=item last_edit_time
-
-String representation of the date the page was last modified
-
-=item modified_time
-
-Time in seconds since the Unix Epoch the page was last modified
-
-=item revision_id
-
-The identifier for the current revision of this page
-
-=item revision_count
-
-The total count of revisions for this page
-
-=item workspace_name
-
-The name of the workspace where this page lives.
-
-=back
-
-=cut
+*to_hash = *hash_representation;
 sub hash_representation {
     my $self = shift;
 
-    # The name, uri, and full_uri are totally botched for pages which never
-    # existed.  For pages that never existed the various methods do "smart"
-    # things and return values we don't want.  We can't just change the
-    # original methods b/c they're part of the bedrock of our app and would
-    # have far reaching changes, so we do it here.
-    my ( $name, $uri );
-    if ( $self->exists ) {
-        $name     = $self->metadata->Subject;
-        $uri      = $self->uri;
-    }
-    else {
-        $name     = $self->metadata->Subject || $self->name;
-        $uri      = $self->id;
-    }
+    my $hash = {
+        create_time     => $self->createtime_utc,
+        edit_summary    => $self->edit_summary,
+        last_edit_time  => $self->datetime_utc,
+        locked          => $self->locked ? 1 : 0,
+        modified_time   => $self->modified_time,
+        name            => $self->name,
+        page_id         => $self->page_id,
+        page_uri        => $self->full_uri,
+        revision_count  => $self->revision_count,
+        revision_id     => $self->revision_id,
+        revision_num    => $self->revision_num,
+        summary         => $self->summary,
+        tags            => $self->tags,
+        type            => $self->page_type,
+        uri             => $self->uri,
+        workspace_name  => $self->workspace_name,
+        workspace_title => $self->workspace_title,
+        ($self->deleted ? (deleted => 1) : ()),
+    };
 
-    my $from = $self->metadata->From;
-    my $user = Socialtext::User->new(email_address => $from);
-    my $masked_email = $user
-        ? $user->masked_email_address(
-            user => $self->hub->current_user,
-            workspace => $self->hub->current_workspace,
-        ) : $from;
+    $hash->{$_} = $self->$_->masked_email_address(
+        user => $self->hub->current_user,
+        workspace => $self->hub->current_workspace,
+    ) for qw(creator last_editor);
 
+    return $hash;
+}
+
+sub legacy_metadata_hash {
+    my $self = shift;
+    my $hash = shift || $self->to_hash;
+    # use dashes instead of camel-case, e.g.
+    # s/^([A-Z][a-z]+)([A-Z].*)$/$1-$2/;
     return +{
-        name     => $name,
-        uri      => $uri,
-        page_id  => $self->id,
-
-        # REVIEW: This URI may eventually prove to be the wrong one
-        page_uri       => $self->app_uri,
-        tags           => $self->metadata->Category,
-        last_editor    => $masked_email,
-        last_edit_time => $self->metadata->Date,
-        modified_time  => $self->modified_time,
-        revision_id    => $self->revision_id,
-        revision_count => $self->revision_count,
-        workspace_name => $self->hub->current_workspace->name,
-        edit_summary => $self->edit_summary,
-
-        type => $self->metadata->Type,
+        ($hash->{deleted} ? ('Control' => 'Deleted') : ()),
+        Subject => $hash->{name},
+        From => $hash->{last_editor},
+        Date => $hash->{last_edit_time},
+        Revision => $hash->{revision_num},
+        Type => $hash->{type},
+        Summary => $hash->{summary},
+        Category => $hash->{tags},
+        Encoding => 'utf8',
+        'Revision-Summary' => $hash->{edit_summary},
+        'Locked' => $hash->{locked} ? 1 : 0,
     };
 }
 
-=head2 $page->get_headers()
+# This is called by Socialtext::Query::Plugin::push_result
+# to create a row suitable for display in a listview.
+our $No_result_times = 0;
+sub to_result {
+    my $self = shift;
+    my $t = time_scope 'model_to_result';
 
-Gets a list of hashes describing the headers present on this 
-page. The content of the page is passed through the wikitext
-formatter to locate the headers, get their level and text.
+    my $editor = $self->last_editor;
+    my $creator = $self->creator;
+    my $result = {
+        Date            => $self->datetime_utc,
+        Deleted         => $self->deleted ? 1 : 0,
+        From            => $editor->email_address,
+        Locked          => $self->locked ? 1 : 0,
+        Revision        => $self->revision_num,
+        Subject         => $self->name,
+        Summary         => $self->summary,
+        Type            => $self->page_type,
+        create_time     => $self->createtime_utc,
+        creator         => $creator->username,
+        edit_summary    => $self->edit_summary,
+        is_spreadsheet  => $self->is_spreadsheet,
+        page_id         => $self->page_id,
+        page_uri        => $self->uri,
+        revision_count  => $self->revision_count,
+        username        => $editor->username,
+        workspace_name  => $self->workspace_name,
+        workspace_title => $self->workspace_title,
+    };
 
-The returned hashes contained in the list have two elements:
+    if ($No_result_times) {
+        $result->{page} = $self;
+    }
+    else {
+        $result->{create_time_local} = $self->createtime_for_user;
+        $result->{DateLocal} = $self->datetime_for_user;
+    }
 
-=over 4
+    return $result;
+}
 
-=item text
-
-The text of the header
-
-=item level
-
-The size or value of the header (1-6) representing it's nesting
-in a hierarchy of headers
-
-=back
-
-=cut
 sub get_headers {
     my $self = shift;
     return $self->get_units(
@@ -578,27 +615,6 @@ sub get_headers {
     );
 }
 
-
-=head2 $page->get_sections()
-
-Gets a list of hashes describing the headers and sections
-present on this page. The content of the page is passed
-through the wikitext formatter to locate the headers and
-the sections.
-
-The returned hashes contained in the list have one element:
-
-=over 4
-
-=item text
-
-The text of the section. For headers this is the header
-text. For sections it is the argument of the section wafl
-phrase.
-
-=back
-
-=cut
 sub get_sections {
     my $self = shift;
     return $self->get_units(
@@ -612,131 +628,69 @@ sub get_sections {
     )
 }
 
-=head2 $page->title( [$str] )
-
-Gets or sets the page title.  If the page title, or I<$str>, is not
-defined, title is taken from the subject or page name.
-
-=cut
-
-sub title {
-    my $self = shift;
-    if ( @_ ) {
-        $self->{title} = shift;
-    }
-    if ( !defined $self->{title} ) {
-        $self->{title} = $self->metadata->Subject || $self->hub->cgi->page_name;
-    }
-    return $self->{title};
-}
-
 sub prepend {
-    my $self = shift;
-    my $new_content = shift;
-
-    if (defined($self->content) && $self->content) {
-        $self->content("$new_content\n---\n" . $self->content);
+    my $self = $_[0];
+    croak "page isn't mutable" unless $self->mutable;
+    my $new = ref($_[1]) ? $_[1] : \$_[1];
+    my $body_ref = $self->body_ref;
+    if ($body_ref && length($$body_ref)) {
+        my $body = "$$new\n---\n$$body_ref"; # deliberate copy
+        $body_ref = \$body;
     } else {
-        $self->content($new_content);
+        $body_ref = $new;
     }
+    $self->body_ref($body_ref);
 }
 
 sub append {
-    my $self = shift;
-    my $new_content = shift;
-
-    if (defined($self->content) && $self->content) {
-        $self->content($self->content . "\n---\n$new_content");
+    my $self = $_[0];
+    croak "page isn't mutable" unless $self->mutable;
+    my $new = ref($_[1]) ? $_[1] : \$_[1];
+    my $body_ref = $self->body_ref;
+    if ($body_ref && length($$body_ref)) {
+        my $body = "$$body_ref\n---\n$$new"; # deliberate copy
+        $body_ref = \$body;
+    } else {
+        $body_ref = $new;
     }
-    else {
-        $self->content($new_content);
+    $self->body_ref($body_ref);
+}
+
+sub _add_delete_tags {
+    my ($self, $tags, $is_add) = @_;
+    return unless $self->hub->checker->check_permission('edit');
+
+    my $was_mutable = $self->mutable;
+    my $rev = $self->edit_rev();
+    my $changed = $is_add ? $rev->add_tags($tags) : $rev->delete_tags($tags);
+    unless ($was_mutable) {
+        $self->edit_summary('');
+        $self->store();
+    }
+
+    foreach my $tag (@$changed) {
+        Socialtext::Events->Record({
+            event_class => 'page',
+            action => $is_add ? 'tag_add' : 'tag_delete',
+            page => $self,
+            tag_name => $tag,
+        });
     }
 }
 
-=head2 $page->uri()
-
-Returns the URI for the page.  It cannot be set manually.
-
-=cut
-
-sub uri {
-    my $self = shift;
-    return $self->{uri} if defined $self->{uri};
-    $self->{uri} = $self->exists
-    ? $self->id
-    : $self->hub->pages->title_to_uri($self->title);
-}
-
-=head2 $page->add_tags( @tags )
-
-Adds the given tags string to the Categories on the page.
-
-=cut
-
+*add_tag = *add_tags;
 sub add_tags {
     my $self = shift;
     my @tags  = grep { length } @_;
-    return unless @tags;
-
-    if ( $self->hub->checker->check_permission('edit') ) {
-        my $meta = $self->metadata;
-        my %tags_added;
-        foreach my $tag (@tags) {
-            my $added = $meta->add_category($tag);
-            $tags_added{$tag} = 1;
-        }
-        $self->metadata->update( user => $self->hub->current_user );
-        $self->metadata->RevisionSummary('');
-        $self->store( user => $self->hub->current_user );
-        foreach my $tag (keys %tags_added) {
-            Socialtext::Events->Record({
-                event_class => 'page',
-                action => 'tag_add',
-                page => $self,
-                tag_name => $tag,
-            });
-        }
-    }
+    return $self->_add_delete_tags(\@tags, 1);
 }
 
-=head2 $page->delete_tag( $tag )
-
-Removes the given tag string from the Categories on the page.
-
-=cut
-
-sub delete_tag {
+*delete_tag = *delete_tags;
+sub delete_tags {
     my $self = shift;
-    my $tag = shift;
-
-    if ( $self->hub->checker->check_permission('edit') ) {
-        $self->metadata->delete_category($tag);
-        $self->metadata->RevisionSummary('');
-        $self->metadata->update( user => $self->hub->current_user );
-        $self->store( user => $self->hub->current_user );
-    }
+    my @tags  = grep { length } @_;
+    return $self->_add_delete_tags(\@tags, 0);
 }
-
-
-=head2 $page->has_tag( $tag )
-
-Determines whether a page has a tag
-
-=cut
-sub has_tag {
-    my $self = shift;
-    my $tag = shift;
-
-    return $self->metadata->has_category($tag);
-}
-
-
-=head2 $page->add_comment( $wikitext )
-
-Adds the given comment to the page.  The current user is noted as the comment
-author.
-
-=cut
 
 sub add_comment {
     my $self     = shift;
@@ -744,159 +698,247 @@ sub add_comment {
     my $signal_edit_to_network = shift;
     my $user = $self->hub->current_user;
 
+    my $t = time_scope 'add_comment';
+
     if (!$self->hub->checker->can_modify_locked($self)) {
-        my $ws = $self->hub->current_workspace;
-        st_log->info(
-            'LOCK_EDIT,PAGE,lock_edit,'
-            . 'workspace:' . $ws->name . '(' . $ws->workspace_id . '),'
-            . 'user:' . $user->email_address . '(' . $user->user_id . '),'
-            . 'page:' . $self->id
-        );
+        $self->_log_page_and_user('LOCK_EDIT,PAGE,lock_edit');
         die "Page is locked and cannot be edited\n";
     }
 
-    my $timer = Socialtext::Timer->new;
+    my $rev = $self->edit_rev();
 
     # Clean it up.
     $wikitext =~ s/\s*\z/\n/;
+    ensure_ref_is_utf8(\$wikitext);
+    # TODO: change this to encode a user_id instead? Would have import/export
+    # and potentially backup/restore side-effects.
+    my $utc_date = $rev->edit_time->strftime('%Y-%m-%d %H:%M:%S GMT');
+    my $comment = "$wikitext\n_".loc("contributed by {user: [_1]} on {date: [_2]}", $rev->editor->email_address, $utc_date)."_\n";
 
-    $self->content( $self->content
-            . "\n---\n"
-            . Socialtext::Encode::ensure_is_utf8($wikitext)
-            . $self->_comment_attribution );
+    $self->append($comment); # pass-by-value is OK; will use $_[1]
 
-    $self->metadata->update( user => $self->hub->current_user );
+    # Truncate the comment to $SignalCommentLength chars if we're sending this
+    # comment as a signal.  Otherwise use the normal 350-char excerpt.
+    my $summary = $signal_edit_to_network
+        ? Socialtext::String::word_truncate($wikitext, $SignalCommentLength)
+        : $self->preview_text($wikitext);
+    $rev->edit_summary($signal_edit_to_network
+        ? $summary
+        : loc('(comment)'));
+    $rev->summary($summary);
 
-    $self->metadata->RevisionSummary(loc('(comment)'));
     my $signal = $self->store(
-        user => $user,
         $signal_edit_to_network ? (
-            edit_summary => $wikitext,
             signal_edit_summary_from_comment => 1,
             signal_edit_to_network => $signal_edit_to_network,
         ) : ()
     );
 
-    # Truncate the comment to $SignalCommentLength chars if we're sending this
-    # comment as a signal.  Otherwise use the normal 350-char excerpt.
-    my $summary = $signal
-        ? Socialtext::String::word_truncate($wikitext, $SignalCommentLength)
-        : $self->preview_text($wikitext);
-
-    my %event = (
+    Socialtext::Events->Record({
         event_class => 'page',
         action => 'comment',
         page => $self,
         summary => $summary,
-    );
-    if ($signal) {
-        $event{signal} = $signal;
-    }
-
-    Socialtext::Events->Record(\%event);
+        ($signal ? (signal => $signal) : ()),
+    });
     return;
 }
 
-sub _comment_attribution {
+sub _fixup_body {
     my $self = shift;
-
-    if (    my $email    = $self->hub->current_user->email_address
-        and my $utc_date = $self->metadata->get_date ) {
-        return "\n_".loc("contributed by {user: [_1]} on {date: [_2]}", $email, $utc_date)."_\n";
+    my $rev = $self->rev;
+    my $body_ref = $rev->body_ref;
+    if ($body_ref && length($$body_ref)) {
+        if ($$body_ref =~ /(?:\r|\{now\}|\n*\z)/) {
+            my $nowdate = $self->formatted_date;
+            my $body = $$body_ref; # copy
+            $body =~ s/\r//g;
+            $body =~ s/\{now\}/$nowdate/egi;
+            $body =~ s/\n*\z/\n/;
+            $rev->body_ref(\$body);
+        }
     }
-
-    return '';
+    else {
+        $rev->deleted(1);
+    }
 }
 
-sub restored {
-    return ( defined $_[0]->{_restored} ) ? 1 : 0;
+sub update {
+    my ($self, %p) = @_;
+
+    die "can't update; page is not mutable" unless $self->mutable;
+    my $rev = $self->rev;
+
+    if ($p{content_ref}) {
+        $rev->body_ref($p{content_ref});
+    }
+    elsif (length $p{content}) {
+        carp "caller should be using content_ref";
+        $rev->body_ref(\$p{content});
+    }
+
+    if (my $tags = $p{categories}) {
+        $tags = [map { ensure_is_utf8($_) } @$tags];
+        $rev->add_tags($tags);
+    }
+
+    $rev->revision_num($p{revision}) if $p{revision};
+    $rev->page_type($p{type}) if $p{type};
+    $rev->name($p{subject}) if defined $p{subject};
+    $rev->edit_summary($p{edit_summary}) if $p{edit_summary};
+    $rev->editor($p{user}) if $p{user};
+    $rev->edit_time($p{date}) if $p{date};
+
+    $self->store(user => $p{user});
+
+    return $self->_signal_edit_summary(
+        $p{user}, $p{edit_summary}, $p{signal_edit_to_network}
+    ) if $p{signal_edit_summary};
+
+    return;
 }
 
-sub is_untitled {
-    my $self = shift;
+{
+    my $spec = {  
+        title      => SCALAR_TYPE,
+        content    => SCALAR_TYPE,
+        date       => { can => [qw(strftime)], default => undef },
+        categories => { type => ARRAYREF, default => []  },
+        creator    => { isa => 'Socialtext::User', default => undef },
+        hub        => { isa => 'Socialtext::Hub', default => undef },
+    };
+    # Use this method by doing Socialtext::Page->new(hub => $hub)->create(...)
+    sub create {
+        my $class_or_self = shift;
+        my %args = validate(@_,$spec);
 
-    if ($self->id eq 'untitled_page') {
-        return 'Untitled Page';
-    }
-    elsif ($self->id eq 'untitled_spreadsheet') {
-        return 'Untitled Spreadsheet';
-    }
+        my $hub = blessed($class_or_self) ? $class_or_self->hub : $args{hub};
+        croak "A hub is required to create() a page" unless $hub;
 
-    return '';
+        $args{date} ||= Socialtext::Date->now(hires=>1);
+        $args{creator} ||= $hub->current_user;
+
+        my $page = $class_or_self->Blank(
+            hub => $hub,
+            name      => $args{title},
+            editor    => $args{creator},
+            edit_time => $args{date},
+            tags      => $args{categories},
+            body_ref  => \$args{content},
+        );
+        $page->store( user => $args{creator} );
+        return $page;
+    }
 }
 
 sub store {
     my $self = shift;
     my %p = @_;
-    Carp::confess('no user given to Socialtext::Page->store')
-        unless $p{user};
+    # who's doing the edit can be different from the actor (actor is always
+    # current)
+    my $user = $p{user} || $self->hub->current_user;
 
-    # Fix for {bz 2099} -- guard against storing an "Untitled Page".
-    if (my $display_name = $self->is_untitled) {
-        die loc('"[_1]" is a reserved name. Please use a different name.', $display_name);
+    confess "page isn't mutable; call edit_rev() first!" unless $self->mutable;
+
+    my $rev = $self->rev;
+    $rev->editor($p{user}) if $p{user};
+
+    if ($rev->body_modified) {
+        $self->_fixup_body();
     }
 
-    # Make sure we have minimal metadata needed to store a page
-    $self->metadata->update( user => $p{user} )
-        unless $self->metadata->Revision;
+    my ($ws_id, $page_id) = map { $self->$_ } qw(workspace_id page_id);
 
-    # XXX Why are we accessing _MAX_PAGE_ID_LENGTH, which implies to me
-    # a very private piece of data.
-    if (Socialtext::String::MAX_PAGE_ID_LEN < length($self->id)) {
-        my $message = loc("Page title is too long after URL encoding");
-        Socialtext::Exception::DataValidation->throw( errors => [ $message ] );
-    }
-
-    $self->{_restored} = 1 if $self->deleted;
-
-    my $original_categories =
-      ref($self)->new(hub => $self->hub, id => $self->id)->metadata->Category;
-
-    my $metadata = $self->{metadata}
-      or die "No metadata for content object";
-    my $body = $self->content;
-    if (length $body) {
-        $body =~ s/\r//g;
-        $body =~ s/\{now\}/$self->formatted_date/egi;
-        $body =~ s/\n*\z/\n/;
-        $metadata->Control('');
-        $metadata->Summary( $self->preview_text( $body ) );
-        $self->content($body);
-    }
-    else {
-        $metadata->Control('Deleted');
-    }
-    $self->create_new_revision_id;
-    $self->_perform_store_actions();
-
-    $self->_log_edit_summary($p{user}) if $self->metadata->RevisionSummary;
-
-    if ($p{signal_edit_summary_from_comment}) {
-        return $self->_signal_edit_summary($p{user}, $p{edit_summary}, $p{signal_edit_to_network}, 'comment');
-    }
-    elsif ($p{signal_edit_summary}) {
-        return $self->_signal_edit_summary($p{user}, $p{edit_summary}, $p{signal_edit_to_network});
-    }
-
-    return;
-}
-
-sub _log_edit_summary {
-    my $self = shift;
-    my $user = shift || $self->hub->current_user;
-    my $ws   = $self->hub->current_workspace;
-
-    st_log->info(
-        'CREATE,EDIT_SUMMARY,edit_summary,'
-        . 'workspace:' . $ws->name . '(' . $ws->workspace_id . '),'
-        . 'user:' . $user->email_address . '(' . $user->user_id . '),'
-        . 'page:' . $self->id
+    my %args = (
+        workspace_id => $ws_id,
+        page_id => $page_id,
     );
-}
 
-sub _perform_store_actions {
-    my $self = shift;
-    $self->update_db_metadata();
+    # set the creator and time so that preview_text() works
+    my $existed = $self->exists;
+    unless ($existed) {
+        $self->creator($rev->editor);
+        $self->create_time($rev->edit_time);
+    }
+
+    $rev->summary($self->preview_text()) if $self->body_modified;
+
+    my ($cur_rev_id, $was_deleted);
+    sql_txn {
+
+        if ($existed) {
+            # check that the page is actually there.  For the create
+            # (!$existed) case, the sql_insert below will fail instead.
+            my $sth = sql_execute(q{
+                SELECT current_revision_id, deleted FROM page
+                 WHERE workspace_id = ? AND page_id = ?
+                FOR UPDATE
+            }, $self->workspace_id, $self->page_id);
+            ($cur_rev_id,$was_deleted) = $sth->fetchrow_array;
+            Socialtext::Exception::Conflict->throw(
+                error => loc('Another person or process has written to this page already.')) if (!$p{skip_rev_check} && $cur_rev_id && $cur_rev_id != $self->revision_id);
+        }
+        else {
+            $rev->revision_num(1);
+            $self->revision_count(0);
+        }
+
+        if ($was_deleted and $self->body_modified) {
+            $rev->deleted(0);
+        }
+
+        $rev->store();
+
+        $self->revision_id($rev->revision_id); # rev-store can change this
+        $self->revision_count($self->revision_count+1);
+
+        while (my ($page_attr,$db_col) = each %PAGE_ROW_MAP) {
+            next if $PAGE_ROW_SKIP{$page_attr};
+            $args{$db_col} = $self->$page_attr;
+        }
+        while (my ($rev_attr,$db_col) = each %REV_ROW_MAP) {
+            $args{$db_col} = $rev->$rev_attr;
+        }
+
+        $args{last_edit_time} = sql_format_timestamptz(
+            delete $args{last_edit_time_utc});
+        $args{$_} //= 0 for qw(locked deleted);
+
+        if (!$existed) {
+            $args{create_time} = $args{last_edit_time};
+            $args{creator_id} = $args{last_editor_id};
+        }
+
+        if (!$existed) {
+            # this or committing the transaction will fail if the page already
+            # exists:
+            my $sth = sql_insert(page => \%args);
+            die "Page creation failed. Maybe it already exists?"
+                unless $sth->rows == 1;
+        }
+        else {
+            my $sth = sql_update(page => \%args, [qw(workspace_id page_id)]);
+            die "Page update failed. ".
+                "Maybe it's missing or was wrongly assumed to have existed?"
+                unless $sth->rows == 1;
+        }
+
+        my $tags = $rev->tags;
+        if ($existed) {
+            # Nothing refers to the page_tag table so these should be safe to
+            # delete.
+            sql_execute(qq{
+                DELETE FROM page_tag WHERE workspace_id = ? AND page_id = ?
+            }, $ws_id, $page_id);
+        }
+        sql_execute_array(q{
+            INSERT INTO page_tag (workspace_id, page_id, tag) VALUES (?,?,?)
+        }, {}, $ws_id, $page_id, $tags) if @$tags;
+    };
+
+    $self->_exists(1);
+    $self->_restored(1) if ($was_deleted and !$self->deleted);
+
     $self->hub->backlinks->update($self);
     Socialtext::JobCreator->index_page($self);
     Socialtext::JobCreator->send_page_notifications($self);
@@ -907,179 +949,79 @@ sub _perform_store_actions {
     $self->hub->pluggable->hook( 'nlw.page.update',
         [$self, workspace => $self->hub->current_workspace],
     );
+
+    $self->_log_page_and_user('CREATE,EDIT_SUMMARY,edit_summary', $user)
+        if $self->edit_summary;
+
+    # need to return the Signal object if we're signalling-this-edit
+    my @sigargs = ($user, $self->edit_summary, $p{signal_edit_to_network});
+    if ($p{signal_edit_summary_from_comment}) {
+        return $self->_signal_edit_summary(@sigargs, 'comment');
+    }
+    elsif ($p{signal_edit_summary}) {
+        return $self->_signal_edit_summary(@sigargs);
+    }
+
+    return;
+}
+
+sub _log_page_and_user {
+    my ($self, $message, $user) = @_;
+    $user //= $self->hub->current_user;
+    st_log->info(
+        $message.','
+        . 'workspace:'.$self->workspace_name.'('.$self->workspace_id.'),'
+        . 'user:'.$user->email_address.'('.$user->user_id.'),'
+        . 'page:'.$self->page_id
+    );
 }
 
 sub _ensure_page_assets {
     my $self = shift;
-
-    return unless $self->revision_count == 1;
-
+    return unless $self->exists;
     require Socialtext::Signal::Topic;
     Socialtext::Signal::Topic::Page->EnsureAssetsFor(
-        page_id => $self->id,
-        workspace_id => $self->hub->current_workspace->workspace_id,
+        page_id => $self->page_id,
+        workspace_id => $self->workspace_id,
     );
-}
-
-sub update_db_metadata {
-    my $self = shift;
-    sql_txn { $self->_do_update_db_metadata() };
-}
-
-sub _do_update_db_metadata {
-    my $self = shift;
-    my $hash = $self->hash_representation;
-    my $wksp_id = $self->hub->current_workspace->workspace_id;
-    my $pg_id = $hash->{page_id};
-
-    my $sth = sql_execute(
-        q{SELECT creator_id, create_time FROM page
-            WHERE workspace_id = ? AND page_id = ? FOR UPDATE},
-        $wksp_id, $pg_id,
-    );
-    my $rows = $sth->fetchall_arrayref();
-    my ($creator_id, $create_time);
-    my $exists = 0;
-    if (@$rows) {
-        $exists = 1;
-        $creator_id = $rows->[0][0];
-        $create_time = $rows->[0][1];
-    }
-    else {
-        my $orig_page = $self->original_revision;
-        $creator_id = $orig_page->last_edited_by->user_id;
-        $create_time = $orig_page->metadata->Date;
-    }
-
-    my $editor_id = $self->last_edited_by->user_id;
-    my $deleted = $self->deleted ? 1 : 0;
-    my $summary = $self->metadata->Summary;
-    my $edit_summary = $self->metadata->RevisionSummary;
-    my $locked = $self->metadata->Locked ? 1 : 0;
-    my @args = (
-        $hash->{name},
-        $editor_id, $hash->{last_edit_time},
-        $creator_id, $create_time,
-        $hash->{revision_id}, $self->metadata->Revision,
-        $hash->{revision_count},
-        $hash->{type}, $deleted, $summary, $edit_summary, $locked,
-        $wksp_id, $pg_id
-    );
-    my $insert_or_update;
-    if ($exists) {
-        $insert_or_update = <<'UPDSQL';
-            UPDATE page SET
-                name = ?,
-                last_editor_id = ?, last_edit_time = ?,
-                creator_id = ?, create_time = ?,
-                current_revision_id = ?, current_revision_num = ?,
-                revision_count = ?,
-                page_type = ?, deleted = ?, summary = ?, edit_summary = ?, locked = ?
-            WHERE
-                workspace_id = ? AND page_id = ?
-UPDSQL
-
-        # we don't reference the page_tag table, so it's safe to nuke 'em
-        sql_execute('DELETE FROM page_tag 
-                     WHERE workspace_id = ? AND page_id = ?',
-                    $wksp_id, $pg_id);
-    }
-    else {
-        $insert_or_update = <<'INSSQL';
-            INSERT INTO page (
-                name, 
-                last_editor_id, last_edit_time, 
-                creator_id, create_time,
-                current_revision_id, current_revision_num, 
-                revision_count,
-                page_type, deleted, summary, edit_summary, locked,
-                workspace_id, page_id
-            )
-            VALUES (
-                ?,
-                ?, ?::timestamptz,
-                ?, ?::timestamptz,
-                ?, ?, 
-                ?, 
-                ?, ?, ?, ?, ?,
-                ?, ?
-            )
-INSSQL
-    }
-    sql_execute($insert_or_update, @args);
-
-    # Insert this revision
-    my $tags = $self->metadata->Category;
-    my @revision_args = (
-        $wksp_id, $pg_id, $hash->{revision_id}, $self->metadata->Revision,
-        $hash->{name}, $editor_id, $hash->{last_edit_time}, $hash->{type},
-        $deleted, $summary, $edit_summary, $locked, $tags,
-    );
-    # Also update SQL in Socialtext/Page/TablePopulator.pm if necessary
-    sql_saveblob(\$self->content, <<SQL, @revision_args);
-        INSERT INTO page_revision (
-            body, workspace_id, page_id, revision_id, revision_num, name,
-            editor_id, edit_time, page_type, deleted, summary, edit_summary,
-            locked, tags
-        )
-        VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
-SQL
-
-    if (@$tags) {
-        sql_insert_many( 
-            page_tag => [qw/workspace_id page_id tag/],
-            [ map { [$wksp_id, $pg_id, $_] } @$tags ],
-        );
-    }
 }
 
 sub is_system_page {
     my $self = shift;
-
-    my $from = $self->metadata->From;
-    return (
-               $from eq $SYSTEM_EMAIL_ADDRESS
-            or $from eq Socialtext::User->SystemUser()->email_address()
-    );
+    return ($self->creator_id || 0) == Socialtext::User->SystemUser->user_id;
 }
 
-=head2 content_as_type(%p)
+sub is_bad_page_title {
+    my $class_or_self = shift;
+    if (blessed($class_or_self)) {
+        return $class_or_self->rev->is_bad_page_title(@_);
+    }
+    else {
+        return Socialtext::PageRevision->is_bad_page_title(@_);
+    }
+}
 
-Return the content of the page as a particular mime type, formatting
-as needed. Takes optional arguments:
+# This sub isn't horribly inefficient if you've just got a
+# scalar and not a scalar-ref on-hand.  You really should be using body_ref()
+# instead.
+# XXX: returning content into a scalar will make a copy of that data, which
+# wastes RAM.
+sub content {
+    my $self = $_[0];
+    $self->body_ref(ref $_[1] ? $_[1] : \$_[1]) if (@_==2);
+    return unless defined wantarray; # void context
+    return ${$self->body_ref};
+}
 
-=over 4
-
-=item type
-
-The mime type of the desired content. Default is text/x.socialtext-wiki
-
-=item link_dictionary
-
-The name of a link_dictionary to use when formatting. Only used when
-type is text/html
-
-=item no_cache
-
-If true, don't use the formatter cache when creating HTML output.
-This is useful when viewing revisions.
-
-=back
-
-=cut
 sub content_as_type {
     my $self = shift;
     my %p    = @_;
-
     my $type = $p{type} || $WIKITEXT_TYPE;
-
-    my $content;
-
-    if ( $type eq $HTML_TYPE ) {
-        return $self->_content_as_html( $p{link_dictionary}, $p{no_cache} );
+    if ($type eq $HTML_TYPE) {
+        return $self->_content_as_html($p{link_dictionary}, $p{no_cache});
     }
-    elsif ( $type eq $WIKITEXT_TYPE ) {
-        return $self->content();
+    elsif ($type eq $WIKITEXT_TYPE) {
+        return ${ $self->body_ref };
     }
     else {
         Socialtext::Exception->throw("unknown content type");
@@ -1113,14 +1055,15 @@ sub _content_as_html {
         return $self->to_html;
     }
     else {
-        return $self->to_html( $self->content, $self );
+        return $self->to_html( $self->body_ref, $self );
     }
 }
 
 sub doctor_links_with_prefix {
     my $self = shift;
     my $prefix = shift;
-    my $new_content = $self->content();
+    die "page isn't mutable" unless $self->mutable;
+    my $new_content = ${$self->body_ref};
     my $link_class = 'Socialtext::Formatter::FreeLink';
     my $start = $link_class->pattern_start;
     my $end = $link_class->pattern_end;
@@ -1128,174 +1071,704 @@ sub doctor_links_with_prefix {
     # $start contains grouping syntax so we must skip $2
     $new_content =~ s/($start)((?!$prefix).+?)($end)/$1$prefix$3$4/g;
     $new_content =~ s/{ (link:\s+\S+\s) { ([^}]+) }}/{$1\[$2]}/xg;
-    $self->content($new_content);
-}
-
-sub categories_sorted {
-    my $self = shift;
-    return sort {lc($a) cmp lc($b)} @{$self->metadata->Category};
-}
-
-sub metadata {
-    my $self = shift;
-    return $self->{metadata} = shift if @_;
-    $self->{metadata} ||=
-      Socialtext::PageMeta->new(hub => $self->hub, id => $self->id);
-    return $self->{metadata} if $self->{metadata}->loaded;
-    $self->load_metadata;
-    return $self->{metadata};
-}
-
-sub last_edited_by {
-    my $self = shift;
-    return unless $self->id && $self->metadata->From;
-
-    my $email_address = $self->metadata->From;
-    # We have some very bogus data on our system, so this is a really
-    # horrible hack to fix it.
-    unless ( Email::Valid->address($email_address) ) {
-        my ($name) = $email_address =~ /([\w-]+)/;
-        $name = 'unknown' unless defined $name;
-        $email_address = $name . '@example.com';
-    }
-
-    my $user = eval { Socialtext::User->Resolve( $email_address ) };
-
-    # There are many usernames in pages that were never in the users
-    # table.  We need to have all users in the DBMS, so
-    # we assume that if they don't exist, they should be created. When
-    # we import pages into the DBMS, we'll need to create any
-    # non-existent users at the same time, for referential integrity.
-    $user ||= eval { Socialtext::User->create(
-        username         => $email_address,
-        email_address    => $email_address,
-    ) };
-    $user ||= Socialtext::User->Guest;
-
-    return $user;
+    $self->body_ref(\$new_content);
+    return;
 }
 
 sub size {
     my $self = shift;
-    return length($self->content);
+    return $self->body_length;
 }
 
-sub modified_time {
+sub all {
     my $self = shift;
-    (my $datestr = $self->metadata->Date) =~ s/ GMT$//;
-    return 0 unless $datestr;
-    my $dt = DateTime::Format::Pg->parse_datetime( $datestr );
-    return $dt->epoch;
-}
-
-=head2 is_recently_modified( [$limit] )
-
-Returns true if the page object was recently modified. With no arguments
-the default is 'changed in the last hour'. If an argument is passed, it
-is the maximum number of seconds since the last change for that change to
-be considered recent.
-
-=cut
-
-sub is_recently_modified {
-    my $self = shift;
-    my $limit = shift;
-    $limit ||= $IS_RECENTLY_MODIFIED_LIMIT;
-
-    return $self->age_in_seconds < $limit;
-}
-
-sub age_in_minutes {
-    my $self = shift;
-    $self->age_in_seconds / 60;
-}
-
-sub age_in_seconds {
-    my $self = shift;
-    my $time = $REFERENCE_TIME || time;
-    return $self->{age_in_seconds} = shift if @_;
-    return $self->{age_in_seconds} if defined $self->{age_in_seconds};
-    return $self->{age_in_seconds} = ($time - $self->modified_time);
-}
-
-sub age_in_english {
-    my $self = shift;
-    my $age = $self->age_in_seconds;
-    my $english =
-    $age < 60 ? loc('[_1] seconds', $age) :
-    $age < 3600 ? loc('[_1] minutes', int($age / 60)) :
-    $age < 86400 ? loc('[_1] hours', int($age / 3600)) :
-    $age < 604800 ? loc('[_1] days', int($age / 86400)) :
-    $age < 2592000 ? loc('[_1] weeks', int($age / 604800)) :
-    loc('[_1] months', int($age / 2592000));
-
-    $english =~ s/^(1 .*)s$/$1/;
-    return $english;
-}
-
-sub datetime_for_user {
-    my $self = shift;
-    if (my $date = $self->metadata->Date) {
-        return $self->hub->timezone->date_local($date);
-    }
-
-    # XXX metadata starts out life as empty string
-    return '';
-}
-
-
-sub time_for_user {
-    my $self = shift;
-    if (my $date = $self->metadata->Date) {
-        return $self->hub->timezone->time_local($date);
-    }
-
-    # XXX metadata starts out life as empty string
-    return '';
-}
-
-# cgi->title guesses the title from query_string, so $self->hub->cgi->title
-# is always defined even if it's a bad guess
-# REVIEW: refactor to fold this into the above when it's all better -- replace
-# title_better with title and perform regression testing to make sure nothing
-# is broken
-sub title_better {
-    my $self = shift;
-    if ( !defined( $self->{title} ) ) {
-        $self->{title} = $self->metadata->Subject || $self->hub->cgi->page_name;
-    }
-    return $self->{title};
+    return (
+        page_uri => $self->uri,
+        page_title => $self->title,
+        # Note:uri-escaped title wasn't always == page_id
+        page_title_uri_escaped => $self->page_id,
+        revision_id => $self->revision_id,
+    );
 }
 
 sub to_html_or_default {
     my $self = shift;
-    $self->to_html($self->content_or_default, $self);
+    $self->to_html(
+        $self->body_length ? $self->body_ref : \$self->default_content,
+        $self);
 }
 
-sub is_spreadsheet { $_[0]->metadata->Type eq 'spreadsheet' }
+# DO NOT use this internally; use:
+#
+#  $self->body_length ? $self->body_ref : \$self->default_content
+#
+sub content_or_default {
+    my $self = shift;
+    return ${$self->body_ref} if $self->body_length;
+    return $self->default_content;
+}
+
+sub default_content {
+    my $self = shift;
+    return $self->is_spreadsheet
+        ? loc('Creating a New Spreadsheet...').'   '
+        : loc('Replace this text with your own.').'   ';
+}
+
+sub get_units {
+    my $self    = shift;
+    my %matches = @_;
+    my @units;
+
+    my $chunker = sub {
+        my $content_ref = shift;
+        _chunk_it_up( $content_ref, sub {
+            my $chunk_ref = shift;
+            $self->_get_units_for_chunk(\%matches, $chunk_ref, \@units);
+        });
+    };
+
+    my $body_ref = $self->body_ref;
+    if ($self->is_spreadsheet) {
+        require Socialtext::Sheet;
+        my $sheet = Socialtext::Sheet->new(sheet_source => $body_ref);
+        my $valueformats = $sheet->_sheet->{valueformats};
+        for my $cell_name (@{ $sheet->cells }) {
+            my $cell = $sheet->cell($cell_name);
+
+            my $valuesubtype = substr($cell->valuetype || ' ', 1);
+            if ($valuesubtype eq "w" or $valuesubtype eq "r") {
+                # This is a wikitext/richtext cell - proceed
+            }
+            else {
+                my $tvf_num = $cell->textvalueformat
+                    || $sheet->{defaulttextvalueformat};
+                next unless defined $tvf_num;
+                my $format = $valueformats->[$tvf_num];
+                next unless defined $format;
+                next unless $format =~ m/^text-wiki/;
+            }
+
+            # The Socialtext::Formatter::Parser expects this content
+            # to end in a newline.  Without it no links will be found for
+            # simple pages.
+            my $dval = $cell->datavalue . "\n";
+            $chunker->(\$dval);
+        }
+    }
+    else {
+        $chunker->($body_ref);
+    }
+
+    return \@units;
+}
+
+sub _get_units_for_chunk {
+    my $self = shift;
+    my $matches = shift;
+    my $content_ref = shift;
+    my $units = shift;
+
+    my $parser = Socialtext::Formatter::Parser->new(
+        table      => $self->hub->formatter->table,
+        wafl_table => $self->hub->formatter->wafl_table
+    );
+    my $parsed_unit = $parser->text_to_parsed($content_ref);
+    {
+        no warnings 'once';
+        # When we use get_text to unwind the parse tree and give
+        # us the content of a unit that contains units, we need to
+        # make sure that we get the right stuff as get_text is
+        # called recursively. This insures we do.
+        local *Socialtext::Formatter::WaflPhrase::get_text = sub {
+            my $self = shift;
+            return $self->arguments;
+        };
+        my $sub = sub {
+            my $unit         = shift;
+            my $formatter_id = $unit->formatter_id;
+            if ( $matches->{$formatter_id} ) {
+                push @$units, $matches->{$formatter_id}($unit);
+            }
+        };
+        $self->traverse_page_units($parsed_unit->units, $sub);
+    }
+}
+
+sub traverse_page_units {
+    my $self  = shift;
+    my $units = shift;
+    my $sub   = shift;
+
+    foreach my $unit (@$units) {
+        if (ref $unit) {
+            $sub->($unit);
+            if ($unit->units) {
+                $self->traverse_page_units($unit->units, $sub);
+            }
+        }
+    }
+}
+
+# The WikiText::Parser doesn't yet handle really large chunks, so we
+# should chunk this up ourself.  That being said, 100kiB should be plenty.
+# (The old Formatter code has a constant set at 500,000 bytes, FWIW).
+use constant CHUNK_IT_UP_SIZE => 100 * 1024;
+sub _chunk_it_up {
+    my $content_ref = shift;
+    my $callback    = shift;
+
+    if (length($$content_ref) < CHUNK_IT_UP_SIZE) {
+        $callback->($content_ref);
+        return;
+    }
+
+    my $chunk_start = 0;
+    my $chunk = ''; # re-use the buffer (space & speed)
+    while (1) {
+        $chunk = substr($$content_ref, $chunk_start, CHUNK_IT_UP_SIZE);
+        last unless length $chunk;
+        $chunk_start += length $chunk;
+        $callback->(\$chunk);
+    }
+    return;
+}
+
+
+sub to_absolute_html {
+    my $self = $_[0];
+    my $content = ref($_[1]) ? $_[1] : \$_[1]; # don't default this to body_ref
+
+    my %p = @_[2..$#_];
+    $p{link_dictionary}
+        ||= Socialtext::Formatter::AbsoluteLinkDictionary->new();
+
+    my $url_prefix = $self->hub->current_workspace->uri;
+    $url_prefix =~ s{/[^/]+/?$}{};
+
+    $self->hub->viewer->url_prefix($url_prefix);
+    $self->hub->viewer->link_dictionary($p{link_dictionary});
+    # REVIEW: Too many paths to setting of page_id and too little
+    # clearness about what it is for. appears to only be used
+    # in WaflPhrase::parse_wafl_reference
+    $self->hub->viewer->page_id($self->page_id);
+
+    # Don't assign these results to anything before returning. It will slow
+    # down the program significantly.
+    return $self->to_html($content) if defined($_[1]);
+    return $self->to_html($self->body_ref, $self);
+}
+
+sub to_html {
+    my ($self, $content_ref, $page) = @_;
+
+    if (@_ == 1) {
+        $content_ref = $self->body_length
+            ? $self->body_ref : \$self->default_content;
+        $page = $self;
+    }
+    elsif (!($content_ref || $$content_ref)) {
+        $content_ref = \$self->default_content;
+    }
+
+    return $self->hub->pluggable->hook('render.sheet.html',
+        [$content_ref, $self]
+    ) if $self->is_spreadsheet;
+
+    return $self->hub->viewer->process($content_ref, $page)
+        if $DISABLE_CACHING;
+
+    # Look for cached HTML
+    my $q_file = $self->_question_file;
+    if ($q_file and -e $q_file) {
+        my $q_str = Socialtext::File::get_contents($q_file);
+        my $a_str = $self->_questions_to_answers($q_str);
+        my $cache_file = $self->_answer_file($a_str);
+        my $cache_file_exists = $cache_file && -e $cache_file;
+        my $users_changed = 0;
+        if ($cache_file_exists) {
+            my $cached_at = (stat($cache_file))[9];
+            $users_changed = $self->_users_modified_since($q_str, $cached_at)
+        }
+        if ($cache_file_exists and !$users_changed) {
+            my $t = time_scope('wikitext_HIT');
+            $self->{__cache_hit}++;
+            warn "HIT: $cache_file" if $CACHING_DEBUG;
+            return scalar Socialtext::File::get_contents_utf8($cache_file);
+        }
+
+        my $t = time_scope('wikitext_MISS');
+        warn "MISS on content" if $CACHING_DEBUG;
+        my $html = $self->hub->viewer->process($content_ref, $page);
+
+        # Check if we are the "current" page, and do not cache if we are not.
+        # This is to avoid crazy errors where we may be rendering other page's
+        # content for TOC wafls and such.
+        my $is_current = $self->hub->pages->current->page_id eq $self->page_id;
+        if (defined $a_str and $is_current) {
+            # cache_file may be undef if the answer string was too long.
+            # XXX if long answers get hashed we can still save it here
+            Socialtext::File::set_contents_utf8_atomic($cache_file, $html)
+                if $cache_file;
+            warn "MISSED: $cache_file" if $CACHING_DEBUG;
+            return $html;
+        }
+        # Our answer string was invalid, so we'll need to re-generate the Q file
+        # We will pass in the rendered html to save work
+        return ${ $self->_cache_html(\$html) };
+    }
+
+    return ${$self->_cache_html};
+}
+
+sub _cache_html {
+    my $self = shift;
+    my $html_ref = shift;
+    return if $self->is_spreadsheet;
+
+    my $t = time_scope('cache_wt');
+
+    my %cacheable_wafls = map { $_ => 1 } qw/
+        Socialtext::Formatter::TradeMark 
+        Socialtext::Formatter::Preformatted 
+        Socialtext::PageAnchorsWafl
+        Socialtext::Wikiwyg::FormattingTestRunAll
+        Socialtext::Wikiwyg::FormattingTest
+        Socialtext::ShortcutLinks::Wafl
+    /;
+    require Socialtext::CodeSyntaxPlugin;
+    for my $brush (keys %Socialtext::CodeSyntaxPlugin::Brushes) {
+        $cacheable_wafls{"Socialtext::CodeSyntaxPlugin::Wafl::$brush"} = 1;
+    }
+    my %not_cacheable_wafls = map { $_ => 1 } qw/
+        Socialtext::Formatter::SpreadsheetInclusion
+        Socialtext::Formatter::PageInclusion
+        Socialtext::RecentChanges::Wafl
+        Socialtext::Category::Wafl
+        Socialtext::Search::Wafl
+    /;
+    my @cache_questions;
+    my %interwiki;
+    my %allows_html;
+    my %users;
+    my %attachments;
+    my $expires_at;
+
+    {
+        no warnings 'redefine';
+        # Maybe in the future un-weaken the hub so this hack isn't needed. 
+        local *Socialtext::Formatter::WaflPhrase::hub = sub {
+            my $wafl = shift;
+            return $wafl->{hub} || $self->hub;
+        };
+        $self->get_units(
+            wafl_phrase => sub {
+                my $wafl = shift;
+
+                my $wafl_expiry = 0;
+                my $wafl_class = ref $wafl;
+
+                # Some short-circuts based on the wafl class
+                return if $cacheable_wafls{ $wafl_class };
+                if ($not_cacheable_wafls{$wafl_class}) {
+                    $expires_at = -1;
+                    return;
+                }
+
+                my $unknown = 0;
+                if ($wafl_class =~ m/(?:Image|File|InterWikiLink|HtmlPage|Toc|CSS)$/) {
+                    my @args = $wafl->arguments =~ $wafl->wafl_reference_parse;
+                    $args[0] ||= $self->workspace_name;
+                    $args[1] ||= $self->page_id;
+                    my ($ws_name, $page_id, $file_name) = @args;
+                    $interwiki{$ws_name}++;
+                    if ($file_name) {
+                        my $attach_id = $wafl->get_file_id($ws_name, $page_id,
+                            $file_name);
+                        $attachments{
+                            join ' ', $ws_name, $page_id, $file_name, $attach_id
+                        }++;
+                    }
+                }
+                elsif ($wafl_class =~ m/(?:TagLink|CategoryLink|WeblogLink|BlogLink)$/) {
+                    my ($ws_name) = $wafl->parse_wafl_category;
+                    $interwiki{$ws_name}++ if $ws_name;
+                }
+                elsif ($wafl_class eq 'Socialtext::FetchRSS::Wafl'
+                    or $wafl_class eq 'Socialtext::VideoPlugin::Wafl'
+                ) {
+                    # Feeds and videos are cached for 1 hour, so we can cache this render for 1h
+                    # There may be an edge case initially where a feed
+                    # ends up getting cached for at most 2 hours if the Question
+                    # had not yet been generated.
+                    $wafl_expiry = 3600;
+                }
+                elsif ($wafl_class eq 'Socialtext::GoogleSearchPlugin::Wafl') {
+                    # Cache google searches for 5 minutes
+                    $wafl_expiry = 300;
+                }
+                elsif ($wafl_class eq 'Socialtext::Pluggable::WaflPhrase') {
+                    if ($wafl->{method} eq 'user') {
+                        $users{$wafl->{arguments}}++ if $wafl->{arguments};
+                    }
+                    else {
+                        $unknown = 1;
+                    }
+                }
+                elsif ($wafl_class eq 'Socialtext::Date::Wafl') {
+                    # Must cache on date prefs
+                    my $prefs = $self->hub->preferences_object;
+
+                    # XXX We really only need to do this once per page.
+                    push @cache_questions, {
+                        date => join ',',
+                            $prefs->date_display_format->value,
+                            $prefs->time_display_12_24->value,
+                            $prefs->time_display_seconds->value,
+                            $prefs->timezone->value
+                    };
+                }
+                elsif ($wafl_class eq 'Socialtext::Category::Wafl') {
+                    if ($wafl->{method} =~ m/^(?:tag|category)_list$/) {
+                        # We do not cache tag list views
+                        $expires_at = -1;
+                    }
+                    else {
+                        $unknown = 1;
+                    }
+                }
+                else {
+                    $unknown = 1;
+                }
+
+                if ($unknown) {
+                    # For unknown wafls, set expiry to be a second ago so 
+                    # the page is never cached.
+                    warn "Unknown wafl phrase: " . ref($wafl) . ' - ' . $wafl->{method};
+                    $expires_at = -1;
+                }
+
+                if ($wafl_expiry) {
+                    # Keep track of the lowest expiry time.
+                    if (!$expires_at or $expires_at > $wafl_expiry) {
+                        $expires_at = $wafl_expiry;
+                    }
+                }
+            },
+            wafl_block => sub {
+                my $wafl = shift;
+                my $wafl_class = ref($wafl);
+                return if $cacheable_wafls{ $wafl_class };
+                if ($wafl->can('wafl_id') and $wafl->wafl_id eq 'html') {
+                    $allows_html{$self->workspace_id}++;
+                }
+                else {
+                    # Do not cache pages with unknown blocks present
+                    $expires_at = -1;
+                    warn "Unknown wafl block: " . ref($wafl);
+                }
+            },
+        );
+    }
+
+    delete $interwiki{ $self->workspace_name };
+    for my $ws_name (keys %interwiki) {
+        my $ws = Socialtext::Workspace->new(name => $ws_name);
+        push @cache_questions, { workspace => $ws } if $ws;
+    }
+    for my $ws_id (keys %allows_html) {
+        my $ws = Socialtext::Workspace->new(workspace_id => $ws_id);
+        push @cache_questions, { allows_html_wafl => $ws } if $ws;
+    }
+    for my $user_id (keys %users) {
+        push @cache_questions, { user_id => $user_id };
+    }
+    for my $attachment (keys %attachments) {
+        push @cache_questions, { attachment => $attachment };
+    }
+    if (defined $expires_at) {
+        $expires_at += time();
+        push @cache_questions, { expires_at => $expires_at };
+    }
+    
+    eval {
+        $html_ref = $self->_cache_using_questions( \@cache_questions, $html_ref );
+    }; die "Failed to cache using questions: $@" if $@;
+
+    return $html_ref;
+}
+
+sub _cache_using_questions {
+    my $self = shift;
+    my $questions = shift;
+    my $html_ref = shift;
+
+    my @short_q;
+    my @answers;
+
+    # Do one pass looking for expiry Q's, as they are cheap to early-out
+    for my $q (@$questions) {
+        if (my $t = $q->{expires_at}) {
+            push @short_q, 'E' . $t;
+            # We just made it, so it's not expired yet
+            push @answers, 1;
+        }
+    }
+
+    my $page_attachments;
+    for my $q (@$questions) {
+        my $ws;
+        if ($ws = $q->{workspace}) {
+            push @short_q, 'w' . $ws->workspace_id;
+            push @answers, $self->hub->authz->user_has_permission_for_workspace(
+                user => $self->hub->current_user,
+                permission => ST_READ_PERM,
+                workspace => $ws
+            ) ? 1 : 0;
+        }
+        elsif (my $user_id = $q->{user_id}) {
+            my $user = eval { Socialtext::User->Resolve($user_id) } or next;
+            push @short_q, 'u' . $user->user_id;
+            push @answers, 1; # All users are linkable.
+        }
+        elsif ($ws = $q->{allows_html_wafl}) {
+            push @short_q, 'h' . $ws->workspace_id;
+            push @answers, $ws->allows_html_wafl ? 1 : 0;
+        }
+        elsif (my $t = $q->{expires_at}) {
+            # Skip, it's handled above.
+        }
+        elsif (my $d = $q->{date}) {
+            push @short_q, 'd' . $d;
+            push @answers, 1;
+        }
+        elsif (my $a = $q->{attachment}) {
+            push @short_q, 'a' . $a;
+            $a =~ m/^(\S+) (\S+) (.+) (\S+)$/;
+            push @answers, $self->hub->attachments->attachment_exists(
+                $1, $2, $3, $4);
+        }
+        else {
+            die "Unknown question: " . Dumper $q;
+        }
+    }
+
+    my $q_str = join "\n", @short_q;
+    $q_str ||= 'null';
+
+    my $q_file = $self->_question_file or return;
+    Socialtext::File::set_contents_utf8_atomic($q_file, \$q_str) if $q_file;
+
+    $html_ref ||= \$self->to_html;
+
+    # Check if we are the "current" page, and do not cache if we are not.
+    # This is to avoid crazy errors where we may be rendering other page's
+    # content for TOC wafls and such.
+    my $is_current = $self->hub->pages->current->page_id eq $self->page_id;
+    if ($is_current) {
+        my $answer_str = join '-', $self->_stock_answers(),
+            map { $_ . '_' . shift(@answers) } @short_q;
+
+        my $cache_file = $self->_answer_file($answer_str);
+        if ($cache_file) {
+            Socialtext::File::set_contents_utf8_atomic($cache_file, $html_ref);
+        }
+    }
+    return $html_ref;
+}
+
+sub _users_modified_since {
+    my $self = shift;
+    my $q_str = shift;
+    my $cached_at = shift;
+
+    my @found_users;
+    my @user_ids;
+    while ($q_str =~ m/(?:^|-)u(\d+)(?:-|$)/gm) {
+        push @user_ids, $1;
+    }
+    return 0 unless @user_ids;
+
+    my $user_placeholders = '?,' x @user_ids; chop $user_placeholders;
+    return sql_singlevalue(qq{
+        SELECT count(user_id) FROM users
+         WHERE user_id IN ($user_placeholders)
+           AND last_profile_update >
+                'epoch'::timestamptz + ?::interval
+        }, @user_ids, $cached_at) || 0;
+}
+
+sub _stock_answers {
+    my $self = shift;
+    my @answers;
+
+    # Which link dictionary is always the first question
+    my $ld = ref($self->hub->viewer->link_dictionary);
+    push @answers, $ld;
+
+    # Which formatter is always the second question
+    push @answers, ref($self->hub->formatter);
+
+    # Which URI scheme is always the third question
+    require Socialtext::URI;
+    my %uri = Socialtext::URI::_scheme();
+    push @answers, $uri{scheme};
+    
+    return @answers;
+};
+
+sub _questions_to_answers {
+    my $self = shift;
+    my $q_str = shift;
+
+    my $t = time_scope('QtoA');
+    my $cur_user = $self->hub->current_user;
+    my $authz = $self->hub->authz;
+
+    my @answers = $self->_stock_answers;
+
+    for my $q (split "\n", $q_str) {
+        if ($q =~ m/^w(\d+)$/) {
+            my $ws = Socialtext::Workspace->new(workspace_id => $1);
+            my $ok = $ws && $self->hub->authz->user_has_permission_for_workspace(
+                user => $cur_user,
+                permission => ST_READ_PERM,
+                workspace => $ws,
+            ) ? 1 : 0;
+            push @answers, "${q}_$ok";
+        }
+        elsif ($q =~ m/^u(\d+)$/) {
+            my $user = Socialtext::User->new(user_id => $1);
+            push @answers, "${q}_1"; # All users are linkable
+        }
+        elsif ($q =~ m/^h(\d+)$/) {
+            my $ws = Socialtext::Workspace->new(workspace_id => $1);
+            my $ok = $ws && $ws->allows_html_wafl() ? 1 : 0;
+            push @answers, "${q}_$ok";
+        }
+        elsif ($q =~ m/^E(\d+)$/) {
+            my ($expires_at, $now) = ($1, time());
+            my $ok = $now < $expires_at ? 1 : 0;
+            warn "Checking Expiry ($now < $expires_at) = $ok" if $CACHING_DEBUG;
+            return undef unless $ok;
+            push @answers, "${q}_1";
+        }
+        elsif ($q =~ m/^d(.+)$/) {
+            my $pref_str = $1;
+            my $prefs = $self->hub->preferences_object;
+            my $my_prefs = join ',',
+                $prefs->date_display_format->value,
+                $prefs->time_display_12_24->value,
+                $prefs->time_display_seconds->value,
+                $prefs->timezone->value;
+            my $ok = $pref_str eq $my_prefs;
+            push @answers, "${q}_$ok";
+        }
+        elsif ($q =~ m/^a(\S+) (\S+) (.+) (\S+)$/) {
+            my $e = $self->hub->attachments->attachment_exists($1, $2, $3, $4);
+            if ($e and !$4) {
+                warn "Attachment $1/$2/$3 exists, but attachment_id is 0"
+                    . " so we will re-generate the question" if $CACHING_DEBUG;
+                return undef;
+            }
+            push @answers, "${q}_$e";
+        }
+        elsif ($q eq 'null') {
+            next;
+        }
+        else {
+            my $ws_name = $self->workspace_name;
+            st_log->info("Unknown wikitext cache question '$q' for $ws_name/"
+                    . $self->page_id);
+            return undef;
+        }
+    }
+    my $str = join '-', @answers;
+    warn "Caching Answers: '$str'" if $CACHING_DEBUG;
+    return $str;
+}
+
+sub _page_cache_basename {
+    my $self = shift;
+    my $cache_dir = $self->_cache_dir or return;
+    return "$cache_dir/" . $self->page_id . '-' . ($self->revision_id || '0');
+}
+
+sub delete_cached_html {
+    my $self = shift;
+    unlink glob($self->_page_cache_basename . '-*');
+}
+
+sub _question_file {
+    my $self = shift;
+    my $base = $self->_page_cache_basename or return;
+    return "$base-Q";
+}
+
+sub _answer_file {
+    my $self = shift;
+
+    # {bz: 4129}: Don't cache temporary pages during new_page creation.
+    # XXX: this may be a little touchy with pages-in-the-db
+    unless ($self->exists) {
+        warn "Not caching new page" if $CACHING_DEBUG;
+        return;
+    }
+
+    my $answer_str = shift || '';
+    my $base = $self->_page_cache_basename;
+    unless ($base) {
+        warn "No _page_cache_basename, not caching";
+        return;
+    }
+
+    # Turn SvUTF8 off before hashing the answer string. {bz: 4474}
+    my $filename = "$base-".sha1_hex(Encode::encode_utf8($answer_str));
+    (my $basename = $filename) =~ s#.+/##;
+    warn "Answer file: $answer_str => $basename" if $CACHING_DEBUG;
+    if (length($basename) > 254) {
+        warn "Answer file basename is too long! - $basename";
+        return undef;
+    }
+    return $filename;
+}
+
+sub _cache_dir {
+    my $self = shift;
+    return unless $self->hub;
+    return $self->hub->viewer->parser->cache_dir(
+        $self->workspace_id);
+}
+
+sub unindex {
+    my $self = shift;
+    my @indexers = Socialtext::Search::AbstractFactory->GetIndexers(
+        $self->workspace_name);
+    my @atts = $self->attachments;
+    for my $indexer (@indexers) {
+        $indexer->delete_page( $self->uri);
+        foreach my $attachment (@atts) {
+            $indexer->delete_attachment($self->uri, $attachment->id);
+        }
+    }
+}
 
 sub delete {
     my $self = shift;
     my %p = @_;
+    my $t = time_scope('page_delete');
+    my $user = $p{user} || $self->hub->current_user;
 
-    my $timer = Socialtext::Timer->new;
 
-    Carp::confess('no user given to Socialtext::Page->delete')
-        unless $p{user};
+    my $rev = $self->edit_rev(editor => $user);
+    $rev->summary('');
+    $rev->edit_summary('');
+    $rev->body_ref(\'');
+    $rev->deleted(1);
+    $rev->tags([]);
+    $self->store();
 
-    my @indexers = Socialtext::Search::AbstractFactory->GetIndexers(
-        $self->hub->current_workspace->name);
-    foreach my $attachment ( $self->attachments ) {
-        my @args = ($self->uri, $attachment->id);
-        for my $indexer (@indexers) {
-            $indexer->delete_attachment( @args );
-        }
-    }
-
-    $self->load;
-    $self->content('');
-    $self->metadata->Category([]);
-    $self->store( user => $p{user} );
+    $self->unindex();
 
     Socialtext::Events->Record({
         event_class => 'page',
@@ -1307,196 +1780,179 @@ sub delete {
 
 sub purge {
     my $self = shift;
-
-    # clean up the index first
-    my $indexer
-        = Socialtext::Search::AbstractFactory->GetFactory->create_indexer(
-        $self->hub->current_workspace->name );
-
-    foreach my $attachment ( $self->attachments ) {
-        $indexer->delete_attachment( $self->uri, $attachment->id );
-    }
-
-    $indexer->delete_page( $self->uri);
-
-    my $hash    = $self->hash_representation;
-    my $wksp_id = $self->hub->current_workspace->workspace_id;
+    $self->unindex();
     sql_txn {
-        sql_execute('DELETE FROM page WHERE workspace_id = ? and page_id = ?',
-            $wksp_id, $hash->{page_id}
-        );
-        sql_execute('DELETE FROM page_revision WHERE workspace_id = ? and page_id = ?',
-            $wksp_id, $hash->{page_id}
-        );
-        sql_execute('DELETE FROM page_tag WHERE workspace_id = ? and page_id = ?',
-            $wksp_id, $hash->{page_id}
-        );
+        my $ws_id = $self->workspace_id;
+        my $page_id = $self->page_id;
+        # the other tables should cascade...
+        for my $tbl (qw(page_tag page_revision page_attachment page)) {
+            sql_execute(qq{
+                DELETE FROM $tbl WHERE workspace_id = ? and page_id = ?
+            }, $ws_id, $page_id);
+        }
     };
 }
 
 Readonly my $ExcerptLength => 350;
+Readonly my $ExcerptLengthInput => 2 * $ExcerptLength;
 sub preview_text {
-    my $self = shift;
+    my $self = $_[0];
+    my $content_ref;
+    if (@_ == 2) {
+        $content_ref = ref($_[1]) ? $_[1] : \$_[1];
+    }
+    $content_ref //= $self->body_ref;
+    return '' unless $content_ref && length($$content_ref);
 
-    return $self->preview_text_spreadsheet(@_)
+    return $self->preview_text_spreadsheet($content_ref)
         if $self->is_spreadsheet;
-
-    my $content = shift || $self->content;
 
     # Gigantic pages caused Perl segfaults. Only need the beginning of the
     # content.
-    my $max_length = $ExcerptLength * 2;
-    if (length($content) > $max_length) {
-        $content = substr($content, 0, $max_length);
+    if (length($$content_ref) > $ExcerptLengthInput) {
+        my $content = substr($$content_ref, 0, $ExcerptLengthInput);
         $content =~ s/(.*\n).*/$1/s;
+        $content_ref = \$content;
     }
 
-    my $excerpt = $self->_to_plain_text( $content );
-    $excerpt = substr( $excerpt, 0, $ExcerptLength ) . '...'
+    my $excerpt = $self->_to_plain_text($content_ref);
+    $excerpt = substr($excerpt, 0, $ExcerptLength) . '...'
         if length $excerpt > $ExcerptLength;
     return Socialtext::String::html_escape($excerpt);
 }
 
 sub preview_text_spreadsheet {
-    my $self = shift;
+    my $self = $_[0];
+    my $content_ref = ref($_[1]) ? $_[1] : \$_[1];
+    $content_ref //= $self->body_ref;
 
-    my $content = shift || $self->content;
-    $content = $self->_to_spreadsheet_plain_text($content);
-
-    $content = substr( $content, 0, $ExcerptLength ) . '...'
-        if length $content > $ExcerptLength;
-
-    return Socialtext::String::html_escape($content);
+    my $excerpt = $self->_to_spreadsheet_plain_text($content_ref);
+    $excerpt = substr($excerpt, 0, $ExcerptLength) . '...'
+        if length $excerpt > $ExcerptLength;
+    return Socialtext::String::html_escape($excerpt);
 }
 
+# also called by the Solr indexer
 sub _to_plain_text {
-    my $self    = shift;
-    my $content = shift || $self->content;
+    my $self = shift;
+    my $content_ref = shift || $self->body_ref;
 
     if ($self->is_spreadsheet) {
-        return $self->_to_spreadsheet_plain_text( $content );
+        return $self->_to_spreadsheet_plain_text($content_ref);
     }
 
+    # Why not go through the chunker? it's slower than returning when you use
+    # a 'my' variable in-between.
+    if ($self->body_length < CHUNK_IT_UP_SIZE) {
+        my $parser = Socialtext::WikiText::Parser->new(
+           receiver => Socialtext::WikiText::Emitter::SearchSnippets->new,
+        );
+        return $parser->parse(${$self->body_ref});
+    }
+
+    # It's too big! Take the hit and process it piecemeal
     my $plain_text = '';
-    Socialtext::Page::Base::_chunk_it_up( \$content, sub {
+    _chunk_it_up( $self->body_ref, sub {
         my $chunk_ref = shift;
-        $plain_text 
-            .= $self->_to_socialtext_wikitext_parser_plain_text($$chunk_ref);
+        my $parser = Socialtext::WikiText::Parser->new(
+           receiver => Socialtext::WikiText::Emitter::SearchSnippets->new,
+        );
+        eval { $plain_text .= $parser->parse($$chunk_ref) };
+        warn $@ if $@;
     });
     return $plain_text;
 }
 
-sub _to_socialtext_formatter_parser_plain_text {
-    my $self    = shift;
-    my $content = shift;
-
-    my $parser = Socialtext::Formatter::Parser->new(
-        table => $self->hub->formatter->table,
-        wafl_table => $self->hub->formatter->wafl_table,
-    );
-    my $units = $parser->text_to_parsed($content);
-    return Socialtext::Formatter::Viewer->to_text( $units );
-}
-
-sub _to_socialtext_wikitext_parser_plain_text {
-    my $self    = shift;
-    my $content = shift;
-
-    my $parser = Socialtext::WikiText::Parser->new(
-       receiver => Socialtext::WikiText::Emitter::SearchSnippets->new,
-    );
-
-    my $return = "";
-    eval { $return = $parser->parse($content) };
-    warn $@ if $@;
-    return $return;
-}
-
 sub _to_spreadsheet_plain_text {
-    my $self    = shift;
-    my $content = shift;
-
+    my $self = shift;
+    my $content_ref = shift;
     require Socialtext::Sheet;
     require Socialtext::Sheet::Renderer;
-
-    my $text = Socialtext::Sheet::Renderer->new(
-        sheet => Socialtext::Sheet->new(sheet_source => \$content),
+    return Socialtext::Sheet::Renderer->new(
+        sheet => Socialtext::Sheet->new(sheet_source => $content_ref),
         hub   => $self->hub,
     )->sheet_to_text();
-
-    return $text;
 }
 
 # REVIEW: We should consider throwing exceptions here rather than return codes.
 sub duplicate {
     my $self = shift;
     my $dest_ws = shift;
-    my $target_page_title = shift;
+    my $target_title = shift;
     my $keep_categories = shift;
     my $keep_attachments = shift;
     my $clobber = shift || '';
     my $is_rename = shift || 0;
 
-    my $dest_main = Socialtext->new;
-    $dest_main->load_hub(
-        current_workspace => $dest_ws,
-        current_user      => $self->hub->current_user,
-    );
-    my $dest_hub = $dest_main->hub;
-    $dest_hub->registry->load;
+    my $cur_ws = $self->hub->current_workspace;
+    my $user = $self->hub->current_user;
 
-    my $target_page = $dest_hub->pages->new_from_name($target_page_title);
+    my ($dest_main, $dest_hub);
+    if ($cur_ws->workspace_id != $dest_ws->workspace_id) {
+        ($dest_main, $dest_hub) =
+            $dest_ws->_main_and_hub($self->hub->current_user); 
+    }
+    else {
+        $dest_hub = $self->hub;
+    }
+
+    my $target = $dest_hub->pages->new_from_name($target_title);
+    my $target_id = $target->page_id;
 
     # XXX need exception handling of better kind
     # Don't clobber an existing page if we aren't clobbering
-    if ($target_page->metadata->Revision
-            and $target_page->active
-            and ($clobber ne $target_page_title)) {
-        return 0;
+    if ($target->active and $clobber ne $target_title) {
+        return 0
     }
 
-    my $target_page_id = Socialtext::String::title_to_id($target_page_title);
-    $target_page->content($self->content);
-    $target_page->metadata->Subject($target_page_title);
-    $target_page->metadata->Category($self->metadata->Category)
-      if $keep_categories;
-    $target_page->metadata->update( user => $dest_hub->current_user );
+    return try { sql_txn {
+        my $rev = $self->mutable
+            ? $self->rev : $self->rev->mutable_clone(editor => $user);
 
-    $target_page->metadata->Type($self->metadata->Type);
+        # Attach the mutable revision to the target page. Since most of the
+        # properties will carry-over, we just need to modify the identity
+        # fields.
+        $rev->hub($dest_hub);
+        $rev->workspace_id($dest_ws->workspace_id);
+        $rev->page_id($target_id);
+        $rev->name($target_title);
+        $target->rev($rev);
 
-    if ($keep_attachments) {
-        my @attachments = $self->attachments();
-        for my $source_attachment (@attachments) {
-            my $target_attachment = $dest_hub->attachments->new_attachment(
-                    id => $source_attachment->id,
-                    page_id => $target_page_id,
-                    filename => $source_attachment->filename,
-                );
+        # Make this the first revision_num unless we're clobbering.
+        $rev->revision_num($target->exists ? $target->revision_num+1 : 0);
 
-            my $target_directory = $dest_hub->attachments->plugin_directory;
-            $target_attachment->copy($source_attachment, $target_attachment, $target_directory);
-            $target_attachment->store( user => $dest_hub->current_user,
-                                       dir  => $target_directory );
+        $rev->tags([]) unless $keep_categories;
+
+        if ($keep_attachments) {
+            my @attachments = $self->attachments();
+            for my $source_attachment (@attachments) {
+                $source_attachment->clone(page => $target);
+            }
         }
-    }
 
-    $target_page->store( user => $dest_hub->current_user );
+        $target->store(user => $dest_hub->current_user);
+        $target->rev->clear_prev; # which still points to the old page
 
-    Socialtext::Events->Record({
-        event_class => 'page',
-        action => ($is_rename ? 'rename' : 'duplicate'),
-        page => $self,
-        target_workspace => $dest_hub->current_workspace,
-        target_page => $target_page,
-    });
+        Socialtext::Events->Record({
+            event_class => 'page',
+            action => ($is_rename ? 'rename' : 'duplicate'),
+            page => $self,
+            target_workspace => $dest_hub->current_workspace,
+            target => $target,
+        });
 
-    Socialtext::Events->Record({
-        event_class => 'page',
-        action => 'edit_save',
-        page => $target_page,
-    });
+        Socialtext::Events->Record({
+            event_class => 'page',
+            action => 'edit_save',
+            page => $target,
+        });
 
-    return 1; # success
+        return 1;
+    } }
+    catch {
+        carp "duplicate failed: $_";
+        return 0;
+    };
 }
 
 # REVIEW: We should consider throwing exceptions here rather than return codes.
@@ -1507,36 +1963,42 @@ sub rename {
     my $keep_attachments = shift;
     my $clobber = shift || '';
 
+
     # If the new title of the page has the same page-id as the old then just
     # change the title, and don't mess with the other bits.
     my $new_id = Socialtext::String::title_to_id($new_page_title);
-    if ( $self->id eq $new_id ) {
-        $self->title($new_page_title);
-        $self->metadata->Subject($new_page_title);
-        $self->metadata->update( user => $self->hub->current_user );
-        $self->store( user => $self->hub->current_user );
+    if ( $self->page_id eq $new_id ) {
+        return sql_txn {
+            my $rev = $self->edit_rev();
+            $rev->name($new_page_title);
+            $self->store();
+            return 1;
+        };
+    }
+
+    return sql_txn {
+        my $ok = $self->duplicate(
+            $self->hub->current_workspace,
+            $new_page_title,
+            $keep_categories,
+            $keep_attachments,
+            $clobber,
+            'rename'
+        );
+        return 0 unless $ok;
+
+        # XXX: is there a better way to put square brackets around the
+        # target name?  Maybe with [sprintf,...] somehow?
+        my $localized_str = loc("Page renamed to <[_1]>", $new_page_title);
+        $localized_str =~ tr/></][/;
+
+        my $rev = $self->edit_rev();
+        $rev->body_ref(\$localized_str);
+        $rev->page_type('wiki');
+        $self->store();
+
         return 1;
-    }
-
-    my $return = $self->duplicate(
-        $self->hub->current_workspace,
-        $new_page_title,
-        $keep_categories,
-        $keep_attachments,
-        $clobber,
-        'rename'
-    );
-
-    if ($return) {
-        my $localized_str = loc("Page renamed to [_1]", $new_page_title);
-        $localized_str =~ s/^Page\ renamed\ to\ /Page\ renamed\ to\ \[/;
-        $localized_str =~ s/$/\]/;
-        $self->content($localized_str);
-        $self->metadata->Type("wiki");
-        $self->store( user => $self->hub->current_user );
-    }
-
-    return $return;
+    };
 }
 
 # REVIEW: Candidate for Socialtext::Validate
@@ -1601,12 +2063,11 @@ sub send_as_email {
         if ($self->is_spreadsheet) {
             my $content = $self->to_absolute_html();
             return $content unless $p{body_intro} =~ /\S/;
-
             my $intro = $self->hub->viewer->process($p{body_intro}, $self);
             return "$intro<hr/>$content";
         }
-
-        return $self->to_absolute_html( $p{body_intro} . $self->content );
+        my $new_content = $p{body_intro} . ${$self->body_ref};
+        return $self->to_absolute_html(\$new_content);
     };
 
     if ($p{include_attachments}) {
@@ -1656,7 +2117,7 @@ sub send_as_email {
     );
     $email{cc} = $p{cc} if defined $p{cc};
     $email{attachments} =
-        [ map { $_->full_path() } $self->attachments ]
+        [ map { $_->ensure_stored(); $_->full_path() } $self->attachments ]
             if $p{include_attachments};
 
     my $locale = system_locale();
@@ -1664,140 +2125,7 @@ sub send_as_email {
     $email_sender->send(%email);
 }
 
-sub is_in_category {
-    my $self = shift;
-    my $category = shift;
-
-    grep {$_ eq $category} @{$self->metadata->Category};
-}
-
-sub locked {
-    my $self = shift;
-
-    return $self->metadata->Locked;
-}
-
-sub deleted {
-    my $self = shift;
-    $self->metadata->Control eq 'Deleted';
-}
-
-sub load_revision {
-    my $self = shift;
-    my $revision_id = shift;
-
-    $self->revision_id($revision_id);
-    return $self->load;
-}
-
-sub load {
-    my $self        = shift;
-    my $page_string = shift;
-
-    my $metadata = $self->{metadata}
-        or die "No metadata object in content object";
-
-    my $headers;
-    if ($page_string) {
-        # This method is used only by testing tools.
-        $headers = $self->_read_page_string($page_string);
-        $metadata->from_hash($self->parse_headers($headers));
-        return $self;
-    }
-
-    $self->load_metadata;
-    return $self;
-}
-
-sub load_metadata {
-    my $self = shift;
-
-    my $metadata = $self->{metadata}
-      or die "No metadata object in content object";
-    return $self unless $self->id;
-
-    my $ws_id = $self->hub->current_workspace->workspace_id;
-    my $pg_id = $self->id;
-    my $rev_id = $self->{revision_id} || '0';
-    my $cache_key = "$ws_id-$pg_id-$rev_id";
-    # Only cache specific revisions, always fetch the latest page w/o rev
-    my $page = $rev_id ? $self->cache->get($cache_key) : undef;
-    unless ($page) {
-        $page = Socialtext::Model::Pages->By_id(
-            hub => $self->hub,
-            workspace_id => $ws_id,
-            page_id => $pg_id,
-            revision_id => $rev_id,
-            no_die => 1,
-            deleted_ok => 1,
-        );
-        return $self unless $page;
-        $self->cache->set($cache_key, $page) if $rev_id;
-    }
-
-    # Nowadays PageMeta is just a legacy interface; it can go away
-    $metadata->from_hash( {
-        Control         => $page->deleted ? 'Deleted' : '',
-        Subject         => $page->title,
-        From            => $page->last_edited_by->email_address,
-        Date            => $page->last_edit_time . " GMT",
-        Revision        => $page->current_revision_num,
-        Type            => $page->type,
-        Summary         => $page->summary,
-        Category        => $page->tags,
-        Encoding        => 'utf8',
-        RevisionSummary => $page->edit_summary,
-        Locked          => $page->locked,
-
-        # These can go away
-#        Received        => undef,
-#        MessageID       => 0,
-    } );
-    $metadata->{Type} ||= 'wiki';
-    return $self;
-}
-
-sub parse_headers {
-    my $self = shift;
-    my $headers = shift;
-    my $metadata = {};
-    for (split /\n/, $headers) {
-        next unless /^(\w\S*):\s*(.*)$/;
-        my ($attribute, $value) = ($1, $2);
-        if (defined $metadata->{$attribute}) {
-            $metadata->{$attribute} = [$metadata->{$attribute}]
-              unless ref $metadata->{$attribute};
-            push @{$metadata->{$attribute}}, $value;
-        }
-        else {
-            $metadata->{$attribute} = $value;
-        }
-    }
-
-    # Putting whacky whitespace in a page title can kill javascript on the
-    # front-end. This fixes {bz: 3475}.
-    if ($metadata->{Subject}) {
-        $metadata->{Subject} =~ s/\s/ /g;
-    }
-
-    return $metadata;
-}
-
-sub _read_page_string {
-    my $self = shift;
-    my $string = shift;
-
-    die "Not a string ($string)" if ref($string);
-    my ($headers, $content) = split "\n\n", $string, 2;
-    $self->content($content);
-    return $headers;
-}
-
-=head2 restore_revision( $id )
-
-Loads and stores the revision specified by I<$id>.
-
-=cut
+*is_in_category = *has_tag;
 
 {
     Readonly my $spec => {
@@ -1809,18 +2137,25 @@ Loads and stores the revision specified by I<$id>.
         my %p = validate( @_, $spec );
         my $id = shift;
 
-        $self->revision_id( $p{revision_id} );
-        $self->load;
-        $self->store( user => $p{user} );
+        $self->switch_rev($p{revision_id});
+        my $num = $self->revision_num;
+
+        my $rev = $self->edit_rev(editor => $p{user});
+
+        # Give this rev a new ID, but use the old sequence number
+        $rev->revision_num($num);
+        $rev->revision_id(0);
+
+        # Re-use the old revision's content. Marking the body not-modified
+        # will trigger a row-to-row copy at the database level IFF the
+        # editing-revision has a previous revision (which this one does).
+        $rev->body_modified(0);
+        $rev->edit_summary($rev->prev->edit_summary);
+        $rev->summary($rev->prev->summary);
+
+        $self->store(user => $p{user}, skip_rev_check => 1);
     }
 }
-
-=head2 edit_in_progress
-
-Returns a hash containing a user and a timestamp if an edit has been started 
-for this page.
-
-=cut
 
 sub edit_in_progress {
     my $self = shift;
@@ -1832,7 +2167,7 @@ sub edit_in_progress {
     my $yesterday = DateTime->now() - DateTime::Duration->new( days => 1 );
     my $events = $reporter->get_page_contention_events({
         page_workspace_id => $self->hub->current_workspace->workspace_id,
-        page_id => $self->id,
+        page_id => $self->page_id,
         after  => $yesterday,
     }) || [];
 
@@ -1888,51 +2223,6 @@ sub edit_in_progress {
     return undef;
 }
 
-sub headers {
-    my $self = shift;
-    my $metadata = $self->metadata;
-    my $hash = $metadata->to_hash;
-    my @keys = $metadata->key_order;
-    my $headers = '';
-    for my $key (@keys) {
-        my $attribute = $key;
-        $key =~ s/^([A-Z][a-z]+)([A-Z].*)$/$1-$2/;
-        my $value = $metadata->$attribute;
-        next unless defined $value;
-        unless (ref $value) {
-            $value =~ tr/\r\n/  /s;
-            $value = [$value];
-        }
-        $headers .= "$key: $_\n" for grep {defined $_ and length $_} @$value;
-    }
-    return $headers;
-}
-
-sub create_new_revision_id {
-    my $self = shift;
-    my ($sec,$min,$hour,$mday,$mon,$year) = gmtime(time);
-    my $id = sprintf(
-        "%4d%02d%02d%02d%02d%02d",
-        $year + 1900, $mon + 1, $mday, $hour, $min, $sec
-    );
-    # REVIEW: This is the minimum change to avoid revision id collisions.
-    # It's not the best solution, but there are so many options and enough
-    # indecision that the wrong way sticks around in pursuit of the 
-    # right way. So here's something adequate that does not cascade 
-    # changes in the rest of the code.
-    my $exists = sql_singlevalue(
-        'SELECT count(*) FROM page_revision
-          WHERE workspace_id = ? AND page_id = ? AND revision_id = ?
-        ', $self->hub->current_workspace->workspace_id, $self->id, $id,
-    );
-    if ($exists == 0) {
-        $self->revision_id($id);
-        return $id;
-    }
-    sleep 1;
-    return $self->{revision_id} = $self->create_new_revision_id();
-}
-
 sub formatted_date {
     # formats the current date/time in iso8601 format
     my $now = DateTime->now();
@@ -1942,56 +2232,75 @@ sub formatted_date {
     return $res;
 }
 
-sub active {
+sub all_revision_ids {
     my $self = shift;
-    return $self->exists && not $self->deleted;
+    my $agg = wantarray ? 'array_accum' : 'count';
+    my $ids = sql_singlevalue(qq{
+        SELECT $agg(revision_id)
+          FROM page_revision
+         WHERE workspace_id = ? AND page_id = ?
+         GROUP BY workspace_id, page_id
+    }, $self->workspace_id, $self->page_id);
+    return sort {$a <=> $b} @$ids if wantarray;
+    return $ids;
 }
 
-sub is_bad_page_title {
-    my ( $class, $title ) = @_;
-    $title = defined($title) ? $title : "";
-
-    # No empty page titles.
-    return 1 if $title =~ /^\s*$/;
-
-    # Can't have a page named "Untitled Page"
-    my $untitled_page = Socialtext::String::title_to_id( loc("Untitled Page") );
-    return 1 if Socialtext::String::title_to_id($title) eq $untitled_page;
-    my $untitled_spreadsheet = Socialtext::String::title_to_id( loc("Untitled Spreadsheet") );
-    return 1 if Socialtext::String::title_to_id($title) eq $untitled_spreadsheet;
-
-    return 0;
+sub attachments {
+    my $self = shift;
+    return @{ $self->hub->attachments->all( page_id => $self->page_id ) };
 }
 
-sub summary { $_[0]->metadata->Summary }
-sub edit_summary { $_[0]->metadata->RevisionSummary }
-
-# This is called by Socialtext::Query::Plugin::push_result
-sub to_result {
+sub _log_page_action {
     my $self = shift;
-    my $t = time_scope 'page_to_result';
-    my $metadata = $self->metadata;
 
-    my $result = {};
-    $result->{$_} = $metadata->$_
-      for qw(From Date Subject Revision Summary Type);
-    $result->{DateLocal} = $self->datetime_for_user;
-    $result->{revision_count} = $self->revision_count;
-    $result->{page_uri} = $self->uri;
-    $result->{page_id} = $self->id;
-    $result->{is_spreadsheet} = $self->is_spreadsheet;
-    $result->{create_time} = $self->original_revision->metadata->Date;
-    $result->{creator} = $self->creator->username;
-    $result->{create_time_local} = $self->original_revision->datetime_for_user;
-    my $user = $self->last_edited_by;
-    $result->{username} = $user ? $user->username : '';
-    if (not $result->{Summary}) {
-        my $text = $self->preview_text;
-        $self->_store_preview_text($text);
-        $result->{Summary} = $text;
+    my $action = $self->hub->action || '';
+    my $clobber = eval { $self->hub->rest->query->param('clobber') };
+
+    return if $clobber
+        || $action eq 'submit_comment'
+        || $action eq 'attachments_upload';
+
+    my $log_action;
+    if ($action eq 'delete_page') {
+        $log_action = 'DELETE';
     }
-    $result->{edit_summary} = $self->edit_summary;
-    return $result;
+    elsif ($action eq 'rename_page') {
+        $log_action = ($self->revision_count == 1) ? 'CREATE' : 'RENAME';
+    }
+    elsif ($action eq 'edit_content') {
+        if ($self->restored) {
+            $log_action = 'RESTORE';
+        }
+        elsif ($self->revision_count == 1) {
+            $log_action = 'CREATE';
+        }
+        else {
+            $log_action = 'EDIT';
+        }
+    }
+    elsif ($action eq 'revision_restore') {
+        $log_action = 'RESTORE';
+    }
+    elsif ($action eq 'undelete_page') {
+        $log_action = 'RESTORE';
+    }
+    else {
+        if ($self->revision_count == 1) {
+            $log_action = 'CREATE';
+        }
+        else {
+            $log_action = 'EDIT';
+        }
+    }
+
+    my $user = $self->hub->current_user;
+    st_log()->info("$log_action,PAGE,"
+       . 'workspace:'.$self->workspace_name.'('.$self->workspace_id.'),'
+       . 'page:'.$self->page_id.','
+       . 'user:'.$user->username.'('.$user->user_id.'),'
+       . '[NA]'
+    );
 }
 
+__PACKAGE__->meta->make_immutable(inline_constructor => 1);
 1;

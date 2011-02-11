@@ -143,7 +143,7 @@ sub mass_copy_to {
     for my $page ($self->hub->pages->all) {
         $page->doctor_links_with_prefix($prefix);
         my $old_id = $page->id;
-        my $old_name = $page->metadata->Subject;
+        my $old_name = $page->name;
         my $new_name =
           $old_name =~ /^\Q$prefix\E/ ? $old_name : $prefix . $old_name;
         $page->duplicate(
@@ -156,7 +156,7 @@ sub mass_copy_to {
         $log .= qq{* "$old_name"<http:/admin/index.cgi?;page_name=$old_id;action=revision_list> became [$new_name]\n};
     }
     $log .= "----\n";
-    $log_page->metadata->Subject($log_title);
+    $log_page->name($log_title);
     $log_page->content($log);
     $log_page->store( user => $user );
 }
@@ -203,7 +203,7 @@ sub _duplicate {
 }
 
 sub _page_title_bad {
-    my ( $self, $title ) = @_;
+    my ( $class_or_self, $title ) = @_;
     return Socialtext::Page->is_bad_page_title($title);
 }
 

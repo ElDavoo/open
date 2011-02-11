@@ -177,13 +177,11 @@ sub _tiddler_representation {
     my $page = shift;
 
     return +{
-        title => $page->metadata->Subject,
-        modifier => $page->metadata->From, # REVIEW: adjust to best full name?
-        modified => $self->_make_tiddly_date( $page->metadata->Date ),
-        created  => $self->_make_tiddly_date(
-            $page->original_revision->metadata->Date
-        ),
-        tags     => $self->_make_tiddly_tags( $page->metadata->Category ),
+        title => $page->name,
+        modifier => $page->last_editor->email_address, # REVIEW: adjust to best full name?
+        modified => $self->_make_tiddly_date( $page->datetime_utc ),
+        created  => $self->_make_tiddly_date( $page->createtime_utc ),
+        tags     => $self->_make_tiddly_tags( $page->tags ),
         wikitext => $self->_escape_wikitext( $page->content ),
         workspace   => $self->hub->current_workspace->name(),
         page        => $page->uri,

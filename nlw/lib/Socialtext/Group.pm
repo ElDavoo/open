@@ -12,7 +12,6 @@ use Socialtext::MultiCursor;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw(get_dbh :exec :time :txn);
 use Socialtext::SQL::Builder qw(sql_abstract);
-use Socialtext::Pluggable::Adapter;
 use Socialtext::User;
 use Socialtext::UserSet qw/:const/;
 use Socialtext::JobCreator;

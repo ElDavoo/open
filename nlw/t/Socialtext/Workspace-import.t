@@ -33,10 +33,10 @@ $user->update_store(
 );
 
 my $page = $hub->pages->new_from_name('Admin Wiki');
+$page->edit_rev;
 $page->update(
     content          => 'This is new front page content.',
-    original_page_id => $page->id(),
-    revision         => $page->metadata()->Revision(),
+    revision         => $page->revision_num,
     subject          => 'Admin Wiki',
     user             => $user,
 );

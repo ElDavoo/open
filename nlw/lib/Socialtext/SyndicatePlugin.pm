@@ -14,7 +14,7 @@ use Socialtext::Timer;
 use Socialtext::Watchlist;
 use Socialtext::User;
 use Socialtext::l10n qw (loc);
-use Socialtext::Model::Pages;
+use Socialtext::Pages;
 
 =head1 NAME
 
@@ -294,7 +294,7 @@ sub _tag_get_items {
     my $tag = shift;
     my $count = shift;
 
-    my $pages = Socialtext::Model::Pages->By_tag(
+    my $pages = Socialtext::Pages->By_tag(
         hub => $self->hub,
         tag => $tag,
         count => $count,
@@ -308,7 +308,7 @@ sub _changes_get_items {
     my $count = shift;
 
     my $days = $self->hub->recent_changes->preferences->changes_depth->value;
-    my $pages = Socialtext::Model::Pages->By_seconds_limit(
+    my $pages = Socialtext::Pages->By_seconds_limit(
         hub => $self->hub,
         count => $count,
         seconds => $days * 1440 * 60,
@@ -398,7 +398,7 @@ sub _page_feed_title {
     my $page = shift;
 
     return $self->hub->current_workspace->title . ': '
-        . $page->metadata->Subject;
+        . $page->name;
 }
 
 sub _tag_html_link {

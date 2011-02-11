@@ -551,7 +551,7 @@ sub confirm_subject {
 
     is $page->uri, $uri, "page has right uri $uri";
     is $page->title, $name, "page has right title $name";
-    is $page->metadata->Subject, $name,
+    is $page->name, $name,
         "page has right Subject $name";
 }
 

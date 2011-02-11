@@ -1,43 +1,45 @@
 #!perl
 # @COPYRIGHT@
-
 use strict;
 use warnings;
-
-use Test::Socialtext tests => 27;
-fixtures( 'admin' );
+use Test::Socialtext tests => 32;
 use Socialtext::Events;
 use Socialtext::SQL;
-
-
 use utf8;
+
+fixtures( 'db' );
+my $Hub = create_test_hub();
 
 my $Eddie_email = "eddie$$\@devnull.socialtext.net";
 my $Eddie = Socialtext::User->create(
     username => "eddie$$",
     email_address => $Eddie_email,
 );
+push @Test::Socialtext::Added_users, $Eddie->user_id; # for cleanup
 my $Alice_email = "alice$$\@devnull.socialtext.net";
 my $Alice = Socialtext::User->create(
     username => "alice$$",
     email_address => $Alice_email,
 );
+push @Test::Socialtext::Added_users, $Alice->user_id; # for cleanup
 my $Bob_email = "bob$$\@devnull.socialtext.net";
 my $Bob = Socialtext::User->create(
     username => "bob$$",
     email_address => $Bob_email,
 );
-my $Hub = new_hub('admin');
-$Hub->current_user($Eddie);
-$Hub->current_workspace->add_user(user => $Eddie);
-$Hub->current_workspace->add_user(user => $Alice);
-$Hub->current_workspace->add_user(user => $Bob);
+push @Test::Socialtext::Added_users, $Bob->user_id; # for cleanup
 
+$Hub->current_user($Eddie);
+$Hub->current_workspace->add_user(user => $_) for ($Eddie, $Alice, $Bob);
+
+my $page_name = "Some Page";
 
 Two_user_edit_cancel: {
-    my $page = $Hub->pages->new_from_name("Admin wiki");
+    is $Hub->current_user->user_id, $Eddie->user_id;
+    my $page = $Hub->pages->new_from_name($page_name);
+    $page->edit_rev();
     $page->append("New paragraph");
-    $page->store(user => $Eddie);
+    $page->store();
 
     ok ! $page->edit_in_progress, "No edit started yet";
 
@@ -96,7 +98,9 @@ Two_user_edit_cancel: {
 # view rev#2 - should show bob's edit
 
 More_complex: {
-    my $page = $Hub->pages->new_from_name("Admin wiki");
+    is $Hub->current_user->user_id, $Eddie->user_id;
+    my $page = $Hub->pages->new_from_name($page_name);
+    ok $page->edit_rev(user => $Eddie);
     $page->append("New paragraph");
     $page->store(user => $Eddie);
 
@@ -116,6 +120,7 @@ More_complex: {
     ok defined $edit->{minutes_ago}, 'has a minutes_ago';
 
     # Now create a new page revision, blowing away alice's edit
+    $page->edit_rev(user => $Eddie);
     $page->append("New paragraph");
     $page->store(user => $Eddie);
 
@@ -164,10 +169,12 @@ More_complex: {
 }
 
 
-
 # another test case - same user start/cancel several times
 Same_user_start_cancel_several_times: {
-    my $page = $Hub->pages->new_from_name("Admin wiki");
+    $Hub->current_user($Eddie);
+    is $Hub->current_user->user_id, $Eddie->user_id;
+    my $page = $Hub->pages->new_from_name($page_name);
+    $page->edit_rev(user => $Eddie);
     $page->append("New paragraph");
     $page->store(user => $Eddie);
     ok ! $page->edit_in_progress, "No edit started yet";
@@ -214,3 +221,5 @@ Same_user_start_cancel_several_times: {
     $Hub->current_user($Eddie);
     ok ! $page->edit_in_progress, "No edit started yet";
 }
+
+pass 'done';

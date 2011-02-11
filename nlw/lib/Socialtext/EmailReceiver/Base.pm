@@ -1,15 +1,13 @@
 # @COPYRIGHT@
 package Socialtext::EmailReceiver::Base;
 
+use feature ':5.12';
 use strict;
 use warnings;
 
 our $VERSION = '0.01';
 
 use Readonly;
-use Socialtext::Validate
-    qw( validate SCALAR_TYPE HANDLE_TYPE WORKSPACE_TYPE );
-
 require bytes;
 use DateTime;
 use Email::Address;
@@ -17,10 +15,14 @@ use Email::MIME;
 use Email::MIME::ContentType ();
 use Email::MIME::Modifier;    # provides walk_parts()
 use Fcntl qw( SEEK_SET );
-use Filesys::DfPortable ();
-use HTML::TreeBuilder   ();
-
+use HTML::TreeBuilder ();
+use Text::Flowed ();
+use DateTime::Format::Mail;
+use Data::Dumper;
 use HTML::WikiConverter ();
+use IO::Scalar;
+use Filesys::DfPortable ();
+
 use Socialtext::Authz;
 use Socialtext::CategoryPlugin;
 use Socialtext::Exceptions qw( auth_error system_error data_validation_error );
@@ -29,11 +31,10 @@ use Socialtext::Permission qw( ST_EMAIL_IN_PERM );
 use Socialtext::User ();
 use Socialtext::Page ();
 use Socialtext::String ();
-use Text::Flowed     ();
 use Socialtext::File;
 use Socialtext::l10n qw(loc system_locale);
-use DateTime::Format::Mail;
-use Data::Dumper;
+use Socialtext::Validate
+    qw( validate SCALAR_TYPE HANDLE_TYPE WORKSPACE_TYPE );
 
 sub _new {
     my $class     = shift;
@@ -66,22 +67,13 @@ sub receive {
     my $email_address = $self->{from}->address();
 
     $self->_require_email_in_permission( $email_address );
-
     $self->_get_user_for_address( $email_address );
-
     $self->_load_hub();
-
     $self->_get_page_for_subject();
-
     $self->_lock_check();
-
     $self->_save_body_and_strip_attachments();
-
     $self->_get_email_body();
-
     $self->_save_html_bodies_as_attachments();
-
-    $self->{hub}->attachments->cache->clear();
 
     # Must be done after we get the email body, because there may be
     # "category: ..." commands in the body.
@@ -157,7 +149,6 @@ sub _lock_check {
     auth_error 'You do not have permission to overwrite the ' .
     $page->title . ' page in the ' . $self->{workspace}->name . ' workspace.' 
         unless $self->{hub}->checker->can_modify_locked( $page );
-
 }
 
 sub _get_user_for_address {
@@ -190,7 +181,7 @@ sub _get_page_for_subject {
     my $self = shift;
 
     my $subject = $self->_clean_subject();
-    if (length Socialtext::Page->uri_escape($subject) 
+    if (length Socialtext::String::uri_escape($subject) 
         > Socialtext::String::MAX_PAGE_ID_LEN ) {
         data_validation_error loc("Page title is too long after URL encoding");
         return;
@@ -201,14 +192,7 @@ sub _get_page_for_subject {
         data_validation_error loc("Page title is too long after URL encoding");
         return;
     }
-    $page->load();
-
-    my $metadata = $page->metadata();
-    $metadata->Subject($subject)
-        unless grep { defined and length } $metadata->Subject();
-    $metadata->MessageID( $self->{email}->header('Message-Id') );
-    $metadata->Received( join '\\', $self->{email}->header('Received') );
-
+    $page->edit_rev();
     $self->{page} = $page;
 }
 
@@ -287,30 +271,20 @@ sub _save_attachment_from_part {
     # REVIEW - do we need to make sure this is just a filename
     # (without a path)?
     my $filename = $part->filename('force_filename');
+    my $page = $self->{page};
+    my $body_io = new IO::Scalar \$part->body();
 
-    my $attachment = $self->{page}->hub()->attachments()->new_attachment(
-        filename => $filename,
-        page_id  => $self->{page}->id(),
+    return unless $self->_has_free_temp_space_for_attachment(
+        bytes::length(${$body_io->sref}),
+        $filename,
     );
 
-    my $tmpfh = File::Temp->new();
-    my $dir   = File::Basename::dirname( $tmpfh->filename() );
-
-    return
-        unless $self->_has_free_temp_space_for_attachment(
-        $dir,
-        bytes::length( $part->body() ),
-        $filename,
-        );
-
-    print $tmpfh $part->body();
-    close $tmpfh;
-
-    open '<', $tmpfh->filename()
-        or system_error "Cannot read " . $tmpfh->filename() . ": $!";
-
-    $attachment->save( $tmpfh->filename() );
-    $attachment->store( user => $self->{user} );
+    my $attachment = $page->hub->attachments->create(
+        fh => $body_io,
+        filename => $filename,
+        page_id  => $page->id(),
+        user => $self->{user},
+    );
 
     push @{ $self->{attachments} }, $attachment;
 
@@ -354,11 +328,13 @@ sub _part_is_inline {
 
     sub _has_free_temp_space_for_attachment {
         my $self     = shift;
-        my $dir      = shift;
         my $size     = shift;
         my $filename = shift;
 
-        my $free            = Filesys::DfPortable::dfportable($dir)->{bavail};
+        my $dir = $Socialtext::Upload::STORAGE_DIR;
+        my $df = Filesys::DfPortable::dfportable($dir);
+        return 1 unless $df;
+        my $free = $df->{bavail};
         my $free_after_save = $free - $size;
 
         if ( $free_after_save < $OneMB * 50 ) {
@@ -409,13 +385,8 @@ sub _get_text_body {
 
     return unless @lines;
 
-    # REVIEW - this is from NLW::EmailReceive but smells of "ancient
-    # feature no one uses nowadays".
-    my $now = DateTime->now( time_zone => 'UTC' )
-        ->strftime('%Y-%m-%d %H:%M:%S GMT');
-    s/{now}/$now/g for @lines;
-
-    $self->{body}      = join "\n", @lines;
+    my $body = join "\n",@lines;
+    $self->{body}      = \$body;
     $self->{body_type} = 'plain';
 
     return 1;
@@ -553,7 +524,7 @@ sub _get_html_body {
 
     $body =~ s/{image:\s+cid:(\S+?)}/$self->_wafl_for_cid($1)/eg;
 
-    $self->{body}      = $body;
+    $self->{body}      = \$body;
     $self->{body_type} = 'html';
 
     return 1;
@@ -622,11 +593,7 @@ sub _set_page_categories {
     $cat = Socialtext::CategoryPlugin->Decode_category_email($cat)
         if defined $cat;
 
-    my %categories = map { $_ => 1 }
-        grep {defined} @{ $self->{page}->metadata()->Category() },
-        @{ $self->{categories} }, $cat;
-
-    $self->{page}->metadata()->Category( [ keys %categories ] );
+    $self->{page}->rev->add_tags([grep {defined} @{$self->{categories}}, $cat]);
 }
 
 sub _get_to_address_local_part {
@@ -658,63 +625,27 @@ sub _get_to_address_local_part {
     return $ws_name;
 }
 
-Readonly my $BodyPlacementMethod => {
-    replace => '_replace_body',
-    top     => '_append_to_top',
-    bottom  => '_append_to_bottom',
-};
-
 sub _update_page_body {
     my $self = shift;
 
-    # For new pages there's no body to replace
-    $self->{body_placement} = 'replace' if not $self->{page}->exists;
+    my $page = $self->{page};
+    my $body_ref = $self->_page_body_from_email();
+    given ($self->{body_placement}) {
+        $page->prepend($body_ref)  when 'top';
+        $page->append($body_ref)   when 'bottom';
+        $page->body_ref($body_ref);
+    }
 
-    my $meth = $BodyPlacementMethod->{ $self->{body_placement} };
-    $self->$meth();
-
-    $self->{page}->metadata()->update( user => $self->{user} );
-    $self->{page}->store( user => $self->{user} );
-}
-
-sub _replace_body {
-    my $self = shift;
-
-    $self->{page}->content( ${ $self->_page_body_from_email() } );
-}
-
-sub _append_to_top {
-    my $self = shift;
-
-    my $old_body = $self->{page}->content;
-    my $new_body = $self->_page_body_from_email();
-
-    ${$new_body} .= "\n---\n" . $old_body
-        if defined $old_body;
-
-    $self->{page}->content( ${$new_body} );
-}
-
-sub _append_to_bottom {
-    my $self = shift;
-
-    my $old_body = $self->{page}->content;
-    my $new_body = $self->_page_body_from_email();
-
-    ${$new_body} = $old_body . "\n---\n" . ${$new_body}
-        if defined $old_body;
-
-    $self->{page}->content( ${$new_body} );
+    $page->store();
 }
 
 sub _page_body_from_email {
     my $self = shift;
 
     my $header = $self->_make_page_header();
-    Encode::_utf8_on($header)         unless Encode::is_utf8($header);
-    Encode::_utf8_on( $self->{body} ) unless Encode::is_utf8( $self->{body} );
-    my $body = join '', @$header, $self->{body};
-
+    Encode::_utf8_on($header) unless Encode::is_utf8($header);
+    Socialtext::Encode::ensure_ref_is_utf8($self->{body});
+    my $body = join '', @$header, ${$self->{body}};
     return \$body;
 }
 
@@ -745,7 +676,7 @@ sub _make_page_header {
         my $wafl = $att->image_or_file_wafl();
         ( my $re = $wafl ) =~ s/\n//g;
 
-        next if $self->{body} =~ /\Q$re/s;
+        next if ${$self->{body}} =~ /\Q$re/s;
         next if $self->{no_wafl}{ $att->filename() };
 
         push @header, $wafl . "\n\n";

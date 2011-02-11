@@ -544,6 +544,8 @@ sub _serve_file {
         '-type'               => $mime_type,
         '-pragma'             => undef,
         '-cache-control'      => undef,
+        # XXX: this header should be mime-encoded (a la
+        # http://www.ietf.org/rfc/rfc2184.txt) if it contains non-ascii
         'Content-Disposition' => 'filename="'.$attachment->filename.'"',
         '-X-Accel-Redirect'   => $file_path,
     );

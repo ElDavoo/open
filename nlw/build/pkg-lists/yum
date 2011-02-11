@@ -69,7 +69,6 @@ perl-Number-Format
 perl-Params-Validate
 perl-Readonly
 perl-Readonly-XS
-perl-SOAP-Lite
 perl-Spiffy
 perl-Sub-Uplevel
 perl-Template-Toolkit

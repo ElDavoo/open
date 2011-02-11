@@ -114,17 +114,13 @@ my %ToDoModules = map { $_ => 1 } qw(
     Socialtext::MassAdd
     Socialtext::Migration
     Socialtext::Migration::Utils
-    Socialtext::Model::Page
-    Socialtext::Model::Pages
     Socialtext::MultiPlugin
     Socialtext::NewFormPagePlugin
     Socialtext::OpenIdPlugin
     Socialtext::Page
-    Socialtext::Page::Base
     Socialtext::Page::TablePopulator
     Socialtext::PageActivityPlugin
     Socialtext::PageAnchorsPlugin
-    Socialtext::PageMeta
     Socialtext::Pages
     Socialtext::Pageset
     Socialtext::PdfExport::LinkDictionary
@@ -204,8 +200,6 @@ my %ToDoModules = map { $_ => 1 } qw(
     Socialtext::RevisionPlugin
     Socialtext::RtfExportPlugin
     Socialtext::SOAPGoogle
-    Socialtext::SOAPPlugin
-    Socialtext::SOAPServer
     Socialtext::Search::Basic::Factory
     Socialtext::Search::Basic::Indexer
     Socialtext::Search::Basic::Searcher

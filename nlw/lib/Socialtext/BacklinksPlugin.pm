@@ -4,7 +4,6 @@ use strict;
 use warnings;
 use Class::Field qw( const );
 use Socialtext::Pages;
-use Socialtext::Model::Pages;
 use Socialtext::l10n qw(loc);
 use Socialtext::String();
 use Socialtext::Pageset;
@@ -63,7 +62,7 @@ sub show_all_backlinks {
     my $page_id = $self->cgi->page_id;
     my $page = $self->hub->pages->new_from_name($page_id);
     $self->screen_wrap(
-        loc('All backlinks for "[_1]"', $page->metadata->Subject),
+        loc('All backlinks for "[_1]"', $page->name),
         $self->present_tense_description_for_page($page)
     );
 }
@@ -101,7 +100,7 @@ sub _make_result_set {
         $rs->{predicate} = 'action=orphans_list';
 
         {
-            local $Socialtext::Model::Page::No_result_times = 1;
+            local $Socialtext::Page::No_result_times = 1;
             $self->push_result($_) for @$pages;
         }
 
@@ -198,7 +197,7 @@ sub get_orphaned_pages {
     my $self = shift;
     return [] unless $self->hub->current_workspace->real;
 
-    my $pages = Socialtext::Model::Pages->All_active(
+    my $pages = Socialtext::Pages->All_active(
         hub => $self->hub,
         workspace_id => $self->hub->current_workspace->workspace_id,
         do_not_need_tags => 1,
