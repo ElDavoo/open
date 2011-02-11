@@ -11,3 +11,39 @@ subtype 'Str.UUID'
 
 no Moose::Util::TypeConstraints;
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::MooseX::Types::UUIDStr - type constraint for UUIDs
+
+=head1 SYNOPSIS
+
+  package MyPackage;
+  use Moose;
+  use Socialtext::MooseX::Types::UUIDStr;
+
+  has 'when' => (
+    is => 'rw', isa => 'UUIDStr'
+  );
+
+=head1 DESCRIPTION
+
+Type-checks for well-formed hex-with-dashes UUID strings.
+
+=head1 TYPES / COERCIONS
+
+=head2 UUIDStr
+
+Coercions provided: none
+
+=head1 AUTHOR
+
+Socialtext, Inc.,  C<< <code@socialtext.com> >>
+
+=head1 COPYRIGHT & LICENSE
+
+Copyright 2011 Socialtext, Inc.,  All Rights Reserved.
+
+=cut
