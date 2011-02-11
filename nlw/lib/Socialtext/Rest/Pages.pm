@@ -39,6 +39,7 @@ sub _get_entities {
         (my $page_filter = $filter) =~ s/^\\b//;
         $self->{_last_modified} = time;
         return Socialtext::Pages->Minimal_by_name(
+            hub          => $self->hub,
             workspace_id => $self->hub->current_workspace->workspace_id,
             page_filter  => $page_filter,
             limit        => $self->items_per_page,
@@ -157,6 +158,7 @@ sub _entities_for_query {
             $order_by = 'name'
         }
         @entities = @{ Socialtext::Pages->All_active(
+            hub          => $self->hub,
             workspace_id => $self->hub->current_workspace->workspace_id,
             order_by     => $order_by,
             count        => $count,
