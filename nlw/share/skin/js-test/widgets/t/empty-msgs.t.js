@@ -1,6 +1,7 @@
 (function($) {
 
 var t = new Test.Visual();
+t.skipAll("Test is no longer functional - Workspaces now always have AUWs and profile widgets are inlined; skipAll for now");
 
 var steps = [
     function() { t.login({}, t.nextStep()) }, 

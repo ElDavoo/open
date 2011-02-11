@@ -89,10 +89,9 @@
 | select_frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups Home. Check Activity Widget |  |
-| wait_for_text_present_ok | within %%groupname%% | 30000 |
 | wait_for_text_present_ok | minute | 30000 |
 | wait_for_text_present_ok | signal-%%start_time%% | 30000 |
-| pause | 15000 |  |
+| text_like | //body | qr/within\s*%%groupname%%/ |
 
 | text_like | //body | qr/edited New Page\s+%%start_time%%\s+in\s+%%wsname%%/ism |
 | text_like | //body | qr/tagged New Page\s+%%start_time%%\s+in\s+%%wsname%%\s+as\s+tag-%%start_time%%/ism |

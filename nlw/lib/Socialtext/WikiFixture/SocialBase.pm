@@ -404,6 +404,25 @@ sub st_open_noeval {
     $self->handle_command('pause',20000);
 }
 
+
+=head2 st_ff_and_ie_wait_for_text_not_present ($text, $howlong)
+
+Say some text is in javascript and is present but not visible.  FF3 and IE can see the text is not present, googlechrome is ... confused.
+
+Check for text not present ONLY in IE and FF3
+
+=cut 
+
+sub st_ff_and_ie_wait_for_text_not_present {
+    my ($self, $text, $howlong) = @_;
+    my $browser = $ENV{'selenium_browser'} || 'chrome';
+    if ($browser=~/safari|chrome|firefox|iexplore/ig && !($browser=~/googlechrome/ig) )  {
+       $self->handle_command('wait_for_text_not_present_ok',$text,$howlong);
+    } else {
+       ok 1, 'in googlechrome we do not check for text here'; 
+    }
+}
+
 sub _relative_filename_to_absolute {
     my $self = shift;
     my $filename = shift;

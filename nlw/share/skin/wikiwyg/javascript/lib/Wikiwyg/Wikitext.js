@@ -595,7 +595,9 @@ proto.make_web_link = function(url, url_text) {
 
 proto.get_selection_text = function() {
     if (Wikiwyg.is_ie) {
-        return this.sel;
+        var element = this.area;
+        var sRange = element.document.selection.createRange();
+        return sRange.text;
     }
 
     var t = this.area;

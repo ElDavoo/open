@@ -44,11 +44,8 @@
 | wait_for_element_visible_ok | reset | 30000 |
 | type_ok | name | %%groupname%% |
 | type_ok | description | Russian letters really suck and mess with everything |
-
-| *Comment* | Test Case: User Creates Group. upload image, wait until visible |  |
-| *Comment* | IE 6 FAILS WITH ACCESS DENIED ERROR |  |
 | type_ok | upload | %%wikitest_client_files%%wikitest.jpg |
-| wait_for_element_visible_ok | //img[contains(@src,'/data/uploads/')] | 30000 |
+| include | [Test Case: User Creates Group Image Uploaded] |  |
 | select-frame | relative=parent |  |
 
 | wait_for_element_visible_ok | create-group | 30000 |

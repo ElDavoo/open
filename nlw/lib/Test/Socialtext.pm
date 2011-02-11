@@ -26,6 +26,8 @@ use YAML;
 use File::Temp qw/tempdir/;
 use File::Spec;
 use Socialtext::System qw/shell_run/;
+use IO::File;
+use IO::Select;
 
 BEGIN {
     require Socialtext::Pluggable::Adapter;
@@ -68,6 +70,7 @@ our @EXPORT = qw(
     timer_report
     set_as_default_account
     looks_like_pdf_ok
+    wait_for_log_lines
 );
 
 our @EXPORT_OK = qw(
@@ -236,6 +239,33 @@ sub formatted_unlike() {
         }
         return $module_loaded_cache{$module};
     }
+}
+
+sub wait_for_log_lines() {
+    my ($filename, $timeout, $expect) = @_;
+
+    my $io = IO::File->new;
+    $io->open($filename,"r") or die $!;
+
+    # Use IO::Select to block on reads
+    my $s = IO::Select->new;
+    $s->add($io);
+
+    my $start = time;
+    while (1) {
+        $s->can_read($timeout);
+        while (defined(my $data = $io->getline())) {
+            chop $data;
+            for my $re(@$expect) {
+                if ($data =~ $re) {
+                    $expect = [ grep { $_ ne $re } @$expect ];
+                    pass "Log line like $re";
+                }
+            }
+        } 
+        last if !@$expect or (time - $start) >= $timeout;
+    }
+    fail "Log line like $_" for @$expect;
 }
 
 sub ceqlotron_run_synchronously() {
