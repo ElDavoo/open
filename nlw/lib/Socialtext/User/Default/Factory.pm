@@ -154,13 +154,13 @@ sub Search {
 
     my $sth = sql_execute(q{
             SELECT first_name, last_name, email_address
-              FROM users 
-             WHERE ( 
+              FROM users
+             WHERE (
                      LOWER( driver_username ) LIKE ? OR
                      LOWER( email_address ) LIKE ? OR
                      LOWER( first_name ) LIKE ? OR
-                     LOWER( last_name ) LIKE ? 
-                   ) 
+                     LOWER( last_name ) LIKE ?
+                   )
                    AND ( driver_key = ? )
                    AND ( driver_username NOT IN (?, ?) )
         },
