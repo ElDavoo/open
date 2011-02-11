@@ -29,10 +29,6 @@ msgstr ""
 msgid "\"%1\" is a reserved page name. Please use a different name"
 msgstr ""
 
-#: share/skin/wikiwyg/javascript/Widgets.js:2 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2680 share/skin/wikiwyg/javascript/socialtext-editor.js:6346
-msgid "\",\""
-msgstr ""
-
 #. (msg)
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:757 share/skin/wikiwyg/javascript/socialtext-editor-light.js:954 share/skin/wikiwyg/javascript/socialtext-editor.js:4620
 msgid ""
@@ -41,10 +37,6 @@ msgid ""
 "You have unsaved changes.\n"
 "\n"
 "Press OK to continue, or Cancel to stay on the current page."
-msgstr ""
-
-#: share/skin/wikiwyg/javascript/Widgets.js:2 share/skin/wikiwyg/javascript/Widgets.yaml:642 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2680 share/skin/wikiwyg/javascript/socialtext-editor.js:6346
-msgid "%asis_content"
 msgstr ""
 
 #. (label)
@@ -57,40 +49,12 @@ msgstr ""
 msgid "'%1' is a required field"
 msgstr ""
 
-#: share/skin/wikiwyg/javascript/lib/Document/Parser/Wikitext.js:66 share/skin/wikiwyg/javascript/socialtext-editor.js:13631
-msgid "'+text.replace(/\\|/g, String.fromCharCode(0xFFFC))+'"
-msgstr ""
-
-#: share/skin/wikiwyg/javascript/lib/Document/Parser/Wikitext.js:74 share/skin/wikiwyg/javascript/socialtext-editor.js:13639
-msgid "'+text.replace(FFFC, '|')+'"
-msgstr ""
-
-#: share/skin/wikiwyg/javascript/Widgets.yaml:643
-msgid "', '"
-msgstr ""
-
-#: share/skin/wikiwyg/javascript/lib/Document/Parser/Wikitext.js:65 share/skin/wikiwyg/javascript/lib/Document/Parser/Wikitext.js:73 share/skin/wikiwyg/javascript/socialtext-editor.js:13630 share/skin/wikiwyg/javascript/socialtext-editor.js:13638
-msgid "(.*?)"
-msgstr ""
-
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1970 share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1988 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2167 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2185 share/skin/wikiwyg/javascript/socialtext-editor.js:5833 share/skin/wikiwyg/javascript/socialtext-editor.js:5851
 msgid "(Note: HTML fragments are not guaranteed to work and may break the UI.)"
 msgstr ""
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1999 share/skin/wikiwyg/javascript/socialtext-editor-light.js:2196 share/skin/wikiwyg/javascript/socialtext-editor.js:5862
 msgid "(Preformatted Text is plain text displayed exactly as entered.)"
-msgstr ""
-
-#: share/skin/wikiwyg/javascript/jemplate_wikiwyg.js:408 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:351 share/skin/wikiwyg/javascript/socialtext-editor.js:605
-msgid "*this text is not bold*"
-msgstr ""
-
-#: share/skin/wikiwyg/javascript/lib/Document/Parser/Wikitext.js:63 share/skin/wikiwyg/javascript/socialtext-editor.js:13628
-msgid "..."
-msgstr ""
-
-#: share/skin/wikiwyg/javascript/lib/Document/Parser/Wikitext.js:64 share/skin/wikiwyg/javascript/socialtext-editor.js:13629
-msgid "...|..."
 msgstr ""
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:211
