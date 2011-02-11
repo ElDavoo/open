@@ -17,7 +17,7 @@ msgstr ""
 
 #: share/skin/s3/template/view/page/revision_compare:66
 msgid "\""
-msgstr ""
+msgstr "revision.end-quote"
 
 #. (edit_summary)
 #: share/skin/s3/template/view/page/revision:62
@@ -33,7 +33,7 @@ msgstr "blog.show=tag"
 #. (local_time(file.date), user(file.uploader))
 #: share/skin/s3/template/element/page/display/attachments:43
 msgid "%1 by %2"
-msgstr "attachment.by=date,uploader"
+msgstr "page.file-by=date,uploader"
 
 #. (days)
 #: share/skin/s3/template/lite/page_list.html:16 share/skin/s3/template/view/page/display:18
@@ -86,38 +86,38 @@ msgstr "page.add-tag"
 
 #: share/skin/s3/template/element/main_nav/subnav/people:6
 msgid "...lists the people you are following. You must register or be logged in to use this feature."
-msgstr "nav.following-hint"
+msgstr "hint.following"
 
 #: share/skin/s3/template/element/main_nav/subnav/workspaces:4
 msgid "...lists the workspaces you belong to. You must be logged in to see your list."
-msgstr "nav.workspaces-hint"
+msgstr "hint.workspaces"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:147 share/skin/s3/template/element/settings/users_invite_search_section:153 share/skin/s3/template/element/settings/users_invite_section:102 share/skin/s3/template/element/settings/users_invite_section:108
 msgid "<Your personal message goes here.>"
-msgstr "settings.personal-message"
+msgstr "config.personal-message"
 
 #. (workspace.name, workspace.title)
 #: share/skin/s3/template/workspaces_created_section.html:18
 msgid "<a href=\"/%1/\">Go to</a> the %2 home page."
-msgstr "workspace.home=name,title"
+msgstr "wiki.home=name,title"
 
 #. (workspace.name, workspace.title)
 #: share/skin/s3/template/workspaces_created_section.html:19
 msgid "<a href=\"/%1/?action=users_invitation\">Invite</a> other people to %2."
-msgstr "workspace.invite=name,title"
+msgstr "wiki.invite=name,title"
 
 #: share/skin/s3/template/element/settings/workspaces_cannot_create_section:19
 msgid "<em>To add a workspace to a <strong>new group,</strong></em> go to <a href=\"#\" onclick=\"showCreateGroupLightbox(); return false\">\"Create Group\"</a> under the Groups pulldown in the main navigation above. From there, use the \"Workspaces\" section to create your workspace."
-msgstr "workspace.add-to-new-group"
+msgstr "wiki.add-to-new-group"
 
 #: share/skin/s3/template/element/settings/workspaces_cannot_create_section:15
 msgid "<em>To add a workspace to an <strong>existing group,</strong></em> go to the <a href=\"/st/groups\">\"Group Directory\"</a> under the Groups pulldown in the main navigation above, go to your chosen group, click \"Edit\" and create the workspace."
-msgstr "workspace.add-to-existing-group"
+msgstr "wiki.add-to-existing-group"
 
 #. (invitation_filter)
 #: share/skin/s3/template/element/settings/users_invite_search_section:14 share/skin/s3/template/element/settings/users_invite_section:62
 msgid "A filter has been set on this workspace. All candidate email addresses must match this pattern: <span style=\"color: red\"> %1 </span>"
-msgstr "settings.set=filter"
+msgstr "config.set=filter"
 
 #: share/skin/s3/template/lite/globalnav.html:44 share/skin/s3/template/lite/globalnav.html:46
 msgid "Activity"
@@ -125,7 +125,7 @@ msgstr "nav.activity"
 
 #: share/skin/s3/template/layout/html:145 share/skin/s3/template/layout/user_frame:150
 msgid "Add Members"
-msgstr "workspace.add-members"
+msgstr "wiki.add-members"
 
 #: share/skin/s3/template/view/page/display:176
 msgid "Add Tag"
@@ -137,7 +137,7 @@ msgstr "page.add-comment"
 
 #: share/skin/s3/template/element/settings/users_listall_section:27
 msgid "Admin"
-msgstr "settings.admin"
+msgstr "config.admin"
 
 #: share/skin/s3/template/lite/event_list_nav.html:30 share/skin/s3/template/lite/event_list_nav.html:32
 msgid "All"
@@ -188,250 +188,250 @@ msgstr "page.locked=type"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:133 share/skin/s3/template/element/settings/users_invite_section:88
 msgid "And don't worry about breaking anything - previous versions of the page are saved, so there's always a backup copy of the page you're working on."
-msgstr ""
+msgstr "email.no-worries"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:31
 msgid "Anyone can send email to this workspace."
-msgstr ""
+msgstr "config.anyone-can-email"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:126 share/skin/s3/template/element/settings/users_invite_section:81
 msgid "Append the personal message below?"
-msgstr ""
+msgstr "config.append-message"
 
 #: share/skin/s3/template/element/page/display/attachments:9
 msgid "Attachments"
-msgstr ""
+msgstr "page.attachments"
 
 #: share/skin/s3/template/lite/page/display.html:49
 msgid "Attachments for this page:"
-msgstr ""
+msgstr "page.attachments-this"
 
 #: share/skin/s3/template/view/page/revision:11 share/skin/s3/template/view/page/revision_compare:11 share/skin/s3/template/view/page_revision_list:26
 msgid "Back To Current Revision"
-msgstr ""
+msgstr "revision.go-current"
 
 #: share/skin/s3/template/view/weblog:7
 msgid "Blog"
-msgstr ""
+msgstr "blog.blog"
 
 #: share/skin/s3/template/view/weblog:108
 msgid "Blog Archives"
-msgstr ""
+msgstr "blog.archives"
 
 #: share/skin/s3/template/view/weblog:91
 msgid "Blog Navigation"
-msgstr ""
+msgstr "blog.navigation"
 
 #: share/skin/s3/template/layout/html:143 share/skin/s3/template/layout/user_frame:148 share/skin/s3/template/view/settings:66
 msgid "Blogs"
-msgstr ""
+msgstr "blog.blogs"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:22
 msgid "Bottom of page"
-msgstr ""
+msgstr "config.bottom-of-page"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_skin_section:32
 msgid "Browse ..."
-msgstr ""
+msgstr "config.browse"
 
 #: share/skin/s3/template/view/page/revision_compare:63
 msgid "By:"
-msgstr ""
+msgstr "revision.by"
 
 #: share/skin/s3/template/element/settings/start:22 share/skin/s3/template/element/settings/stop:12 share/skin/s3/template/lite/subnav.html:46
 msgid "Cancel"
-msgstr ""
+msgstr "config.cancel"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:54
 msgid "Central page"
-msgstr ""
+msgstr "config.central-page"
 
 #: share/skin/s3/template/element/settings/users_settings_section:32
 msgid "Change Password"
-msgstr ""
+msgstr "config.change-password"
 
 #. (user.driver_name)
 #: share/skin/s3/template/element/settings/users_settings_section:61
 msgid "Check with your %1 administrator."
-msgstr ""
+msgstr "config.contact=admin"
 
 #. (page.uri)
 #: share/skin/s3/template/lite/page/contention.html:6
 msgid "Click <a href=\"%1\">here</a> to go to the latest version of the page."
-msgstr ""
+msgstr "page.go-latest=uri"
 
 #. (page.uri)
 #: share/skin/s3/template/lite/page/page_locked.html:6
 msgid "Click <a href=\"%1\">here</a> to return to the page."
-msgstr ""
+msgstr "page.go-back=uri"
 
 #. (type)
 #: share/skin/s3/template/view/edit_contention:16
 msgid "Click here to go to the latest version of the %1."
-msgstr ""
+msgstr "page.go-latest=type"
 
 #. (type)
 #: share/skin/s3/template/view/page_locked:19
 msgid "Click here to return to the %1."
-msgstr ""
+msgstr "page.go-back=type"
 
 #: share/skin/s3/template/element/page/display/comment-button:5
 msgid "Click this button to add a comment to the page"
-msgstr ""
+msgstr "hint.comment"
 
 #: share/skin/s3/template/view/weblog:33
 msgid "Click this button to create a new blog post"
-msgstr ""
+msgstr "hint.post"
 
 #: share/skin/s3/template/element/page/display/edit-button:12 share/skin/s3/template/element/page/display/edit-button:6
 msgid "Click this button to edit the page"
-msgstr ""
+msgstr "hint.edit"
 
 #: share/skin/s3/template/view/page/display:279 share/skin/s3/template/view/page/display:280
 msgid "Click this button to save this page to your computer for offline use."
-msgstr ""
+msgstr "hint.unplug"
 
 #: share/skin/s3/template/view/settings:44
 msgid "Clone This Workspace"
-msgstr ""
+msgstr "wiki.clone-this"
 
 #: share/skin/s3/template/element/settings/workspace_clone_section:6
 msgid "Clone Workspace"
-msgstr ""
+msgstr "wiki.clone"
 
 #. (workspace.title)
 #: share/skin/s3/template/element/settings/workspace_clone_section:16
 msgid "Clone of %1"
-msgstr ""
+msgstr "wiki.clone=workspace"
 
 #: share/skin/s3/template/view/page/revision_compare:32
 msgid "Color View (Unformatted)"
-msgstr ""
+msgstr "revision.color"
 
 #: share/skin/s3/template/element/page/display/comment-button:6 share/skin/s3/template/view/weblog:73
 msgid "Comment"
-msgstr ""
+msgstr "page.comment"
 
 #: share/skin/s3/template/layout/html:176 share/skin/s3/template/layout/user_frame:181
 msgid "Community"
-msgstr ""
+msgstr "nav.community"
 
 #: share/skin/s3/template/view/page_revision_list:97
 msgid "Compare Revisions"
-msgstr ""
+msgstr "revision.compare"
 
 #: share/skin/s3/template/workspaces_created_section.html:7
 msgid "Congratulations!"
-msgstr ""
+msgstr "config.congrats"
 
 #: share/skin/s3/template/layout/html:85 share/skin/s3/template/layout/user_frame:90
 msgid "Control Panel"
-msgstr ""
+msgstr "nav.control-panel"
 
 #: share/skin/s3/template/view/page/display:88
 msgid "Copy Page to Workspace"
-msgstr ""
+msgstr "page.copy"
 
 #: share/skin/s3/template/element/settings/weblog_create:5
 msgid "Create A Blog"
-msgstr ""
+msgstr "config.create-blog"
 
 #: share/skin/s3/template/view/settings:68
 msgid "Create New Blog"
-msgstr ""
+msgstr "config.new-blog"
 
 #: share/skin/s3/template/element/settings/workspaces_cannot_create_section:4 share/skin/s3/template/view/settings:43 share/skin/s3/template/view/settings:46
 msgid "Create New Workspace"
-msgstr ""
+msgstr "config.new-workspace"
 
 #: share/skin/s3/template/view/listview:24
 msgid "Create PDF document from checked pages"
-msgstr ""
+msgstr "nav.create-pdf"
 
 #: share/skin/s3/template/view/listview:26
 msgid "Create Word document from checked pages"
-msgstr ""
+msgstr "nav.create-word"
 
 #: share/skin/s3/template/view/listview:106
 msgid "Created By"
-msgstr ""
+msgstr "nav.created-By"
 
 #: share/skin/s3/template/view/weblog:64 share/skin/s3/template/view/weblog:67
 msgid "Created by"
-msgstr ""
+msgstr "nav.created-by"
 
 #. (create_author, create_date)
 #: share/skin/s3/template/view/page/display:290
 msgid "Created by %1 on %2."
-msgstr ""
+msgstr "page.created=author,date"
 
 #: share/skin/s3/template/element/settings/users_settings_section:38
 msgid "Current password:"
-msgstr ""
+msgstr "config.current-password"
 
 #: share/skin/s3/template/element/main_nav/subnav/workspaces:27
 msgid "Currently, you are not a member of any workspaces."
-msgstr ""
+msgstr "nav.no-workspaces"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:21
 msgid "Custom"
-msgstr ""
+msgstr "config.custom"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_skin_section:12
 msgid "Custom Skin Support"
-msgstr ""
+msgstr "config.skin-support"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_skin_section:47
 msgid "Customized Skin Files"
-msgstr ""
+msgstr "config.skin-files"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_skin_section:21
 msgid "Customized Skin."
-msgstr ""
+msgstr "config.skin-customized"
 
 #: share/skin/s3/template/element/main_nav/standard:4
 msgid "Dashboard"
-msgstr ""
+msgstr "nav.dashboard"
 
 #: share/skin/s3/template/view/page_revision_list:45
 msgid "Date"
-msgstr ""
+msgstr "revision.date"
 
 #: share/skin/s3/template/view/listview:109
 msgid "Date Created"
-msgstr ""
+msgstr "nav.created-date"
 
 #: share/skin/s3/template/view/listview:108
 msgid "Date Last Edited"
-msgstr ""
+msgstr "nav.edited-date"
 
 #: share/skin/s3/template/view/attachmentslist:32
 msgid "Date Uploaded"
-msgstr ""
+msgstr "nav.uploaded-date"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_skin_section:20
 msgid "Default Skin."
-msgstr ""
+msgstr "config.skin-default"
 
 #: share/skin/s3/template/view/page/display:91
 msgid "Delete Page"
-msgstr ""
+msgstr "page.delete"
 
 #: share/skin/s3/template/view/attachmentslist:76
 msgid "Delete Selected Attachments"
-msgstr ""
+msgstr "page.delete-selected-attachments"
 
 #: share/skin/s3/template/element/page/display/attachments:34 share/skin/s3/template/element/page/display/attachments:37 share/skin/s3/template/element/page/display/attachments:38
 msgid "Delete this attachment"
-msgstr ""
+msgstr "page.delete-attachment"
 
 #: share/skin/s3/template/view/page/display:162 share/skin/s3/template/view/page/display:164
 msgid "Delete this tag"
-msgstr ""
+msgstr "page.delete-tag"
 
 #: share/skin/s3/template/layout/html:8 share/skin/s3/template/layout/user_frame:13
 msgid "Desktop"
-msgstr ""
+msgstr "nav.desktop"
 
 #: share/skin/s3/template/view/page/delete_epilogue:17
 msgid "Did you delete this page in error? If so, you can restore the page."
@@ -1718,7 +1718,7 @@ msgstr ""
 
 #: share/skin/s3/template/view/page/revision_compare:66
 msgid "saying \""
-msgstr ""
+msgstr "revision.begin-quote"
 
 #: share/skin/s3/template/view/page/display:131
 msgid "show"
@@ -1738,20 +1738,20 @@ msgstr ""
 
 #: share/skin/s3/template/element/settings/start:28
 msgid "warning:"
-msgstr "settings.warning"
+msgstr "config.warning"
 
 #: share/skin/s3/template/layout/html:63 share/skin/s3/template/layout/simple_html:49 share/skin/s3/template/layout/user_frame:68
 msgid "wiki, business wiki, document management, enterprise wiki, intranet wiki, knowledge management, online collaboration, open source wiki, portal wiki, hosted wiki, collaboration, social software, social networking, dashboard, project collaboration, team collaboration, wiki appliance, wiki software, community"
-msgstr ""
+msgstr "nav.keywords"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:35
 msgid "workspace members"
-msgstr ""
+msgstr "config.workspace-members"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:20
 msgid "your"
-msgstr ""
+msgstr "config.your"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:22 share/skin/s3/template/element/settings/users_invite_section:68
 msgid "your.friend@example.com"
-msgstr ""
+msgstr "config.example-address"
