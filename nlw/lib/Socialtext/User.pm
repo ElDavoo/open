@@ -720,10 +720,6 @@ sub FormattedEmail {
 
     my $name = Socialtext::User::Base->GetFullName($first_name, $last_name);
 
-    # Dave suggested this improvement, but many of our templates anticipate
-    # the previous format, so is being temporarily reverted
-    # return Email::Address->new($name, $email_address)->format;
-
     if (length $name) {
         return $name . ' <' . $email_address . '>';
     }
