@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use Socialtext::AppConfig;
-use Test::Socialtext tests => 18;
+use Test::Socialtext tests => 13;
 
 fixtures(qw( db ));
 
@@ -23,36 +23,6 @@ binmode STDERR, 'utf8'; # So diagnostics don't complain
     ok Encode::is_utf8($valid), 'Good text has utf8 flag';
     ok Socialtext::Encode::is_valid_utf8($valid), 'validates';
     ok Encode::is_utf8($valid), 'still has utf8 flag';
-}
-
-# Set up the bogus-data-having page:
-use File::Copy;
-use File::Path;
-my $hub          = create_test_hub();
-my $ws_name      = $hub->current_workspace->name();
-my $test_dir     = Socialtext::AppConfig->test_dir();
-my $bad_utf8_dir = "$test_dir/root/data/$ws_name/bad_utf8";
-File::Path::mkpath $bad_utf8_dir or die $!;
-copy "t/attachments/bad-8bit.txt", "$bad_utf8_dir/123.txt" or die $!;
-symlink "123.txt", "$bad_utf8_dir/index.txt";
-
-# Check noisy_decode by using pages->new_from_name:
-{
-    my @warnings;
-    local $SIG{__WARN__} = sub { push @warnings, @_ };
-    my $page = $hub->pages->new_from_name('bad_utf8');
-    my $output = $page->to_html;
-    like $output, qr/<div\s+class="wiki">.*asdf/s,
-        'did not cause infinite loop in the Perl interpreter';
-    unlike $output, qr/\x92\n/, 'non-UTF-8 filtered';
-    like $warnings[0], qr/bad_utf8\/123\.txt: doesn't seem to be valid utf-8/,
-        'emitted warnings - to help track down bad data';
-    like $warnings[1], qr/Treating as/, 'Guessing an encoding.';
-
-    # Note: due to some unknown code change, we get warnings twice now
-    # maybe this shouldn't be the case.
-    ok @warnings == 2, '...but it\'s not too noisy.';
-    diag @warnings.join("\n----------\n");
 }
 
 # Socialtext::Encode::ensure_is_utf8
