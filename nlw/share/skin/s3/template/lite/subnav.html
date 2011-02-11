@@ -32,7 +32,7 @@
         </li>
     </div>
         </ul>
-[% IF page AND page.metadata.Type == 'wiki' %]
+[% IF page AND page.page_type == 'wiki' %]
         <span class="menu-padding"><hr></span>
         <div data-role="header" data-position="inline" data-theme="d">
             <h4>[% page.title %]</h4>
