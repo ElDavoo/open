@@ -98,8 +98,9 @@ sub _update_current_user {
 
     $self->_obfuscate_passwords;
 
-    $update{first_name} = $self->cgi->first_name;
-    $update{last_name}  = $self->cgi->last_name;
+    $update{first_name}  = $self->cgi->first_name;
+    $update{middle_name} = $self->cgi->middle_name;
+    $update{last_name}   = $self->cgi->last_name;
 
     eval { $user->update_store(%update) };
 
@@ -616,6 +617,7 @@ cgi 'user_search';
 cgi 'email_addresses';
 cgi 'users_new_ids';
 cgi 'first_name';
+cgi 'middle_name';
 cgi 'last_name';
 cgi 'append_invitation';
 cgi 'invitation_text';
