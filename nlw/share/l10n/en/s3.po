@@ -1217,6 +1217,10 @@ msgstr "post.by"
 msgid "Preferences"
 msgstr ""
 
+#: share/skin/s3/template/view/container.setup:147
+msgid "Preview"
+msgstr ""
+
 #: share/skin/s3/template/view/paging:6 share/skin/s3/template/view/paging:9
 msgid "Previous"
 msgstr ""
