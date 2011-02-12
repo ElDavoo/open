@@ -480,6 +480,7 @@
 | text_like | contentContainer | qr/First Name:/i |
 | text_like | contentContainer | qr/New password:/i |
 | type_ok | first_name | First %%start_time%% |
+| type_ok | middle_name | Middle %%start_time%% |
 | type_ok | last_name | Last %%start_time%% |
 | type_ok | old_password | 123456 |
 | type_ok | new_password | 654321 |
@@ -494,25 +495,30 @@
 | click_and_wait | link=Settings |  |
 | click_and_wait | link=My Settings |  |
 | verifyValue | first_name | First %%start_time%% |
+| verifyValue | middle_name | Middle %%start_time%% |
 | verifyValue | last_name | Last %%start_time%% |
 
 | *Comment* | Test Case: Preferences UI User. Set name with existing values. |  |
 | click_and_wait | link=Save |  |
 | text_like | qr/Saved/i |  |
 | verifyValue | first_name | First %%start_time%% |
+| verifyValue | middle_name | Middle %%start_time%% |
 | verifyValue | last_name | Last %%start_time%% |
 
 | *Comment* | Test Case: Preferences UI User. My Settings. Cancel chooses previous values |  |
 | type_ok | first_name | Cancel First %%start_time%% |
+| type_ok | middle_name | Cancel Middle %%start_time%% |
 | type_ok | last_name | Cancel Last %%start_time%% |
 | click_ok | link=Cancel |  |
 | verifyValue | first_name | First %%start_time%% |
+| verifyValue | middle_name | Middle %%start_time%% |
 | verifyValue | last_name | Last %%start_time%% |
 
 | *Comment* | Test Case: Preferences UI User. My Settings. Navigate away, return, verify value |  |
 | click_and_wait | link=Page Editing |  |
 | click_and_wait | link=My Settings |  |
 | verifyValue | first_name | First %%start_time%% |
+| verifyValue | middle_name | Middle %%start_time%% |
 | verifyValue | last_name | Last %%start_time%% |
 
 | *Comment* | Test Case: Preferences UI User. Screen Layout. Defaults: hover on, include breadcrumbs off |  |
