@@ -9,6 +9,7 @@
 | set | fname | Profile |
 | set | lname | Editor |
 | set | new_fname | Profligate |
+| set | new_mname | Epitome |
 | set | new_lname | Edisaurus |
 | set | super | epsupervisor@ken.socialtext.net |
 | set | short_super | epsupervisor |
@@ -79,6 +80,7 @@
 
 | *Comment* | Test Case: Edit Profile. Fill in all values |  |
 | type_ok | first_name | %%new_fname%% |
+| type_ok | middle_name | %%new_mname%% |
 | type_ok | last_name | %%new_lname%% |
 | type_ok | position | Position %%short_e_user%% |
 | type_ok | company | Company %%short_e_user%% |
