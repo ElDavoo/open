@@ -55,7 +55,7 @@
   [% IF restrict_domain %]
     [% restrict_domain = '<span style="color: red">' _ restrict_domain
                          _ '</span>' %]
-    [% loc('You can only invite people who share the [_1] email domain with you.', restrict_domain) %]
+    [% loc('You can only invite people who share the "[_1]" email domain with you.', restrict_domain) %]
   [% END %]
   [% IF restrict_domain && invitation_filter %]<br />[% END %]
   [% IF invitation_filter %]
