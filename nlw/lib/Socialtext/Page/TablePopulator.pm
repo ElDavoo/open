@@ -426,11 +426,7 @@ sub add_to_db {
     my $table = shift;
     my $rows = shift;
     my $t = time_scope "add_to_db $table";
-
-    unless (@$rows) {
-        warn "No rows to add to $table.\n";
-        return;
-    }
+    return unless @$rows;
 
     my $dbh = get_dbh();
 
