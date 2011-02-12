@@ -402,7 +402,7 @@ msgstr "revision.compare"
 
 #: share/skin/s3/template/workspaces_created_section.html:7
 msgid "Congratulations!"
-msgstr "wiki.created-message"
+msgstr "info.wiki-created"
 
 #: share/skin/s3/template/layout/html:85 share/skin/s3/template/layout/user_frame:90
 msgid "Control Panel"
@@ -674,23 +674,23 @@ msgstr "invite.example:"
 
 #: share/skin/s3/template/element/settings/workspace_clone_section:20 share/skin/s3/template/element/settings/workspaces_create_section:14 share/skin/s3/template/element/settings/workspaces_settings_appearance_section:13
 msgid "Example: Acme Widgets Product Development"
-msgstr ""
+msgstr "example.title"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:37
 msgid "Example: C:\\My Pictures\\socialtext-logo-30.gif"
-msgstr ""
+msgstr "example.logo"
 
 #: share/skin/s3/template/element/settings/weblog_create:13
 msgid "Example: Sales Team Blog"
-msgstr ""
+msgstr "example.blog"
 
 #: share/skin/s3/template/element/settings/workspace_clone_section:35 share/skin/s3/template/element/settings/workspaces_create_section:29
 msgid "Example: acme-product-dev creates this workspace address:"
-msgstr ""
+msgstr "example.wiki-url:"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:29
 msgid "Example: http://www.socialtext.com/images/socialtext-logo-30.gif"
-msgstr ""
+msgstr "example.logo-url"
 
 #: share/skin/s3/javascript/s3.js:881
 msgid "Expand"
@@ -722,11 +722,11 @@ msgstr "file.extract"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_skin_section:54
 msgid "File"
-msgstr ""
+msgstr "skin.file"
 
 #: share/skin/s3/template/view/attachmentslist:29
 msgid "Filename"
-msgstr ""
+msgstr "file.name"
 
 #: share/skin/s3/javascript/lightbox/attachment.js:195
 msgid "Filename is too long after URL encoding."
@@ -746,7 +746,7 @@ msgstr "nav.first-Page"
 
 #: share/skin/s3/template/element/settings/users_settings_section:17 share/skin/s3/template/element/settings/users_settings_section:22
 msgid "First name:"
-msgstr ""
+msgstr "config.first-name"
 
 #: share/skin/s3/template/lite/paging.html:4 share/skin/s3/template/lite/paging.html:6 share/skin/s3/template/lite/paging.html:8
 msgid "First page"
@@ -1481,7 +1481,7 @@ msgstr "file.size"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_skin_section:55
 msgid "Size (bytes)"
-msgstr "file.size-bytes"
+msgstr "skin.size"
 
 #: share/skin/s3/template/layout/html:71 share/skin/s3/template/layout/user_frame:76
 msgid "Socialtext"
@@ -1790,11 +1790,11 @@ msgstr ""
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:32
 msgid "Upload An Image"
-msgstr ""
+msgstr "image.upload"
 
 #: share/skin/s3/javascript/lightbox/attachment.js:146
 msgid "Upload Complete"
-msgstr ""
+msgstr "file.upload-complete"
 
 #: share/skin/s3/javascript/lightbox/attachment.tt2:6 share/skin/s3/template/element/page/display/attachments:51
 msgid "Upload Files"
@@ -1802,103 +1802,103 @@ msgstr "file.upload"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_skin_section:56
 msgid "Uploaded"
-msgstr ""
+msgstr "skin.uploaded"
 
 #: share/skin/s3/template/view/attachmentslist:31
 msgid "Uploaded By"
-msgstr ""
+msgstr "file.uploaded-By"
 
 #: share/skin/s3/template/view/attachmentslist:59
 msgid "Uploaded by"
-msgstr ""
+msgstr "file.uploaded-by"
 
 #: share/skin/s3/javascript/lightbox/attachment.js:175
 msgid "Uploaded files:"
-msgstr ""
+msgstr "file.uploaded:"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_skin_section:14
 msgid "Uploaded skins are not supported. Skin upload is only for development and testing of custom skins. Contact sales@socialtext.com for information on supported custom skins."
-msgstr ""
+msgstr "info.skin-unsupported"
 
 #. (basename)
 #: share/skin/s3/javascript/lightbox/attachment.js:209
 msgid "Uploading %1..."
-msgstr ""
+msgstr "file.uploading=name"
 
 #: share/skin/s3/javascript/lightbox/create_content.tt2:29
 msgid "Use a template:"
-msgstr ""
+msgstr "page.use-template:"
 
 #: share/skin/s3/javascript/lightbox/email.tt2:35
 msgid "Use the Recipients box above to add"
-msgstr ""
+msgstr "info.recipient-box"
 
 #: share/skin/s3/template/element/settings/users_invite_section:9
 msgid "Use the form below to invite users to one of this workspace's groups. Anyone who is a member of one of these groups has access to this workspace. If, instead, you would like to grant the individual access to the workspace without inviting them to the group, you can uncheck the \"invite users to selected group(s)\" checkbox below. Adding a user via a group is strongly recommended."
-msgstr ""
+msgstr "info.invite-member-groups"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:33
 msgid "Use the form below to invite users to one of this workspace's managing groups. Anyone who is a member of one of these groups has access to this workspace. If, instead, you would like to grant access to a specific individual, you can uncheck the \"invite users to selected group(s)\" checkbox below."
-msgstr ""
+msgstr "info.invite-admin-groups"
 
 #: share/skin/s3/template/element/settings/users_settings_section:35
 msgid "Use your email address and new password to log in again."
-msgstr ""
+msgstr "info.relogin"
 
 #: share/skin/s3/template/element/settings/users_listall_section:15 share/skin/s3/template/element/settings/users_listall_section:80 share/skin/s3/template/view/settings:25
 msgid "Users"
-msgstr ""
+msgstr "config.users"
 
 #: share/skin/s3/template/element/category_display/action_weblog_view:2
 msgid "View"
-msgstr ""
+msgstr "blog.view"
 
 #: share/skin/s3/template/view/page/revision_compare:34
 msgid "View Formatted"
-msgstr ""
+msgstr "revision.view"
 
 #: share/skin/s3/template/lite/html_begin.html:77
 msgid "Warning: Stylesheets are not enabled in your mobile device. In order to properly view Socialtext Mobile, you will need to enable stylesheets in your browser options."
-msgstr ""
+msgstr "error.css-disabled"
 
 #: share/skin/s3/javascript/s3.js:920 share/skin/s3/template/view/empty_watchlist:39 share/skin/s3/template/view/page/display:74
 msgid "Watch"
-msgstr ""
+msgstr "do.watch"
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:18
 msgid "Web Link"
-msgstr ""
+msgstr "info.weblink"
 
 #. ('<b>' _ user.username _ '</b>')
 #. ("<b>' _ user.username _ '</b>")
 #: share/skin/s3/template/layout/html:75 share/skin/s3/template/layout/user_frame:80
 msgid "Welcome %1"
-msgstr ""
+msgstr "nav.welcome=user"
 
 #: share/skin/s3/template/element/listview_tabs:5 share/skin/s3/template/layout/html:139 share/skin/s3/template/layout/user_frame:144 share/skin/s3/template/lite/subnav.html:16 share/skin/s3/template/view/empty_watchlist:8 share/skin/s3/template/view/page/display:225
 msgid "What's New"
-msgstr ""
+msgstr "nav.news"
 
 #: share/skin/s3/template/lite/subnav.html:14
 msgid "What's new"
-msgstr ""
+msgstr "nav.lite-news"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:7
 msgid "When the workspace receives an email, the subject of the email becomes the title of a page, and the body of the email becomes the body of the page."
-msgstr ""
+msgstr "info.email-to-page"
 
 #. (workspace.title)
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:45
 msgid "When users click on the title of a workspace, they go to the central page of the workspace. This page has the same title as the workspace (\"%1\")."
-msgstr ""
+msgstr "info.central=workspace"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:133 share/skin/s3/template/element/settings/users_invite_section:88
 msgid "When you're entering text, just type in paragraphs."
-msgstr ""
+msgstr "invite.entering-text"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:28
 msgid "Who can send email to this workspace?"
-msgstr ""
+msgstr "wiki.email-senders?"
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:17
 msgid "Wiki Link"
@@ -1906,143 +1906,138 @@ msgstr "info.wikilink"
 
 #: share/skin/s3/template/layout/html:131 share/skin/s3/template/layout/user_frame:136 share/skin/s3/template/view/listview:102
 msgid "Workspace"
-msgstr ""
+msgstr "nav.wiki"
 
 #: share/skin/s3/template/view/settings:56 share/skin/s3/template/workspaces_created_section.html:23
 msgid "Workspace Appearance"
-msgstr ""
+msgstr "wiki.appearance"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:55
 msgid "Workspace Blog Sort Order"
-msgstr ""
+msgstr "config.blog-sort"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:33
 msgid "Workspace Email Notify Setting"
-msgstr ""
+msgstr "config.email-notify"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:5
 msgid "Workspace Email Receive Setting"
-msgstr ""
+msgstr "config.email-receive"
 
 #: share/skin/s3/template/view/settings:57 share/skin/s3/template/workspaces_created_section.html:24
 msgid "Workspace Features"
-msgstr ""
+msgstr "wiki.feature"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:43
 msgid "Workspace Link"
-msgstr ""
+msgstr "wiki.link"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:19
 msgid "Workspace Logo Image"
-msgstr ""
+msgstr "wiki.logo"
 
 #: share/skin/s3/template/element/settings/workspace_clone_section:25 share/skin/s3/template/element/settings/workspaces_create_section:19 share/skin/s3/template/element/settings/workspaces_listall_section:13
 msgid "Workspace Name"
-msgstr ""
+msgstr "wiki.name"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:6 share/skin/s3/template/view/settings:61 share/skin/s3/template/workspaces_created_section.html:25
 msgid "Workspace Privacy"
-msgstr ""
+msgstr "wiki.privacy"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_skin_section:6 share/skin/s3/template/view/settings:59
 msgid "Workspace Skin"
-msgstr ""
+msgstr "wiki.skin"
 
 #: share/skin/s3/template/element/settings/workspace_clone_section:11 share/skin/s3/template/element/settings/workspaces_create_section:5 share/skin/s3/template/element/settings/workspaces_listall_section:10 share/skin/s3/template/element/settings/workspaces_settings_appearance_section:5
 msgid "Workspace Title"
-msgstr ""
+msgstr "wiki.title"
 
 #: share/skin/s3/template/element/main_nav/subnav/workspaces:1 share/skin/s3/template/element/settings/workspaces_listall_section:4 share/skin/s3/template/lite/globalnav.html:60 share/skin/s3/template/lite/globalnav.html:62 share/skin/s3/template/view/settings:39
 msgid "Workspaces"
-msgstr ""
+msgstr "nav.workspaces"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:8
 msgid "Workspaces are private by default. All users need to log in to view pages. Only workspace admins can invite new users."
-msgstr ""
+msgstr "info.wiki-private"
 
 #: share/skin/s3/template/element/workspace_list/my_workspaces:5
 msgid "Workspaces you belong to:"
-msgstr ""
+msgstr "wiki.list:"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:43
 msgid "Yes"
-msgstr ""
+msgstr "config.yes"
 
 #. ('<b>' _ user.username _ '</b>')
 #. ("<b>' _ user.username _ '</b>")
 #: share/skin/s3/template/view/workspace_list:16
 msgid "You are logged in as %1"
-msgstr ""
+msgstr "info.logged-in=name"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:46
 msgid "You can also configure the workspace link to display as a blog."
-msgstr ""
+msgstr "info.wiki-as-blog"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:20
 msgid "You can choose an image to use as the workspace logo. You may enter the web address of an image already on the web, or you may upload an image from your computer."
-msgstr ""
+msgstr "info.wiki-logo"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:57
 msgid "You can choose to sort blog entries by the date an entry is updated, or by the date an entry was first posted."
-msgstr ""
+msgstr "info.blog-sort"
 
 #: share/skin/s3/template/element/settings/workspaces_cannot_create_section:11
 msgid "You can create a new Group, or add a workspace to an existing Group."
-msgstr ""
+msgstr "info.wiki-group"
 
 #. (restrict_domain)
-#: share/skin/s3/template/element/settings/users_invite_search_section:10
+#: share/skin/s3/template/element/settings/users_invite_search_section:10 share/skin/s3/template/element/settings/users_invite_section:58
 msgid "You can only invite people who share the \"%1\" email domain with you."
-msgstr ""
-
-#. (restrict_domain)
-#: share/skin/s3/template/element/settings/users_invite_section:58
-msgid "You can only invite people who share the %1 email domain with you."
-msgstr ""
+msgstr "info.invite-filter=domain"
 
 #: share/skin/s3/template/view/page_revision_list:83
 msgid "You cannot compare a revision to itself."
-msgstr ""
+msgstr "error.same-revision"
 
 #. (draft.page_title, draft.workspace_title, draft.workspace_id)
 #: share/skin/s3/javascript/s3.js:1161
 msgid "You have an unsaved draft of \"%1\" in the \"%2\" (%3) workspace:"
-msgstr ""
+msgstr "draft.unsaved=page,workspace,workspace_id"
 
 #: share/skin/s3/template/element/workspace_list/public_workspaces:5
 msgid "You have free access to view and contribute to any of these public wikis:"
-msgstr ""
+msgstr "wiki.public:"
 
 #. (workspace.title, workspace_address)
 #: share/skin/s3/template/workspaces_created_section.html:11
 msgid "You have just created \"%1\", a brand new Socialtext Workspace. You are the administrator. The web address of the new workspace is %2."
-msgstr ""
+msgstr "wiki.created=title,uri"
 
 #. ('<a target="_blank" href="/st/group/' + group.group_id + '">' + group.name + '</a>')
 #. ("<a target=\"_blank\" href=\"/st/group/' + group.group_id + '\">' + group.name + '</a>")
 #: share/skin/s3/javascript/lightbox/self_join_single.tt2:1 share/skin/s3/javascript/lightbox/self_join_single.tt2:2
 msgid "You must be a member of %1 Group to edit or comment on this page. Would you like to join now?"
-msgstr ""
+msgstr "edit.self-join?=group"
 
 #: share/skin/s3/javascript/lightbox/self_join_many.tt2:1
 msgid "You must be a member of one of the groups that have access to this workspace. Please select which group(s) you want to join below."
-msgstr ""
+msgstr "edit.choose-group"
 
 #: share/skin/s3/javascript/s3.js:811
 msgid "You must check at least one page in order to create a PDF."
-msgstr ""
+msgstr "error.no-page-pdf"
 
 #: share/skin/s3/javascript/s3.js:823
 msgid "You must check at least one page in order to create a Word document."
-msgstr ""
+msgstr "error.none-page-doc"
 
 #: share/skin/s3/template/element/main_nav/subnav/signals:6
 msgid "You must register or be logged in to use this feature."
-msgstr ""
+msgstr "error.is-guest"
 
 #: share/skin/s3/template/workspaces_created_section.html:14
 msgid "You're ready to jump to your new workspace, if you want to. Choose your next step:"
-msgstr ""
+msgstr "wiki.created:"
 
 #: share/skin/s3/template/element/listview_tabs:9 share/skin/s3/template/view/empty_watchlist:11
 msgid "Your Watchlist"
@@ -2070,7 +2065,7 @@ msgstr "ago.~1hour"
 
 #: share/skin/s3/template/element/settings/workspace_clone_section:37 share/skin/s3/template/element/settings/workspaces_create_section:31
 msgid "and this email address:"
-msgstr ""
+msgstr "example.wiki-email:"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:23 share/skin/s3/template/element/settings/users_invite_section:69
 msgid "another.friend@example.com"
