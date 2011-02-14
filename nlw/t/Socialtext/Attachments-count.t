@@ -4,27 +4,40 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 7;
-fixtures( 'admin', 'clean' );
+use Test::Socialtext tests => 8;
+use Test::Socialtext::Fatal;
+fixtures('db');
 
-BEGIN {
-    use_ok( 'Socialtext::Attachments' );
-    use_ok( 'Socialtext::Page' );
-    use_ok( 'Socialtext::String' );
-}
+use ok 'Socialtext::Attachments';
+use ok 'Socialtext::Page';
+use ok 'Socialtext::String';
 
-my $hub = new_hub('admin');
+my $hub = create_test_hub();
+my $ws_name = $hub->current_workspace->name;
 
 # test that attachments on a deleted page do not show up on
 # a list of all pages
 
-create_page('test page', 'meh');
+my $page = $hub->pages->new_from_name("Test Page");
+$page->content('meh');
+$page->store();
+
 my $all_attachments_count_before = count_all_attachments();
-ok !$hub->attachments->attachment_exists('admin', 'test_page', 'foo.txt'), 'attachment_exists false';
-attach_to_page('foo.txt', 'test page');
-ok $hub->attachments->attachment_exists('admin', 'test_page', 'foo.txt'), 'attachment_exists true';
+ok !$hub->attachments->attachment_exists($ws_name, 'test_page', 'foo.txt'), 'attachment_exists false';
+
+is exception {
+    my $filename = 't/attachments/foo.txt';
+    open my $fh, '<', $filename or die "$filename: $!";
+    $hub->attachments->create(
+        filename => $filename,
+        page => $page,
+        fh       => $fh,
+    );
+}, undef, "created attachment";
+
+ok $hub->attachments->attachment_exists($ws_name, 'test_page', 'foo.txt'), 'attachment_exists true';
 my $all_attachments_count_middle = count_all_attachments();
-delete_page('test page');
+$page->delete(user => $hub->current_user);
 my $all_attachments_count_after = count_all_attachments();
 
 is(
@@ -36,36 +49,9 @@ is(
     'deleting a page decreases attachment count'
 );
 
-sub create_page {
-    my $title = shift;
-    my $content = shift;
-    Socialtext::Page->new(hub => $hub)->create(
-        title => $title,
-        content => $content,
-        creator => $hub->current_user,
-    );
-}
-
-sub attach_to_page {
-    my $filename = shift;
-    my $page_name = shift;
-
-    my $filepath = 't/attachments/' . $filename;
-    open my $fh, '<', $filepath or die "$filepath: $!";
-    $hub->attachments->create(
-        filename => $filename,
-        page_id  => Socialtext::String::title_to_id($page_name),
-        fh       => $fh,
-        creator => $hub->current_user,
-    );
-}
-
 sub count_all_attachments {
-    my $attachments = $hub->attachments->all_in_workspace();
+    # Please don't count attachments like this in production code; please
+    # write a count_attachments_in_workspace() or something:
+    my $attachments = $hub->attachments->all_attachments_in_workspace();
     return scalar @$attachments;
-}
-
-sub delete_page {
-    my $page_name = shift;
-    $hub->pages->new_from_name($page_name)->delete( user => $hub->current_user );
 }
