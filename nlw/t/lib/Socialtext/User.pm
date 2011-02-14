@@ -85,6 +85,7 @@ sub guess_sortable_name {
 
 sub best_full_name { 'Best FullName' }
 sub first_name { $_[0]->{first_name} ||= 'Mocked First' }
+sub middle_name { $_[0]->{middle_name} ||= 'Mocked Middle' }
 sub last_name { $_[0]->{last_name} ||= 'Mocked Last' }
 
 sub is_authenticated { ! $_[0]->is_guest() }
