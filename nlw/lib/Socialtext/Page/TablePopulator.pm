@@ -375,7 +375,7 @@ sub load_page_attachments {
             # Don't recalculate the mime_type (which requires a slow
             # shell-out) if we have it at hand.  This saves about 40% time for
             # help-en.
-            $args{trust_mime_type} = 1 if $args{mime_type}; # big for perf
+            $args{trust_mime_type} = 1 if $args{mime_type};
 
             sql_txn {
                 my $t3 = time_scope 'upload_att';

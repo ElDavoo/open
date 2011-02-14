@@ -465,6 +465,7 @@ sub export_to_dir {
         "Date: ",$self->created_at_str,"\n",
         "Received: from 127.0.0.1\n",
         "Content-MD5: ",$self->content_md5,"\n",
+        "Content-type: ",$self->content_type,"\n", # yes, lowercase t
         "Content-Length: ",$self->content_length,"\n",
         "\n";
     close $fh
