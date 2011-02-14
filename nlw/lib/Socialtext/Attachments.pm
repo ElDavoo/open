@@ -67,7 +67,9 @@ sub all {
     my $sql = q{
         SELECT }.COLUMNS_STR.q{ FROM page_attachment pa
           JOIN attachment a USING (attachment_id)
-         WHERE workspace_id = ? AND page_id = ?};
+         WHERE workspace_id = ? AND page_id = ?
+           AND NOT deleted
+    };
     my @args = ($ws_id, $page_id);
 
     if ($p->{filename}) {

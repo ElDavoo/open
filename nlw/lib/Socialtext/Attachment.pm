@@ -297,8 +297,6 @@ sub extract {
         $_->make_permanent(user => $self->hub->current_user) for @atts;
     };
 
-    $self->hub->attachments->cache->clear();
-
     return;
 }
 
