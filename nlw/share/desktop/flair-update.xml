@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>381</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-381.air</url>
-<description><![CDATA[[Build 381 - Thu Feb  3 23:08:25 PST 2011]
+  <version>383</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-383.air</url>
+<description><![CDATA[[Build 383 - Mon Feb 14 10:44:37 PST 2011]
+* Fix video display issue on Windows.
+
+[Build 382 - Sun Feb 13 06:29:34 PST 2011]
+* Fix the "CPU spike every 30 seconds" issue. (Graham)
+* Remove the Cmd-0 toggle between threadview and listview.
+* Various small performance improvements.
+
+[Build 381 - Thu Feb  3 23:08:25 PST 2011]
+* Update to the latest AW code again.
 
 [Build 380 - Mon Jan 24 17:29:45 PST 2011]
 * Signals: Errors in Insert Video is shown only after the domain part has been entered.

@@ -3,7 +3,6 @@
 
 use strict;
 use warnings;
-# use mocked 'Socialtext::Events', qw(clear_events event_ok is_event_count);
 use mocked 'Socialtext::Log', qw(:tests);
 use File::Slurp qw(write_file);
 use Benchmark qw(timeit timestr);
@@ -215,31 +214,23 @@ ldap_group_records_events_on_membership_change: {
     my $group_dn = 'cn=Motorhead,dc=example,dc=com';
 
     # Get the Group, make sure that the "create_role" Events were emitted
-#     clear_events();
     clear_log();
     my $motorhead = Socialtext::Group->GetGroup(
         driver_unique_id => $group_dn,
     );
 
-#     is_event_count 6;
-#     event_ok( event_class => 'account', action => 'create_role' );
     next_log_like 'info', qr/ASSIGN,USER_ROLE,.*account:/,
         '... User/Account role assignment logged in nlw.log';
-#     event_ok( event_class => 'group', action => 'create_role' );
     next_log_like 'info', qr/ASSIGN,USER_ROLE,.*group:/,
         '... User/Group role assignment logged in nlw.log';
 
-#     event_ok( event_class => 'account', action => 'create_role' );
     next_log_like 'info', qr/ASSIGN,USER_ROLE,.*account:/,
         '... User/Account role assignment logged in nlw.log';
-#     event_ok( event_class => 'group', action => 'create_role' );
     next_log_like 'info', qr/ASSIGN,USER_ROLE,.*group:/,
         '... User/Group role assignment logged in nlw.log';
 
-#     event_ok( event_class => 'account', action => 'create_role' );
     next_log_like 'info', qr/ASSIGN,USER_ROLE,.*account:/,
         '... User/Account role assignment logged in nlw.log';
-#     event_ok( event_class => 'group', action => 'create_role' );
     next_log_like 'info', qr/ASSIGN,USER_ROLE,.*group:/,
         '... User/Group role assignment logged in nlw.log';
 
@@ -264,8 +255,6 @@ ldap_group_records_events_on_membership_change: {
         driver_unique_id => $group_dn,
     );
 
-#     is_event_count 1;
-#     event_ok( event_class => 'group', action => 'delete_role' );
     next_log_like 'info', qr/REMOVE,USER_ROLE,.*group:/,
         '... User/Group role removal logged in nlw.log';
 
