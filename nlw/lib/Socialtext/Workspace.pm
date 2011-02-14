@@ -9,7 +9,6 @@ use DateTime;
 use DateTime::Format::Pg;
 use Digest::MD5;
 use Email::Address;
-use File::chdir;
 use File::Copy ();
 use File::Find ();
 use File::Path ();
@@ -59,6 +58,8 @@ use Socialtext::Validate qw(
 use namespace::clean -except => 'meta';
 
 our $VERSION = '0.01';
+# for workspace exports:
+our $EXPORT_VERSION => 1;
 
 Readonly our @COLUMNS => (
     'workspace_id',
@@ -130,8 +131,6 @@ with 'Socialtext::UserSetContainer',
             => [qw(sorted_workspace_roles)]
      };
 
-# for workspace exports:
-Readonly my $EXPORT_VERSION => 1;
 
 # XXX: This is here to support the non-plugin method of checking whether
 # socialcalc is enabled or not.
@@ -1166,325 +1165,38 @@ sub _group_role_changed {
     };
     sub export_to_tarball {
         my $self = shift;
-        my %p = validate( @_, $spec );
-        $p{name} ||= $self->name;
-        $p{name} = lc $p{name};
+        my %p = validate(@_,$spec);
 
         die loc("Export directory [_1] does not exist.\n", $p{dir})
-	    if defined $p{dir} && ! -d $p{dir};
+            if defined $p{dir} && ! -d $p{dir};
 
         die loc("Export directory [_1] is not writeable.\n", $p{dir})
             unless defined $p{dir} && -w $p{dir};
 
-        my $tarball_dir
-            = defined $p{dir} ? Cwd::abs_path( $p{dir} ) : $ENV{ST_TMP} || '/tmp';
+        my $tarball_dir = defined $p{dir}
+            ? Cwd::abs_path( $p{dir} )
+            : $ENV{ST_TMP};
+        $tarball_dir ||= '/tmp';
 
         my $tarball = Socialtext::File::catfile( $tarball_dir,
-            $p{name} . '.' . $EXPORT_VERSION . '.tar' );
+            "$p{name}.$EXPORT_VERSION.tar" );
 
         for my $file ( ($tarball, "$tarball.gz") ) {
             die loc("Cannot write export file [_1], aborting.\n", $file)
                 if -f $file && ! -w $file;
         }
 
-        $self->_create_export_tarball($tarball, $p{name});
-
-        # pack up the tarball
-        run "gzip --fast --force $tarball";
-
-        return "$tarball.gz";
-    }
-}
-
-sub _create_export_tarball {
-    my $self = shift;
-    my $tarball = shift;
-    my $name = shift || $self->name;
-
-    my $tmpdir = File::Temp::tempdir( CLEANUP => 1 );
-    $self->_dump_to_yaml_file($tmpdir, $name);
-    $self->_dump_users_to_yaml_file($tmpdir, $name);
-    $self->_dump_permissions_to_yaml_file($tmpdir, $name);
-    $self->_export_logo_file($tmpdir);
-    $self->_dump_meta_to_yaml_file($tmpdir);
-    $self->_dump_user_workspace_prefs($tmpdir, $name);
-    $self->_dump_user_breadcrumbs($tmpdir, $name);
-
-    # Copy all the data for export into a the tempdir.
-    $self->_dump_workspace_pages($tmpdir, $name);
-    $self->_dump_workspace_attachments($tmpdir, $name);
-
-    local $CWD = $tmpdir;
-    run "tar cf $tarball *";
-}
-
-sub _dump_user_breadcrumbs {
-    my $self   = shift;
-    my $tmpdir = shift;
-    my $name   = shift;
-
-    my $sth = sql_execute(
-        q{SELECT users.email_address AS email, page_id
-           FROM breadcrumb
-           JOIN users ON (breadcrumb.viewer_id = users.user_id)
-           WHERE breadcrumb.workspace_id = ?
-           ORDER BY last_viewed DESC
-       },
-        $self->workspace_id,
-    );
-    my %breadcrumbs;
-    while (my $row = $sth->fetchrow_hashref) {
-        push @{ $breadcrumbs{$row->{email}} }, $row->{page_id};
-    }
-
-    for my $email (keys %breadcrumbs) {
-        my $trail_dir = "$tmpdir/user/$name/$email";
-        File::Path::make_path($trail_dir);
-        my $trail_file = "$trail_dir/.trail";
-        Socialtext::File::set_contents_utf8($trail_file,
-            join("\n", @{ $breadcrumbs{$email} }) . "\n");
-    }
-}
-
-sub _dump_workspace_pages {
-    my $self = shift;
-    my $tmpdir = shift;
-    my $name   = shift;
-
-    my $ws_dir = "$tmpdir/data/$name";
-    File::Path::make_path($ws_dir);
-    my $counter_dir = "$tmpdir/plugin/$name/counter";
-
-    my $sth = sql_execute(
-        q{SELECT page_revision.*, page_revision.edit_time AT TIME ZONE 'GMT' AS edit_time_gmt, page.views
-           FROM page_revision
-           JOIN page USING (workspace_id, page_id)
-           WHERE page_revision.workspace_id = ?},
-        $self->workspace_id,
-    );
-    while (my $row = $sth->fetchrow_hashref) {
-        my $page_dir = "$ws_dir/$row->{page_id}";
-        File::Path::make_path($page_dir);
-        my $filename = "$page_dir/$row->{revision_id}.txt";
-
-        my $deleted = $row->{deleted} ? 'Deleted' : '';
-        my $editor_email = Socialtext::User->new(user_id => $row->{editor_id})->email_address;
-        my $content = <<EOT;
-Subject: $row->{name}
-From: $editor_email
-Date: $row->{edit_time_gmt} GMT
-Revision: $row->{revision_num}
-Type: $row->{page_type}
-Summary: $row->{summary}
-RevisionSummary: $row->{edit_summary}
-Encoding: utf8
-Locked: $row->{locked}
-EOT
-        $content .= "Control: Deleted\n" if $row->{deleted};
-        for my $tag (@{ $row->{tags} }) {
-            $content .= "Category: $tag\n";
-        }
-
-        $content .= "\n" . $row->{body};
-        Socialtext::File::set_contents_utf8($filename, \$content);
-
-        my $page_counter_dir = "$counter_dir/$row->{page_id}";
-        File::Path::make_path($page_counter_dir);
-        Socialtext::File::set_contents("$page_counter_dir/COUNTER",
-            "#COUNTER-1.0\n$row->{views}\n",
+        my $exporter = Socialtext::Workspace::Exporter->new(
+            workspace => $self,
+            name => $p{name} ? $p{name} : $self->name,
         );
-    }
-}
-
-
-sub _dump_workspace_attachments {
-    my $self = shift;
-    my $tmpdir = shift;
-    my $name   = shift;
-
-    my $plugin_dir = "$tmpdir/plugin/$name";
-    -d $plugin_dir
-        or File::Path::mkpath($plugin_dir)
-        or die "Cannot make $plugin_dir: $!";
-
-    warn "TODO - dump attachments from the DB";
-}
-
-sub _dump_to_yaml_file {
-    my $self = shift;
-    my $dir  = shift;
-    my $name = shift || $self->name;
-
-    my $file = Socialtext::File::catfile( $dir, $name . '-info.yaml' );
-
-    my %dump;
-    my %do_not_dump = map { $_ => 1 } qw/workspace_id user_set_id/;
-    for my $c ( grep { !$do_not_dump{$_} } @COLUMNS ) {
-        $dump{$c} = $self->$c();
-    }
-    $dump{creator_username} = $self->creator->username;
-    $dump{account_name} = $self->account->name;
-    $dump{logo_filename} = File::Basename::basename( $self->logo_filename() )
-        if $self->logo_filename();
-    $dump{name} = $name;
-    $dump{plugins} = { map { $_ => 1 } $self->plugins_enabled };
-
-    require Socialtext::Pluggable::Adapter;
-    my $adapter = Socialtext::Pluggable::Adapter->new;
-    $adapter->make_hub(Socialtext::User->SystemUser(), $self);
-    $adapter->hook('nlw.export_workspace', [$self, \%dump]);
-
-    _dump_yaml( $file, \%dump );
-}
-
-sub _dump_yaml {
-    my $file = shift;
-    my $data = shift;
-
-    open my $fh, '>:utf8', $file
-        or die "Cannot write to $file: $!";
-    print $fh YAML::Dump($data)
-        or die "Cannot write to $file: $!";
-    close $fh
-        or die "Cannot write to $file: $!";
-}
-
-sub _dump_meta_to_yaml_file {
-    my $self      = shift;
-    my $dir       = shift;
-    my $meta_data = { has_lock => 1 };
-    my $file      = Socialtext::File::catfile( $dir, 'meta.yaml' );
-
-    _dump_yaml( $file, $meta_data );
-}
-
-sub _dump_user_workspace_prefs {
-    my $self = shift;
-    my $dir  = shift;
-    my $name = shift;
-
-    my $ws_dir = "$dir/user/$name";
-    File::Path::mkpath($ws_dir) or die "Cannot make $ws_dir: $!";
-    my $users = $self->users(direct => 1);
-    while ( my $user = $users->next ) {
-        my $prefs = Socialtext::PreferencesPlugin->Prefs_for_user($user, $self);
-        next unless keys %$prefs;
-
-        # We dump these prefs to the `preferences.dd` format (instead of 
-        # yaml, say) to preserve backwards compatibility of workspace exports..
-        my $user_dir = "$ws_dir/" . $user->email_address . '/preferences';
-        File::Path::mkpath $user_dir or die "Can't mkpath $user_dir: $!";
-        Socialtext::Base->dumper_to_file("$user_dir/preferences.dd", $prefs);
-    }
-}
-
-sub _dump_users_to_yaml_file {
-    my $self = shift;
-    my $dir = shift;
-    my $name = shift || $self->name;
-
-    my $file = Socialtext::File::catfile( $dir, $name . '-users.yaml' );
-
-    my $user_roles = $self->user_roles(direct => 1);
-    my @dump;
-    while (my $pair = $user_roles->next) {
-        my ($user, $role) = @$pair;
-
-        my $dumped_user = $self->_dump_user_to_hash( $user );
-        $dumped_user->{role_name} = $role->name;
-        push @dump, $dumped_user;
-    }
-
-    require Socialtext::Pluggable::Adapter;
-    my $adapter = Socialtext::Pluggable::Adapter->new;
-    $adapter->make_hub(Socialtext::User->SystemUser(), $self);
-    $adapter->hook('nlw.export_workspace_users', [$self, \@dump]);
-
-    _dump_yaml( $file, \@dump );
-}
-
-sub _dump_user_to_hash {
-    my $self = shift;
-    my $user = shift;
-
-    require Socialtext::Pluggable::Adapter;
-    my $adapter = Socialtext::Pluggable::Adapter->new;
-    $adapter->make_hub($user);
-    my $plugin_prefs = {};
-    $adapter->hook('nlw.export_user_prefs', [$plugin_prefs]);
-
-    my $dump = $user->to_hash(want_private_fields => 1);
-    delete $dump->{user_id};
-    $dump->{plugin_prefs} = $plugin_prefs if keys %$plugin_prefs;
-
-    return $dump;
-}
-
-sub _dump_permissions_to_yaml_file {
-    my $self = shift;
-    my $dir  = shift;
-    my $name = shift || $self->name;
-
-
-    my $sth = sql_execute(<<EOT, $self->workspace_id);
-SELECT role_id, permission_id from "WorkspaceRolePermission"
-    WHERE workspace_id = ?
-EOT
-    my $rows = $sth->fetchall_arrayref;
-
-    my @dump;
-    my @lock_dump;
-    my @self_join_dump;
-    for my $r (@$rows) {
-        my $p = Socialtext::Permission->new(
-            permission_id => $r->[1]);
-
-        # we cannot export 'new' permissions using the default method. let's
-        # ignore 'em here and deal with them down below.
-        #
-        # I think I see a pattern emerging.
-        my $array_ref = \@dump;
-        $array_ref = \@lock_dump if $p->name eq 'lock';
-        $array_ref = \@self_join_dump if $p->name eq 'self_join';
-
-        push @$array_ref, {
-            role_name => Socialtext::Role->new( role_id => $r->[0] )->name,
-            permission_name => $p->name,
-        }
-    }
-
-    my $file = Socialtext::File::catfile( $dir, $name . '-permissions.yaml' );
-    _dump_yaml( $file, \@dump );
-
-    # Deal with the 'new' perms down here.
-    my $lock_perm_file = Socialtext::File::catfile(
-        $dir, $name . '-lock-permissions.yaml');
-    _dump_yaml( $lock_perm_file, \@lock_dump );
-
-    my $self_join_perm_file = Socialtext::File::catfile(
-        $dir, $name . '-self-join-permissions.yaml');
-    _dump_yaml( $self_join_perm_file, \@self_join_dump );
-}
-
-sub _export_logo_file {
-    my $self = shift;
-    my $dir  = shift;
-    if ( my $logo_file = $self->logo_filename() ) {
-
-        # chdir'ing and just using a relative path prevents tar
-        # from giving us warnings about absolute path names.
-        local $CWD = File::Basename::dirname($logo_file);
-        my $basename = File::Basename::basename($logo_file);
-        my $new_logo = Socialtext::File::catdir( $dir, $basename );
-
-        File::Copy::copy( $logo_file, $new_logo )
-            or die "Could not copy $logo_file to $new_logo: $!\n";
+        $exporter->to_tarball("$tarball.gz");
+        return "$tarball.gz";
     }
 }
 
 sub Any {
     my $class = shift;
-
     return $class->All( limit => 1 )->next;
 }
 
