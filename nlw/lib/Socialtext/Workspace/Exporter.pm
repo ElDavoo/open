@@ -7,9 +7,10 @@ use File::Copy qw/copy/;
 use File::Path qw/make_path/;
 use YAML ();
 
-use Socialtext::Base;
-use Socialtext::Permission;
-use Socialtext::Role;
+use Socialtext::SQL qw/:exec/;
+use Socialtext::Base ();
+use Socialtext::Permission ();
+use Socialtext::Role ();
 use Socialtext::PreferencesPlugin;
 use Socialtext::PageRevision;
 
@@ -28,7 +29,7 @@ has 'workspace' => (
 # built from the workspace:
 has 'hub' => (is => 'ro', isa => 'Socialtext::Hub', lazy_build => 1);
 
-has 'tmpdir' => (is => 'ro', isa => 'Object', lazy_build => 1);
+has 'tmpdir' => (is => 'ro', isa => 'Object|Str', lazy_build => 1);
 has 'meta_filename' => (is => 'rw', isa => 'Str', lazy_build => 1);
 
 sub _build_tmpdir {
@@ -83,7 +84,7 @@ sub to_tarball {
 sub _save_yaml {
     my ($file, $data) = @_;
     open my $fh, '>:utf8', $file or die "Cannot write to $file: $!";
-    print $fh YAML::export($data) or die "Cannot write to $file: $!";
+    print $fh YAML::Dump($data) or die "Cannot write to $file: $!";
     close $fh or die "Cannot write to $file: $!";
 }
 
@@ -109,7 +110,7 @@ sub export_info {
             or die "Could not copy $logo_file to $new_logo: $!\n";
     }
 
-    $self->hub->adapter->hook('nlw.export_workspace', [$ws, \%export]);
+    $self->hub->pluggable->hook('nlw.export_workspace', [$ws,\%export]);
 
     _save_yaml( $self->filename($self->name.'-info.yaml'), \%export );
 }
@@ -137,7 +138,7 @@ sub export_users {
         push @export, $exported_user;
     }
 
-    $self->hub->adapter->hook('nlw.export_workspace_users', [$self, \@export]);
+    $self->hub->pluggable->hook('nlw.export_workspace_users', [$ws,\@export]);
 
     _save_yaml($self->filename($self->name.'-users.yaml'), \@export);
 }
@@ -196,7 +197,7 @@ sub export_user_prefs {
     my $users = $ws->users(direct => 1);
     while (my $user = $users->next) {
         my $prefs = Socialtext::PreferencesPlugin->Prefs_for_user($user,$ws);
-        next unless %$prefs;
+        next unless $prefs && %$prefs;
 
         # We export these prefs to the `preferences.dd` format (instead of 
         # yaml, say) to preserve backwards compatibility of workspace exports..
@@ -239,7 +240,7 @@ sub export_pages {
     make_path $ws_dir;
 
     my $sth = sql_execute(q{
-         SELECT }.Socialtext::PageRevision::COLUMNS_STR.q{
+         SELECT }.Socialtext::PageRevision::SELECT_COLUMNS_STR.q{
            FROM page_revision
            WHERE workspace_id = ?
     }, $ws->workspace_id);
@@ -250,7 +251,7 @@ sub export_pages {
         my $filename = "$page_dir/$row->{revision_id}.txt";
         open my $fh, '>:mmap:utf8', $filename
             or die "Can't write $filename: $!";
-        Socialtext::PageRevision->export_to_file_from_row($row => $fh);
+        Socialtext::PageRevision->Export_to_file_from_row($row => $fh);
         close $fh or die "Can't write $filename: $!";
     }
 }
@@ -281,8 +282,23 @@ sub export_attachments {
 
     my $plugin_dir = $self->ws_dir('plugin' => 'attachments');
     make_path $plugin_dir or die "Cannot make $plugin_dir: $!";
+    my $ws = $self->workspace;
 
-    warn "TODO - export attachments from the DB";
+    my $sth = sql_execute(q{
+        SELECT }.Socialtext::Attachments::COLUMNS_STR.q{
+          FROM page_attachment pa
+          JOIN attachment a USING (attachment_id)
+         WHERE workspace_id = $1
+    }, $ws->workspace_id);
+
+    my $atts = $self->hub->attachments;
+    while (my $row = $sth->fetchrow_hashref()) {
+        $row->{workspace} = $ws;
+        my $att = $atts->_new_from_row($row);
+        my $dir = "$plugin_dir/".$att->page_id;
+        make_path $dir or die "can't write attachment: $!";
+        $att->export_to_dir($dir);
+    }
 }
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 1);

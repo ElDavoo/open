@@ -491,6 +491,16 @@ sub short_name {
     return "$1..$2";
 }
 
+has 'md5' => (is => 'rw', isa => 'Str', lazy_build => 1);
+sub _build_md5 {
+    my $self = shift;
+    my $blob;
+    $self->binary_contents(\$blob);
+    my $ctx = Digest::MD5->new();
+    $ctx->add($blob);
+    return $ctx->b64digest . "==";
+}
+
 __PACKAGE__->meta->make_immutable;
 1;
 __END__

@@ -59,7 +59,7 @@ use namespace::clean -except => 'meta';
 
 our $VERSION = '0.01';
 # for workspace exports:
-our $EXPORT_VERSION => 1;
+Readonly my $EXPORT_VERSION => 1;
 
 Readonly our @COLUMNS => (
     'workspace_id',
@@ -1166,6 +1166,7 @@ sub _group_role_changed {
     sub export_to_tarball {
         my $self = shift;
         my %p = validate(@_,$spec);
+        $p{name} //= $self->name;
 
         die loc("Export directory [_1] does not exist.\n", $p{dir})
             if defined $p{dir} && ! -d $p{dir};
@@ -1179,18 +1180,19 @@ sub _group_role_changed {
         $tarball_dir ||= '/tmp';
 
         my $tarball = Socialtext::File::catfile( $tarball_dir,
-            "$p{name}.$EXPORT_VERSION.tar" );
+            $p{name}.".$EXPORT_VERSION.tar" );
 
         for my $file ( ($tarball, "$tarball.gz") ) {
             die loc("Cannot write export file [_1], aborting.\n", $file)
                 if -f $file && ! -w $file;
         }
 
-        my $exporter = Socialtext::Workspace::Exporter->new(
+        require Socialtext::Workspace::Exporter;
+        my $wx = Socialtext::Workspace::Exporter->new(
             workspace => $self,
             name => $p{name} ? $p{name} : $self->name,
         );
-        $exporter->to_tarball("$tarball.gz");
+        $wx->to_tarball("$tarball.gz");
         return "$tarball.gz";
     }
 }

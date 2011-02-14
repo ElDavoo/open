@@ -529,13 +529,15 @@ sub store {
     return $self;
 }
 
-sub Dump_to_file_from_row {
+sub Export_to_file_from_row {
     my ($class, $row, $fh) = @_;
 
     my $editor_email =
         Socialtext::User->new(user_id => $row->{editor_id})->email_address;
     $row->{edit_time_utc} =~ s/Z$/ GMT/;
+    $row->{summary} //= '';
     $row->{summary} =~ s/\n//g;
+    $row->{edit_summary} //= '';
     $row->{edit_summary} =~ s/\n//g;
 
     print $fh <<EOH;

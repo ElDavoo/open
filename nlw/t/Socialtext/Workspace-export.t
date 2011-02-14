@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 30;
+use Test::Socialtext tests => 42;
 fixtures(qw( empty ));
 
 use File::Basename ();
@@ -12,6 +12,9 @@ use File::Temp ();
 use YAML ();
 use Socialtext::Account;
 use Socialtext::AppConfig;
+use IO::File;
+
+use ok 'Socialtext::Workspace::Exporter';
 
 my $hub  = new_hub('empty');
 my $ws   = $hub->current_workspace;
@@ -20,9 +23,31 @@ my $test_dir = Socialtext::AppConfig->test_dir();
 
 my $private_id = Test::Socialtext->create_unique_id();
 $user->update_store(private_external_id => $private_id);
+my $test_att_id;
+
+setup: {
+    my $page = $hub->pages->new_from_name("A Page $^T");
+    $page->content('blah');
+    $page->store;
+
+    my $fh = IO::File->new("t/attachments/revolts.doc", "<");
+    my $attachment = $hub->attachments->create(
+        page => $page,
+        fh => $fh,
+        filename => "../../../revolts.doc", # with slashies that should strip
+        embed => 1,
+    );
+    isa_ok $attachment, 'Socialtext::Attachment';
+    is $attachment->filename, "revolts.doc", "attached revolts.doc";
+    $test_att_id = $attachment->id;
+
+    $page->rev->clear_body_ref;
+    ok $page->content =~ /{file: revolts.doc}/, "got inlined";
+}
 
 Export_includes_meta_info: {
-   $ws->_dump_meta_to_yaml_file( $test_dir );
+   my $wx = new_exporter();
+   $wx->export_meta();
 
    my $meta_file = "$test_dir/meta.yaml";
    ok(-f $meta_file, 'meta.yaml file exists');
@@ -33,11 +58,9 @@ Export_includes_meta_info: {
 
 Export_includes_logo_and_info: {
     my $image ='t/attachments/socialtext-logo-30.gif';
-    $ws->set_logo_from_file(
-        filename   => $image,
-    );
-
-    $ws->_dump_to_yaml_file( $test_dir );
+    $ws->set_logo_from_file(filename => $image);
+    my $wx = new_exporter();
+    $wx->export_info();
 
     my $ws_file = "$test_dir/empty-info.yaml";
     ok( -f $ws_file, 'workspace data yaml dump exists' );
@@ -48,12 +71,15 @@ Export_includes_logo_and_info: {
         'account_name is Socialtext in workspace dump' );
     is( $ws_dump->{creator_username}, 'devnull1@socialtext.com',
         'check creator name in workspace dump' );
-    is( $ws_dump->{logo_filename}, File::Basename::basename( $ws->logo_filename() ),
+    my $logo = File::Basename::basename($ws->logo_filename);
+    is( $ws_dump->{logo_filename}, $logo,
         'check logo filename' );
+    ok -f "$test_dir/$logo", "logo is saved";
 }
 
 Export_users_dumped: {
-    $ws->_dump_users_to_yaml_file( $test_dir );
+    my $wx = new_exporter();
+    $wx->export_users();
 
     my $users_file = "$test_dir/empty-users.yaml";
     ok( -f $users_file, 'users data yaml dump exists' );
@@ -71,7 +97,8 @@ Export_users_dumped: {
 }
 
 Export_permissions_dumped: {
-    $ws->_dump_permissions_to_yaml_file( $test_dir );
+    my $wx = new_exporter();
+    $wx->export_permissions();
 
     my $users_file = "$test_dir/empty-permissions.yaml";
     ok( -f $users_file, 'permissions data yaml dump exists' );
@@ -85,9 +112,8 @@ Export_permissions_dumped: {
 }
 
 Export_tarball_format: {
-    my $dir = File::Temp::tempdir( CLEANUP => 1 );
-
-    my $tarball = $ws->export_to_tarball( dir => $dir);
+    my $dir = File::Temp->newdir(CLEANUP => 1);
+    my $tarball = $ws->export_to_tarball(dir => $dir);
     ok( -f $tarball, 'tarball exists' );
 
     system( 'tar', 'xzf', $tarball, '-C', $dir )
@@ -102,10 +128,22 @@ Export_tarball_format: {
     ok( -f "$dir/empty-users.yaml", 'users yaml dump file is in tarball' );
     ok( -f "$dir/empty-permissions.yaml", 'permissions yaml dump file is in tarball' );
     ok( -f "$dir/meta.yaml", 'Export meta file is in tarball' );
+
+    ok -d "$dir/data/empty/a_page_$^T", "page exists";
+
+    ok -d "$dir/plugin/empty/attachments", "attachments dir exists";
+    ok -d "$dir/plugin/empty/attachments/a_page_$^T",
+        "attachments dir for page exists";
+    ok -f "$dir/plugin/empty/attachments/a_page_$^T/$test_att_id.txt",
+        "attachments dir for page exists";
+    ok -d "$dir/plugin/empty/attachments/a_page_$^T/$test_att_id",
+        "attachments dir for page exists";
+    ok -f "$dir/plugin/empty/attachments/a_page_$^T/$test_att_id/revolts.doc",
+        "attachments dir for page exists";
 }
 
 Export_to_different_name: {
-    my $dir = File::Temp::tempdir( CLEANUP => 1 );
+    my $dir = File::Temp->newdir(CLEANUP=>1);
     my $tarball = $ws->export_to_tarball(name => 'monkey', dir => $dir);
     like $tarball, qr/monkey/, 'tarball named like a monkey';
     ok( -f $tarball, 'tarball exists' );
@@ -122,4 +160,16 @@ Export_to_different_name: {
     ok( -f "$dir/monkey-users.yaml", 'users yaml dump file is in tarball' );
     ok( -f "$dir/monkey-permissions.yaml", 'permissions yaml dump file is in tarball' );
     ok( -f "$dir/meta.yaml", 'Export meta file is in tarball' );
+}
+
+pass 'done';
+
+sub new_exporter {
+    my $dir = shift || $test_dir;
+    my $name = shift || $ws->name;
+    return Socialtext::Workspace::Exporter->new(
+        workspace => $ws,
+        name      => $name,
+        tmpdir    => $test_dir,
+    );
 }
