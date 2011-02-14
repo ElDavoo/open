@@ -58,9 +58,9 @@ has 'upload' => (
     lazy_build => 1,
     handles => [qw(
         attachment_uuid binary_contents cleanup_stored clean_filename
-        content_length copy_to_file created_at created_at_str creator creator_id
-        disk_filename ensure_stored filename is_image is_temporary md5 mime_type
-        protected_uri short_name to_string
+        content_length content_md5 copy_to_file created_at created_at_str
+        creator creator_id disk_filename ensure_stored filename is_image
+        is_temporary mime_type protected_uri short_name to_string
     )],
     trigger => sub { $_[0]->_attachment_id($_[1]->attachment_id) },
 );
@@ -464,7 +464,7 @@ sub export_to_dir {
         "DB_Filename: ",$db_filename,"\n",
         "Date: ",$self->created_at_str,"\n",
         "Received: from 127.0.0.1\n",
-        "Content-MD5: ",$self->md5,"\n",
+        "Content-MD5: ",$self->content_md5,"\n",
         "Content-Length: ",$self->content_length,"\n",
         "\n";
     close $fh

@@ -358,7 +358,7 @@ sub load_page_attachments {
                 created_at     => $meta->{date},
                 filename       => $meta->{subject},
                 content_length => $disk_size,
-                md5            => $meta->{content_md5}, # possibly ignored
+                content_md5    => $meta->{content_md5}, # possibly ignored
                 no_log         => 1,
                 db_only        => 1, # don't copy to storage area
             );

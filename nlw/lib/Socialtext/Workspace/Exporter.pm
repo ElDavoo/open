@@ -13,6 +13,8 @@ use Socialtext::Permission ();
 use Socialtext::Role ();
 use Socialtext::PreferencesPlugin;
 use Socialtext::PageRevision;
+use Socialtext::Attachments;
+use Socialtext::Timer qw/time_scope/;
 
 use namespace::clean -except => 'meta';
 
@@ -35,7 +37,7 @@ has 'meta_filename' => (is => 'rw', isa => 'Str', lazy_build => 1);
 sub _build_tmpdir {
     my $self = shift;
     (my $name = $self->name) =~ s/[^a-z0-9_-]+//g;
-    File::Temp->newdir("export-$name-XXXXXX", CLEANUP => 1);
+    File::Temp->newdir("/tmp/export-$name-XXXXXX", CLEANUP => 1);
 }
 
 sub _build_hub {
@@ -62,6 +64,7 @@ sub BUILD {
 
 sub to_tarball {
     my ($self, $tarball) = @_;
+    my $t = time_scope 'export_tarball';
 
     # Keep the order of these consistent:
     $self->$_ for map { "export_$_" } # e.g. export_info
@@ -72,6 +75,7 @@ sub to_tarball {
     );
 
     {
+        my $t2 = time_scope 'pack_tarball';
         local $CWD = $self->tmpdir."";
         my $flags = ($tarball =~ /\.gz/) ? "zcf" : "cf";
         system("tar $flags $tarball *")
@@ -99,7 +103,7 @@ sub export_info {
     }
     $export{creator_username} = $ws->creator->username;
     $export{account_name} = $ws->account->name;
-    $export{name} = $self->name;
+    $export{name} = $self->name; # so we can override
     $export{plugins} = { map { $_ => 1 } $ws->plugins_enabled };
 
     if (my $logo_file = $ws->logo_filename) {
@@ -193,7 +197,7 @@ sub export_user_prefs {
 
     my $ws = $self->workspace;
     my $ws_dir = $self->ws_dir('user');
-    make_path $ws_dir or die "Cannot make $ws_dir: $!";
+    make_path($ws_dir) or die "Cannot make $ws_dir: $!";
     my $users = $ws->users(direct => 1);
     while (my $user = $users->next) {
         my $prefs = Socialtext::PreferencesPlugin->Prefs_for_user($user,$ws);
@@ -202,7 +206,7 @@ sub export_user_prefs {
         # We export these prefs to the `preferences.dd` format (instead of 
         # yaml, say) to preserve backwards compatibility of workspace exports..
         my $user_dir = "$ws_dir/" . $user->email_address . '/preferences';
-        make_path $user_dir or die "Can't make $user_dir: $!";
+        make_path($user_dir) or die "Can't make $user_dir: $!";
         Socialtext::Base->exporter_to_file("$user_dir/preferences.dd", $prefs);
     }
 }
@@ -225,7 +229,7 @@ sub export_breadcrumbs {
     my $bc_dir = $self->ws_dir('user');
     for my $email (keys %breadcrumbs) {
         my $trail_dir = "$bc_dir/$email";
-        make_path $trail_dir or die "Can't make $trail_dir: $!";
+        make_path($trail_dir) or die "Can't make $trail_dir: $!";
         my $trail_file = "$trail_dir/.trail";
         Socialtext::File::set_contents_utf8($trail_file,
             join("\n", @{ $breadcrumbs{$email} }) . "\n");
@@ -237,7 +241,7 @@ sub export_pages {
 
     my $ws = $self->workspace;
     my $ws_dir = $self->ws_dir('data');
-    make_path $ws_dir;
+    make_path($ws_dir);
 
     my $sth = sql_execute(q{
          SELECT }.Socialtext::PageRevision::SELECT_COLUMNS_STR.q{
@@ -247,7 +251,7 @@ sub export_pages {
 
     while (my $row = $sth->fetchrow_hashref) {
         my $page_dir = "$ws_dir/$row->{page_id}";
-        make_path $page_dir;
+        make_path($page_dir);
         my $filename = "$page_dir/$row->{revision_id}.txt";
         open my $fh, '>:mmap:utf8', $filename
             or die "Can't write $filename: $!";
@@ -265,7 +269,7 @@ sub export_page_counters {
     }, $ws->workspace_id);
          
     my $counter_dir = $self->ws_dir('plugin' => 'counter');
-    make_path $counter_dir;
+    make_path($counter_dir);
     while (my $row = $sth2->fetchrow_arrayref) {
         my ($page_id, $views) = @$row;
         my $page_counter_dir = "$counter_dir/$page_id";
@@ -281,7 +285,7 @@ sub export_attachments {
     my $name   = shift;
 
     my $plugin_dir = $self->ws_dir('plugin' => 'attachments');
-    make_path $plugin_dir or die "Cannot make $plugin_dir: $!";
+    make_path($plugin_dir) or die "Cannot make $plugin_dir: $!";
     my $ws = $self->workspace;
 
     my $sth = sql_execute(q{
@@ -296,7 +300,9 @@ sub export_attachments {
         $row->{workspace} = $ws;
         my $att = $atts->_new_from_row($row);
         my $dir = "$plugin_dir/".$att->page_id;
-        make_path $dir or die "can't write attachment: $!";
+        unless (-d $dir) {
+            make_path($dir) or die "can't write attachment: $dir $!";
+        }
         $att->export_to_dir($dir);
     }
 }
