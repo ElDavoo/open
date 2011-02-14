@@ -563,6 +563,8 @@ Or, for INSERT
 
     INSERT INTO foo (foo_id,body) VALUES ($2,$1)
 
+The C<$sth> is returned if you need to use RETURNING clauses.
+
 =cut
 
 sub sql_saveblob {
@@ -588,6 +590,8 @@ sub sql_saveblob {
     }
     $sth->execute()
         or croak "sql_saveblob: execute failed: ".$sth->errstr;
+    croak "sql_saveblob: failed to insert/update any rows"
+        unless $sth->rows >= 1;
     return $sth;
 }
 
