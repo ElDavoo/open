@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 30;
+use Test::Socialtext tests => 31;
 fixtures(qw( empty ));
 
 use File::Basename ();
@@ -18,8 +18,12 @@ my $ws   = $hub->current_workspace;
 my $user = $hub->current_user;
 my $test_dir = Socialtext::AppConfig->test_dir();
 
-my $private_id = Test::Socialtext->create_unique_id();
-$user->update_store(private_external_id => $private_id);
+my $private_id  = Test::Socialtext->create_unique_id();
+my $middle_name = 'Ulysses';
+$user->update_store(
+    middle_name         => $middle_name,
+    private_external_id => $private_id,
+);
 
 Export_includes_meta_info: {
    $ws->_dump_meta_to_yaml_file( $test_dir );
@@ -63,6 +67,8 @@ Export_users_dumped: {
         'check email address for first user in user dump' );
     is( $users_dump->[0]{creator_username}, 'system-user',
         'check creator name for first user in user dump' );
+    is $users_dump->[0]{middle_name}, $middle_name,
+        'check middle name for first user in user dump';
     is( $users_dump->[0]{private_external_id}, $private_id,
         'check private/external id for first user in user dump' );
     if ( $users_dump->[0]{user_id} ) {
