@@ -342,6 +342,10 @@ sub _update_group_members {
             $seen_set->set($user_id);
             next if ($member_set->get($user_id));
 
+            # If the User has been explicitly de-activated, DO NOT add them
+            # back into an LDAP Group; they're supposed to be deactivated.
+            next if ($user->is_deactivated);
+
             # it's a user, but they don't have a role.  Give them the default
             # role in the group.
             TU && warn "ADD $dn";
