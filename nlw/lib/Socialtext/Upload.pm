@@ -87,7 +87,9 @@ sub Create {
     my $id = sql_nextval('attachment_id_seq');
     my $uuid = $p{uuid} || new_uuid();
 
-    my $filename = $p{filename};
+    my $filename = ensure_is_utf8($p{filename});
+    $filename =~ s/[\/\\]+$//; # strip slashes like in clean_filename()
+    $filename =~ s/^.*[\/\\]//;
     my $disk_filename = $class->_build_disk_filename($uuid);
 
     my ($g, $tmp_store, $content_length, $sref);
@@ -445,7 +447,7 @@ sub binary_contents {
 sub copy_to_file {
     my ($self, $target) = @_;
     my $blob;
-    open my $fh, '>:raw', $target; # Fatal
+    open my $fh, '>:mmap', $target; # Fatal
     $self->binary_contents(\$blob); # either maps or singleblobs
     my $wrote = syswrite $fh, $blob;
     die "failed to copy to file: $_" unless $wrote == length($blob);

@@ -1185,8 +1185,8 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#. (tag)
 #. (file)
+#. (tag)
 #: share/skin/s2/template/element/jst/attachment/queue:5 share/skin/s2/template/element/jst/tag/queue:4
 msgid "Remove %1 from the queue"
 msgstr ""

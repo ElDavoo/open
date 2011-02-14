@@ -360,8 +360,8 @@ sub _revision_id_changed {
     return;
 }
 
-sub load { carp "load() is now a no-op for Pages"; }
-sub load_content { carp "load_content() is now a no-op for Pages"; }
+sub load { Carp::cluck "load() is now a no-op for Pages"; }
+sub load_content { Carp::cluck "load_content() is now a no-op for Pages"; }
 
 
 sub createtime_for_user {
@@ -377,12 +377,12 @@ Readonly my $SignalCommentLength => 250;
 Readonly my $SignalEditLength => 140;
 sub _signal_edit_summary {
     my ($self, $user, $edit_summary, $to_network, $is_comment) = @_;
+    $user //= $self->hub->current_user;
     my $signals = $self->hub->pluggable->plugin_class('signals');
     return unless $signals;
     return unless $user->can_use_plugin('signals');
 
     my $workspace = $self->hub->current_workspace;
-    $user ||= $self->hub->current_user;
 
     # Trim trailing whitespaces first
     $edit_summary =~ s/\s+$//;
@@ -2255,7 +2255,8 @@ sub all_revision_ids {
 
 sub attachments {
     my $self = shift;
-    return @{ $self->hub->attachments->all( page_id => $self->page_id ) };
+    return @{$self->hub->attachments->all(
+        page => $self, page_id => $self->page_id)};
 }
 
 sub _log_page_action {
