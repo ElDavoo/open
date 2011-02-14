@@ -11,7 +11,7 @@ BEGIN {
         exit;
     }
     
-    plan tests => 121;
+    plan tests => 122;
 }
 
 use mocked 'Socialtext::People::Profile', qw(save_ok);
@@ -154,8 +154,8 @@ add_user_to_account_again: {
 }
 
 my $PIRATE_CSV = <<'EOT';
-username,email_address,first_name,last_name,password,position,company,location,work_phone,mobile_phone,home_phone
-guybrush,guybrush@example.com,Guybrush,Threepwood,my_password,Captain,Pirates R. Us,High Seas,123-456-YARR,,123-HIGH-SEA
+username,email_address,first_name,middle_name,last_name,password,position,company,location,work_phone,mobile_phone,home_phone
+guybrush,guybrush@example.com,Guybrush,Ulysses,Threepwood,my_password,Captain,Pirates R. Us,High Seas,123-456-YARR,,123-HIGH-SEA
 EOT
 
 Add_one_user_csv: {
@@ -288,6 +288,7 @@ EOT
             username => 'guybrush',
             password => 'my_password',
             first_name => 'Herman',
+            middle_name => 'Sasafras',
             last_name => 'Toothrot'
         );
         local $Socialtext::People::Profile::Profiles{1}
@@ -307,6 +308,8 @@ EOT
         is_deeply \@failures, [], 'no failure messages';
         is $Socialtext::User::Users{guybrush}->first_name, 'Guybrush',
             'first_name was updated';
+        is $Socialtext::User::Users{guybrush}->middle_name, 'Ulysses',
+            'middle_name was updated';
         is $Socialtext::User::Users{guybrush}->last_name, 'Threepwood',
             'last_name was updated';
     }
@@ -459,7 +462,7 @@ EOT
 Bad_email_address: {
     local $Socialtext::User::Users{lechuck} = undef;
     my $bad_csv = $PIRATE_CSV . <<'EOT';
-lechuck,example.com,Ghost Pirate,LeChuck,my_password,Ghost,Ghost Pirates Inc,Netherworld,,,
+lechuck,example.com,Ghost,Pirate,LeChuck,my_password,Ghost,Ghost Pirates Inc,Netherworld,,,
 EOT
     clear_log();
     my @successes;
@@ -547,7 +550,7 @@ Create_user_with_no_people_installed: {
 
 Missing_username: {
     my $bad_csv = $PIRATE_CSV . <<'EOT';
-,ghost@lechuck.example.com,Ghost Pirate,LeChuck,password,Ghost,Ghost Pirates Inc,Netherworld,,,
+,ghost@lechuck.example.com,Ghost,Pirate,LeChuck,password,Ghost,Ghost Pirates Inc,Netherworld,,,
 EOT
     my @successes;
     my @failures;
@@ -564,7 +567,7 @@ EOT
 
 Missing_email: {
     my $bad_csv = $PIRATE_CSV . <<'EOT';
-lechuck,,Ghost Pirate,LeChuck,password,Ghost,Ghost Pirates Inc,Netherworld,,,
+lechuck,,Ghost,Pirate,LeChuck,password,Ghost,Ghost Pirates Inc,Netherworld,,,
 EOT
     my @successes;
     my @failures;

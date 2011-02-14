@@ -12,7 +12,7 @@ use List::MoreUtils qw/mesh/;
 
 our $Has_People_Installed;
 our @Required_fields = qw/username email_address/;
-our @User_fields = qw/first_name last_name password private_external_id/;
+our @User_fields = qw/first_name middle_name last_name password private_external_id/;
 
 # Note: these fields may not be created, now that fields are treated
 # differently.  Please do some poking around before you change these. (See:
