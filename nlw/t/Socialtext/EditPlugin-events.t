@@ -4,22 +4,15 @@ use strict;
 use warnings;
 use Data::Dumper;
 use mocked 'Socialtext::CGI';
-use mocked 'Apache::Cookie';
 use mocked 'Socialtext::Events', qw/event_ok/;
-use mocked 'Socialtext::WeblogPlugin';
-use mocked 'Socialtext::Hub';
 use Socialtext::Attachments;
 use Test::Socialtext tests => 10;
 
-###############################################################################
-# Fixtures: populated_rdbms
-# - we not only need a DB, but need stuff in it
-# - Graham thinks this is because of the mocked ST::Hub/ST::Workspace
-fixtures(qw( populated_rdbms ));
+fixtures(qw( db ));
 
 BEGIN { use_ok 'Socialtext::EditPlugin' }
 
-my $hub = Socialtext::Hub->new;
+my $hub = create_test_hub();
 
 Edit_save_event: {
     my $ep = setup_plugin();

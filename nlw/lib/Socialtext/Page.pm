@@ -377,12 +377,12 @@ Readonly my $SignalCommentLength => 250;
 Readonly my $SignalEditLength => 140;
 sub _signal_edit_summary {
     my ($self, $user, $edit_summary, $to_network, $is_comment) = @_;
+    $user //= $self->hub->current_user;
     my $signals = $self->hub->pluggable->plugin_class('signals');
     return unless $signals;
     return unless $user->can_use_plugin('signals');
 
     my $workspace = $self->hub->current_workspace;
-    $user ||= $self->hub->current_user;
 
     # Trim trailing whitespaces first
     $edit_summary =~ s/\s+$//;

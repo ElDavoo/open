@@ -166,7 +166,13 @@ sub save {
     my $original_page_id = $self->cgi->original_page_id
         or
         Socialtext::Exception::DataValidation->throw("no original page id");
-    my $page = $self->hub->pages->new_page($original_page_id);
+
+    my $subject = $self->cgi->subject || $self->cgi->page_title;
+    unless ( defined $subject && length $subject ) {
+        Socialtext::Exception::DataValidation->throw(
+            errors => [loc('A page must have a title to be saved.')] );
+    }
+    my $page = $self->hub->pages->new_from_name($subject);
 
     return $self->to_display($page)
         unless $self->hub->checker->check_permission('edit');
@@ -179,14 +185,8 @@ sub save {
         return $self->_edit_contention_screen($page);
     }
 
-    my $subject = $self->cgi->subject || $self->cgi->page_title;
-    unless ( defined $subject && length $subject ) {
-        Socialtext::Exception::DataValidation->throw(
-            errors => [loc('A page must have a title to be saved.')] );
-    }
-
     my $rev = $page->edit_rev();
-    $rev->name($subject);
+    $rev->name($subject); # isn't set by new_from_name($subject) if page exists
 
     {
         my $body = $self->cgi->page_body;
@@ -206,9 +206,7 @@ sub save {
     $rev->tags(\@categories);
 
     $page->update(
-        subject          => $page->title,
-        revision         => $self->cgi->revision || 0,
-        user             => $self->hub->current_user,
+        revision            => $self->cgi->revision || 0,
         signal_edit_summary => 1,
     );
     Socialtext::Events->Record({
@@ -293,20 +291,13 @@ sub _there_is_an_edit_contention {
 }
 
 sub to_display {
-    my $self = shift;
-    my $page = shift;
-    my $edit_mode = shift || 0;
-
+    my ($self, $page, $edit_mode) = @_;
     my $path = Socialtext::WeblogPlugin->compute_redirection_destination(
         page          => $page,
-        caller_action => $self->cgi->caller_action,
+        caller_action => scalar $self->cgi->caller_action,
     );
-
-    if ($edit_mode) {
-        $self->redirect("$path#edit");
-    } else {
-        $self->redirect($path);
-    }
+    $path .= '#edit' if $edit_mode;
+    $self->redirect($path);
 }
 
 sub edit_start  { _add_edit_event(shift, 'edit_start' ) }
