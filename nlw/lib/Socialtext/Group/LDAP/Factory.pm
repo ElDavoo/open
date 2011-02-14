@@ -289,7 +289,7 @@ sub _update_group_members {
         # an optimization for speed.
         next if ($seen_dn{$dn}++);
 
-        my $user_id; 
+        my $user_id;
         eval {
             $user_id = Socialtext::User->ResolveId({driver_unique_id => $dn})
         };
@@ -310,12 +310,12 @@ sub _update_group_members {
         # we couldn't find a user_id because either
         # * the user doesn't exist in our database yet, or
         # * the DN isn't a user; it's either a group or doesn't exist
-        # OR 
+        # OR
         # we did get a user_id, but the user isn't in the group.
 
         my $user;
         eval {
-            sql_txn { 
+            sql_txn {
                 $user = Socialtext::User->new(driver_unique_id => $dn);
                 $user->primary_account($group->primary_account, no_hooks => 1)
                     if $user && !$user_id; # newly created user
