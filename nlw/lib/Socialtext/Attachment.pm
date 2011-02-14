@@ -274,9 +274,7 @@ sub extract {
     # extract the archive, so that must be preserved here.
     my $tmpdir = File::Temp::tempdir(CLEANUP => 1);
     my $archive = "$tmpdir/".$self->clean_filename;
-
-    $self->ensure_stored();
-    File::Copy::copy($self->disk_filename, $archive);
+    $self->copy_to_file($archive);
 
     my @files = Socialtext::ArchiveExtractor->extract(archive => $archive);
     # before everything-in-the-db this used to try to add the archive itself
