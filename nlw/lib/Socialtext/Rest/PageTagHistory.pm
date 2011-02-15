@@ -62,7 +62,7 @@ sub _revision {
 
     return +{
         revision_id => $revision->revision_id,
-        revision_date => $revision->metadata->Date,
+        revision_date => $revision->datetime_utc,
         tags => $revision->tags,
     };
 }
