@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>4.6.0</version>
-  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.6.0.air</url>
-  <description><![CDATA[[4.6.0 - Mon Feb 14 10:52:21 PST 2011]
+  <version>4.6.1</version>
+  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.6.1.air</url>
+  <description><![CDATA[[4.6.1 - Tue Feb 15 10:37:32 PST 2011]
+(Features)
+* OpenSocial Widgets in pages now work in mini-browser and preview pane. {bz: 4933}
+* Syntax-highlighted code blocks now work in mini-browser and preview pane. {bz: 4933}
+
+(Enhancements)
+* Fix "DM with mention of same user is displayed as a mention". {bz: 4942}
+* Fix "Add a video to a signal, but delete the video Title. Save. See 'null'". {bz: 4942}
+* Fix "No video thumbnails in Signal listviews". {bz: 4942}
+
+[4.6.0 - Mon Feb 14 10:52:21 PST 2011]
 (Enhancements)
 * Signals: Fix glitch in displaying embedded video on Windows platforms.
 * Signals: Various performance improvements.
