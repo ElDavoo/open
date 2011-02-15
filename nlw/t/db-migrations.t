@@ -54,7 +54,7 @@ my $latest_schema = $START_SCHEMA; # default, will change to actual latest below
     copy "$real_dir/socialtext-pg-9.sql" => "$fake_dir/socialtext-pg-9.sql";
 }
 
-plan tests => ($latest_schema - $START_SCHEMA) + 2;
+plan tests => ($latest_schema - $START_SCHEMA) + 3;
 
 # Set up the initial database
 diag "loading config...\n";
