@@ -104,6 +104,7 @@ sub populate {
             catch {
                 chomp;
                 warn "Error populating $workspace_name, skipping $dir: $_\n";
+                undef;
             };
             next PAGE unless $page;
 
