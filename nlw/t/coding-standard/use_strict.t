@@ -35,8 +35,8 @@ plan tests => scalar @checkers;
 for my $filename ( @checkers ) {
     my $text = read_file( $filename );
 
-    # either of these is Ok; "use Moose" implies "use strict"
-    my $is_strict = $text =~/^\s*use (?:strict|Moose|Mouse|Moose::Role|MooseX::Singleton)(?:\(\))?;\s*$/m;
+    # either of these is Ok; "use Moose" or "use 5.12.0" both implies "use strict".
+    my $is_strict = $text =~/^\s*use (?:strict|Moose|Mouse|Moose::Role|MooseX::Singleton|5\.12\.0)(?:\(\))?;\s*$/m;
     $is_strict |= ($text =~/^\#!\/bin\/bash/); # Faked out .pl or .pm scripts
     ok $is_strict, $filename;
 }

@@ -232,7 +232,7 @@ proto.create_grammar = function() {
         wikilink: {
             match: /(?:^|[_\W])(\[()(?=[^\s\[\]])(.*?)\](?=[_\W]|$))/,
             filter: function(node) {
-                node._href = '?' + node[2];
+                node._href = node[2];
                 return(node.text || node[2]);
             },
             lookbehind: true
@@ -241,7 +241,7 @@ proto.create_grammar = function() {
             type: 'wikilink',
             match: /(?:"([^"]*)"\s*)(\[(?=[^\s\[\]])(.*?)\](?=[_\W]|$))/,
             filter: function(node) {
-                node._href = '?' + node[2];
+                node._href = node[2];
                 return(node[1] || node[2]);
             }
         },

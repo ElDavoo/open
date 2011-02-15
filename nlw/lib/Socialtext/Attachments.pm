@@ -1,6 +1,6 @@
 package Socialtext::Attachments;
 # @COPYRIGHT@
-use feature ':5.12';
+use 5.12.0;
 use Moose;
 use MooseX::StrictConstructor;
 use List::MoreUtils qw/uniq/;
@@ -162,7 +162,7 @@ sub create {
     my $hub = $self->hub;
     $args{creator} ||= $hub->current_user;
 
-    croak "just specify a page or a page_id, not both, to create an attachment"
+    confess "just specify a page or a page_id, not both, to create an attachment"
         if ($args{page} && $args{page_id});
     
     my $page;

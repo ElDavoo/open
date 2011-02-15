@@ -11,7 +11,7 @@ DEFAULT
 <form id="st-[%sid%]-form" action="[% IF current_workspace; "/$current_workspace.name"; ELSE; "/"; END %]" method="get" name="SearchForm">
   [% IF user.is_guest %]
 
-  <label for="st-[%sid%]-term">[% loc("Search this workspace:") %]</label>
+  <label for="st-[%sid%]-term">[% loc("Search This Workspace:") %]</label>
   <input type="hidden" name="action" value="search" />
 
   [% ELSE %]

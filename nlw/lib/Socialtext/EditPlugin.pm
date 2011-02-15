@@ -1,8 +1,7 @@
 # @COPYRIGHT@
 package Socialtext::EditPlugin;
-use strict;
+use 5.12.0;
 use warnings;
-use feature ':5.12';
 
 use base 'Socialtext::Plugin';
 
@@ -197,17 +196,18 @@ sub save {
         $rev->body_ref(\$body);
     }
 
-    $rev->edit_summary(Socialtext::String::trim($self->cgi->edit_summary||''));
+
 
     my @categories =
       sort keys %{+{map {($_, 1)} split /[\n\r]+/, $self->cgi->header}};
-    my @tags = $self->cgi->add_tag;
+    my @tags =  map { $_ =~ s/(?:^\s+|\s+$)//g; $_; } $self->cgi->add_tag;
     push @categories, @tags;
-    $rev->tags(\@categories);
 
     $page->update(
         revision            => $self->cgi->revision || 0,
         signal_edit_summary => 1,
+        categories => \@categories,
+        edit_summary => Socialtext::String::trim($self->cgi->edit_summary||''),
     );
     Socialtext::Events->Record({
         event_class => 'page',

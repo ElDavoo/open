@@ -1,8 +1,6 @@
 # @COPYRIGHT@
 package Socialtext::EmailReceiver::Base;
-
-use feature ':5.12';
-use strict;
+use 5.12.0;
 use warnings;
 
 our $VERSION = '0.01';

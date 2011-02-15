@@ -1,5 +1,6 @@
 package Socialtext::User;
 # @COPYRIGHT@
+use 5.12.0;
 use Moose;
 
 our $VERSION = '0.01';
@@ -262,11 +263,13 @@ sub create {
 }
 
 sub SystemUser {
-    return shift->new( username => $SystemUsername );
+    state $sysuser = shift->new( username => $SystemUsername );
+    return $sysuser;
 }
 
 sub Guest {
-    return shift->new( username => $GuestUsername );
+    state $guser = shift->new( username => $GuestUsername );
+    return $guser;
 }
 
 sub can_update_store {

@@ -345,6 +345,13 @@ sub switch_rev {
     return $self;
 }
 
+sub original_revision {
+    my $self = shift;
+
+    my $id = $self->original_revision_id;
+    return $self->switch_rev($id);
+}
+
 sub _revision_id_changed {
     my ($self, $new, $old) = @_;
 
@@ -481,6 +488,7 @@ sub update_from_remote {
         subject      => $p{subject},
         $p{date} ? (date => $p{date}) : (),
         signal_edit_summary => $p{signal_edit_summary} || '',
+        signal_edit_to_network => $p{signal_edit_to_network},
     );
 
     $self->update_lock_status($rev->locked, 'skip')
@@ -666,6 +674,7 @@ sub uri {
 
 sub _add_delete_tags {
     my ($self, $tags, $is_add) = @_;
+    return unless scalar(@$tags);
     return unless $self->hub->checker->check_permission('edit');
 
     my $was_mutable = $self->mutable;
@@ -2251,6 +2260,17 @@ sub all_revision_ids {
     }, $self->workspace_id, $self->page_id);
     return sort {$a <=> $b} @$ids if wantarray;
     return $ids;
+}
+
+sub original_revision_id {
+    my $self = shift;
+    my $id = sql_singlevalue(qq{
+        SELECT min(revision_id)
+          FROM page_revision
+         WHERE workspace_id = ? AND page_id = ?
+         GROUP BY workspace_id, page_id
+    }, $self->workspace_id, $self->page_id);
+    return $id;
 }
 
 sub attachments {

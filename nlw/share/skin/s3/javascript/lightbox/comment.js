@@ -154,7 +154,7 @@ GuiEdit.prototype.alarm_on = function() {
 }
 
 GuiEdit.prototype.report_info = function() {
-    alert(loc("selection_start: [_1]", this.selection_start) + "\nselection_end: " +
+    alert("selection_start: " + this.selection_start + "\nselection_end: " +
       this.selection_end + "\nselection: " + this.sel)
 }
 

@@ -1080,7 +1080,7 @@ CREATE TABLE page (
     summary text,
     edit_summary text,
     locked boolean DEFAULT false NOT NULL,
-    tags text[] NOT NULL,
+    tags text[] DEFAULT ARRAY[]::text[] NOT NULL,
     views integer DEFAULT 0 NOT NULL
 );
 

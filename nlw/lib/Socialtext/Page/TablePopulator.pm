@@ -1,6 +1,6 @@
 package Socialtext::Page::TablePopulator;
 # @COPYRIGHT@
-use strict;
+use 5.12.0;
 use warnings;
 use Email::Valid;
 use Socialtext::Workspace;
@@ -103,6 +103,7 @@ sub populate {
             catch {
                 chomp;
                 warn "Error populating $workspace_name, skipping $dir: $_\n";
+                undef;
             };
             next PAGE unless $page;
 
@@ -172,6 +173,8 @@ sub load_page_metadata {
          ORDER BY revision_id DESC
          LIMIT 1
     }, $ws_id, $dir);
+    die "Couldn't find any page_revisions for $ws_id:$dir"
+        unless $sth->rows == 1;
     my $page = $sth->fetchrow_hashref();
 
     # and creation stats
@@ -230,7 +233,7 @@ sub load_revision_metadata {
 
         # Ignore really old pages that have invalid page_ids
         next REV unless Socialtext::Encode::is_valid_utf8($file);
-        try {
+        try { sql_txn {
             my $t2 = time_scope 'load_rev';
             (my $revision_id = $file) =~ s#.+/(.+)\.txt$#$1#;
             my $pagemeta = fetch_metadata($file);
@@ -267,7 +270,7 @@ sub load_revision_metadata {
                 tags => $tags,
             );
 
-            local $dbh->{RaiseError} = 1;
+            local $dbh->{RaiseError} = $sth->{RaiseError} = 1;
             my $n = 1;
             $sth->bind_param($n++, $$body_ref, {pg_type => DBD::Pg::PG_BYTEA});
             for my $col (Socialtext::PageRevision::COLUMNS()) {
@@ -275,7 +278,7 @@ sub load_revision_metadata {
             };
             $sth->execute;
             die "failed to insert $revision_id" unless $sth->rows == 1;
-        }
+        }}
         catch {
             warn "Error parsing revision $ws_dir/$pg_dir/$file, skipping: $_\n";
         };
@@ -304,10 +307,10 @@ sub load_page_attachments {
 
         $sth //= $dbh->prepare_cached(q{
             INSERT INTO page_attachment VALUES (?,?,?,?,?)
-        });
+        }, {RaiseError => 1});
         $sth2 //= $dbh->prepare_cached(q{
             UPDATE attachment SET is_temporary = false WHERE attachment_id = ?
-        });
+        }, {RaiseError => 1});
 
         try {
             my $t2 = time_scope 'load_page_att';
@@ -334,6 +337,12 @@ sub load_page_attachments {
             $meta->{content_length} //= -1;
             my $control = $meta->{control} || '';
             my $deleted = $control eq 'Deleted' ? 1 : 0;
+
+            $meta->{db_filename} //= uri_escape($meta->{subject});
+            unless ($meta->{db_filename}) {
+                die "attachment filename missing\n" if $Noisy;
+                return; # from the try
+            }
 
             my $disk_filename = "$atts_dir/$legacy_id/$meta->{db_filename}";
             my $disk_size = -s $disk_filename;
@@ -435,12 +444,12 @@ sub add_to_db {
     my $sth = $dbh->prepare_cached(qq{INSERT INTO $table VALUES ($ph)})
         or die $dbh->errstr;
     my $row;
-    for $row (@$rows) {
+    for $row (@$rows) { sql_txn {
         $sth->execute(@$row)
             or die "Error during execute - (INSERT INTO $table) - bindings=("
             . join(', ', @$row) . ') - '
             . $sth->errstr;
-    }
+    }}
 }
 
 sub page_exists_in_db {
@@ -477,45 +486,42 @@ sub fetch_metadata {
     return parse_headers($content);
 }
 
-{
-    my %userid_cache;
-
-    # This code inspired by Socialtext::Page::last_edited_by
-    sub editor_to_id {
-        my $email_address = shift || '';
-        unless ( $userid_cache{ $email_address } ) {
-            # We have some very bogus data on our system, so we need to
-            # be very cautious.
-            unless ( Email::Valid->address($email_address) ) {
-                my ($name) = $email_address =~ /([\w-]+)/;
-                $name = 'unknown' unless defined $name;
-                $email_address = $name . '@example.com';
-            }
-
-            # Load or create a new user with the given email.
-            # Email addresses are always written to disk, even for ldap users.
-            my $user = try {
-                Socialtext::User->new(email_address => $email_address);
-            };
-            unless ($user) {
-                warn "Creating user account for '$email_address'\n";
-                try {
-                    $user = Socialtext::User->create(
-                        email_address => $email_address,
-                        username      => $email_address,
-                    );
-                }
-                catch {
-                    warn "Failed to create user '$email_address', ".
-                         "defaulting to system-user\n";
-                };
-                $user ||= Socialtext::User->SystemUser();
-            }
-
-            $userid_cache{ $email_address } = $user->user_id;
+# This code inspired by Socialtext::Page::last_edited_by
+sub editor_to_id {
+    my $email_address = shift || '';
+    state %userid_cache;
+    unless ( $userid_cache{ $email_address } ) {
+        # We have some very bogus data on our system, so we need to
+        # be very cautious.
+        unless ( Email::Valid->address($email_address) ) {
+            my ($name) = $email_address =~ /([\w-]+)/;
+            $name = 'unknown' unless defined $name;
+            $email_address = $name . '@example.com';
         }
-        return $userid_cache{ $email_address };
+
+        # Load or create a new user with the given email.
+        # Email addresses are always written to disk, even for ldap users.
+        my $user = try {
+            Socialtext::User->new(email_address => $email_address);
+        };
+        unless ($user) {
+            warn "Creating user account for '$email_address'\n";
+            try {
+                $user = Socialtext::User->create(
+                    email_address => $email_address,
+                    username      => $email_address,
+                );
+            }
+            catch {
+                warn "Failed to create user '$email_address', ".
+                     "defaulting to system-user: $_\n";
+            };
+            $user ||= Socialtext::User->SystemUser();
+        }
+
+        $userid_cache{ $email_address } = $user->user_id;
     }
+    return $userid_cache{ $email_address };
 }
 
 sub fix_relative_page_link {

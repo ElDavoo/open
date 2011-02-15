@@ -1,0 +1,42 @@
+| *Comment* | Test Case: Mobile Signals to Groups |  |
+
+| set | msg_user | mstg_user_%%start_time%%@david.socialtext.net |
+| set | acct1 | a_acct_%%start_time%% |
+| set | acct2 | b_acct_%%start_time%% |
+| set | group11 | a_group_%%start_time%% |
+| set | group12 | b_group_%%start_time%% |
+| set | group21 | group_%%start_time%% |
+
+| create_account | %%acct1%% |  |  |
+| create_account | %%acct2%% |  |  |
+| create_user | %%msg_user%% | %%password%% | %%acct1%% |
+| st-admin | add-member --account %%acct2%% --email %%msg_user%% | now has the role |  |
+| create-group | %%group11%% | %%acct1%% | %%msg_user%% |
+| set | group11_id | %%group_id%% |  |
+| create-group | %%group12%% | %%acct1%% | %%msg_user%% |
+| set | group12_id | %%group_id%% |  |
+| create-group | %%group21%% | %%acct2%% | %%msg_user%% |
+| set | group21_id | %%group_id%% |  |
+
+| *Comment* | Test Case: Mobile Signals to Group check sort order in dropdown |  |
+| st-logoutin | %%msg_user%% | %%password%% |
+| open_ok | /st/m/signals |  |
+| wait_for_element_visible_ok | link=%%acct1%% (primary, 1 user) | 30000 |
+| mouseOver | link=%%acct1%% (primary, 1 user) |  |
+| wait_for_element_visible_ok | //a[contains(text(),%%group11%%)] | 30000 |
+| wait_for_element_visible_ok | //a[contains(text(),%%group12%%)] | 30000 |
+| wait_for_element_visible_ok | //a[contains(text(),%%acct2%%)] | 30000 |
+| wait_for_element_visible_ok | //a[contains(text(),%%group21%%)] | 30000 |
+| text_like | qr/%%acct1%%.+\.\.\..+%%group11%%.+\.\.\..+%%group12%%.+%%acct2%%.+\.\.\..+%%group21%%/ |  |
+
+| *Comment* | Test Case: Mobile Signals send signal to one group |  |
+| click_ok | //a[contains(text(),%%group11%%)] |  |
+| wait_for_element_visible_ok | //body[@class='signals'] | 30000 |
+| type_ok | //body[@class='signals'] | signal to %%group11%% |
+| click_ok | mobile_post |  |
+
+| *Comment* | Test Case: Mobile Signals to Group TEARDOWN |  |
+| st-admin | deactivate-user --email %%msg_user%% | removed |
+| delete-group | %%group11_id%% |  |
+| delete-group | %%group12_id%% |  |
+| delete-group | %%group21_id%% |  |

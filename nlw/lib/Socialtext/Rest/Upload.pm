@@ -50,11 +50,6 @@ sub _GET {
         return $self->http_404_force;
     }
 
-    my $file = $upload->temp_filename;
-    unless (-f $file) {
-        return $self->http_404_force;
-    }
-
     # Support image resizing /?resize=group:small will resize for a
     # Socialtext::Group::Photo using the small version
     my $blob;
@@ -71,6 +66,12 @@ sub _GET {
         if ($@) {
             warn "while looking for resizer: $@";
             die "Unable to resize image.\n";
+        }
+
+        $upload->ensure_stored;
+        my $file = $upload->disk_filename;
+        unless (-f $file) {
+            return $self->http_404_force;
         }
 
         try  {

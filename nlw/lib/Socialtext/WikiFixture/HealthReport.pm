@@ -46,7 +46,7 @@ Runs the appliance health batch job as super-user.  Will only work on a vz.
 Sets the variables:
 
 health_report_url: The url output of the call to the batch job that is the local report URL
-health_name_www2: the english pagename that will be set on he www2/st-reports-test workspace when the report is completed
+health_name: the english pagename that will be set on local health reports workspace when the report is completed
 
 =cut
 
@@ -69,7 +69,7 @@ sub st_create_health_report {
              my $date_stamp = $1;
              $date_stamp=~s/_/-/g;
              my $pagename = $ENV{WIKIEMAIL} . ' - Health - ' . $date_stamp;
-             $self->{health_name_www2} = $pagename;
+             $self->{health_name} = $pagename;
          } else {
              ok(0, "failed in match 2 of st_create_health_report: '$output'\n");
          }
@@ -100,7 +100,7 @@ You can find documentation for this module with the perldoc command.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2010 Socialtext, all rights reserved.
+Copyright 2011 Socialtext, all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.

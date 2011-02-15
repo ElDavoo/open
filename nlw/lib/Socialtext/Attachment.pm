@@ -1,6 +1,6 @@
 package Socialtext::Attachment;
 # @COPYRIGHT@
-use feature ':5.12';
+use 5.12.0;
 use Moose;
 use MooseX::StrictConstructor;
 use Carp qw/croak confess/;
