@@ -345,6 +345,13 @@ sub switch_rev {
     return $self;
 }
 
+sub original_revision {
+    my $self = shift;
+
+    my $id = $self->original_revision_id;
+    return $self->switch_rev($id);
+}
+
 sub _revision_id_changed {
     my ($self, $new, $old) = @_;
 
@@ -2253,6 +2260,17 @@ sub all_revision_ids {
     }, $self->workspace_id, $self->page_id);
     return sort {$a <=> $b} @$ids if wantarray;
     return $ids;
+}
+
+sub original_revision_id {
+    my $self = shift;
+    my $id = sql_singlevalue(qq{
+        SELECT min(revision_id)
+          FROM page_revision
+         WHERE workspace_id = ? AND page_id = ?
+         GROUP BY workspace_id, page_id
+    }, $self->workspace_id, $self->page_id);
+    return $id;
 }
 
 sub attachments {
