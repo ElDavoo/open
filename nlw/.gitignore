@@ -571,3 +571,4 @@ lib/Socialtext/Gadgets/Container/Page.pm
 t/wikitests/test-data/socialcalc/sample_ss2.csv
 t/wikitests/socialcalc/csv-forumulas-put.wiki
 t/Socialtext/Gadgets/Container/Dashboard-central_workspace.t
+t/wikitests/socialcalc/csv-numbers-put.wiki
