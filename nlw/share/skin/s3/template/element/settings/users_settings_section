@@ -31,7 +31,7 @@
   <dl class="form">
     <dt><label>[% loc('Change Password') %]</label></dt>
     <dd class="noMargin">
-      [% loc('New passwords must be atleast 6 characters long.') %]
+      [% loc('New passwords must be at least 6 characters long.') %]
       [% loc('Use your email address and new password to log in again.') %]
     </dd>
     <dd>
