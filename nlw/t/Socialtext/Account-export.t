@@ -6,7 +6,7 @@ use warnings;
 use YAML qw(LoadFile);
 use File::Temp qw(tempdir);
 use File::Path qw(rmtree);
-use Test::Socialtext tests => 29;
+use Test::Socialtext tests => 32;
 use Test::Deep;
 
 ###############################################################################
@@ -266,5 +266,22 @@ Export_signals_to_group: {
         users   => [$user],
         groups  => [$group],
         signals => [$sig],
+    );
+}
+
+###############################################################################
+# TEST: Account export includes a User's "middle_name".
+includes_users_middle_name: {
+    my $middle_name = 'Ulysses';
+    my $account     = create_test_account_bypassing_factory();
+    my $user        = create_test_user(
+        account     => $account,
+        middle_name => $middle_name,
+    );
+
+    account_export_contains(
+        prefix  => "Includes User' middle name",
+        account => $account,
+        users   => [$user],
     );
 }
