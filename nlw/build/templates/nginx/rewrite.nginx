@@ -20,7 +20,7 @@
     # make sure user agents that don't do gzipped javascript use
     # the uncompressed version - Note SAFARI!!!
     # ALSO notice that this RewriteRule is NOT the last one in the chain
-    if ($http_user_agent ~* Safari) {
+    if ($http_user_agent ~* AppleWebKit) {
         rewrite ^(.*)\.js\.gz$ $1.js permanent;
     }
     if ($http_accept_encoding !~ gzip) {

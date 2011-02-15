@@ -156,7 +156,7 @@
 
     location ~ "^/static/.+\.js$" {
       # Safari doesn't like compressed JS, so *only* compress HTML content
-      gzip_disable     "Safari";
+      gzip_disable     "AppleWebKit";
     }
 
     location /nginx_status {
