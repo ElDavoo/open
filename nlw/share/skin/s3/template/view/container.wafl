@@ -1,3 +1,4 @@
+<script src="[% wiki.skin_uri('s3') %]/javascript/socialtext-s3.js.gz"></script>
 [% INCLUDE element/container_head share="/nlw/plugin/widgets" %]
 [% SET gadget = container.gadgets.0.0 %]
 [% SET num = "wafl-" _ gadget.id %]
@@ -27,10 +28,25 @@
     <div class="widgetBottom"><div class="widgetBottomRight"></div></div><!-- widgetBottom END -->
 </div>
 <script>
+var nlw_make_s2_path = nlw_make_s2_path || function (rest) {
+    return "/static/skin/s2" + rest;
+}
+var nlw_make_s3_path = nlw_make_s3_path || function (rest) {
+    return "/static/skin/s3" + rest;
+}
+var nlw_make_skin_path = nlw_make_skin_path || function (rest) {
+    return "/static/skin/s3" + rest;
+}
+var nlw_make_static_path = nlw_make_static_path || function (rest) {
+    return "/static/" + rest;
+}
+var nlw_make_plugin_path = nlw_make_plugin_path || function (rest) {
+    return "/static/".replace(/static/, 'nlw/plugin') + rest;
+}
 var Socialtext = Socialtext || {};
 var gadgets = gadgets || {};
 gadgets.container = gadgets.container || new gadgets.Container();
-if (Socialtext.wiki_id && Socialtext.page_id ) {
+if (!Socialtext.version || (Socialtext.wiki_id && Socialtext.page_id)) {
     gadgets.container.base_url = '/data/wafl-containers/[% container.name |uri %]';
     gadgets.container.registerServices();
     gadgets.container.updateIframeNames();
