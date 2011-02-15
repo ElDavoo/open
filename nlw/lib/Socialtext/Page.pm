@@ -481,6 +481,7 @@ sub update_from_remote {
         subject      => $p{subject},
         $p{date} ? (date => $p{date}) : (),
         signal_edit_summary => $p{signal_edit_summary} || '',
+        signal_edit_to_network => $p{signal_edit_to_network},
     );
 
     $self->update_lock_status($rev->locked, 'skip')
