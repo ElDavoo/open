@@ -3757,7 +3757,7 @@ sub _require_page_attachment {
     catch {
         my $ws = $page->hub->current_workspace->name;
         $self->_error(qq(There is no attachment with the id ).
-            qq("$opts{attachment}" in the $ws workspace\n"));
+            qq("$opts{attachment}" in the $ws workspace.\n"));
     };
 }
 
