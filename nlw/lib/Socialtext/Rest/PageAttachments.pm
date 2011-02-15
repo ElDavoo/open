@@ -51,7 +51,6 @@ sub POST {
         creator      => $rest->user,
         Content_type => $content_type,
         page         => $page,
-        page_id      => $page->id,
         embed        => 0, # don't inline a wafl for the ReST API
     );
 
