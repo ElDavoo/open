@@ -2,6 +2,7 @@ package Socialtext::Page::TablePopulator;
 # @COPYRIGHT@
 use strict;
 use warnings;
+use feature ':5.12';
 use Email::Valid;
 use Socialtext::Workspace;
 use Socialtext::Paths;
@@ -482,45 +483,42 @@ sub fetch_metadata {
     return parse_headers($content);
 }
 
-{
-    my %userid_cache;
-
-    # This code inspired by Socialtext::Page::last_edited_by
-    sub editor_to_id {
-        my $email_address = shift || '';
-        unless ( $userid_cache{ $email_address } ) {
-            # We have some very bogus data on our system, so we need to
-            # be very cautious.
-            unless ( Email::Valid->address($email_address) ) {
-                my ($name) = $email_address =~ /([\w-]+)/;
-                $name = 'unknown' unless defined $name;
-                $email_address = $name . '@example.com';
-            }
-
-            # Load or create a new user with the given email.
-            # Email addresses are always written to disk, even for ldap users.
-            my $user = try {
-                Socialtext::User->new(email_address => $email_address);
-            };
-            unless ($user) {
-                warn "Creating user account for '$email_address'\n";
-                try {
-                    $user = Socialtext::User->create(
-                        email_address => $email_address,
-                        username      => $email_address,
-                    );
-                }
-                catch {
-                    warn "Failed to create user '$email_address', ".
-                         "defaulting to system-user: $_\n";
-                };
-                $user ||= Socialtext::User->SystemUser();
-            }
-
-            $userid_cache{ $email_address } = $user->user_id;
+# This code inspired by Socialtext::Page::last_edited_by
+sub editor_to_id {
+    my $email_address = shift || '';
+    state %userid_cache;
+    unless ( $userid_cache{ $email_address } ) {
+        # We have some very bogus data on our system, so we need to
+        # be very cautious.
+        unless ( Email::Valid->address($email_address) ) {
+            my ($name) = $email_address =~ /([\w-]+)/;
+            $name = 'unknown' unless defined $name;
+            $email_address = $name . '@example.com';
         }
-        return $userid_cache{ $email_address };
+
+        # Load or create a new user with the given email.
+        # Email addresses are always written to disk, even for ldap users.
+        my $user = try {
+            Socialtext::User->new(email_address => $email_address);
+        };
+        unless ($user) {
+            warn "Creating user account for '$email_address'\n";
+            try {
+                $user = Socialtext::User->create(
+                    email_address => $email_address,
+                    username      => $email_address,
+                );
+            }
+            catch {
+                warn "Failed to create user '$email_address', ".
+                     "defaulting to system-user: $_\n";
+            };
+            $user ||= Socialtext::User->SystemUser();
+        }
+
+        $userid_cache{ $email_address } = $user->user_id;
     }
+    return $userid_cache{ $email_address };
 }
 
 sub fix_relative_page_link {
