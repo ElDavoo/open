@@ -168,7 +168,7 @@ sub _create_workspace {
         name => $info->{account_name} );
 
     my $ws = Socialtext::Workspace->create(
-        title => $info->{title} || $self->{new_name},
+        title => $info->{title},
         name => $self->{new_name},
         created_by_user_id => $creator->user_id,
         account_id         => $account->account_id,
