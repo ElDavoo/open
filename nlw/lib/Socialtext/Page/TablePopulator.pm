@@ -338,6 +338,7 @@ sub load_page_attachments {
             my $control = $meta->{control} || '';
             my $deleted = $control eq 'Deleted' ? 1 : 0;
 
+            $meta->{db_filename} //= uri_escape($meta->{subject});
             unless ($meta->{db_filename}) {
                 die "attachment filename missing\n" if $Noisy;
                 return; # from the try
