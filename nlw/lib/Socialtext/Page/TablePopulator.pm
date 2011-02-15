@@ -335,6 +335,11 @@ sub load_page_attachments {
             my $control = $meta->{control} || '';
             my $deleted = $control eq 'Deleted' ? 1 : 0;
 
+            unless ($meta->{db_filename}) {
+                die "attachment filename missing\n" if $Noisy;
+                return; # from the try
+            }
+
             my $disk_filename = "$atts_dir/$legacy_id/$meta->{db_filename}";
             my $disk_size = -s $disk_filename;
             if (!-f _ || !-r _) {
