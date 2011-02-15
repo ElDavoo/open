@@ -425,8 +425,7 @@ sub created_at {
 
     my $page = $self->get_page(%p);
     return undef if (!defined($page));
-    my $original_revision = $page->original_revision;
-    return $original_revision->datetime_for_user;
+    return $self->hub->timezone->get_date_user($page->create_time);
 }
 
 sub created_by {
@@ -439,8 +438,7 @@ sub created_by {
 
     my $page = $self->get_page(%p);
     return undef if (!defined($page));
-    my $original_revision = $page->original_revision;
-    return $original_revision->last_edited_by;
+    return $page->creator;
 }
 
 sub get_revision {
