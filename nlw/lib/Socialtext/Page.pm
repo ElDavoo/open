@@ -666,6 +666,7 @@ sub uri {
 
 sub _add_delete_tags {
     my ($self, $tags, $is_add) = @_;
+    return unless scalar(@$tags);
     return unless $self->hub->checker->check_permission('edit');
 
     my $was_mutable = $self->mutable;
