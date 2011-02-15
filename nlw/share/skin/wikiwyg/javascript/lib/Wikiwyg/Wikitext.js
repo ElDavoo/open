@@ -1046,7 +1046,7 @@ proto.href_is_wiki_link = function(href) {
         href = location.href;
 
     // check that the url is in this workspace
-    var up_to_wksp = /^https?:\/\/[^\/]+\/[^\/#]+/;
+    var up_to_wksp = /^https?:\/\/[^\/]+\/[^\/#]+\//;
     var no_page_input   = href.match(up_to_wksp);
     var no_page_current = location.href.match(up_to_wksp);
 
@@ -2456,7 +2456,7 @@ proto.make_wikitext_link = function(label, href, elem) {
 }
 
 proto.handle_wiki_link = function(label, href, elem) {
-    var up_to_wksp = /^https?:\/\/[^\/]+\/[^\/]+/;
+    var up_to_wksp = /^https?:\/\/[^\/]+\/[^\/]+\//;
 
     var href_orig = href;
     href = href.replace(/.*\baction=display;is_incipient=1;page_name=/, '');
