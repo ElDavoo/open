@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 13;
+use Test::Socialtext tests => 15;
 
 fixtures(qw( db ));
 
@@ -168,4 +168,29 @@ proper_name: {
     $profile->save();
 
     is $user->proper_name, $proper, 'Proper Name is still first/middle/last when Preferred Name is present';
+}
+
+###############################################################################
+# TEST: "display_name" is set properly on initial User creation
+display_name_set_on_create: {
+    my $acct = create_test_account_bypassing_factory();
+
+    # First and Last name only
+    my $user = create_test_user(
+        first_name  => 'Davey',
+        last_name   => 'Jones',
+        account     => $acct,
+    );
+    is $user->display_name, 'Davey Jones',
+        'display_name calculated at User creation, w/First+Last';
+
+    # First, Middle, and Last name
+    $user = create_test_user(
+        first_name  => 'Oscar',
+        middle_name => 'Emmanuel',
+        last_name   => 'Peterson',
+        account     => $acct,
+    );
+    is $user->display_name, 'Oscar Emmanuel Peterson',
+        'display_name calculated at User creation, w/First+Middle+Last';
 }
