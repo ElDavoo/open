@@ -233,7 +233,7 @@ sub load_revision_metadata {
 
         # Ignore really old pages that have invalid page_ids
         next REV unless Socialtext::Encode::is_valid_utf8($file);
-        try {
+        try { sql_txn {
             my $t2 = time_scope 'load_rev';
             (my $revision_id = $file) =~ s#.+/(.+)\.txt$#$1#;
             my $pagemeta = fetch_metadata($file);
@@ -270,7 +270,7 @@ sub load_revision_metadata {
                 tags => $tags,
             );
 
-            local $dbh->{RaiseError} = 1;
+            local $dbh->{RaiseError} = $sth->{RaiseError} = 1;
             my $n = 1;
             $sth->bind_param($n++, $$body_ref, {pg_type => DBD::Pg::PG_BYTEA});
             for my $col (Socialtext::PageRevision::COLUMNS()) {
@@ -278,7 +278,7 @@ sub load_revision_metadata {
             };
             $sth->execute;
             die "failed to insert $revision_id" unless $sth->rows == 1;
-        }
+        }}
         catch {
             warn "Error parsing revision $ws_dir/$pg_dir/$file, skipping: $_\n";
         };
@@ -307,10 +307,10 @@ sub load_page_attachments {
 
         $sth //= $dbh->prepare_cached(q{
             INSERT INTO page_attachment VALUES (?,?,?,?,?)
-        });
+        }, {RaiseError => 1});
         $sth2 //= $dbh->prepare_cached(q{
             UPDATE attachment SET is_temporary = false WHERE attachment_id = ?
-        });
+        }, {RaiseError => 1});
 
         try {
             my $t2 = time_scope 'load_page_att';
@@ -443,12 +443,12 @@ sub add_to_db {
     my $sth = $dbh->prepare_cached(qq{INSERT INTO $table VALUES ($ph)})
         or die $dbh->errstr;
     my $row;
-    for $row (@$rows) {
+    for $row (@$rows) { sql_txn {
         $sth->execute(@$row)
             or die "Error during execute - (INSERT INTO $table) - bindings=("
             . join(', ', @$row) . ') - '
             . $sth->errstr;
-    }
+    }}
 }
 
 sub page_exists_in_db {
