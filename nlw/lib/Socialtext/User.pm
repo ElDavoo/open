@@ -1,7 +1,7 @@
 package Socialtext::User;
 # @COPYRIGHT@
+use 5.12.0;
 use Moose;
-use feature ':5.12';
 
 our $VERSION = '0.01';
 

@@ -1,6 +1,6 @@
 package Socialtext::Attachments;
 # @COPYRIGHT@
-use feature ':5.12';
+use 5.12.0;
 use Moose;
 use MooseX::StrictConstructor;
 use List::MoreUtils qw/uniq/;

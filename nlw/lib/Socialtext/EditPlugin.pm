@@ -1,8 +1,7 @@
 # @COPYRIGHT@
 package Socialtext::EditPlugin;
-use strict;
+use 5.12.0;
 use warnings;
-use feature ':5.12';
 
 use base 'Socialtext::Plugin';
 
