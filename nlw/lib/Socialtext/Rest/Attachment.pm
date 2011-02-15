@@ -29,7 +29,6 @@ sub GET {
     if ($attachment) {
         my ($file,$size) = $attachment->prepare_to_serve(
             $self->params->{version}, 'protected');
-        warn "FILE $file, SIZE $size";
         try { $self->_serve_file($rest, $attachment, $file, $size) }
         catch { 
             $rv = $self->_invalid_attachment($rest, $_);

@@ -358,7 +358,7 @@ sub load_page_attachments {
                 created_at     => $meta->{date},
                 filename       => $meta->{subject},
                 content_length => $disk_size,
-                md5            => $meta->{content_md5}, # possibly ignored
+                content_md5    => $meta->{content_md5}, # possibly ignored
                 no_log         => 1,
                 db_only        => 1, # don't copy to storage area
             );
@@ -375,7 +375,7 @@ sub load_page_attachments {
             # Don't recalculate the mime_type (which requires a slow
             # shell-out) if we have it at hand.  This saves about 40% time for
             # help-en.
-            $args{trust_mime_type} = 1 if $args{mime_type}; # big for perf
+            $args{trust_mime_type} = 1 if $args{mime_type};
 
             sql_txn {
                 my $t3 = time_scope 'upload_att';
@@ -426,11 +426,7 @@ sub add_to_db {
     my $table = shift;
     my $rows = shift;
     my $t = time_scope "add_to_db $table";
-
-    unless (@$rows) {
-        warn "No rows to add to $table.\n";
-        return;
-    }
+    return unless @$rows;
 
     my $dbh = get_dbh();
 

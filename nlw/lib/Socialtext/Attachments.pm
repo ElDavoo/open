@@ -65,7 +65,7 @@ sub all {
     my $ws_id    = $self->hub->current_workspace->workspace_id;
 
     my $sql = q{
-        SELECT }.COLUMNS_STR.q{ FROM page_attachment pa
+        SELECT }.COLUMNS_STR.qq{ FROM page_attachment pa
           JOIN attachment a USING (attachment_id)
          WHERE workspace_id = ? AND page_id = ?
            AND NOT deleted

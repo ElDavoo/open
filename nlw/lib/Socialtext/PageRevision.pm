@@ -529,7 +529,44 @@ sub store {
     return $self;
 }
 
-__PACKAGE__->meta->make_immutable;
+sub Export_to_file_from_row {
+    my ($class, $row, $fh) = @_;
+
+    my $editor_email =
+        Socialtext::User->new(user_id => $row->{editor_id})->email_address;
+    $row->{edit_time_utc} =~ s/Z$/ GMT/;
+    $row->{summary} //= '';
+    $row->{summary} =~ s/\n//g;
+    $row->{edit_summary} //= '';
+    $row->{edit_summary} =~ s/\n//g;
+
+    print $fh <<EOH;
+Subject: $row->{name}
+From: $editor_email
+Date: $row->{edit_time_utc}
+Revision: $row->{revision_num}
+Type: $row->{page_type}
+Summary: $row->{summary}
+RevisionSummary: $row->{edit_summary}
+Encoding: utf8
+EOH
+    print $fh "Locked: 1\n" if $row->{locked};
+    print $fh "Control: Deleted\n" if $row->{deleted};
+    print $fh "Category: $_\n" for @{$row->{tags}};
+    print $fh "\n";
+
+    my $blob;
+    sql_singleblob(\$blob, q{
+        SELECT body FROM page_revision
+         WHERE workspace_id = $1 AND page_id = $2 AND revision_id = $3
+    }, @$row{qw(workspace_id page_id revision_id)});
+    Encode::_utf8_on($blob); # always on for rev-blobs as BYTEA
+    print $fh $blob;
+
+    return;
+}
+
+__PACKAGE__->meta->make_immutable(inline_constructor => 1);
 1;
 
 __END__

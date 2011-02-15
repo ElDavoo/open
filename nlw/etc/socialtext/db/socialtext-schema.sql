@@ -63,6 +63,19 @@ CREATE FUNCTION auto_hash_signal() RETURNS trigger
     END
 $$;
 
+CREATE FUNCTION auto_md5_upload() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+        IF NEW.body IS NOT NULL AND NEW.content_md5 IS NULL
+        THEN
+            NEW.content_md5 =
+                encode(decode(md5(NEW.body),'hex'),'base64');
+        END IF;
+        return NEW;
+    END
+$$;
+
 CREATE FUNCTION auto_vivify_user_rollups() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
@@ -790,6 +803,7 @@ CREATE TABLE attachment (
     is_image boolean NOT NULL,
     is_temporary boolean DEFAULT false NOT NULL,
     content_length integer NOT NULL,
+    content_md5 character(24),
     body bytea
 );
 
@@ -2187,6 +2201,8 @@ CREATE UNIQUE INDEX workspace_user_set_id
 	    ON "Workspace" (user_set_id);
 
 CREATE TRIGGER account_user_set_delete AFTER DELETE ON "Account" FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
+
+CREATE TRIGGER attachment_md5 BEFORE INSERT OR UPDATE ON attachment FOR EACH ROW EXECUTE PROCEDURE auto_md5_upload();
 
 CREATE TRIGGER group_user_set_delete AFTER DELETE ON groups FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
 

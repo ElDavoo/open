@@ -1,11 +1,12 @@
 #!perl
 use warnings;
 use strict;
-use Test::Socialtext tests => 47;
+use Test::Socialtext tests => 51;
 use Test::Socialtext::Fatal;
 use Socialtext::SQL qw/:txn :exec :time/;
 use File::Temp qw/tempdir tempfile/;
 use File::Copy qw/copy move/;
+use Digest::MD5 qw/md5_base64/;
 use DateTime;
 
 use ok 'Socialtext::Upload';
@@ -48,6 +49,7 @@ check_fk_constraints: {
 }
 
 my $test_body = "Some attachment data\n$^T\n";
+my $expect_md5 = md5_base64($test_body)."==";
 my $user = create_test_user();
 my $tmp = File::Temp->new(CLEANUP => 1);
 print $tmp $test_body;
@@ -87,6 +89,7 @@ create: {
     ok $ul->is_temporary, "is temporary";
     is $ul->filename, "ultra super happy go-time fancy pants.txt";
     is $ul->short_name, "ultra_super_happ...txt";
+    is $ul->content_md5, $expect_md5, "has a content_md5";
     # doesn't really test much:
     is $ul->clean_filename, "ultra super happy go-time fancy pants.txt";
     ok -f $ul->disk_filename, "file exists in storage";
@@ -176,6 +179,22 @@ copy_to_file: {
     my $tmp2 = File::Temp->new(UNLINK => 1);
     is exception { $ul->copy_to_file("$tmp2") }, undef;
     is -s "$tmp", $ul->content_length, "copied the file from disk";
+}
+
+force_md5: {
+    my $ul;
+    is exception { 
+        $ul = Socialtext::Upload->Create(
+            created_at => $creation_time,
+            creator => $user,
+            temp_filename => "$tmp",
+            filename => "fancy.txt",
+            mime_type => 'text/plain; charset=UTF-8',
+            content_md5 => "1234567890123456789012==",
+        );
+    }, undef, "created upload";
+    isa_ok $ul, 'Socialtext::Upload';
+    is $ul->content_md5, "1234567890123456789012==", "preserved old md5";
 }
 
 pass "done";

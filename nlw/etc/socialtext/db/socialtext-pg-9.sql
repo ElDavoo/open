@@ -54,6 +54,19 @@ CREATE FUNCTION _int_union(integer[], integer[]) RETURNS integer[]
     LANGUAGE c IMMUTABLE STRICT
     AS '$libdir/_int', '_int_union';
 
+CREATE FUNCTION auto_md5_upload() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+        IF NEW.body IS NOT NULL AND NEW.content_md5 IS NULL
+        THEN
+            NEW.content_md5 =
+                encode(decode(md5(NEW.body),'hex'),'base64');
+        END IF;
+        return NEW;
+    END
+$$;
+
 CREATE FUNCTION auto_hash_signal() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
@@ -756,6 +769,7 @@ CREATE TABLE attachment (
     is_image boolean NOT NULL,
     is_temporary boolean DEFAULT false NOT NULL,
     content_length integer NOT NULL,
+    content_md5 char(24),
     body bytea
 );
 
@@ -1032,7 +1046,7 @@ CREATE TABLE page (
     summary text,
     edit_summary text,
     locked boolean DEFAULT false NOT NULL,
-    tags text[] NOT NULL,
+    tags text[] DEFAULT ARRAY[]::text[] NOT NULL,
     views integer DEFAULT 0 NOT NULL
 );
 
@@ -2163,6 +2177,9 @@ CREATE TRIGGER user_user_set_delete AFTER DELETE ON users FOR EACH ROW EXECUTE P
 CREATE TRIGGER users_insert AFTER INSERT ON users FOR EACH ROW EXECUTE PROCEDURE auto_vivify_user_rollups();
 
 CREATE TRIGGER workspace_user_set_delete AFTER DELETE ON "Workspace" FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
+
+CREATE TRIGGER attachment_md5 BEFORE INSERT OR UPDATE ON attachment
+    FOR EACH ROW EXECUTE PROCEDURE auto_md5_upload();
 
 ALTER TABLE ONLY account_logo
     ADD CONSTRAINT account_logo_account_fk

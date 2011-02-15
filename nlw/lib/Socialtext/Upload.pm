@@ -34,6 +34,7 @@ has 'attachment_uuid' => (is => 'rw', isa => 'Str.UUID');
 has 'filename' => (is => 'rw', isa => 'UniStr', coerce => 1);
 has 'mime_type' => (is => 'rw', isa => 'Str');
 has 'content_length' => (is => 'rw', isa => 'Int');
+has 'content_md5' => (is => 'rw', isa => 'Maybe[Str]', lazy_build => 1);
 has 'created_at' => (is => 'rw', isa => 'Pg.DateTime', coerce => 1);
 has_user 'creator' => (is => 'rw', st_maybe => 1);
 has 'is_image' => (is => 'rw', isa => 'Bool');
@@ -151,6 +152,9 @@ sub Create {
     # Moose type constraints can cause the create to fail here, hence the txn
     # wrapper.
     my $self = $class->Get(attachment_id => $id);
+
+    # pg will calculate it otherwise:
+    $self->content_md5($p{content_md5}) if $p{content_md5};
     $self->_save_blob($tmp_store,$sref);
 
     unless ($p{db_only}) {
@@ -248,6 +252,7 @@ sub to_hash {
     $hash{created_at} = $self->created_at_str;
     $hash{is_temporary} = $self->is_temporary ? 1 : 0;
     $hash{is_image} = $self->is_image ? 1 : 0;
+    $hash{content_md5} = $self->has_content_md5 ? $self->content_md5 : undef;
 
     if ($viewer && $viewer->is_business_admin) {
         my $filename = $self->disk_filename;
@@ -393,9 +398,14 @@ sub _save_blob {
             $data = '';
         }
     }
-    sql_saveblob(\$data, 
-        q{UPDATE attachment SET body = $1 WHERE attachment_id = $2},
-        $self->attachment_id);
+    my $md5 = $self->has_content_md5 ? $self->content_md5 : undef;
+    my $sth = sql_saveblob(\$data, q{
+        UPDATE attachment SET body = $1, content_md5 = $2
+         WHERE attachment_id = $3
+        RETURNING content_md5
+    }, $md5, $self->attachment_id);
+    my ($new_md5) = $sth->fetchrow_array();
+    $self->content_md5($new_md5);
     return;
 }
 
@@ -489,6 +499,16 @@ sub short_name {
     return $name
       unless $name =~ /^(.{16}).{2,}(\..*)/;
     return "$1..$2";
+}
+
+sub _build_content_md5 {
+    my $self = shift;
+    my $blob;
+    $self->binary_contents(\$blob);
+    return unless defined $blob;
+    my $ctx = Digest::MD5->new();
+    $ctx->add($blob);
+    return $ctx->b64digest . "==";
 }
 
 __PACKAGE__->meta->make_immutable;
