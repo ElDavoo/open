@@ -89,6 +89,7 @@ log_failure_to_auto_create_user: {
         '... failed because we failed to create new user record';
 }
 
+###############################################################################
 # auto-update User info on subsequent request
 auto_update_user: {
     my $guard      = Test::Socialtext::User->snapshot();
