@@ -4,8 +4,8 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 42;
-fixtures(qw( empty ));
+use Test::Socialtext tests => 45;
+fixtures(qw( db ));
 
 use File::Basename ();
 use File::Temp ();
@@ -16,8 +16,11 @@ use IO::File;
 
 use ok 'Socialtext::Workspace::Exporter';
 
-my $hub  = new_hub('empty');
+my $hub  = create_test_hub();
 my $ws   = $hub->current_workspace;
+$ws->title("My Awesome Workspace $^T"); # hack to avoid reindexing
+$ws->update(title => $ws->title);
+my $ws_name = $ws->name;
 my $user = $hub->current_user;
 my $test_dir = Socialtext::AppConfig->test_dir();
 
@@ -62,15 +65,20 @@ Export_includes_logo_and_info: {
     my $wx = new_exporter();
     $wx->export_info();
 
-    my $ws_file = "$test_dir/empty-info.yaml";
+    my $ws_file = "$test_dir/$ws_name-info.yaml";
     ok( -f $ws_file, 'workspace data yaml dump exists' );
 
     my $ws_dump = YAML::LoadFile($ws_file);
     is( $ws_dump->{account_name}, 
         Socialtext::Account->Default->name,
         'account_name is Socialtext in workspace dump' );
-    is( $ws_dump->{creator_username}, 'devnull1@socialtext.com',
+    is( $ws_dump->{creator_username}, $user->username,
         'check creator name in workspace dump' );
+
+    is $ws_dump->{title}, "My Awesome Workspace $^T";
+    ok !exists($ws_dump->{user_set_id}), "no user_set_id";
+    ok !exists($ws_dump->{workspace_id}), "no user_set_id";
+
     my $logo = File::Basename::basename($ws->logo_filename);
     is( $ws_dump->{logo_filename}, $logo,
         'check logo filename' );
@@ -81,11 +89,11 @@ Export_users_dumped: {
     my $wx = new_exporter();
     $wx->export_users();
 
-    my $users_file = "$test_dir/empty-users.yaml";
+    my $users_file = "$test_dir/$ws_name-users.yaml";
     ok( -f $users_file, 'users data yaml dump exists' );
 
     my $users_dump = YAML::LoadFile($users_file);
-    is( $users_dump->[0]{email_address}, 'devnull1@socialtext.com',
+    is( $users_dump->[0]{email_address}, $user->email_address,
         'check email address for first user in user dump' );
     is( $users_dump->[0]{creator_username}, 'system-user',
         'check creator name for first user in user dump' );
@@ -100,7 +108,7 @@ Export_permissions_dumped: {
     my $wx = new_exporter();
     $wx->export_permissions();
 
-    my $users_file = "$test_dir/empty-permissions.yaml";
+    my $users_file = "$test_dir/$ws_name-permissions.yaml";
     ok( -f $users_file, 'permissions data yaml dump exists' );
 
     my $perm_dump = YAML::LoadFile($users_file);
@@ -120,25 +128,25 @@ Export_tarball_format: {
         and die "Cannot untar $tarball: $!";
 
     for my $data_dir ( qw( data plugin user ) ) {
-        my $d = "$dir/$data_dir/empty";
+        my $d = "$dir/$data_dir/$ws_name";
         ok( -d $d, "$d is in tarball" );
     }
 
-    ok( -f "$dir/empty-info.yaml", 'workspace yaml dump file is in tarball' );
-    ok( -f "$dir/empty-users.yaml", 'users yaml dump file is in tarball' );
-    ok( -f "$dir/empty-permissions.yaml", 'permissions yaml dump file is in tarball' );
+    ok( -f "$dir/$ws_name-info.yaml", 'workspace yaml dump file is in tarball' );
+    ok( -f "$dir/$ws_name-users.yaml", 'users yaml dump file is in tarball' );
+    ok( -f "$dir/$ws_name-permissions.yaml", 'permissions yaml dump file is in tarball' );
     ok( -f "$dir/meta.yaml", 'Export meta file is in tarball' );
 
-    ok -d "$dir/data/empty/a_page_$^T", "page exists";
+    ok -d "$dir/data/$ws_name/a_page_$^T", "page exists";
 
-    ok -d "$dir/plugin/empty/attachments", "attachments dir exists";
-    ok -d "$dir/plugin/empty/attachments/a_page_$^T",
+    ok -d "$dir/plugin/$ws_name/attachments", "attachments dir exists";
+    ok -d "$dir/plugin/$ws_name/attachments/a_page_$^T",
         "attachments dir for page exists";
-    ok -f "$dir/plugin/empty/attachments/a_page_$^T/$test_att_id.txt",
+    ok -f "$dir/plugin/$ws_name/attachments/a_page_$^T/$test_att_id.txt",
         "attachments dir for page exists";
-    ok -d "$dir/plugin/empty/attachments/a_page_$^T/$test_att_id",
+    ok -d "$dir/plugin/$ws_name/attachments/a_page_$^T/$test_att_id",
         "attachments dir for page exists";
-    ok -f "$dir/plugin/empty/attachments/a_page_$^T/$test_att_id/revolts.doc",
+    ok -f "$dir/plugin/$ws_name/attachments/a_page_$^T/$test_att_id/revolts.doc",
         "attachments dir for page exists";
 }
 

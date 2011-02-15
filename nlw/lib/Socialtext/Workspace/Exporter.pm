@@ -98,8 +98,8 @@ sub export_info {
 
     my $ws = $self->workspace;
     my %export;
-    for my $c ( grep { !$skip_cols{$_} } @Socialtext::Workapce::COLUMNS ) {
-        $export{$c} = $ws->$c();
+    for my $c ( grep { !$skip_cols{$_} } @Socialtext::Workspace::COLUMNS ) {
+        $export{$c} = $ws->$c;
     }
     $export{creator_username} = $ws->creator->username;
     $export{account_name} = $ws->account->name;
