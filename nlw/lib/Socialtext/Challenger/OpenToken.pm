@@ -99,6 +99,7 @@ sub challenge {
             username      => $data->{subject},
             email_address => $data->{email_address},
             first_name    => $data->{first_name},
+            middle_name   => $data->{middle_name},
             last_name     => $data->{last_name},
         );
 
@@ -283,6 +284,14 @@ OpenToken:
 =item first_name
 
 =item last_name
+
+=back
+
+Optionally, the following additional attributes may be also be set or updated via auto-provisioning:
+
+=over
+
+=item middle_name
 
 =back
 
