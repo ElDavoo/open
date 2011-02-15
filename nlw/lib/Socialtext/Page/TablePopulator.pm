@@ -512,7 +512,7 @@ sub fetch_metadata {
                 }
                 catch {
                     warn "Failed to create user '$email_address', ".
-                         "defaulting to system-user\n";
+                         "defaulting to system-user: $_\n";
                 };
                 $user ||= Socialtext::User->SystemUser();
             }
