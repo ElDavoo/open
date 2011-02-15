@@ -39,7 +39,7 @@
             [% IF user_can_edit_page %]
             <a data-role="button" class="ui-btn-right" data-icon="arrow-d" href="/m/page/[% ws.name %]/[% page.uri %]?action=edit">[% loc('Edit') %]</a>
             [% ELSIF user_can_join_to_edit_page %]
-            <a data-role="button" class="ui-btn-right" data-icon="plus" href="/m/page/[% ws.name %]/[% page.uri %]?action=join_to_edit">[% loc('Join to Edit') %]</a>
+            <a data-role="button" class="ui-btn-right" data-icon="plus" href="/m/page/[% ws.name %]/[% page.uri %]?action=join_to_edit">[% loc('Join to edit') %]</a>
             [% END %]
 
         [% IF cancel_edit %]

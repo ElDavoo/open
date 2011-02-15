@@ -252,7 +252,7 @@ msgstr "draft.discard?"
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:15
 msgid "Attachment Link"
-msgstr "info.file"
+msgstr "do.file"
 
 #: share/skin/s3/template/element/page/display/attachments:9
 msgid "Attachments"
@@ -288,7 +288,7 @@ msgstr "blog.blogs"
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:5
 msgid "Bold"
-msgstr "info.bold"
+msgstr "do.bold"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:22
 msgid "Bottom of page"
@@ -402,7 +402,7 @@ msgstr "revision.compare"
 
 #: share/skin/s3/template/workspaces_created_section.html:7
 msgid "Congratulations!"
-msgstr "info.wiki-created"
+msgstr "wiki.created!"
 
 #: share/skin/s3/template/layout/html:85 share/skin/s3/template/layout/user_frame:90
 msgid "Control Panel"
@@ -451,7 +451,7 @@ msgstr "nav.create-pdf"
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:19
 msgid "Create Table"
-msgstr "info.table"
+msgstr "do.table"
 
 #: share/skin/s3/template/view/listview:26
 msgid "Create Word document from checked pages"
@@ -770,7 +770,7 @@ msgstr "blog.go:"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:35 share/skin/s3/template/element/settings/users_invite_section:14
 msgid "Group"
-msgstr ""
+msgstr "invite.group"
 
 #: share/skin/s3/template/element/settings/users_listall_section:79
 msgid "Group name"
@@ -778,25 +778,25 @@ msgstr "group.name"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:37 share/skin/s3/template/element/settings/users_invite_section:16 share/skin/s3/template/element/settings/users_listall_section:72
 msgid "Groups"
-msgstr ""
+msgstr "nav.groups"
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:8
 msgid "Heading 1"
-msgstr "info.h1"
+msgstr "do.h1"
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:9
 msgid "Heading 2"
-msgstr "info.h2"
+msgstr "do.h2"
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:10
 msgid "Heading 3"
-msgstr "info.h3"
+msgstr "do.h3"
 
 #. ('<b>' _ user.best_full_name _ '</b>')
 #. ("<b>' _ user.best_full_name _ '</b>")
 #: share/skin/s3/template/lite/workspace_list/user_info:6
 msgid "Hello, %1"
-msgstr ""
+msgstr "info.hello=user"
 
 #. (full_uri)
 #: share/skin/s3/javascript/lightbox/email.tt2:48 share/skin/s3/javascript/lightbox/email.tt2:50
@@ -804,160 +804,156 @@ msgid ""
 "Hello, this is a page from the workspace that I wanted you to see. This page is also available for viewing or editing on the web at:\n"
 "\n"
 "%1"
-msgstr ""
+msgstr "email.page=uri"
 
 #: share/skin/s3/template/layout/html:190 share/skin/s3/template/layout/html:87 share/skin/s3/template/layout/user_frame:195 share/skin/s3/template/layout/user_frame:92
 msgid "Help"
-msgstr ""
+msgstr "nav.help"
 
 #: share/skin/s3/template/lite/login/login.html:12
 msgid "I don't know my password."
-msgstr ""
+msgstr "nav.lost-password"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:8
 msgid "If there is already an existing page with that title, where should the body of the email be added?"
-msgstr ""
+msgstr "email.position?"
 
 #: share/skin/s3/template/element/main_nav/subnav/people:10 share/skin/s3/template/element/main_nav/subnav/signals:10
 msgid "If this link does not work for you, contact"
-msgstr ""
+msgstr "info.contact-link"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:21
 msgid "If you don't select an image, a Socialtext logo will be used instead."
-msgstr ""
+msgstr "info.default-logo"
 
 #. (support_address)
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:11
 msgid "If you need public workspaces that can be viewed by users without logging in, please contact <a href=\"%1\">Socialtext Support</a>."
-msgstr ""
+msgstr "info.public-workspace"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:131 share/skin/s3/template/element/settings/users_invite_section:86
 msgid "If you see something you'd like to add to or change, click the \"Edit\" link at the top of each page."
-msgstr ""
+msgstr "invite.click-edit"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:123 share/skin/s3/template/element/settings/users_invite_section:78
 msgid "If you wish, you can include a personal message in the invitation email. You can edit the message to say anything you want."
-msgstr ""
+msgstr "invite.personal-message"
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:16
 msgid "Image"
-msgstr ""
+msgstr "do.image"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:24
 msgid "Image Already On The Web"
-msgstr ""
+msgstr "image.web"
 
 #: share/skin/s3/template/element/settings/workspaces_cannot_create_section:7
 msgid "In order to create a workspace, the Workspace must belong to a Group."
-msgstr ""
+msgstr "wiki.group-required"
 
 #: share/skin/s3/template/view/page/display:204
 msgid "Incoming Links"
-msgstr ""
+msgstr "page.incoming-links"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:105 share/skin/s3/template/element/settings/users_invite_search_section:79 share/skin/s3/template/element/settings/users_invite_section:3
 msgid "Invite"
-msgstr ""
+msgstr "nav.invite"
 
 #: share/skin/s3/template/view/settings:33
 msgid "Invite New Users"
-msgstr ""
+msgstr "invite.new-users"
 
 #: share/skin/s3/template/element/settings/users_invite_section:7
 msgid "Invite Other Users"
-msgstr ""
+msgstr "invite.other-users"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:61 share/skin/s3/template/element/settings/users_invite_section:42
 msgid "Invite users to selected group(s)"
-msgstr ""
+msgstr "invite.to-groups"
 
 #: share/skin/s3/template/element/main_nav/subnav/invite:2
 msgid "Invite!"
-msgstr ""
+msgstr "nav.invite!"
 
 #: share/skin/s3/template/element/settings/workspace_clone_section:28 share/skin/s3/template/element/settings/workspaces_create_section:22
 msgid "It must consist of 3-30 lowercase letters, numbers, underscores or dashes."
-msgstr ""
+msgstr "info.valid-workspace-name"
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:6
 msgid "Italic"
-msgstr ""
+msgstr "do.italic"
 
 #: share/skin/s3/javascript/lightbox/self_join_workspace.tt2:13
 msgid "Join"
-msgstr ""
+msgstr "do.join"
 
 #: share/skin/s3/javascript/lightbox/self_join_workspace.tt2:3
 msgid "Join To Edit"
-msgstr ""
+msgstr "do.join-to-Edit"
 
 #: share/skin/s3/template/element/page/display/edit-button:18
 msgid "Join now to edit this page!"
-msgstr ""
-
-#: share/skin/s3/template/lite/subnav.html:42
-msgid "Join to Edit"
-msgstr ""
+msgstr "page.join-to-edit!"
 
 #: share/skin/s3/template/element/page/display/edit-button:18
 msgid "Join to edit"
-msgstr ""
+msgstr "do.join-to-edit"
 
 #: share/skin/s3/javascript/lightbox/copy.tt2:27 share/skin/s3/javascript/lightbox/duplicate.tt2:21 share/skin/s3/javascript/lightbox/rename.tt2:19
 msgid "Keep attachments"
-msgstr ""
+msgstr "file.keep"
 
 #: share/skin/s3/javascript/lightbox/email.tt2:53
 msgid "Keep attachments?"
-msgstr ""
+msgstr "file.keep?"
 
 #: share/skin/s3/javascript/lightbox/copy.tt2:23 share/skin/s3/javascript/lightbox/duplicate.tt2:17 share/skin/s3/javascript/lightbox/rename.tt2:15
 msgid "Keep tags"
-msgstr ""
+msgstr "tag.keep"
 
 #: share/skin/s3/template/view/paging:24 share/skin/s3/template/view/paging:27
 msgid "Last"
-msgstr ""
+msgstr "nav.last"
 
 #: share/skin/s3/template/view/listview:160
 msgid "Last <strong>updated</strong> by"
-msgstr ""
+msgstr "page.last-updated"
 
 #: share/skin/s3/template/view/listview:105
 msgid "Last Edited By"
-msgstr ""
+msgstr "page.last-edited"
 
 #: share/skin/s3/template/view/paging:27
 msgid "Last Page"
-msgstr ""
+msgstr "nav.last-page"
 
 #: share/skin/s3/template/element/settings/users_settings_section:13 share/skin/s3/template/element/settings/users_settings_section:26
 msgid "Last name:"
-msgstr ""
+msgstr "user.last-name:"
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:13
 msgid "Less Indented"
-msgstr ""
+msgstr "do.outdent"
 
 #: share/skin/s3/template/view/settings:31
 msgid "List All Users"
-msgstr ""
+msgstr "user.list-all"
 
 #: share/skin/s3/template/view/page/display:55
 msgid "Loading..."
-msgstr ""
+msgstr "info.loading"
 
 #: share/skin/s3/template/view/page/display:96
 msgid "Lock Page"
-msgstr ""
+msgstr "page.lock"
 
 #: share/skin/s3/template/layout/html:193 share/skin/s3/template/layout/html:198 share/skin/s3/template/layout/html:90 share/skin/s3/template/layout/html:93 share/skin/s3/template/layout/user_frame:198 share/skin/s3/template/layout/user_frame:203 share/skin/s3/template/layout/user_frame:95 share/skin/s3/template/layout/user_frame:98 share/skin/s3/template/lite/globalnav.html:12 share/skin/s3/template/lite/globalnav.html:14
 msgid "Log in"
-msgstr ""
+msgstr "nav.login"
 
 #: share/skin/s3/template/layout/html:201 share/skin/s3/template/layout/html:96 share/skin/s3/template/layout/user_frame:101 share/skin/s3/template/layout/user_frame:206 share/skin/s3/template/lite/globalnav.html:22 share/skin/s3/template/view/workspace_list:19
 msgid "Log out"
-msgstr ""
+msgstr "nav.logout"
 
 #: share/skin/s3/template/lite/login/nologin.html:6
 msgid "Login is Disabled"
@@ -965,48 +961,48 @@ msgstr "login.disabled"
 
 #: share/skin/s3/template/view/empty_watchlist:37
 msgid "Look for"
-msgstr ""
+msgstr "watch.look-for"
 
 #. (workspace.title)
 #: share/skin/s3/template/element/settings/workspace_clone_section:7
 msgid "Make a clone of the %1 workspace, including all pages, tags, and attachments. Next, you will need to invite members into the new workspace."
-msgstr ""
+msgstr "wiki.clone=workspace"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:131 share/skin/s3/template/element/settings/users_invite_section:86
 msgid "Make your contributions in the text box, then click \"Save\"."
-msgstr ""
+msgstr "invite.edit-save"
 
 #: share/skin/s3/template/view/settings:31
 msgid "Manage All Users"
-msgstr ""
+msgstr "config.users"
 
 #: share/skin/s3/template/element/page/display/attachments:53
 msgid "Manage Files"
-msgstr ""
+msgstr "config.files"
 
 #: share/skin/s3/template/element/settings/users_listall_section:7
 msgid "Manage Workspace Membership"
-msgstr ""
+msgstr "config.membership"
 
 #: share/skin/s3/javascript/lightbox/attachment.tt2:13
 msgid "Maximum file size: 50MB"
-msgstr ""
+msgstr "file.max-size"
 
 #: share/skin/s3/javascript/lightbox/email.tt2:46
 msgid "Message"
-msgstr ""
+msgstr "email.message"
 
 #: share/skin/s3/template/lite/event_list_nav.html:22 share/skin/s3/template/lite/event_list_nav.html:24
 msgid "Mine"
-msgstr ""
+msgstr "nav.mine"
 
 #: share/skin/s3/template/layout/html:184 share/skin/s3/template/layout/html:78 share/skin/s3/template/layout/user_frame:189 share/skin/s3/template/layout/user_frame:83
 msgid "Mobile"
-msgstr ""
+msgstr "nav.mobile"
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:14
 msgid "More Indented"
-msgstr ""
+msgstr "do.indent"
 
 #: share/skin/s3/template/lite/event_list_nav.html:38 share/skin/s3/template/lite/event_list_nav.html:40
 msgid "My Conversations"
@@ -1108,7 +1104,7 @@ msgstr ""
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:12
 msgid "Numbered List"
-msgstr ""
+msgstr "do.ol"
 
 #: share/skin/s3/template/view/weblog:0 share/skin/s3/template/view/weblog:141
 msgid "Older entries"
@@ -1125,7 +1121,7 @@ msgstr ""
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:31
 msgid "Only members with permission to view this page will receive the signal."
-msgstr ""
+msgstr "signal.member-only"
 
 #. (workspace.title)
 #: share/skin/s3/template/workspaces_created_section.html:31
@@ -1163,7 +1159,7 @@ msgstr ""
 
 #: share/skin/s3/template/view/empty_watchlist:34
 msgid "Pages You're Watching"
-msgstr ""
+msgstr "watch.current"
 
 #: share/skin/s3/template/element/main_nav/subnav/people:3
 msgid "People"
@@ -1570,7 +1566,7 @@ msgstr ""
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:7
 msgid "Strike Through"
-msgstr ""
+msgstr "do.strike"
 
 #: share/skin/s3/javascript/lightbox/email.tt2:17
 msgid "Subject"
@@ -1867,13 +1863,13 @@ msgstr "do.watch"
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:18
 msgid "Web Link"
-msgstr "info.weblink"
+msgstr "do.weblink"
 
 #. ('<b>' _ user.username _ '</b>')
 #. ("<b>' _ user.username _ '</b>")
 #: share/skin/s3/template/layout/html:75 share/skin/s3/template/layout/user_frame:80
 msgid "Welcome %1"
-msgstr "nav.welcome=user"
+msgstr "info.welcome=user"
 
 #: share/skin/s3/template/element/listview_tabs:5 share/skin/s3/template/layout/html:139 share/skin/s3/template/layout/user_frame:144 share/skin/s3/template/lite/subnav.html:16 share/skin/s3/template/view/empty_watchlist:8 share/skin/s3/template/view/page/display:225
 msgid "What's New"
@@ -1902,7 +1898,7 @@ msgstr "wiki.email-senders?"
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:17
 msgid "Wiki Link"
-msgstr "info.wikilink"
+msgstr "do.wikilink"
 
 #: share/skin/s3/template/layout/html:131 share/skin/s3/template/layout/user_frame:136 share/skin/s3/template/view/listview:102
 msgid "Workspace"
@@ -2041,7 +2037,7 @@ msgstr "wiki.created:"
 
 #: share/skin/s3/template/element/listview_tabs:9 share/skin/s3/template/view/empty_watchlist:11
 msgid "Your Watchlist"
-msgstr ""
+msgstr "watch.list"
 
 #: share/skin/s3/template/element/settings/workspaces_cannot_create_section:23
 msgid "Your appliance is configured so that only account administrators can create new groups."
@@ -2121,7 +2117,7 @@ msgstr "info.on"
 
 #: share/skin/s3/template/view/empty_watchlist:42
 msgid "on a page you want to watch and then click on it to add the page to your Watchlist."
-msgstr ""
+msgstr "watch.click"
 
 #: share/skin/s3/template/lite/page_list.html:13 share/skin/s3/template/view/page/display:14
 msgid "one day ago"
