@@ -54,7 +54,7 @@ sub signal_new {
                     group_ids   => $signal->group_ids || [],
                     account_ids => $signal->account_ids || [],
                     annotations => $signal->annotations || [],
-                    topics      => $signal->topics_as_hashes || [],
+                    topics      => [ $signal->topics_as_hashes ],
                     body        => $signal->body,
                     hash        => $signal->hash,
                     hidden      => $signal->is_hidden ? 1 : 0,
