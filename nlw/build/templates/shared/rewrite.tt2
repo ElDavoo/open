@@ -41,7 +41,7 @@
     # make sure user agents that don't do gzipped javascript use
     # the uncompressed version - Note SAFARI!!!
     # ALSO notice that this RewriteRule is NOT the last one in the chain
-    RewriteCond %{HTTP_USER_AGENT} ".*Safari.*" [OR]
+    RewriteCond %{HTTP_USER_AGENT} ".*AppleWebKit.*" [OR]
     RewriteCond %{HTTP:Accept-Encoding} !gzip
     RewriteRule (.*)\.js\.gz$ $1\.js
 
