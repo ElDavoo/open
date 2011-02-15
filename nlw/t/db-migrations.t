@@ -20,6 +20,7 @@ use Test::Socialtext;
 # - we're destructive; you'll want to recreate the DB when we're done
 fixtures(qw( clean base_layout destructive ));
 
+my $CURR_RELEASE  = 'lolcat';
 my $test_dir      = Socialtext::AppConfig->test_dir();
 my $real_dir      = 'etc/socialtext/db';
 my $fake_dir      = "$test_dir/etc/socialtext/db";
@@ -86,6 +87,15 @@ for ( $START_SCHEMA+1 .. $latest_schema ) {
         system("tail -n 20 $log_dir/st-db.log");
         die "Can't continue";
     }
+}
+
+# Run schema changes for current release
+ok !exception {
+    $schema->run_sql_file("$real_dir/socialtext-$CURR_RELEASE.sql");
+}, "Schema changes for current release";
+if ($@) {
+    system("tail -n 20 $log_dir/st-db.log");
+    die "Can't continue";
 }
 
 # Now check that the final result is the same as socialtext-schema.sql
