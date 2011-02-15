@@ -115,7 +115,8 @@ sub _item_as_html {
     }
     Socialtext::Timer->Pause('_item_as_html_tags');
 
-    my $create_time = $page->original_revision->datetime_for_user;
+    my $create_time =
+        $self->hub->timezone->get_date_user($page->create_time);
 
     push @html_headers, "<div>".loc('Originally created').": ". $create_time."</div>";
     if (my $summary = $page->edit_summary) {
