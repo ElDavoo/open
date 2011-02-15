@@ -173,6 +173,8 @@ sub load_page_metadata {
          ORDER BY revision_id DESC
          LIMIT 1
     }, $ws_id, $dir);
+    die "Couldn't find any page_revisions for $ws_id:$dir"
+        unless $sth->rows == 1;
     my $page = $sth->fetchrow_hashref();
 
     # and creation stats
