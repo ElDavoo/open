@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 15;
+use Test::Socialtext tests => 22;
 
 fixtures(qw( db ));
 
@@ -193,4 +193,42 @@ display_name_set_on_create: {
     );
     is $user->display_name, 'Oscar Emmanuel Peterson',
         'display_name calculated at User creation, w/First+Middle+Last';
+}
+
+###############################################################################
+# TEST: "display_name" gets updated when name changes
+display_name_updated_on_user_change: {
+    my $acct = create_test_account_bypassing_factory();
+
+    my $user = create_test_user(
+        account    => $acct,
+        first_name => 'Davey',
+        last_name  => 'Jones',
+    );
+    is $user->display_name, 'Davey Jones',
+        'display_name set at User creation';
+
+    # Update "first_name"
+    $user->update_store(first_name => 'Christina');
+    is $user->display_name, 'Christina Jones', '... display_name updated when first_name changed';
+
+    # Update "middle_name"
+    $user->update_store(middle_name => 'Rene');
+    is $user->display_name, 'Christina Rene Jones', '... display_name updated when middle_name changed';
+
+    # Update "last_name",
+    $user->update_store(last_name => 'Hendricks');
+    is $user->display_name, 'Christina Rene Hendricks', '... display_name updated when last_name changed';
+
+    # Clear "first_name"
+    $user->update_store(first_name => '');
+    is $user->display_name, 'Rene Hendricks', '... display_name updated when first_name cleared';
+
+    # Clear "middle_name"
+    $user->update_store(middle_name => '');
+    is $user->display_name, 'Hendricks', '... display_name updated when middle_name cleared';
+
+    # Clear "last_name"
+    $user->update_store(last_name => '');
+    is $user->display_name, $user->guess_real_name, '... display_name updated when last_name cleared';
 }
