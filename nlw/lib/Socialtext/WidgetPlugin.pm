@@ -140,6 +140,7 @@ sub html {
         unless $container and $widget;
 
     return $self->hub->template->process($container->view_template,
+        $self->hub->helpers->global_template_vars,
         pluggable => $self->hub->pluggable,
         container => $container->template_vars,
         width     => $pref->{__width__},

@@ -1,6 +1,4 @@
-
 | *Comment* | Test Case: New Default Dashboard |  |
-
 
 * Fixture: SocialWidgets
 
@@ -22,7 +20,7 @@
 | create_user | %%new_user%% | %%password%% | %%old_acct_name%% |
 | create_user | %%newer_user%% | %%password%% | %%old_acct_name%% |
 | create_user | %%newest_user%% | %%password%% | %%old_acct_name%% |
-| st-admin | give-accounts-admin --email %%new_user%% | admin access |
+| st-admin | give-accounts-admin --email %%new_user%% | admin access |  |
 
 | set | fake_central | %%ndd_acct%%-central |
 | set | central | %%ndd_acct%%-central-1 |

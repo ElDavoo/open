@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>383</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-383.air</url>
-<description><![CDATA[[Build 383 - Mon Feb 14 10:44:37 PST 2011]
-* Fix video display issue on Windows.
+  <version>386</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-386.air</url>
+<description><![CDATA[[Build 386 - Tue Feb 15 10:26:18 PST 2011]
+* Fix "DM with mention of same user is displayed as a mention" {bz: 4942}
+* Fix "Add a video to a signal, but delete the video Title.  Save.  See 'null'." {bz: 4942}
+* Fix "No video thumbnails in Signal listviews." {bz: 4942}
+
+[Build 385 - Tue Feb 15 05:02:08 PST 2011]
+* OpenSocial Widgets in pages now work in mini-browser and preview pane. {bz: 4933}
+  (Requires ST v4.6.0.3+)
+
+[Build 384 - Mon Feb 14 16:18:35 PST 2011]
+* Syntax-highlighted code blocks now work in mini-browser and preview pane. {bz: 4933}
+
+[Build 383 - Mon Feb 14 10:44:37 PST 2011]
+* Fix video display issue on Windows. {bz: 4957}
 
 [Build 382 - Sun Feb 13 06:29:34 PST 2011]
 * Fix the "CPU spike every 30 seconds" issue. (Graham)
