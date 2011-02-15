@@ -33,16 +33,7 @@ People tests
 * [Profile Testcases]
 * [Test Case: People Search]
 
-Dashboard tests
-
-* [Widgets Testcases]
-* [Test Case: Gadgets Galore]
-
-Test Case: Upload Update Gallery Widgets - HighPermissions
-
-* [Test Case: Add Remove Gallery Widgets]
-* [Test Case: Administer Dashboards]
-* [Test Case: Reset to Default Dashboard]
+* [Dashboard Testcases]
 
 Server down testcases
 
