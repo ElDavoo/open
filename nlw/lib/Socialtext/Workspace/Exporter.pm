@@ -114,9 +114,23 @@ sub export_info {
             or die "Could not copy $logo_file to $new_logo: $!\n";
     }
 
-    $self->hub->pluggable->hook('nlw.export_workspace', [$ws,\%export]);
+    $self->hub->pluggable->hook('nlw.export_workspace', [$ws,\%export,$self]);
 
     _save_yaml( $self->filename($self->name.'-info.yaml'), \%export );
+}
+
+sub user_to_export {
+    my ($self, $user) = @_;
+    my $adapter = Socialtext::Pluggable::Adapter->new;
+    $adapter->make_hub($user, $self->workspace);
+    my $plugin_prefs = {};
+    $adapter->hook('nlw.export_user_prefs', [$plugin_prefs]);
+
+    my $exported_user = $user->to_hash(want_private_fields => 1);
+    delete $exported_user->{user_id};
+    $exported_user->{plugin_prefs} = $plugin_prefs if %$plugin_prefs;
+
+    return $exported_user;
 }
 
 sub export_users {
@@ -128,21 +142,13 @@ sub export_users {
     my @export;
     while (my $pair = $user_roles->next) {
         my ($user, $role) = @$pair;
-
-        my $adapter = Socialtext::Pluggable::Adapter->new;
-        $adapter->make_hub($user, $ws);
-        my $plugin_prefs = {};
-        $adapter->hook('nlw.export_user_prefs', [$plugin_prefs]);
-
-        my $exported_user = $user->to_hash(want_private_fields => 1);
-        delete $exported_user->{user_id};
-        $exported_user->{plugin_prefs} = $plugin_prefs if %$plugin_prefs;
+        my $exported_user = $self->user_to_export($user);
         $exported_user->{role_name} = $role->name;
-
         push @export, $exported_user;
     }
 
-    $self->hub->pluggable->hook('nlw.export_workspace_users', [$ws,\@export]);
+    $self->hub->pluggable->hook('nlw.export_workspace_users',
+        [$ws,\@export,$self]);
 
     _save_yaml($self->filename($self->name.'-users.yaml'), \@export);
 }
