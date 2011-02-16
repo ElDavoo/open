@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-16 08:47+0800\n"
+"PO-Revision-Date: 2011-02-16 19:18+0800\n"
 "PO-Revision-Date: \n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
@@ -38,7 +38,7 @@ msgstr "blog.show=tag"
 #. (local_time(file.date), user(file.uploader))
 #: share/skin/s3/template/element/page/display/attachments:43
 msgid "%1 by %2"
-msgstr "file.by=date,uploader"
+msgstr "file.by=date,user"
 
 #. (days)
 #: share/skin/s3/template/lite/page_list.html:16 share/skin/s3/template/view/page/display:18
@@ -112,7 +112,7 @@ msgstr "info.following"
 
 #: share/skin/s3/template/element/main_nav/subnav/workspaces:4
 msgid "...lists the workspaces you belong to. You must be logged in to see your list."
-msgstr "info.workspaces"
+msgstr "info.wikis"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:147 share/skin/s3/template/element/settings/users_invite_search_section:153 share/skin/s3/template/element/settings/users_invite_section:102 share/skin/s3/template/element/settings/users_invite_section:108
 msgid "<Your personal message goes here.>"
@@ -204,7 +204,7 @@ msgstr "page.all"
 #. (escaped_str)
 #: share/skin/s3/template/lite/changes/changes.html:15
 msgid "All Pages in %1"
-msgstr "page.all=workspace"
+msgstr "page.all=wiki"
 
 #: share/skin/s3/template/view/page/revision:21 share/skin/s3/template/view/page/revision_compare:21
 msgid "All Revisions"
@@ -217,7 +217,7 @@ msgstr "tag.all"
 #. (ws.title)
 #: share/skin/s3/template/lite/tag/tag.html:5
 msgid "All tags"
-msgstr "tag.all=workspace"
+msgstr "tag.all=wiki"
 
 #. (type)
 #: share/skin/s3/template/view/page_locked:15
@@ -378,7 +378,7 @@ msgstr "wiki.clone"
 #. (workspace.title)
 #: share/skin/s3/template/element/settings/workspace_clone_section:16
 msgid "Clone of %1"
-msgstr "wiki.clone=workspace"
+msgstr "wiki.clone=wiki"
 
 #: share/skin/s3/javascript/lightbox/simple.tt2:8
 msgid "Close"
@@ -476,11 +476,11 @@ msgstr "password.current:"
 
 #: share/skin/s3/template/element/main_nav/subnav/workspaces:27
 msgid "Currently, you are not a member of any workspaces."
-msgstr "nav.zero-workspaces"
+msgstr "nav.no-wikis"
 
 #: share/skin/s3/javascript/nav-list.js:79
 msgid "Currently, you are not following any people."
-msgstr "nav.zero-followers"
+msgstr "nav.no-followers"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:21
 msgid "Custom"
@@ -829,7 +829,7 @@ msgstr "info.default-logo"
 #. (support_address)
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:11
 msgid "If you need public workspaces that can be viewed by users without logging in, please contact <a href=\"%1\">Socialtext Support</a>."
-msgstr "info.public-workspace"
+msgstr "info.public-wiki"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:131 share/skin/s3/template/element/settings/users_invite_section:86
 msgid "If you see something you'd like to add to or change, click the \"Edit\" link at the top of each page."
@@ -877,7 +877,7 @@ msgstr "nav.invite!"
 
 #: share/skin/s3/template/element/settings/workspace_clone_section:28 share/skin/s3/template/element/settings/workspaces_create_section:22
 msgid "It must consist of 3-30 lowercase letters, numbers, underscores or dashes."
-msgstr "info.valid-workspace-name"
+msgstr "info.valid-wiki-name"
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:6
 msgid "Italic"
@@ -895,7 +895,7 @@ msgstr "do.join-to-Edit"
 msgid "Join now to edit this page!"
 msgstr "page.join-to-edit!"
 
-#: share/skin/s3/template/element/page/display/edit-button:18
+#: share/skin/s3/template/element/page/display/edit-button:18 share/skin/s3/template/lite/subnav.html:42
 msgid "Join to edit"
 msgstr "do.join-to-edit"
 
@@ -966,7 +966,7 @@ msgstr "watch.look-for"
 #. (workspace.title)
 #: share/skin/s3/template/element/settings/workspace_clone_section:7
 msgid "Make a clone of the %1 workspace, including all pages, tags, and attachments. Next, you will need to invite members into the new workspace."
-msgstr "wiki.clone=workspace"
+msgstr "wiki.clone-and-invite=wiki"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:131 share/skin/s3/template/element/settings/users_invite_section:86
 msgid "Make your contributions in the text box, then click \"Save\"."
@@ -1022,7 +1022,7 @@ msgstr "nav.watchlist"
 
 #: share/skin/s3/template/lite/workspace_list/my_workspaces:5 share/skin/s3/template/view/settings:41
 msgid "My Workspaces"
-msgstr "nav.workspaces"
+msgstr "nav.wikis"
 
 #: share/skin/s3/template/element/settings/users_settings_section:6
 msgid "Name"
@@ -1126,7 +1126,7 @@ msgstr "signal.member-only"
 #. (workspace.title)
 #: share/skin/s3/template/workspaces_created_section.html:31
 msgid "Or you may continue to work in this workspace, and visit \"%1\" later."
-msgstr "wiki.visit-later=workspace"
+msgstr "wiki.visit-later=wiki"
 
 #: share/skin/s3/template/view/listview:158
 msgid "Originally <strong>created</strong> by"
@@ -1342,7 +1342,7 @@ msgstr "edit.normal-view"
 #. (workspace.title)
 #: share/skin/s3/template/workspaces_created_section.html:21
 msgid "Review or change the settings for %1:"
-msgstr "config.review-settings=workspace"
+msgstr "config.review-settings=wiki"
 
 #: share/skin/s3/template/view/page_revision_list:43
 msgid "Revision"
@@ -1397,7 +1397,7 @@ msgstr "wiki.search-all:"
 msgid "Search Results"
 msgstr "search.results"
 
-#: share/skin/s3/template/element/search_form:21
+#: share/skin/s3/template/element/search_form:14 share/skin/s3/template/element/search_form:21
 msgid "Search This Workspace:"
 msgstr "wiki.search:"
 
@@ -1518,11 +1518,11 @@ msgstr "info.socialtext"
 #. (type)
 #: share/skin/s3/template/view/edit_contention:15
 msgid "Somebody else made changes to the %1 while you were editing it."
-msgstr "page.contention=type"
+msgstr "edit.contention=type"
 
 #: share/skin/s3/template/lite/page/contention.html:5
 msgid "Somebody else made changes to the page while you were editing it."
-msgstr "page.contention"
+msgstr "edit.contention"
 
 #: share/skin/s3/template/view/page/display:105
 msgid "Sorry, this feature is not available for spreadsheets"
@@ -1550,7 +1550,7 @@ msgstr "invite.welcome-message"
 
 #: share/skin/s3/javascript/lightbox/create_content.js:166
 msgid "Start typing a page name..."
-msgstr ""
+msgstr "page.prompt-name"
 
 #: share/skin/s3/javascript/s3.js:932 share/skin/s3/template/view/listview:166 share/skin/s3/template/view/page/display:72
 msgid "Stop Watching"
@@ -1558,7 +1558,7 @@ msgstr "watch.stop"
 
 #: share/skin/s3/javascript/people-avatar.js:22
 msgid "Stop following this person"
-msgstr ""
+msgstr "do.unfollow"
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:7
 msgid "Strike Through"
@@ -1566,69 +1566,77 @@ msgstr "do.strike"
 
 #: share/skin/s3/javascript/lightbox/email.tt2:17
 msgid "Subject"
-msgstr ""
+msgstr "email.subject"
 
 #: share/skin/s3/template/view/weblog:9
 msgid "Subscribe to Feed"
-msgstr ""
+msgstr "blog.subscribe"
 
 #: share/skin/s3/javascript/lightbox/simple.js:30
 msgid "Success"
-msgstr ""
+msgstr "info.success"
 
 #: share/skin/s3/template/view/page/display:193
 msgid "Suggestions:"
-msgstr ""
+msgstr "tag.suggestions:"
 
 #: share/skin/s3/template/view/listview:82 share/skin/s3/template/view/listview:85
 msgid "Summaries"
-msgstr ""
+msgstr "page.summaries"
 
 #: share/skin/s3/template/view/taglistview:24
 msgid "Tag"
-msgstr ""
+msgstr "wiki.tag"
 
 #. (escaped_str)
 #: share/skin/s3/template/lite/tag/tag.html:15
 msgid "Tag: %1"
-msgstr ""
+msgstr "wiki.tag=tag"
 
 #: share/skin/s3/template/lite/subnav.html:21 share/skin/s3/template/lite/subnav.html:23 share/skin/s3/template/view/page/display:154
 msgid "Tags"
-msgstr ""
+msgstr "wiki.tags"
 
 #: share/skin/s3/template/view/page/revision:60 share/skin/s3/template/view/page/revision_compare:60
 msgid "Tags:"
-msgstr ""
+msgstr "revision.tags:"
 
 #. (type)
 #: share/skin/s3/template/view/edit_contention:17
 msgid "The %1 you just edited is shown below. You can copy and paste your changes from here:"
-msgstr ""
+msgstr "edit.view-contention:=type"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:129 share/skin/s3/template/element/settings/users_invite_section:84
 msgid "The Workspace is easy to use. Click links to browse through the pages."
-msgstr ""
+msgstr "invite.using-wiki"
 
 #: share/skin/s3/javascript/lightbox/duplicate.tt2:24
 msgid "The main window will navigate to the new page name after you click \"Duplicate\"."
-msgstr ""
+msgstr "info.after-duplicate"
 
-#. ( + new_title +                 '", is already in use.  Please choose a different ' +                'name. If you are sure you wish to overwrite the ' +                'existing "' + new_title + '" page, please press ' +                '"' + button + '" again.')
-#: share/skin/s3/javascript/st-lightbox.js:85
-msgid "The new page name you selected, \""
-msgstr ""
+#. (new_title, button)
+#: share/skin/s3/javascript/st-lightbox.js:81
+msgid "The new page name you selected, \"%1\", is already in use.  Please choose a different name.  If you are sure you wish to overwrite the existing \"%1\" page, please press \"%2\" again."
+msgstr "error.page-exists=title,button"
 
-#. ( + new_title +'", ' +                'is not allowed.  Please enter or change the page ' +                'name.')
-#. ( +                new_title + '", is too long after URL encoding')
-#. ( + new_title + '", ' +                "is the same as the page's current title.  " +                'Please enter a new page name.')
-#: share/skin/s3/javascript/st-lightbox.js:105 share/skin/s3/javascript/st-lightbox.js:92 share/skin/s3/javascript/st-lightbox.js:98
-msgid "The page name you selected, \""
-msgstr ""
+#. (new_title)
+#: share/skin/s3/javascript/st-lightbox.js:86
+msgid "The page name you selected, \"%1\", is not allowed.  Please enter or change the page name."
+msgstr "error.invalid-page-name=title"
+
+#. (new_title)
+#: share/skin/s3/javascript/st-lightbox.js:96
+msgid "The page name you selected, \"%1\", is the same as the page's current title.  Please enter a new page name."
+msgstr "error.same-page-name=title"
+
+#. (new_title)
+#: share/skin/s3/javascript/st-lightbox.js:91
+msgid "The page name you selected, \"%1\", is too long after URL encoding."
+msgstr "error.long-page-name=title"
 
 #: share/skin/s3/template/view/page_locked:17
 msgid "The raw wikitext of your changes are below. You can copy your changes from here."
-msgstr ""
+msgstr "edit.view-locked"
 
 #: share/skin/s3/template/view/listview:54
 msgid "The search you have entered is too general."
@@ -1639,76 +1647,64 @@ msgstr "search.too-general"
 msgid "The search you have entered is too general; %1 pages and/or attachments matched your query."
 msgstr "search.too-many=count"
 
-#: share/skin/s3/template/lite/page/page_locked.html:7
-msgid "The text you just edited is shown below."
-msgstr ""
-
-#: share/skin/s3/template/lite/page/contention.html:7
-msgid "The text you just edited is shown below. You can copy and paste your changes from there:"
-msgstr ""
+#: share/skin/s3/template/lite/page/contention.html:7 share/skin/s3/template/lite/page/page_locked.html:7
+msgid "The text you just edited is shown below. You can copy your changes from here:"
+msgstr "edit.view-unsaved:"
 
 #. (matches.length, match.size, match.uploader_name, match.local_date)
 #: share/skin/s3/javascript/lightbox/attachment.js:233
 msgid "There are <span class=\"emphasis\">%1 previous versions</span> of this file (most recently: %2, uploaded by %3 at %4). If you click <em>Replace</em>, you will <em>delete all other versions</em>."
-msgstr ""
+msgstr "file.replace=count,size,user,date"
 
 #: share/skin/s3/template/element/settings/users_listall_section:75
 msgid "There are no groups directly associated with this workspace."
-msgstr ""
+msgstr "wiki.no-groups"
 
 #: share/skin/s3/template/view/page/display:213
 msgid "There are no pages that link to this page yet."
-msgstr ""
+msgstr "page.no-backlinks"
 
 #: share/skin/s3/javascript/pageview.js:173 share/skin/s3/template/view/page/display:170
 msgid "There are no tags for this page."
-msgstr ""
+msgstr "page.no-tags"
 
 #: share/skin/s3/template/element/settings/users_listall_section:19
 msgid "There are no users directly associated with this workspace."
-msgstr ""
+msgstr "wiki.no-members"
 
 #. (filename, match.size, match.uploader_name, match.local_date)
 #: share/skin/s3/javascript/lightbox/attachment.js:239
 msgid "There is already a file named \"%1\" (%2 uploaded by %3 on %4) attached to this page. You can <span class=\"emphasis\">Add</span> another version of the file or <span class=\"emphasis\">Replace</span> the existing version with this one. What would you like to do?"
-msgstr ""
+msgstr "file.add-or-replace?=name,size,user,date"
 
 #. (filename)
 #: share/skin/s3/javascript/lightbox/attachment.js:229
 msgid "There is already a file named \"%1\" attached to this page. You can <span class=\"emphasis\">Add</span> another version of the file or <span class=\"emphasis\">Replace</span> the existing version with this one. What would you like to do?"
-msgstr ""
+msgstr "file.add-or-replace?=name"
 
 #: share/skin/s3/template/view/settings:53
 msgid "This Workspace"
-msgstr ""
+msgstr "config.wiki"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:61
 msgid "This blog:"
-msgstr ""
+msgstr "config.blog:"
 
 #: share/skin/s3/template/element/settings/workspace_clone_section:27 share/skin/s3/template/element/settings/workspaces_create_section:21
 msgid "This is a short unique identifier used as part of your workspace's web address and email address."
-msgstr ""
+msgstr "info.wiki-id"
 
-#: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:6
-msgid "This is the title of your workspace. It may be changed at any time."
-msgstr ""
-
-#: share/skin/s3/template/element/settings/workspace_clone_section:13 share/skin/s3/template/element/settings/workspaces_create_section:7
+#: share/skin/s3/template/element/settings/workspace_clone_section:13 share/skin/s3/template/element/settings/workspaces_create_section:7 share/skin/s3/template/element/settings/workspaces_settings_appearance_section:6
 msgid "This is the title of your workspace. It may be changed later if you want."
-msgstr ""
+msgstr "info.wiki-title"
 
-#: share/skin/s3/template/view/page/display:28
+#: share/skin/s3/template/lite/page/page_locked.html:5 share/skin/s3/template/view/page/display:28
 msgid "This page is locked and can only be edited by a workspace administrator."
-msgstr ""
-
-#: share/skin/s3/template/lite/page/page_locked.html:5
-msgid "This page is locked and can only be edited by the workspace admin."
-msgstr ""
+msgstr "page.is-locked"
 
 #: share/skin/s3/template/element/settings/users_listall_section:61
 msgid "This user's password cannot be reset"
-msgstr ""
+msgstr "error.cannot-reset-pasword"
 
 #: share/skin/s3/template/view/listview:100
 msgid "Title"
@@ -1716,15 +1712,15 @@ msgstr "sort.title"
 
 #: share/skin/s3/template/view/listview:81 share/skin/s3/template/view/listview:84
 msgid "Titles"
-msgstr ""
+msgstr "page.titles"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:135 share/skin/s3/template/element/settings/users_invite_section:90
 msgid "To make a link to another page (even if it doesn't exist yet), put square brackets around a word or phrase."
-msgstr ""
+msgstr "invite.make-wikilink"
 
 #: share/skin/s3/template/view/page/display:81
 msgid "Tools"
-msgstr ""
+msgstr "nav.tools"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:16
 msgid "Top of page"
@@ -1740,7 +1736,7 @@ msgstr "try.signals"
 
 #: share/skin/s3/javascript/lightbox/email.tt2:25
 msgid "Type an email address or user name"
-msgstr ""
+msgstr "email.address-or-name"
 
 #: share/skin/s3/template/element/settings/users_settings_section:50
 msgid "Type new Password again:"
@@ -1752,12 +1748,12 @@ msgstr "page.unlock"
 
 #: share/skin/s3/template/element/settings/workspaces_unsubscribe_section:7 share/skin/s3/template/view/settings:49
 msgid "Unsubscribe"
-msgstr ""
+msgstr "do.unsubscribe"
 
 #. (workspace.name)
 #: share/skin/s3/template/element/settings/workspaces_unsubscribe_section:12
 msgid "Unsubscribe from the %1 workspace"
-msgstr ""
+msgstr "do.unsubscribe=wiki"
 
 #: share/skin/s3/javascript/s3.js:1064 share/skin/s3/javascript/s3.js:12
 msgid "Untitled Page"
@@ -1774,11 +1770,11 @@ msgstr "blog.updated-by"
 #. (update_author, update_date)
 #: share/skin/s3/template/view/page/display:293
 msgid "Updated by %1 on %2."
-msgstr ""
+msgstr "page.updated=user,date"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_skin_section:33
 msgid "Upload"
-msgstr ""
+msgstr "do.upload"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:32
 msgid "Upload An Image"
@@ -1810,7 +1806,7 @@ msgstr "file.uploaded:"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_skin_section:14
 msgid "Uploaded skins are not supported. Skin upload is only for development and testing of custom skins. Contact sales@socialtext.com for information on supported custom skins."
-msgstr "info.skin-unsupported"
+msgstr "skin.unsupported"
 
 #. (basename)
 #: share/skin/s3/javascript/lightbox/attachment.js:209
@@ -1882,7 +1878,7 @@ msgstr "info.email-to-page"
 #. (workspace.title)
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:45
 msgid "When users click on the title of a workspace, they go to the central page of the workspace. This page has the same title as the workspace (\"%1\")."
-msgstr "info.central=workspace"
+msgstr "info.central=wiki"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:133 share/skin/s3/template/element/settings/users_invite_section:88
 msgid "When you're entering text, just type in paragraphs."
@@ -1946,7 +1942,7 @@ msgstr "wiki.title"
 
 #: share/skin/s3/template/element/main_nav/subnav/workspaces:1 share/skin/s3/template/element/settings/workspaces_listall_section:4 share/skin/s3/template/lite/globalnav.html:60 share/skin/s3/template/lite/globalnav.html:62 share/skin/s3/template/view/settings:39
 msgid "Workspaces"
-msgstr "nav.workspaces"
+msgstr "nav.wikis"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:8
 msgid "Workspaces are private by default. All users need to log in to view pages. Only workspace admins can invite new users."
@@ -1994,7 +1990,7 @@ msgstr "error.same-revision"
 #. (draft.page_title, draft.workspace_title, draft.workspace_id)
 #: share/skin/s3/javascript/s3.js:1161
 msgid "You have an unsaved draft of \"%1\" in the \"%2\" (%3) workspace:"
-msgstr "draft.unsaved=page,workspace,workspace_id"
+msgstr "draft.unsaved=page,wiki,wiki_id"
 
 #: share/skin/s3/template/element/workspace_list/public_workspaces:5
 msgid "You have free access to view and contribute to any of these public wikis:"
@@ -2173,7 +2169,7 @@ msgstr "tag.template"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:21
 msgid "this workspace has custom permissions."
-msgstr "config.workspace-custom"
+msgstr "config.wiki-custom"
 
 #: share/skin/s3/javascript/lightbox/comment.js:417
 msgid "type link text here"
@@ -2181,11 +2177,11 @@ msgstr "comment.type-link"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:23
 msgid "users can see pages without logging in."
-msgstr "config.workspace-public"
+msgstr "config.wiki-public"
 
 #: share/skin/s3/template/element/settings/workspaces_permissions_section:16
 msgid "users need to be invited by an admin and must log in to see pages."
-msgstr "config.workspace-private"
+msgstr "config.wiki-private"
 
 #: share/skin/s3/template/element/settings/start:28
 msgid "warning:"
