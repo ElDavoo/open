@@ -218,9 +218,9 @@ sub _plugin_after {
         : '';
 
     my @lines;
-    push @lines, map { loc("The [_1] plugin is now enabled for $what", $_) }
+    push @lines, map { loc("The [_1] plugin is now enabled for [_2]", $_, $what) }
                  grep { !$before->{$_} } keys %after;
-    push @lines, map { loc("The [_1] plugin is now disabled for $what", $_) }
+    push @lines, map { loc("The [_1] plugin is now disabled for [_2]", $_, $what) }
                  grep { !$after{$_} } keys %$before;
 
     if (@lines) {
@@ -558,7 +558,7 @@ sub import_account {
     $self->_alert_error($@) if ($@);
 
     for my $tarball (glob "$dir/*.1.tar.gz") {
-        print loc("Importing workspace from $tarball ..."), "\n";
+        print loc("Importing workspace from [_1] ...", $tarball), "\n";
         eval {
             my $wksp = Socialtext::Workspace->ImportFromTarball(
                 tarball   => $tarball,

@@ -91,7 +91,7 @@ LINE:
             my @missing_fields = grep { !exists $available{$_} } @Required_fields;
             if (@missing_fields) {
                 my $missing = join ', ', @missing_fields;
-                my $msg = loc("could not be parsed.  The file was missing the following required fields ($missing).  The file must have a header row listing the field headers.");
+                my $msg = loc("could not be parsed.  The file was missing the following required fields ([_1]).  The file must have a header row listing the field headers.", $missing);
                 $self->_fail($msg);
                 last LINE;
             }
