@@ -24,12 +24,10 @@
 | st-admin | create-user --email %%loggedinuser%% --password %%password%% --account %%followacct%% |  |
 | st-admin | add-member --workspace %%followws%% --email %%loggedinuser%% |  |
 
-| *Comment* | Test Case: Activities Widget Followers logout explicitly |  |
-| open_ok | /nlw/submit/logout |  |
+| *Comment* | Test Case: Activities Widget Followers Login as %%followinguser%% |  |
+| st-logoutin | %%followinguser%% | %%password%% |
 
-| *Comment* | Test Case: Activities Widget Followers Login as %%followinguser%%, create a page and send a signal |  |
-
-| st-login | %%followinguser%% | %%password%% |
+| *Comment* | Test Case: Activities Widget Followers%%followinguser%%, create a page and send a signal |  |
 | open_ok | /%%followws%%/ |  |
 | st-create-wikipage | %%followws%% | pageone |
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
@@ -58,7 +56,7 @@
 | st-name-widget | 1 | activities_widget |
 | st-widget-settings | activities_widget |  |
 | wait_for_element_visible_ok | limit | 30000 |
-| select_ok | limit | 10 |
+| select_ok | limit | 25 |
 | click_ok | st-savebutton-%%activities_widget%% |  |
 | wait_for_element_not_visible_ok | limit | 30000 |
 | wait_for_element_not_visible_ok | st-savebutton-%%activities_widget%% | 30000 |

@@ -96,7 +96,7 @@
 
 | *Comment* | Test Case: Reset to Default Dashboard should have two WikiPage widgets |  |
 | wait_for_text_present_ok | Learning Resources | 30000 |
-| text_like | contentColumns | Welcome |
+| text_like | contentColumns | I'm new. What do I do? |
 | text_like | contentColumns | Learning Resources |
 
 | *Comment* | Test Case: Reset to Default Dashboard TEARDOWN |  |
