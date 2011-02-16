@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-16 19:18+0800\n"
+"PO-Revision-Date: 2011-02-16 21:46+0800\n"
 "PO-Revision-Date: \n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
@@ -27,7 +27,7 @@ msgstr "error.invalid=email"
 #. (data.revision_count)
 #: share/skin/s3/javascript/pageview.js:96
 msgid "%1 Revisions"
-msgstr "page.count=revisions"
+msgstr "page.revisions=count"
 
 #. (html_escaped_category)
 #: share/skin/s3/template/element/category_display/action_weblog_view:3
@@ -43,22 +43,22 @@ msgstr "file.by=date,user"
 #. (days)
 #: share/skin/s3/template/lite/page_list.html:16 share/skin/s3/template/view/page/display:18
 msgid "%1 days ago"
-msgstr "ago=days"
+msgstr "ago.days=count"
 
 #. (hours)
 #: share/skin/s3/template/lite/page_list.html:12 share/skin/s3/template/view/page/display:13
 msgid "%1 hours ago"
-msgstr "ago=hours"
+msgstr "ago.hours=count"
 
 #. (minutes)
 #: share/skin/s3/template/lite/page_list.html:8
 msgid "%1 min. ago"
-msgstr "ago=mins"
+msgstr "ago.mins=count"
 
 #. (minutes)
 #: share/skin/s3/template/view/page/display:9
 msgid "%1 minutes ago"
-msgstr "ago=minutes"
+msgstr "ago.minutes=count"
 
 #. (display_title)
 #: share/skin/s3/template/view/page_revision_list:5
@@ -116,7 +116,7 @@ msgstr "info.wikis"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:147 share/skin/s3/template/element/settings/users_invite_search_section:153 share/skin/s3/template/element/settings/users_invite_section:102 share/skin/s3/template/element/settings/users_invite_section:108
 msgid "<Your personal message goes here.>"
-msgstr "invite.personal-message"
+msgstr "invite.your-personal-message"
 
 #. (workspace.name, workspace.title)
 #: share/skin/s3/template/workspaces_created_section.html:18
@@ -191,7 +191,7 @@ msgstr "group.all"
 
 #: share/skin/s3/template/element/main_nav/subnav/history:4
 msgid "All My Recently Viewed"
-msgstr "nav.recently-viewed"
+msgstr "nav.my-recently-viewed"
 
 #: share/skin/s3/template/element/main_nav/subnav/workspaces:12
 msgid "All My Workspaces"
@@ -398,7 +398,7 @@ msgstr "nav.community"
 
 #: share/skin/s3/template/view/page_revision_list:97
 msgid "Compare Revisions"
-msgstr "revision.compare"
+msgstr "do.compare-revisions"
 
 #: share/skin/s3/template/workspaces_created_section.html:7
 msgid "Congratulations!"
@@ -837,7 +837,7 @@ msgstr "invite.click-edit"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:123 share/skin/s3/template/element/settings/users_invite_section:78
 msgid "If you wish, you can include a personal message in the invitation email. You can edit the message to say anything you want."
-msgstr "invite.personal-message"
+msgstr "invite.include-personal-message"
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:16
 msgid "Image"
@@ -974,7 +974,7 @@ msgstr "invite.edit-save"
 
 #: share/skin/s3/template/view/settings:31
 msgid "Manage All Users"
-msgstr "config.users"
+msgstr "config.all-users"
 
 #: share/skin/s3/template/element/page/display/attachments:53
 msgid "Manage Files"
@@ -1014,7 +1014,7 @@ msgstr "nav.history"
 
 #: share/skin/s3/template/view/settings:29
 msgid "My Settings"
-msgstr "nav.settings"
+msgstr "nav.my-settings"
 
 #: share/skin/s3/template/layout/html:141 share/skin/s3/template/layout/user_frame:146
 msgid "My Watchlist"
@@ -1022,7 +1022,7 @@ msgstr "nav.watchlist"
 
 #: share/skin/s3/template/lite/workspace_list/my_workspaces:5 share/skin/s3/template/view/settings:41
 msgid "My Workspaces"
-msgstr "nav.wikis"
+msgstr "nav.my-wikis"
 
 #: share/skin/s3/template/element/settings/users_settings_section:6
 msgid "Name"
@@ -1485,15 +1485,15 @@ msgstr "login.title"
 
 #: share/skin/s3/template/element/main_nav/subnav/people:8
 msgid "Socialtext People"
-msgstr "nav.people"
+msgstr "nav.socialtext-people"
 
 #: share/skin/s3/template/element/main_nav/subnav/signals:8
 msgid "Socialtext Signals"
-msgstr "nav.signals"
+msgstr "nav.socialtext-signals"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:76
 msgid "Socialtext Unplugged"
-msgstr "nav.unplugged"
+msgstr "nav.socialtext-unplugged"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:77
 msgid "Socialtext Unplugged allows users to read and edit workspace pages while offline. Users can \"unplug\" one or more pages to read and edit. Changes can be synchronized with the workspace."
