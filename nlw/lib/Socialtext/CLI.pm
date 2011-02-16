@@ -2464,7 +2464,7 @@ sub _show_group_members {
 
     my $urs = $group->user_roles();
     my $msg = loc("Members of the [_1] group", $group->driver_name) . "\n\n";
-    $msg .= loc("| Email Address | First | Last | Role |") . "\n";
+    $msg .= '| ' . join(' | ', loc("Email Address"), loc("First"), loc("Last"), loc("Role")) . " |\n";
 
     while ( my $ur = $urs->next() ) {
         my ($user,$role) = @$ur;
