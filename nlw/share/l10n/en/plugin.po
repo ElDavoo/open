@@ -2,8 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: \n"
-"PO-Revision-Date: \n"
+"PO-Revision-Date: 2011-02-17 04:26+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -24,17 +23,17 @@ msgid " You will soon be able to associate workspaces with your group. For now, 
 msgstr ""
 
 #. (summary)
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:5928 share/plugin/widgets/share/javascript/socialtext-activities.js:6426 share/plugin/widgets/share/javascript/socialtext-container.js:18931 share/plugin/widgets/share/javascript/socialtext-popout.js:9286
+#: share/plugin/signals/share/javascript/socialtext-activities.js:2320 share/plugin/signals/share/javascript/socialtext-signals.js:2432
 msgid "\"%1\""
 msgstr ""
 
 #. (page_name)
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:5033 share/plugin/widgets/share/javascript/socialtext-activities.js:5531 share/plugin/widgets/share/javascript/socialtext-container.js:18036 share/plugin/widgets/share/javascript/socialtext-popout.js:8391
+#: share/plugin/signals/share/javascript/socialtext-activities.js:1473 share/plugin/signals/share/javascript/socialtext-signals.js:1610
 msgid "\"%1\" is a reserved page name. Please use a different name"
 msgstr ""
 
 #. (page_name)
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2091 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2174 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:45492 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:45575
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2091 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2174
 msgid "\"%1\" is a reserved page name. Please use a different name."
 msgstr ""
 
@@ -43,7 +42,7 @@ msgid "\"Signal This\" Bookmarklet"
 msgstr ""
 
 #. (msg)
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2562 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:45963 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:5247 share/plugin/widgets/share/javascript/socialtext-activities.js:5745 share/plugin/widgets/share/javascript/socialtext-container.js:18250 share/plugin/widgets/share/javascript/socialtext-popout.js:8605
+#: share/plugin/signals/share/javascript/socialtext-activities.js:1677 share/plugin/signals/share/javascript/socialtext-signals.js:1805 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2562
 msgid ""
 "%1\n"
 "\n"
@@ -53,7 +52,7 @@ msgid ""
 msgstr ""
 
 #. (new_events)
-#: share/plugin/widgets/share/javascript/activities/event_list.js:411 share/plugin/widgets/share/javascript/socialtext-activities.js:16911 share/plugin/widgets/share/javascript/socialtext-container.js:29416 share/plugin/widgets/share/javascript/socialtext-popout.js:19771
+#: share/plugin/widgets/share/javascript/activities/event_list.js:411
 msgid "%1 %quant(%1,activity,activities)"
 msgstr ""
 
@@ -78,43 +77,13 @@ msgid "%1 %quant(%1,mention,mentions), click here to see first %2"
 msgstr ""
 
 #. (new_replies)
-#: share/plugin/widgets/share/javascript/activities/event_list.js:416 share/plugin/widgets/share/javascript/socialtext-activities.js:16916 share/plugin/widgets/share/javascript/socialtext-container.js:29421 share/plugin/widgets/share/javascript/socialtext-popout.js:19776
+#: share/plugin/widgets/share/javascript/activities/event_list.js:416
 msgid "%1 %quant(%1,reply,replies)"
-msgstr ""
-
-#. ($acct->name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1835
-msgid "%1 Account Growth Report"
-msgstr ""
-
-#. ($acct->name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1814
-msgid "%1 Account Usage Report"
 msgstr ""
 
 #. (group.driver_group_name)
 #: share/plugin/control/template/control/group.html:4
 msgid "%1 Group"
-msgstr ""
-
-#. ($group->driver_group_name,            $workspace->name,)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1492
-msgid "%1 Group has been removed from the Workspace"
-msgstr ""
-
-#. ($group->driver_group_name,                $workspace->name,)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1480
-msgid "%1 Group is not a member of this Workspace"
-msgstr ""
-
-#. ($w->name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1827
-msgid "%1 Workspace Growth Report"
-msgstr ""
-
-#. ($w->name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1822
-msgid "%1 Workspace Usage Report"
 msgstr ""
 
 #. (account.name)
@@ -151,12 +120,12 @@ msgid "%1 minutes ago"
 msgstr ""
 
 #. (new_events + new_replies)
-#: share/plugin/widgets/share/javascript/activities/event_list.js:421 share/plugin/widgets/share/javascript/socialtext-activities.js:16921 share/plugin/widgets/share/javascript/socialtext-container.js:29426 share/plugin/widgets/share/javascript/socialtext-popout.js:19781
+#: share/plugin/widgets/share/javascript/activities/event_list.js:421
 msgid "%1 new"
 msgstr ""
 
 #. (self.mentionCount)
-#: share/plugin/widgets/share/javascript/activities/widget.js:471 share/plugin/widgets/share/javascript/socialtext-activities.js:18150 share/plugin/widgets/share/javascript/socialtext-container.js:30655 share/plugin/widgets/share/javascript/socialtext-popout.js:21010
+#: share/plugin/widgets/share/javascript/activities/widget.js:471
 msgid "%1 new %quant(%1,mention)..."
 msgstr ""
 
@@ -189,7 +158,7 @@ msgid "%1 other %quant(%1,reply,replies)..."
 msgstr ""
 
 #. (signal.best_full_name)
-#: share/plugin/widgets/share/javascript/activities/widget.js:536 share/plugin/widgets/share/javascript/socialtext-activities.js:18215 share/plugin/widgets/share/javascript/socialtext-container.js:30720 share/plugin/widgets/share/javascript/socialtext-popout.js:21075
+#: share/plugin/widgets/share/javascript/activities/widget.js:536
 msgid "%1 private to you"
 msgstr ""
 
@@ -199,11 +168,6 @@ msgstr ""
 msgid "%1 rows selected:"
 msgstr ""
 
-#. ($signaler->best_full_name)
-#: share/plugin/signals/lib/Socialtext/Rest/Signals/Feed.pm:116
-msgid "%1 signalled"
-msgstr ""
-
 #. (custom_skin,                  custom_skins.$custom_skin)
 #. (custom_skin, custom_skins.$custom_skin)
 #: share/plugin/control/template/control/account.html:243 share/plugin/control/template/control/account.html:245
@@ -211,7 +175,7 @@ msgid "%1 skin: workspace-level skin for '%2' workspace(s)"
 msgstr ""
 
 #. (signal.best_full_name,                    targets.join(', ')
-#: share/plugin/widgets/share/javascript/activities/widget.js:539 share/plugin/widgets/share/javascript/socialtext-activities.js:18218 share/plugin/widgets/share/javascript/socialtext-container.js:30723 share/plugin/widgets/share/javascript/socialtext-popout.js:21078
+#: share/plugin/widgets/share/javascript/activities/widget.js:539
 msgid "%1 to %2"
 msgstr ""
 
@@ -231,70 +195,38 @@ msgstr ""
 msgid "%1 workspace"
 msgstr ""
 
-#. ($user->best_full_name)
-#: share/plugin/signals/lib/Socialtext/Rest/Signals/Feed.pm:89
-msgid "%1's avatar"
-msgstr ""
-
 #. (event.context.body)
 #: share/plugin/signals/template/data/events/signal:1 share/plugin/signals/template/data/events/signal:3
 msgid "%1."
 msgstr ""
 
-#. (a.user_count)
-#. (g.user_count)
+#. ('1')
+#. ('2')
 #. (acc.user_count)
 #. (group.user_count)
-#: share/plugin/people/template/invite:28 share/plugin/people/template/invite:31 share/plugin/signals/template/lite/signals.html:57 share/plugin/signals/template/lite/signals.html:68
+#. (a.user_count)
+#. (g.user_count)
+#: share/plugin/people/template/invite:28 share/plugin/people/template/invite:31 share/plugin/signals/share/javascript/socialtext-activities.js:757 share/plugin/signals/share/javascript/socialtext-activities.js:758 share/plugin/signals/template/lite/signals.html:57 share/plugin/signals/template/lite/signals.html:68
 msgid "%quant(%1,user)"
 msgstr ""
 
 #. (label)
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:10456 share/plugin/widgets/share/javascript/socialtext-activities.js:13330 share/plugin/widgets/share/javascript/socialtext-container.js:25835 share/plugin/widgets/share/javascript/socialtext-popout.js:16190
+#: share/plugin/signals/share/javascript/socialtext-activities.js:8221 share/plugin/signals/share/javascript/socialtext-signals.js:8404
 msgid "'%1' has an invalid value"
 msgstr ""
 
 #. (label)
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:10424 share/plugin/widgets/share/javascript/socialtext-activities.js:13298 share/plugin/widgets/share/javascript/socialtext-container.js:25803 share/plugin/widgets/share/javascript/socialtext-popout.js:16158
+#: share/plugin/signals/share/javascript/socialtext-activities.js:8189 share/plugin/signals/share/javascript/socialtext-signals.js:8372
 msgid "'%1' is a required field"
 msgstr ""
 
-#. ($name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1691
-msgid "'%1' is not a valid account name."
-msgstr ""
-
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:289
-msgid "'%1' is not a valid value for group_create."
-msgstr ""
-
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:255
-msgid "'%1' is not a valid value for self_join."
-msgstr ""
-
 #. (self.signalCount, self._originalTitle)
-#: share/plugin/widgets/share/javascript/activities/widget.js:465 share/plugin/widgets/share/javascript/socialtext-activities.js:18144 share/plugin/widgets/share/javascript/socialtext-container.js:30649 share/plugin/widgets/share/javascript/socialtext-popout.js:21004
+#: share/plugin/widgets/share/javascript/activities/widget.js:465
 msgid "(%1) %2"
 msgstr ""
 
 #: share/plugin/signals/template/bookmarklet/too_long.html:13
 msgid "(Click [Cancel] to Signal privately to yourself.)"
-msgstr ""
-
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:742
-msgid "(Desktop users need to logout and login again to see the default logo.)"
-msgstr ""
-
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:729
-msgid "(Desktop users need to logout and login again to see the new logo.)"
-msgstr ""
-
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6460 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6478 share/plugin/widgets/share/javascript/socialtext-activities.js:6958 share/plugin/widgets/share/javascript/socialtext-activities.js:6976 share/plugin/widgets/share/javascript/socialtext-container.js:19463 share/plugin/widgets/share/javascript/socialtext-container.js:19481 share/plugin/widgets/share/javascript/socialtext-popout.js:9818 share/plugin/widgets/share/javascript/socialtext-popout.js:9836
-msgid "(Note: HTML fragments are not guaranteed to work and may break the UI.)"
-msgstr ""
-
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6489 share/plugin/widgets/share/javascript/socialtext-activities.js:6987 share/plugin/widgets/share/javascript/socialtext-container.js:19492 share/plugin/widgets/share/javascript/socialtext-popout.js:9847
-msgid "(Preformatted Text is plain text displayed exactly as entered.)"
 msgstr ""
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:34
@@ -309,7 +241,7 @@ msgstr ""
 msgid "(e.g. AA-00000000-0)"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/explore.js:221 share/plugin/widgets/share/javascript/socialtext-activities.js:18894 share/plugin/widgets/share/javascript/socialtext-container.js:31399 share/plugin/widgets/share/javascript/socialtext-popout.js:21754
+#: share/plugin/widgets/share/javascript/activities/explore.js:221
 msgid "(no items to show)"
 msgstr ""
 
@@ -333,7 +265,7 @@ msgstr ""
 msgid "<a id=\"st-newspreadsheet-duplicate-link\" href=\"#\" target=\"\">XXX</a> is <span id=\"st-newspreadsheet-duplicate-emphasis\">already taken</span>. Would you like to:"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:5822 share/plugin/widgets/share/javascript/socialtext-activities.js:6320 share/plugin/widgets/share/javascript/socialtext-container.js:18825 share/plugin/widgets/share/javascript/socialtext-popout.js:9180
+#: share/plugin/signals/share/javascript/socialtext-activities.js:2176 share/plugin/signals/share/javascript/socialtext-signals.js:2326
 msgid "<a target=\"_blank\" href=\"http://www.mozilla.com/firefox/\">Download Firefox</a> for richer Socialtext editing functionality."
 msgstr ""
 
@@ -361,17 +293,8 @@ msgstr ""
 msgid "Account"
 msgstr ""
 
-#. ($old_name, $new_name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:912
-msgid "Account %1 renamed to %2"
-msgstr ""
-
 #: share/plugin/control/template/control/desktop-account.html:14
 msgid "Account Custom Desktop Skin"
-msgstr ""
-
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1108 share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1150
-msgid "Account ID was not supplied!"
 msgstr ""
 
 #: share/plugin/control/template/control/account.html:231 share/plugin/control/template/control/design-account.html:8
@@ -390,7 +313,7 @@ msgstr ""
 msgid "Account Settings"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/socialtext-gadget.js:3185
+#: share/plugin/control/share/javascript/socialtext-control.min.js:6421
 msgid "Account name is required"
 msgstr ""
 
@@ -406,28 +329,19 @@ msgstr ""
 msgid "Account type:"
 msgstr ""
 
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:430
-msgid "Account updated."
-msgstr ""
-
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1969 share/plugin/control/template/control/group.html:39 share/plugin/control/template/control/index.html:25 share/plugin/control/template/control/wrapper:85
+#: share/plugin/control/template/control/group.html:39 share/plugin/control/template/control/index.html:25 share/plugin/control/template/control/wrapper:85
 msgid "Accounts"
 msgstr ""
 
+#. (this.total)
 #. ('<span id="accountsCount"></span>')
 #. ("<span id=\"accountsCount\"></span>")
-#. (this.total)
 #: share/plugin/control/template/control/group.html:315 share/plugin/control/template/control/user.html:94
 msgid "Accounts (%1)"
 msgstr ""
 
 #: share/plugin/control/template/control/index.html:26
 msgid "Accounts are large groupings of users, who have common access to a People directory, Signals conversations, and other content and features. A variety of options and settings can be configured for each account, including plugins, skins, and look-and-feel of Socialtext Desktop. You can also view usage and adoption reports for accounts."
-msgstr ""
-
-#. ($name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1955
-msgid "Accounts matching \"%1\""
 msgstr ""
 
 #: share/plugin/control/template/control/fields-account.html:32
@@ -522,6 +436,10 @@ msgstr ""
 msgid "Add a Widget with URL:"
 msgstr ""
 
+#: share/plugin/socialcalc/share/javascript/jemplate/add-a-link.html:2
+msgid "Add a link"
+msgstr ""
+
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:118 share/plugin/widgets/share/javascript/template/activities/event.tt2:83
 msgid "Add a tag"
 msgstr ""
@@ -564,11 +482,6 @@ msgstr ""
 msgid "Add users"
 msgstr ""
 
-#. ($group->driver_group_name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1272
-msgid "Add users to %1 group"
-msgstr ""
-
 #. (group.driver_group_name, group.group_id)
 #: share/plugin/control/template/control/group_add_to_workspace.html:5
 msgid "Adding Group %1 (%2) to a Workspace"
@@ -589,12 +502,7 @@ msgstr ""
 msgid "Adding Group to Workspace %1"
 msgstr ""
 
-#. ($widget->{src})
-#: share/plugin/widgets/lib/Socialtext/Pluggable/Plugin/Widgets.pm:307
-msgid "Adding widget %1..."
-msgstr ""
-
-#: share/plugin/control/share/javascript/socialtext-workspaces_new.js:157 share/plugin/control/share/javascript/socialtext-workspaces_new.js:50 share/plugin/control/share/javascript/workspaces_new.js:156 share/plugin/control/share/javascript/workspaces_new.js:49 share/plugin/control/template/control/account.html:133 share/plugin/control/template/control/group.html:184 share/plugin/control/template/control/workspace.html:225 share/plugin/control/template/control/workspace.html:91
+#: share/plugin/control/share/javascript/workspaces_new.js:156 share/plugin/control/share/javascript/workspaces_new.js:49 share/plugin/control/template/control/account.html:133 share/plugin/control/template/control/group.html:184 share/plugin/control/template/control/workspace.html:225 share/plugin/control/template/control/workspace.html:91
 msgid "Admin"
 msgstr ""
 
@@ -606,7 +514,7 @@ msgstr ""
 msgid "Administrators"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:8481 share/plugin/widgets/share/javascript/socialtext-activities.js:11355 share/plugin/widgets/share/javascript/socialtext-container.js:23860 share/plugin/widgets/share/javascript/socialtext-popout.js:14215
+#: share/plugin/signals/share/javascript/socialtext-activities.js:6382 share/plugin/signals/share/javascript/socialtext-signals.js:6576
 msgid "Advanced Content in Grey Border"
 msgstr ""
 
@@ -614,12 +522,12 @@ msgstr ""
 msgid "Advanced Formatting"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:8637 share/plugin/widgets/share/javascript/socialtext-activities.js:11511 share/plugin/widgets/share/javascript/socialtext-container.js:24016 share/plugin/widgets/share/javascript/socialtext-popout.js:14371
+#: share/plugin/signals/share/javascript/socialtext-activities.js:6559 share/plugin/signals/share/javascript/socialtext-signals.js:6753
 msgid "Advanced Mode"
 msgstr ""
 
 #. (advanced_link)
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:8487 share/plugin/widgets/share/javascript/socialtext-activities.js:11361 share/plugin/widgets/share/javascript/socialtext-container.js:23866 share/plugin/widgets/share/javascript/socialtext-popout.js:14221
+#: share/plugin/signals/share/javascript/socialtext-activities.js:6388 share/plugin/signals/share/javascript/socialtext-signals.js:6582
 msgid "Advanced content is shown inside a grey border. Switch to %1 to edit areas inside a grey border."
 msgstr ""
 
@@ -629,15 +537,6 @@ msgstr ""
 
 #: share/plugin/groups/share/widgets/all_groups/widget.html:2
 msgid "All Available Groups"
-msgstr ""
-
-#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:276
-msgid "All People"
-msgstr ""
-
-#. ($tag)
-#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:276
-msgid "All People Tagged '%1'"
 msgstr ""
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:32
@@ -652,11 +551,11 @@ msgstr ""
 msgid "All User's Workspace"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:282 share/plugin/widgets/share/javascript/socialtext-activities.js:14553 share/plugin/widgets/share/javascript/socialtext-container.js:27058 share/plugin/widgets/share/javascript/socialtext-network-dropdown.js:725 share/plugin/widgets/share/javascript/socialtext-popout.js:17413
+#: share/plugin/widgets/share/javascript/activities/appdata.js:282
 msgid "All my groups"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:283 share/plugin/widgets/share/javascript/socialtext-activities.js:14554 share/plugin/widgets/share/javascript/socialtext-container.js:27059 share/plugin/widgets/share/javascript/socialtext-network-dropdown.js:726 share/plugin/widgets/share/javascript/socialtext-popout.js:17414
+#: share/plugin/widgets/share/javascript/activities/appdata.js:283
 msgid "All shared groups"
 msgstr ""
 
@@ -666,15 +565,6 @@ msgstr ""
 
 #: share/plugin/control/template/control/design-account.html:32
 msgid "Also use the logo after a fresh login to Socialtext Desktop."
-msgstr ""
-
-#. ($name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:476
-msgid "An account with this name (%1) already exists."
-msgstr ""
-
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:10493 share/plugin/widgets/share/javascript/socialtext-activities.js:13367 share/plugin/widgets/share/javascript/socialtext-container.js:25872 share/plugin/widgets/share/javascript/socialtext-popout.js:16227
-msgid "An error occured; please try later."
 msgstr ""
 
 #: share/plugin/control/template/control/user.html:64
@@ -687,10 +577,6 @@ msgstr ""
 
 #: share/plugin/control/template/control/index.html:11
 msgid "Appliance Technical Administrators can use the <a href='/console'>Console</a> to manage technical aspects of the appliance, such as network and backup settings."
-msgstr ""
-
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:760
-msgid "Applied current account logo to Desktop. Desktop users need to logout and login again to see the new logo."
 msgstr ""
 
 #: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:175 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:355 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:372 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:194
@@ -713,15 +599,25 @@ msgstr ""
 msgid "April"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:5883 share/plugin/widgets/share/javascript/socialtext-activities.js:6381 share/plugin/widgets/share/javascript/socialtext-container.js:18886 share/plugin/widgets/share/javascript/socialtext-popout.js:9241
+#: share/plugin/signals/share/javascript/socialtext-activities.js:2237 share/plugin/signals/share/javascript/socialtext-signals.js:2387
 msgid "Are you sure you want to cancel?"
 msgstr ""
 
 #. (evt.replies.length ? loc('entire Conversation')
-#: share/plugin/widgets/share/javascript/activities/event_list.js:910 share/plugin/widgets/share/javascript/socialtext-activities.js:17410 share/plugin/widgets/share/javascript/socialtext-container.js:29915 share/plugin/widgets/share/javascript/socialtext-popout.js:20270
+#: share/plugin/widgets/share/javascript/activities/event_list.js:914
 msgid ""
 "Are you sure you want to delete this %1?\n"
 "You cannot undelete it."
+msgstr ""
+
+#: share/plugin/signals/share/widgets/viewer/widget.js.rej:39
+msgid ""
+"Are you sure you want to delete this Signal?\n"
+"You cannot undelete it."
+msgstr ""
+
+#: share/plugin/signals/share/widgets/viewer/widget.js.orig:16 share/plugin/signals/share/widgets/viewer/widget.js.rej:6
+msgid "Are you sure you want to delete this Signal? You cannot undelete it."
 msgstr ""
 
 #: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:10
@@ -736,28 +632,38 @@ msgid ""
 msgstr ""
 
 #. (evt.replies.length ? loc('entire Conversation')
-#: share/plugin/widgets/share/javascript/activities/event_list.js:925 share/plugin/widgets/share/javascript/socialtext-activities.js:17425 share/plugin/widgets/share/javascript/socialtext-container.js:29930 share/plugin/widgets/share/javascript/socialtext-popout.js:20285
+#: share/plugin/widgets/share/javascript/activities/event_list.js:929
 msgid ""
 "Are you sure you want to expunge this %1 from the system?\n"
 "It cannot be recovered."
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2564 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:45965 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:5259 share/plugin/widgets/share/javascript/socialtext-activities.js:5757 share/plugin/widgets/share/javascript/socialtext-container.js:18262 share/plugin/widgets/share/javascript/socialtext-popout.js:8617
+#: share/plugin/signals/share/widgets/viewer/widget.js.rej:51
+msgid ""
+"Are you sure you want to expunge this Signal from the system?\n"
+"It cannot be recovered."
+msgstr ""
+
+#: share/plugin/signals/share/widgets/viewer/widget.js.orig:32 share/plugin/signals/share/widgets/viewer/widget.js.rej:22
+msgid "Are you sure you want to expunge this Signal from the system? It cannot be recovered."
+msgstr ""
+
+#: share/plugin/signals/share/javascript/socialtext-activities.js:1689 share/plugin/signals/share/javascript/socialtext-signals.js:1817 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2564
 msgid "Are you sure you want to navigate away from this page?"
 msgstr ""
 
 #. (this.title)
-#: share/plugin/widgets/share/javascript/lightbox-remove-content.js:118 share/plugin/widgets/share/javascript/lightbox/remove-content.js:46
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:46
 msgid "Are you sure you want to permanently remove the \"%1\" widget?"
 msgstr ""
 
 #. (this.title)
-#: share/plugin/widgets/share/javascript/lightbox-remove-content.js:114 share/plugin/widgets/share/javascript/lightbox/remove-content.js:42
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:42
 msgid "Are you sure you want to remove the \"%1\" widget? Users will no longer see this widget in their widget gallery. You can restore the widget at any time."
 msgstr ""
 
 #. (this.title)
-#: share/plugin/widgets/share/javascript/lightbox-remove-content.js:116 share/plugin/widgets/share/javascript/lightbox/remove-content.js:44
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:44
 msgid "Are you sure you want to restore the \"%1\" widget?"
 msgstr ""
 
@@ -777,16 +683,6 @@ msgstr ""
 msgid "Assign to a new account"
 msgstr ""
 
-#. (shift)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:584
-msgid "Assigned the Appliance Business Administrator role to %1"
-msgstr ""
-
-#. (shift)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:598
-msgid "Assigned the Appliance Technical Administrator role to %1"
-msgstr ""
-
 #: share/plugin/people/template/lite/profile.html:100
 msgid "Assistant"
 msgstr ""
@@ -795,7 +691,15 @@ msgstr ""
 msgid "Attach a file"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:8514 share/plugin/widgets/share/javascript/socialtext-activities.js:11388 share/plugin/widgets/share/javascript/socialtext-container.js:23893 share/plugin/widgets/share/javascript/socialtext-popout.js:14248
+#: share/plugin/socialcalc/share/javascript/jemplate/widget_image_edit.html:1
+msgid "Attached Image"
+msgstr ""
+
+#: share/plugin/socialcalc/share/javascript/jemplate/widget_image_edit.html:83
+msgid "Attached to:"
+msgstr ""
+
+#: share/plugin/signals/share/javascript/socialtext-activities.js:6415 share/plugin/signals/share/javascript/socialtext-signals.js:6609
 msgid "Attachments"
 msgstr ""
 
@@ -893,12 +797,7 @@ msgstr ""
 msgid "Can be seen in the Group Directory by everyone and anyone can join."
 msgstr ""
 
-#. ($url)
-#: share/plugin/widgets/lib/Socialtext/Gadgets/Gadget.pm:767
-msgid "Can't find thumbnail image: %1"
-msgstr ""
-
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6395 share/plugin/widgets/share/javascript/socialtext-activities.js:6893 share/plugin/widgets/share/javascript/socialtext-container.js:19398 share/plugin/widgets/share/javascript/socialtext-popout.js:9753
+#: share/plugin/signals/share/javascript/socialtext-activities.js:2796 share/plugin/signals/share/javascript/socialtext-signals.js:2908
 msgid "Can't have a 0 for a size."
 msgstr ""
 
@@ -906,7 +805,7 @@ msgstr ""
 msgid "Can't see your Bookmarks Bar?"
 msgstr ""
 
-#: share/plugin/control/share/javascript/lightbox/group-create.tt2:66 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:47 share/plugin/control/template/control/field_form:82 share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:20 share/plugin/dashboard/template/dashboard_links:18 share/plugin/dashboard/template/widget_editor_links:13 share/plugin/groups/share/javascript/lightbox/create-group.tt2:64 share/plugin/groups/share/javascript/lightbox/delete-group.tt2:20 share/plugin/groups/share/javascript/lightbox/leave-group.tt2:17 share/plugin/groups/template/edit_group_footer:11 share/plugin/groups/template/edit_group_footer:4 share/plugin/groups/template/group_footer:14 share/plugin/groups/template/group_footer:7 share/plugin/people/template/invite:109 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:750 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:20 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:467 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:493 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:44151 share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:18 share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:17 share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:23
+#: share/plugin/control/share/javascript/lightbox/group-create.tt2:66 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:47 share/plugin/control/template/control/field_form:82 share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:20 share/plugin/dashboard/template/dashboard_links:18 share/plugin/dashboard/template/widget_editor_links:13 share/plugin/groups/share/javascript/lightbox/create-group.tt2:64 share/plugin/groups/share/javascript/lightbox/delete-group.tt2:20 share/plugin/groups/share/javascript/lightbox/leave-group.tt2:17 share/plugin/groups/template/edit_group_footer:11 share/plugin/groups/template/edit_group_footer:4 share/plugin/groups/template/group_footer:14 share/plugin/groups/template/group_footer:7 share/plugin/people/template/invite:109 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:750 share/plugin/socialcalc/share/javascript/jemplate/add-a-link.html:75 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:20 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:467 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:493 share/plugin/socialcalc/share/javascript/jemplate/widget_image_edit.html:117 share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:18 share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:17 share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:23
 msgid "Cancel"
 msgstr ""
 
@@ -914,46 +813,8 @@ msgstr ""
 msgid "Cancel Edit"
 msgstr ""
 
-#. ($from_class, $to_class)
-#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:766
-msgid "Cannot convert field class from '%1' to '%2'"
-msgstr ""
-
-#. ($name, $opts->{title}, $acct->name)
-#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:711
-msgid "Cannot create profile field: The field name '%1' (derived from title '%2') is already used in account '%3'"
-msgstr ""
-
-#. ($name, $opts->{title})
-#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:701
-msgid "Cannot create profile field: The field name '%1' (derived from title '%2') is reserved for Socialtext"
-msgstr ""
-
-#. ($opts->{name}, $acct->name)
-#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:714
-msgid "Cannot create profile field: The field name '%1' is already used in account '%2'"
-msgstr ""
-
-#. ($opts->{name})
-#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:704
-msgid "Cannot create profile field: The field name '%1' is reserved for Socialtext"
-msgstr ""
-
-#. ($opts->{field_class})
-#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:718
-msgid "Cannot create profile field: invalid field-class '%1'"
-msgstr ""
-
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:3006 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:46407
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:3006
 msgid "Cannot load revision"
-msgstr ""
-
-#: share/plugin/widgets/lib/Socialtext/Gadgets/Gallery.pm:200
-msgid "Cannot permanently remove non-account widgets."
-msgstr ""
-
-#: share/plugin/widgets/lib/Socialtext/Gadgets/Gallery.pm:197
-msgid "Cannot remove socialtext widgets."
 msgstr ""
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:218
@@ -970,10 +831,6 @@ msgstr ""
 
 #: share/plugin/control/template/control/account.html:56
 msgid "Change account type to:"
-msgstr ""
-
-#: share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:487 share/plugin/twilio/lib/Socialtext/Pluggable/Plugin/Twilio.pm:66
-msgid "Changes Saved"
 msgstr ""
 
 #: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:2
@@ -1004,17 +861,8 @@ msgstr ""
 msgid "Click here to enable desktop notifications"
 msgstr ""
 
-#: share/plugin/signals/share/javascript/lightbox/explore-about.tt2:17 share/plugin/widgets/share/javascript/activities/event_list.js:752 share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:62 share/plugin/widgets/share/javascript/socialtext-activities.js:17252 share/plugin/widgets/share/javascript/socialtext-container.js:29757 share/plugin/widgets/share/javascript/socialtext-popout.js:20112
+#: share/plugin/signals/share/javascript/lightbox/explore-about.tt2:17 share/plugin/widgets/share/javascript/activities/event_list.js:752 share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:62
 msgid "Close"
-msgstr ""
-
-#. (syntax)
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6466 share/plugin/widgets/share/javascript/socialtext-activities.js:6964 share/plugin/widgets/share/javascript/socialtext-container.js:19469 share/plugin/widgets/share/javascript/socialtext-popout.js:9824
-msgid "Code block with %1 syntax. Click to edit."
-msgstr ""
-
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6463 share/plugin/widgets/share/javascript/socialtext-activities.js:6961 share/plugin/widgets/share/javascript/socialtext-container.js:19466 share/plugin/widgets/share/javascript/socialtext-popout.js:9821
-msgid "Code block. Click to edit."
 msgstr ""
 
 #: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:68 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:59
@@ -1025,26 +873,16 @@ msgstr ""
 msgid "Column&nbsp;Width"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:8703 share/plugin/widgets/share/javascript/socialtext-activities.js:11577 share/plugin/widgets/share/javascript/socialtext-container.js:24082 share/plugin/widgets/share/javascript/socialtext-popout.js:14437
+#: share/plugin/signals/share/javascript/socialtext-activities.js:6610 share/plugin/signals/share/javascript/socialtext-signals.js:6804
 msgid "Columns is invalid."
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6448 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:8711 share/plugin/widgets/share/javascript/socialtext-activities.js:11585 share/plugin/widgets/share/javascript/socialtext-activities.js:6946 share/plugin/widgets/share/javascript/socialtext-container.js:19451 share/plugin/widgets/share/javascript/socialtext-container.js:24090 share/plugin/widgets/share/javascript/socialtext-popout.js:14445 share/plugin/widgets/share/javascript/socialtext-popout.js:9806
+#: share/plugin/signals/share/javascript/socialtext-activities.js:2849 share/plugin/signals/share/javascript/socialtext-activities.js:6618 share/plugin/signals/share/javascript/socialtext-signals.js:2961 share/plugin/signals/share/javascript/socialtext-signals.js:6812
 msgid "Columns is too big. 35 maximum."
 msgstr ""
 
 #: share/plugin/control/template/control/user.html:51
 msgid "Confirm user"
-msgstr ""
-
-#. ($user_count, $ws_count)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2274
-msgid "Congratulations! You successfully added %quant(%1,user) to %quant(%2,workspace). They will receive an invitation message to each workspace."
-msgstr ""
-
-#. ($count,            $link)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2311
-msgid "Congratulations! You successfully created a new workspace with %quant(%1,user). They will receive an invitation message with a link to %2."
 msgstr ""
 
 #: share/plugin/control/template/control/wrapper:90
@@ -1059,10 +897,6 @@ msgstr ""
 msgid "Contact Support"
 msgstr ""
 
-#: share/plugin/widgets/lib/Socialtext/Pluggable/Plugin/Widgets.pm:251
-msgid "Container already exists... Skipping..."
-msgstr ""
-
 #: share/plugin/control/template/control/wrapper:84
 msgid "Control Panel"
 msgstr ""
@@ -1071,26 +905,11 @@ msgstr ""
 msgid "Copy and paste the URL for the video below.  We support embedding video from YouTube, Vimeo, SlideShare and Google Video."
 msgstr ""
 
-#. ($new_type)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:454
-msgid "Could not change account type to %1."
-msgstr ""
-
-#. ($name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:489
-msgid "Could not create account %1."
-msgstr ""
-
-#. ($ws_title)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2298
-msgid "Could not create workspace %1"
-msgstr ""
-
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1345 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:44746
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1345
 msgid "Couldn't find any data to sum."
 msgstr ""
 
-#: share/plugin/control/share/javascript/lightbox-workspace-create.js:72 share/plugin/control/share/javascript/lightbox/group-create.tt2:65 share/plugin/control/share/javascript/lightbox/workspace-create.js:33 share/plugin/control/template/control/report.html:130 share/plugin/groups/template/edit_group_footer:7 share/plugin/groups/template/group_footer:10
+#: share/plugin/control/share/javascript/lightbox/group-create.tt2:65 share/plugin/control/share/javascript/lightbox/workspace-create.js:33 share/plugin/control/template/control/report.html:130 share/plugin/groups/template/edit_group_footer:7 share/plugin/groups/template/group_footer:10
 msgid "Create"
 msgstr ""
 
@@ -1159,7 +978,7 @@ msgstr ""
 msgid "Create new Group"
 msgstr ""
 
-#: share/plugin/control/share/javascript/socialtext-workspaces_new.js:183 share/plugin/control/share/javascript/workspaces_new.js:182 share/plugin/control/template/control/group.html:80 share/plugin/control/template/control/group_table:11 share/plugin/control/template/control/group_table:32 share/plugin/control/template/control/groups.html:87 share/plugin/control/template/control/user.html:16 share/plugin/control/template/control/user.html:252 share/plugin/control/template/control/workspace.html:256 share/plugin/control/template/control/workspace.html:38 share/plugin/control/template/control/workspace_table:18 share/plugin/control/template/control/workspace_table:31
+#: share/plugin/control/share/javascript/workspaces_new.js:182 share/plugin/control/template/control/group.html:80 share/plugin/control/template/control/group_table:11 share/plugin/control/template/control/group_table:32 share/plugin/control/template/control/groups.html:87 share/plugin/control/template/control/user.html:16 share/plugin/control/template/control/user.html:252 share/plugin/control/template/control/workspace.html:256 share/plugin/control/template/control/workspace.html:38 share/plugin/control/template/control/workspace_table:18 share/plugin/control/template/control/workspace_table:31
 msgid "Created"
 msgstr ""
 
@@ -1181,21 +1000,20 @@ msgstr ""
 msgid "Created by"
 msgstr ""
 
-#. (shift->title)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:984
-msgid "Created profile field \"%1\""
-msgstr ""
-
 #: share/plugin/control/template/control/index.html:13
 msgid "Creating"
 msgstr ""
 
-#: share/plugin/control/share/javascript/socialtext-workspaces_new.js:188 share/plugin/control/share/javascript/workspaces_new.js:187 share/plugin/control/template/control/groups.html:97 share/plugin/control/template/control/workspace.html:261
+#: share/plugin/control/share/javascript/workspaces_new.js:187 share/plugin/control/template/control/groups.html:97 share/plugin/control/template/control/workspace.html:261
 msgid "Creator"
 msgstr ""
 
 #: share/plugin/groups/template/nav_groups:23
 msgid "Currently, you are not a member of any groups."
+msgstr ""
+
+#: share/plugin/socialcalc/share/javascript/jemplate/widget_image_edit.html:45
+msgid "Custom"
 msgstr ""
 
 #: share/plugin/control/template/control/account.html:233
@@ -1211,11 +1029,6 @@ msgstr ""
 msgid "Custom fields"
 msgstr ""
 
-#. ($user->username)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1850
-msgid "Dashboard Activity for user %1"
-msgstr ""
-
 #. (account.name)
 #: share/plugin/dashboard/template/dashboard_hello:5
 msgid "Dashboard for %1"
@@ -1225,7 +1038,7 @@ msgstr ""
 msgid "Data Source"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2495 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:45896
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2495
 msgid "Data that this spreadsheet depends on has changed. When you save, these changes will be saved as well."
 msgstr ""
 
@@ -1283,13 +1096,12 @@ msgstr ""
 msgid "Disabled"
 msgstr ""
 
-#: share/plugin/signals/share/javascript/lightbox/explore-about.tt2:10
-msgid "Do not show this information again"
+#: share/plugin/socialcalc/share/javascript/jemplate/widget_image_edit.html:4
+msgid "Display an image on this page. The image must be already uploaded as an attachment to this page or another page. Use this form to edit the properties of the displayed image."
 msgstr ""
 
-#. ($domain)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:427
-msgid "Domain (%1) is not valid."
+#: share/plugin/signals/share/javascript/lightbox/explore-about.tt2:10
+msgid "Do not show this information again"
 msgstr ""
 
 #: share/plugin/control/template/control/group.html:129 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:176 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:316 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:356 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:373 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:195 share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:19
@@ -1321,7 +1133,7 @@ msgstr ""
 msgid "Edit Group: %1"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2526 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:45927 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:4860 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:4871 share/plugin/widgets/share/javascript/socialtext-activities.js:5358 share/plugin/widgets/share/javascript/socialtext-activities.js:5369 share/plugin/widgets/share/javascript/socialtext-container.js:17863 share/plugin/widgets/share/javascript/socialtext-container.js:17874 share/plugin/widgets/share/javascript/socialtext-popout.js:8218 share/plugin/widgets/share/javascript/socialtext-popout.js:8229
+#: share/plugin/signals/share/javascript/socialtext-activities.js:1309 share/plugin/signals/share/javascript/socialtext-activities.js:1325 share/plugin/signals/share/javascript/socialtext-signals.js:1446 share/plugin/signals/share/javascript/socialtext-signals.js:1462 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2526
 msgid "Edit More"
 msgstr ""
 
@@ -1349,25 +1161,21 @@ msgstr ""
 msgid "Enter a meaningful and distinctive title for your spreadsheet."
 msgstr ""
 
-#: share/plugin/signals/share/javascript/lightbox-explore-about.js:64 share/plugin/widgets/share/javascript/lightbox-add-update-content.js:103 share/plugin/widgets/share/javascript/lightbox-remove-content.js:58 share/plugin/widgets/share/javascript/widgets-lightbox.js:16
+#: share/plugin/widgets/share/javascript/widgets-lightbox.js:16
 msgid "Error"
 msgstr ""
 
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1520
-msgid "Error creating group."
-msgstr ""
-
 #. (this.title, error)
-#: share/plugin/widgets/share/javascript/lightbox-remove-content.js:150 share/plugin/widgets/share/javascript/lightbox/remove-content.js:78
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:78
 msgid "Error deleting the \"%1\" widget: %2"
 msgstr ""
 
-#: share/plugin/dashboard/share/javascript/lightbox-save-layout.js:163 share/plugin/dashboard/share/javascript/lightbox/save-layout.js:44
-msgid "Error pushing to dashboards"
+#: share/plugin/signals/share/javascript/socialtext-activities.js:568
+msgid "Error parsing data"
 msgstr ""
 
-#: share/plugin/widgets/lib/Socialtext/Gadgets/Gallery.pm:230
-msgid "Error removing account widget."
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.js:44
+msgid "Error pushing to dashboards"
 msgstr ""
 
 #. (xhr.responseText)
@@ -1376,39 +1184,25 @@ msgid "Error removing account: %1"
 msgstr ""
 
 #. (this.title, error)
-#: share/plugin/widgets/share/javascript/lightbox-remove-content.js:147 share/plugin/widgets/share/javascript/lightbox/remove-content.js:75
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:75
 msgid "Error removing the \"%1\" widget: %2"
 msgstr ""
 
-#: share/plugin/dashboard/share/javascript/lightbox-save-layout.js:184 share/plugin/dashboard/share/javascript/lightbox/save-layout.js:65
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.js:65
 msgid "Error resetting dashboards"
 msgstr ""
 
-#: share/plugin/widgets/lib/Socialtext/Gadgets/Gallery.pm:277
-msgid "Error restoring account widget."
-msgstr ""
-
 #. (this.title, error)
-#: share/plugin/widgets/share/javascript/lightbox-remove-content.js:144 share/plugin/widgets/share/javascript/lightbox/remove-content.js:72
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:72
 msgid "Error restoring the \"%1\" widget: %2"
 msgstr ""
 
-#: share/plugin/dashboard/share/javascript/lightbox-save-layout.js:201 share/plugin/dashboard/share/javascript/lightbox/save-layout.js:82
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.js:82
 msgid "Error saving the default layout."
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/editor.js:663 share/plugin/widgets/share/javascript/socialtext-activities.js:15635 share/plugin/widgets/share/javascript/socialtext-container.js:28140 share/plugin/widgets/share/javascript/socialtext-popout.js:18495
+#: share/plugin/widgets/share/javascript/activities/editor.js:663
 msgid "Error sending Signal, please try again"
-msgstr ""
-
-#. ($err)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:266
-msgid "Error setting self register: %1"
-msgstr ""
-
-#. ($err)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:299
-msgid "Error setting users_can_create_groups %1"
 msgstr ""
 
 #. (res.errors[0])
@@ -1472,10 +1266,6 @@ msgstr ""
 msgid "Export summary data as CSV"
 msgstr ""
 
-#: share/plugin/socialcalc/lib/Socialtext/Pluggable/Plugin/SocialCalc.pm:50
-msgid "Export to CSV"
-msgstr ""
-
 #: share/plugin/control/template/control/report.html:137
 msgid "Export user data as CSV"
 msgstr ""
@@ -1483,24 +1273,6 @@ msgstr ""
 #. (exportable_accounts)
 #: share/plugin/control/template/control/accounts.html:24
 msgid "Export user data for %quant(%1,selected account)"
-msgstr ""
-
-#: share/plugin/widgets/lib/Socialtext/Pluggable/Plugin/Widgets.pm:165
-msgid "Exporting account gallery ..."
-msgstr ""
-
-#. ($groups->count, $acct->name)
-#: share/plugin/groups/lib/Socialtext/Pluggable/Plugin/Groups.pm:69
-msgid "Exporting all groups (%1) for account '%2'..."
-msgstr ""
-
-#. ($ws->name)
-#: share/plugin/groups/lib/Socialtext/Pluggable/Plugin/Groups.pm:152
-msgid "Exporting all groups for workspace '%1'..."
-msgstr ""
-
-#: share/plugin/widgets/lib/Socialtext/Pluggable/Plugin/Widgets.pm:111
-msgid "Exporting dashboard widgets ..."
 msgstr ""
 
 #: share/plugin/control/template/control/field_form:59 share/plugin/control/template/control/fields-account.html:44
@@ -1515,11 +1287,11 @@ msgstr ""
 msgid "Facebook:"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2951 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:46352
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2951
 msgid "Failed to load preview."
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2607 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:46008
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2607
 msgid "Failed to load revision."
 msgstr ""
 
@@ -1535,7 +1307,7 @@ msgstr ""
 msgid "February"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:10742 share/plugin/widgets/share/javascript/socialtext-activities.js:13616 share/plugin/widgets/share/javascript/socialtext-container.js:26121 share/plugin/widgets/share/javascript/socialtext-popout.js:16476
+#: share/plugin/signals/share/javascript/socialtext-activities.js:8439 share/plugin/signals/share/javascript/socialtext-signals.js:8624
 msgid "Fewer options"
 msgstr ""
 
@@ -1549,10 +1321,6 @@ msgstr ""
 
 #: share/plugin/control/template/control/field_form:64 share/plugin/control/template/control/fields-account.html:26
 msgid "Field Type"
-msgstr ""
-
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:454
-msgid "Filename is too long after URL encoding."
 msgstr ""
 
 #: share/plugin/signals/template/bookmarklet/index.html:65
@@ -1628,11 +1396,6 @@ msgstr ""
 msgid "Group"
 msgstr ""
 
-#. ($group->display_name, $role->name, $workspace->name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1400
-msgid "Group '%1' now has the role of %2 in the %3 Workspace"
-msgstr ""
-
 #: share/plugin/groups/template/directory_hello:2 share/plugin/groups/template/nav_groups:15
 msgid "Group Directory"
 msgstr ""
@@ -1645,41 +1408,17 @@ msgstr ""
 msgid "Group Permissions:"
 msgstr ""
 
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1588
-msgid "Group has been added, User list is being refreshed..."
-msgstr ""
-
-#. ($account->name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1428
-msgid "Group is already a member of the %1 Account"
-msgstr ""
-
-#. ($workspace->name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1352
-msgid "Group is already a member of the %1 Workspace"
-msgstr ""
-
-#. ($account->name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1462
-msgid "Group is now a member of the %1 Account"
-msgstr ""
-
-#. ($search_term)
-#: share/plugin/groups/lib/Socialtext/Pluggable/Plugin/Groups.pm:354
-msgid "Group names and descriptions matching '%1'"
-msgstr ""
-
 #: share/plugin/control/template/control/group.html:188 share/plugin/control/template/control/group.html:232 share/plugin/control/template/control/group.html:247 share/plugin/control/template/control/group.html:262 share/plugin/control/template/control/group.html:380
 msgid "Group role changes were successful."
 msgstr ""
 
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2141 share/plugin/control/template/control/groups.html:4 share/plugin/control/template/control/index.html:29 share/plugin/control/template/control/workspace.html:180 share/plugin/control/template/control/workspaces_new.html:41 share/plugin/control/template/control/wrapper:88 share/plugin/groups/template/nav_groups:1
+#: share/plugin/control/template/control/groups.html:4 share/plugin/control/template/control/index.html:29 share/plugin/control/template/control/workspace.html:180 share/plugin/control/template/control/workspaces_new.html:41 share/plugin/control/template/control/wrapper:88 share/plugin/groups/template/nav_groups:1
 msgid "Groups"
 msgstr ""
 
 #. (this.total)
 #. (account.group_count)
-#: share/plugin/control/share/javascript/socialtext-workspaces_new.js:130 share/plugin/control/share/javascript/workspaces_new.js:129 share/plugin/control/template/control/account.html:83 share/plugin/control/template/control/groups.html:45 share/plugin/control/template/control/workspace.html:198
+#: share/plugin/control/share/javascript/workspaces_new.js:129 share/plugin/control/template/control/account.html:83 share/plugin/control/template/control/groups.html:45 share/plugin/control/template/control/workspace.html:198
 msgid "Groups (%1)"
 msgstr ""
 
@@ -1703,10 +1442,6 @@ msgstr ""
 msgid "Hidden"
 msgstr ""
 
-#: share/plugin/people/lib/Socialtext/Lite/People.pm:169
-msgid "Home number"
-msgstr ""
-
 #: share/plugin/people/template/profile_hcard:42
 msgid "Home: "
 msgstr ""
@@ -1716,7 +1451,7 @@ msgstr ""
 msgid "I'm inviting you to join the %1 group at %2."
 msgstr ""
 
-#: share/plugin/control/share/javascript/socialtext-workspaces_new.js:135 share/plugin/control/share/javascript/workspaces_new.js:134 share/plugin/control/template/control/group_table:17 share/plugin/control/template/control/group_table:6 share/plugin/control/template/control/groups.html:50 share/plugin/control/template/control/workspace.html:203
+#: share/plugin/control/share/javascript/workspaces_new.js:134 share/plugin/control/template/control/group_table:17 share/plugin/control/template/control/group_table:6 share/plugin/control/template/control/groups.html:50 share/plugin/control/template/control/workspace.html:203
 msgid "ID"
 msgstr ""
 
@@ -1730,6 +1465,10 @@ msgstr ""
 
 #: share/plugin/signals/template/element/settings/signals_settings_section:8
 msgid "If checked, each time a user sends you a private message via Signals, we'll send you an email with the message."
+msgstr ""
+
+#: share/plugin/socialcalc/share/javascript/jemplate/add-a-link.html:22
+msgid "If not current"
 msgstr ""
 
 #: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:33
@@ -1753,59 +1492,16 @@ msgstr ""
 msgid "Image File:"
 msgstr ""
 
-#: share/plugin/widgets/lib/Socialtext/Pluggable/Plugin/Widgets.pm:278
-msgid "Importing account gallery ..."
-msgstr ""
-
-#. ($acct->name)
-#: share/plugin/groups/lib/Socialtext/Pluggable/Plugin/Groups.pm:90
-msgid "Importing all groups for account '%1'..."
-msgstr ""
-
-#. ($ws->name)
-#: share/plugin/groups/lib/Socialtext/Pluggable/Plugin/Groups.pm:174
-msgid "Importing all groups for workspace '%1'..."
-msgstr ""
-
-#. ($email)
-#: share/plugin/widgets/lib/Socialtext/Pluggable/Plugin/Widgets.pm:235
-msgid "Importing dashboard for user %1"
-msgstr ""
-
-#: share/plugin/widgets/lib/Socialtext/Pluggable/Plugin/Widgets.pm:238
-msgid "Importing default dashboard"
-msgstr ""
-
-#: share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:333
-msgid "Importing signals ..."
-msgstr ""
-
-#: share/plugin/widgets/lib/Socialtext/Pluggable/Plugin/Widgets.pm:211
-msgid "Importing widget containers ..."
+#: share/plugin/socialcalc/share/javascript/jemplate/widget_image_edit.html:8
+msgid "Image filename:"
 msgstr ""
 
 #: share/plugin/people/template/invite:58
 msgid "Include the personal message below in the invitation email?"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6555 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:7093 share/plugin/widgets/share/javascript/socialtext-activities.js:7053 share/plugin/widgets/share/javascript/socialtext-container.js:19558 share/plugin/widgets/share/javascript/socialtext-popout.js:9913
-msgid "Insert"
-msgstr ""
-
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6458 share/plugin/widgets/share/javascript/socialtext-activities.js:6956 share/plugin/widgets/share/javascript/socialtext-container.js:19461 share/plugin/widgets/share/javascript/socialtext-popout.js:9816
-msgid "Insert Code"
-msgstr ""
-
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:216
 msgid "Insert Formula"
-msgstr ""
-
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6476 share/plugin/widgets/share/javascript/socialtext-activities.js:6974 share/plugin/widgets/share/javascript/socialtext-container.js:19479 share/plugin/widgets/share/javascript/socialtext-popout.js:9834
-msgid "Insert HTML"
-msgstr ""
-
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6487 share/plugin/widgets/share/javascript/socialtext-activities.js:6985 share/plugin/widgets/share/javascript/socialtext-container.js:19490 share/plugin/widgets/share/javascript/socialtext-popout.js:9845
-msgid "Insert Preformatted Text"
 msgstr ""
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:115 share/plugin/widgets/share/javascript/template/activities/event.tt2:80
@@ -1826,16 +1522,6 @@ msgstr ""
 
 #: share/plugin/control/template/control/index.html:3
 msgid "Introduction"
-msgstr ""
-
-#. ($data->{ga_domains})
-#: share/plugin/analytics/lib/Socialtext/Pluggable/Plugin/Analytics.pm:31
-msgid "Invalid domains setting: %1"
-msgstr ""
-
-#. ($source)
-#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:677
-msgid "Invalid field source '%1'"
 msgstr ""
 
 #: share/plugin/control/template/control/group_invite.html:128 share/plugin/control/template/control/workspace_invite.html:161 share/plugin/people/template/invite:102
@@ -1919,7 +1605,7 @@ msgstr ""
 msgid "Justify"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/socialtext-gadget.js:3307 share/plugin/widgets/share/javascript/socialtext-gadget.js:3496
+#: share/plugin/control/share/javascript/socialtext-control.min.js:6487 share/plugin/control/share/javascript/socialtext-control.min.js:6655
 msgid "LDAP DN or group name required"
 msgstr ""
 
@@ -1951,12 +1637,24 @@ msgstr ""
 msgid "Left"
 msgstr ""
 
+#: share/plugin/socialcalc/share/javascript/jemplate/add-a-link.html:50
+msgid "Link destination"
+msgstr ""
+
+#: share/plugin/socialcalc/share/javascript/jemplate/widget_image_edit.html:98
+msgid "Link text:"
+msgstr ""
+
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:120 share/plugin/widgets/share/javascript/template/activities/event.tt2:85
 msgid "Link to a web page"
 msgstr ""
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:119 share/plugin/widgets/share/javascript/template/activities/event.tt2:84
 msgid "Link to a wiki page"
+msgstr ""
+
+#: share/plugin/socialcalc/share/javascript/jemplate/add-a-link.html:14 share/plugin/socialcalc/share/javascript/jemplate/add-a-link.html:45
+msgid "Linked text"
 msgstr ""
 
 #: share/plugin/people/template/profile_hcard:96
@@ -1967,33 +1665,16 @@ msgstr ""
 msgid "Load an existing group from LDAP"
 msgstr ""
 
-#. ($filename)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1144
-msgid "Loaded users from %1"
-msgstr ""
-
 #: share/plugin/control/template/control/selected_user_table_header:3 share/plugin/control/template/control/user_table_header:4 share/plugin/control/template/control/user_table_header:8
 msgid "Loading selected users"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2913 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2936 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:65 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:10865 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:46314 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:46337 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6381 share/plugin/widgets/share/javascript/activities/editor.js:1385 share/plugin/widgets/share/javascript/socialtext-activities.js:13739 share/plugin/widgets/share/javascript/socialtext-activities.js:16357 share/plugin/widgets/share/javascript/socialtext-activities.js:6879 share/plugin/widgets/share/javascript/socialtext-container.js:19384 share/plugin/widgets/share/javascript/socialtext-container.js:26244 share/plugin/widgets/share/javascript/socialtext-container.js:28862 share/plugin/widgets/share/javascript/socialtext-popout.js:16599 share/plugin/widgets/share/javascript/socialtext-popout.js:19217 share/plugin/widgets/share/javascript/socialtext-popout.js:9739
+#: share/plugin/signals/share/javascript/socialtext-activities.js:2782 share/plugin/signals/share/javascript/socialtext-signals.js:2894 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2913 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2936 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:65 share/plugin/widgets/share/javascript/activities/editor.js:1385
 msgid "Loading..."
 msgstr ""
 
 #: share/plugin/control/template/control/wrapper:137 share/plugin/control/template/control/wrapper:62 share/plugin/widgets/template/mobile-signals.tt2:97
 msgid "Log out"
-msgstr ""
-
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:52
-msgid "Login session has expired; please re-authenticate."
-msgstr ""
-
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:720
-msgid "Logo has been updated. It should be visible immediately."
-msgstr ""
-
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:735
-msgid "Logo removed. The default should be visible immediately."
 msgstr ""
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:286
@@ -2058,11 +1739,11 @@ msgstr ""
 msgid "MediaWiki Server URL"
 msgstr ""
 
-#: share/plugin/control/share/javascript/socialtext-workspaces_new.js:158 share/plugin/control/share/javascript/socialtext-workspaces_new.js:51 share/plugin/control/share/javascript/workspaces_new.js:157 share/plugin/control/share/javascript/workspaces_new.js:50 share/plugin/control/template/control/account.html:134 share/plugin/control/template/control/group.html:185 share/plugin/control/template/control/workspace.html:226 share/plugin/control/template/control/workspace.html:92
+#: share/plugin/control/share/javascript/workspaces_new.js:157 share/plugin/control/share/javascript/workspaces_new.js:50 share/plugin/control/template/control/account.html:134 share/plugin/control/template/control/group.html:185 share/plugin/control/template/control/workspace.html:226 share/plugin/control/template/control/workspace.html:92
 msgid "Member"
 msgstr ""
 
-#: share/plugin/control/share/javascript/useraccountrole.js:38 share/plugin/widgets/share/javascript/socialtext-gadget.js:3561
+#: share/plugin/control/share/javascript/socialtext-control.min.js:6719 share/plugin/control/share/javascript/useraccountrole.js:38
 msgid "Member of Account"
 msgstr ""
 
@@ -2074,26 +1755,12 @@ msgstr ""
 msgid "Minor"
 msgstr ""
 
-#. ($group_info->{role_name})
-#: share/plugin/groups/lib/Socialtext/Pluggable/Plugin/Groups.pm:100 share/plugin/groups/lib/Socialtext/Pluggable/Plugin/Groups.pm:186
-msgid "Missing/unknown Role '%1'; using default Role"
-msgstr ""
-
 #: share/plugin/control/template/control/wrapper:130 share/plugin/control/template/control/wrapper:55
 msgid "Mobile"
 msgstr ""
 
-#: share/plugin/people/lib/Socialtext/Lite/People.pm:168
-msgid "Mobile number"
-msgstr ""
-
 #: share/plugin/people/template/profile_hcard:37
 msgid "Mobile: "
-msgstr ""
-
-#. ("${action}d")
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:881
-msgid "Module has been %1."
 msgstr ""
 
 #: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:21 share/plugin/widgets/share/javascript/template/activities/ui.mobile-signals.tt2:21 share/plugin/widgets/share/javascript/template/activities/ui.viewer.tt2:17
@@ -2104,7 +1771,7 @@ msgstr ""
 msgid "More Mentions..."
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:10749 share/plugin/widgets/share/javascript/socialtext-activities.js:13623 share/plugin/widgets/share/javascript/socialtext-container.js:26128 share/plugin/widgets/share/javascript/socialtext-popout.js:16483
+#: share/plugin/signals/share/javascript/socialtext-activities.js:8446 share/plugin/signals/share/javascript/socialtext-signals.js:8631 share/plugin/socialcalc/share/javascript/jemplate/widget_image_edit.html:62
 msgid "More options"
 msgstr ""
 
@@ -2120,10 +1787,6 @@ msgstr ""
 msgid "Multiple top-level domains"
 msgstr ""
 
-#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:735
-msgid "Must specify the name of the field to change"
-msgstr ""
-
 #: share/plugin/control/template/control/field_form:12
 msgid "Must supply a field title"
 msgstr ""
@@ -2136,11 +1799,7 @@ msgstr ""
 msgid "My Settings"
 msgstr ""
 
-#: share/plugin/people/lib/Socialtext/Gadgets/Container/ForbiddenProfile.pm:65
-msgid "NOTE: You do not share a group with this person and cannot view their profile information."
-msgstr ""
-
-#: share/plugin/control/share/javascript/socialtext-workspaces_new.js:144 share/plugin/control/share/javascript/socialtext-workspaces_new.js:28 share/plugin/control/share/javascript/workspaces_new.js:143 share/plugin/control/share/javascript/workspaces_new.js:27 share/plugin/control/template/control/account.html:115 share/plugin/control/template/control/account_table:9 share/plugin/control/template/control/desktop-account.html:25 share/plugin/control/template/control/group.html:166 share/plugin/control/template/control/group.html:320 share/plugin/control/template/control/group.html:71 share/plugin/control/template/control/group_invite.html:91 share/plugin/control/template/control/group_table:20 share/plugin/control/template/control/group_table:7 share/plugin/control/template/control/groups.html:59 share/plugin/control/template/control/selected_user_table_header:16 share/plugin/control/template/control/user.html:118 share/plugin/control/template/control/user.html:231 share/plugin/control/template/control/user_table_header:26 share/plugin/control/template/control/user_table_header:28 share/plugin/control/template/control/workspace.html:212 share/plugin/control/template/control/workspace.html:72 share/plugin/control/template/control/workspace_invite.html:144 share/plugin/control/template/control/workspace_invite.html:93 share/plugin/control/template/control/workspace_table:15 share/plugin/control/template/control/workspace_table:22 share/plugin/groups/template/grouplist:53 share/plugin/people/template/view/peoplelist:50 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:334
+#: share/plugin/control/share/javascript/workspaces_new.js:143 share/plugin/control/share/javascript/workspaces_new.js:27 share/plugin/control/template/control/account.html:115 share/plugin/control/template/control/account_table:9 share/plugin/control/template/control/desktop-account.html:25 share/plugin/control/template/control/group.html:166 share/plugin/control/template/control/group.html:320 share/plugin/control/template/control/group.html:71 share/plugin/control/template/control/group_invite.html:91 share/plugin/control/template/control/group_table:20 share/plugin/control/template/control/group_table:7 share/plugin/control/template/control/groups.html:59 share/plugin/control/template/control/selected_user_table_header:16 share/plugin/control/template/control/user.html:118 share/plugin/control/template/control/user.html:231 share/plugin/control/template/control/user_table_header:26 share/plugin/control/template/control/user_table_header:28 share/plugin/control/template/control/workspace.html:212 share/plugin/control/template/control/workspace.html:72 share/plugin/control/template/control/workspace_invite.html:144 share/plugin/control/template/control/workspace_invite.html:93 share/plugin/control/template/control/workspace_table:15 share/plugin/control/template/control/workspace_table:22 share/plugin/groups/template/grouplist:53 share/plugin/people/template/view/peoplelist:50 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:334
 msgid "Name"
 msgstr ""
 
@@ -2154,10 +1813,6 @@ msgstr ""
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:217
 msgid "Named Ranges"
-msgstr ""
-
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2155
-msgid "New Workspace"
 msgstr ""
 
 #: share/plugin/people/template/invite:67
@@ -2176,22 +1831,8 @@ msgstr ""
 msgid "No"
 msgstr ""
 
-#. ($account_name_or_id)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1420
-msgid "No Account identified by %1"
-msgstr ""
-
 #: share/plugin/control/template/control/enumerate_groups:10
 msgid "No Groups to Add."
-msgstr ""
-
-#. ($workspace_name_or_id)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1344
-msgid "No Workspace identified by %1"
-msgstr ""
-
-#: share/plugin/people/lib/Socialtext/Lite/People.pm:91
-msgid "No activities"
 msgstr ""
 
 #: share/plugin/people/template/lite/profile.html:70
@@ -2208,10 +1849,6 @@ msgstr ""
 
 #: share/plugin/people/template/lite/people.html:39
 msgid "No people matching this criteria."
-msgstr ""
-
-#: share/plugin/people/lib/Socialtext/Lite/People.pm:78
-msgid "No signals"
 msgstr ""
 
 #: share/plugin/people/template/lite/profile.html:72
@@ -2250,7 +1887,7 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/explore.js:196 share/plugin/widgets/share/javascript/socialtext-activities.js:18869 share/plugin/widgets/share/javascript/socialtext-container.js:31374 share/plugin/widgets/share/javascript/socialtext-popout.js:21729
+#: share/plugin/widgets/share/javascript/activities/explore.js:196
 msgid "OLDIES"
 msgstr ""
 
@@ -2278,31 +1915,27 @@ msgstr ""
 msgid "Once you have confirmed your account, you will receive a second email with login details."
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:544 share/plugin/widgets/share/javascript/socialtext-activities.js:14815 share/plugin/widgets/share/javascript/socialtext-container.js:27320 share/plugin/widgets/share/javascript/socialtext-network-dropdown.js:987 share/plugin/widgets/share/javascript/socialtext-popout.js:17675 share/plugin/widgets/share/javascript/template/activities/ui.signalthis.tt2:18
+#: share/plugin/widgets/share/javascript/activities/appdata.js:544 share/plugin/widgets/share/javascript/template/activities/ui.signalthis.tt2:18
 msgid "Only members with permission to view this page will receive the signal."
-msgstr ""
-
-#: share/plugin/widgets/lib/Socialtext/Gadgets/Gadget/XML.pm:79
-msgid "Only url and html are valid values for widget types"
-msgstr ""
-
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:12499 share/plugin/widgets/share/javascript/socialtext-activities.js:8932 share/plugin/widgets/share/javascript/socialtext-container.js:21437 share/plugin/widgets/share/javascript/socialtext-popout.js:11792
-msgid "Operation failed due to server error; please try again later."
 msgstr ""
 
 #: share/plugin/control/template/control/plugins:13
 msgid "Optional modules installed:"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/explore.js:188 share/plugin/widgets/share/javascript/socialtext-activities.js:18861 share/plugin/widgets/share/javascript/socialtext-container.js:31366 share/plugin/widgets/share/javascript/socialtext-popout.js:21721
+#: share/plugin/socialcalc/share/javascript/jemplate/widget_image_edit.html:65
+msgid "Optional properties include the title of another page to which the image is attached, and link text. If link text is specified then a link to the image is displayed instead of the image."
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/activities/explore.js:188
 msgid "PAST MONTH"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/explore.js:184 share/plugin/widgets/share/javascript/socialtext-activities.js:18857 share/plugin/widgets/share/javascript/socialtext-container.js:31362 share/plugin/widgets/share/javascript/socialtext-popout.js:21717
+#: share/plugin/widgets/share/javascript/activities/explore.js:184
 msgid "PAST WEEK"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/explore.js:192 share/plugin/widgets/share/javascript/socialtext-activities.js:18865 share/plugin/widgets/share/javascript/socialtext-container.js:31370 share/plugin/widgets/share/javascript/socialtext-popout.js:21725
+#: share/plugin/widgets/share/javascript/activities/explore.js:192
 msgid "PAST YEAR"
 msgstr ""
 
@@ -2314,15 +1947,23 @@ msgstr ""
 msgid "Padding"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:10510 share/plugin/widgets/share/javascript/socialtext-activities.js:13384 share/plugin/widgets/share/javascript/socialtext-container.js:25889 share/plugin/widgets/share/javascript/socialtext-popout.js:16244
+#: share/plugin/socialcalc/share/javascript/jemplate/add-a-link.html:25
+msgid "Page"
+msgstr ""
+
+#: share/plugin/signals/share/javascript/socialtext-activities.js:8240 share/plugin/signals/share/javascript/socialtext-signals.js:8423
 msgid "Page Title required if Workspace Id specified"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:5039 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:5173 share/plugin/widgets/share/javascript/socialtext-activities.js:5537 share/plugin/widgets/share/javascript/socialtext-activities.js:5671 share/plugin/widgets/share/javascript/socialtext-container.js:18042 share/plugin/widgets/share/javascript/socialtext-container.js:18176 share/plugin/widgets/share/javascript/socialtext-popout.js:8397 share/plugin/widgets/share/javascript/socialtext-popout.js:8531
+#: share/plugin/socialcalc/share/javascript/jemplate/widget_image_edit.html:68
+msgid "Page in:"
+msgstr ""
+
+#: share/plugin/signals/share/javascript/socialtext-activities.js:1479 share/plugin/signals/share/javascript/socialtext-activities.js:1606 share/plugin/signals/share/javascript/socialtext-signals.js:1616 share/plugin/signals/share/javascript/socialtext-signals.js:1743
 msgid "Page title is too long after URL encoding"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:747 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:44148
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:747
 msgid "Paste"
 msgstr ""
 
@@ -2330,34 +1971,19 @@ msgstr ""
 msgid "Paste or type your link's destination (URL, e.g. http://socialtext.com) and text of the link below. Link destination is required."
 msgstr ""
 
-#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:72 share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:83 share/plugin/people/template/nav_people:1 share/plugin/widgets/template/mobile-signals.tt2:119
+#: share/plugin/people/template/nav_people:1 share/plugin/widgets/template/mobile-signals.tt2:119
 msgid "People"
-msgstr ""
-
-#. ($user->username)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1846
-msgid "People Activity for user %1"
 msgstr ""
 
 #: share/plugin/people/template/lite/people.html:9
 msgid "People Directory"
 msgstr ""
 
-#. ($unescaped_search_term)
-#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:322
-msgid "People matching '%1'"
-msgstr ""
-
-#. ($account->name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1012
-msgid "People plugin must be enabled for account %1"
-msgstr ""
-
 #: share/plugin/people/template/invite:35
 msgid "People who are invited will be listed in the group's directory and have a profile. They can also use Socialtext Signals if Signals is enabled."
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/lightbox-remove-content.js:105 share/plugin/widgets/share/javascript/lightbox/remove-content.js:33
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:33
 msgid "Permanently Remove Widget"
 msgstr ""
 
@@ -2382,12 +2008,8 @@ msgstr ""
 msgid "Personal:"
 msgstr ""
 
-#: share/plugin/twilio/lib/Socialtext/Pluggable/Plugin/Twilio.pm:108 share/plugin/twilio/template/element/settings/twilio_menu:1 share/plugin/twilio/template/element/settings/twilio_settings_section:5
+#: share/plugin/twilio/template/element/settings/twilio_menu:1 share/plugin/twilio/template/element/settings/twilio_settings_section:5
 msgid "Phone Services"
-msgstr ""
-
-#: share/plugin/twilio/lib/Socialtext/Pluggable/Plugin/Twilio.pm:79
-msgid "Pick one"
 msgstr ""
 
 #. (confirm_uri)
@@ -2407,27 +2029,23 @@ msgstr ""
 msgid "Please choose the group type, then click <b>Next</b>"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:445
-msgid "Please click browse and select a file to upload."
-msgstr ""
-
 #: share/plugin/people/template/dashboard_hello_incomplete:6
 msgid "Please complete <a href=\"/st/edit_profile\">your profile</a> now."
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/editor.js:1426 share/plugin/widgets/share/javascript/socialtext-activities.js:16398 share/plugin/widgets/share/javascript/socialtext-container.js:28903 share/plugin/widgets/share/javascript/socialtext-popout.js:19258
+#: share/plugin/widgets/share/javascript/activities/editor.js:1426
 msgid "Please enter a valid video link."
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6412 share/plugin/widgets/share/javascript/socialtext-activities.js:6910 share/plugin/widgets/share/javascript/socialtext-container.js:19415 share/plugin/widgets/share/javascript/socialtext-popout.js:9770
+#: share/plugin/signals/share/javascript/socialtext-activities.js:2813 share/plugin/signals/share/javascript/socialtext-signals.js:2925
 msgid "Please enter the number of table columns:"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6411 share/plugin/widgets/share/javascript/socialtext-activities.js:6909 share/plugin/widgets/share/javascript/socialtext-container.js:19414 share/plugin/widgets/share/javascript/socialtext-popout.js:9769
+#: share/plugin/signals/share/javascript/socialtext-activities.js:2812 share/plugin/signals/share/javascript/socialtext-signals.js:2924
 msgid "Please enter the number of table rows:"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2170 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:45571
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2170
 msgid "Please provide a name for the new sheet."
 msgstr ""
 
@@ -2443,11 +2061,11 @@ msgstr ""
 msgid "Please select an account"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2193 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:45594
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2193
 msgid "Please select one of the options,  or click cancel."
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2340 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:45741
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2340
 msgid "Please select one of the options, or click cancel."
 msgstr ""
 
@@ -2455,11 +2073,11 @@ msgstr ""
 msgid "Please select some users to add to the group."
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:9211 share/plugin/widgets/share/javascript/socialtext-activities.js:12085 share/plugin/widgets/share/javascript/socialtext-container.js:24590 share/plugin/widgets/share/javascript/socialtext-popout.js:14945
+#: share/plugin/signals/share/javascript/socialtext-activities.js:7094 share/plugin/signals/share/javascript/socialtext-signals.js:7288
 msgid "Please select the text you would like to turn into a link."
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2085 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:45486
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2085
 msgid "Please specify a page name."
 msgstr ""
 
@@ -2479,15 +2097,11 @@ msgstr ""
 msgid "Prefers to be called"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6490 share/plugin/widgets/share/javascript/socialtext-activities.js:6988 share/plugin/widgets/share/javascript/socialtext-container.js:19493 share/plugin/widgets/share/javascript/socialtext-popout.js:9848
-msgid "Preformatted text. Click to edit."
-msgstr ""
-
 #: share/plugin/control/template/control/plugins:5
 msgid "Press 'OK' to enable this module or 'Cancel' to exit."
 msgstr ""
 
-#: share/plugin/dashboard/template/widget_editor_links:3 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2614 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:16 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:46015 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:4859 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:4918 share/plugin/widgets/share/javascript/socialtext-activities.js:5357 share/plugin/widgets/share/javascript/socialtext-activities.js:5416 share/plugin/widgets/share/javascript/socialtext-container.js:17862 share/plugin/widgets/share/javascript/socialtext-container.js:17921 share/plugin/widgets/share/javascript/socialtext-popout.js:8217 share/plugin/widgets/share/javascript/socialtext-popout.js:8276
+#: share/plugin/dashboard/template/widget_editor_links:3 share/plugin/signals/share/javascript/socialtext-activities.js:1308 share/plugin/signals/share/javascript/socialtext-activities.js:1359 share/plugin/signals/share/javascript/socialtext-signals.js:1445 share/plugin/signals/share/javascript/socialtext-signals.js:1496 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2614 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:16
 msgid "Preview"
 msgstr ""
 
@@ -2499,7 +2113,7 @@ msgstr ""
 msgid "Primary"
 msgstr ""
 
-#: share/plugin/control/share/javascript/socialtext-workspaces_new.js:174 share/plugin/control/share/javascript/useraccountrole.js:35 share/plugin/control/share/javascript/workspaces_new.js:173 share/plugin/control/template/control/account.html:150 share/plugin/control/template/control/group.html:201 share/plugin/control/template/control/group_table:10 share/plugin/control/template/control/group_table:29 share/plugin/control/template/control/groups.html:78 share/plugin/control/template/control/selected_user_table_header:19 share/plugin/control/template/control/user_table_header:41 share/plugin/control/template/control/user_table_header:43 share/plugin/control/template/control/workspace.html:110 share/plugin/control/template/control/workspace.html:247 share/plugin/widgets/share/javascript/socialtext-gadget.js:3558
+#: share/plugin/control/share/javascript/socialtext-control.min.js:6716 share/plugin/control/share/javascript/useraccountrole.js:35 share/plugin/control/share/javascript/workspaces_new.js:173 share/plugin/control/template/control/account.html:150 share/plugin/control/template/control/group.html:201 share/plugin/control/template/control/group_table:10 share/plugin/control/template/control/group_table:29 share/plugin/control/template/control/groups.html:78 share/plugin/control/template/control/selected_user_table_header:19 share/plugin/control/template/control/user_table_header:41 share/plugin/control/template/control/user_table_header:43 share/plugin/control/template/control/workspace.html:110 share/plugin/control/template/control/workspace.html:247
 msgid "Primary Account"
 msgstr ""
 
@@ -2511,25 +2125,12 @@ msgstr ""
 msgid "Printer Friendly Report"
 msgstr ""
 
-#: share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:141
-msgid "Priv. Msg"
-msgstr ""
-
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:49
 msgid "Private Group"
 msgstr ""
 
 #: share/plugin/signals/template/element/settings/private_menu:3 share/plugin/signals/template/element/settings/signals_settings_section:5
 msgid "Private Messages"
-msgstr ""
-
-#. ($sender->best_full_name)
-#: share/plugin/signals/lib/Socialtext/Job/SignalDMNotify.pm:55 share/plugin/twilio/lib/Socialtext/Job/TwilioNotify.pm:55
-msgid "Private message from %1"
-msgstr ""
-
-#: share/plugin/people/lib/Socialtext/Lite/People.pm:104
-msgid "Private message sent."
 msgstr ""
 
 #. (p.best_full_name)
@@ -2557,16 +2158,6 @@ msgstr ""
 msgid "Profile Section"
 msgstr ""
 
-#. ($opts->{name}, $acct->name)
-#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:754
-msgid "Profile field '%1' does not exist for account '%2'"
-msgstr ""
-
-#. ($opts->{profile_field_id}, $acct->name)
-#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:748
-msgid "Profile field ID '%1' does not exist for account '%2'"
-msgstr ""
-
 #: share/plugin/dashboard/template/widget_editor_links:8
 msgid "Publish"
 msgstr ""
@@ -2577,10 +2168,6 @@ msgstr ""
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:344
 msgid "Range"
-msgstr ""
-
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6479 share/plugin/widgets/share/javascript/socialtext-activities.js:6977 share/plugin/widgets/share/javascript/socialtext-container.js:19482 share/plugin/widgets/share/javascript/socialtext-popout.js:9837
-msgid "Raw HTML block. Click to edit."
 msgstr ""
 
 #: share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:179
@@ -2611,6 +2198,11 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
+#. (tag)
+#: share/plugin/signals/share/javascript/socialtext-activities.js:2476 share/plugin/signals/share/javascript/socialtext-signals.js:2588
+msgid "Remove %1 from the queue"
+msgstr ""
+
 #: share/plugin/control/template/control/workspace_invite.html:126
 msgid "Remove All"
 msgstr ""
@@ -2623,7 +2215,7 @@ msgstr ""
 msgid "Remove Appliance Technical Administrator Role"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/lightbox-remove-content.js:87 share/plugin/widgets/share/javascript/lightbox/remove-content.js:15
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:15
 msgid "Remove Widget"
 msgstr ""
 
@@ -2641,26 +2233,11 @@ msgstr ""
 msgid "Remove this user from %1 selected %quant(%1,workspace)?"
 msgstr ""
 
-#. (shift)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:587
-msgid "Removed the Appliance Business Administrator role from %1"
-msgstr ""
-
-#. (shift)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:601
-msgid "Removed the Appliance Technical Administrator role from %1"
-msgstr ""
-
-#. ($widget->{src})
-#: share/plugin/widgets/lib/Socialtext/Pluggable/Plugin/Widgets.pm:303
-msgid "Removing widget %1..."
-msgstr ""
-
 #: share/plugin/control/template/control/account.html:6 share/plugin/control/template/control/rename-account.html:8
 msgid "Rename Account"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:5611 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:5618 share/plugin/widgets/share/javascript/socialtext-activities.js:6109 share/plugin/widgets/share/javascript/socialtext-activities.js:6116 share/plugin/widgets/share/javascript/socialtext-container.js:18614 share/plugin/widgets/share/javascript/socialtext-container.js:18621 share/plugin/widgets/share/javascript/socialtext-popout.js:8969 share/plugin/widgets/share/javascript/socialtext-popout.js:8976
+#: share/plugin/signals/share/javascript/socialtext-activities.js:2023 share/plugin/signals/share/javascript/socialtext-activities.js:2030 share/plugin/signals/share/javascript/socialtext-signals.js:2139 share/plugin/signals/share/javascript/socialtext-signals.js:2146
 msgid "Replace this text with your own."
 msgstr ""
 
@@ -2684,13 +2261,13 @@ msgstr ""
 msgid "Required"
 msgstr ""
 
-#. (labels.join(', ')
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:10441 share/plugin/widgets/share/javascript/socialtext-activities.js:13315 share/plugin/widgets/share/javascript/socialtext-container.js:25820 share/plugin/widgets/share/javascript/socialtext-popout.js:16175
-msgid "Requires one of: %1"
+#: share/plugin/socialcalc/share/javascript/jemplate/add-a-link.html:4
+msgid "Required fields are indicated by an"
 msgstr ""
 
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:753
-msgid "Reset Desktop logo to default. Desktop users need to logout and login again to see the new logo."
+#. (labels.join(', ')
+#: share/plugin/signals/share/javascript/socialtext-activities.js:8206 share/plugin/signals/share/javascript/socialtext-signals.js:8389
+msgid "Requires one of: %1"
 msgstr ""
 
 #: share/plugin/control/template/control/design-account.html:45
@@ -2713,7 +2290,7 @@ msgstr ""
 msgid "Restore"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/lightbox-remove-content.js:96 share/plugin/widgets/share/javascript/lightbox/remove-content.js:24
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:24
 msgid "Restore Widget"
 msgstr ""
 
@@ -2742,24 +2319,28 @@ msgstr ""
 msgid "Right"
 msgstr ""
 
-#: share/plugin/control/share/javascript/socialtext-workspaces_new.js:153 share/plugin/control/share/javascript/socialtext-workspaces_new.js:46 share/plugin/control/share/javascript/workspaces_new.js:152 share/plugin/control/share/javascript/workspaces_new.js:45 share/plugin/control/template/control/account.html:129 share/plugin/control/template/control/group.html:180 share/plugin/control/template/control/workspace.html:221 share/plugin/control/template/control/workspace.html:87
+#: share/plugin/control/share/javascript/workspaces_new.js:152 share/plugin/control/share/javascript/workspaces_new.js:45 share/plugin/control/template/control/account.html:129 share/plugin/control/template/control/group.html:180 share/plugin/control/template/control/workspace.html:221 share/plugin/control/template/control/workspace.html:87
 msgid "Role"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:8707 share/plugin/widgets/share/javascript/socialtext-activities.js:11581 share/plugin/widgets/share/javascript/socialtext-container.js:24086 share/plugin/widgets/share/javascript/socialtext-popout.js:14441
+#: share/plugin/signals/share/javascript/socialtext-activities.js:6614 share/plugin/signals/share/javascript/socialtext-signals.js:6808
 msgid "Rows and Columns must be non-zero."
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:8701 share/plugin/widgets/share/javascript/socialtext-activities.js:11575 share/plugin/widgets/share/javascript/socialtext-container.js:24080 share/plugin/widgets/share/javascript/socialtext-popout.js:14435
+#: share/plugin/signals/share/javascript/socialtext-activities.js:6608 share/plugin/signals/share/javascript/socialtext-signals.js:6802
 msgid "Rows is invalid."
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6444 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:8709 share/plugin/widgets/share/javascript/socialtext-activities.js:11583 share/plugin/widgets/share/javascript/socialtext-activities.js:6942 share/plugin/widgets/share/javascript/socialtext-container.js:19447 share/plugin/widgets/share/javascript/socialtext-container.js:24088 share/plugin/widgets/share/javascript/socialtext-popout.js:14443 share/plugin/widgets/share/javascript/socialtext-popout.js:9802
+#: share/plugin/signals/share/javascript/socialtext-activities.js:2845 share/plugin/signals/share/javascript/socialtext-activities.js:6616 share/plugin/signals/share/javascript/socialtext-signals.js:2957 share/plugin/signals/share/javascript/socialtext-signals.js:6810
 msgid "Rows is too big. 100 maximum."
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6022 share/plugin/widgets/share/javascript/socialtext-activities.js:6520 share/plugin/widgets/share/javascript/socialtext-container.js:19025 share/plugin/widgets/share/javascript/socialtext-popout.js:9380
+#: share/plugin/signals/share/javascript/socialtext-signals.js:2526
 msgid "Safari does not support Rich Text editing"
+msgstr ""
+
+#: share/plugin/signals/share/javascript/socialtext-activities.js:2414
+msgid "Safari does not support simple mode editing"
 msgstr ""
 
 #: share/plugin/people/template/profile_hcard:76
@@ -2770,7 +2351,7 @@ msgstr ""
 msgid "Sample"
 msgstr ""
 
-#: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:25 share/plugin/groups/template/edit_group_footer:14 share/plugin/groups/template/group_footer:17 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:14 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:444
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:25 share/plugin/groups/template/edit_group_footer:14 share/plugin/groups/template/group_footer:17 share/plugin/socialcalc/share/javascript/jemplate/add-a-link.html:74 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:14 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:444 share/plugin/socialcalc/share/javascript/jemplate/widget_image_edit.html:116
 msgid "Save"
 msgstr ""
 
@@ -2810,7 +2391,7 @@ msgstr ""
 msgid "Save..."
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:5070 share/plugin/widgets/share/javascript/socialtext-activities.js:5568 share/plugin/widgets/share/javascript/socialtext-container.js:18073 share/plugin/widgets/share/javascript/socialtext-popout.js:8428
+#: share/plugin/signals/share/javascript/socialtext-activities.js:1508 share/plugin/signals/share/javascript/socialtext-signals.js:1645
 msgid "Saving..."
 msgstr ""
 
@@ -2838,6 +2419,14 @@ msgstr ""
 msgid "Search by username"
 msgstr ""
 
+#: share/plugin/socialcalc/share/javascript/jemplate/add-a-link.html:30 share/plugin/socialcalc/share/javascript/jemplate/add-a-link.html:65
+msgid "Section"
+msgstr ""
+
+#: share/plugin/socialcalc/share/javascript/jemplate/add-a-link.html:61
+msgid "Section in current page"
+msgstr ""
+
 #: share/plugin/control/template/control/workspace_invite.html:106
 msgid "Select one or more of the users below to become administrators of your new workspace."
 msgstr ""
@@ -2848,15 +2437,6 @@ msgstr ""
 
 #: share/plugin/control/template/control/add_users.html:16
 msgid "Select the CSV file containing users to add:"
-msgstr ""
-
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2094
-msgid "Selected Users"
-msgstr ""
-
-#. ($group_name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2093
-msgid "Selected Users to add to %1 group"
 msgstr ""
 
 #: share/plugin/signals/share/widgets/explore_filters/widget.js:291
@@ -2911,12 +2491,8 @@ msgstr ""
 msgid "Set by external Directory"
 msgstr ""
 
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1899 share/plugin/control/template/control/index.html:33 share/plugin/control/template/control/wrapper:89
+#: share/plugin/control/template/control/index.html:33 share/plugin/control/template/control/wrapper:89
 msgid "Settings"
-msgstr ""
-
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:840
-msgid "Settings have been saved.  Desktop users need to logout and login again to apply the new skin."
 msgstr ""
 
 #: share/plugin/signals/template/bookmarklet/index.html:44
@@ -2935,19 +2511,15 @@ msgstr ""
 msgid "Show Preview"
 msgstr ""
 
-#: share/plugin/control/share/javascript/socialtext-control.js:1958 share/plugin/control/share/javascript/table.js:27 share/plugin/control/template/control/groups.html:23
+#: share/plugin/control/share/javascript/socialtext-control.min.js:7075 share/plugin/control/share/javascript/table.js:27 share/plugin/control/template/control/groups.html:23
 msgid "Show all"
-msgstr ""
-
-#: share/plugin/people/share/javascript/socialtext-people.js:312 share/plugin/widgets/share/javascript/socialtext-activities.js:4150 share/plugin/widgets/share/javascript/socialtext-container.js:16655 share/plugin/widgets/share/javascript/socialtext-gadget.js:517 share/plugin/widgets/share/javascript/socialtext-popout.js:475 share/plugin/widgets/share/javascript/socialtext-popout.js:7010
-msgid "Show all results..."
 msgstr ""
 
 #: share/plugin/control/template/control/groups.html:36
 msgid "Show deleted"
 msgstr ""
 
-#: share/plugin/control/share/javascript/socialtext-control.js:1964 share/plugin/control/share/javascript/table.js:33 share/plugin/control/template/control/groups.html:30
+#: share/plugin/control/share/javascript/socialtext-control.min.js:7081 share/plugin/control/share/javascript/table.js:33 share/plugin/control/template/control/groups.html:30
 msgid "Show only selected"
 msgstr ""
 
@@ -2974,7 +2546,7 @@ msgstr ""
 msgid "Sign in using the information below:"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/event_list.js:911 share/plugin/widgets/share/javascript/activities/event_list.js:926 share/plugin/widgets/share/javascript/socialtext-activities.js:17411 share/plugin/widgets/share/javascript/socialtext-activities.js:17426 share/plugin/widgets/share/javascript/socialtext-container.js:29916 share/plugin/widgets/share/javascript/socialtext-container.js:29931 share/plugin/widgets/share/javascript/socialtext-popout.js:20271 share/plugin/widgets/share/javascript/socialtext-popout.js:20286
+#: share/plugin/widgets/share/javascript/activities/event_list.js:915 share/plugin/widgets/share/javascript/activities/event_list.js:930
 msgid "Signal"
 msgstr ""
 
@@ -2984,28 +2556,8 @@ msgstr ""
 
 #. (self.maxSignalLength()
 #. (limit)
-#: share/plugin/widgets/share/javascript/activities/editor.js:357 share/plugin/widgets/share/javascript/activities/editor.js:653 share/plugin/widgets/share/javascript/socialtext-activities.js:15329 share/plugin/widgets/share/javascript/socialtext-activities.js:15625 share/plugin/widgets/share/javascript/socialtext-container.js:27834 share/plugin/widgets/share/javascript/socialtext-container.js:28130 share/plugin/widgets/share/javascript/socialtext-popout.js:18189 share/plugin/widgets/share/javascript/socialtext-popout.js:18485
+#: share/plugin/widgets/share/javascript/activities/editor.js:357 share/plugin/widgets/share/javascript/activities/editor.js:653
 msgid "Signal length limit is %1, please edit your Signal"
-msgstr ""
-
-#. ($computed_max_size)
-#: share/plugin/signals/lib/Socialtext/Rest/Signals.pm:621
-msgid "Signal length limit is %1, please edit your Signal."
-msgstr ""
-
-#. ($s->{signal_id}, $s->{username})
-#: share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:345
-msgid "Signal number %1 could not be imported: author '%2' not found"
-msgstr ""
-
-#. ($s->{signal_id}, $s->{recipient_username})
-#: share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:374
-msgid "Signal number %1 could not be imported: recipient '%2' not found for a direct signal"
-msgstr ""
-
-#. ($sig_old_id, $parent_old_id, $signal_id)
-#: share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:466
-msgid "Signal number %1 was originally in reply to signal %2, but that signal is not found.  This signal's new ID is %3"
 msgstr ""
 
 #: share/plugin/widgets/share/javascript/template/activities/ui.signalthis.tt2:20
@@ -3016,7 +2568,7 @@ msgstr ""
 msgid "Signal to "
 msgstr ""
 
-#: share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:119 share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:129 share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:140 share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:507 share/plugin/signals/template/cp_signal_size_limit:2 share/plugin/signals/template/element/settings/private_menu:1 share/plugin/signals/template/nav_signals:1 share/plugin/signals/template/signals_hello:1 share/plugin/widgets/template/mobile-signals.tt2:114 share/plugin/widgets/template/mobile-signals.tt2:116 share/plugin/widgets/template/mobile-signals.tt2:7
+#: share/plugin/signals/template/cp_signal_size_limit:2 share/plugin/signals/template/element/settings/private_menu:1 share/plugin/signals/template/nav_signals:1 share/plugin/signals/template/signals_hello:1 share/plugin/widgets/template/mobile-signals.tt2:114 share/plugin/widgets/template/mobile-signals.tt2:116 share/plugin/widgets/template/mobile-signals.tt2:7
 msgid "Signals"
 msgstr ""
 
@@ -3024,32 +2576,16 @@ msgstr ""
 msgid "Signals - Permalink"
 msgstr ""
 
-#. ($user->username)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1848
-msgid "Signals Activity for user %1"
-msgstr ""
-
 #: share/plugin/signals/template/bookmarklet/index.html:42
 msgid "Signals Bookmarklet"
-msgstr ""
-
-#. ($search_term)
-#: share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:656
-msgid "Signals matching '%1'"
-msgstr ""
-
-#. ($1)
-#: share/plugin/signals/lib/Socialtext/Pluggable/Plugin/Signals.pm:653
-msgid "Signals tagged #%1"
 msgstr ""
 
 #: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:61 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:52
 msgid "Size"
 msgstr ""
 
-#. ($type)
-#: share/plugin/widgets/lib/Socialtext/Pluggable/Plugin/Widgets.pm:243
-msgid "Skipping %1 container..."
+#: share/plugin/socialcalc/share/javascript/jemplate/widget_image_edit.html:15
+msgid "Size:"
 msgstr ""
 
 #: share/plugin/people/template/profile_hcard:69
@@ -3080,16 +2616,8 @@ msgstr ""
 msgid "Socialtext enables you to add multiple users to your account. To add multiple users, download the sample data file, and add your user data. Then upload the file here.  Complete documentation about adding multiple users is available here: <a href=\"https://www.socialtext.net/help-adminguide/index.cgi?adding_and_updating_users#adding_multiple_users\">Adding Multiple Users to Socialtext</a>"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:5821 share/plugin/widgets/share/javascript/socialtext-activities.js:6319 share/plugin/widgets/share/javascript/socialtext-container.js:18824 share/plugin/widgets/share/javascript/socialtext-popout.js:9179
+#: share/plugin/signals/share/javascript/socialtext-activities.js:2175 share/plugin/signals/share/javascript/socialtext-signals.js:2325
 msgid "Socialtext has limited editing capabilities in Safari."
-msgstr ""
-
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6510 share/plugin/widgets/lib/Socialtext/Gadgets/Gallery.pm:308 share/plugin/widgets/share/javascript/socialtext-activities.js:7008 share/plugin/widgets/share/javascript/socialtext-container.js:19513 share/plugin/widgets/share/javascript/socialtext-popout.js:9868
-msgid "Socialtext widgets"
-msgstr ""
-
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:312
-msgid "Sorry, $key is not able to be changed."
 msgstr ""
 
 #. (invalid_addresses.size)
@@ -3102,7 +2630,7 @@ msgstr ""
 msgid "Sorry, The following %*(%1,user was already a member,users were already members) of this Group:"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:7742 share/plugin/widgets/share/javascript/socialtext-activities.js:10616 share/plugin/widgets/share/javascript/socialtext-container.js:23121 share/plugin/widgets/share/javascript/socialtext-popout.js:13476
+#: share/plugin/signals/share/javascript/socialtext-activities.js:5882 share/plugin/signals/share/javascript/socialtext-signals.js:6052
 msgid "Sorry, an edit error occured; please re-edit this page."
 msgstr ""
 
@@ -3110,10 +2638,6 @@ msgstr ""
 #. (wrong_domain.size, "<span style=\"color: red\">' _ restrict_to_domain _ '</span>")
 #: share/plugin/people/template/invite_done:17 share/plugin/people/template/invite_done:26
 msgid "Sorry, the following %*(%1,email address is,email addresses are) not in the domain %2"
-msgstr ""
-
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:10489 share/plugin/widgets/share/javascript/socialtext-activities.js:13363 share/plugin/widgets/share/javascript/socialtext-container.js:25868 share/plugin/widgets/share/javascript/socialtext-popout.js:16223
-msgid "Sorry, this URL does not appear to link to an embeddable video."
 msgstr ""
 
 #: share/plugin/people/template/invite_disabled:15
@@ -3124,17 +2648,12 @@ msgstr ""
 msgid "Sorry, this feature is currently disabled for your group by the administrator."
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/gadgets.js:353 share/plugin/widgets/share/javascript/socialtext-container.js:11942
+#: share/plugin/widgets/share/javascript/gadgets.js:353
 msgid "Sorry, this feature is not yet supported in the Socialtext Dashboard."
 msgstr ""
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:219 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:315
 msgid "Sort"
-msgstr ""
-
-#. (_field_display_name($field)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2503
-msgid "Sort by %1 in %2 order"
 msgstr ""
 
 #: share/plugin/groups/template/grouplist:51 share/plugin/people/template/view/peoplelist:47 share/plugin/signals/template/view/signallist:28
@@ -3154,7 +2673,7 @@ msgstr ""
 msgid "Spreadsheet Already Exists"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:10515 share/plugin/widgets/share/javascript/socialtext-activities.js:13389 share/plugin/widgets/share/javascript/socialtext-container.js:25894 share/plugin/widgets/share/javascript/socialtext-popout.js:16249
+#: share/plugin/signals/share/javascript/socialtext-activities.js:8245 share/plugin/signals/share/javascript/socialtext-signals.js:8428
 msgid "Spreadsheet Title required if Workspace Id specified"
 msgstr ""
 
@@ -3162,7 +2681,7 @@ msgstr ""
 msgid "Spreadsheet Title:"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2097 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2178 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:45498 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:45579
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2097 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2178
 msgid "Spreadsheet title is too long. Please shorten the name and try again."
 msgstr ""
 
@@ -3202,33 +2721,33 @@ msgstr ""
 msgid "Submit"
 msgstr ""
 
-#: share/plugin/signals/share/javascript/lightbox-explore-about.js:57 share/plugin/widgets/share/javascript/lightbox-add-update-content.js:96 share/plugin/widgets/share/javascript/lightbox-remove-content.js:51 share/plugin/widgets/share/javascript/widgets-lightbox.js:9
+#: share/plugin/widgets/share/javascript/widgets-lightbox.js:9
 msgid "Success"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/lightbox-add-update-content.js:178 share/plugin/widgets/share/javascript/lightbox/add-update-content.js:61
+#: share/plugin/widgets/share/javascript/lightbox/add-update-content.js:61
 msgid "Successfully added your widget"
 msgstr ""
 
 #. (this.title)
-#: share/plugin/widgets/share/javascript/lightbox-remove-content.js:165 share/plugin/widgets/share/javascript/lightbox/remove-content.js:93
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:93
 msgid "Successfully removed the \"%1\" widget"
 msgstr ""
 
-#: share/plugin/dashboard/share/javascript/lightbox-save-layout.js:177 share/plugin/dashboard/share/javascript/lightbox/save-layout.js:58
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.js:58
 msgid "Successfully reset all dashboards in the selected account"
 msgstr ""
 
 #. (this.title)
-#: share/plugin/widgets/share/javascript/lightbox-remove-content.js:161 share/plugin/widgets/share/javascript/lightbox/remove-content.js:89
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:89
 msgid "Successfully restored the \"%1\" widget"
 msgstr ""
 
-#: share/plugin/dashboard/share/javascript/lightbox-save-layout.js:193 share/plugin/dashboard/share/javascript/lightbox/save-layout.js:74
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.js:74
 msgid "Successfully saved the default layout for the selected account."
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/lightbox-add-update-content.js:177 share/plugin/widgets/share/javascript/lightbox/add-update-content.js:60
+#: share/plugin/widgets/share/javascript/lightbox/add-update-content.js:60
 msgid "Successfully updated your widget"
 msgstr ""
 
@@ -3241,7 +2760,7 @@ msgid "Swap foreground and background colors"
 msgstr ""
 
 #. (this.advanced_link_html()
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:8632 share/plugin/widgets/share/javascript/socialtext-activities.js:11506 share/plugin/widgets/share/javascript/socialtext-container.js:24011 share/plugin/widgets/share/javascript/socialtext-popout.js:14366
+#: share/plugin/signals/share/javascript/socialtext-activities.js:6554 share/plugin/signals/share/javascript/socialtext-signals.js:6748
 msgid "Switch to %1 to use this feature."
 msgstr ""
 
@@ -3249,15 +2768,15 @@ msgstr ""
 msgid "TAGS"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/explore.js:180 share/plugin/widgets/share/javascript/socialtext-activities.js:18853 share/plugin/widgets/share/javascript/socialtext-container.js:31358 share/plugin/widgets/share/javascript/socialtext-popout.js:21713
+#: share/plugin/widgets/share/javascript/activities/explore.js:180
 msgid "TODAY"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:8483 share/plugin/widgets/share/javascript/socialtext-activities.js:11357 share/plugin/widgets/share/javascript/socialtext-container.js:23862 share/plugin/widgets/share/javascript/socialtext-popout.js:14217
+#: share/plugin/signals/share/javascript/socialtext-activities.js:6384 share/plugin/signals/share/javascript/socialtext-signals.js:6578
 msgid "Table & Advanced Editing"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:8482 share/plugin/widgets/share/javascript/socialtext-activities.js:11356 share/plugin/widgets/share/javascript/socialtext-container.js:23861 share/plugin/widgets/share/javascript/socialtext-popout.js:14216
+#: share/plugin/signals/share/javascript/socialtext-activities.js:6383 share/plugin/signals/share/javascript/socialtext-signals.js:6577
 msgid "Table Edit Tip"
 msgstr ""
 
@@ -3281,63 +2800,16 @@ msgstr ""
 msgid "Thanks,"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/editor.js:1292 share/plugin/widgets/share/javascript/socialtext-activities.js:16264 share/plugin/widgets/share/javascript/socialtext-container.js:28769 share/plugin/widgets/share/javascript/socialtext-popout.js:19124
+#: share/plugin/widgets/share/javascript/activities/editor.js:1292
 msgid "That doesn't appear to be a valid URL, e.g. http://www.google.com"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6393 share/plugin/widgets/share/javascript/socialtext-activities.js:6891 share/plugin/widgets/share/javascript/socialtext-container.js:19396 share/plugin/widgets/share/javascript/socialtext-popout.js:9751
+#: share/plugin/signals/share/javascript/socialtext-activities.js:2794 share/plugin/signals/share/javascript/socialtext-signals.js:2906
 msgid "That doesn't appear to be a valid number."
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2182 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:45583
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2182
 msgid "That name is already taken, please enter a different one."
-msgstr ""
-
-#: share/plugin/widgets/lib/Socialtext/Gadgets/Gallery.pm:144
-msgid "That widget already exists in this gallery."
-msgstr ""
-
-#. ($proto->{driver_group_name})
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1578
-msgid "The %1 Group has already been added"
-msgstr ""
-
-#. ($name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:494
-msgid "The %1 account has been created."
-msgstr ""
-
-#. ($account->name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:459
-msgid "The %1 account type has been changed."
-msgstr ""
-
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:505
-msgid "The %1 user was confirmed."
-msgstr ""
-
-#. ($ws->name, $account->name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:521
-msgid "The %1 workspace is now part of the %2 account."
-msgstr ""
-
-#. ($self->_file_or_url, $error)
-#: share/plugin/widgets/lib/Socialtext/Gadgets/Gadget/XML.pm:28
-msgid "The %1 you provided does not appear to be a valid widget XML file: %2\n"
-msgstr ""
-
-#. ($self->_file_or_url, $xml_error)
-#: share/plugin/widgets/lib/Socialtext/Gadgets/Gadget/XML.pm:34
-msgid "The %1 you provided does not appear to be valid XML: %2\n"
-msgstr ""
-
-#. ($self->_file_or_url, $url, $err)
-#: share/plugin/widgets/lib/Socialtext/Gadgets/Gadget.pm:788
-msgid "The %1 you provided does not contain a widget file. Please check the %1 and try again. The %1 specified was: %2. The specific error was %3"
-msgstr ""
-
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:5536 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:5558 share/plugin/widgets/share/javascript/socialtext-activities.js:6034 share/plugin/widgets/share/javascript/socialtext-activities.js:6056 share/plugin/widgets/share/javascript/socialtext-container.js:18539 share/plugin/widgets/share/javascript/socialtext-container.js:18561 share/plugin/widgets/share/javascript/socialtext-popout.js:8894 share/plugin/widgets/share/javascript/socialtext-popout.js:8916
-msgid "The browser is currently offline; please connect to the internet and try again."
 msgstr ""
 
 #: share/plugin/control/template/control/field_form:89
@@ -3357,40 +2829,9 @@ msgstr ""
 msgid "The group administrators can change this setting after the group is created."
 msgstr ""
 
-#. (Socialtext::AppConfig->support_address)
-#: share/plugin/groups/lib/Socialtext/Handler/Container/Group.pm:36
-msgid "The group you are trying to view does not exist.  Please check with the group administrator or contact <a href=\"%1\">Socialtext Support</a>."
-msgstr ""
-
 #. (group_name)
-#: share/plugin/groups/share/javascript/lightbox-delete-group.js:69 share/plugin/groups/share/javascript/lightbox/delete-group.js:21
+#: share/plugin/groups/share/javascript/lightbox/delete-group.js:21
 msgid "The group, %1, has been successfully deleted."
-msgstr ""
-
-#. ( + new_title +                 '", is already in use.  Please choose a different ' +                'name. If you are sure you wish to overwrite the ' +                'existing "' + new_title + '" page, please press ' +                '"' + button + '" again.')
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:233
-msgid "The new page name you selected, \""
-msgstr ""
-
-#. ( + new_title +'", ' +                'is not allowed.  Please enter or change the page ' +                'name.')
-#. ( +                new_title + '", is too long after URL encoding')
-#. ( + new_title + '", ' +                "is the same as the page's current title.  " +                'Please enter a new page name.')
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:240 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:246 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:253
-msgid "The page name you selected, \""
-msgstr ""
-
-#. ($user->username, $new_password)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:572
-msgid "The password for user %1 has been changed to '%2'."
-msgstr ""
-
-#. (Socialtext::AppConfig->support_address)
-#: share/plugin/people/lib/Socialtext/Handler/Container/Profile.pm:38
-msgid "The person you are trying to view does not exist.  Please check with the system administrator or contact <a href=\"%1\">Socialtext Support</a>."
-msgstr ""
-
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:967
-msgid "The value of this field will be updated from the external source when user data is refreshed."
 msgstr ""
 
 #: share/plugin/control/template/control/desktop-account.html:85
@@ -3401,17 +2842,12 @@ msgstr ""
 msgid "The values have been reset to default. Do you want to apply them now?"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/editor.js:1205 share/plugin/widgets/share/javascript/socialtext-activities.js:16177 share/plugin/widgets/share/javascript/socialtext-container.js:28682 share/plugin/widgets/share/javascript/socialtext-popout.js:19037
+#: share/plugin/widgets/share/javascript/activities/editor.js:1205
 msgid "The workspace is not a valid workspace. You must supply a valid workspace for a page link."
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/editor.js:659 share/plugin/widgets/share/javascript/socialtext-activities.js:15631 share/plugin/widgets/share/javascript/socialtext-container.js:28136 share/plugin/widgets/share/javascript/socialtext-popout.js:18491
+#: share/plugin/widgets/share/javascript/activities/editor.js:659
 msgid "The workspace you specified does not exist, please try again"
-msgstr ""
-
-#. (matches.length, match.size, match.uploader_name, match.local_date)
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:492
-msgid "There are <span class=\"emphasis\">%1 previous versions</span> of this file (most recently: %2, uploaded by %3 at %4). If you click <em>Replace</em>, you will <em>delete all other versions</em>."
 msgstr ""
 
 #. (action.error_title || action.title)
@@ -3429,36 +2865,8 @@ msgstr ""
 msgid "There are no new %1, either because you aren't following anyone yet, or the people you're following haven't created any %1 in the last 30 days. Visit the profiles of your colleagues, and click 'Follow this person' to start following colleagues."
 msgstr ""
 
-#. (filename, match.size, match.uploader_name, match.local_date)
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:498
-msgid "There is already a file named \"%1\" (%2 uploaded by %3 on %4) attached to this page. You can <span class=\"emphasis\">Add</span> another version of the file or <span class=\"emphasis\">Replace</span> the existing version with this one. What would you like to do?"
-msgstr ""
-
-#. (filename)
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:488
-msgid "There is already a file named \"%1\" attached to this page. You can <span class=\"emphasis\">Add</span> another version of the file or <span class=\"emphasis\">Replace</span> the existing version with this one. What would you like to do?"
-msgstr ""
-
-#. ($user->username)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:567
-msgid "There was a problem changing password for user %1"
-msgstr ""
-
-#. ($user->username)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:548
-msgid "There was a problem deactivating user %1"
-msgstr ""
-
-#: share/plugin/widgets/share/javascript/activities/widget.js:419 share/plugin/widgets/share/javascript/activities/widget.js:585 share/plugin/widgets/share/javascript/socialtext-activities.js:18098 share/plugin/widgets/share/javascript/socialtext-activities.js:18264 share/plugin/widgets/share/javascript/socialtext-container.js:30603 share/plugin/widgets/share/javascript/socialtext-container.js:30769 share/plugin/widgets/share/javascript/socialtext-popout.js:20958 share/plugin/widgets/share/javascript/socialtext-popout.js:21124
+#: share/plugin/widgets/share/javascript/activities/widget.js:419 share/plugin/widgets/share/javascript/activities/widget.js:585
 msgid "There was a problem getting activities"
-msgstr ""
-
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:716
-msgid "There was an error processing your image; try uploading another image file?"
-msgstr ""
-
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6511 share/plugin/widgets/lib/Socialtext/Gadgets/Gallery.pm:312 share/plugin/widgets/share/javascript/socialtext-activities.js:7009 share/plugin/widgets/share/javascript/socialtext-container.js:19514 share/plugin/widgets/share/javascript/socialtext-popout.js:9869
-msgid "Third Party widgets"
 msgstr ""
 
 #: share/plugin/analytics/template/cp_google_analytics:13
@@ -3467,14 +2875,6 @@ msgstr ""
 
 #: share/plugin/groups/share/javascript/lightbox/leave-group.tt2:5
 msgid "This action cannot be undone. Are you sure you'd like to leave this group?"
-msgstr ""
-
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:971
-msgid "This field is now hidden from users' profiles."
-msgstr ""
-
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:974
-msgid "This field is now visible in users' profiles."
 msgstr ""
 
 #: share/plugin/control/template/control/workspace_invite.html:94
@@ -3489,7 +2889,7 @@ msgstr ""
 msgid "This is an all users workspace for the account:"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:9651 share/plugin/widgets/share/javascript/socialtext-activities.js:12525 share/plugin/widgets/share/javascript/socialtext-container.js:25030 share/plugin/widgets/share/javascript/socialtext-popout.js:15385
+#: share/plugin/signals/share/javascript/socialtext-activities.js:7476 share/plugin/signals/share/javascript/socialtext-signals.js:7674
 msgid "This is not an editable widget. Please edit it in Wiki Text mode."
 msgstr ""
 
@@ -3517,10 +2917,6 @@ msgstr ""
 
 #: share/plugin/signals/template/email/direct-message.html:14
 msgid "This signal had the following attachments:"
-msgstr ""
-
-#: share/plugin/widgets/lib/Socialtext/Gadgets/Gadget/XML.pm:151
-msgid "This widget cannot be installed because it contains references to localization files that cannot be found"
 msgstr ""
 
 #: share/plugin/control/template/control/design-account.html:58
@@ -3559,16 +2955,6 @@ msgstr ""
 msgid "Transform"
 msgstr ""
 
-#. ($acct_name, $e)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2040
-msgid "Transform Account %1 to group failed: %2"
-msgstr ""
-
-#. ($acct_name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2044
-msgid "Transform Account %1 to group succeeded"
-msgstr ""
-
 #: share/plugin/control/template/control/accounts_transform.html:2
 msgid "Transform Accounts to Groups"
 msgstr ""
@@ -3585,43 +2971,13 @@ msgstr ""
 msgid "URI"
 msgstr ""
 
-#: share/plugin/widgets/lib/Socialtext/Gadgets/Gadget.pm:781
-msgid "URL"
-msgstr ""
-
 #: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:5
 msgid "URL:"
 msgstr ""
 
-#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:770
-msgid "Unable to change profile field."
-msgstr ""
-
-#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:721
-msgid "Unable to create profile field."
-msgstr ""
-
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1596
-msgid "Unable to locate Group while attempting to add to system."
-msgstr ""
-
-#. (join ", ", @add_errors)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:371
-msgid "Unable to make the following workspaces all users workspaces: %1"
-msgstr ""
-
-#. (join ", ", @remove_errors)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:372
-msgid "Unable to make the following workspaces no longer an all users workspaces: %1"
-msgstr ""
-
 #. (widget)
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:9952 share/plugin/widgets/share/javascript/socialtext-activities.js:12826 share/plugin/widgets/share/javascript/socialtext-container.js:25331 share/plugin/widgets/share/javascript/socialtext-popout.js:15686
+#: share/plugin/signals/share/javascript/socialtext-activities.js:7773 share/plugin/signals/share/javascript/socialtext-signals.js:7952
 msgid "Unexpected Widget >>%1<< in parseWidget"
-msgstr ""
-
-#: share/plugin/widgets/lib/Socialtext/Gadgets/Gadget/XML.pm:34
-msgid "Unknown error"
 msgstr ""
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:289 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:298 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:307
@@ -3640,11 +2996,6 @@ msgstr ""
 msgid "Update a Widget from URL:"
 msgstr ""
 
-#. (shift->title)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:995
-msgid "Updated profile field \"%1\""
-msgstr ""
-
 #: share/plugin/control/template/control/group.html:122
 msgid "Updating ..."
 msgstr ""
@@ -3657,26 +3008,13 @@ msgstr ""
 msgid "Upload Account Logo (optional)"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:405
-msgid "Upload Complete"
-msgstr ""
-
 #: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:18
 msgid "Upload Widget XML File:"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:434
-msgid "Uploaded files:"
-msgstr ""
-
 #. (as_string)
-#: share/plugin/widgets/share/javascript/activities/editor.js:951 share/plugin/widgets/share/javascript/socialtext-activities.js:15923 share/plugin/widgets/share/javascript/socialtext-container.js:28428 share/plugin/widgets/share/javascript/socialtext-popout.js:18783
+#: share/plugin/widgets/share/javascript/activities/editor.js:951
 msgid "Uploaded files: %1"
-msgstr ""
-
-#. (basename)
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:468
-msgid "Uploading %1..."
 msgstr ""
 
 #: share/plugin/control/template/control/account.html:34 share/plugin/control/template/control/workspace.html:6
@@ -3688,12 +3026,12 @@ msgid "Usage ending midnight of:"
 msgstr ""
 
 #. (advanced_link)
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:8488 share/plugin/widgets/share/javascript/socialtext-activities.js:11362 share/plugin/widgets/share/javascript/socialtext-container.js:23867 share/plugin/widgets/share/javascript/socialtext-popout.js:14222
+#: share/plugin/signals/share/javascript/socialtext-activities.js:6389 share/plugin/signals/share/javascript/socialtext-signals.js:6583
 msgid "Use %1 to change the number of rows and columns in a table."
 msgstr ""
 
 #. (subject)
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:8631 share/plugin/widgets/share/javascript/socialtext-activities.js:11505 share/plugin/widgets/share/javascript/socialtext-container.js:24010 share/plugin/widgets/share/javascript/socialtext-popout.js:14365
+#: share/plugin/signals/share/javascript/socialtext-activities.js:6553 share/plugin/signals/share/javascript/socialtext-signals.js:6747
 msgid "Use Advanced Mode for %1"
 msgstr ""
 
@@ -3713,33 +3051,12 @@ msgstr ""
 msgid "Use the filters below to narrow the results. Use the small 'x' by any of the Groups, Tags and People filters to remove them."
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6477 share/plugin/widgets/share/javascript/socialtext-activities.js:6975 share/plugin/widgets/share/javascript/socialtext-container.js:19480 share/plugin/widgets/share/javascript/socialtext-popout.js:9835
-msgid "Use the text area below to compose your HTML block."
-msgstr ""
-
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6488 share/plugin/widgets/share/javascript/socialtext-activities.js:6986 share/plugin/widgets/share/javascript/socialtext-container.js:19491 share/plugin/widgets/share/javascript/socialtext-popout.js:9846
-msgid "Use the text area below to compose your preformatted text block."
-msgstr ""
-
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6459 share/plugin/widgets/share/javascript/socialtext-activities.js:6957 share/plugin/widgets/share/javascript/socialtext-container.js:19462 share/plugin/widgets/share/javascript/socialtext-popout.js:9817
-msgid "Use the text area to compose your code block, and optionally select a highlighting syntax."
-msgstr ""
-
 #: share/plugin/control/template/control/index.html:28
 msgid "Use this screen to quickly invite Users to Groups and Workspaces."
 msgstr ""
 
 #: share/plugin/control/template/control/field_form:58 share/plugin/control/template/control/fields-account.html:44
 msgid "User"
-msgstr ""
-
-#: share/plugin/widgets/lib/Socialtext/Pluggable/Plugin/Widgets.pm:231
-msgid "User $email hasn't been imported yet!!\n"
-msgstr ""
-
-#. ($user->username)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:542
-msgid "User %1 has been deactivated."
 msgstr ""
 
 #. (item.title)
@@ -3769,22 +3086,17 @@ msgstr ""
 msgid "User was removed from %quant(%1,Account %2,%1 Accounts)"
 msgstr ""
 
-#: share/plugin/control/share/javascript/socialtext-workspaces_new.js:37 share/plugin/control/share/javascript/workspaces_new.js:36 share/plugin/control/template/control/user.html:14
+#: share/plugin/control/share/javascript/workspaces_new.js:36 share/plugin/control/template/control/user.html:14
 msgid "Username"
 msgstr ""
 
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2126 share/plugin/control/share/javascript/socialtext-workspaces_new.js:170 share/plugin/control/share/javascript/workspaces_new.js:169 share/plugin/control/template/control/account.html:68 share/plugin/control/template/control/account_table:15 share/plugin/control/template/control/group.html:27 share/plugin/control/template/control/group.html:334 share/plugin/control/template/control/group.html:74 share/plugin/control/template/control/group_table:23 share/plugin/control/template/control/group_table:8 share/plugin/control/template/control/groups.html:73 share/plugin/control/template/control/index.html:27 share/plugin/control/template/control/user.html:240 share/plugin/control/template/control/workspace.html:243 share/plugin/control/template/control/workspace.html:46 share/plugin/control/template/control/workspace_table:16 share/plugin/control/template/control/workspace_table:25 share/plugin/control/template/control/workspaces_new.html:31 share/plugin/control/template/control/wrapper:87
+#: share/plugin/control/share/javascript/workspaces_new.js:169 share/plugin/control/template/control/account.html:68 share/plugin/control/template/control/account_table:15 share/plugin/control/template/control/group.html:27 share/plugin/control/template/control/group.html:334 share/plugin/control/template/control/group.html:74 share/plugin/control/template/control/group_table:23 share/plugin/control/template/control/group_table:8 share/plugin/control/template/control/groups.html:73 share/plugin/control/template/control/index.html:27 share/plugin/control/template/control/user.html:240 share/plugin/control/template/control/workspace.html:243 share/plugin/control/template/control/workspace.html:46 share/plugin/control/template/control/workspace_table:16 share/plugin/control/template/control/workspace_table:25 share/plugin/control/template/control/workspaces_new.html:31 share/plugin/control/template/control/wrapper:87
 msgid "Users"
 msgstr ""
 
 #. (this.total)
-#: share/plugin/control/share/javascript/socialtext-workspaces_new.js:23 share/plugin/control/share/javascript/workspaces_new.js:22 share/plugin/control/template/control/account.html:110 share/plugin/control/template/control/group.html:161 share/plugin/control/template/control/workspace.html:67
+#: share/plugin/control/share/javascript/workspaces_new.js:22 share/plugin/control/template/control/account.html:110 share/plugin/control/template/control/group.html:161 share/plugin/control/template/control/workspace.html:67
 msgid "Users (%1)"
-msgstr ""
-
-#. ($name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:2116
-msgid "Users matching \"%1\""
 msgstr ""
 
 #: share/plugin/control/template/control/desktop-account.html:26
@@ -3792,34 +3104,25 @@ msgid "Value"
 msgstr ""
 
 #. (this.via_group.length,                $.map(this.via_group, function (g)
-#: share/plugin/control/share/javascript/useraccountrole.js:55 share/plugin/widgets/share/javascript/socialtext-gadget.js:3578
+#: share/plugin/control/share/javascript/socialtext-control.min.js:6736 share/plugin/control/share/javascript/useraccountrole.js:55
 msgid "Via %quant(%1,Group): %2"
 msgstr ""
 
 #. (this.via_workspace.length,                $.map(this.via_workspace, function (w)
-#: share/plugin/control/share/javascript/useraccountrole.js:45 share/plugin/widgets/share/javascript/socialtext-gadget.js:3568
+#: share/plugin/control/share/javascript/socialtext-control.min.js:6726 share/plugin/control/share/javascript/useraccountrole.js:45
 msgid "Via %quant(%1,Workspace): %2"
-msgstr ""
-
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:10471 share/plugin/widgets/share/javascript/socialtext-activities.js:13345 share/plugin/widgets/share/javascript/socialtext-container.js:25850 share/plugin/widgets/share/javascript/socialtext-popout.js:16205
-msgid "Video URL is required"
 msgstr ""
 
 #: share/plugin/people/template/lite/profile.html:119
 msgid "WEB"
 msgstr ""
 
-#: share/plugin/signals/lib/Socialtext/Handler/Container/Signals/Signal.pm:35
-msgid "We're sorry, but that Signal does not exist. You can use the signal search box above to find a particular signal."
+#: share/plugin/socialcalc/share/javascript/jemplate/add-a-link.html:41
+msgid "Web link"
 msgstr ""
 
 #: share/plugin/dashboard/template/dashboard_hello:14
 msgid "Welcome"
-msgstr ""
-
-#. ('<b><a href="/st/profile">' . $self->user->guess_real_name . '</a></b>',        '<a href="/st/edit_profile">' . loc('(edit)
-#: share/plugin/people/lib/Socialtext/Pluggable/Plugin/People.pm:180
-msgid "Welcome %1 %2"
 msgstr ""
 
 #: share/plugin/control/template/control/index.html:5
@@ -3850,6 +3153,10 @@ msgstr ""
 msgid "Widget rendered correctly but has not been saved. Click publish to update the widget gallery now."
 msgstr ""
 
+#: share/plugin/socialcalc/share/javascript/jemplate/add-a-link.html:10
+msgid "Wiki link"
+msgstr ""
+
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:139
 msgid "Wikitext Mode"
 msgstr ""
@@ -3858,23 +3165,18 @@ msgstr ""
 msgid "Will not be displayed in the Group Directory and new members must be invited by the group administrators."
 msgstr ""
 
-#: share/plugin/people/lib/Socialtext/Lite/People.pm:167
-msgid "Work number"
-msgstr ""
-
 #: share/plugin/people/template/profile_hcard:32
 msgid "Work: "
 msgstr ""
 
-#. (ws)
-#. (workspace)
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:6862 share/plugin/widgets/share/javascript/activities/editor.js:1105 share/plugin/widgets/share/javascript/gadgets.js:256 share/plugin/widgets/share/javascript/gadgets.js:280 share/plugin/widgets/share/javascript/socialtext-activities.js:16077 share/plugin/widgets/share/javascript/socialtext-activities.js:7360 share/plugin/widgets/share/javascript/socialtext-container.js:11845 share/plugin/widgets/share/javascript/socialtext-container.js:11869 share/plugin/widgets/share/javascript/socialtext-container.js:19865 share/plugin/widgets/share/javascript/socialtext-container.js:28582 share/plugin/widgets/share/javascript/socialtext-popout.js:10220 share/plugin/widgets/share/javascript/socialtext-popout.js:18937
-msgid "Workspace \"%1\" does not exist on wiki"
+#: share/plugin/socialcalc/share/javascript/jemplate/add-a-link.html:19
+msgid "Workspace"
 msgstr ""
 
-#. ($user->username)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1844
-msgid "Workspace Activity for user %1"
+#. (ws)
+#. (workspace)
+#: share/plugin/signals/share/javascript/socialtext-activities.js:2921 share/plugin/signals/share/javascript/socialtext-signals.js:3027 share/plugin/widgets/share/javascript/activities/editor.js:1105 share/plugin/widgets/share/javascript/gadgets.js:256 share/plugin/widgets/share/javascript/gadgets.js:280
+msgid "Workspace \"%1\" does not exist on wiki"
 msgstr ""
 
 #: share/plugin/mediawiki/template/element/settings/mediawiki:12
@@ -3885,28 +3187,19 @@ msgstr ""
 msgid "Workspace removals were successful."
 msgstr ""
 
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1885 share/plugin/control/share/javascript/socialtext-workspaces_new.js:166 share/plugin/control/share/javascript/workspaces_new.js:165 share/plugin/control/template/control/account.html:145 share/plugin/control/template/control/account_table:12 share/plugin/control/template/control/group.html:196 share/plugin/control/template/control/group.html:329 share/plugin/control/template/control/group_table:26 share/plugin/control/template/control/group_table:9 share/plugin/control/template/control/groups.html:68 share/plugin/control/template/control/index.html:31 share/plugin/control/template/control/selected_user_table_header:18 share/plugin/control/template/control/user.html:210 share/plugin/control/template/control/user_table_header:34 share/plugin/control/template/control/user_table_header:36 share/plugin/control/template/control/workspace.html:105 share/plugin/control/template/control/workspace.html:239 share/plugin/control/template/control/workspace_invite.html:153 share/plugin/control/template/control/wrapper:86 share/plugin/widgets/template/mobile-signals.tt2:129
+#: share/plugin/control/share/javascript/workspaces_new.js:165 share/plugin/control/template/control/account.html:145 share/plugin/control/template/control/account_table:12 share/plugin/control/template/control/group.html:196 share/plugin/control/template/control/group.html:329 share/plugin/control/template/control/group_table:26 share/plugin/control/template/control/group_table:9 share/plugin/control/template/control/groups.html:68 share/plugin/control/template/control/index.html:31 share/plugin/control/template/control/selected_user_table_header:18 share/plugin/control/template/control/user.html:210 share/plugin/control/template/control/user_table_header:34 share/plugin/control/template/control/user_table_header:36 share/plugin/control/template/control/workspace.html:105 share/plugin/control/template/control/workspace.html:239 share/plugin/control/template/control/workspace_invite.html:153 share/plugin/control/template/control/wrapper:86 share/plugin/widgets/template/mobile-signals.tt2:129
 msgid "Workspaces"
 msgstr ""
 
-#. (this.total)
 #. (account.workspace_count)
 #. (wksp_count)
+#. (this.total)
 #: share/plugin/control/template/control/account.html:215 share/plugin/control/template/control/group.html:50 share/plugin/control/template/control/user.html:226
 msgid "Workspaces (%1)"
 msgstr ""
 
 #: share/plugin/control/template/control/index.html:32
 msgid "Workspaces are where wiki and document content is stored. Use this to create a new Workspace."
-msgstr ""
-
-#. ($name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1871
-msgid "Workspaces matching \"%1\""
-msgstr ""
-
-#: share/plugin/mediawiki/lib/Socialtext/Pluggable/Plugin/MediaWiki.pm:57
-msgid "Workspaces: This Workspace"
 msgstr ""
 
 #: share/plugin/people/template/profile_hcard:56
@@ -3958,17 +3251,8 @@ msgstr ""
 msgid "You can only invite people who share the %1 email domain with you."
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:778 share/plugin/widgets/share/javascript/socialtext-activities.js:4939 share/plugin/widgets/share/javascript/socialtext-container.js:17444 share/plugin/widgets/share/javascript/socialtext-popout.js:7799
+#: share/plugin/signals/share/javascript/socialtext-activities.js:938 share/plugin/signals/share/javascript/socialtext-signals.js:1044
 msgid "You cannot compare a revision to itself."
-msgstr ""
-
-#. (Socialtext::AppConfig->support_address)
-#: share/plugin/groups/lib/Socialtext/Handler/Container/Group.pm:41
-msgid "You do not have permission to view this group. Please check with the group administrator or contact <a href=\"%1\">Socialtext Support<I"
-msgstr ""
-
-#: share/plugin/widgets/lib/Socialtext/Rest/Gadgets/Gallery.pm:35
-msgid "You do not share an account with this gallery."
 msgstr ""
 
 #. ("<a href=\"$webroot/st/profile/$sender.user_id\">$sender.best_full_name</a>")
@@ -3977,17 +3261,8 @@ msgstr ""
 msgid "You have received a private message from %1:"
 msgstr ""
 
-#. ($removed, $group->driver_group_name)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1239
-msgid "You have successfully removed %quant(%1,user) from the %2 Group."
-msgstr ""
-
-#: share/plugin/dashboard/share/widgets/widget_editor/widget.js:261 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:3040 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:46441 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:5292 share/plugin/widgets/share/javascript/socialtext-activities.js:5790 share/plugin/widgets/share/javascript/socialtext-container.js:18295 share/plugin/widgets/share/javascript/socialtext-popout.js:8650
+#: share/plugin/dashboard/share/widgets/widget_editor/widget.js:261 share/plugin/signals/share/javascript/socialtext-activities.js:1727 share/plugin/signals/share/javascript/socialtext-signals.js:1850 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:3040
 msgid "You have unsaved changes."
-msgstr ""
-
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:535
-msgid "You may not delete yourself."
 msgstr ""
 
 #: share/plugin/people/template/email/invitation-body.html:45
@@ -4002,66 +3277,24 @@ msgstr ""
 msgid "You must choose at least one workspace"
 msgstr ""
 
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:470
-msgid "You must provide a name to create a new account."
-msgstr ""
-
-#. ($self->{uri})
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1723
-msgid "You must provide a user_id to this URI (%1)."
-msgstr ""
-
-#. ($self->{uri})
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1695
-msgid "You must provide a valid account_id or account_name to this URI (%1)."
-msgstr ""
-
-#. ($self->{uri})
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1670
-msgid "You must provide a valid group_id to this URI (%1)."
-msgstr ""
-
-#. ($self->{uri})
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1711
-msgid "You must provide a workspace to this URI (%1)"
-msgstr ""
-
-#. ($self->{uri})
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1738
-msgid "You must provide a workspace_id to this URI (%1)."
-msgstr ""
-
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:445
-msgid "You must provide an account type to change the type."
-msgstr ""
-
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:5104 share/plugin/widgets/share/javascript/socialtext-activities.js:5602 share/plugin/widgets/share/javascript/socialtext-container.js:18107 share/plugin/widgets/share/javascript/socialtext-popout.js:8462
+#: share/plugin/signals/share/javascript/socialtext-activities.js:1537 share/plugin/signals/share/javascript/socialtext-signals.js:1674
 msgid "You must select one of the options or click cancel"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:773 share/plugin/widgets/share/javascript/socialtext-activities.js:4934 share/plugin/widgets/share/javascript/socialtext-container.js:17439 share/plugin/widgets/share/javascript/socialtext-popout.js:7794
+#: share/plugin/signals/share/javascript/socialtext-activities.js:933 share/plugin/signals/share/javascript/socialtext-signals.js:1039
 msgid "You must select two revisions to compare."
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:5027 share/plugin/widgets/share/javascript/socialtext-activities.js:5525 share/plugin/widgets/share/javascript/socialtext-container.js:18030 share/plugin/widgets/share/javascript/socialtext-popout.js:8385
+#: share/plugin/signals/share/javascript/socialtext-activities.js:1467 share/plugin/signals/share/javascript/socialtext-signals.js:1604
 msgid "You must specify a page name"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/editor.js:1197 share/plugin/widgets/share/javascript/socialtext-activities.js:16169 share/plugin/widgets/share/javascript/socialtext-container.js:28674 share/plugin/widgets/share/javascript/socialtext-popout.js:19029
+#: share/plugin/widgets/share/javascript/activities/editor.js:1197
 msgid "You must specify a page."
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/editor.js:1192 share/plugin/widgets/share/javascript/socialtext-activities.js:16164 share/plugin/widgets/share/javascript/socialtext-container.js:28669 share/plugin/widgets/share/javascript/socialtext-popout.js:19024
+#: share/plugin/widgets/share/javascript/activities/editor.js:1192
 msgid "You must specify a workspace."
-msgstr ""
-
-#: share/plugin/widgets/lib/Socialtext/Rest/Gadgets/Gadget.pm:23 share/plugin/widgets/lib/Socialtext/Rest/Gadgets/Gallery.pm:21
-msgid "You no longer have accounts administration privileges."
-msgstr ""
-
-#. (scalar(@$members)
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1563
-msgid "You successfully added %quant(%1,user) to %quant(%2,group). They will receive an invitation message to each workspace."
 msgstr ""
 
 #: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:14
@@ -4093,7 +3326,7 @@ msgstr ""
 msgid "about one hour ago"
 msgstr ""
 
-#: share/plugin/control/share/javascript/useraccountrole.js:13 share/plugin/widgets/share/javascript/socialtext-gadget.js:3538
+#: share/plugin/control/share/javascript/socialtext-control.min.js:6696 share/plugin/control/share/javascript/useraccountrole.js:13
 msgid "account_name is required"
 msgstr ""
 
@@ -4107,11 +3340,11 @@ msgstr ""
 msgid "added %1 to the workspace %2."
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:328 share/plugin/widgets/share/javascript/socialtext-activities.js:14599 share/plugin/widgets/share/javascript/socialtext-container.js:27104 share/plugin/widgets/share/javascript/socialtext-network-dropdown.js:771 share/plugin/widgets/share/javascript/socialtext-popout.js:17459
+#: share/plugin/widgets/share/javascript/activities/appdata.js:328
 msgid "all events"
 msgstr ""
 
-#: share/plugin/signals/share/javascript/signals.js:820
+#: share/plugin/signals/share/javascript/signals.js:820 share/plugin/signals/share/javascript/socialtext-signals.js:10844
 msgid "all groups"
 msgstr ""
 
@@ -4123,7 +3356,7 @@ msgstr ""
 msgid "cancel"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:291 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:43692
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:291
 msgid "cell"
 msgstr ""
 
@@ -4141,11 +3374,11 @@ msgstr ""
 msgid "commented on %1 in %2, saying, \"%3\""
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:360 share/plugin/widgets/share/javascript/socialtext-activities.js:14631 share/plugin/widgets/share/javascript/socialtext-container.js:27136 share/plugin/widgets/share/javascript/socialtext-network-dropdown.js:803 share/plugin/widgets/share/javascript/socialtext-popout.js:17491
+#: share/plugin/widgets/share/javascript/activities/appdata.js:360
 msgid "comments"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:350 share/plugin/widgets/share/javascript/socialtext-activities.js:14621 share/plugin/widgets/share/javascript/socialtext-container.js:27126 share/plugin/widgets/share/javascript/socialtext-network-dropdown.js:793 share/plugin/widgets/share/javascript/socialtext-popout.js:17481
+#: share/plugin/widgets/share/javascript/activities/appdata.js:350
 msgid "contributions"
 msgstr ""
 
@@ -4163,11 +3396,7 @@ msgstr ""
 msgid "duplicated %1 in %2."
 msgstr ""
 
-#: share/plugin/control/lib/Socialtext/Handler/ControlPanel.pm:1082
-msgid "e-mail address was not supplied!"
-msgstr ""
-
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:5928 share/plugin/widgets/share/javascript/socialtext-activities.js:6426 share/plugin/widgets/share/javascript/socialtext-container.js:18931 share/plugin/widgets/share/javascript/socialtext-popout.js:9286
+#: share/plugin/signals/share/javascript/socialtext-activities.js:2320 share/plugin/signals/share/javascript/socialtext-signals.js:2432
 msgid "edited"
 msgstr ""
 
@@ -4190,15 +3419,15 @@ msgstr ""
 msgid "edited their own profile."
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:355 share/plugin/widgets/share/javascript/socialtext-activities.js:14626 share/plugin/widgets/share/javascript/socialtext-container.js:27131 share/plugin/widgets/share/javascript/socialtext-network-dropdown.js:798 share/plugin/widgets/share/javascript/socialtext-popout.js:17486
+#: share/plugin/widgets/share/javascript/activities/appdata.js:355
 msgid "edits"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:327 share/plugin/widgets/share/javascript/socialtext-activities.js:14598 share/plugin/widgets/share/javascript/socialtext-container.js:27103 share/plugin/widgets/share/javascript/socialtext-network-dropdown.js:770 share/plugin/widgets/share/javascript/socialtext-popout.js:17458
+#: share/plugin/widgets/share/javascript/activities/appdata.js:327
 msgid "events"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:393 share/plugin/widgets/share/javascript/socialtext-activities.js:14664 share/plugin/widgets/share/javascript/socialtext-container.js:27169 share/plugin/widgets/share/javascript/socialtext-network-dropdown.js:836 share/plugin/widgets/share/javascript/socialtext-popout.js:17524
+#: share/plugin/widgets/share/javascript/activities/appdata.js:393
 msgid "everyone"
 msgstr ""
 
@@ -4206,20 +3435,8 @@ msgstr ""
 msgid "expunge"
 msgstr ""
 
-#: share/plugin/widgets/lib/Socialtext/Gadgets/Gadget.pm:781
-msgid "file"
-msgstr ""
-
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:72
 msgid "from"
-msgstr ""
-
-#: share/plugin/widgets/lib/Socialtext/Rest/Gadgets/Gallery.pm:50 share/plugin/widgets/lib/Socialtext/Rest/Gadgets/Gallery.pm:64
-msgid "gadget_id is a required parameter"
-msgstr ""
-
-#: share/plugin/widgets/share/javascript/socialtext-gadget.js:3205 share/plugin/widgets/share/javascript/socialtext-gadget.js:3218
-msgid "group_id is required"
 msgstr ""
 
 #. (person)
@@ -4227,16 +3444,15 @@ msgstr ""
 msgid "has stopped following %1."
 msgstr ""
 
-#. (data.height)
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:10887 share/plugin/widgets/share/javascript/socialtext-activities.js:13761 share/plugin/widgets/share/javascript/socialtext-container.js:26266 share/plugin/widgets/share/javascript/socialtext-popout.js:16621
-msgid "height: %1"
+#: share/plugin/socialcalc/share/javascript/jemplate/widget_image_edit.html:50
+msgid "height:"
 msgstr ""
 
 #: share/plugin/control/template/control/fields-account.html:45
 msgid "hide"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:5926 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:5928 share/plugin/widgets/share/javascript/socialtext-activities.js:6424 share/plugin/widgets/share/javascript/socialtext-activities.js:6426 share/plugin/widgets/share/javascript/socialtext-container.js:18929 share/plugin/widgets/share/javascript/socialtext-container.js:18931 share/plugin/widgets/share/javascript/socialtext-popout.js:9284 share/plugin/widgets/share/javascript/socialtext-popout.js:9286
+#: share/plugin/signals/share/javascript/socialtext-activities.js:2318 share/plugin/signals/share/javascript/socialtext-activities.js:2320 share/plugin/signals/share/javascript/socialtext-signals.js:2430 share/plugin/signals/share/javascript/socialtext-signals.js:2432
 msgid "in"
 msgstr ""
 
@@ -4263,7 +3479,7 @@ msgstr ""
 msgid "less than a minute ago"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:413 share/plugin/widgets/share/javascript/socialtext-activities.js:14684 share/plugin/widgets/share/javascript/socialtext-container.js:27189 share/plugin/widgets/share/javascript/socialtext-network-dropdown.js:856 share/plugin/widgets/share/javascript/socialtext-popout.js:17544
+#: share/plugin/widgets/share/javascript/activities/appdata.js:413
 msgid "me"
 msgstr ""
 
@@ -4279,7 +3495,7 @@ msgstr ""
 msgid "more"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:407 share/plugin/widgets/share/javascript/socialtext-activities.js:14678 share/plugin/widgets/share/javascript/socialtext-container.js:27183 share/plugin/widgets/share/javascript/socialtext-network-dropdown.js:850 share/plugin/widgets/share/javascript/socialtext-popout.js:17538
+#: share/plugin/widgets/share/javascript/activities/appdata.js:407
 msgid "my conversations"
 msgstr ""
 
@@ -4303,15 +3519,19 @@ msgstr ""
 msgid "one minute ago"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:365 share/plugin/widgets/share/javascript/socialtext-activities.js:14636 share/plugin/widgets/share/javascript/socialtext-container.js:27141 share/plugin/widgets/share/javascript/socialtext-network-dropdown.js:808 share/plugin/widgets/share/javascript/socialtext-popout.js:17496
+#: share/plugin/socialcalc/share/javascript/jemplate/widget_image_edit.html:72 share/plugin/socialcalc/share/javascript/jemplate/widget_image_edit.html:87
+msgid "or"
+msgstr ""
+
+#: share/plugin/widgets/share/javascript/activities/appdata.js:365
 msgid "page tags"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:400 share/plugin/widgets/share/javascript/socialtext-activities.js:14671 share/plugin/widgets/share/javascript/socialtext-container.js:27176 share/plugin/widgets/share/javascript/socialtext-network-dropdown.js:843 share/plugin/widgets/share/javascript/socialtext-popout.js:17531
+#: share/plugin/widgets/share/javascript/activities/appdata.js:400
 msgid "people I follow"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:370 share/plugin/widgets/share/javascript/socialtext-activities.js:14641 share/plugin/widgets/share/javascript/socialtext-container.js:27146 share/plugin/widgets/share/javascript/socialtext-network-dropdown.js:813 share/plugin/widgets/share/javascript/socialtext-popout.js:17501
+#: share/plugin/widgets/share/javascript/activities/appdata.js:370
 msgid "people events"
 msgstr ""
 
@@ -4330,8 +3550,8 @@ msgstr ""
 msgid "performed action '%1' on themself."
 msgstr ""
 
-#. (a.user_count)
 #. (acc.user_count)
+#. (a.user_count)
 #: share/plugin/people/template/invite:26 share/plugin/signals/template/lite/signals.html:55
 msgid "primary, %quant(%1,user)"
 msgstr ""
@@ -4345,7 +3565,7 @@ msgstr ""
 msgid "private to you"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:288 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:171 share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:43689
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:288 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:171
 msgid "range"
 msgstr ""
 
@@ -4396,10 +3616,6 @@ msgstr ""
 msgid "reply privately"
 msgstr ""
 
-#: share/plugin/widgets/lib/Socialtext/Gadgets/Gadget.pm:780
-msgid "resource"
-msgstr ""
-
 #: share/plugin/widgets/template/view/gallery:113
 msgid "restore"
 msgstr ""
@@ -4409,7 +3625,7 @@ msgstr ""
 msgid "sent a private signal to %1: \"%2\"."
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:343 share/plugin/widgets/share/javascript/socialtext-activities.js:14614 share/plugin/widgets/share/javascript/socialtext-container.js:27119 share/plugin/widgets/share/javascript/socialtext-network-dropdown.js:786 share/plugin/widgets/share/javascript/socialtext-popout.js:17474
+#: share/plugin/widgets/share/javascript/activities/appdata.js:343
 msgid "signals"
 msgstr ""
 
@@ -4442,6 +3658,22 @@ msgstr ""
 msgid "text"
 msgstr ""
 
+#: share/plugin/socialcalc/share/javascript/jemplate/widget_image_edit.html:86
+msgid "the current page"
+msgstr ""
+
+#: share/plugin/socialcalc/share/javascript/jemplate/widget_image_edit.html:71
+msgid "the current workspace"
+msgstr ""
+
+#: share/plugin/socialcalc/share/javascript/jemplate/widget_image_edit.html:90
+msgid "the page titled"
+msgstr ""
+
+#: share/plugin/socialcalc/share/javascript/jemplate/widget_image_edit.html:75
+msgid "the workspace named"
+msgstr ""
+
 #. (targets.0)
 #. (signal.networks.0)
 #. (a.name)
@@ -4469,11 +3701,11 @@ msgstr ""
 msgid "update"
 msgstr ""
 
-#: share/plugin/widgets/share/javascript/socialtext-gadget.js:3192
+#: share/plugin/control/share/javascript/socialtext-control.min.js:6428
 msgid "user_id is required"
 msgstr ""
 
-#: share/plugin/control/share/javascript/useraccountrole.js:11 share/plugin/widgets/share/javascript/socialtext-gadget.js:3536
+#: share/plugin/control/share/javascript/socialtext-control.min.js:6694 share/plugin/control/share/javascript/useraccountrole.js:11
 msgid "username is required"
 msgstr ""
 
@@ -4482,14 +3714,14 @@ msgid "username:"
 msgstr ""
 
 #. (item.title)
-#. (workspace.name)
 #. (account.name)
 #. (user.name_and_email)
-#: share/plugin/control/share/javascript/socialtext-workspaces_new.js:320 share/plugin/control/share/javascript/workspaces_new.js:319 share/plugin/control/template/control/account_link:1 share/plugin/control/template/control/user_link:1 share/plugin/control/template/control/workspace_link:1 share/plugin/control/template/control/workspaces_new.html:22
+#. (workspace.name)
+#: share/plugin/control/share/javascript/workspaces_new.js:319 share/plugin/control/template/control/account_link:1 share/plugin/control/template/control/user_link:1 share/plugin/control/template/control/workspace_link:1 share/plugin/control/template/control/workspaces_new.html:22
 msgid "view %1"
 msgstr ""
 
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:5926 share/plugin/widgets/share/javascript/socialtext-activities.js:6424 share/plugin/widgets/share/javascript/socialtext-container.js:18929 share/plugin/widgets/share/javascript/socialtext-popout.js:9284
+#: share/plugin/signals/share/javascript/socialtext-activities.js:2318 share/plugin/signals/share/javascript/socialtext-signals.js:2430
 msgid "wants you to know about an edit of"
 msgstr ""
 
@@ -4497,9 +3729,17 @@ msgstr ""
 msgid "web address:"
 msgstr ""
 
-#. (data.width)
-#: share/plugin/socialcalc/share/javascript/socialtext-socialcalc.js:10885 share/plugin/widgets/share/javascript/socialtext-activities.js:13759 share/plugin/widgets/share/javascript/socialtext-container.js:26264 share/plugin/widgets/share/javascript/socialtext-popout.js:16619
+#: share/plugin/socialcalc/share/javascript/jemplate/widget_image_edit.html:48
+msgid "width:"
+msgstr ""
+
+#. (choice.2)
+#: share/plugin/socialcalc/share/javascript/jemplate/widget_image_edit.html:36
 msgid "width: %1"
+msgstr ""
+
+#: share/plugin/socialcalc/share/javascript/jemplate/widget_image_edit.html:109
+msgid "wiki text"
 msgstr ""
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:76

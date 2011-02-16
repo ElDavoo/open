@@ -12,16 +12,15 @@ my %Sections = (
     bin => 'bin',
     lib => 'lib',
     wikiwyg => 'share/skin/wikiwyg/javascript',
-    plugin => 'share/plugin',
+    plugin => [glob('share/plugin/*/{share,template}')],
     s2 => ['share/skin/s2/template', 'share/skin/s2/javascript'],
     s3 => ['share/skin/s3/template', 'share/skin/s3/javascript'],
 );
 
 %Sections = map { $Sections{$_} ? ($_ => $Sections{$_}) : die "No such section: $_" } @ARGV if @ARGV;
 
-# Cleanup temporary JS files before extracting S3
-shell_run("rm -rf share/skin/s3/javascript/socialtext-*");
-shell_run("rm -rf share/skin/s3/javascript/lightbox-*");
+# Cleanup temporary JS files before extracting
+shell_run("dev-bin/jsmake cleanall");
 
 for my $key (sort keys %Sections) {
     my $dir = $Sections{$key};
