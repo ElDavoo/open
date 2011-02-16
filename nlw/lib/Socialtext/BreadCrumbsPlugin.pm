@@ -29,7 +29,7 @@ sub register {
 sub display_as_box {
     my $self = shift;
     my $p = $self->new_preference('display_as_box');
-    $p->query(loc('Display \"[_1]\" side pane box?',$self->class_title) );
+    $p->query(loc('Display "[_1]" side pane box?', $self->class_title) );
     $p->default(1);
     return $p;
 }

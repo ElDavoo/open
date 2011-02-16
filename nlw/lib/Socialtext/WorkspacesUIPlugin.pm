@@ -411,7 +411,7 @@ sub _update_workspace_settings {
 
     return if $self->input_errors_found;
 
-    $self->message(loc("Changes saved"));
+    $self->message(loc("Changes Saved"));
 }
 
 sub _process_logo_upload {

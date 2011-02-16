@@ -1183,7 +1183,7 @@ sub _group_role_changed {
             $p{name}.".$EXPORT_VERSION.tar" );
 
         for my $file ( ($tarball, "$tarball.gz") ) {
-            die loc("Cannot write export file [_1], aborting.\n", $file)
+            die loc("Cannot write export file [_1], aborting.", $file)."\n"
                 if -f $file && ! -w $file;
         }
 

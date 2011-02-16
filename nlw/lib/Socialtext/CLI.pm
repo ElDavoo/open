@@ -1994,7 +1994,7 @@ sub set_permissions {
     }
     else {
         $self->_error(
-            loc("Can on change permissions on a group or workspace.")
+            loc("Can only change permissions on a group or workspace.")
         );
     }
 
