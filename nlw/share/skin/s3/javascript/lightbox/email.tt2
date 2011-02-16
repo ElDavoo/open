@@ -47,7 +47,9 @@
       <td colspan="2">
         <input id="email_page_add_note_check" name="email_page_add_note_check" class="email_input_checkbox" type="checkbox"  value="1" checked="checked" />
         <label for="email_page_add_note_check">[% loc('Add this note at the front of the email?') %] <i>[% loc('(You can customize the note below.)') %]</i></label>
-        <textarea class="email_input_textarea" name="email_page_add_note" rows="5" cols="40">[% loc("Hello, this is a page from the workspace that I wanted you to see. This page is also available for viewing or editing on the web at:\n\n[_1]", full_uri) %]</textarea>
+        <textarea class="email_input_textarea" name="email_page_add_note" rows="5" cols="40">[% loc("Hello, this is a page from the workspace that I wanted you to see. This page is also available for viewing or editing on the web at:") %]
+
+[% full_uri %]</textarea>
         <br />
         <input id="email_page_keep_attachments" name="email_page_keep_attachments" class="email_input_checkbox" type="checkbox" value="1" />
         <label for="email_page_keep_attachments">[% loc('Keep attachments?') %]</label>

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-17 02:02+0800\n"
+"PO-Revision-Date: 2011-02-17 04:04+0800\n"
 "PO-Revision-Date: \n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
@@ -306,7 +306,7 @@ msgstr "do.ul"
 msgid "By:"
 msgstr "revision.by:"
 
-#: share/skin/s3/javascript/lightbox/attachment.tt2:30 share/skin/s3/javascript/lightbox/attachment.tt2:55 share/skin/s3/javascript/lightbox/comment.tt2:24 share/skin/s3/javascript/lightbox/copy.tt2:39 share/skin/s3/javascript/lightbox/create_content.tt2:51 share/skin/s3/javascript/lightbox/delete.tt2:23 share/skin/s3/javascript/lightbox/duplicate.tt2:34 share/skin/s3/javascript/lightbox/email.tt2:69 share/skin/s3/javascript/lightbox/rename.tt2:31 share/skin/s3/javascript/lightbox/self_join_workspace.tt2:16 share/skin/s3/template/element/settings/start:22 share/skin/s3/template/element/settings/stop:12 share/skin/s3/template/lite/subnav.html:46
+#: share/skin/s3/javascript/lightbox/attachment.tt2:30 share/skin/s3/javascript/lightbox/attachment.tt2:55 share/skin/s3/javascript/lightbox/comment.tt2:24 share/skin/s3/javascript/lightbox/copy.tt2:39 share/skin/s3/javascript/lightbox/create_content.tt2:51 share/skin/s3/javascript/lightbox/delete.tt2:23 share/skin/s3/javascript/lightbox/duplicate.tt2:34 share/skin/s3/javascript/lightbox/email.tt2:71 share/skin/s3/javascript/lightbox/rename.tt2:31 share/skin/s3/javascript/lightbox/self_join_workspace.tt2:16 share/skin/s3/template/element/settings/start:22 share/skin/s3/template/element/settings/stop:12 share/skin/s3/template/lite/subnav.html:46
 msgid "Cancel"
 msgstr "nav.cancel"
 
@@ -798,13 +798,9 @@ msgstr "do.h3"
 msgid "Hello, %1"
 msgstr "info.hello=user"
 
-#. (full_uri)
-#: share/skin/s3/javascript/lightbox/email.tt2:48 share/skin/s3/javascript/lightbox/email.tt2:50
-msgid ""
-"Hello, this is a page from the workspace that I wanted you to see. This page is also available for viewing or editing on the web at:\n"
-"\n"
-"%1"
-msgstr "email.page=uri"
+#: share/skin/s3/javascript/lightbox/email.tt2:50
+msgid "Hello, this is a page from the workspace that I wanted you to see. This page is also available for viewing or editing on the web at:"
+msgstr "email.page-link:"
 
 #: share/skin/s3/template/layout/html:190 share/skin/s3/template/layout/html:87 share/skin/s3/template/layout/user_frame:195 share/skin/s3/template/layout/user_frame:92
 msgid "Help"
@@ -903,7 +899,7 @@ msgstr "do.join-to-edit"
 msgid "Keep attachments"
 msgstr "file.keep"
 
-#: share/skin/s3/javascript/lightbox/email.tt2:53
+#: share/skin/s3/javascript/lightbox/email.tt2:55
 msgid "Keep attachments?"
 msgstr "file.keep?"
 
@@ -1426,11 +1422,11 @@ msgstr "skin.select-file:"
 msgid "Select/Deselect All"
 msgstr "nav.toggle-all"
 
-#: share/skin/s3/javascript/lightbox/email.tt2:64
+#: share/skin/s3/javascript/lightbox/email.tt2:66
 msgid "Send"
 msgstr "email.send"
 
-#: share/skin/s3/javascript/lightbox/email.tt2:56
+#: share/skin/s3/javascript/lightbox/email.tt2:58
 msgid "Send me a copy?"
 msgstr "email.copy-self?"
 
