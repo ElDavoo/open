@@ -92,7 +92,7 @@ ST.Lightbox.prototype = {
         }
         else if (data.same_title) {
             return loc(
-                'The page name you selected, \"[_1]\", is the same as the page's current title.  Please enter a new page name.", new_title
+                'The page name you selected, "[_1]", is the same as the page\'s current title.  Please enter a new page name.', new_title
             );
         }
     }
