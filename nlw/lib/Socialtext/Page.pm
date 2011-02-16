@@ -1,7 +1,6 @@
 package Socialtext::Page;
 # @COPYRIGHT@
 use Moose;
-use MooseX::StrictConstructor;
 
 use Moose::Util::TypeConstraints;
 use Socialtext::Moose::UserAttribute;
@@ -131,7 +130,6 @@ sub BUILDARGS {
     $p->{create_time} = delete $p->{create_time_utc} if $p->{create_time_utc};
     return $p;
 }
-
 
 use constant SELECT_COLUMNS_STR => q{
     "Workspace".name AS workspace_name, 
@@ -834,7 +832,7 @@ sub update {
 
         $args{date} ||= Socialtext::Date->now(hires=>1);
         $args{creator} ||= $hub->current_user;
-
+        
         my $page = $class_or_self->Blank(
             hub => $hub,
             name      => $args{title},

@@ -109,7 +109,7 @@ sub get_crumbhash {
             {
                 page_title => $_->title,
                 page_uri   => $_->uri,
-                page_full_uri => $_->app_uri,
+                page_full_uri => $_->full_uri,
             }
         } @{ $self->_load_trail }
     ];
@@ -152,19 +152,23 @@ sub _load_trail {
     my $self = shift;
 
     my $t = time_scope 'load_crumbs';
-    my $ws_id = $self->hub->current_workspace->workspace_id;
-    my $sth = sql_execute(
-        qq{SELECT $Socialtext::Pages::MODEL_FIELDS FROM page
-             JOIN "Workspace" USING (workspace_id)
-             JOIN breadcrumb  USING (workspace_id, page_id)
-            WHERE workspace_id = \$1
-              AND viewer_id = \$2
-              AND NOT deleted
-            ORDER BY last_viewed DESC
-        },
-        $ws_id, $self->hub->current_user->user_id,
-    );
-    return Socialtext::Pages->load_pages_from_sth($sth, $self->hub);
+    my $hub = $self->hub;
+    my $ws_id = $hub->current_workspace->workspace_id;
+    my $sth = sql_execute(q/
+       SELECT /.Socialtext::Page::SELECT_COLUMNS_STR.q/
+         FROM page 
+         JOIN "Workspace" USING (workspace_id)
+         JOIN breadcrumb  USING (workspace_id, page_id)
+        WHERE workspace_id = ?
+          AND viewer_id = ?
+          AND NOT page.deleted
+        ORDER BY last_viewed DESC
+    /, $ws_id, $hub->current_user->user_id);
+    return [
+        map { Socialtext::Page->_new_from_row($_) }
+        map { $_->{hub} = $hub; $_ }
+        @{ $sth->fetchall_arrayref({}) }
+    ];
 }
 
 ######################################################################
