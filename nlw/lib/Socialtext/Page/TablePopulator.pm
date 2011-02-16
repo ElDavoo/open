@@ -11,6 +11,7 @@ use Socialtext::File;
 use Socialtext::AppConfig;
 use Socialtext::Page::Legacy;
 use Socialtext::PageRevision;
+use Socialtext::String;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw(get_dbh :exec :txn);
 use Fatal qw/opendir closedir chdir open/;
@@ -338,7 +339,8 @@ sub load_page_attachments {
             my $control = $meta->{control} || '';
             my $deleted = $control eq 'Deleted' ? 1 : 0;
 
-            $meta->{db_filename} //= uri_escape($meta->{subject});
+            $meta->{db_filename} //=
+                Socialtext::String::uri_escape($meta->{subject});
             unless ($meta->{db_filename}) {
                 die "attachment filename missing\n" if $Noisy;
                 return; # from the try
