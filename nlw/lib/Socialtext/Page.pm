@@ -1578,16 +1578,15 @@ sub _cache_using_questions {
     # Check if we are the "current" page, and do not cache if we are not.
     # This is to avoid crazy errors where we may be rendering other page's
     # content for TOC wafls and such.
-    my $is_current = $self->hub->pages->current->page_id eq $self->page_id;
-    if ($is_current) {
-        my $answer_str = join '-', $self->_stock_answers(),
-            map { $_ . '_' . shift(@answers) } @short_q;
+    my $cur_id = $self->hub->pages->current->page_id;
+    return $html_ref unless (defined($cur_id) && $cur_id eq $self->page_id);
 
-        my $cache_file = $self->_answer_file($answer_str);
-        if ($cache_file) {
-            Socialtext::File::set_contents_utf8_atomic($cache_file, $html_ref);
-        }
-    }
+    my $answer_str = join '-', $self->_stock_answers(),
+        map { $_ . '_' . shift(@answers) } @short_q;
+    my $cache_file = $self->_answer_file($answer_str);
+    Socialtext::File::set_contents_utf8_atomic($cache_file, $html_ref)
+        if $cache_file;
+
     return $html_ref;
 }
 
