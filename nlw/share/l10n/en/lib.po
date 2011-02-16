@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: \n"
+"PO-Revision-Date: 2011-02-16 22:31+0800\n"
 "PO-Revision-Date: \n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
@@ -11,498 +11,496 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. ($edit_summary, $page_link, $workspace->title)
-#: lib/Socialtext/Page.pm:398
+#: lib/Socialtext/Page.pm:403
 msgid "\"%1\" (commented on %2 in %3)"
-msgstr ""
+msgstr "page.commented=summary,page,wiki"
 
 #. ($edit_summary, $page_link, $workspace->title)
-#: lib/Socialtext/Page.pm:399
+#: lib/Socialtext/Page.pm:404
 msgid "\"%1\" (edited %2 in %3)"
-msgstr ""
+msgstr "page.edited=summary,page,wiki"
 
 #. ($display_name)
 #: lib/Socialtext/PageRevision.pm:448
 msgid "\"%1\" is a reserved name. Please use a different name."
-msgstr ""
+msgstr "error.reserved-name=page"
 
 #. ($self->name)
 #: lib/Socialtext/PageRevision.pm:452
 msgid "\"%1\" is an invalid page title. Please use a different name."
-msgstr ""
+msgstr "error.invalid-title=page"
 
 #. ($username, $validname)
 #: lib/Socialtext/Handler/Authen.pm:220
 msgid "\"%1\" is not a valid %2. Please use your %2 to log in."
-msgstr ""
+msgstr "error.invalid-name=user,type"
 
 #: lib/Socialtext/CLI.pm:3390
 msgid "# Users"
-msgstr ""
+msgstr "cli.users"
 
 #: lib/Socialtext/CLI.pm:3390
 msgid "# Wksps"
-msgstr ""
+msgstr "cli.wikis"
 
 #. ($workspace->title, $query{search_term})
 #: lib/Socialtext/SearchPlugin.pm:208
 msgid "%1 - Atom Search for %2"
-msgstr ""
+msgstr "search.atom=wiki,query"
 
 #. ($workspace->title, $query{search_term})
 #: lib/Socialtext/SearchPlugin.pm:201
 msgid "%1 - RSS Search for %2"
-msgstr ""
+msgstr "search.rss=wiki,query"
 
 #. ($acct->name)
 #: lib/Socialtext/Handler/ControlPanel.pm:1835
 msgid "%1 Account Growth Report"
-msgstr ""
+msgstr "report.growth=account"
 
 #. ($acct->name)
 #: lib/Socialtext/Handler/ControlPanel.pm:1814
 msgid "%1 Account Usage Report"
-msgstr ""
+msgstr "report.usage=account"
 
 #. ($blog_tag)
 #: lib/Socialtext/WeblogPlugin.pm:166
 msgid "%1 Blog"
-msgstr ""
+msgstr "blog.name=tag"
 
 #. ($group->driver_group_name,            $group->group_id,)
 #: lib/Socialtext/CLI.pm:3456
 msgid "%1 Group has been created (Group Id: %2)"
-msgstr ""
+msgstr "group.created=name,id"
 
 #. ($group->driver_group_name,            $workspace->name,)
 #: lib/Socialtext/Handler/ControlPanel.pm:1492
 msgid "%1 Group has been removed from the Workspace"
 msgstr ""
 
+#:
+msgid "%1 Group has been removed from this Workspace"
+msgstr "wiki.removed=group"
+
 #. ($group->driver_group_name,                $workspace->name,)
 #: lib/Socialtext/Handler/ControlPanel.pm:1480
 msgid "%1 Group is not a member of this Workspace"
-msgstr ""
+msgstr "wiki.not-member=group"
 
 #. ($w->name)
 #: lib/Socialtext/Handler/ControlPanel.pm:1827
 msgid "%1 Workspace Growth Report"
-msgstr ""
+msgstr "report.growth=wiki"
 
-#. (ucfirst($wksp->name)
-#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:103
+#:
 msgid "%1 Workspace Total"
-msgstr ""
+msgstr "report.total=wiki"
 
-#. ($wksp->title, $self->start_time,)
-#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:58
+#:
 msgid "%1 Workspace Usage - %2 - past week"
-msgstr ""
+msgstr "report.usage=wiki,start"
 
 #. ($w->name)
 #: lib/Socialtext/Handler/ControlPanel.pm:1822
 msgid "%1 Workspace Usage Report"
-msgstr ""
+msgstr "report.usage=wiki"
 
 #. ($account->name, $dir)
 #: lib/Socialtext/CLI.pm:518
 msgid "%1 account exported to %2"
-msgstr ""
+msgstr "cli.exported=account,path"
 
 #. ($account->name)
 #: lib/Socialtext/CLI.pm:582
 msgid "%1 account imported."
-msgstr ""
+msgstr "cli.imported=account"
 
 #. ($p{name}, $p{cur_role}->display_name, $p{acct_name})
 #: lib/Socialtext/CLI.pm:1175
 msgid "%1 already has the role of '%2' in the %3 Account"
-msgstr ""
+msgstr "error.role-exists=user,role,account"
 
 #. ($p{name}, $p{cur_role}->display_name, $p{ws_name})
 #: lib/Socialtext/CLI.pm:1266
 msgid "%1 already has the role of '%2' in the %3 Workspace"
-msgstr ""
+msgstr "error.role-exists=user,role,wiki"
 
 #. ($p{name},                $p{ws_name})
 #: lib/Socialtext/CLI.pm:1275
 msgid "%1 already has the role of 'admin' in the %2 Workspace"
-msgstr ""
+msgstr "error.admin-role-exists=user,wiki"
 
 #. ($self->hub->timezone->date_local( $_[0], dateonly => 1)
 #: lib/Socialtext/DisplayPlugin.pm:267
 msgid "%1 at %2"
-msgstr ""
+msgstr "time.at=date,time"
 
 #. (int($age / 86400)
 #: lib/Socialtext/PageRevision.pm:377
 msgid "%1 days"
-msgstr ""
+msgstr "time.days=count"
 
 #. ("<a href='$page_url'>$page_title</a>",)
 #: lib/Socialtext/Formatter/WaflPhrase.pm:921
 msgid "%1 does not have any headers."
-msgstr ""
+msgstr "error.no-headers=page"
 
 #. ($user->username, $member->display_name, $thing->name)
 #: lib/Socialtext/CLI.pm:1351
 msgid "%1 does not have the role of '%2' in %3"
-msgstr ""
+msgstr "error.no-role=name,role,container"
 
 #. ($thingy->display_name, $role->name,                $container->name, ucfirst($container_type)
 #: lib/Socialtext/CLI.pm:1519
 msgid "%1 does not have the role of '%2' in the %3 %4."
-msgstr ""
+msgstr "error.no-role=name,role,container,type"
 
 #. (int($age / 3600)
 #: lib/Socialtext/PageRevision.pm:376
 msgid "%1 hours"
-msgstr ""
+msgstr "time.hours=count"
 
 #. ($account->name)
 #: lib/Socialtext/CLI.pm:1426
 msgid "%1 is Group's Primary Account, cannot remove membership"
-msgstr ""
+msgstr "error.remove-primary=account"
 
 #. ($user->username, $indirect_role->name, $thing->name)
 #. ($thingy->display_name, $indirect_role->name, $container->name,)
 #: lib/Socialtext/CLI.pm:1338 lib/Socialtext/CLI.pm:1531
 msgid "%1 is a %2 of %3 through a group, and may not be removed directly"
-msgstr ""
+msgstr "error.remove-indirect=name,role,container"
 
 #. ($mfield)
 #: lib/Socialtext/MassAdd.pm:205
 msgid "%1 is a required field, but it is not present."
-msgstr ""
+msgstr "error.missing-required=field"
 
 #. (ucfirst Socialtext::Data::humanize_column_name($field)
 #: lib/Socialtext/Group/Factory.pm:485 lib/Socialtext/User/Factory.pm:414
 msgid "%1 is a required field."
-msgstr ""
+msgstr "error.required=field"
 
 #. ($user->username, $group->driver_group_name)
 #: lib/Socialtext/CLI.pm:1405
 msgid "%1 is already a non-admin member of %2"
-msgstr ""
+msgstr "error.already-a-member=name,group"
 
 #. ($user->username, $group->driver_group_name)
 #. ($condemned->name, $container->name)
 #: lib/Socialtext/CLI.pm:1412 lib/Socialtext/CLI.pm:1485
 msgid "%1 is no longer a member of %2"
-msgstr ""
+msgstr "cli.member-removed=name,container"
 
 #. ($user->username, $thing->name)
 #. ($user->username, $group->driver_group_name)
 #. ($condemned->name, $container->name)
 #: lib/Socialtext/CLI.pm:1344 lib/Socialtext/CLI.pm:1389 lib/Socialtext/CLI.pm:1472
 msgid "%1 is not a member of %2"
-msgstr ""
+msgstr "error.not-member=name,container"
 
 #. ($url)
 #: lib/Socialtext/VideoPlugin.pm:124
 msgid "%1 is not a valid URL."
-msgstr ""
+msgstr "error.invalid=url"
 
 #. ($filename)
 #: lib/Socialtext/WorkspacesUIPlugin.pm:216
 msgid "%1 is not a valid archive filename. Skin files must end with .zip, .tar.gz or .tgz."
-msgstr ""
+msgstr "error.invalid-archive=file"
 
 #. ($email)
 #: lib/Socialtext/User/Factory.pm:445
 msgid "%1 is not a valid email address."
-msgstr ""
+msgstr "error.invalid=email"
 
 #. ($email_address)
 #: lib/Socialtext/Handler/Authen.pm:594
 msgid "%1 is not registered as a user. Try a different email address?"
-msgstr ""
+msgstr "error.no-such-user=email"
 
 #. ($username)
 #: lib/Socialtext/Handler/Authen.pm:320
 msgid "%1 is not registered as a user. Try a different entry?"
-msgstr ""
+msgstr "error.no-such-user=name"
 
 #. ($user->username, $new_role->name, $group->display_name)
 #: lib/Socialtext/CLI.pm:1101
 msgid "%1 is now a %2 of the %3 Group"
-msgstr ""
+msgstr "cli.member-added=user,role,group"
 
 #. ($user->username, $group->driver_group_name)
 #: lib/Socialtext/CLI.pm:1399
 msgid "%1 is now a member of %2"
-msgstr ""
+msgstr "cli.member-added=user,group"
 
 #. ($user_wafl, $self->primary_account->name)
-#: lib/Socialtext/User.pm:1646
+#: lib/Socialtext/User.pm:1649
 msgid "%1 just joined the %2 group. Hi everybody!"
-msgstr ""
+msgstr "info.just-joined!=user,group"
 
 #. (loc($p{action})
 #: lib/Socialtext/Formatter/WaflPhrase.pm:737
 msgid "%1 link"
-msgstr ""
+msgstr "wafl.link=action"
 
 #. (int($age / 60)
 #: lib/Socialtext/PageRevision.pm:375
 msgid "%1 minutes"
-msgstr ""
+msgstr "time.minutes=count"
 
 #. (int($age / 2592000)
 #: lib/Socialtext/PageRevision.pm:379
 msgid "%1 months"
-msgstr ""
+msgstr "time.months=count"
 
 #. ($thingy->display_name, $from_role,            $container->name, ucfirst($container_type)
 #: lib/Socialtext/CLI.pm:1556
 msgid "%1 no longer has the role of '%2' in the %3 %4."
-msgstr ""
+msgstr "cli.member-removed=name,role,container,type"
 
 #. ($user->username, $thing->name)
 #: lib/Socialtext/CLI.pm:1365
 msgid "%1 no longer has the role of 'member' in %2"
-msgstr ""
-
-#. ($condemned->name, $role->display_name, $container->name)
-#: lib/Socialtext/CLI.pm:1481
-msgid "%1 now has the role of '%2' in %3 due to membership in a Group"
-msgstr ""
+msgstr "cli.member-removed=user,container"
 
 #. ($user->username, $role->display_name, $thing->name)
+#. ($condemned->name, $role->display_name, $container->name)
 #. ($thingy->display_name, $current_role->name, $container->name,)
-#: lib/Socialtext/CLI.pm:1360 lib/Socialtext/CLI.pm:1549
+#: lib/Socialtext/CLI.pm:1360 lib/Socialtext/CLI.pm:1481 lib/Socialtext/CLI.pm:1549
 msgid "%1 now has the role of '%2' in %3 due to membership in a group"
-msgstr ""
+msgstr "cli.indirect-member=name,role,container"
 
 #. ($group->display_name,            $new_role->display_name,            $account->name,)
 #. ($user->username,            $new_role->display_name,            $account->name,)
 #: lib/Socialtext/CLI.pm:1140 lib/Socialtext/CLI.pm:1164
 msgid "%1 now has the role of '%2' in the %3 Account"
-msgstr ""
+msgstr "cli.member-added=name,role,account"
 
 #. ($user->username, $new_role->display_name, $ws->name)
 #. ($thingy->name,            $new_role->display_name,            $ws->name)
 #: lib/Socialtext/CLI.pm:1202 lib/Socialtext/CLI.pm:1254
 msgid "%1 now has the role of '%2' in the %3 Workspace"
-msgstr ""
+msgstr "cli.member-added=name,role,wiki"
 
 #. ($age)
 #: lib/Socialtext/PageRevision.pm:374
 msgid "%1 seconds"
-msgstr ""
+msgstr "time.seconds=count"
 
 #. ($signaler->best_full_name)
 #: lib/Socialtext/Rest/Signals/Feed.pm:116
 msgid "%1 signalled"
-msgstr ""
+msgstr "rest.signalled=user"
 
 #. (int($age / 604800)
 #: lib/Socialtext/PageRevision.pm:378
 msgid "%1 weeks"
-msgstr ""
+msgstr "time.weeks=count"
 
-#. ($self->_workspace->title)
-#. ($self->_group->display_name)
 #. ($user->best_full_name)
+#. ($self->_group->display_name)
+#. ($self->_workspace->title)
 #: lib/Socialtext/Rest/Events/Activities.pm:12 lib/Socialtext/Rest/Events/Groups.pm:13 lib/Socialtext/Rest/Events/Workspaces.pm:14
 msgid "%1's Activity"
-msgstr ""
+msgstr "rest.activity=user"
 
 #. ($self->hub->current_user->best_full_name)
 #: lib/Socialtext/FavoritesPlugin.pm:31
 msgid "%1's Notepad"
-msgstr ""
+msgstr "notepad.title=user"
 
 #. ($user->best_full_name)
 #: lib/Socialtext/Rest/Signals/Feed.pm:89
 msgid "%1's avatar"
-msgstr ""
+msgstr "feed.avatar=user"
 
 #. ($self->hub->current_workspace->title, $query)
 #: lib/Socialtext/SyndicatePlugin.pm:386
 msgid "%1: search for %2"
-msgstr ""
+msgstr "feed.search=wiki,query"
 
 #. ($self->hub->current_workspace->title, $user->best_full_name)
 #: lib/Socialtext/SyndicatePlugin.pm:393
 msgid "%1: watchlist for %2"
-msgstr ""
+msgstr "feed.watchlist=wiki,user"
 
 #. ($diff->in_units('days')
 #: lib/Socialtext/Authen.pm:46
 msgid "%quant(%1,day)"
-msgstr ""
+msgstr "time.count=days"
 
 #. ($name)
-#: lib/Socialtext/Workspace.pm:745
+#: lib/Socialtext/Workspace.pm:744
 msgid "'%1' is a reserved workspace name and cannot be used."
-msgstr ""
+msgstr "error.reserved-name=wiki"
 
 #. ($name)
 #: lib/Socialtext/Handler/ControlPanel.pm:1691
 msgid "'%1' is not a valid account name."
-msgstr ""
+msgstr "error.invalid=account"
 
 #. ($new_locale)
 #: lib/Socialtext/CLI.pm:1779
 msgid "'%1' is not a valid locale"
-msgstr ""
+msgstr "error.invalid=locale"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:289
 msgid "'%1' is not a valid value for group_create."
-msgstr ""
+msgstr "error.invalid-value=group-create"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:255
 msgid "'%1' is not a valid value for self_join."
-msgstr ""
+msgstr "error.invalid-value=self-join"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:742
 msgid "(Desktop users need to logout and login again to see the default logo.)"
-msgstr ""
+msgstr "desktop.relogin-for-default-logo"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:729
 msgid "(Desktop users need to logout and login again to see the new logo.)"
-msgstr ""
+msgstr "desktop.relogin-for-new-logo"
 
-#: lib/Socialtext/Page.pm:735
+#: lib/Socialtext/Page.pm:742
 msgid "(comment)"
-msgstr ""
+msgstr "page.summary-comment"
 
 #: lib/Socialtext/TimeZonePlugin.pm:36
 msgid "+0000 UTC/GMT, Western European"
-msgstr ""
+msgstr "tz.+0000"
 
 #: lib/Socialtext/TimeZonePlugin.pm:37
 msgid "+0100 Central European"
-msgstr ""
+msgstr "tz.+0100"
 
 #: lib/Socialtext/TimeZonePlugin.pm:38
 msgid "+0200 Eastern European"
-msgstr ""
+msgstr "tz.+0200"
 
 #: lib/Socialtext/TimeZonePlugin.pm:39
 msgid "+0300 Baghdad"
-msgstr ""
+msgstr "tz.+0300"
 
 #: lib/Socialtext/TimeZonePlugin.pm:40
 msgid "+0330 Iran"
-msgstr ""
+msgstr "tz.+0330"
 
 #: lib/Socialtext/TimeZonePlugin.pm:41
 msgid "+0400 Delta/USSR Zone 3"
-msgstr ""
+msgstr "tz.+0400"
 
 #: lib/Socialtext/TimeZonePlugin.pm:42
 msgid "+0500 Echo/USSR Zone 4"
-msgstr ""
+msgstr "tz.+0500"
 
 #: lib/Socialtext/TimeZonePlugin.pm:43
 msgid "+0530 Indian"
-msgstr ""
+msgstr "tz.+0530"
 
 #: lib/Socialtext/TimeZonePlugin.pm:44
 msgid "+0600 Foxtrot/USSR Zone 5"
-msgstr ""
+msgstr "tz.+0600"
 
 #: lib/Socialtext/TimeZonePlugin.pm:45
 msgid "+0700 Golf/USSR Zone 6"
-msgstr ""
+msgstr "tz.+0700"
 
 #: lib/Socialtext/TimeZonePlugin.pm:46
 msgid "+0800 Western Australian, China Coast"
-msgstr ""
+msgstr "tz.+0800"
 
 #: lib/Socialtext/TimeZonePlugin.pm:47
 msgid "+0900 Japan, Korean"
-msgstr ""
+msgstr "tz.+0900"
 
 #: lib/Socialtext/TimeZonePlugin.pm:48
 msgid "+0930 Central Australian"
-msgstr ""
+msgstr "tz.+0930"
 
 #: lib/Socialtext/TimeZonePlugin.pm:49
 msgid "+1000 Eastern Australian, Guam"
-msgstr ""
+msgstr "tz.+1000"
 
 #: lib/Socialtext/TimeZonePlugin.pm:50
 msgid "+1100 Lima"
-msgstr ""
+msgstr "tz.+1100"
 
 #: lib/Socialtext/TimeZonePlugin.pm:51
 msgid "+1200 International Date Line East"
-msgstr ""
+msgstr "tz.+1200-east"
 
 #: lib/Socialtext/TimeZonePlugin.pm:52
 msgid "+1200 New Zealand"
-msgstr ""
+msgstr "tz.+1200"
 
 #: lib/Socialtext/CLI.pm:3422
 msgid "--email must be supplied to create a group."
-msgstr ""
+msgstr "error.gruop-email-required"
 
 #: lib/Socialtext/CLI.pm:3417
 msgid "--name or --ldap-dn must be supplied to create a group."
-msgstr ""
+msgstr "error.group-name-or-ldap-dn-required"
 
 #: lib/Socialtext/TimeZonePlugin.pm:35
 msgid "-0100 West Africa"
-msgstr ""
+msgstr "tz.-0100"
 
 #: lib/Socialtext/TimeZonePlugin.pm:34
 msgid "-0200 Oscar"
-msgstr ""
+msgstr "tz.-0200"
 
 #: lib/Socialtext/TimeZonePlugin.pm:33
 msgid "-0300 Greenland"
-msgstr ""
+msgstr "tz.-0300"
 
 #: lib/Socialtext/TimeZonePlugin.pm:32
 msgid "-0330 Newfoundland"
-msgstr ""
+msgstr "tz.-0330"
 
 #: lib/Socialtext/TimeZonePlugin.pm:31
 msgid "-0400 Atlantic"
-msgstr ""
+msgstr "tz.-0400"
 
 #: lib/Socialtext/TimeZonePlugin.pm:30
 msgid "-0500 Eastern (Americas)"
-msgstr ""
+msgstr "tz.-0500"
 
 #: lib/Socialtext/TimeZonePlugin.pm:29
 msgid "-0600 Central (Americas)"
-msgstr ""
+msgstr "tz.-0600"
 
 #: lib/Socialtext/TimeZonePlugin.pm:28
 msgid "-0700 Mountain"
-msgstr ""
+msgstr "tz.-0700"
 
 #: lib/Socialtext/TimeZonePlugin.pm:27
 msgid "-0800 Pacific"
-msgstr ""
+msgstr "tz.-0800"
 
 #: lib/Socialtext/TimeZonePlugin.pm:26
 msgid "-0900 Yukon"
-msgstr ""
+msgstr "tz.-0900"
 
 #: lib/Socialtext/TimeZonePlugin.pm:25
 msgid "-1000 Hawaii, Central Alaska"
-msgstr ""
+msgstr "tz.-1000"
 
 #: lib/Socialtext/TimeZonePlugin.pm:24
 msgid "-1100 Nome"
-msgstr ""
+msgstr "tz.-1100"
 
 #: lib/Socialtext/TimeZonePlugin.pm:23
 msgid "-1200 International Date Line West"
-msgstr ""
+msgstr "tz.-1200-west"
 
 #. ($plugin_name)
 #: lib/Socialtext/Account.pm:552
 msgid "... '%1' plugin missing; skipping"
-msgstr ""
+msgstr "account.skip-missing=plugin"
 
 #: lib/Socialtext/FavoritesPlugin.pm:25
 msgid "<p>This is where you set the title of the page you would like to see in the \"Your Notepad\" panel.</p><p>Some choose to use an existing page, and others make a new page, such as \"Rupert Jee's Notepad\".</p>"
-msgstr ""
+msgstr "notepad.set-title"
 
 #: lib/Socialtext/WeblogPlugin.pm:81
 msgid "A blog title must be provided."
@@ -512,11 +510,11 @@ msgstr ""
 msgid "A custom skin file was not uploaded."
 msgstr ""
 
-#: lib/Socialtext/EditPlugin.pm:195
+#: lib/Socialtext/EditPlugin.pm:194
 msgid "A page must have a body to be saved."
 msgstr ""
 
-#: lib/Socialtext/EditPlugin.pm:185
+#: lib/Socialtext/EditPlugin.pm:172
 msgid "A page must have a title to be saved."
 msgstr ""
 
@@ -623,11 +621,7 @@ msgstr ""
 msgid "All backlinks for \"%1\""
 msgstr ""
 
-#: lib/Socialtext/Appliance/Model/SupportTarball.pm:54
-msgid "Already started!"
-msgstr ""
-
-#: lib/Socialtext/Workspace.pm:641
+#: lib/Socialtext/Workspace.pm:640
 msgid "An account must be specified for all new workspaces."
 msgstr ""
 
@@ -655,7 +649,7 @@ msgstr ""
 msgid "Announcements and Links"
 msgstr ""
 
-#: lib/Socialtext/Page.pm:887
+#: lib/Socialtext/Page.pm:894
 msgid "Another person or process has written to this page already."
 msgstr ""
 
@@ -688,10 +682,6 @@ msgstr ""
 msgid "Applied current account logo to Desktop. Desktop users need to logout and login again to see the new logo."
 msgstr ""
 
-#: lib/Socialtext/Appliance/Model/Backup.pm:317
-msgid "Archive Directory"
-msgstr ""
-
 #: lib/Socialtext/AppConfig.pm:1051
 msgid "As a Socialtext customer, you have access to the <a href=\"http://www.socialtext.net/exchange/\">Socialtext Customer Exchange</a>. It is where you can share tips and best practices with other Socialtext customers."
 msgstr ""
@@ -708,45 +698,6 @@ msgstr ""
 
 #: lib/Socialtext/AttachmentsUIPlugin.pm:63 lib/Socialtext/AttachmentsUIPlugin.pm:82
 msgid "Attachment not found. The page name, file name or identifer number in the link may be incorrect, or the attachment may have been deleted or is not present in this workspace."
-msgstr ""
-
-#. ($min_days, $max_days)
-#: lib/Socialtext/Appliance/Model/Setup.pm:203
-msgid "Authentication token hard limit must be between %1 and %2 days."
-msgstr ""
-
-#. ($min_days, $max_days)
-#: lib/Socialtext/Appliance/Model/Setup.pm:200
-msgid "Authentication token soft limit must be between %1 and %2 days."
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Setup.pm:207
-msgid "Authentication token soft limit must be lower than the hard limit."
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Backup.pm:310
-msgid "Backup Server name"
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Backup.pm:164
-msgid "Backup already running"
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Backup.pm:296
-msgid "Backup destination updated"
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Backup.pm:348
-msgid "Backup failed ..."
-msgstr ""
-
-#. ($started_at)
-#: lib/Socialtext/Appliance/Model/Backup.pm:62
-msgid "Backup is in progress - started at %1"
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Backup.pm:58
-msgid "Backup is in progress - started at never"
 msgstr ""
 
 #: lib/Socialtext/Handler/Base.pm:131
@@ -845,10 +796,6 @@ msgstr ""
 msgid "Cannot import an Account with a version greater than %1"
 msgstr ""
 
-#: lib/Socialtext/Appliance/BackupStore.pm:86
-msgid "Cannot mount the SAMBA share.\n"
-msgstr ""
-
 #: lib/Socialtext/Gadgets/Gallery.pm:200
 msgid "Cannot permanently remove non-account widgets."
 msgstr ""
@@ -899,10 +846,6 @@ msgstr ""
 msgid "Chronologically (Oldest First)"
 msgstr ""
 
-#: lib/Socialtext/Appliance/BackupCleanup.pm:29
-msgid "Cleaning is not implemented."
-msgstr ""
-
 #: lib/Socialtext/CLI.pm:540
 msgid "Clearing caches..."
 msgstr ""
@@ -927,11 +870,6 @@ msgstr ""
 
 #: lib/Socialtext/WatchlistPlugin.pm:215
 msgid "Click this button to save the pages you're watching for offline use."
-msgstr ""
-
-#. ($data->{collaborativeness})
-#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:89
-msgid "Collaborativeness: %1 - Unique contributors as a percent of unique visitors"
 msgstr ""
 
 #. ($old_revision, $new_revision)
@@ -960,10 +898,6 @@ msgstr ""
 
 #: lib/Socialtext/Formatter/WaflPhrase.pm:850
 msgid "Contents"
-msgstr ""
-
-#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:92
-msgid "Contributions"
 msgstr ""
 
 #. ($new_type)
@@ -1021,7 +955,7 @@ msgstr ""
 msgid "Created profile field '%1' for account '%2'"
 msgstr ""
 
-#: lib/Socialtext/Page.pm:1122
+#: lib/Socialtext/Page.pm:1129
 msgid "Creating a New Spreadsheet..."
 msgstr ""
 
@@ -1034,7 +968,7 @@ msgstr ""
 msgid "Dashboard Activity for user %1"
 msgstr ""
 
-#: lib/Socialtext/EmailReceiver/Base.pm:673
+#: lib/Socialtext/EmailReceiver/Base.pm:671
 msgid "Date:"
 msgstr ""
 
@@ -1091,18 +1025,6 @@ msgstr ""
 msgid "Displaying all groups"
 msgstr ""
 
-#: lib/Socialtext/Appliance/ConsoleController.pm:118
-msgid "Do you really want to delete all workspaces and create a new initial workspace? (This action cannot be undone.)"
-msgstr ""
-
-#: lib/Socialtext/Appliance/ConsoleController.pm:90
-msgid "Do you really want to reboot the appliance?"
-msgstr ""
-
-#: lib/Socialtext/Appliance/ConsoleController.pm:104
-msgid "Do you really want to shutdown the appliance?"
-msgstr ""
-
 #. ($p->{restrict_to_domain})
 #: lib/Socialtext/Account.pm:1126
 msgid "Domain (%1) is not valid!"
@@ -1119,6 +1041,10 @@ msgstr ""
 
 #: lib/Socialtext/Formatter/WaflPhrase.pm:514
 msgid "Edit"
+msgstr ""
+
+#: lib/Socialtext/CLI.pm:2467
+msgid "Email Address"
 msgstr ""
 
 #: lib/Socialtext/Authen.pm:37
@@ -1164,72 +1090,14 @@ msgstr ""
 msgid "Error restoring account widget."
 msgstr ""
 
-#: lib/Socialtext/Appliance/Model/Setup.pm:356
-msgid "Error saving system time to hardware clock"
-msgstr ""
-
-#. ($err)
-#: lib/Socialtext/Appliance/Model/Setup.pm:224
-msgid "Error setting authentication token limits %1"
-msgstr ""
-
-#. ($err)
-#: lib/Socialtext/Appliance/Model/Setup.pm:182
-msgid "Error setting captcha settings: %1"
-msgstr ""
-
-#. ($err)
-#: lib/Socialtext/Appliance/Model/Setup.pm:265
-msgid "Error setting desktop update: %1"
-msgstr ""
-
-#. ($err)
-#: lib/Socialtext/Appliance/Model/Setup.pm:122
-msgid "Error setting login message: %1"
-msgstr ""
-
-#. ($err)
-#: lib/Socialtext/Appliance/Model/Setup.pm:388
-msgid "Error setting proxy server: %1"
-msgstr ""
-
 #. ($err)
 #: lib/Socialtext/Handler/ControlPanel.pm:266
 msgid "Error setting self register: %1"
 msgstr ""
 
 #. ($err)
-#: lib/Socialtext/Appliance/Model/Setup.pm:142
-msgid "Error setting signals only: %1"
-msgstr ""
-
-#. ($err)
-#: lib/Socialtext/Appliance/Model/Setup.pm:160
-msgid "Error setting signals size limit: %1"
-msgstr ""
-
-#. ($err)
-#: lib/Socialtext/Appliance/Model/Setup.pm:251
-msgid "Error setting support href: %1"
-msgstr ""
-
-#. ($err)
 #: lib/Socialtext/Handler/ControlPanel.pm:299
 msgid "Error setting users_can_create_groups %1"
-msgstr ""
-
-#. ($ts)
-#: lib/Socialtext/Appliance/Model/Setup.pm:348
-msgid "Error synchronizing with timeserver %1"
-msgstr ""
-
-#. ($new_ts)
-#: lib/Socialtext/Appliance/Model/Setup.pm:300
-msgid "Error testing timeserver %1"
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Setup.pm:341
-msgid "Error: No timeserver is configured"
 msgstr ""
 
 #: lib/Socialtext/PdfExportPlugin.pm:66
@@ -1278,12 +1146,12 @@ msgid "Every Week"
 msgstr ""
 
 #. ($p{dir})
-#: lib/Socialtext/Workspace.pm:1172
+#: lib/Socialtext/Workspace.pm:1170
 msgid "Export directory %1 does not exist.\n"
 msgstr ""
 
 #. ($p{dir})
-#: lib/Socialtext/Workspace.pm:1175
+#: lib/Socialtext/Workspace.pm:1173
 msgid "Export directory %1 is not writeable.\n"
 msgstr ""
 
@@ -1306,7 +1174,7 @@ msgid "Exporting all groups (%1) for account '%2'..."
 msgstr ""
 
 #. ($ws->name)
-#: lib/Socialtext/Pluggable/Plugin/Groups.pm:152
+#: lib/Socialtext/Pluggable/Plugin/Groups.pm:149
 msgid "Exporting all groups for workspace '%1'..."
 msgstr ""
 
@@ -1324,23 +1192,17 @@ msgstr ""
 msgid "External ID for '%1' set to '%2'."
 msgstr ""
 
-#. ($new_ts)
-#: lib/Socialtext/Appliance/Model/Setup.pm:317
-msgid "Failed to configure ntpd with timeserver %1"
-msgstr ""
-
 #. ($gid, $@)
 #: lib/Socialtext/CLI.pm:1113
 msgid "Failed to delete group id %1: %2"
 msgstr ""
 
-#. ($new_ts)
-#: lib/Socialtext/Appliance/Model/Setup.pm:309
-msgid "Failed to save timeserver %1 to appliance configuration"
-msgstr ""
-
 #: lib/Socialtext/Syndicate/Atom.pm:147 lib/Socialtext/Syndicate/RSS20.pm:31
 msgid "Feed Error"
+msgstr ""
+
+#: lib/Socialtext/CLI.pm:2467
+msgid "First"
 msgstr ""
 
 #. ($blog_tag)
@@ -1352,11 +1214,7 @@ msgstr ""
 msgid "Free50 Account Setup"
 msgstr ""
 
-#: lib/Socialtext/Appliance/Model/Backup.pm:267
-msgid "Fri"
-msgstr ""
-
-#: lib/Socialtext/EmailReceiver/Base.pm:656
+#: lib/Socialtext/EmailReceiver/Base.pm:654
 msgid "From:"
 msgstr ""
 
@@ -1389,7 +1247,7 @@ msgid "Group is now a member of the %1 Account"
 msgstr ""
 
 #. ($search_term)
-#: lib/Socialtext/Pluggable/Plugin/Groups.pm:354
+#: lib/Socialtext/Pluggable/Plugin/Groups.pm:351
 msgid "Group names and descriptions matching '%1'"
 msgstr ""
 
@@ -1438,8 +1296,8 @@ msgstr ""
 msgid "How should displayed dates be formatted?"
 msgstr ""
 
-#. ($name)
 #. ($self->account->name)
+#. ($name)
 #: lib/Socialtext/AccountInvitation.pm:26 lib/Socialtext/GroupInvitation.pm:28
 msgid "I'm inviting you into the %1 group"
 msgstr ""
@@ -1484,7 +1342,7 @@ msgid "Importing all groups for account '%1'..."
 msgstr ""
 
 #. ($ws->name)
-#: lib/Socialtext/Pluggable/Plugin/Groups.pm:174
+#: lib/Socialtext/Pluggable/Plugin/Groups.pm:171
 msgid "Importing all groups for workspace '%1'..."
 msgstr ""
 
@@ -1521,16 +1379,8 @@ msgstr ""
 msgid "Include Recently Viewed items as a side box when viewing pages?"
 msgstr ""
 
-#: lib/Socialtext/Workspace.pm:632
+#: lib/Socialtext/Workspace.pm:631
 msgid "Incoming email placement must be one of top, bottom, or replace."
-msgstr ""
-
-#: lib/Socialtext/Appliance/ConsoleController.pm:119
-msgid "Initialize Workspaces"
-msgstr ""
-
-#: lib/Socialtext/Appliance/ConsoleController.pm:117
-msgid "Initialize Workspaces?"
 msgstr ""
 
 #: lib/Socialtext/RecentChangesPlugin.pm:83
@@ -1546,12 +1396,6 @@ msgstr ""
 msgid "Invalid field source '%1'"
 msgstr ""
 
-#. ($new_ts)
-#. ($new_proxy)
-#: lib/Socialtext/Appliance/Model/Setup.pm:292 lib/Socialtext/Appliance/Model/Setup.pm:377
-msgid "Invalid host: %1"
-msgstr ""
-
 #. ($p->{permission_set})
 #: lib/Socialtext/Group/Factory.pm:440
 msgid "Invalid permissions name: %1"
@@ -1564,6 +1408,10 @@ msgstr ""
 
 #: lib/Socialtext/Rest/Jobs.pm:25
 msgid "Jobs"
+msgstr ""
+
+#: lib/Socialtext/CLI.pm:2467
+msgid "Last"
 msgstr ""
 
 #: lib/Socialtext/RecentChangesPlugin.pm:43
@@ -1590,15 +1438,6 @@ msgstr ""
 msgid "Last Week"
 msgstr ""
 
-#. ($last)
-#: lib/Socialtext/Appliance/Model/Backup.pm:72
-msgid "Last manual backup was %1"
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Backup.pm:69
-msgid "Last manual backup was never"
-msgstr ""
-
 #. ($self->{line})
 #: lib/Socialtext/MassAdd.pm:326
 msgid "Line %1: "
@@ -1619,7 +1458,7 @@ msgstr ""
 msgid "Locked pages in the '%1' workspace:"
 msgstr ""
 
-#: lib/Socialtext/Page.pm:502
+#: lib/Socialtext/Page.pm:508
 msgid "Locking page."
 msgstr ""
 
@@ -1636,7 +1475,7 @@ msgid "Login has been disabled"
 msgstr ""
 
 #. ($self->driver_name)
-#: lib/Socialtext/User.pm:822
+#: lib/Socialtext/User.pm:825
 msgid "Login information is controlled by the %1 directory administrator."
 msgstr ""
 
@@ -1644,7 +1483,7 @@ msgstr ""
 msgid "Login session has expired; please re-authenticate."
 msgstr ""
 
-#: lib/Socialtext/Workspace.pm:852
+#: lib/Socialtext/Workspace.pm:851
 msgid "Logo file must be a gif, jpeg, or png file."
 msgstr ""
 
@@ -1666,7 +1505,7 @@ msgid "Members of the %1 group"
 msgstr ""
 
 #. ($group_info->{role_name})
-#: lib/Socialtext/Pluggable/Plugin/Groups.pm:100 lib/Socialtext/Pluggable/Plugin/Groups.pm:186
+#: lib/Socialtext/Pluggable/Plugin/Groups.pm:100 lib/Socialtext/Pluggable/Plugin/Groups.pm:183
 msgid "Missing/unknown Role '%1'; using default Role"
 msgstr ""
 
@@ -1677,14 +1516,6 @@ msgstr ""
 #. ("${action}d")
 #: lib/Socialtext/Handler/ControlPanel.pm:881
 msgid "Module has been %1."
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Backup.pm:267
-msgid "Mon"
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Setup.pm:172
-msgid "Must set both private and public key to enable captcha"
 msgstr ""
 
 #: lib/Socialtext/Pluggable/Plugin/People.pm:735
@@ -1755,7 +1586,7 @@ msgstr ""
 msgid "No email address found to resend confirmation."
 msgstr ""
 
-#: lib/Socialtext/Helpers.pm:493 lib/Socialtext/Helpers.pm:514
+#: lib/Socialtext/Helpers.pm:480 lib/Socialtext/Helpers.pm:501
 msgid "No email addresses specified"
 msgstr ""
 
@@ -1820,7 +1651,7 @@ msgstr ""
 msgid "Only registered users can send email to %1."
 msgstr ""
 
-#: lib/Socialtext/Gadgets/Gadget/XML.pm:79
+#: lib/Socialtext/Gadgets/Gadget/XML.pm:81
 msgid "Only url and html are valid values for widget types"
 msgstr ""
 
@@ -1829,7 +1660,7 @@ msgstr ""
 msgid "Only workspace members can send email to %1."
 msgstr ""
 
-#: lib/Socialtext/Syndicate/Feed.pm:120
+#: lib/Socialtext/Syndicate/Feed.pm:121
 msgid "Originally created"
 msgstr ""
 
@@ -1876,11 +1707,11 @@ msgid "Page name is too long"
 msgstr ""
 
 #. ($new_page_title)
-#: lib/Socialtext/Page.pm:2000
+#: lib/Socialtext/Page.pm:2007
 msgid "Page renamed to <%1>"
 msgstr ""
 
-#: lib/Socialtext/EditPlugin.pm:44 lib/Socialtext/EmailReceiver/Base.pm:186 lib/Socialtext/EmailReceiver/Base.pm:192 lib/Socialtext/PageRevision.pm:456 lib/Socialtext/UserPreferencesPlugin.pm:143
+#: lib/Socialtext/EditPlugin.pm:43 lib/Socialtext/EmailReceiver/Base.pm:184 lib/Socialtext/EmailReceiver/Base.pm:190 lib/Socialtext/PageRevision.pm:456 lib/Socialtext/UserPreferencesPlugin.pm:143
 msgid "Page title is too long after URL encoding"
 msgstr ""
 
@@ -1889,7 +1720,7 @@ msgstr ""
 msgid "Page title is too long; maximum length is %1"
 msgstr ""
 
-#: lib/Socialtext/EditPlugin.pm:48
+#: lib/Socialtext/EditPlugin.pm:47
 msgid "Page title missing"
 msgstr ""
 
@@ -1902,11 +1733,7 @@ msgstr ""
 msgid "Pages matching '%1'"
 msgstr ""
 
-#: lib/Socialtext/Appliance/Model/Backup.pm:313
-msgid "Password"
-msgstr ""
-
-#: lib/Socialtext/User.pm:891 lib/Socialtext/User/Base.pm:243
+#: lib/Socialtext/User.pm:894 lib/Socialtext/User/Base.pm:243
 msgid "Passwords must be at least 6 characters long."
 msgstr ""
 
@@ -1933,14 +1760,6 @@ msgstr ""
 msgid "Please contact Socialtext support using the <a href=\"http://www.socialtext.com/customers/support_request.php\">Technical Support Request</a> form and describe the the time the error occurred, and what you were attempting to do prior to the error."
 msgstr ""
 
-#: lib/Socialtext/Appliance/Model/Setup.pm:465 lib/Socialtext/Appliance/Model/Setup.pm:485
-msgid "Please enter a valid email address"
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Setup.pm:474
-msgid "Please enter an email address"
-msgstr ""
-
 #: lib/Socialtext/Handler/Authen.pm:399
 msgid "Please enter an email address."
 msgstr ""
@@ -1949,20 +1768,8 @@ msgstr ""
 msgid "Please enter the full video URL."
 msgstr ""
 
-#: lib/Socialtext/User.pm:1591
+#: lib/Socialtext/User.pm:1594
 msgid "Please follow these instructions to change your Socialtext password"
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Backup.pm:176
-msgid "Please select a backup to restore"
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Backup.pm:183
-msgid "Please wait until the backup finishes, then retry."
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Backup.pm:157
-msgid "Please wait until the restore finishes, then retry."
 msgstr ""
 
 #. ($p)
@@ -2060,14 +1867,6 @@ msgstr ""
 msgid "Profile field ID '%1' does not exist for account '%2'"
 msgstr ""
 
-#: lib/Socialtext/Appliance/ConsoleController.pm:91
-msgid "Reboot"
-msgstr ""
-
-#: lib/Socialtext/Appliance/ConsoleController.pm:89
-msgid "Reboot Appliance?"
-msgstr ""
-
 #: lib/Socialtext/SyndicatePlugin.pm:379 lib/Socialtext/WeblogPlugin.pm:231 lib/Socialtext/WeblogPlugin.pm:286 lib/Socialtext/WeblogPlugin.pm:339 lib/Socialtext/WeblogPlugin.pm:342
 msgid "Recent Changes"
 msgstr ""
@@ -2101,19 +1900,6 @@ msgstr ""
 msgid "Recently Viewed Pages"
 msgstr ""
 
-#. ($login_url)
-#: lib/Socialtext/Appliance/ConsoleController.pm:130
-msgid "Redirecting to %1"
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Backup.pm:92
-msgid "Refresh is in progress, please wait ..."
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Backup.pm:329
-msgid "Refreshing the backup list ..."
-msgstr ""
-
 #: lib/Socialtext/Handler/Authen.pm:356
 msgid "Registration is disabled."
 msgstr ""
@@ -2145,17 +1931,12 @@ msgstr ""
 msgid "Removing widget %1..."
 msgstr ""
 
-#: lib/Socialtext/Page.pm:1123
+#: lib/Socialtext/Page.pm:1130
 msgid "Replace this text with your own."
 msgstr ""
 
 #: lib/Socialtext/BugsPlugin.pm:31
 msgid "Report Bug"
-msgstr ""
-
-#. ($self->start_time)
-#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:80
-msgid "Report timeframe: week ending %1"
 msgstr ""
 
 #. ($self->hub->current_workspace->title)
@@ -2167,50 +1948,18 @@ msgstr ""
 msgid "Reset Desktop logo to default. Desktop users need to logout and login again to see the new logo."
 msgstr ""
 
-#. ($rd->log_file)
-#: lib/Socialtext/Appliance/Model/Backup.pm:418
-msgid "Restore failed - check %1"
-msgstr ""
-
-#. ($restore_id)
-#: lib/Socialtext/Appliance/Model/Backup.pm:372
-msgid "Restore failed for (%1) ..."
-msgstr ""
-
-#. ($started_at)
-#: lib/Socialtext/Appliance/Model/Backup.pm:85
-msgid "Restore in progress - started at %1"
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Backup.pm:82
-msgid "Restore in progress - started at never"
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Backup.pm:189
-msgid "Restore is already running"
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Backup.pm:203
-msgid "Restore latest is already running"
-msgstr ""
-
-#. ($latest_backup->{id})
-#: lib/Socialtext/Appliance/Model/Backup.pm:413
-msgid "Restore of %1 finished."
-msgstr ""
-
 #: lib/Socialtext/EmailNotifyPlugin.pm:54
 msgid "Reverse Chronologically"
 msgstr ""
 
 #. ($this_revision)
 #. ($pretty_revision)
-#: lib/Socialtext/RevisionPlugin.pm:110 lib/Socialtext/RevisionPlugin.pm:241
+#: lib/Socialtext/RevisionPlugin.pm:110 lib/Socialtext/RevisionPlugin.pm:244
 msgid "Revision %1"
 msgstr ""
 
-#: lib/Socialtext/Appliance/Model/Backup.pm:267
-msgid "Sat"
+#: lib/Socialtext/CLI.pm:2467
+msgid "Role"
 msgstr ""
 
 #: lib/Socialtext/DisplayPlugin.pm:25
@@ -2254,21 +2003,12 @@ msgstr ""
 msgid "Self-join is disabled for %1"
 msgstr ""
 
-#. ($recip)
-#: lib/Socialtext/Appliance/Model/Setup.pm:442
-msgid "Sent test email to %1"
-msgstr ""
-
 #: lib/Socialtext/Handler/ControlPanel.pm:1899
 msgid "Settings"
 msgstr ""
 
 #: lib/Socialtext/Handler/ControlPanel.pm:840
 msgid "Settings have been saved.  Desktop users need to logout and login again to apply the new skin."
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Backup.pm:311
-msgid "Shared Directory Name"
 msgstr ""
 
 #: lib/Socialtext/DisplayPlugin.pm:110
@@ -2281,14 +2021,6 @@ msgstr ""
 
 #: lib/Socialtext/TimeZonePlugin.pm:161
 msgid "Should times be displayed in 12-hour or 24-hour format?"
-msgstr ""
-
-#: lib/Socialtext/Appliance/ConsoleController.pm:105
-msgid "Shutdown"
-msgstr ""
-
-#: lib/Socialtext/Appliance/ConsoleController.pm:103
-msgid "Shutdown Appliance?"
 msgstr ""
 
 #. ($computed_max_size)
@@ -2325,10 +2057,6 @@ msgstr ""
 msgid "Signals matching '%1'"
 msgstr ""
 
-#: lib/Socialtext/Appliance/Model/Setup.pm:151
-msgid "Signals maximum size must be an positive integer"
-msgstr ""
-
 #. ($1)
 #: lib/Socialtext/Pluggable/Plugin/Signals.pm:653
 msgid "Signals tagged #%1"
@@ -2341,15 +2069,6 @@ msgstr ""
 #. ($type)
 #: lib/Socialtext/Pluggable/Plugin/Widgets.pm:243
 msgid "Skipping %1 container..."
-msgstr ""
-
-#. ($wksp->title)
-#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:48
-msgid "Skipping workspace %1, no usage."
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Setup.pm:448
-msgid "Socialtext Appliance Test Email"
 msgstr ""
 
 #: lib/Socialtext/Handler/Authen.pm:78
@@ -2386,25 +2105,8 @@ msgstr ""
 msgid "Sort by %1 in %2 order"
 msgstr ""
 
-#: lib/Socialtext/Appliance/Model/Backup.pm:267
-msgid "Sun"
-msgstr ""
-
-#. ($ts)
-#: lib/Socialtext/Appliance/Model/Setup.pm:362
-msgid "Synchronized time with %1"
-msgstr ""
-
 #: lib/Socialtext/SyndicatePlugin.pm:44
 msgid "Syndicate"
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/System.pm:58
-msgid "System rebooting ..."
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/System.pm:64
-msgid "System shutting down ..."
 msgstr ""
 
 #. ($tag)
@@ -2496,7 +2198,7 @@ msgid "The %1 you provided does not appear to be a valid widget XML file: %2\n"
 msgstr ""
 
 #. ($self->_file_or_url, $xml_error)
-#: lib/Socialtext/Gadgets/Gadget/XML.pm:34
+#: lib/Socialtext/Gadgets/Gadget/XML.pm:36
 msgid "The %1 you provided does not appear to be valid XML: %2\n"
 msgstr ""
 
@@ -2522,7 +2224,7 @@ msgstr ""
 msgid "The Signals plugin is not installed."
 msgstr ""
 
-#: lib/Socialtext/Apache/Authen/NTLM.pm:31
+#: lib/Socialtext/Apache/Authen/NTLM.pm:31 lib/Socialtext/Apache/Authen/foo.pm:31
 msgid "The Socialtext system cannot reach the Windows NTLM Domain Controller.  An Admin should check the Domain Controller and/or Socialtext configuration."
 msgstr ""
 
@@ -2542,7 +2244,7 @@ msgid "The account name you specified, %1, does not exist."
 msgstr ""
 
 #. ($p->{account_id})
-#: lib/Socialtext/Workspace.pm:655
+#: lib/Socialtext/Workspace.pm:654
 msgid "The account_id you specified, %1, does not exist."
 msgstr ""
 
@@ -2695,13 +2397,8 @@ msgstr ""
 msgid "The user %1 has been deactivated."
 msgstr ""
 
-#: lib/Socialtext/User.pm:821
+#: lib/Socialtext/User.pm:824
 msgid "The user has been removed from workspaces and directories."
-msgstr ""
-
-#. ($new_href)
-#: lib/Socialtext/Appliance/Model/Setup.pm:237
-msgid "The value '%1' is invalid."
 msgstr ""
 
 #: lib/Socialtext/Handler/ControlPanel.pm:967
@@ -2714,12 +2411,12 @@ msgid "The workspace %1 does not exist"
 msgstr ""
 
 #. ($p->{name})
-#: lib/Socialtext/Workspace.pm:617
+#: lib/Socialtext/Workspace.pm:616
 msgid "The workspace name you chose, %1, is already in use as an email alias."
 msgstr ""
 
 #. ($p->{name})
-#: lib/Socialtext/Workspace.pm:621
+#: lib/Socialtext/Workspace.pm:620
 msgid "The workspace name you chose, %1, is already in use by another workspace."
 msgstr ""
 
@@ -2785,10 +2482,6 @@ msgstr ""
 msgid "Third Party widgets"
 msgstr ""
 
-#: lib/Socialtext/Appliance/Model/Setup.pm:449
-msgid "This email was sent from the Socialtext Appliance."
-msgstr ""
-
 #: lib/Socialtext/Handler/ControlPanel.pm:971
 msgid "This field is now hidden from users' profiles."
 msgstr ""
@@ -2810,54 +2503,26 @@ msgstr ""
 msgid "This username has no associated email address."
 msgstr ""
 
-#: lib/Socialtext/Gadgets/Gadget/XML.pm:151
+#: lib/Socialtext/Gadgets/Gadget/XML.pm:153
 msgid "This widget cannot be installed because it contains references to localization files that cannot be found"
 msgstr ""
 
-#. ($self->account->name)
 #. ($ws->account->name)
-#: lib/Socialtext/CLI.pm:2807 lib/Socialtext/Workspace.pm:649
+#. ($self->account->name)
+#: lib/Socialtext/CLI.pm:2807 lib/Socialtext/Workspace.pm:648
 msgid "This workspace is the all users workspace for the %1 account. Aborting."
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Backup.pm:267
-msgid "Thu"
 msgstr ""
 
 #: lib/Socialtext/TimeZonePlugin.pm:17
 msgid "Time"
 msgstr ""
 
-#. ($new_ts)
-#: lib/Socialtext/Appliance/Model/Setup.pm:330
-msgid "Timeserver updated to %1, clock synchronized"
-msgstr ""
-
 #: lib/Socialtext/CLI.pm:1306
 msgid "To do so, first assign them to a new primary account:"
 msgstr ""
 
-#: lib/Socialtext/Workspace.pm:317
+#: lib/Socialtext/Workspace.pm:316
 msgid "Top Page"
-msgstr ""
-
-#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:92
-msgid "Total"
-msgstr ""
-
-#. ($data->{total_members})
-#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:87
-msgid "Total members (current): %1"
-msgstr ""
-
-#. ($data->{unique_contributors})
-#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:83
-msgid "Total unique contributors: %1"
-msgstr ""
-
-#. ($data->{unique_visitors})
-#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:85
-msgid "Total unique visitors: %1"
 msgstr ""
 
 #. ($acct_name, $e)
@@ -2868,10 +2533,6 @@ msgstr ""
 #. ($acct_name)
 #: lib/Socialtext/Handler/ControlPanel.pm:2044
 msgid "Transform Account %1 to group succeeded"
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Backup.pm:267
-msgid "Tue"
 msgstr ""
 
 #: lib/Socialtext/Gadgets/Gadget.pm:781
@@ -2900,12 +2561,7 @@ msgstr ""
 msgid "Unable to make the following workspaces no longer an all users workspaces: %1"
 msgstr ""
 
-#. ($post_url, $response->status_line)
-#: lib/Socialtext/Appliance/PhoneHome.pm:104
-msgid "Unable to post appliance user report data to '%1': %2"
-msgstr ""
-
-#: lib/Socialtext/Workspace.pm:873
+#: lib/Socialtext/Workspace.pm:872
 msgid "Unable to process logo file. Is it an image?"
 msgstr ""
 
@@ -2922,7 +2578,7 @@ msgstr ""
 msgid "Unknown error"
 msgstr ""
 
-#: lib/Socialtext/Page.pm:502
+#: lib/Socialtext/Page.pm:508
 msgid "Unlocking page."
 msgstr ""
 
@@ -2934,15 +2590,6 @@ msgstr ""
 msgid "Untitled Spreadsheet"
 msgstr ""
 
-#. ($new_host)
-#: lib/Socialtext/Appliance/Model/Setup.pm:423
-msgid "Updated mail server to %1"
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Setup.pm:427
-msgid "Updated mail server to use built-in server"
-msgstr ""
-
 #. (shift->title)
 #: lib/Socialtext/Handler/ControlPanel.pm:995
 msgid "Updated profile field \"%1\""
@@ -2951,10 +2598,6 @@ msgstr ""
 #. ($args{username})
 #: lib/Socialtext/MassAdd.pm:182
 msgid "Updated user %1"
-msgstr ""
-
-#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:92
-msgid "User"
 msgstr ""
 
 #. ($user->username)
@@ -2984,10 +2627,6 @@ msgstr ""
 #. ($current_role->display_name, $group->display_name)
 #: lib/Socialtext/CLI.pm:1094
 msgid "User already has the role of '%1' in the %2 Group"
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Backup.pm:312
-msgid "Username"
 msgstr ""
 
 #: lib/Socialtext/Authen.pm:38
@@ -3023,10 +2662,6 @@ msgstr ""
 msgid "Validation subroutine called outside of validator"
 msgstr ""
 
-#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:92
-msgid "Views"
-msgstr ""
-
 #: lib/Socialtext/Lite.pm:518
 msgid "Warning: Socialtext Mobile requires BlackBerry OS v4.5 or higher"
 msgstr ""
@@ -3044,20 +2679,7 @@ msgstr ""
 msgid "We're sorry, but that Signal does not exist. You can use the signal search box above to find a particular signal."
 msgstr ""
 
-#: lib/Socialtext/Appliance/Model/Setup.pm:397
-msgid "Web proxy cleared."
-msgstr ""
-
-#. ($new_proxy)
-#: lib/Socialtext/Appliance/Model/Setup.pm:394
-msgid "Web proxy updated to %1"
-msgstr ""
-
-#: lib/Socialtext/Appliance/Model/Backup.pm:267
-msgid "Wed"
-msgstr ""
-
-#: lib/Socialtext/Workspace.pm:316 lib/Socialtext/l10n.pm:18
+#: lib/Socialtext/Workspace.pm:315 lib/Socialtext/l10n.pm:18
 msgid "Welcome"
 msgstr ""
 
@@ -3067,12 +2689,12 @@ msgid "Welcome %1 %2"
 msgstr ""
 
 #. ($self->primary_account->name)
-#: lib/Socialtext/User.pm:1501
+#: lib/Socialtext/User.pm:1504
 msgid "Welcome to the %1 community - please confirm your email to join"
 msgstr ""
 
 #. ($target_workspace->title)
-#: lib/Socialtext/User.pm:1499
+#: lib/Socialtext/User.pm:1502
 msgid "Welcome to the %1 workspace - please confirm your email to join"
 msgstr ""
 
@@ -3123,41 +2745,32 @@ msgstr ""
 msgid "Workspace List"
 msgstr ""
 
-#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:69
-msgid "Workspace Usage Blog"
-msgstr ""
-
-#: lib/Socialtext/Workspace.pm:595
+#: lib/Socialtext/Workspace.pm:594
 msgid "Workspace name is a required field."
 msgstr ""
 
-#: lib/Socialtext/Workspace.pm:740
+#: lib/Socialtext/Workspace.pm:739
 msgid "Workspace name may not begin with -."
 msgstr ""
 
-#: lib/Socialtext/Workspace.pm:735
+#: lib/Socialtext/Workspace.pm:734
 msgid "Workspace name must be between 3 and 30 characters long, and must contain only upper- or lower-case letters, numbers, underscores, and dashes."
 msgstr ""
 
-#: lib/Socialtext/Workspace.pm:606
+#: lib/Socialtext/Workspace.pm:605
 msgid "Workspace title is a required field."
 msgstr ""
 
-#: lib/Socialtext/Workspace.pm:704
+#: lib/Socialtext/Workspace.pm:703
 msgid "Workspace title is too long after URL encoding"
 msgstr ""
 
-#: lib/Socialtext/Workspace.pm:697
+#: lib/Socialtext/Workspace.pm:696
 msgid "Workspace title must be between 2 and 64 characters long and may not begin with a -."
 msgstr ""
 
 #: lib/Socialtext/Handler/ControlPanel.pm:1885
 msgid "Workspaces"
-msgstr ""
-
-#. ($log)
-#: lib/Socialtext/Appliance/Model/Setup.pm:482
-msgid "Workspaces initialized.<br>Log: %1"
 msgstr ""
 
 #. ($name)
@@ -3199,12 +2812,12 @@ msgid "Wrong %1 or password - please try again"
 msgstr ""
 
 #. ($app_name)
-#: lib/Socialtext/User.pm:1528
+#: lib/Socialtext/User.pm:1531
 msgid "You can now login to the %1 application"
 msgstr ""
 
 #. ($ws->title()
-#: lib/Socialtext/User.pm:1525
+#: lib/Socialtext/User.pm:1528
 msgid "You can now login to the %1 workspace"
 msgstr ""
 
@@ -3354,7 +2967,7 @@ msgid "click to create page"
 msgstr ""
 
 #. ($rev->editor->email_address, $utc_date)
-#: lib/Socialtext/Page.pm:724
+#: lib/Socialtext/Page.pm:731
 msgid "contributed by {user: %1} on {date: %2}"
 msgstr ""
 
@@ -3479,14 +3092,10 @@ msgid "tag"
 msgstr ""
 
 #. ($page_link, $workspace->title)
-#: lib/Socialtext/Page.pm:400
+#: lib/Socialtext/Page.pm:405
 msgid "wants you to know about an edit of %1 in %2"
 msgstr ""
 
 #: lib/Socialtext/Formatter/WaflPhrase.pm:760
 msgid "weblog"
-msgstr ""
-
-#: lib/Socialtext/CLI.pm:2467
-msgid "| Email Address | First | Last | Role |"
 msgstr ""

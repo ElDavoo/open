@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-16 21:46+0800\n"
+"PO-Revision-Date: 2011-02-16 22:09+0800\n"
 "PO-Revision-Date: \n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
@@ -1990,7 +1990,7 @@ msgstr "error.same-revision"
 #. (draft.page_title, draft.workspace_title, draft.workspace_id)
 #: share/skin/s3/javascript/s3.js:1161
 msgid "You have an unsaved draft of \"%1\" in the \"%2\" (%3) workspace:"
-msgstr "draft.unsaved=page,wiki,wiki_id"
+msgstr "draft.unsaved=page,wiki,wiki-id"
 
 #: share/skin/s3/template/element/workspace_list/public_workspaces:5
 msgid "You have free access to view and contribute to any of these public wikis:"
