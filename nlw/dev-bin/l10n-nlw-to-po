@@ -13,7 +13,7 @@ my %Sections = (
     lib => 'lib',
     wikiwyg => 'share/skin/wikiwyg/javascript',
     plugin => [glob('share/plugin/*/{share,template}')],
-    s2 => ['share/skin/s2/template', 'share/skin/s2/javascript'],
+#   s2 => ['share/skin/s2/template', 'share/skin/s2/javascript'],
     s3 => ['share/skin/s3/template', 'share/skin/s3/javascript'],
 );
 
