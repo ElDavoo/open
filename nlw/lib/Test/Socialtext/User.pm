@@ -63,6 +63,8 @@ sub delete_recklessly {
 
     # Delete things owned/associated with this user
     Socialtext::SQL::sql_execute(
+        q{DELETE FROM signal WHERE user_id = ?}, $user_id);
+    Socialtext::SQL::sql_execute(
         q{DELETE FROM attachment WHERE creator_id = ?}, $user_id);
     Socialtext::SQL::sql_execute(
         q{DELETE FROM signal_thread_tag WHERE user_id = ?}, $user_id);
