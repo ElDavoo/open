@@ -13,7 +13,7 @@ use Socialtext::Upload;
 use Socialtext::File ();
 use Socialtext::SQL qw/:exec :txn/;
 use Socialtext::SQL::Builder qw/sql_insert/;
-use Socialtext::String;
+use Socialtext::String qw/:uri :html/;
 use Socialtext::Timer qw/time_scope/;
 
 use namespace::clean -except => 'meta';
@@ -407,7 +407,7 @@ sub download_uri {
     my ($self, $flavor) = @_;
     $flavor ||= 'original'; # can also be 'files'
     my $ws = $self->workspace->name;
-    my $filename_uri  = Socialtext::String::uri_escape($self->clean_filename);
+    my $filename_uri  = uri_escape($self->clean_filename);
     my $uri = "/data/workspaces/$ws/attachments/".
         $self->page->uri.':'.$self->id."/$flavor/$filename_uri";
 }
@@ -415,7 +415,7 @@ sub download_uri {
 sub download_link {
     my ($self, $flavor) = @_;
     my $uri = $self->download_uri($flavor);
-    my $filename_html = Socialtext::String::html_escape($self->filename);
+    my $filename_html = html_escape($self->filename);
     return qq(<a href="$uri">$filename_html</a>);
 }
 
@@ -451,7 +451,7 @@ sub to_hash {
 sub export_to_dir {
     my ($self, $dir) = @_;
     my $id = $self->id;
-    my $db_filename = Socialtext::String::uri_escape($self->filename);
+    my $db_filename = uri_escape($self->filename);
 
     mkdir "$dir/$id" or die "can't write attachment: $!";
 

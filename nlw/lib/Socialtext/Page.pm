@@ -23,7 +23,7 @@ use Socialtext::Permission qw/ST_READ_PERM ST_EDIT_PERM ST_ATTACHMENTS_PERM/;
 use Socialtext::SQL qw/:exec :txn :time/;
 use Socialtext::SQL::Builder qw/sql_insert sql_update/;
 use Socialtext::Search::AbstractFactory;
-use Socialtext::String;
+use Socialtext::String qw/:uri :html :id word_truncate/;
 use Socialtext::URI;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::Validate qw(validate :types SCALAR SCALARREF ARRAYREF UNDEF BOOLEAN);
@@ -225,7 +225,7 @@ sub _build_rev {
     else {
         # must be creating the page
         $self->_exists(0);
-        my $name = Socialtext::String::uri_unescape($self->page_id);
+        my $name = uri_unescape($self->page_id);
         return Socialtext::PageRevision->Blank(
             hub => $self->hub,
             name => $name,
@@ -396,7 +396,8 @@ sub _signal_edit_summary {
     # so the syntax won't be blocked by the leading double-quote.
     $edit_summary =~ s/^([^\s\w])/ $1/;
 
-    $edit_summary = Socialtext::String::word_truncate($edit_summary, ($is_comment ? $SignalCommentLength : $SignalEditLength));
+    $edit_summary = word_truncate($edit_summary,
+        ($is_comment ? $SignalCommentLength : $SignalEditLength));
     my $page_link = sprintf "{link: %s [%s]}", $workspace->name, $self->title;
     my $body = $edit_summary
         ? ($is_comment
@@ -665,9 +666,7 @@ sub append {
 
 sub uri {
     my $self = shift;
-    return $self->exists
-        ? $self->page_id
-        : Socialtext::String::title_to_display_id($self->name);
+    return $self->exists ? $self->page_id : title_to_display_id($self->name);
 }
 
 sub _add_delete_tags {
@@ -735,7 +734,7 @@ sub add_comment {
     # Truncate the comment to $SignalCommentLength chars if we're sending this
     # comment as a signal.  Otherwise use the normal 350-char excerpt.
     my $summary = $signal_edit_to_network
-        ? Socialtext::String::word_truncate($wikitext, $SignalCommentLength)
+        ? word_truncate($wikitext, $SignalCommentLength)
         : $self->preview_text($wikitext);
     $rev->edit_summary($signal_edit_to_network
         ? $summary
@@ -1833,7 +1832,7 @@ sub preview_text {
     my $excerpt = $self->_to_plain_text($content_ref);
     $excerpt = substr($excerpt, 0, $ExcerptLength) . '...'
         if length $excerpt > $ExcerptLength;
-    return Socialtext::String::html_escape($excerpt);
+    return html_escape($excerpt);
 }
 
 sub preview_text_spreadsheet {
@@ -1844,7 +1843,7 @@ sub preview_text_spreadsheet {
     my $excerpt = $self->_to_spreadsheet_plain_text($content_ref);
     $excerpt = substr($excerpt, 0, $ExcerptLength) . '...'
         if length $excerpt > $ExcerptLength;
-    return Socialtext::String::html_escape($excerpt);
+    return html_escape($excerpt);
 }
 
 # also called by the Solr indexer
@@ -1981,7 +1980,7 @@ sub rename {
 
     # If the new title of the page has the same page-id as the old then just
     # change the title, and don't mess with the other bits.
-    my $new_id = Socialtext::String::title_to_id($new_page_title);
+    my $new_id = title_to_id($new_page_title);
     if ( $self->page_id eq $new_id ) {
         return sql_txn {
             my $rev = $self->edit_rev();

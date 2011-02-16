@@ -5,7 +5,6 @@ use warnings;
 
 use base 'Socialtext::Base';
 
-*_t2id = *Socialtext::String::title_to_id;
 use Carp qw/croak/;
 use Class::Field qw( const field );
 use Email::Valid;
@@ -17,7 +16,7 @@ use Socialtext::Log 'st_log';
 use Socialtext::Page;
 use Socialtext::Paths;
 use Socialtext::SQL qw/:exec sql_format_timestamptz/;
-use Socialtext::String ();
+use Socialtext::String qw/title_to_id MAX_PAGE_ID_LEN/;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::User;
 use Socialtext::Validate qw( validate DIR_TYPE );
@@ -228,7 +227,7 @@ sub current_id {
     my $page_name = 
       $self->hub->cgi->page_name ||
       $self->hub->current_workspace->title;
-    _t2id($page_name);
+    title_to_id($page_name);
 }
 
 sub unset_current {
@@ -246,8 +245,8 @@ sub new_page {
 sub new_from_name {
     my $self = shift;
     my $page_name = shift;
-    my $id = _t2id($page_name);
-    return if length($id) > Socialtext::String::MAX_PAGE_ID_LEN;
+    my $id = title_to_id($page_name);
+    return if length($id) > MAX_PAGE_ID_LEN;
 
     my $page = $self->By_id(
         hub          => $self->hub,
@@ -274,11 +273,11 @@ sub new_from_uri {
 
     my $page = Socialtext::Page->new(
         hub => $self->hub,
-        id  => _t2id($uri) );
+        id  => title_to_id($uri) );
 
     die("Invalid page URI: $uri") unless $page;
 
-    my $return_id = _t2id($page->title);
+    my $return_id = title_to_id($page->title);
     $page->title( $uri ) unless $return_id eq $uri;
 
     return $page;
