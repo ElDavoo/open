@@ -52,6 +52,7 @@ Page_create_delete_restore_edit: {
         my $page = $hub->pages->current;
         clear_log();
 
+        $page->edit_rev;
         $page->store(
             content => 'Testing, 1, 2, 3.',
             revision => $page->revision_count + 4,
