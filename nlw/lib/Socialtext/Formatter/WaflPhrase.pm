@@ -696,7 +696,6 @@ use Socialtext::Permission 'ST_READ_PERM';
 use Socialtext::l10n qw( loc );
 
 const wafl_id => 'category';
-my $wafl_id_str_category = loc('category');
 
 sub html {
     my $self = shift;
@@ -746,7 +745,6 @@ use Class::Field qw( const );
 use Socialtext::l10n qw( loc );
 
 const wafl_id => 'tag';
-my $wafl_id_str_tag = loc('tag');
 
 ################################################################################
 package Socialtext::Formatter::WeblogLink;
@@ -757,7 +755,6 @@ use Class::Field qw( const );
 use Socialtext::l10n qw( loc );
 
 const wafl_id => 'weblog';
-#const wafl_id_str => loc('weblog');
 
 ################################################################################
 package Socialtext::Formatter::BlogLink;
@@ -768,7 +765,6 @@ use Class::Field qw( const );
 use Socialtext::l10n qw( loc );
 
 const wafl_id => 'blog';
-#const wafl_id_str => loc('blog');
 
 ################################################################################
 package Socialtext::Formatter::TradeMark;
