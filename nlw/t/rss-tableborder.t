@@ -27,6 +27,7 @@ my $page = Socialtext::Page->new(hub => $hub)->create(
 );
 
 {
+    $page->edit_rev;
     $page->content(<<"EOF");
 ^^^ Hello Friends
 
