@@ -3,7 +3,7 @@
 [% PROCESS element/settings/start %]
 <dl class="form">
   <dt><label>[% loc('Workspace Title') %]</label></dt>
-  <dd>[% loc('This is the title of your workspace. It may be changed at any time.') %]</dd>
+  <dd>[% loc('This is the title of your workspace. It may be changed later if you want.') %]</dd>
 
   <dd>
     <input type="text" name="title" value="[% workspace.title | html %]" size="50" />
