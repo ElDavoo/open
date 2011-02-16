@@ -209,7 +209,7 @@ sub _table_rows {
             id        => $att->id,
             filename  => $att->filename,
             subject   => $page->title,
-            user      => $att->creator,
+            user      => $att->creator->username, # TODO: pass object
             date_str  => sub { $att->created_at_str },
             date      => sub { $att->created_at },
             page_uri  => $page->uri,
