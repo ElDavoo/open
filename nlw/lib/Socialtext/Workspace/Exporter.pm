@@ -1,5 +1,7 @@
 package Socialtext::Workspace::Exporter;
 use Moose;
+use MooseX::StrictConstructor;
+
 use File::Temp ();
 use File::chdir; # for magic $CWD
 use File::Basename qw/basename/;
