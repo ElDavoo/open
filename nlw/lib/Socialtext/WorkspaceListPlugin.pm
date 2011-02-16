@@ -9,7 +9,7 @@ use Socialtext::Workspace;
 use base 'Socialtext::Plugin';
 
 const class_id    => 'workspace_list';
-const class_title => loc('Workspace List');
+const class_title => 'Workspace List';
 
 sub WORKSPACE_LIST_SIZE { 10 }
 

@@ -15,7 +15,7 @@ use Socialtext::l10n qw ( loc );
 use List::Util qw/min/;
 
 sub class_id { 'recent_changes' }
-const class_title      => loc("What's New");
+const class_title      => "What's New";
 const cgi_class        => 'Socialtext::RecentChanges::CGI';
 const default_category => 'recent changes';
 

@@ -9,7 +9,7 @@ use Class::Field qw( const );
 use Socialtext::l10n qw( loc );
 
 sub class_id { 'favorites' }
-const class_title => loc('Your Notepad');
+const class_title => 'Your Notepad';
 
 sub register {
     my $self = shift;

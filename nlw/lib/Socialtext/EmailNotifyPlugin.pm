@@ -8,7 +8,7 @@ use Socialtext::EmailNotifier;
 use Socialtext::l10n qw( loc loc_lang system_locale );
 
 sub class_id { 'email_notify' }
-const class_title => loc('Email Notification');
+const class_title => 'Email Notification';
 field abstracts => [];
 field 'lock_handle';
 field notify_requested => 0;

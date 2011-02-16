@@ -14,7 +14,7 @@ use Socialtext::Date::l10n;
 use Socialtext::l10n qw( loc );
 
 sub class_id {'timezone'}
-const class_title => loc('Time');
+const class_title => 'Time';
 const dcDATE => 1;
 const dcTIME => 2;
 const dcDATETIME => 3;
