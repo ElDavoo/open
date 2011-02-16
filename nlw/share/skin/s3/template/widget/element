@@ -1,7 +1,6 @@
 [% USE JSON %]
-[%- IF col.borderless;
-        class = "borderless";
-    ELSIF gadget.class;
+[%- 
+    IF gadget.class;
         class = gadget.class;
     ELSIF gadget.fixed;
         class = 'tan';

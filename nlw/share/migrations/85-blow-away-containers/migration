@@ -1,0 +1,20 @@
+#!/usr/bin/env perl
+# @COPYRIGHT@
+use strict;
+use warnings;
+
+my @containers = qw(
+    Socialtext::Gadgets::Container::Signals::Signal
+    Socialtext::Gadgets::Container::Group
+    Socialtext::Gadgets::Container::WidgetEditor
+    Socialtext::Gadgets::Container::Signals
+    Socialtext::Gadgets::Container::GroupDirectory
+    Socialtext::Gadgets::Container::Explore
+);
+for my $class (@containers) {
+    warn "Resetting all $class containers...\n";
+    eval "require $class";
+    $class->DeleteAll;
+}
+
+exit 0;
