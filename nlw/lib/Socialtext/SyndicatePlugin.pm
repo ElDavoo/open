@@ -41,7 +41,7 @@ on those parameters.
 =cut
 
 sub class_id { 'syndicate' }
-const class_title => loc('Syndicate');
+const class_title => 'Syndicate';
 const cgi_class => 'Socialtext::Syndicate::CGI';
 const default_tag => 'Recent Changes';
 const default_type => 'RSS20';

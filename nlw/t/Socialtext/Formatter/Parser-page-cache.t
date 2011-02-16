@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 24;
+use Test::Socialtext tests => 18;
 use Test::Socialtext::Fatal;
 fixtures('workspaces', 'public');
 
@@ -76,45 +76,6 @@ EOF
     ok( -e $cache_dir, 'cache directory exists' );
 }
 
-OTHER_USER_NO_ACCESS: {
-    my $user = Socialtext::User->create(
-        username      => 'toobad@example.com',
-        email_address => 'toobad@example.com',
-        password      => 'password'
-    );
-    $hub->current_workspace->add_user(
-        user => $user,
-        role => Socialtext::Role->Member(),
-    );
-    check_with_user(
-        user        => 'toobad@example.com',
-        should_fail => 1,
-    );
-
-    open my $fh, '>', $page->current_revision_file
-        or die "Cannot write to ", $page->current_revision_file, ": $!";
-    print $fh $page->headers, <<'EOF';
-
-a brand new page!
-
-{link public [welcome]}
-
-{link foobar [welcome]}
-
-EOF
-    close $fh;
-
-    my $future = time + 10;
-    utime $future, $future, $page->current_revision_file
-        or die "Cannot call utime on ", $page->current_revision_file, ": $!";
-
-    check_with_user(
-        user             => 'devnull1@socialtext.com',
-        new_page_content => 1,
-    );
-
-    ok( -e $cache_dir, 'cache directory exists' );
-}
 
 CACHE_DIR_UNWRITEABLE: {
     my $dir = File::Temp::tempdir( CLEANUP => 1 );

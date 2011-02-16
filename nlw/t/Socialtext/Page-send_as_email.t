@@ -56,7 +56,6 @@ EOF
         fh => IO::File->new('t/attachments/socialtext-logo-30.gif', '<'),
         filename => 'socialtext-logo.gif',
         page => $page,
-        page_id => $page->id,
         user => $hub->current_user,
     );
 

@@ -14,8 +14,7 @@ use Socialtext::MooseX::Types::UniStr;
 use Socialtext::SQL qw/:exec :txn :time/;
 use Socialtext::SQL::Builder qw/sql_nextval sql_insert/;
 use Socialtext::Encode qw/ensure_is_utf8 ensure_ref_is_utf8/;
-use Socialtext::String ();
-*title_to_id = *Socialtext::String::title_to_id;
+use Socialtext::String qw/title_to_id trim MAX_PAGE_ID_LEN/;
 use Socialtext::Workspace;
 use Socialtext::Exceptions qw/data_validation_error/;
 use Socialtext::l10n qw/loc/;
@@ -101,7 +100,7 @@ around 'BUILDARGS' => sub {
     my $orig = shift;
     my $class = shift;
     my $args = shift;
-    $args->{summary} //= '';
+    $args->{$_} //= '' for qw(summary edit_summary);
     return $orig->($class, $args);
 };
 
@@ -452,7 +451,7 @@ sub store {
         push @errors, loc('"[_1]" is an invalid page title. Please use a different name.', $self->name);
     }
 
-    if (Socialtext::String::MAX_PAGE_ID_LEN < length($self->page_id)) {
+    if (MAX_PAGE_ID_LEN < length($self->page_id)) {
         push @errors, loc("Page title is too long after URL encoding");
     }
 
@@ -462,7 +461,7 @@ sub store {
     ) if @errors;
 
     for (qw(edit_summary summary)) {
-        $self->$_(Socialtext::String::trim($self->$_)) if defined $self->$_;
+        $self->$_(trim($self->$_)) if defined $self->$_;
     }
 
     my %args = map { $_ => $self->$_ } Socialtext::PageRevision::COLUMNS();

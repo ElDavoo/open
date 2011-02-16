@@ -4,7 +4,6 @@ use strict;
 use warnings;
 
 use YAML;
-use Test::Socialtext::Fatal;
 use Test::Differences;
 use File::Path 'mkpath';
 use File::Copy qw/copy/;
@@ -80,23 +79,25 @@ if ($@) {
 
 # Check each schema
 for ( $START_SCHEMA+1 .. $latest_schema ) {
-    ok !exception {
+    eval {
         $schema->sync( to_version => $_, no_dump => 1, no_create => 1)
-    }, "Schema migration $_";
+    };
     if ($@) {
         system("tail -n 20 $log_dir/st-db.log");
         die "Can't continue";
     }
+    pass "Schema migration $_";
 }
 
 # Run schema changes for current release
-ok !exception {
+eval {
     $schema->run_sql_file("$real_dir/socialtext-$CURR_RELEASE.sql");
-}, "Schema changes for current release";
+};
 if ($@) {
     system("tail -n 20 $log_dir/st-db.log");
     die "Can't continue";
 }
+pass "Schema changes for current release";
 
 # Now check that the final result is the same as socialtext-schema.sql
 my $generated_schema = "$test_dir/generated-schema.sql";

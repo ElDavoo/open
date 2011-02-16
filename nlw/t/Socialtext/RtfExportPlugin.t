@@ -162,6 +162,7 @@ sub clean_symbol_table {
 sub rtf_for_wikitext {
     my ($wikitext) = @_;
     my $page = $HUB->pages->new_from_name($PAGE_NAME);
+    $page->edit_rev;
     $page->content($wikitext);
     $page->store( user => $HUB->current_user );
 

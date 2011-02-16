@@ -1168,10 +1168,10 @@ sub _group_role_changed {
         my %p = validate(@_,$spec);
         $p{name} //= $self->name;
 
-        die loc("Export directory [_1] does not exist.\n", $p{dir})
+        die loc("Export directory [_1] does not exist.", $p{dir})."\n"
             if defined $p{dir} && ! -d $p{dir};
 
-        die loc("Export directory [_1] is not writeable.\n", $p{dir})
+        die loc("Export directory [_1] is not writable.", $p{dir})."\n"
             unless defined $p{dir} && -w $p{dir};
 
         my $tarball_dir = defined $p{dir}
@@ -1183,7 +1183,7 @@ sub _group_role_changed {
             $p{name}.".$EXPORT_VERSION.tar" );
 
         for my $file ( ($tarball, "$tarball.gz") ) {
-            die loc("Cannot write export file [_1], aborting.\n", $file)
+            die loc("Cannot write export file [_1], aborting.", $file)."\n"
                 if -f $file && ! -w $file;
         }
 

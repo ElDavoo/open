@@ -207,19 +207,6 @@ sub desktop_update_enabled {
     $self->_get_appliance_config_value('desktop_update_enabled');
 }
 
-sub _get_history_list_for_template
-{
-    my $self = shift;
-
-    my $history = $self->hub->breadcrumbs->get_crumbs;
-   
-    my @historylist =
-        map { +{ label => $_->{page_title}, link => $_->{page_full_uri} }; }
-        @$history;
-    if ($#historylist > 19) { $#historylist = 19;}
-    return  \@historylist;
-}
-
 sub global_template_vars {
     my $self = shift;
     my $hub = $self->hub;

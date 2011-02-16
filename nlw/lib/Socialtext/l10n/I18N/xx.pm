@@ -31,7 +31,7 @@ Socialtext::l10n::I18N::xq
 
 =head1 SYNOPSIS
 
-  loc("Blah");
+  Blah => Xxxx
 
 =head1 DESCRIPTION
 

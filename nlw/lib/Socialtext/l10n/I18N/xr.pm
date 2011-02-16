@@ -28,7 +28,7 @@ Socialtext::l10n::I18N::xr
 
 =head1 SYNOPSIS
 
-  loc("Blah");
+  Blah => 8l4h
 
 =head1 DESCRIPTION
 

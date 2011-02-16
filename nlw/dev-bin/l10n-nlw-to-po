@@ -17,6 +17,8 @@ my %Sections = (
     s3 => ['share/skin/s3/template', 'share/skin/s3/javascript'],
 );
 
+%Sections = map { $Sections{$_} ? ($_ => $Sections{$_}) : die "No such section: $_" } @ARGV if @ARGV;
+
 # Cleanup temporary JS files before extracting S3
 shell_run("rm -rf share/skin/s3/javascript/socialtext-*");
 shell_run("rm -rf share/skin/s3/javascript/lightbox-*");

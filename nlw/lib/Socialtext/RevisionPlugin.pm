@@ -103,8 +103,8 @@ sub revision_view {
         previous_revision => $previous_revision,
         next_revision => $next_revision,
         human_readable_revision => $page->revision_num,
-        tags => [ $page->html_escaped_categories ],
-        edit_summary => $page->edit_summary,
+        tags => [ map { Socialtext::String::html_escape($_) }
+            $page->tags_sorted ],
         edit_summary_maxlength => EDIT_SUMMARY_MAXLENGTH(),
         display_title    => $self->html_escape( $page->title ),
         display_title_decorator  => loc("Revision [_1]", $this_revision),
@@ -233,8 +233,11 @@ sub header {
     my @header;
 
     my %tags = ();
-    $tags{$self->before_page} = [ grep $_ ne 'Recent Changes', $self->before_page->html_escaped_categories ];
-    $tags{$self->after_page} = [ grep $_ ne 'Recent Changes', $self->after_page->html_escaped_categories ];
+    my @before = map { Socialtext::String::html_escape($_) }
+        grep !/^Recent Changes$/, $self->before_page->tags_sorted;
+    my @after = map { Socialtext::String::html_escape($_) }
+        grep !/^Recent Changes$/, $self->after_page->tags_sorted;
+
     for my $page ($self->before_page, $self->after_page) {
         my %col;
         my $pretty_revision = $page->revision_num;
@@ -247,13 +250,13 @@ sub header {
         );
         $col{tags} = ($page == $self->before_page) ? 
             $self->_tag_diff(
-                old_tags =>$tags{$self->after_page}, 
-                new_tags => $tags{$self->before_page},
+                new_tags => \@before,
+                old_tags => \@after,
                 highlight_class => 'st-revision-compare-old',
             ) :
             $self->_tag_diff(
-                new_tags =>$tags{$self->after_page}, 
-                old_tags => $tags{$self->before_page},
+                new_tags => \@after,
+                old_tags => \@before,
                 highlight_class => 'st-revision-compare-new',
             );
         $col{editor} = $page->last_edited_by->username;

@@ -218,9 +218,9 @@ sub _plugin_after {
         : '';
 
     my @lines;
-    push @lines, map { loc("The [_1] plugin is now enabled for $what", $_) }
+    push @lines, map { loc("The [_1] plugin is now enabled for [_2]", $_, $what) }
                  grep { !$before->{$_} } keys %after;
-    push @lines, map { loc("The [_1] plugin is now disabled for $what", $_) }
+    push @lines, map { loc("The [_1] plugin is now disabled for [_2]", $_, $what) }
                  grep { !$after{$_} } keys %$before;
 
     if (@lines) {
@@ -558,7 +558,7 @@ sub import_account {
     $self->_alert_error($@) if ($@);
 
     for my $tarball (glob "$dir/*.1.tar.gz") {
-        print loc("Importing workspace from $tarball ..."), "\n";
+        print loc("Importing workspace from [_1] ...", $tarball), "\n";
         eval {
             my $wksp = Socialtext::Workspace->ImportFromTarball(
                 tarball   => $tarball,
@@ -1483,7 +1483,7 @@ sub _remove_thing_from_thing {
     my $role = $container->$role_method($condemned);
     my $msg;
     if ($role) {
-        $msg = loc("[_1] now has the role of '[_2]' in [_3] due to membership in a Group",
+        $msg = loc("[_1] now has the role of '[_2]' in [_3] due to membership in a group",
             $condemned->name, $role->display_name, $container->name);
     }
     else {
@@ -2000,12 +2000,12 @@ sub set_permissions {
     }
     else {
         $self->_error(
-            loc("Can on change permissions on a group or workspace.")
+            loc("Can only change permissions on a group or workspace.")
         );
     }
 
     $self->_success(
-        loc("The permissions for the [_1] [_2] have been changed to [_3].\n",
+        loc("The permissions for the [_1] [_2] have been changed to [_3].",
             $name, $object, $set_name)
     );
 }
@@ -2470,7 +2470,7 @@ sub _show_group_members {
 
     my $urs = $group->user_roles();
     my $msg = loc("Members of the [_1] group", $group->driver_name) . "\n\n";
-    $msg .= loc("| Email Address | First | Last | Role |") . "\n";
+    $msg .= '| ' . join(' | ', loc("Email Address"), loc("First"), loc("Last"), loc("Role")) . " |\n";
 
     while ( my $ur = $urs->next() ) {
         my ($user,$role) = @$ur;
@@ -2598,7 +2598,7 @@ sub _toggle_page_lock {
     my $workspace = $hub->current_workspace;
 
     $self->_error(loc(
-        "Page locking is turned off for workspace '[_1]'.\n",
+        "Page locking is turned off for workspace '[_1]'.",
         $workspace->title()
     )) unless ( $workspace->allows_page_locking );
 
@@ -2621,11 +2621,18 @@ sub can_lock_pages {
     $hub->current_user($user);
     my $can_lock = $hub->checker->check_permission('lock') && $hub->current_workspace->allows_page_locking;
 
-    $self->_success(loc(
-        "User '[_1]' [_2] lock a page.\n",
-        $user->username,
-        $can_lock? 'can' : 'cannot',
-    ));
+    if ($can_lock) {
+        $self->_success(loc(
+            "User '[_1]' can lock a page.",
+            $user->username
+        ));
+    }
+    else {
+        $self->_success(loc(
+            "User '[_1]' cannot lock a page.",
+            $user->username
+        ));
+    }
 }
 
 sub locked_pages {

@@ -12,7 +12,7 @@ use Socialtext::Events;
 use Socialtext::Pageset;
 
 const class_id    => 'watchlist';
-const class_title => loc('Watchlist');
+const class_title => 'Watchlist';
 const cgi_class   => 'Socialtext::Watchlist::CGI';
 const listview_extra_columns => { watchlist => 1 };
 field 'lock_handle';
