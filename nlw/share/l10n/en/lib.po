@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-17 00:11+0800\n"
+"PO-Revision-Date: 2011-02-17 02:19+0800\n"
 "PO-Revision-Date: \n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
@@ -233,7 +233,7 @@ msgstr "cli.member-added=user,group"
 #. ($user_wafl, $self->primary_account->name)
 #: lib/Socialtext/User.pm:1649
 msgid "%1 just joined the %2 group. Hi everybody!"
-msgstr "info.just-joined!=user,group"
+msgstr "info.just-joined=user,group!"
 
 #. (loc($p{action})
 #: lib/Socialtext/Formatter/WaflPhrase.pm:736
@@ -530,7 +530,7 @@ msgstr "config.did-you-know-title"
 #. ($name)
 #: lib/Socialtext/Account.pm:433
 msgid "Account %1 already exists!"
-msgstr "error.exists!=account"
+msgstr "error.exists=account!"
 
 #. ($old_name, $new_name)
 #: lib/Socialtext/Handler/ControlPanel.pm:912
@@ -652,31 +652,31 @@ msgstr "error.page-conflict"
 #. ($ws->name()
 #: lib/Socialtext/WorkspacesUIPlugin.pm:683
 msgid "Anyone can send email to %1."
-msgstr ""
+msgstr "config.anyone-can-email=wiki"
 
 #. ($user->email_address, $hostname, $error)
 #: lib/Socialtext/BugsPlugin.pm:120
 msgid "Application error for %1 on %2: %3"
-msgstr ""
+msgstr "error.application=email,host,error"
 
 #. ($workspace,$user->email_address, $hostname, $error)
 #: lib/Socialtext/BugsPlugin.pm:114
 msgid "Application error in %1 for %2 on %3: %4"
-msgstr ""
+msgstr "error.application=wiki,email,host,error"
 
 #. ($workspace,$hostname, $error)
 #: lib/Socialtext/BugsPlugin.pm:117
 msgid "Application error in %1 on %2: %3"
-msgstr ""
+msgstr "error.application=wiki.host,error"
 
 #. ($hostname, $error)
 #: lib/Socialtext/BugsPlugin.pm:122
 msgid "Application error on %1: %2"
-msgstr ""
+msgstr "error.application=host,error"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:760
 msgid "Applied current account logo to Desktop. Desktop users need to logout and login again to see the new logo."
-msgstr ""
+msgstr "desktop.relogin-for-logo"
 
 #: lib/Socialtext/AppConfig.pm:1051
 msgid "As a Socialtext customer, you have access to the <a href=\"http://www.socialtext.net/exchange/\">Socialtext Customer Exchange</a>. It is where you can share tips and best practices with other Socialtext customers."
@@ -685,158 +685,151 @@ msgstr "config.did-you-know-text"
 #. (shift)
 #: lib/Socialtext/Handler/ControlPanel.pm:584
 msgid "Assigned the Appliance Business Administrator role to %1"
-msgstr ""
+msgstr "appliance.added-business-admin=user"
 
 #. (shift)
 #: lib/Socialtext/Handler/ControlPanel.pm:598
 msgid "Assigned the Appliance Technical Administrator role to %1"
-msgstr ""
+msgstr "appliance.added-technical-admin=user"
 
 #: lib/Socialtext/AttachmentsUIPlugin.pm:63 lib/Socialtext/AttachmentsUIPlugin.pm:82
 msgid "Attachment not found. The page name, file name or identifer number in the link may be incorrect, or the attachment may have been deleted or is not present in this workspace."
-msgstr ""
+msgstr "error.attachment-missing"
 
 #: lib/Socialtext/Handler/Base.pm:131
 msgid "Bad Request"
-msgstr ""
-
-#: lib/Socialtext/l10n/I18N/xq.pm:26 lib/Socialtext/l10n/I18N/xr.pm:31 lib/Socialtext/l10n/I18N/xx.pm:34
-msgid "Blah"
-msgstr ""
+msgstr "error.bad-request"
 
 #: lib/Socialtext/WeblogPlugin.pm:476
 msgid "Blog Navigation"
-msgstr ""
+msgstr "blog.navigation"
 
 #: lib/Socialtext/WeblogPlugin.pm:120
 msgid "Blog name is too long after URL encoding"
-msgstr ""
+msgstr "error.blog-name-too-long"
 
 #. ($self->current_blog_str)
 #: lib/Socialtext/WeblogPlugin.pm:209
 msgid "Blog: %1 Atom"
-msgstr ""
+msgstr "blog.atom=blog"
 
 #. ($self->current_blog_str)
 #: lib/Socialtext/WeblogPlugin.pm:204
 msgid "Blog: %1 RSS"
-msgstr ""
+msgstr "blog.rss=blog"
 
 #: lib/Socialtext/BugsPlugin.pm:44
 msgid "Bug Dump"
-msgstr ""
+msgstr "bug.dump"
 
 #: lib/Socialtext/CLI.pm:1997
-msgid "Can on change permissions on a group or workspace."
-msgstr ""
+msgid "Can only change permissions on a group or workspace."
+msgstr "error.group-or-wiki-required"
 
 #: lib/Socialtext/CLI.pm:3307
 msgid "Can only specify one of --visible or --hidden"
-msgstr ""
+msgstr "error.no-visible-and-hidden"
 
 #. ($url)
 #: lib/Socialtext/Gadgets/Gadget.pm:767
 msgid "Can't find thumbnail image: %1"
-msgstr ""
+msgstr "error.thumbnail-missing=url"
 
 #: lib/Socialtext/UserSettingsPlugin.pm:237
 msgid "Can't remove privileges of the last admin"
-msgstr ""
+msgstr "error.removing-last-admin"
 
 #: lib/Socialtext/PageRevision.pm:443
 msgid "Cannot change page name: requires a different page_id"
-msgstr ""
+msgstr "error.page-id-mismatch"
 
 #. ($from_class, $to_class)
 #: lib/Socialtext/Pluggable/Plugin/People.pm:766
 msgid "Cannot convert field class from '%1' to '%2'"
-msgstr ""
+msgstr "error.field-conversion-failed=from-class,to-class"
 
 #. ($name, $opts->{title}, $acct->name)
 #: lib/Socialtext/Pluggable/Plugin/People.pm:711
 msgid "Cannot create profile field: The field name '%1' (derived from title '%2') is already used in account '%3'"
-msgstr ""
+msgstr "error.field-exists=name,title,account"
 
 #. ($name, $opts->{title})
 #: lib/Socialtext/Pluggable/Plugin/People.pm:701
 msgid "Cannot create profile field: The field name '%1' (derived from title '%2') is reserved for Socialtext"
-msgstr ""
+msgstr "error.field-reserved=name,title,account"
+
 
 #. ($opts->{name}, $acct->name)
 #: lib/Socialtext/Pluggable/Plugin/People.pm:714
 msgid "Cannot create profile field: The field name '%1' is already used in account '%2'"
-msgstr ""
+msgstr "error.field-exists=name,account"
 
 #. ($opts->{name})
 #: lib/Socialtext/Pluggable/Plugin/People.pm:704
 msgid "Cannot create profile field: The field name '%1' is reserved for Socialtext"
-msgstr ""
+msgstr "error.field-reserved=name"
 
 #. ($opts->{field_class})
 #: lib/Socialtext/Pluggable/Plugin/People.pm:718
 msgid "Cannot create profile field: invalid field-class '%1'"
-msgstr ""
+msgstr "error.invalid=field-class"
 
 #. ($file->{filename})
 #: lib/Socialtext/WorkspacesUIPlugin.pm:224
 msgid "Cannot extract files from %1"
-msgstr ""
+msgstr "error.unpack=file"
 
 #. ($ldap_dn)
 #: lib/Socialtext/CLI.pm:3490
 msgid "Cannot find Group with DN '%1'."
-msgstr ""
+msgstr "error.no-group=ldap-dn"
 
 #. ($EXPORT_VERSION)
 #: lib/Socialtext/Account.pm:426
 msgid "Cannot import an Account with a version greater than %1"
-msgstr ""
+msgstr "error.import-account=max-version"
 
 #: lib/Socialtext/Gadgets/Gallery.pm:200
 msgid "Cannot permanently remove non-account widgets."
-msgstr ""
+msgstr "error.remove-non-account-widget"
 
 #: lib/Socialtext/Gadgets/Gallery.pm:197
 msgid "Cannot remove socialtext widgets."
-msgstr ""
+msgstr "error.remove-socialtext-widget"
 
 #: lib/Socialtext/PageRevision.pm:460
 msgid "Cannot store page revision"
-msgstr ""
+msgstr "error.store-revision"
 
 #: lib/Socialtext/DeletePagePlugin.pm:53
 msgid "Cannot undelete a page with only one revision. Returning to front page."
-msgstr ""
+msgstr "error.undelete-page-one-revision"
 
 #. ($file)
 #: lib/Socialtext/Workspace.pm:1185
-msgid "Cannot write export file %1, aborting.\n"
-msgstr ""
+msgid "Cannot write export file %1, aborting."
+msgstr "error.export=file"
 
 #: lib/Socialtext/Handler/Authen.pm:375
 msgid "Captcha failed."
-msgstr ""
+msgstr "error.captcha"
 
 #: lib/Socialtext/Handler/Authen.pm:666
 msgid "Challenger Did not Redirect."
-msgstr ""
+msgstr "error.challenger-redirect-failed"
 
 #: lib/Socialtext/Pluggable/Plugin/Signals.pm:487 lib/Socialtext/UserSettingsPlugin.pm:117 lib/Socialtext/UserSettingsPlugin.pm:240 lib/Socialtext/WorkspacesUIPlugin.pm:71
 msgid "Changes Saved"
-msgstr ""
+msgstr "config.saved"
 
 #. ($last_changes_time, $changed_total, $total)
 #: lib/Socialtext/RecentChangesPlugin.pm:182
 msgid "Changes in %1 (%2) out of (%3) Total Pages"
-msgstr ""
-
-#: lib/Socialtext/WorkspacesUIPlugin.pm:414
-msgid "Changes saved"
-msgstr ""
+msgstr "page.changes=time,changed,total"
 
 #: lib/Socialtext/Handler/Authen.pm:81 lib/Socialtext/Handler/Authen.pm:82
 msgid "Choose Password"
-msgstr ""
+msgstr "pasword.choose"
 
 #: lib/Socialtext/EmailNotifyPlugin.pm:53
 msgid "Chronologically (Oldest First)"
@@ -844,7 +837,7 @@ msgstr ""
 
 #: lib/Socialtext/CLI.pm:540
 msgid "Clearing caches..."
-msgstr ""
+msgstr "cli.clearing-caches"
 
 #: lib/Socialtext/BreadCrumbsPlugin.pm:68
 msgid "Click this button to save recently viewed pages to your computer for offline use."
@@ -876,7 +869,7 @@ msgstr ""
 #. ($group->driver_group_name)
 #: lib/Socialtext/CLI.pm:3515
 msgid "Config for group %1:"
-msgstr ""
+msgstr "config.for=group:"
 
 #. ($user_count, $ws_count)
 #: lib/Socialtext/Handler/ControlPanel.pm:2272
@@ -966,7 +959,7 @@ msgstr ""
 
 #: lib/Socialtext/EmailReceiver/Base.pm:671
 msgid "Date:"
-msgstr ""
+msgstr "email.date:"
 
 #. ($page->name)
 #: lib/Socialtext/DeletePagePlugin.pm:77
@@ -1010,12 +1003,12 @@ msgstr ""
 
 #. ($self->class_title)
 #: lib/Socialtext/BreadCrumbsPlugin.pm:32
-msgid "Display \\\"%1\\\" side pane box?"
-msgstr ""
+msgid "Display \"%1\" side pane box?"
+msgstr "wiki.show-sidebox=class?"
 
 #: lib/Socialtext/RecentChangesPlugin.pm:70
 msgid "Display as a side box in page view?"
-msgstr ""
+msgstr "wiki.show-sidebox?"
 
 #: lib/Socialtext/CLI.pm:3387
 msgid "Displaying all groups"
@@ -1024,16 +1017,16 @@ msgstr ""
 #. ($p->{restrict_to_domain})
 #: lib/Socialtext/Account.pm:1126
 msgid "Domain (%1) is not valid!"
-msgstr ""
+msgstr "error.invalid=domain!"
 
 #. ($domain)
 #: lib/Socialtext/Handler/ControlPanel.pm:427
 msgid "Domain (%1) is not valid."
-msgstr ""
+msgstr "error.invalid=domain"
 
 #: lib/Socialtext/WikiwygPlugin.pm:711
 msgid "Double-click to edit a page?"
-msgstr ""
+msgstr "wiki.double-click-to-edit?"
 
 #: lib/Socialtext/Formatter/WaflPhrase.pm:514
 msgid "Edit"
@@ -1045,7 +1038,7 @@ msgstr ""
 
 #: lib/Socialtext/Authen.pm:37
 msgid "Email Address:"
-msgstr ""
+msgstr "login.email:"
 
 #: lib/Socialtext/EmailNotifyPlugin.pm:11
 msgid "Email Notification"
@@ -1062,7 +1055,7 @@ msgstr ""
 #. ($dir)
 #: lib/Socialtext/CLI.pm:502
 msgid "Error - export directory %1 already exists!"
-msgstr ""
+msgstr "error.export-directory-exists=path"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:1518
 msgid "Error creating group."
@@ -1212,7 +1205,7 @@ msgstr ""
 
 #: lib/Socialtext/EmailReceiver/Base.pm:654
 msgid "From:"
-msgstr ""
+msgstr "email.from:"
 
 #. ($group->display_name, $role->name, $workspace->name)
 #: lib/Socialtext/Handler/ControlPanel.pm:1400
@@ -1262,7 +1255,7 @@ msgstr ""
 
 #: lib/Socialtext/WatchlistPlugin.pm:41
 msgid "How frequently would you like to receive watchlist emails?"
-msgstr ""
+msgstr "watch.email-frequency?"
 
 #: lib/Socialtext/RecentChangesPlugin.pm:57
 msgid "How many items from that time period should be displayed as a side box on pages?"
@@ -1274,7 +1267,7 @@ msgstr ""
 
 #: lib/Socialtext/WeblogPlugin.pm:49
 msgid "How many posts should be displayed in blog view?"
-msgstr ""
+msgstr "blog.number-of-posts?"
 
 #: lib/Socialtext/SyndicatePlugin.pm:144
 msgid "How many posts should be displayed in outgoing feeds?"
@@ -1286,11 +1279,11 @@ msgstr ""
 
 #: lib/Socialtext/TimeZonePlugin.pm:93
 msgid "How should Daylight Savings/Summer Time be handled?"
-msgstr ""
+msgstr "tz.dst?"
 
 #: lib/Socialtext/TimeZonePlugin.pm:127
 msgid "How should displayed dates be formatted?"
-msgstr ""
+msgstr "date.format?"
 
 #. ($self->account->name)
 #. ($name)
@@ -1314,11 +1307,11 @@ msgstr ""
 
 #: lib/Socialtext/CLI.pm:1310
 msgid "If you'd like to remove the user's system access, please do:"
-msgstr ""
+msgstr "info.deactivated-user:"
 
 #: lib/Socialtext/BugsPlugin.pm:32
 msgid "Ignore Bug"
-msgstr ""
+msgstr "bug.ignore"
 
 #: lib/Socialtext/CLI.pm:550
 msgid "Importing account data..."
@@ -1453,7 +1446,7 @@ msgstr ""
 #. ($ws->title)
 #: lib/Socialtext/CLI.pm:2633
 msgid "Locked pages in the '%1' workspace:"
-msgstr ""
+msgstr "wiki.locked-pages=wiki:"
 
 #: lib/Socialtext/Page.pm:508
 msgid "Locking page."
@@ -1719,7 +1712,7 @@ msgstr ""
 
 #: lib/Socialtext/EditPlugin.pm:47
 msgid "Page title missing"
-msgstr ""
+msgstr "error.missing-page-title"
 
 #: lib/Socialtext/WatchlistPlugin.pm:270
 msgid "Pages You're Watching"
@@ -1772,7 +1765,7 @@ msgstr ""
 #. ($p)
 #: lib/Socialtext/CLI.pm:358
 msgid "Plugin %1 does not exist!"
-msgstr ""
+msgstr "error.missing=plugin"
 
 #: lib/Socialtext/UserPreferencesPlugin.pm:35
 msgid "Preferences Class ID is missing"
@@ -1781,7 +1774,7 @@ msgstr ""
 #. ($plugin, $account->name)
 #: lib/Socialtext/CLI.pm:441
 msgid "Preferences for the %1 plugin in the %2 account"
-msgstr ""
+msgstr "pref.for=plugin,account"
 
 #. ($to_string)
 #: lib/Socialtext/CLI.pm:423
@@ -1796,7 +1789,7 @@ msgstr ""
 #. ($plugin)
 #: lib/Socialtext/CLI.pm:442
 msgid "Preferences for the %1 plugin:"
-msgstr ""
+msgstr "pref.for=plugin"
 
 #: lib/Socialtext/UserPreferencesPlugin.pm:47
 msgid "Preferences saved"
@@ -1934,7 +1927,7 @@ msgstr ""
 
 #: lib/Socialtext/BugsPlugin.pm:31
 msgid "Report Bug"
-msgstr ""
+msgstr "bug.report"
 
 #. ($self->hub->current_workspace->title)
 #: lib/Socialtext/UserSettingsPlugin.pm:530
@@ -2014,11 +2007,11 @@ msgstr ""
 
 #: lib/Socialtext/TimeZonePlugin.pm:193
 msgid "Should seconds be included on displayed times?"
-msgstr ""
+msgstr "date.include-seconds?"
 
 #: lib/Socialtext/TimeZonePlugin.pm:161
 msgid "Should times be displayed in 12-hour or 24-hour format?"
-msgstr ""
+msgstr "date.hour-format?"
 
 #. ($computed_max_size)
 #: lib/Socialtext/Rest/Signals.pm:621
@@ -2323,11 +2316,11 @@ msgstr ""
 
 #: lib/Socialtext/BacklinksPlugin.pm:183
 msgid "The page had no Backlinks."
-msgstr ""
+msgstr "page.no-backlinks"
 
 #: lib/Socialtext/BacklinksPlugin.pm:168
 msgid "The page had these Backlinks:"
-msgstr ""
+msgstr "page.backlist:"
 
 #. (Socialtext::AppConfig->support_address)
 #: lib/Socialtext/Handler/Base.pm:138
@@ -2388,7 +2381,7 @@ msgstr ""
 
 #: lib/Socialtext/WorkspacesUIPlugin.pm:249
 msgid "The uploaded skin does not contain info.yaml!"
-msgstr ""
+msgstr "error.info-yaml-missing"
 
 #. ($username)
 #: lib/Socialtext/Handler/Authen.pm:324
@@ -2470,7 +2463,7 @@ msgstr ""
 
 #: lib/Socialtext/Handler/ControlPanel.pm:716
 msgid "There was an error processing your image; try uploading another image file?"
-msgstr ""
+msgstr "error.invalid-account-logo?"
 
 #: lib/Socialtext/Hub.pm:189
 msgid "There was an error with your request"
@@ -2495,7 +2488,7 @@ msgstr ""
 
 #: lib/Socialtext/BacklinksPlugin.pm:174
 msgid "This page is linked to from:"
-msgstr ""
+msgstr "page.linked-from:"
 
 #: lib/Socialtext/Handler/Authen.pm:228
 msgid "This username has no associated email address."
@@ -2517,7 +2510,7 @@ msgstr ""
 
 #: lib/Socialtext/CLI.pm:1306
 msgid "To do so, first assign them to a new primary account:"
-msgstr ""
+msgstr "info.change-primary-account:"
 
 #: lib/Socialtext/Workspace.pm:316
 msgid "Top Page"
@@ -2561,7 +2554,7 @@ msgstr ""
 
 #: lib/Socialtext/Workspace.pm:872
 msgid "Unable to process logo file. Is it an image?"
-msgstr ""
+msgstr "error.invalid-wiki-logo?"
 
 #: lib/Socialtext/WikiText/Emitter/Messages/Canonicalize.pm:67 lib/Socialtext/WikiText/Emitter/Messages/HTML.pm:94
 msgid "Unknown Person"
@@ -2630,7 +2623,7 @@ msgstr ""
 
 #: lib/Socialtext/Authen.pm:38
 msgid "Username:"
-msgstr ""
+msgstr "login.name:"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:2124
 msgid "Users"
@@ -2699,19 +2692,19 @@ msgstr ""
 
 #: lib/Socialtext/EmailNotifyPlugin.pm:65 lib/Socialtext/WatchlistPlugin.pm:63
 msgid "What information about changed pages do you want in email digests?"
-msgstr ""
+msgstr "email.page-digest-details?"
 
 #: lib/Socialtext/EmailNotifyPlugin.pm:50
 msgid "What order would you like the updates to be sorted?"
-msgstr ""
+msgstr "email.page-digest-sort?"
 
 #: lib/Socialtext/RecentChangesPlugin.pm:39
 msgid "What time interval should \"What's New\" display?"
-msgstr ""
+msgstr "config.changes-depth?"
 
 #: lib/Socialtext/TimeZonePlugin.pm:69
 msgid "What time zone should times be displayed in?"
-msgstr ""
+msgstr "config.time-zone?"
 
 #: lib/Socialtext/RecentChangesPlugin.pm:18 lib/Socialtext/RecentChangesPlugin.pm:268
 msgid "What's New"
@@ -2724,7 +2717,7 @@ msgstr ""
 
 #: lib/Socialtext/DisplayPlugin.pm:127
 msgid "Which language do you use?"
-msgstr ""
+msgstr "config.language?"
 
 #: lib/Socialtext/Lite/People.pm:167
 msgid "Work number"
@@ -2838,7 +2831,7 @@ msgstr ""
 
 #: lib/Socialtext/CLI.pm:1304
 msgid "You cannot remove a user from their primary account."
-msgstr ""
+msgstr "error.remove-user-primary-account"
 
 #. (Socialtext::AppConfig->support_address)
 #: lib/Socialtext/Handler/Container/Group.pm:41
@@ -2993,7 +2986,7 @@ msgstr "tz.dst-no"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:1082
 msgid "e-mail address was not supplied!"
-msgstr ""
+msgstr "error.email-required"
 
 #: lib/Socialtext/Formatter/Phrase.pm:268 lib/Socialtext/Formatter/Phrase.pm:330
 msgid "external link"

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-16 22:09+0800\n"
+"PO-Revision-Date: 2011-02-17 02:02+0800\n"
 "PO-Revision-Date: \n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
@@ -239,12 +239,12 @@ msgstr "invite.append?"
 #. (page_title)
 #: share/skin/s3/javascript/lightbox/delete.tt2:12
 msgid "Are you sure you want to delete \"%1\"?"
-msgstr "page.delete?=title"
+msgstr "page.delete=title?"
 
 #. (selected_attachment)
 #: share/skin/s3/javascript/lightbox/attachment.tt2:50
 msgid "Are you sure you want to delete the attachment '%1' from this page?"
-msgstr "file.delete?=name"
+msgstr "file.delete=name?"
 
 #: share/skin/s3/javascript/s3.js:1175
 msgid "Are you sure you want to discard the draft?"
@@ -423,7 +423,7 @@ msgstr "info.copy"
 #. (page_title)
 #: share/skin/s3/javascript/lightbox/copy.tt2:8
 msgid "Copy the page %1 to another workspace?"
-msgstr "page.copy?=title"
+msgstr "page.copy=title?"
 
 #: share/skin/s3/javascript/lightbox/create_content.tt2:46
 msgid "Create"
@@ -1604,7 +1604,7 @@ msgstr "revision.tags:"
 #. (type)
 #: share/skin/s3/template/view/edit_contention:17
 msgid "The %1 you just edited is shown below. You can copy and paste your changes from here:"
-msgstr "edit.view-contention:=type"
+msgstr "edit.view-contention=type:"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:129 share/skin/s3/template/element/settings/users_invite_section:84
 msgid "The Workspace is easy to use. Click links to browse through the pages."
@@ -1675,12 +1675,12 @@ msgstr "wiki.no-members"
 #. (filename, match.size, match.uploader_name, match.local_date)
 #: share/skin/s3/javascript/lightbox/attachment.js:239
 msgid "There is already a file named \"%1\" (%2 uploaded by %3 on %4) attached to this page. You can <span class=\"emphasis\">Add</span> another version of the file or <span class=\"emphasis\">Replace</span> the existing version with this one. What would you like to do?"
-msgstr "file.add-or-replace?=name,size,user,date"
+msgstr "file.add-or-replace=name,size,user,date?"
 
 #. (filename)
 #: share/skin/s3/javascript/lightbox/attachment.js:229
 msgid "There is already a file named \"%1\" attached to this page. You can <span class=\"emphasis\">Add</span> another version of the file or <span class=\"emphasis\">Replace</span> the existing version with this one. What would you like to do?"
-msgstr "file.add-or-replace?=name"
+msgstr "file.add-or-replace=name?"
 
 #: share/skin/s3/template/view/settings:53
 msgid "This Workspace"
@@ -2005,7 +2005,7 @@ msgstr "wiki.created=title,uri"
 #. ("<a target=\"_blank\" href=\"/st/group/' + group.group_id + '\">' + group.name + '</a>")
 #: share/skin/s3/javascript/lightbox/self_join_single.tt2:1 share/skin/s3/javascript/lightbox/self_join_single.tt2:2
 msgid "You must be a member of %1 Group to edit or comment on this page. Would you like to join now?"
-msgstr "edit.self-join?=group"
+msgstr "edit.self-join=group?"
 
 #: share/skin/s3/javascript/lightbox/self_join_many.tt2:1
 msgid "You must be a member of one of the groups that have access to this workspace. Please select which group(s) you want to join below."
