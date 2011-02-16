@@ -1168,10 +1168,10 @@ sub _group_role_changed {
         my %p = validate(@_,$spec);
         $p{name} //= $self->name;
 
-        die loc("Export directory [_1] does not exist.\n", $p{dir})
+        die loc("Export directory [_1] does not exist.", $p{dir})."\n"
             if defined $p{dir} && ! -d $p{dir};
 
-        die loc("Export directory [_1] is not writeable.\n", $p{dir})
+        die loc("Export directory [_1] is not writable.", $p{dir})."\n"
             unless defined $p{dir} && -w $p{dir};
 
         my $tarball_dir = defined $p{dir}

@@ -1999,7 +1999,7 @@ sub set_permissions {
     }
 
     $self->_success(
-        loc("The permissions for the [_1] [_2] have been changed to [_3].\n",
+        loc("The permissions for the [_1] [_2] have been changed to [_3].",
             $name, $object, $set_name)
     );
 }
@@ -2592,7 +2592,7 @@ sub _toggle_page_lock {
     my $workspace = $hub->current_workspace;
 
     $self->_error(loc(
-        "Page locking is turned off for workspace '[_1]'.\n",
+        "Page locking is turned off for workspace '[_1]'.",
         $workspace->title()
     )) unless ( $workspace->allows_page_locking );
 
@@ -2615,11 +2615,18 @@ sub can_lock_pages {
     $hub->current_user($user);
     my $can_lock = $hub->checker->check_permission('lock') && $hub->current_workspace->allows_page_locking;
 
-    $self->_success(loc(
-        "User '[_1]' [_2] lock a page.\n",
-        $user->username,
-        $can_lock? 'can' : 'cannot',
-    ));
+    if ($can_lock) {
+        $self->_success(loc(
+            "User '[_1]' can lock a page.",
+            $user->username
+        ));
+    }
+    else {
+        $self->_success(loc(
+            "User '[_1]' cannot lock a page.",
+            $user->username
+        ));
+    }
 }
 
 sub locked_pages {

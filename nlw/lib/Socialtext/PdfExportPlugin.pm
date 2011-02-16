@@ -64,7 +64,7 @@ sub pdf_export {
 
     my @page_names = $self->cgi->page_selected;
     if (0 == @page_names) {
-        return loc("Error:<pre>No pages selected for export</pre>\n");
+        return loc("Error:<pre>No pages selected for export</pre>");
     }
 
     # If there is only one page to be exported, set the current
@@ -84,7 +84,7 @@ sub pdf_export {
         );
         return $pdf_content;
     }
-    return "Error:<pre>Unable to convert to PDF</pre>\n";
+    return loc("Error:<pre>Unable to convert to PDF</pre>");
 }
 
 =head2 multi_page_export($page_names, \$output)
