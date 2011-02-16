@@ -101,7 +101,7 @@ around 'BUILDARGS' => sub {
     my $orig = shift;
     my $class = shift;
     my $args = shift;
-    $args->{summary} //= '';
+    $args->{$_} //= '' for qw(summary edit_summary);
     return $orig->($class, $args);
 };
 
