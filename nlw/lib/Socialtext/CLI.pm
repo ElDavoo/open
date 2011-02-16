@@ -1477,7 +1477,7 @@ sub _remove_thing_from_thing {
     my $role = $container->$role_method($condemned);
     my $msg;
     if ($role) {
-        $msg = loc("[_1] now has the role of '[_2]' in [_3] due to membership in a Group",
+        $msg = loc("[_1] now has the role of '[_2]' in [_3] due to membership in a group",
             $condemned->name, $role->display_name, $container->name);
     }
     else {
