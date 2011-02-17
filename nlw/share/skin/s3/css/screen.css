@@ -1432,38 +1432,6 @@ div.dashNewPage a {
 	background: url(../images/newPageIcon.png) no-repeat center left;
 	
 }
-
-div.widgetContent div#profile,
-div.widgetContent div.profile {
-	width: 99%;
-	margin-left: 14px;
-	text-align: left;
-	line-height: 16px;
-	color: #666;
-	padding-top: 10px;
-}
-
-
-div.widgetContent div#profile dl.mainInfo,
-div.widgetContent div.profile dl.mainInfo {
-	float: left;
-	margin-left: 15px;
-	
-}
-
-div.widgetContent div#profile dl dt,
-div.widgetContent div.profile dl dt {
-	font-weight: bold;
-	font-size: 11px;
-	text-transform: uppercase;
-}
-
-
-div.widgetContent div#profile dl.mainInfo dt,
-div.widgetContent div.profile dl.mainInfo dt {
-	font-size: 13px;
-	text-transform: capitalize;
-	}
 	
 img.bigAvatar {
 	width: 62px;
