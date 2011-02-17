@@ -3760,9 +3760,10 @@ sub _require_page_attachment {
     }
 
     return try { 
-        $self->hub->attachments->load(
-            page => $page, page_id => $page->id,
-            id => $opts{attachment});
+        $page->hub->attachments->load(
+            page_id => $page->id,
+            id => $opts{attachment}
+        );
     }
     catch {
         my $ws = $page->hub->current_workspace->name;
