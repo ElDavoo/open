@@ -398,7 +398,7 @@ sub _signal_edit_summary {
 
     $edit_summary = word_truncate($edit_summary,
         ($is_comment ? $SignalCommentLength : $SignalEditLength));
-    my $page_link = sprintf "{link: %s [%s]}", $workspace->name, $self->title;
+    my $page_link = sprintf "{link: %s [%s]}", $workspace->name, $self->name;
     my $body = $edit_summary
         ? ($is_comment
             ? loc('"[_1]" (commented on [_2] in [_3])', $edit_summary, $page_link, $workspace->title)
@@ -1098,7 +1098,7 @@ sub all {
     my $self = shift;
     return (
         page_uri => $self->uri,
-        page_title => $self->title,
+        page_title => $self->name,
         # Note:uri-escaped title wasn't always == page_id
         page_title_uri_escaped => $self->page_id,
         revision_id => $self->revision_id,
@@ -2051,7 +2051,7 @@ sub send_as_email {
             type => SCALAR | ARRAYREF | UNDEF, default => undef,
             callbacks => { 'has addresses' => sub { $self->_validate_has_addresses(@_) } }
         },
-        subject => { type => SCALAR, default => $self->title },
+        subject => { type => SCALAR, default => $self->name },
         body_intro => { type => SCALAR, default => '' },
         include_attachments => { type => BOOLEAN, default => 0 },
         send_copy => { type => BOOLEAN, default => 0 },

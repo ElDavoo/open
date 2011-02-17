@@ -8,7 +8,7 @@ use base 'Socialtext::Plugin';
 use Class::Field qw( const );
 use DateTime::Format::Strptime;
 use Socialtext::User;
-use Socialtext::String ();
+use Socialtext::String qw/html_escape title_to_id uri_escape/;
 use Socialtext::BrowserDetect ();
 use Socialtext::l10n qw/loc system_locale/;
 use Socialtext::Locales qw/available_locales/;
@@ -75,7 +75,7 @@ sub new_page {
     }
 
     foreach ($self->_new_tags_to_add()) {
-        $uri .= ";add_tag=" . $self->uri_escape($_);
+        $uri .= ";add_tag=" . uri_escape($_);
     }
     $uri = $uri . ';caller_action=' . $self->cgi->caller_action
         if $self->cgi->caller_action;
@@ -171,7 +171,7 @@ sub display {
     }
 
     my $is_new_page = $self->hub->pages->page_exists_in_workspace(
-        $page->title,
+        $page->name,
         $self->hub->current_workspace->name,
     ) ? 0 : 1;
 
@@ -268,17 +268,18 @@ sub _render_display {
                     $self->hub->timezone->time_local( $_[0] ),
                 ),
             },
-            title                   => $page->title,
+            title                   => $page->name,
             page                    => $self->_get_page_info($page),
             template_name           => $self->cgi->template || '',
             tag_count               => scalar @{ $page->tags }, # counts recent changes!
             tags                    => $self->_getCurrentTags($page),
             initialtags             => $self->_getCurrentTagsJSON($page),
             workspacetags           => $self->_get_workspace_tags,
-            is_homepage             =>
-                ( not $self->hub->current_workspace->homepage_is_dashboard
-                    and $page->title eq
-                    $self->hub->current_workspace->title ),
+            is_homepage             => (
+                  !$self->hub->current_workspace->homepage_is_dashboard
+                  and $page->page_id eq title_to_id(
+                      $self->hub->current_workspace->title)
+            )
             is_new                  => $is_new_page,
             is_incipient            => ($self->cgi->is_incipient ? 1 : 0),
             start_in_edit_mode      => $start_in_edit_mode,
@@ -287,7 +288,7 @@ sub _render_display {
             new_attachments         => $new_attachments,
             watching                => $self->hub->watchlist->page_watched,
             login_and_edit_path => '/challenge?'
-                . $self->uri_escape(
+                . uri_escape(
                     $self->hub->current_workspace->uri 
                   . '?action=edit;page_name=' . $page->uri
                 ),
@@ -316,7 +317,7 @@ sub _get_minimal_page_info {
 
     return {
         link   => $self->hub->helpers->page_display_path($page->id),
-        title  => $self->hub->helpers->html_escape($page->title),
+        title  => html_escape($page->name),
         date   => $page->datetime_for_user,
     }
 }
@@ -333,7 +334,7 @@ sub content_only {
         template    => 'view/page/content',
         vars        => {
             $self->hub->helpers->global_template_vars,
-            title        => $page->title,
+            title        => $page->name,
             page         => $self->_get_page_info($page),
             initialtags  => $self->_getCurrentTagsJSON($page),
             workspacetags  => $self->_get_workspace_tags,
@@ -352,11 +353,11 @@ sub _get_page_info {
     Socialtext::Timer->Pause('s2_page_html');
 
     return {
-        title           => $page->title,
-        display_title   => Socialtext::String::html_escape( $page->title ),
+        title           => $page->name,
+        display_title   => html_escape($page->name),
         id              => $page->id,
         is_default_page => (
-            $page->id eq Socialtext::String::title_to_id(
+            $page->page_id eq title_to_id(
                 $self->hub->current_workspace->title
             )
         ),
