@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>388</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-388.air</url>
-<description><![CDATA[[Build 388 - Thu Feb 17 07:40:54 PST 2011]
+  <version>391</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-391.air</url>
+<description><![CDATA[[Build 391 - Thu Feb 17 14:34:17 PST 2011]
+* Also delay toggling "Show Signals within" until all placeholder parent signals are fetched.
+
+[Build 390 - Thu Feb 17 13:33:22 PST 2011]
+* More attempt at fixing {bz: 4979}.
+
+[Build 389 - Thu Feb 17 13:14:10 PST 2011]
+* Delay the effect of toggling "Show Signals within" to avoid wedging SD. {bz: 4979}
+
+[Build 388 - Thu Feb 17 07:40:54 PST 2011]
 * Fix "Insert Video" button so it displays again in Signals reply. (Alan)
 
 [Build 387 - Wed Feb 16 17:04:57 PST 2011]
