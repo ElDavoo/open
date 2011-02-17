@@ -28,7 +28,7 @@ sub class_id { 'pages' }
 const class_title => 'NLW Pages';
 
 field current => 
-      -init => '$self->new_page($self->current_id)';
+      -init => '$self->new_page($self->current_name)';
 
 sub ensure_current {
     my ($self, $page) = @_;
@@ -222,12 +222,12 @@ sub title_to_disposition {
     return ($disposition, $page->uri);
 }
 
-sub current_id {
+sub current_name {
     my $self = shift;
     my $page_name = 
       $self->hub->cgi->page_name ||
       $self->hub->current_workspace->title;
-    title_to_id($page_name);
+    return $page_name || '0';
 }
 
 sub unset_current {
