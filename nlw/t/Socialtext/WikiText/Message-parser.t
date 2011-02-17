@@ -92,7 +92,7 @@ for my $type (qw(Solr Canonicalize HTML)) {
     is $noun_links[5]{text}, 'other taag', "$type tag is named";
 
     is $noun_links[6]{wafl_type}, 'link', "$type then a link";
-    is $noun_links[6]{page_id}, 'Admin%20Wiki', "$type link has page_id";
+    is $noun_links[6]{page_id}, 'Admin Wiki', "$type link has page_id";
     is $noun_links[6]{workspace_id}, 'admin', "$type link has workspace";
     is $noun_links[6]{section}, 'some%20part', "$type link has section";
 
