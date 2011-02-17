@@ -542,6 +542,9 @@ sub hash_representation {
         uri             => $self->uri,
         workspace_name  => $self->workspace_name,
         workspace_title => $self->workspace_title,
+        creator_id => $self->creator->user_id,
+        last_editor_id => $self->last_editor->user_id,
+
         ($self->deleted ? (deleted => 1) : ()),
     };
 
@@ -549,6 +552,7 @@ sub hash_representation {
         user => $self->hub->current_user,
         workspace => $self->hub->current_workspace,
     ) for qw(creator last_editor);
+
 
     return $hash;
 }
