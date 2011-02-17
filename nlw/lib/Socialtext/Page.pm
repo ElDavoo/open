@@ -1754,12 +1754,13 @@ sub _cache_dir {
 }
 
 sub unindex {
-    my $self = shift;
+    my ($self, $skip_atts) = @_;
     my @indexers = Socialtext::Search::AbstractFactory->GetIndexers(
         $self->workspace_name);
-    my @atts = $self->attachments;
+    my @atts = $self->attachments(deleted_ok => 1) unless $skip_atts;
     for my $indexer (@indexers) {
         $indexer->delete_page( $self->uri);
+        next if $skip_atts;
         foreach my $attachment (@atts) {
             $indexer->delete_attachment($self->uri, $attachment->id);
         }
@@ -1771,7 +1772,6 @@ sub delete {
     my %p = @_;
     my $t = time_scope('page_delete');
     my $user = $p{user} || $self->hub->current_user;
-
 
     my $rev = $self->edit_rev(editor => $user);
     $rev->summary('');
@@ -1793,16 +1793,26 @@ sub delete {
 
 sub purge {
     my $self = shift;
-    $self->unindex();
+    my $ws_id = $self->workspace_id;
+    my $page_id = $self->page_id;
+
+    my @atts = $self->attachments(deleted_ok => 1);
+    $self->unindex('skip_atts'); # will get unindexed during $att->purge
+
     sql_txn {
-        my $ws_id = $self->workspace_id;
-        my $page_id = $self->page_id;
-        # the other tables should cascade...
-        for my $tbl (qw(page_tag page_revision page_attachment page)) {
+        # these won't cascade when we delete the page row:
+        for my $tbl (qw(page_tag page_revision)) {
             sql_execute(qq{
                 DELETE FROM $tbl WHERE workspace_id = ? and page_id = ?
             }, $ws_id, $page_id);
         }
+
+        $_->purge() for @atts; # so the Upload gets cleaned up and logged
+
+        # if anything else references the page, this should cascade:
+        sql_execute(qq{
+            DELETE FROM page WHERE workspace_id = ? and page_id = ?
+        }, $ws_id, $page_id);
     };
 }
 
@@ -2270,9 +2280,9 @@ sub original_revision_id {
 }
 
 sub attachments {
-    my $self = shift;
+    my ($self, @args) = @_;
     return @{$self->hub->attachments->all(
-        page => $self, page_id => $self->page_id)};
+        @args, page => $self, page_id => $self->page_id)};
 }
 
 sub _log_page_action {

@@ -63,12 +63,12 @@ sub all {
     my $page_id  = $p->{page_id} || $self->hub->pages->current->id;
     my $page = $p->{page};
     my $ws_id    = $self->hub->current_workspace->workspace_id;
+    my $not_deleted = $p->{deleted_ok} ? '' : 'AND NOT deleted';
 
     my $sql = q{
         SELECT }.COLUMNS_STR.qq{ FROM page_attachment pa
           JOIN attachment a USING (attachment_id)
-         WHERE workspace_id = ? AND page_id = ?
-           AND NOT deleted
+         WHERE workspace_id = ? AND page_id = ? $not_deleted
     };
     my @args = ($ws_id, $page_id);
 
