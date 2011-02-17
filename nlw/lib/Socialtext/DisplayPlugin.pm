@@ -279,7 +279,7 @@ sub _render_display {
                   !$self->hub->current_workspace->homepage_is_dashboard
                   and $page->page_id eq title_to_id(
                       $self->hub->current_workspace->title)
-            )
+            ),
             is_new                  => $is_new_page,
             is_incipient            => ($self->cgi->is_incipient ? 1 : 0),
             start_in_edit_mode      => $start_in_edit_mode,
