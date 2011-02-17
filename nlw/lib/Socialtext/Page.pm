@@ -2010,6 +2010,9 @@ sub rename {
         );
         return 0 unless $ok;
 
+        # Need to get rid of the page attachments on this page
+        $_->delete for $self->attachments;
+
         # XXX: is there a better way to put square brackets around the
         # target name?  Maybe with [sprintf,...] somehow?
         my $localized_str = loc("Page renamed to <[_1]>", $new_page_title);
