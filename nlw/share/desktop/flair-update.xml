@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>386</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-386.air</url>
-<description><![CDATA[[Build 386 - Tue Feb 15 10:26:18 PST 2011]
+  <version>388</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-388.air</url>
+<description><![CDATA[[Build 388 - Thu Feb 17 07:40:54 PST 2011]
+* Fix "Insert Video" button so it displays again in Signals reply. (Alan)
+
+[Build 387 - Wed Feb 16 17:04:57 PST 2011]
+* Fix freeze of PostTo dropdown menu when ShowFrom item changes with it. {bz: 4976}
+
+[Build 386 - Tue Feb 15 10:26:18 PST 2011]
 * Fix "DM with mention of same user is displayed as a mention" {bz: 4942}
 * Fix "Add a video to a signal, but delete the video Title.  Save.  See 'null'." {bz: 4942}
 * Fix "No video thumbnails in Signal listviews." {bz: 4942}
