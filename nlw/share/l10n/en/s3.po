@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-17 04:04+0800\n"
+"PO-Revision-Date: 2011-02-18 01:54+0800\n"
 "PO-Revision-Date: \n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
@@ -962,7 +962,7 @@ msgstr "watch.look-for"
 #. (workspace.title)
 #: share/skin/s3/template/element/settings/workspace_clone_section:7
 msgid "Make a clone of the %1 workspace, including all pages, tags, and attachments. Next, you will need to invite members into the new workspace."
-msgstr "wiki.clone-and-invite=wiki"
+msgstr "wiki.clone+invite=wiki"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:131 share/skin/s3/template/element/settings/users_invite_section:86
 msgid "Make your contributions in the text box, then click \"Save\"."
@@ -1187,7 +1187,7 @@ msgstr "file.browse"
 
 #: share/skin/s3/javascript/s3.js:150
 msgid "Please copy your changes, and click Cancel to return to the page."
-msgstr "edit.copy-and-cancel"
+msgstr "edit.copy+cancel"
 
 #: share/skin/s3/template/element/settings/weblog_create:7
 msgid "Please give your blog a name. If the name you provide does not end with \"Blog\", the system will add \"Blog\" to the name you provide. After you click \"Create\", you'll be taken right to the new blog."
@@ -1862,10 +1862,6 @@ msgstr "info.welcome=user"
 #: share/skin/s3/template/element/listview_tabs:5 share/skin/s3/template/layout/html:139 share/skin/s3/template/layout/user_frame:144 share/skin/s3/template/lite/subnav.html:16 share/skin/s3/template/view/empty_watchlist:8 share/skin/s3/template/view/page/display:225
 msgid "What's New"
 msgstr "nav.news"
-
-#: share/skin/s3/template/lite/subnav.html:14
-msgid "What's new"
-msgstr "nav.lite-news"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:7
 msgid "When the workspace receives an email, the subject of the email becomes the title of a page, and the body of the email becomes the body of the page."
