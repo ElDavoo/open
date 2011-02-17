@@ -208,11 +208,11 @@
                     </tr>
                     <tr>
                         <td>[% loc('dinette') %]</td>
-                        <td>$[% loc('75') %]</td>
+                        <td>[% loc('$75') %]</td>
                     </tr>
                 </table>
             </td>
-            <td>[% loc('|table|value|<br>|dinette|$75|<br>') %]</td>
+            <td>[% '| ' + loc('table') + ' | ' + loc('value') + ' |<br>| ' + loc('dinette') + ' | ' + loc('$75') + ' |<br>' %]</td>
         </tr> 
         <tr class="st-refcard-table-row">
             <td><blockquote>[% loc('indented') %]<br>[% loc('lines') %]</blockquote></td>
@@ -343,7 +343,7 @@
             <td>.pre<br>Block of text with no *special* punctuation<br>.pre</td>
         </tr> 
         <tr class="st-refcard-table-row">
-            <td><sup>™</sup></td>
+            <td><sup>&#x2122;</sup></td>
             <td>{tm}</td>
         </tr> 
         <tr class="st-refcard-table-row">
