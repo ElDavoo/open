@@ -1518,8 +1518,8 @@ sub send_confirmation_completed_email {
 
     my $app_name =
         Socialtext::AppConfig->is_appliance()
-        ? 'Socialtext Appliance'
-        : 'Socialtext';
+        ? loc('Socialtext Appliance')
+        : loc('Socialtext');
     my @workspaces = [];
     my @groups = [];
     my $subject;

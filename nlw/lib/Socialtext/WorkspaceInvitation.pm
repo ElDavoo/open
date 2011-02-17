@@ -89,7 +89,7 @@ sub invite_admin_notify {
     my $template_dir = $workspace->invitation_template;
 
     my $subject = loc( 
-        "I'm inviting you to the [_1] workspace", 
+        "I'm inviting you into the [_1] workspace", 
         $workspace->title
     );
 

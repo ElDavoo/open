@@ -111,15 +111,15 @@ sub _item_as_html {
     Socialtext::Timer->Continue('_item_as_html_tags');
     my @tags    = grep { $_ !~ /recent changes/i } $page->categories_sorted;
     if ( scalar @tags ) {
-       push @html_footers, "<div>Tags: " . join( ", ", @tags ) . "</div>";
+       push @html_footers, "<div>".loc("Tags: [_1]", join( ", ", @tags )) . "</div>";
     }
     Socialtext::Timer->Pause('_item_as_html_tags');
 
     my $create_time = $page->createtime_for_user;
 
-    push @html_headers, "<div>".loc('Originally created').": ". $create_time."</div>";
+    push @html_headers, "<div>".loc('Originally created: [_1]', $create_time)."</div>";
     if (my $summary = $page->edit_summary) {
-        if ($summary ne '(comment)') {
+        if ($summary ne '(comment)' and $summary ne loc('(comment)') {
             push @html_headers, "<div>$summary</div>";
         }
     }

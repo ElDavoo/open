@@ -126,7 +126,7 @@ sub nologin {
         eval {$messages = Socialtext::File::get_contents_utf8($file)};
         warn $@ if $@;
     }
-    $messages ||= '<p>'. loc('Login has been Disabled') .'</p>';
+    $messages ||= '<p>'. loc('Login has been disabled') .'</p>';
 
     return $self->_process_template(
         $NOLOGIN_TEMPLATE,
@@ -370,7 +370,7 @@ sub _pages_for_tag {
 
     return $self->_process_template(
         $TAG_TEMPLATE,
-        title     => loc("Tag [_1]", $tag),
+        title     => loc("Tag: [_1]", $tag),
         section   => 'tag',
         base_uri  => '/m/tag/'.$self->hub->current_workspace->name.'/'.$tag,
         rows      => $rows,
