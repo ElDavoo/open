@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>4.6.2</version>
-  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.6.2.air</url>
-  <description><![CDATA[[4.6.2 - Wed Feb 16 17:16:35 PST 2011]
+  <version>4.6.3</version>
+  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.6.3.air</url>
+  <description><![CDATA[[4.6.3 - Thu Feb 17 14:42:55 PST 2011]
 (Features)
 * OpenSocial Widgets in pages now work in mini-browser and preview pane. {bz: 4933}
 * Syntax-highlighted code blocks now work in mini-browser and preview pane. {bz: 4933}
@@ -12,6 +12,7 @@
 * Fix "Add a video to a signal, but delete the video Title. Save. See 'null'". {bz: 4942}
 * Fix "No video thumbnails in Signal listviews". {bz: 4942}
 * Fix "PostTo dropdown menu frozen". {bz: 4976}
+* Fix "Toggling 'Show Signals within' results in inconsistent signals display". {bz: 4979}
 
 [4.6.0 - Mon Feb 14 10:52:21 PST 2011]
 (Enhancements)
