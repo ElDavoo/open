@@ -119,7 +119,7 @@ sub _item_as_html {
 
     push @html_headers, "<div>".loc('Originally created: [_1]', $create_time)."</div>";
     if (my $summary = $page->edit_summary) {
-        if ($summary ne '(comment)' and $summary ne loc('(comment)') {
+        if ($summary ne '(comment)' and $summary ne loc('(comment)')) {
             push @html_headers, "<div>$summary</div>";
         }
     }
