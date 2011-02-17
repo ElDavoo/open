@@ -289,7 +289,7 @@ sub _render_display {
             login_and_edit_path => '/challenge?'
                 . $self->uri_escape(
                     $self->hub->current_workspace->uri 
-                  . '?action=edit;page_name=' . $page->name
+                  . '?action=edit;page_name=' . $page->uri
                 ),
             feeds => $self->_feeds( $self->hub->current_workspace, $page ),
             wikiwyg_double =>
