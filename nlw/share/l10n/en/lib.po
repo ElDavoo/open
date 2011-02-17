@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-17 04:06+0800\n"
+"PO-Revision-Date: 2011-02-17 09:47+0800\n"
 "PO-Revision-Date: \n"
 "Language-Team: LANGUAGE TEAM <E-MAIL@ADDRESS or HOME PAGE>\n"
 "Last-Translator: Socialtext i18n team\n"
@@ -1158,21 +1158,21 @@ msgstr "account.exporting-gallery"
 #. ($groups->count, $acct->name)
 #: lib/Socialtext/Pluggable/Plugin/Groups.pm:69
 msgid "Exporting all groups (%1) for account '%2'..."
-msgstr ""
+msgstr "account.exporting-groups=count,account"
 
 #. ($ws->name)
 #: lib/Socialtext/Pluggable/Plugin/Groups.pm:149
 msgid "Exporting all groups for workspace '%1'..."
-msgstr ""
+msgstr "wiki.exporting-groups=wiki"
 
 #: lib/Socialtext/Pluggable/Plugin/Widgets.pm:111
 msgid "Exporting dashboard widgets ..."
-msgstr ""
+msgstr "dashboard.exporting-widgets"
 
 #. ($wksp->name)
 #: lib/Socialtext/CLI.pm:512
 msgid "Exporting workspace %1 ..."
-msgstr ""
+msgstr "wiki.exporting=wiki"
 
 #. ($user->username, $p{'external-id'})
 #: lib/Socialtext/CLI.pm:691
@@ -1190,7 +1190,7 @@ msgstr ""
 
 #: lib/Socialtext/CLI.pm:2467
 msgid "First"
-msgstr ""
+msgstr "cli.first-name"
 
 #. ($blog_tag)
 #: lib/Socialtext/WeblogPlugin.pm:131
@@ -1400,7 +1400,7 @@ msgstr ""
 
 #: lib/Socialtext/CLI.pm:2467
 msgid "Last"
-msgstr ""
+msgstr "cli.last-name"
 
 #: lib/Socialtext/RecentChangesPlugin.pm:43
 msgid "Last 2 Days"
@@ -1944,7 +1944,7 @@ msgstr ""
 
 #: lib/Socialtext/CLI.pm:2467
 msgid "Role"
-msgstr ""
+msgstr "cli.role"
 
 #: lib/Socialtext/SearchPlugin.pm:175
 msgid "Search Results"
@@ -2213,17 +2213,17 @@ msgstr ""
 #. ($p->{name})
 #: lib/Socialtext/Account.pm:1106
 msgid "The account name you chose, %1, is already in use."
-msgstr ""
+msgstr "error.account-exists=name"
 
 #. ($value)
 #: lib/Socialtext/CLI.pm:2211
 msgid "The account name you specified, %1, does not exist."
-msgstr ""
+msgstr "error.no-account=name"
 
 #. ($p->{account_id})
 #: lib/Socialtext/Workspace.pm:654
 msgid "The account_id you specified, %1, does not exist."
-msgstr ""
+msgstr "error.no-account=id"
 
 #. ($self->{command})
 #: lib/Socialtext/CLI.pm:3535
