@@ -79,9 +79,9 @@ my $page_incipient = Socialtext::Page->new( hub => $hub )->create(
 
 my $incipient_content = $page_incipient->to_html_or_default;
 like $incipient_content,
-    qr{href="/admin/this%20page%20isn't%20cool" class="incipient">}, 'href is double quoted';
+    qr{href="/admin/this%20page%20isn%27t%20cool" class="incipient">}, 'href is double quoted';
 like $incipient_content,
-    qr{href="/admin/\?is_incipient=1;page_name=this%20page%20isn't%20cool;page_type=wiki#edit"}, 'href edit link is double quoted';
+    qr{href="/admin/\?is_incipient=1;page_name=this%20page%20isn%27t%20cool;page_type=wiki#edit"}, 'href edit link is double quoted';
 
 
 my $a1 = Socialtext::Page->new( hub => $hub )->create(
