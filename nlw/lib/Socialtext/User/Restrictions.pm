@@ -70,8 +70,12 @@ sub _validate_assign_expires_at {
     my $class = shift;
     my $proto = shift;
     unless ($proto->{expires_at}) {
-        $proto->{expires_at} = Socialtext::Date->now->add(weeks => 2),
+        $proto->{expires_at} = $class->default_expires_at;
     }
+}
+
+sub default_expires_at {
+    return Socialtext::Date->now->add(weeks => 2);
 }
 
 sub _validate_assign_workspace_id {
