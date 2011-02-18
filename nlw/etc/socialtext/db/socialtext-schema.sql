@@ -1749,6 +1749,9 @@ CREATE INDEX groups_permission_set_non_priv
 CREATE UNIQUE INDEX groups_user_set_id
 	    ON groups (user_set_id);
 
+CREATE INDEX idx_attach_content_md5
+	    ON attachment (content_md5);
+
 CREATE INDEX idx_attach_created_at
 	    ON attachment (created_at);
 
@@ -1777,8 +1780,27 @@ CREATE INDEX idx_opensocial_appdata_app_user
 CREATE UNIQUE INDEX idx_opensocial_appdata_app_user_field
 	    ON opensocial_appdata (app_id, user_set_id, field);
 
-CREATE UNIQUE INDEX idx_page_att_id
-	    ON page_attachment (workspace_id, page_id, id);
+CREATE INDEX idx_page_att_att_fk
+	    ON page_attachment (attachment_id);
+
+CREATE INDEX idx_page_att_att_fk_nodel
+	    ON page_attachment (attachment_id)
+	    WHERE (NOT deleted);
+
+CREATE INDEX idx_page_att_page
+	    ON page_attachment (workspace_id, page_id);
+
+CREATE INDEX idx_page_att_page_nodel
+	    ON page_attachment (workspace_id, page_id)
+	    WHERE (NOT deleted);
+
+CREATE UNIQUE INDEX idx_page_att_pk_nodel
+	    ON page_attachment (workspace_id, page_id, attachment_id)
+	    WHERE (NOT deleted);
+
+CREATE UNIQUE INDEX idx_page_att_uk_nodel
+	    ON page_attachment (workspace_id, page_id, id)
+	    WHERE (NOT deleted);
 
 CREATE INDEX idx_signal_tag_lower_tag
 	    ON signal_tag (lower(tag) text_pattern_ops);
