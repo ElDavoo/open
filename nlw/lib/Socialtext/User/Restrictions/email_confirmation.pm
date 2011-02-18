@@ -1,7 +1,9 @@
 package Socialtext::User::Restrictions::email_confirmation;
 
 use Moose;
-extends 'Socialtext::User::Restrictions::base';
+with 'Socialtext::User::Restrictions::base';
+
+sub restriction_type { 'email_confirmation' };
 
 # with some custom stuff
 

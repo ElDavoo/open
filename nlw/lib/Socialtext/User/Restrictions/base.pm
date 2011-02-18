@@ -1,18 +1,14 @@
 package Socialtext::User::Restrictions::base;
 
-use Moose;
+use Moose::Role;
 use Socialtext::Date;
 use Socialtext::MooseX::Types::Pg;
+
+requires 'restriction_type';
 
 has 'user_id' => (
     is          => 'ro',
     isa         => 'Int',
-    required    => 1,
-);
-
-has 'restriction_type' => (
-    is          => 'ro',
-    isa         => 'Str',
     required    => 1,
 );
 
@@ -52,7 +48,5 @@ sub has_expired {
     my $expires_at = $self->expires_at;
     return $expires_at < $now;
 }
-
-__PACKAGE__->meta->make_immutable;
 
 1;

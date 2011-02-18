@@ -1,7 +1,9 @@
 package Socialtext::User::Restrictions::password_change;
 
 use Moose;
-extends 'Socialtext::User::Restrictions::base';
+with 'Socialtext::User::Restrictions::base';
+
+sub restriction_type { 'password_change' };
 
 # with some custom stuff
 
