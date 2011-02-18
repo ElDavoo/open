@@ -22,8 +22,9 @@ $prefs->locale->value('en');
 loc_lang('en');
 
 my $page = $hub->pages->new_from_name("Empty wiki");
-
-my $original_body = $page->content;
+my $original_body = 'blather blather herp derp derp.';
+$page->edit_rev();
+$page->content($original_body);
 
 $page->add_comment( $COMMENT );
 
