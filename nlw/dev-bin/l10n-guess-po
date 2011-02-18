@@ -26,7 +26,7 @@ sub words {
 }
 
 for (<>) {
-    when (/msgid "(.*)([!:?]?)"/) {
+    when (/^msgid "(.*?)([!:?]?)"$/) {
         print;
         my $max;
         $punct = $2;
@@ -36,7 +36,7 @@ for (<>) {
             $msgid .= "=" . join(',', @params[0..$max-1]);
         }
     }
-    when (/#\: (.*)/) {
+    when (/^#\: (.*)/) {
         my $sources = $1;
         for my $key (sort keys %SectionMap) {
             if ($sources =~ /\Q$key\E/i) {
@@ -46,11 +46,11 @@ for (<>) {
         }
         print;
     }
-    when (/#\. \((.*)\)/) {
+    when (/^#\. \((.*)\)/) {
         @params = words $1;
         print;
     }
-    when (/msgstr "(.*)"/) {
+    when (/^msgstr "(.*)"$/) {
         if ($1 eq '' or $1 ~~ /^(###|XXX)\./) {
             say qq[msgstr "$section.$msgid$punct"];
         }
