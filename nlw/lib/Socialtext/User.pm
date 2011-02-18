@@ -20,6 +20,7 @@ use Socialtext::User::EmailConfirmation;
 use Socialtext::User::Factory;
 use Socialtext::UserSet qw/:const/;
 use Socialtext::User::Default::Users qw(:system-user :guest-user);
+use Socialtext::User::Restrictions::email_confirmation;
 use Email::Address;
 use Socialtext::l10n qw(system_locale loc);
 use Socialtext::EmailSender::Factory;
@@ -1438,6 +1439,13 @@ sub Count {
             %p,
         );
     }
+}
+
+sub requires_email_confirmation {
+    my $self = shift;
+    Socialtext::User::Restrictions::email_confirmation->CreateOrReplace( {
+        user_id => $self->user_id,
+    } );
 }
 
 sub confirmation_hash {
