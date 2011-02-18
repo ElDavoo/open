@@ -265,7 +265,7 @@ sub _edit_contention_screen {
         page_body => $self->html_escape($self->cgi->page_body),
         display_title => $page->title,
         header_display_title => $page->title,
-        attachment_count => scalar $self->hub->attachments->all,
+        attachment_count => $self->hub->attachments->count,
         revision_count => $page->revision_num,
     );
 }
