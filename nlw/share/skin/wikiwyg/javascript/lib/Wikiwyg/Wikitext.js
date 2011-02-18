@@ -2454,7 +2454,7 @@ proto.make_wikitext_link = function(label, href, elem) {
 }
 
 proto.handle_wiki_link = function(label, href, elem) {
-    var up_to_wksp = /^https?:\/\/[^\/]+\/[^\/]+\//;
+    var up_to_wksp = /^https?:\/\/[^\/]+\/[^\/#]+\/(?:(?:index.cgi)?\?)?/;
 
     var href_orig = href;
     href = href.replace(/.*\baction=display;is_incipient=1;page_name=/, '');
