@@ -284,7 +284,7 @@ lib/Socialtext/Rest/Sheet/Cell.pm
 lib/Socialtext/Sheet/Cell.pm
 t/Socialtext/Sheet.t
 t/Socialtext/Rest/Sheet/Cell.t
-t/wikitest/socialcalc/get_cell.wiki
+t/wikitest/socialcalc/*
 etc/socialtext/uri_map.d/socialcalc.yaml
 t/wikitests/socialcalc/get_cell.wiki
 t/wikitests/test-data/socialcalc/ohai.ssheet
