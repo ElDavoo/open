@@ -477,10 +477,11 @@ sub confirm_email {
     my $user = $self->_find_user_for_email_confirmation_hash( $r, $hash );
     return $self->_show_error() unless $user;
 
-    if ( $user->confirmation_has_expired ) {
-        $user->set_confirmation_info();
+    my $confirmation = $user->email_confirmation;
+    if ($confirmation->has_expired) {
+        $confirmation->renew;
 
-        if ( $user->confirmation_is_for_password_change() ) {
+        if ($confirmation->is_password_change) {
             $user->send_password_change_email();
         }
         else {
@@ -492,7 +493,7 @@ sub confirm_email {
         );
     }
 
-    if ( $user->confirmation_is_for_password_change or not $user->has_valid_password ) {
+    if ( $confirmation->is_password_change or not $user->has_valid_password ) {
         $self->session->save_args(
             hash => $hash,
             ($self->{args}{account_for} 
@@ -503,7 +504,7 @@ sub confirm_email {
 
     # Need to grab wsid before we do confirm_email_address, cuz that wipes the
     # email_confirmation
-    my $wsid = $user->confirmation_workspace_id;
+    my $wsid = $confirmation->workspace_id;
 
     $user->confirm_email_address();
 
