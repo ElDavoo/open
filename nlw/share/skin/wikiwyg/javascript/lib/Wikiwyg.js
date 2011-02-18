@@ -1326,13 +1326,6 @@ this.addGlobal().setup_wikiwyg = function() {
 
             ww.is_editing = true;
 
-            if (Wikiwyg.is_safari) {
-                ww.message.display({
-                    title: loc("Socialtext has limited editing capabilities in Safari."),
-                    body: loc("<a target=\"_blank\" href=\"http://www.mozilla.com/firefox/\">Download Firefox</a> for richer Socialtext editing functionality.")
-                });
-            }
-
             if (firstMode == WW_SIMPLE_MODE) {
                 // Give the browser two seconds to render the initial iframe.
                 // If we don't do this, click on "Wiki text" prematurely will
