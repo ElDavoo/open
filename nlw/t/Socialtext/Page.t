@@ -22,7 +22,7 @@ URI: {
     is $page->uri, "some_page_test", "exists-uri";
     
     #double check on reload
-    my $page = $hub->pages->new_from_name("Some Page     Test");
+    $page = $hub->pages->new_from_name("Some Page     Test");
     is $page->uri, "some_page_test", "exists-uri";
 }
 
@@ -314,9 +314,11 @@ HASHES: {
     cmp_deeply $page_hash, {
         create_time     => '2011-01-01 00:00:00 GMT',
         creator         => $creator->email_address,
+        creator_id      => $creator->user_id,
         edit_summary    => 'changing to bar',
         last_edit_time  => '2011-01-23 00:00:00 GMT',
         last_editor     => $editor->email_address,
+        last_editor_id  => $editor->user_id,
         locked          => 0,
         modified_time   => $mtime,
         name            => 'Testing Hashes, Yo',
