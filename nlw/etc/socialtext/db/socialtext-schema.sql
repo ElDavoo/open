@@ -613,7 +613,7 @@ CREATE TABLE "Account" (
     name varchar(250) NOT NULL,
     is_system_created boolean DEFAULT false NOT NULL,
     skin_name varchar(30) DEFAULT 's3'::varchar NOT NULL,
-    email_addresses_are_hidden boolean DEFAULT false NOT NULL,
+    email_addresses_are_hidden boolean,
     is_exportable boolean DEFAULT false NOT NULL,
     desktop_logo_uri varchar(250) DEFAULT '/static/desktop/images/sd-logo.png'::varchar,
     desktop_header_gradient_top varchar(7) DEFAULT '#4C739B'::varchar,
