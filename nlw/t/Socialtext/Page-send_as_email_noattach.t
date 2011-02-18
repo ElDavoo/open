@@ -54,10 +54,7 @@ EOF
         filename => 'socialtext-logo.gif',
         fh => 't/attachments/socialtext-logo-30.gif',
     );
-    $attachment->inline;
 
-    # Get a fresh copy
-    $page = $pages->new_from_name($utf8_subject);
     $page->send_as_email
         ( from => 'devnull1@socialtext.com',
           to   => 'devnull2@socialtext.com',
