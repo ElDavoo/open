@@ -303,6 +303,7 @@ sub purge {
     }}
     catch {
         die $_ unless (/violates foreign key constraint/i);
+        warn $_;
     };
 
     return if $p{no_log} || !$deleted;
