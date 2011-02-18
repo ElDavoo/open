@@ -53,7 +53,7 @@ EOF
     $pages->current($page);
 
     my $attachment = $hub->attachments->create(
-        fh => IO::File->new('t/attachments/socialtext-logo-30.gif', '<'),
+        fh => 't/attachments/socialtext-logo-30.gif',
         filename => 'socialtext-logo.gif',
         page => $page,
         user => $hub->current_user,
