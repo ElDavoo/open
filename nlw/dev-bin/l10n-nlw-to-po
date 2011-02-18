@@ -26,6 +26,10 @@ for my $key (sort keys %Sections) {
     my $dir = $Sections{$key};
     $dir = [$dir] unless ref $dir;
 
+    if ($key eq 'wikiwyg') {
+        shell_run('./dev-bin/l10n-widget-to-js');
+    }
+
     shell_run(
         qw( xgettext.pl -now -P perl=* -P tt2=* ),
         -o => "share/l10n/en/$key.po",
