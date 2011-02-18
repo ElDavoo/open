@@ -32,6 +32,15 @@ has 'workspace_id' => (
     isa => 'Maybe[Int]',
 );
 
+sub CreateOrReplace {
+    my $class = shift;
+    my %opts  = @_;
+    Socialtext::User::Restrictions->CreateOrReplace( {
+        %opts,
+        restriction_type => $class->restriction_type,
+    } );
+}
+
 sub update {
     my $self  = shift;
     my $proto = shift;
