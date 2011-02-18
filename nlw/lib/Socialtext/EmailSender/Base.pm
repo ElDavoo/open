@@ -68,9 +68,20 @@ $SendClass                       = 'Sendmail';
 
     sub _attachment_part {
         my $self = shift;
-        my $file = shift;
+        my $file_or_attach = shift;
+        my ($file, $filename);
+        
+        if (ref($file_or_attach)) {
+            my $attach = $file_or_attach;
+            $attach->ensure_stored;
+            $file = $attach->disk_filename;
+            $filename = $attach->clean_filename;
+        }
+        else {
+            $file = $file_or_attach;
+            $filename = File::Basename::basename($file);
+        }
 
-        my $filename = File::Basename::basename($file);
         my $content_id = $filename;
         $filename = $self->_encode_filename($filename);
 
@@ -142,9 +153,19 @@ $SendClass                       = 'Sendmail';
                 body => $self->_html_body( $p{html_body}, $encoding ),
             );
 
-            my %basenames =
-                map { File::Basename::basename($_) => $_ }
-                grep {-f} @{ $p{attachments} };
+            my %basenames;
+            if (@{$p{attachments}} and ref($p{attachments}->[0])) {
+                %basenames =
+                    map { $_->clean_filename => $_ }
+                    grep { !$_->is_deleted }
+                    @{ $p{attachments} };
+            }
+            else {
+                # Assume they are filenames
+                %basenames =
+                    map { File::Basename::basename($_) => $_ }
+                    grep {-f} @{ $p{attachments} };
+            }
 
             my %cids;
             while ( $p{html_body} =~ /\G.*?src="cid:([^"]+)"/gs ) {

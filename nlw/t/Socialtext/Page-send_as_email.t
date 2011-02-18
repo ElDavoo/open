@@ -50,7 +50,6 @@ EOF
     Email::Send::Test->clear;
 
     my $page = $pages->new_from_name($utf8_subject);
-    $pages->current($page);
 
     my $attachment = $hub->attachments->create(
         fh => 't/attachments/socialtext-logo-30.gif',

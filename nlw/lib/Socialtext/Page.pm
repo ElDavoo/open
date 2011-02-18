@@ -2142,9 +2142,7 @@ sub send_as_email {
         html_body => $html_body,
     );
     $email{cc} = $p{cc} if defined $p{cc};
-    $email{attachments} =
-        [ map { $_->ensure_stored(); $_->full_path() } $self->attachments ]
-            if $p{include_attachments};
+    $email{attachments} = [ $self->attachments ] if $p{include_attachments};
 
     my $locale = system_locale();
     my $email_sender = Socialtext::EmailSender::Factory->create($locale);
