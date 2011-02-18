@@ -193,7 +193,7 @@
         </tr> 
         <tr class="st-refcard-table-row">
             <td><del>[% loc('strikeout') %]</del></td>
-            <td>-[% loc('strikeout-') %]</td>
+            <td>-[% loc('-strikeout-') %]</td>
         </tr> 
         <tr class="st-refcard-table-row">
             <td><tt>[% loc('monospace') %]</tt></td>

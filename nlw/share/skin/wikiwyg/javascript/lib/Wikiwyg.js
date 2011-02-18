@@ -1426,9 +1426,9 @@ this.addGlobal().setup_wikiwyg = function() {
             summary = ww.word_truncate(summary, 140);
             var html = ' <strong>' + name + '</strong>';
             if (!summary)
-                html += ' ' + loc('wants you to know about an edit of') + ' <strong>' + page + '</strong> ' + loc('in') + ' ' + workspace;
+                html += ' ' + loc('wants you to know about an edit of <strong>[_1]</strong> in [_2]', page, workspace);
             else
-                html += ', ' + loc('"[_1]"', summary) + ' (' + loc('edited') + ' <strong>' + page + '</strong> ' + loc('in') + ' ' + workspace + ')';
+                html += ', ' + loc('"[_1]" (edited <strong>[_2]</strong> in [_3])', summary, page, workspace);
 
             jQuery('#st-edit-summary .preview .text')
                 .html(html);
