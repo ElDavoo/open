@@ -35,7 +35,7 @@
         </div>
 
         <script>
-            gadgets.container = new gadgets.Container();
+            gadgets.container.setup();
         </script>
     </body>
 </html>

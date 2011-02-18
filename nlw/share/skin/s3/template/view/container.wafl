@@ -45,10 +45,12 @@ var nlw_make_plugin_path = nlw_make_plugin_path || function (rest) {
 }
 var Socialtext = Socialtext || {};
 var gadgets = gadgets || {};
-gadgets.container = gadgets.container || new gadgets.Container();
 if (!Socialtext.version || (Socialtext.wiki_id && Socialtext.page_id)) {
-    gadgets.container.base_url = '/data/wafl-containers/[% container.name |uri %]';
-    gadgets.container.registerServices();
-    gadgets.container.updateIframeNames();
+    gadgets.container.setup({
+        base_url: '/data/wafl-containers/[% container.name |uri %]'
+    });
+}
+else {
+    gadgets.container.setup();
 }
 </script>
