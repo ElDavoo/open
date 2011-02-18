@@ -1804,7 +1804,10 @@ sub purge {
             }, $ws_id, $page_id);
         }
 
-        $_->purge() for @atts; # so the Upload gets cleaned up and logged
+        # page_attachment won't cascade either, plus it further won't cascade
+        # to the attachment row. purge it directly so the Upload also gets
+        # cleaned up and logged
+        $_->purge() for @atts;
 
         # if anything else references the page, this should cascade:
         sql_execute(qq{
