@@ -3,6 +3,7 @@ package Socialtext::User::Restrictions::base;
 use Moose::Role;
 use Socialtext::Date;
 use Socialtext::MooseX::Types::Pg;
+use Socialtext::User::Restrictions;
 
 requires 'restriction_type';
 
