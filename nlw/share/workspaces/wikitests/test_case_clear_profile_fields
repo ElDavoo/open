@@ -1,0 +1,85 @@
+
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Clear Profile Fields |  |
+
+| *Comment* | [Test Case: Edit Profile] and [Test Case: Verify Profile] should have run before Clear Profile Fields |  |
+
+| *Comment* | These values must match the one in [Test Case: Edit Profile] |  |
+| set | e_user | profile.editor@ken.socialtext.net |
+| set | new_fname | Profligate |
+| set | new_mname | Epitome |
+| set | new_lname | Edisaurus |
+
+| *Comment* | Test Case: Clear Profile Fields. Access profile. |  |
+| open_ok | /nlw/submit/logout |  |
+| wait_for_element_visible_ok | username | 60000 |
+| wait_for_element_visible_ok | password | 60000 |
+| type_ok | username | %%e_user%% |
+| type_ok | password | %%password%% |
+| click_and_wait | login_btn |  |
+
+| *Comment* | Test Case: Clear Profile Fields. Open for editing |  |
+| open_ok | /st/dashboard/ |  |
+| wait_for_element_visible_ok | link=(edit) | 30000 |
+| click_and_wait | link=(edit) |  |
+
+| *Comment* | Test Case: Clear Profile Fields - Change values |  |
+| verifyValue | first_name | %%new_fname%% |
+| verifyValue | last_name | %%new_lname%% |
+| KeyPress | first_name | \\8 |
+| KeyPress | first_name | \\8 |
+| KeyPress | first_name | \\8 |
+| KeyPress | first_name | \\8 |
+| KeyPress | first_name | \\8 |
+| KeyPress | first_name | \\8 |
+| KeyPress | first_name | \\8 |
+| KeyPress | first_name | \\8 |
+| KeyPress | first_name | \\8 |
+| KeyPress | first_name | \\8 |
+
+| KeyPress | middle_name | \\8 |
+| KeyPress | middle_name | \\8 |
+| KeyPress | middle_name | \\8 |
+| KeyPress | middle_name | \\8 |
+| KeyPress | middle_name | \\8 |
+| KeyPress | middle_name | \\8 |
+| KeyPress | middle_name | \\8 |
+| KeyPress | middle_name | \\8 |
+| KeyPress | middle_name | \\8 |
+| KeyPress | middle_name | \\8 |
+| KeyPress | middle_name | \\8 |
+
+| KeyPress | last_name | \\8 |
+| KeyPress | last_name | \\8 |
+| KeyPress | last_name | \\8 |
+| KeyPress | last_name | \\8 |
+| KeyPress | last_name | \\8 |
+| KeyPress | last_name | \\8 |
+| KeyPress | last_name | \\8 |
+| KeyPress | last_name | \\8 |
+| KeyPress | last_name | \\8 |
+| KeyPress | last_name | \\8 |
+| KeyPress | last_name | \\8 |
+| KeyPress | last_name | \\8 |
+| KeyPress | last_name | \\8 |
+| KeyPress | last_name | \\8 |
+| KeyPress | last_name | \\8 |
+| KeyPress | last_name | \\8 |
+
+| wait_for_element_visible_ok | update_profile | 30000 |
+| pause | 25000 | settling time |
+| click_and_wait | update_profile |  |
+
+| text_unlike | //body | %%fname%% |
+| text_unlike | //body | %%mname%% |
+| text_unlike | //body | %%lname%% |
+
+| *Comment* | Test Case: Clear Profile Fields - Verify Changed |  |
+| wait_for_element_visible_ok | link=(Edit) | 60000 |
+| click_and_wait | link=(Edit) |  |
+| verifyValue | first_name |  |
+| verifyValue | last_name |  |
+| verifyValue | middle_name |  |
+
+|

@@ -60,6 +60,7 @@
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Edit Profile. Verify by clicking link=(Edit) from Global Nav |  |
+
 | open_ok | /st/dashboard/ |  |
 | wait_for_element_visible_ok | link=(edit) | 30000 |
 | click_and_wait | link=(edit) |  |
@@ -117,7 +118,5 @@
 | wait_for_text_present_ok | Profile | 30000 |
 | wait_for_text_present_ok | Tag | 30000 |
 | wait_for_text_present_ok | Activities | 30000 |
-
-| *Comment* | Test Case: Edit Profile COMPLETED |  |
 
 | *Comment* | Test Case: Edit Profile COMPLETED |  |
