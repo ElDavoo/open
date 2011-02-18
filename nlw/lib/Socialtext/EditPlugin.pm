@@ -13,6 +13,7 @@ use Socialtext::Events;
 use Socialtext::Log qw(st_log);
 use Socialtext::String ();
 use Socialtext::JSON qw/decode_json encode_json/;
+use Try::Tiny;
 
 sub   class_id { 'edit' }
 const class_title => 'Editing Page';
@@ -281,13 +282,21 @@ sub _there_is_an_edit_contention {
 
     # If the revision ID we got wasn't a valid page revision,
     # there's contention.
-    my @revisions = $page->all_revision_ids;
-    unless (grep { $_ eq $original_revision } @revisions) {
-        return 1;
-    }
-    # Since the revision is different, pull the old page and check contents against the current page
-    my $original_page = $self->hub->pages->new_page($page->id)->load_revision($original_revision);
-    return ($original_page->content ne $page->content);
+    my $orig_rev = try {
+        Socialtext::PageRevision->Get(
+            hub => $self->hub,
+            page_id => $page->page_id,
+            revision_id => $original_revision,
+        );
+    };
+    return 1 unless $orig_rev;
+
+    # Do a body_length check first since blobs are lazy-loaded (and relatively
+    # expensive).  Revs may entail just a tag change, so checking the body is
+    # important.
+    my $cur_rev = $page->rev;
+    return ($orig_rev->body_length ne $cur_rev->body_length or
+            ${$orig_rev->body_ref} ne ${$cur_rev->body_ref});
 }
 
 sub to_display {

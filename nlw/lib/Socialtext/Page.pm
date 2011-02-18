@@ -343,13 +343,6 @@ sub switch_rev {
     return $self;
 }
 
-sub original_revision {
-    my $self = shift;
-
-    my $id = $self->original_revision_id;
-    return $self->switch_rev($id);
-}
-
 sub _revision_id_changed {
     my ($self, $new, $old) = @_;
 

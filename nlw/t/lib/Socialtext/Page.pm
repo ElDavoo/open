@@ -72,7 +72,6 @@ sub page_type { $_[0]->{type} || 'page' }
 sub revision_num { $_[0]{revision} || 'page_rev' }
 sub tags { $_[0]{category} || $_[0]{tags} || ['mock_category'] }
 
-sub original_revision { shift } # hack - return ourself
 sub datetime_for_user { 'Mon 12 12:00am' }
 sub create_time { 'Mon 12 12:00am' }
 sub creator { Socialtext::User->new(username => 'mocked_user') }

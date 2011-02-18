@@ -406,9 +406,8 @@ sub get_entries {
             weblog_id => $blog_id,
             attachments => $attachments,
         );
-        my $original_page = $page->original_revision;
-        $entry->{is_updated}
-          = $original_page->revision_id != $page->revision_id;
+        my $original_rev_id = $page->original_revision_id;
+        $entry->{is_updated} = $original_rev_id != $page->revision_id;
         if ($entry->{is_updated}) {
             $entry->{original} = $self->format_page_for_entry(
                 no_post => 1,
