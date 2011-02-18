@@ -32,7 +32,7 @@ loc("Instant message to '[_1]' using Yahoo! Click to edit.", yahoo_id);
 loc("Call '[_1]' using Skype. Click to edit.", skype_id);
 loc("User mention. Click to edit.");
 loc("Display '[_1]' in reader's time zone. Click to edit.", date_string);
-loc("Unformatted Content");
+loc("Unformatted content. Click to edit.");
 loc("Use [_1] to generate a form. Click to edit.", form_name);
 loc("Include the page '[_1]'. Click to edit.", spreadsheete_title);
 loc("link: [_1]", label);

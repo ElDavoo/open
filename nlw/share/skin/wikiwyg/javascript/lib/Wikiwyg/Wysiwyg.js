@@ -3252,12 +3252,12 @@ proto.require_page_if_workspace = function(values) {
     }
 
     if (values.workspace_id.length && ! values.page_title.length)
-        throw(loc("Page Title required if Workspace Id specified"));
+        throw(loc("Page Title required if Workspace ID specified"));
 }
 
 proto.require_spreadsheet_if_workspace = function(values) {
     if (values.workspace_id.length && ! values.spreadsheet_title.length)
-        throw(loc("Spreadsheet Title required if Workspace Id specified"));
+        throw(loc("Spreadsheet Title required if Workspace ID specified"));
 }
 
 

@@ -758,7 +758,9 @@ proto.saveChanges = function() {
 
 proto.confirmCancellation = function(msg) {
     return confirm(
-        loc("[_1]\n\nYou have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.", msg)
+        msg + "\n\n"
+        + loc("You have unsaved changes.") + "\n\n"
+        + loc("Press OK to continue, or Cancel to stay on the current page.")
     );
 
 }

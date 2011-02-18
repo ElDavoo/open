@@ -642,7 +642,7 @@ widget:
     pattern: '{{%asis_content}}'
     markup: ['bound_phrase', '{{', '}}']
     field: asis_content
-    title: Unformatted Content
+    title: Unformatted content. Click to edit.
     desc: Include unformatted text in the page. This text will not be treated as wiki text. Use this form to edit the text.
     more_desc: There are no optional properties for unformatted text.
     required: [asis_content]
