@@ -1426,11 +1426,13 @@ this.addGlobal().setup_wikiwyg = function() {
 
             var summary = ww.edit_summary();
             summary = ww.word_truncate(summary, 140);
-            var html = ' <strong>' + name + '</strong>';
-            if (!summary)
-                html += ' ' + loc('wants you to know about an edit of <strong>[_1]</strong> in [_2]', page, workspace);
-            else
-                html += ', ' + loc('"[_1]" (edited <strong>[_2]</strong> in [_3])', summary, page, workspace);
+            var html;
+            if (!summary) {
+                html = loc('<strong>[_1]</strong> wants you to know about an edit of <strong>[_2]</strong> in [_3]', name, page, workspace);
+            }
+            else {
+                html = loc('<strong>[_1]</strong>, "[_2]" (edited <strong>[_3]</strong> in [_4])', name, summary, page, workspace);
+            }
 
             jQuery('#st-edit-summary .preview .text')
                 .html(html);

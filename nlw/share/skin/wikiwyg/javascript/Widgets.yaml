@@ -92,7 +92,7 @@ widget:
         blank: [workspace_id]
     image_text:
         - { field: label, text: "link: %label" }
-        - { field: page_title, text: "link: %page_title (%section_name )" }
+        - { field: page_title, text: "link: %page_title (%section_name)" }
         - { field: default, text: "link: %section_name" }
 
   link2_hyperlink:
