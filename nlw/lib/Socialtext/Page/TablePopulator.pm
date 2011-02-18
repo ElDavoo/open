@@ -150,6 +150,10 @@ sub populate {
         add_to_db('page_tag', \@page_tags);
 
         $self->load_breadcrumbs();
+
+        # clean up any un-referenced uploads (for when attchments got purged
+        # between populations)
+        Socialtext::JobCreator->tidy_uploads();
     }}
     catch {
         die "Error during populate of $workspace_name: $_";

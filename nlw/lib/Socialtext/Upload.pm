@@ -25,6 +25,13 @@ use Socialtext::UUID qw/new_uuid/;
 
 use namespace::clean -except => 'meta';
 
+use constant TIDY_FREQUENCY => 60;
+use constant TABLE_REFS => qw(
+    page_attachment
+    signal_attachment
+    signal_asset
+);
+
 # NOTE: if this gets changed to anything other than /tmp, make sure tmpreaper is
 # monitoring that directory.
 our $STORAGE_DIR = Socialtext::AppConfig->data_root_dir."/attachments";
@@ -305,6 +312,9 @@ sub purge {
         die $_ unless (/violates foreign key constraint/i);
         warn $_;
     };
+
+    # trigger cleaning up any others that may have been purged
+    Socialtext::JobCreator->tidy_uploads();
 
     return if $p{no_log} || !$deleted;
 
