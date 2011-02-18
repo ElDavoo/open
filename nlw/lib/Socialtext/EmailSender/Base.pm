@@ -69,17 +69,19 @@ $SendClass                       = 'Sendmail';
     sub _attachment_part {
         my $self = shift;
         my $file_or_attach = shift;
-        my ($file, $filename);
+        my ($file, $filename, $ct);
         
         if (ref($file_or_attach)) {
             my $attach = $file_or_attach;
             $attach->ensure_stored;
             $file = $attach->disk_filename;
             $filename = $attach->clean_filename;
+            $ct = $attach->mime_type;
         }
         else {
             $file = $file_or_attach;
             $filename = File::Basename::basename($file);
+            $ct = Socialtext::MIME::Types::mimeTypeOf($file),
         }
 
         my $content_id = $filename;
@@ -88,7 +90,7 @@ $SendClass                       = 'Sendmail';
         return Email::MIME->create(
             header     => [ 'Content-Id' => $content_id ],
             attributes => {
-                content_type => Socialtext::MIME::Types::mimeTypeOf($file),
+                content_type => $ct,
                 charset      => '',
                 disposition  => 'attachment',
                 encoding     => 'base64',

@@ -2085,6 +2085,8 @@ sub send_as_email {
             my $intro = $self->hub->viewer->process($p{body_intro}, $self);
             return "$intro<hr/>$content";
         }
+
+        local $DISABLE_CACHING = 1 if $p{body_intro};
         my $new_content = $p{body_intro} . ${$self->body_ref};
         return $self->to_absolute_html(\$new_content);
     };
