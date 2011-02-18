@@ -2062,7 +2062,7 @@ CREATE UNIQUE INDEX page_pk_nodel
             ON page (workspace_id, page_id)
             WHERE NOT deleted;
 
-CREATE UNIQUE INDEX idx_page_lower_name
+CREATE INDEX idx_page_lower_name
             ON page (workspace_id, lower(name) text_pattern_ops)
             WHERE NOT deleted;
 
