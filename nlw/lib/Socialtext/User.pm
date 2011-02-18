@@ -1604,13 +1604,8 @@ sub send_password_change_email {
 
 sub confirmation_uri {
     my $self = shift;
-
     return unless $self->requires_confirmation;
-
-    return Socialtext::URI::uri(
-        path  => '/nlw/submit/confirm_email',
-        query => { hash => $self->confirmation_hash() },
-    );
+    return $self->email_confirmation->uri;
 }
 
 sub requires_confirmation {
