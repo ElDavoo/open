@@ -235,13 +235,7 @@ sub unset_current {
     delete $self->{current};
 }
 
-sub new_page {
-    my $self = shift;
-    my $t = time_scope 'pages_new_page';
-    # TODO: check cache
-    Socialtext::Page->new(hub => $self->hub, page_id => shift);
-}
-
+*new_page = \&new_from_name;
 sub new_from_name {
     my $self = shift;
     my $page_name = shift;

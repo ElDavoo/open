@@ -29,7 +29,7 @@ sub _entities_for_query {
     my $self = shift;
 
     return map {
-        my $revision = $self->hub->pages->new_from_name( $self->page->id );
+        my $revision = $self->hub->pages->new_page( $self->page->id );
         $revision->revision_id($_);
         $revision;
     } $self->page->all_revision_ids();
