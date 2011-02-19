@@ -1448,11 +1448,6 @@ sub requires_email_confirmation {
     } );
 }
 
-sub confirmation_is_for_password_change {
-    my $self = shift;
-    return $self->email_confirmation->is_password_change;
-}
-
 sub confirmation_workspace_id {
     my $self = shift;
     return $self->email_confirmation->workspace_id;
@@ -2288,11 +2283,6 @@ the method was called.
 
 This returns true if there is a row for this user in the
 UseEmailConfirmation table.
-
-=head2 $user->confirmation_is_for_password_change()
-
-This returns true if the user requires confirmation, and this is for
-the purpose of allow them to change their password.
 
 =head2 $user->confirmation_uri()
 
