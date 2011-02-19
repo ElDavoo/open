@@ -1448,11 +1448,6 @@ sub requires_email_confirmation {
     } );
 }
 
-sub confirmation_hash {
-    my $self = shift;
-    return $self->email_confirmation->hash;
-}
-
 sub confirmation_is_for_password_change {
     my $self = shift;
     return $self->email_confirmation->is_password_change;
@@ -2298,11 +2293,6 @@ UseEmailConfirmation table.
 
 This returns true if the user requires confirmation, and this is for
 the purpose of allow them to change their password.
-
-=head2 $user->confirmation_hash()
-
-Returns the hash value which will confirm this user's email address,
-if one exists.
 
 =head2 $user->confirmation_uri()
 
