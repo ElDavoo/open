@@ -1469,17 +1469,18 @@ sub confirmation_workspace_id {
 sub send_confirmation_email {
     my $self = shift;
 
-    return unless $self->email_confirmation();
+    my $confirmation = $self->email_confirmation;
+    return unless $confirmation;
 
     my $renderer = Socialtext::TT2::Renderer->instance();
 
-    my $uri = $self->confirmation_uri();
+    my $uri = $confirmation->uri;
 
     my $target_workspace;
 
-    if ($self->confirmation_workspace_id) {
+    if (my $wsid = $confirmation->workspace_id) {
         require Socialtext::Workspace;      # lazy-load, to reduce startup impact
-        $target_workspace = new Socialtext::Workspace(workspace_id => $self->confirmation_workspace_id);
+        $target_workspace = new Socialtext::Workspace(workspace_id => $wsid);
     }
     my %vars = (
         confirmation_uri => $uri,
@@ -1572,11 +1573,12 @@ sub send_confirmation_completed_email {
 sub send_password_change_email {
     my $self = shift;
 
-    return unless $self->email_confirmation();
+    my $confirmation = $self->email_confirmation();
+    return unless $confirmation;
 
     my $renderer = Socialtext::TT2::Renderer->instance();
 
-    my $uri = $self->confirmation_uri();
+    my $uri = $confirmation->uri;
 
     my %vars = (
         appconfig        => Socialtext::AppConfig->instance(),
