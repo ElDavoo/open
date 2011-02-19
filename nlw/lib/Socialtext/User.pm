@@ -1448,12 +1448,6 @@ sub requires_email_confirmation {
     } );
 }
 
-sub confirmation_workspace_id {
-    my $self = shift;
-    return $self->email_confirmation->workspace_id;
-}
-
-
 # REVIEW - does this belong in here, or maybe a higher level library
 # like one for all of our emails? I dunno.
 sub send_confirmation_email {
@@ -2282,10 +2276,6 @@ UseEmailConfirmation table.
 
 This is the URI to confirm the user's email address. If the user is
 already confirmation, it returns false.
-
-=head2 $user->confirmation_workspace_id()
-
-Returns the workspace ID of the confirmation workspace.
 
 =head2 $user->send_confirmation_email()
 
