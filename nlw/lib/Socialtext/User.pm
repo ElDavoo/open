@@ -1606,12 +1606,6 @@ sub requires_confirmation {
     return $self->email_confirmation ? 1 : 0;
 }
 
-sub confirmation_has_expired {
-    my $self = shift;
-
-    return $self->email_confirmation->has_expired;
-}
-
 sub confirm_email_address {
     my $self = shift;
 
@@ -2288,11 +2282,6 @@ UseEmailConfirmation table.
 
 This is the URI to confirm the user's email address. If the user is
 already confirmation, it returns false.
-
-=head2 $user->confirmation_has_expired()
-
-Returns a boolean indicating whether or not the user's confirmation
-hash has expired.
 
 =head2 $user->confirmation_workspace_id()
 
