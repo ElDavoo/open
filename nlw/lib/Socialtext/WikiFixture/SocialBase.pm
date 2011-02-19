@@ -994,7 +994,7 @@ sub delete_workspace {
     if ($ws) {
         my $ws_id = $ws->workspace_id;
         my $ws_name = $ws->name;
-        diag "Recklessly deleting workspace (ID: $ws_id Name: $name)";
+        diag "Recklessly deleting workspace $ws_name (ID: $ws_id)";
 
         require Test::Socialtext::Workspace;
         Test::Socialtext::Workspace->delete_recklessly($ws);
