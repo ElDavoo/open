@@ -30,7 +30,7 @@ my $user = Socialtext::User->create(
     $user->set_confirmation_info( is_password_change => 1 );
     $user->send_password_change_email();
 
-    ok( $user->confirmation_is_for_password_change(),
+    ok( $user->email_confirmation->is_password_change(),
         'confirmation_is_for_password_change() returns true' );
 
     my @emails = Email::Send::Test->emails();

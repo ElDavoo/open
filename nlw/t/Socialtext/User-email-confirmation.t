@@ -31,10 +31,11 @@ confirmation_email_qualities: {
     $user->set_confirmation_info();
 
     # verify the qualities that the confirmation email has.
-    is length $user->confirmation_hash, 27, '... has base64 encoded email confirmation hash';
+    my $confirmation = $user->email_confirmation;
+    is length $confirmation->hash, 27, '... has base64 encoded email confirmation hash';
     ok $user->requires_confirmation, '... user requires confirmation';
-    ok !$user->confirmation_has_expired, '... confirmation has not yet expired';
-    ok !$user->confirmation_is_for_password_change, '... confirmation is *not* for password change';
+    ok !$confirmation->has_expired, '... confirmation has not yet expired';
+    ok !$confirmation->is_password_change, '... confirmation is *not* for password change';
 
     # confirm the email, and make sure it sticks
     $user->confirm_email_address();
@@ -51,7 +52,7 @@ confirmation_hash_reused: {
 
     # set the confirmation info for this user, and get the hash it generated.
     $user->set_confirmation_info();
-    my $hash_orig = $user->confirmation_hash();
+    my $hash_orig    = $user->email_confirmation->hash();
 
     # sleep a bit; the hash is time() based, and we want to make sure that
     # changes
@@ -60,7 +61,7 @@ confirmation_hash_reused: {
 
     # set the confirmation info again, and get the generated hash again
     $user->set_confirmation_info();
-    my $hash_reused = $user->confirmation_hash();
+    my $hash_reused = $user->email_confirmation->hash();
 
     # the confirmation hash *should* have been reused
     is $hash_reused, $hash_orig, 'confirmation hash reused if it already exists';
