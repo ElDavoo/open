@@ -245,10 +245,15 @@ sub All {
     }
     else {
         if ($ob =~ /^\w+$/ and $p{sort_order} =~ /^(?:ASC|DESC)$/i) {
-            $order = "$ob $p{sort_order}";
             push @cols, 'driver_group_name';
-            unless ($ob eq 'driver_group_name' || $ob eq 'group_id') {
-                $order .= ", driver_group_name ASC";
+            if ($ob eq 'driver_group_name') {
+                $order = "LOWER($ob) $p{sort_order}";
+            }
+            else {
+                $order = "$ob $p{sort_order}";
+                unless ($ob eq 'group_id') {
+                    $order .= ", LOWER(driver_group_name) ASC";
+                }
             }
             $order .= ", group_id ASC" unless ($ob eq 'group_id');
         }
