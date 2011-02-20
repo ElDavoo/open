@@ -38,6 +38,9 @@ for (<>) {
         while ($id =~ s/%(\d+)/ /) {
             $max = max($max, $1);
         }
+        if ($id =~ s/%\w+\([^)]*?(\w+)[^)]*\)/$1/g) {
+            $id .= "-count";
+        }
         $msgid = join '-', words $id;
         if ($max) {
             push @params, (('XXX') x $max);
@@ -59,7 +62,7 @@ for (<>) {
         print;
     }
     when (/^msgstr "(.*)"$/) {
-        if ($1 eq '' or $1 ~~ /^(###|XXX)\./) {
+        if ($section and ($1 eq '' or $1 ~~ /^(###|XXX)\./)) {
             say qq[msgstr "$section.$msgid$punct"];
         }
         else {
