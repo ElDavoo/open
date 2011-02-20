@@ -17,12 +17,12 @@ msgstr ""
 
 #: share/plugin/mediawiki/template/element/settings/mediawiki:5
 msgid "MediaWiki"
-msgstr ""
+msgstr "###-mediawiki.mediawiki"
 
 #: share/plugin/mediawiki/template/element/settings/mediawiki:7
 msgid "MediaWiki Server URL"
-msgstr ""
+msgstr "###-mediawiki.mediawiki-server-url"
 
 #: share/plugin/mediawiki/template/element/settings/mediawiki:12
 msgid "Workspace Navbar Name"
-msgstr ""
+msgstr "###-mediawiki.workspace-navbar-name"

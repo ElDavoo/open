@@ -17,40 +17,40 @@ msgstr ""
 
 #: share/plugin/analytics/template/cp_google_analytics:9
 msgid "(e.g. AA-00000000-0)"
-msgstr ""
+msgstr "###-analytics.e-g-aa-00000000-0"
 
 #: share/plugin/analytics/template/cp_google_analytics:16
 msgid "A single domain (if you're unsure, use this value)"
-msgstr ""
+msgstr "###-analytics.a-single-domain-if-you-re-unsure-use-this-value"
 
 #: share/plugin/analytics/template/cp_google_analytics:27
 msgid "By default, Socialtext does not allow identifiable information, such as page names, workspace names, and tags, to be displayed in Google Analytics reports. If you want users who have access to your Google Analytics account to be able to see reports including page names, workspace names, and tag names, you can uncheck the box below to unmask the confidential information."
-msgstr ""
+msgstr "###-analytics.by-default-socialtext-does-not-allow-identifiable-information-such-as-page-names-workspace-names-and-tags-to-be-displayed-in-google-analytics-reports-if-you-want-users-who-have-access-to-your-google-analytics-account-to-be-able-to-see-reports-including-page-names-workspace-names-and-tag-names-you-can-uncheck-box-below-to-unmask-confidential-information"
 
 #: share/plugin/analytics/template/cp_google_analytics:2
 msgid "Google Analytics"
-msgstr ""
+msgstr "###-analytics.google-analytics"
 
 #: share/plugin/analytics/template/cp_google_analytics:6
 msgid "Google Analytics ID:"
-msgstr ""
+msgstr "###-analytics.google-analytics-id:"
 
 #: share/plugin/analytics/template/cp_google_analytics:29
 msgid "Mask identifiable information in Google Analytics reports"
-msgstr ""
+msgstr "###-analytics.mask-identifiable-information-in-google-analytics-reports"
 
 #: share/plugin/analytics/template/cp_google_analytics:20
 msgid "Multiple subdomains"
-msgstr ""
+msgstr "###-analytics.multiple-subdomains"
 
 #: share/plugin/analytics/template/cp_google_analytics:24
 msgid "Multiple top-level domains"
-msgstr ""
+msgstr "###-analytics.multiple-top-level-domains"
 
 #: share/plugin/analytics/template/cp_google_analytics:13
 msgid "This Google Analytics tracking ID is used for: "
-msgstr ""
+msgstr "###-analytics.this-google-analytics-tracking-id-is-used-for"
 
 #: share/plugin/analytics/template/cp_google_analytics:4
 msgid "You can add a Google Analytics tracking code that will enable Socialtext page views to be tracked by Google Analytics. It may take up to 2 days for your usage data to be displayed on analytics.google.com"
-msgstr ""
+msgstr "###-analytics.you-can-add-google-analytics-tracking-code-that-will-enable-socialtext-page-views-to-be-tracked-by-google-analytics-it-may-take-up-to-2-days-for-your-usage-data-to-be-displayed-on-analytics-google-com"

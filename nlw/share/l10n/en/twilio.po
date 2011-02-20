@@ -17,28 +17,28 @@ msgstr ""
 
 #: share/plugin/twilio/template/element/settings/twilio_settings_section:28
 msgid "Click here to edit your profile."
-msgstr ""
+msgstr "###-twilio.click-here-to-edit-your-profile"
 
 #: share/plugin/twilio/template/element/settings/twilio_settings_section:10
 msgid "If checked, each time a user sends you a private message via Signals, we'll send you a text message with the signal body."
-msgstr ""
+msgstr "###-twilio.if-checked-each-time-user-sends-you-private-message-via-signals-we-ll-send-you-text-message-with-signal-body"
 
 #: share/plugin/twilio/template/element/settings/twilio_menu:3
 msgid "Manage Phone Services"
-msgstr ""
+msgstr "###-twilio.manage-phone-services"
 
 #: share/plugin/twilio/template/element/settings/twilio_menu:1 share/plugin/twilio/template/element/settings/twilio_settings_section:5
 msgid "Phone Services"
-msgstr ""
+msgstr "###-twilio.phone-services"
 
 #: share/plugin/twilio/template/element/settings/twilio_settings_section:25
 msgid "Please add your mobile phone number to your profile to use this feature."
-msgstr ""
+msgstr "###-twilio.please-add-your-mobile-phone-number-to-your-profile-to-use-this-feature"
 
 #: share/plugin/twilio/template/element/settings/twilio_settings_section:8
 msgid "Send Socialtext Signals private messages as a text message (SMS) to your phone."
-msgstr ""
+msgstr "###-twilio.send-socialtext-signals-private-messages-as-text-message-sms-to-your-phone"
 
 #: share/plugin/twilio/template/element/settings/twilio_settings_section:14
 msgid "Text messages you send should be sent to this account: "
-msgstr ""
+msgstr "###-twilio.text-messages-you-send-should-be-sent-to-this-account"

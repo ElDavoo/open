@@ -7,6 +7,7 @@ die "Usage: $0 input.po > output.po\n" unless @ARGV;
 
 my $default_section = basename($ARGV[0]);
 $default_section =~ s/\..*//;
+$default_section =~ s/socialcalc/sc/;
 
 my $msgid;
 my @params;
