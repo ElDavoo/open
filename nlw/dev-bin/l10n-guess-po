@@ -1,8 +1,12 @@
 #!/usr/bin/env perl
 use 5.12.0;
 use List::Util 'max';
+use File::Basename;
 
 die "Usage: $0 input.po > output.po\n" unless @ARGV;
+
+my $default_section = basename($ARGV[0]);
+$default_section =~ s/\..*//;
 
 my $msgid;
 my @params;
@@ -29,8 +33,12 @@ for (<>) {
     when (/^msgid "(.*?)([!:?]?)"$/) {
         print;
         my $max;
+        my $id = $1;
         $punct = $2;
-        $msgid = join '-', map { if (/^\d$/) { $max = max($max, $_); () } else { $_ } } words $1;
+        while ($id =~ s/%(\d+)/ /) {
+            $max = max($max, $1);
+        }
+        $msgid = join '-', words $id;
         if ($max) {
             push @params, (('XXX') x $max);
             $msgid .= "=" . join(',', @params[0..$max-1]);
@@ -57,7 +65,7 @@ for (<>) {
         else {
             print;
         }
-        $section = 'XXX';
+        $section = "###-$default_section";
         @params = ();
         $punct = '';
     }
