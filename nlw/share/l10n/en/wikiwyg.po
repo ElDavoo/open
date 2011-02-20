@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-19 05:09+0800\n"
+"PO-Revision-Date: 2011-02-20 08:54+0800\n"
 "PO-Revision-Date: \n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
@@ -326,7 +326,7 @@ msgstr "edit.expand"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:39
 msgid "Expand edit area to fill browser window"
-msgstr "info.expand-view"
+msgstr "edit.expand-view"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3443
 msgid "Fewer options"
@@ -779,7 +779,7 @@ msgstr "error.edit-again"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3190
 msgid "Sorry, this URL does not appear to link to an embeddable video."
-msgstr "edit.invalid-video-url"
+msgstr "error.invalid-video-url"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3216
 msgid "Spreadsheet Title required if Workspace ID specified"
