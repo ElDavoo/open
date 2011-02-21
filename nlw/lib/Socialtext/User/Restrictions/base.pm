@@ -65,6 +65,15 @@ sub CreateOrReplace {
     } );
 }
 
+sub Get {
+    my $class = shift;
+    my %opts  = @_;
+    return Socialtext::User::Restrictions->Get( {
+        %opts,
+        restriction_type => $class->restriction_type,
+    } );
+}
+
 sub update {
     my $self  = shift;
     my $proto = shift;
@@ -160,6 +169,11 @@ User.
 B<Note,> a User can B<only> have I<one> Restriction of any given Type at any
 time; thus the desire for a quick/easy way to create/replace the existing
 record in the DB with an almost identical one.
+
+=item $class->Get(user_id => $user_id)
+
+Retrieves the Email Confirmation Restriction for the User specified by the
+provided C<$user_id>.
 
 =item $restriction->update( { ... } )
 
