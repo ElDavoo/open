@@ -39,6 +39,17 @@ sub GET_json {
 sub GET_html {
     my $self = shift;
     $self->if_authorized_to_view(sub {
+        # Override any preferences from up_ cgi parameters
+        my %prefs;
+        for my $param ($self->rest->query->param) {
+            if ($param =~ /^up_(.*)$/) {
+                $prefs{$1} = Encode::decode_utf8(
+                    $self->rest->query->param($param)
+                );
+            }
+        }
+        $self->gadget->preference_hash(\%prefs);
+
         $self->rest->header(-type => 'text/html; charset=utf-8');
         return $self->gadget->expanded_content;
     });
