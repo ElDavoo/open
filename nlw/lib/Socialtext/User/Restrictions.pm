@@ -70,11 +70,11 @@ sub _validate_assign_expires_at {
     my $class = shift;
     my $proto = shift;
     unless ($proto->{expires_at}) {
-        $proto->{expires_at} = $class->default_expires_at;
+        $proto->{expires_at} = $class->DefaultExpiry;
     }
 }
 
-sub default_expires_at {
+sub DefaultExpiry {
     return Socialtext::Date->now->add(weeks => 2);
 }
 
@@ -326,7 +326,7 @@ attributes.
 
 Validates and cleans the provided hash-ref of C<%data>, using the optionally provided C<$restriction> as a reference point for update.
 
-=item $class->default_expires_at()
+=item $class->DefaultExpiry()
 
 Returns the default expiration date for any new User Restriction created right now.
 

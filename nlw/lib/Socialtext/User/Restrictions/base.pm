@@ -85,7 +85,7 @@ sub has_expired {
 
 sub renew {
     my $self = shift;
-    my $when = Socialtext::User::Restrictions->default_expires_at;
+    my $when = Socialtext::User::Restrictions->DefaultExpiry;
     $self->update( { expires_at => $when } );
 }
 
