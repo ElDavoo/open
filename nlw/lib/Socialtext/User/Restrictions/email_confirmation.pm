@@ -13,19 +13,12 @@ use Socialtext::URI;
 sub restriction_type { 'email_confirmation' };
 
 sub send_email {
-    my $self = shift;
-    my $user = $self->user;
-
+    my $self     = shift;
+    my $user     = $self->user;
+    my $uri      = $self->uri;
     my $renderer = Socialtext::TT2::Renderer->instance();
 
-    my $uri = $self->uri;
-
-    my $target_workspace;
-
-    if (my $wsid = $self->workspace_id) {
-        require Socialtext::Workspace;      # lazy-load, to reduce startup impact
-        $target_workspace = new Socialtext::Workspace(workspace_id => $wsid);
-    }
+    my $target_workspace = $self->workspace;
     my %vars = (
         confirmation_uri => $uri,
         appconfig        => Socialtext::AppConfig->instance(),
