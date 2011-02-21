@@ -1519,8 +1519,6 @@ sub confirm_email_address {
     my $uce = $self->email_confirmation;
     return unless $uce;
 
-    $uce->delete;
-
     return if $uce->is_password_change;
     my $target_workspace;
     if (my $wsid=$uce->workspace_id) {
@@ -1530,6 +1528,8 @@ sub confirm_email_address {
 
     $self->send_confirmation_completed_email($target_workspace);
     $self->send_confirmation_completed_signal unless $target_workspace;
+
+    $uce->delete;
 }
 
 sub send_confirmation_completed_signal {
