@@ -47,6 +47,12 @@ sub send_email {
     );
 }
 
+sub send_completed_notifications {
+    my $self = shift;
+    $self->send_completed_email;
+    $self->send_completed_signal unless $self->workspace_id;
+}
+
 sub send_completed_email {
     my $self     = shift;
     my $user     = $self->user;

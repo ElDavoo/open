@@ -1457,15 +1457,6 @@ sub send_confirmation_email {
     return $confirmation->send_email;
 }
 
-sub send_confirmation_completed_email {
-    my $self = shift;
-
-    my $confirmation = $self->email_confirmation;
-    return unless $confirmation;
-
-    return $confirmation->send_completed_email();
-}
-
 sub send_password_change_email {
     my $self = shift;
 
@@ -1520,19 +1511,8 @@ sub confirm_email_address {
 
     return if $uce->is_password_change;
 
-    $self->send_confirmation_completed_email();
-    $self->send_confirmation_completed_signal unless $uce->workspace_id;
-
+    $uce->send_completed_notifications;
     $uce->delete;
-}
-
-sub send_confirmation_completed_signal {
-    my $self = shift;
-
-    my $confirmation = $self->email_confirmation;
-    return unless $confirmation;
-
-    return $confirmation->send_completed_signal;
 }
 
 sub email_confirmation {
