@@ -1515,7 +1515,10 @@ sub confirm_email_address {
 
 sub email_confirmation {
     my $self = shift;
-    return Socialtext::User::EmailConfirmation->new( $self->user_id );
+    my $uce  = Socialtext::User::Restrictions::email_confirmation->Get(
+        user_id => $self->user_id,
+    );
+    return $uce;
 }
 
 sub is_plugin_enabled {
