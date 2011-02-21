@@ -43,6 +43,19 @@ has 'workspace_id' => (
     isa => 'Maybe[Int]',
 );
 
+has 'workspace' => (
+    is         => 'ro',
+    isa        => 'Maybe[Socialtext::Workspace]',
+    lazy_build => 1,
+);
+sub _build_workspace {
+    my $self = shift;
+    my $wsid = $self->workspace_id;
+    return unless $wsid;
+    require Socialtext::Workspace;
+    return Socialtext::Workspace->new(workspace_id => $wsid);
+}
+
 sub CreateOrReplace {
     my $class = shift;
     my %opts  = @_;
