@@ -6,6 +6,7 @@ with 'Socialtext::User::Restrictions::base';
 use Socialtext::AppConfig;
 use Socialtext::EmailSender::Factory;
 use Socialtext::l10n qw(system_locale loc);
+use Socialtext::Pluggable::Adapter;
 use Socialtext::TT2::Renderer;
 use Socialtext::URI;
 
@@ -112,6 +113,24 @@ sub send_completed_email {
     );
 }
 
+sub send_completed_signal {
+    my $self = shift;
+    my $signals = Socialtext::Pluggable::Adapter->plugin_class('signals');
+    return unless $signals;
+
+    my $user = $self->user;
+    my $user_wafl = '{user: '.$user->user_id.'}';
+    my $body =
+        loc('[_1] just joined the [_2] group. Hi everybody!', $user_wafl, $user->primary_account->name);
+    eval {
+        $signals->Send({
+            user => $user,
+            account_ids => [ $user->primary_account_id ],
+            body => $body,
+        });
+    };
+    warn $@ if $@;
+}
 
 __PACKAGE__->meta->make_immutable;
 

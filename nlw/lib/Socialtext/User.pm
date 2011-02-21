@@ -1534,20 +1534,11 @@ sub confirm_email_address {
 
 sub send_confirmation_completed_signal {
     my $self = shift;
-    my $signals = Socialtext::Pluggable::Adapter->plugin_class('signals');
-    return unless $signals;
 
-    my $user_wafl = '{user: '.$self->user_id.'}';
-    my $body =
-        loc('[_1] just joined the [_2] group. Hi everybody!', $user_wafl, $self->primary_account->name);
-    eval {
-        $signals->Send({
-            user => $self,
-            account_ids => [ $self->primary_account_id ],
-            body => $body,
-        });
-    };
-    warn $@ if $@;
+    my $confirmation = $self->email_confirmation;
+    return unless $confirmation;
+
+    return $confirmation->send_completed_signal;
 }
 
 sub email_confirmation {
