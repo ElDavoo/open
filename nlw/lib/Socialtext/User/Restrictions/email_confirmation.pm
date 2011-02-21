@@ -12,6 +12,14 @@ use Socialtext::URI;
 
 sub restriction_type { 'email_confirmation' };
 
+sub uri {
+    my $self = shift;
+    return Socialtext::URI::uri(
+        path  => '/nlw/submit/confirm_email',
+        query => { hash => $self->token },
+    );
+}
+
 sub send_email {
     my $self     = shift;
     my $user     = $self->user;
@@ -168,6 +176,11 @@ e-mail address.
 =item $self_or_class->restriction_type()
 
 Returns the type of restriction this is.
+
+=item $self->uri()
+
+Returns the URI that the User should be directed to in order to confirm their
+e-mail address.
 
 =item $self->send_email()
 

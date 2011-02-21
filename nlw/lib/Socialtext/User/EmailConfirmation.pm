@@ -123,14 +123,6 @@ sub id_from_hash {
 sub hash               { shift->{sha1_hash} }
 sub is_password_change { shift->{is_password_change} }
 
-sub uri {
-    my $self = shift;
-    return Socialtext::URI::uri(
-        path  => '/nlw/submit/confirm_email',
-        query => { hash => $self->hash },
-    );
-}
-
 sub expiration_datetime { 
     my $self = shift;
     return DateTime::Format::Pg->parse_timestamptz( 
