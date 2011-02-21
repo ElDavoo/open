@@ -102,6 +102,10 @@ sub PUT_layout {
                     unless $gadgets{$g->{id}};
                 my $gadget = $self->container->get_gadget_instance($g->{id});
                 push @positions, [$gadget, $x, $y, $g->{minimized}];
+
+                # set preferences if they're being passed as part of the layout
+                $gadget->set_preferences($g->{preferences})
+                    if $g->{preferences};
             }
         }
 

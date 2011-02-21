@@ -17,8 +17,7 @@
                 [% gadget.title %]
             </span>
         </div>
-        <div class="widgetHeaderButtons">
-        [% IF editing || !gadget.fixed %]
+        <div class="widgetHeaderButtons" style="[% UNLESS editing || !gadget.fixed %]display: none[% END %]">
             <a class="close" href="#" onclick="gadgets.container.remove('[% gadget.id %]'); return false"></a>
             <a class="minimize" href="#" onclick="gadgets.container.minimize('[% gadget.id %]'); return false"></a>
             [% IF gadget.minimized %]
@@ -35,7 +34,6 @@
             [% IF editing %]
                 <a class="fix [% gadget.fixed ? "fixed" : "unfixed" %]" href="#" onclick="gadgets.container.fix('[% gadget.id %]'); return false"></a>
             [% END %]
-        [% END %]
         </div>
     </div><!-- widgetHeader END -->
 
