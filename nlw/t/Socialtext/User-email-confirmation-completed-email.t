@@ -33,7 +33,7 @@ my $user = Socialtext::User->create(
 );
 
 {
-    $user->set_confirmation_info();
+    $user->create_email_confirmation();
 
     my @emails = Email::Send::Test->emails();
     is( scalar @emails, 0, 'no email was sent while user still requires confirmation' );
@@ -63,7 +63,7 @@ my $user = Socialtext::User->create(
     );
     $ws->add_user( user => $user );
 
-    $user->set_confirmation_info();
+    $user->create_email_confirmation();
     $user->confirm_email_address();
 
     my @emails = Email::Send::Test->emails();
@@ -103,7 +103,7 @@ my $user = Socialtext::User->create(
     );
     $ws->add_user( user => $user );
 
-    $user->set_confirmation_info();
+    $user->create_email_confirmation();
     $user->confirm_email_address();
 
     my @emails = Email::Send::Test->emails();
@@ -158,7 +158,7 @@ sub _invite_user_to_group {
     my $g2 = _invite_user_to_group('group 2', $inviter, $user);
     my $g3 = _invite_user_to_group('group 3', $inviter, $user);
 
-    $user->set_confirmation_info();
+    $user->create_email_confirmation();
     $user->confirm_email_address();
 
     my @emails = Email::Send::Test->emails();
