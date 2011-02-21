@@ -180,4 +180,8 @@ Renews the restriction, extending it by the default expration period.
 
 =back
 
+=head1 COPYRIGHT
+
+Copyright 2011 Socialtext, Inc., All Rights Reserved.
+
 =cut
