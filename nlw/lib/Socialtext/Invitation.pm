@@ -35,7 +35,7 @@ sub queue {
         %addtl,
     );
 
-    $user->requires_email_confirmation()
+    $user->create_email_confirmation()
         unless $user->has_valid_password();
 
     $object->assign_role_to_user(
