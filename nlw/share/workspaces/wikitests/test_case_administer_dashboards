@@ -14,17 +14,17 @@
 | open_ok | /?dashboard | 60000 |
 
 | *Comment* | Test Case: Administer Dashboards - bring up DB, no administer button |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
 | wait_for_element_not_present_ok | link=Administer Dashboards | 5000 |
 | text_unlike | controlsRight | Administer Dashboards |
 
 | *Comment* | Test Case: Administer Dashboards - add accounts admin |  |
 | st-admin | give-accounts-admin --e %%mwgmail%% --account "%%acct%%" | now has accounts admin access |
 | open_ok | /?dashboard | 60000 |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
 | wait_for_element_visible_ok | link=Administer Dashboards | 5000 |
 | click_and_wait | link=Administer Dashboards |  |
-| wait_for_element_visible_ok | link=Add Content |  |
+| wait_for_element_visible_ok | link=Add Widget |  |
 | wait_for_element_visible_ok | link=Save... |  |
 | wait_for_element_visible_ok | link=Cancel |  |
 | wait_for_element_visible_ok | link=Revert to Default... |  |
@@ -36,8 +36,8 @@
 | click_and_wait | link=Administer Dashboards |  |
 
 | *Comment* | Test Case: Administer Dashboards - Add RSS Viewer |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
+| click_and_wait | link=Add Widget |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-RSS Viewer'] | 30000 |
 | click_and_wait | //a[@id='gallery-widget-RSS Viewer'] |  |
 
@@ -53,8 +53,8 @@
 | open_ok | /?dashboard | 60000 |
 | wait_for_element_visible_ok | link=Administer Dashboards | 5000 |
 | click_and_wait | link=Administer Dashboards |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
+| click_and_wait | link=Add Widget |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 30000 |
 | click_and_wait | //a[@id='gallery-widget-Wikipedia'] |  |
 
@@ -92,8 +92,8 @@ click_ok | //a[contains(@class,'cancel genericOrangeButton')] | |
 | open_ok | /?dashboard | 60000 |
 | wait_for_element_visible_ok | link=Administer Dashboards | 30000 |
 | click_and_wait | link=Administer Dashboards |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
+| click_and_wait | link=Add Widget |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-RSS Viewer'] | 30000 |
 | click_and_wait | //a[@id='gallery-widget-RSS Viewer'] |  |
 
@@ -141,7 +141,7 @@ click_ok | //a[contains(@class,'cancel genericOrangeButton')] | |
 | *Comment* | Test Case: Administer Dashboards Revert to Default... and Cancel |  |
 | st-admin | give-accounts-admin --e %%mwgmail%%-2 --account "%%acct%%" | now has accounts admin access |
 | open_ok | /?dashboard | 60000 |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
 | wait_for_element_visible_ok | link=Administer Dashboards | 5000 |
 | click_and_wait | link=Administer Dashboards |  |
 | wait_for_element_visible_ok | link=Revert to Default... |  |
@@ -152,7 +152,7 @@ click_ok | //a[contains(@class,'cancel genericOrangeButton')] | |
 
 | *Comment* | Test Case: Administer Dashboards Revert to Default... |  |
 | open_ok | /?dashboard | 60000 |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
 | wait_for_element_visible_ok | link=Administer Dashboards | 5000 |
 | click_and_wait | link=Administer Dashboards |  |
 | wait_for_element_visible_ok | link=Revert to Default... |  |
@@ -168,7 +168,7 @@ TODO: make it work. |  |
 
 *Comment* | Test Case: Administer Dashboards Wikipedia and RSS are gone | |
 open_ok | /?dashboard | 60000 |
-wait_for_element_visible_ok | link=Add Content | 30000 |
+wait_for_element_visible_ok | link=Add Widget | 30000 |
 wait_for_element_visible_ok | link=Administer Dashboards | 5000 |
 click_and_wait | link=Administer Dashboards | |
 

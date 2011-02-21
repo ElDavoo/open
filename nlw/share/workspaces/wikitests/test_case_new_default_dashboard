@@ -82,8 +82,8 @@
 | wait_for_element_visible_ok | link=Administer Dashboards | 30000 |
 | click_and_wait | link=Administer Dashboards |  |
 | wait_for_text_present_ok | This is the default dashboard | 30000 |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
+| click_and_wait | link=Add Widget |  |
 | wait_for_element_visible_ok | gallery-widget-Active Content | 30000 |
 | click_and_wait | gallery-widget-Active Content |  |
 | wait_for_element_visible_ok | dashboard-save-layout | 30000 |
