@@ -107,9 +107,9 @@ sub send_completed_signal {
     return unless $signals;
 
     my $user = $self->user;
-    my $user_wafl = '{user: '.$user->user_id.'}';
+    my $wafl = '{user: '.$user->user_id.'}';
     my $body =
-        loc('[_1] just joined the [_2] group. Hi everybody!', $user_wafl, $user->primary_account->name);
+        loc('[_1] just joined the [_2] group. Hi everybody!', $wafl, $user->primary_account->name);
     eval {
         $signals->Send({
             user => $user,
