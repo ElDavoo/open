@@ -324,11 +324,13 @@ attributes.
 
 =item $class->ValidateAndCleanData($restriction, \%data)
 
-Validates and cleans the provided hash-ref of C<%data>, using the optionally provided C<$restriction> as a reference point for update.
+Validates and cleans the provided hash-ref of C<%data>, using the optionally
+provided C<$restriction> as a reference point for update.
 
 =item $class->DefaultExpiry()
 
-Returns the default expiration date for any new User Restriction created right now.
+Returns the default expiration date for any new User Restriction created right
+now.
 
 =item $class->CreateRecord( { ... } )
 
