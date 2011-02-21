@@ -1459,59 +1459,12 @@ sub send_confirmation_email {
 
 sub send_confirmation_completed_email {
     my $self = shift;
-
     my $target_workspace = shift;
 
-    return if $self->email_confirmation();
+    my $confirmation = $self->email_confirmation;
+    return unless $confirmation;
 
-    my $renderer = Socialtext::TT2::Renderer->instance();
-
-    my $app_name =
-        Socialtext::AppConfig->is_appliance()
-        ? 'Socialtext Appliance'
-        : 'Socialtext';
-    my @workspaces = [];
-    my @groups = [];
-    my $subject;
-    my $ws = $target_workspace;
-    if ($ws) {
-        $subject = loc('You can now login to the [_1] workspace', $ws->title());
-    }
-    else {
-        $subject = loc("You can now login to the [_1] application", $app_name);
-        @groups = $self->groups->all;
-        @workspaces = $self->workspaces->all;
-    }
-
-    my %vars = (
-        title => ($ws) ? $ws->title() : $app_name,
-        uri   => ($ws) ? $ws->uri() : Socialtext::URI::uri(path => '/challenge'),
-        workspaces => \@workspaces,
-        groups => \@groups,
-        target_workspace => $target_workspace,
-        user => $self,
-        app_name => $app_name,
-        appconfig => Socialtext::AppConfig->instance(),
-        support_address => Socialtext::AppConfig->instance()->support_address,
-    );
-
-    my $text_body = $renderer->render(
-        template => 'email/email-address-confirmation-completed.txt',
-        vars     => \%vars,
-    );
-
-    my $html_body = $renderer->render(
-        template => 'email/email-address-confirmation-completed.html',
-        vars     => \%vars,
-    );
-    my $locale = system_locale();
-    my $email_sender = Socialtext::EmailSender::Factory->create($locale);
-    $email_sender->send(
-        to        => $self->name_and_email(),
-        subject   => $subject,
-        text_body => $text_body,
-        html_body => $html_body,
-    );
+    return $confirmation->send_completed_email($target_workspace);
 }
 
 sub send_password_change_email {
