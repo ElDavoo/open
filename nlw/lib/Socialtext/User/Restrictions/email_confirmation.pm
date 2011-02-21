@@ -17,13 +17,12 @@ sub send_email {
     my $user     = $self->user;
     my $uri      = $self->uri;
     my $renderer = Socialtext::TT2::Renderer->instance();
-
-    my $target_workspace = $self->workspace;
+    my $workspace = $self->workspace;
     my %vars = (
         confirmation_uri => $uri,
         appconfig        => Socialtext::AppConfig->instance(),
         account_name     => $user->primary_account->name,
-        target_workspace => $target_workspace
+        target_workspace => $workspace
     );
 
     my $text_body = $renderer->render(
@@ -41,8 +40,8 @@ sub send_email {
     my $email_sender = Socialtext::EmailSender::Factory->create($locale);
     $email_sender->send(
         to        => $user->name_and_email(),
-        subject   => $target_workspace ? 
-            loc('Welcome to the [_1] workspace - please confirm your email to join', $target_workspace->title)
+        subject   => $workspace ?
+            loc('Welcome to the [_1] workspace - please confirm your email to join', $workspace->title)
             :
             loc('Welcome to the [_1] community - please confirm your email to join', $user->primary_account->name),
         text_body => $text_body,
