@@ -2004,91 +2004,21 @@ proto.do_widget_pre = function(widget_element) {
 
 proto.do_opensocial_gallery = function() {
     var self = this;
-    if (!jQuery('#st-widget-opensocial-gallery').size()) {
-        Socialtext.wikiwyg_variables.loc = loc;
-        jQuery('body').append(
-            Jemplate.process(
-                "opensocial-gallery.html",
-                Socialtext.wikiwyg_variables
-            )
-        );
-        $.ajax({
-            url: '/data/accounts/' + Socialtext.current_workspace_account_id + '/gallery',
-            dataType: 'json',
-            success: function(gallery) {
-                var tables = [
-                    { widgets: [], title: loc('Socialtext widgets') },
-                    { widgets: [], title: loc('Third Party widgets') }
-                ];
-                var widgets = gallery.widgets;
-                widgets.sort(function(a, b) {
-                    if (a.socialtext === b.socialtext) { return 0 }
-                    if (a.socialtext === null) { return -1 }
-                    if (b.socialtext === null) { return 1 }
-                    if (a.socialtext < b.socialtext) { return -1 }
-                    if (a.socialtext > b.socialtext) { return 1 }
-                    return 0;
-                });
-                $.each(widgets, function(){
-                    if (this.removed) { return; }
-                    if (!this.src || this.src == 'local:widgets:activities' || this.src == 'http://www.google.com/ig/modules/calendar3.xml') { return; }
-                    var ary = tables[(this.socialtext == true) ? 0 : 1].widgets;
-                    // 2-column layout
-                    if (ary.length && (ary[ary.length-1].length < 2)) {
-                        ary[ary.length-1].push(this);
-                    }
-                    else {
-                        ary.push([this]);
-                    }
-                });
 
-                var $gallery = $('#st-widget-opensocial-gallery-widgets');
-                $.each(tables, function(){
-                    $gallery.append($('<div />', { 'class': 'title' }).text(this.title));
-                    var $table = $('<table />', {
-                        'class': 'galleryWidget',
-                        css: { width: '99%', tableLayout: 'fixed' }
-                    });
-                    $.each(this.widgets, function(){
-                        var $imgRow = $('<tr />').appendTo($table);
-                        var $textRow = $('<tr />').appendTo($table);
-                        $.each(this, function(){
-                            var src = this.src;
-                            var $imgCell = $('<td />', { width: '20%' }).appendTo($imgRow);
-                            $imgCell.append($('<img />', { width: '90', height: '45', src: '/data/gadgets/' + this.gadget_id + '/thumbnail' }));
-
-                            var $btnCell = $('<td />', { width: '30%' }).appendTo($imgRow);
-                            var $button = $('<div style="float: left" />')
-                                .append($('<ul class="widgetButton" style="float: left; margin-left: 15px; margin-top: 10px; cursor: pointer" />')
-                                    .append($('<li class="flexButtonGrey" style="float: left" />')
-                                        .append($('<a class="greyButton" />')
-                                            .text(loc('Insert')))));
-
-                            $btnCell.append($button.click(function(){
-                                $('#lightbox').unbind('lightbox-unload').bind('lightbox-unload', function(){
-                                    Wikiwyg.Widgets.widget_editing = 1;
-                                    self.do_opensocial_setup(src);
-                                });
-                                jQuery.hideLightbox();
-                            }));
-
-                            var $textCell = $('<td />', { width: '50%', colspan: '2' }).appendTo($textRow);
-                            $textCell.append($('<div />', { css: { fontWeight: 'bold' } }).text(this.title));
-                            $textCell.append($('<div />', { css: { marginTop: '3px', marginBottom: '10px', marginRight: '10px' } }).text(this.description));
-                        });
-                    });
-                    $gallery.append($table);
-                });
+    get_plugin_lightbox('widgets', 'opensocial-gallery', function () {
+        var gallery = new ST.OpenSocialGallery({
+            account_id: Socialtext.current_workspace_account_id,
+            onAddWidget: function(src) {
+                Wikiwyg.Widgets.widget_editing = 1;
+                self.do_opensocial_setup(src);
+            },
+            hidden: {
+                'local:widgets:activities': true,
+                'http://www.google.com/ig/modules/calendar3.xml': true
             }
         });
-    }
-
-    jQuery.showLightbox({
-        content: '#st-widget-opensocial-gallery',
-        close: '#st-widget-opensocial-gallery-cancel',
-        width: '640px'
+        gallery.showLightbox();
     });
-//    alert("Gallery");
 }
 
 proto.do_opensocial_setup = function(src) {
