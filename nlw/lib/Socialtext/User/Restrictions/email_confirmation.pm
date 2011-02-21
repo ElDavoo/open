@@ -48,12 +48,10 @@ sub send_email {
 }
 
 sub send_completed_email {
-    my $self = shift;
-    my $user = $self->user;
-    my $ws = $self->workspace;
-
+    my $self     = shift;
+    my $user     = $self->user;
+    my $ws       = $self->workspace;
     my $renderer = Socialtext::TT2::Renderer->instance();
-
     my $app_name =
         Socialtext::AppConfig->is_appliance()
         ? 'Socialtext Appliance'
@@ -61,12 +59,13 @@ sub send_completed_email {
     my @workspaces;
     my @groups;
     my $subject;
+
     if ($ws) {
         $subject = loc('You can now login to the [_1] workspace', $ws->title());
     }
     else {
         $subject = loc("You can now login to the [_1] application", $app_name);
-        @groups = $user->groups->all;
+        @groups     = $user->groups->all;
         @workspaces = $user->workspaces->all;
     }
 
@@ -79,7 +78,7 @@ sub send_completed_email {
         user             => $user,
         app_name         => $app_name,
         appconfig        => Socialtext::AppConfig->instance(),
-        support_address => Socialtext::AppConfig->instance()->support_address,
+        support_address  => Socialtext::AppConfig->instance()->support_address,
     );
 
     my $text_body = $renderer->render(
