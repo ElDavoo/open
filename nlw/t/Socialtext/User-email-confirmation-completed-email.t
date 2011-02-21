@@ -3,26 +3,20 @@
 
 use strict;
 use warnings;
-
-use Test::Socialtext;
-fixtures(qw( clean db ));
+use Test::Socialtext tests => 24;
+use Socialtext::Account;
+use Socialtext::User;
+use Socialtext::Workspace;
+use Socialtext::Role;
 
 BEGIN {
     unless ( eval { require Email::Send::Test; 1 } ) {
         plan skip_all => 'These tests require Email::Send::Test to run.';
     }
+    $Socialtext::EmailSender::Base::SendClass = 'Test';
 }
 
-plan tests => 24;
-
-use Socialtext::Account;
-use Socialtext::Group;
-use Socialtext::User;
-use Socialtext::Workspace;
-use Socialtext::GroupInvitation;
-use Socialtext::Role;
-
-$Socialtext::EmailSender::Base::SendClass = 'Test';
+fixtures(qw( clean db ));
 
 my $AdminRole = Socialtext::Role->Admin();
 
@@ -152,7 +146,7 @@ sub _invite_user_to_group {
 
 {
     Email::Send::Test->clear();
-    
+
     my $inviter = create_test_user();
     my $g1 = _invite_user_to_group('group 1', $inviter, $user);
     my $g2 = _invite_user_to_group('group 2', $inviter, $user);
