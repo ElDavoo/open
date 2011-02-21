@@ -165,13 +165,12 @@ sub FetchByToken {
 
 sub AllForUser {
     my $class      = shift;
-    my $maybe_user = shift;
-    my %p          = @_;
+    my $user_or_id = shift;
     my $t          = time_scope('user_restriction_all_for_user');
     my $user_id
-        = (ref($maybe_user) && $maybe_user->can('user_id'))
-        ? $maybe_user->user_id
-        : $maybe_user;
+        = (ref($user_or_id) && $user_or_id->can('user_id'))
+        ? $user_or_id->user_id
+        : $user_or_id;
 
     my ($sql, @bind)
         = sql_abstract->select($TABLE, $COLUMNS, { user_id => $user_id });
