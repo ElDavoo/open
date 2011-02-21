@@ -98,8 +98,13 @@ sub PUT_layout {
             my $col = $layout->[$x];
             for my $y (0 .. $#$col) {
                 my $g = $col->[$y];
-                die "Widget $g->{id} is not in container\n"
-                    unless $gadgets{$g->{id}};
+
+                # Make sure this gadget is in the container, and keep track of
+                # ones we've seen in the layout, so we can delete gadgets that
+                # were removed from the container while in edit mode
+                delete $gadgets{$g->{id}} ||
+                    die "Widget $g->{id} is not in container\n";
+
                 my $gadget = $self->container->get_gadget_instance($g->{id});
                 push @positions, [$gadget, $x, $y, $g->{minimized}];
 
@@ -107,6 +112,11 @@ sub PUT_layout {
                 $gadget->set_preferences($g->{preferences})
                     if $g->{preferences};
             }
+        }
+
+        for my $gadget_id (keys %gadgets) {
+            my $gadget = $self->container->get_gadget_instance($gadget_id);
+            $gadget->delete;
         }
 
         for my $gadget_position (@positions) {
