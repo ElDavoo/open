@@ -35,14 +35,13 @@ sub send_email {
         vars     => \%vars,
     );
 
-    my $locale = system_locale();
+    my $locale       = system_locale();
     my $email_sender = Socialtext::EmailSender::Factory->create($locale);
     $email_sender->send(
         to        => $user->name_and_email(),
-        subject   => $workspace ?
-            loc('Welcome to the [_1] workspace - please confirm your email to join', $workspace->title)
-            :
-            loc('Welcome to the [_1] community - please confirm your email to join', $user->primary_account->name),
+        subject   => $workspace
+            ? loc('Welcome to the [_1] workspace - please confirm your email to join', $workspace->title)
+            : loc('Welcome to the [_1] community - please confirm your email to join', $user->primary_account->name),
         text_body => $text_body,
         html_body => $html_body,
     );
