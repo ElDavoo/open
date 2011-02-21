@@ -132,3 +132,68 @@ sub send_completed_signal {
 __PACKAGE__->meta->make_immutable;
 
 1;
+
+=head1 NAME
+
+Socialtext::User::Restrictions::email_confirmation - Email Confirmation restriction
+
+=head1 SYNOPSIS
+
+  use Socialtext::User::Restrictions::email_confirmation;
+
+  # require that a User confirm their e-mail address
+  my $restriction = Socialtext::User::Restrictions::email_confirmation->CreateOrReplace( {
+      user_id      => $user->user_id,
+      workspace_id => $workspace->workspace_id,
+  } );
+
+  # send the User the e-mail asking them to confirm their e-mail address
+  $restriction->send_email;
+
+  # let the User know that they've completed the confirmation
+  $restriction->send_completed_notifications;
+
+  # clear the Restriction (after the User completed their confirmation)
+  $restriction->clear;
+
+=head1 DESCRIPTION
+
+This module implements a Restriction requiring the User to confirm their
+e-mail address.
+
+=head1 METHODS
+
+=over
+
+=item $self_or_class->restriction_type()
+
+Returns the type of restriction this is.
+
+=item $self->send_email()
+
+Sends an e-mail message to the User informing them that they need to confirm
+their e-mail address before they have access to their account.
+
+=item $self->send_completed_notifications()
+
+Sends out all of the notifications necessary, once the User has confirmed
+their e-mail address.
+
+=item $self->send_completed_email()
+
+Sends an e-mail message to the User, letting them know that they've completed
+the process of confirming their e-mail address.
+
+=item $self->send_completed_signal()
+
+Sends a Signal, indicating to other Users that this individual just completed
+the process of confirming their e-mail address, welcoming him/her to the
+system.
+
+=back
+
+=head1 COPYRIGHT
+
+Copyright 2011 Socialtext, Inc., All Rights Reserved.
+
+=cut
