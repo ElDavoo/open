@@ -103,19 +103,22 @@ sub send_completed_email {
 
 sub send_completed_signal {
     my $self = shift;
+
     my $signals = Socialtext::Pluggable::Adapter->plugin_class('signals');
     return unless $signals;
 
     my $user = $self->user;
-    my $wafl = '{user: '.$user->user_id.'}';
-    my $body =
-        loc('[_1] just joined the [_2] group. Hi everybody!', $wafl, $user->primary_account->name);
+    my $wafl = '{user: ' . $user->user_id . '}';
+    my $body = loc(
+        '[_1] just joined the [_2] group. Hi everybody!',
+        $wafl, $user->primary_account->name,
+    );
     eval {
-        $signals->Send({
-            user => $user,
+        $signals->Send( {
+            user        => $user,
             account_ids => [ $user->primary_account_id ],
-            body => $body,
-        });
+            body        => $body,
+        } );
     };
     warn $@ if $@;
 }
