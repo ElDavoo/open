@@ -13,6 +13,16 @@ has 'user_id' => (
     required    => 1,
 );
 
+has 'user' => (
+    is         => 'ro',
+    isa        => 'Socialtext::User',
+    lazy_build => 1,
+);
+sub _build_user {
+    my $self = shift;
+    my $user = Socialtext::User->new(user_id => $self->user_id);
+}
+
 has 'token' => (
     is       => 'ro',
     isa      => 'Str',
