@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 16;
+use Test::Socialtext tests => 15;
 use Socialtext::User;
 
 BEGIN {
@@ -28,14 +28,13 @@ confirmation_email_qualities: {
     isa_ok $user, 'Socialtext::User', 'new test user';
 
     # set the confirmation info for this user.
-    $user->set_confirmation_info();
+    $user->create_email_confirmation();
 
     # verify the qualities that the confirmation email has.
     my $confirmation = $user->email_confirmation;
-    is length $confirmation->hash, 27, '... has base64 encoded email confirmation hash';
-    ok $user->requires_confirmation, '... user requires confirmation';
-    ok !$confirmation->has_expired, '... confirmation has not yet expired';
-    ok !$confirmation->is_password_change, '... confirmation is *not* for password change';
+    is length $confirmation->token, 27,    '... has base64 encoded email confirmation hash';
+    ok $user->requires_confirmation,       '... user requires confirmation';
+    ok !$confirmation->has_expired,        '... confirmation has not yet expired';
 
     # confirm the email, and make sure it sticks
     $user->confirm_email_address();
@@ -51,8 +50,8 @@ confirmation_hash_reused: {
     isa_ok $user, 'Socialtext::User', 'new test user';
 
     # set the confirmation info for this user, and get the hash it generated.
-    $user->set_confirmation_info();
-    my $hash_orig    = $user->email_confirmation->hash();
+    $user->create_email_confirmation;
+    my $hash_orig = $user->email_confirmation->token();
 
     # sleep a bit; the hash is time() based, and we want to make sure that
     # changes
@@ -60,8 +59,8 @@ confirmation_hash_reused: {
     sleep 2;
 
     # set the confirmation info again, and get the generated hash again
-    $user->set_confirmation_info();
-    my $hash_reused = $user->email_confirmation->hash();
+    $user->create_email_confirmation;
+    my $hash_reused = $user->email_confirmation->token();
 
     # the confirmation hash *should* have been reused
     is $hash_reused, $hash_orig, 'confirmation hash reused if it already exists';
@@ -75,8 +74,8 @@ confirmation_email_contents: {
 
     # set the confirmation info the this user, and get the generated e-mail
     Email::Send::Test->clear();
-    $user->set_confirmation_info();
-    $user->send_confirmation_email();
+    my $uce = $user->create_email_confirmation;
+    $uce->send_email;
 
     my @emails = Email::Send::Test->emails();
     is scalar @emails, 1, 'one confirmation e-mail was sent';
