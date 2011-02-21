@@ -20,6 +20,7 @@ has 'user' => (
 );
 sub _build_user {
     my $self = shift;
+    require Socialtext::User;
     my $user = Socialtext::User->new(user_id => $self->user_id);
 }
 
