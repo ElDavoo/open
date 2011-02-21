@@ -50,8 +50,7 @@ sub send_email {
 sub send_completed_email {
     my $self = shift;
     my $user = $self->user;
-
-    my $target_workspace = $self->workspace;
+    my $ws = $self->workspace;
 
     my $renderer = Socialtext::TT2::Renderer->instance();
 
@@ -62,7 +61,6 @@ sub send_completed_email {
     my @workspaces = [];
     my @groups = [];
     my $subject;
-    my $ws = $target_workspace;
     if ($ws) {
         $subject = loc('You can now login to the [_1] workspace', $ws->title());
     }
@@ -77,7 +75,7 @@ sub send_completed_email {
         uri   => ($ws) ? $ws->uri() : Socialtext::URI::uri(path => '/challenge'),
         workspaces       => \@workspaces,
         groups           => \@groups,
-        target_workspace => $target_workspace,
+        target_workspace => $ws,
         user             => $user,
         app_name         => $app_name,
         appconfig        => Socialtext::AppConfig->instance(),
