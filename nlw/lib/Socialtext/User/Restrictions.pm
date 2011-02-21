@@ -160,12 +160,7 @@ sub Get {
 sub FetchByToken {
     my $class = shift;
     my $token = shift;
-    my ($sql, @bind)
-        = sql_abstract->select($TABLE, $COLUMNS, { token => $token });
-    my $sth = sql_execute($sql, @bind);
-    my $row = $sth->fetchrow_hashref();
-    return unless $row;
-    return $class->_instantiate($row);
+    return $class->Get( { token => $token } );
 }
 
 sub AllForUser {
