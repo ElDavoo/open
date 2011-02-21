@@ -1443,9 +1443,9 @@ sub Count {
 
 sub create_email_confirmation {
     my $self = shift;
-    Socialtext::User::Restrictions::email_confirmation->CreateOrReplace( {
+    Socialtext::User::Restrictions::email_confirmation->CreateOrReplace(
         user_id => $self->user_id,
-    } );
+    );
 }
 
 sub send_confirmation_email {
