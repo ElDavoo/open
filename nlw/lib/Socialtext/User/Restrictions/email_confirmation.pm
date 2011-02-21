@@ -58,8 +58,8 @@ sub send_completed_email {
         Socialtext::AppConfig->is_appliance()
         ? 'Socialtext Appliance'
         : 'Socialtext';
-    my @workspaces = [];
-    my @groups = [];
+    my @workspaces;
+    my @groups;
     my $subject;
     if ($ws) {
         $subject = loc('You can now login to the [_1] workspace', $ws->title());
