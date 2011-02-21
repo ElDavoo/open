@@ -181,27 +181,6 @@ sub AllForUser {
     );
 }
 
-around 'UpdateRecord' => \&sql_txn;
-sub UpdateRecord {
-    my $class = shift;
-    my $proto = shift;
-
-    # Get the list of valid DB columns, the pkey, and the values to update
-    my $valid  = $class->_filter_valid_columns($proto);
-    my $pkey   = $class->_filter_pkey_columns($valid);
-    my $values = $class->_filter_non_pkey_columns($valid);
-
-    # If we don't have anything to update, don't
-    return unless %{$values};
-
-    # UPDATE the record in the DB.
-    my ($sql, @bind) = sql_abstract->update($TABLE, $values, $pkey);
-    my $sth  = sql_execute($sql, @bind);
-    my $rows = $sth->rows;
-
-    return $rows;   # count of records updated
-}
-
 sub Update {
     my $class       = shift;
     my $restriction = shift;
@@ -227,6 +206,27 @@ sub Update {
         $setter->set_value($restriction, $to_update->{$attr});
     }
     return $restriction;
+}
+
+around 'UpdateRecord' => \&sql_txn;
+sub UpdateRecord {
+    my $class = shift;
+    my $proto = shift;
+
+    # Get the list of valid DB columns, the pkey, and the values to update
+    my $valid  = $class->_filter_valid_columns($proto);
+    my $pkey   = $class->_filter_pkey_columns($valid);
+    my $values = $class->_filter_non_pkey_columns($valid);
+
+    # If we don't have anything to update, don't
+    return unless %{$values};
+
+    # UPDATE the record in the DB.
+    my ($sql, @bind) = sql_abstract->update($TABLE, $values, $pkey);
+    my $sth  = sql_execute($sql, @bind);
+    my $rows = $sth->rows;
+
+    return $rows;   # count of records updated
 }
 
 sub Delete {
