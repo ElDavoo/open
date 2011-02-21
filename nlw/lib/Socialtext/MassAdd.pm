@@ -247,7 +247,7 @@ sub _create_user {
 
     # Send the user a confirmation email, if they don't have a pw
     unless ($user->has_valid_password) {
-        $user->set_confirmation_info(is_password_change => 0);
+        $user->create_email_confirmation();
         $user->send_confirmation_email();
     }
 

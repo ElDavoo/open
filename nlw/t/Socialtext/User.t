@@ -87,7 +87,7 @@ my $user3 = Socialtext::User->create(
     created_by_user_id => $user->user_id,
 );
 
-$user3->set_confirmation_info(is_password_change => 0);
+$user3->create_email_confirmation;
 
 is( $user3->requires_confirmation, 1, 'user requires confirmation' );
 

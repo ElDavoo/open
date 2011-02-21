@@ -458,7 +458,7 @@ sub register {
     }
 
 
-    $user->set_confirmation_info(workspace_name => $target_ws_name);
+    $user->create_email_confirmation(workspace_name => $target_ws_name);
     $user->send_confirmation_email;
 
     $self->session->add_message(loc("An email confirming your registration has been sent to [_1].", $email_address));
@@ -601,7 +601,7 @@ sub resend_confirmation {
         return $self->_challenge();
     }
 
-    $user->set_confirmation_info;
+    $user->create_email_confirmation;
     $user->send_confirmation_email;
 
     $self->session->add_error(loc('The confirmation email has been resent. Please follow the link in this email to activate your account.'));
