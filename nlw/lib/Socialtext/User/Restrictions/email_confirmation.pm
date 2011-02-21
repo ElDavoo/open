@@ -75,12 +75,12 @@ sub send_completed_email {
     my %vars = (
         title => ($ws) ? $ws->title() : $app_name,
         uri   => ($ws) ? $ws->uri() : Socialtext::URI::uri(path => '/challenge'),
-        workspaces => \@workspaces,
-        groups => \@groups,
+        workspaces       => \@workspaces,
+        groups           => \@groups,
         target_workspace => $target_workspace,
-        user => $user,
-        app_name => $app_name,
-        appconfig => Socialtext::AppConfig->instance(),
+        user             => $user,
+        app_name         => $app_name,
+        appconfig        => Socialtext::AppConfig->instance(),
         support_address => Socialtext::AppConfig->instance()->support_address,
     );
 
@@ -93,7 +93,8 @@ sub send_completed_email {
         template => 'email/email-address-confirmation-completed.html',
         vars     => \%vars,
     );
-    my $locale = system_locale();
+
+    my $locale       = system_locale();
     my $email_sender = Socialtext::EmailSender::Factory->create($locale);
     $email_sender->send(
         to        => $user->name_and_email(),
