@@ -35,7 +35,6 @@ sub send_email {
         vars     => \%vars,
     );
 
-    # XXX if we add locale per workspace, we have to get the locale from hub.
     my $locale = system_locale();
     my $email_sender = Socialtext::EmailSender::Factory->create($locale);
     $email_sender->send(
