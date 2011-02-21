@@ -51,7 +51,7 @@ sub send_completed_email {
     my $self = shift;
     my $user = $self->user;
 
-    my $target_workspace = shift;
+    my $target_workspace = $self->workspace;
 
     my $renderer = Socialtext::TT2::Renderer->instance();
 

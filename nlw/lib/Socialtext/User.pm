@@ -1459,12 +1459,11 @@ sub send_confirmation_email {
 
 sub send_confirmation_completed_email {
     my $self = shift;
-    my $target_workspace = shift;
 
     my $confirmation = $self->email_confirmation;
     return unless $confirmation;
 
-    return $confirmation->send_completed_email($target_workspace);
+    return $confirmation->send_completed_email();
 }
 
 sub send_password_change_email {
@@ -1520,14 +1519,9 @@ sub confirm_email_address {
     return unless $uce;
 
     return if $uce->is_password_change;
-    my $target_workspace;
-    if (my $wsid=$uce->workspace_id) {
-        require Socialtext::Workspace;      # lazy-load, to reduce startup impact
-        $target_workspace = Socialtext::Workspace->new(workspace_id => $wsid);
-    }
 
-    $self->send_confirmation_completed_email($target_workspace);
-    $self->send_confirmation_completed_signal unless $target_workspace;
+    $self->send_confirmation_completed_email();
+    $self->send_confirmation_completed_signal unless $uce->workspace_id;
 
     $uce->delete;
 }
