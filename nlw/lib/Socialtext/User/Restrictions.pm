@@ -302,12 +302,90 @@ Socialtext::User::Restrictions - User Restrictions factory
   my $iter = Socialtext::User::Restrictions->AllForUser($user_or_id);
 
   # Get a specific restriction, by its token
-  my $restriction = Socialatext::User::Restrictions->FetchByToken($token);
+  my $restriction = Socialtext::User::Restrictions->FetchByToken($token);
 
 =head1 DESCRIPTION
 
+This module implements a factory class for User Restrictions; restrictions
+placed on a User record that would prevent the User from being able to access
+the system until some operation has been performed.
+
 =head1 METHODS
 
+=over
+
+=item $class->Create( { ... } )
+
+Creates a new User Restriction, based on the parameters provided.  Returns an
+appropriate C<Socialtext::User::Restrictions::*> object to the caller.
+
+Refer to L<Socialtext::User::Restrictions::base> for a list of available
+attributes.
+
+=item $class->ValidateAndCleanData($restriction, \%data)
+
+Validates and cleans the provided hash-ref of C<%data>, using the optionally provided C<$restriction> as a reference point for update.
+
+=item $class->default_expires_at()
+
+Returns the default expiration date for any new User Restriction created right now.
+
+=item $class->CreateRecord( { ... } )
+
+Creates a new record in the DB for the User Restriction defined by the
+parameters provided.
+
+=item $class->CreateOrReplace( { ... } )
+
+Creates or replaces a User Restriction in the DB, returning an appropriate
+C<Socialtext::User::Restrictions::*> object back to the caller.
+
+=item $class->Get( { ... } )
+
+Attempts to retrieve a User Restriction from the DB, using the parameters
+provided.  Returns an appropriate C<Socialtext::User::Restrictions::*> object
+to the caller if we can find a matching record in the DB, returning
+empty-handed otherwise.
+
+=item $class->FetchByToken($token)
+
+Attempts to retrieve a User Restriction from the DB based on the C<$token>
+provided.
+
+=item $class->AllForUser($user_or_id)
+
+Retrieves objects for all of the Restrictions found in the DB for the given
+User.  C<$user_or_id> can be provided either as a C<Socialtext::User> object
+or as their User Id directly.
+
+=item $class->Update( $restriction, { ... } )
+
+Updates the provided C<$restriction> using the parameters provided.  Returns
+the updated restriction object back to the caller.
+
+=item $class->UpdateRecord( { ... } )
+
+Updates the User Restriction record in the DB defined by the primary key in
+the provided parameters.
+
+Returns the number of rows updated.
+
+=item $class->Delete($restriction)
+
+Deletes the provided C<$restriction> object, removing that User Restriction
+object from the DB.
+
+=item $class->DeleteRecord( { ... } )
+
+Deletes the User Restriction from the DB that is defined by the provided
+parameters.
+
+Returns the number of rows updated.
+
+=back
+
 =head1 COPYRIGHT
+
+Copyright 2011 Socialtext, Inc., All Rights Reserved.
 
 =cut
