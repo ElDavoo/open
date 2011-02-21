@@ -1512,7 +1512,7 @@ sub confirm_email_address {
     return if $uce->is_password_change;
 
     $uce->send_completed_notifications;
-    $uce->delete;
+    $uce->clear;
 }
 
 sub email_confirmation {
