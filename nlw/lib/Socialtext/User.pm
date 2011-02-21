@@ -1448,53 +1448,13 @@ sub create_email_confirmation {
     } );
 }
 
-# REVIEW - does this belong in here, or maybe a higher level library
-# like one for all of our emails? I dunno.
 sub send_confirmation_email {
     my $self = shift;
 
     my $confirmation = $self->email_confirmation;
     return unless $confirmation;
 
-    my $renderer = Socialtext::TT2::Renderer->instance();
-
-    my $uri = $confirmation->uri;
-
-    my $target_workspace;
-
-    if (my $wsid = $confirmation->workspace_id) {
-        require Socialtext::Workspace;      # lazy-load, to reduce startup impact
-        $target_workspace = new Socialtext::Workspace(workspace_id => $wsid);
-    }
-    my %vars = (
-        confirmation_uri => $uri,
-        appconfig        => Socialtext::AppConfig->instance(),
-        account_name     => $self->primary_account->name,
-        target_workspace => $target_workspace
-    );
-
-    my $text_body = $renderer->render(
-        template => 'email/email-address-confirmation.txt',
-        vars     => \%vars,
-    );
-
-    my $html_body = $renderer->render(
-        template => 'email/email-address-confirmation.html',
-        vars     => \%vars,
-    );
-
-    # XXX if we add locale per workspace, we have to get the locale from hub.
-    my $locale = system_locale();
-    my $email_sender = Socialtext::EmailSender::Factory->create($locale);
-    $email_sender->send(
-        to        => $self->name_and_email(),
-        subject   => $target_workspace ? 
-            loc('Welcome to the [_1] workspace - please confirm your email to join', $target_workspace->title)
-            :
-            loc('Welcome to the [_1] community - please confirm your email to join', $self->primary_account->name),
-        text_body => $text_body,
-        html_body => $html_body,
-    );
+    return $confirmation->send_email;
 }
 
 sub send_confirmation_completed_email {
