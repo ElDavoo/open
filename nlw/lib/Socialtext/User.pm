@@ -1509,8 +1509,6 @@ sub confirm_email_address {
     my $uce = $self->email_confirmation;
     return unless $uce;
 
-    return if $uce->is_password_change;
-
     $uce->send_completed_notifications;
     $uce->clear;
 }
