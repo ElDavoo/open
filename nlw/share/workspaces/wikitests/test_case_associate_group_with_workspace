@@ -185,18 +185,18 @@
 
 | *Comment* | Test Case: Associate Group With Workspace TEARDOWN |  |
 | st-admin | deactivate-user --email %%agw_user%% | removed |
-| delete-group | %%agw_group_id%% |  |
-| st-admin | delete-workspace --workspace %%ws1%% --no-export | deleted |
-| st-admin | delete-workspace --workspace %%ws2%% --no-export | deleted |
-| st-admin | delete-workspace --workspace %%ws3%% --no-export | deleted |
-| st-admin | delete-workspace --workspace %%ws4%% --no-export | deleted |
-| st-admin | delete-workspace --workspace %%ws5%% --no-export | deleted |
-| st-admin | delete-workspace --workspace %%ws6%% --no-export | deleted |
-| st-admin | delete-workspace --workspace %%ws7%% --no-export | deleted |
-| st-admin | delete-workspace --workspace %%ws8%% --no-export | deleted |
-| st-admin | delete-workspace --workspace %%ws9%% --no-export | deleted |
-| st-admin | delete-workspace --workspace %%ws10%% --no-export | deleted |
-| st-admin | delete-workspace --workspace %%ws11%% --no-export | deleted |
-| st-admin | delete-workspace --workspace %%ws_noadmin%% --no-export | deleted |
+| delete-group | %%agw_group_id%% | Recklessly deleting group |
+| delete-workspace | %%ws1%% | Recklessly deleting workspace |
+| delete-workspace | %%ws2%% | Recklessly deleting workspace |
+| delete-workspace | %%ws3%% | Recklessly deleting workspace |
+| delete-workspace | %%ws4%% | Recklessly deleting workspace |
+| delete-workspace | %%ws5%% | Recklessly deleting workspace |
+| delete-workspace | %%ws6%% | Recklessly deleting workspace |
+| delete-workspace | %%ws7%% | Recklessly deleting workspace |
+| delete-workspace | %%ws8%% | Recklessly deleting workspace |
+| delete-workspace | %%ws9%% | Recklessly deleting workspace |
+| delete-workspace | %%ws10%% | Recklessly deleting workspace |
+| delete-workspace | %%ws11%% | Recklessly deleting workspace |
+| delete-workspace | %%ws_noadmin%% | Recklessly deleting workspace |
 
 | *Comment* | Test Case: Associate Group With Workspace COMPLETED |  |
