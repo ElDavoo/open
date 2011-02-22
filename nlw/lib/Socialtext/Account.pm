@@ -957,11 +957,13 @@ sub _All {
         unshift @args, $p{type};
     }
 
+    my $order_by_field = $p{case_insensitive} ? 'LOWER(name)' : 'name';
+
     return sql_execute(
         'SELECT *'
         . ' FROM "Account"'
         . $where
-        . " ORDER BY name $p{sort_order}"
+        . " ORDER BY $order_by_field $p{sort_order}"
         . ' LIMIT ? OFFSET ?' ,
         @args );
 }

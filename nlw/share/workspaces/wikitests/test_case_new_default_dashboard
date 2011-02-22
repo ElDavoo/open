@@ -140,15 +140,9 @@
 | st-admin | deactivate-user --email %%new_user%% | removed |
 | st-admin | deactivate-user --email %%newer_user%% | removed |
 | st-admin | deactivate-user --email %%newest_user%% | removed |
-| st-admin | delete-workspace --no-export --w %%fake_central%% | deleted |
-| st-logoutin | %%username%% | %%password%% |
-| open_ok | /nlw/control/account/%%ndd_acct_id%% |  |
-| wait_for_element_visible_ok | %%auw_checkbox%% | 30000 |
-| uncheck_ok | %%auw_checkbox%% |  |
-| st_unchecked_ok | %%auw_checkbox%% |  |
-| wait_for_element_visible_ok | //form[@action='/nlw/control/submit/account_settings']/input[@value='Update'] | 30000 |
-| click_and_wait | //form[@action='/nlw/control/submit/account_settings']/input[@value='Update'] |  |
-| st_unchecked_ok | %%auw_checkbox%% |  |
-| st-admin | delete-workspace --workspace %%central%% --no-export | deleted |
+
+| st-process-jobs |  |  |
+| delete-workspace | %%fake_central%% | Recklessly deleting workspace |
+| delete-workspace | %%central%% | Recklessly deleting workspace (Name: %%central%% |
 
 | *Comment* | Test Case: New Default Dashboard COMPLETED |  |

@@ -243,8 +243,7 @@ proto.onChangeFilename = function () {
             // Add Handler
             $('.chooser .add', $menu).unbind('click').click(function() {
                 $('#st-attachments-attach-replace').val('0');
-                upload.call();
-                $menu.fadeOut();
+                $menu.fadeOut('normal', upload);
                 return false;
             });
 
@@ -258,8 +257,7 @@ proto.onChangeFilename = function () {
                     });
                 }
                 $('#st-attachments-attach-replace').val('1');
-                upload.call();
-                $menu.fadeOut();
+                $menu.fadeOut('normal', upload);
                 return false;
             });
 
