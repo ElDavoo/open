@@ -987,11 +987,14 @@ sub delete_workspace {
 
     my $ws = (ref($ws_or_id))
         ? $ws_or_id
-        : Socialtext::Workspace->new(workspace_id => $ws_or_id);
+        : Socialtext::Workspace->new(
+            (($ws_or_id =~ /^\d+$/) ? 'workspace_id' : 'name') => $ws_or_id
+        );
 
     if ($ws) {
         my $ws_id = $ws->workspace_id;
-        diag "Recklessly deleting workspace $ws_id";
+        my $ws_name = $ws->name;
+        diag "Recklessly deleting workspace $ws_name (ID: $ws_id)";
 
         require Test::Socialtext::Workspace;
         Test::Socialtext::Workspace->delete_recklessly($ws);
