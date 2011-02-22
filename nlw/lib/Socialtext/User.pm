@@ -135,14 +135,6 @@ sub new_homunculus {
     my $key = shift;
     my $val = shift;
 
-    # if we are passed in an email confirmation hash, we look up the user_id
-    # associated with that hash
-    if ($key eq 'email_confirmation_hash') {
-        my $user_id = Socialtext::User::EmailConfirmation->id_from_hash($val);
-        return undef unless defined $user_id;
-        $key = 'user_id'; $val = $user_id;
-    }
-
     my $homunculus = Socialtext::User::Cache->Fetch($key, $val);
     return $homunculus if $homunculus;
 
