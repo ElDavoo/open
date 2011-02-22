@@ -66,8 +66,9 @@ sub handler ($$) {
                 loc('Invalid confirmation URL.')
             ) unless $hash;
 
-            my $user = $self->_find_user_for_email_confirmation_hash( $r, $hash );
-            return $self->_show_error() unless $user;
+            my $restriction = $self->_find_restriction_for_hash($r, $hash);
+            return $self->_show_error() unless $restriction;
+            my $user = $restriction->user;
 
             $vars->{email_address} = $user->email_address;
             $vars->{hash}          = $hash;
@@ -473,26 +474,20 @@ sub confirm_email {
     my $hash = $self->{args}{hash};
     return $self->_show_error(loc('Invalid confirmation URL.')) unless $hash;
 
-    my $user = $self->_find_user_for_email_confirmation_hash( $r, $hash );
-    return $self->_show_error() unless $user;
+    my $restriction = $self->_find_restriction_for_hash($r, $hash);
+    return $self->_show_error() unless $restriction;
+    my $user = $restriction->user;
 
-    my $confirmation = $user->email_confirmation;
-    if ($confirmation->has_expired) {
-        $confirmation->renew;
-
-        if ($confirmation->is_password_change) {
-            $user->send_password_change_email();
-        }
-        else {
-            $user->send_confirmation_email();
-        }
-
+    if ($restriction->has_expired) {
+        $restriction->renew;
+        $restriction->send_email;
         return $self->_show_error(
             loc("The confirmation URL you used has expired. A new one will be sent.")
         );
     }
 
-    if ( $confirmation->is_password_change or not $user->has_valid_password ) {
+    if ( ($restriction->restriction_type eq 'password_change')
+        or not $user->has_valid_password) {
         $self->session->save_args(
             hash => $hash,
             ($self->{args}{account_for} 
@@ -503,8 +498,7 @@ sub confirm_email {
 
     # Need to grab wsid before we do confirm_email_address, cuz that wipes the
     # email_confirmation
-    my $wsid = $confirmation->workspace_id;
-
+    my $wsid = $restriction->workspace_id;
     $user->confirm_email_address();
 
     my $targetws;
@@ -542,8 +536,9 @@ sub choose_password {
         loc('Invalid confirmation URL.')
     ) unless $hash;
 
-    my $user = $self->_find_user_for_email_confirmation_hash( $r, $hash );
-    return $self->_show_error() unless $user;
+    my $restriction = $self->_find_restriction_for_hash($r, $hash);
+    return $self->_show_error() unless $restriction;
+    my $user = $restriction->user;
 
     my %args;
     $args{$_} = $self->{args}{$_} || '' for (qw(password password2));
@@ -564,7 +559,7 @@ sub choose_password {
     my $expire = $self->{args}{remember} ? '+12M' : '';
     Socialtext::Apache::User::set_login_cookie( $r, $user->user_id, $expire );
 
-    $user->confirm_email_address;
+    $restriction->clear();
     $user->record_login;
 
     my $dest = $self->{args}{redirect_to};
@@ -595,13 +590,14 @@ sub resend_confirmation {
         return $self->_challenge();
     }
 
-    unless ($user->requires_confirmation) {
+    my $confirmation = $user->email_confirmation;
+    unless ($confirmation) {
         $self->session->add_error(loc("The email address for [_1] has already been confirmed.", $email_address));
         return $self->_challenge();
     }
 
-    $user->create_email_confirmation;
-    $user->send_confirmation_email;
+    $confirmation->renew;
+    $confirmation->send_email;
 
     $self->session->add_error(loc('The confirmation email has been resent. Please follow the link in this email to activate your account.'));
     return $self->_challenge();
@@ -719,7 +715,7 @@ sub _show_error {
     );
 }
 
-sub _find_user_for_email_confirmation_hash {
+sub _find_restriction_for_hash {
     my $self = shift;
     my $r    = shift;
     my $hash = shift;
@@ -735,7 +731,7 @@ sub _find_user_for_email_confirmation_hash {
         $self->session->add_error( "<br/>(" . $r->uri . "?" . $r->args . ")" );
         $r->log_error ("no confirmation hash for: [" . $r->uri . "?" . $r->args . "]" );
     }
-    return $restriction->user;
+    return $restriction;
 }
 
 1;
