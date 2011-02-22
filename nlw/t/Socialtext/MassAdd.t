@@ -959,5 +959,7 @@ Adding_a_deactivated_user: {
     my $role = $acct->role_for_user($user);
     ok $role;
     is $role->name, 'member', 'user got added to the account';
+
+    $user = Socialtext::User->new(username => 'ronnie');
     ok !$user->is_deactivated, "ronnie got re-activated";
 }
