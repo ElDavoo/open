@@ -1490,14 +1490,16 @@ sub password_change_uri {
 
 sub confirmation_uri {
     my $self = shift;
-    return unless $self->requires_confirmation;
+    return unless $self->email_confirmation;
     return $self->email_confirmation->uri;
 }
 
 sub requires_confirmation {
     my $self = shift;
 
-    return $self->email_confirmation ? 1 : 0;
+    return 1 if $self->email_confirmation;
+    return 1 if $self->password_change_confirmation;
+    return 0;
 }
 
 sub confirm_email_address {
