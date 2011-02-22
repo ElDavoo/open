@@ -19,6 +19,7 @@ use Socialtext::Log qw(st_log st_timed_log);
 use Socialtext::Timer;
 use Socialtext::Apache::User;
 use Socialtext::User;
+use Socialtext::User::Restrictions;
 use Socialtext::Session;
 use Socialtext::Helpers;
 use Socialtext::Workspace;
@@ -728,13 +729,13 @@ sub _find_user_for_email_confirmation_hash {
     # see: https://rt.socialtext.net:444/Ticket/Display.html?id=26571
     $hash =~ s/ /+/g;
 
-    my $user = Socialtext::User->new( email_confirmation_hash => $hash );
-    unless ($user) {
+    my $restriction = Socialtext::User::Restrictions->FetchByToken($hash);
+    unless ($restriction) {
         $self->session->add_error(loc("The given confirmation URL does not match any pending confirmations."));
         $self->session->add_error( "<br/>(" . $r->uri . "?" . $r->args . ")" );
         $r->log_error ("no confirmation hash for: [" . $r->uri . "?" . $r->args . "]" );
     }
-    return $user;
+    return $restriction->user;
 }
 
 1;
