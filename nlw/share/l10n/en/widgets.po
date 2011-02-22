@@ -22,22 +22,22 @@ msgstr "###-widgets.activity-count=new-events"
 #. (asset.count)
 #: share/plugin/widgets/share/javascript/template/activities/assets.tt2:26
 msgid "%1 %quant(%1,mention,mentions)"
-msgstr "###-widgets.mention-count=asset"
+msgstr "###-widgets.mention-count=count"
 
 #. (asset.count)
 #: share/plugin/widgets/share/javascript/template/activities/assets.tt2:8 share/plugin/widgets/share/javascript/template/activities/assets.tt2:9
 msgid "%1 %quant(%1,mention,mentions), click here to collapse"
-msgstr "###-widgets.mention-click-here-to-collapse-count=asset"
+msgstr "###-widgets.mention-click-here-to-collapse-count=count"
 
 #. (asset.count)
 #: share/plugin/widgets/share/javascript/template/activities/assets.tt2:14 share/plugin/widgets/share/javascript/template/activities/assets.tt2:8
 msgid "%1 %quant(%1,mention,mentions), click here to expand"
-msgstr "###-widgets.mention-click-here-to-expand-count=asset"
+msgstr "###-widgets.mention-click-here-to-expand-count=count"
 
 #. (asset.count, asset.eventList.size || 5)
 #: share/plugin/widgets/share/javascript/template/activities/assets.tt2:12 share/plugin/widgets/share/javascript/template/activities/assets.tt2:8
 msgid "%1 %quant(%1,mention,mentions), click here to see first %2"
-msgstr "###-widgets.mention-click-here-to-see-first-count=asset,count"
+msgstr "###-widgets.mention-click-here-to-see-first-count=count,size"
 
 #. (new_replies)
 #: share/plugin/widgets/share/javascript/activities/event_list.js:416
@@ -48,7 +48,7 @@ msgstr "###-widgets.reply-count=new-replies"
 #. (actor, widget_link(event.context), event.context.description)
 #: share/plugin/widgets/share/javascript/template/activities/widget.tt2:6 share/plugin/widgets/share/javascript/template/activities/widget.tt2:7 share/plugin/widgets/template/data/events/widget:6 share/plugin/widgets/template/data/events/widget:7
 msgid "%1 added the %2 widget. %3."
-msgstr "###-widgets.added-widget=actor,widget-link,event"
+msgstr "###-widgets.added-widget=actor,widget-link,context"
 
 #. (this.round(minutes / 1440)
 #. (this.round(minutes / 1440))
@@ -75,7 +75,7 @@ msgstr "###-widgets.new=new-events"
 #. (self.mentionCount)
 #: share/plugin/widgets/share/javascript/activities/widget.js:471
 msgid "%1 new %quant(%1,mention)..."
-msgstr "###-widgets.new-mention-count=self"
+msgstr "###-widgets.new-mention-count=mentioncount"
 
 #. (older)
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:22
@@ -90,12 +90,12 @@ msgstr "###-widgets.other-reply-count=older"
 #. (signal.best_full_name)
 #: share/plugin/widgets/share/javascript/activities/widget.js:536
 msgid "%1 private to you"
-msgstr "###-widgets.private-to-you=signal"
+msgstr "###-widgets.private-to-you=best-full_name"
 
 #. (signal.best_full_name,                    targets.join(', ')
 #: share/plugin/widgets/share/javascript/activities/widget.js:539
 msgid "%1 to %2"
-msgstr "###-widgets.to=signal,best-full_name"
+msgstr "###-widgets.to=best-full_name,join"
 
 #. (actor, widget_link(event.context)
 #. (actor, widget_link(event.context))
@@ -106,7 +106,7 @@ msgstr "###-widgets.updated-widget=actor,widget-link"
 #. (self.signalCount, self._originalTitle)
 #: share/plugin/widgets/share/javascript/activities/widget.js:465
 msgid "(%1) %2"
-msgstr "###-widgets.=self,signalcount"
+msgstr "###-widgets.=signalcount,originaltitle"
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:34
 msgid "(click here to collapse)"
@@ -181,17 +181,17 @@ msgstr "###-widgets."
 #. (this.title)
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:46
 msgid "Are you sure you want to permanently remove the \"%1\" widget?"
-msgstr "###-widgets.are-you-sure-you-want-to-permanently-remove-widget=this?"
+msgstr "###-widgets.are-you-sure-you-want-to-permanently-remove-widget=title?"
 
 #. (this.title)
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:42
 msgid "Are you sure you want to remove the \"%1\" widget? Users will no longer see this widget in their widget gallery. You can restore the widget at any time."
-msgstr "###-widgets.are-you-sure-you-want-to-remove-widget-users-will-no-longer-see-this-widget-in-their-widget-gallery-you-can-restore-widget-at-any-time=this"
+msgstr "###-widgets.are-you-sure-you-want-to-remove-widget-users-will-no-longer-see-this-widget-in-their-widget-gallery-you-can-restore-widget-at-any-time=title"
 
 #. (this.title)
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:44
 msgid "Are you sure you want to restore the \"%1\" widget?"
-msgstr "###-widgets.are-you-sure-you-want-to-restore-widget=this?"
+msgstr "###-widgets.are-you-sure-you-want-to-restore-widget=title?"
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:117 share/plugin/widgets/share/javascript/template/activities/event.tt2:82
 msgid "Attach a file"
@@ -240,17 +240,17 @@ msgstr "nav.error"
 #. (this.title, error)
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:78
 msgid "Error deleting the \"%1\" widget: %2"
-msgstr "###-widgets.error-deleting-widget=this,title"
+msgstr "###-widgets.error-deleting-widget=title,error"
 
 #. (this.title, error)
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:75
 msgid "Error removing the \"%1\" widget: %2"
-msgstr "###-widgets.error-removing-widget=this,title"
+msgstr "###-widgets.error-removing-widget=title,error"
 
 #. (this.title, error)
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:72
 msgid "Error restoring the \"%1\" widget: %2"
-msgstr "###-widgets.error-restoring-widget=this,title"
+msgstr "###-widgets.error-restoring-widget=title,error"
 
 #: share/plugin/widgets/share/javascript/activities/editor.js:663
 msgid "Error sending Signal, please try again"
@@ -291,7 +291,7 @@ msgstr "###-widgets.manage-gallery-for-accounts"
 #. (this.max_filesize)
 #: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:8
 msgid "Maximum file size: %1MB"
-msgstr "###-widgets.maximum-file-size-mb=this"
+msgstr "###-widgets.maximum-file-size-mb=max-filesize"
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:116 share/plugin/widgets/share/javascript/template/activities/event.tt2:81
 msgid "Mention another person"
@@ -438,12 +438,12 @@ msgstr "###-widgets.successfully-added-your-widget"
 #. (this.title)
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:93
 msgid "Successfully removed the \"%1\" widget"
-msgstr "###-widgets.successfully-removed-widget=this"
+msgstr "###-widgets.successfully-removed-widget=title"
 
 #. (this.title)
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:89
 msgid "Successfully restored the \"%1\" widget"
-msgstr "###-widgets.successfully-restored-widget=this"
+msgstr "###-widgets.successfully-restored-widget=title"
 
 #: share/plugin/widgets/share/javascript/lightbox/add-update-content.js:60
 msgid "Successfully updated your widget"
@@ -468,17 +468,17 @@ msgstr "###-widgets.the-workspace-you-specified-does-not-exist-please-try-again"
 #. (action.error_title || action.title)
 #: share/plugin/widgets/share/javascript/template/activities/empty.tt2:4
 msgid "There are no new %1 because you haven't engaged in conversations with your colleagues in the last 30 days."
-msgstr "###-widgets.there-are-no-new-because-you-haven-t-engaged-in-conversations-with-your-colleagues-in-last-30-days=action"
+msgstr "###-widgets.there-are-no-new-because-you-haven-t-engaged-in-conversations-with-your-colleagues-in-last-30-days=error-title"
 
 #. (action.error_title || action.title)
 #: share/plugin/widgets/share/javascript/template/activities/empty.tt2:2 share/plugin/widgets/share/javascript/template/activities/empty.tt2:8
 msgid "There are no new %1 in the last 30 days."
-msgstr "###-widgets.there-are-no-new-in-last-30-days=action"
+msgstr "###-widgets.there-are-no-new-in-last-30-days=error-title"
 
 #. (action.error_title || action.title)
 #: share/plugin/widgets/share/javascript/template/activities/empty.tt2:6
 msgid "There are no new %1, either because you aren't following anyone yet, or the people you're following haven't created any %1 in the last 30 days. Visit the profiles of your colleagues, and click 'Follow this person' to start following colleagues."
-msgstr "###-widgets.there-are-no-new-either-because-you-aren-t-following-anyone-yet-or-people-you-re-following-haven-t-created-any-in-last-30-days-visit-profiles-of-your-colleagues-and-click-follow-this-person-to-start-following-colleagues=action"
+msgstr "###-widgets.there-are-no-new-either-because-you-aren-t-following-anyone-yet-or-people-you-re-following-haven-t-created-any-in-last-30-days-visit-profiles-of-your-colleagues-and-click-follow-this-person-to-start-following-colleagues=error-title"
 
 #: share/plugin/widgets/share/javascript/activities/widget.js:419 share/plugin/widgets/share/javascript/activities/widget.js:585
 msgid "There was a problem getting activities"
@@ -487,7 +487,7 @@ msgstr "###-widgets.there-was-problem-getting-activities"
 #. (gallery.account_name)
 #: share/plugin/widgets/template/view/gallery:34
 msgid "This is the widget gallery for the \"%1\" account. Switch to account: "
-msgstr "###-widgets.this-is-widget-gallery-for-account-switch-to-account=gallery"
+msgstr "###-widgets.this-is-widget-gallery-for-account-switch-to-account=account-name"
 
 #: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:9
 msgid "Title:"
@@ -593,7 +593,7 @@ msgstr "###-widgets.all-events"
 #. (page, workspace, event.context.summary.replace("[\n ]+$", ""))
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:16
 msgid "commented on %1 in %2, saying, \"%3\""
-msgstr "###-widgets.commented-on-in-saying=page,workspace,event"
+msgstr "###-widgets.commented-on-in-saying=page,workspace,replace"
 
 #: share/plugin/widgets/share/javascript/activities/appdata.js:360
 msgid "comments"
@@ -620,7 +620,7 @@ msgstr "###-widgets.duplicated-in=page,workspace"
 #. (page, workspace, event.context.edit_summary)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:5
 msgid "edited %1 in %2, saying \"%3\"."
-msgstr "###-widgets.edited-in-saying=page,workspace,event"
+msgstr "###-widgets.edited-in-saying=page,workspace,edit-summary"
 
 #. (page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:7
@@ -705,17 +705,17 @@ msgstr "###-widgets.people-events"
 #. (event.action, page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:22
 msgid "performed action %1 on %2 in %3."
-msgstr "###-widgets.performed-action-on-in=event,action,page"
+msgstr "###-widgets.performed-action-on-in=action,page,workspace"
 
 #. (event.action, person)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:25
 msgid "performed action '%1' on %2."
-msgstr "###-widgets.performed-action-on=event,action"
+msgstr "###-widgets.performed-action-on=action,person"
 
 #. (event.action)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:10
 msgid "performed action '%1' on themself."
-msgstr "###-widgets.performed-action-on-themself=event"
+msgstr "###-widgets.performed-action-on-themself=action"
 
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:8
@@ -800,12 +800,12 @@ msgstr "###-widgets.tagged-themself=person-tag"
 #. (targets.0)
 #: share/plugin/widgets/share/javascript/template/activities/page.meta.tt2:9 share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:17
 msgid "to %1"
-msgstr "###-widgets.to=targets"
+msgstr "###-widgets.to=0"
 
 #. (targets.size)
 #: share/plugin/widgets/share/javascript/template/activities/page.meta.tt2:5 share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:13
 msgid "to %1 groups"
-msgstr "###-widgets.to-groups=targets"
+msgstr "###-widgets.to-groups=size"
 
 #: share/plugin/widgets/template/view/gallery:107
 msgid "update"

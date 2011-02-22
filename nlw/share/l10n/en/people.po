@@ -1,16 +1,11 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
+# @COPYRIGHT@
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-02-23 02:09+0800\n"
+"PO-Revision-Date: \n"
+"Language-Team: Socialtext i18n team\n"
+"Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -19,37 +14,37 @@ msgstr ""
 #. (group.user_count)
 #: share/plugin/people/template/invite:28 share/plugin/people/template/invite:31
 msgid "%quant(%1,user)"
-msgstr "###-people.user-count=group"
+msgstr "people.count=users"
 
 #: share/plugin/people/template/invite:73 share/plugin/people/template/invite:80
 msgid "<Your personal message goes here.>"
-msgstr "###-people."
+msgstr "invite.your-personal-message"
 
 #: share/plugin/people/template/profile_hcard:49
 msgid "AIM&trade;:"
-msgstr "###-people.aim:"
+msgstr "profile.aim:"
 
 #: share/plugin/people/template/lite/profile.html:59 share/plugin/people/template/lite/profile.html:61
 msgid "Activities"
-msgstr "###-people.activities"
+msgstr "profile.activities"
 
 #. (tag)
 #. (tagname)
 #: share/plugin/people/share/people.js:11 share/plugin/people/template/tagged_people_links:13
 msgid "Add tag \"%1\" to user:"
-msgstr "###-people.add-tag-to-user=tagname:"
+msgstr "people.add-tag-to-user=name:"
 
 #: share/plugin/people/template/view/peoplelist:17
 msgid "Add this tag to me"
-msgstr "###-people.add-this-tag-to-me"
+msgstr "people.add-tag-to-myself"
 
 #: share/plugin/people/template/view/peoplelist:22
 msgid "Add this tag to someone"
-msgstr "###-people.add-this-tag-to-someone"
+msgstr "people.add-tag-to-someone"
 
 #: share/plugin/people/template/lite/profile.html:100
 msgid "Assistant"
-msgstr "###-people.assistant"
+msgstr "profile.assistant"
 
 #. (a, app_name)
 #: share/plugin/people/template/email/invitation-body.html:37
@@ -58,7 +53,7 @@ msgstr "###-people.because-you-already-have-account-password-is-same-as-password
 
 #: share/plugin/people/template/profile_hcard:84
 msgid "Blog:"
-msgstr "###-people.blog:"
+msgstr "profile.blog:"
 
 #: share/plugin/people/template/email/standard-footer.html:12
 msgid "Brought to you by Socialtext."
@@ -66,7 +61,7 @@ msgstr "###-people.brought-to-you-by-socialtext"
 
 #: share/plugin/people/template/lite/profile.html:153
 msgid "CUSTOM"
-msgstr "###-people.custom"
+msgstr "profile.custom"
 
 #: share/plugin/people/template/invite:109
 msgid "Cancel"
@@ -82,7 +77,7 @@ msgstr "###-people.example:"
 
 #: share/plugin/people/template/profile_hcard:104
 msgid "Facebook:"
-msgstr "###-people.facebook:"
+msgstr "profile.facebook:"
 
 #: share/plugin/people/template/invite:48
 msgid "Firstname Lastname &lt;u01234@example.com&gt;"
@@ -90,19 +85,19 @@ msgstr "###-people.firstname-lastname-u01234-example-com"
 
 #: share/plugin/people/template/lite/profile.html:15
 msgid "Follow"
-msgstr "###-people.follow"
+msgstr "people.follow"
 
 #: share/plugin/people/template/profile_hcard:63
 msgid "GTalk:"
-msgstr "###-people.gtalk:"
+msgstr "profile.gtalk:"
 
 #: share/plugin/people/template/email/invitation-body.html:8
 msgid "Hi,"
 msgstr "###-people.hi"
 
 #: share/plugin/people/template/profile_hcard:42
-msgid "Home: "
-msgstr "###-people.home"
+msgid "Home:"
+msgstr "###-people.home:"
 
 #. (acct_name, host)
 #: share/plugin/people/template/email/invitation-body.html:13
@@ -160,8 +155,8 @@ msgid "Manager"
 msgstr "###-people.manager"
 
 #: share/plugin/people/template/profile_hcard:37
-msgid "Mobile: "
-msgstr "###-people.mobile"
+msgid "Mobile:"
+msgstr "###-people.mobile:"
 
 #: share/plugin/people/template/lite/people.html:11
 msgid "My Profile"
@@ -235,7 +230,7 @@ msgstr "###-people.please-complete-your-profile-now"
 #. (p.best_full_name)
 #: share/plugin/people/template/lite/profile.html:169
 msgid "Private message to %1:"
-msgstr "###-people.private-message-to=p:"
+msgstr "###-people.private-message-to=best-full_name:"
 
 #: share/plugin/people/template/lite/profile.html:54 share/plugin/people/template/lite/profile.html:56
 msgid "Profile"
@@ -277,18 +272,18 @@ msgstr "###-people.skype:"
 #. (invalid_addresses.size)
 #: share/plugin/people/template/invite_done:17 share/plugin/people/template/invite_done:22
 msgid "Sorry, The following %*(%1,email address was,email addresses were) invalid:"
-msgstr "###-people.sorry-the-following-email-address-was-email-addresses-were-invalid=invalid-addresses:"
+msgstr "###-people.sorry-the-following-email-address-was-email-addresses-were-invalid=size:"
 
 #. (users_already_present.size)
 #: share/plugin/people/template/invite_done:17 share/plugin/people/template/invite_done:18
 msgid "Sorry, The following %*(%1,user was already a member,users were already members) of this Group:"
-msgstr "###-people.sorry-the-following-user-was-already-member-users-were-already-members-of-this-group=users-already_present:"
+msgstr "###-people.sorry-the-following-user-was-already-member-users-were-already-members-of-this-group=size:"
 
 #. (wrong_domain.size, '<span style="color: red">' _ restrict_to_domain _ '</span>')
 #. (wrong_domain.size, "<span style=\"color: red\">' _ restrict_to_domain _ '</span>")
 #: share/plugin/people/template/invite_done:17 share/plugin/people/template/invite_done:26
 msgid "Sorry, the following %*(%1,email address is,email addresses are) not in the domain %2"
-msgstr "###-people.sorry-following-email-address-is-email-addresses-are-not-in-domain=wrong-domain,size"
+msgstr "###-people.sorry-following-email-address-is-email-addresses-are-not-in-domain=size,"
 
 #: share/plugin/people/template/invite_disabled:15
 msgid "Sorry, this feature is currently disabled by your server administrator."
@@ -321,7 +316,7 @@ msgstr "###-people.thanks"
 #. (users_invited.size)
 #: share/plugin/people/template/invite_done:17 share/plugin/people/template/invite_done:30
 msgid "The following %*(%1,user was,users were) successfully invited into this Group:"
-msgstr "###-people.the-following-user-was-users-were-successfully-invited-into-this-group=users-invited:"
+msgstr "###-people.the-following-user-was-users-were-successfully-invited-into-this-group=size:"
 
 #: share/plugin/people/template/view/peoplelist:13
 msgid "Tools"
@@ -340,8 +335,8 @@ msgid "Welcome, New User"
 msgstr "###-people.welcome-new-user"
 
 #: share/plugin/people/template/profile_hcard:32
-msgid "Work: "
-msgstr "###-people.work"
+msgid "Work:"
+msgstr "###-people.work:"
 
 #: share/plugin/people/template/profile_hcard:56
 msgid "Yahoo!&trade;:"
@@ -387,17 +382,17 @@ msgstr "###-people.is-now-following=person"
 #. (event.action, person)
 #: share/plugin/people/template/data/events/person:25
 msgid "performed action '%1' on %2."
-msgstr "###-people.performed-action-on=event,action"
+msgstr "###-people.performed-action-on=action,person"
 
 #. (event.action)
 #: share/plugin/people/template/data/events/person:10
 msgid "performed action '%1' on themself."
-msgstr "###-people.performed-action-on-themself=event"
+msgstr "###-people.performed-action-on-themself=action"
 
 #. (acc.user_count)
 #: share/plugin/people/template/invite:26
 msgid "primary, %quant(%1,user)"
-msgstr "###-people.primary-user-count=acc"
+msgstr "###-people.primary-user-count=user-count"
 
 #. (person_tag, person)
 #: share/plugin/people/template/data/events/person:19
