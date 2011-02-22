@@ -487,7 +487,8 @@ sub box_content_filled {
     }
 
     my $page = $self->hub->pages->new_from_name($title);
-    return $page->to_html(($page->content||""), $page);
+    my $content_ref = $page->body_length ? $page->body_ref : \"";
+    return $page->to_html($content_ref, $page);
 }
 
 sub page_title {
