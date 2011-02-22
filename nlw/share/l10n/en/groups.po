@@ -17,27 +17,27 @@ msgstr ""
 
 #: share/plugin/groups/share/widgets/all_groups/widget.html:2
 msgid "All Available Groups"
-msgstr "###-groups.all-available-groups"
+msgstr "groups.all-available"
 
 #: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:10
 msgid "Are you sure you want to delete this group?"
-msgstr "###-groups.are-you-sure-you-want-to-delete-this-group?"
+msgstr "groups.confirm-delete?"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:28
 msgid "Before creating a group, you can search names and descriptions for existing groups."
-msgstr "###-groups.before-creating-group-you-can-search-names-and-descriptions-for-existing-groups"
+msgstr "groups.search-before-creating"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:40
 msgid "Can be seen in the Group Directory by everyone and anyone can join."
-msgstr "###-groups.can-be-seen-in-group-directory-by-everyone-and-anyone-can-join"
+msgstr "groups.self-join-listed-in-directory"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:64 share/plugin/groups/share/javascript/lightbox/delete-group.tt2:20 share/plugin/groups/share/javascript/lightbox/leave-group.tt2:17 share/plugin/groups/template/edit_group_footer:11 share/plugin/groups/template/edit_group_footer:4 share/plugin/groups/template/group_footer:14 share/plugin/groups/template/group_footer:7
 msgid "Cancel"
-msgstr "###-groups.cancel"
+msgstr "do.cancel"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:23
 msgid "Change Group Type"
-msgstr "###-groups.change-group-type"
+msgstr "groups.change-type"
 
 #: share/plugin/groups/template/edit_group_footer:7 share/plugin/groups/template/group_footer:10
 msgid "Create"
@@ -45,19 +45,19 @@ msgstr "do.create"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:26
 msgid "Create Group"
-msgstr "###-groups.create-group"
+msgstr "groups.create"
 
 #: share/plugin/groups/template/nav_groups:27
 msgid "Create Group..."
-msgstr "###-groups.create-group"
+msgstr "groups.create-group"
 
 #: share/plugin/groups/template/directory_links:5
 msgid "Create New Group"
-msgstr "###-groups.create-new-group"
+msgstr "groups.create-new-group"
 
 #: share/plugin/groups/template/create_group_hello:3
 msgid "Create a Group"
-msgstr "###-groups.create-group"
+msgstr "groups.create-a-group"
 
 #: share/plugin/groups/template/nav_groups:23
 msgid "Currently, you are not a member of any groups."
@@ -70,28 +70,28 @@ msgstr "do.delete"
 #. (name)
 #: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:6
 msgid "Delete %1"
-msgstr "###-groups.delete=name"
+msgstr "groups.delete=name"
 
 #: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:2
 msgid "Delete Group"
-msgstr "###-groups.delete-group"
+msgstr "groups.delete"
 
 #: share/plugin/groups/template/edit_group_links:3
 msgid "Delete This Group"
-msgstr "###-groups.delete-this-group"
+msgstr "groups.delete-this"
 
 #. (container.group.name)
 #: share/plugin/groups/template/edit_group_hello:4
 msgid "Edit Group: %1"
-msgstr "###-groups.edit-group=container"
+msgstr "groups.edit=name"
 
 #: share/plugin/groups/template/create_group_hello:2
 msgid "Group"
-msgstr "###-groups.group"
+msgstr "groups.group"
 
 #: share/plugin/groups/template/directory_hello:2 share/plugin/groups/template/nav_groups:15
 msgid "Group Directory"
-msgstr "###-groups.group-directory"
+msgstr "groups.directory"
 
 #: share/plugin/groups/template/nav_groups:1
 msgid "Groups"
@@ -103,39 +103,39 @@ msgstr "do.join"
 
 #: share/plugin/groups/share/javascript/lightbox/leave-group.tt2:11 share/plugin/groups/template/group_links:8
 msgid "Leave"
-msgstr "###-groups.leave"
+msgstr "do.leave"
 
 #: share/plugin/groups/share/javascript/lightbox/leave-group.tt2:3
 msgid "Leave Group"
-msgstr "###-groups.leave-group"
+msgstr "groups.leave"
 
 #: share/plugin/groups/template/grouplist:53
 msgid "Name"
-msgstr "###-groups.name"
+msgstr "groups.name"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:59
 msgid "Next"
-msgstr "###-groups.next"
+msgstr "groups.next-step"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:33
 msgid "Please choose the group type, then click <b>Next</b>"
-msgstr "###-groups.please-choose-group-type-then-click-next"
+msgstr "groups.choose-type-then-click-next"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:49
 msgid "Private Group"
-msgstr "###-groups.private-group"
+msgstr "groups.private"
 
 #: share/plugin/groups/template/edit_group_footer:14 share/plugin/groups/template/group_footer:17
 msgid "Save"
-msgstr "###-groups.save"
+msgstr "groups.save"
 
 #: share/plugin/groups/template/search_box_groups:1
 msgid "Search Groups:"
-msgstr "###-groups.search-groups:"
+msgstr "groups.search:"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:39
 msgid "Self-Join Group"
-msgstr "###-groups.self-join-group"
+msgstr "groups.self-join"
 
 #. (offset + 1, last, pager.total_entries)
 #: share/plugin/groups/template/grouplist:49
@@ -148,41 +148,41 @@ msgstr "sort.by:"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:54
 msgid "The group administrators can change this setting after the group is created."
-msgstr "###-groups.the-group-administrators-can-change-this-setting-after-group-is-created"
+msgstr "groups.admin-can-change-setting-after-creation"
 
 #. (group_name)
 #: share/plugin/groups/share/javascript/lightbox/delete-group.js:21
 msgid "The group, %1, has been successfully deleted."
-msgstr "###-groups.the-group-has-been-successfully-deleted=group-name"
+msgstr "groups.successfully-deleted=name"
 
 #: share/plugin/groups/share/javascript/lightbox/leave-group.tt2:5
 msgid "This action cannot be undone. Are you sure you'd like to leave this group?"
-msgstr "###-groups.this-action-cannot-be-undone-are-you-sure-you-d-like-to-leave-this-group?"
+msgstr "groups.confirm-leave?"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:24
 msgid "When making a Private group a Self-join group, any user in the group's Accounts will be able to join the group and then optionally invite others into the group. When changing a Self-join group to a Private group, it will no longer appear in the Group Directory and will become invite-only by the group administrators."
-msgstr "###-groups.when-making-private-group-self-join-group-any-user-in-group-s-accounts-will-be-able-to-join-group-and-then-optionally-invite-others-into-group-when-changing-self-join-group-to-private-group-it-will-no-longer-appear-in-group-directory-and-will-become-invite-only-by-group-administrators"
+msgstr "groups.toggling-self-join-and-private"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:50
 msgid "Will not be displayed in the Group Directory and new members must be invited by the group administrators."
-msgstr "###-groups.will-not-be-displayed-in-group-directory-and-new-members-must-be-invited-by-group-administrators"
+msgstr "groups.private-not-listed-in-directory"
 
 #: share/plugin/groups/template/grouplist:30 share/plugin/groups/template/grouplist:88
 msgid "You are currently a member of this group."
-msgstr "###-groups.you-are-currently-member-of-this-group"
+msgstr "groups.you-are-member"
 
 #: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:14
 msgid "You will not be able to restore the group once it's deleted. Users will no longer be able to signal to this group and any access to workspaces through this group will be revoked."
-msgstr "###-groups.you-will-not-be-able-to-restore-group-once-it-s-deleted-users-will-no-longer-be-able-to-signal-to-this-group-and-any-access-to-workspaces-through-this-group-will-be-revoked"
+msgstr "groups.delete-is-final"
 
 #: share/plugin/groups/template/grouplist:103
 msgid "member"
-msgstr "###-groups.member"
+msgstr "groups.member"
 
 #: share/plugin/groups/template/grouplist:105 share/plugin/groups/template/grouplist:38
 msgid "members"
-msgstr "###-groups.members"
+msgstr "groups.members"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:30
 msgid "type your search here..."
-msgstr "###-groups.type-your-search-here"
+msgstr "groups.search-here"
