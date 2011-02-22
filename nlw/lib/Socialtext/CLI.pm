@@ -517,7 +517,7 @@ sub export_account {
 
 sub import_account {
     my $self = shift;
-    my %opts = $self->_get_options("directory:s", "overwrite", "name:s", "noindex");
+    my %opts = $self->_get_options("directory:s", "name:s", "noindex");
     my $dir = $opts{directory} || '';
     $dir =~ s#/$##;
 
@@ -548,7 +548,6 @@ sub import_account {
     my $account = eval { Socialtext::Account->import_file(
         file  => "$dir/account.yaml",
         name  => $opts{name},
-        force => $opts{overwrite},
         hub   => $hub,
         dir   => $dir,
     ) };
@@ -559,7 +558,6 @@ sub import_account {
         eval {
             my $wksp = Socialtext::Workspace->ImportFromTarball(
                 tarball   => $tarball,
-                overwrite => $opts{overwrite},
                 noindex   => $opts{noindex},
             );
             $wksp->update( account_id => $account->account_id );
@@ -4051,7 +4049,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   set-default-account [--account]
   get-default-account
   export-account --account [--force] 
-  import-account --directory [--overwrite] [--name] [--noindex]
+  import-account --directory [--name] [--noindex]
   set-account-config --account <key> <value>
   show-account-config --account
   reset-account-skin --account <account> --skin <skin>
@@ -4598,7 +4596,7 @@ Prints out the current default account.
 
 Exports the specified account to /tmp. --force to overwrite an existing export.
 
-=head2 import-account --directory [--overwrite] [--name] [--noindex]
+=head2 import-account --directory [--name] [--noindex]
 
 Imports an account from the specified directory.
 
