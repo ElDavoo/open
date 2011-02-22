@@ -42,8 +42,8 @@ my $user = Socialtext::User->create(
         'email is addressed to user' );
 
     my @parts = $emails[0]->parts;
-    like( $parts[0]->body, qr[/submit/confirm_email\?hash=.{27}],
+    like( $parts[0]->body, qr[/submit/confirm_email\?hash=\S{27}],
           'text email body has confirmation link' );
-    like( $parts[1]->body, qr[/submit/confirm_email\?hash=.{27}],
+    like( $parts[1]->body, qr[/submit/confirm_email\?hash=\S{27}],
           'html email body has confirmation link' );
 }
