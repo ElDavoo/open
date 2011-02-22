@@ -1458,6 +1458,21 @@ sub send_confirmation_email {
     return $confirmation->send_email;
 }
 
+sub create_password_change_confirmation {
+    my $self = shift;
+    Socialtext::User::Restrictions::password_change->CreateOrReplace(
+        user_id => $self->user_id,
+    );
+}
+
+sub password_change_confirmation {
+    my $self = shift;
+    my $uce  = Socialtext::User::Restrictions::password_change->Get(
+        user_id => $self->user_id,
+    );
+    return $uce;
+}
+
 sub send_password_change_email {
     my $self = shift;
 
