@@ -7,9 +7,9 @@
 
 | *Comment* | These values must match the one in [Test Case: Edit Profile] |  |
 | set | e_user | profile.editor@ken.socialtext.net |
-| set | new_fname | Profligate |
-| set | new_mname | Epitome |
-| set | new_lname | Edisaurus |
+| set | fname | Profligate |
+| set | mname | Epitome |
+| set | lname | Edisaurus |
 
 | *Comment* | Test Case: Clear Profile Fields. Access profile. |  |
 | open_ok | /nlw/submit/logout |  |
@@ -19,67 +19,81 @@
 | type_ok | password | %%password%% |
 | click_and_wait | login_btn |  |
 
+| *Comment* | Test Case: Clear Profile Fields. Verify old names |  |
+| open_ok | /st/profile |  |
+| st-name-widget | 1 | profile |
+| st-widget-title-like | profile | Profile |
+| st-select-widget-frame | profile |  |
+| text_like | %%fname%% %%mname%% %%lname%% |  |
+| select-frame | relative=parent |  |
+
 | *Comment* | Test Case: Clear Profile Fields. Open for editing |  |
-| open_ok | /st/dashboard/ |  |
 | wait_for_element_visible_ok | link=(edit) | 30000 |
 | click_and_wait | link=(edit) |  |
 
-| *Comment* | Test Case: Clear Profile Fields - Change values |  |
-| verifyValue | first_name | %%new_fname%% |
-| verifyValue | last_name | %%new_lname%% |
-| KeyPress | first_name | \\8 |
-| KeyPress | first_name | \\8 |
-| KeyPress | first_name | \\8 |
-| KeyPress | first_name | \\8 |
-| KeyPress | first_name | \\8 |
-| KeyPress | first_name | \\8 |
-| KeyPress | first_name | \\8 |
-| KeyPress | first_name | \\8 |
-| KeyPress | first_name | \\8 |
-| KeyPress | first_name | \\8 |
+| *Comment* | Test Case: Clear Profile Fields - Verify OLD values |  |
+| wait_for_element_visible_ok | first_name | 30000 |
+| wait_for_element_visible_ok | middle_name | 30000 |
+| wait_for_element_visible_ok | last_name | 30000 |
+| verifyValue | first_name | %%fname%% |
+| verifyValue | last_name | %%lname%% |
+| verifyValue | middle_name | %%mname%% |
 
-| KeyPress | middle_name | \\8 |
-| KeyPress | middle_name | \\8 |
-| KeyPress | middle_name | \\8 |
-| KeyPress | middle_name | \\8 |
-| KeyPress | middle_name | \\8 |
-| KeyPress | middle_name | \\8 |
-| KeyPress | middle_name | \\8 |
-| KeyPress | middle_name | \\8 |
-| KeyPress | middle_name | \\8 |
-| KeyPress | middle_name | \\8 |
-| KeyPress | middle_name | \\8 |
+| *Comment* | Test Case: Clear Profile Fields - Manipulate the values through backspace |  |
+| KeyPressOk | first_name | \8 |
+| KeyPressOk | first_name | \8 |
+| KeyPressOk | first_name | \8 |
+| KeyPressOk | first_name | \8 |
+| KeyPressOk | first_name | \8 |
+| KeyPressOk | first_name | \8 |
+| KeyPressOk | first_name | \8 |
+| KeyPressOk | first_name | \8 |
+| KeyPressOk | first_name | \8 |
+| KeyPressOk | first_name | \8 |
 
-| KeyPress | last_name | \\8 |
-| KeyPress | last_name | \\8 |
-| KeyPress | last_name | \\8 |
-| KeyPress | last_name | \\8 |
-| KeyPress | last_name | \\8 |
-| KeyPress | last_name | \\8 |
-| KeyPress | last_name | \\8 |
-| KeyPress | last_name | \\8 |
-| KeyPress | last_name | \\8 |
-| KeyPress | last_name | \\8 |
-| KeyPress | last_name | \\8 |
-| KeyPress | last_name | \\8 |
-| KeyPress | last_name | \\8 |
-| KeyPress | last_name | \\8 |
-| KeyPress | last_name | \\8 |
-| KeyPress | last_name | \\8 |
+| KeyPressOk | middle_name | \8 |
+| KeyPressOk | middle_name | \8 |
+| KeyPressOk | middle_name | \8 |
+| KeyPressOk | middle_name | \8 |
+| KeyPressOk | middle_name | \8 |
+| KeyPressOk | middle_name | \8 |
+| KeyPressOk | middle_name | \8 |
+| KeyPressOk | middle_name | \8 |
+| KeyPressOk | middle_name | \8 |
+| KeyPressOk | middle_name | \8 |
+| KeyPressOk | middle_name | \8 |
+
+| KeyPressOk | last_name | \8 |
+| KeyPressOk | last_name | \8 |
+| KeyPressOk | last_name | \8 |
+| KeyPressOk | last_name | \8 |
+| KeyPressOk | last_name | \8 |
+| KeyPressOk | last_name | \8 |
+| KeyPressOk | last_name | \8 |
+| KeyPressOk | last_name | \8 |
+| KeyPressOk | last_name | \8 |
+| KeyPressOk | last_name | \8 |
+| KeyPressOk | last_name | \8 |
+| KeyPressOk | last_name | \8 |
+| KeyPressOk | last_name | \8 |
+| KeyPressOk | last_name | \8 |
+| KeyPressOk | last_name | \8 |
+| KeyPressOk | last_name | \8 |
 
 | wait_for_element_visible_ok | update_profile | 30000 |
-| pause | 25000 | settling time |
+| pause | 10000 | settling time |
 | click_and_wait | update_profile |  |
 
+| *Comment* | Test Case: Clear Profile Fields. Verify old names GONE |  |
+| open_ok | /st/profile |  |
+| st-name-widget | 1 | profile |
+| st-widget-title-like | profile | Profile |
+| st-select-widget-frame | profile |  |
+| text_unlike | //body | %%fname%% %%mname%% %%lname%% |
 | text_unlike | //body | %%fname%% |
 | text_unlike | //body | %%mname%% |
 | text_unlike | //body | %%lname%% |
+| select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Clear Profile Fields - Verify Changed |  |
-| wait_for_element_visible_ok | link=(Edit) | 60000 |
-| click_and_wait | link=(Edit) |  |
-| verifyValue | first_name |  |
-| verifyValue | last_name |  |
-| verifyValue | middle_name |  |
 
-|
+| *Comment* | Test Case: Clear Profile Fields COMPLETED |  |
