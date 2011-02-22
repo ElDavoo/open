@@ -32,7 +32,7 @@
 | set | ws10_suffix | 10-wiki-%%start_time%% |
 | set | ws11_suffix | 11-wiki-%%start_time%% |
 
-| create_account | %%agw_acct%% |  |
+| create_account | %%agw_acct%% |  |  |
 | create_user | %%agw_user%% | %%password%% | %%agw_acct%% |
 | create_group | %%agw_group%% | %%agw_acct%% | %%agw_user%% |
 | set | agw_group_id | %%group_id%% |  |
@@ -60,7 +60,7 @@
 | add_workspace_admin | %%agw_user%% | %%ws10%% |  |
 | add_workspace_admin | %%agw_user%% | %%ws11%% |  |
 
-| *Comment* | Test Case: Associate Group With Workspace user cannot add workspace if he is not admin |  |
+| *Comment* | Test Case: Associate Group With Workspace user cannot add workspace if he is not workspace admin |  |
 | st-logoutin | %%agw_user%% | %%password%% |
 | open_ok | /st/edit_group/%%agw_group_id%% |  |
 | wait_for_text_present_ok | Edit Group: %%agw_group%% | 30000 |
@@ -122,7 +122,7 @@
 | wait_for_element_visible_ok | create-group | 30000 |
 | click_and_wait | create-group |  |
 
-| *Comment* | Test Case: Associate Group With Workspace check behavior of list of already added wikis |  |
+| *Comment* | Test Case: Associate Group With Workspace check behavior of list of already added wikis in group edit page |  |
 | open_ok | /st/edit_group/%%agw_group_id%% |  |
 | wait_for_text_present_ok | Edit Group: %%agw_group%% | 30000 |
 | st-name-widget | 2 | wiki |
@@ -145,7 +145,7 @@
 | wait_for_element_not_present_ok | link=%%ws10%% | 30000 |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Associate Group With Workspace add all wikis to group to test list pagination |  |
+| *Comment* | Test Case: Associate Group With Workspace add all wikis to group to test list pagination of already added wikis in edit page |  |
 | add-group-to-workspace | %%agw_group_id%% | %%ws1%% |
 | add-group-to-workspace | %%agw_group_id%% | %%ws3%% |
 | add-group-to-workspace | %%agw_group_id%% | %%ws4%% |
@@ -157,7 +157,7 @@
 | add-group-to-workspace | %%agw_group_id%% | %%ws10%% |
 | add-group-to-workspace | %%agw_group_id%% | %%ws11%% |
 
-| *Comment* | Test Case: Associate Group With Workspace test pagination of already added list |  |
+| *Comment* | Test Case: Associate Group With Workspace test pagination of already added list in group edit page workspaces widget |  |
 | open_ok | /st/edit_group/%%agw_group_id%% |  |
 | wait_for_text_present_ok | Edit Group: %%agw_group%% | 30000 |
 | st-name-widget | 2 | wiki |
