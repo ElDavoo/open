@@ -3,6 +3,8 @@ package Socialtext::Handler::Gadget;
 use Moose::Role;
 use Socialtext::JSON qw(encode_json decode_json);
 use Socialtext::HTTP qw(:codes);
+use Socialtext::SQL qw(:txn);
+use Guard;
 use namespace::clean -except => 'meta';
 
 requires qw(container if_authorized_to_edit if_authorized_to_view);
@@ -19,15 +21,15 @@ sub _build_gadget {
     return $self->container->get_gadget_instance($self->gadget_instance_id);
 }
 
-around 'if_authorized_to_view' => sub {
-    my ($orig, $self, $cb) = @_;
+sub if_authorized_to_view_gadget {
+    my ($self, $cb) = @_;
     return $self->not_found unless $self->gadget;
-    return $orig->($self, $cb);
-};
+    return $self->if_authorized_to_view($cb);
+}
 
 sub GET_json {
     my $self = shift;
-    $self->if_authorized_to_view(sub {
+    $self->if_authorized_to_view_gadget(sub {
         $self->rest->header(-type => 'application/json');
         return encode_json({
             content => $self->gadget->content,
@@ -36,9 +38,30 @@ sub GET_json {
     });
 }
 
-sub GET_html {
+sub GET_temp_json {
     my $self = shift;
     $self->if_authorized_to_view(sub {
+        $self->rest->header(-type => 'application/json');
+
+        # This is a temporary action, so roll back when $rollback goes out of
+        # scope
+        sql_begin_work();
+        my $rollback = guard { sql_rollback() };
+
+        my $gadget_instance = $self->container->install_gadget(
+            gadget_id => $self->gadget_id
+        );
+
+        return encode_json({
+            content => $gadget_instance->content,
+            %{$gadget_instance->template_vars},
+        });
+    });
+}
+
+sub GET_html {
+    my $self = shift;
+    $self->if_authorized_to_view_gadget(sub {
         # Override any preferences from up_ cgi parameters
         my %prefs;
         for my $param ($self->rest->query->param) {
@@ -65,7 +88,7 @@ sub DELETE {
 
 sub GET_prefs {
     my $self = shift;
-    $self->if_authorized_to_view(sub {
+    $self->if_authorized_to_view_gadget(sub {
         return encode_json($self->gadget->preference_hash);
     });
 }

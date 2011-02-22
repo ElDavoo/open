@@ -310,7 +310,12 @@ sub _jemplate_to_text {
                 my $jemplate = $File::Find::name;
                 return unless -f $jemplate;
                 return if basename($File::Find::name) =~ /^\./;
-                (my $name = $jemplate) =~ s{^$part->{jemplate}/}{};
+
+                # Keep the directory name in the template name when
+                # include_paths is set
+                (my $name = $jemplate);
+                $name =~ s{^$part->{jemplate}/}{} unless $part->{include_paths};
+
                 $text .= $part->{nocomment} ? '' : "// BEGIN $jemplate\n";
                 $text .= Jemplate->compile_template_content(
                     scalar(slurp($jemplate)), $name
