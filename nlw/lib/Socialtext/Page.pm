@@ -999,7 +999,8 @@ sub _ensure_page_assets {
 
 sub is_system_page {
     my $self = shift;
-    return ($self->creator_id || 0) == Socialtext::User->SystemUser->user_id;
+    return (($self->creator_id || 0) == Socialtext::User->SystemUser->user_id
+        or $self->creator->email_address eq $SYSTEM_EMAIL_ADDRESS);
 }
 
 sub is_bad_page_title {
