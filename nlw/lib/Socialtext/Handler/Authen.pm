@@ -39,11 +39,10 @@ sub handler ($$) {
     (my $uri = $r->uri) =~ s[^/nlw/?][];
     if ($uri =~ m[submit/]) {
         my ($action) = $uri =~ m[submit/(\w+)];
-        
         return $self->$action if $self->can($action);
         warn "Can't handle action '$action'";
         return NOT_FOUND;
-    } 
+    }
     elsif ($uri =~ /\.html$/) {
         # strip off trailing ; to avoid warning
         (my $query_string = $r->args || '') =~ s/;$//;
@@ -73,14 +72,14 @@ sub handler ($$) {
             $vars->{hash}          = $hash;
 
             if ($account_for && $account_for eq 'free50') {
-                $vars->{title}         = loc("Free50 Account Setup");
-                $vars->{heading}       = loc("Free50 Account Setup");
-                $vars->{to_create}     = loc("Socialtext Free50 account");
+                $vars->{title}     = loc("Free50 Account Setup");
+                $vars->{heading}   = loc("Free50 Account Setup");
+                $vars->{to_create} = loc("Socialtext Free50 account");
             }
             else {
-                $vars->{title}         = loc("Choose Password");
-                $vars->{heading}       = loc("Choose Password");
-                $vars->{to_create}     = loc("Socialtext account");
+                $vars->{title}     = loc("Choose Password");
+                $vars->{heading}   = loc("Choose Password");
+                $vars->{to_create} = loc("Socialtext account");
             }
         }
 
@@ -159,11 +158,11 @@ sub handler ($$) {
         }
 
         my $saved_args = $self->{saved_args} = $self->session->saved_args;
-        my $repl_vars  = {
+        my $repl_vars = {
             $self->_default_template_vars(),
-            authen_page    => 1,
-            username_label => Socialtext::Authen->username_label,
-            redirect_to    => $self->{args}{redirect_to},
+            authen_page       => 1,
+            username_label    => Socialtext::Authen->username_label,
+            redirect_to       => $self->{args}{redirect_to},
             remember_duration => Socialtext::Authen->remember_duration,
             %$saved_args,
             %$vars,
@@ -201,20 +200,18 @@ sub login {
     my ($self) = @_;
     my $r = $self->r;
 
-    my $validname = ( Socialtext::Authen->username_is_email()
+    my $validname = Socialtext::Authen->username_is_email()
         ? loc('email address')
-        : loc('username')
-    );
+        : loc('username');
     my $username = $self->{args}{username} || '';
     unless ($username) {
         $self->session->add_error(loc('You must provide a valid [_1].', $validname));
         return $self->_challenge();
     }
 
-    my $user_check = ( Socialtext::Authen->username_is_email()
+    my $user_check = Socialtext::Authen->username_is_email()
         ? Email::Valid->address($username)
-        : ( (Encode::is_utf8($username) ? $username : Encode::decode_utf8($username)) =~ /\w/ )
-    );
+        : ( (Encode::is_utf8($username) ? $username : Encode::decode_utf8($username)) =~ /\w/ );
 
     unless ( $user_check ) {
         $self->session->add_error( loc('"[_1]" is not a valid [_2]. Please use your [_2] to log in.', $username, $validname) );
@@ -283,11 +280,14 @@ sub _add_user_to_workspace {
             return 1;
         }
 
-        my $can_self_join = $ws->permissions->user_can( 
-            user => $user, permission => ST_SELF_JOIN_PERM);
+        my $can_self_join = $ws->permissions->user_can(
+            user       => $user,
+            permission => ST_SELF_JOIN_PERM
+        );
         if ($can_self_join) {
             $ws->add_user(
-                user => $user, role => Socialtext::Role->Member()
+                user => $user,
+                role => Socialtext::Role->Member(),
             );
             return 1;
         }
@@ -310,7 +310,7 @@ sub logout {
 
 sub forgot_password {
     my $self = shift;
-    my $r = $self->r;
+    my $r    = $self->r;
 
     my $forgot_password_uri = $self->{args}{lite} ? '/lite/forgot_password' : '/nlw/forgot_password.html';
 
@@ -335,7 +335,7 @@ sub forgot_password {
     $confirmation->send_email;
 
     my $from_address = 'noreply@socialtext.com';
-    $self->session->add_message( 
+    $self->session->add_message(
       loc('An email with instructions on changing your password has been sent to [_1].', $user->username) . "\n<p>\n" . loc('The email will come from [_1]. To ensure you receive it, please add [_1] to your address book or safe list.', $from_address) . "\n</p>\n"
     );
 
@@ -356,34 +356,34 @@ sub register {
         $self->session->add_error(loc("Registration is disabled."));
         return $self->_redirect($redirect_target);
     }
-   
+
     my $appliance_config = Socialtext::Appliance::Config->new;
     if ($appliance_config->value('captcha_enabled')) {
-        # check captcha.. 
-        
+        # check captcha..
+
         my $c = Captcha::reCAPTCHA->new;
         my $c_challenge = $self->{args}{recaptcha_challenge_field};
-        my $c_response = $self->{args}{recaptcha_response_field};
+        my $c_response  = $self->{args}{recaptcha_response_field};
 
         my $c_privkey = $appliance_config->value('captcha_privkey');
-        my $result = $c->check_answer(
+        my $result    = $c->check_answer(
             $c_privkey,
             $r->connection->remote_ip,
             $c_challenge,
-            $c_response);
+            $c_response,
+        );
         unless ( $result->{is_valid} ) {
             $self->session->add_error(loc("Captcha failed."));
             return $self->_redirect($redirect_target, $self->{args});
         }
     }
 
-
     my $ws;
     if ($target_ws_name) {
         eval {
             $ws = Socialtext::Workspace->new( name => $target_ws_name);
             my $perms = $ws->permissions;
-            if (!$perms->role_can( 
+            if (!$perms->role_can(
                     role => Socialtext::Role->Guest(),
                     permission => ST_SELF_JOIN_PERM
                 )) {
@@ -470,9 +470,7 @@ sub confirm_email {
     my $r = $self->r;
 
     my $hash = $self->{args}{hash};
-    return $self->_show_error(
-        loc('Invalid confirmation URL.')
-    ) unless $hash;
+    return $self->_show_error(loc('Invalid confirmation URL.')) unless $hash;
 
     my $user = $self->_find_user_for_email_confirmation_hash( $r, $hash );
     return $self->_show_error() unless $user;
@@ -536,7 +534,7 @@ sub confirm_email {
 
 sub choose_password {
     my $self = shift;
-    my $r = $self->r;
+    my $r    = $self->r;
 
     my $hash = $self->{args}{hash};
     return $self->_show_error(
@@ -625,14 +623,15 @@ sub require_confirmation_redirect {
 }
 
 sub _redirect {
-    my $self = shift;
-    my $uri  = shift;
-    my $formfields = shift;
-    my $redirect_to = $self->{args}{redirect_to};
+    my $self            = shift;
+    my $uri             = shift;
+    my $formfields      = shift;
+    my $redirect_to     = $self->{args}{redirect_to};
     my $oldformvarquery = '';
     if ($formfields) {
-        $oldformvarquery = join(";", 
-            map { $_ . "=" . uri_escape_utf8($formfields->{$_})} grep {!/^(recaptcha_|password|redirect_to)/} keys %{$formfields});
+        $oldformvarquery = join(";",
+            map { $_ . "=" . uri_escape_utf8($formfields->{$_})} grep {!/^(recaptcha_|password|redirect_to)/} keys %{$formfields}
+        );
     }
     if ($redirect_to) {
         $uri .= ($uri =~ m/\?/ ? ';' : '?')
@@ -640,7 +639,7 @@ sub _redirect {
     }
     if ($oldformvarquery) {
         $uri .= ($uri =~ m/\?/ ? ';' : '?')
-              . $oldformvarquery; 
+              . $oldformvarquery;
     }
 
     $self->redirect($uri);
@@ -663,9 +662,7 @@ sub _challenge {
         st_log->error($e);
     }
 
-    $self->session->add_error(
-        loc("Challenger Did not Redirect.")
-    );
+    $self->session->add_error(loc("Challenger Did not Redirect."));
     return $self->redirect('/nlw/error.html');
 }
 
@@ -723,7 +720,7 @@ sub _show_error {
 
 sub _find_user_for_email_confirmation_hash {
     my $self = shift;
-    my $r = shift;
+    my $r    = shift;
     my $hash = shift;
 
     # now in order to deal with email clients that might have decoded %2B to '+' for us
