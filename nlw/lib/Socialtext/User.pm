@@ -1482,6 +1482,12 @@ sub send_password_change_email {
     return $confirmation->send_email;
 }
 
+sub password_change_uri {
+    my $self = shift;
+    return unless $self->password_change_confirmation;
+    return $self->password_change_confirmation->uri;
+}
+
 sub confirmation_uri {
     my $self = shift;
     return unless $self->requires_confirmation;
