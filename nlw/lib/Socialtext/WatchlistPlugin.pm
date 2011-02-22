@@ -243,30 +243,25 @@ sub watchlist_changes {
     my $pages = shift;
 
     my %sortdir = %{ $self->sortdir };
-    if ( $self->cgi->sortby ) {
-        $self->result_set( $self->sorted_result_set( \%sortdir ) );
-    }
-    else {
-        $self->result_set( $self->new_result_set() );
+    $self->result_set( $self->new_result_set() );
 
-        my $watchlist;
-        foreach my $page (@$pages) {
-            my $page_object = $self->hub->pages->new_page($page);
+    my $watchlist;
+    foreach my $page (@$pages) {
+        my $page_object = $self->hub->pages->new_page($page);
 
-            # If the page has been purged take it out of the watchlist
-            if ( !$page_object->active ) {
-                $watchlist ||= Socialtext::Watchlist->new(
-                    user      => $self->hub->current_user,
-                    workspace => $self->hub->current_workspace
-                );
-                $watchlist->remove_page( page => $page_object );
-                next;
-            }
-
-            $self->push_result($page_object);
+        # If the page has been purged take it out of the watchlist
+        if ( !$page_object->active ) {
+            $watchlist ||= Socialtext::Watchlist->new(
+                user      => $self->hub->current_user,
+                workspace => $self->hub->current_workspace
+            );
+            $watchlist->remove_page( page => $page_object );
+            next;
         }
-        $self->result_set( $self->sorted_result_set( \%sortdir ) );
+
+        $self->push_result($page_object);
     }
+    $self->result_set( $self->sorted_result_set( \%sortdir ) );
     $self->result_set->{display_title} = loc("Pages You're Watching");
     $self->result_set->{hits} = @{$self->result_set->{rows}};
 
