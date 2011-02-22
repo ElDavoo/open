@@ -12,6 +12,7 @@ use Socialtext::URI;
 
 sub restriction_type { 'email_confirmation' };
 
+# XXX - Yuck; this same URI is also used by "password_change"
 sub uri {
     my $self = shift;
     return Socialtext::URI::uri(
