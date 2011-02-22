@@ -358,7 +358,7 @@ sub _revision_id_changed {
     return;
 }
 
-sub load { Carp::cluck "load() is now a no-op for Pages"; }
+sub load { Carp::cluck "load() is now a no-op for Pages"; return shift }
 sub load_content { Carp::cluck "load_content() is now a no-op for Pages"; }
 
 

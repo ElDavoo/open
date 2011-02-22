@@ -46,6 +46,7 @@ sub revision_list {
             date         => $rev->datetime_for_user,
             from         => $rev->editor->email_address,
             class        => (@$rows % 2 ? 'trbg-odd' : 'trbg-even'),
+            is_deleted   => $rev->deleted,
         };
         $rows->[-1]{next} = $row if @$rows;
         push @$rows, $row;
@@ -80,7 +81,7 @@ sub revision_view {
     my $next_revision = $this_revision;
     my $one_more_time = 0;
 
-    for my $revision_id ($page->all_revision_ids) {
+    for my $revision_id (reverse $page->all_revision_ids) {
       if ($one_more_time) {
         $next_revision = $revision_id;
         last;
