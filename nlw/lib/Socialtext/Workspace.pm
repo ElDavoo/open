@@ -530,6 +530,10 @@ sub delete {
 
     $self->cache->clear();
 
+    # clean up any un-referenced uploads (which won't cascade from
+    # page_attchment when the workspace is nuked)
+    Socialtext::JobCreator->tidy_uploads();
+
     st_log()
         ->info( 'DELETE,WORKSPACE,workspace:'
             . $self->name . '('

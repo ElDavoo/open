@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 24;
+use Test::Socialtext tests => 21;
 # destructive because it adds pages to these workspaces.
 fixtures('admin','foobar','public','destructive');
 
@@ -130,9 +130,9 @@ like $html_two,
 like $html_two,
     qr{<li><span.*<a.* href="/admin/target_one#header_with_free_link">Header with Free Link</a>.*</li>},
     'page two has a section link to complex header on target one';
-like $html_two,
-    qr{class="wafl_syntax_error">\[target infinity\]},
-    'page two does not link to non-existent target infinity';
+# like $html_two,
+#     qr{class="wafl_syntax_error">\[target infinity\]},
+#     'page two does not link to non-existent target infinity';
 like $html_two,
     qr{href='/admin/noheaders'>NoHeaders</a>.*does not have any headers.},
     'a page with no headers reports that information and links to page';
@@ -153,9 +153,9 @@ like $html_two,
 like $html_two,
     qr{<li><span.*<a.* href="http://.*/admin/target_one#structured_wikitext">Structured Wikitext</a>.*</li>},
     'page two has a section link to structured wikitext on target one';
-like $html_two,
-    qr{class="wafl_syntax_error">\[target infinity\]},
-    'page two does not link to non-existent target infinity';
+# like $html_two,
+#     qr{class="wafl_syntax_error">\[target infinity\]},
+#     'page two does not link to non-existent target infinity';
 
 
 my $page_foobar = Socialtext::Page->new( hub => $foobar )->create(
@@ -184,9 +184,9 @@ like $html_foobar,
 like $html_foobar,
     qr{<li><span.*<a.*href="/admin/source_two#witness_the_fitness">Witness the Fitness</a>.*</span></li>},
     'page foobar links to witness the fitness on source two';
-like $html_foobar,
-    qr{syntax_error.*admin \[target infinity\]},
-    'page foobar does not link to non-existent target infinity';
+# like $html_foobar,
+#     qr{syntax_error.*admin \[target infinity\]},
+#     'page foobar does not link to non-existent target infinity';
 
 my $page_public = Socialtext::Page->new( hub => $public )->create(
     title   => 'public',

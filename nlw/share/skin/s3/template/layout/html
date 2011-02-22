@@ -84,7 +84,7 @@
             [% IF user.is_business_admin %]
               <li id="st-wikinav-control"><a href="/nlw/control">[% loc('Control Panel') %]</a></li>
             [% END %]
-            <li id="st-wikinav-help"><a href="/help/index.cgi" target="_blank">[% loc('Help') %]</a></li>
+            <li id="st-wikinav-help"><a href="/help/" target="_blank">[% loc('Help') %]</a></li>
             [% IF user.is_guest %]
               [% IF self_registration AND NOT checker.check_permission('self_join') %]
                 <li id="st-wikinav-login"><a href="/challenge?[% wiki.uri | html %]">[% loc('Log in') %]</a></li>
@@ -187,7 +187,7 @@
                 <li>[%- desktop_link(id="st-footer-link-desktop") -%]</li>
               [% END %]
                 <li><a id="st-footer-link-setting" href="/[% current_workspace.name %]?action=users_settings">[% loc('Settings') %]</a></li>
-                <li><a id="st-footer-link-help" href="/help/index.cgi" target="_blank">[% loc('Help') %]</a></li>
+                <li><a id="st-footer-link-help" href="/help/" target="_blank">[% loc('Help') %]</a></li>
               [% IF user.is_guest %]
                 [% IF self_registration %]
                   <li><a id="st-footer-link-login" href="/challenge?[% wiki.uri | html %]">[% loc('Log in') %]</a></li>

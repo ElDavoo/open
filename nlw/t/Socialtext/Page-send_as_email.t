@@ -16,7 +16,7 @@ BEGIN {
 
 use Socialtext::Page;
 
-plan tests => 48;
+plan tests => 49;
 
 $Socialtext::EmailSender::Base::SendClass = 'Test';
 
@@ -50,29 +50,31 @@ EOF
     Email::Send::Test->clear;
 
     my $page = $pages->new_from_name($utf8_subject);
-    $pages->current($page);
+
+    open my $fh, '<', 't/attachments/socialtext-logo-30.gif'
+        or die $!;
 
     my $attachment = $hub->attachments->create(
-        fh => IO::File->new('t/attachments/socialtext-logo-30.gif', '<'),
+        fh => $fh,
+        content_type => 'image/gif',
         filename => 'socialtext-logo.gif',
         page => $page,
         user => $hub->current_user,
     );
+    ok $attachment, 'created attachment';
 
-    $page->send_as_email
-        ( from => 'devnull1@socialtext.com',
-          to   => 'devnull2@socialtext.com',
-          include_attachments => 1,
-        );
+    $page->send_as_email(
+        from => 'devnull1@socialtext.com',
+        to   => 'devnull2@socialtext.com',
+        include_attachments => 1,
+    );
 
     my @emails = Email::Send::Test->emails;
 
-    is( scalar @emails, 1,
-        'one email was sent' );
+    is( scalar @emails, 1, 'one email was sent' );
 
     my @parts = $emails[0]->parts;
-    is( scalar @parts, 2,
-        'email has two parts' );
+    is( scalar @parts, 2, 'email has two parts' );
 
     my @html_parts = $parts[1]->parts;
     is( scalar @html_parts, 2, 'mp/related has two parts' );
@@ -92,6 +94,7 @@ EOF
         'attachment; filename="socialtext-logo.gif"',
         q{third part content disposition is 'attachment; filename="socialtext-logo.gif"'} );
 }
+
 {
     Email::Send::Test->clear;
 
@@ -271,7 +274,6 @@ send_copy_duplicate_copy: {
           to   => 'devnull2@socialtext.com',
           body_intro => "Some extra text up front, can have *wiki formatting*\n",
         );
-
     my @emails = Email::Send::Test->emails;
 
     is( scalar @emails, 1,

@@ -202,8 +202,8 @@ sub login {
     my $r = $self->r;
 
     my $validname = ( Socialtext::Authen->username_is_email()
-        ? 'email address'
-        : 'username'
+        ? loc('email address')
+        : loc('username')
     );
     my $username = $self->{args}{username} || '';
     unless ($username) {
@@ -321,7 +321,7 @@ sub forgot_password {
         return $self->_redirect($forgot_password_uri);
     }
     elsif ($user->is_deactivated) {
-        $self->session->add_error(loc("The user [_1] has been deactivated.", $username));
+        $self->session->add_error(loc("User [_1] has been deactivated.", $username));
         return $self->_redirect($forgot_password_uri);
     }
     elsif ($user->is_externally_sourced) {
@@ -387,7 +387,7 @@ sub register {
                     role => Socialtext::Role->Guest(),
                     permission => ST_SELF_JOIN_PERM
                 )) {
-                    $self->session->add_error(loc("Self-join is disabled for")." ".$target_ws_name);
+                    $self->session->add_error(loc("Self-join is disabled for [_1]", $target_ws_name));
                     return $self->_redirect($redirect_target);
                 }
             };

@@ -33,6 +33,7 @@ our %Services = (
         ],
         url => "http://www.youtube.com/watch?v=__ID__",
         oembed => "http://www.youtube.com/oembed?format=json;url=__URL__",
+        ssl_thumbnail => 1,
         html => q{<iframe src='https://www.youtube.com/embed/__ID__?rel=0;autoplay=__AUTOPLAY__'
                           type='text/html'
                           width='__WIDTH__'
@@ -186,6 +187,10 @@ sub get_oembed_data {
 
                 $self->_do_normalize_size($payload, $width, $height);
                 $payload->{thumbnail_url} ||= $payload->{thumbnail};
+
+                if ($service->{ssl_thumbnail}) {
+                    $payload->{thumbnail_url} =~ s/^http:/https:/;
+                }
 
                 return $payload;
             }

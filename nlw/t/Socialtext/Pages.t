@@ -3,7 +3,7 @@
 
 use warnings;
 use strict;
-use Test::Socialtext tests => 15;
+use Test::Socialtext tests => 14;
 use Try::Tiny;
 
 BEGIN {

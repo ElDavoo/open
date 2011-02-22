@@ -11,8 +11,9 @@ use Socialtext::File;
 use Socialtext::AppConfig;
 use Socialtext::Page::Legacy;
 use Socialtext::PageRevision;
+use Socialtext::String;
 use Socialtext::Timer qw/time_scope/;
-use Socialtext::SQL qw(get_dbh :exec :txn);
+use Socialtext::SQL qw(get_dbh :exec sql_txn sql_ensure_temp);
 use Fatal qw/opendir closedir chdir open/;
 use Cwd   qw/abs_path/;
 use DateTime;
@@ -53,25 +54,42 @@ sub new {
 sub populate {
     my $self = shift;
     my %opts = @_;
-    my $recreate = $opts{recreate};
+    $self->{recreate} = $opts{recreate};
     my $workspace = $self->{workspace};
     my $workspace_name = $self->{workspace_name};
+    my $workspace_id = $workspace->workspace_id;
 
     try { sql_txn {
         # Start a transaction, and delete everything for this workspace.
         # if we're recreating the workspace from scratch, clean it out *first*
-        if ($recreate) {
-            sql_execute(
+        if ($self->{recreate}) {
+
+            # Save attachment_ids so we can avoid having to re-upload
+            # attachment blobs.  Since attachments can be deleted (hidden) or
+            # purged, it's safest to start with a clean slate and re-insert
+            # page_attachment rows.
+            sql_ensure_temp(t_attachments => q{
+                id text,
+                attachment_id bigint,
+                page_id text
+            }, q{CREATE INDEX t_att_id ON t_attachments (id,page_id)});
+            sql_execute(q{
+                INSERT INTO t_attachments
+                SELECT id, attachment_id, page_id
+                  FROM page_attachment
+                  WHERE workspace_id = ?
+            }, $workspace->workspace_id);
+
+            # Don't delete page revs so we can avoid having to re-insert them.
+            # Revs only ever get added to a page unless a workspace or page
+            # purge happens.  Revs don't have a FK into page, so it's ok to
+            # clean these up as a final step in the workspace population.
+
+            sql_execute($_, $workspace->workspace_id) for (
+                'DELETE FROM page_attachment WHERE workspace_id = ?',
+                'DELETE FROM page_tag WHERE workspace_id = ?',
                 'DELETE FROM page WHERE workspace_id = ?',
-                $workspace->workspace_id,
-            );
-            sql_execute(
-                'DELETE FROM page_revision WHERE workspace_id = ?',
-                $workspace->workspace_id,
-            );
-            sql_execute(
                 'DELETE FROM breadcrumb WHERE workspace_id = ?',
-                $workspace->workspace_id,
             );
         }
 
@@ -97,7 +115,6 @@ sub populate {
             catch { chomp; warn "Error fixing relative link: $_\n"; 0 };
 
             # Get all the data we want on a page
-            my $workspace_id = $workspace->workspace_id;
 
             my $page = try { $self->load_page_metadata($workspace_dir, $dir) }
             catch {
@@ -108,17 +125,17 @@ sub populate {
             next PAGE unless $page;
 
             # Skip this page if it already exists in the DB
-            my $page_exists_already = $recreate ? 0 : page_exists_in_db(
+            my $page_exists_already = $self->{recreate} ? 0 : page_exists_in_db(
                 workspace_id => $workspace_id,
                 page_id      => $page->{page_id},
             );
-            next PAGE if $page_exists_already;
 
             try { $self->load_page_attachments($workspace_dir, $page) }
             catch {
                 chomp;
                 warn "Error populating $workspace_name attachments: $_\n";
             };
+            next PAGE if $page_exists_already;
 
             # Add this page (and its tags) to the list of things to add to the
             # DB. NOTE these are in the same column-order as the actual table.
@@ -149,6 +166,21 @@ sub populate {
         add_to_db('page_tag', \@page_tags);
 
         $self->load_breadcrumbs();
+
+        # clean up any un-referenced uploads (for when attchments got purged
+        # between populations)
+        Socialtext::JobCreator->tidy_uploads();
+
+        # clean up any un-referenced page_revisions (i.e. pages that have been
+        # purged)
+        sql_execute(q{
+            DELETE FROM page_revision
+             WHERE workspace_id = $1
+               AND page_id NOT IN (
+                SELECT page_id FROM page WHERE workspace_id = $1
+               )
+        }, $workspace_id);
+
     }}
     catch {
         die "Error during populate of $workspace_name: $_";
@@ -220,9 +252,11 @@ my $page_rev_insert = do {
 sub load_revision_metadata {
     my ($self, $ws_dir, $pg_dir) = @_;
     my $t = time_scope 'load_rev_metadata';
+    my $ws_id = $self->{workspace}->workspace_id;
 
     my $dbh = get_dbh();
     my $sth = $dbh->prepare_cached($page_rev_insert) or die $dbh->errmsg;
+    my $check_sth;
 
     opendir(my $dfh, "$ws_dir/$pg_dir");
     REV: while (my $file = readdir($dfh)) {
@@ -233,9 +267,26 @@ sub load_revision_metadata {
 
         # Ignore really old pages that have invalid page_ids
         next REV unless Socialtext::Encode::is_valid_utf8($file);
-        try { sql_txn {
+
+        (my $revision_id = $file) =~ s#.+/(.+)\.txt$#$1#;
+
+        if ($self->{recreate}) {
+            my $t = time_scope 'recreate_rev';
+            $check_sth //= $dbh->prepare_cached(q{
+                SELECT 1 FROM page_revision
+                WHERE workspace_id = ? AND page_id = ? AND revision_id = ?
+                LIMIT 1
+            });
+            # see if it's still there
+            $check_sth->execute($ws_id, $pg_dir, $revision_id);
+            my ($exists) = $check_sth->fetchrow_array;
+            $check_sth->finish;
+            next REV if $exists
+        }
+
+        try {
             my $t2 = time_scope 'load_rev';
-            (my $revision_id = $file) =~ s#.+/(.+)\.txt$#$1#;
+
             my $pagemeta = fetch_metadata($file);
             my $body_ref = Socialtext::Page::Legacy::read_and_decode_file(
                 $file, 1, 1); # "return content as ref"
@@ -254,7 +305,7 @@ sub load_revision_metadata {
             }
 
             my %cols = (
-                workspace_id => $self->{workspace}->workspace_id,
+                workspace_id => $ws_id,
                 page_id => $pg_dir,
                 body_length => length($$body_ref),
                 revision_id => $revision_id,
@@ -270,15 +321,16 @@ sub load_revision_metadata {
                 tags => $tags,
             );
 
-            local $dbh->{RaiseError} = $sth->{RaiseError} = 1;
-            my $n = 1;
-            $sth->bind_param($n++, $$body_ref, {pg_type => DBD::Pg::PG_BYTEA});
-            for my $col (Socialtext::PageRevision::COLUMNS()) {
-                $sth->bind_param($n++, $cols{$col});
+            sql_txn {
+                my $n = 1;
+                $sth->bind_param($n++, $$body_ref, {pg_type => DBD::Pg::PG_BYTEA});
+                for my $col (Socialtext::PageRevision::COLUMNS()) {
+                    $sth->bind_param($n++, $cols{$col});
+                };
+                $sth->execute;
+                die "failed to insert $revision_id" unless $sth->rows == 1;
             };
-            $sth->execute;
-            die "failed to insert $revision_id" unless $sth->rows == 1;
-        }}
+        }
         catch {
             warn "Error parsing revision $ws_dir/$pg_dir/$file, skipping: $_\n";
         };
@@ -295,7 +347,7 @@ sub load_page_attachments {
     return unless -d $atts_dir;
 
     my $dbh = get_dbh();
-    my ($sth, $sth2);
+    my ($insert_sth, $update_sth, $check_sth);
 
     opendir my $dh, $atts_dir or die "can't open dir $atts_dir: $!";
   ATT:
@@ -305,10 +357,10 @@ sub load_page_attachments {
         $file = "$atts_dir/$file";
         next unless -f $file;
 
-        $sth //= $dbh->prepare_cached(q{
+        $insert_sth //= $dbh->prepare_cached(q{
             INSERT INTO page_attachment VALUES (?,?,?,?,?)
         }, {RaiseError => 1});
-        $sth2 //= $dbh->prepare_cached(q{
+        $update_sth //= $dbh->prepare_cached(q{
             UPDATE attachment SET is_temporary = false WHERE attachment_id = ?
         }, {RaiseError => 1});
 
@@ -338,7 +390,30 @@ sub load_page_attachments {
             my $control = $meta->{control} || '';
             my $deleted = $control eq 'Deleted' ? 1 : 0;
 
-            $meta->{db_filename} //= uri_escape($meta->{subject});
+            # if we're recreating, try to use the old attachment blob
+            # (which can be identified by its old unique ID on this page)
+            if ($self->{recreate}) {
+                my $t = time_scope 'recreate_att';
+                $check_sth //= $dbh->prepare_cached(q{
+                    SELECT attachment_id FROM t_attachments
+                     WHERE id = ? AND page_id = ?
+                });
+                $check_sth->execute($legacy_id, $page_hash->{page_id});
+                my ($use_upload_id) = $check_sth->fetchrow_array;
+                $check_sth->finish;
+                if ($use_upload_id) {
+                    sql_txn {
+                        $insert_sth->execute($legacy_id,
+                            @$page_hash{qw(workspace_id page_id)},
+                            $use_upload_id, $deleted);
+                        die "insert failed" unless $insert_sth->rows == 1;
+                    };
+                    return; # from the try
+                }
+            }
+
+            $meta->{db_filename} //=
+                Socialtext::String::uri_escape($meta->{subject});
             unless ($meta->{db_filename}) {
                 die "attachment filename missing\n" if $Noisy;
                 return; # from the try
@@ -393,13 +468,13 @@ sub load_page_attachments {
 
                 # page_attachment make_permanent:
                 # NOTE bind values must be same order as actual table
-                $sth->execute($legacy_id, @$page_hash{qw(workspace_id page_id)},
-                              $upload->attachment_id, $deleted);
-                die "insert failed" unless $sth->rows == 1;
+                $insert_sth->execute($legacy_id, @$page_hash{qw(workspace_id
+                    page_id)}, $upload->attachment_id, $deleted);
+                die "insert failed" unless $insert_sth->rows == 1;
 
                 # roughly Socialtext::Upload->make_permanent():
-                $sth2->execute($upload->attachment_id);
-                die "upload de-temping failed" unless $sth->rows == 1;
+                $update_sth->execute($upload->attachment_id);
+                die "upload de-temping failed" unless $insert_sth->rows == 1;
                 $upload->is_temporary(0); # just in case of cached
             };
         }

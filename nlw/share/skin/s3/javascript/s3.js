@@ -1,3 +1,6 @@
+;if (typeof Socialtext != 'object' || (!Socialtext.S3)) {
+
+var Socialtext = Socialtext || {};
 Socialtext.S3 = true;
 
 function trim(value) {
@@ -1208,3 +1211,5 @@ $(function() {
         top.window.resizeTo(screen.availWidth, screen.availHeight);
     } } catch (e) {}
 });
+
+};

@@ -134,8 +134,8 @@ sub Blank {
     my %p = ref($_[0]) ? %{$_[0]} : @_;
 
     croak "hub is required to make a new revision" unless $p{hub};
-    my $name = $p{name} || delete $p{title};
-    croak "name (a title) is required" unless $name;
+    my $name = $p{name} // delete $p{title} //
+        croak "name (a title) is required";
 
     my $hub = $p{hub};
     $p{workspace_id} = $hub->current_workspace->workspace_id;
@@ -144,7 +144,7 @@ sub Blank {
     $p{revision_id} = $p{revision_num} = 0;
     $p{editor} = $hub->current_user;
     $p{editor_id} = $p{editor}->user_id;
-    $p{__mutable} = 1;
+    $p{__mutable} = ($p{page_id} eq "_") ? 0 : 1;
     
     return Socialtext::PageRevision->new(\%p);
 }
@@ -242,6 +242,7 @@ sub mutable_clone {
     my $self = shift;
     my $p = ref($_[0]) ? $_[0] : {@_};
     confess "PageRevision is already mutable" if $self->mutable;
+    confess "The '_' page cannot be made mutable" if $self->page_id eq '_';
 
     $p->{editor} //= $self->hub->current_user;
 
@@ -427,6 +428,8 @@ sub datetime_utc {
 sub store {
     my $self = shift;
     confess "PageRevision isn't mutable" unless $self->mutable;
+    # XXX extra caution, but should be a database-level constraint
+    confess "Can't store the '_' page_id" if $self->page_id eq '_';
 
     my @errors;
 

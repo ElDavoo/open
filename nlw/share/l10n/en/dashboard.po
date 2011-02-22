@@ -1,0 +1,124 @@
+# @COPYRIGHT@
+msgid ""
+msgstr ""
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-02-20 10:52+0800\n"
+"Language-Team: Socialtext i18n team\n"
+"Last-Translator: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: share/plugin/dashboard/template/dashboard_links:3
+msgid "Add Widget"
+msgstr "dashboard.add-widget"
+
+#: share/plugin/dashboard/template/dashboard_links:60
+msgid "Administer Dashboards"
+msgstr "dashboard.admin"
+
+#: share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:4
+msgid "Are you sure you want to revert to the Socialtext defaults?"
+msgstr "dashboard.confirm-revert?"
+
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:20 share/plugin/dashboard/template/dashboard_links:18 share/plugin/dashboard/template/widget_editor_links:13
+msgid "Cancel"
+msgstr "do.cancel"
+
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:4
+msgid "Click <b>Save</b> below to make this the default dashboard for your account. All new users will have this dashboard when they first log in. To also force this dashboard for existing users, click the \"force update\" checkbox below."
+msgstr "info.dashboard-save-layout"
+
+#. (account.name)
+#: share/plugin/dashboard/template/dashboard_hello:5
+msgid "Dashboard for %1"
+msgstr "dashboard.for=account"
+
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.js:44
+msgid "Error pushing to dashboards"
+msgstr "error.dashboard-push-widget"
+
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.js:65
+msgid "Error resetting dashboards"
+msgstr "error.dashboard-reset"
+
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.js:82
+msgid "Error saving the default layout."
+msgstr "error.dashboard-save-default-layout"
+
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:31
+msgid "Force update this dashboard on existing users, too"
+msgstr "dashboard.force-update"
+
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:33
+msgid "If you choose to force update this dashboard, you will REPLACE the existing Dashboard for EVERYONE in this account."
+msgstr "info.dashboard-force-update"
+
+#: share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:13
+msgid "No"
+msgstr "do.no"
+
+#: share/plugin/dashboard/template/widget_editor_links:3
+msgid "Preview"
+msgstr "dashboard.preview"
+
+#: share/plugin/dashboard/template/widget_editor_links:8
+msgid "Publish"
+msgstr "dashboard.publish"
+
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:9
+msgid "Pushing a widget to appear on the user's dashboard will cause it to appear at the top of your chosen column the next time each user loads the dashboard. It will be placed above any other widgets that already appear on the user's dashboard."
+msgstr "info.dashboard-push-widget"
+
+#: share/plugin/dashboard/template/dashboard_links:25
+msgid "Revert to Default..."
+msgstr "do.revert-dashboard"
+
+#: share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:2
+msgid "Revert to default"
+msgstr "dashboard.revert"
+
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:25
+msgid "Save"
+msgstr "do.save"
+
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:2
+msgid "Save Confirmation"
+msgstr "dashboard.save-confirmation"
+
+#: share/plugin/dashboard/template/dashboard_links:11
+msgid "Save..."
+msgstr "dashboard.save"
+
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.js:58
+msgid "Successfully reset all dashboards in the selected account"
+msgstr "dashboard.successfully-reset"
+
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.js:74
+msgid "Successfully saved the default layout for the selected account."
+msgstr "dashboard.successfully-saved"
+
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:12
+msgid "The following widgets will be pushed:"
+msgstr "dashboard.widgets-to-push:"
+
+#. (account.name)
+#: share/plugin/dashboard/template/dashboard_notice:2
+msgid "This is the default dashboard shared among all users for the \"%1\" account. Switch to account:"
+msgstr "dashboard.switch-from=account:"
+
+#: share/plugin/dashboard/template/dashboard_hello:14
+msgid "Welcome"
+msgstr "dashboard.welcome"
+
+#: share/plugin/dashboard/share/widgets/widget_editor/widget.js:211
+msgid "Widget rendered correctly but has not been saved. Click publish to update the widget gallery now."
+msgstr "dashboard.publish-widget-now"
+
+#: share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:8
+msgid "Yes"
+msgstr "do.yes"
+
+#: share/plugin/dashboard/share/widgets/widget_editor/widget.js:261
+msgid "You have unsaved changes."
+msgstr "error.unsaved-widget"

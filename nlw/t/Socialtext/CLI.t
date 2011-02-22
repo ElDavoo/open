@@ -922,13 +922,10 @@ PURGE_ATTACHMENT: {
         = Socialtext::CLI->new( argv => [qw( --workspace foobar )] )
         ->_require_hub();
     my $att = $hub->attachments()->all( page_id => 'formattingtest' )->[0];
+    ok $att, 'Attachment exists';
+
     my $filename = $att->filename();
     my $att_id = $att->id();
-
-    ok(
-        $att->exists(),
-        'Attachment exists'
-    );
 
     expect_success(
         sub {

@@ -4,7 +4,7 @@
 use warnings;
 use strict;
 
-use Test::Socialtext tests => 12;
+use Test::Socialtext tests => 11;
 fixtures( 'workspaces' );
 my $hub = new_hub('admin');
 isa_ok( $hub, 'Socialtext::Hub' );
@@ -94,18 +94,8 @@ sub add_attachment {
 sub run_tests {
     my $tests = shift;
 
-    my @noisy_decode_args;
-    no warnings qw'redefine once';
-    local *Socialtext::Encode::noisy_decode = sub {
-        my %args = @_;
-        push @noisy_decode_args, %args;
-        $args{input};
-    };
-
     my $page = $hub->pages->new_from_name($title);
     my $html = $page->to_absolute_html;
-
-    ok @noisy_decode_args, 'noisy_decode should be called';
 
     foreach my $test (@$tests) {
         my $text = shift @$test;

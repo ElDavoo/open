@@ -406,13 +406,13 @@ sub get_entries {
             weblog_id => $blog_id,
             attachments => $attachments,
         );
-        my $original_page = $page->original_revision;
-        $entry->{is_updated}
-          = $original_page->revision_id != $page->revision_id;
+        my $original_rev_id = $page->original_revision_id;
+        $entry->{is_updated} = $original_rev_id != $page->revision_id;
         if ($entry->{is_updated}) {
+            $page->switch_rev($original_rev_id);
             $entry->{original} = $self->format_page_for_entry(
                 no_post => 1,
-                page => $original_page,
+                page => $page,
                 weblog_id => $blog_id,
                 attachments => $attachments,
             );
@@ -432,7 +432,6 @@ sub format_page_for_entry {
     my $blog_id = $args{weblog_id};
     my $attachments = $args{attachments};
 
-    $page->load;
     my ($raw_date, $raw_time) = split(/\s+/, $page->datetime_utc);
     my $date_local = $page->datetime_for_user;
     my ($date, $time) = ($date_local =~ /(.+) (\d+:\d+:*\d*)/);
@@ -451,8 +450,7 @@ sub format_page_for_entry {
     $entry->{author} = $page->last_editor->email_address;
     $entry->{username} = $page->last_editor->username;
     $entry->{post} = $page->to_html_or_default unless $args{no_post};
-    $entry->{attachment_count} =
-      scalar @{$attachments->all( page_id => $page->id )};
+    $entry->{attachment_count} = $attachments->count(page_id => $page->id);
     $entry->{page_locked_for_user} =  
         $page->locked && 
         $self->hub->current_workspace->allows_page_locking &&
@@ -489,7 +487,8 @@ sub box_content_filled {
     }
 
     my $page = $self->hub->pages->new_from_name($title);
-    return $page->to_html(($page->content||""), $page);
+    my $content_ref = $page->body_length ? $page->body_ref : \"";
+    return $page->to_html($content_ref, $page);
 }
 
 sub page_title {

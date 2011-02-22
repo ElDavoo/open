@@ -1,0 +1,288 @@
+# @COPYRIGHT@
+msgid ""
+msgstr ""
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-02-23 02:02+0800\n"
+"PO-Revision-Date: \n"
+"Language-Team: Socialtext i18n team\n"
+"Last-Translator: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: share/plugin/signals/template/bookmarklet/index.html:4
+msgid "\"Signal This\" Bookmarklet"
+msgstr "signals.signal-this-bookmarklet"
+
+#. (user_link(row.signal.user_id)
+#. (user_link(row.signal.user_id), row.signal.uri, to_localtime(row.signal.at), networks(row.signal))
+#: share/plugin/signals/template/view/signallist:81
+msgid "%1 on <a href=\"%2\">%3</a> <b>%4</b>."
+msgstr "signals.on=user,uri,date,networks"
+
+#. (user_link(row.signal.user_id)
+#. (user_link(row.signal.user_id), to_localtime(row.signal.at), row.signal.uri, user_link(row.signal.in_reply_to.user_id))
+#: share/plugin/signals/template/view/signallist:79
+msgid "%1 on <a href=\"%2\">%3</a> in reply to %4."
+msgstr "signals.on=user,uri,date,reply-to"
+
+#. (user_link(row.signal.user_id)
+#. (user_link(row.signal.user_id), to_localtime(row.signal.at), row.signal.uri, user_link(row.signal.recipient.id))
+#: share/plugin/signals/template/view/signallist:77
+msgid "%1 on <a href=\"%2\">%3</a> privately to %4."
+msgstr "signals.on=user,uri,date,private-to"
+
+#. (event.context.body)
+#: share/plugin/signals/template/data/events/signal:1 share/plugin/signals/template/data/events/signal:3
+msgid "%1."
+msgstr "signals.edit-save=event"
+
+#. (a.user_count)
+#. (g.user_count)
+#: share/plugin/signals/template/lite/signals.html:57 share/plugin/signals/template/lite/signals.html:68
+msgid "%quant(%1,user)"
+msgstr "signals.network-count=users"
+
+#: share/plugin/signals/template/bookmarklet/too_long.html:13
+msgid "(Click [Cancel] to Signal privately to yourself.)"
+msgstr "signals.click-cancel-to-signal-to-self"
+
+#: share/plugin/signals/share/javascript/lightbox/explore-about.tt2:4
+msgid "<b>Socialtext Explore</b> makes it easy to learn about the files and links your colleagues have shared via Socialtext Signals. Use the tabs along the top to choose the asset type and the filters on the left to narrow down the information being displayed. <br /> <br /> Each item listed has one or more Signals conversations that mention it. Click on an item's title to open the link itself, or click on the square to the left of the title to see and reply to its conversations."
+msgstr "info.about-explore"
+
+#: share/plugin/signals/share/widgets/profile/widget.html:21
+msgid "All Shared Groups"
+msgstr "signals.all-shared-groups"
+
+#: share/plugin/signals/template/bookmarklet/index.html:64
+msgid "Can't see your Bookmarks Bar?"
+msgstr "signals.bookmarks-bar-missing?"
+
+#: share/plugin/signals/share/javascript/lightbox/explore-about.tt2:17
+msgid "Close"
+msgstr "do.close"
+
+#: share/plugin/signals/share/javascript/lightbox/explore-about.tt2:10
+msgid "Do not show this information again"
+msgstr "explore.do-not-show-again"
+
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:290
+msgid "Everyone"
+msgstr "explore.everyone"
+
+#: share/plugin/signals/template/nav_signals_explore:1
+msgid "Explore"
+msgstr "nav.explore"
+
+#: share/plugin/signals/template/explore_hello:2
+msgid "Explore (beta)"
+msgstr "explore.beta"
+
+#: share/plugin/signals/template/bookmarklet/index.html:65
+msgid "Find and select \"Show Bookmarks Bar\" from the menu in your browser."
+msgstr "signals.find-bookmarks-bar"
+
+#: share/plugin/signals/template/bookmarklet/index.html:53
+msgid "For all other browsers, simply drag the button below to your Bookmarks Bar."
+msgstr "signals.drag-button-to-bookmarks-bar"
+
+#: share/plugin/signals/template/element/settings/signals_settings_section:8
+msgid "If checked, each time a user sends you a private message via Signals, we'll send you an email with the message."
+msgstr "signals.private-message-to-email"
+
+#: share/plugin/signals/template/bookmarklet/index.html:47
+msgid "Install it as a bookmark (or favorite) and, when you find a page you want to signal or share, just click or select the bookmark and it will send a signal for you!"
+msgstr "signals.about-bookmarklet"
+
+#: share/plugin/signals/template/bookmarklet/index.html:51
+msgid "Instructions: For Internet Explorer users, right-click the button below and select \"Add to Favorites\", then choose the \"Links\" folder."
+msgstr "signals.bookmarklet-for-ie-users"
+
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:289
+msgid "Just Me"
+msgstr "explore.just-me"
+
+#: share/plugin/signals/template/cp_signal_size_limit:3
+msgid "Maximum Size Limit:"
+msgstr "signals.size-limit:"
+
+#. (global_limit)
+#: share/plugin/signals/template/cp_signal_size_limit:7
+msgid "Maximum value for this appliance is %1"
+msgstr "signals.global-limit=size"
+
+#: share/plugin/signals/template/view/signallist:30
+msgid "Newest"
+msgstr "signals.sort-newest"
+
+#: share/plugin/signals/template/view/signallist:31
+msgid "Oldest"
+msgstr "signals.sort-oldest"
+
+#: share/plugin/signals/template/bookmarklet/too_long.html:7
+msgid "Please try again:"
+msgstr "signals.try-again:"
+
+#: share/plugin/signals/template/lite/signals.html:45
+msgid "Post to"
+msgstr "signals.post-to"
+
+#: share/plugin/signals/template/element/settings/private_menu:3 share/plugin/signals/template/element/settings/signals_settings_section:5
+msgid "Private Messages"
+msgstr "signals.private-messages"
+
+#: share/plugin/signals/template/explore_links:3
+msgid "Refresh"
+msgstr "signals.refresh"
+
+#: share/plugin/signals/template/view/signallist:32
+msgid "Relevance"
+msgstr "signals.sort-relevance"
+
+#: share/plugin/signals/template/email/direct-message.html:24
+msgid "Reply privately to this signal."
+msgstr "signals.reply-privately"
+
+#: share/plugin/signals/template/search_box_signals:1
+msgid "Search Signals:"
+msgstr "signals.search:"
+
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:291
+msgid "Selected people"
+msgstr "signals.selected-people"
+
+#: share/plugin/signals/template/element/settings/signals_settings_section:7
+msgid "Send Socialtext Signals private messages as email"
+msgstr "signals.email-to-private-message"
+
+#: share/plugin/signals/share/widgets/profile/widget.html:29
+msgid "Send as private message"
+msgstr "signals.send-as-private-message"
+
+#: share/plugin/signals/template/view/signallist:33
+msgid "Sender"
+msgstr "signals.sort-sender"
+
+#: share/plugin/signals/template/bookmarklet/index.html:44
+msgid "Share any page on the web via Signals using this handy bookmarklet."
+msgstr "signals.share-with-bookmarklet"
+
+#: share/plugin/signals/template/bookmarklet/too_long.html:12
+msgid "Share this link to your colleagues?"
+msgstr "signals.share-to-colleagues?"
+
+#. (offset + 1, last, pager.total_entries)
+#: share/plugin/signals/template/view/signallist:26
+msgid "Showing %1 - %2 of %3 total."
+msgstr "signals.showing=from,to,total"
+
+#: share/plugin/signals/template/bookmarklet/index.html:57
+msgid "Signal This!"
+msgstr "signals.signal-this!"
+
+#: share/plugin/signals/share/widgets/profile/widget.html:19
+msgid "Signal to"
+msgstr "signals.signal-to"
+
+#: share/plugin/signals/template/cp_signal_size_limit:2 share/plugin/signals/template/element/settings/private_menu:1 share/plugin/signals/template/nav_signals:1 share/plugin/signals/template/signals_hello:1
+msgid "Signals"
+msgstr "nav.signals"
+
+#: share/plugin/signals/template/permalink_hello:2
+msgid "Signals - Permalink"
+msgstr "signals.permalink"
+
+#: share/plugin/signals/template/bookmarklet/index.html:42
+msgid "Signals Bookmarklet"
+msgstr "signals.bookmarklet"
+
+#: share/plugin/signals/share/javascript/lightbox/explore-about.tt2:2
+msgid "Socialtext Explore"
+msgstr "nav.socialtext-explore"
+
+#: share/plugin/signals/template/view/signallist:28
+msgid "Sort by:"
+msgstr "signals.sort-by:"
+
+#: share/plugin/signals/template/email/direct-message.html:28
+msgid "This message was sent from Socialtext Signals."
+msgstr "signals.email-from-socialtext"
+
+#: share/plugin/signals/template/email/direct-message.html:14
+msgid "This signal had the following attachments:"
+msgstr "signals.attachments:"
+
+#: share/plugin/signals/template/email/direct-message.html:29
+msgid "To stop receiving Socialtext Signals emails or to change your preferences, please visit"
+msgstr "signals.email-link-to-preferences"
+
+#: share/plugin/signals/template/lite/signals.html:41
+msgid "Update"
+msgstr "signals.update"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:3
+msgid "Use the filters below to narrow the results. Use the small 'x' by any of the Groups, Tags and People filters to remove them."
+msgstr "explore.using-filters"
+
+#: share/plugin/signals/template/lite/signals.html:6
+msgid "What are you working on?"
+msgstr "signals.what-are-you-working-on?"
+
+#. ("<a href=\"$webroot/st/profile/$sender.user_id\">$sender.best_full_name</a>")
+#. (('<a href="' _ webroot _ '/st/profile/' _ sender.user_id _ '">' _ sender.best_full_name _ '</a>'))
+#: share/plugin/signals/template/email/direct-message.html:0 share/plugin/signals/template/email/direct-message.html:5
+msgid "You have received a private message from %1:"
+msgstr "signals.private-message-from=user:"
+
+#. (limit)
+#: share/plugin/signals/template/bookmarklet/too_long.html:6
+msgid "Your signal exceeded %1 characters"
+msgstr "error.signal-too-long=limit"
+
+#: share/plugin/signals/share/javascript/signals.js:820
+msgid "all groups"
+msgstr "signals.all-groups"
+
+#: share/plugin/signals/share/javascript/template/rightBar.tt2:26
+msgid "delete"
+msgstr "signals.delete"
+
+#: share/plugin/signals/share/javascript/template/rightBar.tt2:20
+msgid "expunge"
+msgstr "signals.expunge"
+
+#. (a.user_count)
+#: share/plugin/signals/template/lite/signals.html:55
+msgid "primary, %quant(%1,user)"
+msgstr "signals.primary-account=users"
+
+#: share/plugin/signals/share/javascript/template/rightBar.tt2:8
+msgid "reply"
+msgstr "signals.reply"
+
+#: share/plugin/signals/share/javascript/template/rightBar.tt2:13
+msgid "reply privately"
+msgstr "signals.private-reply"
+
+#. (person, event.context.body)
+#: share/plugin/signals/template/data/events/signal:1 share/plugin/signals/template/data/events/signal:6
+msgid "sent a private signal to %1: \"%2\"."
+msgstr "signals.private-to=person,body"
+
+#. (signal.networks.0)
+#. (a.name)
+#. (g.name)
+#: share/plugin/signals/template/data/events/signal.meta:13 share/plugin/signals/template/data/events/signal.meta:8 share/plugin/signals/template/view/signallist:7
+msgid "to %1"
+msgstr "signals.to=name"
+
+#. (signal.networks.size)
+#. (event.context.account_ids.size + event.context.group_ids.size)
+#: share/plugin/signals/template/data/events/signal.meta:4 share/plugin/signals/template/view/signallist:10
+msgid "to %1 groups"
+msgstr "signals.to-groups=count"
+
+#: share/plugin/signals/template/email/direct-message.html:29
+msgid "your settings"
+msgstr "signals.your-settings"

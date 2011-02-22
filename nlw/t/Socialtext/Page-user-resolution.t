@@ -80,7 +80,7 @@ user_lookups_resolve_properly: {
         my $user = create_test_user();
         my $hub  = new_hub('empty', $user->username);
 
-        my $page = Socialtext::Page->new(hub => $hub, id => $page_id);
+        my $page = $hub->pages->new_from_name($page_id);
         ok $page, 'Found the page';
 
         my $creator = $page->creator();

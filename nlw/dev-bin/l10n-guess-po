@@ -1,0 +1,82 @@
+#!/usr/bin/env perl
+use 5.12.0;
+use List::Util 'max';
+use File::Basename;
+
+die "Usage: $0 input.po > output.po\n" unless @ARGV;
+
+my $default_section = basename($ARGV[0]);
+$default_section =~ s/\..*//;
+$default_section =~ s/socialcalc/sc/;
+
+my $msgid;
+my @params;
+my $section;
+my $punct = '';
+my %SectionMap = (
+    "add-a-block.html" => "code",
+    "table-create.html" => "table",
+    "table-options.html" => "table",
+    "widget_resource.js" => "wafl",
+    "opensocial-setup.html" => "widget",
+);
+
+sub words {
+    my $text = shift;
+    $text =~ s/<[^>]*//g;
+    $text =~ s/&\w+;//g;
+    return map { s/_/-/; s/^-//; s/-$//; lc $_ } grep {
+        not($_ ~~ [qw[a an the]]);
+    } grep /\w/, split(/\W+/, $text);
+}
+
+for (<>) {
+    when (/^msgid "(.*?)([!:?]?)"$/) {
+        print;
+        my $max;
+        my $id = $1;
+        $punct = $2;
+        while ($id =~ s/%(\d+)/ /) {
+            $max = max($max, $1);
+        }
+        if ($id =~ s/%\w+\([^)]*?(\w+)[^)]*\)/$1/g) {
+            $id .= "-count";
+        }
+        $msgid = join '-', words $id;
+        if ($max) {
+            push @params, (('XXX') x $max);
+            $msgid .= "=" . join(',', @params[0..$max-1]);
+        }
+    }
+    when (/^#\: (.*)/) {
+        my $sources = $1;
+        for my $key (sort keys %SectionMap) {
+            if ($sources =~ /\Q$key\E/i) {
+                $section = "###-" . $SectionMap{$key};
+                last;
+            }
+        }
+        print;
+    }
+    when (/^#\. \((.*)\)/) {
+        my $param = $1;
+        # Turn foo.name to "foo-name"
+        do {} while $param =~ s/(\w+)\.(\w+)/$2/;
+        @params = words $param;
+        print;
+    }
+    when (/^msgstr "(.*)"$/) {
+        if ($section and ($1 eq '' or $1 ~~ /^(###|XXX)/)) {
+            say qq[msgstr "$section.$msgid$punct"];
+        }
+        else {
+            print;
+        }
+        $section = "###-$default_section";
+        @params = ();
+        $punct = '';
+    }
+    default {
+        print;
+    }
+}

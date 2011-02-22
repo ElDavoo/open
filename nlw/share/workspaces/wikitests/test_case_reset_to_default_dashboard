@@ -13,13 +13,13 @@
 | st-admin | give-accounts-admin --e %%mwgmail%% --account "%%acct%%" | now has accounts admin access |
 | st-logoutin | %%mwgmail%% | %%password%% |
 | open_ok | /?dashboard | 60000 |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
 | wait_for_element_visible_ok | link=Administer Dashboards | 30000 |
 | click_and_wait | link=Administer Dashboards |  |
 
 | *Comment* | Test Case: Reset to Default Dashboard - Add RSS Viewer |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
+| click_and_wait | link=Add Widget |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-RSS Viewer'] | 30000 |
 | click_and_wait | //a[@id='gallery-widget-RSS Viewer'] |  |
 
@@ -30,8 +30,8 @@
 | text_like | Push to all dashboards |  |
 
 | *Comment* | Test Case: Reset to Default Dashboard - Add Wikipedia |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
+| click_and_wait | link=Add Widget |  |
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 30000 |
 | click_and_wait | //a[@id='gallery-widget-Wikipedia'] |  |
 
@@ -72,7 +72,7 @@
 | *Comment* | Test Case: Reset to Default Dashboard Revert to Default... |  |
 | st-admin | give-accounts-admin --e %%mwgmail%%-2 --account "%%acct%%" | now has accounts admin access |
 | open_ok | /?dashboard | 60000 |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
 | wait_for_element_visible_ok | link=Administer Dashboards | 30000 |
 | click_and_wait | link=Administer Dashboards |  |
 | wait_for_element_visible_ok | link=Revert to Default... |  |
@@ -87,7 +87,7 @@
 
 | *Comment* | Test Case: Reset to Default Dashboard Wikipedia and RSS are gone |  |
 | open_ok | /?dashboard | 60000 |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
 | wait_for_element_visible_ok | link=Administer Dashboards | 30000 |
 | click_and_wait | link=Administer Dashboards |  |
 | wait_for_element_visible_ok | link=Revert to Default... |  |
@@ -96,7 +96,7 @@
 
 | *Comment* | Test Case: Reset to Default Dashboard should have two WikiPage widgets |  |
 | wait_for_text_present_ok | Learning Resources | 30000 |
-| text_like | contentColumns | Welcome |
+| text_like | contentColumns | I'm new. What do I do? |
 | text_like | contentColumns | Learning Resources |
 
 | *Comment* | Test Case: Reset to Default Dashboard TEARDOWN |  |

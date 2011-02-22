@@ -176,7 +176,7 @@ sub _build_page {
     my $page_id = $self->arg->{page_id};
     return unless $page_id;
 
-    my $page = eval { $hub->pages->new_page($self->arg->{page_id}) };
+    my $page = eval { $hub->pages->new_from_name($self->arg->{page_id}) };
     return $page if ($page && $page->exists); # checks filesystem
 
     my $msg = "Couldn't load page id=$page_id from the '" . 

@@ -25,6 +25,13 @@ use Socialtext::UUID qw/new_uuid/;
 
 use namespace::clean -except => 'meta';
 
+use constant TIDY_FREQUENCY => 60;
+use constant TABLE_REFS => qw(
+    page_attachment
+    signal_attachment
+    signal_asset
+);
+
 # NOTE: if this gets changed to anything other than /tmp, make sure tmpreaper is
 # monitoring that directory.
 our $STORAGE_DIR = Socialtext::AppConfig->data_root_dir."/attachments";
@@ -295,15 +302,22 @@ sub purge {
 
     # If uploads are copyable to multiple attachments this delete may fail
     # harmlessly ASSUMING that all the foreign keys are "ON DELETE RESTRICT".
+    my $deleted = 0;
     try { sql_txn {
-        sql_execute(q{DELETE FROM attachment WHERE attachment_id = ?},
+        my $sth = sql_execute(q{DELETE FROM attachment WHERE attachment_id = ?},
             $self->attachment_id);
+        $deleted = $sth->rows == 1;
     }}
     catch {
         die $_ unless (/violates foreign key constraint/i);
+        warn $_;
     };
 
-    return if $p{no_log};
+    # trigger cleaning up any others that may have been purged
+    Socialtext::JobCreator->tidy_uploads();
+
+    return if $p{no_log} || !$deleted;
+
     st_log()->info(join(',', "UPLOAD,DELETE",
         $self->is_image ? 'IMAGE' : 'FILE',
         encode_json({

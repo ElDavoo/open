@@ -96,6 +96,12 @@ sub revision_view {
       ? do { local $_ = $self->html_escape( $page->content ); s/$/<br \/>/gm; $_ }
       : $page->to_html;
 
+    my $revision_num = Socialtext::PageRevision->Get(
+        hub => $self->hub,
+        page_id => $page->page_id,
+        revision_id => $revision_id,
+    )->revision_num;
+
     $self->screen_template('view/page/revision');
     $self->render_screen(
         $page->all,
@@ -107,7 +113,7 @@ sub revision_view {
             $page->tags_sorted ],
         edit_summary_maxlength => EDIT_SUMMARY_MAXLENGTH(),
         display_title    => $self->html_escape( $page->title ),
-        display_title_decorator  => loc("Revision [_1]", $this_revision),
+        display_title_decorator  => loc("Revision [_1]", $revision_num),
         print                   => $output,
     );
 }

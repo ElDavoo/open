@@ -51,7 +51,7 @@
                         <input type="text" size="65" id="st-newpage-pagename-edit" value="[% page.title | html_encode %]" onclick="Socialtext.clear_untitled(this)"/>
                     </h2>
                 [% ELSE %]
-                    <h2 id="st-editing-title" class="tableTitle" title="[% loc('Editing: ') %][% page.display_title %]">
+                    <h2 id="st-editing-title" class="tableTitle" title="[% loc('Editing: [_1]', page.display_title) %]">
                         [% loc('Editing:') %]
                         [% page.display_title %]
                         <input type="hidden" id="st-newpage-pagename-edit" value="[% page.title | html_encode %]" />
@@ -185,7 +185,7 @@
         </tr>
         <tr class="st-refcard-table-row">
             <td><b>[% loc('bold words') %]</b></td>
-            <td>*[% loc('bold words*') %]</td>
+            <td>*[% loc('*bold words*') %]</td>
         </tr> 
         <tr class="st-refcard-table-row">
             <td><i>[% loc('italic words') %]</i></td>
@@ -193,11 +193,11 @@
         </tr> 
         <tr class="st-refcard-table-row">
             <td><del>[% loc('strikeout') %]</del></td>
-            <td>-[% loc('strikeout-') %]</td>
+            <td>-[% loc('-strikeout-') %]</td>
         </tr> 
         <tr class="st-refcard-table-row">
             <td><tt>[% loc('monospace') %]</tt></td>
-            <td>`[% loc('monospace`') %]</td>
+            <td>`[% loc('`monospace`') %]</td>
         </tr> 
         <tr class="st-refcard-table-row">
             <td>
@@ -208,39 +208,39 @@
                     </tr>
                     <tr>
                         <td>[% loc('dinette') %]</td>
-                        <td>$[% loc('75') %]</td>
+                        <td>[% loc('$75') %]</td>
                     </tr>
                 </table>
             </td>
-            <td>[% loc('|table|value|<br>|dinette|$75|<br>') %]</td>
+            <td>[% '| ' + loc('table') + ' | ' + loc('value') + ' |<br>| ' + loc('dinette') + ' | ' + loc('$75') + ' |<br>' %]</td>
         </tr> 
         <tr class="st-refcard-table-row">
-            <td><blockquote>[% loc('indented') %]<br>[% loc('lines') %]</blockquote></td>
+            <td><blockquote>[% loc('indented<br>lines') %]</blockquote></td>
             <td>&gt;indented<br>&gt;lines</td>
         </tr> 
         <tr class="st-refcard-table-row">
-            <td><a href="./index.cgi?Page%20Link" title="\[Page link\]" target="_blank">Page Link</a></td>
+            <td><a href="Page%20Link" title="[% loc('Page Link') %]" target="_blank">[% loc('Page Link') %]</a></td>
             <td>[[% loc('Page Link') %]]</td>
         </tr> 
         <tr class="st-refcard-table-row">
-            <td><a href="./index.cgi?Page%20Link" title="\[% loc('Page Link') %]\]" target="_blank">Link text</a></td>
-            <td>"[% loc('Link text') %]" [[% loc('Page Link') %]]</td>
+            <td><a href="Page%20Link" title="[% loc('Page Name') %]" target="_blank">[% loc('Link text') %]</a></td>
+            <td>"[% loc('Link text') %]" [[% loc('Page Name') %]]</td>
         </tr> 
         <tr class="st-refcard-table-row">
             <td><u>[% loc('Page Link') %]</u> [% loc('to different-workspace') %]</td>
-            <td>{link: different-workspace [Page Title]} to different-workspace</td>
+            <td>{link: different-workspace [[% loc('Page Link') %]]}</td>
         </tr> 
         <tr class="st-refcard-table-row">
             <td>[% loc('Page section name') %]</td>
-            <td>{[% loc('section:Name}') %]</td>
+            <td>{section: [% loc('Page section name') %]}</td>
         </tr> 
         <tr class="st-refcard-table-row">
             <td><u>[% loc('Link to section') %]</u> [% loc('in the same page') %]</td>
-            <td>{[% loc('link: Section} (note: headings are sections too)') %]</td>
+            <td>{link: [% loc('Section') %]} [% loc('(note: headings are sections too)') %]</td>
         </tr> 
         <tr class="st-refcard-table-row">
-            <td><u>Link to section</u> of a different page</td>
-            <td>{link: [Page Title] Section}</td>
+            <td><u>[% loc('Link to section') %]</u> [% loc('of a different page') %]</td>
+            <td>{link: [[% loc('Page Name') %]] [% loc('Section') %]}</td>
         </tr> 
         <tr class="st-refcard-table-row">
             <td><u>Link to section</u> of a page in another workspace</td>
@@ -343,7 +343,7 @@
             <td>.pre<br>Block of text with no *special* punctuation<br>.pre</td>
         </tr> 
         <tr class="st-refcard-table-row">
-            <td><sup>™</sup></td>
+            <td><sup>&#x2122;</sup></td>
             <td>{tm}</td>
         </tr> 
         <tr class="st-refcard-table-row">

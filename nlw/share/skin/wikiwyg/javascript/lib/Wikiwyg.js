@@ -758,7 +758,9 @@ proto.saveChanges = function() {
 
 proto.confirmCancellation = function(msg) {
     return confirm(
-        loc("[_1]\n\nYou have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.", msg)
+        msg + "\n\n"
+        + loc("You have unsaved changes.") + "\n\n"
+        + loc("Press OK to continue, or Cancel to stay on the current page.")
     );
 
 }
@@ -1326,13 +1328,6 @@ this.addGlobal().setup_wikiwyg = function() {
 
             ww.is_editing = true;
 
-            if (Wikiwyg.is_safari) {
-                ww.message.display({
-                    title: loc("Socialtext has limited editing capabilities in Safari."),
-                    body: loc("<a target=\"_blank\" href=\"http://www.mozilla.com/firefox/\">Download Firefox</a> for richer Socialtext editing functionality.")
-                });
-            }
-
             if (firstMode == WW_SIMPLE_MODE) {
                 // Give the browser two seconds to render the initial iframe.
                 // If we don't do this, click on "Wiki text" prematurely will
@@ -1431,11 +1426,13 @@ this.addGlobal().setup_wikiwyg = function() {
 
             var summary = ww.edit_summary();
             summary = ww.word_truncate(summary, 140);
-            var html = ' <strong>' + name + '</strong>';
-            if (!summary)
-                html += ' ' + loc('wants you to know about an edit of') + ' <strong>' + page + '</strong> ' + loc('in') + ' ' + workspace;
-            else
-                html += ', ' + loc('"[_1]"', summary) + ' (' + loc('edited') + ' <strong>' + page + '</strong> ' + loc('in') + ' ' + workspace + ')';
+            var html;
+            if (!summary) {
+                html = loc('<strong>[_1]</strong> wants you to know about an edit of <strong>[_2]</strong> in [_3]', name, page, workspace);
+            }
+            else {
+                html = loc('<strong>[_1]</strong>, "[_2]" (edited <strong>[_3]</strong> in [_4])', name, summary, page, workspace);
+            }
 
             jQuery('#st-edit-summary .preview .text')
                 .html(html);

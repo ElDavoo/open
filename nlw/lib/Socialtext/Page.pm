@@ -343,13 +343,6 @@ sub switch_rev {
     return $self;
 }
 
-sub original_revision {
-    my $self = shift;
-
-    my $id = $self->original_revision_id;
-    return $self->switch_rev($id);
-}
-
 sub _revision_id_changed {
     my ($self, $new, $old) = @_;
 
@@ -398,7 +391,7 @@ sub _signal_edit_summary {
 
     $edit_summary = word_truncate($edit_summary,
         ($is_comment ? $SignalCommentLength : $SignalEditLength));
-    my $page_link = sprintf "{link: %s [%s]}", $workspace->name, $self->title;
+    my $page_link = sprintf "{link: %s [%s]}", $workspace->name, $self->name;
     my $body = $edit_summary
         ? ($is_comment
             ? loc('"[_1]" (commented on [_2] in [_3])', $edit_summary, $page_link, $workspace->title)
@@ -542,6 +535,9 @@ sub hash_representation {
         uri             => $self->uri,
         workspace_name  => $self->workspace_name,
         workspace_title => $self->workspace_title,
+        creator_id => $self->creator->user_id,
+        last_editor_id => $self->last_editor->user_id,
+
         ($self->deleted ? (deleted => 1) : ()),
     };
 
@@ -549,6 +545,7 @@ sub hash_representation {
         user => $self->hub->current_user,
         workspace => $self->hub->current_workspace,
     ) for qw(creator last_editor);
+
 
     return $hash;
 }
@@ -1002,7 +999,8 @@ sub _ensure_page_assets {
 
 sub is_system_page {
     my $self = shift;
-    return ($self->creator_id || 0) == Socialtext::User->SystemUser->user_id;
+    return (($self->creator_id || 0) == Socialtext::User->SystemUser->user_id
+        or $self->creator->email_address eq $SYSTEM_EMAIL_ADDRESS);
 }
 
 sub is_bad_page_title {
@@ -1098,7 +1096,7 @@ sub all {
     my $self = shift;
     return (
         page_uri => $self->uri,
-        page_title => $self->title,
+        page_title => $self->name,
         # Note:uri-escaped title wasn't always == page_id
         page_title_uri_escaped => $self->page_id,
         revision_id => $self->revision_id,
@@ -1578,16 +1576,15 @@ sub _cache_using_questions {
     # Check if we are the "current" page, and do not cache if we are not.
     # This is to avoid crazy errors where we may be rendering other page's
     # content for TOC wafls and such.
-    my $is_current = $self->hub->pages->current->page_id eq $self->page_id;
-    if ($is_current) {
-        my $answer_str = join '-', $self->_stock_answers(),
-            map { $_ . '_' . shift(@answers) } @short_q;
+    my $cur_id = $self->hub->pages->current->page_id;
+    return $html_ref unless (defined($cur_id) && $cur_id eq $self->page_id);
 
-        my $cache_file = $self->_answer_file($answer_str);
-        if ($cache_file) {
-            Socialtext::File::set_contents_utf8_atomic($cache_file, $html_ref);
-        }
-    }
+    my $answer_str = join '-', $self->_stock_answers(),
+        map { $_ . '_' . shift(@answers) } @short_q;
+    my $cache_file = $self->_answer_file($answer_str);
+    Socialtext::File::set_contents_utf8_atomic($cache_file, $html_ref)
+        if $cache_file;
+
     return $html_ref;
 }
 
@@ -1755,12 +1752,13 @@ sub _cache_dir {
 }
 
 sub unindex {
-    my $self = shift;
+    my ($self, $skip_atts) = @_;
     my @indexers = Socialtext::Search::AbstractFactory->GetIndexers(
         $self->workspace_name);
-    my @atts = $self->attachments;
+    my @atts = $self->attachments(deleted_ok => 1) unless $skip_atts;
     for my $indexer (@indexers) {
         $indexer->delete_page( $self->uri);
+        next if $skip_atts;
         foreach my $attachment (@atts) {
             $indexer->delete_attachment($self->uri, $attachment->id);
         }
@@ -1772,7 +1770,6 @@ sub delete {
     my %p = @_;
     my $t = time_scope('page_delete');
     my $user = $p{user} || $self->hub->current_user;
-
 
     my $rev = $self->edit_rev(editor => $user);
     $rev->summary('');
@@ -1794,16 +1791,29 @@ sub delete {
 
 sub purge {
     my $self = shift;
-    $self->unindex();
+    my $ws_id = $self->workspace_id;
+    my $page_id = $self->page_id;
+
+    my @atts = $self->attachments(deleted_ok => 1);
+    $self->unindex('skip_atts'); # will get unindexed during $att->purge
+
     sql_txn {
-        my $ws_id = $self->workspace_id;
-        my $page_id = $self->page_id;
-        # the other tables should cascade...
-        for my $tbl (qw(page_tag page_revision page_attachment page)) {
+        # these won't cascade when we delete the page row:
+        for my $tbl (qw(page_tag page_revision)) {
             sql_execute(qq{
                 DELETE FROM $tbl WHERE workspace_id = ? and page_id = ?
             }, $ws_id, $page_id);
         }
+
+        # page_attachment won't cascade either, plus it further won't cascade
+        # to the attachment row. purge it directly so the Upload also gets
+        # cleaned up and logged
+        $_->purge() for @atts;
+
+        # if anything else references the page, this should cascade:
+        sql_execute(qq{
+            DELETE FROM page WHERE workspace_id = ? and page_id = ?
+        }, $ws_id, $page_id);
     };
 }
 
@@ -2001,6 +2011,9 @@ sub rename {
         );
         return 0 unless $ok;
 
+        # Need to get rid of the page attachments on this page
+        $_->delete for $self->attachments;
+
         # XXX: is there a better way to put square brackets around the
         # target name?  Maybe with [sprintf,...] somehow?
         my $localized_str = loc("Page renamed to <[_1]>", $new_page_title);
@@ -2042,7 +2055,7 @@ sub send_as_email {
             type => SCALAR | ARRAYREF | UNDEF, default => undef,
             callbacks => { 'has addresses' => sub { $self->_validate_has_addresses(@_) } }
         },
-        subject => { type => SCALAR, default => $self->title },
+        subject => { type => SCALAR, default => $self->name },
         body_intro => { type => SCALAR, default => '' },
         include_attachments => { type => BOOLEAN, default => 0 },
         send_copy => { type => BOOLEAN, default => 0 },
@@ -2080,6 +2093,8 @@ sub send_as_email {
             my $intro = $self->hub->viewer->process($p{body_intro}, $self);
             return "$intro<hr/>$content";
         }
+
+        local $DISABLE_CACHING = 1 if $p{body_intro};
         my $new_content = $p{body_intro} . ${$self->body_ref};
         return $self->to_absolute_html(\$new_content);
     };
@@ -2130,9 +2145,7 @@ sub send_as_email {
         html_body => $html_body,
     );
     $email{cc} = $p{cc} if defined $p{cc};
-    $email{attachments} =
-        [ map { $_->ensure_stored(); $_->full_path() } $self->attachments ]
-            if $p{include_attachments};
+    $email{attachments} = [ $self->attachments ] if $p{include_attachments};
 
     my $locale = system_locale();
     my $email_sender = Socialtext::EmailSender::Factory->create($locale);
@@ -2271,9 +2284,9 @@ sub original_revision_id {
 }
 
 sub attachments {
-    my $self = shift;
+    my ($self, @args) = @_;
     return @{$self->hub->attachments->all(
-        page => $self, page_id => $self->page_id)};
+        @args, page => $self, page_id => $self->page_id)};
 }
 
 sub _log_page_action {
