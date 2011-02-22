@@ -59,11 +59,14 @@ for (<>) {
         print;
     }
     when (/^#\. \((.*)\)/) {
-        @params = words $1;
+        my $param = $1;
+        # Turn foo.name to "foo-name"
+        do {} while $param =~ s/(\w+)\.(\w+)/$2/;
+        @params = words $param;
         print;
     }
     when (/^msgstr "(.*)"$/) {
-        if ($section and ($1 eq '' or $1 ~~ /^(###|XXX)\./)) {
+        if ($section and ($1 eq '' or $1 ~~ /^(###|XXX)/)) {
             say qq[msgstr "$section.$msgid$punct"];
         }
         else {
