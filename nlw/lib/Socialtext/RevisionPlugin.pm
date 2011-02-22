@@ -46,6 +46,7 @@ sub revision_list {
             date         => $rev->datetime_for_user,
             from         => $rev->editor->email_address,
             class        => (@$rows % 2 ? 'trbg-odd' : 'trbg-even'),
+            is_deleted   => $rev->deleted,
         };
         $rows->[-1]{next} = $row if @$rows;
         push @$rows, $row;
