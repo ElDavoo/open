@@ -21,6 +21,7 @@ use Socialtext::User::Factory;
 use Socialtext::UserSet qw/:const/;
 use Socialtext::User::Default::Users qw(:system-user :guest-user);
 use Socialtext::User::Restrictions::email_confirmation;
+use Socialtext::User::Restrictions::password_change;
 use Email::Address;
 use Socialtext::l10n qw(system_locale loc);
 use Socialtext::EmailSender::Factory;
@@ -1460,35 +1461,10 @@ sub send_confirmation_email {
 sub send_password_change_email {
     my $self = shift;
 
-    my $confirmation = $self->email_confirmation();
+    my $confirmation = $self->password_change_confirmation;
     return unless $confirmation;
 
-    my $renderer = Socialtext::TT2::Renderer->instance();
-
-    my $uri = $confirmation->uri;
-
-    my %vars = (
-        appconfig        => Socialtext::AppConfig->instance(),
-        confirmation_uri => $uri,
-    );
-
-    my $text_body = $renderer->render(
-        template => 'email/password-change.txt',
-        vars     => \%vars,
-    );
-
-    my $html_body = $renderer->render(
-        template => 'email/password-change.html',
-        vars     => \%vars,
-    );
-    my $locale = system_locale();
-    my $email_sender = Socialtext::EmailSender::Factory->create($locale);
-    $email_sender->send(
-        to        => $self->name_and_email(),
-        subject   => loc('Please follow these instructions to change your Socialtext password'),
-        text_body => $text_body,
-        html_body => $html_body,
-    );
+    return $confirmation->send_email;
 }
 
 sub confirmation_uri {
