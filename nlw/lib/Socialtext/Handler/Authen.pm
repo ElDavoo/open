@@ -503,7 +503,6 @@ sub confirm_email {
 
     if ($targetws) {
         $targetws->add_user(user => $user);
-        my $set_account;
         $user->primary_account($targetws->account);
         st_log->info("SELF_JOIN,user:". $user->email_address . "("
             .$user->user_id."),workspace:"
