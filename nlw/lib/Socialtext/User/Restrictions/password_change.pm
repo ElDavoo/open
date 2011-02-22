@@ -10,6 +10,15 @@ use Socialtext::TT2::Renderer;
 
 sub restriction_type { 'password_change' };
 
+# XXX - Yuck; this uses the same URI as the "email_confirmation"
+sub uri {
+    my $self = shift;
+    return Socialtext::URI::uri(
+        path  => '/nlw/submit/confirm_email',
+        query => { hash => $self->token },
+    );
+}
+
 sub send_email {
     my $self = shift;
     my $user = $self->user;
