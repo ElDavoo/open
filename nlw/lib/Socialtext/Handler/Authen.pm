@@ -496,14 +496,12 @@ sub confirm_email {
         return $self->_redirect( "/nlw/choose_password.html" );
     }
 
-    # Need to grab wsid before we do confirm_email_address, cuz that wipes the
-    # email_confirmation
-    my $wsid = $restriction->workspace_id;
-    $user->confirm_email_address();
+    # Grab the WS that might be tied to the confirmation, then clear the
+    # confirmation; we don't need it any more.
+    my $targetws = $restriction->workspace;
+    $user->confirm_email_address;
 
-    my $targetws;
-    if ( $wsid ) {
-        $targetws = Socialtext::Workspace->new(workspace_id => $wsid);
+    if ($targetws) {
         $targetws->add_user(user => $user);
         my $set_account;
         $user->primary_account($targetws->account);
