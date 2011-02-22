@@ -62,11 +62,11 @@ __DATA__
 
 === Link with many words
 --- wikitext: Read {link: admin [The Page Name]} now
---- html: Read <a href="/admin/The%20Page%20Name">The Page Name</a> now
+--- html: Read <a href="/admin/The Page Name">The Page Name</a> now
 
 === Link with many words
 --- wikitext: Read {link: admin [The Page Name]} now
---- html: Read <a href="/admin/The%20Page%20Name">The Page Name</a> now
+--- html: Read <a href="/admin/The Page Name">The Page Name</a> now
 
 === Hyperlink
 --- wikitext: Go to "Google"<http://google.com>!

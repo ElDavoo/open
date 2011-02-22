@@ -263,10 +263,7 @@ sub enable_plugin {
         return $self->_plugin_after(%opts);
     }
     elsif ($opts{workspace}) {
-        my $workspace = Socialtext::Workspace->new( name => $opts{workspace} );
-        $self->_error(
-           loc("The workspace [_1] does not exist", $opts{workspace}) )
-           unless $workspace;
+        my $workspace = $self->_load_workspace( $opts{workspace} );
         $self->_plugin_before(%opts);
         eval { $workspace->enable_plugin($_) for @$plugins; };
         $self->_error($@) if $@;
@@ -2598,12 +2595,18 @@ sub _toggle_page_lock {
 
     $page->update_lock_status( $status );
 
-    my $message = ( $status ) ? 'locked' : 'unlocked';
-
-    $self->_success(loc(
-        "Page '[_1]' in workspace '[_2]' has been [_3].",
-        $page->name, $workspace->title(), $message
-    ));
+    if ($status) {
+        $self->_success(loc(
+            "Page '[_1]' in workspace '[_2]' has been locked.",
+            $page->name, $workspace->title(),
+        ));
+    }
+    else {
+        $self->_success(loc(
+            "Page '[_1]' in workspace '[_2]' has been unlocked.",
+            $page->name, $workspace->title(),
+        ));
+    }
 }
 
 
@@ -3757,9 +3760,10 @@ sub _require_page_attachment {
     }
 
     return try { 
-        $self->hub->attachments->load(
-            page => $page, page_id => $page->id,
-            id => $opts{attachment});
+        $page->hub->attachments->load(
+            page_id => $page->id,
+            id => $opts{attachment}
+        );
     }
     catch {
         my $ws = $page->hub->current_workspace->name;

@@ -12,8 +12,8 @@
 | *Comment* | Test Case: Add Remove Gallery Widgets login as fresh user |  |
 | st-logoutin | %%mwgmail%% | %%password%% |
 | open_ok | /?dashboard | 60000 |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
+| click_and_wait | link=Add Widget |  |
 
 | wait_for_element_visible_ok | link=Manage Gallery for Accounts | 30000 |
 | click_ok | link=Manage Gallery for Accounts |  |
@@ -32,8 +32,8 @@
 
 | *Comment* | Test Case: Add Remove Gallery Widgets remove a 3rd party widget |  |
 | open_ok | /?dashboard | 60000 |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
+| click_and_wait | link=Add Widget |  |
 | wait_for_element_visible_ok | link=Manage Gallery for Accounts | 30000 |
 | click_and_wait | link=Manage Gallery for Accounts |  |
 | wait_for_element_visible_ok | //a[@id='gallery-remove-Google Calendar'] | 60000 |
@@ -46,8 +46,8 @@
 
 | *Comment* | Test Case: Add Remove Gallery Widgets removed a 3rd party widget |  |
 | open_ok | /?dashboard | 60000 |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
+| click_and_wait | link=Add Widget |  |
 | wait_for_element_visible_ok | link=Manage Gallery for Accounts | 30000 |
 | click_and_wait | link=Manage Gallery for Accounts |  |
 | wait_for_element_visible_ok | //a[@id='gallery-restore-Google Calendar'] | 60000 |
@@ -63,8 +63,8 @@
 
 | *Comment* | Test Case: Add Remove Gallery Widgets restored a 3rd party widget |  |
 | open_ok | /?dashboard | 60000 |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
+| click_and_wait | link=Add Widget |  |
 | wait_for_element_visible_ok | link=Manage Gallery for Accounts | 30000 |
 | click_and_wait | link=Manage Gallery for Accounts |  |
 | wait_for_element_visible_ok | //a[@id='gallery-remove-Google Calendar'] | 60000 |
@@ -73,8 +73,8 @@
 
 | *Comment* | Test Case: Add Remove Gallery Widgets remove an uploaded widget |  |
 | open_ok | /?dashboard | 60000 |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
+| click_and_wait | link=Add Widget |  |
 | wait_for_element_visible_ok | link=Manage Gallery for Accounts | 30000 |
 | click_and_wait | link=Manage Gallery for Accounts |  |
 | wait_for_element_visible_ok | //a[contains(@id,'gallery-remove-Cheeky')] | 60000 |
@@ -87,8 +87,8 @@
 
 | *Comment* | Test Case: Add Remove Gallery Widgets removed an uploaded widget |  |
 | open_ok | /?dashboard | 60000 |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
+| click_and_wait | link=Add Widget |  |
 | wait_for_element_visible_ok | link=Manage Gallery for Accounts | 30000 |
 | click_and_wait | link=Manage Gallery for Accounts |  |
 | wait_for_element_visible_ok | //a[contains(@id,'gallery-restore-Cheeky')] | 60000 |
@@ -104,8 +104,8 @@
 
 | *Comment* | Test Case: Add Remove Gallery Widgets restored an uploaded widget |  |
 | open_ok | /?dashboard | 60000 |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
+| click_and_wait | link=Add Widget |  |
 | wait_for_element_visible_ok | link=Manage Gallery for Accounts | 30000 |
 | click_and_wait | link=Manage Gallery for Accounts |  |
 | wait_for_element_visible_ok | //a[contains(@id,'gallery-remove-Cheeky')] | 60000 |
@@ -115,8 +115,8 @@
 
 | *Comment* | Test Case: Add Remove Gallery Widgets remove for delete an uploaded widget |  |
 | open_ok | /?dashboard | 60000 |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
+| click_and_wait | link=Add Widget |  |
 | wait_for_element_visible_ok | link=Manage Gallery for Accounts | 30000 |
 | click_and_wait | link=Manage Gallery for Accounts |  |
 | wait_for_element_visible_ok | //a[contains(@id,'gallery-remove-Cheeky')] | 60000 |
@@ -129,8 +129,8 @@
 
 | *Comment* | Test Case: Add Remove Gallery Widgets delete a removed uploaded widget |  |
 | open_ok | /?dashboard | 60000 |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
+| click_and_wait | link=Add Widget |  |
 | wait_for_element_visible_ok | link=Manage Gallery for Accounts | 30000 |
 | click_and_wait | link=Manage Gallery for Accounts |  |
 | wait_for_element_visible_ok | //a[contains(@id,'gallery-restore-Cheeky')] | 60000 |
@@ -146,8 +146,8 @@
 
 | *Comment* | Test Case: Add Remove Gallery Widgets deleted an uploaded widget |  |
 | open_ok | /?dashboard | 60000 |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
+| click_and_wait | link=Add Widget |  |
 | wait_for_element_visible_ok | link=Manage Gallery for Accounts | 30000 |
 | click_and_wait | link=Manage Gallery for Accounts |  |
 | text-unlike | //body | Cheeky Quote |

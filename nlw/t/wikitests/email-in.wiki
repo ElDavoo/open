@@ -53,10 +53,6 @@
 | get     | %%pages_uri%%/%%subject%%/attachments | application/json |
 | body-is | []                                    |                  |
 
-| get       | %%pages_uri%%/%%subject%%?metadata=1                                                       | application/json |
-| body-like | "Message-ID":"<Pine.LNX.4.33.0409151241140.5203-100000@sharkey.morinda.com>"               |                  |
-| body-like | "Received":"from lists.sourceforge.net ([66.35.250.206] helo=sc8-sf-list1.sourceforge.net) |                  |
-
 | *Comment* | Case of workspace in to address is incorrect |
 | set              | ws        | foobar_%%start_time%%         |
 | set              | ws_wrong  | FooBar_%%start_time%%         |
@@ -82,7 +78,3 @@
 
 | get     | %%pages_uri%%/%%subject%%/attachments | application/json |
 | body-is | []                                    |                  |
-
-| get       | %%pages_uri%%/%%subject%%?metadata=1                                                       | application/json |
-| body-like | "Message-ID":"<Pine.LNX.4.33.0409151241140.5203-100000@sharkey.morinda.com>"               |                  |
-| body-like | "Received":"from lists.sourceforge.net ([66.35.250.206] helo=sc8-sf-list1.sourceforge.net) |                  |

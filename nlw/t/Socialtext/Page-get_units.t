@@ -77,6 +77,7 @@ ARBITRARY: {
 }
 
 DELETED: {
+    $page->edit_rev;
     $page->content('');
 
     my $sections = $page->get_sections();

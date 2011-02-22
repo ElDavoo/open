@@ -1,11 +1,13 @@
 | *Comment* | Starting Test Case: Calc Tagging |  |
 
-| open_ok | %%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=tag%20page%20%%start_time%%#edit |  |
+| set | t_ws | calc_tagging_ws_%%start_time%% |
+| st-admin | create-workspace --empty --name %%t_ws%% --title %%t_ws%% | was created |
+| add-member | %%username%% | %%t_ws%% |
+
+| open_ok | %%t_ws%%/index.cgi?action=display;page_type=spreadsheet;page_name=tag%20page%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | pause | 5000 | I hate pause; needed for entire page load |
 | st-page-save |  |  |
-
-| wait_for_element_visible_ok | st-tags-addlink | 30000 |
 
 | *Comment* | Test Case: Calc Tagging. fog tag added |  |
 | wait_for_element_visible_ok | link=Add Tag | 30000 |
@@ -87,6 +89,8 @@ Add any other tag to three different pages | tag is added
 | type_ok | st-tags-field | tagtest %%start_time%% |
 | wait_for_element_visible_ok | st-tags-plusbutton-link | 30000 |
 | click_ok | st-tags-plusbutton-link |  |
+
+| *Comment* | Test Case: Calc Tagging. verify tagtest tag added 1 |  |
 | wait_for_element_visible_ok | st-tags-listing | 30000 |
 | wait_for_text_present_ok | tagtest %%start_time%% | 30000 |
 | text_like | link=tagtest %%start_time%% | tagtest %%start_time%% |
@@ -103,7 +107,7 @@ Add any other tag to three different pages | tag is added
 | wait_for_element_visible_ok | st-tags-plusbutton-link | 30000 |
 | click_ok | st-tags-plusbutton-link |  |
 
-| *Comment* | Test Case: Calc Tagging. verify tagtest tag added |  |
+| *Comment* | Test Case: Calc Tagging. verify tagtest tag added 2 |  |
 | wait_for_element_visible_ok | st-tags-listing | 30000 |
 | wait_for_text_present_ok | tagtest %%start_time%% | 30000 |
 | text_like | link=tagtest %%start_time%% | tagtest %%start_time%% |
@@ -114,21 +118,18 @@ Add any other tag to three different pages | tag is added
 | pause | 5000 | I hate pause; needed for entire page load |
 | st-page-save |  |  |
 | wait_for_element_visible_ok | st-tags-addlink | 30000 |
-
 | click_ok | link=Add Tag |  |
 | wait_for_element_visible_ok | st-tags-field | 30000 |
 | type_ok | st-tags-field | tagtest %%start_time%% |
 | wait_for_element_visible_ok | st-tags-plusbutton-link | 30000 |
 | click_ok | st-tags-plusbutton-link |  |
 
-| *Comment* | Test Case: Calc Tagging. verify tagtest tag added |  |
+| *Comment* | Test Case: Calc Tagging. verify tagtest tag added 3 |  |
 | wait_for_element_visible_ok | st-tags-listing | 30000 |
 | wait_for_text_present_ok | tagtest %%start_time%% | 30000 |
 | text_like | link=tagtest %%start_time%% | tagtest %%start_time%% |
 
-| *Comment* | Test Case: Calc Tagging checking revisions |  |
-
-| click_and_wait | controls-right-revisions |
+| *Comment* | Test Case: Calc Tagging. Delete Tag |  |
 | open_ok | /%%workspace%%/?tag page 2 %%start_time%% |
 | wait_for_element_present_ok | //a[@class='delete_tag'] | 30000 |
 | click_ok | //a[@class='delete_tag'] |  |
@@ -146,26 +147,29 @@ Click that tag | Tag list page appears with two remaining tagged pages
 | text_like | contentContainer | tag page 1 %%start_time%% |
 | text_like | contentContainer | tag page 3 %%start_time%% |
 
+
+| *Comment* | Test Case: Calc Tagging verify suggestions foo bar, fog, and Foster City |  |
+| open_ok | %%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=tag%20page%204%20%%start_time%%#edit |  |
+| wait_for_element_visible_ok | st-save-button-link | 30000 |
+| pause | 5000 | I hate pause; needed for entire page load |
+| st-page-save |  |  |
+| wait_for_element_visible_ok | link=Add Tag | 30000 |
+| click_ok | link=Add Tag |  |
+| wait_for_element_visible_ok | st-tags-field | 30000 |
+| type_lookahead_ok | st-tags-field | fo |
+| wait_for_element_visible_ok | link=foster City %%start_time%% | 30000 |
+| wait_for_element_visible_ok | link=foo bar %%start_time%% | 30000 |
+| wait_for_element_visible_ok | link=fog %%start_time%% | 30000 |
+
+| *Comment* | Test Case: Calc Tagging use lookahead to add a tag |  |
+| click_ok | link=foster City %%start_time%% |  |
+| wait_for_text_not_present_ok | There are no tags for this page. | 30000 |
+| wait_for_element_visible_ok | st-tags-listing | 30000 |
+| wait_for_text_present_ok | foster City %%start_time%% | 30000 |
+| text_like | st-tags-listing | foster City %%start_time%% |
+
 | *Comment* | Test Case: Calc Tagging Teardown |  |
-| st-admin | purge-page --workspace %%workspace%% --page tag_page_%%start_time%% | was purged |
-| st-admin | purge-page --workspace %%workspace%% --page tag_page_1_%%start_time%% | was purged |
-| st-admin | purge-page --workspace %%workspace%% --page tag_page_2_%%start_time%% | was purged |
-| st-admin | purge-page --workspace %%workspace%% --page tag_page_3_%%start_time%% | was purged |
+| st-process-jobs |  |  |
+| delete-workspace | %%t_ws%% | Recklessly deleting workspace (Name: %%t_ws%% |
 
 | *Comment* | Test Case: Calc Tagging COMPLETED |  |
-
-^ DONE_TESTING
-
-| type_ok | st-tags-field | Foster City %%start_time%% |
-| wait_for_element_present_ok | st-tags-plusbutton-link | 20000 |
-| click_ok | st-tags-plusbutton-link |  |
-| wait_for_element_visible_ok | st-tags-field | 30000 |
-| text_like | link=Foster City %%start_time%% | Foster City %%start_time%% |
-
-| text_like | st-tags | Foster City %%start_time%% |
-
-| *Comment* | Test Case: Calc Tagging verify suggestions foo bar and Foster City |  |
-| type_ok | st-tags-field | fo |
-| wait_for_text_present_ok | Suggestions | 30000 |
-| text_like | st-tags | fog %%start_time%% |
-| text_like | st-tags | foo bar %%start_time%% |

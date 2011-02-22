@@ -6,22 +6,20 @@ use warnings;
 use mocked 'Apache::Cookie';
 use mocked 'Socialtext::CGI';
 use Test::Socialtext tests => 8;
-fixtures(qw( empty ));
+fixtures(qw(db));
 
 BEGIN {
     use_ok( 'Socialtext::DisplayPlugin' );
     use_ok( 'Socialtext::Page' );
 }
 
-my $hub = new_hub('empty');
+my $hub = create_test_hub();
 
 # Make sure the display action returns the "furniture" we expect it to.
 DISPLAY: {
-    my $page = Socialtext::Page->new( hub => $hub )->create(
-        title   => "Zac's First Page",
-        content => "^ Header One\n\nHello World!\n",
-        creator => $hub->current_user(),
-    );
+    my $page = $hub->pages->new_from_name("Zac's First Page");
+    $page->content("^ Header One\n\nHello World!\n");
+    $page->store();
 
     $hub->pages->current($page);
 
@@ -46,10 +44,9 @@ DISPLAY: {
 # of the data structure is warranted at some time.
 PAGE_INFO_HASH: {
     my $page = $hub->pages->new_from_name("Zac's First Page");
-
     my $hash = $hub->display->_get_page_info($page);
 
-    like $hash->{has_stats}, qr{^\d+$}, "has_stats contains a digit";
+    ok $hash->{is_active}, 'page is active';
 }
 
 TEMPLATES: {

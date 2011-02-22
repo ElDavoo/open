@@ -91,26 +91,21 @@ sub _make_result_set {
     my $sortdir = shift;
     my $pages = shift;
 
-    if ($self->cgi->sortby) {
-        $self->result_set($self->sorted_result_set($sortdir));
-    }
-    else {
-        $self->result_set($self->new_result_set());
-        my $rs = $self->result_set;
-        $rs->{predicate} = 'action=orphans_list';
+    $self->result_set($self->new_result_set());
+    my $rs = $self->result_set;
+    $rs->{predicate} = 'action=orphans_list';
 
-        {
-            local $Socialtext::Page::No_result_times = 1;
-            $self->push_result($_) for @$pages;
-        }
-
-        $rs->{rows} = [
-            sort { $b->{Date} cmp $a->{Date} } @{ $rs->{rows} }
-        ];
+    {
+        local $Socialtext::Page::No_result_times = 1;
+        $self->push_result($_) for @$pages;
     }
+
+    $rs->{rows} = [
+        sort { $b->{Date} cmp $a->{Date} } @{ $rs->{rows} }
+    ];
 
     $self->result_set->{title} = loc('Orphaned Pages');
-    $self->write_result_set;
+    $self->result_set($self->sorted_result_set($sortdir));
 }
 
 sub update {

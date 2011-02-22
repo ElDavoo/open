@@ -82,8 +82,8 @@
 | wait_for_element_visible_ok | link=Administer Dashboards | 30000 |
 | click_and_wait | link=Administer Dashboards |  |
 | wait_for_text_present_ok | This is the default dashboard | 30000 |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
+| click_and_wait | link=Add Widget |  |
 | wait_for_element_visible_ok | gallery-widget-Active Content | 30000 |
 | click_and_wait | gallery-widget-Active Content |  |
 | wait_for_element_visible_ok | dashboard-save-layout | 30000 |
@@ -140,15 +140,9 @@
 | st-admin | deactivate-user --email %%new_user%% | removed |
 | st-admin | deactivate-user --email %%newer_user%% | removed |
 | st-admin | deactivate-user --email %%newest_user%% | removed |
-| st-admin | delete-workspace --no-export --w %%fake_central%% | deleted |
-| st-logoutin | %%username%% | %%password%% |
-| open_ok | /nlw/control/account/%%ndd_acct_id%% |  |
-| wait_for_element_visible_ok | %%auw_checkbox%% | 30000 |
-| uncheck_ok | %%auw_checkbox%% |  |
-| st_unchecked_ok | %%auw_checkbox%% |  |
-| wait_for_element_visible_ok | //form[@action='/nlw/control/submit/account_settings']/input[@value='Update'] | 30000 |
-| click_and_wait | //form[@action='/nlw/control/submit/account_settings']/input[@value='Update'] |  |
-| st_unchecked_ok | %%auw_checkbox%% |  |
-| st-admin | delete-workspace --workspace %%central%% --no-export | deleted |
+
+| st-process-jobs |  |  |
+| delete-workspace | %%fake_central%% | Recklessly deleting workspace |
+| delete-workspace | %%central%% | Recklessly deleting workspace (Name: %%central%% |
 
 | *Comment* | Test Case: New Default Dashboard COMPLETED |  |

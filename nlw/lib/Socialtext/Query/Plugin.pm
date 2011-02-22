@@ -322,7 +322,7 @@ sub _make_row {
     eval {
         $page = $hit->{page} || $hit_hub->pages->new_page($page_uri);
     };
-    return {} if !$page or $page->deleted;
+    return {} if !$page or $page->deleted or !$page->exists;
 
     my $author = $page->last_edited_by;
     my $document_title = $page->title;

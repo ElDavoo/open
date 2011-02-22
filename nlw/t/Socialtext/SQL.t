@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 74;
+use Test::Socialtext tests => 75;
 use Test::Socialtext::Fatal;
 use Scalar::Util qw/refaddr/;
 
@@ -19,6 +19,11 @@ BEGIN {
 
 ok !exception { disconnect_dbh() }, "can disconnect okay";
 ok !exception { get_dbh() }, "can connect okay";
+
+raise_error_is_default: {
+    my $dbh = get_dbh();
+    ok $dbh->{RaiseError}, "RaiseError is ON";
+}
 
 sql_execute: {
     my $sth;

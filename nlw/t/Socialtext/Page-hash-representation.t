@@ -49,6 +49,7 @@ my $page_id   = Socialtext::String::title_to_id($page_name);
     # update the page
     # first the obligatory sleep because our revisions ids are lame
     sleep 1;
+    $page->edit_rev();
     $page->content('something new');
     $page->store(user => $hub->current_user);
 }

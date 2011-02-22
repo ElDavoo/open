@@ -579,7 +579,7 @@ CREATE TABLE "Account" (
     name varchar(250) NOT NULL,
     is_system_created boolean DEFAULT false NOT NULL,
     skin_name varchar(30) DEFAULT 's3'::varchar NOT NULL,
-    email_addresses_are_hidden boolean,
+    email_addresses_are_hidden boolean DEFAULT false NOT NULL,
     is_exportable boolean DEFAULT false NOT NULL,
     desktop_logo_uri varchar(250) DEFAULT '/static/desktop/images/sd-logo.png'::varchar,
     desktop_header_gradient_top varchar(7) DEFAULT '#4C739B'::varchar,
@@ -1653,6 +1653,9 @@ CREATE INDEX "UserMetadata_primary_account_id"
 CREATE UNIQUE INDEX "Workspace___lower___name"
 	    ON "Workspace" (lower((name)::text));
 
+CREATE UNIQUE INDEX "Workspace_lower_name_tpo"
+	    ON "Workspace" (lower((name)::text) text_pattern_ops);
+
 CREATE INDEX "Workspace_account_id"
 	    ON "Workspace" (account_id);
 
@@ -1701,6 +1704,9 @@ CREATE UNIQUE INDEX groups_user_set_id
 
 CREATE INDEX idx_attach_created_at
 	    ON attachment (created_at);
+
+CREATE INDEX idx_attach_content_md5
+	    ON attachment (content_md5);
 
 CREATE INDEX idx_attach_filename
 	    ON attachment (lower(filename) text_pattern_ops);
@@ -2049,29 +2055,77 @@ CREATE INDEX job_funcid_runafter
 CREATE INDEX page_creator_time
 	    ON page (creator_id, create_time);
 
+CREATE INDEX page_last_editor_time
+	    ON page (last_editor_id, last_edit_time);
+
+CREATE UNIQUE INDEX page_pk_nodel
+            ON page (workspace_id, page_id)
+            WHERE NOT deleted;
+
+CREATE INDEX idx_page_lower_name
+            ON page (workspace_id, lower(name) text_pattern_ops)
+            WHERE NOT deleted;
+
 CREATE INDEX breadcrumb_viewer_ws
 	    ON breadcrumb (viewer_id, workspace_id);
 
 CREATE INDEX page_tag__page_ix
 	    ON page_tag (workspace_id, page_id);
 
-CREATE INDEX page_tag__tag_ix
-	    ON page_tag (tag);
-
-CREATE INDEX page_tag__workspace_ix
-	    ON page_tag (workspace_id);
-
 CREATE INDEX page_tag__workspace_lower_tag_ix
-	    ON page_tag (workspace_id, lower(tag));
+	    ON page_tag (workspace_id, lower(tag) text_pattern_ops);
+
+CREATE INDEX page_tag__workspace_lower_tag_page_ix
+	    ON page_tag (workspace_id, lower(tag) text_pattern_ops, page_id);
 
 CREATE INDEX page_tag__workspace_tag_ix
 	    ON page_tag (workspace_id, tag);
 
-CREATE UNIQUE INDEX idx_page_att_id
-	    ON page_attachment (workspace_id, page_id, id);
+CREATE INDEX page_tag__workspace_tag_page_ix
+	    ON page_tag (workspace_id, tag, page_id);
+
+CREATE INDEX idx_page_att_page
+	    ON page_attachment (workspace_id, page_id);
+
+CREATE INDEX idx_page_att_att_fk
+	    ON page_attachment (attachment_id);
+
+CREATE INDEX idx_page_att_att_fk_nodel
+	    ON page_attachment (attachment_id)
+            WHERE NOT deleted;
+
+CREATE INDEX idx_page_att_page_nodel
+	    ON page_attachment (workspace_id, page_id)
+            WHERE NOT deleted;
+
+CREATE UNIQUE INDEX idx_page_att_uk_nodel
+	    ON page_attachment (workspace_id, page_id, id)
+            WHERE NOT deleted;
+
+CREATE UNIQUE INDEX idx_page_att_pk_nodel
+	    ON page_attachment (workspace_id, page_id, attachment_id)
+            WHERE NOT deleted;
 
 CREATE UNIQUE INDEX person_tag__name
 	    ON person_tag (name);
+
+CREATE INDEX idx_page_rev_editor_time
+	    ON page_revision (editor_id, edit_time);
+
+CREATE INDEX idx_page_rev_page
+            ON page_revision (workspace_id, page_id);
+
+CREATE INDEX idx_page_rev_page_nodel
+            ON page_revision (workspace_id, page_id)
+            WHERE NOT deleted;
+
+CREATE UNIQUE INDEX idx_page_rev_pk_nodel
+            ON page_revision (workspace_id, page_id, revision_id)
+            WHERE NOT deleted;
+
+CREATE UNIQUE INDEX idx_page_rev_pk_nodel_latest
+            ON page_revision (workspace_id ASC, page_id ASC, revision_id DESC)
+            WHERE NOT deleted;
 
 CREATE INDEX plugin_pref_key_idx
 	    ON plugin_pref (plugin, key);

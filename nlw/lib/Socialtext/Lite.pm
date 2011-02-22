@@ -4,7 +4,7 @@ use Moose;
 use Readonly;
 use Date::Parse qw/str2time/;
 use Socialtext::Authen;
-use Socialtext::String;
+use Socialtext::String qw/uri_escape/;
 use Socialtext::Permission 'ST_EDIT_PERM';
 use Socialtext::Helpers;
 use Socialtext::l10n qw(loc);
@@ -13,6 +13,7 @@ use Socialtext::Session;
 use Socialtext::Formatter::LiteLinkDictionary;
 use Socialtext::Encode;
 use Socialtext::Pages;
+use Try::Tiny;
 
 use namespace::clean -except => 'meta';
 
@@ -123,10 +124,10 @@ sub nologin {
     my $messages;
     my $file = Socialtext::AppConfig->login_message_file();
     if ( $file and -r $file ) {
-        eval {$messages = Socialtext::File::get_contents_utf8($file)};
-        warn $@ if $@;
+        try { $messages = Socialtext::File::get_contents_utf8($file) }
+        catch { warn $_ };
     }
-    $messages ||= '<p>'. loc('Login has been Disabled') .'</p>';
+    $messages //= '<p>'. loc('Login has been disabled') .'</p>';
 
     return $self->_process_template(
         $NOLOGIN_TEMPLATE,
@@ -193,31 +194,26 @@ data, use the information in the provided page object.
 
 =cut 
 sub edit_save {
-    my $self = shift;
-    my %p    = @_;
+    my ($self, %p) = @_;
+    my $page = delete $p{page};
+    my $is_comment = ($p{action} && $p{action} eq 'comment');
 
-    my $page = $p{page};
-    delete $p{page};
-
-    if ($p{action} eq 'comment') {
-        eval { $page->add_comment($p{comment}) };
+    return try {
+        $is_comment ? $page->add_comment($p{comment})
+                    : $page->update_from_remote(%p);
+        return '';    # insure that we are returning no content
     }
-    else {
-        eval { $page->update_from_remote(%p); };
-    }
-
-    if ( $@ =~ /^Contention:/ ) {
-        return $self->_handle_contention( $page, $p{subject}, ($p{action} eq 'comment') ? $p{comment} : $p{content} );
-    }
-    elsif ($@ =~ /Page is locked/) {
-        return $self->_handle_lock( $page, $p{subject}, ($p{action} eq 'comment') ? $p{comment} : $p{content} );
-    }
-    elsif ($@) {
-        # rethrow
-        die $@;
-    }
-
-    return '';    # insure that we are returning no content
+    catch {
+        if (/^Contention:/) {
+            return $self->_handle_contention($page, $p{subject},
+                $is_comment ? $p{comment} : $p{content});
+        }
+        elsif (/Page is locked/) {
+            return $self->_handle_lock($page, $p{subject},
+                $is_comment ? $p{comment} : $p{content});
+        }
+        die $_; 
+    };
 }
 
 =head2 recent_changes
@@ -285,7 +281,7 @@ sub search {
     my $page_size = 20;
 
     if ( $search_term ) {
-        eval {
+        try {
             my $search = $self->hub->search;
             $search->sortby($search->preferences->default_search_order->value);
             $search->_direction($search->preferences->direction->value);
@@ -294,25 +290,22 @@ sub search {
                 offset => $pagenum * $page_size,
                 limit => $page_size,
             );
-        };
-        if ($@) {
-            $error = $@;
-            $title = 'Search Error';
-        }
-        else {
             $title = $search_results->{display_title};
         }
+        catch {
+            $error = $_;
+            $title = 'Search Error';
+        };
     }
 
     my $more = 0;
+    $search_results->{hits} //= 0;
     if ($search_results->{too_many}) {
         $error = loc('The search term you have entered is too general; [_1] pages and/or attachments matched your query. Please add additional search terms that you expect your documents contain.', $search_results->{hits});
     }
     elsif ($search_results->{hits} > (($pagenum+1) * $page_size)) {
         $more = 1;
     }
-
-    use URI::Escape 'uri_escape_utf8';
 
     return $self->_process_template(
         $SEARCH_TEMPLATE,
@@ -322,7 +315,7 @@ sub search {
         search_error  => $error,
         pagenum       => $pagenum,
         more          => $more,
-        base_uri      => '/m/search/'.$self->hub->current_workspace->name.'?search_term='.uri_escape_utf8($search_term),
+        base_uri      => '/m/search/'.$self->hub->current_workspace->name.'?search_term='.uri_escape($search_term),
         load_row_times => sub {
             return Socialtext::Query::Plugin::load_row_times(@_);
         },
@@ -370,7 +363,7 @@ sub _pages_for_tag {
 
     return $self->_process_template(
         $TAG_TEMPLATE,
-        title     => loc("Tag [_1]", $tag),
+        title     => loc("Tag: [_1]", $tag),
         section   => 'tag',
         base_uri  => '/m/tag/'.$self->hub->current_workspace->name.'/'.$tag,
         rows      => $rows,
@@ -512,6 +505,7 @@ sub template_vars {
     my $self = shift;
 
     my $warning;
+    # XXX ACK ACK! THIS WON'T WORK WITH PLACK:
     my $ua = $ENV{HTTP_USER_AGENT} || '';
     if (my ($version) = $ua =~ m{^BlackBerry[^/]+/(\d+\.\d+)}) {
         if ($version < 4.5) {
@@ -541,7 +535,7 @@ sub template_vars {
         pluggable   => $self->hub->pluggable,
         user        => $user,
         minutes_ago => sub { int((time - str2time(shift, 'UTC')) / 60) },
-        enable_jquery_mobile => ($ENV{HTTP_USER_AGENT} =~ /Gecko/) || 0,
+        enable_jquery_mobile => ($ua =~ /Gecko/) || 0,
     };
 }
 

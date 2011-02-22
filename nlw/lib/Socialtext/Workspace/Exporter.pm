@@ -317,3 +317,23 @@ sub export_attachments {
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 1);
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Workspace::Exporter - Export workspace to a tarball
+
+=head1 SYNOPSIS
+
+  use Socialtext::Workspace::Exporter
+  my $wx = Socialtext::Workspace::Exporter->new(
+      workspace => $ws,
+      name => $ws->name,
+  );
+  $wx->to_tarball("/path/to/tarball.gz");
+
+=head1 DESCRIPTION
+
+Export the workspace into the specified tarball.
+

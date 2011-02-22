@@ -17,22 +17,22 @@
 | wait_for_element_not_visible_ok | title | 5000 |
 
 | *Comment* | Test Case: Multiple Widgets Add Wiki Page Widget |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
+| click_and_wait | link=Add Widget |  |
 | wait_for_element_visible_ok | gallery-widget-Wiki Page | 30000 |
 | click_and_wait | gallery-widget-Wiki Page |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
 
 | *Comment* | Test Case: Multiple Widgets Image is now 2nd widget, right? |  |
 | st-name-widget | 2 | image_widget |
 | st-widget-title-like | image_widget | Chairman |
 
 | *Comment* | Test Case: Multiple Widgets Add My Workspaces Widget |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
-| click_and_wait | link=Add Content |  |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
+| click_and_wait | link=Add Widget |  |
 | wait_for_element_visible_ok | //a[contains(@id,'gallery-widget-Workspaces')] | 30000 |
 | click_and_wait | //a[contains(@id,'gallery-widget-Workspaces')] |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
 
 | *Comment* | Test Case: Multiple Widgets Wiki Page is now 2nd Widget, Images are 3rd, right? |  |
 | st-name-widget | 3 | image_widget |
@@ -54,10 +54,10 @@
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Multiple Widgets Add Workspace Tags, everything shifts by 1 |  |
-| click_and_wait | link=Add Content |  |
+| click_and_wait | link=Add Widget |  |
 | wait_for_element_visible_ok | gallery-widget-Workspace Tags | 30000 |
 | click_and_wait | gallery-widget-Workspace Tags |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
 
 | *Comment* | Test Case: Multiple Widgets Image widget again |  |
 | st-name-widget | 4 | image_widget |
@@ -89,13 +89,13 @@
 | select-frame | relative=parent |  |
 
 | *Comment* | Add RSS Viewer everything shifts by 1 |  |
-| click_and_wait | link=Add Content |  |
+| click_and_wait | link=Add Widget |  |
 | wait_for_element_visible_ok | gallery-widget-RSS Viewer | 30000 |
 | click_and_wait | gallery-widget-RSS Viewer |  |
 | wait_for_text_present_ok | Enterprise Social Software Blog | 30000 |
 
 | *Comment* | Add All People Tags everything shifts by 1 |  |
-| click_and_wait | link=Add Content |  |
+| click_and_wait | link=Add Widget |  |
 | wait_for_element_visible_ok | gallery-widget-All People Tags | 30000 |
 | click_and_wait | gallery-widget-All People Tags |  |
 | wait_for_text_present_ok | All People Tags | 30000 |

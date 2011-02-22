@@ -5,19 +5,29 @@ use warnings;
 use FindBin qw/$Bin/;
 use lib "$Bin/../lib";
 use Locale::Maketext::Lexicon 0.85; # Ensures xgettext.pl terminates
+use File::Basename 'basename';
 use Socialtext::System qw/shell_run/;
 chdir "$Bin/..";
 
+my @plugins = map { basename($_) } grep { -d and (-d "$_/share" or -d "$_/template") } glob('share/plugin/*');
 my %Sections = (
     bin => 'bin',
     lib => 'lib',
     wikiwyg => 'share/skin/wikiwyg/javascript',
-    plugin => [glob('share/plugin/*/{share,template}')],
 #   s2 => ['share/skin/s2/template', 'share/skin/s2/javascript'],
     s3 => ['share/skin/s3/template', 'share/skin/s3/javascript'],
+    map {
+        $_ => [grep { -d } glob("share/plugin/$_/{share,template}")]
+    } @plugins
 );
 
-%Sections = map { $Sections{$_} ? ($_ => $Sections{$_}) : die "No such section: $_" } @ARGV if @ARGV;
+%Sections = map {
+    /^plugins?$/
+        ? (map { $_ => $Sections{$_} } @plugins)
+        : $Sections{$_}
+            ? ($_ => $Sections{$_})
+            : die "No such section: $_"
+} @ARGV if @ARGV;
 
 # Cleanup temporary JS files before extracting
 shell_run("dev-bin/jsmake cleanall");
@@ -25,6 +35,10 @@ shell_run("dev-bin/jsmake cleanall");
 for my $key (sort keys %Sections) {
     my $dir = $Sections{$key};
     $dir = [$dir] unless ref $dir;
+
+    if ($key eq 'wikiwyg') {
+        shell_run('./dev-bin/l10n-widget-to-js');
+    }
 
     shell_run(
         qw( xgettext.pl -now -P perl=* -P tt2=* ),

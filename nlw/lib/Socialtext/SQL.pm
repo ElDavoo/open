@@ -115,7 +115,7 @@ sub _connect_dbh {
             pg_enable_utf8 => 1,
             pg_prepare_now => 1,
             PrintError => 0,
-            RaiseError => 0,
+            RaiseError => 1,
         });
 
     die "Could not connect to database with dsn: $dsn: $!\n" unless $_dbh;
@@ -303,7 +303,6 @@ sub sql_begin_work {
         }
     }
 
-    local $dbh->{RaiseError} = 1;
     push @{$dbh->{'private_Socialtext::SQL'}{txn_stack}}, [$sp,@$caller];
     return $sp ? $dbh->pg_savepoint($sp) : $dbh->begin_work();
 }
@@ -315,7 +314,6 @@ sub sql_commit {
         return;
     }
 
-    local $dbh->{RaiseError} = 1;
     my $rec = pop @{$dbh->{'private_Socialtext::SQL'}{txn_stack}};
     if ($rec->[0]) {
         carp "Releasing savepoint $rec->[0]" if $DEBUG;
@@ -334,7 +332,6 @@ sub sql_rollback {
         return;
     }
 
-    local $dbh->{RaiseError} = 1;
     my $rec = pop @{$dbh->{'private_Socialtext::SQL'}{txn_stack}};
     if ($rec->[0]) {
         carp "Rolling back to savepoint $rec->[0]" if $DEBUG;
@@ -425,6 +422,7 @@ sub _sql_execute {
             . " from $file line $line\n";
     }
     if ($PROFILE_SQL && $statement =~ /^\W*SELECT/i) {
+        local $dbh->{RaiseError} = 0;
         my (undef, $file, $line) = caller($Level);
         my $explain = "EXPLAIN ANALYZE $statement";
         my $esth = $dbh->prepare($explain);
@@ -439,8 +437,7 @@ sub _sql_execute {
     _count_sql($statement) if $COUNT_SQL;
 
     $sth = $dbh->prepare($statement);
-    $sth->$exec_sub(@$bind)
-        || die "$exec_sub failed: " . $sth->errstr . "\n";
+    $sth->$exec_sub(@$bind);
     return $sth;
 }
 
@@ -473,7 +470,6 @@ sub sql_selectrow {
     my ( $statement, @bindings ) = @_;
     my $t = time_scope 'sql_selectrow';
     my $dbh = get_dbh();
-    local $dbh->{RaiseError} = 1;
     return $dbh->selectrow_array($statement, undef, @bindings);
 }
 
@@ -578,18 +574,11 @@ sub sql_saveblob {
         unless ($dataref and ref($dataref) eq 'SCALAR');
 
     my $dbh = get_dbh();
-    my $sth = $dbh->prepare($sql)
-        or croak "sql_saveblob: unable to prepare SQL: ".$dbh->errstr;
+    my $sth = $dbh->prepare($sql);
     my $n = 1;
-    $sth->bind_param($n++,$$dataref,{pg_type => DBD::Pg::PG_BYTEA()})
-        or croak "sql_saveblob: unable to bind blob param: ".$sth->errstr;
-    for (@_) {
-        $sth->bind_param($n++,$_)
-            or croak "sql_saveblob: unable to bind param ".
-            (--$n).": ".$sth->errstr;
-    }
-    $sth->execute()
-        or croak "sql_saveblob: execute failed: ".$sth->errstr;
+    $sth->bind_param($n++,$$dataref,{pg_type => DBD::Pg::PG_BYTEA()});
+    $sth->bind_param($n++,$_) for @_;
+    $sth->execute();
     croak "sql_saveblob: failed to insert/update any rows"
         unless $sth->rows >= 1;
     return $sth;

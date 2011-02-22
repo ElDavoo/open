@@ -6,8 +6,9 @@ use warnings;
 use IPC::Run qw(run timeout);
 
 use utf8;
-use Test::Socialtext::Search;
 use Test::Socialtext tests => 204;
+use Test::Socialtext::Search;
+
 fixtures(qw( db no-ceq-jobs ));
 
 use_ok("Socialtext::Search::Solr::Factory");

@@ -176,8 +176,10 @@ sub match {
     $end =~ s/\n.*//s;
     return unless $end =~ $self->pattern_end;
     $text = $rt_19458_hack = $text; # To work around a Perl bug, see {rt 19458}
-    $self->title( substr( $text, $match_start, $-[0] ) );
+    my $title = substr( $text, $match_start, $-[0] );
     $self->start_end_offset( $-[0] + $match_start );
+    $title =~ s/^index\.cgi\?//; # Migrating pages affected by {bz: 4987}
+    $self->title( $title );
     return 1;
 }
 

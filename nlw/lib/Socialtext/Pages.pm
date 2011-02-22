@@ -28,7 +28,7 @@ sub class_id { 'pages' }
 const class_title => 'NLW Pages';
 
 field current => 
-      -init => '$self->new_page($self->current_id)';
+      -init => '$self->new_page($self->current_name)';
 
 sub ensure_current {
     my ($self, $page) = @_;
@@ -222,12 +222,12 @@ sub title_to_disposition {
     return ($disposition, $page->uri);
 }
 
-sub current_id {
+sub current_name {
     my $self = shift;
     my $page_name = 
       $self->hub->cgi->page_name ||
       $self->hub->current_workspace->title;
-    title_to_id($page_name);
+    return $page_name || '0';
 }
 
 sub unset_current {
@@ -235,13 +235,7 @@ sub unset_current {
     delete $self->{current};
 }
 
-sub new_page {
-    my $self = shift;
-    my $t = time_scope 'pages_new_page';
-    # TODO: check cache
-    Socialtext::Page->new(hub => $self->hub, page_id => shift);
-}
-
+*new_page = \&new_from_name;
 sub new_from_name {
     my $self = shift;
     my $page_name = shift;

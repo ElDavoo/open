@@ -274,6 +274,21 @@ sub index_person {
     return ($job_id);
 }
 
+sub tidy_uploads {
+    my ($self, $attachment_id) = @_;
+
+    require Socialtext::Upload;
+    $self->insert( 'Socialtext::Job::TidyUploads' => {
+        attachment_id => $attachment_id,
+        job => {
+            run_after => time + Socialtext::Upload::TIDY_FREQUENCY(),
+            coalesce => 'only',
+            uniqkey => 'only',
+            priority => -70, # VERY low
+        },
+    } );
+}
+
 sub _index_related_groups {
     my ($self, $user_id) = @_;
 

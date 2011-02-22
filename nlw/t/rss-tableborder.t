@@ -47,6 +47,7 @@ EOF
 }
 
 {
+    $page->edit_rev;
     $page->content(<<"EOF");
 ^^^ Hello Friends
 

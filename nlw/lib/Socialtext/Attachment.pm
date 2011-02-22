@@ -233,6 +233,8 @@ sub purge {
             DELETE FROM page_attachment
             WHERE workspace_id = ? AND page_id = ? AND attachment_id = ?
         }, $ws->workspace_id, $self->page_id, $u->attachment_id);
+
+        # this will leave the attachment intact if referenced by other things:
         $u->purge(actor => $self->hub->current_user);
     };
 

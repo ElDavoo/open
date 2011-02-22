@@ -666,9 +666,6 @@ proto.enable_table_navigation_bindings = function() {
     if (jQuery.browser.mozilla && navigator.oscpu.match(/Mac/)) {
         event_name = "keypress";
     }
-    if (jQuery.browser.msie && jQuery.browser.version > 7) {
-        event_name = "keypress";
-    }
 
     self.bind( event_name, function (e) {
         if (e.metaKey || e.ctrlKey) { return true; }
@@ -1220,43 +1217,10 @@ proto.set_clear_handler = function () {
     } catch (e) {};
 }
 
-proto.show_messages = function(html) {
-    var advanced_link = this.advanced_link_html();
-    var message_titles = {
-        wiki:  loc('Advanced Content in Grey Border'),
-        table: loc('Table Edit Tip'),
-        both:  loc('Table & Advanced Editing')
-    };
-    var message_bodies = {
-        wiki:
-            loc('Advanced content is shown inside a grey border. Switch to [_1] to edit areas inside a grey border.',advanced_link),
-        table: loc('Use [_1] to change the number of rows and columns in a table.', advanced_link),
-        both: ''
-    };
-    message_bodies.both = message_bodies.table + ' ' + message_bodies.wiki;
-
-    var wiki    = html.match(/<!--\s*wiki:/);
-    var table   = html.match(/<table /i);
-    var message = null;
-    if      (wiki && table) message = 'both'
-    else if (table)         message = 'table'
-    else if (wiki)          message = 'wiki';
-
-    if (message) {
-        this.wikiwyg.message.display({
-            title: message_titles[message],
-            body: message_bodies[message],
-            timeout: 60
-        });
-    }
-}
+proto.show_messages = function(html) {}
 
 proto.do_p = function() {
     this.format_command("p");
-}
-
-proto.do_attach = function() {
-    this.wikiwyg.message.display(this.use_advanced_mode_message(loc('Attachments')));
 }
 
 proto.do_image = function() {
@@ -1369,17 +1333,6 @@ proto.make_link = function(label, page_name, url) {
 
     this.set_focus(); // Need this before .insert_html
     this.insert_html(html);
-}
-
-proto.use_advanced_mode_message = function(subject) {
-    return {
-        title: loc('Use Advanced Mode for [_1]', subject),
-        body: loc('Switch to [_1] to use this feature.',  this.advanced_link_html()) 
-    }
-}
-
-proto.advanced_link_html = function() {
-    return '<a onclick="wikiwyg.wikitext_link.onclick(); return false" href="#">' + loc('Advanced Mode') + '</a>';
 }
 
 proto.insert_table_html = function(rows, columns, options) {
@@ -3252,12 +3205,12 @@ proto.require_page_if_workspace = function(values) {
     }
 
     if (values.workspace_id.length && ! values.page_title.length)
-        throw(loc("Page Title required if Workspace Id specified"));
+        throw(loc("Page Title required if Workspace ID specified"));
 }
 
 proto.require_spreadsheet_if_workspace = function(values) {
     if (values.workspace_id.length && ! values.spreadsheet_title.length)
-        throw(loc("Spreadsheet Title required if Workspace Id specified"));
+        throw(loc("Spreadsheet Title required if Workspace ID specified"));
 }
 
 

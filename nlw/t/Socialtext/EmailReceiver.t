@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 178;
+use Test::Socialtext tests => 174;
 
 # Fixtures: admin_no_pages
 #

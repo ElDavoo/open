@@ -206,7 +206,7 @@ $html = $lite->tag(tag => 'Welcome');
 
 is ( lc($html_from_lc_tag), lc($html), 'case of tag does not change content' );
 # XXX case is odd
-like ( $html, qr{\Q<title>Admin Wiki : Tag Welcome</title>},
+like ( $html, qr{<title>Admin Wiki : Tag:? Welcome</title>},
     'tag display for welcome has right title' );
 like ( $html, qr{<li>\s+<a.*href="/m/page/admin/start_here".*>\s*Start here\s*</a>}ms,
     'tag display for welcome links to included page' );

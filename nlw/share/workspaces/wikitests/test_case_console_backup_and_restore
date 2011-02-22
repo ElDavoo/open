@@ -136,7 +136,7 @@ Automated backup and restore testing
 | *Comment* | Test Case: Console Backup and Restore: People and Dashboard |  |
 | click_and_wait | link=Dashboard |  |
 | text_like | st-editing-tools-edit | Welcome |
-| click_and_wait | link=Add Content |  |
+| click_and_wait | link=Add Widget |  |
 | text_like | Widget Gallery |  |
 | click_and_wait | link=People |  |
 | text_like | All People |  |

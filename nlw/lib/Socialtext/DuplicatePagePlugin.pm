@@ -141,6 +141,7 @@ sub mass_copy_to {
     my $log_page = $dest_hub->pages->new_from_name($log_title);
     my $log = $log_page->content;
     for my $page ($self->hub->pages->all) {
+        $page->edit_rev();
         $page->doctor_links_with_prefix($prefix);
         my $old_id = $page->id;
         my $old_name = $page->name;

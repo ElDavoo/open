@@ -249,9 +249,12 @@ sub _do_normalize_size {
 sub check_video_url {
     my $self = shift;
     $self->hub->rest->header(-type => 'application/json; charset=UTF-8');
-    return encode_json(
+    my $json = encode_json(
         $self->get_oembed_data(map { scalar $self->cgi->$_ } qw( video_url width height autoplay ))
     );
+    utf8::decode($json);
+    $json =~ s{([^\x00-\xff])}{sprintf "\\u%04X", ord $1}eg;
+    return $json;
 }
 
 sub get_video_html {

@@ -48,6 +48,7 @@ my $page = Socialtext::Page->new(hub => $hub)->create(
     is $fourth_header->{text}, 'the fourth header', 'the fourth header has the right text';
     is $fourth_header->{level}, 6, 'the fourth header has level 6';
 
+    $page->edit_rev();
     $page->content('');
     $headers = $page->get_headers();
     is scalar @$headers, 0, 'no headers in an empty page';
