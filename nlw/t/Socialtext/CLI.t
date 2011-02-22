@@ -163,7 +163,7 @@ CONFIRM_USER: {
         ! $user->has_valid_password(),
         'check that password is empty'
     );
-    $user->set_confirmation_info();
+    $user->create_email_confirmation();
 
     expect_success(
         sub {

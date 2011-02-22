@@ -861,7 +861,7 @@ sub reactivate {
     $deleted->remove_user( user => $self );
 
     unless ($self->is_externally_sourced) {
-        $self->set_confirmation_info(is_password_change => 1);
+        $self->create_password_change_confirmation;
     }
 }
 
@@ -1420,27 +1420,6 @@ sub Count {
 }
 
 # Confirmation methods
-
-{
-    my $spec = { 
-        is_password_change => BOOLEAN_TYPE( default => 0 ),
-        workspace_name => 
-            {
-                type => SCALAR | UNDEF, 
-                default => undef 
-            }
-        };
-
-    sub set_confirmation_info {
-        my $self = shift;
-        my %p    = validate( @_, $spec );
-
-        Socialtext::User::EmailConfirmation->create_or_update(
-            user_id => $self->user_id,
-            %p,
-        );
-    }
-}
 
 sub create_email_confirmation {
     my $self = shift;

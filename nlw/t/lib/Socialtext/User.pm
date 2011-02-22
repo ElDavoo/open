@@ -146,12 +146,6 @@ sub Resolve {
     return $user;
 }
 
-our %Confirmation_info;
-sub set_confirmation_info {
-    my ($self, undef, $pw_change) = @_;
-    $Confirmation_info{$self->{username}} = $pw_change;
-}
-
 our %Sent_email;
 sub send_confirmation_email {
     my $self = shift;
