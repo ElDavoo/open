@@ -6,7 +6,6 @@ with 'Socialtext::User::Restrictions::base';
 use Socialtext::AppConfig;
 use Socialtext::EmailSender::Factory;
 use Socialtext::l10n qw(system_locale loc);
-use Socialtext::Pluggable::Adapter;
 use Socialtext::TT2::Renderer;
 use Socialtext::URI;
 
@@ -119,6 +118,7 @@ sub send_completed_email {
 sub send_completed_signal {
     my $self = shift;
 
+    require Socialtext::Pluggable::Adapter;
     my $signals = Socialtext::Pluggable::Adapter->plugin_class('signals');
     return unless $signals;
 
