@@ -99,13 +99,21 @@ sub PUT_layout {
             for my $y (0 .. $#$col) {
                 my $g = $col->[$y];
 
-                # Make sure this gadget is in the container, and keep track of
-                # ones we've seen in the layout, so we can delete gadgets that
-                # were removed from the container while in edit mode
-                delete $gadgets{$g->{id}} ||
-                    die "Widget $g->{id} is not in container\n";
-
-                my $gadget = $self->container->get_gadget_instance($g->{id});
+                my $gadget;
+                if (delete $gadgets{$g->{instance_id}}) {
+                    # Existing widget, so move it
+                    $gadget = $self->container->get_gadget_instance(
+                        $g->{instance_id}
+                    );
+                }
+                else {
+                    # Install the new gadget
+                    $gadget = $self->container->install_gadget(
+                        gadget_id => $g->{gadget_id},
+                    );
+                }
+            
+                # Move this widget to it's position
                 push @positions, [$gadget, $x, $y, $g->{minimized}];
 
                 # set preferences if they're being passed as part of the layout
