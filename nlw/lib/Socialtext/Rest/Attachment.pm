@@ -52,7 +52,7 @@ sub DELETE {
             return $self->not_authorized
                 unless $self->hub->checker->can_modify_locked($attachment->page);
 
-            if ($attachment->temporary) {
+            if ($attachment->is_temporary) {
                 $attachment->purge($attachment->page);
             }
             else {
