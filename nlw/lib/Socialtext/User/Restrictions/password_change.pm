@@ -54,3 +54,53 @@ sub send_email {
 __PACKAGE__->meta->make_immutable;
 
 1;
+
+=head1 NAME
+
+Socialtext::User::Restrictions::password_change - Password Change restriction
+
+=head1 SYNOPSIS
+
+  use Socialtext::User::Restrictions::password_change;
+
+  # require that a User change their password
+  my $restriction = Socialtext::User::Restrictions::password_change->CreateOrReplace( {
+      user_id      => $user->user_id,
+  } );
+
+  # send the User the e-mail asking them to change their password
+  $restriction->send_email;
+
+  # clear the Restriction (after the User changes their password)
+  $restriction->clear;
+
+=head1 DESCRIPTION
+
+This module implements a Restriction requiring the User to change their
+password.
+
+=head1 METHODS
+
+=over
+
+=item $self_or_class->restriction_type()
+
+Returns the type of restriction this is.
+
+=item $self->uri()
+
+Returns the URI that the User should be directed to in order to change their
+password.
+
+=item $self->send_email()
+
+Sends an e-mail message to the User informing them that they need to change
+their password.
+
+=back
+
+=head1 COPYRIGHT
+
+Copyright 2011 Socialtext, Inc., All Rights Reserved.
+
+=cut
