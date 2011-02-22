@@ -21,7 +21,12 @@ our @EXPORT = qw(init delete_page search_for_term
 
 if (Socialtext::AppConfig->syslog_level ne 'debug') {
     Socialtext::AppConfig->set('syslog_level' => 'debug');
-    Socialtext::AppConfig->write();
+
+    # if this is call on the first test run, $file won't exist, so be explicit
+    # when saving.
+    my $file = Socialtext::AppConfig->test_dir() 
+        . "/etc/socialtext/socialtext.conf";
+    Socialtext::AppConfig->write(file => $file);
 }
 
 sub hub {
