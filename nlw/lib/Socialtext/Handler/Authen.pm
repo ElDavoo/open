@@ -490,7 +490,7 @@ sub confirm_email {
         or not $user->has_valid_password) {
         $self->session->save_args(
             hash => $hash,
-            ($self->{args}{account_for} 
+            ($self->{args}{account_for}
                 ? (account_for => $self->{args}{account_for}) : ()),
         );
         return $self->_redirect( "/nlw/choose_password.html" );
@@ -510,8 +510,8 @@ sub confirm_email {
         st_log->info("SELF_JOIN,user:". $user->email_address . "("
             .$user->user_id."),workspace:"
             . $targetws->name . "(" . $targetws->workspace_id . ")"
-            . ",".$targetws->account->name 
-            . "(". $targetws->account->account_id . ")" 
+            . ",".$targetws->account->name
+            . "(". $targetws->account->account_id . ")"
         );
     }
     my $address = $user->email_address;
