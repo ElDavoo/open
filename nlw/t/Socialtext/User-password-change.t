@@ -13,7 +13,7 @@ BEGIN {
     }
 }
 
-plan tests => 6;
+plan tests => 7;
 
 use DateTime::Format::Pg;
 use Socialtext::User;
@@ -27,11 +27,11 @@ my $user = Socialtext::User->create(
 );
 
 {
-    $user->set_confirmation_info( is_password_change => 1 );
-    $user->send_password_change_email();
+    my $confirmation = $user->create_password_change_confirmation;
+    $confirmation->send_email;
 
-    ok( $user->email_confirmation->is_password_change(),
-        'e-mail confirmation is for a password change' );
+    ok $user->requires_confirmation, 'User requires a confirmation';
+    ok $user->password_change_confirmation, '... a password change';
 
     my @emails = Email::Send::Test->emails();
     is( scalar @emails, 1, 'one email was sent' );

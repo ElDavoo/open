@@ -331,8 +331,8 @@ sub forgot_password {
         return $self->_redirect($forgot_password_uri);
     }
 
-    $user->set_confirmation_info( is_password_change => 1 );
-    $user->send_password_change_email();
+    my $confirmation = $user->create_password_change_confirmation();
+    $confirmation->send_email;
 
     my $from_address = 'noreply@socialtext.com';
     $self->session->add_message( 
