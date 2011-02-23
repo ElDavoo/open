@@ -49,8 +49,10 @@ sub GET_temp_json {
         my $rollback = guard { sql_rollback() };
 
         my $gadget_instance = $self->container->install_gadget(
-            gadget_id => $self->gadget_id
+            gadget_id => $self->gadget_id,
+            gadget_instance_id => $self->rest->query->param('instance_id'),
         );
+        $gadget_instance->override_preferences($self->extract_prefs);
 
         return encode_json({
             content => $gadget_instance->content,
@@ -59,19 +61,24 @@ sub GET_temp_json {
     });
 }
 
+sub extract_prefs {
+    my $self = shift;
+    my %prefs;
+    for my $param ($self->rest->query->param) {
+        if ($param =~ /^up_(.*)$/) {
+            $prefs{$1} = Encode::decode_utf8(
+                $self->rest->query->param($param)
+            );
+        }
+    }
+    return \%prefs;
+}
+
 sub GET_html {
     my $self = shift;
     $self->if_authorized_to_view_gadget(sub {
         # Override any preferences from up_ cgi parameters
-        my %prefs;
-        for my $param ($self->rest->query->param) {
-            if ($param =~ /^up_(.*)$/) {
-                $prefs{$1} = Encode::decode_utf8(
-                    $self->rest->query->param($param)
-                );
-            }
-        }
-        $self->gadget->preference_hash(\%prefs);
+        $self->gadget->override_preferences($self->extract_prefs);
 
         $self->rest->header(-type => 'text/html; charset=utf-8');
         return $self->gadget->expanded_content;
