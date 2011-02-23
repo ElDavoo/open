@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 16;
+use Test::Socialtext tests => 21;
 use Socialtext::CLI;
 use Test::Socialtext::CLIUtils qw(:all);
 use Test::Socialtext::User;
@@ -92,4 +92,29 @@ change_password_too_short: {
         qr/\QPasswords must be at least 6 characters long.\E/,
         'password is too short',
     );
+}
+
+###############################################################################
+# TEST: Changing User's password removes any "change password" restrictions
+change_password_removes_restrictions: {
+    my $guard = Test::Socialtext::User->snapshot;
+    my $user  = create_test_user();
+    ok $user, 'Created test user';
+
+    $user->create_password_change_confirmation();
+    ok $user->password_change_confirmation, '... password change set';
+
+    expect_success(
+        call_cli_argv(
+            'change-password',
+            '--username' => $user->username,
+            '--password' => 'abc123',
+        ),
+        qr/The password for \S+ has been changed\./,
+        'change password successfully',
+    );
+
+    # reload User and check that the restriction is now gone
+    $user->reload;
+    ok !$user->password_change_confirmation, '... password change cleared';
 }

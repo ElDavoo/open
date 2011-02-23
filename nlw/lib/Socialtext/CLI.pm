@@ -1698,11 +1698,15 @@ sub remove_account_impersonator {
 
 sub change_password {
     my $self = shift;
-
     my $user = $self->_require_user();
     my $pw   = $self->_require_string('password');
 
     $self->_eval_password_change($user,$pw);
+
+    # If the User had a "change my password" action in-flight, clear that out;
+    # we've now got a password for the User.
+    my $restriction = $user->password_change_confirmation;
+    $restriction->clear if $restriction;
 
     $self->_success( 'The password for ' . $user->username
                       . ' has been changed.' );
