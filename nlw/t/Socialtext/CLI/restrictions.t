@@ -2,66 +2,91 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 11;
+use Test::Socialtext tests => 16;
 use Socialtext::CLI;
 use Test::Socialtext::CLIUtils qw(:all);
+use Test::Socialtext::User;
 
 fixtures(qw( db ));
 
+###############################################################################
+# TEST: Can confirm User with outstanding e-mail confirmation.
+confirm_user: {
+    my $guard = Test::Socialtext::User->snapshot;
+    my $user  = create_test_user();
+    ok $user, 'Created test User';
 
-CONFIRM_USER: {
-    my $user = Socialtext::User->create(
-        username      => 'devnull5@socialtext.com',
-        email_address => 'devnull5@socialtext.com',
-    );
-    ok $user, 'User created via User->create';
-    ok !$user->has_valid_password(), 'check that password is empty';
     $user->create_email_confirmation();
+    ok $user->email_confirmation,  '... e-mail confirmation set';
+    ok !$user->has_valid_password(), '... password is empty';
 
     expect_success(
         call_cli_argv(
             'confirm-user',
-            '--email'    => 'devnull5@socialtext.com',
+            '--email'    => $user->email_address,
             '--password' => 'foobar',
         ),
-        qr/\Qdevnull5\E\@\Qsocialtext.com has been confirmed with password foobar\E/,
+        qr/has been confirmed with password foobar/,
         'confirm-user success message'
     );
+
+    # reload User and check that they were confirmed properly
+    $user = Socialtext::User->new(user_id => $user->user_id);
+    ok !$user->email_confirmation, '... e-mail confirmation was removed';
+    ok $user->has_valid_password(), '... password now valid after confirmation';
+}
+
+###############################################################################
+# TEST: Cannot confirm a User that has *no* outstanding e-mail confirmation
+cannot_confirm_already_confirmed_user: {
+    my $guard = Test::Socialtext::User->snapshot;
+    my $user  = create_test_user();
+    ok $user, 'Created test User';
+
+    ok !$user->email_confirmation, '... has no e-mail confirmation';
 
     expect_failure(
         call_cli_argv(
             'confirm-user',
-            '--email'    => 'devnull5@socialtext.com',
+            '--email'    => $user->email_address,
             '--password' => 'foobar',
         ),
-        qr/\Qdevnull5\E\@\Qsocialtext.com has already been confirmed\E/,
+        qr/has already been confirmed\E/,
         'confirm-user failed with already confirmed user'
     );
 }
 
-CHANGE_PASSWORD: {
+###############################################################################
+# TEST: Change the password for a User.
+change_password: {
+    my $guard  = Test::Socialtext::User->snapshot;
+    my $user   = create_test_user();
     my $new_pw = 'valid-password';
-    my $user = Socialtext::User->create(
-        username      => 'test@example.com',
-        email_address => 'test@example.com',
-    );
 
     expect_success(
         call_cli_argv(
             'change-password',
-            '--username' => 'test@example.com',
+            '--username' => $user->username,
             '--password' => $new_pw,
         ),
-        qr/The password for test\@example\.com has been changed\./,
+        qr/The password for \S+ has been changed\./,
         'change password successfully',
     );
 
+    $user = Socialtext::User->new(user_id => $user->user_id);
     ok $user->password_is_correct($new_pw), 'new password is valid';
+}
+
+###############################################################################
+# TEST: Changing User's password fails if password is too short.
+change_password_too_short: {
+    my $guard  = Test::Socialtext::User->snapshot;
+    my $user   = create_test_user();
 
     expect_failure(
         call_cli_argv(
             'change-password',
-            '--username' => 'test@example.com',
+            '--username' => $user->username,
             '--password' => 'bad',
         ),
         qr/\QPasswords must be at least 6 characters long.\E/,
