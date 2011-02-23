@@ -122,6 +122,20 @@ This module provides a Moose Role for User Restrictions; restrictions placed
 on a User record that would prevent them from having access to the system
 until some other condition has been met (and the restriction cleared).
 
+=head1 REQUIREMENTS
+
+In order to consume this Role, your class will need to provide implementations
+for the following methods:
+
+=over
+
+=item restriction_type()
+
+Returns the restriction type to be stored in the DB.  B<Must> match up with
+your class name.
+
+=back
+
 =head1 ATTRIBUTES
 
 =over
