@@ -20,6 +20,7 @@ use Socialtext::User::EmailConfirmation;
 use Socialtext::User::Factory;
 use Socialtext::UserSet qw/:const/;
 use Socialtext::User::Default::Users qw(:system-user :guest-user);
+use Socialtext::User::Restrictions;
 use Socialtext::User::Restrictions::email_confirmation;
 use Socialtext::User::Restrictions::password_change;
 use Email::Address;
@@ -1432,6 +1433,11 @@ sub Count {
 }
 
 # Confirmation methods
+
+sub restrictions {
+    my $self = shift;
+    return Socialtext::User::Restrictions->AllForUser($self);
+}
 
 sub create_email_confirmation {
     my $self = shift;
