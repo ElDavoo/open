@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 02:05+0800\n"
+"PO-Revision-Date: 2011-02-24 06:34+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -233,7 +233,7 @@ msgstr "table.current-column:"
 
 #: share/skin/wikiwyg/javascript/jemplate/table-options.html:5
 msgid "Current Row:"
-msgstr "table.current-row"
+msgstr "table.current-row:"
 
 #: share/skin/wikiwyg/javascript/template/widget_edit.tt2:149 share/skin/wikiwyg/javascript/template/widget_edit.tt2:197
 msgid "Custom"
@@ -798,7 +798,7 @@ msgstr "edit.summarize"
 
 #: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:12
 msgid "Syntax highlight as:"
-msgstr "code.syntax-highlight-as"
+msgstr "code.syntax-highlight-as:"
 
 #: share/skin/wikiwyg/javascript/jemplate/table-create.html:26 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:359
 msgid "Table is Sortable"
@@ -1055,7 +1055,7 @@ msgstr "wafl.height:"
 #. (data.height)
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3588
 msgid "height: %1"
-msgstr "wafl.height=px:"
+msgstr "wafl.height=px"
 
 #. (label)
 #. (image_name)
@@ -1202,7 +1202,7 @@ msgstr "wafl.width:"
 #. (data.width)
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3586 share/skin/wikiwyg/javascript/template/widget_edit.tt2:140 share/skin/wikiwyg/javascript/template/widget_edit.tt2:186
 msgid "width: %1"
-msgstr "wafl.width=px:"
+msgstr "wafl.width=px"
 
 #: share/skin/wikiwyg/javascript/template/widget_edit.tt2:61
 msgid "wiki text"

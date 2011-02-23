@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 01:40+0800\n"
+"PO-Revision-Date: 2011-02-24 06:36+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -92,7 +92,7 @@ msgstr "signals.private-message-to-email"
 
 #: share/plugin/signals/template/bookmarklet/index.html:47
 msgid "Install it as a bookmark (or favorite) and, when you find a page you want to signal or share, just click or select the bookmark and it will send a signal for you!"
-msgstr "signals.about-bookmarklet"
+msgstr "signals.about-bookmarklet!"
 
 #: share/plugin/signals/template/bookmarklet/index.html:51
 msgid "Instructions: For Internet Explorer users, right-click the button below and select \"Add to Favorites\", then choose the \"Links\" folder."
