@@ -56,7 +56,6 @@ CHANGE_PASSWORD: {
         'change password successfully',
     );
 
-    my $user = Socialtext::User->new( username => 'test@example.com' );
     ok $user->password_is_correct($new_pw), 'new password is valid';
 
     expect_failure(
