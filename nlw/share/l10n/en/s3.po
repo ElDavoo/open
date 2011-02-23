@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-20 08:54+0800\n"
+"PO-Revision-Date: 2011-02-24 00:31+0800\n"
 "PO-Revision-Date: \n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
@@ -24,9 +24,10 @@ msgstr "revision.quote=summary"
 msgid "\"%1\" is not a valid email address."
 msgstr "error.invalid=email"
 
+#. (page.revisions)
 #. (data.revision_count)
-#: share/skin/s3/javascript/pageview.js:96
-msgid "%1 Revisions"
+#: share/skin/s3/javascript/pageview.js:96 share/skin/s3/template/view/page/display:63
+msgid "%*(%1,Revision)"
 msgstr "page.revisions=count"
 
 #. (html_escaped_category)
@@ -71,11 +72,6 @@ msgid "%quant(%1,Person,People)"
 msgstr "account.count=people"
 
 #. (page.revisions)
-#: share/skin/s3/template/view/page/display:63
-msgid "%quant(%1,Revision)"
-msgstr "page.count=Revision"
-
-#. (page.revisions)
 #: share/skin/s3/template/view/page/display:296
 msgid "%quant(%1,revision)"
 msgstr "page.count=revision"
@@ -89,7 +85,7 @@ msgstr "page.count=view"
 msgid "&nbsp;+"
 msgstr "page.add-tag"
 
-#: share/skin/s3/javascript/s3.js:1168
+#: share/skin/s3/javascript/s3.js:1171
 msgid "&nbsp;or&nbsp;"
 msgstr "recover.or"
 
@@ -102,7 +98,7 @@ msgstr "error.type-mismatch=template,type"
 msgid "(You can customize the note below.)"
 msgstr "email.customize"
 
-#: share/skin/s3/javascript/s3.js:133
+#: share/skin/s3/javascript/s3.js:136
 msgid "(Your edit was successfully saved.)"
 msgstr "edit.saved"
 
@@ -136,7 +132,7 @@ msgstr "wiki.to-new-group"
 msgid "<em>To add a workspace to an <strong>existing group,</strong></em> go to the <a href=\"/st/groups\">\"Group Directory\"</a> under the Groups pulldown in the main navigation above, go to your chosen group, click \"Edit\" and create the workspace."
 msgstr "wiki.to-existing-group"
 
-#: share/skin/s3/javascript/s3.js:1187
+#: share/skin/s3/javascript/s3.js:1190
 msgid "?"
 msgstr "draft.?"
 
@@ -246,7 +242,7 @@ msgstr "page.delete=title?"
 msgid "Are you sure you want to delete the attachment '%1' from this page?"
 msgstr "file.delete=name?"
 
-#: share/skin/s3/javascript/s3.js:1175
+#: share/skin/s3/javascript/s3.js:1178
 msgid "Are you sure you want to discard the draft?"
 msgstr "draft.discard?"
 
@@ -396,7 +392,7 @@ msgstr "page.comment"
 msgid "Community"
 msgstr "nav.community"
 
-#: share/skin/s3/template/view/page_revision_list:97
+#: share/skin/s3/template/view/page_revision_list:98
 msgid "Compare Revisions"
 msgstr "do.compare-revisions"
 
@@ -550,6 +546,11 @@ msgstr "file.delete-this"
 msgid "Delete this tag"
 msgstr "page.delete-tag"
 
+#. (revision)
+#: share/skin/s3/template/view/page_revision_list:116
+msgid "Deleted: Revision %1"
+msgstr "page.deleted=revision"
+
 #: share/skin/s3/template/layout/html:8 share/skin/s3/template/layout/user_frame:13
 msgid "Desktop"
 msgstr "nav.desktop"
@@ -562,7 +563,7 @@ msgstr "page.delete-epilogue"
 msgid "Disable page locking. Any member who can edit pages can edit any page. If any pages were previously locked, those pages will be unlocked."
 msgstr "wiki.disable-locking"
 
-#: share/skin/s3/javascript/s3.js:1171
+#: share/skin/s3/javascript/s3.js:1174
 msgid "Discard"
 msgstr "draft.discard"
 
@@ -692,11 +693,11 @@ msgstr "example.wiki-url:"
 msgid "Example: http://www.socialtext.com/images/socialtext-logo-30.gif"
 msgstr "example.logo-url"
 
-#: share/skin/s3/javascript/s3.js:881
+#: share/skin/s3/javascript/s3.js:884
 msgid "Expand"
 msgstr "edit.expand"
 
-#: share/skin/s3/javascript/s3.js:881
+#: share/skin/s3/javascript/s3.js:884
 msgid "Expand edit area to fill browser window"
 msgstr "info.expand-view"
 
@@ -742,7 +743,7 @@ msgstr "nav.first"
 
 #: share/skin/s3/template/view/paging:8
 msgid "First Page"
-msgstr "nav.first-Page"
+msgstr "nav.first-page"
 
 #: share/skin/s3/template/element/settings/users_settings_section:17 share/skin/s3/template/element/settings/users_settings_section:22
 msgid "First name:"
@@ -750,7 +751,7 @@ msgstr "config.first-name"
 
 #: share/skin/s3/template/lite/paging.html:4 share/skin/s3/template/lite/paging.html:6 share/skin/s3/template/lite/paging.html:8
 msgid "First page"
-msgstr "nav.first-page"
+msgstr "lite.first-page"
 
 #: share/skin/s3/template/element/settings/users_invite_section:70
 msgid "Firstname Lastname &lt;u01234@example.com&gt;"
@@ -885,7 +886,7 @@ msgstr "do.join"
 
 #: share/skin/s3/javascript/lightbox/self_join_workspace.tt2:3
 msgid "Join To Edit"
-msgstr "do.join-to-Edit"
+msgstr "do.join-to-edit"
 
 #: share/skin/s3/template/element/page/display/edit-button:18
 msgid "Join now to edit this page!"
@@ -893,7 +894,7 @@ msgstr "page.join-to-edit!"
 
 #: share/skin/s3/template/element/page/display/edit-button:18 share/skin/s3/template/lite/subnav.html:42
 msgid "Join to edit"
-msgstr "do.join-to-edit"
+msgstr "page.join-to-edit"
 
 #: share/skin/s3/javascript/lightbox/copy.tt2:27 share/skin/s3/javascript/lightbox/duplicate.tt2:21 share/skin/s3/javascript/lightbox/rename.tt2:19
 msgid "Keep attachments"
@@ -962,7 +963,7 @@ msgstr "watch.look-for"
 #. (workspace.title)
 #: share/skin/s3/template/element/settings/workspace_clone_section:7
 msgid "Make a clone of the %1 workspace, including all pages, tags, and attachments. Next, you will need to invite members into the new workspace."
-msgstr "wiki.clone+invite=wiki"
+msgstr "wiki.clone-and-invite-members=wiki"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:131 share/skin/s3/template/element/settings/users_invite_section:86
 msgid "Make your contributions in the text box, then click \"Save\"."
@@ -1066,7 +1067,7 @@ msgstr "revision.next-compare"
 
 #: share/skin/s3/template/view/paging:26
 msgid "Next Page"
-msgstr "nav.next-Page"
+msgstr "nav.next-page"
 
 #: share/skin/s3/template/view/page/revision:26
 msgid "Next Revision"
@@ -1074,7 +1075,7 @@ msgstr "revision.next"
 
 #: share/skin/s3/template/lite/paging.html:17 share/skin/s3/template/lite/paging.html:19
 msgid "Next page"
-msgstr "nav.next-page"
+msgstr "lite.next-page"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:50
 msgid "No"
@@ -1090,7 +1091,7 @@ msgstr "error.no-page=type,tag"
 msgid "No page named '%1' exists"
 msgstr "error.no-page=template"
 
-#: share/skin/s3/javascript/s3.js:857
+#: share/skin/s3/javascript/s3.js:860
 msgid "Normal"
 msgstr "edit.normal"
 
@@ -1185,9 +1186,9 @@ msgstr "error.choose-group"
 msgid "Please click browse and select a file to upload."
 msgstr "file.browse"
 
-#: share/skin/s3/javascript/s3.js:150
+#: share/skin/s3/javascript/s3.js:153
 msgid "Please copy your changes, and click Cancel to return to the page."
-msgstr "edit.copy+cancel"
+msgstr "edit.copy-your-changes"
 
 #: share/skin/s3/template/element/settings/weblog_create:7
 msgid "Please give your blog a name. If the name you provide does not end with \"Blog\", the system will add \"Blog\" to the name you provide. After you click \"Create\", you'll be taken right to the new blog."
@@ -1223,7 +1224,7 @@ msgstr "revision.previous-compare"
 
 #: share/skin/s3/template/view/paging:9
 msgid "Previous Page"
-msgstr "nav.previous-Page"
+msgstr "nav.previous-page"
 
 #: share/skin/s3/template/view/page/revision:16
 msgid "Previous Revision"
@@ -1231,7 +1232,7 @@ msgstr "revision.previous"
 
 #: share/skin/s3/template/lite/paging.html:12 share/skin/s3/template/lite/paging.html:14
 msgid "Previous page"
-msgstr "nav.previous-page"
+msgstr "lite.previous-page"
 
 #: share/skin/s3/template/view/page/display:77 share/skin/s3/template/view/weblog:10
 msgid "Print"
@@ -1286,7 +1287,7 @@ msgid "Remove"
 msgstr "do.remove"
 
 #. (tag)
-#: share/skin/s3/javascript/s3.js:299
+#: share/skin/s3/javascript/s3.js:302
 msgid "Remove %1 from the queue"
 msgstr "edit.remove=tag"
 
@@ -1327,11 +1328,11 @@ msgstr "page.restore"
 msgid "Restore Revision %1"
 msgstr "page.restore=revision"
 
-#: share/skin/s3/javascript/s3.js:1165
+#: share/skin/s3/javascript/s3.js:1168
 msgid "Resume"
 msgstr "draft.resume"
 
-#: share/skin/s3/javascript/s3.js:857
+#: share/skin/s3/javascript/s3.js:860
 msgid "Return edit area to normal view"
 msgstr "info.normal-view"
 
@@ -1345,7 +1346,7 @@ msgid "Revision"
 msgstr "page.revision"
 
 #. (revision)
-#: share/skin/s3/template/view/page_revision_list:115
+#: share/skin/s3/template/view/page_revision_list:119
 msgid "Revision %1"
 msgstr "page.revision=revision"
 
@@ -1377,7 +1378,7 @@ msgstr "comment.save"
 msgid "Save the 50 most recent pages"
 msgstr "blog.unplug"
 
-#: share/skin/s3/javascript/lightbox/comment.js:91 share/skin/s3/javascript/s3.js:154
+#: share/skin/s3/javascript/lightbox/comment.js:91 share/skin/s3/javascript/s3.js:157
 msgid "Saving failed due to server error; please try again later."
 msgstr "error.save-failed"
 
@@ -1548,7 +1549,7 @@ msgstr "invite.welcome-message"
 msgid "Start typing a page name..."
 msgstr "page.prompt-name"
 
-#: share/skin/s3/javascript/s3.js:932 share/skin/s3/template/view/listview:166 share/skin/s3/template/view/page/display:72
+#: share/skin/s3/javascript/s3.js:935 share/skin/s3/template/view/listview:166 share/skin/s3/template/view/page/display:72
 msgid "Stop Watching"
 msgstr "watch.stop"
 
@@ -1751,11 +1752,11 @@ msgstr "do.unsubscribe"
 msgid "Unsubscribe from the %1 workspace"
 msgstr "do.unsubscribe=wiki"
 
-#: share/skin/s3/javascript/s3.js:1064 share/skin/s3/javascript/s3.js:12
+#: share/skin/s3/javascript/s3.js:1067 share/skin/s3/javascript/s3.js:15
 msgid "Untitled Page"
 msgstr "page.untitled"
 
-#: share/skin/s3/javascript/s3.js:1065 share/skin/s3/javascript/s3.js:13
+#: share/skin/s3/javascript/s3.js:1068 share/skin/s3/javascript/s3.js:16
 msgid "Untitled Spreadsheet"
 msgstr "sheet.untitled"
 
@@ -1790,7 +1791,7 @@ msgstr "skin.uploaded"
 
 #: share/skin/s3/template/view/attachmentslist:31
 msgid "Uploaded By"
-msgstr "file.uploaded-By"
+msgstr "sort.uploader"
 
 #: share/skin/s3/template/view/attachmentslist:59
 msgid "Uploaded by"
@@ -1845,7 +1846,7 @@ msgstr "revision.view"
 msgid "Warning: Stylesheets are not enabled in your mobile device. In order to properly view Socialtext Mobile, you will need to enable stylesheets in your browser options."
 msgstr "error.css-disabled"
 
-#: share/skin/s3/javascript/s3.js:920 share/skin/s3/template/view/empty_watchlist:39 share/skin/s3/template/view/page/display:74
+#: share/skin/s3/javascript/s3.js:923 share/skin/s3/template/view/empty_watchlist:39 share/skin/s3/template/view/page/display:74
 msgid "Watch"
 msgstr "do.watch"
 
@@ -1859,7 +1860,7 @@ msgstr "do.weblink"
 msgid "Welcome %1"
 msgstr "info.welcome=user"
 
-#: share/skin/s3/template/element/listview_tabs:5 share/skin/s3/template/layout/html:139 share/skin/s3/template/layout/user_frame:144 share/skin/s3/template/lite/subnav.html:16 share/skin/s3/template/view/empty_watchlist:8 share/skin/s3/template/view/page/display:225
+#: share/skin/s3/template/element/listview_tabs:5 share/skin/s3/template/layout/html:139 share/skin/s3/template/layout/user_frame:144 share/skin/s3/template/lite/subnav.html:14 share/skin/s3/template/lite/subnav.html:16 share/skin/s3/template/view/empty_watchlist:8 share/skin/s3/template/view/page/display:225
 msgid "What's New"
 msgstr "nav.news"
 
@@ -1975,12 +1976,12 @@ msgstr "info.wiki-group"
 msgid "You can only invite people who share the \"%1\" email domain with you."
 msgstr "info.invite-filter=domain"
 
-#: share/skin/s3/template/view/page_revision_list:83
+#: share/skin/s3/template/view/page_revision_list:84
 msgid "You cannot compare a revision to itself."
 msgstr "error.same-revision"
 
 #. (draft.page_title, draft.workspace_title, draft.workspace_id)
-#: share/skin/s3/javascript/s3.js:1161
+#: share/skin/s3/javascript/s3.js:1164
 msgid "You have an unsaved draft of \"%1\" in the \"%2\" (%3) workspace:"
 msgstr "draft.unsaved=page,wiki,wiki-id"
 
@@ -2003,11 +2004,11 @@ msgstr "edit.self-join=group?"
 msgid "You must be a member of one of the groups that have access to this workspace. Please select which group(s) you want to join below."
 msgstr "edit.choose-group"
 
-#: share/skin/s3/javascript/s3.js:811
+#: share/skin/s3/javascript/s3.js:814
 msgid "You must check at least one page in order to create a PDF."
 msgstr "error.no-page-pdf"
 
-#: share/skin/s3/javascript/s3.js:823
+#: share/skin/s3/javascript/s3.js:826
 msgid "You must check at least one page in order to create a Word document."
 msgstr "error.none-page-doc"
 
