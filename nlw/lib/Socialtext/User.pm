@@ -1499,8 +1499,7 @@ sub confirm_email_address {
     my $uce = $self->email_confirmation;
     return unless $uce;
 
-    $uce->send_completed_notifications;
-    $uce->clear;
+    $uce->confirm;
 }
 
 sub email_confirmation {
