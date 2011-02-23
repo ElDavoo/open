@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 01:56+0800\n"
+"PO-Revision-Date: 2011-02-24 06:52+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -11,1329 +11,1329 @@ msgstr ""
 
 #. (group.driver_group_name)
 #: share/plugin/control/template/control/group.html:4
-msgid "%1 Group"
-msgstr "control.group=name"
+msgid "control.group=name"
+msgstr "%1 Group"
 
 #. (account.name)
 #: share/plugin/control/template/control/account.html:4 share/plugin/control/template/control/add_profile_field.html:2 share/plugin/control/template/control/add_user.html:2 share/plugin/control/template/control/add_users.html:2 share/plugin/control/template/control/design-account.html:2 share/plugin/control/template/control/desktop-account.html:8 share/plugin/control/template/control/edit_profile_field.html:2 share/plugin/control/template/control/fields-account.html:2 share/plugin/control/template/control/rename-account.html:2
-msgid "%1 account"
-msgstr "control.account=name"
+msgid "control.account=name"
+msgstr "%1 account"
 
 #. (title)
 #: share/plugin/control/template/control/plugins:5
-msgid "%1 is a paid option. For more information about fees, contact your sales representative."
-msgstr "plugins.about-paid-option=plugin"
+msgid "plugins.about-paid-option=plugin"
+msgstr "%1 is a paid option. For more information about fees, contact your sales representative."
 
 #. (title)
 #: share/plugin/control/template/control/add_user.html:40
-msgid "%1 is calculated unless provided"
-msgstr "control.calculated-unless-provided=field"
+msgid "control.calculated-unless-provided=field"
+msgstr "%1 is calculated unless provided"
 
 #. ("<span class=\"numSelected\">$numSelected</span>")
 #. (('<span class="numSelected">' _ numSelected _ '</span>'))
 #: share/plugin/control/share/javascript/template/control_table.tt2:0 share/plugin/control/share/javascript/template/control_table.tt2:9
-msgid "%1 rows selected:"
-msgstr "control.rows-selected=count:"
+msgid "control.rows-selected=count:"
+msgstr "%1 rows selected:"
 
 #. (custom_skin,                  custom_skins.$custom_skin)
 #. (custom_skin, custom_skins.$custom_skin)
 #: share/plugin/control/template/control/account.html:244 share/plugin/control/template/control/account.html:246
-msgid "%1 skin: workspace-level skin for '%2' workspace(s)"
-msgstr "control.wiki-skin=name,wikis"
+msgid "control.wiki-skin=name,wikis"
+msgstr "%1 skin: workspace-level skin for '%2' workspace(s)"
 
 #. (count_selected_users()
 #: share/plugin/control/template/control/user_table:65
-msgid "%1 users selected"
-msgstr "control.users-selected=count"
+msgid "control.users-selected=count"
+msgstr "%1 users selected"
 
 #. (workspace.name)
 #: share/plugin/control/template/control/workspace.html:3
-msgid "%1 workspace"
-msgstr "control.wiki=name"
+msgid "control.wiki=name"
+msgstr "%1 workspace"
 
 #: share/plugin/control/template/control/report.html:127
-msgid "1 Month"
-msgstr "date.1month"
+msgid "date.1month"
+msgstr "1 Month"
 
 #: share/plugin/control/template/control/report.html:128
-msgid "1 Quarter"
-msgstr "date.1quarter"
+msgid "date.1quarter"
+msgstr "1 Quarter"
 
 #: share/plugin/control/template/control/report.html:126
-msgid "1 Week"
-msgstr "date.1week"
+msgid "date.1week"
+msgstr "1 Week"
 
 #: share/plugin/control/share/javascript/lightbox/group-create.tt2:29 share/plugin/control/template/control/group.html:16
-msgid "<strong>Private:</strong> Only Members can see and access this group."
-msgstr "control.private-group"
+msgid "control.private-group"
+msgstr "<strong>Private:</strong> Only Members can see and access this group."
 
 #: share/plugin/control/share/javascript/lightbox/group-create.tt2:27 share/plugin/control/template/control/group.html:14
-msgid "<strong>Self-Join:</strong> Non-Members can view the group, but must become Members to contribute."
-msgstr "control.self-join-group"
+msgid "control.self-join-group"
+msgstr "<strong>Self-Join:</strong> Non-Members can view the group, but must become Members to contribute."
 
 #: share/plugin/control/template/control/group.html:77 share/plugin/control/template/control/user.html:249 share/plugin/control/template/control/workspace.html:10 share/plugin/control/template/control/workspace_invite.html:98 share/plugin/control/template/control/workspace_table:17 share/plugin/control/template/control/workspace_table:28 share/plugin/control/template/control/workspaces_new.html:20
-msgid "Account"
-msgstr "control.account"
+msgid "control.account"
+msgstr "Account"
 
 #: share/plugin/control/template/control/desktop-account.html:14
-msgid "Account Custom Desktop Skin"
-msgstr "control.account-custom-desktop-skin"
+msgid "control.account-custom-desktop-skin"
+msgstr "Account Custom Desktop Skin"
 
 #: share/plugin/control/template/control/account.html:232 share/plugin/control/template/control/design-account.html:8
-msgid "Account Logo"
-msgstr "control.account-logo"
+msgid "control.account-logo"
+msgstr "Account Logo"
 
 #: share/plugin/control/template/control/accounts_transform.html:8
-msgid "Account Name"
-msgstr "control.account-name"
+msgid "control.account-name"
+msgstr "Account Name"
 
 #: share/plugin/control/template/control/fields-account.html:8
-msgid "Account Profile Fields"
-msgstr "control.account-profile-fields"
+msgid "control.account-profile-fields"
+msgstr "Account Profile Fields"
 
 #: share/plugin/control/template/control/account.html:39
-msgid "Account Settings"
-msgstr "control.account-settings"
+msgid "control.account-settings"
+msgstr "Account Settings"
 
 #: share/plugin/control/template/control/account.html:138
-msgid "Account role changes were successful."
-msgstr "control.account-role-changed"
+msgid "control.account-role-changed"
+msgstr "Account role changes were successful."
 
 #: share/plugin/control/template/control/account.html:53
-msgid "Account type"
-msgstr "control.account-type"
+msgid "control.account-type"
+msgstr "Account type"
 
 #: share/plugin/control/template/control/accounts.html:15
-msgid "Account type:"
-msgstr "control.account-type:"
+msgid "control.account-type:"
+msgstr "Account type:"
 
 #: share/plugin/control/template/control/group.html:39 share/plugin/control/template/control/index.html:25 share/plugin/control/template/control/wrapper:87
-msgid "Accounts"
-msgstr "nav.accounts"
+msgid "nav.accounts"
+msgstr "Accounts"
 
 #. (this.total)
 #. ('<span id="accountsCount"></span>')
 #. ("<span id=\"accountsCount\"></span>")
 #: share/plugin/control/template/control/group.html:316 share/plugin/control/template/control/user.html:94
-msgid "Accounts (%1)"
-msgstr "control.accounts=count"
+msgid "control.accounts=count"
+msgstr "Accounts (%1)"
 
 #: share/plugin/control/template/control/index.html:26
-msgid "Accounts are large groupings of users, who have common access to a People directory, Signals conversations, and other content and features. A variety of options and settings can be configured for each account, including plugins, skins, and look-and-feel of Socialtext Desktop. You can also view usage and adoption reports for accounts."
-msgstr "control.about-accounts-tab"
+msgid "control.about-accounts-tab"
+msgstr "Accounts are large groupings of users, who have common access to a People directory, Signals conversations, and other content and features. A variety of options and settings can be configured for each account, including plugins, skins, and look-and-feel of Socialtext Desktop. You can also view usage and adoption reports for accounts."
 
 #: share/plugin/control/template/control/fields-account.html:32
-msgid "Actions"
-msgstr "control.actions"
+msgid "control.actions"
+msgstr "Actions"
 
 #: share/plugin/control/template/control/workspace_invite.html:117
-msgid "Add"
-msgstr "control.add"
+msgid "control.add"
+msgstr "Add"
 
 #: share/plugin/control/template/control/workspace_invite.html:123
-msgid "Add All"
-msgstr "control.add-all"
+msgid "control.add-all"
+msgstr "Add All"
 
 #: share/plugin/control/template/control/account.html:71
-msgid "Add Existing User: "
-msgstr "control.add-existing-user"
+msgid "control.add-existing-user"
+msgstr "Add Existing User: "
 
 #: share/plugin/control/template/control/account_add_group.html:2 share/plugin/control/template/control/group_add_to_account.html:2
-msgid "Add Group to Account"
-msgstr "control.add-group-to-account"
+msgid "control.add-group-to-account"
+msgstr "Add Group to Account"
 
 #: share/plugin/control/template/control/group.html:41
-msgid "Add Group to Account:"
-msgstr "control.add-group-to-account:"
+msgid "control.add-group-to-account:"
+msgstr "Add Group to Account:"
 
 #: share/plugin/control/template/control/group.html:0 share/plugin/control/template/control/group.html:58 share/plugin/control/template/control/group_add_to_workspace.html:2 share/plugin/control/template/control/workspace.html:183 share/plugin/control/template/control/workspace_add_group.html:2
-msgid "Add Group to Workspace"
-msgstr "control.add-group-to-wiki"
+msgid "control.add-group-to-wiki"
+msgstr "Add Group to Workspace"
 
 #: share/plugin/control/template/control/workspaces_new.html:43
-msgid "Add Group to Workspace:"
-msgstr "control.add-group-to-wiki:"
+msgid "control.add-group-to-wiki:"
+msgstr "Add Group to Workspace:"
 
 #: share/plugin/control/template/control/account.html:76
-msgid "Add Multiple Users"
-msgstr "control.add-multiple-users"
+msgid "control.add-multiple-users"
+msgstr "Add Multiple Users"
 
 #: share/plugin/control/template/control/account.html:75
-msgid "Add New User"
-msgstr "control.add-new-user"
+msgid "control.add-new-user"
+msgstr "Add New User"
 
 #: share/plugin/control/template/control/add_user.html:1 share/plugin/control/template/control/add_user.html:56 share/plugin/control/template/control/add_user.html:8
-msgid "Add User"
-msgstr "control.add-user"
+msgid "control.add-user"
+msgstr "Add User"
 
 #: share/plugin/control/template/control/user.html:97
-msgid "Add User to Account:"
-msgstr "control.add-user-to-account:"
+msgid "control.add-user-to-account:"
+msgstr "Add User to Account:"
 
 #: share/plugin/control/template/control/group.html:29
-msgid "Add User to Group:"
-msgstr "control.add-user-to-group:"
+msgid "control.add-user-to-group:"
+msgstr "Add User to Group:"
 
 #: share/plugin/control/template/control/workspaces_new.html:33
-msgid "Add User to Workspace:"
-msgstr "control.add-user-to-wiki:"
+msgid "control.add-user-to-wiki:"
+msgstr "Add User to Workspace:"
 
 #: share/plugin/control/template/control/add_users.html:8 share/plugin/control/template/control/invite_to_group:1
-msgid "Add Users"
-msgstr "control.add-users"
+msgid "control.add-users"
+msgstr "Add Users"
 
 #: share/plugin/control/template/control/account_add_group.html:27 share/plugin/control/template/control/group_add_to_account.html:25
-msgid "Add to Account"
-msgstr "control.add-to-account"
+msgid "control.add-to-account"
+msgstr "Add to Account"
 
 #: share/plugin/control/template/control/group_add_to_workspace.html:31 share/plugin/control/template/control/workspace_add_group.html:31
-msgid "Add to Workspace"
-msgstr "control.add-to-wiki"
+msgid "control.add-to-wiki"
+msgstr "Add to Workspace"
 
 #. (group.driver_group_name, group.group_id)
 #: share/plugin/control/template/control/group_add_to_workspace.html:5
-msgid "Adding Group %1 (%2) to a Workspace"
-msgstr "control.adding-group-to-wiki=group,group-id"
+msgid "control.adding-group-to-wiki=group,group-id"
+msgstr "Adding Group %1 (%2) to a Workspace"
 
 #. (group.driver_group_name, group.group_id)
 #: share/plugin/control/template/control/group_add_to_account.html:5
-msgid "Adding Group %1 (%2) to an Account"
-msgstr "control.adding-group-to-account=group,group-id"
+msgid "control.adding-group-to-account=group,group-id"
+msgstr "Adding Group %1 (%2) to an Account"
 
 #. (account.name)
 #: share/plugin/control/template/control/account_add_group.html:5
-msgid "Adding Group to Account %1"
-msgstr "control.adding-group-to-account=name"
+msgid "control.adding-group-to-account=name"
+msgstr "Adding Group to Account %1"
 
 #. (workspace.name)
 #: share/plugin/control/template/control/workspace_add_group.html:5
-msgid "Adding Group to Workspace %1"
-msgstr "control.adding-group-to-wiki=name"
+msgid "control.adding-group-to-wiki=name"
+msgstr "Adding Group to Workspace %1"
 
 #: share/plugin/control/share/javascript/workspaces_new.js:157 share/plugin/control/share/javascript/workspaces_new.js:49 share/plugin/control/template/control/account.html:134 share/plugin/control/template/control/group.html:184 share/plugin/control/template/control/workspace.html:225 share/plugin/control/template/control/workspace.html:91
-msgid "Admin"
-msgstr "control.admin"
+msgid "control.admin"
+msgstr "Admin"
 
 #: share/plugin/control/template/control/workspace_invite.html:105
-msgid "Administrators"
-msgstr "control.administrators"
+msgid "control.administrators"
+msgstr "Administrators"
 
 #: share/plugin/control/template/control/workspace_table:13
-msgid "All User's Workspace"
-msgstr "control.all-user-wiki"
+msgid "control.all-user-wiki"
+msgstr "All User's Workspace"
 
 #: share/plugin/control/template/control/design-account.html:64
-msgid "Also reset the logo after a fresh login to Socialtext Desktop."
-msgstr "control.also-reset-logo-for-desktop"
+msgid "control.also-reset-logo-for-desktop"
+msgstr "Also reset the logo after a fresh login to Socialtext Desktop."
 
 #: share/plugin/control/template/control/design-account.html:32
-msgid "Also use the logo after a fresh login to Socialtext Desktop."
-msgstr "control.also-use-logo-for-desktop"
+msgid "control.also-use-logo-for-desktop"
+msgstr "Also use the logo after a fresh login to Socialtext Desktop."
 
 #: share/plugin/control/template/control/user.html:64
-msgid "Appliance Business Administrator?"
-msgstr "control.appliance-business-administrator?"
+msgid "control.appliance-business-administrator?"
+msgstr "Appliance Business Administrator?"
 
 #: share/plugin/control/template/control/user.html:78
-msgid "Appliance Technical Administrator?"
-msgstr "control.appliance-technical-administrator?"
+msgid "control.appliance-technical-administrator?"
+msgstr "Appliance Technical Administrator?"
 
 #: share/plugin/control/template/control/index.html:11
-msgid "Appliance Technical Administrators can use the <a href='/console'>Console</a> to manage technical aspects of the appliance, such as network and backup settings."
-msgstr "control.console-link"
+msgid "control.console-link"
+msgstr "Appliance Technical Administrators can use the <a href='/console'>Console</a> to manage technical aspects of the appliance, such as network and backup settings."
 
 #: share/plugin/control/template/control/report.html:105
-msgid "April"
-msgstr "date.april"
+msgid "date.april"
+msgstr "April"
 
 #: share/plugin/control/template/control/group.html:134
-msgid ""
+msgid "control.confirm-delete-group"
+msgstr ""
 "Are you sure you want to delete this group?\n"
 "\n"
 "You will not be able to restore the group once it's deleted. Users will no longer be able to signal to this group and any access to workspaces through this group will be revoked."
-msgstr "control.confirm-delete-group"
 
 #: share/plugin/control/template/control/user.html:75
-msgid "Assign Appliance Business Administrator Role"
-msgstr "control.assign-appliance-business-administrator-role"
+msgid "control.assign-appliance-business-administrator-role"
+msgstr "Assign Appliance Business Administrator Role"
 
 #: share/plugin/control/template/control/user.html:89
-msgid "Assign Appliance Technical Administrator Role"
-msgstr "control.assign-appliance-technical-administrator-role"
+msgid "control.assign-appliance-technical-administrator-role"
+msgstr "Assign Appliance Technical Administrator Role"
 
 #: share/plugin/control/template/control/workspace.html:32
-msgid "Assign to a new account"
-msgstr "control.assign-to-new-account"
+msgid "control.assign-to-new-account"
+msgstr "Assign to a new account"
 
 #: share/plugin/control/template/control/report.html:109
-msgid "August"
-msgstr "date.august"
+msgid "date.august"
+msgstr "August"
 
 #: share/plugin/control/template/control/group_invite.html:109
-msgid "Available groups"
-msgstr "control.available-groups"
+msgid "control.available-groups"
+msgstr "Available groups"
 
 #: share/plugin/control/template/control/add_user.html:5 share/plugin/control/template/control/add_users.html:5 share/plugin/control/template/control/design-account.html:5 share/plugin/control/template/control/desktop-account.html:12 share/plugin/control/template/control/fields-account.html:6 share/plugin/control/template/control/rename-account.html:5
-msgid "Back"
-msgstr "control.back"
+msgid "control.back"
+msgstr "Back"
 
 #: share/plugin/control/template/control/edit_profile_field.html:6
-msgid "Back to Account"
-msgstr "control.back-to-account"
+msgid "control.back-to-account"
+msgstr "Back to Account"
 
 #: share/plugin/control/template/control/add_profile_field.html:6
-msgid "Back to Account Fields"
-msgstr "control.back-to-account-fields"
+msgid "control.back-to-account-fields"
+msgstr "Back to Account Fields"
 
 #: share/plugin/control/template/control/growth_report.html:12 share/plugin/control/template/control/report.html:147
-msgid "Back to the account page"
-msgstr "control.back-to-account-page"
+msgid "control.back-to-account-page"
+msgstr "Back to the account page"
 
 #: share/plugin/control/template/control/report.html:145
-msgid "Back to the user page"
-msgstr "control.back-to-user-page"
+msgid "control.back-to-user-page"
+msgstr "Back to the user page"
 
 #: share/plugin/control/template/control/growth_report.html:14 share/plugin/control/template/control/report.html:149
-msgid "Back to the workspace page"
-msgstr "control.back-to-wiki-page"
+msgid "control.back-to-wiki-page"
+msgstr "Back to the workspace page"
 
 #. (account.skin_name)
 #: share/plugin/control/template/control/design-account.html:77
-msgid "Because a custom skin is in use, the account logo cannot be changed.  The skin in use is called '%1'"
-msgstr "error.cannot-change-account-logo-with-custom-skin=name"
+msgid "error.cannot-change-account-logo-with-custom-skin=name"
+msgstr "Because a custom skin is in use, the account logo cannot be changed.  The skin in use is called '%1'"
 
 #: share/plugin/control/template/control/add_users.html:18
-msgid "Browse ..."
-msgstr "control.browse"
+msgid "control.browse"
+msgstr "Browse ..."
 
 #: share/plugin/control/share/javascript/lightbox/group-create.tt2:67 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:47 share/plugin/control/template/control/field_form:82
-msgid "Cancel"
-msgstr "do.cancel"
+msgid "do.cancel"
+msgstr "Cancel"
 
 #: share/plugin/control/template/control/account.html:57
-msgid "Change account type to:"
-msgstr "control.set-account-type-to:"
+msgid "control.set-account-type-to:"
+msgstr "Change account type to:"
 
 #: share/plugin/control/share/javascript/template/control_table.tt2:18 share/plugin/control/template/control/user_table_header:10
-msgid "Clear Selection"
-msgstr "control.clear-selection"
+msgid "control.clear-selection"
+msgstr "Clear Selection"
 
 #: share/plugin/control/template/control/user.html:51
-msgid "Confirm user"
-msgstr "control.confirm-user"
+msgid "control.confirm-user"
+msgstr "Confirm user"
 
 #: share/plugin/control/template/control/wrapper:92
-msgid "Console"
-msgstr "control.console"
+msgid "control.console"
+msgstr "Console"
 
 #: share/plugin/control/template/control/field_common:4 share/plugin/control/template/control/field_common:7
-msgid "Contact"
-msgstr "control.field-contact"
+msgid "control.field-contact"
+msgstr "Contact"
 
 #: share/plugin/control/template/control/wrapper:125
-msgid "Contact Support"
-msgstr "control.contact-support"
+msgid "control.contact-support"
+msgstr "Contact Support"
 
 #: share/plugin/control/template/control/wrapper:86
-msgid "Control Panel"
-msgstr "nav.control-panel"
+msgid "nav.control-panel"
+msgstr "Control Panel"
 
 #: share/plugin/control/share/javascript/lightbox/group-create.tt2:66 share/plugin/control/share/javascript/lightbox/workspace-create.js:33 share/plugin/control/template/control/report.html:130
-msgid "Create"
-msgstr "do.create"
+msgid "do.create"
+msgstr "Create"
 
 #: share/plugin/control/template/control/account.html:91
-msgid "Create Group"
-msgstr "control.create-group"
+msgid "control.create-group"
+msgstr "Create Group"
 
 #: share/plugin/control/template/control/accounts.html:10
-msgid "Create New Account"
-msgstr "control.create-new-account"
+msgid "control.create-new-account"
+msgstr "Create New Account"
 
 #: share/plugin/control/template/control/add_profile_field.html:8 share/plugin/control/template/control/field_form:81 share/plugin/control/template/control/fields-account.html:12
-msgid "Create New Field"
-msgstr "control.create-new-field"
+msgid "control.create-new-field"
+msgstr "Create New Field"
 
 #: share/plugin/control/template/control/group_invite.html:85 share/plugin/control/template/control/groups.html:109
-msgid "Create New Group"
-msgstr "control.create-new-group"
+msgid "control.create-new-group"
+msgstr "Create New Group"
 
 #: share/plugin/control/template/control/workspace_invite.html:82 share/plugin/control/template/control/workspaces.html:11 share/plugin/control/template/control/workspaces.html:8
-msgid "Create New Workspace"
-msgstr "control.create-new-wiki"
+msgid "control.create-new-wiki"
+msgstr "Create New Workspace"
 
 #: share/plugin/control/template/control/group.html:0 share/plugin/control/template/control/group.html:62
-msgid "Create New Workspace for this Group"
-msgstr "control.create-new-wiki-for-group"
+msgid "control.create-new-wiki-for-group"
+msgstr "Create New Workspace for this Group"
 
 #: share/plugin/control/template/control/account.html:0 share/plugin/control/template/control/account.html:221
-msgid "Create New Workspace in this Account"
-msgstr "control.create-new-wiki-in-account"
+msgid "control.create-new-wiki-in-account"
+msgstr "Create New Workspace in this Account"
 
 #: share/plugin/control/template/control/workspaces_new.html:3 share/plugin/control/template/control/workspaces_new.html:53
-msgid "Create Workspace"
-msgstr "control.create-wiki"
+msgid "control.create-wiki"
+msgstr "Create Workspace"
 
 #: share/plugin/control/template/control/index.html:19
-msgid "Create a Group"
-msgstr "control.create-a-group"
+msgid "control.create-a-group"
+msgstr "Create a Group"
 
 #: share/plugin/control/share/javascript/lightbox/group-create.tt2:10
-msgid "Create a Socialtext Group"
-msgstr "control.create-a-socialtext-group"
+msgid "control.create-a-socialtext-group"
+msgstr "Create a Socialtext Group"
 
 #: share/plugin/control/template/control/index.html:18
-msgid "Create a User"
-msgstr "control.create-a-user"
+msgid "control.create-a-user"
+msgstr "Create a User"
 
 #: share/plugin/control/template/control/index.html:20
-msgid "Create a Workspace"
-msgstr "control.create-a-wiki"
+msgid "control.create-a-wiki"
+msgstr "Create a Workspace"
 
 #: share/plugin/control/share/javascript/workspaces_new.js:183 share/plugin/control/template/control/group.html:80 share/plugin/control/template/control/group_table:11 share/plugin/control/template/control/group_table:32 share/plugin/control/template/control/groups.html:87 share/plugin/control/template/control/user.html:16 share/plugin/control/template/control/user.html:257 share/plugin/control/template/control/workspace.html:256 share/plugin/control/template/control/workspace.html:38 share/plugin/control/template/control/workspace_table:18 share/plugin/control/template/control/workspace_table:31
-msgid "Created"
-msgstr "control.created"
+msgid "control.created"
+msgstr "Created"
 
 #: share/plugin/control/template/control/group.html:83 share/plugin/control/template/control/group_table:12 share/plugin/control/template/control/group_table:35 share/plugin/control/template/control/user.html:261 share/plugin/control/template/control/workspace.html:41 share/plugin/control/template/control/workspace_table:19 share/plugin/control/template/control/workspace_table:34
-msgid "Created By"
-msgstr "control.created-by"
+msgid "control.created-by"
+msgstr "Created By"
 
 #. (creator.best_full_name)
 #: share/plugin/control/template/control/group.html:6
-msgid "Created By: %1"
-msgstr "control.created-by=user"
+msgid "control.created-by=user"
+msgstr "Created By: %1"
 
 #. (create_time)
 #: share/plugin/control/template/control/group.html:7
-msgid "Created On: %1"
-msgstr "control.created-on=time"
+msgid "control.created-on=time"
+msgstr "Created On: %1"
 
 #: share/plugin/control/template/control/index.html:13
-msgid "Creating"
-msgstr "control.creating"
+msgid "control.creating"
+msgstr "Creating"
 
 #: share/plugin/control/share/javascript/workspaces_new.js:188 share/plugin/control/template/control/groups.html:97 share/plugin/control/template/control/workspace.html:261
-msgid "Creator"
-msgstr "control.creator"
+msgid "control.creator"
+msgstr "Creator"
 
 #: share/plugin/control/template/control/account.html:234
-msgid "Custom Desktop Skin"
-msgstr "control.custom-desktop-skin"
+msgid "control.custom-desktop-skin"
+msgstr "Custom Desktop Skin"
 
 #. (skin_name)
 #: share/plugin/control/template/control/account.html:240
-msgid "Custom Skins: %1"
-msgstr "control.custom-skins=name"
+msgid "control.custom-skins=name"
+msgstr "Custom Skins: %1"
 
 #: share/plugin/control/template/control/fields-account.html:16
-msgid "Custom fields"
-msgstr "control.custom-fields"
+msgid "control.custom-fields"
+msgstr "Custom fields"
 
 #: share/plugin/control/template/control/field_form:56
-msgid "Data Source"
-msgstr "control.data-source"
+msgid "control.data-source"
+msgstr "Data Source"
 
 #: share/plugin/control/template/control/user.html:27
-msgid "Deactivate user"
-msgstr "control.deactivate-user"
+msgid "control.deactivate-user"
+msgstr "Deactivate user"
 
 #: share/plugin/control/template/control/report.html:113
-msgid "December"
-msgstr "date.december"
+msgid "date.december"
+msgstr "December"
 
 #: share/plugin/control/template/control/group.html:25
-msgid "Delete this group"
-msgstr "control.delete-this-group"
+msgid "control.delete-this-group"
+msgstr "Delete this group"
 
 #: share/plugin/control/template/control/desktop-account.html:27
-msgid "Description"
-msgstr "control.description"
+msgid "control.description"
+msgstr "Description"
 
 #. (group.description)
 #: share/plugin/control/template/control/group.html:21
-msgid "Description: %1"
-msgstr "control.group=description"
+msgid "control.group=description"
+msgstr "Description: %1"
 
 #: share/plugin/control/template/control/wrapper:7
-msgid "Desktop"
-msgstr "nav.desktop"
+msgid "nav.desktop"
+msgstr "Desktop"
 
 #: share/plugin/control/template/control/account.html:12
-msgid "Disable Export User Data"
-msgstr "control.disable-export-user-data"
+msgid "control.disable-export-user-data"
+msgstr "Disable Export User Data"
 
 #: share/plugin/control/template/control/account.html:24
-msgid "Disable Invitation to Group"
-msgstr "control.disable-invitation-to-group"
+msgid "control.disable-invitation-to-group"
+msgstr "Disable Invitation to Group"
 
 #: share/plugin/control/template/control/fields-account.html:29
-msgid "Disabled"
-msgstr "control.field-disabled"
+msgid "control.field-disabled"
+msgstr "Disabled"
 
 #: share/plugin/control/template/control/group.html:129
-msgid "Done"
-msgstr "do.done"
+msgid "do.done"
+msgstr "Done"
 
 #: share/plugin/control/template/control/add_user.html:24
-msgid "E-mail Address:"
-msgstr "control.email-address:"
+msgid "control.email-address:"
+msgstr "E-mail Address:"
 
 #: share/plugin/control/template/control/add_user.html:13
-msgid "E-mail address must be specified"
-msgstr "error.email-address-required"
+msgid "error.email-address-required"
+msgstr "E-mail address must be specified"
 
 #: share/plugin/control/template/control/fields-account.html:39
-msgid "Edit"
-msgstr "control.field-edit"
+msgid "control.field-edit"
+msgstr "Edit"
 
 #: share/plugin/control/template/control/edit_profile_field.html:8
-msgid "Edit Field"
-msgstr "control.edit-field"
+msgid "control.edit-field"
+msgstr "Edit Field"
 
 #: share/plugin/control/template/control/account.html:15
-msgid "Enable Export User Data"
-msgstr "control.enable-export-user-data"
+msgid "control.enable-export-user-data"
+msgstr "Enable Export User Data"
 
 #: share/plugin/control/template/control/account.html:26
-msgid "Enable Invitation to Group"
-msgstr "control.enable-invitation-to-group"
+msgid "control.enable-invitation-to-group"
+msgstr "Enable Invitation to Group"
 
 #. (xhr.responseText)
 #: share/plugin/control/share/javascript/useraccountrole.js:26
-msgid "Error removing account: %1"
-msgstr "error.remove-account=message"
+msgid "error.remove-account=message"
+msgstr "Error removing account: %1"
 
 #. (res.errors[0])
 #: share/plugin/control/template/control/group.html:127
-msgid "Error: %1"
-msgstr "error.error=message"
+msgid "error.error=message"
+msgstr "Error: %1"
 
 #: share/plugin/control/template/control/desktop-account.html:44
-msgid "Error: Image cannot be retrieved."
-msgstr "error.retrieve-image"
+msgid "error.retrieve-image"
+msgstr "Error: Image cannot be retrieved."
 
 #: share/plugin/control/template/control/workspace_invite.html:269
-msgid "Error: Workspace name is a required field."
-msgstr "error.wiki-name-required"
+msgid "error.wiki-name-required"
+msgstr "Workspace name is a required field."
 
 #: share/plugin/control/template/control/workspace_invite.html:272
-msgid "Error: Workspace name must be between 3 and 30 characters long, and must contain only lower-case letters, numbers, underscores, and dashes and may not begin with a '-'."
-msgstr "error.invalid-wiki-name"
+msgid "error.invalid-wiki-name"
+msgstr "Workspace name must be between 3 and 30 characters long, and must contain only lower-case letters, numbers, underscores, and dashes and may not begin with a '-'."
 
 #: share/plugin/control/template/control/workspace_invite.html:294
-msgid "Error: Workspace title is a required field."
-msgstr "error.wiki-title-required"
+msgid "error.wiki-title-required"
+msgstr "Workspace title is a required field."
 
 #: share/plugin/control/template/control/workspace_invite.html:297
-msgid "Error: Workspace title must be between 2 and 64 characters long and may not begin with a '-'."
-msgstr "error.invalid-wiki-title"
+msgid "error.invalid-wiki-title"
+msgstr "Workspace title must be between 2 and 64 characters long and may not begin with a '-'."
 
 #: share/plugin/control/template/control/growth_report.html:6
-msgid "Export data as CSV"
-msgstr "report.export-as-csv"
+msgid "report.export-as-csv"
+msgstr "Export data as CSV"
 
 #: share/plugin/control/template/control/report.html:137
-msgid "Export summary data as CSV"
-msgstr "report.export-summary-as-csv"
+msgid "report.export-summary-as-csv"
+msgstr "Export summary data as CSV"
 
 #: share/plugin/control/template/control/report.html:139
-msgid "Export user data as CSV"
-msgstr "report.export-user-as-csv"
+msgid "report.export-user-as-csv"
+msgstr "Export user data as CSV"
 
 #. (exportable_accounts)
 #: share/plugin/control/template/control/accounts.html:24
-msgid "Export user data for %*(%1,selected account)"
-msgstr "control.export-user-for-selected-accounts=count"
+msgid "control.export-user-for-selected-accounts=count"
+msgstr "Export user data for %*(%1,selected account)"
 
 #: share/plugin/control/template/control/field_form:59 share/plugin/control/template/control/fields-account.html:44
-msgid "External"
-msgstr "control.external-field"
+msgid "control.external-field"
+msgstr "External"
 
 #: share/plugin/control/template/control/account.html:160 share/plugin/control/template/control/group.html:210 share/plugin/control/template/control/selected_user_table_header:17 share/plugin/control/template/control/user_table_header:31 share/plugin/control/template/control/workspace.html:119
-msgid "External ID"
-msgstr "control.external-id"
+msgid "control.external-id"
+msgstr "External ID"
 
 #: share/plugin/control/template/control/user.html:44
-msgid "External ID:"
-msgstr "control.external-id:"
+msgid "control.external-id:"
+msgstr "External ID:"
 
 #: share/plugin/control/template/control/account.html:227
-msgid "Features And Skins"
-msgstr "control.features-and-skins"
+msgid "control.features-and-skins"
+msgstr "Features And Skins"
 
 #: share/plugin/control/template/control/report.html:103
-msgid "February"
-msgstr "date.february"
+msgid "date.february"
+msgstr "February"
 
 #: share/plugin/control/template/control/field_form:46 share/plugin/control/template/control/fields-account.html:25
-msgid "Field Name"
-msgstr "control.field-name"
+msgid "control.field-name"
+msgstr "Field Name"
 
 #: share/plugin/control/template/control/field_form:42 share/plugin/control/template/control/fields-account.html:24
-msgid "Field Title"
-msgstr "control.field-title"
+msgid "control.field-title"
+msgstr "Field Title"
 
 #: share/plugin/control/template/control/field_form:64 share/plugin/control/template/control/fields-account.html:26
-msgid "Field Type"
-msgstr "control.field-type"
+msgid "control.field-type"
+msgstr "Field Type"
 
 #: share/plugin/control/template/control/add_user.html:28
-msgid "First name:"
-msgstr "control.first-name:"
+msgid "control.first-name:"
+msgstr "First name:"
 
 #: share/plugin/control/template/control/index.html:8
-msgid "From here, Appliance Business Administrators can manage and monitor the use of the Socialtext application, including Accounts, Groups, Workspaces, Users, and Reports."
-msgstr "control.about-control-panel"
+msgid "control.about-control-panel"
+msgstr "From here, Appliance Business Administrators can manage and monitor the use of the Socialtext application, including Accounts, Groups, Workspaces, Users, and Reports."
 
 #: share/plugin/control/template/control/group_add_to_workspace.html:27 share/plugin/control/template/control/workspace_add_group.html:28
-msgid "Give entire Group Admin privileges"
-msgstr "control.give-group-admin-privileges"
+msgid "control.give-group-admin-privileges"
+msgstr "Give entire Group Admin privileges"
 
 #. (workspace.name)
 #: share/plugin/control/template/control/workspace.html:16
-msgid "Go to the %1 workspace"
-msgstr "control.go-to-wiki=name"
+msgid "control.go-to-wiki=name"
+msgstr "Go to the %1 workspace"
 
 #: share/plugin/control/template/control/group.html:9
-msgid "Go to this group"
-msgstr "control.go-to-this-group"
+msgid "control.go-to-this-group"
+msgstr "Go to this group"
 
 #: share/plugin/control/share/javascript/lightbox/group-create.tt2:58
-msgid "Group Name:"
-msgstr "control.group-name:"
+msgid "control.group-name:"
+msgstr "Group Name:"
 
 #: share/plugin/control/share/javascript/lightbox/group-create.tt2:24
-msgid "Group Permissions:"
-msgstr "control.group-permissions:"
+msgid "control.group-permissions:"
+msgstr "Group Permissions:"
 
 #: share/plugin/control/template/control/group.html:188 share/plugin/control/template/control/group.html:232 share/plugin/control/template/control/group.html:247 share/plugin/control/template/control/group.html:262 share/plugin/control/template/control/group.html:381
-msgid "Group role changes were successful."
-msgstr "control.group-role-changed"
+msgid "control.group-role-changed"
+msgstr "Group role changes were successful."
 
 #: share/plugin/control/template/control/groups.html:4 share/plugin/control/template/control/index.html:29 share/plugin/control/template/control/workspace.html:180 share/plugin/control/template/control/workspaces_new.html:41 share/plugin/control/template/control/wrapper:90
-msgid "Groups"
-msgstr "nav.groups"
+msgid "nav.groups"
+msgstr "Groups"
 
 #. (this.total)
 #. (account.group_count)
 #: share/plugin/control/share/javascript/workspaces_new.js:130 share/plugin/control/template/control/account.html:84 share/plugin/control/template/control/groups.html:45 share/plugin/control/template/control/workspace.html:198
-msgid "Groups (%1)"
-msgstr "control.groups=count"
+msgid "control.groups=count"
+msgstr "Groups (%1)"
 
 #: share/plugin/control/template/control/index.html:30
-msgid "Groups are collections of users. Groups belong to accounts, and maybe associated with one or more Workspaces. Settings for a Group as well as User/Workspace associations are controlled here."
-msgstr "control.about-groups-tab"
+msgid "control.about-groups-tab"
+msgstr "Groups are collections of users. Groups belong to accounts, and maybe associated with one or more Workspaces. Settings for a Group as well as User/Workspace associations are controlled here."
 
 #: share/plugin/control/template/control/account.html:35 share/plugin/control/template/control/workspace.html:7
-msgid "Growth Reports"
-msgstr "report.growth"
+msgid "report.growth"
+msgstr "Growth Reports"
 
 #: share/plugin/control/template/control/wrapper:138 share/plugin/control/template/control/wrapper:63
-msgid "Help"
-msgstr "nav.help"
+msgid "nav.help"
+msgstr "Help"
 
 #: share/plugin/control/template/control/field_form:75 share/plugin/control/template/control/fields-account.html:28
-msgid "Hidden"
-msgstr "control.hidden-field"
+msgid "control.hidden-field"
+msgstr "Hidden"
 
 #: share/plugin/control/share/javascript/workspaces_new.js:135 share/plugin/control/template/control/group_table:17 share/plugin/control/template/control/group_table:6 share/plugin/control/template/control/groups.html:50 share/plugin/control/template/control/workspace.html:203
-msgid "ID"
-msgstr "cli.group-id"
+msgid "cli.group-id"
+msgstr "ID"
 
 #: share/plugin/control/template/control/design-account.html:25
-msgid "Image File:"
-msgstr "control.image-file:"
+msgid "control.image-file:"
+msgstr "Image File:"
 
 #: share/plugin/control/template/control/index.html:3
-msgid "Introduction"
-msgstr "control.introduction"
+msgid "control.introduction"
+msgstr "Introduction"
 
 #: share/plugin/control/template/control/group_invite.html:128 share/plugin/control/template/control/workspace_invite.html:161
-msgid "Invite"
-msgstr "nav.invite"
+msgid "nav.invite"
+msgstr "Invite"
 
 #: share/plugin/control/template/control/account.html:87
-msgid "Invite Group to Account"
-msgstr "control.invite-group-to-account"
+msgid "control.invite-group-to-account"
+msgstr "Invite Group to Account"
 
 #: share/plugin/control/template/control/invite_users:2
-msgid "Invite to Group(s)"
-msgstr "control.invite-to-group"
+msgid "control.invite-to-group"
+msgstr "Invite to Group(s)"
 
 #: share/plugin/control/template/control/invite_users:1
-msgid "Invite to Workspace(s)"
-msgstr "control.invite-to-wiki"
+msgid "control.invite-to-wiki"
+msgstr "Invite to Workspace(s)"
 
 #: share/plugin/control/template/control/group_invite.html:100
-msgid "Invite to existing group(s)"
-msgstr "control.invite-to-existing-group"
+msgid "control.invite-to-existing-group"
+msgstr "Invite to existing group(s)"
 
 #: share/plugin/control/template/control/workspace_invite.html:138
-msgid "Invite to existing workspace(s)"
-msgstr "control.invite-to-existing-wiki"
+msgid "control.invite-to-existing-wiki"
+msgstr "Invite to existing workspace(s)"
 
 #: share/plugin/control/template/control/selected_user_table_header:20 share/plugin/control/template/control/user_table_header:47
-msgid "Invited"
-msgstr "control.invited"
+msgid "control.invited"
+msgstr "Invited"
 
 #: share/plugin/control/template/control/account.html:164 share/plugin/control/template/control/group.html:214 share/plugin/control/template/control/workspace.html:123
-msgid "Invited (to system)"
-msgstr "control.invited-to-system"
+msgid "control.invited-to-system"
+msgstr "Invited (to system)"
 
 #: share/plugin/control/template/control/selected_user_table_header:21 share/plugin/control/template/control/user_table_header:51 share/plugin/control/template/control/user_table_header:53
-msgid "Invited By"
-msgstr "control.invited-by"
+msgid "control.invited-by"
+msgstr "Invited By"
 
 #: share/plugin/control/template/control/user.html:40
-msgid "Invited by:"
-msgstr "control.invited-by:"
+msgid "control.invited-by:"
+msgstr "Invited by:"
 
 #: share/plugin/control/template/control/report.html:102
-msgid "January"
-msgstr "date.january"
+msgid "date.january"
+msgstr "January"
 
 #: share/plugin/control/template/control/report.html:108
-msgid "July"
-msgstr "date.july"
+msgid "date.july"
+msgstr "July"
 
 #: share/plugin/control/template/control/report.html:107
-msgid "June"
-msgstr "date.june"
+msgid "date.june"
+msgstr "June"
 
 #: share/plugin/control/share/javascript/lightbox/group-create.tt2:46
-msgid "LDAP Driver:"
-msgstr "control.ldap-driver:"
+msgid "control.ldap-driver:"
+msgstr "LDAP Driver:"
 
 #: share/plugin/control/template/control/user.html:36
-msgid "Last login:"
-msgstr "control.last-login:"
+msgid "control.last-login:"
+msgstr "Last login:"
 
 #: share/plugin/control/template/control/add_user.html:32
-msgid "Last name:"
-msgstr "user.last-name:"
+msgid "user.last-name:"
+msgstr "Last name:"
 
 #: share/plugin/control/share/javascript/lightbox/group-create.tt2:39
-msgid "Load an existing group from LDAP"
-msgstr "control.load-existing-group-from-ldap"
+msgid "control.load-existing-group-from-ldap"
+msgstr "Load an existing group from LDAP"
 
 #: share/plugin/control/template/control/selected_user_table_header:3 share/plugin/control/template/control/user_table_header:4 share/plugin/control/template/control/user_table_header:8
-msgid "Loading selected users"
-msgstr "control.loading-selected-users"
+msgid "control.loading-selected-users"
+msgstr "Loading selected users"
 
 #: share/plugin/control/template/control/wrapper:139 share/plugin/control/template/control/wrapper:64
-msgid "Log out"
-msgstr "nav.logout"
+msgid "nav.logout"
+msgstr "Log out"
 
 #: share/plugin/control/template/control/index.html:34
-msgid "Manage system-wide application settings."
-msgstr "control.about-settings-tab"
+msgid "control.about-settings-tab"
+msgstr "Manage system-wide application settings."
 
 #: share/plugin/control/template/control/workspaces_new.html:16
-msgid "Manually set URI:"
-msgstr "control.manually-set-uri:"
+msgid "control.manually-set-uri:"
+msgstr "Manually set URI:"
 
 #: share/plugin/control/template/control/report.html:104
-msgid "March"
-msgstr "date.march"
+msgid "date.march"
+msgstr "March"
 
 #: share/plugin/control/template/control/report.html:106
-msgid "May"
-msgstr "date.may"
+msgid "date.may"
+msgstr "May"
 
 #: share/plugin/control/share/javascript/workspaces_new.js:158 share/plugin/control/share/javascript/workspaces_new.js:50 share/plugin/control/template/control/account.html:135 share/plugin/control/template/control/group.html:185 share/plugin/control/template/control/workspace.html:226 share/plugin/control/template/control/workspace.html:92
-msgid "Member"
-msgstr "control.member"
+msgid "control.member"
+msgstr "Member"
 
 #: share/plugin/control/share/javascript/useraccountrole.js:38
-msgid "Member of Account"
-msgstr "control.member-of-account"
+msgid "control.member-of-account"
+msgstr "Member of Account"
 
 #: share/plugin/control/template/control/wrapper:132 share/plugin/control/template/control/wrapper:57
-msgid "Mobile"
-msgstr "nav.mobile"
+msgid "nav.mobile"
+msgstr "Mobile"
 
 #: share/plugin/control/template/control/field_form:12
-msgid "Must supply a field title"
-msgstr "error.field-title-required"
+msgid "error.field-title-required"
+msgstr "Must supply a field title"
 
 #: share/plugin/control/template/control/wrapper:137 share/plugin/control/template/control/wrapper:62
-msgid "My Settings"
-msgstr "nav.my-settings"
+msgid "nav.my-settings"
+msgstr "My Settings"
 
 #: share/plugin/control/share/javascript/workspaces_new.js:144 share/plugin/control/share/javascript/workspaces_new.js:27 share/plugin/control/template/control/account.html:116 share/plugin/control/template/control/account_table:9 share/plugin/control/template/control/desktop-account.html:25 share/plugin/control/template/control/group.html:166 share/plugin/control/template/control/group.html:321 share/plugin/control/template/control/group.html:71 share/plugin/control/template/control/group_invite.html:91 share/plugin/control/template/control/group_table:20 share/plugin/control/template/control/group_table:7 share/plugin/control/template/control/groups.html:59 share/plugin/control/template/control/selected_user_table_header:16 share/plugin/control/template/control/user.html:118 share/plugin/control/template/control/user.html:236 share/plugin/control/template/control/user_table_header:26 share/plugin/control/template/control/user_table_header:28 share/plugin/control/template/control/workspace.html:212 share/plugin/control/template/control/workspace.html:72 share/plugin/control/template/control/workspace_invite.html:144 share/plugin/control/template/control/workspace_invite.html:93 share/plugin/control/template/control/workspace_table:15 share/plugin/control/template/control/workspace_table:22
-msgid "Name"
-msgstr "control.name"
+msgid "control.name"
+msgstr "Name"
 
 #: share/plugin/control/share/javascript/lightbox/group-create.tt2:14
-msgid "Name of group:"
-msgstr "control.name-of-group:"
+msgid "control.name-of-group:"
+msgstr "Name of group:"
 
 #: share/plugin/control/template/control/accounts.html:12
-msgid "Name:"
-msgstr "control.name:"
+msgid "control.name:"
+msgstr "Name:"
 
 #: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:46
-msgid "Next"
-msgstr "control.next"
+msgid "control.next"
+msgstr "Next"
 
 #: share/plugin/control/template/control/fields-account.html:43
-msgid "No"
-msgstr "control.field-not-hidden"
+msgid "control.field-not-hidden"
+msgstr "No"
 
 #: share/plugin/control/template/control/enumerate_groups:10
-msgid "No Groups to Add."
-msgstr "error.no-groups-to-add"
+msgid "error.no-groups-to-add"
+msgstr "No Groups to Add."
 
 #: share/plugin/control/template/control/user_table:83
-msgid "No users selected, please select at least one user and try again."
-msgstr "error.no-users-selected"
+msgid "error.no-users-selected"
+msgstr "No users selected, please select at least one user and try again."
 
 #: share/plugin/control/template/control/plugins:15
-msgid "None"
-msgstr "plugins.none"
+msgid "plugins.none"
+msgstr "None"
 
 #: share/plugin/control/template/control/report.html:112
-msgid "Novemeber"
-msgstr "date.novemeber"
+msgid "date.novemeber"
+msgstr "Novemeber"
 
 #: share/plugin/control/template/control/report.html:111
-msgid "October"
-msgstr "date.october"
+msgid "date.october"
+msgstr "October"
 
 #: share/plugin/control/share/javascript/lightbox/group-create.tt2:42
-msgid "Once you create the group, it may take some time for your LDAP group members to be displayed on the Group home page. If you don't see the members at first, wait a while and refresh the page"
-msgstr "control.wait-for-ldap-group-refresh"
+msgid "control.wait-for-ldap-group-refresh"
+msgstr "Once you create the group, it may take some time for your LDAP group members to be displayed on the Group home page. If you don't see the members at first, wait a while and refresh the page"
 
 #: share/plugin/control/template/control/plugins:13
-msgid "Optional modules installed:"
-msgstr "plugins.installed:"
+msgid "plugins.installed:"
+msgstr "Optional modules installed:"
 
 #: share/plugin/control/template/control/groups.html:92
-msgid "Permission Set"
-msgstr "control.permission-set"
+msgid "control.permission-set"
+msgstr "Permission Set"
 
 #. (group.permission_set)
 #: share/plugin/control/template/control/group.html:11
-msgid "Permission Set:"
-msgstr "control.permission-set:"
+msgid "control.permission-set:"
+msgstr "Permission Set:"
 
 #: share/plugin/control/template/control/field_common:4 share/plugin/control/template/control/field_common:8
-msgid "Person"
-msgstr "control.field-person"
+msgid "control.field-person"
+msgstr "Person"
 
 #: share/plugin/control/template/control/desktop-account.html:45
-msgid "Please check again?"
-msgstr "error.check-again?"
+msgid "error.check-again?"
+msgstr "Please check again?"
 
 #: share/plugin/control/template/control/account_add_group.html:10 share/plugin/control/template/control/workspace_add_group.html:14
-msgid "Please select a group"
-msgstr "control.select-group"
+msgid "control.select-group"
+msgstr "Please select a group"
 
 #: share/plugin/control/template/control/group_add_to_workspace.html:13
-msgid "Please select a workspace"
-msgstr "control.select-wiki"
+msgid "control.select-wiki"
+msgstr "Please select a workspace"
 
 #: share/plugin/control/template/control/group_add_to_account.html:14
-msgid "Please select an account"
-msgstr "control.select-account"
+msgid "control.select-account"
+msgstr "Please select an account"
 
 #: share/plugin/control/template/control/group_add_users.html:9
-msgid "Please select some users to add to the group."
-msgstr "control.select-users-to-add-to-group"
+msgid "control.select-users-to-add-to-group"
+msgstr "Please select some users to add to the group."
 
 #: share/plugin/control/template/control/user.html:11
-msgid "Prefers to be called"
-msgstr "control.prefers-to-be-called"
+msgid "control.prefers-to-be-called"
+msgstr "Prefers to be called"
 
 #: share/plugin/control/template/control/plugins:8
-msgid "Press 'OK' to disable this module or 'Cancel' to exit."
-msgstr "plugins.confirm-disable"
+msgid "plugins.confirm-disable"
+msgstr "Press 'OK' to disable this module or 'Cancel' to exit."
 
 #: share/plugin/control/template/control/plugins:5
-msgid "Press 'OK' to enable this module or 'Cancel' to exit."
-msgstr "plugins.confirm-enable"
+msgid "plugins.confirm-enable"
+msgstr "Press 'OK' to enable this module or 'Cancel' to exit."
 
 #: share/plugin/control/template/control/group.html:340 share/plugin/control/template/control/user.html:134
-msgid "Primary"
-msgstr "control.primary"
+msgid "control.primary"
+msgstr "Primary"
 
 #: share/plugin/control/share/javascript/useraccountrole.js:35 share/plugin/control/share/javascript/workspaces_new.js:174 share/plugin/control/template/control/account.html:151 share/plugin/control/template/control/group.html:201 share/plugin/control/template/control/group_table:10 share/plugin/control/template/control/group_table:29 share/plugin/control/template/control/groups.html:78 share/plugin/control/template/control/selected_user_table_header:19 share/plugin/control/template/control/user_table_header:41 share/plugin/control/template/control/user_table_header:43 share/plugin/control/template/control/workspace.html:110 share/plugin/control/template/control/workspace.html:247
-msgid "Primary Account"
-msgstr "control.primary-account"
+msgid "control.primary-account"
+msgstr "Primary Account"
 
 #: share/plugin/control/template/control/accounts_transform.html:20
-msgid "Primary account for the new groups is:"
-msgstr "control.primary-account-for-new-groups:"
+msgid "control.primary-account-for-new-groups:"
+msgstr "Primary account for the new groups is:"
 
 #: share/plugin/control/template/control/growth_report.html:4 share/plugin/control/template/control/report.html:135
-msgid "Printer Friendly Report"
-msgstr "report.printer-friendly"
+msgid "report.printer-friendly"
+msgstr "Printer Friendly Report"
 
 #: share/plugin/control/template/control/account.html:20
-msgid "Profile Fields"
-msgstr "control.profile-fields"
+msgid "control.profile-fields"
+msgstr "Profile Fields"
 
 #: share/plugin/control/template/control/fields-account.html:27
-msgid "Profile Section"
-msgstr "control.profile-section"
+msgid "control.profile-section"
+msgstr "Profile Section"
 
 #: share/plugin/control/template/control/field_common:4 share/plugin/control/template/control/field_common:6
-msgid "Regular"
-msgstr "control.field-regular"
+msgid "control.field-regular"
+msgstr "Regular"
 
 #: share/plugin/control/template/control/user.html:127
-msgid "Relationship"
-msgstr "control.relationship"
+msgid "control.relationship"
+msgstr "Relationship"
 
 #: share/plugin/control/template/control/workspace_invite.html:120
-msgid "Remove"
-msgstr "do.remove"
+msgid "do.remove"
+msgstr "Remove"
 
 #: share/plugin/control/template/control/workspace_invite.html:126
-msgid "Remove All"
-msgstr "do.remove-all"
+msgid "do.remove-all"
+msgstr "Remove All"
 
 #: share/plugin/control/template/control/user.html:73
-msgid "Remove Appliance Business Administrator Role"
-msgstr "control.remove-appliance-business-administrator-role"
+msgid "control.remove-appliance-business-administrator-role"
+msgstr "Remove Appliance Business Administrator Role"
 
 #: share/plugin/control/template/control/user.html:87
-msgid "Remove Appliance Technical Administrator Role"
-msgstr "control.remove-appliance-technical-administrator-role"
+msgid "control.remove-appliance-technical-administrator-role"
+msgstr "Remove Appliance Technical Administrator Role"
 
 #: share/plugin/control/template/control/user.html:271
-msgid "Remove from Workspaces"
-msgstr "control.remove-from-wiki"
+msgid "control.remove-from-wiki"
+msgstr "Remove from Workspaces"
 
 #. (accounts.length)
 #: share/plugin/control/template/control/group.html:368
-msgid "Remove this Group from %*(%1,selected Account)?"
-msgstr "control.remove-group-from-accounts=count?"
+msgid "control.remove-group-from-accounts=count?"
+msgstr "Remove this Group from %*(%1,selected Account)?"
 
 #. (workspaces.length)
 #: share/plugin/control/template/control/user.html:273
-msgid "Remove this user from %*(%1,selected workspace)?"
-msgstr "control.remove-user-from-accounts=count?"
+msgid "control.remove-user-from-accounts=count?"
+msgstr "Remove this user from %*(%1,selected workspace)?"
 
 #: share/plugin/control/template/control/account.html:6 share/plugin/control/template/control/rename-account.html:8
-msgid "Rename Account"
-msgstr "control.rename-account"
+msgid "control.rename-account"
+msgstr "Rename Account"
 
 #: share/plugin/control/template/control/report.html:124
-msgid "Report Period:"
-msgstr "report.period:"
+msgid "report.period:"
+msgstr "Report Period:"
 
 #: share/plugin/control/template/control/account.html:32
-msgid "Reports"
-msgstr "control.reports"
+msgid "control.reports"
+msgstr "Reports"
 
 #: share/plugin/control/template/control/fields-account.html:31
-msgid "Required"
-msgstr "control.required-field"
+msgid "control.required-field"
+msgstr "Required"
 
 #: share/plugin/control/template/control/design-account.html:45
-msgid "Reset Logo to Default"
-msgstr "control.reset-logo-to-default"
+msgid "control.reset-logo-to-default"
+msgstr "Reset Logo to Default"
 
 #: share/plugin/control/template/control/user.html:32
-msgid "Reset password"
-msgstr "control.reset-password"
+msgid "control.reset-password"
+msgstr "Reset password"
 
 #: share/plugin/control/template/control/desktop-account.html:162
-msgid "Reset to Current"
-msgstr "control.reset-to-current"
+msgid "control.reset-to-current"
+msgstr "Reset to Current"
 
 #: share/plugin/control/template/control/desktop-account.html:163
-msgid "Reset to Default"
-msgstr "control.reset-to-default"
+msgid "control.reset-to-default"
+msgstr "Reset to Default"
 
 #: share/plugin/control/template/control/account.html:42
-msgid "Restrict Invites To Domain:"
-msgstr "control.restrict-invites-to-domain:"
+msgid "control.restrict-invites-to-domain:"
+msgstr "Restrict Invites To Domain:"
 
 #. (group_name)
 #: share/plugin/control/template/control/group_add_users.html:11
-msgid "Return to %1 Group"
-msgstr "control.return-to-group=name"
+msgid "control.return-to-group=name"
+msgstr "Return to %1 Group"
 
 #: share/plugin/control/share/javascript/workspaces_new.js:153 share/plugin/control/share/javascript/workspaces_new.js:45 share/plugin/control/template/control/account.html:130 share/plugin/control/template/control/group.html:180 share/plugin/control/template/control/workspace.html:221 share/plugin/control/template/control/workspace.html:87
-msgid "Role"
-msgstr "control.role"
+msgid "control.role"
+msgstr "Role"
 
 #: share/plugin/control/template/control/field_form:81
-msgid "Save Field"
-msgstr "control.save-field"
+msgid "control.save-field"
+msgstr "Save Field"
 
 #: share/plugin/control/template/control/accounts.html:3 share/plugin/control/template/control/workspaces.html:3
-msgid "Search by name"
-msgstr "control.search-by-name"
+msgid "control.search-by-name"
+msgstr "Search by name"
 
 #: share/plugin/control/template/control/group_add_users.html:4 share/plugin/control/template/control/users.html:4
-msgid "Search by username"
-msgstr "control.search-by-username"
+msgid "control.search-by-username"
+msgstr "Search by username"
 
 #: share/plugin/control/template/control/workspace_invite.html:106
-msgid "Select one or more of the users below to become administrators of your new workspace."
-msgstr "control.select-admins-of-new-wiki"
+msgid "control.select-admins-of-new-wiki"
+msgstr "Select one or more of the users below to become administrators of your new workspace."
 
 #: share/plugin/control/template/control/accounts_transform.html:3
-msgid "Select the Accounts that you wish to transform into Groups"
-msgstr "control.select-accounts-to-transform-into-groups"
+msgid "control.select-accounts-to-transform-into-groups"
+msgstr "Select the Accounts that you wish to transform into Groups"
 
 #: share/plugin/control/template/control/add_users.html:16
-msgid "Select the CSV file containing users to add:"
-msgstr "control.select-users-csv:"
+msgid "control.select-users-csv:"
+msgstr "Select the CSV file containing users to add:"
 
 #: share/plugin/control/template/control/account_add_group.html:23 share/plugin/control/template/control/group_add_to_account.html:21 share/plugin/control/template/control/group_add_to_workspace.html:20 share/plugin/control/template/control/workspace_add_group.html:21
-msgid "Send invitation email"
-msgstr "control.send-invitation-email"
+msgid "control.send-invitation-email"
+msgstr "Send invitation email"
 
 #: share/plugin/control/template/control/report.html:110
-msgid "September"
-msgstr "date.september"
+msgid "date.september"
+msgstr "September"
 
 #: share/plugin/control/template/control/add_user.html:75
-msgid "Set by external Directory"
-msgstr "control.set-by-external-directory"
+msgid "control.set-by-external-directory"
+msgstr "Set by external Directory"
 
 #: share/plugin/control/template/control/index.html:33 share/plugin/control/template/control/wrapper:91
-msgid "Settings"
-msgstr "nav.settings"
+msgid "nav.settings"
+msgstr "Settings"
 
 #: share/plugin/control/share/javascript/table.js:27 share/plugin/control/template/control/groups.html:23
-msgid "Show all"
-msgstr "control.show-all"
+msgid "control.show-all"
+msgstr "Show all"
 
 #: share/plugin/control/template/control/groups.html:36
-msgid "Show deleted"
-msgstr "control.show-deleted"
+msgid "control.show-deleted"
+msgstr "Show deleted"
 
 #: share/plugin/control/share/javascript/table.js:33 share/plugin/control/template/control/groups.html:30
-msgid "Show only selected"
-msgstr "control.show-only-selected"
+msgid "control.show-only-selected"
+msgstr "Show only selected"
 
 #. (from, to, total)
 #: share/plugin/control/share/javascript/template/control_table.tt2:46
-msgid "Showing %1 - %2 of %3"
-msgstr "control.showing=from,to,total"
+msgid "control.showing=from,to,total"
+msgstr "Showing %1 - %2 of %3"
 
 #. (pager.first, pager.last, pager.total_entries)
 #: share/plugin/control/template/control/paging_controls:11
-msgid "Showing %1 - %2 of %3 total."
-msgstr "info.showing=from,to,total"
+msgid "info.showing=from,to,total"
+msgstr "Showing %1 - %2 of %3 total."
 
 #: share/plugin/control/share/javascript/template/control_table.tt2:58
-msgid "Showing all selected entries"
-msgstr "control.showing-all-selected-entries"
+msgid "control.showing-all-selected-entries"
+msgstr "Showing all selected entries"
 
 #: share/plugin/control/template/control/wrapper:53
-msgid "Socialtext"
-msgstr "nav.socialtext"
+msgid "nav.socialtext"
+msgstr "Socialtext"
 
 #: share/plugin/control/template/control/config.html:2
-msgid "Socialtext Admin Configuration"
-msgstr "control.socialtext-admin-configuration"
+msgid "control.socialtext-admin-configuration"
+msgstr "Socialtext Admin Configuration"
 
 #: share/plugin/control/template/control/wrapper:104 share/plugin/control/template/control/wrapper:19
-msgid "Socialtext Control Panel"
-msgstr "control.socialtext-control-panel"
+msgid "control.socialtext-control-panel"
+msgstr "Socialtext Control Panel"
 
 #: share/plugin/control/template/control/add_users.html:10
-msgid "Socialtext enables you to add multiple users to your account. To add multiple users, download the sample data file, and add your user data. Then upload the file here.  Complete documentation about adding multiple users is available here: <a href=\"https://www.socialtext.net/help-adminguide/adding_and_updating_users#adding_multiple_users\">Adding Multiple Users to Socialtext</a>"
-msgstr "control.about-mass-add-users"
+msgid "control.about-mass-add-users"
+msgstr "Socialtext enables you to add multiple users to your account. To add multiple users, download the sample data file, and add your user data. Then upload the file here.  Complete documentation about adding multiple users is available here: <a href=\"https://www.socialtext.net/help-adminguide/adding_and_updating_users#adding_multiple_users\">Adding Multiple Users to Socialtext</a>"
 
 #: share/plugin/control/template/control/fields-account.html:30
-msgid "Source"
-msgstr "control.field-source"
+msgid "control.field-source"
+msgstr "Source"
 
 #. (group.driver_key)
 #: share/plugin/control/template/control/group.html:8
-msgid "Source: %1"
-msgstr "control.group-source=key"
+msgid "control.group-source=key"
+msgstr "Source: %1"
 
 #: share/plugin/control/template/control/workspace_invite.html:145
-msgid "Start typing the name of a workspace:"
-msgstr "control.lookahead-wiki:"
+msgid "control.lookahead-wiki:"
+msgstr "Start typing the name of a workspace:"
 
 #: share/plugin/control/template/control/workspace_invite.html:99
-msgid "Start typing the name of the account the new workspace should belong to:"
-msgstr "control.lookahead-account-of-new-wiki:"
+msgid "control.lookahead-account-of-new-wiki:"
+msgstr "Start typing the name of the account the new workspace should belong to:"
 
 #: share/plugin/control/template/control/workspaces_new.html:5
-msgid "Step 1: Give your workspace a title."
-msgstr "control.step-1-set-wiki-title"
+msgid "control.step-1-set-wiki-title"
+msgstr "Step 1: Give your workspace a title."
 
 #: share/plugin/control/template/control/workspaces_new.html:28
-msgid "Step 2: Add one or more users, or a group of users to the workspace. You must make at least one an administrator."
-msgstr "control.step-2-add-users-with-at-least-one-admin"
+msgid "control.step-2-add-users-with-at-least-one-admin"
+msgstr "Step 2: Add one or more users, or a group of users to the workspace. You must make at least one an administrator."
 
 #: share/plugin/control/template/control/workspaces_new.html:51
-msgid "Step 3: Click the button to create the workspace"
-msgstr "control.step-3-click-to-create-wiki"
+msgid "control.step-3-click-to-create-wiki"
+msgstr "Step 3: Click the button to create the workspace"
 
 #: share/plugin/control/template/control/fields-account.html:15
-msgid "Stock fields"
-msgstr "control.stock-fields"
+msgid "control.stock-fields"
+msgstr "Stock fields"
 
 #: share/plugin/control/template/control/accounts.html:18 share/plugin/control/template/control/accounts.html:5 share/plugin/control/template/control/desktop-account.html:161 share/plugin/control/template/control/group_add_users.html:6 share/plugin/control/template/control/users.html:6 share/plugin/control/template/control/workspace.html:34 share/plugin/control/template/control/workspaces.html:5
-msgid "Submit"
-msgstr "control.submit"
+msgid "control.submit"
+msgstr "Submit"
 
 #: share/plugin/control/template/control/index.html:22
-msgid "Tabs"
-msgstr "control.tabs"
+msgid "control.tabs"
+msgstr "Tabs"
 
 #: share/plugin/control/template/control/field_form:89
-msgid "The field name is used as a unique identifier.  If left blank, it will be derrived from the title"
-msgstr "control.about-field-name"
+msgid "control.about-field-name"
+msgstr "The field name is used as a unique identifier.  If left blank, it will be derrived from the title"
 
 #: share/plugin/control/template/control/desktop-account.html:85
-msgid "The values have been reset to current. Do you want to apply them now?"
-msgstr "control.desktop-skin-reset-to-current-apply-now?"
+msgid "control.desktop-skin-reset-to-current-apply-now?"
+msgstr "The values have been reset to current. Do you want to apply them now?"
 
 #: share/plugin/control/template/control/desktop-account.html:71
-msgid "The values have been reset to default. Do you want to apply them now?"
-msgstr "control.desktop-skin-reset-to-default-apply-now?"
+msgid "control.desktop-skin-reset-to-default-apply-now?"
+msgstr "The values have been reset to default. Do you want to apply them now?"
 
 #: share/plugin/control/template/control/workspace_invite.html:94
-msgid "This is a short unique identifier used as part of your workspace's web address and email address. It must consist of 3-30 lowercase letters, numbers, underscores, or dashes."
-msgstr "control.about-wiki-id"
+msgid "control.about-wiki-id"
+msgstr "This is a short unique identifier used as part of your workspace's web address and email address. It must consist of 3-30 lowercase letters, numbers, underscores, or dashes."
 
 #: share/plugin/control/template/control/workspace.html:25
-msgid "This is an all users workspace for the account:"
-msgstr "control.this-is-all-users-wiki-for-account:"
+msgid "control.this-is-all-users-wiki-for-account:"
+msgstr "This is an all users workspace for the account:"
 
 #: share/plugin/control/template/control/group_invite.html:92
-msgid "This is the name of your group."
-msgstr "control.this-is-name-of-your-group"
+msgid "control.this-is-name-of-your-group"
+msgstr "This is the name of your group."
 
 #: share/plugin/control/template/control/workspace_invite.html:89
-msgid "This is the title of your workspace. It may be changed later if you want."
-msgstr "info.wiki-title"
+msgid "info.wiki-title"
+msgstr "This is the title of your workspace. It may be changed later if you want."
 
 #: share/plugin/control/template/control/design-account.html:58
-msgid "This will also reset the logo after a fresh login to Socialtext Desktop."
-msgstr "control.this-will-also-reset-logo-for-desktop"
+msgid "control.this-will-also-reset-logo-for-desktop"
+msgstr "This will also reset the logo after a fresh login to Socialtext Desktop."
 
 #: share/plugin/control/template/control/design-account.html:52
-msgid "This will reset the logo after a fresh login to Socialtext Desktop."
-msgstr "control.this-will-reset-logo-for-desktop"
+msgid "control.this-will-reset-logo-for-desktop"
+msgstr "This will reset the logo after a fresh login to Socialtext Desktop."
 
 #: share/plugin/control/template/control/workspace_invite.html:88 share/plugin/control/template/control/workspaces_new.html:9
-msgid "Title"
-msgstr "control.wiki-title"
+msgid "control.wiki-title"
+msgstr "Title"
 
 #: share/plugin/control/template/control/index.html:15
-msgid "To create an entity in the default account, use these links. To create an entity in a specific account, browse to the desired account via the <a href='/nlw/control/account'>Accounts</a> tab."
-msgstr "control.about-create-links"
+msgid "control.about-create-links"
+msgstr "To create an entity in the default account, use these links. To create an entity in a specific account, browse to the desired account via the <a href='/nlw/control/account'>Accounts</a> tab."
 
 #: share/plugin/control/template/control/accounts_transform.html:7
-msgid "Transform"
-msgstr "control.transform"
+msgid "control.transform"
+msgstr "Transform"
 
 #: share/plugin/control/template/control/accounts_transform.html:2
-msgid "Transform Accounts to Groups"
-msgstr "control.transform-accounts-to-groups"
+msgid "control.transform-accounts-to-groups"
+msgstr "Transform Accounts to Groups"
 
 #: share/plugin/control/template/control/accounts_transform.html:29
-msgid "Transform to Groups"
-msgstr "control.transform-to-groups"
+msgid "control.transform-to-groups"
+msgstr "Transform to Groups"
 
 #: share/plugin/control/template/control/workspace.html:14 share/plugin/control/template/control/workspaces_new.html:13
-msgid "URI"
-msgstr "control.uri"
+msgid "control.uri"
+msgstr "URI"
 
 #: share/plugin/control/template/control/account.html:61 share/plugin/control/template/control/group.html:18 share/plugin/control/template/control/plugin_pref_form.html:6 share/plugin/control/template/control/workspace_table:3 share/plugin/control/template/control/workspace_table:70
-msgid "Update"
-msgstr "control.update"
+msgid "control.update"
+msgstr "Update"
 
 #: share/plugin/control/template/control/group.html:122
-msgid "Updating ..."
-msgstr "control.updating"
+msgid "control.updating"
+msgstr "Updating ..."
 
 #: share/plugin/control/template/control/add_users.html:19
-msgid "Upload"
-msgstr "do.upload"
+msgid "do.upload"
+msgstr "Upload"
 
 #: share/plugin/control/template/control/design-account.html:24
-msgid "Upload Account Logo (optional)"
-msgstr "control.upload-account-logo-optional"
+msgid "control.upload-account-logo-optional"
+msgstr "Upload Account Logo (optional)"
 
 #: share/plugin/control/template/control/account.html:34 share/plugin/control/template/control/workspace.html:6
-msgid "Usage Reports"
-msgstr "report.usage"
+msgid "report.usage"
+msgstr "Usage Reports"
 
 #: share/plugin/control/template/control/report.html:100
-msgid "Usage ending midnight of:"
-msgstr "report.usage-ending-midnight-of:"
+msgid "report.usage-ending-midnight-of:"
+msgstr "Usage ending midnight of:"
 
 #: share/plugin/control/template/control/design-account.html:62 share/plugin/control/template/control/design-account.html:67
-msgid "Use Default Socialtext Logo"
-msgstr "control.use-default-logo"
+msgid "control.use-default-logo"
+msgstr "Use Default Socialtext Logo"
 
 #: share/plugin/control/template/control/design-account.html:56
-msgid "Use Default Socialtext Logo for Desktop"
-msgstr "control.use-default-logo-for-desktop"
+msgid "control.use-default-logo-for-desktop"
+msgstr "Use Default Socialtext Logo for Desktop"
 
 #: share/plugin/control/template/control/index.html:28
-msgid "Use this screen to quickly invite Users to Groups and Workspaces."
-msgstr "control.about-users-tab"
+msgid "control.about-users-tab"
+msgstr "Use this screen to quickly invite Users to Groups and Workspaces."
 
 #: share/plugin/control/template/control/field_form:58 share/plugin/control/template/control/fields-account.html:44
-msgid "User"
-msgstr "control.user-field"
+msgid "control.user-field"
+msgstr "User"
 
 #. (item.title)
 #: share/plugin/control/template/control/account.html:200
-msgid "User %1 is now a Member of the Account"
-msgstr "control.user-added-to-account=user"
+msgid "control.user-added-to-account=user"
+msgstr "User %1 is now a Member of the Account"
 
 #. (name)
 #: share/plugin/control/template/control/user.html:208
-msgid "User has been added to the %1 account"
-msgstr "control.user-added=account"
+msgid "control.user-added=account"
+msgstr "User has been added to the %1 account"
 
 #: share/plugin/control/template/control/user.html:58
-msgid "User is a system user."
-msgstr "control.user-is-system-user"
+msgid "control.user-is-system-user"
+msgstr "User is a system user."
 
 #: share/plugin/control/template/control/user.html:54
-msgid "User is confirmed"
-msgstr "control.user-is-confirmed"
+msgid "control.user-is-confirmed"
+msgstr "User is confirmed"
 
 #: share/plugin/control/template/control/user.html:48
-msgid "User requires confirmation"
-msgstr "control.user-requires-confirmation"
+msgid "control.user-requires-confirmation"
+msgstr "User requires confirmation"
 
 #. (success.length)
 #: share/plugin/control/template/control/user.html:180
-msgid "User was removed from %*(%1,Account)"
-msgstr "control.user-removed-from-accounts=count"
+msgid "control.user-removed-from-accounts=count"
+msgstr "User was removed from %*(%1,Account)"
 
 #. (success[0].account_name)
 #: share/plugin/control/template/control/user.html:175
-msgid "User was removed from Account %1"
-msgstr "control.removed-user=account"
+msgid "control.removed-user=account"
+msgstr "User was removed from Account %1"
 
 #: share/plugin/control/share/javascript/workspaces_new.js:36 share/plugin/control/template/control/user.html:14
-msgid "Username"
-msgstr "control.username"
+msgid "control.username"
+msgstr "Username"
 
 #: share/plugin/control/share/javascript/workspaces_new.js:170 share/plugin/control/template/control/account.html:69 share/plugin/control/template/control/account_table:15 share/plugin/control/template/control/group.html:27 share/plugin/control/template/control/group.html:335 share/plugin/control/template/control/group.html:74 share/plugin/control/template/control/group_table:23 share/plugin/control/template/control/group_table:8 share/plugin/control/template/control/groups.html:73 share/plugin/control/template/control/index.html:27 share/plugin/control/template/control/user.html:245 share/plugin/control/template/control/workspace.html:243 share/plugin/control/template/control/workspace.html:46 share/plugin/control/template/control/workspace_table:16 share/plugin/control/template/control/workspace_table:25 share/plugin/control/template/control/workspaces_new.html:31 share/plugin/control/template/control/wrapper:89
-msgid "Users"
-msgstr "control.users"
+msgid "control.users"
+msgstr "Users"
 
 #. (this.total)
 #: share/plugin/control/share/javascript/workspaces_new.js:22 share/plugin/control/template/control/account.html:111 share/plugin/control/template/control/group.html:161 share/plugin/control/template/control/workspace.html:67
-msgid "Users (%1)"
-msgstr "control.users=count"
+msgid "control.users=count"
+msgstr "Users (%1)"
 
 #: share/plugin/control/template/control/desktop-account.html:26
-msgid "Value"
-msgstr "control.value"
+msgid "control.value"
+msgstr "Value"
 
 #. (this.via_group.length,                $.map(this.via_group, function (g)
 #: share/plugin/control/share/javascript/useraccountrole.js:55
-msgid "Via %*(%1,Group): %2"
-msgstr "control.via-group=count,links"
+msgid "control.via-group=count,links"
+msgstr "Via %*(%1,Group): %2"
 
 #. (this.via_workspace.length,                $.map(this.via_workspace, function (w)
 #: share/plugin/control/share/javascript/useraccountrole.js:45
-msgid "Via %*(%1,Workspace): %2"
-msgstr "control.via-wiki=count,links"
+msgid "control.via-wiki=count,links"
+msgstr "Via %*(%1,Workspace): %2"
 
 #: share/plugin/control/template/control/index.html:5
-msgid "Welcome to the Socialtext Control Panel."
-msgstr "control.welcome-to-control-panel"
+msgid "control.welcome-to-control-panel"
+msgstr "Welcome to the Socialtext Control Panel."
 
 #: share/plugin/control/template/control/group_add_users.html:10
-msgid "When you've made your decisions, click the 'Add Users' link."
-msgstr "control.click-add-users-link"
+msgid "control.click-add-users-link"
+msgstr "When you've made your decisions, click the 'Add Users' link."
 
 #: share/plugin/control/template/control/user.html:279
-msgid "Workspace removals were successful."
-msgstr "control.wiki-removed"
+msgid "control.wiki-removed"
+msgstr "Workspace removals were successful."
 
 #: share/plugin/control/share/javascript/workspaces_new.js:166 share/plugin/control/template/control/account.html:146 share/plugin/control/template/control/account_table:12 share/plugin/control/template/control/group.html:196 share/plugin/control/template/control/group.html:330 share/plugin/control/template/control/group_table:26 share/plugin/control/template/control/group_table:9 share/plugin/control/template/control/groups.html:68 share/plugin/control/template/control/index.html:31 share/plugin/control/template/control/selected_user_table_header:18 share/plugin/control/template/control/user.html:215 share/plugin/control/template/control/user_table_header:34 share/plugin/control/template/control/user_table_header:36 share/plugin/control/template/control/workspace.html:105 share/plugin/control/template/control/workspace.html:239 share/plugin/control/template/control/workspace_invite.html:153 share/plugin/control/template/control/wrapper:88
-msgid "Workspaces"
-msgstr "nav.wikis"
+msgid "nav.wikis"
+msgstr "Workspaces"
 
 #. (account.workspace_count)
 #. (wksp_count)
 #. (this.total)
 #: share/plugin/control/template/control/account.html:216 share/plugin/control/template/control/group.html:50 share/plugin/control/template/control/user.html:231
-msgid "Workspaces (%1)"
-msgstr "control.wikis=count"
+msgid "control.wikis=count"
+msgstr "Workspaces (%1)"
 
 #: share/plugin/control/template/control/index.html:32
-msgid "Workspaces are where wiki and document content is stored. Use this to create a new Workspace."
-msgstr "control.about-wikis-tab"
+msgid "control.about-wikis-tab"
+msgstr "Workspaces are where wiki and document content is stored. Use this to create a new Workspace."
 
 #: share/plugin/control/template/control/fields-account.html:43
-msgid "Yes"
-msgstr "control.field-is-hidden"
+msgid "control.field-is-hidden"
+msgstr "Yes"
 
 #. (title)
 #: share/plugin/control/template/control/plugins:8
-msgid "You are about to disable %1."
-msgstr "plugins.about-to-disable=plugin"
+msgid "plugins.about-to-disable=plugin"
+msgstr "You are about to disable %1."
 
 #: share/plugin/control/template/control/design-account.html:21
-msgid "You can choose an image to use as the Account logo. Use the form below to upload an image from your computer. If you don't select an image, the Socialtext logo will be used instead.  The size of the logo should be 201 pixels wide and 36 pixels high, otherwise your image will be transformed to fit.  The uploaded logo will be displayed immediately to users in the browser and (optionally) after a fresh login to Socialtext Desktop."
-msgstr "control.about-account-logo-image"
+msgid "control.about-account-logo-image"
+msgstr "You can choose an image to use as the Account logo. Use the form below to upload an image from your computer. If you don't select an image, the Socialtext logo will be used instead.  The size of the logo should be 201 pixels wide and 36 pixels high, otherwise your image will be transformed to fit.  The uploaded logo will be displayed immediately to users in the browser and (optionally) after a fresh login to Socialtext Desktop."
 
 #: share/plugin/control/template/control/workspace_invite.html:324
-msgid "You must choose at least one administrator."
-msgstr "error.at-least-one-admin-required"
+msgid "error.at-least-one-admin-required"
+msgstr "You must choose at least one administrator."
 
 #: share/plugin/control/template/control/workspace_invite.html:342
-msgid "You must choose at least one workspace"
-msgstr "error.at-least-one-wiki-required"
+msgid "error.at-least-one-wiki-required"
+msgstr "You must choose at least one workspace"
 
 #: share/plugin/control/template/control/paging_controls:6
-msgid "Your selections will not carry-over to the next page.  Are you sure you want to change pages?"
-msgstr "control.confirm-paging-discard-selection?"
+msgid "control.confirm-paging-discard-selection?"
+msgstr "Your selections will not carry-over to the next page.  Are you sure you want to change pages?"
 
 #: share/plugin/control/share/javascript/useraccountrole.js:13
-msgid "account_name is required"
-msgstr "error.account-name-required"
+msgid "error.account_name-required"
+msgstr "account_name is required"
 
 #: share/plugin/control/template/control/plugins:30
-msgid "click to disable"
-msgstr "plugins.click-to-disable"
+msgid "plugins.click-to-disable"
+msgstr "click to disable"
 
 #: share/plugin/control/template/control/plugins:30
-msgid "click to enable"
-msgstr "plugins.click-to-enable"
+msgid "plugins.click-to-enable"
+msgstr "click to enable"
 
 #: share/plugin/control/template/control/fields-account.html:45
-msgid "hide"
-msgstr "control.hide-field"
+msgid "control.hide-field"
+msgstr "hide"
 
 #: share/plugin/control/template/control/date_cell:2
-msgid "never"
-msgstr "date.never"
+msgid "date.never"
+msgstr "never"
 
 #: share/plugin/control/template/control/user.html:68 share/plugin/control/template/control/user.html:82
-msgid "no"
-msgstr "control.role-no"
+msgid "control.role-no"
+msgstr "no"
 
 #: share/plugin/control/template/control/fields-account.html:45
-msgid "un-hide"
-msgstr "control.show-field"
+msgid "control.show-field"
+msgstr "un-hide"
 
 #: share/plugin/control/share/javascript/useraccountrole.js:11
-msgid "username is required"
-msgstr "error.username-required"
+msgid "error.username-required"
+msgstr "username is required"
 
 #. (item.title)
 #. (account.name)
 #. (user.name_and_email)
 #. (workspace.name)
 #: share/plugin/control/share/javascript/workspaces_new.js:320 share/plugin/control/template/control/account_link:1 share/plugin/control/template/control/user_link:1 share/plugin/control/template/control/workspace_link:1 share/plugin/control/template/control/workspaces_new.html:22
-msgid "view %1"
-msgstr "control.view=name"
+msgid "control.view=name"
+msgstr "view %1"
 
 #: share/plugin/control/template/control/user.html:66 share/plugin/control/template/control/user.html:80
-msgid "yes"
-msgstr "control.role-yes"
+msgid "control.role-yes"
+msgstr "yes"

@@ -12,419 +12,419 @@ msgstr ""
 #. (acc.user_count)
 #. (group.user_count)
 #: share/plugin/people/template/invite:28 share/plugin/people/template/invite:31
-msgid "%quant(%1,user)"
-msgstr "people.count=users"
+msgid "people.count=users"
+msgstr "%quant(%1,user)"
 
 #: share/plugin/people/template/invite:73 share/plugin/people/template/invite:80
-msgid "<Your personal message goes here.>"
-msgstr "invite.your-personal-message"
+msgid "invite.your-personal-message"
+msgstr "<Your personal message goes here.>"
 
 #: share/plugin/people/template/profile_hcard:52
-msgid "AIM&trade;:"
-msgstr "profile.aim:"
+msgid "profile.aim:"
+msgstr "AIM&trade;:"
 
 #: share/plugin/people/template/lite/profile.html:59 share/plugin/people/template/lite/profile.html:61
-msgid "Activities"
-msgstr "profile.activities"
+msgid "profile.activities"
+msgstr "Activities"
 
 #. (tag)
 #. (tagname)
 #: share/plugin/people/share/people.js:11 share/plugin/people/template/tagged_people_links:13
-msgid "Add tag \"%1\" to user:"
-msgstr "people.add-tag-to-user=name:"
+msgid "people.add-tag-to-user=name:"
+msgstr "Add tag \"%1\" to user:"
 
 #: share/plugin/people/template/view/peoplelist:17
-msgid "Add this tag to me"
-msgstr "people.add-tag-to-myself"
+msgid "people.add-tag-to-myself"
+msgstr "Add this tag to me"
 
 #: share/plugin/people/template/view/peoplelist:22
-msgid "Add this tag to someone"
-msgstr "people.add-tag-to-someone"
+msgid "people.add-tag-to-someone"
+msgstr "Add this tag to someone"
 
 #: share/plugin/people/template/lite/profile.html:100
-msgid "Assistant"
-msgstr "profile.assistant"
+msgid "profile.assistant"
+msgstr "Assistant"
 
 #. (app_name)
 #: share/plugin/people/template/email/invitation-body.html:37
-msgid "Because you already have a %1 account, the password is the same as the password you use for your other %1 groups."
-msgstr "invite.account-password-exists=app-name"
+msgid "invite.account-password-exists=app-name"
+msgstr "Because you already have a %1 account, the password is the same as the password you use for your other %1 groups."
 
 #: share/plugin/people/template/email/invitation-body.html:39
-msgid "Because you already have an account, the password is the same as the password you use for your other groups."
-msgstr "invite.account-password-exists"
+msgid "invite.account-password-exists"
+msgstr "Because you already have an account, the password is the same as the password you use for your other groups."
 
 #: share/plugin/people/template/profile_hcard:87
-msgid "Blog:"
-msgstr "profile.blog:"
+msgid "profile.blog:"
+msgstr "Blog:"
 
 #: share/plugin/people/template/email/standard-footer.html:11
-msgid "Brought to you by Socialtext."
-msgstr "invite.socialtext-footer"
+msgid "invite.socialtext-footer"
+msgstr "Brought to you by Socialtext."
 
 #: share/plugin/people/template/lite/profile.html:153
-msgid "CUSTOM"
-msgstr "profile.custom"
+msgid "profile.custom"
+msgstr "CUSTOM"
 
 #: share/plugin/people/template/invite:109
-msgid "Cancel"
-msgstr "do.cancel"
+msgid "do.cancel"
+msgstr "Cancel"
 
 #: share/plugin/people/template/invite:22
-msgid "Enter a list of email addresses (one address per line) of people you would like to invite to this group:"
-msgstr "invite.enter-email-list:"
+msgid "invite.enter-email-list:"
+msgstr "Enter a list of email addresses (one address per line) of people you would like to invite to this group:"
 
 #: share/plugin/people/template/invite:45
-msgid "Example:"
-msgstr "invite.example:"
+msgid "invite.example:"
+msgstr "Example:"
 
 #: share/plugin/people/template/profile_hcard:107
-msgid "Facebook:"
-msgstr "profile.facebook:"
+msgid "profile.facebook:"
+msgstr "Facebook:"
 
 #: share/plugin/people/template/invite:48
-msgid "Firstname Lastname &lt;u01234@example.com&gt;"
-msgstr "invite.example-full-email-address"
+msgid "invite.example-full-email-address"
+msgstr "Firstname Lastname &lt;u01234@example.com&gt;"
 
 #: share/plugin/people/template/lite/profile.html:15
-msgid "Follow"
-msgstr "people.follow"
+msgid "people.follow"
+msgstr "Follow"
 
 #: share/plugin/people/template/profile_hcard:66
-msgid "GTalk:"
-msgstr "profile.gtalk:"
+msgid "profile.gtalk:"
+msgstr "GTalk:"
 
 #: share/plugin/people/template/email/invitation-body.html:8
-msgid "Hi,"
-msgstr "invite.hi"
+msgid "invite.hi"
+msgstr "Hi,"
 
 #: share/plugin/people/template/profile_hcard:44
-msgid "Home:"
-msgstr "profile.home:"
+msgid "profile.home:"
+msgstr "Home:"
 
 #. (acct_name, host)
 #: share/plugin/people/template/email/invitation-body.html:13
-msgid "I'm inviting you to join the %1 group at %2."
-msgstr "invite.join=account,host"
+msgid "invite.join=account,host"
+msgstr "I'm inviting you to join the %1 group at %2."
 
 #: share/plugin/people/template/lite/profile.html:108
-msgid "IM"
-msgstr "profile.im"
+msgid "profile.im"
+msgstr "IM"
 
 #: share/plugin/people/template/email/invitation-body.html:41
-msgid "If you don't remember it, follow this link to select a new password:"
-msgstr "invite.link-to-reset-password:"
+msgid "invite.link-to-reset-password:"
+msgstr "If you don't remember it, follow this link to select a new password:"
 
 #. (support_address)
 #: share/plugin/people/template/email/standard-footer.html:6
-msgid "If you have questions about this email, please <a href=\"%1\">Contact Support</a>."
-msgstr "invite.contact-support=uri"
+msgid "invite.contact-support=uri"
+msgstr "If you have questions about this email, please <a href=\"%1\">Contact Support</a>."
 
 #: share/plugin/people/template/invite:55
-msgid "If you wish, you can include a personal message in the invitation email. You can edit the message to say anything you want."
-msgstr "invite.personal-message-in-email"
+msgid "invite.personal-message-in-email"
+msgstr "If you wish, you can include a personal message in the invitation email. You can edit the message to say anything you want."
 
 #: share/plugin/people/template/invite:58
-msgid "Include the personal message below in the invitation email?"
-msgstr "invite.personal-message-in-email?"
+msgid "invite.personal-message-in-email?"
+msgstr "Include the personal message below in the invitation email?"
 
 #: share/plugin/people/template/invite:102
-msgid "Invite"
-msgstr "do.invite"
+msgid "do.invite"
+msgstr "Invite"
 
 #: share/plugin/people/template/invite:21
-msgid "Invite People"
-msgstr "invite.people"
+msgid "invite.people"
+msgstr "Invite People"
 
 #: share/plugin/people/template/invite_done:42
-msgid "Invite more people"
-msgstr "invite.more-people"
+msgid "invite.more-people"
+msgstr "Invite more people"
 
 #. (name)
 #: share/plugin/people/template/invite_done:12
-msgid "Invite people to %1"
-msgstr "invite.to=name"
+msgid "invite.to=name"
+msgstr "Invite people to %1"
 
 #: share/plugin/people/template/invite:13 share/plugin/people/template/invite:4 share/plugin/people/template/invite_disabled:13 share/plugin/people/template/invite_disabled:4 share/plugin/people/template/invite_disabled_by_group:13 share/plugin/people/template/invite_disabled_by_group:4 share/plugin/people/template/invite_done:3
-msgid "Invite people to your group"
-msgstr "invite.to-your-group"
+msgid "invite.to-your-group"
+msgstr "Invite people to your group"
 
 #: share/plugin/people/template/profile_hcard:99
-msgid "Linkedin&reg;:"
-msgstr "profile.linkedin:"
+msgid "profile.linkedin:"
+msgstr "Linkedin&reg;:"
 
 #: share/plugin/people/template/lite/profile.html:97
-msgid "Manager"
-msgstr "profile.manager"
+msgid "profile.manager"
+msgstr "Manager"
 
 #: share/plugin/people/template/profile_hcard:38
-msgid "Mobile:"
-msgstr "people.mobile:"
+msgid "people.mobile:"
+msgstr "Mobile:"
 
 #: share/plugin/people/template/lite/people.html:11
-msgid "My Profile"
-msgstr "nav.my-profile"
+msgid "nav.my-profile"
+msgstr "My Profile"
 
 #: share/plugin/people/template/view/peoplelist:50
-msgid "Name"
-msgstr "people.sort-name"
+msgid "people.sort-name"
+msgstr "Name"
 
 #: share/plugin/people/template/invite:67
-msgid "New users will be sent the following welcome email:"
-msgstr "invite.new-users-will-be-sent-following-welcome-email:"
+msgid "invite.new-users-will-be-sent-following-welcome-email:"
+msgstr "New users will be sent the following welcome email:"
 
 #: share/plugin/people/template/lite/profile.html:70
-msgid "No activities to display."
-msgstr "error.no-activities"
+msgid "error.no-activities"
+msgstr "No activities to display."
 
 #: share/plugin/people/template/lite/profile.html:164
-msgid "No additional profile data."
-msgstr "error.no-additional-profile-data"
+msgid "error.no-additional-profile-data"
+msgstr "No additional profile data."
 
 #: share/plugin/people/template/lite/people.html:39
-msgid "No people matching this criteria."
-msgstr "error.no-people-found"
+msgid "error.no-people-found"
+msgstr "No people matching this criteria."
 
 #: share/plugin/people/template/lite/profile.html:72
-msgid "No signals to display."
-msgstr "error.no-signals"
+msgid "error.no-signals"
+msgstr "No signals to display."
 
 #: share/plugin/people/template/lite/profile.html:95
-msgid "ORGANIZATION"
-msgstr "profile.organization"
+msgid "profile.organization"
+msgstr "ORGANIZATION"
 
 #: share/plugin/people/template/email/invitation-body.html:26
-msgid "Once you have confirmed your account, you will receive a second email with login details."
-msgstr "invite.login-details-after-confirmation"
+msgid "invite.login-details-after-confirmation"
+msgstr "Once you have confirmed your account, you will receive a second email with login details."
 
 #: share/plugin/people/template/lite/profile.html:79
-msgid "PHONE"
-msgstr "profile.phone"
+msgid "profile.phone"
+msgstr "PHONE"
 
 #: share/plugin/people/template/nav_people:1
-msgid "People"
-msgstr "nav.people"
+msgid "nav.people"
+msgstr "People"
 
 #: share/plugin/people/template/lite/people.html:9
-msgid "People Directory"
-msgstr "people.directory"
+msgid "people.directory"
+msgstr "People Directory"
 
 #: share/plugin/people/template/invite:35
-msgid "People who are invited will be listed in the group's directory and have a profile. They can also use Socialtext Signals if Signals is enabled."
-msgstr "invite.features-for-invitees"
+msgid "invite.features-for-invitees"
+msgstr "People who are invited will be listed in the group's directory and have a profile. They can also use Socialtext Signals if Signals is enabled."
 
 #: share/plugin/people/template/invite:54
-msgid "Personal Message"
-msgstr "invite.personal-message"
+msgid "invite.personal-message"
+msgstr "Personal Message"
 
 #: share/plugin/people/template/profile_hcard:93
-msgid "Personal:"
-msgstr "profile.personal:"
+msgid "profile.personal:"
+msgstr "Personal:"
 
 #. (confirm_uri)
 #: share/plugin/people/template/email/invitation-body.html:22
-msgid "Please <a href=\"%1\">click on this link</a> to confirm your email address."
-msgstr "invite.click-to-confirm-email=uri"
+msgid "invite.click-to-confirm-email=uri"
+msgstr "Please <a href=\"%1\">click on this link</a> to confirm your email address."
 
 #: share/plugin/people/template/dashboard_hello_incomplete:6
-msgid "Please complete <a href=\"/st/edit_profile\">your profile</a> now."
-msgstr "people.complete-your-profile"
+msgid "people.complete-your-profile"
+msgstr "Please complete <a href=\"/st/edit_profile\">your profile</a> now."
 
 #. (p.best_full_name)
 #: share/plugin/people/template/lite/profile.html:169
-msgid "Private message to %1:"
-msgstr "people.private-message-to=user:"
+msgid "people.private-message-to=user:"
+msgstr "Private message to %1:"
 
 #: share/plugin/people/template/lite/profile.html:54 share/plugin/people/template/lite/profile.html:56
-msgid "Profile"
-msgstr "people.profile"
+msgid "people.profile"
+msgstr "Profile"
 
 #: share/plugin/people/template/view/peoplelist:49
-msgid "Relevance"
-msgstr "people.sort-relevance"
+msgid "people.sort-relevance"
+msgstr "Relevance"
 
 #: share/plugin/people/template/profile_hcard:79
-msgid "Sametime&reg;:"
-msgstr "profile.sametime:"
+msgid "profile.sametime:"
+msgstr "Sametime&reg;:"
 
 #: share/plugin/people/template/lite/people.html:7
-msgid "Search People"
-msgstr "people.search"
+msgid "people.search"
+msgstr "Search People"
 
 #: share/plugin/people/template/search_box_people:1
-msgid "Search People:"
-msgstr "people.search:"
+msgid "people.search:"
+msgstr "Search People:"
 
 #: share/plugin/people/template/lite/profile.html:173
-msgid "Send"
-msgstr "people.private-message-send"
+msgid "people.private-message-send"
+msgstr "Send"
 
 #. (offset + 1, last, pager.total_entries)
 #: share/plugin/people/template/view/peoplelist:44
-msgid "Showing %1 - %2 of %3 total."
-msgstr "people.showing=from,to,total"
+msgid "people.showing=from,to,total"
+msgstr "Showing %1 - %2 of %3 total."
 
 #: share/plugin/people/template/email/invitation-body.html:15
-msgid "Sign in using the information below:"
-msgstr "invite.sign-in-with:"
+msgid "invite.sign-in-with:"
+msgstr "Sign in using the information below:"
 
 #: share/plugin/people/template/profile_hcard:72
-msgid "Skype&trade;:"
-msgstr "profile.skype:"
+msgid "profile.skype:"
+msgstr "Skype&trade;:"
 
 #. (invalid_addresses.size)
 #: share/plugin/people/template/invite_done:17 share/plugin/people/template/invite_done:22
-msgid "Sorry, The following %*(%1,email address was,email addresses were) invalid:"
-msgstr "error.invalid-email-address=count:"
+msgid "error.invalid-email-address=count:"
+msgstr "Sorry, The following %*(%1,email address was,email addresses were) invalid:"
 
 #. (users_already_present.size)
 #: share/plugin/people/template/invite_done:17 share/plugin/people/template/invite_done:18
-msgid "Sorry, The following %*(%1,user was already a member,users were already members) of this Group:"
-msgstr "error.group-member-exists=count:"
+msgid "error.group-member-exists=count:"
+msgstr "Sorry, The following %*(%1,user was already a member,users were already members) of this Group:"
 
 #. (wrong_domain.size, '<span style="color: red">' _ restrict_to_domain _ '</span>')
 #. (wrong_domain.size, "<span style=\"color: red\">' _ restrict_to_domain _ '</span>")
 #: share/plugin/people/template/invite_done:17 share/plugin/people/template/invite_done:26
-msgid "Sorry, the following %*(%1,email address is,email addresses are) not in the domain %2"
-msgstr "error.invalid-email-address=count,domain"
+msgid "error.invalid-email-address=count,domain"
+msgstr "Sorry, the following %*(%1,email address is,email addresses are) not in the domain %2"
 
 #: share/plugin/people/template/invite_disabled:15
-msgid "Sorry, this feature is currently disabled by your server administrator."
-msgstr "invite.disabled-for-server"
+msgid "invite.disabled-for-server"
+msgstr "Sorry, this feature is currently disabled by your server administrator."
 
 #: share/plugin/people/template/invite_disabled_by_group:15
-msgid "Sorry, this feature is currently disabled for your group by the administrator."
-msgstr "invite.disabled-for-group"
+msgid "invite.disabled-for-group"
+msgstr "Sorry, this feature is currently disabled for your group by the administrator."
 
 #: share/plugin/people/template/view/peoplelist:47
-msgid "Sort by:"
-msgstr "sort.by:"
+msgid "sort.by:"
+msgstr "Sort by:"
 
 #: share/plugin/people/template/invite:66
-msgid "Standard Welcome Message"
-msgstr "invite.standard-welcome-message"
+msgid "invite.standard-welcome-message"
+msgstr "Standard Welcome Message"
 
 #: share/plugin/people/template/lite/profile.html:13
-msgid "Stop following"
-msgstr "people.stop-following"
+msgid "people.stop-following"
+msgstr "Stop following"
 
 #: share/plugin/people/template/lite/profile.html:141
-msgid "TAGS"
-msgstr "profile.tags"
+msgid "profile.tags"
+msgstr "TAGS"
 
 #: share/plugin/people/template/email/invitation-body.html:53
-msgid "Thanks,"
-msgstr "invite.thanks"
+msgid "invite.thanks"
+msgstr "Thanks,"
 
 #. (users_invited.size)
 #: share/plugin/people/template/invite_done:17 share/plugin/people/template/invite_done:30
-msgid "The following %*(%1,user was,users were) successfully invited into this Group:"
-msgstr "invite.added-to-group=users:"
+msgid "invite.added-to-group=users:"
+msgstr "The following %*(%1,user was,users were) successfully invited into this Group:"
 
 #: share/plugin/people/template/view/peoplelist:13
-msgid "Tools"
-msgstr "people.tools"
+msgid "people.tools"
+msgstr "Tools"
 
 #: share/plugin/people/template/profile_hcard:113
-msgid "Twitter:"
-msgstr "profile.twitter:"
+msgid "profile.twitter:"
+msgstr "Twitter:"
 
 #: share/plugin/people/template/lite/profile.html:119
-msgid "WEB"
-msgstr "profile.web"
+msgid "profile.web"
+msgstr "WEB"
 
 #: share/plugin/people/template/dashboard_hello_incomplete:5
-msgid "Welcome, New User"
-msgstr "people.welcome-new-user"
+msgid "people.welcome-new-user"
+msgstr "Welcome, New User"
 
 #: share/plugin/people/template/profile_hcard:32
-msgid "Work:"
-msgstr "profile.work:"
+msgid "profile.work:"
+msgstr "Work:"
 
 #: share/plugin/people/template/profile_hcard:59
-msgid "Yahoo!&trade;:"
-msgstr "profile.yahoo:"
+msgid "profile.yahoo:"
+msgstr "Yahoo!&trade;:"
 
 #. ('<span style="color: red;">' _ restrict_to_domain _ '</span>')
 #. ("<span style=\"color: red;\">' _ restrict_to_domain _ '</span>")
 #: share/plugin/people/template/invite:39
-msgid "You can only invite people who share the %1 email domain with you."
-msgstr "invite.email-restricted=domain"
+msgid "invite.email-restricted=domain"
+msgstr "You can only invite people who share the %1 email domain with you."
 
 #: share/plugin/people/template/email/invitation-body.html:48
-msgid "You may want to keep this email for future reference."
-msgstr "invite.keep-this-email-for-reference"
+msgid "invite.keep-this-email-for-reference"
+msgstr "You may want to keep this email for future reference."
 
 #: share/plugin/people/template/invite:47
-msgid "another.friend@example.com"
-msgstr "invite.another-example-email-address"
+msgid "invite.another-example-email-address"
+msgstr "another.friend@example.com"
 
 #: share/plugin/people/share/people.js:31
-msgid "cancel"
-msgstr "people.cancel-add-tag"
+msgid "people.cancel-add-tag"
+msgstr "cancel"
 
 #. (person)
 #: share/plugin/people/template/data/events/person:15
-msgid "edited %1's profile."
-msgstr "event.edit-profile=person"
+msgid "event.edit-profile=person"
+msgstr "edited %1's profile."
 
 #: share/plugin/people/template/data/events/person:4
-msgid "edited their own profile."
-msgstr "event.edit-profile-self"
+msgid "event.edit-profile-self"
+msgstr "edited their own profile."
 
 #. (event.action, person)
 #: share/plugin/people/template/data/events/person:25
-msgid "performed action '%1' on %2."
-msgstr "event.generic=action,person"
+msgid "event.generic=action,person"
+msgstr "performed action '%1' on %2."
 
 #. (event.action)
 #: share/plugin/people/template/data/events/person:10
-msgid "performed action '%1' on themself."
-msgstr "event.generic-self=action"
+msgid "event.generic-self=action"
+msgstr "performed action '%1' on themself."
 
 #. (acc.user_count)
 #: share/plugin/people/template/invite:26
-msgid "primary, %quant(%1,user)"
-msgstr "invite.primary-account=users"
+msgid "invite.primary-account=users"
+msgstr "primary, %quant(%1,user)"
 
 #. (person_tag, person)
 #: share/plugin/people/template/data/events/person:19
-msgid "removed the tag %1 from %2."
-msgstr "event.delete-tag=tag,person"
+msgid "event.delete-tag=tag,person"
+msgstr "removed the tag %1 from %2."
 
 #. (person_tag)
 #: share/plugin/people/template/data/events/person:8
-msgid "removed their tag %1."
-msgstr "event.delete-tag-self=tag"
+msgid "event.delete-tag-self=tag"
+msgstr "removed their tag %1."
 
 #. (person)
 #: share/plugin/people/template/data/events/person:21
-msgid "started following %1."
-msgstr "event.follow=person"
+msgid "event.follow=person"
+msgstr "started following %1."
 
 #. (person)
 #: share/plugin/people/template/data/events/person:23
-msgid "stopped following %1."
-msgstr "event.unfollow=person"
+msgid "event.unfollow=person"
+msgstr "stopped following %1."
 
 #. (person, person_tag)
 #: share/plugin/people/template/data/events/person:17
-msgid "tagged %1 %2."
-msgstr "event.add-tag=person,tag"
+msgid "event.add-tag=person,tag"
+msgstr "tagged %1 %2."
 
 #. (person_tag)
 #: share/plugin/people/template/data/events/person:6
-msgid "tagged themself %1."
-msgstr "event.add-tag-self=tag"
+msgid "event.add-tag-self=tag"
+msgstr "tagged themself %1."
 
 #: share/plugin/people/template/email/invitation-body.html:31
-msgid "username:"
-msgstr "invite.username:"
+msgid "invite.username:"
+msgstr "username:"
 
 #: share/plugin/people/template/email/invitation-body.html:30
-msgid "web address:"
-msgstr "invite.web-address:"
+msgid "invite.web-address:"
+msgstr "web address:"
 
 #: share/plugin/people/template/invite:46
-msgid "your.friend@example.com"
-msgstr "invite.example-email-address"
+msgid "invite.example-email-address"
+msgstr "your.friend@example.com"

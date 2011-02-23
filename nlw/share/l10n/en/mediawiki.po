@@ -10,13 +10,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: share/plugin/mediawiki/template/element/settings/mediawiki:5
-msgid "MediaWiki"
-msgstr "nav.mediawiki"
+msgid "nav.mediawiki"
+msgstr "MediaWiki"
 
 #: share/plugin/mediawiki/template/element/settings/mediawiki:7
-msgid "MediaWiki Server URL"
-msgstr "mediawiki.server-url"
+msgid "mediawiki.server-url"
+msgstr "MediaWiki Server URL"
 
 #: share/plugin/mediawiki/template/element/settings/mediawiki:12
-msgid "Workspace Navbar Name"
-msgstr "mediawiki.wiki-navbar-name"
+msgid "mediawiki.wiki-navbar-name"
+msgstr "Workspace Navbar Name"

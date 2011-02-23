@@ -11,74 +11,74 @@ msgstr ""
 
 #. ($cleaned)
 #: bin/ceq-cleanup:20
-msgid "Done cleaning %1 job types."
-msgstr "job.cleaned=count"
+msgid "job.cleaned=count"
+msgstr "Done cleaning %1 job types."
 
 #: bin/ceq-stat:40
-msgid "Earliest (oldest) enqueued time"
-msgstr "job.oldest"
+msgid "job.oldest"
+msgstr "Earliest (oldest) enqueued time"
 
 #: bin/ceq-stat:41
-msgid "Earliest (oldest) enqueued time, without a delayed start"
-msgstr "job.oldest-without-delay"
+msgid "job.oldest-without-delay"
+msgstr "Earliest (oldest) enqueued time, without a delayed start"
 
 #: bin/ceq-stat:35
-msgid "Failed job count"
-msgstr "job.count-failed"
+msgid "job.count-failed"
+msgstr "Failed job count"
 
 #: bin/ceq-stat:83
-msgid "HINT try --verbose for a key and extra columns"
-msgstr "info.verbose"
+msgid "info.verbose"
+msgstr "HINT try --verbose for a key and extra columns"
 
 #: bin/ceq-stat:68
-msgid "Job Type"
-msgstr "job.type"
+msgid "job.type"
+msgstr "Job Type"
 
 #. ($job_name)
 #: bin/ceq-cleanup:18
-msgid "Job type %1 has been deprecated. Removing it."
-msgstr "job.deprecated=type"
+msgid "job.deprecated=type"
+msgstr "Job type %1 has been deprecated. Removing it."
 
 #: bin/ceq-stat:72
-msgid "Key:"
-msgstr "job.key:"
+msgid "job.key:"
+msgstr "Key:"
 
 #: bin/ceq-stat:37
-msgid "Most recent failure time"
-msgstr "job.last-failure"
+msgid "job.last-failure"
+msgstr "Most recent failure time"
 
 #: bin/ceq-stat:36
-msgid "Most recent success time"
-msgstr "job.last-success"
+msgid "job.last-success"
+msgstr "Most recent success time"
 
 #: bin/ceq-stat:38
-msgid "Most recently (latest) enqueued time"
-msgstr "job.newest"
+msgid "job.newest"
+msgstr "Most recently (latest) enqueued time"
 
 #: bin/ceq-stat:39
-msgid "Most recently (latest) enqueued time, without a delayed start"
-msgstr "job.newest-without-delay"
+msgid "job.newest-without-delay"
+msgstr "Most recently (latest) enqueued time, without a delayed start"
 
 #: bin/ceq-stat:134
-msgid "Never"
-msgstr "time.never"
+msgid "time.never"
+msgstr "Never"
 
 #: bin/ceq-stat:32
-msgid "Number of jobs \"grabbed\" for work"
-msgstr "job.count-grabbed"
+msgid "job.count-grabbed"
+msgstr "Number of jobs \"grabbed\" for work"
 
 #: bin/ceq-stat:31
-msgid "Number of jobs enqueued"
-msgstr "job.count-enqueued"
+msgid "job.count-enqueued"
+msgstr "Number of jobs enqueued"
 
 #: bin/ceq-stat:33
-msgid "Number of jobs with a delayed start time"
-msgstr "job.count-delay"
+msgid "job.count-delay"
+msgstr "Number of jobs with a delayed start time"
 
 #: bin/ceq-stat:34
-msgid "Successful job count"
-msgstr "job.count-success"
+msgid "job.count-success"
+msgstr "Successful job count"
 
 #: bin/ceq-stat:69
-msgid "Total"
-msgstr "job.total"
+msgid "job.total"
+msgstr "Total"

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 01:40+0800\n"
+"PO-Revision-Date: 2011-02-24 07:07+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -10,173 +10,173 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: share/plugin/groups/share/widgets/all_groups/widget.html:2
-msgid "All Available Groups"
-msgstr "groups.all-available"
+msgid "groups.all-available"
+msgstr "All Available Groups"
 
 #: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:10
-msgid "Are you sure you want to delete this group?"
-msgstr "groups.confirm-delete?"
+msgid "groups.confirm-delete?"
+msgstr "Are you sure you want to delete this group?"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:28
-msgid "Before creating a group, you can search names and descriptions for existing groups."
-msgstr "groups.search-before-creating"
+msgid "groups.search-before-creating"
+msgstr "Before creating a group, you can search names and descriptions for existing groups."
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:40
-msgid "Can be seen in the Group Directory by everyone and anyone can join."
-msgstr "groups.self-join-listed-in-directory"
+msgid "groups.self-join-listed-in-directory"
+msgstr "Can be seen in the Group Directory by everyone and anyone can join."
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:64 share/plugin/groups/share/javascript/lightbox/delete-group.tt2:20 share/plugin/groups/share/javascript/lightbox/leave-group.tt2:17 share/plugin/groups/template/edit_group_footer:11 share/plugin/groups/template/edit_group_footer:4 share/plugin/groups/template/group_footer:14 share/plugin/groups/template/group_footer:7
-msgid "Cancel"
-msgstr "do.cancel"
+msgid "do.cancel"
+msgstr "Cancel"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:23
-msgid "Change Group Type"
-msgstr "groups.change-type"
+msgid "groups.change-type"
+msgstr "Change Group Type"
 
 #: share/plugin/groups/template/edit_group_footer:7 share/plugin/groups/template/group_footer:10
-msgid "Create"
-msgstr "do.create"
+msgid "do.create"
+msgstr "Create"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:26
-msgid "Create Group"
-msgstr "groups.create"
+msgid "groups.create"
+msgstr "Create Group"
 
 #: share/plugin/groups/template/nav_groups:27
-msgid "Create Group..."
-msgstr "groups.create-group"
+msgid "groups.create-group"
+msgstr "Create Group..."
 
 #: share/plugin/groups/template/directory_links:5
-msgid "Create New Group"
-msgstr "groups.create-new-group"
+msgid "groups.create-new-group"
+msgstr "Create New Group"
 
 #: share/plugin/groups/template/create_group_hello:3
-msgid "Create a Group"
-msgstr "groups.create-a-group"
+msgid "groups.create-a-group"
+msgstr "Create a Group"
 
 #: share/plugin/groups/template/nav_groups:23
-msgid "Currently, you are not a member of any groups."
-msgstr "###-groups.currently-you-are-not-member-of-any-groups"
+msgid "error.not-member-of-any-groups"
+msgstr "Currently, you are not a member of any groups."
 
 #: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:25
-msgid "Delete"
-msgstr "do.delete"
+msgid "do.delete"
+msgstr "Delete"
 
 #. (name)
 #: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:6
-msgid "Delete %1"
-msgstr "groups.delete=name"
+msgid "groups.delete=name"
+msgstr "Delete %1"
 
 #: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:2
-msgid "Delete Group"
-msgstr "groups.delete"
+msgid "groups.delete"
+msgstr "Delete Group"
 
 #: share/plugin/groups/template/edit_group_links:3
-msgid "Delete This Group"
-msgstr "groups.delete-this"
+msgid "groups.delete-this"
+msgstr "Delete This Group"
 
 #. (container.group.name)
 #: share/plugin/groups/template/edit_group_hello:4
-msgid "Edit Group: %1"
-msgstr "groups.edit=name"
+msgid "groups.edit=name"
+msgstr "Edit Group: %1"
 
 #: share/plugin/groups/template/create_group_hello:2
-msgid "Group"
-msgstr "groups.group"
+msgid "groups.group"
+msgstr "Group"
 
 #: share/plugin/groups/template/directory_hello:2 share/plugin/groups/template/nav_groups:15
-msgid "Group Directory"
-msgstr "groups.directory"
+msgid "groups.directory"
+msgstr "Group Directory"
 
 #: share/plugin/groups/template/nav_groups:1
-msgid "Groups"
-msgstr "nav.groups"
+msgid "nav.groups"
+msgstr "Groups"
 
 #: share/plugin/groups/template/group_links:11 share/plugin/groups/template/grouplist:93
-msgid "Join"
-msgstr "do.join"
+msgid "do.join"
+msgstr "Join"
 
 #: share/plugin/groups/share/javascript/lightbox/leave-group.tt2:11 share/plugin/groups/template/group_links:8
-msgid "Leave"
-msgstr "do.leave"
+msgid "do.leave"
+msgstr "Leave"
 
 #: share/plugin/groups/share/javascript/lightbox/leave-group.tt2:3
-msgid "Leave Group"
-msgstr "groups.leave"
+msgid "groups.leave"
+msgstr "Leave Group"
 
 #: share/plugin/groups/template/grouplist:53
-msgid "Name"
-msgstr "groups.name"
+msgid "groups.name"
+msgstr "Name"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:59
-msgid "Next"
-msgstr "groups.next-step"
+msgid "groups.next-step"
+msgstr "Next"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:33
-msgid "Please choose the group type, then click <b>Next</b>"
-msgstr "groups.choose-type-then-click-next"
+msgid "groups.choose-type-then-click-next"
+msgstr "Please choose the group type, then click <b>Next</b>"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:49
-msgid "Private Group"
-msgstr "groups.private"
+msgid "groups.private"
+msgstr "Private Group"
 
 #: share/plugin/groups/template/edit_group_footer:14 share/plugin/groups/template/group_footer:17
-msgid "Save"
-msgstr "groups.save"
+msgid "groups.save"
+msgstr "Save"
 
 #: share/plugin/groups/template/search_box_groups:1
-msgid "Search Groups:"
-msgstr "groups.search:"
+msgid "groups.search:"
+msgstr "Search Groups:"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:39
-msgid "Self-Join Group"
-msgstr "groups.self-join"
+msgid "groups.self-join"
+msgstr "Self-Join Group"
 
 #. (offset + 1, last, pager.total_entries)
 #: share/plugin/groups/template/grouplist:49
-msgid "Showing %1 - %2 of %3 total."
-msgstr "info.showing=from,to,total"
+msgid "info.showing=from,to,total"
+msgstr "Showing %1 - %2 of %3 total."
 
 #: share/plugin/groups/template/grouplist:51
-msgid "Sort by:"
-msgstr "sort.by:"
+msgid "sort.by:"
+msgstr "Sort by:"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:54
-msgid "The group administrators can change this setting after the group is created."
-msgstr "groups.admin-can-change-setting-after-creation"
+msgid "groups.admin-can-change-setting-after-creation"
+msgstr "The group administrators can change this setting after the group is created."
 
 #. (group_name)
 #: share/plugin/groups/share/javascript/lightbox/delete-group.js:21
-msgid "The group, %1, has been successfully deleted."
-msgstr "groups.successfully-deleted=name"
+msgid "groups.successfully-deleted=name"
+msgstr "The group, %1, has been successfully deleted."
 
 #: share/plugin/groups/share/javascript/lightbox/leave-group.tt2:5
-msgid "This action cannot be undone. Are you sure you'd like to leave this group?"
-msgstr "groups.confirm-leave?"
+msgid "groups.confirm-leave?"
+msgstr "This action cannot be undone. Are you sure you'd like to leave this group?"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:24
-msgid "When making a Private group a Self-join group, any user in the group's Accounts will be able to join the group and then optionally invite others into the group. When changing a Self-join group to a Private group, it will no longer appear in the Group Directory and will become invite-only by the group administrators."
-msgstr "groups.toggling-self-join-and-private"
+msgid "groups.toggling-self-join-and-private"
+msgstr "When making a Private group a Self-join group, any user in the group's Accounts will be able to join the group and then optionally invite others into the group. When changing a Self-join group to a Private group, it will no longer appear in the Group Directory and will become invite-only by the group administrators."
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:50
-msgid "Will not be displayed in the Group Directory and new members must be invited by the group administrators."
-msgstr "groups.private-not-listed-in-directory"
+msgid "groups.private-not-listed-in-directory"
+msgstr "Will not be displayed in the Group Directory and new members must be invited by the group administrators."
 
 #: share/plugin/groups/template/grouplist:30 share/plugin/groups/template/grouplist:88
-msgid "You are currently a member of this group."
-msgstr "groups.you-are-member"
+msgid "groups.you-are-member"
+msgstr "You are currently a member of this group."
 
 #: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:14
-msgid "You will not be able to restore the group once it's deleted. Users will no longer be able to signal to this group and any access to workspaces through this group will be revoked."
-msgstr "groups.delete-is-final"
+msgid "groups.delete-is-final"
+msgstr "You will not be able to restore the group once it's deleted. Users will no longer be able to signal to this group and any access to workspaces through this group will be revoked."
 
 #: share/plugin/groups/template/grouplist:103
-msgid "member"
-msgstr "groups.member"
+msgid "groups.member"
+msgstr "member"
 
 #: share/plugin/groups/template/grouplist:105 share/plugin/groups/template/grouplist:38
-msgid "members"
-msgstr "groups.members"
+msgid "groups.members"
+msgstr "members"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:30
-msgid "type your search here..."
-msgstr "groups.search-here"
+msgid "groups.search-here"
+msgstr "type your search here..."
