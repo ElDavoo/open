@@ -1,4 +1,4 @@
 | *Comment* | Test Case: Preferences UI User Teardown |  |
 
 | st-admin | deactivate-user --email %%new_user%% |  |
-| st-admin | delete-workspace --no-export --w %%new_ws%% | has been deleted |
+| delete-workspace | %%new_ws%% | Recklessly deleting |
