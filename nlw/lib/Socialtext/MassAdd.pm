@@ -323,7 +323,7 @@ sub _pass {
 sub _fail {
     my $self = shift;
     my $msg = shift;
-    $msg = loc("Line [_1]: ", $self->{line}) . $msg
+    $msg = loc("Line [_1]: [_2]", $self->{line}, $msg)
         if ($self->{from_csv});
     st_log->error($msg);
     $self->{fail_cb}->($msg);

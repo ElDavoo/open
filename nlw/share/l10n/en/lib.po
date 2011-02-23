@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 02:03+0800\n"
+"PO-Revision-Date: 2011-02-24 06:35+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -547,7 +547,7 @@ msgstr "error.account-name-required"
 #. ($p->{account_type})
 #: lib/Socialtext/Account.pm:1119
 msgid "Account type (%1) is not valid!"
-msgstr "error.invalid=account-type"
+msgstr "error.invalid=account-type!"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:430
 msgid "Account updated."
@@ -1422,8 +1422,8 @@ msgstr "last.week"
 
 #. ($self->{line})
 #: lib/Socialtext/MassAdd.pm:326
-msgid "Line %1: "
-msgstr "error.at=line:"
+msgid "Line %1: %2"
+msgstr "error.at=line,message"
 
 #. ($filename)
 #: lib/Socialtext/Handler/ControlPanel.pm:1143
@@ -1782,7 +1782,7 @@ msgstr "pref.updated=plugins"
 #. ($plugin)
 #: lib/Socialtext/CLI.pm:439
 msgid "Preferences for the %1 plugin:"
-msgstr "pref.for=plugin"
+msgstr "pref.for=plugin:"
 
 #: lib/Socialtext/UserPreferencesPlugin.pm:47
 msgid "Preferences saved"

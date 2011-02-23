@@ -2840,6 +2840,14 @@ sub st_account_type_is {
     is $acct->account_type, $type, "Account type matches";
 }
 
+sub delete_account {
+    my $self = shift;
+    my $name = shift;
+    my $acct = Socialtext::Account->new( name => $name );
+    die "Couldn't find account $name" unless $acct;
+    $acct->delete;
+}
+
 my @exports;
 END { rmtree(\@exports) if @exports };
 
@@ -2858,7 +2866,7 @@ sub st_import_account {
     my $account = shift;
     my $dir = "/tmp/$account.export";
     Socialtext::System::shell_run(
-        'st-admin', 'import-account', '--dir', $dir, '--overwrite',
+        'st-admin', 'import-account', '--dir', $dir,
     );
 }
 

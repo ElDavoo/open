@@ -588,14 +588,20 @@ sub _add_group_doc {
 sub _load_page {
     my ( $self, $page_id, $deleted_ok ) = @_;
     _debug("Loading $page_id");
-    my $page = $self->hub->pages->new_page($page_id);
+    my $page = $self->hub->pages->By_id(
+        hub => $self->hub,
+        workspace_id => $self->hub->current_workspace->workspace_id,
+        page_id => $page_id,
+        deleted_ok => 1,
+        no_die => 1,
+    );
+    unless ($page and $page->exists) {
+        _debug("Could not load page $page_id");
+    }
     unless (eval { $page->rev; 1 }) {
         _debug("Could not load latest page rev for $page_id");
     }
-    if (!$page->exists) {
-        _debug("Could not load page $page_id");
-    }
-    elsif ( !$deleted_ok and $page->deleted ) {
+    if ( !$deleted_ok and $page->deleted ) {
         _debug("Page $page_id is deleted, skipping.");
         undef $page;
     }

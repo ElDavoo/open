@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 01:40+0800\n"
+"PO-Revision-Date: 2011-02-24 06:34+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -746,7 +746,7 @@ msgstr "nav.first-page"
 
 #: share/skin/s3/template/element/settings/users_settings_section:17 share/skin/s3/template/element/settings/users_settings_section:22
 msgid "First name:"
-msgstr "config.first-name"
+msgstr "config.first-name:"
 
 #: share/skin/s3/template/lite/paging.html:4 share/skin/s3/template/lite/paging.html:6 share/skin/s3/template/lite/paging.html:8
 msgid "First page"
@@ -1338,7 +1338,7 @@ msgstr "info.normal-view"
 #. (workspace.title)
 #: share/skin/s3/template/workspaces_created_section.html:21
 msgid "Review or change the settings for %1:"
-msgstr "config.review-settings=wiki"
+msgstr "config.review-settings=wiki:"
 
 #: share/skin/s3/template/view/page_revision_list:43
 msgid "Revision"
@@ -1736,7 +1736,7 @@ msgstr "email.address-or-name"
 
 #: share/skin/s3/template/element/settings/users_settings_section:50
 msgid "Type new Password again:"
-msgstr "password.again"
+msgstr "password.again:"
 
 #: share/skin/s3/template/view/page/display:96
 msgid "Unlock Page"
@@ -1982,7 +1982,7 @@ msgstr "error.same-revision"
 #. (draft.page_title, draft.workspace_title, draft.workspace_id)
 #: share/skin/s3/javascript/s3.js:1164
 msgid "You have an unsaved draft of \"%1\" in the \"%2\" (%3) workspace:"
-msgstr "draft.unsaved=page,wiki,wiki-id"
+msgstr "draft.unsaved=page,wiki,wiki-id:"
 
 #: share/skin/s3/template/element/workspace_list/public_workspaces:5
 msgid "You have free access to view and contribute to any of these public wikis:"
@@ -2065,7 +2065,7 @@ msgstr "file.by"
 
 #: share/skin/s3/template/element/settings/start:31
 msgid "error:"
-msgstr "info.error"
+msgstr "info.error:"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:24
 msgid "example"
@@ -2177,7 +2177,7 @@ msgstr "config.wiki-private"
 
 #: share/skin/s3/template/element/settings/start:28
 msgid "warning:"
-msgstr "info.warning"
+msgstr "info.warning:"
 
 #: share/skin/s3/template/layout/html:63 share/skin/s3/template/layout/simple_html:49 share/skin/s3/template/layout/user_frame:68
 msgid "wiki, business wiki, document management, enterprise wiki, intranet wiki, knowledge management, online collaboration, open source wiki, portal wiki, hosted wiki, collaboration, social software, social networking, dashboard, project collaboration, team collaboration, wiki appliance, wiki software, community"

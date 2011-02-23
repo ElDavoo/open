@@ -175,7 +175,7 @@ sub html_description {
     my $text_for_when_there_are_backlinks = shift;
 
     my $links = $self->hub->backlinks->all_backlinks_for_page($page);
-    return '<p>' . loc('The page had no Backlinks.') . '<p>'
+    return '<p>' . loc('There are no pages that link to this page yet.') . '<p>'
         unless $links and @$links;
     my @items = map {
         '<li>'.$self->hub->helpers->page_display_link($_->{page_title}).'</li>'

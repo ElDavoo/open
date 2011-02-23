@@ -94,10 +94,12 @@ Create_from_row: {
     is_deeply $hash, {
         create_time     => '2007-01-01 23:12:01 GMT',
         creator         => $creator->email_address,
+        creator_id      => $creator->user_id,
         deleted         => 1,
         edit_summary    => 'edit summary',
         last_edit_time  => '2008-01-01 23:12:01 GMT',
         last_editor     => $editor->email_address,
+        last_editor_id  => $editor->user_id,
         locked          => 0,
         modified_time   => 1199229121,     # edit time as epoch-seconds
         name            => 'Some Page ID',

@@ -1,0 +1,46 @@
+#!/usr/bin/env perl
+use 5.12.0;
+use autodie;
+use open qw(:std :utf8);
+use subs 'outs';
+use Getopt::Long;
+
+my $inplace;
+GetOptions( 'inplace|i!' => \$inplace ) and @ARGV
+    or die "Usage: $0 [--inplace] input.po\n";
+
+local $/ = "\n\n";
+
+my ($in, $out);
+for my $po (@ARGV) {
+    open $in, '<', $po;
+
+    if ($inplace) {
+        open $out, '>', "$po.new";
+        select $out;
+    }
+    outs scalar <$in>;
+
+    while (<$in>) {
+        my ($comments, $id, $str) = split(/\n(?=msg)/, "\n$_");
+        $id =~ s/^msgid/msgstr/m;
+        $str =~ s/^msgstr/msgid/m;
+        outs $comments;
+        outs $str;
+        outs $id;
+    }
+
+    close $in;
+    if ($inplace) {
+        close $out;
+        unlink $po;
+        rename "$po.new" => $po;
+        warn "*** Changed file in-place: $po\n";
+    }
+}
+
+sub outs {
+    my $para = shift;
+    $para =~ s/\n*$/\n/;
+    print $para;
+}

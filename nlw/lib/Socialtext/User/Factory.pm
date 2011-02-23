@@ -445,7 +445,7 @@ sub ExpireUserRecord {
         my $email = $p->{email_address};
         if (defined $email) {
             unless (length($email) and Email::Valid->address($email)) {
-                return loc("[_1] is not a valid email address.", $email);
+                return loc('"[_1]" is not a valid email address.', $email);
             }
         }
         return;

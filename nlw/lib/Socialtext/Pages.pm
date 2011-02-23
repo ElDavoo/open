@@ -242,10 +242,19 @@ sub new_from_name {
     my $id = title_to_id($page_name);
     return if length($id) > MAX_PAGE_ID_LEN;
 
+    # Try loading the page twice - sometimes the page_id can become
+    # double encoded if it contains utf8 characters that have been 
+    # encoded into %\d\d already.
     my $page = $self->By_id(
         hub          => $self->hub,
         workspace_id => $self->hub->current_workspace->workspace_id,
         page_id      => $id,
+        deleted_ok   => 1,
+        no_die       => 1,
+    ) || $self->By_id(
+        hub          => $self->hub,
+        workspace_id => $self->hub->current_workspace->workspace_id,
+        page_id      => $page_name,
         deleted_ok   => 1,
         no_die       => 1,
     );

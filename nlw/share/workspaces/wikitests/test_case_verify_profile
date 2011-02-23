@@ -100,12 +100,5 @@
 | text_like | Followers |  |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Verify Profile. Verify AYW Workspace present. |  |
-| wait_for_text_present_ok | Workspaces | 30000 |
-| st-name-widget | 5 | workspaces |
-| st-widget-title-like | workspaces | Workspaces |
-| st-select-widget-frame | workspaces |  |
-| text-like | qr/central/i |  |
-| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Verify Profile COMPLETED |  |
