@@ -1493,10 +1493,7 @@ sub confirmation_uri {
 
 sub requires_confirmation {
     my $self = shift;
-
-    return 1 if $self->email_confirmation;
-    return 1 if $self->password_change_confirmation;
-    return 0;
+    return $self->restrictions->count ? 1 : 0;
 }
 
 sub confirm_email_address {
