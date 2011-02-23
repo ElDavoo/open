@@ -13,7 +13,8 @@ sub restriction_type { 'email_confirmation' };
 
 sub confirm {
     my $self = shift;
-    $self->send_completed_notifications;
+    $self->send_completed_email;
+    $self->send_completed_signal unless $self->workspace_id;
 };
 
 # XXX - Yuck; this same URI is also used by "password_change"
@@ -58,12 +59,6 @@ sub send_email {
         text_body => $text_body,
         html_body => $html_body,
     );
-}
-
-sub send_completed_notifications {
-    my $self = shift;
-    $self->send_completed_email;
-    $self->send_completed_signal unless $self->workspace_id;
 }
 
 sub send_completed_email {
