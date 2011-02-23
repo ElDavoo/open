@@ -9,6 +9,9 @@ use Socialtext::l10n qw(system_locale loc);
 use Socialtext::TT2::Renderer;
 
 sub restriction_type { 'password_change' };
+sub confirm {
+    # no-op; no explicit action required to confirm password change
+}
 
 # XXX - Yuck; this uses the same URI as the "email_confirmation"
 sub uri {

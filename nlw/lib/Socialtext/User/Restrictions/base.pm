@@ -6,6 +6,13 @@ use Socialtext::MooseX::Types::Pg;
 use Socialtext::User::Restrictions;
 
 requires 'restriction_type';
+requires 'confirm';
+around 'confirm' => sub {
+    my $orig = shift;
+    my $self = shift;
+    $self->$orig();
+    $self->clear;
+};
 
 has 'user_id' => (
     is          => 'ro',
@@ -133,6 +140,13 @@ for the following methods:
 
 Returns the restriction type to be stored in the DB.  B<Must> match up with
 your class name.
+
+=item confirm()
+
+Method which performs whatever actions are necessary to confirm the
+restriction.  This base Role will ensure that the restriction is
+cleared/removed immediately after this method is called; you do not need to
+clear the restriction in your class.
 
 =back
 
