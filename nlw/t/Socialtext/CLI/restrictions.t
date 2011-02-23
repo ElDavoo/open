@@ -10,13 +10,12 @@ fixtures(qw( db ));
 
 
 CONFIRM_USER: {
-    my $user = Socialtext::User->create(username => 'devnull5@socialtext.com',
-                                        email_address => 'devnull5@socialtext.com' );
-    ok( $user, 'User created via User->create' );
-    ok(
-        ! $user->has_valid_password(),
-        'check that password is empty'
+    my $user = Socialtext::User->create(
+        username      => 'devnull5@socialtext.com',
+        email_address => 'devnull5@socialtext.com',
     );
+    ok $user, 'User created via User->create';
+    ok !$user->has_valid_password(), 'check that password is empty';
     $user->create_email_confirmation();
 
     expect_success(
@@ -58,7 +57,7 @@ CHANGE_PASSWORD: {
     );
 
     my $user = Socialtext::User->new( username => 'test@example.com' );
-    ok( $user->password_is_correct($new_pw), 'new password is valid' );
+    ok $user->password_is_correct($new_pw), 'new password is valid';
 
     expect_failure(
         sub {
