@@ -189,7 +189,7 @@ Add_user_already_added: {
     uneditable_profile_field: {
         scope_guard { Email::Send::Test->clear() };
         scope_guard { clear_log(); };
-        scope_guard { $user = Socialtext::User->new(user_id => $user_id) };
+        scope_guard { $user->reload };
         local $userinfo{mobile_phone} = '1-877-AVAST-YE';
 
         # make the "mobile_phone" field externally sourced
@@ -228,7 +228,7 @@ Add_user_already_added: {
     Profile_data_needs_update: {
         scope_guard { Email::Send::Test->clear() };
         scope_guard { clear_log(); };
-        scope_guard { $user = Socialtext::User->new(user_id => $user_id) };
+        scope_guard { $user->reload };
 
         $user->profile->set_attr('mobile_phone', '1-888-555-1212');
         $user->profile->save();
@@ -247,7 +247,7 @@ Add_user_already_added: {
     Profile_data_already_up_to_date: {
         scope_guard { Email::Send::Test->clear() };
         scope_guard { clear_log(); };
-        scope_guard { $user = Socialtext::User->new(user_id => $user_id) };
+        scope_guard { $user->reload };
 
         my (@successes, @failures);
         my $mass_add = Socialtext::MassAdd->new(
@@ -263,7 +263,7 @@ Add_user_already_added: {
     Password_gets_updated: {
         scope_guard { Email::Send::Test->clear() };
         scope_guard { clear_log(); };
-        scope_guard { $user = Socialtext::User->new(user_id => $user_id) };
+        scope_guard { $user->reload };
 
         $user->update_store(password => 'elaine');
         ok $user->password_is_correct('elaine'), 'password faked for test';
@@ -277,14 +277,14 @@ Add_user_already_added: {
         is_deeply \@successes, ['Updated user guybrush'], 'success message ok';
         is_deeply \@failures, [], 'no failure messages';
 
-        $user = Socialtext::User->new(username => $user->username);
+        $user->reload;
         ok $user->password_is_correct('my_password'), 'password was updated';
     }
 
     Password_untouched: {
         scope_guard { Email::Send::Test->clear() };
         scope_guard { clear_log(); };
-        scope_guard { $user = Socialtext::User->new(user_id => $user_id) };
+        scope_guard { $user->reload };
 
         $user->update_store(
             first_name => 'to-be-overwritten',
@@ -306,7 +306,7 @@ EOT
         is_deeply \@successes, ['Updated user guybrush'], 'success message ok';
         is_deeply \@failures, [], 'no failure messages';
 
-        $user = Socialtext::User->new(username => $user->username);
+        $user->reload;
         is $user->first_name, 'Guybrush', 'first_name was updated';
         ok $user->password_is_correct('joanna'), 'password was untouched';
 
@@ -317,14 +317,14 @@ EOT
     First_last_name_update: {
         scope_guard { Email::Send::Test->clear() };
         scope_guard { clear_log(); };
-        scope_guard { $user = Socialtext::User->new(user_id => $user_id) };
+        scope_guard { $user->reload };
 
         $user->update_store(
             first_name  => 'Herman',
             middle_name => 'Sasafras',
             last_name   => 'Toothrot',
         );
-        $user = Socialtext::User->new(username => $user->username);
+# XXX $user->reload;
         is $user->first_name,  'Herman',   'first names over-ridden';
         is $user->middle_name, 'Sasafras', 'middle name over-ridden';
         is $user->last_name,   'Toothrot', 'last name over-ridden';
@@ -338,7 +338,7 @@ EOT
         is_deeply \@successes, ['Updated user guybrush'], 'success message ok';
         is_deeply \@failures, [], 'no failure messages';
 
-        $user = Socialtext::User->new(username => $user->username);
+        $user->reload;
         is $user->first_name,  'Guybrush',   'first_name was updated';
         is $user->middle_name, 'Ulysses',    'middle_name was updated';
         is $user->last_name,   'Threepwood', 'last_name was updated';
@@ -347,7 +347,7 @@ EOT
     Profile_update: {
         scope_guard { Email::Send::Test->clear() };
         scope_guard { clear_log(); };
-        scope_guard { $user = Socialtext::User->new(user_id => $user_id) };
+        scope_guard { $user->reload };
 
         $user->profile->set_attr(position   => 'Chef');
         $user->profile->set_attr(company    => 'Scumm Bar');
@@ -365,7 +365,7 @@ EOT
         is_deeply \@successes, ['Updated user guybrush'], 'success message ok';
         is_deeply \@failures, [], 'no failure messages';
 
-        $user = Socialtext::User->new(username => $user->username);
+        $user->reload;
         my $profile = $user->profile;
         is $profile->get_attr('position'),   'Captain',       'People position was updated';
         is $profile->get_attr('company'),    'Pirates R. Us', 'People company was updated';
@@ -376,7 +376,7 @@ EOT
     Update_with_no_people_installed: {
         scope_guard { Email::Send::Test->clear() };
         scope_guard { clear_log(); };
-        scope_guard { $user = Socialtext::User->new(user_id => $user_id) };
+        scope_guard { $user->reload };
 
         local $Socialtext::MassAdd::Has_People_Installed = 0;
         my (@successes, @failures);
@@ -960,6 +960,6 @@ Adding_a_deactivated_user: {
     ok $role;
     is $role->name, 'member', 'user got added to the account';
 
-    $user = Socialtext::User->new(username => 'ronnie');
+    $user->reload;
     ok !$user->is_deactivated, "ronnie got re-activated";
 }
