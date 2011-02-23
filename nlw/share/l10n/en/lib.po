@@ -2,9 +2,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-18 01:53+0800\n"
-"PO-Revision-Date: \n"
-"Language-Team: LANGUAGE TEAM <E-MAIL@ADDRESS or HOME PAGE>\n"
+"PO-Revision-Date: 2011-02-24 02:03+0800\n"
+"Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -728,7 +727,7 @@ msgstr "error.group-or-wiki-required"
 
 #: lib/Socialtext/CLI.pm:3317
 msgid "Can only specify one of --visible or --hidden"
-msgstr "error.no-visible+hidden"
+msgstr "error.not-both-visible-and-hidden"
 
 #. ($url)
 #: lib/Socialtext/Gadgets/Gadget.pm:767
@@ -1360,7 +1359,7 @@ msgstr "wiki.importing=tarball"
 
 #: lib/Socialtext/DisplayPlugin.pm:118
 msgid "Include Recently Viewed items as a side box when viewing pages?"
-msgstr "wiki.show-breadcrumbs-sidebox?"
+msgstr "wiki.include-breadcrumbs?"
 
 #: lib/Socialtext/Workspace.pm:631
 msgid "Incoming email placement must be one of top, bottom, or replace."
@@ -1680,11 +1679,11 @@ msgstr "wiki.disabled-locking=title"
 
 #: lib/Socialtext/EmailNotifyPlugin.pm:68 lib/Socialtext/WatchlistPlugin.pm:66
 msgid "Page name and link only"
-msgstr "email.page+link-only"
+msgstr "email.page-name-link-only"
 
 #: lib/Socialtext/EmailNotifyPlugin.pm:69 lib/Socialtext/WatchlistPlugin.pm:67
 msgid "Page name and link, plus author and date"
-msgstr "email.page+link+author+date"
+msgstr "email.page-name-link-author-date"
 
 #: lib/Socialtext/DisplayPlugin.pm:53
 msgid "Page name is too long"
@@ -1706,7 +1705,7 @@ msgstr "error.page-title-too-long=max-length"
 
 #: lib/Socialtext/EditPlugin.pm:47
 msgid "Page title missing"
-msgstr "error.no-page-title"
+msgstr "error.page-title-required"
 
 #: lib/Socialtext/WatchlistPlugin.pm:270
 msgid "Pages You're Watching"
@@ -2150,7 +2149,7 @@ msgstr "plugin.enabled=plugin,container"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:505
 msgid "The %1 user was confirmed."
-msgstr "user.confirmed=name+email"
+msgstr "user.confirmed=name-and-email"
 
 #. ($ws->name, $file)
 #: lib/Socialtext/CLI.pm:2736
@@ -2202,11 +2201,6 @@ msgstr "error.no-signals-plugin"
 #: lib/Socialtext/Apache/Authen/NTLM.pm:31 lib/Socialtext/Apache/Authen/foo.pm:31
 msgid "The Socialtext system cannot reach the Windows NTLM Domain Controller.  An Admin should check the Domain Controller and/or Socialtext configuration."
 msgstr "error.ntlm"
-
-#. ($opts{account})
-#: lib/Socialtext/CLI.pm:258
-msgid "The account %1 does not exist"
-msgstr "error.no-account=name"
 
 #. ($p->{name})
 #: lib/Socialtext/Account.pm:1106
@@ -2291,7 +2285,7 @@ msgstr "error.invalid-mass-add-file"
 
 #: lib/Socialtext/Handler/Authen.pm:735
 msgid "The given confirmation URL does not match any pending confirmations."
-msgstr "error.invalid-confirmation-url"
+msgstr "error.no-such-pending-confirmation"
 
 #. (Socialtext::AppConfig->support_address)
 #: lib/Socialtext/Handler/Container/Group.pm:36
@@ -2458,7 +2452,7 @@ msgstr "profile.field-hidden"
 #. ($blog_tag)
 #: lib/Socialtext/WeblogPlugin.pm:190
 msgid "This is the first post in %1. Click *New Post* to add another post."
-msgstr "blog.first-post=tag"
+msgstr "blog.first-post-body=tag"
 
 #: lib/Socialtext/BacklinksPlugin.pm:174
 msgid "This page is linked to from:"
@@ -2838,7 +2832,7 @@ msgstr "error.self-delete"
 
 #: lib/Socialtext/OpenIdPlugin.pm:42
 msgid "You must input both an OpenID and an email."
-msgstr "error.openid+email-required"
+msgstr "error.openid-and-email-required"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:470
 msgid "You must provide a name to create a new account."

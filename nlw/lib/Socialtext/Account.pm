@@ -430,9 +430,7 @@ sub import_file {
     $hash->{import_name} = $name;
     my $account = $class->new(name => $name);
     if ($account && !$account->is_placeholder()) {
-        die loc("Account [_1] already exists!", $name) . "\n" 
-            unless $opts{force};
-        $account->delete;
+        die loc("Account [_1] already exists!", $name) . "\n";
     }
 
     my %acct_params = (

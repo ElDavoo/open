@@ -25,7 +25,7 @@ sub words {
     my $text = shift;
     $text =~ s/<[^>]*//g;
     $text =~ s/&\w+;//g;
-    return map { s/_/-/; s/^-//; s/-$//; lc $_ } grep {
+    return map { s/_/-/g; s/^-//; s/-$//; s/^spreadsheet$/sheet/i; s/^workspace/wiki/; lc $_ } grep {
         not($_ ~~ [qw[a an the]]);
     } grep /\w/, split(/\W+/, $text);
 }
@@ -39,7 +39,7 @@ for (<>) {
         while ($id =~ s/%(\d+)/ /) {
             $max = max($max, $1);
         }
-        if ($id =~ s/%\w+\([^)]*?(\w+)[^)]*\)/$1/g) {
+        if ($id =~ s/%(?:\*|\w+)\([^)]*?(\w+)[^)]*\)/$1/g) {
             $id .= "-count";
         }
         $msgid = join '-', words $id;
@@ -61,7 +61,7 @@ for (<>) {
     when (/^#\. \((.*)\)/) {
         my $param = $1;
         # Turn foo.name to "foo-name"
-        do {} while $param =~ s/(\w+)\.(\w+)/$2/;
+        do {} while $param =~ s/(\w+(?:\[[^\]]+\])?)\.(\w+)/$2/;
         @params = words $param;
         print;
     }

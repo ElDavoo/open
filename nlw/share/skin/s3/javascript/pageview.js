@@ -93,7 +93,7 @@ Page = {
                     $('#st-page-editing-revisionid').val(newRev);
                     $('#st-rewind-revision-count').html(newRev);
 
-                    rev_string = loc('[_1] Revisions', data.revision_count);
+                    rev_string = loc('[*,_1,Revision]', data.revision_count);
                     $('#controls-right-revisions').html(rev_string);
                     $('#bottom-buttons-revisions').html(rev_string);
                     $('#update-attribution .st-username').empty().append(
