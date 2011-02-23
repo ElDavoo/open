@@ -1,13 +1,14 @@
 #!/usr/bin/env perl
 use 5.12.0;
+use autodie;
+use open qw(:std :utf8);
 use List::Util 'max';
 use File::Basename;
+use Getopt::Long;
 
-die "Usage: $0 input.po > output.po\n" unless @ARGV;
-
-my $default_section = basename($ARGV[0]);
-$default_section =~ s/\..*//;
-$default_section =~ s/socialcalc/sc/;
+my $inplace;
+GetOptions( 'inplace|i!' => \$inplace ) and @ARGV
+    or die "Usage: $0 [--inplace] input.po\n";
 
 my $msgid;
 my @params;
@@ -25,58 +26,80 @@ sub words {
     my $text = shift;
     $text =~ s/<[^>]*//g;
     $text =~ s/&\w+;//g;
-    return map { s/_/-/g; s/^-//; s/-$//; s/^spreadsheet$/sheet/i; s/^workspace/wiki/; lc $_ } grep {
+    return map { s/_/-/g; s/^-//; s/-$//; s/spreadsheet/sheet/ig; s/workspace/wiki/ig; lc $_ } grep {
         not($_ ~~ [qw[a an the]]);
     } grep /\w/, split(/\W+/, $text);
 }
 
-for (<>) {
-    when (/^msgid "(.*?)([!:?]?)"$/) {
-        print;
-        my $max;
-        my $id = $1;
-        $punct = $2;
-        while ($id =~ s/%(\d+)/ /) {
-            $max = max($max, $1);
-        }
-        if ($id =~ s/%(?:\*|\w+)\([^)]*?(\w+)[^)]*\)/$1/g) {
-            $id .= "-count";
-        }
-        $msgid = join '-', words $id;
-        if ($max) {
-            push @params, (('XXX') x $max);
-            $msgid .= "=" . join(',', @params[0..$max-1]);
-        }
+my ($in, $out);
+for my $po (@ARGV) {
+    my $default_section = basename($po);
+    $default_section =~ s/\..*//;
+    $default_section =~ s/socialcalc/sc/;
+
+    open $in, '<', $po;
+
+    if ($inplace) {
+        open $out, '>', "$po.new";
+        select $out;
     }
-    when (/^#\: (.*)/) {
-        my $sources = $1;
-        for my $key (sort keys %SectionMap) {
-            if ($sources =~ /\Q$key\E/i) {
-                $section = "###-" . $SectionMap{$key};
-                last;
+
+    for (<$in>) {
+        when (/^msgid "(.*?)([!:?]?)"$/) {
+            print;
+            my $max;
+            my $id = $1;
+            $punct = $2;
+            while ($id =~ s/%(\d+)/ /) {
+                $max = max($max, $1);
+            }
+            if ($id =~ s/%(?:\*|\w+)\([^)]*?(\w+)[^)]*\)/$1/g) {
+                $id .= "-count";
+            }
+            $msgid = join '-', words $id;
+            if ($max) {
+                push @params, (('XXX') x $max);
+                $msgid .= "=" . join(',', @params[0..$max-1]);
             }
         }
-        print;
-    }
-    when (/^#\. \((.*)\)/) {
-        my $param = $1;
-        # Turn foo.name to "foo-name"
-        do {} while $param =~ s/(\w+(?:\[[^\]]+\])?)\.(\w+)/$2/;
-        @params = words $param;
-        print;
-    }
-    when (/^msgstr "(.*)"$/) {
-        if ($section and ($1 eq '' or $1 ~~ /^(###|XXX)/)) {
-            say qq[msgstr "$section.$msgid$punct"];
-        }
-        else {
+        when (/^#\: (.*)/) {
+            my $sources = $1;
+            for my $key (sort keys %SectionMap) {
+                if ($sources =~ /\Q$key\E/i) {
+                    $section = "###-" . $SectionMap{$key};
+                    last;
+                }
+            }
             print;
         }
-        $section = "###-$default_section";
-        @params = ();
-        $punct = '';
+        when (/^#\. \((.*)\)/) {
+            my $param = $1;
+            # Turn foo.name to "foo-name"
+            do {} while $param =~ s/(\w+(?:\[[^\]]+\])?)\.(\w+)/$2/;
+            @params = words $param;
+            print;
+        }
+        when (/^msgstr "(.*)"$/) {
+            if ($section and ($1 eq '' or $1 ~~ /^(###|XXX)/)) {
+                say qq[msgstr "$section.$msgid$punct"];
+            }
+            else {
+                print;
+            }
+            $section = "###-$default_section";
+            @params = ();
+            $punct = '';
+        }
+        default {
+            print;
+        }
     }
-    default {
-        print;
+
+    close $in;
+    if ($inplace) {
+        close $out;
+        unlink $po;
+        rename "$po.new" => $po;
+        warn "*** Changed file in-place: $po\n";
     }
 }
