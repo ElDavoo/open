@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-23 10:27+0800\n"
+"PO-Revision-Date: 2011-02-23 20:34+0800\n"
 "PO-Revision-Date: \n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
@@ -72,7 +72,7 @@ msgstr "###-control.private-only-members-can-see-and-access-this-group"
 msgid "<strong>Self-Join:</strong> Non-Members can view and join the group."
 msgstr "###-control.self-join-non-members-can-view-and-join-group"
 
-#: share/plugin/control/template/control/group.html:77 share/plugin/control/template/control/user.html:244 share/plugin/control/template/control/workspace.html:10 share/plugin/control/template/control/workspace_invite.html:98 share/plugin/control/template/control/workspace_table:17 share/plugin/control/template/control/workspace_table:28 share/plugin/control/template/control/workspaces_new.html:20
+#: share/plugin/control/template/control/group.html:77 share/plugin/control/template/control/user.html:249 share/plugin/control/template/control/workspace.html:10 share/plugin/control/template/control/workspace_invite.html:98 share/plugin/control/template/control/workspace_table:17 share/plugin/control/template/control/workspace_table:28 share/plugin/control/template/control/workspaces_new.html:20
 msgid "Account"
 msgstr "###-control.account"
 
@@ -108,14 +108,14 @@ msgstr "###-control.account-type"
 msgid "Account type:"
 msgstr "###-control.account-type:"
 
-#: share/plugin/control/template/control/group.html:39 share/plugin/control/template/control/index.html:25 share/plugin/control/template/control/wrapper:85
+#: share/plugin/control/template/control/group.html:39 share/plugin/control/template/control/index.html:25 share/plugin/control/template/control/wrapper:87
 msgid "Accounts"
 msgstr "nav.accounts"
 
 #. (this.total)
 #. ('<span id="accountsCount"></span>')
 #. ("<span id=\"accountsCount\"></span>")
-#: share/plugin/control/template/control/group.html:315 share/plugin/control/template/control/user.html:94
+#: share/plugin/control/template/control/group.html:316 share/plugin/control/template/control/user.html:94
 msgid "Accounts (%1)"
 msgstr "###-control.accounts=XXX"
 
@@ -171,7 +171,7 @@ msgstr "###-control.add-multiple-users"
 msgid "Add New User"
 msgstr "###-control.add-new-user"
 
-#: share/plugin/control/template/control/add_user.html:8
+#: share/plugin/control/template/control/add_user.html:1 share/plugin/control/template/control/add_user.html:8
 msgid "Add User"
 msgstr "###-control.add-user"
 
@@ -227,7 +227,7 @@ msgstr "###-control.adding-group-to-account=name"
 msgid "Adding Group to Workspace %1"
 msgstr "###-control.adding-group-to-workspace=name"
 
-#: share/plugin/control/share/javascript/workspaces_new.js:156 share/plugin/control/share/javascript/workspaces_new.js:49 share/plugin/control/template/control/account.html:134 share/plugin/control/template/control/group.html:184 share/plugin/control/template/control/workspace.html:225 share/plugin/control/template/control/workspace.html:91
+#: share/plugin/control/share/javascript/workspaces_new.js:157 share/plugin/control/share/javascript/workspaces_new.js:49 share/plugin/control/template/control/account.html:134 share/plugin/control/template/control/group.html:184 share/plugin/control/template/control/workspace.html:225 share/plugin/control/template/control/workspace.html:91
 msgid "Admin"
 msgstr "###-control.admin"
 
@@ -302,15 +302,15 @@ msgstr "###-control.back-to-account"
 msgid "Back to Account Fields"
 msgstr "###-control.back-to-account-fields"
 
-#: share/plugin/control/template/control/growth_report.html:11 share/plugin/control/template/control/report.html:145
+#: share/plugin/control/template/control/growth_report.html:12 share/plugin/control/template/control/report.html:147
 msgid "Back to the account page"
 msgstr "###-control.back-to-account-page"
 
-#: share/plugin/control/template/control/report.html:143
+#: share/plugin/control/template/control/report.html:145
 msgid "Back to the user page"
 msgstr "###-control.back-to-user-page"
 
-#: share/plugin/control/template/control/growth_report.html:13 share/plugin/control/template/control/report.html:147
+#: share/plugin/control/template/control/growth_report.html:14 share/plugin/control/template/control/report.html:149
 msgid "Back to the workspace page"
 msgstr "###-control.back-to-workspace-page"
 
@@ -339,7 +339,7 @@ msgstr "###-control.clear-selection"
 msgid "Confirm user"
 msgstr "###-control.confirm-user"
 
-#: share/plugin/control/template/control/wrapper:90
+#: share/plugin/control/template/control/wrapper:92
 msgid "Console"
 msgstr "###-control.console"
 
@@ -347,11 +347,11 @@ msgstr "###-control.console"
 msgid "Contact"
 msgstr "###-control.contact"
 
-#: share/plugin/control/template/control/wrapper:123
+#: share/plugin/control/template/control/wrapper:125
 msgid "Contact Support"
 msgstr "###-control.contact-support"
 
-#: share/plugin/control/template/control/wrapper:84
+#: share/plugin/control/template/control/wrapper:86
 msgid "Control Panel"
 msgstr "nav.control-panel"
 
@@ -416,11 +416,11 @@ msgstr "###-control.create-new-workspace"
 msgid "Create new Group"
 msgstr "###-control.create-new-group"
 
-#: share/plugin/control/share/javascript/workspaces_new.js:182 share/plugin/control/template/control/group.html:80 share/plugin/control/template/control/group_table:11 share/plugin/control/template/control/group_table:32 share/plugin/control/template/control/groups.html:87 share/plugin/control/template/control/user.html:16 share/plugin/control/template/control/user.html:252 share/plugin/control/template/control/workspace.html:256 share/plugin/control/template/control/workspace.html:38 share/plugin/control/template/control/workspace_table:18 share/plugin/control/template/control/workspace_table:31
+#: share/plugin/control/share/javascript/workspaces_new.js:183 share/plugin/control/template/control/group.html:80 share/plugin/control/template/control/group_table:11 share/plugin/control/template/control/group_table:32 share/plugin/control/template/control/groups.html:87 share/plugin/control/template/control/user.html:16 share/plugin/control/template/control/user.html:257 share/plugin/control/template/control/workspace.html:256 share/plugin/control/template/control/workspace.html:38 share/plugin/control/template/control/workspace_table:18 share/plugin/control/template/control/workspace_table:31
 msgid "Created"
 msgstr "###-control.created"
 
-#: share/plugin/control/template/control/group.html:83 share/plugin/control/template/control/group_table:12 share/plugin/control/template/control/group_table:35 share/plugin/control/template/control/user.html:256 share/plugin/control/template/control/workspace_table:19 share/plugin/control/template/control/workspace_table:34
+#: share/plugin/control/template/control/group.html:83 share/plugin/control/template/control/group_table:12 share/plugin/control/template/control/group_table:35 share/plugin/control/template/control/user.html:261 share/plugin/control/template/control/workspace_table:19 share/plugin/control/template/control/workspace_table:34
 msgid "Created By"
 msgstr "###-control.created-by"
 
@@ -442,7 +442,7 @@ msgstr "###-control.created-by"
 msgid "Creating"
 msgstr "###-control.creating"
 
-#: share/plugin/control/share/javascript/workspaces_new.js:187 share/plugin/control/template/control/groups.html:97 share/plugin/control/template/control/workspace.html:261
+#: share/plugin/control/share/javascript/workspaces_new.js:188 share/plugin/control/template/control/groups.html:97 share/plugin/control/template/control/workspace.html:261
 msgid "Creator"
 msgstr "###-control.creator"
 
@@ -558,22 +558,22 @@ msgstr "###-control.error-workspace-title-is-required-field"
 msgid "Error: Workspace title must be between 2 and 64 characters long and may not begin with a '-'."
 msgstr "###-control.error-workspace-title-must-be-between-2-and-64-characters-long-and-may-not-begin-with"
 
-#: share/plugin/control/template/control/growth_report.html:5
+#: share/plugin/control/template/control/growth_report.html:6
 msgid "Export data as CSV"
 msgstr "###-control.export-data-as-csv"
 
-#: share/plugin/control/template/control/report.html:136
+#: share/plugin/control/template/control/report.html:137
 msgid "Export summary data as CSV"
 msgstr "###-control.export-summary-data-as-csv"
 
-#: share/plugin/control/template/control/report.html:137
+#: share/plugin/control/template/control/report.html:139
 msgid "Export user data as CSV"
 msgstr "###-control.export-user-data-as-csv"
 
 #. (exportable_accounts)
 #: share/plugin/control/template/control/accounts.html:24
-msgid "Export user data for %quant(%1,selected account)"
-msgstr "###-control.export-user-data-for-selected-count=exportable-accounts"
+msgid "Export user data for %*(%1,selected account)"
+msgstr "###-control.export-user-data-for-selected-account=exportable-accounts"
 
 #: share/plugin/control/template/control/field_form:59 share/plugin/control/template/control/fields-account.html:44
 msgid "External"
@@ -632,17 +632,17 @@ msgstr "###-control.group-name:"
 msgid "Group Permissions:"
 msgstr "###-control.group-permissions:"
 
-#: share/plugin/control/template/control/group.html:188 share/plugin/control/template/control/group.html:232 share/plugin/control/template/control/group.html:247 share/plugin/control/template/control/group.html:262 share/plugin/control/template/control/group.html:380
+#: share/plugin/control/template/control/group.html:188 share/plugin/control/template/control/group.html:232 share/plugin/control/template/control/group.html:247 share/plugin/control/template/control/group.html:262 share/plugin/control/template/control/group.html:381
 msgid "Group role changes were successful."
 msgstr "###-control.group-role-changes-were-successful"
 
-#: share/plugin/control/template/control/groups.html:4 share/plugin/control/template/control/index.html:29 share/plugin/control/template/control/workspace.html:180 share/plugin/control/template/control/workspaces_new.html:41 share/plugin/control/template/control/wrapper:88
+#: share/plugin/control/template/control/groups.html:4 share/plugin/control/template/control/index.html:29 share/plugin/control/template/control/workspace.html:180 share/plugin/control/template/control/workspaces_new.html:41 share/plugin/control/template/control/wrapper:90
 msgid "Groups"
 msgstr "nav.groups"
 
 #. (this.total)
 #. (account.group_count)
-#: share/plugin/control/share/javascript/workspaces_new.js:129 share/plugin/control/template/control/account.html:84 share/plugin/control/template/control/groups.html:45 share/plugin/control/template/control/workspace.html:198
+#: share/plugin/control/share/javascript/workspaces_new.js:130 share/plugin/control/template/control/account.html:84 share/plugin/control/template/control/groups.html:45 share/plugin/control/template/control/workspace.html:198
 msgid "Groups (%1)"
 msgstr "###-control.groups=group-count"
 
@@ -654,7 +654,7 @@ msgstr "###-control.groups-are-collections-of-users-groups-belong-to-accounts-an
 msgid "Growth Reports"
 msgstr "###-control.growth-reports"
 
-#: share/plugin/control/template/control/wrapper:136 share/plugin/control/template/control/wrapper:61
+#: share/plugin/control/template/control/wrapper:138 share/plugin/control/template/control/wrapper:63
 msgid "Help"
 msgstr "nav.help"
 
@@ -662,7 +662,7 @@ msgstr "nav.help"
 msgid "Hidden"
 msgstr "###-control.hidden"
 
-#: share/plugin/control/share/javascript/workspaces_new.js:134 share/plugin/control/template/control/group_table:17 share/plugin/control/template/control/group_table:6 share/plugin/control/template/control/groups.html:50 share/plugin/control/template/control/workspace.html:203
+#: share/plugin/control/share/javascript/workspaces_new.js:135 share/plugin/control/template/control/group_table:17 share/plugin/control/template/control/group_table:6 share/plugin/control/template/control/groups.html:50 share/plugin/control/template/control/workspace.html:203
 msgid "ID"
 msgstr "cli.group-id"
 
@@ -746,7 +746,7 @@ msgstr "###-control.load-existing-group-from-ldap"
 msgid "Loading selected users"
 msgstr "###-control.loading-selected-users"
 
-#: share/plugin/control/template/control/wrapper:137 share/plugin/control/template/control/wrapper:62
+#: share/plugin/control/template/control/wrapper:139 share/plugin/control/template/control/wrapper:64
 msgid "Log out"
 msgstr "nav.logout"
 
@@ -766,7 +766,7 @@ msgstr "###-control.march"
 msgid "May"
 msgstr "###-control.may"
 
-#: share/plugin/control/share/javascript/workspaces_new.js:157 share/plugin/control/share/javascript/workspaces_new.js:50 share/plugin/control/template/control/account.html:135 share/plugin/control/template/control/group.html:185 share/plugin/control/template/control/workspace.html:226 share/plugin/control/template/control/workspace.html:92
+#: share/plugin/control/share/javascript/workspaces_new.js:158 share/plugin/control/share/javascript/workspaces_new.js:50 share/plugin/control/template/control/account.html:135 share/plugin/control/template/control/group.html:185 share/plugin/control/template/control/workspace.html:226 share/plugin/control/template/control/workspace.html:92
 msgid "Member"
 msgstr "###-control.member"
 
@@ -774,7 +774,7 @@ msgstr "###-control.member"
 msgid "Member of Account"
 msgstr "###-control.member-of-account"
 
-#: share/plugin/control/template/control/wrapper:130 share/plugin/control/template/control/wrapper:55
+#: share/plugin/control/template/control/wrapper:132 share/plugin/control/template/control/wrapper:57
 msgid "Mobile"
 msgstr "nav.mobile"
 
@@ -782,11 +782,11 @@ msgstr "nav.mobile"
 msgid "Must supply a field title"
 msgstr "###-control.must-supply-field-title"
 
-#: share/plugin/control/template/control/wrapper:135 share/plugin/control/template/control/wrapper:60
+#: share/plugin/control/template/control/wrapper:137 share/plugin/control/template/control/wrapper:62
 msgid "My Settings"
 msgstr "nav.my-settings"
 
-#: share/plugin/control/share/javascript/workspaces_new.js:143 share/plugin/control/share/javascript/workspaces_new.js:27 share/plugin/control/template/control/account.html:116 share/plugin/control/template/control/account_table:9 share/plugin/control/template/control/desktop-account.html:25 share/plugin/control/template/control/group.html:166 share/plugin/control/template/control/group.html:320 share/plugin/control/template/control/group.html:71 share/plugin/control/template/control/group_invite.html:91 share/plugin/control/template/control/group_table:20 share/plugin/control/template/control/group_table:7 share/plugin/control/template/control/groups.html:59 share/plugin/control/template/control/selected_user_table_header:16 share/plugin/control/template/control/user.html:118 share/plugin/control/template/control/user.html:231 share/plugin/control/template/control/user_table_header:26 share/plugin/control/template/control/user_table_header:28 share/plugin/control/template/control/workspace.html:212 share/plugin/control/template/control/workspace.html:72 share/plugin/control/template/control/workspace_invite.html:144 share/plugin/control/template/control/workspace_invite.html:93 share/plugin/control/template/control/workspace_table:15 share/plugin/control/template/control/workspace_table:22
+#: share/plugin/control/share/javascript/workspaces_new.js:144 share/plugin/control/share/javascript/workspaces_new.js:27 share/plugin/control/template/control/account.html:116 share/plugin/control/template/control/account_table:9 share/plugin/control/template/control/desktop-account.html:25 share/plugin/control/template/control/group.html:166 share/plugin/control/template/control/group.html:321 share/plugin/control/template/control/group.html:71 share/plugin/control/template/control/group_invite.html:91 share/plugin/control/template/control/group_table:20 share/plugin/control/template/control/group_table:7 share/plugin/control/template/control/groups.html:59 share/plugin/control/template/control/selected_user_table_header:16 share/plugin/control/template/control/user.html:118 share/plugin/control/template/control/user.html:236 share/plugin/control/template/control/user_table_header:26 share/plugin/control/template/control/user_table_header:28 share/plugin/control/template/control/workspace.html:212 share/plugin/control/template/control/workspace.html:72 share/plugin/control/template/control/workspace_invite.html:144 share/plugin/control/template/control/workspace_invite.html:93 share/plugin/control/template/control/workspace_table:15 share/plugin/control/template/control/workspace_table:22
 msgid "Name"
 msgstr "###-control.name"
 
@@ -879,11 +879,11 @@ msgstr "###-control.press-ok-to-disable-this-module-or-cancel-to-exit"
 msgid "Press 'OK' to enable this module or 'Cancel' to exit."
 msgstr "###-control.press-ok-to-enable-this-module-or-cancel-to-exit"
 
-#: share/plugin/control/template/control/group.html:339 share/plugin/control/template/control/user.html:134
+#: share/plugin/control/template/control/group.html:340 share/plugin/control/template/control/user.html:134
 msgid "Primary"
 msgstr "###-control.primary"
 
-#: share/plugin/control/share/javascript/useraccountrole.js:35 share/plugin/control/share/javascript/workspaces_new.js:173 share/plugin/control/template/control/account.html:151 share/plugin/control/template/control/group.html:201 share/plugin/control/template/control/group_table:10 share/plugin/control/template/control/group_table:29 share/plugin/control/template/control/groups.html:78 share/plugin/control/template/control/selected_user_table_header:19 share/plugin/control/template/control/user_table_header:41 share/plugin/control/template/control/user_table_header:43 share/plugin/control/template/control/workspace.html:110 share/plugin/control/template/control/workspace.html:247
+#: share/plugin/control/share/javascript/useraccountrole.js:35 share/plugin/control/share/javascript/workspaces_new.js:174 share/plugin/control/template/control/account.html:151 share/plugin/control/template/control/group.html:201 share/plugin/control/template/control/group_table:10 share/plugin/control/template/control/group_table:29 share/plugin/control/template/control/groups.html:78 share/plugin/control/template/control/selected_user_table_header:19 share/plugin/control/template/control/user_table_header:41 share/plugin/control/template/control/user_table_header:43 share/plugin/control/template/control/workspace.html:110 share/plugin/control/template/control/workspace.html:247
 msgid "Primary Account"
 msgstr "###-control.primary-account"
 
@@ -931,19 +931,19 @@ msgstr "###-control.remove-appliance-business-administrator-role"
 msgid "Remove Appliance Technical Administrator Role"
 msgstr "###-control.remove-appliance-technical-administrator-role"
 
-#: share/plugin/control/template/control/user.html:266
+#: share/plugin/control/template/control/user.html:271
 msgid "Remove from Workspaces"
 msgstr "###-control.remove-from-workspaces"
 
 #. (accounts.length)
-#: share/plugin/control/template/control/group.html:367
-msgid "Remove this Group from the %1 selected %quant(%1,Account)"
-msgstr "###-control.remove-this-group-from-selected-account-count=length"
+#: share/plugin/control/template/control/group.html:368
+msgid "Remove this Group from %*(%1,selected Account)"
+msgstr "###-control.remove-this-group-from-selected-account=length"
 
 #. (workspaces.length)
-#: share/plugin/control/template/control/user.html:268
-msgid "Remove this user from %1 selected %quant(%1,workspace)?"
-msgstr "###-control.remove-this-user-from-selected-workspace-count=length?"
+#: share/plugin/control/template/control/user.html:273
+msgid "Remove this user from %*(%1,selected workspace)?"
+msgstr "###-control.remove-this-user-from-selected-workspace=length?"
 
 #: share/plugin/control/template/control/account.html:6 share/plugin/control/template/control/rename-account.html:8
 msgid "Rename Account"
@@ -986,7 +986,7 @@ msgstr "###-control.restrict-invites-to-domain:"
 msgid "Return to %1 Group"
 msgstr "###-control.return-to-group=group-name"
 
-#: share/plugin/control/share/javascript/workspaces_new.js:152 share/plugin/control/share/javascript/workspaces_new.js:45 share/plugin/control/template/control/account.html:130 share/plugin/control/template/control/group.html:180 share/plugin/control/template/control/workspace.html:221 share/plugin/control/template/control/workspace.html:87
+#: share/plugin/control/share/javascript/workspaces_new.js:153 share/plugin/control/share/javascript/workspaces_new.js:45 share/plugin/control/template/control/account.html:130 share/plugin/control/template/control/group.html:180 share/plugin/control/template/control/workspace.html:221 share/plugin/control/template/control/workspace.html:87
 msgid "Role"
 msgstr "###-control.role"
 
@@ -1030,7 +1030,7 @@ msgstr "###-control.september"
 msgid "Set by external Directory"
 msgstr "###-control.set-by-external-directory"
 
-#: share/plugin/control/template/control/index.html:33 share/plugin/control/template/control/wrapper:89
+#: share/plugin/control/template/control/index.html:33 share/plugin/control/template/control/wrapper:91
 msgid "Settings"
 msgstr "nav.settings"
 
@@ -1060,7 +1060,7 @@ msgstr "info.showing=from,to,total"
 msgid "Showing all selected entries"
 msgstr "###-control.showing-all-selected-entries"
 
-#: share/plugin/control/template/control/wrapper:51
+#: share/plugin/control/template/control/wrapper:53
 msgid "Socialtext"
 msgstr "nav.socialtext"
 
@@ -1068,7 +1068,7 @@ msgstr "nav.socialtext"
 msgid "Socialtext Admin Configuration"
 msgstr "###-control.socialtext-admin-configuration"
 
-#: share/plugin/control/template/control/wrapper:102 share/plugin/control/template/control/wrapper:19
+#: share/plugin/control/template/control/wrapper:104 share/plugin/control/template/control/wrapper:19
 msgid "Socialtext Control Panel"
 msgstr "###-control.socialtext-control-panel"
 
@@ -1223,7 +1223,7 @@ msgid "User %1 is now a Member of the Account"
 msgstr "###-control.user-is-now-member-of-account=title"
 
 #. (name)
-#: share/plugin/control/template/control/user.html:203
+#: share/plugin/control/template/control/user.html:208
 msgid "User has been added to the %1 account"
 msgstr "###-control.user-has-been-added-to-account=name"
 
@@ -1239,16 +1239,21 @@ msgstr "###-control.user-is-confirmed"
 msgid "User requires confirmation"
 msgstr "###-control.user-requires-confirmation"
 
-#. (success.length, success[0].account_name)
+#. (success.length)
+#: share/plugin/control/template/control/user.html:180
+msgid "User was removed from %*(%1,Account)"
+msgstr "###-control.user-was-removed-from-account=length"
+
+#. (success[0].account_name)
 #: share/plugin/control/template/control/user.html:175
-msgid "User was removed from %quant(%1,Account %2,%1 Accounts)"
-msgstr "###-control.user-was-removed-from-account-count=length,success"
+msgid "User was removed from Account %1"
+msgstr "###-control.user-was-removed-from-account=account-name"
 
 #: share/plugin/control/share/javascript/workspaces_new.js:36 share/plugin/control/template/control/user.html:14
 msgid "Username"
 msgstr "###-control.username"
 
-#: share/plugin/control/share/javascript/workspaces_new.js:169 share/plugin/control/template/control/account.html:69 share/plugin/control/template/control/account_table:15 share/plugin/control/template/control/group.html:27 share/plugin/control/template/control/group.html:334 share/plugin/control/template/control/group.html:74 share/plugin/control/template/control/group_table:23 share/plugin/control/template/control/group_table:8 share/plugin/control/template/control/groups.html:73 share/plugin/control/template/control/index.html:27 share/plugin/control/template/control/user.html:240 share/plugin/control/template/control/workspace.html:243 share/plugin/control/template/control/workspace.html:46 share/plugin/control/template/control/workspace_table:16 share/plugin/control/template/control/workspace_table:25 share/plugin/control/template/control/workspaces_new.html:31 share/plugin/control/template/control/wrapper:87
+#: share/plugin/control/share/javascript/workspaces_new.js:170 share/plugin/control/template/control/account.html:69 share/plugin/control/template/control/account_table:15 share/plugin/control/template/control/group.html:27 share/plugin/control/template/control/group.html:335 share/plugin/control/template/control/group.html:74 share/plugin/control/template/control/group_table:23 share/plugin/control/template/control/group_table:8 share/plugin/control/template/control/groups.html:73 share/plugin/control/template/control/index.html:27 share/plugin/control/template/control/user.html:245 share/plugin/control/template/control/workspace.html:243 share/plugin/control/template/control/workspace.html:46 share/plugin/control/template/control/workspace_table:16 share/plugin/control/template/control/workspace_table:25 share/plugin/control/template/control/workspaces_new.html:31 share/plugin/control/template/control/wrapper:89
 msgid "Users"
 msgstr "###-control.users"
 
@@ -1263,13 +1268,13 @@ msgstr "###-control.value"
 
 #. (this.via_group.length,                $.map(this.via_group, function (g)
 #: share/plugin/control/share/javascript/useraccountrole.js:55
-msgid "Via %quant(%1,Group): %2"
-msgstr "###-control.via-group-count=length,map"
+msgid "Via %*(%1,Group): %2"
+msgstr "###-control.via-group=length,map"
 
 #. (this.via_workspace.length,                $.map(this.via_workspace, function (w)
 #: share/plugin/control/share/javascript/useraccountrole.js:45
-msgid "Via %quant(%1,Workspace): %2"
-msgstr "###-control.via-workspace-count=length,map"
+msgid "Via %*(%1,Workspace): %2"
+msgstr "###-control.via-workspace=length,map"
 
 #: share/plugin/control/template/control/index.html:5
 msgid "Welcome to the Socialtext Control Panel."
@@ -1279,18 +1284,18 @@ msgstr "###-control.welcome-to-socialtext-control-panel"
 msgid "When you've made your decisions, click the 'Add Users' link."
 msgstr "###-control.when-you-ve-made-your-decisions-click-add-users-link"
 
-#: share/plugin/control/template/control/user.html:274
+#: share/plugin/control/template/control/user.html:279
 msgid "Workspace removals were successful."
 msgstr "###-control.workspace-removals-were-successful"
 
-#: share/plugin/control/share/javascript/workspaces_new.js:165 share/plugin/control/template/control/account.html:146 share/plugin/control/template/control/account_table:12 share/plugin/control/template/control/group.html:196 share/plugin/control/template/control/group.html:329 share/plugin/control/template/control/group_table:26 share/plugin/control/template/control/group_table:9 share/plugin/control/template/control/groups.html:68 share/plugin/control/template/control/index.html:31 share/plugin/control/template/control/selected_user_table_header:18 share/plugin/control/template/control/user.html:210 share/plugin/control/template/control/user_table_header:34 share/plugin/control/template/control/user_table_header:36 share/plugin/control/template/control/workspace.html:105 share/plugin/control/template/control/workspace.html:239 share/plugin/control/template/control/workspace_invite.html:153 share/plugin/control/template/control/wrapper:86
+#: share/plugin/control/share/javascript/workspaces_new.js:166 share/plugin/control/template/control/account.html:146 share/plugin/control/template/control/account_table:12 share/plugin/control/template/control/group.html:196 share/plugin/control/template/control/group.html:330 share/plugin/control/template/control/group_table:26 share/plugin/control/template/control/group_table:9 share/plugin/control/template/control/groups.html:68 share/plugin/control/template/control/index.html:31 share/plugin/control/template/control/selected_user_table_header:18 share/plugin/control/template/control/user.html:215 share/plugin/control/template/control/user_table_header:34 share/plugin/control/template/control/user_table_header:36 share/plugin/control/template/control/workspace.html:105 share/plugin/control/template/control/workspace.html:239 share/plugin/control/template/control/workspace_invite.html:153 share/plugin/control/template/control/wrapper:88
 msgid "Workspaces"
 msgstr "nav.wikis"
 
 #. (account.workspace_count)
 #. (wksp_count)
 #. (this.total)
-#: share/plugin/control/template/control/account.html:216 share/plugin/control/template/control/group.html:50 share/plugin/control/template/control/user.html:226
+#: share/plugin/control/template/control/account.html:216 share/plugin/control/template/control/group.html:50 share/plugin/control/template/control/user.html:231
 msgid "Workspaces (%1)"
 msgstr "###-control.workspaces=total"
 
@@ -1359,7 +1364,7 @@ msgstr "###-control.username-is-required"
 #. (account.name)
 #. (user.name_and_email)
 #. (workspace.name)
-#: share/plugin/control/share/javascript/workspaces_new.js:319 share/plugin/control/template/control/account_link:1 share/plugin/control/template/control/user_link:1 share/plugin/control/template/control/workspace_link:1 share/plugin/control/template/control/workspaces_new.html:22
+#: share/plugin/control/share/javascript/workspaces_new.js:320 share/plugin/control/template/control/account_link:1 share/plugin/control/template/control/user_link:1 share/plugin/control/template/control/workspace_link:1 share/plugin/control/template/control/workspaces_new.html:22
 msgid "view %1"
 msgstr "###-control.view=name"
 

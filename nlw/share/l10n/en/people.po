@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-23 09:37+0800\n"
+"PO-Revision-Date: 2011-02-23 22:15+0800\n"
 "PO-Revision-Date: \n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
@@ -289,6 +289,22 @@ msgstr "error.group-member-exists=count:"
 msgid "Sorry, the following %*(%1,email address is,email addresses are) not in the domain %2"
 msgstr "error.invalid-email-address=count,domain"
 
+#: share/plugin/people/template/invite_disabled:15
+msgid "Sorry, this feature is currently disabled by your server administrator."
+msgstr "invite.disabled-for-server"
+
+#: share/plugin/people/template/invite_disabled_by_group:15
+msgid "Sorry, this feature is currently disabled for your group by the administrator."
+msgstr "invite.disabled-for-group"
+
+#: share/plugin/people/template/view/peoplelist:47
+msgid "Sort by:"
+msgstr "sort.by:"
+
+#: share/plugin/people/template/invite:66
+msgid "Standard Welcome Message"
+msgstr "invite.standard-welcome-message"
+
 #: share/plugin/people/template/lite/profile.html:13
 msgid "Stop following"
 msgstr "people.stop-following"
@@ -351,31 +367,21 @@ msgstr "people.cancel-add-tag"
 #. (person)
 #: share/plugin/people/template/data/events/person:15
 msgid "edited %1's profile."
-msgstr "event.edited-profile=person"
+msgstr "event.edit-profile=person"
 
 #: share/plugin/people/template/data/events/person:4
 msgid "edited their own profile."
-msgstr "event.edited-own-profile"
-
-#. (person)
-#: share/plugin/people/template/data/events/person:23
-msgid "has stopped following %1."
-msgstr "event.stopped-following=person"
-
-#. (person)
-#: share/plugin/people/template/data/events/person:21
-msgid "is now following %1."
-msgstr "event.following=person"
+msgstr "event.edit-profile-self"
 
 #. (event.action, person)
 #: share/plugin/people/template/data/events/person:25
 msgid "performed action '%1' on %2."
-msgstr "event.performed=action,person"
+msgstr "event.generic=action,person"
 
 #. (event.action)
 #: share/plugin/people/template/data/events/person:10
 msgid "performed action '%1' on themself."
-msgstr "event.performed-on-self=action"
+msgstr "event.generic-self=action"
 
 #. (acc.user_count)
 #: share/plugin/people/template/invite:26
@@ -384,23 +390,33 @@ msgstr "invite.primary-account=users"
 
 #. (person_tag, person)
 #: share/plugin/people/template/data/events/person:19
-msgid "removed tag %1 from %2."
-msgstr "event.removed-tag=tag,person"
+msgid "removed the tag %1 from %2."
+msgstr "event.delete-tag=tag,person"
 
 #. (person_tag)
 #: share/plugin/people/template/data/events/person:8
 msgid "removed their tag %1."
-msgstr "event.removed-tag-on-self=tag"
+msgstr "event.delete-tag-self=tag"
+
+#. (person)
+#: share/plugin/people/template/data/events/person:21
+msgid "started following %1."
+msgstr "event.follow=person"
+
+#. (person)
+#: share/plugin/people/template/data/events/person:23
+msgid "stopped following %1."
+msgstr "event.unfollow=person"
 
 #. (person, person_tag)
 #: share/plugin/people/template/data/events/person:17
 msgid "tagged %1 %2."
-msgstr "event.tagged=person,tag"
+msgstr "event.add-tag=person,tag"
 
 #. (person_tag)
 #: share/plugin/people/template/data/events/person:6
 msgid "tagged themself %1."
-msgstr "event.tagged-self=tag"
+msgstr "event.add-tag-self=tag"
 
 #: share/plugin/people/template/email/invitation-body.html:31
 msgid "username:"
