@@ -778,10 +778,13 @@ sub is_authenticated {
         return 0;
     }
 
-    # If they have an outstanding e-mail confirmation, we don't treat them as
-    # Authenticated.
-    if ($self->requires_confirmation()) {
-        st_log->info( "user $username has oustanding email confirmation; not treating as authenticated" );
+    # If they have any outstanding restrictions (e.g. e-mail confirmation,
+    # password change), we don't treat them as Authenticated.
+    my @restrictions = map { $_->restriction_type } $self->restrictions->all;
+    if (@restrictions) {
+        map {
+            st_log->info("user $username has outstanding '$_' restriction; not treating as authenticated");
+        } @restrictions;
         return 0;
     }
 
