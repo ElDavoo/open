@@ -25,7 +25,7 @@ sub words {
     my $text = shift;
     $text =~ s/<[^>]*//g;
     $text =~ s/&\w+;//g;
-    return map { s/_/-/g; s/^-//; s/-$//; s/^spreadsheet$/sheet/i; lc $_ } grep {
+    return map { s/_/-/g; s/^-//; s/-$//; s/^spreadsheet$/sheet/i; s/^workspace/wiki/; lc $_ } grep {
         not($_ ~~ [qw[a an the]]);
     } grep /\w/, split(/\W+/, $text);
 }
