@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Test::Socialtext tests => 11;
 use Socialtext::CLI;
-use Test::Socialtext::CLIUtils qw(expect_success expect_failure);
+use Test::Socialtext::CLIUtils qw(:all);
 
 fixtures(qw( db ));
 
@@ -19,21 +19,21 @@ CONFIRM_USER: {
     $user->create_email_confirmation();
 
     expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => [qw( --email devnull5@socialtext.com --password foobar )] )
-                ->confirm_user();
-            },
-            qr/\Qdevnull5\E\@\Qsocialtext.com has been confirmed with password foobar\E/,
-            'confirm-user success message'
+        call_cli_argv(
+            'confirm-user',
+            '--email'    => 'devnull5@socialtext.com',
+            '--password' => 'foobar',
+        ),
+        qr/\Qdevnull5\E\@\Qsocialtext.com has been confirmed with password foobar\E/,
+        'confirm-user success message'
     );
 
     expect_failure(
-        sub {
-            Socialtext::CLI->new(
-                argv => [qw( --email devnull5@socialtext.com --password foobar )] )
-                ->confirm_user();
-        },
+        call_cli_argv(
+            'confirm-user',
+            '--email'    => 'devnull5@socialtext.com',
+            '--password' => 'foobar',
+        ),
         qr/\Qdevnull5\E\@\Qsocialtext.com has already been confirmed\E/,
         'confirm-user failed with already confirmed user'
     );
@@ -47,11 +47,11 @@ CHANGE_PASSWORD: {
     );
 
     expect_success(
-        sub {
-            Socialtext::CLI->new( argv =>
-                    [ qw( --username test@example.com --password ), $new_pw ]
-            )->change_password();
-        },
+        call_cli_argv(
+            'change-password',
+            '--username' => 'test@example.com',
+            '--password' => $new_pw,
+        ),
         qr/The password for test\@example\.com has been changed\./,
         'change password successfully',
     );
@@ -60,11 +60,11 @@ CHANGE_PASSWORD: {
     ok $user->password_is_correct($new_pw), 'new password is valid';
 
     expect_failure(
-        sub {
-            Socialtext::CLI->new(
-                argv => [qw( --username test@example.com --password bad )] )
-                ->change_password();
-        },
+        call_cli_argv(
+            'change-password',
+            '--username' => 'test@example.com',
+            '--password' => 'bad',
+        ),
         qr/\QPasswords must be at least 6 characters long.\E/,
         'password is too short',
     );
