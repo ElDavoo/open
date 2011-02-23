@@ -10,6 +10,7 @@ use Class::Field qw( const field );
 use Email::Valid;
 use Guard;
 use Readonly;
+use Try::Tiny;
 use Scalar::Util qw/blessed/;
 use Socialtext::File;
 use Socialtext::Log 'st_log';
@@ -251,13 +252,13 @@ sub new_from_name {
         page_id      => $id,
         deleted_ok   => 1,
         no_die       => 1,
-    ) || $self->By_id(
+    ) || try { $self->By_id(
         hub          => $self->hub,
         workspace_id => $self->hub->current_workspace->workspace_id,
         page_id      => $page_name,
         deleted_ok   => 1,
         no_die       => 1,
-    );
+    ) };
 
     $page //= Socialtext::Page->Blank(
         hub     => $self->hub, # will use current_user/workspace
