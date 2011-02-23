@@ -38,7 +38,8 @@ BEGIN {
 }
 
 has 'homunculus' => (
-    is => 'ro', isa => 'Socialtext::User::Base',
+    is => 'rw', isa => 'Socialtext::User::Base',
+    writer => '_set_homunculus',
     required => 1,
     handles => [qw(
         user_id
@@ -254,6 +255,25 @@ sub create {
     $user->_index();
 
     return $user;
+}
+
+sub reload {
+    my $self    = shift;
+    my $user_id = $self->user_id;
+
+    # Forcably remove ourselves from the cache first; we explicitly *don't*
+    # want the cached copy of this User
+    Socialtext::User::Cache->Remove(user_id => $user_id);
+    $self->metadata->_cache->remove($user_id);
+
+    # Refresh the Homunculus and Metadata for the User.
+    my $homey = $self->new_homunculus(user_id => $user_id);
+    $self->_set_homunculus($homey);
+
+    my $meta = Socialtext::UserMetadata->new(user_id => $user_id);
+    $self->_set_metadata($meta);
+
+    return $self;
 }
 
 sub SystemUser {
@@ -1758,6 +1778,13 @@ considered an error.
 
 Returns the name of the package (used by the Socialtext::MultiPlugin base when
 determining driver classes
+
+=head2 $user->reload()
+
+Reloads the User object from the DB, including any entries in in-memory caches.
+
+Primarily used for I<testing>; when you're operating at a distance on a User
+and need to reload that object quickly to verify the results.
 
 =head2 $user->can_update_store()
 
