@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 01:41+0800\n"
+"PO-Revision-Date: 2011-02-24 02:05+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -456,7 +456,7 @@ msgstr "wafl.link-title=url"
 #. (blog_name)
 #: share/skin/wikiwyg/javascript/widget_resource.js:17 share/skin/wikiwyg/javascript/widget_resource.js:20
 msgid "Link to blog '%1'. Click to edit."
-msgstr "wafl.blog-title=name"
+msgstr "wafl.blog-link-title=name"
 
 #. (file_name)
 #: share/skin/wikiwyg/javascript/widget_resource.js:7
@@ -584,11 +584,11 @@ msgstr "code.plain-text"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1919
 msgid "Please enter the number of table columns:"
-msgstr "table.columns:"
+msgstr "table.enter-columns:"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1918
 msgid "Please enter the number of table rows:"
-msgstr "table.rows:"
+msgstr "table.enter-rows:"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1912
 msgid "Please select the text you would like to turn into a link."

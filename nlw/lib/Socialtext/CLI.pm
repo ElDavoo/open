@@ -255,7 +255,7 @@ sub enable_plugin {
     elsif ($opts{account}) {
         my $account = $self->_load_account($opts{account});
         $self->_error(
-           loc("The account [_1] does not exist", $opts{account}) )
+           loc("The account name you specified, [_1], does not exist.", $opts{account}) )
            unless $account;
         $self->_plugin_before(%opts);
         eval { $account->enable_plugin($_) for @$plugins; };

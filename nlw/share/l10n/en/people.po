@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 01:40+0800\n"
+"PO-Revision-Date: 2011-02-24 02:05+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -84,7 +84,7 @@ msgstr "profile.facebook:"
 
 #: share/plugin/people/template/invite:48
 msgid "Firstname Lastname &lt;u01234@example.com&gt;"
-msgstr "invite.example-email-address"
+msgstr "invite.example-full-email-address"
 
 #: share/plugin/people/template/lite/profile.html:15
 msgid "Follow"

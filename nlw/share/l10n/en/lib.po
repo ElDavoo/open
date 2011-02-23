@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 01:40+0800\n"
+"PO-Revision-Date: 2011-02-24 02:03+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -1359,7 +1359,7 @@ msgstr "wiki.importing=tarball"
 
 #: lib/Socialtext/DisplayPlugin.pm:118
 msgid "Include Recently Viewed items as a side box when viewing pages?"
-msgstr "wiki.show-breadcrumbs-sidebox?"
+msgstr "wiki.include-breadcrumbs?"
 
 #: lib/Socialtext/Workspace.pm:631
 msgid "Incoming email placement must be one of top, bottom, or replace."
@@ -1705,7 +1705,7 @@ msgstr "error.page-title-too-long=max-length"
 
 #: lib/Socialtext/EditPlugin.pm:47
 msgid "Page title missing"
-msgstr "error.no-page-title"
+msgstr "error.page-title-required"
 
 #: lib/Socialtext/WatchlistPlugin.pm:270
 msgid "Pages You're Watching"
@@ -2202,11 +2202,6 @@ msgstr "error.no-signals-plugin"
 msgid "The Socialtext system cannot reach the Windows NTLM Domain Controller.  An Admin should check the Domain Controller and/or Socialtext configuration."
 msgstr "error.ntlm"
 
-#. ($opts{account})
-#: lib/Socialtext/CLI.pm:258
-msgid "The account %1 does not exist"
-msgstr "error.no-account=name"
-
 #. ($p->{name})
 #: lib/Socialtext/Account.pm:1106
 msgid "The account name you chose, %1, is already in use."
@@ -2290,7 +2285,7 @@ msgstr "error.invalid-mass-add-file"
 
 #: lib/Socialtext/Handler/Authen.pm:735
 msgid "The given confirmation URL does not match any pending confirmations."
-msgstr "error.invalid-confirmation-url"
+msgstr "error.no-such-pending-confirmation"
 
 #. (Socialtext::AppConfig->support_address)
 #: lib/Socialtext/Handler/Container/Group.pm:36
@@ -2457,7 +2452,7 @@ msgstr "profile.field-hidden"
 #. ($blog_tag)
 #: lib/Socialtext/WeblogPlugin.pm:190
 msgid "This is the first post in %1. Click *New Post* to add another post."
-msgstr "blog.first-post=tag"
+msgstr "blog.first-post-body=tag"
 
 #: lib/Socialtext/BacklinksPlugin.pm:174
 msgid "This page is linked to from:"

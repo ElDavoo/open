@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 01:40+0800\n"
+"PO-Revision-Date: 2011-02-24 02:09+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -424,15 +424,15 @@ msgstr "sc.new-name"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:291
 msgid "cell"
-msgstr "sc.cell"
+msgstr "sc.target-cell"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:132
 msgid "number"
-msgstr "sc.number"
+msgstr "sc.sample-number"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:288 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:171
 msgid "range"
-msgstr "sc.range"
+msgstr "sc.target-range"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:161
 msgid "text"

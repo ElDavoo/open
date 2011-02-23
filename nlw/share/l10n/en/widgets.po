@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-23 23:40+0800\n"
+"PO-Revision-Date: 2011-02-24 02:12+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -110,9 +110,25 @@ msgstr "activities.click-to-collapse"
 msgid "(click here to expand)"
 msgstr "activities.click-to-expand"
 
+#: share/plugin/widgets/template/view/gallery:119
+msgid "(delete)"
+msgstr "widgets.delete"
+
 #: share/plugin/widgets/share/javascript/activities/explore.js:221
 msgid "(no items to show)"
 msgstr "explore.no-items"
+
+#: share/plugin/widgets/template/view/gallery:126
+msgid "(remove)"
+msgstr ""
+
+#: share/plugin/widgets/template/view/gallery:113
+msgid "(restore)"
+msgstr "widgets.restore"
+
+#: share/plugin/widgets/template/view/gallery:107
+msgid "(update)"
+msgstr "widgets.update"
 
 #: share/plugin/widgets/template/mobile-signals.tt2:123
 msgid "Activity"
@@ -225,7 +241,7 @@ msgstr "activities.enter-video-url-here"
 
 #: share/plugin/widgets/template/view/gallery:116
 msgid "Delete"
-msgstr "do.delete"
+msgstr "widget.about-delete"
 
 #: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:19
 msgid "Done"
@@ -385,7 +401,7 @@ msgstr "activities.reply-to-conversation"
 
 #: share/plugin/widgets/template/view/gallery:110
 msgid "Restore"
-msgstr "widgets.restore"
+msgstr "widgets.about-restore"
 
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:24
 msgid "Restore Widget"
@@ -509,7 +525,7 @@ msgstr "video.url:"
 
 #: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:55 share/plugin/widgets/template/view/gallery:104
 msgid "Update"
-msgstr "widgets.update"
+msgstr "widgets.about-update"
 
 #: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:3
 msgid "Update Widget"
@@ -617,7 +633,7 @@ msgstr "activities.comments"
 msgid "contributions"
 msgstr "activities.contributions"
 
-#: share/plugin/widgets/share/javascript/template/activities/signal.icons.tt2:23 share/plugin/widgets/template/view/gallery:119
+#: share/plugin/widgets/share/javascript/template/activities/signal.icons.tt2:23
 msgid "delete"
 msgstr "activities.delete"
 
@@ -740,7 +756,7 @@ msgstr "activities.private-to=user"
 msgid "private to you"
 msgstr "activities.private-to-you"
 
-#: share/plugin/widgets/template/view/gallery:126
+#:
 msgid "remove"
 msgstr "widgets.remove"
 
@@ -777,10 +793,6 @@ msgstr "activities.rename=page,wiki"
 #: share/plugin/widgets/share/javascript/template/activities/page.icons.tt2:12 share/plugin/widgets/share/javascript/template/activities/signal.icons.tt2:8
 msgid "reply"
 msgstr "activities.reply"
-
-#: share/plugin/widgets/template/view/gallery:113
-msgid "restore"
-msgstr "widgets.restore"
 
 #: share/plugin/widgets/share/javascript/activities/appdata.js:343
 msgid "signals"
@@ -820,10 +832,6 @@ msgstr "activities.to=target"
 #: share/plugin/widgets/share/javascript/template/activities/page.meta.tt2:5 share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:13
 msgid "to %1 groups"
 msgstr "activities.to-groups=count"
-
-#: share/plugin/widgets/template/view/gallery:107
-msgid "update"
-msgstr "widgets.update"
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:76
 msgid "within"
