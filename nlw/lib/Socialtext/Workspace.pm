@@ -697,7 +697,7 @@ sub TitleIsValid {
         and ( $title !~ /^-/ ) ) {
         push @{$errors},
             loc(
-            'Workspace title must be between 2 and 64 characters long and may not begin with a -.'
+            "Workspace title must be between 2 and 64 characters long and may not begin with a '-'."
             );
     }
 
@@ -735,7 +735,7 @@ sub NameIsValid {
 
     if ( $class->NameIsIllegal($name) ) {
         push @{$errors},
-            loc('Workspace name must be between 3 and 30 characters long, and must contain only upper- or lower-case letters, numbers, underscores, and dashes.');
+            loc("Workspace name must be between 3 and 30 characters long, and must contain only lower-case letters, numbers, underscores, and dashes and may not begin with a '-'.");
     }
 
     if ( $name =~ /^-/ ) {
