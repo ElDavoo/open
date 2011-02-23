@@ -1,15 +1,11 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# @COPYRIGHT@
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2011-02-20 09:35+0800\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-02-23 10:27+0800\n"
+"PO-Revision-Date: \n"
+"Language-Team: Socialtext i18n team\n"
+"Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -90,12 +86,12 @@ msgstr "###-widgets.other-reply-count=older"
 #. (signal.best_full_name)
 #: share/plugin/widgets/share/javascript/activities/widget.js:536
 msgid "%1 private to you"
-msgstr "###-widgets.private-to-you=best-full_name"
+msgstr "###-widgets.private-to-you=best-full-name"
 
 #. (signal.best_full_name,                    targets.join(', ')
 #: share/plugin/widgets/share/javascript/activities/widget.js:539
 msgid "%1 to %2"
-msgstr "###-widgets.to=best-full_name,join"
+msgstr "###-widgets.to=best-full-name,join"
 
 #. (actor, widget_link(event.context)
 #. (actor, widget_link(event.context))

@@ -1,16 +1,11 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
+# @COPYRIGHT@
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-02-23 10:27+0800\n"
+"PO-Revision-Date: \n"
+"Language-Team: Socialtext i18n team\n"
+"Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,7 +13,7 @@ msgstr ""
 #. (group.driver_group_name)
 #: share/plugin/control/template/control/group.html:4
 msgid "%1 Group"
-msgstr "###-control.group=driver-group_name"
+msgstr "###-control.group=driver-group-name"
 
 #. (account.name)
 #: share/plugin/control/template/control/account.html:4 share/plugin/control/template/control/add_profile_field.html:2 share/plugin/control/template/control/add_user.html:2 share/plugin/control/template/control/add_users.html:2 share/plugin/control/template/control/design-account.html:2 share/plugin/control/template/control/desktop-account.html:8 share/plugin/control/template/control/edit_profile_field.html:2 share/plugin/control/template/control/fields-account.html:2 share/plugin/control/template/control/rename-account.html:2
@@ -50,7 +45,7 @@ msgstr "###-control.skin-workspace-level-skin-for-workspace-s=custom-skin,custom
 #. (count_selected_users()
 #: share/plugin/control/template/control/user_table:65
 msgid "%1 users selected"
-msgstr "###-control.users-selected=count-selected_users"
+msgstr "###-control.users-selected=count-selected-users"
 
 #. (workspace.name)
 #: share/plugin/control/template/control/workspace.html:3
@@ -215,12 +210,12 @@ msgstr "###-control.add-users"
 #. (group.driver_group_name, group.group_id)
 #: share/plugin/control/template/control/group_add_to_workspace.html:5
 msgid "Adding Group %1 (%2) to a Workspace"
-msgstr "###-control.adding-group-to-workspace=driver-group_name,group-id"
+msgstr "###-control.adding-group-to-workspace=driver-group-name,group-id"
 
 #. (group.driver_group_name, group.group_id)
 #: share/plugin/control/template/control/group_add_to_account.html:5
 msgid "Adding Group %1 (%2) to an Account"
-msgstr "###-control.adding-group-to-account=driver-group_name,group-id"
+msgstr "###-control.adding-group-to-account=driver-group-name,group-id"
 
 #. (account.name)
 #: share/plugin/control/template/control/account_add_group.html:5
@@ -432,7 +427,7 @@ msgstr "###-control.created-by"
 #. (creator.best_full_name)
 #: share/plugin/control/template/control/group.html:6
 msgid "Created By: %1"
-msgstr "###-control.created-by=best-full_name"
+msgstr "###-control.created-by=best-full-name"
 
 #. (create_time)
 #: share/plugin/control/template/control/group.html:7
