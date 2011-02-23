@@ -1708,8 +1708,9 @@ sub change_password {
     my $restriction = $user->password_change_confirmation;
     $restriction->clear if $restriction;
 
-    $self->_success( 'The password for ' . $user->username
-                      . ' has been changed.' );
+    $self->_success(
+        loc('The password for [_1] has been changed.', $user->username),
+    );
 }
 
 sub _eval_password_change {
