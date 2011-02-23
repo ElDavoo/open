@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 07:11+0800\n"
+"PO-Revision-Date: 2011-02-24 07:46+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -80,6 +80,11 @@ msgstr "The %1 account has been created."
 msgid "account.default=name"
 msgstr "The default account is %1."
 
+#. ($dir)
+#: lib/Socialtext/CLI.pm:495
+msgid "account.deleting-old-export=path"
+msgstr "Deleting existing account export at %1."
+
 #: lib/Socialtext/Account.pm:549
 msgid "account.enabling-plugins"
 msgstr "Enabling account plugins ..."
@@ -102,6 +107,14 @@ msgstr "Exporting account %1 ..."
 #: lib/Socialtext/CLI.pm:579
 msgid "account.imported=name"
 msgstr "%1 account imported."
+
+#: lib/Socialtext/CLI.pm:547
+msgid "account.importing-data"
+msgstr "Importing account data..."
+
+#: lib/Socialtext/Pluggable/Plugin/Widgets.pm:278
+msgid "account.importing-gallery"
+msgstr "Importing account gallery ..."
 
 #. ($acct->name)
 #: lib/Socialtext/Pluggable/Plugin/Groups.pm:90
@@ -204,19 +217,6 @@ msgstr "public-join-to-edit"
 #: lib/Socialtext/Workspace/Permissions.pm:101
 msgid "acl.public-read-only"
 msgstr "public-read-only"
-
-#. ($dir)
-#: lib/Socialtext/CLI.pm:495
-msgid "acount.deleting-old-export=path"
-msgstr "Deleting existing account export at %1."
-
-#: lib/Socialtext/CLI.pm:547
-msgid "acount.importing-data"
-msgstr "Importing account data..."
-
-#: lib/Socialtext/Pluggable/Plugin/Widgets.pm:278
-msgid "acount.importing-gallery"
-msgstr "Importing account gallery ..."
 
 #: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:2
 msgid "activities.about-insert-wikilink"
@@ -568,12 +568,6 @@ msgstr "within"
 msgid "activities.you"
 msgstr "You"
 
-#. (blog_name)
-#: share/skin/wikiwyg/javascript/widget_resource.js:58
-#: share/skin/wikiwyg/javascript/widget_resource.js:61
-msgid "afl.blog-list=name"
-msgstr "blog list: %1"
-
 #: share/skin/s3/template/lite/page_list.html:13
 #: share/skin/s3/template/view/page/display:14
 #: share/plugin/widgets/share/javascript/template/activities/ago.tt2:7
@@ -688,11 +682,6 @@ msgstr "Removed the Appliance Business Administrator role from %1"
 #: lib/Socialtext/Handler/ControlPanel.pm:601
 msgid "appliance.removed-technical-admin=user"
 msgstr "Removed the Appliance Technical Administrator role from %1"
-
-#. ($page->name)
-#: lib/Socialtext/BacklinksPlugin.pm:65
-msgid "backlink.all=page"
-msgstr "All backlinks for \"%1\""
 
 #: share/skin/s3/template/view/weblog:108
 msgid "blog.archives"
@@ -1358,6 +1347,13 @@ msgstr ""
 "adding_and_updating_users#adding_multiple_users\">Adding Multiple Users to "
 "Socialtext</a>"
 
+#. (title)
+#: share/plugin/control/template/control/plugins:5
+msgid "control.about-paid-option=plugin"
+msgstr ""
+"%1 is a paid option. For more information about fees, contact your sales "
+"representative."
+
 #: share/plugin/control/template/control/index.html:34
 msgid "control.about-settings-tab"
 msgstr "Manage system-wide application settings."
@@ -1980,6 +1976,10 @@ msgstr "hide"
 #: share/plugin/control/template/control/design-account.html:25
 msgid "control.image-file:"
 msgstr "Image File:"
+
+#: share/plugin/control/template/control/plugins:13
+msgid "control.installed-plugins:"
+msgstr "Optional modules installed:"
 
 #: share/plugin/control/template/control/index.html:3
 msgid "control.introduction"
@@ -2613,6 +2613,10 @@ msgstr "Dashboard for %1"
 msgid "dashboard.force-update"
 msgstr "Force update this dashboard on existing users, too"
 
+#: lib/Socialtext/Pluggable/Plugin/Widgets.pm:238
+msgid "dashboard.importing-default"
+msgstr "Importing default dashboard"
+
 #. ($email)
 #: lib/Socialtext/Pluggable/Plugin/Widgets.pm:235
 msgid "dashboard.importing=user"
@@ -2666,18 +2670,6 @@ msgstr "Welcome"
 #: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:12
 msgid "dashboard.widgets-to-push:"
 msgstr "The following widgets will be pushed:"
-
-#: share/plugin/control/template/control/report.html:127
-msgid "date.1month"
-msgstr "1 Month"
-
-#: share/plugin/control/template/control/report.html:128
-msgid "date.1quarter"
-msgstr "1 Quarter"
-
-#: share/plugin/control/template/control/report.html:126
-msgid "date.1week"
-msgstr "1 Week"
 
 #: share/plugin/control/template/control/report.html:105
 msgid "date.april"
@@ -2742,10 +2734,6 @@ msgstr "October"
 #: share/plugin/control/template/control/report.html:110
 msgid "date.september"
 msgstr "September"
-
-#: lib/Socialtext/Pluggable/Plugin/Widgets.pm:238
-msgid "default.importing-default"
-msgstr "Importing default dashboard"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:742
 msgid "desktop.relogin-for-default-logo"
@@ -2891,6 +2879,10 @@ msgstr "Done"
 #: share/skin/s3/javascript/lightbox/duplicate.tt2:8
 msgid "do.duplicate"
 msgstr "Duplicate"
+
+#: share/skin/s3/template/view/listview:21
+msgid "do.export"
+msgstr "Export"
 
 #: lib/Socialtext/Pluggable/Plugin/SocialCalc.pm:50
 msgid "do.export-csv"
@@ -3088,6 +3080,10 @@ msgstr "Discard"
 #: share/skin/s3/javascript/s3.js:1178
 msgid "draft.discard?"
 msgstr "Are you sure you want to discard the draft?"
+
+#: share/skin/s3/javascript/s3.js:1171
+msgid "draft.or"
+msgstr "&nbsp;or&nbsp;"
 
 #: share/skin/s3/javascript/s3.js:1168
 msgid "draft.resume"
@@ -4364,6 +4360,10 @@ msgstr "No LDAP Group Factories configured; cannot create Group from LDAP."
 msgid "error.no-page-body"
 msgstr "A page must have a body to be saved."
 
+#: share/skin/s3/javascript/s3.js:826
+msgid "error.no-page-doc"
+msgstr "You must check at least one page in order to create a Word document."
+
 #: share/skin/s3/javascript/s3.js:814
 msgid "error.no-page-pdf"
 msgstr "You must check at least one page in order to create a PDF."
@@ -4567,10 +4567,6 @@ msgid "error.non-admin-create-group"
 msgstr ""
 "Your appliance is configured so that only account administrators can create "
 "new groups."
-
-#: share/skin/s3/javascript/s3.js:826
-msgid "error.none-page-doc"
-msgstr "You must check at least one page in order to create a Word document."
 
 #: lib/Socialtext/CLI.pm:3317
 msgid "error.not-both-visible-and-hidden"
@@ -5419,6 +5415,10 @@ msgstr "(no items to show)"
 msgid "explore.oldies"
 msgstr "OLDIES"
 
+#: share/plugin/widgets/share/javascript/activities/explore.js:188
+msgid "explore.past-month"
+msgstr "PAST MONTH"
+
 #: share/plugin/widgets/share/javascript/activities/explore.js:184
 msgid "explore.past-week"
 msgstr "PAST WEEK"
@@ -5436,14 +5436,6 @@ msgid "explore.using-filters"
 msgstr ""
 "Use the filters below to narrow the results. Use the small 'x' by any of the "
 "Groups, Tags and People filters to remove them."
-
-#: share/plugin/widgets/share/javascript/activities/explore.js:188
-msgid "explorepast-month"
-msgstr "PAST MONTH"
-
-#: share/skin/s3/template/view/listview:21
-msgid "export.do"
-msgstr "Export"
 
 #: share/skin/s3/template/view/page/display:113
 msgid "export.html"
@@ -7278,6 +7270,14 @@ msgstr "Select/Deselect All"
 msgid "nav.tools"
 msgstr "Tools"
 
+#: share/skin/s3/template/element/main_nav/subnav/people:9
+msgid "nav.try-people"
+msgstr "Try Socialtext People"
+
+#: share/skin/s3/template/element/main_nav/subnav/signals:9
+msgid "nav.try-signals"
+msgstr "Try Socialtext Signals"
+
 #: share/skin/s3/template/view/attachmentslist:32
 msgid "nav.uploaded-date"
 msgstr "Date Uploaded"
@@ -7373,6 +7373,11 @@ msgstr "Click <a href=\"%1\">here</a> to return to the page."
 #: lib/Socialtext/BacklinksPlugin.pm:168
 msgid "page.backlinks:"
 msgstr "The page had these Backlinks:"
+
+#. ($page->name)
+#: lib/Socialtext/BacklinksPlugin.pm:65
+msgid "page.backlinks=page"
+msgstr "All backlinks for \"%1\""
 
 #: share/skin/s3/javascript/lightbox/create_content.tt2:23
 msgid "page.blank"
@@ -7865,6 +7870,27 @@ msgstr "Tools"
 msgid "people.welcome-new-user"
 msgstr "Welcome, New User"
 
+#. (title)
+#: share/plugin/control/template/control/plugins:8
+msgid "plugin.about-to-disable=title"
+msgstr "You are about to disable %1."
+
+#: share/plugin/control/template/control/plugins:30
+msgid "plugin.click-to-disable"
+msgstr "click to disable"
+
+#: share/plugin/control/template/control/plugins:30
+msgid "plugin.click-to-enable"
+msgstr "click to enable"
+
+#: share/plugin/control/template/control/plugins:8
+msgid "plugin.confirm-disable"
+msgstr "Press 'OK' to disable this module or 'Cancel' to exit."
+
+#: share/plugin/control/template/control/plugins:5
+msgid "plugin.confirm-enable"
+msgstr "Press 'OK' to enable this module or 'Cancel' to exit."
+
 #: lib/Socialtext/Handler/ControlPanel.pm:880
 msgid "plugin.disabled"
 msgstr "Module has been disabled."
@@ -7883,40 +7909,8 @@ msgstr "Module has been enabled."
 msgid "plugin.enabled=plugin,container"
 msgstr "The %1 plugin is now enabled for %2"
 
-#. (title)
-#: share/plugin/control/template/control/plugins:5
-msgid "plugins.about-paid-option=plugin"
-msgstr ""
-"%1 is a paid option. For more information about fees, contact your sales "
-"representative."
-
-#. (title)
-#: share/plugin/control/template/control/plugins:8
-msgid "plugins.about-to-disable=plugin"
-msgstr "You are about to disable %1."
-
-#: share/plugin/control/template/control/plugins:30
-msgid "plugins.click-to-disable"
-msgstr "click to disable"
-
-#: share/plugin/control/template/control/plugins:30
-msgid "plugins.click-to-enable"
-msgstr "click to enable"
-
-#: share/plugin/control/template/control/plugins:8
-msgid "plugins.confirm-disable"
-msgstr "Press 'OK' to disable this module or 'Cancel' to exit."
-
-#: share/plugin/control/template/control/plugins:5
-msgid "plugins.confirm-enable"
-msgstr "Press 'OK' to enable this module or 'Cancel' to exit."
-
-#: share/plugin/control/template/control/plugins:13
-msgid "plugins.installed:"
-msgstr "Optional modules installed:"
-
 #: share/plugin/control/template/control/plugins:15
-msgid "plugins.none"
+msgid "plugin.none"
 msgstr "None"
 
 #: share/skin/s3/template/view/weblog:53 share/skin/s3/template/view/weblog:55
@@ -8107,10 +8101,6 @@ msgstr "Work:"
 #: share/plugin/people/template/profile_hcard:59
 msgid "profile.yahoo:"
 msgstr "Yahoo!&trade;:"
-
-#: share/skin/s3/javascript/s3.js:1171
-msgid "recover.or"
-msgstr "&nbsp;or&nbsp;"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:211
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:215
@@ -8927,31 +8917,6 @@ msgstr "Creating a New Spreadsheet..."
 msgid "sheet.untitled"
 msgstr "Untitled Spreadsheet"
 
-#: lib/Socialtext/Pluggable/Plugin/Signals.pm:333
-msgid "signal.importing"
-msgstr "Importing signals ..."
-
-#. ($search_term)
-#: lib/Socialtext/Pluggable/Plugin/Signals.pm:656
-msgid "signal.matching=query"
-msgstr "Signals matching '%1'"
-
-#. ($sig_old_id, $parent_old_id, $signal_id)
-#: lib/Socialtext/Pluggable/Plugin/Signals.pm:466
-msgid "signal.no-imported-parent=old-id,old-parent-id,new-id"
-msgstr ""
-"Signal number %1 was originally in reply to signal %2, but that signal is "
-"not found.  This signal's new ID is %3"
-
-#: lib/Socialtext/Lite/People.pm:104
-msgid "signal.private-message-sent"
-msgstr "Private message sent."
-
-#. ($1)
-#: lib/Socialtext/Pluggable/Plugin/Signals.pm:653
-msgid "signal.tagged=tag"
-msgstr "Signals tagged #%1"
-
 #: share/plugin/signals/template/bookmarklet/index.html:47
 msgid "signals.about-bookmarklet!"
 msgstr ""
@@ -9031,12 +8996,28 @@ msgstr "Find and select \"Show Bookmarks Bar\" from the menu in your browser."
 msgid "signals.global-limit=size"
 msgstr "Maximum value for this appliance is %1"
 
+#: lib/Socialtext/Pluggable/Plugin/Signals.pm:333
+msgid "signals.importing"
+msgstr "Importing signals ..."
+
+#. ($search_term)
+#: lib/Socialtext/Pluggable/Plugin/Signals.pm:656
+msgid "signals.matching=query"
+msgstr "Signals matching '%1'"
+
 #. (a.user_count)
 #. (g.user_count)
 #: share/plugin/signals/template/lite/signals.html:57
 #: share/plugin/signals/template/lite/signals.html:68
 msgid "signals.network-count=users"
 msgstr "%quant(%1,user)"
+
+#. ($sig_old_id, $parent_old_id, $signal_id)
+#: lib/Socialtext/Pluggable/Plugin/Signals.pm:466
+msgid "signals.no-imported-parent=old-id,old-parent-id,new-id"
+msgstr ""
+"Signal number %1 was originally in reply to signal %2, but that signal is "
+"not found.  This signal's new ID is %3"
 
 #. (user_link(row.signal.user_id)
 #. (user_link(row.signal.user_id), row.signal.uri, to_localtime(row.signal.at), networks(row.signal))
@@ -9075,6 +9056,10 @@ msgstr "primary, %quant(%1,user)"
 #: share/plugin/signals/template/email/direct-message.html:5
 msgid "signals.private-message-from=user:"
 msgstr "You have received a private message from %1:"
+
+#: lib/Socialtext/Lite/People.pm:104
+msgid "signals.private-message-sent"
+msgstr "Private message sent."
 
 #: share/plugin/signals/template/element/settings/signals_settings_section:8
 msgid "signals.private-message-to-email"
@@ -9169,6 +9154,11 @@ msgstr "Relevance"
 #: share/plugin/signals/template/view/signallist:33
 msgid "signals.sort-sender"
 msgstr "Sender"
+
+#. ($1)
+#: lib/Socialtext/Pluggable/Plugin/Signals.pm:653
+msgid "signals.tagged=tag"
+msgstr "Signals tagged #%1"
 
 #. (signal.networks.size)
 #. (event.context.account_ids.size + event.context.group_ids.size)
@@ -9457,6 +9447,18 @@ msgstr "Deleted %quant(%1,uploaded widget)"
 msgid "test.deleted-widgets=count"
 msgstr "Deleted %quant(%1,widget)"
 
+#: share/plugin/control/template/control/report.html:127
+msgid "time.1month"
+msgstr "1 Month"
+
+#: share/plugin/control/template/control/report.html:128
+msgid "time.1quarter"
+msgstr "1 Quarter"
+
+#: share/plugin/control/template/control/report.html:126
+msgid "time.1week"
+msgstr "1 Week"
+
 #. ($self->hub->timezone->date_local( $_[0], dateonly => 1)
 #: lib/Socialtext/DisplayPlugin.pm:267
 msgid "time.at=date,time"
@@ -9500,14 +9502,6 @@ msgstr "%1 seconds"
 #: lib/Socialtext/PageRevision.pm:378
 msgid "time.weeks=count"
 msgstr "%1 weeks"
-
-#: share/skin/s3/template/element/main_nav/subnav/people:9
-msgid "try.people"
-msgstr "Try Socialtext People"
-
-#: share/skin/s3/template/element/main_nav/subnav/signals:9
-msgid "try.signals"
-msgstr "Try Socialtext Signals"
 
 #: share/plugin/twilio/template/element/settings/twilio_settings_section:28
 msgid "twilio.edit-profile"
@@ -9676,10 +9670,6 @@ msgstr "currently in DST"
 #: lib/Socialtext/TimeZonePlugin.pm:93
 msgid "tz.dst?"
 msgstr "How should Daylight Savings/Summer Time be handled?"
-
-#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:8
-msgid "ui.content"
-msgstr "Content"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:90
 msgid "unplugged.disabled"
@@ -9855,6 +9845,12 @@ msgstr "Display the blog '%1'. Click to edit."
 msgid "wafl.blog-link-title=name"
 msgstr "Link to blog '%1'. Click to edit."
 
+#. (blog_name)
+#: share/skin/wikiwyg/javascript/widget_resource.js:58
+#: share/skin/wikiwyg/javascript/widget_resource.js:61
+msgid "wafl.blog-list=name"
+msgstr "blog list: %1"
+
 #: share/skin/wikiwyg/javascript/widget_resource.js:77
 msgid "wafl.blog-name"
 msgstr "Blog name"
@@ -9882,6 +9878,10 @@ msgstr "Code block. Click to edit."
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1973
 msgid "wafl.code-title=syntax"
 msgstr "Code block with %1 syntax. Click to edit."
+
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:8
+msgid "wafl.content"
+msgstr "Content"
 
 #: lib/Socialtext/Formatter/WaflPhrase.pm:846
 msgid "wafl.contents"

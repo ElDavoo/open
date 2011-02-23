@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 07:05+0800\n"
+"PO-Revision-Date: 2011-02-24 07:37+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -220,7 +220,7 @@ msgid "table.columns:"
 msgstr "Columns:"
 
 #: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:8
-msgid "ui.content"
+msgid "wafl.content"
 msgstr "Content"
 
 #: share/skin/wikiwyg/javascript/jemplate/table-create.html:1
@@ -1009,7 +1009,7 @@ msgstr "`monospace`"
 
 #. (blog_name)
 #: share/skin/wikiwyg/javascript/widget_resource.js:58 share/skin/wikiwyg/javascript/widget_resource.js:61
-msgid "afl.blog-list=name"
+msgid "wafl.blog-list=name"
 msgstr "blog list: %1"
 
 #. (label)

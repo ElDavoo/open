@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 06:58+0800\n"
+"PO-Revision-Date: 2011-02-24 07:37+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -85,7 +85,7 @@ msgid "page.add-tag"
 msgstr "&nbsp;+"
 
 #: share/skin/s3/javascript/s3.js:1171
-msgid "recover.or"
+msgid "draft.or"
 msgstr "&nbsp;or&nbsp;"
 
 #. (template,                        self.selected_visible_type()
@@ -701,7 +701,7 @@ msgid "info.expand-view"
 msgstr "Expand edit area to fill browser window"
 
 #: share/skin/s3/template/view/listview:21
-msgid "export.do"
+msgid "do.export"
 msgstr "Export"
 
 #: share/skin/s3/template/view/page/display:113
@@ -1723,11 +1723,11 @@ msgid "page.top"
 msgstr "Top of page"
 
 #: share/skin/s3/template/element/main_nav/subnav/people:9
-msgid "try.people"
+msgid "nav.try-people"
 msgstr "Try Socialtext People"
 
 #: share/skin/s3/template/element/main_nav/subnav/signals:9
-msgid "try.signals"
+msgid "nav.try-signals"
 msgstr "Try Socialtext Signals"
 
 #: share/skin/s3/javascript/lightbox/email.tt2:25
@@ -2008,7 +2008,7 @@ msgid "error.no-page-pdf"
 msgstr "You must check at least one page in order to create a PDF."
 
 #: share/skin/s3/javascript/s3.js:826
-msgid "error.none-page-doc"
+msgid "error.no-page-doc"
 msgstr "You must check at least one page in order to create a Word document."
 
 #: share/skin/s3/template/element/main_nav/subnav/signals:6
