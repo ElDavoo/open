@@ -31,7 +31,7 @@ confirm_user: {
     );
 
     # reload User and check that they were confirmed properly
-    $user = Socialtext::User->new(user_id => $user->user_id);
+    $user->reload;
     ok !$user->email_confirmation, '... e-mail confirmation was removed';
     ok $user->has_valid_password(), '... password now valid after confirmation';
 }
@@ -73,7 +73,7 @@ change_password: {
         'change password successfully',
     );
 
-    $user = Socialtext::User->new(user_id => $user->user_id);
+    $user->reload;
     ok $user->password_is_correct($new_pw), 'new password is valid';
 }
 
