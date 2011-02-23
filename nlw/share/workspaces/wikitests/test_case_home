@@ -6,9 +6,7 @@
 
 | *Comment* | click the Weblog radio button |  |
 | click_ok | document.forms[1].homepage_is_weblog[1] |  |
-| pause | 5000 | needed for javascript catchup - to enable the textbox |
 | type_ok | homepage_weblog | Home %%start_time%% Blog |
-| pause | 5000 | needed for javascript catchup |
 | click_and_wait | link=Save |  |
 
 TODO: when Selenium checks the weblog box, the weblog text area does not enable. ??
