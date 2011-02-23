@@ -110,6 +110,7 @@ sub PUT_layout {
                     # Install the new gadget
                     $gadget = $self->container->install_gadget(
                         gadget_id => $g->{gadget_id},
+                        fixed => $g->{fixed},
                     );
                 }
             
