@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-18 01:53+0800\n"
+"PO-Revision-Date: 2011-02-24 00:23+0800\n"
 "PO-Revision-Date: \n"
 "Language-Team: LANGUAGE TEAM <E-MAIL@ADDRESS or HOME PAGE>\n"
 "Last-Translator: Socialtext i18n team\n"
@@ -728,7 +728,7 @@ msgstr "error.group-or-wiki-required"
 
 #: lib/Socialtext/CLI.pm:3317
 msgid "Can only specify one of --visible or --hidden"
-msgstr "error.no-visible+hidden"
+msgstr "error.not-both-visible-and-hidden"
 
 #. ($url)
 #: lib/Socialtext/Gadgets/Gadget.pm:767
@@ -1680,11 +1680,11 @@ msgstr "wiki.disabled-locking=title"
 
 #: lib/Socialtext/EmailNotifyPlugin.pm:68 lib/Socialtext/WatchlistPlugin.pm:66
 msgid "Page name and link only"
-msgstr "email.page+link-only"
+msgstr "email.page-name-link-only"
 
 #: lib/Socialtext/EmailNotifyPlugin.pm:69 lib/Socialtext/WatchlistPlugin.pm:67
 msgid "Page name and link, plus author and date"
-msgstr "email.page+link+author+date"
+msgstr "email.page-name-link-author-date"
 
 #: lib/Socialtext/DisplayPlugin.pm:53
 msgid "Page name is too long"
@@ -2150,7 +2150,7 @@ msgstr "plugin.enabled=plugin,container"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:505
 msgid "The %1 user was confirmed."
-msgstr "user.confirmed=name+email"
+msgstr "user.confirmed=name-and-email"
 
 #. ($ws->name, $file)
 #: lib/Socialtext/CLI.pm:2736
@@ -2838,7 +2838,7 @@ msgstr "error.self-delete"
 
 #: lib/Socialtext/OpenIdPlugin.pm:42
 msgid "You must input both an OpenID and an email."
-msgstr "error.openid+email-required"
+msgstr "error.openid-and-email-required"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:470
 msgid "You must provide a name to create a new account."
