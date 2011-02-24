@@ -1,10 +1,15 @@
 #!/usr/bin/env perl
+# @COPYRIGHT@
 use 5.12.0;
 use autodie;
+use warnings;
 use open qw(:std :utf8);
 use List::Util 'max';
 use File::Basename;
 use Getopt::Long;
+use FindBin '$RealBin';
+use lib "$RealBin/../lib";
+use Socialtext::l10n::DevUtils;
 
 my $inplace;
 GetOptions( 'inplace|i!' => \$inplace ) and @ARGV
@@ -20,6 +25,7 @@ my %SectionMap = (
     "table-options.html" => "table",
     "widget_resource.js" => "wafl",
     "opensocial-setup.html" => "widget",
+    "lib/Socialtext/Appliance" => "appliance",
 );
 
 sub words {

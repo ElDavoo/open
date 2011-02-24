@@ -1,9 +1,14 @@
 #!/usr/bin/env perl
+# @COPYRIGHT@
 use 5.12.0;
 use autodie;
+use warnings;
 use open qw(:std :utf8);
 use subs qw(outs is_key);
 use Getopt::Long;
+use FindBin '$RealBin';
+use lib "$RealBin/../lib";
+use Socialtext::l10n::DevUtils;
 
 my $inplace;
 my $msgstr;
@@ -50,15 +55,4 @@ for my $po (@ARGV) {
         rename "$po.new" => $po;
         warn "*** Changed file in-place: $po\n";
     }
-}
-
-sub outs {
-    my $para = shift;
-    $para =~ s/\n*$/\n/;
-    print $para;
-}
-
-sub is_key {
-    my $str = shift;
-    return($str =~ /^msg(?:id|str) "(?:###-)?(?:XXX|[a-z][a-z\d]+)\.\S/);
 }

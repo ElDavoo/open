@@ -1,13 +1,13 @@
 #!/usr/bin/env perl
 # @COPYRIGHT@
-use strict;
+use 5.12.0;
 use warnings;
-use FindBin qw/$Bin/;
-use lib "$Bin/../lib";
+use FindBin qw/$RealBin/;
+use lib "$RealBin/../lib";
 use Locale::Maketext::Lexicon 0.85; # Ensures xgettext.pl terminates
 use File::Basename 'basename';
 use Socialtext::System qw/shell_run/;
-chdir "$Bin/..";
+chdir "$RealBin/..";
 
 my @plugins = map { basename($_) } grep { -d and (-d "$_/share" or -d "$_/template") } glob('share/plugin/*');
 my %Sections = (
@@ -39,6 +39,7 @@ for my $key (sort keys %Sections) {
 
     if ($key eq 'wikiwyg') {
         shell_run('./dev-bin/l10n-widget-to-js');
+        unlink 'lib/Socialtext/Widget_resource.pm';
     }
 
     shell_run(
