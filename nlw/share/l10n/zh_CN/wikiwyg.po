@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-25 03:04+0800\n"
+"PO-Revision-Date: 2011-02-25 03:44+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -208,7 +208,7 @@ msgid "edit.summary=name,page,workspace"
 msgstr "<strong>%1</strong>想让您知道位于 %3 的<strong>%2</strong>所进行的编辑"
 
 msgid "edit.summary=name,summary,page,workspace"
-msgstr "<strong>%1</strong>，\"%2\" (编辑了位于 %4 的<strong>%3</strong> )"
+msgstr "<strong>%1</strong>，\"%2\"（编辑了位于 %4 的<strong>%3</strong>）"
 
 msgid "edit.tag-prompt:"
 msgstr "标签:"
@@ -376,7 +376,7 @@ msgid "page.save-with-another-name:"
 msgstr "另存为其他名称:"
 
 msgid "page.save-with-name"
-msgstr "页面另存为 \"<span id=\"st-newpage-duplicate-suggest\">XXX</span>\""
+msgstr "页面另存为 <span id=\"st-newpage-duplicate-suggest\">XXX</span>"
 
 msgid "refcard.$75"
 msgstr "$75"
