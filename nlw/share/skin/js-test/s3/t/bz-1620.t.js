@@ -18,8 +18,8 @@ t.runAsync([
 
         t.is(
             $rss_link.attr('target'),
-            '',
-            "[RSS Feed] link opens in the same window, not a new window"
+            '_blank',
+            "[RSS Feed] link opens in a new window, not the same window"
         );
 
         t.endAsync();
