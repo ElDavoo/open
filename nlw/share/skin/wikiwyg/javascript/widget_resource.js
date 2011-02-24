@@ -36,7 +36,7 @@ loc("Unformatted content. Click to edit.");
 loc("Use [_1] to generate a form. Click to edit.", form_name);
 loc("Include the page '[_1]'. Click to edit.", spreadsheete_title);
 loc("link: [_1]", label);
-loc("link: [_1] ([_2] )", page_title, section_name);
+loc("link: [_1] ([_2])", page_title, section_name);
 loc("link: [_1]", section_name);
 loc("image: [_1]", label);
 loc("image: [_1]", image_name);
