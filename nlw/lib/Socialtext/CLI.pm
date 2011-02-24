@@ -949,10 +949,11 @@ sub confirm_user {
     my $user = $self->_require_user();
     my $password = $self->_require_string('password');
 
-    unless ($user->requires_confirmation) {
+    my $confirmation = $user->email_confirmation;
+    unless ($confirmation) {
         $self->_error( $user->username . ' has already been confirmed' );
     }
-    $user->confirm_email_address;
+    $confirmation->confirm;
     $self->_eval_password_change($user,$password);
 
     $self->_success( $user->username . ' has been confirmed with password '
