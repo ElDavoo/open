@@ -40,7 +40,7 @@ msgstr "%1."
 #. (g.user_count)
 #: share/plugin/signals/template/lite/signals.html:57 share/plugin/signals/template/lite/signals.html:68
 msgid "signals.network-count=users"
-msgstr "%quant(%1,user)"
+msgstr "%*(%1,user)"
 
 #: share/plugin/signals/template/bookmarklet/too_long.html:13
 msgid "signals.click-cancel-to-signal-to-self"
@@ -254,7 +254,7 @@ msgstr "expunge"
 #. (a.user_count)
 #: share/plugin/signals/template/lite/signals.html:55
 msgid "signals.primary-account=users"
-msgstr "primary, %quant(%1,user)"
+msgstr "primary, %*(%1,user)"
 
 #: share/plugin/signals/share/javascript/template/rightBar.tt2:8
 msgid "signals.reply"

@@ -68,17 +68,17 @@ msgstr "%1: All Revisions"
 #. (user_count)
 #: share/skin/s3/template/element/listview_account_filter:13 share/skin/s3/template/element/listview_account_filter:22
 msgid "account.count=people"
-msgstr "%quant(%1,Person,People)"
+msgstr "%*(%1,Person,People)"
 
 #. (page.revisions)
 #: share/skin/s3/template/view/page/display:296
 msgid "page.count=revision"
-msgstr "%quant(%1,revision)"
+msgstr "%*(%1,revision)"
 
 #. (page.views)
 #: share/skin/s3/template/view/page/display:297
 msgid "page.count=view"
-msgstr "%quant(%1,view)"
+msgstr "%*(%1,view)"
 
 #: share/skin/s3/template/view/page/display:184
 msgid "page.add-tag"

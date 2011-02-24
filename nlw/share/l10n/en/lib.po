@@ -323,7 +323,7 @@ msgstr "%1: watchlist for %2"
 #. ($diff->in_units('days')
 #: lib/Socialtext/Authen.pm:46
 msgid "time.count=days"
-msgstr "%quant(%1,day)"
+msgstr "%*(%1,day)"
 
 #. ($name)
 #: lib/Socialtext/Workspace.pm:744
@@ -872,12 +872,12 @@ msgstr "Config for group %1:"
 #. ($user_count, $ws_count)
 #: lib/Socialtext/Handler/ControlPanel.pm:2271
 msgid "info.added-members=user-count,wiki"
-msgstr "Congratulations! You successfully added %quant(%1,user) to %quant(%2,workspace). They will receive an invitation message to each workspace."
+msgstr "Congratulations! You successfully added %*(%1,user) to %*(%2,workspace). They will receive an invitation message to each workspace."
 
 #. ($count,            $link)
 #: lib/Socialtext/Handler/ControlPanel.pm:2308
 msgid "info.created-wiki=user-count,link"
-msgstr "Congratulations! You successfully created a new workspace with %quant(%1,user). They will receive an invitation message with a link to %2."
+msgstr "Congratulations! You successfully created a new workspace with %*(%1,user). They will receive an invitation message with a link to %2."
 
 #: lib/Socialtext/Pluggable/Plugin/Widgets.pm:251
 msgid "info.container-exists"
@@ -967,22 +967,22 @@ msgstr "Deleted \"%1\""
 #. ($sth->rows)
 #: lib/Socialtext/WikiFixture/SocialBase.pm:2924
 msgid "test.deleted-containers=count"
-msgstr "Deleted %quant(%1,container)"
+msgstr "Deleted %*(%1,container)"
 
 #. ($sth->rows)
 #: lib/Socialtext/WikiFixture/SocialBase.pm:2908
 msgid "test.deleted-galleries=count"
-msgstr "Deleted %quant(%1,gallery,galleries)"
+msgstr "Deleted %*(%1,gallery,galleries)"
 
 #. ($sth->rows)
 #: lib/Socialtext/WikiFixture/SocialBase.pm:2935
 msgid "test.deleted-uploaded-widgets=count"
-msgstr "Deleted %quant(%1,uploaded widget)"
+msgstr "Deleted %*(%1,uploaded widget)"
 
 #. ($sth->rows)
 #: lib/Socialtext/WikiFixture/SocialBase.pm:2941
 msgid "test.deleted-widgets=count"
-msgstr "Deleted %quant(%1,widget)"
+msgstr "Deleted %*(%1,widget)"
 
 #. ($gid)
 #: lib/Socialtext/CLI.pm:1112
@@ -2824,7 +2824,7 @@ msgstr "You don't have permission to upload attachments"
 #. ($removed, $group->driver_group_name)
 #: lib/Socialtext/Handler/ControlPanel.pm:1238
 msgid "user.removed=count,group"
-msgstr "You have successfully removed %quant(%1,user) from the %2 Group."
+msgstr "You have successfully removed %*(%1,user) from the %2 Group."
 
 #: lib/Socialtext/Handler/ControlPanel.pm:535
 msgid "error.self-delete"
@@ -2887,7 +2887,7 @@ msgstr "You selected a homepage as blog, but did not select a blog name.  Your c
 #. (scalar(@$members)
 #: lib/Socialtext/Handler/ControlPanel.pm:1560
 msgid "user.added=count,group"
-msgstr "You successfully added %quant(%1,user) to %quant(%2,group). They will receive an invitation message to each workspace."
+msgstr "You successfully added %*(%1,user) to %*(%2,group). They will receive an invitation message to each workspace."
 
 #. ($self->hub->current_workspace->title)
 #: lib/Socialtext/WatchlistPlugin.pm:202

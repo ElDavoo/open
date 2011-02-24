@@ -13,7 +13,7 @@ msgstr ""
 #. (group.user_count)
 #: share/plugin/people/template/invite:28 share/plugin/people/template/invite:31
 msgid "people.count=users"
-msgstr "%quant(%1,user)"
+msgstr "%*(%1,user)"
 
 #: share/plugin/people/template/invite:73 share/plugin/people/template/invite:80
 msgid "invite.your-personal-message"
@@ -385,7 +385,7 @@ msgstr "performed action '%1' on themself."
 #. (acc.user_count)
 #: share/plugin/people/template/invite:26
 msgid "invite.primary-account=users"
-msgstr "primary, %quant(%1,user)"
+msgstr "primary, %*(%1,user)"
 
 #. (person_tag, person)
 #: share/plugin/people/template/data/events/person:19
