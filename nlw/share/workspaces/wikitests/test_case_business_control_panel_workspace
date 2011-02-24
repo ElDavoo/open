@@ -40,8 +40,8 @@
 | *Comment* | Test case: Business Control Panel Workspace Create workspace |  |
 | open_ok | /nlw/control/workspace |  |
 | set | wstitle | wstitle_%%start_time%% |
-| wait_for_element_visible_ok | //input[@value='Create a new Workspace'] | 30000 |
-| click_ok | //input[@value='Create a new Workspace'] | 30000 |
+| wait_for_element_visible_ok | //input[@value='Create New Workspace'] | 30000 |
+| click_ok | //input[@value='Create New Workspace'] | 30000 |
 | wait_for_element_visible_ok | create | 30000 |
 | wait_for_element_visible_ok | workspace_title | 30000 |
 | type_ok | workspace_title | %%wstitle%% |

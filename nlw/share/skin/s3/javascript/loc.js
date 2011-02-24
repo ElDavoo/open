@@ -44,13 +44,14 @@ function loc() {
         l10n = l10n.replace(rx, arguments[i]);
         l10n = l10n.replace(rx2, arguments[i]);
 
-        var quant = new RegExp("\\[quant,_" + i + ",([^\\],]+)(?:,([^\\]]+))?\\]");
+        var quant = new RegExp("\\[(?:quant|\\*),_" + i + ",([^\\],]+)(?:,([^\\]]+))?\\]");
         while (quant.exec(l10n)) {
-            if (arguments[i] && arguments[i] == 1) {
-                l10n = l10n.replace(quant, RegExp.$1);
+            var num = arguments[i] || 0;
+            if (num == 1) {
+                l10n = l10n.replace(quant, num + ' ' + RegExp.$1);
             }
             else {
-                l10n = l10n.replace(quant, RegExp.$2 || RegExp.$1 + 's');
+                l10n = l10n.replace(quant, num + ' ' + (RegExp.$2 || (RegExp.$1 + 's')));
             }
         }
     }

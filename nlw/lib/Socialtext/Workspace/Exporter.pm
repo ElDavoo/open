@@ -215,7 +215,7 @@ sub export_user_prefs {
         # yaml, say) to preserve backwards compatibility of workspace exports..
         my $user_dir = "$ws_dir/" . $user->email_address . '/preferences';
         make_path($user_dir) or die "Can't make $user_dir: $!";
-        Socialtext::Base->exporter_to_file("$user_dir/preferences.dd", $prefs);
+        Socialtext::Base->dumper_to_file("$user_dir/preferences.dd", $prefs);
     }
 }
 
@@ -237,7 +237,7 @@ sub export_breadcrumbs {
     my $bc_dir = $self->ws_dir('user');
     for my $email (keys %breadcrumbs) {
         my $trail_dir = "$bc_dir/$email";
-        make_path($trail_dir) or die "Can't make $trail_dir: $!";
+        make_path($trail_dir) unless -d $trail_dir;
         my $trail_file = "$trail_dir/.trail";
         Socialtext::File::set_contents_utf8($trail_file,
             join("\n", @{ $breadcrumbs{$email} }) . "\n");

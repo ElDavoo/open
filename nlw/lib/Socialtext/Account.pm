@@ -232,7 +232,7 @@ sub workspace_count {
     return $self->workspaces->count();
 }
 
-around 'groups','group_count' => sub {
+around 'groups', 'group_count' => sub {
     my $code = shift;
     my $self = shift;
     my %p = @_;
@@ -430,16 +430,14 @@ sub import_file {
     $hash->{import_name} = $name;
     my $account = $class->new(name => $name);
     if ($account && !$account->is_placeholder()) {
-        die loc("Account [_1] already exists!", $name) . "\n" 
-            unless $opts{force};
-        $account->delete;
+        die loc("Account [_1] already exists!", $name) . "\n";
     }
 
     my %acct_params = (
         is_system_created          => $hash->{is_system_created},
         skin_name                  => $hash->{skin_name},
         backup_skin_name           => 's3',
-        email_addresses_are_hidden => $hash->{email_addresses_are_hidden},
+        email_addresses_are_hidden => $hash->{email_addresses_are_hidden} ? 1 : 0,
         allow_invitation           => (
             defined $hash->{allow_invitation}
             ? $hash->{allow_invitation}

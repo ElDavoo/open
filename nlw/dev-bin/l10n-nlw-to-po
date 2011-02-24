@@ -1,13 +1,13 @@
 #!/usr/bin/env perl
 # @COPYRIGHT@
-use strict;
+use 5.12.0;
 use warnings;
-use FindBin qw/$Bin/;
-use lib "$Bin/../lib";
+use FindBin qw/$RealBin/;
+use lib "$RealBin/../lib";
 use Locale::Maketext::Lexicon 0.85; # Ensures xgettext.pl terminates
 use File::Basename 'basename';
 use Socialtext::System qw/shell_run/;
-chdir "$Bin/..";
+chdir "$RealBin/..";
 
 my @plugins = map { basename($_) } grep { -d and (-d "$_/share" or -d "$_/template") } glob('share/plugin/*');
 my %Sections = (
@@ -17,7 +17,7 @@ my %Sections = (
 #   s2 => ['share/skin/s2/template', 'share/skin/s2/javascript'],
     s3 => ['share/skin/s3/template', 'share/skin/s3/javascript'],
     map {
-        $_ => [grep { -d } glob("share/plugin/$_/{share,template}")]
+        $_ => [grep { -d and (join(',', glob("$_/*")) ne "$_/images") } glob("share/plugin/$_/{share,template}")]
     } @plugins
 );
 
@@ -35,9 +35,11 @@ shell_run("dev-bin/jsmake cleanall");
 for my $key (sort keys %Sections) {
     my $dir = $Sections{$key};
     $dir = [$dir] unless ref $dir;
+    next unless @$dir;
 
     if ($key eq 'wikiwyg') {
         shell_run('./dev-bin/l10n-widget-to-js');
+        unlink 'lib/Socialtext/Widget_resource.pm';
     }
 
     shell_run(

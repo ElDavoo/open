@@ -318,8 +318,8 @@ reconsitute_default_group_on_account_import: {
     );
 
     # VERIFY: Group membership list was merged
-    my @expected = map { $_->username } ($user_one, $user_two);
-    my @received = map { $_->username } $group->users->all;
+    my @expected = sort map { $_->username } ($user_one, $user_two);
+    my @received = sort map { $_->username } $group->users->all;
     eq_or_diff \@received, \@expected,
         'Group membership list merged on Account import';
 }

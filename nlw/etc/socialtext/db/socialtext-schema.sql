@@ -1805,7 +1805,7 @@ CREATE UNIQUE INDEX idx_page_att_uk_nodel
 	    ON page_attachment (workspace_id, page_id, id)
 	    WHERE (NOT deleted);
 
-CREATE UNIQUE INDEX idx_page_lower_name
+CREATE INDEX idx_page_lower_name
 	    ON page (workspace_id, lower(name) text_pattern_ops)
 	    WHERE (NOT deleted);
 

@@ -534,7 +534,7 @@ proto.newpage_save = function(page_name, pagename_editfield) {
     page_name = trim(page_name);
 
     if (page_name.length == 0) {
-        alert(loc('You must specify a page name'));
+        alert(loc('Please specify a page name.'));
         if (pagename_editfield) {
             pagename_editfield.focus();
         }

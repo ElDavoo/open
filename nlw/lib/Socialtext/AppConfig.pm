@@ -467,7 +467,12 @@ sub _find_config_dirs {
 }
 
 sub config_dir {
+    my $self = shift;
+
     my @dirs = _find_config_dirs();
+    unshift @dirs, File::Basename::dirname($self->file)
+        if $self && ref($self);
+
     foreach my $dir (@dirs) {
         return $dir if -d $dir;
     }

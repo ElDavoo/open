@@ -45,3 +45,23 @@ sub do_work {
     });
     $self->job->replace_with($next);
 }
+
+__END__
+
+=head1 NAME
+
+Socialtext::Job::TidyUploads - Creature of the Sea
+
+=head1 SYNOPSIS
+
+  use Socialtext::JobCreator;
+  my $jc = Socialtext::JobCreator->new;
+  $jc->tidy_uploads($attachment_id);
+
+=head1 DESCRIPTION
+
+When we purge page_attachments, signal_attachments, or signal_assets we may
+leave dangling attachment entries.  Guard against excessive attachments by
+trying to clean up a few at a time in a job.
+
+=cut

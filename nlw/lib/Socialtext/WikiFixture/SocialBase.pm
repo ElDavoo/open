@@ -2840,6 +2840,14 @@ sub st_account_type_is {
     is $acct->account_type, $type, "Account type matches";
 }
 
+sub delete_account {
+    my $self = shift;
+    my $name = shift;
+    my $acct = Socialtext::Account->new( name => $name );
+    die "Couldn't find account $name" unless $acct;
+    $acct->delete;
+}
+
 my @exports;
 END { rmtree(\@exports) if @exports };
 
@@ -2858,7 +2866,7 @@ sub st_import_account {
     my $account = shift;
     my $dir = "/tmp/$account.export";
     Socialtext::System::shell_run(
-        'st-admin', 'import-account', '--dir', $dir, '--overwrite',
+        'st-admin', 'import-account', '--dir', $dir,
     );
 }
 
@@ -2908,7 +2916,7 @@ sub st_purge_account_gallery {
     my $sth = sql_execute('
         DELETE FROM gallery WHERE account_id = ?
     ', $acct->account_id);
-    diag loc("Deleted [quant,_1,gallery,galleries]", $sth->rows)."\n";
+    diag loc("Deleted [*,_1,gallery,galleries]", $sth->rows)."\n";
 }
 
 sub st_purge_account_containers {
@@ -2924,7 +2932,7 @@ sub st_purge_account_containers {
             )
             OR user_set_id = ' . ACCT_OFFSET . ' + $1
     ', $acct->account_id);
-    diag loc("Deleted [quant,_1,container]", $sth->rows)."\n";
+    diag loc("Deleted [*,_1,container]", $sth->rows)."\n";
 }
 
 sub st_purge_uploaded_widgets {
@@ -2935,13 +2943,13 @@ sub st_purge_uploaded_widgets {
          WHERE src IS NULL
             OR src like 'file:/tmp/acct-%/%.xml'
     });
-    diag loc("Deleted [quant,_1,uploaded widget]", $sth->rows)."\n";
+    diag loc("Deleted [*,_1,uploaded widget]", $sth->rows)."\n";
 }
 
 sub st_purge_widget {
     my ($self, $src) = @_;
     my $sth = sql_execute('DELETE FROM gadget WHERE src = ?', $src);
-    diag loc("Deleted [quant,_1,widget]", $sth->rows)."\n";
+    diag loc("Deleted [*,_1,widget]", $sth->rows)."\n";
 }
 
 sub enable_ws_plugin    { shift; _change_plugin('Workspace', 1, @_) }

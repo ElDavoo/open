@@ -34,7 +34,7 @@ sub msg_format_link {
         url_prefix => $self->{callbacks}{baseurl} || "",
         link => 'interwiki',
         workspace => $ast->{workspace_id},
-        page_uri => $ast->{page_id},
+        page_uri => Socialtext::String::uri_escape($ast->{page_id}),
     );
     if (defined $ast->{section} && length($ast->{section})) {
         my $section = Socialtext::String::title_to_id(

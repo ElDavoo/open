@@ -28,8 +28,8 @@ locked-pages
 | st-admin | can-lock-pages --email %%cli_admin%% --workspace %%cmdline_workspace%% | User '%%cli_admin%%' can lock a page. |
 | st-admin | lock-page --workspace %%cmdline_workspace%% --page lockme_page_1_%%start_time%% | Page 'Lockme Page 1 %%start_time%%' in workspace '%%cmdline_workspace%%' has been locked. |
 | st-admin | lock-page --workspace %%cmdline_workspace%% --page lockme_page_2_%%start_time%% | Page 'Lockme Page 2 %%start_time%%' in workspace '%%cmdline_workspace%%' has been locked. |
-| st-admin | locked-pages --workspace %%cmdline_workspace%% | lockme_page_1_%%start_time%% |
-| st-admin | locked-pages --workspace %%cmdline_workspace%% | lockme_page_2_%%start_time%% |
+| st-admin | locked-pages --workspace %%cmdline_workspace%% | Lockme Page 1 %%start_time%% |
+| st-admin | locked-pages --workspace %%cmdline_workspace%% | Lockme Page 2 %%start_time%% |
 | st-admin | unlock-page --workspace %%cmdline_workspace%% --page lockme_page_1_%%start_time%% | Page 'Lockme Page 1 %%start_time%%' in workspace '%%cmdline_workspace%%' has been unlocked. |
 
 | *Comment* | STARTING Test Case: Command Line LOCK PAGES Make workspace unlockable |  |
