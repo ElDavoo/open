@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-25 03:44+0800\n"
+"PO-Revision-Date: 2011-02-25 06:18+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -151,7 +151,7 @@ msgid "edit.cancel?"
 msgstr "确定要取消?"
 
 msgid "edit.default-text"
-msgstr "输入您自己的文本.由"
+msgstr "请在此输入文字."
 
 msgid "edit.editing:"
 msgstr "正在编辑:"
@@ -190,7 +190,7 @@ msgid "edit.preview"
 msgstr "预览"
 
 msgid "edit.rich-text"
-msgstr "豐富文本"
+msgstr "丰富文本"
 
 msgid "edit.saving"
 msgstr "正在保存..."
@@ -202,12 +202,12 @@ msgid "edit.spreadsheet-title-required-for-wiki"
 msgstr "如果指定工作区，则必须填入试算表标题"
 
 msgid "edit.summarize"
-msgstr "编辑概述(可选)"
+msgstr "编辑概述（可选）"
 
-msgid "edit.summary=name,page,workspace"
+msgid "edit.summary=name,page,wiki"
 msgstr "<strong>%1</strong>想让您知道位于 %3 的<strong>%2</strong>所进行的编辑"
 
-msgid "edit.summary=name,summary,page,workspace"
+msgid "edit.summary=name,summary,page,wiki"
 msgstr "<strong>%1</strong>，\"%2\"（编辑了位于 %4 的<strong>%3</strong>）"
 
 msgid "edit.tag-prompt:"
@@ -223,16 +223,16 @@ msgid "edit.upload"
 msgstr "正在上传..."
 
 msgid "edit.wiki-text"
-msgstr "Wiki文本"
+msgstr "Wiki格式"
 
 msgid "error.browser-offline"
 msgstr "浏览器为离线状态，请连入互联网再重试."
 
 msgid "error.check-video-url"
-msgstr "出错了;请稍候再重试."
+msgstr "系統出错; 请稍候再重试."
 
 msgid "error.columns-too-big"
-msgstr "列数值过大，最大值为35."
+msgstr "列数值过大，最大值为 35."
 
 msgid "error.edit-again"
 msgstr "抱歉，编辑出错，请重新编辑本页面."
@@ -241,43 +241,43 @@ msgid "error.field-required=labels"
 msgstr "必需填入: %1"
 
 msgid "error.invalid-columns"
-msgstr "列无效."
+msgstr "列数无效."
 
 msgid "error.invalid-number"
 msgstr "该数目无效."
 
 msgid "error.invalid-rows"
-msgstr "无效行."
+msgstr "行数无效."
 
 msgid "error.invalid-video-url"
-msgstr "抱歉，该 URL并非指向嵌入视频的链接."
+msgstr "抱歉，该网址并非指向嵌入视频的链接."
 
 msgid "error.invalid-widget-field=label"
-msgstr "'%1'的值无效"
+msgstr "'%1' 的值无效"
 
 msgid "error.link-selection-required"
 msgstr "请选择要插入链接的文本."
 
 msgid "error.no-wiki-on-server=wiki"
-msgstr "Wiki 中不存在 \"%1\" 工作区"
+msgstr "系統中不存在 \"%1\" 工作区"
 
 msgid "error.page-name-required"
 msgstr "请明确页面的名称."
 
 msgid "error.page-title-too-long"
-msgstr "在URL编码后，页面标题过长"
+msgstr "在网址编码后，页面标题过长"
 
 msgid "error.reserved-page-name"
 msgstr "\"%1\" 是一个保留的页面名称，请使用另外一个名称"
 
 msgid "error.rows-and-columns-required"
-msgstr "行与列不能为0."
+msgstr "行与列不能为 0."
 
 msgid "error.rows-too-big"
-msgstr "行的数值过大，最大值为100."
+msgstr "行数过大，最大值为 100."
 
 msgid "error.safari-rich-text-unsupported"
-msgstr "Safari不支持丰富文本编辑"
+msgstr "Safari 不支持丰富文本编辑"
 
 msgid "error.select-or-cancel"
 msgstr "您必须选择一个选项，或者点击取消"
@@ -286,16 +286,16 @@ msgid "error.server-error"
 msgstr "由于服务器错误操作失败，请稍候重试."
 
 msgid "error.size-required"
-msgstr "大小不能为0."
+msgstr "大小不能为 0."
 
 msgid "error.unexpected-parse=widget"
-msgstr "非法小工具 >>%1<< in parseWidget"
+msgstr "parseWidget: 非法小工具 >>%1<<"
 
 msgid "error.video-url-required"
-msgstr "必需填入视频URL"
+msgstr "必需填入视频网址"
 
 msgid "error.widget-field-required=label"
-msgstr "'%1'是一个必需的字段"
+msgstr "'%1' 是一个必需的字段"
 
 msgid "info.edit-add-tag"
 msgstr "点击按钮为页面添加标签"
@@ -304,7 +304,7 @@ msgid "info.edit-code-block"
 msgstr "使用下方的文本区来组织您的代码数据块，并可选择高亮语法."
 
 msgid "info.edit-html-block"
-msgstr "使用下方的文本区来组织您的HTML数据块."
+msgstr "使用下方的文本区来组织您的 HTML 数据块."
 
 msgid "info.edit-pre-block"
 msgstr "使用下方的文本区来组织您的预格式化文本数据块."
@@ -313,13 +313,13 @@ msgid "info.edit-summary-signal-visibility"
 msgstr "只有有权查看本页面的成员会收到信号."
 
 msgid "info.edit-upload"
-msgstr "点击按钮为页面上传文件"
+msgstr "点击此按钮，为页面上传文件"
 
 msgid "info.html-fragments"
 msgstr "(注意：HTML片段不能确保运行并可能会破坏用户界面.)"
 
 msgid "info.new-page-name"
-msgstr "为您的页面输入一个有意义的与独特的标题."
+msgstr "为您的页面输入一个有意义与独特的标题."
 
 msgid "info.new-page-title"
 msgstr "提示：您稍后可以使用您选择的标题来查找本页面."
@@ -334,7 +334,7 @@ msgid "info.preformatted-text"
 msgstr "(预格式化文本为与输入所显示出来完全一致的纯文本.)"
 
 msgid "info.wafl-uneditable"
-msgstr "该小工具不可编辑.请在wiki文本模式下进行编辑."
+msgstr "该小工具不可编辑.请在Wiki语法模式下进行编辑."
 
 msgid "link.add"
 msgstr "添加链接"
@@ -343,7 +343,7 @@ msgid "link.destination:"
 msgstr "链接目标:"
 
 msgid "link.if-not-current"
-msgstr "如果不是当前"
+msgstr "如果不是当前页面"
 
 msgid "link.mandatory-indicator"
 msgstr "规定的必需字段"
@@ -388,10 +388,10 @@ msgid "refcard.-strikeout-"
 msgstr "-删除线-"
 
 msgid "refcard._italic-words_"
-msgstr "_斜体文字_"
+msgstr "_斜体_"
 
 msgid "refcard.`monospace`"
-msgstr "`单一间隔`"
+msgstr "`等宽`"
 
 msgid "refcard.bold-words"
 msgstr "粗体"
@@ -400,7 +400,7 @@ msgid "refcard.dinette"
 msgstr "dinette"
 
 msgid "refcard.headings-are-sections"
-msgstr "(注意：标题也是代码段)"
+msgstr "(注意：标题也算作段落)"
 
 msgid "refcard.in-same-page"
 msgstr "在相同页面"
@@ -415,7 +415,7 @@ msgid "refcard.link-to-section"
 msgstr "链接到段落"
 
 msgid "refcard.monospace"
-msgstr "单一间隔"
+msgstr "等宽"
 
 msgid "refcard.of-different-page"
 msgstr "在不同页面"
@@ -532,28 +532,28 @@ msgid "wafl.asis=content"
 msgstr "未格式化: %1"
 
 msgid "wafl.atom-title"
-msgstr "包含 '%1' Atom feed. 点击进行编辑."
+msgstr "包含 '%1' Atom 网址. 点击进行编辑."
 
 msgid "wafl.atom-url"
-msgstr "Atom feed URL"
+msgstr "Atom 来源网址"
 
 msgid "wafl.blog-full=name"
-msgstr "显示 '%1'的blog. 点击进行编辑."
+msgstr "显示 '%1' 的博客. 点击进行编辑."
 
 msgid "wafl.blog-link-title=name"
-msgstr "链接到 '%1'blog. 点击进行编辑."
+msgstr "链接到 '%1' 博客. 点击进行编辑."
 
 msgid "wafl.blog-list=name"
-msgstr "blog列表: %1"
+msgstr "博客列表: %1"
 
 msgid "wafl.blog-name"
-msgstr "Blog名称"
+msgstr "博客名称"
 
 msgid "wafl.blog-title=name"
-msgstr "包含 '%1' blog. 点击进行编辑."
+msgstr "包含 '%1' 博客. 点击进行编辑."
 
 msgid "wafl.blog=name"
-msgstr "blog: %1"
+msgstr "博客: %1"
 
 msgid "wafl.code-title"
 msgstr "代码块. 点击进行编辑."
@@ -577,7 +577,7 @@ msgid "wafl.date=string"
 msgstr "日期: %1"
 
 msgid "wafl.feed=url"
-msgstr "feed: %1"
+msgstr "来源: %1"
 
 msgid "wafl.fewer-options"
 msgstr "更少选项"
@@ -601,10 +601,10 @@ msgid "wafl.full-results:"
 msgstr "全部结果:"
 
 msgid "wafl.google-title=query"
-msgstr "在 Google 搜索 '%1'. 点击进行编辑."
+msgstr "在谷歌搜索 '%1'. 点击进行编辑."
 
 msgid "wafl.google=query"
-msgstr "Google: %1"
+msgstr "谷歌: %1"
 
 msgid "wafl.height:"
 msgstr "高度:"
@@ -688,19 +688,19 @@ msgid "wafl.recent-changes=wiki"
 msgstr "最近修改: %1"
 
 msgid "wafl.relative-url"
-msgstr "相关 URL"
+msgstr "相对网址"
 
 msgid "wafl.rss-title"
-msgstr "包含 '%1' RSS feed. 点击进行编辑."
+msgstr "包含 '%1' RSS 来源. 点击进行编辑."
 
 msgid "wafl.rss-url"
-msgstr "RSS feed URL"
+msgstr "RSS 来源网址"
 
 msgid "wafl.search"
 msgstr "搜索条件"
 
 msgid "wafl.search-full=query"
-msgstr "显示搜索'%1'的结果. 点击进行编辑."
+msgstr "显示搜索 '%1' 的结果. 点击进行编辑."
 
 msgid "wafl.search-title=query"
 msgstr "搜索 '%1'. 点击进行编辑."
@@ -727,19 +727,19 @@ msgid "wafl.sheet-cell"
 msgstr "单元格"
 
 msgid "wafl.sheet-title"
-msgstr "表格名称"
+msgstr "试算表名称"
 
 msgid "wafl.skype"
-msgstr "Skype名称"
+msgstr "Skype 名称"
 
 msgid "wafl.skype-title=id"
-msgstr "使用Skype呼叫 '%1'. 点击进行编辑."
+msgstr "使用 Skype 呼叫 '%1'. 点击进行编辑."
 
 msgid "wafl.skype=id"
 msgstr "Skype: %1"
 
 msgid "wafl.ss=sheet,cell"
-msgstr "ss: %1 (%2)"
+msgstr "试算表: %1 (%2)"
 
 msgid "wafl.tag"
 msgstr "标签"
@@ -796,7 +796,7 @@ msgid "wafl.video-title=url"
 msgstr "在'%1'嵌入视频. 点击进行编辑."
 
 msgid "wafl.video-url"
-msgstr "Video URL"
+msgstr "视频网址"
 
 msgid "wafl.video=url"
 msgstr "视频: %1"
@@ -811,7 +811,7 @@ msgid "wafl.wiki"
 msgstr "工作区"
 
 msgid "wafl.wiki-text"
-msgstr "Wiki語法"
+msgstr "Wiki语法"
 
 msgid "wafl.wiki-this"
 msgstr "当前工作区"

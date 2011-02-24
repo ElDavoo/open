@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-25 03:47+0800\n"
+"PO-Revision-Date: 2011-02-25 04:41+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -13,19 +13,19 @@ msgid "activities.new-events=count"
 msgstr "%*(%1,活动,活动)"
 
 msgid "explore.mentions=count"
-msgstr "%*(%1,指向,指向)"
+msgstr "%*(%1,提及,提及)"
 
 msgid "explore.click-to-collapse-mentions=count"
-msgstr "%*(%1,指向,指向), 点击此处折叠"
+msgstr "%*(%1,提及,提及), 点击此处折叠"
 
 msgid "explore.click-to-expand-mentions=count"
-msgstr "%*(%1,指向,指向), 点击此处展开"
+msgstr "%*(%1,提及,提及), 点击此处展开"
 
 msgid "explore.click-to-expand-mentions=count,first-page"
-msgstr "%*(%1,指向,指向), 点击此处查看最先的 %2"
+msgstr "%*(%1,提及,提及), 点击此处查看最先的 %2"
 
 msgid "activities.new-mentions=count"
-msgstr "%*(%1,新指向,新指向)..."
+msgstr "%*(%1,新提及,新提及)..."
 
 msgid "activities.other-replies=count"
 msgstr "%*(%1,其它回复,其它回复)..."
@@ -136,7 +136,7 @@ msgid "do.cancel"
 msgstr "删除"
 
 msgid "activities.about-insert-wikilink"
-msgstr "选定一个工作区，然后搜索您想连接的维基页面. 您可以更改链接文本, 并连接到该网页的子链接 ."
+msgstr "选定一个工作区，然后搜索您想连接的工作区页面. 您可以更改链接文本, 并连接到该网页的子链接 ."
 
 msgid "info.browse"
 msgstr "点击\"浏览\"并选择上传图片或文件."
@@ -177,7 +177,8 @@ msgstr "恢复 \"%1\" 小工具时出错: %2"
 msgid "error.send-signal"
 msgstr "传递信号时出错，请重试."
 
-msgstr "[[[activities.insert:] 插入:"
+msgid "activities.insert:"
+msgstr "插入:"
 
 msgid "widgets.install-this"
 msgstr "安装小工具"
@@ -189,7 +190,7 @@ msgid "activities.link-to-web"
 msgstr "链接至网页"
 
 msgid "activities.link-to-wiki"
-msgstr "链接至维基网页"
+msgstr "链接至工作区页面"
 
 msgid "activities.loading-video"
 msgstr "下载中..."
@@ -207,13 +208,13 @@ msgid "activities.maximum-file-size=mb"
 msgstr "最大文件大小: %1MB"
 
 msgid "activities.mention-user"
-msgstr "指向另一个人"
+msgstr "提及另一个人"
 
 msgid "activities.more"
 msgstr "更多"
 
 msgid "activities.more-mentions"
-msgstr "更多指向..."
+msgstr "更多提及..."
 
 msgid "do.no"
 msgstr "无"
@@ -378,7 +379,7 @@ msgid "widgets.use-editor"
 msgstr "使用小工具编辑器"
 
 msgid "error.no-wiki-on-server=wiki"
-msgstr "在维基, 工作区 \"%1\" 不存在"
+msgstr "工作区 \"%1\" 不存在"
 
 msgid "activities.wiki:"
 msgstr "工作区:"
