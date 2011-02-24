@@ -2,14 +2,20 @@
 use 5.12.0;
 use autodie;
 use open qw(:std :utf8);
-use subs 'outs';
+use subs qw(outs is_key);
 use Getopt::Long;
 
 my $inplace;
-GetOptions( 'inplace|i!' => \$inplace ) and @ARGV
-    or die "Usage: $0 [--inplace] input.po\n";
+my $msgstr;
+my $msgid;
+GetOptions(
+    'inplace|i!' => \$inplace,
+    'msgid!' => \$msgid,
+    'msgstr!' => \$msgstr,
+) and @ARGV or die "Usage: $0 [--inplace] [--msgid|--msgstr] input.po\n";
 
-local $/ = "\n\n";
+die "Cannot specify both --msgid and --msgstr; please choose one as the field for new.style keys.\n"
+    if $msgid and $msgstr;
 
 my ($in, $out);
 for my $po (@ARGV) {
@@ -19,12 +25,19 @@ for my $po (@ARGV) {
         open $out, '>', "$po.new";
         select $out;
     }
+
+    local $/ = "\n\n";
     outs scalar <$in>;
 
     while (<$in>) {
         my ($comments, $id, $str) = split(/\n(?=msg)/, "\n$_");
-        $id =~ s/^msgid/msgstr/m;
-        $str =~ s/^msgstr/msgid/m;
+        if (($msgid and is_key($str)) or ($msgstr and is_key($id)) or (!$msgid and !$msgstr)) {
+            $id =~ s/^msgid/msgstr/m;
+            $str =~ s/^msgstr/msgid/m;
+        }
+        else {
+            ($str, $id) = ($id, $str);
+        }
         outs $comments;
         outs $str;
         outs $id;
@@ -43,4 +56,9 @@ sub outs {
     my $para = shift;
     $para =~ s/\n*$/\n/;
     print $para;
+}
+
+sub is_key {
+    my $str = shift;
+    return($str =~ /^msg(?:id|str) "(?:###-)?(?:XXX|[a-z][a-z\d]+)\.\S/);
 }
