@@ -33,7 +33,7 @@
 | wait_for_element_visible_ok | //a[@title='view %%fname_wiki_2%%'] | 30000 |
 | click_and_wait | //a[@title='view %%fname_wiki_2%%'] |  |
 | wait_for_text_present_ok | %%fname%% | 30000 |
-| text_like | Created by: "%%fname%%" |  |
+| text_like | Created By: "%%fname%%" |  |
 | text_like | //div[@id='userTable'] | %%fname%% |
 | text_like | //div[@id='groupTable'] | %%fname%% |
 
