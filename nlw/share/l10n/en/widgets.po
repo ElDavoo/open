@@ -9,51 +9,340 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:2
+msgid "activities.about-insert-wikilink"
+msgstr "Choose a workspace then search for the wikipage you want linked. You can change the link text and link to a subsection of the page."
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:118 share/plugin/widgets/share/javascript/template/activities/event.tt2:83
+msgid "activities.add-tag"
+msgstr "Add a tag"
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:121 share/plugin/widgets/share/javascript/template/activities/event.tt2:86
+msgid "activities.add-video-link"
+msgstr "Add a video link"
+
+#: share/plugin/widgets/share/javascript/activities/appdata.js:328
+msgid "activities.all-events"
+msgstr "all events"
+
+#: share/plugin/widgets/share/javascript/activities/appdata.js:282
+msgid "activities.all-my-groups"
+msgstr "All my groups"
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:32
+msgid "activities.all-replies"
+msgstr "All Replies"
+
+#: share/plugin/widgets/share/javascript/activities/appdata.js:283
+msgid "activities.all-shared-groups"
+msgstr "All shared groups"
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:117 share/plugin/widgets/share/javascript/template/activities/event.tt2:82
+msgid "activities.attach-file"
+msgstr "Attach a file"
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:34
+msgid "activities.click-to-collapse"
+msgstr "(click here to collapse)"
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:164
+msgid "activities.click-to-enable-desktop-notifications"
+msgstr "Click here to enable desktop notifications"
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:25
+msgid "activities.click-to-expand"
+msgstr "(click here to expand)"
+
+#: share/plugin/widgets/share/javascript/template/activities/ui.signalthis.tt2:6
+msgid "activities.close-this-window"
+msgstr "Close this window"
+
+#: share/plugin/widgets/share/javascript/activities/appdata.js:360
+msgid "activities.comments"
+msgstr "comments"
+
+#. (person)
+#: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:11
+msgid "activities.composing-message-to=user"
+msgstr "You are composing a message to %1"
+
+#. (person)
+#: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:5 share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:9
+msgid "activities.composing-private-message-to=person"
+msgstr "You are composing a private message to %1"
+
+#. (person)
+#: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:16
+msgid "activities.composing-reply-to=person"
+msgstr "You are composing a reply to %1"
+
+#. (evt.replies.length ? loc('entire Conversation')
+#: share/plugin/widgets/share/javascript/activities/event_list.js:918
+msgid "activities.confirm-delete=target"
+msgstr ""
+"Are you sure you want to delete this %1?\n"
+"You cannot undelete it."
+
+#. (evt.replies.length ? loc('entire Conversation')
+#: share/plugin/widgets/share/javascript/activities/event_list.js:933
+msgid "activities.confirm-expunge=target"
+msgstr ""
+"Are you sure you want to expunge this %1 from the system?\n"
+"It cannot be recovered."
+
+#: share/plugin/widgets/share/javascript/activities/appdata.js:350
+msgid "activities.contributions"
+msgstr "contributions"
+
+#: share/plugin/widgets/share/javascript/template/activities/signal.icons.tt2:23
+msgid "activities.delete"
+msgstr "delete"
+
+#: share/plugin/widgets/share/javascript/activities/appdata.js:355
+msgid "activities.edits"
+msgstr "edits"
+
+#: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:2
+msgid "activities.enter-video-url-here"
+msgstr "Copy and paste the URL for the video below.  We support embedding video from YouTube, Vimeo, SlideShare and Google Video."
+
+#: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:2
+msgid "activities.enter-weblink-url-here"
+msgstr "Paste or type your link's destination (URL, e.g. http://socialtext.com) and text of the link below. Link destination is required."
+
+#: share/plugin/widgets/share/javascript/activities/appdata.js:327
+msgid "activities.events"
+msgstr "events"
+
+#: share/plugin/widgets/share/javascript/activities/appdata.js:393
+msgid "activities.everyone"
+msgstr "everyone"
+
+#: share/plugin/widgets/share/javascript/template/activities/signal.icons.tt2:17
+msgid "activities.expunge"
+msgstr "expunge"
+
+#: share/plugin/widgets/share/javascript/activities/appdata.js:400
+msgid "activities.following"
+msgstr "people I follow"
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:72
+msgid "activities.from"
+msgstr "from"
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:115 share/plugin/widgets/share/javascript/template/activities/event.tt2:80
+msgid "activities.insert:"
+msgstr "Insert:"
+
+#: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:4
+msgid "activities.link-text:"
+msgstr "Link text:"
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:120 share/plugin/widgets/share/javascript/template/activities/event.tt2:85
+msgid "activities.link-to-web"
+msgstr "Link to a web page"
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:119 share/plugin/widgets/share/javascript/template/activities/event.tt2:84
+msgid "activities.link-to-wiki"
+msgstr "Link to a wiki page"
+
+#: share/plugin/widgets/share/javascript/activities/editor.js:1385
+msgid "activities.loading-video"
+msgstr "Loading..."
+
+#: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:13
+msgid "activities.make-signal-private"
+msgstr "Make this signal private"
+
+#. (this.max_filesize)
+#: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:8
+msgid "activities.maximum-file-size=mb"
+msgstr "Maximum file size: %1MB"
+
+#: share/plugin/widgets/share/javascript/activities/appdata.js:413
+msgid "activities.me"
+msgstr "me"
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:116 share/plugin/widgets/share/javascript/template/activities/event.tt2:81
+msgid "activities.mention-user"
+msgstr "Mention another person"
+
+#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:21 share/plugin/widgets/share/javascript/template/activities/ui.mobile-signals.tt2:21 share/plugin/widgets/share/javascript/template/activities/ui.viewer.tt2:17
+msgid "activities.more"
+msgstr "More"
+
+#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:57
+msgid "activities.more-mentions"
+msgstr "More Mentions..."
+
+#: share/plugin/widgets/share/javascript/activities/appdata.js:407
+msgid "activities.my-conversations"
+msgstr "my conversations"
+
 #. (new_events)
 #: share/plugin/widgets/share/javascript/activities/event_list.js:415
 msgid "activities.new-events=count"
 msgstr "%*(%1,activity,activities)"
-
-#. (asset.count)
-#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:26
-msgid "explore.mentions=count"
-msgstr "%*(%1,mention)"
-
-#. (asset.count)
-#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:8 share/plugin/widgets/share/javascript/template/activities/assets.tt2:9
-msgid "explore.click-to-collapse-mentions=count"
-msgstr "%*(%1,mention), click here to collapse"
-
-#. (asset.count)
-#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:14 share/plugin/widgets/share/javascript/template/activities/assets.tt2:8
-msgid "explore.click-to-expand-mentions=count"
-msgstr "%*(%1,mention), click here to expand"
-
-#. (asset.count, asset.eventList.size || 5)
-#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:12 share/plugin/widgets/share/javascript/template/activities/assets.tt2:8
-msgid "explore.click-to-expand-mentions=count,first-page"
-msgstr "%*(%1,mention), click here to see first %2"
 
 #. (self.mentionCount)
 #: share/plugin/widgets/share/javascript/activities/widget.js:471
 msgid "activities.new-mentions=count"
 msgstr "%*(%1,new mention)..."
 
-#. (older)
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:20 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:22
-msgid "activities.other-replies=count"
-msgstr "%*(%1,other reply,other replies)..."
-
 #. (new_replies)
 #: share/plugin/widgets/share/javascript/activities/event_list.js:420
 msgid "activities.new-replies=count"
 msgstr "%*(%1,reply,replies)"
 
-#. (actor, widget_link(event.context)
-#. (actor, widget_link(event.context), event.context.description)
-#: share/plugin/widgets/share/javascript/template/activities/widget.tt2:6 share/plugin/widgets/share/javascript/template/activities/widget.tt2:7 share/plugin/widgets/template/data/events/widget:6 share/plugin/widgets/template/data/events/widget:7
-msgid "event.add-widget=user,widget,context"
-msgstr "%1 added the %2 widget. %3."
+#. (new_events + new_replies)
+#: share/plugin/widgets/share/javascript/activities/event_list.js:425
+msgid "activities.new=count"
+msgstr "%1 new"
+
+#. (older)
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:20 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:22
+msgid "activities.other-replies=count"
+msgstr "%*(%1,other reply,other replies)..."
+
+#: share/plugin/widgets/share/javascript/activities/appdata.js:365
+msgid "activities.page-tags"
+msgstr "page tags"
+
+#: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:12
+msgid "activities.page:"
+msgstr "Page:"
+
+#: share/plugin/widgets/share/javascript/activities/appdata.js:370
+msgid "activities.people-events"
+msgstr "people events"
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:101 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:148 share/plugin/widgets/share/javascript/template/activities/event.tt2:69
+msgid "activities.post"
+msgstr "Post"
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:137 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:90
+msgid "activities.post-to"
+msgstr "Post to"
+
+#: share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:6
+msgid "activities.private-to-you"
+msgstr "private to you"
+
+#. (signal.best_full_name)
+#: share/plugin/widgets/share/javascript/activities/widget.js:536
+msgid "activities.private-to-you=sender"
+msgstr "%1 private to you"
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:112
+msgid "activities.private-to:"
+msgstr "Private to:"
+
+#. (person)
+#: share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:8
+msgid "activities.private-to=user"
+msgstr "private to %1"
+
+#. (page, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:12
+msgid "activities.rename=page,wiki"
+msgstr "renamed %1 in %2."
+
+#: share/plugin/widgets/share/javascript/template/activities/page.icons.tt2:12 share/plugin/widgets/share/javascript/template/activities/signal.icons.tt2:8
+msgid "activities.reply"
+msgstr "reply"
+
+#: share/plugin/widgets/share/javascript/template/activities/event.tt2:74
+msgid "activities.reply-to-conversation"
+msgstr "Reply to conversation..."
+
+#: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:16
+msgid "activities.section:"
+msgstr "Section:"
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:113
+msgid "activities.send-private-message"
+msgstr "Send a private message"
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:68
+msgid "activities.showing"
+msgstr "Showing"
+
+#: share/plugin/widgets/share/javascript/activities/event_list.js:919 share/plugin/widgets/share/javascript/activities/event_list.js:934
+msgid "activities.signal"
+msgstr "Signal"
+
+#: share/plugin/widgets/share/javascript/template/activities/ui.signalthis.tt2:20
+msgid "activities.signal-sent!"
+msgstr "Signal sent!"
+
+#: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:18
+msgid "activities.signal-sent-click-to-adjust-filters"
+msgstr "Your Signal was successfully sent. Click <a href=\"#\" class=\"clearFilters\">here</a> to automatically adjust your filters to show the new signal."
+
+#: share/plugin/widgets/share/javascript/template/activities/ui.signalthis.tt2:9
+msgid "activities.signal-this-page"
+msgstr "Send a signal with a link to this page"
+
+#: share/plugin/widgets/share/javascript/activities/appdata.js:343
+msgid "activities.signals"
+msgstr "signals"
+
+#: share/plugin/widgets/template/mobile-signals.tt2:5
+msgid "activities.signals-permalink"
+msgstr "Signals - Permalink"
+
+#: share/plugin/widgets/template/activities.tt2:3
+msgid "activities.socialtext-activities"
+msgstr "Socialtext Activities"
+
+#. (self.signalCount, self._originalTitle)
+#: share/plugin/widgets/share/javascript/activities/widget.js:465
+msgid "activities.title=signal-count,original-title"
+msgstr "(%1) %2"
+
+#. (targets.size)
+#: share/plugin/widgets/share/javascript/template/activities/page.meta.tt2:5 share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:13
+msgid "activities.to-groups=count"
+msgstr "to %1 groups"
+
+#. (signal.best_full_name,                    targets.join(', ')
+#: share/plugin/widgets/share/javascript/activities/widget.js:539
+msgid "activities.to=sender,targets"
+msgstr "%1 to %2"
+
+#. (targets.0)
+#: share/plugin/widgets/share/javascript/template/activities/page.meta.tt2:9 share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:17
+msgid "activities.to=target"
+msgstr "to %1"
+
+#. (as_string)
+#: share/plugin/widgets/share/javascript/activities/editor.js:951
+msgid "activities.uploaded=files"
+msgstr "Uploaded files: %1"
+
+#: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:8
+msgid "activities.wiki:"
+msgstr "Workspace:"
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:76
+msgid "activities.within"
+msgstr "within"
+
+#: share/plugin/widgets/share/javascript/template/activities/event.tt2:23 share/plugin/widgets/share/javascript/template/activities/reply.tt2:14
+msgid "activities.you"
+msgstr "You"
+
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:7
+msgid "ago.1day"
+msgstr "one day ago"
+
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:3
+msgid "ago.1minute"
+msgstr "one minute ago"
+
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:2
+msgid "ago.<1minute"
+msgstr "less than a minute ago"
 
 #. (this.round(minutes / 1440)
 #. (this.round(minutes / 1440))
@@ -72,408 +361,58 @@ msgstr "%1 hours ago"
 msgid "ago.minutes=count"
 msgstr "%1 minutes ago"
 
-#. (new_events + new_replies)
-#: share/plugin/widgets/share/javascript/activities/event_list.js:425
-msgid "activities.new=count"
-msgstr "%1 new"
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:8
+msgid "ago.~1day"
+msgstr "about one day ago"
 
-#. (signal.best_full_name)
-#: share/plugin/widgets/share/javascript/activities/widget.js:536
-msgid "activities.private-to-you=sender"
-msgstr "%1 private to you"
-
-#. (signal.best_full_name,                    targets.join(', ')
-#: share/plugin/widgets/share/javascript/activities/widget.js:539
-msgid "activities.to=sender,targets"
-msgstr "%1 to %2"
-
-#. (actor, widget_link(event.context)
-#. (actor, widget_link(event.context))
-#: share/plugin/widgets/share/javascript/template/activities/widget.tt2:9 share/plugin/widgets/template/data/events/widget:9
-msgid "event.update-widget=actor,widget"
-msgstr "%1 updated the %2 widget."
-
-#. (self.signalCount, self._originalTitle)
-#: share/plugin/widgets/share/javascript/activities/widget.js:465
-msgid "activities.title=signal-count,original-title"
-msgstr "(%1) %2"
-
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:34
-msgid "activities.click-to-collapse"
-msgstr "(click here to collapse)"
-
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:25
-msgid "activities.click-to-expand"
-msgstr "(click here to expand)"
-
-#: share/plugin/widgets/template/view/gallery:119
-msgid "widgets.delete"
-msgstr "(delete)"
-
-#: share/plugin/widgets/share/javascript/activities/explore.js:221
-msgid "explore.no-items"
-msgstr "(no items to show)"
-
-#: share/plugin/widgets/template/view/gallery:126
-msgid "widgets.remove"
-msgstr "(remove)"
-
-#: share/plugin/widgets/template/view/gallery:113
-msgid "widgets.restore"
-msgstr "(restore)"
-
-#: share/plugin/widgets/template/view/gallery:107
-msgid "widgets.update"
-msgstr "(update)"
-
-#: share/plugin/widgets/template/mobile-signals.tt2:123
-msgid "nav.activity"
-msgstr "Activity"
-
-#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:55
-msgid "widgets.add"
-msgstr "Add"
-
-#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:3
-msgid "widgets.add-widget"
-msgstr "Add Widget"
-
-#: share/plugin/widgets/template/view/gallery:11 share/plugin/widgets/template/view/gallery:15
-msgid "widgets.add-to-gallery"
-msgstr "Add Widget to Gallery"
-
-#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:31
-msgid "widgets.add-url:"
-msgstr "Add a Widget with URL:"
-
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:118 share/plugin/widgets/share/javascript/template/activities/event.tt2:83
-msgid "activities.add-tag"
-msgstr "Add a tag"
-
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:121 share/plugin/widgets/share/javascript/template/activities/event.tt2:86
-msgid "activities.add-video-link"
-msgstr "Add a video link"
-
-#: share/plugin/widgets/template/view/gallery:0 share/plugin/widgets/template/view/gallery:81
-msgid "widget.add-it-now"
-msgstr "Add it now"
-
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:32
-msgid "activities.all-replies"
-msgstr "All Replies"
-
-#: share/plugin/widgets/share/javascript/activities/appdata.js:282
-msgid "activities.all-my-groups"
-msgstr "All my groups"
-
-#: share/plugin/widgets/share/javascript/activities/appdata.js:283
-msgid "activities.all-shared-groups"
-msgstr "All shared groups"
-
-#. (evt.replies.length ? loc('entire Conversation')
-#: share/plugin/widgets/share/javascript/activities/event_list.js:918
-msgid "activities.confirm-delete=target"
-msgstr ""
-"Are you sure you want to delete this %1?\n"
-"You cannot undelete it."
-
-#. (evt.replies.length ? loc('entire Conversation')
-#: share/plugin/widgets/share/javascript/activities/event_list.js:933
-msgid "activities.confirm-expunge=target"
-msgstr ""
-"Are you sure you want to expunge this %1 from the system?\n"
-"It cannot be recovered."
-
-#. (this.title)
-#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:46
-msgid "widgets.confirm-delete=widget?"
-msgstr "Are you sure you want to permanently remove the \"%1\" widget?"
-
-#. (this.title)
-#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:42
-msgid "widgets.confirm-remove=widget?"
-msgstr "Are you sure you want to remove the \"%1\" widget? Users will no longer see this widget in their widget gallery. You can restore the widget at any time."
-
-#. (this.title)
-#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:44
-msgid "widgets.confirm-restore=widget?"
-msgstr "Are you sure you want to restore the \"%1\" widget?"
-
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:117 share/plugin/widgets/share/javascript/template/activities/event.tt2:82
-msgid "activities.attach-file"
-msgstr "Attach a file"
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:5
+msgid "ago.~1hour"
+msgstr "about one hour ago"
 
 #: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:18 share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:17 share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:23
 msgid "do.cancel"
 msgstr "Cancel"
 
-#: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:2
-msgid "activities.about-insert-wikilink"
-msgstr "Choose a workspace then search for the wikipage you want linked. You can change the link text and link to a subsection of the page."
-
-#: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:5
-msgid "info.browse"
-msgstr "Click \"Browse\" and select an image or file to upload."
-
-#: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:6
-msgid "info.done"
-msgstr "Click \"Done\" to close this window."
-
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:164
-msgid "activities.click-to-enable-desktop-notifications"
-msgstr "Click here to enable desktop notifications"
-
 #: share/plugin/widgets/share/javascript/activities/event_list.js:756 share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:62
 msgid "do.close"
 msgstr "Close"
-
-#: share/plugin/widgets/share/javascript/template/activities/ui.signalthis.tt2:6
-msgid "activities.close-this-window"
-msgstr "Close this window"
-
-#: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:2
-msgid "activities.enter-video-url-here"
-msgstr "Copy and paste the URL for the video below.  We support embedding video from YouTube, Vimeo, SlideShare and Google Video."
-
-#: share/plugin/widgets/template/view/gallery:116
-msgid "widget.about-delete"
-msgstr "Delete"
 
 #: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:19
 msgid "do.done"
 msgstr "Done"
 
-#: share/plugin/widgets/share/javascript/widgets-lightbox.js:16
-msgid "nav.error"
-msgstr "Error"
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.tt2:18
+msgid "do.no"
+msgstr "No"
+
+#: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:17 share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:16 share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:22
+msgid "do.ok"
+msgstr "OK"
+
+#: share/plugin/widgets/template/view/gallery:123
+msgid "do.remove"
+msgstr "Remove"
+
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.tt2:11
+msgid "do.yes"
+msgstr "Yes"
 
 #. (this.title, error)
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:78
 msgid "error.delete=widget,message"
 msgstr "Error deleting the \"%1\" widget: %2"
 
-#. (this.title, error)
-#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:75
-msgid "error.remove=widget,message"
-msgstr "Error removing the \"%1\" widget: %2"
-
-#. (this.title, error)
-#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:72
-msgid "error.restore=widget,message"
-msgstr "Error restoring the \"%1\" widget: %2"
-
-#: share/plugin/widgets/share/javascript/activities/editor.js:663
-msgid "error.send-signal"
-msgstr "Error sending Signal, please try again"
-
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:115 share/plugin/widgets/share/javascript/template/activities/event.tt2:80
-msgid "activities.insert:"
-msgstr "Insert:"
-
-#: share/plugin/widgets/share/javascript/template/activities/widget.tt2:2 share/plugin/widgets/template/data/events/widget:2
-msgid "widgets.install-this"
-msgstr "Install this widget"
-
-#: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:4
-msgid "activities.link-text:"
-msgstr "Link text:"
-
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:120 share/plugin/widgets/share/javascript/template/activities/event.tt2:85
-msgid "activities.link-to-web"
-msgstr "Link to a web page"
-
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:119 share/plugin/widgets/share/javascript/template/activities/event.tt2:84
-msgid "activities.link-to-wiki"
-msgstr "Link to a wiki page"
-
-#: share/plugin/widgets/share/javascript/activities/editor.js:1385
-msgid "activities.loading-video"
-msgstr "Loading..."
-
-#: share/plugin/widgets/template/mobile-signals.tt2:97
-msgid "nav.logout"
-msgstr "Log out"
-
-#: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:13
-msgid "activities.make-signal-private"
-msgstr "Make this signal private"
-
-#: share/plugin/widgets/template/view/gallery:0 share/plugin/widgets/template/view/gallery:24
-msgid "widgets.manage-gallery-for-accounts"
-msgstr "Manage Gallery for Accounts"
-
-#. (this.max_filesize)
-#: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:8
-msgid "activities.maximum-file-size=mb"
-msgstr "Maximum file size: %1MB"
-
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:116 share/plugin/widgets/share/javascript/template/activities/event.tt2:81
-msgid "activities.mention-user"
-msgstr "Mention another person"
-
-#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:21 share/plugin/widgets/share/javascript/template/activities/ui.mobile-signals.tt2:21 share/plugin/widgets/share/javascript/template/activities/ui.viewer.tt2:17
-msgid "activities.more"
-msgstr "More"
-
-#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:57
-msgid "activities.more-mentions"
-msgstr "More Mentions..."
-
-#: share/plugin/widgets/share/javascript/lightbox/remove-content.tt2:18
-msgid "do.no"
-msgstr "No"
-
-#: share/plugin/widgets/template/view/gallery:75
-msgid "widgets.no-description"
-msgstr "No description provided"
-
-#: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:17 share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:16 share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:22
-msgid "do.ok"
-msgstr "OK"
-
-#: share/plugin/widgets/share/javascript/activities/explore.js:196
-msgid "explore.oldies"
-msgstr "OLDIES"
-
-#: share/plugin/widgets/share/javascript/activities/appdata.js:544 share/plugin/widgets/share/javascript/template/activities/ui.signalthis.tt2:18
-msgid "info.edit-summary-signal-visibility"
-msgstr "Only members with permission to view this page will receive the signal."
-
-#: share/plugin/widgets/share/javascript/activities/explore.js:188
-msgid "explore.past-month"
-msgstr "PAST MONTH"
-
-#: share/plugin/widgets/share/javascript/activities/explore.js:184
-msgid "explore.past-week"
-msgstr "PAST WEEK"
-
-#: share/plugin/widgets/share/javascript/activities/explore.js:192
-msgid "explore.past-year"
-msgstr "PAST YEAR"
-
-#: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:12
-msgid "activities.page:"
-msgstr "Page:"
-
-#: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:2
-msgid "activities.enter-weblink-url-here"
-msgstr "Paste or type your link's destination (URL, e.g. http://socialtext.com) and text of the link below. Link destination is required."
-
-#: share/plugin/widgets/template/mobile-signals.tt2:119
-msgid "nav.people"
-msgstr "People"
-
-#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:33
-msgid "widgets.permanent-remove"
-msgstr "Permanently Remove Widget"
-
-#: share/plugin/widgets/share/javascript/activities/editor.js:1426
-msgid "error.invalid-video-link"
-msgstr "Please enter a valid video link."
-
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:101 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:148 share/plugin/widgets/share/javascript/template/activities/event.tt2:69
-msgid "activities.post"
-msgstr "Post"
-
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:137 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:90
-msgid "activities.post-to"
-msgstr "Post to"
-
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:112
-msgid "activities.private-to:"
-msgstr "Private to:"
-
-#: share/plugin/widgets/template/view/gallery:123
-msgid "do.remove"
-msgstr "Remove"
-
-#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:15
-msgid "widgets.remove-widget"
-msgstr "Remove Widget"
-
-#: share/plugin/widgets/share/javascript/template/activities/event.tt2:74
-msgid "activities.reply-to-conversation"
-msgstr "Reply to conversation..."
-
-#: share/plugin/widgets/template/view/gallery:110
-msgid "widgets.about-restore"
-msgstr "Restore"
-
-#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:24
-msgid "widgets.restore-widget"
-msgstr "Restore Widget"
-
-#: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:16
-msgid "activities.section:"
-msgstr "Section:"
-
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:113
-msgid "activities.send-private-message"
-msgstr "Send a private message"
-
-#: share/plugin/widgets/share/javascript/template/activities/ui.signalthis.tt2:9
-msgid "activities.signal-this-page"
-msgstr "Send a signal with a link to this page"
-
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:68
-msgid "activities.showing"
-msgstr "Showing"
-
-#: share/plugin/widgets/share/javascript/activities/event_list.js:919 share/plugin/widgets/share/javascript/activities/event_list.js:934
-msgid "activities.signal"
-msgstr "Signal"
-
-#. (self.maxSignalLength()
-#. (limit)
-#: share/plugin/widgets/share/javascript/activities/editor.js:357 share/plugin/widgets/share/javascript/activities/editor.js:653
-msgid "error.signal-too-long=max-length"
-msgstr "Signal length limit is %1, please edit your Signal"
-
-#: share/plugin/widgets/share/javascript/template/activities/ui.signalthis.tt2:20
-msgid "activities.signal-sent!"
-msgstr "Signal sent!"
-
-#: share/plugin/widgets/template/mobile-signals.tt2:114 share/plugin/widgets/template/mobile-signals.tt2:116 share/plugin/widgets/template/mobile-signals.tt2:7
-msgid "nav.signals"
-msgstr "Signals"
-
-#: share/plugin/widgets/template/mobile-signals.tt2:5
-msgid "activities.signals-permalink"
-msgstr "Signals - Permalink"
-
-#: share/plugin/widgets/template/activities.tt2:3
-msgid "activities.socialtext-activities"
-msgstr "Socialtext Activities"
-
 #: share/plugin/widgets/share/javascript/gadgets.js:353
 msgid "error.feature-not-supported-in-dashboard"
 msgstr "Sorry, this feature is not yet supported in the Socialtext Dashboard."
 
-#: share/plugin/widgets/share/javascript/widgets-lightbox.js:9
-msgid "info.success"
-msgstr "Success"
+#: share/plugin/widgets/share/javascript/activities/widget.js:419 share/plugin/widgets/share/javascript/activities/widget.js:585
+msgid "error.getting-activities"
+msgstr "There was a problem getting activities"
 
-#: share/plugin/widgets/share/javascript/lightbox/add-update-content.js:61
-msgid "widgets.added"
-msgstr "Successfully added your widget"
-
-#. (this.title)
-#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:93
-msgid "widgets.removed=widget"
-msgstr "Successfully removed the \"%1\" widget"
-
-#. (this.title)
-#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:89
-msgid "widgets.restored=widget"
-msgstr "Successfully restored the \"%1\" widget"
-
-#: share/plugin/widgets/share/javascript/lightbox/add-update-content.js:60
-msgid "widgets.updated=widget"
-msgstr "Successfully updated your widget"
-
-#: share/plugin/widgets/share/javascript/activities/explore.js:180
-msgid "explore.today"
-msgstr "TODAY"
+#: share/plugin/widgets/share/javascript/activities/editor.js:1426
+msgid "error.invalid-video-link"
+msgstr "Please enter a valid video link."
 
 #: share/plugin/widgets/share/javascript/activities/editor.js:1292
 msgid "error.invalid-weblink-url"
@@ -482,10 +421,6 @@ msgstr "That doesn't appear to be a valid URL, e.g. http://www.google.com"
 #: share/plugin/widgets/share/javascript/activities/editor.js:1205
 msgid "error.invalid-wikilink-wiki"
 msgstr "The workspace is not a valid workspace. You must supply a valid workspace for a page link."
-
-#: share/plugin/widgets/share/javascript/activities/editor.js:659
-msgid "error.no-such-wikilink-wiki"
-msgstr "The workspace you specified does not exist, please try again"
 
 #. (action.error_title || action.title)
 #: share/plugin/widgets/share/javascript/template/activities/empty.tt2:4
@@ -502,47 +437,9 @@ msgstr "There are no new %1 in the last 30 days."
 msgid "error.no-followed-events-in-30days=title"
 msgstr "There are no new %1, either because you aren't following anyone yet, or the people you're following haven't created any %1 in the last 30 days. Visit the profiles of your colleagues, and click 'Follow this person' to start following colleagues."
 
-#: share/plugin/widgets/share/javascript/activities/widget.js:419 share/plugin/widgets/share/javascript/activities/widget.js:585
-msgid "error.getting-activities"
-msgstr "There was a problem getting activities"
-
-#. (gallery.account_name)
-#: share/plugin/widgets/template/view/gallery:34
-msgid "widgets.gallery-switch=account:"
-msgstr "This is the widget gallery for the \"%1\" account. Switch to account:"
-
-#: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:9
-msgid "video.title:"
-msgstr "Title:"
-
-#: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:5
-msgid "video.url:"
-msgstr "URL:"
-
-#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:55 share/plugin/widgets/template/view/gallery:104
-msgid "widgets.about-update"
-msgstr "Update"
-
-#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:3
-msgid "widgets.update-widget"
-msgstr "Update Widget"
-
-#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:31
-msgid "widgets.update-from-url:"
-msgstr "Update a Widget from URL:"
-
-#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:18
-msgid "widgets.upload-xml:"
-msgstr "Upload Widget XML File:"
-
-#. (as_string)
-#: share/plugin/widgets/share/javascript/activities/editor.js:951
-msgid "activities.uploaded=files"
-msgstr "Uploaded files: %1"
-
-#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:44
-msgid "widgets.use-editor"
-msgstr "Use the Widget Editor"
+#: share/plugin/widgets/share/javascript/activities/editor.js:659
+msgid "error.no-such-wikilink-wiki"
+msgstr "The workspace you specified does not exist, please try again"
 
 #. (ws)
 #. (workspace)
@@ -550,36 +447,25 @@ msgstr "Use the Widget Editor"
 msgid "error.no-wiki-on-server=wiki"
 msgstr "Workspace \"%1\" does not exist on wiki"
 
-#: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:8
-msgid "activities.wiki:"
-msgstr "Workspace:"
+#. (this.title, error)
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:75
+msgid "error.remove=widget,message"
+msgstr "Error removing the \"%1\" widget: %2"
 
-#: share/plugin/widgets/template/mobile-signals.tt2:129
-msgid "nav.wikis"
-msgstr "Workspaces"
+#. (this.title, error)
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:72
+msgid "error.restore=widget,message"
+msgstr "Error restoring the \"%1\" widget: %2"
 
-#: share/plugin/widgets/share/javascript/lightbox/remove-content.tt2:11
-msgid "do.yes"
-msgstr "Yes"
+#: share/plugin/widgets/share/javascript/activities/editor.js:663
+msgid "error.send-signal"
+msgstr "Error sending Signal, please try again"
 
-#: share/plugin/widgets/share/javascript/template/activities/event.tt2:23 share/plugin/widgets/share/javascript/template/activities/reply.tt2:14
-msgid "activities.you"
-msgstr "You"
-
-#. (person)
-#: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:11
-msgid "activities.composing-message-to=user"
-msgstr "You are composing a message to %1"
-
-#. (person)
-#: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:5 share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:9
-msgid "activities.composing-private-message-to=person"
-msgstr "You are composing a private message to %1"
-
-#. (person)
-#: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:16
-msgid "activities.composing-reply-to=person"
-msgstr "You are composing a reply to %1"
+#. (self.maxSignalLength()
+#. (limit)
+#: share/plugin/widgets/share/javascript/activities/editor.js:357 share/plugin/widgets/share/javascript/activities/editor.js:653
+msgid "error.signal-too-long=max-length"
+msgstr "Signal length limit is %1, please edit your Signal"
 
 #: share/plugin/widgets/share/javascript/activities/editor.js:1197
 msgid "error.wikilink-page-required"
@@ -589,31 +475,26 @@ msgstr "You must specify a page."
 msgid "error.wikilink-wiki-required"
 msgstr "You must specify a workspace."
 
-#: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:18
-msgid "activities.signal-sent-click-to-adjust-filters"
-msgstr "Your Signal was successfully sent. Click <a href=\"#\" class=\"clearFilters\">here</a> to automatically adjust your filters to show the new signal."
+#. (person_tag)
+#: share/plugin/widgets/share/javascript/template/activities/person.tt2:6
+msgid "event.add-tag-self=tag"
+msgstr "tagged themself %1."
 
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:8
-msgid "ago.~1day"
-msgstr "about one day ago"
+#. (page, workspace, page_tag)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:18
+msgid "event.add-tag=page,wiki,tag"
+msgstr "tagged %1 in %2 as %3."
 
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:5
-msgid "ago.~1hour"
-msgstr "about one hour ago"
+#. (person, person_tag)
+#: share/plugin/widgets/share/javascript/template/activities/person.tt2:17
+msgid "event.add-tag=person,tag"
+msgstr "tagged %1 %2."
 
-#. (person, group)
-#: share/plugin/widgets/share/javascript/template/activities/group.tt2:11
-msgid "event.join=user,group"
-msgstr "added %1 to the group %2."
-
-#. (group, workspace)
-#: share/plugin/widgets/share/javascript/template/activities/group.tt2:15
-msgid "event.join=group,wiki"
-msgstr "added %1 to the workspace %2."
-
-#: share/plugin/widgets/share/javascript/activities/appdata.js:328
-msgid "activities.all-events"
-msgstr "all events"
+#. (actor, widget_link(event.context)
+#. (actor, widget_link(event.context), event.context.description)
+#: share/plugin/widgets/share/javascript/template/activities/widget.tt2:6 share/plugin/widgets/share/javascript/template/activities/widget.tt2:7 share/plugin/widgets/template/data/events/widget:6 share/plugin/widgets/template/data/events/widget:7
+msgid "event.add-widget=user,widget,context"
+msgstr "%1 added the %2 widget. %3."
 
 #. (page, workspace, event.context.summary.replace("[\n ]+\$", '')
 #. (page, workspace, event.context.summary.replace("[\n ]+$", ""))
@@ -621,146 +502,10 @@ msgstr "all events"
 msgid "event.comment=page,wiki,summary"
 msgstr "commented on %1 in %2, saying, \"%3\""
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:360
-msgid "activities.comments"
-msgstr "comments"
-
-#: share/plugin/widgets/share/javascript/activities/appdata.js:350
-msgid "activities.contributions"
-msgstr "contributions"
-
-#: share/plugin/widgets/share/javascript/template/activities/signal.icons.tt2:23
-msgid "activities.delete"
-msgstr "delete"
-
-#. (page, workspace)
-#: share/plugin/widgets/share/javascript/template/activities/page.tt2:14
-msgid "event.delete=page,wiki"
-msgstr "deleted %1 in %2."
-
-#. (page, workspace)
-#: share/plugin/widgets/share/javascript/template/activities/page.tt2:10
-msgid "event.duplicate=page,wiki"
-msgstr "duplicated %1 in %2."
-
-#. (page, workspace, event.context.edit_summary)
-#: share/plugin/widgets/share/javascript/template/activities/page.tt2:5
-msgid "event.edit=page,wiki,summary"
-msgstr "edited %1 in %2, saying \"%3\"."
-
-#. (page, workspace)
-#: share/plugin/widgets/share/javascript/template/activities/page.tt2:7
-msgid "event.edit=page,wiki"
-msgstr "edited %1 in %2."
-
-#. (person)
-#: share/plugin/widgets/share/javascript/template/activities/person.tt2:15
-msgid "event.edit-profile=person"
-msgstr "edited %1's profile."
-
-#: share/plugin/widgets/share/javascript/template/activities/person.tt2:4
-msgid "event.edit-profile-self"
-msgstr "edited their own profile."
-
-#: share/plugin/widgets/share/javascript/activities/appdata.js:355
-msgid "activities.edits"
-msgstr "edits"
-
-#: share/plugin/widgets/share/javascript/activities/appdata.js:327
-msgid "activities.events"
-msgstr "events"
-
-#: share/plugin/widgets/share/javascript/activities/appdata.js:393
-msgid "activities.everyone"
-msgstr "everyone"
-
-#: share/plugin/widgets/share/javascript/template/activities/signal.icons.tt2:17
-msgid "activities.expunge"
-msgstr "expunge"
-
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:72
-msgid "activities.from"
-msgstr "from"
-
-#. (group)
-#: share/plugin/widgets/share/javascript/template/activities/group.tt2:4
-msgid "event.join=group"
-msgstr "joined the group %1."
-
-#. (group)
-#: share/plugin/widgets/share/javascript/template/activities/group.tt2:6
-msgid "event.leave=group"
-msgstr "left the group %1."
-
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:2
-msgid "ago.<1minute"
-msgstr "less than a minute ago"
-
-#: share/plugin/widgets/share/javascript/activities/appdata.js:413
-msgid "activities.me"
-msgstr "me"
-
-#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:3
-msgid "explore.more"
-msgstr "more"
-
-#: share/plugin/widgets/share/javascript/activities/appdata.js:407
-msgid "activities.my-conversations"
-msgstr "my conversations"
-
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:7
-msgid "ago.1day"
-msgstr "one day ago"
-
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:3
-msgid "ago.1minute"
-msgstr "one minute ago"
-
-#: share/plugin/widgets/share/javascript/activities/appdata.js:365
-msgid "activities.page-tags"
-msgstr "page tags"
-
-#: share/plugin/widgets/share/javascript/activities/appdata.js:400
-msgid "activities.following"
-msgstr "people I follow"
-
-#: share/plugin/widgets/share/javascript/activities/appdata.js:370
-msgid "activities.people-events"
-msgstr "people events"
-
-#. (event.action, page, workspace)
-#: share/plugin/widgets/share/javascript/template/activities/page.tt2:22
-msgid "event.generic=action,page,wiki"
-msgstr "performed action %1 on %2 in %3."
-
-#. (event.action, person)
-#: share/plugin/widgets/share/javascript/template/activities/person.tt2:25
-msgid "event.generic=action,person"
-msgstr "performed action '%1' on %2."
-
-#. (event.action)
-#: share/plugin/widgets/share/javascript/template/activities/person.tt2:10
-msgid "event.generic-self=action"
-msgstr "performed action '%1' on themself."
-
-#. (person)
-#: share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:8
-msgid "activities.private-to=user"
-msgstr "private to %1"
-
-#: share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:6
-msgid "activities.private-to-you"
-msgstr "private to you"
-
-#. (person, group)
-#: share/plugin/widgets/share/javascript/template/activities/group.tt2:13
-msgid "event.leave=user,group"
-msgstr "removed %1 from the group %2."
-
-#. (group, workspace)
-#: share/plugin/widgets/share/javascript/template/activities/group.tt2:17
-msgid "event.leave=user,wiki"
-msgstr "removed %1 from the workspace %2."
+#. (person_tag)
+#: share/plugin/widgets/share/javascript/template/activities/person.tt2:8
+msgid "event.delete-tag-self=tag"
+msgstr "removed their tag %1."
 
 #. (page_tag, page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:20
@@ -772,59 +517,314 @@ msgstr "removed tag %1 from %2 in %3."
 msgid "event.delete-tag=tag,person"
 msgstr "removed the tag %1 from %2."
 
-#. (person_tag)
-#: share/plugin/widgets/share/javascript/template/activities/person.tt2:8
-msgid "event.delete-tag-self=tag"
-msgstr "removed their tag %1."
+#. (page, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:14
+msgid "event.delete=page,wiki"
+msgstr "deleted %1 in %2."
 
 #. (page, workspace)
-#: share/plugin/widgets/share/javascript/template/activities/page.tt2:12
-msgid "activities.rename=page,wiki"
-msgstr "renamed %1 in %2."
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:10
+msgid "event.duplicate=page,wiki"
+msgstr "duplicated %1 in %2."
 
-#: share/plugin/widgets/share/javascript/template/activities/page.icons.tt2:12 share/plugin/widgets/share/javascript/template/activities/signal.icons.tt2:8
-msgid "activities.reply"
-msgstr "reply"
+#: share/plugin/widgets/share/javascript/template/activities/person.tt2:4
+msgid "event.edit-profile-self"
+msgstr "edited their own profile."
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:343
-msgid "activities.signals"
-msgstr "signals"
+#. (person)
+#: share/plugin/widgets/share/javascript/template/activities/person.tt2:15
+msgid "event.edit-profile=person"
+msgstr "edited %1's profile."
+
+#. (page, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:7
+msgid "event.edit=page,wiki"
+msgstr "edited %1 in %2."
+
+#. (page, workspace, event.context.edit_summary)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:5
+msgid "event.edit=page,wiki,summary"
+msgstr "edited %1 in %2, saying \"%3\"."
 
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:21
 msgid "event.follow=person"
 msgstr "started following %1."
 
+#. (event.action)
+#: share/plugin/widgets/share/javascript/template/activities/person.tt2:10
+msgid "event.generic-self=action"
+msgstr "performed action '%1' on themself."
+
+#. (event.action, page, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/page.tt2:22
+msgid "event.generic=action,page,wiki"
+msgstr "performed action %1 on %2 in %3."
+
+#. (event.action, person)
+#: share/plugin/widgets/share/javascript/template/activities/person.tt2:25
+msgid "event.generic=action,person"
+msgstr "performed action '%1' on %2."
+
+#. (group)
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:4
+msgid "event.join=group"
+msgstr "joined the group %1."
+
+#. (group, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:15
+msgid "event.join=group,wiki"
+msgstr "added %1 to the workspace %2."
+
+#. (person, group)
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:11
+msgid "event.join=user,group"
+msgstr "added %1 to the group %2."
+
+#. (group)
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:6
+msgid "event.leave=group"
+msgstr "left the group %1."
+
+#. (person, group)
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:13
+msgid "event.leave=user,group"
+msgstr "removed %1 from the group %2."
+
+#. (group, workspace)
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:17
+msgid "event.leave=user,wiki"
+msgstr "removed %1 from the workspace %2."
+
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:23
 msgid "event.unfollow=person"
 msgstr "stopped following %1."
 
-#. (person, person_tag)
-#: share/plugin/widgets/share/javascript/template/activities/person.tt2:17
-msgid "event.add-tag=person,tag"
-msgstr "tagged %1 %2."
+#. (actor, widget_link(event.context)
+#. (actor, widget_link(event.context))
+#: share/plugin/widgets/share/javascript/template/activities/widget.tt2:9 share/plugin/widgets/template/data/events/widget:9
+msgid "event.update-widget=actor,widget"
+msgstr "%1 updated the %2 widget."
 
-#. (page, workspace, page_tag)
-#: share/plugin/widgets/share/javascript/template/activities/page.tt2:18
-msgid "event.add-tag=page,wiki,tag"
-msgstr "tagged %1 in %2 as %3."
+#. (asset.count)
+#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:8 share/plugin/widgets/share/javascript/template/activities/assets.tt2:9
+msgid "explore.click-to-collapse-mentions=count"
+msgstr "%*(%1,mention), click here to collapse"
 
-#. (person_tag)
-#: share/plugin/widgets/share/javascript/template/activities/person.tt2:6
-msgid "event.add-tag-self=tag"
-msgstr "tagged themself %1."
+#. (asset.count)
+#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:14 share/plugin/widgets/share/javascript/template/activities/assets.tt2:8
+msgid "explore.click-to-expand-mentions=count"
+msgstr "%*(%1,mention), click here to expand"
 
-#. (targets.0)
-#: share/plugin/widgets/share/javascript/template/activities/page.meta.tt2:9 share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:17
-msgid "activities.to=target"
-msgstr "to %1"
+#. (asset.count, asset.eventList.size || 5)
+#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:12 share/plugin/widgets/share/javascript/template/activities/assets.tt2:8
+msgid "explore.click-to-expand-mentions=count,first-page"
+msgstr "%*(%1,mention), click here to see first %2"
 
-#. (targets.size)
-#: share/plugin/widgets/share/javascript/template/activities/page.meta.tt2:5 share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:13
-msgid "activities.to-groups=count"
-msgstr "to %1 groups"
+#. (asset.count)
+#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:26
+msgid "explore.mentions=count"
+msgstr "%*(%1,mention)"
 
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:76
-msgid "activities.within"
-msgstr "within"
+#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:3
+msgid "explore.more"
+msgstr "more"
+
+#: share/plugin/widgets/share/javascript/activities/explore.js:221
+msgid "explore.no-items"
+msgstr "(no items to show)"
+
+#: share/plugin/widgets/share/javascript/activities/explore.js:196
+msgid "explore.oldies"
+msgstr "OLDIES"
+
+#: share/plugin/widgets/share/javascript/activities/explore.js:188
+msgid "explore.past-month"
+msgstr "PAST MONTH"
+
+#: share/plugin/widgets/share/javascript/activities/explore.js:184
+msgid "explore.past-week"
+msgstr "PAST WEEK"
+
+#: share/plugin/widgets/share/javascript/activities/explore.js:192
+msgid "explore.past-year"
+msgstr "PAST YEAR"
+
+#: share/plugin/widgets/share/javascript/activities/explore.js:180
+msgid "explore.today"
+msgstr "TODAY"
+
+#: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:5
+msgid "info.browse"
+msgstr "Click \"Browse\" and select an image or file to upload."
+
+#: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:6
+msgid "info.done"
+msgstr "Click \"Done\" to close this window."
+
+#: share/plugin/widgets/share/javascript/activities/appdata.js:544 share/plugin/widgets/share/javascript/template/activities/ui.signalthis.tt2:18
+msgid "info.edit-summary-signal-visibility"
+msgstr "Only members with permission to view this page will receive the signal."
+
+#: share/plugin/widgets/share/javascript/widgets-lightbox.js:9
+msgid "info.success"
+msgstr "Success"
+
+#: share/plugin/widgets/template/mobile-signals.tt2:123
+msgid "nav.activity"
+msgstr "Activity"
+
+#: share/plugin/widgets/share/javascript/widgets-lightbox.js:16
+msgid "nav.error"
+msgstr "Error"
+
+#: share/plugin/widgets/template/mobile-signals.tt2:97
+msgid "nav.logout"
+msgstr "Log out"
+
+#: share/plugin/widgets/template/mobile-signals.tt2:119
+msgid "nav.people"
+msgstr "People"
+
+#: share/plugin/widgets/template/mobile-signals.tt2:114 share/plugin/widgets/template/mobile-signals.tt2:116 share/plugin/widgets/template/mobile-signals.tt2:7
+msgid "nav.signals"
+msgstr "Signals"
+
+#: share/plugin/widgets/template/mobile-signals.tt2:129
+msgid "nav.wikis"
+msgstr "Workspaces"
+
+#: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:9
+msgid "video.title:"
+msgstr "Title:"
+
+#: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:5
+msgid "video.url:"
+msgstr "URL:"
+
+#: share/plugin/widgets/template/view/gallery:116
+msgid "widget.about-delete"
+msgstr "Delete"
+
+#: share/plugin/widgets/template/view/gallery:0 share/plugin/widgets/template/view/gallery:81
+msgid "widget.add-it-now"
+msgstr "Add it now"
+
+#: share/plugin/widgets/template/view/gallery:110
+msgid "widgets.about-restore"
+msgstr "Restore"
+
+#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:55 share/plugin/widgets/template/view/gallery:104
+msgid "widgets.about-update"
+msgstr "Update"
+
+#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:55
+msgid "widgets.add"
+msgstr "Add"
+
+#: share/plugin/widgets/template/view/gallery:11 share/plugin/widgets/template/view/gallery:15
+msgid "widgets.add-to-gallery"
+msgstr "Add Widget to Gallery"
+
+#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:31
+msgid "widgets.add-url:"
+msgstr "Add a Widget with URL:"
+
+#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:3
+msgid "widgets.add-widget"
+msgstr "Add Widget"
+
+#: share/plugin/widgets/share/javascript/lightbox/add-update-content.js:61
+msgid "widgets.added"
+msgstr "Successfully added your widget"
+
+#. (this.title)
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:46
+msgid "widgets.confirm-delete=widget?"
+msgstr "Are you sure you want to permanently remove the \"%1\" widget?"
+
+#. (this.title)
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:42
+msgid "widgets.confirm-remove=widget?"
+msgstr "Are you sure you want to remove the \"%1\" widget? Users will no longer see this widget in their widget gallery. You can restore the widget at any time."
+
+#. (this.title)
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:44
+msgid "widgets.confirm-restore=widget?"
+msgstr "Are you sure you want to restore the \"%1\" widget?"
+
+#: share/plugin/widgets/template/view/gallery:119
+msgid "widgets.delete"
+msgstr "(delete)"
+
+#. (gallery.account_name)
+#: share/plugin/widgets/template/view/gallery:34
+msgid "widgets.gallery-switch=account:"
+msgstr "This is the widget gallery for the \"%1\" account. Switch to account:"
+
+#: share/plugin/widgets/share/javascript/template/activities/widget.tt2:2 share/plugin/widgets/template/data/events/widget:2
+msgid "widgets.install-this"
+msgstr "Install this widget"
+
+#: share/plugin/widgets/template/view/gallery:0 share/plugin/widgets/template/view/gallery:24
+msgid "widgets.manage-gallery-for-accounts"
+msgstr "Manage Gallery for Accounts"
+
+#: share/plugin/widgets/template/view/gallery:75
+msgid "widgets.no-description"
+msgstr "No description provided"
+
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:33
+msgid "widgets.permanent-remove"
+msgstr "Permanently Remove Widget"
+
+#: share/plugin/widgets/template/view/gallery:126
+msgid "widgets.remove"
+msgstr "(remove)"
+
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:15
+msgid "widgets.remove-widget"
+msgstr "Remove Widget"
+
+#. (this.title)
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:93
+msgid "widgets.removed=widget"
+msgstr "Successfully removed the \"%1\" widget"
+
+#: share/plugin/widgets/template/view/gallery:113
+msgid "widgets.restore"
+msgstr "(restore)"
+
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:24
+msgid "widgets.restore-widget"
+msgstr "Restore Widget"
+
+#. (this.title)
+#: share/plugin/widgets/share/javascript/lightbox/remove-content.js:89
+msgid "widgets.restored=widget"
+msgstr "Successfully restored the \"%1\" widget"
+
+#: share/plugin/widgets/template/view/gallery:107
+msgid "widgets.update"
+msgstr "(update)"
+
+#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:31
+msgid "widgets.update-from-url:"
+msgstr "Update a Widget from URL:"
+
+#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:3
+msgid "widgets.update-widget"
+msgstr "Update Widget"
+
+#: share/plugin/widgets/share/javascript/lightbox/add-update-content.js:60
+msgid "widgets.updated=widget"
+msgstr "Successfully updated your widget"
+
+#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:18
+msgid "widgets.upload-xml:"
+msgstr "Upload Widget XML File:"
+
+#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:44
+msgid "widgets.use-editor"
+msgstr "Use the Widget Editor"

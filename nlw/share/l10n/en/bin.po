@@ -9,30 +9,34 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: bin/ceq-stat:83
+msgid "info.verbose"
+msgstr "HINT try --verbose for a key and extra columns"
+
 #. ($cleaned)
 #: bin/ceq-cleanup:20
 msgid "job.cleaned=count"
 msgstr "Done cleaning %1 job types."
 
-#: bin/ceq-stat:40
-msgid "job.oldest"
-msgstr "Earliest (oldest) enqueued time"
+#: bin/ceq-stat:33
+msgid "job.count-delay"
+msgstr "Number of jobs with a delayed start time"
 
-#: bin/ceq-stat:41
-msgid "job.oldest-without-delay"
-msgstr "Earliest (oldest) enqueued time, without a delayed start"
+#: bin/ceq-stat:31
+msgid "job.count-enqueued"
+msgstr "Number of jobs enqueued"
 
 #: bin/ceq-stat:35
 msgid "job.count-failed"
 msgstr "Failed job count"
 
-#: bin/ceq-stat:83
-msgid "info.verbose"
-msgstr "HINT try --verbose for a key and extra columns"
+#: bin/ceq-stat:32
+msgid "job.count-grabbed"
+msgstr "Number of jobs \"grabbed\" for work"
 
-#: bin/ceq-stat:68
-msgid "job.type"
-msgstr "Job Type"
+#: bin/ceq-stat:34
+msgid "job.count-success"
+msgstr "Successful job count"
 
 #. ($job_name)
 #: bin/ceq-cleanup:18
@@ -59,26 +63,22 @@ msgstr "Most recently (latest) enqueued time"
 msgid "job.newest-without-delay"
 msgstr "Most recently (latest) enqueued time, without a delayed start"
 
-#: bin/ceq-stat:134
-msgid "time.never"
-msgstr "Never"
+#: bin/ceq-stat:40
+msgid "job.oldest"
+msgstr "Earliest (oldest) enqueued time"
 
-#: bin/ceq-stat:32
-msgid "job.count-grabbed"
-msgstr "Number of jobs \"grabbed\" for work"
-
-#: bin/ceq-stat:31
-msgid "job.count-enqueued"
-msgstr "Number of jobs enqueued"
-
-#: bin/ceq-stat:33
-msgid "job.count-delay"
-msgstr "Number of jobs with a delayed start time"
-
-#: bin/ceq-stat:34
-msgid "job.count-success"
-msgstr "Successful job count"
+#: bin/ceq-stat:41
+msgid "job.oldest-without-delay"
+msgstr "Earliest (oldest) enqueued time, without a delayed start"
 
 #: bin/ceq-stat:69
 msgid "job.total"
 msgstr "Total"
+
+#: bin/ceq-stat:68
+msgid "job.type"
+msgstr "Job Type"
+
+#: bin/ceq-stat:134
+msgid "time.never"
+msgstr "Never"
