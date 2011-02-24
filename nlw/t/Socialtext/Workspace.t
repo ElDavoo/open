@@ -119,7 +119,7 @@ NO_DASH_IN_TITLE:
         );
     };
     my $e = $@;
-    ok( ( grep { /and may not begin with a -/ } $e->messages ),
+    ok( ( grep { /and may not begin with a '-'/ } $e->messages ),
         'and may not begin with a -' );
 }
 
@@ -449,7 +449,7 @@ NON_ASCII_WS_NAME: {
         account_id         => Socialtext::Account->Socialtext()->account_id,
         skip_default_pages => 1,
     ) };
-    like( $@, qr/\Qmust contain only upper- or lower-case letters/,
+    like( $@, qr/\Qmust contain only lower-case letters, numbers, underscores/,
           'workspace name with non-ASCII letters is invalid' );
 }
 
