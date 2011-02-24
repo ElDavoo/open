@@ -17,6 +17,7 @@ my $TABLE    = 'user_restrictions';
 my $COLUMNS  = [qw( user_id restriction_type token expires_at workspace_id )];
 my $PKEY     = [qw( user_id restriction_type )];
 my $REQUIRED = [qw( user_id restriction_type )];
+my %KNOWN_TYPES = map { $_ => 1 } qw(email_confirmation password_change);
 
 sub Create {
     my $class = shift;
@@ -41,6 +42,9 @@ sub ValidateAndCleanData {
     # are we creating a new restriction, or updating an existing one?
     my $is_create = defined $restriction ? 0 : 1;
 
+    # restriction has to be of a known type
+    $class->_validate_restriction_known_type($proto);
+
     # new Restrictions need a "token"
     $class->_validate_assign_token($proto) if ($is_create);
 
@@ -52,6 +56,15 @@ sub ValidateAndCleanData {
 
     # can't create multiple Restrictions for a User of a given type
     $class->_validate_check_unique_type_for_user($proto) if ($is_create);
+}
+
+sub _validate_restriction_known_type {
+    my $class = shift;
+    my $proto = shift;
+    if (exists $proto->{restriction_type}) {
+        my $type = $proto->{restriction_type};
+        die "unknown restriction type, '$type'\n" unless ($KNOWN_TYPES{$type});
+    }
 }
 
 sub _validate_assign_token {
