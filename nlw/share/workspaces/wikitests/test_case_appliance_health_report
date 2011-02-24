@@ -2,11 +2,12 @@
 
 | *Comment* | Test Case: Appliance Health Report |  |
 
-| *Comment* | Test Case: Appliance Health Report SETUP |  |
-| st-admin | add-member --e %%username%% --w st-health | has the role of 'member' |
-
 | *Comment* | Test Case: Appliance Health Report Create local report |  |
 | st_create_health_report |  |  |
+
+| st-admin | add-member --e %%username%% --w st-health | has the role of 'member' |
+
+| *Comment* | Test Case: Appliance Health Report verify local report |  |
 | open_ok | %%health_report_url%% |  |
 | text_like | //body | General info about this report |
 | text_like | //body | Snapshot of the hardware state. |
