@@ -41,6 +41,14 @@ for my $po (@ARGV) {
             warn "*** $po : Untranslated key: $id\n";
             $errors++;
         }
+        elsif (trim($id) =~ /[!:?]$/ and substr(trim($str), -1) ne substr(trim($id), -1)) {
+            warn "*** $po : msgid has trailing punctuation not found in msgstr: $id\n";
+            $errors++;
+        }
+        elsif (trim($str) =~ /[!:?]$/ and substr(trim($str), -1) ne substr(trim($id), -1)) {
+            warn "*** $po : msgstr has trailing punctuation not found in msgid $str\n";
+            $errors++;
+        }
     }
 }
 
