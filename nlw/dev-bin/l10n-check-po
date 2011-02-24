@@ -37,9 +37,10 @@ for my $po (@ARGV) {
             }
             next;
         }
-
-        $id = trim($id);
-        $str = trim($str);
+        elsif (trim($str) eq '') {
+            warn "*** $po : Untranslated key: $id\n";
+            $errors++;
+        }
     }
 }
 
