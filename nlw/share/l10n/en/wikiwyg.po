@@ -218,7 +218,7 @@ msgstr "Expand"
 msgid "edit.expand-view"
 msgstr "Expand edit area to fill browser window"
 
-#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:27 share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1888 share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3566
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:27 share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1888 share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3563
 msgid "edit.loading"
 msgstr "Loading..."
 
@@ -242,7 +242,7 @@ msgstr "Press OK to continue, or Cancel to stay on the current page."
 msgid "edit.page-exists"
 msgstr "Page Already Exists"
 
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3211
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3208
 msgid "edit.page-title-required-for-wiki"
 msgstr "Page Title required if Workspace ID specified"
 
@@ -262,7 +262,7 @@ msgstr "Saving..."
 msgid "edit.signal-to"
 msgstr "Signal this edit to"
 
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3216
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3213
 msgid "edit.spreadsheet-title-required-for-wiki"
 msgstr "Spreadsheet Title required if Workspace ID specified"
 
@@ -304,11 +304,11 @@ msgstr "Wiki Text"
 msgid "error.browser-offline"
 msgstr "The browser is currently offline; please connect to the internet and try again."
 
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3194
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3191
 msgid "error.check-video-url"
 msgstr "An error occured; please try later."
 
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1955 share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1412
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1955 share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1409
 msgid "error.columns-too-big"
 msgstr "Columns is too big. 35 maximum."
 
@@ -317,11 +317,11 @@ msgid "error.edit-again"
 msgstr "Sorry, an edit error occured; please re-edit this page."
 
 #. (labels.join(', ')
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3142
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3139
 msgid "error.field-required=labels"
 msgstr "Requires one of: %1"
 
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1404
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1401
 msgid "error.invalid-columns"
 msgstr "Columns is invalid."
 
@@ -329,20 +329,20 @@ msgstr "Columns is invalid."
 msgid "error.invalid-number"
 msgstr "That doesn't appear to be a valid number."
 
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1402
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1399
 msgid "error.invalid-rows"
 msgstr "Rows is invalid."
 
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3190
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3187
 msgid "error.invalid-video-url"
 msgstr "Sorry, this URL does not appear to link to an embeddable video."
 
 #. (label)
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3157
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3154
 msgid "error.invalid-widget-field=label"
 msgstr "'%1' has an invalid value"
 
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1912
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1909
 msgid "error.link-selection-required"
 msgstr "Please select the text you would like to turn into a link."
 
@@ -364,11 +364,11 @@ msgstr "Page title is too long after URL encoding"
 msgid "error.reserved-page-name"
 msgstr "\"%1\" is a reserved page name. Please use a different name"
 
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1408
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1405
 msgid "error.rows-and-columns-required"
 msgstr "Rows and Columns must be non-zero."
 
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1951 share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1410
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1951 share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1407
 msgid "error.rows-too-big"
 msgstr "Rows is too big. 100 maximum."
 
@@ -389,16 +389,16 @@ msgid "error.size-required"
 msgstr "Can't have a 0 for a size."
 
 #. (widget)
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:2653
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:2650
 msgid "error.unexpected-parse=widget"
 msgstr "Unexpected Widget >>%1<< in parseWidget"
 
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3172
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3169
 msgid "error.video-url-required"
 msgstr "Video URL is required"
 
 #. (label)
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3125
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3122
 msgid "error.widget-field-required=label"
 msgstr "'%1' is a required field"
 
@@ -450,7 +450,7 @@ msgstr "There is <span id=\"st-newpage-duplicate-emphasis\">already a page</span
 msgid "info.preformatted-text"
 msgstr "(Preformatted Text is plain text displayed exactly as entered.)"
 
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:2352
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:2349
 msgid "info.wafl-uneditable"
 msgstr "This is not an editable widget. Please edit it in Wiki Text mode."
 
@@ -794,7 +794,7 @@ msgstr "date: %1"
 msgid "wafl.feed=url"
 msgstr "feed: %1"
 
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3443
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3440
 msgid "wafl.fewer-options"
 msgstr "Fewer options"
 
@@ -841,7 +841,7 @@ msgid "wafl.height:"
 msgstr "height:"
 
 #. (data.height)
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3588
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3585
 msgid "wafl.height=px"
 msgstr "height: %1"
 
@@ -912,7 +912,7 @@ msgstr "link: %1"
 msgid "wafl.link=page,section"
 msgstr "link: %1 (%2)"
 
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3450 share/skin/wikiwyg/javascript/template/widget_edit.tt2:21
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3447 share/skin/wikiwyg/javascript/template/widget_edit.tt2:21
 msgid "wafl.more-options"
 msgstr "More options"
 
@@ -1141,7 +1141,7 @@ msgstr "width:"
 
 #. (choice.2)
 #. (data.width)
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3586 share/skin/wikiwyg/javascript/template/widget_edit.tt2:140 share/skin/wikiwyg/javascript/template/widget_edit.tt2:186
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3583 share/skin/wikiwyg/javascript/template/widget_edit.tt2:140 share/skin/wikiwyg/javascript/template/widget_edit.tt2:186
 msgid "wafl.width=px"
 msgstr "width: %1"
 

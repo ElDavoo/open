@@ -9,11 +9,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: share/plugin/twilio/template/element/settings/twilio_settings_section:10
+#: share/plugin/twilio/template/element/settings/twilio_settings_section:13
 msgid "info.signal-to-sms"
 msgstr "If checked, each time a user sends you a private message via Signals, we'll send you a text message with the signal body."
 
-#: share/plugin/twilio/template/element/settings/twilio_settings_section:28
+#: share/plugin/twilio/template/element/settings/twilio_settings_section:31
 msgid "twilio.edit-profile"
 msgstr "Click here to edit your profile."
 
@@ -21,7 +21,7 @@ msgstr "Click here to edit your profile."
 msgid "twilio.manage-services"
 msgstr "Manage Phone Services"
 
-#: share/plugin/twilio/template/element/settings/twilio_settings_section:25
+#: share/plugin/twilio/template/element/settings/twilio_settings_section:28
 msgid "twilio.mobile-phone-required"
 msgstr "Please add your mobile phone number to your profile to use this feature."
 
@@ -29,10 +29,10 @@ msgstr "Please add your mobile phone number to your profile to use this feature.
 msgid "twilio.services"
 msgstr "Phone Services"
 
-#: share/plugin/twilio/template/element/settings/twilio_settings_section:8
+#: share/plugin/twilio/template/element/settings/twilio_settings_section:10
 msgid "twilio.signal-to-sms?"
 msgstr "Send Socialtext Signals private messages as a text message (SMS) to your phone?"
 
-#: share/plugin/twilio/template/element/settings/twilio_settings_section:14
+#: share/plugin/twilio/template/element/settings/twilio_settings_section:17
 msgid "twilio.target-account:"
 msgstr "Text messages you send should be sent to this account:"

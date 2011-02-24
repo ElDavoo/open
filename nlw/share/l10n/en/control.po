@@ -1163,7 +1163,8 @@ msgid "error.email-address-required"
 msgstr "E-mail address must be specified"
 
 #. (res.errors[0])
-#: share/plugin/control/template/control/group.html:127
+#. (message)
+#: share/plugin/control/template/control/group.html:127 share/plugin/control/template/control/workspace_invite.html:275 share/plugin/control/template/control/workspace_invite.html:300
 msgid "error.error=message"
 msgstr "Error: %1"
 

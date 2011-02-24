@@ -1165,7 +1165,7 @@ msgstr "Create Word document from checked pages"
 msgid "nav.created-by"
 msgstr "Created by"
 
-#: share/skin/s3/template/element/main_nav/standard:4
+#: share/skin/s3/template/element/main_nav/standard:3
 msgid "nav.dashboard"
 msgstr "Dashboard"
 

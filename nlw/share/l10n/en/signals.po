@@ -137,13 +137,13 @@ msgid "signals.on=user,uri,date,networks"
 msgstr "%1 on <a href=\"%2\">%3</a> <b>%4</b>."
 
 #. (user_link(row.signal.user_id)
-#. (user_link(row.signal.user_id), to_localtime(row.signal.at), row.signal.uri, user_link(row.signal.recipient.id))
+#. (user_link(row.signal.user_id), row.signal.uri, to_localtime(row.signal.at), user_link(row.signal.recipient.id))
 #: share/plugin/signals/template/view/signallist:77
 msgid "signals.on=user,uri,date,private-to"
 msgstr "%1 on <a href=\"%2\">%3</a> privately to %4."
 
 #. (user_link(row.signal.user_id)
-#. (user_link(row.signal.user_id), to_localtime(row.signal.at), row.signal.uri, user_link(row.signal.in_reply_to.user_id))
+#. (user_link(row.signal.user_id), row.signal.uri, to_localtime(row.signal.at), user_link(row.signal.in_reply_to.user_id))
 #: share/plugin/signals/template/view/signallist:79
 msgid "signals.on=user,uri,date,reply-to"
 msgstr "%1 on <a href=\"%2\">%3</a> in reply to %4."
