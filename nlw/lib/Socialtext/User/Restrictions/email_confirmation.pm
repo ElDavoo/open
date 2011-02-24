@@ -123,6 +123,8 @@ sub send_completed_signal {
     return unless $signals;
 
     my $user = $self->user;
+    return unless $user->can_use_plugin('signals');
+
     my $wafl = '{user: ' . $user->user_id . '}';
     my $body = loc(
         '[_1] just joined the [_2] group. Hi everybody!',
