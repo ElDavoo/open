@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 07:36+0800\n"
+"PO-Revision-Date: 2011-02-26 04:55+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -2371,8 +2371,20 @@ msgid "lang.changed=user,locale"
 msgstr "Locale for %1 is now %2"
 
 #: lib/Socialtext/Locales.pm:51
-msgid "lang.english"
+msgid "lang.en"
 msgstr "English"
+
+#: lib/Socialtext/Locales.pm:51
+msgid "lang.fr_CA"
+msgstr "French - Canadian"
+
+#: lib/Socialtext/Locales.pm:51
+msgid "lang.zh_CN"
+msgstr "Chinese - Simplified"
+
+#: lib/Socialtext/Locales.pm:51
+msgid "lang.zh_TW"
+msgstr "Chinese - Traditional"
 
 #: lib/Socialtext/RecentChangesPlugin.pm:42
 msgid "last.24hours"

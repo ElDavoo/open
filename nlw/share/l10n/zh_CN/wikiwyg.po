@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-26 02:17+0800\n"
+"PO-Revision-Date: 2011-02-26 04:28+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -220,7 +220,7 @@ msgid "edit.unsaved-changes"
 msgstr "您的更改未保存."
 
 msgid "edit.upload"
-msgstr "正在上传..."
+msgstr "上传文件..."
 
 msgid "edit.wiki-text"
 msgstr "維基格式"
@@ -586,7 +586,7 @@ msgid "wafl.file-name"
 msgstr "文件名称"
 
 msgid "wafl.file-title=name"
-msgstr "链接到 '%1'文件. 点击进行编辑."
+msgstr "链接到“%1”文件. 点击进行编辑."
 
 msgid "wafl.file=name"
 msgstr "文件: %1"
