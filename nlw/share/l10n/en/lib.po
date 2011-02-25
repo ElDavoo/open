@@ -2375,15 +2375,15 @@ msgid "lang.en"
 msgstr "English"
 
 #: lib/Socialtext/Locales.pm:51
-msgid "lang.fr_CA"
+msgid "lang.fr-ca"
 msgstr "French - Canadian"
 
 #: lib/Socialtext/Locales.pm:51
-msgid "lang.zh_CN"
+msgid "lang.zh-cn"
 msgstr "Chinese - Simplified"
 
 #: lib/Socialtext/Locales.pm:51
-msgid "lang.zh_TW"
+msgid "lang.zh-tw"
 msgstr "Chinese - Traditional"
 
 #: lib/Socialtext/RecentChangesPlugin.pm:42
