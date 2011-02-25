@@ -6,7 +6,7 @@ ST.CreateContent = function () {}
 var proto = ST.CreateContent.prototype = new ST.Lightbox;
 
 proto.visible_types = {
-    wiki: loc('nav.page')
+    wiki: loc('page.type-wiki')
 };
 
 proto.type_radio = function (type) {
