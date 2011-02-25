@@ -38,8 +38,8 @@ for my $key (sort keys %Sections) {
     next unless @$dir;
 
     if ($key eq 'wikiwyg') {
-        shell_run('./dev-bin/l10n-widget-to-js');
-        unlink 'lib/Socialtext/Widget_resource.pm';
+#        shell_run('./dev-bin/l10n-widget-to-js');
+#        unlink 'lib/Socialtext/Widget_resource.pm';
     }
 
     shell_run(

@@ -31,7 +31,7 @@ for my $po (glob("share/l10n/$lang/*.po")) {
     }
 }
 
-my $js_file = "share/l10n/$lang.js";
+my $js_file = "share/skin/s3/javascript/l10n/$lang.js";
 open my $js, '>', $js_file;
 print $js ";var LocalizedStrings={\"$lang\":{\n";
 my $json = encode_json \%Lexicon;
@@ -41,7 +41,7 @@ $json =~ s/\}$//;
 print $js join(",\n", sort split /\n/, $json);
 print $js "\n}};\n";
 close $js;
-system("dev-bin/jsmake share/skin/s3/javascript/l10n-$lang.js share/skin/s3/javascript/l10n-$lang.js.gz");
+system("dev-bin/jsmake");
 warn "*** Generated successfully: $js_file\n";
 
 my $po_file = "share/l10n/$lang.po";
