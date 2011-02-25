@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: share/skin/s3/template/layout/html:63 share/skin/s3/template/layout/simple_html:49 share/skin/s3/template/layout/user_frame:68
+#: share/skin/s3/template/layout/html:61 share/skin/s3/template/layout/simple_html:49 share/skin/s3/template/layout/user_frame:66
 msgid "about.keywords"
 msgstr "wiki, business wiki, document management, enterprise wiki, intranet wiki, knowledge management, online collaboration, open source wiki, portal wiki, hosted wiki, collaboration, social software, social networking, dashboard, project collaboration, team collaboration, wiki appliance, wiki software, community"
 
@@ -86,7 +86,7 @@ msgstr "Blog Archives"
 msgid "blog.blog"
 msgstr "Blog"
 
-#: share/skin/s3/template/layout/html:143 share/skin/s3/template/layout/user_frame:148 share/skin/s3/template/view/settings:66
+#: share/skin/s3/template/layout/html:141 share/skin/s3/template/layout/user_frame:146 share/skin/s3/template/view/settings:66
 msgid "blog.blogs"
 msgstr "Blogs"
 
@@ -344,7 +344,7 @@ msgstr "Less Indented"
 msgid "do.print"
 msgstr "Print"
 
-#: share/skin/s3/template/layout/html:195 share/skin/s3/template/layout/html:91 share/skin/s3/template/layout/user_frame:200 share/skin/s3/template/layout/user_frame:96
+#: share/skin/s3/template/layout/html:193 share/skin/s3/template/layout/html:89 share/skin/s3/template/layout/user_frame:198 share/skin/s3/template/layout/user_frame:94
 msgid "do.register"
 msgstr "Register"
 
@@ -951,7 +951,7 @@ msgstr "Showing %1 - %2 of %3 total."
 msgid "info.skin"
 msgstr "Socialtext can create a skin to customize the look and feel of your workspace. You can use the default skin supplied by Socialtext or a customized skin."
 
-#: share/skin/s3/template/layout/html:170 share/skin/s3/template/layout/user_frame:175
+#: share/skin/s3/template/layout/html:168 share/skin/s3/template/layout/user_frame:173
 msgid "info.socialtext"
 msgstr "Socialtext: Enterprise Social Software"
 
@@ -973,7 +973,7 @@ msgstr "warning:"
 
 #. ('<b>' _ user.username _ '</b>')
 #. ("<b>' _ user.username _ '</b>")
-#: share/skin/s3/template/layout/html:75 share/skin/s3/template/layout/user_frame:80
+#: share/skin/s3/template/layout/html:73 share/skin/s3/template/layout/user_frame:78
 msgid "info.welcome=user"
 msgstr "Welcome %1"
 
@@ -1141,11 +1141,11 @@ msgstr "Activity"
 msgid "nav.all"
 msgstr "All"
 
-#: share/skin/s3/template/layout/html:176 share/skin/s3/template/layout/user_frame:181
+#: share/skin/s3/template/layout/html:174 share/skin/s3/template/layout/user_frame:179
 msgid "nav.community"
 msgstr "Community"
 
-#: share/skin/s3/template/layout/html:85 share/skin/s3/template/layout/user_frame:90
+#: share/skin/s3/template/layout/html:83 share/skin/s3/template/layout/user_frame:88
 msgid "nav.control-panel"
 msgstr "Control Panel"
 
@@ -1201,7 +1201,7 @@ msgstr "People I follow"
 msgid "nav.groups"
 msgstr "Groups"
 
-#: share/skin/s3/template/layout/html:190 share/skin/s3/template/layout/html:87 share/skin/s3/template/layout/user_frame:195 share/skin/s3/template/layout/user_frame:92
+#: share/skin/s3/template/layout/html:188 share/skin/s3/template/layout/html:85 share/skin/s3/template/layout/user_frame:193 share/skin/s3/template/layout/user_frame:90
 msgid "nav.help"
 msgstr "Help"
 
@@ -1229,11 +1229,11 @@ msgstr "Last"
 msgid "nav.last-page"
 msgstr "Last Page"
 
-#: share/skin/s3/template/layout/html:193 share/skin/s3/template/layout/html:198 share/skin/s3/template/layout/html:90 share/skin/s3/template/layout/html:93 share/skin/s3/template/layout/user_frame:198 share/skin/s3/template/layout/user_frame:203 share/skin/s3/template/layout/user_frame:95 share/skin/s3/template/layout/user_frame:98 share/skin/s3/template/lite/globalnav.html:12 share/skin/s3/template/lite/globalnav.html:14
+#: share/skin/s3/template/layout/html:191 share/skin/s3/template/layout/html:196 share/skin/s3/template/layout/html:88 share/skin/s3/template/layout/html:91 share/skin/s3/template/layout/user_frame:196 share/skin/s3/template/layout/user_frame:201 share/skin/s3/template/layout/user_frame:93 share/skin/s3/template/layout/user_frame:96 share/skin/s3/template/lite/globalnav.html:12 share/skin/s3/template/lite/globalnav.html:14
 msgid "nav.login"
 msgstr "Log in"
 
-#: share/skin/s3/template/layout/html:201 share/skin/s3/template/layout/html:96 share/skin/s3/template/layout/user_frame:101 share/skin/s3/template/layout/user_frame:206 share/skin/s3/template/lite/globalnav.html:22 share/skin/s3/template/view/workspace_list:19
+#: share/skin/s3/template/layout/html:199 share/skin/s3/template/layout/html:94 share/skin/s3/template/layout/user_frame:204 share/skin/s3/template/layout/user_frame:99 share/skin/s3/template/lite/globalnav.html:22 share/skin/s3/template/view/workspace_list:19
 msgid "nav.logout"
 msgstr "Log out"
 
@@ -1245,7 +1245,7 @@ msgstr "I don't know my password."
 msgid "nav.mine"
 msgstr "Mine"
 
-#: share/skin/s3/template/layout/html:184 share/skin/s3/template/layout/html:78 share/skin/s3/template/layout/user_frame:189 share/skin/s3/template/layout/user_frame:83
+#: share/skin/s3/template/layout/html:182 share/skin/s3/template/layout/html:76 share/skin/s3/template/layout/user_frame:187 share/skin/s3/template/layout/user_frame:81
 msgid "nav.mobile"
 msgstr "Mobile"
 
@@ -1257,7 +1257,7 @@ msgstr "All My Recently Viewed"
 msgid "nav.my-settings"
 msgstr "My Settings"
 
-#: share/skin/s3/template/layout/html:141 share/skin/s3/template/layout/user_frame:146
+#: share/skin/s3/template/layout/html:139 share/skin/s3/template/layout/user_frame:144
 msgid "nav.my-watchlist"
 msgstr "My Watchlist"
 
@@ -1265,7 +1265,7 @@ msgstr "My Watchlist"
 msgid "nav.my-wikis"
 msgstr "My Workspaces"
 
-#: share/skin/s3/template/element/listview_tabs:5 share/skin/s3/template/layout/html:139 share/skin/s3/template/layout/user_frame:144 share/skin/s3/template/lite/subnav.html:14 share/skin/s3/template/lite/subnav.html:16 share/skin/s3/template/view/empty_watchlist:8 share/skin/s3/template/view/page/display:225
+#: share/skin/s3/template/element/listview_tabs:5 share/skin/s3/template/layout/html:137 share/skin/s3/template/layout/user_frame:142 share/skin/s3/template/lite/subnav.html:14 share/skin/s3/template/lite/subnav.html:16 share/skin/s3/template/view/empty_watchlist:8 share/skin/s3/template/view/page/display:225
 msgid "nav.news"
 msgstr "What's New"
 
@@ -1333,7 +1333,7 @@ msgstr "Search"
 msgid "nav.select"
 msgstr "Select"
 
-#: share/skin/s3/template/layout/html:189 share/skin/s3/template/layout/html:83 share/skin/s3/template/layout/user_frame:194 share/skin/s3/template/layout/user_frame:88 share/skin/s3/template/view/settings:22
+#: share/skin/s3/template/layout/html:187 share/skin/s3/template/layout/html:81 share/skin/s3/template/layout/user_frame:192 share/skin/s3/template/layout/user_frame:86 share/skin/s3/template/view/settings:22
 msgid "nav.settings"
 msgstr "Settings"
 
@@ -1349,7 +1349,7 @@ msgstr "Show:"
 msgid "nav.signals"
 msgstr "Signals"
 
-#: share/skin/s3/template/layout/html:71 share/skin/s3/template/layout/user_frame:76
+#: share/skin/s3/template/layout/html:69 share/skin/s3/template/layout/user_frame:74
 msgid "nav.socialtext"
 msgstr "Socialtext"
 
@@ -1389,7 +1389,7 @@ msgstr "Try Socialtext Signals"
 msgid "nav.uploaded-date"
 msgstr "Date Uploaded"
 
-#: share/skin/s3/template/layout/html:131 share/skin/s3/template/layout/user_frame:136 share/skin/s3/template/view/listview:102
+#: share/skin/s3/template/layout/html:129 share/skin/s3/template/layout/user_frame:134 share/skin/s3/template/view/listview:102
 msgid "nav.wiki"
 msgstr "Workspace"
 
@@ -1560,7 +1560,7 @@ msgstr "Lock Page"
 msgid "page.locked=type"
 msgstr "An administrator has locked this %1 since you opened it for editing. You will not be able to save it."
 
-#: share/skin/s3/template/layout/html:151 share/skin/s3/template/layout/user_frame:156
+#: share/skin/s3/template/layout/html:149 share/skin/s3/template/layout/user_frame:154
 msgid "page.new"
 msgstr "New Page"
 
@@ -2082,7 +2082,7 @@ msgstr "In order to create a workspace, the Workspace must belong to a Group."
 msgid "wiki.home=name,title"
 msgstr "<a href=\"/%1/\">Go to</a> the %2 home page."
 
-#: share/skin/s3/template/layout/html:145 share/skin/s3/template/layout/user_frame:150
+#: share/skin/s3/template/layout/html:143 share/skin/s3/template/layout/user_frame:148
 msgid "wiki.invite"
 msgstr "Add Members"
 
