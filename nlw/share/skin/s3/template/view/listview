@@ -99,7 +99,7 @@
               [% END %]
                 [% PROCESS sort_by_option name = loc('sort.title') field = 'Subject' %]
               [% IF show_workspace %]
-                [% PROCESS sort_by_option name = loc('nav.wiki') field = 'Workspace' %]
+                [% PROCESS sort_by_option name = loc('sort.wiki') field = 'Workspace' %]
               [% END %]
               [% IF ! no_user_sorting %]
                 [% PROCESS sort_by_option name = loc('sort.last-edited') field = 'username' %]
