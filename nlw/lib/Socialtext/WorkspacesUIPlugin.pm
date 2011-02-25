@@ -56,7 +56,7 @@ sub workspaces_listall {
         settings_table_id => 'settings-table',
         settings_section  => $settings_section,
         hub               => $self->hub,
-        display_title     => loc('Workspaces: My Workspaces'),
+        display_title     => loc('config.wiki-list'),
         pref_list         => $self->_get_pref_list,
     );
 }
@@ -68,7 +68,7 @@ sub _update_selected_workspaces {
         [ map { Socialtext::Workspace->new( workspace_id => $_ ) } $self->cgi->selected_workspace_id ],
     );
 
-    $self->message(loc("Changes Saved"));
+    $self->message(loc("config.saved"));
 }
 
 sub workspaces_settings_appearance {
@@ -95,7 +95,7 @@ sub _render_page {
         settings_table_id => 'settings-table',
         settings_section  => $settings_section,
         hub               => $self->hub,
-        display_title     => loc('Workspaces: This Workspace'),
+        display_title     => loc('config.wiki-current'),
         pref_list         => $self->_get_pref_list,
     );
 }
@@ -213,21 +213,21 @@ sub _unpack_skin_file {
         my $filename = File::Basename::basename( $file->{filename} );
 
         if (!Socialtext::ArchiveExtractor::valid_archivename($filename)) {
-            $$error = loc('[_1] is not a valid archive filename. Skin files must end with .zip, .tar.gz or .tgz.', $filename );
+            $$error = loc('error.invalid-archive=file', $filename );
             return 0;
         }
         my $tmparchive = "$tmpdir/$filename";
 
         open my $tmpfh, '>', $tmparchive
-            or die loc('Could not open [_1]', $file->{filename});
+            or die loc('error.open=file', $file->{filename});
         File::Copy::copy($file->{handle}, $tmpfh)
-            or die loc('Cannot extract files from [_1]', $file->{filename});
+            or die loc('error.unpack=file', $file->{filename});
         close $tmpfh;
 
         push @$files, Socialtext::ArchiveExtractor->extract( archive => $tmparchive );
     };
     if ($@ or not @$files) {
-        $$error = loc('Could not extract files from the skin archive. This is most likely caused by a corrupt archive file. Please check your file and try the upload again.');
+        $$error = loc('error.extract-skin');
         return 0;
     }
 
@@ -246,7 +246,7 @@ sub _install_skin_files {
 
     my ($basedir) = map { m{^(.*/)info\.yaml$} } @$files;
     unless ($basedir) {
-        $$error = loc("The uploaded skin does not contain info.yaml!");
+        $$error = loc("error.info-yaml-required!");
         return;
     }
 
@@ -286,7 +286,7 @@ sub _extract_skin {
     my $file = $self->cgi->skin_file;
 
     if (!$file) {
-        $$error_message = loc('A custom skin file was not uploaded.');
+        $$error_message = loc('error.skin-upload-failed');
         return 0;
     }
 
@@ -354,7 +354,7 @@ sub _workspace_settings {
         settings_table_id => 'settings-table',
         settings_section  => $settings_section,
         hub               => $self->hub,
-        display_title     => loc('Workspaces: This Workspace'),
+        display_title     => loc('config.wiki-current'),
         pref_list         => $self->_get_pref_list,
     );
 }
@@ -373,7 +373,7 @@ sub _update_workspace_settings {
 
     if ($self->cgi->defined('homepage_is_weblog')) {
         if ($self->cgi->homepage_is_weblog and not $self->cgi->homepage_weblog) {
-            $self->add_error(loc('You selected a homepage as blog, but did not select a blog name.  Your changes were not saved'))
+            $self->add_error(loc('error.blog-name-required'))
         }
         $update{homepage_weblog} = $self->cgi->homepage_is_weblog ?
             $self->cgi->homepage_weblog : '';
@@ -411,7 +411,7 @@ sub _update_workspace_settings {
 
     return if $self->input_errors_found;
 
-    $self->message(loc("Changes Saved"));
+    $self->message(loc("config.saved"));
 }
 
 sub _process_logo_upload {
@@ -427,7 +427,7 @@ sub workspace_clone {
     my $self = shift;
 
     return $self->_workspace_clone_or_create(
-        loc('Workspaces: Clone This Workspace'),
+        loc('config.wiki-clone'),
         'workspace_clone_section',
     );
 }
@@ -456,7 +456,7 @@ sub workspaces_create {
     my $self = shift;
 
     return $self->_workspace_clone_or_create(
-        loc('Workspaces: Create New Workspace'),
+        loc('config.wiki-new'),
         'workspaces_create_section',
     );
 }
@@ -581,7 +581,7 @@ sub workspaces_created {
         settings_table_id => 'settings-table',
         settings_section  => $settings_section,
         hub               => $self->hub,
-        display_title     => loc('Workspaces: Created New Workspace'),
+        display_title     => loc('config.wiki-created'),
         pref_list         => $self->_get_pref_list,
     );
 }
@@ -607,7 +607,7 @@ sub workspaces_unsubscribe {
         settings_table_id => 'settings-table',
         settings_section  => $settings_section,
         hub               => $self->hub,
-        display_title     => loc('Workspaces: Unsubscribe'),
+        display_title     => loc('config.wiki.unsubscribe'),
         pref_list         => $self->_get_pref_list,
     );
 }
@@ -646,7 +646,7 @@ sub workspaces_permissions {
         settings_table_id => 'settings-table',
         settings_section  => $settings_section,
         hub               => $self->hub,
-        display_title     => loc('Workspaces: Permissions'),
+        display_title     => loc('config.wiki-acl'),
         pref_list         => $self->_get_pref_list,
     );
 }
@@ -658,15 +658,15 @@ sub _set_workspace_permissions {
 
     $self->_update_workspace_settings();
     $message .= $ws->allows_page_locking
-        ? loc('Page locking is enabled.')
-        : loc('Page locking is disabled.');
+        ? loc('wiki.enabled-locking')
+        : loc('wiki.disabled-locking');
 
     # This was drastically simplified as of 
     # [Story: Remove Public Workspace Option]
     if (my $set_name = $self->cgi()->permission_set_name()) {
         if ($set_name eq 'member-only') {
             $message .= '  ';
-            $message .= loc('The permissions for [_1] have been set to [_2].', $ws->name(), loc($set_name));
+            $message .= loc('acl.changed=wiki,set', $ws->name(), loc($set_name));
             $ws->permissions->set( set_name => $set_name );
         }
     }
@@ -680,14 +680,14 @@ sub _set_workspace_permissions {
     );
 
     if ($self->cgi()->guest_has_email_in()) {
-        $message .= ' ' . loc('Anyone can send email to [_1].', $ws->name());
+        $message .= ' ' . loc('config.anyone-can-email=wiki', $ws->name());
     } else {
         if ($ws->permissions->current_set_name() =~ /public-(?:read|comment)-only/) {
             $message .= ' ';
-            $message .= loc('Only workspace members can send email to [_1].', $ws->name());
+            $message .= loc('config.members-can-email=wiki', $ws->name());
         } else {
             $message .= ' ';
-            $message .= loc('Only registered users can send email to [_1].', $ws->name());
+            $message .= loc('config.registered-can-email=wiki', $ws->name());
         }
     }
 

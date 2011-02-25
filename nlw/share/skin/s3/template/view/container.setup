@@ -144,7 +144,7 @@ div.widgetBottomRight {
     });
 
     $(function(){
-        $('#st-savebutton-[% gadget.id %]').val("[% loc('Preview') %]");
+        $('#st-savebutton-[% gadget.id %]').val("[% loc('widget.preview') %]");
     });
     $('#[% gadget.id %]-content').hide();
     $('#[% gadget.id %]-setup').show();

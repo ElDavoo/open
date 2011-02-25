@@ -22,7 +22,7 @@ use POSIX qw/strftime/;
 }
 
 sub allowed_methods {'GET'}
-sub collection_name { loc('Jobs') }
+sub collection_name { loc('rest.jobs') }
 
 field errors => [];
 

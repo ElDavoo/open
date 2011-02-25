@@ -12,7 +12,7 @@
         <input data-inline="true" name="search" id="st-search-submit" value="Search" type="submit" />
         <script>$(function(){ $('#st-search-text').focus() });</script>
 [% IF search_error %]
-<div>[% loc("Error:") %] [% search_error %]</div>
+<div>[% loc("search.error:") %] [% search_error %]</div>
 [% END %]
 [% PROCESS lite/page_list.html %]
     </div>

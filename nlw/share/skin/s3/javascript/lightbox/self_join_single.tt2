@@ -1,4 +1,4 @@
-<p>[% loc('You must be a member of [_1] Group to edit or comment on this page. Would you like to join now?', 
+<p>[% loc('edit.self-join=group?', 
 '<a target="_blank" href="/st/group/' + group.group_id + '">' + group.name + '</a>') %]</p>
 
 <input type="checkbox" name="join-group-[% group.group_id %]"

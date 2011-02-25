@@ -2,8 +2,8 @@
 [% IF !page_locked_for_user %]
 [% IF checker.check_permission('comment') %]
   <li class="flexButton">
-    <a id="st-comment-button-link[% id_suffix %]" class="commentButton" href="#" title="[% loc('Click this button to add a comment to the page') %]">
-      [% loc('Comment') %]
+    <a id="st-comment-button-link[% id_suffix %]" class="commentButton" href="#" title="[% loc('info.comment') %]">
+      [% loc('page.comment') %]
     </a>
   </li>
 [% END %]

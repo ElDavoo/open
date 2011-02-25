@@ -1,28 +1,28 @@
 [%# vim: set et sts=2 sw=2: %]
 [%# @COPYRIGHT@ -%]
-[% save_button_value = loc('Search') %]
+[% save_button_value = loc('nav.search') %]
 [% INCLUDE element/settings/start %]
 <dl class="form">
-  <dt><label>[% loc('Search for Users to Invite') %]</label></dt>
-  <dd>[% loc("Enter part of a user's first or last name, or email address.") %]</dd>
+  <dt><label>[% loc('invite.search-users') %]</label></dt>
+  <dd>[% loc("invite.lookahead") %]</dd>
 
   [% IF restrict_domain %]
-    [% loc('You can only invite people who share the "[_1]" email domain with you.', restrict_domain) %]
+    [% loc('info.invite-filter=domain', restrict_domain) %]
   [% END %]
   [% IF restrict_domain && invitation_filter %]<br />[% END %]
   [% IF invitation_filter %]
-    [% loc('A filter has been set on this workspace. All candidate email addresses must match this pattern: <span style="color: red"> [_1] </span>', invitation_filter) %]
+    [% loc('wiki.set=filter', invitation_filter) %]
   [% END %]
 
   <dd><input type="text" size="40" name="user_search" value="[% user_search %]"/></dd>
   <dd>
-    [% loc('Example:') %]
-    <pre>[% loc('your') %]
-[% loc('friend') %]
-[% loc('your.friend@example.com') %]
-[% loc('another.friend@example.com') %]
-[% loc('example') %]
-[% loc('example.com') %]
+    [% loc('invite.example:') %]
+    <pre>[% loc('invite.your') %]
+[% loc('invite.friend') %]
+[% loc('invite.example-address') %]
+[% loc('email.another-example') %]
+[% loc('invite.example') %]
+[% loc('invite.example-domain') %]
     </pre>
   </dd>
 </dl>
@@ -30,11 +30,11 @@
 [% IF search_performed %]
 <dl class="form">
   [% IF users.size and groups.size and is_admin %]
-  <dd>[% loc('Use the form below to invite users to one of this workspace\'s managing groups. Anyone who is a member of one of these groups has access to this workspace. If, instead, you would like to grant access to a specific individual, you can uncheck the "invite users to selected group(s)" checkbox below.') %]</dd>
+  <dd>[% loc('info.invite-admin-groups') %]</dd>
     [% IF groups.size == 1 %]
-      <dd><p><strong>[% loc('Group') %]:</strong> <a href="/st/group/[% groups.0.group_id %]" target="_blank">[% groups.0.display_name %]</a><input type="hidden" name="invite_to_group" value="[% groups.0.group_id %]"></p></dd>
+      <dd><p><strong>[% loc('invite.group') %]:</strong> <a href="/st/group/[% groups.0.group_id %]" target="_blank">[% groups.0.display_name %]</a><input type="hidden" name="invite_to_group" value="[% groups.0.group_id %]"></p></dd>
     [% ELSIF groups.size > 1 %]
-      <dd><strong>[% loc('Groups') %]: </strong>
+      <dd><strong>[% loc('nav.groups') %]: </strong>
       <ul>
       [% FOR group IN groups %] 
       <li>
@@ -58,7 +58,7 @@
     [% END %]
     <dd>
       <input id="group_invite_checkbox" name="group_invite" type="checkbox" value="1" checked="1" />
-      [% loc('Invite users to selected group(s)') %] 
+      [% loc('invite.to-groups') %] 
     </dd>
     <script language="Javascript">
         jQuery("input[name=group_invite]").click(function() {
@@ -70,13 +70,13 @@
         });
     </script>
   [% END %]
-  <dt><label>[% loc('Search Results') %]</label></dt>
+  <dt><label>[% loc('search.results') %]</label></dt>
   [% IF users.size %]
   <dd>
     [% IF users.size > 20 %]
       <ul class="formButtons">
         <li class="flexButton">
-          <a class="genericOrangeButton" href="#" onclick="jQuery('input[name=Button]').val('Invite'); jQuery('form[name=settings]').submit(); return false">[% loc('Invite') %]</a>
+          <a class="genericOrangeButton" href="#" onclick="jQuery('input[name=Button]').val('Invite'); jQuery('form[name=settings]').submit(); return false">[% loc('nav.invite') %]</a>
         </li>
       </ul>
       <br />
@@ -96,19 +96,19 @@ function toggle_all() {
 };
 
 </script>
-        <input type="checkbox" name="all" onclick="toggle_all()"/>[% loc('Select/Deselect All') %]<br />
+        <input type="checkbox" name="all" onclick="toggle_all()"/>[% loc('nav.toggle-all') %]<br />
     [% FOREACH user = users %]
         <input type="checkbox" name="email_addresses" value="[% user.email_address %]"/> [% user.name_and_email | html %]<br/>
     [% END %]
         <ul class="formButtons">
           <li class="flexButton">
-            <a class="genericOrangeButton" href="#" onclick="jQuery('input[name=Button]').val('Invite'); jQuery('form[name=settings]').submit(); return false">[% loc('Invite') %]</a>
+            <a class="genericOrangeButton" href="#" onclick="jQuery('input[name=Button]').val('Invite'); jQuery('form[name=settings]').submit(); return false">[% loc('nav.invite') %]</a>
           </li>
         </ul>
   </dd>
   [% ELSE %]
   <dd>
-      [% loc('Your search returned no results.') %]
+      [% loc('search.no-results') %]
   </dd>
   [% END %]
 </dl>
@@ -119,26 +119,26 @@ function toggle_all() {
 
 [% IF hub.checker.check_permission('admin_workspace') %]
 <dl class="form">
-  <dt><label>[% loc('Personal Message') %]</label></dt>
-  <dd>[% loc('If you wish, you can include a personal message in the invitation email. You can edit the message to say anything you want.') %]</dd>
+  <dt><label>[% loc('invite.personal-message') %]</label></dt>
+  <dd>[% loc('invite.include-personal-message') %]</dd>
   <dd>
     <input name="append_invitation" type="checkbox" value="1" />
-    [% loc('Append the personal message below?') %]
+    [% loc('invite.append?') %]
   </dd>
   <dd>
-    <textarea name="invitation_text" rows="8" cols="50" class="clear-line">[% loc('The Workspace is easy to use. Click links to browse through the pages.') %]
+    <textarea name="invitation_text" rows="8" cols="50" class="clear-line">[% loc('invite.using-wiki') %]
 
-[% loc("If you see something you'd like to add to or change, click the \"Edit\" link at the top of each page.") %] [% loc('Make your contributions in the text box, then click "Save".') %]
+[% loc("invite.click-edit") %] [% loc('invite.edit-save') %]
 
-[% loc("When you're entering text, just type in paragraphs.") %] [% loc("And don't worry about breaking anything - previous versions of the page are saved, so there's always a backup copy of the page you're working on.") %]
+[% loc("invite.entering-text") %] [% loc("invite.no-worries") %]
 
-[% loc("To make a link to another page (even if it doesn't exist yet), put square brackets around a word or phrase.") %]</textarea>
+[% loc("invite.make-wikilink") %]</textarea>
   </dd>
 </dl> 
 
 <dl class="form">
-  <dt><label>[% loc('Standard Welcome Message') %]</label></dt>
-  <dd>[% loc('New users will be sent the following welcome email:') %]</dd>
+  <dt><label>[% loc('invite.welcome-message') %]</label></dt>
+  <dd>[% loc('invite.welcome-email:') %]</dd>
   <dd>
     <div class="messageBox">
       <div class="messageBoxRight">
@@ -150,7 +150,7 @@ function toggle_all() {
               requires_confirmation => 1,
               inviting_user     => hub.current_user.best_full_name,
               confirmation_uri    => ''
-              extra_text      => loc('<Your personal message goes here.>'),
+              extra_text      => loc('invite.your-personal-message'),
             %]
           </div><!-- messageBoxBottomLeft -->
         </div><!-- messageBoxBottomRight -->

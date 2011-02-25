@@ -10,7 +10,7 @@ use Socialtext::l10n 'loc';
 
 sub collection_name { 
     my $self = shift;
-    return loc("[_1]'s Activity", $self->_group->display_name);
+    return loc("rest.activity=user", $self->_group->display_name);
 }
 
 sub get_resource {

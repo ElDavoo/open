@@ -59,7 +59,7 @@ sub renew_authentication {
     my $here     = shift || $self->rest->query->url(-absolute => 1, -path_info => 1, -query => 1);
     my $location = '/challenge?' . uri_escape($here);
     $self->session->add_error(
-        loc("Login session has expired; please re-authenticate.")
+        loc("error.relogin")
     );
     $self->rest->header(
         -status   => HTTP_302_Found,

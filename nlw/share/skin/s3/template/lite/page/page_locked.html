@@ -2,9 +2,9 @@
 [% PROCESS lite/header.html %]
 
     <div>
-        <p>[% loc('This page is locked and can only be edited by a workspace administrator.') %]
-        [% loc('Click <a href="[_1]">here</a> to return to the page.', page.uri) %]
-        [% loc('The text you just edited is shown below. You can copy your changes from here:') %]</p>
+        <p>[% loc('page.is-locked') %]
+        [% loc('page.back=uri', page.uri) %]
+        [% loc('edit.view-unsaved:') %]</p>
     <div>
         <pre>
 [% content | html %]

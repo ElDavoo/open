@@ -437,7 +437,7 @@ sub ValidateAndCleanData {
         $p->{permission_set} !~ /^(?:private|request-to-join|self-join)$/)
     {
         push @errors,
-            loc('Invalid permissions name: [_1]', $p->{permission_set});
+            loc('error.invalid-permission=name', $p->{permission_set});
     }
 
     # check for presence of required attributes
@@ -481,7 +481,7 @@ sub _validate_trim_values {
 sub _validate_check_required_field {
     my ($self, $field, $p) = @_;
     unless ((defined $p->{$field}) and (length($p->{$field}))) {
-        return loc('[_1] is a required field.',
+        return loc('error.required=field',
             ucfirst Socialtext::Data::humanize_column_name($field)
         );
     }

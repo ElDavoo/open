@@ -28,7 +28,7 @@ sub _create_feed {
     foreach my $page (@$pages) {
         if ($page->{error_message}) {
             $rss->add_item(
-                title => loc('Feed Error'),
+                title => loc('error.feed'),
                 description => $page->{error_message},
             );
             next;

@@ -141,7 +141,7 @@ is unset for the user, the default, 10, is used.
 sub syndication_depth {
     my $self = shift;
     my $p = $self->new_preference('syndication_depth');
-    $p->query(loc('How many posts should be displayed in outgoing feeds?'));
+    $p->query(loc('feed.number-of-posts?'));
     $p->type('pulldown');
     my $choices = [
         5   => '5',
@@ -376,21 +376,21 @@ sub _tag_feed_title {
 
 sub _changes_feed_title {
     my $self = shift;
-    return $self->hub->current_workspace->title . ': ' . loc('Recent Changes');
+    return $self->hub->current_workspace->title . ': ' . loc('nav.recent-changes');
 }
 
 sub _search_feed_title {
     my $self = shift;
     my $query = shift;
 
-    return loc('[_1]: search for [_2]', $self->hub->current_workspace->title, $query);
+    return loc('feed.search=wiki,query', $self->hub->current_workspace->title, $query);
 }
 
 sub _watchlist_feed_title {
     my $self = shift;
     my $user = shift;
 
-    return loc('[_1]: watchlist for [_2]', $self->hub->current_workspace->title, $user->best_full_name);
+    return loc('feed.watchlist=wiki,user', $self->hub->current_workspace->title, $user->best_full_name);
 }
 
 sub _page_feed_title {

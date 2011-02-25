@@ -15,6 +15,6 @@ my $cleaned = 0;
 Socialtext::Jobs->cleanup_job_tables(sub {
     my $job_name = shift;
     $cleaned++;
-    print loc("Job type [_1] has been deprecated. Removing it.", $job_name),$/;
+    print loc("job.deprecated=type", $job_name),$/;
 });
-print loc("Done cleaning [_1] job types.", $cleaned),$/;
+print loc("job.cleaned=count", $cleaned),$/;

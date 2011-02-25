@@ -89,7 +89,7 @@ sub pretty {
     my $result = shift;
     $self->hub->template->process('wafl_box.html',
         query      => $query,
-        wafl_title => loc('Search for "[_1]"', $query),
+        wafl_title => loc('google.for=query', $query),
         wafl_link  => "http://www.google.com/search?q=$query",
         items      => $result->{resultElements},
         error      => $result->{error},

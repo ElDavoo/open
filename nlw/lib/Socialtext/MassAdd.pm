@@ -72,11 +72,11 @@ LINE:
 
         unless ($parsed_ok) {
             unless ($have_parsed_header) {
-                my $msg = loc("could not be parsed.  CSV header invalid; aborting.");
+                my $msg = loc("error.parse-csv-header");
                 $self->_fail($msg);
                 last LINE;
             }
-            my $msg = loc("could not be parsed.  Skipping this user.");
+            my $msg = loc("error.parse-failed");
             $self->_fail($msg);
             next LINE;
         }
@@ -91,7 +91,7 @@ LINE:
             my @missing_fields = grep { !exists $available{$_} } @Required_fields;
             if (@missing_fields) {
                 my $missing = join ', ', @missing_fields;
-                my $msg = loc("could not be parsed.  The file was missing the following required fields ([_1]).  The file must have a header row listing the field headers.", $missing);
+                my $msg = loc("error.parse-header-missing=fields", $missing);
                 $self->_fail($msg);
                 last LINE;
             }
@@ -105,14 +105,14 @@ LINE:
 
         if (scalar @fields < scalar @header_fields) {
             # user data is missing fields that were defined in the header
-            my $msg = loc("could not be parsed (missing fields).  Skipping this user.");
+            my $msg = loc("error.parse-missing-fields");
             $self->_fail($msg);
             next LINE;
         }
 
         if (scalar @fields > scalar @header_fields) {
             # user data contains fields that were NOT defined in the header
-            my $msg = loc("could not be parsed (extra fields).  Skipping this user.");
+            my $msg = loc("error.parse-extra-fields");
             $self->_fail($msg);
             next LINE;
         }
@@ -175,15 +175,15 @@ sub add_user {
     }
 
     if ($added_user) {
-        my $msg = loc("Added user [_1]", $args{username});
+        my $msg = loc("user.added=name", $args{username});
         $self->_pass($msg);
     }
     elsif ($changed_user) {
-        my $msg = loc("Updated user [_1]", $args{username});
+        my $msg = loc("user.updated=name", $args{username});
         $self->_pass($msg);
     }
     else {
-        my $msg = loc("No changes for user [_1]", $args{username});
+        my $msg = loc("user.no-changes=name", $args{username});
         $self->_pass($msg);
     }
 }
@@ -202,7 +202,7 @@ sub _validate_args {
     for $f ('username','email_address') {
         next if $args->{$f};
         my $mfield = ($f eq 'email_address') ? 'email' : $f;
-        my $msg = loc("[_1] is a required field, but it is not present.", $mfield);
+        my $msg = loc("error.field-required=name", $mfield);
         $self->_fail($msg);
         return;
     }
@@ -307,7 +307,7 @@ sub _update_profile {
     foreach my $field (@$failed) {
         next if ($self->{failed_fields}{$field});
         $self->{failed_fields}{$field} = 1;
-        $self->_fail(loc('Profile field "[_1]" could not be updated', $field));
+        $self->_fail(loc('error.update-failed=field', $field));
     }
 
     return $changed_user ? 1 : 0;
@@ -323,7 +323,7 @@ sub _pass {
 sub _fail {
     my $self = shift;
     my $msg = shift;
-    $msg = loc("Line [_1]: [_2]", $self->{line}, $msg)
+    $msg = loc("error.at=line,message", $self->{line}, $msg)
         if ($self->{from_csv});
     st_log->error($msg);
     $self->{fail_cb}->($msg);

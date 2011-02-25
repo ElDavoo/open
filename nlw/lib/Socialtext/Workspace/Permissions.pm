@@ -98,7 +98,7 @@ $_->{impersonator} = [ 'impersonate', @{ $_->{member} } ]
 $_->{affiliate} = []
     for (values %PermissionSets, values %DeprecatedPermissionSets);
 
-my @PermissionSetsLocalize = (loc('public'), loc('member-only'), loc('authenticated-user-only'), loc('public-read-only'), loc('public-comment-only'), loc('public-authenticate-to-edit') ,loc('public-join-to-edit'), loc('intranet'));
+my @PermissionSetsLocalize = (loc('acl.public'), loc('acl.member-only'), loc('acl.authenticated-user-only'), loc('acl.public-read-only'), loc('acl.public-comment-only'), loc('acl.public-authenticate-to-edit') ,loc('acl.public-join-to-edit'), loc('acl.intranet'));
 
 sub IsValidRole {
     my $class = shift;

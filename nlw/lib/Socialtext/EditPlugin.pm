@@ -41,11 +41,11 @@ sub _validate_pagename_length {
     my $id = Socialtext::String::title_to_id($page_name);
 
     if ( Socialtext::String::MAX_PAGE_ID_LEN < length $id ) {
-        my $message = loc("Page title is too long after URL encoding");
+        my $message = loc("error.page-title-too-long");
         data_validation_error errors => [$message];
     }
     if ( length $id == 0 ) {
-        my $message = loc("Page title missing");
+        my $message = loc("error.page-title-required");
         data_validation_error errors => [$message];
     }
 }
@@ -170,7 +170,7 @@ sub save {
     my $subject = $self->cgi->subject || $self->cgi->page_title;
     unless ( defined $subject && length $subject ) {
         Socialtext::Exception::DataValidation->throw(
-            errors => [loc('A page must have a title to be saved.')] );
+            errors => [loc('error.no-page-title')] );
     }
     my $page = $self->hub->pages->new_from_name($subject);
 
@@ -192,7 +192,7 @@ sub save {
         my $body = $self->cgi->page_body;
         unless ( defined $body && length $body ) {
             Socialtext::Exception::DataValidation->throw(
-                errors => [loc('A page must have a body to be saved.')] );
+                errors => [loc('error.no-page-body')] );
         }
         $rev->body_ref(\$body);
     }

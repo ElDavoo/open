@@ -62,7 +62,7 @@ sub show_all_backlinks {
     my $page_id = $self->cgi->page_id;
     my $page = $self->hub->pages->new_from_name($page_id);
     $self->screen_wrap(
-        loc('All backlinks for "[_1]"', $page->name),
+        loc('page.backlinks=page', $page->name),
         $self->present_tense_description_for_page($page)
     );
 }
@@ -78,7 +78,7 @@ sub orphans_list {
     return $self->display_results(
         \%sortdir,
         feeds => $self->_feeds($self->hub->current_workspace),
-        display_title => loc('Orphaned Pages'),
+        display_title => loc('page.orphaned'),
         Socialtext::Pageset->new(
             cgi => {$self->cgi->all},
             total_entries => $self->result_set->{hits},
@@ -104,7 +104,7 @@ sub _make_result_set {
         sort { $b->{Date} cmp $a->{Date} } @{ $rs->{rows} }
     ];
 
-    $self->result_set->{title} = loc('Orphaned Pages');
+    $self->result_set->{title} = loc('page.orphaned');
     $self->result_set($self->sorted_result_set($sortdir));
 }
 
@@ -160,13 +160,13 @@ sub all_backlinks_for_page {
 sub past_tense_description_for_page {
     my $self = shift;
     my $page = shift;
-    return $self->html_description($page, loc('The page had these Backlinks:'));
+    return $self->html_description($page, loc('page.backlinks:'));
 }
 
 sub present_tense_description_for_page {
     my $self = shift;
     my $page = shift;
-    return $self->html_description($page, loc('This page is linked to from:'));
+    return $self->html_description($page, loc('page.linked-from:'));
 }
 
 sub html_description {
@@ -175,7 +175,7 @@ sub html_description {
     my $text_for_when_there_are_backlinks = shift;
 
     my $links = $self->hub->backlinks->all_backlinks_for_page($page);
-    return '<p>' . loc('There are no pages that link to this page yet.') . '<p>'
+    return '<p>' . loc('page.no-backlinks') . '<p>'
         unless $links and @$links;
     my @items = map {
         '<li>'.$self->hub->helpers->page_display_link($_->{page_title}).'</li>'

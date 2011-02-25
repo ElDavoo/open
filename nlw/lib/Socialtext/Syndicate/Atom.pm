@@ -144,7 +144,7 @@ sub _create_feed {
     foreach my $page (@$pages) {
         if ($page->{error_message}) {
             my $entry = XML::Atom::Entry->new();
-            $entry->title( loc('Feed Error') );
+            $entry->title( loc('error.feed') );
             $entry->content( $page->{error_message} );
             $atom->add_entry($entry);
             next;

@@ -5,20 +5,20 @@
   <div id="tabs">
     <div class="tableTabs">
       <ul>
-        <li class="recentchanges[% IF action == 'recent_changes' %] selected[% END %]"><a class="first" href="/[% current_workspace.name %]?action=recent_changes">[% loc("What's New") %]</a></li>
-        <li class="recentlyviewed[% IF action == 'breadcrumbs_list' %] selected[% END %]"><a href="/[% current_workspace.name %]?action=breadcrumbs_list">[% loc("Recently Viewed") %]</a></li>
+        <li class="recentchanges[% IF action == 'recent_changes' %] selected[% END %]"><a class="first" href="/[% current_workspace.name %]?action=recent_changes">[% loc("nav.news") %]</a></li>
+        <li class="recentlyviewed[% IF action == 'breadcrumbs_list' %] selected[% END %]"><a href="/[% current_workspace.name %]?action=breadcrumbs_list">[% loc("nav.recently-viewed") %]</a></li>
         [% UNLESS user.is_guest %]
-        <li class="yourwatchlist[% IF action == 'display_watchlist' %] selected[% END %]"><a href="/[% current_workspace.name %]?action=display_watchlist">[% loc("Your Watchlist") %]</a></li>
+        <li class="yourwatchlist[% IF action == 'display_watchlist' %] selected[% END %]"><a href="/[% current_workspace.name %]?action=display_watchlist">[% loc("watch.list") %]</a></li>
         [% END %]
-        <li class="orphanpages[% IF action == 'orphans_list' %] selected[% END %]"><a href="/[% current_workspace.name %]?action=orphans_list">[% loc("Orphaned Pages") %]</a></li>
+        <li class="orphanpages[% IF action == 'orphans_list' %] selected[% END %]"><a href="/[% current_workspace.name %]?action=orphans_list">[% loc("page.orphaned") %]</a></li>
       </ul>
     </div><!-- tableTabs END -->
     <div class="tableFilter">
       <label>View:</label>
       <ul>
-        <li class="allpages [% IF action == 'changes' %] selected[% END %]"><a href="/[% current_workspace.name %]?action=changes&changes=all">[% loc("All Pages") %]</a></li>
-        <li class="alltags[% IF action == 'category_list' %] selected[% END %]"><a href="/[% current_workspace.name %]?action=category_list">[% loc("All Tags") %]</a></li>
-        <li class="allfiles[% IF action == 'attachments_listall' %] selected[% END %]"><a href="/[% current_workspace.name %]?action=attachments_listall">[% loc("All Files") %]</a></li>
+        <li class="allpages [% IF action == 'changes' %] selected[% END %]"><a href="/[% current_workspace.name %]?action=changes&changes=all">[% loc("page.all") %]</a></li>
+        <li class="alltags[% IF action == 'category_list' %] selected[% END %]"><a href="/[% current_workspace.name %]?action=category_list">[% loc("tag.all") %]</a></li>
+        <li class="allfiles[% IF action == 'attachments_listall' %] selected[% END %]"><a href="/[% current_workspace.name %]?action=attachments_listall">[% loc("file.all") %]</a></li>
       </ul>
     </div><!-- tableFilter END -->
   </div><!-- tabs END -->
@@ -31,15 +31,15 @@
   <div id="contentContainer">
     <h2 class="tableTitle" title="[% display_title | html %]">[% display_title | html %]</h2>
     <dl class="form">
-      <dt><label>[% loc("Pages You're Watching") %]</label></dt>
+      <dt><label>[% loc("watch.current-page") %]</label></dt>
       <dd>[% empty_message %]</dt>
       <dd>
-      <div style="float:left">[% loc('Look for') %]</div>
+      <div style="float:left">[% loc('watch.look-for') %]</div>
       <div style="float:left;padding:0 5px" class="controlsInline">
-        <ul><li><a href="#" class="watch">[% loc('Watch') %]</a></li></ul>
+        <ul><li><a href="#" class="watch">[% loc('do.watch') %]</a></li></ul>
       </div>
       <div style="float:left">
-        [% loc('on a page you want to watch and then click on it to add the page to your Watchlist.') %]
+        [% loc('watch.click') %]
       </div>
       </dd>
     </dl>

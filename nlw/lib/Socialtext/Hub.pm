@@ -186,15 +186,15 @@ sub handle_validation_error {
 
     my $msg;
     if ( $error->can('messages') && $error->messages() ) {
-        $msg = loc('There was an error with your request') . ':<br />';
+        $msg = loc('error.request') . ':<br />';
         $msg .= "$_<br />" for $error->messages;
     }
     else {
-        $msg = loc('Malformed query.') . '<br />';
+        $msg = loc('error.invalid-query') . '<br />';
     }
     my $support_address = Socialtext::AppConfig->support_address();
     my $support_form_link = 
-    $msg .= loc('Please contact Socialtext support using the <a href="http://www.socialtext.com/customers/support_request.php">Technical Support Request</a> form and describe the the time the error occurred, and what you were attempting to do prior to the error.');
+    $msg .= loc('bug.contact-support');
     $self->fail_home_with_warning( $msg, $error );
 }
 

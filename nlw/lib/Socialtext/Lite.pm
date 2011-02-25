@@ -108,7 +108,7 @@ sub login {
     my $session     = Socialtext::Session->new();
     return $self->_process_template(
         $LOGIN_TEMPLATE,
-        title             => loc('Socialtext Login'),
+        title             => loc('login.title'),
         redirect_to       => $redirect_to,
         errors            => [ $session->errors ],
         messages          => [ $session->messages ],
@@ -127,11 +127,11 @@ sub nologin {
         try { $messages = Socialtext::File::get_contents_utf8($file) }
         catch { warn $_ };
     }
-    $messages //= '<p>'. loc('Login has been disabled') .'</p>';
+    $messages //= '<p>'. loc('info.login-disabled') .'</p>';
 
     return $self->_process_template(
         $NOLOGIN_TEMPLATE,
-        title             => loc('Login Disabled'),
+        title             => loc('login.disabled'),
         messages          => [ $messages ],
     );
 }
@@ -257,7 +257,7 @@ sub workspace_list {
     my $self  = shift;
     return $self->_process_template(
         $WORKSPACE_LIST_TEMPLATE,
-        title             => loc('Workspace List'),
+        title             => loc('wiki.list'),
         section           => 'workspaces',
         my_workspaces     => [ $self->hub->workspace_list->my_workspaces ],
         public_workspaces => [ $self->hub->workspace_list->public_workspaces ],
@@ -301,7 +301,7 @@ sub search {
     my $more = 0;
     $search_results->{hits} //= 0;
     if ($search_results->{too_many}) {
-        $error = loc('The search term you have entered is too general; [_1] pages and/or attachments matched your query. Please add additional search terms that you expect your documents contain.', $search_results->{hits});
+        $error = loc('error.search-too-general=hits', $search_results->{hits});
     }
     elsif ($search_results->{hits} > (($pagenum+1) * $page_size)) {
         $more = 1;
@@ -363,7 +363,7 @@ sub _pages_for_tag {
 
     return $self->_process_template(
         $TAG_TEMPLATE,
-        title     => loc("Tag: [_1]", $tag),
+        title     => loc("nav.tag=tag", $tag),
         section   => 'tag',
         base_uri  => '/m/tag/'.$self->hub->current_workspace->name.'/'.$tag,
         rows      => $rows,
@@ -395,7 +395,7 @@ sub _all_tags {
     return $self->_process_template(
         $TAG_TEMPLATE,
         base_uri => '/m/tag/'.$self->hub->current_workspace->name,
-        title    => loc('Tags'),
+        title    => loc('nav.tags'),
         section  => 'tags',
         tags     => \@rows,
         pagenum  => $pagenum,
@@ -509,7 +509,7 @@ sub template_vars {
     my $ua = $ENV{HTTP_USER_AGENT} || '';
     if (my ($version) = $ua =~ m{^BlackBerry[^/]+/(\d+\.\d+)}) {
         if ($version < 4.5) {
-            $warning = loc("Warning: Socialtext Mobile requires BlackBerry OS v4.5 or higher");
+            $warning = loc("error.blackberry-version-too-low");
         }
     }
 

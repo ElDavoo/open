@@ -136,7 +136,7 @@ sub html {
         encoded_prefs => $encoded_prefs,
     });
 
-    return loc("The settings for this widget have become corrupted. Please remove and re-insert the widget.")
+    return loc("error.corrupted-widget-settings")
         unless $container and $widget;
 
     return $self->hub->template->process($container->view_template,

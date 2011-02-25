@@ -3,14 +3,14 @@
   <form id="st-attachments-attach-form" name="attachForm" method="post" action="index.cgi" enctype="multipart/form-data" target="st-attachments-attach-formtarget">
     <input type="hidden" name="page_name" value="[% page_id %]"/>
     <input type="hidden" name="action" value="attachments_upload"/>
-    <div class="title" id="st-attachments-attach-title">[% loc('Upload Files') %]</div>
+    <div class="title" id="st-attachments-attach-title">[% loc('file.upload') %]</div>
 
     <p id="st-attachments-attach-message">
-    [% loc('Click "Browse" and select an image or file to upload.') %]
+    [% loc('info.browse') %]
     <br />
-    [% loc('Click "Done" to close this window.') %]
+    [% loc('info.done') %]
     </p>
-    <p class="hint" id="st-attachments-attach-limit">[% loc('Maximum file size: 50MB') %]</p>
+    <p class="hint" id="st-attachments-attach-limit">[% loc('file.max-size') %]</p>
     <p class="fileprompt" id="st-attachments-attach-fileprompt">
       <input id="st-attachments-attach-filename" size="45" type="file" name="file"/>
     </p>
@@ -25,9 +25,9 @@
         </div>
 
         <ul class="chooser">
-            <li><a class="add" href="#">[% loc("Add") %]</a></li>
-            <li><a class="replace" href="#">[% loc("Replace") %]</a></li>
-            <li class="last"><a class="cancel" href="#">[% loc("Cancel") %]</a></li>
+            <li><a class="add" href="#">[% loc("do.add") %]</a></li>
+            <li><a class="replace" href="#">[% loc("do.replace") %]</a></li>
+            <li class="last"><a class="cancel" href="#">[% loc("do.cancel") %]</a></li>
         </ul>
     </div>
     <div class="error" id="st-attachments-attach-error">&nbsp;</div>
@@ -37,7 +37,7 @@
     <div class="buttons" id="st-attachments-attach-buttons">
         <ul class="widgetButton" style="float:left; padding:10px">
             <li class="flexButton" id="st-attachments-attach-closebutton">
-                <a class="genericOrangeButton" href="#">[% loc('Done') %]</a>
+                <a class="genericOrangeButton" href="#">[% loc('do.done') %]</a>
             </li>
         </ul>
     </div>
@@ -46,13 +46,13 @@
 </div>
 
 <div class="lightbox" id="st-attachment-delete-confirm">
- <h3>[% loc('Delete Attachment') %]</h3>
- <p>[% loc("Are you sure you want to delete the attachment '[_1]' from this page?", selected_attachment) %]</p>
+ <h3>[% loc('file.delete') %]</h3>
+ <p>[% loc("file.delete=name?", selected_attachment) %]</p>
 
  <div id="st-attachment-delete-buttons">
  <ul class="buttons">
-  <li class="flexButton"><a href="#" id="st-attachment-delete" class="delete">[% loc('Delete') %]</a></li>
-  <li class="flexButton"><a href="#" id="st-attachment-delete-cancel" class="close">[% loc('Cancel') %]</a></li>
+  <li class="flexButton"><a href="#" id="st-attachment-delete" class="delete">[% loc('do.delete') %]</a></li>
+  <li class="flexButton"><a href="#" id="st-attachment-delete-cancel" class="close">[% loc('do.cancel') %]</a></li>
  </ul>
  </div>
 </div>

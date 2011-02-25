@@ -16,8 +16,8 @@ sub allowed_methods {'GET, POST'}
 sub collection_name {
     my $self = shift;
     $self->rest->query->param('contributions')
-        ? loc("All Changes")
-        : loc("All Events");
+        ? loc("rest.all-changes")
+        : loc("rest.all-events");
 }
 
 sub get_resource {

@@ -4,20 +4,20 @@
 [% WRAPPER $frame_name id="blog" %]
 <div id="controls">
   <div id="st-editing-tools-edit">
-    <h1 title="[% loc('Blog') %]: [% display_title | html %]">[% loc('Blog') %]: [% display_title | html %]</h1>
+    <h1 title="[% loc('blog.blog') %]: [% display_title | html %]">[% loc('blog.blog') %]: [% display_title | html %]</h1>
     <ul id="quickLinks">
-      <li><a href="[% feeds.rss.page.url %]"><img src="[% wiki.skin_uri('s3') %]/images/rss.png" />[% loc('Subscribe to Feed') %]</a></li>
-      <li><a href="JavaScript:window.print()"><img src="[% wiki.skin_uri('s3') %]/images/printIcon.png" />[% loc('Print') %]</a></li>
+      <li><a href="[% feeds.rss.page.url %]"><img src="[% wiki.skin_uri('s3') %]/images/rss.png" />[% loc('blog.subscribe') %]</a></li>
+      <li><a href="JavaScript:window.print()"><img src="[% wiki.skin_uri('s3') %]/images/printIcon.png" />[% loc('do.print') %]</a></li>
       [% IF hub.current_workspace.enable_unplugged %]
-      <li ><img src="[% wiki.skin_uri('s3') %]/images/plug.png" /><a href="?action=unplug;tag=[% tag_escaped %]">[% loc('Save the 50 most recent pages') %]</a></li>
+      <li ><img src="[% wiki.skin_uri('s3') %]/images/plug.png" /><a href="?action=unplug;tag=[% tag_escaped %]">[% loc('blog.unplug') %]</a></li>
       [% END %]
       <li class="noBorder">  
     <form action="[% script_name %]">
         <input type="hidden" name="action" value="blog_display" />
-      <span>[% loc('Go to:') %]&nbsp;<select name="category" onchange="this.form.submit()" id="page-control-category-selector">
+      <span>[% loc('blog.go:') %]&nbsp;<select name="category" onchange="this.form.submit()" id="page-control-category-selector">
           [% FOREACH blog = blogs %]
             [% display_string = blog.display | html %]
-            <option[% IF blog.display == tag %] selected="true"[% END %] value="[% blog.escape_html %]">[% IF display_string == 'Recent Changes' %] [% loc('Recent Changes') %] [% ELSE %] [% display_string %] [% END %]</option>
+            <option[% IF blog.display == tag %] selected="true"[% END %] value="[% blog.escape_html %]">[% IF display_string == 'Recent Changes' %] [% loc('nav.recent-changes') %] [% ELSE %] [% display_string %] [% END %]</option>
           [% END %]
           </select>
         </span>
@@ -30,13 +30,13 @@
         [% IF checker.check_permission('edit') %]
         <ul>
           <li class="flexButtonBlue">
-            <a id="st-weblog-newpost-button" class="addButton" href="[% script_name %]?action=new_page;add_tag=[% tag_escaped %];caller_action=blog_display" title="[% loc('Click this button to create a new blog post') %]">[% loc('New Post') %]</a>
+            <a id="st-weblog-newpost-button" class="addButton" href="[% script_name %]?action=new_page;add_tag=[% tag_escaped %];caller_action=blog_display" title="[% loc('info.post') %]">[% loc('post.new') %]</a>
           </li>
         </ul>
         [% END %]
       </div>
     [% IF is_real_category AND checker.check_permission('edit') %]
-    <div class="goTo postByEmail"> <a href="mailto:[% email_category_address %]">[% loc('or post by email') %]</a></div>
+    <div class="goTo postByEmail"> <a href="mailto:[% email_category_address %]">[% loc('info.post-by-email') %]</a></div>
     [% END %]
   </div><!-- controlsRight END -->
 </div><!-- controls END -->
@@ -50,9 +50,9 @@
           <h3><a href="[%entry.page_uri%]">[% entry.title | html %]</a></h3>
           <em class="weblog_info">
           [% IF entry.is_updated %]
-            [% loc('Posted by') %] [% entry.original.username | decorate('user_link') %] [% loc('on') %] [% entry.original.date_local %]
+            [% loc('post.by') %] [% entry.original.username | decorate('user_link') %] [% loc('info.on') %] [% entry.original.date_local %]
           [% ELSE %]
-            [% loc('Posted by') %] [% entry.username | decorate('user_link') %] [% loc('on') %] [% entry.date_local %]
+            [% loc('post.by') %] [% entry.username | decorate('user_link') %] [% loc('info.on') %] [% entry.date_local %]
           [% END %]
           </em>
           <div id="content_[% entry.page_uri %]">
@@ -61,25 +61,25 @@
           <hr size="1"/>
           <em class="weblog_info">
             [% IF entry.is_updated %]
-                  [% loc('Created by') %] [% entry.original.username | decorate('user_link') %] [% loc('on') %] [% entry.original.date_local %].
-                  [% loc('Updated by') %] [% entry.username | decorate('user_link') %] [% loc('on') %] [% entry.date_local %].
+                  [% loc('nav.created-by') %] [% entry.original.username | decorate('user_link') %] [% loc('info.on') %] [% entry.original.date_local %].
+                  [% loc('blog.updated-by') %] [% entry.username | decorate('user_link') %] [% loc('info.on') %] [% entry.date_local %].
             [% ELSE %]
-                  [% loc('Created by') %] [% entry.username | decorate('user_link') %] [% loc('on') %] [% entry.date_local %].
+                  [% loc('nav.created-by') %] [% entry.username | decorate('user_link') %] [% loc('info.on') %] [% entry.date_local %].
             [% END %]
 
             [% IF !entry.page_locked_for_user %]
               [% IF checker.check_permission('comment') %]
                 <a href="#" id="comment_[% entry.page_uri %]" class="weblog_comment">
-                  [% loc('Comment') %]
+                  [% loc('page.comment') %]
                 </a>
                 -
               [% END %]
               [% IF checker.check_permission('edit') %]
-                <a href="?action=display;page_name=[% entry.page_uri %];caller_action=[% caller_action %];tag=[% tag | uri %];js=show_edit_div#edit">[% loc('Edit this post') %]</a>
+                <a href="?action=display;page_name=[% entry.page_uri %];caller_action=[% caller_action %];tag=[% tag | uri %];js=show_edit_div#edit">[% loc('blog.edit') %]</a>
                 -
               [% END %]
             [% END %]
-            <a href="?[%entry.page_uri%]">[% loc('Permalink') %]</a>
+            <a href="?[%entry.page_uri%]">[% loc('blog.permalink') %]</a>
           </em>
         [% END %]
       [% END %]
@@ -88,14 +88,14 @@
     <div id="contentRight">
       <div class="widget">
         <div class="widgetHeader">
-          <h4>[% loc('Blog Navigation') %]</h4>
+          <h4>[% loc('blog.navigation') %]</h4>
         </div><!-- widgetHeader END -->
         <div class="widgetContent">
           [% box_content_filled %]
           [% IF hub.checker.check_permission('edit') %]
           <ul class="widgetButton">
             <li class="flexButtonGrey">
-              <a class="greyButton" href="[% hub.weblog.page_edit_path %]#edit">[% loc('Edit') %]</a>
+              <a class="greyButton" href="[% hub.weblog.page_edit_path %]#edit">[% loc('page.edit') %]</a>
             </li>
           </ul>
           [% END %]
@@ -105,7 +105,7 @@
       </div><!-- widget END -->
       <div class="widget">
         <div class="widgetHeader">
-          <h4>[% loc('Blog Archives') %]</h4>
+          <h4>[% loc('blog.archives') %]</h4>
         </div><!-- widgetHeader END -->
         <div class="widgetContent">
           <ul>
@@ -135,10 +135,10 @@
     [% IF weblog_previous.defined OR weblog_next.defined %]
     <div class="st-weblog-entrynav">
         [% IF weblog_previous.defined %]
-            <span class="st-weblog-previousentries">[% INCLUDE element/ws_link href="?action=blog_display;start=${weblog_previous}", name=loc("Newer entries") %]</span>
+            <span class="st-weblog-previousentries">[% INCLUDE element/ws_link href="?action=blog_display;start=${weblog_previous}", name=loc("blog.newer") %]</span>
         [% END %]
         [% IF weblog_next.defined %]
-            <span class="st-weblog-nextentries">[% INCLUDE element/ws_link href="?action=blog_display;start=${weblog_next}", name=loc("Older entries") %]</span>
+            <span class="st-weblog-nextentries">[% INCLUDE element/ws_link href="?action=blog_display;start=${weblog_next}", name=loc("blog.older") %]</span>
         [% END %]
     </div>
     [% END %]
