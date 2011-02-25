@@ -49,5 +49,7 @@ system("dev-bin/jsmake");
 warn "*** Generated successfully: $js_file\n";
 
 my $po_file = "share/l10n/$lang.po";
-system("msgcat --width 99999 --use-first -s @{[reverse sort glob(qq[share/l10n/$lang/*.po])]} > $po_file");
+my $use_first = '--use-first';
+$use_first = '' if $lang eq 'en';
+system("msgcat --width 99999 -s @{[reverse sort glob(qq[share/l10n/$lang/*.po])]} > $po_file");
 warn "*** Generated successfully: $po_file\n";
