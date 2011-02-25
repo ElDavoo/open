@@ -1,0 +1,93 @@
+| *Comment* | Test Case: Profile Group List |  |
+
+| set | user_acct | account_a_%%start_time%% |  |
+| set | acct_b | account_b_%%start_time%% |  |
+| set | acct_c | account_c_%%start_time%% |  |
+| set | acct_d | account_d_%%start_time%% |  |
+| set | acct_e | account_e_%%start_time%% |  |
+| set | acct_f | account_f_%%start_time%% |  |
+| set | member_acct | account_m_%%start_time%% |  |
+| set | wiki_a | wiki_a_%%start_time%% |  |
+| set | wiki_b | wiki_b_%%start_time%% |  |
+| set | viewer | view_user_%%start_time%%@david.socialtext.net |  |
+| set | member | mem_user_%%start_time%%@david.socialtext.net |  |
+| set | user_group | user_group_%%start_time%% |  |
+| create_account | %%user_acct%% |  |  |
+| create_account | %%acct_b%% |  |  |
+| create_account | %%acct_c%% |  |  |
+| create_account | %%acct_d%% |  |  |
+| create_account | %%acct_e%% |  |  |
+| create_account | %%acct_f%% |  |  |
+| create_workspace | %%wiki_a%% | %%acct_c%% |  |
+| create_workspace | %%wiki_b%% | %%acct_f%% |  |
+| create_user | %%viewer%% | %%password%% | %%user_acct%% |
+| create_user | %%member%% | %%password%% | %%member_acct%% |
+| create-group | %%user_group%% | %%acct_d%% | %%viewer%% |
+| set | user_group_id | %%group_id%% |  |
+| st-admin | add-member --workspace %%wiki_a%% --email %%viewer%% | now has the role |  |
+| st-admin | add-member --group %%user_group_id%% --workspace %%wiki_b%% | now has the role |  |
+
+| *Comment* | Test Case: Profile Group List group A is private, user is member |  |  |
+| set | group_a | group_a_%%start_time%% |  |
+| create-group | %%group_a%% |  | %%member%% |
+| set | group_a_id | %%group_id%% |  |
+| st-admin | add-member --email %%viewer%% --group %%group_a_id%% | now has the role |  |
+
+| *Comment* | Test Case: Profile Group List group B is self-join, shares account with user |  |  |
+| set | group_b | group_b_%%start_time%% |  |
+| create-group | %%group_b%% | %%user_acct%% | %%member%% |
+| set | group_b_id | %%group_id%% |  |
+| st-admin | set-permissions --group %%group_b_id%% --permissions self-join | have been changed |  |
+
+| *Comment* | Test Case: Profile Group List group C is self-join, user is member |  |  |
+| set | group_c | group_c_%%start_time%% |  |
+| create-group | %%group_c%% |  | %%member%% |
+| set | group_c_id | %%group_id%% |  |
+| st-admin | set-permissions --group %%group_c_id%% --permissions self-join | have been changed |  |
+| st-admin | add-member --email %%viewer%% --group %%group_c_id%% | now has the role |  |
+
+| *Comment* | Test Case: Profile Group List group D is self-join, user is added to group's account through CLI |  |  |
+| set | group_d | group_d_%%start_time%% |  |
+| create-group | %%group_d%% | %%acct_b%% | %%member%% |
+| set | group_d_id | %%group_id%% |  |
+| st-admin | set-permissions --group %%group_d_id%% --permissions self-join | have been changed |  |
+| st-admin | add-member --account %%acct_b%% --email %%viewer%% | now has the role |  |
+
+| *Comment* | Test Case: Profile Group List group E is self-join, user is member of workspace that shares group's account |  |  |
+| set | group_e | group_e_%%start_time%% |  |
+| create-group | %%group_e%% | %%acct_c%% | %%member%% |
+| set | group_e_id | %%group_id%% |  |
+| st-admin | set-permissions --group %%group_e_id%% --permissions self-join | have been changed |  |
+
+| *Comment* | Test Case: Profile Group List group F is self-join, user is member of group that shares group F's account |  |  |
+| set | group_f | group_f_%%start_time%% |  |
+| create-group | %%group_f%% | %%acct_d%% | %%member%% |
+| set | group_f_id | %%group_id%% |  |
+| st-admin | set-permissions --group %%group_f_id%% --permissions self-join | have been changed |  |
+
+| *Comment* | Test Case: Profile Group List group G is self-join, user is member of group that is added to group G's account through CLI |  |  |
+| set | group_g | group_g_%%start_time%% |  |
+| create-group | %%group_g%% | %%acct_e%% | %%member%% |
+| set | group_g_id | %%group_id%% |  |
+| st-admin | set-permissions --group %%group_g_id%% --permissions self-join | have been changed |  |
+| st-admin | add-member --group %%user_group_id%% --account %%acct_e%% | now has the role |  |
+
+| *Comment* | Test Case: Profile Group List group H is self-join, user is member of group that is member of workspace that shares group H's account |  |  |
+| set | group_h | group_h_%%start_time%% |  |
+| create-group | %%group_h%% | %%acct_f%% | %%member%% |
+| set | group_h_id | %%group_id%% |  |
+| st-admin | set-permissions --group %%group_h_id%% --permissions self-join | have been changed |  |
+
+| *Comment* | Test Case: Profile Group List | *Comment* | Test Case: Profile Group List TEARDOWN |  |
+| delete-workspace | %%wiki_a%% | Recklessly deleting |
+| delete-workspace | %%wiki_b%% | Recklessly deleting |
+| st-admin | deactivate-user --email %%viewer%% |  |
+| delete-group | %%user_group_id%% | Recklessly deleting |
+| delete-group | %%group_a_id%% | Recklessly deleting |
+| delete-group | %%group_b_id%% | Recklessly deleting |
+| delete-group | %%group_c_id%% | Recklessly deleting |
+| delete-group | %%group_d_id%% | Recklessly deleting |
+| delete-group | %%group_e_id%% | Recklessly deleting |
+| delete-group | %%group_f_id%% | Recklessly deleting |
+| delete-group | %%group_g_id%% | Recklessly deleting |
+| delete-group | %%group_h_id%% | Recklessly deleting |

@@ -45,7 +45,7 @@
 | wait_for_text_present_ok | Groups (2) | 30000 |
 | wait_for_element_visible_ok | link=%%group_acct%% | 30000 |
 | wait_for_element_visible_ok | link=%%group_acct_two%% | 30000 |
-| wait_for_text_present_ok | Workspaces (3) | 30000 |
+| wait_for_text_present_ok | Workspaces (1) | 30000 |
 | wait_for_element_visible_ok | link=%%group_ws%% | 30000 |
 | click_and_wait | link=%%group_acct%% |  |
 | wait_for_element_visible_ok | link=%%group_user_short%% <%%group_user%%> | 30000 |
