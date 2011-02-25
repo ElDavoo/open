@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-26 02:22+0800\n"
+"PO-Revision-Date: 2011-02-26 04:43+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -16,16 +16,16 @@ msgid "revision.quote=summary"
 msgstr "“%1”"
 
 msgid "error.invalid=email"
-msgstr "“%1”不是一个有效的电子邮件地址"
+msgstr "“%1”不是有效的电子邮件地址"
 
 msgid "page.revisions=count"
-msgstr "%*(%1,版本)"
+msgstr "%1 次更动"
 
 msgid "blog.show=tag"
-msgstr "%1作为一个博客"
+msgstr "%1 博客"
 
 msgid "file.by=date,user"
-msgstr "%由%2"
+msgstr "%1由%2"
 
 msgid "ago.days=count"
 msgstr "%1天前"
@@ -40,16 +40,16 @@ msgid "ago.minutes=count"
 msgstr "%1分钟前"
 
 msgid "revision.all=page"
-msgstr "%1:所有版本"
+msgstr "%1: 所有版本"
 
 msgid "account.count=people"
-msgstr "%*(%1,人,人)"
+msgstr "%1 人"
 
 msgid "page.count=revision"
-msgstr "%*(%1,版本)"
+msgstr "%1 次更动"
 
 msgid "page.count=view"
-msgstr "%*(%1,查看)"
+msgstr "%1 次查看"
 
 msgid "page.add-tag"
 msgstr "&nbsp;+"
@@ -73,7 +73,7 @@ msgid "info.wikis"
 msgstr "...列出您所属的工作区。您必须登录查看您的列表。"
 
 msgid "invite.your-personal-message"
-msgstr "<您的个人消息都在此处。>"
+msgstr "<此处是您的个人消息。>"
 
 msgid "wiki.home=name,title"
 msgstr "<a href=\"/%1/\">转到</a>%2首页。"
@@ -280,13 +280,13 @@ msgid "wiki.created!"
 msgstr "恭喜!"
 
 msgid "nav.control-panel"
-msgstr "控制版面"
+msgstr "控制台"
 
 msgid "do.copy"
 msgstr "复制"
 
 msgid "page.copy"
-msgstr "将页面复制到工作区"
+msgstr "复制到另一个工作区"
 
 msgid "info.copy"
 msgstr "复制一个存在的页面..."
@@ -304,7 +304,7 @@ msgid "page.create"
 msgstr "新建内容"
 
 msgid "blog.new"
-msgstr "新建博客文章"
+msgstr "新建博客"
 
 msgid "wiki.create"
 msgstr "新建工作区"
@@ -325,7 +325,7 @@ msgid "nav.created-by"
 msgstr "创建者"
 
 msgid "page.created=author,date"
-msgstr "由%1于%2创建"
+msgstr "由 %1 于 %2 创建"
 
 msgid "password.current:"
 msgstr "当前密码:"
@@ -433,7 +433,7 @@ msgid "blog.edit"
 msgstr "编辑这个文章"
 
 msgid "revision.edited-by"
-msgstr "编辑由"
+msgstr "编辑者"
 
 msgid "user.email"
 msgstr "邮件"
@@ -442,10 +442,10 @@ msgid "user.email-address"
 msgstr "邮件地址"
 
 msgid "page.email-to-this"
-msgstr "向这个页面发送的邮件"
+msgstr "发送邮件到这个页面"
 
 msgid "wiki.email-to-this"
-msgstr "向这个工作区发送的邮件"
+msgstr "发送邮件到这个工作区"
 
 msgid "info.email-page"
 msgstr "用邮件发送这个页面"
@@ -547,7 +547,7 @@ msgid "do.follow"
 msgstr "关注此人"
 
 msgid "email.from"
-msgstr "来此"
+msgstr "寄件人"
 
 msgid "blog.go:"
 msgstr "转到："
@@ -649,7 +649,7 @@ msgid "file.keep"
 msgstr "保留附件"
 
 msgid "file.keep?"
-msgstr "保留附件吗?"
+msgstr "寄送附件?"
 
 msgid "tag.keep"
 msgstr "保留标签"
@@ -658,10 +658,10 @@ msgid "nav.last"
 msgstr "最后"
 
 msgid "page.last-updated"
-msgstr "最后<strong>更新</strong>由"
+msgstr "前次<strong>更新</strong>为"
 
 msgid "sort.last-edited"
-msgstr "最后编辑由"
+msgstr "前次编辑者"
 
 msgid "nav.last-page"
 msgstr "末页"
@@ -718,7 +718,7 @@ msgid "nav.mine"
 msgstr "我的"
 
 msgid "nav.mobile"
-msgstr "移动的"
+msgstr "移动版"
 
 msgid "do.indent"
 msgstr "增减缩进"
@@ -775,7 +775,7 @@ msgid "nav.next-page"
 msgstr "下一页"
 
 msgid "revision.next"
-msgstr "一下一个版本"
+msgstr "下一个版本"
 
 msgid "lite.next-page"
 msgstr "下一页"
@@ -982,7 +982,7 @@ msgid "revision.compare"
 msgstr "版本比较"
 
 msgid "sort.revisions"
-msgstr "版本"
+msgstr "更動次數"
 
 msgid "user.role"
 msgstr "角色"
@@ -1051,7 +1051,7 @@ msgid "nav.show:"
 msgstr "显示:"
 
 msgid "info.showing=from,to,total"
-msgstr "显示全部%3中的%1 - %2"
+msgstr "显示第 %1 - %2 項，共 %3 項"
 
 msgid "page.signal-this!"
 msgstr "发送此页!"
@@ -1279,7 +1279,7 @@ msgid "blog.updated-by"
 msgstr "更新者"
 
 msgid "page.updated=user,date"
-msgstr "由%1于%2更新"
+msgstr "由 %1 于 %2 更新"
 
 msgid "do.upload"
 msgstr "上传"
@@ -1309,7 +1309,7 @@ msgid "skin.unsupported"
 msgstr "上传的视觉主题不支持。上传视觉主题仅用于开发和测试自定义视觉主题。请联系sales@socialtext.com获取更多关于自定义视觉主题的信息。"
 
 msgid "file.uploading=name"
-msgstr "正在上传%1..."
+msgstr "正在上传 %1..."
 
 msgid "page.use-template:"
 msgstr "使用模板:"
@@ -1348,7 +1348,7 @@ msgid "info.welcome=user"
 msgstr "欢迎%1"
 
 msgid "nav.news"
-msgstr "最新"
+msgstr "最新更动"
 
 msgid "info.email-to-page"
 msgstr "当工作区收到邮件，邮件主题将变成页面名称，邮件正文将变成页面正文。"
@@ -1519,7 +1519,7 @@ msgid "ago.<1minute"
 msgstr "不到一分钟前"
 
 msgid "info.on"
-msgstr "在"
+msgstr "於"
 
 msgid "watch.click"
 msgstr "在您想关注的页面上点击，以添加页面到您的关注列表。"
