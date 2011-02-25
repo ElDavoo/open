@@ -63,7 +63,8 @@ sub _display_locale {
 }
 
 sub loc {
-    eval qq(require "Socialtext::l10n");
+    local $@;
+    eval { require Socialtext::l10n };
     if ($@) {
         return shift;
     }
