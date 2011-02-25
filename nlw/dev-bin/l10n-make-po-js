@@ -1,0 +1,49 @@
+#!/usr/bin/env perl
+# @COPYRIGHT@
+use 5.12.0;
+use autodie;
+use warnings;
+use open qw(:std :utf8);
+use Getopt::Long;
+use FindBin '$RealBin';
+use lib "$RealBin/../lib";
+use Socialtext::l10n::DevUtils;
+use Socialtext::JSON;
+
+my %Lexicon;
+my $errors = 0;
+my $lang = shift or die "Usage: $0 <lang>\n";
+$lang =~ s/-/_/g;
+$lang =~ s/(_\w+)$/uc $1/;
+for my $po (glob("share/l10n/$lang/*.po")) {
+    next if $po =~ /lib\.po$/; # Not going to occur in JS
+
+    open my $in, '<', $po;
+
+    local $/ = "\n\n";
+    scalar <$in>;
+
+    while (<$in>) {
+        my ($comments, $id, $str) = split(/\n(?=msg)/, "\n$_");
+        $id = gettext_to_maketext(trim($id));
+        $str = gettext_to_maketext(trim($str));
+        $Lexicon{$id} = $str unless $id eq $str;
+    }
+}
+
+my $js_file = "share/skin/s3/javascript/l10n/$lang.js";
+open my $js, '>', $js_file;
+print $js ";var LocalizedStrings={\"$lang\":{\n";
+my $json = encode_json \%Lexicon;
+$json =~ s/^\{//;
+$json =~ s/","/"\n"/g;
+$json =~ s/\}$//;
+print $js join(",\n", sort split /\n/, $json);
+print $js "\n}};\n";
+close $js;
+system("dev-bin/jsmake");
+warn "*** Generated successfully: $js_file\n";
+
+my $po_file = "share/l10n/$lang.po";
+system("msgcat --width 99999 -s share/l10n/$lang/*.po > $po_file");
+warn "*** Generated successfully: $po_file\n";

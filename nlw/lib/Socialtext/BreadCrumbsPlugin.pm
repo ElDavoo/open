@@ -29,7 +29,7 @@ sub register {
 sub display_as_box {
     my $self = shift;
     my $p = $self->new_preference('display_as_box');
-    $p->query(loc('Display "Recently Viewed" side pane box?') );
+    $p->query(loc('wiki.show-breadcrumbs-sidebox?') );
     $p->default(1);
     return $p;
 }
@@ -37,7 +37,7 @@ sub display_as_box {
 sub how_many {
     my $self = shift;
     my $p = $self->new_preference('how_many');
-    $p->query(loc('How many pages to show in side pane box?'));
+    $p->query(loc('wiki.sidebox-number-of-breadcrumbs?'));
     $p->type('pulldown');
     my $choices = [
         3 => 3,
@@ -63,9 +63,9 @@ sub breadcrumbs_list {
 
     $self->display_results(
         \%sortdir,
-        display_title => loc('Recently Viewed Pages'),
+        display_title => loc('page.breadcrumbs'),
         unplug_uri    => "?action=unplug;breadcrumbs=1",
-        unplug_phrase => loc('Click this button to save recently viewed pages to your computer for offline use.'),
+        unplug_phrase => loc('info.unplug-breadcrumbs'),
         hide_sort_widget => 1,
     );
 }

@@ -54,7 +54,7 @@
         </div>
         [% IF editing && !gadget.parent_instance_id  %]
         <div id="[% gadget.id %]-push" class="widgetPush">
-            <input class="push-widget" name="[% gadget.title %]" id="push_[% gadget.id %]" type="checkbox" /> <label for="push_[% gadget.id %]">[% loc('Push to all dashboards') %]</label>
+            <input class="push-widget" name="[% gadget.title %]" id="push_[% gadget.id %]" type="checkbox" /> <label for="push_[% gadget.id %]">[% loc('widget.push-all') %]</label>
         </div>
         
         [% END %]

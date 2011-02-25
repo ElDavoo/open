@@ -54,7 +54,7 @@ sub _send_email {
     my $email_sender = Socialtext::EmailSender::Factory->create($locale);
     $email_sender->send(
         to        => $user->name_and_email(),
-        subject   => loc('Please follow these instructions to change your Socialtext password'),
+        subject   => loc('info.reset-password'),
         text_body => $text_body,
         html_body => $html_body,
     );

@@ -74,7 +74,7 @@
         [% FILTER decorate('body_begin') %]
         [% END %]
         <div style="display:none">
-            <strong>[% warning || loc("Warning: Stylesheets are not enabled in your mobile device. In order to properly view Socialtext Mobile, you will need to enable stylesheets in your browser options.") %]</strong>
+            <strong>[% warning || loc("error.css-disabled") %]</strong>
             <br/>
         </div>
         <div data-role="page">

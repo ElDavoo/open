@@ -335,11 +335,11 @@ sub ExpireUserRecord {
         # Can't change the username/email for a system-created User
         if (!$is_create and $metadata and $metadata->is_system_created) {
             push @errors,
-                loc("You cannot change the name of a system-created user.")
+                loc("error.set-system-user-name")
                 if $p->{username};
 
             push @errors,
-                loc("You cannot change the email address of a system-created user.")
+                loc("error.set-system-user-email")
                 if $p->{email_address};
         }
 
@@ -413,7 +413,7 @@ sub ExpireUserRecord {
     sub _validate_check_required_field {
         my ($self, $field, $p) = @_;
         unless ((defined $p->{$field}) and (length($p->{$field}))) {
-            return loc('[_1] is a required field.',
+            return loc('error.required=field',
                 ucfirst Socialtext::Data::humanize_column_name($field)
             );
         }
@@ -433,7 +433,7 @@ sub ExpireUserRecord {
             my $driver_uid   = $p->{driver_unique_id};
             my $existing_uid = $isnt_unique->{driver_unique_id};
             if (!$driver_uid || ($driver_uid ne $existing_uid)) {
-                return loc("The [_1] you provided ([_2]) is already in use.",
+                return loc("error.user-exists=field,value",
                         Socialtext::Data::humanize_column_name($field), $value
                     );
             }
@@ -445,7 +445,7 @@ sub ExpireUserRecord {
         my $email = $p->{email_address};
         if (defined $email) {
             unless (length($email) and Email::Valid->address($email)) {
-                return loc('"[_1]" is not a valid email address.', $email);
+                return loc('error.invalid=email', $email);
             }
         }
         return;
@@ -463,7 +463,7 @@ sub ExpireUserRecord {
     sub _validate_password_is_required {
         my ($self, $p) = @_;
         unless (defined $p->{password}) {
-            return loc('A password is required to create a new user.');
+            return loc('error.no-password-for-new-user');
         }
         return;
     }

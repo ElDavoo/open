@@ -1,16 +1,16 @@
 [%# vim: set et sts=2 sw=2: %]
 [%# @COPYRIGHT@ -%]
 <dl class="form">
-  <dt><label>[% loc('Workspaces') %]</label></dt>
+  <dt><label>[% loc('nav.wikis') %]</label></dt>
 </dl>
 
 <table>
   <tr>
     <th>
-      <label>[% loc('Workspace Title') %]</label>
+      <label>[% loc('wiki.title') %]</label>
     </th>
     <th>
-      <label>[% loc('Workspace Name') %]</label>
+      <label>[% loc('wiki.name') %]</label>
     </th>
   </tr>
 [% WHILE (workspace = workspaces.next) %]

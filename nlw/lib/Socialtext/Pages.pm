@@ -209,7 +209,7 @@ sub title_to_disposition {
 
     return unless $page;
 
-    return ('title="[' . loc("click to create page") . ']" class="incipient"', 
+    return ('title="[' . loc("link.incipient") . ']" class="incipient"', 
             "?action=display;is_incipient=1;page_name=".
             $self->uri_escape($page_name),
            ) unless $page->active;

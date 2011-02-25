@@ -58,9 +58,10 @@ sub _send_email {
     my $email_sender = Socialtext::EmailSender::Factory->create($locale);
     $email_sender->send(
         to        => $user->name_and_email(),
-        subject   => $workspace
-            ? loc('Welcome to the [_1] workspace - please confirm your email to join', $workspace->title)
-            : loc('Welcome to the [_1] community - please confirm your email to join', $user->primary_account->name),
+        subject   => $workspace ?
+            loc('wiki.welcome-confirm=name', $workspace->title)
+            :
+            loc('account.welcome-confirm=name', $user->primary_account->name),
         text_body => $text_body,
         html_body => $html_body,
     );
@@ -73,17 +74,17 @@ sub _send_completed_email {
     my $renderer = Socialtext::TT2::Renderer->instance();
     my $app_name =
         Socialtext::AppConfig->is_appliance()
-        ? loc('Socialtext Appliance')
-        : loc('Socialtext');
+        ? loc('email.socialtext-appliance')
+        : loc('email.socialtext');
     my @workspaces;
     my @groups;
     my $subject;
 
     if ($ws) {
-        $subject = loc('You can now login to the [_1] workspace', $ws->title());
+        $subject = loc('email.confirmation-subject=wiki', $ws->title());
     }
     else {
-        $subject = loc("You can now login to the [_1] application", $app_name);
+        $subject = loc("email.confirmation-subject=app", $app_name);
         @groups     = $user->groups->all;
         @workspaces = $user->workspaces->all;
     }
@@ -131,10 +132,8 @@ sub _send_completed_signal {
     return unless $user->can_use_plugin('signals');
 
     my $wafl = '{user: ' . $user->user_id . '}';
-    my $body = loc(
-        '[_1] just joined the [_2] group. Hi everybody!',
-        $wafl, $user->primary_account->name,
-    );
+    my $body =
+        loc('info.just-joined=user,group!', $wafl, $user->primary_account->name);
     eval {
         $signals->Send( {
             user        => $user,

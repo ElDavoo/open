@@ -172,10 +172,10 @@ sub search {
             search_term => $search_term,
             scope => $scope,
         ),
-        title => loc('Search Results'),
+        title => loc('search.results'),
         unplug_uri => "?action=unplug;search_term=$template_args{search_term}",
         unplug_phrase =>
-            loc('Click this button to save the pages from this search to your computer for offline use'),
+            loc('info.unplug-search'),
         Socialtext::Pageset->new(
             cgi => {$self->cgi->all},
             total_entries => $self->result_set->{hits},
@@ -198,14 +198,14 @@ sub _feeds {
     my %feeds = (
         rss => {
             page => {
-                title => loc('[_1] - RSS Search for [_2]', $workspace->title, $query{search_term})
+                title => loc('search.rss=wiki,query', $workspace->title, $query{search_term})
 ,
                 url => $root . "?search_term=$uri_escaped_query;scope=$scope",
             },
         },
         atom => {
             page => {
-                title => loc('[_1] - Atom Search for [_2]', $workspace->title, $query{search_term}),
+                title => loc('search.atom=wiki,query', $workspace->title, $query{search_term}),
                 url => $root . "?search_term=$uri_escaped_query;scope=$scope;type=Atom",
             },
         },
@@ -240,7 +240,7 @@ sub search_for_term {
 
         $search_term =~ s/=(\S+|"[^"]+")/title:$1/g;
         $result_set->{display_title} = 
-            loc("Pages matching \'[_1]\'", $search_term);
+            loc("search.pages=query", $search_term);
         $result_set->{predicate} = 'action=search';
 
         $self->write_result_set;
@@ -441,9 +441,9 @@ sub _set_titles {
     my $arguments = shift;
     my $title_info;
     if ( $self->target_workspace ne $self->current_workspace_name ) {
-        $title_info = loc('Search for [_1] in workspace [_2]', $arguments, $self->target_workspace);
+        $title_info = loc('search.for=query,wiki', $arguments, $self->target_workspace);
     } else {
-        $title_info = loc('Search for [_1]', $arguments);
+        $title_info = loc('search.for=query', $arguments);
     }
     $self->wafl_query_title($title_info);
     $self->wafl_query_link($self->_set_query_link($arguments));

@@ -243,7 +243,7 @@ sub expire {
         my $class = shift;
         my %p = validate( @_, $spec );
 
-        return ( loc("Passwords must be at least 6 characters long.") )
+        return ( loc("error.password-too-short") )
             unless length $p{password} >= 6;
 
         return;

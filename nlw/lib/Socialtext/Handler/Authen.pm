@@ -63,7 +63,7 @@ sub handler ($$) {
             my $account_for = $saved_args->{account_for};
 
             return $self->_show_error(
-                loc('Invalid confirmation URL.')
+                loc('error.invalid-confirmation-url')
             ) unless $hash;
 
             my $restriction = $self->_find_restriction_for_hash($r, $hash);
@@ -74,14 +74,14 @@ sub handler ($$) {
             $vars->{hash}          = $hash;
 
             if ($account_for && $account_for eq 'free50') {
-                $vars->{title}     = loc("Free50 Account Setup");
-                $vars->{heading}   = loc("Free50 Account Setup");
-                $vars->{to_create} = loc("Socialtext Free50 account");
+                $vars->{title}         = loc("free50.setup");
+                $vars->{heading}       = loc("free50.setup");
+                $vars->{to_create}     = loc("free50.account");
             }
             else {
-                $vars->{title}     = loc("Choose Password");
-                $vars->{heading}   = loc("Choose Password");
-                $vars->{to_create} = loc("Socialtext account");
+                $vars->{title}         = loc("pasword.choose");
+                $vars->{heading}       = loc("pasword.choose");
+                $vars->{to_create}     = loc("account.socialtext");
             }
         }
 
@@ -145,7 +145,7 @@ sub handler ($$) {
                 };
                 warn $@ if $@;
             }
-            $vars->{messages} ||= '<p>'. loc("Login has been disabled") .'</p>';
+            $vars->{messages} ||= '<p>'. loc("info.login-disabled") .'</p>';
         }
 
         if ($self->{args}{workspace_name}) {
@@ -202,12 +202,13 @@ sub login {
     my ($self) = @_;
     my $r = $self->r;
 
-    my $validname = Socialtext::Authen->username_is_email()
-        ? loc('email address')
-        : loc('username');
+    my $validname = ( Socialtext::Authen->username_is_email()
+        ? loc('login.email-address')
+        : loc('login.username')
+    );
     my $username = $self->{args}{username} || '';
     unless ($username) {
-        $self->session->add_error(loc('You must provide a valid [_1].', $validname));
+        $self->session->add_error(loc('error.invalid-login=field', $validname));
         return $self->_challenge();
     }
 
@@ -216,7 +217,7 @@ sub login {
         : ( (Encode::is_utf8($username) ? $username : Encode::decode_utf8($username)) =~ /\w/ );
 
     unless ( $user_check ) {
-        $self->session->add_error( loc('"[_1]" is not a valid [_2]. Please use your [_2] to log in.', $username, $validname) );
+        $self->session->add_error( loc('error.invalid-name=user,type', $username, $validname) );
         $r->log_error ($username . ' is not a valid ' . $validname);
         return $self->_challenge();
     }
@@ -224,7 +225,7 @@ sub login {
     my $user = Socialtext::User->new( username => $username );
 
     if ($user && !$user->email_address) {
-        $self->session->add_error(loc("This username has no associated email address." ));
+        $self->session->add_error(loc("error.no-user-email" ));
         $r->log_error ($username . ' has no associated email address');
         return $self->_challenge();
     }
@@ -235,7 +236,7 @@ sub login {
     }
 
     unless ($self->{args}{password}) {
-        $self->session->add_error(loc('Wrong [_1] or password - please try again', $validname));
+        $self->session->add_error(loc('error.invalid-login=name', $validname));
         $r->log_error('Wrong ' . $validname .' or password for ' . $username);
         return $self->_challenge();
     }
@@ -246,7 +247,7 @@ sub login {
     );
 
     unless ($check_password) {
-        $self->session->add_error(loc('Wrong [_1] or password - please try again', $validname));
+        $self->session->add_error(loc('error.invalid-login=name', $validname));
         $r->log_error('Wrong ' . $validname .' or password for ' . $username);
         return $self->_challenge();
     }
@@ -295,7 +296,7 @@ sub _add_user_to_workspace {
         }
         else {
             $self->session->add_error(
-                loc("Self-join is disabled for [_1]", $ws_name)
+                loc("error.self-join-disabled=wiki", $ws_name)
             );
         }
     }
@@ -319,16 +320,16 @@ sub forgot_password {
     my $username = $self->{args}{username} || '';
     my $user = Socialtext::User->new( username => $username );
     unless ( $user ) {
-        $self->session->add_error(loc("[_1] is not registered as a user. Try a different entry?", $username));
+        $self->session->add_error(loc("error.no-user=name", $username));
         return $self->_redirect($forgot_password_uri);
     }
     elsif ($user->is_deactivated) {
-        $self->session->add_error(loc("User [_1] has been deactivated.", $username));
+        $self->session->add_error(loc("user.deactivated=name", $username));
         return $self->_redirect($forgot_password_uri);
     }
     elsif ($user->is_externally_sourced) {
         $self->session->add_error(
-            loc("Since your password is stored in the directory for your organization, there is no way to reset your password within the Socialtext system. Please contact your directory administrator for assistance.")
+            loc("error.reset-ldap-password")
         );
         return $self->_redirect($forgot_password_uri);
     }
@@ -338,7 +339,7 @@ sub forgot_password {
 
     my $from_address = 'noreply@socialtext.com';
     $self->session->add_message(
-      loc('An email with instructions on changing your password has been sent to [_1].', $user->username) . "\n<p>\n" . loc('The email will come from [_1]. To ensure you receive it, please add [_1] to your address book or safe list.', $from_address) . "\n</p>\n"
+      loc('register.reset-password-sent=email', $user->username) . "\n<p>\n" . loc('info.email-confirmation=from', $from_address) . "\n</p>\n"
     );
 
     $self->session->save_args( username => $user->username() );
@@ -355,7 +356,7 @@ sub register {
         : '/nlw/register.html';
 
     unless (Socialtext::AppConfig->self_registration()) {
-        $self->session->add_error(loc("Registration is disabled."));
+        $self->session->add_error(loc("error.registration-disabled"));
         return $self->_redirect($redirect_target);
     }
 
@@ -375,7 +376,7 @@ sub register {
             $c_response,
         );
         unless ( $result->{is_valid} ) {
-            $self->session->add_error(loc("Captcha failed."));
+            $self->session->add_error(loc("error.captcha"));
             return $self->_redirect($redirect_target, $self->{args});
         }
     }
@@ -389,7 +390,7 @@ sub register {
                     role => Socialtext::Role->Guest(),
                     permission => ST_SELF_JOIN_PERM
                 )) {
-                    $self->session->add_error(loc("Self-join is disabled for [_1]", $target_ws_name));
+                    $self->session->add_error(loc("error.self-join-disabled=wiki", $target_ws_name));
                     return $self->_redirect($redirect_target);
                 }
             };
@@ -398,7 +399,7 @@ sub register {
 
     my $email_address = $self->{args}{email_address};
     unless ( $email_address ) {
-        $self->session->add_error(loc("Please enter an email address."));
+        $self->session->add_error(loc("error.email-required"));
         return $self->_redirect($redirect_target);
     }
 
@@ -408,7 +409,7 @@ sub register {
             return $self->require_confirmation_redirect($email_address);
         }
         elsif ( $user->has_valid_password() ) {
-            $self->session->add_message(loc("A user with this email address ([_1]) already exists.", $email_address));
+            $self->session->add_message(loc("error.user-exists=email", $email_address));
             $self->session->save_args( email_address => $email_address );
 
             return $self->_redirect($redirect_target);
@@ -420,7 +421,7 @@ sub register {
         $args{$_} = $self->{args}{$_} || '';
     }
     if ( $args{password} and $args{password} ne $args{password2} ) {
-        $self->session->add_error(loc('The passwords you provided did not match.'));
+        $self->session->add_error(loc('error.password-mismatch'));
     }
 
     my $is_new_user;
@@ -463,7 +464,7 @@ sub register {
     $user->create_email_confirmation(workspace_name => $target_ws_name);
     $user->send_confirmation_email;
 
-    $self->session->add_message(loc("An email confirming your registration has been sent to [_1].", $email_address));
+    $self->session->add_message(loc("register.confirmation-sent=email", $email_address));
     return $self->_challenge();
 }
 
@@ -472,7 +473,9 @@ sub confirm_email {
     my $r = $self->r;
 
     my $hash = $self->{args}{hash};
-    return $self->_show_error(loc('Invalid confirmation URL.')) unless $hash;
+    return $self->_show_error(
+        loc('error.invalid-confirmation-url')
+    ) unless $hash;
 
     my $restriction = $self->_find_restriction_for_hash($r, $hash);
     return $self->_show_error() unless $restriction;
@@ -482,7 +485,7 @@ sub confirm_email {
         $restriction->renew;
         $restriction->send;
         return $self->_show_error(
-            loc("The confirmation URL you used has expired. A new one will be sent.")
+            loc("error.confirmation-expired")
         );
     }
 
@@ -513,10 +516,10 @@ sub confirm_email {
     }
     my $address = $user->email_address;
     if ($targetws) {
-        $self->session->add_message(loc("Your email address, [_1], has been confirmed and you have been added to the [_2] workspace. Please login.", $address, $targetws->title));
+        $self->session->add_message(loc("login.confirmed=email,wiki", $address, $targetws->title));
     }
     else {
-        $self->session->add_message(loc("Your email address, [_1], has been confirmed. Please login.", $address));
+        $self->session->add_message(loc("login.confirmed=email", $address));
     }
     $self->session->save_args( username => $user->username );
 
@@ -530,7 +533,7 @@ sub choose_password {
 
     my $hash = $self->{args}{hash};
     return $self->_show_error(
-        loc('Invalid confirmation URL.')
+        loc('error.invalid-confirmation-url')
     ) unless $hash;
 
     my $restriction = $self->_find_restriction_for_hash($r, $hash);
@@ -540,7 +543,7 @@ sub choose_password {
     my %args;
     $args{$_} = $self->{args}{$_} || '' for (qw(password password2));
     if ( $args{password} and $args{password} ne $args{password2} ) {
-        $self->session->add_error(loc('The passwords you provided did not match.'));
+        $self->session->add_error(loc('error.password-mismatch'));
     }
     eval { $user->update_store( password   => $args{password} ) };
     if ( my $e = Exception::Class->caught('Socialtext::Exception::DataValidation') ) {
@@ -577,26 +580,26 @@ sub resend_confirmation {
     my $email_address = $self->{args}{email_address};
     unless ($email_address) {
         return $self->_show_error(
-            loc("No email address found to resend confirmation.")
+            loc("error.email-for-confirmation-required")
         );
     }
 
     my $user = Socialtext::User->new( email_address => $email_address );
     unless ($user) {
-        $self->session->add_error(loc("[_1] is not registered as a user. Try a different email address?", $email_address));
+        $self->session->add_error(loc("error.no-such-user=email", $email_address));
         return $self->_challenge();
     }
 
     my $confirmation = $user->email_confirmation;
     unless ($confirmation) {
-        $self->session->add_error(loc("The email address for [_1] has already been confirmed.", $email_address));
+        $self->session->add_error(loc("error.already-confirmed=email", $email_address));
         return $self->_challenge();
     }
 
     $confirmation->renew;
     $confirmation->send;
 
-    $self->session->add_error(loc('The confirmation email has been resent. Please follow the link in this email to activate your account.'));
+    $self->session->add_error(loc('error.confirmation-resent'));
     return $self->_challenge();
 }
 
@@ -656,7 +659,9 @@ sub _challenge {
         st_log->error($e);
     }
 
-    $self->session->add_error(loc("Challenger Did not Redirect."));
+    $self->session->add_error(
+        loc("error.challenger-redirect-failed")
+    );
     return $self->redirect('/nlw/error.html');
 }
 
@@ -724,7 +729,7 @@ sub _find_restriction_for_hash {
 
     my $restriction = Socialtext::User::Restrictions->FetchByToken($hash);
     unless ($restriction) {
-        $self->session->add_error(loc("The given confirmation URL does not match any pending confirmations."));
+        $self->session->add_error(loc("error.no-such-pending-confirmation"));
         $self->session->add_error( "<br/>(" . $r->uri . "?" . $r->args . ")" );
         $r->log_error ("no confirmation hash for: [" . $r->uri . "?" . $r->args . "]" );
     }

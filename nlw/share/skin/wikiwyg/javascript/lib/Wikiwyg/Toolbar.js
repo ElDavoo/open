@@ -54,7 +54,7 @@ proto.resetModeSelector = function() {
 }
 
 proto.setup_widgets = function() {
-    this.setup_widgets_menu(loc('Insert'));
+    this.setup_widgets_menu(loc('do.insert'));
 }
 
 proto.setup_widgets_menu = function(title) {

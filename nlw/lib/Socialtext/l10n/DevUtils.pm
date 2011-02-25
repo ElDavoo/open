@@ -1,7 +1,7 @@
 package Socialtext::l10n::DevUtils;
 use 5.12.0;
 use parent 'Exporter';
-our @EXPORT = qw( trim str_to_regex is_key outs );
+our @EXPORT = qw( trim gettext_to_maketext str_to_regex is_key outs );
 
 sub trim {
     my $str = shift;
@@ -11,12 +11,10 @@ sub trim {
     return $str;
 }
 
-sub str_to_regex {
+sub gettext_to_maketext {
     my $str = shift;
     chomp $str;
-    $str =~ s/\\n/\x{FFFC}/g;
     $str =~ s/\\(.)/$1/g;
-
     $str =~ s{
         ([%\\]%)                        # 1 - escaped sequence
     |
@@ -31,6 +29,13 @@ sub str_to_regex {
            : $2 ? "\[$2,"._unescape($3)."]"
                 : "[_$4]"
     }egx;
+    return $str;
+}
+
+sub str_to_regex {
+    my $str = shift;
+    $str =~ s/\\n/\x{FFFC}/g;
+    $str = gettext_to_maketext($str);
 
     my $qm1 = quotemeta($str);
     $qm1 =~ s/\x{FFFC}/(?:\n|\\\\n)/g;

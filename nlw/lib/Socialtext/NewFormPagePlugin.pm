@@ -37,7 +37,7 @@ sub new_form_page {
     my $self = shift;
     $self->_render(
         'new_form_page_input.html',
-        display_title => loc('Create Your Profile'),
+        display_title => loc('profile.create'),
         self => $self,
         $self->cgi->all,
     );

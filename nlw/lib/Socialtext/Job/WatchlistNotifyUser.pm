@@ -12,7 +12,7 @@ override '_notification_vars' => sub {
     my $ws = $self->workspace;
 
     return (
-        subject => loc('Watchlist update for [_1] Workspace', $ws->title),
+        subject => loc('watch.email-subject=wiki', $ws->title),
         text_template => 'email/watchlist.txt',
         html_template => 'email/watchlist.html',
     );

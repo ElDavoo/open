@@ -3,22 +3,22 @@
 [% PROCESS element/settings/start form_action="workspaces_settings_skin" %]
 
 <dl class="form">
-  <dt><label>[% loc('Workspace Skin') %]</label></dt>
+  <dt><label>[% loc('wiki.skin') %]</label></dt>
   <dd>
-    [% loc('Socialtext can create a skin to customize the look and feel of your workspace. You can use the default skin supplied by Socialtext or a customized skin.') %]
+    [% loc('info.skin') %]
   </dd>
 </dl>
 <dl class="form">
-  <dt><label>[% loc('Custom Skin Support') %]</label></dt>
+  <dt><label>[% loc('skin.support') %]</label></dt>
   <dd>    
-    [% loc('Uploaded skins are not supported. Skin upload is only for development and testing of custom skins. Contact sales@socialtext.com for information on supported custom skins.') %]
+    [% loc('skin.unsupported') %]
   </dd>
 </dl>
 <dl class="form">
-  <dt><label>[% loc('Select a workspace skin:') %]</label></dt>
+  <dt><label>[% loc('skin.select:') %]</label></dt>
   <dd>
-    <input id="st-workspaceskin-default" type="radio" name="uploaded_skin" value="0"[% IF NOT uploaded_skin %] checked="true"[% END %] >[% loc('Default Skin.') %]<br/>
-    <input id="st-workspaceskin-custom" type="radio" name="uploaded_skin" value="1"[% IF uploaded_skin %] checked="true"[% END %] [% IF !skin_files.size() %]disabled="true"[% END %]>[% loc('Customized Skin.') %]
+    <input id="st-workspaceskin-default" type="radio" name="uploaded_skin" value="0"[% IF NOT uploaded_skin %] checked="true"[% END %] >[% loc('skin.default') %]<br/>
+    <input id="st-workspaceskin-custom" type="radio" name="uploaded_skin" value="1"[% IF uploaded_skin %] checked="true"[% END %] [% IF !skin_files.size() %]disabled="true"[% END %]>[% loc('skin.customized') %]
   </dd>
 </dl>
 
@@ -28,9 +28,9 @@
   <form id="st-workspaceskin-uploadform" method="post" name="skin-upload" action="[% script_name %]" enctype="multipart/form-data">
     <input type="hidden" name="action" value="skin_upload" />
     <dd>
-      [% loc('Select the ZIP or TGZ file that contains the customized skin files:') %]<br/>
-      <input id="st-workspaceskin-file" type="file" name="skin_file" size="35" value="[% loc('Browse ...') %]" />
-      <input id="st-workspaceskin-submit" name="submit" type="submit" value="[% loc('Upload') %]" />
+      [% loc('skin.select-file:') %]<br/>
+      <input id="st-workspaceskin-file" type="file" name="skin_file" size="35" value="[% loc('skin.browse') %]" />
+      <input id="st-workspaceskin-submit" name="submit" type="submit" value="[% loc('do.upload') %]" />
     </dd>
 
     <dd>
@@ -44,16 +44,16 @@
 <dl class="form" [% IF !skin_files.size() %][% "style=\"display: none;\"" %][% END %]>
   <form id="st-workspaceskin-removefiles" method="post" name="remove-files" action="[% script_name %]" enctype="application/x-www-form-urlencoded">
     <input type="hidden" name="action" value="remove_skin_files" />
-    <dt><label>[%- loc('Customized Skin Files') %]</label></dt>
+    <dt><label>[%- loc('skin.files') %]</label></dt>
     <dd>
-      <input id="st-workspaceskin-removesubmit" name="submit" type="submit" value=[% loc('Remove&nbsp;Existing&nbsp;Files') %] />
+      <input id="st-workspaceskin-removesubmit" name="submit" type="submit" value=[% loc('skin.remove-existing') %] />
     </dd>
   </form>
   <table class="standard-table" [% UNLESS skin_files.size() %]style="display: none;"[% END %]>
     <tr>
-      <th>[% loc('File') %]</th>
-      <th>[% loc('Size (bytes)') %]</th>
-      <th>[% loc('Uploaded') %]</th>
+      <th>[% loc('skin.file') %]</th>
+      <th>[% loc('skin.size') %]</th>
+      <th>[% loc('skin.uploaded') %]</th>
     </tr>
       [% FOREACH file IN skin_files %]
       <tr class="[% loop.count % 2 ? 'w-st-even-row' : '' %]"><td>[% file.name %]</td><td class="alignright">[% file.size %]</td><td>[% file.date %]</td></tr>

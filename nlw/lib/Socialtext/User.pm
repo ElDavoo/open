@@ -836,8 +836,8 @@ sub deactivate {
         $self->update_store( password => '*no-password*', no_crypt => 1 );
     }
     else {
-        warn loc("The user has been removed from workspaces and directories.") . "\n";
-        warn loc("Login information is controlled by the [_1] directory administrator.", $self->driver_name) . "\n\n";
+        warn loc("user.deactivated") . "\n";
+        warn loc("info.login-admin=driver", $self->driver_name) . "\n\n";
     }
 
     # leaves things referencing this user in place
@@ -906,7 +906,7 @@ sub _call_hook {
         shift;
         my %p = validate( @_, $spec );
 
-        return ( loc("Passwords must be at least 6 characters long.") )
+        return ( loc("error.password-too-short") )
             unless length $p{password} >= 6;
 
         return;

@@ -6,7 +6,7 @@
 
 <div class="widget">
 <div class="widgetHeader">
-<h4>[% loc('Attachments') %]</h4>
+<h4>[% loc('info.files') %]</h4>
 </div><!-- widgetHeader END -->
 <div class="widgetContent">
   <ul id="st-attachment-listing">
@@ -25,22 +25,22 @@
     <a name="[% file.id %]" href="#" class="extract_attachment">
       <img src="/static/skin/common/images/extract.png"
         width="16" height="16" border="0"
-        alt="[% loc('Extract this attachment') %]"
-        title="[% loc('Extract this attachment') %]"
+        alt="[% loc('file.extract') %]"
+        title="[% loc('file.extract') %]"
       />
     </a>
     [% END %]
     [% IF !page_locked_for_user %]
-    <a href="#" title="[% loc('Delete this attachment') %]" class="delete_attachment">
+    <a href="#" title="[% loc('file.delete-this') %]" class="delete_attachment">
     <img src="[% wiki.skin_uri('s3') %]/images/delete.png"
         width="16" height="16" border="0"
-        alt="[% loc('Delete this attachment') %]"
-        title="[% loc('Delete this attachment') %]"
+        alt="[% loc('file.delete-this') %]"
+        title="[% loc('file.delete-this') %]"
       />
     </a>
     [% END %]
     <div class="fileInfo">
-        [% loc("[_1] by [_2]", local_time(file.date), user(file.uploader)) %]
+        [% loc("file.by=date,user", local_time(file.date), user(file.uploader)) %]
     </div>
     </li>
   [% END %]
@@ -48,9 +48,9 @@
   [% IF checker.check_permission('attachments') AND !page_locked_for_user %]
   <ul class="widgetButton">
     <li class="flexButtonGrey">
-      <a id="st-attachments-uploadbutton" class="greyButton" href="#">[% loc('Upload Files') %]</a>
+      <a id="st-attachments-uploadbutton" class="greyButton" href="#">[% loc('file.upload') %]</a>
     </li>
-    <!--<li><a id="st-attachments-managebutton" class="manageButton" href="#">[% loc('Manage Files') %]</a></li>-->
+    <!--<li><a id="st-attachments-managebutton" class="manageButton" href="#">[% loc('config.files') %]</a></li>-->
   </ul>
   [% END %]
   <div class="clear"></div>

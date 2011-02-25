@@ -33,13 +33,13 @@ sub openid_invite {
                             $self->cgi->users_openid );
 
         unless ( keys %user_hash ) {
-            $self->add_error (loc("No users entered"));
+            $self->add_error (loc("error.openid-users-required"));
             return;
         }
 
         my $html = $self->_invite_users(\%user_hash);
     } else {
-        $self->add_error (loc("You must input both an OpenID and an email."));
+        $self->add_error (loc("error.openid-and-email-required"));
         return;
     }
 }
@@ -88,7 +88,7 @@ sub _invite_users {
         settings_table_id   => 'settings-table',
         settings_section    => $settings_section,
         hub                 => $self->hub,
-        display_title       => loc('Users: Invite New Users'),
+        display_title       => loc('config.user-invite'),
         pref_list           => $self->_get_pref_list,
     );
 }
@@ -118,7 +118,7 @@ sub invite_notify {
 
     my $template_dir = $self->hub->current_workspace->invitation_template;
 
-    my $subject = loc("Invitation to join [_1]" ,$self->hub->current_workspace->name);
+    my $subject = loc("openid.invite=wiki" ,$self->hub->current_workspace->name);
 
     my $renderer = Socialtext::TT2::Renderer->instance();
 

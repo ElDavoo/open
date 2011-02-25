@@ -127,4 +127,7 @@
         - 'Class.js'
         - 'loc.js'
         - {dir: 'skin/wikiwyg/javascript', file: 'socialtext-editor-light.js'}
-
+'l10n-en.js':
+    compress: 1
+    parts:
+        - {dir: 'skin/s3/javascript/l10n', file: 'en.js'}

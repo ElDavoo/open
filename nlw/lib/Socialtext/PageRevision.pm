@@ -371,12 +371,12 @@ sub age_in_english {
     my $self = shift;
     my $age = $self->age_in_seconds;
     my $english =
-        $age < 60 ? loc('[_1] seconds', $age) :
-        $age < 3600 ? loc('[_1] minutes', int($age / 60)) :
-        $age < 86400 ? loc('[_1] hours', int($age / 3600)) :
-        $age < 604800 ? loc('[_1] days', int($age / 86400)) :
-        $age < 2592000 ? loc('[_1] weeks', int($age / 604800)) :
-        loc('[_1] months', int($age / 2592000));
+        $age < 60 ? loc('time.seconds=count', $age) :
+        $age < 3600 ? loc('time.minutes=count', int($age / 60)) :
+        $age < 86400 ? loc('time.hours=count', int($age / 3600)) :
+        $age < 604800 ? loc('time.days=count', int($age / 86400)) :
+        $age < 2592000 ? loc('time.weeks=count', int($age / 604800)) :
+        loc('time.months=count', int($age / 2592000));
     $english =~ s/^(1 .*)s$/$1/;
     return $english;
 }
@@ -407,9 +407,9 @@ sub is_bad_page_title {
     return 1 if $class_or_self->is_untitled($id); # unlocalized
 
     # Can't have a page named "Untitled Page" in the current locale
-    my $untitled_page = title_to_id( loc("Untitled Page") );
+    my $untitled_page = title_to_id( loc("page.untitled") );
     return 1 if $id eq $untitled_page;
-    my $untitled_spreadsheet = title_to_id( loc("Untitled Spreadsheet") );
+    my $untitled_spreadsheet = title_to_id( loc("sheet.untitled") );
     return 1 if $id eq $untitled_spreadsheet;
 
     return 0;
@@ -442,24 +442,24 @@ sub store {
     }
 
     my $name_check = title_to_id($self->name); 
-    push @errors, loc("Cannot change page name: requires a different page_id")
+    push @errors, loc("error.page-id-mismatch")
         unless $self->page_id eq $name_check;
 
     # Fix for {bz 2099} -- guard against storing an "Untitled Page".
     if (my $display_name = $self->is_untitled) {
-        push @errors, loc('"[_1]" is a reserved name. Please use a different name.', $display_name);
+        push @errors, loc('error.reserved-name=page', $display_name);
     }
 
     if ($self->is_bad_page_title($self->name)) {
-        push @errors, loc('"[_1]" is an invalid page title. Please use a different name.', $self->name);
+        push @errors, loc('error.invalid-title=page', $self->name);
     }
 
     if (MAX_PAGE_ID_LEN < length($self->page_id)) {
-        push @errors, loc("Page title is too long after URL encoding");
+        push @errors, loc("error.page-title-too-long");
     }
 
     Socialtext::Exception::DataValidation->throw(
-        error => loc("Cannot store page revision"),
+        error => loc("error.store-revision"),
         errors => \@errors
     ) if @errors;
 

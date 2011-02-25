@@ -58,7 +58,7 @@ sub rtf_export {
 
     if ( 0 == @page_names ) {
         Socialtext::Exception::DataValidation->throw(
-            errors => [loc('No pages selected for export')] );
+            errors => [loc('error.pages-for-export-required')] );
     }
 
     my @page_ids = sort$self->hub->pages->all_ids;
@@ -66,7 +66,7 @@ sub rtf_export {
     foreach my $page_name (@page_names) {
         unless ( defined $page_name && length $page_name ) {
             Socialtext::Exception::DataValidation->throw(
-                errors => [loc('No page name given')] );
+                errors => [loc('error.page-name-is-empty')] );
         }
 
     }

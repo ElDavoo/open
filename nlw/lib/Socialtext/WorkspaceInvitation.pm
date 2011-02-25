@@ -89,7 +89,7 @@ sub invite_admin_notify {
     my $template_dir = $workspace->invitation_template;
 
     my $subject = loc( 
-        "I'm inviting you into the [_1] workspace", 
+        "invite.wiki=title", 
         $workspace->title
     );
 
@@ -123,7 +123,7 @@ sub invite_notify {
 
     my $template_dir = $workspace->invitation_template;
 
-    my $subject = loc("I'm inviting you into the [_1] workspace", $workspace->title);
+    my $subject = loc("invite.wiki=title", $workspace->title);
 
     my $renderer = Socialtext::TT2::Renderer->instance();
 

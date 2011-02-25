@@ -3,19 +3,19 @@
 [% UNLESS page.is_spreadsheet && !current_workspace.enable_spreadsheet %]
 [% IF checker.check_permission('edit') %]
   <li class="flexButton">
-    <a title="[% loc('Click this button to edit the page') %]" id="st-edit-button-link[% id_suffix %]" class="editButton" href="#">
-      [% loc('Edit') %]
+    <a title="[% loc('info.edit') %]" id="st-edit-button-link[% id_suffix %]" class="editButton" href="#">
+      [% loc('page.edit') %]
     </a>
   </li>
 [% ELSIF checker.check_permission('edit_controls') AND !page_locked_for_user %]
   <li class="flexButton">
-    <a title="[% loc('Click this button to edit the page') %]" id="st-login-to-edit-button-link[% id_suffix %]" class="editButton" href="[% login_and_edit_path %]">
-      [% loc('Edit') %]
+    <a title="[% loc('info.edit') %]" id="st-login-to-edit-button-link[% id_suffix %]" class="editButton" href="[% login_and_edit_path %]">
+      [% loc('page.edit') %]
     </a>
   </li>
 [% ELSIF self_registration and checker.check_permission('self_join') and ! checker.check_permission('edit') %]
   <li class="flexButton" id="st-wikinav-register">
-    <a title="[% loc('Join now to edit this page!') %]" class="editButton" href="/nlw/join.html?workspace_name=[% current_workspace.name%];redirect_to=[% current_workspace.uri %]">[% loc('Join to edit') %]</a>
+    <a title="[% loc('page.join-to-edit!') %]" class="editButton" href="/nlw/join.html?workspace_name=[% current_workspace.name%];redirect_to=[% current_workspace.uri %]">[% loc('page.join-to-edit') %]</a>
   </li>
 [% END %]
 [% END %]

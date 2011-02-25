@@ -60,7 +60,7 @@ sub attachments_download {
     }
     catch {
         $self->failure_message(
-            loc('Attachment not found. The page name, file name or identifer number in the link may be incorrect, or the attachment may have been deleted or is not present in this workspace.'),
+            loc('error.no-attachment'),
             $_,
             $self->hub->pages->current
         );
@@ -79,7 +79,7 @@ sub attachments_extract {
     }
     catch {
         $self->failure_message(
-            loc('Attachment not found. The page name, file name or identifer number in the link may be incorrect, or the attachment may have been deleted or is not present in this workspace.'),
+            loc('error.no-attachment'),
             $_,
             $self->hub->pages->current
         );
@@ -98,10 +98,10 @@ sub attachments_upload {
     my $count = grep { -s $_->{handle} } @files;
     my $page = $self->hub->pages->current;
 
-    return loc('The file you are trying to upload does not exist')
+    return loc('error.file-required')
         unless $count;
 
-    return loc('You don\'t have permission to upload attachments')
+    return loc('error.file-upload-forbidden')
         unless ($self->hub->checker->check_permission('attachments')
             and $self->hub->checker->can_modify_locked($page));
 
@@ -184,7 +184,7 @@ sub attachments_listall {
     $self->screen_template('view/attachmentslist');
     $self->render_screen(
         rows => $rows,
-        display_title => loc("All Files"),
+        display_title => loc("file.all"),
         sortby => $sortby,
         sortdir => $self->sortdir,
         direction => $direction,

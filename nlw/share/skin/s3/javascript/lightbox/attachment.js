@@ -143,7 +143,7 @@ proto.onTargetLoad = function (iframe) {
 
     var id = $('input', doc).val();
 
-    $('#st-attachments-attach-uploadmessage').html(loc('Upload Complete'));
+    $('#st-attachments-attach-uploadmessage').html(loc('file.upload-complete'));
     $('#st-attachments-attach-filename').attr('disabled', false).val('');
     $('#st-attachments-attach-closebutton').removeClass('disabled').removeClass('loading');
 
@@ -172,7 +172,7 @@ proto.refreshUploadedAttachmentsList = function (){
         .append(
             $('<span></span>')
                 .attr('class', 'st-attachments-attach-listlabel')
-                .html(loc('Uploaded files:') + 
+                .html(loc('file.uploaded:') + 
                     '&nbsp;' + self.attachmentList()
                 )
         );
@@ -183,7 +183,7 @@ proto.onChangeFilename = function () {
     var filename = $('#st-attachments-attach-filename').val();
     if (!filename) {
         $('#st-attachments-attach-uploadmessage').html(
-            loc("Please click browse and select a file to upload.")
+            loc("file.browse")
         );
         return false;
     }
@@ -192,7 +192,7 @@ proto.onChangeFilename = function () {
 
     if (encodeURIComponent(filename).length > 255 ) {
         $('#st-attachments-attach-uploadmessage').html(
-            loc("Filename is too long after URL encoding.")
+            loc("error.filename-too-long")
         );
         return false;
     }
@@ -206,7 +206,7 @@ proto.onChangeFilename = function () {
 
         var upload = function() {
             $('#st-attachments-attach-uploadmessage').html(
-                loc('Uploading [_1]...', basename)
+                loc('file.uploading=name', basename)
             );
 
             $('#st-attachments-attach-formtarget').one('load', function () {
@@ -226,17 +226,17 @@ proto.onChangeFilename = function () {
 
             if (matches.length > 1 ) {
                 $('.tip', $menu).html(
-                    loc('There is already a file named "[_1]" attached to this page. You can <span class="emphasis">Add</span> another version of the file or <span class="emphasis">Replace</span> the existing version with this one. What would you like to do?', filename)
+                    loc('file.add-or-replace=name?', filename)
                 );
 
                 $('.more p', $menu).html(
-                    loc('There are <span class="emphasis">[_1] previous versions</span> of this file (most recently: [_2], uploaded by [_3] at [_4]). If you click <em>Replace</em>, you will <em>delete all other versions</em>.', matches.length, match.size, match.uploader_name, match.local_date)
+                    loc('file.replace=count,size,user,date', matches.length, match.size, match.uploader_name, match.local_date)
                 );
                 $('.more', $menu).show();
             }
             else {
                 $('.tip', $menu).html(
-                    loc('There is already a file named "[_1]" ([_2] uploaded by [_3] on [_4]) attached to this page. You can <span class="emphasis">Add</span> another version of the file or <span class="emphasis">Replace</span> the existing version with this one. What would you like to do?', filename, match.size, match.uploader_name, match.local_date)
+                    loc('file.add-or-replace=name,size,user,date?', filename, match.size, match.uploader_name, match.local_date)
                 );
             }
 

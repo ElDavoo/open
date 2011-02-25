@@ -12,8 +12,8 @@ function trim(value) {
 function is_reserved_pagename(pagename) {
     if (pagename && pagename.length > 0) {
         var name = nlw_name_to_id(trim(pagename));
-        var untitled = nlw_name_to_id(loc('Untitled Page'));
-        var untitledspreadsheet = nlw_name_to_id(loc('Untitled Spreadsheet'));
+        var untitled = nlw_name_to_id(loc('page.untitled'));
+        var untitledspreadsheet = nlw_name_to_id(loc('sheet.untitled'));
         return (name == untitled) || (name == untitledspreadsheet);
     }
     else {
@@ -133,7 +133,7 @@ Socialtext.set_save_error_resume_handler = function(cb) {
 
                 if (win.$('#loginPage').length) {
                     errorMessage += "\n\n";
-                    errorMessage += loc("(Your edit was successfully saved.)");
+                    errorMessage += loc("edit.saved");
                     alert(errorMessage);
                     Socialtext.discardDraft('edit_save');
                     window.location = win.location;
@@ -150,11 +150,11 @@ Socialtext.set_save_error_resume_handler = function(cb) {
 
         if (errorMessage) {
             errorMessage += "\n\n";
-            errorMessage += loc("Please copy your changes, and click Cancel to return to the page.");
+            errorMessage += loc("edit.copy-your-changes");
             alert(errorMessage);
         }
         else {
-            alert(loc("Saving failed due to server error; please try again later."));
+            alert(loc("error.save-failed"));
         }
 
         if (cb) { cb() }
@@ -299,7 +299,7 @@ Socialtext.addNewTag = function (tag) {
     jQuery("#st-taglist-" + rand)
         .append(
             jQuery('<a href="#" class="st-tagqueue-taglist-delete" />')
-                .attr('title', loc("Remove [_1] from the queue", tag))
+                .attr('title', loc("edit.remove=tag", tag))
                 .click(function () {
                     jQuery('#st-taglist-'+rand).remove();
                     jQuery('#st-tagqueue-'+rand).remove();
@@ -811,7 +811,7 @@ $(function() {
 
     $('#st-listview-submit-pdfexport').click(function() {
         if (!$('.st-listview-selectpage-checkbox:checked').size()) {
-            alert(loc("You must check at least one page in order to create a PDF."));
+            alert(loc("error.no-page-pdf"));
         }
         else {
             $('#st-listview-action').val('pdf_export')
@@ -823,7 +823,7 @@ $(function() {
 
     $('#st-listview-submit-rtfexport').click(function() {
         if (!$('.st-listview-selectpage-checkbox:checked').size()) {
-            alert(loc("You must check at least one page in order to create a Word document."));
+            alert(loc("error.no-page-doc"));
         }
         else {
             $('#st-listview-action').val('rtf_export')
@@ -857,7 +857,7 @@ $(function() {
     });
 
     Socialtext.ui_expand_on = function() {
-        $("#st-edit-pagetools-expand,#st-pagetools-expand").attr("title", loc("Return edit area to normal view")).text(loc("Normal")).addClass("contract");
+        $("#st-edit-pagetools-expand,#st-pagetools-expand").attr("title", loc("info.normal-view")).text(loc("edit.normal")).addClass("contract");
 
         if ($.browser.msie && $.browser.version < 7) {
             $('#globalNav select').css('visibility', 'hidden');
@@ -881,7 +881,7 @@ $(function() {
         return false;
     };
     Socialtext.ui_expand_off = function() {
-        $("#st-edit-pagetools-expand,#st-pagetools-expand").attr("title", loc("Expand edit area to fill browser window")).text(loc("Expand")).removeClass("contract");
+        $("#st-edit-pagetools-expand,#st-pagetools-expand").attr("title", loc("info.expand-view")).text(loc("edit.expand")).removeClass("contract");
 
         if ($.browser.msie && $.browser.version < 7) {
             $('#globalNav select').css('visibility', 'visible');
@@ -920,7 +920,7 @@ $(function() {
                 ';page=' + pageId +
                 ';_=' + (new Date()).getTime(),
                 function () {
-                    var text = loc("Watch");
+                    var text = loc("do.watch");
                     $(self).attr('title', text).text(text);
                     $(self).removeClass('on');
                 }
@@ -932,7 +932,7 @@ $(function() {
                 ';page=' + pageId +
                 ';_=' + (new Date()).getTime(),
                 function () {
-                    var text = loc('Stop Watching');
+                    var text = loc('watch.stop');
                     $(self).attr('title', text).text(text);
                     $(self).addClass('on');
                 }
@@ -1064,8 +1064,8 @@ $(function() {
     });
 
     if ( Socialtext.new_page
-            && Socialtext.page_title != loc("Untitled Page")
-            && Socialtext.page_title != loc("Untitled Spreadsheet")
+            && Socialtext.page_title != loc("page.untitled")
+            && Socialtext.page_title != loc("sheet.untitled")
             && !location.href.toString().match(/action=display;/)
             && !/^#draft-\d+$/.test(location.hash) ) {
         $("#st-create-content-link").trigger("click", { title: Socialtext.page_title })
@@ -1161,21 +1161,21 @@ $(function() {
                               + '#draft-'+key;
               $('#contentColumns').prepend(
                 $('<div />', { id: "st-draft-notice-" + key, css: { background: '#ffff80', textAlign: 'center', padding: '2px', borderBottom: '1px solid #ccc' } })
-                  .text(loc('You have an unsaved draft of "[_1]" in the "[_2]" ([_3]) workspace:', draft.page_title, draft.workspace_title, draft.workspace_id))
+                  .text(loc('draft.unsaved=page,wiki,wiki-id:', draft.page_title, draft.workspace_title, draft.workspace_id))
                   .append('&nbsp;')
                   .append(
                     $('<a />')
-                      .text(loc('Resume'))
+                      .text(loc('draft.resume'))
                       .attr('href', resume_link)
                   )
-                  .append(loc('&nbsp;or&nbsp;'))
+                  .append(loc('draft.or'))
                   .append(
                     $('<a />')
-                      .text(loc('Discard'))
+                      .text(loc('draft.discard'))
                       .attr('href', '#')
                       .attr('id', 'st-discard-draft-' + key)
                       .click(function(){
-                        if (confirm(loc("Are you sure you want to discard the draft?"))) {
+                        if (confirm(loc("draft.discard?"))) {
                           var key = $(this).attr('id').replace(/^st-discard-draft-/, '');
                           $('#st-draft-notice-' + key).fadeOut();
                           try {
@@ -1187,7 +1187,7 @@ $(function() {
                         return false;
                       })
                   )
-                  .append(loc('?'))
+                  .append(loc('draft.?'))
                );
             }
           }

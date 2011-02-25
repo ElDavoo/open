@@ -15,11 +15,11 @@ Socialtext::l10n - Provides localization functions
   use Socialtext::l10n qw(loc loc_lang);
 
   loc_lang('fr');                 # set the locale
-  is loc('Welcome'), 'Bienvenue'; # find localized text
+  is loc('wiki.welcome'), 'Bienvenue'; # find localized text
 
 =head1 Methods
 
-=head2 loc("string [_1]", $arg)
+=head2 loc("example.string", $arg)
 
 loc() will lookup the english string to find the localized string.  If
 no localized string can be found, the english string will be used.

@@ -80,7 +80,7 @@ sub GET {
     };
     if ($@) {
         warn $@;
-        return $self->error(loc("There was a problem trying to display this page. Use your browser's refresh button and try again. If the problem continues, please contact <a href=\"[_1]\">Socialtext Support</a>.", Socialtext::AppConfig->support_address));
+        return $self->error(loc("error.display-page", Socialtext::AppConfig->support_address));
     }
 
     return $res;
@@ -119,7 +119,7 @@ sub not_authenticated {
 sub renew_authentication {
     my $self = shift;
     $self->session->add_error(
-        loc("Login session has expired; please re-authenticate.")
+        loc("error.relogin")
     );
     my $redirect_to = $self->rest->request->parsed_uri->unparse;
     $self->redirect("/challenge?$redirect_to");
@@ -128,14 +128,14 @@ sub renew_authentication {
 
 sub invalid {
     my $self = shift;
-    my $msg  = shift || loc('Bad Request');
+    my $msg  = shift || loc('error.bad-request');
     $self->rest->header(-status => HTTP_400_Bad_Request);
     return $self->error($msg);
 }
 
 sub not_found {
     my $self = shift;
-    my $msg = shift || loc("The page you are trying to view does not exist.  Please check with the system administrator or contact <a href=\"[_1]\">Socialtext Support</a>.", Socialtext::AppConfig->support_address);
+    my $msg = shift || loc("error.no-such-page", Socialtext::AppConfig->support_address);
 
     $self->rest->header(-status => HTTP_404_Not_Found);
     return $self->error($msg);
@@ -143,7 +143,7 @@ sub not_found {
 
 sub forbidden {
     my $self = shift;
-    my $msg = shift || loc("You do not have permission to view this page. Please check with the system administrator or contact <a href=\"[_1]\">Socialtext Support</a>.", Socialtext::AppConfig->support_address);
+    my $msg = shift || loc("error.page-forbidden", Socialtext::AppConfig->support_address);
 
     $self->rest->header(-status => HTTP_403_Forbidden);
     return $self->error($msg);

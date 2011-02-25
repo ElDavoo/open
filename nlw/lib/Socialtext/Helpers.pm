@@ -477,7 +477,7 @@ sub validate_email_addresses {
         my @lines = $self->_split_email_addresses( $ids );
 
         unless (@lines) {
-            $self->add_error(loc("No email addresses specified"));
+            $self->add_error(loc("error.email-adress-required"));
             return;
         }
 
@@ -498,7 +498,7 @@ sub validate_email_addresses {
     }
     else
     {
-        push @invalid, loc("No email addresses specified");
+        push @invalid, loc("error.email-adress-required");
     }
 
     return(\@emails, \@invalid);

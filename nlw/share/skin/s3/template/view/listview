@@ -18,12 +18,12 @@
         [% END %]
         <ul class="level1">
           <li class="submenu">
-            <a class="export" href="#" id="st-listtools-export">[% loc('Export') %]</a>
+            <a class="export" href="#" id="st-listtools-export">[% loc('do.export') %]</a>
             <ul class="level2">
               [% IF loc_system_lang != 'ja' %]
-              <li class="first"><a title="[% loc('Create PDF document from checked pages') %]" id="st-listview-submit-pdfexport" href="#">[% loc('Export to PDF') %]</a></li>
+              <li class="first"><a title="[% loc('nav.create-pdf') %]" id="st-listview-submit-pdfexport" href="#">[% loc('export.pdf') %]</a></li>
               [% END %]
-              <li class="separator"><a title="[% loc('Create Word document from checked pages') %]" id="st-listview-submit-rtfexport" href="#">[% loc('Export to Word') %]</a></li>
+              <li class="separator"><a title="[% loc('nav.create-word') %]" id="st-listview-submit-rtfexport" href="#">[% loc('export.word') %]</a></li>
             </ul>
           </li>
         </ul>
@@ -35,13 +35,13 @@
     [% IF too_many %]
       <div id="tooManyResults">
         <p>
-          [% loc('The search you have entered is too general; [_1] pages and/or attachments matched your query.', too_many) %]
+          [% loc('search.too-many=count', too_many) %]
         </p>
         <p>
-          [% loc('Searches are limited to [_1] results.' , appconfig.search_warning_threshold) %]
+          [% loc('search.limit=count' , appconfig.search_warning_threshold) %]
         </p>
         <p>
-          [% loc('Please use more specific words or add more search terms.') %]
+          [% loc('search.be-more-specific') %]
         </p>
         <br />
         <div id="inlineSearch">
@@ -51,10 +51,10 @@
     [% ELSIF search_timeout %]
       <div id="tooManyResults">
         <p>
-          [% loc('The search you have entered is too general.') %]
+          [% loc('search.too-general') %]
         </p>
         <p>
-          [% loc('Please use more specific words or add more search terms.') %]
+          [% loc('search.be-more-specific') %]
         </p>
         <br />
         <div id="inlineSearch">
@@ -76,13 +76,13 @@
           <th class="toggle">
           [% predicate_with_params = BLOCK %]?[% predicate %];scope=[% scope %];orig_search_term=[% search_term %];sortby=[% sortby %];direction=[% direction || sortdir.$sortby %][%- END %]
           <div class="toggle">
-            [% loc('Show:') %]
+            [% loc('nav.show:') %]
             [% IF summaries %]
-               <a href="[% predicate_with_params %];summaries=0;limit=[% limit %];offset=[% offset %]" [% IF ! summaries %] class="selected" [% END %]>[% loc('Titles') %]</a> | 
-               [% loc('Summaries') %]
+               <a href="[% predicate_with_params %];summaries=0;limit=[% limit %];offset=[% offset %]" [% IF ! summaries %] class="selected" [% END %]>[% loc('page.titles') %]</a> | 
+               [% loc('page.summaries') %]
             [% ELSE %]
-               [% loc('Titles') %] |
-               <a href="[% predicate_with_params %];summaries=1;limit=[% limit %];offset=[% offset %]" [% IF summaries %] class="selected" [% END %]>[% loc('Summaries') %]</a>
+               [% loc('page.titles') %] |
+               <a href="[% predicate_with_params %];summaries=1;limit=[% limit %];offset=[% offset %]" [% IF summaries %] class="selected" [% END %]>[% loc('page.summaries') %]</a>
             [% END %]
             [% IF pager %]
             &mdash;
@@ -92,22 +92,22 @@
           </th>
           [% IF !hide_sort_widget %]
           <th class="sort">
-          [% loc('Sort by:') %]
+          [% loc('sort.by:') %]
             <select id="sort-picker" onchange="sort_by();">
               [% IF allow_relevance %]
-                [% PROCESS sort_by_option name = loc('Relevance') field = 'Relevance' %]
+                [% PROCESS sort_by_option name = loc('sort.relevance') field = 'Relevance' %]
               [% END %]
-                [% PROCESS sort_by_option name = loc('Title') field = 'Subject' %]
+                [% PROCESS sort_by_option name = loc('sort.title') field = 'Subject' %]
               [% IF show_workspace %]
-                [% PROCESS sort_by_option name = loc('Workspace') field = 'Workspace' %]
+                [% PROCESS sort_by_option name = loc('sort.wiki') field = 'Workspace' %]
               [% END %]
               [% IF ! no_user_sorting %]
-                [% PROCESS sort_by_option name = loc('Last Edited By') field = 'username' %]
-                [% PROCESS sort_by_option name = loc('Created By') field = 'creator' %]
+                [% PROCESS sort_by_option name = loc('sort.last-edited') field = 'username' %]
+                [% PROCESS sort_by_option name = loc('sort.creator') field = 'creator' %]
               [% END %]
-              [% PROCESS sort_by_option name = loc('Date Last Edited') field = 'Date' %]
-              [% PROCESS sort_by_option name = loc('Date Created') field = 'create_time' %]
-              [% PROCESS sort_by_option name = loc('Revisions') field = 'revision_count' %]
+              [% PROCESS sort_by_option name = loc('sort.edited') field = 'Date' %]
+              [% PROCESS sort_by_option name = loc('sort.created') field = 'create_time' %]
+              [% PROCESS sort_by_option name = loc('sort.revisions') field = 'revision_count' %]
           </select>
           </th>
           [% END %]
@@ -142,28 +142,28 @@
         [% END %]
         [% IF row.is_attachment %]
           <a class="titleLink" href="/data/workspaces/[% row.workspace_name || current_workspace.name %]/attachments/[% row.page_uri %]:[% row.id %]/original/[% row.document_title %]">[% row.document_title %]</a>
-          [% loc('attached to page') %]
+          [% loc('file.attached-to-page') %]
           <a href="/[% row.workspace_name || current_workspace.name %]/[% row.page_uri %]">[% row.Subject | html %]</a>
         [% ELSE %]
           <a class="titleLink" href="/[% row.workspace_name || current_workspace.name %]/[% row.page_uri %]">[% row.Subject | html %]</a>
         [% END %]
-        [% IF row.workspace_title %][% loc('in') %] <a href="/[% row.workspace_name %]">[% row.workspace_title %]</a>[% END %]
+        [% IF row.workspace_title %][% loc('info.in') %] <a href="/[% row.workspace_name %]">[% row.workspace_title %]</a>[% END %]
         [% IF summaries %]
           <div class="summary">[% row.Summary %]</div>
           [% IF row.edit_summary %]
-            <div class="edit_summary">[% loc('Edit summary') %]: [% row.edit_summary %]</div>
+            <div class="edit_summary">[% loc('nav.summary') %]: [% row.edit_summary %]</div>
           [% END %]
         [% END %]
         <div class="byline">
-        <span class="originally-created-by">[% loc('Originally <strong>created</strong> by') %] [% row.creator | decorate('user_avatar') %] [% loc('on') %] [% row.create_time_local %]</span>.
+        <span class="originally-created-by">[% loc('page.creator') %] [% row.creator | decorate('user_avatar') %] [% loc('info.on') %] [% row.create_time_local %]</span>.
         <span class="byline-separator">&nbsp;</span>
-        <span class="last-updated-by">[% loc('Last <strong>updated</strong> by') %] [% row.username | decorate('user_avatar') %] [% loc('on') %] [% row.DateLocal %].</span>
-        <span class="revision-count">(<a href="/[% row.workspace_name || current_workspace.name %]/?action=revision_list;page_name=[% row.page_uri %]">[% row.revision_count %]</a> [% loc('Revisions') %])</span>
+        <span class="last-updated-by">[% loc('page.last-updated') %] [% row.username | decorate('user_avatar') %] [% loc('info.on') %] [% row.DateLocal %].</span>
+        <span class="revision-count">(<a href="/[% row.workspace_name || current_workspace.name %]/?action=revision_list;page_name=[% row.page_uri %]">[% row.revision_count %]</a> [% loc('sort.revisions') %])</span>
         </div>
         </td>
     [% IF listview_extra_columns.watchlist %]
         <td class="listview-watchlist">
-        <a id="st-watchlist-indicator-[% row.page_uri %]" class="on watch" href="#" title="[% loc('Stop Watching') %]">[% loc('Stop Watching') %]</a>
+        <a id="st-watchlist-indicator-[% row.page_uri %]" class="on watch" href="#" title="[% loc('watch.stop') %]">[% loc('watch.stop') %]</a>
         </td>
     [% END %]
         </tr>
@@ -196,6 +196,6 @@
 
 
 [% BLOCK list_pager %]
-    <b>[% loc('Showing [_1] - [_2] of [_3] total.', offset + 1, last, pager.total_entries) %]</b>
+    <b>[% loc('info.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b>
     [% INCLUDE "view/paging" %]
 [% END %]

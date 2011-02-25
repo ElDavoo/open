@@ -421,7 +421,7 @@ sub import_file {
     my $version = $hash->{version};
     if ($version && ($version > $EXPORT_VERSION)) {
         die loc(
-            "Cannot import an Account with a version greater than [_1]",
+            "error.import-account=max-version",
             $EXPORT_VERSION
         );
     }
@@ -430,7 +430,7 @@ sub import_file {
     $hash->{import_name} = $name;
     my $account = $class->new(name => $name);
     if ($account && !$account->is_placeholder()) {
-        die loc("Account [_1] already exists!", $name) . "\n";
+        die loc("error.exists=account!", $name) . "\n";
     }
 
     my %acct_params = (
@@ -469,7 +469,7 @@ sub import_file {
     }
 
     if ($hash->{logo}) {
-        print loc("Importing account logo ...") . "\n";
+        print loc("account.importing-logo") . "\n";
         eval {
             my $image = MIME::Base64::decode($hash->{logo});
             $account->logo->set(\$image);
@@ -478,7 +478,7 @@ sub import_file {
         warn "Could not import account logo: $@" if $@;
     }
     
-    print loc("Importing users..."), "\n";
+    print loc("user.importing"), "\n";
     my @profiles;
     for my $user_hash (@{ $hash->{users} }) {
 
@@ -539,15 +539,15 @@ sub import_file {
     # Create all the profiles after so that user references resolve.
     eval "require Socialtext::People::Profile";
     unless ($@) {
-        print loc("Importing people profiles ...") . "\n";
+        print loc("profile.importing") . "\n";
         Socialtext::People::Profile->create_from_hash( $_ ) for @profiles;
     }
 
     if ($hash->{plugins}) {
-        print loc("Enabling account plugins ...") . "\n";
+        print loc("account.enabling-plugins") . "\n";
         for my $plugin_name (@{ $hash->{plugins} }) {
             unless (Socialtext::Pluggable::Adapter->plugin_exists($plugin_name)) {
-                print loc("... '[_1]' plugin missing; skipping", $plugin_name) . "\n";
+                print loc("account.skip-missing=plugin", $plugin_name) . "\n";
                 next;
             }
             eval {
@@ -1075,7 +1075,7 @@ sub _validate_and_clean_data {
     if ( ( exists $p->{name} or $is_create )
          and not
          ( defined $p->{name} and length $p->{name} ) ) {
-        push @errors, loc('Account name is a required field.');
+        push @errors, loc('error.account-name-required');
     }
 
     if ($p->{all_users_workspace}) {
@@ -1089,7 +1089,7 @@ sub _validate_and_clean_data {
                 $skin = Socialtext::Skin->new(name => $p->{backup_skin_name});
             }
             my $msg = loc(
-                "The skin you specified, [_1], does not exist.", $p->{skin_name}
+                "error.no-skin=name", $p->{skin_name}
             );
             if ($skin->exists) {
                 warn $msg . "\n";
@@ -1103,27 +1103,27 @@ sub _validate_and_clean_data {
     delete $p->{backup_skin_name};
 
     if ( defined $p->{name} && Socialtext::Account->new( name => $p->{name} ) ) {
-        push @errors, loc('The account name you chose, [_1], is already in use.',$p->{name} );
+        push @errors, loc('error.account-exists=name',$p->{name} );
     }
 
     if ( not $is_create and $self->is_system_created and $p->{name} ) {
-        push @errors, loc('You cannot change the name of a system-created account.');
+        push @errors, loc('error.set-system-account-name');
     }
 
     if ( not $is_create and $p->{is_system_created} ) {
-        push @errors, loc('You cannot change is_system_created for an account after it has been created.');
+        push @errors, loc('error.set-system-account');
     }
 
     if ($p->{account_type} and !$VALID_TYPE{ $p->{account_type} }) {
         push @errors, 
-            loc("Account type ([_1]) is not valid!", $p->{account_type});
+            loc("error.invalid=account-type!", $p->{account_type});
     }
 
     if ($p->{restrict_to_domain}
         and !Socialtext::Helpers->valid_email_domain( $p->{restrict_to_domain} )
     ) {
         push @errors,
-            loc("Domain ([_1]) is not valid!", $p->{restrict_to_domain});
+            loc("error.invalid=domain!", $p->{restrict_to_domain});
     }
 
     unless (defined $p->{allow_invitation}) {

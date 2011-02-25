@@ -28,17 +28,17 @@ GetOptions(
 my $Interval = shift;
 
 my %label = (
-    queued => loc('Number of jobs enqueued'),
-    grabbed => loc('Number of jobs "grabbed" for work'),
-    delayed => loc('Number of jobs with a delayed start time'),
-    num_ok => loc('Successful job count'),
-    num_fail => loc('Failed job count'),
-    last_ok => loc('Most recent success time'),
-    last_fail => loc('Most recent failure time'),
-    latest => loc('Most recently (latest) enqueued time'),
-    latest_nodelay => loc('Most recently (latest) enqueued time, without a delayed start'),
-    earliest => loc('Earliest (oldest) enqueued time'),
-    earliest_nodelay => loc('Earliest (oldest) enqueued time, without a delayed start'),
+    queued => loc('job.count-enqueued'),
+    grabbed => loc('job.count-grabbed'),
+    delayed => loc('job.count-delay'),
+    num_ok => loc('job.count-success'),
+    num_fail => loc('job.count-failed'),
+    last_ok => loc('job.last-success'),
+    last_fail => loc('job.last-failure'),
+    latest => loc('job.newest'),
+    latest_nodelay => loc('job.newest-without-delay'),
+    earliest => loc('job.oldest'),
+    earliest_nodelay => loc('job.oldest-without-delay'),
 );
 
 my %header = (
@@ -65,11 +65,11 @@ my @min_stats = grep /^(?:earliest)/, @stat_order;
 my @time_stats = grep /^(?:last_|latest|earliest)/, @stat_order;
 my @sum_stats = qw(queued grabbed delayed num_ok num_fail); 
 
-my $name_header = loc('Job Type');
-my $total = loc('Total');
+my $name_header = loc('job.type');
+my $total = loc('job.total');
 
 if ($verbose) {
-    print loc('Key:'),$/;
+    print loc('job.key:'),$/;
     for my $key (@stat_order) {
         print "\t$header{$key}: $label{$key}\n";
     }
@@ -80,7 +80,7 @@ if ($verbose) {
     print "ceq-stat\n";
 }
 else {
-    print "ceq-stat: ".loc('HINT try --verbose for a key and extra columns')."\n";
+    print "ceq-stat: ".loc('info.verbose')."\n";
 }
 
 while (1) {
@@ -131,7 +131,7 @@ sub show_total {
         for my $row (@table) {
             $row->[$i] = $row->[$i] > 0
                 ? strftime('%m/%d@%T',localtime($row->[$i]))
-                : loc('Never');
+                : loc('time.never');
         }
     }
 

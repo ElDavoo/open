@@ -19,8 +19,8 @@ Person.prototype = {
     },
 
     linkText: function() {
-        return this.isFollowing() ? loc('Stop following this person')
-                                  : loc('Follow this person');
+        return this.isFollowing() ? loc('do.unfollow')
+                                  : loc('do.follow');
     },
 
     createFollowLink: function() {
@@ -175,7 +175,7 @@ Avatar.prototype = {
 
     showError: function() {
         this.contentNode
-            .html(loc('Error retreiving user data'));
+            .html(loc('error.user-data'));
         this.mouseOver();
     },
 
