@@ -14,7 +14,7 @@ my %Lexicon;
 my $errors = 0;
 my $lang = shift or die "Usage: $0 <lang>\n";
 $lang =~ s/-/_/g;
-$lang =~ s/(_\w+)$/uc $1/;
+$lang =~ s/(_\w+)$/uc $1/e;
 for my $po (glob("share/l10n/$lang/*.po")) {
     next if $po =~ /lib\.po$/; # Not going to occur in JS
 
@@ -25,7 +25,9 @@ for my $po (glob("share/l10n/$lang/*.po")) {
 
     while (<$in>) {
         my ($comments, $id, $str) = split(/\n(?=msg)/, "\n$_");
+        $id =~ s/\\n/\x{FFFC}/g;
         $id = gettext_to_maketext(trim($id));
+        $str =~ s/\\n/\x{FFFC}/g;
         $str = gettext_to_maketext(trim($str));
         $Lexicon{$id} = $str unless $id eq $str;
     }
@@ -35,6 +37,8 @@ my $js_file = "share/skin/s3/javascript/l10n/$lang.js";
 open my $js, '>', $js_file;
 print $js ";var LocalizedStrings={\"$lang\":{\n";
 my $json = encode_json \%Lexicon;
+utf8::decode($json);
+$json =~ s/\x{FFFC}/\\n/g;
 $json =~ s/^\{//;
 $json =~ s/","/"\n"/g;
 $json =~ s/\}$//;
@@ -45,5 +49,5 @@ system("dev-bin/jsmake");
 warn "*** Generated successfully: $js_file\n";
 
 my $po_file = "share/l10n/$lang.po";
-system("msgcat --width 99999 -s share/l10n/$lang/*.po > $po_file");
+system("msgcat --width 99999 --use-first -s @{[reverse sort glob(qq[share/l10n/$lang/*.po])]} > $po_file");
 warn "*** Generated successfully: $po_file\n";
