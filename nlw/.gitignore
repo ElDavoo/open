@@ -573,3 +573,6 @@ t/wikitests/socialcalc/csv-forumulas-put.wiki
 t/Socialtext/Gadgets/Container/Dashboard-central_workspace.t
 t/wikitests/socialcalc/csv-numbers-put.wiki
 lib/Socialtext/Handler/Gadget/Group.pm
+t/Socialtext/Gadgets/Gadget-views.t
+t/widget/views-html-good.xml
+t/widget/views-url.xml
