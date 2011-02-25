@@ -32,7 +32,7 @@
 | set | ws10_suffix | 10-wiki-%%start_time%% |
 | set | ws11_suffix | 11-wiki-%%start_time%% |
 
-| create_account | %%agw_acct%% |  |
+| create_account | %%agw_acct%% |  |  |
 | create_user | %%agw_user%% | %%password%% | %%agw_acct%% |
 | create_group | %%agw_group%% | %%agw_acct%% | %%agw_user%% |
 | set | agw_group_id | %%group_id%% |  |
@@ -60,7 +60,7 @@
 | add_workspace_admin | %%agw_user%% | %%ws10%% |  |
 | add_workspace_admin | %%agw_user%% | %%ws11%% |  |
 
-| *Comment* | Test Case: Associate Group With Workspace user cannot add workspace if he is not admin |  |
+| *Comment* | Test Case: Associate Group With Workspace user cannot add workspace if he is not workspace admin |  |
 | st-logoutin | %%agw_user%% | %%password%% |
 | open_ok | /st/edit_group/%%agw_group_id%% |  |
 | wait_for_text_present_ok | Edit Group: %%agw_group%% | 30000 |
@@ -122,7 +122,7 @@
 | wait_for_element_visible_ok | create-group | 30000 |
 | click_and_wait | create-group |  |
 
-| *Comment* | Test Case: Associate Group With Workspace check behavior of list of already added wikis |  |
+| *Comment* | Test Case: Associate Group With Workspace check behavior of list of already added wikis in group edit page |  |
 | open_ok | /st/edit_group/%%agw_group_id%% |  |
 | wait_for_text_present_ok | Edit Group: %%agw_group%% | 30000 |
 | st-name-widget | 2 | wiki |
@@ -145,7 +145,7 @@
 | wait_for_element_not_present_ok | link=%%ws10%% | 30000 |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Associate Group With Workspace add all wikis to group to test list pagination |  |
+| *Comment* | Test Case: Associate Group With Workspace add all wikis to group to test list pagination of already added wikis in edit page |  |
 | add-group-to-workspace | %%agw_group_id%% | %%ws1%% |
 | add-group-to-workspace | %%agw_group_id%% | %%ws3%% |
 | add-group-to-workspace | %%agw_group_id%% | %%ws4%% |
@@ -157,7 +157,7 @@
 | add-group-to-workspace | %%agw_group_id%% | %%ws10%% |
 | add-group-to-workspace | %%agw_group_id%% | %%ws11%% |
 
-| *Comment* | Test Case: Associate Group With Workspace test pagination of already added list |  |
+| *Comment* | Test Case: Associate Group With Workspace test pagination of already added list in group edit page workspaces widget |  |
 | open_ok | /st/edit_group/%%agw_group_id%% |  |
 | wait_for_text_present_ok | Edit Group: %%agw_group%% | 30000 |
 | st-name-widget | 2 | wiki |
@@ -185,18 +185,18 @@
 
 | *Comment* | Test Case: Associate Group With Workspace TEARDOWN |  |
 | st-admin | deactivate-user --email %%agw_user%% | removed |
-| delete-group | %%agw_group_id%% |  |
-| st-admin | delete-workspace --workspace %%ws1%% --no-export | deleted |
-| st-admin | delete-workspace --workspace %%ws2%% --no-export | deleted |
-| st-admin | delete-workspace --workspace %%ws3%% --no-export | deleted |
-| st-admin | delete-workspace --workspace %%ws4%% --no-export | deleted |
-| st-admin | delete-workspace --workspace %%ws5%% --no-export | deleted |
-| st-admin | delete-workspace --workspace %%ws6%% --no-export | deleted |
-| st-admin | delete-workspace --workspace %%ws7%% --no-export | deleted |
-| st-admin | delete-workspace --workspace %%ws8%% --no-export | deleted |
-| st-admin | delete-workspace --workspace %%ws9%% --no-export | deleted |
-| st-admin | delete-workspace --workspace %%ws10%% --no-export | deleted |
-| st-admin | delete-workspace --workspace %%ws11%% --no-export | deleted |
-| st-admin | delete-workspace --workspace %%ws_noadmin%% --no-export | deleted |
+| delete-group | %%agw_group_id%% | Recklessly deleting group |
+| delete-workspace | %%ws1%% | Recklessly deleting workspace |
+| delete-workspace | %%ws2%% | Recklessly deleting workspace |
+| delete-workspace | %%ws3%% | Recklessly deleting workspace |
+| delete-workspace | %%ws4%% | Recklessly deleting workspace |
+| delete-workspace | %%ws5%% | Recklessly deleting workspace |
+| delete-workspace | %%ws6%% | Recklessly deleting workspace |
+| delete-workspace | %%ws7%% | Recklessly deleting workspace |
+| delete-workspace | %%ws8%% | Recklessly deleting workspace |
+| delete-workspace | %%ws9%% | Recklessly deleting workspace |
+| delete-workspace | %%ws10%% | Recklessly deleting workspace |
+| delete-workspace | %%ws11%% | Recklessly deleting workspace |
+| delete-workspace | %%ws_noadmin%% | Recklessly deleting workspace |
 
 | *Comment* | Test Case: Associate Group With Workspace COMPLETED |  |

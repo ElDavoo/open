@@ -1,4 +1,6 @@
 *This test assumes that a SameTime client is currently running on the installation being tested*
+*This test has to be run manually on a Windows Desktop running the Sametime client so it is not linked into any testset.*
+*However, it is linked from the wikitests homepage to keep it from popping up as an orphan*
 
 | *Comment* | Test Case: SameTime Links |  |
 
