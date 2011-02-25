@@ -2,12 +2,15 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 21;
+use Test::Socialtext tests => 39;
 use Socialtext::CLI;
 use Test::Socialtext::CLIUtils qw(:all);
 use Test::Socialtext::User;
+use Email::Send::Test;
 
 fixtures(qw( db ));
+
+$Socialtext::EmailSender::Base::SendClass = 'Test';
 
 ###############################################################################
 # TEST: Can confirm User with outstanding e-mail confirmation.
@@ -117,4 +120,84 @@ change_password_removes_restrictions: {
     # reload User and check that the restriction is now gone
     $user->reload;
     ok !$user->password_change_confirmation, '... password change cleared';
+}
+
+###############################################################################
+# TEST: Add an "email confirmation" restriction to a User
+add_email_confirmation_restriction: {
+    my $guard = Test::Socialtext::User->snapshot;
+    my $user  = create_test_user;
+    ok $user, 'Created test user';
+
+    ok !$user->email_confirmation, '... has no e-mail confirmation';
+    Email::Send::Test->clear;
+
+    expect_success(
+        call_cli_argv(
+            'add-restriction',
+            '--username'    => $user->username,
+            '--restriction' => 'email_confirmation',
+        ),
+        qr/has been given the 'email_confirmation' restriction/,
+        '... given an e-mail confirmation restriction'
+    );
+
+    ok $user->email_confirmation, '... User now has e-mail confirmation';
+
+    my @emails = Email::Send::Test->emails();
+    is @emails, 1, '... and an e-mail message was sent';
+}
+
+###############################################################################
+# TEST: Add a "password change" restriction to a User
+add_password_change_restriction: {
+    my $guard = Test::Socialtext::User->snapshot;
+    my $user  = create_test_user;
+    ok $user, 'Created test user';
+
+    ok !$user->password_change_confirmation,
+        '... has no password change restriction';
+    Email::Send::Test->clear;
+
+    expect_success(
+        call_cli_argv(
+            'add-restriction',
+            '--username'    => $user->username,
+            '--restriction' => 'password_change',
+        ),
+        qr/has been given the 'password_change' restriction/,
+        '... given a password change restriction'
+    );
+
+    ok $user->password_change_confirmation,
+        '... User now has password change restriction';
+
+    my @emails = Email::Send::Test->emails();
+    is @emails, 1, '... and an e-mail message was sent';
+}
+
+###############################################################################
+# TEST: Add an unknown/invalid restriction to a User
+add_invalid_restriction: {
+    my $guard = Test::Socialtext::User->snapshot;
+    my $user  = create_test_user;
+    ok $user, 'Created test user';
+
+    is $user->restrictions->count, 0, '... has no restrictions';
+    Email::Send::Test->clear;
+
+    expect_failure(
+        call_cli_argv(
+            'add-restriction',
+            '--username'    => $user->username,
+            '--restriction' => 'invalid-restriction',
+        ),
+        qr/unknown restriction type, 'invalid-restriction'/,
+        '... failed due to unknown restriction type'
+    );
+
+    is $user->restrictions->count, 0, '... User still has no restrictions';
+
+    my @emails = Email::Send::Test->emails();
+    is @emails, 0, '... and NO e-mail message was sent';
 }

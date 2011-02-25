@@ -960,6 +960,25 @@ sub confirm_user {
                         . $password );
 }
 
+sub add_restriction {
+    my $self = shift;
+    my $user = $self->_require_user();
+    my $type = $self->_require_string('restriction');
+
+    my $restriction = eval {
+        Socialtext::User::Restrictions->CreateOrReplace( {
+            user_id          => $user->user_id,
+            restriction_type => $type,
+        } );
+    };
+    $self->_error($@) if ($@);
+
+    $restriction->send;
+    $self->_success(
+        loc("[_1] has been given the '[_2]' restriction'", $user->username, $type)
+    );
+}
+
 # revoke a user's access to everything
 sub deactivate_user {
     my $self = shift;
