@@ -4023,6 +4023,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   can-lock-pages [--username or --email] --workspace
   locked-pages --workspace
   mass-add-users --csv --account
+  add-restriction [--username or --email] --restriction
 
   WORKSPACES
 
@@ -4319,6 +4320,25 @@ default account.
 When updating users, if no account is specified, the user will be left in the
 account that they are currently assigned to.  If an account is provided when
 updating users, the users will be (re-)assigned to that account.
+
+=head2 add-restriction [--username or --email] --restriction
+
+Adds a restriction to a User record.  Once restricted, the User will B<not> be
+able to log in to the system until the restriction has been lifted.
+
+Available restrictions include:
+
+=over
+
+=item email_confirmation
+
+Requires that the User re-confirm their e-mail address.
+
+=item password_change
+
+Requires that the User to change their password.
+
+=back
 
 =head2 set-permissions --workspace --permissions
 
