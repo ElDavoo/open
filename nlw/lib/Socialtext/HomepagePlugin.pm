@@ -65,7 +65,7 @@ sub dashboard {
             $self->hub->helpers->global_template_vars,
             did_you_know_title => $did_you_know_title,
             did_you_know_text  => $did_you_know_text,
-            title          => loc('Dashboard'),
+            title          => loc('wiki.dashboard'),
             username       => $self->hub->current_user->username,
             group_notes    => $self->_get_group_notes_info,
             personal_notes => $self->_get_personal_notes_info,
@@ -75,7 +75,7 @@ sub dashboard {
             hub            => $self->hub,
             feeds          => $self->_feeds( $self->hub->current_workspace ),
             unplug_uri     => "?action=unplug",
-            unplug_phrase  => loc('Click this button to save the [_1] most recent pages to your computer for offline use.', $self->hub->tiddly->default_count),
+            unplug_phrase  => loc('info.unplug-recent=count', $self->hub->tiddly->default_count),
         },
     );
 }
@@ -83,7 +83,7 @@ sub dashboard {
 
 sub _get_group_notes_info {
     my ($self) = @_;
-    my $page_title = loc('Announcements and Links');
+    my $page_title = loc('wiki.notes-title');
     return {
         html      => $self->hub->pages->new_from_name($page_title)->to_html_or_default,
         edit_path => $self->hub->helpers->page_edit_path($page_title),

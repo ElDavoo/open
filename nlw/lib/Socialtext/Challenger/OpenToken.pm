@@ -129,7 +129,7 @@ sub challenge {
     # If we don't have a User record, it wasn't provisioned; can't login as
     # the User, so fail.
     unless ($user) {
-        my $err = loc("Have valid token, but for unknown user '[_1]'.", $username);
+        my $err = loc("error.valid-token-for-unknown=user", $username);
         st_log->warning("ST::Challenger::OpenToken: $err");
         return $app->_handle_error(
             error => $err,

@@ -80,7 +80,7 @@ sub category_list {
 
     $self->screen_template('view/taglistview');
     return $self->render_screen(
-        display_title => loc("All Tags in Workspace"),
+        display_title => loc("wiki.all-tags"),
         rows          => \@rows,
         allow_delete  => 0,
     );
@@ -164,7 +164,7 @@ sub category_display {
     $self->screen_template('view/category_display');
     return $self->render_screen(
         summaries              => $self->show_summaries,
-        display_title          => loc("Tag: [_1]", $category),
+        display_title          => loc("nav.tag=tag", $category),
         predicate              => 'action=category_display;category=' . $uri_escaped_category,
         rows                   => $results->{rows},
         html_escaped_category  => $html_escaped_category,
@@ -174,7 +174,7 @@ sub category_display {
         sortby                 => $sortby,
         direction              => $direction,
         unplug_uri    => "?action=unplug;tag=$uri_escaped_category",
-        unplug_phrase => loc('Click this button to save the pages with the tag [_1] to your computer for offline use.', $html_escaped_category),
+        unplug_phrase => loc('info.unplug=tag', $html_escaped_category),
         load_row_times         => \&Socialtext::Query::Plugin::load_row_times,
         Socialtext::Pageset->new(
             cgi => {$self->cgi->all},
@@ -528,16 +528,16 @@ sub _set_titles {
     if ( $arguments =~ /blog/i ) {
   
         if ( $self->target_workspace ne $self->current_workspace_name ) {
-            $title_info = loc("Recent Posts from [_1] in workspace [_2]", $arguments, $self->target_workspace);
+            $title_info = loc("blog.recent-posts=tag,wiki", $arguments, $self->target_workspace);
         } else {
-            $title_info = loc("Recent Posts from [_1]", $arguments);
+            $title_info = loc("blog.recent-posts=tag", $arguments);
         }
     }
     else {
         if ( $self->target_workspace ne $self->current_workspace_name ) {
-            $title_info = loc("Recent Changes in Tag [_1] in workspace [_2]", $arguments, $self->target_workspace);
+            $title_info = loc("nav.recent-changes=tag,wiki", $arguments, $self->target_workspace);
         } else {
-            $title_info = loc("Recent Changes in Tag [_1]", $arguments);
+            $title_info = loc("nav.recent-changes=tag", $arguments);
         }
     }
     $self->wafl_query_title($title_info);

@@ -2,11 +2,11 @@
 <div class="pagination-container">
         <span class="paging-back">
             [% IF pager.current_page == pager.first_page %]
-                &laquo; [% loc('First') %]
-                &lsaquo; [% loc('Previous') %]
+                &laquo; [% loc('nav.first') %]
+                &lsaquo; [% loc('nav.previous') %]
             [% ELSE %]
-                &laquo; <a title="[% loc('First Page') %]" href="[% page_url %];offset=0;limit=[% limit %]">[% loc('First') %]</a>
-                &lsaquo; <a title="[% loc('Previous Page') %]" href="[% page_url %];offset=[% previous_page_offset %];limit=[% limit %]">[% loc('Previous') %]</a>
+                &laquo; <a title="[% loc('nav.first-page') %]" href="[% page_url %];offset=0;limit=[% limit %]">[% loc('nav.first') %]</a>
+                &lsaquo; <a title="[% loc('nav.previous-page') %]" href="[% page_url %];offset=[% previous_page_offset %];limit=[% limit %]">[% loc('nav.previous') %]</a>
             [% END %]
         </span>
         <span class="paging-numbers">
@@ -14,17 +14,17 @@
                 [% IF page == pager.current_page %]
                     <b>[% page %]</b>
                 [% ELSE %]
-                    <a href="[% page_url %];offset=[% (page - 1) * limit %];limit=[% limit %]" title="[% loc('Page') %] [% page %]">[% page %]</a>
+                    <a href="[% page_url %];offset=[% (page - 1) * limit %];limit=[% limit %]" title="[% loc('nav.page') %] [% page %]">[% page %]</a>
                 [% END %]
             [% END %]
         </span>
         <span class="paging-forward">
             [% IF pager.current_page == pager.last_page %]
-                [% loc('Next') %] &rsaquo;
-                [% loc('Last') %] &raquo;
+                [% loc('nav.next') %] &rsaquo;
+                [% loc('nav.last') %] &raquo;
             [% ELSE %]
-                <a title="[% loc('Next Page') %]" href="[% page_url %];offset=[% next_page_offset %];limit=[% limit %]">[% loc('Next') %]</a> &rsaquo;
-                <a title="[% loc('Last Page') %]" href="[% page_url %];offset=[% last_page_offset %];limit=[% limit %]">[% loc('Last') %]</a> &raquo;
+                <a title="[% loc('nav.next-page') %]" href="[% page_url %];offset=[% next_page_offset %];limit=[% limit %]">[% loc('nav.next') %]</a> &rsaquo;
+                <a title="[% loc('nav.last-page') %]" href="[% page_url %];offset=[% last_page_offset %];limit=[% limit %]">[% loc('nav.last') %]</a> &raquo;
             [% END %]
         </span>
 </div>

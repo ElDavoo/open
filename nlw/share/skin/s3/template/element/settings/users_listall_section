@@ -4,7 +4,7 @@
 [% INCLUDE element/settings/start %]
 
 <dl class="form">
-<dt><label>[% loc('Manage Workspace Membership') %]</label></dt>
+<dt><label>[% loc('config.membership') %]</label></dt>
 </dl>
 [% IF is_auw %]
   <p>All users from the <b>[% workspace.account.name %]</b> account are also members of
@@ -12,21 +12,21 @@
 [% END %]
 
 <dl class="form">
-<dt><label>[% loc('Users') %]</label></dt>
+<dt><label>[% loc('config.users') %]</label></dt>
 </dl>
 
 [% IF users_with_roles.size == 0 %]
-  <p>[% loc('There are no users directly associated with this workspace.') %]</p>
+  <p>[% loc('wiki.no-members') %]</p>
 [% ELSE %]
   <table style="margin: 1em 0">
   <tr>
     [% IF perm_admin %]
-      <th>[% loc('Remove') %]</th>
+      <th>[% loc('do.remove') %]</th>
     [% END %]
-      <th>[% loc('Email Address') %]</th>
-      <th>[% loc('Admin') %]</th>
+      <th>[% loc('user.email-address') %]</th>
+      <th>[% loc('user.admin') %]</th>
     [% IF perm_admin && appconfig.is_default('user_factories') %]
-      <th>[% loc('Reset Password') %]</th>
+      <th>[% loc('password.reset') %]</th>
     [% END %]
   </tr>
 
@@ -58,7 +58,7 @@
           <input type="checkbox" value="[% user.user_id %]" name="reset_password" />
         [% ELSE %]
           <input type="checkbox" name="reset_password" disabled="true"
-                 title="[% loc("This user's password cannot be reset") %]" />
+                 title="[% loc("error.cannot-reset-pasword") %]" />
         [% END %]
         </td>
       [% END %]
@@ -69,16 +69,16 @@
 
 [% IF is_business_admin OR NOT is_auw %]
   <dl class="form">
-  <dt><label>[% loc('Groups') %]</label></dt>
+  <dt><label>[% loc('nav.groups') %]</label></dt>
   </dl>
   [% IF groups_with_roles.size == 0 %]
-    <p>[% loc('There are no groups directly associated with this workspace.') %]</p>
+    <p>[% loc('wiki.no-groups') %]</p>
   [% ELSE %]
     <table>
     <tr>
-      <th>[% loc('Group name') %]</th>
-      <th>[% loc('Users') %]</th>
-      <th>[% loc('Role') %]</th>
+      <th>[% loc('group.name') %]</th>
+      <th>[% loc('config.users') %]</th>
+      <th>[% loc('user.role') %]</th>
     </tr>
 
     [% FOREACH gwr IN groups_with_roles %]

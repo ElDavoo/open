@@ -13,10 +13,10 @@
     <div id="contentColumns">
       <div id="contentLeft">
         <p>
-          [% loc('You are logged in as [_1]', '<b>' _ user.username _ '</b>') %]
+          [% loc('info.logged-in=name', '<b>' _ user.username _ '</b>') %]
         </p>
         <p>
-          <a href="/nlw/submit/logout[% IF wiki.is_public %]?redirect_to=[% wiki.uri | html %][% END %]">[% loc('Log out') %]</a>
+          <a href="/nlw/submit/logout[% IF wiki.is_public %]?redirect_to=[% wiki.uri | html %][% END %]">[% loc('nav.logout') %]</a>
         </p>
       </div>
       <div id="contentRight" class="wiki">

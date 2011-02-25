@@ -23,7 +23,7 @@ sub _prepare_listview {
     my %acct_set = map { $_->account_id => 1 } @$accounts;
 
     Socialtext::Exception::Auth->throw(
-        loc("not authorized: No Accounts have [_1] enabled", $plugin_name)."\n")
+        loc("error.no-account-with=plugin", $plugin_name)."\n")
         unless @$accounts;
 
     my ($account_id, $all_accounts, $group_id);
@@ -55,7 +55,7 @@ sub _prepare_listview {
         }
     }
 
-    Socialtext::Exception::Auth->throw(loc("Not authorized to use this Account")."\n")
+    Socialtext::Exception::Auth->throw(loc("error.account-forbidden")."\n")
         unless ($account_id eq 'all' || $acct_set{$account_id});
 
     my $sortby = $self->_calc_sortby($is_search, \%cgi_vars);;

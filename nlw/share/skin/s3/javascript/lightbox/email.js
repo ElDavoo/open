@@ -94,7 +94,7 @@ proto.show = function () {
                 return false;
             }
             else if (!Email.Page.check_address(val)) {
-                alert(loc('"[_1]" is not a valid email address.', val))
+                alert(loc('error.invalid=email', val))
                 jQuery('#email_page_add_one').focus();
                 return false;
             }
@@ -123,7 +123,7 @@ proto.show = function () {
                 jQuery('#email_add').click();
             }
             if ((jQuery('#email_dest').get(0).length <= 0 || self.firstAdd) && (!send_copy_checked)) {
-                alert(loc('Error: To send email, you must specify a recipient.'));
+                alert(loc('error.no-recipient'));
                 return false;
             }
             
@@ -140,7 +140,7 @@ proto.show = function () {
                     jQuery.hideLightbox();
                 },
                 error: function() {
-                    alert(loc('Error: Failed to send email.'));
+                    alert(loc('error.send-failed'));
                     jQuery('#email_send').parent('li').removeClass('disabled').removeClass('loading');
                     jQuery('#email_dest option').attr('selected', false);
                 }

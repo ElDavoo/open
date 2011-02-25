@@ -38,7 +38,7 @@ our $Default_notify_frequency = 1440;
 sub watchlist_notify_frequency {
     my $self = shift;
     my $p    = $self->new_preference('watchlist_notify_frequency');
-    $p->query(loc('How frequently would you like to receive watchlist emails?'));
+    $p->query(loc('watch.email-frequency?'));
     $p->type('pulldown');
     my $choices = [
         0     => 'Never',
@@ -60,11 +60,11 @@ sub watchlist_links_only {
     my $self = shift;
     my $p    = $self->new_preference('watchlist_links_only');
     $p->query(
-        loc('What information about changed pages do you want in email digests?'));
+        loc('email.page-digest-details?'));
     $p->type('radio');
     my $choices = [
-        condensed => loc('Page name and link only'),
-        expanded  => loc('Page name and link, plus author and date'),
+        condensed => loc('email.page-name-link-only'),
+        expanded  => loc('email.page-name-link-author-date'),
     ];
     $p->choices($choices);
     $p->default('expanded');
@@ -198,21 +198,21 @@ sub display_watchlist {
 
     my @pages = $watchlist->pages;
     if ( $#pages < 0 ) {
-        my $empty_message = loc("Your Watchlist in [_1] is empty.",
+        my $empty_message = loc("watch.empty=wiki",
             $self->hub->current_workspace->title);
         return $self->template_render(
             template => 'view/empty_watchlist',
             vars     => {
                 $self->hub->helpers->global_template_vars,
                 action        => 'display_watchlist',
-                title         => loc("Watchlist"),
+                title         => loc("nav.watchlist"),
                 empty_message => $empty_message,
                 feeds => $self->_feeds( $self->hub->current_workspace ),
                 enable_unplugged =>
                     $self->hub->current_workspace->enable_unplugged,
                 unplug_uri    => "?action=unplug;watchlist=default",
                 unplug_phrase =>
-                    loc("Click this button to save the pages you're watching for offline use."),
+                    loc("info.unplug-watchlist"),
             },
         );
     }
@@ -262,7 +262,7 @@ sub watchlist_changes {
         $self->push_result($page_object);
     }
     $self->result_set( $self->sorted_result_set( \%sortdir ) );
-    $self->result_set->{display_title} = loc("Pages You're Watching");
+    $self->result_set->{display_title} = loc("watch.current-pages");
     $self->result_set->{hits} = @{$self->result_set->{rows}};
 
     $self->write_result_set;

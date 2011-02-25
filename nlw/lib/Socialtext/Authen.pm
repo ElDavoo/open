@@ -34,8 +34,8 @@ sub check_password {
 
 sub username_label {
     return username_is_email()
-        ? loc('Email Address:')
-        : loc('Username:');
+        ? loc('login.email:')
+        : loc('login.name:');
 }
 
 sub remember_duration {
@@ -43,7 +43,7 @@ sub remember_duration {
     my $now     = DateTime->now();
     my $then    = DateTime->now->add(seconds => $expires);
     my $diff    = $then - $now;
-    return loc("[*,_1,day]", $diff->in_units('days'));
+    return loc("time.count=days", $diff->in_units('days'));
 }
 
 sub username_is_email {

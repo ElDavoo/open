@@ -3,13 +3,13 @@
     [% IF hub.action != 'users_listall' OR perm_admin %]
       <li class="flexButton">
         <a class="genericOrangeButton" id="[% ns %]-savelink" href="#" onclick="document.forms['settings'].submit(); return false">
-          [% save_button_value || loc('Save') %]
+          [% save_button_value || loc('edit.save') %]
         </a>
       </li>
     [% END %]
     <li class="flexButton">
       <a class="genericOrangeButton" id="[% ns %]-cancellink" href="#" onclick="document.forms['settings'].reset(); return false">
-        [% loc('Cancel') %]
+        [% loc('do.cancel') %]
       </a>
     </li>
   </ul>

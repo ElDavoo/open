@@ -9,7 +9,7 @@ use Socialtext::l10n 'loc';
 sub collection_name { 
     my $self = shift;
     my $user = Socialtext::User->Resolve($self->user);
-    return loc("[_1]'s Activity", $user->best_full_name);
+    return loc("rest.activity=user", $user->best_full_name);
 }
 
 sub get_resource {

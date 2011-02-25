@@ -821,8 +821,8 @@ sub deactivate {
         $self->update_store( password => '*no-password*', no_crypt => 1 );
     }
     else {
-        warn loc("The user has been removed from workspaces and directories.") . "\n";
-        warn loc("Login information is controlled by the [_1] directory administrator.", $self->driver_name) . "\n\n";
+        warn loc("user.deactivated") . "\n";
+        warn loc("info.login-admin=driver", $self->driver_name) . "\n\n";
     }
 
     # leaves things referencing this user in place
@@ -891,7 +891,7 @@ sub _call_hook {
         shift;
         my %p = validate( @_, $spec );
 
-        return ( loc("Passwords must be at least 6 characters long.") )
+        return ( loc("error.password-too-short") )
             unless length $p{password} >= 6;
 
         return;
@@ -1499,9 +1499,9 @@ sub send_confirmation_email {
     $email_sender->send(
         to        => $self->name_and_email(),
         subject   => $target_workspace ? 
-            loc('Welcome to the [_1] workspace - please confirm your email to join', $target_workspace->title)
+            loc('wiki.welcome-confirm=name', $target_workspace->title)
             :
-            loc('Welcome to the [_1] community - please confirm your email to join', $self->primary_account->name),
+            loc('account.welcome-confirm=name', $self->primary_account->name),
         text_body => $text_body,
         html_body => $html_body,
     );
@@ -1518,17 +1518,17 @@ sub send_confirmation_completed_email {
 
     my $app_name =
         Socialtext::AppConfig->is_appliance()
-        ? loc('Socialtext Appliance')
-        : loc('Socialtext');
+        ? loc('email.socialtext-appliance')
+        : loc('email.socialtext');
     my @workspaces = [];
     my @groups = [];
     my $subject;
     my $ws = $target_workspace;
     if ($ws) {
-        $subject = loc('You can now login to the [_1] workspace', $ws->title());
+        $subject = loc('email.confirmation-subject=wiki', $ws->title());
     }
     else {
-        $subject = loc("You can now login to the [_1] application", $app_name);
+        $subject = loc("email.confirmation-subject=app", $app_name);
         @groups = $self->groups->all;
         @workspaces = $self->workspaces->all;
     }
@@ -1591,7 +1591,7 @@ sub send_password_change_email {
     my $email_sender = Socialtext::EmailSender::Factory->create($locale);
     $email_sender->send(
         to        => $self->name_and_email(),
-        subject   => loc('Please follow these instructions to change your Socialtext password'),
+        subject   => loc('info.reset-password'),
         text_body => $text_body,
         html_body => $html_body,
     );
@@ -1646,7 +1646,7 @@ sub send_confirmation_completed_signal {
 
     my $user_wafl = '{user: '.$self->user_id.'}';
     my $body =
-        loc('[_1] just joined the [_2] group. Hi everybody!', $user_wafl, $self->primary_account->name);
+        loc('info.just-joined=user,group!', $user_wafl, $self->primary_account->name);
     eval {
         $signals->Send({
             user => $self,

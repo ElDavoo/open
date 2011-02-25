@@ -22,10 +22,10 @@ ST.SimpleLightbox.prototype = {
 
 function errorLightbox(error, cb) {
     var lb = new ST.SimpleLightbox;
-    lb.show(loc('Error'), error, cb);
+    lb.show(loc('nav.error'), error, cb);
 }
 
 function successLightbox(msg, cb) {
     var lb = new ST.SimpleLightbox;
-    lb.show(loc('Success'), msg, cb);
+    lb.show(loc('info.success'), msg, cb);
 }

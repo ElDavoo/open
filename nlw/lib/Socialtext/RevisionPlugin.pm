@@ -114,7 +114,7 @@ sub revision_view {
             $page->tags_sorted ],
         edit_summary_maxlength => EDIT_SUMMARY_MAXLENGTH(),
         display_title    => $self->html_escape( $page->title ),
-        display_title_decorator  => loc("Revision [_1]", $revision_num),
+        display_title_decorator  => loc("page.revision=revision", $revision_num),
         print                   => $output,
     );
 }
@@ -180,7 +180,7 @@ sub revision_compare {
         diff_rows     => $differ->diff_rows,
         header        => $differ->header,
         display_title => $self->html_escape($page->title),
-        display_title_decorator => loc("Compare Revisions [_1] and [_2]", $old_revision, $new_revision),
+        display_title_decorator => loc("revision.compare=old,new", $old_revision, $new_revision),
     );
 }
 
@@ -248,7 +248,7 @@ sub header {
     for my $page ($self->before_page, $self->after_page) {
         my %col;
         my $pretty_revision = $page->revision_num;
-        my $rev_text = loc('Revision [_1]', $pretty_revision);
+        my $rev_text = loc('page.revision=revision', $pretty_revision);
         $col{link} = Socialtext::Helpers->script_link(
             "<strong>$rev_text</strong></a>",
             action      => 'revision_view',

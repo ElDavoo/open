@@ -9,7 +9,7 @@
                             [%- IF entry.exists('icon') -%]
                                 <img src="[% entry.icon(item) %]"/>
                             [%- END -%]
-                            [%- entry.title(item) | label_ellipsis(25) | html_encode %][% IF item.default %] ([% loc("Default") %])[% END -%]
+                            [%- entry.title(item) | label_ellipsis(25) | html_encode %][% IF item.default %] ([% loc("nav.default") %])[% END -%]
                         </a>
                     </li>
                     [%- IF item.default %]<li style="background-color: #eee;">&nbsp;</li>[% END -%]

@@ -4,12 +4,12 @@
   <input type="hidden" name="action" value="workspaces_unsubscribe" />
   <input type="hidden" name="preferences_class_id" value="[% preferences_class_id %]" />
   <dl class="form">
-    <dt><label>[% loc('Unsubscribe') %]</label></dt>
+    <dt><label>[% loc('do.unsubscribe') %]</label></dt>
     <dd>
-      [% loc('Only Click the button below if you wish to be unsubscribed from this workspace. After clicking you will no longer have access to this workspace unless you are resubscribed by a Workspace administrator at a later time.') %]
+      [% loc('wiki.confirm-unsubscribe') %]
     </dd>
     <dd>
-      <input type="submit" value="[% loc('Unsubscribe from the [_1] workspace', workspace.name) %]" name="Button"/>
+      <input type="submit" value="[% loc('do.unsubscribe=wiki', workspace.name) %]" name="Button"/>
     </dd>
   </dl>
 </form>

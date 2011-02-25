@@ -181,13 +181,13 @@ sub _get_page_for_subject {
     my $subject = $self->_clean_subject();
     if (length Socialtext::String::uri_escape($subject) 
         > Socialtext::String::MAX_PAGE_ID_LEN ) {
-        data_validation_error loc("Page title is too long after URL encoding");
+        data_validation_error loc("error.page-title-too-long");
         return;
     }
 
     my $page = $self->{hub}->pages()->new_from_name($subject);
     if (! defined($page) ) {
-        data_validation_error loc("Page title is too long after URL encoding");
+        data_validation_error loc("error.page-title-too-long");
         return;
     }
     $page->edit_rev();
@@ -651,7 +651,7 @@ sub _make_page_header {
     my $self = shift;
 
     my @header = ('');                 # will become a newline
-    my $from   = loc('From:') . ' ';
+    my $from   = loc('email.from:') . ' ';
     if ( my $name = $self->{from}->name() ) {
         $from .= qq|"$name" |;
     }
@@ -668,7 +668,7 @@ sub _make_page_header {
         if ($@) {
             $formated_date = $self->{email}->header('Date');
         }
-        push @header, loc('Date:') . " $formated_date\n";
+        push @header, loc('email.date:') . " $formated_date\n";
     }
     for my $att ( @{ $self->{attachments} } ) {
         my $wafl = $att->image_or_file_wafl();

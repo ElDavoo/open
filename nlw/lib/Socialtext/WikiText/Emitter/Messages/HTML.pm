@@ -91,7 +91,7 @@ sub msg_format_user {
 
     my $user = eval { Socialtext::User->Resolve($userid) };
     unless ($user) {
-        return loc("Unknown Person");
+        return loc("user.unknown");
     }
 
     my $url = $self->link_dictionary->format_link(

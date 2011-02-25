@@ -8,27 +8,27 @@
       Rename <span id="st-rename-pagetitle">"[% page_title %]"</span>
     </div>
     <div class="error" id="st-rename-error">&nbsp;</div>
-    [% loc('New page name') %]
+    [% loc('page.new-name') %]
     <input type="text" id="st-rename-newname" name="new_title" size="34" />
     <br/>
 
-    [% loc('Keep tags') %]:
+    [% loc('tag.keep') %]:
     <input type="checkbox" name="keep_categories" value="1" checked="true" />
     <br />
 
-    [% loc('Keep attachments') %]:
+    [% loc('file.keep') %]:
     <input type="checkbox" name="keep_attachments" value="1" checked="true" />
     <br />
 
     <div class="buttons">
         <ul class="widgetButton" style="float:left; padding:10px">
           <li class="flexButton">
-              <a id="st-rename-savelink" class="submit genericOrangeButton" href="#">[% loc('Rename') %]</a>
+              <a id="st-rename-savelink" class="submit genericOrangeButton" href="#">[% loc('do.rename') %]</a>
           </li>
         </ul>
         <ul class="widgetButton" style="float:left; padding:10px">
           <li class="flexButton">
-              <a id="st-rename-cancellink" class="close genericOrangeButton" href="#">[% loc('Cancel') %]</a>
+              <a id="st-rename-cancellink" class="close genericOrangeButton" href="#">[% loc('do.cancel') %]</a>
           </li>
         </ul>
     </div>

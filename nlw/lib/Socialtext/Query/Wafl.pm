@@ -49,7 +49,7 @@ sub _get_results {
     my $results;
 
     my $ws = Socialtext::Workspace->new( name => $workspace_name );
-    return +{error => loc('no access to workspace')}
+    return +{error => loc('error.no-wiki-access')}
         unless $ws && $self->authz->user_has_permission_for_workspace(
             user       => $self->current_user,
             permission => ST_READ_PERM,
@@ -73,7 +73,7 @@ sub _present_results {
 
     if ($results->{too_many}) {
         $wafl_html = '';
-        $results->{error} = loc('The search term you have entered is too general. Please add additional search terms that you expect your documents contain.');
+        $results->{error} = loc('error.search-too-general');
     }
     elsif ($self->method =~ /[-_]full$/ and not $results->{error}) {
         $wafl_html = $self->_full_page_results($results);

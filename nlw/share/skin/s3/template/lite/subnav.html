@@ -11,23 +11,23 @@
         <span class="menu-padding">&nbsp;</span>
         </li><li>
         [% IF section == 'recent_changes' %]
-        <a id="mobile-workspace-changes" class="current ui-btn-active">[% loc("What's New") %]</a>
+        <a id="mobile-workspace-changes" class="current ui-btn-active">[% loc("nav.news") %]</a>
         [% ELSE %]
-        <a id="mobile-workspace-changes" href="/m/changes/[% ws.name %]/">[% loc("What's New") %]</a>
+        <a id="mobile-workspace-changes" href="/m/changes/[% ws.name %]/">[% loc("nav.news") %]</a>
         [% END %]
         <span class="menu-padding">&nbsp;</span>
         </li><li>
         [% IF section == 'tags' %]
-        <a id="mobile-workspace-tags" class="current ui-btn-active">[% loc('Tags') %]</a>
+        <a id="mobile-workspace-tags" class="current ui-btn-active">[% loc('wiki.tags') %]</a>
         [% ELSE %]
-        <a id="mobile-workspace-tags" href="/m/tag/[% ws.name %]/">[% loc('Tags') %]</a>
+        <a id="mobile-workspace-tags" href="/m/tag/[% ws.name %]/">[% loc('wiki.tags') %]</a>
         [% END %]
         <span class="menu-padding">&nbsp;</span>
         </li><li>
         [% IF section == 'search' %]
-        <a id="mobile-workspace-search" class="current ui-btn-active">[% loc('Search') %]</a>
+        <a id="mobile-workspace-search" class="current ui-btn-active">[% loc('nav.search') %]</a>
         [% ELSE %]
-        <a id="mobile-workspace-search" href="/m/search/[% ws.name %]/">[% loc('Search') %]</a>
+        <a id="mobile-workspace-search" href="/m/search/[% ws.name %]/">[% loc('nav.search') %]</a>
         [% END %]
         </li>
     </div>
@@ -37,13 +37,13 @@
         <div data-role="header" data-position="inline" data-theme="d">
             <h4>[% page.title %]</h4>
             [% IF user_can_edit_page %]
-            <a data-role="button" class="ui-btn-right" data-icon="arrow-d" href="/m/page/[% ws.name %]/[% page.uri %]?action=edit">[% loc('Edit') %]</a>
+            <a data-role="button" class="ui-btn-right" data-icon="arrow-d" href="/m/page/[% ws.name %]/[% page.uri %]?action=edit">[% loc('page.edit') %]</a>
             [% ELSIF user_can_join_to_edit_page %]
-            <a data-role="button" class="ui-btn-right" data-icon="plus" href="/m/page/[% ws.name %]/[% page.uri %]?action=join_to_edit">[% loc('Join to edit') %]</a>
+            <a data-role="button" class="ui-btn-right" data-icon="plus" href="/m/page/[% ws.name %]/[% page.uri %]?action=join_to_edit">[% loc('page.join-to-edit') %]</a>
             [% END %]
 
         [% IF cancel_edit %]
-            <a data-role="button" class="ui-btn-right" data-icon="back" href="/m/page/[% ws.name %]/[% cancel_edit %]">[% loc('Cancel') %]</a>
+            <a data-role="button" class="ui-btn-right" data-icon="back" href="/m/page/[% ws.name %]/[% cancel_edit %]">[% loc('do.cancel') %]</a>
         [% END %]
         </div>
         [% END %]

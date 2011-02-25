@@ -2,10 +2,10 @@
 [%# @COPYRIGHT@ -%]
 [% PROCESS element/settings/start %]
 <dl class="form">
-    <dt><label>[% loc('Workspace Email Receive Setting') %]</label></dt>
+    <dt><label>[% loc('config.email-receive') %]</label></dt>
     <dd>
-      [% loc('When the workspace receives an email, the subject of the email becomes the title of a page, and the body of the email becomes the body of the page.') %]<br/><br/>
-      [% loc('If there is already an existing page with that title, where should the body of the email be added?') %]
+      [% loc('info.email-to-page') %]<br/><br/>
+      [% loc('email.position?') %]
     </dd>
     <dd>
         <input type="radio" name="incoming_email_placement"
@@ -13,48 +13,48 @@
           checked="checked"
         [%- END %]
           value="top" />
-        [% loc('Top of page') %]<br/>
+        [% loc('page.top') %]<br/>
         <input type="radio" name="incoming_email_placement"
         [%- IF workspace.incoming_email_placement == 'bottom' %]
           checked="checked"
         [%- END %]
           value="bottom" />
-        [% loc('Bottom of page') %]<br/>
+        [% loc('page.bottom') %]<br/>
         <input type="radio" name="incoming_email_placement"
         [%- IF workspace.incoming_email_placement == 'replace' %]
           checked="checked"
         [%- END %]
           value="replace" />
-        [% loc('Replace existing page') %]<br/>
+        [% loc('page.replace') %]<br/>
     </dd>
 </dl>
 
 <dl class="form">
-    <dt><label>[% loc('Workspace Email Notify Setting') %]</label></dt>
+    <dt><label>[% loc('config.email-notify') %]</label></dt>
     <dd>
-        [% loc('Should users of this workspace receive email notifications of changes to this workspace?') %]
-        [% loc('Enable email notifications for this workspace?') %]
+        [% loc('wiki.send-email-notifications?') %]
+        [% loc('wiki.enable-email-notifications?') %]
     </dd>
         <input type="radio" name="email_notify_is_enabled"
         [%- IF workspace.email_notify_is_enabled %]
          checked="checked"
         [%- END %]
          value="1" />
-        [% loc('Yes') %]<br/>
+        [% loc('config.yes') %]<br/>
  
         <input type="radio" name="email_notify_is_enabled"
         [%- UNLESS workspace.email_notify_is_enabled %]
          checked="checked"
         [%- END %]
          value="0" />
-        [% loc('No') %]<br/>
+        [% loc('config.no') %]<br/>
     <dd>
 </dl>
 
 <dl class="form">
-    <dt><label>[% loc('Workspace Blog Sort Order') %]</label></dt>
+    <dt><label>[% loc('config.blog-sort') %]</label></dt>
     <dd>
-        [% loc('You can choose to sort blog entries by the date an entry is updated, or by the date an entry was first posted.') %]
+        [% loc('info.blog-sort') %]
     </dd>
     <dd>
         <input type="radio" name="sort_weblogs_by_create"
@@ -62,32 +62,32 @@
          checked="checked"
         [%- END %]
          value="0" />
-        [% loc('Sort entries by last updated time') %]<br/>
+        [% loc('sort.by-updated') %]<br/>
         <input type="radio" name="sort_weblogs_by_create"
         [%- IF workspace.sort_weblogs_by_create %]
          checked="checked"
         [%- END %]
          value="1" />
-         [% loc('Sort entries by first posted time') %]<br/>
+         [% loc('sort.by-created') %]<br/>
     </dd>
 </dl>
 
 <dl class="form">
-    <dt><label>[% loc('Socialtext Unplugged') %]</label></dt>
-    <dd>[% loc('Socialtext Unplugged allows users to read and edit workspace pages while offline. Users can "unplug" one or more pages to read and edit. Changes can be synchronized with the workspace.') %]</dd>
+    <dt><label>[% loc('nav.socialtext-unplugged') %]</label></dt>
+    <dd>[% loc('about.unplugged') %]</dd>
     <dd>
         <input type="radio" name="enable_unplugged"
         [%- IF workspace.enable_unplugged %]
          checked="checked"
         [%- END %]
          value="1" />
-        [% loc('Socialtext Unplugged enabled') %]<br/>
+        [% loc('unplugged.enabled') %]<br/>
         <input type="radio" name="enable_unplugged"
         [%- UNLESS workspace.enable_unplugged %]
          checked="checked"
         [%- END %]
          value="0" />
-         [% loc('Socialtext Unplugged disabled') %]<br/>
+         [% loc('unplugged.disabled') %]<br/>
     </dd>
 </dl>
 

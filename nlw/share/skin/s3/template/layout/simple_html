@@ -46,7 +46,7 @@
     <script type="text/javascript" charset="utf-8" src="[% customjs %]"></script>
     [% END %]
 
-    <meta name="keywords" content="[% loc('wiki, business wiki, document management, enterprise wiki, intranet wiki, knowledge management, online collaboration, open source wiki, portal wiki, hosted wiki, collaboration, social software, social networking, dashboard, project collaboration, team collaboration, wiki appliance, wiki software, community') %]"/>
+    <meta name="keywords" content="[% loc('about.keywords') %]"/>
     [% END %]
   </head>
   <body id="[% id || 'socialtext-wiki' %]" onload="if (typeof Socialtext != 'undefined') Socialtext.body_loaded = true">

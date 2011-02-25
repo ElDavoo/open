@@ -6,7 +6,7 @@ use base 'Socialtext::Rest::EventsBase';
 
 use Socialtext::l10n 'loc';
 
-sub collection_name { loc("My Colleagues") }
+sub collection_name { loc("rest.my-colleagues") }
 
 sub events_auth_method { 'people' };
 

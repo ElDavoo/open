@@ -642,7 +642,7 @@ sub wikiwyg_get_page_html2 {
     # If the page id is null or empty throw a DataValidation Error
     unless ( defined $page_id && length $page_id ) {
         Socialtext::Exception::DataValidation->throw(
-            errors => [loc('No page ID given')] );
+            errors => [loc('error.page-id-required')] );
     }
 
     # Get all the page ids for comparison against the inputted page id
@@ -651,12 +651,12 @@ sub wikiwyg_get_page_html2 {
     # If the page id does not exist throw a DataValidation Error
     unless ( grep (/^$page_id$/,@page_ids)) {
         Socialtext::Exception::DataValidation->throw(
-            errors => [loc("An invalid page ID was given: [_1]", $page_id)] );
+            errors => [loc("error.invalid=page", $page_id)] );
     }
 
     if (! -d "/tmp/wikiwyg_data_validation/$session_id") {
         Socialtext::Exception::DataValidation->throw(
-          errors => [loc('Validation subroutine called outside of validator')] );
+          errors => [loc('error.validation-called-outside-validator')] );
     }
 
     my $wikitext = $self->hub->pages->new_from_name($page_id)->content;
@@ -708,7 +708,7 @@ sub power_user {
 sub wikiwyg_double {
     my $self = shift;
     my $p = $self->new_preference('wikiwyg_double');
-    $p->query(loc('Double-click to edit a page?'));
+    $p->query(loc('wiki.double-click-to-edit?'));
     $p->default(1);
     return $p;
 }
@@ -792,7 +792,7 @@ sub wikiwyg_get_page_html {
     # If the page id is null or empty throw a DataValidation Error
     unless ( defined $page_id && length $page_id ) {
         Socialtext::Exception::DataValidation->throw(
-            errors => [loc('No page ID given')] );
+            errors => [loc('error.page-id-required')] );
     }
 
     # Get all the page ids for comparison against the inputted page id
@@ -801,7 +801,7 @@ sub wikiwyg_get_page_html {
     # If the page id does not exist throw a DataValidation Error
     unless ( grep (/^$page_id$/,@page_ids)) {
         Socialtext::Exception::DataValidation->throw(
-            errors => [loc("An invalid page ID was given: [_1]", $page_id)] );
+            errors => [loc("error.invalid=page", $page_id)] );
     }
 
     my $wikitext = $self->hub->pages->new_from_name($page_id)->content;

@@ -2,7 +2,7 @@
 [%# @COPYRIGHT@ -%]
 [% PROCESS element/settings/start %]
 <dl class="form">
-  <dt><label>[% loc('Preferences') %]</label></dt>
+  <dt><label>[% loc('nav.preferences') %]</label></dt>
 </dl>
 [% FOREACH preference = preference_list %]
   <div style="padding-bottom:5px"><label>

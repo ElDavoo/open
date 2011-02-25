@@ -3,51 +3,51 @@
 [% IF user.can_update_store %]
   [% INCLUDE element/settings/start %]
   <dl class="form">
-    <dt><label>[% loc('Name') %]</label></dt>
+    <dt><label>[% loc('user.name') %]</label></dt>
     <dd>
-      <label>[% loc('Email') %]</label>
+      <label>[% loc('user.email') %]</label>
       <a href="mailto:[% user.email_address %]">[% user.email_address %]</a>
     </dd>
     [% IF loc_lang == 'ja' %]
       <dd>
-        <label>[% loc('Last name:') %]</label>
+        <label>[% loc('user.last-name:') %]</label>
         <div><input type="text" name="last_name" value="[% user.last_name %]"/></div>
       </dd>
       <dd>
-        <label>[% loc('First name:') %]</label>
+        <label>[% loc('config.first-name:') %]</label>
         <div><input type="text" name="first_name" value="[% user.first_name %]"/></div>
       </dd>
     [% ELSE %]
       <dd>
-        <label>[% loc('First name:') %]</label>
+        <label>[% loc('config.first-name:') %]</label>
         <div><input type="text" name="first_name" value="[% user.first_name %]"/></div>
       </dd>
       <dd>
-        <label>[% loc('Last name:') %]</label>
+        <label>[% loc('user.last-name:') %]</label>
         <div><input type="text" name="last_name" value="[% user.last_name %]"/></div>
       </dd>
     [% END %]
   </dl>
   <dl class="form">
-    <dt><label>[% loc('Change Password') %]</label></dt>
+    <dt><label>[% loc('password.change') %]</label></dt>
     <dd class="noMargin">
-      [% loc('New passwords must be at least 6 characters long.') %]
-      [% loc('Use your email address and new password to log in again.') %]
+      [% loc('password.minimum-length') %]
+      [% loc('info.relogin') %]
     </dd>
     <dd>
-      <label>[% loc('Current password:') %]</label>
+      <label>[% loc('password.current:') %]</label>
       <div>
         <input autocomplete="off" name="old_password" type="password" maxlength="30" />
       </div>
     </dd>
     <dd>
-      <label>[% loc('New password:') %]</label>
+      <label>[% loc('password.new:') %]</label>
       <div>
         <input name="new_password" type="password" maxlength="30" />
       </div>
     </dd>
     <dd>
-      <label>[% loc('Type new Password again:') %]</label>
+      <label>[% loc('password.again:') %]</label>
       <div>
         <input name="new_password_retype" type="password" maxlength="30" />
       </div>
@@ -57,8 +57,8 @@
 [% ELSE %]
   <div class="error">
     <p>
-      [% loc('Your user name and password cannot be changed using My Settings.') %]
-      [% loc('Check with your [_1] administrator.', user.driver_name) %]
+      [% loc('config.immutable-name-password') %]
+      [% loc('info.contact=admin', user.driver_name) %]
     </p>
   </div>
 [% END %]

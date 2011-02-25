@@ -1,7 +1,7 @@
-<li class="submenu"><a id="st-wiki-subnav-link-workspaces" href="/?action=workspaces_listall">[% loc("Workspaces") %]</a>
+<li class="submenu"><a id="st-wiki-subnav-link-workspaces" href="/?action=workspaces_listall">[% loc("nav.wikis") %]</a>
   <ul class="level2" id="global-workspace-list">
   [% IF user.is_guest %]
-    <li class="emptynotice">[% loc("...lists the workspaces you belong to. You must be logged in to see your list.") %]</li>
+    <li class="emptynotice">[% loc("info.wikis") %]</li>
   [% END %]
   </ul>
 
@@ -9,7 +9,7 @@
     <script>
         $("#global-workspace-list").navList([
             {
-                title: loc("All My Workspaces"),
+                title: loc("wiki.all"),
                 href: "/?action=workspaces_listall"
             },
             {
@@ -24,7 +24,7 @@
                     return (a.title < b.title) ? -1 : 1;
                 },
                 emptyMessage:
-                    loc("Currently, you are not a member of any workspaces.")
+                    loc("nav.no-wikis")
             }
         ]);
     </script>
