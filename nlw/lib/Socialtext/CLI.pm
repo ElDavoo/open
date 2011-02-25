@@ -976,6 +976,28 @@ sub add_restriction {
     );
 }
 
+sub remove_restriction {
+    my $self = shift;
+    my $user = $self->_require_user();
+    my $type = $self->_require_string('restriction');
+
+    my $restriction = eval {
+        Socialtext::User::Restrictions->Get( {
+            user_id          => $user->user_id,
+            restriction_type => $type,
+        } );
+    };
+    $self->_error($@) if ($@);
+    $self->_error(
+        loc("'[_1]' does not have the '[_2]' restriction", $user->username, $type)
+    ) unless ($restriction);
+
+    $restriction->clear;
+    $self->_success(
+        loc("'[_1]' restriction has been lifted on '[_1]'", $type, $user->username)
+    );
+}
+
 # revoke a user's access to everything
 sub deactivate_user {
     my $self = shift;
@@ -4024,6 +4046,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   locked-pages --workspace
   mass-add-users --csv --account
   add-restriction [--username or --email] --restriction
+  remove-restriction [--username or --email] --restriction
 
   WORKSPACES
 
@@ -4339,6 +4362,13 @@ Requires that the User re-confirm their e-mail address.
 Requires that the User to change their password.
 
 =back
+
+=head2 remove-restriction [--username or --email] --restriction
+
+Removes a restriction from a User record, by confirming it and sending any
+notifications necessary.
+
+Refer to C<add-restriction> for a list of acceptable restrictions.
 
 =head2 set-permissions --workspace --permissions
 

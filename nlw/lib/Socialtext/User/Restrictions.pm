@@ -162,6 +162,7 @@ sub Get {
     my $proto = shift;
     my $t     = time_scope('user_restriction_get');
     my $valid = $class->_filter_valid_columns($proto);
+    $class->_validate_restriction_known_type($valid);
 
     my ($sql, @bind) = sql_abstract->select($TABLE, $COLUMNS, $valid);
     my $sth = sql_execute($sql, @bind);

@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 39;
+use Test::Socialtext tests => 56;
 use Socialtext::CLI;
 use Test::Socialtext::CLIUtils qw(:all);
 use Test::Socialtext::User;
@@ -200,4 +200,94 @@ add_invalid_restriction: {
 
     my @emails = Email::Send::Test->emails();
     is @emails, 0, '... and NO e-mail message was sent';
+}
+
+###############################################################################
+# TEST: Remove a "email confirmation" restriction (as a restriction)
+remove_email_confirmation_restriction: {
+    my $guard = Test::Socialtext::User->snapshot;
+    my $user = create_test_user();
+    ok $user, 'Created test User';
+
+    $user->create_email_confirmation();
+    ok $user->email_confirmation, '... e-mail confirmation set';
+
+    Email::Send::Test->clear;
+    expect_success(
+        call_cli_argv(
+            'remove-restriction',
+            '--email'       => $user->email_address,
+            '--restriction' => 'email_confirmation',
+        ),
+        qr/'email_confirmation' restriction has been lifted/,
+        '... restriction lifted',
+    );
+
+    # reload User and check that the restriction was removed
+    $user->reload;
+    ok !$user->email_confirmation, '... restriction no longer set';
+
+    my @emails = Email::Send::Test->emails();
+    is @emails, 1, '... and an e-mail message was sent';
+}
+
+###############################################################################
+# TEST: Remove a "password change" restriction (as a restriction)
+remove_password_change_restriction: {
+    my $guard = Test::Socialtext::User->snapshot;
+    my $user = create_test_user();
+    ok $user, 'Created test User';
+
+    $user->create_password_change_confirmation();
+    ok $user->password_change_confirmation, '... password change set';
+
+    expect_success(
+        call_cli_argv(
+            'remove-restriction',
+            '--email'       => $user->email_address,
+            '--restriction' => 'password_change',
+        ),
+        qr/'password_change' restriction has been lifted/,
+        '... restriction lifted',
+    );
+
+    # reload User and check that the restriction was removed
+    $user->reload;
+    ok !$user->password_change_confirmation, '... restriction no longer set';
+}
+
+###############################################################################
+# TEST: Remove an unknown/invalid restriction
+remove_unknown_restriction: {
+    my $guard = Test::Socialtext::User->snapshot;
+    my $user = create_test_user();
+    ok $user, 'Created test User';
+
+    expect_failure(
+        call_cli_argv(
+            'remove-restriction',
+            '--email'       => $user->email_address,
+            '--restriction' => 'invalid-restriction',
+        ),
+        qr/unknown restriction type, 'invalid-restriction'/,
+        '... failed due to unknown restriction type'
+    );
+}
+
+###############################################################################
+# TEST: Remove known (but unset) restriction
+remove_unset_restriction: {
+    my $guard = Test::Socialtext::User->snapshot;
+    my $user = create_test_user();
+    ok $user, 'Created test User';
+
+    expect_failure(
+        call_cli_argv(
+            'remove-restriction',
+            '--email'       => $user->email_address,
+            '--restriction' => 'email_confirmation',
+        ),
+        qr/does not have the 'email_confirmation' restriction/,
+        '... failed because restriction has not been set'
+    );
 }
