@@ -12,7 +12,7 @@ sub restriction_type { 'password_change' };
 
 sub send {
     my $self = shift;
-    $self->send_email;
+    $self->_send_email;
 }
 
 sub confirm {
@@ -28,7 +28,7 @@ sub uri {
     );
 }
 
-sub send_email {
+sub _send_email {
     my $self = shift;
     my $user = $self->user;
 
@@ -109,11 +109,6 @@ Confirms the password change.  No-op; no notification is sent.
 
 Returns the URI that the User should be directed to in order to change their
 password.
-
-=item $self->send_email()
-
-Sends an e-mail message to the User informing them that they need to change
-their password.
 
 =back
 

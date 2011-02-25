@@ -334,7 +334,7 @@ sub forgot_password {
     }
 
     my $confirmation = $user->create_password_change_confirmation();
-    $confirmation->send_email;
+    $confirmation->send;
 
     my $from_address = 'noreply@socialtext.com';
     $self->session->add_message(
@@ -480,7 +480,7 @@ sub confirm_email {
 
     if ($restriction->has_expired) {
         $restriction->renew;
-        $restriction->send_email;
+        $restriction->send;
         return $self->_show_error(
             loc("The confirmation URL you used has expired. A new one will be sent.")
         );
@@ -594,7 +594,7 @@ sub resend_confirmation {
     }
 
     $confirmation->renew;
-    $confirmation->send_email;
+    $confirmation->send;
 
     $self->session->add_error(loc('The confirmation email has been resent. Please follow the link in this email to activate your account.'));
     return $self->_challenge();

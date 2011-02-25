@@ -191,7 +191,7 @@ sub _update_users_in_workspace {
     for my $user_id ( grep { !$removed{$_} } $self->cgi->reset_password ) {
         my $user = Socialtext::User->new( user_id => $user_id );
         my $confirmation = $user->create_password_change_confirmation;
-        $confirmation->send_email;
+        $confirmation->send;
     }
 
     my %should_be_admin = map { $_ => 1 } $self->cgi->should_be_admin;

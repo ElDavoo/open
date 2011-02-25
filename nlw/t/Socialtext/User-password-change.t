@@ -28,7 +28,7 @@ my $user = Socialtext::User->create(
 
 {
     my $confirmation = $user->create_password_change_confirmation;
-    $confirmation->send_email;
+    $confirmation->send;
 
     ok $user->requires_confirmation, 'User requires a confirmation';
     ok $user->password_change_confirmation, '... a password change';

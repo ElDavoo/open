@@ -13,7 +13,7 @@ sub restriction_type { 'email_confirmation' };
 
 sub send {
     my $self = shift;
-    $self->send_email;
+    $self->_send_email;
 }
 
 sub confirm {
@@ -31,7 +31,7 @@ sub uri {
     );
 }
 
-sub send_email {
+sub _send_email {
     my $self     = shift;
     my $user     = $self->user;
     my $uri      = $self->uri;
@@ -164,7 +164,7 @@ Socialtext::User::Restrictions::email_confirmation - Email Confirmation restrict
   } );
 
   # send the User the e-mail asking them to confirm their e-mail address
-  $restriction->send_email;
+  $restriction->send;
 
   # let the User know that they've completed the confirmation
   $restriction->send_completed_notifications;
@@ -194,11 +194,6 @@ confirm their e-mail address.
 
 Returns the URI that the User should be directed to in order to confirm their
 e-mail address.
-
-=item $self->send_email()
-
-Sends an e-mail message to the User informing them that they need to confirm
-their e-mail address before they have access to their account.
 
 =item $self->send_completed_notifications()
 

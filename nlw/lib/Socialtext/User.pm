@@ -1455,7 +1455,7 @@ sub send_confirmation_email {
     my $confirmation = $self->email_confirmation;
     return unless $confirmation;
 
-    return $confirmation->send_email;
+    return $confirmation->send;
 }
 
 sub create_password_change_confirmation {
@@ -1479,7 +1479,7 @@ sub send_password_change_email {
     my $confirmation = $self->password_change_confirmation;
     return unless $confirmation;
 
-    return $confirmation->send_email;
+    return $confirmation->send;
 }
 
 sub password_change_uri {

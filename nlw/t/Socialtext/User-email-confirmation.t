@@ -75,7 +75,7 @@ confirmation_email_contents: {
     # set the confirmation info the this user, and get the generated e-mail
     Email::Send::Test->clear();
     my $uce = $user->create_email_confirmation;
-    $uce->send_email;
+    $uce->send;
 
     my @emails = Email::Send::Test->emails();
     is scalar @emails, 1, 'one confirmation e-mail was sent';
