@@ -283,7 +283,7 @@ msgstr "Clear Selection"
 msgid "control.click-add-users-link"
 msgstr "When you've made your decisions, click the 'Add Users' link."
 
-#: share/plugin/control/template/control/group.html:134
+#: share/plugin/control/template/control/group.html:136
 msgid "control.confirm-delete-group"
 msgstr ""
 "Are you sure you want to delete this group?\n"
