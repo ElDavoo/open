@@ -18,8 +18,8 @@ sub send {
 
 sub confirm {
     my $self = shift;
-    $self->send_completed_email;
-    $self->send_completed_signal unless $self->workspace_id;
+    $self->_send_completed_email;
+    $self->_send_completed_signal unless $self->workspace_id;
 };
 
 # XXX - Yuck; this same URI is also used by "password_change"
@@ -66,7 +66,7 @@ sub _send_email {
     );
 }
 
-sub send_completed_email {
+sub _send_completed_email {
     my $self     = shift;
     my $user     = $self->user;
     my $ws       = $self->workspace;
@@ -120,7 +120,7 @@ sub send_completed_email {
     );
 }
 
-sub send_completed_signal {
+sub _send_completed_signal {
     my $self = shift;
 
     require Socialtext::Pluggable::Adapter;
@@ -167,7 +167,7 @@ Socialtext::User::Restrictions::email_confirmation - Email Confirmation restrict
   $restriction->send;
 
   # let the User know that they've completed the confirmation
-  $restriction->send_completed_notifications;
+  $restriction->confirm;
 
   # clear the Restriction (after the User completed their confirmation)
   $restriction->clear;
@@ -195,21 +195,10 @@ confirm their e-mail address.
 Returns the URI that the User should be directed to in order to confirm their
 e-mail address.
 
-=item $self->send_completed_notifications()
+=item $self->confirm()
 
 Sends out all of the notifications necessary, once the User has confirmed
 their e-mail address.
-
-=item $self->send_completed_email()
-
-Sends an e-mail message to the User, letting them know that they've completed
-the process of confirming their e-mail address.
-
-=item $self->send_completed_signal()
-
-Sends a Signal, indicating to other Users that this individual just completed
-the process of confirming their e-mail address, welcoming him/her to the
-system.
 
 =back
 
