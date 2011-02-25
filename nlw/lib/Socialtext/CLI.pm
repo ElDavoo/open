@@ -1013,6 +1013,9 @@ sub deactivate_user {
             @output
         );
     }
+    else {
+        $self->_success($user->username . ' has been deactivated.');
+    }
 
 }
 

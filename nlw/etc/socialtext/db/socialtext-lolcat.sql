@@ -1,5 +1,14 @@
 -- Migrations for lolcat
 
+-- Add missing NOT NULL and DEFAULT to "Account" table.
+UPDATE "Account"
+   SET email_addresses_are_hidden = false
+ WHERE email_addresses_are_hidden IS NULL;
+
+ALTER TABLE "Account"
+    ALTER email_addresses_are_hidden SET NOT NULL,
+    ALTER email_addresses_are_hidden SET DEFAULT false;
+
 -- TODO: truncate from_page_id, to_page_id to 255
 
 ALTER TABLE ONLY page_link

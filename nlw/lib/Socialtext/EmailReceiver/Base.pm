@@ -280,7 +280,7 @@ sub _save_attachment_from_part {
     my $attachment = $page->hub->attachments->create(
         fh => $body_io,
         filename => $filename,
-        page_id  => $page->id(),
+        page => $page,
         user => $self->{user},
     );
 

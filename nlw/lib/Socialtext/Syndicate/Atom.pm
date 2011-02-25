@@ -165,7 +165,11 @@ sub _content {
     my $self         = shift;
     my $content_body = shift;
 
-    my $content = XML::Atom::Content->new();
+    my $content = (
+        (index($content_body, "\x00") >= 0)
+            ? XML::Atom::Content->new(Version => 0.3)
+            : XML::Atom::Content->new()
+    );
     $content->body($content_body);
 
     return $content;

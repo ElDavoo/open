@@ -10,7 +10,7 @@
     [% END %]
     >
     [% SET user_count = iaccount.user_count %]
-    [% iaccount.name | html %] ([% loc("[quant,_1,Person,People]",user_count) %])
+    [% iaccount.name | html %] ([% loc("[*,_1,Person,People]",user_count) %])
     </option>
     [% FOR igroup = account_groups.${iaccount.account_id} %]
         <option  value=";group_id=[% igroup.group_id %]"
@@ -19,7 +19,7 @@
          [% END %]
         > 
           [% SET user_count = igroup.user_count %]
-          &nbsp;...&nbsp;[% igroup.display_name | html %] ([% loc("[quant,_1,Person,People]",user_count) %])
+          &nbsp;...&nbsp;[% igroup.display_name | html %] ([% loc("[*,_1,Person,People]",user_count) %])
         </option>
     [% END %]
   [% END %]

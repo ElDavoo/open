@@ -43,7 +43,7 @@ sub remember_duration {
     my $now     = DateTime->now();
     my $then    = DateTime->now->add(seconds => $expires);
     my $diff    = $then - $now;
-    return loc("[quant,_1,day]", $diff->in_units('days'));
+    return loc("[*,_1,day]", $diff->in_units('days'));
 }
 
 sub username_is_email {
