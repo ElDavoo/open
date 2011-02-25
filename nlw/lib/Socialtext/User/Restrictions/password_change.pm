@@ -101,6 +101,10 @@ Returns the type of restriction this is.
 Sends out a notification e-mail to the User to let them know that they need to
 change their password.
 
+=item $self->confirm()
+
+Confirms the password change.  No-op; no notification is sent.
+
 =item $self->uri()
 
 Returns the URI that the User should be directed to in order to change their
