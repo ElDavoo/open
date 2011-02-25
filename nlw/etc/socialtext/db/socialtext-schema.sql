@@ -912,18 +912,24 @@ CREATE TABLE gadget (
     gadget_id bigint NOT NULL,
     src text,
     plugin text DEFAULT 'widgets',
-    href text,
     last_update timestamptz DEFAULT now() NOT NULL,
-    content_type text,
     features text[],
     preloads text[],
-    content text,
     title text,
     thumbnail text,
     scrolling boolean DEFAULT false,
     height integer,
     description text,
     xml text
+);
+
+CREATE TABLE gadget_content (
+    gadget_id bigint NOT NULL,
+    view_name text DEFAULT 'default' NOT NULL,
+    content_type text DEFAULT 'html',
+    content text,
+    href text,
+    "position" integer
 );
 
 CREATE SEQUENCE gadget_id
@@ -1499,6 +1505,10 @@ ALTER TABLE ONLY funcmap
     ADD CONSTRAINT funcmap_pkey
             PRIMARY KEY (funcid);
 
+ALTER TABLE ONLY gadget_content
+    ADD CONSTRAINT gadget_content__gadget_id_position
+            UNIQUE (gadget_id, "position");
+
 ALTER TABLE ONLY gadget_instance
     ADD CONSTRAINT gadget_instace_pk
             PRIMARY KEY (gadget_instance_id);
@@ -1732,6 +1742,9 @@ CREATE INDEX exitstatus_deleteafter
 
 CREATE INDEX exitstatus_funcid
 	    ON exitstatus (funcid);
+
+CREATE INDEX gadget_content__gadget_id
+	    ON gadget_content (gadget_id);
 
 CREATE INDEX gallery_gadget_gadget_id_idx
 	    ON gallery_gadget (gadget_id);
@@ -2376,6 +2389,11 @@ ALTER TABLE ONLY "WorkspaceRolePermission"
             FOREIGN KEY (workspace_id)
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY gadget_content
+    ADD CONSTRAINT gadget_content_gadget_fk
+            FOREIGN KEY (gadget_id)
+            REFERENCES gadget(gadget_id) ON DELETE CASCADE;
+
 ALTER TABLE ONLY gadget_instance
     ADD CONSTRAINT gadget_instance_container_fk
             FOREIGN KEY (container_id)
@@ -2732,4 +2750,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '133');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '134');
