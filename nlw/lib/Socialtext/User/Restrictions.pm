@@ -17,7 +17,6 @@ my $TABLE    = 'user_restrictions';
 my $COLUMNS  = [qw( user_id restriction_type token expires_at workspace_id )];
 my $PKEY     = [qw( user_id restriction_type )];
 my $REQUIRED = [qw( user_id restriction_type )];
-my %KNOWN_TYPES = map { $_ => 1 } qw(email_confirmation password_change);
 
 sub Create {
     my $class = shift;
@@ -32,6 +31,18 @@ sub Create {
 
     # Create the restriction object and return that back to the caller
     return $class->_instantiate($proto);
+}
+
+{
+    my %KNOWN_TYPES = (
+        email_confirmation => 1,
+        password_change    => 1,
+    );
+    sub ValidRestrictionType {
+        my $class = shift;
+        my $type  = shift;
+        return exists $KNOWN_TYPES{$type} ? 1 : 0;
+    }
 }
 
 sub ValidateAndCleanData {
@@ -63,7 +74,8 @@ sub _validate_restriction_known_type {
     my $proto = shift;
     if (exists $proto->{restriction_type}) {
         my $type = $proto->{restriction_type};
-        die "unknown restriction type, '$type'\n" unless ($KNOWN_TYPES{$type});
+        die "unknown restriction type, '$type'\n"
+            unless $class->ValidRestrictionType($type);
     }
 }
 
@@ -335,6 +347,11 @@ appropriate C<Socialtext::User::Restrictions::*> object to the caller.
 
 Refer to L<Socialtext::User::Restrictions::base> for a list of available
 attributes.
+
+=item $class->ValidRestrictionType($type)
+
+Checks to see if the specified restriction C<$type> is known/valid.  Returns
+true if it is, false otherwise.
 
 =item $class->ValidateAndCleanData($restriction, \%data)
 
