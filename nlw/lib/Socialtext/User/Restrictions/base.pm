@@ -6,6 +6,7 @@ use Socialtext::MooseX::Types::Pg;
 use Socialtext::User::Restrictions;
 
 requires 'restriction_type';
+requires 'send';
 requires 'confirm';
 around 'confirm' => sub {
     my $orig = shift;
@@ -140,6 +141,15 @@ for the following methods:
 
 Returns the restriction type to be stored in the DB.  B<Must> match up with
 your class name.
+
+=item send()
+
+Method which performs whatever actions are necessary to send out notification
+to the User that they have a restriction on their user record and that a
+confirmation is required.
+
+If your particular restriction has no notification to be sent out to the User,
+simply implement an empty sub.
 
 =item confirm()
 

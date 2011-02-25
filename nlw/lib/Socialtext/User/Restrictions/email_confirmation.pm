@@ -11,6 +11,11 @@ use Socialtext::URI;
 
 sub restriction_type { 'email_confirmation' };
 
+sub send {
+    my $self = shift;
+    $self->send_email;
+}
+
 sub confirm {
     my $self = shift;
     $self->send_completed_email;
@@ -179,6 +184,11 @@ e-mail address.
 =item $self_or_class->restriction_type()
 
 Returns the type of restriction this is.
+
+=item $self->send()
+
+Sends out a notification e-mail to the User to let them know that they need to
+confirm their e-mail address.
 
 =item $self->uri()
 

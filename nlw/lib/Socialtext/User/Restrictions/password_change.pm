@@ -9,6 +9,12 @@ use Socialtext::l10n qw(system_locale loc);
 use Socialtext::TT2::Renderer;
 
 sub restriction_type { 'password_change' };
+
+sub send {
+    my $self = shift;
+    $self->send_email;
+}
+
 sub confirm {
     # no-op; no explicit action required to confirm password change
 }
@@ -89,6 +95,11 @@ password.
 =item $self_or_class->restriction_type()
 
 Returns the type of restriction this is.
+
+=item $self->send()
+
+Sends out a notification e-mail to the User to let them know that they need to
+change their password.
 
 =item $self->uri()
 
