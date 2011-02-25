@@ -130,4 +130,4 @@
 'l10n-en.js':
     compress: 1
     parts:
-        - {dir: 'l10n', file: 'en.js'}
+        - {dir: 'skin/s3/javascript/l10n', file: 'en.js'}
