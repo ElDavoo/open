@@ -1,3 +1,4 @@
+
 | *Comment* | Test Case: Control Panel Group Delegate Membership |  |
 
 | set | deg_acct | deg_account_%%start_time%% |
@@ -15,7 +16,7 @@
 | *Comment* | Test Case: Control Panel Group Delegate Membership change member to admin with dropdown |  |
 | open_ok | /nlw/control/group/%%deg_group_id%% |  |
 | wait_for_element_visible_ok | //div[@id='userTable'] | 30000 |
-| wait_for_text_not_present_ok | Group role changes were successful |  |
+| wait_for_element_visible_ok | userTable-dropdown-1-1 | 30000 |
 | is_selected_ok | userTable-dropdown-1-1 | label=Member |
 | select_ok | userTable-dropdown-1-1 | label=Admin |
 | wait_for_text_present_ok | Group role changes were successful |  |

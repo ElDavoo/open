@@ -50,7 +50,7 @@
 | pause | 3000 |  |
 | click_ok | link=Post |  |
 | wait_for_element_visible_ok | link=%%text%% | 30000 |
-| wait_for_element_visible_ok | //a[@href='%%url%%'] | 30000 |
+| wait_for_element_visible_ok | //a[contains(@href,'%%url%%')] | 30000 |
 
 | *Comment* | Test Case: Signals Web Link can't click the link since it has target="_new" |  |
 
