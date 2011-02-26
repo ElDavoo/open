@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 56;
+use Test::Socialtext tests => 82;
 use Socialtext::CLI;
 use Test::Socialtext::CLIUtils qw(:all);
 use Test::Socialtext::User;
@@ -290,4 +290,116 @@ remove_unset_restriction: {
         qr/does not have the 'email_confirmation' restriction/,
         '... failed because restriction has not been set'
     );
+}
+
+###############################################################################
+# TEST: Remove multiple restrictions
+remove_multiple_restrictions: {
+    my $guard = Test::Socialtext::User->snapshot;
+    my $user = create_test_user();
+    ok $user, 'Created test User';
+
+    $user->create_email_confirmation;
+    $user->create_password_change_confirmation;
+    ok $user->email_confirmation, '... e-mail confirmation set';
+    ok $user->password_change_confirmation, '... password change set';
+
+    expect_success(
+        call_cli_argv(
+            'remove-restriction',
+            '--email'       => $user->email_address,
+            '--restriction' => 'email_confirmation',
+            '--restriction' => 'password_change',
+        ),
+        qr/has been lifted.*has been lifted/s,
+        '... restrictions lifted'
+    );
+
+    # reload User and check that the restrictions were removed
+    ok !$user->email_confirmation, '... e-mail confirmation cleared';
+    ok !$user->password_change_confirmation, '... password change cleared';
+}
+
+###############################################################################
+# TEST: Remove multiple restrictions aborts on unknown/invalid restriction
+remove_multiple_restriction_abort_on_invalid: {
+    my $guard = Test::Socialtext::User->snapshot;
+    my $user = create_test_user();
+    ok $user, 'Created test User';
+
+    $user->create_email_confirmation;
+    $user->create_password_change_confirmation;
+    ok $user->email_confirmation, '... e-mail confirmation set';
+    ok $user->password_change_confirmation, '... password change set';
+
+    expect_failure(
+        call_cli_argv(
+            'remove-restriction',
+            '--email'       => $user->email_address,
+            '--restriction' => 'email_confirmation',
+            '--restriction' => 'invalid-restriction',
+            '--restriction' => 'password_change',
+        ),
+        qr/unknown restriction type, 'invalid-restriction'/,
+        '... fails on invalid restriction'
+    );
+
+    # reload User and make sure that all restrictions are still in place
+    $user->reload;
+    ok $user->email_confirmation, '... e-mail confirmation still set';
+    ok $user->password_change_confirmation, '... password change still set';
+}
+
+###############################################################################
+# TEST: Remove multiple restrictions aborts on unset restriction
+remove_multiple_restriction_abort_on_unset: {
+    my $guard = Test::Socialtext::User->snapshot;
+    my $user = create_test_user();
+    ok $user, 'Created test User';
+
+    $user->create_email_confirmation;
+    ok $user->email_confirmation, '... e-mail confirmation set';
+
+    expect_failure(
+        call_cli_argv(
+            'remove-restriction',
+            '--email'       => $user->email_address,
+            '--restriction' => 'email_confirmation',
+            '--restriction' => 'password_change',
+        ),
+        qr/does not have the 'password_change' restriction/,
+        '... fails on invalid restriction'
+    );
+
+    # reload User and make sure that all restrictions are still in place
+    $user->reload;
+    ok $user->email_confirmation, '... e-mail confirmation still set';
+}
+
+###############################################################################
+# TEST: Remove all restrictions
+remove_all_restrictions: {
+    my $guard = Test::Socialtext::User->snapshot;
+    my $user = create_test_user();
+    ok $user, 'Created test User';
+
+    $user->create_email_confirmation;
+    $user->create_password_change_confirmation;
+    ok $user->email_confirmation, '... e-mail confirmation set';
+    ok $user->password_change_confirmation, '... password change set';
+
+    expect_success(
+        call_cli_argv(
+            'remove-restriction',
+            '--email'       => $user->email_address,
+            '--restriction' => 'all',
+        ),
+        qr/has been lifted.*has been lifted/s,
+        '... restrictions removed',
+    );
+
+    # reload User and check that the restrictions were removed
+    $user->reload;
+    ok !$user->email_confirmation, '... e-mail confirmation cleared';
+    ok !$user->password_change_confirmation, '... password change cleared';
 }

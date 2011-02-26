@@ -977,25 +977,59 @@ sub add_restriction {
 }
 
 sub remove_restriction {
-    my $self = shift;
-    my $user = $self->_require_user();
-    my $type = $self->_require_string('restriction');
+    my $self  = shift;
+    my $user  = $self->_require_user();
+    my $types = $self->_require_restriction();
 
-    my $restriction = eval {
-        Socialtext::User::Restrictions->Get( {
-            user_id          => $user->user_id,
-            restriction_type => $type,
-        } );
+    my @restrictions;
+    if (!ref($types) && ($types eq 'all')) {
+        @restrictions = $user->restrictions->all;
+    }
+    else {
+        foreach my $t (@{$types}) {
+            my $restriction = eval {
+                Socialtext::User::Restrictions->Get( {
+                    user_id          => $user->user_id,
+                    restriction_type => $t,
+                } );
+            };
+            $self->_error(
+                loc("'[_1]' does not have the '[_2]' restriction", $user->username, $t)
+            ) unless ($restriction);
+            push @restrictions, $restriction;
+        }
+    }
+
+    eval {
+        foreach my $r (@restrictions) {
+            $r->confirm;
+            print loc(
+                "'[_1]' restriction has been lifted on '[_2]'",
+                $r->restriction_type, $user->username,
+            ) . "\n";
+        }
     };
     $self->_error($@) if ($@);
-    $self->_error(
-        loc("'[_1]' does not have the '[_2]' restriction", $user->username, $type)
-    ) unless ($restriction);
+    $self->_success();
+}
 
-    $restriction->clear;
-    $self->_success(
-        loc("'[_1]' restriction has been lifted on '[_1]'", $type, $user->username)
-    );
+sub _require_restriction {
+    my $self        = shift;
+    my %opts        = $self->_get_options('restriction:s@');
+    my $restriction = shift || $opts{restriction};
+
+    $self->_error(loc("error.restriction-required"))
+        unless $restriction and scalar(@$restriction);
+
+    return 'all' if ($restriction->[0] eq 'all');
+
+    for my $type (@{$restriction}) {
+        $self->_error(
+            loc("unknown restriction type, '[_1]'", $type)
+        ) unless Socialtext::User::Restrictions->ValidRestrictionType($type);
+    }
+
+    return $restriction;
 }
 
 # revoke a user's access to everything
@@ -4367,6 +4401,11 @@ Requires that the User to change their password.
 
 Removes a restriction from a User record, by confirming it and sending any
 notifications necessary.
+
+Can accept multiple C<--restriction> options, when specifying multiple
+restrictions that are to be removed for the User.  Alternatively, you may
+specify C<--restriction all> to remove I<all> of the restrictions that are
+placed on the User's account.
 
 Refer to C<add-restriction> for a list of acceptable restrictions.
 
