@@ -6,16 +6,34 @@ use Getopt::Long;
 use FindBin '$RealBin';
 use lib "$RealBin/../lib";
 use Socialtext::l10n::DevUtils;
+use DateTime;
+my $now = DateTime->now;
+my $date = $now->ymd . ' ' . $now->hms . '+0000';
 
 my ($in, $out);
 for my $txt (@ARGV) {
     open $in, '<', $txt;
     my $out_file = $txt;
     $out_file =~ s/\.txt\b//;
+    $out_file =~ s/\.po\b//;
     open $out, '>', "$out_file.po";
     select $out;
 
     local $/ = '[[[';
+    scalar <$in>;
+    print << ".";
+# \@COPYRIGHT\@
+msgid ""
+msgstr ""
+"Project-Id-Version: Socialtext i18n\\n"
+"PO-Revision-Date: $date\\n"
+"Language-Team: Socialtext i18n team\\n"
+"Last-Translator: Socialtext i18n team\\n"
+"MIME-Version: 1.0\\n"
+"Content-Type: text/plain; charset=UTF-8\\n"
+"Content-Transfer-Encoding: 8bit\\n"
+
+.
     while (<$in>) {
         s/\r//g;
         s/\n+$//;
@@ -29,5 +47,5 @@ for my $txt (@ARGV) {
 
     close $in;
     close $out;
-    warn "*** $txt.po\n";
+    warn "*** $out_file.po\n";
 }
