@@ -1,6 +1,7 @@
 #!/usr/bin/env perl
 # @COPYRIGHT@
 use 5.12.0;
+use utf8;
 use autodie;
 use warnings;
 use open qw(:std :utf8);
@@ -10,46 +11,121 @@ use lib "$RealBin/../lib";
 use Socialtext::l10n::DevUtils;
 use Socialtext::JSON;
 
-my %Lexicon;
-my $errors = 0;
-my $lang = shift or die "Usage: $0 <lang>\n";
-$lang =~ s/-/_/g;
-$lang =~ s/(_\w+)$/uc $1/e;
-for my $po (glob("share/l10n/$lang/*.po")) {
-    next if $po =~ /lib\.po$/; # Not going to occur in JS
-
-    open my $in, '<', $po;
-
-    local $/ = "\n\n";
-    scalar <$in>;
-
-    while (<$in>) {
-        my ($comments, $id, $str) = split(/\n(?=msg)/, "\n$_");
-        $id =~ s/\\n/\x{FFFC}/g;
-        $id = gettext_to_maketext(trim($id));
-        $str =~ s/\\n/\x{FFFC}/g;
-        $str = gettext_to_maketext(trim($str));
-        $Lexicon{$id} = $str unless $id eq $str;
-    }
+if (!@ARGV) {
+    @ARGV = map { 
+        s!^share/l10n/(.+)/lib\.po!$1!; $_
+    } glob("share/l10n/*/lib.po")
 }
 
-my $js_file = "share/skin/s3/javascript/l10n/$lang.js";
-open my $js, '>', $js_file;
-print $js ";var Socialtext = Socialtext || {}; Socialtext.loc_lang = Socialtext.loc_lang || '$lang'; var LocalizedStrings={\"$lang\":{\n";
-my $json = encode_json \%Lexicon;
-utf8::decode($json);
-$json =~ s/\x{FFFC}/\\n/g;
-$json =~ s/^\{//;
-$json =~ s/","/"\n"/g;
-$json =~ s/\}$//;
-print $js join(",\n", sort split /\n/, $json);
-print $js "\n}};\n";
-close $js;
-system("dev-bin/jsmake");
-warn "*** Generated successfully: $js_file\n";
+for my $lang (@ARGV) {
+    my %Lexicon;
+    $lang =~ s/-/_/g;
+    $lang =~ s/(_\w+)$/uc $1/e;
+    for my $po (glob("share/l10n/$lang/*.po")) {
+        next if $po =~ /lib\.po$/; # Not going to occur in JS
 
-my $po_file = "share/l10n/$lang.po";
-my $use_first = '--use-first';
-$use_first = '' if $lang eq 'en';
-system("msgcat --width 99999 $use_first -s @{[reverse sort glob(qq[share/l10n/$lang/*.po])]} > $po_file");
-warn "*** Generated successfully: $po_file\n";
+        open my $in, '<', $po;
+
+        local $/ = "\n\n";
+        scalar <$in>;
+
+        while (<$in>) {
+            my ($comments, $id, $str) = split(/\n(?=msg)/, "\n$_");
+            $id =~ s/\\n/\x{FFFC}/g;
+            $id = gettext_to_maketext(trim($id));
+            $str =~ s/\\n/\x{FFFC}/g;
+            $str = gettext_to_maketext(trim($str));
+            $Lexicon{$id} = $str unless $id eq $str;
+        }
+    }
+    gen_po($lang => \%Lexicon);
+    gen_js($lang => \%Lexicon);
+
+    next unless $lang eq 'en';
+
+    # Generated derived locales
+    my %zz = map { ($_ => zz($Lexicon{$_})) } keys %Lexicon;
+    my %zq = map { ($_ => zq($Lexicon{$_})) } keys %Lexicon;
+    gen_derived_po(zz => \&zz);
+    gen_js('zz' => \%zz);
+    gen_derived_po(zq => \&zq);
+    gen_js('zq' => \%zq);
+}
+
+system("dev-bin/jsmake 2>/dev/null");
+
+sub zz {
+    my @tokens = split(/(&\w+;|<[^>]*|quant)/, shift);
+    my $result = '';
+    for my $token (@tokens) {
+        unless ($token =~ /^(?:<|&\w+;|quant$)/) {
+            $token =~ s/[[:upper:]]/Z/g;
+            $token =~ s/[[:lower:]]/z/g;
+        }
+
+        $result .= $token;
+    }
+    return $result;
+}
+
+sub zq {
+    my $token = shift;
+    return $token unless $token =~ /\S/;
+    return "«$token»";
+}
+
+sub gen_js {
+    my ($lang, $lexicon) = @_;
+    my $js_file = "share/skin/s3/javascript/l10n/$lang.js";
+    open my $js, '>', $js_file;
+    print $js ";var Socialtext = Socialtext || {}; Socialtext.loc_lang = Socialtext.loc_lang || '$lang'; var LocalizedStrings={\"$lang\":{\n";
+    my $json = encode_json $lexicon;
+    utf8::decode($json);
+    $json =~ s/\x{FFFC}/\\n/g;
+    $json =~ s/^\{//;
+    $json =~ s/","/"\n"/g;
+    $json =~ s/\}$//;
+    print $js join(",\n", sort split /\n/, $json);
+    print $js "\n}};\n";
+    close $js;
+    warn "*** Generated successfully: $js_file\n";
+}
+
+sub gen_po {
+    my ($lang, $lexicon) = @_;
+    my $po_file = "share/l10n/$lang.po";
+    my $use_first = '--use-first';
+    $use_first = '' if $lang eq 'en';
+    system("msgcat --width 99999 $use_first -s @{[reverse sort glob(qq[share/l10n/$lang/*.po])]} > $po_file");
+    warn "*** Generated successfully: $po_file\n";
+}
+
+sub gen_derived_po {
+    my ($lang, $gen) = @_;
+    my $in_file = "share/l10n/en.po";
+    my $out_file = "share/l10n/$lang.po";
+    open my $in, '<:utf8', $in_file;
+    open my $out, '>:utf8', $out_file;
+    {
+        local $/ = "\n\n";
+        print $out scalar <$in>;
+    }
+    while (<$in>) {
+        if (/^msgstr/ .. /^$/) {
+            if (s/^(msg\w+\s*)//) {
+                print $out $1;
+            }
+
+            if (/^"(.*)"$/) {
+                print $out '"'.$gen->($1).'"'."\n";
+            }
+            else {
+                print $out $gen->($_);
+            }
+        }
+        else {
+            print $out $_;
+        }
+    }
+    warn "*** Generated successfully: $out_file\n";
+}

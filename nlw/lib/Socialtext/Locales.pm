@@ -35,11 +35,14 @@ sub valid_code {
     my $available = available_locales();
 
     # Add sekret locales
-    $available->{xx} = 'Hax0r (auto-generated)';
-    $available->{xq} = '«Quoted» (auto-generated)';
-    $available->{zz} = 'Hax0r';
-    $available->{zj} = 'Japanese Hax0r';
-    $available->{zl} = 'LOL Cat';
+    $available->{xx} = 'Xxx (msgid, auto-generated)';
+    $available->{xq} = '«Quoted» (msgid, auto-generated)';
+    $available->{zz} = 'Zzz (msgstr)';
+    $available->{zq} = '«Quoted» (msgstr)';
+
+    # Add not-yet-ready but available locales
+    $available->{zh_CN} = 'Chinese - Simplified';
+
     return $available->{$code};
 }
 
@@ -48,7 +51,7 @@ sub available_locales {
 
     use utf8;
     return {
-        'en' => _display_locale(loc('lang.en'), 'English'),
+       'en' => _display_locale(loc('lang.en'), 'English'),
 #       'fr_CA' => _display_locale(loc('lang.fr_CA'), 'French - Canadian'),
 #       'zh_CN' => _display_locale(loc('lang.zh_CN'), 'Chinese - Simplified'),
 #       'zh_TW' => _display_locale(loc('lang.zh_TW'), 'Chinese - Traditional'),
