@@ -35,7 +35,7 @@ for my $po (glob("share/l10n/$lang/*.po")) {
 
 my $js_file = "share/skin/s3/javascript/l10n/$lang.js";
 open my $js, '>', $js_file;
-print $js ";var LocalizedStrings={\"$lang\":{\n";
+print $js ";var Socialtext = Socialtext || {}; Socialtext.loc_lang = Socialtext.loc_lang || '$lang'; var LocalizedStrings={\"$lang\":{\n";
 my $json = encode_json \%Lexicon;
 utf8::decode($json);
 $json =~ s/\x{FFFC}/\\n/g;
