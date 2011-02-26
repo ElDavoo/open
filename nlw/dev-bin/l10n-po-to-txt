@@ -10,7 +10,7 @@ use Socialtext::l10n::DevUtils;
 my ($in, $out);
 for my $po (@ARGV) {
     open $in, '<', $po;
-    open $out, '>', "$po.txt";
+    open $out, '>:crlf', "$po.txt";
     select $out;
 
     local $/ = "\n\n";
