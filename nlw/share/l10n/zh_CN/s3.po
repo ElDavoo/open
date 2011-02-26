@@ -1536,8 +1536,8 @@ msgstr "一分钟前"
 msgid "ago.1minute"
 msgstr "一分钟前"
 
-msgid "page.editing"
-msgstr "打开页面进行编辑"
+msgid "page.editing=ago"
+msgstr "已於%1打开本页进行编辑。"
 
 msgid "info.optional"
 msgstr "可选"

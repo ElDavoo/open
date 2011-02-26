@@ -109,10 +109,10 @@ msgid "activities.all-replies"
 msgstr "所有回复"
 
 msgid "activities.all-my-groups"
-msgstr "我的所有组"
+msgstr "我的所有群组"
 
 msgid "activities.all-shared-groups"
-msgstr "所有共享组"
+msgstr "所有共享群组"
 
 msgid "activities.confirm-delete=target"
 msgstr "您确定要删除这 %1?\n一旦删除，无法恢复."
@@ -256,7 +256,7 @@ msgid "error.invalid-video-link"
 msgstr "请输入一个有效的视频链接."
 
 msgid "activities.post"
-msgstr "邮件"
+msgstr "发送"
 
 msgid "activities.post-to"
 msgstr "发送至"
@@ -289,7 +289,7 @@ msgid "activities.signal-this-page"
 msgstr "发送一个至本页面的链接信号"
 
 msgid "activities.showing"
-msgstr "显示中"
+msgstr "显示"
 
 msgid "activities.signal"
 msgstr "信号"
@@ -469,7 +469,7 @@ msgid "activities.expunge"
 msgstr "删除"
 
 msgid "activities.from"
-msgstr "从"
+msgstr "来自"
 
 msgid "event.join=group"
 msgstr "加入组 %1."
@@ -565,4 +565,4 @@ msgid "activities.to-groups=count"
 msgstr "至 %1 组"
 
 msgid "activities.within"
-msgstr "范围内"
+msgstr "群组为"
