@@ -139,8 +139,7 @@
       [% ELSE %]
        <a href="mailto:[% page.edit_in_progress.email_address %]">[% page.edit_in_progress.username %]</a>
       [% END %]
-      [% loc('page.editing') %]
-      [% ago_text(page.edit_in_progress.minutes_ago) %].
+      [% loc('page.editing=ago', ago_text(page.edit_in_progress.minutes_ago)) %]
       <a href="#" id="st-edit-warning-help">(?)</a>
     </div>
     [% END %]

@@ -1,4 +1,4 @@
-;var LocalizedStrings={"en":{
+;var Socialtext = Socialtext || {}; Socialtext.loc_lang = Socialtext.loc_lang || 'en'; var LocalizedStrings={"en":{
 "about.keywords":"wiki, business wiki, document management, enterprise wiki, intranet wiki, knowledge management, online collaboration, open source wiki, portal wiki, hosted wiki, collaboration, social software, social networking, dashboard, project collaboration, team collaboration, wiki appliance, wiki software, community",
 "about.people":"is a people directory with robust social networking features. You can find contact information for your colleagues, discover people with expertise and common interests, and find valuable information through your social connections.",
 "about.signals":"provides social messaging integrated with Socialtext's enterprise collaboration platform. While it provides a lot of the same great benefits of other micro-sharing tools like Twitter&#0153;, Socialtext Signals also provides additional benefits because the messaging occurs in the context of people within an organization working transparently and collaborating on common goals.",
@@ -1145,7 +1145,7 @@
 "page.duplicate=title":"Duplicate of [_1]",
 "page.edit":"Edit",
 "page.edit=title":"Edit [_1]",
-"page.editing":"opened this page for editing",
+"page.editing=ago":"opened this page for editing [_1].",
 "page.email-to-this":"Email To This Page",
 "page.files:":"Attachments for this page:",
 "page.incoming-links":"Incoming Links",
