@@ -11,14 +11,13 @@ use Socialtext::System qw/shell_run/;
 chdir "$RealBin/..";
 
 my $new;
-GetOptions( 'new|n!' => \$new ) and @ARGV
-    or die "Usage: $0 [--new] input.po\n";
+GetOptions( 'new|n!' => \$new ) or die "Usage: $0 [--new] [sections]\n";
 
 my @plugins = map { basename($_) } grep { -d and (-d "$_/share" or -d "$_/template") } glob('share/plugin/*');
 my %Sections = (
     bin => 'bin',
     lib => 'lib',
-    wikiwyg => 'shareskin/wikiwyg/javascript',
+    wikiwyg => 'share/skin/wikiwyg/javascript',
     appliance => ['../appliance/libsocialtext-appliance-perl/template', '../appliance/libsocialtext-appliance-perl/sbin'],
 #   s2 => ['share/skin/s2/template', 'share/skin/s2/javascript'],
     s3 => ['share/skin/s3/template', 'share/skin/s3/javascript'],
@@ -48,7 +47,8 @@ for my $key (sort keys %Sections) {
 
     if ($key eq 'wikiwyg') {
 #        shell_run('./dev-bin/l10n-widget-to-js');
-#        unlink 'lib/Socialtext/Widget_resource.pm';
+        unlink 'lib/Socialtext/Widget_resource.pm';
+        unlink 'share/skin/wikiwyg/javascript/widget_resource.js';
     }
 
     shell_run(
@@ -58,7 +58,7 @@ for my $key (sort keys %Sections) {
     );
 
     if ($new) {
-        system("msggrep --msgid -v -e '^<!\|^[a-z][a-z0-9][a-z0-9]*\.' share/l10n/$lang/$key.po > share/l10n/$lang/$key.po.new");
+        system("msggrep --msgid -v -e '^<!\\|^[a-z][a-z0-9][a-z0-9]*\\.' share/l10n/$lang/$key.po > share/l10n/$lang/$key.po.new");
         system("mv share/l10n/$lang/$key.po.new share/l10n/$lang/$key.po");
         unlink "share/l10n/$lang/$key.po" unless -s "share/l10n/$lang/$key.po";
     }
