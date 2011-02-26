@@ -127,7 +127,7 @@
 | text_like | Name |  |
 | text_like | Account |  |
 | text_like | Administrators |  |
-| text_like | Create a new workspace |  |
+| text_like | qr/Create.+new workspace/i |  |
 | text_like | qr/Invite To existing workspace\(s\)/i |  |
 
 | *Comment* | Test Case: Business Control Panel Sorting radio buttons create or invite |  |
