@@ -51,5 +51,5 @@ warn "*** Generated successfully: $js_file\n";
 my $po_file = "share/l10n/$lang.po";
 my $use_first = '--use-first';
 $use_first = '' if $lang eq 'en';
-system("msgcat --width 99999 -s @{[reverse sort glob(qq[share/l10n/$lang/*.po])]} > $po_file");
+system("msgcat --width 99999 $use_first -s @{[reverse sort glob(qq[share/l10n/$lang/*.po])]} > $po_file");
 warn "*** Generated successfully: $po_file\n";
