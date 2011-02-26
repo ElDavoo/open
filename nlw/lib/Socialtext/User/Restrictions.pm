@@ -198,8 +198,11 @@ sub AllForUser {
         ? $user_or_id->user_id
         : $user_or_id;
 
-    my ($sql, @bind)
-        = sql_abstract->select($TABLE, $COLUMNS, { user_id => $user_id });
+    my ($sql, @bind) = sql_abstract->select(
+        $TABLE, $COLUMNS,
+        { user_id  => $user_id },
+        { order_by => 'user_id, restriction_type' },
+    );
     my $sth = sql_execute($sql, @bind);
     return Socialtext::MultiCursor->new(
         iterables => [ $sth->fetchall_arrayref({}) ],
