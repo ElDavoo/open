@@ -6,8 +6,13 @@ use FindBin qw/$RealBin/;
 use lib "$RealBin/../lib";
 use Locale::Maketext::Lexicon 0.85; # Ensures xgettext.pl terminates
 use File::Basename 'basename';
+use Getopt::Long;
 use Socialtext::System qw/shell_run/;
 chdir "$RealBin/..";
+
+my $new;
+GetOptions( 'new|n!' => \$new ) and @ARGV
+    or die "Usage: $0 [--new] input.po\n";
 
 my @plugins = map { basename($_) } grep { -d and (-d "$_/share" or -d "$_/template") } glob('share/plugin/*');
 my %Sections = (
@@ -33,6 +38,9 @@ my %Sections = (
 # Cleanup temporary JS files before extracting
 shell_run("dev-bin/jsmake cleanall");
 
+my $lang = $new ? 'new' : 'en';
+mkdir "share/l10n/$lang" if $new;
+
 for my $key (sort keys %Sections) {
     my $dir = $Sections{$key};
     $dir = [$dir] unless ref $dir;
@@ -45,9 +53,15 @@ for my $key (sort keys %Sections) {
 
     shell_run(
         qw( xgettext.pl -now -P perl=* -P tt2=* ),
-        -o => "share/l10n/en/$key.po",
+        -o => "share/l10n/$lang/$key.po",
         map { -D => $_ } @$dir
-    )
+    );
+
+    if ($new) {
+        system("msggrep --msgid -v -e '^<!\|^[a-z][a-z0-9][a-z0-9]*\.' share/l10n/$lang/$key.po > share/l10n/$lang/$key.po.new");
+        system("mv share/l10n/$lang/$key.po.new share/l10n/$lang/$key.po");
+        unlink "share/l10n/$lang/$key.po" unless -s "share/l10n/$lang/$key.po";
+    }
 }
 
 #shell_run("msgcat share/l10n/en/*.po > share/l10n/en.po");
