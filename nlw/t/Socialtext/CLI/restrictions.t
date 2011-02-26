@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 93;
+use Test::Socialtext tests => 98;
 use Socialtext::CLI;
 use Test::Socialtext::CLIUtils qw(:all);
 use Test::Socialtext::User;
@@ -449,4 +449,41 @@ remove_all_restrictions: {
     $user->reload;
     ok !$user->email_confirmation, '... e-mail confirmation cleared';
     ok !$user->password_change_confirmation, '... password change cleared';
+}
+
+###############################################################################
+# TEST: List restrictions for a User
+list_restrictions: {
+    my $guard = Test::Socialtext::User->snapshot;
+    my $user = create_test_user();
+    ok $user, 'Created test User';
+
+    # With *NO* restrictions
+    expect_success(
+        call_cli_argv(
+            'list-restrictions',
+            '--email' => $user->email_address,
+        ),
+        qr/No restrictions for user/,
+        '... User listed with no restrictions',
+    );
+
+    # With multiple restrictions
+    my $r_email    = $user->create_email_confirmation;
+    my $r_password = $user->create_password_change_confirmation;
+
+    my $expected =
+        join '.*',
+            map { "\Q$_\E" }
+                $r_email->restriction_type,    $r_email->token,
+                $r_password->restriction_type, $r_password->token;
+
+    expect_success(
+        call_cli_argv(
+            'list-restrictions',
+            '--email' => $user->email_address,
+        ),
+        qr/$expected/s,
+        '... User shown to have multiple restrictions',
+    );
 }

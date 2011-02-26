@@ -957,6 +957,26 @@ sub confirm_user {
                         . $password );
 }
 
+sub list_restrictions {
+    my $self         = shift;
+    my $user         = $self->_require_user();
+    my @restrictions = $user->restrictions->all();
+
+    unless (@restrictions) {
+        $self->_success( loc("No restrictions for user") );
+    }
+
+    printf '| %20s | %40s |' . "\n",
+        loc("Restriction Type"),
+        loc("Token");
+    foreach my $r (@restrictions) {
+        printf '| %20s | %40s |' . "\n",
+            $r->restriction_type,
+            $r->token;
+    }
+    $self->_success();
+}
+
 sub add_restriction {
     my $self  = shift;
     my $user  = $self->_require_user();
@@ -4080,6 +4100,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   can-lock-pages [--username or --email] --workspace
   locked-pages --workspace
   mass-add-users --csv --account
+  list-restrictions [--username or --email]
   add-restriction [--username or --email] --restriction
   remove-restriction [--username or --email] --restriction
 
@@ -4378,6 +4399,12 @@ default account.
 When updating users, if no account is specified, the user will be left in the
 account that they are currently assigned to.  If an account is provided when
 updating users, the users will be (re-)assigned to that account.
+
+=head2 list-restrictions [--username or --email]
+
+Lists the restrictions that are in place against a User record.  Each of the
+listed restrictions will prevent the User from being able to log in until the
+restriction has been removed/lifted.
 
 =head2 add-restriction [--username or --email] --restriction
 
