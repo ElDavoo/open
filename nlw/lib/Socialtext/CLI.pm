@@ -958,22 +958,23 @@ sub confirm_user {
 }
 
 sub add_restriction {
-    my $self = shift;
-    my $user = $self->_require_user();
-    my $type = $self->_require_string('restriction');
+    my $self  = shift;
+    my $user  = $self->_require_user();
+    my $types = $self->_require_restriction();
 
-    my $restriction = eval {
-        Socialtext::User::Restrictions->CreateOrReplace( {
-            user_id          => $user->user_id,
-            restriction_type => $type,
-        } );
-    };
-    $self->_error($@) if ($@);
+    foreach my $t (@{$types}) {
+        eval {
+            my $restriction = Socialtext::User::Restrictions->CreateOrReplace( {
+                user_id          => $user->user_id,
+                restriction_type => $t,
+            } );
+            $restriction->send;
+        };
+        $self->_error($@) if ($@);
 
-    $restriction->send;
-    $self->_success(
-        loc("[_1] has been given the '[_2]' restriction'", $user->username, $type)
-    );
+        print loc("[_1] has been given the '[_2]' restriction'", $user->username, $t) . "\n";
+    }
+    $self->_success();
 }
 
 sub remove_restriction {
@@ -4382,6 +4383,8 @@ updating users, the users will be (re-)assigned to that account.
 
 Adds a restriction to a User record.  Once restricted, the User will B<not> be
 able to log in to the system until the restriction has been lifted.
+
+To add multiple restrictions, use the C<--restriction> option multiple times.
 
 Available restrictions include:
 

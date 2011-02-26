@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 82;
+use Test::Socialtext tests => 93;
 use Socialtext::CLI;
 use Test::Socialtext::CLIUtils qw(:all);
 use Test::Socialtext::User;
@@ -200,6 +200,53 @@ add_invalid_restriction: {
 
     my @emails = Email::Send::Test->emails();
     is @emails, 0, '... and NO e-mail message was sent';
+}
+
+###############################################################################
+# TEST: Add multiple restrictions
+add_multiple_restrictions: {
+    my $guard = Test::Socialtext::User->snapshot;
+    my $user  = create_test_user;
+    ok $user, 'Created test user';
+
+    is $user->restrictions->count, 0, '... has no restrictions';
+
+    expect_success(
+        call_cli_argv(
+            'add-restriction',
+            '--username'    => $user->username,
+            '--restriction' => 'email_confirmation',
+            '--restriction' => 'password_change',
+        ),
+        qr/has been given.*has been given/s,
+        '... multiple restrictions added',
+    );
+    is $user->restrictions->count, 2, '... User has restrictions';
+
+    my @emails = Email::Send::Test->emails();
+    is @emails, 2, '... and e-mail messages were sent';
+}
+
+###############################################################################
+# TEST: Add multiple restrictions aborts on unknown/invalid restriction
+add_multiple_restrictions_abort_on_invalid: {
+    my $guard = Test::Socialtext::User->snapshot;
+    my $user  = create_test_user;
+    ok $user, 'Created test user';
+
+    is $user->restrictions->count, 0, '... has no restrictions';
+
+    expect_failure(
+        call_cli_argv(
+            'add-restriction',
+            '--username'    => $user->username,
+            '--restriction' => 'email_confirmation',
+            '--restriction' => 'invalid-restriction',
+        ),
+        qr/unknown restriction type, 'invalid-restriction'/,
+        '... aborted on invalid restriction',
+    );
+    is $user->restrictions->count, 0, '... User still has no restrictions';
 }
 
 ###############################################################################
