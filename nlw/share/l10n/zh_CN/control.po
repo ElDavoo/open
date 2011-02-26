@@ -169,7 +169,7 @@ msgid "control.appliance-technical-administrator?"
 msgstr "设备技术管理员?"
 
 msgid "control.console-link"
-msgstr "设备技术管理员可以使用 <a href='/console'>控制台</a> 对设备的各技术方面进行管理，例如网络与对设置进行备份。"
+msgstr "设备技术管理员可以使用 <a href='/console'>设备管理</a> 对设备的各技术方面进行管理，例如网络与对设置进行备份。"
 
 msgid "date.april"
 msgstr "四月"
@@ -232,7 +232,7 @@ msgid "control.confirm-user"
 msgstr "确认用户"
 
 msgid "control.console"
-msgstr "控制台"
+msgstr "设备管理"
 
 msgid "control.field-contact"
 msgstr "联系"
@@ -241,7 +241,7 @@ msgid "control.contact-support"
 msgstr "联系支持"
 
 msgid "nav.control-panel"
-msgstr "控制面板"
+msgstr "控制台"
 
 msgid "do.create"
 msgstr "创建"
@@ -754,7 +754,7 @@ msgid "control.socialtext-admin-configuration"
 msgstr "Socialtext 管理设置"
 
 msgid "control.socialtext-control-panel"
-msgstr "Socialtext 控制面板"
+msgstr "Socialtext 控制台"
 
 msgid "control.about-mass-add-users"
 msgstr "Socialtext 可以让您为账户添加多用户。要添加多用户，请下载样本数据文件，然后添加您的用户数据。并在此上传该文件。也可以访问<a href=\"https://www.socialtext.net/help-adminguide/adding_and_updating_users#adding_multiple_users\">为Socialtext添加多用户</a>查看添加多用户的全部文档。"
@@ -904,7 +904,7 @@ msgid "control.via-wiki=count,links"
 msgstr "源于 %1 个工作区: %2"
 
 msgid "control.welcome-to-control-panel"
-msgstr "欢迎访问Socialtext控制面板"
+msgstr "欢迎访问 Socialtext 控制台"
 
 msgid "control.click-add-users-link"
 msgstr "当您作出决定后，点击“添加用户”链接。"
