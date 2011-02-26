@@ -43,7 +43,7 @@ msgid "console.apache-error-log"
 msgstr "Apache 错误日志"
 
 msgid "console.appliance"
-msgstr "设备控制台"
+msgstr "设备管理"
 
 msgid "console.documentation"
 msgstr "设备文档"
@@ -109,7 +109,7 @@ msgid "console.contact-socialtext-support"
 msgstr "联系Socialtext支持"
 
 msgid "console.control-panel"
-msgstr "控制面板"
+msgstr "控制台"
 
 msgid "console.create-initial-wiki"
 msgstr "创建初始工作区"
@@ -157,7 +157,7 @@ msgid "console.ntp-server-rfc-1305"
 msgstr "NTP 服务器 (RFC 1305)"
 
 msgid "console.about-navigation-tabs"
-msgstr "使用导航标签来选择控制面板的不同部分"
+msgstr "使用导航标签来选择设备管理的不同部分"
 
 msgid "console.new-admin-email-address:"
 msgstr "新的管理员电子邮件地址:"
@@ -298,7 +298,7 @@ msgid "console.time-each-day:"
 msgstr "每日时间:"
 
 msgid "console.link-to-control-panel"
-msgstr "查看与管理系统的工作区、账户、组与用户，请转至 <a href=\"/nlw/control/\">控制面板</a> 工具."
+msgstr "查看与管理系统的工作区、账户、组与用户，请转至 <a href=\"/nlw/control/\">控制台</a> 工具."
 
 msgid "error.unknown=status"
 msgstr "未知: %1"
