@@ -215,7 +215,7 @@ purge-attachment
 | st-admin | purge-attachment | qr/The command you called \(purge-attachment\) requires a workspace to be specified/ |
 | st-admin | purge-attachment --workspace %%cmdline_workspace%% | qr/The command you called \(purge-attachment\) requires a page to be specified/ |
 | st-admin | purge-attachment --workspace %%cmdline_workspace%% --page nosuchpage | qr/There is no page with the id "nosuchpage" in the %%cmdline_workspace%% workspace/ |
-| st-admin | purge-attachment --workspace %%cmdline_workspace%% --page example_page_project_tracking | qr/The command you called \(purge-attachment\) requires an attachment to be specified/ |
+| st-admin | purge-attachment --workspace %%cmdline_workspace%% --page example_page_project_tracking | qr/The command you called \(purge-attachment\) requires an attachment id to be specified/ |
 
 TODO: figure out a way to calculate the attachment ID
 st-admin | purge-attachment --workspace %%cmdline_workspace%% --page example_page_project_tracking --attachment 20100401162154-11-29454 | attachment was purged from Example Page: Project Tracking page in the %%cmdline_workspace%% workspace. |
