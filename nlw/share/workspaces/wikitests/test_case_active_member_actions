@@ -2,7 +2,7 @@
 
 * Fixture: SocialWidgets
 
-| *Comment* | Test Case: Active Members Actions - View Profile |  |
+| *Comment* | Test Case: Active Members Actions - View Profile for %%logged_in_user%% |  |
 | open_ok | /st/profile |  |
 | text-like | st-editing-tools-edit | %%logged_in_user%% |
 | st-name-widget | 1 | profile |
@@ -10,7 +10,7 @@
 | wait_for_element_visible_ok | link=(Edit) | 60000 |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Active Members Actions - A couple Edits |  |
+| *Comment* | Test Case: Active Members Actions - A couple Edits for %%logged_in_user%% |  |
 | open_ok | /%%am_ws_1%%/ |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |
 | click_ok | link=Comment |  |
@@ -29,7 +29,7 @@
 | st_click_pause | link=Save | 5000 |
 | wait_for_element_visible_ok | link=Comment | 30000 |
 
-| *Comment* | Test Case: Active Members Actions - A couple Edits in workspace 2 |  |
+| *Comment* | Test Case: Active Members Actions - A couple Edits in workspace 2 for %%logged_in_user%% |  |
 | open_ok | /%%am_ws_2%%/ |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |
 | click_ok | link=Comment |  |
@@ -48,12 +48,12 @@
 | st_click_pause | link=Save | 5000 |
 | wait_for_element_visible_ok | link=Comment | 30000 |
 
-| *Comment* | Test Case: Active Members Actions - Page View |  |
+| *Comment* | Test Case: Active Members Actions - Page View for %%logged_in_user%% |  |
 | open_ok | /%%am_ws_1%%/ |  |
 | wait_for_element_visible_ok | link=Comment | 30000 |
 
-| *Comment* | Test Case: Active Members Actions - Signal Once Upon A Time |  |
+| *Comment* | Test Case: Active Members Actions - Signal Once Upon A Time for %%logged_in_user%% |  |
 | http-user-pass | %%logged_in_as%% | %%password%% |
 | post-signal | Once Upon A Time %%start_time%% %%mark%% |  |
 
-| *Comment* | Test Case: Active Members Actions COMPLETED |  |
+| *Comment* | Test Case: Active Members Actions for %%logged_in_user%% COMPLETED |  |
