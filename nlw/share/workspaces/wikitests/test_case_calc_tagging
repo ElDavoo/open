@@ -78,7 +78,7 @@ Add any other tag to three different pages | tag is added
 | *Comment* | Test Case: Calc Tagging add the same tag to three new pages |  |
 
 | *Comment* | Tag Page 1 |  |
-| open_ok | %%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=tag%20page%201%20%%start_time%%#edit |  |
+| open_ok | %%t_ws%%/index.cgi?action=display;page_type=spreadsheet;page_name=tag%20page%201%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | pause | 5000 | I hate pause; needed for entire page load |
 | st-page-save |  |  |
@@ -96,7 +96,7 @@ Add any other tag to three different pages | tag is added
 | text_like | link=tagtest %%start_time%% | tagtest %%start_time%% |
 
 | *Comment* | Tag Page 2 |  |
-| open_ok | %%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=tag%20page%202%20%%start_time%%#edit |  |
+| open_ok | %%t_ws%%/index.cgi?action=display;page_type=spreadsheet;page_name=tag%20page%202%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | pause | 5000 | I hate pause; needed for entire page load |
 | st-page-save |  |  |
@@ -113,7 +113,7 @@ Add any other tag to three different pages | tag is added
 | text_like | link=tagtest %%start_time%% | tagtest %%start_time%% |
 
 | *Comment* | Tag Page 3 |  |
-| open_ok | %%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=tag%20page%203%20%%start_time%%#edit |  |
+| open_ok | %%t_ws%%/index.cgi?action=display;page_type=spreadsheet;page_name=tag%20page%203%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | pause | 5000 | I hate pause; needed for entire page load |
 | st-page-save |  |  |
@@ -130,7 +130,7 @@ Add any other tag to three different pages | tag is added
 | text_like | link=tagtest %%start_time%% | tagtest %%start_time%% |
 
 | *Comment* | Test Case: Calc Tagging. Delete Tag |  |
-| open_ok | /%%workspace%%/?tag page 2 %%start_time%% |
+| open_ok | /%%t_ws%%/?tag page 2 %%start_time%% |
 | wait_for_element_present_ok | //a[@class='delete_tag'] | 30000 |
 | click_ok | //a[@class='delete_tag'] |  |
 | wait_for_element_visible_ok | st-no-tags-placeholder | 30000 |
@@ -140,7 +140,7 @@ Navigate to All Tags in list view | All Tags appears
 Observe that tag | tag is still in list
 Click that tag | Tag list page appears with two remaining tagged pages
 
-| open_ok | /%%workspace%%/?action=recent_changes |  |
+| open_ok | /%%t_ws%%/?action=recent_changes |  |
 | click_and_wait | link=All Tags |  |
 | text_like | contentContainer | tagtest %%start_time%% |
 | click_and_wait | link=tagtest %%start_time%% |  |
@@ -149,7 +149,7 @@ Click that tag | Tag list page appears with two remaining tagged pages
 
 
 | *Comment* | Test Case: Calc Tagging verify suggestions foo bar, fog, and Foster City |  |
-| open_ok | %%workspace%%/index.cgi?action=display;page_type=spreadsheet;page_name=tag%20page%204%20%%start_time%%#edit |  |
+| open_ok | %%t_ws%%/index.cgi?action=display;page_type=spreadsheet;page_name=tag%20page%204%20%%start_time%%#edit |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | pause | 5000 | I hate pause; needed for entire page load |
 | st-page-save |  |  |
@@ -170,6 +170,6 @@ Click that tag | Tag list page appears with two remaining tagged pages
 
 | *Comment* | Test Case: Calc Tagging Teardown |  |
 | st-process-jobs |  |  |
-| delete-workspace | %%t_ws%% | Recklessly deleting workspace (Name: %%t_ws%% |
+| delete-workspace | %%t_ws%% | Recklessly deleting workspace |
 
 | *Comment* | Test Case: Calc Tagging COMPLETED |  |
