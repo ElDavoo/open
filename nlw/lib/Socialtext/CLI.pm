@@ -899,9 +899,10 @@ sub _require_create_user_params {
 }
 
 sub mass_add_users {
-    my $self = shift;
-    my $account = $self->_require_account('optional');
-    my %opts = $self->_require_mass_add_users_params();
+    my $self        = shift;
+    my $account     = $self->_require_account('optional');
+    my $restriction = $self->_require_restriction('optional');
+    my %opts        = $self->_require_mass_add_users_params();
 
     my $csv = eval { slurp($opts{csv}) };
     if ($@) {
@@ -921,6 +922,7 @@ sub mass_add_users {
                 push @messages, $_[0];
                 $has_errors++;
             },
+            restrictions => $restriction,
         );
         $mass_add->from_csv($csv);
     };
