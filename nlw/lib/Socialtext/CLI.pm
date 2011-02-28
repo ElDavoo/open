@@ -4104,7 +4104,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   hide-profile [--username or --email]
   can-lock-pages [--username or --email] --workspace
   locked-pages --workspace
-  mass-add-users --csv --account
+  mass-add-users --csv --account --restriction
   list-restrictions [--username or --email]
   add-restriction [--username or --email] --restriction
   remove-restriction [--username or --email] --restriction
@@ -4385,7 +4385,7 @@ Show whether a user can lock pages in the workspace.
 
 List the locked pages for a given workspace.
 
-=head2 mass-add-users --csv --account
+=head2 mass-add-users --csv --account --restriction
 
 Bulk adds/updates users from the given CSV file.
 
@@ -4404,6 +4404,12 @@ default account.
 When updating users, if no account is specified, the user will be left in the
 account that they are currently assigned to.  If an account is provided when
 updating users, the users will be (re-)assigned to that account.
+
+If the C<--restriction> option is provided, one or more restrictions can be
+applied to Users en-masse (either during the creation of new Users, or the
+update of existing ones).  To set multiple restrictions, use the
+C<--restriction> option multiple times.  For more information on available
+restrictions, see L</add-restriction>.
 
 =head2 list-restrictions [--username or --email]
 
