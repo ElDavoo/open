@@ -565,6 +565,7 @@ sub groups {
 sub to_hash {
     my $self = shift;
     my %args = @_;
+    my $t = time_scope 'user_to_hash';
 
     if ($args{minimal}) {
         return {

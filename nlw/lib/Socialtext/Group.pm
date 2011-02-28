@@ -652,18 +652,23 @@ sub to_hash {
     my %opts = @_;
 
     my $hash = {
-        group_id => $self->group_id,
-        name => $self->driver_group_name,
-        description => $self->description,
-        user_count => $self->user_count,
-        workspace_count => $self->workspace_count,
-        creation_date => $self->creation_datetime->ymd,
-        created_by_user_id => $self->created_by_user_id,
-        created_by_username => $self->creator->guess_real_name,
+        group_id           => $self->group_id,
+        name               => $self->driver_group_name,
+        description        => $self->description,
+        user_count         => $self->user_count,
         primary_account_id => $self->primary_account_id,
-        primary_account_name => $self->primary_account->name,
-        permission_set => $self->permission_set,
     };
+    if (!$opts{minimal}) {
+        $hash = {
+            %$hash,
+            workspace_count      => $self->workspace_count,
+            creation_date        => $self->creation_datetime->ymd,
+            created_by_user_id   => $self->created_by_user_id,
+            created_by_username  => $self->creator->guess_real_name,
+            primary_account_name => $self->primary_account->name,
+            permission_set       => $self->permission_set,
+        };
+    }
 
     if ($opts{show_members}) {
         $hash->{members} = $self->users_as_minimal_arrayref('member');
@@ -675,10 +680,7 @@ sub to_hash {
         $hash->{plugins_enabled} = [ sort $self->plugins_enabled ],
     }
     if ($opts{show_account_ids}) {
-        $hash->{primary_account_id} = $self->primary_account_id;
-        $hash->{account_ids} = [
-            $self->accounts(ids_only => 1)->all
-        ];
+        $hash->{account_ids} = [ $self->accounts(ids_only => 1)->all ];
     }
 
     return $hash;
