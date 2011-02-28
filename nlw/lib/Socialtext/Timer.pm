@@ -123,6 +123,16 @@ sub elapsed {
     return time() - $self->{_start_time};
 }
 
+sub elapsed_hms {
+    my $self = shift;
+    my $dur = time() - $self->{_start_time};
+    my $hr = int($dur / 3600);
+    $dur %= 3600;
+    my $min = int($dur / 60);
+    $dur %= 60;
+    return sprintf('%01dh%02dm%0.3fs', $hr, $min, $dur);
+}
+
 sub time_this(&$) {
     __PACKAGE__->Continue($_[1]);
     eval { $_[0]->() };
