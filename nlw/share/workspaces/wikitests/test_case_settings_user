@@ -1,5 +1,0 @@
-| *Comment* | START Test Case: Settings: User |
-
-| include | [Test Case: Preferences UI User]   |
-
-| *Comment* | Test Case: Settings: User COMPLETED |

@@ -1,12 +1,12 @@
 | *Comment* | Test case: Business Control Panel Workspace |  |
 
-| set | new_acct | acct wstest %%start_time%% |
+| set | new_acct | acct-wstest-%%start_time%% |
 | set | new_workspace | wksp-test%%start_time%% |
 | set | cli_user | cli_test%%start_time%%@ken.socialtext.net |
 | set | cli_user_prefix | cli |
 | set | cli_user_suffix | test%%start_time%% |
 
-| st-admin | create-account --name '%%new_acct%%' |  |
+| create-account | %%new_acct%% |  |
 | st-admin | create-workspace --empty --name %%new_workspace%% --title %%new_workspace%% --account '%%new_acct%%' |  |
 | st-admin | create-user --email %%cli_user%% --password %%password%% |  |
 
@@ -42,7 +42,6 @@
 | set | wstitle | wstitle_%%start_time%% |
 | wait_for_element_visible_ok | //input[@value='Create New Workspace'] | 30000 |
 | click_ok | //input[@value='Create New Workspace'] | 30000 |
-| wait_for_element_visible_ok | create | 30000 |
 | wait_for_element_visible_ok | workspace_title | 30000 |
 | type_ok | workspace_title | %%wstitle%% |
 | wait_for_element_visible_ok | addUserLookahead | 30000 |
@@ -52,10 +51,11 @@
 | wait_for_element_visible_ok | link=%%cli_user%% | 30000 |
 | wait_for_element_visible_ok | userTable-dropdown-2-0 | 30000 |
 | select_ok | userTable-dropdown-2-0 | label=Admin |
-| wait_for_text_present_ok | Updating | 15000 |
-| wait_for_text_not_present_ok | Updating | 15000 |
+| pause | 8000 | nothing to reliably wait on |
 | verifyValue | userTable-dropdown-2-0 | admin |
-| click_and_wait | create |  |
+
+| wait_for_element_visible_ok | id=create | 30000 |
+| click_and_wait | id=create |  |
 | wait_for_text_present_ok | %%wstitle%% workspace | 30000 |
 
 | *Comment* | Test case: Business Control Panel Workspace Change new workspace account to Socialtext |  |
@@ -95,5 +95,6 @@
 | st-admin | delete-workspace --workspace %%new_workspace%% --no-export | has been deleted |
 | st-admin | delete-workspace --workspace %%wstitle%% --no-export | has been deleted |
 | st-admin | deactivate-user --email %%cli_user%% | has been removed |
+| delete-account | %%new_acct%% | has been deleted |
 
 | *Comment* | Test case: Business Control Panel Workspace COMPLETED |  |

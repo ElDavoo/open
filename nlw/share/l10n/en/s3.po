@@ -1505,8 +1505,8 @@ msgid "page.edit=title"
 msgstr "Edit %1"
 
 #: share/skin/s3/template/view/page/display:142
-msgid "page.editing"
-msgstr "opened this page for editing"
+msgid "page.editing=ago"
+msgstr "opened this page for editing %1."
 
 #: share/skin/s3/template/view/page/display:105 share/skin/s3/template/view/page/display:107
 msgid "page.email-to-this"

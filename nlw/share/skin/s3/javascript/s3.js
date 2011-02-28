@@ -340,7 +340,7 @@ $(function() {
             else
                 $('#contentColumns').removeClass("showbox").addClass("hidebox");
             hidden = !hidden;
-            this.innerHTML = hidden ? 'show' : 'hide';
+            $(this).text(hidden ? loc('nav.show') : loc('nav.hide'));
             Cookie.set('st-page-accessories', hidden ? 'hide' : 'show');
 
             if ($('div#contentLeft').css('overflow') == 'visible') {

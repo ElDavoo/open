@@ -57,11 +57,6 @@ set-logo-from-file --workspace --file /path/to/file.jpg
 | st-admin | set-logo-from-file --workspace %%cmdline_workspace%% --file /foo/bar | Logo file must be a gif, jpeg, or png file. |
 | st-admin | set-logo-from-file --workspace %%cmdline_workspace%% --file %%wikitest_client_files%%wikitest.jpg | The logo file was imported as the new logo for the %%cmdline_workspace%% workspace. |
 
-| *Comment* | Test Case: Command Line Tests OTHER set-comment-form-custom-fields succeeds with no arguments |  |
-
-| st-admin | set-comment-form-custom-fields | qr/The command you called \(set-comment-form-custom-fields\) requires a workspace to be specified/ |
-| st-admin | set-comment-form-custom-fields --workspace %%cmdline_workspace%% | qr/The custom comment form fields for the %%cmdline_workspace%% workspace have been updated/ |
-
 set-ping-uris --workspace <uri> <uri>
 
 | *Comment* | Test Case: Command Line Tests OTHER set-ping-uris succeeds with no arguments |  |

@@ -38,9 +38,9 @@ sub delete_alias {
     my @aliases;
     open my $fh, '<', $aliases_file
         or die "Cannot read $aliases_file: $!";
-    while (<$fh>) {
-        next if /^\Q$name\E/;
-        push @aliases, $_;
+    for my $line (qx(grep "^." "$aliases_file")) {
+        next if $line =~ /^\Q$name\E/;
+        push @aliases, $line;
     }
     close $fh;
 
@@ -60,7 +60,7 @@ sub find_alias {
     for my $file ( '/etc/aliases', Socialtext::Paths::aliases_file() ) {
         next unless -e $file;
 
-        for my $line (Socialtext::File::get_contents($file)) {
+        for my $line (qx(grep "^$name: " "$file")) {
             return $2 if $line =~ /^([\w\.\-]+): (.*)$/ and $1 eq $name;
         }
     }

@@ -2,286 +2,201 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 06:36+0800\n"
+"PO-Revision-Date: 2011-02-26 08:54+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: share/plugin/signals/share/javascript/lightbox/explore-about.tt2:17
 msgid "do.close"
-msgstr "Close"
+msgstr "关闭"
 
-#. (limit)
-#: share/plugin/signals/template/bookmarklet/too_long.html:6
 msgid "error.signal-too-long=limit"
-msgstr "Your signal exceeded %1 characters"
+msgstr "您的信号超过了%1字数"
 
-#: share/plugin/signals/template/explore_hello:2
 msgid "explore.beta"
-msgstr "Explore (beta)"
+msgstr "探索 (测试)"
 
-#: share/plugin/signals/share/javascript/lightbox/explore-about.tt2:10
 msgid "explore.do-not-show-again"
-msgstr "Do not show this information again"
+msgstr "不要再显示此信息"
 
-#: share/plugin/signals/share/widgets/explore_filters/widget.js:290
 msgid "explore.everyone"
-msgstr "Everyone"
+msgstr "所有人"
 
-#: share/plugin/signals/share/widgets/explore_filters/widget.js:289
 msgid "explore.just-me"
-msgstr "Just Me"
+msgstr "只有我"
 
-#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:3
 msgid "explore.using-filters"
-msgstr "Use the filters below to narrow the results. Use the small 'x' by any of the Groups, Tags and People filters to remove them."
+msgstr "使用下面的过滤器来缩小结果。 使用'x'来过滤掉相应的群组，标签和好友。"
 
-#: share/plugin/signals/share/javascript/lightbox/explore-about.tt2:4
 msgid "info.about-explore"
-msgstr "<b>Socialtext Explore</b> makes it easy to learn about the files and links your colleagues have shared via Socialtext Signals. Use the tabs along the top to choose the asset type and the filters on the left to narrow down the information being displayed. <br /> <br /> Each item listed has one or more Signals conversations that mention it. Click on an item's title to open the link itself, or click on the square to the left of the title to see and reply to its conversations."
+msgstr "<b>Socialtext 浏览</b> 让您轻松通过Socialtext信号知道同事们分享的文件和链接。使用顶部的标签来选择类型和左边的筛选功能来减少要显示的信息。<br /> <br /> 每个列出的项目都有一个或者更多提及它的信号会话。您可以点击项目来打开链接，或者点击标题左边的方框来查看和回复相应的会话。"
 
-#: share/plugin/signals/template/nav_signals_explore:1
 msgid "nav.explore"
-msgstr "Explore"
+msgstr "探索"
 
-#: share/plugin/signals/template/cp_signal_size_limit:2 share/plugin/signals/template/element/settings/private_menu:1 share/plugin/signals/template/nav_signals:1 share/plugin/signals/template/signals_hello:1
 msgid "nav.signals"
-msgstr "Signals"
+msgstr "信号"
 
-#: share/plugin/signals/share/javascript/lightbox/explore-about.tt2:2
 msgid "nav.socialtext-explore"
-msgstr "Socialtext Explore"
+msgstr "Socialtext 探索"
 
-#: share/plugin/signals/template/bookmarklet/index.html:47
 msgid "signals.about-bookmarklet!"
-msgstr "Install it as a bookmark (or favorite) and, when you find a page you want to signal or share, just click or select the bookmark and it will send a signal for you!"
+msgstr "将其作为书签(或收藏夹)安装，当您有网页要信号或分享，只需点击或选择书签就可以发送信号了！"
 
-#: share/plugin/signals/share/javascript/signals.js:820
 msgid "signals.all-groups"
-msgstr "all groups"
+msgstr "所有群组"
 
-#: share/plugin/signals/share/widgets/profile/widget.html:21
 msgid "signals.all-shared-groups"
-msgstr "All Shared Groups"
+msgstr "所有的共享群组"
 
-#: share/plugin/signals/template/email/direct-message.html:14
 msgid "signals.attachments:"
-msgstr "This signal had the following attachments:"
+msgstr "此信号的附件如下："
 
-#: share/plugin/signals/template/bookmarklet/index.html:42
 msgid "signals.bookmarklet"
-msgstr "Signals Bookmarklet"
+msgstr "信号书签"
 
-#: share/plugin/signals/template/bookmarklet/index.html:51
 msgid "signals.bookmarklet-for-ie-users"
-msgstr "Instructions: For Internet Explorer users, right-click the button below and select \"Add to Favorites\", then choose the \"Links\" folder."
+msgstr "须知：使用Internet Explorer的用户，右键点击下面的按钮，选择“添加到收藏夹”，然后选择“链接”文件夹。"
 
-#: share/plugin/signals/template/bookmarklet/index.html:64
 msgid "signals.bookmarks-bar-missing?"
-msgstr "Can't see your Bookmarks Bar?"
+msgstr "看不到书签栏？"
 
-#: share/plugin/signals/template/bookmarklet/too_long.html:13
 msgid "signals.click-cancel-to-signal-to-self"
-msgstr "(Click [Cancel] to Signal privately to yourself.)"
+msgstr "(点击 [取消] 来隐藏自己的信号。)"
 
-#: share/plugin/signals/share/javascript/template/rightBar.tt2:26
 msgid "signals.delete"
-msgstr "delete"
+msgstr "删除"
 
-#: share/plugin/signals/template/bookmarklet/index.html:53
 msgid "signals.drag-button-to-bookmarks-bar"
-msgstr "For all other browsers, simply drag the button below to your Bookmarks Bar."
+msgstr "对于其它的浏览器，您只需将按钮拖放到书签栏下面。"
 
-#. (event.context.body)
-#: share/plugin/signals/template/data/events/signal:1 share/plugin/signals/template/data/events/signal:3
 msgid "signals.edit-save=event"
-msgstr "%1."
+msgstr "%1。"
 
-#: share/plugin/signals/template/email/direct-message.html:28
 msgid "signals.email-from-socialtext"
-msgstr "This message was sent from Socialtext Signals."
+msgstr "此条消息由Socialtext信号发送。"
 
-#: share/plugin/signals/template/email/direct-message.html:29
 msgid "signals.email-link-to-preferences"
-msgstr "To stop receiving Socialtext Signals emails or to change your preferences, please visit"
+msgstr "不想收到Socialtext信号的邮件或者更改您的偏好设置，请访问"
 
-#: share/plugin/signals/template/element/settings/signals_settings_section:7
 msgid "signals.email-to-private-message"
-msgstr "Send Socialtext Signals private messages as email"
+msgstr "将Socialtext信号的私信作为电子邮件发送"
 
-#: share/plugin/signals/share/javascript/template/rightBar.tt2:20
 msgid "signals.expunge"
-msgstr "expunge"
+msgstr "消去"
 
-#: share/plugin/signals/template/bookmarklet/index.html:65
 msgid "signals.find-bookmarks-bar"
-msgstr "Find and select \"Show Bookmarks Bar\" from the menu in your browser."
+msgstr "在您的浏览器菜单中找到并且选择“显示书签栏”。"
 
-#. (global_limit)
-#: share/plugin/signals/template/cp_signal_size_limit:7
 msgid "signals.global-limit=size"
-msgstr "Maximum value for this appliance is %1"
+msgstr "该应用的最大值是%1"
 
-#. (a.user_count)
-#. (g.user_count)
-#: share/plugin/signals/template/lite/signals.html:57 share/plugin/signals/template/lite/signals.html:68
 msgid "signals.network-count=users"
-msgstr "%*(%1,user)"
+msgstr "%1 名用户"
 
-#. (user_link(row.signal.user_id)
-#. (user_link(row.signal.user_id), row.signal.uri, to_localtime(row.signal.at), networks(row.signal))
-#: share/plugin/signals/template/view/signallist:81
 msgid "signals.on=user,uri,date,networks"
-msgstr "%1 on <a href=\"%2\">%3</a> <b>%4</b>."
+msgstr "%1 在 <a href=\"%2\">%3</a> <b>%4</b>."
 
-#. (user_link(row.signal.user_id)
-#. (user_link(row.signal.user_id), row.signal.uri, to_localtime(row.signal.at), user_link(row.signal.recipient.id))
-#: share/plugin/signals/template/view/signallist:77
 msgid "signals.on=user,uri,date,private-to"
-msgstr "%1 on <a href=\"%2\">%3</a> privately to %4."
+msgstr "%1 在 <a href=\"%2\">%3</a> 给%4私信。"
 
-#. (user_link(row.signal.user_id)
-#. (user_link(row.signal.user_id), row.signal.uri, to_localtime(row.signal.at), user_link(row.signal.in_reply_to.user_id))
-#: share/plugin/signals/template/view/signallist:79
 msgid "signals.on=user,uri,date,reply-to"
-msgstr "%1 on <a href=\"%2\">%3</a> in reply to %4."
+msgstr "%1 在 <a href=\"%2\">%3</a> 给%4回复。"
 
-#: share/plugin/signals/template/permalink_hello:2
 msgid "signals.permalink"
-msgstr "Signals - Permalink"
+msgstr "信号的永久链接"
 
-#: share/plugin/signals/template/lite/signals.html:45
 msgid "signals.post-to"
-msgstr "Post to"
+msgstr "发布到"
 
-#. (a.user_count)
-#: share/plugin/signals/template/lite/signals.html:55
 msgid "signals.primary-account=users"
-msgstr "primary, %*(%1,user)"
+msgstr "主要, %1 名用户"
 
-#. ("<a href=\"$webroot/st/profile/$sender.user_id\">$sender.best_full_name</a>")
-#. (('<a href="' _ webroot _ '/st/profile/' _ sender.user_id _ '">' _ sender.best_full_name _ '</a>'))
-#: share/plugin/signals/template/email/direct-message.html:0 share/plugin/signals/template/email/direct-message.html:5
 msgid "signals.private-message-from=user:"
-msgstr "You have received a private message from %1:"
+msgstr "您收到了%1的私信："
 
-#: share/plugin/signals/template/element/settings/signals_settings_section:8
 msgid "signals.private-message-to-email"
-msgstr "If checked, each time a user sends you a private message via Signals, we'll send you an email with the message."
+msgstr "如果勾选上，每次别人通过信号给您发送私信，您将会收到包含该消息的电子邮件。"
 
-#: share/plugin/signals/template/element/settings/private_menu:3 share/plugin/signals/template/element/settings/signals_settings_section:5
 msgid "signals.private-messages"
-msgstr "Private Messages"
+msgstr "私信"
 
-#: share/plugin/signals/share/javascript/template/rightBar.tt2:13
 msgid "signals.private-reply"
-msgstr "reply privately"
+msgstr "私密回复"
 
-#. (person, event.context.body)
-#: share/plugin/signals/template/data/events/signal:1 share/plugin/signals/template/data/events/signal:6
 msgid "signals.private-to=person,body"
-msgstr "sent a private signal to %1: \"%2\"."
+msgstr "给%1发送私密信号: \"%2\"。"
 
-#: share/plugin/signals/template/explore_links:3
 msgid "signals.refresh"
-msgstr "Refresh"
+msgstr "刷新"
 
-#: share/plugin/signals/share/javascript/template/rightBar.tt2:8
 msgid "signals.reply"
-msgstr "reply"
+msgstr "回复"
 
-#: share/plugin/signals/template/email/direct-message.html:24
 msgid "signals.reply-privately"
-msgstr "Reply privately to this signal."
+msgstr "私密回复该信号。"
 
-#: share/plugin/signals/template/search_box_signals:1
 msgid "signals.search:"
-msgstr "Search Signals:"
+msgstr "搜索信号:"
 
-#: share/plugin/signals/share/widgets/explore_filters/widget.js:291
 msgid "signals.selected-people"
-msgstr "Selected people"
+msgstr "选定的好友"
 
-#: share/plugin/signals/share/widgets/profile/widget.html:29
 msgid "signals.send-as-private-message"
-msgstr "Send as private message"
+msgstr "作为私信发送"
 
-#: share/plugin/signals/template/bookmarklet/too_long.html:12
 msgid "signals.share-to-colleagues?"
-msgstr "Share this link to your colleagues?"
+msgstr "给您的同事分享这条链接？"
 
-#: share/plugin/signals/template/bookmarklet/index.html:44
 msgid "signals.share-with-bookmarklet"
-msgstr "Share any page on the web via Signals using this handy bookmarklet."
+msgstr "使用这个方便的书签来通过信号分享所有网站上的页面。"
 
-#. (offset + 1, last, pager.total_entries)
-#: share/plugin/signals/template/view/signallist:26
 msgid "signals.showing=from,to,total"
-msgstr "Showing %1 - %2 of %3 total."
+msgstr "显示第 %1 - %2 項，共 %3 項。"
 
-#: share/plugin/signals/template/bookmarklet/index.html:57
 msgid "signals.signal-this!"
-msgstr "Signal This!"
+msgstr "发送此頁！"
 
-#: share/plugin/signals/template/bookmarklet/index.html:4
 msgid "signals.signal-this-bookmarklet"
-msgstr "\"Signal This\" Bookmarklet"
+msgstr "\"发送此頁\" 书签"
 
-#: share/plugin/signals/share/widgets/profile/widget.html:19
 msgid "signals.signal-to"
-msgstr "Signal to"
+msgstr "发送到"
 
-#: share/plugin/signals/template/cp_signal_size_limit:3
 msgid "signals.size-limit:"
-msgstr "Maximum Size Limit:"
+msgstr "最大長度："
 
-#: share/plugin/signals/template/view/signallist:28
 msgid "signals.sort-by:"
-msgstr "Sort by:"
+msgstr "排列方式"
 
-#: share/plugin/signals/template/view/signallist:30
 msgid "signals.sort-newest"
-msgstr "Newest"
+msgstr "最新的"
 
-#: share/plugin/signals/template/view/signallist:31
 msgid "signals.sort-oldest"
-msgstr "Oldest"
+msgstr "最早的"
 
-#: share/plugin/signals/template/view/signallist:32
 msgid "signals.sort-relevance"
-msgstr "Relevance"
+msgstr "相关度"
 
-#: share/plugin/signals/template/view/signallist:33
 msgid "signals.sort-sender"
-msgstr "Sender"
+msgstr "发送者"
 
-#. (signal.networks.size)
-#. (event.context.account_ids.size + event.context.group_ids.size)
-#: share/plugin/signals/template/data/events/signal.meta:4 share/plugin/signals/template/view/signallist:10
 msgid "signals.to-groups=count"
-msgstr "to %1 groups"
+msgstr "给%1个群组"
 
-#. (signal.networks.0)
-#. (a.name)
-#. (g.name)
-#: share/plugin/signals/template/data/events/signal.meta:13 share/plugin/signals/template/data/events/signal.meta:8 share/plugin/signals/template/view/signallist:7
 msgid "signals.to=name"
-msgstr "to %1"
+msgstr "给%1"
 
-#: share/plugin/signals/template/bookmarklet/too_long.html:7
 msgid "signals.try-again:"
-msgstr "Please try again:"
+msgstr "请重新尝试:"
 
-#: share/plugin/signals/template/lite/signals.html:41
 msgid "signals.update"
-msgstr "Update"
+msgstr "更新"
 
-#: share/plugin/signals/template/lite/signals.html:6
 msgid "signals.what-are-you-working-on?"
-msgstr "What are you working on?"
+msgstr "您在做什么呢？"
 
-#: share/plugin/signals/template/email/direct-message.html:29
 msgid "signals.your-settings"
-msgstr "your settings"
+msgstr "您的设置"

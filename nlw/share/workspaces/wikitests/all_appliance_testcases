@@ -4,6 +4,7 @@ Socialcalc enabled is required because we run Calc Testcases
 
 The Privacy Defaults testcase checks to see whether a newly built appliance has self-join setting OFF. It will only succeed if the appliance has been newly built.
 
+* [Disable Google Analytics]
 * [Test Case: Privacy Defaults]
 
 *It is possible to run Firefox testcases as the default LDAP user*

@@ -25,6 +25,12 @@
 | *Comment* | Test Case: Tagging Profile. verify fog tag added |  |
 | wait_for_element_visible_ok | link=fog %%start_time%% | 30000 |
 | text_like | link=fog %%start_time%% | fog %%start_time%% |
+| type_ok | new_tag | fog creek %%start_time%% |
+| click_ok | //input[@value='Add Tag'] |  |
+| wait_for_element_visible_ok | link=fog creek %%start_time%% | 30000 |
+| text_like | link=fog creek %%start_time%% | fog creek %%start_time%% |
+
+
 
 | *Comment* | Test Case: Tagging Profile. foo bar tag added |  |
 | wait_for_element_visible_ok | new_tag | 30000 |
@@ -104,6 +110,12 @@ text_like | 所以 | |
 | click_ok | //input[@value='Add Tag'] |  |
 | wait_for_element_visible_ok | link=tagger %%start_time%% | 30000 |
 | text_like | link=tagger %%start_time%% | tagger %%start_time%% |
+| type-lookahead-ok | new_tag | fog |
+| wait_for_element_visible_ok | link=fog %%start_time%% |
+| click_and_pause | link=fog %%start_time%% | |
+| open_ok | /st/profile |  |
+| wait_for_element_visible_ok | link=fog %%start_time%% |
+
 
 | *Comment* | Test Case: Tagging Profile. Add tag to me |  |
 | st-admin | set-user-names --e %%email%% --f "" --l "" |  |

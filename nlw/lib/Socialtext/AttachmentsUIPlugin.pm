@@ -314,13 +314,13 @@ sub _gen_sort_closure {
         $sortby = 'date_str' if $sortby eq 'date';
         if ( $direction eq 'asc' ) {
             return sub {
-                lc( $a->{$sortby} ) cmp lc( $b->{$sortby} )
+                lc( &{$a->{$sortby}} ) cmp lc( &{$b->{$sortby}} )
                     or lc( $a->{subject} ) cmp lc( $b->{subject} );
             };
         }
         else {
             return sub {
-                lc( $b->{$sortby} ) cmp lc( $a->{$sortby} )
+                lc( &{$b->{$sortby}} ) cmp lc( &{$a->{$sortby}} )
                     or lc( $a->{subject} ) cmp lc( $b->{subject} );
             };
         }

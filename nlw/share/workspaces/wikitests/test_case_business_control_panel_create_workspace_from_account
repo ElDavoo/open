@@ -21,8 +21,8 @@
 | click_and_wait | link=%%acct%% |  |
 
 | *Comment* | Test Case: Business Control Panel Create Workspace from Account. Create Workspace from account page |  |
-| wait_for_element_present_ok | //input[contains(@value,'Create a new Workspace in this Account')] | 30000 |
-| click_and_wait | //input[contains(@value,'Create a new Workspace in this Account')] |  |
+| wait_for_element_present_ok | //input[contains(@value,'Create New Workspace in this Account')] | 30000 |
+| click_and_wait | //input[contains(@value,'Create New Workspace in this Account')] |  |
 | location_like | /nlw/control/workspaces/new?account_id |  |
 | wait_for_text_present_ok | Create Workspace | 30000 |
 | wait_for_text_present_ok | Title: | 30000 |
@@ -62,8 +62,8 @@
 | click_ok | link=%%acct%% |  |
 
 | *Comment* | Test Case: Business Control Panel Create Workspace from Account. Create using alternate account |  |
-| wait_for_element_present_ok | //input[contains(@value,'Create a new Workspace in this Account')] | 30000 |
-| click_and_wait | //input[contains(@value,'Create a new Workspace in this Account')] |  |
+| wait_for_element_present_ok | //input[contains(@value,'Create New Workspace in this Account')] | 30000 |
+| click_and_wait | //input[contains(@value,'Create New Workspace in this Account')] |  |
 
 | *Comment* | Test Case: Business Control Panel Create Workspace from Account - alternate account and WS name |  |
 | wait_for_element_visible_ok | workspace_title | 30000 |
@@ -102,5 +102,7 @@ TODO: test the error conditions which were all buggy
 | st-process-jobs |  |  |
 | st-admin | delete-workspace --no-export --w %%wsname%% | has been deleted |
 | st-admin | delete-workspace --no-export --w %%altname%% | has been deleted |
+| delete-account | %%acct%% | has been deleted |
+| delete-account | %%altacct%% | has been deleted |
 
 | *Comment* | Test Case: Business Control Panel Create Workspace from Account COMPLETED |

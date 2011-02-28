@@ -158,7 +158,7 @@
         <span class="originally-created-by">[% loc('page.creator') %] [% row.creator | decorate('user_avatar') %] [% loc('info.on') %] [% row.create_time_local %]</span>.
         <span class="byline-separator">&nbsp;</span>
         <span class="last-updated-by">[% loc('page.last-updated') %] [% row.username | decorate('user_avatar') %] [% loc('info.on') %] [% row.DateLocal %].</span>
-        <span class="revision-count">(<a href="/[% row.workspace_name || current_workspace.name %]/?action=revision_list;page_name=[% row.page_uri %]">[% row.revision_count %]</a> [% loc('sort.revisions') %])</span>
+        <span class="revision-count">([% loc('page.revisions=count', '<a href="/' _ (row.workspace_name || current_workspace.name) _ '/?action=revision_list;page_name=' _ row.page_uri _ '">' _ row.revision_count _ '</a>') %])</span>
         </div>
         </td>
     [% IF listview_extra_columns.watchlist %]

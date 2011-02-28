@@ -64,7 +64,7 @@
 
 | wait_for_element_visible_ok | st-group-permission-set-selector | 30000 |
 | is-editable-ok | st-group-permission-set-selector | 30000 |
-| is_selected_ok | st-group-permission-set-selector | label=Private: Only Members can access this group. |
+| is_selected_ok | st-group-permission-set-selector | label=Private: Only Members can see and access this group. |
 | wait_for_element_visible_ok | st-group-permission-set-submit | 30000 |
 | is-editable-ok | st-group-permission-set-submit |  |
 
@@ -80,20 +80,20 @@
 | st-admin | add-member --g %%group_id%% --w %%wsname%% | now has the role of 'member' |
 
 | *Comment* | Test Case: Business Control Panel Create Workspace from Group - %%group_user%% is not an admin of %%wsname%%. |  |
-| select_ok | st-group-permission-set-selector | label=Self-Join: Non-Members can view the group but must become Members to contribute. |
+| select_ok | st-group-permission-set-selector | label=Self-Join: Non-Members can view the group, but must become Members to contribute. |
 | st_pause_click | 2000 | st-group-permission-set-submit |
 | wait_for_text_present_ok | Error: user cannot manage workspaces this group is associated with | 30000 |
-| is_selected_ok | st-group-permission-set-selector | label=Private: Only Members can access this group. |
+| is_selected_ok | st-group-permission-set-selector | label=Private: Only Members can see and access this group. |
 
 | *Comment* | Test Case: Business Control Panel Create Workspace from Group - remove %%wsname%% from group. |  |
 | st-admin | remove-member --g %%group_id%% --w %%wsname%% | is no longer a member of |
 
 | *Comment* | Test Case: Business Control Panel Create Workspace from Group - Change to self-join |  |
-| select_ok | st-group-permission-set-selector | label=Self-Join: Non-Members can view the group but must become Members to contribute. |
+| select_ok | st-group-permission-set-selector | label=Self-Join: Non-Members can view the group, but must become Members to contribute. |
 | st_pause_click | 2000 | st-group-permission-set-submit |
 | pause | 10000 |  |
 | text_like | st-group-change-message | Done |
-| is_selected_ok | st-group-permission-set-selector | label=Self-Join: Non-Members can view the group but must become Members to contribute. |
+| is_selected_ok | st-group-permission-set-selector | label=Self-Join: Non-Members can view the group, but must become Members to contribute. |
 
 | *Comment* | Test Case: Business Control Panel Create Workspace from Group - add %%wsname%% to s-j group. |  |
 | st-admin | add-member --g %%group_id%% --w %%wsname%% | group and workspace do not have compatible permission sets |
@@ -101,22 +101,22 @@
 | st-admin | add-member --g %%group_id%% --w %%wsname%% | now has the role of |
 
 | *Comment* | Test Case: Business Control Panel Create Workspace from Group - s-j %%group_user%% is not an admin of %%workspace%%. |  |
-| select_ok | st-group-permission-set-selector | label=Private: Only Members can access this group. |
+| select_ok | st-group-permission-set-selector | label=Private: Only Members can see and access this group. |
 | st_pause_click | 2000 | st-group-permission-set-submit |
 | wait_for_text_present_ok | Error: user cannot manage workspaces this group is associated with | 30000 |
-| is_selected_ok | st-group-permission-set-selector | label=Self-Join: Non-Members can view the group but must become Members to contribute. |
+| is_selected_ok | st-group-permission-set-selector | label=Self-Join: Non-Members can view the group, but must become Members to contribute. |
 
 | *Comment* | Test Case: Business Control Panel Create Workspace from Group - remove %%wsname%% from s-j group. |  |
 | st-admin | remove-member --g %%group_id%% --w %%wsname%% | is no longer a member of |
 
 | *Comment* | Test Case: Business Control Panel Create Workspace from Group - Change back to Private |  |
-| select_ok | st-group-permission-set-selector | label=Private: Only Members can access this group. |
-| is_selected_ok | st-group-permission-set-selector | label=Private: Only Members can access this group. |
+| select_ok | st-group-permission-set-selector | label=Private: Only Members can see and access this group. |
+| is_selected_ok | st-group-permission-set-selector | label=Private: Only Members can see and access this group. |
 | wait_for_element_visible_ok | st-group-permission-set-submit | 30000 |
 | st_pause_click | 2000 | st-group-permission-set-submit |
 | pause | 10000 |  |
 | text_like | st-group-change-message | Done |
-| is_selected_ok | st-group-permission-set-selector | label=Private: Only Members can access this group. |
+| is_selected_ok | st-group-permission-set-selector | label=Private: Only Members can see and access this group. |
 
 | *Comment* | Test Case: Business Control Panel Create Workspace from Group - workspace buttons should still be enabled. |  |
 | wait_for_element_visible_ok | add-workspace | 30000 |
