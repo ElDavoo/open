@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 58;
+use Test::Socialtext tests => 61;
 use Test::Socialtext::User;
 use Socialtext::Account;
 use File::Slurp qw(write_file);
@@ -330,4 +330,31 @@ add_users_multiple_restrictions: {
 
     my @emails = Email::Send::Test->emails();
     is @emails, 2, '... and e-mails were sent (one for each restriction)';
+}
+
+add_invalid_restriction: {
+    my $guard = Test::Socialtext::User->snapshot;
+
+    # create CSV file
+    my $csvfile = Cwd::abs_path(
+        (File::Temp::tempfile(SUFFIX=>'.csv', OPEN=>0))[1]
+    );
+    write_file $csvfile,
+        join(',', qw{username email_address first_name last_name password position company location work_phone mobile_phone home_phone preferred_name}) . "\n",
+        join(',', qw{csvtest1 csvtest1@example.com John Doe passw0rd position company location work_phone mobile_phone home_phone JohnDoe}) . "\n";
+
+    # mass add Users with restrictions
+    Email::Send::Test->clear;
+    expect_failure(
+        call_cli_argv(
+            'mass-add-users',
+            '--csv'         => $csvfile,
+            '--restriction' => 'invalid-restriction',
+        ),
+        qr/unknown restriction type, 'invalid-restriction'/,
+        '... failed due to unknown restriction type'
+    );
+
+    my $user = Socialtext::User->new(username => 'csvtest1');
+    ok !$user, '... and User was *not* added';
 }
