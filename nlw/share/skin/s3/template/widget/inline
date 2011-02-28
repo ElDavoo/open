@@ -1,5 +1,0 @@
-<div class="inlineWidget">
-    <div class="inlineWidgetContent">
-        [% gadget.content %]
-    </div>
-</div>
