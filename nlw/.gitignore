@@ -121,7 +121,6 @@ share/html/502.html.en
 share/html/502.html.html
 share/html/502.html.ja
 share/l10n/mecab/
-share/skin/.gitignore
 share/template/control
 share/uploaded-skin/
 share/widgets/*.png
