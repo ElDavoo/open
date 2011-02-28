@@ -3,6 +3,7 @@
 use warnings;
 use strict;
 use Test::Socialtext tests => 43;
+use Test::Socialtext::User;
 use Socialtext::Account;
 use File::Slurp qw(write_file);
 
@@ -12,6 +13,7 @@ use Test::Socialtext::CLIUtils qw/expect_failure expect_success/;
 fixtures( 'db' );
 
 MASS_ADD_USERS: {
+    my $guard   = Test::Socialtext::User->snapshot;
     my $default = Socialtext::Account->Default();
 
     add_users_from_csv: {
