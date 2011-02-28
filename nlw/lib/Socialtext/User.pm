@@ -23,6 +23,7 @@ use Socialtext::User::Default::Users qw(:system-user :guest-user);
 use Socialtext::User::Restrictions;
 use Socialtext::User::Restrictions::email_confirmation;
 use Socialtext::User::Restrictions::password_change;
+use Socialtext::User::Restrictions::require_external_id;
 use Email::Address;
 use Socialtext::l10n qw(system_locale loc);
 use Socialtext::EmailSender::Factory;
@@ -1512,6 +1513,14 @@ sub confirm_email_address {
 sub email_confirmation {
     my $self = shift;
     my $uce  = Socialtext::User::Restrictions::email_confirmation->Get(
+        user_id => $self->user_id,
+    );
+    return $uce;
+}
+
+sub requires_external_id {
+    my $self = shift;
+    my $uce  = Socialtext::User::Restrictions::require_external_id->Get(
         user_id => $self->user_id,
     );
     return $uce;
