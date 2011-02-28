@@ -1151,10 +1151,12 @@ sub hash_representation {
     my $hash = {
         account_name       => $self->name,
         account_id         => $self->account_id,
-        plugins_enabled    => [ sort $self->plugins_enabled ],
-        plugin_preferences => $self->plugin_preferences,
+        $p{minimal} ? () : (
+            plugins_enabled    => [ sort $self->plugins_enabled ],
+            plugin_preferences => $self->plugin_preferences,
+        ),
     };
-    unless ($p{no_desktop}) {
+    unless ($p{minimal} || $p{no_desktop}) {
         $hash->{$_} = $self->$_ for (grep /^desktop_/,@ACCT_COLS);
     }
     if ($p{user_count}) {
