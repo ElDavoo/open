@@ -914,11 +914,11 @@ sub mass_add_users {
     eval {
         my $mass_add = Socialtext::MassAdd->new(
             account => $account,
-            pass_cb => sub { 
+            pass_cb => sub {
                 print $_[0], "\n";
             },
-            fail_cb => sub { 
-                push @messages, $_[0]; 
+            fail_cb => sub {
+                push @messages, $_[0];
                 $has_errors++;
             },
         );
