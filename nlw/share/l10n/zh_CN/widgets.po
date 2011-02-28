@@ -91,7 +91,7 @@ msgid "widgets.add-widget"
 msgstr "添加小工具"
 
 msgid "widgets.add-to-gallery"
-msgstr "添加小工具至图库"
+msgstr "添加小工具至工具库"
 
 msgid "widgets.add-url:"
 msgstr "通过网址添加小工具:"
@@ -124,7 +124,7 @@ msgid "widgets.confirm-delete=widget?"
 msgstr "您确定要永久删除这 \"%1\" 小工具?"
 
 msgid "widgets.confirm-remove=widget?"
-msgstr "您确定要移除此 \"%1\" 小工具? 用户将无法在他们的小工具图库中看到此小工具. 您随时可以恢复此小工具."
+msgstr "您确定要移除此 \"%1\" 小工具? 用户将无法在他们的工具库中看到此小工具. 您随时可以恢复此小工具."
 
 msgid "widgets.confirm-restore=widget?"
 msgstr "您确定要恢复此 \"%1\" 小工具?"
@@ -202,7 +202,7 @@ msgid "activities.make-signal-private"
 msgstr "使此信号私有"
 
 msgid "widgets.manage-gallery-for-accounts"
-msgstr "管理各账号图库"
+msgstr "管理各账号工具库"
 
 msgid "activities.maximum-file-size=mb"
 msgstr "最大文件大小: %1MB"
@@ -271,7 +271,7 @@ msgid "widgets.remove-widget"
 msgstr "移除小工具"
 
 msgid "activities.reply-to-conversation"
-msgstr "回复聊天 ..."
+msgstr "回复對話 ..."
 
 msgid "widgets.about-restore"
 msgstr "恢复"
@@ -340,19 +340,19 @@ msgid "error.no-such-wikilink-wiki"
 msgstr "您输入的工作区不存在, 请重试"
 
 msgid "error.no-conversations-in-30days=title"
-msgstr "没有新的 %1 因为在过去的30天内,您没有与您的同事聊天."
+msgstr "没有新的 %1 因为在过去的30天内,您没有与您的同事對話."
 
 msgid "error.no-events-in-30days=title"
 msgstr "在过去30天内，没有新的 %1 ."
 
 msgid "error.no-followed-events-in-30days=title"
-msgstr "没有新的 %1, 要么因为您还没有跟从任何人, 要么因为您跟从的人在过去30天内还没有新的 %1 . 访问您同事的个人档案, 然后点击\"跟从此人\"来开始跟从同事."
+msgstr "没有新的 %1, 要么因为您还没有关注任何人, 要么因为您关注的人在过去30天内还没有新的 %1 . 访问您同事的个人档案, 然后点击\"关注此人\"来开始关注同事."
 
 msgid "error.getting-activities"
 msgstr "参加活动时出错."
 
 msgid "widgets.gallery-switch=account:"
-msgstr "这是 \"%1\" 账号的小工具图库. 转到账户:"
+msgstr "这是 \"%1\" 账号的工具库. 转到账户:"
 
 msgid "video.title:"
 msgstr "标题:"
@@ -427,7 +427,7 @@ msgid "activities.all-events"
 msgstr "所有事件"
 
 msgid "event.comment=page,wiki,summary"
-msgstr "在 %2 中推荐 %1 , 也就是, \"%3\""
+msgstr "在 %2 中评论 %1：\"%3\""
 
 msgid "activities.comments"
 msgstr "评论"
@@ -445,16 +445,16 @@ msgid "event.duplicate=page,wiki"
 msgstr "在 %2 中复制 %1 ."
 
 msgid "event.edit=page,wiki,summary"
-msgstr "在 %2 中编辑 %1, 也就是 \"%3\"."
+msgstr "在 %2 中编辑 %1：\"%3\""
 
 msgid "event.edit=page,wiki"
 msgstr "在 %2 中复制 %1."
 
 msgid "event.edit-profile=person"
-msgstr "编辑 %1'文档."
+msgstr "编辑 %1 的个人资料."
 
 msgid "event.edit-profile-self"
-msgstr "编辑自有文档."
+msgstr "编辑自身的个人资料."
 
 msgid "activities.edits"
 msgstr "编辑"
@@ -487,7 +487,7 @@ msgid "explore.more"
 msgstr "更多"
 
 msgid "activities.my-conversations"
-msgstr "我的聊天"
+msgstr "我的對話"
 
 msgid "ago.1day"
 msgstr "一天之前"
@@ -499,7 +499,7 @@ msgid "activities.page-tags"
 msgstr "页面标签"
 
 msgid "activities.following"
-msgstr "我跟从的人"
+msgstr "我关注的人"
 
 msgid "activities.people-events"
 msgstr "人际事件"
@@ -511,7 +511,7 @@ msgid "event.generic=action,person"
 msgstr "在 %2 执行动作 %1."
 
 msgid "event.generic-self=action"
-msgstr "自身执行动作 %1."
+msgstr "對自身执行动作 %1."
 
 msgid "activities.private-to=user"
 msgstr "归 %1 私有"
@@ -544,10 +544,10 @@ msgid "activities.signals"
 msgstr "信号"
 
 msgid "event.follow=person"
-msgstr "开始跟从 %1."
+msgstr "开始关注 %1."
 
 msgid "event.unfollow=person"
-msgstr "停止跟从 %1."
+msgstr "停止关注 %1."
 
 msgid "event.add-tag=person,tag"
 msgstr "给 %1 贴标签 %2."
