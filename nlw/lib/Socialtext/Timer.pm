@@ -125,12 +125,14 @@ sub elapsed {
 
 sub elapsed_hms {
     my $self = shift;
-    my $dur = time() - $self->{_start_time};
-    my $hr = int($dur / 3600);
-    $dur %= 3600;
-    my $min = int($dur / 60);
-    $dur %= 60;
-    return sprintf('%01dh%02dm%0.3fs', $hr, $min, $dur);
+    my $sec = time() - $self->{_start_time};
+    my $frac = $sec - int($sec);
+    my $hr = int($sec / 3600);
+    $sec %= 3600;
+    my $min = int($sec / 60);
+    $sec %= 60;
+    $sec += $frac;
+    return sprintf('%01dh%02dm%0.3fs', $hr, $min, $sec);
 }
 
 sub time_this(&$) {

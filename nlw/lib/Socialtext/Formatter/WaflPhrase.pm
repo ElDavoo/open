@@ -840,7 +840,9 @@ sub _parse_page_for_headers {
 
     my $content = $self->hub->wikiwyg->cgi->content;
     if ($content && ($cur_page_id eq $page_id || !$page->exists)) {
-        $page->content($content) if $content;
+        # We bypass the ->content() check here to avoid immutability error,
+        # since we're not actually going to store this into a revision object.
+        ${$page->body_ref} = $content;
     }
 
     my $title = loc('wafl.contents');
