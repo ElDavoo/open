@@ -6,6 +6,7 @@ use Text::CSV_XS;
 use Socialtext::Encode;
 use Socialtext::Log qw(st_log);
 use Socialtext::User;
+use Socialtext::User::Restrictions;
 use Socialtext::l10n qw/loc/;
 use Socialtext::String;
 use List::MoreUtils qw/mesh/;
@@ -35,6 +36,7 @@ sub new {
     $self->{pass_cb} = delete $opts{pass_cb} or die "pass_cb is mandatory!";
     $self->{fail_cb} = delete $opts{fail_cb} or die "fail_cb is mandatory!";
     $self->{account} = delete $opts{account};
+    $self->{restrictions} = delete $opts{restrictions};
     $self->{failed_fields} = {};
     return $self;
 }
@@ -172,6 +174,16 @@ sub add_user {
                         grep {!$Non_profile_fields{$_}} keys %args;
         $changed_user += $self->_update_profile($user, @prof_args)
             if @prof_args;
+    }
+
+    if ($self->{restrictions}) {
+        foreach my $r (@{$self->{restrictions}}) {
+            my $restriction = Socialtext::User::Restrictions->CreateOrReplace( {
+                user_id          => $user->user_id,
+                restriction_type => $r,
+            } );
+            $restriction->send;
+        }
     }
 
     if ($added_user) {

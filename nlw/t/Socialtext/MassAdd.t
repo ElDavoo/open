@@ -18,7 +18,7 @@ BEGIN {
         plan skip_all => 'These tests require Email::Send::Test to run.';
     }
     else {
-        plan tests => 128;
+        plan tests => 135;
     }
     $Socialtext::EmailSender::Base::SendClass = 'Test';
 }
@@ -962,4 +962,31 @@ Adding_a_deactivated_user: {
 
     $user->reload;
     ok !$user->is_deactivated, "ronnie got re-activated";
+}
+
+Add_user_with_restrictions: {
+    my $guard = Test::Socialtext::User->snapshot;
+    scope_guard { Email::Send::Test->clear() };
+    scope_guard { clear_log(); };
+
+    # Add a User, with some restrictions
+    my (@successes, @failures);
+    my $mass_add = Socialtext::MassAdd->new(
+        pass_cb      => sub { push @successes, shift },
+        fail_cb      => sub { push @failures,  shift },
+        restrictions => [qw( email_confirmation password_change )],
+    );
+    $mass_add->add_user(%userinfo);
+
+    is_deeply \@successes, ['Added user ronnie'], 'success message ok';
+    logged_like 'info', qr/Added user ronnie/, '... message also logged';
+    is_deeply \@failures, [], 'no failure messages';
+
+    my $user = Socialtext::User->new(username => 'ronnie');
+    ok $user, 'User created with restrictions';
+    ok $user->email_confirmation, '... e-mail confirmation is set';
+    ok $user->password_change_confirmation, '... password change is set';
+
+    my @emails = Email::Send::Test->emails;
+    is @emails, 2, '... and two e-mails were sent (one for each restriction)';
 }
