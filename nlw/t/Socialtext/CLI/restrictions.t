@@ -185,7 +185,7 @@ add_requires_external_id_restriction: {
 
     # Set an External Id into  the User record, and make sure its there
     my $extern_id = 'abc123';
-    $user->homunculus->update_private_external_id($extern_id);
+    $user->update_private_external_id($extern_id);
 
     $user->reload;
     is $user->private_external_id, $extern_id, '... External Id set';

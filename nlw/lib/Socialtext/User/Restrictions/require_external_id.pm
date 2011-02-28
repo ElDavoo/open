@@ -11,7 +11,7 @@ sub send {
 
     # Forcably remove any existing external id for the User
     if (defined $user->private_external_id) {
-        $user->homunculus->update_private_external_id(undef);
+        $user->update_private_external_id(undef);
     }
 }
 

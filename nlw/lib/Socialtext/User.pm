@@ -70,6 +70,7 @@ has 'homunculus' => (
         guess_sortable_name
         name_and_email
         update_display_name
+        update_private_external_id
     )],
 );
 
