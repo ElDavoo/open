@@ -3,6 +3,7 @@ package Socialtext::Rest::Report::TopContent;
 use Moose;
 use Socialtext::JSON qw/encode_json/;
 use Socialtext::String;
+use Socialtext::Timer qw/time_scope/;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::ReportAdapter';
@@ -71,6 +72,7 @@ sub _combine_page_data {
     my $report    = shift;
     my %page_data = ();
     my $data      = $report->_data;
+    my $t = time_scope 'combine_page_data';
 
     # Clean up the data
     for my $row (@$data) {
