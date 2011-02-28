@@ -17,7 +17,7 @@
 | st-admin | index-attachment | qr/The command you called \(index-attachment\) requires a workspace to be specified/ |
 | st-admin | index-page --workspace %%cmdline_workspace%% | qr/The command you called \(index-page\) requires a page to be specified/ |
 | st-admin | index-attachment --workspace %%cmdline_workspace%% | qr/The command you called \(index-attachment\) requires a page to be specified/ |
-| st-admin | index-attachment --workspace %%cmdline_workspace%% --page %%cmdline_workspace%% | qr/The command you called \(index-attachment\) requires an attachment to be specified/ |
+| st-admin | index-attachment --workspace %%cmdline_workspace%% --page %%cmdline_workspace%% | qr/The command you called \(index-attachment\) requires an attachment id to be specified/ |
 | st-admin | index-page --workspace %%cmdline_workspace%% --page %%cmdline_workspace%%_wiki | There is no page with the id "%%cmdline_workspace%%_wiki" in the %%cmdline_workspace%% workspace. |
 
 | st-admin | index-page --workspace %%cmdline_workspace%% --page example_page_project_tracking | The Example Page: Project Tracking page in the %%cmdline_workspace%% workspace has been indexed. |

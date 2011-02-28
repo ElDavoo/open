@@ -68,7 +68,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 07:36+0800\n"
+"PO-Revision-Date: 2011-02-26 04:55+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -101,6 +101,14 @@ msgstr ""
 "#-#-#-#-#  bin.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
 "PO-Revision-Date: 2011-02-24 01:39+0800\n"
+"Language-Team: Socialtext i18n team\n"
+"Last-Translator: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"#-#-#-#-#  appliance.po (Socialtext i18n)  #-#-#-#-#\n"
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-02-26 04:55+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -721,9 +729,17 @@ msgstr "Assigned the Appliance Technical Administrator role to %1"
 msgid "appliance.archive-directory"
 msgstr "Archive Directory"
 
+#: ../appliance/libsocialtext-appliance-perl/sbin/st-appliance-take-snapshot:57
+msgid "appliance.archiving-system-config-files"
+msgstr "Archiving system config files ..."
+
 #: lib/Socialtext/Appliance/Model/Backup.pm:296
 msgid "appliance.backup-destination-updated"
 msgstr "Backup destination updated"
+
+#: ../appliance/libsocialtext-appliance-perl/sbin/st-appliance-restore:43
+msgid "appliance.backup-id"
+msgstr "Backup ID"
 
 #: lib/Socialtext/Appliance/Model/Backup.pm:58
 msgid "appliance.backup-in-progress-started-at-never"
@@ -737,6 +753,18 @@ msgstr "Backup is in progress - started at %1"
 #: lib/Socialtext/Appliance/Model/Backup.pm:310
 msgid "appliance.backup-server-name"
 msgstr "Backup Server name"
+
+#: ../appliance/libsocialtext-appliance-perl/sbin/st-appliance-restore:43
+msgid "appliance.backup-time"
+msgstr "Backup Time"
+
+#: ../appliance/libsocialtext-appliance-perl/sbin/st-appliance-restore:41
+msgid "appliance.backups-for-restore:"
+msgstr "Backups available for restore:"
+
+#: ../appliance/libsocialtext-appliance-perl/sbin/st-appliance-take-snapshot:51
+msgid "appliance.cleanup-previous-snapshot"
+msgstr "Cleaning up previous snapshot ..."
 
 #. ($data->{collaborativeness})
 #: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:89
@@ -891,6 +919,10 @@ msgstr "Skipping workspace %1, no usage."
 #: lib/Socialtext/Appliance/Model/Setup.pm:362
 msgid "appliance.synchronized-time-with=ts"
 msgstr "Synchronized time with %1"
+
+#: ../appliance/libsocialtext-appliance-perl/sbin/st-appliance-take-snapshot:39
+msgid "appliance.taking-database-snapshot"
+msgstr "Taking database snapshot ..."
 
 #: lib/Socialtext/Appliance/Model/Setup.pm:448
 msgid "appliance.test-email"
@@ -1500,6 +1532,407 @@ msgstr "Workspaces: Unsubscribe"
 msgid "config.yes"
 msgstr "Yes"
 
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:53
+msgid "console.about-authentication-token-timeout"
+msgstr "For security reasons, authentication tokens automatically expire after a pre-defined period of time, even if users have chosen \"Remember me on this computer\". Minimum is \"1 day\", maximum is \"365 days\", default is \"14 days\".  You can change the period here."
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:103
+msgid "console.about-backup-settings"
+msgstr "The appliance can store backup files on a Windows- or SMB-compatible shared directory/folder on another computer. Set the backup server, directory and username here."
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:12
+msgid "console.about-captcha-setting"
+msgstr "If your Socialtext appliance is exposed to the public internet, spammers and automated \"bots\" can try to register themselves.  A \"Captcha\" service requires registrants to prove they are human by recognizing text (a Captcha).  USE THIS SETTING IF YOUR APPLIANCE IS EXPOSED TO THE PUBLIC INTERNET."
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:101
+msgid "console.about-desktop-nav-setting"
+msgstr "Note: If this option is disabled, the <tt>Desktop</tt> link will disappear from the global navigation menu."
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:91
+msgid "console.about-disable-automatic-updates"
+msgstr "You may disable automatic updates by unchecking this checkbox and clicking Submit."
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:141
+msgid "console.about-initialize-wikis"
+msgstr "This action will delete all existing workspaces and users on this appliance, and create the Admin workspace."
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:55
+msgid "console.about-invalid-limit"
+msgstr "After the Invalid limit has been reached, the system will force the user to log back in."
+
+#: ../appliance/libsocialtext-appliance-perl/template/popup.html:53
+msgid "console.about-login-after-initialize-wikis"
+msgstr "You will be asked to log into the Console after you click \"Initialize Workspaces\"."
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:37
+msgid "console.about-login-message"
+msgstr "You can add a message that people will see <a href=\"/challenge\">on their login screen</a>."
+
+#: ../appliance/libsocialtext-appliance-perl/template/form.tmpl:17
+msgid "console.about-maximum-signal-length"
+msgstr "You can set a server-wide maximum length for signals. Each account can impose a smaller limit for signals posted to that account or groups in that account."
+
+#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:38
+msgid "console.about-navigation-tabs"
+msgstr "Navigation tabs to select different sections of the control panel."
+
+#. ('<a href="http://en.wikipedia.org/wiki/Network_Time_Protocol">http://en.wikipedia.org/wiki/Network_Time_Protocol</a>')
+#. ("<a href=\"http://en.wikipedia.org/wiki/Network_Time_Protocol\">http://en.wikipedia.org/wiki/Network_Time_Protocol</a>")
+#: ../appliance/libsocialtext-appliance-perl/template/form.tmpl:9
+msgid "console.about-ntp-server=help-link"
+msgstr "You can synchronize the appliance clock with another computer using the NTP protocol. The appliance must be able to contact that server via port 123. See %1 for more information."
+
+#. (link)
+#: ../appliance/libsocialtext-appliance-perl/template/form.tmpl:14
+msgid "console.about-poxy-server=help-link"
+msgstr "You can set a proxy server that allows users to access Web Services including Dashboard Widgets and RSS feeds. For more information see: %1."
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:74
+msgid "console.about-support-contact"
+msgstr "Set this to the email or web address where users can get help with login, application access, and directory access."
+
+#: ../appliance/libsocialtext-appliance-perl/template/popup.html:54
+msgid "console.about-username-password-after-initialize-wikis"
+msgstr "Use the email address you entered above as the username, and <strong>password</strong> as the password. You can change your password later."
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:131 ../appliance/libsocialtext-appliance-perl/template/setup.html:136
+msgid "console.add-administrator"
+msgstr "Add Administrator"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:131 ../appliance/libsocialtext-appliance-perl/template/setup.html:132
+msgid "console.add-appliance-administrators"
+msgstr "Add Appliance Administrators"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:54
+msgid "console.after-renew-limit"
+msgstr "After the Renew limit has been reached, the User will be prompted to re-authenticate, but will not be logged out if they are in the middle of work, such as editing a page, viewing a page, or reading Signals"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:98
+msgid "console.allow-automatic-updating"
+msgstr "Allow Automatic Updating"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:175 ../appliance/libsocialtext-appliance-perl/template/setup.html:176
+msgid "console.apache-error-log"
+msgstr "Apache error log"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:174
+msgid "console.apache-logs"
+msgstr "Apache Logs"
+
+#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:62
+msgid "console.appliance"
+msgstr "Appliance Console"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:44
+msgid "console.automatic-backup-schedule"
+msgstr "Automatic Backup Schedule"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:89
+msgid "console.automatic-updating"
+msgstr "Automatic Updating"
+
+#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:41
+msgid "console.backup"
+msgstr "Backup"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:99
+msgid "console.backup-destination"
+msgstr "Backup Destination"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:11
+msgid "console.backup-now"
+msgstr "Backup Now"
+
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:67
+msgid "console.building-diagnostic-tarball"
+msgstr "Building Diagnostic Tarball..."
+
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:124
+msgid "console.contact-socialtext-support"
+msgstr "Contact Socialtext Support"
+
+#: ../appliance/libsocialtext-appliance-perl/template/overview.html:6
+msgid "console.control-panel"
+msgstr "Control Panel"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:140 ../appliance/libsocialtext-appliance-perl/template/setup.html:142 ../appliance/libsocialtext-appliance-perl/template/setup.html:143
+msgid "console.create-initial-wiki"
+msgstr "Create Initial Workspace"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:90
+msgid "console.default-desktop-update-url"
+msgstr "By default, <a _target=\"blank\" href=\"http://www.socialtext.com/products/desktop.php\">Socialtext Desktop</a> automatically updates itself from www.socialtext.com."
+
+#: ../appliance/libsocialtext-appliance-perl/template/overview.html:11
+msgid "console.disk-usage"
+msgstr "Disk Usage"
+
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:121
+msgid "console.documentation"
+msgstr "Appliance Documentation"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:122 ../appliance/libsocialtext-appliance-perl/template/setup.html:125
+msgid "console.email-for-testing:"
+msgstr "Email address for testing:"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:18
+msgid "console.enable-captcha"
+msgstr "Enable Captcha that requires registering users to prove they are human"
+
+#: ../appliance/libsocialtext-appliance-perl/template/overview.html:13
+msgid "console.free"
+msgstr "free"
+
+#: ../appliance/libsocialtext-appliance-perl/template/form.tmpl:12
+msgid "console.how-to-configure-web-proxy"
+msgstr "How to configure a web proxy"
+
+#: ../appliance/libsocialtext-appliance-perl/template/popup.html:41
+msgid "console.initial-admin-email"
+msgstr "Initial Appliance Administrator Email"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:64
+msgid "console.invalid-after-days"
+msgstr "Invalid After (in days)"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:111 ../appliance/libsocialtext-appliance-perl/template/setup.html:116
+msgid "console.leave-blank-to-use-built-in-smtp-server"
+msgstr "(leave blank to use appliance's built-in SMTP server)"
+
+#: ../appliance/libsocialtext-appliance-perl/template/overview.html:8
+msgid "console.link-to-control-panel"
+msgstr "To view and manage the Workspaces, Accounts, Groups and Users on the system, go to the <a href=\"/nlw/control/\">Control Panel</a> tool."
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:45
+msgid "console.login-message"
+msgstr "Login Message"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:10
+msgid "console.login-screen-setup"
+msgstr "Login Screen Setup"
+
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:122
+msgid "console.manual-wiki"
+msgstr "Appliance Manual Workspace"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:131 ../appliance/libsocialtext-appliance-perl/template/setup.html:134
+msgid "console.new-admin-email-address:"
+msgstr "New administrator email address:"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:40
+msgid "console.no-files-available-to-restore"
+msgstr "No files available to restore."
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:159 ../appliance/libsocialtext-appliance-perl/template/setup.html:163
+msgid "console.ntp-server-rfc-1305"
+msgstr "NTP server (RFC 1305)"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:110
+msgid "console.other-settings"
+msgstr "Other Settings"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:111 ../appliance/libsocialtext-appliance-perl/template/setup.html:114
+msgid "console.outgoing-mail-server"
+msgstr "Outgoing mail server"
+
+#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:41
+msgid "console.overview"
+msgstr "Overview"
+
+#: ../appliance/libsocialtext-appliance-perl/template/overview.html:13
+msgid "console.percent-free"
+msgstr "percent free"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:6
+msgid "console.perform-backup-now"
+msgstr "Perform Backup Now"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:16
+msgid "console.perform-restore"
+msgstr "Perform Restore"
+
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:135
+msgid "console.problem-description:"
+msgstr "Problem description:"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:148 ../appliance/libsocialtext-appliance-perl/template/setup.html:149
+msgid "console.proxy-server-for-web-services"
+msgstr "Proxy Server for Web Services"
+
+#: ../appliance/libsocialtext-appliance-perl/template/shutdown.html:12
+msgid "console.reboot-appliance"
+msgstr "Reboot Appliance"
+
+#: ../appliance/libsocialtext-appliance-perl/template/shutdown.html:15
+msgid "console.reboot-now"
+msgstr "Reboot Now"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:23
+msgid "console.recaptcha-private-key"
+msgstr "reCaptcha Private Key"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:28
+msgid "console.recaptcha-public-key"
+msgstr "reCaptcha Public Key"
+
+#: ../appliance/libsocialtext-appliance-perl/template/form.tmpl:7
+msgid "console.refresh"
+msgstr "refresh"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:24
+msgid "console.refresh-file-list"
+msgstr "Refresh file list"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:22
+msgid "console.refresh-this-page"
+msgstr "Refresh this page"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:60
+msgid "console.renew-after-in-days"
+msgstr "Renew After (in days)"
+
+#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:41
+msgid "console.report-problem"
+msgstr "Report a Problem"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:36
+msgid "console.restore-now"
+msgstr "Restore Now"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:95
+msgid "console.save-backup-schedule"
+msgstr "Save Backup Schedule"
+
+#: ../appliance/libsocialtext-appliance-perl/template/form.tmpl:6
+msgid "console.screen-generate-time:"
+msgstr "Appliance clock when this screen was generated:"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:39
+msgid "console.script-tag-stripped-in-login-message"
+msgstr "Please feel free to use HTML in this message, but SCRIPT tags ( eg JavaScript ) will be stripped out before your message is saved."
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:122 ../appliance/libsocialtext-appliance-perl/template/setup.html:123 ../appliance/libsocialtext-appliance-perl/template/setup.html:127
+msgid "console.send-test-email"
+msgstr "Send Test Email"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:52
+msgid "console.set-authentication-token-timeout"
+msgstr "Set Authentication Token Timeout"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:114
+msgid "console.set-backup-destination"
+msgstr "Set Backup Destination"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:36
+msgid "console.set-custom-login-screen-message"
+msgstr "Set a Custom Login Screen Message"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:111 ../appliance/libsocialtext-appliance-perl/template/setup.html:112 ../appliance/libsocialtext-appliance-perl/template/setup.html:117
+msgid "console.set-email-configuration"
+msgstr "Set Email Configuration"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:159 ../appliance/libsocialtext-appliance-perl/template/setup.html:165
+msgid "console.set-ntp-server"
+msgstr "Set NTP Server"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:181 ../appliance/libsocialtext-appliance-perl/template/setup.html:183
+msgid "console.set-signals-size-limit"
+msgstr "Set Signals Size Limit"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:73
+msgid "console.set-support-contact"
+msgstr "Set Support Contact"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:148 ../appliance/libsocialtext-appliance-perl/template/setup.html:154
+msgid "console.set-web-proxy-server"
+msgstr "Set Web Proxy Server"
+
+#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:41
+msgid "console.setup"
+msgstr "Setup"
+
+#: ../appliance/libsocialtext-appliance-perl/template/shutdown.html:6
+msgid "console.shut-down-appliance"
+msgstr "Shut Down Appliance"
+
+#: ../appliance/libsocialtext-appliance-perl/template/shutdown.html:9
+msgid "console.shut-down-now"
+msgstr "Shut Down Now"
+
+#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:41
+msgid "console.shutdown"
+msgstr "Shutdown"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:180
+msgid "console.signals-size-limit"
+msgstr "Signals Size Limit"
+
+#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:26 ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:7
+msgid "console.socialtext-appliance"
+msgstr "Socialtext Appliance"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:88
+msgid "console.socialtext-desktop"
+msgstr "Socialtext Desktop"
+
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:63
+msgid "console.socialtext-support"
+msgstr "Socialtext Support"
+
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:141
+msgid "console.submit"
+msgstr "Submit"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:80
+msgid "console.support-contact"
+msgstr "Support Contact"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:169 ../appliance/libsocialtext-appliance-perl/template/setup.html:170
+msgid "console.synchronize-appliance-clock-now"
+msgstr "Synchronize Appliance Clock Now"
+
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:60
+msgid "console.tarball-built"
+msgstr "Tarball Built"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:69
+msgid "console.time-each-day:"
+msgstr "Time each day:"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:159 ../appliance/libsocialtext-appliance-perl/template/setup.html:160
+msgid "console.time-server"
+msgstr "Time Server"
+
+#: ../appliance/libsocialtext-appliance-perl/template/overview.html:13
+msgid "console.total"
+msgstr "total"
+
+#. (download_link, mailto_link)
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:73
+msgid "console.upload-complete=download-link,mailto-link"
+msgstr "%1, Upload Complete. Your message has been submitted to %2."
+
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:127
+msgid "console.upload-support-tarball-to-socialtext"
+msgstr "Upload a Support Tarball to Socialtext"
+
+#. (download_link)
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:70
+msgid "console.uploading-tarball=download-link"
+msgstr "%1, Uploading Tarball to Socialtext..."
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:11
+msgid "console.use-captcha-to-prevent-automated-registration"
+msgstr "Use Captcha to prevent automated registration"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:148 ../appliance/libsocialtext-appliance-perl/template/setup.html:152
+msgid "console.web-service-proxy-address"
+msgstr "Web Service Proxy Address"
+
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:131
+msgid "console.your-email-address:"
+msgstr "Your email address:"
+
 #: share/plugin/control/template/control/design-account.html:21
 msgid "control.about-account-logo-image"
 msgstr "You can choose an image to use as the Account logo. Use the form below to upload an image from your computer. If you don't select an image, the Socialtext logo will be used instead.  The size of the logo should be 201 pixels wide and 36 pixels high, otherwise your image will be transformed to fit.  The uploaded logo will be displayed immediately to users in the browser and (optionally) after a fresh login to Socialtext Desktop."
@@ -1785,7 +2218,7 @@ msgstr "Your selections will not carry-over to the next page.  Are you sure you 
 msgid "control.confirm-user"
 msgstr "Confirm user"
 
-#: share/plugin/control/template/control/wrapper:92
+#: share/plugin/control/template/control/wrapper:90
 msgid "control.console"
 msgstr "Console"
 
@@ -1793,7 +2226,7 @@ msgstr "Console"
 msgid "control.console-link"
 msgstr "Appliance Technical Administrators can use the <a href='/console'>Console</a> to manage technical aspects of the appliance, such as network and backup settings."
 
-#: share/plugin/control/template/control/wrapper:125
+#: share/plugin/control/template/control/wrapper:123
 msgid "control.contact-support"
 msgstr "Contact Support"
 
@@ -2367,7 +2800,7 @@ msgstr "Showing %1 - %2 of %3"
 msgid "control.socialtext-admin-configuration"
 msgstr "Socialtext Admin Configuration"
 
-#: share/plugin/control/template/control/wrapper:104 share/plugin/control/template/control/wrapper:19
+#: share/plugin/control/template/control/wrapper:102 share/plugin/control/template/control/wrapper:19
 msgid "control.socialtext-control-panel"
 msgstr "Socialtext Control Panel"
 
@@ -2482,7 +2915,7 @@ msgstr "User requires confirmation"
 msgid "control.username"
 msgstr "Username"
 
-#: share/plugin/control/share/javascript/workspaces_new.js:170 share/plugin/control/template/control/account.html:69 share/plugin/control/template/control/account_table:15 share/plugin/control/template/control/group.html:27 share/plugin/control/template/control/group.html:335 share/plugin/control/template/control/group.html:74 share/plugin/control/template/control/group_table:23 share/plugin/control/template/control/group_table:8 share/plugin/control/template/control/groups.html:73 share/plugin/control/template/control/index.html:27 share/plugin/control/template/control/user.html:245 share/plugin/control/template/control/workspace.html:243 share/plugin/control/template/control/workspace.html:46 share/plugin/control/template/control/workspace_table:16 share/plugin/control/template/control/workspace_table:25 share/plugin/control/template/control/workspaces_new.html:31 share/plugin/control/template/control/wrapper:89
+#: share/plugin/control/share/javascript/workspaces_new.js:170 share/plugin/control/template/control/account.html:69 share/plugin/control/template/control/account_table:15 share/plugin/control/template/control/group.html:27 share/plugin/control/template/control/group.html:335 share/plugin/control/template/control/group.html:74 share/plugin/control/template/control/group_table:23 share/plugin/control/template/control/group_table:8 share/plugin/control/template/control/groups.html:73 share/plugin/control/template/control/user.html:245 share/plugin/control/template/control/workspace.html:243 share/plugin/control/template/control/workspace.html:46 share/plugin/control/template/control/workspace_table:16 share/plugin/control/template/control/workspace_table:25 share/plugin/control/template/control/workspaces_new.html:31 share/plugin/control/template/control/wrapper:87
 msgid "control.users"
 msgstr "Users"
 
@@ -2764,11 +3197,11 @@ msgstr "Add users to %1 group"
 msgid "do.bold"
 msgstr "Bold"
 
-#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:65 share/skin/wikiwyg/javascript/jemplate/add-a-link.html:75 share/skin/wikiwyg/javascript/jemplate/opensocial-gallery.html:10 share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:24 share/skin/wikiwyg/javascript/jemplate/table-create.html:50 share/skin/wikiwyg/javascript/jemplate/table-options.html:54 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:14 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:148 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:168 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:377 share/skin/wikiwyg/javascript/template/widget_edit.tt2:69 share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:18 share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:17 share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:23 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:750 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:20 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:467 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:493 share/skin/s3/javascript/lightbox/attachment.tt2:30 share/skin/s3/javascript/lightbox/attachment.tt2:55 share/skin/s3/javascript/lightbox/comment.tt2:24 share/skin/s3/javascript/lightbox/copy.tt2:39 share/skin/s3/javascript/lightbox/create_content.tt2:51 share/skin/s3/javascript/lightbox/delete.tt2:23 share/skin/s3/javascript/lightbox/duplicate.tt2:34 share/skin/s3/javascript/lightbox/email.tt2:71 share/skin/s3/javascript/lightbox/rename.tt2:31 share/skin/s3/javascript/lightbox/self_join_workspace.tt2:16 share/skin/s3/template/element/settings/start:22 share/skin/s3/template/element/settings/stop:12 share/skin/s3/template/lite/subnav.html:46 share/plugin/people/template/invite:109 share/plugin/groups/share/javascript/lightbox/create-group.tt2:64 share/plugin/groups/share/javascript/lightbox/delete-group.tt2:20 share/plugin/groups/share/javascript/lightbox/leave-group.tt2:17 share/plugin/groups/template/edit_group_footer:11 share/plugin/groups/template/edit_group_footer:4 share/plugin/groups/template/group_footer:14 share/plugin/groups/template/group_footer:7 share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:20 share/plugin/dashboard/template/dashboard_links:18 share/plugin/dashboard/template/widget_editor_links:13 share/plugin/control/share/javascript/lightbox/group-create.tt2:67 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:47 share/plugin/control/template/control/field_form:82
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:65 share/skin/wikiwyg/javascript/jemplate/add-a-link.html:75 share/skin/wikiwyg/javascript/jemplate/opensocial-gallery.html:10 share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:24 share/skin/wikiwyg/javascript/jemplate/table-create.html:50 share/skin/wikiwyg/javascript/jemplate/table-options.html:54 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:14 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:148 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:168 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:377 share/skin/wikiwyg/javascript/template/widget_edit.tt2:69 share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:18 share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:17 share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:23 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:750 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:20 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:467 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:493 share/skin/s3/javascript/lightbox/attachment.tt2:30 share/skin/s3/javascript/lightbox/attachment.tt2:55 share/skin/s3/javascript/lightbox/comment.tt2:24 share/skin/s3/javascript/lightbox/copy.tt2:39 share/skin/s3/javascript/lightbox/create_content.tt2:51 share/skin/s3/javascript/lightbox/delete.tt2:23 share/skin/s3/javascript/lightbox/duplicate.tt2:34 share/skin/s3/javascript/lightbox/email.tt2:71 share/skin/s3/javascript/lightbox/rename.tt2:31 share/skin/s3/javascript/lightbox/self_join_workspace.tt2:16 share/skin/s3/template/element/settings/start:22 share/skin/s3/template/element/settings/stop:12 share/skin/s3/template/lite/subnav.html:46 share/plugin/people/template/invite:109 share/plugin/groups/share/javascript/lightbox/create-group.tt2:64 share/plugin/groups/share/javascript/lightbox/delete-group.tt2:20 share/plugin/groups/share/javascript/lightbox/leave-group.tt2:17 share/plugin/groups/template/edit_group_footer:11 share/plugin/groups/template/edit_group_footer:4 share/plugin/groups/template/group_footer:14 share/plugin/groups/template/group_footer:7 share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:20 share/plugin/dashboard/template/dashboard_links:18 share/plugin/dashboard/template/widget_editor_links:13 share/plugin/control/share/javascript/lightbox/group-create.tt2:67 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:47 share/plugin/control/template/control/field_form:82 ../appliance/libsocialtext-appliance-perl/template/popup.html:48
 msgid "do.cancel"
 msgstr "Cancel"
 
-#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:122 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:179 share/plugin/widgets/share/javascript/activities/event_list.js:756 share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:62 share/plugin/signals/share/javascript/lightbox/explore-about.tt2:17 share/skin/s3/javascript/lightbox/simple.tt2:8
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:122 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:179 share/plugin/widgets/share/javascript/activities/event_list.js:756 share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:62 share/plugin/signals/share/javascript/lightbox/explore-about.tt2:17 share/skin/s3/javascript/lightbox/simple.tt2:8 ../appliance/libsocialtext-appliance-perl/template/popup.html:32
 msgid "do.close"
 msgstr "Close"
 
@@ -3375,6 +3808,10 @@ msgstr "Backup already running"
 msgid "error.backup-failed"
 msgstr "Backup failed ..."
 
+#: ../appliance/libsocialtext-appliance-perl/sbin/st-appliance-restore:32
+msgid "error.backup-id-required"
+msgstr "Must supply a backup ID - or use --list to see available backups."
+
 #: lib/Socialtext/Handler/Base.pm:131
 msgid "error.bad-request"
 msgstr "Bad Request"
@@ -3484,6 +3921,10 @@ msgstr "Error creating group: %1"
 msgid "error.create-profile-field-failed"
 msgstr "Unable to create profile field."
 
+#: ../appliance/libsocialtext-appliance-perl/sbin/st-appliance-mount-samba:84
+msgid "error.create-test-file-on-samba-share!"
+msgstr "Cannot create test file on samba share!"
+
 #. ($name)
 #: lib/Socialtext/Handler/ControlPanel.pm:489
 msgid "error.create=account"
@@ -3547,6 +3988,10 @@ msgstr "E-mail address must be specified"
 #: lib/Socialtext/Helpers.pm:480 lib/Socialtext/Helpers.pm:501
 msgid "error.email-adress-required"
 msgstr "No email addresses specified"
+
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:89
+msgid "error.email-and-description-required!"
+msgstr "Email and description are required!"
 
 #: lib/Socialtext/Handler/Authen.pm:588
 msgid "error.email-for-confirmation-required"
@@ -3955,7 +4400,9 @@ msgstr "Domain (%1) is not valid!"
 #. (val)
 #. #-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#
 #. ($email)
-#: share/skin/s3/javascript/lightbox/email.js:97 lib/Socialtext/User/Factory.pm:445
+#. #-#-#-#-#  appliance.po (Socialtext i18n)  #-#-#-#-#
+#. (email)
+#: share/skin/s3/javascript/lightbox/email.js:97 lib/Socialtext/User/Factory.pm:445 ../appliance/libsocialtext-appliance-perl/template/help.html:93
 msgid "error.invalid=email"
 msgstr "\"%1\" is not a valid email address."
 
@@ -4829,6 +5276,10 @@ msgstr "Can't have a 0 for a size."
 msgid "error.skin-upload-failed"
 msgstr "A custom skin file was not uploaded."
 
+#: ../appliance/libsocialtext-appliance-perl/sbin/st-appliance-backup-snapshot:185
+msgid "error.socialtext-appliance-backup"
+msgstr "Error during Socialtext Appliance Backup"
+
 #: lib/Socialtext/PageRevision.pm:462
 msgid "error.store-revision"
 msgstr "Cannot store page revision"
@@ -4860,6 +5311,15 @@ msgstr "Unexpected Widget >>%1<< in parseWidget"
 #: lib/Socialtext/Gadgets/Gadget/XML.pm:34
 msgid "error.unknown"
 msgstr "Unknown error"
+
+#. (status)
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:76
+msgid "error.unknown=status"
+msgstr "Unknown: %1"
+
+#: ../appliance/libsocialtext-appliance-perl/sbin/st-appliance-mount-samba:89
+msgid "error.unlink-test-file-on-samba-share!"
+msgstr "Cannot unlink test file on samba share!"
 
 #. ($file->{filename})
 #: lib/Socialtext/WorkspacesUIPlugin.pm:224
@@ -5009,6 +5469,10 @@ msgstr "You must specify a page."
 #: share/plugin/widgets/share/javascript/activities/editor.js:1192
 msgid "error.wikilink-wiki-required"
 msgstr "You must specify a workspace."
+
+#: ../appliance/libsocialtext-appliance-perl/sbin/st-appliance-mount-samba:87
+msgid "error.write-test-file-on-samba-share!"
+msgstr "Cannot write test file on samba share!"
 
 #. (person_tag)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:6 share/plugin/people/template/data/events/person:6
@@ -6312,8 +6776,20 @@ msgid "lang.changed=user,locale"
 msgstr "Locale for %1 is now %2"
 
 #: lib/Socialtext/Locales.pm:51
-msgid "lang.english"
+msgid "lang.en"
 msgstr "English"
+
+#: lib/Socialtext/Locales.pm:51
+msgid "lang.fr-ca"
+msgstr "French - Canadian"
+
+#: lib/Socialtext/Locales.pm:51
+msgid "lang.zh-cn"
+msgstr "Chinese - Simplified"
+
+#: lib/Socialtext/Locales.pm:51
+msgid "lang.zh-tw"
+msgstr "Chinese - Traditional"
 
 #: lib/Socialtext/RecentChangesPlugin.pm:42
 msgid "last.24hours"
@@ -6466,7 +6942,7 @@ msgstr "MediaWiki Server URL"
 msgid "mediawiki.wiki-navbar-name"
 msgstr "Workspace Navbar Name"
 
-#: lib/Socialtext/Handler/ControlPanel.pm:1965 share/plugin/control/template/control/group.html:39 share/plugin/control/template/control/index.html:25 share/plugin/control/template/control/wrapper:87
+#: lib/Socialtext/Handler/ControlPanel.pm:1965 share/plugin/control/template/control/group.html:39 share/plugin/control/template/control/index.html:25 share/plugin/control/template/control/wrapper:85
 msgid "nav.accounts"
 msgstr "Accounts"
 
@@ -6486,7 +6962,7 @@ msgstr "Google Analytics"
 msgid "nav.community"
 msgstr "Community"
 
-#: share/skin/s3/template/layout/html:83 share/skin/s3/template/layout/user_frame:88 share/plugin/control/template/control/wrapper:86
+#: share/skin/s3/template/layout/html:83 share/skin/s3/template/layout/user_frame:88 share/plugin/control/template/control/wrapper:84
 msgid "nav.control-panel"
 msgstr "Control Panel"
 
@@ -6542,11 +7018,11 @@ msgstr "First Page"
 msgid "nav.following"
 msgstr "People I follow"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:37 share/skin/s3/template/element/settings/users_invite_section:16 share/skin/s3/template/element/settings/users_listall_section:72 lib/Socialtext/Handler/ControlPanel.pm:2137 share/plugin/groups/template/nav_groups:1 share/plugin/control/template/control/groups.html:4 share/plugin/control/template/control/index.html:29 share/plugin/control/template/control/workspace.html:180 share/plugin/control/template/control/workspaces_new.html:41 share/plugin/control/template/control/wrapper:90
+#: share/skin/s3/template/element/settings/users_invite_search_section:37 share/skin/s3/template/element/settings/users_invite_section:16 share/skin/s3/template/element/settings/users_listall_section:72 lib/Socialtext/Handler/ControlPanel.pm:2137 share/plugin/groups/template/nav_groups:1 share/plugin/control/template/control/groups.html:4 share/plugin/control/template/control/index.html:29 share/plugin/control/template/control/workspace.html:180 share/plugin/control/template/control/workspaces_new.html:41 share/plugin/control/template/control/wrapper:88
 msgid "nav.groups"
 msgstr "Groups"
 
-#: share/skin/s3/template/layout/html:188 share/skin/s3/template/layout/html:85 share/skin/s3/template/layout/user_frame:193 share/skin/s3/template/layout/user_frame:90 share/plugin/control/template/control/wrapper:138 share/plugin/control/template/control/wrapper:63
+#: share/skin/s3/template/layout/html:188 share/skin/s3/template/layout/html:85 share/skin/s3/template/layout/user_frame:193 share/skin/s3/template/layout/user_frame:90 share/plugin/control/template/control/wrapper:136 share/plugin/control/template/control/wrapper:61
 msgid "nav.help"
 msgstr "Help"
 
@@ -6578,7 +7054,7 @@ msgstr "Last Page"
 msgid "nav.login"
 msgstr "Log in"
 
-#: share/plugin/widgets/template/mobile-signals.tt2:99 share/skin/s3/template/layout/html:199 share/skin/s3/template/layout/html:94 share/skin/s3/template/layout/user_frame:204 share/skin/s3/template/layout/user_frame:99 share/skin/s3/template/lite/globalnav.html:22 share/skin/s3/template/view/workspace_list:19 share/plugin/control/template/control/wrapper:139 share/plugin/control/template/control/wrapper:64
+#: share/plugin/widgets/template/mobile-signals.tt2:99 share/skin/s3/template/layout/html:199 share/skin/s3/template/layout/html:94 share/skin/s3/template/layout/user_frame:204 share/skin/s3/template/layout/user_frame:99 share/skin/s3/template/lite/globalnav.html:22 share/skin/s3/template/view/workspace_list:19 share/plugin/control/template/control/wrapper:137 share/plugin/control/template/control/wrapper:62
 msgid "nav.logout"
 msgstr "Log out"
 
@@ -6594,7 +7070,7 @@ msgstr "MediaWiki"
 msgid "nav.mine"
 msgstr "Mine"
 
-#: share/skin/s3/template/layout/html:182 share/skin/s3/template/layout/html:76 share/skin/s3/template/layout/user_frame:187 share/skin/s3/template/layout/user_frame:81 share/plugin/control/template/control/wrapper:132 share/plugin/control/template/control/wrapper:57
+#: share/skin/s3/template/layout/html:182 share/skin/s3/template/layout/html:76 share/skin/s3/template/layout/user_frame:187 share/skin/s3/template/layout/user_frame:81 share/plugin/control/template/control/wrapper:130 share/plugin/control/template/control/wrapper:55
 msgid "nav.mobile"
 msgstr "Mobile"
 
@@ -6606,7 +7082,7 @@ msgstr "My Profile"
 msgid "nav.my-recently-viewed"
 msgstr "All My Recently Viewed"
 
-#: share/skin/s3/template/view/settings:29 share/plugin/control/template/control/wrapper:137 share/plugin/control/template/control/wrapper:62
+#: share/skin/s3/template/view/settings:29 share/plugin/control/template/control/wrapper:135 share/plugin/control/template/control/wrapper:60
 msgid "nav.my-settings"
 msgstr "My Settings"
 
@@ -6705,7 +7181,7 @@ msgstr "Search"
 msgid "nav.select"
 msgstr "Select"
 
-#: share/skin/s3/template/layout/html:187 share/skin/s3/template/layout/html:81 share/skin/s3/template/layout/user_frame:192 share/skin/s3/template/layout/user_frame:86 share/skin/s3/template/view/settings:22 lib/Socialtext/Handler/ControlPanel.pm:1895 share/plugin/control/template/control/index.html:33 share/plugin/control/template/control/wrapper:91
+#: share/skin/s3/template/layout/html:187 share/skin/s3/template/layout/html:81 share/skin/s3/template/layout/user_frame:192 share/skin/s3/template/layout/user_frame:86 share/skin/s3/template/view/settings:22 lib/Socialtext/Handler/ControlPanel.pm:1895 share/plugin/control/template/control/index.html:33 share/plugin/control/template/control/wrapper:89
 msgid "nav.settings"
 msgstr "Settings"
 
@@ -6721,7 +7197,7 @@ msgstr "Show:"
 msgid "nav.signals"
 msgstr "Signals"
 
-#: share/skin/s3/template/layout/html:69 share/skin/s3/template/layout/user_frame:74 share/plugin/control/template/control/wrapper:53
+#: share/skin/s3/template/layout/html:69 share/skin/s3/template/layout/user_frame:74 share/plugin/control/template/control/wrapper:51
 msgid "nav.socialtext"
 msgstr "Socialtext"
 
@@ -6775,7 +7251,7 @@ msgstr "Try Socialtext Signals"
 msgid "nav.uploaded-date"
 msgstr "Date Uploaded"
 
-#: lib/Socialtext/Handler/ControlPanel.pm:2122
+#: lib/Socialtext/Handler/ControlPanel.pm:2122 share/plugin/control/template/control/index.html:27
 msgid "nav.users"
 msgstr "Users"
 
@@ -6792,7 +7268,7 @@ msgstr "Welcome %1 %2"
 msgid "nav.wiki"
 msgstr "Workspace"
 
-#: share/plugin/widgets/template/mobile-signals.tt2:131 share/skin/s3/template/element/main_nav/subnav/workspaces:1 share/skin/s3/template/element/settings/workspaces_listall_section:4 share/skin/s3/template/lite/globalnav.html:60 share/skin/s3/template/lite/globalnav.html:62 share/skin/s3/template/view/settings:39 lib/Socialtext/Handler/ControlPanel.pm:1881 share/plugin/control/share/javascript/workspaces_new.js:166 share/plugin/control/template/control/account.html:146 share/plugin/control/template/control/account_table:12 share/plugin/control/template/control/group.html:196 share/plugin/control/template/control/group.html:330 share/plugin/control/template/control/group_table:26 share/plugin/control/template/control/group_table:9 share/plugin/control/template/control/groups.html:68 share/plugin/control/template/control/index.html:31 share/plugin/control/template/control/selected_user_table_header:18 share/plugin/control/template/control/user.html:215 share/plugin/control/template/control/user_table_header:34 share/plugin/control/template/control/user_table_header:36 share/plugin/control/template/control/workspace.html:105 share/plugin/control/template/control/workspace.html:239 share/plugin/control/template/control/workspace_invite.html:153 share/plugin/control/template/control/wrapper:88
+#: share/plugin/widgets/template/mobile-signals.tt2:131 share/skin/s3/template/element/main_nav/subnav/workspaces:1 share/skin/s3/template/element/settings/workspaces_listall_section:4 share/skin/s3/template/lite/globalnav.html:60 share/skin/s3/template/lite/globalnav.html:62 share/skin/s3/template/view/settings:39 lib/Socialtext/Handler/ControlPanel.pm:1881 share/plugin/control/share/javascript/workspaces_new.js:166 share/plugin/control/template/control/account.html:146 share/plugin/control/template/control/account_table:12 share/plugin/control/template/control/group.html:196 share/plugin/control/template/control/group.html:330 share/plugin/control/template/control/group_table:26 share/plugin/control/template/control/group_table:9 share/plugin/control/template/control/groups.html:68 share/plugin/control/template/control/index.html:31 share/plugin/control/template/control/selected_user_table_header:18 share/plugin/control/template/control/user.html:215 share/plugin/control/template/control/user_table_header:34 share/plugin/control/template/control/user_table_header:36 share/plugin/control/template/control/workspace.html:105 share/plugin/control/template/control/workspace.html:239 share/plugin/control/template/control/workspace_invite.html:153 share/plugin/control/template/control/wrapper:86
 msgid "nav.wikis"
 msgstr "Workspaces"
 
@@ -6961,8 +7437,8 @@ msgid "page.edited=summary,page,wiki"
 msgstr "\"%1\" (edited %2 in %3)"
 
 #: share/skin/s3/template/view/page/display:142
-msgid "page.editing"
-msgstr "opened this page for editing"
+msgid "page.editing=ago"
+msgstr "opened this page for editing %1."
 
 #: share/skin/s3/template/view/page/display:105 share/skin/s3/template/view/page/display:107
 msgid "page.email-to-this"

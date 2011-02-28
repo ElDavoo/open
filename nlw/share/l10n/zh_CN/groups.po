@@ -2,181 +2,135 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 07:07+0800\n"
+"PO-Revision-Date: 2011-02-26 08:53+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:64 share/plugin/groups/share/javascript/lightbox/delete-group.tt2:20 share/plugin/groups/share/javascript/lightbox/leave-group.tt2:17 share/plugin/groups/template/edit_group_footer:11 share/plugin/groups/template/edit_group_footer:4 share/plugin/groups/template/group_footer:14 share/plugin/groups/template/group_footer:7
 msgid "do.cancel"
-msgstr "Cancel"
+msgstr "取消"
 
-#: share/plugin/groups/template/edit_group_footer:7 share/plugin/groups/template/group_footer:10
 msgid "do.create"
-msgstr "Create"
+msgstr "创建"
 
-#: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:25
 msgid "do.delete"
-msgstr "Delete"
+msgstr "删除"
 
-#: share/plugin/groups/template/group_links:11 share/plugin/groups/template/grouplist:93
 msgid "do.join"
-msgstr "Join"
+msgstr "加入"
 
-#: share/plugin/groups/share/javascript/lightbox/leave-group.tt2:11 share/plugin/groups/template/group_links:8
 msgid "do.leave"
-msgstr "Leave"
+msgstr "离开"
 
-#: share/plugin/groups/template/nav_groups:23
 msgid "error.not-member-of-any-groups"
-msgstr "Currently, you are not a member of any groups."
+msgstr "目前，您是不是任何群组的成员。"
 
-#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:54
 msgid "groups.admin-can-change-setting-after-creation"
-msgstr "The group administrators can change this setting after the group is created."
+msgstr "群组管理员在创建完该群组之后可以更改其设置。"
 
-#: share/plugin/groups/share/widgets/all_groups/widget.html:2
 msgid "groups.all-available"
-msgstr "All Available Groups"
+msgstr "所有可用的群组"
 
-#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:23
 msgid "groups.change-type"
-msgstr "Change Group Type"
+msgstr "变更群组类型"
 
-#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:33
 msgid "groups.choose-type-then-click-next"
-msgstr "Please choose the group type, then click <b>Next</b>"
+msgstr "请选择群组类型，然后点击<b>下一步</b>"
 
-#: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:10
 msgid "groups.confirm-delete?"
-msgstr "Are you sure you want to delete this group?"
+msgstr "您确认要删掉这个群组么？"
 
-#: share/plugin/groups/share/javascript/lightbox/leave-group.tt2:5
 msgid "groups.confirm-leave?"
-msgstr "This action cannot be undone. Are you sure you'd like to leave this group?"
+msgstr "这个操作无法复原。您确定要离开这个群组？"
 
-#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:26
 msgid "groups.create"
-msgstr "Create Group"
+msgstr "创建群组"
 
-#: share/plugin/groups/template/create_group_hello:3
 msgid "groups.create-a-group"
-msgstr "Create a Group"
+msgstr "创建一个群组"
 
-#: share/plugin/groups/template/nav_groups:27
 msgid "groups.create-group"
-msgstr "Create Group..."
+msgstr "创建群组..."
 
-#: share/plugin/groups/template/directory_links:5
 msgid "groups.create-new-group"
-msgstr "Create New Group"
+msgstr "创建新群组"
 
-#: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:2
 msgid "groups.delete"
-msgstr "Delete Group"
+msgstr "删除群组"
 
-#: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:14
 msgid "groups.delete-is-final"
-msgstr "You will not be able to restore the group once it's deleted. Users will no longer be able to signal to this group and any access to workspaces through this group will be revoked."
+msgstr "一旦删除群组之后您不能重建它。用户将不能登录该群组并且任何通过本群组的工作区访问将被撤销。"
 
-#: share/plugin/groups/template/edit_group_links:3
 msgid "groups.delete-this"
-msgstr "Delete This Group"
+msgstr "删除这个群组"
 
-#. (name)
-#: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:6
 msgid "groups.delete=name"
-msgstr "Delete %1"
+msgstr "删除 %1"
 
-#: share/plugin/groups/template/directory_hello:2 share/plugin/groups/template/nav_groups:15
 msgid "groups.directory"
-msgstr "Group Directory"
+msgstr "群组名单"
 
-#. (container.group.name)
-#: share/plugin/groups/template/edit_group_hello:4
 msgid "groups.edit=name"
-msgstr "Edit Group: %1"
+msgstr "编辑群组: %1"
 
-#: share/plugin/groups/template/create_group_hello:2
 msgid "groups.group"
-msgstr "Group"
+msgstr "群组"
 
-#: share/plugin/groups/share/javascript/lightbox/leave-group.tt2:3
 msgid "groups.leave"
-msgstr "Leave Group"
+msgstr "离开群组"
 
-#: share/plugin/groups/template/grouplist:103
 msgid "groups.member"
-msgstr "member"
+msgstr "成员"
 
-#: share/plugin/groups/template/grouplist:105 share/plugin/groups/template/grouplist:38
 msgid "groups.members"
-msgstr "members"
+msgstr "成员"
 
-#: share/plugin/groups/template/grouplist:53
 msgid "groups.name"
-msgstr "Name"
+msgstr "名称"
 
-#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:59
 msgid "groups.next-step"
-msgstr "Next"
+msgstr "下一步"
 
-#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:49
 msgid "groups.private"
-msgstr "Private Group"
+msgstr "私密群组"
 
-#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:50
 msgid "groups.private-not-listed-in-directory"
-msgstr "Will not be displayed in the Group Directory and new members must be invited by the group administrators."
+msgstr "在群组名单中消失并且只有管理员可以邀请新成员。"
 
-#: share/plugin/groups/template/edit_group_footer:14 share/plugin/groups/template/group_footer:17
 msgid "groups.save"
-msgstr "Save"
+msgstr "保存"
 
-#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:28
 msgid "groups.search-before-creating"
-msgstr "Before creating a group, you can search names and descriptions for existing groups."
+msgstr "在创建群组之前，您可以搜索按名字和描述搜索已有的群组。"
 
-#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:30
 msgid "groups.search-here"
-msgstr "type your search here..."
+msgstr "在这里输入您的搜索..."
 
-#: share/plugin/groups/template/search_box_groups:1
 msgid "groups.search:"
-msgstr "Search Groups:"
+msgstr "搜索群组:"
 
-#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:39
 msgid "groups.self-join"
-msgstr "Self-Join Group"
+msgstr "自加入群组"
 
-#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:40
 msgid "groups.self-join-listed-in-directory"
-msgstr "Can be seen in the Group Directory by everyone and anyone can join."
+msgstr "在群组名单的所有人可见并且任何人都可以加入。"
 
-#. (group_name)
-#: share/plugin/groups/share/javascript/lightbox/delete-group.js:21
 msgid "groups.successfully-deleted=name"
-msgstr "The group, %1, has been successfully deleted."
+msgstr "群组中%1已经被成功删除。"
 
-#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:24
 msgid "groups.toggling-self-join-and-private"
-msgstr "When making a Private group a Self-join group, any user in the group's Accounts will be able to join the group and then optionally invite others into the group. When changing a Self-join group to a Private group, it will no longer appear in the Group Directory and will become invite-only by the group administrators."
+msgstr "将私密群组转变自加入群组后，群组帐户里的任何用户都可以加入群组，之后还可以选择邀请其他人加入。将自加入群组转变为私密群组后，该群组将会在群组名单中消失，只能由群组管理员邀请加入。"
 
-#: share/plugin/groups/template/grouplist:30 share/plugin/groups/template/grouplist:88
 msgid "groups.you-are-member"
-msgstr "You are currently a member of this group."
+msgstr "您当前是这个群组的成员。"
 
-#. (offset + 1, last, pager.total_entries)
-#: share/plugin/groups/template/grouplist:49
 msgid "info.showing=from,to,total"
-msgstr "Showing %1 - %2 of %3 total."
+msgstr "显示总数%3的%1到%2。"
 
-#: share/plugin/groups/template/nav_groups:1
 msgid "nav.groups"
-msgstr "Groups"
+msgstr "群组"
 
-#: share/plugin/groups/template/grouplist:51
 msgid "sort.by:"
-msgstr "Sort by:"
+msgstr "排序方式："

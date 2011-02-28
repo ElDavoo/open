@@ -145,7 +145,7 @@ set-locale
 | st-admin | set-locale | qr/The command you called \(set-locale\) requires a user to be specified/ism |
 | st-admin | set-locale --email %%email%% | qr/The command you called \(set-locale\) requires a workspace to be specified/ism |
 | st-admin | set-locale --email %%email%% --workspace %%cmdline_workspace%% | qr/The command you called \(set-locale\) requires a locale to be specified with the --locale option/ism |
-| st-admin | set-locale --email %%email%% --workspace %%cmdline_workspace%% --locale zz | l0c4l3 F0R %%username%% iS N0W zz |
+| st-admin | set-locale --email %%email%% --workspace %%cmdline_workspace%% --locale zq | Locale for %%username%% is now zq |
 | st-admin | set-locale --email %%email%% --workspace %%cmdline_workspace%% --locale en | Locale for %%username%% is now en |
 
 set-user-names

@@ -8,7 +8,7 @@ our %Lexicon = ( _AUTO => 1 );
 
 sub maketext {
     my $self   = shift;
-    my @tokens = split(/(&\w+;|<[^<]*|quant)/, shift);
+    my @tokens = split(/(&\w+;|<[^>]*|quant)/, shift);
     my $result = '';
     for my $token (@tokens) {
         unless ($token =~ /^(?:<|&\w+;|quant$)/) {

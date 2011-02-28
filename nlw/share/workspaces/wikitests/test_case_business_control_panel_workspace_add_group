@@ -22,9 +22,9 @@
 | click_and_wait | link=%%ws%% |  |
 
 | *Comment* | Test Case: Business Control Panel Workspace Add Group Add the Group |  |
-| wait_for_element_visible_ok | link=Add Group To Workspace | 30000 |
+| wait_for_element_visible_ok | //a[contains(text(),'Add Group')] | 30000 |
 | wait_for_text_present_ok | Groups (0) | 30000 |
-| click_and_wait | link=Add Group To Workspace |  |
+| click_and_wait | //a[contains(text(),'Add Group')] |  |
 | wait_for_element_visible_ok | send-invite-message | 30000 |
 | uncheck_ok | send-invite-message |  |
 | text_like | //body | qr/Add Group To Workspace/ism |
@@ -58,5 +58,6 @@
 
 | *Comment* | Test Case: Business Control Panel Workspace Add Group TEARDOWN |  |
 | st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
+| delete-account | %%acct%% | has been deleted |
 
 | *Comment* | Test Case: Business Control Panel Workspace Add Group COMPLETED |  |

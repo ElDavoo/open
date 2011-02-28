@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-26 04:43+0800\n"
+"PO-Revision-Date: 2011-02-26 06:17+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -589,7 +589,7 @@ msgid "info.contact-link"
 msgstr "如果链接无效，请联系"
 
 msgid "info.default-logo"
-msgstr "如果您没有选择图片，将会用Socialtext的图像代替。"
+msgstr "如果您没有选择图片，将会用 Socialtext 的标识代替。"
 
 msgid "info.public-wiki"
 msgstr "如果您想要无需登陆即可让用户查看的公共工作区，请联系<a href=\"%1\">Socialtext客服支持</a>."
@@ -1387,7 +1387,7 @@ msgid "wiki.link"
 msgstr "工作区链接"
 
 msgid "wiki.logo"
-msgstr "工作区图像"
+msgstr "工作区标识"
 
 msgid "wiki.name"
 msgstr "工作区名称"
@@ -1414,13 +1414,13 @@ msgid "config.yes"
 msgstr "是"
 
 msgid "info.logged-in=name"
-msgstr "您已作为%1登入"
+msgstr "您已登入为 %1"
 
 msgid "info.wiki-as-blog"
 msgstr "您也可以配置工作区链接作为博客显示。"
 
 msgid "info.wiki-logo"
-msgstr "您可以选择一个图片当作工作区的图像。您可以输入一个已经存在的网络图片链接，或者从您的电脑上传一张图片。"
+msgstr "您可以选择一个图片当作工作区的标识。您可以输入一个已经存在的网络图片链接，或者从您的电脑上传一张图片。"
 
 msgid "info.blog-sort"
 msgstr "您可以选择按照条目更新的日期或者第一次发布日期进行排序。"
@@ -1441,10 +1441,10 @@ msgid "wiki.public:"
 msgstr "您可以自由进入查看或者编辑任何公开维基条目："
 
 msgid "wiki.created=title,uri"
-msgstr "您刚刚创建了\"%1\", 一个全新的Socialtext 工作区。您是管理员。新工作区的网络链接是%2"
+msgstr "您刚刚创建了\"%1\", 一个全新的 Socialtext 工作区。您是管理员。新工作区的网络链接是 %2"
 
 msgid "edit.self-join=group?"
-msgstr "您必须成为 %1 群组的成员，才能在此页面进行编辑或者评论。 想现在加入吗?"
+msgstr "您必须成为 %1 群组的成员，才能在此页面进行编辑或者评论。想现在加入吗?"
 
 msgid "edit.choose-group"
 msgstr "您必须成为具有访问此工作区权限的的群组中的成员。请在下面选择您想加入的群组："
@@ -1536,8 +1536,8 @@ msgstr "一分钟前"
 msgid "ago.1minute"
 msgstr "一分钟前"
 
-msgid "page.editing"
-msgstr "打开页面进行编辑"
+msgid "page.editing=ago"
+msgstr "已於%1打开本页进行编辑。"
 
 msgid "info.optional"
 msgstr "可选"
