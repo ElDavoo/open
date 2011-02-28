@@ -1,0 +1,30 @@
+External Id tests for the Control Panel
+
+| *Comment* | Test Case: Business Control Panel USER: External Id |
+
+| *Comment* | Test Case: Business Control Panel USER: External Id Setup |
+| set | user_fname | Davey |
+| set | user_lname | Jones |
+| set | user_email | davey-jones-%%start_time%%@ken.socialtext.net |
+| set | user_passwd | abc123 |
+| set | external_id | %%start_time%% |
+| st-admin | create-user --email %%user_email%% --first_name %%user_fname%% --last_name %%user_lname%% --password %%user_passwd%% | was created |
+| set-user-id | user_id | %%user_email%% |
+
+| *Comment* | Test Case: Business Control Panel USER: External Id No External Id |
+| open-ok | /nlw/control/user/%%user_id%% |
+| text-like | External ID is not set |
+
+| *Comment* | Test Case: Business Control Panel USER: External Id Set External Id for User |
+| st-admin | set-external-id --email %%user_email%% --external-id %%external_id%% |
+| open-ok | /nlw/control/user/%%user_id%% |
+| text-like | External ID: %%external_id%% |
+
+| *Comment* | Test Case: Business Control Panel USER: External Id Clear External Id |
+| open-ok | /nlw/control/user/%%user_id%% |
+| wait-for-element-visible-ok | submit-clear-external-id |
+| click-and-wait | submit-clear-external-id |
+| text-like | External Id cleared for |
+| text-like | External ID is not set |
+
+| *Comment* | Test Case: Business Control Panel USER: External Id COMPLETED |
