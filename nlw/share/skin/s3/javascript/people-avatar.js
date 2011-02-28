@@ -5,12 +5,30 @@ Person = function (user) {
 }
 
 Person.prototype = {
+    loadWatchlist: function(callback) {
+        var self = this;
+
+        var params = {};
+        params[gadgets.io.RequestParameters.CONTENT_TYPE] =
+            gadgets.io.ContentType.JSON;
+        params[gadgets.io.RequestParameters.REFRESH_INTERVAL] = 20;
+        var uri = location.protocol + '//' + location.host
+                + '/data/people/' + Socialtext.userid + '/watchlist?minimal=1';
+        gadgets.io.makeRequest(uri, function(response) {
+            self.watchlist = {};
+            $.each(response.data, function(_, user) {
+                self.watchlist[user.id] = true;
+            });
+            callback();
+        }, params);
+    },
+
     isSelf: function() {
         return this.self || (Socialtext.email_address == this.email);
     },
 
     isFollowing: function() {
-        return Socialtext.watchlist[this.id] ? true : false;
+        return this.watchlist[this.id] ? true : false;
     },
 
     updateFollowLink: function() {
@@ -47,7 +65,7 @@ Person.prototype = {
             processData: false,
             data: '{"person":{"id":"' + this.id + '"}}',
             success: function() {
-                Socialtext.watchlist[self.id] = self.best_full_name;
+                self.watchlist[self.id] = true;
                 self.updateFollowLink();
                 $("#global-people-directory").peopleNavList();
                 if ($.isFunction(self.onFollow)) {
@@ -64,7 +82,7 @@ Person.prototype = {
             type:'DELETE',
             contentType: 'application/json',
             success: function() {
-                delete Socialtext.watchlist[self.id];
+                delete self.watchlist[self.id];
                 self.updateFollowLink();
                 $("#global-people-directory").peopleNavList();
                 if ($.isFunction(self.onStopFollowing)) {
