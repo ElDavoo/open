@@ -35,8 +35,9 @@ sub Create {
 
 {
     my %KNOWN_TYPES = (
-        email_confirmation => 1,
-        password_change    => 1,
+        email_confirmation  => 1,
+        password_change     => 1,
+        require_external_id => 1,
     );
     sub ValidRestrictionType {
         my $class = shift;
