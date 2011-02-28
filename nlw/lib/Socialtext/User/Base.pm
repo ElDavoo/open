@@ -180,6 +180,24 @@ sub update_display_name {
     }
 }
 
+# TODO: this method (and 'update_display_name' above) are odd ones as they
+# update *internal* fields for User records that may or may not be pulled from
+# LDAP.  If we have an LDAP User, though, but _don't_ have these fields mapped
+# to come from LDAP, we still need some way of updating them.
+sub update_private_external_id {
+    my $self        = shift;
+    my $external_id = shift;
+
+    my $factory = $self->factory;
+    if ($factory) {
+        $factory->UpdateUserRecord( {
+            user_id             => $self->user_id,
+            cached_at           => undef,
+            private_external_id => $external_id,
+        } );
+    }
+}
+
 sub FormatFullName {
     my $class       = shift;
     my $first_name  = shift;
