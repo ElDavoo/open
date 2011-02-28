@@ -27,4 +27,21 @@ External Id tests for the Control Panel
 | text-like | External Id cleared for |
 | text-like | External ID is not set |
 
+| *Comment* | Test Case: Business Control Panel USER: External Id add require_external_id restriction |
+| open-ok | /nlw/control/user/%%user_id%% |
+| text-like | External ID is not set |
+| wait-for-element-visible-ok | submit-require-external-id |
+| click-and-wait | submit-require-external-id |
+| text-like | External Id requirement added |
+| text-like | Requires External ID |
+
+| *Comment* | Test Case: Business Control Panel USER: External Id remove require_external_id restriction |
+| open-ok | /nlw/control/user/%%user_id%% |
+| text-like | Requires External ID |
+| wait-for-element-visible-ok | submit-remove-external-id-requirement |
+| click-and-wait | submit-remove-external-id-requirement |
+| text-like | External Id requirement removed |
+| text-like | External ID is not set |
+| text-unlike | //body | Requires External ID |
+
 | *Comment* | Test Case: Business Control Panel USER: External Id COMPLETED |
