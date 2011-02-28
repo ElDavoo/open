@@ -522,10 +522,10 @@ EOT
     $mass_add->from_csv($bad_csv);
     is_deeply \@successes, ['Added user guybrush'], 'success message ok';
     is_deeply \@failures,
-        ['Line 3: example.com is not a valid email address.'],
+        ['Line 3: "example.com" is not a valid email address.'],
         'correct failure message';
     logged_like 'error',
-        qr/\QLine 3: example.com is not a valid email address/,
+        qr/\QLine 3: "example.com" is not a valid email address/,
         '... message also logged';
 }
 
