@@ -97,11 +97,11 @@ sub revision_view {
       ? do { local $_ = $self->html_escape( $page->content ); s/$/<br \/>/gm; $_ }
       : $page->to_html;
 
-    my $revision_num = Socialtext::PageRevision->Get(
+    my $revision = Socialtext::PageRevision->Get(
         hub => $self->hub,
         page_id => $page->page_id,
         revision_id => $revision_id,
-    )->revision_num;
+    );
 
     $self->screen_template('view/page/revision');
     $self->render_screen(
@@ -112,9 +112,10 @@ sub revision_view {
         human_readable_revision => $page->revision_num,
         tags => [ map { Socialtext::String::html_escape($_) }
             $page->tags_sorted ],
+        edit_summary => $revision->edit_summary,
         edit_summary_maxlength => EDIT_SUMMARY_MAXLENGTH(),
         display_title    => $self->html_escape( $page->title ),
-        display_title_decorator  => loc("page.revision=revision", $revision_num),
+        display_title_decorator  => loc("page.revision=revision", $revision->revision_num),
         print                   => $output,
     );
 }
