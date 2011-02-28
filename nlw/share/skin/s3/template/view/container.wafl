@@ -1,5 +1,6 @@
 <script src="[% wiki.skin_uri('s3') %]/javascript/socialtext-s3.js.gz"></script>
 [% INCLUDE element/container_head share="/nlw/plugin/widgets" %]
+[% INCLUDE element/container_css share="/nlw/plugin/widgets" %]
 [% SET gadget = container.gadgets.0.0 %]
 [% SET num = "wafl-" _ gadget.id %]
 [% SET col = 0 %]

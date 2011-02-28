@@ -2,6 +2,7 @@
 [% WRAPPER $frame_name 
     id="dashBoard"
     head_template="element/container_head"
+    css_template="element/container_css"
     title=container.title
 %]
 <input id="containerID" type="hidden" value="[% container.id %]"/>

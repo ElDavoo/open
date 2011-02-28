@@ -3,6 +3,7 @@
         [% USE decorate %]
         [% FILTER decorate "head" %]
         <title>[% container.title %]</title>
+        [% INCLUDE element/container_css share="/nlw/plugin/widgets" %]
         <script type="text/javascript" charset="utf-8"
           src="[% wiki.skin_uri('s3') %]/javascript/socialtext-s3.js.gz">
         </script>

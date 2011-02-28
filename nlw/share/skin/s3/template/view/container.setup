@@ -6,6 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     [% PROCESS element/css_links %]
+    [% INCLUDE element/container_css share="/nlw/plugin/widgets" %]
     [% IF loc_lang != 'en' %]
     <script type="text/javascript" charset="utf-8"
       src="/static/skin/s2/javascript/l10ns.js.gz">
