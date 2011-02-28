@@ -1036,8 +1036,11 @@ sub remove_restriction {
 
 sub _require_restriction {
     my $self        = shift;
+    my $optional    = shift;
     my %opts        = $self->_get_options('restriction:s@');
-    my $restriction = shift || $opts{restriction};
+    my $restriction = $opts{restriction};
+
+    return if ($optional && !$restriction);
 
     $self->_error(loc("error.restriction-required"))
         unless $restriction and scalar(@$restriction);
