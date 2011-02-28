@@ -2,15 +2,18 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 51;
+use Test::Socialtext tests => 58;
 use Test::Socialtext::User;
 use Socialtext::Account;
 use File::Slurp qw(write_file);
+use Email::Send::Test;
 
 BEGIN { use_ok 'Socialtext::CLI' }
 use Test::Socialtext::CLIUtils qw(:all);
 
 fixtures( 'db' );
+
+$Socialtext::EmailSender::Base::SendClass = 'Test';
 
 MASS_ADD_USERS: {
     my $guard   = Test::Socialtext::User->snapshot;
@@ -271,6 +274,7 @@ add_users_with_restrictions: {
         join(',', qw{csvtest2 csvtest2@example.com Jane Smith password2 position2 company2 location2 work_phone2 mobile_phone2 home_phone2 JaneSmith}) . "\n";
 
     # mass add Users with restrictions
+    Email::Send::Test->clear;
     expect_success(
         call_cli_argv(
             'mass-add-users',
@@ -290,4 +294,40 @@ add_users_with_restrictions: {
     ok $user_two, '... found first user';
     ok $user_two->password_change_confirmation, '... ... password change set';
     ok !$user_two->email_confirmation, '... ... NO e-mail confirmation set';
+
+    my @emails = Email::Send::Test->emails();
+    is @emails, 2, '... and e-mails were sent to each User';
+}
+
+add_users_multiple_restrictions: {
+    my $guard = Test::Socialtext::User->snapshot;
+
+    # create CSV file
+    my $csvfile = Cwd::abs_path(
+        (File::Temp::tempfile(SUFFIX=>'.csv', OPEN=>0))[1]
+    );
+    write_file $csvfile,
+        join(',', qw{username email_address first_name last_name password position company location work_phone mobile_phone home_phone preferred_name}) . "\n",
+        join(',', qw{csvtest1 csvtest1@example.com John Doe passw0rd position company location work_phone mobile_phone home_phone JohnDoe}) . "\n";
+
+    # mass add Users with restrictions
+    Email::Send::Test->clear;
+    expect_success(
+        call_cli_argv(
+            'mass-add-users',
+            '--csv'         => $csvfile,
+            '--restriction' => 'password_change',
+            '--restriction' => 'email_confirmation',
+        ),
+        qr/Added user/s,
+        'mass-add-users successfully added users',
+    );
+
+    my $user = Socialtext::User->new(username => 'csvtest1');
+    ok $user, '... found test User';
+    ok $user->password_change_confirmation, '... ... password change set';
+    ok $user->email_confirmation, '... ... e-mail confirmation set';
+
+    my @emails = Email::Send::Test->emails();
+    is @emails, 2, '... and e-mails were sent (one for each restriction)';
 }
