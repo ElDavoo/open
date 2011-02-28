@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 98;
+use Test::Socialtext tests => 105;
 use Socialtext::CLI;
 use Test::Socialtext::CLIUtils qw(:all);
 use Test::Socialtext::User;
@@ -174,6 +174,42 @@ add_password_change_restriction: {
 
     my @emails = Email::Send::Test->emails();
     is @emails, 1, '... and an e-mail message was sent';
+}
+
+###############################################################################
+# TEST: Add a "requires_external_id" restriction to a User
+add_requires_external_id_restriction: {
+    my $guard = Test::Socialtext::User->snapshot;
+    my $user  = create_test_user;
+    ok $user, 'Created test user';
+
+    # Set an External Id into  the User record, and make sure its there
+    my $extern_id = 'abc123';
+    $user->homunculus->update_private_external_id($extern_id);
+
+    $user->reload;
+    is $user->private_external_id, $extern_id, '... External Id set';
+
+    # Add this restriction to the User
+    expect_success(
+        call_cli_argv(
+            'add-restriction',
+            '--username'    => $user->username,
+            '--restriction' => 'require_external_id',
+        ),
+        qr/has been given the 'require_external_id' restriction/,
+        '... given a external id restriction'
+    );
+    $user->reload;
+
+    ok $user->requires_confirmation,
+        '... User now has something that requires confirmation';
+
+    my $restriction = $user->restrictions->next;
+    isa_ok $restriction, 'Socialtext::User::Restrictions::require_external_id',
+        '... an External Id requirement';
+
+    ok !$user->private_external_id, '... existing External Id was cleared';
 }
 
 ###############################################################################
