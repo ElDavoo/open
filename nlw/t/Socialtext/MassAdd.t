@@ -18,7 +18,7 @@ BEGIN {
         plan skip_all => 'These tests require Email::Send::Test to run.';
     }
     else {
-        plan tests => 135;
+        plan tests => 141;
     }
     $Socialtext::EmailSender::Base::SendClass = 'Test';
 }
@@ -989,4 +989,40 @@ Add_user_with_restrictions: {
 
     my @emails = Email::Send::Test->emails;
     is @emails, 2, '... and two e-mails were sent (one for each restriction)';
+}
+
+Update_user_with_restrictions: {
+    my $guard = Test::Socialtext::User->snapshot;
+    scope_guard { Email::Send::Test->clear() };
+    scope_guard { clear_log(); };
+
+    # Add the User, so we've got something to update
+    my (@successes, @failures);
+    my $mass_add = Socialtext::MassAdd->new(
+        pass_cb => sub { push @successes, shift },
+        fail_cb => sub { push @failures,  shift },
+    );
+    $mass_add->add_user(%userinfo);
+
+    @successes = @failures = ();
+    clear_log;
+
+    # Go update the User, assigning them a restriction
+    $mass_add = Socialtext::MassAdd->new(
+        pass_cb      => sub { push @successes, shift },
+        fail_cb      => sub { push @failures,  shift },
+        restrictions => [qw( email_confirmation )],
+    );
+    $mass_add->add_user(%userinfo);
+
+    is_deeply \@successes, ['Updated user ronnie'], 'success message ok';
+    logged_like 'info', qr/Updated user ronnie/, '... message also logged';
+    is_deeply \@failures, [], 'no failure messages';
+
+    my $user = Socialtext::User->new(username => 'ronnie');
+    ok $user->email_confirmation, '... e-mail confirmation is set';
+    ok !$user->password_change_confirmation, '... no password change set';
+
+    my @emails = Email::Send::Test->emails;
+    is @emails, 1, '... e-mail was sent for applied restriction';
 }

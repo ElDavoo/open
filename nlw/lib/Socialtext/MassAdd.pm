@@ -183,6 +183,7 @@ sub add_user {
                 restriction_type => $r,
             } );
             $restriction->send;
+            $changed_user++;
         }
     }
 
