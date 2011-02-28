@@ -2,7 +2,7 @@ package Socialtext::HTMLArchive;
 # @COPYRIGHT@
 use Moose;
 
-use File::Basename qw/basename/;
+use File::Basename qw/basename dirname/;
 use File::Copy qw/copy/;
 use File::Temp ();
 use Socialtext::File;
@@ -16,7 +16,9 @@ has 'hub' => (is => 'rw', isa => 'Socialtext::Hub', weak_ref=>1);
 
 sub create_zip {
     my ($self, $zip_file) = @_;
+    die "Path to zip file does not exist\n" unless ($zip_file);
     $zip_file .= '.zip' unless $zip_file =~ /\.zip$/;
+    die "Path to zip file does not existsi\n" if (!-e dirname($zip_file));
 
     my $dir = File::Temp->newdir(); # will cleanup
 
