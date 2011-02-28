@@ -18,7 +18,7 @@ BEGIN {
         plan skip_all => 'These tests require Email::Send::Test to run.';
     }
     else {
-        plan tests => 141;
+        plan tests => 140;
     }
     $Socialtext::EmailSender::Base::SendClass = 'Test';
 }
@@ -974,7 +974,7 @@ Add_user_with_restrictions: {
     my $mass_add = Socialtext::MassAdd->new(
         pass_cb      => sub { push @successes, shift },
         fail_cb      => sub { push @failures,  shift },
-        restrictions => [qw( email_confirmation password_change )],
+        restrictions => [qw( email_confirmation password_change require_external_id )],
     );
     $mass_add->add_user(%userinfo);
 
@@ -984,8 +984,10 @@ Add_user_with_restrictions: {
 
     my $user = Socialtext::User->new(username => 'ronnie');
     ok $user, 'User created with restrictions';
-    ok $user->email_confirmation, '... e-mail confirmation is set';
-    ok $user->password_change_confirmation, '... password change is set';
+
+    my @restrictions = map { $_->restriction_type } $user->restrictions->all;
+    my @expected     = qw( email_confirmation password_change require_external_id );
+    is_deeply \@restrictions, \@expected, '... expected restrictions';
 
     my @emails = Email::Send::Test->emails;
     is @emails, 2, '... and two e-mails were sent (one for each restriction)';
