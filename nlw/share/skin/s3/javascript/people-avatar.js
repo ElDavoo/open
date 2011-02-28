@@ -12,9 +12,9 @@ Person.prototype = {
         params[gadgets.io.RequestParameters.CONTENT_TYPE] =
             gadgets.io.ContentType.JSON;
         params[gadgets.io.RequestParameters.REFRESH_INTERVAL] = 20;
-        var uri = location.protocol + '//' + location.host
+        var url = location.protocol + '//' + location.host
                 + '/data/people/' + Socialtext.userid + '/watchlist?minimal=1';
-        gadgets.io.makeRequest(uri, function(response) {
+        gadgets.io.makeRequest(url, function(response) {
             self.watchlist = {};
             $.each(response.data, function(_, user) {
                 self.watchlist[user.id] = true;

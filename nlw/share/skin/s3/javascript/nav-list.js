@@ -7,17 +7,19 @@ function fetchData(entries, index, callback) {
         var entry = entries[index];
         if (entry.url) {
             setTimeout(function() {
-                $.ajax({
-                    url: entry.url,
-                    type: 'get',
-                    dataType: 'json',
-                    success: function(data) {
-                        if (entry.sort) data = data.sort(entry.sort);
-                        entry.data = data;
+                var params = {};
+                params[gadgets.io.RequestParameters.CONTENT_TYPE] =
+                    gadgets.io.ContentType.JSON;
+                params[gadgets.io.RequestParameters.REFRESH_INTERVAL] = 20;
+                var url = location.protocol + '//' + location.host
+                        + entry.url;
+                gadgets.io.makeRequest(url, function(response) {
+                    if (entry.sort)
+                        response.data = response.data.sort(entry.sort);
+                    entry.data = response.data;
 
-                        fetchData(entries, index + 1, callback);
-                    }
-                });
+                    fetchData(entries, index + 1, callback);
+                }, params);
             }, LOAD_DELAY);
         }
         else {
