@@ -552,9 +552,9 @@ sub groups {
 
     my $apply = $p{ids_only}
         ? sub { $_[0][0] }
-        : sub {
-            return Socialtext::Group->GetGroup( group_id => $_[0][0] );
-        };
+        : $p{minimal}
+            ? sub { { group_id => $_[0][0], name => $_[0][1] } }
+            : sub { Socialtext::Group->GetGroup( group_id => $_[0][0] ) };
 
     return Socialtext::MultiCursor->new(
         iterables => [ $sth->fetchall_arrayref ],
