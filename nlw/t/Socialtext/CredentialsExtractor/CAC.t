@@ -3,8 +3,9 @@
 use strict;
 use warnings;
 use Socialtext::CredentialsExtractor;
+use Socialtext::CredentialsExtractor::Extractor::CAC;
 use Socialtext::AppConfig;
-use Test::Socialtext tests => 10;
+use Test::Socialtext tests => 13;
 
 fixtures(qw( empty ));
 
@@ -16,6 +17,36 @@ my $test_username = $test_user->username;
 my $test_user_id  = $test_user->user_id;
 
 Socialtext::AppConfig->set(credentials_extractors => 'CAC:Guest');
+
+###############################################################################
+# TEST: Parse username into fields
+parse_username_into_fields: {
+    # Parse successfully.
+    my $username = 'first.middle.last.edipin';
+    my %expected = (
+        first_name  => 'first',
+        middle_name => 'middle',
+        last_name   => 'last',
+        edipin      => 'edipin',
+    );
+    my %fields = Socialtext::CredentialsExtractor::Extractor::CAC
+        ->_parse_cac_username($username);
+    is_deeply \%fields, \%expected, 'Parsed username fields successfully';
+
+    # Parse w/o edipin
+    $username = 'first.middle.last';
+    %expected =  ( );
+    %fields = Socialtext::CredentialsExtractor::Extractor::CAC
+        ->_parse_cac_username($username);
+    is_deeply \%fields, \%expected, 'Cannot parse username when missing EDIPIN';
+
+    # Parse when malformed (regular LDAP formatted name)
+    $username = 'Bubba Bo Bob Brain';
+    %expected =  ( );
+    %fields = Socialtext::CredentialsExtractor::Extractor::CAC
+        ->_parse_cac_username($username);
+    is_deeply \%fields, \%expected, 'Cannot parse username when malformed';
+}
 
 ###############################################################################
 # TEST: No CAC credentials
