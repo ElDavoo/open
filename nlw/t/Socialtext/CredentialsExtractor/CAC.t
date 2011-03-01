@@ -6,6 +6,7 @@ use Socialtext::CredentialsExtractor;
 use Socialtext::CredentialsExtractor::Extractor::CAC;
 use Socialtext::AppConfig;
 use Test::Socialtext tests => 20;
+use Test::Socialtext::User;
 
 fixtures(qw( empty ));
 
@@ -144,6 +145,7 @@ valid: {
 ###############################################################################
 # TEST: Auto-provision User, single User matches
 auto_provision_user: {
+    my $guard  = Test::Socialtext::User->snapshot;
     my $first  = 'Ian';
     my $middle = 'Lancaster';
     my $last   = 'Fleming';
