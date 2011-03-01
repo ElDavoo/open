@@ -5,7 +5,7 @@ use warnings;
 use Socialtext::CredentialsExtractor;
 use Socialtext::CredentialsExtractor::Extractor::CAC;
 use Socialtext::AppConfig;
-use Test::Socialtext tests => 20;
+use Test::Socialtext tests => 22;
 use Test::Socialtext::User;
 
 fixtures(qw( empty ));
@@ -177,5 +177,42 @@ auto_provision_user: {
     is $user->private_external_id, $edipin, '... and with assigned EDIPIN';
 }
 
+###############################################################################
 # TEST: Auto-provision User, multiple User matches
+auto_provision_multiple_users: {
+    my $guard  = Test::Socialtext::User->snapshot;
+    my $first  = 'Ian';
+    my $middle = 'Lancaster';
+    my $last   = 'Fleming';
+    my $edipin = '123456789';
+
+    # Create *multiple* Users, all of which are only partially provisioned.
+    my $user_one = create_test_user(
+        first_name  => $first,
+        middle_name => $middle,
+        last_name   => $last,
+    );
+    Socialtext::User::Restrictions::require_external_id->CreateOrReplace(
+        user_id => $user_one->user_id,
+    );
+
+    my $user_two = create_test_user(
+        first_name  => $first,
+        middle_name => $middle,
+        last_name   => $last,
+    );
+    Socialtext::User::Restrictions::require_external_id->CreateOrReplace(
+        user_id => $user_two->user_id,
+    );
+
+    # Attempt to extract creds
+    my $subject = "C=UK, O=Goldeneye, CN=$first\.$middle\.$last\.$edipin";
+    my $creds   = Socialtext::CredentialsExtractor->ExtractCredentials( {
+        X_SSL_CLIENT_SUBJECT => $subject,
+    } );
+    ok !$creds->{valid}, 'unable to extract credentials';
+#XXX    like $creds->{reason}, qr/multiple matches found/i, '... multiple matches';
+    like $creds->{reason}, qr/invalid username/, '... invalid username';
+}
+
 # TEST: Auto-provision User, *no* matches
