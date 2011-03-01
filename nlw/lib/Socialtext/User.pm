@@ -12,6 +12,7 @@ use Socialtext::Log qw(st_log);
 use Socialtext::MultiCursor;
 use Socialtext::Permission 'ST_READ_PERM';
 use Socialtext::SQL qw(sql_execute sql_selectrow sql_singlevalue sql_txn);
+use Socialtext::SQL::Builder qw(sql_abstract);
 use Socialtext::TT2::Renderer;
 use Socialtext::URI;
 use Socialtext::UserMetadata;
@@ -973,6 +974,23 @@ sub ResolveId {
         }
     }
     return;
+}
+
+sub Find {
+    my $class  = shift;
+    my $params = shift;
+    my $t      = time_scope('user_find');
+
+    my ($sql, @bind) = sql_abstract->select('users', [qw(user_id)], $params);
+    my $sth = sql_execute($sql, @bind);
+    my $mc  = Socialtext::MultiCursor->new(
+        iterables => [ $sth->fetchall_arrayref ],
+        apply     => sub {
+            my $row = shift;
+            $class->new(user_id => $row->[0]);
+        },
+    );
+    return $mc;
 }
 
 sub _UserCursor {
@@ -2132,6 +2150,11 @@ low-level C<user_id> for said User.
 Checks each of the configured User Factories to see if they know about this
 User, B<without> actually instantiating the User object; useful as a
 peek-ahead to see if we know about a User with this C<driver_unique_id> yet.
+
+=head2 Socialtext::User->Find( $hashref )
+
+Finds User records that match the given hash-ref of field data B<exactly>,
+returning a cursor of the records found.
 
 =head2 Socialtext::User->Create_user_from_hash( $hashref )
 

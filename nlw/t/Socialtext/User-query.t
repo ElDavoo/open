@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Socialtext::User;
-use Test::Socialtext tests => 30;
+use Test::Socialtext tests => 32;
 use Test::Differences;
 
 ###############################################################################
@@ -406,4 +406,20 @@ fixtures(qw( clean populated_rdbms ));
         [ map { ("devnull$_\@urth.org") } 3, 4, 5, 6, 7, 1, 2 ],
         'ByUsername() sorted by creator',
     );
+}
+
+{
+    my $user = create_test_user();
+    my $cursor;
+
+    $cursor = Socialtext::User->Find( {
+        driver_username => $user->username,
+    } );
+    is $cursor->count, 1, 'Find() matched User';
+
+    $cursor = Socialtext::User->Find( {
+        driver_username => $user->username,
+        last_name       => 'blah blah blah blah',
+    } );
+    is $cursor->count, 0, 'Find() did not match bad user';
 }
