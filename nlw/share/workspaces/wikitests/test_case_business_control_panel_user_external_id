@@ -1,8 +1,4 @@
-External Id tests for the Control Panel
-
-| *Comment* | Test Case: Business Control Panel USER: External Id |
-
-| *Comment* | Test Case: Business Control Panel USER: External Id Setup |
+| *Comment* | Test Case: Business Control Panel User External Id Setup |  |
 | set | user_fname | Davey |
 | set | user_lname | Jones |
 | set | user_email | davey-jones-%%start_time%%@ken.socialtext.net |
@@ -11,7 +7,7 @@ External Id tests for the Control Panel
 | st-admin | create-user --email %%user_email%% --first_name %%user_fname%% --last_name %%user_lname%% --password %%user_passwd%% | was created |
 | set-user-id | user_id | %%user_email%% |
 
-| *Comment* | Test Case: Business Control Panel USER: External Id No External Id |
+| *Comment* | Test Case: Business Control Panel User External Id No External Id |
 | open-ok | /nlw/control/user/%%user_id%% |
 | text-like | External ID is not set |
 
@@ -20,14 +16,14 @@ External Id tests for the Control Panel
 | open-ok | /nlw/control/user/%%user_id%% |
 | text-like | External ID: %%external_id%% |
 
-| *Comment* | Test Case: Business Control Panel USER: External Id Clear External Id |
+| *Comment* | Test Case: Business Control Panel User External Id Clear External Id |
 | open-ok | /nlw/control/user/%%user_id%% |
 | wait-for-element-visible-ok | submit-clear-external-id |
 | click-and-wait | submit-clear-external-id |
 | text-like | External Id cleared for |
 | text-like | External ID is not set |
 
-| *Comment* | Test Case: Business Control Panel USER: External Id add require_external_id restriction |
+| *Comment* | Test Case: Business Control Panel User External Id add require_external_id restriction |
 | open-ok | /nlw/control/user/%%user_id%% |
 | text-like | External ID is not set |
 | wait-for-element-visible-ok | submit-require-external-id |
@@ -35,13 +31,14 @@ External Id tests for the Control Panel
 | text-like | External Id requirement added |
 | text-like | Requires External ID |
 
-| *Comment* | Test Case: Business Control Panel USER: External Id remove require_external_id restriction |
-| open-ok | /nlw/control/user/%%user_id%% |
-| text-like | Requires External ID |
-| wait-for-element-visible-ok | submit-remove-external-id-requirement |
-| click-and-wait | submit-remove-external-id-requirement |
-| text-like | External Id requirement removed |
-| text-like | External ID is not set |
+| *Comment* | Test Case: Business Control Panel User External Id remove require_external_id restriction |  |
+| open-ok | /nlw/control/user/%%user_id%% |  |
+| text-like | Requires External ID |  |
+| wait-for-element-visible-ok | submit-remove-external-id-requirement | 30000 |
+| click-and-wait | submit-remove-external-id-requirement |  |
+| text-like | External Id requirement removed |  |
+| text-like | External ID is not set |  |
 | text-unlike | //body | Requires External ID |
 
-| *Comment* | Test Case: Business Control Panel USER: External Id COMPLETED |
+
+| *Comment* | Test Case: Business Control Panel User External Id COMPLETED |
