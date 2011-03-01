@@ -5,7 +5,7 @@ use warnings;
 use Socialtext::CredentialsExtractor;
 use Socialtext::CredentialsExtractor::Extractor::CAC;
 use Socialtext::AppConfig;
-use Test::Socialtext tests => 13;
+use Test::Socialtext tests => 14;
 
 fixtures(qw( empty ));
 
@@ -46,6 +46,46 @@ parse_username_into_fields: {
     %fields = Socialtext::CredentialsExtractor::Extractor::CAC
         ->_parse_cac_username($username);
     is_deeply \%fields, \%expected, 'Cannot parse username when malformed';
+}
+
+###############################################################################
+# TEST: Find partially provisioned Users.
+find_partially_provisioned_users: {
+    my %fields = (
+        first_name  => 'David',
+        middle_name => 'Michael',
+        last_name   => 'Smith',
+    );
+
+    # Two matching UN-provisioned Users, non-matching UN-provisioned User, and
+    # a provisioned User.
+    my $user_one = create_test_user(%fields);
+    Socialtext::User::Restrictions::require_external_id->CreateOrReplace(
+        user_id => $user_one->user_id,
+    );
+
+    my $user_two = create_test_user(%fields);
+    Socialtext::User::Restrictions::require_external_id->CreateOrReplace(
+        user_id => $user_two->user_id,
+    );
+
+    my $diff_name_user = create_test_user(%fields, middle_name => 'Matt');
+    Socialtext::User::Restrictions::require_external_id->CreateOrReplace(
+        user_id => $diff_name_user->user_id,
+    );
+
+    my $provisioned_user = create_test_user(%fields);
+
+    # Which Users did we find?
+    my @users = Socialtext::CredentialsExtractor::Extractor::CAC
+        ->_find_partially_provisioned_users(
+            first_name  => 'David',
+            middle_name => 'Michael',
+            last_name   => 'Smith',
+        );
+    my @found    = map { $_->username } @users;
+    my @expected = map { $_->username } ($user_one, $user_two);
+    is_deeply \@found, \@expected, 'Found partially provisioned Users';
 }
 
 ###############################################################################
@@ -100,3 +140,7 @@ valid: {
     ok $creds->{valid}, 'extracted creds from slash delimited subject';
     is $creds->{user_id}, $test_user_id, '... with valid User';
 }
+
+# TEST: Auto-provision User, single User matches
+# TEST: Auto-provision User, multiple User matches
+# TEST: Auto-provision User, *no* matches
