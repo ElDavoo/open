@@ -24,7 +24,7 @@
 
         [% IF loc_lang != 'en' %]
         <script type="text/javascript" charset="utf-8"
-            src="[% wiki.skin_uri('s2') %]/javascript/l10ns.js.gz">
+            src="[% wiki.skin_uri('s2') %]/javascript/l10ns.jgz">
         </script>
         [% END %]
 
@@ -33,7 +33,7 @@
             [% combined_file = "socialtext-display" %]
         [% END %]
         <script type="text/javascript" charset="utf-8"
-            src="[% wiki.skin_uri('s2') %]/javascript/[% combined_file %].js.gz">
+            src="[% wiki.skin_uri('s2') %]/javascript/[% combined_file %].jgz">
         </script>
         [% IF customjs %]
         <script type="text/javascript" charset="utf-8" src="[% customjs %]"></script>
@@ -41,7 +41,7 @@
     
         [% IF stax_info.paths.size > 0 %]
         <script type="text/javascript" charset="utf-8"
-            src="[% wiki.skin_uri('s2') %]/javascript/socialtext-stax.js.gz">
+            src="[% wiki.skin_uri('s2') %]/javascript/socialtext-stax.jgz">
         </script>
         [% END %]
 

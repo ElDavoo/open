@@ -34,7 +34,7 @@ jQuery(function () {
 
     var load_ui = function(cb) {
         var script_url =
-            nlw_make_s2_path("/javascript/socialtext-display-ui.js.gz")
+            nlw_make_s2_path("/javascript/socialtext-display-ui.jgz")
             .replace(/(\d+\.\d+\.\d+\.\d+)/, '$1.' + Socialtext.make_time) ;
 
         var self = this;
@@ -50,7 +50,7 @@ jQuery(function () {
         }
 
         var script_url =
-            nlw_make_plugin_path("/socialcalc/javascript/socialtext-socialcalc.js.gz")
+            nlw_make_plugin_path("/socialcalc/javascript/socialtext-socialcalc.jgz")
                 .replace(/(\d+\.\d+\.\d+\.\d+)/, '$1.' + Socialtext.make_time) ;
 
         var self = this;

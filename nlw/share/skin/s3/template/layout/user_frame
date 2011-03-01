@@ -52,12 +52,12 @@
 
     <% IF loc_lang != 'en' %>
     <script type="text/javascript" charset="utf-8"
-      src="[% wiki.skin_uri('s2') %]/javascript/l10ns.js.gz">
+      src="[% wiki.skin_uri('s2') %]/javascript/l10ns.jgz">
     </script>
     <% END %>
 
     <script type="text/javascript" charset="utf-8"
-      src="[% wiki.skin_uri('s3') %]/javascript/socialtext-s3.js.gz">
+      src="[% wiki.skin_uri('s3') %]/javascript/socialtext-s3.jgz">
     </script>
 
     [% IF head_template %]

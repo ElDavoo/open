@@ -75,7 +75,7 @@
         expires 1y;
     }
 
-    location ~ "^/nlw/static/(.+.js.gz)$" {
+    location ~ "^/nlw/static/(.+.jgz)$" {
         alias [% config.static_dir %]/$1;
         expires 1y;
         types {}
@@ -84,7 +84,7 @@
         gzip off;
     }
 
-    location ~ "^/static/(.+.js.gz)$" {
+    location ~ "^/static/(.+.jgz)$" {
         alias [% config.static_dir %]/$1;
         expires 1y;
         types {}
@@ -98,7 +98,7 @@
         expires 1y;
     }
 
-    location ~ "^/nlw/plugin/([^/]+)/(.+.js.gz)" {
+    location ~ "^/nlw/plugin/([^/]+)/(.+.jgz)" {
         alias [% config.static_dir %]/plugin/$1/share/$2;
         expires 1y;
         types {}
@@ -153,11 +153,6 @@
 
     # Force IE8 to emulate IE7, to avoid IE8 rendering issues.
     add_header X-UA-Compatible IE=EmulateIE7;
-
-    location ~ "^/static/.+\.js$" {
-      # Safari doesn't like compressed JS, so *only* compress HTML content
-      gzip_disable     "AppleWebKit";
-    }
 
     location /nginx_status {
       stub_status on;

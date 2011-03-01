@@ -96,7 +96,10 @@ sub CleanDir {
     my @toclean;
     for my $file (keys %{$dirs{$dir}}) {
         push @toclean, $file;
-        push @toclean, "$file.gz" if $dirs{$dir}{$file}{compress};
+        if ($dirs{$dir}{$file}{compress}) {
+            (my $gz_file = $file) =~ s{\.js$}{\.jgz};
+            push @toclean, $gz_file;
+        }
     }
     unlink @toclean;
 }
@@ -104,7 +107,7 @@ sub CleanDir {
 sub Exists {
     my ($class, $dir, $target) = @_;
     if ($target) {
-        $target =~ s/\.gz$//; # built anyway
+        $target =~ s/\.jgz$/\.js/; # built anyway
         return $dirs{$dir}{$target} ? 1 : 0;
     }
     else {
@@ -114,7 +117,7 @@ sub Exists {
 
 sub Build {
     my ($class, $dir, $target) = @_;
-    $target =~ s/\.gz$//; # built anyway
+    $target =~ s/\.jgz$/\.js/; # built anyway
 
     local $CWD = "$CODE_BASE/$dir";
 
@@ -435,8 +438,9 @@ sub write_compressed {
     warn "Gzipping $target...\n" if $VERBOSE;
     my $gzipped = Compress::Zlib::memGzip($text);
 
-    warn "Writing to $target.gz...\n" if $VERBOSE;
-    write_file("$target.gz", $gzipped);
+    (my $gz_target = $target) =~ s{\.js$}{\.jgz};
+    warn "Writing to $gz_target...\n" if $VERBOSE;
+    write_file("$gz_target", $gzipped);
 }
 
 sub modified {

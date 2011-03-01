@@ -22,11 +22,11 @@
         [% INCLUDE "element/wiki/js-bootstrap" %]
         [% IF loc_lang != 'en' %]
         <script type="text/javascript" charset="utf-8"
-            src="[% wiki.skin_uri('s2') %]/javascript/l10ns.js.gz">
+            src="[% wiki.skin_uri('s2') %]/javascript/l10ns.jgz">
         </script>
         [% END %]
         <script type="text/javascript"
-            src="[% wiki.skin_uri('s2') %]/javascript/socialtext.js.gz">
+            src="[% wiki.skin_uri('s2') %]/javascript/socialtext.jgz">
         </script>
     </head>
     <body id="socialtext-wiki">
