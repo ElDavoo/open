@@ -1867,16 +1867,16 @@ sub _to_plain_text {
 
     # Why not go through the chunker? it's slower than returning when you use
     # a 'my' variable in-between.
-    if ($self->body_length < CHUNK_IT_UP_SIZE) {
+    if (length $$content_ref < CHUNK_IT_UP_SIZE) {
         my $parser = Socialtext::WikiText::Parser->new(
            receiver => Socialtext::WikiText::Emitter::SearchSnippets->new,
         );
-        return $parser->parse(${$self->body_ref});
+        return $parser->parse($$content_ref);
     }
 
     # It's too big! Take the hit and process it piecemeal
     my $plain_text = '';
-    _chunk_it_up( $self->body_ref, sub {
+    _chunk_it_up( $content_ref, sub {
         my $chunk_ref = shift;
         my $parser = Socialtext::WikiText::Parser->new(
            receiver => Socialtext::WikiText::Emitter::SearchSnippets->new,
@@ -1927,6 +1927,16 @@ sub duplicate {
     # Don't clobber an existing page if we aren't clobbering
     if ($target->active and $clobber ne $target_title) {
         return 0
+    }
+
+    # If the target page is the same as the source page, just rename
+    if ($cur_ws->workspace_id == $dest_ws->workspace_id and $target_id eq $self->page_id) {
+        return $self->rename(
+            $target_title,
+            $keep_categories,
+            $keep_attachments,
+            $clobber,
+        );
     }
 
     return try { sql_txn {

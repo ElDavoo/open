@@ -7,6 +7,7 @@ use base 'Socialtext::Plugin';
 
 use File::Spec;
 use Class::Field qw( const );
+use Socialtext::ArchiveExtractor;
 use Socialtext::AppConfig;
 use Socialtext::Permission qw( ST_EMAIL_IN_PERM );
 use Socialtext::Role;
