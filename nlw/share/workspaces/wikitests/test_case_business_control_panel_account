@@ -1,10 +1,6 @@
 
 | *Comment* | Test case: Business Control Panel Account |  |
 
-
-
-
-
 | st-admin | give-accounts-admin --email %%email%% | %%username%% now has accounts admin access |
 
 | set | new_acct | acct %%start_time%% |  |
@@ -91,13 +87,13 @@
 | text_like | qr/Socialtext Signals\s+\(click to disable\)/ism |  |
 
 | click_ok | toggle_plugin_signals |  |
-| verifyConfirmation | You are about to disable Socialtext Signals \n\n Press 'OK' to disable this module or 'Cancel' to exit. |  |
+| verifyConfirmation | You are about to disable Socialtext Signals |  |
 | wait_for_page_to_load | 30000 |  |
 | text_like | qr/Socialtext Signals\s+\(click to enable\)/ism |  |
 
 | *Comment* | Test case: Business Control Panel Account go the other way |  |
 | click_ok | toggle_plugin_people |  |
-| verifyConfirmation | You are about to disable Socialtext People \n\n Press 'OK' to disable this module or 'Cancel' to exit. |  |
+| verifyConfirmation | You are about to disable Socialtext People |  |
 | wait_for_page_to_load | 30000 |  |
 | text_like | qr/Socialtext People\s+\(click to enable\)/ism |  |
 | click_ok | toggle_plugin_signals |  |
