@@ -48,7 +48,7 @@ from the archive.
 
 =cut
 
-=head2 Socialtext::ArchiveExtractor->valid_archivename( filename )
+=head2 Socialtext::ArchiveExtractor::valid_archivename( filename )
 
 Returns true if the filename has a valid archive extension, false otherwise
 

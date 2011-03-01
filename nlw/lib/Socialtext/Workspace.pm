@@ -677,6 +677,11 @@ sub _validate_and_clean_data {
 
     # You should never update the user_set_id
     delete $p->{user_set_id};
+
+    # Make uploaded_skin into a boolean
+    if (exists $p->{uploaded_skin}) {
+        $p->{uploaded_skin} = ($p->{uploaded_skin} ? 1 : 0);
+    }
 }
 
 
