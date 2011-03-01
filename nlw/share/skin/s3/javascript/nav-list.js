@@ -10,7 +10,6 @@ function fetchData(entries, index, callback) {
                 var params = {};
                 params[gadgets.io.RequestParameters.CONTENT_TYPE] =
                     gadgets.io.ContentType.JSON;
-                params[gadgets.io.RequestParameters.REFRESH_INTERVAL] = 20;
                 var url = location.protocol + '//' + location.host
                         + entry.url;
                 gadgets.io.makeRequest(url, function(response) {
