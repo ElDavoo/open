@@ -434,7 +434,7 @@ sub write_compressed {
 
     # This is pure voodoo, but appears to workaround a FF bug that
     # misidentified gzipped js as E4X -- Needs more investigation.
-    $text =~ s!;(/\*\s*\n.*?\*/)!;\n!g;
+    $text =~ s!;(/\*\s*\n.*?\*/)!;\n!sg;
 
     warn "Gzipping $target...\n" if $VERBOSE;
     my $gzipped = Compress::Zlib::memGzip($text);
