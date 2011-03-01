@@ -368,7 +368,6 @@ sub st_single_widget_in_dashboard {
         my $str = '//a[@id=' . "'" . $linkid . "'" . ']';
         $self->handle_command('wait_for_element_visible_ok', $str, 30000);
         $self->handle_command('click_and_wait' ,$str); 
-        $self->handle_command('open_ok','/st/dashboard');
     };
     ok(!$@, 'st_single_widget_in_dashboard' );
 }
@@ -588,7 +587,6 @@ sub st_create_group {
     $self->handle_command('wait_for_element_present_ok','link=Create Group...',30000);
     $self->handle_command('click_ok','link=Create Group...');
     $self->handle_command('wait_for_element_visible_ok','st-create-group-next', 30000);
-    $self->handle_command('wait_for_element_visible_ok','st-lightbox-cancel-create-group');
     $self->handle_command('wait_for_element_visible_ok', $radiotype);
     $self->handle_command('check_ok', $radiotype);
     $self->handle_command('click_ok','st-create-group-next');
@@ -599,8 +597,6 @@ sub st_create_group {
     $self->handle_command('st-select-widget-frame','create_group');
     $self->handle_command('wait_for_element_visible_ok','name', 30000);
     $self->handle_command('wait_for_element_visible_ok','description', 30000);
-    $self->handle_command('wait_for_element_visible_ok','upload',30000);
-    $self->handle_command('wait_for_element_visible_ok','reset',30000);
     $self->handle_command('type_ok','name',$groupname);
     $self->handle_command('type_ok','description',$groupdesc);
     $self->handle_command('select-frame','relative=parent');
