@@ -975,11 +975,6 @@ sub ResolveId {
     return;
 }
 
-my $standard_apply = sub {
-    my $row = shift;
-    return Socialtext::User->new( user_id => $row->[0] );
-};
-
 sub _UserCursor {
     my ( $class, $sql, $interpolations, %p ) = @_;
 
