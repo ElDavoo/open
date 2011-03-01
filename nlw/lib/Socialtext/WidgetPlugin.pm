@@ -148,8 +148,9 @@ sub html {
 
     # Sometimes page widget's HTML block gets re-formatted again with newlines becoming
     # <br/> on Firefox; apply this workaround before we find out the root cause.
-    $html =~ s!//\s.*$!!mg;
-    $html =~ s/\s*\n\s*//g;
+    $html =~ s[//\s.*$][]mg;
+    $html =~ s[\s*\n\s*][ ]g;
+    $html =~ s[(<script\b[^>]*>)\s*<!--(.*?)-->\s*</script>][$1$2</script>]ig;
     return $html;
 }
 
