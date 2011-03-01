@@ -212,6 +212,7 @@ sub _table_rows {
             user      => $att->creator->username, # TODO: pass object
             date_str  => sub { $att->created_at_str },
             date      => sub { $att->created_at },
+            user_date => sub { $self->hub->timezone->get_date_user($att->created_at) },
             page_uri  => $page->uri,
             page_link => sub {
                 Socialtext::Helpers->page_display_link_from_page($page) },
