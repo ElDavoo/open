@@ -314,13 +314,19 @@ sub _gen_sort_closure {
         $sortby = 'date_str' if $sortby eq 'date';
         if ( $direction eq 'asc' ) {
             return sub {
-                lc( &{$a->{$sortby}} ) cmp lc( &{$b->{$sortby}} )
+                my ($af, $bf) = ($a->{$sortby}, $b->{$sortby});
+                $af = &$af if ref $af eq 'CODE';
+                $bf = &$bf if ref $bf eq 'CODE';
+                (lc( $af ) cmp lc( $bf ))
                     or lc( $a->{subject} ) cmp lc( $b->{subject} );
             };
         }
         else {
             return sub {
-                lc( &{$b->{$sortby}} ) cmp lc( &{$a->{$sortby}} )
+                my ($af, $bf) = ($a->{$sortby}, $b->{$sortby});
+                $af = &$af if ref $af eq 'CODE';
+                $bf = &$bf if ref $bf eq 'CODE';
+                (lc( $bf ) cmp lc( $af ))
                     or lc( $a->{subject} ) cmp lc( $b->{subject} );
             };
         }
