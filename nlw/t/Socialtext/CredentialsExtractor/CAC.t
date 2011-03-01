@@ -5,7 +5,7 @@ use warnings;
 use Socialtext::CredentialsExtractor;
 use Socialtext::CredentialsExtractor::Extractor::CAC;
 use Socialtext::AppConfig;
-use Test::Socialtext tests => 14;
+use Test::Socialtext tests => 20;
 
 fixtures(qw( empty ));
 
@@ -141,6 +141,39 @@ valid: {
     is $creds->{user_id}, $test_user_id, '... with valid User';
 }
 
+###############################################################################
 # TEST: Auto-provision User, single User matches
+auto_provision_user: {
+    my $first  = 'Ian';
+    my $middle = 'Lancaster';
+    my $last   = 'Fleming';
+    my $edipin = '123456789';
+
+    # Create a User, flag them as being partially provisioned.
+    my $user = create_test_user(
+        first_name  => $first,
+        middle_name => $middle,
+        last_name   => $last,
+    );
+    ok $user, 'Created test User';
+
+    Socialtext::User::Restrictions::require_external_id->CreateOrReplace(
+        user_id => $user->user_id,
+    );
+    ok $user->requires_external_id, '... missing their external id';
+
+    # Extract creds for this User
+    my $subject = "C=UK, O=Goldeneye, CN=$first\.$middle\.$last\.$edipin";
+    my $creds   = Socialtext::CredentialsExtractor->ExtractCredentials( {
+        X_SSL_CLIENT_SUBJECT => $subject,
+    } );
+    ok $creds->{valid}, 'extracted creds for partially provisioned User';
+    is $creds->{user_id}, $user->user_id, '... with correct User';
+
+    $user->reload;
+    ok !$user->requires_external_id, '... external id no longer required';
+    is $user->private_external_id, $edipin, '... and with assigned EDIPIN';
+}
+
 # TEST: Auto-provision User, multiple User matches
 # TEST: Auto-provision User, *no* matches
