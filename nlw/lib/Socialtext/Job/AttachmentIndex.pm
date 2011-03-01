@@ -29,6 +29,7 @@ sub do_work {
     my $attachment = $page->hub->attachments->load(
         id      => $args->{attach_id},
         page_id => $page->id,
+        deleted_ok => 1,
     );
 
     if ($attachment->deleted) {
