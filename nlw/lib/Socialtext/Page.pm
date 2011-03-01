@@ -1929,6 +1929,16 @@ sub duplicate {
         return 0
     }
 
+    # If the target page is the same as the source page, just rename
+    if ($cur_ws->workspace_id == $dest_ws->workspace_id and $target_id eq $self->page_id) {
+        return $self->rename(
+            $target_title,
+            $keep_categories,
+            $keep_attachments,
+            $clobber,
+        );
+    }
+
     return try { sql_txn {
         my $rev = $self->mutable
             ? $self->rev : $self->rev->mutable_clone(editor => $user);
