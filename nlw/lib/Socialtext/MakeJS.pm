@@ -429,8 +429,14 @@ sub write_compressed {
 
     if ($MINIFY_JS) {
         warn "Minifying $target...\n" if $VERBOSE;
-        $text = minify($text)
+        $text = minify($text);
     }
+
+    # This is pure voodoo, but appears to workaround a FF bug that
+    # misidentified gzipped js as E4X -- Needs more investigation.
+    $text =~ s!;(/\*\s*)!;\n$1!g;
+    $text =~ s! \* "License"\); (you may not use this file except in compliance)! * License; $1!g;
+    $text =~ s! \* "AS IS" (BASIS, WITHOUT WARRANTIES)! * AS IS $1!g;
 
     warn "Gzipping $target...\n" if $VERBOSE;
     my $gzipped = Compress::Zlib::memGzip($text);
