@@ -572,6 +572,21 @@ sub st_search_cp_workspace {
     }
 }
 
+=head2 st_build_cp_name ($email, $variable) 
+
+Transforms matt@foo.com into "matt" <matt@foo.com>
+
+ASSUMES users bestfullname is first half of email.  Avoid periods, dashes, and don't customize first, last, middle, or preferred name, please.
+
+=cut
+
+sub st_build_cp_name { 
+    my ($self, $email, $variable) = @_;
+    my $full = $email;
+    my @arr = split /\@/, $email;
+    my $link = '"' . $arr[0] . '"' . ' <' . $email . '>';
+    $self->{$variable} = $link;
+}
 
 =head2 st_search_cp_users($searchfor)
 
