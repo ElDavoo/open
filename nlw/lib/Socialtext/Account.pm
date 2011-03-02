@@ -1154,7 +1154,7 @@ sub hash_representation {
         plugins_enabled    => [ sort $self->plugins_enabled ],
         plugin_preferences => $self->plugin_preferences,
     };
-    unless ($p{no_desktop}) {
+    unless ($p{minimal} || $p{no_desktop}) {
         $hash->{$_} = $self->$_ for (grep /^desktop_/,@ACCT_COLS);
     }
     if ($p{user_count}) {

@@ -139,12 +139,19 @@ sub html {
     return loc("The settings for this widget have become corrupted. Please remove and re-insert the widget.")
         unless $container and $widget;
 
-    return $self->hub->template->process($container->view_template,
+    my $html = $self->hub->template->process($container->view_template,
         $self->hub->helpers->global_template_vars,
         pluggable => $self->hub->pluggable,
         container => $container->template_vars,
         width     => $pref->{__width__},
     );
+
+    # Sometimes page widget's HTML block gets re-formatted again with newlines becoming
+    # <br/> on Firefox; apply this workaround before we find out the root cause.
+    $html =~ s[//\s.*$][]mg;
+    $html =~ s[\s*\n\s*][ ]g;
+    $html =~ s[(<script\b[^>]*>)\s*<!--(.*?)-->\s*</script>][$1$2</script>]ig;
+    return $html;
 }
 
 ################################################################################

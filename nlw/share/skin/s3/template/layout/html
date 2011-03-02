@@ -17,7 +17,12 @@
 
     [% FILTER decorate "head" %]
     <title>[% title || display_title %][% IF workspace_present AND wiki.title %] / [% wiki.title %][% END %]</title>
+
+    [% FILTER decorate "head_css" %]
     [% PROCESS element/css_links %]
+    [% IF css_template; INCLUDE $css_template; END %]
+    [% END %]
+
     [% IF feeds %]
       [% IF feeds.rss %]
         [% FOREACH feed IN feeds.rss %]
