@@ -7,6 +7,7 @@ use Class::Field qw(const);
 use Socialtext::HTTP ':codes';
 use Socialtext::Events::Recorder;
 use Socialtext::Events::Reporter;
+use Socialtext::Timer qw/time_scope/;
 use List::MoreUtils qw/all/;
 use Carp qw/croak/;
 
@@ -68,6 +69,7 @@ sub EventInBlackList {
 sub Record {
     my $class = shift;
     my $ev = shift;
+    my $t = time_scope 'record_event';
 
     return if $class->EventInBlackList($ev);
 

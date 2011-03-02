@@ -12,6 +12,7 @@ use Readonly;
 use Socialtext::HTTP ':codes';
 use Socialtext::Events;
 use Socialtext::PageMeta qw( EDIT_SUMMARY_MAXLENGTH );
+use Socialtext::Timer qw/time_scope/;
 
 Readonly my $DEFAULT_LINK_DICTIONARY => 'REST';
 Readonly my $S2_LINK_DICTIONARY      => 'S2';
@@ -42,6 +43,7 @@ sub make_GETter {
                     return $self->pname . ' is not the correct type';
                 }
                 else {
+                    my $t = time_scope "get_page__$content_type";
                     $self->hub->pages->current($page);
                     my @etag = ();
 
@@ -140,6 +142,7 @@ sub GET_json {
             }
 
             if ($page->active) {
+                my $t = time_scope 'get_page_json';
                 $rest->header(
                     -status => HTTP_200_OK,
                     -type   => 'application/json; charset=UTF-8',
