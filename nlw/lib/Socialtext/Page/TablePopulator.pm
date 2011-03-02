@@ -352,8 +352,7 @@ sub load_revision_metadata {
             my $t2 = time_scope 'load_rev';
 
             my $pagemeta = fetch_metadata($file);
-            my $body_ref = Socialtext::Page::Legacy::read_and_decode_file(
-                $file, 1, 1); # "return content as ref"
+            my $body_ref = read_and_decode_page($file, 'content too');
 
             my $tags = $pagemeta->{Category} || [];
             $tags = [$tags] unless ref($tags);
@@ -550,27 +549,6 @@ sub load_page_attachments {
     }
 }
 
-# This method was copied from Socialtext::Page, to remove a dependency
-# should that module change in the future.
-# (One less thing to think about then.)
-sub parse_headers {
-    my $headers = shift;
-    my $metadata = {};
-    for (split /\n/, $headers) {
-        next unless /^(\w\S*):\s*(.*)$/;
-        my ($attribute, $value) = ($1, $2);
-        if (defined $metadata->{$attribute}) {
-            $metadata->{$attribute} = [$metadata->{$attribute}]
-              unless ref $metadata->{$attribute};
-            push @{$metadata->{$attribute}}, $value;
-        }
-        else {
-            $metadata->{$attribute} = $value;
-        }
-    }
-    return $metadata;
-}
-
 sub add_to_db {
     my $table = shift;
     my $rows = shift;
@@ -622,8 +600,7 @@ sub fetch_metadata {
         }
     };
 
-    my $content = Socialtext::Page::Legacy::read_and_decode_file($file);
-    return parse_headers($content);
+    return parse_page_headers(read_and_decode_page($file));
 }
 
 # This code inspired by Socialtext::Page::last_edited_by
