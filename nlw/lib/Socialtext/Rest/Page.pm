@@ -129,6 +129,7 @@ sub GET_json {
             my $verbose = $rest->query->param('verbose');
             my $wikitext = $rest->query->param('wikitext');
             my $metadata = $rest->query->param('metadata');
+            my $html     = $rest->query->param('html');
 
             my $link_dictionary = $self->_link_dictionary($rest);
             my $page = $self->page;
@@ -158,11 +159,15 @@ sub GET_json {
                 $page_hash->{editable} =
                     $self->hub->checker->check_permission('edit');
 
+                my $to_html = sub {
+                    $addtional_content->('text/html', $link_dictionary);
+                };
+                my $to_wikitext = sub {
+                    $addtional_content->('text/x.socialtext-wiki');
+                };
                 if ($verbose) {
-                    $page_hash->{wikitext} = 
-                        $addtional_content->('text/x.socialtext-wiki');
-                    $page_hash->{html} = 
-                        $addtional_content->('text/html', $link_dictionary);
+                    $page_hash->{wikitext} = $to_wikitext->();
+                    $page_hash->{html} = $to_html->();
                     $page_hash->{last_editor_html} = 
                         $self->hub->viewer->text_to_html(
                             "\n{user: $page_hash->{last_editor}}\n"
@@ -172,13 +177,17 @@ sub GET_json {
                             "\n{date: $page_hash->{last_edit_time}}\n"
                         );
                     $page_hash->{workspace} =
-                        $self->hub->current_workspace->to_hash;
+                        $self->hub->current_workspace->to_hash(minimal => 1);
                 }
                 elsif ($wikitext) {
-                    $page_hash->{wikitext} = 
-                        $addtional_content->('text/x.socialtext-wiki');
+                    $page_hash->{wikitext} = $to_wikitext->();
+                }
+                elsif ($html) {
+                    $page_hash->{html} = $to_html->();
                 }
 
+                $page_hash->{workspace}{title}
+                    ||= $self->hub->current_workspace->title;
                 $page_hash->{metadata} = $page->metadata->to_hash if $metadata;
                 $page_hash->{locked} = $page->locked;
 
