@@ -201,9 +201,10 @@ sub new_homunculus {
 }
 
 sub _update_profile_with_extra_attrs {
-    my $self = shift;
+    my $self  = shift;
     my $homey = $self->homunculus;
     return unless $homey->can('extra_attrs');
+
     my $attrs = $homey->extra_attrs;
     $homey->extra_attrs(undef);
     return unless ($attrs && %$attrs);
