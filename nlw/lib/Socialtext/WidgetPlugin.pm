@@ -139,11 +139,16 @@ sub html {
     return loc("error.corrupted-widget-settings")
         unless $container and $widget;
 
+    my $width = $pref->{__width__} || '';
+    if ($width =~ /^\d+$/) {
+        $width .= 'px';
+    }
+
     my $html = $self->hub->template->process($container->view_template,
         $self->hub->helpers->global_template_vars,
         pluggable => $self->hub->pluggable,
         container => $container->template_vars,
-        width     => $pref->{__width__},
+        width     => $width,
     );
 
     # Sometimes page widget's HTML block gets re-formatted again with newlines becoming
