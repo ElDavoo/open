@@ -296,7 +296,7 @@ sub exit_if_already_running {
     return if ($RunInForeground && $OnceMode);
     return unless -e $PID_FILE;
     my $pid = get_contents($PID_FILE);
-    my $alive = kill 0 => $pid;
+    my $alive = $pid && kill 0 => $pid;
     exit 1 if $alive;
 }
 

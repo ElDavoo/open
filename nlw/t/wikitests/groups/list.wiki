@@ -30,6 +30,17 @@ Tests for [Story: Groups ReST API]
 | json-path-is    | $[0].user_count      | 1              |
 | json-path-is    | $[0].workspace_count | 0              |
 
+######## Quick & Lite interface for nav drop-down ########
+
+| Comment | Fast interface for nav |
+| GET-json | /data/groups?minimal=1 |
+| code-is | 200 |
+| json-parse |
+| json-path-is    | $[0].group_id        | %%group_id%%   |
+| json-path-is    | $[0].name            | %%group_name%% |
+| json-path-is    | $[0].user_count      |               |
+| json-path-is    | $[0].workspace_count |               |
+
 # Group Visibility Rules
 
 ## visible by Business Admin (Business Admin can see all Groups)
