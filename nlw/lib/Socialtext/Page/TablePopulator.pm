@@ -15,7 +15,7 @@ use Socialtext::String;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw(get_dbh :exec sql_txn sql_ensure_temp);
 use Fatal qw/opendir closedir chdir open/;
-use Cwd   qw/abs_path/;
+use Cwd   qw/getcwd abs_path/;
 use DateTime;
 use Try::Tiny;
 use IO::File ();
@@ -54,15 +54,22 @@ sub new {
 sub populate {
     my $self = shift;
     my %opts = @_;
-    $self->{recreate} = $opts{recreate};
     my $workspace = $self->{workspace};
     my $workspace_name = $self->{workspace_name};
     my $workspace_id = $workspace->workspace_id;
 
+    my $old_cwd = getcwd();
+    my $hub = $self->{hub}
+        = Socialtext::Hub->new( current_workspace => $workspace );
+    my $workspace_dir = $self->{workspace_data_dir};
+    chdir $workspace_dir;
+
     try { sql_txn {
+        my ($insert_sth, $update_sth, $tags_sth);
+
         # Start a transaction, and delete everything for this workspace.
         # if we're recreating the workspace from scratch, clean it out *first*
-        if ($self->{recreate}) {
+        setup_recreate: {
 
             # Save attachment_ids so we can avoid having to re-upload
             # attachment blobs.  Since attachments can be deleted (hidden) or
@@ -78,27 +85,31 @@ sub populate {
                 SELECT id, attachment_id, page_id
                   FROM page_attachment
                   WHERE workspace_id = ?
-            }, $workspace->workspace_id);
+            }, $workspace_id);
 
             # Don't delete page revs so we can avoid having to re-insert them.
             # Revs only ever get added to a page unless a workspace or page
             # purge happens.  Revs don't have a FK into page, so it's ok to
             # clean these up as a final step in the workspace population.
 
-            sql_execute($_, $workspace->workspace_id) for (
+            # track pages so we know which ones get purged
+            sql_ensure_temp(t_page =>
+                q{ page_id text },
+                q{CREATE INDEX t_page_id_ix ON t_page (page_id)}
+            );
+            sql_execute(q{
+                INSERT INTO t_page
+                SELECT page_id FROM page WHERE workspace_id = ?
+            }, $workspace_id);
+
+            sql_execute($_, $workspace_id) for (
                 'DELETE FROM page_attachment WHERE workspace_id = ?',
-                'DELETE FROM page_tag WHERE workspace_id = ?',
-                'DELETE FROM page WHERE workspace_id = ?',
                 'DELETE FROM breadcrumb WHERE workspace_id = ?',
             );
         }
 
         # Grab all the Pages in the Workspace, figure out which ones we need
         # to add to the DB, then add them all.
-        my $workspace_dir = $self->{workspace_data_dir};
-        my $hub = $self->{hub}
-            = Socialtext::Hub->new( current_workspace => $workspace );
-        chdir $workspace_dir;
         opendir(my $dfh, $workspace_dir);
         my @pages;
         my @page_tags;
@@ -116,7 +127,7 @@ sub populate {
 
             # Get all the data we want on a page
 
-            my $page = try { $self->load_page_metadata($workspace_dir, $dir) }
+            my $page = try { $self->load_page_metadata($dir) }
             catch {
                 chomp;
                 warn "Error populating $workspace_name, skipping $dir: $_\n";
@@ -124,46 +135,21 @@ sub populate {
             };
             next PAGE unless $page;
 
-            # Skip this page if it already exists in the DB
-            my $page_exists_already = $self->{recreate} ? 0 : page_exists_in_db(
-                workspace_id => $workspace_id,
-                page_id      => $page->{page_id},
-            );
+            # if we get this far, the page wasn't purged in the datadir
 
-            try { $self->load_page_attachments($workspace_dir, $page) }
+            try { $self->load_page_attachments($page) }
             catch {
                 chomp;
                 warn "Error populating $workspace_name attachments: $_\n";
             };
-            next PAGE if $page_exists_already;
 
-            # Add this page (and its tags) to the list of things to add to the
-            # DB. NOTE these are in the same column-order as the actual table.
-            push @pages, [
-                $workspace_id, $page->{page_id}, $page->{name},
-                $page->{last_editor_id}, $page->{last_edit_time},
-                $page->{creator_id},     $page->{create_time},
-                $page->{revision_id},
-                $page->{revision_count},
-                $page->{revision_num},
-                $page->{page_type}, $page->{deleted},
-                $page->{summary}, $page->{edit_summary},
-                $page->{locked},
-                $page->{tags},
-                $page->{views},
-            ];
-
-            my %tags;
-            for my $t (grep { length } @{ $page->{tags} }) {
-                next if $tags{lc($t)}++; # avoid duplicate tags
-                push @page_tags, [ $workspace_id, $page->{page_id}, $t ];
-            }
+            try { sql_txn { $self->insert_or_update_page($page) } }
+            catch {
+                warn "Error updating $workspace_name ".
+                     "page $page->{page_id}: $_";
+            };
         }
         closedir($dfh);
-
-        # Now add all those pages and tags to the database
-        add_to_db('page', \@pages);
-        add_to_db('page_tag', \@page_tags);
 
         $self->load_breadcrumbs();
 
@@ -181,15 +167,89 @@ sub populate {
                )
         }, $workspace_id);
 
+        # clean up purged pages; anything left in t_page is a candidate
+        sql_execute(q{
+            DELETE FROM page WHERE workspace_id = ? AND page_id IN (
+                SELECT page_id FROM t_page
+            )
+        }, $workspace_id);
+
     }}
     catch {
         die "Error during populate of $workspace_name: $_";
+    }
+    finally {
+        chdir $old_cwd;
     };
     return;
 }
 
+use constant PAGE_COLUMNS => Socialtext::Page::COLUMNS;
+use constant PAGE_UPDATE_COLS =>
+    grep !/^(?:workspace_id|page_id|creator_id|create_time)$/, PAGE_COLUMNS;
+        
+sub insert_or_update_page {
+    my ($self, $page) = @_;
+    my $workspace_id = $self->{workspace}->workspace_id;
+    my $page_id = $page->{page_id};
+
+    state $page_update_sql = do {
+        my $ph = join(', ', map { "$_ = ?" } PAGE_UPDATE_COLS);
+        qq{UPDATE page SET $ph WHERE workspace_id = ? AND page_id = ?};
+    };
+
+    state $page_insert_sql = do {
+        my $cols = join ', ', PAGE_COLUMNS;
+        my $ph = '?,' x scalar(PAGE_COLUMNS);
+        chop $ph;
+        qq{INSERT INTO page ($cols) VALUES ($ph)};
+    };
+
+    my $dbh = get_dbh();
+    my $t_page_get_sth = $dbh->prepare_cached(q{
+        SELECT 1 FROM t_page WHERE page_id = ?
+    });
+    $t_page_get_sth->execute($page_id);
+    my ($exists_already) = $t_page_get_sth->fetchrow_array;
+    $t_page_get_sth->finish();
+
+    # page will not end up purged
+    my $t_page_del_sth = $dbh->prepare_cached(
+        "DELETE FROM t_page WHERE page_id = ?");
+    $t_page_del_sth->execute($page_id);
+
+    if ($exists_already) {
+        # NOTE that creator/create_time are not updated:
+        my $update_sth = $dbh->prepare_cached($page_update_sql);
+        $update_sth->execute(
+            @$page{(PAGE_UPDATE_COLS)}, $workspace_id, $page_id);
+        die "updating database failed"
+            unless $update_sth->rows == 1;
+    }
+    else {
+        my $insert_sth = $dbh->prepare_cached($page_insert_sql);
+        $insert_sth->execute(@$page{(PAGE_COLUMNS)});
+        die "inserting page failed"
+            unless $insert_sth->rows == 1;
+    }
+
+    my $del_tags_sth = $dbh->prepare_cached(q{
+        DELETE FROM page_tag WHERE workspace_id = ? AND page_id = ?
+    });
+    my $ins_tags_sth = $dbh->prepare_cached(q{
+        INSERT INTO page_tag (workspace_id,page_id,tag) VALUES(?,?,?)
+    });
+
+    $del_tags_sth->execute($workspace_id, $page_id);
+    $ins_tags_sth->execute_array({}, $workspace_id, $page_id, $page->{tags})
+        if @{$page->{tags}||[]};
+
+    return;
+}
+
 sub load_page_metadata {
-    my ($self, $ws_dir, $dir) = @_;
+    my ($self, $dir) = @_;
+    my $ws_dir = $self->{workspace_data_dir};
 
     my $t = time_scope 'load_page_meta';
 
@@ -208,6 +268,8 @@ sub load_page_metadata {
     die "Couldn't find any page_revisions for $ws_id:$dir"
         unless $sth->rows == 1;
     my $page = $sth->fetchrow_hashref();
+     use XXX; WWW($page);
+     die "need to resolve 'revision_ids are dates on dapper, sequence on lucid'";
 
     # and creation stats
     $sth = sql_execute(q{
@@ -236,6 +298,8 @@ sub load_page_metadata {
 
     $page->{last_editor_id} = delete $page->{editor_id};
     $page->{last_edit_time} = delete $page->{edit_time};
+    $page->{current_revision_id} = delete $page->{revision_id};
+    $page->{current_revision_num} = delete $page->{revision_num};
 
     delete $page->{body_length};
 
@@ -270,7 +334,7 @@ sub load_revision_metadata {
 
         (my $revision_id = $file) =~ s#.+/(.+)\.txt$#$1#;
 
-        if ($self->{recreate}) {
+        check_for_rev: {
             my $t = time_scope 'recreate_rev';
             $check_sth //= $dbh->prepare_cached(q{
                 SELECT 1 FROM page_revision
@@ -339,7 +403,8 @@ sub load_revision_metadata {
 }
 
 sub load_page_attachments {
-    my ($self, $ws_dir, $page_hash) = @_;
+    my ($self, $page_hash) = @_;
+    my $ws_dir = $self->{workspace_data_dir};
     my $t = time_scope 'load_page_atts';
 
     my $atts_dir = $self->{workspace_plugin_dir}."/attachments/".
@@ -392,7 +457,7 @@ sub load_page_attachments {
 
             # if we're recreating, try to use the old attachment blob
             # (which can be identified by its old unique ID on this page)
-            if ($self->{recreate}) {
+            recreate_att: {
                 my $t = time_scope 'recreate_att';
                 $check_sth //= $dbh->prepare_cached(q{
                     SELECT attachment_id FROM t_attachments
@@ -635,14 +700,12 @@ sub load_breadcrumbs {
     my $ws_user_dir = $self->{workspace_user_dir};
     return unless -d $ws_user_dir;
 
-    # The .trail files do not contain dates, so we will sythesize dates
-    # to provide order. We will start at midnight of today and add a second
-    # for each breadcrumb
-    my $date = DateTime->now;
-    $date->set_hour(0);
-    $date->set_minute(0);
+    my $bc_insert = get_dbh()->prepare_cached(q{
+        INSERT INTO breadcrumb
+        (viewer_id, workspace_id, page_id, last_viewed)
+        VALUES (?,?,?, current_date + ?::interval)
+    });
 
-    my @breadcrumbs;
     opendir(my $dfh, $ws_user_dir);
     while (my $user_dir = readdir($dfh)) {
         next unless -d "$ws_user_dir/$user_dir";
@@ -655,15 +718,20 @@ sub load_breadcrumbs {
 
         my @page_ids =
             map { Socialtext::String::title_to_id($_) }
-                split "\n", Socialtext::File::get_contents_utf8($trail);
+            split "\n", Socialtext::File::get_contents_utf8($trail);
 
-        my $i = 0;
-        for my $id (@page_ids) {
-            $date->set_second($i++);
-            push @breadcrumbs, [ $user->user_id, $ws_id, $id, $date->iso8601 ];
-        }
+        # The .trail files do not contain dates, so we will sythesize dates to
+        # provide order. We will start at midnight of today and add a second
+        # for each breadcrumb
+        my @offsets = map {"$_ seconds"} (0 .. $#page_ids);
+
+        # no need to worry about fk constraints (there are none):
+        $bc_insert->execute_array({},
+            $user->user_id, $ws_id, \@page_ids, \@offsets);
     }
-    add_to_db('breadcrumb', \@breadcrumbs) if @breadcrumbs;
+    closedir $dfh;
+
+    return;
 }
 
 
