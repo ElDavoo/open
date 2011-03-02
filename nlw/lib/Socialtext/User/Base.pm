@@ -129,7 +129,7 @@ sub guess_sortable_name {
     $name =~ s/^\s+//;
     $name =~ s/\s+$//;
     # TODO: unicode casefolding?
-    return $name if length $name;
+    return lc($name) if length $name;
     return $self->_guess_nonreal_name;
 }
 
