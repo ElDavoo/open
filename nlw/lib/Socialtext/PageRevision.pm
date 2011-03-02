@@ -425,6 +425,14 @@ sub datetime_utc {
     return $self->edit_time->strftime('%Y-%m-%d %H:%M:%S GMT');
 }
 
+# For overriding in tests, and potentially for providing legacy-compatible IDs
+our $NextRevisionID;
+sub next_revision_id {
+    defined $NextRevisionID
+        ? $NextRevisionID++
+        : sql_nextval('page_revision_id_seq')
+}
+
 sub store {
     my $self = shift;
     confess "PageRevision isn't mutable" unless $self->mutable;
@@ -490,7 +498,7 @@ sub store {
 
     sql_txn {
         # paranoia: never insert with zeros for either of these two:
-        $args{revision_id} ||= sql_nextval('page_revision_id_seq');
+        $args{revision_id} ||= next_revision_id();
         $args{revision_num} ||= 1;
 
         sql_insert(page_revision => \%args);
