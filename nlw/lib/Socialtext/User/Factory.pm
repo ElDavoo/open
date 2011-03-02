@@ -123,40 +123,38 @@ sub GetHomunculus {
         return undef;
     }
 
-
-    my ($where_clause, @bindings);
+    my $where_clause = { };
     my $was_deleted;
-
     if ($where eq 'user_id') {
-        # if we don't check this for being an integer here, the SQL query will
-        # die.  Since looking up by a non-numeric user_id would return no
-        # results, mimic that behaviour instead of throwing the exception.
-        return undef if $id_val =~ /\D/;
+        # Don't allow for non-numeric lookups; we *KNOW* that user_id is
+        # numeric, so don't even let non-numerics get to the DB.
+        return undef if ($id_val =~ /\D/);
 
-        $where_clause = qq{user_id = ?};
-        @bindings = ($id_val);
+        $where_clause = { user_id => $id_val };
     }
     else {
         die "no driver key?!" unless $driver_key;
+
         my $search_deleted = (ref($driver_key) eq 'ARRAY');
         if (!$search_deleted) {
-            $where_clause = qq{driver_key = ? AND $where = ?};
-            @bindings = ($driver_key, $id_val);
+            $where_clause = {
+                driver_key => $driver_key,
+                $where     => $id_val,
+            };
         }
         else {
             die "no user factories configured?!" unless @$driver_key;
-            my $placeholders = '?,' x @$driver_key;
-            chop $placeholders;
-            $where_clause = qq{driver_key NOT IN ($placeholders) AND $where=?};
-            @bindings = (@$driver_key, $id_val);
+
+            $where_clause = {
+                driver_key => { -not_in => $driver_key },
+                $where     => $id_val,
+            };
             $was_deleted = 1;
         }
     }
 
-    my $sth = sql_execute(
-        qq{SELECT * FROM users WHERE $where_clause},
-        @bindings
-    );
+    my ($sql, @bindings) = sql_abstract->select('users', ['*'], $where_clause);
+    $sth = sql_execute($sql, @bindings);
 
     my $row = $sth->fetchrow_hashref();
     return undef unless $row;
