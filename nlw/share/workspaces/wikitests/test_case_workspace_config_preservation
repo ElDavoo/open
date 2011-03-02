@@ -19,7 +19,7 @@
 | st-admin | set-workspace-config --workspace %%temp_ws_name%% comment_form_window_height 300 | The workspace config for %%temp_ws_name%% has been updated. |
 | *Comment* | not setting: st-admin set-workspace-config --workspace %%temp_ws_name%% created_by_user_id | The workspace config for %%temp_ws_name%% has been updated. |
 | *Comment* | not setting: st-admin set-workspace-config --workspace %%temp_ws_name%% creation_datetime | The workspace config for %%temp_ws_name%% has been updated. |
-| st-admin | set-workspace-config --workspace %%temp_ws_name%% custom_title_label 'custom-title-label' | The workspace config for %%temp_ws_name%% has been updated. |
+
 | *Comment* | not setting: st-admin set-workspace-config --workspace %%temp_ws_name%% customjs_name | The workspace config for %%temp_ws_name%% has been updated. |
 | *Comment* | not setting: st-admin set-workspace-config --workspace %%temp_ws_name%% customjs_uri | The workspace config for %%temp_ws_name%% has been updated. |
 | st-admin | set-workspace-config --workspace %%temp_ws_name%% email_addresses_are_hidden 1 | The workspace config for %%temp_ws_name%% has been updated. |

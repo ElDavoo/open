@@ -121,7 +121,6 @@ share/html/502.html.en
 share/html/502.html.html
 share/html/502.html.ja
 share/l10n/mecab/
-share/skin/.gitignore
 share/template/control
 share/uploaded-skin/
 share/widgets/*.png
@@ -576,3 +575,4 @@ lib/Socialtext/Handler/Gadget/Group.pm
 t/Socialtext/Gadgets/Gadget-views.t
 t/widget/views-html-good.xml
 t/widget/views-url.xml
+share/skin/s3/javascript/l10n-*.js

@@ -85,10 +85,11 @@ log_failure_to_auto_create_user: {
     ok !$rc, 'challenge failed (as expected)';
 
     # verify that we logged that we failed to create the new user
-    logged_like 'error', qr/unable to create user; $email_addr/,
+    logged_like 'error', qr/unable to create user; "$email_addr"/,
         '... failed because we failed to create new user record';
 }
 
+###############################################################################
 # auto-update User info on subsequent request
 auto_update_user: {
     my $guard      = Test::Socialtext::User->snapshot();

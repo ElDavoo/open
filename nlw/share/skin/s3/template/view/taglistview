@@ -21,8 +21,8 @@
     <table class="dataTable tablist">
       <thead>
       <tr>
-        <th>[% loc('Tag') %]</th>
-        <th>[% loc('Pages') %]</th>
+        <th>[% loc('wiki.tag') %]</th>
+        <th>[% loc('tag.pages') %]</th>
       </tr>
       </thead>
       <tbody>

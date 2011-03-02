@@ -1801,6 +1801,7 @@ table.dataTable th.selectColumn {
 	width: 1%;
 	padding:0 15px 0 15px;
 	text-align: center;
+        white-space: nowrap;
 }
 
 

@@ -1045,7 +1045,7 @@ Default: 25
 
 The did you know title
 
-=for code default => loc('Access a Community of Peers')
+=for code default => loc('config.did-you-know-title')
 
 =for code type => SCALAR_TYPE
 
@@ -1053,7 +1053,7 @@ The did you know title
 
 The did you know text
 
-=for code default => loc('As a Socialtext customer, you have access to the <a href="http://www.socialtext.net/exchange/">Socialtext Customer Exchange</a>. It is where you can share tips and best practices with other Socialtext customers.')
+=for code default => loc('config.did-you-know-text')
 
 =for code type => SCALAR_TYPE
 

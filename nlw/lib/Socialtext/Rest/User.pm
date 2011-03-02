@@ -40,7 +40,6 @@ sub get_resource {
     return undef if $all and !$badmin;
 
     my $show_pvt = $query->param('want_private_fields') && $badmin ? 1 : 0;
-
     my $repr = {};
     if ($all) {
         return +{
@@ -58,16 +57,36 @@ sub get_resource {
         };
     }
     elsif (my @shared_accts = $user->shared_accounts($acting_user)) {
-        return +{
-            ( hgrep { $k ne 'password' }
+        my $minimal  = $query->param('minimal');
+        my $user_hash;
+        if ($minimal) {
+            $user_hash = $user->to_hash(minimal => 1);
+            $user_hash->{primary_account_id} = $user->primary_account_id;
+        }
+        else {
+            $user_hash = {
+                ( hgrep { $k ne 'password' }
                 %{ $user->to_hash(want_private_fields => $show_pvt) } ),
+            };
+        }
+        return +{
+            %$user_hash,
             accounts => [
-                map { $_->hash_representation(user_count=>1) }
+                map { $_->hash_representation(
+                        user_count=>1,
+                        minimal => $minimal,
+                    ) }
                 @shared_accts
             ],
             groups => [
-                map { $_->to_hash(plugins=>1, show_account_ids=>1,
-                                  show_admins => 1)
+                map { $_->to_hash(
+                        $minimal 
+                            ? ( minimal => 1 )
+                            : ( plugins => 1,
+                                show_account_ids => 1,
+                                show_admins => 1,
+                            )
+                        )
                     } $user->shared_groups($acting_user, 1, 'ignore badmin')
             ],
         };

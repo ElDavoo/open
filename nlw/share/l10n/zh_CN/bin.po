@@ -1,0 +1,64 @@
+# @COPYRIGHT@
+msgid ""
+msgstr ""
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-02-26 08:52+0800\n"
+"Language-Team: Socialtext i18n team\n"
+"Last-Translator: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "info.verbose"
+msgstr "提示尝试 -- verbose 来获得关键的额外列表"
+
+msgid "job.cleaned=count"
+msgstr "完成 %1 的清理作业。"
+
+msgid "job.count-delay"
+msgstr "有启动延时的作业数量"
+
+msgid "job.count-enqueued"
+msgstr "入队作业的数量"
+
+msgid "job.count-failed"
+msgstr "失败的作业数"
+
+msgid "job.count-grabbed"
+msgstr "“抓取”的作业数量"
+
+msgid "job.count-success"
+msgstr "成功作业计数"
+
+msgid "job.deprecated=type"
+msgstr "作业 %1 已经过期，删除之。"
+
+msgid "job.key:"
+msgstr "关键字："
+
+msgid "job.last-failure"
+msgstr "最近的故障时间"
+
+msgid "job.last-success"
+msgstr "最近的成功时间"
+
+msgid "job.newest"
+msgstr "最近（最新）入队时间"
+
+msgid "job.newest-without-delay"
+msgstr "最近（最新）入队的时候，没有延时启动"
+
+msgid "job.oldest"
+msgstr "最早（时间最长）入队时间"
+
+msgid "job.oldest-without-delay"
+msgstr "最早（时间最长）入队时间，没有延时启动"
+
+msgid "job.total"
+msgstr "作业总数"
+
+msgid "job.type"
+msgstr "作业类型"
+
+msgid "time.never"
+msgstr "永远不"

@@ -179,7 +179,7 @@ sub set_default_account {
     my $self = shift;
     my $account = $self->_require_account;
     set_system_setting('default-account', $account->account_id);
-    $self->_success(loc("The default account is now [_1].", $account->name));
+    $self->_success(loc("account.new-default=name", $account->name));
 }
 
 sub _enabled_plugins {
@@ -218,16 +218,16 @@ sub _plugin_after {
         : '';
 
     my @lines;
-    push @lines, map { loc("The [_1] plugin is now enabled for [_2]", $_, $what) }
+    push @lines, map { loc("plugin.enabled=plugin,container", $_, $what) }
                  grep { !$before->{$_} } keys %after;
-    push @lines, map { loc("The [_1] plugin is now disabled for [_2]", $_, $what) }
+    push @lines, map { loc("plugin.disabled=plugin,container", $_, $what) }
                  grep { !$after{$_} } keys %$before;
 
     if (@lines) {
         return $self->_success(join "\n", @lines);
     }
     else {
-        return $self->_success(loc("No changes were made"));
+        return $self->_success(loc("cli.no-changes"));
     }
 }
 
@@ -255,7 +255,7 @@ sub enable_plugin {
     elsif ($opts{account}) {
         my $account = $self->_load_account($opts{account});
         $self->_error(
-           loc("The account name you specified, [_1], does not exist.", $opts{account}) )
+           loc("error.no-account=name", $opts{account}) )
            unless $account;
         $self->_plugin_before(%opts);
         eval { $account->enable_plugin($_) for @$plugins; };
@@ -271,8 +271,7 @@ sub enable_plugin {
     }
     else {
         $self->_error(
-            loc("The command you called ([_1]) requires an account or a "
-                . "workspace to be specified.", $self->{command}),
+            loc("error.account-or-wiki-required=command", $self->{command}),
         );
     }
 }
@@ -314,8 +313,7 @@ sub disable_plugin {
     }
     else {
         $self->_error(
-            loc("The command you called ([_1]) requires an account or a "
-                . "workspace to be specified.", $self->{command}),
+            loc("error.account-or-wiki-required=command", $self->{command}),
         );
     }
 }
@@ -344,7 +342,7 @@ sub _require_plugin {
     my %opts = $self->_get_options('plugin:s@');
     my $plugin = shift || $opts{plugin};
 
-    $self->_error(loc("You must specify a plugin."))
+    $self->_error(loc("error.plugin-required"))
         unless $plugin and scalar(@$plugin);
 
     my $adapter = Socialtext::Pluggable::Adapter->new;
@@ -352,7 +350,7 @@ sub _require_plugin {
     return 'all' if $plugin->[0] eq 'all';
 
     for my $p (@$plugin) {
-        $self->_error(loc("Plugin [_1] does not exist!", $p))
+        $self->_error(loc("error.no-plugin=name!", $p))
             unless $adapter->plugin_exists($p);
     }
 
@@ -399,7 +397,7 @@ sub set_plugin_pref {
 
     my $to_string = join(', ', sort @$plugins);
     $self->_success(
-        loc('Preferences for the [_1] plugin(s) have been updated.', $to_string)
+        loc('pref.updated=plugins', $to_string)
     );
 }
 
@@ -417,7 +415,7 @@ sub clear_plugin_prefs {
 
     my $to_string = join(', ', @$plugins);
     $self->_success(
-        loc('Preferences for the [_1] plugin(s) have been cleared.', $to_string)
+        loc('pref.cleared=plugins', $to_string)
     );
 }
 
@@ -427,7 +425,7 @@ sub show_plugin_prefs {
     my $account  = $self->_require_account(1);
 
     # only accept a single `--plugin` param
-    $self->_error(loc('show-plugin-prefs only works on a single plugin'))
+    $self->_error(loc('error.show-pref-for-multiple-plugins'))
          if (!ref($plugin) or scalar(@$plugin) > 1);
 
     $plugin = $plugin->[0];
@@ -435,8 +433,8 @@ sub show_plugin_prefs {
     my $table = $self->_pluginPrefTable($plugin_class, $account);
     my $prefs = $table->get();
     my $msg = $account
-        ? loc("Preferences for the [_1] plugin in the [_2] account", $plugin, $account->name)
-        : loc("Preferences for the [_1] plugin:", $plugin);
+        ? loc("pref.for=plugin,account", $plugin, $account->name)
+        : loc("pref.for=plugin:", $plugin);
     $msg .= "\n";
     if (%$prefs) {
         for my $key (sort keys %$prefs) {
@@ -444,7 +442,7 @@ sub show_plugin_prefs {
         }
     }
     else {
-        $msg .= loc("No preferences set for the [_1] plugin.", $plugin);
+        $msg .= loc("error.no-preference=plugin", $plugin);
     }
     $msg .= "\n";
     $self->_success($msg);
@@ -459,8 +457,7 @@ sub _require_account {
     return if $optional and !$opts{account};
 
     $self->_error(
-        loc("The command you called ([_1]) requires an account to be "
-            . "specified.", $self->{command}),
+        loc("error.account-required=command", $self->{command}),
     ) unless $opts{account};
 
     return $self->{account} = $self->_load_account($opts{account});
@@ -471,7 +468,7 @@ sub get_default_account {
     my $self = shift;
 
     my $account = get_system_setting('default-account');
-    $self->_success(loc("The default account is [_1].", $account->name));
+    $self->_success(loc("account.default=name", $account->name));
 }
 
 sub export_account {
@@ -492,27 +489,27 @@ sub export_account {
 
     if (-d $dir) {
         if ($opts{force}) {
-            print loc("Deleting existing account export at [_1].", $dir) . "\n";
+            print loc("account.deleting-old-export=path", $dir) . "\n";
             rmtree $dir;
         }
         else {
-            die loc("Error - export directory [_1] already exists!", $dir) . "\n";
+            die loc("error.export-directory-exists=path!", $dir) . "\n";
         }
     }
     mkdir $dir;
 
-    print loc("Exporting account [_1] ...", $account->name) . "\n";
+    print loc("account.exporting=name", $account->name) . "\n";
     $account->export( dir => $dir, hub => $hub );
 
     my $workspaces = $account->workspaces;
     while (my $wksp = $workspaces->next) {
-        print loc("Exporting workspace [_1] ...", $wksp->name) . "\n";
+        print loc("wiki.exporting=name", $wksp->name) . "\n";
         eval { $wksp->export_to_tarball( dir => $dir ); };
         $self->_error($@) if $@;
     }
 
     $self->_success(
-        "\n" . loc("[_1] account exported to [_2]", $account->name, $dir));
+        "\n" . loc("cli.exported=account,path", $account->name, $dir));
 }
 
 sub import_account {
@@ -521,8 +518,8 @@ sub import_account {
     my $dir = $opts{directory} || '';
     $dir =~ s#/$##;
 
-    $self->_error(loc("No import directory specified.") . "\n") unless $dir;
-    $self->_error(loc("Directory [_1] does not exist.", $dir) . "\n") unless -d $dir;
+    $self->_error(loc("error.import-directory-required") . "\n") unless $dir;
+    $self->_error(loc("error.no-directory=path", $dir) . "\n") unless -d $dir;
 
     Socialtext::Events->BlackList(
         { action => 'add_user', event_class => 'group'},
@@ -534,7 +531,7 @@ sub import_account {
         Socialtext::User->SystemUser(),
     );
 
-    print loc("Clearing caches..."),"\n";
+    print loc("cli.clearing-caches"),"\n";
     eval {
         require Socialtext::People::ProfilePhoto;
         Socialtext::People::ProfilePhoto->ClearCache();
@@ -544,7 +541,7 @@ sub import_account {
         Socialtext::Group::Photo->ClearCache();
     };
 
-    print loc("Importing account data..."), "\n";
+    print loc("account.importing-data"), "\n";
     my $account = eval { Socialtext::Account->import_file(
         file  => "$dir/account.yaml",
         name  => $opts{name},
@@ -554,7 +551,7 @@ sub import_account {
     $self->_alert_error($@) if ($@);
 
     for my $tarball (glob "$dir/*.1.tar.gz") {
-        print loc("Importing workspace from [_1] ...", $tarball), "\n";
+        print loc("wiki.importing=tarball", $tarball), "\n";
         eval {
             my $wksp = Socialtext::Workspace->ImportFromTarball(
                 tarball   => $tarball,
@@ -574,7 +571,7 @@ sub import_account {
     $self->_alert_error($@) if $@;
 
     $self->_success(
-        "\n" . loc("[_1] account imported.", $account->name));
+        "\n" . loc("account.imported=name", $account->name));
 }
 
 sub _alert_error {
@@ -635,7 +632,7 @@ sub set_user_names {
     my %opts = $self->_require_set_user_names_params(shift);
     
     $self->_error(
-        loc("Remotely sourced Users cannot be updated via Socialtext.")
+        loc("error.update-remote-user")
     ) unless $user->can_update_store();
 
     my $result = $user->update_store(%opts);
@@ -643,7 +640,7 @@ sub set_user_names {
         $self->_error('First name and last name match the current names for the user; no change to "' . $user->username() . '".');
     }
 
-    $self->_success( loc('User "[_1]" was updated.', $user->username) );
+    $self->_success( loc('cli.updated-user=name', $user->username) );
 }
 
 sub set_user_account {
@@ -654,7 +651,7 @@ sub set_user_account {
 
     $user->primary_account($account->account_id, no_hooks => $opts{'no-hooks'});
 
-    $self->_success( loc('User "[_1]" was updated.', $user->username) );
+    $self->_success( loc('cli.updated-user=name', $user->username) );
 }
 
 sub get_user_account {
@@ -663,7 +660,7 @@ sub get_user_account {
 
     my $account = $user->primary_account;
     $self->_success(
-        loc('Primary account for "[_1]" is [_2].', $user->username, $account->name)
+        loc('cli.show-primary-account=user,account', $user->username, $account->name)
     );
 }
 
@@ -683,7 +680,7 @@ sub set_external_id {
     }
 
     $self->_success(
-        loc("External ID for '[_1]' set to '[_2]'.", $user->username, $p{'external-id'})
+        loc("cli.set=user,external-id", $user->username, $p{'external-id'})
     );
 }
 
@@ -697,7 +694,7 @@ sub set_user_profile {
     unless ($profile->valid_attr($key)) {
         # non-existent field
         $self->_error(
-            loc("Unknown Profile Field '[_1]'.", $key)
+            loc("error.no-profile-field=name", $key)
         );
     }
 
@@ -705,21 +702,21 @@ sub set_user_profile {
     if ($field->is_hidden) {
         # field hidden
         $self->_error(
-            loc("Profile Field '[_1]' is hidden and cannot be updated.",$key)
+            loc("error.update-hidden=field",$key)
         );
     }
 
     unless ($field->is_user_editable) {
         # externally sourced, cannot be set
         $self->_error(
-            loc("Profile Field '[_1]' is externally sourced and cannot be updated.", $key)
+            loc("error.update-external=field", $key)
         );
     }
 
     $profile->set_attr($key, $val);
     $profile->save();
     $self->_success(
-        loc("Profile field '[_1]' set to '[_2]' for User '[_3]'",
+        loc("profile.set=field,value,user",
             $key, $val, $user->username,
         )
     );
@@ -733,7 +730,7 @@ sub show_profile {
     $profile->is_hidden(0);
     $profile->save;
     $self->_success(
-        loc('The profile for "[_1]" is no longer hidden.', 
+        loc('profile.visible=user', 
             $user->username)
     );
 }
@@ -746,7 +743,7 @@ sub hide_profile {
     $profile->is_hidden(1);
     $profile->save;
     $self->_success(
-        loc('The profile for "[_1]" is now hidden.', $user->username)
+        loc('profile.hidden=user', $user->username)
     );
 }
 
@@ -755,12 +752,12 @@ sub _get_profile {
     my $user = shift;
 
     unless ($user->can_use_plugin( 'people' )) {
-        $self->_error(loc("The People plugin is not available."));
+        $self->_error(loc("error.missing-people-plugin"));
     }
 
     my $adapter = Socialtext::Pluggable::Adapter->new;
     unless ($adapter->plugin_exists('people')) {
-        $self->_error(loc("The People plugin is not installed."));
+        $self->_error(loc("error.no-people-plugin"));
     }
 
     require Socialtext::People::Profile;
@@ -851,7 +848,7 @@ sub _ensure_email_passes_filters {
     my $account = $filter_sources->{account};
     if ($account) {
         $self->_error(
-            loc("The email address, [_1], is not in the domain [_2].",
+            loc("error.invalid=email,domain",
                 $email, $account->restrict_to_domain)
         ) unless $account->email_passes_domain_filter( $email )
     }
@@ -859,7 +856,7 @@ sub _ensure_email_passes_filters {
     my $workspace = $filter_sources->{workspace};
     if ($workspace) {
         $self->_error(
-            loc("The email address, [_1], does not match the workspace invitation filter [_2].",
+            loc("error.invalid-invite=email,filter",
                 $email, $workspace->invitation_filter)
         ) unless $workspace->email_passes_invitation_filter( $email )
     }
@@ -902,7 +899,7 @@ sub mass_add_users {
 
     my $csv = eval { slurp($opts{csv}) };
     if ($@) {
-        $self->_error( loc("The file you provided could not be read. No users were added.") );
+        $self->_error( loc("error.invalid-mass-add-file") );
     }
 
     require Socialtext::MassAdd;
@@ -1060,7 +1057,7 @@ sub _type_of_entity_collection_operation {
 
     $self->_error(
         loc(
-            "The command you called ([_1]) requires one of [_2] and one of [_3]",
+            "error.required=command,entity,collection",
             $self->{command},
             join(' ', @cli_entities),
             join(' ', @cli_collections),
@@ -1083,19 +1080,19 @@ sub _add_user_to_group_as {
     my $current_role = $group->role_for_user($user, {direct => 1});
 
     $self->_error(
-        loc("Remotely sourced Groups cannot be updated via Socialtext.")
+        loc("error.update-remote-group")
     ) unless $group->can_update_store;
 
     if ( $current_role ) {
         $self->_error(
-            loc("User already has the role of '[_1]' in the [_2] Group",
+            loc("error.user-role-exists=role,group",
                 $current_role->display_name, $group->display_name)
         ) if $current_role->name eq $new_role->name;
     }
 
     $group->assign_role_to_user( user => $user, role => $new_role );
     $self->_success(
-        loc("[_1] is now a [_2] of the [_3] Group",
+        loc("cli.member-added=user,role,group",
             $user->username, $new_role->name, $group->display_name)
     );
 }
@@ -1108,9 +1105,9 @@ sub delete_group {
     eval { $group->delete };
     if ($@) {
         warn $@;
-        $self->_error(loc("Failed to delete group id [_1]: [_2]", $gid, $@));
+        $self->_error(loc("error.delete-group=id,message", $gid, $@));
     }
-    $self->_success(loc("Deleted group id: [_1]", $gid));
+    $self->_success(loc("group.deleted=id", $gid));
 }
 
 # We don't need to be magical here because there is no 'admin' role for
@@ -1131,7 +1128,7 @@ sub _add_group_to_account_as {
 
     $account->assign_role_to_group( group => $group, role => $new_role );
     $self->_success(
-        loc("[_1] now has the role of '[_2]' in the [_3] Account",
+        loc("cli.member-added=name,role,account",
             $group->display_name,
             $new_role->display_name,
             $account->name,
@@ -1155,7 +1152,7 @@ sub _add_user_to_account_as {
 
     $account->assign_role_to_user( user => $user, role => $new_role );
     $self->_success(
-        loc("[_1] now has the role of '[_2]' in the [_3] Account",
+        loc("cli.member-added=name,role,account",
             $user->username,
             $new_role->display_name,
             $account->name,
@@ -1169,7 +1166,7 @@ sub _check_account_role {
 
     if ($p{cur_role}) {
         $self->_error(
-            loc("[_1] already has the role of '[_2]' in the [_3] Account",
+            loc("error.role-exists=user,role,account",
                 $p{name}, $p{cur_role}->display_name, $p{acct_name})
         ) if $p{cur_role}->name eq $p{new_role}->name;
     }
@@ -1196,7 +1193,7 @@ sub _add_user_to_workspace_as {
 
     $ws->assign_role_to_user( user => $user, role => $new_role );
     $self->_success(
-        loc("[_1] now has the role of '[_2]' in the [_3] Workspace",
+        loc("cli.member-added=name,role,wiki",
         $user->username, $new_role->display_name, $ws->name)
     );
 }
@@ -1246,7 +1243,7 @@ sub _add_thingy_to_ws_as {
         $self->_error(loc($e));
     }
     $self->_success(
-        loc("[_1] now has the role of '[_2]' in the [_3] Workspace",
+        loc("cli.member-added=name,role,wiki",
             $thingy->name,
             $new_role->display_name,
             $ws->name)
@@ -1260,14 +1257,14 @@ sub _check_workspace_role {
 
     if ( $p{cur_role} ) {
         $self->_error(
-            loc("[_1] already has the role of '[_2]' in the [_3] Workspace",
+            loc("error.role-exists=user,role,wiki",
                 $p{name}, $p{cur_role}->display_name, $p{ws_name})
         ) if $p{cur_role}->name eq $p{new_role}->name;
 
         # Do not allow the code to "downgrade" from admin to member,
         # the user has to use remove-workspace-admin for that.
         $self->_error(
-            loc("[_1] already has the role of 'admin' in the [_2] Workspace",
+            loc("error.admin-role-exists=user,wiki",
                 $p{name},
                 $p{ws_name}
             )
@@ -1299,13 +1296,13 @@ sub _remove_user_from_account {
         my $email   = $user->email_address;
         my $account = $account->name;
         my $msg     = join("\n",
-            loc("You cannot remove a user from their primary account."),
+            loc("error.remove-user-primary-account"),
             '',
-            loc("To do so, first assign them to a new primary account:"),
+            loc("info.change-primary-account:"),
             " * st-admin set-user-account --email $email --account <account-name>",
             " * st-admin remove-member --email $email --account $account",
             '',
-            loc("If you'd like to remove the user's system access, please do:"),
+            loc("info.deactivated-user:"),
             " * st-admin deactivate-user --email $email",
         );
         $self->_error($msg);
@@ -1332,20 +1329,20 @@ sub _remove_user_from_thing {
     if (!$current) {
         if (my $indirect_role = $thing->role_for_user($user, direct => 0)) {
             $self->_error(
-                loc('[_1] is a [_2] of [_3] through a group, and may not be removed directly',
+                loc('error.remove-indirect=name,role,container',
                     $user->username, $indirect_role->name, $thing->name)
             );
         }
         else {
             $self->_error(
-                loc('[_1] is not a member of [_2]',
+                loc('error.not-member=name,container',
                     $user->username, $thing->name)
             );
         }
     }
 
     $self->_error(
-        loc("[_1] does not have the role of '[_2]' in [_3]",
+        loc("error.no-role=name,role,container",
             $user->username, $member->display_name, $thing->name)
     ) if $current->name ne $member->name;
 
@@ -1354,12 +1351,12 @@ sub _remove_user_from_thing {
     # Does the user still have a role in this thing indirectly?
     my $role = $thing->role_for_user($user);
     $self->_success(
-        loc("[_1] now has the role of '[_2]' in [_3] due to membership in a group",
+        loc("cli.indirect-member=name,role,container",
             $user->username, $role->display_name, $thing->name)
     ) if $role;
 
     $self->_success(
-        loc("[_1] no longer has the role of 'member' in [_2]",
+        loc("cli.member-removed=user,container",
             $user->username, $thing->name)
     );
 }
@@ -1377,13 +1374,13 @@ sub _remove_user_from_group {
     my $group = $self->_require_group();
 
     $self->_error(
-        loc("Remotely sourced Groups cannot be updated via Socialtext.")
+        loc("error.update-remote-group")
     ) unless $group->can_update_store;
 
     my $role = $group->role_for_user( $user, {direct => 1});
 
     $self->_error(
-        loc("[_1] is not a member of [_2]",
+        loc("error.not-member=name,container",
             $user->username, $group->driver_group_name)
     ) unless $role;
 
@@ -1393,20 +1390,20 @@ sub _remove_user_from_group {
             role => Socialtext::Role->Member(),
         );
         $self->_success(
-            loc("[_1] is now a member of [_2]",
+            loc("cli.member-added=user,group",
                 $user->username, $group->driver_group_name)
         );
     }
     elsif ($role->name eq 'member' && $p{downgrade}) {
         $self->_success(
-            loc("[_1] is already a non-admin member of [_2]",
+            loc("error.already-a-member=name,group",
                 $user->username, $group->driver_group_name)
         );
     }
     else {
         $group->remove_user( user => $user );
         $self->_success(
-            loc("[_1] is no longer a member of [_2]",
+            loc("cli.member-removed=name,container",
                 $user->username, $group->driver_group_name)
         );
     }
@@ -1420,7 +1417,7 @@ sub _remove_group_from_account {
 
     if ( $account->account_id == $group->primary_account_id ) {
         $self->_error(
-            loc("[_1] is Group's Primary Account, cannot remove membership",
+            loc("error.remove-primary=account",
                 $account->name)
         );
     }
@@ -1466,7 +1463,7 @@ sub _remove_thing_from_thing {
 
     unless ($container->$has_method($condemned)) {
        $self->_error(
-           loc("[_1] is not a member of [_2]",
+           loc("error.not-member=name,container",
                $condemned->name, $container->name)
         );
     }
@@ -1475,11 +1472,11 @@ sub _remove_thing_from_thing {
     my $role = $container->$role_method($condemned);
     my $msg;
     if ($role) {
-        $msg = loc("[_1] now has the role of '[_2]' in [_3] due to membership in a group",
+        $msg = loc("cli.indirect-member=name,role,container",
             $condemned->name, $role->display_name, $container->name);
     }
     else {
-        $msg = loc('[_1] is no longer a member of [_2]',
+        $msg = loc('cli.member-removed=name,container',
             $condemned->name, $container->name);
     }
 
@@ -1512,7 +1509,7 @@ sub _downgrade_thingy_to_member_in_container {
     my $has_role_method = "${type}_has_role";
     unless ($container->$has_role_method($type => $thingy, role => $role)) {
         $self->_error(
-            loc("[_1] does not have the role of '[_2]' in the [_3] [_4].",
+            loc("error.no-role=name,role,container,type",
                 $thingy->display_name, $role->name,
                 $container->name, ucfirst($container_type),
             )
@@ -1524,7 +1521,7 @@ sub _downgrade_thingy_to_member_in_container {
     unless ($direct_role) {
         my $indirect_role = $container->$role_for_method($thingy, direct => 0);
         $self->_error(
-            loc('[_1] is a [_2] of [_3] through a group, and may not be removed directly',
+            loc('error.remove-indirect=name,role,container',
                 $thingy->display_name, $indirect_role->name, $container->name,
             )
         )
@@ -1542,14 +1539,14 @@ sub _downgrade_thingy_to_member_in_container {
     my $current_role = $container->$role_for_method($thingy);
     if ($current_role->name ne $MemberRole->name) {
         $self->_error(
-            loc("[_1] now has the role of '[_2]' in [_3] due to membership in a group",
+            loc("cli.indirect-member=name,role,container",
                 $thingy->display_name, $current_role->name, $container->name,
             )
         );
     } 
 
     $self->_success(
-        loc("[_1] no longer has the role of '[_2]' in the [_3] [_4].",
+        loc("cli.member-removed=name,role,container,type",
             $thingy->display_name, $from_role,
             $container->name, ucfirst($container_type),
         )
@@ -1711,7 +1708,7 @@ sub _eval_password_change {
     my $pw = shift;
 
     $self->_error(
-        loc("Remotely sourced passwords cannot be updated via Socialtext.")
+        loc("error.update-remote-password")
      ) unless $user->can_update_store();
 
     eval { $user->update_store( password => $pw ) };
@@ -1774,7 +1771,7 @@ sub set_locale {
 
     my $new_locale = $self->_require_string('locale');
     if ( not valid_code($new_locale) ) {
-        $self->_error( loc( "'[_1]' is not a valid locale", $new_locale ) );
+        $self->_error( loc( "error.invalid=locale", $new_locale ) );
     }
 
     $display_prefs->{locale} = $new_locale;
@@ -1782,7 +1779,7 @@ sub set_locale {
     loc_lang($new_locale);
     $self->_success(
         loc(
-            'Locale for [_1] is now [_2]',
+            'lang.changed=user,locale',
             $user->username, $new_locale
         )
     );
@@ -1905,7 +1902,7 @@ sub _load_workspace {
     my $workspace = Socialtext::Workspace->new( name => $workspace_name );
     unless ($workspace) {
         $self->_error(
-            loc('No workspace named "[_1]" could be found.', $workspace_name)
+            loc('error.no-wiki=name', $workspace_name)
         );
     }
 }
@@ -1976,7 +1973,7 @@ sub set_permissions {
         eval { $ws->permissions->set( set_name => $set_name ); };
         if ($@) {
             $self->_error(
-                loc("The '[_1]' permission does not exist.", $set_name));
+                loc("error.no-permission=name", $set_name));
         }
     }
     elsif ($opts{group}) {
@@ -1987,17 +1984,17 @@ sub set_permissions {
         eval { $group->update_store({permission_set => $set_name}) };
         if ($@) {
             $self->_error(
-                loc("Could not update permissions for [_1] group.", $name));
+                loc("error.update-permission=group", $name));
         }
     }
     else {
         $self->_error(
-            loc("Can only change permissions on a group or workspace.")
+            loc("error.group-or-wiki-required")
         );
     }
 
     $self->_success(
-        loc("The permissions for the [_1] [_2] have been changed to [_3].",
+        loc("acl.changed=name,object,set",
             $name, $object, $set_name)
     );
 }
@@ -2205,7 +2202,7 @@ sub set_workspace_config {
         if ($key =~ m/account[-_]name/) {
             my $account = Socialtext::Account->new(name => $value);
             $self->_error(
-                loc("The account name you specified, [_1], does not exist.",
+                loc("error.no-account=name",
                     $value)) unless $account;
             $key = 'account_id';
             $value = $account->account_id;
@@ -2461,8 +2458,8 @@ sub _show_group_members {
     my $group = $self->_require_group();
 
     my $urs = $group->user_roles();
-    my $msg = loc("Members of the [_1] group", $group->driver_name) . "\n\n";
-    $msg .= '| ' . join(' | ', loc("Email Address"), loc("First"), loc("Last"), loc("Role")) . " |\n";
+    my $msg = loc("cli.members-of=group", $group->driver_name) . "\n\n";
+    $msg .= '| ' . join(' | ', loc("cli.email"), loc("cli.first-name"), loc("cli.last-name"), loc("cli.role")) . " |\n";
 
     while ( my $ur = $urs->next() ) {
         my ($user,$role) = @$ur;
@@ -2523,8 +2520,7 @@ sub show_impersonators {
     my $acct = $self->_require_account('optional');
     unless ($ws or $acct) {
         $self->_error(
-            loc("The command you called ([_1]) requires an account or a "
-                . "workspace to be specified.", $self->{command}),
+            loc("error.account-or-wiki-required=command", $self->{command}),
         );
     }
 
@@ -2567,7 +2563,7 @@ sub purge_page {
     $page->purge();
 
     $self->_success( 
-        loc('The [_1] page was purged from the [_2] workspace.',
+        loc('page.purged=title,wiki',
             $title, $hub->current_workspace()->name())
     );
 }
@@ -2590,7 +2586,7 @@ sub _toggle_page_lock {
     my $workspace = $hub->current_workspace;
 
     $self->_error(loc(
-        "Page locking is turned off for workspace '[_1]'.",
+        "wiki.disabled-locking=title",
         $workspace->title()
     )) unless ( $workspace->allows_page_locking );
 
@@ -2598,13 +2594,13 @@ sub _toggle_page_lock {
 
     if ($status) {
         $self->_success(loc(
-            "Page '[_1]' in workspace '[_2]' has been locked.",
+            "page.locked=name,wiki",
             $page->name, $workspace->title(),
         ));
     }
     else {
         $self->_success(loc(
-            "Page '[_1]' in workspace '[_2]' has been unlocked.",
+            "page.unlocked=name,wiki",
             $page->name, $workspace->title(),
         ));
     }
@@ -2621,13 +2617,13 @@ sub can_lock_pages {
 
     if ($can_lock) {
         $self->_success(loc(
-            "User '[_1]' can lock a page.",
+            "wiki.enabled-locking=user",
             $user->username
         ));
     }
     else {
         $self->_success(loc(
-            "User '[_1]' cannot lock a page.",
+            "wiki.disabled-locking=user",
             $user->username
         ));
     }
@@ -2641,13 +2637,13 @@ sub locked_pages {
     my $msg;
 
     if ( @page_ids > 0 ) {
-        $msg = loc("Locked pages in the '[_1]' workspace:", $ws->title);
+        $msg = loc("page.list-locked=wiki:", $ws->title);
         for my $id ( @page_ids ) {
             $msg .= "\n* " . $hub->pages->new_from_name( $id )->title;
         }
     }
     else {
-        $msg = loc("Workspace '[_1]' has no locked pages.", $ws->title);
+        $msg = loc("page.nothing-locked=wiki", $ws->title);
     }
 
     $self->_success("$msg\n\n");
@@ -2733,7 +2729,7 @@ sub export_workspace {
 
     my $ws = $self->_require_workspace();
     my $file = $self->_export_workspace($ws);
-    $self->_success(loc("The [_1] workspace has been exported to [_2].",
+    $self->_success(loc("wiki.exported=name,file",
             $ws->name, $file));
 }
 
@@ -2815,7 +2811,7 @@ sub delete_workspace {
     my $ws = $self->_require_workspace();
 
     if ( $ws->is_all_users_workspace ) {
-        $self->_error(loc("This workspace is the all users workspace for the [_1] account. Aborting.", $ws->account->name));
+        $self->_error(loc("error.delete-auw-workspace", $ws->account->name));
     }
 
     my $skip_export = $self->_boolean_flag('no-export');
@@ -2919,7 +2915,7 @@ sub index_people {
 
     my $adapter = Socialtext::Pluggable::Adapter->new;
     unless ($adapter->plugin_exists('people')) {
-        $self->_error(loc("The People plugin is not installed."));
+        $self->_error(loc("error.no-people-plugin"));
     }
 
     Socialtext::JobCreator->insert('Socialtext::Job::Upgrade::ReindexPeople');
@@ -2931,7 +2927,7 @@ sub index_groups {
 
     my $adapter = Socialtext::Pluggable::Adapter->new;
     unless ($adapter->plugin_exists('groups')) {
-        $self->_error(loc("The People plugin is not installed."));
+        $self->_error(loc("error.no-people-plugin"));
     }
     Socialtext::JobCreator->insert('Socialtext::Job::Upgrade::ReindexGroups');
     $self->_success( "Scheduled groups for re-indexing." );
@@ -2942,7 +2938,7 @@ sub index_signals {
 
     my $adapter = Socialtext::Pluggable::Adapter->new;
     unless ($adapter->plugin_exists('signals')) {
-        $self->_error(loc("The Signals plugin is not installed."));
+        $self->_error(loc("error.no-signals-plugin"));
     }
     Socialtext::JobCreator->insert('Socialtext::Job::Upgrade::ReindexSignals');
     $self->_success( "Scheduled signals for re-indexing." );
@@ -3300,7 +3296,7 @@ sub _require_field_options {
 
     my $adapter = Socialtext::Pluggable::Adapter->new;
     unless ($adapter->plugin_exists('people')) {
-        $self->_error(loc("The People plugin is not installed."));
+        $self->_error(loc("error.no-people-plugin"));
     }
 
     my $acct = $self->_require_account('optional');
@@ -3315,7 +3311,7 @@ sub _require_field_options {
         'visible',
     );
 
-    $self->_error(loc("Can only specify one of --visible or --hidden"))
+    $self->_error(loc("error.not-both-visible-and-hidden"))
         if ($opts{hidden} && $opts{visible});
 
     if ($opts{hidden} || $opts{visible}) {
@@ -3348,7 +3344,7 @@ sub add_profile_field {
         });
     };
     $self->_error($@) if $@;
-    $self->_success(loc("Created profile field '[_1]' for account '[_2]'",
+    $self->_success(loc("profile.created-field=title,account",
                         $field->title, $acct->name));
 }
 
@@ -3367,7 +3363,7 @@ sub set_profile_field {
         });
     };
     $self->_error($@) if $@;
-    $self->_success(loc("Profile field '[_1]' updated for account '[_2]'",
+    $self->_success(loc("profile.updated=field,account",
                         $old_title, $acct->name));
 }
 
@@ -3394,12 +3390,12 @@ sub list_groups {
             include_aggregates => 1,
             %param,
         );
-        die loc("No Groups found") . "\n" if $groups->count == 0;
-        print loc("Displaying all groups")."\n\n";
+        die loc("error.no-groups") . "\n" if $groups->count == 0;
+        print loc("cli.displaying-all-groups")."\n\n";
         printf '| %4s | %20s | %7s | %7s | %15s | %10s | %20s |' . "\n",
-            loc("ID"), loc("Group Name"),
-            loc("# Wksps"), loc("# Users"), loc("Primary Account"),
-            loc("Created"), loc("Created By");
+            loc("cli.group-id"), loc("cli.group-name"),
+            loc("cli.group-wikis"), loc("cli.group-users"), loc("cli.group-primary-account"),
+            loc("cli.created"), loc("cli.created-by");
 
         while (my $g = $groups->next) {
             printf '| %4d | %20s | %7d | %7d | %15s | %10s | %20s |' . "\n",
@@ -3425,16 +3421,16 @@ sub create_group {
     my $name = $opts{name};
     unless ($name) {
         $self->_error(
-            loc("--name or --ldap-dn must be supplied to create a group.")
+            loc("error.group-name-or-ldap-dn-required")
         );
     }
 
     my $email = $opts{email};
-    $self->_error( loc("--email must be supplied to create a group.") )
+    $self->_error( loc("error.group-email-required") )
         unless $email;
 
     my $user = Socialtext::User->new(email_address => $opts{email});
-    $self->_error( loc("no user for email address [_1]", $email) )
+    $self->_error( loc("error.no-user=email", $email) )
         unless $user;
 
     my $account = $opts{account} || Socialtext::Account->Default;
@@ -3449,7 +3445,7 @@ sub create_group {
     if (my $err = $@) {
         if ($err =~ m/duplicate key value violates/) {
             $self->_error(
-                loc("The [_1] Group has already been added to the system.",
+                loc("error.already-added=group",
                     $name,
                 )
             );
@@ -3458,10 +3454,10 @@ sub create_group {
             $err = $err->as_string();
         }
         my ($msg) = ($err =~ m{(.+?)(?:^Trace begun)? at \S+ line .*}ims);
-        $self->_error(loc("Error creating group: [_1]", $msg));
+        $self->_error(loc("error.create-group=message", $msg));
     }
     $self->_success(
-        loc("[_1] Group has been created (Group Id: [_2])",
+        loc("group.created=name,id",
             $group->driver_group_name,
             $group->group_id,
         )
@@ -3476,7 +3472,7 @@ sub _create_ldap_group {
     # Check to make sure LDAP Group Factories have been configured.
     unless (grep { /^LDAP:/ } Socialtext::Group->Drivers) {
         $self->_error(
-            loc("No LDAP Group Factories configured; cannot create Group from LDAP.")
+            loc("error.no-ldap-group-factories")
         );
     }
 
@@ -3484,7 +3480,7 @@ sub _create_ldap_group {
     my $proto = Socialtext::Group->GetProtoGroup(driver_unique_id => $ldap_dn);
     if ($proto) {
         $self->_error(
-            loc("The [_1] Group has already been added to the system.",
+            loc("error.already-added=group",
                 $proto->{driver_group_name},
             )
         );
@@ -3498,12 +3494,12 @@ sub _create_ldap_group {
 
     unless ( $group ) {
         $self->_error(
-            loc("Cannot find Group with DN '[_1]'.", $ldap_dn)
+            loc("error.no-group=ldap-dn", $ldap_dn)
         );
     }
 
     $self->_success(
-        loc("The [_1] Group has been created in the [_2] Account.",
+        loc("group.created=name,account",
             $group->driver_group_name,
             $opts{account}->name,
         )
@@ -3523,7 +3519,7 @@ sub show_group_config {
         'Source'               => $group->driver_key
     );
 
-    my $msg = loc("Config for group [_1]:", $group->driver_group_name) . "\n\n";
+    my $msg = loc("config.for=group:", $group->driver_group_name) . "\n\n";
     $msg .= join("\n",
         map { sprintf('%-21s: %s', $_, $group{$_}) } sort keys %group );
 
@@ -3535,7 +3531,7 @@ sub _require_group {
     my %opts = $self->_get_options('group:s');
 
     $self->_error(
-        loc("The command you called ([_1]) requires a '--group' parameter.",
+        loc("error.group-required=command",
             $self->{command}),
     ) unless exists $opts{group};
 
@@ -3549,7 +3545,7 @@ sub _load_group {
     my $group = Socialtext::Group->GetGroup( group_id => $group_id );
 
     $self->_error(
-        loc("No group with ID [_1].", $group_id)
+        loc("error.no-group=id", $group_id)
     ) unless $group;
 
     return $group;
@@ -3702,7 +3698,7 @@ sub _require_tags {
     if ( $opts{tag} ) {
         unless ( $hub->category->exists( $opts{tag} ) ) {
             $self->_error(
-                loc('There is no tag "[_1]" in the [_2] workspace.',
+                loc('error.no-tag=tag,wiki',
                     $opts{tag}, $hub->current_workspace()->name())
             );
         }
@@ -3714,7 +3710,7 @@ sub _require_tags {
 
         unless (@matches) {
             $self->_error(
-                loc('No tags matching "[_1]" were found in the [_2] workspace.',
+                loc('error.no-tag=query,wiki',
                     $opts{search}, $hub->current_workspace()->name())
             );
         }
@@ -3738,7 +3734,7 @@ sub _require_page {
     my $page = $hub->pages()->new_page( $opts{page} );
     unless ( $page and $page->exists() ) {
         $self->_error( 
-            loc('There is no page with the id "[_1]" in the [_2] workspace.',
+            loc('error.no-page=id,wiki',
                 $opts{page}, $hub->current_workspace()->name())
         );
     }

@@ -1395,7 +1395,7 @@ proto.convertWikitextToHtml = function(wikitext, func, onError) {
     });
 
     if (!isSuccess) {
-        alert(loc("Operation failed due to server error; please try again later."));
+        alert(loc("error.server-error"));
         if (onError) { onError(); }
     }
 }

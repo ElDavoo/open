@@ -55,7 +55,7 @@ proto.addHandlers = function() {
 
         if (selected.length == 0) {
             $(self.errorID)
-               .text(loc('Please choose one or more groups')).show();
+               .text(loc('error.choose-group')).show();
             return false;
         }
         //self.loading();

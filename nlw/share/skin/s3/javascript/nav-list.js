@@ -7,17 +7,18 @@ function fetchData(entries, index, callback) {
         var entry = entries[index];
         if (entry.url) {
             setTimeout(function() {
-                $.ajax({
-                    url: entry.url,
-                    type: 'get',
-                    dataType: 'json',
-                    success: function(data) {
-                        if (entry.sort) data = data.sort(entry.sort);
-                        entry.data = data;
+                var params = {};
+                params[gadgets.io.RequestParameters.CONTENT_TYPE] =
+                    gadgets.io.ContentType.JSON;
+                var url = location.protocol + '//' + location.host
+                        + entry.url;
+                gadgets.io.makeRequest(url, function(response) {
+                    if (entry.sort)
+                        response.data = response.data.sort(entry.sort);
+                    entry.data = response.data;
 
-                        fetchData(entries, index + 1, callback);
-                    }
-                });
+                    fetchData(entries, index + 1, callback);
+                }, params);
             }, LOAD_DELAY);
         }
         else {
@@ -67,7 +68,7 @@ $.fn.navList = function(entries) {
 $.fn.peopleNavList = function(nodes) {
     $(this).each(function() {
         $(this).navList([
-            { title: loc("People Directory"), href: "/?action=people" },
+            { title: loc("nav.people-directory"), href: "/?action=people" },
             {
                 url: "/data/people/" + Socialtext.userid + "/watchlist",
                 icon: function(p) {
@@ -76,7 +77,7 @@ $.fn.peopleNavList = function(nodes) {
                 href: function(p) { return '/st/profile/' + p.id },
                 title: function(p) { return p.best_full_name },
                 emptyMessage:
-                    loc("Currently, you are not following any people.")
+                    loc("nav.no-followers")
             }
         ]);
     });

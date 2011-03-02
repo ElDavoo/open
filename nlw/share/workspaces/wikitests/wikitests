@@ -48,3 +48,6 @@ SELECT p.name FROM "page" p
                AND to_page_id = p.page_id
      );
 .pre
+
+
+[Test Case: SameTime Links] is not really an orphan, but it has to be run stand-alone on a Windows Desktop running the Sametime client

@@ -9,7 +9,7 @@ ST.Duplicate.prototype.duplicateLightbox = function () {
     this.process('duplicate.tt2');
     this.sel = '#st-duplicate-lightbox';
     $("#st-duplicate-newname").val(
-        loc('Duplicate of [_1]', Socialtext.page_title)
+        loc('page.duplicate=title', Socialtext.page_title)
     );
     this.show(
         true, // Do redirection

@@ -2,7 +2,7 @@
 [% PROCESS lite/header.html %]
 [% IF tags %]
     <div data-role="header" data-inline="true" data-position="inline" data-theme="d">
-    <h4>[% loc("All tags", ws.title) %]</h4>
+    <h4>[% loc("tag.all=wiki", ws.title) %]</h4>
     </div>
     <ul data-role="listview">
         [% FOREACH tag = tags %]
@@ -12,7 +12,7 @@
 [% ELSE %]
         [% SET escaped_str = tag | html %]
     <div data-role="header" data-inline="true" data-position="inline" data-theme="d">
-    <h4>[% loc("Tag: [_1]", escaped_str) %]</h4>
+    <h4>[% loc("wiki.tag=tag", escaped_str) %]</h4>
     </div>
         [% PROCESS lite/page_list.html %]
 [% END %]

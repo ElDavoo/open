@@ -266,7 +266,7 @@
             if (filtered.length >= self.opts.count) {
                 if (self.opts.showAll) {
                     filtered.push({
-                        title: loc("Show all results..."),
+                        title: loc("lookahead.all-results"),
                         displayAs: val,
                         noThumbnail: true,
                         onAccept: function() {

@@ -28,7 +28,7 @@ sub handler($$) {
     elsif ($rc == HTTP_INTERNAL_SERVER_ERROR) {
         $rc = HTTP_FORBIDDEN;
         _set_session_error( $r, loc(
-            "The Socialtext system cannot reach the Windows NTLM Domain Controller.  An Admin should check the Domain Controller and/or Socialtext configuration."
+            "error.ntlm"
         ) );
     }
     st_log->debug( "NTLM authen handler rc: $rc" );

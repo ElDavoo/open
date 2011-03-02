@@ -511,7 +511,7 @@ sub html {
 
 sub edit_icon {
     my ($self, $edit_url, $page_exists) = @_;
-    my $edit_text = loc('Edit');
+    my $edit_text = loc('wafl.edit');
     return qq{<a class="smallEditButton" href="$edit_url" title="$edit_text">[$edit_text]</a>}
          . qq{<div class="clear"></div>}
 }
@@ -634,11 +634,11 @@ sub html {
             : $section_id;
         $section_id   = Socialtext::String::title_to_id($section_id);
         $section_text = '#' . Socialtext::Formatter::legalize_sgml_id($section_id);
-        $link_title   = loc("section link");
+        $link_title   = loc("link.section");
     }
     else {
         $label      ||= $page_title;
-        $link_title = loc("inter-workspace link: [_1]", $workspace_name);
+        $link_title = loc("link.interwiki", $workspace_name);
     }
 
     my $ws = Socialtext::Workspace->new( name => $workspace_name );
@@ -733,7 +733,7 @@ sub _link_to_action_display {
     );
 
     my $label = $self->label || $p{category};
-    my $title = loc("[_1] link", loc($p{action}));
+    my $title = loc("wafl.link=action", loc($p{action}));
     return qq(<a title="$title" href="$link">$label</a>);
 }
 
@@ -840,10 +840,12 @@ sub _parse_page_for_headers {
 
     my $content = $self->hub->wikiwyg->cgi->content;
     if ($content && ($cur_page_id eq $page_id || !$page->exists)) {
-        $page->content($content) if $content;
+        # We bypass the ->content() check here to avoid immutability error,
+        # since we're not actually going to store this into a revision object.
+        ${$page->body_ref} = $content;
     }
 
-    my $title = loc('Contents');
+    my $title = loc('wafl.contents');
 
     my $linkref = '';
     if ($self->current_workspace_name ne $workspace_name) {
@@ -912,7 +914,7 @@ sub _parse_page_for_headers {
         );
 
         $error = loc(
-            "[_1] does not have any headers.",
+            "error.no-headers=page",
             "<a href='$page_url'>$page_title</a>",
         );
     }

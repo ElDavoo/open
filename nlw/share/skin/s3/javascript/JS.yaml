@@ -127,4 +127,27 @@
         - 'Class.js'
         - 'loc.js'
         - {dir: 'skin/wikiwyg/javascript', file: 'socialtext-editor-light.js'}
-
+'l10n-en.js':
+    compress: 1
+    parts:
+        - {dir: 'skin/s3/javascript/l10n', file: 'en.js'}
+'l10n-zz.js':
+    compress: 1
+    parts:
+        - {dir: 'skin/s3/javascript/l10n', file: 'zz.js'}
+'l10n-zq.js':
+    compress: 1
+    parts:
+        - {dir: 'skin/s3/javascript/l10n', file: 'zq.js'}
+'l10n-zh_CN.js':
+    compress: 1
+    parts:
+        - {dir: 'skin/s3/javascript/l10n', file: 'zh_CN.js'}
+#'l10n-fr_CA.js':
+#    compress: 1
+#    parts:
+#        - {dir: 'skin/s3/javascript/l10n', file: 'fr_CA.js'}
+#'l10n-zh_TW.js':
+#    compress: 1
+#    parts:
+#        - {dir: 'skin/s3/javascript/l10n', file: 'zh_TW.js'}

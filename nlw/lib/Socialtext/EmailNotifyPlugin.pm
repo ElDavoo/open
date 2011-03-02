@@ -26,18 +26,18 @@ our $Default_notify_frequency = 1440;
 sub notify_frequency {
     my $self = shift;
     my $p = $self->new_preference('notify_frequency');
-    $p->query(loc('How often would you like to receive email updates?'));
+    $p->query(loc('email.frequency?'));
     $p->type('pulldown');
     my $choices = [
-        0 => loc('Never'),
-        1 => loc('Every Minute'),
-        5 => loc('Every 5 Minutes'),
-        15 => loc('Every 15 Minutes'),
-        60 => loc('Every Hour'),
-        360 => loc('Every 6 Hours'),
-        1440 => loc('Every Day'),
-        4320 => loc('Every 3 Days'),
-        10080 => loc('Every Week'),
+        0 => loc('time.never'),
+        1 => loc('every.minute'),
+        5 => loc('every.5minutes'),
+        15 => loc('every.15minutes'),
+        60 => loc('every.hour'),
+        360 => loc('every.6hours'),
+        1440 => loc('every.day'),
+        4320 => loc('every.3days'),
+        10080 => loc('every.week'),
     ];
     $p->choices($choices);
     $p->default($Default_notify_frequency);
@@ -47,12 +47,12 @@ sub notify_frequency {
 sub sort_order {
     my $self = shift;
     my $p = $self->new_preference('sort_order');
-    $p->query(loc('What order would you like the updates to be sorted?'));
+    $p->query(loc('email.page-digest-sort?'));
     $p->type('radio');
     my $choices = [
-        chrono => loc('Chronologically (Oldest First)'),
-        reverse => loc('Reverse Chronologically'),
-        name => loc('Page Name'),
+        chrono => loc('sort.oldest-first'),
+        reverse => loc('sort.newest-first'),
+        name => loc('sort.page-name'),
     ];
     $p->choices($choices);
     $p->default('chrono');
@@ -62,11 +62,11 @@ sub sort_order {
 sub links_only {
     my $self = shift;
     my $p = $self->new_preference('links_only');
-    $p->query(loc('What information about changed pages do you want in email digests?'));
+    $p->query(loc('email.page-digest-details?'));
     $p->type('radio');
     my $choices = [
-        condensed => loc('Page name and link only'),
-        expanded => loc('Page name and link, plus author and date'),
+        condensed => loc('email.page-name-link-only'),
+        expanded => loc('email.page-name-link-author-date'),
     ];
     $p->choices($choices);
     $p->default('expanded');

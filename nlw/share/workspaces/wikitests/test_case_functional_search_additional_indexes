@@ -31,5 +31,33 @@
 | st-result | Another Salary |  |
 | st-result | Kinosearch test page: politics |  |
 
+| st-search | tag_exact: "carroll's poem" | |
+| st-result | 2 total | |
+| st-result | Jabberwocky | |
+| st-result | beamish boy | |
+
+| st-search | tag_count:0 | Pages matching 'tag_count:0' |
+| st-result | 9 total | |
+
+| st-search | creator:1 | Pages matching 'creator:1' |
+| st-result | 20 total | |
+
+| st-search | created:[2009-07-21T23:59:59.999Z TO NOW] | Pages matching 'created:[2009-07-21T23:59:59.999Z TO NOW]' |
+| st-result | 6 total | |
+
+| st-search | date:[2010-07-15T22:05:01.999Z TO NOW] | Pages matching 'date:[2010-07-15T22:05:01.999Z TO NOW]' |
+| st-result | 4 total |
+| st-result | Powerpoint Sample for search results | |
+| st-result | Boilerplate PPT File.pptx | |
+| st-result | Excel Sample for Search Results | |
+| st-result | Sample Excel 2007 file.xlsx | |
+
+| st-search | pagetype:spreadsheet | Pages matching 'pagetype:spreadsheet' |
+| st-result | 5 total | |
+| st-result | Car Loan | |
+| st-result | House Payment | |
+| st-result | Credit Card Payment | |
+| st-result | Another Salary | |
+
 
 | *Comment* | Test Case: Functional Search Additional Indexes COMPLETED |

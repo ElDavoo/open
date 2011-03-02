@@ -50,7 +50,7 @@ sub page_info {
     # the future
     unless (defined $page) {
         Socialtext::Exception::DataValidation->throw(
-            errors => [loc('Page name is too long')] );
+            errors => [loc('error.page-name-too-long')] );
     }
 
     $page->load;
@@ -65,7 +65,7 @@ sub new_page {
 
     my $title = $self->cgi->new_blog_entry ? $self->hub->pages->new_page_title : 
         (
-            ($self->cgi->page_type && $self->cgi->page_type eq "spreadsheet") ? loc('Untitled Spreadsheet') : loc('Untitled Page')
+            ($self->cgi->page_type && $self->cgi->page_type eq "spreadsheet") ? loc('sheet.untitled') : loc('page.untitled')
         );
     my $page = $self->hub->pages->new_from_name($title);
     my $uri = 'action=display';
@@ -107,7 +107,7 @@ sub preview {
 sub mouseover_length {
     my $self = shift;
     my $p = $self->new_preference('mouseover_length');
-    $p->query(loc('Should hovering your mouse over a link display the first part of the page?'));
+    $p->query(loc('wiki.mouseover-link?'));
     $p->default(1);
     return $p;
 }
@@ -115,7 +115,7 @@ sub mouseover_length {
 sub include_breadcrumbs {
     my $self = shift;
     my $p = $self->new_preference('include_breadcrumbs');
-    $p->query(loc('Include Recently Viewed items as a side box when viewing pages?'));
+    $p->query(loc('wiki.include-breadcrumbs?'));
     $p->type('boolean');
     $p->default(0);
     return $p;
@@ -124,7 +124,7 @@ sub include_breadcrumbs {
 sub locale {
     my $self = shift;
     my $p = $self->new_preference('locale');
-    $p->query(loc('Which language do you use?'));
+    $p->query(loc('config.language?'));
     $p->type('pulldown');
     my $languages = available_locales();
     my $choices = [ map {$_ => $languages->{$_}} sort keys %$languages ];
@@ -167,7 +167,7 @@ sub display {
     # very long and useless page names
     unless (defined $page) {
         Socialtext::Exception::DataValidation->throw(
-            errors => [loc('Not a valid page name')] );
+            errors => [loc('error.invalid-page-name')] );
     }
 
     my $is_new_page = $self->hub->pages->page_exists_in_workspace(
@@ -263,7 +263,7 @@ sub _render_display {
             } || '',
             local_time              => sub {
                 loc(
-                    "[_1] at [_2]",
+                    "time.at=date,time",
                     $self->hub->timezone->date_local( $_[0], dateonly => 1 ),
                     $self->hub->timezone->time_local( $_[0] ),
                 ),

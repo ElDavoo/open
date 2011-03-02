@@ -1,10 +1,10 @@
 [%# @COPYRIGHT@ -%]
 [%# vim: set et sts=2 sw=2: %]
-[% WRAPPER $frame_name id="loginPage" title=loc("Error") %]
+[% WRAPPER $frame_name id="loginPage" title=loc("nav.error") %]
 <div id="st-display-mode-container" class="authentication">
   <div id="controls">
     <div id="st-editing-tools-edit">
-        <h2 id="st-page-titletext" class="tableTitle">[% loc('Error' ) %]</h2>
+        <h2 id="st-page-titletext" class="tableTitle">[% loc('nav.error' ) %]</h2>
     </div>
     <div id="controlsRight">&nbsp;</div>
   </div>

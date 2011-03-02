@@ -12,7 +12,7 @@ t.runAsync([
     t.doExec("set A1 value n 1234"),
 
     t.doClick('#st-bold-button-link'),
-    t.doCheckCSS('font-weight', 700, 'Bold'),
+    t.doCheckCSS('font-weight', 'bold', 'Bold'),
     t.doClick('#st-italic-button-link'),
     t.doCheckCSS('font-style', 'italic', 'Italic'),
 //    t.doClick('#st-cell-borders-button-link'),

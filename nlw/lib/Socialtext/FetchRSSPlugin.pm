@@ -191,7 +191,7 @@ sub html {
     };
     if ($@) {
         st_log()->debug("FetchRSS error on $url: $@");
-        $html = loc('Error loading feed: [_1]', $url);
+        $html = loc('error.load-feed=url', $url);
     }
     return $html;
 }

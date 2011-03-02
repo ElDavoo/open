@@ -24,8 +24,9 @@ sub collection_name { 'Groups' }
 
 sub _entity_hash { 
     my ($self, $group) = @_;
-    my $show_members = $self->rest->query->param('show_members');
     return $group if $self->rest->query->param('ids_only');
+    return $group if $self->rest->query->param('minimal');
+    my $show_members = $self->rest->query->param('show_members');
     return {
         group_id => $group->group_id,
         name => $group->name,
@@ -115,6 +116,7 @@ sub _get_entities {
             # Old API; no need to supply total_results.
             return [ $user->groups(
                 ids_only => scalar $self->rest->query->param('ids_only'),
+                minimal => scalar $self->rest->query->param('minimal'),
                 discoverable => $discoverable,
                 limit => $self->items_per_page,
                 offset => $self->start_index,

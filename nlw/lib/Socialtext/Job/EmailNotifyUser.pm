@@ -116,7 +116,7 @@ sub _notification_vars {
     my $ws = $self->workspace;
 
     return (
-        subject => loc('Recent Changes In [_1] Workspace', $ws->title),
+        subject => loc('email.recent-changes=wiki', $ws->title),
         text_template => 'email/recent-changes.txt',
         html_template => 'email/recent-changes.html',
     );

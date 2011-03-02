@@ -25,7 +25,7 @@ sub _name {
 sub _subject {
     my $self = shift;
     my $name = $self->group->driver_group_name;
-    loc("I'm inviting you into the [_1] group", $name);
+    loc("invite.group=name", $name);
 }
 
 sub _template_type { 'group' }

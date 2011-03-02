@@ -2,7 +2,7 @@
 [% PROCESS lite/header.html %]
 [% PROCESS tag_link %]
 <div data-role="header" data-inline="true" data-position="inline" data-theme="d">
-<h4>[% loc("Recent Changes") %]</h4>
+<h4>[% loc("nav.recent-changes") %]</h4>
 </div>
 [% PROCESS lite/page_list.html %]
 [% PROCESS lite/footer.html %]
@@ -12,7 +12,7 @@
     [% IF tag %]
     <a href="/m/tag/[% ws.name %]/[% tag | uri |html %]">
         [% SET escaped_str = tag | html %]
-        [% loc('All Pages in [_1]', escaped_str) %]
+        [% loc('page.all=wiki', escaped_str) %]
     </a>
     [% END %]
 </div>

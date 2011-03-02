@@ -2,15 +2,15 @@
 [%# @COPYRIGHT@ -%]
 [% PROCESS element/settings/start %]
 <dl class="form">
-  <dt><label>[% loc('Create A Blog') %]</label></dt>
+  <dt><label>[% loc('blog.create') %]</label></dt>
   <dd>
-    [% loc('Please give your blog a name. If the name you provide does not end with "Blog", the system will add "Blog" to the name you provide. After you click "Create", you\'ll be taken right to the new blog.') %]
+    [% loc('blog.naming') %]
   </dd>
   <dd>
-    <input type="text" name="weblog_title" value="[% loc("Sample Blog") %]" size="50" />
-    ([% loc('required') %])
+    <input type="text" name="weblog_title" value="[% loc("blog.sample") %]" size="50" />
+    ([% loc('info.required') %])
     <br/>
-    <i> [% loc('Example: Sales Team Blog') %]</i>
+    <i> [% loc('example.blog') %]</i>
   </dd>
 </dl>
 

@@ -77,22 +77,22 @@ ST.Lightbox.prototype = {
         if (data.page_exists) {
             var button = $(this.sel + ' a[class~=submit]').text();
             return loc(
-                'The new page name you selected, "[_1]", is already in use.  Please choose a different name.  If you are sure you wish to overwrite the existing "[_1]" page, please press "[_2]" again.', new_title, button
+                'error.page-exists=title,button', new_title, button
             );
         }
         else if (data.page_title_bad) {
             return loc(
-                'The page name you selected, "[_1]", is not allowed.  Please enter or change the page name.', new_title
+                'error.invalid-page-name=title', new_title
             );
         }
         else if (data.page_title_too_long) {
             return loc(
-                'The page name you selected, "[_1]", is too long after URL encoding.', new_title
+                'error.long-page-name=title', new_title
             );
         }
         else if (data.same_title) {
             return loc(
-                'The page name you selected, "[_1]", is the same as the page\'s current title.  Please enter a new page name.', new_title
+                'error.same-page-name=title', new_title
             );
         }
     }

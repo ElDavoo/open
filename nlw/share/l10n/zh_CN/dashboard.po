@@ -1,0 +1,94 @@
+# @COPYRIGHT@
+msgid ""
+msgstr ""
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-02-26 08:53+0800\n"
+"Language-Team: Socialtext i18n team\n"
+"Last-Translator: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "dashboard.add-widget"
+msgstr "新增小工具"
+
+msgid "dashboard.admin"
+msgstr "管理显示板"
+
+msgid "dashboard.confirm-revert?"
+msgstr "您确认要恢复到Socialtext的默认设置么？"
+
+msgid "dashboard.for=account"
+msgstr "%1 的显示板"
+
+msgid "dashboard.force-update"
+msgstr "同时强制升级現有用户的显示板"
+
+msgid "dashboard.preview"
+msgstr "预览"
+
+msgid "dashboard.publish"
+msgstr "发布"
+
+msgid "dashboard.publish-widget-now"
+msgstr "小工具生成正确但是尚未保存。点击发布来更新小工具库。"
+
+msgid "dashboard.revert"
+msgstr "恢复为默认"
+
+msgid "dashboard.save"
+msgstr "保存..."
+
+msgid "dashboard.save-confirmation"
+msgstr "确认保存"
+
+msgid "dashboard.successfully-reset"
+msgstr "成功重置所选帐户的所有显示板"
+
+msgid "dashboard.successfully-saved"
+msgstr "成功保存所选帐户的默认布局。"
+
+msgid "dashboard.switch-from=account:"
+msgstr "这是帐户\"%1\"下面所有用户共享的默认显示板。切换到帐户："
+
+msgid "dashboard.welcome"
+msgstr "欢迎"
+
+msgid "dashboard.widgets-to-push:"
+msgstr "下面的小工具将会被推送："
+
+msgid "do.cancel"
+msgstr "取消"
+
+msgid "do.no"
+msgstr "否"
+
+msgid "do.revert-dashboard"
+msgstr "恢复为默认..."
+
+msgid "do.save"
+msgstr "保存"
+
+msgid "do.yes"
+msgstr "是"
+
+msgid "error.dashboard-push-widget"
+msgstr "推送到显示板发生错误"
+
+msgid "error.dashboard-reset"
+msgstr "重置显示板发生错误"
+
+msgid "error.dashboard-save-default-layout"
+msgstr "保存默认布局错误。"
+
+msgid "error.unsaved-widget"
+msgstr "您有未保存的更改。"
+
+msgid "info.dashboard-force-update"
+msgstr "如果您强制升级当前显示板，您会替换这个帐户下面所有人现有的显示板。"
+
+msgid "info.dashboard-push-widget"
+msgstr "推送小工具到用户的显示板，会导致每个用户载入显示板的时候，该小工具出现在在您选择的列的顶部，也就是現有小工具的上方。"
+
+msgid "info.dashboard-save-layout"
+msgstr "点击下面的<b>保存</b>使当前显示板成为您帐户的默认显示板。在新用户第一次登录的时候，他们都会有这个显示板。点击下面“强制升级”复选框来使强制老用户帐户也如此。"

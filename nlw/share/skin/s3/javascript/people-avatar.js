@@ -5,12 +5,30 @@ Person = function (user) {
 }
 
 Person.prototype = {
+    loadWatchlist: function(callback) {
+        var self = this;
+
+        var params = {};
+        params[gadgets.io.RequestParameters.CONTENT_TYPE] =
+            gadgets.io.ContentType.JSON;
+        params[gadgets.io.RequestParameters.REFRESH_INTERVAL] = 20;
+        var url = location.protocol + '//' + location.host
+                + '/data/people/' + Socialtext.userid + '/watchlist?minimal=1';
+        gadgets.io.makeRequest(url, function(response) {
+            self.watchlist = {};
+            $.each(response.data, function(_, user) {
+                self.watchlist[user.id] = true;
+            });
+            callback();
+        }, params);
+    },
+
     isSelf: function() {
         return this.self || (Socialtext.email_address == this.email);
     },
 
     isFollowing: function() {
-        return Socialtext.watchlist[this.id] ? true : false;
+        return this.watchlist[this.id] ? true : false;
     },
 
     updateFollowLink: function() {
@@ -19,8 +37,8 @@ Person.prototype = {
     },
 
     linkText: function() {
-        return this.isFollowing() ? loc('Stop following this person')
-                                  : loc('Follow this person');
+        return this.isFollowing() ? loc('do.unfollow')
+                                  : loc('do.follow');
     },
 
     createFollowLink: function() {
@@ -47,7 +65,7 @@ Person.prototype = {
             processData: false,
             data: '{"person":{"id":"' + this.id + '"}}',
             success: function() {
-                Socialtext.watchlist[self.id] = self.best_full_name;
+                self.watchlist[self.id] = true;
                 self.updateFollowLink();
                 $("#global-people-directory").peopleNavList();
                 if ($.isFunction(self.onFollow)) {
@@ -64,7 +82,7 @@ Person.prototype = {
             type:'DELETE',
             contentType: 'application/json',
             success: function() {
-                delete Socialtext.watchlist[self.id];
+                delete self.watchlist[self.id];
                 self.updateFollowLink();
                 $("#global-people-directory").peopleNavList();
                 if ($.isFunction(self.onStopFollowing)) {
@@ -175,7 +193,7 @@ Avatar.prototype = {
 
     showError: function() {
         this.contentNode
-            .html(loc('Error retreiving user data'));
+            .html(loc('error.user-data'));
         this.mouseOver();
     },
 

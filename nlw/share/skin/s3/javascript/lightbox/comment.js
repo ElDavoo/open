@@ -88,7 +88,7 @@ GuiEdit.prototype.show = function () {
                 self.close();
             },
             error: function() {
-                alert(loc("Saving failed due to server error; please try again later."));
+                alert(loc("error.save-failed"));
                 $saveButton.parent().removeClass('disabled').removeClass('loading');
             }
         });
@@ -414,7 +414,7 @@ GuiEdit.prototype.do_image = function() {
 }
 
 GuiEdit.prototype.do_wikilink = function() {
-    this.boundword('[', ']', loc('type link text here'))
+    this.boundword('[', ']', loc('comment.type-link'))
 }
 
 GuiEdit.prototype.do_createlink = function() {

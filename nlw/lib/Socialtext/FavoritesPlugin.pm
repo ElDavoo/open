@@ -22,13 +22,13 @@ sub which_page_pref {
     my $self = shift;
     my $p = $self->new_preference('which_page');
     my $title = $self->class_title;
-    my $message = loc('<p>This is where you set the title of the page you would like to see in the "Your Notepad" panel.</p><p>Some choose to use an existing page, and others make a new page, such as "Rupert Jee\'s Notepad".</p>');
+    my $message = loc('notepad.set-title');
     $p->query($message);
     $p->size(30);
     $p->type('input');
     $p->default_for_input(sub {
         my $self = shift;
-        return loc("[_1]'s Notepad", $self->hub->current_user->best_full_name);
+        return loc("notepad.title=user", $self->hub->current_user->best_full_name);
     });
     $p->layout_over_under(1);
     return $p;

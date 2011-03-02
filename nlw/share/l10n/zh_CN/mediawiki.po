@@ -1,0 +1,19 @@
+# @COPYRIGHT@
+msgid ""
+msgstr ""
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-02-26 08:53+0800\n"
+"Language-Team: Socialtext i18n team\n"
+"Last-Translator: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "mediawiki.server-url"
+msgstr "MediaWiki服务器网址"
+
+msgid "mediawiki.wiki-navbar-name"
+msgstr "工作区的导航条名称"
+
+msgid "nav.mediawiki"
+msgstr "MediaWiki"

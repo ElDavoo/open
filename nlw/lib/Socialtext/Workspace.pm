@@ -312,8 +312,8 @@ sub _copy_default_pages {
     my $help_hub = $self->_hub_for_workspace( $help );
 
     # Get all the default pages from the help workspace
-    my @pages = $help_hub->category->get_pages_for_category( loc("Welcome") );
-    push @pages, $help_hub->category->get_pages_for_category( loc("Top Page") );
+    my @pages = $help_hub->category->get_pages_for_category( loc("wiki.welcome") );
+    push @pages, $help_hub->category->get_pages_for_category( loc("wiki.top-page") );
 
     my $homepage_id = ( system_locale() eq 'ja' )
         ? '%E3%83%88%E3%83%83%E3%83%97%E3%83%9A%E3%83%BC%E3%82%B8'
@@ -595,7 +595,7 @@ sub _validate_and_clean_data {
         if ( ( exists $p->{name} or $is_create )
              and not
              ( defined $p->{name} and length $p->{name} ) ) {
-            push @errors, loc("Workspace name is a required field.");
+            push @errors, loc("error.wiki-name-required");
         }
     }
 
@@ -606,7 +606,7 @@ sub _validate_and_clean_data {
         if ( ( exists $p->{title} or $is_create )
              and not
              ( defined $p->{title} and length $p->{title} ) ) {
-            push @errors, loc("Workspace title is a required field.");
+            push @errors, loc("error.wiki-title-required");
         }
     }
 
@@ -617,11 +617,11 @@ sub _validate_and_clean_data {
                                             errors => \@errors );
 
         if ( Socialtext::EmailAlias::find_alias( $p->{name} ) ) {
-            push @errors, loc("The workspace name you chose, [_1], is already in use as an email alias.", $p->{name});
+            push @errors, loc("error.wiki-email-alias-exists=name", $p->{name});
         }
 
         if ( Socialtext::Workspace->new( name => $p->{name} ) ) {
-            push @errors, loc("The workspace name you chose, [_1], is already in use by another workspace.", $p->{name});
+            push @errors, loc("error.wiki-exists=name", $p->{name});
         }
     }
 
@@ -632,7 +632,7 @@ sub _validate_and_clean_data {
 
     if ( $p->{incoming_email_placement}
          and $p->{incoming_email_placement} !~ /^(?:top|bottom|replace)$/ ) {
-        push @errors, loc('Incoming email placement must be one of top, bottom, or replace.');
+        push @errors, loc('error.invalid-email-placement');
     }
 
     if ($p->{skin_name}) {
@@ -641,7 +641,7 @@ sub _validate_and_clean_data {
     }
 
     if ( $is_create and not $p->{account_id} ) {
-        push @errors, loc("An account must be specified for all new workspaces.");
+        push @errors, loc("error.account-for-new-wiki-required");
     }
 
     if ($p->{account_id}) {
@@ -649,12 +649,12 @@ sub _validate_and_clean_data {
 
         if ( $account ) {
             if ( ! $is_create and $self->is_all_users_workspace ) {
-                push @errors, loc("This workspace is the all users workspace for the [_1] account. Aborting.", $self->account->name);
+                push @errors, loc("error.delete-auw-workspace", $self->account->name);
             }
         }
         else {
             push @errors,
-                loc("The account_id you specified, [_1], does not exist.",
+                loc("error.no-account=id",
                     $p->{account_id});
         }
     }
@@ -677,6 +677,11 @@ sub _validate_and_clean_data {
 
     # You should never update the user_set_id
     delete $p->{user_set_id};
+
+    # Make uploaded_skin into a boolean
+    if (exists $p->{uploaded_skin}) {
+        $p->{uploaded_skin} = ($p->{uploaded_skin} ? 1 : 0);
+    }
 }
 
 
@@ -697,14 +702,14 @@ sub TitleIsValid {
         and ( $title !~ /^-/ ) ) {
         push @{$errors},
             loc(
-            "Workspace title must be between 2 and 64 characters long and may not begin with a '-'."
+            "error.invalid-wiki-title"
             );
     }
 
     if ( defined $title
          and ( length Socialtext::String::title_to_id($title) > Socialtext::String::MAX_PAGE_ID_LEN )
        ) {
-        push @{$errors}, loc('Workspace title is too long after URL encoding');
+        push @{$errors}, loc('error.wiki-title-too-long');
     }
 
     return @{$errors} > 0 ? 0 : 1;
@@ -735,17 +740,17 @@ sub NameIsValid {
 
     if ( $class->NameIsIllegal($name) ) {
         push @{$errors},
-            loc("Workspace name must be between 3 and 30 characters long, and must contain only lower-case letters, numbers, underscores, and dashes and may not begin with a '-'.");
+            loc("error.invalid-wiki-name");
     }
 
     if ( $name =~ /^-/ ) {
         push @{$errors},
-            loc('Workspace name may not begin with -.');
+            loc('error.invalid-wiki-name-begins-with-dash');
     }
 
     if ( $ReservedNames{$name} || ($name =~ /^st_/i) ) {
         push @{$errors},
-            loc("'[_1]' is a reserved workspace name and cannot be used.", $name);
+            loc("error.reserved-name=wiki", $name);
     }
 
     return @{$errors} > 0 ? 0 : 1;
@@ -852,7 +857,7 @@ sub logo_filename {
 
         my $mime_type = Socialtext::MIME::Types::mimeTypeOf($p{filename});
         unless ( $mime_type and $ValidTypes{$mime_type} ) {
-            data_validation_error errors => [ loc("Logo file must be a gif, jpeg, or png file.") ];
+            data_validation_error errors => [ loc("error.invalid-logo-image-type") ];
         }
 
         my $new_file = $self->_new_logo_filename( $ValidTypes{$mime_type} );
@@ -873,7 +878,7 @@ sub logo_filename {
         };
         if ($@) {
             data_validation_error errors =>
-                [loc('Unable to process logo file. Is it an image?')];
+                [loc('error.invalid-wiki-logo?')];
         }
 
         my $old_logo_file = $self->logo_filename();
@@ -1172,10 +1177,10 @@ sub _group_role_changed {
         my %p = validate(@_,$spec);
         $p{name} //= $self->name;
 
-        die loc("Export directory [_1] does not exist.", $p{dir})."\n"
+        die loc("error.no-export-directory=path", $p{dir})."\n"
             if defined $p{dir} && ! -d $p{dir};
 
-        die loc("Export directory [_1] is not writable.", $p{dir})."\n"
+        die loc("error.export-directory-not-writable=path", $p{dir})."\n"
             unless defined $p{dir} && -w $p{dir};
 
         my $tarball_dir = defined $p{dir}
@@ -1187,7 +1192,7 @@ sub _group_role_changed {
             $p{name}.".$EXPORT_VERSION.tar" );
 
         for my $file ( ($tarball, "$tarball.gz") ) {
-            die loc("Cannot write export file [_1], aborting.", $file)."\n"
+            die loc("error.export=file", $file)."\n"
                 if -f $file && ! -w $file;
         }
 

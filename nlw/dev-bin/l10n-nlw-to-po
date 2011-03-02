@@ -6,14 +6,19 @@ use FindBin qw/$RealBin/;
 use lib "$RealBin/../lib";
 use Locale::Maketext::Lexicon 0.85; # Ensures xgettext.pl terminates
 use File::Basename 'basename';
+use Getopt::Long;
 use Socialtext::System qw/shell_run/;
 chdir "$RealBin/..";
+
+my $new;
+GetOptions( 'new|n!' => \$new ) or die "Usage: $0 [--new] [sections]\n";
 
 my @plugins = map { basename($_) } grep { -d and (-d "$_/share" or -d "$_/template") } glob('share/plugin/*');
 my %Sections = (
     bin => 'bin',
     lib => 'lib',
     wikiwyg => 'share/skin/wikiwyg/javascript',
+    appliance => ['../appliance/libsocialtext-appliance-perl/template', '../appliance/libsocialtext-appliance-perl/sbin'],
 #   s2 => ['share/skin/s2/template', 'share/skin/s2/javascript'],
     s3 => ['share/skin/s3/template', 'share/skin/s3/javascript'],
     map {
@@ -32,21 +37,31 @@ my %Sections = (
 # Cleanup temporary JS files before extracting
 shell_run("dev-bin/jsmake cleanall");
 
+my $lang = $new ? 'new' : 'en';
+mkdir "share/l10n/$lang" if $new;
+
 for my $key (sort keys %Sections) {
     my $dir = $Sections{$key};
     $dir = [$dir] unless ref $dir;
     next unless @$dir;
 
     if ($key eq 'wikiwyg') {
-        shell_run('./dev-bin/l10n-widget-to-js');
+#        shell_run('./dev-bin/l10n-widget-to-js');
         unlink 'lib/Socialtext/Widget_resource.pm';
+        unlink 'share/skin/wikiwyg/javascript/widget_resource.js';
     }
 
     shell_run(
         qw( xgettext.pl -now -P perl=* -P tt2=* ),
-        -o => "share/l10n/en/$key.po",
+        -o => "share/l10n/$lang/$key.po",
         map { -D => $_ } @$dir
-    )
+    );
+
+    if ($new) {
+        system("msggrep --msgid -v -e '^<!\\|^[a-z][a-z0-9][a-z0-9]*\\.' share/l10n/$lang/$key.po > share/l10n/$lang/$key.po.new");
+        system("mv share/l10n/$lang/$key.po.new share/l10n/$lang/$key.po");
+        unlink "share/l10n/$lang/$key.po" unless -s "share/l10n/$lang/$key.po";
+    }
 }
 
 #shell_run("msgcat share/l10n/en/*.po > share/l10n/en.po");

@@ -394,9 +394,9 @@ sub _signal_edit_summary {
     my $page_link = sprintf "{link: %s [%s]}", $workspace->name, $self->name;
     my $body = $edit_summary
         ? ($is_comment
-            ? loc('"[_1]" (commented on [_2] in [_3])', $edit_summary, $page_link, $workspace->title)
-            : loc('"[_1]" (edited [_2] in [_3])', $edit_summary, $page_link, $workspace->title))
-        : loc('wants you to know about an edit of [_1] in [_2]', $page_link, $workspace->title);
+            ? loc('page.commented=summary,page,wiki', $edit_summary, $page_link, $workspace->title)
+            : loc('page.edited=summary,page,wiki', $edit_summary, $page_link, $workspace->title))
+        : loc('page.default-summary=page,wiki', $page_link, $workspace->title);
 
     my %params = (
         user  => $user,
@@ -499,7 +499,7 @@ sub update_lock_status {
     my ($self, $status, $skip_edit) = @_;
 
     unless ($skip_edit) {
-        my $summary = $status ? loc('Locking page.') : loc('Unlocking page.');
+        my $summary = $status ? loc('page.locking') : loc('page.unlocking');
         my $rev = $self->edit_rev();
         $rev->locked($status);
         $rev->edit_summary($summary);
@@ -724,7 +724,7 @@ sub add_comment {
     # TODO: change this to encode a user_id instead? Would have import/export
     # and potentially backup/restore side-effects.
     my $utc_date = $rev->edit_time->strftime('%Y-%m-%d %H:%M:%S GMT');
-    my $comment = "$wikitext\n_".loc("contributed by {user: [_1]} on {date: [_2]}", $rev->editor->email_address, $utc_date)."_\n";
+    my $comment = "$wikitext\n_".loc("page.contributed-by=user,date", $rev->editor->email_address, $utc_date)."_\n";
 
     $self->append($comment); # pass-by-value is OK; will use $_[1]
 
@@ -735,7 +735,7 @@ sub add_comment {
         : $self->preview_text($wikitext);
     $rev->edit_summary($signal_edit_to_network
         ? $summary
-        : loc('(comment)'));
+        : loc('page.summary-comment'));
     $rev->summary($summary);
 
     my $signal = $self->store(
@@ -887,7 +887,7 @@ sub store {
             }, $self->workspace_id, $self->page_id);
             ($cur_rev_id,$was_deleted) = $sth->fetchrow_array;
             Socialtext::Exception::Conflict->throw(
-                error => loc('Another person or process has written to this page already.')) if (!$p{skip_rev_check} && $cur_rev_id && $cur_rev_id != $self->revision_id);
+                error => loc('error.page-conflict')) if (!$p{skip_rev_check} && $cur_rev_id && $cur_rev_id != $self->revision_id);
         }
         else {
             $rev->revision_num(1);
@@ -1123,8 +1123,8 @@ sub content_or_default {
 sub default_content {
     my $self = shift;
     return $self->is_spreadsheet
-        ? loc('Creating a New Spreadsheet...').'   '
-        : loc('Replace this text with your own.').'   ';
+        ? loc('sheet.creating').'   '
+        : loc('edit.default-text').'   ';
 }
 
 sub get_units {
@@ -1867,16 +1867,16 @@ sub _to_plain_text {
 
     # Why not go through the chunker? it's slower than returning when you use
     # a 'my' variable in-between.
-    if ($self->body_length < CHUNK_IT_UP_SIZE) {
+    if (length $$content_ref < CHUNK_IT_UP_SIZE) {
         my $parser = Socialtext::WikiText::Parser->new(
            receiver => Socialtext::WikiText::Emitter::SearchSnippets->new,
         );
-        return $parser->parse(${$self->body_ref});
+        return $parser->parse($$content_ref);
     }
 
     # It's too big! Take the hit and process it piecemeal
     my $plain_text = '';
-    _chunk_it_up( $self->body_ref, sub {
+    _chunk_it_up( $content_ref, sub {
         my $chunk_ref = shift;
         my $parser = Socialtext::WikiText::Parser->new(
            receiver => Socialtext::WikiText::Emitter::SearchSnippets->new,
@@ -1927,6 +1927,16 @@ sub duplicate {
     # Don't clobber an existing page if we aren't clobbering
     if ($target->active and $clobber ne $target_title) {
         return 0
+    }
+
+    # If the target page is the same as the source page, just rename
+    if ($cur_ws->workspace_id == $dest_ws->workspace_id and $target_id eq $self->page_id) {
+        return $self->rename(
+            $target_title,
+            $keep_categories,
+            $keep_attachments,
+            $clobber,
+        );
     }
 
     return try { sql_txn {
@@ -2016,7 +2026,7 @@ sub rename {
 
         # XXX: is there a better way to put square brackets around the
         # target name?  Maybe with [sprintf,...] somehow?
-        my $localized_str = loc("Page renamed to <[_1]>", $new_page_title);
+        my $localized_str = loc("page.renamed=title", $new_page_title);
         $localized_str =~ tr/></][/;
 
         my $rev = $self->edit_rev();

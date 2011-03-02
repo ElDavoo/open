@@ -77,14 +77,14 @@ msgid "activities.composing-reply-to=person"
 msgstr "You are composing a reply to %1"
 
 #. (evt.replies.length ? loc('entire Conversation')
-#: share/plugin/widgets/share/javascript/activities/event_list.js:918
+#: share/plugin/widgets/share/javascript/activities/event_list.js:919
 msgid "activities.confirm-delete=target"
 msgstr ""
 "Are you sure you want to delete this %1?\n"
 "You cannot undelete it."
 
 #. (evt.replies.length ? loc('entire Conversation')
-#: share/plugin/widgets/share/javascript/activities/event_list.js:933
+#: share/plugin/widgets/share/javascript/activities/event_list.js:934
 msgid "activities.confirm-expunge=target"
 msgstr ""
 "Are you sure you want to expunge this %1 from the system?\n"
@@ -671,7 +671,7 @@ msgstr "Only members with permission to view this page will receive the signal."
 msgid "info.success"
 msgstr "Success"
 
-#: share/plugin/widgets/template/mobile-signals.tt2:123
+#: share/plugin/widgets/template/mobile-signals.tt2:125
 msgid "nav.activity"
 msgstr "Activity"
 
@@ -679,19 +679,19 @@ msgstr "Activity"
 msgid "nav.error"
 msgstr "Error"
 
-#: share/plugin/widgets/template/mobile-signals.tt2:97
+#: share/plugin/widgets/template/mobile-signals.tt2:99
 msgid "nav.logout"
 msgstr "Log out"
 
-#: share/plugin/widgets/template/mobile-signals.tt2:119
+#: share/plugin/widgets/template/mobile-signals.tt2:121
 msgid "nav.people"
 msgstr "People"
 
-#: share/plugin/widgets/template/mobile-signals.tt2:114 share/plugin/widgets/template/mobile-signals.tt2:116 share/plugin/widgets/template/mobile-signals.tt2:7
+#: share/plugin/widgets/template/mobile-signals.tt2:116 share/plugin/widgets/template/mobile-signals.tt2:118 share/plugin/widgets/template/mobile-signals.tt2:7
 msgid "nav.signals"
 msgstr "Signals"
 
-#: share/plugin/widgets/template/mobile-signals.tt2:129
+#: share/plugin/widgets/template/mobile-signals.tt2:131
 msgid "nav.wikis"
 msgstr "Workspaces"
 

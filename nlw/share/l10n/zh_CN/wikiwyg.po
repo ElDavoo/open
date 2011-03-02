@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-25 06:18+0800\n"
+"PO-Revision-Date: 2011-02-26 04:28+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -196,7 +196,7 @@ msgid "edit.saving"
 msgstr "正在保存..."
 
 msgid "edit.signal-to"
-msgstr "将本编辑通知"
+msgstr "将本编辑发送至"
 
 msgid "edit.spreadsheet-title-required-for-wiki"
 msgstr "如果指定工作区，则必须填入试算表标题"
@@ -220,10 +220,10 @@ msgid "edit.unsaved-changes"
 msgstr "您的更改未保存."
 
 msgid "edit.upload"
-msgstr "正在上传..."
+msgstr "上传文件..."
 
 msgid "edit.wiki-text"
-msgstr "Wiki格式"
+msgstr "維基格式"
 
 msgid "error.browser-offline"
 msgstr "浏览器为离线状态，请连入互联网再重试."
@@ -334,7 +334,7 @@ msgid "info.preformatted-text"
 msgstr "(预格式化文本为与输入所显示出来完全一致的纯文本.)"
 
 msgid "info.wafl-uneditable"
-msgstr "该小工具不可编辑.请在Wiki语法模式下进行编辑."
+msgstr "该小工具不可编辑。请在維基格式下进行编辑。"
 
 msgid "link.add"
 msgstr "添加链接"
@@ -364,7 +364,7 @@ msgid "link.web-link"
 msgstr "网站链接"
 
 msgid "link.wiki-link"
-msgstr "Wiki链接"
+msgstr "維基链接"
 
 msgid "link.wiki:"
 msgstr "工作区:"
@@ -586,7 +586,7 @@ msgid "wafl.file-name"
 msgstr "文件名称"
 
 msgid "wafl.file-title=name"
-msgstr "链接到 '%1'文件. 点击进行编辑."
+msgstr "链接到“%1”文件. 点击进行编辑."
 
 msgid "wafl.file=name"
 msgstr "文件: %1"
@@ -811,7 +811,7 @@ msgid "wafl.wiki"
 msgstr "工作区"
 
 msgid "wafl.wiki-text"
-msgstr "Wiki语法"
+msgstr "維基格式"
 
 msgid "wafl.wiki-this"
 msgstr "当前工作区"

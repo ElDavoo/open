@@ -32,7 +32,7 @@ sub preferences_settings {
 
     my $class_id = $self->cgi->preferences_class_id;
     if ( $class_id eq '' ) {
-        my $message = loc("Preferences Class ID is missing");
+        my $message = loc("error.no-preference-class-id");
         data_validation_error errors => [$message];
     }
 
@@ -44,7 +44,7 @@ sub preferences_settings {
 
     if ( $self->cgi->Button ) {
         $self->save($object);
-        $self->message(loc('Preferences saved'));
+        $self->message(loc('pref.saved'));
     }
 
     my $prefs = $self->preferences->new_for_user($self->hub->current_user);
@@ -61,7 +61,7 @@ sub preferences_settings {
         settings_table_id => 'settings-table',
         settings_section  => $settings_section,
         hub               => $self->hub,
-        display_title     => loc('Preferences: [_1]',loc($object->class_title)),
+        display_title     => loc('pref.for-class=title',loc($object->class_title)),
         pref_list         => $self->_get_pref_list,
     );
 }
@@ -140,7 +140,7 @@ sub save {
 
         if( $class_id eq 'favorites' ) {
             if(! $self->_is_favorites_page_title_valid($settings->{$pref})) {
-                my $message = loc("Page title is too long after URL encoding");
+                my $message = loc("error.page-title-too-long");
                 $self->add_error($message);
                 return;
             }

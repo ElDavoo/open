@@ -8,7 +8,7 @@ use Socialtext::l10n 'loc';
 
 sub collection_name {
     my $self = shift;
-    return loc("Events for [_1] in [_2]", 
+    return loc("rest.events=page,wiki", 
                 $self->hub->pages->current->title,
                 $self->hub->current_workspace->title);
 }

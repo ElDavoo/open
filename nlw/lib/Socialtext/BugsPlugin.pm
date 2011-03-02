@@ -28,8 +28,8 @@ sub register {
 
 sub bugs_report {
     my $self = shift;
-    return $self->save_comment if $self->cgi->Button eq loc('Report Bug');
-    return $self->ignore_bug if $self->cgi->Button eq loc('Ignore Bug');
+    return $self->save_comment if $self->cgi->Button eq loc('bug.report');
+    return $self->ignore_bug if $self->cgi->Button eq loc('bug.ignore');
     my $bug_id = $self->save_report(@_);
     return $self->hub->template->process('bugs_content.html',
         bug_id => $bug_id,
@@ -41,7 +41,7 @@ sub bugs_dump {
     my $dump = eval { YAML::Dump($self->retrieve($self->cgi->bug_id)) } || $@;
     return $self->hub->template->process('bugs_dump.html',
        content_pane => 'bugs_dump.html',
-       display_title => loc('Bug Dump'),
+       display_title => loc('bug.dump'),
        dump => $dump,
     );
 }
@@ -111,15 +111,15 @@ sub send_email {
     my $subject;
 
     if( defined $workspace and defined $user) {
-        $subject = loc("Application error in [_1] for [_2] on [_3]: [_4]", $workspace,$user->email_address, $hostname, $error);
+        $subject = loc("error.application=wiki,email,host,error", $workspace,$user->email_address, $hostname, $error);
     } elsif (defined $workspace and not defined $user) {
 
-        $subject = loc("Application error in [_1] on [_2]: [_3]", $workspace,$hostname, $error);
+        $subject = loc("error.application=wiki.host,error", $workspace,$hostname, $error);
     } elsif (not defined $workspace and defined $user) {
 
-        $subject = loc("Application error for [_1] on [_2]: [_3]", $user->email_address, $hostname, $error);
+        $subject = loc("error.application=email,host,error", $user->email_address, $hostname, $error);
     } else {
-        $subject = loc("Application error on [_1]: [_2]", $hostname, $error);
+        $subject = loc("error.application=host,error", $hostname, $error);
     }
 
     my $dump = eval { YAML::Dump($report) } || $@;

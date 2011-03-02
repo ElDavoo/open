@@ -11,7 +11,7 @@ extends 'Socialtext::Rest::EventsBase';
 
 sub collection_name { 
     my $self = shift;
-    return loc("[_1]'s Activity", $self->_workspace->title);
+    return loc("rest.activity=user", $self->_workspace->title);
 }
 
 sub get_resource {

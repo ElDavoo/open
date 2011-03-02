@@ -49,7 +49,7 @@ sub challenge {
         my $workspace = $hub->current_workspace;
         my $username  = $hub->current_user->username();
         my $message   = loc(
-            "User [_1] is not authorized to view workspace [_2]",
+            "error.wiki-forbidden=user,wiki",
             $username . $workspace->title()
         );
         st_log->error($message);

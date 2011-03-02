@@ -1,0 +1,304 @@
+# @COPYRIGHT@
+msgid ""
+msgstr ""
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-02-26 08:54+0800\n"
+"Language-Team: Socialtext i18n team\n"
+"Last-Translator: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "do.cancel"
+msgstr "取消"
+
+msgid "do.invite"
+msgstr "邀请"
+
+msgid "error.group-member-exists=count:"
+msgstr "对不起，下面的 %1 名用户已经是群组成员："
+
+msgid "error.invalid-email-address=count,domain"
+msgstr "对不起，下面的 %1 項电子邮箱地址不在域名 %2 下面"
+
+msgid "error.invalid-email-address=count:"
+msgstr "对不起，下面的 %1 項电子邮箱地址是无效的："
+
+msgid "error.no-activities"
+msgstr "没有活动可以显示。"
+
+msgid "error.no-additional-profile-data"
+msgstr "没有额外的个人资料数据。"
+
+msgid "error.no-people-found"
+msgstr "没有好友符合此标准。"
+
+msgid "error.no-signals"
+msgstr "没有人注册。"
+
+msgid "event.add-tag-self=tag"
+msgstr "给自己添加标签 %1。"
+
+msgid "event.add-tag=person,tag"
+msgstr "给 %1 添加标签 %2。"
+
+msgid "event.delete-tag-self=tag"
+msgstr "删掉自己的标签 %1。"
+
+msgid "event.delete-tag=tag,person"
+msgstr "删除 %2 的标签 %1。"
+
+msgid "event.edit-profile-self"
+msgstr "编辑自己的个人资料。"
+
+msgid "event.edit-profile=person"
+msgstr "编辑 %1 的个人资料。"
+
+msgid "event.follow=person"
+msgstr "开始关注 %1。"
+
+msgid "event.generic-self=action"
+msgstr "为自己执行 '%1' 操作。"
+
+msgid "event.generic=action,person"
+msgstr "为 %2 执行 '%1' 操作。"
+
+msgid "event.unfollow=person"
+msgstr "取消关注 %1。"
+
+msgid "invite.account-password-exists"
+msgstr "由于您已经拥有一个帐户，其它群组的密码将与其密码相同。"
+
+msgid "invite.account-password-exists=app-name"
+msgstr "由于您已经拥有帐户%1，其它群组的密码将和%1的密码相同。"
+
+msgid "invite.added-to-group=users:"
+msgstr "下面的 %1 名用户已经被成功的邀请到这个群组："
+
+msgid "invite.another-example-email-address"
+msgstr "another.friend@example.com"
+
+msgid "invite.click-to-confirm-email=uri"
+msgstr "请<a href=\"%1\">点击此链接</a>来确认您的电子邮件地址。"
+
+msgid "invite.contact-support=uri"
+msgstr "如果您对此电子邮件有疑问，请 <a href=\"%1\">联系支持</a>。"
+
+msgid "invite.disabled-for-group"
+msgstr "对不起，当前服务器管理员禁用了该群组的这项功能。"
+
+msgid "invite.disabled-for-server"
+msgstr "对不起，当前服务器管理员禁用了这项功能。"
+
+msgid "invite.email-restricted=domain"
+msgstr "您只能邀请那些和您邮箱%1域名一致的用户。"
+
+msgid "invite.enter-email-list:"
+msgstr "输入您要邀请到该群组的人的电子邮件地址清单(每行一个地址)："
+
+msgid "invite.example-email-address"
+msgstr "your.friend@example.com"
+
+msgid "invite.example-full-email-address"
+msgstr "名字 姓氏 &lt;u01234@example.com&gt;"
+
+msgid "invite.example:"
+msgstr "例如："
+
+msgid "invite.features-for-invitees"
+msgstr "邀请的好友会列在群组的名单中，上面有个人资料。如果开启了Socialtext信号，他们也可使用。"
+
+msgid "invite.hi"
+msgstr "您好,"
+
+msgid "invite.join=account,host"
+msgstr "我邀请您加入%2的群组%1。"
+
+msgid "invite.keep-this-email-for-reference"
+msgstr "您可以保存这些电子邮件以备将来参考。"
+
+msgid "invite.link-to-reset-password:"
+msgstr "如果您不记得了，请点击此链接以选择一个新密码："
+
+msgid "invite.login-details-after-confirmation"
+msgstr "一旦您确认了您的帐户，您将收到第二封电子邮件，其中有登录的详细信息。"
+
+msgid "invite.more-people"
+msgstr "邀请更多好友"
+
+msgid "invite.new-users-will-be-sent-following-welcome-email:"
+msgstr "将下面的欢迎邮件发送到新用户："
+
+msgid "invite.people"
+msgstr "邀请好友"
+
+msgid "invite.personal-message"
+msgstr "个人消息"
+
+msgid "invite.personal-message-in-email"
+msgstr "如果愿意，您可以在邀请电子邮件内包含个人信息。您可以编辑该消息来说您想说的。"
+
+msgid "invite.personal-message-in-email?"
+msgstr "在下面的邀请信中加入个人信息？"
+
+msgid "invite.primary-account=users"
+msgstr "主要，%1 名用户"
+
+msgid "invite.sign-in-with:"
+msgstr "用下面的信息登录："
+
+msgid "invite.socialtext-footer"
+msgstr "由 Socialtext 为您带来。"
+
+msgid "invite.standard-welcome-message"
+msgstr "标准欢迎辞"
+
+msgid "invite.thanks"
+msgstr "谢谢，"
+
+msgid "invite.to-your-group"
+msgstr "邀请好友到您的群组"
+
+msgid "invite.to=name"
+msgstr "邀请好友到%1"
+
+msgid "invite.username:"
+msgstr "用户名:"
+
+msgid "invite.web-address:"
+msgstr "网址:"
+
+msgid "invite.your-personal-message"
+msgstr "<您的个人信息放在这里。>"
+
+msgid "nav.my-profile"
+msgstr "我的个人资料"
+
+msgid "nav.people"
+msgstr "好友"
+
+msgid "people.add-tag-to-myself"
+msgstr "给我添加这个标签"
+
+msgid "people.add-tag-to-someone"
+msgstr "给某人添加这个标签"
+
+msgid "people.add-tag-to-user=name:"
+msgstr "为用户添加标签\"%1\":"
+
+msgid "people.cancel-add-tag"
+msgstr "取消"
+
+msgid "people.complete-your-profile"
+msgstr "请现在完成<a href=\"/st/edit_profile\">您的个人资料</a>。"
+
+msgid "people.count=users"
+msgstr "%1 名用户"
+
+msgid "people.directory"
+msgstr "好友名单"
+
+msgid "people.follow"
+msgstr "关注"
+
+msgid "people.mobile:"
+msgstr "移动电话:"
+
+msgid "people.private-message-send"
+msgstr "发送"
+
+msgid "people.private-message-to=user:"
+msgstr "给%1的短消息:"
+
+msgid "people.profile"
+msgstr "个人资料"
+
+msgid "people.search"
+msgstr "搜索好友"
+
+msgid "people.search:"
+msgstr "搜索好友:"
+
+msgid "people.showing=from,to,total"
+msgstr "显示总数%3的%1到%2。"
+
+msgid "people.sort-name"
+msgstr "名字"
+
+msgid "people.sort-relevance"
+msgstr "相关度"
+
+msgid "people.stop-following"
+msgstr "停止下面的"
+
+msgid "people.tools"
+msgstr "工具"
+
+msgid "people.welcome-new-user"
+msgstr "欢迎新用户"
+
+msgid "profile.activities"
+msgstr "活动"
+
+msgid "profile.aim:"
+msgstr "目标和情况;:"
+
+msgid "profile.assistant"
+msgstr "助理"
+
+msgid "profile.blog:"
+msgstr "博客："
+
+msgid "profile.custom"
+msgstr "自定义"
+
+msgid "profile.facebook:"
+msgstr "Facebook:"
+
+msgid "profile.gtalk:"
+msgstr "GTalk:"
+
+msgid "profile.home:"
+msgstr "家庭地址:"
+
+msgid "profile.im"
+msgstr "聊天室"
+
+msgid "profile.linkedin:"
+msgstr "Linkedin&reg;:"
+
+msgid "profile.manager"
+msgstr "经理"
+
+msgid "profile.organization"
+msgstr "组织"
+
+msgid "profile.personal:"
+msgstr "个人:"
+
+msgid "profile.phone"
+msgstr "电话"
+
+msgid "profile.sametime:"
+msgstr "同时&reg;:"
+
+msgid "profile.skype:"
+msgstr "Skype&trade;:"
+
+msgid "profile.tags"
+msgstr "标签"
+
+msgid "profile.twitter:"
+msgstr "Twitter:"
+
+msgid "profile.web"
+msgstr "网页"
+
+msgid "profile.work:"
+msgstr "工作："
+
+msgid "profile.yahoo:"
+msgstr "雅虎&trade;:"
+
+msgid "sort.by:"
+msgstr "排序方式："

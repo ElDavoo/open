@@ -26,6 +26,8 @@ my %SectionMap = (
     "widget_resource.js" => "wafl",
     "opensocial-setup.html" => "widget",
     "lib/Socialtext/Appliance" => "appliance",
+    "libsocialtext-appliance-perl/sbin" => "appliance",
+    "libsocialtext-appliance-perl/template" => "console",
 );
 
 sub words {
