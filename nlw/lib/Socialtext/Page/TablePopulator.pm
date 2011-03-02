@@ -2,13 +2,13 @@ package Socialtext::Page::TablePopulator;
 # @COPYRIGHT@
 use 5.12.0;
 use warnings;
+use Carp;
 use Email::Valid;
 use Socialtext::Workspace;
 use Socialtext::Paths;
 use Socialtext::Hub;
 use Socialtext::User;
 use Socialtext::File;
-use Socialtext::AppConfig;
 use Socialtext::Page::Legacy;
 use Socialtext::PageRevision;
 use Socialtext::String;
@@ -18,7 +18,6 @@ use Fatal qw/opendir closedir chdir open/;
 use Cwd   qw/getcwd abs_path/;
 use DateTime;
 use Try::Tiny;
-use IO::File ();
 
 our $Noisy = 1;
 
@@ -30,18 +29,19 @@ sub new {
     my $self = \%opts;
     bless $self, $class;
 
-    $self->{workspace}
-        = Socialtext::Workspace->new( name => $opts{workspace_name} );
-    die "No such workspace $opts{workspace_name}\n"
-        unless $self->{workspace};
+    my $ws = Socialtext::Workspace->new(name => $opts{workspace_name});
+    croak "No such workspace $opts{workspace_name}\n"
+        unless $ws;
+    $self->{workspace} = $ws;
+    $self->{workspace_id} = $ws->workspace_id;
 
-    die "data_dir is a required option" unless $self->{data_dir};
-    die "No such directory $self->{data_dir}"
+    croak "data_dir is a required option" unless $self->{data_dir};
+    croak "No such directory $self->{data_dir}"
         unless -d $self->{data_dir};
 
     $self->{old_name} ||= $self->{workspace_name};
     $self->{workspace_data_dir} = "$self->{data_dir}/data/$self->{old_name}";
-    die "No such workspace directory $self->{workspace_data_dir}"
+    croak "No such workspace directory $self->{workspace_data_dir}"
         unless -d $self->{workspace_data_dir};
     $self->{workspace_plugin_dir}
         = "$self->{data_dir}/plugin/$self->{old_name}";
@@ -56,7 +56,7 @@ sub populate {
     my %opts = @_;
     my $workspace = $self->{workspace};
     my $workspace_name = $self->{workspace_name};
-    my $workspace_id = $workspace->workspace_id;
+    my $workspace_id = $self->{workspace_id};
 
     my $old_cwd = getcwd();
     my $hub = $self->{hub}
@@ -187,23 +187,23 @@ sub populate {
 use constant PAGE_COLUMNS => Socialtext::Page::COLUMNS;
 use constant PAGE_UPDATE_COLS =>
     grep !/^(?:workspace_id|page_id|creator_id|create_time)$/, PAGE_COLUMNS;
+
+use constant PAGE_UPDATE_SQL => do {
+    my $ph = join(', ', map { "$_ = ?" } PAGE_UPDATE_COLS);
+    qq{UPDATE page SET $ph WHERE workspace_id = ? AND page_id = ?};
+};
+
+use constant PAGE_INSERT_SQL => do {
+    my $cols = join ', ', PAGE_COLUMNS;
+    my $ph = '?,' x scalar(PAGE_COLUMNS);
+    chop $ph;
+    qq{INSERT INTO page ($cols) VALUES ($ph)};
+};
         
 sub insert_or_update_page {
     my ($self, $page) = @_;
-    my $workspace_id = $self->{workspace}->workspace_id;
+    my $workspace_id = $self->{workspace_id};
     my $page_id = $page->{page_id};
-
-    state $page_update_sql = do {
-        my $ph = join(', ', map { "$_ = ?" } PAGE_UPDATE_COLS);
-        qq{UPDATE page SET $ph WHERE workspace_id = ? AND page_id = ?};
-    };
-
-    state $page_insert_sql = do {
-        my $cols = join ', ', PAGE_COLUMNS;
-        my $ph = '?,' x scalar(PAGE_COLUMNS);
-        chop $ph;
-        qq{INSERT INTO page ($cols) VALUES ($ph)};
-    };
 
     my $dbh = get_dbh();
     my $t_page_get_sth = $dbh->prepare_cached(q{
@@ -220,14 +220,14 @@ sub insert_or_update_page {
 
     if ($exists_already) {
         # NOTE that creator/create_time are not updated:
-        my $update_sth = $dbh->prepare_cached($page_update_sql);
+        my $update_sth = $dbh->prepare_cached(PAGE_UPDATE_SQL);
         $update_sth->execute(
             @$page{(PAGE_UPDATE_COLS)}, $workspace_id, $page_id);
         die "updating database failed"
             unless $update_sth->rows == 1;
     }
     else {
-        my $insert_sth = $dbh->prepare_cached($page_insert_sql);
+        my $insert_sth = $dbh->prepare_cached(PAGE_INSERT_SQL);
         $insert_sth->execute(@$page{(PAGE_COLUMNS)});
         die "inserting page failed"
             unless $insert_sth->rows == 1;
@@ -268,8 +268,6 @@ sub load_page_metadata {
     die "Couldn't find any page_revisions for $ws_id:$dir"
         unless $sth->rows == 1;
     my $page = $sth->fetchrow_hashref();
-     use XXX; WWW($page);
-     die "need to resolve 'revision_ids are dates on dapper, sequence on lucid'";
 
     # and creation stats
     $sth = sql_execute(q{
@@ -306,7 +304,7 @@ sub load_page_metadata {
     return $page;
 }
 
-my $page_rev_insert = do {
+use constant PAGE_REV_INSERT => do {
     my $cols_str = join(',', 'body', Socialtext::PageRevision::COLUMNS());
     my $ph = '?'; # body
     $ph .= ',?' x scalar(Socialtext::PageRevision::COLUMNS());
@@ -319,7 +317,7 @@ sub load_revision_metadata {
     my $ws_id = $self->{workspace}->workspace_id;
 
     my $dbh = get_dbh();
-    my $sth = $dbh->prepare_cached($page_rev_insert) or die $dbh->errmsg;
+    my $sth = $dbh->prepare_cached(PAGE_REV_INSERT) or die $dbh->errmsg;
     my $check_sth;
 
     opendir(my $dfh, "$ws_dir/$pg_dir");
@@ -411,7 +409,15 @@ sub load_page_attachments {
     return unless -d $atts_dir;
 
     my $dbh = get_dbh();
-    my ($insert_sth, $update_sth, $check_sth);
+    my $page_att_ins_sth = $dbh->prepare_cached(q{
+        INSERT INTO page_attachment VALUES (?,?,?,?,?)
+    });
+    my $upload_non_temp_sth = $dbh->prepare_cached(q{
+        UPDATE attachment SET is_temporary = false WHERE attachment_id = ?
+    });
+    my $check_sth = $dbh->prepare_cached(q{
+        SELECT attachment_id FROM t_attachments WHERE id = ? AND page_id = ?
+    });
 
     opendir my $dh, $atts_dir or die "can't open dir $atts_dir: $!";
   ATT:
@@ -420,13 +426,6 @@ sub load_page_attachments {
         my $legacy_id = $1;
         $file = "$atts_dir/$file";
         next unless -f $file;
-
-        $insert_sth //= $dbh->prepare_cached(q{
-            INSERT INTO page_attachment VALUES (?,?,?,?,?)
-        }, {RaiseError => 1});
-        $update_sth //= $dbh->prepare_cached(q{
-            UPDATE attachment SET is_temporary = false WHERE attachment_id = ?
-        }, {RaiseError => 1});
 
         try {
             my $t2 = time_scope 'load_page_att';
@@ -458,19 +457,15 @@ sub load_page_attachments {
             # (which can be identified by its old unique ID on this page)
             recreate_att: {
                 my $t = time_scope 'recreate_att';
-                $check_sth //= $dbh->prepare_cached(q{
-                    SELECT attachment_id FROM t_attachments
-                     WHERE id = ? AND page_id = ?
-                });
                 $check_sth->execute($legacy_id, $page_hash->{page_id});
                 my ($use_upload_id) = $check_sth->fetchrow_array;
                 $check_sth->finish;
                 if ($use_upload_id) {
                     sql_txn {
-                        $insert_sth->execute($legacy_id,
+                        $page_att_ins_sth->execute($legacy_id,
                             @$page_hash{qw(workspace_id page_id)},
                             $use_upload_id, $deleted);
-                        die "insert failed" unless $insert_sth->rows == 1;
+                        die "insert failed" unless $page_att_ins_sth->rows == 1;
                     };
                     return; # from the try
                 }
@@ -532,13 +527,13 @@ sub load_page_attachments {
 
                 # page_attachment make_permanent:
                 # NOTE bind values must be same order as actual table
-                $insert_sth->execute($legacy_id, @$page_hash{qw(workspace_id
+                $page_att_ins_sth->execute($legacy_id, @$page_hash{qw(workspace_id
                     page_id)}, $upload->attachment_id, $deleted);
-                die "insert failed" unless $insert_sth->rows == 1;
+                die "insert failed" unless $page_att_ins_sth->rows == 1;
 
                 # roughly Socialtext::Upload->make_permanent():
-                $update_sth->execute($upload->attachment_id);
-                die "upload de-temping failed" unless $insert_sth->rows == 1;
+                $upload_non_temp_sth->execute($upload->attachment_id);
+                die "upload de-temping failed" unless $page_att_ins_sth->rows == 1;
                 $upload->is_temporary(0); # just in case of cached
             };
         }
