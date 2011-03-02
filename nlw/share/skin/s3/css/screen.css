@@ -1178,6 +1178,10 @@ body#dashBoard div.widget.regular {
 	margin-right: 0px;
 }
 
+body#dashBoard div.widget.regular.maximized {
+    margin-top: 0px;
+}
+
 body#dashBoard div#contentColumns div#contentLeft div.widget,
 body#settingsPage div#contentColumns div#contentLeft div.widget {
 	float: left;
@@ -1650,6 +1654,18 @@ div.widgetContent div#calendarControl ul li.next a {
 		text-indent: -9999px;
 	}
 	
+        div.widgetHeader a.maximize {
+		background: url(../images/sort-down.png) no-repeat top left;
+		width: 15px;
+		height: 15px;
+		display: block;
+		margin-right: 4px;
+		position: relative;
+		top: 12px;
+		float: right;
+		text-indent: -9999px;
+	}
+	
 	div.widgetHeader a.close {
 		background: url(../images/closeIcon.png) no-repeat top left;
 		width: 15px;
@@ -2052,6 +2068,10 @@ div#contentColumns.hidebox #contentRight {
 
 div#contentColumns.showbox #contentRight {
     display: block;
+}
+
+div#contentColumns.maximized {
+    padding-top: 10px;
 }
 
 #st-wikinav-profile a {

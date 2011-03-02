@@ -22,6 +22,7 @@
         <div class="widgetHeaderButtons" style="[% UNLESS editing || !gadget.fixed %]display: none[% END %]">
             <a class="close" href="#" onclick="gadgets.container.remove('[% gadget.instance_id %]'); return false"></a>
             <a class="minimize" href="#" onclick="gadgets.container.minimize('[% gadget.instance_id %]'); return false"></a>
+            <a class="maximize" href="#" onclick="gadgets.container.maximize('[% gadget.instance_id %]'); return false"></a>
             [% IF gadget.minimized %]
                 <script><!--
                     jQuery(function(){
