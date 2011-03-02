@@ -273,14 +273,6 @@ sub ExpireUserRecord {
         # New user's *have* to have a User Id
         $self->_validate_assign_user_id($p) if ($is_create);
 
-        # When updating a User, we'll need their Metadata
-        my $metadata;
-        unless ($is_create) {
-            $metadata = Socialtext::UserMetadata->new(
-                user_id => $user->{user_id},
-            );
-        }
-
         # Lower-case any fields that require it
         $self->_validate_lowercase_values($p);
 
@@ -332,14 +324,19 @@ sub ExpireUserRecord {
         }
 
         # Can't change the username/email for a system-created User
-        if (!$is_create and $metadata and $metadata->is_system_created) {
-            push @errors,
-                loc("error.set-system-user-name")
-                if $p->{username};
+        unless ($is_create) {
+            my $metadata = Socialtext::UserMetadata->new(
+                user_id => $user->{user_id},
+            );
+            if ($metadata->is_system_created) {
+                push @errors,
+                    loc("error.set-system-user-name")
+                    if $p->{username};
 
-            push @errors,
-                loc("error.set-system-user-email")
-                if $p->{email_address};
+                push @errors,
+                    loc("error.set-system-user-email")
+                    if $p->{email_address};
+            }
         }
 
         ### IF DATA FAILED TO VALIDATE, THROW AN EXCEPTION!
