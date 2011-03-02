@@ -71,46 +71,53 @@ sub populate {
     try { sql_txn {
         my ($insert_sth, $update_sth, $tags_sth);
 
-        # Start a transaction, and delete everything for this workspace.
-        # if we're recreating the workspace from scratch, clean it out *first*
-        setup_recreate: {
+        # Assume a "dirty" workspace environment where we'll be overwriting
+        # certain objects.  We need to consider page-table entries, page
+        # revisions, page attachments, page tags and finally breadcrumbs
 
-            # Save attachment_ids so we can avoid having to re-upload
-            # attachment blobs.  Since attachments can be deleted (hidden) or
-            # purged, it's safest to start with a clean slate and re-insert
-            # page_attachment rows.
-            sql_ensure_temp(t_attachments => q{
-                id text,
-                attachment_id bigint,
-                page_id text
-            }, q{CREATE INDEX t_att_id ON t_attachments (id,page_id)});
-            sql_execute(q{
-                INSERT INTO t_attachments
-                SELECT id, attachment_id, page_id
-                  FROM page_attachment
-                  WHERE workspace_id = ?
-            }, $workspace_id);
+        # Track pages so we know which ones to purge.  It's important not to
+        # delete pages so that we don't get unwanted ON DELETE CASCADE
+        # effects.
+        sql_ensure_temp(t_page =>
+            q{ page_id text },
+            q{CREATE INDEX t_page_id_ix ON t_page (page_id)}
+        );
+        sql_execute(q{
+            INSERT INTO t_page
+            SELECT page_id FROM page WHERE workspace_id = ?
+        }, $workspace_id);
 
-            # Don't delete page revs so we can avoid having to re-insert them.
-            # Revs only ever get added to a page unless a workspace or page
-            # purge happens.  Revs don't have a FK into page, so it's ok to
-            # clean these up as a final step in the workspace population.
+        # Don't delete page revs so we can avoid having to re-insert them.
+        # Revs only ever get added to a page unless a workspace or page
+        # purge happens.  Revs don't have a FK into page, so it's ok to
+        # clean these up as a final step in the workspace population.
+        1; # no-op for page revs
 
-            # track pages so we know which ones get purged
-            sql_ensure_temp(t_page =>
-                q{ page_id text },
-                q{CREATE INDEX t_page_id_ix ON t_page (page_id)}
-            );
-            sql_execute(q{
-                INSERT INTO t_page
-                SELECT page_id FROM page WHERE workspace_id = ?
-            }, $workspace_id);
+        # Save attachment_ids so we can avoid having to re-upload attachment
+        # blobs.  Since attachments can be deleted (hidden) or purged, it's
+        # safest to start with a clean page_attachments table and then
+        # re-insert the rows.  We'll clean dangling uploads later.
+        sql_ensure_temp(t_attachments => q{
+            id text,
+            attachment_id bigint,
+            page_id text
+        }, q{CREATE INDEX t_att_id ON t_attachments (page_id,id)});
+        sql_execute(q{
+            INSERT INTO t_attachments
+            SELECT id, attachment_id, page_id
+              FROM page_attachment
+              WHERE workspace_id = ?
+        }, $workspace_id);
+        sql_execute(q{
+            DELETE FROM page_attachment WHERE workspace_id = ?
+        }, $workspace_id);
 
-            sql_execute($_, $workspace_id) for (
-                'DELETE FROM page_attachment WHERE workspace_id = ?',
-                'DELETE FROM breadcrumb WHERE workspace_id = ?',
-            );
-        }
+        # Completely overwrite breadcrumbs every time (since the files
+        # have no timestamp information, there's no way to merge the
+        # existing and imported lists).
+        sql_execute(q{
+            DELETE FROM breadcrumb WHERE workspace_id = ?
+        }, $workspace_id);
 
         # Grab all the Pages in the Workspace, figure out which ones we need
         # to add to the DB, then add them all.
@@ -383,6 +390,7 @@ sub load_revision_metadata {
                 $summary = $summary->[-1];
             }
 
+            my $control = lc($pagemeta->{Control} || '');
             my %cols = (
                 workspace_id => $ws_id,
                 page_id => $pg_dir,
@@ -393,7 +401,7 @@ sub load_revision_metadata {
                 editor_id => editor_to_id($pagemeta->{From}),
                 edit_time => $pagemeta->{Date},
                 page_type => $pagemeta->{Type}||'wiki',
-                deleted => (($pagemeta->{Control} || '') eq 'Deleted') ? 1 : 0,
+                deleted => $control eq 'deleted' ? 1 : 0,
                 summary => $summary,
                 edit_summary => $pagemeta->{'Revision-Summary'},
                 locked => $pagemeta->{Locked}||0,
@@ -424,24 +432,31 @@ sub load_page_attachments {
     my ($self, $page_hash) = @_;
     my $ws_dir = $self->{workspace_data_dir};
     my $t = time_scope 'load_page_atts';
+    my $page_id = $page_hash->{page_id};
 
     my $atts_dir = $self->{workspace_plugin_dir}."/attachments/".
-        $page_hash->{page_id};
+        $page_id;
     return unless -d $atts_dir;
 
     my $dbh = get_dbh();
     my $page_att_ins_sth = $dbh->prepare_cached(q{
-        INSERT INTO page_attachment VALUES (?,?,?,?,?)
+        INSERT INTO page_attachment
+        (workspace_id, page_id, id, attachment_id, deleted)
+        VALUES (?,?,?,?,?)
     });
     my $upload_non_temp_sth = $dbh->prepare_cached(q{
         UPDATE attachment SET is_temporary = false WHERE attachment_id = ?
     });
+
     my $check_sth = $dbh->prepare_cached(q{
-        SELECT attachment_id FROM t_attachments WHERE id = ? AND page_id = ?
+        SELECT id, attachment_id FROM t_attachments WHERE page_id = ?
     });
+    $check_sth->execute($page_id);
+    my %existing_att = map { $_->[0] => $_->[1] }
+        @{ $check_sth->fetchall_arrayref || [] };
+    $check_sth->finish;
 
     opendir my $dh, $atts_dir or die "can't open dir $atts_dir: $!";
-  ATT:
     while (my $file = readdir($dh)) {
         next unless $file =~ m{([0-9-]+)\.txt$};
         my $legacy_id = $1;
@@ -471,25 +486,20 @@ sub load_page_attachments {
             # Control: Deleted
 
             $meta->{content_length} //= -1;
-            my $control = $meta->{control} || '';
-            my $deleted = $control eq 'Deleted' ? 1 : 0;
+            my $control = lc($meta->{control} || '');
+            my $deleted = $control eq 'deleted' ? 1 : 0;
 
-            # if we're recreating, try to use the old attachment blob
-            # (which can be identified by its old unique ID on this page)
-            recreate_att: {
-                my $t = time_scope 'recreate_att';
-                $check_sth->execute($legacy_id, $page_hash->{page_id});
-                my ($use_upload_id) = $check_sth->fetchrow_array;
-                $check_sth->finish;
-                if ($use_upload_id) {
-                    sql_txn {
-                        $page_att_ins_sth->execute($legacy_id,
-                            @$page_hash{qw(workspace_id page_id)},
-                            $use_upload_id, $deleted);
-                        die "insert failed" unless $page_att_ins_sth->rows == 1;
-                    };
-                    return; # from the try
-                }
+            # If we're recreating this attachment, use the old attachment blob
+            # (which can be identified by its old unique ID on this page) and
+            # update the deleted status.
+            if (my $upload_id = $existing_att{$legacy_id}) {
+                sql_txn {
+                    $page_att_ins_sth->execute(
+                        @$page_hash{qw(workspace_id page_id)},
+                        $legacy_id, $upload_id, $deleted);
+                    die "insert failed" unless $page_att_ins_sth->rows == 1;
+                };
+                return; # from the try
             }
 
             $meta->{db_filename} //=
@@ -548,13 +558,15 @@ sub load_page_attachments {
 
                 # page_attachment make_permanent:
                 # NOTE bind values must be same order as actual table
-                $page_att_ins_sth->execute($legacy_id, @$page_hash{qw(workspace_id
-                    page_id)}, $upload->attachment_id, $deleted);
+                $page_att_ins_sth->execute(
+                    @$page_hash{qw(workspace_id page_id)}, 
+                    $legacy_id, $upload->attachment_id, $deleted);
                 die "insert failed" unless $page_att_ins_sth->rows == 1;
 
                 # roughly Socialtext::Upload->make_permanent():
                 $upload_non_temp_sth->execute($upload->attachment_id);
-                die "upload de-temping failed" unless $page_att_ins_sth->rows == 1;
+                die "upload de-temping failed"
+                    unless $page_att_ins_sth->rows == 1;
                 $upload->is_temporary(0); # just in case of cached
             };
         }
@@ -645,7 +657,7 @@ sub read_counter {
     my $t = time_scope 'read_counter';
     my $contents = Socialtext::File::get_contents($file);
     my (undef, $count) = split "\n", $contents;
-    return $count;
+    return 0+$count;
 }
 
 sub load_breadcrumbs {

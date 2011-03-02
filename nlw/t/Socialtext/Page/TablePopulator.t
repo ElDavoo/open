@@ -84,12 +84,17 @@ is exception {
     $p2 = $hub->pages->new_from_name("To Delete");
     $p2->content("Goodbye\n");
     $p2->store;
-    $hub->attachments->create(
+    my $att = $hub->attachments->create(
         page => $p2,
         fh => 't/attachments/grayscale.png',
         filename => 'GRAY2DELETE.png',
         mime_type => 'image/png',
     );
+    # for tarball consistency:
+    sql_execute(q{
+        UPDATE page_attachment SET id = ?
+        WHERE attachment_id = ?
+    }, '20110301233806-0-30531', $att->attachment_id);
 
     $p3 = $hub->pages->new_from_name("To Purge");
     $p3->content("So-long\n");
