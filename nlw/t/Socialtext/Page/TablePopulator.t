@@ -40,6 +40,9 @@ my $user = create_test_user(unique_id => '1299022686305310');
 $ws->add_user(user => $user, role => 'admin');
 $hub->current_user($user);
 
+# in order to match with what's in the tarball:
+local $Socialtext::PageRevision::NextRevisionID = 20110301000000;
+
 my ($p0, $p1, $p2, $p3);
 is exception {
     $user->primary_account->enable_plugin('signals');

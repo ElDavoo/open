@@ -2,8 +2,7 @@ package Socialtext::Page::TablePopulator;
 # @COPYRIGHT@
 use 5.12.0;
 use warnings;
-use Carp;
-use Email::Valid;
+
 use Socialtext::Workspace;
 use Socialtext::Paths;
 use Socialtext::Hub;
@@ -14,6 +13,10 @@ use Socialtext::PageRevision;
 use Socialtext::String;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw(get_dbh :exec sql_txn sql_ensure_temp);
+use Socialtext::IntSet;
+
+use Carp;
+use Email::Valid;
 use Fatal qw/opendir closedir chdir open/;
 use Cwd   qw/getcwd abs_path/;
 use DateTime;
@@ -305,7 +308,7 @@ sub load_page_metadata {
     return $page;
 }
 
-use constant PAGE_REV_INSERT => do {
+use constant PAGE_REV_INSERT_SQL => do {
     my $cols_str = join(',', 'body', Socialtext::PageRevision::COLUMNS());
     my $ph = '?'; # body
     $ph .= ',?' x scalar(Socialtext::PageRevision::COLUMNS());
@@ -318,37 +321,51 @@ sub load_revision_metadata {
     my $ws_id = $self->{workspace}->workspace_id;
 
     my $dbh = get_dbh();
-    my $sth = $dbh->prepare_cached(PAGE_REV_INSERT) or die $dbh->errmsg;
-    my $check_sth;
+    my $page_rev_insert_sth = $dbh->prepare_cached(PAGE_REV_INSERT_SQL);
 
+    # If overwriting, we'll fetch basically every revision anyway.  For fresh
+    # workspaces, this is empty and thus cheap.
+    my $check_sth = $dbh->prepare_cached(q{
+        SELECT revision_id FROM page_revision
+        WHERE workspace_id = ? AND page_id = ?
+    });
+    my $existing_ids = Socialtext::IntSet->FromArray(
+        # yes, you can pass in a prepared sth instead of text!
+        $dbh->selectcol_arrayref($check_sth,{},$ws_id,$pg_dir) || []
+    );
+
+    my ($legacy_revids, $modern_revids) = (0,0);
+
+    my @files;
     opendir(my $dfh, "$ws_dir/$pg_dir");
-    REV: while (my $file = readdir($dfh)) {
+    while (my $file = readdir($dfh)) {
         next unless $file =~ m/^\d+\.txt$/;
         $file = "$ws_dir/$pg_dir/$file";
-        next REV if -l $file;
-        next REV unless -f $file;
+        next if -l $file;
+        next unless -f $file;
 
         # Ignore really old pages that have invalid page_ids
-        next REV unless Socialtext::Encode::is_valid_utf8($file);
+        next unless Socialtext::Encode::is_valid_utf8($file);
 
         (my $revision_id = $file) =~ s#.+/(.+)\.txt$#$1#;
+        $revision_id += 0; # force-numify
+        $modern_revids++ if $revision_id >= 30000000000000;
+        $legacy_revids++ if $revision_id <  30000000000000;
 
-        check_for_rev: {
-            my $t = time_scope 'recreate_rev';
-            $check_sth //= $dbh->prepare_cached(q{
-                SELECT 1 FROM page_revision
-                WHERE workspace_id = ? AND page_id = ? AND revision_id = ?
-                LIMIT 1
-            });
-            # see if it's still there
-            $check_sth->execute($ws_id, $pg_dir, $revision_id);
-            my ($exists) = $check_sth->fetchrow_array;
-            $check_sth->finish;
-            next REV if $exists
-        }
+        # TODO {bz: 5015}
+        die "export is corrupt: cannot mix modern and legacy revision ids\n"
+            if ($modern_revids && $legacy_revids);
 
+        next if $existing_ids->check($revision_id);
+
+        push @files, [$revision_id, $file];
+    }
+    closedir $dfh;
+
+    while (my $revvy = shift @files) {
+        my ($revision_id, $file) = @$revvy;
         try {
-            my $t2 = time_scope 'load_rev';
+            my $t = time_scope 'load_rev';
 
             my $pagemeta = fetch_metadata($file);
             my $body_ref = read_and_decode_page($file, 'content too');
@@ -385,19 +402,22 @@ sub load_revision_metadata {
 
             sql_txn {
                 my $n = 1;
-                $sth->bind_param($n++, $$body_ref, {pg_type => DBD::Pg::PG_BYTEA});
+                $page_rev_insert_sth->bind_param(
+                    $n++, $$body_ref, {pg_type => DBD::Pg::PG_BYTEA});
                 for my $col (Socialtext::PageRevision::COLUMNS()) {
-                    $sth->bind_param($n++, $cols{$col});
+                    $page_rev_insert_sth->bind_param($n++, $cols{$col});
                 };
-                $sth->execute;
-                die "failed to insert $revision_id" unless $sth->rows == 1;
+                $page_rev_insert_sth->execute;
+                die "failed to insert $revision_id"
+                    unless $page_rev_insert_sth->rows == 1;
             };
         }
         catch {
             warn "Error parsing revision $ws_dir/$pg_dir/$file, skipping: $_\n";
         };
     }
-    closedir($dfh);
+
+    return;
 }
 
 sub load_page_attachments {
