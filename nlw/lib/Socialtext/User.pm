@@ -201,7 +201,7 @@ sub new_homunculus {
     return $homunculus;
 }
 
-sub _update_profile {
+sub _update_profile_with_extra_attrs {
     my $self = shift;
     my $homunculus = $self->homunculus;
     return unless $homunculus->can('extra_attrs');
@@ -228,7 +228,7 @@ sub new_from_homunculus {
     my $class      = shift;
     my $homunculus = shift;
     my $self       = $class->meta->new_object(homunculus => $homunculus);
-    $self->_update_profile();
+    $self->_update_profile_with_extra_attrs();
 
     return $self;
 }
@@ -260,7 +260,7 @@ sub create {
         metadata   => $metadata,
     );
 
-    $user->_update_profile();
+    $user->_update_profile_with_extra_attrs();
     $user->_index();
 
     return $user;
