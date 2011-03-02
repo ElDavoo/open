@@ -156,6 +156,11 @@ sub new_homunculus {
 
         # Go get this User from the DB (so we know what driver it came from,
         # and what it looked like _last time_ we saw it.
+        #
+        # Its *REALLY* important here to grab *ALL* of the columns from this
+        # table; we're going to pass it through to the Factory as a pre-loaded
+        # proto-user, so don't skimp here and try to just query one or two
+        # columns (we're going to need them all).
         my $sth = sql_execute(qq{SELECT * FROM users WHERE user_id = ?}, $val);
         my $row = $sth->fetchrow_hashref();
         return unless $row;
@@ -166,7 +171,11 @@ sub new_homunculus {
         if ($driver) {
             # look the user up by *user_id*; *ALL* factories must support this
             # lookup.
-            $homunculus = $driver->GetUser( $key, $val );
+            #
+            # "preload" is an optimization; we've already pulled the row from
+            # the DB for this User so pass it through to the factory so they
+            # can avoid looking the record up in the DB _again_.
+            $homunculus = $driver->GetUser($key, $val, preload => $row);
         }
 
         $homunculus ||= Socialtext::User::Deleted->new(
