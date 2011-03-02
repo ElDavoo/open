@@ -113,24 +113,23 @@ sub guess_real_name {
 
 sub guess_sortable_name {
     my $self = shift;
-    my $name;
 
-    my $preferred = $self->preferred_name;
-    return $preferred if ($preferred);
-
-    my $fn = $self->first_name || '';
-    my $ln = $self->last_name || '';
-    if ($self->email_address eq $fn) {
-        $fn =~ s/\@.+$//;
+    my $name = $self->display_name;
+    unless ($name) {
+        my $fn = $self->first_name || '';
+        my $ln = $self->last_name || '';
+        if ($self->email_address eq $fn) {
+            $fn =~ s/\@.+$//;
+        }
+        $name = "$fn $ln";
     }
 
-    # Desired result: sort is caseless and alphabetical by first name -- {bz: 1246}
-    $name = "$fn $ln";
+    # Desired result: sort is caseless and alphabetical by first name 
+    # -- {bz: 1246}
     $name =~ s/^\s+//;
     $name =~ s/\s+$//;
     # TODO: unicode casefolding?
     return $name if length $name;
-
     return $self->_guess_nonreal_name;
 }
 
