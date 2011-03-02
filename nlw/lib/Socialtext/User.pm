@@ -71,6 +71,7 @@ has 'homunculus' => (
 has 'metadata' => (
     is => 'rw', isa => 'Socialtext::UserMetadata',
     writer => '_set_metadata',
+    lazy_build => 1,
     handles => [qw(
         email_address_at_import
         creation_datetime
@@ -88,6 +89,11 @@ has 'metadata' => (
         primary_account_id
     )],
 );
+sub _build_metadata {
+    my $self = shift;
+    my $meta = Socialtext::UserMetadata->create_if_necessary($self);
+    return $meta;
+}
 
 with 'Socialtext::UserSetContained';
 
@@ -222,8 +228,6 @@ sub new_from_homunculus {
     my $class      = shift;
     my $homunculus = shift;
     my $self       = $class->meta->new_object(homunculus => $homunculus);
-    my $um         = Socialtext::UserMetadata->create_if_necessary($self);
-    $self->_set_metadata($um);
     $self->_update_profile();
 
     return $self;
