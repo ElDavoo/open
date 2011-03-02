@@ -49,6 +49,10 @@ sub NewHomunculus {
     confess "homunculi need to have a user_id, driver_key and driver_unique_id"
         unless ($user{user_id} && $user{driver_key} && $user{driver_unique_id});
 
+    # fix up any botched DB/object mappings (why, oh why didn't we get right
+    # the very first time)
+    $user{username} = delete $user{driver_username} if ($user{driver_username});
+
     # What kind of User Homunculus object do we need to create?
     # - generally based on the driver
     # - "missing" Users are turned into a "ST::U::Deleted" homunculus to
