@@ -250,14 +250,15 @@ sub create {
         }
     }
 
-    my $user = $class->meta->new_object(homunculus => $homunculus);
-
-    # scribble UserMetadata
     my $metadata = Socialtext::UserMetadata->create(
-        email_address_at_import => $user->email_address,
+        email_address_at_import => $homunculus->email_address,
         %p,
     );
-    $user->_set_metadata($metadata);
+
+    my $user = $class->meta->new_object(
+        homunculus => $homunculus,
+        metadata   => $metadata,
+    );
 
     $user->_update_profile();
     $user->_index();
