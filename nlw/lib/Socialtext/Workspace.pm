@@ -525,12 +525,13 @@ sub skin_name {
 # turn a workspace into a hash suitable for JSON and such things.
 sub to_hash {
     my $self = shift;
-    my $hash = {
-        map { $_ => $self->$_ } @COLUMNS
-    };
-    $hash->{account_name}
-        = Socialtext::Account->new(account_id => $hash->{account_id})->name;
+    my %opts = @_;
+    my $t = time_scope 'wksp_to_hash';
 
+    my $hash = { map { $_ => $self->$_ } @COLUMNS };
+    return $hash if $opts{minimal};
+
+    $hash->{account_name} = $self->account->name;
     $hash->{is_all_users_workspace}
         = $self->is_all_users_workspace ? 1 : 0;
 
