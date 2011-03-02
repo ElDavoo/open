@@ -565,43 +565,6 @@ sub load_page_attachments {
     }
 }
 
-sub add_to_db {
-    my $table = shift;
-    my $rows = shift;
-    my $t = time_scope "add_to_db $table";
-    return unless @$rows;
-
-    my $dbh = get_dbh();
-
-    my $ph = '?,' x scalar @{ $rows->[0] }; chop $ph;
-    $table = $dbh->quote_identifier($table);
-    my $sth = $dbh->prepare_cached(qq{INSERT INTO $table VALUES ($ph)})
-        or die $dbh->errstr;
-    my $row;
-    for $row (@$rows) { sql_txn {
-        $sth->execute(@$row)
-            or die "Error during execute - (INSERT INTO $table) - bindings=("
-            . join(', ', @$row) . ') - '
-            . $sth->errstr;
-    }}
-}
-
-sub page_exists_in_db {
-    my %opts = @_;
-    my $ws_id   = $opts{workspace_id} || die "workspace_id is required";
-    my $page_id = $opts{page_id}      || die "page_id is required";
-
-    my $t = time_scope 'page_exists_in_db';
-    my $exists_already = sql_singlevalue( q{
-        SELECT true
-          FROM page
-         WHERE workspace_id = ?
-           AND page_id = ?
-        }, $ws_id, $page_id
-    );
-    return defined $exists_already ? 1 : 0;
-}
-
 sub fetch_metadata {
     my $file = shift;
 
