@@ -2,9 +2,15 @@
 
 * Fixture: SocialWidgets
 
-| set | agw_acct | agw_account_%%start_time%% |
-| set | agw_user | agw_user_%%start_time%%@david.socialtext.net |
-| set | agw_group | agw_group_%%start_time%% |
+| set | agw_acct | agw_account_%%start_time%% |  |
+| set | agw_user | agw_user_%%start_time%%@david.socialtext.net |  |
+| set | agw_group | agw_group_%%start_time%% |  |
+| create_account | %%agw_acct%% |  |  |
+| create_user | %%agw_user%% | %%password%% | %%agw_acct%% |
+| create_group | %%agw_group%% | %%agw_acct%% | %%agw_user%% |
+| set | agw_group_id | %%group_id%% |  |
+
+| *Comment* | Test Case: Associate Group With Workspace create 11 wikis in order to later test pagination of wiki list |  |
 | set | ws1 | agw1-wiki-%%start_time%% |
 | set | ws2 | agw2-wiki-%%start_time%% |
 | set | ws3 | agw3-wiki-%%start_time%% |
@@ -16,9 +22,38 @@
 | set | ws9 | agw9-wiki-%%start_time%% |
 | set | ws10 | agw10-wiki-%%start_time%% |
 | set | ws11 | agw11-wiki-%%start_time%% |
+| create_workspace | %%ws1%% | %%agw_acct%% |
+| create_workspace | %%ws2%% | %%agw_acct%% |
+| create_workspace | %%ws3%% | %%agw_acct%% |
+| create_workspace | %%ws4%% | %%agw_acct%% |
+| create_workspace | %%ws5%% | %%agw_acct%% |
+| create_workspace | %%ws6%% | %%agw_acct%% |
+| create_workspace | %%ws7%% | %%agw_acct%% |
+| create_workspace | %%ws8%% | %%agw_acct%% |
+| create_workspace | %%ws9%% | %%agw_acct%% |
+| create_workspace | %%ws10%% | %%agw_acct%% |
+| create_workspace | %%ws11%% | %%agw_acct%% |
+
+| *Comment* | Test Case: Associate Group With Workspace make user admin of all 11 wikis so he can add them to the group |  |
+| add_workspace_admin | %%agw_user%% | %%ws1%% |
+| add_workspace_admin | %%agw_user%% | %%ws2%% |
+| add_workspace_admin | %%agw_user%% | %%ws3%% |
+| add_workspace_admin | %%agw_user%% | %%ws4%% |
+| add_workspace_admin | %%agw_user%% | %%ws5%% |
+| add_workspace_admin | %%agw_user%% | %%ws6%% |
+| add_workspace_admin | %%agw_user%% | %%ws7%% |
+| add_workspace_admin | %%agw_user%% | %%ws8%% |
+| add_workspace_admin | %%agw_user%% | %%ws9%% |
+| add_workspace_admin | %%agw_user%% | %%ws10%% |
+| add_workspace_admin | %%agw_user%% | %%ws11%% |
+
+| *Comment* | Test Case: Associate Group With Workspace create a wiki that the user will not be an admin of |  |
 | set | ws_noadmin | noadmin-wiki-%%start_time%% |
 | set | ws_noadmin_prefix | noadmin |
 | set | ws_noadmin_suffix | `-wiki-%%start_time%%` |
+| create_workspace | %%ws_noadmin%% | %%agw_acct%% |
+
+| *Comment* | Test Case: Associate Group With Workspace set suffixs for all wikis to later test lookahead |  |
 | set | ws_prefix | agw |
 | set | ws1_suffix | 1-wiki-%%start_time%% |
 | set | ws2_suffix | 2-wiki-%%start_time%% |
@@ -31,34 +66,6 @@
 | set | ws9_suffix | 9-wiki-%%start_time%% |
 | set | ws10_suffix | 10-wiki-%%start_time%% |
 | set | ws11_suffix | 11-wiki-%%start_time%% |
-
-| create_account | %%agw_acct%% |  |  |
-| create_user | %%agw_user%% | %%password%% | %%agw_acct%% |
-| create_group | %%agw_group%% | %%agw_acct%% | %%agw_user%% |
-| set | agw_group_id | %%group_id%% |  |
-| create_workspace | %%ws1%% | %%agw_acct%% |  |
-| create_workspace | %%ws2%% | %%agw_acct%% |  |
-| create_workspace | %%ws3%% | %%agw_acct%% |  |
-| create_workspace | %%ws4%% | %%agw_acct%% |  |
-| create_workspace | %%ws5%% | %%agw_acct%% |  |
-| create_workspace | %%ws6%% | %%agw_acct%% |  |
-| create_workspace | %%ws7%% | %%agw_acct%% |  |
-| create_workspace | %%ws8%% | %%agw_acct%% |  |
-| create_workspace | %%ws9%% | %%agw_acct%% |  |
-| create_workspace | %%ws10%% | %%agw_acct%% |  |
-| create_workspace | %%ws11%% | %%agw_acct%% |  |
-| create_workspace | %%ws_noadmin%% | %%agw_acct%% |  |
-| add_workspace_admin | %%agw_user%% | %%ws1%% |  |
-| add_workspace_admin | %%agw_user%% | %%ws2%% |  |
-| add_workspace_admin | %%agw_user%% | %%ws3%% |  |
-| add_workspace_admin | %%agw_user%% | %%ws4%% |  |
-| add_workspace_admin | %%agw_user%% | %%ws5%% |  |
-| add_workspace_admin | %%agw_user%% | %%ws6%% |  |
-| add_workspace_admin | %%agw_user%% | %%ws7%% |  |
-| add_workspace_admin | %%agw_user%% | %%ws8%% |  |
-| add_workspace_admin | %%agw_user%% | %%ws9%% |  |
-| add_workspace_admin | %%agw_user%% | %%ws10%% |  |
-| add_workspace_admin | %%agw_user%% | %%ws11%% |  |
 
 | *Comment* | Test Case: Associate Group With Workspace user cannot add workspace if he is not workspace admin |  |
 | st-logoutin | %%agw_user%% | %%password%% |
@@ -184,6 +191,7 @@
 | wait_for_element_not_present_ok | link=%%ws9%% | 30000 |
 
 | *Comment* | Test Case: Associate Group With Workspace TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | deactivate-user --email %%agw_user%% | removed |
 | delete-group | %%agw_group_id%% | Recklessly deleting group |
 | delete-workspace | %%ws1%% | Recklessly deleting workspace |
