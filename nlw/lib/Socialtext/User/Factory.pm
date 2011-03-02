@@ -154,7 +154,7 @@ sub GetHomunculus {
     }
 
     my ($sql, @bindings) = sql_abstract->select('users', ['*'], $where_clause);
-    $sth = sql_execute($sql, @bindings);
+    my $sth = sql_execute($sql, @bindings);
 
     my $row = $sth->fetchrow_hashref();
     return undef unless $row;
