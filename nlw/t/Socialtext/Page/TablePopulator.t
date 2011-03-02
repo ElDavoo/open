@@ -6,6 +6,7 @@ use Test::Socialtext tests => 30;
 use Test::Socialtext::Fatal;
 use Test::Deep;
 use Socialtext::SQL qw/:exec/;
+use List::Util qw/shuffle/;
 use Cwd;
 use ok 'Socialtext::Page::TablePopulator';
 
@@ -35,7 +36,9 @@ only_these_things_reference_page_id: {
 my $hub = create_test_hub();
 my $ws = $hub->current_workspace;
 my $ws_id = $ws->workspace_id;
-my $user = $hub->current_user;
+my $user = create_test_user(unique_id => '1299022686305310');
+$ws->add_user(user => $user, role => 'admin');
+$hub->current_user($user);
 
 my ($p0, $p1, $p2, $p3);
 is exception {
@@ -95,10 +98,7 @@ is exception {
         mime_type => 'image/png',
     );
 
-    $hub->breadcrumbs->drop_crumb($p3);
-    $hub->breadcrumbs->drop_crumb($p2);
-    $hub->breadcrumbs->drop_crumb($p1);
-    $hub->breadcrumbs->drop_crumb($p0);
+    $hub->breadcrumbs->drop_crumb($_) for shuffle ($p0,$p1,$p2,$p3);
 
     sql_execute(q{
         UPDATE page SET views = views+10 WHERE workspace_id = ?
@@ -289,7 +289,7 @@ recheck_crumbs: {
          ORDER BY last_viewed DESC
     }, $user->user_id, $ws_id);
     my @pages = map { $_->[0] } @{$sth->fetchall_arrayref || []};
-    cmp_deeply \@pages, [qw(referenced_page test_page to_delete to_purge)],
+    cmp_deeply \@pages, [qw(to_purge to_delete referenced_page test_page)],
         "recheck: breadcrumbs overwritten";
 }
 

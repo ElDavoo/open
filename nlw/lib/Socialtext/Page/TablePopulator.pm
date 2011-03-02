@@ -18,6 +18,7 @@ use Fatal qw/opendir closedir chdir open/;
 use Cwd   qw/getcwd abs_path/;
 use DateTime;
 use Try::Tiny;
+use List::MoreUtils qw/any/;
 
 our $Noisy = 1;
 
@@ -694,12 +695,18 @@ sub load_breadcrumbs {
 
         # The .trail files do not contain dates, so we will sythesize dates to
         # provide order. We will start at midnight of today and add a second
-        # for each breadcrumb
-        my @offsets = map {"$_ seconds"} (0 .. $#page_ids);
+        # for each breadcrumb.  Reverse the offsets because the trail file
+        # is ordered most-to-least recent.
+        my @offsets = map {"$_ seconds"} reverse 0 .. $#page_ids;
 
         # no need to worry about fk constraints (there are none):
-        $bc_insert->execute_array({},
-            $user->user_id, $ws_id, \@page_ids, \@offsets);
+        sql_txn {
+            my @status;
+            $bc_insert->execute_array({ArrayTupleStatus=>\@status},
+                $user->user_id, $ws_id, \@page_ids, \@offsets);
+            die "one or more breadcrumbs failed to insert\n"
+                if any { $_ != 1 } @status;
+        };
     }
     closedir $dfh;
 
