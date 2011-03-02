@@ -5,7 +5,7 @@
 use strict;
 use warnings;
 # do *not* `use utf8` here
-use Test::More tests => 5 + 7 + 4 + 4 + 3*45 + 7;
+use Test::More tests => 5 + 7 + 4 + 4 + 3*48 + 7;
 
 use ok 'WikiText::Socialtext';
 use ok 'Socialtext::WikiText::Parser::Messages';
@@ -162,6 +162,15 @@ for my $char (qw( - * _ )) {
         ok $content, 'parsed';
         like $content, qr/<(b|i|del)>/i, "huggy beginning $char works around WAFLs";
     }
+
+    markup_sanity_zero: {
+        my $parser = make_parser('HTML');
+
+        my $content = $parser->parse("mmm ${char}0$char tomorrow");
+        ok $content, 'parsed';
+        like $content, qr/<(b|i|del)>0/i, "Zero between huggy chars are parsed";
+    }
+
 }
 
 sub make_parser {
