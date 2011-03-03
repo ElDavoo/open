@@ -12,7 +12,6 @@ HELPEN=0
 FIXTURE='ALL'
 PAUSE=0
 UPDATE_WIDGETS=1
-ST_USERS=0
 MINIFY_JS=1
 CONTEXTUAL=0
 while getopts "jhmbpwsc" OPT; do
@@ -22,7 +21,6 @@ while getopts "jhmbpwsc" OPT; do
     j) MINIFY_JS=0;;
     p) PAUSE=1;;
     w) UPDATE_WIDGETS=0;;
-    s) ST_USERS=1;;
     c) CONTEXTUAL=1;;
   esac
 done
@@ -130,7 +128,7 @@ if [ $UPDATE_WIDGETS == 1 ]; then
     set +x
 fi
 
-[ $ST_USERS == 1 ] && create-socialtext-users
+create-staging-users
 
 # Clean up dead symlinks
 find -L -type l -delete
