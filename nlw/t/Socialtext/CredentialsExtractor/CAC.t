@@ -7,7 +7,7 @@ use Socialtext::CredentialsExtractor;
 use Socialtext::CredentialsExtractor::Extractor::CAC;
 use Socialtext::AppConfig;
 use Socialtext::Signal;
-use Test::Socialtext tests => 33;
+use Test::Socialtext tests => 45;
 use Test::Socialtext::User;
 
 fixtures(qw( empty ));
@@ -289,4 +289,41 @@ auto_provision_multiple_users: {
     like $contents, qr/Found: \Q$found_two\E/, '... ... ... w/second match';
 }
 
+###############################################################################
 # TEST: Auto-provision User, *no* matches
+auto_provision_no_users: {
+    my $guard = Test::Socialtext::User->snapshot;
+    my $first  = 'Ian';
+    my $middle = 'Lancaster';
+    my $last   = 'Fleming';
+    my $edipin = '123456789';
+
+    # Create a Business Admin to receive error notifications
+    my $badmin = create_test_user;
+    $badmin->set_business_admin(1);
+
+    # Attempt to extract creds for a non-existing User.
+    my $subject = "C=UK, O=Goldeneye, CN=$first\.$middle\.$last\.$edipin";
+    my $creds   = Socialtext::CredentialsExtractor->ExtractCredentials( {
+        X_SSL_CLIENT_SUBJECT => $subject,
+    } );
+    ok !$creds->{valid}, 'unable to extract credentials';
+    like $creds->{reason}, qr/invalid username/, '... invalid username';
+
+    # Verify that the Business Admin got a DM
+    my @signals = Socialtext::Signal->All(
+        viewer => $badmin,
+        direct => 'both',
+    );
+    is @signals, 1, '... DM Signal was sent to Business Admin';
+    like $signals[0]->body, qr/no matches found/i,
+        '... ... denoting NO matches found';
+
+    # Verify contents of DM attachment
+    my $att      = $signals[0]->attachments->[0];
+    my $file     = $att->upload->disk_filename;
+    my $contents = slurp($file);
+    like $contents, qr/First name.*?: $first/,   '... ... ... w/first name';
+    like $contents, qr/Middle name.*?: $middle/, '... ... ... w/middle name';
+    like $contents, qr/Last name.*?: $last/,     '... ... ... w/last name';
+}
