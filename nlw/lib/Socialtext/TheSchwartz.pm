@@ -1,7 +1,7 @@
 package Socialtext::TheSchwartz;
 # @COPYRIGHT@
 use Moose;
-use Socialtext::SQL (); # call $dbh-> methods in this class.
+use Socialtext::SQL ('sql_txn'); # call $dbh-> methods in this class.
 
 sub run_in_txn (&$);
 BEGIN {
