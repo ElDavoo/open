@@ -87,7 +87,6 @@ TODO: come back and finish this test when {bz: 1039} is fixed. Can't seem to cli
 
 | *Comment* | Test Case: Tools: Copy Page to Workspace. verify copy of edited page |  |
 | open_ok | /%%newspace%%/index.cgi?action=revision_list;page_name=page_copied_%%start_time%% |  |
-| text_like | contentContainer | qr/revision 2/i |
 | click_and_wait | link=Compare Revisions |  |
 | text_like | contentContainer | Copy This Page %%start_time%% content |
 | text_like | contentContainer | Copy This Page %%start_time%% NEW content |

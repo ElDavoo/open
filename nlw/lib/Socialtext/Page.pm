@@ -155,6 +155,13 @@ use constant SELECT_COLUMNS_STR => q{
     page.tags -- ordered array
 };
 
+# This should be the order they show up in on the actual table:
+use constant COLUMNS => qw(
+    workspace_id page_id name last_editor_id last_edit_time creator_id
+    create_time current_revision_id current_revision_num revision_count
+    page_type deleted summary edit_summary locked tags views 
+);
+
 # use 'user' and 'date' instead of 'creator/editor', 'create_time/edit_time'
 sub Blank {
     my ($class, %p) = @_;
@@ -1929,6 +1936,16 @@ sub duplicate {
         return 0
     }
 
+    # If the target page is the same as the source page, just rename
+    if ($cur_ws->workspace_id == $dest_ws->workspace_id and $target_id eq $self->page_id) {
+        return $self->rename(
+            $target_title,
+            $keep_categories,
+            $keep_attachments,
+            $clobber,
+        );
+    }
+
     return try { sql_txn {
         my $rev = $self->mutable
             ? $self->rev : $self->rev->mutable_clone(editor => $user);
@@ -2162,7 +2179,6 @@ sub send_as_email {
     sub restore_revision {
         my $self = shift;
         my %p = validate( @_, $spec );
-        my $id = shift;
 
         $self->switch_rev($p{revision_id});
         my $num = $self->revision_num;
@@ -2181,6 +2197,8 @@ sub send_as_email {
         $rev->summary($rev->prev->summary);
 
         $self->store(user => $p{user}, skip_rev_check => 1);
+
+        # XXX TODO no events or logging for restore actions (by flawed design)
     }
 }
 

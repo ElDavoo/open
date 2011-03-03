@@ -212,6 +212,7 @@ sub _table_rows {
             user      => $att->creator->username, # TODO: pass object
             date_str  => sub { $att->created_at_str },
             date      => sub { $att->created_at },
+            user_date => sub { $self->hub->timezone->get_date_user($att->created_at) },
             page_uri  => $page->uri,
             page_link => sub {
                 Socialtext::Helpers->page_display_link_from_page($page) },
@@ -314,13 +315,19 @@ sub _gen_sort_closure {
         $sortby = 'date_str' if $sortby eq 'date';
         if ( $direction eq 'asc' ) {
             return sub {
-                lc( &{$a->{$sortby}} ) cmp lc( &{$b->{$sortby}} )
+                my ($af, $bf) = ($a->{$sortby}, $b->{$sortby});
+                $af = &$af if ref $af eq 'CODE';
+                $bf = &$bf if ref $bf eq 'CODE';
+                (lc( $af ) cmp lc( $bf ))
                     or lc( $a->{subject} ) cmp lc( $b->{subject} );
             };
         }
         else {
             return sub {
-                lc( &{$b->{$sortby}} ) cmp lc( &{$a->{$sortby}} )
+                my ($af, $bf) = ($a->{$sortby}, $b->{$sortby});
+                $af = &$af if ref $af eq 'CODE';
+                $bf = &$bf if ref $bf eq 'CODE';
+                (lc( $bf ) cmp lc( $af ))
                     or lc( $a->{subject} ) cmp lc( $b->{subject} );
             };
         }
