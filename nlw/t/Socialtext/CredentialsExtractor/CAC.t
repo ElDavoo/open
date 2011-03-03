@@ -7,7 +7,7 @@ use Socialtext::CredentialsExtractor;
 use Socialtext::CredentialsExtractor::Extractor::CAC;
 use Socialtext::AppConfig;
 use Socialtext::Signal;
-use Test::Socialtext tests => 31;
+use Test::Socialtext tests => 33;
 use Test::Socialtext::User;
 
 fixtures(qw( empty ));
@@ -235,6 +235,10 @@ auto_provision_multiple_users: {
     my $last   = 'Fleming';
     my $edipin = '123456789';
 
+    # Create a Business Admin to receive error notifications
+    my $badmin = create_test_user;
+    $badmin->set_business_admin(1);
+
     # Create *multiple* Users, all of which are only partially provisioned.
     my $user_one = create_test_user(
         first_name  => $first,
@@ -260,8 +264,16 @@ auto_provision_multiple_users: {
         X_SSL_CLIENT_SUBJECT => $subject,
     } );
     ok !$creds->{valid}, 'unable to extract credentials';
-#XXX    like $creds->{reason}, qr/multiple matches found/i, '... multiple matches';
     like $creds->{reason}, qr/invalid username/, '... invalid username';
+
+    # Verify that the Business Admin got a DM
+    my @signals = Socialtext::Signal->All(
+        viewer => $badmin,
+        direct => 'both',
+    );
+    is @signals, 1, '... DM Signal was sent to Business Admin';
+    like $signals[0]->body, qr/multiple matches found/i,
+        '... ... denoting multiple matches being found';
 }
 
 # TEST: Auto-provision User, *no* matches
