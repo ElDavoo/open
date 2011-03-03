@@ -1105,6 +1105,12 @@ EOSQL
     return $class->_UserCursor( $sql, [] );
 }
 
+sub AllBusinessAdmins {
+    my $class = shift;
+    my $sql   = qq{SELECT user_id FROM "UserMetadata" WHERE is_business_admin};
+    return $class->_UserCursor($sql, []);
+}
+
 {
     Readonly my $spec => {
         %LimitAndSortSpec,
