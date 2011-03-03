@@ -103,6 +103,49 @@ sub _find_partially_provisioned_users {
 sub _notify_business_admins {
     my $class  = shift;
     my %params = @_;
+    my $subject = $params{message};
+    my $body    = $params{attachment_body};
+
+    # Dump the attachment body to file, so we can slurp it in and create an
+    # Upload
+    my $tmpfile = File::Temp->new(CLEANUP => 1);
+    $tmpfile->print($body);
+    $tmpfile->close;
+
+    # Send a DM Signal to all of the Business Admins, with our attachment.
+    #
+    # NOTE: The DM has to come *FROM* the Business Admin *TO* himself; we've
+    # got no other guarantee of visibility from any other User record to the
+    # Business Admin.
+    my $now     = Socialtext::Date->now;
+    my @badmins = Socialtext::User->AllBusinessAdmins->all;
+    foreach my $user (@badmins) {
+        my $creator = $user;
+
+        my $upload = Socialtext::Upload->Create(
+            created_at    => $now,
+            creator       => $creator,
+            temp_filename => "$tmpfile",
+            filename      => 'cac-provisioning-errors.txt',
+            mime_type     => 'text/plain; charset=UTF-8',
+        );
+
+        my $attachment = Socialtext::Signal::Attachment->new(
+            attachment_id => $upload->attachment_id,
+            upload        => $upload,
+            signal_id     => 0,
+        );
+
+        my $signal = Socialtext::Signal->Create( {
+            user         => $creator,
+            user_id      => $creator->user_id,
+            body         => $subject,
+            recipient_id => $user->user_id,
+            attachments  => [$attachment],
+        } );
+    }
+
+    return;
 }
 
 no Moose;

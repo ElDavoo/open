@@ -2,10 +2,12 @@
 
 use strict;
 use warnings;
+use File::Slurp qw(slurp);
 use Socialtext::CredentialsExtractor;
 use Socialtext::CredentialsExtractor::Extractor::CAC;
 use Socialtext::AppConfig;
-use Test::Socialtext tests => 22;
+use Socialtext::Signal;
+use Test::Socialtext tests => 31;
 use Test::Socialtext::User;
 
 fixtures(qw( empty ));
@@ -87,6 +89,53 @@ find_partially_provisioned_users: {
     my @found    = map { $_->username } @users;
     my @expected = map { $_->username } ($user_one, $user_two);
     is_deeply \@found, \@expected, 'Found partially provisioned Users';
+}
+
+###############################################################################
+# TEST: Send notification to Business Admins
+notify_business_admins: {
+    my $user = create_test_user;
+    $user->set_business_admin(1);
+
+    my @badmins = Socialtext::User->AllBusinessAdmins->all;
+    ok @badmins, 'Have at least one Business Admin';
+    ok grep( { $_->user_id == $user->user_id } @badmins),
+        '... including our Test User';
+
+    # Check first that our target User has *no* Signals in their stream
+    my @signals = Socialtext::Signal->All(
+        viewer => $user,
+        direct => 'received',
+    );
+    ok !@signals, '... no Signals in the stream (yet)';
+
+    # Send a notification message to all Business Admins on the box
+    my $subject = 'This is a test';
+    my $body    = '... of the emergency broadcast system';
+    Socialtext::CredentialsExtractor::Extractor::CAC->_notify_business_admins(
+        message         => $subject,
+        attachment_body => $body,
+    );
+
+    # Get the DM Signal sent to our test User, and verify its contents
+    @signals = Socialtext::Signal->All(
+        viewer => $user,
+        direct => 'received',
+    );
+    is @signals, 1, '... found a Signal sent to User';
+
+    my $sig = shift @signals;
+    is $sig->recipient_id, $user->user_id, '... ... a DM to this User';
+    is $sig->user_id,      $user->user_id, '... ... from himself';
+    is $sig->body, $subject, '... ... with our message';
+
+    my $atts = $sig->attachments;
+    is @{$atts}, 1, '... ... and an attachment';
+
+    my $att      = shift @{$atts};
+    my $file     = $att->upload->disk_filename;
+    my $contents = slurp($file);
+    is $contents, $body, '... ... ... with correct attachment contents';
 }
 
 ###############################################################################
