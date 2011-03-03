@@ -125,6 +125,7 @@ sub _connect_dbh {
         temps => {},
     };
 
+    _count_sql("Connected DBH", []) if $COUNT_SQL;
     $_needs_ping = 0;
 }
 
@@ -465,7 +466,7 @@ sub _sql_execute {
     }
 
     eval {
-        _count_sql($statement) if $COUNT_SQL;
+        _count_sql($statement, $bind) if $COUNT_SQL;
         Socialtext::Timer->Continue('sql_prepare');
         $sth = $dbh->prepare($statement);
         Socialtext::Timer->Pause('sql_prepare');
@@ -484,13 +485,14 @@ sub _sql_execute {
 
 sub _count_sql {
     my $sql = shift;
+    my $bind = shift;
     $sql =~ s/\s+/ /smg;
     $sql =~ s/\n/ /smg;
 
     require Digest::SHA1;
     my $sql_file = '/tmp/sql-count';
     open(my $fh, ">>$sql_file") or die "Can't open $sql_file: $!";
-    print $fh Digest::SHA1::sha1_hex($sql), " $sql\n";
+    print $fh Digest::SHA1::sha1_hex($sql), " $sql - ", join(',', @$bind), "\n";
     close $fh;
 }
 
