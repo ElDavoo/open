@@ -213,4 +213,12 @@ sub SystemUser {
     return shift->new( username => 'system-user' );
 }
 
+sub display_name {
+    return join ' ', grep defined, @{$_[0]}{qw[ first_name last_name ]};
+}
+
+sub guess_sortable_name {
+    return lc join ' ', grep defined, @{$_[0]}{qw[ last_name first_name ]};
+}
+
 1;
