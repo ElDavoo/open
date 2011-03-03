@@ -142,7 +142,7 @@ guess_sortable_name: {
     $profile->save();
 
     my $bfn = $user->guess_sortable_name();
-    is $bfn, 'Bubba Bo Bob Brain', 'Guess Sortable Name contains preferred_name';
+    is $bfn, 'bubba bo bob brain', 'Guess Sortable Name contains preferred_name';
 }
 
 ###############################################################################
