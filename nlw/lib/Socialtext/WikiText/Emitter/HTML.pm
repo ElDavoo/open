@@ -25,7 +25,8 @@ sub content {
 sub insert {
     my $self = shift;
     my $ast = shift;
-    $self->{output} .= $ast->{output} || '';
+    no warnings 'uninitialized';
+    $self->{output} .= $ast->{output};
 }
 
 sub uri_escape {
