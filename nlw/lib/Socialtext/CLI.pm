@@ -989,8 +989,10 @@ sub deactivate_user {
             $user->username . ' has been removed from workspaces ' . join ', ',
             @output
         );
-    }
 
+    } else {
+        $self->_success($user->username . ' has been deactivated.');
+   }
 }
 
 sub add_member {
