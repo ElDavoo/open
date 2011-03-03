@@ -11,9 +11,8 @@ Person.prototype = {
         var params = {};
         params[gadgets.io.RequestParameters.CONTENT_TYPE] =
             gadgets.io.ContentType.JSON;
-        params[gadgets.io.RequestParameters.REFRESH_INTERVAL] = 20;
         var url = location.protocol + '//' + location.host
-                + '/data/people/' + Socialtext.userid + '/watchlist?minimal=1';
+                + '/data/people/' + Socialtext.userid + '/watchlist';
         gadgets.io.makeRequest(url, function(response) {
             self.watchlist = {};
             $.each(response.data, function(_, user) {
@@ -199,23 +198,29 @@ Avatar.prototype = {
 
     showUserInfo: function(html) {
         var self = this;
-        this.contentNode.append(html);
-        this.person = new Person({
-            id: this.id,
-            best_full_name: this.popup.find('.fn').text(),
-            email: this.popup.find('.email').text(),
-            restricted: this.popup.find('.vcard').hasClass('restricted')
+        self.contentNode.append(html);
+        self.person = new Person({
+            id: self.id,
+            best_full_name: self.popup.find('.fn').text(),
+            email: self.popup.find('.email').text(),
+            restricted: self.popup.find('.vcard').hasClass('restricted')
         });
-        var followLink = this.person.createFollowLink();
-        if (followLink) {
-            $('<div></div>')
-                .addClass('follow')
-                .append(
-                    $('<ul></ul>').append($('<li></li>').append(followLink))
-                )
-                .appendTo(this.contentNode);
-        }
+        self.person.loadWatchlist(function() {
+            var followLink = self.person.createFollowLink();
+            if (followLink) {
+                $('<div></div>')
+                    .addClass('follow')
+                    .append(
+                        $('<ul></ul>').append($('<li></li>').append(followLink))
+                    )
+                    .appendTo(self.contentNode);
+            }
+            self.showSametimeInfo();
+            self.mouseOver();
+        });
+    },
 
+    showSametimeInfo: function() {
         // Dynamic sametime script hack
 
         var sametime_elem = this.popup.find('.sametime');
@@ -247,7 +252,6 @@ Avatar.prototype = {
                     }
                 });
         }    
-        this.mouseOver();
     },
 
     displayAvatar: function() {

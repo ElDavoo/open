@@ -1,5 +1,5 @@
 
-| *Comment* | Test Case: Profile Group List |  |
+| *Comment* | Test Case: Profile Group List will test the Groups tab of the Colleagues widget in another user's Profile page, showing the groups that both the viewer and the profile user are connected to |  |
 
 * Fixture: SocialWidgets
 
@@ -157,6 +157,7 @@
 | wait_for_text_present_ok | group not found | 30000 |
 
 | *Comment* | Test Case: Profile Group List TEARDOWN |  |
+| st-process-jobs |  |  |
 | delete-workspace | %%wiki_a%% | Recklessly deleting |
 | delete-workspace | %%wiki_b%% | Recklessly deleting |
 | st-admin | deactivate-user --email %%viewer%% |  |

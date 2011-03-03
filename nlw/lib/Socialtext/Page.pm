@@ -509,6 +509,7 @@ The name of the workspace where this page lives.
 =cut
 sub hash_representation {
     my $self = shift;
+    my $t = time_scope 'page_hash_repr';
 
     # The name, uri, and full_uri are totally botched for pages which never
     # existed.  For pages that never existed the various methods do "smart"

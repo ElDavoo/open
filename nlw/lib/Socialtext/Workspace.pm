@@ -44,7 +44,7 @@ use Socialtext::WorkspaceBreadcrumb;
 use Socialtext::Page;
 use Socialtext::Workspace::Permissions;
 use Socialtext::Workspace::Roles;
-use Socialtext::Timer;
+use Socialtext::Timer qw/time_scope/;
 use Socialtext::Pluggable::Adapter;
 use Socialtext::JSON qw(decode_json);
 use Socialtext::JSON::Proxy::Helper;
@@ -525,12 +525,13 @@ sub skin_name {
 # turn a workspace into a hash suitable for JSON and such things.
 sub to_hash {
     my $self = shift;
-    my $hash = {
-        map { $_ => $self->$_ } @COLUMNS
-    };
-    $hash->{account_name}
-        = Socialtext::Account->new(account_id => $hash->{account_id})->name;
+    my %opts = @_;
+    my $t = time_scope 'wksp_to_hash';
 
+    my $hash = { map { $_ => $self->$_ } @COLUMNS };
+    return $hash if $opts{minimal};
+
+    $hash->{account_name} = $self->account->name;
     $hash->{is_all_users_workspace}
         = $self->is_all_users_workspace ? 1 : 0;
 
@@ -1023,24 +1024,28 @@ sub title_label {
 sub creation_datetime_object {
     my $self = shift;
 
+    # XXX This should be cached in the object?
     return DateTime::Format::Pg->parse_timestamptz( $self->creation_datetime );
 }
 
 sub creator {
     my $self = shift;
 
+    # XXX This should be cached in the object?
     return Socialtext::User->new( user_id => $self->created_by_user_id );
 }
 
 sub account {
     my $self = shift;
 
+    # XXX This should be cached in the object?
     return Socialtext::Account->new( account_id => $self->account_id );
 }
 
 sub is_all_users_workspace {
     my $self        = shift;
 
+    # XXX This should be cached in the object?
     return $self->role_for_account( $self->account, direct => 1 );
 }
 
