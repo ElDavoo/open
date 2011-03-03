@@ -274,6 +274,19 @@ auto_provision_multiple_users: {
     is @signals, 1, '... DM Signal was sent to Business Admin';
     like $signals[0]->body, qr/multiple matches found/i,
         '... ... denoting multiple matches being found';
+
+    # Verify contents of DM attachment
+    my $att      = $signals[0]->attachments->[0];
+    my $file     = $att->upload->disk_filename;
+    my $contents = slurp($file);
+    like $contents, qr/First name.*?: $first/,   '... ... ... w/first name';
+    like $contents, qr/Middle name.*?: $middle/, '... ... ... w/middle name';
+    like $contents, qr/Last name.*?: $last/,     '... ... ... w/last name';
+
+    my $found_one = $user_one->name_and_email;
+    my $found_two = $user_two->name_and_email;
+    like $contents, qr/Found: \Q$found_one\E/, '... ... ... w/first match';
+    like $contents, qr/Found: \Q$found_two\E/, '... ... ... w/second match';
 }
 
 # TEST: Auto-provision User, *no* matches
