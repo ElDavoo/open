@@ -1,3 +1,5 @@
+BEGIN;
+
 -- Migrations for lolcat
 
 -- Add missing NOT NULL and DEFAULT to "Account" table.
@@ -32,3 +34,8 @@ UPDATE page
     ) latest
  WHERE page.page_id = latest.page_id AND page.workspace_id = latest.workspace_id;
 
+UPDATE "System"
+   SET value = '134'
+ WHERE field = 'socialtext-schema-version';
+
+COMMIT;
