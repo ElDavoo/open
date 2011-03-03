@@ -11,6 +11,7 @@ ALTER TABLE "Account"
     ALTER email_addresses_are_hidden SET NOT NULL,
     ALTER email_addresses_are_hidden SET DEFAULT false;
 
+
 -- TODO: truncate from_page_id, to_page_id to 255
 
 ALTER TABLE ONLY page_link
@@ -19,6 +20,7 @@ ALTER TABLE ONLY page_link
 
 CREATE INDEX page_link__to_page
 	    ON page_link (to_workspace_id, to_page_id);
+
 
 -- Populate the page "tags" column from the current page_rev
 UPDATE page
@@ -33,6 +35,17 @@ UPDATE page
           ) max_rev USING (page_id, workspace_id, revision_id)
     ) latest
  WHERE page.page_id = latest.page_id AND page.workspace_id = latest.workspace_id;
+
+
+-- for Backups 5.0
+
+CREATE TABLE backup_file (
+    name text NOT NULL,
+    at   timestamptz DEFAULT now() NOT NULL,
+    body bytea NOT NULL,
+    PRIMARY KEY (name)
+);
+
 
 UPDATE "System"
    SET value = '134'
