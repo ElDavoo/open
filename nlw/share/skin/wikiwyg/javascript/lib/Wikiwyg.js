@@ -2122,8 +2122,9 @@ proto.do_opensocial_setup = function(src) {
         });
     }
 
+    $('#st-widget-opensocial-setup-width-options').val(600);
     if (encoded_prefs) {
-        var match = encoded_prefs.match(/\b__width__=(\d+)\b/);
+        var match = encoded_prefs.match(/\b__width__=(\d+%?)\b/);
         if (match) {
             $('#st-widget-opensocial-setup-width-options').val(match[1]);
         }

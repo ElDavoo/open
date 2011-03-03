@@ -39,6 +39,7 @@
 | st-process-jobs | GroupRefresh |  |
 
 | get_group_id | Motorhead | created_group_id |
+| pause | 15000 |  |
 | open_ok | /nlw/control/group/%%created_group_id%% |  |
 
 | wait_for_element_visible_ok | addToAccountLookahead | 30000 |
@@ -48,6 +49,7 @@
 | text_like | //body | Source: LDAP: |
 | text_like | //body | Description: |
 | text_like | //body | Accounts (1) |
+
 | text_like | //body | Users (3) |
 
 | *Comment* | Test Case: Create LDAP Group COMPLETED |  |

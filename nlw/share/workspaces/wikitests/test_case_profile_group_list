@@ -1,6 +1,5 @@
-*Test currently has 6 failures. Signals page Collegues widget is bugged? Or has it simply changed since https://www2.socialtext.net/dev-tasks/index.cgi?story_group_list_shown_on_people_profile was written?*
 
-| *Comment* | Test Case: Profile Group List |  |
+| *Comment* | Test Case: Profile Group List will test the Groups tab of the Colleagues widget in another user's Profile page, showing the groups that both the viewer and the profile user are connected to |  |
 
 * Fixture: SocialWidgets
 
@@ -111,8 +110,7 @@
 | wait_for_element_not_present_ok | link=%%member_group%% | 30000 |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Profile Group List check same widget in Signals page |  |
-| pause | 10000 |  |
+| *Comment* | Test Case: Profile Group List check widget in Signals page, see only groups that you are a member of |  |
 | open_ok | /st/signals |  |
 | wait_for_text_present_ok | Signals | 30000 |
 | st-name-widget | 2 | groups |
@@ -121,13 +119,14 @@
 | wait_for_element_visible_ok | //td[contains(text(),'Groups')] | 30000 |
 | click_ok | //td[contains(text(),'Groups')] |  |
 | wait_for_element_visible_ok | link=%%group_a%% | 30000 |
-| wait_for_element_visible_ok | link=%%group_b%% | 30000 |
 | wait_for_element_visible_ok | link=%%group_c%% | 30000 |
-| wait_for_element_visible_ok | link=%%group_d%% | 30000 |
-| wait_for_element_visible_ok | link=%%group_e%% | 30000 |
-| wait_for_element_visible_ok | link=%%group_f%% | 30000 |
-| wait_for_element_visible_ok | link=%%group_g%% | 30000 |
-| wait_for_element_visible_ok | link=%%group_h%% | 30000 |
+| wait_for_element_visible_ok | link=%%user_group%% | 30000 |
+| wait_for_element_not_present_ok | link=%%group_b%% | 30000 |
+| wait_for_element_not_present_ok | link=%%group_d%% | 30000 |
+| wait_for_element_not_present_ok | link=%%group_e%% | 30000 |
+| wait_for_element_not_present_ok | link=%%group_f%% | 30000 |
+| wait_for_element_not_present_ok | link=%%group_g%% | 30000 |
+| wait_for_element_not_present_ok | link=%%group_h%% | 30000 |
 | wait_for_element_not_present_ok | link=%%member_group%% | 30000 |
 | select-frame | relative=parent |  |
 
@@ -158,6 +157,7 @@
 | wait_for_text_present_ok | group not found | 30000 |
 
 | *Comment* | Test Case: Profile Group List TEARDOWN |  |
+| st-process-jobs |  |  |
 | delete-workspace | %%wiki_a%% | Recklessly deleting |
 | delete-workspace | %%wiki_b%% | Recklessly deleting |
 | st-admin | deactivate-user --email %%viewer%% |  |

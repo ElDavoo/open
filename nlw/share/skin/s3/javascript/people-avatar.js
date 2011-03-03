@@ -5,12 +5,29 @@ Person = function (user) {
 }
 
 Person.prototype = {
+    loadWatchlist: function(callback) {
+        var self = this;
+
+        var params = {};
+        params[gadgets.io.RequestParameters.CONTENT_TYPE] =
+            gadgets.io.ContentType.JSON;
+        var url = location.protocol + '//' + location.host
+                + '/data/people/' + Socialtext.userid + '/watchlist';
+        gadgets.io.makeRequest(url, function(response) {
+            self.watchlist = {};
+            $.each(response.data, function(_, user) {
+                self.watchlist[user.id] = true;
+            });
+            callback();
+        }, params);
+    },
+
     isSelf: function() {
         return this.self || (Socialtext.email_address == this.email);
     },
 
     isFollowing: function() {
-        return Socialtext.watchlist[this.id] ? true : false;
+        return this.watchlist[this.id] ? true : false;
     },
 
     updateFollowLink: function() {
@@ -47,7 +64,7 @@ Person.prototype = {
             processData: false,
             data: '{"person":{"id":"' + this.id + '"}}',
             success: function() {
-                Socialtext.watchlist[self.id] = self.best_full_name;
+                self.watchlist[self.id] = true;
                 self.updateFollowLink();
                 $("#global-people-directory").peopleNavList();
                 if ($.isFunction(self.onFollow)) {
@@ -64,7 +81,7 @@ Person.prototype = {
             type:'DELETE',
             contentType: 'application/json',
             success: function() {
-                delete Socialtext.watchlist[self.id];
+                delete self.watchlist[self.id];
                 self.updateFollowLink();
                 $("#global-people-directory").peopleNavList();
                 if ($.isFunction(self.onStopFollowing)) {
@@ -181,23 +198,29 @@ Avatar.prototype = {
 
     showUserInfo: function(html) {
         var self = this;
-        this.contentNode.append(html);
-        this.person = new Person({
-            id: this.id,
-            best_full_name: this.popup.find('.fn').text(),
-            email: this.popup.find('.email').text(),
-            restricted: this.popup.find('.vcard').hasClass('restricted')
+        self.contentNode.append(html);
+        self.person = new Person({
+            id: self.id,
+            best_full_name: self.popup.find('.fn').text(),
+            email: self.popup.find('.email').text(),
+            restricted: self.popup.find('.vcard').hasClass('restricted')
         });
-        var followLink = this.person.createFollowLink();
-        if (followLink) {
-            $('<div></div>')
-                .addClass('follow')
-                .append(
-                    $('<ul></ul>').append($('<li></li>').append(followLink))
-                )
-                .appendTo(this.contentNode);
-        }
+        self.person.loadWatchlist(function() {
+            var followLink = self.person.createFollowLink();
+            if (followLink) {
+                $('<div></div>')
+                    .addClass('follow')
+                    .append(
+                        $('<ul></ul>').append($('<li></li>').append(followLink))
+                    )
+                    .appendTo(self.contentNode);
+            }
+            self.showSametimeInfo();
+            self.mouseOver();
+        });
+    },
 
+    showSametimeInfo: function() {
         // Dynamic sametime script hack
 
         var sametime_elem = this.popup.find('.sametime');
@@ -229,7 +252,6 @@ Avatar.prototype = {
                     }
                 });
         }    
-        this.mouseOver();
     },
 
     displayAvatar: function() {
