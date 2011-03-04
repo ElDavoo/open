@@ -36,8 +36,8 @@ if ($action eq 'init') {
     my $subj = $STUB .'/CN=ca@ken.socialtext.net/';
 
     print color('magenta');
-    shell_run('-rm -Rf {cert,ca,working,binary}') if $force;
-    shell_run('-mkdir {cert,ca,working,binary}');
+    shell_run('-rm -Rf cert ca working binary') if $force;
+    shell_run('-mkdir cert ca working binary');
     shell_run("openssl genrsa -out $ca_key");
     shell_run("openssl req -x509 -new -key $ca_key -out $ca_cert -subj '$subj'");
     print color('reset');
@@ -87,7 +87,8 @@ elsif ($action eq 'install') {
     shell_run("openssl x509 -req -in $csr -CA $ca_cert -CAkey $ca_key -CAcreateserial -out $cert");
 
     unless ($dryrun) {
-        shell_run("mkdir -p $path/etc/ssl/{certs,private}");
+        shell_run("mkdir -p $path/etc/ssl/certs");
+        shell_run("mkdir -p $path/etc/ssl/private");
         shell_run("cp $cert $path/etc/ssl/certs/");
         shell_run("cp $key $path/etc/ssl/private/");
         shell_run("cp $ca_cert $path/etc/ssl/certs/$server.client.crt");
