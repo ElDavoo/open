@@ -1,4 +1,6 @@
+
 | *Comment* | Test Case: Connections |
+
 
 | open_ok | /%%workspace%%/?action=new_page |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
@@ -45,11 +47,11 @@
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | `^ RSS 1.0\n{fetchrss: http://weblogs.macromedia.com/dev_center/index.rdf}\n{fetchrss: http://weblogs.macromedia.com/dev_center/index.rdf abstract}\n{fetchrss: http://weblogs.macromedia.com/dev_center/index.rdf summary}\n{fetchrss: http://weblogs.macromedia.com/dev_center/index.rdf full}` |
+| type_ok | wikiwyg_wikitext_textarea | `^ RSS 1.0\n{fetchrss: http://www.xtreemos.eu/blog/feed.rdf}\n{fetchrss: http://www.xtreemos.eu/blog/feed.rdf abstract}\n{fetchrss: http://www.xtreemos.eu/blog/feed.rdf summary}\n{fetchrss: http://www.xtreemos.eu/blog/feed.rdf full}` |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | st-page-save |  |  |
 | wait_for_text_present_ok | RSS 1.0 | 120000 |
-| text_like | qr/Macromedia Developer Center.+Macromedia Developer Center.+Macromedia Developer Center.+Macromedia Developer Center/ims |  |
+| text_like | qr/Blog XtreemOS.+Blog XtreemOS.+Blog XtreemOS.+Blog XtreemOS/ims |  |
 
 | *Comment* | Test Case: Connections. RSS .91 |  |
 | click_ok | link=Edit |  |
