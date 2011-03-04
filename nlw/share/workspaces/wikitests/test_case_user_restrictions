@@ -72,10 +72,16 @@
 
 | *Comment* | Test Case: Restrict User - Multiple Restrictions |  |
 | st-admin | add-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | %%euser%% has been given the 'require_external_id' restriction |
+| st-admin | list-restrictions --e %%euser%% | email_confirmation |
+| st-admin | list-restrictions --e %%euser%% | password_change |
+| st-admin | list-restrictions --e %%euser%% | require_external_id |
+
 | st-admin | remove-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | 'require_external_id' restriction has been lifted on '%%euser%%' |
 | st-admin | remove-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | '%%euser%%' does not have the 'require_external_id' restriction |
 | st-admin | remove-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | '%%euser%%' does not have the 'password_change' restriction |
 | st-admin | remove-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | '%%euser%%' does not have the 'email_confirmation' restriction |
+| st-admin | list-restrictions --e %%euser%% | No restrictions for user |
+
 
 | st-admin | add-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | %%euser%% has been given the 'email_confirmation' restriction |
 | st-admin | remove-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | 'email_confirmation' restriction has been lifted on '%%euser%%' |
