@@ -22,10 +22,10 @@ max_connections = [% config.pg_max_connections %]
 
 # Memory
 
-shared_buffers = [% config.pg_shared_buffers %]
-temp_buffers = [% config.pg_temp_buffers %]
-work_mem = [% config.pg_work_mem %]
-maintenance_work_mem = [% config.pg_maintenance_work_mem %]
+shared_buffers = '[% config.pg_shared_buffers %]'
+temp_buffers = '[% config.pg_temp_buffers %]'
+work_mem = '[% config.pg_work_mem %]'
+maintenance_work_mem = '[% config.pg_maintenance_work_mem %]'
 
 # Disk
 
@@ -78,7 +78,7 @@ checkpoint_completion_target = [% config.pg_checkpoint_completion_target %]
 cpu_index_tuple_cost = [% config.pg_cpu_index_tuple_cost %]
 cpu_operator_cost = [% config.pg_cpu_operator_cost %]
 cpu_tuple_cost = [% config.pg_cpu_tuple_cost %]
-effective_cache_size = [% config.pg_effective_cache_size %]
+effective_cache_size = '[% config.pg_effective_cache_size %]'
 random_page_cost = [% config.pg_random_page_cost %]
 seq_page_cost = [% config.pg_seq_page_cost %]
 
