@@ -41,9 +41,6 @@ effective_io_concurrency = [% config.pg_effective_io_concurrency %]
   wal_level = 'minimal'
 [% END %]
 
-checkpoint_segments = [% config.pg_checkpoint_segments %]
-checkpoint_timeout = [% config.pg_checkpoint_timeout %]
-
 [% IF config.pg_archive %]
   archive_mode    = on
   archive_command = '/usr/sbin/st-appliance-wal-archive %p %f'
@@ -51,6 +48,13 @@ checkpoint_timeout = [% config.pg_checkpoint_timeout %]
 [% ELSE %]
   archive_mode    = off
 [% END %]
+
+# WAL tuning
+
+wal_buffers = [% config.pg_wal_buffers %]
+checkpoint_segments = [% config.pg_checkpoint_segments %]
+checkpoint_timeout = [% config.pg_checkpoint_timeout %]
+checkpoint_completion_target = [% config.pg_checkpoint_completion_target %]
 
 # Streaming Replication 
 
@@ -71,12 +75,12 @@ checkpoint_timeout = [% config.pg_checkpoint_timeout %]
 
 # Planner
 
-seq_page_cost = [% config.pg_seq_page_cost %]
-random_page_cost = [% config.pg_random_page_cost %]
-cpu_tuple_cost = [% config.pg_cpu_tuple_cost %]
 cpu_index_tuple_cost = [% config.pg_cpu_index_tuple_cost %]
 cpu_operator_cost = [% config.pg_cpu_operator_cost %]
+cpu_tuple_cost = [% config.pg_cpu_tuple_cost %]
 effective_cache_size = [% config.pg_effective_cache_size %]
+random_page_cost = [% config.pg_random_page_cost %]
+seq_page_cost = [% config.pg_seq_page_cost %]
 
 # Logging
 
@@ -85,6 +89,7 @@ log_statement = 'none' # enable ONLY for debugging
 
 # Stats
 
+default_statistics_target = [% config.pg_default_statistics_target %]
 track_activities = on
 track_counts = on
 track_functions = none
