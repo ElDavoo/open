@@ -17,13 +17,12 @@ BEGIN {
     select STDOUT; $|=1;
     if ($ENV{ST_LOG_NAME} && !$ENV{HARNESS_ACTIVE}) {
         my $path = '/var/log';
-        if ($0 !~ m{^/usr/bin}) {
-            $path = Socialtext::Paths->log_directory();
-        }
+        $path = Socialtext::Paths->log_directory() if $0 !~ m{/usr/s?bin};
         eval "use Socialtext::System::TraceTo '$path/$ENV{ST_LOG_NAME}.log'";
     }
 
-    if (Socialtext::AppConfig->is_dev_env) {
+    if (Socialtext::AppConfig->is_dev_env && !$ENV{HARNESS_ACTIVE}) {
+        # set this manually in your test, it interferes with TAP parsers:
         $ENV{ST_DEBUG_ASYNC} = 1; # See Socialtext::WebDaemon::Util
     }
 }
