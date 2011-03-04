@@ -4,6 +4,9 @@ use Moose;
 extends 'Socialtext::CredentialsExtractor::Extractor::SSLCertificate';
 
 use Socialtext::l10n qw(loc);
+use Socialtext::Signal;
+use Socialtext::Signal::Attachment;
+use Socialtext::Upload;
 
 # Regardless of what our parent class says, our username comes from the "CN".
 override '_username_field' => sub {
