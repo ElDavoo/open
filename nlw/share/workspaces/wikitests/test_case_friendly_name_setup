@@ -1,3 +1,5 @@
+* Fixture: SocialWidgets
+
 | set | fname_user | fname_user_%%start_time%%@david.socialtext.net |  |
 | set | fname_user_regexp | fname_user_%%start_time%%\@david.socialtext.net |  |
 | set_default | fname | Bob_%%start_time%% |  |
@@ -35,6 +37,7 @@
 | st-admin | add-member --email %%fname_checker%% --group %%fname_group_id%% | is now a member |  |
 | open_ok | /nlw/submit/logout |  |  |
 | st-login | %%fname_user%% | %%password%% |  |
+
 
 | *Comment* | Test Case: Friendly Name edit profile |  |
 | open_ok | /st/edit_profile |  |

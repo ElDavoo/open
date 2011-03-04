@@ -109,8 +109,8 @@
 | st-admin | delete-workspace --no-export --w %%workspace1%% | has been deleted |
 | st-admin | delete-workspace --no-export --w %%workspace2%% | has been deleted |
 | st-admin | delete-workspace --no-export --w %%workspace3%% | has been deleted |
-| st-admin | deactivate-user --e %%isouser1%% | has been removed |
-| st-admin | deactivate-user --e %%isouser2%% | has been removed |
-| st-admin | deactivate-user --e %%isouser3%% | has been removed |
+| st-admin | deactivate-user --e %%isouser1%% | has been deactivated |
+| st-admin | deactivate-user --e %%isouser2%% | has been deactivated |
+| st-admin | deactivate-user --e %%isouser3%% | has been deactivated |
 
 | *Comment* | Test Case: Business Control Panel Groups In Account COMPLETED |
