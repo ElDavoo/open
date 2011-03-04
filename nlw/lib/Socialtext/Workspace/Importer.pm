@@ -98,7 +98,6 @@ sub import_workspace {
             "$CWD/user/$self->{old_name}",
             $self->{workspace}
         );
-        $self->_import_data_dirs();
         $self->_populate_db_metadata();
         $self->_rebuild_page_links();
 
@@ -278,17 +277,6 @@ sub _load_yaml {
     }
 
     return YAML::Load($yaml);
-}
-
-sub _import_data_dirs {
-    my $self = shift;
-    my $data_root = Socialtext::AppConfig->data_root_dir();
-    for my $dir (qw(plugin)) {
-        my $src = Socialtext::File::catdir( $dir, $self->{old_name} );
-        my $dest = Socialtext::File::catdir( $data_root, $dir, $self->{new_name} );
-        Socialtext::File::Copy::Recursive::dircopy( $src, $dest )
-            or die "Could not copy $src to $dest: $!\n";
-    }
 }
 
 sub _set_permissions {
