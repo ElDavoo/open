@@ -208,4 +208,9 @@ sub SystemUser {
     return shift->new( username => 'system-user' );
 }
 
+sub display_name {
+    return join ' ', grep defined, @{$_[0]}{qw[ first_name last_name ]};
+}
+
+
 1;

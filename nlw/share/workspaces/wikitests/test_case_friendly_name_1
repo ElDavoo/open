@@ -24,11 +24,7 @@
 
 | *Comment* | Test Case: Friendly Name 1 Check activities widget |  |
 | open_ok | /st/dashboard |  |
-| st-name-widget | 4 | activities_widget |
-| st-widget-title-like | activities_widget | Activities |
-| st-select-widget-frame | activities_widget |  |
 | wait_for_element_present_ok | link=%%fname%% | 30000 |
-| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Friendly Name 1 check wiki page and user wafl |  |
 | open_ok | /%%fname_wiki%%/index.cgi?%%fname_page%% |  |

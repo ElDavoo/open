@@ -3,6 +3,7 @@
 | *Comment* | Test Case: Verify Avatar Popup |  |
 | *Comment* | [Test Case: Verify Profile] should have run before Avatar Popup |  |
 
+
 | *Comment* | These values must match the one in [Test Case: Edit Profile] |  |
 | set | e_user | profile.editor@ken.socialtext.net |
 | set | es_user | profile.editor\@ken.socialtext.net |
@@ -51,6 +52,8 @@
 | wait_for_element_visible_ok | link=Follow this person | 30000 |
 
 | *Comment* | Test Case: Avatar Popup TEARDOWN |  |
+|  st-process-jobs |  |  |
+|  st-admin |  purge-page --w %%workspace%% --p %%avatar_page%% |  |
 | st-admin | remove-member --w %%workspace%% --e %%e_user%% | no longer has the role of 'member' |
 
 | *Comment* | Test Case: Avatar Popup COMPLETED |  |

@@ -85,7 +85,10 @@ sub Count {
 }
 
 sub GetUser {
-    my ($self, $id_key, $id_val) = @_;
+    my ($self, $id_key, $id_val, %opts) = @_;
+    if (my $proto = $opts{preload}) {
+        return $self->NewHomunculus($proto);
+    }
     return $self->get_homunculus($id_key, $id_val);
 }
 

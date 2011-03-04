@@ -805,6 +805,12 @@ CREATE SEQUENCE attachment_id_seq
     NO MAXVALUE
     CACHE 1;
 
+CREATE TABLE backup_file (
+    name text NOT NULL,
+    at timestamptz DEFAULT now() NOT NULL,
+    body bytea NOT NULL
+);
+
 CREATE TABLE breadcrumb (
     viewer_id integer NOT NULL,
     workspace_id bigint NOT NULL,
@@ -1479,6 +1485,10 @@ ALTER TABLE ONLY attachment
 ALTER TABLE ONLY attachment
     ADD CONSTRAINT attachment_uuid_key
             UNIQUE (attachment_uuid);
+
+ALTER TABLE ONLY backup_file
+    ADD CONSTRAINT backup_file_pkey
+            PRIMARY KEY (name);
 
 ALTER TABLE ONLY container
     ADD CONSTRAINT container_pk
@@ -2736,4 +2746,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '133');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '134');

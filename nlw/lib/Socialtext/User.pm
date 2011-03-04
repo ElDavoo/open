@@ -79,6 +79,7 @@ has 'homunculus' => (
 has 'metadata' => (
     is => 'rw', isa => 'Socialtext::UserMetadata',
     writer => '_set_metadata',
+    lazy_build => 1,
     handles => [qw(
         email_address_at_import
         creation_datetime
@@ -96,6 +97,11 @@ has 'metadata' => (
         primary_account_id
     )],
 );
+sub _build_metadata {
+    my $self = shift;
+    my $meta = Socialtext::UserMetadata->create_if_necessary($self);
+    return $meta;
+}
 
 with 'Socialtext::UserSetContained';
 
@@ -151,6 +157,11 @@ sub new_homunculus {
 
         # Go get this User from the DB (so we know what driver it came from,
         # and what it looked like _last time_ we saw it.
+        #
+        # Its *REALLY* important here to grab *ALL* of the columns from this
+        # table; we're going to pass it through to the Factory as a pre-loaded
+        # proto-user, so don't skimp here and try to just query one or two
+        # columns (we're going to need them all).
         my $sth = sql_execute(qq{SELECT * FROM users WHERE user_id = ?}, $val);
         my $row = $sth->fetchrow_hashref();
         return unless $row;
@@ -161,7 +172,11 @@ sub new_homunculus {
         if ($driver) {
             # look the user up by *user_id*; *ALL* factories must support this
             # lookup.
-            $homunculus = $driver->GetUser( $key, $val );
+            #
+            # "preload" is an optimization; we've already pulled the row from
+            # the DB for this User so pass it through to the factory so they
+            # can avoid looking the record up in the DB _again_.
+            $homunculus = $driver->GetUser($key, $val, preload => $row);
         }
 
         $homunculus ||= Socialtext::User::Deleted->new(
@@ -195,12 +210,13 @@ sub new_homunculus {
     return $homunculus;
 }
 
-sub _update_profile {
-    my $self = shift;
-    my $homunculus = $self->homunculus;
-    return unless $homunculus->can('extra_attrs');
-    my $attrs = $homunculus->extra_attrs;
-    $homunculus->extra_attrs(undef);
+sub _update_profile_with_extra_attrs {
+    my $self  = shift;
+    my $homey = $self->homunculus;
+    return unless $homey->can('extra_attrs');
+
+    my $attrs = $homey->extra_attrs;
+    $homey->extra_attrs(undef);
     return unless ($attrs && %$attrs);
 
     my $people = Socialtext::Pluggable::Adapter->plugin_class('people');
@@ -222,9 +238,7 @@ sub new_from_homunculus {
     my $class      = shift;
     my $homunculus = shift;
     my $self       = $class->meta->new_object(homunculus => $homunculus);
-    my $um         = Socialtext::UserMetadata->create_if_necessary($self);
-    $self->_set_metadata($um);
-    $self->_update_profile();
+    $self->_update_profile_with_extra_attrs();
 
     return $self;
 }
@@ -246,16 +260,17 @@ sub create {
         }
     }
 
-    my $user = $class->meta->new_object(homunculus => $homunculus);
-
-    # scribble UserMetadata
     my $metadata = Socialtext::UserMetadata->create(
-        email_address_at_import => $user->email_address,
+        email_address_at_import => $homunculus->email_address,
         %p,
     );
-    $user->_set_metadata($metadata);
 
-    $user->_update_profile();
+    my $user = $class->meta->new_object(
+        homunculus => $homunculus,
+        metadata   => $metadata,
+    );
+
+    $user->_update_profile_with_extra_attrs();
     $user->_index();
 
     return $user;
@@ -574,9 +589,9 @@ sub groups {
 
     my $apply = $p{ids_only}
         ? sub { $_[0][0] }
-        : sub {
-            return Socialtext::Group->GetGroup( group_id => $_[0][0] );
-        };
+        : $p{minimal}
+            ? sub { { group_id => $_[0][0], name => $_[0][1] } }
+            : sub { Socialtext::Group->GetGroup( group_id => $_[0][0] ) };
 
     return Socialtext::MultiCursor->new(
         iterables => [ $sth->fetchall_arrayref ],
@@ -587,6 +602,7 @@ sub groups {
 sub to_hash {
     my $self = shift;
     my %args = @_;
+    my $t = time_scope 'user_to_hash';
 
     if ($args{minimal}) {
         return {

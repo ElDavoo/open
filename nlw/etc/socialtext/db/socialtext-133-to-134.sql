@@ -1,3 +1,5 @@
+BEGIN;
+
 -- Migrations for lolcat
 
 -- Add missing NOT NULL and DEFAULT to "Account" table.
@@ -8,6 +10,7 @@ UPDATE "Account"
 ALTER TABLE "Account"
     ALTER email_addresses_are_hidden SET NOT NULL,
     ALTER email_addresses_are_hidden SET DEFAULT false;
+
 
 -- TODO: truncate from_page_id, to_page_id to 255
 
@@ -64,3 +67,19 @@ UPDATE page
           ) max_rev USING (page_id, workspace_id, revision_id)
     ) latest
  WHERE page.page_id = latest.page_id AND page.workspace_id = latest.workspace_id;
+
+-- for Backups 5.0
+
+CREATE TABLE backup_file (
+    name text NOT NULL,
+    at   timestamptz DEFAULT now() NOT NULL,
+    body bytea NOT NULL,
+    PRIMARY KEY (name)
+);
+
+
+UPDATE "System"
+   SET value = '134'
+ WHERE field = 'socialtext-schema-version';
+
+COMMIT;

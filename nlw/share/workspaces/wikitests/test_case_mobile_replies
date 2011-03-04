@@ -25,7 +25,9 @@
 
 | *Comment* | Test Case: Mobile Replies Check Permalink View |  |
 | wait_for_element_present_ok | //a[contains(text(),'minute')] | 30000 |
-| click_and_wait | //a[contains(text(),'minute')] |  |
+
+| *Comment* | Test Case: Mobile Replies click and wait doesn't work, use click_ok |  |
+| click_ok | //a[contains(text(),'minute')] |  |
 | wait_for_text_present_ok | %%topic_signal%% | 30000 |
 | wait_for_text_present_ok | All Replies | 30000 |
 | text_like | qr/%%reply_prefix%%-0-0.+%%reply_prefix%%-0-1.+%%reply_prefix%%-0-2.+%%reply_prefix%%-1.+%%reply_prefix%%-2/ |  |

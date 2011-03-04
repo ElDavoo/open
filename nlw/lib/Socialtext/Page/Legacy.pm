@@ -32,7 +32,7 @@ sub parse_page_headers {
 }
 
 sub read_and_decode_page {
-    my ($filename, $all) = @_;
+    my ($filename, $want_content) = @_;
 
     die "No such file $filename" unless -f $filename;
     die "File path contains '..', which is not allowed."
@@ -43,10 +43,14 @@ sub read_and_decode_page {
     open(my $fh, '<:mmap', $filename)
         or die "Can't open $filename: $!";
 
-    my $buffer = do {
-        local $/ = $all ? undef : "\n\n"; # header-only
-        <$fh>
-    };
+    my $buffer;
+    if ($want_content) {
+        do { local $/="\n\n"; <$fh> }; # throw away header for speed
+        $buffer = do { local $/; <$fh> };
+    }
+    else {
+        $buffer = do { local $/="\n\n"; <$fh> };
+    }
 
     $buffer //= '';
     $buffer = Socialtext::Encode::guess_decode($buffer);

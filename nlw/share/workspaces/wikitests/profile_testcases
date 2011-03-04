@@ -18,6 +18,10 @@ test profile (People) tagging
 
 * [Test Case: Tagging Profile]
 
+test Collegues widget in other user's profile
+
+* [Test Case: Profile Group List]
+
 There is a further glitch in that wait_for_element_... does not seem to work for widgets. If the profile does not open immediately, the test just runs on. This may need a frame select - Matt to investigate.
 
 * [Test Case: Clear Profile Fields]

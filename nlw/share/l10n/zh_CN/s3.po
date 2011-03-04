@@ -1096,7 +1096,7 @@ msgid "info.skin"
 msgstr "Socialtext可以创建视觉主题来自定义您的工作区的外观和风格。您可以使用由Socialtext提供的默认视觉主题或者自定义视觉主题。"
 
 msgid "info.socialtext"
-msgstr "Socialtext:企业社会化软件"
+msgstr "Socialtext：企业社会化软件"
 
 msgid "edit.contention=type"
 msgstr "在您编辑的时候有其他人对%1进行了更改。"

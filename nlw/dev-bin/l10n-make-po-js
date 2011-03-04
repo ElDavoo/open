@@ -11,6 +11,8 @@ use lib "$RealBin/../lib";
 use Socialtext::l10n::DevUtils;
 use Socialtext::JSON;
 
+chdir "$RealBin/..";
+
 if (!@ARGV) {
     @ARGV = map { 
         s!^share/l10n/(.+)/lib\.po!$1!; $_

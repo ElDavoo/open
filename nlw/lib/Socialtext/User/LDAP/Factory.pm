@@ -82,7 +82,7 @@ sub _attr_map {
 }
 
 sub GetUser {
-    my ($self, $key, $val) = @_;
+    my ($self, $key, $val, %opts) = @_;
 
     # SANITY CHECK: have inbound parameters
     return unless $key;
@@ -92,9 +92,11 @@ sub GetUser {
     return unless ($valid_get_user_terms{$key});
 
     # If we have a valid/fresh cached copy of the User, use that
-    my $cache_lookup = $self->GetHomunculus(
-        $key, $val, $self->driver_key, 'raw_proto_user_please',
-    );
+    my $cache_lookup
+        = $opts{preload}
+        || $self->GetHomunculus(
+            $key, $val, $self->driver_key, 'raw_proto_user_please',
+           );
     if ($CacheEnabled) {
         time_scope 'ldap_user_check_cache';
         if ($self->_is_cached_proto_user_valid($cache_lookup)) {

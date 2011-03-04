@@ -82,7 +82,7 @@ msgid "invite.click-to-confirm-email=uri"
 msgstr "请<a href=\"%1\">点击此链接</a>来确认您的电子邮件地址。"
 
 msgid "invite.contact-support=uri"
-msgstr "如果您对此电子邮件的问题,请 <a href=\"%1\">联系支持</a>。"
+msgstr "如果您对此电子邮件有疑问，请 <a href=\"%1\">联系支持</a>。"
 
 msgid "invite.disabled-for-group"
 msgstr "对不起，当前服务器管理员禁用了该群组的这项功能。"
@@ -148,7 +148,7 @@ msgid "invite.sign-in-with:"
 msgstr "用下面的信息登录："
 
 msgid "invite.socialtext-footer"
-msgstr "由Socialtext为您带来。"
+msgstr "由 Socialtext 为您带来。"
 
 msgid "invite.standard-welcome-message"
 msgstr "标准欢迎辞"
