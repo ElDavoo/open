@@ -3454,6 +3454,38 @@ sub restart_userd {
     fail "userd could not be restarted";
 }
 
+sub restart_everything {
+    my $self = shift;
+    Socialtext::System::shell_run(qw( nlwctl restart ));
+
+    my $host = $self->{hostname};
+    my @to_check = (
+        # UserD
+        HTTP::Request->new(
+            GET => 'http://localhost:' . $self->{userd_port} . '/ping',
+            [ Accept => 'application/json' ]
+        ),
+        # NLW
+        HTTP::Request->new(
+            GET => "http://$host:" . $self->{http_port} . '/nlw/login.html'
+        ),
+    );
+
+    my $ua = LWP::UserAgent->new;
+  SERVICE:
+    foreach my $req (@to_check) {
+      ATTEMPT:
+        for (1 .. 18) {
+            my $resp = $ua->request($req);
+            next SERVICE unless ($resp->is_error);
+            Time::HiRes::sleep(0.5);
+        }
+        fail "services could not be restarted";
+        return;
+    }
+    pass "services restarted";
+}
+
 sub jsmake {
     my ($self, $target, $dir) = @_;
     require Socialtext::MakeJS;
