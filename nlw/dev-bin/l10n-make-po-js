@@ -19,7 +19,13 @@ if (!@ARGV) {
     } glob("share/l10n/*/lib.po")
 }
 
-for my $lang (@ARGV) {
+sub en {
+    # Sort "en" before everything else
+    ($_[0] eq 'en') ? '' : $_[0];
+}
+
+my %EnglishLexicon;
+for my $lang (sort { en($a) cmp en($b) } @ARGV) {
     my %Lexicon;
     $lang =~ s/-/_/g;
     $lang =~ s/(_\w+)$/uc $1/e;
@@ -44,6 +50,8 @@ for my $lang (@ARGV) {
     gen_js($lang => \%Lexicon);
 
     next unless $lang eq 'en';
+
+    %EnglishLexicon = %Lexicon;
 
     # Generated derived locales
     my %zz = map { ($_ => zz($Lexicon{$_})) } keys %Lexicon;
@@ -78,6 +86,9 @@ sub zq {
 
 sub gen_js {
     my ($lang, $lexicon) = @_;
+    if ($lang ne 'en') {
+        $lexicon = { %EnglishLexicon, %$lexicon };
+    }
     my $js_file = "share/skin/s3/javascript/l10n/$lang.js";
     open my $js, '>', $js_file;
     print $js ";var Socialtext = Socialtext || {}; Socialtext.loc_lang = Socialtext.loc_lang || '$lang'; var LocalizedStrings={\"$lang\":{\n";
@@ -97,8 +108,9 @@ sub gen_po {
     my ($lang, $lexicon) = @_;
     my $po_file = "share/l10n/$lang.po";
     my $use_first = '--use-first';
-    $use_first = '' if $lang eq 'en';
-    system("msgcat --width 99999 $use_first -s @{[reverse sort glob(qq[share/l10n/$lang/*.po])]} > $po_file");
+    my $en_po = "share/l10n/en.po";
+    $en_po = $use_first = '' if $lang eq 'en';
+    system("msgcat --width 99999 $use_first -s @{[reverse sort glob(qq[share/l10n/$lang/*.po])]} $en_po > $po_file");
     warn "*** Generated successfully: $po_file\n";
 }
 
