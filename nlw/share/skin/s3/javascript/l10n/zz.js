@@ -1627,6 +1627,7 @@
 "watch.list":"Zzzz Zzzzzzzzz",
 "watch.look-for":"Zzzz zzz",
 "watch.stop":"Zzzz Zzzzzzzz",
+"widget.100%":"Zzz zzzz zzzzz (100%)",
 "widget.300px":"Zzzzz (300zz)",
 "widget.450px":"Zzzzzz (450zz)",
 "widget.600px":"Zzzzz (600zz)",

@@ -1627,6 +1627,7 @@
 "watch.list":"Your Watchlist",
 "watch.look-for":"Look for",
 "watch.stop":"Stop Watching",
+"widget.100%":"Fit page width (100%)",
 "widget.300px":"Small (300px)",
 "widget.450px":"Medium (450px)",
 "widget.600px":"Large (600px)",
