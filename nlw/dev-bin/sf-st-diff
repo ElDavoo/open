@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
 # @COPYRIGHT@
 
 # Determines differences between ST-based trunk and SF-based trunk
