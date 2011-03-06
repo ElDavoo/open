@@ -1040,26 +1040,29 @@ proto.squish_style_object_into_string = function(style) {
 }
 
 proto.href_is_wiki_link = function(href) {
-    if (! this.looks_like_a_url(href))
+    if (! this.looks_like_a_url(href)) {
         return true;
+    }
     if (href.match(/\/static\//) && href.match(/\/skin\/js-test\//))
         href = location.href;
 
     // check that the url is in this workspace
-    var up_to_wksp = /^https?:\/\/[^\/]+\/(?!(?:nlw|challenge|data|feed|js|m|settings|soap|st|wsdl)\/)[^\/#]+\//;
-    var no_page_input   = href.match(up_to_wksp);
-    var no_page_current = location.href.match(up_to_wksp);
+    var up_to_wksp = /^https?:\/\/([^\/]+)\/(?:m\/page\/)?(?!(?:nlw|challenge|data|feed|js|m|settings|soap|st|wsdl)\/)[^\/#]+\//;
+    var no_page_input = href.match(up_to_wksp);
 
     // This url is nothing like a wikilink
-    if (!no_page_input || !no_page_current) return false;
+    if (!no_page_input) return false;
 
-    if (no_page_input[0] == no_page_current[0]) {
-        // We are on the current workspace
-        // Check to make sure CGI params aren't pointing to something else
-        var query = href.split('?')[1];
-        if (!query) return true;
-        return ((! query.match(/=/)) || query.match(/action=display\b/));
+    // This url may be a wikilink, but is it under our domain?
+    if (no_page_input[1].toLowerCase().indexOf(location.hostname.toLowerCase()) != 0) {
+        return false;
     }
+
+    // We are on the current domain
+    // Check to make sure CGI params aren't pointing to something else
+    var query = href.split('?')[1];
+    if (!query) return true;
+    return ((! query.match(/=/)) || query.match(/action=display\b/));
 }
 
 proto.looks_like_a_url = function(string) {
@@ -2351,6 +2354,13 @@ proto.format_a = function(elem) {
 
     var href = elem.getAttribute('href');
 
+    // Workaround relative links from FF: {bz: 5010}
+    href = href.replace(/^(?:\.\.\/)+/, 
+        location.protocol + '//' + location.hostname
+            + (((location.port == 80) || (location.port == '')) ? '' : ':' + location.port)
+            + '/'
+    );
+
     if (! href) href = ''; // Necessary for <a name="xyz"></a>'s
     var link = this.make_wikitext_link(label, href, elem);
 
@@ -2420,8 +2430,8 @@ proto.is_italic = function(elem) {
     );
 }
 
-proto.elem_is_wiki_link = function (elem) {
-    var href = elem.getAttribute('href') || ''
+proto.elem_is_wiki_link = function (elem, href) {
+    href = href || elem.getAttribute('href') || ''
     return jQuery(elem).attr('wiki_page')
         || this.href_is_wiki_link(href);
 }
@@ -2429,7 +2439,7 @@ proto.elem_is_wiki_link = function (elem) {
 proto.make_wikitext_link = function(label, href, elem) {
     var mailto = href.match(/^mailto:(.*)/);
 
-    if (this.elem_is_wiki_link(elem)) {
+    if (this.elem_is_wiki_link(elem, href)) {
         return this.handle_wiki_link(label, href, elem);
     }
     else if (mailto) {
@@ -2456,10 +2466,10 @@ proto.make_wikitext_link = function(label, href, elem) {
 }
 
 proto.handle_wiki_link = function(label, href, elem) {
-    var up_to_wksp = /^https?:\/\/[^\/]+\/([^\/#]+)\/(?:(?:index.cgi)?\?)?/;
+    var up_to_wksp = new RegExp('^https?://[^/]+/(?:m/page/)?([^/#]+)/(?:(?:index.cgi)?\\?)?');
 
     var match = href.match(up_to_wksp);
-    var wksp = match[1];
+    var wksp = match ? match[1] : Socialtext.wiki_id;
 
     var href_orig = href;
     href = href.replace(/.*\baction=display;is_incipient=1;page_name=/, '');
@@ -2491,7 +2501,12 @@ proto.handle_wiki_link = function(label, href, elem) {
         return prefix + '{link: ' + wksp + ' [' + page + '] ' + section + '}';
     }
     else {
-        return prefix + '[' + page + ']';
+        var locationMatch = location.href.match(up_to_wksp);
+        if (locationMatch && locationMatch[1] == wksp) {
+            return prefix + '[' + page + ']';
+        }
+
+        return prefix + '{link: ' + wksp + ' [' + page + ']}';
     }
 }
 
