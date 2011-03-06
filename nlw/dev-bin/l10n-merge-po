@@ -14,6 +14,7 @@ for my $po (glob("share/l10n/new/*.po")) {
     my $en = $po;
     $en =~ s/\bnew\b/en/;
 
+    system("perl -ni -e 'print unless /^# SOME DESCRIPTIVE TITLE./ .. /^#:/ and not /^#:/' $po");
     system("(msgcat --width 99999 -s $po $en > $en.new) && (mv $en.new $en)");
     warn "*** Merged: $en\n";
 }
