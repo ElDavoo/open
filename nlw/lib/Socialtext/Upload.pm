@@ -5,7 +5,7 @@ use File::Copy qw/copy move/;
 use File::Path qw/make_path/;
 use File::Map qw/map_file advise/;
 use File::Temp ();
-use Fatal qw/copy move rename open close/;
+use Fatal qw/copy move rename open close chmod/;
 use Try::Tiny;
 use Guard;
 
@@ -168,8 +168,7 @@ sub Create {
         rename $tmp_store => $disk_filename;
         $g->cancel if $g;
         my $time = $self->created_at->epoch;
-        utime $time, $time, $disk_filename
-            or warn "can't update timestamp on $disk_filename: $!";
+        $self->update_utime($disk_filename);
     }
 
     return $self if $p{no_log};
@@ -226,6 +225,16 @@ sub CleanTemps {
     });
     warn "Cleaned up ".$sth->rows." temp attachment records"
         if ($sth->rows > 0);
+}
+
+sub update_utime {
+    my ($self, $filename) = @_;
+    $filename //= $self->disk_filename;
+    utime time, # update atime for tmpreaper
+        $self->created_at->epoch, # mtime for nginx
+        $filename
+     or warn "can't update timestamp on $filename: $!";
+    return;
 }
 
 sub relative_filename {
@@ -374,28 +383,21 @@ sub _ensure_storage_dir {
 
 sub _store {
     my ($self, $data_ref, $filename) = @_;
+    local $!;
     confess "undef data" unless defined($$data_ref);
 
     $filename ||= $self->disk_filename;
     my $dir = _ensure_storage_dir($filename);
-    my $tmp = File::Temp->new(
-        TEMPLATE => "$filename.XXXXXX", SUFFIX => '.tmp', CLEANUP => 1)
+    my $tmp = File::Temp->new(DIR => $dir,
+        TEMPLATE => 'store-XXXXXX', SUFFIX => '.tmp')
         or confess "can't open storage temp file: $!";
-    binmode $tmp, ':raw';
-    my $time = $self->created_at->epoch;
 
-    try {
-        local $!;
-        my $wrote = syswrite $tmp, $$data_ref;
-        die "can't write to storage temp file: $!" if ($! or $wrote <= 0);
-        close $tmp; # Fatal
-        rename $tmp => $filename; # Fatal
-        utime time, $time, $filename; # not Fatal, but not a big deal
-    }
-    catch {
-        unlink $tmp;
-        die $_;
-    };
+    my $wrote = syswrite $tmp, $$data_ref;
+    die "can't write to storage temp file: $!" if ($! or $wrote <= 0);
+    close $tmp; # Fatal
+    chmod 0644, "$tmp"; # Fatal
+    rename "$tmp" => $filename; # Fatal
+    $self->update_utime($filename);
     return;
 }
 
@@ -433,15 +435,18 @@ sub _load_blob {
 # opposite of ensure_stored
 sub cleanup_stored {
     my $self = shift;
-    unlink $self->disk_filename;
+    my $filename = $self->disk_filename;
+    confess "illegal glob filename: $filename" if $filename =~ /\s/;
+    while (my $file = glob "$filename*") {
+        unlink $file;
+    }
 }
 
 sub ensure_stored {
     my ($self, $filename) = @_;
-    $filename ||= $self->disk_filename;
-    if (-f $filename) {
-        # "touch" the atime of the file so this can be used for pruning 
-        utime time, $self->created_at->epoch, $filename;
+    $filename //= $self->disk_filename;
+    if (-f $filename && -s _ == $self->content_length) {
+        $self->update_utime($filename);
         return;
     }
 
@@ -523,6 +528,46 @@ sub _build_content_md5 {
     my $ctx = Digest::MD5->new();
     $ctx->add($blob);
     return $ctx->b64digest . "==";
+}
+
+sub ensure_scaled {
+    my ($self, %opts) = @_;
+    confess "can only scale images" unless $self->is_image;
+    require Socialtext::Image;
+
+    my $t = time_scope 'ensure_scaled';
+
+    my $spec = delete $opts{spec} || 'thumb-64x64';
+    confess "invalid resize spec" unless $spec =~ /^[a-z0-9-@]+$/;
+
+    my $filename = $self->disk_filename;
+    my $dir = _ensure_storage_dir($filename);
+    my $scaled = "$filename.$spec";
+    if (-f $scaled && -s _) {
+        my $size = -s _;
+        $self->update_utime($scaled);
+        return $size;
+    }
+
+    my $t2 = time_scope 'gen_scaled';
+
+    $self->ensure_stored unless -f $filename; # avoid utimes bump
+
+    my $tmp = File::Temp->new(
+        DIR => $dir, TEMPLATE => 'scale-XXXXXX',
+    ) or die "can't make tempfile: $!";
+    close $tmp; # will read/write via name
+
+    Socialtext::Image::spec_resize($spec, $filename => "$tmp");
+    chmod 0644, "$tmp"; # Fatal
+    # the -f check here doesn't guarantee we won't overwrite, but *does* give
+    # more insurance that we won't return an incorrect Content-Length due to
+    # multiple writer processes and non-deterministic image scaling output.
+    rename "$tmp" => $scaled unless -f $scaled; # Fatal
+
+    # make the scaled image have the same utimes as for regular attachments:
+    $self->update_utime($scaled);
+    return -s $scaled;
 }
 
 __PACKAGE__->meta->make_immutable;
