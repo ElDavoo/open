@@ -26,9 +26,9 @@
   
   if ($ua_redirect ~ "[% ua %].*-1$") {
     # rewrite: /:ws/?args => /m/pages/:ws/?args
-    rewrite ^/+([^/]+)/*$ /m/page/$1/ redirect;
+    rewrite ^/+([^/]+)/*$ /m/page/$1/$args? redirect;
     # rewrite: /:ws/index.cgi?:page => /m/pages/:ws/:page
-    rewrite ^/+([^/]+)/+index.cgi$ /m/page/$1/? redirect;
+    rewrite ^/+([^/]+)/+index.cgi$ /m/page/$1/$args? redirect;
     # rewrite: /:ws/:page => /m/pages/:ws/:page
     rewrite ^/+([^/]+)/+([^/]+)$ /m/page/$1/$2 redirect;
   }
