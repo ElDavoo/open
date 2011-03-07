@@ -2,7 +2,6 @@
 | *Comment* | Test Case: User Restrictions NOTE: Other restrictions also in test_case_business_control_panel_confirm_user |  |
 
 
-
 | *Comment* | Test Case: Restrict User - Make sure emails are sent for change password and deactivate user |  |
 | set | acct | restrict%%start_time%% |
 | st-admin | create-account --name %%acct%% | was created |
@@ -12,6 +11,17 @@
 | st-admin | create-user --e %%emailaddr%% --p %%password%% | was created |
 | st-admin | add-member --w %%ws%% --e %%username%% | now has the role of 'member' in the |
 | st-admin | add-member --w %%ws%% --e %%emailaddr%% | now has the role of 'member' in the |
+| st-admin | add-workspace-admin --e %%username%% --w %%ws%% | now has the role of 'admin' in the |
+
+| *Comment* | Test Case: Restrict User - Make sure submitted emails /will/ become pages |  |
+| open_ok | /%%ws%%/ |  |
+| clickAndWait | link=Settings |  |
+| clickAndWait | link=Workspace Privacy |  |
+| click_ok | //input[@name='guest_has_email_in' and @value='1'] |  |
+| clickAndWait | link=Save |  |
+| text_like | contentContainer | Anyone can send email to %%ws%%. |
+
+| *Comment* | Test Case: Restrict User - Create confirmations - this will generate emails (this, wikipages) |  |
 | st-admin | add-restriction --email %%emailaddr%% --restriction password_change | has been given the 'password_change' restriction |
 | st-admin | add-restriction --email %%emailaddr%% --restriction email_confirmation | has been given the 'email_confirmation' restriction |
 | st-process-jobs |  |  |
@@ -23,7 +33,8 @@
 | open_ok | /%%ws%% |  |
 | wait_for_element_visible_ok | link=What's New | 30000 |
 | click_and_wait | link=What's New |  |
-| pause | 120000 |  |
+| wait_for_element_visible_ok | link=Please follow these instructions to change your Socialtext password | 30000 |
+| wait_for_element_visible_ok | link=Welcome to the lucite.socialtext.net community - please confirm your email to join | 30000 |
 
 | *Comment* | Test Case: Now test command-line; create user |  |
 | set | user | mattrestrict%%start_time%% |
