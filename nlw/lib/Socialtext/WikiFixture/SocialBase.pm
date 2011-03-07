@@ -3480,6 +3480,7 @@ sub restart_everything {
             next SERVICE unless ($resp->is_error);
             Time::HiRes::sleep(0.5);
         }
+        fail "unable to reach: " . $req->uri;
         BAIL_OUT("services could not be restarted");
     }
     pass "services restarted";
