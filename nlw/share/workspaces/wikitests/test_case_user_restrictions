@@ -1,8 +1,8 @@
 | *Comment* | Test Case: User Restrictions |  |
-| *Comment* | Test Case: User Restrictions NOTE: Other restrictions also in test_case_business_control_panel_confirm_user |  |
+| *Comment* | Test Case: User Restrictions GUI and email checks NOTE: Other restrictions also in test_case_business_control_panel_confirm_user and test_case_command_line_user_restrictions |  |
 
 
-| *Comment* | Test Case: Restrict User - Make sure emails are sent for change password and deactivate user |  |
+| *Comment* | Test Case: User Restrictions - Make sure emails are sent for change password and deactivate user |  |
 | set | acct | restrict%%start_time%% |
 | st-admin | create-account --name %%acct%% | was created |
 | set | ws | restrictws%%start_time%% |
@@ -13,7 +13,7 @@
 | st-admin | add-member --w %%ws%% --e %%emailaddr%% | now has the role of 'member' in the |
 | st-admin | add-workspace-admin --e %%username%% --w %%ws%% | now has the role of 'admin' in the |
 
-| *Comment* | Test Case: Restrict User - Make sure submitted emails /will/ become pages |  |
+| *Comment* | Test Case: User Restrictions - Make sure submitted emails /will/ become pages |  |
 | open_ok | /%%ws%%/ |  |
 | clickAndWait | link=Settings |  |
 | clickAndWait | link=Workspace Privacy |  |
@@ -21,121 +21,25 @@
 | clickAndWait | link=Save |  |
 | text_like | contentContainer | Anyone can send email to %%ws%%. |
 
-| *Comment* | Test Case: Restrict User - Create confirmations - this will generate emails (this, wikipages) |  |
+| *Comment* | Test Case: User Restrictions - Create confirmations - this will generate emails (this, wikipages) |  |
 | st-admin | add-restriction --email %%emailaddr%% --restriction password_change | has been given the 'password_change' restriction |
 | st-admin | add-restriction --email %%emailaddr%% --restriction email_confirmation | has been given the 'email_confirmation' restriction |
 | st-process-jobs |  |  |
 
-| *Comment* | Test Case: Restrict UserPause 90 seconds for invitation email delivery |  |
+| *Comment* | Test Case: User Restrictions Pause 90 seconds for invitation email delivery |  |
 | pause | 90000 |  |
 
-| *Comment* | Test Case: Restrict User Check email delivery |  |
+| *Comment* | Test Case: User Restrictions Check email delivery |  |
 | open_ok | /%%ws%% |  |
 | wait_for_element_visible_ok | link=What's New | 30000 |
 | click_and_wait | link=What's New |  |
 | wait_for_element_visible_ok | link=Please follow these instructions to change your Socialtext password | 30000 |
 | wait_for_element_visible_ok | link=Welcome to the lucite.socialtext.net community - please confirm your email to join | 30000 |
 
-| *Comment* | Test Case: Now test command-line; create user |  |
-| set | user | mattrestrict%%start_time%% |
-| set | euser | %%user%%@matt.socialtext.net |
-| st-admin | create-user --e %%euser%% --p %%password%% --account %%acct%% | was created |
-
-| *Comment* | Test Case: User Can Log In |  |
-| open_ok | /st/dashboard |  |
-| st-logoutin | %%euser%% | %%password%% |
-| text_unlike | //body | You need to confirm your email address to activate this account |
-| text_unlike | //body | You should have received an email with a confirmation link. |
-| wait_for_element_not_present_ok | //input[@value="Resend confirmation"] | 30000 |
-| open_ok | /st/dashboard |  |
-| wait_for_text_present_ok | Welcome, New User | 30000 |
-
-| *Comment* | Test Case: Restrict User - Restrict for Password Change |  |
-| st-logout |  |  |
-| st-admin | add-restriction --email %%euser%% --restriction password_change | has been given the 'password_change' restriction |
-
-| *Comment* | Test Case: Restrict User - User can NOT log in |  |
-| st-logoutin | %%euser%% | %%password%% |
-| wait_for_text_present_ok | You need to confirm your email address to activate this account | 3000 |
-| wait_for_text_present_ok | You should have received an email with a confirmation link. | 30000 |
-| wait_for_element_visible_ok | //input[@value="Resend confirmation"] | 30000 |
-| open_ok | /st/dashboard |  |
-| text_unlike | //body | Welcome, New User |
-| text_like | //body | Log in to Socialtext |
-
-| *Comment* | Test Case: Restrict User - Remove Restrictions, can now log in |  |
-| st-admin | remove-restriction --e %%euser%% --restriction password_change | 'password_change' restriction has been lifted on |
-| st-login | %%euser%% | %%password%% |
-| text_unlike | //body | You need to confirm your email address to activate this account |
-| text_unlike | //body | You should have received an email with a confirmation link. |
-| wait_for_element_not_present_ok | //input[@value="Resend confirmation"] | 30000 |
-| open_ok | /st/dashboard |  |
-| wait_for_text_present_ok | Welcome, New User | 30000 |
-
-| *Comment* | Test Case: Restrict User - Bad Restriction, user can still log in |  |
-| st-admin | remove-restriction --e %%euser%% --restriction foo | unknown restriction type, 'foo' |
-| st-logoutin | %%euser%% | %%password%% |
-| text_unlike | //body | You need to confirm your email address to activate this account |
-| text_unlike | //body | You should have received an email with a confirmation link. |
-| wait_for_element_not_present_ok | //input[@value="Resend confirmation"] | 30000 |
-| open_ok | /st/dashboard |  |
-| wait_for_text_present_ok | Welcome, New User | 30000 |
-
-| *Comment* | Test Case: Restrict User - Multiple Restrictions |  |
-| st-admin | add-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | %%euser%% has been given the 'require_external_id' restriction |
-| st-admin | list-restrictions --e %%euser%% | email_confirmation |
-| st-admin | list-restrictions --e %%euser%% | password_change |
-| st-admin | list-restrictions --e %%euser%% | require_external_id |
-
-| st-admin | remove-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | 'require_external_id' restriction has been lifted on '%%euser%%' |
-| st-admin | remove-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | '%%euser%%' does not have the 'require_external_id' restriction |
-| st-admin | remove-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | '%%euser%%' does not have the 'password_change' restriction |
-| st-admin | remove-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | '%%euser%%' does not have the 'email_confirmation' restriction |
-| st-admin | list-restrictions --e %%euser%% | No restrictions for user |
-
-
-| st-admin | add-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | %%euser%% has been given the 'email_confirmation' restriction |
-| st-admin | remove-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | 'email_confirmation' restriction has been lifted on '%%euser%%' |
-| st-admin | remove-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | '%%euser%%' does not have the 'email_confirmation' restriction |
-
-| st-admin | add-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | %%euser%% has been given the 'password_change' restriction |
-| st-admin | remove-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | 'password_change' restriction has been lifted on '%%euser%%' |
-| st-admin | remove-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | '%%euser%%' does not have the 'password_change' restriction |
-
-| *Comment* | Test Case: Restrict User - Add 3, subtract 1, still can't log in |  |
-| st-admin | add-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | %%euser%% has been given the 'require_external_id' restriction |
-| st-admin | remove-restriction --e %%euser%% --restriction require_external_id | 'require_external_id' restriction has been lifted on '%%euser%%' |
-| st-logoutin | %%euser%% | %%password%% |
-| wait_for_text_present_ok | You need to confirm your email address to activate this account | 3000 |
-| wait_for_text_present_ok | You should have received an email with a confirmation link. | 30000 |
-| wait_for_element_visible_ok | //input[@value="Resend confirmation"] | 30000 |
-| open_ok | /st/dashboard |  |
-| text_unlike | //body | Welcome, New User |
-| text_like | //body | Log in to Socialtext |
-
-| *Comment* | Test Case: Restrict User - Subtract 1 more restriction still can't log in |  |
-| st-admin | remove-restriction --e %%euser%% --restriction email_confirmation | 'email_confirmation' restriction has been lifted on '%%euser%%' |
-| st-logoutin | %%euser%% | %%password%% |
-| wait_for_text_present_ok | You need to confirm your email address to activate this account | 3000 |
-| wait_for_text_present_ok | You should have received an email with a confirmation link. | 30000 |
-| wait_for_element_visible_ok | //input[@value="Resend confirmation"] | 30000 |
-| open_ok | /st/dashboard |  |
-| text_unlike | //body | Welcome, New User |
-| text_like | //body | Log in to Socialtext |
-
-| *Comment* | Test Case: Restrict User - Remove last restriction, can log in |  |
-| st-admin | remove-restriction --e %%euser%% --restriction password_change | 'password_change' restriction has been lifted on '%%euser%%' |
-| st-login | %%euser%% | %%password%% |
-| text_unlike | //body | You need to confirm your email address to activate this account |
-| text_unlike | //body | You should have received an email with a confirmation link. |
-| wait_for_element_not_present_ok | //input[@value="Resend confirmation"] | 30000 |
-| open_ok | /st/dashboard |  |
-| wait_for_text_present_ok | Welcome, New User | 30000 |
-
-| *Comment* | Test Case: Restrict User TEARDOWN |  |
+| *Comment* | Test Case:User Restrictions TEARDOWN |  |
 | st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
-| st-admin | deactivate-user --e %%euser%% | has been deactivated |
-| st-admin | deactivate-user --e %%emailaddr%% | has been deactivated |
+| st-admin | deactivate-user --e %%emailaddr%% | has been deleted |
+| st-process-jobs |  |  |
 
 
-| *Comment* | Test Case: Restrict User COMPLETED |  |
+| *Comment* | Test Case: User RestrictionsCOMPLETED |  |
