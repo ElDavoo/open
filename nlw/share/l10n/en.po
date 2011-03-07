@@ -10167,6 +10167,10 @@ msgstr "Look for"
 msgid "watch.stop"
 msgstr "Stop Watching"
 
+#: share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:11
+msgid "widget.100%"
+msgstr "Fit page width (100%)"
+
 #: share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:8
 msgid "widget.300px"
 msgstr "Small (300px)"

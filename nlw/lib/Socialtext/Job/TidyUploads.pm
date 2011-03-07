@@ -24,7 +24,7 @@ sub do_work {
         LIMIT ?
     }, AT_A_TIME);
 
-    return $self->success if $sth->rows == 0;
+    return $self->completed if $sth->rows == 0;
 
     while (my $row = $sth->fetchrow_arrayref) {
         my $att_id = $row->[0];

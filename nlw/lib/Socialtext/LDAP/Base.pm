@@ -52,6 +52,9 @@ sub connect {
     if ($self->config->port()) {
         $opts{port} ||= $self->config->port();
     }
+    if ($self->config->sslversion()) {
+        $opts{sslversion} ||= $self->config->sslversion();
+    }
 
     # attempt connection
     $self->{ldap} = _ldap_connect($host, %opts);

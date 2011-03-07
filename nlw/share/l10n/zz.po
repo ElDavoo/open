@@ -10167,6 +10167,10 @@ msgstr "Zzzz zzz"
 msgid "watch.stop"
 msgstr "Zzzz Zzzzzzzz"
 
+#: share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:11
+msgid "widget.100%"
+msgstr "Zzz zzzz zzzzz (100%)"
+
 #: share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:8
 msgid "widget.300px"
 msgstr "Zzzzz (300zz)"

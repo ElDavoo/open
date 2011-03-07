@@ -84,6 +84,29 @@
     rewrite    ^/nlw/control/?$         /nlw/control/index.html  last;
     rewrite    ^(/nlw/control/[^/]+)/$  $1 last;
 
+    ### Rewrite /ws/index.cgi?page and /ws/?page to /ws/page {{{
+    set $index_cgi_match 0;
+    if ($uri ~ ^/+([^/]+)/*(index\.cgi)?$) {
+      set $index_cgi_match 1;
+    }
+    if ($uri ~ ^/(nlw|challenge|data|feed|js|m|settings|st)(/|$)) {
+      set $index_cgi_match 0;
+    }
+    if ($uri ~ ^/(avatar|widget_thumbnail|account_logo|wafl|group-photo|webplugin|widget_thumbnail)(/|$)) {
+      set $index_cgi_match 0;
+    }
+    if ($args ~ "=") {
+      set $index_cgi_match 0;
+    }
+    if ($args ~ ^\s*$) {
+      set $index_cgi_match 0;
+    }
+    set $index_cgi_rewrite "$index_cgi_match-$request_method";
+    if ($index_cgi_rewrite ~ "1-GET$") {
+      rewrite ^/+([^/]+)/*(?:index.cgi)?$ /$1/$args? permanent;
+    }
+    ### }}}
+
     set $to_backend 1;
     if ($uri ~ ^/nlw/plugin) {
         set $to_backend 0;

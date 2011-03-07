@@ -14,9 +14,9 @@ for my $po (@ARGV) {
     select $out;
 
     local $/ = "\n\n";
-    scalar <$in>;
-
     while (<$in>) {
+        next if /^msgid ""\nmsgstr ""/m;
+
         my ($comments, $id, $str) = split(/\n(?=msg)/, "\n$_");
         if (is_key($str)) {
             $id =~ s/^msgid/msgstr/m;

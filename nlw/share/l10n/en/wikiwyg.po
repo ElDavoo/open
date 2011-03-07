@@ -1171,6 +1171,10 @@ msgstr "Yahoo! IM: %1"
 msgid "wafl.yahoo-title=id"
 msgstr "Instant message to '%1' using Yahoo! Click to edit."
 
+#: share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:11
+msgid "widget.100%"
+msgstr "Fit page width (100%)"
+
 #: share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:8
 msgid "widget.300px"
 msgstr "Small (300px)"

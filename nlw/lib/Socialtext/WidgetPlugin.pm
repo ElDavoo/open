@@ -8,6 +8,7 @@ use Socialtext::l10n 'loc';
 use Socialtext::Formatter::Phrase ();
 use Socialtext::String ();
 use Socialtext::Paths ();
+use Encode ();
 
 const class_id    => 'widget';
 const class_title => 'WidgetPlugin';
@@ -49,7 +50,12 @@ sub get_container_for_gadget {
     my %new_prefs;
     for my $encoded_pref (split /\s+/, $encoded_prefs) {
         $encoded_pref =~ /^([^\s=]+)=(\S*)/ or next;
-        $new_prefs{$1} = Socialtext::String::uri_unescape($2);
+        my ($key, $val) = ($1, $2);
+        use bytes;
+        $val =~ s/%([0-9A-Fa-f]{2})/chr hex($1)/eg;
+        Encode::_utf8_off($val);
+        $val = Encode::decode_utf8($val);
+        $new_prefs{$key} = $val;
     }
 
     for my $pref (@{ $gadget->preferences || [] }) {

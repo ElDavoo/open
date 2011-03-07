@@ -57,10 +57,16 @@ for my $key (sort keys %Sections) {
         map { -D => $_ } @$dir
     );
 
-    if ($new) {
-        system("msggrep --msgid -v -e '^<!\\|^[a-z][a-z0-9][a-z0-9]*\\.' share/l10n/$lang/$key.po > share/l10n/$lang/$key.po.new");
-        system("mv share/l10n/$lang/$key.po.new share/l10n/$lang/$key.po");
-        unlink "share/l10n/$lang/$key.po" unless -s "share/l10n/$lang/$key.po";
+    my $po = "share/l10n/$lang/$key.po";
+    if ($new and -e $po) {
+        system("perl -ni -e 'print unless /^# SOME DESCRIPTIVE TITLE./ .. /^#:/ and not /^#:/' $po");
+        system("msggrep --msgid -v -e '^<!\\|^[a-z][a-z0-9][a-z0-9]*\\.' $po > $po.new");
+        system("mv $po.new $po");
+        unlink $po unless -s $po;
+    }
+
+    if ($key eq 'wikiwyg') {
+        shell_run('git checkout share/skin/wikiwyg/javascript/widget_resource.js');
     }
 }
 

@@ -32,9 +32,12 @@ for my $po (@ARGV) {
     }
 
     local $/ = "\n\n";
-    outs scalar <$in>;
-
     while (<$in>) {
+        if (/^msgid ""\nmsgstr ""/m) {
+            outs $_;
+            next;
+        }
+
         my ($comments, $id, $str) = split(/\n(?=msg)/, "\n$_");
         if (($msgid and is_key($str)) or ($msgstr and is_key($id)) or (!$msgid and !$msgstr)) {
             $id =~ s/^msgid/msgstr/m;
