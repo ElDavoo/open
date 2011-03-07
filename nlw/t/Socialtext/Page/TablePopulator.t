@@ -1,5 +1,6 @@
 #!perl
 use warnings;
+use strict;
 use 5.12.2;
 
 use Test::Socialtext tests => 30;
