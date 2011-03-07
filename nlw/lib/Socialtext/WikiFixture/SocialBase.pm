@@ -3480,8 +3480,7 @@ sub restart_everything {
             next SERVICE unless ($resp->is_error);
             Time::HiRes::sleep(0.5);
         }
-        fail "services could not be restarted";
-        return;
+        BAIL_OUT("services could not be restarted");
     }
     pass "services restarted";
 }
