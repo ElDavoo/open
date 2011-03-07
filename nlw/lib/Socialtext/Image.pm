@@ -8,6 +8,7 @@ use Carp ();
 use Readonly;
 use IO::Handle;
 use IO::File;
+use File::Copy qw/copy/;
 use Socialtext::Validate qw( validate SCALAR_TYPE OPTIONAL_INT_TYPE HANDLE_TYPE );
 
 {
@@ -65,24 +66,22 @@ sub get_dimensions {
 sub extract_rectangle {
     my %p = @_;
 
-    die "an 'image_filename' filename parameter is required"
-        unless $p{image_filename};
+    die "a filename parameter is required" unless $p{filename};
 
-    my $img = $p{image_filename};
+    my $file = $p{filename};
+    my $to_file = $p{to_filename} || $file;
     my ($max_w, $max_h) = @p{qw(width height)};
     die "must supply width and height" unless $max_w && $max_h;
 
-    my ($w, $h, $scenes) = get_dimensions($img);
+    my ($w, $h) = get_dimensions($file);
 
-    die "Can't resize animated images" unless ($scenes == 1);
     die "Bad dimensions"
         if ($h == 0 || $w == 0 || $max_h == 0 || $max_w == 0);
 
-    # Convert to PNG
-    convert($img, "$img.png");
-    rename "$img.png", $img or die "Error converting to PNG";
-
-    return if ($w == $max_w && $h == $max_h);
+    if ($w == $max_w && $h == $max_h) {
+        copy $file => $to_file unless $file eq $to_file;
+        return;
+    }
 
     my @opts = ();
 
@@ -118,7 +117,8 @@ sub extract_rectangle {
         push @opts, crop => $max_w.'x'.$max_h.'+0+0';
     }
 
-    convert($img, $img, @opts);
+    local $Socialtext::System::SILENT_RUN = 1;
+    convert($file, $to_file, @opts);
 }
 
 sub convert {
