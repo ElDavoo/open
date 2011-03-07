@@ -1,15 +1,61 @@
 # @COPYRIGHT@
 package Socialtext::Image;
-use strict;
+use 5.12.0;
 use warnings;
 
 use Socialtext::System qw(shell_run backtick);
-use Carp ();
+use Carp qw/croak confess/;
 use Readonly;
 use IO::Handle;
 use IO::File;
 use File::Copy qw/copy/;
 use Socialtext::Validate qw( validate SCALAR_TYPE OPTIONAL_INT_TYPE HANDLE_TYPE );
+
+my %SPEC = (
+    profile   => sub { "rect-".($_[0] eq 'small' ? 27 : 62) },
+    group     => sub { "rect-".($_[0] eq 'small' ? 27 : 62) },
+    account   => sub { "thumb-201x36" },
+    sigattach => sub { "thumb-64x64" },
+);
+
+sub spec_resize_get {
+    my ($spec_name, $spec_param) = @_;
+    my $resizer = $SPEC{$spec_name};
+    return unless $resizer;
+    return $resizer->($spec_param);
+}
+
+sub spec_resize {
+    my ($spec, $from, $to) = @_;
+    # The specs are used for filenames in Socialtext::Upload so be sure to
+    # constrain these to filesystem-friendly characters (i.e. no dots or
+    # slashes)
+    confess "invalid resize spec" unless $spec =~ /^[a-z0-9-@]+$/;
+    my ($kind,$rest) = split '-',$spec,2;
+    if ($kind eq 'thumb') {
+        my ($w,$h) = split 'x',$rest;
+        confess "invalid width/height in thumbnail resize spec"
+            if ($w=~/\D/ || $h=~/\D/);
+        return resize(
+            filename => $from, to_filename => $to,
+            max_width => $w, max_height => $h
+        );
+    }
+    elsif ($kind eq 'rect') {
+        my $max_dim = $rest;
+        my ($w,$h) = split 'x',$rest;
+        $h //= $w;
+        confess "invalid width/height in rectangular resize spec"
+            if ($w=~/\D/ || $h=~/\D/);
+        return extract_rectangle(
+            filename => $from, to_filename => $to,
+            width => $max_dim, height => $max_dim
+        );
+    }
+    else {
+        confess "invalid resize spec: $spec";
+    }
+}
 
 {
     Readonly my $spec => {
