@@ -7,7 +7,7 @@ use strict;
 use base 'Socialtext::Rest::Attachments';
 
 use Fcntl ':seek';
-use File::Temp 'tempfile';
+use File::Temp;
 use Socialtext::HTTP ':codes';
 
 =head2 POST
@@ -36,8 +36,8 @@ sub POST {
     }
     my $page = $self->page;
 
-    my $content_fh = tempfile(CLEANUP => 1);
-    $content_fh->print($rest->getContent);
+    my $content_fh = File::Temp->new();
+    print $content_fh $rest->getContent;
     seek $content_fh, 0, SEEK_SET;
 
     # read the ?name= query parameter (REST::Application can't do this)
