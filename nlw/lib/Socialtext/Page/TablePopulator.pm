@@ -134,13 +134,13 @@ sub populate {
 
             # Fix up relative links in the filesystem
             next PAGE unless try { fix_relative_page_link($dir); 1 }
-            catch { my $err = format($_); warn "Fixing relative link: $err\n"; 0 };
+            catch { my $err = format_err($_); warn "Fixing relative link: $err\n"; 0 };
 
             # Get all the data we want on a page
 
             my $page = try { $self->load_page_metadata($dir) }
             catch {
-                my $err = format($_);
+                my $err = format_err($_);
                 warn "Populating $workspace_name, skipping $dir: $err\n";
                 undef;
             };
@@ -150,13 +150,13 @@ sub populate {
 
             try { $self->load_page_attachments($page) }
             catch {
-                my $err = format($_);
+                my $err = format_err($_);
                 warn "Populating $workspace_name attachments: $err\n";
             };
 
             try { sql_txn { $self->insert_or_update_page($page) } }
             catch {
-                my $err = format($_);
+                my $err = format_err($_);
                 warn "Updating $workspace_name ".
                      "page $page->{page_id}: $err";
             };
@@ -633,7 +633,7 @@ sub editor_to_id {
     return $userid_cache{ $email_address };
 }
 
-sub format {
+sub format_err {
     my $err = shift;
     return '' unless $err;
 
