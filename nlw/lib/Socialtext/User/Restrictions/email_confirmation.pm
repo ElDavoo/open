@@ -9,7 +9,7 @@ use Socialtext::l10n qw(system_locale loc);
 use Socialtext::TT2::Renderer;
 use Socialtext::URI;
 
-sub restriction_type { 'email_confirmation' };
+sub _restriction_type { 'email_confirmation' };
 
 sub send {
     my $self = shift;
@@ -179,10 +179,6 @@ e-mail address.
 =head1 METHODS
 
 =over
-
-=item $self_or_class->restriction_type()
-
-Returns the type of restriction this is.
 
 =item $self->send()
 

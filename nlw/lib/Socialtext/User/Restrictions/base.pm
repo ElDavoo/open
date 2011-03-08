@@ -5,7 +5,7 @@ use Socialtext::Date;
 use Socialtext::MooseX::Types::Pg;
 use Socialtext::User::Restrictions;
 
-requires 'restriction_type';
+requires '_restriction_type';
 requires 'send';
 requires 'confirm';
 around 'confirm' => sub {
@@ -20,6 +20,15 @@ has 'user_id' => (
     isa         => 'Int',
     required    => 1,
 );
+
+has 'restriction_type' => (
+    is         => 'ro',
+    isa        => 'Str',
+    lazy_build => 1,
+);
+sub _build_restriction_type {
+    return shift->_restriction_type;
+}
 
 has 'user' => (
     is         => 'ro',
@@ -69,7 +78,7 @@ sub CreateOrReplace {
     my %opts  = @_;
     Socialtext::User::Restrictions->CreateOrReplace( {
         %opts,
-        restriction_type => $class->restriction_type,
+        restriction_type => $class->_restriction_type,
     } );
 }
 
@@ -78,7 +87,7 @@ sub Get {
     my %opts  = @_;
     return Socialtext::User::Restrictions->Get( {
         %opts,
-        restriction_type => $class->restriction_type,
+        restriction_type => $class->_restriction_type,
     } );
 }
 
@@ -137,7 +146,7 @@ for the following methods:
 
 =over
 
-=item restriction_type()
+=item _restriction_type()
 
 Returns the restriction type to be stored in the DB.  B<Must> match up with
 your class name.

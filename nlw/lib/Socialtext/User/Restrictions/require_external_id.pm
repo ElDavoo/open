@@ -3,7 +3,7 @@ package Socialtext::User::Restrictions::require_external_id;
 use Moose;
 with 'Socialtext::User::Restrictions::base';
 
-sub restriction_type { 'require_external_id' };
+sub _restriction_type { 'require_external_id' };
 
 sub send {
     my $self = shift;
@@ -55,10 +55,6 @@ Id for their User record.
 =head1 METHODS
 
 =over
-
-=item $self_or_class->restriction_type()
-
-Returns the type of restriction this is.
 
 =item $self->send()
 

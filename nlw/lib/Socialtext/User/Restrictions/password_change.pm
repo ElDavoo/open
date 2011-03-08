@@ -8,7 +8,7 @@ use Socialtext::EmailSender::Factory;
 use Socialtext::l10n qw(system_locale loc);
 use Socialtext::TT2::Renderer;
 
-sub restriction_type { 'password_change' };
+sub _restriction_type { 'password_change' };
 
 sub send {
     my $self = shift;
@@ -91,10 +91,6 @@ password.
 =head1 METHODS
 
 =over
-
-=item $self_or_class->restriction_type()
-
-Returns the type of restriction this is.
 
 =item $self->send()
 
