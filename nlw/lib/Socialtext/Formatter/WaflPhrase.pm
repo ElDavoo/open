@@ -265,6 +265,7 @@ sub html {
         );
         return $self->set_error($self->existence_error) unless $att;
 
+        $size ||= 'scaled';
         my $full_path = $att->prepare_to_serve($size);
         $link = $hub->viewer->link_dictionary->format_link(
             link       => 'image',
@@ -273,7 +274,7 @@ sub html {
             filename   => $self->uri_escape($image_name),
             page_uri   => $page_uri,
             id         => $att->id,
-            size       => $size || 'scaled',
+            size       => $size,
             full_path  => $full_path,
         );
     });

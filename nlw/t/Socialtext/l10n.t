@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 7;
+use Test::Socialtext tests => 8;
 use Socialtext::AppConfig;
 
 fixtures(qw( empty ));
@@ -16,12 +16,13 @@ my $hub = new_hub('empty');
 
 Default_to_english: {
     is loc('Welcome'), 'Welcome';
+    is loc('dashboard.welcome'), 'Welcome';
 }
 
 Test_locale: {
     my $result = loc_lang('zz');
     isa_ok($result, 'Socialtext::l10n::I18N::zz', 'found locale.');
-    is loc('Welcome'), 'w3lC0M3';
+    is loc('dashboard.welcome'), 'Zzzzzzz';
 }
 
 System_locale: {

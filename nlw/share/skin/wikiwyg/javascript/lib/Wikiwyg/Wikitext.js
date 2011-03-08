@@ -1047,14 +1047,14 @@ proto.href_is_wiki_link = function(href) {
         href = location.href;
 
     // check that the url is in this workspace
-    var up_to_wksp = /^https?:\/\/([^\/]+)\/(?:m\/page\/)?(?!(?:nlw|challenge|data|feed|js|m|settings|soap|st|wsdl)\/)[^\/#]+\//;
-    var no_page_input = href.match(up_to_wksp);
+    var up_to_wksp = /^https?:\/\/([^:\/]+)[^\/]*\/(?!(?:nlw|challenge|data|feed|js|m|settings|soap|st|wsdl)\/)[^\/#]+\//;
+    var no_page_input   = href.match(up_to_wksp);
 
     // This url is nothing like a wikilink
     if (!no_page_input) return false;
 
     // This url may be a wikilink, but is it under our domain?
-    if (no_page_input[1].toLowerCase().indexOf(location.hostname.toLowerCase()) != 0) {
+    if (no_page_input[1].toLowerCase() != location.hostname.toLowerCase()) {
         return false;
     }
 
@@ -2466,7 +2466,7 @@ proto.make_wikitext_link = function(label, href, elem) {
 }
 
 proto.handle_wiki_link = function(label, href, elem) {
-    var up_to_wksp = new RegExp('^https?://[^/]+/(?:m/page/)?([^/#]+)/(?:(?:index.cgi)?\\?)?');
+    var up_to_wksp = /^https?:\/\/[^\/]+\/([^\/#]+)\/(?:(?:index.cgi)?\?)?/;
 
     var match = href.match(up_to_wksp);
     var wksp = match ? match[1] : Socialtext.wiki_id;
@@ -2500,13 +2500,11 @@ proto.handle_wiki_link = function(label, href, elem) {
         page = segments[0];
         return prefix + '{link: ' + wksp + ' [' + page + '] ' + section + '}';
     }
-    else {
-        var locationMatch = location.href.match(up_to_wksp);
-        if (locationMatch && locationMatch[1] == wksp) {
-            return prefix + '[' + page + ']';
-        }
-
+    else if (wksp != Socialtext.wiki_id) {
         return prefix + '{link: ' + wksp + ' [' + page + ']}';
+    }
+    else {
+        return prefix + '[' + page + ']';
     }
 }
 

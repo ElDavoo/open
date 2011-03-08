@@ -159,14 +159,12 @@
 | wait_for_element_present_ok | //a[contains(text(),'/st/group/%%group_id%%')] | 30000 |
 | wait_for_text_present_ok | %%group_name%% is a group on %%hostname%% | 30000 |
 | wait_for_text_present_ok | If you have questions about this email, contact support at http://www.socialtext.com/customers/support_request.php | 30000 |
-| *Comment* | Test Case: Groups UI AddRemove Members From Group. May fail due to {bz: 5011} |
-| wait_for_text_present_ok | Go to the <group_name> Home Page: | 30000 |
-| *Comment* | Test Case: Groups UI AddRemove Members From Group. PAUSE |
-| pause | 120000 |
+| wait_for_text_present_ok | Go to the %%group_name%% Home Page: | 30000 |
 
 | *Comment* | Test Case: Groups UI AddRemove Members From Group. TEARDOWN |
-| delete-group | %%group_id%% |
-| st-admin | delete-workspace --w %%group_ws%% --no-export |
-| st-admin | delete-workspace --w %%email_ws%% --no-export |
+| st-process-jobs |  |  |
+| delete-group | %%group_id%% | Recklessly deleting |
+| delete-workspace | %%group_ws%% | Recklessly deleting |
+| delete-workspace | %%email_ws%% | Recklessly deleting |
 
 | *Comment* | Test Case: Groups UI AddRemove Members From Group. COMPLETED |

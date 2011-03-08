@@ -1,14 +1,61 @@
 # @COPYRIGHT@
 package Socialtext::Image;
-use strict;
+use 5.12.0;
 use warnings;
 
 use Socialtext::System qw(shell_run backtick);
-use Carp ();
+use Carp qw/croak confess/;
 use Readonly;
 use IO::Handle;
 use IO::File;
+use File::Copy qw/copy/;
 use Socialtext::Validate qw( validate SCALAR_TYPE OPTIONAL_INT_TYPE HANDLE_TYPE );
+
+my %SPEC = (
+    profile   => sub { "rect-".($_[0] eq 'small' ? 27 : 62) },
+    group     => sub { "rect-".($_[0] eq 'small' ? 27 : 62) },
+    account   => sub { "thumb-201x36" },
+    sigattach => sub { "thumb-64x64" },
+);
+
+sub spec_resize_get {
+    my ($spec_name, $spec_param) = @_;
+    my $resizer = $SPEC{$spec_name};
+    return unless $resizer;
+    return $resizer->($spec_param);
+}
+
+sub spec_resize {
+    my ($spec, $from, $to) = @_;
+    # The specs are used for filenames in Socialtext::Upload so be sure to
+    # constrain these to filesystem-friendly characters (i.e. no dots or
+    # slashes)
+    confess "invalid resize spec" unless $spec =~ /^[a-z0-9-@]+$/;
+    my ($kind,$rest) = split '-',$spec,2;
+    if ($kind eq 'thumb') {
+        my ($w,$h) = split 'x',$rest;
+        confess "invalid width/height in thumbnail resize spec"
+            if ($w=~/\D/ || $h=~/\D/);
+        return resize(
+            filename => $from, to_filename => $to,
+            max_width => $w, max_height => $h
+        );
+    }
+    elsif ($kind eq 'rect') {
+        my $max_dim = $rest;
+        my ($w,$h) = split 'x',$rest;
+        $h //= $w;
+        confess "invalid width/height in rectangular resize spec"
+            if ($w=~/\D/ || $h=~/\D/);
+        return extract_rectangle(
+            filename => $from, to_filename => $to,
+            width => $max_dim, height => $max_dim
+        );
+    }
+    else {
+        confess "invalid resize spec: $spec";
+    }
+}
 
 {
     Readonly my $spec => {
@@ -65,24 +112,22 @@ sub get_dimensions {
 sub extract_rectangle {
     my %p = @_;
 
-    die "an 'image_filename' filename parameter is required"
-        unless $p{image_filename};
+    die "a filename parameter is required" unless $p{filename};
 
-    my $img = $p{image_filename};
+    my $file = $p{filename};
+    my $to_file = $p{to_filename} || $file;
     my ($max_w, $max_h) = @p{qw(width height)};
     die "must supply width and height" unless $max_w && $max_h;
 
-    my ($w, $h, $scenes) = get_dimensions($img);
+    my ($w, $h) = get_dimensions($file);
 
-    die "Can't resize animated images" unless ($scenes == 1);
     die "Bad dimensions"
         if ($h == 0 || $w == 0 || $max_h == 0 || $max_w == 0);
 
-    # Convert to PNG
-    convert($img, "$img.png");
-    rename "$img.png", $img or die "Error converting to PNG";
-
-    return if ($w == $max_w && $h == $max_h);
+    if ($w == $max_w && $h == $max_h) {
+        copy $file => $to_file unless $file eq $to_file;
+        return;
+    }
 
     my @opts = ();
 
@@ -118,7 +163,8 @@ sub extract_rectangle {
         push @opts, crop => $max_w.'x'.$max_h.'+0+0';
     }
 
-    convert($img, $img, @opts);
+    local $Socialtext::System::SILENT_RUN = 1;
+    convert($file, $to_file, @opts);
 }
 
 sub convert {

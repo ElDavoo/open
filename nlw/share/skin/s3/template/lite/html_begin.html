@@ -6,6 +6,7 @@
     <head>
         <title>[% "$ws.title : " IF ws.title %][%- title | html %]</title>
         <link rel="apple-touch-icon" href="/static/skin/common/images/apple-touch-icon.png"/>
+        <script src="[% s3_uri('javascript/l10n-' _ loc_lang _ '.js.gz') %]"></script>
         [% IF enable_jquery_mobile %]
         <link rel="stylesheet" href="/static/skin/common/css/jquery.mobile-1.0a3.min.css" />
         <script src="/static/skin/common/javascript/jquery-1.4.4.min.js"></script>

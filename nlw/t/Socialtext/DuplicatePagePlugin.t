@@ -152,7 +152,7 @@ successful_clobber_diff_names: {
     my $page_admin_two =
         $admin->pages->new_from_name('intrawiki copy four');
 
-    my $temp_file = File::Temp->new(CLEANUP => 1);
+    my $temp_file = File::Temp->new();
     print $temp_file 'my test content';
     close $temp_file;
 
