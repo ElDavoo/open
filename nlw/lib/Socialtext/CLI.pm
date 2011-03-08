@@ -994,7 +994,7 @@ sub add_restriction {
         };
         $self->_error($@) if ($@);
 
-        print loc("[_1] has been given the '[_2]' restriction'", $user->username, $t) . "\n";
+        print loc("[_1] has been given the '[_2]' restriction", $user->username, $t) . "\n";
     }
     $self->_success();
 }
