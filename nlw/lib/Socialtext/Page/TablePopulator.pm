@@ -134,14 +134,14 @@ sub populate {
 
             # Fix up relative links in the filesystem
             next PAGE unless try { fix_relative_page_link($dir); 1 }
-            catch { chomp; warn "Error fixing relative link: $_\n"; 0 };
+            catch { my $err = format_err($_); warn "Fixing relative link: $err\n"; 0 };
 
             # Get all the data we want on a page
 
             my $page = try { $self->load_page_metadata($dir) }
             catch {
-                chomp;
-                warn "Error populating $workspace_name, skipping $dir: $_\n";
+                my $err = format_err($_);
+                warn "Populating $workspace_name, skipping $dir: $err\n";
                 undef;
             };
             next PAGE unless $page;
@@ -150,14 +150,15 @@ sub populate {
 
             try { $self->load_page_attachments($page) }
             catch {
-                chomp;
-                warn "Error populating $workspace_name attachments: $_\n";
+                my $err = format_err($_);
+                warn "Populating $workspace_name attachments: $err\n";
             };
 
             try { sql_txn { $self->insert_or_update_page($page) } }
             catch {
-                warn "Error updating $workspace_name ".
-                     "page $page->{page_id}: $_";
+                my $err = format_err($_);
+                warn "Updating $workspace_name ".
+                     "page $page->{page_id}: $err";
             };
         }
         closedir($dfh);
@@ -630,6 +631,16 @@ sub editor_to_id {
         $userid_cache{ $email_address } = $user->user_id;
     }
     return $userid_cache{ $email_address };
+}
+
+sub format_err {
+    my $err = shift;
+    return '' unless $err;
+
+    chomp $err;
+    $err =~ s/at \S+ line \d+\.$//;
+
+    return $err;
 }
 
 sub fix_relative_page_link {
