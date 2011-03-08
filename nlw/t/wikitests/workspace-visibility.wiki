@@ -36,27 +36,27 @@
 
 | Comment | Guest can't read member-only workspace |
 | http-user-pass |                                            |
-| GET            | /%%member_only%%/index.cgi?%%member_only%% |
+| GET            | /%%member_only%%/%%member_only%% |
 | code-is        | 302                                        |
 
 | Comment | Authenticated User can't read member-only workspace |
 | http-user-pass | %%auth_user%%                              | password |
-| GET            | /%%member_only%%/index.cgi?%%member_only%% |          |
+| GET            | /%%member_only%%/%%member_only%% |          |
 | code-is        | 302                                        |          |
 
 | Comment | Account User can't read member-only workspace |
 | http-user-pass | %%account_user%%                           | password |
-| GET            | /%%member_only%%/index.cgi?%%member_only%% |          |
+| GET            | /%%member_only%%/%%member_only%% |          |
 | code-is        | 302                                        |          |
 
 | Comment | Member can read member-only workspace |
 | http-user-pass | %%member%%                                 | password |
-| GET            | /%%member_only%%/index.cgi?%%member_only%% |          |
+| GET            | /%%member_only%%/%%member_only%% |          |
 | code-is        | 200                                        |          |
 
 | Comment | Admin can read member-only workspace |
 | http-user-pass | %%admin%%                                  | password |
-| GET            | /%%member_only%%/index.cgi?%%member_only%% |          |
+| GET            | /%%member_only%%/%%member_only%% |          |
 | code-is        | 200                                        |          |
 
 # Create a self-join workspace
@@ -69,27 +69,27 @@
 
 | Comment | Guest can't read self-join workspace |
 | http-user-pass |                                        |
-| GET            | /%%self_join%%/index.cgi?%%self_join%% |
+| GET            | /%%self_join%%/%%self_join%% |
 | code-is        | 302                                    |
 
 | Comment | Authenticated User can't read self-join workspace |
 | http-user-pass | %%auth_user%%                          | password |
-| GET            | /%%self_join%%/index.cgi?%%self_join%% |          |
+| GET            | /%%self_join%%/%%self_join%% |          |
 | code-is        | 302                                    |          |
 
 | Comment | Account User can read self-join workspace |
 | http-user-pass | %%account_user%%                       | password |
-| GET            | /%%self_join%%/index.cgi?%%self_join%% |          |
+| GET            | /%%self_join%%/%%self_join%% |          |
 | code-is        | 200                                    |          |
 
 | Comment | Member can read self-join workspace |
 | http-user-pass | %%member%%                             | password |
-| GET            | /%%self_join%%/index.cgi?%%self_join%% |          |
+| GET            | /%%self_join%%/%%self_join%% |          |
 | code-is        | 200                                    |          |
 
 | Comment | Admin can read self-join workspace |
 | http-user-pass | %%admin%%                              | password |
-| GET            | /%%self_join%%/index.cgi?%%self_join%% |          |
+| GET            | /%%self_join%%/%%self_join%% |          |
 | code-is        | 200                                    |          |
 
 # Create an authenticated-user-only workspace
@@ -102,27 +102,27 @@
 
 | Comment | Guest can't read authenticated-user-only workspace |
 | http-user-pass |                                                  |
-| GET            | /%%auth_user_only%%/index.cgi?%%auth_user_only%% |
+| GET            | /%%auth_user_only%%/%%auth_user_only%% |
 | code-is        | 302                                              |
 
 | Comment | Authenticated User can read authenticated-user-only workspace |
 | http-user-pass | %%auth_user%%                                    | password |
-| GET            | /%%auth_user_only%%/index.cgi?%%auth_user_only%% |          |
+| GET            | /%%auth_user_only%%/%%auth_user_only%% |          |
 | code-is        | 200                                              |          |
 
 | Comment | Account User can read authenticated-user-only workspace |
 | http-user-pass | %%account_user%%                                 | password |
-| GET            | /%%auth_user_only%%/index.cgi?%%auth_user_only%% |          |
+| GET            | /%%auth_user_only%%/%%auth_user_only%% |          |
 | code-is        | 200                                              |          |
 
 | Comment | Member can read authenticated-user-only workspace |
 | http-user-pass | %%member%%                                       | password |
-| GET            | /%%auth_user_only%%/index.cgi?%%auth_user_only%% |          |
+| GET            | /%%auth_user_only%%/%%auth_user_only%% |          |
 | code-is        | 200                                              |          |
 
 | Comment | Admin can read authenticated-user-only workspace |
 | http-user-pass | %%admin%%                                        | password |
-| GET            | /%%auth_user_only%%/index.cgi?%%auth_user_only%% |          |
+| GET            | /%%auth_user_only%%/%%auth_user_only%% |          |
 | code-is        | 200                                              |          |
 
 # Create an public-read-only workspace
@@ -135,25 +135,25 @@
 
 | Comment | Guest can read public-read-only workspace |
 | http-user-pass |                                                      |
-| GET            | /%%public_read_only%%/index.cgi?%%public_read_only%% |
+| GET            | /%%public_read_only%%/%%public_read_only%% |
 | code-is        | 200                                                  |
 
 | Comment | Authenticated User can read public-read-only workspace |
 | http-user-pass | %%auth_user%%                                        | password |
-| GET            | /%%public_read_only%%/index.cgi?%%public_read_only%% |          |
+| GET            | /%%public_read_only%%/%%public_read_only%% |          |
 | code-is        | 200                                                  |          |
 
 | Comment | Account User can read public-read-only workspace |
 | http-user-pass | %%account_user%%                                     | password |
-| GET            | /%%public_read_only%%/index.cgi?%%public_read_only%% |          |
+| GET            | /%%public_read_only%%/%%public_read_only%% |          |
 | code-is        | 200                                                  |          |
 
 | Comment | Member can read public-read-only workspace |
 | http-user-pass | %%member%%                                           | password |
-| GET            | /%%public_read_only%%/index.cgi?%%public_read_only%% |          |
+| GET            | /%%public_read_only%%/%%public_read_only%% |          |
 | code-is        | 200                                                  |          |
 
 | Comment | Admin can read public-read-only workspace |
 | http-user-pass | %%admin%%                                            | password |
-| GET            | /%%public_read_only%%/index.cgi?%%public_read_only%% |          |
+| GET            | /%%public_read_only%%/%%public_read_only%% |          |
 | code-is        | 200                                                  |          |
