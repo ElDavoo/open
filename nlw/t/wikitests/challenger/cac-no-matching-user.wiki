@@ -6,7 +6,7 @@ Verify that we can't auto-provision Users that don't match the necessary criteri
 
 | *Comment* | Decide who our test User is going to be |                                                         |
 | set       | f_name                                  | Karen                                                   |
-| set       | m_name                                  | Lynn                                                    |
+| set       | m_name                                  | Lynn-%%start_time%%                                     |
 | set       | l_name                                  | Greening                                                |
 | set       | edipin                                  | %%start_time%%                                          |
 | set       | email                                   | %%f_name%%.%%l_name%%.%%start_time%%@ken.socialtext.net |

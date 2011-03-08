@@ -6,7 +6,7 @@ Verify that CAC authentication support works.
 
 | *Comment* | Create a test User to work with |                                                         |
 | set       | f_name                          | Lita                                                    |
-| set       | m_name                          | Rossana                                                 |
+| set       | m_name                          | Rossana-%%start_time%%                                  |
 | set       | l_name                          | Ford                                                    |
 | set       | edipin                          | %%start_time%%                                          |
 | set       | email                           | %%f_name%%.%%l_name%%.%%start_time%%@ken.socialtext.net |
@@ -18,10 +18,10 @@ Verify that CAC authentication support works.
 | st-client-ssl | server-on                                                               |                                             |
 | st-client-ssl | client-on                                                               | %%f_name%%.%%m_name%%.%%l_name%%.%%edipin%% |
 
-| *Comment* | Check that the CAC credentials extractor works |
-| GET       | %%https%%/st/dashboard                         |
-| code-is   | 200                                            |
-| body-like | Socialtext.username = 'Lita Rossana Ford'      |
+| *Comment* | Check that the CAC credentials extractor works          |
+| GET       | %%https%%/st/dashboard                                  |
+| code-is   | 200                                                     |
+| body-like | Socialtext.username = '%%f_name%% %%m_name%% %%l_name%% |
 
 | *Comment*     | CLEANUP: Reset the configuration                  |
 | st-config     | set credentials_extractors BasicAuth:Cookie:Guest |
