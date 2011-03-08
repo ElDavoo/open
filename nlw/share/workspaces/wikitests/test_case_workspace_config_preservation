@@ -14,9 +14,7 @@
 | st-admin | set-workspace-config --workspace %%temp_ws_name%% basic_search_only 1 | The workspace config for %%temp_ws_name%% has been updated. |
 | st-admin | set-workspace-config --workspace %%temp_ws_name%% cascade_css 0 | The workspace config for %%temp_ws_name%% has been updated. |
 | st-admin | set-workspace-config --workspace %%temp_ws_name%% comment_by_email 1 | The workspace config for %%temp_ws_name%% has been updated. |
-| st-admin | set-workspace-config --workspace %%temp_ws_name%% comment_form_note_bottom 'note-at-bottom-of-comment-form' | The workspace config for %%temp_ws_name%% has been updated. |
-| st-admin | set-workspace-config --workspace %%temp_ws_name%% comment_form_note_top 'note-at-top-of-comment-form' | The workspace config for %%temp_ws_name%% has been updated. |
-| st-admin | set-workspace-config --workspace %%temp_ws_name%% comment_form_window_height 300 | The workspace config for %%temp_ws_name%% has been updated. |
+
 | *Comment* | not setting: st-admin set-workspace-config --workspace %%temp_ws_name%% created_by_user_id | The workspace config for %%temp_ws_name%% has been updated. |
 | *Comment* | not setting: st-admin set-workspace-config --workspace %%temp_ws_name%% creation_datetime | The workspace config for %%temp_ws_name%% has been updated. |
 
@@ -63,9 +61,6 @@
 
 | st-admin | show-workspace-config --workspace %%temp_ws_name%% | qr/cascade_css *: *0/ |
 | st-admin | show-workspace-config --workspace %%temp_ws_name%% | qr/comment_by_email *: *1/ |
-| st-admin | show-workspace-config --workspace %%temp_ws_name%% | qr/comment_form_note_bottom *: *note-at-bottom-of-comment-form/ |
-| st-admin | show-workspace-config --workspace %%temp_ws_name%% | qr/comment_form_note_top *: *note-at-top-of-comment-form/ |
-| st-admin | show-workspace-config --workspace %%temp_ws_name%% | qr/comment_form_window_height *: *300/ |
 | *Comment* | not checking: st-admin show-workspace-config --workspace %%temp_ws_name%% | qr/created_by_user_id/ |
 | *Comment* | not checking: st-admin show-workspace-config --workspace %%temp_ws_name%% | qr/creation_datetime/ |
 | *Comment* | not checking: st-admin show-workspace-config --workspace %%temp_ws_name%% | qr/custom_title_label/ |
