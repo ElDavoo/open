@@ -364,14 +364,14 @@ remove_unset_restriction: {
     my $user = create_test_user();
     ok $user, 'Created test User';
 
-    expect_failure(
+    expect_success(
         call_cli_argv(
             'remove-restriction',
             '--email'       => $user->email_address,
             '--restriction' => 'email_confirmation',
         ),
         qr/does not have the 'email_confirmation' restriction/,
-        '... failed because restriction has not been set'
+        '... reports unset restriction'
     );
 }
 
@@ -434,7 +434,7 @@ remove_multiple_restriction_abort_on_invalid: {
 }
 
 ###############################################################################
-# TEST: Remove multiple restrictions aborts on unset restriction
+# TEST: Remove multiple restrictions reports unset restriction
 remove_multiple_restriction_abort_on_unset: {
     my $guard = Test::Socialtext::User->snapshot;
     my $user = create_test_user();
@@ -443,7 +443,7 @@ remove_multiple_restriction_abort_on_unset: {
     $user->create_email_confirmation;
     ok $user->email_confirmation, '... e-mail confirmation set';
 
-    expect_failure(
+    expect_success(
         call_cli_argv(
             'remove-restriction',
             '--email'       => $user->email_address,
@@ -451,12 +451,12 @@ remove_multiple_restriction_abort_on_unset: {
             '--restriction' => 'password_change',
         ),
         qr/does not have the 'password_change' restriction/,
-        '... fails on invalid restriction'
+        '... reports about unset restriction'
     );
 
-    # reload User and make sure that all restrictions are still in place
+    # reload User and make sure that the other restriction got removed
     $user->reload;
-    ok $user->email_confirmation, '... e-mail confirmation still set';
+    ok !$user->email_confirmation, '... e-mail confirmation removed';
 }
 
 ###############################################################################

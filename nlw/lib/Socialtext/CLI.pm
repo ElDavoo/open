@@ -1016,10 +1016,14 @@ sub remove_restriction {
                     restriction_type => $t,
                 } );
             };
-            $self->_error(
-                loc("'[_1]' does not have the '[_2]' restriction", $user->username, $t)
-            ) unless ($restriction);
-            push @restrictions, $restriction;
+            if ($restriction) {
+                push @restrictions, $restriction;
+            }
+            else {
+                print
+                    loc("'[_1]' does not have the '[_2]' restriction", $user->username, $t)
+                    . "\n";
+            }
         }
     }
 
