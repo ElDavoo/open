@@ -2470,7 +2470,7 @@ proto.handle_wiki_link = function(label, href, elem) {
     var up_to_wksp = /^https?:\/\/[^\/]+\/([^\/#]+)\/(?:(?:index.cgi)?\?)?/;
 
     var match = href.match(up_to_wksp);
-    var wksp = match[1];
+    var wksp = match ? match[1] : Socialtext.wiki_id;
 
     var href_orig = href;
     href = href.replace(/.*\baction=display;is_incipient=1;page_name=/, '');
