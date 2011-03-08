@@ -2163,6 +2163,13 @@ proto.do_opensocial_setup = function(src) {
                 + ';_=' + Math.random(),
             width: '600px',
             height: '400px'
+        }).one('load', function(){
+            // Workaround the bug that prevented containers from rendering
+            // correctly the first time.
+            if ( $(this).contents().find(".st-savebutton").size() == 0 ) {
+                $(this.contentWindow.document.body).html('');
+                this.contentWindow.location.reload(true);
+            }
         })
     );
 
