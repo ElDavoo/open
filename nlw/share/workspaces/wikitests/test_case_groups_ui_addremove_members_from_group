@@ -159,7 +159,7 @@
 | wait_for_element_present_ok | //a[contains(text(),'/st/group/%%group_id%%')] | 30000 |
 | wait_for_text_present_ok | %%group_name%% is a group on %%hostname%% | 30000 |
 | wait_for_text_present_ok | If you have questions about this email, contact support at http://www.socialtext.com/customers/support_request.php | 30000 |
-| wait_for_text_present_ok | Go to the %%group_name%%Home Page: | 30000 |
+| wait_for_text_present_ok | Go to the %%group_name%% Home Page: | 30000 |
 
 | *Comment* | Test Case: Groups UI AddRemove Members From Group. TEARDOWN |
 | st-process-jobs |  |  |
