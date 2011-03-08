@@ -68,7 +68,7 @@
 | st-admin | show-workspace-config --workspace %%temp_ws_name%% | qr/comment_form_window_height *: *300/ |
 | *Comment* | not checking: st-admin show-workspace-config --workspace %%temp_ws_name%% | qr/created_by_user_id/ |
 | *Comment* | not checking: st-admin show-workspace-config --workspace %%temp_ws_name%% | qr/creation_datetime/ |
-| st-admin | show-workspace-config --workspace %%temp_ws_name%% | qr/custom_title_label *: *custom-title-label/ |
+| *Comment* | not checking: st-admin show-workspace-config --workspace %%temp_ws_name%% | qr/custom_title_label/ |
 | *Comment* | not checking: st-admin show-workspace-config --workspace %%temp_ws_name%% | qr/customjs_name/ |
 | *Comment* | not checking: st-admin show-workspace-config --workspace %%temp_ws_name%% | qr/customjs_uri/ |
 | st-admin | show-workspace-config --workspace %%temp_ws_name%% | qr/email_addresses_are_hidden *: *1/ |
@@ -99,7 +99,8 @@
 | *Comment* | not checking: st-admin show-workspace-config --workspace %%temp_ws_name%% | qr/ping URIs/ |
 | *Comment* | not checking: st-admin show-workspace-config --workspace %%temp_ws_name%% | qr/custom comment form fields/ |
 
-| *Comment* | Test Case: Workspace Config Preservation Teardown |  |
+| *Comment* | Test Case: Workspace Config Preservation TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | delete-workspace --workspace %%temp_ws_name%% --no-export | The %%temp_ws_name%% workspace has been deleted. |
 
 | *Comment* | Test Case: Workspace Config Preservation COMPLETED |  |

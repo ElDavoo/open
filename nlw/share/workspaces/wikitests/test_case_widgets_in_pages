@@ -21,25 +21,29 @@
 | *Comment* | Test Case: Widgets in Pages test widget buttons, lightbox |  |
 | wait_for_element_visible_ok | wikiwyg_button_widget | 30000 |
 | click_ok | wikiwyg_button_widget |  |
-| wait_for_element_visible_ok | st-widget-opensocial-gallery-widgets | 30000 |
 | wait_for_element_visible_ok | st-widget-opensocial-gallery-cancel | 30000 |
+| wait_for_element_visible_ok | st-widget-opensocial-gallery-widgets | 30000 |
+| wait_for_text-present_ok | Socialtext widgets | 30000 |
+| wait_for_text-present_ok | Third Party widgets | 30000 |
 | text_like | qr/Socialtext widgets.+Third Party widgets/ |  |
-| wait_for_text_not_present_ok | Activities | 30000 |
 | click_ok | st-widget-opensocial-gallery-cancel |  |
 | wait_for_element_not_visible_ok | st-widget-opensocial-gallery-widgets | 15000 |
 | wait_for_element_present_ok | link=Widget... | 30000 |
 | click_ok | link=Widget... |  |
 | wait_for_element_visible_ok | st-widget-opensocial-gallery-widgets | 30000 |
-| text_like | qr/Socialtext widgets.+Third Party widgets/ |  |
+| wait_for_text-present_ok | Socialtext widgets | 30000 |
+| wait_for_text-present_ok | Third Party widgets | 30000 |
 
 | *Comment* | Test Case: Widgets in Pages add All People Tags *This test must assume that All People Tags is the first widget in the list* |  |
+| text_like | qr/Socialtext widgets.+Third Party widgets/ |  |
 | text_like | qr/All People Tags.+Active Content/ |  |
+| pause | 10000 | wait for JS to load |
 | wait_for_element_visible_ok | //a[@class='greyButton' and contains(text(),'Insert')] | 30000 |
 | click_ok | //a[@class='greyButton' and contains(text(),'Insert')] |  |
 | wait_for_text_present_ok | Edit Widget | 30000 |
 | wait_for_element_visible_ok | st-widget-opensocial-setup-width-options | 30000 |
-| wait_for_element_visible_ok | //input[@class='searchButton st-savebutton'] | 30000 |
-| click_ok | //input[@class='searchButton st-savebutton'] |  |
+| wait_for_element_visible_ok | //input[@value='Preview'] | 30000 |
+| click_ok | //input[@value='Preview'] |  |
 | wait_for_element_visible_ok | st-widget-opensocial-setup-cancel | 30000 |
 | wait_for_element_visible_ok | st-widget-opensocial-setup-save | 30000 |
 | click_ok | st-widget-opensocial-setup-save |  |
@@ -49,14 +53,17 @@
 | *Comment* | Test Case: Widgets in Pages add 2nd widget, see sequential number |  |
 | click_ok | link=Widget... |  |
 | wait_for_element_visible_ok | st-widget-opensocial-gallery-widgets | 30000 |
+| wait_for_text-present_ok | Socialtext widgets | 30000 |
+| wait_for_text-present_ok | Third Party widgets | 30000 |
 | text_like | qr/Socialtext widgets.+Third Party widgets/ |  |
 | text_like | qr/All People Tags.+Active Content/ |  |
+| pause | 10000 | wait for JS to load |
 | wait_for_element_visible_ok | //a[@class='greyButton' and contains(text(),'Insert')] | 30000 |
 | click_ok | //a[@class='greyButton' and contains(text(),'Insert')] |  |
 | wait_for_text_present_ok | Edit Widget | 30000 |
 | wait_for_element_visible_ok | st-widget-opensocial-setup-width-options | 30000 |
-| wait_for_element_visible_ok | //input[@class='searchButton st-savebutton'] | 30000 |
-| click_ok | //input[@class='searchButton st-savebutton'] |  |
+| wait_for_element_visible_ok | //input[@value='Preview'] | 30000 |
+| click_ok | //input[@value='Preview'] |  |
 | wait_for_element_visible_ok | st-widget-opensocial-setup-cancel | 30000 |
 | wait_for_element_visible_ok | st-widget-opensocial-setup-save | 30000 |
 | click_ok | st-widget-opensocial-setup-save |  |
