@@ -1047,15 +1047,14 @@ proto.href_is_wiki_link = function(href) {
         href = location.href;
 
     // check that the url is in this workspace
-    var up_to_wksp = /^https?:\/\/[^\/]+\/(?!(?:nlw|challenge|data|feed|js|m|settings|soap|st|wsdl)\/)[^\/#]+\//;
+    var up_to_wksp = /^https?:\/\/([^:\/]+)[^\/]*\/(?!(?:nlw|challenge|data|feed|js|m|settings|soap|st|wsdl)\/)[^\/#]+\//;
     var no_page_input   = href.match(up_to_wksp);
-    var no_page_current = location.href.match(up_to_wksp);
 
     // This url is nothing like a wikilink
     if (!no_page_input) return false;
 
     // This url may be a wikilink, but is it under our domain?
-    if (no_page_input[1].toLowerCase().indexOf(location.hostname.toLowerCase()) != 0) {
+    if (no_page_input[1].toLowerCase() != location.hostname.toLowerCase()) {
         return false;
     }
 
@@ -2500,6 +2499,9 @@ proto.handle_wiki_link = function(label, href, elem) {
         var section = segments[1];
         page = segments[0];
         return prefix + '{link: ' + wksp + ' [' + page + '] ' + section + '}';
+    }
+    else if (wksp != Socialtext.wiki_id) {
+        return prefix + '{link: ' + wksp + ' [' + page + ']}';
     }
     else {
         return prefix + '[' + page + ']';
