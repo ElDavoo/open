@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Guard qw(scope_guard);
 use List::MoreUtils qw(any);
-use Test::Socialtext tests => 40;
+use Test::Socialtext tests => 44;
 use Test::Socialtext::User;
 use Socialtext::Date;
 use Socialtext::User::Restrictions;
@@ -340,6 +340,39 @@ delete_restriction: {
         restriction_type => $type,
     } );
     ok !$retrieved, '... and which then cannot be found in the DB';
+}
+
+###############################################################################
+# TEST: Delete *just one* restriction
+delete_just_one_restriction: {
+    my $guard = Test::Socialtext::User->snapshot;
+
+    my $user    = create_test_user();
+    my $user_id = $user->user_id;
+
+    my $one = Socialtext::User::Restrictions->Create( {
+        user_id          => $user_id,
+        restriction_type => 'password_change',
+    } );
+    scope_guard { $one && $one->clear };
+
+    my $two = Socialtext::User::Restrictions->Create( {
+        user_id          => $user_id,
+        restriction_type => 'email_confirmation',
+    } );
+    scope_guard { $two && $two->clear };
+
+    my $rc = Socialtext::User::Restrictions->Delete($one);
+    ok $rc, 'Delete one of the restrictions on a User';
+
+    my $cursor = Socialtext::User::Restrictions->AllForUser($user);
+    isa_ok $cursor, 'Socialtext::MultiCursor';
+
+    my @restrictions = $cursor->all;
+    is @restrictions, 1, '... one restriction left';
+
+    is $restrictions[0]->restriction_type, $two->restriction_type,
+        '... the one we did not delete';
 }
 
 ###############################################################################
