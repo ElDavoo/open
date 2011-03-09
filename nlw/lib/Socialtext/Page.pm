@@ -2277,17 +2277,36 @@ sub formatted_date {
     return $res;
 }
 
-sub all_revision_ids {
+sub number_of_revisions {
     my $self = shift;
-    my $agg = wantarray ? 'array_accum' : 'count';
-    my $ids = sql_singlevalue(qq{
-        SELECT $agg(revision_id)
+
+    my $count = sql_singlevalue(qq{
+        SELECT count(revision_id)
           FROM page_revision
          WHERE workspace_id = ? AND page_id = ?
-         GROUP BY workspace_id, page_id
     }, $self->workspace_id, $self->page_id);
-    return sort {$a <=> $b} @$ids if wantarray;
-    return $ids;
+    return $count;
+}
+
+sub all_revision_ids {
+    my $self = shift;
+    my $order = shift || Socialtext::SQL::OLDEST_FIRST;
+
+    $order = $order eq Socialtext::SQL::OLDEST_FIRST ? 'asc' : 'desc';
+    my $sth = sql_execute(qq{
+        SELECT
+          revision_id
+        FROM
+          page_revision
+        WHERE
+          workspace_id = ?
+        AND
+          page_id = ?
+        ORDER BY
+          revision_id $order
+    }, $self->workspace_id, $self->page_id);
+    my @ids = map { $_->[0] } @{$sth->fetchall_arrayref || []};
+    return @ids;
 }
 
 sub original_revision_id {

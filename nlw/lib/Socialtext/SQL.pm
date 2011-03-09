@@ -70,6 +70,9 @@ our $PROFILE_SQL = 0;
 our $COUNT_SQL = 0;
 our $Level = 2;
 
+use constant NEWEST_FIRST => 'newest';
+use constant OLDEST_FIRST => 'oldest';
+
 # ⚠  Don't access these globals directly; use get_dbh(). They're only globals
 # ⚠  (and not lexically scoped via "my") so that with_local_dbh() can work.
 # ⚠  Code in this module is not an exception! It should use get_dbh too.
