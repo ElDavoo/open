@@ -41,14 +41,14 @@ CREATE INDEX user_restrictions_token_key ON user_restrictions(token);
 INSERT INTO user_restrictions (
     user_id, restriction_type, token, expires_at, workspace_id
     )
-    SELECT user_id, 'email-confirmation', sha1_hash, expiration_datetime, workspace_id
+    SELECT user_id, 'email_confirmation', sha1_hash, expiration_datetime, workspace_id
       FROM "UserEmailConfirmation"
      WHERE is_password_change = false;
 
 INSERT INTO user_restrictions (
     user_id, restriction_type, token, expires_at
     )
-    SELECT user_id, 'password-change', sha1_hash, expiration_datetime
+    SELECT user_id, 'password_change', sha1_hash, expiration_datetime
       FROM "UserEmailConfirmation"
      WHERE is_password_change = true;
 
