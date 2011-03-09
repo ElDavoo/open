@@ -677,7 +677,10 @@ sub set_external_id {
 
     eval { $user->update_store(private_external_id => $extern) };
     if (my $e = $@) {
-        $self->_error($@);
+        my $err = (ref($e) && ($e->can('full_message')))
+            ? $e->full_message
+            : "$e";
+        $self->_error($err);
     }
 
     $self->_success(
