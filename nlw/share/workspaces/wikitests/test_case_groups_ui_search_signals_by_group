@@ -16,32 +16,54 @@
 | st-admin | create-user --e %%non_grp_mbr%% --p %%password%% --account %%group_acct%% | created |
 | st-admin | add-member --group %%group_id%% --email %%grp_mbr%% | is now a member of the %%group_name%% Group |
 
-| *Comment* | Test Case: Groups UI Search Signals by Group. Send 2 signals %%grp_mbr%% |  |
+| *Comment* | Test Case: Groups UI Search Signals by Group. Send 2 signals to group |  |
 | http-user-pass | %%grp_mbr%% | %%password%% |
-| post-signal | SearchForThis %%start_time%% 01 |  |
+| post-signal | SearchForThis %%start_time%% 01 | {"group_ids":[%%group_id%%],"account_ids":[]} |
 | pause | 3000 |  |
-| post-signal | SearchForThis %%start_time%% 12 |  |
+| post-signal | SearchForThis %%start_time%% 12 | {"group_ids":[%%group_id%%],"account_ids":[]} |
 
-| *Comment* | Test Case: Groups UI Search Signals by Group. Send 2 signals %%non_grp_mbr%% |  |
+| *Comment* | Test Case: Groups UI Search Signals by Group. Send 2 signals to account |  |
 | http-user-pass | %%non_grp_mbr%% | %%password%% |
 | post-signal | SearchForThis %%start_time%% 20 |  |
 | pause | 3000 |  |
 | post-signal | SearchForThis %%start_time%% 25 |  |
 
-| *Comment* | Test Case: Signals Search.  Process jobs |  |
-| st_process_jobs | SignalIndex |   |
+| *Comment* | Test Case: Signals Search. Process jobs |  |
+| st_process_jobs | SignalIndex |  |
 
-| *Comment* | Test Case: Groups UI Search Signals by Group. TODO: Search within group, see signal |  |
+| *Comment* | Test Case: Groups UI Search Signals by Group. Initially see All Groups all 4 signals |  |
 | st-logoutin | %%group_user%% | %%password%% |
-| open_ok | /?signals |  |
+| open_ok | /?action=search_signals&search_term=%%start_time%% |  |
+| wait_for_element_visible_ok | //select[@class='account-select'] | 30000 |
+| is_selected_ok | //select[@class='account-select'] | label=All Groups |
+| wait_for_text_present_ok | %%start_time%% 01 | 30000 |
+| wait_for_text_present_ok | %%start_time%% 12 | 30000 |
+| wait_for_text_present_ok | %%start_time%% 20 | 30000 |
+| wait_for_text_present_ok | %%start_time%% 25 | 30000 |
 
-| *Comment* | Test Case: Groups UI Search Signals by Group. TODO: Search within ACCOUNT, do not see signal |  |
+| *Comment* | Test Case: Groups UI Search Signals by Group change filter to account, see 2 signals |  |
+| select_ok | //select[@class='account-select'] | label=%%group_acct%% (3 People) |
+| wait_for_text_present_ok | Showing 1 - 2 of 2 total. | 30000 |
+| is_selected_ok | //select[@class='account-select'] | label=%%group_acct%% (3 People) |
+| wait_for_text_present_ok | %%start_time%% 20 | 30000 |
+| wait_for_text_present_ok | %%start_time%% 25 | 30000 |
+| wait_for_text_not_present_ok | %%start_time%% 01 | 30000 |
+| wait_for_text_not_present_ok | %%start_time%% 12 | 30000 |
 
-| *Comment* | Test Case: Groups UI Search Signals by Group. TODOA: Login as group member (of two accounts) |  |
-| *Comment* | Test Case: Groups UI Search Signals by Group. TODOB: Select "All Group", do not see signal |  |
+| *Comment* | Test Case: Groups UI Search Signals by Group change filter to group, see other 2 signals |  |
+| select_ok | //select[@class='account-select'] | value=;group_id=%%group_id%% |
+| wait_for_text_present_ok | %%start_time%% 01 | 30000 |
+| wait_for_text_present_ok | %%start_time%% 01 | 30000 |
+| wait_for_text_present_ok | %%start_time%% 12 | 30000 |
+| wait_for_text_not_present_ok | %%start_time%% 20 | 30000 |
+| wait_for_text_not_present_ok | %%start_time%% 25 | 30000 |
 
-| *Comment* | Test Case: Groups UI Search Signals by Group Teardown |
-| delete-group | %%group_id%% |
-| st-admin | delete-workspace --w %%group_ws%% --no-export |
+| *Comment* | Test Case: Groups UI Search Signals by Group Teardown |  |
+| delete-group | %%group_id%% | Recklessly deleting |
+| delete-workspace | %%group_ws%% | Recklessly deleting |
+| delete-account | %%group_acct%% | Recklessly deleting |
+| st-admin | deactivate-user --email %%grp_mbr%% |  |
+| st-admin | deactivate-user --email %%non_grp_mbr%% |  |
+| st-admin | deactivate-user --email %%group_user%% |  |
 
 | *Comment* | Test Case: Groups UI Search Signals by Group COMPLETED |
