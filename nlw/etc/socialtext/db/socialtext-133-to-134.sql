@@ -12,8 +12,8 @@ ALTER TABLE "Account"
     ALTER email_addresses_are_hidden SET DEFAULT false;
 
 
--- TODO: truncate from_page_id, to_page_id to 255
-
+-- Delete long spammy links
+DELETE FROM page_link WHERE LENGTH(to_page_id) > 255;
 ALTER TABLE ONLY page_link
     ADD CONSTRAINT page_link_unique
             UNIQUE (from_workspace_id, from_page_id, to_workspace_id, to_page_id);

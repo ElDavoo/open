@@ -282,6 +282,37 @@ BEGIN
 END;
 $$;
 
+CREATE FUNCTION mark_user_as_updated_when_user_changes() RETURNS TRIGGER
+AS $$
+BEGIN
+    IF TG_OP = 'INSERT' THEN
+        NEW.last_profile_update := current_timestamp;
+    ELSE
+        IF NEW.last_profile_update = OLD.last_profile_update THEN
+            NEW.last_profile_update := current_timestamp;
+        END IF;
+    END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE FUNCTION mark_user_as_updated_when_profile_changes() RETURNS TRIGGER AS $$
+BEGIN
+
+  IF TG_OP = 'INSERT' OR TG_OP = 'UPDATE' THEN
+    UPDATE users
+       SET last_profile_update = current_timestamp
+     WHERE user_id = NEW.user_id;
+    RETURN NEW;
+  ELSIF TG_OP = 'DELETE' THEN
+    UPDATE users
+       SET last_profile_update = current_timestamp
+     WHERE user_id = OLD.user_id;
+    RETURN OLD;
+  END IF;
+END;
+$$ LANGUAGE plpgsql;
+
 CREATE FUNCTION purge_user_set(to_purge integer) RETURNS boolean
     LANGUAGE plpgsql
     AS $$
@@ -2196,6 +2227,22 @@ CREATE INDEX webhook__workspace_class_ix
 CREATE UNIQUE INDEX workspace_user_set_id
 	    ON "Workspace" (user_set_id);
 
+CREATE TRIGGER users_mark_as_updated_when_changed
+    BEFORE INSERT OR UPDATE ON users
+    FOR EACH ROW EXECUTE PROCEDURE mark_user_as_updated_when_user_changes();
+
+CREATE TRIGGER profile_attr_mark_user_updated_when_changed
+    BEFORE INSERT OR UPDATE OR DELETE ON profile_attribute
+    FOR EACH ROW EXECUTE PROCEDURE mark_user_as_updated_when_profile_changes();
+
+CREATE TRIGGER profile_rel_mark_user_updated_when_changed
+    BEFORE INSERT OR UPDATE OR DELETE ON profile_relationship
+    FOR EACH ROW EXECUTE PROCEDURE mark_user_as_updated_when_profile_changes();
+
+CREATE TRIGGER profile_photo_mark_user_updated_when_changed
+    BEFORE INSERT OR UPDATE OR DELETE ON profile_photo
+    FOR EACH ROW EXECUTE PROCEDURE mark_user_as_updated_when_profile_changes();
+
 CREATE TRIGGER account_user_set_delete AFTER DELETE ON "Account" FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
 
 CREATE TRIGGER group_user_set_delete AFTER DELETE ON groups FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
@@ -2668,4 +2715,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '132');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '133');
