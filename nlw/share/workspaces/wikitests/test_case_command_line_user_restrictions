@@ -102,7 +102,6 @@
 | wait_for_text_present_ok | Welcome, New User | 30000 |
 
 | *Comment* | Test Case: Command-Line User Restrictions TEARDOWN |  |
-| st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
 | st-admin | deactivate-user --e %%euser%% | has been deactivated |
 | st-process-jobs |  |  |
 
