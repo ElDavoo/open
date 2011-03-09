@@ -1100,7 +1100,7 @@ CREATE TABLE page_link (
 CREATE TABLE page_revision (
     workspace_id bigint NOT NULL,
     page_id text NOT NULL,
-    revision_id bigint NOT NULL,
+    revision_id numeric(20,6) NOT NULL,
     revision_num integer NOT NULL,
     name text,
     editor_id bigint NOT NULL,
@@ -1114,13 +1114,6 @@ CREATE TABLE page_revision (
     body_length bigint DEFAULT 0 NOT NULL,
     body bytea
 );
-
-CREATE SEQUENCE page_revision_id_seq
-    START WITH 30000000000000
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
 
 CREATE TABLE page_tag (
     workspace_id bigint NOT NULL,

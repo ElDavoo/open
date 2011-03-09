@@ -45,6 +45,10 @@ BEGIN {
             type => SCALAR,
             callbacks => { 'is positive integer' => sub { ($_[0] =~ /^\d+$/) && ($_[0] > 0) }, },
         },
+        POSITIVE_FLOAT_TYPE => {
+            type => SCALAR,
+            callbacks => { 'is positive float' => sub { ($_[0] =~ /^\d+(?:\.\d+)?$/) && ($_[0] > 0) }, },
+        },
 
         OPTIONAL_INT_TYPE => { type => SCALAR, regex => qr/^\d+$/, optional => 1 },
 

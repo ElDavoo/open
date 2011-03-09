@@ -74,17 +74,18 @@ sub spec_resize {
         my $to_file = $p{to_filename} || $file;
 
         ($p{img_width}, $p{img_height}) = get_dimensions($file);
-        my ($new_width, $new_height) = get_proportions(%p);
+        my ($max_w, $max_h) = get_proportions(%p);
 
         # only resize the image if it has to be resized, otherwise we trigger
         # recompression of the image, which screws up images w/lossy
         # compression algorithms (e.g. JPEGs)
-        if (    ($new_width  and ($new_width  != $p{img_width}))
-            and ($new_height and ($new_height != $p{img_height}))
-        ) {
-            local $Socialtext::System::SILENT_RUN = 1;
-            convert($file, $to_file, scale => "${new_width}x${new_height}");
+        if ($p{img_width} == $max_w and $p{img_height} == $max_h) {
+            copy $file => $to_file unless $file eq $to_file;
+            return;
         }
+
+        local $Socialtext::System::SILENT_RUN = 1;
+        convert($file, $to_file, scale => "${max_w}x${max_h}");
     }
 }
 

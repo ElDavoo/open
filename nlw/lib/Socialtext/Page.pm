@@ -64,7 +64,7 @@ has 'hub' => (
 has 'workspace_id' => (is => 'rw', isa => 'Int', required => 1);
 has 'page_id' => (is => 'rw', isa => 'Str', required => 1);
 *id = *page_id; # legacy alias
-has 'revision_id' => (is => 'rw', isa => 'Int',
+has 'revision_id' => (is => 'rw', isa => 'Num',
     trigger => sub { $_[0]->_revision_id_changed($_[1],$_[2]) },
 );
 *current_revision_id = *revision_id;
@@ -2173,7 +2173,7 @@ sub send_as_email {
 
 {
     Readonly my $spec => {
-        revision_id => POSITIVE_INT_TYPE,
+        revision_id => POSITIVE_FLOAT_TYPE,
         user        => USER_TYPE,
     };
     sub restore_revision {

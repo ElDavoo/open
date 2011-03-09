@@ -171,7 +171,7 @@ mass-copy-pages --workspace --target [--prefix]
 | st-admin | html-archive | qr/The command you called \(html-archive\) requires a workspace to be specified/ |
 | st-admin | html-archive --workspace %%cmdline_workspace%% | qr/The command you called \(html-archive\) requires a file to be specified with the --file option/ |
 | *Comment* | Test Case: Command Line Tests html-archive with a bogus --file causes stack trace |  |
-| st-admin | html-archive --workspace %%cmdline_workspace%% --file /temp/foo | qr/Socialtext::HTMLArchive::create_zip\(undef, undef\) called at/ |
+| st-admin | html-archive --workspace %%cmdline_workspace%% --file /temp/foo | Path to zip file does not exist |
 | st-admin | html-archive --workspace %%cmdline_workspace%% --file /tmp/%%start_time%% | qr/An HTML archive of the %%cmdline_workspace%% workspace has been created in \/tmp\/%%start_time%%\.zip/ |
 
 | *Comment* | Test Case: Command Line Tests WORKSPACE mass-copy-pages going to /tmp |  |
