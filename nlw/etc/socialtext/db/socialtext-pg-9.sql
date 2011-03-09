@@ -1050,17 +1050,10 @@ CREATE TABLE page (
     views integer DEFAULT 0 NOT NULL
 );
 
-CREATE SEQUENCE page_revision_id_seq
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    START WITH 30000000000000
-    CACHE 1;
-
 CREATE TABLE page_revision (
     workspace_id bigint NOT NULL,
     page_id text NOT NULL,
-    revision_id bigint NOT NULL,
+    revision_id NUMERIC(20,6) NOT NULL,
     revision_num int NOT NULL,
     name text,
     editor_id bigint NOT NULL,

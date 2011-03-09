@@ -342,8 +342,6 @@ sub load_revision_metadata {
         $dbh->selectcol_arrayref($check_sth,{},$ws_id,$pg_dir) || []
     );
 
-    my ($legacy_revids, $modern_revids) = (0,0);
-
     my @files;
     opendir(my $dfh, "$ws_dir/$pg_dir");
     while (my $file = readdir($dfh)) {
@@ -357,13 +355,6 @@ sub load_revision_metadata {
 
         (my $revision_id = $file) =~ s#.+/(.+)\.txt$#$1#;
         $revision_id += 0; # force-numify
-        $modern_revids++ if $revision_id >= 30000000000000;
-        $legacy_revids++ if $revision_id <  30000000000000;
-
-        # TODO {bz: 5015}
-        die "export is corrupt: cannot mix modern and legacy revision ids\n"
-            if ($modern_revids && $legacy_revids);
-
         next if $existing_ids->check($revision_id);
 
         push @files, [$revision_id, $file];
