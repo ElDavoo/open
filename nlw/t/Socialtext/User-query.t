@@ -412,14 +412,14 @@ fixtures(qw( clean populated_rdbms ));
     my $user = create_test_user();
     my $cursor;
 
-    $cursor = Socialtext::User->Find( {
+    $cursor = Socialtext::User->Query( {
         driver_username => $user->username,
     } );
-    is $cursor->count, 1, 'Find() matched User';
+    is $cursor->count, 1, 'Query() matched User';
 
-    $cursor = Socialtext::User->Find( {
+    $cursor = Socialtext::User->Query( {
         driver_username => $user->username,
         last_name       => 'blah blah blah blah',
     } );
-    is $cursor->count, 0, 'Find() did not match bad user';
+    is $cursor->count, 0, 'Query() did not match bad user';
 }

@@ -992,7 +992,7 @@ sub ResolveId {
     return;
 }
 
-sub Find {
+sub Query {
     my $class  = shift;
     my $params = shift;
     my $t      = time_scope('user_find');
@@ -2173,7 +2173,7 @@ Checks each of the configured User Factories to see if they know about this
 User, B<without> actually instantiating the User object; useful as a
 peek-ahead to see if we know about a User with this C<driver_unique_id> yet.
 
-=head2 Socialtext::User->Find( $hashref )
+=head2 Socialtext::User->Query( $hashref )
 
 Finds User records that match the given hash-ref of field data B<exactly>,
 returning a cursor of the records found.
