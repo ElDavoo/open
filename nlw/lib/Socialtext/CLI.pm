@@ -665,22 +665,23 @@ sub get_user_account {
 }
 
 sub set_external_id {
-    my $self = shift;
-    my $user = $self->_require_user;
-    my %p    = $self->_get_options('external-id|X:s');
+    my $self   = shift;
+    my $user   = $self->_require_user;
+    my %p      = $self->_get_options('external-id|X:s');
+    my $extern = $p{'external-id'};
 
-    if (not defined $p{'external-id'}) {
+    if (not defined $extern) {
         $self->_error(
             "The command you called ($self->{command}) requires an external ID to be specified with the --external-id option.\n");
     }
 
-    eval { $user->update_store(private_external_id => $p{'external-id'}) };
+    eval { $user->update_store(private_external_id => $extern) };
     if (my $e = $@) {
         $self->_error($@);
     }
 
     $self->_success(
-        loc("cli.set=user,external-id", $user->username, $p{'external-id'})
+        loc("cli.set=user,external-id", $user->username, $extern)
     );
 }
 
