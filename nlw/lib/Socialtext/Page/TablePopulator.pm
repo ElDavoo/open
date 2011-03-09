@@ -629,7 +629,7 @@ sub format_err {
     return '' unless $err;
 
     chomp $err;
-    $err =~ s/at \S+ line \d+\.$//;
+    $err =~ s/at \S+ line \d+(?:, <> line \d+)?.$//;
 
     return $err;
 }
