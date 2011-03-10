@@ -61,7 +61,7 @@ Add_from_hash: {
         is_deeply \@failures, [], 'no failure messages';
 
         my $user = Socialtext::User->new(username => 'ronnie');
-        ok !$user->requires_confirmation, 'confirmation is not set';
+        ok !$user->requires_email_confirmation, 'email confirmation is not required';
         is $user->primary_account_id, $DefaultAccountId,
             'User added to Default account';
 
@@ -167,7 +167,7 @@ Add_one_user_csv: {
     is_deeply \@failures, [], 'no failure messages';
 
     my $user = Socialtext::User->new(username => 'guybrush');
-    ok !$user->requires_confirmation, 'confirmation is not set';
+    ok !$user->requires_email_confirmation, 'email confirmation is not required';
 
     my @emails = Email::Send::Test->emails;
     ok !@emails, 'confirmation email not sent';
@@ -567,7 +567,7 @@ No_password_causes_email_to_be_sent: {
     is_deeply \@failures, [], 'no failure messages';
 
     my $user = Socialtext::User->new(username => 'guybrush');
-    ok $user->requires_confirmation, 'confirmation is set';
+    ok $user->requires_email_confirmation, 'email confirmation is required';
 
     my @emails = Email::Send::Test->emails;
     is @emails, 1, 'confirmation email sent';
@@ -611,7 +611,7 @@ Create_user_with_no_people_installed: {
     is_deeply \@failures, [], 'no failure messages';
 
     my $user = Socialtext::User->new(username => 'guybrush');
-    ok !$user->requires_confirmation, 'confirmation is not set';
+    ok !$user->requires_email_confirmation, 'email confirmation is not required';
 
     my @emails = Email::Send::Test->emails;
     ok !@emails, 'confirmation email not sent';
