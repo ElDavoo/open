@@ -1539,6 +1539,11 @@ sub confirm_email_address {
     return $self->remove_restriction('email_confirmation');
 }
 
+sub requires_email_confirmation {
+    my $self = shift;
+    return $self->has_restriction('email_confirmation');
+}
+
 sub requires_confirmation {
     my $self = shift;
     return $self->restrictions->count ? 1 : 0;
@@ -1565,6 +1570,11 @@ sub password_change_uri {
     my $self = shift;
     my $restriction = $self->get_restriction('password_change');
     return $restriction->uri if $restriction;
+}
+
+sub requires_password_change {
+    my $self = shift;
+    return $self->has_restriction('password_change');
 }
 
 # restriction:  require external id
