@@ -11,6 +11,7 @@ use Socialtext::Role;
 use Socialtext::Permission 'ST_ADMIN_WORKSPACE_PERM';
 use Socialtext::JobCreator;
 use Socialtext::Upload;
+use Scalar::Util qw(blessed);
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Collection';
@@ -26,7 +27,12 @@ sub _entity_hash {
     my ($self, $group) = @_;
     my $minimal = $self->rest->query->param('minimal');
     if ($minimal or $self->rest->query->param('ids_only')) {
-        return $group->to_hash(minimal => $minimal);
+        if (blessed($group) and $group->can('to_hash')) {
+            return $group->to_hash(minimal => $minimal) ;
+        }
+        else {
+            return $group;
+        }
     }
     my $show_members = $self->rest->query->param('show_members');
     return {
