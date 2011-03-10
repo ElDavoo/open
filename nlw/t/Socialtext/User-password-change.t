@@ -30,8 +30,8 @@ my $user = Socialtext::User->create(
     my $confirmation = $user->create_password_change_confirmation;
     $confirmation->send;
 
-    ok $user->requires_confirmation, 'User requires a confirmation';
-    ok $user->password_change_confirmation, '... a password change';
+    ok $user->is_restricted, 'User record is restricted';
+    ok $user->password_change_confirmation, '... by a password change';
 
     my @emails = Email::Send::Test->emails();
     is( scalar @emails, 1, 'one email was sent' );

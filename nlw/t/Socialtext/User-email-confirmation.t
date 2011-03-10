@@ -33,12 +33,13 @@ confirmation_email_qualities: {
     # verify the qualities that the confirmation email has.
     my $confirmation = $user->email_confirmation;
     is length $confirmation->token, 27,    '... has base64 encoded email confirmation hash';
-    ok $user->requires_confirmation,       '... user requires confirmation';
+    ok $user->requires_email_confirmation, '... user requires email confirmation';
     ok !$confirmation->has_expired,        '... confirmation has not yet expired';
 
     # confirm the email, and make sure it sticks
     $user->confirm_email_address();
-    ok !$user->requires_confirmation, '... user no longer requires confirmation';
+    ok !$user->requires_email_confirmation,
+        '... user no longer requires confirmation';
 }
 
 ###############################################################################

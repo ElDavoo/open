@@ -91,7 +91,7 @@ my $user3 = Socialtext::User->create(
 
 $user3->create_email_confirmation;
 
-is( $user3->requires_confirmation, 1, 'user requires confirmation' );
+ok $user3->requires_email_confirmation, 'user requires email confirmation';
 
 account_roles_for_created_user: {
     my $member         = Socialtext::Role->Member();
