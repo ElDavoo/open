@@ -14,7 +14,7 @@
         <div><input type="text" name="last_name" value="[% user.last_name %]"/></div>
       </dd>
       <dd>
-        <label>[% loc('config.first-name:') %]</label>
+        <label>[% loc('user.first-name:') %]</label>
         <div><input type="text" name="first_name" value="[% user.first_name %]"/></div>
       </dd>
       <dd>
@@ -23,7 +23,7 @@
       </dd>
     [% ELSE %]
       <dd>
-        <label>[% loc('config.first-name:') %]</label>
+        <label>[% loc('user.first-name:') %]</label>
         <div><input type="text" name="first_name" value="[% user.first_name %]"/></div>
       </dd>
       <dd>

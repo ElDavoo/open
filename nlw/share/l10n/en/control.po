@@ -275,6 +275,10 @@ msgstr "Browse ..."
 msgid "control.calculated-unless-provided=field"
 msgstr "%1 is calculated unless provided"
 
+#: share/plugin/control/template/control/user.html:119
+msgid "control.clear-external-id"
+msgstr "Clear External ID"
+
 #: share/plugin/control/share/javascript/template/control_table.tt2:18 share/plugin/control/template/control/user_table_header:10
 msgid "control.clear-selection"
 msgstr "Clear Selection"
@@ -289,6 +293,10 @@ msgstr ""
 "Are you sure you want to delete this group?\n"
 "\n"
 "You will not be able to restore the group once it's deleted. Users will no longer be able to signal to this group and any access to workspaces through this group will be revoked."
+
+#: share/plugin/control/template/control/add_users.html:27
+msgid "control.confirm-email-address"
+msgstr "Confirm e-mail address"
 
 #: share/plugin/control/template/control/paging_controls:6
 msgid "control.confirm-paging-discard-selection?"
@@ -458,6 +466,14 @@ msgstr "External"
 msgid "control.external-id"
 msgstr "External ID"
 
+#: share/plugin/control/template/control/user.html:112
+msgid "control.external-id-not-set"
+msgstr "External ID is not set"
+
+#: share/plugin/control/template/control/user.html 110
+msgid "control.external-id-required"
+msgstr "Requires External ID"
+
 #: share/plugin/control/template/control/user.html:44
 msgid "control.external-id:"
 msgstr "External ID:"
@@ -513,6 +529,14 @@ msgstr "Field Type"
 #: share/plugin/control/template/control/add_user.html:28
 msgid "control.first-name:"
 msgstr "First name:"
+
+#: share/plugin/control/template/control/user.html:103
+msgid "control.for-cac-authentication"
+msgstr "For use with CAC Authentication"
+
+#: share/plugin/control/template/control/add_users.html:31
+msgid "control.force-password-change"
+msgstr "Force password change"
 
 #: share/plugin/control/template/control/group_add_to_workspace.html:27 share/plugin/control/template/control/workspace_add_group.html:28
 msgid "control.give-group-admin-privileges"
@@ -717,6 +741,10 @@ msgstr "Remove Appliance Business Administrator Role"
 msgid "control.remove-appliance-technical-administrator-role"
 msgstr "Remove Appliance Technical Administrator Role"
 
+#: share/plugin/control/template/control/user.html:125
+msgid "control.remove-external-id-requirement"
+msgstr "Remove External ID Requirement"
+
 #: share/plugin/control/template/control/user.html:271
 msgid "control.remove-from-wiki"
 msgstr "Remove from Workspaces"
@@ -743,6 +771,10 @@ msgstr "Rename Account"
 #: share/plugin/control/template/control/account.html:32
 msgid "control.reports"
 msgstr "Reports"
+
+#: share/plugin/control/template/control/add_users.html:35 share/plugin/control/template/control/user.html:130
+msgid "control.require-external-id"
+msgstr "Require External ID"
 
 #: share/plugin/control/template/control/fields-account.html:31
 msgid "control.required-field"
@@ -1196,6 +1228,10 @@ msgstr "Error removing account: %1"
 #: share/plugin/control/template/control/desktop-account.html:44
 msgid "error.retrieve-image"
 msgstr "Error: Image cannot be retrieved."
+
+#: share/plugin/control/template/control/user.html:32
+msgid "error.user-missing-from-ldap-during-last-refresh"
+msgstr "This user was missing from the LDAP directory during the last refresh."
 
 #: share/plugin/control/share/javascript/useraccountrole.js:11
 msgid "error.username-required"

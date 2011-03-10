@@ -50,13 +50,13 @@ Searched for:
 |;
     if (@users == 0) {
         $err_msg = loc(
-            'No matches found when searching for User matching "[_1]"',
+            'error.no-user-matched=name',
             $username,
         );
     }
     if (@users > 1) {
         $err_msg = loc(
-            'Multiple matches found when searching for User matching "[_1]"',
+            'error.multiple-user-matched=name',
             $username,
         );
         foreach my $match (@users) {

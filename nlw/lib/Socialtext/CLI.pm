@@ -969,12 +969,12 @@ sub list_restrictions {
     my @restrictions = $user->restrictions->all();
 
     unless (@restrictions) {
-        $self->_success( loc("No restrictions for user") );
+        $self->_success( loc("user.no-restrictions") );
     }
 
     printf '| %20s | %40s |' . "\n",
-        loc("Restriction Type"),
-        loc("Token");
+        loc("user.restriction-type"),
+        loc("user.restriction-token");
     foreach my $r (@restrictions) {
         printf '| %20s | %40s |' . "\n",
             $r->restriction_type,
@@ -998,7 +998,7 @@ sub add_restriction {
         };
         $self->_error($@) if ($@);
 
-        print loc("[_1] has been given the '[_2]' restriction", $user->username, $t) . "\n";
+        print loc("user.given=name,restriction", $user->username, $t) . "\n";
     }
     $self->_success();
 }
@@ -1025,7 +1025,7 @@ sub remove_restriction {
             }
             else {
                 print
-                    loc("'[_1]' does not have the '[_2]' restriction", $user->username, $t)
+                    loc("user.no-such=name,restriction", $user->username, $t)
                     . "\n";
             }
         }
@@ -1035,7 +1035,7 @@ sub remove_restriction {
         foreach my $r (@restrictions) {
             $r->confirm;
             print loc(
-                "'[_1]' restriction has been lifted on '[_2]'",
+                "user.lifted=restriction,name",
                 $r->restriction_type, $user->username,
             ) . "\n";
         }
@@ -1059,7 +1059,7 @@ sub _require_restriction {
 
     for my $type (@{$restriction}) {
         $self->_error(
-            loc("unknown restriction type, '[_1]'", $type)
+            loc("error.unknown-restriction=type", $type)
         ) unless Socialtext::User::Restrictions->ValidRestrictionType($type);
     }
 
@@ -1817,7 +1817,7 @@ sub change_password {
     $restriction->clear if $restriction;
 
     $self->_success(
-        loc('The password for [_1] has been changed.', $user->username),
+        loc('user.password-changed=name', $user->username),
     );
 }
 

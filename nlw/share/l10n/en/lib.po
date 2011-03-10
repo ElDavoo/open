@@ -1399,6 +1399,11 @@ msgstr "The People plugin is not available."
 msgid "error.mount-samba-share"
 msgstr "Cannot mount the SAMBA share."
 
+#. ($username,)
+#: lib/Socialtext/CredentialsExtractor/Extractor/CAC.pm:61
+msgid "error.multiple-user-matched=name"
+msgstr "Multiple matches found when searching for User matching \"%1\""
+
 #: lib/Socialtext/Handler/ControlPanel.pm:470
 msgid "error.new-account-name-required"
 msgstr "You must provide a name to create a new account."
@@ -1644,6 +1649,11 @@ msgstr "Error: No timeserver is configured"
 #: lib/Socialtext/Handler/Authen.pm:228
 msgid "error.no-user-email"
 msgstr "This username has no associated email address."
+
+#. ($username,)
+#: lib/Socialtext/CredentialsExtractor/Extractor/CAC.pm:55
+msgid "error.no-user-matched=name"
+msgstr "No matches found when searching for User matching \"%1\""
 
 #. ($email)
 #: lib/Socialtext/CLI.pm:3433
@@ -2021,6 +2031,11 @@ msgstr "Cannot undelete a page with only one revision. Returning to front page."
 #: lib/Socialtext/Gadgets/Gadget/XML.pm:34
 msgid "error.unknown"
 msgstr "Unknown error"
+
+#. ($type)
+#: lib/Socialtext/CLI.pm:1062
+msgid "error.unknown-restriction=type"
+msgstr "unknown restriction type, '%1'"
 
 #. ($file->{filename})
 #: lib/Socialtext/WorkspacesUIPlugin.pm:224
@@ -3250,6 +3265,25 @@ msgstr "The user has been removed from workspaces and directories."
 msgid "user.deactivated=name"
 msgstr "User %1 has been deactivated."
 
+#. ($user->name_and_email)
+#: lib/Socialtext/Handler/ControlPanel.pm:516
+msgid "user.external-id-cleared=name"
+msgstr "External ID cleared for %1"
+
+#. ($user->name_and_email)
+#: lib/Socialtext/Handler/ControlPanel.pm:529
+msgid "user.external-id-requirement-added=name"
+msgstr "External ID requirement added for %1"
+
+#. ($user->name_and_email)
+#: lib/Socialtext/Handler/ControlPanel.pm:544
+msgid "user.external-id-requirement-removed=name"
+msgstr "External ID requirement removed for %1"
+
+#: lib/Socialtext/CLI.pm:1001
+msgid "user.given=name,restriction"
+msgstr "%1 has been given the '%2' restriction"
+
 #. ($filename)
 #: lib/Socialtext/Handler/ControlPanel.pm:1142
 msgid "user.imported=file"
@@ -3258,6 +3292,11 @@ msgstr "Loaded users from %1"
 #: lib/Socialtext/Account.pm:481
 msgid "user.importing"
 msgstr "Importing users..."
+
+#. ($r->restriction_type, $user->username,)
+#: lib/Socialtext/CLI.pm:1040
+msgid "user.lifted=restriction,name"
+msgstr "'%1' restriction has been lifted on '%2'"
 
 #. ($name)
 #: lib/Socialtext/Handler/ControlPanel.pm:2112
@@ -3269,10 +3308,32 @@ msgstr "Users matching \"%1\""
 msgid "user.no-changes=name"
 msgstr "No changes for user %1"
 
+#: lib/Socialtext/CLI.pm:972
+msgid "user.no-restrictions"
+msgstr "No restrictions for user"
+
+#. ($user->username, $t)
+#: lib/Socialtext/CLI.pm:1028
+msgid "user.no-such=name,restriction"
+msgstr "'%1' does not have the '%2' restriction"
+
+#. ($user->username)
+#: lib/Socialtext/CLI.pm:1820
+msgid "user.password-changed=name"
+msgstr "The password for %1 has been changed."
+
 #. ($removed, $group->driver_group_name)
 #: lib/Socialtext/Handler/ControlPanel.pm:1237
 msgid "user.removed=count,group"
 msgstr "You have successfully removed %*(%1,user) from the %2 Group."
+
+#: lib/Socialtext/CLI.pm:977
+msgid "user.restriction-token"
+msgstr "Token"
+
+#: lib/Socialtext/CLI.pm:976
+msgid "user.restriction-type"
+msgstr "Restriction Type"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:2090
 msgid "user.selected"

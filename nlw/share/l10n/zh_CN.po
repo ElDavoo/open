@@ -51,6 +51,10 @@ msgstr "正在启用账户插件..."
 msgid "account.exporting-"
 msgstr "正在导出账户工具库..."
 
+#: lib/Socialtext/Pluggable/Plugin/Widgets.pm:165
+msgid "account.exporting-gallery"
+msgstr "Exporting account gallery ..."
+
 msgid "account.exporting-groups=count,account"
 msgstr "正在导出账户'%2'的全部群组(%1)..."
 
@@ -65,6 +69,10 @@ msgstr "正在导入账户工具库..."
 
 msgid "account.importing-data"
 msgstr "正在导入账户数据..."
+
+#: lib/Socialtext/Pluggable/Plugin/Widgets.pm:278
+msgid "account.importing-gallery"
+msgstr "Importing account gallery ..."
 
 msgid "account.importing-groups=account"
 msgstr "正在为'%1'账户导入全部群组..."
@@ -424,11 +432,32 @@ msgstr "指派 %1 为应用业务管理员。"
 msgid "appliance.added-technical-admin=user"
 msgstr "指派 %1 为应用技术管理员。"
 
+#: lib/Socialtext/Appliance/Model/Backup.pm:317
+msgid "appliance.archive-directory"
+msgstr "Archive Directory"
+
 msgid "appliance.archiving-system-config-files"
 msgstr "正在存档系统配置文件..."
 
+#: lib/Socialtext/Appliance/Model/Backup.pm:296
+msgid "appliance.backup-destination-updated"
+msgstr "Backup destination updated"
+
 msgid "appliance.backup-id"
 msgstr "备份ID"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:58
+msgid "appliance.backup-in-progress-started-at-never"
+msgstr "Backup is in progress - started at never"
+
+#. ($started_at)
+#: lib/Socialtext/Appliance/Model/Backup.pm:62
+msgid "appliance.backup-in-progress=started-at"
+msgstr "Backup is in progress - started at %1"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:310
+msgid "appliance.backup-server-name"
+msgstr "Backup Server name"
 
 msgid "appliance.backup-time"
 msgstr "备份时间"
@@ -439,14 +468,190 @@ msgstr "可供恢复的备份:"
 msgid "appliance.cleanup-previous-snapshot"
 msgstr "正在清除前一个快照..."
 
+#. ($data->{collaborativeness})
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:89
+msgid "appliance.collaborativeness=score"
+msgstr "Collaborativeness: %1 - Unique contributors as a percent of unique visitors"
+
+#: lib/Socialtext/Appliance/ConsoleController.pm:118
+msgid "appliance.confirm-initialize-wikis"
+msgstr "Do you really want to delete all workspaces and create a new initial workspace? (This action cannot be undone.)"
+
+#: lib/Socialtext/Appliance/ConsoleController.pm:90
+msgid "appliance.confirm-reboot?"
+msgstr "Do you really want to reboot the appliance?"
+
+#: lib/Socialtext/Appliance/ConsoleController.pm:104
+msgid "appliance.confirm-shutdown?"
+msgstr "Do you really want to shutdown the appliance?"
+
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:92
+msgid "appliance.contributions"
+msgstr "Contributions"
+
+#: lib/Socialtext/Appliance/Model/Setup.pm:474
+msgid "appliance.email-required"
+msgstr "Please enter an email address"
+
+#: lib/Socialtext/Appliance/ConsoleController.pm:119
+msgid "appliance.initialize-wikis"
+msgstr "Initialize Workspaces"
+
+#: lib/Socialtext/Appliance/ConsoleController.pm:117
+msgid "appliance.initialize-wikis?"
+msgstr "Initialize Workspaces?"
+
+#: lib/Socialtext/Appliance/Model/Setup.pm:465 lib/Socialtext/Appliance/Model/Setup.pm:485
+msgid "appliance.invalid-email"
+msgstr "Please enter a valid email address"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:69
+msgid "appliance.last-manual-backup-was-never"
+msgstr "Last manual backup was never"
+
+#. ($last)
+#: lib/Socialtext/Appliance/Model/Backup.pm:72
+msgid "appliance.last-manual-backup-was=last"
+msgstr "Last manual backup was %1"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:313
+msgid "appliance.password"
+msgstr "Password"
+
+#: lib/Socialtext/Appliance/ConsoleController.pm:91
+msgid "appliance.reboot"
+msgstr "Reboot"
+
+#: lib/Socialtext/Appliance/ConsoleController.pm:89
+msgid "appliance.reboot?"
+msgstr "Reboot Appliance?"
+
+#: lib/Socialtext/Appliance/Model/System.pm:58
+msgid "appliance.rebooting"
+msgstr "System rebooting ..."
+
+#. ($login_url)
+#: lib/Socialtext/Appliance/ConsoleController.pm:130
+msgid "appliance.redirecting-to=url"
+msgstr "Redirecting to %1"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:92
+msgid "appliance.refresh-in-progress"
+msgstr "Refresh is in progress, please wait ..."
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:329
+msgid "appliance.refreshing-backup-list"
+msgstr "Refreshing the backup list ..."
+
 msgid "appliance.removed-business-admin=user"
 msgstr "解除 %1 应用业务管理员的角色。"
 
 msgid "appliance.removed-technical-admin=user"
 msgstr "解除 %1 应用技术管理员的角色。"
 
+#: lib/Socialtext/Appliance/Model/Backup.pm:189
+msgid "appliance.restore-already-running"
+msgstr "Restore is already running"
+
+#. ($latest_backup->{id})
+#: lib/Socialtext/Appliance/Model/Backup.pm:413
+msgid "appliance.restore-finished=latest-backup"
+msgstr "Restore of %1 finished."
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:82
+msgid "appliance.restore-in-progress-started-at-never"
+msgstr "Restore in progress - started at never"
+
+#. ($started_at)
+#: lib/Socialtext/Appliance/Model/Backup.pm:85
+msgid "appliance.restore-in-progress=started-at"
+msgstr "Restore in progress - started at %1"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:203
+msgid "appliance.restore-latest-already-running"
+msgstr "Restore latest is already running"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:183
+msgid "appliance.retry-after-backup"
+msgstr "Please wait until the backup finishes, then retry."
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:157
+msgid "appliance.retry-after-restore"
+msgstr "Please wait until the restore finishes, then retry."
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:176
+msgid "appliance.select-backup-to-restore"
+msgstr "Please select a backup to restore"
+
+#: lib/Socialtext/Appliance/Model/Setup.pm:427
+msgid "appliance.set-mail-server-to-built-in"
+msgstr "Updated mail server to use built-in server"
+
+#. ($new_host)
+#: lib/Socialtext/Appliance/Model/Setup.pm:423
+msgid "appliance.set-mail-server=host"
+msgstr "Updated mail server to %1"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:311
+msgid "appliance.shared-directory-name"
+msgstr "Shared Directory Name"
+
+#: lib/Socialtext/Appliance/ConsoleController.pm:105
+msgid "appliance.shutdown"
+msgstr "Shutdown"
+
+#: lib/Socialtext/Appliance/ConsoleController.pm:103
+msgid "appliance.shutdown?"
+msgstr "Shutdown Appliance?"
+
+#: lib/Socialtext/Appliance/Model/System.pm:64
+msgid "appliance.shutting-down"
+msgstr "System shutting down ..."
+
+#. ($wksp->title)
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:48
+msgid "appliance.skipping-no-usage=wiki"
+msgstr "Skipping workspace %1, no usage."
+
+#. ($ts)
+#: lib/Socialtext/Appliance/Model/Setup.pm:362
+msgid "appliance.synchronized-time-with=ts"
+msgstr "Synchronized time with %1"
+
 msgid "appliance.taking-database-snapshot"
 msgstr "生成数据库快照..."
+
+#: lib/Socialtext/Appliance/Model/Setup.pm:448
+msgid "appliance.test-email"
+msgstr "Socialtext Appliance Test Email"
+
+#. ($recip)
+#: lib/Socialtext/Appliance/Model/Setup.pm:442
+msgid "appliance.test-email-sent=recipient"
+msgstr "Sent test email to %1"
+
+#. ($new_ts)
+#: lib/Socialtext/Appliance/Model/Setup.pm:330
+msgid "appliance.timeserver-updated=ts"
+msgstr "Timeserver updated to %1, clock synchronized"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:312
+msgid "appliance.username"
+msgstr "Username"
+
+#: lib/Socialtext/Appliance/Model/Setup.pm:397
+msgid "appliance.web-proxy-cleared"
+msgstr "Web proxy cleared."
+
+#. ($new_proxy)
+#: lib/Socialtext/Appliance/Model/Setup.pm:394
+msgid "appliance.web-proxy-updated=new-proxy"
+msgstr "Web proxy updated to %1"
+
+#. ($log)
+#: lib/Socialtext/Appliance/Model/Setup.pm:482
+msgid "appliance.wikis-initialized=log"
+msgstr "Workspaces initialized.<br>Log: %1"
 
 msgid "blog.archives"
 msgstr "博客存档"
@@ -1342,6 +1547,10 @@ msgstr "浏览 ..."
 msgid "control.calculated-unless-provided=field"
 msgstr "若未设定，将自动计算 %1"
 
+#: share/plugin/control/template/control/user.html:119
+msgid "control.clear-external-id"
+msgstr "Clear External ID"
+
 msgid "control.clear-selection"
 msgstr "清除选择"
 
@@ -1353,6 +1562,10 @@ msgstr ""
 "您确定要删除该群组?\n"
 "\n"
 "一旦删除您将无法恢复该群组。用户将无法在该群组进行交流，任何通过该群组对工作区的访问都将被移除。"
+
+#: share/plugin/control/template/control/add_users.html:27
+msgid "control.confirm-email-address"
+msgstr "Confirm e-mail address"
 
 msgid "control.confirm-paging-discard-selection?"
 msgstr "您的选择不会保留到下一页。您确定要变更页面吗？"
@@ -1477,6 +1690,14 @@ msgstr "外部"
 msgid "control.external-id"
 msgstr "外部ID"
 
+#: share/plugin/control/template/control/user.html:112
+msgid "control.external-id-not-set"
+msgstr "External ID is not set"
+
+#: share/plugin/control/template/control/user.html 110
+msgid "control.external-id-required"
+msgstr "Requires External ID"
+
 msgid "control.external-id:"
 msgstr "外部ID:"
 
@@ -1518,6 +1739,14 @@ msgstr "字段类别"
 
 msgid "control.first-name:"
 msgstr "名:"
+
+#: share/plugin/control/template/control/user.html:103
+msgid "control.for-cac-authentication"
+msgstr "For use with CAC Authentication"
+
+#: share/plugin/control/template/control/add_users.html:31
+msgid "control.force-password-change"
+msgstr "Force password change"
 
 msgid "control.give-group-admin-privileges"
 msgstr "为整群组授予管理权限"
@@ -1669,6 +1898,10 @@ msgstr "移除设备业务管理员角色"
 msgid "control.remove-appliance-technical-administrator-role"
 msgstr "移除设备技术管理员角色"
 
+#: share/plugin/control/template/control/user.html:125
+msgid "control.remove-external-id-requirement"
+msgstr "Remove External ID Requirement"
+
 msgid "control.remove-from-wiki"
 msgstr "从工作区中移除"
 
@@ -1686,6 +1919,10 @@ msgstr "重命名账户"
 
 msgid "control.reports"
 msgstr "报告"
+
+#: share/plugin/control/template/control/add_users.html:35 share/plugin/control/template/control/user.html:130
+msgid "control.require-external-id"
+msgstr "Require External ID"
 
 msgid "control.required-field"
 msgstr "必填"
@@ -1981,6 +2218,10 @@ msgstr "二月"
 msgid "date.format?"
 msgstr "如何显示日期格式？"
 
+#: lib/Socialtext/Appliance/Model/Backup.pm:267
+msgid "date.fri"
+msgstr "Fri"
+
 msgid "date.hour-format?"
 msgstr "显示时间为 12 小时制或是 24 小时制？"
 
@@ -2002,6 +2243,10 @@ msgstr "三月"
 msgid "date.may"
 msgstr "五月"
 
+#: lib/Socialtext/Appliance/Model/Backup.pm:267
+msgid "date.mon"
+msgstr "Mon"
+
 msgid "date.never"
 msgstr "从未"
 
@@ -2011,8 +2256,28 @@ msgstr "十一月"
 msgid "date.october"
 msgstr "十月"
 
+#: lib/Socialtext/Appliance/Model/Backup.pm:267
+msgid "date.sat"
+msgstr "Sat"
+
 msgid "date.september"
 msgstr "九月"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:267
+msgid "date.sun"
+msgstr "Sun"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:267
+msgid "date.thu"
+msgstr "Thu"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:267
+msgid "date.tue"
+msgstr "Tue"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:267
+msgid "date.wed"
+msgstr "Wed"
 
 msgid "desktop.relogin-for-default-logo"
 msgstr "（桌面用户如需看默认标志，需退出并重新登录。）"
@@ -2395,6 +2660,18 @@ msgstr "收件人"
 msgid "email.send"
 msgstr "发送"
 
+#: lib/Socialtext/Appliance/Model/Setup.pm:449
+msgid "email.sent-from-socialtext-appliance"
+msgstr "This email was sent from the Socialtext Appliance."
+
+#: lib/Socialtext/User.pm:1522
+msgid "email.socialtext"
+msgstr "Socialtext"
+
+#: lib/Socialtext/User.pm:1521
+msgid "email.socialtext-appliance"
+msgstr "Socialtext Appliance"
+
 msgid "email.subject"
 msgstr "主题"
 
@@ -2464,6 +2741,18 @@ msgstr "您必须至少选择一个工作区"
 msgid "error.at=line,message"
 msgstr "第 %1 行: %2"
 
+#: lib/Socialtext/Appliance/Model/Setup.pm:207
+msgid "error.authentication-token-soft-limit-must-be-lower-than-hard-limit"
+msgstr "Authentication token soft limit must be lower than the hard limit."
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:164
+msgid "error.backup-already-running"
+msgstr "Backup already running"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:348
+msgid "error.backup-failed"
+msgstr "Backup failed ..."
+
 msgid "error.backup-id-required"
 msgstr "必须提供一个备份ID，或者使用列表查看可用备份"
 
@@ -2515,8 +2804,17 @@ msgstr "系統出错; 请稍候再重试."
 msgid "error.choose-group"
 msgstr "请选择一个或者更多群组"
 
+#: lib/Socialtext/Appliance/BackupCleanup.pm:29
+msgid "error.cleaning-not-implemented"
+msgstr "Cleaning is not implemented."
+
 msgid "error.columns-too-big"
 msgstr "列数值过大，最大值为 35."
+
+#. ($new_ts)
+#: lib/Socialtext/Appliance/Model/Setup.pm:317
+msgid "error.configure-ntpd-failed=new-ts"
+msgstr "Failed to configure ntpd with timeserver %1"
 
 msgid "error.confirmation-expired"
 msgstr "确认网址已过期。将重新发送确认邮件。"
@@ -2590,6 +2888,10 @@ msgstr "电子邮件与描述为必填项!"
 msgid "error.email-for-confirmation-required"
 msgstr "找不到电子邮箱重新发送确认信息。"
 
+#: lib/Socialtext/Handler/Authen.pm:399
+msgid "error.email-required"
+msgstr "Please enter an email address."
+
 msgid "error.email-required!"
 msgstr "未提供邮箱"
 
@@ -2662,8 +2964,16 @@ msgstr "没有权限上传附件"
 msgid "error.filename-too-long"
 msgstr "网址编码后文件名太长。"
 
+#: lib/Socialtext/VideoPlugin.pm:203
+msgid "error.full-video-url-required"
+msgstr "Please enter the full video URL."
+
 msgid "error.gadget-id-required"
 msgstr "gadget_id为必要参数"
+
+#: lib/Socialtext/Rest/Gadgets/Gallery.pm:35
+msgid "error.gallery-forbidden"
+msgstr "You do not share an account with this gallery."
 
 msgid "error.getting-activities"
 msgstr "参加活动时出错."
@@ -2718,6 +3028,16 @@ msgstr "对不起，%1 无法更改。"
 
 msgid "error.invalid-archive=file"
 msgstr "%1 是无效文件名。主题文件后缀名只能是 .zip，.tar.gz 或 .tgz。"
+
+#. ($min_days, $max_days)
+#: lib/Socialtext/Appliance/Model/Setup.pm:203
+msgid "error.invalid-authentication-token-hard-limit=min-days,max-days"
+msgstr "Authentication token hard limit must be between %1 and %2 days."
+
+#. ($min_days, $max_days)
+#: lib/Socialtext/Appliance/Model/Setup.pm:200
+msgid "error.invalid-authentication-token-soft-limit=min-days,max-days"
+msgstr "Authentication token soft limit must be between %1 and %2 days."
 
 msgid "error.invalid-columns"
 msgstr "列数无效."
@@ -2851,11 +3171,27 @@ msgstr "邮箱 %1 不符合域名 %2。"
 msgid "error.invalid=field-class"
 msgstr "不能创建个人资料字段： 字段 '%1'无效"
 
+#. ($new_ts)
+#. ($new_proxy)
+#: lib/Socialtext/Appliance/Model/Setup.pm:292 lib/Socialtext/Appliance/Model/Setup.pm:377
+msgid "error.invalid=host"
+msgstr "Invalid host: %1"
+
 msgid "error.invalid=locale"
 msgstr "'%1'是无效的区域设置"
 
 msgid "error.invalid=page"
 msgstr "无效页面ID已给出：%1"
+
+#. ($new_href)
+#: lib/Socialtext/Appliance/Model/Setup.pm:237
+msgid "error.invalid=support-uri"
+msgstr "The value '%1' is invalid."
+
+#. ($url)
+#: lib/Socialtext/VideoPlugin.pm:125
+msgid "error.invalid=url"
+msgstr "%1 is not a valid URL."
 
 msgid "error.is-guest"
 msgstr "您必须注册或者登录以使用此功能。"
@@ -2880,6 +3216,15 @@ msgstr "缺失或未识别角色'%1'；应用默认角色"
 
 msgid "error.missing-people-plugin"
 msgstr "成员插件不可用。"
+
+#: lib/Socialtext/Appliance/BackupStore.pm:87
+msgid "error.mount-samba-share"
+msgstr "Cannot mount the SAMBA share."
+
+#. ($username,)
+#: lib/Socialtext/CredentialsExtractor/Extractor/CAC.pm:61
+msgid "error.multiple-user-matched=name"
+msgstr "Multiple matches found when searching for User matching \"%1\""
 
 msgid "error.new-account-name-required"
 msgstr "必须提供一个名字用以创建账户"
@@ -3076,8 +3421,17 @@ msgstr "无法在 %2 工作区中找到标签为\"%1\"的页面。"
 msgid "error.no-thumbnail=url"
 msgstr "找不到缩略图：%1"
 
+#: lib/Socialtext/Appliance/Model/Setup.pm:341
+msgid "error.no-timeserver-configured"
+msgstr "Error: No timeserver is configured"
+
 msgid "error.no-user-email"
 msgstr "此用户名没有关联任何邮箱。"
+
+#. ($username,)
+#: lib/Socialtext/CredentialsExtractor/Extractor/CAC.pm:55
+msgid "error.no-user-matched=name"
+msgstr "No matches found when searching for User matching \"%1\""
 
 msgid "error.no-user=email"
 msgstr "无法找到邮箱为 %1 的用户"
@@ -3193,8 +3547,17 @@ msgstr "密码必须为6位字符或以上。"
 msgid "error.pdf-conversion-failed"
 msgstr "错误: <pre>无法转换为PDF</pre>"
 
+#. ($post_url, $response->status_line)
+#: lib/Socialtext/Appliance/PhoneHome.pm:104
+msgid "error.phone-home=url,response"
+msgstr "Unable to post appliance user report data to '%1': %2"
+
 msgid "error.plugin-required"
 msgstr "必须指定一个插件。"
+
+#: lib/Socialtext/Appliance/Model/Setup.pm:172
+msgid "error.private-and-public-key-required-for-captcha"
+msgstr "Must set both private and public key to enable captcha"
 
 msgid "error.registration-disabled"
 msgstr "注册号被停用。"
@@ -3259,6 +3622,16 @@ msgstr "如果你的密码保存在组织目录，Socialtext 管理员无法帮�
 msgid "error.restore-account-widget"
 msgstr "恢复账户小工具出错。"
 
+#. ($rd->log_file)
+#: lib/Socialtext/Appliance/Model/Backup.pm:418
+msgid "error.restore-failed=log-file"
+msgstr "Restore failed - check %1"
+
+#. ($restore_id)
+#: lib/Socialtext/Appliance/Model/Backup.pm:372
+msgid "error.restore-failed=restore-id"
+msgstr "Restore failed for (%1) ..."
+
 msgid "error.restore=widget,message"
 msgstr "恢复 \"%1\" 小工具时出错: %2"
 
@@ -3289,6 +3662,15 @@ msgstr "您不能让版本跟自己比较。"
 msgid "error.save-failed"
 msgstr "服务器错误导致保存失败，请稍候再试。"
 
+#: lib/Socialtext/Appliance/Model/Setup.pm:356
+msgid "error.saving-system-time-to-hardware-clock"
+msgstr "Error saving system time to hardware clock"
+
+#. ($new_ts)
+#: lib/Socialtext/Appliance/Model/Setup.pm:309
+msgid "error.saving-timeserver-to-appliance-configuration=new-ts"
+msgstr "Failed to save timeserver %1 to appliance configuration"
+
 msgid "error.search-too-general"
 msgstr "你的搜索字词过于笼统。请添加更多相关信息。"
 
@@ -3318,6 +3700,51 @@ msgstr "传递信号时出错，请重试."
 
 msgid "error.server-error"
 msgstr "由于服务器错误操作失败，请稍候重试."
+
+#. ($err)
+#: lib/Socialtext/Appliance/Model/Setup.pm:224
+msgid "error.set-authentication-token-limits=message"
+msgstr "Error setting authentication token limits %1"
+
+#. ($err)
+#: lib/Socialtext/Appliance/Model/Setup.pm:182
+msgid "error.set-captcha=message"
+msgstr "Error setting captcha settings: %1"
+
+#. ($err)
+#: lib/Socialtext/Appliance/Model/Setup.pm:265
+msgid "error.set-desktop-update=message"
+msgstr "Error setting desktop update: %1"
+
+#. ($err)
+#: lib/Socialtext/Appliance/Model/Setup.pm:122
+msgid "error.set-login-message=message"
+msgstr "Error setting login message: %1"
+
+#. ($err)
+#: lib/Socialtext/Appliance/Model/Setup.pm:388
+msgid "error.set-proxy-server=message"
+msgstr "Error setting proxy server: %1"
+
+#. ($err)
+#: lib/Socialtext/Handler/ControlPanel.pm:266
+msgid "error.set-self-register=message"
+msgstr "Error setting self register: %1"
+
+#. ($err)
+#: lib/Socialtext/Appliance/Model/Setup.pm:142
+msgid "error.set-signals-only=message"
+msgstr "Error setting signals only: %1"
+
+#. ($err)
+#: lib/Socialtext/Appliance/Model/Setup.pm:160
+msgid "error.set-signals-size-limit=message"
+msgstr "Error setting signals size limit: %1"
+
+#. ($err)
+#: lib/Socialtext/Appliance/Model/Setup.pm:251
+msgid "error.set-support-href=message"
+msgstr "Error setting support href: %1"
 
 msgid "error.set-system-account"
 msgstr "无法在账户创建后更新is_system_created字段"
@@ -3352,6 +3779,10 @@ msgstr "您的信号超过了%1字数"
 msgid "error.signal-too-long=max-length"
 msgstr "信号长度限制为 %1, 请编辑您的信号"
 
+#: lib/Socialtext/Appliance/Model/Setup.pm:151
+msgid "error.signals-maximum-size-not-positive-integer"
+msgstr "Signals maximum size must be an positive integer"
+
 msgid "error.size-required"
 msgstr "大小不能为 0."
 
@@ -3364,6 +3795,16 @@ msgstr "Socialtext 设备备份过程中出错"
 msgid "error.store-revision"
 msgstr "不能保存页面修订"
 
+#. ($ts)
+#: lib/Socialtext/Appliance/Model/Setup.pm:348
+msgid "error.synchronizing-with-timeserver=ts"
+msgstr "Error synchronizing with timeserver %1"
+
+#. ($new_ts)
+#: lib/Socialtext/Appliance/Model/Setup.pm:300
+msgid "error.testing-timeserver=new-ts"
+msgstr "Error testing timeserver %1"
+
 msgid "error.type-mismatch=template,type"
 msgstr "'%1'存在,但并不是%2"
 
@@ -3375,6 +3816,11 @@ msgstr "parseWidget: 非法小工具 >>%1<<"
 
 msgid "error.unknown"
 msgstr "未知错误"
+
+#. ($type)
+#: lib/Socialtext/CLI.pm:1062
+msgid "error.unknown-restriction=type"
+msgstr "unknown restriction type, '%1'"
 
 msgid "error.unknown=status"
 msgstr "未知: %1"
@@ -3409,6 +3855,10 @@ msgstr "不能通过 Socialtext 更新远程密码。"
 msgid "error.update-remote-user"
 msgstr "不能通过 Socialtext 更新远程用户。"
 
+#: lib/Socialtext/Appliance/Model/SupportTarball.pm:54
+msgid "error.upload-support-tarball-already-started"
+msgstr "Already started!"
+
 msgid "error.user-can-create-groups=message"
 msgstr "“用户创建群组”设定出错: %1"
 
@@ -3423,6 +3873,10 @@ msgstr "字段 %1（%2）已被占用。"
 
 msgid "error.user-id-required=uri"
 msgstr "必须提供用户 ID 到此网址(%1)"
+
+#: share/plugin/control/template/control/user.html:32
+msgid "error.user-missing-from-ldap-during-last-refresh"
+msgstr "This user was missing from the LDAP directory during the last refresh."
 
 msgid "error.user-role-exists=role,group"
 msgstr "用户在 %2 群组具有'%1'身份"
@@ -3441,6 +3895,10 @@ msgstr "必需填入视频网址"
 
 msgid "error.widget-exists-in-"
 msgstr "工具库中已使用该小工具。"
+
+#: lib/Socialtext/Gadgets/Gallery.pm:144
+msgid "error.widget-exists-in-gallery"
+msgstr "That widget already exists in this gallery."
 
 msgid "error.widget-field-required=label"
 msgstr "'%1' 是一个必需的字段"
@@ -4384,8 +4842,24 @@ msgstr "作业类型"
 msgid "lang.changed=user,locale"
 msgstr "%1 区域现已更新为 %2"
 
+#: lib/Socialtext/Locales.pm:51
+msgid "lang.en"
+msgstr "English"
+
 msgid "lang.english"
 msgstr "英语"
+
+#: lib/Socialtext/Locales.pm:51
+msgid "lang.fr-ca"
+msgstr "French - Canadian"
+
+#: lib/Socialtext/Locales.pm:51
+msgid "lang.zh-cn"
+msgstr "Chinese - Simplified"
+
+#: lib/Socialtext/Locales.pm:51
+msgid "lang.zh-tw"
+msgstr "Chinese - Traditional"
 
 msgid "last.24hours"
 msgstr "最近24小时"
@@ -4981,6 +5455,10 @@ msgstr "标题"
 msgid "page.top"
 msgstr "页面顶部"
 
+#: share/skin/s3/javascript/lightbox/create_content.js:9
+msgid "page.type-wiki"
+msgstr "Page"
+
 msgid "page.unlock"
 msgstr "解锁页面"
 
@@ -5362,6 +5840,25 @@ msgstr "打印版本的报告"
 msgid "report.signals-activity=user"
 msgstr "用户 %1 的信号活动"
 
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:92
+msgid "report.total"
+msgstr "Total"
+
+#. ($data->{total_members})
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:87
+msgid "report.total-members=count"
+msgstr "Total members (current): %1"
+
+#. ($data->{unique_contributors})
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:83
+msgid "report.total-unique-contributors=count"
+msgstr "Total unique contributors: %1"
+
+#. ($data->{unique_visitors})
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:85
+msgid "report.total-unique-visitors=count"
+msgstr "Total unique visitors: %1"
+
 msgid "report.total=wiki"
 msgstr "%1 工作区总数"
 
@@ -5379,6 +5876,23 @@ msgstr "%1 工作区使用报告"
 
 msgid "report.usage=wiki,start"
 msgstr "%1 工作区使用率 - %2 - 上周"
+
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:92
+msgid "report.user"
+msgstr "User"
+
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:92
+msgid "report.views"
+msgstr "Views"
+
+#. ($self->start_time)
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:80
+msgid "report.week-ending=start-time"
+msgstr "Report timeframe: week ending %1"
+
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:69
+msgid "report.wiki-usage-blog"
+msgstr "Workspace Usage Blog"
 
 msgid "report.workspace.activity=user"
 msgstr "用户 %1 的工作区活动"
@@ -6049,6 +6563,10 @@ msgstr "标题"
 msgid "sort.uploader"
 msgstr "上传者"
 
+#: share/skin/s3/template/view/listview:102
+msgid "sort.wiki"
+msgstr "Workspace"
+
 msgid "table.add-column-left"
 msgstr "在左侧添加列"
 
@@ -6136,8 +6654,10 @@ msgstr "已删除 %1 个容器"
 msgid "test.deleted-galleries=count"
 msgstr "已删除 %1 个工具库"
 
+#. ($sth->rows)
+#: lib/Socialtext/WikiFixture/SocialBase.pm:2946
 msgid "test.deleted-uploaded-widgets=count"
-msgstr ""
+msgstr "Deleted %*(%1,uploaded widget)"
 
 msgid "test.deleted-widgets=count"
 msgstr "已删除 %1 小工具"
@@ -6331,6 +6851,29 @@ msgstr "邮件"
 msgid "user.email-address"
 msgstr "邮件地址"
 
+#. ($user->name_and_email)
+#: lib/Socialtext/Handler/ControlPanel.pm:516
+msgid "user.external-id-cleared=name"
+msgstr "External ID cleared for %1"
+
+#. ($user->name_and_email)
+#: lib/Socialtext/Handler/ControlPanel.pm:529
+msgid "user.external-id-requirement-added=name"
+msgstr "External ID requirement added for %1"
+
+#. ($user->name_and_email)
+#: lib/Socialtext/Handler/ControlPanel.pm:544
+msgid "user.external-id-requirement-removed=name"
+msgstr "External ID requirement removed for %1"
+
+#: share/skin/s3/template/element/settings/users_settings_section:17 share/skin/s3/template/element/settings/users_settings_section:26
+msgid "user.first-name:"
+msgstr "First name:"
+
+#: lib/Socialtext/CLI.pm:1001
+msgid "user.given=name,restriction"
+msgstr "%1 has been given the '%2' restriction"
+
 msgid "user.imported=file"
 msgstr "从 %1 加载用户"
 
@@ -6340,11 +6883,20 @@ msgstr "正在导入用户..."
 msgid "user.last-name:"
 msgstr "姓："
 
+#. ($r->restriction_type, $user->username,)
+#: lib/Socialtext/CLI.pm:1040
+msgid "user.lifted=restriction,name"
+msgstr "'%1' restriction has been lifted on '%2'"
+
 msgid "user.list-all"
 msgstr "列出所有用户"
 
 msgid "user.matching=query"
 msgstr "符合\"%1\"用户"
+
+#: share/skin/s3/template/element/settings/users_settings_section:21 share/skin/s3/template/element/settings/users_settings_section:30
+msgid "user.middle-name:"
+msgstr "Middle name:"
 
 msgid "user.name"
 msgstr "名称"
@@ -6352,8 +6904,30 @@ msgstr "名称"
 msgid "user.no-changes=name"
 msgstr "用户 %1 没有更改"
 
+#: lib/Socialtext/CLI.pm:972
+msgid "user.no-restrictions"
+msgstr "No restrictions for user"
+
+#. ($user->username, $t)
+#: lib/Socialtext/CLI.pm:1028
+msgid "user.no-such=name,restriction"
+msgstr "'%1' does not have the '%2' restriction"
+
+#. ($user->username)
+#: lib/Socialtext/CLI.pm:1820
+msgid "user.password-changed=name"
+msgstr "The password for %1 has been changed."
+
 msgid "user.removed=count,group"
 msgstr "成功从 %2 群组删除 %1 位用户。"
+
+#: lib/Socialtext/CLI.pm:977
+msgid "user.restriction-token"
+msgstr "Token"
+
+#: lib/Socialtext/CLI.pm:976
+msgid "user.restriction-type"
+msgstr "Restriction Type"
 
 msgid "user.role"
 msgstr "角色"
@@ -6729,6 +7303,10 @@ msgstr "寻找"
 
 msgid "watch.stop"
 msgstr "停止关注"
+
+#: share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:11
+msgid "widget.100%"
+msgstr "Fit page width (100%)"
 
 msgid "widget.300px"
 msgstr "小 (300px)"
