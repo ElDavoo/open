@@ -32,7 +32,17 @@ sub spec_resize {
     # slashes)
     confess "invalid resize spec" unless $spec =~ /^[a-z0-9-@]+$/;
     my ($kind,$rest) = split '-',$spec,2;
-    if ($kind eq 'thumb') {
+    if ($kind eq 'resize') {
+        my ($w,$h) = split 'x',$rest;
+        confess "invalid width/height in thumbnail resize spec"
+            if ($w=~/\D/ || $h=~/\D/);
+        return resize(
+            filename => $from, to_filename => $to,
+            max_width => $w, max_height => $h,
+            new_width => $w, new_height => $h,
+        );
+    }
+    elsif ($kind eq 'thumb') {
         my ($w,$h) = split 'x',$rest;
         confess "invalid width/height in thumbnail resize spec"
             if ($w=~/\D/ || $h=~/\D/);
