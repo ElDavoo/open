@@ -184,11 +184,12 @@ sub _confirm_user_if_neccessary {
 
     my $user = Socialtext::User->new( username => $username );
 
-    if ($user && $user->requires_confirmation ) {
+    if ($user && $user->requires_email_confirmation) {
         warn "# Confirming user $username\n";
         $user->confirm_email_address();
         $user->update_store( password => 'secret' );
         return 1;
     }
+
     return 0;
 }
