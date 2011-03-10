@@ -43,7 +43,7 @@ effective_io_concurrency = [% config.pg_effective_io_concurrency %]
 
 [% IF config.pg_archive %]
   archive_mode    = on
-  archive_command = '/usr/sbin/st-appliance-wal-archive %p %f'
+  archive_command = '/usr/share/libsocialtext-appliance-perl/pgbackup/wal-archive "%p" "%f"'
   archive_timeout = '[% config.pg_archive_timeout %]'
 [% ELSE %]
   archive_mode    = off
