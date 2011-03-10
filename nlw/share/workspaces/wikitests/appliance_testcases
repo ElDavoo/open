@@ -2,6 +2,7 @@ These testcases are specific to the appliance.
 
 Test Case: Privacy Defaults can only succeed if it is the first test run by All Appliance Testcases in a freshly built appliance
 
+* [Test Case: User: Primary Account]
 * [Test Case: Appliance Health Report]
 * [Test Case: Bare Account]
 * [Test Case: change signal limit]
