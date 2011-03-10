@@ -422,6 +422,10 @@ sub Create {
               . '[' . $timer->elapsed . ']';
     st_log()->info($msg);
 
+    # Clear the json cache so group navlist get the new group
+    require Socialtext::JSON::Proxy::Helper;
+    Socialtext::JSON::Proxy::Helper->PurgeCache;
+
     return $group;
 }
 

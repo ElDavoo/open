@@ -228,6 +228,10 @@ sub delete {
 
     Socialtext::JobCreator->index_group($group_id);
 
+    # Clear the json cache so group navlist get the new group
+    require Socialtext::JSON::Proxy::Helper;
+    Socialtext::JSON::Proxy::Helper->PurgeCache;
+
     my $msg = 'DELETE,GROUP,group_id:' . $group_id
               . '[' . $timer->elapsed . ']';
     st_log()->info($msg);
