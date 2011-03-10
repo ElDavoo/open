@@ -1479,6 +1479,38 @@ sub restrictions {
     return Socialtext::User::Restrictions->AllForUser($self);
 }
 
+sub add_restriction {
+    my $self = shift;
+    my $type = shift;
+    return Socialtext::User::Restrictions->CreateOrReplace( {
+        user_id          => $self->user_id,
+        restriction_type => $type,
+    } );
+}
+
+sub get_restriction {
+    my $self = shift;
+    my $type = shift;
+    return Socialtext::User::Restrictions->Get( {
+        user_id          => $self->user_id,
+        restriction_type => $type,
+    } );
+}
+
+sub remove_restriction {
+    my $self = shift;
+    my $type = shift;
+    my $restriction = $self->get_restriction($type);
+    $restriction->confirm if ($restriction);
+}
+
+sub has_restriction {
+    my $self = shift;
+    my $type = shift;
+    my $restriction = $self->get_restriction($type);
+    return $restriction ? 1 : 0;
+}
+
 sub create_email_confirmation {
     my $self = shift;
     Socialtext::User::Restrictions::email_confirmation->CreateOrReplace(
