@@ -214,10 +214,7 @@ sub export_and_reimport_account {
 }
 
 sub _sort_roles {
-    sort {
-        my ($a, $b) = @_;
-        return join(',', values %$a) cmp join(',', values %$b);
-    } @_;
+    sort { return join(',', values %$a) cmp join(',', values %$b) } @_;
 }
 
 sub _dump_gars {
