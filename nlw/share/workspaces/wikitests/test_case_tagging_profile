@@ -4,6 +4,7 @@
 | set | e_user | `profile.editor@ken.socialtext.net` |
 | set | fname | Profligate |
 | set | lname | Edisaurus |
+| set | mname | Epitome |
 
 | *Comment* | Test Case: Tagging Profile. You don't know the account of %%username%%, so we need a common account between the logged in user and %%e_user%%. |  |
 | st-admin | create-account --name tagging-profile |  |
@@ -92,7 +93,7 @@ text_like | 所以 | |
 | *Comment* | Test Case: Tagging Profile list view: tag fog %%start_time%% two users |  |
 | text_like | All People Tagged 'fog %%start_time%%' |  |
 | text_like | %%email%% |  |
-| text_like | %%fname%% %%lname%% |  |
+| text_like | %%fname%% %%mname%% %%lname%% |  |
 | text_like | %%e_user%% |  |
 
 | *Comment* | Make and tag a new user |  |
@@ -112,7 +113,7 @@ text_like | 所以 | |
 | text_like | link=tagger %%start_time%% | tagger %%start_time%% |
 | type-lookahead-ok | new_tag | fog |
 | wait_for_element_visible_ok | link=fog %%start_time%% |
-| click_and_pause | link=fog %%start_time%% | |
+| click_and_pause | link=fog %%start_time%% |  |
 | open_ok | /st/profile |  |
 | wait_for_element_visible_ok | link=fog %%start_time%% |
 
