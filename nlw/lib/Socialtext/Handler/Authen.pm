@@ -232,7 +232,7 @@ sub login {
 
     if ($user and $user->requires_email_confirmation) {
         $r->log_error($username . ' requires confirmation');
-        return $self->require_confirmation_redirect($user->email_address);
+        return $self->require_email_confirmation_redirect($user->email_address);
     }
     if ($user and $user->requires_password_change) {
         $r->log_error($username . ' requires password change');
@@ -415,7 +415,7 @@ sub register {
     my $user = Socialtext::User->new( email_address => $email_address );
     if ($user) {
         if ( $user->requires_email_confirmation() ) {
-            return $self->require_confirmation_redirect($email_address);
+            return $self->require_email_confirmation_redirect($email_address);
         }
         elsif ( $user->has_valid_password() ) {
             $self->session->add_message(loc("error.user-exists=email", $email_address));
@@ -645,7 +645,7 @@ sub resend_password_change {
     return $self->_challenge();
 }
 
-sub require_confirmation_redirect {
+sub require_email_confirmation_redirect {
     my $self  = shift;
     my $email = shift;
     return $self->_error_redirect(
