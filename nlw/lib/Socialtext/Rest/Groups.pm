@@ -24,8 +24,10 @@ sub collection_name { 'Groups' }
 
 sub _entity_hash { 
     my ($self, $group) = @_;
-    return $group if $self->rest->query->param('ids_only');
-    return $group if $self->rest->query->param('minimal');
+    my $minimal = $self->rest->query->param('minimal');
+    if ($minimal or $self->rest->query->param('ids_only')) {
+        return $group->to_hash(minimal => $minimal);
+    }
     my $show_members = $self->rest->query->param('show_members');
     return {
         group_id => $group->group_id,
