@@ -202,8 +202,7 @@ add_requires_external_id_restriction: {
     );
     $user->reload;
 
-    ok $user->requires_confirmation,
-        '... User now has something that requires confirmation';
+    ok $user->is_restricted, '... User now has some form of restriction';
 
     my $restriction = $user->restrictions->next;
     isa_ok $restriction, 'Socialtext::User::Restrictions::require_external_id',
