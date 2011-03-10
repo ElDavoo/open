@@ -1511,6 +1511,11 @@ sub has_restriction {
     return $restriction ? 1 : 0;
 }
 
+sub is_restricted {
+    my $self = shift;
+    return $self->restrictions->count;
+}
+
 # restriction: email confirmation
 sub create_email_confirmation {
     my $self = shift;
