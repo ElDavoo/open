@@ -604,18 +604,26 @@ sub resend_confirmation {
 }
 
 sub require_confirmation_redirect {
-    my $self          = shift;
-    my $email_address = shift;
+    my $self  = shift;
+    my $email = shift;
+    return $self->_error_redirect(
+        type          => 'requires_confirmation',
+        email_address => $email,
+    );
+}
 
-    $self->session->save_args( username => $email_address );
+sub _error_redirect {
+    my $self = shift;
+    my %p = @_;
+
+    $self->session->save_args(username => $p{email_address});
     $self->session->add_error( {
-        type => 'requires_confirmation',
+        type => $p{type},
         args => {
-           email_address => $email_address,
-           redirect_to   => $self->{args}{redirect_to} || '',
-       },
+            email_address => $p{email_address},
+            redirect_to   => $self->{args}{redirect_to} || '',
+        }
     } );
-
     return $self->_challenge();
 }
 
