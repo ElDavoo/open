@@ -70,7 +70,7 @@ sub invite_notify {
         user                  => $user,
         from_user             => $self->from_user,
         username              => $user->username,
-        requires_confirmation => $user->requires_confirmation,
+        requires_confirmation => $user->requires_email_confirmation,
         confirmation_uri      => $user->confirmation_uri || '',
         host                  => Socialtext::AppConfig->web_hostname(),
         inviting_user         => $self->from_user->best_full_name,
