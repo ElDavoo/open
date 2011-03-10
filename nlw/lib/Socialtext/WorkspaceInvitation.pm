@@ -136,7 +136,7 @@ sub invite_notify {
 
     my %vars = (
         username              => $user->username,
-        requires_confirmation => $user->requires_confirmation,
+        requires_confirmation => $user->requires_email_confirmation,
         confirmation_uri      => $user->confirmation_uri || '',
         workspace_title       => $workspace->title,
         workspace_uri         => $workspace->uri,
