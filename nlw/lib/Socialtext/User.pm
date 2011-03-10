@@ -1549,11 +1549,6 @@ sub requires_email_confirmation {
     return $self->has_restriction('email_confirmation');
 }
 
-sub requires_confirmation {
-    my $self = shift;
-    return $self->restrictions->count ? 1 : 0;
-}
-
 # restriction: password change
 sub create_password_change_confirmation {
     my $self = shift;
