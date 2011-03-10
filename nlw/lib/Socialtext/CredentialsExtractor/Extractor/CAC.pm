@@ -93,7 +93,7 @@ sub _find_partially_provisioned_users {
     # Find all matching Users, and trim that to *just* those that have an
     # outstanding "require_external_id" restriction.
     my @users =
-        grep { defined $_->requires_external_id }
+        grep { $_->requires_external_id }
         Socialtext::User->Query( {
             first_name  => $fields{first_name},
             middle_name => $fields{middle_name},
