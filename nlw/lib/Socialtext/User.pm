@@ -1511,56 +1511,32 @@ sub has_restriction {
     return $restriction ? 1 : 0;
 }
 
+# restriction: email confirmation
 sub create_email_confirmation {
     my $self = shift;
-    Socialtext::User::Restrictions::email_confirmation->CreateOrReplace(
-        user_id => $self->user_id,
-    );
+    return $self->add_restriction('email_confirmation');
+}
+
+sub email_confirmation {
+    my $self = shift;
+    return $self->get_restriction('email_confirmation');
 }
 
 sub send_confirmation_email {
     my $self = shift;
-
-    my $confirmation = $self->email_confirmation;
-    return unless $confirmation;
-
-    return $confirmation->send;
-}
-
-sub create_password_change_confirmation {
-    my $self = shift;
-    Socialtext::User::Restrictions::password_change->CreateOrReplace(
-        user_id => $self->user_id,
-    );
-}
-
-sub password_change_confirmation {
-    my $self = shift;
-    my $uce  = Socialtext::User::Restrictions::password_change->Get(
-        user_id => $self->user_id,
-    );
-    return $uce;
-}
-
-sub send_password_change_email {
-    my $self = shift;
-
-    my $confirmation = $self->password_change_confirmation;
-    return unless $confirmation;
-
-    return $confirmation->send;
-}
-
-sub password_change_uri {
-    my $self = shift;
-    return unless $self->password_change_confirmation;
-    return $self->password_change_confirmation->uri;
+    my $restriction = $self->get_restriction('email_confirmation');
+    $restriction->send if $restriction;
 }
 
 sub confirmation_uri {
     my $self = shift;
-    return unless $self->email_confirmation;
-    return $self->email_confirmation->uri;
+    my $restriction = $self->email_confirmation;
+    return $restriction->uri if $restriction;
+}
+
+sub confirm_email_address {
+    my $self = shift;
+    return $self->remove_restriction('email_confirmation');
 }
 
 sub requires_confirmation {
@@ -1568,30 +1544,36 @@ sub requires_confirmation {
     return $self->restrictions->count ? 1 : 0;
 }
 
-sub confirm_email_address {
+# restriction: password change
+sub create_password_change_confirmation {
     my $self = shift;
-
-    my $uce = $self->email_confirmation;
-    return unless $uce;
-
-    $uce->confirm;
+    return $self->add_restriction('password_change');
 }
 
-sub email_confirmation {
+sub password_change_confirmation {
     my $self = shift;
-    my $uce  = Socialtext::User::Restrictions::email_confirmation->Get(
-        user_id => $self->user_id,
-    );
-    return $uce;
+    return $self->get_restriction('password_change');
 }
 
+sub send_password_change_email {
+    my $self = shift;
+    my $restriction = $self->get_restriction('password_change');
+    $restriction->send if $restriction;
+}
+
+sub password_change_uri {
+    my $self = shift;
+    my $restriction = $self->get_restriction('password_change');
+    return $restriction->uri if $restriction;
+}
+
+# restriction:  require external id
 sub requires_external_id {
     my $self = shift;
-    my $uce  = Socialtext::User::Restrictions::require_external_id->Get(
-        user_id => $self->user_id,
-    );
-    return $uce;
+    return $self->has_restriction('require_external_id');
 }
+
+# END restrictions
 
 sub is_plugin_enabled {
     my $self = shift;
