@@ -19,7 +19,7 @@
 | *Comment* | Test Case: Edit Profile. Create a user. user may already exist |  |
 | st-admin | `create-user --e %%e_user%% --p %%password%%` |  |
 | st-admin | `change-password --e %%e_user%% --p %%password%%` |  |
-| st-admin | `set-user-names --e %%e_user%% --f %%fname%% --l %%lname%%` |  |
+| st-admin | `set-user-names --e %%e_user%% --f %%fname%% --l %%lname%% --m""` |  |
 | st-admin | `create-user -e %%super%% --p %%password%%` |  |
 | st-admin | `create-user -e %%assistant%% --p %%password%%` |  |
 
@@ -34,7 +34,7 @@
 | *Comment* | Verify original first and last names: %%fname%% %%lname%% |  |
 | text_like | %%fname%% %%lname%% |  |
 | open_ok | /st/profile |  |
-| text_like | st-page-titletext | %%fname%% %%lname%% |  |
+| text_like | st-page-titletext | %%fname%% %%lname%% |
 
 | *Comment* | Test Case: Edit Profile. Open for editing |  |
 | st-name-widget | 1 | profile |
