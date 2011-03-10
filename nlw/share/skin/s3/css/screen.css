@@ -3248,7 +3248,7 @@ div#mainNav ul.level1 li.submenu:hover {
 }
 
 div#mainNav ul.level2 {
-    top: 3.0em; 
+    top: 34px;
     left: -1px;
     background: white;
     overflow: hidden;
@@ -3273,7 +3273,7 @@ div#mainNav .emptynotice, div#mainNav .notinstallednotice {
     line-height: 13px !important;
     padding-left: 10px;
     border-bottom: none !important;
-    width: 18em !important;
+    width: 200px !important;
     padding-top: 5px !important;
     padding-bottom: 5px !important;
 }
