@@ -574,3 +574,4 @@ t/wikitests/socialcalc/csv-numbers-put.wiki
 t/wikitests/control/user_restrictions.wiki
 share/skin/s3/javascript/l10n-*.js
 ssl/
+lib/Socialtext/Appliance/PgBackup.pm
