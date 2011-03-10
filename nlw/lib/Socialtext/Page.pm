@@ -1957,10 +1957,10 @@ sub duplicate {
         $rev->workspace_id($dest_ws->workspace_id);
         $rev->page_id($target_id);
         $rev->name($target_title);
-        $target->rev($rev);
 
         # Make this the first revision_num unless we're clobbering.
         $rev->revision_num($target->exists ? $target->revision_num+1 : 0);
+        $target->rev($rev);
 
         $rev->tags([]) unless $keep_categories;
 
