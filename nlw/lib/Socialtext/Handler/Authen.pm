@@ -230,10 +230,19 @@ sub login {
         return $self->_challenge();
     }
 
-    if ($user and $user->requires_confirmation) {
+    if ($user and $user->requires_email_confirmation) {
         $r->log_error($username . ' requires confirmation');
         return $self->require_confirmation_redirect($user->email_address);
     }
+    if ($user and $user->requires_password_change) {
+        $r->log_error($username . ' requires password change');
+        return $self->require_password_change_redirect($user->email_address);
+    }
+    if ($user and $user->requires_external_id) {
+        $r->log_error($username . ' requires external id');
+        return $self->require_external_id_redirect($user->email_address);
+    }
+
 
     unless ($self->{args}{password}) {
         $self->session->add_error(loc('error.invalid-login=name', $validname));
@@ -405,7 +414,7 @@ sub register {
 
     my $user = Socialtext::User->new( email_address => $email_address );
     if ($user) {
-        if ( $user->requires_confirmation() ) {
+        if ( $user->requires_email_confirmation() ) {
             return $self->require_confirmation_redirect($email_address);
         }
         elsif ( $user->has_valid_password() ) {
@@ -608,6 +617,24 @@ sub require_confirmation_redirect {
     my $email = shift;
     return $self->_error_redirect(
         type          => 'requires_confirmation',
+        email_address => $email,
+    );
+}
+
+sub require_password_change_redirect {
+    my $self  = shift;
+    my $email = shift;
+    return $self->_error_redirect(
+        type          => 'requires_password_change',
+        email_address => $email,
+    );
+}
+
+sub require_external_id_redirect {
+    my $self  = shift;
+    my $email = shift;
+    return $self->_error_redirect(
+        type          => 'requires_external_id',
         email_address => $email,
     );
 }
