@@ -213,6 +213,13 @@ sub export_and_reimport_account {
     return $output;
 }
 
+sub _sort_roles {
+    sort {
+        my ($a, $b) = @_;
+        return join(',', values %$a) cmp join(',', values %$b);
+    } @_;
+}
+
 sub _dump_gars {
     my $account = shift;
     my @gars;
@@ -226,7 +233,7 @@ sub _dump_gars {
             };
         }
     }
-    return @gars;
+    return _sort_roles @gars;
 }
 
 sub _dump_uars {
@@ -243,7 +250,7 @@ sub _dump_uars {
             };
         }
     }
-    return @uars;
+    return _sort_roles @uars;
 }
 
 sub _dump_uwrs {
@@ -259,7 +266,7 @@ sub _dump_uwrs {
             };
         }
     }
-    return @uwrs;
+    return _sort_roles @uwrs;
 }
 
 sub _dump_gwrs {
@@ -275,7 +282,7 @@ sub _dump_gwrs {
             };
         }
     }
-    return @gwrs;
+    return _sort_roles @gwrs;
 }
 
 sub _dump_ugrs {
@@ -291,7 +298,7 @@ sub _dump_ugrs {
             };
         }
     }
-    return @ugrs;
+    return _sort_roles @ugrs;
 }
 
 1;
