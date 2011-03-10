@@ -366,7 +366,10 @@ sub load_revision_metadata {
         try {
             my $t = time_scope 'load_rev';
 
+            next unless -s $file;
             my $pagemeta = fetch_metadata($file);
+            next unless $pagemeta;
+
             my $body_ref = read_and_decode_page($file, 'content too');
 
             my $tags = $pagemeta->{Category} || [];
