@@ -990,10 +990,7 @@ sub add_restriction {
 
     foreach my $t (@{$types}) {
         eval {
-            my $restriction = Socialtext::User::Restrictions->CreateOrReplace( {
-                user_id          => $user->user_id,
-                restriction_type => $t,
-            } );
+            my $restriction = $user->add_restriction($t);
             $restriction->send;
         };
         $self->_error($@) if ($@);
@@ -1014,12 +1011,7 @@ sub remove_restriction {
     }
     else {
         foreach my $t (@{$types}) {
-            my $restriction = eval {
-                Socialtext::User::Restrictions->Get( {
-                    user_id          => $user->user_id,
-                    restriction_type => $t,
-                } );
-            };
+            my $restriction = eval { $user->get_restriction($t) };
             if ($restriction) {
                 push @restrictions, $restriction;
             }

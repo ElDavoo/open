@@ -6,7 +6,6 @@ use Text::CSV_XS;
 use Socialtext::Encode;
 use Socialtext::Log qw(st_log);
 use Socialtext::User;
-use Socialtext::User::Restrictions;
 use Socialtext::l10n qw/loc/;
 use Socialtext::String;
 use List::MoreUtils qw/mesh/;
@@ -178,10 +177,7 @@ sub add_user {
 
     if ($self->{restrictions}) {
         foreach my $r (@{$self->{restrictions}}) {
-            my $restriction = Socialtext::User::Restrictions->CreateOrReplace( {
-                user_id          => $user->user_id,
-                restriction_type => $r,
-            } );
+            my $restriction = $user->add_restriction($r);
             $restriction->send;
             $changed_user++;
         }
