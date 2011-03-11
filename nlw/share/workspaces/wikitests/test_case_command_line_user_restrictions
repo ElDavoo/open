@@ -25,9 +25,9 @@
 
 | *Comment* | Test Case: Command-Line User Restrictions - User can NOT log in |  |
 | st-logoutin | %%euser%% | %%password%% |
-| wait_for_text_present_ok | You need to confirm your email address to activate this account | 3000 |
-| wait_for_text_present_ok | You should have received an email with a confirmation link. | 30000 |
-| wait_for_element_visible_ok | //input[@value="Resend confirmation"] | 30000 |
+| wait_for_text_present_ok | You should have received an email with a link allowing you to do so. | 30000 |
+| wait_for_text_present_ok | You need to set a new password for your account. | 30000 |
+| wait_for_element_visible_ok | //input[@value="Resend Change of Password"] | 30000 |
 | open_ok | /st/dashboard |  |
 | text_unlike | //body | Welcome, New User |
 | text_like | //body | Log in to Socialtext |
@@ -73,7 +73,7 @@
 
 | *Comment* | Test Case: Command-Line User Restrictions - Add 3, subtract 1, still can't log in |  |
 | st-admin | add-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | %%euser%% has been given the 'require_external_id' restriction |
-| st-admin | remove-restriction --e %%euser%% --restriction require_external_id | 'require_external_id' restriction has been lifted on '%%euser%%' |
+| st-admin | remove-restriction --e %%euser%% --restriction password_change | 'password_change' restriction has been lifted on '%%euser%%' |
 | st-logoutin | %%euser%% | %%password%% |
 | wait_for_text_present_ok | You need to confirm your email address to activate this account | 3000 |
 | wait_for_text_present_ok | You should have received an email with a confirmation link. | 30000 |
@@ -85,15 +85,14 @@
 | *Comment* | Test Case: Command-Line User Restrictions - Subtract 1 more restriction still can't log in |  |
 | st-admin | remove-restriction --e %%euser%% --restriction email_confirmation | 'email_confirmation' restriction has been lifted on '%%euser%%' |
 | st-logoutin | %%euser%% | %%password%% |
-| wait_for_text_present_ok | You need to confirm your email address to activate this account | 3000 |
-| wait_for_text_present_ok | You should have received an email with a confirmation link. | 30000 |
-| wait_for_element_visible_ok | //input[@value="Resend confirmation"] | 30000 |
+| wait_for_text_present_ok | You need to have an External Id set in order to activate this account. | 3000 |
+| wait_for_text_present_ok | For more information, please contact your system administrator. | 30000 |
 | open_ok | /st/dashboard |  |
 | text_unlike | //body | Welcome, New User |
 | text_like | //body | Log in to Socialtext |
 
 | *Comment* | Test Case: Command-Line User Restrictions - Remove last restriction, can log in |  |
-| st-admin | remove-restriction --e %%euser%% --restriction password_change | 'password_change' restriction has been lifted on '%%euser%%' |
+| st-admin | remove-restriction --e %%euser%% --restriction require_external_id | 'require_external_id' restriction has been lifted on '%%euser%%' |
 | st-login | %%euser%% | %%password%% |
 | text_unlike | //body | You need to confirm your email address to activate this account |
 | text_unlike | //body | You should have received an email with a confirmation link. |
@@ -102,6 +101,7 @@
 | wait_for_text_present_ok | Welcome, New User | 30000 |
 
 | *Comment* | Test Case: Command-Line User Restrictions TEARDOWN |  |
+| delete-workspace | %%acct%%-central |  |
 | st-admin | deactivate-user --e %%euser%% | has been deactivated |
 | st-process-jobs |  |  |
 
