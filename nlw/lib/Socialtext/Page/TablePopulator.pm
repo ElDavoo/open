@@ -71,8 +71,6 @@ sub populate {
     chdir $workspace_dir;
 
     try { sql_txn {
-        my ($insert_sth, $update_sth, $tags_sth);
-
         # Assume a "dirty" workspace environment where we'll be overwriting
         # certain objects.  We need to consider page-table entries, page
         # revisions, page attachments, page tags and finally breadcrumbs
@@ -378,7 +376,7 @@ sub load_revision_metadata {
             $tags = [$tags] unless ref($tags);
 
             my $subject = $pagemeta->{Subject} || '';
-            if (ref($sub/ect)) { # Handle bad duplicate headers
+            if (ref($subject)) { # Handle bad duplicate headers
                 $subject = shift @$subject;
             }
             my $summary = $pagemeta->{Summary} || '';
