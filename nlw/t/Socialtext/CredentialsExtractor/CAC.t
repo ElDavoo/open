@@ -63,19 +63,13 @@ find_partially_provisioned_users: {
     # Two matching UN-provisioned Users, non-matching UN-provisioned User, and
     # a provisioned User.
     my $user_one = create_test_user(%fields);
-    Socialtext::User::Restrictions::require_external_id->CreateOrReplace(
-        user_id => $user_one->user_id,
-    );
+    $user_one->add_restriction('require_external_id');
 
     my $user_two = create_test_user(%fields);
-    Socialtext::User::Restrictions::require_external_id->CreateOrReplace(
-        user_id => $user_two->user_id,
-    );
+    $user_two->add_restriction('require_external_id');
 
     my $diff_name_user = create_test_user(%fields, middle_name => 'Matt');
-    Socialtext::User::Restrictions::require_external_id->CreateOrReplace(
-        user_id => $diff_name_user->user_id,
-    );
+    $diff_name_user->add_restriction('require_external_id');
 
     my $provisioned_user = create_test_user(%fields);
 
@@ -207,10 +201,7 @@ auto_provision_user: {
         last_name   => $last,
     );
     ok $user, 'Created test User';
-
-    Socialtext::User::Restrictions::require_external_id->CreateOrReplace(
-        user_id => $user->user_id,
-    );
+    $user->add_restriction('require_external_id');
     ok $user->requires_external_id, '... missing their external id';
 
     # Extract creds for this User
@@ -245,18 +236,14 @@ auto_provision_multiple_users: {
         middle_name => $middle,
         last_name   => $last,
     );
-    Socialtext::User::Restrictions::require_external_id->CreateOrReplace(
-        user_id => $user_one->user_id,
-    );
+    $user_one->add_restriction('require_external_id');
 
     my $user_two = create_test_user(
         first_name  => $first,
         middle_name => $middle,
         last_name   => $last,
     );
-    Socialtext::User::Restrictions::require_external_id->CreateOrReplace(
-        user_id => $user_two->user_id,
-    );
+    $user_two->add_restriction('require_external_id');
 
     # Attempt to extract creds
     my $subject = "C=UK, O=Goldeneye, CN=$first\.$middle\.$last\.$edipin";
