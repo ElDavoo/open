@@ -17,7 +17,6 @@ use Socialtext::TT2::Renderer;
 use Socialtext::URI;
 use Socialtext::UserMetadata;
 use Socialtext::User::Deleted;
-use Socialtext::User::EmailConfirmation;
 use Socialtext::User::Factory;
 use Socialtext::UserSet qw/:const/;
 use Socialtext::User::Default::Users qw(:system-user :guest-user);
