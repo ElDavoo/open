@@ -120,7 +120,7 @@
 | text_unlike | //body | %%grp_mbr%% |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Groups UI AddRemover Members From Group Invite %%email_user%% with custom message |  |
+| *Comment* | Test Case: Groups UI AddRemove Members From Group Invite %%email_user%% with custom message |  |
 | open_ok | /st/edit_group/%%group_id%% |  |
 | wait_for_text_present_ok | Edit Group |  |
 | wait_for_element_visible_ok | create-group | 30000 |
@@ -145,7 +145,7 @@
 | *Comment* | Wait 90 seconds for the confirmation email to arrive |  |
 | pause | 90000 |  |
 
-| *Comment* | Test Case: Groups UI AddRemover Members From Group view custom invite in %%email_ws%% workspace |  |
+| *Comment* | Test Case: Groups UI AddRemove Members From Group view custom invite in %%email_ws%% workspace |  |
 | open_ok | /%%email_ws%%/ |  |
 | wait_for_element_visible_ok | //*[@id='st-create-content-cancellink'] | 30000 |
 | click_ok | //*[@id='st-create-content-cancellink'] |  |
@@ -155,16 +155,18 @@
 | wait_for_element_visible_ok | link=I'm inviting you into the %%group_name%% group | 30000 |
 | click_and_wait | link=I'm inviting you into the %%group_name%% group |  |
 | wait_for_text_present_ok | has added you to the group: %%group_name%% | 30000 |
-| wait_for_text_present_ok | %%invite%% | 30000 |
-| wait_for_element_present_ok | //a[contains(text(),'/st/group/%%group_id%%')] | 30000 |
-| wait_for_text_present_ok | %%group_name%% is a group on %%hostname%% | 30000 |
-| wait_for_text_present_ok | If you have questions about this email, contact support at http://www.socialtext.com/customers/support_request.php | 30000 |
-| wait_for_text_present_ok | Go to the %%group_name%% Home Page: | 30000 |
+| wait_for_text_present_ok | %%invite%% | 5000 |
+| wait_for_element_present_ok | //a[contains(text(),'/st/group/%%group_id%%')] | 5000 |
+| wait_for_text_present_ok | %%group_name%% is a group on %%hostname%% | 5000 |
+| wait_for_text_present_ok | If you have questions about this email, contact support at http://www.socialtext.com/customers/support_request.php | 5000 |
+| wait_for_text_present_ok | Go to the %%group_name%% Home Page | 5000 |
 
-| *Comment* | Test Case: Groups UI AddRemove Members From Group. TEARDOWN |
+| *Comment* | Test Case: Groups UI AddRemove Members From Group. TEARDOWN |  |
 | st-process-jobs |  |  |
 | delete-group | %%group_id%% | Recklessly deleting |
 | delete-workspace | %%group_ws%% | Recklessly deleting |
 | delete-workspace | %%email_ws%% | Recklessly deleting |
+| st-admin | deactivate-user --e %%group_user%% |  |
+| delete-account | %%group_acct%% |  |
 
 | *Comment* | Test Case: Groups UI AddRemove Members From Group. COMPLETED |
