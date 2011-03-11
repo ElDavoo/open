@@ -378,7 +378,7 @@ sub load_revision_metadata {
             $tags = [$tags] unless ref($tags);
 
             my $subject = $pagemeta->{Subject} || '';
-            if (ref($subject)) { # Handle bad duplicate headers
+            if (ref($sub/ect)) { # Handle bad duplicate headers
                 $subject = shift @$subject;
             }
             my $summary = $pagemeta->{Summary} || '';
@@ -644,7 +644,7 @@ sub format_err {
     return '' unless $err;
 
     chomp $err;
-    $err =~ s/at \S+ line \d+(?:, <> line \d+)?.$//;
+    $err =~ s/at \S+ line \d+.*.$//;
 
     return $err;
 }
