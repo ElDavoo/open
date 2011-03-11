@@ -152,7 +152,7 @@
 | st-admin | create-workspace --empty --name from-scratch --title From-Scratch --empty | A new workspace named "from-scratch" was created. |
 | st-admin | add-member --workspace from-scratch --email %%email%% | now has the role of 'member' in the from-scratch Workspace |
 
-| open_ok | /from-scratch/index.cgi?action=new_page |  |
+| open_ok | /from-scratch/?action=new_page |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
@@ -163,7 +163,7 @@
 | clickAndWait | st-save-button-link |  |
 
 | *Comment* | Test Case: Inter Workspace Search index new page explicitly just in case ceq is tetchy |  |
-| st-admin | index-page -workspace from-scratch --page jabber | The jabber page in the from-scratch workspace has been indexed. |
+| st-process-jobs | PageIndex | from-scratch |
 | select_ok | st-search-action | label=Search My Workspaces: |
 | st-search | jabber | Pages matching 'jabber' |
 | st-result | 11 total |  |
@@ -176,9 +176,9 @@
 | st-result | qr/jabber.+From-Scratch/ |  |
 
 | *Comment* | Test Case: Inter Workspace Search TEARDOWN |
-
-| st-admin | delete-workspace --workspace test-data2 --no-export |  |
-| st-admin | delete-workspace --workspace test-data3 --no-export | has been deleted |
-| st-admin | delete-workspace --workspace from-scratch --no-export | has been deleted |
+| st-process-jobs |  |  |
+| delete-workspace | test-data2 | Recklessly deleting |
+| delete-workspace | test-data3 | Recklessly deleting |
+| delete-workspace | from-scratch | Recklessly deleting |
 
 | *Comment* | Test Case: Inter Workspace Search COMPLETED |

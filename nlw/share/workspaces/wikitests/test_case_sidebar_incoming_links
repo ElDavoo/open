@@ -63,11 +63,6 @@ Navigate to a page known to have many incoming links | all incoming links appear
 | text_like | link=What else is here? | What else is here? |
 | text_like | link=Workspace Tour - Table of Contents | Workspace Tour - Table of Contents |
 
-Help workspace central page is a good page
-| *Comment* | Test Case: Sidebar: Incoming Links. Verify existing backlinks in help |
-| open_ok | /help-en | |
-| text_like | link=Stop Words | Stop Words |
-
 | *Comment* | Test Case : Sidebar: Incoming Links TEARDOWN |  |
 | st-process-jobs | PageIndex | %%workspace%% |
 | st-admin | purge-page --w %%workspace%% --page tc_incoming_links_%%start_time%% | was purged |
