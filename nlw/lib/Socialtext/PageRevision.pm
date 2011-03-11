@@ -431,7 +431,7 @@ sub next_revision_id {
     return $NextRevisionID++ if defined $NextRevisionID;
 
     my $hires = Time::HiRes::time();
-    $hires =~ m/^(\d+)(?:\.(\d+))?$/;
+    $hires =~ m/^(\d+)(?:\.(\d{0,5})\d*)?$/;
     my ($time, $fractional) = ($1, $2||0);
     my ($sec, $min, $hour, $mday, $mon, $year) = gmtime($time);
     my $id = sprintf(

@@ -1100,7 +1100,7 @@ CREATE TABLE page_link (
 CREATE TABLE page_revision (
     workspace_id bigint NOT NULL,
     page_id text NOT NULL,
-    revision_id numeric(20,6) NOT NULL,
+    revision_id numeric(19,5) NOT NULL,
     revision_num integer NOT NULL,
     name text,
     editor_id bigint NOT NULL,
