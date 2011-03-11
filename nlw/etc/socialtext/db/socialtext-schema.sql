@@ -2199,7 +2199,7 @@ CREATE INDEX user_plugin_pref_idx
 CREATE INDEX user_plugin_pref_key_idx
 	    ON user_plugin_pref (user_id, plugin, key);
 
-CREATE INDEX user_restrictions_token_key
+CREATE UNIQUE INDEX user_restrictions_token_key
 	    ON user_restrictions (token);
 
 CREATE INDEX user_restrictions_user_id_key

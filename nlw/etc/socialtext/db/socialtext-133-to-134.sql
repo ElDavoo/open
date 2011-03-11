@@ -36,7 +36,7 @@ CREATE TABLE user_restrictions (
     PRIMARY KEY (user_id, restriction_type)
 );
 CREATE INDEX user_restrictions_user_id_key ON user_restrictions(user_id);
-CREATE INDEX user_restrictions_token_key ON user_restrictions(token);
+CREATE UNIQUE INDEX user_restrictions_token_key ON user_restrictions(token);
 
 INSERT INTO user_restrictions (
     user_id, restriction_type, token, expires_at, workspace_id
