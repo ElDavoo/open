@@ -483,7 +483,7 @@
 "control.select-users-csv:":"«Select the CSV file containing users to add:»",
 "control.select-users-to-add-to-group":"«Please select some users to add to the group.»",
 "control.select-wiki":"«Please select a workspace»",
-"control.self-join-group":"«<strong>Self-Join:</strong> Non-Members can view the group, but must become Members to contribute.»",
+"control.self-join-group":"«<strong>Self-Join:</strong> Non-Members can view and join the group.»",
 "control.send-invitation-email":"«Send invitation email»",
 "control.set-account-type-to:":"«Change account type to:»",
 "control.set-by-external-directory":"«Set by external Directory»",

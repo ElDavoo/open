@@ -2789,7 +2789,7 @@ msgstr "Please select a workspace"
 
 #: share/plugin/control/share/javascript/lightbox/group-create.tt2:27 share/plugin/control/template/control/group.html:14
 msgid "control.self-join-group"
-msgstr "<strong>Self-Join:</strong> Non-Members can view the group, but must become Members to contribute."
+msgstr "<strong>Self-Join:</strong> Non-Members can view and join the group."
 
 #: share/plugin/control/template/control/account_add_group.html:23 share/plugin/control/template/control/group_add_to_account.html:21 share/plugin/control/template/control/group_add_to_workspace.html:20 share/plugin/control/template/control/workspace_add_group.html:21
 msgid "control.send-invitation-email"

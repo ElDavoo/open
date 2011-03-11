@@ -483,7 +483,7 @@
 "control.select-users-csv:":"Zzzzzz zzz ZZZ zzzz zzzzzzzzzz zzzzz zz zzz:",
 "control.select-users-to-add-to-group":"Zzzzzz zzzzzz zzzz zzzzz zz zzz zz zzz zzzzz.",
 "control.select-wiki":"Zzzzzz zzzzzz z zzzzzzzzz",
-"control.self-join-group":"<strong>Zzzz-Zzzz:</strong> Zzz-Zzzzzzz zzz zzzz zzz zzzzz, zzz zzzz zzzzzz Zzzzzzz zz zzzzzzzzzz.",
+"control.self-join-group":"<strong>Zzzz-Zzzz:</strong> Zzz-Zzzzzzz zzz zzzz zzz zzzz zzz zzzzz.",
 "control.send-invitation-email":"Zzzz zzzzzzzzzz zzzzz",
 "control.set-account-type-to:":"Zzzzzz zzzzzzz zzzz zz:",
 "control.set-by-external-directory":"Zzz zz zzzzzzzz Zzzzzzzzz",
