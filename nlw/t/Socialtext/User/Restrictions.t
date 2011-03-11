@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Guard qw(scope_guard);
 use List::MoreUtils qw(any);
-use Test::Socialtext tests => 44;
+use Test::Socialtext tests => 45;
 use Test::Socialtext::User;
 use Socialtext::Date;
 use Socialtext::User::Restrictions;
@@ -59,6 +59,28 @@ create_autofill_token: {
     is $restriction->restriction_type, $type,       '... check type';
     is $restriction->expires_at,       $expires_at, '... check expiration';
     ok $restriction->token, '... token auto-filled during creation';
+}
+
+###############################################################################
+# TEST: Auto-created "token"s are unique
+tokens_are_unique: {
+    my $guard = Test::Socialtext::User->snapshot;
+    my $user    = create_test_user();
+    my $user_id = $user->user_id;
+
+    my $one = Socialtext::User::Restrictions->Create( {
+        user_id          => $user_id,
+        restriction_type => 'password_change',
+    } );
+    scope_guard { $one && $one->clear };
+
+    my $two = Socialtext::User::Restrictions->Create( {
+        user_id          => $user_id,
+        restriction_type => 'email_confirmation',
+    } );
+    scope_guard { $two && $two->clear };
+
+    isnt $one->token, $two->token, 'Auto-created tokens are unique';
 }
 
 ###############################################################################

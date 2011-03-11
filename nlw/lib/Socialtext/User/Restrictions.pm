@@ -5,6 +5,7 @@ use Moose;
 use Carp qw(croak);
 use Digest::SHA1 qw(sha1_base64);
 use List::Util qw(first);
+use Time::HiRes qw();
 use Socialtext::AppConfig;
 use Socialtext::Date;
 use Socialtext::MultiCursor;
@@ -86,7 +87,7 @@ sub _validate_assign_token {
     unless ($proto->{token}) {
         $proto->{token} = sha1_base64(
             $proto->{user_id},
-            time,
+            Time::HiRes::time,
             Socialtext::AppConfig->MAC_secret
         );
     }
