@@ -3,6 +3,7 @@ package Socialtext::Page::TablePopulator;
 use 5.12.0;
 use warnings;
 
+use Socialtext::Account;
 use Socialtext::Workspace;
 use Socialtext::Paths;
 use Socialtext::Hub;
@@ -21,7 +22,7 @@ use Fatal qw/opendir closedir chdir open/;
 use Cwd   qw/getcwd abs_path/;
 use DateTime;
 use Try::Tiny;
-use List::MoreUtils qw/any/;
+use List::MoreUtils qw/any all/;
 use Scalar::Util qw/looks_like_number/;
 
 our $Noisy = 1;
@@ -369,7 +370,7 @@ sub load_revision_metadata {
 
             next unless -s $file;
             my $pagemeta = fetch_metadata($file);
-            next unless $pagemeta;
+            next unless has_required_meta($pagemeta);
 
             my $body_ref = read_and_decode_page($file, 'content too');
 
@@ -422,6 +423,13 @@ sub load_revision_metadata {
     }
 
     return;
+}
+
+sub has_required_meta {
+    my $pagemeta = shift;
+
+    return 0 unless $pagemeta;
+    return all { defined($pagemeta->{$_}) } qw/Subject From Date/;
 }
 
 sub load_page_attachments {
@@ -591,6 +599,7 @@ sub fetch_metadata {
 }
 
 # This code inspired by Socialtext::Page::last_edited_by
+use constant DELETED_ACCT_ID => Socialtext::Account->Deleted()->account_id;
 sub editor_to_id {
     my $email_address = shift || '';
     state %userid_cache;
@@ -612,8 +621,10 @@ sub editor_to_id {
             warn "Creating user account for '$email_address'\n";
             try {
                 $user = Socialtext::User->create(
-                    email_address => $email_address,
-                    username      => $email_address,
+                    email_address      => $email_address,
+                    username           => $email_address,
+                    primary_account_id => DELETED_ACCT_ID,
+                    missing            => 1,
                 );
             }
             catch {
