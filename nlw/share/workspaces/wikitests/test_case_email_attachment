@@ -65,6 +65,7 @@
 | text_unlike | contentContainer | qr/attached to page Email subject %%start_time%%/i |
 
 | *Comment* | Test Case: Email attachment TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | purge-page --w %%workspace%% --page email_subject_%%start_time%% | was purged |
 
 | *Comment* | Test Case: Email attachment COMPLETED |

@@ -10,6 +10,7 @@
 | set | fname | Profligate |
 | set | mname | Epitome |
 | set | lname | Edisaurus |
+| st-admin | set-user-names --e %%e_user%% --f "%%fname%%" --m "%%mname%%" --l "%%lname%%" | updated |
 
 | *Comment* | Test Case: Clear Profile Fields. Access profile. |  |
 | open_ok | /nlw/submit/logout |  |

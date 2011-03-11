@@ -61,9 +61,9 @@
 | *Comment* | Test Case: Groups UI Search Signals by Group Teardown |  |
 | delete-group | %%group_id%% | Recklessly deleting |
 | delete-workspace | %%group_ws%% | Recklessly deleting |
-| delete-account | %%group_acct%% | Recklessly deleting |
 | st-admin | deactivate-user --email %%grp_mbr%% |  |
 | st-admin | deactivate-user --email %%non_grp_mbr%% |  |
 | st-admin | deactivate-user --email %%group_user%% |  |
+| delete-account | %%group_acct%% | Recklessly deleting |
 
 | *Comment* | Test Case: Groups UI Search Signals by Group COMPLETED |

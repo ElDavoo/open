@@ -172,5 +172,12 @@
 | delete-group | %%group_f_id%% | Recklessly deleting |
 | delete-group | %%group_g_id%% | Recklessly deleting |
 | delete-group | %%group_h_id%% | Recklessly deleting |
+| delete_account | %%user_acct%% | Recklessly deleting |
+| delete_account | %%member_acct%% | Recklessly deleting |
+| delete_account | %%acct_b%% | Recklessly deleting |
+| delete_account | %%acct_c%% | Recklessly deleting |
+| delete_account | %%acct_d%% | Recklessly deleting |
+| delete_account | %%acct_e%% | Recklessly deleting |
+| delete_account | %%acct_f%% | Recklessly deleting |
 
 | *Comment* | Test Case: Profile Group List COMPLETED |  |

@@ -142,6 +142,7 @@ text_like | link=%%fname%% %%mname%% %%lname%% | %%fname%% %%mname%% %%lname%% |
 
 | *Comment* | Test Case: Tagging Profile TEARDOWN |  |
 | st-process-jobs |  |  |
+| st-admin | deactivate-user --e %%tag_user%% | removed |
 | delete-workspace | tp-%%start_time%% | Recklessly deleting |
 
 | *Comment* | Test Case: Tagging Profile COMPLETED |  |
