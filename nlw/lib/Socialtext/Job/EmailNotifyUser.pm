@@ -35,7 +35,7 @@ sub do_work {
     return $self->completed
         unless defined $user->email_address
             && length $user->email_address
-            && !$user->requires_confirmation();
+            && !$user->requires_email_confirmation();
 
     return $self->completed unless $ws->has_user($user);
 
