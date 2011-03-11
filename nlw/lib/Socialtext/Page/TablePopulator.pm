@@ -366,9 +366,10 @@ sub load_revision_metadata {
         try {
             my $t = time_scope 'load_rev';
 
-            next unless -s $file;
+            die "zero length file" unless -s $file;
+
             my $pagemeta = fetch_metadata($file);
-            next unless has_required_meta($pagemeta);
+            die "missing required metadata" unless has_required_meta($pagemeta);
 
             my $body_ref = read_and_decode_page($file, 'content too');
 
@@ -416,7 +417,7 @@ sub load_revision_metadata {
             };
         }
         catch {
-            warn "Error parsing revision $ws_dir/$pg_dir/$file, skipping: $_\n";
+            warn "Couldn't parse revision $ws_dir/$pg_dir/$file, skipping: $_\n";
         };
     }
 
