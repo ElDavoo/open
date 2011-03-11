@@ -22,6 +22,7 @@ use Cwd   qw/getcwd abs_path/;
 use DateTime;
 use Try::Tiny;
 use List::MoreUtils qw/any/;
+use Scalar::Util qw/looks_like_number/;
 
 our $Noisy = 1;
 
@@ -345,7 +346,7 @@ sub load_revision_metadata {
     my @files;
     opendir(my $dfh, "$ws_dir/$pg_dir");
     while (my $file = readdir($dfh)) {
-        next unless $file =~ m/^\d+\.txt$/;
+        next unless $file =~ m/^[.\d]+\.txt$/;
         $file = "$ws_dir/$pg_dir/$file";
         next if -l $file;
         next unless -f $file;
@@ -354,7 +355,7 @@ sub load_revision_metadata {
         next unless Socialtext::Encode::is_valid_utf8($file);
 
         (my $revision_id = $file) =~ s#.+/(.+)\.txt$#$1#;
-        $revision_id += 0; # force-numify
+        $revision_id += 0 unless looks_like_number($revision_id); # force-numify
         next if $existing_ids->check($revision_id);
 
         push @files, [$revision_id, $file];
