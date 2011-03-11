@@ -18,6 +18,13 @@ sub ClearMemoryCache {
         ? "$ENV{ST_CURRENT}/plugins/widgets/service"
         : "/usr/share/nlw/plugin/widgets/service";
     my ($pid) = `svstat $jsonproxy_svc_dir` =~ /up \(pid (\d+)\)/;
+
+    if (!$pid and not Socialtext::AppConfig->is_dev_env) {
+        # Fallback to the good old "ps ax" for appliances.
+        $pid = `ps ax |grep json-proxy | grep -v supervise | grep -v grep`;
+        $pid =~ s/^\s*(\d+)\s+.*/$1/s or undef $pid;
+    }
+
     system "kill -USR1 $pid" if $pid;
 }
 
