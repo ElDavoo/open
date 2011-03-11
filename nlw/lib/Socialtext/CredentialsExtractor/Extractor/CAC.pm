@@ -37,7 +37,7 @@ override 'username_to_user_id' => sub {
         # Found matching User; update w/EDIPIN and remove restriction
         $user = shift @users;
         $user->update_private_external_id($edipin);
-        $user->requires_external_id->confirm;
+        $user->remove_restriction('require_external_id');
         return $user->user_id;
     }
 
