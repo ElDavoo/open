@@ -2,66 +2,52 @@
 
 * Fixture: SocialWidgets
 
-| set | pause | 8000 |
-| http-user-pass | %%username%% | %%password%% |
+| set | wtacct | wt-%%start_time%% |
+| set | wtuser | wtuser%%start_time%%@ken.socialtext.net |
+| set | short_wtuser | wtuser%%start_time%% |
+
+| create-account | %%wtacct%% |  |  |
+| create-user | %%wtuser%% | %%password%% | %%wtacct%% |
+
+| st-logoutin | %%wtuser%% | %%password%% |
+| http-user-pass | %%wtuser%% | %%password%% |
 
 | *Comment* | Test Case: Signals Wikitext wiki link |  |
 | post-signal | `{link: help [Searching] %%start_time%%}` |  |
 | open-ok | /st/signals |  |
 | wait_for_element_visible_ok | link=Searching | 30000 |
 | wait_for_element_visible_ok | `//a[contains(@href,'Searching#%%start_time%%')]` | 30000 |
-| click_and_wait | link=Searching |  |
-| location_like | /help/Searching |  |
 
 | *Comment* | Test Case: Signals Wikitext named wiki link |  |
 | post-signal | `"This better be link text for the Help home page at %%start_time%%"{link: help [Socialtext Dashboard] %%start_time%%}` |  |
 | open-ok | /st/signals |  |
 | wait_for_element_visible_ok | `//a[contains(@href,'Dashboard#%%start_time%%')]` | 30000 |
 | wait_for_element_visible_ok | `link=This better be link text for the Help home page at %%start_time%%` | 30000 |
-| click_and_wait | `link=This better be link text for the Help home page at %%start_time%%` |  |
-| location_like | qr/\/help\/Socialtext.+Dashboard/ |  |
 
 | *Comment* | Test Case: Signals Wikitext web link |  |
 | post-signal | `http://www.socialtext.com#%%start_time%%` |  |
-| open-ok | /st/signals |  |
 | wait_for_element_visible_ok | `//a[contains(@href,'http://www.socialtext.com#%%start_time%%')]` | 30000 |
 | wait_for_element_visible_ok | `link=http://www.socialtext.com#%%start_time%%` | 30000 |
-| click_and_wait | `link=http://www.socialtext.com#%%start_time%%` |  |
-| location_like | www.socialtext.com |  |
 
 | *Comment* | Test Case: Signals Wikitext bracketed web link |  |
 | post-signal | `<http://kenpier.org#%%start_time%%>` |  |
-| open-ok | /st/signals |  |
 | wait_for_element_visible_ok | `link=http://kenpier.org#%%start_time%%` | 30000 |
-| click_and_wait | `link=http://kenpier.org#%%start_time%%` |  |
-| location_like | sites.google.com/site/kenpier/#%%start_time%% |  |
 
 | *Comment* | Test Case: Signals Wikitext named web link |  |
 | post-signal | `"MARCOM Website %%start_time%%"<http://www.socialtext.com#%%start_time%%-2>` |  |
-| open-ok | /st/signals |  |
+| wait_for_element_visible_ok | `//a[contains(@href,'http://www.socialtext.com#%%start_time%%-2')]` | 30000 |
 | wait_for_element_visible_ok | `link=MARCOM Website %%start_time%%` | 30000 |
-| click_and_wait | `link=MARCOM Website %%start_time%%` |  |
-| location_like | www.socialtext.com |  |
 
 | *Comment* | Test Case: Signals Wikitext named web link with mention |  |
 | post-signal | `"Socialtext Home %%start_time%%"<http://www.socialtext.com#%%start_time%%-3> mentioning {user: 1}` |  |
-| open-ok | /st/signals |  |
 | wait_for_element_visible_ok | link=Socialtext Home %%start_time%% | 30000 |
-| click_and_wait | link=Socialtext Home %%start_time%% |  |
-| location_like | www.socialtext.com |  |
-| open-ok | /st/signals |  |
 | wait_for_element_visible_ok | link=System User | 30000 |
-| click_and_wait | link=System User |  |
-| text_like | Profile |  |
-| text_like | System User |  |
+| wait_for_element_visible_ok | `//a[contains(@href,'/st/profile/1')]` | 30000 |
 
 | *Comment* | Test Case: Signals Wikitext user wafl %%username%% |  |
-| post-signal | `{user: %%username%%}` |  |
-| open-ok | /st/signals |  |
+| post-signal | `{user: %%username%%} at %%start_time%%` |  |
 | wait_for_element_visible_ok | `link=%%short_username%%` | 30000 |
-| click_and_wait | `link=%%short_username%%` |  |
-| text_like | Profile |  |
-| text_like | %%short_username%% |  |
+| wait_for_text_present_ok | `%%short_username%% at %%start_time%%` | 30000 |
 
 | *Comment* | Test Case: Signals Wikitext user wafl nosuchuser |  |
 | post-signal | `{user: nosuchuser-%%start_time%%}` |  |
@@ -72,21 +58,22 @@
 | post-signal | `*_-"Bold Italic Strike link to Socialtext Home at %%start_time%%"<http://www.socialtext.com#%%start_time%%>-_*` |  |
 | post-signal | `-_*bold italic strike %%start_time%%*_-` |  |
 | post-signal | `*bold%%start_time%%* _italic%%start_time%%_ -strike%%start_time%%- {{_asis:_ *bold* -%%start_time%%-}}` |  |
-| open-ok | /st/signals |  |
-| pause | %%pause%% |  |
+
+| wait_for_text_present_ok | `_asis:_ *bold* -%%start_time%%-` | 30000 |
 
 | *Comment* | VERIFY SIGNAL *bold* _italic_ -strike- {{_asis:_ *bold*}} |  |
 | is_element_present_ok | //div[contains(@class,'signal_body')]/b[contains(text(),'bold%%start_time%%')] |  |
 | is_element_present_ok | //div[contains(@class,'signal_body')]/i[contains(text(),'italic%%start_time%%')] |  |
 | is_element_present_ok | //div[contains(@class,'signal_body')]/del[contains(text(),'strike%%start_time%%')] |  |
-| text_like | `_asis:_ *bold* -%%start_time%%-` |  |
 
 | *Comment* | VERIFY SIGNAL -_*bold italic strike*_- |  |
 | is_element_present_ok | //div[contains(@class,'signal_body')]/del/i/b[contains(text(),'bold italic strike %%start_time%%')] |  |
 
 | *Comment* | VERIFY SIGNAL *_-Bold Italic Strike link to Socialtext Home-_* |  |
 | is_element_present_ok | //div[contains(@class,'signal_body')]/b/i/del/a[contains(text(),'Bold Italic Strike link to Socialtext Home at %%start_time%%')] |  |
-| click_and_wait | //a[contains(text(),'Bold Italic Strike link to Socialtext Home at %%start_time%%')] |  |
-| location_like | www.socialtext.com |  |
+
+| *Comment* | Test Case: Signals Wikitext TEARDOWN |  |
+| st-admin | deactivate-user --e %%wtuser%% | deactivated |
+| delete-account | %%wtacct%% |  |
 
 | *Comment* | Test Case: Signals Wikitext COMPLETED |  |
