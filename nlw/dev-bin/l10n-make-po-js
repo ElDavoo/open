@@ -26,6 +26,8 @@ sub en {
 
 my %EnglishLexicon;
 for my $lang (sort { en($a) cmp en($b) } @ARGV) {
+    next if $lang eq 'new';
+
     my %Lexicon;
     $lang =~ s/-/_/g;
     $lang =~ s/(_\w+)$/uc $1/e;
@@ -111,6 +113,11 @@ sub gen_po {
     my $en_po = "share/l10n/en.po";
     $en_po = $use_first = '' if $lang eq 'en';
     system("msgcat --width 99999 $use_first -s @{[reverse sort glob(qq[share/l10n/$lang/*.po])]} $en_po > $po_file");
+    if ($lang ne 'en') {
+        system("msgcat --width 99999 $use_first -s @{[reverse sort glob(qq[share/l10n/$lang/*.po])]} > $po_file.orig");
+        system("diff -du $po_file.orig $po_file | grep ^+ > $po_file.diff");
+        warn "*** Diff generated successfully: $po_file.diff\n";
+    }
     warn "*** Generated successfully: $po_file\n";
 }
 

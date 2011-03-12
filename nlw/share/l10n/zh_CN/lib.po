@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-28 17:54:04+0000\n"
+"PO-Revision-Date: 2011-03-12 14:31+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -1728,11 +1728,8 @@ msgstr "已删除 %1 个容器"
 msgid "test.deleted-galleries=count"
 msgstr "已删除 %1 个工具库"
 
-msgid "test.deleted-uploaded-widgets=count"
-msgstr ""
-
 msgid "test.deleted-widgets=count"
-msgstr "已删除 %1 小工具"
+msgstr "已删除 %1 个小工具"
 
 msgid "time.at=date,time"
 msgstr "%2 中的 %1"
