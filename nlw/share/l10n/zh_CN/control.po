@@ -13,7 +13,7 @@ msgid "control.group=name"
 msgstr "%1 群组"
 
 msgid "control.account=name"
-msgstr "%1 账户"
+msgstr "%1 帐户"
 
 msgid "control.about-paid-option=plugin"
 msgstr "%1 为付费选项。关于费用的更多信息，请联系您的销售代表。"
@@ -49,40 +49,40 @@ msgid "control.self-join-group"
 msgstr "<strong>自行加入:</strong> 非成员可以浏览本群组，但只有成为成员才能进行参与。"
 
 msgid "control.account"
-msgstr "账户"
+msgstr "帐户"
 
 msgid "control.account-custom-desktop-skin"
-msgstr "账户自定义桌面视觉主题"
+msgstr "帐户自定义桌面视觉主题"
 
 msgid "control.account-logo"
-msgstr "账户标识"
+msgstr "帐户标识"
 
 msgid "control.account-name"
-msgstr "账户名称"
+msgstr "帐户名称"
 
 msgid "control.account-profile-fields"
-msgstr "账户资料字段"
+msgstr "帐户资料字段"
 
 msgid "control.account-settings"
-msgstr "账户设置"
+msgstr "帐户设置"
 
 msgid "control.account-role-changed"
-msgstr "账户角色转变成功。"
+msgstr "帐户角色转变成功。"
 
 msgid "control.account-type"
-msgstr "账户类别"
+msgstr "帐户类别"
 
 msgid "control.account-type:"
-msgstr "账户类别:"
+msgstr "帐户类别:"
 
 msgid "nav.accounts"
-msgstr "账户"
+msgstr "帐户"
 
 msgid "control.accounts=count"
-msgstr "账户 (%1)"
+msgstr "帐户 (%1)"
 
 msgid "control.about-accounts-tab"
-msgstr "账户指一大群的用户，其具有访问用户目录、交流对话以及其他内容特征的公共权限。每个账户可以设定不同的选项与设置，包括插件、视觉主题以及美化Socialtext桌面。您也可以对账户的使用情况进行查看，并对报告进行采纳。"
+msgstr "帐户指一大群的用户，其具有访问用户目录、交流对话以及其他内容特征的公共权限。每个帐户可以设定不同的选项与设置，包括插件、视觉主题以及美化Socialtext桌面。您也可以对帐户的使用情况进行查看，并对报告进行采纳。"
 
 msgid "control.actions"
 msgstr "动作"
@@ -97,10 +97,10 @@ msgid "control.add-existing-user"
 msgstr "添加已有用户: "
 
 msgid "control.add-group-to-account"
-msgstr "添加群组至账户"
+msgstr "添加群组至帐户"
 
 msgid "control.add-group-to-account:"
-msgstr "添加群组至账户:"
+msgstr "添加群组至帐户:"
 
 msgid "control.add-group-to-wiki"
 msgstr "添加群组至工作区"
@@ -118,10 +118,10 @@ msgid "control.add-user"
 msgstr "添加用户"
 
 msgid "control.add-user-to-account:"
-msgstr "添加用户至账户:"
+msgstr "添加用户至帐户:"
 
 msgid "control.add-user-to-group:"
-msgstr "添加用户至账户:"
+msgstr "添加用户至帐户:"
 
 msgid "control.add-user-to-wiki:"
 msgstr "添加用户至工作区:"
@@ -130,7 +130,7 @@ msgid "control.add-users"
 msgstr "添加用户"
 
 msgid "control.add-to-account"
-msgstr "添加至账户"
+msgstr "添加至帐户"
 
 msgid "control.add-to-wiki"
 msgstr "添加至工作区"
@@ -139,10 +139,10 @@ msgid "control.adding-group-to-wiki=group,group-id"
 msgstr "添加群组 %1 (%2) 至工作区"
 
 msgid "control.adding-group-to-account=group,group-id"
-msgstr "添加群组 %1 (%2) 至账户"
+msgstr "添加群组 %1 (%2) 至帐户"
 
 msgid "control.adding-group-to-account=name"
-msgstr "添加群组至账户 %1"
+msgstr "添加群组至帐户 %1"
 
 msgid "control.adding-group-to-wiki=name"
 msgstr "添加群组至工作区 %1"
@@ -187,7 +187,7 @@ msgid "control.assign-appliance-technical-administrator-role"
 msgstr "分配设备技术管理员角色"
 
 msgid "control.assign-to-new-account"
-msgstr "分配给新账户"
+msgstr "分配给新帐户"
 
 msgid "date.august"
 msgstr "八月"
@@ -199,13 +199,13 @@ msgid "control.back"
 msgstr "返回"
 
 msgid "control.back-to-account"
-msgstr "返回账户"
+msgstr "返回帐户"
 
 msgid "control.back-to-account-fields"
-msgstr "返回账户字段"
+msgstr "返回帐户字段"
 
 msgid "control.back-to-account-page"
-msgstr "返回账户页面"
+msgstr "返回帐户页面"
 
 msgid "control.back-to-user-page"
 msgstr "返回用户页面"
@@ -214,7 +214,7 @@ msgid "control.back-to-wiki-page"
 msgstr "返回工作区页面"
 
 msgid "error.cannot-change-account-logo-with-custom-skin=name"
-msgstr "由于当前使用的是自定义视觉主题，因此账户标识不可更改。正在使用的视觉主题名为 '%1'"
+msgstr "由于当前使用的是自定义视觉主题，因此帐户标识不可更改。正在使用的视觉主题名为 '%1'"
 
 msgid "control.browse"
 msgstr "浏览 ..."
@@ -223,7 +223,7 @@ msgid "do.cancel"
 msgstr "取消"
 
 msgid "control.set-account-type-to:"
-msgstr "变更账户类别为:"
+msgstr "变更帐户类别为:"
 
 msgid "control.clear-selection"
 msgstr "清除选择"
@@ -250,7 +250,7 @@ msgid "control.create-group"
 msgstr "创建群组"
 
 msgid "control.create-new-account"
-msgstr "创建新账户"
+msgstr "创建新帐户"
 
 msgid "control.create-new-field"
 msgstr "创建新字段"
@@ -265,7 +265,7 @@ msgid "control.create-new-wiki-for-group"
 msgstr "为本群组创建新工作区"
 
 msgid "control.create-new-wiki-in-account"
-msgstr "为本账户创建新工作区"
+msgstr "为本帐户创建新工作区"
 
 msgid "control.create-wiki"
 msgstr "创建工作区"
@@ -391,7 +391,7 @@ msgid "report.export-user-as-csv"
 msgstr "以CSV输出用户数据"
 
 msgid "control.export-user-for-selected-accounts=count"
-msgstr "为 %1 个选中账户输出用户数据"
+msgstr "为 %1 个选中帐户输出用户数据"
 
 msgid "control.external-field"
 msgstr "外部"
@@ -421,7 +421,7 @@ msgid "control.first-name:"
 msgstr "名:"
 
 msgid "control.about-control-panel"
-msgstr "自此设备业务管理员可以管理与监控Socialtext应用的使用，包括账户、群组、工作区、用户与报告。"
+msgstr "自此设备业务管理员可以管理与监控Socialtext应用的使用，包括帐户、群组、工作区、用户与报告。"
 
 msgid "control.give-group-admin-privileges"
 msgstr "为整群组授予管理权限"
@@ -448,7 +448,7 @@ msgid "control.groups=count"
 msgstr "群组 (%1)"
 
 msgid "control.about-groups-tab"
-msgstr "群组指用户的集合。群组从属于账户，并与一个或多个工作区相联系。对群组的设定及其相联系的用户或工作区均在此控制。"
+msgstr "群组指用户的集合。群组从属于帐户，并与一个或多个工作区相联系。对群组的设定及其相联系的用户或工作区均在此控制。"
 
 msgid "report.growth"
 msgstr "增长报告"
@@ -472,7 +472,7 @@ msgid "nav.invite"
 msgstr "邀请"
 
 msgid "control.invite-group-to-account"
-msgstr "邀请群组到账户"
+msgstr "邀请群组到帐户"
 
 msgid "control.invite-to-group"
 msgstr "邀请到群组"
@@ -541,7 +541,7 @@ msgid "control.member"
 msgstr "成员"
 
 msgid "control.member-of-account"
-msgstr "账户成员"
+msgstr "帐户成员"
 
 msgid "nav.mobile"
 msgstr "移动"
@@ -607,7 +607,7 @@ msgid "control.select-wiki"
 msgstr "请选择一个工作区"
 
 msgid "control.select-account"
-msgstr "请选择一个账户"
+msgstr "请选择一个帐户"
 
 msgid "control.select-users-to-add-to-group"
 msgstr "请选择多名用户添加至群组。"
@@ -625,10 +625,10 @@ msgid "control.primary"
 msgstr "主要"
 
 msgid "control.primary-account"
-msgstr "主要账户"
+msgstr "主要帐户"
 
 msgid "control.primary-account-for-new-groups:"
-msgstr "新群组的主要账户为:"
+msgstr "新群组的主要帐户为:"
 
 msgid "report.printer-friendly"
 msgstr "打印版本的报告"
@@ -661,13 +661,13 @@ msgid "control.remove-from-wiki"
 msgstr "从工作区中移除"
 
 msgid "control.remove-group-from-accounts=count?"
-msgstr "从 %1 个选中账户中移除群组?"
+msgstr "从 %1 个选中帐户中移除群组?"
 
 msgid "control.remove-user-from-accounts=count?"
 msgstr "从 %1 个选中工作区中移除本用户?"
 
 msgid "control.rename-account"
-msgstr "重命名账户"
+msgstr "重命名帐户"
 
 msgid "report.period:"
 msgstr "报告期间:"
@@ -712,7 +712,7 @@ msgid "control.select-admins-of-new-wiki"
 msgstr "选择下面的一名或多名用户成为您新工作区的管理员"
 
 msgid "control.select-accounts-to-transform-into-groups"
-msgstr "选择您希望转换成群组的账户"
+msgstr "选择您希望转换成群组的帐户"
 
 msgid "control.select-users-csv:"
 msgstr "选择包含用户的CSV文件添加:"
@@ -757,7 +757,7 @@ msgid "control.socialtext-control-panel"
 msgstr "Socialtext 控制台"
 
 msgid "control.about-mass-add-users"
-msgstr "Socialtext 可以让您为账户添加多用户。要添加多用户，请下载样本数据文件，然后添加您的用户数据。并在此上传该文件。也可以访问<a href=\"https://www.socialtext.net/help-adminguide/adding_and_updating_users#adding_multiple_users\">为Socialtext添加多用户</a>查看添加多用户的全部文档。"
+msgstr "Socialtext 可以让您为帐户添加多用户。要添加多用户，请下载样本数据文件，然后添加您的用户数据。并在此上传该文件。也可以访问<a href=\"https://www.socialtext.net/help-adminguide/adding_and_updating_users#adding_multiple_users\">为Socialtext添加多用户</a>查看添加多用户的全部文档。"
 
 msgid "control.field-source"
 msgstr "来源"
@@ -769,7 +769,7 @@ msgid "control.lookahead-wiki:"
 msgstr "开始输入工作区的名称:"
 
 msgid "control.lookahead-account-of-new-wiki:"
-msgstr "开始输入新工作区所属的账户名称:"
+msgstr "开始输入新工作区所属的帐户名称:"
 
 msgid "control.step-1-set-wiki-title"
 msgstr "第1步: 给您的工作区命一个标题"
@@ -802,7 +802,7 @@ msgid "control.about-wiki-id"
 msgstr "这是作为您工作区网址与email地址一部分的短唯一标识符。必须由3-30个小写字母、数字、下划线或破折号群组成"
 
 msgid "control.this-is-all-users-wiki-for-account:"
-msgstr "这是账户全部用户的工作区:"
+msgstr "这是帐户全部用户的工作区:"
 
 msgid "control.this-is-name-of-your-group"
 msgstr "这是您的群组名称."
@@ -820,13 +820,13 @@ msgid "control.wiki-title"
 msgstr "标题"
 
 msgid "control.about-create-links"
-msgstr "使用本链接在默认账户中创建实体。在指定账户中创建实体，请访问<a href='/nlw/control/account'>账户</a>标签栏来浏览指定账户"
+msgstr "使用本链接在默认帐户中创建实体。在指定帐户中创建实体，请访问<a href='/nlw/control/account'>帐户</a>标签栏来浏览指定帐户"
 
 msgid "control.transform"
 msgstr "转换"
 
 msgid "control.transform-accounts-to-groups"
-msgstr "转换账户为群组"
+msgstr "转换帐户为群组"
 
 msgid "control.transform-to-groups"
 msgstr "转换为群组"
@@ -844,7 +844,7 @@ msgid "do.upload"
 msgstr "上传"
 
 msgid "control.upload-account-logo-optional"
-msgstr "上传账户标识 (可选)"
+msgstr "上传帐户标识 (可选)"
 
 msgid "report.usage"
 msgstr "使用报告"
@@ -865,10 +865,10 @@ msgid "control.user-field"
 msgstr "用户"
 
 msgid "control.user-added-to-account=user"
-msgstr "用户 %1 现在已经为账户的成员"
+msgstr "用户 %1 现在已经为帐户的成员"
 
 msgid "control.user-added=account"
-msgstr "用户已添加至 %1 账户"
+msgstr "用户已添加至 %1 帐户"
 
 msgid "control.user-is-system-user"
 msgstr "用户为系统用户"
@@ -880,10 +880,10 @@ msgid "control.user-requires-confirmation"
 msgstr "用户必要信息"
 
 msgid "control.user-removed-from-accounts=count"
-msgstr "已从 %1 个账户中移除用户"
+msgstr "已从 %1 个帐户中移除用户"
 
 msgid "control.removed-user=account"
-msgstr "已从账户 %1 中移除用户"
+msgstr "已从帐户 %1 中移除用户"
 
 msgid "control.username"
 msgstr "用户"
@@ -931,7 +931,7 @@ msgid "plugin.about-to-disable=title"
 msgstr "您要停用 %1."
 
 msgid "control.about-account-logo-image"
-msgstr "您可以选择一个图像作为账户标识。使用下面的表单从计算机上传图像。如果您未选择图像，则使用Socialtext的标识。标识的大小为宽201像素，高36像素，如果不符合该要求则图像将被调整。上传的标识将立即在用户的浏览器中显示，或者在刷新登录Socialtext桌面后显示（可选）。"
+msgstr "您可以选择一个图像作为帐户标识。使用下面的表单从计算机上传图像。如果您未选择图像，则使用Socialtext的标识。标识的大小为宽201像素，高36像素，如果不符合该要求则图像将被调整。上传的标识将立即在用户的浏览器中显示，或者在刷新登录Socialtext桌面后显示（可选）。"
 
 msgid "error.at-least-one-admin-required"
 msgstr "您必须至少选择一个管理员"
@@ -943,7 +943,7 @@ msgid "control.confirm-paging-discard-selection?"
 msgstr "您的选择不会保留到下一页。您确定要变更页面吗？"
 
 msgid "error.account_name-required"
-msgstr "账户名称为必填"
+msgstr "帐户名称为必填"
 
 msgid "plugin.click-to-disable"
 msgstr "点击以禁止"

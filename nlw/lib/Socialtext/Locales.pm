@@ -42,6 +42,7 @@ sub valid_code {
 
     # Add not-yet-ready but available locales
     $available->{zh_CN} = 'Chinese - Simplified';
+    $available->{zh_TW} = 'Chinese - Traditional';
 
     return $available->{$code};
 }

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 14:31+0800\n"
+"PO-Revision-Date: 2011-03-12 14:40+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -10,67 +10,67 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "account.created=name"
-msgstr "已创建账户 %1。"
+msgstr "已创建帐户 %1。"
 
 msgid "account.default=name"
-msgstr "默认账户为 %1。"
+msgstr "默认帐户为 %1。"
 
 msgid "account.deleting-old-export=path"
-msgstr "正在删除导出到 %1 的现存账户。"
+msgstr "正在删除导出到 %1 的现存帐户。"
 
 msgid "account.enabling-plugins"
-msgstr "正在启用账户插件..."
+msgstr "正在启用帐户插件..."
 
 msgid "account.exporting-"
-msgstr "正在导出账户工具库..."
+msgstr "正在导出帐户工具库..."
 
 msgid "account.exporting-groups=count,account"
-msgstr "正在导出账户'%2'的全部群组(%1)..."
+msgstr "正在导出帐户'%2'的全部群组(%1)..."
 
 msgid "account.exporting=name"
-msgstr "正在导出账户 %1..."
+msgstr "正在导出帐户 %1..."
 
 msgid "account.imported=name"
-msgstr "%1 账户已导入。"
+msgstr "%1 帐户已导入。"
 
 msgid "account.importing-"
-msgstr "正在导入账户工具库..."
+msgstr "正在导入帐户工具库..."
 
 msgid "account.importing-data"
-msgstr "正在导入账户数据..."
+msgstr "正在导入帐户数据..."
 
 msgid "account.importing-groups=account"
-msgstr "正在为'%1'账户导入全部群组..."
+msgstr "正在为'%1'帐户导入全部群组..."
 
 msgid "account.importing-logo"
-msgstr "正在导入账户标志..."
+msgstr "正在导入帐户标志..."
 
 msgid "account.matching=name"
-msgstr "匹配\"%1\"的账户"
+msgstr "匹配\"%1\"的帐户"
 
 msgid "account.new-default=name"
-msgstr "默认账户更新为 %1。"
+msgstr "默认帐户更新为 %1。"
 
 msgid "account.removed-logo"
 msgstr "标志已移除。默认即时可见。"
 
 msgid "account.renamed=old,new"
-msgstr "%1 账户已重命名为 %2"
+msgstr "%1 帐户已重命名为 %2"
 
 msgid "account.skip-missing=plugin"
 msgstr "... '%1'补丁丢失； 跳过"
 
 msgid "account.socialtext"
-msgstr "Socialtext 账户"
+msgstr "Socialtext 帐户"
 
 msgid "account.to-group=name"
 msgstr "成功迁移帐户 %1 至群组"
 
 msgid "account.type-changed=name"
-msgstr "已更新账户类型 %1。"
+msgstr "已更新帐户类型 %1。"
 
 msgid "account.updated"
-msgstr "账户已更新。"
+msgstr "帐户已更新。"
 
 msgid "account.updated-logo"
 msgstr "标志已更新。即时可见。"
@@ -181,7 +181,7 @@ msgid "cli.email"
 msgstr "邮箱"
 
 msgid "cli.exported=account,path"
-msgstr "%1 账户导出到 %2"
+msgstr "%1 帐户导出到 %2"
 
 msgid "cli.first-name"
 msgstr "名字"
@@ -193,7 +193,7 @@ msgid "cli.group-name"
 msgstr "群组名"
 
 msgid "cli.group-primary-account"
-msgstr "主要账户"
+msgstr "主要帐户"
 
 msgid "cli.group-users"
 msgstr "# 用户"
@@ -208,7 +208,7 @@ msgid "cli.last-name"
 msgstr "姓氏"
 
 msgid "cli.member-added=name,role,account"
-msgstr "%1 现是 %3 账户的'%2'"
+msgstr "%1 现是 %3 帐户的'%2'"
 
 msgid "cli.member-added=name,role,wiki"
 msgstr "%1 现是 %3 工作区的'%2'"
@@ -241,7 +241,7 @@ msgid "cli.set=user,external-id"
 msgstr "将'%1'的外部ID设置为'%2'。"
 
 msgid "cli.show-primary-account=user,account"
-msgstr "\"%1\"的主要账户是 %2。"
+msgstr "\"%1\"的主要帐户是 %2。"
 
 msgid "cli.updated-user=name"
 msgstr "已更新用户 %1。"
@@ -328,13 +328,13 @@ msgid "date.hour-format?"
 msgstr "显示时间为 12 小时制或是 24 小时制？"
 
 msgid "date.include-seconds?"
-msgstr "在时间里显式秒数？"
+msgstr "在时间里显示秒数？"
 
 msgid "desktop.relogin-for-default-logo"
 msgstr "（桌面用户如需看默认标志，需退出并重新登录。）"
 
 msgid "desktop.relogin-for-logo"
-msgstr "当前账户标志应用至桌面。桌面用户需退出并重新登录才能看到新的标志。"
+msgstr "当前帐户标志应用至桌面。桌面用户需退出并重新登录才能看到新的标志。"
 
 msgid "desktop.relogin-for-new-logo"
 msgstr "（桌面用户如需看新的标志，需退出并重新登录）"
@@ -388,28 +388,28 @@ msgid "email.recent-changes=wiki"
 msgstr "%1 工作区的最近更新"
 
 msgid "error.-forbidden"
-msgstr "没有不能共享账户到此工具库。"
+msgstr "没有不能共享帐户到此工具库。"
 
 msgid "error.account-exists=name"
 msgstr "此帐户名 %1 已被占用。"
 
 msgid "error.account-for-new-wiki-required"
-msgstr "账户必须被所有新的工作区指定。"
+msgstr "帐户必须被所有新的工作区指定。"
 
 msgid "error.account-forbidden"
-msgstr "无权限使用此账户"
+msgstr "无权限使用此帐户"
 
 msgid "error.account-id-or-name-required=uri"
-msgstr "必须提供合法的帐户名或账户ID到此网址(%1)。"
+msgstr "必须提供合法的帐户名或帐户ID到此网址(%1)。"
 
 msgid "error.account-name-required"
-msgstr "账户名称必填。"
+msgstr "帐户名称必填。"
 
 msgid "error.account-or-wiki-required=command"
-msgstr "命令(%1)必须指定账户或工作区。"
+msgstr "命令(%1)必须指定帐户或工作区。"
 
 msgid "error.account-required=command"
-msgstr "命令(%1)必须指定账户。"
+msgstr "命令(%1)必须指定帐户。"
 
 msgid "error.account-to-group-failed=name,message"
 msgstr "迁移帐户 %1 至群组失败：%2"
@@ -463,7 +463,7 @@ msgid "error.challenger-redirect-failed"
 msgstr "无重定向异议者。"
 
 msgid "error.change-account=type"
-msgstr "无法转换账户类型到 %1。"
+msgstr "无法转换帐户类型到 %1。"
 
 msgid "error.change-password=user"
 msgstr "用户 %1 修改密码出错"
@@ -475,7 +475,7 @@ msgid "error.confirmation-expired"
 msgstr "确认网址已过期。将重新发送确认邮件。"
 
 msgid "error.confirmation-resent"
-msgstr "已重新发送确认邮件。请通过邮件中链接激活账户。"
+msgstr "已重新发送确认邮件。请通过邮件中链接激活帐户。"
 
 msgid "error.corrupted-widget-settings"
 msgstr "此小工具设置已损坏。请删除并重新插入。"
@@ -493,7 +493,7 @@ msgid "error.create-profile-field-failed"
 msgstr "无法创建资料字段。"
 
 msgid "error.create=account"
-msgstr "无法创建账户 %1。"
+msgstr "无法创建帐户 %1。"
 
 msgid "error.create=wiki"
 msgstr "无法创建工作区 %1。"
@@ -502,7 +502,7 @@ msgid "error.deactivate=user"
 msgstr "用户 %1 停用出错"
 
 msgid "error.delete-auw-workspace"
-msgstr "本工作区属于账户 %1 下全体用户，正在终止。"
+msgstr "本工作区属于帐户 %1 下全体用户，正在终止。"
 
 msgid "error.delete-group=id,message"
 msgstr "删除群组id %1 失败: %2"
@@ -520,10 +520,10 @@ msgid "error.email-required!"
 msgstr "未提供邮箱"
 
 msgid "error.exists=account"
-msgstr "此名字 (%1) 的账户已存在。"
+msgstr "此名字 (%1) 的帐户已存在。"
 
 msgid "error.exists=account!"
-msgstr "%1 账户已存在！"
+msgstr "%1 帐户已存在！"
 
 msgid "error.exists=blog"
 msgstr "已存在博客'%1'，请选择其他名字。"
@@ -547,10 +547,10 @@ msgid "error.field-conversion-failed=from-class,to-class"
 msgstr "不能从'%1'转换字段类型到'%2'"
 
 msgid "error.field-exists=name,account"
-msgstr "不能创建个人资料字段： 字段'%1'已在账户'%2'中使用"
+msgstr "不能创建个人资料字段： 字段'%1'已在帐户'%2'中使用"
 
 msgid "error.field-exists=name,title,account"
-msgstr "不能创建个人资料字段： 字段'%1'（源于'%2'）已存在'%3'账户中"
+msgstr "不能创建个人资料字段： 字段'%1'（源于'%2'）已存在'%3'帐户中"
 
 msgid "error.field-name-required"
 msgstr "必须指定需要更改的字段名"
@@ -583,7 +583,7 @@ msgid "error.group-id-required=uri"
 msgstr "必须提供合法的群组ID到此网址(%1)。"
 
 msgid "error.group-member-exists=account"
-msgstr "群组已在账户 %1 中"
+msgstr "群组已在帐户 %1 中"
 
 msgid "error.group-member-exists=wiki"
 msgstr "群组已在工作区 %1 中"
@@ -598,7 +598,7 @@ msgid "error.group-required=command"
 msgstr "命令(%1)必须带有'--group'参数。"
 
 msgid "error.import-account=max-version"
-msgstr "不能导入一个比 %1 更高版本的账户"
+msgstr "不能导入一个比 %1 更高版本的帐户"
 
 msgid "error.import-directory-required"
 msgstr "未指定导入目录。"
@@ -703,10 +703,10 @@ msgid "error.invalid= url"
 msgstr "%1 是无效网址。"
 
 msgid "error.invalid=account"
-msgstr "'%1'是无效的账户名。"
+msgstr "'%1'是无效的帐户名。"
 
 msgid "error.invalid=account-type!"
-msgstr "账户类型(%1)无效！"
+msgstr "帐户类型(%1)无效！"
 
 msgid "error.invalid=domain"
 msgstr "域名(%1)无效。"
@@ -739,28 +739,28 @@ msgid "error.missing-people-plugin"
 msgstr "成员插件不可用。"
 
 msgid "error.new-account-name-required"
-msgstr "必须提供一个名字用以创建账户"
+msgstr "必须提供一个名字用以创建帐户"
 
 msgid "error.new-account-type-required"
-msgstr "必须指定更新的账户类型。"
+msgstr "必须指定更新的帐户类型。"
 
 msgid "error.new-password-mismatch"
 msgstr "新密码不匹配"
 
 msgid "error.no-account-id!"
-msgstr "账户ID未填写！"
+msgstr "帐户ID未填写！"
 
 msgid "error.no-account-with=plugin"
-msgstr "未通过认证：没有账户启用插件 %1"
+msgstr "未通过认证：没有帐户启用插件 %1"
 
 msgid "error.no-account=id"
-msgstr "指定账户ID：%1 不存在。"
+msgstr "指定帐户ID：%1 不存在。"
 
 msgid "error.no-account=name"
-msgstr "指定账户 %1 不存在。"
+msgstr "指定帐户 %1 不存在。"
 
 msgid "error.no-account=name-or-id"
-msgstr "%1 账户不存在"
+msgstr "%1 帐户不存在"
 
 msgid "error.no-activities"
 msgstr "没有活动显示。"
@@ -790,10 +790,10 @@ msgid "error.no-export-directory=path"
 msgstr "导出目录 %1 不存在。"
 
 msgid "error.no-field=id,account"
-msgstr "账户'%2'中不存在个人资料ID'%1'。"
+msgstr "帐户'%2'中不存在个人资料ID'%1'。"
 
 msgid "error.no-field=name,account"
-msgstr "账户'%2'中不存在个人资料'%1'"
+msgstr "帐户'%2'中不存在个人资料'%1'"
 
 msgid "error.no-group=id"
 msgstr "没有ID %1 的群组。"
@@ -832,7 +832,7 @@ msgid "error.no-people-plugin"
 msgstr "成员插件未安装。"
 
 msgid "error.no-people-plugin=account"
-msgstr "%1 账户必须启用成员插件"
+msgstr "%1 帐户必须启用成员插件"
 
 msgid "error.no-permission=name"
 msgstr "权限'%1'不存在"
@@ -1000,7 +1000,7 @@ msgid "error.relogin"
 msgstr "登录会话已过期，请重新认证。"
 
 msgid "error.remove-account-widget"
-msgstr "移除账户小工具出错。"
+msgstr "移除帐户小工具出错。"
 
 msgid "error.remove-auw-failed=wikis"
 msgstr "无法开放下列工作区给全体用户：%1"
@@ -1009,16 +1009,16 @@ msgid "error.remove-indirect=name,role,container"
 msgstr "在此群组中 %1 是 %3 的 %2，不能被直接移除。"
 
 msgid "error.remove-non-account-widget"
-msgstr "不能永久删除非账户小工具。"
+msgstr "不能永久删除非帐户小工具。"
 
 msgid "error.remove-primary=account"
-msgstr "%1 为群组的主要账户，不能解除成员资格。"
+msgstr "%1 为群组的主要帐户，不能解除成员资格。"
 
 msgid "error.remove-socialtext-widget"
 msgstr "不能删除 Socialtext 的小工具。"
 
 msgid "error.remove-user-primary-account"
-msgstr "无法从主账户删除用户"
+msgstr "无法从主帐户删除用户"
 
 msgid "error.removing-last-admin"
 msgstr "不能取消最后管理员的权限。"
@@ -1042,10 +1042,10 @@ msgid "error.reset-ldap-password"
 msgstr "如果你的密码保存在组织目录，Socialtext 管理员无法帮你重设密码。"
 
 msgid "error.restore-account-widget"
-msgstr "恢复账户小工具出错。"
+msgstr "恢复帐户小工具出错。"
 
 msgid "error.role-exists=user,role,account"
-msgstr "%1 已是 %3 账户的 %2"
+msgstr "%1 已是 %3 帐户的 %2"
 
 msgid "error.role-exists=user,role,wiki"
 msgstr "%1 已是 %3 工作区的 %2"
@@ -1066,10 +1066,10 @@ msgid "error.self-register=message"
 msgstr "开放注册设定出错: %1"
 
 msgid "error.set-system-account"
-msgstr "无法在账户创建后更新is_system_created字段"
+msgstr "无法在帐户创建后更新is_system_created字段"
 
 msgid "error.set-system-account-name"
-msgstr "无法修改系统创建账户的名字"
+msgstr "无法修改系统创建帐户的名字"
 
 msgid "error.set-system-user-email"
 msgstr "无法修改系统创建用户的邮箱"
@@ -1144,7 +1144,7 @@ msgid "error.widget-exists-in-"
 msgstr "工具库中已使用该小工具。"
 
 msgid "error.widget-forbidden"
-msgstr "你已失去所有账户的管理员权限。"
+msgstr "你已失去所有帐户的管理员权限。"
 
 msgid "error.wiki-email-alias-exists=name"
 msgstr "选择的工作空间名 %1，已被作为邮箱别名被占用。"
@@ -1219,16 +1219,16 @@ msgid "file.all"
 msgstr "所有文件"
 
 msgid "free50.account"
-msgstr "50 个免费 Socialtext 账户"
+msgstr "50 个免费 Socialtext 帐户"
 
 msgid "free50.setup"
-msgstr "50个免费账户"
+msgstr "50个免费帐户"
 
 msgid "google.for=query"
 msgstr "搜索\"%1\""
 
 msgid "group.created=name,account"
-msgstr "%1 群组已被创建在账户 %2 中。"
+msgstr "%1 群组已被创建在帐户 %2 中。"
 
 msgid "group.created=name,id"
 msgstr "%1 群组已创建（群组Id:%2）"
@@ -1243,7 +1243,7 @@ msgid "group.importing=wiki"
 msgstr "正在为'%1'工作区导入全部群组..."
 
 msgid "group.joined=account"
-msgstr "群组现加入账户 %1"
+msgstr "群组现加入帐户 %1"
 
 msgid "group.joined=group,role,wiki"
 msgstr "群组'%1'现是 %3 工作区的 %2"
@@ -1384,7 +1384,7 @@ msgid "login.username"
 msgstr "用户名"
 
 msgid "nav.accounts"
-msgstr "账户"
+msgstr "帐户"
 
 msgid "nav.groups"
 msgstr "群组"
@@ -1546,7 +1546,7 @@ msgid "pref.for-class=title"
 msgstr "选项：%1"
 
 msgid "pref.for=plugin,account"
-msgstr "%2 账户中 %1 插件的选项"
+msgstr "%2 帐户中 %1 插件的选项"
 
 msgid "pref.for=plugin:"
 msgstr "%1 插件的选项："
@@ -1564,7 +1564,7 @@ msgid "profile.created-field=title"
 msgstr "已创建档案栏\"%1\""
 
 msgid "profile.created-field=title,account"
-msgstr "已创建账户'%2'的档案栏'%1'"
+msgstr "已创建帐户'%2'的档案栏'%1'"
 
 msgid "profile.field-hidden"
 msgstr "此字段在用户资料中可见。"
@@ -1591,7 +1591,7 @@ msgid "profile.updated=field"
 msgstr "更新个人资料字段\"%1\""
 
 msgid "profile.updated=field,account"
-msgstr "账户'%2'的个人资料'%1'已更新"
+msgstr "帐户'%2'的个人资料'%1'已更新"
 
 msgid "profile.visible=user"
 msgstr "用户\"%1\"的资料已显示。"
@@ -1600,7 +1600,7 @@ msgid "profile.work-number"
 msgstr "工作区编号"
 
 msgid "register.confirmation-sent=email"
-msgstr "账户确认邮件已发送至 %1。"
+msgstr "帐户确认邮件已发送至 %1。"
 
 msgid "register.reset-password-sent=email"
 msgstr "帮助你修改密码的邮件已发送至 %1。"
@@ -1609,7 +1609,7 @@ msgid "report.dashboard-activity=user"
 msgstr "用户 %1 的活动"
 
 msgid "report.growth=account"
-msgstr "%1 账户增长报告"
+msgstr "%1 帐户增长报告"
 
 msgid "report.growth=wiki"
 msgstr "%1 工作区增长报告"
@@ -1624,7 +1624,7 @@ msgid "report.total=wiki"
 msgstr "%1 工作区总数"
 
 msgid "report.usage=account"
-msgstr "%1 账户使用报告"
+msgstr "%1 帐户使用报告"
 
 msgid "report.usage=wiki"
 msgstr "%1 工作区使用报告"
@@ -1993,7 +1993,7 @@ msgid "wiki.include-breadcrumbs?"
 msgstr "浏览页面时，在侧边栏显示最近浏览页面？"
 
 msgid "wiki.joined=name,account"
-msgstr "工作区 %1 已加入到账户 %2 下。"
+msgstr "工作区 %1 已加入到帐户 %2 下。"
 
 msgid "wiki.list"
 msgstr "工作区列表"
@@ -2002,7 +2002,7 @@ msgid "wiki.matching=query"
 msgstr "符合\"%1\"的工作区"
 
 msgid "wiki.mouseover-link?"
-msgstr "鼠标停在链接上时显式页面的第一部份?"
+msgstr "鼠标停在链接上时显示页面的第一部份?"
 
 msgid "wiki.not-member=group"
 msgstr "%1 群组不属于此工作区"

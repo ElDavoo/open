@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-26 08:54+0800\n"
+"PO-Revision-Date: 2011-03-12 14:50+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -28,7 +28,7 @@ msgid "error.loading-revisio-failed"
 msgstr "无法载入修订。"
 
 msgid "error.new-sheet-name-required"
-msgstr "请提供一个新的试算表的名称。"
+msgstr "请提供一个新的电子表格的名称。"
 
 msgid "error.no-data-to-sum"
 msgstr "找不到任何数据可以相加。"
@@ -43,7 +43,7 @@ msgid "error.select-option-or-click-cancel"
 msgstr "请选择其中一个选项，或点击取消。"
 
 msgid "error.sheet-contention:"
-msgstr "当您编辑的时候, <span style=\"font-weight: bold\" id=\"st-contention-user\">XXX</span> 保存了试算表的一个版本,并且我们无法调和这个变化。您想:"
+msgstr "当您编辑的时候, <span style=\"font-weight: bold\" id=\"st-contention-user\">XXX</span> 保存了电子表格的一个版本,并且我们无法调和这个变化。您想:"
 
 msgid "error.sheet-name-exists"
 msgstr "该名字已被使用，请输入一个不同的名称。"
@@ -52,7 +52,7 @@ msgid "error.sheet-name-exists:"
 msgstr "<a id=\"st-newspreadsheet-duplicate-link\" href=\"#\" target=\"\">XXX</a>  <span id=\"st-newspreadsheet-duplicate-emphasis\">已经被占用</span>。您想:"
 
 msgid "error.sheet-title-too-long"
-msgstr "试算表名称太长。请缩短名称，再试一次。"
+msgstr "电子表格名称太长。请缩短名称，再试一次。"
 
 msgid "sc.advanced-formatting"
 msgstr "高级格式"
@@ -70,7 +70,7 @@ msgid "sc.apply-current-selection"
 msgstr "将上面的设置应用到当前的选区"
 
 msgid "sc.apply-sheet-default"
-msgstr "将上面的设置成为试算表的默认值"
+msgstr "将上面的设置成为电子表格的默认值"
 
 msgid "sc.background"
 msgstr "背景"
@@ -127,10 +127,10 @@ msgid "sc.editing:"
 msgstr "编辑:"
 
 msgid "sc.enter-sheet-name"
-msgstr "输入新的试算表的名称"
+msgstr "输入新的电子表格的名称"
 
 msgid "sc.enter-sheet-title"
-msgstr "为您的试算表输入一个有意义的和独特的名称。"
+msgstr "为您的电子表格输入一个有意义的和独特的名称。"
 
 msgid "sc.existing-names"
 msgstr "存在的名称"
@@ -220,7 +220,7 @@ msgid "sc.range"
 msgstr "范围"
 
 msgid "sc.recalc-finished"
-msgstr "试算表依赖的数据已经发生了改变。保存的时候数据变更也将被保存。"
+msgstr "电子表格依赖的数据已经发生了改变。保存的时候数据变更也将被保存。"
 
 msgid "sc.recalculation"
 msgstr "重新计算"
@@ -229,7 +229,7 @@ msgid "sc.refresh"
 msgstr "刷新"
 
 msgid "sc.refresh-sheet"
-msgstr "刷新试算表"
+msgstr "刷新电子表格"
 
 msgid "sc.restore-revision"
 msgstr "还原修订"
@@ -256,7 +256,7 @@ msgid "sc.save-as"
 msgstr "另存为..."
 
 msgid "sc.save-as-new-revision"
-msgstr "作为一个新的版本保存在当前试算表"
+msgstr "作为一个新的版本保存在当前电子表格"
 
 msgid "sc.save-changes"
 msgstr "保存修改"
@@ -271,16 +271,16 @@ msgid "sc.save-with-new-name:"
 msgstr "保存一个新的名称:"
 
 msgid "sc.save-with-suggested-name"
-msgstr "保存试算表名称为 \"<span id=\"st-newspreadsheet-duplicate-suggest\">XXX</span>\""
+msgstr "保存电子表格名称为 \"<span id=\"st-newspreadsheet-duplicate-suggest\">XXX</span>\""
 
 msgid "sc.sheet-already-exists"
-msgstr "试算表已经存在"
+msgstr "电子表格已经存在"
 
 msgid "sc.sheet-settings"
-msgstr "试算表设置"
+msgstr "电子表格设置"
 
 msgid "sc.sheet-title:"
-msgstr "试算表名称:"
+msgstr "电子表格名称:"
 
 msgid "sc.show-preview"
 msgstr "显示预览"

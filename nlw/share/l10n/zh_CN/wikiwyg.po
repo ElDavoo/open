@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-26 04:28+0800\n"
+"PO-Revision-Date: 2011-03-12 14:50+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -199,7 +199,7 @@ msgid "edit.signal-to"
 msgstr "将本编辑发送至"
 
 msgid "edit.spreadsheet-title-required-for-wiki"
-msgstr "如果指定工作区，则必须填入试算表标题"
+msgstr "如果指定工作区，则必须填入电子表格标题"
 
 msgid "edit.summarize"
 msgstr "编辑概述（可选）"
@@ -514,7 +514,7 @@ msgid "wafl.#=tag"
 msgstr "#%1"
 
 msgid "wafl.aim"
-msgstr "AIM账户名"
+msgstr "AIM帐户名"
 
 msgid "wafl.aim-title=id"
 msgstr "使用 AIM 向 '%1' 发送即时信息. 点击进行编辑."
@@ -727,7 +727,7 @@ msgid "wafl.sheet-cell"
 msgstr "单元格"
 
 msgid "wafl.sheet-title"
-msgstr "试算表名称"
+msgstr "电子表格名称"
 
 msgid "wafl.skype"
 msgstr "Skype 名称"
@@ -739,7 +739,7 @@ msgid "wafl.skype=id"
 msgstr "Skype: %1"
 
 msgid "wafl.ss=sheet,cell"
-msgstr "试算表: %1 (%2)"
+msgstr "电子表格: %1 (%2)"
 
 msgid "wafl.tag"
 msgstr "标签"

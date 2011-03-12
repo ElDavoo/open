@@ -352,7 +352,7 @@ msgid "error.getting-activities"
 msgstr "参加活动时出错."
 
 msgid "widgets.gallery-switch=account:"
-msgstr "这是 \"%1\" 账号的工具库. 转到账户:"
+msgstr "这是 \"%1\" 账号的工具库. 转到帐户:"
 
 msgid "video.title:"
 msgstr "标题:"

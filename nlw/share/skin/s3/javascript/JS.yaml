@@ -147,7 +147,7 @@
 #    compress: 1
 #    parts:
 #        - {dir: 'skin/s3/javascript/l10n', file: 'fr_CA.js'}
-#'l10n-zh_TW.js':
-#    compress: 1
-#    parts:
-#        - {dir: 'skin/s3/javascript/l10n', file: 'zh_TW.js'}
+'l10n-zh_TW.js':
+    compress: 1
+    parts:
+        - {dir: 'skin/s3/javascript/l10n', file: 'zh_TW.js'}
