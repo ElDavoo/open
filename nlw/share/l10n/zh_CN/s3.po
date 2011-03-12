@@ -9,1520 +9,20 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "revision.end-quote"
-msgstr "”"
-
-msgid "revision.quote=summary"
-msgstr "“%1”"
-
-msgid "error.invalid=email"
-msgstr "“%1”不是有效的电子邮件地址"
-
-msgid "page.revisions=count"
-msgstr "%1 次更动"
-
-msgid "blog.show=tag"
-msgstr "%1 博客"
-
-msgid "file.by=date,user"
-msgstr "%1由%2"
-
-msgid "ago.days=count"
-msgstr "%1天前"
-
-msgid "ago.hours=count"
-msgstr "%1小时前"
-
-msgid "ago.mins=count"
-msgstr "%1分钟前"
-
-msgid "ago.minutes=count"
-msgstr "%1分钟前"
-
-msgid "revision.all=page"
-msgstr "%1: 所有版本"
-
-msgid "account.count=people"
-msgstr "%1 人"
-
-msgid "page.count=revision"
-msgstr "%1 次更动"
-
-msgid "page.count=view"
-msgstr "%1 次查看"
-
-msgid "page.add-tag"
-msgstr "&nbsp;+"
-
-msgid "draft.or"
-msgstr "&nbsp;or&nbsp;"
-
-msgid "error.type-mismatch=template,type"
-msgstr "'%1'存在,但并不是%2"
-
-msgid "email.customize"
-msgstr "(您可以自定义下面的文字。)"
-
-msgid "edit.saved"
-msgstr "(您的修改已经保存。)"
-
-msgid "info.following"
-msgstr "...列出您关注的人。您必须先注册或者登录来使用这个功能。"
-
-msgid "info.wikis"
-msgstr "...列出您所属的工作区。您必须登录查看您的列表。"
-
-msgid "invite.your-personal-message"
-msgstr "<此处是您的个人消息。>"
-
-msgid "wiki.home=name,title"
-msgstr "<a href=\"/%1/\">转到</a>%2首页。"
-
-msgid "wiki.invite=name,title"
-msgstr "<a href=\"/%1/?action=users_invitation\">邀请</a>其他人到%2。"
-
-msgid "wiki.to-new-group"
-msgstr "<em>要添加一个工作区到<strong>新群组,</strong></em>转到<a href=\"#\" onclick=\"showCreateGroupLightbox(); return false\">\"新建群组\"</a>在上面的主导航群组下拉菜单中。在这里,使用\"工作区\" 来创建您的工作区。"
-
-msgid "wiki.to-existing-group"
-msgstr "<em>要添加一个工作区到<strong>已存在的群组,</strong></em>转到<a href=\"/st/groups\">\"群组目录\"</a在上面的主导航群组下拉菜单中,转到您选择的群组, 点击\"编辑\"并创建您的工作区。"
-
-msgid "draft.?"
-msgstr "?"
-
-msgid "wiki.set=filter"
-msgstr "已在此工作区设置一个过滤器。所有邮件地址必须匹配此式样: <span style=\"color: red\">%1</span>"
-
-msgid "nav.activity"
-msgstr "活动"
-
-msgid "do.add"
-msgstr "添加"
-
-msgid "email.add-all"
-msgstr "添加所有成员"
-
-msgid "wiki.invite"
-msgstr "添加成员"
-
-msgid "tag.add"
-msgstr "添加标签"
-
-msgid "email.add-note?"
-msgstr "在邮件前面添加此标注？"
-
-msgid "comment.add:"
-msgstr "添加您的评论:"
-
-msgid "user.admin"
-msgstr "管理员"
-
-msgid "nav.all"
-msgstr "所有"
-
-msgid "file.all"
-msgstr "所有文件"
-
-msgid "group.all"
-msgstr "所有群组"
-
-msgid "nav.my-recently-viewed"
-msgstr "所有我最近浏览的"
-
-msgid "wiki.all"
-msgstr "我所有的工作区"
-
-msgid "page.all"
-msgstr "所有页面"
-
-msgid "page.all=wiki"
-msgstr "所有在%1的页面"
-
-msgid "revision.all"
-msgstr "所有版本"
-
-msgid "tag.all"
-msgstr "所有标签"
-
-msgid "tag.all=wiki"
-msgstr "所有标签"
-
-msgid "page.locked=type"
-msgstr "在您打开并进行编辑之后一位管理员已经锁定了这个%1。您将无法保存修改。"
-
-msgid "invite.no-worries"
-msgstr "请不用担心破坏任何东西--先前的版本都已经保存，因此总有一个您正在操作页面的备份。"
-
-msgid "wiki.anyone-can-email"
-msgstr "任何人都可以向这个工作区发送邮件。"
-
-msgid "invite.append?"
-msgstr "添加下面的个人消息？"
-
-msgid "page.delete=title?"
-msgstr "您确定要删除“%1”?"
-
-msgid "file.delete=name?"
-msgstr "您确定要从本页面删除此附件'%1'？"
-
-msgid "draft.discard?"
-msgstr "您确定要丢弃草稿吗?"
-
-msgid "do.file"
-msgstr "附件链接"
-
-msgid "info.files"
-msgstr "附件"
-
-msgid "page.files:"
-msgstr "本页面的附件:"
-
-msgid "revision.current"
-msgstr "回到当前版本"
-
-msgid "page.blank"
-msgstr "空白页"
-
-msgid "blog.blog"
-msgstr "博客"
-
-msgid "blog.archives"
-msgstr "博客存档"
-
-msgid "blog.navigation"
-msgstr "博客导航"
-
-msgid "blog.blogs"
-msgstr "博客"
-
-msgid "do.bold"
-msgstr "加粗"
-
-msgid "page.bottom"
-msgstr "页面底部"
-
-msgid "skin.browse"
-msgstr "浏览..."
-
-msgid "do.ul"
-msgstr "项目符号列表"
-
-msgid "revision.by:"
-msgstr "由:"
-
-msgid "do.cancel"
-msgstr "取消"
-
-msgid "wiki.central-page"
-msgstr "中间页面"
-
-msgid "password.change"
-msgstr "更改密码"
-
-msgid "info.contact=admin"
-msgstr "请与您的%1管理员联系。"
-
-msgid "info.browse"
-msgstr "点击“浏览”并选择一个图片或者文件上传."
-
-msgid "info.done"
-msgstr "点击“完成”来关闭这个窗口。"
-
-msgid "page.latest=uri"
-msgstr "点击<a href=\"%1\">这里</a>转到页面的最新版本。"
-
-msgid "page.back=uri"
-msgstr "点击<a href=\"%1\">这里</a>返回页面。"
-
-msgid "page.latest=type"
-msgstr "点击这里转到%1的最新版本。"
-
-msgid "page.back=type"
-msgstr "点击这里返回%1。"
-
-msgid "info.comment"
-msgstr "点击按钮添加评论到页面"
-
-msgid "info.post"
-msgstr "点击按钮新建博客文章"
-
-msgid "info.edit"
-msgstr "点击按钮编辑页面"
-
-msgid "info.unplugged"
-msgstr "点击按钮将页面保存到您的电脑离线使用。"
-
-msgid "wiki.clone-this"
-msgstr "复制这个工作区"
-
-msgid "wiki.clone"
-msgstr "复制工作区"
-
-msgid "wiki.clone=wiki"
-msgstr "%1的副本"
-
-msgid "do.close"
-msgstr "关闭"
-
-msgid "revision.color"
-msgstr "颜色查看(无格式的)"
-
-msgid "page.comment"
-msgstr "评论"
-
-msgid "nav.community"
-msgstr "社区"
-
-msgid "do.compare-revisions"
-msgstr "版本对比"
-
-msgid "wiki.created!"
-msgstr "恭喜!"
-
-msgid "nav.control-panel"
-msgstr "控制台"
-
-msgid "do.copy"
-msgstr "复制"
-
-msgid "page.copy"
-msgstr "复制到另一个工作区"
-
-msgid "info.copy"
-msgstr "复制一个存在的页面..."
-
-msgid "page.copy=title?"
-msgstr "将页面%1复制到另外一个工作区?"
-
-msgid "do.create"
-msgstr "新建"
-
-msgid "blog.create"
-msgstr "新建一个博客"
-
-msgid "page.create"
-msgstr "新建内容"
-
-msgid "blog.new"
-msgstr "新建博客"
-
-msgid "wiki.create"
-msgstr "新建工作区"
-
-msgid "nav.create-pdf"
-msgstr "由勾选的页面创建PDF文档"
-
-msgid "do.table"
-msgstr "新建表格"
-
-msgid "nav.create-word"
-msgstr "由勾选的页面创建Word文档"
-
-msgid "sort.creator"
-msgstr "创建者"
-
-msgid "nav.created-by"
-msgstr "创建者"
-
-msgid "page.created=author,date"
-msgstr "由 %1 于 %2 创建"
-
-msgid "password.current:"
-msgstr "当前密码:"
-
-msgid "nav.no-wikis"
-msgstr "目前，您还不是任何工作区的成员。"
-
-msgid "nav.no-followers"
-msgstr "目前, 您还没有关注任何人。"
-
-msgid "wiki.custom-permission"
-msgstr "自定义"
-
-msgid "skin.support"
-msgstr "自定义视觉主题支持"
-
-msgid "skin.files"
-msgstr "自定义的视觉主题文件"
-
-msgid "skin.customized"
-msgstr "自定义的视觉主题"
-
-msgid "nav.dashboard"
-msgstr "显示板"
-
-msgid "revision.date"
-msgstr "日期"
-
-msgid "sort.created"
-msgstr "创建的日期"
-
-msgid "sort.edited"
-msgstr "最后编辑的日期"
-
-msgid "nav.uploaded-date"
-msgstr "上传的日期"
-
-msgid "nav.default"
-msgstr "默认"
-
-msgid "skin.default"
-msgstr "默认视觉主题"
-
-msgid "do.delete"
-msgstr "删除"
-
-msgid "file.delete"
-msgstr "删除附件"
-
-msgid "page.delete"
-msgstr "删除页面"
-
-msgid "file.delete-selected"
-msgstr "删除选择的附件"
-
-msgid "file.delete-this"
-msgstr "删除这个附件"
-
-msgid "page.delete-tag"
-msgstr "删除这个标签"
-
-msgid "page.deleted=revision"
-msgstr "已删除: 版本%1"
-
-msgid "nav.desktop"
-msgstr "桌面"
-
-msgid "page.delete-epilogue"
-msgstr "您是否误删除了这个页面?如果是，您可以恢复页面。"
-
-msgid "wiki.disable-locking"
-msgstr "取消页面锁定。任何有编辑页面权限的成员都可以编辑任何页面。任何之前被锁定的页面都会解锁。"
-
-msgid "draft.discard"
-msgstr "放弃"
-
-msgid "wiki.permission-type:"
-msgstr "您是否想将此工作区设立为:"
-
-msgid "do.done"
-msgstr "完成"
-
-msgid "do.duplicate"
-msgstr "复制"
-
-msgid "page.duplicate"
-msgstr "复制页面"
-
-msgid "page.duplicate=title"
-msgstr "%1的副本"
-
-msgid "page.edit"
-msgstr "编辑"
-
-msgid "page.edit=title"
-msgstr "编辑%1"
-
-msgid "revision.summary"
-msgstr "编辑摘要"
-
-msgid "nav.summary"
-msgstr "编辑摘要"
-
-msgid "blog.edit"
-msgstr "编辑这个文章"
-
-msgid "revision.edited-by"
-msgstr "编辑者"
-
-msgid "user.email"
-msgstr "邮件"
-
-msgid "user.email-address"
-msgstr "邮件地址"
-
-msgid "page.email-to-this"
-msgstr "发送邮件到这个页面"
-
-msgid "wiki.email-to-this"
-msgstr "发送邮件到这个工作区"
-
-msgid "info.email-page"
-msgstr "用邮件发送这个页面"
-
-msgid "wiki.enable-email-notifications?"
-msgstr "为这个工作区开启邮件通知?"
-
-msgid "wiki.enable-page-locking"
-msgstr "开启页面锁定。工作区管理员可以选择锁定任何页面，只有管理员可以编辑锁定的页面。 谨慎使用，如果成员能轻松编辑页面才能更多参与。"
-
-msgid "invite.enter-email-list"
-msgstr "输入一个邮件列表（每个地址一行），包含您想要邀请加入这个工作区的人。"
-
-msgid "invite.lookahead"
-msgstr "输入用户的姓或名的一部分，或者邮件地址。"
-
-msgid "nav.error"
-msgstr "错误"
-
-msgid "error.user-data"
-msgstr "错误恢复用户数据"
-
-msgid "search.error:"
-msgstr "错误:"
-
-msgid "error.send-failed"
-msgstr "错误: 发送邮件失败。"
-
-msgid "error.no-recipient"
-msgstr "错误: 要发送邮件，您必须指定收件人。"
-
-msgid "invite.example:"
-msgstr "示例："
-
-msgid "example.title"
-msgstr "示例: Acme Widgets Product Development"
-
-msgid "example.logo"
-msgstr "示例: C:\\My Pictures\\socialtext-logo-30.gif"
-
-msgid "example.blog"
-msgstr "示例: 销售团队博客"
-
-msgid "example.wiki-url:"
-msgstr "示例: acme-product-dev 创建的工作区地址为:"
-
-msgid "example.logo-url"
-msgstr "示例: http://www.socialtext.com/images/socialtext-logo-30.gif"
-
-msgid "edit.expand"
-msgstr "扩展"
-
-msgid "info.expand-view"
-msgstr "扩展编辑区域以填充浏览器窗口"
-
-msgid "do.export"
-msgstr "导出"
-
-msgid "export.html"
-msgstr "导出为HTML"
-
-msgid "export.pdf"
-msgstr "导出为PDF"
-
-msgid "export.word"
-msgstr "导出为Word"
-
-msgid "file.extract"
-msgstr "提取附件"
-
-msgid "skin.file"
-msgstr "文件"
-
-msgid "file.name"
-msgstr "文件名"
-
-msgid "error.filename-too-long"
-msgstr "网址编码后文件名太长。"
-
-msgid "nav.filter:"
-msgstr "过滤按:"
-
-msgid "nav.first"
-msgstr "最前"
-
-msgid "nav.first-page"
-msgstr "第一页"
-
-msgid "config.first-name:"
-msgstr "名:"
-
-msgid "lite.first-page"
-msgstr "第一页"
-
-msgid "invite.email-template"
-msgstr "姓名 &lt;u01234@example.com&gt;"
-
-msgid "do.follow"
-msgstr "关注此人"
-
-msgid "email.from"
-msgstr "寄件人"
-
-msgid "blog.go:"
-msgstr "转到："
-
-msgid "invite.group"
-msgstr "群组"
-
-msgid "group.name"
-msgstr "群组名称"
-
-msgid "nav.groups"
-msgstr "群组"
-
-msgid "do.h1"
-msgstr "标题 1"
-
-msgid "do.h2"
-msgstr "标题 2"
-
-msgid "do.h3"
-msgstr "标题3"
-
-msgid "info.hello=user"
-msgstr "你好, %1"
-
-msgid "email.page-link:"
-msgstr "你好, 这是来自我想要你看到的工作区中的一个页面。此页面也可以在以下网页查看或者编辑："
-
-msgid "nav.help"
-msgstr "帮助"
-
-msgid "nav.lost-password"
-msgstr "我忘记密码了"
-
-msgid "email.position?"
-msgstr "如果已经有改标题的页面存在，邮件正文应该加在什么哪里？"
-
-msgid "info.contact-link"
-msgstr "如果链接无效，请联系"
-
-msgid "info.default-logo"
-msgstr "如果您没有选择图片，将会用 Socialtext 的标识代替。"
-
-msgid "info.public-wiki"
-msgstr "如果您想要无需登陆即可让用户查看的公共工作区，请联系<a href=\"%1\">Socialtext客服支持</a>."
-
-msgid "invite.click-edit"
-msgstr "如果您发现想要添加或者编辑的内容，请点击页面顶部的“编辑”链接。"
-
-msgid "invite.include-personal-message"
-msgstr "如果您希望的话，可以在邀请信里面包含个人消息。您可以编辑消息说出您想说的话。"
-
-msgid "do.image"
-msgstr "图片"
-
-msgid "image.web"
-msgstr "图片已存在于页面"
-
-msgid "wiki.group-required"
-msgstr "要新建工作区，工作区必须属于一个群组。"
-
-msgid "page.incoming-links"
-msgstr "外部链接"
-
-msgid "nav.invite"
-msgstr "邀请"
-
-msgid "invite.new-users"
-msgstr "邀请新用户"
-
-msgid "invite.other-users"
-msgstr "邀请其他用户"
-
-msgid "invite.to-groups"
-msgstr "邀请用户到选定的群组"
-
-msgid "nav.invite!"
-msgstr "邀请！"
-
-msgid "info.valid-wiki-name"
-msgstr "只能由3-30个小写字母、数字、下划线或者破折号组成。"
-
-msgid "do.italic"
-msgstr "斜体"
-
-msgid "do.join"
-msgstr "加入"
-
-msgid "do.join-to-edit"
-msgstr "加入以编辑"
-
-msgid "page.join-to-edit!"
-msgstr "现在加入编辑此页面！"
-
-msgid "page.join-to-edit"
-msgstr "加入以编辑"
-
-msgid "file.keep"
-msgstr "保留附件"
-
-msgid "file.keep?"
-msgstr "寄送附件?"
-
-msgid "tag.keep"
-msgstr "保留标签"
-
-msgid "nav.last"
-msgstr "最后"
-
-msgid "page.last-updated"
-msgstr "前次<strong>更新</strong>为"
-
-msgid "sort.last-edited"
-msgstr "前次编辑者"
-
-msgid "nav.last-page"
-msgstr "末页"
-
-msgid "user.last-name:"
-msgstr "姓："
-
-msgid "do.outdent"
-msgstr "减少缩进"
-
-msgid "user.list-all"
-msgstr "列出所有用户"
-
-msgid "edit.loading"
-msgstr "载入中..."
-
-msgid "page.lock"
-msgstr "锁定页面"
-
-msgid "nav.login"
-msgstr "登录"
-
-msgid "nav.logout"
-msgstr "登出"
-
-msgid "login.is-disabled"
-msgstr "无法登录"
-
-msgid "watch.look-for"
-msgstr "寻找"
-
-msgid "wiki.clone-and-invite-members=wiki"
-msgstr "复制%1工作区，包括所有的页面、标签和附件。下一步，您需要邀请成员加入新的工作区。"
-
-msgid "invite.edit-save"
-msgstr "在文本框键入您的内容，然后点击“保存”。"
-
-msgid "config.all-users"
-msgstr "管理所有用户"
-
-msgid "config.files"
-msgstr "管理文件"
-
-msgid "config.membership"
-msgstr "管理工作区成员"
-
-msgid "file.max-size"
-msgstr "文件最大: 50MB"
-
-msgid "email.message"
-msgstr "消息"
-
-msgid "nav.mine"
-msgstr "我的"
-
-msgid "nav.mobile"
-msgstr "移动版"
-
-msgid "do.indent"
-msgstr "增减缩进"
-
-msgid "nav.conversations"
-msgstr "我的对话"
-
-msgid "nav.history"
-msgstr "我的历史"
-
-msgid "nav.my-settings"
-msgstr "我的设置"
-
-msgid "nav.my-watchlist"
-msgstr "我的关注列表"
-
-msgid "nav.my-wikis"
-msgstr "我的工作区"
-
-msgid "user.name"
-msgstr "名称"
-
-msgid "page.new"
-msgstr "新页面"
-
-msgid "post.new"
-msgstr "发帖"
-
-msgid "page.new-name"
-msgstr "新页面名称"
-
-msgid "password.new:"
-msgstr "新的密码："
-
-msgid "password.minimum-length"
-msgstr "新密码至少需6个字符长。"
-
-msgid "invite.welcome-email:"
-msgstr "新用户会收到以下欢迎信："
-
-msgid "wiki.new"
-msgstr "新工作区"
-
-msgid "blog.newer"
-msgstr "新条目"
-
-msgid "nav.next"
-msgstr "下一个"
-
-msgid "revision.next-compare"
-msgstr "下一个比较"
-
-msgid "nav.next-page"
-msgstr "下一页"
-
-msgid "revision.next"
-msgstr "下一个版本"
-
-msgid "lite.next-page"
-msgstr "下一页"
-
-msgid "config.no"
-msgstr "否"
-
-msgid "error.no-page=type,tag"
-msgstr "没有找到“%2”标签的%1页面"
-
-msgid "error.no-page=template"
-msgstr "名为“%1”的页面不存在"
-
-msgid "edit.normal"
-msgstr "一般"
-
-msgid "revision.normal-view"
-msgstr "一般查看"
-
-msgid "do.ol"
-msgstr "编号列表"
-
-msgid "blog.older"
-msgstr "更早的条目"
-
-msgid "wiki.only-email-from=role"
-msgstr "只有%1可以向这个工作区发邮件。"
-
-msgid "wiki.confirm-unsubscribe"
-msgstr "如果您希望从这个工作区退出只需点击下面的按钮。点击之后您将无法访问这个工作区，再次访问需要工作区管理员重新将您加入。 "
-
-msgid "info.edit-summary-signal-visibility"
-msgstr "只有具有本页面查看权限的成员才会收到信号。"
-
-msgid "wiki.visit-later=wiki"
-msgstr "您也可以在此工作区继续工作，稍后再访问“%1”。"
-
-msgid "page.creator"
-msgstr "原<strong>创建者</strong>为"
-
-msgid "page.orphaned"
-msgstr "孤立页面"
-
-msgid "nav.page"
-msgstr "页面"
-
-msgid "page.last-updated=time,author"
-msgstr "页面最后更新: %2于%1"
-
-msgid "nav.page-locking"
-msgstr "页面锁定"
-
-msgid "page.title"
-msgstr "页面标题"
-
-msgid "tag.pages"
-msgstr "页面"
-
-msgid "watch.current-page"
-msgstr "您正在关注的页面"
-
-msgid "nav.people"
-msgstr "人員"
-
-msgid "nav.people-directory"
-msgstr "人員目录"
-
-msgid "nav.following"
-msgstr "我关注的人"
-
-msgid "blog.permalink"
-msgstr "永久链接"
-
-msgid "invite.personal-message"
-msgstr "个人消息"
-
-msgid "error.choose-group"
-msgstr "请选择一个或者更多群组"
-
-msgid "file.browse"
-msgstr "请点击浏览并选择一个文件上传。"
-
-msgid "edit.copy-your-changes"
-msgstr "请复制您的更改并点击取消返回到页面。"
-
-msgid "blog.naming"
-msgstr "请给您的博客命名。如果您的命名不以 \"博客\"结尾, 系统会在您的命名后面自动添加\"博客\"。点击 \"创建\"之后, 您将会直接进入新建的博客。"
-
-msgid "search.be-more-specific"
-msgstr "请使用更准确的关键字或者添加更多搜索项目。"
-
-msgid "post.by-email:"
-msgstr "通过邮件向此标签发布:"
-
-msgid "post.by"
-msgstr "发布者"
-
-msgid "nav.preferences"
-msgstr "偏好"
-
-msgid "widget.preview"
-msgstr "预览"
-
-msgid "nav.previous"
-msgstr "前一个"
-
-msgid "revision.previous-compare"
-msgstr "前一个比较"
-
-msgid "nav.previous-page"
-msgstr "上一页"
-
-msgid "revision.previous"
-msgstr "上一个版本"
-
-msgid "lite.previous-page"
-msgstr "上一页"
-
-msgid "do.print"
-msgstr "打印"
-
-msgid "page.print"
-msgstr "打印本页"
-
-msgid "config.private"
-msgstr "隐私"
-
-msgid "config.public"
-msgstr "公开"
-
-msgid "wiki.public"
-msgstr "公开的工作区"
-
-msgid "widget.push-all"
-msgstr "推送到所有显示板"
-
-msgid "nav.recent-activities"
-msgstr "近期活动"
-
-msgid "nav.recent-changes"
-msgstr "近期更改"
-
-msgid "nav.recently-viewed"
-msgstr "近期查看"
-
-msgid "email.recipients"
-msgstr "收件人"
-
-msgid "do.register"
-msgstr "注册"
-
-msgid "sort.relevance"
-msgstr "相关性"
-
-msgid "do.remove"
-msgstr "移除"
-
-msgid "edit.remove=tag"
-msgstr "将%1从此队列中移除"
-
-msgid "do.remove-all"
-msgstr "移除全部"
-
-msgid "skin.remove-existing"
-msgstr "移除&nbsp;存在的&nbsp;文件"
-
-msgid "do.rename"
-msgstr "重命名"
-
-msgid "page.rename"
-msgstr "重命名页面"
-
-msgid "do.replace"
-msgstr "替换"
-
-msgid "page.replace"
-msgstr "替换已存在页面"
-
-msgid "password.reset"
-msgstr "重设密码"
-
-msgid "page.restore"
-msgstr "恢复页面"
-
-msgid "page.restore=revision"
-msgstr "恢复版本%1"
-
-msgid "draft.resume"
-msgstr "继续"
-
-msgid "info.normal-view"
-msgstr "将编辑区域回到一般查看"
-
-msgid "config.review-settings=wiki:"
-msgstr "查看或更改%1的设置:"
-
-msgid "page.revision"
-msgstr "版本"
-
-msgid "page.revision=revision"
-msgstr "版本%1"
-
-msgid "revision.compare"
-msgstr "版本比较"
-
-msgid "sort.revisions"
-msgstr "更動次數"
-
-msgid "user.role"
-msgstr "角色"
-
-msgid "blog.sample"
-msgstr "博客示例"
-
-msgid "edit.save"
-msgstr "保存"
-
-msgid "comment.save"
-msgstr "保存评论"
-
-msgid "blog.unplug"
-msgstr "保存最近的50个页面"
-
-msgid "error.save-failed"
-msgstr "服务器错误导致保存失败，请稍候再试。"
-
-msgid "nav.search"
-msgstr "搜索"
-
-msgid "wiki.search-all:"
-msgstr "搜索我的工作区："
-
-msgid "search.results"
-msgstr "搜索结果"
-
-msgid "wiki.search:"
-msgstr "搜索此工作区:"
-
-msgid "invite.search-users"
-msgstr "搜索用户并邀请"
-
-msgid "search.limit=count"
-msgstr "搜索被限制在%1结果."
-
-msgid "nav.select"
-msgstr "选取"
-
-msgid "skin.select:"
-msgstr "选取一个工作区视觉主题:"
-
-msgid "skin.select-file:"
-msgstr "选取一个包含自定义视觉主题文件的ZIP或TGZ文件:"
-
-msgid "nav.toggle-all"
-msgstr "全选/取消全选"
-
-msgid "email.send"
-msgstr "发送"
-
-msgid "email.copy-self?"
-msgstr "向自己发送副本?"
-
-msgid "nav.settings"
-msgstr "设置"
-
-msgid "wiki.send-email-notifications?"
-msgstr "通过邮件向此工作区的用户发送工作区更改通知吗？"
-
-msgid "lookahead.all-results"
-msgstr "显示所有结果..."
-
-msgid "nav.show:"
-msgstr "显示:"
-
-msgid "info.showing=from,to,total"
-msgstr "显示第 %1 - %2 項，共 %3 項"
-
-msgid "page.signal-this!"
-msgstr "发送此页!"
-
-msgid "comment.signal-to"
-msgstr "将本评论发送至"
-
-msgid "nav.signals"
-msgstr "信号"
-
-msgid "file.size"
-msgstr "大小"
-
-msgid "skin.size"
-msgstr "大小(bytes)"
-
-msgid "nav.socialtext"
-msgstr "Socialtext"
-
-msgid "login.title"
-msgstr "Socialtext登录"
-
-msgid "nav.socialtext-people"
-msgstr "Socialtext人員"
-
-msgid "nav.socialtext-signals"
-msgstr "Socialtext信号"
-
-msgid "nav.socialtext-unplugged"
-msgstr "Socialtext脱机"
-
-msgid "about.unplugged"
-msgstr "Socialtext脱机允许用户脱机阅读或者编辑工作区。用户可以\"脱机\"一个或者更多页面来进行阅读或者编辑。更改将会与工作区同步。"
-
-msgid "unplugged.disabled"
-msgstr "Socialtext脱机取消"
-
-msgid "unplugged.enabled"
-msgstr "Socialtext脱机开启"
-
-msgid "info.skin"
-msgstr "Socialtext可以创建视觉主题来自定义您的工作区的外观和风格。您可以使用由Socialtext提供的默认视觉主题或者自定义视觉主题。"
-
-msgid "info.socialtext"
-msgstr "Socialtext：企业社会化软件"
-
-msgid "edit.contention=type"
-msgstr "在您编辑的时候有其他人对%1进行了更改。"
-
-msgid "edit.contention"
-msgstr "在您编辑的时候有其他人对此页面进行了更改。"
-
-msgid "error.email-spreadsheet"
-msgstr "对不起，此功能不支持电子表格。"
-
-msgid "sort.by:"
-msgstr "排序按照:"
-
-msgid "sort.by-created"
-msgstr "按首次发布时间对条目排序"
-
-msgid "sort.by-updated"
-msgstr "按最后更新时间对条目排序"
-
-msgid "do.source-view"
-msgstr "资源查看"
-
-msgid "invite.welcome-message"
-msgstr "标准欢迎信息"
-
-msgid "page.prompt-name"
-msgstr "开始输入一个页面名称..."
-
-msgid "watch.stop"
-msgstr "停止关注"
-
-msgid "do.unfollow"
-msgstr "停止关注此人"
-
-msgid "do.strike"
-msgstr "删去"
-
-msgid "email.subject"
-msgstr "主题"
-
-msgid "blog.subscribe"
-msgstr "添加到订阅"
-
-msgid "info.success"
-msgstr "成功"
-
-msgid "tag.suggestions:"
-msgstr "建议:"
-
-msgid "page.summaries"
-msgstr "摘要"
-
-msgid "wiki.tag"
-msgstr "标签"
-
-msgid "wiki.tag=tag"
-msgstr "标签: %1"
-
-msgid "wiki.tags"
-msgstr "标签"
-
-msgid "revision.tags:"
-msgstr "标签:"
-
-msgid "edit.view-contention=type:"
-msgstr "您刚才编辑的%1显示如下 。您可以从此处复制粘贴您的更改:"
-
-msgid "invite.using-wiki"
-msgstr "工作区简单易用。点击这里总览页面。"
-
-msgid "info.after-duplicate"
-msgstr "点击\"复制\"之后主窗口会导航到新的页面名称。 "
-
-msgid "error.page-exists=title,button"
-msgstr "您选择的新页面名称, \"%1\", 已经被使用。请选择其它的名字。 如果您确定要覆盖已经存在的\"%1\"页面, 请再次点击\"%2\" 。"
-
-msgid "error.invalid-page-name=title"
-msgstr "您选择的新页面名称, \"%1\", 不允许使用。请输入或更改页面名称。"
-
-msgid "error.same-page-name=title"
-msgstr "您选择的新页面名称, \"%1\", 跟现在的名称一样。请输入新的名称。"
-
-msgid "error.long-page-name=title"
-msgstr "您选择的新页面名称, \"%1\", 在网址编码之后太长了."
-
-msgid "edit.view-locked"
-msgstr "您的更改的原始wikitext 如下。 您可以从此处复制您的更改。"
-
-msgid "search.too-general"
-msgstr "您输入的搜索过于宽泛。"
-
-msgid "search.too-many=count"
-msgstr "您输入的搜索过于宽泛; %1页面和/或附件符合请求。"
-
-msgid "edit.view-unsaved:"
-msgstr "您刚编辑的文本显示如下。您可以从此处复制您的更改。"
-
-msgid "file.replace=count,size,user,date"
-msgstr "此文件(最近更新: %2, 由%3于%4上传)有<span class=\"emphasis\">%1以前的版本</span>。 如果您点击<em>替换</em>,将会<em>删除其它所有版本</em>。"
-
-msgid "wiki.no-groups"
-msgstr "没有群组直接跟此工作区关联。"
-
-msgid "page.no-backlinks"
-msgstr "还没有页面链接到此页面。"
-
-msgid "page.no-tags"
-msgstr "此页面没有标签。"
-
-msgid "wiki.no-members"
-msgstr "没有用户直接跟此工作区关联。"
-
-msgid "file.add-or-replace=name,size,user,date?"
-msgstr "本页面已经有名为\"%1\" (%2 由%3于%4上传) 的附件。 您可以<span class=\"emphasis\">添加</span> 此文件的其它版本或<span class=\"emphasis\">替换</span>已存在的文件。您想怎么做？"
-
-msgid "file.add-or-replace=name?"
-msgstr "本页面已经有名为\"%1\"的附件。您可以<span class=\"emphasis\">添加</span>此文件的其它版本或<span class=\"emphasis\">替换</span>已存在的文件。您想怎么做？"
-
-msgid "config.wiki"
-msgstr "此工作区"
-
-msgid "config.blog:"
-msgstr "此博客:"
-
-msgid "info.wiki-id"
-msgstr "这是一个作为您的工作区网址和邮件地址的唯一短标识。"
-
-msgid "info.wiki-title"
-msgstr "这是您工作区的标题。需要的话稍后可以更改。"
-
-msgid "page.is-locked"
-msgstr "本页面已锁定，只有工作区管理员可以进行编辑。"
-
-msgid "error.cannot-reset-pasword"
-msgstr "此用户的密码不能重置。"
-
-msgid "sort.title"
-msgstr "标题"
-
-msgid "page.titles"
-msgstr "标题"
-
-msgid "invite.make-wikilink"
-msgstr "要链接到其它页面（即使页面还不存在），请给一个词语或词组加上方括号。"
-
-msgid "nav.tools"
-msgstr "工具"
-
-msgid "page.top"
-msgstr "页面顶部"
-
-msgid "nav.try-people"
-msgstr "试试Socialtext别人"
-
-msgid "nav.try-signals"
-msgstr "试试Socialtext Signals"
-
-msgid "email.address-or-name"
-msgstr "输入一个邮件地址或者用户名"
-
-msgid "password.again:"
-msgstr "再次输入新密码:"
-
-msgid "page.unlock"
-msgstr "解锁页面"
-
-msgid "do.unsubscribe"
-msgstr "退出"
-
-msgid "do.unsubscribe=wiki"
-msgstr "从%1工作区退出"
-
-msgid "page.untitled"
-msgstr "未命名页面"
-
-msgid "sheet.untitled"
-msgstr "未命名电子表格"
-
-msgid "blog.updated-by"
-msgstr "更新者"
-
-msgid "page.updated=user,date"
-msgstr "由 %1 于 %2 更新"
-
-msgid "do.upload"
-msgstr "上传"
-
-msgid "image.upload"
-msgstr "上传图片"
-
-msgid "file.upload-complete"
-msgstr "上传完成"
-
-msgid "file.upload"
-msgstr "上传文件"
-
-msgid "skin.uploaded"
-msgstr "已上传"
-
-msgid "sort.uploader"
-msgstr "上传者"
-
-msgid "file.uploaded-by"
-msgstr "上传者"
-
-msgid "file.uploaded:"
-msgstr "已上传的文件:"
-
-msgid "skin.unsupported"
-msgstr "上传的视觉主题不支持。上传视觉主题仅用于开发和测试自定义视觉主题。请联系sales@socialtext.com获取更多关于自定义视觉主题的信息。"
-
-msgid "file.uploading=name"
-msgstr "正在上传 %1..."
-
-msgid "page.use-template:"
-msgstr "使用模板:"
-
-msgid "email.recipient-box"
-msgstr "用上面的收件人栏添加"
-
-msgid "info.invite-member-groups"
-msgstr "使用下面的表格来邀请用户加入此工作区的一个群组。这些群组中的任何一个成员都可以访问此工作区。此外，如果您想授予某人进入工作区的权限而不想邀请他加入群组，您可以取消勾选下面的“邀请用户加入选取的群组”选框。强烈建议通过群组添加用户。"
-
-msgid "info.invite-admin-groups"
-msgstr "使用下面的表格邀请用户加入一个此工作区管理的的群组。这些群组中的任何一个用户成员都可以进入此工作区。此外，如果你想授予某特定用户访问权，您可以取消勾选下面的“邀请用户加入选取的群组”选框。"
-
-msgid "info.relogin"
-msgstr "请用你的邮箱地址和新密码再次登录。"
-
-msgid "config.users"
-msgstr "用户"
-
-msgid "blog.view"
-msgstr "查看"
-
-msgid "revision.view"
-msgstr "查看含格式的"
-
-msgid "error.css-disabled"
-msgstr "警告：样式单在移动设备上无法使用。要正确地查看移动版Socialtext, 您需要在浏览器设置里面启用样式单。"
-
-msgid "do.watch"
-msgstr "关注"
-
-msgid "do.weblink"
-msgstr "网络链接"
-
-msgid "info.welcome=user"
-msgstr "欢迎%1"
-
-msgid "nav.news"
-msgstr "最新更动"
-
-msgid "info.email-to-page"
-msgstr "当工作区收到邮件，邮件主题将变成页面名称，邮件正文将变成页面正文。"
-
-msgid "info.central=wiki"
-msgstr "当用户点击工作区标题，会转到工作区的中间页面。此页面跟工作区有一样的标题（“%1”）。"
-
-msgid "invite.entering-text"
-msgstr "当您输入本文的时候，请按段落录入。"
-
-msgid "wiki.email-senders?"
-msgstr "谁可以向此工作区发送邮件？"
-
-msgid "do.wikilink"
-msgstr "维基链接"
-
-msgid "nav.wiki"
-msgstr "工作区"
-
-msgid "wiki.appearance"
-msgstr "工作区外观"
-
-msgid "config.blog-sort"
-msgstr "工作区博客排序"
-
-msgid "config.email-notify"
-msgstr "工作区邮件通知设置"
-
-msgid "config.email-receive"
-msgstr "工作区邮件接收设置"
-
-msgid "wiki.feature"
-msgstr "工作区功能"
-
-msgid "wiki.link"
-msgstr "工作区链接"
-
-msgid "wiki.logo"
-msgstr "工作区标识"
-
-msgid "wiki.name"
-msgstr "工作区名称"
-
-msgid "wiki.privacy"
-msgstr "工作区隐私"
-
-msgid "wiki.skin"
-msgstr "工作区视觉主题"
-
-msgid "wiki.title"
-msgstr "工作区标题"
-
-msgid "nav.wikis"
-msgstr "工作区"
-
-msgid "info.wiki-private"
-msgstr "工作区默认是不开放的。所有用户都需要登录查看页面。只有工作区管理员可以邀请新的用户。"
-
-msgid "wiki.list:"
-msgstr "您所属的工作区："
-
-msgid "config.yes"
-msgstr "是"
-
-msgid "info.logged-in=name"
-msgstr "您已登入为 %1"
-
-msgid "info.wiki-as-blog"
-msgstr "您也可以配置工作区链接作为博客显示。"
-
-msgid "info.wiki-logo"
-msgstr "您可以选择一个图片当作工作区的标识。您可以输入一个已经存在的网络图片链接，或者从您的电脑上传一张图片。"
-
-msgid "info.blog-sort"
-msgstr "您可以选择按照条目更新的日期或者第一次发布日期进行排序。"
-
-msgid "info.wiki-group"
-msgstr "您可以创建一个新的群组，或者添加工作区到已存在的群组。"
-
-msgid "info.invite-filter=domain"
-msgstr "您只能邀请跟您一样使用“%1”邮箱域名的人。"
-
-msgid "error.same-revision"
-msgstr "您不能让版本跟自己比较。"
-
-msgid "draft.unsaved=page,wiki,wiki-id:"
-msgstr "您有一个\"%1\"的未保存草稿在\"%2\" (%3)工作区:"
-
-msgid "wiki.public:"
-msgstr "您可以自由进入查看或者编辑任何公开维基条目："
-
-msgid "wiki.created=title,uri"
-msgstr "您刚刚创建了\"%1\", 一个全新的 Socialtext 工作区。您是管理员。新工作区的网络链接是 %2"
-
-msgid "edit.self-join=group?"
-msgstr "您必须成为 %1 群组的成员，才能在此页面进行编辑或者评论。想现在加入吗?"
-
-msgid "edit.choose-group"
-msgstr "您必须成为具有访问此工作区权限的的群组中的成员。请在下面选择您想加入的群组："
-
-msgid "error.no-page-pdf"
-msgstr "您必须至少勾选一个页面来创建PDF"
-
-msgid "error.no-page-doc"
-msgstr "您必须至少勾选一个页面来创建Word文档"
-
-msgid "error.is-guest"
-msgstr "您必须注册或者登录以使用此功能。"
-
-msgid "wiki.created:"
-msgstr "如果您想，您已经可以跳转到您的新群组。选择您的下一步："
-
-msgid "watch.list"
-msgstr "您的关注列表"
-
-msgid "error.non-admin-create-group"
-msgstr "由於您的应用配置限制，只有帐户管理员可以创建群组。"
-
-msgid "search.no-results"
-msgstr "您的搜索没有匹配的结果。"
-
-msgid "config.immutable-name-password"
-msgstr "您的用户名和密码不能用“我的设置”来更改。"
-
-msgid "ago.~1day"
-msgstr "大约一天前"
-
-msgid "ago.~1hour"
-msgstr "大约一个小时前"
-
-msgid "example.wiki-email:"
-msgstr "这个邮件地址:"
-
-msgid "email.another-example"
-msgstr "another.friend@example.com"
-
-msgid "file.attached-to"
-msgstr "附加到"
-
-msgid "file.attached-to-page"
-msgstr "附加到页面"
-
-msgid "file.by"
-msgstr "由"
-
-msgid "info.error:"
-msgstr "错误:"
-
-msgid "invite.example"
-msgstr "范例"
-
-msgid "invite.example-domain"
-msgstr "example.com"
-
-msgid "invite.friend"
-msgstr "好友"
-
-msgid "nav.hide"
-msgstr "隐藏"
-
-msgid "info.in"
-msgstr "在"
+msgid "about.keywords"
+msgstr "维基, 商务维基, 文档管理, 企业维基, 内网维基, 知识管理, 在线协作, 开放资源维基, 门户维基, 托管维基, 协作, 社会化软件, 社交网络, 显示板, 项目协作, 团队协作, 维基应用, 维基软件, 社区"
 
 msgid "about.people"
 msgstr "是一个具有强劲社交网络功能的人員目录。您可以找到您同事的联络信息，发现具有特长和共同爱好的人，以及通过您的社交网络找到有价值的信息。"
 
-msgid "ago.<1minute"
-msgstr "不到一分钟前"
+msgid "about.signals"
+msgstr "提供与Socialtext的企业协作平台整合的社会化消息服务。在提供像其它微分享工具如Twitter&#0153;一样的好处的同时，Socialtext Signals还有更多优点，因为消息服务的运作脉络，是在为共同目标协作的组织成员当中。"
 
-msgid "info.on"
-msgstr "於"
+msgid "about.unplugged"
+msgstr "Socialtext脱机允许用户脱机阅读或者编辑工作区。用户可以\"脱机\"一个或者更多页面来进行阅读或者编辑。更改将会与工作区同步。"
 
-msgid "watch.click"
-msgstr "在您想关注的页面上点击，以添加页面到您的关注列表。"
+msgid "account.count=people"
+msgstr "%1 人"
 
 msgid "ago.1day"
 msgstr "一天前"
@@ -1536,59 +36,1571 @@ msgstr "一分钟前"
 msgid "ago.1minute"
 msgstr "一分钟前"
 
-msgid "page.editing=ago"
-msgstr "已於%1打开本页进行编辑。"
+msgid "ago.<1minute"
+msgstr "不到一分钟前"
 
-msgid "info.optional"
-msgstr "可选"
+msgid "ago.days=count"
+msgstr "%1天前"
 
-msgid "info.post-by-email"
-msgstr "或通过邮件发布"
+msgid "ago.hours=count"
+msgstr "%1小时前"
 
-msgid "about.signals"
-msgstr "提供与Socialtext的企业协作平台整合的社会化消息服务。在提供像其它微分享工具如Twitter&#0153;一样的好处的同时，Socialtext Signals还有更多优点，因为消息服务的运作脉络，是在为共同目标协作的组织成员当中。"
+msgid "ago.mins=count"
+msgstr "%1分钟前"
 
-msgid "email.recipient-box-continued"
-msgstr "这个列表的收件人"
+msgid "ago.minutes=count"
+msgstr "%1分钟前"
 
-msgid "config.registered-users"
-msgstr "已注册用户"
+msgid "ago.~1day"
+msgstr "大约一天前"
 
-msgid "info.required"
-msgstr "必选"
+msgid "ago.~1hour"
+msgstr "大约一个小时前"
 
-msgid "revision.begin-quote"
-msgstr "说道：“"
+msgid "blog.archives"
+msgstr "博客存档"
 
-msgid "nav.show"
-msgstr "显示"
+msgid "blog.blog"
+msgstr "博客"
 
-msgid "tag.template"
-msgstr "模版"
+msgid "blog.blogs"
+msgstr "博客"
 
-msgid "config.wiki-custom"
-msgstr "这个工作区有定制的许可"
+msgid "blog.create"
+msgstr "新建一个博客"
+
+msgid "blog.edit"
+msgstr "编辑这个文章"
+
+msgid "blog.go:"
+msgstr "转到："
+
+msgid "blog.naming"
+msgstr "请给您的博客命名。如果您的命名不以 \"博客\"结尾, 系统会在您的命名后面自动添加\"博客\"。点击 \"创建\"之后, 您将会直接进入新建的博客。"
+
+msgid "blog.navigation"
+msgstr "博客导航"
+
+msgid "blog.new"
+msgstr "新建博客"
+
+msgid "blog.newer"
+msgstr "新条目"
+
+msgid "blog.older"
+msgstr "更早的条目"
+
+msgid "blog.permalink"
+msgstr "永久链接"
+
+msgid "blog.sample"
+msgstr "博客示例"
+
+msgid "blog.show=tag"
+msgstr "%1 博客"
+
+msgid "blog.subscribe"
+msgstr "添加到订阅"
+
+msgid "blog.unplug"
+msgstr "保存最近的50个页面"
+
+msgid "blog.updated-by"
+msgstr "更新者"
+
+msgid "blog.view"
+msgstr "查看"
+
+msgid "comment.add:"
+msgstr "添加您的评论:"
+
+msgid "comment.save"
+msgstr "保存评论"
+
+msgid "comment.signal-to"
+msgstr "将本评论发送至"
 
 msgid "comment.type-link"
 msgstr "在此输入链接文本"
 
-msgid "config.wiki-public"
-msgstr "用户无需登录即可查看页面。"
+msgid "config.all-users"
+msgstr "管理所有用户"
+
+msgid "config.blog-sort"
+msgstr "工作区博客排序"
+
+msgid "config.blog:"
+msgstr "此博客:"
+
+msgid "config.email-notify"
+msgstr "工作区邮件通知设置"
+
+msgid "config.email-receive"
+msgstr "工作区邮件接收设置"
+
+msgid "config.files"
+msgstr "管理文件"
+
+msgid "config.first-name:"
+msgstr "名:"
+
+msgid "config.immutable-name-password"
+msgstr "您的用户名和密码不能用“我的设置”来更改。"
+
+msgid "config.membership"
+msgstr "管理工作区成员"
+
+msgid "config.no"
+msgstr "否"
+
+msgid "config.private"
+msgstr "隐私"
+
+msgid "config.public"
+msgstr "公开"
+
+msgid "config.registered-users"
+msgstr "已注册用户"
+
+msgid "config.review-settings=wiki:"
+msgstr "查看或更改%1的设置:"
+
+msgid "config.users"
+msgstr "用户"
+
+msgid "config.wiki"
+msgstr "此工作区"
+
+msgid "config.wiki-custom"
+msgstr "这个工作区有定制的许可"
 
 msgid "config.wiki-private"
 msgstr "用户需由管理员邀请加入并登录，方可查看页面"
 
+msgid "config.wiki-public"
+msgstr "用户无需登录即可查看页面。"
+
+msgid "config.yes"
+msgstr "是"
+
+msgid "do.add"
+msgstr "添加"
+
+msgid "do.bold"
+msgstr "加粗"
+
+msgid "do.cancel"
+msgstr "取消"
+
+msgid "do.close"
+msgstr "关闭"
+
+msgid "do.compare-revisions"
+msgstr "版本对比"
+
+msgid "do.copy"
+msgstr "复制"
+
+msgid "do.create"
+msgstr "新建"
+
+msgid "do.delete"
+msgstr "删除"
+
+msgid "do.done"
+msgstr "完成"
+
+msgid "do.duplicate"
+msgstr "复制"
+
+msgid "do.export"
+msgstr "导出"
+
+msgid "do.file"
+msgstr "附件链接"
+
+msgid "do.follow"
+msgstr "关注此人"
+
+msgid "do.h1"
+msgstr "标题 1"
+
+msgid "do.h2"
+msgstr "标题 2"
+
+msgid "do.h3"
+msgstr "标题3"
+
+msgid "do.image"
+msgstr "图片"
+
+msgid "do.indent"
+msgstr "增减缩进"
+
+msgid "do.italic"
+msgstr "斜体"
+
+msgid "do.join"
+msgstr "加入"
+
+msgid "do.join-to-edit"
+msgstr "加入以编辑"
+
+msgid "do.ol"
+msgstr "编号列表"
+
+msgid "do.outdent"
+msgstr "减少缩进"
+
+msgid "do.print"
+msgstr "打印"
+
+msgid "do.register"
+msgstr "注册"
+
+msgid "do.remove"
+msgstr "移除"
+
+msgid "do.remove-all"
+msgstr "移除全部"
+
+msgid "do.rename"
+msgstr "重命名"
+
+msgid "do.replace"
+msgstr "替换"
+
+msgid "do.source-view"
+msgstr "资源查看"
+
+msgid "do.strike"
+msgstr "删去"
+
+msgid "do.table"
+msgstr "新建表格"
+
+msgid "do.ul"
+msgstr "项目符号列表"
+
+msgid "do.unfollow"
+msgstr "停止关注此人"
+
+msgid "do.unsubscribe"
+msgstr "退出"
+
+msgid "do.unsubscribe=wiki"
+msgstr "从%1工作区退出"
+
+msgid "do.upload"
+msgstr "上传"
+
+msgid "do.watch"
+msgstr "关注"
+
+msgid "do.weblink"
+msgstr "网络链接"
+
+msgid "do.wikilink"
+msgstr "维基链接"
+
+msgid "draft.?"
+msgstr "?"
+
+msgid "draft.discard"
+msgstr "放弃"
+
+msgid "draft.discard?"
+msgstr "您确定要丢弃草稿吗?"
+
+msgid "draft.or"
+msgstr "&nbsp;or&nbsp;"
+
+msgid "draft.resume"
+msgstr "继续"
+
+msgid "draft.unsaved=page,wiki,wiki-id:"
+msgstr "您有一个\"%1\"的未保存草稿在\"%2\" (%3)工作区:"
+
+msgid "edit.choose-group"
+msgstr "您必须成为具有访问此工作区权限的的群组中的成员。请在下面选择您想加入的群组："
+
+msgid "edit.contention"
+msgstr "在您编辑的时候有其他人对此页面进行了更改。"
+
+msgid "edit.contention=type"
+msgstr "在您编辑的时候有其他人对%1进行了更改。"
+
+msgid "edit.copy-your-changes"
+msgstr "请复制您的更改并点击取消返回到页面。"
+
+msgid "edit.expand"
+msgstr "扩展"
+
+msgid "edit.loading"
+msgstr "载入中..."
+
+msgid "edit.normal"
+msgstr "一般"
+
+msgid "edit.remove=tag"
+msgstr "将%1从此队列中移除"
+
+msgid "edit.save"
+msgstr "保存"
+
+msgid "edit.saved"
+msgstr "(您的修改已经保存。)"
+
+msgid "edit.self-join=group?"
+msgstr "您必须成为 %1 群组的成员，才能在此页面进行编辑或者评论。想现在加入吗?"
+
+msgid "edit.view-contention=type:"
+msgstr "您刚才编辑的%1显示如下 。您可以从此处复制粘贴您的更改:"
+
+msgid "edit.view-locked"
+msgstr "您的更改的原始wikitext 如下。 您可以从此处复制您的更改。"
+
+msgid "edit.view-unsaved:"
+msgstr "您刚编辑的文本显示如下。您可以从此处复制您的更改。"
+
+msgid "email.add-all"
+msgstr "添加所有成员"
+
+msgid "email.add-note?"
+msgstr "在邮件前面添加此标注？"
+
+msgid "email.address-or-name"
+msgstr "输入一个邮件地址或者用户名"
+
+msgid "email.another-example"
+msgstr "another.friend@example.com"
+
+msgid "email.copy-self?"
+msgstr "向自己发送副本?"
+
+msgid "email.customize"
+msgstr "(您可以自定义下面的文字。)"
+
+msgid "email.from"
+msgstr "寄件人"
+
+msgid "email.message"
+msgstr "消息"
+
+msgid "email.page-link:"
+msgstr "你好, 这是来自我想要你看到的工作区中的一个页面。此页面也可以在以下网页查看或者编辑："
+
+msgid "email.position?"
+msgstr "如果已经有改标题的页面存在，邮件正文应该加在什么哪里？"
+
+msgid "email.recipient-box"
+msgstr "用上面的收件人栏添加"
+
+msgid "email.recipient-box-continued"
+msgstr "这个列表的收件人"
+
+msgid "email.recipients"
+msgstr "收件人"
+
+msgid "email.send"
+msgstr "发送"
+
+msgid "email.subject"
+msgstr "主题"
+
+msgid "error.cannot-reset-pasword"
+msgstr "此用户的密码不能重置。"
+
+msgid "error.choose-group"
+msgstr "请选择一个或者更多群组"
+
+msgid "error.css-disabled"
+msgstr "警告：样式单在移动设备上无法使用。要正确地查看移动版Socialtext, 您需要在浏览器设置里面启用样式单。"
+
+msgid "error.email-spreadsheet"
+msgstr "对不起，此功能不支持电子表格。"
+
+msgid "error.filename-too-long"
+msgstr "网址编码后文件名太长。"
+
+msgid "error.invalid-page-name=title"
+msgstr "您选择的新页面名称, \"%1\", 不允许使用。请输入或更改页面名称。"
+
+msgid "error.invalid=email"
+msgstr "“%1”不是有效的电子邮件地址"
+
+msgid "error.is-guest"
+msgstr "您必须注册或者登录以使用此功能。"
+
+msgid "error.long-page-name=title"
+msgstr "您选择的新页面名称, \"%1\", 在网址编码之后太长了."
+
+msgid "error.no-page-doc"
+msgstr "您必须至少勾选一个页面来创建Word文档"
+
+msgid "error.no-page-pdf"
+msgstr "您必须至少勾选一个页面来创建PDF"
+
+msgid "error.no-page=template"
+msgstr "名为“%1”的页面不存在"
+
+msgid "error.no-page=type,tag"
+msgstr "没有找到“%2”标签的%1页面"
+
+msgid "error.no-recipient"
+msgstr "错误: 要发送邮件，您必须指定收件人。"
+
+msgid "error.non-admin-create-group"
+msgstr "由於您的应用配置限制，只有帐户管理员可以创建群组。"
+
+msgid "error.page-exists=title,button"
+msgstr "您选择的新页面名称, \"%1\", 已经被使用。请选择其它的名字。 如果您确定要覆盖已经存在的\"%1\"页面, 请再次点击\"%2\" 。"
+
+msgid "error.same-page-name=title"
+msgstr "您选择的新页面名称, \"%1\", 跟现在的名称一样。请输入新的名称。"
+
+msgid "error.same-revision"
+msgstr "您不能让版本跟自己比较。"
+
+msgid "error.save-failed"
+msgstr "服务器错误导致保存失败，请稍候再试。"
+
+msgid "error.send-failed"
+msgstr "错误: 发送邮件失败。"
+
+msgid "error.type-mismatch=template,type"
+msgstr "'%1'存在,但并不是%2"
+
+msgid "error.user-data"
+msgstr "错误恢复用户数据"
+
+msgid "example.blog"
+msgstr "示例: 销售团队博客"
+
+msgid "example.logo"
+msgstr "示例: C:\\My Pictures\\socialtext-logo-30.gif"
+
+msgid "example.logo-url"
+msgstr "示例: http://www.socialtext.com/images/socialtext-logo-30.gif"
+
+msgid "example.title"
+msgstr "示例: Acme Widgets Product Development"
+
+msgid "example.wiki-email:"
+msgstr "这个邮件地址:"
+
+msgid "example.wiki-url:"
+msgstr "示例: acme-product-dev 创建的工作区地址为:"
+
+msgid "export.html"
+msgstr "导出为HTML"
+
+msgid "export.pdf"
+msgstr "导出为PDF"
+
+msgid "export.word"
+msgstr "导出为Word"
+
+msgid "file.add-or-replace=name,size,user,date?"
+msgstr "本页面已经有名为\"%1\" (%2 由%3于%4上传) 的附件。 您可以<span class=\"emphasis\">添加</span> 此文件的其它版本或<span class=\"emphasis\">替换</span>已存在的文件。您想怎么做？"
+
+msgid "file.add-or-replace=name?"
+msgstr "本页面已经有名为\"%1\"的附件。您可以<span class=\"emphasis\">添加</span>此文件的其它版本或<span class=\"emphasis\">替换</span>已存在的文件。您想怎么做？"
+
+msgid "file.all"
+msgstr "所有文件"
+
+msgid "file.attached-to"
+msgstr "附加到"
+
+msgid "file.attached-to-page"
+msgstr "附加到页面"
+
+msgid "file.browse"
+msgstr "请点击浏览并选择一个文件上传。"
+
+msgid "file.by"
+msgstr "由"
+
+msgid "file.by=date,user"
+msgstr "%1由%2"
+
+msgid "file.delete"
+msgstr "删除附件"
+
+msgid "file.delete-selected"
+msgstr "删除选择的附件"
+
+msgid "file.delete-this"
+msgstr "删除这个附件"
+
+msgid "file.delete=name?"
+msgstr "您确定要从本页面删除此附件'%1'？"
+
+msgid "file.extract"
+msgstr "提取附件"
+
+msgid "file.keep"
+msgstr "保留附件"
+
+msgid "file.keep?"
+msgstr "寄送附件?"
+
+msgid "file.max-size"
+msgstr "文件最大: 50MB"
+
+msgid "file.name"
+msgstr "文件名"
+
+msgid "file.replace=count,size,user,date"
+msgstr "此文件(最近更新: %2, 由%3于%4上传)有<span class=\"emphasis\">%1以前的版本</span>。 如果您点击<em>替换</em>,将会<em>删除其它所有版本</em>。"
+
+msgid "file.size"
+msgstr "大小"
+
+msgid "file.upload"
+msgstr "上传文件"
+
+msgid "file.upload-complete"
+msgstr "上传完成"
+
+msgid "file.uploaded-by"
+msgstr "上传者"
+
+msgid "file.uploaded:"
+msgstr "已上传的文件:"
+
+msgid "file.uploading=name"
+msgstr "正在上传 %1..."
+
+msgid "group.all"
+msgstr "所有群组"
+
+msgid "group.name"
+msgstr "群组名称"
+
+msgid "image.upload"
+msgstr "上传图片"
+
+msgid "image.web"
+msgstr "图片已存在于页面"
+
+msgid "info.after-duplicate"
+msgstr "点击\"复制\"之后主窗口会导航到新的页面名称。 "
+
+msgid "info.blog-sort"
+msgstr "您可以选择按照条目更新的日期或者第一次发布日期进行排序。"
+
+msgid "info.browse"
+msgstr "点击“浏览”并选择一个图片或者文件上传."
+
+msgid "info.central=wiki"
+msgstr "当用户点击工作区标题，会转到工作区的中间页面。此页面跟工作区有一样的标题（“%1”）。"
+
+msgid "info.comment"
+msgstr "点击按钮添加评论到页面"
+
+msgid "info.contact-link"
+msgstr "如果链接无效，请联系"
+
+msgid "info.contact=admin"
+msgstr "请与您的%1管理员联系。"
+
+msgid "info.copy"
+msgstr "复制一个存在的页面..."
+
+msgid "info.default-logo"
+msgstr "如果您没有选择图片，将会用 Socialtext 的标识代替。"
+
+msgid "info.done"
+msgstr "点击“完成”来关闭这个窗口。"
+
+msgid "info.edit"
+msgstr "点击按钮编辑页面"
+
+msgid "info.edit-summary-signal-visibility"
+msgstr "只有具有本页面查看权限的成员才会收到信号。"
+
+msgid "info.email-page"
+msgstr "用邮件发送这个页面"
+
+msgid "info.email-to-page"
+msgstr "当工作区收到邮件，邮件主题将变成页面名称，邮件正文将变成页面正文。"
+
+msgid "info.error:"
+msgstr "错误:"
+
+msgid "info.expand-view"
+msgstr "扩展编辑区域以填充浏览器窗口"
+
+msgid "info.files"
+msgstr "附件"
+
+msgid "info.following"
+msgstr "...列出您关注的人。您必须先注册或者登录来使用这个功能。"
+
+msgid "info.hello=user"
+msgstr "你好, %1"
+
+msgid "info.in"
+msgstr "在"
+
+msgid "info.invite-admin-groups"
+msgstr "使用下面的表格邀请用户加入一个此工作区管理的的群组。这些群组中的任何一个用户成员都可以进入此工作区。此外，如果你想授予某特定用户访问权，您可以取消勾选下面的“邀请用户加入选取的群组”选框。"
+
+msgid "info.invite-filter=domain"
+msgstr "您只能邀请跟您一样使用“%1”邮箱域名的人。"
+
+msgid "info.invite-member-groups"
+msgstr "使用下面的表格来邀请用户加入此工作区的一个群组。这些群组中的任何一个成员都可以访问此工作区。此外，如果您想授予某人进入工作区的权限而不想邀请他加入群组，您可以取消勾选下面的“邀请用户加入选取的群组”选框。强烈建议通过群组添加用户。"
+
+msgid "info.logged-in=name"
+msgstr "您已登入为 %1"
+
+msgid "info.normal-view"
+msgstr "将编辑区域回到一般查看"
+
+msgid "info.on"
+msgstr "於"
+
+msgid "info.optional"
+msgstr "可选"
+
+msgid "info.post"
+msgstr "点击按钮新建博客文章"
+
+msgid "info.post-by-email"
+msgstr "或通过邮件发布"
+
+msgid "info.public-wiki"
+msgstr "如果您想要无需登陆即可让用户查看的公共工作区，请联系<a href=\"%1\">Socialtext客服支持</a>."
+
+msgid "info.relogin"
+msgstr "请用你的邮箱地址和新密码再次登录。"
+
+msgid "info.required"
+msgstr "必选"
+
+msgid "info.showing=from,to,total"
+msgstr "显示第 %1 - %2 項，共 %3 項"
+
+msgid "info.skin"
+msgstr "Socialtext可以创建视觉主题来自定义您的工作区的外观和风格。您可以使用由Socialtext提供的默认视觉主题或者自定义视觉主题。"
+
+msgid "info.socialtext"
+msgstr "Socialtext：企业社会化软件"
+
+msgid "info.success"
+msgstr "成功"
+
+msgid "info.unplugged"
+msgstr "点击按钮将页面保存到您的电脑离线使用。"
+
+msgid "info.valid-wiki-name"
+msgstr "只能由3-30个小写字母、数字、下划线或者破折号组成。"
+
 msgid "info.warning:"
 msgstr "警告:"
 
-msgid "about.keywords"
-msgstr "维基, 商务维基, 文档管理, 企业维基, 内网维基, 知识管理, 在线协作, 开放资源维基, 门户维基, 托管维基, 协作, 社会化软件, 社交网络, 显示板, 项目协作, 团队协作, 维基应用, 维基软件, 社区"
+msgid "info.welcome=user"
+msgstr "欢迎%1"
 
-msgid "wiki.members"
-msgstr "工作区成员"
+msgid "info.wiki-as-blog"
+msgstr "您也可以配置工作区链接作为博客显示。"
+
+msgid "info.wiki-group"
+msgstr "您可以创建一个新的群组，或者添加工作区到已存在的群组。"
+
+msgid "info.wiki-id"
+msgstr "这是一个作为您的工作区网址和邮件地址的唯一短标识。"
+
+msgid "info.wiki-logo"
+msgstr "您可以选择一个图片当作工作区的标识。您可以输入一个已经存在的网络图片链接，或者从您的电脑上传一张图片。"
+
+msgid "info.wiki-private"
+msgstr "工作区默认是不开放的。所有用户都需要登录查看页面。只有工作区管理员可以邀请新的用户。"
+
+msgid "info.wiki-title"
+msgstr "这是您工作区的标题。需要的话稍后可以更改。"
+
+msgid "info.wikis"
+msgstr "...列出您所属的工作区。您必须登录查看您的列表。"
+
+msgid "invite.append?"
+msgstr "添加下面的个人消息？"
+
+msgid "invite.click-edit"
+msgstr "如果您发现想要添加或者编辑的内容，请点击页面顶部的“编辑”链接。"
+
+msgid "invite.edit-save"
+msgstr "在文本框键入您的内容，然后点击“保存”。"
+
+msgid "invite.email-template"
+msgstr "姓名 &lt;u01234@example.com&gt;"
+
+msgid "invite.enter-email-list"
+msgstr "输入一个邮件列表（每个地址一行），包含您想要邀请加入这个工作区的人。"
+
+msgid "invite.entering-text"
+msgstr "当您输入本文的时候，请按段落录入。"
+
+msgid "invite.example"
+msgstr "范例"
+
+msgid "invite.example-address"
+msgstr "your.friend@example.com"
+
+msgid "invite.example-domain"
+msgstr "example.com"
+
+msgid "invite.example:"
+msgstr "示例："
+
+msgid "invite.friend"
+msgstr "好友"
+
+msgid "invite.group"
+msgstr "群组"
+
+msgid "invite.include-personal-message"
+msgstr "如果您希望的话，可以在邀请信里面包含个人消息。您可以编辑消息说出您想说的话。"
+
+msgid "invite.lookahead"
+msgstr "输入用户的姓或名的一部分，或者邮件地址。"
+
+msgid "invite.make-wikilink"
+msgstr "要链接到其它页面（即使页面还不存在），请给一个词语或词组加上方括号。"
+
+msgid "invite.new-users"
+msgstr "邀请新用户"
+
+msgid "invite.no-worries"
+msgstr "请不用担心破坏任何东西--先前的版本都已经保存，因此总有一个您正在操作页面的备份。"
+
+msgid "invite.other-users"
+msgstr "邀请其他用户"
+
+msgid "invite.personal-message"
+msgstr "个人消息"
+
+msgid "invite.search-users"
+msgstr "搜索用户并邀请"
+
+msgid "invite.to-groups"
+msgstr "邀请用户到选定的群组"
+
+msgid "invite.using-wiki"
+msgstr "工作区简单易用。点击这里总览页面。"
+
+msgid "invite.welcome-email:"
+msgstr "新用户会收到以下欢迎信："
+
+msgid "invite.welcome-message"
+msgstr "标准欢迎信息"
 
 msgid "invite.your"
 msgstr "您的"
 
-msgid "invite.example-address"
-msgstr "your.friend@example.com"
+msgid "invite.your-personal-message"
+msgstr "<此处是您的个人消息。>"
+
+msgid "lite.first-page"
+msgstr "第一页"
+
+msgid "lite.next-page"
+msgstr "下一页"
+
+msgid "lite.previous-page"
+msgstr "上一页"
+
+msgid "login.is-disabled"
+msgstr "无法登录"
+
+msgid "login.title"
+msgstr "Socialtext登录"
+
+msgid "lookahead.all-results"
+msgstr "显示所有结果..."
+
+msgid "nav.activity"
+msgstr "活动"
+
+msgid "nav.all"
+msgstr "所有"
+
+msgid "nav.community"
+msgstr "社区"
+
+msgid "nav.control-panel"
+msgstr "控制台"
+
+msgid "nav.conversations"
+msgstr "我的对话"
+
+msgid "nav.create-pdf"
+msgstr "由勾选的页面创建PDF文档"
+
+msgid "nav.create-word"
+msgstr "由勾选的页面创建Word文档"
+
+msgid "nav.created-by"
+msgstr "创建者"
+
+msgid "nav.dashboard"
+msgstr "显示板"
+
+msgid "nav.default"
+msgstr "默认"
+
+msgid "nav.desktop"
+msgstr "桌面"
+
+msgid "nav.error"
+msgstr "错误"
+
+msgid "nav.filter:"
+msgstr "过滤按:"
+
+msgid "nav.first"
+msgstr "最前"
+
+msgid "nav.first-page"
+msgstr "第一页"
+
+msgid "nav.following"
+msgstr "我关注的人"
+
+msgid "nav.groups"
+msgstr "群组"
+
+msgid "nav.help"
+msgstr "帮助"
+
+msgid "nav.hide"
+msgstr "隐藏"
+
+msgid "nav.history"
+msgstr "我的历史"
+
+msgid "nav.invite"
+msgstr "邀请"
+
+msgid "nav.invite!"
+msgstr "邀请！"
+
+msgid "nav.last"
+msgstr "最后"
+
+msgid "nav.last-page"
+msgstr "末页"
+
+msgid "nav.login"
+msgstr "登录"
+
+msgid "nav.logout"
+msgstr "登出"
+
+msgid "nav.lost-password"
+msgstr "我忘记密码了"
+
+msgid "nav.mine"
+msgstr "我的"
+
+msgid "nav.mobile"
+msgstr "移动版"
+
+msgid "nav.my-recently-viewed"
+msgstr "所有我最近浏览的"
+
+msgid "nav.my-settings"
+msgstr "我的设置"
+
+msgid "nav.my-watchlist"
+msgstr "我的关注列表"
+
+msgid "nav.my-wikis"
+msgstr "我的工作区"
+
+msgid "nav.news"
+msgstr "最新更动"
+
+msgid "nav.next"
+msgstr "下一个"
+
+msgid "nav.next-page"
+msgstr "下一页"
+
+msgid "nav.no-followers"
+msgstr "目前, 您还没有关注任何人。"
+
+msgid "nav.no-wikis"
+msgstr "目前，您还不是任何工作区的成员。"
+
+msgid "nav.page"
+msgstr "页面"
+
+msgid "nav.page-locking"
+msgstr "页面锁定"
+
+msgid "nav.people"
+msgstr "人員"
+
+msgid "nav.people-directory"
+msgstr "人員目录"
+
+msgid "nav.preferences"
+msgstr "偏好"
+
+msgid "nav.previous"
+msgstr "前一个"
+
+msgid "nav.previous-page"
+msgstr "上一页"
+
+msgid "nav.recent-activities"
+msgstr "近期活动"
+
+msgid "nav.recent-changes"
+msgstr "近期更改"
+
+msgid "nav.recently-viewed"
+msgstr "近期查看"
+
+msgid "nav.search"
+msgstr "搜索"
+
+msgid "nav.select"
+msgstr "选取"
+
+msgid "nav.settings"
+msgstr "设置"
+
+msgid "nav.show"
+msgstr "显示"
+
+msgid "nav.show:"
+msgstr "显示:"
+
+msgid "nav.signals"
+msgstr "信号"
+
+msgid "nav.socialtext"
+msgstr "Socialtext"
+
+msgid "nav.socialtext-people"
+msgstr "Socialtext人員"
+
+msgid "nav.socialtext-signals"
+msgstr "Socialtext信号"
+
+msgid "nav.socialtext-unplugged"
+msgstr "Socialtext脱机"
+
+msgid "nav.summary"
+msgstr "编辑摘要"
+
+msgid "nav.toggle-all"
+msgstr "全选/取消全选"
+
+msgid "nav.tools"
+msgstr "工具"
+
+msgid "nav.try-people"
+msgstr "试试Socialtext别人"
+
+msgid "nav.try-signals"
+msgstr "试试Socialtext Signals"
+
+msgid "nav.uploaded-date"
+msgstr "上传的日期"
+
+msgid "nav.wiki"
+msgstr "工作区"
+
+msgid "nav.wikis"
+msgstr "工作区"
+
+msgid "page.add-tag"
+msgstr "&nbsp;+"
+
+msgid "page.all"
+msgstr "所有页面"
+
+msgid "page.all=wiki"
+msgstr "所有在%1的页面"
+
+msgid "page.back=type"
+msgstr "点击这里返回%1。"
+
+msgid "page.back=uri"
+msgstr "点击<a href=\"%1\">这里</a>返回页面。"
+
+msgid "page.blank"
+msgstr "空白页"
+
+msgid "page.bottom"
+msgstr "页面底部"
+
+msgid "page.comment"
+msgstr "评论"
+
+msgid "page.copy"
+msgstr "复制到另一个工作区"
+
+msgid "page.copy=title?"
+msgstr "将页面%1复制到另外一个工作区?"
+
+msgid "page.count=revision"
+msgstr "%1 次更动"
+
+msgid "page.count=view"
+msgstr "%1 次查看"
+
+msgid "page.create"
+msgstr "新建内容"
+
+msgid "page.created=author,date"
+msgstr "由 %1 于 %2 创建"
+
+msgid "page.creator"
+msgstr "原<strong>创建者</strong>为"
+
+msgid "page.delete"
+msgstr "删除页面"
+
+msgid "page.delete-epilogue"
+msgstr "您是否误删除了这个页面?如果是，您可以恢复页面。"
+
+msgid "page.delete-tag"
+msgstr "删除这个标签"
+
+msgid "page.delete=title?"
+msgstr "您确定要删除“%1”?"
+
+msgid "page.deleted=revision"
+msgstr "已删除: 版本%1"
+
+msgid "page.duplicate"
+msgstr "复制页面"
+
+msgid "page.duplicate=title"
+msgstr "%1的副本"
+
+msgid "page.edit"
+msgstr "编辑"
+
+msgid "page.edit=title"
+msgstr "编辑%1"
+
+msgid "page.editing=ago"
+msgstr "已於%1打开本页进行编辑。"
+
+msgid "page.email-to-this"
+msgstr "发送邮件到这个页面"
+
+msgid "page.files:"
+msgstr "本页面的附件:"
+
+msgid "page.incoming-links"
+msgstr "外部链接"
+
+msgid "page.is-locked"
+msgstr "本页面已锁定，只有工作区管理员可以进行编辑。"
+
+msgid "page.join-to-edit"
+msgstr "加入以编辑"
+
+msgid "page.join-to-edit!"
+msgstr "现在加入编辑此页面！"
+
+msgid "page.last-updated"
+msgstr "前次<strong>更新</strong>为"
+
+msgid "page.last-updated=time,author"
+msgstr "页面最后更新: %2于%1"
+
+msgid "page.latest=type"
+msgstr "点击这里转到%1的最新版本。"
+
+msgid "page.latest=uri"
+msgstr "点击<a href=\"%1\">这里</a>转到页面的最新版本。"
+
+msgid "page.lock"
+msgstr "锁定页面"
+
+msgid "page.locked=type"
+msgstr "在您打开并进行编辑之后一位管理员已经锁定了这个%1。您将无法保存修改。"
+
+msgid "page.new"
+msgstr "新页面"
+
+msgid "page.new-name"
+msgstr "新页面名称"
+
+msgid "page.no-backlinks"
+msgstr "还没有页面链接到此页面。"
+
+msgid "page.no-tags"
+msgstr "此页面没有标签。"
+
+msgid "page.orphaned"
+msgstr "孤立页面"
+
+msgid "page.print"
+msgstr "打印本页"
+
+msgid "page.prompt-name"
+msgstr "开始输入一个页面名称..."
+
+msgid "page.rename"
+msgstr "重命名页面"
+
+msgid "page.replace"
+msgstr "替换已存在页面"
+
+msgid "page.restore"
+msgstr "恢复页面"
+
+msgid "page.restore=revision"
+msgstr "恢复版本%1"
+
+msgid "page.revision"
+msgstr "版本"
+
+msgid "page.revision=revision"
+msgstr "版本%1"
+
+msgid "page.revisions=count"
+msgstr "%1 次更动"
+
+msgid "page.signal-this!"
+msgstr "发送此页!"
+
+msgid "page.summaries"
+msgstr "摘要"
+
+msgid "page.title"
+msgstr "页面标题"
+
+msgid "page.titles"
+msgstr "标题"
+
+msgid "page.top"
+msgstr "页面顶部"
+
+msgid "page.type-wiki"
+msgstr "页"
+
+msgid "page.unlock"
+msgstr "解锁页面"
+
+msgid "page.untitled"
+msgstr "未命名页面"
+
+msgid "page.updated=user,date"
+msgstr "由 %1 于 %2 更新"
+
+msgid "page.use-template:"
+msgstr "使用模板:"
+
+msgid "password.again:"
+msgstr "再次输入新密码:"
+
+msgid "password.change"
+msgstr "更改密码"
+
+msgid "password.current:"
+msgstr "当前密码:"
+
+msgid "password.minimum-length"
+msgstr "新密码至少需6个字符长。"
+
+msgid "password.new:"
+msgstr "新的密码："
+
+msgid "password.reset"
+msgstr "重设密码"
+
+msgid "post.by"
+msgstr "发布者"
+
+msgid "post.by-email:"
+msgstr "通过邮件向此标签发布:"
+
+msgid "post.new"
+msgstr "发帖"
+
+msgid "revision.all"
+msgstr "所有版本"
+
+msgid "revision.all=page"
+msgstr "%1: 所有版本"
+
+msgid "revision.begin-quote"
+msgstr "说道：“"
+
+msgid "revision.by:"
+msgstr "由:"
+
+msgid "revision.color"
+msgstr "颜色查看(无格式的)"
+
+msgid "revision.compare"
+msgstr "版本比较"
+
+msgid "revision.current"
+msgstr "回到当前版本"
+
+msgid "revision.date"
+msgstr "日期"
+
+msgid "revision.edited-by"
+msgstr "编辑者"
+
+msgid "revision.end-quote"
+msgstr "”"
+
+msgid "revision.next"
+msgstr "下一个版本"
+
+msgid "revision.next-compare"
+msgstr "下一个比较"
+
+msgid "revision.normal-view"
+msgstr "一般查看"
+
+msgid "revision.previous"
+msgstr "上一个版本"
+
+msgid "revision.previous-compare"
+msgstr "前一个比较"
+
+msgid "revision.quote=summary"
+msgstr "“%1”"
+
+msgid "revision.summary"
+msgstr "编辑摘要"
+
+msgid "revision.tags:"
+msgstr "标签:"
+
+msgid "revision.view"
+msgstr "查看含格式的"
+
+msgid "search.be-more-specific"
+msgstr "请使用更准确的关键字或者添加更多搜索项目。"
+
+msgid "search.error:"
+msgstr "错误:"
+
+msgid "search.limit=count"
+msgstr "搜索被限制在%1结果."
+
+msgid "search.no-results"
+msgstr "您的搜索没有匹配的结果。"
+
+msgid "search.results"
+msgstr "搜索结果"
+
+msgid "search.too-general"
+msgstr "您输入的搜索过于宽泛。"
+
+msgid "search.too-many=count"
+msgstr "您输入的搜索过于宽泛; %1页面和/或附件符合请求。"
+
+msgid "sheet.untitled"
+msgstr "未命名电子表格"
+
+msgid "skin.browse"
+msgstr "浏览..."
+
+msgid "skin.customized"
+msgstr "自定义的视觉主题"
+
+msgid "skin.default"
+msgstr "默认视觉主题"
+
+msgid "skin.file"
+msgstr "文件"
+
+msgid "skin.files"
+msgstr "自定义的视觉主题文件"
+
+msgid "skin.remove-existing"
+msgstr "移除&nbsp;存在的&nbsp;文件"
+
+msgid "skin.select-file:"
+msgstr "选取一个包含自定义视觉主题文件的ZIP或TGZ文件:"
+
+msgid "skin.select:"
+msgstr "选取一个工作区视觉主题:"
+
+msgid "skin.size"
+msgstr "大小(bytes)"
+
+msgid "skin.support"
+msgstr "自定义视觉主题支持"
+
+msgid "skin.unsupported"
+msgstr "上传的视觉主题不支持。上传视觉主题仅用于开发和测试自定义视觉主题。请联系sales@socialtext.com获取更多关于自定义视觉主题的信息。"
+
+msgid "skin.uploaded"
+msgstr "已上传"
+
+msgid "sort.by-created"
+msgstr "按首次发布时间对条目排序"
+
+msgid "sort.by-updated"
+msgstr "按最后更新时间对条目排序"
+
+msgid "sort.by:"
+msgstr "排序按照:"
+
+msgid "sort.created"
+msgstr "创建的日期"
+
+msgid "sort.creator"
+msgstr "创建者"
+
+msgid "sort.edited"
+msgstr "最后编辑的日期"
+
+msgid "sort.last-edited"
+msgstr "前次编辑者"
+
+msgid "sort.relevance"
+msgstr "相关性"
+
+msgid "sort.revisions"
+msgstr "更動次數"
+
+msgid "sort.title"
+msgstr "标题"
+
+msgid "sort.uploader"
+msgstr "上传者"
+
+msgid "sort.wiki"
+msgstr "工作区"
+
+msgid "tag.add"
+msgstr "添加标签"
+
+msgid "tag.all"
+msgstr "所有标签"
+
+msgid "tag.all=wiki"
+msgstr "所有标签"
+
+msgid "tag.keep"
+msgstr "保留标签"
+
+msgid "tag.pages"
+msgstr "页面"
+
+msgid "tag.suggestions:"
+msgstr "建议:"
+
+msgid "tag.template"
+msgstr "模版"
+
+msgid "unplugged.disabled"
+msgstr "Socialtext脱机取消"
+
+msgid "unplugged.enabled"
+msgstr "Socialtext脱机开启"
+
+msgid "user.admin"
+msgstr "管理员"
+
+msgid "user.email"
+msgstr "邮件"
+
+msgid "user.email-address"
+msgstr "邮件地址"
+
+msgid "user.first-name:"
+msgstr "名字："
+
+msgid "user.last-name:"
+msgstr "姓："
+
+msgid "user.list-all"
+msgstr "列出所有用户"
+
+msgid "user.middle-name:"
+msgstr "中间名："
+
+msgid "user.name"
+msgstr "名称"
+
+msgid "user.role"
+msgstr "角色"
+
+msgid "watch.click"
+msgstr "在您想关注的页面上点击，以添加页面到您的关注列表。"
+
+msgid "watch.current-page"
+msgstr "您正在关注的页面"
+
+msgid "watch.list"
+msgstr "您的关注列表"
+
+msgid "watch.look-for"
+msgstr "寻找"
+
+msgid "watch.stop"
+msgstr "停止关注"
+
+msgid "widget.preview"
+msgstr "预览"
+
+msgid "widget.push-all"
+msgstr "推送到所有显示板"
+
+msgid "wiki.all"
+msgstr "我所有的工作区"
+
+msgid "wiki.anyone-can-email"
+msgstr "任何人都可以向这个工作区发送邮件。"
+
+msgid "wiki.appearance"
+msgstr "工作区外观"
+
+msgid "wiki.central-page"
+msgstr "中间页面"
+
+msgid "wiki.clone"
+msgstr "复制工作区"
+
+msgid "wiki.clone-and-invite-members=wiki"
+msgstr "复制%1工作区，包括所有的页面、标签和附件。下一步，您需要邀请成员加入新的工作区。"
+
+msgid "wiki.clone-this"
+msgstr "复制这个工作区"
+
+msgid "wiki.clone=wiki"
+msgstr "%1的副本"
+
+msgid "wiki.confirm-unsubscribe"
+msgstr "如果您希望从这个工作区退出只需点击下面的按钮。点击之后您将无法访问这个工作区，再次访问需要工作区管理员重新将您加入。 "
+
+msgid "wiki.create"
+msgstr "新建工作区"
+
+msgid "wiki.created!"
+msgstr "恭喜!"
+
+msgid "wiki.created:"
+msgstr "如果您想，您已经可以跳转到您的新群组。选择您的下一步："
+
+msgid "wiki.created=title,uri"
+msgstr "您刚刚创建了\"%1\", 一个全新的 Socialtext 工作区。您是管理员。新工作区的网络链接是 %2"
+
+msgid "wiki.custom-permission"
+msgstr "自定义"
+
+msgid "wiki.disable-locking"
+msgstr "取消页面锁定。任何有编辑页面权限的成员都可以编辑任何页面。任何之前被锁定的页面都会解锁。"
+
+msgid "wiki.email-senders?"
+msgstr "谁可以向此工作区发送邮件？"
+
+msgid "wiki.email-to-this"
+msgstr "发送邮件到这个工作区"
+
+msgid "wiki.enable-email-notifications?"
+msgstr "为这个工作区开启邮件通知?"
+
+msgid "wiki.enable-page-locking"
+msgstr "开启页面锁定。工作区管理员可以选择锁定任何页面，只有管理员可以编辑锁定的页面。 谨慎使用，如果成员能轻松编辑页面才能更多参与。"
+
+msgid "wiki.feature"
+msgstr "工作区功能"
+
+msgid "wiki.group-required"
+msgstr "要新建工作区，工作区必须属于一个群组。"
+
+msgid "wiki.home=name,title"
+msgstr "<a href=\"/%1/\">转到</a>%2首页。"
+
+msgid "wiki.invite"
+msgstr "添加成员"
+
+msgid "wiki.invite=name,title"
+msgstr "<a href=\"/%1/?action=users_invitation\">邀请</a>其他人到%2。"
+
+msgid "wiki.link"
+msgstr "工作区链接"
+
+msgid "wiki.list:"
+msgstr "您所属的工作区："
+
+msgid "wiki.logo"
+msgstr "工作区标识"
+
+msgid "wiki.members"
+msgstr "工作区成员"
+
+msgid "wiki.name"
+msgstr "工作区名称"
+
+msgid "wiki.new"
+msgstr "新工作区"
+
+msgid "wiki.no-groups"
+msgstr "没有群组直接跟此工作区关联。"
+
+msgid "wiki.no-members"
+msgstr "没有用户直接跟此工作区关联。"
+
+msgid "wiki.only-email-from=role"
+msgstr "只有%1可以向这个工作区发邮件。"
+
+msgid "wiki.permission-type:"
+msgstr "您是否想将此工作区设立为:"
+
+msgid "wiki.privacy"
+msgstr "工作区隐私"
+
+msgid "wiki.public"
+msgstr "公开的工作区"
+
+msgid "wiki.public:"
+msgstr "您可以自由进入查看或者编辑任何公开维基条目："
+
+msgid "wiki.search-all:"
+msgstr "搜索我的工作区："
+
+msgid "wiki.search:"
+msgstr "搜索此工作区:"
+
+msgid "wiki.send-email-notifications?"
+msgstr "通过邮件向此工作区的用户发送工作区更改通知吗？"
+
+msgid "wiki.set=filter"
+msgstr "已在此工作区设置一个过滤器。所有邮件地址必须匹配此式样: <span style=\"color: red\">%1</span>"
+
+msgid "wiki.skin"
+msgstr "工作区视觉主题"
+
+msgid "wiki.tag"
+msgstr "标签"
+
+msgid "wiki.tag=tag"
+msgstr "标签: %1"
+
+msgid "wiki.tags"
+msgstr "标签"
+
+msgid "wiki.title"
+msgstr "工作区标题"
+
+msgid "wiki.to-existing-group"
+msgstr "<em>要添加一个工作区到<strong>已存在的群组,</strong></em>转到<a href=\"/st/groups\">\"群组目录\"</a在上面的主导航群组下拉菜单中,转到您选择的群组, 点击\"编辑\"并创建您的工作区。"
+
+msgid "wiki.to-new-group"
+msgstr "<em>要添加一个工作区到<strong>新群组,</strong></em>转到<a href=\"#\" onclick=\"showCreateGroupLightbox(); return false\">\"新建群组\"</a>在上面的主导航群组下拉菜单中。在这里,使用\"工作区\" 来创建您的工作区。"
+
+msgid "wiki.visit-later=wiki"
+msgstr "您也可以在此工作区继续工作，稍后再访问“%1”。"

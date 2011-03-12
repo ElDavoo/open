@@ -24,6 +24,9 @@ msgstr "正在启用帐户插件..."
 msgid "account.exporting-"
 msgstr "正在导出帐户工具库..."
 
+msgid "account.exporting-gallery"
+msgstr "正在导出账户工具库 ..."
+
 msgid "account.exporting-groups=count,account"
 msgstr "正在导出帐户'%2'的全部群组(%1)..."
 
@@ -38,6 +41,9 @@ msgstr "正在导入帐户工具库..."
 
 msgid "account.importing-data"
 msgstr "正在导入帐户数据..."
+
+msgid "account.importing-gallery"
+msgstr "正在导入账户工具库 ..."
 
 msgid "account.importing-groups=account"
 msgstr "正在为'%1'帐户导入全部群组..."
@@ -114,11 +120,149 @@ msgstr "指派 %1 为应用业务管理员。"
 msgid "appliance.added-technical-admin=user"
 msgstr "指派 %1 为应用技术管理员。"
 
+msgid "appliance.archive-directory"
+msgstr "存档目录"
+
+msgid "appliance.backup-destination-updated"
+msgstr "备份地址已更新"
+
+msgid "appliance.backup-in-progress-started-at-never"
+msgstr "正在进行备份 – 尚未开始"
+
+msgid "appliance.backup-in-progress=started-at"
+msgstr "正在进行备份 – 从 %1 开始"
+
+msgid "appliance.backup-server-name"
+msgstr "备份服务器名称"
+
+msgid "appliance.collaborativeness=score"
+msgstr "协作：%1 – 总贡献人数占总访问人数的百分比"
+
+msgid "appliance.confirm-initialize-wikis"
+msgstr "您确定要删除所有工作区，并创建新工作区吗？（此操作无法恢复。)"
+
+msgid "appliance.confirm-reboot?"
+msgstr "您确定要重启设备？"
+
+msgid "appliance.confirm-shutdown?"
+msgstr "您确定要关闭设备？"
+
+msgid "appliance.contributions"
+msgstr "贡献"
+
+msgid "appliance.email-required"
+msgstr "请输入电子邮箱地址"
+
+msgid "appliance.initialize-wikis"
+msgstr "工作区初始化"
+
+msgid "appliance.initialize-wikis?"
+msgstr "要初始化工作区吗？"
+
+msgid "appliance.invalid-email"
+msgstr "请输入有效的电子邮箱地址"
+
+msgid "appliance.last-manual-backup-was-never"
+msgstr "最近一次手动备份未开始"
+
+msgid "appliance.last-manual-backup-was=last"
+msgstr "最近一次手动备份：%1"
+
+msgid "appliance.password"
+msgstr "密码"
+
+msgid "appliance.reboot"
+msgstr "重启"
+
+msgid "appliance.reboot?"
+msgstr "重启设备？"
+
+msgid "appliance.rebooting"
+msgstr "系统重启中 ..."
+
+msgid "appliance.redirecting-to=url"
+msgstr "重定向至 %1"
+
+msgid "appliance.refresh-in-progress"
+msgstr "正在进行更新，请稍等 ..."
+
+msgid "appliance.refreshing-backup-list"
+msgstr "正在备份列表 ..."
+
 msgid "appliance.removed-business-admin=user"
 msgstr "解除 %1 应用业务管理员的角色。"
 
 msgid "appliance.removed-technical-admin=user"
 msgstr "解除 %1 应用技术管理员的角色。"
+
+msgid "appliance.restore-already-running"
+msgstr "已经启用恢复"
+
+msgid "appliance.restore-finished=latest-backup"
+msgstr "已完成 %1 的恢复。"
+
+msgid "appliance.restore-in-progress-started-at-never"
+msgstr "正在进行恢复 – 尚未开始"
+
+msgid "appliance.restore-in-progress=started-at"
+msgstr "正在进行恢复 – 从 %1 开始"
+
+msgid "appliance.restore-latest-already-running"
+msgstr "最新恢复已开始"
+
+msgid "appliance.retry-after-backup"
+msgstr "请等待备份完成，然后重试。"
+
+msgid "appliance.retry-after-restore"
+msgstr "请等待恢复完成，然后重试。"
+
+msgid "appliance.select-backup-to-restore"
+msgstr "请选择某个备份进行恢复"
+
+msgid "appliance.set-mail-server-to-built-in"
+msgstr "已更新邮件服务器以便使用内置服务器"
+
+msgid "appliance.set-mail-server=host"
+msgstr "已更新邮件服务器至%1"
+
+msgid "appliance.shared-directory-name"
+msgstr "共享地址名称"
+
+msgid "appliance.shutdown"
+msgstr "关闭"
+
+msgid "appliance.shutdown?"
+msgstr "要关闭设备吗？"
+
+msgid "appliance.shutting-down"
+msgstr "系统关闭中 ..."
+
+msgid "appliance.skipping-no-usage=wiki"
+msgstr "跳过工作区 %1，未使用。"
+
+msgid "appliance.synchronized-time-with=ts"
+msgstr "同步时间 %1"
+
+msgid "appliance.test-email"
+msgstr "Socialtext 设备的测试邮件"
+
+msgid "appliance.test-email-sent=recipient"
+msgstr "发送测试邮件至 %1"
+
+msgid "appliance.timeserver-updated=ts"
+msgstr "时间服务器已更新至 %1，时钟已同步"
+
+msgid "appliance.username"
+msgstr "用户名"
+
+msgid "appliance.web-proxy-cleared"
+msgstr "网络代理已清除。"
+
+msgid "appliance.web-proxy-updated=new-proxy"
+msgstr "网络代理已更新为 %1"
+
+msgid "appliance.wikis-initialized=log"
+msgstr "工作区已初始化。<br>记录：%1"
 
 msgid "blog.atom=blog"
 msgstr "博客：%1 Atom"
@@ -324,11 +468,32 @@ msgstr "正在为'%1'用户导入控制面板"
 msgid "date.format?"
 msgstr "如何显示日期格式？"
 
+msgid "date.fri"
+msgstr "周五"
+
 msgid "date.hour-format?"
 msgstr "显示时间为 12 小时制或是 24 小时制？"
 
 msgid "date.include-seconds?"
 msgstr "在时间里显示秒数？"
+
+msgid "date.mon"
+msgstr "周一"
+
+msgid "date.sat"
+msgstr "周六"
+
+msgid "date.sun"
+msgstr "周日"
+
+msgid "date.thu"
+msgstr "周四"
+
+msgid "date.tue"
+msgstr "周二"
+
+msgid "date.wed"
+msgstr "周三"
 
 msgid "desktop.relogin-for-default-logo"
 msgstr "（桌面用户如需看默认标志，需退出并重新登录。）"
@@ -387,6 +552,15 @@ msgstr "来自 %1 的私人讯息"
 msgid "email.recent-changes=wiki"
 msgstr "%1 工作区的最近更新"
 
+msgid "email.sent-from-socialtext-appliance"
+msgstr "此电子邮件发送自 Socialtext 设备。"
+
+msgid "email.socialtext"
+msgstr "Socialtext"
+
+msgid "email.socialtext-appliance"
+msgstr "Socialtext 设备"
+
 msgid "error.-forbidden"
 msgstr "没有不能共享帐户到此工具库。"
 
@@ -444,6 +618,15 @@ msgstr "在 %2 上 %1 的应用错误为：%3"
 msgid "error.at=line,message"
 msgstr "第 %1 行: %2"
 
+msgid "error.authentication-token-soft-limit-must-be-lower-than-hard-limit"
+msgstr "认证所采用的软限制须低于硬限制。"
+
+msgid "error.backup-already-running"
+msgstr "备份已经开始"
+
+msgid "error.backup-failed"
+msgstr "备份失败 ..."
+
 msgid "error.bad-request"
 msgstr "错误请求"
 
@@ -470,6 +653,12 @@ msgstr "用户 %1 修改密码出错"
 
 msgid "error.change-profile-field-failed"
 msgstr "无法更新资料字段。"
+
+msgid "error.cleaning-not-implemented"
+msgstr "清除功能尚未实现。"
+
+msgid "error.configure-ntpd-failed=new-ts"
+msgstr "未能配置网络时间服务器至 %1"
 
 msgid "error.confirmation-expired"
 msgstr "确认网址已过期。将重新发送确认邮件。"
@@ -515,6 +704,12 @@ msgstr "未指定电子邮箱"
 
 msgid "error.email-for-confirmation-required"
 msgstr "找不到电子邮箱重新发送确认信息。"
+
+msgid "error.email-missing-for-password-change"
+msgstr "未找到重发变更密码的电子邮箱地址。"
+
+msgid "error.email-required"
+msgstr "请输入电子邮箱地址。"
 
 msgid "error.email-required!"
 msgstr "未提供邮箱"
@@ -570,8 +765,14 @@ msgstr "上传文件不存在"
 msgid "error.file-upload-forbidden"
 msgstr "没有权限上传附件"
 
+msgid "error.full-video-url-required"
+msgstr "请输入完整的视频链接地址。"
+
 msgid "error.gadget-id-required"
 msgstr "gadget_id为必要参数"
+
+msgid "error.gallery-forbidden"
+msgstr "您没有对任何账户共享该工具库。"
 
 msgid "error.group-email-required"
 msgstr "--建立新的群组时，必须提供邮件。"
@@ -620,6 +821,12 @@ msgstr "对不起，%1 无法更改。"
 
 msgid "error.invalid-archive=file"
 msgstr "%1 是无效文件名。主题文件后缀名只能是 .zip，.tar.gz 或 .tgz。"
+
+msgid "error.invalid-authentication-token-hard-limit=min-days,max-days"
+msgstr "认证所采用的硬限制须介于 %1 与%2 天之间。"
+
+msgid "error.invalid-authentication-token-soft-limit=min-days,max-days"
+msgstr "认证所采用的软限制须介于 %1 与 %2 天之间。"
 
 msgid "error.invalid-confirmation-url"
 msgstr "无效的确认网址。"
@@ -723,11 +930,20 @@ msgstr "邮箱 %1 不符合域名 %2。"
 msgid "error.invalid=field-class"
 msgstr "不能创建个人资料字段： 字段 '%1'无效"
 
+msgid "error.invalid=host"
+msgstr "无效伺服：%1"
+
 msgid "error.invalid=locale"
 msgstr "'%1'是无效的区域设置"
 
 msgid "error.invalid=page"
 msgstr "无效页面ID已给出：%1"
+
+msgid "error.invalid=support-uri"
+msgstr "网址“%1”无效。"
+
+msgid "error.invalid=url"
+msgstr "%1 是无效链接。"
 
 msgid "error.load-feed=url"
 msgstr "加载订阅出错: %1"
@@ -737,6 +953,12 @@ msgstr "缺失或未识别角色'%1'；应用默认角色"
 
 msgid "error.missing-people-plugin"
 msgstr "成员插件不可用。"
+
+msgid "error.mount-samba-share"
+msgstr "无法增加 SAMBA 共享。"
+
+msgid "error.multiple-user-matched=name"
+msgstr "搜索符合“%1”的用户有多重结果"
 
 msgid "error.new-account-name-required"
 msgstr "必须提供一个名字用以创建帐户"
@@ -891,8 +1113,14 @@ msgstr "无法在 %2 工作区中找到标签为\"%1\"的页面。"
 msgid "error.no-thumbnail=url"
 msgstr "找不到缩略图：%1"
 
+msgid "error.no-timeserver-configured"
+msgstr "错误：未配置时间服务器"
+
 msgid "error.no-user-email"
 msgstr "此用户名没有关联任何邮箱。"
+
+msgid "error.no-user-matched=name"
+msgstr "未找到符合“%1”的用户"
 
 msgid "error.no-user=email"
 msgstr "无法找到邮箱为 %1 的用户"
@@ -981,6 +1209,9 @@ msgstr "无法解析，文件中缺失必要字段（%1），并且必须包含�
 msgid "error.parse-missing-fields"
 msgstr "字段不足无法解析，跳过此用户。"
 
+msgid "error.password-exists-for=email"
+msgstr "电子邮箱地址%1已设有密码。"
+
 msgid "error.password-mismatch"
 msgstr "密码不匹配。"
 
@@ -990,8 +1221,14 @@ msgstr "密码必须为6位字符或以上。"
 msgid "error.pdf-conversion-failed"
 msgstr "错误: <pre>无法转换为PDF</pre>"
 
+msgid "error.phone-home=url,response"
+msgstr "不能发送设备用户报告数据至“%1”：%2"
+
 msgid "error.plugin-required"
 msgstr "必须指定一个插件。"
+
+msgid "error.private-and-public-key-required-for-captcha"
+msgstr "必须设置私钥和公钥方可开启验证码"
 
 msgid "error.registration-disabled"
 msgstr "注册号被停用。"
@@ -1044,11 +1281,23 @@ msgstr "如果你的密码保存在组织目录，Socialtext 管理员无法帮�
 msgid "error.restore-account-widget"
 msgstr "恢复帐户小工具出错。"
 
+msgid "error.restore-failed=log-file"
+msgstr "恢复失败 – 检查 %1"
+
+msgid "error.restore-failed=restore-id"
+msgstr "恢复 %1 失败..."
+
 msgid "error.role-exists=user,role,account"
 msgstr "%1 已是 %3 帐户的 %2"
 
 msgid "error.role-exists=user,role,wiki"
 msgstr "%1 已是 %3 工作区的 %2"
+
+msgid "error.saving-system-time-to-hardware-clock"
+msgstr "保存系统时间至硬件时钟时发生错误"
+
+msgid "error.saving-timeserver-to-appliance-configuration=new-ts"
+msgstr "未能将时间服务器 %1 保存至设备配置中"
 
 msgid "error.search-too-general"
 msgstr "你的搜索字词过于笼统。请添加更多相关信息。"
@@ -1064,6 +1313,33 @@ msgstr "自行加入群组已停用"
 
 msgid "error.self-register=message"
 msgstr "开放注册设定出错: %1"
+
+msgid "error.set-authentication-token-limits=message"
+msgstr "设置认证所采用的限制 %1 时发生错误"
+
+msgid "error.set-captcha=message"
+msgstr "设置验证码时发生错误：%1"
+
+msgid "error.set-desktop-update=message"
+msgstr "设置桌面更新时发生错误：%1"
+
+msgid "error.set-login-message=message"
+msgstr "设置登录信息时发生错误：%1"
+
+msgid "error.set-proxy-server=message"
+msgstr "设置代理服务器时发生错误：%1"
+
+msgid "error.set-self-register=message"
+msgstr "设置自注册时发生错误：%1"
+
+msgid "error.set-signals-only=message"
+msgstr "设置讯息专用设备时发生错误：%1"
+
+msgid "error.set-signals-size-limit=message"
+msgstr "设置讯息长度限制时发生错误：%1"
+
+msgid "error.set-support-href=message"
+msgstr "设置支持网址时发生错误：%1"
 
 msgid "error.set-system-account"
 msgstr "无法在帐户创建后更新is_system_created字段"
@@ -1083,17 +1359,29 @@ msgstr "show-plugin-prefs 只用于单个插件"
 msgid "error.signal-too-long=max-length"
 msgstr "信号长度不能超过 %1，请重新编辑"
 
+msgid "error.signals-maximum-size-not-positive-integer"
+msgstr "讯息最大长度须为正整数"
+
 msgid "error.skin-upload-failed"
 msgstr "一个自定义的主题文件没有被上传。"
 
 msgid "error.store-revision"
 msgstr "不能保存页面修订"
 
+msgid "error.synchronizing-with-timeserver=ts"
+msgstr "与时间服务器 %1 同步时发生错误"
+
+msgid "error.testing-timeserver=new-ts"
+msgstr "测试时间服务器 %1 时发生错误"
+
 msgid "error.undelete-page-one-revision"
 msgstr "不能恢复只带有一次修订的页面。返回首页。"
 
 msgid "error.unknown"
 msgstr "未知错误"
+
+msgid "error.unknown-restriction=type"
+msgstr "未知限制类型：“%1”"
 
 msgid "error.unpack=file"
 msgstr "不能从 %1 中提取文件"
@@ -1119,6 +1407,9 @@ msgstr "不能通过 Socialtext 更新远程密码。"
 msgid "error.update-remote-user"
 msgstr "不能通过 Socialtext 更新远程用户。"
 
+msgid "error.upload-support-tarball-already-started"
+msgstr "上传已经开始!"
+
 msgid "error.user-can-create-groups=message"
 msgstr "“用户创建群组”设定出错: %1"
 
@@ -1142,6 +1433,9 @@ msgstr "验证子程序调用外部验证器"
 
 msgid "error.widget-exists-in-"
 msgstr "工具库中已使用该小工具。"
+
+msgid "error.widget-exists-in-gallery"
+msgstr "该小工具已存在于此工具库中。"
 
 msgid "error.widget-forbidden"
 msgstr "你已失去所有帐户的管理员权限。"
@@ -1272,6 +1566,9 @@ msgstr "如果你想移除用户的系统访问权限，请按如下操作:"
 msgid "info.email-confirmation=from"
 msgstr "为确保你能收到来自 %1 的邮件，请将 %1 添加到通讯录或安全列表中。"
 
+msgid "info.email-sent-for-password-change"
+msgstr "密码变更电子邮件已发出。请依照该邮件中的链接重设您的密码。"
+
 msgid "info.external-field-update"
 msgstr "此字段的内容会在用户数据刷新后自动随着外部资料更新。"
 
@@ -1320,8 +1617,20 @@ msgstr "所有 %1 工作"
 msgid "lang.changed=user,locale"
 msgstr "%1 区域现已更新为 %2"
 
+msgid "lang.en"
+msgstr "英文"
+
 msgid "lang.english"
 msgstr "英语"
+
+msgid "lang.fr-ca"
+msgstr "法文 – 加拿大"
+
+msgid "lang.zh-cn"
+msgstr "中文 – 简体"
+
+msgid "lang.zh-tw"
+msgstr "中文 – 繁体"
 
 msgid "last.24hours"
 msgstr "最近24小时"
@@ -1620,6 +1929,18 @@ msgstr "用户 %1 的活动"
 msgid "report.signals-activity=user"
 msgstr "用户 %1 的信号活动"
 
+msgid "report.total"
+msgstr "总共"
+
+msgid "report.total-members=count"
+msgstr "总成员数（当前）：%1"
+
+msgid "report.total-unique-contributors=count"
+msgstr "总贡献人数：%1"
+
+msgid "report.total-unique-visitors=count"
+msgstr "总访问人数：%1"
+
 msgid "report.total=wiki"
 msgstr "%1 工作区总数"
 
@@ -1631,6 +1952,18 @@ msgstr "%1 工作区使用报告"
 
 msgid "report.usage=wiki,start"
 msgstr "%1 工作区使用率 - %2 - 上周"
+
+msgid "report.user"
+msgstr "用户"
+
+msgid "report.views"
+msgstr "查看次数"
+
+msgid "report.week-ending=start-time"
+msgstr "报告时间范围：周末%1"
+
+msgid "report.wiki-usage-blog"
+msgstr "工作区用量统计博客"
 
 msgid "report.workspace.activity=user"
 msgstr "用户 %1 的工作区活动"
@@ -1727,6 +2060,9 @@ msgstr "已删除 %1 个容器"
 
 msgid "test.deleted-galleries=count"
 msgstr "已删除 %1 个工具库"
+
+msgid "test.deleted-uploaded-widgets=count"
+msgstr "删除 %1 上传的小工具"
 
 msgid "test.deleted-widgets=count"
 msgstr "已删除 %1 个小工具"
@@ -1878,11 +2214,26 @@ msgstr "用户已被删除出工作区和目录。"
 msgid "user.deactivated=name"
 msgstr "用户 %1 已被停用。"
 
+msgid "user.external-id-cleared=name"
+msgstr "已为 %1 清除外部 ID"
+
+msgid "user.external-id-requirement-added=name"
+msgstr "已为 %1 增加外部 ID 要求"
+
+msgid "user.external-id-requirement-removed=name"
+msgstr "已为 %1 删除外部 ID 要求"
+
+msgid "user.given=name,restriction"
+msgstr "已为 “%1” 施加 “%2” 限制"
+
 msgid "user.imported=file"
 msgstr "从 %1 加载用户"
 
 msgid "user.importing"
 msgstr "正在导入用户..."
+
+msgid "user.lifted=restriction,name"
+msgstr "已为 “%2” 取消 “%1” 限制"
 
 msgid "user.matching=query"
 msgstr "符合\"%1\"用户"
@@ -1890,8 +2241,23 @@ msgstr "符合\"%1\"用户"
 msgid "user.no-changes=name"
 msgstr "用户 %1 没有更改"
 
+msgid "user.no-restrictions"
+msgstr "用户无任何限制"
+
+msgid "user.no-such=name,restriction"
+msgstr "“%1” 没有 “%2” 的限制"
+
+msgid "user.password-changed=name"
+msgstr "%1 的密码已更改。"
+
 msgid "user.removed=count,group"
 msgstr "成功从 %2 群组删除 %1 位用户。"
+
+msgid "user.restriction-token"
+msgstr "令牌"
+
+msgid "user.restriction-type"
+msgstr "限制类型"
 
 msgid "user.selected"
 msgstr "所选用户"
