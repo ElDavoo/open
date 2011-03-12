@@ -94,7 +94,7 @@ msgid "widgets.add-to-gallery"
 msgstr "添加小工具至工具库"
 
 msgid "widgets.add-url:"
-msgstr "通过网址添加小工具:"
+msgstr "通过网址添加小工具："
 
 msgid "activities.add-tag"
 msgstr "添加标签"
@@ -121,13 +121,13 @@ msgid "activities.confirm-expunge=target"
 msgstr "您确定要将此 %1 从系统中删除?\n一旦删除，无法恢复."
 
 msgid "widgets.confirm-delete=widget?"
-msgstr "您确定要永久删除这 \"%1\" 小工具?"
+msgstr "您确定要永久删除这 \"%1\" 小工具？"
 
 msgid "widgets.confirm-remove=widget?"
 msgstr "您确定要移除此 \"%1\" 小工具? 用户将无法在他们的工具库中看到此小工具. 您随时可以恢复此小工具."
 
 msgid "widgets.confirm-restore=widget?"
-msgstr "您确定要恢复此 \"%1\" 小工具?"
+msgstr "您确定要恢复此 \"%1\" 小工具？"
 
 msgid "activities.attach-file"
 msgstr "添加附件"
@@ -178,13 +178,13 @@ msgid "error.send-signal"
 msgstr "传递信号时出错，请重试."
 
 msgid "activities.insert:"
-msgstr "插入:"
+msgstr "插入："
 
 msgid "widgets.install-this"
 msgstr "安装小工具"
 
 msgid "activities.link-text:"
-msgstr "链接文本:"
+msgstr "链接文本："
 
 msgid "activities.link-to-web"
 msgstr "链接至网页"
@@ -241,7 +241,7 @@ msgid "explore.past-year"
 msgstr "过去的一年"
 
 msgid "activities.page:"
-msgstr "页面:"
+msgstr "页面："
 
 msgid "activities.enter-weblink-url-here"
 msgstr "请在底下贴上或键入链接的目标（网址，如http://socialtext.com）。链接目标是必填的。"
@@ -280,7 +280,7 @@ msgid "widgets.restore-widget"
 msgstr "恢复小工具"
 
 msgid "activities.section:"
-msgstr "区域:"
+msgstr "区域："
 
 msgid "activities.send-private-message"
 msgstr "发送私人信息"
@@ -352,13 +352,13 @@ msgid "error.getting-activities"
 msgstr "参加活动时出错."
 
 msgid "widgets.gallery-switch=account:"
-msgstr "这是 \"%1\" 账号的工具库. 转到帐户:"
+msgstr "这是 \"%1\" 账号的工具库. 转到帐户："
 
 msgid "video.title:"
-msgstr "标题:"
+msgstr "标题："
 
 msgid "video.url:"
-msgstr "网址:"
+msgstr "网址："
 
 msgid "widgets.about-update"
 msgstr "更新"
@@ -367,10 +367,10 @@ msgid "widgets.update-widget"
 msgstr "更新小工具"
 
 msgid "widgets.update-from-url:"
-msgstr "通过网址更新小工具:"
+msgstr "通过网址更新小工具："
 
 msgid "widgets.upload-xml:"
-msgstr "上传小工具可扩展标识语言文件:"
+msgstr "上传小工具可扩展标识语言文件："
 
 msgid "activities.uploaded=files"
 msgstr "已上传的文件: %1"
@@ -382,7 +382,7 @@ msgid "error.no-wiki-on-server=wiki"
 msgstr "工作区 \"%1\" 不存在"
 
 msgid "activities.wiki:"
-msgstr "工作区:"
+msgstr "工作区："
 
 msgid "nav.wikis"
 msgstr "工作区"

@@ -139,7 +139,7 @@ msgid "signals.reply-privately"
 msgstr "私密回复该信号。"
 
 msgid "signals.search:"
-msgstr "搜索信号:"
+msgstr "搜索信号："
 
 msgid "signals.selected-people"
 msgstr "选定的好友"
@@ -190,7 +190,7 @@ msgid "signals.to=name"
 msgstr "给%1"
 
 msgid "signals.try-again:"
-msgstr "请重新尝试:"
+msgstr "请重新尝试："
 
 msgid "signals.update"
 msgstr "更新"

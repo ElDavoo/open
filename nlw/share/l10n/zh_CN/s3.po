@@ -112,7 +112,7 @@ msgid "blog.view"
 msgstr "查看"
 
 msgid "comment.add:"
-msgstr "添加您的评论:"
+msgstr "添加您的评论："
 
 msgid "comment.save"
 msgstr "保存评论"
@@ -130,7 +130,7 @@ msgid "config.blog-sort"
 msgstr "工作区博客排序"
 
 msgid "config.blog:"
-msgstr "此博客:"
+msgstr "此博客："
 
 msgid "config.email-notify"
 msgstr "工作区邮件通知设置"
@@ -142,7 +142,7 @@ msgid "config.files"
 msgstr "管理文件"
 
 msgid "config.first-name:"
-msgstr "名:"
+msgstr "名："
 
 msgid "config.immutable-name-password"
 msgstr "您的用户名和密码不能用“我的设置”来更改。"
@@ -163,7 +163,7 @@ msgid "config.registered-users"
 msgstr "已注册用户"
 
 msgid "config.review-settings=wiki:"
-msgstr "查看或更改%1的设置:"
+msgstr "查看或更改%1的设置："
 
 msgid "config.users"
 msgstr "用户"
@@ -304,13 +304,13 @@ msgid "do.wikilink"
 msgstr "维基链接"
 
 msgid "draft.?"
-msgstr "?"
+msgstr "？"
 
 msgid "draft.discard"
 msgstr "放弃"
 
 msgid "draft.discard?"
-msgstr "您确定要丢弃草稿吗?"
+msgstr "您确定要丢弃草稿吗？"
 
 msgid "draft.or"
 msgstr "&nbsp;or&nbsp;"
@@ -319,7 +319,7 @@ msgid "draft.resume"
 msgstr "继续"
 
 msgid "draft.unsaved=page,wiki,wiki-id:"
-msgstr "您有一个\"%1\"的未保存草稿在\"%2\" (%3)工作区:"
+msgstr "您有一个\"%1\"的未保存草稿在\"%2\" (%3)工作区："
 
 msgid "edit.choose-group"
 msgstr "您必须成为具有访问此工作区权限的的群组中的成员。请在下面选择您想加入的群组："
@@ -352,10 +352,10 @@ msgid "edit.saved"
 msgstr "(您的修改已经保存。)"
 
 msgid "edit.self-join=group?"
-msgstr "您必须成为 %1 群组的成员，才能在此页面进行编辑或者评论。想现在加入吗?"
+msgstr "您必须成为 %1 群组的成员，才能在此页面进行编辑或者评论。想现在加入吗？"
 
 msgid "edit.view-contention=type:"
-msgstr "您刚才编辑的%1显示如下 。您可以从此处复制粘贴您的更改:"
+msgstr "您刚才编辑的%1显示如下 。您可以从此处复制粘贴您的更改："
 
 msgid "edit.view-locked"
 msgstr "您的更改的原始wikitext 如下。 您可以从此处复制您的更改。"
@@ -376,7 +376,7 @@ msgid "email.another-example"
 msgstr "another.friend@example.com"
 
 msgid "email.copy-self?"
-msgstr "向自己发送副本?"
+msgstr "向自己发送副本？"
 
 msgid "email.customize"
 msgstr "(您可以自定义下面的文字。)"
@@ -487,10 +487,10 @@ msgid "example.title"
 msgstr "示例: Acme Widgets Product Development"
 
 msgid "example.wiki-email:"
-msgstr "这个邮件地址:"
+msgstr "这个邮件地址："
 
 msgid "example.wiki-url:"
-msgstr "示例: acme-product-dev 创建的工作区地址为:"
+msgstr "示例: acme-product-dev 创建的工作区地址为："
 
 msgid "export.html"
 msgstr "导出为HTML"
@@ -544,7 +544,7 @@ msgid "file.keep"
 msgstr "保留附件"
 
 msgid "file.keep?"
-msgstr "寄送附件?"
+msgstr "寄送附件？"
 
 msgid "file.max-size"
 msgstr "文件最大: 50MB"
@@ -568,7 +568,7 @@ msgid "file.uploaded-by"
 msgstr "上传者"
 
 msgid "file.uploaded:"
-msgstr "已上传的文件:"
+msgstr "已上传的文件："
 
 msgid "file.uploading=name"
 msgstr "正在上传 %1..."
@@ -628,7 +628,7 @@ msgid "info.email-to-page"
 msgstr "当工作区收到邮件，邮件主题将变成页面名称，邮件正文将变成页面正文。"
 
 msgid "info.error:"
-msgstr "错误:"
+msgstr "错误："
 
 msgid "info.expand-view"
 msgstr "扩展编辑区域以填充浏览器窗口"
@@ -700,7 +700,7 @@ msgid "info.valid-wiki-name"
 msgstr "只能由3-30个小写字母、数字、下划线或者破折号组成。"
 
 msgid "info.warning:"
-msgstr "警告:"
+msgstr "警告："
 
 msgid "info.welcome=user"
 msgstr "欢迎%1"
@@ -859,7 +859,7 @@ msgid "nav.error"
 msgstr "错误"
 
 msgid "nav.filter:"
-msgstr "过滤按:"
+msgstr "过滤按："
 
 msgid "nav.first"
 msgstr "最前"
@@ -979,7 +979,7 @@ msgid "nav.show"
 msgstr "显示"
 
 msgid "nav.show:"
-msgstr "显示:"
+msgstr "显示："
 
 msgid "nav.signals"
 msgstr "信号"
@@ -1048,7 +1048,7 @@ msgid "page.copy"
 msgstr "复制到另一个工作区"
 
 msgid "page.copy=title?"
-msgstr "将页面%1复制到另外一个工作区?"
+msgstr "将页面%1复制到另外一个工作区？"
 
 msgid "page.count=revision"
 msgstr "%1 次更动"
@@ -1075,7 +1075,7 @@ msgid "page.delete-tag"
 msgstr "删除这个标签"
 
 msgid "page.delete=title?"
-msgstr "您确定要删除“%1”?"
+msgstr "您确定要删除“%1”？"
 
 msgid "page.deleted=revision"
 msgstr "已删除: 版本%1"
@@ -1099,7 +1099,7 @@ msgid "page.email-to-this"
 msgstr "发送邮件到这个页面"
 
 msgid "page.files:"
-msgstr "本页面的附件:"
+msgstr "本页面的附件："
 
 msgid "page.incoming-links"
 msgstr "外部链接"
@@ -1201,16 +1201,16 @@ msgid "page.updated=user,date"
 msgstr "由 %1 于 %2 更新"
 
 msgid "page.use-template:"
-msgstr "使用模板:"
+msgstr "使用模板："
 
 msgid "password.again:"
-msgstr "再次输入新密码:"
+msgstr "再次输入新密码："
 
 msgid "password.change"
 msgstr "更改密码"
 
 msgid "password.current:"
-msgstr "当前密码:"
+msgstr "当前密码："
 
 msgid "password.minimum-length"
 msgstr "新密码至少需6个字符长。"
@@ -1225,7 +1225,7 @@ msgid "post.by"
 msgstr "发布者"
 
 msgid "post.by-email:"
-msgstr "通过邮件向此标签发布:"
+msgstr "通过邮件向此标签发布："
 
 msgid "post.new"
 msgstr "发帖"
@@ -1240,7 +1240,7 @@ msgid "revision.begin-quote"
 msgstr "说道：“"
 
 msgid "revision.by:"
-msgstr "由:"
+msgstr "由："
 
 msgid "revision.color"
 msgstr "颜色查看(无格式的)"
@@ -1282,7 +1282,7 @@ msgid "revision.summary"
 msgstr "编辑摘要"
 
 msgid "revision.tags:"
-msgstr "标签:"
+msgstr "标签："
 
 msgid "revision.view"
 msgstr "查看含格式的"
@@ -1291,7 +1291,7 @@ msgid "search.be-more-specific"
 msgstr "请使用更准确的关键字或者添加更多搜索项目。"
 
 msgid "search.error:"
-msgstr "错误:"
+msgstr "错误："
 
 msgid "search.limit=count"
 msgstr "搜索被限制在%1结果."
@@ -1330,10 +1330,10 @@ msgid "skin.remove-existing"
 msgstr "移除&nbsp;存在的&nbsp;文件"
 
 msgid "skin.select-file:"
-msgstr "选取一个包含自定义视觉主题文件的ZIP或TGZ文件:"
+msgstr "选取一个包含自定义视觉主题文件的ZIP或TGZ文件："
 
 msgid "skin.select:"
-msgstr "选取一个工作区视觉主题:"
+msgstr "选取一个工作区视觉主题："
 
 msgid "skin.size"
 msgstr "大小(bytes)"
@@ -1354,7 +1354,7 @@ msgid "sort.by-updated"
 msgstr "按最后更新时间对条目排序"
 
 msgid "sort.by:"
-msgstr "排序按照:"
+msgstr "排序按照："
 
 msgid "sort.created"
 msgstr "创建的日期"
@@ -1399,7 +1399,7 @@ msgid "tag.pages"
 msgstr "页面"
 
 msgid "tag.suggestions:"
-msgstr "建议:"
+msgstr "建议："
 
 msgid "tag.template"
 msgstr "模版"
@@ -1510,7 +1510,7 @@ msgid "wiki.email-to-this"
 msgstr "发送邮件到这个工作区"
 
 msgid "wiki.enable-email-notifications?"
-msgstr "为这个工作区开启邮件通知?"
+msgstr "为这个工作区开启邮件通知？"
 
 msgid "wiki.enable-page-locking"
 msgstr "开启页面锁定。工作区管理员可以选择锁定任何页面，只有管理员可以编辑锁定的页面。 谨慎使用，如果成员能轻松编辑页面才能更多参与。"
@@ -1558,7 +1558,7 @@ msgid "wiki.only-email-from=role"
 msgstr "只有%1可以向这个工作区发邮件。"
 
 msgid "wiki.permission-type:"
-msgstr "您是否想将此工作区设立为:"
+msgstr "您是否想将此工作区设立为："
 
 msgid "wiki.privacy"
 msgstr "工作区隐私"
@@ -1573,7 +1573,7 @@ msgid "wiki.search-all:"
 msgstr "搜索我的工作区："
 
 msgid "wiki.search:"
-msgstr "搜索此工作区:"
+msgstr "搜索此工作区："
 
 msgid "wiki.send-email-notifications?"
 msgstr "通过邮件向此工作区的用户发送工作区更改通知吗？"

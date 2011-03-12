@@ -16,7 +16,7 @@ msgid "<! widget.label !>"
 msgstr "<! widget.label !>"
 
 msgid "<! widget.labels.$field || data.fields.$field !>:"
-msgstr "<! widget.labels.$field || data.fields.$field !>:"
+msgstr "<! widget.labels.$field || data.fields.$field !>："
 
 msgid "<! widget.more_desc !>"
 msgstr "<! widget.more_desc !>"
@@ -230,10 +230,10 @@ msgid "activities.from"
 msgstr "來自"
 
 msgid "activities.insert:"
-msgstr "插入:"
+msgstr "插入："
 
 msgid "activities.link-text:"
-msgstr "鏈結文本:"
+msgstr "鏈結文本："
 
 msgid "activities.link-to-web"
 msgstr "鏈結至網頁"
@@ -284,7 +284,7 @@ msgid "activities.page-tags"
 msgstr "頁面標籤"
 
 msgid "activities.page:"
-msgstr "頁面:"
+msgstr "頁面："
 
 msgid "activities.people-events"
 msgstr "人際事件"
@@ -317,7 +317,7 @@ msgid "activities.reply-to-conversation"
 msgstr "回複對話 ..."
 
 msgid "activities.section:"
-msgstr "區域:"
+msgstr "區域："
 
 msgid "activities.send-private-message"
 msgstr "發送私人資訊"
@@ -362,7 +362,7 @@ msgid "activities.uploaded=files"
 msgstr "已上傳的文件: %1"
 
 msgid "activities.wiki:"
-msgstr "工作區:"
+msgstr "工作區："
 
 msgid "activities.within"
 msgstr "群組為"
@@ -455,7 +455,7 @@ msgid "appliance.backup-time"
 msgstr "備份時間"
 
 msgid "appliance.backups-for-restore:"
-msgstr "可供恢複的備份:"
+msgstr "可供恢複的備份："
 
 msgid "appliance.cleanup-previous-snapshot"
 msgstr "正在清除前一個快照..."
@@ -848,7 +848,7 @@ msgid "code.sql"
 msgstr "SQL"
 
 msgid "code.syntax-highlight-as:"
-msgstr "語法高亮:"
+msgstr "語法高亮："
 
 msgid "code.visualbasic"
 msgstr "VisualBasic"
@@ -866,7 +866,7 @@ msgid "code.yaml"
 msgstr "YAML"
 
 msgid "comment.add:"
-msgstr "新增您的評論:"
+msgstr "新增您的評論："
 
 msgid "comment.save"
 msgstr "保存評論"
@@ -887,7 +887,7 @@ msgid "config.blog-sort"
 msgstr "工作區網誌排序"
 
 msgid "config.blog:"
-msgstr "此網誌:"
+msgstr "此網誌："
 
 msgid "config.changes-depth?"
 msgstr "間隔多長時間顯示『最新更新』？"
@@ -908,10 +908,10 @@ msgid "config.files"
 msgstr "管理文件"
 
 msgid "config.first-name:"
-msgstr "名:"
+msgstr "名："
 
 msgid "config.for=group:"
-msgstr "配置為 %1 群組:"
+msgstr "配置為 %1 群組："
 
 msgid "config.immutable-name-password"
 msgstr "您的用戶名和密碼不能用『我的設定』來更改。"
@@ -941,7 +941,7 @@ msgid "config.registered-users"
 msgstr "已註冊用戶"
 
 msgid "config.review-settings=wiki:"
-msgstr "查看或更改%1的設定:"
+msgstr "查看或更改%1的設定："
 
 msgid "config.saved"
 msgstr "更改已保存"
@@ -1103,7 +1103,7 @@ msgid "console.documentation"
 msgstr "設備文檔"
 
 msgid "console.email-for-testing:"
-msgstr "供測試的電子郵件位址:"
+msgstr "供測試的電子郵件位址："
 
 msgid "console.enable-captcha"
 msgstr "允許驗証碼要求註冊用戶証實其為人類"
@@ -1136,7 +1136,7 @@ msgid "console.manual-wiki"
 msgstr "設備手冊工作區"
 
 msgid "console.new-admin-email-address:"
-msgstr "新的管理員電子郵件位址:"
+msgstr "新的管理員電子郵件位址："
 
 msgid "console.no-files-available-to-restore"
 msgstr "沒有可供恢複的文件"
@@ -1163,7 +1163,7 @@ msgid "console.perform-restore"
 msgstr "執行恢複"
 
 msgid "console.problem-description:"
-msgstr "問題描述:"
+msgstr "問題描述："
 
 msgid "console.proxy-server-for-web-services"
 msgstr "網頁服務的代理伺服器"
@@ -1202,7 +1202,7 @@ msgid "console.save-backup-schedule"
 msgstr "保存備份計劃"
 
 msgid "console.screen-generate-time:"
-msgstr "生成本螢幕時的設備時鐘:"
+msgstr "生成本螢幕時的設備時鐘："
 
 msgid "console.script-tag-stripped-in-login-message"
 msgstr "您可以隨時在資訊中使用HTML，但是在消息被保存之前，SCRIPT標籤（例如JavaScript）將不會顯現"
@@ -1271,7 +1271,7 @@ msgid "console.tarball-built"
 msgstr "壓縮檔已建立"
 
 msgid "console.time-each-day:"
-msgstr "每日時間:"
+msgstr "每日時間："
 
 msgid "console.time-server"
 msgstr "時間伺服器"
@@ -1295,7 +1295,7 @@ msgid "console.web-service-proxy-address"
 msgstr "網頁服務代理位址"
 
 msgid "console.your-email-address:"
-msgstr "您的電子郵件位址:"
+msgstr "您的電子郵件位址："
 
 msgid "control.about-account-logo-image"
 msgstr "您可以選擇一個圖像作為帳戶標識。使用下面的表單從電腦上傳圖像。如果您未選擇圖像，則使用Socialtext的標識。標識的大小為寬201像素，高36像素，如果不符合該要求則圖像將被調整。上傳的標識將立即在用戶的瀏覽器中顯示，或者在刷新登入Socialtext桌面後顯示（可選）。"
@@ -1358,7 +1358,7 @@ msgid "control.account-type"
 msgstr "帳戶類別"
 
 msgid "control.account-type:"
-msgstr "帳戶類別:"
+msgstr "帳戶類別："
 
 msgid "control.account=name"
 msgstr "%1 帳戶"
@@ -1382,13 +1382,13 @@ msgid "control.add-group-to-account"
 msgstr "新增群組至帳戶"
 
 msgid "control.add-group-to-account:"
-msgstr "新增群組至帳戶:"
+msgstr "新增群組至帳戶："
 
 msgid "control.add-group-to-wiki"
 msgstr "新增群組至工作區"
 
 msgid "control.add-group-to-wiki:"
-msgstr "新增群組至工作區:"
+msgstr "新增群組至工作區："
 
 msgid "control.add-multiple-users"
 msgstr "新增多名用戶"
@@ -1406,13 +1406,13 @@ msgid "control.add-user"
 msgstr "新增用戶"
 
 msgid "control.add-user-to-account:"
-msgstr "新增用戶至帳戶:"
+msgstr "新增用戶至帳戶："
 
 msgid "control.add-user-to-group:"
-msgstr "新增用戶至帳戶:"
+msgstr "新增用戶至帳戶："
 
 msgid "control.add-user-to-wiki:"
-msgstr "新增用戶至工作區:"
+msgstr "新增用戶至工作區："
 
 msgid "control.add-users"
 msgstr "新增用戶"
@@ -1445,10 +1445,10 @@ msgid "control.also-use-logo-for-desktop"
 msgstr "在刷新登入 Socialtext 桌面後將使用該標識。"
 
 msgid "control.appliance-business-administrator?"
-msgstr "設備業務管理員?"
+msgstr "設備業務管理員？"
 
 msgid "control.appliance-technical-administrator?"
-msgstr "設備技術管理員?"
+msgstr "設備技術管理員？"
 
 msgid "control.assign-appliance-business-administrator-role"
 msgstr "分配設備業務管理員角色"
@@ -1610,7 +1610,7 @@ msgid "control.edit-field"
 msgstr "編輯欄位"
 
 msgid "control.email-address:"
-msgstr "電子郵件位址:"
+msgstr "電子郵件位址："
 
 msgid "control.enable-export-user-data"
 msgstr "禁止輸出用戶資料"
@@ -1634,7 +1634,7 @@ msgid "control.external-id-required"
 msgstr "要求外部 ID"
 
 msgid "control.external-id:"
-msgstr "外部ID:"
+msgstr "外部ID："
 
 msgid "control.features-and-skins"
 msgstr "特征與視覺主題"
@@ -1673,7 +1673,7 @@ msgid "control.field-type"
 msgstr "欄位類別"
 
 msgid "control.first-name:"
-msgstr "名:"
+msgstr "名："
 
 msgid "control.for-cac-authentication"
 msgstr "為 CAC 認証之用"
@@ -1691,10 +1691,10 @@ msgid "control.go-to-wiki=name"
 msgstr "轉至 %1 工作區"
 
 msgid "control.group-name:"
-msgstr "群組名稱:"
+msgstr "群組名稱："
 
 msgid "control.group-permissions:"
-msgstr "群組權限:"
+msgstr "群組權限："
 
 msgid "control.group-role-changed"
 msgstr "群組角色變更成功."
@@ -1718,10 +1718,10 @@ msgid "control.hide-field"
 msgstr "隱藏"
 
 msgid "control.image-file:"
-msgstr "圖像文件:"
+msgstr "圖像文件："
 
 msgid "control.installed-plugins:"
-msgstr "已安裝的可選模組:"
+msgstr "已安裝的可選模組："
 
 msgid "control.introduction"
 msgstr "概述"
@@ -1748,16 +1748,16 @@ msgid "control.invited-by"
 msgstr "邀請"
 
 msgid "control.invited-by:"
-msgstr "邀請人:"
+msgstr "邀請人："
 
 msgid "control.invited-to-system"
 msgstr "邀請 (到系統)"
 
 msgid "control.last-login:"
-msgstr "上次登入:"
+msgstr "上次登入："
 
 msgid "control.ldap-driver:"
-msgstr "LDAP驅動:"
+msgstr "LDAP驅動："
 
 msgid "control.load-existing-group-from-ldap"
 msgstr "從LDAP載入已有群組"
@@ -1766,13 +1766,13 @@ msgid "control.loading-selected-users"
 msgstr "正在載入選中用戶"
 
 msgid "control.lookahead-account-of-new-wiki:"
-msgstr "開始輸入新工作區所屬的帳戶名稱:"
+msgstr "開始輸入新工作區所屬的帳戶名稱："
 
 msgid "control.lookahead-wiki:"
-msgstr "開始輸入工作區的名稱:"
+msgstr "開始輸入工作區的名稱："
 
 msgid "control.manually-set-uri:"
-msgstr "手工設定URI:"
+msgstr "手工設定URI："
 
 msgid "control.member"
 msgstr "成員"
@@ -1784,10 +1784,10 @@ msgid "control.name"
 msgstr "名稱"
 
 msgid "control.name-of-group:"
-msgstr "群組名稱:"
+msgstr "群組名稱："
 
 msgid "control.name:"
-msgstr "名稱:"
+msgstr "名稱："
 
 msgid "control.new-wiki"
 msgstr "新工作區"
@@ -1799,7 +1799,7 @@ msgid "control.permission-set"
 msgstr "權限設定"
 
 msgid "control.permission-set:"
-msgstr "權限設定:"
+msgstr "權限設定："
 
 msgid "control.prefers-to-be-called"
 msgstr "起一個名字"
@@ -1811,7 +1811,7 @@ msgid "control.primary-account"
 msgstr "主要帳戶"
 
 msgid "control.primary-account-for-new-groups:"
-msgstr "新群組的主要帳戶為:"
+msgstr "新群組的主要帳戶為："
 
 msgid "control.private-group"
 msgstr "<strong>私人:</strong> 只有成員才能瀏覽與訪問本群組。"
@@ -1838,10 +1838,10 @@ msgid "control.remove-from-wiki"
 msgstr "從工作區中移除"
 
 msgid "control.remove-group-from-accounts=count?"
-msgstr "從 %1 個選中帳戶中移除群組?"
+msgstr "從 %1 個選中帳戶中移除群組？"
 
 msgid "control.remove-user-from-accounts=count?"
-msgstr "從 %1 個選中工作區中移除本用戶?"
+msgstr "從 %1 個選中工作區中移除本用戶？"
 
 msgid "control.removed-user=account"
 msgstr "已從帳戶 %1 中移除用戶"
@@ -1871,7 +1871,7 @@ msgid "control.reset-to-default"
 msgstr "重置為預設"
 
 msgid "control.restrict-invites-to-domain:"
-msgstr "限制邀請至域:"
+msgstr "限制邀請至域："
 
 msgid "control.return-to-group=name"
 msgstr "返回 %1群組"
@@ -1886,7 +1886,7 @@ msgid "control.role-yes"
 msgstr "是"
 
 msgid "control.rows-selected=count:"
-msgstr "%1 行選中:"
+msgstr "%1 行選中："
 
 msgid "control.save-field"
 msgstr "保存欄位"
@@ -1910,7 +1910,7 @@ msgid "control.select-group"
 msgstr "請選擇一個群組"
 
 msgid "control.select-users-csv:"
-msgstr "選擇包含用戶的CSV文件新增:"
+msgstr "選擇包含用戶的CSV文件新增："
 
 msgid "control.select-users-to-add-to-group"
 msgstr "請選擇多名用戶新增至群組。"
@@ -1925,7 +1925,7 @@ msgid "control.send-invitation-email"
 msgstr "發送邀請email"
 
 msgid "control.set-account-type-to:"
-msgstr "變更帳戶類別為:"
+msgstr "變更帳戶類別為："
 
 msgid "control.set-by-external-directory"
 msgstr "根據外部目錄設定"
@@ -1973,7 +1973,7 @@ msgid "control.tabs"
 msgstr "標籤欄"
 
 msgid "control.this-is-all-users-wiki-for-account:"
-msgstr "這是帳戶全部用戶的工作區:"
+msgstr "這是帳戶全部用戶的工作區："
 
 msgid "control.this-is-name-of-your-group"
 msgstr "這是您的群組名稱."
@@ -2375,13 +2375,13 @@ msgid "do.yes"
 msgstr "是"
 
 msgid "draft.?"
-msgstr "?"
+msgstr "？"
 
 msgid "draft.discard"
 msgstr "放棄"
 
 msgid "draft.discard?"
-msgstr "您確定要丟棄草稿嗎?"
+msgstr "您確定要丟棄草稿嗎？"
 
 msgid "draft.or"
 msgstr "&nbsp;or&nbsp;"
@@ -2390,16 +2390,16 @@ msgid "draft.resume"
 msgstr "繼續"
 
 msgid "draft.unsaved=page,wiki,wiki-id:"
-msgstr "您有一個\"%1\"的未保存草稿在\"%2\" (%3)工作區:"
+msgstr "您有一個\"%1\"的未保存草稿在\"%2\" (%3)工作區："
 
 msgid "edit.add-tags"
 msgstr "新增標籤..."
 
 msgid "edit.append-to-page:"
-msgstr "在當前命名頁面的底部附上您的文本:"
+msgstr "在當前命名頁面的底部附上您的文本："
 
 msgid "edit.cancel?"
-msgstr "確定要取消?"
+msgstr "確定要取消？"
 
 msgid "edit.choose-group"
 msgstr "您必須成為具有訪問此工作區權限的的群組中的成員。請在下面選擇您想加入的群組："
@@ -2417,7 +2417,7 @@ msgid "edit.default-text"
 msgstr "請在此輸入文字."
 
 msgid "edit.editing:"
-msgstr "正在編輯:"
+msgstr "正在編輯："
 
 msgid "edit.editing=page"
 msgstr "正在編輯: %1"
@@ -2468,7 +2468,7 @@ msgid "edit.saving"
 msgstr "正在保存..."
 
 msgid "edit.self-join=group?"
-msgstr "您必須成為 %1 群組的成員，才能在此頁面進行編輯或者評論。想現在加入嗎?"
+msgstr "您必須成為 %1 群組的成員，才能在此頁面進行編輯或者評論。想現在加入嗎？"
 
 msgid "edit.signal-to"
 msgstr "將本編輯發送至"
@@ -2486,10 +2486,10 @@ msgid "edit.summary=name,summary,page,wiki"
 msgstr "<strong>%1</strong>，\"%2\"（編輯了位于 %4 的<strong>%3</strong>）"
 
 msgid "edit.tag-prompt:"
-msgstr "標籤:"
+msgstr "標籤："
 
 msgid "edit.tag-queue:"
-msgstr "適用的標籤:"
+msgstr "適用的標籤："
 
 msgid "edit.unsaved-changes"
 msgstr "您的更改未保存."
@@ -2498,7 +2498,7 @@ msgid "edit.upload"
 msgstr "上傳文件..."
 
 msgid "edit.view-contention=type:"
-msgstr "您剛才編輯的%1顯示如下 。您可以從此處複製粘貼您的更改:"
+msgstr "您剛才編輯的%1顯示如下 。您可以從此處複製粘貼您的更改："
 
 msgid "edit.view-locked"
 msgstr "您的更改的原始wikitext 如下。 您可以從此處複製您的更改。"
@@ -2528,13 +2528,13 @@ msgid "email.confirmation-subject=wiki"
 msgstr "已登陸到工作區 %1"
 
 msgid "email.copy-self?"
-msgstr "向自己發送副本?"
+msgstr "向自己發送副本？"
 
 msgid "email.customize"
 msgstr "(您可以自定義下面的文字。)"
 
 msgid "email.date:"
-msgstr "日期:"
+msgstr "日期："
 
 msgid "email.frequency?"
 msgstr "你想要多長時間收到一次郵件更新？"
@@ -2543,7 +2543,7 @@ msgid "email.from"
 msgstr "寄件人"
 
 msgid "email.from:"
-msgstr "來自:"
+msgstr "來自："
 
 msgid "email.message"
 msgstr "消息"
@@ -2714,7 +2714,7 @@ msgid "error.change-profile-field-failed"
 msgstr "無法更新資料欄位。"
 
 msgid "error.check-again?"
-msgstr "請再次確認?"
+msgstr "請再次確認？"
 
 msgid "error.check-video-url"
 msgstr "系統出錯; 請稍候再重試."
@@ -3635,13 +3635,13 @@ msgid "error.set-system-user-name"
 msgstr "無法修改系統建立用戶的名字"
 
 msgid "error.sheet-contention:"
-msgstr "當您編輯的時候, <span style=\"font-weight: bold\" id=\"st-contention-user\">XXX</span> 保存了試算表的一個版本,並且我們無法調和這個變化。您想:"
+msgstr "當您編輯的時候, <span style=\"font-weight: bold\" id=\"st-contention-user\">XXX</span> 保存了試算表的一個版本,並且我們無法調和這個變化。您想："
 
 msgid "error.sheet-name-exists"
 msgstr "該名字已被使用，請輸入一個不同的名稱。"
 
 msgid "error.sheet-name-exists:"
-msgstr "<a id=\"st-newspreadsheet-duplicate-link\" href=\"#\" target=\"\">XXX</a>  <span id=\"st-newspreadsheet-duplicate-emphasis\">已經被占用</span>。您想:"
+msgstr "<a id=\"st-newspreadsheet-duplicate-link\" href=\"#\" target=\"\">XXX</a>  <span id=\"st-newspreadsheet-duplicate-emphasis\">已經被占用</span>。您想："
 
 msgid "error.sheet-title-too-long"
 msgstr "試算表名稱太長。請縮短名稱，再試一次。"
@@ -3923,10 +3923,10 @@ msgid "example.title"
 msgstr "示例: Acme Widgets Product Development"
 
 msgid "example.wiki-email:"
-msgstr "這個郵件位址:"
+msgstr "這個郵件位址："
 
 msgid "example.wiki-url:"
-msgstr "示例: acme-product-dev 建立的工作區位址為:"
+msgstr "示例: acme-product-dev 建立的工作區位址為："
 
 msgid "explore.beta"
 msgstr "探索 (測試)"
@@ -4046,7 +4046,7 @@ msgid "file.keep"
 msgstr "保留附件"
 
 msgid "file.keep?"
-msgstr "寄送附件?"
+msgstr "寄送附件？"
 
 msgid "file.max-size"
 msgstr "文件最大: 50MB"
@@ -4070,7 +4070,7 @@ msgid "file.uploaded-by"
 msgstr "上傳者"
 
 msgid "file.uploaded:"
-msgstr "已上傳的文件:"
+msgstr "已上傳的文件："
 
 msgid "file.uploading=name"
 msgstr "正在上傳 %1..."
@@ -4196,7 +4196,7 @@ msgid "groups.search-here"
 msgstr "在這裡輸入您的搜尋..."
 
 msgid "groups.search:"
-msgstr "搜尋群組:"
+msgstr "搜尋群組："
 
 msgid "groups.self-join"
 msgstr "自加入群組"
@@ -4277,7 +4277,7 @@ msgid "info.dashboard-save-layout"
 msgstr "點選下面的<b>保存</b>使當前顯示板成為您帳戶的預設顯示板。在新用戶第一次登入的時候，他們都會有這個顯示板。點選下面『強制升級』複選框來使強制老用戶帳戶也如此。"
 
 msgid "info.deactivated-user:"
-msgstr "如果你想移除用戶的系統訪問權限，請按如下操作:"
+msgstr "如果你想移除用戶的系統訪問權限，請按如下操作："
 
 msgid "info.default-logo"
 msgstr "如果您沒有選擇圖片，將會用 Socialtext 的標識代替。"
@@ -4319,7 +4319,7 @@ msgid "info.email-to-page"
 msgstr "當工作區收到郵件，郵件主題將變成頁面名稱，郵件正文將變成頁面正文。"
 
 msgid "info.error:"
-msgstr "錯誤:"
+msgstr "錯誤："
 
 msgid "info.expand-view"
 msgstr "擴展編輯區域以填充瀏覽器視窗"
@@ -4382,7 +4382,7 @@ msgid "info.optional"
 msgstr "可選"
 
 msgid "info.page-exists:"
-msgstr "<span id=\"st-newpage-duplicate-emphasis\">已經存在</span>一個名為 <a id=\"st-newpage-duplicate-link\" href=\"#\" target=\"\">XXX</a>的頁面. 您是否願意:"
+msgstr "<span id=\"st-newpage-duplicate-emphasis\">已經存在</span>一個名為 <a id=\"st-newpage-duplicate-link\" href=\"#\" target=\"\">XXX</a>的頁面. 您是否願意："
 
 msgid "info.post"
 msgstr "點選按鈕新建網誌文章"
@@ -4448,7 +4448,7 @@ msgid "info.wafl-uneditable"
 msgstr "該小工具不可編輯。請在維基格式下進行編輯。"
 
 msgid "info.warning:"
-msgstr "警告:"
+msgstr "警告："
 
 msgid "info.welcome=user"
 msgstr "歡迎%1"
@@ -4634,13 +4634,13 @@ msgid "invite.to=name"
 msgstr "邀請好友到%1"
 
 msgid "invite.username:"
-msgstr "用戶名:"
+msgstr "用戶名："
 
 msgid "invite.using-wiki"
 msgstr "工作區簡單易用。點選這裡總覽頁面。"
 
 msgid "invite.web-address:"
-msgstr "網址:"
+msgstr "網址："
 
 msgid "invite.welcome-email:"
 msgstr "新用戶會收到以下歡迎信："
@@ -4748,7 +4748,7 @@ msgid "link.add"
 msgstr "新增鏈結"
 
 msgid "link.destination:"
-msgstr "鏈結目標:"
+msgstr "鏈結目標："
 
 msgid "link.external"
 msgstr "外部鏈結"
@@ -4769,7 +4769,7 @@ msgid "link.mandatory-indicator"
 msgstr "規定的必需欄位"
 
 msgid "link.page:"
-msgstr "頁面:"
+msgstr "頁面："
 
 msgid "link.section"
 msgstr "章節鏈結"
@@ -4778,10 +4778,10 @@ msgid "link.section-in-this-page"
 msgstr "本頁段落"
 
 msgid "link.section:"
-msgstr "段落:"
+msgstr "段落："
 
 msgid "link.text:"
-msgstr "鏈結文本:"
+msgstr "鏈結文本："
 
 msgid "link.web-link"
 msgstr "網站鏈結"
@@ -4790,7 +4790,7 @@ msgid "link.wiki-link"
 msgstr "維基鏈結"
 
 msgid "link.wiki:"
-msgstr "工作區:"
+msgstr "工作區："
 
 msgid "lite.first-page"
 msgstr "第一頁"
@@ -4817,7 +4817,7 @@ msgid "login.email-required"
 msgstr "請輸入郵箱。"
 
 msgid "login.email:"
-msgstr "登入郵箱:"
+msgstr "登入郵箱："
 
 msgid "login.is-disabled"
 msgstr "無法登入"
@@ -4886,7 +4886,7 @@ msgid "nav.explore"
 msgstr "探索"
 
 msgid "nav.filter:"
-msgstr "過濾按:"
+msgstr "過濾按："
 
 msgid "nav.first"
 msgstr "最前"
@@ -5024,7 +5024,7 @@ msgid "nav.show"
 msgstr "顯示"
 
 msgid "nav.show:"
-msgstr "顯示:"
+msgstr "顯示："
 
 msgid "nav.signals"
 msgstr "信號"
@@ -5138,7 +5138,7 @@ msgid "page.copy"
 msgstr "複製到另一個工作區"
 
 msgid "page.copy=title?"
-msgstr "將頁面%1複製到另外一個工作區?"
+msgstr "將頁面%1複製到另外一個工作區？"
 
 msgid "page.count=revision"
 msgstr "%1 次更動"
@@ -5168,7 +5168,7 @@ msgid "page.delete-tag"
 msgstr "刪除這個標籤"
 
 msgid "page.delete=title?"
-msgstr "您確定要刪除『%1』?"
+msgstr "您確定要刪除『%1』？"
 
 msgid "page.deleted=name"
 msgstr "已刪除\"%1\""
@@ -5198,7 +5198,7 @@ msgid "page.email-to-this"
 msgstr "發送郵件到這個頁面"
 
 msgid "page.files:"
-msgstr "本頁面的附件:"
+msgstr "本頁面的附件："
 
 msgid "page.incoming-links"
 msgstr "外部鏈結"
@@ -5228,7 +5228,7 @@ msgid "page.linked-from:"
 msgstr "這個頁面鏈結來自："
 
 msgid "page.list-locked=wiki:"
-msgstr "在'%1'工作區中鎖定頁面:"
+msgstr "在'%1'工作區中鎖定頁面："
 
 msgid "page.lock"
 msgstr "鎖定頁面"
@@ -5297,7 +5297,7 @@ msgid "page.save-as"
 msgstr "頁面另存為"
 
 msgid "page.save-with-another-name:"
-msgstr "另存為其他名稱:"
+msgstr "另存為其他名稱："
 
 msgid "page.save-with-name"
 msgstr "頁面另存為 <span id=\"st-newpage-duplicate-suggest\">XXX</span>"
@@ -5339,16 +5339,16 @@ msgid "page.updated=user,date"
 msgstr "由 %1 于 %2 更新"
 
 msgid "page.use-template:"
-msgstr "使用範本:"
+msgstr "使用範本："
 
 msgid "password.again:"
-msgstr "再次輸入新密碼:"
+msgstr "再次輸入新密碼："
 
 msgid "password.change"
 msgstr "更改密碼"
 
 msgid "password.current:"
-msgstr "當前密碼:"
+msgstr "當前密碼："
 
 msgid "password.minimum-length"
 msgstr "新密碼至少需6個字符長。"
@@ -5372,7 +5372,7 @@ msgid "people.add-tag-to-someone"
 msgstr "給某人新增這個標籤"
 
 msgid "people.add-tag-to-user=name:"
-msgstr "為用戶新增標籤\"%1\":"
+msgstr "為用戶新增標籤\"%1\"："
 
 msgid "people.all"
 msgstr "所有成員"
@@ -5393,13 +5393,13 @@ msgid "people.follow"
 msgstr "關注"
 
 msgid "people.mobile:"
-msgstr "移動電話:"
+msgstr "移動電話："
 
 msgid "people.private-message-send"
 msgstr "發送"
 
 msgid "people.private-message-to=user:"
-msgstr "給%1的短消息:"
+msgstr "給%1的短消息："
 
 msgid "people.profile"
 msgstr "個人資料"
@@ -5408,7 +5408,7 @@ msgid "people.search"
 msgstr "搜尋好友"
 
 msgid "people.search:"
-msgstr "搜尋好友:"
+msgstr "搜尋好友："
 
 msgid "people.showing=from,to,total"
 msgstr "顯示總數%3的%1到%2。"
@@ -5465,7 +5465,7 @@ msgid "post.by"
 msgstr "發布者"
 
 msgid "post.by-email:"
-msgstr "通過郵件向此標籤發布:"
+msgstr "通過郵件向此標籤發布："
 
 msgid "post.new"
 msgstr "發帖"
@@ -5492,7 +5492,7 @@ msgid "profile.activities"
 msgstr "活動"
 
 msgid "profile.aim:"
-msgstr "目標和情況;:"
+msgstr "目標和情況;："
 
 msgid "profile.assistant"
 msgstr "助理"
@@ -5513,7 +5513,7 @@ msgid "profile.custom"
 msgstr "自定義"
 
 msgid "profile.facebook:"
-msgstr "Facebook:"
+msgstr "Facebook："
 
 msgid "profile.field-hidden"
 msgstr "此欄位在用戶資料中可見。"
@@ -5522,7 +5522,7 @@ msgid "profile.field-visible"
 msgstr "此欄位在用戶資料中隱藏。"
 
 msgid "profile.gtalk:"
-msgstr "GTalk:"
+msgstr "GTalk："
 
 msgid "profile.hidden=user"
 msgstr "用戶\"%1\"的資料已隱藏。"
@@ -5531,7 +5531,7 @@ msgid "profile.home-number"
 msgstr "家庭電話"
 
 msgid "profile.home:"
-msgstr "家庭位址:"
+msgstr "家庭位址："
 
 msgid "profile.im"
 msgstr "聊天室"
@@ -5540,7 +5540,7 @@ msgid "profile.importing"
 msgstr "正在導入個人資料..."
 
 msgid "profile.linkedin:"
-msgstr "Linkedin&reg;:"
+msgstr "Linkedin&reg;："
 
 msgid "profile.manager"
 msgstr "經理"
@@ -5552,25 +5552,25 @@ msgid "profile.organization"
 msgstr "組織"
 
 msgid "profile.personal:"
-msgstr "個人:"
+msgstr "個人："
 
 msgid "profile.phone"
 msgstr "電話"
 
 msgid "profile.sametime:"
-msgstr "同時&reg;:"
+msgstr "同時&reg;："
 
 msgid "profile.set=field,value,user"
 msgstr "用戶'%3'的個人資料'%1'設定為'%2'"
 
 msgid "profile.skype:"
-msgstr "Skype&trade;:"
+msgstr "Skype&trade;："
 
 msgid "profile.tags"
 msgstr "標籤"
 
 msgid "profile.twitter:"
-msgstr "Twitter:"
+msgstr "Twitter："
 
 msgid "profile.updated=field"
 msgstr "更新個人資料欄位\"%1\""
@@ -5591,7 +5591,7 @@ msgid "profile.work:"
 msgstr "工作："
 
 msgid "profile.yahoo:"
-msgstr "雅虎&trade;:"
+msgstr "雅虎&trade;："
 
 msgid "refcard.$75"
 msgstr "$75"
@@ -5645,7 +5645,7 @@ msgid "refcard.page-section-name"
 msgstr "頁面段落名稱"
 
 msgid "refcard.page-title:"
-msgstr "頁面標題:"
+msgstr "頁面標題："
 
 msgid "refcard.strikeout"
 msgstr "刪除線"
@@ -5696,7 +5696,7 @@ msgid "report.people-activity=user"
 msgstr "用戶 %1 的活動"
 
 msgid "report.period:"
-msgstr "報告期間:"
+msgstr "報告期間："
 
 msgid "report.printer-friendly"
 msgstr "列印版本的報告"
@@ -5723,7 +5723,7 @@ msgid "report.usage"
 msgstr "使用報告"
 
 msgid "report.usage-ending-midnight-of:"
-msgstr "凌晨使用停止:"
+msgstr "凌晨使用停止："
 
 msgid "report.usage=account"
 msgstr "%1 帳戶使用報告"
@@ -5786,7 +5786,7 @@ msgid "revision.begin-quote"
 msgstr "說道：『"
 
 msgid "revision.by:"
-msgstr "由:"
+msgstr "由："
 
 msgid "revision.color"
 msgstr "顏色查看(無格式的)"
@@ -5831,7 +5831,7 @@ msgid "revision.summary"
 msgstr "編輯摘要"
 
 msgid "revision.tags:"
-msgstr "標籤:"
+msgstr "標籤："
 
 msgid "revision.view"
 msgstr "查看含格式的"
@@ -5870,7 +5870,7 @@ msgid "sc.bottom"
 msgstr "底部"
 
 msgid "sc.by:"
-msgstr "上傳者:"
+msgstr "上傳者："
 
 msgid "sc.cancel-edit"
 msgstr "取消編輯"
@@ -5906,7 +5906,7 @@ msgid "sc.edit-this-revision-instead"
 msgstr "編輯本次修訂，而不是當前編輯器的內容"
 
 msgid "sc.editing:"
-msgstr "編輯:"
+msgstr "編輯："
 
 msgid "sc.enter-sheet-name"
 msgstr "輸入新的試算表的名稱"
@@ -5984,7 +5984,7 @@ msgid "sc.ok-or-cancel"
 msgstr "按確定繼續，或取消停留在當前頁面。"
 
 msgid "sc.on:"
-msgstr "開:"
+msgstr "開："
 
 msgid "sc.padding"
 msgstr "填充"
@@ -6050,7 +6050,7 @@ msgid "sc.save-with-name:"
 msgstr "保存不同的名稱："
 
 msgid "sc.save-with-new-name:"
-msgstr "保存一個新的名稱:"
+msgstr "保存一個新的名稱："
 
 msgid "sc.save-with-suggested-name"
 msgstr "保存試算表名稱為 \"<span id=\"st-newspreadsheet-duplicate-suggest\">XXX</span>\""
@@ -6062,7 +6062,7 @@ msgid "sc.sheet-settings"
 msgstr "試算表設定"
 
 msgid "sc.sheet-title:"
-msgstr "試算表名稱:"
+msgstr "試算表名稱："
 
 msgid "sc.show-preview"
 msgstr "顯示預覽"
@@ -6119,7 +6119,7 @@ msgid "search.be-more-specific"
 msgstr "請使用更准確的關鍵字或者新增更多搜尋項目。"
 
 msgid "search.error:"
-msgstr "錯誤:"
+msgstr "錯誤："
 
 msgid "search.for=query"
 msgstr "搜尋 %1"
@@ -6266,7 +6266,7 @@ msgid "signals.reply-privately"
 msgstr "私密回複該信號。"
 
 msgid "signals.search:"
-msgstr "搜尋信號:"
+msgstr "搜尋信號："
 
 msgid "signals.selected-people"
 msgstr "選定的好友"
@@ -6320,7 +6320,7 @@ msgid "signals.to=name"
 msgstr "給%1"
 
 msgid "signals.try-again:"
-msgstr "請重新嘗試:"
+msgstr "請重新嘗試："
 
 msgid "signals.update"
 msgstr "更新"
@@ -6350,10 +6350,10 @@ msgid "skin.remove-existing"
 msgstr "移除&nbsp;存在的&nbsp;文件"
 
 msgid "skin.select-file:"
-msgstr "選取一個包含自定義視覺主題文件的ZIP或TGZ文件:"
+msgstr "選取一個包含自定義視覺主題文件的ZIP或TGZ文件："
 
 msgid "skin.select:"
-msgstr "選取一個工作區視覺主題:"
+msgstr "選取一個工作區視覺主題："
 
 msgid "skin.size"
 msgstr "大小(bytes)"
@@ -6377,7 +6377,7 @@ msgid "sort.by-updated"
 msgstr "按最後更新時間對條目排序"
 
 msgid "sort.by:"
-msgstr "排序按照:"
+msgstr "排序按照："
 
 msgid "sort.created"
 msgstr "建立的日期"
@@ -6431,16 +6431,16 @@ msgid "table.add-row-below"
 msgstr "在下方新增行"
 
 msgid "table.columns:"
-msgstr "列:"
+msgstr "列："
 
 msgid "table.create"
 msgstr "建立表格"
 
 msgid "table.current-column:"
-msgstr "當前列:"
+msgstr "當前列："
 
 msgid "table.current-row:"
-msgstr "當前行:"
+msgstr "當前行："
 
 msgid "table.delete-column"
 msgstr "刪除列"
@@ -6452,10 +6452,10 @@ msgid "table.edit"
 msgstr "編輯表格"
 
 msgid "table.enter-columns:"
-msgstr "請輸入表格列數:"
+msgstr "請輸入表格列數："
 
 msgid "table.enter-rows:"
-msgstr "請輸入表格行數:"
+msgstr "請輸入表格行數："
 
 msgid "table.move-column-left"
 msgstr "將列往左移動"
@@ -6470,7 +6470,7 @@ msgid "table.move-row-up"
 msgstr "將行往上移動"
 
 msgid "table.rows:"
-msgstr "行:"
+msgstr "行："
 
 msgid "table.show-cell-borders"
 msgstr "顯示單元格"
@@ -6494,7 +6494,7 @@ msgid "tag.pages"
 msgstr "頁面"
 
 msgid "tag.suggestions:"
-msgstr "建議:"
+msgstr "建議："
 
 msgid "tag.template"
 msgstr "模版"
@@ -6779,10 +6779,10 @@ msgid "video.full-url-required"
 msgstr "請輸入完整的視頻網址。"
 
 msgid "video.title:"
-msgstr "標題:"
+msgstr "標題："
 
 msgid "video.url:"
-msgstr "網址:"
+msgstr "網址："
 
 msgid "wafl.#=tag"
 msgstr "#%1"
@@ -6878,7 +6878,7 @@ msgid "wafl.form=name"
 msgstr "表格: %1"
 
 msgid "wafl.full-results:"
-msgstr "全部結果:"
+msgstr "全部結果："
 
 msgid "wafl.google-title=query"
 msgstr "在谷歌搜尋 '%1'. 點選進行編輯."
@@ -6887,7 +6887,7 @@ msgid "wafl.google=query"
 msgstr "谷歌: %1"
 
 msgid "wafl.height:"
-msgstr "高度:"
+msgstr "高度："
 
 msgid "wafl.height=px"
 msgstr "高度: %1"
@@ -6989,7 +6989,7 @@ msgid "wafl.search-title=query"
 msgstr "搜尋 '%1'. 點選進行編輯."
 
 msgid "wafl.search-type:"
-msgstr "搜尋類型:"
+msgstr "搜尋類型："
 
 msgid "wafl.search=query"
 msgstr "搜尋: %1"
@@ -7085,7 +7085,7 @@ msgid "wafl.video=url"
 msgstr "視頻: %1"
 
 msgid "wafl.width:"
-msgstr "寬度:"
+msgstr "寬度："
 
 msgid "wafl.width=px"
 msgstr "寬度: %1"
@@ -7193,7 +7193,7 @@ msgid "widget.url"
 msgstr "網址"
 
 msgid "widget.width:"
-msgstr "小工具寬度:"
+msgstr "小工具寬度："
 
 msgid "widgets.about-restore"
 msgstr "恢複"
@@ -7208,7 +7208,7 @@ msgid "widgets.add-to-gallery"
 msgstr "新增小工具至工具庫"
 
 msgid "widgets.add-url:"
-msgstr "通過網址新增小工具:"
+msgstr "通過網址新增小工具："
 
 msgid "widgets.add-widget"
 msgstr "新增小工具"
@@ -7217,19 +7217,19 @@ msgid "widgets.added"
 msgstr "成功新增您的小工具"
 
 msgid "widgets.confirm-delete=widget?"
-msgstr "您確定要永久刪除這 \"%1\" 小工具?"
+msgstr "您確定要永久刪除這 \"%1\" 小工具？"
 
 msgid "widgets.confirm-remove=widget?"
 msgstr "您確定要移除此 \"%1\" 小工具? 用戶將無法在他們的工具庫中看到此小工具. 您隨時可以恢複此小工具."
 
 msgid "widgets.confirm-restore=widget?"
-msgstr "您確定要恢複此 \"%1\" 小工具?"
+msgstr "您確定要恢複此 \"%1\" 小工具？"
 
 msgid "widgets.delete"
 msgstr "(刪除)"
 
 msgid "widgets.gallery-switch=account:"
-msgstr "這是 \"%1\" 賬號的工具庫. 轉到帳戶:"
+msgstr "這是 \"%1\" 賬號的工具庫. 轉到帳戶："
 
 msgid "widgets.install-this"
 msgstr "安裝小工具"
@@ -7265,7 +7265,7 @@ msgid "widgets.update"
 msgstr "(更新)"
 
 msgid "widgets.update-from-url:"
-msgstr "通過網址更新小工具:"
+msgstr "通過網址更新小工具："
 
 msgid "widgets.update-widget"
 msgstr "更新小工具"
@@ -7274,7 +7274,7 @@ msgid "widgets.updated=widget"
 msgstr "成功更新您的小工具"
 
 msgid "widgets.upload-xml:"
-msgstr "上傳小工具可擴展標識語言文件:"
+msgstr "上傳小工具可擴展標識語言文件："
 
 msgid "widgets.use-editor"
 msgstr "使用小工具編輯器"
@@ -7349,7 +7349,7 @@ msgid "wiki.email-to-this"
 msgstr "發送郵件到這個工作區"
 
 msgid "wiki.enable-email-notifications?"
-msgstr "為這個工作區開啟郵件通知?"
+msgstr "為這個工作區開啟郵件通知？"
 
 msgid "wiki.enable-page-locking"
 msgstr "開啟頁面鎖定。工作區管理員可以選擇鎖定任何頁面，只有管理員可以編輯鎖定的頁面。 謹慎使用，如果成員能輕鬆編輯頁面才能更多參與。"
@@ -7409,7 +7409,7 @@ msgid "wiki.members"
 msgstr "工作區成員"
 
 msgid "wiki.mouseover-link?"
-msgstr "滑鼠停在鏈結上時顯示頁面的第一部份?"
+msgstr "滑鼠停在鏈結上時顯示頁面的第一部份？"
 
 msgid "wiki.name"
 msgstr "工作區名稱"
@@ -7433,7 +7433,7 @@ msgid "wiki.only-email-from=role"
 msgstr "只有%1可以向這個工作區發郵件。"
 
 msgid "wiki.permission-type:"
-msgstr "您是否想將此工作區設立為:"
+msgstr "您是否想將此工作區設立為："
 
 msgid "wiki.privacy"
 msgstr "工作區隱私"
@@ -7451,7 +7451,7 @@ msgid "wiki.search-all:"
 msgstr "搜尋我的工作區："
 
 msgid "wiki.search:"
-msgstr "搜尋此工作區:"
+msgstr "搜尋此工作區："
 
 msgid "wiki.send-email-notifications?"
 msgstr "通過郵件向此工作區的用戶發送工作區更改通知嗎？"

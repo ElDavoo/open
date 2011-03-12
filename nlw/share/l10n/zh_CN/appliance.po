@@ -52,7 +52,7 @@ msgid "console.manual-wiki"
 msgstr "设备手册工作区"
 
 msgid "console.screen-generate-time:"
-msgstr "生成本屏幕时的设备时钟:"
+msgstr "生成本屏幕时的设备时钟："
 
 msgid "appliance.archiving-system-config-files"
 msgstr "正在存档系统配置文件..."
@@ -79,7 +79,7 @@ msgid "appliance.backup-time"
 msgstr "备份时间"
 
 msgid "appliance.backups-for-restore:"
-msgstr "可供恢复的备份:"
+msgstr "可供恢复的备份："
 
 msgid "console.building-diagnostic-tarball"
 msgstr "建立诊断Tarball..."
@@ -118,7 +118,7 @@ msgid "console.disk-usage"
 msgstr "硬盘使用情况"
 
 msgid "console.email-for-testing:"
-msgstr "供测试的电子邮件地址:"
+msgstr "供测试的电子邮件地址："
 
 msgid "error.email-and-description-required!"
 msgstr "电子邮件与描述为必填项!"
@@ -160,7 +160,7 @@ msgid "console.about-navigation-tabs"
 msgstr "使用导航标签来选择设备管理的不同部分"
 
 msgid "console.new-admin-email-address:"
-msgstr "新的管理员电子邮件地址:"
+msgstr "新的管理员电子邮件地址："
 
 msgid "console.no-files-available-to-restore"
 msgstr "没有可供恢复的文件"
@@ -187,7 +187,7 @@ msgid "console.script-tag-stripped-in-login-message"
 msgstr "您可以随时在信息中使用HTML，但是在消息被保存之前，SCRIPT标签（例如JavaScript）将不会显现"
 
 msgid "console.problem-description:"
-msgstr "问题描述:"
+msgstr "问题描述："
 
 msgid "console.proxy-server-for-web-services"
 msgstr "网页服务的代理服务器"
@@ -295,7 +295,7 @@ msgid "console.time-server"
 msgstr "时间服务器"
 
 msgid "console.time-each-day:"
-msgstr "每日时间:"
+msgstr "每日时间："
 
 msgid "console.link-to-control-panel"
 msgstr "查看与管理系统的工作区、帐户、组与用户，请转至 <a href=\"/nlw/control/\">控制台</a> 工具."
@@ -334,7 +334,7 @@ msgid "console.about-login-after-initialize-wikis"
 msgstr "在您点击“初始化工作区”后您将被要求登录控制台"
 
 msgid "console.your-email-address:"
-msgstr "您的电子邮件地址:"
+msgstr "您的电子邮件地址："
 
 msgid "console.free"
 msgstr "空闲"

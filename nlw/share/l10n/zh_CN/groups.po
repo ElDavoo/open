@@ -109,7 +109,7 @@ msgid "groups.search-here"
 msgstr "在这里输入您的搜索..."
 
 msgid "groups.search:"
-msgstr "搜索群组:"
+msgstr "搜索群组："
 
 msgid "groups.self-join"
 msgstr "自加入群组"

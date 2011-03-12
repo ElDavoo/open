@@ -16,7 +16,7 @@ msgid "<! widget.label !>"
 msgstr "<! widget.label !>"
 
 msgid "<! widget.labels.$field || data.fields.$field !>:"
-msgstr "<! widget.labels.$field || data.fields.$field !>:"
+msgstr "<! widget.labels.$field || data.fields.$field !>："
 
 msgid "<! widget.more_desc !>"
 msgstr "<! widget.more_desc !>"
@@ -230,10 +230,10 @@ msgid "activities.from"
 msgstr "来自"
 
 msgid "activities.insert:"
-msgstr "插入:"
+msgstr "插入："
 
 msgid "activities.link-text:"
-msgstr "链接文本:"
+msgstr "链接文本："
 
 msgid "activities.link-to-web"
 msgstr "链接至网页"
@@ -284,7 +284,7 @@ msgid "activities.page-tags"
 msgstr "页面标签"
 
 msgid "activities.page:"
-msgstr "页面:"
+msgstr "页面："
 
 msgid "activities.people-events"
 msgstr "人际事件"
@@ -317,7 +317,7 @@ msgid "activities.reply-to-conversation"
 msgstr "回复對話 ..."
 
 msgid "activities.section:"
-msgstr "区域:"
+msgstr "区域："
 
 msgid "activities.send-private-message"
 msgstr "发送私人信息"
@@ -362,7 +362,7 @@ msgid "activities.uploaded=files"
 msgstr "已上传的文件: %1"
 
 msgid "activities.wiki:"
-msgstr "工作区:"
+msgstr "工作区："
 
 msgid "activities.within"
 msgstr "群组为"
@@ -455,7 +455,7 @@ msgid "appliance.backup-time"
 msgstr "备份时间"
 
 msgid "appliance.backups-for-restore:"
-msgstr "可供恢复的备份:"
+msgstr "可供恢复的备份："
 
 msgid "appliance.cleanup-previous-snapshot"
 msgstr "正在清除前一个快照..."
@@ -848,7 +848,7 @@ msgid "code.sql"
 msgstr "SQL"
 
 msgid "code.syntax-highlight-as:"
-msgstr "语法高亮:"
+msgstr "语法高亮："
 
 msgid "code.visualbasic"
 msgstr "VisualBasic"
@@ -866,7 +866,7 @@ msgid "code.yaml"
 msgstr "YAML"
 
 msgid "comment.add:"
-msgstr "添加您的评论:"
+msgstr "添加您的评论："
 
 msgid "comment.save"
 msgstr "保存评论"
@@ -887,7 +887,7 @@ msgid "config.blog-sort"
 msgstr "工作区博客排序"
 
 msgid "config.blog:"
-msgstr "此博客:"
+msgstr "此博客："
 
 msgid "config.changes-depth?"
 msgstr "间隔多长时间显示“最新更新”？"
@@ -908,10 +908,10 @@ msgid "config.files"
 msgstr "管理文件"
 
 msgid "config.first-name:"
-msgstr "名:"
+msgstr "名："
 
 msgid "config.for=group:"
-msgstr "配置为 %1 群组:"
+msgstr "配置为 %1 群组："
 
 msgid "config.immutable-name-password"
 msgstr "您的用户名和密码不能用“我的设置”来更改。"
@@ -941,7 +941,7 @@ msgid "config.registered-users"
 msgstr "已注册用户"
 
 msgid "config.review-settings=wiki:"
-msgstr "查看或更改%1的设置:"
+msgstr "查看或更改%1的设置："
 
 msgid "config.saved"
 msgstr "更改已保存"
@@ -1103,7 +1103,7 @@ msgid "console.documentation"
 msgstr "设备文档"
 
 msgid "console.email-for-testing:"
-msgstr "供测试的电子邮件地址:"
+msgstr "供测试的电子邮件地址："
 
 msgid "console.enable-captcha"
 msgstr "允许验证码要求注册用户证实其为人类"
@@ -1136,7 +1136,7 @@ msgid "console.manual-wiki"
 msgstr "设备手册工作区"
 
 msgid "console.new-admin-email-address:"
-msgstr "新的管理员电子邮件地址:"
+msgstr "新的管理员电子邮件地址："
 
 msgid "console.no-files-available-to-restore"
 msgstr "没有可供恢复的文件"
@@ -1163,7 +1163,7 @@ msgid "console.perform-restore"
 msgstr "执行恢复"
 
 msgid "console.problem-description:"
-msgstr "问题描述:"
+msgstr "问题描述："
 
 msgid "console.proxy-server-for-web-services"
 msgstr "网页服务的代理服务器"
@@ -1202,7 +1202,7 @@ msgid "console.save-backup-schedule"
 msgstr "保存备份计划"
 
 msgid "console.screen-generate-time:"
-msgstr "生成本屏幕时的设备时钟:"
+msgstr "生成本屏幕时的设备时钟："
 
 msgid "console.script-tag-stripped-in-login-message"
 msgstr "您可以随时在信息中使用HTML，但是在消息被保存之前，SCRIPT标签（例如JavaScript）将不会显现"
@@ -1271,7 +1271,7 @@ msgid "console.tarball-built"
 msgstr "压缩档已建立"
 
 msgid "console.time-each-day:"
-msgstr "每日时间:"
+msgstr "每日时间："
 
 msgid "console.time-server"
 msgstr "时间服务器"
@@ -1295,7 +1295,7 @@ msgid "console.web-service-proxy-address"
 msgstr "网页服务代理地址"
 
 msgid "console.your-email-address:"
-msgstr "您的电子邮件地址:"
+msgstr "您的电子邮件地址："
 
 msgid "control.about-account-logo-image"
 msgstr "您可以选择一个图像作为帐户标识。使用下面的表单从计算机上传图像。如果您未选择图像，则使用Socialtext的标识。标识的大小为宽201像素，高36像素，如果不符合该要求则图像将被调整。上传的标识将立即在用户的浏览器中显示，或者在刷新登录Socialtext桌面后显示（可选）。"
@@ -1358,7 +1358,7 @@ msgid "control.account-type"
 msgstr "帐户类别"
 
 msgid "control.account-type:"
-msgstr "帐户类别:"
+msgstr "帐户类别："
 
 msgid "control.account=name"
 msgstr "%1 帐户"
@@ -1382,13 +1382,13 @@ msgid "control.add-group-to-account"
 msgstr "添加群组至帐户"
 
 msgid "control.add-group-to-account:"
-msgstr "添加群组至帐户:"
+msgstr "添加群组至帐户："
 
 msgid "control.add-group-to-wiki"
 msgstr "添加群组至工作区"
 
 msgid "control.add-group-to-wiki:"
-msgstr "添加群组至工作区:"
+msgstr "添加群组至工作区："
 
 msgid "control.add-multiple-users"
 msgstr "添加多名用户"
@@ -1406,13 +1406,13 @@ msgid "control.add-user"
 msgstr "添加用户"
 
 msgid "control.add-user-to-account:"
-msgstr "添加用户至帐户:"
+msgstr "添加用户至帐户："
 
 msgid "control.add-user-to-group:"
-msgstr "添加用户至帐户:"
+msgstr "添加用户至帐户："
 
 msgid "control.add-user-to-wiki:"
-msgstr "添加用户至工作区:"
+msgstr "添加用户至工作区："
 
 msgid "control.add-users"
 msgstr "添加用户"
@@ -1445,10 +1445,10 @@ msgid "control.also-use-logo-for-desktop"
 msgstr "在刷新登录 Socialtext 桌面后将使用该标识。"
 
 msgid "control.appliance-business-administrator?"
-msgstr "设备业务管理员?"
+msgstr "设备业务管理员？"
 
 msgid "control.appliance-technical-administrator?"
-msgstr "设备技术管理员?"
+msgstr "设备技术管理员？"
 
 msgid "control.assign-appliance-business-administrator-role"
 msgstr "分配设备业务管理员角色"
@@ -1610,7 +1610,7 @@ msgid "control.edit-field"
 msgstr "编辑字段"
 
 msgid "control.email-address:"
-msgstr "电子邮件地址:"
+msgstr "电子邮件地址："
 
 msgid "control.enable-export-user-data"
 msgstr "禁止输出用户数据"
@@ -1634,7 +1634,7 @@ msgid "control.external-id-required"
 msgstr "要求外部 ID"
 
 msgid "control.external-id:"
-msgstr "外部ID:"
+msgstr "外部ID："
 
 msgid "control.features-and-skins"
 msgstr "特征与视觉主题"
@@ -1673,7 +1673,7 @@ msgid "control.field-type"
 msgstr "字段类别"
 
 msgid "control.first-name:"
-msgstr "名:"
+msgstr "名："
 
 msgid "control.for-cac-authentication"
 msgstr "为 CAC 认证之用"
@@ -1691,10 +1691,10 @@ msgid "control.go-to-wiki=name"
 msgstr "转至 %1 工作区"
 
 msgid "control.group-name:"
-msgstr "群组名称:"
+msgstr "群组名称："
 
 msgid "control.group-permissions:"
-msgstr "群组权限:"
+msgstr "群组权限："
 
 msgid "control.group-role-changed"
 msgstr "群组角色变更成功."
@@ -1718,10 +1718,10 @@ msgid "control.hide-field"
 msgstr "隐藏"
 
 msgid "control.image-file:"
-msgstr "图像文件:"
+msgstr "图像文件："
 
 msgid "control.installed-plugins:"
-msgstr "已安装的可选模块:"
+msgstr "已安装的可选模块："
 
 msgid "control.introduction"
 msgstr "概述"
@@ -1748,16 +1748,16 @@ msgid "control.invited-by"
 msgstr "邀请"
 
 msgid "control.invited-by:"
-msgstr "邀请人:"
+msgstr "邀请人："
 
 msgid "control.invited-to-system"
 msgstr "邀请 (到系统)"
 
 msgid "control.last-login:"
-msgstr "上次登录:"
+msgstr "上次登录："
 
 msgid "control.ldap-driver:"
-msgstr "LDAP驱动:"
+msgstr "LDAP驱动："
 
 msgid "control.load-existing-group-from-ldap"
 msgstr "从LDAP加载已有群组"
@@ -1766,13 +1766,13 @@ msgid "control.loading-selected-users"
 msgstr "正在加载选中用户"
 
 msgid "control.lookahead-account-of-new-wiki:"
-msgstr "开始输入新工作区所属的帐户名称:"
+msgstr "开始输入新工作区所属的帐户名称："
 
 msgid "control.lookahead-wiki:"
-msgstr "开始输入工作区的名称:"
+msgstr "开始输入工作区的名称："
 
 msgid "control.manually-set-uri:"
-msgstr "手工设置URI:"
+msgstr "手工设置URI："
 
 msgid "control.member"
 msgstr "成员"
@@ -1784,10 +1784,10 @@ msgid "control.name"
 msgstr "名称"
 
 msgid "control.name-of-group:"
-msgstr "群组名称:"
+msgstr "群组名称："
 
 msgid "control.name:"
-msgstr "名称:"
+msgstr "名称："
 
 msgid "control.new-wiki"
 msgstr "新工作区"
@@ -1799,7 +1799,7 @@ msgid "control.permission-set"
 msgstr "权限设定"
 
 msgid "control.permission-set:"
-msgstr "权限设定:"
+msgstr "权限设定："
 
 msgid "control.prefers-to-be-called"
 msgstr "起一个名字"
@@ -1811,7 +1811,7 @@ msgid "control.primary-account"
 msgstr "主要帐户"
 
 msgid "control.primary-account-for-new-groups:"
-msgstr "新群组的主要帐户为:"
+msgstr "新群组的主要帐户为："
 
 msgid "control.private-group"
 msgstr "<strong>私人:</strong> 只有成员才能浏览与访问本群组。"
@@ -1838,10 +1838,10 @@ msgid "control.remove-from-wiki"
 msgstr "从工作区中移除"
 
 msgid "control.remove-group-from-accounts=count?"
-msgstr "从 %1 个选中帐户中移除群组?"
+msgstr "从 %1 个选中帐户中移除群组？"
 
 msgid "control.remove-user-from-accounts=count?"
-msgstr "从 %1 个选中工作区中移除本用户?"
+msgstr "从 %1 个选中工作区中移除本用户？"
 
 msgid "control.removed-user=account"
 msgstr "已从帐户 %1 中移除用户"
@@ -1871,7 +1871,7 @@ msgid "control.reset-to-default"
 msgstr "重置为默认"
 
 msgid "control.restrict-invites-to-domain:"
-msgstr "限制邀请至域:"
+msgstr "限制邀请至域："
 
 msgid "control.return-to-group=name"
 msgstr "返回 %1群组"
@@ -1886,7 +1886,7 @@ msgid "control.role-yes"
 msgstr "是"
 
 msgid "control.rows-selected=count:"
-msgstr "%1 行选中:"
+msgstr "%1 行选中："
 
 msgid "control.save-field"
 msgstr "保存字段"
@@ -1910,7 +1910,7 @@ msgid "control.select-group"
 msgstr "请选择一个群组"
 
 msgid "control.select-users-csv:"
-msgstr "选择包含用户的CSV文件添加:"
+msgstr "选择包含用户的CSV文件添加："
 
 msgid "control.select-users-to-add-to-group"
 msgstr "请选择多名用户添加至群组。"
@@ -1925,7 +1925,7 @@ msgid "control.send-invitation-email"
 msgstr "发送邀请email"
 
 msgid "control.set-account-type-to:"
-msgstr "变更帐户类别为:"
+msgstr "变更帐户类别为："
 
 msgid "control.set-by-external-directory"
 msgstr "根据外部目录设置"
@@ -1973,7 +1973,7 @@ msgid "control.tabs"
 msgstr "标签栏"
 
 msgid "control.this-is-all-users-wiki-for-account:"
-msgstr "这是帐户全部用户的工作区:"
+msgstr "这是帐户全部用户的工作区："
 
 msgid "control.this-is-name-of-your-group"
 msgstr "这是您的群组名称."
@@ -2375,13 +2375,13 @@ msgid "do.yes"
 msgstr "是"
 
 msgid "draft.?"
-msgstr "?"
+msgstr "？"
 
 msgid "draft.discard"
 msgstr "放弃"
 
 msgid "draft.discard?"
-msgstr "您确定要丢弃草稿吗?"
+msgstr "您确定要丢弃草稿吗？"
 
 msgid "draft.or"
 msgstr "&nbsp;or&nbsp;"
@@ -2390,16 +2390,16 @@ msgid "draft.resume"
 msgstr "继续"
 
 msgid "draft.unsaved=page,wiki,wiki-id:"
-msgstr "您有一个\"%1\"的未保存草稿在\"%2\" (%3)工作区:"
+msgstr "您有一个\"%1\"的未保存草稿在\"%2\" (%3)工作区："
 
 msgid "edit.add-tags"
 msgstr "添加标签..."
 
 msgid "edit.append-to-page:"
-msgstr "在当前命名页面的底部附上您的文本:"
+msgstr "在当前命名页面的底部附上您的文本："
 
 msgid "edit.cancel?"
-msgstr "确定要取消?"
+msgstr "确定要取消？"
 
 msgid "edit.choose-group"
 msgstr "您必须成为具有访问此工作区权限的的群组中的成员。请在下面选择您想加入的群组："
@@ -2417,7 +2417,7 @@ msgid "edit.default-text"
 msgstr "请在此输入文字."
 
 msgid "edit.editing:"
-msgstr "正在编辑:"
+msgstr "正在编辑："
 
 msgid "edit.editing=page"
 msgstr "正在编辑: %1"
@@ -2468,7 +2468,7 @@ msgid "edit.saving"
 msgstr "正在保存..."
 
 msgid "edit.self-join=group?"
-msgstr "您必须成为 %1 群组的成员，才能在此页面进行编辑或者评论。想现在加入吗?"
+msgstr "您必须成为 %1 群组的成员，才能在此页面进行编辑或者评论。想现在加入吗？"
 
 msgid "edit.signal-to"
 msgstr "将本编辑发送至"
@@ -2486,10 +2486,10 @@ msgid "edit.summary=name,summary,page,wiki"
 msgstr "<strong>%1</strong>，\"%2\"（编辑了位于 %4 的<strong>%3</strong>）"
 
 msgid "edit.tag-prompt:"
-msgstr "标签:"
+msgstr "标签："
 
 msgid "edit.tag-queue:"
-msgstr "适用的标签:"
+msgstr "适用的标签："
 
 msgid "edit.unsaved-changes"
 msgstr "您的更改未保存."
@@ -2498,7 +2498,7 @@ msgid "edit.upload"
 msgstr "上传文件..."
 
 msgid "edit.view-contention=type:"
-msgstr "您刚才编辑的%1显示如下 。您可以从此处复制粘贴您的更改:"
+msgstr "您刚才编辑的%1显示如下 。您可以从此处复制粘贴您的更改："
 
 msgid "edit.view-locked"
 msgstr "您的更改的原始wikitext 如下。 您可以从此处复制您的更改。"
@@ -2528,13 +2528,13 @@ msgid "email.confirmation-subject=wiki"
 msgstr "已登陆到工作区 %1"
 
 msgid "email.copy-self?"
-msgstr "向自己发送副本?"
+msgstr "向自己发送副本？"
 
 msgid "email.customize"
 msgstr "(您可以自定义下面的文字。)"
 
 msgid "email.date:"
-msgstr "日期:"
+msgstr "日期："
 
 msgid "email.frequency?"
 msgstr "你想要多长时间收到一次邮件更新？"
@@ -2543,7 +2543,7 @@ msgid "email.from"
 msgstr "寄件人"
 
 msgid "email.from:"
-msgstr "来自:"
+msgstr "来自："
 
 msgid "email.message"
 msgstr "消息"
@@ -2714,7 +2714,7 @@ msgid "error.change-profile-field-failed"
 msgstr "无法更新资料字段。"
 
 msgid "error.check-again?"
-msgstr "请再次确认?"
+msgstr "请再次确认？"
 
 msgid "error.check-video-url"
 msgstr "系統出错; 请稍候再重试."
@@ -3635,13 +3635,13 @@ msgid "error.set-system-user-name"
 msgstr "无法修改系统创建用户的名字"
 
 msgid "error.sheet-contention:"
-msgstr "当您编辑的时候, <span style=\"font-weight: bold\" id=\"st-contention-user\">XXX</span> 保存了电子表格的一个版本,并且我们无法调和这个变化。您想:"
+msgstr "当您编辑的时候, <span style=\"font-weight: bold\" id=\"st-contention-user\">XXX</span> 保存了电子表格的一个版本,并且我们无法调和这个变化。您想："
 
 msgid "error.sheet-name-exists"
 msgstr "该名字已被使用，请输入一个不同的名称。"
 
 msgid "error.sheet-name-exists:"
-msgstr "<a id=\"st-newspreadsheet-duplicate-link\" href=\"#\" target=\"\">XXX</a>  <span id=\"st-newspreadsheet-duplicate-emphasis\">已经被占用</span>。您想:"
+msgstr "<a id=\"st-newspreadsheet-duplicate-link\" href=\"#\" target=\"\">XXX</a>  <span id=\"st-newspreadsheet-duplicate-emphasis\">已经被占用</span>。您想："
 
 msgid "error.sheet-title-too-long"
 msgstr "电子表格名称太长。请缩短名称，再试一次。"
@@ -3923,10 +3923,10 @@ msgid "example.title"
 msgstr "示例: Acme Widgets Product Development"
 
 msgid "example.wiki-email:"
-msgstr "这个邮件地址:"
+msgstr "这个邮件地址："
 
 msgid "example.wiki-url:"
-msgstr "示例: acme-product-dev 创建的工作区地址为:"
+msgstr "示例: acme-product-dev 创建的工作区地址为："
 
 msgid "explore.beta"
 msgstr "探索 (测试)"
@@ -4046,7 +4046,7 @@ msgid "file.keep"
 msgstr "保留附件"
 
 msgid "file.keep?"
-msgstr "寄送附件?"
+msgstr "寄送附件？"
 
 msgid "file.max-size"
 msgstr "文件最大: 50MB"
@@ -4070,7 +4070,7 @@ msgid "file.uploaded-by"
 msgstr "上传者"
 
 msgid "file.uploaded:"
-msgstr "已上传的文件:"
+msgstr "已上传的文件："
 
 msgid "file.uploading=name"
 msgstr "正在上传 %1..."
@@ -4196,7 +4196,7 @@ msgid "groups.search-here"
 msgstr "在这里输入您的搜索..."
 
 msgid "groups.search:"
-msgstr "搜索群组:"
+msgstr "搜索群组："
 
 msgid "groups.self-join"
 msgstr "自加入群组"
@@ -4277,7 +4277,7 @@ msgid "info.dashboard-save-layout"
 msgstr "点击下面的<b>保存</b>使当前显示板成为您帐户的默认显示板。在新用户第一次登录的时候，他们都会有这个显示板。点击下面“强制升级”复选框来使强制老用户帐户也如此。"
 
 msgid "info.deactivated-user:"
-msgstr "如果你想移除用户的系统访问权限，请按如下操作:"
+msgstr "如果你想移除用户的系统访问权限，请按如下操作："
 
 msgid "info.default-logo"
 msgstr "如果您没有选择图片，将会用 Socialtext 的标识代替。"
@@ -4319,7 +4319,7 @@ msgid "info.email-to-page"
 msgstr "当工作区收到邮件，邮件主题将变成页面名称，邮件正文将变成页面正文。"
 
 msgid "info.error:"
-msgstr "错误:"
+msgstr "错误："
 
 msgid "info.expand-view"
 msgstr "扩展编辑区域以填充浏览器窗口"
@@ -4382,7 +4382,7 @@ msgid "info.optional"
 msgstr "可选"
 
 msgid "info.page-exists:"
-msgstr "<span id=\"st-newpage-duplicate-emphasis\">已经存在</span>一个名为 <a id=\"st-newpage-duplicate-link\" href=\"#\" target=\"\">XXX</a>的页面. 您是否愿意:"
+msgstr "<span id=\"st-newpage-duplicate-emphasis\">已经存在</span>一个名为 <a id=\"st-newpage-duplicate-link\" href=\"#\" target=\"\">XXX</a>的页面. 您是否愿意："
 
 msgid "info.post"
 msgstr "点击按钮新建博客文章"
@@ -4448,7 +4448,7 @@ msgid "info.wafl-uneditable"
 msgstr "该小工具不可编辑。请在維基格式下进行编辑。"
 
 msgid "info.warning:"
-msgstr "警告:"
+msgstr "警告："
 
 msgid "info.welcome=user"
 msgstr "欢迎%1"
@@ -4634,13 +4634,13 @@ msgid "invite.to=name"
 msgstr "邀请好友到%1"
 
 msgid "invite.username:"
-msgstr "用户名:"
+msgstr "用户名："
 
 msgid "invite.using-wiki"
 msgstr "工作区简单易用。点击这里总览页面。"
 
 msgid "invite.web-address:"
-msgstr "网址:"
+msgstr "网址："
 
 msgid "invite.welcome-email:"
 msgstr "新用户会收到以下欢迎信："
@@ -4748,7 +4748,7 @@ msgid "link.add"
 msgstr "添加链接"
 
 msgid "link.destination:"
-msgstr "链接目标:"
+msgstr "链接目标："
 
 msgid "link.external"
 msgstr "外部链接"
@@ -4769,7 +4769,7 @@ msgid "link.mandatory-indicator"
 msgstr "规定的必需字段"
 
 msgid "link.page:"
-msgstr "页面:"
+msgstr "页面："
 
 msgid "link.section"
 msgstr "章节链接"
@@ -4778,10 +4778,10 @@ msgid "link.section-in-this-page"
 msgstr "本页段落"
 
 msgid "link.section:"
-msgstr "段落:"
+msgstr "段落："
 
 msgid "link.text:"
-msgstr "链接文本:"
+msgstr "链接文本："
 
 msgid "link.web-link"
 msgstr "网站链接"
@@ -4790,7 +4790,7 @@ msgid "link.wiki-link"
 msgstr "維基链接"
 
 msgid "link.wiki:"
-msgstr "工作区:"
+msgstr "工作区："
 
 msgid "lite.first-page"
 msgstr "第一页"
@@ -4817,7 +4817,7 @@ msgid "login.email-required"
 msgstr "请输入邮箱。"
 
 msgid "login.email:"
-msgstr "登录邮箱:"
+msgstr "登录邮箱："
 
 msgid "login.is-disabled"
 msgstr "无法登录"
@@ -4886,7 +4886,7 @@ msgid "nav.explore"
 msgstr "探索"
 
 msgid "nav.filter:"
-msgstr "过滤按:"
+msgstr "过滤按："
 
 msgid "nav.first"
 msgstr "最前"
@@ -5024,7 +5024,7 @@ msgid "nav.show"
 msgstr "显示"
 
 msgid "nav.show:"
-msgstr "显示:"
+msgstr "显示："
 
 msgid "nav.signals"
 msgstr "信号"
@@ -5138,7 +5138,7 @@ msgid "page.copy"
 msgstr "复制到另一个工作区"
 
 msgid "page.copy=title?"
-msgstr "将页面%1复制到另外一个工作区?"
+msgstr "将页面%1复制到另外一个工作区？"
 
 msgid "page.count=revision"
 msgstr "%1 次更动"
@@ -5168,7 +5168,7 @@ msgid "page.delete-tag"
 msgstr "删除这个标签"
 
 msgid "page.delete=title?"
-msgstr "您确定要删除“%1”?"
+msgstr "您确定要删除“%1”？"
 
 msgid "page.deleted=name"
 msgstr "已删除\"%1\""
@@ -5198,7 +5198,7 @@ msgid "page.email-to-this"
 msgstr "发送邮件到这个页面"
 
 msgid "page.files:"
-msgstr "本页面的附件:"
+msgstr "本页面的附件："
 
 msgid "page.incoming-links"
 msgstr "外部链接"
@@ -5228,7 +5228,7 @@ msgid "page.linked-from:"
 msgstr "这个页面链接来自："
 
 msgid "page.list-locked=wiki:"
-msgstr "在'%1'工作区中锁定页面:"
+msgstr "在'%1'工作区中锁定页面："
 
 msgid "page.lock"
 msgstr "锁定页面"
@@ -5297,7 +5297,7 @@ msgid "page.save-as"
 msgstr "页面另存为"
 
 msgid "page.save-with-another-name:"
-msgstr "另存为其他名称:"
+msgstr "另存为其他名称："
 
 msgid "page.save-with-name"
 msgstr "页面另存为 <span id=\"st-newpage-duplicate-suggest\">XXX</span>"
@@ -5339,16 +5339,16 @@ msgid "page.updated=user,date"
 msgstr "由 %1 于 %2 更新"
 
 msgid "page.use-template:"
-msgstr "使用模板:"
+msgstr "使用模板："
 
 msgid "password.again:"
-msgstr "再次输入新密码:"
+msgstr "再次输入新密码："
 
 msgid "password.change"
 msgstr "更改密码"
 
 msgid "password.current:"
-msgstr "当前密码:"
+msgstr "当前密码："
 
 msgid "password.minimum-length"
 msgstr "新密码至少需6个字符长。"
@@ -5372,7 +5372,7 @@ msgid "people.add-tag-to-someone"
 msgstr "给某人添加这个标签"
 
 msgid "people.add-tag-to-user=name:"
-msgstr "为用户添加标签\"%1\":"
+msgstr "为用户添加标签\"%1\"："
 
 msgid "people.all"
 msgstr "所有成员"
@@ -5393,13 +5393,13 @@ msgid "people.follow"
 msgstr "关注"
 
 msgid "people.mobile:"
-msgstr "移动电话:"
+msgstr "移动电话："
 
 msgid "people.private-message-send"
 msgstr "发送"
 
 msgid "people.private-message-to=user:"
-msgstr "给%1的短消息:"
+msgstr "给%1的短消息："
 
 msgid "people.profile"
 msgstr "个人资料"
@@ -5408,7 +5408,7 @@ msgid "people.search"
 msgstr "搜索好友"
 
 msgid "people.search:"
-msgstr "搜索好友:"
+msgstr "搜索好友："
 
 msgid "people.showing=from,to,total"
 msgstr "显示总数%3的%1到%2。"
@@ -5465,7 +5465,7 @@ msgid "post.by"
 msgstr "发布者"
 
 msgid "post.by-email:"
-msgstr "通过邮件向此标签发布:"
+msgstr "通过邮件向此标签发布："
 
 msgid "post.new"
 msgstr "发帖"
@@ -5492,7 +5492,7 @@ msgid "profile.activities"
 msgstr "活动"
 
 msgid "profile.aim:"
-msgstr "目标和情况;:"
+msgstr "目标和情况;："
 
 msgid "profile.assistant"
 msgstr "助理"
@@ -5513,7 +5513,7 @@ msgid "profile.custom"
 msgstr "自定义"
 
 msgid "profile.facebook:"
-msgstr "Facebook:"
+msgstr "Facebook："
 
 msgid "profile.field-hidden"
 msgstr "此字段在用户资料中可见。"
@@ -5522,7 +5522,7 @@ msgid "profile.field-visible"
 msgstr "此字段在用户资料中隐藏。"
 
 msgid "profile.gtalk:"
-msgstr "GTalk:"
+msgstr "GTalk："
 
 msgid "profile.hidden=user"
 msgstr "用户\"%1\"的资料已隐藏。"
@@ -5531,7 +5531,7 @@ msgid "profile.home-number"
 msgstr "家庭电话"
 
 msgid "profile.home:"
-msgstr "家庭地址:"
+msgstr "家庭地址："
 
 msgid "profile.im"
 msgstr "聊天室"
@@ -5540,7 +5540,7 @@ msgid "profile.importing"
 msgstr "正在导入个人资料..."
 
 msgid "profile.linkedin:"
-msgstr "Linkedin&reg;:"
+msgstr "Linkedin&reg;："
 
 msgid "profile.manager"
 msgstr "经理"
@@ -5552,25 +5552,25 @@ msgid "profile.organization"
 msgstr "组织"
 
 msgid "profile.personal:"
-msgstr "个人:"
+msgstr "个人："
 
 msgid "profile.phone"
 msgstr "电话"
 
 msgid "profile.sametime:"
-msgstr "同时&reg;:"
+msgstr "同时&reg;："
 
 msgid "profile.set=field,value,user"
 msgstr "用户'%3'的个人资料'%1'设置为'%2'"
 
 msgid "profile.skype:"
-msgstr "Skype&trade;:"
+msgstr "Skype&trade;："
 
 msgid "profile.tags"
 msgstr "标签"
 
 msgid "profile.twitter:"
-msgstr "Twitter:"
+msgstr "Twitter："
 
 msgid "profile.updated=field"
 msgstr "更新个人资料字段\"%1\""
@@ -5591,7 +5591,7 @@ msgid "profile.work:"
 msgstr "工作："
 
 msgid "profile.yahoo:"
-msgstr "雅虎&trade;:"
+msgstr "雅虎&trade;："
 
 msgid "refcard.$75"
 msgstr "$75"
@@ -5645,7 +5645,7 @@ msgid "refcard.page-section-name"
 msgstr "页面段落名称"
 
 msgid "refcard.page-title:"
-msgstr "页面标题:"
+msgstr "页面标题："
 
 msgid "refcard.strikeout"
 msgstr "删除线"
@@ -5696,7 +5696,7 @@ msgid "report.people-activity=user"
 msgstr "用户 %1 的活动"
 
 msgid "report.period:"
-msgstr "报告期间:"
+msgstr "报告期间："
 
 msgid "report.printer-friendly"
 msgstr "打印版本的报告"
@@ -5723,7 +5723,7 @@ msgid "report.usage"
 msgstr "使用报告"
 
 msgid "report.usage-ending-midnight-of:"
-msgstr "凌晨使用停止:"
+msgstr "凌晨使用停止："
 
 msgid "report.usage=account"
 msgstr "%1 帐户使用报告"
@@ -5786,7 +5786,7 @@ msgid "revision.begin-quote"
 msgstr "说道：“"
 
 msgid "revision.by:"
-msgstr "由:"
+msgstr "由："
 
 msgid "revision.color"
 msgstr "颜色查看(无格式的)"
@@ -5831,7 +5831,7 @@ msgid "revision.summary"
 msgstr "编辑摘要"
 
 msgid "revision.tags:"
-msgstr "标签:"
+msgstr "标签："
 
 msgid "revision.view"
 msgstr "查看含格式的"
@@ -5870,7 +5870,7 @@ msgid "sc.bottom"
 msgstr "底部"
 
 msgid "sc.by:"
-msgstr "上传者:"
+msgstr "上传者："
 
 msgid "sc.cancel-edit"
 msgstr "取消编辑"
@@ -5906,7 +5906,7 @@ msgid "sc.edit-this-revision-instead"
 msgstr "编辑本次修订，而不是当前编辑器的内容"
 
 msgid "sc.editing:"
-msgstr "编辑:"
+msgstr "编辑："
 
 msgid "sc.enter-sheet-name"
 msgstr "输入新的电子表格的名称"
@@ -5984,7 +5984,7 @@ msgid "sc.ok-or-cancel"
 msgstr "按确定继续，或取消停留在当前页面。"
 
 msgid "sc.on:"
-msgstr "开:"
+msgstr "开："
 
 msgid "sc.padding"
 msgstr "填充"
@@ -6050,7 +6050,7 @@ msgid "sc.save-with-name:"
 msgstr "保存不同的名称："
 
 msgid "sc.save-with-new-name:"
-msgstr "保存一个新的名称:"
+msgstr "保存一个新的名称："
 
 msgid "sc.save-with-suggested-name"
 msgstr "保存电子表格名称为 \"<span id=\"st-newspreadsheet-duplicate-suggest\">XXX</span>\""
@@ -6062,7 +6062,7 @@ msgid "sc.sheet-settings"
 msgstr "电子表格设置"
 
 msgid "sc.sheet-title:"
-msgstr "电子表格名称:"
+msgstr "电子表格名称："
 
 msgid "sc.show-preview"
 msgstr "显示预览"
@@ -6119,7 +6119,7 @@ msgid "search.be-more-specific"
 msgstr "请使用更准确的关键字或者添加更多搜索项目。"
 
 msgid "search.error:"
-msgstr "错误:"
+msgstr "错误："
 
 msgid "search.for=query"
 msgstr "搜索 %1"
@@ -6266,7 +6266,7 @@ msgid "signals.reply-privately"
 msgstr "私密回复该信号。"
 
 msgid "signals.search:"
-msgstr "搜索信号:"
+msgstr "搜索信号："
 
 msgid "signals.selected-people"
 msgstr "选定的好友"
@@ -6320,7 +6320,7 @@ msgid "signals.to=name"
 msgstr "给%1"
 
 msgid "signals.try-again:"
-msgstr "请重新尝试:"
+msgstr "请重新尝试："
 
 msgid "signals.update"
 msgstr "更新"
@@ -6350,10 +6350,10 @@ msgid "skin.remove-existing"
 msgstr "移除&nbsp;存在的&nbsp;文件"
 
 msgid "skin.select-file:"
-msgstr "选取一个包含自定义视觉主题文件的ZIP或TGZ文件:"
+msgstr "选取一个包含自定义视觉主题文件的ZIP或TGZ文件："
 
 msgid "skin.select:"
-msgstr "选取一个工作区视觉主题:"
+msgstr "选取一个工作区视觉主题："
 
 msgid "skin.size"
 msgstr "大小(bytes)"
@@ -6377,7 +6377,7 @@ msgid "sort.by-updated"
 msgstr "按最后更新时间对条目排序"
 
 msgid "sort.by:"
-msgstr "排序按照:"
+msgstr "排序按照："
 
 msgid "sort.created"
 msgstr "创建的日期"
@@ -6431,16 +6431,16 @@ msgid "table.add-row-below"
 msgstr "在下方添加行"
 
 msgid "table.columns:"
-msgstr "列:"
+msgstr "列："
 
 msgid "table.create"
 msgstr "创建表格"
 
 msgid "table.current-column:"
-msgstr "当前列:"
+msgstr "当前列："
 
 msgid "table.current-row:"
-msgstr "当前行:"
+msgstr "当前行："
 
 msgid "table.delete-column"
 msgstr "删除列"
@@ -6452,10 +6452,10 @@ msgid "table.edit"
 msgstr "编辑表格"
 
 msgid "table.enter-columns:"
-msgstr "请输入表格列数:"
+msgstr "请输入表格列数："
 
 msgid "table.enter-rows:"
-msgstr "请输入表格行数:"
+msgstr "请输入表格行数："
 
 msgid "table.move-column-left"
 msgstr "将列往左移动"
@@ -6470,7 +6470,7 @@ msgid "table.move-row-up"
 msgstr "将行往上移动"
 
 msgid "table.rows:"
-msgstr "行:"
+msgstr "行："
 
 msgid "table.show-cell-borders"
 msgstr "显示单元格"
@@ -6494,7 +6494,7 @@ msgid "tag.pages"
 msgstr "页面"
 
 msgid "tag.suggestions:"
-msgstr "建议:"
+msgstr "建议："
 
 msgid "tag.template"
 msgstr "模版"
@@ -6779,10 +6779,10 @@ msgid "video.full-url-required"
 msgstr "请输入完整的视频网址。"
 
 msgid "video.title:"
-msgstr "标题:"
+msgstr "标题："
 
 msgid "video.url:"
-msgstr "网址:"
+msgstr "网址："
 
 msgid "wafl.#=tag"
 msgstr "#%1"
@@ -6878,7 +6878,7 @@ msgid "wafl.form=name"
 msgstr "表格: %1"
 
 msgid "wafl.full-results:"
-msgstr "全部结果:"
+msgstr "全部结果："
 
 msgid "wafl.google-title=query"
 msgstr "在谷歌搜索 '%1'. 点击进行编辑."
@@ -6887,7 +6887,7 @@ msgid "wafl.google=query"
 msgstr "谷歌: %1"
 
 msgid "wafl.height:"
-msgstr "高度:"
+msgstr "高度："
 
 msgid "wafl.height=px"
 msgstr "高度: %1"
@@ -6989,7 +6989,7 @@ msgid "wafl.search-title=query"
 msgstr "搜索 '%1'. 点击进行编辑."
 
 msgid "wafl.search-type:"
-msgstr "搜索类型:"
+msgstr "搜索类型："
 
 msgid "wafl.search=query"
 msgstr "搜索: %1"
@@ -7085,7 +7085,7 @@ msgid "wafl.video=url"
 msgstr "视频: %1"
 
 msgid "wafl.width:"
-msgstr "宽度:"
+msgstr "宽度："
 
 msgid "wafl.width=px"
 msgstr "宽度: %1"
@@ -7193,7 +7193,7 @@ msgid "widget.url"
 msgstr "网址"
 
 msgid "widget.width:"
-msgstr "小工具宽度:"
+msgstr "小工具宽度："
 
 msgid "widgets.about-restore"
 msgstr "恢复"
@@ -7208,7 +7208,7 @@ msgid "widgets.add-to-gallery"
 msgstr "添加小工具至工具库"
 
 msgid "widgets.add-url:"
-msgstr "通过网址添加小工具:"
+msgstr "通过网址添加小工具："
 
 msgid "widgets.add-widget"
 msgstr "添加小工具"
@@ -7217,19 +7217,19 @@ msgid "widgets.added"
 msgstr "成功添加您的小工具"
 
 msgid "widgets.confirm-delete=widget?"
-msgstr "您确定要永久删除这 \"%1\" 小工具?"
+msgstr "您确定要永久删除这 \"%1\" 小工具？"
 
 msgid "widgets.confirm-remove=widget?"
 msgstr "您确定要移除此 \"%1\" 小工具? 用户将无法在他们的工具库中看到此小工具. 您随时可以恢复此小工具."
 
 msgid "widgets.confirm-restore=widget?"
-msgstr "您确定要恢复此 \"%1\" 小工具?"
+msgstr "您确定要恢复此 \"%1\" 小工具？"
 
 msgid "widgets.delete"
 msgstr "(删除)"
 
 msgid "widgets.gallery-switch=account:"
-msgstr "这是 \"%1\" 账号的工具库. 转到帐户:"
+msgstr "这是 \"%1\" 账号的工具库. 转到帐户："
 
 msgid "widgets.install-this"
 msgstr "安装小工具"
@@ -7265,7 +7265,7 @@ msgid "widgets.update"
 msgstr "(更新)"
 
 msgid "widgets.update-from-url:"
-msgstr "通过网址更新小工具:"
+msgstr "通过网址更新小工具："
 
 msgid "widgets.update-widget"
 msgstr "更新小工具"
@@ -7274,7 +7274,7 @@ msgid "widgets.updated=widget"
 msgstr "成功更新您的小工具"
 
 msgid "widgets.upload-xml:"
-msgstr "上传小工具可扩展标识语言文件:"
+msgstr "上传小工具可扩展标识语言文件："
 
 msgid "widgets.use-editor"
 msgstr "使用小工具编辑器"
@@ -7349,7 +7349,7 @@ msgid "wiki.email-to-this"
 msgstr "发送邮件到这个工作区"
 
 msgid "wiki.enable-email-notifications?"
-msgstr "为这个工作区开启邮件通知?"
+msgstr "为这个工作区开启邮件通知？"
 
 msgid "wiki.enable-page-locking"
 msgstr "开启页面锁定。工作区管理员可以选择锁定任何页面，只有管理员可以编辑锁定的页面。 谨慎使用，如果成员能轻松编辑页面才能更多参与。"
@@ -7409,7 +7409,7 @@ msgid "wiki.members"
 msgstr "工作区成员"
 
 msgid "wiki.mouseover-link?"
-msgstr "鼠标停在链接上时显示页面的第一部份?"
+msgstr "鼠标停在链接上时显示页面的第一部份？"
 
 msgid "wiki.name"
 msgstr "工作区名称"
@@ -7433,7 +7433,7 @@ msgid "wiki.only-email-from=role"
 msgstr "只有%1可以向这个工作区发邮件。"
 
 msgid "wiki.permission-type:"
-msgstr "您是否想将此工作区设立为:"
+msgstr "您是否想将此工作区设立为："
 
 msgid "wiki.privacy"
 msgstr "工作区隐私"
@@ -7451,7 +7451,7 @@ msgid "wiki.search-all:"
 msgstr "搜索我的工作区："
 
 msgid "wiki.search:"
-msgstr "搜索此工作区:"
+msgstr "搜索此工作区："
 
 msgid "wiki.send-email-notifications?"
 msgstr "通过邮件向此工作区的用户发送工作区更改通知吗？"

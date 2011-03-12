@@ -16,7 +16,7 @@ msgid "<! widget.label !>"
 msgstr "<! widget.label !>"
 
 msgid "<! widget.labels.$field || data.fields.$field !>:"
-msgstr "<! widget.labels.$field || data.fields.$field !>:"
+msgstr "<! widget.labels.$field || data.fields.$field !>："
 
 msgid "<! widget.more_desc !>"
 msgstr "<! widget.more_desc !>"
@@ -103,7 +103,7 @@ msgid "code.sql"
 msgstr "SQL"
 
 msgid "code.syntax-highlight-as:"
-msgstr "语法高亮:"
+msgstr "语法高亮："
 
 msgid "code.visualbasic"
 msgstr "VisualBasic"
@@ -145,16 +145,16 @@ msgid "edit.add-tags"
 msgstr "添加标签..."
 
 msgid "edit.append-to-page:"
-msgstr "在当前命名页面的底部附上您的文本:"
+msgstr "在当前命名页面的底部附上您的文本："
 
 msgid "edit.cancel?"
-msgstr "确定要取消?"
+msgstr "确定要取消？"
 
 msgid "edit.default-text"
 msgstr "请在此输入文字."
 
 msgid "edit.editing:"
-msgstr "正在编辑:"
+msgstr "正在编辑："
 
 msgid "edit.editing=page"
 msgstr "正在编辑: %1"
@@ -211,10 +211,10 @@ msgid "edit.summary=name,summary,page,wiki"
 msgstr "<strong>%1</strong>，\"%2\"（编辑了位于 %4 的<strong>%3</strong>）"
 
 msgid "edit.tag-prompt:"
-msgstr "标签:"
+msgstr "标签："
 
 msgid "edit.tag-queue:"
-msgstr "适用的标签:"
+msgstr "适用的标签："
 
 msgid "edit.unsaved-changes"
 msgstr "您的更改未保存."
@@ -328,7 +328,7 @@ msgid "info.normal-view"
 msgstr "使编辑区域回到正常视图"
 
 msgid "info.page-exists:"
-msgstr "<span id=\"st-newpage-duplicate-emphasis\">已经存在</span>一个名为 <a id=\"st-newpage-duplicate-link\" href=\"#\" target=\"\">XXX</a>的页面. 您是否愿意:"
+msgstr "<span id=\"st-newpage-duplicate-emphasis\">已经存在</span>一个名为 <a id=\"st-newpage-duplicate-link\" href=\"#\" target=\"\">XXX</a>的页面. 您是否愿意："
 
 msgid "info.preformatted-text"
 msgstr "(预格式化文本为与输入所显示出来完全一致的纯文本.)"
@@ -340,7 +340,7 @@ msgid "link.add"
 msgstr "添加链接"
 
 msgid "link.destination:"
-msgstr "链接目标:"
+msgstr "链接目标："
 
 msgid "link.if-not-current"
 msgstr "如果不是当前页面"
@@ -349,16 +349,16 @@ msgid "link.mandatory-indicator"
 msgstr "规定的必需字段"
 
 msgid "link.page:"
-msgstr "页面:"
+msgstr "页面："
 
 msgid "link.section-in-this-page"
 msgstr "本页段落"
 
 msgid "link.section:"
-msgstr "段落:"
+msgstr "段落："
 
 msgid "link.text:"
-msgstr "链接文本:"
+msgstr "链接文本："
 
 msgid "link.web-link"
 msgstr "网站链接"
@@ -367,13 +367,13 @@ msgid "link.wiki-link"
 msgstr "維基链接"
 
 msgid "link.wiki:"
-msgstr "工作区:"
+msgstr "工作区："
 
 msgid "page.save-as"
 msgstr "页面另存为"
 
 msgid "page.save-with-another-name:"
-msgstr "另存为其他名称:"
+msgstr "另存为其他名称："
 
 msgid "page.save-with-name"
 msgstr "页面另存为 <span id=\"st-newpage-duplicate-suggest\">XXX</span>"
@@ -430,7 +430,7 @@ msgid "refcard.page-section-name"
 msgstr "页面段落名称"
 
 msgid "refcard.page-title:"
-msgstr "页面标题:"
+msgstr "页面标题："
 
 msgid "refcard.strikeout"
 msgstr "删除线"
@@ -463,16 +463,16 @@ msgid "table.add-row-below"
 msgstr "在下方添加行"
 
 msgid "table.columns:"
-msgstr "列:"
+msgstr "列："
 
 msgid "table.create"
 msgstr "创建表格"
 
 msgid "table.current-column:"
-msgstr "当前列:"
+msgstr "当前列："
 
 msgid "table.current-row:"
-msgstr "当前行:"
+msgstr "当前行："
 
 msgid "table.delete-column"
 msgstr "删除列"
@@ -484,10 +484,10 @@ msgid "table.edit"
 msgstr "编辑表格"
 
 msgid "table.enter-columns:"
-msgstr "请输入表格列数:"
+msgstr "请输入表格列数："
 
 msgid "table.enter-rows:"
-msgstr "请输入表格行数:"
+msgstr "请输入表格行数："
 
 msgid "table.move-column-left"
 msgstr "将列往左移动"
@@ -502,7 +502,7 @@ msgid "table.move-row-up"
 msgstr "将行往上移动"
 
 msgid "table.rows:"
-msgstr "行:"
+msgstr "行："
 
 msgid "table.show-cell-borders"
 msgstr "显示单元格"
@@ -598,7 +598,7 @@ msgid "wafl.form=name"
 msgstr "表格: %1"
 
 msgid "wafl.full-results:"
-msgstr "全部结果:"
+msgstr "全部结果："
 
 msgid "wafl.google-title=query"
 msgstr "在谷歌搜索 '%1'. 点击进行编辑."
@@ -607,7 +607,7 @@ msgid "wafl.google=query"
 msgstr "谷歌: %1"
 
 msgid "wafl.height:"
-msgstr "高度:"
+msgstr "高度："
 
 msgid "wafl.height=px"
 msgstr "高度: %1"
@@ -706,7 +706,7 @@ msgid "wafl.search-title=query"
 msgstr "搜索 '%1'. 点击进行编辑."
 
 msgid "wafl.search-type:"
-msgstr "搜索类型:"
+msgstr "搜索类型："
 
 msgid "wafl.search=query"
 msgstr "搜索: %1"
@@ -802,7 +802,7 @@ msgid "wafl.video=url"
 msgstr "视频: %1"
 
 msgid "wafl.width:"
-msgstr "宽度:"
+msgstr "宽度："
 
 msgid "wafl.width=px"
 msgstr "宽度: %1"
@@ -850,7 +850,7 @@ msgid "widget.third-party"
 msgstr "第三方小工具"
 
 msgid "widget.width:"
-msgstr "小工具宽度:"
+msgstr "小工具宽度："
 
 msgid "wiki.wiki-named"
 msgstr "工作区命名"

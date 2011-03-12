@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 20:30+0800\n"
+"PO-Revision-Date: 2011-03-12 20:39+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -403,7 +403,7 @@ msgid "config.did-you-know-title"
 msgstr "节点社区入口"
 
 msgid "config.for=group:"
-msgstr "配置为 %1 群组:"
+msgstr "配置为 %1 群组："
 
 msgid "config.language?"
 msgstr "你的语言是？"
@@ -526,13 +526,13 @@ msgid "email.confirmation-subject=wiki"
 msgstr "已登陆到工作区 %1"
 
 msgid "email.date:"
-msgstr "日期:"
+msgstr "日期："
 
 msgid "email.frequency?"
 msgstr "你想要多长时间收到一次邮件更新？"
 
 msgid "email.from:"
-msgstr "来自:"
+msgstr "来自："
 
 msgid "email.page-digest-details?"
 msgstr "在每日邮件中你想得到更新的页面的哪些信息？"
@@ -1564,7 +1564,7 @@ msgid "info.created-wiki=user-count,link"
 msgstr "恭喜你！你已成功创建一个包含 %1 位用户的工作区。他们将会收到链接到 %2 的邀请信息。"
 
 msgid "info.deactivated-user:"
-msgstr "如果你想移除用户的系统访问权限，请按如下操作:"
+msgstr "如果你想移除用户的系统访问权限，请按如下操作："
 
 msgid "info.email-confirmation=from"
 msgstr "为确保你能收到来自 %1 的邮件，请将 %1 添加到通讯录或安全列表中。"
@@ -1684,7 +1684,7 @@ msgid "login.email-required"
 msgstr "请输入邮箱。"
 
 msgid "login.email:"
-msgstr "登录邮箱:"
+msgstr "登录邮箱："
 
 msgid "login.name:"
 msgstr "用户名"
@@ -1789,7 +1789,7 @@ msgid "page.linked-from:"
 msgstr "这个页面链接来自："
 
 msgid "page.list-locked=wiki:"
-msgstr "在'%1'工作区中锁定页面:"
+msgstr "在'%1'工作区中锁定页面："
 
 msgid "page.locked=name,wiki"
 msgstr "'%2'工作区中的'%1'页面已被锁定。"
@@ -2371,7 +2371,7 @@ msgid "wiki.matching=query"
 msgstr "符合\"%1\"的工作区"
 
 msgid "wiki.mouseover-link?"
-msgstr "鼠标停在链接上时显示页面的第一部份?"
+msgstr "鼠标停在链接上时显示页面的第一部份？"
 
 msgid "wiki.not-member=group"
 msgstr "%1 群组不属于此工作区"

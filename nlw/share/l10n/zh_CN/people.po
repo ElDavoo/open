@@ -163,10 +163,10 @@ msgid "invite.to=name"
 msgstr "邀请好友到%1"
 
 msgid "invite.username:"
-msgstr "用户名:"
+msgstr "用户名："
 
 msgid "invite.web-address:"
-msgstr "网址:"
+msgstr "网址："
 
 msgid "invite.your-personal-message"
 msgstr "<您的个人信息放在这里。>"
@@ -184,7 +184,7 @@ msgid "people.add-tag-to-someone"
 msgstr "给某人添加这个标签"
 
 msgid "people.add-tag-to-user=name:"
-msgstr "为用户添加标签\"%1\":"
+msgstr "为用户添加标签\"%1\"："
 
 msgid "people.cancel-add-tag"
 msgstr "取消"
@@ -202,13 +202,13 @@ msgid "people.follow"
 msgstr "关注"
 
 msgid "people.mobile:"
-msgstr "移动电话:"
+msgstr "移动电话："
 
 msgid "people.private-message-send"
 msgstr "发送"
 
 msgid "people.private-message-to=user:"
-msgstr "给%1的短消息:"
+msgstr "给%1的短消息："
 
 msgid "people.profile"
 msgstr "个人资料"
@@ -217,7 +217,7 @@ msgid "people.search"
 msgstr "搜索好友"
 
 msgid "people.search:"
-msgstr "搜索好友:"
+msgstr "搜索好友："
 
 msgid "people.showing=from,to,total"
 msgstr "显示总数%3的%1到%2。"
@@ -241,7 +241,7 @@ msgid "profile.activities"
 msgstr "活动"
 
 msgid "profile.aim:"
-msgstr "目标和情况;:"
+msgstr "目标和情况;："
 
 msgid "profile.assistant"
 msgstr "助理"
@@ -253,19 +253,19 @@ msgid "profile.custom"
 msgstr "自定义"
 
 msgid "profile.facebook:"
-msgstr "Facebook:"
+msgstr "Facebook："
 
 msgid "profile.gtalk:"
-msgstr "GTalk:"
+msgstr "GTalk："
 
 msgid "profile.home:"
-msgstr "家庭地址:"
+msgstr "家庭地址："
 
 msgid "profile.im"
 msgstr "聊天室"
 
 msgid "profile.linkedin:"
-msgstr "Linkedin&reg;:"
+msgstr "Linkedin&reg;："
 
 msgid "profile.manager"
 msgstr "经理"
@@ -274,22 +274,22 @@ msgid "profile.organization"
 msgstr "组织"
 
 msgid "profile.personal:"
-msgstr "个人:"
+msgstr "个人："
 
 msgid "profile.phone"
 msgstr "电话"
 
 msgid "profile.sametime:"
-msgstr "同时&reg;:"
+msgstr "同时&reg;："
 
 msgid "profile.skype:"
-msgstr "Skype&trade;:"
+msgstr "Skype&trade;："
 
 msgid "profile.tags"
 msgstr "标签"
 
 msgid "profile.twitter:"
-msgstr "Twitter:"
+msgstr "Twitter："
 
 msgid "profile.web"
 msgstr "网页"
@@ -298,7 +298,7 @@ msgid "profile.work:"
 msgstr "工作："
 
 msgid "profile.yahoo:"
-msgstr "雅虎&trade;:"
+msgstr "雅虎&trade;："
 
 msgid "sort.by:"
 msgstr "排序方式："

@@ -73,7 +73,7 @@ msgid "control.account-type"
 msgstr "帐户类别"
 
 msgid "control.account-type:"
-msgstr "帐户类别:"
+msgstr "帐户类别："
 
 msgid "control.account=name"
 msgstr "%1 帐户"
@@ -97,13 +97,13 @@ msgid "control.add-group-to-account"
 msgstr "添加群组至帐户"
 
 msgid "control.add-group-to-account:"
-msgstr "添加群组至帐户:"
+msgstr "添加群组至帐户："
 
 msgid "control.add-group-to-wiki"
 msgstr "添加群组至工作区"
 
 msgid "control.add-group-to-wiki:"
-msgstr "添加群组至工作区:"
+msgstr "添加群组至工作区："
 
 msgid "control.add-multiple-users"
 msgstr "添加多名用户"
@@ -121,13 +121,13 @@ msgid "control.add-user"
 msgstr "添加用户"
 
 msgid "control.add-user-to-account:"
-msgstr "添加用户至帐户:"
+msgstr "添加用户至帐户："
 
 msgid "control.add-user-to-group:"
-msgstr "添加用户至帐户:"
+msgstr "添加用户至帐户："
 
 msgid "control.add-user-to-wiki:"
-msgstr "添加用户至工作区:"
+msgstr "添加用户至工作区："
 
 msgid "control.add-users"
 msgstr "添加用户"
@@ -160,10 +160,10 @@ msgid "control.also-use-logo-for-desktop"
 msgstr "在刷新登录 Socialtext 桌面后将使用该标识。"
 
 msgid "control.appliance-business-administrator?"
-msgstr "设备业务管理员?"
+msgstr "设备业务管理员？"
 
 msgid "control.appliance-technical-administrator?"
-msgstr "设备技术管理员?"
+msgstr "设备技术管理员？"
 
 msgid "control.assign-appliance-business-administrator-role"
 msgstr "分配设备业务管理员角色"
@@ -325,7 +325,7 @@ msgid "control.edit-field"
 msgstr "编辑字段"
 
 msgid "control.email-address:"
-msgstr "电子邮件地址:"
+msgstr "电子邮件地址："
 
 msgid "control.enable-export-user-data"
 msgstr "禁止输出用户数据"
@@ -349,7 +349,7 @@ msgid "control.external-id-required"
 msgstr "要求外部 ID"
 
 msgid "control.external-id:"
-msgstr "外部ID:"
+msgstr "外部ID："
 
 msgid "control.features-and-skins"
 msgstr "特征与视觉主题"
@@ -388,7 +388,7 @@ msgid "control.field-type"
 msgstr "字段类别"
 
 msgid "control.first-name:"
-msgstr "名:"
+msgstr "名："
 
 msgid "control.for-cac-authentication"
 msgstr "为 CAC 认证之用"
@@ -406,10 +406,10 @@ msgid "control.go-to-wiki=name"
 msgstr "转至 %1 工作区"
 
 msgid "control.group-name:"
-msgstr "群组名称:"
+msgstr "群组名称："
 
 msgid "control.group-permissions:"
-msgstr "群组权限:"
+msgstr "群组权限："
 
 msgid "control.group-role-changed"
 msgstr "群组角色变更成功."
@@ -433,10 +433,10 @@ msgid "control.hide-field"
 msgstr "隐藏"
 
 msgid "control.image-file:"
-msgstr "图像文件:"
+msgstr "图像文件："
 
 msgid "control.installed-plugins:"
-msgstr "已安装的可选模块:"
+msgstr "已安装的可选模块："
 
 msgid "control.introduction"
 msgstr "概述"
@@ -463,16 +463,16 @@ msgid "control.invited-by"
 msgstr "邀请"
 
 msgid "control.invited-by:"
-msgstr "邀请人:"
+msgstr "邀请人："
 
 msgid "control.invited-to-system"
 msgstr "邀请 (到系统)"
 
 msgid "control.last-login:"
-msgstr "上次登录:"
+msgstr "上次登录："
 
 msgid "control.ldap-driver:"
-msgstr "LDAP驱动:"
+msgstr "LDAP驱动："
 
 msgid "control.load-existing-group-from-ldap"
 msgstr "从LDAP加载已有群组"
@@ -481,13 +481,13 @@ msgid "control.loading-selected-users"
 msgstr "正在加载选中用户"
 
 msgid "control.lookahead-account-of-new-wiki:"
-msgstr "开始输入新工作区所属的帐户名称:"
+msgstr "开始输入新工作区所属的帐户名称："
 
 msgid "control.lookahead-wiki:"
-msgstr "开始输入工作区的名称:"
+msgstr "开始输入工作区的名称："
 
 msgid "control.manually-set-uri:"
-msgstr "手工设置URI:"
+msgstr "手工设置URI："
 
 msgid "control.member"
 msgstr "成员"
@@ -499,10 +499,10 @@ msgid "control.name"
 msgstr "名称"
 
 msgid "control.name-of-group:"
-msgstr "群组名称:"
+msgstr "群组名称："
 
 msgid "control.name:"
-msgstr "名称:"
+msgstr "名称："
 
 msgid "control.next"
 msgstr "下一步"
@@ -511,7 +511,7 @@ msgid "control.permission-set"
 msgstr "权限设定"
 
 msgid "control.permission-set:"
-msgstr "权限设定:"
+msgstr "权限设定："
 
 msgid "control.prefers-to-be-called"
 msgstr "起一个名字"
@@ -523,7 +523,7 @@ msgid "control.primary-account"
 msgstr "主要帐户"
 
 msgid "control.primary-account-for-new-groups:"
-msgstr "新群组的主要帐户为:"
+msgstr "新群组的主要帐户为："
 
 msgid "control.private-group"
 msgstr "<strong>私人:</strong> 只有成员才能浏览与访问本群组。"
@@ -550,10 +550,10 @@ msgid "control.remove-from-wiki"
 msgstr "从工作区中移除"
 
 msgid "control.remove-group-from-accounts=count?"
-msgstr "从 %1 个选中帐户中移除群组?"
+msgstr "从 %1 个选中帐户中移除群组？"
 
 msgid "control.remove-user-from-accounts=count?"
-msgstr "从 %1 个选中工作区中移除本用户?"
+msgstr "从 %1 个选中工作区中移除本用户？"
 
 msgid "control.removed-user=account"
 msgstr "已从帐户 %1 中移除用户"
@@ -583,7 +583,7 @@ msgid "control.reset-to-default"
 msgstr "重置为默认"
 
 msgid "control.restrict-invites-to-domain:"
-msgstr "限制邀请至域:"
+msgstr "限制邀请至域："
 
 msgid "control.return-to-group=name"
 msgstr "返回 %1群组"
@@ -598,7 +598,7 @@ msgid "control.role-yes"
 msgstr "是"
 
 msgid "control.rows-selected=count:"
-msgstr "%1 行选中:"
+msgstr "%1 行选中："
 
 msgid "control.save-field"
 msgstr "保存字段"
@@ -622,7 +622,7 @@ msgid "control.select-group"
 msgstr "请选择一个群组"
 
 msgid "control.select-users-csv:"
-msgstr "选择包含用户的CSV文件添加:"
+msgstr "选择包含用户的CSV文件添加："
 
 msgid "control.select-users-to-add-to-group"
 msgstr "请选择多名用户添加至群组。"
@@ -637,7 +637,7 @@ msgid "control.send-invitation-email"
 msgstr "发送邀请email"
 
 msgid "control.set-account-type-to:"
-msgstr "变更帐户类别为:"
+msgstr "变更帐户类别为："
 
 msgid "control.set-by-external-directory"
 msgstr "根据外部目录设置"
@@ -685,7 +685,7 @@ msgid "control.tabs"
 msgstr "标签栏"
 
 msgid "control.this-is-all-users-wiki-for-account:"
-msgstr "这是帐户全部用户的工作区:"
+msgstr "这是帐户全部用户的工作区："
 
 msgid "control.this-is-name-of-your-group"
 msgstr "这是您的群组名称."
@@ -859,7 +859,7 @@ msgid "error.cannot-change-account-logo-with-custom-skin=name"
 msgstr "由于当前使用的是自定义视觉主题，因此帐户标识不可更改。正在使用的视觉主题名为 '%1'"
 
 msgid "error.check-again?"
-msgstr "请再次确认?"
+msgstr "请再次确认？"
 
 msgid "error.email-address-required"
 msgstr "必须确定E-mail地址"
@@ -976,7 +976,7 @@ msgid "report.growth"
 msgstr "增长报告"
 
 msgid "report.period:"
-msgstr "报告期间:"
+msgstr "报告期间："
 
 msgid "report.printer-friendly"
 msgstr "打印版本的报告"
@@ -985,7 +985,7 @@ msgid "report.usage"
 msgstr "使用报告"
 
 msgid "report.usage-ending-midnight-of:"
-msgstr "凌晨使用停止:"
+msgstr "凌晨使用停止："
 
 msgid "time.1month"
 msgstr "1 月"
@@ -997,4 +997,4 @@ msgid "time.1week"
 msgstr "1 周"
 
 msgid "user.last-name:"
-msgstr "姓:"
+msgstr "姓："
