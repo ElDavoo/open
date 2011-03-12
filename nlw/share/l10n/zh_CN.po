@@ -1920,7 +1920,7 @@ msgstr "重命名账户"
 msgid "control.reports"
 msgstr "报告"
 
-#: share/plugin/control/template/control/add_users.html:35 share/plugin/control/template/control/user.html:130
+#: share/plugin/control/template/control/user.html:130 share/plugin/control/template/control/add_users.html:35
 msgid "control.require-external-id"
 msgstr "Require External ID"
 
@@ -2888,6 +2888,10 @@ msgstr "电子邮件与描述为必填项!"
 msgid "error.email-for-confirmation-required"
 msgstr "找不到电子邮箱重新发送确认信息。"
 
+#: lib/Socialtext/Handler/Authen.pm:621
+msgid "error.email-missing-for-password-change"
+msgstr "No email address found to resend change of password."
+
 #: lib/Socialtext/Handler/Authen.pm:399
 msgid "error.email-required"
 msgstr "Please enter an email address."
@@ -3537,6 +3541,11 @@ msgstr "无法解析，文件中缺失必要字段（%1），并且必须包含�
 
 msgid "error.parse-missing-fields"
 msgstr "字段不足无法解析，跳过此用户。"
+
+#. ($email_address)
+#: lib/Socialtext/Handler/Authen.pm:634
+msgid "error.password-exists-for=email"
+msgstr "The email address for %1 already has a password."
 
 msgid "error.password-mismatch"
 msgstr "密码不匹配。"
@@ -4445,6 +4454,10 @@ msgstr "为确保你能收到来自 %1 的邮件，请将 %1 添加到通讯录�
 
 msgid "info.email-page"
 msgstr "用邮件发送这个页面"
+
+#: lib/Socialtext/Handler/Authen.pm:643
+msgid "info.email-sent-for-password-change"
+msgstr "The change of password email has been resent. Please follow the link in this email to set a new password for your account."
 
 msgid "info.email-to-page"
 msgstr "当工作区收到邮件，邮件主题将变成页面名称，邮件正文将变成页面正文。"

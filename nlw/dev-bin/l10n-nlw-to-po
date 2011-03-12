@@ -8,10 +8,14 @@ use Locale::Maketext::Lexicon 0.85; # Ensures xgettext.pl terminates
 use File::Basename 'basename';
 use Getopt::Long;
 use Socialtext::System qw/shell_run/;
+use File::Path qw(make_path remove_tree);
 chdir "$RealBin/..";
 
-my $new;
-GetOptions( 'new|n!' => \$new ) or die "Usage: $0 [--new] [sections]\n";
+my ($new, $lang);
+GetOptions(
+    'new|n!' => \$new,
+    'lang|l=s' => \$lang,
+) or die "Usage: $0 [--new] [--lang lang] [sections]\n";
 
 my @plugins = map { basename($_) } grep { -d and (-d "$_/share" or -d "$_/template") } glob('share/plugin/*');
 my %Sections = (
@@ -37,15 +41,18 @@ my %Sections = (
 # Cleanup temporary JS files before extracting
 shell_run("dev-bin/jsmake cleanall");
 
-my $lang = $new ? 'new' : 'en';
-mkdir "share/l10n/$lang" if $new;
+if ($new) {
+    $lang = 'new' if $new;
+    remove_tree "share/l10n/$lang";
+    make_path "share/l10n/$lang";
+}
 
 for my $key (sort keys %Sections) {
     my $dir = $Sections{$key};
     $dir = [$dir] unless ref $dir;
     next unless @$dir;
 
-    if ($key eq 'wikiwyg') {
+    if ($key eq 'wikiwyg' or $key eq 'lib') {
 #        shell_run('./dev-bin/l10n-widget-to-js');
         unlink 'lib/Socialtext/Widget_resource.pm';
         unlink 'share/skin/wikiwyg/javascript/widget_resource.js';
@@ -65,7 +72,7 @@ for my $key (sort keys %Sections) {
         unlink $po unless -s $po;
     }
 
-    if ($key eq 'wikiwyg') {
+    if ($key eq 'wikiwyg' or $key eq 'lib') {
         shell_run('git checkout share/skin/wikiwyg/javascript/widget_resource.js');
     }
 }

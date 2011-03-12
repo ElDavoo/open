@@ -618,7 +618,7 @@ sub resend_password_change {
     my $email_address = $self->{args}{email_address};
     unless ($email_address) {
         return $self->_show_error(
-            loc("No email address found to resend change of password.")
+            loc("error.email-missing-for-password-change")
         );
     }
 
@@ -631,7 +631,7 @@ sub resend_password_change {
     my $confirmation = $user->password_change_confirmation;
     unless ($confirmation) {
         $self->session->add_error(
-            loc("The email address for [_1] already has a password.", $email_address)
+            loc("error.password-exists-for=email", $email_address)
         );
         return $self->_challenge();
     }
@@ -640,7 +640,7 @@ sub resend_password_change {
     $confirmation->send;
 
     $self->session->add_error(
-        loc("The change of password email has been resent. Please follow the link in this email to set a new password for your account.")
+        loc("info.email-sent-for-password-change")
     );
     return $self->_challenge();
 }
