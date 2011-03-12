@@ -46,6 +46,9 @@ if ($new) {
     remove_tree "share/l10n/$lang";
     make_path "share/l10n/$lang";
 }
+else {
+    $lang //= 'en';
+}
 
 for my $key (sort keys %Sections) {
     my $dir = $Sections{$key};

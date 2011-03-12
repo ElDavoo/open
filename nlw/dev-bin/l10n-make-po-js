@@ -14,7 +14,7 @@ use Socialtext::JSON;
 chdir "$RealBin/..";
 
 if (!@ARGV) {
-    @ARGV = map { 
+    @ARGV = map {
         s!^share/l10n/(.+)/lib\.po!$1!; $_
     } glob("share/l10n/*/lib.po")
 }
@@ -475,11 +475,36 @@ use constant CN2TW => {qw(
     鵰悍         雕悍
     黑沉沉       黑沈沈
     鼠標         滑鼠
+
+    複制         複製
+    博客         網誌
+    重命名       重新命名
+    導出         匯出
+    標簽         標籤
+    搜索         搜尋
+    設置         設定
+    登錄         登入
+    注冊         註冊
+    短信         簡訊
+    默認         預設
+    聯系         聯絡
+    輕松         輕鬆
+    點擊         點選
+    創建         建立
+   ^帮助$        輔助說明
+    移动电话     行動電話
+    移动版       行動版
+    添加         新增
+    軟件         軟體
+    這里         這裡
+    匹配         符合
+    式樣         樣式
+    屬于         屬於
 )};
 
 sub tw {
     my $CN2TW = CN2TW();
-    state $regex ||= join('|', map { quotemeta($_) } sort { length $b <=> length $a } keys %$CN2TW);
+    state $regex ||= join('|', sort { length $b <=> length $a } keys %$CN2TW);
     my $trad = Encode::HanConvert::simp_to_trad($_[0]);
     $trad =~ s/($regex)/$CN2TW->{$1}/g;
     return $trad;
