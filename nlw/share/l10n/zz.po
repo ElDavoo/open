@@ -2696,7 +2696,7 @@ msgstr "Zzzzzz Zzzzzzz"
 msgid "control.reports"
 msgstr "Zzzzzzz"
 
-#: share/plugin/control/template/control/add_users.html:35 share/plugin/control/template/control/user.html:130
+#: share/plugin/control/template/control/user.html:130 share/plugin/control/template/control/add_users.html:35
 msgid "control.require-external-id"
 msgstr "Zzzzzzz Zzzzzzzz ZZ"
 
@@ -4029,6 +4029,10 @@ msgstr "Zzzzz zzz zzzzzzzzzzz zzz zzzzzzzz!"
 msgid "error.email-for-confirmation-required"
 msgstr "Zz zzzzz zzzzzzz zzzzz zz zzzzzz zzzzzzzzzzzz."
 
+#: lib/Socialtext/Handler/Authen.pm:621
+msgid "error.email-missing-for-password-change"
+msgstr "Zz zzzzz zzzzzzz zzzzz zz zzzzzz zzzzzz zz zzzzzzzz."
+
 #: lib/Socialtext/Handler/Authen.pm:399
 msgid "error.email-required"
 msgstr "Zzzzzz zzzzz zz zzzzz zzzzzzz."
@@ -4987,6 +4991,11 @@ msgstr "zzzzz zzz zz zzzzzz.  Zzz zzzz zzz zzzzzzz zzz zzzzzzzzz zzzzzzzz zzzzzz
 #: lib/Socialtext/MassAdd.pm:108
 msgid "error.parse-missing-fields"
 msgstr "zzzzz zzz zz zzzzzz (zzzzzzz zzzzzz).  Zzzzzzzz zzzz zzzz."
+
+#. ($email_address)
+#: lib/Socialtext/Handler/Authen.pm:634
+msgid "error.password-exists-for=email"
+msgstr "Zzz zzzzz zzzzzzz zzz %1 zzzzzzz zzz z zzzzzzzz."
 
 #: lib/Socialtext/Handler/Authen.pm:421 lib/Socialtext/Handler/Authen.pm:551
 msgid "error.password-mismatch"
@@ -6262,6 +6271,10 @@ msgstr "Zzz zzzzz zzzz zzzz zzzz %1. Zz zzzzzz zzz zzzzzzz zz, zzzzzz zzz %1 zz 
 #: share/skin/s3/javascript/lightbox/email.tt2:7 share/skin/s3/template/view/page/display:79
 msgid "info.email-page"
 msgstr "Zzzzz zzzz zzzz"
+
+#: lib/Socialtext/Handler/Authen.pm:643
+msgid "info.email-sent-for-password-change"
+msgstr "Zzz zzzzzz zz zzzzzzzz zzzzz zzz zzzz zzzzzz. Zzzzzz zzzzzz zzz zzzz zz zzzz zzzzz zz zzz z zzz zzzzzzzz zzz zzzz zzzzzzz."
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:7
 msgid "info.email-to-page"

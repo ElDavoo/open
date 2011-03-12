@@ -2696,7 +2696,7 @@ msgstr "Rename Account"
 msgid "control.reports"
 msgstr "Reports"
 
-#: share/plugin/control/template/control/add_users.html:35 share/plugin/control/template/control/user.html:130
+#: share/plugin/control/template/control/user.html:130 share/plugin/control/template/control/add_users.html:35
 msgid "control.require-external-id"
 msgstr "Require External ID"
 
@@ -4029,6 +4029,10 @@ msgstr "Email and description are required!"
 msgid "error.email-for-confirmation-required"
 msgstr "No email address found to resend confirmation."
 
+#: lib/Socialtext/Handler/Authen.pm:621
+msgid "error.email-missing-for-password-change"
+msgstr "No email address found to resend change of password."
+
 #: lib/Socialtext/Handler/Authen.pm:399
 msgid "error.email-required"
 msgstr "Please enter an email address."
@@ -4987,6 +4991,11 @@ msgstr "could not be parsed.  The file was missing the following required fields
 #: lib/Socialtext/MassAdd.pm:108
 msgid "error.parse-missing-fields"
 msgstr "could not be parsed (missing fields).  Skipping this user."
+
+#. ($email_address)
+#: lib/Socialtext/Handler/Authen.pm:634
+msgid "error.password-exists-for=email"
+msgstr "The email address for %1 already has a password."
 
 #: lib/Socialtext/Handler/Authen.pm:421 lib/Socialtext/Handler/Authen.pm:551
 msgid "error.password-mismatch"
@@ -6262,6 +6271,10 @@ msgstr "The email will come from %1. To ensure you receive it, please add %1 to 
 #: share/skin/s3/javascript/lightbox/email.tt2:7 share/skin/s3/template/view/page/display:79
 msgid "info.email-page"
 msgstr "Email this page"
+
+#: lib/Socialtext/Handler/Authen.pm:643
+msgid "info.email-sent-for-password-change"
+msgstr "The change of password email has been resent. Please follow the link in this email to set a new password for your account."
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:7
 msgid "info.email-to-page"

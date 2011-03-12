@@ -772,7 +772,7 @@ msgstr "Rename Account"
 msgid "control.reports"
 msgstr "Reports"
 
-#: share/plugin/control/template/control/add_users.html:35 share/plugin/control/template/control/user.html:130
+#: share/plugin/control/template/control/user.html:130 share/plugin/control/template/control/add_users.html:35
 msgid "control.require-external-id"
 msgstr "Require External ID"
 
