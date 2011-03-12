@@ -574,4 +574,8 @@ t/wikitests/socialcalc/csv-numbers-put.wiki
 t/wikitests/control/user_restrictions.wiki
 share/skin/s3/javascript/l10n-*.js
 ssl/
+t/js/empty.html
+t/js/activities-eventlist.t.js
+lib/Socialtext/Appliance/PgPITR.pm
 lib/Socialtext/Appliance/PgBackup.pm
+lib/Socialtext/Appliance/PgRestore.pm
