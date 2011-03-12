@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-26 14:25+0800\n"
+"PO-Revision-Date: 2011-03-12 23:34+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -13,13 +13,13 @@ msgid "error.invalid=email"
 msgstr "\"%1\" 不是一个有效的电子邮件地址"
 
 msgid "console.upload-complete=download-link,mailto-link"
-msgstr "%1, 上传完成. 您的信息已提交给 %2."
+msgstr "%1 上传完成。您的信息已提交给 %2。"
 
 msgid "console.uploading-tarball=download-link"
-msgstr "%1, 正在上传压缩档到Socialtext..."
+msgstr "正在上传压缩档 %1 到 Socialtext..."
 
 msgid "console.leave-blank-to-use-built-in-smtp-server"
-msgstr "(此处留白以使用设备的内置 SMTP 服务器)"
+msgstr "（此处留白以使用设备的内置 SMTP 服务器）"
 
 msgid "console.add-administrator"
 msgstr "添加管理员"
@@ -85,7 +85,7 @@ msgid "console.building-diagnostic-tarball"
 msgstr "建立诊断Tarball..."
 
 msgid "console.default-desktop-update-url"
-msgstr "默认状态下，<a _target=\"blank\" href=\"http://www.socialtext.com/products/desktop.php\">Socialtext桌面</a>会自动从www.socialtext.com取得更新"
+msgstr "默认状态下，<a _target=\"blank\" href=\"http://www.socialtext.com/products/desktop.php\">Socialtext 桌面</a>会自动从 www.socialtext.com 取得更新"
 
 msgid "do.cancel"
 msgstr "取消"
@@ -142,7 +142,7 @@ msgid "console.initial-admin-email"
 msgstr "初始设备管理员电子邮件地址"
 
 msgid "console.invalid-after-days"
-msgstr "(天)后无效"
+msgstr "（天）后无效"
 
 msgid "console.login-message"
 msgstr "登录信息"
@@ -154,7 +154,7 @@ msgid "error.backup-id-required"
 msgstr "必须提供一个备份ID，或者使用列表查看可用备份"
 
 msgid "console.ntp-server-rfc-1305"
-msgstr "NTP 服务器 (RFC 1305)"
+msgstr "NTP 服务器（RFC 1305）"
 
 msgid "console.about-navigation-tabs"
 msgstr "使用导航标签来选择设备管理的不同部分"
@@ -166,7 +166,7 @@ msgid "console.no-files-available-to-restore"
 msgstr "没有可供恢复的文件"
 
 msgid "console.about-desktop-nav-setting"
-msgstr "注意：如果该选项被禁用, 则<tt>桌面</tt>链接将不再出现在全球导航菜单上"
+msgstr "注意：如果该选项被禁用，则<tt>桌面</tt>链接将不再出现在全域导航菜单上。"
 
 msgid "console.other-settings"
 msgstr "其他设置"
@@ -205,7 +205,7 @@ msgid "console.refresh-this-page"
 msgstr "刷新本页"
 
 msgid "console.renew-after-in-days"
-msgstr "(天) 后更新"
+msgstr "（天）后更新"
 
 msgid "console.report-problem"
 msgstr "报告问题"
@@ -229,7 +229,7 @@ msgid "console.set-email-configuration"
 msgstr "设置电子邮件配置"
 
 msgid "console.set-ntp-server"
-msgstr "设置NTP服务器"
+msgstr "设置 NTP 服务器"
 
 msgid "console.set-signals-size-limit"
 msgstr "设置讯息大小限制"
@@ -301,7 +301,7 @@ msgid "console.link-to-control-panel"
 msgstr "查看与管理系统的工作区、帐户、组与用户，请转至 <a href=\"/nlw/control/\">控制台</a> 工具."
 
 msgid "error.unknown=status"
-msgstr "未知: %1"
+msgstr "未知：%1"
 
 msgid "console.upload-support-tarball-to-socialtext"
 msgstr "上传支持压缩档至 Socialtext"

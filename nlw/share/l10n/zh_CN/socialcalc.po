@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 14:50+0800\n"
+"PO-Revision-Date: 2011-03-12 23:08+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -43,7 +43,7 @@ msgid "error.select-option-or-click-cancel"
 msgstr "请选择其中一个选项，或点击取消。"
 
 msgid "error.sheet-contention:"
-msgstr "当您编辑的时候, <span style=\"font-weight: bold\" id=\"st-contention-user\">XXX</span> 保存了电子表格的一个版本,并且我们无法调和这个变化。您想："
+msgstr "当您编辑的时候，<span style=\"font-weight: bold\" id=\"st-contention-user\">XXX</span> 保存了电子表格的一个版本，并且我们无法调和这个变化。您想："
 
 msgid "error.sheet-name-exists"
 msgstr "该名字已被使用，请输入一个不同的名称。"

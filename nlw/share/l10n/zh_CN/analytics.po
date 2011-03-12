@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-26 08:52+0800\n"
+"PO-Revision-Date: 2011-03-12 22:38+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -22,10 +22,10 @@ msgid "analytics.multiple-top-level-domains"
 msgstr "多个顶级域名"
 
 msgid "analytics.sample-id"
-msgstr "(例如 AA-00000000-0)"
+msgstr "（例如 AA-00000000-0）"
 
 msgid "analytics.single-domain"
-msgstr "单个域名 (如果您不清楚，请选择此项)"
+msgstr "单个域名（如果您不清楚，请选择此项）"
 
 msgid "analytics.use-for:"
 msgstr "这个 Google Analytics 追踪帐号是用於："

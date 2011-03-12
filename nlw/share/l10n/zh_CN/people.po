@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 20:57+0800\n"
+"PO-Revision-Date: 2011-03-12 22:47+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -94,13 +94,13 @@ msgid "invite.email-restricted=domain"
 msgstr "您只能邀请那些和您邮箱%1域名一致的用户。"
 
 msgid "invite.enter-email-list:"
-msgstr "输入您要邀请到该群组的人的电子邮件地址清单(每行一个地址)："
+msgstr "输入您要邀请到该群组的人的电子邮件地址清单（每行一个地址）："
 
 msgid "invite.example-email-address"
 msgstr "your.friend@example.com"
 
 msgid "invite.example-full-email-address"
-msgstr "名字 姓氏 &lt;u01234@example.com&gt;"
+msgstr "姓 &lt;u01234@example.com&gt;"
 
 msgid "invite.example:"
 msgstr "例如："
@@ -160,7 +160,7 @@ msgid "invite.to-your-group"
 msgstr "邀请人员到您的群组"
 
 msgid "invite.to=name"
-msgstr "邀请人员到%1"
+msgstr "邀请人员到 %1"
 
 msgid "invite.username:"
 msgstr "用户名："
@@ -220,7 +220,7 @@ msgid "people.search:"
 msgstr "搜索人员："
 
 msgid "people.showing=from,to,total"
-msgstr "显示总数%3的%1到%2。"
+msgstr "显示第 %1 - %2 項，共 %3 項。"
 
 msgid "people.sort-name"
 msgstr "名字"
@@ -241,7 +241,7 @@ msgid "profile.activities"
 msgstr "活动"
 
 msgid "profile.aim:"
-msgstr "目标和情况;："
+msgstr "AIM："
 
 msgid "profile.assistant"
 msgstr "助理"

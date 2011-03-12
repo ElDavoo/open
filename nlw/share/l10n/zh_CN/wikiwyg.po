@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 14:50+0800\n"
+"PO-Revision-Date: 2011-03-12 22:57+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -151,13 +151,13 @@ msgid "edit.cancel?"
 msgstr "确定要取消？"
 
 msgid "edit.default-text"
-msgstr "请在此输入文字."
+msgstr "请在此输入文字。"
 
 msgid "edit.editing:"
 msgstr "正在编辑："
 
 msgid "edit.editing=page"
-msgstr "正在编辑: %1"
+msgstr "正在编辑：%1"
 
 msgid "edit.expand"
 msgstr "展开"
@@ -178,7 +178,7 @@ msgid "edit.normal"
 msgstr "正常"
 
 msgid "edit.ok-or-cancel"
-msgstr "点击确定以继续，或者点击取消留在本页."
+msgstr "点击确定以继续，或者点击取消留在本页。"
 
 msgid "edit.page-exists"
 msgstr "页面已经存在"
@@ -217,7 +217,7 @@ msgid "edit.tag-queue:"
 msgstr "适用的标签："
 
 msgid "edit.unsaved-changes"
-msgstr "您的更改未保存."
+msgstr "您的更改未保存。"
 
 msgid "edit.upload"
 msgstr "上传文件..."
@@ -226,43 +226,43 @@ msgid "edit.wiki-text"
 msgstr "維基格式"
 
 msgid "error.browser-offline"
-msgstr "浏览器为离线状态，请连入互联网再重试."
+msgstr "浏览器为离线状态，请连入互联网再重试。"
 
 msgid "error.check-video-url"
-msgstr "系統出错; 请稍候再重试."
+msgstr "系統出错; 请稍候再重试。"
 
 msgid "error.columns-too-big"
-msgstr "列数值过大，最大值为 35."
+msgstr "列数值过大，最大值为 35。"
 
 msgid "error.edit-again"
-msgstr "抱歉，编辑出错，请重新编辑本页面."
+msgstr "抱歉，编辑出错，请重新编辑本页面。"
 
 msgid "error.field-required=labels"
-msgstr "必需填入: %1"
+msgstr "必需填入：%1"
 
 msgid "error.invalid-columns"
-msgstr "列数无效."
+msgstr "列数无效。"
 
 msgid "error.invalid-number"
-msgstr "该数目无效."
+msgstr "该数目无效。"
 
 msgid "error.invalid-rows"
-msgstr "行数无效."
+msgstr "行数无效。"
 
 msgid "error.invalid-video-url"
-msgstr "抱歉，该网址并非指向嵌入视频的链接."
+msgstr "抱歉，该网址并非指向嵌入视频的链接。"
 
 msgid "error.invalid-widget-field=label"
 msgstr "'%1' 的值无效"
 
 msgid "error.link-selection-required"
-msgstr "请选择要插入链接的文本."
+msgstr "请选择要插入链接的文本。"
 
 msgid "error.no-wiki-on-server=wiki"
 msgstr "系統中不存在 \"%1\" 工作区"
 
 msgid "error.page-name-required"
-msgstr "请明确页面的名称."
+msgstr "请明确页面的名称。"
 
 msgid "error.page-title-too-long"
 msgstr "在网址编码后，页面标题过长"
@@ -271,10 +271,10 @@ msgid "error.reserved-page-name"
 msgstr "\"%1\" 是一个保留的页面名称，请使用另外一个名称"
 
 msgid "error.rows-and-columns-required"
-msgstr "行与列不能为 0."
+msgstr "行与列不能为 0。"
 
 msgid "error.rows-too-big"
-msgstr "行数过大，最大值为 100."
+msgstr "行数过大，最大值为 100。"
 
 msgid "error.safari-rich-text-unsupported"
 msgstr "Safari 不支持丰富文本编辑"
@@ -283,13 +283,13 @@ msgid "error.select-or-cancel"
 msgstr "您必须选择一个选项，或者点击取消"
 
 msgid "error.server-error"
-msgstr "由于服务器错误操作失败，请稍候重试."
+msgstr "由于服务器错误操作失败，请稍候重试。"
 
 msgid "error.size-required"
-msgstr "大小不能为 0."
+msgstr "大小不能为 0。"
 
 msgid "error.unexpected-parse=widget"
-msgstr "parseWidget: 非法小工具 >>%1<<"
+msgstr "parseWidget：小工具 >>%1<< 无效"
 
 msgid "error.video-url-required"
 msgstr "必需填入视频网址"
@@ -301,37 +301,37 @@ msgid "info.edit-add-tag"
 msgstr "点击按钮为页面添加标签"
 
 msgid "info.edit-code-block"
-msgstr "使用下方的文本区来组织您的代码数据块，并可选择高亮语法."
+msgstr "使用下方的文本区来组织您的代码数据块，并可选择高亮语法。"
 
 msgid "info.edit-html-block"
-msgstr "使用下方的文本区来组织您的 HTML 数据块."
+msgstr "使用下方的文本区来组织您的 HTML 数据块。"
 
 msgid "info.edit-pre-block"
-msgstr "使用下方的文本区来组织您的预格式化文本数据块."
+msgstr "使用下方的文本区来组织您的预格式化文本数据块。"
 
 msgid "info.edit-summary-signal-visibility"
-msgstr "只有有权查看本页面的成员会收到讯息."
+msgstr "只有有权查看本页面的成员会收到讯息。"
 
 msgid "info.edit-upload"
 msgstr "点击此按钮，为页面上传文件"
 
 msgid "info.html-fragments"
-msgstr "(注意：HTML片段不能确保运行并可能会破坏用户界面.)"
+msgstr "（注意：HTML 片段不能确保运行并可能会破坏用户界面。）"
 
 msgid "info.new-page-name"
-msgstr "为您的页面输入一个有意义与独特的标题."
+msgstr "为您的页面输入一个有意义与独特的标题。"
 
 msgid "info.new-page-title"
-msgstr "提示：您稍后可以使用您选择的标题来查找本页面."
+msgstr "提示：您稍后可以使用您选择的标题来查找本页面。"
 
 msgid "info.normal-view"
 msgstr "使编辑区域回到正常视图"
 
 msgid "info.page-exists:"
-msgstr "<span id=\"st-newpage-duplicate-emphasis\">已经存在</span>一个名为 <a id=\"st-newpage-duplicate-link\" href=\"#\" target=\"\">XXX</a>的页面. 您是否愿意："
+msgstr "<span id=\"st-newpage-duplicate-emphasis\">已经存在</span>一个名为 <a id=\"st-newpage-duplicate-link\" href=\"#\" target=\"\">XXX</a>的页面。您是否愿意："
 
 msgid "info.preformatted-text"
-msgstr "(预格式化文本为与输入所显示出来完全一致的纯文本.)"
+msgstr "（预格式化文本，是与输入所显示出来完全一致的纯文字。）"
 
 msgid "info.wafl-uneditable"
 msgstr "该小工具不可编辑。请在維基格式下进行编辑。"
@@ -400,7 +400,7 @@ msgid "refcard.dinette"
 msgstr "dinette"
 
 msgid "refcard.headings-are-sections"
-msgstr "(注意：标题也算作段落)"
+msgstr "（注意：标题也算作段落）"
 
 msgid "refcard.in-same-page"
 msgstr "在相同页面"
@@ -517,49 +517,49 @@ msgid "wafl.aim"
 msgstr "AIM帐户名"
 
 msgid "wafl.aim-title=id"
-msgstr "使用 AIM 向 '%1' 发送即时信息. 点击进行编辑."
+msgstr "使用 AIM 向 '%1' 发送即时信息。点击进行编辑。"
 
 msgid "wafl.aim=id"
-msgstr "AIM: %1"
+msgstr "AIM：%1"
 
 msgid "wafl.asis"
 msgstr "未格式化内容"
 
 msgid "wafl.asis-title"
-msgstr "未格式化内容. 点击进行编辑."
+msgstr "未格式化内容。点击进行编辑。"
 
 msgid "wafl.asis=content"
-msgstr "未格式化: %1"
+msgstr "未格式化：%1"
 
 msgid "wafl.atom-title"
-msgstr "包含 '%1' Atom 网址. 点击进行编辑."
+msgstr "包含 '%1' Atom 网址。点击进行编辑。"
 
 msgid "wafl.atom-url"
 msgstr "Atom 来源网址"
 
 msgid "wafl.blog-full=name"
-msgstr "显示 '%1' 的博客. 点击进行编辑."
+msgstr "显示 '%1' 的博客。点击进行编辑。"
 
 msgid "wafl.blog-link-title=name"
-msgstr "链接到 '%1' 博客. 点击进行编辑."
+msgstr "链接到 '%1' 博客。点击进行编辑。"
 
 msgid "wafl.blog-list=name"
-msgstr "博客列表: %1"
+msgstr "博客列表：%1"
 
 msgid "wafl.blog-name"
 msgstr "博客名称"
 
 msgid "wafl.blog-title=name"
-msgstr "包含 '%1' 博客. 点击进行编辑."
+msgstr "包含 '%1' 博客。点击进行编辑。"
 
 msgid "wafl.blog=name"
-msgstr "博客: %1"
+msgstr "博客：%1"
 
 msgid "wafl.code-title"
-msgstr "代码块. 点击进行编辑."
+msgstr "代码块。点击进行编辑。"
 
 msgid "wafl.code-title=syntax"
-msgstr "语法为 %1 的代码块. 点击进行编辑."
+msgstr "语法为 %1 的代码块。点击进行编辑。"
 
 msgid "wafl.content"
 msgstr "内容"
@@ -571,13 +571,13 @@ msgid "wafl.date-format"
 msgstr "YYYY-MM-DD&nbsp;HH:MM:SS"
 
 msgid "wafl.date-full=date"
-msgstr "以访问者的时区显示 '%1' . 点击进行编辑."
+msgstr "以访问者的时区显示 '%1' 。点击进行编辑。"
 
 msgid "wafl.date=string"
-msgstr "日期: %1"
+msgstr "日期：%1"
 
 msgid "wafl.feed=url"
-msgstr "来源: %1"
+msgstr "来源：%1"
 
 msgid "wafl.fewer-options"
 msgstr "更少选项"
@@ -586,49 +586,49 @@ msgid "wafl.file-name"
 msgstr "文件名称"
 
 msgid "wafl.file-title=name"
-msgstr "链接到“%1”文件. 点击进行编辑."
+msgstr "链接到“%1”文件。点击进行编辑。"
 
 msgid "wafl.file=name"
-msgstr "文件: %1"
+msgstr "文件：%1"
 
 msgid "wafl.form-name"
 msgstr "表单名称"
 
 msgid "wafl.form=name"
-msgstr "表格: %1"
+msgstr "表格：%1"
 
 msgid "wafl.full-results:"
 msgstr "全部结果："
 
 msgid "wafl.google-title=query"
-msgstr "在谷歌搜索 '%1'. 点击进行编辑."
+msgstr "在谷歌搜索 '%1'。点击进行编辑。"
 
 msgid "wafl.google=query"
-msgstr "谷歌: %1"
+msgstr "谷歌：%1"
 
 msgid "wafl.height:"
 msgstr "高度："
 
 msgid "wafl.height=px"
-msgstr "高度: %1"
+msgstr "高度：%1"
 
 msgid "wafl.html-title"
-msgstr "源 HTML 数据块. 点击进行编辑."
+msgstr "源 HTML 数据块。点击进行编辑。"
 
 msgid "wafl.image-full=name"
-msgstr "显示 '%1'的图像. 点击进行编辑."
+msgstr "显示 '%1'的图像。点击进行编辑。"
 
 msgid "wafl.image-name"
 msgstr "图像名称"
 
 msgid "wafl.image=name"
-msgstr "图像: %1"
+msgstr "图像：%1"
 
 msgid "wafl.include-title=page"
-msgstr "包含 '%1' 页面. 点击进行编辑."
+msgstr "包含 '%1' 页面。点击进行编辑。"
 
 msgid "wafl.include=page"
-msgstr "包含: %1"
+msgstr "包含：%1"
 
 msgid "wafl.insert-code"
 msgstr "插入代码"
@@ -643,22 +643,22 @@ msgid "wafl.link-text"
 msgstr "链接文本"
 
 msgid "wafl.link-title=url"
-msgstr "链接到'%1'. 点击进行编辑."
+msgstr "链接到'%1'。点击进行编辑。"
 
 msgid "wafl.link-title=wiki,page,section"
-msgstr "链接到 %1: '%2' %3. 点击进行编辑."
+msgstr "链接到 %1：“%2” %3。点击进行编辑。"
 
 msgid "wafl.link=name"
-msgstr "链接: %1"
+msgstr "链接：%1"
 
 msgid "wafl.link=page,section"
-msgstr "链接: %1 (%2)"
+msgstr "链接：%1（%2）"
 
 msgid "wafl.more-options"
 msgstr "更多选项"
 
 msgid "wafl.new-form-page=name"
-msgstr "使用 %1 生成表单. 点击进行编辑."
+msgstr "使用 %1 生成表单。点击进行编辑。"
 
 msgid "wafl.or"
 msgstr "或"
@@ -673,25 +673,25 @@ msgid "wafl.page-titled"
 msgstr "the page titled"
 
 msgid "wafl.pre-edit"
-msgstr "预格式化文本. 点击进行编辑."
+msgstr "预格式化文本。点击进行编辑。"
 
 msgid "wafl.recent-changes"
 msgstr "最近修改"
 
 msgid "wafl.recent-changes-full=wiki"
-msgstr "显示'%1'工作区的更新. 点击进行编辑."
+msgstr "显示'%1'工作区的更新。点击进行编辑。"
 
 msgid "wafl.recent-changes-title=wiki"
-msgstr "'%1' 工作区的更新. 点击进行编辑."
+msgstr "'%1' 工作区的更新。点击进行编辑。"
 
 msgid "wafl.recent-changes=wiki"
-msgstr "最近修改: %1"
+msgstr "最近修改：%1"
 
 msgid "wafl.relative-url"
 msgstr "相对网址"
 
 msgid "wafl.rss-title"
-msgstr "包含 '%1' RSS 来源. 点击进行编辑."
+msgstr "包含 '%1' RSS 来源。点击进行编辑。"
 
 msgid "wafl.rss-url"
 msgstr "RSS 来源网址"
@@ -700,16 +700,16 @@ msgid "wafl.search"
 msgstr "搜索条件"
 
 msgid "wafl.search-full=query"
-msgstr "显示搜索 '%1' 的结果. 点击进行编辑."
+msgstr "显示搜索 '%1' 的结果。点击进行编辑。"
 
 msgid "wafl.search-title=query"
-msgstr "搜索 '%1'. 点击进行编辑."
+msgstr "搜索 '%1'。点击进行编辑。"
 
 msgid "wafl.search-type:"
 msgstr "搜索类型："
 
 msgid "wafl.search=query"
-msgstr "搜索: %1"
+msgstr "搜索：%1"
 
 msgid "wafl.section"
 msgstr "段落"
@@ -718,10 +718,10 @@ msgid "wafl.section-name"
 msgstr "段落名称"
 
 msgid "wafl.section-title=name"
-msgstr "标记为 '%1' 的段落. 点击进行编辑."
+msgstr "标记为 '%1' 的段落。点击进行编辑。"
 
 msgid "wafl.section=name"
-msgstr "段落: %1"
+msgstr "段落：%1"
 
 msgid "wafl.sheet-cell"
 msgstr "单元格"
@@ -733,40 +733,40 @@ msgid "wafl.skype"
 msgstr "Skype 名称"
 
 msgid "wafl.skype-title=id"
-msgstr "使用 Skype 呼叫 '%1'. 点击进行编辑."
+msgstr "使用 Skype 呼叫 '%1'。点击进行编辑。"
 
 msgid "wafl.skype=id"
-msgstr "Skype: %1"
+msgstr "Skype：%1"
 
 msgid "wafl.ss=sheet,cell"
-msgstr "电子表格: %1 (%2)"
+msgstr "电子表格：%1（%2）"
 
 msgid "wafl.tag"
 msgstr "标签"
 
 msgid "wafl.tag-full=name"
-msgstr "以 '%1' 标签显示页面. 点击进行编辑."
+msgstr "以 '%1' 标签显示页面。点击进行编辑。"
 
 msgid "wafl.tag-list-title=name"
-msgstr "以 '%1' 标签的页面. 点击进行编辑."
+msgstr "以 '%1' 标签的页面。点击进行编辑。"
 
 msgid "wafl.tag-list=name"
-msgstr "标签列表: %1"
+msgstr "标签列表：%1"
 
 msgid "wafl.tag-name"
 msgstr "标签名称"
 
 msgid "wafl.tag-title=name"
-msgstr "链接到 '%1' 标签. 点击进行编辑."
+msgstr "链接到 '%1' 标签。点击进行编辑。"
 
 msgid "wafl.tag=name"
-msgstr "标签: %1"
+msgstr "标签：%1"
 
 msgid "wafl.technorati-title=query"
-msgstr "在 Technorati 搜索'%1'. 点击进行编辑."
+msgstr "在 Technorati 搜索'%1'。点击进行编辑。"
 
 msgid "wafl.technorati=query"
-msgstr "Technorati: %1"
+msgstr "Technorati：%1"
 
 msgid "wafl.text"
 msgstr "文本"
@@ -775,37 +775,37 @@ msgid "wafl.title"
 msgstr "标题"
 
 msgid "wafl.toc"
-msgstr "toc"
+msgstr "目录"
 
 msgid "wafl.toc-title=page"
-msgstr "内容为 '%1'的表格. 点击进行编辑."
+msgstr "内容为 '%1'的表格。点击进行编辑。"
 
 msgid "wafl.toc=page"
-msgstr "toc: %1"
+msgstr "目录：%1"
 
 msgid "wafl.user-email"
 msgstr "用户 email"
 
 msgid "wafl.user-title"
-msgstr "用户涉及. 点击进行编辑."
+msgstr "用户名称。点击进行编辑。"
 
 msgid "wafl.user=email"
-msgstr "user: %1"
+msgstr "用户：%1"
 
 msgid "wafl.video-title=url"
-msgstr "在'%1'嵌入视频. 点击进行编辑."
+msgstr "在'%1'嵌入视频。点击进行编辑。"
 
 msgid "wafl.video-url"
 msgstr "视频网址"
 
 msgid "wafl.video=url"
-msgstr "视频: %1"
+msgstr "视频：%1"
 
 msgid "wafl.width:"
 msgstr "宽度："
 
 msgid "wafl.width=px"
-msgstr "宽度: %1"
+msgstr "宽度：%1"
 
 msgid "wafl.wiki"
 msgstr "工作区"
@@ -820,10 +820,10 @@ msgid "wafl.yahoo-id"
 msgstr "Yahoo! ID"
 
 msgid "wafl.yahoo-im=id"
-msgstr "Yahoo! IM: %1"
+msgstr "Yahoo! IM：%1"
 
 msgid "wafl.yahoo-title=id"
-msgstr "使用 Yahoo! 向 '%1' 发送即时信息. 点击进行编辑."
+msgstr "使用 Yahoo! 向 '%1' 发送即时信息。点击进行编辑。"
 
 msgid "widget.100%"
 msgstr "依页宽（100%）"

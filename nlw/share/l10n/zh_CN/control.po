@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-26 06:26+0800\n"
+"PO-Revision-Date: 2011-03-12 23:35+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -79,7 +79,7 @@ msgid "control.account=name"
 msgstr "%1 帐户"
 
 msgid "control.accounts=count"
-msgstr "帐户 (%1)"
+msgstr "帐户（%1）"
 
 msgid "control.actions"
 msgstr "动作"
@@ -91,7 +91,7 @@ msgid "control.add-all"
 msgstr "添加全部"
 
 msgid "control.add-existing-user"
-msgstr "添加已有用户: "
+msgstr "添加已有用户："
 
 msgid "control.add-group-to-account"
 msgstr "添加群组至帐户"
@@ -133,13 +133,13 @@ msgid "control.add-users"
 msgstr "添加用户"
 
 msgid "control.adding-group-to-account=group,group-id"
-msgstr "添加群组 %1 (%2) 至帐户"
+msgstr "添加群组 %1（%2）至帐户"
 
 msgid "control.adding-group-to-account=name"
 msgstr "添加群组至帐户 %1"
 
 msgid "control.adding-group-to-wiki=group,group-id"
-msgstr "添加群组 %1 (%2) 至工作区"
+msgstr "添加群组 %1（%2）至工作区"
 
 msgid "control.adding-group-to-wiki=name"
 msgstr "添加群组至工作区 %1"
@@ -295,7 +295,7 @@ msgid "control.custom-fields"
 msgstr "自定义字段"
 
 msgid "control.custom-skins=name"
-msgstr "自定义视觉主题: %1"
+msgstr "自定义视觉主题：%1"
 
 msgid "control.data-source"
 msgstr "数据来源"
@@ -415,16 +415,16 @@ msgid "control.group-role-changed"
 msgstr "群组角色变更成功."
 
 msgid "control.group-source=key"
-msgstr "来源: %1"
+msgstr "来源：%1"
 
 msgid "control.group=description"
-msgstr "描述: %1"
+msgstr "描述：%1"
 
 msgid "control.group=name"
 msgstr "%1 群组"
 
 msgid "control.groups=count"
-msgstr "群组 (%1)"
+msgstr "群组（%1）"
 
 msgid "control.hidden-field"
 msgstr "隐藏"
@@ -466,7 +466,7 @@ msgid "control.invited-by:"
 msgstr "邀请人："
 
 msgid "control.invited-to-system"
-msgstr "邀请 (到系统)"
+msgstr "邀请（到系统）"
 
 msgid "control.last-login:"
 msgstr "上次登录："
@@ -526,7 +526,7 @@ msgid "control.primary-account-for-new-groups:"
 msgstr "新群组的主要帐户为："
 
 msgid "control.private-group"
-msgstr "<strong>私人:</strong> 只有成员才能浏览与访问本群组。"
+msgstr "<strong>私人：</strong>只有成员才能浏览与访问本群组。"
 
 msgid "control.profile-fields"
 msgstr "资料字段"
@@ -622,7 +622,7 @@ msgid "control.select-group"
 msgstr "请选择一个群组"
 
 msgid "control.select-users-csv:"
-msgstr "选择包含用户的CSV文件添加："
+msgstr "选择包含用户的 CSV 文件添加："
 
 msgid "control.select-users-to-add-to-group"
 msgstr "请选择多名用户添加至群组。"
@@ -631,7 +631,7 @@ msgid "control.select-wiki"
 msgstr "请选择一个工作区"
 
 msgid "control.self-join-group"
-msgstr "<strong>自行加入:</strong> 非成员可以浏览本群组，但只有成为成员才能进行参与。"
+msgstr "<strong>自行加入：</strong>非成员可以浏览本群组，但只有成为成员才能进行参与。"
 
 msgid "control.send-invitation-email"
 msgstr "发送邀请email"
@@ -667,13 +667,13 @@ msgid "control.socialtext-control-panel"
 msgstr "Socialtext 控制台"
 
 msgid "control.step-1-set-wiki-title"
-msgstr "第1步: 给您的工作区命一个标题"
+msgstr "第1步：给您的工作区命一个标题"
 
 msgid "control.step-2-add-users-with-at-least-one-admin"
-msgstr "第2步: 添加一名、多名或一群组用户到工作区。您必须至少设定一名管理员。"
+msgstr "第2步：添加一名、多名或一群组用户到工作区。您必须至少设定一名管理员。"
 
 msgid "control.step-3-click-to-create-wiki"
-msgstr "第3步: 点击按钮创建工作区"
+msgstr "第3步：点击按钮创建工作区"
 
 msgid "control.stock-fields"
 msgstr "存储字段"
@@ -712,16 +712,16 @@ msgid "control.updating"
 msgstr "正在更新 ..."
 
 msgid "control.upload-account-logo-optional"
-msgstr "上传帐户标识 (可选)"
+msgstr "上传帐户标识（可选）"
 
 msgid "control.uri"
 msgstr "URI"
 
 msgid "control.use-default-logo"
-msgstr "使用默认Socialtext标识"
+msgstr "使用默认 Socialtext 标识"
 
 msgid "control.use-default-logo-for-desktop"
-msgstr "为桌面使用默认Socialtext标识"
+msgstr "为桌面使用默认 Socialtext 标识"
 
 msgid "control.user-added-to-account=user"
 msgstr "用户 %1 现在已经为帐户的成员"
@@ -754,16 +754,16 @@ msgid "control.users-selected=count"
 msgstr "选中 %1 个用户"
 
 msgid "control.users=count"
-msgstr "用户 (%1)"
+msgstr "用户（%1）"
 
 msgid "control.value"
 msgstr "值"
 
 msgid "control.via-group=count,links"
-msgstr "源于 %1 个群组: %2"
+msgstr "源于 %1 个群组：%2"
 
 msgid "control.via-wiki=count,links"
-msgstr "源于 %1 个工作区: %2"
+msgstr "源于 %1 个工作区：%2"
 
 msgid "control.view=name"
 msgstr "查看 %1"
@@ -778,7 +778,7 @@ msgid "control.wiki-removed"
 msgstr "工作区移除成功"
 
 msgid "control.wiki-skin=name,wikis"
-msgstr "%1 视觉主题: '%2' 个工作区的视觉主题"
+msgstr "%1 视觉主题：“%2”个工作区的视觉主题"
 
 msgid "control.wiki-title"
 msgstr "标题"
@@ -787,7 +787,7 @@ msgid "control.wiki=name"
 msgstr "%1 工作区"
 
 msgid "control.wikis=count"
-msgstr "工作区 (%1)"
+msgstr "工作区（%1）"
 
 msgid "date.april"
 msgstr "四月"
@@ -856,25 +856,25 @@ msgid "error.at-least-one-wiki-required"
 msgstr "您必须至少选择一个工作区"
 
 msgid "error.cannot-change-account-logo-with-custom-skin=name"
-msgstr "由于当前使用的是自定义视觉主题，因此帐户标识不可更改。正在使用的视觉主题名为 '%1'"
+msgstr "由于当前使用的是自定义视觉主题，因此帐户标识不可更改。正在使用的视觉主题名为“%1”"
 
 msgid "error.check-again?"
 msgstr "请再次确认？"
 
 msgid "error.email-address-required"
-msgstr "必须确定E-mail地址"
+msgstr "必须确定 E-mail 地址"
 
 msgid "error.error=message"
-msgstr "出错: %1"
+msgstr "出错：%1"
 
 msgid "error.field-title-required"
 msgstr "必须提供字段标题"
 
 msgid "error.invalid-wiki-name"
-msgstr "工作区名称长度为3-30个字符，只能由小写字母、数字、下划线群组成，并不得以'-'开头。"
+msgstr "工作区名称长度为3-30个字符，只能由小写字母、数字、下划线群组成，并不得以“-”开头。"
 
 msgid "error.invalid-wiki-title"
-msgstr "工作区标题长度为2-64个字符，并不得以'-'开头。"
+msgstr "工作区标题长度为2-64个字符，并不得以“-”开头。"
 
 msgid "error.no-groups-to-add"
 msgstr "没有群组进行添加"
@@ -883,10 +883,10 @@ msgid "error.no-users-selected"
 msgstr "没有选中用户，请至少选中一名用户然后重试"
 
 msgid "error.remove-account=message"
-msgstr "移除用户出错: %1"
+msgstr "移除用户出错：%1"
 
 msgid "error.retrieve-image"
-msgstr "出错: 图像无法恢复"
+msgstr "出错：图像无法恢复"
 
 msgid "error.user-missing-from-ldap-during-last-refresh"
 msgstr "上次更新时该用户从 LDAP 地址中丢失。"
@@ -946,7 +946,7 @@ msgid "nav.wikis"
 msgstr "工作区"
 
 msgid "plugin.about-to-disable=title"
-msgstr "您要停用 %1."
+msgstr "您要停用 %1。"
 
 msgid "plugin.click-to-disable"
 msgstr "点击以禁止"
@@ -964,13 +964,13 @@ msgid "plugin.none"
 msgstr "无"
 
 msgid "report.export-as-csv"
-msgstr "以CSV输出数据"
+msgstr "以 CSV 输出数据"
 
 msgid "report.export-summary-as-csv"
-msgstr "以CSV输出摘要数据"
+msgstr "以 CSV 输出摘要数据"
 
 msgid "report.export-user-as-csv"
-msgstr "以CSV输出用户数据"
+msgstr "以 CSV 输出用户数据"
 
 msgid "report.growth"
 msgstr "增长报告"
@@ -997,4 +997,4 @@ msgid "time.1week"
 msgstr "1 周"
 
 msgid "user.last-name:"
-msgstr "姓："
+msgstr "姓氏："
