@@ -133,7 +133,7 @@ msgid "acl.public-authenticate-to-edit"
 msgstr "公開編輯（需認証）"
 
 msgid "acl.public-comment-only"
-msgstr "公開回複"
+msgstr "公開回覆"
 
 msgid "acl.public-join-to-edit"
 msgstr "公開編輯"
@@ -157,7 +157,7 @@ msgid "activities.all-my-groups"
 msgstr "我的所有群組"
 
 msgid "activities.all-replies"
-msgstr "所有回複"
+msgstr "所有回覆"
 
 msgid "activities.all-shared-groups"
 msgstr "所有共用群組"
@@ -187,7 +187,7 @@ msgid "activities.composing-private-message-to=person"
 msgstr "您正在編輯條私人資訊至 %1"
 
 msgid "activities.composing-reply-to=person"
-msgstr "您正在編輯一條回複至 %1"
+msgstr "您正在編輯一條回覆至 %1"
 
 msgid "activities.confirm-delete=target"
 msgstr ""
@@ -272,13 +272,13 @@ msgid "activities.new-mentions=count"
 msgstr "%1 項新提及..."
 
 msgid "activities.new-replies=count"
-msgstr "%1 項回複"
+msgstr "%1 項回覆"
 
 msgid "activities.new=count"
 msgstr "%1 新的"
 
 msgid "activities.other-replies=count"
-msgstr "%1 項其他回複..."
+msgstr "%1 項其他回覆..."
 
 msgid "activities.page-tags"
 msgstr "頁面標籤"
@@ -311,10 +311,10 @@ msgid "activities.rename=page,wiki"
 msgstr "重新命名 %2 中的 %1."
 
 msgid "activities.reply"
-msgstr "回複"
+msgstr "回覆"
 
 msgid "activities.reply-to-conversation"
-msgstr "回複對話 ..."
+msgstr "回覆對話 ..."
 
 msgid "activities.section:"
 msgstr "區域："
@@ -3650,7 +3650,7 @@ msgid "error.show-pref-for-multiple-plugins"
 msgstr "show-plugin-prefs 只用於單個插件"
 
 msgid "error.signal-too-long=limit"
-msgstr "您的訊息超過了%1字數"
+msgstr "您的訊息超過了 %1 字數"
 
 msgid "error.signal-too-long=max-length"
 msgstr "訊息長度限制為 %1, 請編輯您的訊息"
@@ -3929,7 +3929,7 @@ msgid "example.wiki-url:"
 msgstr "示例: acme-product-dev 建立的工作區位址為："
 
 msgid "explore.beta"
-msgstr "探索 (測試)"
+msgstr "探索（測試）"
 
 msgid "explore.click-to-collapse-mentions=count"
 msgstr "%1 項提及, 點選此處折疊"
@@ -4220,7 +4220,7 @@ msgid "image.web"
 msgstr "圖片已存在於頁面"
 
 msgid "info.about-explore"
-msgstr "<b>Socialtext 瀏覽</b> 讓您輕鬆通過Socialtext訊息知道同事們分享的文件和鏈結。使用頂部的標籤來選擇類型和左邊的篩選功能來減少要顯示的資訊。<br /> <br /> 每個列出的項目都有一個或者更多提及它的訊息會話。您可以點選項目來打開鏈結，或者點選標題左邊的方框來查看和回複相應的會話。"
+msgstr "<b>Socialtext 瀏覽</b> 讓您輕鬆通過Socialtext訊息知道同事們分享的文件和鏈結。使用頂部的標籤來選擇類型和左邊的篩選功能來減少要顯示的資訊。<br /> <br /> 每個列出的項目都有一個或者更多提及它的訊息會話。您可以點選項目來打開鏈結，或者點選標題左邊的方框來查看和回覆相應的會話。"
 
 msgid "info.added-members=user-count,wiki"
 msgstr "恭喜你！你已成功新增 %1 位用戶到 %2 個工作區。他們將會收到邀請到相應工作區的資訊。"
@@ -6158,7 +6158,7 @@ msgid "sheet.untitled"
 msgstr "未命名試算表"
 
 msgid "signals.about-bookmarklet!"
-msgstr "將其作為書籤(或收藏夾)安裝，當您有網頁要訊息或分享，只需點選或選擇書籤就可以發送訊息了！"
+msgstr "將其作為書籤（或收藏夾）安裝，當您有網頁要訊息或分享，只需點選或選擇書籤就可以發送訊息了！"
 
 msgid "signals.all-groups"
 msgstr "所有群組"
@@ -6179,7 +6179,7 @@ msgid "signals.bookmarks-bar-missing?"
 msgstr "看不到書籤欄？"
 
 msgid "signals.click-cancel-to-signal-to-self"
-msgstr "(點選 [取消] 來隱藏自己的訊息。)"
+msgstr "（點選 [取消] 來隱藏自己的訊息。）"
 
 msgid "signals.delete"
 msgstr "刪除"
@@ -6197,7 +6197,7 @@ msgid "signals.email-link-to-preferences"
 msgstr "不想收到Socialtext訊息的郵件或者更改您的偏好設定，請訪問"
 
 msgid "signals.email-to-private-message"
-msgstr "將Socialtext訊息的私信作為電子郵件發送"
+msgstr "將 Socialtext 的私人訊息作為電子郵件發送"
 
 msgid "signals.expunge"
 msgstr "消去"
@@ -6206,7 +6206,7 @@ msgid "signals.find-bookmarks-bar"
 msgstr "在您的瀏覽器功能表中找到並且選擇『顯示書籤欄』。"
 
 msgid "signals.global-limit=size"
-msgstr "該應用的最大值是%1"
+msgstr "該設備的最大值是 %1"
 
 msgid "signals.importing"
 msgstr "正在導入訊息..."
@@ -6218,16 +6218,16 @@ msgid "signals.network-count=users"
 msgstr "%1 名用戶"
 
 msgid "signals.no-imported-parent=old-id,old-parent-id,new-id"
-msgstr "訊息 %1 是回複 %2，但被回複的訊息丟失。更新此訊息為 %3"
+msgstr "訊息 %1 是回覆 %2，但被回覆的訊息丟失。更新此訊息為 %3"
 
 msgid "signals.on=user,uri,date,networks"
 msgstr "%1 在 <a href=\"%2\">%3</a> <b>%4</b>."
 
 msgid "signals.on=user,uri,date,private-to"
-msgstr "%1 在 <a href=\"%2\">%3</a> 給%4私信。"
+msgstr "%1 在 <a href=\"%2\">%3</a> 給 %4 私人訊息。"
 
 msgid "signals.on=user,uri,date,reply-to"
-msgstr "%1 在 <a href=\"%2\">%3</a> 給%4回複。"
+msgstr "%1 在 <a href=\"%2\">%3</a> 給%4回覆。"
 
 msgid "signals.permalink"
 msgstr "訊息的永久鏈結"
@@ -6236,34 +6236,34 @@ msgid "signals.post-to"
 msgstr "發布到"
 
 msgid "signals.primary-account=users"
-msgstr "主要, %1 名用戶"
+msgstr "主要，%1 名用戶"
 
 msgid "signals.private-message-from=user:"
-msgstr "您收到了%1的私信："
+msgstr "您收到了 %1 的私人訊息："
 
 msgid "signals.private-message-sent"
 msgstr "已發送的私人訊息"
 
 msgid "signals.private-message-to-email"
-msgstr "如果勾選上，每次別人通過訊息給您發送私信，您將會收到包含該消息的電子郵件。"
+msgstr "如果勾選上，每次別人給您發送私人訊息，您將會收到包含該消息的電子郵件。"
 
 msgid "signals.private-messages"
-msgstr "私信"
+msgstr "私人訊息"
 
 msgid "signals.private-reply"
-msgstr "私密回複"
+msgstr "私密回覆"
 
 msgid "signals.private-to=person,body"
-msgstr "給%1發送私密訊息：『%2』。"
+msgstr "給 %1 發送私人訊息：『%2』。"
 
 msgid "signals.refresh"
 msgstr "刷新"
 
 msgid "signals.reply"
-msgstr "回複"
+msgstr "回覆"
 
 msgid "signals.reply-privately"
-msgstr "私密回複該訊息。"
+msgstr "私密回覆該訊息。"
 
 msgid "signals.search:"
 msgstr "搜尋訊息："
@@ -6272,7 +6272,7 @@ msgid "signals.selected-people"
 msgstr "選定的好友"
 
 msgid "signals.send-as-private-message"
-msgstr "作為私信發送"
+msgstr "發送為私人訊息"
 
 msgid "signals.share-to-colleagues?"
 msgstr "給您的同事分享這條鏈結？"

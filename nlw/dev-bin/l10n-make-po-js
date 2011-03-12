@@ -501,6 +501,7 @@ use constant CN2TW => {qw(
     匹配         符合
     式樣         樣式
     繁體         正體
+    回複         回覆
     于           於
 )};
 
@@ -521,4 +522,3 @@ sub tw {
 
     return $trad;
 }
-

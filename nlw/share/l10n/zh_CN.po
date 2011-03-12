@@ -3650,7 +3650,7 @@ msgid "error.show-pref-for-multiple-plugins"
 msgstr "show-plugin-prefs 只用于单个插件"
 
 msgid "error.signal-too-long=limit"
-msgstr "您的讯息超过了%1字数"
+msgstr "您的讯息超过了 %1 字数"
 
 msgid "error.signal-too-long=max-length"
 msgstr "讯息长度限制为 %1, 请编辑您的讯息"
@@ -3929,7 +3929,7 @@ msgid "example.wiki-url:"
 msgstr "示例: acme-product-dev 创建的工作区地址为："
 
 msgid "explore.beta"
-msgstr "探索 (测试)"
+msgstr "探索（测试）"
 
 msgid "explore.click-to-collapse-mentions=count"
 msgstr "%1 項提及, 点击此处折叠"
@@ -6158,7 +6158,7 @@ msgid "sheet.untitled"
 msgstr "未命名电子表格"
 
 msgid "signals.about-bookmarklet!"
-msgstr "将其作为书签(或收藏夹)安装，当您有网页要讯息或分享，只需点击或选择书签就可以发送讯息了！"
+msgstr "将其作为书签（或收藏夹）安装，当您有网页要讯息或分享，只需点击或选择书签就可以发送讯息了！"
 
 msgid "signals.all-groups"
 msgstr "所有群组"
@@ -6179,7 +6179,7 @@ msgid "signals.bookmarks-bar-missing?"
 msgstr "看不到书签栏？"
 
 msgid "signals.click-cancel-to-signal-to-self"
-msgstr "(点击 [取消] 来隐藏自己的讯息。)"
+msgstr "（点击 [取消] 来隐藏自己的讯息。）"
 
 msgid "signals.delete"
 msgstr "删除"
@@ -6197,7 +6197,7 @@ msgid "signals.email-link-to-preferences"
 msgstr "不想收到Socialtext讯息的邮件或者更改您的偏好设置，请访问"
 
 msgid "signals.email-to-private-message"
-msgstr "将Socialtext讯息的私信作为电子邮件发送"
+msgstr "将 Socialtext 的私人讯息作为电子邮件发送"
 
 msgid "signals.expunge"
 msgstr "消去"
@@ -6206,7 +6206,7 @@ msgid "signals.find-bookmarks-bar"
 msgstr "在您的浏览器菜单中找到并且选择“显示书签栏”。"
 
 msgid "signals.global-limit=size"
-msgstr "该应用的最大值是%1"
+msgstr "该设备的最大值是 %1"
 
 msgid "signals.importing"
 msgstr "正在导入讯息..."
@@ -6224,7 +6224,7 @@ msgid "signals.on=user,uri,date,networks"
 msgstr "%1 在 <a href=\"%2\">%3</a> <b>%4</b>."
 
 msgid "signals.on=user,uri,date,private-to"
-msgstr "%1 在 <a href=\"%2\">%3</a> 给%4私信。"
+msgstr "%1 在 <a href=\"%2\">%3</a> 给 %4 私人讯息。"
 
 msgid "signals.on=user,uri,date,reply-to"
 msgstr "%1 在 <a href=\"%2\">%3</a> 给%4回复。"
@@ -6236,25 +6236,25 @@ msgid "signals.post-to"
 msgstr "发布到"
 
 msgid "signals.primary-account=users"
-msgstr "主要, %1 名用户"
+msgstr "主要，%1 名用户"
 
 msgid "signals.private-message-from=user:"
-msgstr "您收到了%1的私信："
+msgstr "您收到了 %1 的私人讯息："
 
 msgid "signals.private-message-sent"
 msgstr "已发送的私人讯息"
 
 msgid "signals.private-message-to-email"
-msgstr "如果勾选上，每次别人通过讯息给您发送私信，您将会收到包含该消息的电子邮件。"
+msgstr "如果勾选上，每次别人給您发送私人讯息，您将会收到包含该消息的电子邮件。"
 
 msgid "signals.private-messages"
-msgstr "私信"
+msgstr "私人讯息"
 
 msgid "signals.private-reply"
 msgstr "私密回复"
 
 msgid "signals.private-to=person,body"
-msgstr "给%1发送私密讯息：“%2”。"
+msgstr "给 %1 发送私人讯息：“%2”。"
 
 msgid "signals.refresh"
 msgstr "刷新"
@@ -6272,7 +6272,7 @@ msgid "signals.selected-people"
 msgstr "选定的好友"
 
 msgid "signals.send-as-private-message"
-msgstr "作为私信发送"
+msgstr "发送为私人讯息"
 
 msgid "signals.share-to-colleagues?"
 msgstr "给您的同事分享这条链接？"
