@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-26 08:54+0800\n"
+"PO-Revision-Date: 2011-03-12 20:59+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -127,7 +127,7 @@ msgid "signals.private-reply"
 msgstr "私密回复"
 
 msgid "signals.private-to=person,body"
-msgstr "给%1发送私密讯息: \"%2\"。"
+msgstr "给%1发送私密讯息：“%2”。"
 
 msgid "signals.refresh"
 msgstr "刷新"
@@ -160,7 +160,7 @@ msgid "signals.signal-this!"
 msgstr "发送此頁！"
 
 msgid "signals.signal-this-bookmarklet"
-msgstr "\"发送此頁\" 书签"
+msgstr "“发送此頁”书签"
 
 msgid "signals.signal-to"
 msgstr "发送到"

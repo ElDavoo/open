@@ -3251,7 +3251,7 @@ msgid "error.no-password-for-new-user"
 msgstr "创建一个新用户时需要填写密码。"
 
 msgid "error.no-people-found"
-msgstr "没有好友符合此标准。"
+msgstr "没有人员符合此标准。"
 
 msgid "error.no-people-plugin"
 msgstr "成员插件未安装。"
@@ -4541,7 +4541,7 @@ msgid "invite.example:"
 msgstr "示例："
 
 msgid "invite.features-for-invitees"
-msgstr "邀请的好友会列在群组的名单中，上面有个人资料。如果开启了Socialtext讯息，他们也可使用。"
+msgstr "邀请的人员会列在群组的名单中，上面有个人资料。如果开启了Socialtext讯息，他们也可使用。"
 
 msgid "invite.friend"
 msgstr "好友"
@@ -4553,7 +4553,7 @@ msgid "invite.group=name"
 msgstr "我邀请你加入 %1 群组"
 
 msgid "invite.hi"
-msgstr "您好,"
+msgstr "您好，"
 
 msgid "invite.include-personal-message"
 msgstr "如果您希望的话，可以在邀请信里面包含个人消息。您可以编辑消息说出您想说的话。"
@@ -4577,7 +4577,7 @@ msgid "invite.make-wikilink"
 msgstr "要链接到其它页面（即使页面还不存在），请给一个词语或词组加上方括号。"
 
 msgid "invite.more-people"
-msgstr "邀请更多好友"
+msgstr "邀请更多人员"
 
 msgid "invite.new-users"
 msgstr "邀请新用户"
@@ -4592,7 +4592,7 @@ msgid "invite.other-users"
 msgstr "邀请其他用户"
 
 msgid "invite.people"
-msgstr "邀请好友"
+msgstr "邀请人员"
 
 msgid "invite.personal-message"
 msgstr "个人消息"
@@ -4628,10 +4628,10 @@ msgid "invite.to-groups"
 msgstr "邀请用户到选定的群组"
 
 msgid "invite.to-your-group"
-msgstr "邀请好友到您的群组"
+msgstr "邀请人员到您的群组"
 
 msgid "invite.to=name"
-msgstr "邀请好友到%1"
+msgstr "邀请人员到%1"
 
 msgid "invite.username:"
 msgstr "用户名："
@@ -5387,7 +5387,7 @@ msgid "people.count=users"
 msgstr "%1 名用户"
 
 msgid "people.directory"
-msgstr "好友名单"
+msgstr "人员名单"
 
 msgid "people.follow"
 msgstr "关注"
@@ -5405,10 +5405,10 @@ msgid "people.profile"
 msgstr "个人资料"
 
 msgid "people.search"
-msgstr "搜索好友"
+msgstr "搜索人员"
 
 msgid "people.search:"
-msgstr "搜索好友："
+msgstr "搜索人员："
 
 msgid "people.showing=from,to,total"
 msgstr "显示总数%3的%1到%2。"
@@ -6254,7 +6254,7 @@ msgid "signals.private-reply"
 msgstr "私密回复"
 
 msgid "signals.private-to=person,body"
-msgstr "给%1发送私密讯息: \"%2\"。"
+msgstr "给%1发送私密讯息：“%2”。"
 
 msgid "signals.refresh"
 msgstr "刷新"
@@ -6287,7 +6287,7 @@ msgid "signals.signal-this!"
 msgstr "发送此頁！"
 
 msgid "signals.signal-this-bookmarklet"
-msgstr "\"发送此頁\" 书签"
+msgstr "“发送此頁”书签"
 
 msgid "signals.signal-to"
 msgstr "发送到"

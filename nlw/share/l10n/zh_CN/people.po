@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-26 08:54+0800\n"
+"PO-Revision-Date: 2011-03-12 20:57+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -31,7 +31,7 @@ msgid "error.no-additional-profile-data"
 msgstr "没有额外的个人资料数据。"
 
 msgid "error.no-people-found"
-msgstr "没有好友符合此标准。"
+msgstr "没有人员符合此标准。"
 
 msgid "error.no-signals"
 msgstr "没有人注册。"
@@ -106,10 +106,10 @@ msgid "invite.example:"
 msgstr "例如："
 
 msgid "invite.features-for-invitees"
-msgstr "邀请的好友会列在群组的名单中，上面有个人资料。如果开启了Socialtext讯息，他们也可使用。"
+msgstr "邀请的人员会列在群组的名单中，上面有个人资料。如果开启了Socialtext讯息，他们也可使用。"
 
 msgid "invite.hi"
-msgstr "您好,"
+msgstr "您好，"
 
 msgid "invite.join=account,host"
 msgstr "我邀请您加入%2的群组%1。"
@@ -124,13 +124,13 @@ msgid "invite.login-details-after-confirmation"
 msgstr "一旦您确认了您的帐户，您将收到第二封电子邮件，其中有登录的详细信息。"
 
 msgid "invite.more-people"
-msgstr "邀请更多好友"
+msgstr "邀请更多人员"
 
 msgid "invite.new-users-will-be-sent-following-welcome-email:"
 msgstr "将下面的欢迎邮件发送到新用户："
 
 msgid "invite.people"
-msgstr "邀请好友"
+msgstr "邀请人员"
 
 msgid "invite.personal-message"
 msgstr "个人消息"
@@ -157,10 +157,10 @@ msgid "invite.thanks"
 msgstr "谢谢，"
 
 msgid "invite.to-your-group"
-msgstr "邀请好友到您的群组"
+msgstr "邀请人员到您的群组"
 
 msgid "invite.to=name"
-msgstr "邀请好友到%1"
+msgstr "邀请人员到%1"
 
 msgid "invite.username:"
 msgstr "用户名："
@@ -175,7 +175,7 @@ msgid "nav.my-profile"
 msgstr "我的个人资料"
 
 msgid "nav.people"
-msgstr "好友"
+msgstr "人员"
 
 msgid "people.add-tag-to-myself"
 msgstr "给我添加这个标签"
@@ -196,7 +196,7 @@ msgid "people.count=users"
 msgstr "%1 名用户"
 
 msgid "people.directory"
-msgstr "好友名单"
+msgstr "人员名单"
 
 msgid "people.follow"
 msgstr "关注"
@@ -214,10 +214,10 @@ msgid "people.profile"
 msgstr "个人资料"
 
 msgid "people.search"
-msgstr "搜索好友"
+msgstr "搜索人员"
 
 msgid "people.search:"
-msgstr "搜索好友："
+msgstr "搜索人员："
 
 msgid "people.showing=from,to,total"
 msgstr "显示总数%3的%1到%2。"

@@ -692,7 +692,7 @@ msgid "cli.created"
 msgstr "已建立"
 
 msgid "cli.created-by"
-msgstr "建立于"
+msgstr "建立於"
 
 msgid "cli.displaying-all-groups"
 msgstr "正在顯示全部群組"
@@ -722,7 +722,7 @@ msgid "cli.group-wikis"
 msgstr "# 工作區"
 
 msgid "cli.indirect-member=name,role,container"
-msgstr "%1 現是 %3 的'%2'，歸于一個群組內的成員。"
+msgstr "%1 現是 %3 的'%2'，歸於一個群組內的成員。"
 
 msgid "cli.last-name"
 msgstr "姓氏"
@@ -1001,7 +1001,7 @@ msgid "config.yes"
 msgstr "是"
 
 msgid "console.about-authentication-token-timeout"
-msgstr "出于安全的原因，認証標記在預先定義的期間過後將自動失效，即使用戶選擇了『在本電腦上記住我』。該期間最短為『1天』，最長為『365天』，預設為『14天』。您可以在此更改該期間。"
+msgstr "出於安全的原因，認証標記在預先定義的期間過後將自動失效，即使用戶選擇了『在本電腦上記住我』。該期間最短為『1天』，最長為『365天』，預設為『14天』。您可以在此更改該期間。"
 
 msgid "console.about-backup-settings"
 msgstr "本設備可以在另外一台電腦上相容Windows或SMB的目錄或文件夾中存儲備份文件。在此設定備份伺服器、目錄與用戶名。"
@@ -1319,7 +1319,7 @@ msgid "control.about-mass-add-users"
 msgstr "Socialtext 可以讓您為帳戶新增多用戶。要新增多用戶，請下載樣本資料文件，然後新增您的用戶資料。並在此上傳該文件。也可以訪問<a href=\"https://www.socialtext.net/help-adminguide/adding_and_updating_users#adding_multiple_users\">為Socialtext新增多用戶</a>查看新增多用戶的全部文檔。"
 
 msgid "control.about-paid-option=plugin"
-msgstr "%1 為付費選項。關于費用的更多資訊，請聯絡您的銷售代表。"
+msgstr "%1 為付費選項。關於費用的更多資訊，請聯絡您的銷售代表。"
 
 msgid "control.about-settings-tab"
 msgstr "管理全系統的應用設定"
@@ -1565,7 +1565,7 @@ msgid "control.created-by=user"
 msgstr "由 %1 建立"
 
 msgid "control.created-on=time"
-msgstr "于 %1 建立"
+msgstr "於 %1 建立"
 
 msgid "control.creating"
 msgstr "建立"
@@ -2048,10 +2048,10 @@ msgid "control.value"
 msgstr "值"
 
 msgid "control.via-group=count,links"
-msgstr "源于 %1 個群組: %2"
+msgstr "源於 %1 個群組: %2"
 
 msgid "control.via-wiki=count,links"
-msgstr "源于 %1 個工作區: %2"
+msgstr "源於 %1 個工作區: %2"
 
 msgid "control.view=name"
 msgstr "查看 %1"
@@ -2480,10 +2480,10 @@ msgid "edit.summarize"
 msgstr "編輯概述（可選）"
 
 msgid "edit.summary=name,page,wiki"
-msgstr "<strong>%1</strong>想讓您知道位于 %3 的<strong>%2</strong>所進行的編輯"
+msgstr "<strong>%1</strong>想讓您知道位於 %3 的<strong>%2</strong>所進行的編輯"
 
 msgid "edit.summary=name,summary,page,wiki"
-msgstr "<strong>%1</strong>，\"%2\"（編輯了位于 %4 的<strong>%3</strong>）"
+msgstr "<strong>%1</strong>，\"%2\"（編輯了位於 %4 的<strong>%3</strong>）"
 
 msgid "edit.tag-prompt:"
 msgstr "標籤："
@@ -2663,7 +2663,7 @@ msgid "error.at=line,message"
 msgstr "第 %1 行: %2"
 
 msgid "error.authentication-token-soft-limit-must-be-lower-than-hard-limit"
-msgstr "認証所採用的軟限制須低于硬限制。"
+msgstr "認証所採用的軟限制須低於硬限制。"
 
 msgid "error.backup-already-running"
 msgstr "備份已經開始"
@@ -2678,7 +2678,7 @@ msgid "error.bad-request"
 msgstr "錯誤請求"
 
 msgid "error.blackberry-version-too-low"
-msgstr "警告：Socialtext 移動版需要不低于v4.5的BlackBerry OS"
+msgstr "警告：Socialtext 行動版需要不低於v4.5的BlackBerry OS"
 
 msgid "error.blog-name-required"
 msgstr "更新失敗，未選擇網誌名。"
@@ -2690,7 +2690,7 @@ msgid "error.browser-offline"
 msgstr "瀏覽器為離線狀態，請連入互聯網再重試."
 
 msgid "error.cannot-change-account-logo-with-custom-skin=name"
-msgstr "由于當前使用的是自定義視覺主題，因此帳戶標識不可更改。正在使用的視覺主題名為 '%1'"
+msgstr "由於當前使用的是自定義視覺主題，因此帳戶標識不可更改。正在使用的視覺主題名為 '%1'"
 
 msgid "error.cannot-load-revision"
 msgstr "無法載入更動"
@@ -2762,7 +2762,7 @@ msgid "error.create=wiki"
 msgstr "無法建立工作區 %1。"
 
 msgid "error.css-disabled"
-msgstr "警告：樣式單在移動設備上無法使用。要正確地查看移動版Socialtext, 您需要在瀏覽器設定里面啟用樣式單。"
+msgstr "警告：樣式單在移動設備上無法使用。要正確地查看行動版Socialtext, 您需要在瀏覽器設定里面啟用樣式單。"
 
 msgid "error.dashboard-push-widget"
 msgstr "推送到顯示板發生錯誤"
@@ -2852,7 +2852,7 @@ msgid "error.field-exists=name,account"
 msgstr "不能建立個人資料欄位： 欄位'%1'已在帳戶'%2'中使用"
 
 msgid "error.field-exists=name,title,account"
-msgstr "不能建立個人資料欄位： 欄位'%1'（源于'%2'）已存在'%3'帳戶中"
+msgstr "不能建立個人資料欄位： 欄位'%1'（源於'%2'）已存在'%3'帳戶中"
 
 msgid "error.field-name-required"
 msgstr "必須指定需要更改的欄位名"
@@ -2867,7 +2867,7 @@ msgid "error.field-reserved=name"
 msgstr "不能建立個人資料欄位： 欄位『%1』是Socialtext的保留欄位"
 
 msgid "error.field-reserved=name,title,account"
-msgstr "不能建立個人資料欄位： 欄位'%1'（源于'%2'）是Socialtext的保留欄位"
+msgstr "不能建立個人資料欄位： 欄位'%1'（源於'%2'）是Socialtext的保留欄位"
 
 msgid "error.field-title-required"
 msgstr "必須提供欄位標題"
@@ -2945,10 +2945,10 @@ msgid "error.invalid-archive=file"
 msgstr "%1 是無效文件名。主題文件後綴名只能是 .zip，.tar.gz 或 .tgz。"
 
 msgid "error.invalid-authentication-token-hard-limit=min-days,max-days"
-msgstr "認証所採用的硬限制須介于 %1 與%2 天之間。"
+msgstr "認証所採用的硬限制須介於 %1 與%2 天之間。"
 
 msgid "error.invalid-authentication-token-soft-limit=min-days,max-days"
-msgstr "認証所採用的軟限制須介于 %1 與 %2 天之間。"
+msgstr "認証所採用的軟限制須介於 %1 與 %2 天之間。"
 
 msgid "error.invalid-columns"
 msgstr "列數無效."
@@ -2963,7 +2963,7 @@ msgid "error.invalid-email-address=count:"
 msgstr "對不起，下面的 %1 項電子郵箱位址是無效的："
 
 msgid "error.invalid-email-placement"
-msgstr "新郵件位置必須位于頂部，底部或覆蓋。"
+msgstr "新郵件位置必須位於頂部，底部或覆蓋。"
 
 msgid "error.invalid-field=source"
 msgstr "無效的欄位來源'%1'"
@@ -3005,7 +3005,7 @@ msgid "error.invalid-rows"
 msgstr "行數無效."
 
 msgid "error.invalid-scope=plugin,scope"
-msgstr "插件 %1 並未設于 %2 範圍中。"
+msgstr "插件 %1 並未設於 %2 範圍中。"
 
 msgid "error.invalid-title=page"
 msgstr "\"%1\" 是無效的頁面主題。請另選一個。"
@@ -3044,13 +3044,13 @@ msgid "error.invalid-wiki-logo?"
 msgstr "無法處理標志文件，它是什麼圖片？"
 
 msgid "error.invalid-wiki-name"
-msgstr "工作區名字必須介于3到30個字符長度，只能包含小寫字母，數字，下劃線和連字符，且不能以'-'開頭。"
+msgstr "工作區名字必須介於3到30個字符長度，只能包含小寫字母，數字，下劃線和連字符，且不能以'-'開頭。"
 
 msgid "error.invalid-wiki-name-begins-with-dash"
 msgstr "工作區名字不能以- 開頭。"
 
 msgid "error.invalid-wiki-title"
-msgstr "工作區題目必須介于2到64個字符長度，並不能以'-'開頭。"
+msgstr "工作區題目必須介於2到64個字符長度，並不能以'-'開頭。"
 
 msgid "error.invalid-wikilink-wiki"
 msgstr "非有效工作區. 您必須輸入一個包含網頁鏈結的有效工作區."
@@ -3161,7 +3161,7 @@ msgid "error.no-additional-profile-data"
 msgstr "沒有額外的個人資料資料。"
 
 msgid "error.no-attachment"
-msgstr "找不到附件。頁面名，文件名或鏈結中的識別碼可能有錯誤，或附件已被刪除或不存在于此工作區。"
+msgstr "找不到附件。頁面名，文件名或鏈結中的識別碼可能有錯誤，或附件已被刪除或不存在於此工作區。"
 
 msgid "error.no-blog-title"
 msgstr "必須提供一個網誌標題。"
@@ -3251,7 +3251,7 @@ msgid "error.no-password-for-new-user"
 msgstr "建立一個新用戶時需要填寫密碼。"
 
 msgid "error.no-people-found"
-msgstr "沒有好友符合此標准。"
+msgstr "沒有人員符合此標准。"
 
 msgid "error.no-people-plugin"
 msgstr "成員插件未安裝。"
@@ -3341,7 +3341,7 @@ msgid "error.no-users-selected"
 msgstr "沒有選中用戶，請至少選中一名用戶然後重試"
 
 msgid "error.no-widget-localization-file"
-msgstr "由于本地化文件無法找到，此小工具安裝失敗"
+msgstr "由於本地化文件無法找到，此小工具安裝失敗"
 
 msgid "error.no-wiki-access"
 msgstr "無權訪問工作區"
@@ -3566,10 +3566,10 @@ msgid "error.saving-timeserver-to-appliance-configuration=new-ts"
 msgstr "未能將時間伺服器 %1 保存至設備配置中"
 
 msgid "error.search-too-general"
-msgstr "你的搜尋字詞過于籠統。請新增更多相關資訊。"
+msgstr "你的搜尋字詞過於籠統。請新增更多相關資訊。"
 
 msgid "error.search-too-general=hits"
-msgstr "你的搜尋字詞過于籠統。%1 個頁面和或附件符合搜尋，請新增更多相關資訊。"
+msgstr "你的搜尋字詞過於籠統。%1 個頁面和或附件符合搜尋，請新增更多相關資訊。"
 
 msgid "error.select-option-or-click-cancel"
 msgstr "請選擇其中一個選項，或點選取消。"
@@ -3593,7 +3593,7 @@ msgid "error.send-signal"
 msgstr "傳遞訊息時出錯，請重試."
 
 msgid "error.server-error"
-msgstr "由于伺服器錯誤操作失敗，請稍候重試."
+msgstr "由於伺服器錯誤操作失敗，請稍候重試."
 
 msgid "error.set-authentication-token-limits=message"
 msgstr "設定認証所採用的限制 %1 時發生錯誤"
@@ -3647,7 +3647,7 @@ msgid "error.sheet-title-too-long"
 msgstr "試算表名稱太長。請縮短名稱，再試一次。"
 
 msgid "error.show-pref-for-multiple-plugins"
-msgstr "show-plugin-prefs 只用于單個插件"
+msgstr "show-plugin-prefs 只用於單個插件"
 
 msgid "error.signal-too-long=limit"
 msgstr "您的訊息超過了%1字數"
@@ -3764,7 +3764,7 @@ msgid "error.widget-exists-in-"
 msgstr "工具庫中已使用該小工具。"
 
 msgid "error.widget-exists-in-gallery"
-msgstr "該小工具已存在于此工具庫中。"
+msgstr "該小工具已存在於此工具庫中。"
 
 msgid "error.widget-field-required=label"
 msgstr "'%1' 是一個必需的欄位"
@@ -3989,7 +3989,7 @@ msgid "feed.avatar=user"
 msgstr "%1 的頭像"
 
 msgid "feed.created=time"
-msgstr "原創于：%1"
+msgstr "原創於：%1"
 
 msgid "feed.number-of-posts?"
 msgstr "在訂閱輸出中顯示多少網誌？"
@@ -4004,7 +4004,7 @@ msgid "feed.watchlist=wiki,user"
 msgstr "%1：關注 %2"
 
 msgid "file.add-or-replace=name,size,user,date?"
-msgstr "本頁面已經有名為\"%1\" (%2 由%3于%4上傳) 的附件。 您可以<span class=\"emphasis\">新增</span> 此文件的其他版本或<span class=\"emphasis\">替換</span>已存在的文件。您想怎麼做？"
+msgstr "本頁面已經有名為\"%1\" (%2 由%3於%4上傳) 的附件。 您可以<span class=\"emphasis\">新增</span> 此文件的其他版本或<span class=\"emphasis\">替換</span>已存在的文件。您想怎麼做？"
 
 msgid "file.add-or-replace=name?"
 msgstr "本頁面已經有名為\"%1\"的附件。您可以<span class=\"emphasis\">新增</span>此文件的其他版本或<span class=\"emphasis\">替換</span>已存在的文件。您想怎麼做？"
@@ -4055,7 +4055,7 @@ msgid "file.name"
 msgstr "文件名"
 
 msgid "file.replace=count,size,user,date"
-msgstr "此文件(最近更新: %2, 由%3于%4上傳)有<span class=\"emphasis\">%1以前的版本</span>。 如果您點選<em>替換</em>,將會<em>刪除其他所有版本</em>。"
+msgstr "此文件(最近更新: %2, 由%3於%4上傳)有<span class=\"emphasis\">%1以前的版本</span>。 如果您點選<em>替換</em>,將會<em>刪除其他所有版本</em>。"
 
 msgid "file.size"
 msgstr "大小"
@@ -4217,7 +4217,7 @@ msgid "image.upload"
 msgstr "上傳圖片"
 
 msgid "image.web"
-msgstr "圖片已存在于頁面"
+msgstr "圖片已存在於頁面"
 
 msgid "info.about-explore"
 msgstr "<b>Socialtext 瀏覽</b> 讓您輕鬆通過Socialtext訊息知道同事們分享的文件和鏈結。使用頂部的標籤來選擇類型和左邊的篩選功能來減少要顯示的資訊。<br /> <br /> 每個列出的項目都有一個或者更多提及它的訊息會話。您可以點選項目來打開鏈結，或者點選標題左邊的方框來查看和回複相應的會話。"
@@ -4475,10 +4475,10 @@ msgid "info.wikis"
 msgstr "...列出您所屬的工作區。您必須登入查看您的列表。"
 
 msgid "invite.account-password-exists"
-msgstr "由于您已經擁有一個帳戶，其他群組的密碼將與其密碼相同。"
+msgstr "由於您已經擁有一個帳戶，其他群組的密碼將與其密碼相同。"
 
 msgid "invite.account-password-exists=app-name"
-msgstr "由于您已經擁有帳戶%1，其他群組的密碼將和%1的密碼相同。"
+msgstr "由於您已經擁有帳戶%1，其他群組的密碼將和%1的密碼相同。"
 
 msgid "invite.added-to-group=users:"
 msgstr "下面的 %1 名用戶已經被成功的邀請到這個群組："
@@ -4541,7 +4541,7 @@ msgid "invite.example:"
 msgstr "示例："
 
 msgid "invite.features-for-invitees"
-msgstr "邀請的好友會列在群組的名單中，上面有個人資料。如果開啟了Socialtext訊息，他們也可使用。"
+msgstr "邀請的人員會列在群組的名單中，上面有個人資料。如果開啟了Socialtext訊息，他們也可使用。"
 
 msgid "invite.friend"
 msgstr "好友"
@@ -4553,7 +4553,7 @@ msgid "invite.group=name"
 msgstr "我邀請你加入 %1 群組"
 
 msgid "invite.hi"
-msgstr "您好,"
+msgstr "您好，"
 
 msgid "invite.include-personal-message"
 msgstr "如果您希望的話，可以在邀請信里麵包含個人消息。您可以編輯消息說出您想說的話。"
@@ -4577,7 +4577,7 @@ msgid "invite.make-wikilink"
 msgstr "要鏈結到其他頁面（即使頁面還不存在），請給一個詞語或片語加上方括弧。"
 
 msgid "invite.more-people"
-msgstr "邀請更多好友"
+msgstr "邀請更多人員"
 
 msgid "invite.new-users"
 msgstr "邀請新用戶"
@@ -4592,7 +4592,7 @@ msgid "invite.other-users"
 msgstr "邀請其他用戶"
 
 msgid "invite.people"
-msgstr "邀請好友"
+msgstr "邀請人員"
 
 msgid "invite.personal-message"
 msgstr "個人消息"
@@ -4628,10 +4628,10 @@ msgid "invite.to-groups"
 msgstr "邀請用戶到選定的群組"
 
 msgid "invite.to-your-group"
-msgstr "邀請好友到您的群組"
+msgstr "邀請人員到您的群組"
 
 msgid "invite.to=name"
-msgstr "邀請好友到%1"
+msgstr "邀請人員到%1"
 
 msgid "invite.username:"
 msgstr "用戶名："
@@ -4937,7 +4937,7 @@ msgid "nav.mine"
 msgstr "我的"
 
 msgid "nav.mobile"
-msgstr "移動版"
+msgstr "行動版"
 
 msgid "nav.my-profile"
 msgstr "我的個人資料"
@@ -5132,7 +5132,7 @@ msgid "page.commented=summary,page,wiki"
 msgstr "\"%1\"（在 %3 中評論 %2）"
 
 msgid "page.contributed-by=user,date"
-msgstr "由 {user: %1} 于 {date: %2} 發表"
+msgstr "由 {user: %1} 於 {date: %2} 發表"
 
 msgid "page.copy"
 msgstr "複製到另一個工作區"
@@ -5150,7 +5150,7 @@ msgid "page.create"
 msgstr "新建內容"
 
 msgid "page.created=author,date"
-msgstr "由 %1 于 %2 建立"
+msgstr "由 %1 於 %2 建立"
 
 msgid "page.creator"
 msgstr "原<strong>建立者</strong>為"
@@ -5216,7 +5216,7 @@ msgid "page.last-updated"
 msgstr "前次<strong>更新</strong>為"
 
 msgid "page.last-updated=time,author"
-msgstr "頁面最後更新: %2于%1"
+msgstr "頁面最後更新: %2於%1"
 
 msgid "page.latest=type"
 msgstr "點選這裡轉到%1的最新版本。"
@@ -5336,7 +5336,7 @@ msgid "page.untitled"
 msgstr "未命名頁面"
 
 msgid "page.updated=user,date"
-msgstr "由 %1 于 %2 更新"
+msgstr "由 %1 於 %2 更新"
 
 msgid "page.use-template:"
 msgstr "使用範本："
@@ -5387,7 +5387,7 @@ msgid "people.count=users"
 msgstr "%1 名用戶"
 
 msgid "people.directory"
-msgstr "好友名單"
+msgstr "人員名單"
 
 msgid "people.follow"
 msgstr "關注"
@@ -5405,10 +5405,10 @@ msgid "people.profile"
 msgstr "個人資料"
 
 msgid "people.search"
-msgstr "搜尋好友"
+msgstr "搜尋人員"
 
 msgid "people.search:"
-msgstr "搜尋好友："
+msgstr "搜尋人員："
 
 msgid "people.showing=from,to,total"
 msgstr "顯示總數%3的%1到%2。"
@@ -6146,10 +6146,10 @@ msgid "search.rss=wiki,query"
 msgstr "%1 - 用 RSS 搜尋 %2"
 
 msgid "search.too-general"
-msgstr "您輸入的搜尋過于寬泛。"
+msgstr "您輸入的搜尋過於寬泛。"
 
 msgid "search.too-many=count"
-msgstr "您輸入的搜尋過于寬泛; %1頁面和/或附件符合請求。"
+msgstr "您輸入的搜尋過於寬泛; %1頁面和/或附件符合請求。"
 
 msgid "sheet.creating"
 msgstr "正在建立新的試算表..."
@@ -6158,7 +6158,7 @@ msgid "sheet.untitled"
 msgstr "未命名試算表"
 
 msgid "signals.about-bookmarklet!"
-msgstr "將其作為書簽(或收藏夾)安裝，當您有網頁要訊息或分享，只需點選或選擇書簽就可以發送訊息了！"
+msgstr "將其作為書籤(或收藏夾)安裝，當您有網頁要訊息或分享，只需點選或選擇書籤就可以發送訊息了！"
 
 msgid "signals.all-groups"
 msgstr "所有群組"
@@ -6170,13 +6170,13 @@ msgid "signals.attachments:"
 msgstr "此訊息的附件如下："
 
 msgid "signals.bookmarklet"
-msgstr "訊息書簽"
+msgstr "訊息書籤"
 
 msgid "signals.bookmarklet-for-ie-users"
 msgstr "須知：使用Internet Explorer的用戶，右鍵點選下面的按鈕，選擇『新增到收藏夾』，然後選擇『鏈結』文件夾。"
 
 msgid "signals.bookmarks-bar-missing?"
-msgstr "看不到書簽欄？"
+msgstr "看不到書籤欄？"
 
 msgid "signals.click-cancel-to-signal-to-self"
 msgstr "(點選 [取消] 來隱藏自己的訊息。)"
@@ -6185,7 +6185,7 @@ msgid "signals.delete"
 msgstr "刪除"
 
 msgid "signals.drag-button-to-bookmarks-bar"
-msgstr "對于其他的瀏覽器，您只需將按鈕拖放到書簽欄下面。"
+msgstr "對於其他的瀏覽器，您只需將按鈕拖放到書籤欄下面。"
 
 msgid "signals.edit-save=event"
 msgstr "%1。"
@@ -6203,7 +6203,7 @@ msgid "signals.expunge"
 msgstr "消去"
 
 msgid "signals.find-bookmarks-bar"
-msgstr "在您的瀏覽器功能表中找到並且選擇『顯示書簽欄』。"
+msgstr "在您的瀏覽器功能表中找到並且選擇『顯示書籤欄』。"
 
 msgid "signals.global-limit=size"
 msgstr "該應用的最大值是%1"
@@ -6254,7 +6254,7 @@ msgid "signals.private-reply"
 msgstr "私密回複"
 
 msgid "signals.private-to=person,body"
-msgstr "給%1發送私密訊息: \"%2\"。"
+msgstr "給%1發送私密訊息：『%2』。"
 
 msgid "signals.refresh"
 msgstr "刷新"
@@ -6278,7 +6278,7 @@ msgid "signals.share-to-colleagues?"
 msgstr "給您的同事分享這條鏈結？"
 
 msgid "signals.share-with-bookmarklet"
-msgstr "使用這個方便的書簽來通過訊息分享所有網站上的頁面。"
+msgstr "使用這個方便的書籤來通過訊息分享所有網站上的頁面。"
 
 msgid "signals.showing=from,to,total"
 msgstr "顯示第 %1 - %2 項，共 %3 項。"
@@ -6287,7 +6287,7 @@ msgid "signals.signal-this!"
 msgstr "發送此頁！"
 
 msgid "signals.signal-this-bookmarklet"
-msgstr "\"發送此頁\" 書簽"
+msgstr "『發送此頁』書籤"
 
 msgid "signals.signal-to"
 msgstr "發送到"
@@ -6362,7 +6362,7 @@ msgid "skin.support"
 msgstr "自定義視覺主題支援"
 
 msgid "skin.unsupported"
-msgstr "上傳的視覺主題不支援。上傳視覺主題僅用于開發和測試自定義視覺主題。請聯絡sales@socialtext.com獲取更多關于自定義視覺主題的資訊。"
+msgstr "上傳的視覺主題不支援。上傳視覺主題僅用於開發和測試自定義視覺主題。請聯絡sales@socialtext.com獲取更多關於自定義視覺主題的資訊。"
 
 msgid "skin.uploaded"
 msgstr "已上傳"
