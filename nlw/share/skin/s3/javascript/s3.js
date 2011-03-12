@@ -14,7 +14,10 @@ function is_reserved_pagename(pagename) {
         var name = nlw_name_to_id(trim(pagename));
         var untitled = nlw_name_to_id(loc('page.untitled'));
         var untitledspreadsheet = nlw_name_to_id(loc('sheet.untitled'));
-        return (name == untitled) || (name == untitledspreadsheet);
+        return(
+            (name == untitled) || (name == untitledspreadsheet)
+            || (name == 'untitled_page') || (name == 'untitled_spreadsheet')
+        );
     }
     else {
         return false;
