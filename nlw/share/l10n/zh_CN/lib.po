@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 14:40+0800\n"
+"PO-Revision-Date: 2011-03-12 20:30+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -1287,6 +1287,9 @@ msgstr "恢复失败 – 检查 %1"
 msgid "error.restore-failed=restore-id"
 msgstr "恢复 %1 失败..."
 
+msgid "error.restriction-required"
+msgstr "请指定限制类型。"
+
 msgid "error.role-exists=user,role,account"
 msgstr "%1 已是 %3 帐户的 %2"
 
@@ -1623,13 +1626,13 @@ msgstr "英文"
 msgid "lang.english"
 msgstr "英语"
 
-msgid "lang.fr-ca"
+msgid "lang.fr_CA"
 msgstr "法文 – 加拿大"
 
-msgid "lang.zh-cn"
+msgid "lang.zh_CN"
 msgstr "中文 – 简体"
 
-msgid "lang.zh-tw"
+msgid "lang.zh_TW"
 msgstr "中文 – 繁体"
 
 msgid "last.24hours"

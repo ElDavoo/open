@@ -99,7 +99,7 @@ sub gen_js {
         $lexicon = { %EnglishLexicon, %$lexicon };
     }
     my $js_file = "share/skin/s3/javascript/l10n/$lang.js";
-    open my $js, '>', $js_file;
+    open my $js, '>:utf8', $js_file;
     print $js ";var Socialtext = Socialtext || {}; Socialtext.loc_lang = Socialtext.loc_lang || '$lang'; var LocalizedStrings={\"$lang\":{\n";
     my $json = encode_json $lexicon;
     utf8::decode($json);
@@ -123,7 +123,7 @@ sub gen_po {
     if ($lang ne 'en') {
         system("msgcat --width 99999 $use_first -s @{[reverse sort glob(qq[share/l10n/$lang/*.po])]} > $po_file.orig");
         system("diff -du $po_file.orig $po_file | grep ^+ > $po_file.diff");
-        warn "*** Diff generated successfully: $po_file.diff\n";
+        warn "*** Diff generated successfully: $po_file.diff\n" if -s "$po_file.diff";
     }
     warn "*** Generated successfully: $po_file\n";
 }
@@ -491,7 +491,6 @@ use constant CN2TW => {qw(
     輕松         輕鬆
     點擊         點選
     創建         建立
-   ^帮助$        輔助說明
     移动电话     行動電話
     移动版       行動版
     添加         新增
@@ -500,13 +499,24 @@ use constant CN2TW => {qw(
     匹配         符合
     式樣         樣式
     屬于         屬於
+    繁體         正體
+)};
+
+use constant CN2TW_ExactMatch => {qw(
+    幫助         輔助說明
 )};
 
 sub tw {
     my $CN2TW = CN2TW();
+    my $CN2TW_ExactMatch = CN2TW_ExactMatch();
     state $regex ||= join('|', sort { length $b <=> length $a } keys %$CN2TW);
     my $trad = Encode::HanConvert::simp_to_trad($_[0]);
     $trad =~ s/($regex)/$CN2TW->{$1}/g;
+
+    for my $key (keys %$CN2TW_ExactMatch) {
+        $trad = $CN2TW_ExactMatch->{$key} if $trad eq $key;
+    }
+
     return $trad;
 }
 

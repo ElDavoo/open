@@ -169,7 +169,7 @@ msgstr "Hi,"
 msgid "invite.join=account,host"
 msgstr "I'm inviting you to join the %1 group at %2."
 
-#: share/plugin/people/template/email/invitation-body.html:48
+#: share/plugin/people/template/email/invitation-body.html:46
 msgid "invite.keep-this-email-for-reference"
 msgstr "You may want to keep this email for future reference."
 
@@ -222,7 +222,7 @@ msgstr "Brought to you by Socialtext."
 msgid "invite.standard-welcome-message"
 msgstr "Standard Welcome Message"
 
-#: share/plugin/people/template/email/invitation-body.html:53
+#: share/plugin/people/template/email/invitation-body.html:51
 msgid "invite.thanks"
 msgstr "Thanks,"
 

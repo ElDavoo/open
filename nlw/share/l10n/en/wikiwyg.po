@@ -165,7 +165,7 @@ msgstr "Add"
 msgid "do.add-tags"
 msgstr "Add Tags"
 
-#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:65 share/skin/wikiwyg/javascript/jemplate/add-a-link.html:75 share/skin/wikiwyg/javascript/jemplate/opensocial-gallery.html:10 share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:24 share/skin/wikiwyg/javascript/jemplate/table-create.html:50 share/skin/wikiwyg/javascript/jemplate/table-options.html:54 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:14 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:148 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:168 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:377 share/skin/wikiwyg/javascript/template/widget_edit.tt2:69
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:65 share/skin/wikiwyg/javascript/jemplate/add-a-link.html:75 share/skin/wikiwyg/javascript/jemplate/opensocial-gallery.html:10 share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:25 share/skin/wikiwyg/javascript/jemplate/table-create.html:50 share/skin/wikiwyg/javascript/jemplate/table-options.html:54 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:14 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:148 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:168 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:377 share/skin/wikiwyg/javascript/template/widget_edit.tt2:69
 msgid "do.cancel"
 msgstr "Cancel"
 
@@ -181,7 +181,7 @@ msgstr "Insert"
 msgid "do.ok"
 msgstr "OK"
 
-#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:58 share/skin/wikiwyg/javascript/jemplate/add-a-link.html:74 share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:17 share/skin/wikiwyg/javascript/jemplate/table-create.html:43 share/skin/wikiwyg/javascript/jemplate/table-options.html:53 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:169 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:370 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:8 share/skin/wikiwyg/javascript/template/widget_edit.tt2:68
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:58 share/skin/wikiwyg/javascript/jemplate/add-a-link.html:74 share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:18 share/skin/wikiwyg/javascript/jemplate/table-create.html:43 share/skin/wikiwyg/javascript/jemplate/table-options.html:53 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:169 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:370 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:8 share/skin/wikiwyg/javascript/template/widget_edit.tt2:68
 msgid "do.save"
 msgstr "Save"
 
@@ -347,7 +347,7 @@ msgid "error.link-selection-required"
 msgstr "Please select the text you would like to turn into a link."
 
 #. (ws)
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:2369
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:2380
 msgid "error.no-wiki-on-server=wiki"
 msgstr "Workspace \"%1\" does not exist on wiki"
 
@@ -380,7 +380,7 @@ msgstr "Safari does not support Rich Text editing"
 msgid "error.select-or-cancel"
 msgstr "You must select one of the options or click cancel"
 
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wikitext.js:1398
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wikitext.js:1401
 msgid "error.server-error"
 msgstr "Operation failed due to server error; please try again later."
 
@@ -686,74 +686,63 @@ msgstr "Show Cell Borders"
 msgid "table.table-sortable"
 msgstr "Table is Sortable"
 
-#. (tag)
-#: share/skin/wikiwyg/javascript/widget_resource.js:52
+#:
 msgid "wafl.#=tag"
 msgstr "#%1"
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:97
+#:
 msgid "wafl.aim"
 msgstr "AIM screen name"
 
-#. (aim_id)
-#: share/skin/wikiwyg/javascript/widget_resource.js:30
+#:
 msgid "wafl.aim-title=id"
 msgstr "Instant message to '%1' using AIM. Click to edit."
 
-#. (aim_id)
-#: share/skin/wikiwyg/javascript/widget_resource.js:68
+#:
 msgid "wafl.aim=id"
 msgstr "AIM: %1"
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:95
+#:
 msgid "wafl.asis"
 msgstr "Unformatted content"
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:35
+#:
 msgid "wafl.asis-title"
 msgstr "Unformatted content. Click to edit."
 
-#. (asis_content)
-#: share/skin/wikiwyg/javascript/widget_resource.js:73
+#:
 msgid "wafl.asis=content"
 msgstr "unformatted: %1"
 
-#. (atom_url)
-#: share/skin/wikiwyg/javascript/widget_resource.js:24
+#:
 msgid "wafl.atom-title"
 msgstr "Include the '%1' Atom feed. Click to edit."
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:93
+#:
 msgid "wafl.atom-url"
 msgstr "Atom feed URL"
 
-#. (blog_name)
-#: share/skin/wikiwyg/javascript/widget_resource.js:19 share/skin/wikiwyg/javascript/widget_resource.js:22
+#:
 msgid "wafl.blog-full=name"
 msgstr "Display the blog '%1'. Click to edit."
 
-#. (blog_name)
-#: share/skin/wikiwyg/javascript/widget_resource.js:17 share/skin/wikiwyg/javascript/widget_resource.js:20
+#:
 msgid "wafl.blog-link-title=name"
 msgstr "Link to blog '%1'. Click to edit."
 
-#. (blog_name)
-#: share/skin/wikiwyg/javascript/widget_resource.js:58 share/skin/wikiwyg/javascript/widget_resource.js:61
+#:
 msgid "wafl.blog-list=name"
 msgstr "blog list: %1"
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:77
+#:
 msgid "wafl.blog-name"
 msgstr "Blog name"
 
-#. (blog_name)
-#: share/skin/wikiwyg/javascript/widget_resource.js:18 share/skin/wikiwyg/javascript/widget_resource.js:21
+#:
 msgid "wafl.blog-title=name"
 msgstr "Include the blog '%1'. Click to edit."
 
-#. (label)
-#. (blog_name)
-#: share/skin/wikiwyg/javascript/widget_resource.js:56 share/skin/wikiwyg/javascript/widget_resource.js:57 share/skin/wikiwyg/javascript/widget_resource.js:59 share/skin/wikiwyg/javascript/widget_resource.js:60
+#:
 msgid "wafl.blog=name"
 msgstr "blog: %1"
 
@@ -774,23 +763,19 @@ msgstr "Content"
 msgid "wafl.custom"
 msgstr "Custom"
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:81
+#:
 msgid "wafl.date-format"
 msgstr "YYYY-MM-DD&nbsp;HH:MM:SS"
 
-#. (date_string)
-#: share/skin/wikiwyg/javascript/widget_resource.js:34
+#:
 msgid "wafl.date-full=date"
 msgstr "Display '%1' in reader's time zone. Click to edit."
 
-#. (date_string)
-#: share/skin/wikiwyg/javascript/widget_resource.js:72
+#:
 msgid "wafl.date=string"
 msgstr "date: %1"
 
-#. (rss_url)
-#. (atom_url)
-#: share/skin/wikiwyg/javascript/widget_resource.js:62 share/skin/wikiwyg/javascript/widget_resource.js:63
+#:
 msgid "wafl.feed=url"
 msgstr "feed: %1"
 
@@ -798,27 +783,23 @@ msgstr "feed: %1"
 msgid "wafl.fewer-options"
 msgstr "Fewer options"
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:83
+#:
 msgid "wafl.file-name"
 msgstr "File name"
 
-#. (file_name)
-#: share/skin/wikiwyg/javascript/widget_resource.js:7
+#:
 msgid "wafl.file-title=name"
 msgstr "Link to file '%1'. Click to edit."
 
-#. (label)
-#. (file_name)
-#: share/skin/wikiwyg/javascript/widget_resource.js:44 share/skin/wikiwyg/javascript/widget_resource.js:45
+#:
 msgid "wafl.file=name"
 msgstr "file: %1"
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:80
+#:
 msgid "wafl.form-name"
 msgstr "Form name"
 
-#. (form_name)
-#: share/skin/wikiwyg/javascript/widget_resource.js:74
+#:
 msgid "wafl.form=name"
 msgstr "form: %1"
 
@@ -826,13 +807,11 @@ msgstr "form: %1"
 msgid "wafl.full-results:"
 msgstr "Full results:"
 
-#. (search_term)
-#: share/skin/wikiwyg/javascript/widget_resource.js:27 share/skin/wikiwyg/javascript/widget_resource.js:28
+#:
 msgid "wafl.google-title=query"
 msgstr "Search Google for '%1'. Click to edit."
 
-#. (search_term)
-#: share/skin/wikiwyg/javascript/widget_resource.js:65 share/skin/wikiwyg/javascript/widget_resource.js:66
+#:
 msgid "wafl.google=query"
 msgstr "Google: %1"
 
@@ -849,29 +828,23 @@ msgstr "height: %1"
 msgid "wafl.html-title"
 msgstr "Raw HTML block. Click to edit."
 
-#. (image_name)
-#: share/skin/wikiwyg/javascript/widget_resource.js:5
+#:
 msgid "wafl.image-full=name"
 msgstr "Display image '%1'. Click to edit."
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:79
+#:
 msgid "wafl.image-name"
 msgstr "Image name"
 
-#. (label)
-#. (image_name)
-#: share/skin/wikiwyg/javascript/widget_resource.js:41 share/skin/wikiwyg/javascript/widget_resource.js:42
+#:
 msgid "wafl.image=name"
 msgstr "image: %1"
 
-#. (page_title)
-#. (spreadsheete_title)
-#: share/skin/wikiwyg/javascript/widget_resource.js:37 share/skin/wikiwyg/javascript/widget_resource.js:9
+#:
 msgid "wafl.include-title=page"
 msgstr "Include the page '%1'. Click to edit."
 
-#. (page_title)
-#: share/skin/wikiwyg/javascript/widget_resource.js:48
+#:
 msgid "wafl.include=page"
 msgstr "include: %1"
 
@@ -887,28 +860,23 @@ msgstr "Insert HTML"
 msgid "wafl.insert-pre"
 msgstr "Insert Preformatted Text"
 
-#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:226 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:227 share/skin/wikiwyg/javascript/widget_resource.js:84 share/skin/wikiwyg/javascript/widget_resource.js:96
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:226 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:227
 msgid "wafl.link-text"
 msgstr "Link text"
 
-#. (url)
-#: share/skin/wikiwyg/javascript/widget_resource.js:3 share/skin/wikiwyg/javascript/widget_resource.js:4
+#:
 msgid "wafl.link-title=url"
 msgstr "Link to '%1'. Click to edit."
 
-#. (workspace_id, page_title, section_name)
-#: share/skin/wikiwyg/javascript/widget_resource.js:2
+#:
 msgid "wafl.link-title=wiki,page,section"
 msgstr "Link to %1: '%2' %3. Click to edit."
 
-#. (label)
-#. (section_name)
-#: share/skin/wikiwyg/javascript/widget_resource.js:38 share/skin/wikiwyg/javascript/widget_resource.js:40
+#:
 msgid "wafl.link=name"
 msgstr "link: %1"
 
-#. (page_title, section_name)
-#: share/skin/wikiwyg/javascript/widget_resource.js:39
+#:
 msgid "wafl.link=page,section"
 msgstr "link: %1 (%2)"
 
@@ -916,8 +884,7 @@ msgstr "link: %1 (%2)"
 msgid "wafl.more-options"
 msgstr "More options"
 
-#. (form_name)
-#: share/skin/wikiwyg/javascript/widget_resource.js:36
+#:
 msgid "wafl.new-form-page=name"
 msgstr "Use %1 to generate a form. Click to edit."
 
@@ -929,7 +896,7 @@ msgstr "or"
 msgid "wafl.page-this"
 msgstr "the current page"
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:86
+#:
 msgid "wafl.page-title"
 msgstr "Page title"
 
@@ -941,49 +908,43 @@ msgstr "the page titled"
 msgid "wafl.pre-edit"
 msgstr "Preformatted text. Click to edit."
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:51
+#:
 msgid "wafl.recent-changes"
 msgstr "recent changes"
 
-#. (workspace_id)
-#: share/skin/wikiwyg/javascript/widget_resource.js:12
+#:
 msgid "wafl.recent-changes-full=wiki"
 msgstr "Display what's new in the '%1' workspace. Click to edit."
 
-#. (workspace_id)
-#: share/skin/wikiwyg/javascript/widget_resource.js:11
+#:
 msgid "wafl.recent-changes-title=wiki"
 msgstr "What's new in the '%1' workspace. Click to edit."
 
-#. (workspace_id)
-#: share/skin/wikiwyg/javascript/widget_resource.js:50
+#:
 msgid "wafl.recent-changes=wiki"
 msgstr "recent changes: %1"
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:89
+#:
 msgid "wafl.relative-url"
 msgstr "Relative URL"
 
-#. (rss_url)
-#: share/skin/wikiwyg/javascript/widget_resource.js:23
+#:
 msgid "wafl.rss-title"
 msgstr "Include the '%1' RSS feed. Click to edit."
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:92
+#:
 msgid "wafl.rss-url"
 msgstr "RSS feed URL"
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:76
+#:
 msgid "wafl.search"
 msgstr "Search term"
 
-#. (search_term)
-#: share/skin/wikiwyg/javascript/widget_resource.js:26
+#:
 msgid "wafl.search-full=query"
 msgstr "Display result for searching '%1'. Click to edit."
 
-#. (search_term)
-#: share/skin/wikiwyg/javascript/widget_resource.js:25
+#:
 msgid "wafl.search-title=query"
 msgstr "Search for '%1'. Click to edit."
 
@@ -991,8 +952,7 @@ msgstr "Search for '%1'. Click to edit."
 msgid "wafl.search-type:"
 msgstr "Search type:"
 
-#. (search_term)
-#: share/skin/wikiwyg/javascript/widget_resource.js:64
+#:
 msgid "wafl.search=query"
 msgstr "search: %1"
 
@@ -1000,44 +960,39 @@ msgstr "search: %1"
 msgid "wafl.section"
 msgstr "Section"
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:82
+#:
 msgid "wafl.section-name"
 msgstr "Section name"
 
-#. (section_name)
-#: share/skin/wikiwyg/javascript/widget_resource.js:10
+#:
 msgid "wafl.section-title=name"
 msgstr "Section marker '%1'. Click to edit."
 
-#. (section_name)
-#: share/skin/wikiwyg/javascript/widget_resource.js:49
+#:
 msgid "wafl.section=name"
 msgstr "section: %1"
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:94
+#:
 msgid "wafl.sheet-cell"
 msgstr "Spreadsheet cell"
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:91
+#:
 msgid "wafl.sheet-title"
 msgstr "Spreadsheet title"
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:88
+#:
 msgid "wafl.skype"
 msgstr "Skype name"
 
-#. (skype_id)
-#: share/skin/wikiwyg/javascript/widget_resource.js:32
+#:
 msgid "wafl.skype-title=id"
 msgstr "Call '%1' using Skype. Click to edit."
 
-#. (skype_id)
-#: share/skin/wikiwyg/javascript/widget_resource.js:70
+#:
 msgid "wafl.skype=id"
 msgstr "Skype: %1"
 
-#. (spreadsheet_title, spreadsheet_cell)
-#: share/skin/wikiwyg/javascript/widget_resource.js:75
+#:
 msgid "wafl.ss=sheet,cell"
 msgstr "ss: %1 (%2)"
 
@@ -1045,44 +1000,35 @@ msgstr "ss: %1 (%2)"
 msgid "wafl.tag"
 msgstr "Tag"
 
-#. (tag_name)
-#: share/skin/wikiwyg/javascript/widget_resource.js:16
+#:
 msgid "wafl.tag-full=name"
 msgstr "Display pages with the '%1' tag. Click to edit."
 
-#. (tag_name)
-#: share/skin/wikiwyg/javascript/widget_resource.js:15
+#:
 msgid "wafl.tag-list-title=name"
 msgstr "Pages with the '%1' tag. Click to edit."
 
-#. (tag_name)
-#: share/skin/wikiwyg/javascript/widget_resource.js:55
+#:
 msgid "wafl.tag-list=name"
 msgstr "tag list: %1"
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:78
+#:
 msgid "wafl.tag-name"
 msgstr "Tag name"
 
-#. (tag)
-#. (tag_name)
-#: share/skin/wikiwyg/javascript/widget_resource.js:13 share/skin/wikiwyg/javascript/widget_resource.js:14
+#:
 msgid "wafl.tag-title=name"
 msgstr "Link to tag '%1'. Click to edit."
 
-#. (label)
-#. (tag_name)
-#: share/skin/wikiwyg/javascript/widget_resource.js:53 share/skin/wikiwyg/javascript/widget_resource.js:54
+#:
 msgid "wafl.tag=name"
 msgstr "tag: %1"
 
-#. (search_term)
-#: share/skin/wikiwyg/javascript/widget_resource.js:29
+#:
 msgid "wafl.technorati-title=query"
 msgstr "Search Technorati for '%1'. Click to edit."
 
-#. (search_term)
-#: share/skin/wikiwyg/javascript/widget_resource.js:67
+#:
 msgid "wafl.technorati=query"
 msgstr "Technorati: %1"
 
@@ -1094,44 +1040,39 @@ msgstr "Text"
 msgid "wafl.title"
 msgstr "Title"
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:47
+#:
 msgid "wafl.toc"
 msgstr "toc"
 
-#. (page_title)
-#: share/skin/wikiwyg/javascript/widget_resource.js:8
+#:
 msgid "wafl.toc-title=page"
 msgstr "Table of contents for '%1'. Click to edit."
 
-#. (page_title)
-#: share/skin/wikiwyg/javascript/widget_resource.js:46
+#:
 msgid "wafl.toc=page"
 msgstr "toc: %1"
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:85
+#:
 msgid "wafl.user-email"
 msgstr "User's email"
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:33
+#:
 msgid "wafl.user-title"
 msgstr "User mention. Click to edit."
 
-#. (user_email)
-#: share/skin/wikiwyg/javascript/widget_resource.js:71
+#:
 msgid "wafl.user=email"
 msgstr "user: %1"
 
-#. (video_url)
-#: share/skin/wikiwyg/javascript/widget_resource.js:6
+#:
 msgid "wafl.video-title=url"
 msgstr "Embed video to '%1'. Click to edit."
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:90
+#:
 msgid "wafl.video-url"
 msgstr "Video URL"
 
-#. (video_url)
-#: share/skin/wikiwyg/javascript/widget_resource.js:43
+#:
 msgid "wafl.video=url"
 msgstr "video: %1"
 
@@ -1145,7 +1086,7 @@ msgstr "width:"
 msgid "wafl.width=px"
 msgstr "width: %1"
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:87
+#:
 msgid "wafl.wiki"
 msgstr "Workspace"
 
@@ -1157,17 +1098,15 @@ msgstr "wiki text"
 msgid "wafl.wiki-this"
 msgstr "the current workspace"
 
-#: share/skin/wikiwyg/javascript/widget_resource.js:98
+#:
 msgid "wafl.yahoo-id"
 msgstr "Yahoo! ID"
 
-#. (yahoo_id)
-#: share/skin/wikiwyg/javascript/widget_resource.js:69
+#:
 msgid "wafl.yahoo-im=id"
 msgstr "Yahoo! IM: %1"
 
-#. (yahoo_id)
-#: share/skin/wikiwyg/javascript/widget_resource.js:31
+#:
 msgid "wafl.yahoo-title=id"
 msgstr "Instant message to '%1' using Yahoo! Click to edit."
 

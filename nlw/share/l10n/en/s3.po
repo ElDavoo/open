@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: share/skin/s3/template/layout/html:61 share/skin/s3/template/layout/simple_html:49 share/skin/s3/template/layout/user_frame:66
+#: share/skin/s3/template/layout/html:66 share/skin/s3/template/layout/simple_html:54 share/skin/s3/template/layout/user_frame:71
 msgid "about.keywords"
 msgstr "wiki, business wiki, document management, enterprise wiki, intranet wiki, knowledge management, online collaboration, open source wiki, portal wiki, hosted wiki, collaboration, social software, social networking, dashboard, project collaboration, team collaboration, wiki appliance, wiki software, community"
 
@@ -86,7 +86,7 @@ msgstr "Blog Archives"
 msgid "blog.blog"
 msgstr "Blog"
 
-#: share/skin/s3/template/layout/html:141 share/skin/s3/template/layout/user_frame:146 share/skin/s3/template/view/settings:66
+#: share/skin/s3/template/layout/html:146 share/skin/s3/template/layout/user_frame:151 share/skin/s3/template/view/settings:66
 msgid "blog.blogs"
 msgstr "Blogs"
 
@@ -191,11 +191,11 @@ msgstr "Workspace Email Receive Setting"
 msgid "config.files"
 msgstr "Manage Files"
 
-#: share/skin/s3/template/element/settings/users_settings_section:17 share/skin/s3/template/element/settings/users_settings_section:22
+#:
 msgid "config.first-name:"
 msgstr "First name:"
 
-#: share/skin/s3/template/element/settings/users_settings_section:60
+#: share/skin/s3/template/element/settings/users_settings_section:68
 msgid "config.immutable-name-password"
 msgstr "Your user name and password cannot be changed using My Settings."
 
@@ -296,7 +296,7 @@ msgstr "Export"
 msgid "do.file"
 msgstr "Attachment Link"
 
-#: share/skin/s3/javascript/people-avatar.js:23
+#: share/skin/s3/javascript/people-avatar.js:40
 msgid "do.follow"
 msgstr "Follow this person"
 
@@ -344,7 +344,7 @@ msgstr "Less Indented"
 msgid "do.print"
 msgstr "Print"
 
-#: share/skin/s3/template/layout/html:193 share/skin/s3/template/layout/html:89 share/skin/s3/template/layout/user_frame:198 share/skin/s3/template/layout/user_frame:94
+#: share/skin/s3/template/layout/html:198 share/skin/s3/template/layout/html:94 share/skin/s3/template/layout/user_frame:203 share/skin/s3/template/layout/user_frame:99
 msgid "do.register"
 msgstr "Register"
 
@@ -380,7 +380,7 @@ msgstr "Create Table"
 msgid "do.ul"
 msgstr "Bulleted List"
 
-#: share/skin/s3/javascript/people-avatar.js:22
+#: share/skin/s3/javascript/people-avatar.js:39
 msgid "do.unfollow"
 msgstr "Stop following this person"
 
@@ -563,7 +563,7 @@ msgstr "This user's password cannot be reset"
 msgid "error.choose-group"
 msgstr "Please choose one or more groups"
 
-#: share/skin/s3/template/lite/html_begin.html:77
+#: share/skin/s3/template/lite/html_begin.html:66
 msgid "error.css-disabled"
 msgstr "Warning: Stylesheets are not enabled in your mobile device. In order to properly view Socialtext Mobile, you will need to enable stylesheets in your browser options."
 
@@ -647,7 +647,7 @@ msgstr "Error: Failed to send email."
 msgid "error.type-mismatch=template,type"
 msgstr "'%1' exists, but is not a %2"
 
-#: share/skin/s3/javascript/people-avatar.js:178
+#: share/skin/s3/javascript/people-avatar.js:195
 msgid "error.user-data"
 msgstr "Error retreiving user data"
 
@@ -832,7 +832,7 @@ msgid "info.contact-link"
 msgstr "If this link does not work for you, contact"
 
 #. (user.driver_name)
-#: share/skin/s3/template/element/settings/users_settings_section:61
+#: share/skin/s3/template/element/settings/users_settings_section:69
 msgid "info.contact=admin"
 msgstr "Check with your %1 administrator."
 
@@ -934,7 +934,7 @@ msgstr "or post by email"
 msgid "info.public-wiki"
 msgstr "If you need public workspaces that can be viewed by users without logging in, please contact <a href=\"%1\">Socialtext Support</a>."
 
-#: share/skin/s3/template/element/settings/users_settings_section:35
+#: share/skin/s3/template/element/settings/users_settings_section:43
 msgid "info.relogin"
 msgstr "Use your email address and new password to log in again."
 
@@ -951,7 +951,7 @@ msgstr "Showing %1 - %2 of %3 total."
 msgid "info.skin"
 msgstr "Socialtext can create a skin to customize the look and feel of your workspace. You can use the default skin supplied by Socialtext or a customized skin."
 
-#: share/skin/s3/template/layout/html:168 share/skin/s3/template/layout/user_frame:173
+#: share/skin/s3/template/layout/html:173 share/skin/s3/template/layout/user_frame:178
 msgid "info.socialtext"
 msgstr "Socialtext: Enterprise Social Software"
 
@@ -959,7 +959,7 @@ msgstr "Socialtext: Enterprise Social Software"
 msgid "info.success"
 msgstr "Success"
 
-#: share/skin/s3/template/view/page/display:279 share/skin/s3/template/view/page/display:280
+#: share/skin/s3/template/view/page/display:278 share/skin/s3/template/view/page/display:279
 msgid "info.unplugged"
 msgstr "Click this button to save this page to your computer for offline use."
 
@@ -973,7 +973,7 @@ msgstr "warning:"
 
 #. ('<b>' _ user.username _ '</b>')
 #. ("<b>' _ user.username _ '</b>")
-#: share/skin/s3/template/layout/html:73 share/skin/s3/template/layout/user_frame:78
+#: share/skin/s3/template/layout/html:78 share/skin/s3/template/layout/user_frame:83
 msgid "info.welcome=user"
 msgstr "Welcome %1"
 
@@ -1141,11 +1141,11 @@ msgstr "Activity"
 msgid "nav.all"
 msgstr "All"
 
-#: share/skin/s3/template/layout/html:174 share/skin/s3/template/layout/user_frame:179
+#: share/skin/s3/template/layout/html:179 share/skin/s3/template/layout/user_frame:184
 msgid "nav.community"
 msgstr "Community"
 
-#: share/skin/s3/template/layout/html:83 share/skin/s3/template/layout/user_frame:88
+#: share/skin/s3/template/layout/html:88 share/skin/s3/template/layout/user_frame:93
 msgid "nav.control-panel"
 msgstr "Control Panel"
 
@@ -1201,11 +1201,11 @@ msgstr "People I follow"
 msgid "nav.groups"
 msgstr "Groups"
 
-#: share/skin/s3/template/layout/html:188 share/skin/s3/template/layout/html:85 share/skin/s3/template/layout/user_frame:193 share/skin/s3/template/layout/user_frame:90
+#: share/skin/s3/template/layout/html:193 share/skin/s3/template/layout/html:90 share/skin/s3/template/layout/user_frame:198 share/skin/s3/template/layout/user_frame:95
 msgid "nav.help"
 msgstr "Help"
 
-#: share/skin/s3/template/view/page/display:131
+#: share/skin/s3/javascript/s3.js:343 share/skin/s3/template/view/page/display:131
 msgid "nav.hide"
 msgstr "hide"
 
@@ -1229,11 +1229,11 @@ msgstr "Last"
 msgid "nav.last-page"
 msgstr "Last Page"
 
-#: share/skin/s3/template/layout/html:191 share/skin/s3/template/layout/html:196 share/skin/s3/template/layout/html:88 share/skin/s3/template/layout/html:91 share/skin/s3/template/layout/user_frame:196 share/skin/s3/template/layout/user_frame:201 share/skin/s3/template/layout/user_frame:93 share/skin/s3/template/layout/user_frame:96 share/skin/s3/template/lite/globalnav.html:12 share/skin/s3/template/lite/globalnav.html:14
+#: share/skin/s3/template/layout/html:196 share/skin/s3/template/layout/html:201 share/skin/s3/template/layout/html:93 share/skin/s3/template/layout/html:96 share/skin/s3/template/layout/user_frame:101 share/skin/s3/template/layout/user_frame:201 share/skin/s3/template/layout/user_frame:206 share/skin/s3/template/layout/user_frame:98 share/skin/s3/template/lite/globalnav.html:12 share/skin/s3/template/lite/globalnav.html:14
 msgid "nav.login"
 msgstr "Log in"
 
-#: share/skin/s3/template/layout/html:199 share/skin/s3/template/layout/html:94 share/skin/s3/template/layout/user_frame:204 share/skin/s3/template/layout/user_frame:99 share/skin/s3/template/lite/globalnav.html:22 share/skin/s3/template/view/workspace_list:19
+#: share/skin/s3/template/layout/html:204 share/skin/s3/template/layout/html:99 share/skin/s3/template/layout/user_frame:104 share/skin/s3/template/layout/user_frame:209 share/skin/s3/template/lite/globalnav.html:22 share/skin/s3/template/view/workspace_list:19
 msgid "nav.logout"
 msgstr "Log out"
 
@@ -1245,7 +1245,7 @@ msgstr "I don't know my password."
 msgid "nav.mine"
 msgstr "Mine"
 
-#: share/skin/s3/template/layout/html:182 share/skin/s3/template/layout/html:76 share/skin/s3/template/layout/user_frame:187 share/skin/s3/template/layout/user_frame:81
+#: share/skin/s3/template/layout/html:187 share/skin/s3/template/layout/html:81 share/skin/s3/template/layout/user_frame:192 share/skin/s3/template/layout/user_frame:86
 msgid "nav.mobile"
 msgstr "Mobile"
 
@@ -1257,7 +1257,7 @@ msgstr "All My Recently Viewed"
 msgid "nav.my-settings"
 msgstr "My Settings"
 
-#: share/skin/s3/template/layout/html:139 share/skin/s3/template/layout/user_frame:144
+#: share/skin/s3/template/layout/html:144 share/skin/s3/template/layout/user_frame:149
 msgid "nav.my-watchlist"
 msgstr "My Watchlist"
 
@@ -1265,7 +1265,7 @@ msgstr "My Watchlist"
 msgid "nav.my-wikis"
 msgstr "My Workspaces"
 
-#: share/skin/s3/template/element/listview_tabs:5 share/skin/s3/template/layout/html:137 share/skin/s3/template/layout/user_frame:142 share/skin/s3/template/lite/subnav.html:14 share/skin/s3/template/lite/subnav.html:16 share/skin/s3/template/view/empty_watchlist:8 share/skin/s3/template/view/page/display:225
+#: share/skin/s3/template/element/listview_tabs:5 share/skin/s3/template/layout/html:142 share/skin/s3/template/layout/user_frame:147 share/skin/s3/template/lite/subnav.html:14 share/skin/s3/template/lite/subnav.html:16 share/skin/s3/template/view/empty_watchlist:8 share/skin/s3/template/view/page/display:224
 msgid "nav.news"
 msgstr "What's New"
 
@@ -1277,7 +1277,7 @@ msgstr "Next"
 msgid "nav.next-page"
 msgstr "Next Page"
 
-#: share/skin/s3/javascript/nav-list.js:79
+#: share/skin/s3/javascript/nav-list.js:80
 msgid "nav.no-followers"
 msgstr "Currently, you are not following any people."
 
@@ -1297,7 +1297,7 @@ msgstr "Page Locking"
 msgid "nav.people"
 msgstr "People"
 
-#: share/skin/s3/javascript/nav-list.js:70
+#: share/skin/s3/javascript/nav-list.js:71
 msgid "nav.people-directory"
 msgstr "People Directory"
 
@@ -1321,7 +1321,7 @@ msgstr "Recent Activities"
 msgid "nav.recent-changes"
 msgstr "Recent Changes"
 
-#: share/skin/s3/template/element/listview_tabs:7 share/skin/s3/template/view/empty_watchlist:9 share/skin/s3/template/view/page/display:242
+#: share/skin/s3/template/element/listview_tabs:7 share/skin/s3/template/view/empty_watchlist:9 share/skin/s3/template/view/page/display:241
 msgid "nav.recently-viewed"
 msgstr "Recently Viewed"
 
@@ -1333,11 +1333,11 @@ msgstr "Search"
 msgid "nav.select"
 msgstr "Select"
 
-#: share/skin/s3/template/layout/html:187 share/skin/s3/template/layout/html:81 share/skin/s3/template/layout/user_frame:192 share/skin/s3/template/layout/user_frame:86 share/skin/s3/template/view/settings:22
+#: share/skin/s3/template/layout/html:192 share/skin/s3/template/layout/html:86 share/skin/s3/template/layout/user_frame:197 share/skin/s3/template/layout/user_frame:91 share/skin/s3/template/view/settings:22
 msgid "nav.settings"
 msgstr "Settings"
 
-#: share/skin/s3/template/view/page/display:131
+#: share/skin/s3/javascript/s3.js:343 share/skin/s3/template/view/page/display:131
 msgid "nav.show"
 msgstr "show"
 
@@ -1349,7 +1349,7 @@ msgstr "Show:"
 msgid "nav.signals"
 msgstr "Signals"
 
-#: share/skin/s3/template/layout/html:69 share/skin/s3/template/layout/user_frame:74
+#: share/skin/s3/template/layout/html:74 share/skin/s3/template/layout/user_frame:79
 msgid "nav.socialtext"
 msgstr "Socialtext"
 
@@ -1389,7 +1389,7 @@ msgstr "Try Socialtext Signals"
 msgid "nav.uploaded-date"
 msgstr "Date Uploaded"
 
-#: share/skin/s3/template/layout/html:129 share/skin/s3/template/layout/user_frame:134
+#: share/skin/s3/template/layout/html:134 share/skin/s3/template/layout/user_frame:139
 msgid "nav.wiki"
 msgstr "Workspace"
 
@@ -1397,7 +1397,7 @@ msgstr "Workspace"
 msgid "nav.wikis"
 msgstr "Workspaces"
 
-#: share/skin/s3/template/view/page/display:184
+#: share/skin/s3/template/view/page/display:183
 msgid "page.add-tag"
 msgstr "&nbsp;+"
 
@@ -1442,12 +1442,12 @@ msgid "page.copy=title?"
 msgstr "Copy the page %1 to another workspace?"
 
 #. (page.revisions)
-#: share/skin/s3/template/view/page/display:296
+#: share/skin/s3/template/view/page/display:295
 msgid "page.count=revision"
 msgstr "%*(%1,revision)"
 
 #. (page.views)
-#: share/skin/s3/template/view/page/display:297
+#: share/skin/s3/template/view/page/display:296
 msgid "page.count=view"
 msgstr "%*(%1,view)"
 
@@ -1456,7 +1456,7 @@ msgid "page.create"
 msgstr "Create Content"
 
 #. (create_author, create_date)
-#: share/skin/s3/template/view/page/display:290
+#: share/skin/s3/template/view/page/display:289
 msgid "page.created=author,date"
 msgstr "Created by %1 on %2."
 
@@ -1472,7 +1472,7 @@ msgstr "Delete Page"
 msgid "page.delete-epilogue"
 msgstr "Did you delete this page in error? If so, you can restore the page."
 
-#: share/skin/s3/javascript/pageview.js:160 share/skin/s3/javascript/pageview.js:161 share/skin/s3/template/view/page/display:162 share/skin/s3/template/view/page/display:164
+#: share/skin/s3/javascript/pageview.js:160 share/skin/s3/javascript/pageview.js:161 share/skin/s3/template/view/page/display:161 share/skin/s3/template/view/page/display:163
 msgid "page.delete-tag"
 msgstr "Delete this tag"
 
@@ -1504,6 +1504,8 @@ msgstr "Edit"
 msgid "page.edit=title"
 msgstr "Edit %1"
 
+#. (ago_text(page.edit_in_progress.minutes_ago)
+#. (ago_text(page.edit_in_progress.minutes_ago))
 #: share/skin/s3/template/view/page/display:142
 msgid "page.editing=ago"
 msgstr "opened this page for editing %1."
@@ -1516,7 +1518,7 @@ msgstr "Email To This Page"
 msgid "page.files:"
 msgstr "Attachments for this page:"
 
-#: share/skin/s3/template/view/page/display:204
+#: share/skin/s3/template/view/page/display:203
 msgid "page.incoming-links"
 msgstr "Incoming Links"
 
@@ -1560,7 +1562,7 @@ msgstr "Lock Page"
 msgid "page.locked=type"
 msgstr "An administrator has locked this %1 since you opened it for editing. You will not be able to save it."
 
-#: share/skin/s3/template/layout/html:149 share/skin/s3/template/layout/user_frame:154
+#: share/skin/s3/template/layout/html:154 share/skin/s3/template/layout/user_frame:159
 msgid "page.new"
 msgstr "New Page"
 
@@ -1568,11 +1570,11 @@ msgstr "New Page"
 msgid "page.new-name"
 msgstr "New page name"
 
-#: share/skin/s3/template/view/page/display:213
+#: share/skin/s3/template/view/page/display:212
 msgid "page.no-backlinks"
 msgstr "There are no pages that link to this page yet."
 
-#: share/skin/s3/javascript/pageview.js:173 share/skin/s3/template/view/page/display:170
+#: share/skin/s3/javascript/pageview.js:173 share/skin/s3/template/view/page/display:169
 msgid "page.no-tags"
 msgstr "There are no tags for this page."
 
@@ -1614,9 +1616,10 @@ msgstr "Revision"
 msgid "page.revision=revision"
 msgstr "Revision %1"
 
+#. (row.revision_count)
 #. (page.revisions)
 #. (data.revision_count)
-#: share/skin/s3/javascript/pageview.js:96 share/skin/s3/template/view/page/display:63
+#: share/skin/s3/javascript/pageview.js:96 share/skin/s3/template/view/listview:161 share/skin/s3/template/view/page/display:63
 msgid "page.revisions=count"
 msgstr "%*(%1,Revision)"
 
@@ -1653,7 +1656,7 @@ msgid "page.untitled"
 msgstr "Untitled Page"
 
 #. (update_author, update_date)
-#: share/skin/s3/template/view/page/display:293
+#: share/skin/s3/template/view/page/display:292
 msgid "page.updated=user,date"
 msgstr "Updated by %1 on %2."
 
@@ -1661,23 +1664,23 @@ msgstr "Updated by %1 on %2."
 msgid "page.use-template:"
 msgstr "Use a template:"
 
-#: share/skin/s3/template/element/settings/users_settings_section:50
+#: share/skin/s3/template/element/settings/users_settings_section:58
 msgid "password.again:"
 msgstr "Type new Password again:"
 
-#: share/skin/s3/template/element/settings/users_settings_section:32
+#: share/skin/s3/template/element/settings/users_settings_section:40
 msgid "password.change"
 msgstr "Change Password"
 
-#: share/skin/s3/template/element/settings/users_settings_section:38
+#: share/skin/s3/template/element/settings/users_settings_section:46
 msgid "password.current:"
 msgstr "Current password:"
 
-#: share/skin/s3/template/element/settings/users_settings_section:34
+#: share/skin/s3/template/element/settings/users_settings_section:42
 msgid "password.minimum-length"
 msgstr "New passwords must be at least 6 characters long."
 
-#: share/skin/s3/template/element/settings/users_settings_section:44
+#: share/skin/s3/template/element/settings/users_settings_section:52
 msgid "password.new:"
 msgstr "New password:"
 
@@ -1889,7 +1892,7 @@ msgstr "Last Edited By"
 msgid "sort.relevance"
 msgstr "Relevance"
 
-#: share/skin/s3/template/view/listview:110 share/skin/s3/template/view/listview:161
+#: share/skin/s3/template/view/listview:110
 msgid "sort.revisions"
 msgstr "Revisions"
 
@@ -1905,7 +1908,7 @@ msgstr "Uploaded By"
 msgid "sort.wiki"
 msgstr "Workspace"
 
-#: share/skin/s3/template/view/page/display:176
+#: share/skin/s3/template/view/page/display:175
 msgid "tag.add"
 msgstr "Add Tag"
 
@@ -1926,7 +1929,7 @@ msgstr "Keep tags"
 msgid "tag.pages"
 msgstr "Pages"
 
-#: share/skin/s3/template/view/page/display:193
+#: share/skin/s3/template/view/page/display:192
 msgid "tag.suggestions:"
 msgstr "Suggestions:"
 
@@ -1958,7 +1961,7 @@ msgstr "Email Address"
 msgid "user.first-name:"
 msgstr "First name:"
 
-#: share/skin/s3/template/element/settings/users_settings_section:13 share/skin/s3/template/element/settings/users_settings_section:26
+#: share/skin/s3/template/element/settings/users_settings_section:13 share/skin/s3/template/element/settings/users_settings_section:34
 msgid "user.last-name:"
 msgstr "Last name:"
 
@@ -1998,11 +2001,11 @@ msgstr "Look for"
 msgid "watch.stop"
 msgstr "Stop Watching"
 
-#: share/skin/s3/template/view/container.setup:147
+#:
 msgid "widget.preview"
 msgstr "Preview"
 
-#: share/skin/s3/template/widget/element:57
+#:
 msgid "widget.push-all"
 msgstr "Push to all dashboards"
 
@@ -2098,7 +2101,7 @@ msgstr "In order to create a workspace, the Workspace must belong to a Group."
 msgid "wiki.home=name,title"
 msgstr "<a href=\"/%1/\">Go to</a> the %2 home page."
 
-#: share/skin/s3/template/layout/html:143 share/skin/s3/template/layout/user_frame:148
+#: share/skin/s3/template/layout/html:148 share/skin/s3/template/layout/user_frame:153
 msgid "wiki.invite"
 msgstr "Add Members"
 
@@ -2190,7 +2193,7 @@ msgstr "Tag"
 msgid "wiki.tag=tag"
 msgstr "Tag: %1"
 
-#: share/skin/s3/template/lite/subnav.html:21 share/skin/s3/template/lite/subnav.html:23 share/skin/s3/template/view/page/display:154
+#: share/skin/s3/template/lite/subnav.html:21 share/skin/s3/template/lite/subnav.html:23 share/skin/s3/template/view/page/display:153
 msgid "wiki.tags"
 msgstr "Tags"
 
