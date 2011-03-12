@@ -2,7 +2,7 @@ package Socialtext::Job::Upgrade::CleanupReportsEditActions;
 # @COPYRIGHT@
 use Moose;
 use Socialtext::Reports::DB ();
-use Socialtext::SQL qw/sql_execute ith_local_dbh/;
+use Socialtext::SQL qw/sql_execute with_local_dbh/;
 use Socialtext::Timer qw/time_scope/;
 use namespace::clean -except => 'meta';
 
