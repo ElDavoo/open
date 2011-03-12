@@ -1903,6 +1903,10 @@ msgstr "Restore failed - check %1"
 msgid "error.restore-failed=restore-id"
 msgstr "Restore failed for (%1) ..."
 
+#: lib/Socialtext/CLI.pm:1047
+msgid "error.restriction-required"
+msgstr "Please specify a restriction type."
+
 #. ($p{name}, $p{cur_role}->display_name, $p{acct_name})
 #: lib/Socialtext/CLI.pm:1170
 msgid "error.role-exists=user,role,account"

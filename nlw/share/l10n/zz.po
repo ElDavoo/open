@@ -5133,6 +5133,10 @@ msgstr "Zzzzzzz zzzzzz zzz (%1) ..."
 msgid "error.restore=widget,message"
 msgstr "Zzzzz zzzzzzzzz zzz \"%1\" zzzzzz: %2"
 
+#: lib/Socialtext/CLI.pm:1047
+msgid "error.restriction-required"
+msgstr "Zzzzzz zzzzzzz z zzzzzzzzzzz zzzz."
+
 #: share/plugin/control/template/control/desktop-account.html:44
 msgid "error.retrieve-image"
 msgstr "Zzzzz: Zzzzz zzzzzz zz zzzzzzzzz."

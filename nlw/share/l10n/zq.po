@@ -5133,6 +5133,10 @@ msgstr "«Restore failed for (%1) ...»"
 msgid "error.restore=widget,message"
 msgstr "«Error restoring the \"%1\" widget: %2»"
 
+#: lib/Socialtext/CLI.pm:1047
+msgid "error.restriction-required"
+msgstr "«Please specify a restriction type.»"
+
 #: share/plugin/control/template/control/desktop-account.html:44
 msgid "error.retrieve-image"
 msgstr "«Error: Image cannot be retrieved.»"

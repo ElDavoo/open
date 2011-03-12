@@ -3644,6 +3644,10 @@ msgstr "Restore failed for (%1) ..."
 msgid "error.restore=widget,message"
 msgstr "恢复 \"%1\" 小工具时出错: %2"
 
+#: lib/Socialtext/CLI.pm:1047
+msgid "error.restriction-required"
+msgstr "Please specify a restriction type."
+
 msgid "error.retrieve-image"
 msgstr "出错: 图像无法恢复"
 
