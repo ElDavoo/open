@@ -175,7 +175,7 @@ msgid "error.restore=widget,message"
 msgstr "恢复 \"%1\" 小工具时出错: %2"
 
 msgid "error.send-signal"
-msgstr "传递信号时出错，请重试."
+msgstr "传递讯息时出错，请重试."
 
 msgid "activities.insert:"
 msgstr "插入："
@@ -199,7 +199,7 @@ msgid "nav.logout"
 msgstr "登出"
 
 msgid "activities.make-signal-private"
-msgstr "使此信号私有"
+msgstr "使此讯息私有"
 
 msgid "widgets.manage-gallery-for-accounts"
 msgstr "管理各账号工具库"
@@ -229,7 +229,7 @@ msgid "explore.oldies"
 msgstr "老人"
 
 msgid "info.edit-summary-signal-visibility"
-msgstr "只有获取访问本网页的成员能接收到信号."
+msgstr "只有获取访问本网页的成员能接收到讯息."
 
 msgid "explore.past-month"
 msgstr "过去的一月"
@@ -262,7 +262,7 @@ msgid "activities.post-to"
 msgstr "发送至"
 
 msgid "activities.private-to:"
-msgstr "发送私人信号至"
+msgstr "发送私人讯息至"
 
 msgid "do.remove"
 msgstr "移除"
@@ -286,25 +286,25 @@ msgid "activities.send-private-message"
 msgstr "发送私人信息"
 
 msgid "activities.signal-this-page"
-msgstr "发送一个至本页面的链接信号"
+msgstr "发送一个至本页面的链接讯息"
 
 msgid "activities.showing"
 msgstr "显示"
 
 msgid "activities.signal"
-msgstr "信号"
+msgstr "讯息"
 
 msgid "error.signal-too-long=max-length"
-msgstr "信号长度限制为 %1, 请编辑您的信号"
+msgstr "讯息长度限制为 %1, 请编辑您的讯息"
 
 msgid "activities.signal-sent!"
-msgstr "信号已发送"
+msgstr "讯息已发送"
 
 msgid "nav.signals"
-msgstr "信号"
+msgstr "讯息"
 
 msgid "activities.signals-permalink"
-msgstr "信号 - 固定链接"
+msgstr "讯息 - 固定链接"
 
 msgid "activities.socialtext-activities"
 msgstr "Socialtext 活动"
@@ -409,7 +409,7 @@ msgid "error.wikilink-wiki-required"
 msgstr "您必须指定一个工作区."
 
 msgid "activities.signal-sent-click-to-adjust-filters"
-msgstr "您的信号已成功发送. 点击此处自动调整筛选器，以显示新信号."
+msgstr "您的讯息已成功发送. 点击此处自动调整筛选器，以显示新讯息."
 
 msgid "ago.~1day"
 msgstr "大约一天前"
@@ -541,7 +541,7 @@ msgid "activities.reply"
 msgstr "回复"
 
 msgid "activities.signals"
-msgstr "信号"
+msgstr "讯息"
 
 msgid "event.follow=person"
 msgstr "开始关注 %1."

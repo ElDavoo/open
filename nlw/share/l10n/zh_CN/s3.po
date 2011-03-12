@@ -619,7 +619,7 @@ msgid "info.edit"
 msgstr "点击按钮编辑页面"
 
 msgid "info.edit-summary-signal-visibility"
-msgstr "只有具有本页面查看权限的成员才会收到信号。"
+msgstr "只有具有本页面查看权限的成员才会收到讯息。"
 
 msgid "info.email-page"
 msgstr "用邮件发送这个页面"
@@ -982,7 +982,7 @@ msgid "nav.show:"
 msgstr "显示："
 
 msgid "nav.signals"
-msgstr "信号"
+msgstr "讯息"
 
 msgid "nav.socialtext"
 msgstr "Socialtext"
@@ -991,7 +991,7 @@ msgid "nav.socialtext-people"
 msgstr "Socialtext人員"
 
 msgid "nav.socialtext-signals"
-msgstr "Socialtext信号"
+msgstr "Socialtext讯息"
 
 msgid "nav.socialtext-unplugged"
 msgstr "Socialtext脱机"

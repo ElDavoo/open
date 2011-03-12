@@ -245,7 +245,7 @@ msgid "activities.loading-video"
 msgstr "下载中..."
 
 msgid "activities.make-signal-private"
-msgstr "使此信号私有"
+msgstr "使此讯息私有"
 
 msgid "activities.maximum-file-size=mb"
 msgstr "最大文件大小: %1MB"
@@ -302,7 +302,7 @@ msgid "activities.private-to-you=sender"
 msgstr "%1 属于您私有"
 
 msgid "activities.private-to:"
-msgstr "发送私人信号至"
+msgstr "发送私人讯息至"
 
 msgid "activities.private-to=user"
 msgstr "归 %1 私有"
@@ -326,22 +326,22 @@ msgid "activities.showing"
 msgstr "显示"
 
 msgid "activities.signal"
-msgstr "信号"
+msgstr "讯息"
 
 msgid "activities.signal-sent!"
-msgstr "信号已发送"
+msgstr "讯息已发送"
 
 msgid "activities.signal-sent-click-to-adjust-filters"
-msgstr "您的信号已成功发送. 点击此处自动调整筛选器，以显示新信号."
+msgstr "您的讯息已成功发送. 点击此处自动调整筛选器，以显示新讯息."
 
 msgid "activities.signal-this-page"
-msgstr "发送一个至本页面的链接信号"
+msgstr "发送一个至本页面的链接讯息"
 
 msgid "activities.signals"
-msgstr "信号"
+msgstr "讯息"
 
 msgid "activities.signals-permalink"
-msgstr "信号 - 固定链接"
+msgstr "讯息 - 固定链接"
 
 msgid "activities.socialtext-activities"
 msgstr "Socialtext 活动"
@@ -1028,7 +1028,7 @@ msgid "console.about-login-message"
 msgstr "您可以添加一条对方可在其 <a href=\"/challenge\">登录屏幕</a>上看到的信息"
 
 msgid "console.about-maximum-signal-length"
-msgstr "您可以为信号设置一个服务器全局的最大长度。每个帐户可以为发送至该帐户或该帐户的组的信号设定一个更小的限制。"
+msgstr "您可以为讯息设置一个服务器全局的最大长度。每个帐户可以为发送至该帐户或该帐户的组的讯息设定一个更小的限制。"
 
 msgid "console.about-navigation-tabs"
 msgstr "使用导航标签来选择设备管理的不同部分"
@@ -1052,7 +1052,7 @@ msgid "console.add-appliance-administrators"
 msgstr "添加设备管理员"
 
 msgid "console.after-renew-limit"
-msgstr "一旦达到更新限制，用户将会立即被要求重新认证，但是如果用户正在工作进行过程，如编辑页面、查看页面或阅读信号，则用户不会被注销"
+msgstr "一旦达到更新限制，用户将会立即被要求重新认证，但是如果用户正在工作进行过程，如编辑页面、查看页面或阅读讯息，则用户不会被注销"
 
 msgid "console.allow-automatic-updating"
 msgstr "允许自动更新"
@@ -1226,7 +1226,7 @@ msgid "console.set-ntp-server"
 msgstr "设置NTP服务器"
 
 msgid "console.set-signals-size-limit"
-msgstr "设置信号大小限制"
+msgstr "设置讯息大小限制"
 
 msgid "console.set-support-contact"
 msgstr "设置支持联系"
@@ -1247,7 +1247,7 @@ msgid "console.shutdown"
 msgstr "关闭"
 
 msgid "console.signals-size-limit"
-msgstr "信号大小限制"
+msgstr "讯息大小限制"
 
 msgid "console.socialtext-appliance"
 msgstr "Socialtext 设备"
@@ -3218,10 +3218,10 @@ msgid "error.no-headers=page"
 msgstr "%1 无任何标题。"
 
 msgid "error.no-imported-author=signal,user"
-msgstr "信号 %1 无法被导入：找不到发送者'%2'"
+msgstr "讯息 %1 无法被导入：找不到发送者'%2'"
 
 msgid "error.no-imported-recipient=signal,user"
-msgstr "信号 %1 无法被导入：找不到接受者'%2'"
+msgstr "讯息 %1 无法被导入：找不到接受者'%2'"
 
 msgid "error.no-ldap-group-factories"
 msgstr "LDAP 群组配置不存在；不能在 LDAP 创建群组。"
@@ -3287,7 +3287,7 @@ msgid "error.no-signals"
 msgstr "没有人注册。"
 
 msgid "error.no-signals-plugin"
-msgstr "信号插件未安装。"
+msgstr "讯息插件未安装。"
 
 msgid "error.no-skin=name"
 msgstr "指定主题 %1 不存在。"
@@ -3305,7 +3305,7 @@ msgid "error.no-such-person"
 msgstr "你所查看的成员不存在。请咨询系统管理员或联系<a href=\"%1\">Socialtext 客户服务人员</a>."
 
 msgid "error.no-such-signal"
-msgstr "对不起，信号不存在。使用信号搜索框可以查找想要的信号。"
+msgstr "对不起，讯息不存在。使用讯息搜索框可以查找想要的讯息。"
 
 msgid "error.no-such-user=email"
 msgstr "%1 用户邮箱未注册。试试其他的邮箱？"
@@ -3590,7 +3590,7 @@ msgid "error.send-failed"
 msgstr "错误: 发送邮件失败。"
 
 msgid "error.send-signal"
-msgstr "传递信号时出错，请重试."
+msgstr "传递讯息时出错，请重试."
 
 msgid "error.server-error"
 msgstr "由于服务器错误操作失败，请稍候重试."
@@ -3650,10 +3650,10 @@ msgid "error.show-pref-for-multiple-plugins"
 msgstr "show-plugin-prefs 只用于单个插件"
 
 msgid "error.signal-too-long=limit"
-msgstr "您的信号超过了%1字数"
+msgstr "您的讯息超过了%1字数"
 
 msgid "error.signal-too-long=max-length"
-msgstr "信号长度限制为 %1, 请编辑您的信号"
+msgstr "讯息长度限制为 %1, 请编辑您的讯息"
 
 msgid "error.signals-maximum-size-not-positive-integer"
 msgstr "讯息最大长度须为正整数"
@@ -4220,7 +4220,7 @@ msgid "image.web"
 msgstr "图片已存在于页面"
 
 msgid "info.about-explore"
-msgstr "<b>Socialtext 浏览</b> 让您轻松通过Socialtext信号知道同事们分享的文件和链接。使用顶部的标签来选择类型和左边的筛选功能来减少要显示的信息。<br /> <br /> 每个列出的项目都有一个或者更多提及它的信号会话。您可以点击项目来打开链接，或者点击标题左边的方框来查看和回复相应的会话。"
+msgstr "<b>Socialtext 浏览</b> 让您轻松通过Socialtext讯息知道同事们分享的文件和链接。使用顶部的标签来选择类型和左边的筛选功能来减少要显示的信息。<br /> <br /> 每个列出的项目都有一个或者更多提及它的讯息会话。您可以点击项目来打开链接，或者点击标题左边的方框来查看和回复相应的会话。"
 
 msgid "info.added-members=user-count,wiki"
 msgstr "恭喜你！你已成功添加 %1 位用户到 %2 个工作区。他们将会收到邀请到相应工作区的信息。"
@@ -4301,7 +4301,7 @@ msgid "info.edit-pre-block"
 msgstr "使用下方的文本区来组织您的预格式化文本数据块."
 
 msgid "info.edit-summary-signal-visibility"
-msgstr "只有有权查看本页面的成员会收到信号."
+msgstr "只有有权查看本页面的成员会收到讯息."
 
 msgid "info.edit-upload"
 msgstr "点击此按钮，为页面上传文件"
@@ -4409,7 +4409,7 @@ msgid "info.showing=from,to,total"
 msgstr "显示第 %1 - %2 項，共 %3 項"
 
 msgid "info.signal-to-sms"
-msgstr "如果勾选上，每次用户通过信号给您发送私信时，我们会将包含信号主体的文本信息发送给您。"
+msgstr "如果勾选上，每次用户通过给您发送私人讯息时，我们会将包含讯息主体的文本信息发送给您。"
 
 msgid "info.skin"
 msgstr "Socialtext可以创建视觉主题来自定义您的工作区的外观和风格。您可以使用由Socialtext提供的默认视觉主题或者自定义视觉主题。"
@@ -4541,7 +4541,7 @@ msgid "invite.example:"
 msgstr "示例："
 
 msgid "invite.features-for-invitees"
-msgstr "邀请的好友会列在群组的名单中，上面有个人资料。如果开启了Socialtext信号，他们也可使用。"
+msgstr "邀请的好友会列在群组的名单中，上面有个人资料。如果开启了Socialtext讯息，他们也可使用。"
 
 msgid "invite.friend"
 msgstr "好友"
@@ -5027,7 +5027,7 @@ msgid "nav.show:"
 msgstr "显示："
 
 msgid "nav.signals"
-msgstr "信号"
+msgstr "讯息"
 
 msgid "nav.socialtext"
 msgstr "Socialtext"
@@ -5039,7 +5039,7 @@ msgid "nav.socialtext-people"
 msgstr "Socialtext人員"
 
 msgid "nav.socialtext-signals"
-msgstr "Socialtext信号"
+msgstr "Socialtext讯息"
 
 msgid "nav.socialtext-unplugged"
 msgstr "Socialtext脱机"
@@ -5702,7 +5702,7 @@ msgid "report.printer-friendly"
 msgstr "打印版本的报告"
 
 msgid "report.signals-activity=user"
-msgstr "用户 %1 的信号活动"
+msgstr "用户 %1 的讯息活动"
 
 msgid "report.total"
 msgstr "总共"
@@ -5774,7 +5774,7 @@ msgid "rest.my-conversations"
 msgstr "聊天记录"
 
 msgid "rest.signalled=user"
-msgstr "%1 发送信号"
+msgstr "%1 发送讯息"
 
 msgid "revision.all"
 msgstr "所有版本"
@@ -6158,7 +6158,7 @@ msgid "sheet.untitled"
 msgstr "未命名电子表格"
 
 msgid "signals.about-bookmarklet!"
-msgstr "将其作为书签(或收藏夹)安装，当您有网页要信号或分享，只需点击或选择书签就可以发送信号了！"
+msgstr "将其作为书签(或收藏夹)安装，当您有网页要讯息或分享，只需点击或选择书签就可以发送讯息了！"
 
 msgid "signals.all-groups"
 msgstr "所有群组"
@@ -6167,10 +6167,10 @@ msgid "signals.all-shared-groups"
 msgstr "所有的共享群组"
 
 msgid "signals.attachments:"
-msgstr "此信号的附件如下："
+msgstr "此讯息的附件如下："
 
 msgid "signals.bookmarklet"
-msgstr "信号书签"
+msgstr "讯息书签"
 
 msgid "signals.bookmarklet-for-ie-users"
 msgstr "须知：使用Internet Explorer的用户，右键点击下面的按钮，选择“添加到收藏夹”，然后选择“链接”文件夹。"
@@ -6179,7 +6179,7 @@ msgid "signals.bookmarks-bar-missing?"
 msgstr "看不到书签栏？"
 
 msgid "signals.click-cancel-to-signal-to-self"
-msgstr "(点击 [取消] 来隐藏自己的信号。)"
+msgstr "(点击 [取消] 来隐藏自己的讯息。)"
 
 msgid "signals.delete"
 msgstr "删除"
@@ -6191,13 +6191,13 @@ msgid "signals.edit-save=event"
 msgstr "%1。"
 
 msgid "signals.email-from-socialtext"
-msgstr "此条消息由Socialtext信号发送。"
+msgstr "此条消息由Socialtext讯息发送。"
 
 msgid "signals.email-link-to-preferences"
-msgstr "不想收到Socialtext信号的邮件或者更改您的偏好设置，请访问"
+msgstr "不想收到Socialtext讯息的邮件或者更改您的偏好设置，请访问"
 
 msgid "signals.email-to-private-message"
-msgstr "将Socialtext信号的私信作为电子邮件发送"
+msgstr "将Socialtext讯息的私信作为电子邮件发送"
 
 msgid "signals.expunge"
 msgstr "消去"
@@ -6209,16 +6209,16 @@ msgid "signals.global-limit=size"
 msgstr "该应用的最大值是%1"
 
 msgid "signals.importing"
-msgstr "正在导入信号..."
+msgstr "正在导入讯息..."
 
 msgid "signals.matching=query"
-msgstr "符合'%1'的信号"
+msgstr "符合'%1'的讯息"
 
 msgid "signals.network-count=users"
 msgstr "%1 名用户"
 
 msgid "signals.no-imported-parent=old-id,old-parent-id,new-id"
-msgstr "信号 %1 是回复 %2，但被回复的信号丢失。更新此信号为 %3"
+msgstr "讯息 %1 是回复 %2，但被回复的讯息丢失。更新此讯息为 %3"
 
 msgid "signals.on=user,uri,date,networks"
 msgstr "%1 在 <a href=\"%2\">%3</a> <b>%4</b>."
@@ -6230,7 +6230,7 @@ msgid "signals.on=user,uri,date,reply-to"
 msgstr "%1 在 <a href=\"%2\">%3</a> 给%4回复。"
 
 msgid "signals.permalink"
-msgstr "信号的永久链接"
+msgstr "讯息的永久链接"
 
 msgid "signals.post-to"
 msgstr "发布到"
@@ -6245,7 +6245,7 @@ msgid "signals.private-message-sent"
 msgstr "已发送的私人讯息"
 
 msgid "signals.private-message-to-email"
-msgstr "如果勾选上，每次别人通过信号给您发送私信，您将会收到包含该消息的电子邮件。"
+msgstr "如果勾选上，每次别人通过讯息给您发送私信，您将会收到包含该消息的电子邮件。"
 
 msgid "signals.private-messages"
 msgstr "私信"
@@ -6254,7 +6254,7 @@ msgid "signals.private-reply"
 msgstr "私密回复"
 
 msgid "signals.private-to=person,body"
-msgstr "给%1发送私密信号: \"%2\"。"
+msgstr "给%1发送私密讯息: \"%2\"。"
 
 msgid "signals.refresh"
 msgstr "刷新"
@@ -6263,10 +6263,10 @@ msgid "signals.reply"
 msgstr "回复"
 
 msgid "signals.reply-privately"
-msgstr "私密回复该信号。"
+msgstr "私密回复该讯息。"
 
 msgid "signals.search:"
-msgstr "搜索信号："
+msgstr "搜索讯息："
 
 msgid "signals.selected-people"
 msgstr "选定的好友"
@@ -6278,7 +6278,7 @@ msgid "signals.share-to-colleagues?"
 msgstr "给您的同事分享这条链接？"
 
 msgid "signals.share-with-bookmarklet"
-msgstr "使用这个方便的书签来通过信号分享所有网站上的页面。"
+msgstr "使用这个方便的书签来通过讯息分享所有网站上的页面。"
 
 msgid "signals.showing=from,to,total"
 msgstr "显示第 %1 - %2 項，共 %3 項。"
@@ -6311,7 +6311,7 @@ msgid "signals.sort-sender"
 msgstr "发送者"
 
 msgid "signals.tagged=tag"
-msgstr "标记了 #%1 的信号"
+msgstr "标记了 #%1 的讯息"
 
 msgid "signals.to-groups=count"
 msgstr "给%1个群组"
@@ -6560,7 +6560,7 @@ msgid "twilio.services"
 msgstr "电话服务"
 
 msgid "twilio.signal-to-sms?"
-msgstr "将Socialtext信号私信作为短信(SMS)发送给到您的手机？"
+msgstr "将Socialtext私人讯息作为短信(SMS)发送给到您的手机？"
 
 msgid "twilio.target-account:"
 msgstr "您发送的文字信息应发送到这个帐户："

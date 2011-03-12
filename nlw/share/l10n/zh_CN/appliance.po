@@ -31,7 +31,7 @@ msgid "console.about-invalid-limit"
 msgstr "一旦达到无效限制，系统将强制用户重新登录"
 
 msgid "console.after-renew-limit"
-msgstr "一旦达到更新限制，用户将会立即被要求重新认证，但是如果用户正在工作进行过程，如编辑页面、查看页面或阅读信号，则用户不会被注销"
+msgstr "一旦达到更新限制，用户将会立即被要求重新认证，但是如果用户正在工作进行过程，如编辑页面、查看页面或阅读讯息，则用户不会被注销"
 
 msgid "console.allow-automatic-updating"
 msgstr "允许自动更新"
@@ -232,7 +232,7 @@ msgid "console.set-ntp-server"
 msgstr "设置NTP服务器"
 
 msgid "console.set-signals-size-limit"
-msgstr "设置信号大小限制"
+msgstr "设置讯息大小限制"
 
 msgid "console.set-support-contact"
 msgstr "设置支持联系"
@@ -259,7 +259,7 @@ msgid "console.shutdown"
 msgstr "关闭"
 
 msgid "console.signals-size-limit"
-msgstr "信号大小限制"
+msgstr "讯息大小限制"
 
 msgid "console.socialtext-appliance"
 msgstr "Socialtext 设备"
@@ -322,7 +322,7 @@ msgid "console.about-poxy-server=help-link"
 msgstr "您可以设置一个代理服务器，以允许用户可以访问包括面板小工具与RSS源在内的网络服务。更多信息请查看：%1"
 
 msgid "console.about-maximum-signal-length"
-msgstr "您可以为信号设置一个服务器全局的最大长度。每个帐户可以为发送至该帐户或该帐户的组的信号设定一个更小的限制。"
+msgstr "您可以为讯息设置一个服务器全局的最大长度。每个帐户可以为发送至该帐户或该帐户的组的讯息设定一个更小的限制。"
 
 msgid "console.about-ntp-server=help-link"
 msgstr "您可以使用 NTP 协议将本设备的时钟与另一台计算机进行同步。设备必须可以通过123端口访问该服务器。更多信息请查看：%1。"

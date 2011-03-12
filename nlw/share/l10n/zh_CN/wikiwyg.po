@@ -310,7 +310,7 @@ msgid "info.edit-pre-block"
 msgstr "使用下方的文本区来组织您的预格式化文本数据块."
 
 msgid "info.edit-summary-signal-visibility"
-msgstr "只有有权查看本页面的成员会收到信号."
+msgstr "只有有权查看本页面的成员会收到讯息."
 
 msgid "info.edit-upload"
 msgstr "点击此按钮，为页面上传文件"

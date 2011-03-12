@@ -106,7 +106,7 @@ msgid "invite.example:"
 msgstr "例如："
 
 msgid "invite.features-for-invitees"
-msgstr "邀请的好友会列在群组的名单中，上面有个人资料。如果开启了Socialtext信号，他们也可使用。"
+msgstr "邀请的好友会列在群组的名单中，上面有个人资料。如果开启了Socialtext讯息，他们也可使用。"
 
 msgid "invite.hi"
 msgstr "您好,"

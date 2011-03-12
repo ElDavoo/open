@@ -13,7 +13,7 @@ msgid "do.close"
 msgstr "关闭"
 
 msgid "error.signal-too-long=limit"
-msgstr "您的信号超过了%1字数"
+msgstr "您的讯息超过了%1字数"
 
 msgid "explore.beta"
 msgstr "探索 (测试)"
@@ -31,19 +31,19 @@ msgid "explore.using-filters"
 msgstr "使用下面的过滤器来缩小结果。 使用'x'来过滤掉相应的群组，标签和好友。"
 
 msgid "info.about-explore"
-msgstr "<b>Socialtext 浏览</b> 让您轻松通过Socialtext信号知道同事们分享的文件和链接。使用顶部的标签来选择类型和左边的筛选功能来减少要显示的信息。<br /> <br /> 每个列出的项目都有一个或者更多提及它的信号会话。您可以点击项目来打开链接，或者点击标题左边的方框来查看和回复相应的会话。"
+msgstr "<b>Socialtext 浏览</b> 让您轻松通过Socialtext讯息知道同事们分享的文件和链接。使用顶部的标签来选择类型和左边的筛选功能来减少要显示的信息。<br /> <br /> 每个列出的项目都有一个或者更多提及它的讯息会话。您可以点击项目来打开链接，或者点击标题左边的方框来查看和回复相应的会话。"
 
 msgid "nav.explore"
 msgstr "探索"
 
 msgid "nav.signals"
-msgstr "信号"
+msgstr "讯息"
 
 msgid "nav.socialtext-explore"
 msgstr "Socialtext 探索"
 
 msgid "signals.about-bookmarklet!"
-msgstr "将其作为书签(或收藏夹)安装，当您有网页要信号或分享，只需点击或选择书签就可以发送信号了！"
+msgstr "将其作为书签(或收藏夹)安装，当您有网页要讯息或分享，只需点击或选择书签就可以发送讯息了！"
 
 msgid "signals.all-groups"
 msgstr "所有群组"
@@ -52,10 +52,10 @@ msgid "signals.all-shared-groups"
 msgstr "所有的共享群组"
 
 msgid "signals.attachments:"
-msgstr "此信号的附件如下："
+msgstr "此讯息的附件如下："
 
 msgid "signals.bookmarklet"
-msgstr "信号书签"
+msgstr "讯息书签"
 
 msgid "signals.bookmarklet-for-ie-users"
 msgstr "须知：使用Internet Explorer的用户，右键点击下面的按钮，选择“添加到收藏夹”，然后选择“链接”文件夹。"
@@ -64,7 +64,7 @@ msgid "signals.bookmarks-bar-missing?"
 msgstr "看不到书签栏？"
 
 msgid "signals.click-cancel-to-signal-to-self"
-msgstr "(点击 [取消] 来隐藏自己的信号。)"
+msgstr "(点击 [取消] 来隐藏自己的讯息。)"
 
 msgid "signals.delete"
 msgstr "删除"
@@ -76,13 +76,13 @@ msgid "signals.edit-save=event"
 msgstr "%1。"
 
 msgid "signals.email-from-socialtext"
-msgstr "此条消息由Socialtext信号发送。"
+msgstr "此条消息由Socialtext讯息发送。"
 
 msgid "signals.email-link-to-preferences"
-msgstr "不想收到Socialtext信号的邮件或者更改您的偏好设置，请访问"
+msgstr "不想收到Socialtext讯息的邮件或者更改您的偏好设置，请访问"
 
 msgid "signals.email-to-private-message"
-msgstr "将Socialtext信号的私信作为电子邮件发送"
+msgstr "将Socialtext讯息的私信作为电子邮件发送"
 
 msgid "signals.expunge"
 msgstr "消去"
@@ -106,7 +106,7 @@ msgid "signals.on=user,uri,date,reply-to"
 msgstr "%1 在 <a href=\"%2\">%3</a> 给%4回复。"
 
 msgid "signals.permalink"
-msgstr "信号的永久链接"
+msgstr "讯息的永久链接"
 
 msgid "signals.post-to"
 msgstr "发布到"
@@ -118,7 +118,7 @@ msgid "signals.private-message-from=user:"
 msgstr "您收到了%1的私信："
 
 msgid "signals.private-message-to-email"
-msgstr "如果勾选上，每次别人通过信号给您发送私信，您将会收到包含该消息的电子邮件。"
+msgstr "如果勾选上，每次别人通过讯息给您发送私信，您将会收到包含该消息的电子邮件。"
 
 msgid "signals.private-messages"
 msgstr "私信"
@@ -127,7 +127,7 @@ msgid "signals.private-reply"
 msgstr "私密回复"
 
 msgid "signals.private-to=person,body"
-msgstr "给%1发送私密信号: \"%2\"。"
+msgstr "给%1发送私密讯息: \"%2\"。"
 
 msgid "signals.refresh"
 msgstr "刷新"
@@ -136,10 +136,10 @@ msgid "signals.reply"
 msgstr "回复"
 
 msgid "signals.reply-privately"
-msgstr "私密回复该信号。"
+msgstr "私密回复该讯息。"
 
 msgid "signals.search:"
-msgstr "搜索信号："
+msgstr "搜索讯息："
 
 msgid "signals.selected-people"
 msgstr "选定的好友"
@@ -151,7 +151,7 @@ msgid "signals.share-to-colleagues?"
 msgstr "给您的同事分享这条链接？"
 
 msgid "signals.share-with-bookmarklet"
-msgstr "使用这个方便的书签来通过信号分享所有网站上的页面。"
+msgstr "使用这个方便的书签来通过讯息分享所有网站上的页面。"
 
 msgid "signals.showing=from,to,total"
 msgstr "显示第 %1 - %2 項，共 %3 項。"

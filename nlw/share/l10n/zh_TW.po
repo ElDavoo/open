@@ -245,7 +245,7 @@ msgid "activities.loading-video"
 msgstr "下載中..."
 
 msgid "activities.make-signal-private"
-msgstr "使此信號私有"
+msgstr "使此訊息私有"
 
 msgid "activities.maximum-file-size=mb"
 msgstr "最大文件大小: %1MB"
@@ -302,7 +302,7 @@ msgid "activities.private-to-you=sender"
 msgstr "%1 屬於您私有"
 
 msgid "activities.private-to:"
-msgstr "發送私人信號至"
+msgstr "發送私人訊息至"
 
 msgid "activities.private-to=user"
 msgstr "歸 %1 私有"
@@ -326,22 +326,22 @@ msgid "activities.showing"
 msgstr "顯示"
 
 msgid "activities.signal"
-msgstr "信號"
+msgstr "訊息"
 
 msgid "activities.signal-sent!"
-msgstr "信號已發送"
+msgstr "訊息已發送"
 
 msgid "activities.signal-sent-click-to-adjust-filters"
-msgstr "您的信號已成功發送. 點選此處自動調整篩選器，以顯示新信號."
+msgstr "您的訊息已成功發送. 點選此處自動調整篩選器，以顯示新訊息."
 
 msgid "activities.signal-this-page"
-msgstr "發送一個至本頁面的鏈結信號"
+msgstr "發送一個至本頁面的鏈結訊息"
 
 msgid "activities.signals"
-msgstr "信號"
+msgstr "訊息"
 
 msgid "activities.signals-permalink"
-msgstr "信號 - 固定鏈結"
+msgstr "訊息 - 固定鏈結"
 
 msgid "activities.socialtext-activities"
 msgstr "Socialtext 活動"
@@ -1028,7 +1028,7 @@ msgid "console.about-login-message"
 msgstr "您可以新增一條對方可在其 <a href=\"/challenge\">登入螢幕</a>上看到的資訊"
 
 msgid "console.about-maximum-signal-length"
-msgstr "您可以為信號設定一個伺服器全局的最大長度。每個帳戶可以為發送至該帳戶或該帳戶的組的信號設定一個更小的限制。"
+msgstr "您可以為訊息設定一個伺服器全局的最大長度。每個帳戶可以為發送至該帳戶或該帳戶的組的訊息設定一個更小的限制。"
 
 msgid "console.about-navigation-tabs"
 msgstr "使用導航標籤來選擇設備管理的不同部分"
@@ -1052,7 +1052,7 @@ msgid "console.add-appliance-administrators"
 msgstr "新增設備管理員"
 
 msgid "console.after-renew-limit"
-msgstr "一旦達到更新限制，用戶將會立即被要求重新認証，但是如果用戶正在工作進行過程，如編輯頁面、查看頁面或閱讀信號，則用戶不會被登出"
+msgstr "一旦達到更新限制，用戶將會立即被要求重新認証，但是如果用戶正在工作進行過程，如編輯頁面、查看頁面或閱讀訊息，則用戶不會被登出"
 
 msgid "console.allow-automatic-updating"
 msgstr "允許自動更新"
@@ -1226,7 +1226,7 @@ msgid "console.set-ntp-server"
 msgstr "設定NTP伺服器"
 
 msgid "console.set-signals-size-limit"
-msgstr "設定信號大小限制"
+msgstr "設定訊息大小限制"
 
 msgid "console.set-support-contact"
 msgstr "設定支援聯絡"
@@ -1247,7 +1247,7 @@ msgid "console.shutdown"
 msgstr "關閉"
 
 msgid "console.signals-size-limit"
-msgstr "信號大小限制"
+msgstr "訊息大小限制"
 
 msgid "console.socialtext-appliance"
 msgstr "Socialtext 設備"
@@ -3218,10 +3218,10 @@ msgid "error.no-headers=page"
 msgstr "%1 無任何標題。"
 
 msgid "error.no-imported-author=signal,user"
-msgstr "信號 %1 無法被導入：找不到發送者'%2'"
+msgstr "訊息 %1 無法被導入：找不到發送者'%2'"
 
 msgid "error.no-imported-recipient=signal,user"
-msgstr "信號 %1 無法被導入：找不到接受者'%2'"
+msgstr "訊息 %1 無法被導入：找不到接受者'%2'"
 
 msgid "error.no-ldap-group-factories"
 msgstr "LDAP 群組配置不存在；不能在 LDAP 建立群組。"
@@ -3287,7 +3287,7 @@ msgid "error.no-signals"
 msgstr "沒有人註冊。"
 
 msgid "error.no-signals-plugin"
-msgstr "信號插件未安裝。"
+msgstr "訊息插件未安裝。"
 
 msgid "error.no-skin=name"
 msgstr "指定主題 %1 不存在。"
@@ -3305,7 +3305,7 @@ msgid "error.no-such-person"
 msgstr "你所查看的成員不存在。請諮詢系統管理員或聯絡<a href=\"%1\">Socialtext 客戶服務人員</a>."
 
 msgid "error.no-such-signal"
-msgstr "對不起，信號不存在。使用信號搜尋框可以查找想要的信號。"
+msgstr "對不起，訊息不存在。使用訊息搜尋框可以查找想要的訊息。"
 
 msgid "error.no-such-user=email"
 msgstr "%1 用戶郵箱未註冊。試試其他的郵箱？"
@@ -3590,7 +3590,7 @@ msgid "error.send-failed"
 msgstr "錯誤: 發送郵件失敗。"
 
 msgid "error.send-signal"
-msgstr "傳遞信號時出錯，請重試."
+msgstr "傳遞訊息時出錯，請重試."
 
 msgid "error.server-error"
 msgstr "由于伺服器錯誤操作失敗，請稍候重試."
@@ -3650,10 +3650,10 @@ msgid "error.show-pref-for-multiple-plugins"
 msgstr "show-plugin-prefs 只用于單個插件"
 
 msgid "error.signal-too-long=limit"
-msgstr "您的信號超過了%1字數"
+msgstr "您的訊息超過了%1字數"
 
 msgid "error.signal-too-long=max-length"
-msgstr "信號長度限制為 %1, 請編輯您的信號"
+msgstr "訊息長度限制為 %1, 請編輯您的訊息"
 
 msgid "error.signals-maximum-size-not-positive-integer"
 msgstr "訊息最大長度須為正整數"
@@ -4220,7 +4220,7 @@ msgid "image.web"
 msgstr "圖片已存在于頁面"
 
 msgid "info.about-explore"
-msgstr "<b>Socialtext 瀏覽</b> 讓您輕鬆通過Socialtext信號知道同事們分享的文件和鏈結。使用頂部的標籤來選擇類型和左邊的篩選功能來減少要顯示的資訊。<br /> <br /> 每個列出的項目都有一個或者更多提及它的信號會話。您可以點選項目來打開鏈結，或者點選標題左邊的方框來查看和回複相應的會話。"
+msgstr "<b>Socialtext 瀏覽</b> 讓您輕鬆通過Socialtext訊息知道同事們分享的文件和鏈結。使用頂部的標籤來選擇類型和左邊的篩選功能來減少要顯示的資訊。<br /> <br /> 每個列出的項目都有一個或者更多提及它的訊息會話。您可以點選項目來打開鏈結，或者點選標題左邊的方框來查看和回複相應的會話。"
 
 msgid "info.added-members=user-count,wiki"
 msgstr "恭喜你！你已成功新增 %1 位用戶到 %2 個工作區。他們將會收到邀請到相應工作區的資訊。"
@@ -4301,7 +4301,7 @@ msgid "info.edit-pre-block"
 msgstr "使用下方的文本區來組織您的預格式化文本資料塊."
 
 msgid "info.edit-summary-signal-visibility"
-msgstr "只有有權查看本頁面的成員會收到信號."
+msgstr "只有有權查看本頁面的成員會收到訊息."
 
 msgid "info.edit-upload"
 msgstr "點選此按鈕，為頁面上傳文件"
@@ -4409,7 +4409,7 @@ msgid "info.showing=from,to,total"
 msgstr "顯示第 %1 - %2 項，共 %3 項"
 
 msgid "info.signal-to-sms"
-msgstr "如果勾選上，每次用戶通過信號給您發送私信時，我們會將包含信號主體的文本資訊發送給您。"
+msgstr "如果勾選上，每次用戶通過給您發送私人訊息時，我們會將包含訊息主體的文本資訊發送給您。"
 
 msgid "info.skin"
 msgstr "Socialtext可以建立視覺主題來自定義您的工作區的外觀和風格。您可以使用由Socialtext提供的預設視覺主題或者自定義視覺主題。"
@@ -4541,7 +4541,7 @@ msgid "invite.example:"
 msgstr "示例："
 
 msgid "invite.features-for-invitees"
-msgstr "邀請的好友會列在群組的名單中，上面有個人資料。如果開啟了Socialtext信號，他們也可使用。"
+msgstr "邀請的好友會列在群組的名單中，上面有個人資料。如果開啟了Socialtext訊息，他們也可使用。"
 
 msgid "invite.friend"
 msgstr "好友"
@@ -5027,7 +5027,7 @@ msgid "nav.show:"
 msgstr "顯示："
 
 msgid "nav.signals"
-msgstr "信號"
+msgstr "訊息"
 
 msgid "nav.socialtext"
 msgstr "Socialtext"
@@ -5039,7 +5039,7 @@ msgid "nav.socialtext-people"
 msgstr "Socialtext人員"
 
 msgid "nav.socialtext-signals"
-msgstr "Socialtext信號"
+msgstr "Socialtext訊息"
 
 msgid "nav.socialtext-unplugged"
 msgstr "Socialtext脫機"
@@ -5702,7 +5702,7 @@ msgid "report.printer-friendly"
 msgstr "列印版本的報告"
 
 msgid "report.signals-activity=user"
-msgstr "用戶 %1 的信號活動"
+msgstr "用戶 %1 的訊息活動"
 
 msgid "report.total"
 msgstr "總共"
@@ -5774,7 +5774,7 @@ msgid "rest.my-conversations"
 msgstr "聊天記錄"
 
 msgid "rest.signalled=user"
-msgstr "%1 發送信號"
+msgstr "%1 發送訊息"
 
 msgid "revision.all"
 msgstr "所有版本"
@@ -6158,7 +6158,7 @@ msgid "sheet.untitled"
 msgstr "未命名試算表"
 
 msgid "signals.about-bookmarklet!"
-msgstr "將其作為書簽(或收藏夾)安裝，當您有網頁要信號或分享，只需點選或選擇書簽就可以發送信號了！"
+msgstr "將其作為書簽(或收藏夾)安裝，當您有網頁要訊息或分享，只需點選或選擇書簽就可以發送訊息了！"
 
 msgid "signals.all-groups"
 msgstr "所有群組"
@@ -6167,10 +6167,10 @@ msgid "signals.all-shared-groups"
 msgstr "所有的共用群組"
 
 msgid "signals.attachments:"
-msgstr "此信號的附件如下："
+msgstr "此訊息的附件如下："
 
 msgid "signals.bookmarklet"
-msgstr "信號書簽"
+msgstr "訊息書簽"
 
 msgid "signals.bookmarklet-for-ie-users"
 msgstr "須知：使用Internet Explorer的用戶，右鍵點選下面的按鈕，選擇『新增到收藏夾』，然後選擇『鏈結』文件夾。"
@@ -6179,7 +6179,7 @@ msgid "signals.bookmarks-bar-missing?"
 msgstr "看不到書簽欄？"
 
 msgid "signals.click-cancel-to-signal-to-self"
-msgstr "(點選 [取消] 來隱藏自己的信號。)"
+msgstr "(點選 [取消] 來隱藏自己的訊息。)"
 
 msgid "signals.delete"
 msgstr "刪除"
@@ -6191,13 +6191,13 @@ msgid "signals.edit-save=event"
 msgstr "%1。"
 
 msgid "signals.email-from-socialtext"
-msgstr "此條消息由Socialtext信號發送。"
+msgstr "此條消息由Socialtext訊息發送。"
 
 msgid "signals.email-link-to-preferences"
-msgstr "不想收到Socialtext信號的郵件或者更改您的偏好設定，請訪問"
+msgstr "不想收到Socialtext訊息的郵件或者更改您的偏好設定，請訪問"
 
 msgid "signals.email-to-private-message"
-msgstr "將Socialtext信號的私信作為電子郵件發送"
+msgstr "將Socialtext訊息的私信作為電子郵件發送"
 
 msgid "signals.expunge"
 msgstr "消去"
@@ -6209,16 +6209,16 @@ msgid "signals.global-limit=size"
 msgstr "該應用的最大值是%1"
 
 msgid "signals.importing"
-msgstr "正在導入信號..."
+msgstr "正在導入訊息..."
 
 msgid "signals.matching=query"
-msgstr "符合'%1'的信號"
+msgstr "符合'%1'的訊息"
 
 msgid "signals.network-count=users"
 msgstr "%1 名用戶"
 
 msgid "signals.no-imported-parent=old-id,old-parent-id,new-id"
-msgstr "信號 %1 是回複 %2，但被回複的信號丟失。更新此信號為 %3"
+msgstr "訊息 %1 是回複 %2，但被回複的訊息丟失。更新此訊息為 %3"
 
 msgid "signals.on=user,uri,date,networks"
 msgstr "%1 在 <a href=\"%2\">%3</a> <b>%4</b>."
@@ -6230,7 +6230,7 @@ msgid "signals.on=user,uri,date,reply-to"
 msgstr "%1 在 <a href=\"%2\">%3</a> 給%4回複。"
 
 msgid "signals.permalink"
-msgstr "信號的永久鏈結"
+msgstr "訊息的永久鏈結"
 
 msgid "signals.post-to"
 msgstr "發布到"
@@ -6245,7 +6245,7 @@ msgid "signals.private-message-sent"
 msgstr "已發送的私人訊息"
 
 msgid "signals.private-message-to-email"
-msgstr "如果勾選上，每次別人通過信號給您發送私信，您將會收到包含該消息的電子郵件。"
+msgstr "如果勾選上，每次別人通過訊息給您發送私信，您將會收到包含該消息的電子郵件。"
 
 msgid "signals.private-messages"
 msgstr "私信"
@@ -6254,7 +6254,7 @@ msgid "signals.private-reply"
 msgstr "私密回複"
 
 msgid "signals.private-to=person,body"
-msgstr "給%1發送私密信號: \"%2\"。"
+msgstr "給%1發送私密訊息: \"%2\"。"
 
 msgid "signals.refresh"
 msgstr "刷新"
@@ -6263,10 +6263,10 @@ msgid "signals.reply"
 msgstr "回複"
 
 msgid "signals.reply-privately"
-msgstr "私密回複該信號。"
+msgstr "私密回複該訊息。"
 
 msgid "signals.search:"
-msgstr "搜尋信號："
+msgstr "搜尋訊息："
 
 msgid "signals.selected-people"
 msgstr "選定的好友"
@@ -6278,7 +6278,7 @@ msgid "signals.share-to-colleagues?"
 msgstr "給您的同事分享這條鏈結？"
 
 msgid "signals.share-with-bookmarklet"
-msgstr "使用這個方便的書簽來通過信號分享所有網站上的頁面。"
+msgstr "使用這個方便的書簽來通過訊息分享所有網站上的頁面。"
 
 msgid "signals.showing=from,to,total"
 msgstr "顯示第 %1 - %2 項，共 %3 項。"
@@ -6311,7 +6311,7 @@ msgid "signals.sort-sender"
 msgstr "發送者"
 
 msgid "signals.tagged=tag"
-msgstr "標記了 #%1 的信號"
+msgstr "標記了 #%1 的訊息"
 
 msgid "signals.to-groups=count"
 msgstr "給%1個群組"
@@ -6560,7 +6560,7 @@ msgid "twilio.services"
 msgstr "電話服務"
 
 msgid "twilio.signal-to-sms?"
-msgstr "將Socialtext信號私信作為簡訊(SMS)發送給到您的手機？"
+msgstr "將Socialtext私人訊息作為簡訊(SMS)發送給到您的手機？"
 
 msgid "twilio.target-account:"
 msgstr "您發送的文字資訊應發送到這個帳戶："
