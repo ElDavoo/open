@@ -40,7 +40,7 @@ Run these tests as the main user.
 | Comment    | Create and fetch a page with an intra-ws link |
 | st-process-jobs | |
 | edit_page  | %%workspace%% | one_link | Alpha |
-| GET | /%%workspace%%/index.cgi?one_link |
+| GET | /%%workspace%%/one_link |
 | code-is | 200 |
 | body-like | Alpha |
 | edit_page  | %%workspace%% | Test2 | This has [one link]. |
@@ -48,17 +48,17 @@ Run these tests as the main user.
 | fetch-page | Test2         | hit   |                      |
 | cache-created-ok | %%workspace%% |
 | question-file-is | Test2 | null |
-| GET | /%%workspace%%/index.cgi?test2 |
+| GET | /%%workspace%%/test2 |
 | code-is | 200 |
 | body-like | Alpha |
 | edit_page  | %%workspace%% | one_link | Beta |
-| GET | /%%workspace%%/index.cgi?one_link |
+| GET | /%%workspace%%/one_link |
 | code-is | 200 |
 | body-like | Beta |
 | st-process-jobs | |
 | job-count | PageIndex | 0 |
 | fetch-page | Test2         | miss   |                      |
-| GET | /%%workspace%%/index.cgi?test2 |
+| GET | /%%workspace%%/test2 |
 | code-is | 200 |
 | body-unlike | Alpha |
 | body-like | Beta |

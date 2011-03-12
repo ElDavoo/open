@@ -82,8 +82,9 @@ get-user-account [--username or --email]
 | st-admin | show-account-config --account account%%start_time%% | qr/skin_name.+s3/ |
 
 | *Comment* | Test Case: Command Line Tests ACCOUNTS need to deal with the file for mass-add of users |  |
-
- mass-add-users --csv --account
+| st-admin | mass-add-users --csv foo.csv | The file you provided could not be read. No users were added. |
+| st-admin | mass-add-users --csv foo.csv --restriction foo | unknown restriction type, 'foo' |
+| st-admin | mass-add-users --csv foo.csv --restriction password_change | The file you provided could not be read. No users were added. |
 
 | *Comment* | Test Case: Command Line Tests ACCOUNTS teardown |  |
 | st-admin | delete-workspace --w ws%%start_time%% --no-export | has been deleted |

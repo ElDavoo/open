@@ -40,6 +40,8 @@ PROVE = nice st-prove --timer --state=save $(PROVE_ARGS)
 TEST_JOBS = 4
 UNIT_TESTS  = $(shell find -L t/ -name '*.t' -not -regex '^t/live/.*' | dev-bin/fixture-sort)
 WIKID_TESTS = $(shell find -L t/wikitests/ -name '*.wiki')
+REPORTS_TESTS = $(shell find -L ../socialtext-reports/t/ -name '*.t')
+CONSOLE_TESTS = $(shell find -L ../appliance/libsocialtext-appliance-perl/t/ -name '*.t')
 
 # Program locations
 STCTL          = $(PERL) dev-bin/nlwctl
@@ -338,13 +340,19 @@ testunit:
 testwikid:
 	@$(PROVE) --jobs $(TEST_JOBS) $(WIKID_TESTS)
 
+testreports:
+	@$(PROVE) --jobs $(TEST_JOBS) $(REPORTS_TESTS)
+
+testconsole:
+	@$(PROVE) --jobs $(TEST_JOBS) $(CONSOLE_TESTS)
+
 testplugin-%:
 	@$(PROVE) -s $(shell cd share/plugin/$(@:testplugin-%=%) && find -L t -name '*.t' -not -regex '^t/live.*' | dev-bin/fixture-sort)
 
 testlive:
 	@$(PROVE) -r t/live
 
-testall: test testlive
+testall: test testlive testreports testconsole
 
 QUICK_TESTS = \
 	t/chunks.t \

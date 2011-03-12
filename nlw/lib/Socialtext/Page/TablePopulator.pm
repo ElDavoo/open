@@ -3,6 +3,7 @@ package Socialtext::Page::TablePopulator;
 use 5.12.0;
 use warnings;
 
+use Socialtext::Account;
 use Socialtext::Workspace;
 use Socialtext::Paths;
 use Socialtext::Hub;
@@ -21,7 +22,8 @@ use Fatal qw/opendir closedir chdir open/;
 use Cwd   qw/getcwd abs_path/;
 use DateTime;
 use Try::Tiny;
-use List::MoreUtils qw/any/;
+use List::MoreUtils qw/any all/;
+use Scalar::Util qw/looks_like_number/;
 
 our $Noisy = 1;
 
@@ -69,8 +71,6 @@ sub populate {
     chdir $workspace_dir;
 
     try { sql_txn {
-        my ($insert_sth, $update_sth, $tags_sth);
-
         # Assume a "dirty" workspace environment where we'll be overwriting
         # certain objects.  We need to consider page-table entries, page
         # revisions, page attachments, page tags and finally breadcrumbs
@@ -134,14 +134,14 @@ sub populate {
 
             # Fix up relative links in the filesystem
             next PAGE unless try { fix_relative_page_link($dir); 1 }
-            catch { chomp; warn "Error fixing relative link: $_\n"; 0 };
+            catch { my $err = format_err($_); warn "Fixing relative link: $err\n"; 0 };
 
             # Get all the data we want on a page
 
             my $page = try { $self->load_page_metadata($dir) }
             catch {
-                chomp;
-                warn "Error populating $workspace_name, skipping $dir: $_\n";
+                my $err = format_err($_);
+                warn "Populating $workspace_name, skipping $dir: $err\n";
                 undef;
             };
             next PAGE unless $page;
@@ -150,14 +150,15 @@ sub populate {
 
             try { $self->load_page_attachments($page) }
             catch {
-                chomp;
-                warn "Error populating $workspace_name attachments: $_\n";
+                my $err = format_err($_);
+                warn "Populating $workspace_name attachments: $err\n";
             };
 
             try { sql_txn { $self->insert_or_update_page($page) } }
             catch {
-                warn "Error updating $workspace_name ".
-                     "page $page->{page_id}: $_";
+                my $err = format_err($_);
+                warn "Updating $workspace_name ".
+                     "page $page->{page_id}: $err";
             };
         }
         closedir($dfh);
@@ -341,12 +342,10 @@ sub load_revision_metadata {
         $dbh->selectcol_arrayref($check_sth,{},$ws_id,$pg_dir) || []
     );
 
-    my ($legacy_revids, $modern_revids) = (0,0);
-
     my @files;
     opendir(my $dfh, "$ws_dir/$pg_dir");
     while (my $file = readdir($dfh)) {
-        next unless $file =~ m/^\d+\.txt$/;
+        next unless $file =~ m/^[.\d]+\.txt$/;
         $file = "$ws_dir/$pg_dir/$file";
         next if -l $file;
         next unless -f $file;
@@ -355,14 +354,7 @@ sub load_revision_metadata {
         next unless Socialtext::Encode::is_valid_utf8($file);
 
         (my $revision_id = $file) =~ s#.+/(.+)\.txt$#$1#;
-        $revision_id += 0; # force-numify
-        $modern_revids++ if $revision_id >= 30000000000000;
-        $legacy_revids++ if $revision_id <  30000000000000;
-
-        # TODO {bz: 5015}
-        die "export is corrupt: cannot mix modern and legacy revision ids\n"
-            if ($modern_revids && $legacy_revids);
-
+        $revision_id += 0 unless looks_like_number($revision_id); # force-numify
         next if $existing_ids->check($revision_id);
 
         push @files, [$revision_id, $file];
@@ -374,7 +366,11 @@ sub load_revision_metadata {
         try {
             my $t = time_scope 'load_rev';
 
+            die "zero length file" unless -s $file;
+
             my $pagemeta = fetch_metadata($file);
+            die "missing required metadata" unless has_required_meta($pagemeta);
+
             my $body_ref = read_and_decode_page($file, 'content too');
 
             my $tags = $pagemeta->{Category} || [];
@@ -421,11 +417,18 @@ sub load_revision_metadata {
             };
         }
         catch {
-            warn "Error parsing revision $ws_dir/$pg_dir/$file, skipping: $_\n";
+            warn "Couldn't parse revision $ws_dir/$pg_dir/$file, skipping: $_\n";
         };
     }
 
     return;
+}
+
+sub has_required_meta {
+    my $pagemeta = shift;
+
+    return 0 unless $pagemeta;
+    return all { defined($pagemeta->{$_}) } qw/Subject From Date/;
 }
 
 sub load_page_attachments {
@@ -595,6 +598,7 @@ sub fetch_metadata {
 }
 
 # This code inspired by Socialtext::Page::last_edited_by
+use constant DELETED_ACCT_ID => Socialtext::Account->Deleted()->account_id;
 sub editor_to_id {
     my $email_address = shift || '';
     state %userid_cache;
@@ -616,8 +620,10 @@ sub editor_to_id {
             warn "Creating user account for '$email_address'\n";
             try {
                 $user = Socialtext::User->create(
-                    email_address => $email_address,
-                    username      => $email_address,
+                    email_address      => $email_address,
+                    username           => $email_address,
+                    primary_account_id => DELETED_ACCT_ID,
+                    missing            => 1,
                 );
             }
             catch {
@@ -630,6 +636,16 @@ sub editor_to_id {
         $userid_cache{ $email_address } = $user->user_id;
     }
     return $userid_cache{ $email_address };
+}
+
+sub format_err {
+    my $err = shift;
+    return '' unless $err;
+
+    chomp $err;
+    $err =~ s/at \S+ line \d+.*.$//;
+
+    return $err;
 }
 
 sub fix_relative_page_link {

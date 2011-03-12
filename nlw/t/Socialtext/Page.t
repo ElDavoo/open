@@ -325,7 +325,7 @@ HASHES: {
         page_id         => 'testing_hashes_yo',
         page_uri        => re('^https?.+testing_hashes_yo$'),
         revision_count  => 2,
-        revision_id     => re('^\d+$'),
+        revision_id     => re('^\d+\.\d+$'),
         revision_num    => 2,
         summary         => 'bar',
         tags            => [ 'FOO', 'Bar' ],

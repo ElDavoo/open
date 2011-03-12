@@ -12,7 +12,7 @@ use List::MoreUtils qw/mesh/;
 
 our $Has_People_Installed;
 our @Required_fields = qw/username email_address/;
-our @User_fields = qw/first_name last_name password private_external_id/;
+our @User_fields = qw/first_name middle_name last_name password private_external_id/;
 
 # Note: these fields may not be created, now that fields are treated
 # differently.  Please do some poking around before you change these. (See:
@@ -35,6 +35,7 @@ sub new {
     $self->{pass_cb} = delete $opts{pass_cb} or die "pass_cb is mandatory!";
     $self->{fail_cb} = delete $opts{fail_cb} or die "fail_cb is mandatory!";
     $self->{account} = delete $opts{account};
+    $self->{restrictions} = delete $opts{restrictions};
     $self->{failed_fields} = {};
     return $self;
 }
@@ -174,6 +175,14 @@ sub add_user {
             if @prof_args;
     }
 
+    if ($self->{restrictions}) {
+        foreach my $r (@{$self->{restrictions}}) {
+            my $restriction = $user->add_restriction($r);
+            $restriction->send;
+            $changed_user++;
+        }
+    }
+
     if ($added_user) {
         my $msg = loc("user.added=name", $args{username});
         $self->_pass($msg);
@@ -247,7 +256,7 @@ sub _create_user {
 
     # Send the user a confirmation email, if they don't have a pw
     unless ($user->has_valid_password) {
-        $user->set_confirmation_info(is_password_change => 0);
+        $user->create_email_confirmation();
         $user->send_confirmation_email();
     }
 

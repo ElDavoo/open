@@ -19,6 +19,7 @@ use Socialtext::Log qw(st_log st_timed_log);
 use Socialtext::Timer;
 use Socialtext::Apache::User;
 use Socialtext::User;
+use Socialtext::User::Restrictions;
 use Socialtext::Session;
 use Socialtext::Helpers;
 use Socialtext::Workspace;
@@ -39,11 +40,10 @@ sub handler ($$) {
     (my $uri = $r->uri) =~ s[^/nlw/?][];
     if ($uri =~ m[submit/]) {
         my ($action) = $uri =~ m[submit/(\w+)];
-        
         return $self->$action if $self->can($action);
         warn "Can't handle action '$action'";
         return NOT_FOUND;
-    } 
+    }
     elsif ($uri =~ /\.html$/) {
         # strip off trailing ; to avoid warning
         (my $query_string = $r->args || '') =~ s/;$//;
@@ -66,8 +66,9 @@ sub handler ($$) {
                 loc('error.invalid-confirmation-url')
             ) unless $hash;
 
-            my $user = $self->_find_user_for_email_confirmation_hash( $r, $hash );
-            return $self->_show_error() unless $user;
+            my $restriction = $self->_find_restriction_for_hash($r, $hash);
+            return $self->_show_error() unless $restriction;
+            my $user = $restriction->user;
 
             $vars->{email_address} = $user->email_address;
             $vars->{hash}          = $hash;
@@ -159,11 +160,11 @@ sub handler ($$) {
         }
 
         my $saved_args = $self->{saved_args} = $self->session->saved_args;
-        my $repl_vars  = {
+        my $repl_vars = {
             $self->_default_template_vars(),
-            authen_page    => 1,
-            username_label => Socialtext::Authen->username_label,
-            redirect_to    => $self->{args}{redirect_to},
+            authen_page       => 1,
+            username_label    => Socialtext::Authen->username_label,
+            redirect_to       => $self->{args}{redirect_to},
             remember_duration => Socialtext::Authen->remember_duration,
             %$saved_args,
             %$vars,
@@ -211,10 +212,9 @@ sub login {
         return $self->_challenge();
     }
 
-    my $user_check = ( Socialtext::Authen->username_is_email()
+    my $user_check = Socialtext::Authen->username_is_email()
         ? Email::Valid->address($username)
-        : ( (Encode::is_utf8($username) ? $username : Encode::decode_utf8($username)) =~ /\w/ )
-    );
+        : ( (Encode::is_utf8($username) ? $username : Encode::decode_utf8($username)) =~ /\w/ );
 
     unless ( $user_check ) {
         $self->session->add_error( loc('error.invalid-name=user,type', $username, $validname) );
@@ -230,10 +230,19 @@ sub login {
         return $self->_challenge();
     }
 
-    if ($user and $user->requires_confirmation) {
+    if ($user and $user->requires_email_confirmation) {
         $r->log_error($username . ' requires confirmation');
-        return $self->require_confirmation_redirect($user->email_address);
+        return $self->require_email_confirmation_redirect($user->email_address);
     }
+    if ($user and $user->requires_password_change) {
+        $r->log_error($username . ' requires password change');
+        return $self->require_password_change_redirect($user->email_address);
+    }
+    if ($user and $user->requires_external_id) {
+        $r->log_error($username . ' requires external id');
+        return $self->require_external_id_redirect($user->email_address);
+    }
+
 
     unless ($self->{args}{password}) {
         $self->session->add_error(loc('error.invalid-login=name', $validname));
@@ -283,11 +292,14 @@ sub _add_user_to_workspace {
             return 1;
         }
 
-        my $can_self_join = $ws->permissions->user_can( 
-            user => $user, permission => ST_SELF_JOIN_PERM);
+        my $can_self_join = $ws->permissions->user_can(
+            user       => $user,
+            permission => ST_SELF_JOIN_PERM
+        );
         if ($can_self_join) {
             $ws->add_user(
-                user => $user, role => Socialtext::Role->Member()
+                user => $user,
+                role => Socialtext::Role->Member(),
             );
             return 1;
         }
@@ -310,7 +322,7 @@ sub logout {
 
 sub forgot_password {
     my $self = shift;
-    my $r = $self->r;
+    my $r    = $self->r;
 
     my $forgot_password_uri = $self->{args}{lite} ? '/lite/forgot_password' : '/nlw/forgot_password.html';
 
@@ -331,11 +343,11 @@ sub forgot_password {
         return $self->_redirect($forgot_password_uri);
     }
 
-    $user->set_confirmation_info( is_password_change => 1 );
-    $user->send_password_change_email();
+    my $confirmation = $user->create_password_change_confirmation();
+    $confirmation->send;
 
     my $from_address = 'noreply@socialtext.com';
-    $self->session->add_message( 
+    $self->session->add_message(
       loc('register.reset-password-sent=email', $user->username) . "\n<p>\n" . loc('info.email-confirmation=from', $from_address) . "\n</p>\n"
     );
 
@@ -356,34 +368,34 @@ sub register {
         $self->session->add_error(loc("error.registration-disabled"));
         return $self->_redirect($redirect_target);
     }
-   
+
     my $appliance_config = Socialtext::Appliance::Config->new;
     if ($appliance_config->value('captcha_enabled')) {
-        # check captcha.. 
-        
+        # check captcha..
+
         my $c = Captcha::reCAPTCHA->new;
         my $c_challenge = $self->{args}{recaptcha_challenge_field};
-        my $c_response = $self->{args}{recaptcha_response_field};
+        my $c_response  = $self->{args}{recaptcha_response_field};
 
         my $c_privkey = $appliance_config->value('captcha_privkey');
-        my $result = $c->check_answer(
+        my $result    = $c->check_answer(
             $c_privkey,
             $r->connection->remote_ip,
             $c_challenge,
-            $c_response);
+            $c_response,
+        );
         unless ( $result->{is_valid} ) {
             $self->session->add_error(loc("error.captcha"));
             return $self->_redirect($redirect_target, $self->{args});
         }
     }
 
-
     my $ws;
     if ($target_ws_name) {
         eval {
             $ws = Socialtext::Workspace->new( name => $target_ws_name);
             my $perms = $ws->permissions;
-            if (!$perms->role_can( 
+            if (!$perms->role_can(
                     role => Socialtext::Role->Guest(),
                     permission => ST_SELF_JOIN_PERM
                 )) {
@@ -402,8 +414,8 @@ sub register {
 
     my $user = Socialtext::User->new( email_address => $email_address );
     if ($user) {
-        if ( $user->requires_confirmation() ) {
-            return $self->require_confirmation_redirect($email_address);
+        if ( $user->requires_email_confirmation() ) {
+            return $self->require_email_confirmation_redirect($email_address);
         }
         elsif ( $user->has_valid_password() ) {
             $self->session->add_message(loc("error.user-exists=email", $email_address));
@@ -458,7 +470,7 @@ sub register {
     }
 
 
-    $user->set_confirmation_info(workspace_name => $target_ws_name);
+    $user->create_email_confirmation(workspace_name => $target_ws_name);
     $user->send_confirmation_email;
 
     $self->session->add_message(loc("register.confirmation-sent=email", $email_address));
@@ -474,50 +486,41 @@ sub confirm_email {
         loc('error.invalid-confirmation-url')
     ) unless $hash;
 
-    my $user = $self->_find_user_for_email_confirmation_hash( $r, $hash );
-    return $self->_show_error() unless $user;
+    my $restriction = $self->_find_restriction_for_hash($r, $hash);
+    return $self->_show_error() unless $restriction;
+    my $user = $restriction->user;
 
-    if ( $user->confirmation_has_expired ) {
-        $user->set_confirmation_info();
-
-        if ( $user->confirmation_is_for_password_change() ) {
-            $user->send_password_change_email();
-        }
-        else {
-            $user->send_confirmation_email();
-        }
-
+    if ($restriction->has_expired) {
+        $restriction->renew;
+        $restriction->send;
         return $self->_show_error(
             loc("error.confirmation-expired")
         );
     }
 
-    if ( $user->confirmation_is_for_password_change or not $user->has_valid_password ) {
+    if ( ($restriction->restriction_type eq 'password_change')
+        or not $user->has_valid_password) {
         $self->session->save_args(
             hash => $hash,
-            ($self->{args}{account_for} 
+            ($self->{args}{account_for}
                 ? (account_for => $self->{args}{account_for}) : ()),
         );
         return $self->_redirect( "/nlw/choose_password.html" );
     }
 
-    # Need to grab wsid before we do confirm_email_address, cuz that wipes the
-    # email_confirmation
-    my $wsid = $user->confirmation_workspace_id;
+    # Grab the WS that might be tied to the confirmation, then clear the
+    # confirmation; we don't need it any more.
+    my $targetws = $restriction->workspace;
+    $user->confirm_email_address;
 
-    $user->confirm_email_address();
-
-    my $targetws;
-    if ( $wsid ) {
-        $targetws = Socialtext::Workspace->new(workspace_id => $wsid);
+    if ($targetws) {
         $targetws->add_user(user => $user);
-        my $set_account;
         $user->primary_account($targetws->account);
         st_log->info("SELF_JOIN,user:". $user->email_address . "("
             .$user->user_id."),workspace:"
             . $targetws->name . "(" . $targetws->workspace_id . ")"
-            . ",".$targetws->account->name 
-            . "(". $targetws->account->account_id . ")" 
+            . ",".$targetws->account->name
+            . "(". $targetws->account->account_id . ")"
         );
     }
     my $address = $user->email_address;
@@ -535,15 +538,16 @@ sub confirm_email {
 
 sub choose_password {
     my $self = shift;
-    my $r = $self->r;
+    my $r    = $self->r;
 
     my $hash = $self->{args}{hash};
     return $self->_show_error(
         loc('error.invalid-confirmation-url')
     ) unless $hash;
 
-    my $user = $self->_find_user_for_email_confirmation_hash( $r, $hash );
-    return $self->_show_error() unless $user;
+    my $restriction = $self->_find_restriction_for_hash($r, $hash);
+    return $self->_show_error() unless $restriction;
+    my $user = $restriction->user;
 
     my %args;
     $args{$_} = $self->{args}{$_} || '' for (qw(password password2));
@@ -564,7 +568,7 @@ sub choose_password {
     my $expire = $self->{args}{remember} ? '+12M' : '';
     Socialtext::Apache::User::set_login_cookie( $r, $user->user_id, $expire );
 
-    $user->confirm_email_address;
+    $restriction->clear();
     $user->record_login;
 
     my $dest = $self->{args}{redirect_to};
@@ -595,43 +599,104 @@ sub resend_confirmation {
         return $self->_challenge();
     }
 
-    unless ($user->requires_confirmation) {
+    my $confirmation = $user->email_confirmation;
+    unless ($confirmation) {
         $self->session->add_error(loc("error.already-confirmed=email", $email_address));
         return $self->_challenge();
     }
 
-    $user->set_confirmation_info;
-    $user->send_confirmation_email;
+    $confirmation->renew;
+    $confirmation->send;
 
     $self->session->add_error(loc('error.confirmation-resent'));
     return $self->_challenge();
 }
 
-sub require_confirmation_redirect {
-    my $self          = shift;
-    my $email_address = shift;
+sub resend_password_change {
+    my $self = shift;
 
-    $self->session->save_args( username => $email_address );
+    my $email_address = $self->{args}{email_address};
+    unless ($email_address) {
+        return $self->_show_error(
+            loc("No email address found to resend change of password.")
+        );
+    }
+
+    my $user = Socialtext::User->new( email_address => $email_address );
+    unless ($user) {
+        $self->session->add_error(loc("error.no-such-user=email", $email_address));
+        return $self->_challenge();
+    }
+
+    my $confirmation = $user->password_change_confirmation;
+    unless ($confirmation) {
+        $self->session->add_error(
+            loc("The email address for [_1] already has a password.", $email_address)
+        );
+        return $self->_challenge();
+    }
+
+    $confirmation->renew;
+    $confirmation->send;
+
+    $self->session->add_error(
+        loc("The change of password email has been resent. Please follow the link in this email to set a new password for your account.")
+    );
+    return $self->_challenge();
+}
+
+sub require_email_confirmation_redirect {
+    my $self  = shift;
+    my $email = shift;
+    return $self->_error_redirect(
+        type          => 'requires_confirmation',
+        email_address => $email,
+    );
+}
+
+sub require_password_change_redirect {
+    my $self  = shift;
+    my $email = shift;
+    return $self->_error_redirect(
+        type          => 'requires_password_change',
+        email_address => $email,
+    );
+}
+
+sub require_external_id_redirect {
+    my $self  = shift;
+    my $email = shift;
+    return $self->_error_redirect(
+        type          => 'requires_external_id',
+        email_address => $email,
+    );
+}
+
+sub _error_redirect {
+    my $self = shift;
+    my %p = @_;
+
+    $self->session->save_args(username => $p{email_address});
     $self->session->add_error( {
-        type => 'requires_confirmation',
+        type => $p{type},
         args => {
-           email_address => $email_address,
-           redirect_to   => $self->{args}{redirect_to} || '',
-       },
+            email_address => $p{email_address},
+            redirect_to   => $self->{args}{redirect_to} || '',
+        }
     } );
-
     return $self->_challenge();
 }
 
 sub _redirect {
-    my $self = shift;
-    my $uri  = shift;
-    my $formfields = shift;
-    my $redirect_to = $self->{args}{redirect_to};
+    my $self            = shift;
+    my $uri             = shift;
+    my $formfields      = shift;
+    my $redirect_to     = $self->{args}{redirect_to};
     my $oldformvarquery = '';
     if ($formfields) {
-        $oldformvarquery = join(";", 
-            map { $_ . "=" . uri_escape_utf8($formfields->{$_})} grep {!/^(recaptcha_|password|redirect_to)/} keys %{$formfields});
+        $oldformvarquery = join(";",
+            map { $_ . "=" . uri_escape_utf8($formfields->{$_})} grep {!/^(recaptcha_|password|redirect_to)/} keys %{$formfields}
+        );
     }
     if ($redirect_to) {
         $uri .= ($uri =~ m/\?/ ? ';' : '?')
@@ -639,7 +704,7 @@ sub _redirect {
     }
     if ($oldformvarquery) {
         $uri .= ($uri =~ m/\?/ ? ';' : '?')
-              . $oldformvarquery; 
+              . $oldformvarquery;
     }
 
     $self->redirect($uri);
@@ -720,9 +785,9 @@ sub _show_error {
     );
 }
 
-sub _find_user_for_email_confirmation_hash {
+sub _find_restriction_for_hash {
     my $self = shift;
-    my $r = shift;
+    my $r    = shift;
     my $hash = shift;
 
     # now in order to deal with email clients that might have decoded %2B to '+' for us
@@ -730,13 +795,13 @@ sub _find_user_for_email_confirmation_hash {
     # see: https://rt.socialtext.net:444/Ticket/Display.html?id=26571
     $hash =~ s/ /+/g;
 
-    my $user = Socialtext::User->new( email_confirmation_hash => $hash );
-    unless ($user) {
+    my $restriction = Socialtext::User::Restrictions->FetchByToken($hash);
+    unless ($restriction) {
         $self->session->add_error(loc("error.no-such-pending-confirmation"));
         $self->session->add_error( "<br/>(" . $r->uri . "?" . $r->args . ")" );
         $r->log_error ("no confirmation hash for: [" . $r->uri . "?" . $r->args . "]" );
     }
-    return $user;
+    return $restriction;
 }
 
 1;

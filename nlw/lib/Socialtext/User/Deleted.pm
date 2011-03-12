@@ -16,6 +16,7 @@ sub new {
     $proto_user{username}      ||= 'deleted-user';
     $proto_user{email_address} ||= 'deleted.user@socialtext.com';
     $proto_user{first_name}    ||= 'Deleted';
+    $proto_user{middle_name}     = '';
     $proto_user{last_name}     ||= 'User';
 
     # *FORCE* these fields on the Deleted User.  Regardless of what we were

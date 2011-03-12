@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 312;
+use Test::Socialtext tests => 274;
 use File::Path qw(rmtree);
 use Socialtext::Account;
 use Socialtext::SQL qw/sql_execute/;
@@ -155,7 +155,7 @@ MISSING_ARGS: {
     );
 }
 
-CREATE_USER: {
+GIVE_REMOVE_ADMIN: {
     expect_success(
         sub {
             Socialtext::CLI->new(
@@ -166,140 +166,6 @@ CREATE_USER: {
         'create-user success message'
     );
 
-    my $user = Socialtext::User->new( username => 'test@example.com' );
-    ok( $user, 'User was created via create_user' );
-    ok(
-        $user->password_is_correct('foobar'),
-        'check that given password works'
-    );
-
-    is(
-        $user->email_address(), 'test@example.com',
-        'email and username are the same'
-    );
-    is $user->primary_account->name, Socialtext::Account->Default->name,
-        'default primary account set';
-
-
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => [qw( --email account-test@example.com --password foobar 
-                             --account Socialtext
-                           )] )
-                ->create_user();
-        },
-        qr/\QA new user with the username "account-test\E\@\Qexample.com" was created.\E/,
-        'create-user success message'
-    );
-    my $user2 = Socialtext::User->new( username => 'account-test@example.com' );
-    is $user2->primary_account->name, Socialtext::Account->Socialtext->name,
-        'primary account set';
-
-    # User with external private ID
-    my $email = Test::Socialtext::create_unique_id() . '@ken.socialtext.net';
-    my $external_id = 'abc123';
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => ['--email' => $email,
-                         '--password' => 'password',
-                         '--external-id' => $external_id,
-                ],
-            )->create_user();
-        },
-        qr/A new user with the username "[^"]+" was created./,
-        'created user with a private external id',
-    );
-    $user = Socialtext::User->new(email_address => $email);
-    isa_ok $user, 'Socialtext::User', 'got a user';
-    is $user->private_external_id, $external_id, '... with external ID';
-
-    # User with conflicting external private ID (ID recycled from above)
-    $email = Test::Socialtext::create_unique_id() . '@ken.socialtext.net';
-    expect_failure(
-        sub {
-            Socialtext::CLI->new(
-                argv => ['--email' => $email,
-                         '--password' => 'password',
-                         '--external-id' => $external_id,
-                ],
-            )->create_user();
-        },
-        qr/The private external id you provided \([^\)]+\) is already in use./,
-        'failed to create user with a conflicting external id',
-    );
-
-    expect_failure(
-        sub {
-            Socialtext::CLI->new(
-                argv => [qw( --email test@example.com --password foobar )] )
-                ->create_user();
-        },
-        qr/\QThe email address you provided, "test\E\@\Qexample.com", is already in use.\E/,
-        'create-user failed with dupe email'
-    );
-
-    expect_failure(
-        sub {
-            Socialtext::CLI->new( argv => [] )->create_user();
-        },
-        qr/Username is a required field.+Email address is a required field.+password is required/s,
-        'create-user failed with no args'
-    );
-
-    {
-        local *STDOUT;
-        open STDOUT, '>', '/dev/null';
-        eval {
-            Socialtext::CLI->new(
-                argv => [
-                    qw( --email test2@example.com --password foobar
-                        --first-name John --last-name Doe )
-                ]
-            )->create_user();
-        };
-    }
-
-    $user = Socialtext::User->new( username => 'test2@example.com' );
-    is( $user->first_name(), 'John', 'new user first name' );
-    is( $user->last_name(),  'Doe',  'new user last name' );
-
-}
-
-
-CONFIRM_USER: {
-    my $user = Socialtext::User->create(username => 'devnull5@socialtext.com',
-                                        email_address => 'devnull5@socialtext.com' );
-    ok( $user, 'User created via User->create' );
-    ok(
-        ! $user->has_valid_password(),
-        'check that password is empty'
-    );
-    $user->set_confirmation_info();
-
-    expect_success(
-        sub {
-            Socialtext::CLI->new(
-                argv => [qw( --email devnull5@socialtext.com --password foobar )] )
-                ->confirm_user();
-            },
-            qr/\Qdevnull5\E\@\Qsocialtext.com has been confirmed with password foobar\E/,
-            'confirm-user success message'
-    );
-
-    expect_failure(
-        sub {
-            Socialtext::CLI->new(
-                argv => [qw( --email devnull5@socialtext.com --password foobar )] )
-                ->confirm_user();
-        },
-        qr/\Qdevnull5\E\@\Qsocialtext.com has already been confirmed\E/,
-        'confirm-user failed with already confirmed user'
-    );
-}
-
-GIVE_REMOVE_ADMIN: {
     # We call ST::User->new each time to force the system to re-fetch
     # the data from the DBMS.
     ok(
@@ -582,33 +448,6 @@ LIST_WORKSPACES: {
         sub { Socialtext::CLI->new( argv => ['--ids'] )->list_workspaces(); },
         qr/\A\d+\n\d+\n\d+\n\d+\n\d+\n\d+\n\d+\n\d+\n\z/,
         'list-workspaces by id'
-    );
-}
-
-CHANGE_PASSWORD: {
-    my $new_pw = 'valid-password';
-
-    expect_success(
-        sub {
-            Socialtext::CLI->new( argv =>
-                    [ qw( --username test@example.com --password ), $new_pw ]
-            )->change_password();
-        },
-        qr/The password for test\@example\.com has been changed\./,
-        'change password successfully',
-    );
-
-    my $user = Socialtext::User->new( username => 'test@example.com' );
-    ok( $user->password_is_correct($new_pw), 'new password is valid' );
-
-    expect_failure(
-        sub {
-            Socialtext::CLI->new(
-                argv => [qw( --username test@example.com --password bad )] )
-                ->change_password();
-        },
-        qr/\QPasswords must be at least 6 characters long.\E/,
-        'password is too short',
     );
 }
 
@@ -1617,115 +1456,6 @@ RENAME_WORKSPACE: {
         Socialtext::Workspace->new( name => 'new-admin' ),
         'new-admin workspace exists'
     );
-}
-
-SET_USER_NAMES: {
-    {
-        local *STDOUT;
-        open STDOUT, '>', '/dev/null';
-        eval {
-            Socialtext::CLI->new(
-                argv => [
-                    qw( --email setnames@example.com --password foobar
-                        --first-name John --last-name Doe )
-                ]
-            )->create_user();
-        };
-    }
-
-    {
-        local *STDOUT;
-        open STDOUT, '>', '/dev/null';
-        eval {
-            Socialtext::CLI->new(
-                argv => [
-                    qw( --email setnames@example.com --first-name Jane --last-name Smith )
-                ]
-            )->set_user_names();
-        };
-        warn $@ if $@;
-    }
-
-    my $user = Socialtext::User->new( username => 'setnames@example.com' );
-    is( $user->first_name(), 'Jane', 'First name updated' );
-    is( $user->last_name(),  'Smith',  'Last name updated' );
-}
-
-SET_USER_NAMES_no_user: {
-
-    expect_failure(
-        sub {
-            Socialtext::CLI->new(
-                argv => [
-                    qw( --email noususj@example.com --first-name Jane --last-name Smith )
-                ]
-            )->set_user_names();
-        },
-        qr/No user with the email address "noususj\@example\.com" could be found\./,
-        'Admin warned about missing user'
-    );
-}
-
-SET_USER_NAMES_firstnameonly: {
-    {
-        local *STDOUT;
-        open STDOUT, '>', '/dev/null';
-        eval {
-            Socialtext::CLI->new(
-                argv => [
-                    qw( --email firstnameonly@example.com --password foobar
-                        --first-name John --last-name Doe )
-                ]
-            )->create_user();
-        };
-    }
-
-    {
-        local *STDOUT;
-        open STDOUT, '>', '/dev/null';
-        eval {
-            Socialtext::CLI->new(
-                argv => [
-                    qw( --email firstnameonly@example.com --first-name Jane )
-                ]
-            )->set_user_names();
-        };
-    }
-
-    my $user = Socialtext::User->new( username => 'firstnameonly@example.com' );
-    is( $user->first_name(), 'Jane', 'First name updated' );
-    is( $user->last_name(),  'Doe',  'Last name still the same' );
-}
-
-SET_USER_NAMES_lastnameonly: {
-    {
-        local *STDOUT;
-        open STDOUT, '>', '/dev/null';
-        eval {
-            Socialtext::CLI->new(
-                argv => [
-                    qw( --email lastnameonly@example.com --password foobar
-                        --first-name John --last-name Doe )
-                ]
-            )->create_user();
-        };
-    }
-
-    {
-        local *STDOUT;
-        open STDOUT, '>', '/dev/null';
-        eval {
-            Socialtext::CLI->new(
-                argv => [
-                    qw( --email lastnameonly@example.com --last-name Smith )
-                ]
-            )->set_user_names();
-        };
-    }
-
-    my $user = Socialtext::User->new( username => 'lastnameonly@example.com' );
-    is( $user->first_name(), 'John', 'First name still the same' );
-    is( $user->last_name(),  'Smith',  'Last name changed' );
 }
 
 GET_SET_USER_ACCOUNT: {

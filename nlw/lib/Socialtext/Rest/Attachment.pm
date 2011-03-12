@@ -29,10 +29,8 @@ sub GET {
     if ($attachment) {
         my ($file,$size) = $attachment->prepare_to_serve(
             $self->params->{version}, 'protected');
-        try { $self->_serve_file($rest, $attachment, $file, $size) }
-        catch { 
-            $rv = $self->_invalid_attachment($rest, $_);
-        };
+        $rv = try { $self->serve_file($rest, $attachment, $file, $size) }
+        catch { $self->_invalid_attachment($rest, $_) };
     }
 
     # The frontend will take care of sending the attachment.

@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>391</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-391.air</url>
-<description><![CDATA[[Build 391 - Thu Feb 17 14:34:17 PST 2011]
+  <version>393</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-393.air</url>
+<description><![CDATA[[Build 393 - Fri Mar 11 08:00:35 PST 2011]
+* Activity: Resume requests after server upgrade. {bz: 4834}
+
+[Build 392 - Mon Mar  7 03:41:18 PST 2011]
+* Disable network toggling when the user clicks More in Signals/All. {bz: 4979}
+
+[Build 391 - Thu Feb 17 14:34:17 PST 2011]
 * Also delay toggling "Show Signals within" until all placeholder parent signals are fetched.
 
 [Build 390 - Thu Feb 17 13:33:22 PST 2011]

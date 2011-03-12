@@ -1954,6 +1954,10 @@ msgstr "Email"
 msgid "user.email-address"
 msgstr "Email Address"
 
+#: share/skin/s3/template/element/settings/users_settings_section:17 share/skin/s3/template/element/settings/users_settings_section:26
+msgid "user.first-name:"
+msgstr "First name:"
+
 #: share/skin/s3/template/element/settings/users_settings_section:13 share/skin/s3/template/element/settings/users_settings_section:26
 msgid "user.last-name:"
 msgstr "Last name:"
@@ -1961,6 +1965,10 @@ msgstr "Last name:"
 #: share/skin/s3/template/view/settings:31
 msgid "user.list-all"
 msgstr "List All Users"
+
+#: share/skin/s3/template/element/settings/users_settings_section:21 share/skin/s3/template/element/settings/users_settings_section:30
+msgid "user.middle-name:"
+msgstr "Middle name:"
 
 #: share/skin/s3/template/element/settings/users_settings_section:6
 msgid "user.name"

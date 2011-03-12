@@ -191,8 +191,9 @@ sub NewUserRecord {
 
     my %insert_args
         = map { $_ => $proto_user->{$_} } @Socialtext::User::Base::all_fields;
-    $insert_args{first_name} ||= '';
-    $insert_args{last_name}  ||= '';
+    $insert_args{first_name}  ||= '';
+    $insert_args{middle_name} ||= '';
+    $insert_args{last_name}   ||= '';
 
     $insert_args{driver_username} = $proto_user->{driver_username};
     delete $insert_args{username};
@@ -264,7 +265,7 @@ sub ExpireUserRecord {
     Readonly my @required_fields   => qw(username email_address);
     Readonly my @unique_fields     => qw(username email_address private_external_id);
     Readonly my @lowercased_fields => qw(username email_address);
-    Readonly my @optional_fields   => qw(private_external_id);
+    Readonly my @optional_fields   => qw(private_external_id middle_name);
     sub ValidateAndCleanData {
         my ($self, $user, $p) = @_;
         my @errors;
@@ -368,19 +369,21 @@ sub ExpireUserRecord {
             #
             # BUT... we want to take the given "$p" data into consideration,
             # so localize that when we Guess the User's Real Name.
-            local $user->{first_name}    = $p->{first_name}    if ($p->{first_name});
-            local $user->{last_name}     = $p->{last_name}     if ($p->{last_name});
-            local $user->{email_address} = $p->{email_address} if ($p->{email_address});
+            local $user->{first_name}    = $p->{first_name}    if (defined $p->{first_name});
+            local $user->{middle_name}   = $p->{middle_name}   if (defined $p->{middle_name});
+            local $user->{last_name}     = $p->{last_name}     if (defined $p->{last_name});
+            local $user->{email_address} = $p->{email_address} if (defined $p->{email_address});
             $p->{display_name} = $user->guess_real_name();
         }
         else {
             # No User, so calculate it as best we can from the data provided.
-            my $first_name = $p->{first_name};
-            my $last_name  = $p->{last_name};
-            my $email      = $p->{email_address};
+            my $first_name  = $p->{first_name};
+            my $middle_name = $p->{middle_name};
+            my $last_name   = $p->{last_name};
+            my $email       = $p->{email_address};
             {
                 no warnings 'uninitialized';
-                my $name = join ' ', grep {length} $first_name, $last_name;
+                my $name = join ' ', grep {length} $first_name, $middle_name, $last_name;
                 ($name = $email) =~ s/@.+// unless $name;
                 $p->{display_name} = $name;
             }

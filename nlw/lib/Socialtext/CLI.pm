@@ -630,14 +630,14 @@ sub set_user_names {
     my $self = shift;
     my $user = $self->_require_user;
     my %opts = $self->_require_set_user_names_params(shift);
-    
+
     $self->_error(
         loc("error.update-remote-user")
     ) unless $user->can_update_store();
 
     my $result = $user->update_store(%opts);
     if ($result == 0) {
-        $self->_error('First name and last name match the current names for the user; no change to "' . $user->username() . '".');
+        $self->_error('Names provided match the current names for the user; no change to "' . $user->username() . '".');
     }
 
     $self->_success( loc('cli.updated-user=name', $user->username) );
@@ -665,22 +665,26 @@ sub get_user_account {
 }
 
 sub set_external_id {
-    my $self = shift;
-    my $user = $self->_require_user;
-    my %p    = $self->_get_options('external-id|X:s');
+    my $self   = shift;
+    my $user   = $self->_require_user;
+    my %p      = $self->_get_options('external-id|X:s');
+    my $extern = $p{'external-id'};
 
-    if (not defined $p{'external-id'}) {
+    if (not defined $extern) {
         $self->_error(
             "The command you called ($self->{command}) requires an external ID to be specified with the --external-id option.\n");
     }
 
-    eval { $user->update_store(private_external_id => $p{'external-id'}) };
+    eval { $user->update_store(private_external_id => $extern) };
     if (my $e = $@) {
-        $self->_error($@);
+        my $err = (ref($e) && ($e->can('full_message')))
+            ? $e->full_message
+            : "$e";
+        $self->_error($err);
     }
 
     $self->_success(
-        loc("cli.set=user,external-id", $user->username, $p{'external-id'})
+        loc("cli.set=user,external-id", $user->username, $extern)
     );
 }
 
@@ -772,10 +776,12 @@ sub _require_set_user_names_params {
 
     my %opts = $self->_get_options(
         'first-name:s',
+        'middle-name:s',
         'last-name:s'
     );
 
-    for my $key ( grep { defined $opts{$_} } 'first-name', 'last-name' ) {
+    my @utf8_fields = ('first-name', 'middle-name', 'last-name');
+    for my $key ( grep { defined $opts{$_} } @utf8_fields ) {
         my $val = $opts{$key};
 
         unless ( Encode::is_utf8($val) or $val =~ /^[\x00-\xff]*$/ ) {
@@ -785,6 +791,7 @@ sub _require_set_user_names_params {
 
     $opts{email_address} = $self->{user}->email_address;
     $opts{first_name}    = delete $opts{'first-name'} if (defined($opts{'first-name'}));
+    $opts{middle_name}   = delete $opts{'middle-name'} if (defined($opts{'middle-name'}));
     $opts{last_name}     = delete $opts{'last-name'} if (defined($opts{'last-name'}));
 
     return %opts;
@@ -870,11 +877,13 @@ sub _require_create_user_params {
         'email|e:s',
         'password:s',
         'first-name:s',
+        'middle-name:s',
         'last-name:s',
         'external-id|X:s',
     );
 
-    for my $key ( grep { defined $opts{$_} } 'first-name', 'last-name' ) {
+    my @utf8_fields = ('first-name', 'middle-name', 'last-name');
+    for my $key ( grep { defined $opts{$_} } @utf8_fields ) {
         my $val = $opts{$key};
 
         unless ( Encode::is_utf8($val) or $val =~ /^[\x00-\xff]*$/ ) {
@@ -886,6 +895,7 @@ sub _require_create_user_params {
 
     $opts{email_address}       = delete $opts{email};
     $opts{first_name}          = delete $opts{'first-name'};
+    $opts{middle_name}         = delete $opts{'middle-name'};
     $opts{last_name}           = delete $opts{'last-name'};
     $opts{private_external_id} = delete $opts{'external-id'};
 
@@ -893,9 +903,10 @@ sub _require_create_user_params {
 }
 
 sub mass_add_users {
-    my $self = shift;
-    my $account = $self->_require_account('optional');
-    my %opts = $self->_require_mass_add_users_params();
+    my $self        = shift;
+    my $account     = $self->_require_account('optional');
+    my $restriction = $self->_require_restriction('optional');
+    my %opts        = $self->_require_mass_add_users_params();
 
     my $csv = eval { slurp($opts{csv}) };
     if ($@) {
@@ -908,13 +919,14 @@ sub mass_add_users {
     eval {
         my $mass_add = Socialtext::MassAdd->new(
             account => $account,
-            pass_cb => sub { 
+            pass_cb => sub {
                 print $_[0], "\n";
             },
-            fail_cb => sub { 
-                push @messages, $_[0]; 
+            fail_cb => sub {
+                push @messages, $_[0];
                 $has_errors++;
             },
+            restrictions => $restriction,
         );
         $mass_add->from_csv($csv);
     };
@@ -940,14 +952,110 @@ sub confirm_user {
     my $user = $self->_require_user();
     my $password = $self->_require_string('password');
 
-    unless ($user->requires_confirmation) {
+    my $confirmation = $user->email_confirmation;
+    unless ($confirmation) {
         $self->_error( $user->username . ' has already been confirmed' );
     }
-    $user->confirm_email_address;
+    $confirmation->confirm;
     $self->_eval_password_change($user,$password);
 
     $self->_success( $user->username . ' has been confirmed with password '
                         . $password );
+}
+
+sub list_restrictions {
+    my $self         = shift;
+    my $user         = $self->_require_user();
+    my @restrictions = $user->restrictions->all();
+
+    unless (@restrictions) {
+        $self->_success( loc("user.no-restrictions") );
+    }
+
+    printf '| %20s | %40s |' . "\n",
+        loc("user.restriction-type"),
+        loc("user.restriction-token");
+    foreach my $r (@restrictions) {
+        printf '| %20s | %40s |' . "\n",
+            $r->restriction_type,
+            $r->token;
+    }
+    $self->_success();
+}
+
+sub add_restriction {
+    my $self  = shift;
+    my $user  = $self->_require_user();
+    my $types = $self->_require_restriction();
+
+    foreach my $t (@{$types}) {
+        eval {
+            my $restriction = $user->add_restriction($t);
+            $restriction->send;
+        };
+        $self->_error($@) if ($@);
+
+        print loc("user.given=name,restriction", $user->username, $t) . "\n";
+    }
+    $self->_success();
+}
+
+sub remove_restriction {
+    my $self  = shift;
+    my $user  = $self->_require_user();
+    my $types = $self->_require_restriction();
+
+    my @restrictions;
+    if (!ref($types) && ($types eq 'all')) {
+        @restrictions = $user->restrictions->all;
+    }
+    else {
+        foreach my $t (@{$types}) {
+            my $restriction = eval { $user->get_restriction($t) };
+            if ($restriction) {
+                push @restrictions, $restriction;
+            }
+            else {
+                print
+                    loc("user.no-such=name,restriction", $user->username, $t)
+                    . "\n";
+            }
+        }
+    }
+
+    eval {
+        foreach my $r (@restrictions) {
+            $r->confirm;
+            print loc(
+                "user.lifted=restriction,name",
+                $r->restriction_type, $user->username,
+            ) . "\n";
+        }
+    };
+    $self->_error($@) if ($@);
+    $self->_success();
+}
+
+sub _require_restriction {
+    my $self        = shift;
+    my $optional    = shift;
+    my %opts        = $self->_get_options('restriction:s@');
+    my $restriction = $opts{restriction};
+
+    return if ($optional && !$restriction);
+
+    $self->_error(loc("error.restriction-required"))
+        unless $restriction and scalar(@$restriction);
+
+    return 'all' if ($restriction->[0] eq 'all');
+
+    for my $type (@{$restriction}) {
+        $self->_error(
+            loc("error.unknown-restriction=type", $type)
+        ) unless Socialtext::User::Restrictions->ValidRestrictionType($type);
+    }
+
+    return $restriction;
 }
 
 # revoke a user's access to everything
@@ -1690,14 +1798,19 @@ sub remove_account_impersonator {
 
 sub change_password {
     my $self = shift;
-
     my $user = $self->_require_user();
     my $pw   = $self->_require_string('password');
 
     $self->_eval_password_change($user,$pw);
 
-    $self->_success( 'The password for ' . $user->username
-                      . ' has been changed.' );
+    # If the User had a "change my password" action in-flight, clear that out;
+    # we've now got a password for the User.
+    my $restriction = $user->password_change_confirmation;
+    $restriction->clear if $restriction;
+
+    $self->_success(
+        loc('user.password-changed=name', $user->username),
+    );
 }
 
 sub _eval_password_change {
@@ -3959,7 +4072,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
 
   USERS
 
-  create-user [--account] --email [--username] --password [--first-name --last-name --external-id]
+  create-user [--account] --email [--username] --password [--first-name --middle-name --last-name --external-id]
   invite-user --email --workspace --from [--secure]
   confirm-user --email --password
   deactivate-user [--username or --email]
@@ -3980,7 +4093,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   remove-group-admin [--username or --email] --group
   disable-email-notify [--username or --email] --workspace
   set-locale [--username or --email] --workspace --locale
-  set-user-names [--username or --email] --first-name --last-name
+  set-user-names [--username or --email] --first-name --middle-name --last-name
   set-user-account [--username or --email] --account
   get-user-account [--username or --email]
   set-external-id [--username or --email] --external-id
@@ -3989,7 +4102,10 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
   hide-profile [--username or --email]
   can-lock-pages [--username or --email] --workspace
   locked-pages --workspace
-  mass-add-users --csv --account
+  mass-add-users --csv --account --restriction
+  list-restrictions [--username or --email]
+  add-restriction [--username or --email] --restriction
+  remove-restriction [--username or --email] --restriction
 
   WORKSPACES
 
@@ -4117,7 +4233,7 @@ Socialtext::CLI - Provides the implementation for the st-admin CLI script
 
 The following commands are provided:
 
-=head2 create-user [--account] --email [--username] --password [--first-name --last-name --external-id]
+=head2 create-user [--account] --email [--username] --password [--first-name --middle-name --last-name --external-id]
 
 Creates a new user, optionally in a specified account. An email address and
 password are required. If no username is specified, then the email address
@@ -4230,9 +4346,9 @@ given user.
 Sets the language locale for user on a workspace.  Locale codes are 2 letter
 codes.  Eg: en, fr, ja, de
 
-=head2 set-user-names [--email or --username] --first-name --last-name
+=head2 set-user-names [--email or --username] --first-name --middle-name --last-name
 
-Set the first and last names for an existing user.
+Set the first, middle, and last names for an existing user.
 
 =head2 set-user-account [--email or --username] --account
 
@@ -4267,7 +4383,7 @@ Show whether a user can lock pages in the workspace.
 
 List the locked pages for a given workspace.
 
-=head2 mass-add-users --csv --account
+=head2 mass-add-users --csv --account --restriction
 
 Bulk adds/updates users from the given CSV file.
 
@@ -4286,6 +4402,51 @@ default account.
 When updating users, if no account is specified, the user will be left in the
 account that they are currently assigned to.  If an account is provided when
 updating users, the users will be (re-)assigned to that account.
+
+If the C<--restriction> option is provided, one or more restrictions can be
+applied to Users en-masse (either during the creation of new Users, or the
+update of existing ones).  To set multiple restrictions, use the
+C<--restriction> option multiple times.  For more information on available
+restrictions, see L</add-restriction>.
+
+=head2 list-restrictions [--username or --email]
+
+Lists the restrictions that are in place against a User record.  Each of the
+listed restrictions will prevent the User from being able to log in until the
+restriction has been removed/lifted.
+
+=head2 add-restriction [--username or --email] --restriction
+
+Adds a restriction to a User record.  Once restricted, the User will B<not> be
+able to log in to the system until the restriction has been lifted.
+
+To add multiple restrictions, use the C<--restriction> option multiple times.
+
+Available restrictions include:
+
+=over
+
+=item email_confirmation
+
+Requires that the User re-confirm their e-mail address.
+
+=item password_change
+
+Requires that the User to change their password.
+
+=back
+
+=head2 remove-restriction [--username or --email] --restriction
+
+Removes a restriction from a User record, by confirming it and sending any
+notifications necessary.
+
+Can accept multiple C<--restriction> options, when specifying multiple
+restrictions that are to be removed for the User.  Alternatively, you may
+specify C<--restriction all> to remove I<all> of the restrictions that are
+placed on the User's account.
+
+Refer to C<add-restriction> for a list of acceptable restrictions.
 
 =head2 set-permissions --workspace --permissions
 

@@ -4,6 +4,9 @@ use strict;
 use warnings;
 use base 'Socialtext::WikiFixture::SocialBase';
 use base 'Socialtext::WikiFixture';
+use Cwd;
+use Guard qw(scope_guard);
+use Socialtext::System qw(shell_run);
 use Test::HTTP;
 use Test::More;
 
@@ -75,6 +78,46 @@ Use the comment as a test comment
 sub comment {
     my $self = shift;
     $self->{http}->name(shift);
+}
+
+sub st_client_ssl {
+    my $self    = shift;
+    my $command = shift;
+    my @args    = @_;
+
+    my $ssl_dir = 'ssl';
+    my $old_dir = getcwd();
+
+    mkdir($ssl_dir, 0755) unless (-e $ssl_dir);
+    chdir($ssl_dir) || die "Can't cd to '$ssl_dir'; $!";
+    scope_guard { chdir($old_dir) };
+
+    if ($command eq 'server-on') {
+        shell_run(qw( manage-certs init --force ));
+        shell_run(qw( manage-certs install ));
+        $self->st_config('set ssl_only 1');
+        shell_run(qw( gen-config --sitewide ));
+        $self->restart_everything;
+    }
+    elsif ($command eq 'server-off') {
+        $self->st_config('set ssl_only 0');
+        shell_run(qw( gen-config --sitewide ));
+        $self->restart_everything;
+    }
+    elsif ($command eq 'client-on') {
+        my $username = shift @args;
+        die "cannot 'st-client-ssl client-on' without a username\n" unless $username;
+        shell_run(qw( manage-certs client --force --username ), $username );
+        $ENV{HTTPS_PKCS12_FILE} = "$ssl_dir/binary/${username}.p12";
+        $ENV{HTTPS_PKCS12_PASSWORD} = "password";
+    }
+    elsif ($command eq 'client-off') {
+        delete $ENV{HTTPS_PKCS12_FILE};
+        delete $ENV{HTTPS_PKCS12_PASSWORD};
+    }
+    else {
+        die "unknown st-client-ssl option '$command'\n";
+    }
 }
 
 =head1 AUTHOR

@@ -572,6 +572,21 @@ sub st_search_cp_workspace {
     }
 }
 
+=head2 st_build_cp_name ($email, $variable) 
+
+Transforms matt@foo.com into "matt" <matt@foo.com>
+
+ASSUMES users bestfullname is first half of email.  Avoid periods, dashes, and don't customize first, last, middle, or preferred name, please.
+
+=cut
+
+sub st_build_cp_name { 
+    my ($self, $email, $variable) = @_;
+    my $full = $email;
+    my @arr = split /\@/, $email;
+    my $link = '"' . $arr[0] . '"' . ' <' . $email . '>';
+    $self->{$variable} = $link;
+}
 
 =head2 st_search_cp_users($searchfor)
 
@@ -3437,6 +3452,38 @@ sub restart_userd {
         Time::HiRes::sleep(0.5);
     }
     fail "userd could not be restarted";
+}
+
+sub restart_everything {
+    my $self = shift;
+    Socialtext::System::shell_run(qw( nlwctl restart ));
+
+    my $host = $self->{hostname};
+    my @to_check = (
+        # UserD
+        HTTP::Request->new(
+            GET => 'http://localhost:' . $self->{userd_port} . '/ping',
+            [ Accept => 'application/json' ]
+        ),
+        # NLW
+        HTTP::Request->new(
+            GET => "http://$host:" . $self->{http_port} . '/nlw/login.html'
+        ),
+    );
+
+    my $ua = LWP::UserAgent->new;
+  SERVICE:
+    foreach my $req (@to_check) {
+      ATTEMPT:
+        for (1 .. 18) {
+            my $resp = $ua->request($req);
+            next SERVICE unless ($resp->is_error);
+            Time::HiRes::sleep(0.5);
+        }
+        fail "unable to reach: " . $req->uri;
+        BAIL_OUT("services could not be restarted");
+    }
+    pass "services restarted";
 }
 
 sub jsmake {

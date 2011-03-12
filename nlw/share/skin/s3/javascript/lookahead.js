@@ -324,8 +324,8 @@
                         padding: '3px 5px',
                         height: '15px', // overridden when there are thumbnails
                         lineHeight: '15px',
-                        float: 'left',
-                        clear: 'both'
+                        'float': 'left',
+                        'clear': 'both'
                     })
                     .appendTo(lookaheadList);
                 if (self.opts.getEntryThumbnail && !item.noThumbnail) {

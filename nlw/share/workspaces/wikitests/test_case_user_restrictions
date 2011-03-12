@@ -1,0 +1,45 @@
+| *Comment* | Test Case: User Restrictions |  |
+| *Comment* | Test Case: User Restrictions GUI and email checks NOTE: Other restrictions also in test_case_business_control_panel_confirm_user and test_case_command_line_user_restrictions |  |
+
+
+| *Comment* | Test Case: User Restrictions - Make sure emails are sent for change password and deactivate user |  |
+| set | acct | restrict%%start_time%% |
+| st-admin | create-account --name %%acct%% | was created |
+| set | ws | restrictws%%start_time%% |
+| set | emailaddr | %%ws%%@%%wikiemail%% |
+| st-admin | create-workspace --name %%ws%% --title %%ws%% --account %%acct%% | was created |
+| st-admin | create-user --e %%emailaddr%% --p %%password%% | was created |
+| st-admin | add-member --w %%ws%% --e %%username%% | now has the role of 'member' in the |
+| st-admin | add-member --w %%ws%% --e %%emailaddr%% | now has the role of 'member' in the |
+| st-admin | add-workspace-admin --e %%username%% --w %%ws%% | now has the role of 'admin' in the |
+
+| *Comment* | Test Case: User Restrictions - Make sure submitted emails /will/ become pages |  |
+| open_ok | /%%ws%%/ |  |
+| clickAndWait | link=Settings |  |
+| clickAndWait | link=Workspace Privacy |  |
+| click_ok | //input[@name='guest_has_email_in' and @value='1'] |  |
+| clickAndWait | link=Save |  |
+| text_like | contentContainer | Anyone can send email to %%ws%%. |
+
+| *Comment* | Test Case: User Restrictions - Create confirmations - this will generate emails (this, wikipages) |  |
+| st-admin | add-restriction --email %%emailaddr%% --restriction password_change | has been given the 'password_change' restriction |
+| st-admin | add-restriction --email %%emailaddr%% --restriction email_confirmation | has been given the 'email_confirmation' restriction |
+| st-process-jobs |  |  |
+
+| *Comment* | Test Case: User Restrictions Pause 90 seconds for invitation email delivery |  |
+| pause | 90000 |  |
+
+| *Comment* | Test Case: User Restrictions Check email delivery |  |
+| open_ok | /%%ws%% |  |
+| wait_for_element_visible_ok | link=What's New | 30000 |
+| click_and_wait | link=What's New |  |
+| wait_for_element_visible_ok | link=Please follow these instructions to change your Socialtext password | 30000 |
+| wait_for_element_visible_ok | link=Welcome to the lucite.socialtext.net community - please confirm your email to join | 30000 |
+
+| *Comment* | Test Case:User Restrictions TEARDOWN |  |
+| st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
+| st-admin | deactivate-user --e %%emailaddr%% | has been deleted |
+| st-process-jobs |  |  |
+
+
+| *Comment* | Test Case: User RestrictionsCOMPLETED |  |

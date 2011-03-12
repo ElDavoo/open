@@ -15,7 +15,7 @@ Needed for integration with Lotus Connections; the "LC->ST Connector" that IBM d
 | code-is   | 200                                                           |                               |                                                                                          |
 | body-like | "customjs_uri":"/monkey.js"                                   |                               |                                                                                          |
 | *comment* | ... and verify that it shows up on pages in WS                |                               |                                                                                          |
-| GET       | /%%wksp%%/index.cgi?advanced_getting_around                   |                               |                                                                                          |
+| GET       | /%%wksp%%/advanced_getting_around                   |                               |                                                                                          |
 | code-is   | 200                                                           |                               |                                                                                          |
 | body-like | /monkey.js                                                    |                               |                                                                                          |
 

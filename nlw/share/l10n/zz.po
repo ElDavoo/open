@@ -2195,6 +2195,10 @@ msgstr "Zzzzzz ..."
 msgid "control.calculated-unless-provided=field"
 msgstr "%1 zz zzzzzzzzzz zzzzzz zzzzzzzz"
 
+#: share/plugin/control/template/control/user.html:119
+msgid "control.clear-external-id"
+msgstr "Zzzzz Zzzzzzzz ZZ"
+
 #: share/plugin/control/share/javascript/template/control_table.tt2:18 share/plugin/control/template/control/user_table_header:10
 msgid "control.clear-selection"
 msgstr "Zzzzz Zzzzzzzzz"
@@ -2209,6 +2213,10 @@ msgstr ""
 "Zzz zzz zzzz zzz zzzz zz zzzzzz zzzz zzzzz?\z"
 "\z"
 "Zzz zzzz zzz zz zzzz zz zzzzzzz zzz zzzzz zzzz zz'z zzzzzzz. Zzzzz zzzz zz zzzzzz zz zzzz zz zzzzzz zz zzzz zzzzz zzz zzz zzzzzz zz zzzzzzzzzz zzzzzzz zzzz zzzzz zzzz zz zzzzzzz."
+
+#: share/plugin/control/template/control/add_users.html:27
+msgid "control.confirm-email-address"
+msgstr "Zzzzzzz z-zzzz zzzzzzz"
 
 #: share/plugin/control/template/control/paging_controls:6
 msgid "control.confirm-paging-discard-selection?"
@@ -2378,6 +2386,14 @@ msgstr "Zzzzzzzz"
 msgid "control.external-id"
 msgstr "Zzzzzzzz ZZ"
 
+#: share/plugin/control/template/control/user.html:112
+msgid "control.external-id-not-set"
+msgstr "Zzzzzzzz ZZ zz zzz zzz"
+
+#: share/plugin/control/template/control/user.html 110
+msgid "control.external-id-required"
+msgstr "Zzzzzzzz Zzzzzzzz ZZ"
+
 #: share/plugin/control/template/control/user.html:44
 msgid "control.external-id:"
 msgstr "Zzzzzzzz ZZ:"
@@ -2433,6 +2449,14 @@ msgstr "Zzzzz Zzzz"
 #: share/plugin/control/template/control/add_user.html:28
 msgid "control.first-name:"
 msgstr "Zzzzz zzzz:"
+
+#: share/plugin/control/template/control/user.html:103
+msgid "control.for-cac-authentication"
+msgstr "Zzz zzz zzzz ZZZ Zzzzzzzzzzzzzz"
+
+#: share/plugin/control/template/control/add_users.html:31
+msgid "control.force-password-change"
+msgstr "Zzzzz zzzzzzzz zzzzzz"
 
 #: share/plugin/control/template/control/group_add_to_workspace.html:27 share/plugin/control/template/control/workspace_add_group.html:28
 msgid "control.give-group-admin-privileges"
@@ -2641,6 +2665,10 @@ msgstr "Zzzzzz Zzzzzzzzz Zzzzzzzz Zzzzzzzzzzzzz Zzzz"
 msgid "control.remove-appliance-technical-administrator-role"
 msgstr "Zzzzzz Zzzzzzzzz Zzzzzzzzz Zzzzzzzzzzzzz Zzzz"
 
+#: share/plugin/control/template/control/user.html:125
+msgid "control.remove-external-id-requirement"
+msgstr "Zzzzzz Zzzzzzzz ZZ Zzzzzzzzzzz"
+
 #: share/plugin/control/template/control/user.html:271
 msgid "control.remove-from-wiki"
 msgstr "Zzzzzz zzzz Zzzzzzzzzz"
@@ -2667,6 +2695,10 @@ msgstr "Zzzzzz Zzzzzzz"
 #: share/plugin/control/template/control/account.html:32
 msgid "control.reports"
 msgstr "Zzzzzzz"
+
+#: share/plugin/control/template/control/add_users.html:35 share/plugin/control/template/control/user.html:130
+msgid "control.require-external-id"
+msgstr "Zzzzzzz Zzzzzzzz ZZ"
 
 #: share/plugin/control/template/control/fields-account.html:31
 msgid "control.required-field"
@@ -2757,7 +2789,7 @@ msgstr "Zzzzzz zzzzzz z zzzzzzzzz"
 
 #: share/plugin/control/share/javascript/lightbox/group-create.tt2:27 share/plugin/control/template/control/group.html:14
 msgid "control.self-join-group"
-msgstr "<strong>Zzzz-Zzzz:</strong> Zzz-Zzzzzzz zzz zzzz zzz zzzzz, zzz zzzz zzzzzz Zzzzzzz zz zzzzzzzzzz."
+msgstr "<strong>Zzzz-Zzzz:</strong> Zzz-Zzzzzzz zzz zzzz zzz zzzz zzz zzzzz."
 
 #: share/plugin/control/template/control/account_add_group.html:23 share/plugin/control/template/control/group_add_to_account.html:21 share/plugin/control/template/control/group_add_to_workspace.html:20 share/plugin/control/template/control/workspace_add_group.html:21
 msgid "control.send-invitation-email"
@@ -4481,6 +4513,11 @@ msgstr "Zzz Zzzzzz zzzzzz zz zzz zzzzzzzzz."
 msgid "error.mount-samba-share"
 msgstr "Zzzzzz zzzzz zzz ZZZZZ zzzzz."
 
+#. ($username,)
+#: lib/Socialtext/CredentialsExtractor/Extractor/CAC.pm:61
+msgid "error.multiple-user-matched=name"
+msgstr "Zzzzzzzz zzzzzzz zzzzz zzzz zzzzzzzzz zzz Zzzz zzzzzzzz \"%1\""
+
 #: lib/Socialtext/Handler/ControlPanel.pm:470
 msgid "error.new-account-name-required"
 msgstr "Zzz zzzz zzzzzzz z zzzz zz zzzzzz z zzz zzzzzzz."
@@ -4787,6 +4824,11 @@ msgstr "Zzzzz: Zz zzzzzzzzzz zz zzzzzzzzzz"
 #: lib/Socialtext/Handler/Authen.pm:228
 msgid "error.no-user-email"
 msgstr "Zzzz zzzzzzzz zzz zz zzzzzzzzzz zzzzz zzzzzzz."
+
+#. ($username,)
+#: lib/Socialtext/CredentialsExtractor/Extractor/CAC.pm:55
+msgid "error.no-user-matched=name"
+msgstr "Zz zzzzzzz zzzzz zzzz zzzzzzzzz zzz Zzzz zzzzzzzz \"%1\""
 
 #. ($email)
 #: lib/Socialtext/CLI.pm:3433
@@ -5312,6 +5354,11 @@ msgstr "Zzzzzzzzzz Zzzzzz >>%1<< in parseWidget"
 msgid "error.unknown"
 msgstr "Zzzzzzz zzzzz"
 
+#. ($type)
+#: lib/Socialtext/CLI.pm:1062
+msgid "error.unknown-restriction=type"
+msgstr "zzzzzzz zzzzzzzzzzz zzzz, '%1'"
+
 #. (status)
 #: ../appliance/libsocialtext-appliance-perl/template/help.html:76
 msgid "error.unknown=status"
@@ -5389,6 +5436,10 @@ msgstr "Zzz %1 zzz zzzzzzzz (%2) zz zzzzzzz zz zzz."
 #: lib/Socialtext/Handler/ControlPanel.pm:1719
 msgid "error.user-id-required=uri"
 msgstr "Zzz zzzz zzzzzzz z zzzz_zz zz zzzz ZZZ (%1)."
+
+#: share/plugin/control/template/control/user.html:32
+msgid "error.user-missing-from-ldap-during-last-refresh"
+msgstr "Zzzz zzzz zzz zzzzzzz zzzz zzz ZZZZ zzzzzzzzz zzzzzz zzz zzzz zzzzzzz."
 
 #. ($current_role->display_name, $group->display_name)
 #: lib/Socialtext/CLI.pm:1089
@@ -9565,6 +9616,29 @@ msgstr "Zzzzz"
 msgid "user.email-address"
 msgstr "Zzzzz Zzzzzzz"
 
+#. ($user->name_and_email)
+#: lib/Socialtext/Handler/ControlPanel.pm:516
+msgid "user.external-id-cleared=name"
+msgstr "Zzzzzzzz ZZ zzzzzzz zzz %1"
+
+#. ($user->name_and_email)
+#: lib/Socialtext/Handler/ControlPanel.pm:529
+msgid "user.external-id-requirement-added=name"
+msgstr "Zzzzzzzz ZZ zzzzzzzzzzz zzzzz zzz %1"
+
+#. ($user->name_and_email)
+#: lib/Socialtext/Handler/ControlPanel.pm:544
+msgid "user.external-id-requirement-removed=name"
+msgstr "Zzzzzzzz ZZ zzzzzzzzzzz zzzzzzz zzz %1"
+
+#: share/skin/s3/template/element/settings/users_settings_section:17 share/skin/s3/template/element/settings/users_settings_section:26
+msgid "user.first-name:"
+msgstr "Zzzzz zzzz:"
+
+#: lib/Socialtext/CLI.pm:1001
+msgid "user.given=name,restriction"
+msgstr "%1 zzz zzzz zzzzz zzz '%2' zzzzzzzzzzz"
+
 #. ($filename)
 #: lib/Socialtext/Handler/ControlPanel.pm:1142
 msgid "user.imported=file"
@@ -9578,6 +9652,11 @@ msgstr "Zzzzzzzzz zzzzz..."
 msgid "user.last-name:"
 msgstr "Zzzz zzzz:"
 
+#. ($r->restriction_type, $user->username,)
+#: lib/Socialtext/CLI.pm:1040
+msgid "user.lifted=restriction,name"
+msgstr "'%1' zzzzzzzzzzz zzz zzzz zzzzzz zz '%2'"
+
 #: share/skin/s3/template/view/settings:31
 msgid "user.list-all"
 msgstr "Zzzz Zzz Zzzzz"
@@ -9586,6 +9665,10 @@ msgstr "Zzzz Zzz Zzzzz"
 #: lib/Socialtext/Handler/ControlPanel.pm:2112
 msgid "user.matching=query"
 msgstr "Zzzzz zzzzzzzz \"%1\""
+
+#: share/skin/s3/template/element/settings/users_settings_section:21 share/skin/s3/template/element/settings/users_settings_section:30
+msgid "user.middle-name:"
+msgstr "Zzzzzz zzzz:"
 
 #: share/skin/s3/template/element/settings/users_settings_section:6
 msgid "user.name"
@@ -9596,10 +9679,32 @@ msgstr "Zzzz"
 msgid "user.no-changes=name"
 msgstr "Zz zzzzzzz zzz zzzz %1"
 
+#: lib/Socialtext/CLI.pm:972
+msgid "user.no-restrictions"
+msgstr "Zz zzzzzzzzzzzz zzz zzzz"
+
+#. ($user->username, $t)
+#: lib/Socialtext/CLI.pm:1028
+msgid "user.no-such=name,restriction"
+msgstr "'%1' zzzz zzz zzzz zzz '%2' zzzzzzzzzzz"
+
+#. ($user->username)
+#: lib/Socialtext/CLI.pm:1820
+msgid "user.password-changed=name"
+msgstr "Zzz zzzzzzzz zzz %1 zzz zzzz zzzzzzz."
+
 #. ($removed, $group->driver_group_name)
 #: lib/Socialtext/Handler/ControlPanel.pm:1237
 msgid "user.removed=count,group"
 msgstr "Zzz zzzz zzzzzzzzzzzz zzzzzzz %*(%1,zzzz) zzzz zzz %2 Zzzzz."
+
+#: lib/Socialtext/CLI.pm:977
+msgid "user.restriction-token"
+msgstr "Zzzzz"
+
+#: lib/Socialtext/CLI.pm:976
+msgid "user.restriction-type"
+msgstr "Zzzzzzzzzzz Zzzz"
 
 #: share/skin/s3/template/element/settings/users_listall_section:81
 msgid "user.role"

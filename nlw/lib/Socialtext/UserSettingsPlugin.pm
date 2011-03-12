@@ -98,8 +98,9 @@ sub _update_current_user {
 
     $self->_obfuscate_passwords;
 
-    $update{first_name} = $self->cgi->first_name;
-    $update{last_name}  = $self->cgi->last_name;
+    $update{first_name}  = $self->cgi->first_name;
+    $update{middle_name} = $self->cgi->middle_name;
+    $update{last_name}   = $self->cgi->last_name;
 
     eval { $user->update_store(%update) };
 
@@ -189,9 +190,8 @@ sub _update_users_in_workspace {
 
     for my $user_id ( grep { !$removed{$_} } $self->cgi->reset_password ) {
         my $user = Socialtext::User->new( user_id => $user_id );
-
-        $user->set_confirmation_info( is_password_change => 1 );
-        $user->send_password_change_email();
+        my $confirmation = $user->create_password_change_confirmation;
+        $confirmation->send;
     }
 
     my %should_be_admin = map { $_ => 1 } $self->cgi->should_be_admin;
@@ -616,6 +616,7 @@ cgi 'user_search';
 cgi 'email_addresses';
 cgi 'users_new_ids';
 cgi 'first_name';
+cgi 'middle_name';
 cgi 'last_name';
 cgi 'append_invitation';
 cgi 'invitation_text';

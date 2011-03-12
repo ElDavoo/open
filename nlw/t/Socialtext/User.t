@@ -4,10 +4,12 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 66;
+use Test::Socialtext tests => 70;
 fixtures(qw( clean db ));
 use Socialtext::User;
 use Socialtext::Role;
+use Socialtext::SQL::Builder qw(sql_abstract);
+use Socialtext::SQL qw(sql_execute);
 use Test::Socialtext::Fatal;
 
 my $user;
@@ -87,9 +89,9 @@ my $user3 = Socialtext::User->create(
     created_by_user_id => $user->user_id,
 );
 
-$user3->set_confirmation_info(is_password_change => 0);
+$user3->create_email_confirmation;
 
-is( $user3->requires_confirmation, 1, 'user requires confirmation' );
+ok $user3->requires_email_confirmation, 'user requires email confirmation';
 
 account_roles_for_created_user: {
     my $member         = Socialtext::Role->Member();
@@ -392,7 +394,7 @@ to_hash: {
     );
     my @standard_fields = qw(
         user_id username email_address password
-        first_name last_name display_name
+        first_name middle_name last_name display_name
         creation_datetime last_login_datetime
         email_address_at_import created_by_user_id
         is_business_admin is_technical_admin is_system_created
@@ -435,6 +437,38 @@ to_hash: {
         my $expect = $make_hash->($user, @with_private_fields);
         is_deeply $data, $expect, 'Extended/private hash repr for User';
     }
+}
+
+reload: {
+    my $user      = create_test_user();
+    my $old_email = $user->email_address;
+    my $new_email = Test::Socialtext->create_unique_id . '@ken.socialtext.net';
+
+    # manually update the DB, faking an update that we want to reload
+    my ($sth, @bind) = sql_abstract->update(
+        'users',
+        { email_address => $new_email },
+        { email_address => $old_email },
+    );
+    sql_execute($sth, @bind);
+
+    ($sth, @bind) = sql_abstract->update(
+        '"UserMetadata"',
+        { email_address_at_import => $new_email },
+        { email_address_at_import => $old_email },
+    );
+    sql_execute($sth, @bind);
+
+    # Verify the old values are in the User object
+    is $user->email_address,           $old_email, '... old e-mail in homey';
+    is $user->email_address_at_import, $old_email, '... old e-mail in metadata';
+
+    # Reload the User object
+    $user->reload;
+
+    # Confirm that the new values are in the User object
+    is $user->email_address,           $new_email, '... new e-mail in homey';
+    is $user->email_address_at_import, $new_email, '... new e-mail in metadata';
 }
 
 pass 'done';

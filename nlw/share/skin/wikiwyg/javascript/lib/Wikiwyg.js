@@ -2152,24 +2152,34 @@ proto.do_opensocial_setup = function(src) {
         return false;
     });
 
-    $('#st-widget-opensocial-setup-widgets').html('').append(
-        $('<iframe />', {
-            src: '/?action=widget_setup_screen'
-                + ';widget=' + encodeURIComponent(src)
-                + ';workspace_name=' + encodeURIComponent(Socialtext.wiki_id)
-                + ';page_id=' + encodeURIComponent(Socialtext.page_id)
-                + ';serial=' + encodeURIComponent(serial)
-                + ';encoded_prefs=' + encodeURIComponent(encoded_prefs)
-                + ';_=' + Math.random(),
-            width: '600px',
-            height: '400px'
-        })
-    );
+    $('#st-widget-opensocial-setup-widgets').text('');
 
     jQuery.showLightbox({
         content: '#st-widget-opensocial-setup',
         close: '#st-widget-opensocial-setup-cancel',
-        width: '640px'
+        width: '640px',
+        callback: function(){ 
+            $('#st-widget-opensocial-setup-widgets').append(
+                $('<iframe />', {
+                    src: '/?action=widget_setup_screen'
+                        + ';widget=' + encodeURIComponent(src)
+                        + ';workspace_name=' + encodeURIComponent(Socialtext.wiki_id)
+                        + ';page_id=' + encodeURIComponent(Socialtext.page_id)
+                        + ';serial=' + encodeURIComponent(serial)
+                        + ';encoded_prefs=' + encodeURIComponent(encoded_prefs)
+                        + ';_=' + Math.random(),
+                    width: '600px',
+                    height: '400px'
+                }).one('load', function(){
+                    // Workaround the bug that prevented containers from rendering
+                    // correctly the first time.
+                    if ( $(this).contents().find(".st-savebutton").size() == 0 ) {
+                        $(this.contentWindow.document.body).html('');
+                        this.contentWindow.location.reload(true);
+                    }
+                })
+            );
+        }
     });
 
 

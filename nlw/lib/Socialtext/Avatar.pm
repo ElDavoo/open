@@ -9,7 +9,10 @@ use Socialtext::File;
 use Socialtext::Skin;
 use Socialtext::SQL qw(:txn :exec get_dbh);
 use Socialtext::SQL::Builder qw(sql_insert sql_update);
+use Try::Tiny;
 use namespace::clean -except => 'meta';
+
+requires qw(cache table versions id_column id resize_spec default_skin);
 
 sub DefaultPhoto {
     my $class = shift;
@@ -24,8 +27,6 @@ sub DefaultPhoto {
     my $blob = Socialtext::File::get_contents_binary("$dir/$file");
     return \$blob;
 }
-
-requires qw(cache table versions id_column id Resize default_skin);
 
 sub cache_dir {
     my $class = shift;
@@ -53,16 +54,18 @@ sub set {
     my $self = shift;
     my $blob_ref = shift;
 
-    eval {
+    return try {
         my %blobs;
         for my $version (@{$self->versions}) {
-            my ($fh, $filename) = tempfile;
-            print $fh $$blob_ref;
-            close $fh or die "Invalid image: $!";
+            my $tmp = File::Temp->new(UNLINK => 1);
+            print $tmp $$blob_ref;
+            close $tmp or die "Invalid image: $!";
 
-            $self->Resize($version, $filename);
+            my $spec = Socialtext::Image::spec_resize_get(
+                $self->resize_spec, $version);
+            Socialtext::Image::spec_resize($spec, "$tmp" => "$tmp");
 
-            my $contents = Socialtext::File::get_contents_binary($filename);
+            my $contents = Socialtext::File::get_contents_binary("$tmp");
             $self->$version(\$contents);
             $blobs{$version} = \$contents;
         }
@@ -70,14 +73,14 @@ sub set {
         $self->_save_db(%blobs);
         $self->_save_cache(%blobs);
         $self->default(0);
-    };
-    # check if there were any problems with the image format
-    if ($@) {
-        return "Animated images are not supported"
-            if $@ =~ /Can't resize animated images/;
-        warn $@;
-        return "Invalid image";
+        return;
     }
+    catch {
+        return "Animated images are not supported"
+            if /Can't resize animated images/;
+        warn $_;
+        return "Invalid image";
+    };
 }
 
 sub purge {

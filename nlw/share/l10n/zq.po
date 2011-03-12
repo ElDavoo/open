@@ -2195,6 +2195,10 @@ msgstr "«Browse ...»"
 msgid "control.calculated-unless-provided=field"
 msgstr "«%1 is calculated unless provided»"
 
+#: share/plugin/control/template/control/user.html:119
+msgid "control.clear-external-id"
+msgstr "«Clear External ID»"
+
 #: share/plugin/control/share/javascript/template/control_table.tt2:18 share/plugin/control/template/control/user_table_header:10
 msgid "control.clear-selection"
 msgstr "«Clear Selection»"
@@ -2209,6 +2213,10 @@ msgstr ""
 "«Are you sure you want to delete this group?\n»"
 "«\n»"
 "«You will not be able to restore the group once it's deleted. Users will no longer be able to signal to this group and any access to workspaces through this group will be revoked.»"
+
+#: share/plugin/control/template/control/add_users.html:27
+msgid "control.confirm-email-address"
+msgstr "«Confirm e-mail address»"
 
 #: share/plugin/control/template/control/paging_controls:6
 msgid "control.confirm-paging-discard-selection?"
@@ -2378,6 +2386,14 @@ msgstr "«External»"
 msgid "control.external-id"
 msgstr "«External ID»"
 
+#: share/plugin/control/template/control/user.html:112
+msgid "control.external-id-not-set"
+msgstr "«External ID is not set»"
+
+#: share/plugin/control/template/control/user.html 110
+msgid "control.external-id-required"
+msgstr "«Requires External ID»"
+
 #: share/plugin/control/template/control/user.html:44
 msgid "control.external-id:"
 msgstr "«External ID:»"
@@ -2433,6 +2449,14 @@ msgstr "«Field Type»"
 #: share/plugin/control/template/control/add_user.html:28
 msgid "control.first-name:"
 msgstr "«First name:»"
+
+#: share/plugin/control/template/control/user.html:103
+msgid "control.for-cac-authentication"
+msgstr "«For use with CAC Authentication»"
+
+#: share/plugin/control/template/control/add_users.html:31
+msgid "control.force-password-change"
+msgstr "«Force password change»"
 
 #: share/plugin/control/template/control/group_add_to_workspace.html:27 share/plugin/control/template/control/workspace_add_group.html:28
 msgid "control.give-group-admin-privileges"
@@ -2641,6 +2665,10 @@ msgstr "«Remove Appliance Business Administrator Role»"
 msgid "control.remove-appliance-technical-administrator-role"
 msgstr "«Remove Appliance Technical Administrator Role»"
 
+#: share/plugin/control/template/control/user.html:125
+msgid "control.remove-external-id-requirement"
+msgstr "«Remove External ID Requirement»"
+
 #: share/plugin/control/template/control/user.html:271
 msgid "control.remove-from-wiki"
 msgstr "«Remove from Workspaces»"
@@ -2667,6 +2695,10 @@ msgstr "«Rename Account»"
 #: share/plugin/control/template/control/account.html:32
 msgid "control.reports"
 msgstr "«Reports»"
+
+#: share/plugin/control/template/control/add_users.html:35 share/plugin/control/template/control/user.html:130
+msgid "control.require-external-id"
+msgstr "«Require External ID»"
 
 #: share/plugin/control/template/control/fields-account.html:31
 msgid "control.required-field"
@@ -2757,7 +2789,7 @@ msgstr "«Please select a workspace»"
 
 #: share/plugin/control/share/javascript/lightbox/group-create.tt2:27 share/plugin/control/template/control/group.html:14
 msgid "control.self-join-group"
-msgstr "«<strong>Self-Join:</strong> Non-Members can view the group, but must become Members to contribute.»"
+msgstr "«<strong>Self-Join:</strong> Non-Members can view and join the group.»"
 
 #: share/plugin/control/template/control/account_add_group.html:23 share/plugin/control/template/control/group_add_to_account.html:21 share/plugin/control/template/control/group_add_to_workspace.html:20 share/plugin/control/template/control/workspace_add_group.html:21
 msgid "control.send-invitation-email"
@@ -4481,6 +4513,11 @@ msgstr "«The People plugin is not available.»"
 msgid "error.mount-samba-share"
 msgstr "«Cannot mount the SAMBA share.»"
 
+#. ($username,)
+#: lib/Socialtext/CredentialsExtractor/Extractor/CAC.pm:61
+msgid "error.multiple-user-matched=name"
+msgstr "«Multiple matches found when searching for User matching \"%1\"»"
+
 #: lib/Socialtext/Handler/ControlPanel.pm:470
 msgid "error.new-account-name-required"
 msgstr "«You must provide a name to create a new account.»"
@@ -4787,6 +4824,11 @@ msgstr "«Error: No timeserver is configured»"
 #: lib/Socialtext/Handler/Authen.pm:228
 msgid "error.no-user-email"
 msgstr "«This username has no associated email address.»"
+
+#. ($username,)
+#: lib/Socialtext/CredentialsExtractor/Extractor/CAC.pm:55
+msgid "error.no-user-matched=name"
+msgstr "«No matches found when searching for User matching \"%1\"»"
 
 #. ($email)
 #: lib/Socialtext/CLI.pm:3433
@@ -5312,6 +5354,11 @@ msgstr "«Unexpected Widget >>%1<< in parseWidget»"
 msgid "error.unknown"
 msgstr "«Unknown error»"
 
+#. ($type)
+#: lib/Socialtext/CLI.pm:1062
+msgid "error.unknown-restriction=type"
+msgstr "«unknown restriction type, '%1'»"
+
 #. (status)
 #: ../appliance/libsocialtext-appliance-perl/template/help.html:76
 msgid "error.unknown=status"
@@ -5389,6 +5436,10 @@ msgstr "«The %1 you provided (%2) is already in use.»"
 #: lib/Socialtext/Handler/ControlPanel.pm:1719
 msgid "error.user-id-required=uri"
 msgstr "«You must provide a user_id to this URI (%1).»"
+
+#: share/plugin/control/template/control/user.html:32
+msgid "error.user-missing-from-ldap-during-last-refresh"
+msgstr "«This user was missing from the LDAP directory during the last refresh.»"
 
 #. ($current_role->display_name, $group->display_name)
 #: lib/Socialtext/CLI.pm:1089
@@ -9565,6 +9616,29 @@ msgstr "«Email»"
 msgid "user.email-address"
 msgstr "«Email Address»"
 
+#. ($user->name_and_email)
+#: lib/Socialtext/Handler/ControlPanel.pm:516
+msgid "user.external-id-cleared=name"
+msgstr "«External ID cleared for %1»"
+
+#. ($user->name_and_email)
+#: lib/Socialtext/Handler/ControlPanel.pm:529
+msgid "user.external-id-requirement-added=name"
+msgstr "«External ID requirement added for %1»"
+
+#. ($user->name_and_email)
+#: lib/Socialtext/Handler/ControlPanel.pm:544
+msgid "user.external-id-requirement-removed=name"
+msgstr "«External ID requirement removed for %1»"
+
+#: share/skin/s3/template/element/settings/users_settings_section:17 share/skin/s3/template/element/settings/users_settings_section:26
+msgid "user.first-name:"
+msgstr "«First name:»"
+
+#: lib/Socialtext/CLI.pm:1001
+msgid "user.given=name,restriction"
+msgstr "«%1 has been given the '%2' restriction»"
+
 #. ($filename)
 #: lib/Socialtext/Handler/ControlPanel.pm:1142
 msgid "user.imported=file"
@@ -9578,6 +9652,11 @@ msgstr "«Importing users...»"
 msgid "user.last-name:"
 msgstr "«Last name:»"
 
+#. ($r->restriction_type, $user->username,)
+#: lib/Socialtext/CLI.pm:1040
+msgid "user.lifted=restriction,name"
+msgstr "«'%1' restriction has been lifted on '%2'»"
+
 #: share/skin/s3/template/view/settings:31
 msgid "user.list-all"
 msgstr "«List All Users»"
@@ -9586,6 +9665,10 @@ msgstr "«List All Users»"
 #: lib/Socialtext/Handler/ControlPanel.pm:2112
 msgid "user.matching=query"
 msgstr "«Users matching \"%1\"»"
+
+#: share/skin/s3/template/element/settings/users_settings_section:21 share/skin/s3/template/element/settings/users_settings_section:30
+msgid "user.middle-name:"
+msgstr "«Middle name:»"
 
 #: share/skin/s3/template/element/settings/users_settings_section:6
 msgid "user.name"
@@ -9596,10 +9679,32 @@ msgstr "«Name»"
 msgid "user.no-changes=name"
 msgstr "«No changes for user %1»"
 
+#: lib/Socialtext/CLI.pm:972
+msgid "user.no-restrictions"
+msgstr "«No restrictions for user»"
+
+#. ($user->username, $t)
+#: lib/Socialtext/CLI.pm:1028
+msgid "user.no-such=name,restriction"
+msgstr "«'%1' does not have the '%2' restriction»"
+
+#. ($user->username)
+#: lib/Socialtext/CLI.pm:1820
+msgid "user.password-changed=name"
+msgstr "«The password for %1 has been changed.»"
+
 #. ($removed, $group->driver_group_name)
 #: lib/Socialtext/Handler/ControlPanel.pm:1237
 msgid "user.removed=count,group"
 msgstr "«You have successfully removed %*(%1,user) from the %2 Group.»"
+
+#: lib/Socialtext/CLI.pm:977
+msgid "user.restriction-token"
+msgstr "«Token»"
+
+#: lib/Socialtext/CLI.pm:976
+msgid "user.restriction-type"
+msgstr "«Restriction Type»"
 
 #: share/skin/s3/template/element/settings/users_listall_section:81
 msgid "user.role"

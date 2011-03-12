@@ -1,9 +1,0 @@
-# Remove this test later please
-
-* Fixture: SocialRest
-
-| *Comment* | This test will DIE!! |
-| GET | /st/dashboard |
-| body-like | Socialtext |
-
-^ Die die die

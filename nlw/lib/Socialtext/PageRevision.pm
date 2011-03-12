@@ -29,7 +29,7 @@ has 'hub' => (is => 'rw', isa => 'Socialtext::Hub', weak_ref => 1);
 has 'workspace_id' => (is => 'rw', isa => 'Int');
 has 'page_id'      => (is => 'rw', isa => 'Str');
 *id = *page_id; # legacy code uses this alias
-has 'revision_id'  => (is => 'rw', isa => 'Int');
+has 'revision_id'  => (is => 'rw', isa => 'Num');
 
 has 'revision_num' => (is => 'rw', isa => 'Int', default => 0);
 has 'name'         => (is => 'rw', isa => 'UniStr', coerce => 1);
@@ -428,9 +428,17 @@ sub datetime_utc {
 # For overriding in tests, and potentially for providing legacy-compatible IDs
 our $NextRevisionID;
 sub next_revision_id {
-    defined $NextRevisionID
-        ? $NextRevisionID++
-        : sql_nextval('page_revision_id_seq')
+    return $NextRevisionID++ if defined $NextRevisionID;
+
+    my $hires = Time::HiRes::time();
+    $hires =~ m/^(\d+)(?:\.(\d{0,5})\d*)?$/;
+    my ($time, $fractional) = ($1, $2||0);
+    my ($sec, $min, $hour, $mday, $mon, $year) = gmtime($time);
+    my $id = sprintf(
+        "%4d%02d%02d%02d%02d%02d.$fractional",
+        $year + 1900, $mon + 1, $mday, $hour, $min, $sec
+    );
+    return $id;
 }
 
 sub store {

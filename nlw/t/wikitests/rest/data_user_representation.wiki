@@ -22,6 +22,7 @@ Tests the ReST representations for Users
 | body-like | <tr><td>email_address</td><td>%%username%%</td></tr>           |
 | body-like | <tr><td>username</td><td>%%username%%</td></tr>                |
 | body-like | <tr><td>first_name</td><td></td></tr>                          |
+| body-like | <tr><td>middle_name</td><td></td></tr>                         |
 | body-like | <tr><td>last_name</td><td></td></tr>                           |
 | body-like | <tr><td>creator_username</td><td>system-user</td></tr>         |
 | body-like | <tr><td>created_by_user_id</td><td>1</td></tr>                 |
@@ -39,6 +40,7 @@ Tests the ReST representations for Users
 | body-like | "email_address":"%%username%%"           |                  |
 | body_like | "username":"%%username%%"                |                  |
 | body_like | "first_name":""                          |                  |
+| body_like | "middle_name":""                         |                  |
 | body_like | "last_name":""                           |                  |
 | body_like | "creator_username":"system-user"         |                  |
 | body_like | "created_by_user_id":"1"                 |                  |

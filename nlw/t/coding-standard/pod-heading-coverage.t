@@ -233,7 +233,6 @@ my %ToDoModules = map { $_ => 1 } qw(
     Socialtext::UploadedImage
     Socialtext::User::Base
     Socialtext::User::Cache
-    Socialtext::User::EmailConfirmation
     Socialtext::User::Factory
     Socialtext::User::Find
     Socialtext::User::Find::Workspace
