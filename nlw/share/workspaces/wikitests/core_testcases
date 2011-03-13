@@ -118,6 +118,7 @@ Put tests that don't use the browser here
 * [Test Case: Command Line: LOCK PAGES]
 * [Test Case: Command Line: TAGS]
 * [Test Case: Command Line: NEW]
+* [Test Case: Command Line: User Restrictions]
 * [Test Case: Workspace Config Preservation]
 
 Return to last login fails when People and Dashboard are installed. Keep the test because

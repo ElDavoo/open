@@ -1,3 +1,4 @@
+
 | *Comment* | Test Case: Business Control Panel Confirm User |  |
 
 | st-config | set self_registration 1 |  |
@@ -9,7 +10,7 @@
 | set | eself_reg2 | %%self_reg2%%@matt.socialtext.net |
 
 | *Comment* | Test Case: Business Control Panel Confirm User, self-register |  |
-| click_and_wait | link=Log out |  |
+| open_ok | /nlw/submit/logout |  |
 | wait_for_element_visible_ok | link=Register | 30000 |
 | click_and_wait | link=Register |  |
 | wait_for_element_visible_ok | email_address | 30000 |
@@ -65,5 +66,9 @@
 | st-login | %%eself_reg2%% | %%password%% |
 | open_ok | /st/dashboard |  |
 | wait_for_text_present_ok | Welcome, New User | 30000 |
+
+| *Comment* | Test Case: Business Control Panel Confirm User TEARDOWN |  |
+| st-admin | deactivate-user --e %%eself_reg%% | removed |
+| st-admin | deactivate-user --e %%eself_reg2%% | removed |
 
 | *Comment* | Test Case: Business Control Panel Confirm User COMPLETED |  |

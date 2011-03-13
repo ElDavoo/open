@@ -1,7 +1,7 @@
 | *Comment* | Test Case: Business Control Panel Mass Add Users |  |
 
 | *Comment* | Test Case: Business Control Panel Mass Add Users Create Account |  |
-| set | acct | acctmassadd%%start_time%% |
+| set | acct | acctmassadd-%%start_time%% |
 | st-admin | create-account --name %%acct%% | was created |
 
 | *Comment* | Test Case: Business Control Panel Mass Add Users Navigate to account in /nlw |  |
@@ -12,6 +12,8 @@
 | click_and_wait | st-submit-search-by-name |  |
 | wait_for_element_visible_ok | link=%%acct%% | 30000 |
 | click_and_wait | link=%%acct%% |  |
+
+| *Comment* | Test Case: Business Control Panel Mass Add Users Add Multiple Users |  |
 | wait_for_element_visible_ok | link=Add Multiple Users | 30000 |
 | click_and_wait | link=Add Multiple Users |  |
 | wait_for_element_visible_ok | st-add-users-file | 30000 |
@@ -23,4 +25,7 @@
 | text_like | //body | When adding/updating Users, you may also specify a series of optional restrictions to be placed on their User records. Until these restrictions have been satisfied and cleared, Users will be unable to log in to the system |
 
 
-| *Comment* | Test Case: Business Control Panel Mass Add Users |
+| *Comment* | Test Case: Business Control Panel Mass Add Users TEARDOWN |
+| delete-account | %%acct%% |  |
+
+| *Comment* | Test Case: Business Control Panel Mass Add Users COMPLETED |
