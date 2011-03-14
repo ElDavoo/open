@@ -3134,7 +3134,7 @@ msgstr "加载订阅出错：%1"
 msgid "error.loading-preview-failed"
 msgstr "无法加载预览。"
 
-msgid "error.loading-revisio-failed"
+msgid "error.loading-revision-failed"
 msgstr "无法载入修订。"
 
 msgid "error.long-page-name=title"
@@ -6084,7 +6084,7 @@ msgid "sc.left"
 msgstr "左側"
 
 msgid "sc.loading"
-msgstr "加载..."
+msgstr "加载中..."
 
 msgid "sc.move"
 msgstr "移动"
@@ -6117,7 +6117,7 @@ msgid "sc.ok-or-cancel"
 msgstr "按确定继续，或取消停留在当前页面。"
 
 msgid "sc.on:"
-msgstr "开："
+msgstr "时间："
 
 msgid "sc.padding"
 msgstr "填充"

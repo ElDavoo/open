@@ -728,7 +728,7 @@
 "error.is-guest":"Zzz zzzz zzzzzzzz zz zz zzzzzz zz zz zzz zzzz zzzzzzz.",
 "error.link-selection-required":"Zzzzzz zzzzzz zzz zzzz zzz zzzzz zzzz zz zzzz zzzz z zzzz.",
 "error.loading-preview-failed":"Zzzzzz zz zzzz zzzzzzz.",
-"error.loading-revisio-failed":"Zzzzzz zz zzzz zzzzzzzz.",
+"error.loading-revision-failed":"Zzzzzz zz zzzz zzzzzzzz.",
 "error.long-page-name=title":"Zzz zzzz zzzz zzz zzzzzzzz, \"[_1]\", zz zzz zzzz zzzzz ZZZ zzzzzzzz.",
 "error.new-sheet-name-required":"Zzzzzz zzzzzzz z zzzz zzz zzz zzz zzzzz.",
 "error.no-activities":"Zz zzzzzzzzzz zz zzzzzzz.",

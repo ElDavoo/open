@@ -30,7 +30,7 @@ msgid "error.loading-preview-failed"
 msgstr "Failed to load preview."
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2609
-msgid "error.loading-revisio-failed"
+msgid "error.loading-revision-failed"
 msgstr "Failed to load revision."
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2170

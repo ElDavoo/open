@@ -728,7 +728,7 @@
 "error.is-guest":"You must register or be logged in to use this feature.",
 "error.link-selection-required":"Please select the text you would like to turn into a link.",
 "error.loading-preview-failed":"Failed to load preview.",
-"error.loading-revisio-failed":"Failed to load revision.",
+"error.loading-revision-failed":"Failed to load revision.",
 "error.long-page-name=title":"The page name you selected, \"[_1]\", is too long after URL encoding.",
 "error.new-sheet-name-required":"Please provide a name for the new sheet.",
 "error.no-activities":"No activities to display.",

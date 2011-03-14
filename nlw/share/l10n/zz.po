@@ -4446,7 +4446,7 @@ msgid "error.loading-preview-failed"
 msgstr "Zzzzzz zz zzzz zzzzzzz."
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2609
-msgid "error.loading-revisio-failed"
+msgid "error.loading-revision-failed"
 msgstr "Zzzzzz zz zzzz zzzzzzzz."
 
 #. (new_title)

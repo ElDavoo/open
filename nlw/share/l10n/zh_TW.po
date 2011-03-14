@@ -3134,7 +3134,7 @@ msgstr "載入訂閱出錯：%1"
 msgid "error.loading-preview-failed"
 msgstr "無法載入預覽。"
 
-msgid "error.loading-revisio-failed"
+msgid "error.loading-revision-failed"
 msgstr "無法載入修訂。"
 
 msgid "error.long-page-name=title"
@@ -6009,7 +6009,7 @@ msgid "sc.cancel-edit"
 msgstr "取消編輯"
 
 msgid "sc.cell-comment"
-msgstr "單元格注解"
+msgstr "儲存格注解"
 
 msgid "sc.center"
 msgstr "中心"
@@ -6066,7 +6066,7 @@ msgid "sc.format"
 msgstr "格式"
 
 msgid "sc.formats-will-apply-as-default"
-msgstr "以上格式會<b>套用</b>為所有單元格的<b>預設值</b>。"
+msgstr "以上格式會<b>套用</b>為所有儲存格的<b>預設值</b>。"
 
 msgid "sc.formats-will-apply-to"
 msgstr "以上格式會<b>套用</b>到"
@@ -6084,7 +6084,7 @@ msgid "sc.left"
 msgstr "左側"
 
 msgid "sc.loading"
-msgstr "載入..."
+msgstr "載入中..."
 
 msgid "sc.move"
 msgstr "移動"
@@ -6117,7 +6117,7 @@ msgid "sc.ok-or-cancel"
 msgstr "按確定繼續，或取消停留在當前頁面。"
 
 msgid "sc.on:"
-msgstr "開："
+msgstr "時間："
 
 msgid "sc.padding"
 msgstr "填充"
@@ -6222,7 +6222,7 @@ msgid "sc.swap-foreground-background-colors"
 msgstr "交換前景色和背景色"
 
 msgid "sc.target-cell"
-msgstr "單元格"
+msgstr "儲存格"
 
 msgid "sc.target-range"
 msgstr "範圍"
@@ -7164,7 +7164,7 @@ msgid "wafl.section=name"
 msgstr "段落：%1"
 
 msgid "wafl.sheet-cell"
-msgstr "單元格"
+msgstr "儲存格"
 
 msgid "wafl.sheet-title"
 msgstr "試算表名稱"
