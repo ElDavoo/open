@@ -2437,9 +2437,8 @@ msgstr "展開"
 msgid "edit.expand-view"
 msgstr "展開編輯區域以輸入瀏覽視窗"
 
-#: share/skin/s3/javascript/lightbox/edit_check.tt2:9
 msgid "edit.force"
-msgstr "Edit Anyway"
+msgstr "繼續編輯"
 
 msgid "edit.loading"
 msgstr "正在載入..."
@@ -2468,9 +2467,8 @@ msgstr "預覽"
 msgid "edit.remove=tag"
 msgstr "將%1從此佇列中移除"
 
-#: share/skin/s3/javascript/lightbox/edit_check.tt2:10
 msgid "edit.return-to-page-view"
-msgstr "Return to Page View"
+msgstr "返回頁面檢視"
 
 msgid "edit.rich-text"
 msgstr "豐富文本"
@@ -2523,9 +2521,8 @@ msgstr "您的更改的原始wikitext 如下。您可以從此處複製您的更
 msgid "edit.view-unsaved:"
 msgstr "您剛編輯的文本顯示如下。您可以從此處複製您的更改。"
 
-#: share/skin/s3/javascript/lightbox/edit_check.tt2:2
 msgid "edit.warning"
-msgstr "Edit Warning"
+msgstr "編輯警告"
 
 msgid "edit.wiki-text"
 msgstr "源碼格式"
@@ -2836,9 +2833,8 @@ msgstr "未提供郵箱"
 msgid "error.email-spreadsheet"
 msgstr "對不起，此功能不支援試算表。"
 
-#: share/plugin/widgets/share/javascript/activities/editor.js:376
 msgid "error.error"
-msgstr "error"
+msgstr "錯誤"
 
 msgid "error.error=message"
 msgstr "出錯：%1"
@@ -3248,17 +3244,14 @@ msgstr "訊息 %1 無法被導入：找不到發送者『%2』"
 msgid "error.no-imported-recipient=signal,user"
 msgstr "訊息 %1 無法被導入：找不到接受者『%2』"
 
-#: share/plugin/widgets/share/javascript/activities/explore.js:15
 msgid "error.no-items-for-explore"
-msgstr "There are no items to show. Either no one has posted any links or attachments, or you have too many filters applied."
+msgstr "沒有可顯示的項目。可能是沒人發布鏈結或附件，也可能是您新增了太多過濾器。"
 
 msgid "error.no-ldap-group-factories"
 msgstr "LDAP 群組配置不存在；不能在 LDAP 建立群組。"
 
-#. ($(this.input)
-#: share/skin/s3/javascript/lookahead.js:361
 msgid "error.no-match=lookahead"
-msgstr "No matches for '%1'"
+msgstr "沒有和『%1』符合的項目"
 
 msgid "error.no-page-body"
 msgstr "儲存頁面時，正文不能為空。"
@@ -3470,9 +3463,8 @@ msgstr "無法解析，檔案中缺失必要欄位（%1），並且必須包含�
 msgid "error.parse-missing-fields"
 msgstr "欄位不足無法解析，跳過此用戶。"
 
-#: share/skin/s3/javascript/lookahead.js:662
 msgid "error.parsing-data"
-msgstr "Error parsing data"
+msgstr "解析資料出錯"
 
 msgid "error.password-exists-for=email"
 msgstr "電子郵箱位址 %1 已設有密碼。"
@@ -3966,29 +3958,23 @@ msgstr "這個郵件位址："
 msgid "example.wiki-url:"
 msgstr "範例：acme-product-dev 建立的工作區位址為："
 
-#: share/plugin/signals/template/explore_header:9
 msgid "explore.all-assets"
-msgstr "All Assets"
+msgstr "所有資源"
 
-#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:8
 msgid "explore.all-people"
-msgstr "All People"
+msgstr "所有人"
 
-#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:25 share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:26
 msgid "explore.any-group"
-msgstr "Any Group"
+msgstr "任何群組"
 
-#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:38 share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:39
 msgid "explore.any-tag"
-msgstr "Any Tag"
+msgstr "任何標籤"
 
-#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:49 share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:50
 msgid "explore.anyone"
-msgstr "Anyone"
+msgstr "任何人"
 
-#: share/plugin/signals/template/explore_header:10
 msgid "explore.attachments"
-msgstr "Attachments"
+msgstr "附件"
 
 msgid "explore.beta"
 msgstr "探索（測試）"
@@ -4008,27 +3994,23 @@ msgstr "不要再顯示此資訊"
 msgid "explore.everyone"
 msgstr "所有人"
 
-#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:15
 msgid "explore.from"
-msgstr "From"
+msgstr "從"
 
-#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:22
 msgid "explore.groups"
-msgstr "GROUPS"
+msgstr "群組"
 
 msgid "explore.just-me"
 msgstr "只有我"
 
-#: share/plugin/signals/template/explore_header:17
 msgid "explore.mentions"
-msgstr "Mentions"
+msgstr "提及"
 
 msgid "explore.mentions=count"
 msgstr "%1 項提及"
 
-#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:10
 msgid "explore.mine"
-msgstr "Mine"
+msgstr "我的"
 
 msgid "explore.more"
 msgstr "更多"
@@ -4048,33 +4030,26 @@ msgstr "過去的一周"
 msgid "explore.past-year"
 msgstr "過去的一年"
 
-#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:46
 msgid "explore.people"
-msgstr "PEOPLE"
+msgstr "人員"
 
-#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:9
 msgid "explore.people-i-follow"
-msgstr "People I follow"
+msgstr "我關注的人"
 
-#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:57
 msgid "explore.permalink-for-this-view"
-msgstr "Permalink for this View"
+msgstr "此檢視的永久鏈結"
 
-#: share/plugin/signals/template/explore_header:16
 msgid "explore.recency"
-msgstr "Recency"
+msgstr "發佈時間"
 
-#: share/plugin/signals/template/explore_header:14
 msgid "explore.sort-by:"
-msgstr "Sort by:"
+msgstr "排序按："
 
-#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:34
 msgid "explore.tags-from"
-msgstr "TAGS from"
+msgstr "標籤來自"
 
-#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:17
 msgid "explore.to"
-msgstr "to"
+msgstr "到"
 
 msgid "explore.today"
 msgstr "今天"
@@ -4082,13 +4057,11 @@ msgstr "今天"
 msgid "explore.using-filters"
 msgstr "使用下面的過濾器來篩選結果。點選『x』來取消過濾。"
 
-#: share/plugin/signals/template/explore_header:12
 msgid "explore.web-links"
-msgstr "Web Links"
+msgstr "網頁鏈結"
 
-#: share/plugin/signals/template/explore_header:11
 msgid "explore.wiki-links"
-msgstr "Workspace Links"
+msgstr "工作區鏈結"
 
 msgid "export.html"
 msgstr "匯出為 HTML"
@@ -4189,9 +4162,8 @@ msgstr "已上傳的檔案："
 msgid "file.uploading=name"
 msgstr "正在上傳 %1..."
 
-#: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:15
 msgid "files.none"
-msgstr "none"
+msgstr "無"
 
 msgid "free50.account"
 msgstr "50 個免費 Socialtext 帳戶"
@@ -4953,9 +4925,8 @@ msgstr "用戶名"
 msgid "lookahead.all-results"
 msgstr "顯示所有結果..."
 
-#: share/plugin/widgets/share/javascript/activities/editor.js:852
 msgid "lookahead.start-typing"
-msgstr "Start typing..."
+msgstr "開始鍵入..."
 
 msgid "mediawiki.server-url"
 msgstr "MediaWiki伺服器網址"
@@ -5194,9 +5165,8 @@ msgstr "上傳的日期"
 msgid "nav.users"
 msgstr "用戶"
 
-#: share/skin/s3/template/element/listview_tabs:16 share/skin/s3/template/view/empty_watchlist:17
 msgid "nav.view:"
-msgstr "View:"
+msgstr "查看："
 
 msgid "nav.watchlist"
 msgstr "關注列表"
@@ -5384,9 +5354,8 @@ msgstr "此頁面沒有標籤。"
 msgid "page.nothing-locked=wiki"
 msgstr "工作區 %1 沒有鎖定頁面。"
 
-#: share/skin/s3/javascript/lightbox/edit_check.tt2:4
 msgid "page.opened-for-edit=user,ago"
-msgstr "%1 has opened this page for editing %2."
+msgstr "%1 已於 %2 打開此頁編輯。"
 
 msgid "page.orphaned"
 msgstr "孤立頁面"
@@ -6349,21 +6318,17 @@ msgstr "該設備的最大值是 %1"
 msgid "signals.importing"
 msgstr "正在導入訊息..."
 
-#: share/plugin/widgets/share/javascript/activities/editor.js:1508
 msgid "signals.insert-mention:"
-msgstr "Insert mention of user:"
+msgstr "提及用戶："
 
-#: share/plugin/widgets/share/javascript/activities/editor.js:1493
 msgid "signals.insert-tag:"
-msgstr "Insert tag:"
+msgstr "插入標籤："
 
-#: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:10
 msgid "signals.link-destination:"
-msgstr "Link destination:"
+msgstr "鏈結目的地："
 
-#: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:5
 msgid "signals.link-text:"
-msgstr "Link text:"
+msgstr "顯示文字："
 
 msgid "signals.matching=query"
 msgstr "符合『%1』的訊息"
@@ -6401,9 +6366,8 @@ msgstr "已發送的私人訊息"
 msgid "signals.private-message-to-email"
 msgstr "如果勾選上，每次別人給您發送私人訊息，您將會收到包含該消息的電子郵件。"
 
-#: share/plugin/widgets/share/javascript/activities/editor.js:1533
 msgid "signals.private-message-to:"
-msgstr "Create private message to:"
+msgstr "發送私信給："
 
 msgid "signals.private-messages"
 msgstr "私人訊息"
@@ -6483,9 +6447,8 @@ msgstr "請重新嘗試："
 msgid "signals.update"
 msgstr "更新"
 
-#: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:15
 msgid "signals.uploaded-files:"
-msgstr "Uploaded files:"
+msgstr "已上傳的檔案："
 
 msgid "signals.what-are-you-working-on?"
 msgstr "您在做什麼呢？"
@@ -7423,9 +7386,8 @@ msgstr "恢復小工具"
 msgid "widgets.restored=widget"
 msgstr "成功恢復『%1』小工具"
 
-#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:24
 msgid "widgets.rss-feed"
-msgstr "RSS feed"
+msgstr "RSS 訂閱"
 
 msgid "widgets.update"
 msgstr "（更新）"

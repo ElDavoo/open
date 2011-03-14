@@ -15,6 +15,24 @@ msgstr "关闭"
 msgid "error.signal-too-long=limit"
 msgstr "您的讯息超过了 %1 字数"
 
+msgid "explore.all-assets"
+msgstr "所有资源"
+
+msgid "explore.all-people"
+msgstr "所有人"
+
+msgid "explore.any-group"
+msgstr "任何群组"
+
+msgid "explore.any-tag"
+msgstr "任何标签"
+
+msgid "explore.anyone"
+msgstr "任何人"
+
+msgid "explore.attachments"
+msgstr "附件"
+
 msgid "explore.beta"
 msgstr "探索（测试）"
 
@@ -24,11 +42,50 @@ msgstr "不要再显示此信息"
 msgid "explore.everyone"
 msgstr "所有人"
 
+msgid "explore.from"
+msgstr "从"
+
+msgid "explore.groups"
+msgstr "群组"
+
 msgid "explore.just-me"
 msgstr "只有我"
 
+msgid "explore.mentions"
+msgstr "提及"
+
+msgid "explore.mine"
+msgstr "我的"
+
+msgid "explore.people"
+msgstr "人員"
+
+msgid "explore.people-i-follow"
+msgstr "我关注的人"
+
+msgid "explore.permalink-for-this-view"
+msgstr "此檢视的永久链接"
+
+msgid "explore.recency"
+msgstr "發佈時間"
+
+msgid "explore.sort-by:"
+msgstr "排序按："
+
+msgid "explore.tags-from"
+msgstr "标签來自"
+
+msgid "explore.to"
+msgstr "到"
+
 msgid "explore.using-filters"
 msgstr "使用下面的过滤器来筛选结果。点击“x”来取消过滤。"
+
+msgid "explore.web-links"
+msgstr "网页链接"
+
+msgid "explore.wiki-links"
+msgstr "工作区链接"
 
 msgid "info.about-explore"
 msgstr "<b>Socialtext 探索</b> 让您轻松发现同事们通过 Socialtext 讯息分享的文件和链接。使用顶部的标签来选择类型，用左边的筛选功能来减少要显示的信息。<br /> <br /> 每个列出的项目都有一个以上提及它的讯息对话。您可以点击项目来打开链接，或者点击标题左边的方框来查看和回复对话。"

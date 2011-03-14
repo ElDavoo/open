@@ -336,6 +336,9 @@ msgstr "请复制您的更改并点击取消返回到页面。"
 msgid "edit.expand"
 msgstr "扩展"
 
+msgid "edit.force"
+msgstr "继续编辑"
+
 msgid "edit.loading"
 msgstr "载入中..."
 
@@ -344,6 +347,9 @@ msgstr "一般"
 
 msgid "edit.remove=tag"
 msgstr "将%1从此队列中移除"
+
+msgid "edit.return-to-page-view"
+msgstr "返回页面檢视"
 
 msgid "edit.save"
 msgstr "保存"
@@ -362,6 +368,9 @@ msgstr "您的更改的原始wikitext 如下。您可以从此处复制您的更
 
 msgid "edit.view-unsaved:"
 msgstr "您刚编辑的文本显示如下。您可以从此处复制您的更改。"
+
+msgid "edit.warning"
+msgstr "编辑警告"
 
 msgid "email.add-all"
 msgstr "添加所有成员"
@@ -435,6 +444,9 @@ msgstr "您必须注册或者登录以使用此功能。"
 msgid "error.long-page-name=title"
 msgstr "您选择的新页面名称“%1”，在网址编码之后太长了。"
 
+msgid "error.no-match=lookahead"
+msgstr "没有和“%1”匹配的项目"
+
 msgid "error.no-page-doc"
 msgstr "您必须至少勾选一个页面来创建Word文档"
 
@@ -455,6 +467,9 @@ msgstr "由於您的应用配置限制，只有帐户管理员可以创建群组
 
 msgid "error.page-exists=title,button"
 msgstr "您选择的新页面名称“%1”已经被使用，请选择其它的名字。如果您确定要覆盖現有的“%1”页面，请再次点击“%2”。"
+
+msgid "error.parsing-data"
+msgstr "解析数据出错"
 
 msgid "error.same-page-name=title"
 msgstr "您选择的新页面名称“%1”，跟现在的名称一样。请输入新的名称。"
@@ -1014,6 +1029,9 @@ msgstr "试试Socialtext Signals"
 msgid "nav.uploaded-date"
 msgstr "上传的日期"
 
+msgid "nav.view:"
+msgstr "查看："
+
 msgid "nav.wiki"
 msgstr "工作区"
 
@@ -1143,6 +1161,9 @@ msgstr "还没有页面链接到此页面。"
 msgid "page.no-tags"
 msgstr "此页面没有标签。"
 
+msgid "page.opened-for-edit=user,ago"
+msgstr "%1 已于 %2 打开此页编辑。"
+
 msgid "page.orphaned"
 msgstr "孤立页面"
 
@@ -1187,6 +1208,9 @@ msgstr "标题"
 
 msgid "page.top"
 msgstr "页面顶部"
+
+msgid "page.type-spreadsheet"
+msgstr "电子表格"
 
 msgid "page.type-wiki"
 msgstr "页面"
@@ -1604,6 +1628,3 @@ msgstr "要添加一个工作区到<strong>新群组</strong>，请到主导航�
 
 msgid "wiki.visit-later=wiki"
 msgstr "您也可以在此工作区继续工作，稍后再转到“%1”。"
-
-msgid "page.type-spreadsheet"
-msgstr "电子表格"
