@@ -123,7 +123,19 @@ sub gen_po {
     if ($lang ne 'en') {
         system("msgcat --width 99999 $use_first -s @{[reverse sort glob(qq[share/l10n/$lang/*.po])]} > $po_file.orig");
         system("diff -du $po_file.orig $po_file | grep ^+ > $po_file.diff");
-        warn "*** Diff generated successfully: $po_file.diff\n" if -s "$po_file.diff";
+        if (-s "$po_file.diff") {
+            open my $diff, '<', "$po_file.diff";
+            open my $diff_po, '>', "$po_file.diff.txt";
+            while (<$diff>) {
+                if (/\+msgid "([^"]+)"/) {
+                    print $diff_po "[[[$1]]]\n";
+                }
+                elsif (/\+msgstr "([^"]+)"/) {
+                    print $diff_po "$1\n\n";
+                }
+            }
+            warn "*** Diff for myGengo generated successfully: $po_file.diff.txt\n"
+        }
     }
     warn "*** Generated successfully: $po_file\n";
 }

@@ -191,7 +191,6 @@ msgstr "Workspace Email Receive Setting"
 msgid "config.files"
 msgstr "Manage Files"
 
-#:
 msgid "config.first-name:"
 msgstr "First name:"
 
@@ -455,6 +454,10 @@ msgstr "Please copy your changes, and click Cancel to return to the page."
 msgid "edit.expand"
 msgstr "Expand"
 
+#: share/skin/s3/javascript/lightbox/edit_check.tt2:9
+msgid "edit.force"
+msgstr "Edit Anyway"
+
 #: share/skin/s3/template/view/page/display:55
 msgid "edit.loading"
 msgstr "Loading..."
@@ -467,6 +470,10 @@ msgstr "Normal"
 #: share/skin/s3/javascript/s3.js:302
 msgid "edit.remove=tag"
 msgstr "Remove %1 from the queue"
+
+#: share/skin/s3/javascript/lightbox/edit_check.tt2:10
+msgid "edit.return-to-page-view"
+msgstr "Return to Page View"
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:23 share/skin/s3/template/element/settings/start:16 share/skin/s3/template/element/settings/start:8 share/skin/s3/template/element/settings/stop:6 share/skin/s3/template/lite/page/edit.html:10 share/skin/s3/template/lite/page/edit.html:15
 msgid "edit.save"
@@ -494,6 +501,10 @@ msgstr "The raw wikitext of your changes are below. You can copy your changes fr
 #: share/skin/s3/template/lite/page/contention.html:7 share/skin/s3/template/lite/page/page_locked.html:7
 msgid "edit.view-unsaved:"
 msgstr "The text you just edited is shown below. You can copy your changes from here:"
+
+#: share/skin/s3/javascript/lightbox/edit_check.tt2:2
+msgid "edit.warning"
+msgstr "Edit Warning"
 
 #: share/skin/s3/javascript/lightbox/email.tt2:40
 msgid "email.add-all"
@@ -594,6 +605,11 @@ msgstr "You must register or be logged in to use this feature."
 msgid "error.long-page-name=title"
 msgstr "The page name you selected, \"%1\", is too long after URL encoding."
 
+#. ($(this.input)
+#: share/skin/s3/javascript/lookahead.js:361
+msgid "error.no-match=lookahead"
+msgstr "No matches for '%1'"
+
 #: share/skin/s3/javascript/s3.js:826
 msgid "error.no-page-doc"
 msgstr "You must check at least one page in order to create a Word document."
@@ -624,6 +640,10 @@ msgstr "Your appliance is configured so that only account administrators can cre
 #: share/skin/s3/javascript/st-lightbox.js:81
 msgid "error.page-exists=title,button"
 msgstr "The new page name you selected, \"%1\", is already in use.  Please choose a different name.  If you are sure you wish to overwrite the existing \"%1\" page, please press \"%2\" again."
+
+#: share/skin/s3/javascript/lookahead.js:662
+msgid "error.parsing-data"
+msgstr "Error parsing data"
 
 #. (new_title)
 #: share/skin/s3/javascript/st-lightbox.js:96
@@ -1389,6 +1409,10 @@ msgstr "Try Socialtext Signals"
 msgid "nav.uploaded-date"
 msgstr "Date Uploaded"
 
+#: share/skin/s3/template/element/listview_tabs:16 share/skin/s3/template/view/empty_watchlist:17
+msgid "nav.view:"
+msgstr "View:"
+
 #: share/skin/s3/template/layout/html:134 share/skin/s3/template/layout/user_frame:139
 msgid "nav.wiki"
 msgstr "Workspace"
@@ -1577,6 +1601,10 @@ msgstr "There are no pages that link to this page yet."
 #: share/skin/s3/javascript/pageview.js:173 share/skin/s3/template/view/page/display:169
 msgid "page.no-tags"
 msgstr "There are no tags for this page."
+
+#: share/skin/s3/javascript/lightbox/edit_check.tt2:4
+msgid "page.opened-for-edit=user,ago"
+msgstr "%1 has opened this page for editing %2."
 
 #: share/skin/s3/template/element/listview_tabs:11 share/skin/s3/template/view/empty_watchlist:13
 msgid "page.orphaned"
@@ -2001,11 +2029,9 @@ msgstr "Look for"
 msgid "watch.stop"
 msgstr "Stop Watching"
 
-#:
 msgid "widget.preview"
 msgstr "Preview"
 
-#:
 msgid "widget.push-all"
 msgstr "Push to all dashboards"
 

@@ -18,6 +18,30 @@ msgstr "Close"
 msgid "error.signal-too-long=limit"
 msgstr "Your signal exceeded %1 characters"
 
+#: share/plugin/signals/template/explore_header:9
+msgid "explore.all-assets"
+msgstr "All Assets"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:8
+msgid "explore.all-people"
+msgstr "All People"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:25 share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:26
+msgid "explore.any-group"
+msgstr "Any Group"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:38 share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:39
+msgid "explore.any-tag"
+msgstr "Any Tag"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:49 share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:50
+msgid "explore.anyone"
+msgstr "Anyone"
+
+#: share/plugin/signals/template/explore_header:10
+msgid "explore.attachments"
+msgstr "Attachments"
+
 #: share/plugin/signals/template/explore_hello:2
 msgid "explore.beta"
 msgstr "Explore (beta)"
@@ -30,13 +54,65 @@ msgstr "Do not show this information again"
 msgid "explore.everyone"
 msgstr "Everyone"
 
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:15
+msgid "explore.from"
+msgstr "From"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:22
+msgid "explore.groups"
+msgstr "GROUPS"
+
 #: share/plugin/signals/share/widgets/explore_filters/widget.js:289
 msgid "explore.just-me"
 msgstr "Just Me"
 
+#: share/plugin/signals/template/explore_header:17
+msgid "explore.mentions"
+msgstr "Mentions"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:10
+msgid "explore.mine"
+msgstr "Mine"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:46
+msgid "explore.people"
+msgstr "PEOPLE"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:9
+msgid "explore.people-i-follow"
+msgstr "People I follow"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:57
+msgid "explore.permalink-for-this-view"
+msgstr "Permalink for this View"
+
+#: share/plugin/signals/template/explore_header:16
+msgid "explore.recency"
+msgstr "Recency"
+
+#: share/plugin/signals/template/explore_header:14
+msgid "explore.sort-by:"
+msgstr "Sort by:"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:34
+msgid "explore.tags-from"
+msgstr "TAGS from"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:17
+msgid "explore.to"
+msgstr "to"
+
 #: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:3
 msgid "explore.using-filters"
 msgstr "Use the filters below to narrow the results. Use the small 'x' by any of the Groups, Tags and People filters to remove them."
+
+#: share/plugin/signals/template/explore_header:12
+msgid "explore.web-links"
+msgstr "Web Links"
+
+#: share/plugin/signals/template/explore_header:11
+msgid "explore.wiki-links"
+msgstr "Workspace Links"
 
 #: share/plugin/signals/share/javascript/lightbox/explore-about.tt2:4
 msgid "info.about-explore"

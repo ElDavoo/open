@@ -673,6 +673,18 @@ msgstr "更新者"
 msgid "blog.view"
 msgstr "查看"
 
+#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26
+msgid "bookmarklet.share-via-signals"
+msgstr "bookmarklet to share any page on the web via Signals."
+
+#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26
+msgid "bookmarklet.signal-this!"
+msgstr "Signal This!"
+
+#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26
+msgid "bookmarklet.tip"
+msgstr "Tip: Use the"
+
 msgid "bug.contact-support"
 msgstr "请填写<a href=\"http://www.socialtext.com/customers/support_request.php\">技术支持请求</a>表格，联系Socialtext，描述错误发生的时间，以及发生错误之前的操作。"
 
@@ -2428,6 +2440,10 @@ msgstr "展开"
 msgid "edit.expand-view"
 msgstr "展开编辑区域以输入浏览窗口"
 
+#: share/skin/s3/javascript/lightbox/edit_check.tt2:9
+msgid "edit.force"
+msgstr "Edit Anyway"
+
 msgid "edit.loading"
 msgstr "正在加载..."
 
@@ -2454,6 +2470,10 @@ msgstr "预览"
 
 msgid "edit.remove=tag"
 msgstr "将%1从此队列中移除"
+
+#: share/skin/s3/javascript/lightbox/edit_check.tt2:10
+msgid "edit.return-to-page-view"
+msgstr "Return to Page View"
 
 msgid "edit.rich-text"
 msgstr "丰富文本"
@@ -2505,6 +2525,10 @@ msgstr "您的更改的原始wikitext 如下。您可以从此处复制您的更
 
 msgid "edit.view-unsaved:"
 msgstr "您刚编辑的文本显示如下。您可以从此处复制您的更改。"
+
+#: share/skin/s3/javascript/lightbox/edit_check.tt2:2
+msgid "edit.warning"
+msgstr "Edit Warning"
 
 msgid "edit.wiki-text"
 msgstr "源码格式"
@@ -2814,6 +2838,10 @@ msgstr "未提供邮箱"
 
 msgid "error.email-spreadsheet"
 msgstr "对不起，此功能不支持电子表格。"
+
+#: share/plugin/widgets/share/javascript/activities/editor.js:376
+msgid "error.error"
+msgstr "error"
 
 msgid "error.error=message"
 msgstr "出错：%1"
@@ -3223,8 +3251,17 @@ msgstr "讯息 %1 无法被导入：找不到发送者“%2”"
 msgid "error.no-imported-recipient=signal,user"
 msgstr "讯息 %1 无法被导入：找不到接受者“%2”"
 
+#: share/plugin/widgets/share/javascript/activities/explore.js:15
+msgid "error.no-items-for-explore"
+msgstr "There are no items to show. Either no one has posted any links or attachments, or you have too many filters applied."
+
 msgid "error.no-ldap-group-factories"
 msgstr "LDAP 群组配置不存在；不能在 LDAP 创建群组。"
+
+#. ($(this.input)
+#: share/skin/s3/javascript/lookahead.js:361
+msgid "error.no-match=lookahead"
+msgstr "No matches for '%1'"
 
 msgid "error.no-page-body"
 msgstr "保存页面时，正文不能为空。"
@@ -3435,6 +3472,10 @@ msgstr "无法解析，文件中缺失必要字段（%1），并且必须包含�
 
 msgid "error.parse-missing-fields"
 msgstr "字段不足无法解析，跳过此用户。"
+
+#: share/skin/s3/javascript/lookahead.js:662
+msgid "error.parsing-data"
+msgstr "Error parsing data"
 
 msgid "error.password-exists-for=email"
 msgstr "电子邮箱地址 %1 已设有密码。"
@@ -3928,6 +3969,30 @@ msgstr "这个邮件地址："
 msgid "example.wiki-url:"
 msgstr "示例：acme-product-dev 创建的工作区地址为："
 
+#: share/plugin/signals/template/explore_header:9
+msgid "explore.all-assets"
+msgstr "All Assets"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:8
+msgid "explore.all-people"
+msgstr "All People"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:25 share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:26
+msgid "explore.any-group"
+msgstr "Any Group"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:38 share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:39
+msgid "explore.any-tag"
+msgstr "Any Tag"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:49 share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:50
+msgid "explore.anyone"
+msgstr "Anyone"
+
+#: share/plugin/signals/template/explore_header:10
+msgid "explore.attachments"
+msgstr "Attachments"
+
 msgid "explore.beta"
 msgstr "探索（测试）"
 
@@ -3946,11 +4011,27 @@ msgstr "不要再显示此信息"
 msgid "explore.everyone"
 msgstr "所有人"
 
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:15
+msgid "explore.from"
+msgstr "From"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:22
+msgid "explore.groups"
+msgstr "GROUPS"
+
 msgid "explore.just-me"
 msgstr "只有我"
 
+#: share/plugin/signals/template/explore_header:17
+msgid "explore.mentions"
+msgstr "Mentions"
+
 msgid "explore.mentions=count"
 msgstr "%1 項提及"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:10
+msgid "explore.mine"
+msgstr "Mine"
 
 msgid "explore.more"
 msgstr "更多"
@@ -3970,11 +4051,47 @@ msgstr "过去的一周"
 msgid "explore.past-year"
 msgstr "过去的一年"
 
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:46
+msgid "explore.people"
+msgstr "PEOPLE"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:9
+msgid "explore.people-i-follow"
+msgstr "People I follow"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:57
+msgid "explore.permalink-for-this-view"
+msgstr "Permalink for this View"
+
+#: share/plugin/signals/template/explore_header:16
+msgid "explore.recency"
+msgstr "Recency"
+
+#: share/plugin/signals/template/explore_header:14
+msgid "explore.sort-by:"
+msgstr "Sort by:"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:34
+msgid "explore.tags-from"
+msgstr "TAGS from"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:17
+msgid "explore.to"
+msgstr "to"
+
 msgid "explore.today"
 msgstr "今天"
 
 msgid "explore.using-filters"
 msgstr "使用下面的过滤器来筛选结果。点击“x”来取消过滤。"
+
+#: share/plugin/signals/template/explore_header:12
+msgid "explore.web-links"
+msgstr "Web Links"
+
+#: share/plugin/signals/template/explore_header:11
+msgid "explore.wiki-links"
+msgstr "Workspace Links"
 
 msgid "export.html"
 msgstr "导出为 HTML"
@@ -4074,6 +4191,10 @@ msgstr "已上传的文件："
 
 msgid "file.uploading=name"
 msgstr "正在上传 %1..."
+
+#: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:15
+msgid "files.none"
+msgstr "none"
 
 msgid "free50.account"
 msgstr "50 个免费 Socialtext 帐户"
@@ -4834,6 +4955,10 @@ msgstr "用户名"
 msgid "lookahead.all-results"
 msgstr "显示所有结果..."
 
+#: share/plugin/widgets/share/javascript/activities/editor.js:852
+msgid "lookahead.start-typing"
+msgstr "Start typing..."
+
 msgid "mediawiki.server-url"
 msgstr "MediaWiki服务器网址"
 
@@ -5071,6 +5196,10 @@ msgstr "上传的日期"
 msgid "nav.users"
 msgstr "用户"
 
+#: share/skin/s3/template/element/listview_tabs:16 share/skin/s3/template/view/empty_watchlist:17
+msgid "nav.view:"
+msgstr "View:"
+
 msgid "nav.watchlist"
 msgstr "关注列表"
 
@@ -5256,6 +5385,10 @@ msgstr "此页面没有标签。"
 
 msgid "page.nothing-locked=wiki"
 msgstr "工作区 %1 没有锁定页面。"
+
+#: share/skin/s3/javascript/lightbox/edit_check.tt2:4
+msgid "page.opened-for-edit=user,ago"
+msgstr "%1 has opened this page for editing %2."
 
 msgid "page.orphaned"
 msgstr "孤立页面"
@@ -6211,6 +6344,22 @@ msgstr "该设备的最大值是 %1"
 msgid "signals.importing"
 msgstr "正在导入讯息..."
 
+#: share/plugin/widgets/share/javascript/activities/editor.js:1508
+msgid "signals.insert-mention:"
+msgstr "Insert mention of user:"
+
+#: share/plugin/widgets/share/javascript/activities/editor.js:1493
+msgid "signals.insert-tag:"
+msgstr "Insert tag:"
+
+#: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:10
+msgid "signals.link-destination:"
+msgstr "Link destination:"
+
+#: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:5
+msgid "signals.link-text:"
+msgstr "Link text:"
+
 msgid "signals.matching=query"
 msgstr "符合“%1”的讯息"
 
@@ -6246,6 +6395,10 @@ msgstr "已发送的私人讯息"
 
 msgid "signals.private-message-to-email"
 msgstr "如果勾选上，每次别人給您发送私人讯息，您将会收到包含该消息的电子邮件。"
+
+#: share/plugin/widgets/share/javascript/activities/editor.js:1533
+msgid "signals.private-message-to:"
+msgstr "Create private message to:"
 
 msgid "signals.private-messages"
 msgstr "私人讯息"
@@ -6324,6 +6477,10 @@ msgstr "请重新尝试："
 
 msgid "signals.update"
 msgstr "更新"
+
+#: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:15
+msgid "signals.uploaded-files:"
+msgstr "Uploaded files:"
 
 msgid "signals.what-are-you-working-on?"
 msgstr "您在做什么呢？"
@@ -7260,6 +7417,10 @@ msgstr "恢复小工具"
 
 msgid "widgets.restored=widget"
 msgstr "成功恢复“%1”小工具"
+
+#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:24
+msgid "widgets.rss-feed"
+msgstr "RSS feed"
 
 msgid "widgets.update"
 msgstr "（更新）"

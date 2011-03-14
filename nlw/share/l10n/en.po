@@ -1023,6 +1023,18 @@ msgstr "Updated by"
 msgid "blog.view"
 msgstr "View"
 
+#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26
+msgid "bookmarklet.share-via-signals"
+msgstr "bookmarklet to share any page on the web via Signals."
+
+#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26
+msgid "bookmarklet.signal-this!"
+msgstr "Signal This!"
+
+#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26
+msgid "bookmarklet.tip"
+msgstr "Tip: Use the"
+
 #: lib/Socialtext/Hub.pm:197
 msgid "bug.contact-support"
 msgstr "Please contact Socialtext support using the <a href=\"http://www.socialtext.com/customers/support_request.php\">Technical Support Request</a> form and describe the the time the error occurred, and what you were attempting to do prior to the error."
@@ -3432,6 +3444,10 @@ msgstr "Expand"
 msgid "edit.expand-view"
 msgstr "Expand edit area to fill browser window"
 
+#: share/skin/s3/javascript/lightbox/edit_check.tt2:9
+msgid "edit.force"
+msgstr "Edit Anyway"
+
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:27 share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1888 share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3563 share/skin/s3/template/view/page/display:55
 msgid "edit.loading"
 msgstr "Loading..."
@@ -3468,6 +3484,10 @@ msgstr "Preview"
 #: share/skin/s3/javascript/s3.js:302
 msgid "edit.remove=tag"
 msgstr "Remove %1 from the queue"
+
+#: share/skin/s3/javascript/lightbox/edit_check.tt2:10
+msgid "edit.return-to-page-view"
+msgstr "Return to Page View"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:19
 msgid "edit.rich-text"
@@ -3541,6 +3561,10 @@ msgstr "The raw wikitext of your changes are below. You can copy your changes fr
 #: share/skin/s3/template/lite/page/contention.html:7 share/skin/s3/template/lite/page/page_locked.html:7
 msgid "edit.view-unsaved:"
 msgstr "The text you just edited is shown below. You can copy your changes from here:"
+
+#: share/skin/s3/javascript/lightbox/edit_check.tt2:2
+msgid "edit.warning"
+msgstr "Edit Warning"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:20
 msgid "edit.wiki-text"
@@ -3975,6 +3999,10 @@ msgstr "e-mail address was not supplied!"
 #: share/skin/s3/template/view/page/display:105
 msgid "error.email-spreadsheet"
 msgstr "Sorry, this feature is not available for spreadsheets"
+
+#: share/plugin/widgets/share/javascript/activities/editor.js:376
+msgid "error.error"
+msgstr "error"
 
 #. (res.errors[0])
 #. (message)
@@ -4592,9 +4620,18 @@ msgstr "Signal number %1 could not be imported: author '%2' not found"
 msgid "error.no-imported-recipient=signal,user"
 msgstr "Signal number %1 could not be imported: recipient '%2' not found for a direct signal"
 
+#: share/plugin/widgets/share/javascript/activities/explore.js:15
+msgid "error.no-items-for-explore"
+msgstr "There are no items to show. Either no one has posted any links or attachments, or you have too many filters applied."
+
 #: lib/Socialtext/CLI.pm:3586
 msgid "error.no-ldap-group-factories"
 msgstr "No LDAP Group Factories configured; cannot create Group from LDAP."
+
+#. ($(this.input)
+#: share/skin/s3/javascript/lookahead.js:361
+msgid "error.no-match=lookahead"
+msgstr "No matches for '%1'"
 
 #: lib/Socialtext/EditPlugin.pm:195
 msgid "error.no-page-body"
@@ -4911,6 +4948,10 @@ msgstr "could not be parsed.  The file was missing the following required fields
 #: lib/Socialtext/MassAdd.pm:109
 msgid "error.parse-missing-fields"
 msgstr "could not be parsed (missing fields).  Skipping this user."
+
+#: share/skin/s3/javascript/lookahead.js:662
+msgid "error.parsing-data"
+msgstr "Error parsing data"
 
 #. ($email_address)
 #: lib/Socialtext/Handler/Authen.pm:634
@@ -5618,6 +5659,30 @@ msgstr "and this email address:"
 msgid "example.wiki-url:"
 msgstr "Example: acme-product-dev creates this workspace address:"
 
+#: share/plugin/signals/template/explore_header:9
+msgid "explore.all-assets"
+msgstr "All Assets"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:8
+msgid "explore.all-people"
+msgstr "All People"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:25 share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:26
+msgid "explore.any-group"
+msgstr "Any Group"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:38 share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:39
+msgid "explore.any-tag"
+msgstr "Any Tag"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:49 share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:50
+msgid "explore.anyone"
+msgstr "Anyone"
+
+#: share/plugin/signals/template/explore_header:10
+msgid "explore.attachments"
+msgstr "Attachments"
+
 #: share/plugin/signals/template/explore_hello:2
 msgid "explore.beta"
 msgstr "Explore (beta)"
@@ -5645,14 +5710,30 @@ msgstr "Do not show this information again"
 msgid "explore.everyone"
 msgstr "Everyone"
 
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:15
+msgid "explore.from"
+msgstr "From"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:22
+msgid "explore.groups"
+msgstr "GROUPS"
+
 #: share/plugin/signals/share/widgets/explore_filters/widget.js:289
 msgid "explore.just-me"
 msgstr "Just Me"
+
+#: share/plugin/signals/template/explore_header:17
+msgid "explore.mentions"
+msgstr "Mentions"
 
 #. (asset.count)
 #: share/plugin/widgets/share/javascript/template/activities/assets.tt2:26
 msgid "explore.mentions=count"
 msgstr "%*(%1,mention)"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:10
+msgid "explore.mine"
+msgstr "Mine"
 
 #: share/plugin/widgets/share/javascript/template/activities/assets.tt2:3
 msgid "explore.more"
@@ -5678,6 +5759,34 @@ msgstr "PAST WEEK"
 msgid "explore.past-year"
 msgstr "PAST YEAR"
 
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:46
+msgid "explore.people"
+msgstr "PEOPLE"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:9
+msgid "explore.people-i-follow"
+msgstr "People I follow"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:57
+msgid "explore.permalink-for-this-view"
+msgstr "Permalink for this View"
+
+#: share/plugin/signals/template/explore_header:16
+msgid "explore.recency"
+msgstr "Recency"
+
+#: share/plugin/signals/template/explore_header:14
+msgid "explore.sort-by:"
+msgstr "Sort by:"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:34
+msgid "explore.tags-from"
+msgstr "TAGS from"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:17
+msgid "explore.to"
+msgstr "to"
+
 #: share/plugin/widgets/share/javascript/activities/explore.js:180
 msgid "explore.today"
 msgstr "TODAY"
@@ -5685,6 +5794,14 @@ msgstr "TODAY"
 #: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:3
 msgid "explore.using-filters"
 msgstr "Use the filters below to narrow the results. Use the small 'x' by any of the Groups, Tags and People filters to remove them."
+
+#: share/plugin/signals/template/explore_header:12
+msgid "explore.web-links"
+msgstr "Web Links"
+
+#: share/plugin/signals/template/explore_header:11
+msgid "explore.wiki-links"
+msgstr "Workspace Links"
 
 #: share/skin/s3/template/view/page/display:113
 msgid "export.html"
@@ -5829,6 +5946,10 @@ msgstr "Uploaded files:"
 #: share/skin/s3/javascript/lightbox/attachment.js:209
 msgid "file.uploading=name"
 msgstr "Uploading %1..."
+
+#: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:15
+msgid "files.none"
+msgstr "none"
 
 #: lib/Socialtext/Handler/Authen.pm:79
 msgid "free50.account"
@@ -6889,6 +7010,10 @@ msgstr "username"
 msgid "lookahead.all-results"
 msgstr "Show all results..."
 
+#: share/plugin/widgets/share/javascript/activities/editor.js:852
+msgid "lookahead.start-typing"
+msgstr "Start typing..."
+
 #: share/plugin/mediawiki/template/element/settings/mediawiki:7
 msgid "mediawiki.server-url"
 msgstr "MediaWiki Server URL"
@@ -7210,6 +7335,10 @@ msgstr "Date Uploaded"
 msgid "nav.users"
 msgstr "Users"
 
+#: share/skin/s3/template/element/listview_tabs:16 share/skin/s3/template/view/empty_watchlist:17
+msgid "nav.view:"
+msgstr "View:"
+
 #: lib/Socialtext/WatchlistPlugin.pm:208
 msgid "nav.watchlist"
 msgstr "Watchlist"
@@ -7487,6 +7616,10 @@ msgstr "There are no tags for this page."
 #: lib/Socialtext/CLI.pm:2757
 msgid "page.nothing-locked=wiki"
 msgstr "Workspace '%1' has no locked pages."
+
+#: share/skin/s3/javascript/lightbox/edit_check.tt2:4
+msgid "page.opened-for-edit=user,ago"
+msgstr "%1 has opened this page for editing %2."
 
 #: share/skin/s3/template/element/listview_tabs:11 share/skin/s3/template/view/empty_watchlist:13 lib/Socialtext/BacklinksPlugin.pm:107 lib/Socialtext/BacklinksPlugin.pm:81
 msgid "page.orphaned"
@@ -8814,6 +8947,22 @@ msgstr "Maximum value for this appliance is %1"
 msgid "signals.importing"
 msgstr "Importing signals ..."
 
+#: share/plugin/widgets/share/javascript/activities/editor.js:1508
+msgid "signals.insert-mention:"
+msgstr "Insert mention of user:"
+
+#: share/plugin/widgets/share/javascript/activities/editor.js:1493
+msgid "signals.insert-tag:"
+msgstr "Insert tag:"
+
+#: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:10
+msgid "signals.link-destination:"
+msgstr "Link destination:"
+
+#: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:5
+msgid "signals.link-text:"
+msgstr "Link text:"
+
 #. ($search_term)
 #: lib/Socialtext/Pluggable/Plugin/Signals.pm:656
 msgid "signals.matching=query"
@@ -8874,6 +9023,10 @@ msgstr "Private message sent."
 #: share/plugin/signals/template/element/settings/signals_settings_section:8
 msgid "signals.private-message-to-email"
 msgstr "If checked, each time a user sends you a private message via Signals, we'll send you an email with the message."
+
+#: share/plugin/widgets/share/javascript/activities/editor.js:1533
+msgid "signals.private-message-to:"
+msgstr "Create private message to:"
 
 #: share/plugin/signals/template/element/settings/private_menu:3 share/plugin/signals/template/element/settings/signals_settings_section:5
 msgid "signals.private-messages"
@@ -8987,7 +9140,11 @@ msgstr "Please try again:"
 msgid "signals.update"
 msgstr "Update"
 
-#: share/plugin/signals/template/lite/signals.html:6
+#: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:15
+msgid "signals.uploaded-files:"
+msgstr "Uploaded files:"
+
+#: share/plugin/widgets/share/javascript/activities/widget.js:27 share/plugin/signals/template/lite/signals.html:6
 msgid "signals.what-are-you-working-on?"
 msgstr "What are you working on?"
 
@@ -10199,6 +10356,10 @@ msgstr "Restore Widget"
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:89
 msgid "widgets.restored=widget"
 msgstr "Successfully restored the \"%1\" widget"
+
+#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:24
+msgid "widgets.rss-feed"
+msgstr "RSS feed"
 
 #: share/plugin/widgets/template/view/gallery:107
 msgid "widgets.update"

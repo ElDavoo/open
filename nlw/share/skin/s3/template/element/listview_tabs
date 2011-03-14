@@ -13,7 +13,7 @@
     </ul>
   </div><!-- tableTabs END -->
   <div class="tableFilter">
-    <label>[% loc('View:') %]</label>
+    <label>[% loc('nav.view:') %]</label>
     <ul>
       <li class="allpages [% IF action == 'changes' %] selected[% END %]"><a href="/[% current_workspace.name %]?action=changes&changes=all">[% loc("page.all") %]</a></li>
       [% IF workspace_present %]

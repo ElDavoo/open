@@ -1023,6 +1023,18 @@ msgstr "Zzzzzzz zz"
 msgid "blog.view"
 msgstr "Zzzz"
 
+#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26
+msgid "bookmarklet.share-via-signals"
+msgstr "zzzzzzzzzzz zz zzzzz zzz zzzz zz zzz zzz zzz Zzzzzzz."
+
+#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26
+msgid "bookmarklet.signal-this!"
+msgstr "Zzzzzz Zzzz!"
+
+#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26
+msgid "bookmarklet.tip"
+msgstr "Zzz: Zzz zzz"
+
 #: lib/Socialtext/Hub.pm:197
 msgid "bug.contact-support"
 msgstr "Zzzzzz zzzzzzz Zzzzzzzzzz zzzzzzz zzzzz zzz <a href=\"http://www.socialtext.com/customers/support_request.php\">Zzzzzzzzz Zzzzzzz Zzzzzzz</a> zzzz zzz zzzzzzzz zzz zzz zzzz zzz zzzzz zzzzzzzz, zzz zzzz zzz zzzz zzzzzzzzzz zz zz zzzzz zz zzz zzzzz."
@@ -3432,6 +3444,10 @@ msgstr "Zzzzzz"
 msgid "edit.expand-view"
 msgstr "Zzzzzz zzzz zzzz zz zzzz zzzzzzz zzzzzz"
 
+#: share/skin/s3/javascript/lightbox/edit_check.tt2:9
+msgid "edit.force"
+msgstr "Zzzz Zzzzzz"
+
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:27 share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1888 share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3563 share/skin/s3/template/view/page/display:55
 msgid "edit.loading"
 msgstr "Zzzzzzz..."
@@ -3468,6 +3484,10 @@ msgstr "Zzzzzzz"
 #: share/skin/s3/javascript/s3.js:302
 msgid "edit.remove=tag"
 msgstr "Zzzzzz %1 zzzz zzz zzzzz"
+
+#: share/skin/s3/javascript/lightbox/edit_check.tt2:10
+msgid "edit.return-to-page-view"
+msgstr "Zzzzzz zz Zzzz Zzzz"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:19
 msgid "edit.rich-text"
@@ -3541,6 +3561,10 @@ msgstr "Zzz zzz zzzzzzzz zz zzzz zzzzzzz zzz zzzzz. Zzz zzz zzzz zzzz zzzzzzz zz
 #: share/skin/s3/template/lite/page/contention.html:7 share/skin/s3/template/lite/page/page_locked.html:7
 msgid "edit.view-unsaved:"
 msgstr "Zzz zzzz zzz zzzz zzzzzz zz zzzzz zzzzz. Zzz zzz zzzz zzzz zzzzzzz zzzz zzzz:"
+
+#: share/skin/s3/javascript/lightbox/edit_check.tt2:2
+msgid "edit.warning"
+msgstr "Zzzz Zzzzzzz"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:20
 msgid "edit.wiki-text"
@@ -3975,6 +3999,10 @@ msgstr "z-zzzz zzzzzzz zzz zzz zzzzzzzz!"
 #: share/skin/s3/template/view/page/display:105
 msgid "error.email-spreadsheet"
 msgstr "Zzzzz, zzzz zzzzzzz zz zzz zzzzzzzzz zzz zzzzzzzzzzzz"
+
+#: share/plugin/widgets/share/javascript/activities/editor.js:376
+msgid "error.error"
+msgstr "zzzzz"
 
 #. (res.errors[0])
 #. (message)
@@ -4592,9 +4620,18 @@ msgstr "Zzzzzz zzzzzz %1 zzzzz zzz zz zzzzzzzz: zzzzzz '%2' zzz zzzzz"
 msgid "error.no-imported-recipient=signal,user"
 msgstr "Zzzzzz zzzzzz %1 zzzzz zzz zz zzzzzzzz: zzzzzzzzz '%2' zzz zzzzz zzz z zzzzzz zzzzzz"
 
+#: share/plugin/widgets/share/javascript/activities/explore.js:15
+msgid "error.no-items-for-explore"
+msgstr "Zzzzz zzz zz zzzzz zz zzzz. Zzzzzz zz zzz zzz zzzzzz zzz zzzzz zz zzzzzzzzzzz, zz zzz zzzz zzz zzzz zzzzzzz zzzzzzz."
+
 #: lib/Socialtext/CLI.pm:3586
 msgid "error.no-ldap-group-factories"
 msgstr "Zz ZZZZ Zzzzz Zzzzzzzzz zzzzzzzzzz; zzzzzz zzzzzz Zzzzz zzzz ZZZZ."
+
+#. ($(this.input)
+#: share/skin/s3/javascript/lookahead.js:361
+msgid "error.no-match=lookahead"
+msgstr "Zz zzzzzzz zzz '%1'"
 
 #: lib/Socialtext/EditPlugin.pm:195
 msgid "error.no-page-body"
@@ -4911,6 +4948,10 @@ msgstr "zzzzz zzz zz zzzzzz.  Zzz zzzz zzz zzzzzzz zzz zzzzzzzzz zzzzzzzz zzzzzz
 #: lib/Socialtext/MassAdd.pm:109
 msgid "error.parse-missing-fields"
 msgstr "zzzzz zzz zz zzzzzz (zzzzzzz zzzzzz).  Zzzzzzzz zzzz zzzz."
+
+#: share/skin/s3/javascript/lookahead.js:662
+msgid "error.parsing-data"
+msgstr "Zzzzz zzzzzzz zzzz"
 
 #. ($email_address)
 #: lib/Socialtext/Handler/Authen.pm:634
@@ -5618,6 +5659,30 @@ msgstr "zzz zzzz zzzzz zzzzzzz:"
 msgid "example.wiki-url:"
 msgstr "Zzzzzzz: zzzz-zzzzzzz-zzz zzzzzzz zzzz zzzzzzzzz zzzzzzz:"
 
+#: share/plugin/signals/template/explore_header:9
+msgid "explore.all-assets"
+msgstr "Zzz Zzzzzz"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:8
+msgid "explore.all-people"
+msgstr "Zzz Zzzzzz"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:25 share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:26
+msgid "explore.any-group"
+msgstr "Zzz Zzzzz"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:38 share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:39
+msgid "explore.any-tag"
+msgstr "Zzz Zzz"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:49 share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:50
+msgid "explore.anyone"
+msgstr "Zzzzzz"
+
+#: share/plugin/signals/template/explore_header:10
+msgid "explore.attachments"
+msgstr "Zzzzzzzzzzz"
+
 #: share/plugin/signals/template/explore_hello:2
 msgid "explore.beta"
 msgstr "Zzzzzzz (zzzz)"
@@ -5645,14 +5710,30 @@ msgstr "Zz zzz zzzz zzzz zzzzzzzzzzz zzzzz"
 msgid "explore.everyone"
 msgstr "Zzzzzzzz"
 
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:15
+msgid "explore.from"
+msgstr "Zzzz"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:22
+msgid "explore.groups"
+msgstr "ZZZZZZ"
+
 #: share/plugin/signals/share/widgets/explore_filters/widget.js:289
 msgid "explore.just-me"
 msgstr "Zzzz Zz"
+
+#: share/plugin/signals/template/explore_header:17
+msgid "explore.mentions"
+msgstr "Zzzzzzzz"
 
 #. (asset.count)
 #: share/plugin/widgets/share/javascript/template/activities/assets.tt2:26
 msgid "explore.mentions=count"
 msgstr "%*(%1,zzzzzzz)"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:10
+msgid "explore.mine"
+msgstr "Zzzz"
 
 #: share/plugin/widgets/share/javascript/template/activities/assets.tt2:3
 msgid "explore.more"
@@ -5678,6 +5759,34 @@ msgstr "ZZZZ ZZZZ"
 msgid "explore.past-year"
 msgstr "ZZZZ ZZZZ"
 
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:46
+msgid "explore.people"
+msgstr "ZZZZZZ"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:9
+msgid "explore.people-i-follow"
+msgstr "Zzzzzz Z zzzzzz"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:57
+msgid "explore.permalink-for-this-view"
+msgstr "Zzzzzzzzz zzz zzzz Zzzz"
+
+#: share/plugin/signals/template/explore_header:16
+msgid "explore.recency"
+msgstr "Zzzzzzz"
+
+#: share/plugin/signals/template/explore_header:14
+msgid "explore.sort-by:"
+msgstr "Zzzz zz:"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:34
+msgid "explore.tags-from"
+msgstr "ZZZZ zzzz"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:17
+msgid "explore.to"
+msgstr "zz"
+
 #: share/plugin/widgets/share/javascript/activities/explore.js:180
 msgid "explore.today"
 msgstr "ZZZZZ"
@@ -5685,6 +5794,14 @@ msgstr "ZZZZZ"
 #: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:3
 msgid "explore.using-filters"
 msgstr "Zzz zzz zzzzzzz zzzzz zz zzzzzz zzz zzzzzzz. Zzz zzz zzzzz 'z' zz zzz zz zzz Zzzzzz, Zzzz zzz Zzzzzz zzzzzzz zz zzzzzz zzzz."
+
+#: share/plugin/signals/template/explore_header:12
+msgid "explore.web-links"
+msgstr "Zzz Zzzzz"
+
+#: share/plugin/signals/template/explore_header:11
+msgid "explore.wiki-links"
+msgstr "Zzzzzzzzz Zzzzz"
 
 #: share/skin/s3/template/view/page/display:113
 msgid "export.html"
@@ -5829,6 +5946,10 @@ msgstr "Zzzzzzzz zzzzz:"
 #: share/skin/s3/javascript/lightbox/attachment.js:209
 msgid "file.uploading=name"
 msgstr "Zzzzzzzzz %1..."
+
+#: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:15
+msgid "files.none"
+msgstr "zzzz"
 
 #: lib/Socialtext/Handler/Authen.pm:79
 msgid "free50.account"
@@ -6889,6 +7010,10 @@ msgstr "zzzzzzzz"
 msgid "lookahead.all-results"
 msgstr "Zzzz zzz zzzzzzz..."
 
+#: share/plugin/widgets/share/javascript/activities/editor.js:852
+msgid "lookahead.start-typing"
+msgstr "Zzzzz zzzzzz..."
+
 #: share/plugin/mediawiki/template/element/settings/mediawiki:7
 msgid "mediawiki.server-url"
 msgstr "ZzzzzZzzz Zzzzzz ZZZ"
@@ -7210,6 +7335,10 @@ msgstr "Zzzz Zzzzzzzz"
 msgid "nav.users"
 msgstr "Zzzzz"
 
+#: share/skin/s3/template/element/listview_tabs:16 share/skin/s3/template/view/empty_watchlist:17
+msgid "nav.view:"
+msgstr "Zzzz:"
+
 #: lib/Socialtext/WatchlistPlugin.pm:208
 msgid "nav.watchlist"
 msgstr "Zzzzzzzzz"
@@ -7487,6 +7616,10 @@ msgstr "Zzzzz zzz zz zzzz zzz zzzz zzzz."
 #: lib/Socialtext/CLI.pm:2757
 msgid "page.nothing-locked=wiki"
 msgstr "Zzzzzzzzz '%1' zzz zz zzzzzz zzzzz."
+
+#: share/skin/s3/javascript/lightbox/edit_check.tt2:4
+msgid "page.opened-for-edit=user,ago"
+msgstr "%1 zzz zzzzzz zzzz zzzz zzz zzzzzzz %2."
 
 #: share/skin/s3/template/element/listview_tabs:11 share/skin/s3/template/view/empty_watchlist:13 lib/Socialtext/BacklinksPlugin.pm:107 lib/Socialtext/BacklinksPlugin.pm:81
 msgid "page.orphaned"
@@ -8814,6 +8947,22 @@ msgstr "Zzzzzzz zzzzz zzz zzzz zzzzzzzzz zz %1"
 msgid "signals.importing"
 msgstr "Zzzzzzzzz zzzzzzz ..."
 
+#: share/plugin/widgets/share/javascript/activities/editor.js:1508
+msgid "signals.insert-mention:"
+msgstr "Zzzzzz zzzzzzz zz zzzz:"
+
+#: share/plugin/widgets/share/javascript/activities/editor.js:1493
+msgid "signals.insert-tag:"
+msgstr "Zzzzzz zzz:"
+
+#: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:10
+msgid "signals.link-destination:"
+msgstr "Zzzz zzzzzzzzzzz:"
+
+#: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:5
+msgid "signals.link-text:"
+msgstr "Zzzz zzzz:"
+
 #. ($search_term)
 #: lib/Socialtext/Pluggable/Plugin/Signals.pm:656
 msgid "signals.matching=query"
@@ -8874,6 +9023,10 @@ msgstr "Zzzzzzz zzzzzzz zzzz."
 #: share/plugin/signals/template/element/settings/signals_settings_section:8
 msgid "signals.private-message-to-email"
 msgstr "Zz zzzzzzz, zzzz zzzz z zzzz zzzzz zzz z zzzzzzz zzzzzzz zzz Zzzzzzz, zz'zz zzzz zzz zz zzzzz zzzz zzz zzzzzzz."
+
+#: share/plugin/widgets/share/javascript/activities/editor.js:1533
+msgid "signals.private-message-to:"
+msgstr "Zzzzzz zzzzzzz zzzzzzz zz:"
 
 #: share/plugin/signals/template/element/settings/private_menu:3 share/plugin/signals/template/element/settings/signals_settings_section:5
 msgid "signals.private-messages"
@@ -8987,7 +9140,11 @@ msgstr "Zzzzzz zzz zzzzz:"
 msgid "signals.update"
 msgstr "Zzzzzz"
 
-#: share/plugin/signals/template/lite/signals.html:6
+#: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:15
+msgid "signals.uploaded-files:"
+msgstr "Zzzzzzzz zzzzz:"
+
+#: share/plugin/widgets/share/javascript/activities/widget.js:27 share/plugin/signals/template/lite/signals.html:6
 msgid "signals.what-are-you-working-on?"
 msgstr "Zzzz zzz zzz zzzzzzz zz?"
 
@@ -10199,6 +10356,10 @@ msgstr "Zzzzzzz Zzzzzz"
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:89
 msgid "widgets.restored=widget"
 msgstr "Zzzzzzzzzzzz zzzzzzzz zzz \"%1\" zzzzzz"
+
+#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:24
+msgid "widgets.rss-feed"
+msgstr "ZZZ zzzz"
 
 #: share/plugin/widgets/template/view/gallery:107
 msgid "widgets.update"

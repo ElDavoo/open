@@ -369,6 +369,18 @@ msgstr "about one day ago"
 msgid "ago.~1hour"
 msgstr "about one hour ago"
 
+#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26
+msgid "bookmarklet.share-via-signals"
+msgstr "bookmarklet to share any page on the web via Signals."
+
+#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26
+msgid "bookmarklet.signal-this!"
+msgstr "Signal This!"
+
+#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26
+msgid "bookmarklet.tip"
+msgstr "Tip: Use the"
+
 #: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:18 share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:17 share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:23
 msgid "do.cancel"
 msgstr "Cancel"
@@ -401,6 +413,10 @@ msgstr "Yes"
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:78
 msgid "error.delete=widget,message"
 msgstr "Error deleting the \"%1\" widget: %2"
+
+#: share/plugin/widgets/share/javascript/activities/editor.js:376
+msgid "error.error"
+msgstr "error"
 
 #: share/plugin/widgets/share/javascript/gadgets.js:353
 msgid "error.feature-not-supported-in-dashboard"
@@ -436,6 +452,10 @@ msgstr "There are no new %1 in the last 30 days."
 #: share/plugin/widgets/share/javascript/template/activities/empty.tt2:6
 msgid "error.no-followed-events-in-30days=title"
 msgstr "There are no new %1, either because you aren't following anyone yet, or the people you're following haven't created any %1 in the last 30 days. Visit the profiles of your colleagues, and click 'Follow this person' to start following colleagues."
+
+#: share/plugin/widgets/share/javascript/activities/explore.js:15
+msgid "error.no-items-for-explore"
+msgstr "There are no items to show. Either no one has posted any links or attachments, or you have too many filters applied."
 
 #: share/plugin/widgets/share/javascript/activities/editor.js:659
 msgid "error.no-such-wikilink-wiki"
@@ -655,6 +675,10 @@ msgstr "PAST YEAR"
 msgid "explore.today"
 msgstr "TODAY"
 
+#: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:15
+msgid "files.none"
+msgstr "none"
+
 #: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:5
 msgid "info.browse"
 msgstr "Click \"Browse\" and select an image or file to upload."
@@ -670,6 +694,10 @@ msgstr "Only members with permission to view this page will receive the signal."
 #: share/plugin/widgets/share/javascript/widgets-lightbox.js:9
 msgid "info.success"
 msgstr "Success"
+
+#: share/plugin/widgets/share/javascript/activities/editor.js:852
+msgid "lookahead.start-typing"
+msgstr "Start typing..."
 
 #: share/plugin/widgets/template/mobile-signals.tt2:125
 msgid "nav.activity"
@@ -694,6 +722,34 @@ msgstr "Signals"
 #: share/plugin/widgets/template/mobile-signals.tt2:131
 msgid "nav.wikis"
 msgstr "Workspaces"
+
+#: share/plugin/widgets/share/javascript/activities/editor.js:1508
+msgid "signals.insert-mention:"
+msgstr "Insert mention of user:"
+
+#: share/plugin/widgets/share/javascript/activities/editor.js:1493
+msgid "signals.insert-tag:"
+msgstr "Insert tag:"
+
+#: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:10
+msgid "signals.link-destination:"
+msgstr "Link destination:"
+
+#: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:5
+msgid "signals.link-text:"
+msgstr "Link text:"
+
+#: share/plugin/widgets/share/javascript/activities/editor.js:1533
+msgid "signals.private-message-to:"
+msgstr "Create private message to:"
+
+#: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:15
+msgid "signals.uploaded-files:"
+msgstr "Uploaded files:"
+
+#: share/plugin/widgets/share/javascript/activities/widget.js:27
+msgid "signals.what-are-you-working-on?"
+msgstr "What are you working on?"
 
 #: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:9
 msgid "video.title:"
@@ -812,6 +868,10 @@ msgstr "Restore Widget"
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:89
 msgid "widgets.restored=widget"
 msgstr "Successfully restored the \"%1\" widget"
+
+#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:24
+msgid "widgets.rss-feed"
+msgstr "RSS feed"
 
 #: share/plugin/widgets/template/view/gallery:107
 msgid "widgets.update"
