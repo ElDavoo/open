@@ -673,17 +673,14 @@ msgstr "更新者"
 msgid "blog.view"
 msgstr "查看"
 
-#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26
 msgid "bookmarklet.share-via-signals"
-msgstr "bookmarklet to share any page on the web via Signals."
+msgstr "”书签，将网页透过讯息来分享给同事。"
 
-#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26
 msgid "bookmarklet.signal-this!"
-msgstr "Signal This!"
+msgstr "分享此页!"
 
-#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26
 msgid "bookmarklet.tip"
-msgstr "Tip: Use the"
+msgstr "小秘诀：您可利用“"
 
 msgid "bug.contact-support"
 msgstr "请填写<a href=\"http://www.socialtext.com/customers/support_request.php\">技术支持请求</a>表格，联系Socialtext，描述错误发生的时间，以及发生错误之前的操作。"
@@ -7435,7 +7432,7 @@ msgid "widgets.updated=widget"
 msgstr "成功更新您的小工具"
 
 msgid "widgets.upload-xml:"
-msgstr "上传小工具可扩展标识语言文件："
+msgstr "上传小工具 XML 文件："
 
 msgid "widgets.use-editor"
 msgstr "使用小工具编辑器"

@@ -2,99 +2,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 23:37+0800\n"
+"PO-Revision-Date: 2011-03-14 09:35+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "activities.new-events=count"
-msgstr "%1 項活动"
-
-msgid "explore.mentions=count"
-msgstr "%1 項提及"
-
-msgid "explore.click-to-collapse-mentions=count"
-msgstr "%1 項提及，点击此处收回"
-
-msgid "explore.click-to-expand-mentions=count"
-msgstr "%1 項提及，点击此处展开"
-
-msgid "explore.click-to-expand-mentions=count,first-page"
-msgstr "%1 項提及，点击此处查看最先的 %2 則"
-
-msgid "activities.new-mentions=count"
-msgstr "%1 項新提及..."
-
-msgid "activities.other-replies=count"
-msgstr "%1 項其它回复..."
-
-msgid "activities.new-replies=count"
-msgstr "%1 項回复"
-
-msgid "event.add-widget=user,widget,context"
-msgstr "%1 增加 %2 小工具（%3）。"
-
-msgid "ago.days=count"
-msgstr "%1 天前"
-
-msgid "ago.hours=count"
-msgstr "%1 小时前"
-
-msgid "ago.minutes=count"
-msgstr "%1 分钟前"
-
-msgid "activities.new=count"
-msgstr "%1 新的"
-
-msgid "activities.private-to-you=sender"
-msgstr "%1 属于您私有"
-
-msgid "activities.to=sender,targets"
-msgstr "%1 至 %2"
-
-msgid "event.update-widget=actor,widget"
-msgstr "%1 更新 %2 小工具。"
-
-msgid "activities.title=signal-count,original-title"
-msgstr "（%1）%2"
-
-msgid "activities.click-to-collapse"
-msgstr "（点击此处收回）"
-
-msgid "activities.click-to-expand"
-msgstr "（点击此处展开）"
-
-msgid "widgets.delete"
-msgstr "（删除）"
-
-msgid "explore.no-items"
-msgstr "（无项目展示）"
-
-msgid "widgets.remove"
-msgstr "（移除）"
-
-msgid "widgets.restore"
-msgstr "（恢复）"
-
-msgid "widgets.update"
-msgstr "（更新）"
-
-msgid "nav.activity"
-msgstr "活动"
-
-msgid "widgets.add"
-msgstr "添加"
-
-msgid "widgets.add-widget"
-msgstr "添加小工具"
-
-msgid "widgets.add-to-gallery"
-msgstr "添加小工具至工具库"
-
-msgid "widgets.add-url:"
-msgstr "通过网址添加小工具："
+msgid "activities.about-insert-wikilink"
+msgstr "选定一个工作区，然后搜索您想连接的工作区页面。您可以更改显示文字，也可以连接到该页面的。"
 
 msgid "activities.add-tag"
 msgstr "添加标签"
@@ -102,86 +18,87 @@ msgstr "添加标签"
 msgid "activities.add-video-link"
 msgstr "添加视频连接"
 
-msgid "widget.add-it-now"
-msgstr "现在添加"
-
-msgid "activities.all-replies"
-msgstr "所有回复"
+msgid "activities.all-events"
+msgstr "所有事件"
 
 msgid "activities.all-my-groups"
 msgstr "我的所有群组"
 
+msgid "activities.all-replies"
+msgstr "所有回复"
+
 msgid "activities.all-shared-groups"
 msgstr "所有共享群组"
-
-msgid "activities.confirm-delete=target"
-msgstr "您确定要删除这 %1？\n一旦删除，无法恢复。"
-
-msgid "activities.confirm-expunge=target"
-msgstr "您确定要将此 %1 从系统中删除？\n一旦删除，无法恢复。"
-
-msgid "widgets.confirm-delete=widget?"
-msgstr "您确定要永久删除这 \"%1\" 小工具？"
-
-msgid "widgets.confirm-remove=widget?"
-msgstr "您确定要移除此 \"%1\" 小工具? 用户将无法在他们的工具库中看到此小工具. 您随时可以恢复此小工具。"
-
-msgid "widgets.confirm-restore=widget?"
-msgstr "您确定要恢复此 \"%1\" 小工具？"
 
 msgid "activities.attach-file"
 msgstr "添加附件"
 
-msgid "do.cancel"
-msgstr "删除"
-
-msgid "activities.about-insert-wikilink"
-msgstr "选定一个工作区，然后搜索您想连接的工作区页面。您可以更改显示文字，也可以连接到该页面的。"
-
-msgid "info.browse"
-msgstr "点击“浏览”并选择上传图片或文件。"
-
-msgid "info.done"
-msgstr "点击“完成”关闭窗口。"
+msgid "activities.click-to-collapse"
+msgstr "（点击此处收回）"
 
 msgid "activities.click-to-enable-desktop-notifications"
 msgstr "点击此处启动桌面通知"
 
-msgid "do.close"
-msgstr "关闭"
+msgid "activities.click-to-expand"
+msgstr "（点击此处展开）"
 
 msgid "activities.close-this-window"
 msgstr "关闭该窗口"
 
+msgid "activities.comments"
+msgstr "评论"
+
+msgid "activities.composing-message-to=user"
+msgstr "您正在编辑一条信息至 %1"
+
+msgid "activities.composing-private-message-to=person"
+msgstr "您正在编辑条私人信息至 %1"
+
+msgid "activities.composing-reply-to=person"
+msgstr "您正在编辑一条回复至 %1"
+
+msgid "activities.confirm-delete=target"
+msgstr ""
+"您确定要删除这 %1？\n"
+"一旦删除，无法恢复。"
+
+msgid "activities.confirm-expunge=target"
+msgstr ""
+"您确定要将此 %1 从系统中删除？\n"
+"一旦删除，无法恢复。"
+
+msgid "activities.contributions"
+msgstr "贡献"
+
+msgid "activities.delete"
+msgstr "删除"
+
+msgid "activities.edits"
+msgstr "编辑"
+
 msgid "activities.enter-video-url-here"
 msgstr "复制和粘贴以下视频的网址。我们支持插入来自YouTube，Vimeo，SlideShare 和 Google Video 的视频。"
 
-msgid "widget.about-delete"
+msgid "activities.enter-weblink-url-here"
+msgstr "请在底下贴上或键入链接的目标（网址，如http://socialtext.com）。链接目标是必填的。"
+
+msgid "activities.events"
+msgstr "事件"
+
+msgid "activities.everyone"
+msgstr "每个人"
+
+msgid "activities.expunge"
 msgstr "删除"
 
-msgid "do.done"
-msgstr "完成"
+msgid "activities.following"
+msgstr "我关注的人"
 
-msgid "nav.error"
-msgstr "错误"
-
-msgid "error.delete=widget,message"
-msgstr "删除“%1”小工具时出错：%2"
-
-msgid "error.remove=widget,message"
-msgstr "移除“%1”小工具时出错：%2"
-
-msgid "error.restore=widget,message"
-msgstr "恢复“%1”小工具时出错：%2"
-
-msgid "error.send-signal"
-msgstr "传递讯息时出错，请重试。"
+msgid "activities.from"
+msgstr "来自"
 
 msgid "activities.insert:"
 msgstr "插入："
-
-msgid "widgets.install-this"
-msgstr "安装小工具"
 
 msgid "activities.link-text:"
 msgstr "显示文字："
@@ -195,17 +112,14 @@ msgstr "链接至工作区页面"
 msgid "activities.loading-video"
 msgstr "下载中..."
 
-msgid "nav.logout"
-msgstr "登出"
-
 msgid "activities.make-signal-private"
 msgstr "使此讯息私有"
 
-msgid "widgets.manage-gallery-for-accounts"
-msgstr "管理各账号工具库"
-
 msgid "activities.maximum-file-size=mb"
 msgstr "最大文件大小：%1MB"
+
+msgid "activities.me"
+msgstr "我"
 
 msgid "activities.mention-user"
 msgstr "提及另一个人"
@@ -216,44 +130,32 @@ msgstr "更多"
 msgid "activities.more-mentions"
 msgstr "更多提及..."
 
-msgid "do.no"
-msgstr "无"
+msgid "activities.my-conversations"
+msgstr "我的對話"
 
-msgid "widgets.no-description"
-msgstr "无描述"
+msgid "activities.new-events=count"
+msgstr "%1 項活动"
 
-msgid "do.ok"
-msgstr "好"
+msgid "activities.new-mentions=count"
+msgstr "%1 項新提及..."
 
-msgid "explore.oldies"
-msgstr "老人"
+msgid "activities.new-replies=count"
+msgstr "%1 項回复"
 
-msgid "info.edit-summary-signal-visibility"
-msgstr "只有获取访问本网页的成员能接收到讯息。"
+msgid "activities.new=count"
+msgstr "%1 新的"
 
-msgid "explore.past-month"
-msgstr "过去的一月"
+msgid "activities.other-replies=count"
+msgstr "%1 項其它回复..."
 
-msgid "explore.past-week"
-msgstr "过去的一周"
-
-msgid "explore.past-year"
-msgstr "过去的一年"
+msgid "activities.page-tags"
+msgstr "页面标签"
 
 msgid "activities.page:"
 msgstr "页面："
 
-msgid "activities.enter-weblink-url-here"
-msgstr "请在底下贴上或键入链接的目标（网址，如http://socialtext.com）。链接目标是必填的。"
-
-msgid "nav.people"
-msgstr "人員"
-
-msgid "widgets.permanent-remove"
-msgstr "永久移除小工具"
-
-msgid "error.invalid-video-link"
-msgstr "请输入一个有效的视频链接。"
+msgid "activities.people-events"
+msgstr "人际事件"
 
 msgid "activities.post"
 msgstr "发送"
@@ -261,23 +163,26 @@ msgstr "发送"
 msgid "activities.post-to"
 msgstr "发送至"
 
+msgid "activities.private-to-you"
+msgstr "归您私有"
+
+msgid "activities.private-to-you=sender"
+msgstr "%1 属于您私有"
+
 msgid "activities.private-to:"
 msgstr "发送私人讯息至"
 
-msgid "do.remove"
-msgstr "移除"
+msgid "activities.private-to=user"
+msgstr "归 %1 私有"
 
-msgid "widgets.remove-widget"
-msgstr "移除小工具"
+msgid "activities.rename=page,wiki"
+msgstr "重命名 %2 中的 %1。"
+
+msgid "activities.reply"
+msgstr "回复"
 
 msgid "activities.reply-to-conversation"
 msgstr "回复對話 ..."
-
-msgid "widgets.about-restore"
-msgstr "恢复"
-
-msgid "widgets.restore-widget"
-msgstr "恢复小工具"
 
 msgid "activities.section:"
 msgstr "区域："
@@ -285,22 +190,22 @@ msgstr "区域："
 msgid "activities.send-private-message"
 msgstr "发送私人信息"
 
-msgid "activities.signal-this-page"
-msgstr "发送一个至本页面的链接讯息"
-
 msgid "activities.showing"
 msgstr "显示"
 
 msgid "activities.signal"
 msgstr "讯息"
 
-msgid "error.signal-too-long=max-length"
-msgstr "讯息长度限制为 %1，请编辑您的讯息"
-
 msgid "activities.signal-sent!"
 msgstr "讯息发送成功！"
 
-msgid "nav.signals"
+msgid "activities.signal-sent-click-to-adjust-filters"
+msgstr "您的讯息已成功发送. 点击此处自动调整筛选器，以显示新讯息."
+
+msgid "activities.signal-this-page"
+msgstr "发送一个至本页面的链接讯息"
+
+msgid "activities.signals"
 msgstr "讯息"
 
 msgid "activities.signals-permalink"
@@ -309,35 +214,101 @@ msgstr "讯息 - 固定链接"
 msgid "activities.socialtext-activities"
 msgstr "Socialtext 活动"
 
+msgid "activities.title=signal-count,original-title"
+msgstr "（%1）%2"
+
+msgid "activities.to-groups=count"
+msgstr "至 %1 群组"
+
+msgid "activities.to=sender,targets"
+msgstr "%1 至 %2"
+
+msgid "activities.to=target"
+msgstr "至 %1"
+
+msgid "activities.uploaded=files"
+msgstr "已上传的文件：%1"
+
+msgid "activities.wiki:"
+msgstr "工作区："
+
+msgid "activities.within"
+msgstr "群组为"
+
+msgid "activities.you"
+msgstr "您"
+
+msgid "ago.1day"
+msgstr "一天之前"
+
+msgid "ago.1minute"
+msgstr "一分钟之前"
+
+msgid "ago.<1minute"
+msgstr "不到一分钟前"
+
+msgid "ago.days=count"
+msgstr "%1 天前"
+
+msgid "ago.hours=count"
+msgstr "%1 小时前"
+
+msgid "ago.minutes=count"
+msgstr "%1 分钟前"
+
+msgid "ago.~1day"
+msgstr "大约一天前"
+
+msgid "ago.~1hour"
+msgstr "大约一小时前"
+
+msgid "bookmarklet.share-via-signals"
+msgstr "”书签，将网页透过讯息来分享给同事。"
+
+msgid "bookmarklet.signal-this!"
+msgstr "分享此页!"
+
+msgid "bookmarklet.tip"
+msgstr "小秘诀：您可利用“"
+
+msgid "do.cancel"
+msgstr "删除"
+
+msgid "do.close"
+msgstr "关闭"
+
+msgid "do.done"
+msgstr "完成"
+
+msgid "do.no"
+msgstr "无"
+
+msgid "do.ok"
+msgstr "好"
+
+msgid "do.remove"
+msgstr "移除"
+
+msgid "do.yes"
+msgstr "是"
+
+msgid "error.delete=widget,message"
+msgstr "删除“%1”小工具时出错：%2"
+
 msgid "error.feature-not-supported-in-dashboard"
 msgstr "抱歉，顯示板暂不支持此项特性。"
 
-msgid "info.success"
-msgstr "成功"
+msgid "error.getting-activities"
+msgstr "参加活动时出错。"
 
-msgid "widgets.added"
-msgstr "成功添加您的小工具"
-
-msgid "widgets.removed=widget"
-msgstr "成功移除“%1”小工具"
-
-msgid "widgets.restored=widget"
-msgstr "成功恢复“%1”小工具"
-
-msgid "widgets.updated=widget"
-msgstr "成功更新您的小工具"
-
-msgid "explore.today"
-msgstr "今天"
+msgid "error.invalid-video-link"
+msgstr "请输入一个有效的视频链接。"
 
 msgid "error.invalid-weblink-url"
 msgstr "非有效网址（如 http://www.google.com）"
 
 msgid "error.invalid-wikilink-wiki"
 msgstr "非有效工作区。请输入一个包含网页链接的有效工作区。"
-
-msgid "error.no-such-wikilink-wiki"
-msgstr "您输入的工作区不存在，请重试"
 
 msgid "error.no-conversations-in-30days=title"
 msgstr "没有新的 %1 因为在过去的 30 天内，您没有与您的同事對話。"
@@ -348,59 +319,23 @@ msgstr "在过去 30 天内，没有新的 %1。"
 msgid "error.no-followed-events-in-30days=title"
 msgstr "没有新的 %1，要么因为您还没有关注任何人，要么因为您关注的人在过去30天内还没有新的 %1。访问您同事的个人档案，然后点击“关注此人”来开始关注同事。"
 
-msgid "error.getting-activities"
-msgstr "参加活动时出错。"
-
-msgid "widgets.gallery-switch=account:"
-msgstr "这是“%1”账号的工具库。转到帐户："
-
-msgid "video.title:"
-msgstr "标题："
-
-msgid "video.url:"
-msgstr "网址："
-
-msgid "widgets.about-update"
-msgstr "更新"
-
-msgid "widgets.update-widget"
-msgstr "更新小工具"
-
-msgid "widgets.update-from-url:"
-msgstr "通过网址更新小工具："
-
-msgid "widgets.upload-xml:"
-msgstr "上传小工具可扩展标识语言文件："
-
-msgid "activities.uploaded=files"
-msgstr "已上传的文件：%1"
-
-msgid "widgets.use-editor"
-msgstr "使用小工具编辑器"
+msgid "error.no-such-wikilink-wiki"
+msgstr "您输入的工作区不存在，请重试"
 
 msgid "error.no-wiki-on-server=wiki"
 msgstr "工作区“%1”不存在"
 
-msgid "activities.wiki:"
-msgstr "工作区："
+msgid "error.remove=widget,message"
+msgstr "移除“%1”小工具时出错：%2"
 
-msgid "nav.wikis"
-msgstr "工作区"
+msgid "error.restore=widget,message"
+msgstr "恢复“%1”小工具时出错：%2"
 
-msgid "do.yes"
-msgstr "是"
+msgid "error.send-signal"
+msgstr "传递讯息时出错，请重试。"
 
-msgid "activities.you"
-msgstr "您"
-
-msgid "activities.composing-message-to=user"
-msgstr "您正在编辑一条信息至 %1"
-
-msgid "activities.composing-private-message-to=person"
-msgstr "您正在编辑条私人信息至 %1"
-
-msgid "activities.composing-reply-to=person"
-msgstr "您正在编辑一条回复至 %1"
+msgid "error.signal-too-long=max-length"
+msgstr "讯息长度限制为 %1，请编辑您的讯息"
 
 msgid "error.wikilink-page-required"
 msgstr "您必须指定一个页面."
@@ -408,122 +343,23 @@ msgstr "您必须指定一个页面."
 msgid "error.wikilink-wiki-required"
 msgstr "您必须指定一个工作区."
 
-msgid "activities.signal-sent-click-to-adjust-filters"
-msgstr "您的讯息已成功发送. 点击此处自动调整筛选器，以显示新讯息."
+msgid "event.add-tag-self=tag"
+msgstr "给自身加标签 %1。"
 
-msgid "ago.~1day"
-msgstr "大约一天前"
+msgid "event.add-tag=page,wiki,tag"
+msgstr "给 %2 中的 %1 加标签 %3。"
 
-msgid "ago.~1hour"
-msgstr "大约一小时前"
+msgid "event.add-tag=person,tag"
+msgstr "给 %1 加标签 %2。"
 
-msgid "event.join=user,group"
-msgstr "添加 %1 至 %2 群组。"
-
-msgid "event.join=group,wiki"
-msgstr "添加 %1 至 %2 工作区。"
-
-msgid "activities.all-events"
-msgstr "所有事件"
+msgid "event.add-widget=user,widget,context"
+msgstr "%1 增加 %2 小工具（%3）。"
 
 msgid "event.comment=page,wiki,summary"
 msgstr "在 %2 中评论 %1：“%3”"
 
-msgid "activities.comments"
-msgstr "评论"
-
-msgid "activities.contributions"
-msgstr "贡献"
-
-msgid "activities.delete"
-msgstr "删除"
-
-msgid "event.delete=page,wiki"
-msgstr "在 %2 中删除 %1。"
-
-msgid "event.duplicate=page,wiki"
-msgstr "在 %2 中复制 %1。"
-
-msgid "event.edit=page,wiki,summary"
-msgstr "在 %2 中编辑 %1：\"%3\""
-
-msgid "event.edit=page,wiki"
-msgstr "在 %2 中复制 %1。"
-
-msgid "event.edit-profile=person"
-msgstr "编辑 %1 的个人资料。"
-
-msgid "event.edit-profile-self"
-msgstr "编辑自身的个人资料。"
-
-msgid "activities.edits"
-msgstr "编辑"
-
-msgid "activities.events"
-msgstr "事件"
-
-msgid "activities.everyone"
-msgstr "每个人"
-
-msgid "activities.expunge"
-msgstr "删除"
-
-msgid "activities.from"
-msgstr "来自"
-
-msgid "event.join=group"
-msgstr "加入群组 %1。"
-
-msgid "event.leave=group"
-msgstr "离开群组 %1。"
-
-msgid "ago.<1minute"
-msgstr "不到一分钟前"
-
-msgid "activities.me"
-msgstr "我"
-
-msgid "explore.more"
-msgstr "更多"
-
-msgid "activities.my-conversations"
-msgstr "我的對話"
-
-msgid "ago.1day"
-msgstr "一天之前"
-
-msgid "ago.1minute"
-msgstr "一分钟之前"
-
-msgid "activities.page-tags"
-msgstr "页面标签"
-
-msgid "activities.following"
-msgstr "我关注的人"
-
-msgid "activities.people-events"
-msgstr "人际事件"
-
-msgid "event.generic=action,page,wiki"
-msgstr "在 %3 中的 %2 执行动作 %1."
-
-msgid "event.generic=action,person"
-msgstr "在 %2 执行动作 %1。"
-
-msgid "event.generic-self=action"
-msgstr "對自身执行动作 %1。"
-
-msgid "activities.private-to=user"
-msgstr "归 %1 私有"
-
-msgid "activities.private-to-you"
-msgstr "归您私有"
-
-msgid "event.leave=user,group"
-msgstr "从组 %2 中移除 %1。"
-
-msgid "event.leave=user,wiki"
-msgstr "从工作区 %2 中移除 %1。"
+msgid "event.delete-tag-self=tag"
+msgstr "移除他们的标签 %1。"
 
 msgid "event.delete-tag=tag,page,wiki"
 msgstr "从 %3 中的 %2 移除 %1。"
@@ -531,38 +367,215 @@ msgstr "从 %3 中的 %2 移除 %1。"
 msgid "event.delete-tag=tag,person"
 msgstr "从 %2 中移除标签 %1。"
 
-msgid "event.delete-tag-self=tag"
-msgstr "移除他们的标签 %1。"
+msgid "event.delete=page,wiki"
+msgstr "在 %2 中删除 %1。"
 
-msgid "activities.rename=page,wiki"
-msgstr "重命名 %2 中的 %1。"
+msgid "event.duplicate=page,wiki"
+msgstr "在 %2 中复制 %1。"
 
-msgid "activities.reply"
-msgstr "回复"
+msgid "event.edit-profile-self"
+msgstr "编辑自身的个人资料。"
 
-msgid "activities.signals"
-msgstr "讯息"
+msgid "event.edit-profile=person"
+msgstr "编辑 %1 的个人资料。"
+
+msgid "event.edit=page,wiki"
+msgstr "在 %2 中复制 %1。"
+
+msgid "event.edit=page,wiki,summary"
+msgstr "在 %2 中编辑 %1：\"%3\""
 
 msgid "event.follow=person"
 msgstr "开始关注 %1。"
 
+msgid "event.generic-self=action"
+msgstr "對自身执行动作 %1。"
+
+msgid "event.generic=action,page,wiki"
+msgstr "在 %3 中的 %2 执行动作 %1."
+
+msgid "event.generic=action,person"
+msgstr "在 %2 执行动作 %1。"
+
+msgid "event.join=group"
+msgstr "加入群组 %1。"
+
+msgid "event.join=group,wiki"
+msgstr "添加 %1 至 %2 工作区。"
+
+msgid "event.join=user,group"
+msgstr "添加 %1 至 %2 群组。"
+
+msgid "event.leave=group"
+msgstr "离开群组 %1。"
+
+msgid "event.leave=user,group"
+msgstr "从组 %2 中移除 %1。"
+
+msgid "event.leave=user,wiki"
+msgstr "从工作区 %2 中移除 %1。"
+
 msgid "event.unfollow=person"
 msgstr "停止关注 %1。"
 
-msgid "event.add-tag=person,tag"
-msgstr "给 %1 加标签 %2。"
+msgid "event.update-widget=actor,widget"
+msgstr "%1 更新 %2 小工具。"
 
-msgid "event.add-tag=page,wiki,tag"
-msgstr "给 %2 中的 %1 加标签 %3。"
+msgid "explore.click-to-collapse-mentions=count"
+msgstr "%1 項提及，点击此处收回"
 
-msgid "event.add-tag-self=tag"
-msgstr "给自身加标签 %1。"
+msgid "explore.click-to-expand-mentions=count"
+msgstr "%1 項提及，点击此处展开"
 
-msgid "activities.to=target"
-msgstr "至 %1"
+msgid "explore.click-to-expand-mentions=count,first-page"
+msgstr "%1 項提及，点击此处查看最先的 %2 則"
 
-msgid "activities.to-groups=count"
-msgstr "至 %1 群组"
+msgid "explore.mentions=count"
+msgstr "%1 項提及"
 
-msgid "activities.within"
-msgstr "群组为"
+msgid "explore.more"
+msgstr "更多"
+
+msgid "explore.no-items"
+msgstr "（无项目展示）"
+
+msgid "explore.oldies"
+msgstr "老人"
+
+msgid "explore.past-month"
+msgstr "过去的一月"
+
+msgid "explore.past-week"
+msgstr "过去的一周"
+
+msgid "explore.past-year"
+msgstr "过去的一年"
+
+msgid "explore.today"
+msgstr "今天"
+
+msgid "info.browse"
+msgstr "点击“浏览”并选择上传图片或文件。"
+
+msgid "info.done"
+msgstr "点击“完成”关闭窗口。"
+
+msgid "info.edit-summary-signal-visibility"
+msgstr "只有获取访问本网页的成员能接收到讯息。"
+
+msgid "info.success"
+msgstr "成功"
+
+msgid "nav.activity"
+msgstr "活动"
+
+msgid "nav.error"
+msgstr "错误"
+
+msgid "nav.logout"
+msgstr "登出"
+
+msgid "nav.people"
+msgstr "人員"
+
+msgid "nav.signals"
+msgstr "讯息"
+
+msgid "nav.wikis"
+msgstr "工作区"
+
+msgid "video.title:"
+msgstr "标题："
+
+msgid "video.url:"
+msgstr "网址："
+
+msgid "widget.about-delete"
+msgstr "删除"
+
+msgid "widget.add-it-now"
+msgstr "现在添加"
+
+msgid "widgets.about-restore"
+msgstr "恢复"
+
+msgid "widgets.about-update"
+msgstr "更新"
+
+msgid "widgets.add"
+msgstr "添加"
+
+msgid "widgets.add-to-gallery"
+msgstr "添加小工具至工具库"
+
+msgid "widgets.add-url:"
+msgstr "通过网址添加小工具："
+
+msgid "widgets.add-widget"
+msgstr "添加小工具"
+
+msgid "widgets.added"
+msgstr "成功添加您的小工具"
+
+msgid "widgets.confirm-delete=widget?"
+msgstr "您确定要永久删除这 \"%1\" 小工具？"
+
+msgid "widgets.confirm-remove=widget?"
+msgstr "您确定要移除此 \"%1\" 小工具? 用户将无法在他们的工具库中看到此小工具. 您随时可以恢复此小工具。"
+
+msgid "widgets.confirm-restore=widget?"
+msgstr "您确定要恢复此 \"%1\" 小工具？"
+
+msgid "widgets.delete"
+msgstr "（删除）"
+
+msgid "widgets.gallery-switch=account:"
+msgstr "这是“%1”账号的工具库。转到帐户："
+
+msgid "widgets.install-this"
+msgstr "安装小工具"
+
+msgid "widgets.manage-gallery-for-accounts"
+msgstr "管理各账号工具库"
+
+msgid "widgets.no-description"
+msgstr "无描述"
+
+msgid "widgets.permanent-remove"
+msgstr "永久移除小工具"
+
+msgid "widgets.remove"
+msgstr "（移除）"
+
+msgid "widgets.remove-widget"
+msgstr "移除小工具"
+
+msgid "widgets.removed=widget"
+msgstr "成功移除“%1”小工具"
+
+msgid "widgets.restore"
+msgstr "（恢复）"
+
+msgid "widgets.restore-widget"
+msgstr "恢复小工具"
+
+msgid "widgets.restored=widget"
+msgstr "成功恢复“%1”小工具"
+
+msgid "widgets.update"
+msgstr "（更新）"
+
+msgid "widgets.update-from-url:"
+msgstr "通过网址更新小工具："
+
+msgid "widgets.update-widget"
+msgstr "更新小工具"
+
+msgid "widgets.updated=widget"
+msgstr "成功更新您的小工具"
+
+msgid "widgets.upload-xml:"
+msgstr "上传小工具 XML 文件："
+
+msgid "widgets.use-editor"
+msgstr "使用小工具编辑器"
