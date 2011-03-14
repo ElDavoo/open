@@ -115,6 +115,16 @@ sub renew {
     $self->update( { expires_at => $when } );
 }
 
+sub to_hash {
+    my $self = shift;
+    return {
+        restriction_type => $self->restriction_type,
+        token            => $self->token,
+        expires_at       => $self->expires_at,
+        workspace_id     => $self->workspace_id,
+    };
+}
+
 1;
 
 =head1 NAME
