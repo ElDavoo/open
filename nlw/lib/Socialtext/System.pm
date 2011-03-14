@@ -47,8 +47,9 @@ sub backtick {
     sub _vmem_limiter {
         # limit Virtual Memory and Address Space
         for (qw(RLIMIT_VMEM RLIMIT_AS)) {
-            setrlimit($rlimits->{$_}, $VMEM_LIMIT, $VMEM_LIMIT)
-                if exists $rlimits->{$_};
+            if (exists $rlimits->{$_} and $VMEM_LIMIT > 0) {
+                setrlimit($rlimits->{$_}, $VMEM_LIMIT, $VMEM_LIMIT)
+            }
         }
     }
 }
