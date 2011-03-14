@@ -28,6 +28,13 @@ my %SectionMap = (
     "lib/Socialtext/Appliance" => "appliance",
     "libsocialtext-appliance-perl/sbin" => "appliance",
     "libsocialtext-appliance-perl/template" => "console",
+    "share/template/data/event" => "event",
+    "share/template/data/job" => "job",
+    "share/template/data/bug" => "bug",
+    "share/template/email" => "email",
+    "share/template/desktop" => "desktop",
+    "share/template/errors" => "error",
+    "share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu" => "insert",
 );
 
 sub words {

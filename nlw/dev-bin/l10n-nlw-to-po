@@ -71,7 +71,7 @@ for my $key (sort keys %Sections) {
     my $po = "share/l10n/$lang/$key.po";
     if ($new and -e $po) {
         system("perl -ni -e 'print unless /^# SOME DESCRIPTIVE TITLE./ .. /^#:/ and not /^#:/' $po");
-        system("msggrep --msgid -v -e '^<!\\|^[a-z][a-z0-9][a-z0-9]*\\.' $po > $po.new");
+        system("msggrep -w 99999 --sort-output --msgid -v -e '^<!\\|^[a-z][a-z0-9][a-z0-9]*\\.' $po > $po.new");
         system("mv $po.new $po");
         unlink $po unless -s $po;
     }
