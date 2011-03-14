@@ -358,7 +358,7 @@
         else {
             lookaheadList.html('<li></li>');
             $('li', lookaheadList)
-                .text("No matches for '"+$(this.input).val()+"'")
+                .text(loc("No matches for '[_1]'", $(this.input).val()))
                 .css({padding: '3px 5px'});
             this.show();
         }
@@ -659,7 +659,7 @@
                     .appendTo(self.getLookaheadList());
 
                 if (textStatus == 'parsererror') {
-                    $error.html("Error parsing data");
+                    $error.html(loc("Error parsing data"));
                 }
                 else if (self.opts.onError) {
                     var errorHandler = self.opts.onError[xhr.status]

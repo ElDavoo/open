@@ -689,7 +689,10 @@ $(function() {
 
                     get_lightbox("edit_check", function() {
                         $("body").append(
-                            Jemplate.process("edit_check.tt2", data)
+                            Jemplate.process("edit_check.tt2", $.extend({
+                                loc: loc,
+                                time_ago: loc('ago.minutes=count', data.minutes_ago)
+                            }, data))
                         );
 
                         jQuery.showLightbox({

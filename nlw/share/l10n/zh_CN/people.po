@@ -190,7 +190,7 @@ msgid "people.cancel-add-tag"
 msgstr "取消"
 
 msgid "people.complete-your-profile"
-msgstr "请现在完成<a href=\"/st/edit_profile\">您的个人资料</a>。"
+msgstr "请填写<a href=\"/st/edit_profile\">您的个人资料</a>。"
 
 msgid "people.count=users"
 msgstr "%1 名用户"

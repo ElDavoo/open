@@ -169,7 +169,7 @@ msgid "edit.loading"
 msgstr "正在加载..."
 
 msgid "edit.more"
-msgstr "编辑更多"
+msgstr "继续编辑"
 
 msgid "edit.navigate-away?"
 msgstr "确定要访问本页面之外的页面吗？"
@@ -223,7 +223,7 @@ msgid "edit.upload"
 msgstr "上传文件..."
 
 msgid "edit.wiki-text"
-msgstr "維基格式"
+msgstr "源码格式"
 
 msgid "error.browser-offline"
 msgstr "浏览器为离线状态，请连入互联网再重试。"
@@ -334,7 +334,7 @@ msgid "info.preformatted-text"
 msgstr "（预格式化文本，是与输入所显示出来完全一致的纯文字。）"
 
 msgid "info.wafl-uneditable"
-msgstr "该小工具不可编辑。请在維基格式下进行编辑。"
+msgstr "该小工具不可编辑。请在源码格式下进行编辑。"
 
 msgid "link.add"
 msgstr "添加链接"
@@ -364,7 +364,7 @@ msgid "link.web-link"
 msgstr "网站链接"
 
 msgid "link.wiki-link"
-msgstr "維基链接"
+msgstr "共笔链接"
 
 msgid "link.wiki:"
 msgstr "工作区："
@@ -505,16 +505,16 @@ msgid "table.rows:"
 msgstr "行："
 
 msgid "table.show-cell-borders"
-msgstr "显示单元格"
+msgstr "显示框线"
 
 msgid "table.table-sortable"
-msgstr "表格可归类"
+msgstr "表格可排序"
 
 msgid "wafl.#=tag"
 msgstr "#%1"
 
 msgid "wafl.aim"
-msgstr "AIM帐户名"
+msgstr "AIM 帐户名"
 
 msgid "wafl.aim-title=id"
 msgstr "使用 AIM 向 '%1' 发送即时信息。点击进行编辑。"
@@ -565,7 +565,7 @@ msgid "wafl.content"
 msgstr "内容"
 
 msgid "wafl.custom"
-msgstr "Custom"
+msgstr "自定义"
 
 msgid "wafl.date-format"
 msgstr "YYYY-MM-DD&nbsp;HH:MM:SS"
@@ -634,13 +634,13 @@ msgid "wafl.insert-code"
 msgstr "插入代码"
 
 msgid "wafl.insert-html"
-msgstr "插入HTML"
+msgstr "插入 HTML"
 
 msgid "wafl.insert-pre"
 msgstr "插入预格式化文本"
 
 msgid "wafl.link-text"
-msgstr "链接文本"
+msgstr "显示文字"
 
 msgid "wafl.link-title=url"
 msgstr "链接到'%1'。点击进行编辑。"
@@ -670,7 +670,7 @@ msgid "wafl.page-title"
 msgstr "页面标题"
 
 msgid "wafl.page-titled"
-msgstr "the page titled"
+msgstr "其他页面："
 
 msgid "wafl.pre-edit"
 msgstr "预格式化文本。点击进行编辑。"
@@ -811,7 +811,7 @@ msgid "wafl.wiki"
 msgstr "工作区"
 
 msgid "wafl.wiki-text"
-msgstr "維基格式"
+msgstr "源码格式"
 
 msgid "wafl.wiki-this"
 msgstr "当前工作区"
@@ -853,4 +853,4 @@ msgid "widget.width:"
 msgstr "小工具宽度："
 
 msgid "wiki.wiki-named"
-msgstr "工作区命名"
+msgstr "其他工作区："

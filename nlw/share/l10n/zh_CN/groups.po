@@ -25,10 +25,10 @@ msgid "do.leave"
 msgstr "离开"
 
 msgid "error.not-member-of-any-groups"
-msgstr "目前，您是不是任何群组的成员。"
+msgstr "您目前不是任何群组的成员。"
 
 msgid "groups.admin-can-change-setting-after-creation"
-msgstr "群组管理员在创建完该群组之后可以更改其设置。"
+msgstr "群组管理员在创建完群组后，可以更改其设置。"
 
 msgid "groups.all-available"
 msgstr "所有可用的群组"
@@ -49,7 +49,7 @@ msgid "groups.create"
 msgstr "创建群组"
 
 msgid "groups.create-a-group"
-msgstr "创建一个群组"
+msgstr "创建群组"
 
 msgid "groups.create-group"
 msgstr "创建群组..."
@@ -70,7 +70,7 @@ msgid "groups.delete=name"
 msgstr "删除 %1"
 
 msgid "groups.directory"
-msgstr "群组名单"
+msgstr "群组目录"
 
 msgid "groups.edit=name"
 msgstr "编辑群组：%1"
@@ -97,13 +97,13 @@ msgid "groups.private"
 msgstr "私密群组"
 
 msgid "groups.private-not-listed-in-directory"
-msgstr "在群组名单中消失并且只有管理员可以邀请新成员。"
+msgstr "不列入群组名单；只有管理员可以邀请新成员。"
 
 msgid "groups.save"
 msgstr "保存"
 
 msgid "groups.search-before-creating"
-msgstr "在创建群组之前，您可以搜索按名字和描述搜索已有的群组。"
+msgstr "在创建群组之前，您可以按名字或描述搜索已有的群组。"
 
 msgid "groups.search-here"
 msgstr "在这里输入您的搜索..."
@@ -112,16 +112,16 @@ msgid "groups.search:"
 msgstr "搜索群组："
 
 msgid "groups.self-join"
-msgstr "自加入群组"
+msgstr "公開群组"
 
 msgid "groups.self-join-listed-in-directory"
-msgstr "在群组名单的所有人可见并且任何人都可以加入。"
+msgstr "列入群组名单；任何人都可以加入。"
 
 msgid "groups.successfully-deleted=name"
 msgstr "群组 %1 已成功删除。"
 
 msgid "groups.toggling-self-join-and-private"
-msgstr "将私密群组转变自加入群组后，群组帐户里的任何用户都可以加入群组，之后还可以选择邀请其他人加入。将自加入群组转变为私密群组后，该群组将会在群组名单中消失，只能由群组管理员邀请加入。"
+msgstr "将私密群组转变为公開群组后，群组帐户里的任何用户都可以加入群组，之后还可以选择邀请其他人加入。将公開群组转变为私密群组后，该群组将会在群组名单中消失，只能由群组管理员邀请加入。"
 
 msgid "groups.you-are-member"
 msgstr "您当前是这个群组的成员。"

@@ -14,7 +14,7 @@
       </ul>
     </div><!-- tableTabs END -->
     <div class="tableFilter">
-      <label>View:</label>
+      <label>[% loc('View:') %]</label>
       <ul>
         <li class="allpages [% IF action == 'changes' %] selected[% END %]"><a href="/[% current_workspace.name %]?action=changes&changes=all">[% loc("page.all") %]</a></li>
         <li class="alltags[% IF action == 'category_list' %] selected[% END %]"><a href="/[% current_workspace.name %]?action=category_list">[% loc("tag.all") %]</a></li>

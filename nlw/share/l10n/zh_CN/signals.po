@@ -28,10 +28,10 @@ msgid "explore.just-me"
 msgstr "只有我"
 
 msgid "explore.using-filters"
-msgstr "使用下面的过滤器来缩小结果。 使用'x'来过滤掉相应的群组，标签和好友。"
+msgstr "使用下面的过滤器来筛选结果。点击“x”来取消过滤。"
 
 msgid "info.about-explore"
-msgstr "<b>Socialtext 浏览</b> 让您轻松通过Socialtext讯息知道同事们分享的文件和链接。使用顶部的标签来选择类型和左边的筛选功能来减少要显示的信息。<br /> <br /> 每个列出的项目都有一个或者更多提及它的讯息会话。您可以点击项目来打开链接，或者点击标题左边的方框来查看和回复相应的会话。"
+msgstr "<b>Socialtext 探索</b> 让您轻松发现同事们通过 Socialtext 讯息分享的文件和链接。使用顶部的标签来选择类型，用左边的筛选功能来减少要显示的信息。<br /> <br /> 每个列出的项目都有一个以上提及它的讯息对话。您可以点击项目来打开链接，或者点击标题左边的方框来查看和回复对话。"
 
 msgid "nav.explore"
 msgstr "探索"

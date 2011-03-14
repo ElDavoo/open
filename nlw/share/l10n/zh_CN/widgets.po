@@ -136,7 +136,7 @@ msgid "do.cancel"
 msgstr "删除"
 
 msgid "activities.about-insert-wikilink"
-msgstr "选定一个工作区，然后搜索您想连接的工作区页面。您可以更改链接文本，并连接到该网页的子链接。"
+msgstr "选定一个工作区，然后搜索您想连接的工作区页面。您可以更改显示文字，也可以连接到该页面的。"
 
 msgid "info.browse"
 msgstr "点击“浏览”并选择上传图片或文件。"
@@ -184,7 +184,7 @@ msgid "widgets.install-this"
 msgstr "安装小工具"
 
 msgid "activities.link-text:"
-msgstr "链接文本："
+msgstr "显示文字："
 
 msgid "activities.link-to-web"
 msgstr "链接至网页"

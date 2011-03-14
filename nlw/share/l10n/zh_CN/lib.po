@@ -136,7 +136,7 @@ msgid "appliance.backup-server-name"
 msgstr "备份服务器名称"
 
 msgid "appliance.collaborativeness=score"
-msgstr "协作：%1 – 总贡献人数占总访问人数的百分比"
+msgstr "协作：%1 – 总贡献人数占总访客人数的百分比"
 
 msgid "appliance.confirm-initialize-wikis"
 msgstr "您确定要删除所有工作区，并创建新工作区吗？（此操作无法恢复。）"
@@ -268,13 +268,13 @@ msgid "blog.atom=blog"
 msgstr "博客：%1 Atom"
 
 msgid "blog.first-post-body=tag"
-msgstr "这是 %1 的第一篇博客。点击*新建博客*创建更多博客。"
+msgstr "这是 %1 的第一篇文章。点击 *发帖* 创建更多文章。"
 
 msgid "blog.first-post=tag"
 msgstr "标记为 %1 的第一个博客"
 
 msgid "blog.name=tag"
-msgstr "%1 博客"
+msgstr "%1博客"
 
 msgid "blog.navigation"
 msgstr "博客导航"
@@ -397,7 +397,7 @@ msgid "config.changes-depth?"
 msgstr "间隔多长时间显示“最新更新”？"
 
 msgid "config.did-you-know-text"
-msgstr "作为 Socialtext 的客户，你可访问<a href=\"http://www.socialtext.net/exchange/\">Socialtext 客户交流</a>。 在这里，你可以与其他 Socialtext 客户分享和交流。"
+msgstr "作为 Socialtext 的客户，您可以在 <a href=\"http://www.socialtext.net/exchange/\">Socialtext 客户交流区</a> 与其他 Socialtext 客户分享和交流。"
 
 msgid "config.did-you-know-title"
 msgstr "节点社区入口"
@@ -451,7 +451,7 @@ msgid "config.wiki-new"
 msgstr "工作区：创建新工作区"
 
 msgid "config.wiki.unsubscribe"
-msgstr "工作区：未订阅"
+msgstr "工作区：退出"
 
 msgid "control.new-wiki"
 msgstr "新工作区"
@@ -496,13 +496,13 @@ msgid "date.wed"
 msgstr "周三"
 
 msgid "desktop.relogin-for-default-logo"
-msgstr "（桌面用户如需看默认标志，需退出并重新登录。）"
+msgstr "（桌面用户如需看默认标志，需重新登录。）"
 
 msgid "desktop.relogin-for-logo"
-msgstr "当前帐户标志应用至桌面。桌面用户需退出并重新登录才能看到新的标志。"
+msgstr "当前帐户标志应用至桌面。桌面用户需重新登录才能看到新的标志。"
 
 msgid "desktop.relogin-for-new-logo"
-msgstr "（桌面用户如需看新的标志，需退出并重新登录）"
+msgstr "（桌面用户如需看新的标志，需重新登录）"
 
 msgid "desktop.relogin-for-reset-logo"
 msgstr "重置为默认桌面标志。桌面用户需要注销并重新登录才能看到新的标志。"
@@ -1768,7 +1768,7 @@ msgid "page.breadcrumbs"
 msgstr "最近浏览页面"
 
 msgid "page.changes=time,changed,total"
-msgstr "在 %1（%2）之内一共更新了（%3）页面"
+msgstr "%1更新（%2 个页面，共 %3 个页面）"
 
 msgid "page.commented=summary,page,wiki"
 msgstr "“%1”（在 %3 中评论 %2）"
@@ -1942,7 +1942,7 @@ msgid "report.total-unique-contributors=count"
 msgstr "总贡献人数：%1"
 
 msgid "report.total-unique-visitors=count"
-msgstr "总访问人数：%1"
+msgstr "总访客人数：%1"
 
 msgid "report.total=wiki"
 msgstr "%1 工作区总数"
@@ -2071,7 +2071,7 @@ msgid "test.deleted-widgets=count"
 msgstr "已删除 %1 个小工具"
 
 msgid "time.at=date,time"
-msgstr "%2 中的 %1"
+msgstr "%1 %2"
 
 msgid "time.count=days"
 msgstr "%1 天"

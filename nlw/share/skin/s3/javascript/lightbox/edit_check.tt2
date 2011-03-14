@@ -1,13 +1,13 @@
 <div class="lightbox" id="st-edit-check">
-  <h3>Edit Warning</h3>
+  <h3>[% loc('Edit Warning') %]</h3>
 
-  <p>[% user_link %]</a> has opened this page for editing [% time_ago %].</p>
+  <p>[% loc('[_1] has opened this page for editing [_2].', user_link, time_ago) %]</p>
 
   [% user_business_card %]
 
   <ul class="buttons">
-    <li class="flexButton"><a href="#" class="continue">Edit Anyway</a></li>
-    <li class="flexButton"><a href="#" class="close">Return to Page View</a></li>
+    <li class="flexButton"><a href="#" class="continue">[% loc('Edit Anyway') %]</a></li>
+    <li class="flexButton"><a href="#" class="close">[% loc('Return to Page View') %]</a></li>
   </ul>
 </div>
 

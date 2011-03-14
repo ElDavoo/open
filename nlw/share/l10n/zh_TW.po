@@ -22,7 +22,7 @@ msgid "<! widget.more_desc !>"
 msgstr "<! widget.more_desc !>"
 
 msgid "about.keywords"
-msgstr "維基，商務維基，文檔管理，企業維基，內網維基，知識管理，在線協作，開放資源維基，門戶維基，托管維基，協作，社會化軟體，社交網路，顯示板，項目協作，團隊協作，維基應用，維基軟體，社區"
+msgstr "維基，商務維基，文檔管理，企業維基，內網維基，知識管理，在線協作，開放維基，門戶維基，托管維基，協作，社會化軟體，社交網路，顯示板，項目協作，團隊協作，維基應用，維基軟體，社區，共筆，商務共筆，企業共筆，內網共筆，開源共筆，門戶共筆，托管共筆，共筆應用，共筆軟體"
 
 msgid "about.people"
 msgstr "是一個具有強勁社交網路功能的人員目錄。您可以找到您同事的聯絡資訊，發現具有特長和共同愛好的人，以及通過您的社交網路找到有價值的資訊。"
@@ -31,7 +31,7 @@ msgid "about.signals"
 msgstr "提供與 Socialtext 的企業協作平台整合的社會化消息服務。在提供像其他微網誌工具如 Twitter&#0153; 一樣的好處的同時，Socialtext 訊息還有更多優點，因為消息服務的運作脈絡，是在為共同目標協作的組織成員當中。"
 
 msgid "about.unplugged"
-msgstr "Socialtext 離線允許用戶離線閱讀或者編輯工作區。用戶可以『離線』一個或者更多頁面來進行閱讀或者編輯。更改將會與工作區同步。"
+msgstr "『Socialtext 離線』允許用戶離線閱讀或者編輯工作區。用戶可以『離線』一個或者更多頁面來進行閱讀或者編輯。更改將會與工作區同步。"
 
 msgid "account.count=people"
 msgstr "%1 人"
@@ -142,13 +142,13 @@ msgid "acl.public-read-only"
 msgstr "公開唯讀"
 
 msgid "activities.about-insert-wikilink"
-msgstr "選定一個工作區，然後搜尋您想連接的工作區頁面。您可以更改鏈結文本，並連接到該網頁的子鏈結。"
+msgstr "選定一個工作區，然後搜尋您想連接的工作區頁面。您可以更改顯示文字，也可以連接到該頁面的。"
 
 msgid "activities.add-tag"
 msgstr "新增標籤"
 
 msgid "activities.add-video-link"
-msgstr "新增視頻連接"
+msgstr "新增影片連接"
 
 msgid "activities.all-events"
 msgstr "所有事件"
@@ -209,7 +209,7 @@ msgid "activities.edits"
 msgstr "編輯"
 
 msgid "activities.enter-video-url-here"
-msgstr "複製和貼上以下視頻的網址。我們支援插入來自YouTube，Vimeo，SlideShare 和 Google Video 的視頻。"
+msgstr "複製和貼上以下影片的網址。我們支援插入來自YouTube，Vimeo，SlideShare 和 Google Video 的影片。"
 
 msgid "activities.enter-weblink-url-here"
 msgstr "請在底下貼上或鍵入鏈結的目標（網址，如http://socialtext.com）。鏈結目標是必填的。"
@@ -233,7 +233,7 @@ msgid "activities.insert:"
 msgstr "插入："
 
 msgid "activities.link-text:"
-msgstr "鏈結文本："
+msgstr "顯示文字："
 
 msgid "activities.link-to-web"
 msgstr "鏈結至網頁"
@@ -248,7 +248,7 @@ msgid "activities.make-signal-private"
 msgstr "使此訊息私有"
 
 msgid "activities.maximum-file-size=mb"
-msgstr "最大文件大小：%1MB"
+msgstr "最大檔案大小：%1MB"
 
 msgid "activities.me"
 msgstr "我"
@@ -359,7 +359,7 @@ msgid "activities.to=target"
 msgstr "至 %1"
 
 msgid "activities.uploaded=files"
-msgstr "已上傳的文件：%1"
+msgstr "已上傳的檔案：%1"
 
 msgid "activities.wiki:"
 msgstr "工作區："
@@ -431,10 +431,10 @@ msgid "appliance.added-technical-admin=user"
 msgstr "指派 %1 為應用技術管理員。"
 
 msgid "appliance.archive-directory"
-msgstr "存檔目錄"
+msgstr "封存目錄"
 
 msgid "appliance.archiving-system-config-files"
-msgstr "正在存檔系統配置文件..."
+msgstr "正在封存系統配置檔案..."
 
 msgid "appliance.backup-destination-updated"
 msgstr "備份位址已更新"
@@ -461,7 +461,7 @@ msgid "appliance.cleanup-previous-snapshot"
 msgstr "正在清除前一個快照..."
 
 msgid "appliance.collaborativeness=score"
-msgstr "協作：%1 – 總貢獻人數占總訪問人數的百分比"
+msgstr "協作：%1 – 總貢獻人數占總訪客人數的百分比"
 
 msgid "appliance.confirm-initialize-wikis"
 msgstr "您確定要刪除所有工作區，並建立新工作區嗎？（此操作無法恢復。）"
@@ -593,7 +593,7 @@ msgid "appliance.wikis-initialized=log"
 msgstr "工作區已初始化。<br>記錄：%1"
 
 msgid "blog.archives"
-msgstr "網誌存檔"
+msgstr "網誌封存"
 
 msgid "blog.atom=blog"
 msgstr "網誌：%1 Atom"
@@ -608,22 +608,22 @@ msgid "blog.create"
 msgstr "新建一個網誌"
 
 msgid "blog.edit"
-msgstr "編輯這個文章"
+msgstr "編輯這篇文章"
 
 msgid "blog.first-post-body=tag"
-msgstr "這是 %1 的第一篇網誌。點選*新建網誌*建立更多網誌。"
+msgstr "這是 %1 的第一篇文章。點選 *貼文* 建立更多文章。"
 
 msgid "blog.first-post=tag"
 msgstr "標記為 %1 的第一個網誌"
 
 msgid "blog.go:"
-msgstr "轉到："
+msgstr "前往："
 
 msgid "blog.name=tag"
-msgstr "%1 網誌"
+msgstr "%1網誌"
 
 msgid "blog.naming"
-msgstr "請給您的網誌命名。如果您的命名不以『blog』結尾，系統會在您的命名後面自動新增『blog』。點選『建立』之後，您將會直接進入新建的網誌。"
+msgstr "請給您的網誌命名。如果您的命名不以『網誌』結尾，系統會在您的命名後面自動新增『網誌』。點選『建立』之後，您將會直接進入新建的網誌。"
 
 msgid "blog.navigation"
 msgstr "網誌導航"
@@ -656,7 +656,7 @@ msgid "blog.rss=blog"
 msgstr "網誌：%1 RSS"
 
 msgid "blog.sample"
-msgstr "網誌範例"
+msgstr "範例網誌"
 
 msgid "blog.show=tag"
 msgstr "%1 網誌"
@@ -878,7 +878,7 @@ msgid "comment.type-link"
 msgstr "在此輸入鏈結文本"
 
 msgid "config.all-users"
-msgstr "管理所有用戶"
+msgstr "管理用戶"
 
 msgid "config.anyone-can-email=wiki"
 msgstr "任何人都可以發送郵件至 %1。"
@@ -887,13 +887,13 @@ msgid "config.blog-sort"
 msgstr "工作區網誌排序"
 
 msgid "config.blog:"
-msgstr "此網誌："
+msgstr "指定網誌："
 
 msgid "config.changes-depth?"
 msgstr "間隔多長時間顯示『最新更新』？"
 
 msgid "config.did-you-know-text"
-msgstr "作為 Socialtext 的客戶，你可訪問<a href=\"http://www.socialtext.net/exchange/\">Socialtext 客戶交流</a>。 在這裡，你可以與其他 Socialtext 客戶分享和交流。"
+msgstr "作為 Socialtext 的客戶，您可以在 <a href=\"http://www.socialtext.net/exchange/\">Socialtext 客戶交流區</a> 與其他 Socialtext 客戶分享和交流。"
 
 msgid "config.did-you-know-title"
 msgstr "節點社區入口"
@@ -905,7 +905,7 @@ msgid "config.email-receive"
 msgstr "工作區郵件接收設定"
 
 msgid "config.files"
-msgstr "管理文件"
+msgstr "管理檔案"
 
 msgid "config.first-name:"
 msgstr "名："
@@ -995,7 +995,7 @@ msgid "config.wiki-public"
 msgstr "用戶無需登入即可查看頁面。"
 
 msgid "config.wiki.unsubscribe"
-msgstr "工作區：未訂閱"
+msgstr "工作區：退出"
 
 msgid "config.yes"
 msgstr "是"
@@ -1004,7 +1004,7 @@ msgid "console.about-authentication-token-timeout"
 msgstr "出於安全的原因，認証標記在預先定義的期間過後將自動失效，即使用戶選擇了『在本電腦上記住我』。該期間最短為『1天』，最長為『365天』，預設為『14天』。您可以在此更改該期間。"
 
 msgid "console.about-backup-settings"
-msgstr "本設備可以在另外一台電腦上相容Windows或SMB的目錄或文件夾中存儲備份文件。在此設定備份伺服器、目錄與用戶名。"
+msgstr "本設備可以在另外一台電腦上相容Windows或SMB的目錄或檔案夾中存儲備份檔案。在此設定備份伺服器、目錄與用戶名。"
 
 msgid "console.about-captcha-setting"
 msgstr "如果您的 Socialtext 設備公開在公共互聯網上，垃圾郵件制造者與自動『機器人』會嘗試自行註冊。『驗証碼』服務會要求註冊者通過辨認一段文本（驗証碼）來証實其為人類。如果您的設備為公開在公共互聯網的話，請使用該設定。"
@@ -1034,13 +1034,13 @@ msgid "console.about-navigation-tabs"
 msgstr "使用導航標籤來選擇設備管理的不同部分"
 
 msgid "console.about-ntp-server=help-link"
-msgstr "您可以使用 NTP 協定將本設備的時鐘與另一台電腦進行同步。設備必須可以通過123端口訪問該伺服器。更多資訊請查看：%1。"
+msgstr "您可以使用 NTP 協定將本設備的時鐘與另一台電腦進行同步。設備必須可以通過123端口存取該伺服器。更多資訊請查看：%1。"
 
 msgid "console.about-poxy-server=help-link"
-msgstr "您可以設定一個代理伺服器，以允許用戶可以訪問包括面板小工具與RSS源在內的網路服務。更多資訊請查看：%1"
+msgstr "您可以設定一個代理伺服器，以允許用戶可以存取包括面板小工具與RSS源在內的網路服務。更多資訊請查看：%1"
 
 msgid "console.about-support-contact"
-msgstr "在此設定用戶可以通過登入、應用訪問或目錄訪問方式，以獲取幫助的電子郵件位址或網址"
+msgstr "在此設定用戶可以通過登入、應用存取或目錄存取方式，以獲取幫助的電子郵件位址或網址"
 
 msgid "console.about-username-password-after-initialize-wikis"
 msgstr "以上您輸入的電子郵件位址將作為用戶名，密碼為<strong>password</strong>。您可以稍後更改密碼。"
@@ -1139,7 +1139,7 @@ msgid "console.new-admin-email-address:"
 msgstr "新的管理員電子郵件位址："
 
 msgid "console.no-files-available-to-restore"
-msgstr "沒有可供恢復的文件"
+msgstr "沒有可供恢復的檔案"
 
 msgid "console.ntp-server-rfc-1305"
 msgstr "NTP 伺服器（RFC 1305）"
@@ -1181,13 +1181,13 @@ msgid "console.recaptcha-public-key"
 msgstr "reCaptcha 公鑰"
 
 msgid "console.refresh"
-msgstr "刷新"
+msgstr "更新"
 
 msgid "console.refresh-file-list"
-msgstr "刷新文件列表"
+msgstr "更新檔案列表"
 
 msgid "console.refresh-this-page"
-msgstr "刷新本頁"
+msgstr "更新本頁"
 
 msgid "console.renew-after-in-days"
 msgstr "（天）後更新"
@@ -1298,16 +1298,16 @@ msgid "console.your-email-address:"
 msgstr "您的電子郵件位址："
 
 msgid "control.about-account-logo-image"
-msgstr "您可以選擇一個圖像作為帳戶標識。使用下面的表單從電腦上傳圖像。如果您未選擇圖像，則使用Socialtext的標識。標識的大小為寬201像素，高36像素，如果不符合該要求則圖像將被調整。上傳的標識將立即在用戶的瀏覽器中顯示，或者在刷新登入Socialtext桌面後顯示（可選）。"
+msgstr "您可以選擇一個圖像作為帳戶標識。使用下面的表單從電腦上傳圖像。如果您未選擇圖像，則使用Socialtext的標識。標識的大小為寬201像素，高36像素，如果不符合該要求則圖像將被調整。上傳的標識將立即在用戶的瀏覽器中顯示，或者在更新登入Socialtext桌面後顯示（非必填）。"
 
 msgid "control.about-accounts-tab"
-msgstr "帳戶指一大群的用戶，其具有訪問用戶目錄、交流對話以及其他內容特征的公共權限。每個帳戶可以設定不同的選項與設定，包括插件、視覺主題以及美化Socialtext桌面。您也可以對帳戶的使用情況進行查看，並對報告進行採納。"
+msgstr "帳戶指一大群的用戶，其具有存取用戶目錄、交流對話以及其他內容特征的公共權限。每個帳戶可以設定不同的選項與設定，包括插件、視覺主題以及美化Socialtext桌面。您也可以對帳戶的使用情況進行查看，並對報告進行採納。"
 
 msgid "control.about-control-panel"
 msgstr "自此設備業務管理員可以管理與監控Socialtext應用的使用，包括帳戶、群組、工作區、用戶與報告。"
 
 msgid "control.about-create-links"
-msgstr "使用本鏈結在預設帳戶中建立實體。在指定帳戶中建立實體，請訪問<a href='/nlw/control/account'>帳戶</a>標籤欄來瀏覽指定帳戶"
+msgstr "使用本鏈結在預設帳戶中建立實體。在指定帳戶中建立實體，請存取<a href='/nlw/control/account'>帳戶</a>標籤欄來瀏覽指定帳戶"
 
 msgid "control.about-field-name"
 msgstr "欄位名稱作為唯一識別符。如果為空白，則根據標題生成。"
@@ -1316,7 +1316,7 @@ msgid "control.about-groups-tab"
 msgstr "群組指用戶的集合。群組從屬於帳戶，並與一個或多個工作區相聯絡。對群組的設定及其相聯絡的用戶或工作區均在此控制。"
 
 msgid "control.about-mass-add-users"
-msgstr "Socialtext 可以讓您為帳戶新增多用戶。要新增多用戶，請下載樣本資料文件，然後新增您的用戶資料。並在此上傳該文件。也可以訪問<a href=\"https://www.socialtext.net/help-adminguide/adding_and_updating_users#adding_multiple_users\">為Socialtext新增多用戶</a>查看新增多用戶的全部文檔。"
+msgstr "Socialtext 可以讓您為帳戶新增多用戶。要新增多用戶，請下載樣本資料檔案，然後新增您的用戶資料。並在此上傳該檔案。也可以存取<a href=\"https://www.socialtext.net/help-adminguide/adding_and_updating_users#adding_multiple_users\">為Socialtext新增多用戶</a>查看新增多用戶的全部文檔。"
 
 msgid "control.about-paid-option=plugin"
 msgstr "%1 為付費選項。關於費用的更多資訊，請聯絡您的銷售代表。"
@@ -1439,10 +1439,10 @@ msgid "control.all-user-wiki"
 msgstr "全部用戶工作區"
 
 msgid "control.also-reset-logo-for-desktop"
-msgstr "在刷新登入 Socialtext 桌面後將重置標識。"
+msgstr "在更新登入 Socialtext 桌面後將重置標識。"
 
 msgid "control.also-use-logo-for-desktop"
-msgstr "在刷新登入 Socialtext 桌面後將使用該標識。"
+msgstr "在更新登入 Socialtext 桌面後將使用該標識。"
 
 msgid "control.appliance-business-administrator?"
 msgstr "設備業務管理員？"
@@ -1499,7 +1499,7 @@ msgid "control.confirm-delete-group"
 msgstr ""
 "您確定要刪除該群組?\n"
 "\n"
-"一旦刪除您將無法恢復該群組。用戶將無法在該群組進行交流，任何通過該群組對工作區的訪問都將被移除。"
+"一旦刪除您將無法恢復該群組。用戶將無法在該群組進行交流，任何通過該群組對工作區的存取都將被移除。"
 
 msgid "control.confirm-email-address"
 msgstr "確認電子郵件位址"
@@ -1718,10 +1718,10 @@ msgid "control.hide-field"
 msgstr "隱藏"
 
 msgid "control.image-file:"
-msgstr "圖像文件："
+msgstr "圖像檔案："
 
 msgid "control.installed-plugins:"
-msgstr "已安裝的可選模組："
+msgstr "已安裝的非必填模組："
 
 msgid "control.introduction"
 msgstr "概述"
@@ -1814,7 +1814,7 @@ msgid "control.primary-account-for-new-groups:"
 msgstr "新群組的主要帳戶為："
 
 msgid "control.private-group"
-msgstr "<strong>私人：</strong>只有成員才能瀏覽與訪問本群組。"
+msgstr "<strong>私人：</strong>只有成員才能瀏覽與存取本群組。"
 
 msgid "control.profile-fields"
 msgstr "資料欄位"
@@ -1910,7 +1910,7 @@ msgid "control.select-group"
 msgstr "請選擇一個群組"
 
 msgid "control.select-users-csv:"
-msgstr "選擇包含用戶的 CSV 文件新增："
+msgstr "選擇包含用戶的 CSV 檔案新增："
 
 msgid "control.select-users-to-add-to-group"
 msgstr "請選擇多名用戶新增至群組。"
@@ -1979,10 +1979,10 @@ msgid "control.this-is-name-of-your-group"
 msgstr "這是您的群組名稱."
 
 msgid "control.this-will-also-reset-logo-for-desktop"
-msgstr "在刷新登入 Socialtext 桌面後也將重置標識."
+msgstr "在更新登入 Socialtext 桌面後也將重置標識."
 
 msgid "control.this-will-reset-logo-for-desktop"
-msgstr "在刷新登入 Socialtext 桌面後將重置標識"
+msgstr "在更新登入 Socialtext 桌面後將重置標識"
 
 msgid "control.transform"
 msgstr "轉換"
@@ -2000,7 +2000,7 @@ msgid "control.updating"
 msgstr "正在更新 ..."
 
 msgid "control.upload-account-logo-optional"
-msgstr "上傳帳戶標識（可選）"
+msgstr "上傳帳戶標識（非必填）"
 
 msgid "control.uri"
 msgstr "URI"
@@ -2057,10 +2057,10 @@ msgid "control.view=name"
 msgstr "查看 %1"
 
 msgid "control.wait-for-ldap-group-refresh"
-msgstr "一旦您建立群組，需要一段時間您的LDAP群組成員才會在群組首頁顯示。如果您無法看到成員，請稍候在刷新本頁。"
+msgstr "一旦您建立群組，需要一段時間您的LDAP群組成員才會在群組首頁顯示。如果您無法看到成員，請稍候在更新本頁。"
 
 msgid "control.welcome-to-control-panel"
-msgstr "歡迎訪問 Socialtext 控制台"
+msgstr "歡迎存取 Socialtext 控制台"
 
 msgid "control.wiki-removed"
 msgstr "工作區移除成功"
@@ -2204,13 +2204,13 @@ msgid "date.wed"
 msgstr "周三"
 
 msgid "desktop.relogin-for-default-logo"
-msgstr "（桌面用戶如需看預設標誌，需退出並重新登入。）"
+msgstr "（桌面用戶如需看預設標誌，需重新登入。）"
 
 msgid "desktop.relogin-for-logo"
-msgstr "當前帳戶標誌應用至桌面。桌面用戶需退出並重新登入才能看到新的標誌。"
+msgstr "當前帳戶標誌應用至桌面。桌面用戶需重新登入才能看到新的標誌。"
 
 msgid "desktop.relogin-for-new-logo"
-msgstr "（桌面用戶如需看新的標誌，需退出並重新登入）"
+msgstr "（桌面用戶如需看新的標誌，需重新登入）"
 
 msgid "desktop.relogin-for-reset-logo"
 msgstr "重置為預設桌面標誌。桌面用戶需要登出並重新登入才能看到新的標誌。"
@@ -2357,7 +2357,7 @@ msgid "do.unsubscribe"
 msgstr "退出"
 
 msgid "do.unsubscribe=wiki"
-msgstr "從%1工作區退出"
+msgstr "退出『%1』工作區"
 
 msgid "do.upload"
 msgstr "上傳"
@@ -2369,7 +2369,7 @@ msgid "do.weblink"
 msgstr "網路鏈結"
 
 msgid "do.wikilink"
-msgstr "維基鏈結"
+msgstr "共筆鏈結"
 
 msgid "do.yes"
 msgstr "是"
@@ -2402,7 +2402,7 @@ msgid "edit.cancel?"
 msgstr "確定要取消？"
 
 msgid "edit.choose-group"
-msgstr "您必須成為具有訪問此工作區權限的的群組中的成員。請在下面選擇您想加入的群組："
+msgstr "您必須成為具有存取此工作區權限的的群組中的成員。請在下面選擇您想加入的群組："
 
 msgid "edit.contention"
 msgstr "在您編輯的時候有其他人對此頁面進行了更改。"
@@ -2432,10 +2432,10 @@ msgid "edit.loading"
 msgstr "正在載入..."
 
 msgid "edit.more"
-msgstr "編輯更多"
+msgstr "繼續編輯"
 
 msgid "edit.navigate-away?"
-msgstr "確定要訪問本頁面之外的頁面嗎？"
+msgstr "確定要存取本頁面之外的頁面嗎？"
 
 msgid "edit.normal"
 msgstr "正常"
@@ -2477,7 +2477,7 @@ msgid "edit.spreadsheet-title-required-for-wiki"
 msgstr "如果指定工作區，則必須填入試算表標題"
 
 msgid "edit.summarize"
-msgstr "編輯概述（可選）"
+msgstr "編輯概述（非必填）"
 
 msgid "edit.summary=name,page,wiki"
 msgstr "<strong>%1</strong>想讓您知道位於 %3 的<strong>%2</strong>所進行的編輯"
@@ -2495,7 +2495,7 @@ msgid "edit.unsaved-changes"
 msgstr "您的更改未儲存。"
 
 msgid "edit.upload"
-msgstr "上傳文件..."
+msgstr "上傳檔案..."
 
 msgid "edit.view-contention=type:"
 msgstr "您剛才編輯的%1顯示如下。您可以從此處複製貼上您的更改："
@@ -2507,7 +2507,7 @@ msgid "edit.view-unsaved:"
 msgstr "您剛編輯的文本顯示如下。您可以從此處複製您的更改。"
 
 msgid "edit.wiki-text"
-msgstr "維基格式"
+msgstr "源碼格式"
 
 msgid "email.add-all"
 msgstr "新增所有成員"
@@ -2753,7 +2753,7 @@ msgid "error.create-profile-field-failed"
 msgstr "無法建立資料欄位。"
 
 msgid "error.create-test-file-on-samba-share!"
-msgstr "無法在 Samba 共用中建立測試文件!"
+msgstr "無法在 Samba 共用中建立測試檔案!"
 
 msgid "error.create=account"
 msgstr "無法建立帳戶 %1。"
@@ -2762,7 +2762,7 @@ msgid "error.create=wiki"
 msgstr "無法建立工作區 %1。"
 
 msgid "error.css-disabled"
-msgstr "警告：樣式單在移動設備上無法使用。要正確地查看行動版 Socialtext，您需要在瀏覽器設定里面啟用樣式單。"
+msgstr "警告：樣式單在移動設備上無法使用。要正確地查看行動版 Socialtext，您需要在瀏覽器設定裡面啟用樣式單。"
 
 msgid "error.dashboard-push-widget"
 msgstr "推送到顯示板發生錯誤"
@@ -2786,7 +2786,7 @@ msgid "error.delete=widget,message"
 msgstr "刪除『%1』小工具時出錯：%2"
 
 msgid "error.display-page"
-msgstr "頁面顯示出錯。請刷新本頁面，如還有問題請聯絡<a href=\"%1\">Socialtext 客戶服務人員</a>"
+msgstr "頁面顯示出錯。請更新本頁面，如還有問題請聯絡<a href=\"%1\">Socialtext 客戶服務人員</a>"
 
 msgid "error.edit-again"
 msgstr "抱歉，編輯出錯，請重新編輯本頁面。"
@@ -2834,10 +2834,10 @@ msgid "error.export-directory-not-writable=path"
 msgstr "匯出目錄 %1 不可寫。"
 
 msgid "error.export=file"
-msgstr "無法寫入匯出文件 %1，正在終止。"
+msgstr "無法寫入匯出檔案 %1，正在終止。"
 
 msgid "error.extract-skin"
-msgstr "無法解壓主題存檔。這很可能是由損壞的存檔文件造成的。請檢查你的文件，並重新上傳。"
+msgstr "無法解壓主題封存。這很可能是由損壞的封存檔案造成的。請檢查你的檔案，並重新上傳。"
 
 msgid "error.feature-not-supported-in-dashboard"
 msgstr "抱歉，顯示板暫不支援此項特性。"
@@ -2873,16 +2873,16 @@ msgid "error.field-title-required"
 msgstr "必須提供欄位標題"
 
 msgid "error.file-required"
-msgstr "上傳文件不存在"
+msgstr "上傳檔案不存在"
 
 msgid "error.file-upload-forbidden"
 msgstr "沒有權限上傳附件"
 
 msgid "error.filename-too-long"
-msgstr "網址編碼後文件名太長。"
+msgstr "網址編碼後檔案名太長。"
 
 msgid "error.full-video-url-required"
-msgstr "請輸入完整的視頻鏈結位址。"
+msgstr "請輸入完整的影片鏈結位址。"
 
 msgid "error.gadget-id-required"
 msgstr "gadget_id 為必要參數"
@@ -2930,19 +2930,19 @@ msgid "error.incorrect-old-password"
 msgstr "舊密碼不正確"
 
 msgid "error.info-yaml-required!"
-msgstr "上傳的主題不包含 info.yaml 文件！"
+msgstr "上傳的主題不包含 info.yaml 檔案！"
 
 msgid "error.invalid-/-in-changes"
 msgstr "更改參數中含有非法字符『/』"
 
 msgid "error.invalid-account-logo?"
-msgstr "圖片處理出錯，嘗試重新上傳其他文件？"
+msgstr "圖片處理出錯，嘗試重新上傳其他檔案？"
 
 msgid "error.invalid-account-setting=key"
 msgstr "對不起，%1 無法更改。"
 
 msgid "error.invalid-archive=file"
-msgstr "%1 是無效文件名。主題文件後綴名只能是 .zip，.tar.gz 或 .tgz。"
+msgstr "%1 是無效檔案名。主題檔案後綴名只能是 .zip，.tar.gz 或 .tgz。"
 
 msgid "error.invalid-authentication-token-hard-limit=min-days,max-days"
 msgstr "認証所採用的硬限制須介於 %1 與%2 天之間。"
@@ -2978,10 +2978,10 @@ msgid "error.invalid-login=name"
 msgstr "錯誤的 %1 或密碼 - 請重試"
 
 msgid "error.invalid-logo-image-type"
-msgstr "標誌文件必須為gif，jpeg，或png格式。"
+msgstr "標誌檔案必須為gif，jpeg，或png格式。"
 
 msgid "error.invalid-mass-add-file"
-msgstr "無法讀取該文件。未新增任何用戶。"
+msgstr "無法讀取該檔案。未新增任何用戶。"
 
 msgid "error.invalid-name=user,type"
 msgstr "『%1』是無效的 %2。請使用你的 %2 登入。"
@@ -3017,10 +3017,10 @@ msgid "error.invalid-value=self-join"
 msgstr "『%1』不是self_join的有效值。"
 
 msgid "error.invalid-video-link"
-msgstr "請輸入一個有效的視頻鏈結。"
+msgstr "請輸入一個有效的影片鏈結。"
 
 msgid "error.invalid-video-url"
-msgstr "抱歉，該網址並非指向嵌入視頻的鏈結。"
+msgstr "抱歉，該網址並非指向嵌入影片的鏈結。"
 
 msgid "error.invalid-video-url=hosts"
 msgstr "對不起，此網址不提供任何我們支援的服務（%1）。"
@@ -3035,13 +3035,13 @@ msgid "error.invalid-widget-type"
 msgstr "只有url和html是小工具類型的有效值。"
 
 msgid "error.invalid-widget=src,message"
-msgstr "你提供的 %1 文件不是一個合法的小工具XML：%2"
+msgstr "你提供的 %1 檔案不是一個合法的小工具XML：%2"
 
 msgid "error.invalid-widget=src,url,message"
-msgstr "你提供的 %1 不包含小工具文件。請重新檢查並上傳。%1 被指定為 %2。錯誤為 %3。"
+msgstr "你提供的 %1 不包含小工具檔案。請重新檢查並上傳。%1 被指定為 %2。錯誤為 %3。"
 
 msgid "error.invalid-wiki-logo?"
-msgstr "無法處理標誌文件，它是什麼圖片？"
+msgstr "無法處理標誌檔案，它是什麼圖片？"
 
 msgid "error.invalid-wiki-name"
 msgstr "工作區名字必須介於3到30個字符長度，只能包含小寫字母，數字，下劃線和連字符，且不能以『-』開頭。"
@@ -3056,7 +3056,7 @@ msgid "error.invalid-wikilink-wiki"
 msgstr "非有效工作區。請輸入一個包含網頁鏈結的有效工作區。"
 
 msgid "error.invalid-xml=src,message"
-msgstr "你提供的 %1 文件不是一個合法的XML：%2"
+msgstr "你提供的 %1 檔案不是一個合法的XML：%2"
 
 msgid "error.invalid= url"
 msgstr "%1 是無效網址。"
@@ -3161,7 +3161,7 @@ msgid "error.no-additional-profile-data"
 msgstr "沒有額外的個人資料資料。"
 
 msgid "error.no-attachment"
-msgstr "找不到附件。頁面名，文件名或鏈結中的識別碼可能有錯誤，或附件已被刪除或不存在於此工作區。"
+msgstr "找不到附件。頁面名，檔案名或鏈結中的識別碼可能有錯誤，或附件已被刪除或不存在於此工作區。"
 
 msgid "error.no-blog-title"
 msgstr "必須提供一個網誌標題。"
@@ -3200,7 +3200,7 @@ msgid "error.no-field=name,account"
 msgstr "帳戶『%2』中不存在個人資料『%1』"
 
 msgid "error.no-followed-events-in-30days=title"
-msgstr "沒有新的 %1，要麼因為您還沒有關注任何人，要麼因為您關注的人在過去30天內還沒有新的 %1。訪問您同事的個人檔案，然後點選『關注此人』來開始關注同事。"
+msgstr "沒有新的 %1，要麼因為您還沒有關注任何人，要麼因為您關注的人在過去30天內還沒有新的 %1。存取您同事的個人檔案，然後點選『關注此人』來開始關注同事。"
 
 msgid "error.no-group=id"
 msgstr "沒有ID %1 的群組。"
@@ -3293,10 +3293,10 @@ msgid "error.no-skin=name"
 msgstr "指定主題 %1 不存在。"
 
 msgid "error.no-such-group"
-msgstr "你所訪問的群組不存在。請諮詢群組管理員或聯絡<a href=\"%1\">Socialtext 客戶服務人員</a>."
+msgstr "你所存取的群組不存在。請諮詢群組管理員或聯絡<a href=\"%1\">Socialtext 客戶服務人員</a>."
 
 msgid "error.no-such-page"
-msgstr "你所訪問的頁面不存在。請諮詢系統管理員或聯絡<a href=\"%1\">Socialtext 客戶服務人員</a>."
+msgstr "你所存取的頁面不存在。請諮詢系統管理員或聯絡<a href=\"%1\">Socialtext 客戶服務人員</a>."
 
 msgid "error.no-such-pending-confirmation"
 msgstr "此確認網址不符合任何待確認用戶。"
@@ -3341,10 +3341,10 @@ msgid "error.no-users-selected"
 msgstr "沒有選中用戶，請至少選中一名用戶然後重試"
 
 msgid "error.no-widget-localization-file"
-msgstr "由於本地化文件無法找到，此小工具安裝失敗"
+msgstr "由於本地化檔案無法找到，此小工具安裝失敗"
 
 msgid "error.no-wiki-access"
-msgstr "無權訪問工作區"
+msgstr "無權存取工作區"
 
 msgid "error.no-wiki-on-server=wiki"
 msgstr "系統中不存在 \"%1\" 工作區"
@@ -3362,7 +3362,7 @@ msgid "error.not-both-visible-and-hidden"
 msgstr "只能指定 --visible 和 --hidden 其中一項參數"
 
 msgid "error.not-member-of-any-groups"
-msgstr "目前，您是不是任何群組的成員。"
+msgstr "您目前不是任何群組的成員。"
 
 msgid "error.not-member=name,container"
 msgstr "%1 不是 %2 的成員"
@@ -3431,7 +3431,7 @@ msgid "error.parse-failed"
 msgstr "無法解析，跳過此用戶。"
 
 msgid "error.parse-header-missing=fields"
-msgstr "無法解析，文件中缺失必要欄位（%1），並且必須包含欄位列表。"
+msgstr "無法解析，檔案中缺失必要欄位（%1），並且必須包含欄位列表。"
 
 msgid "error.parse-missing-fields"
 msgstr "欄位不足無法解析，跳過此用戶。"
@@ -3662,7 +3662,7 @@ msgid "error.size-required"
 msgstr "大小不能為 0。"
 
 msgid "error.skin-upload-failed"
-msgstr "一個自定義的主題文件沒有被上傳。"
+msgstr "一個自定義的主題檔案沒有被上傳。"
 
 msgid "error.socialtext-appliance-backup"
 msgstr "Socialtext 設備備份過程中出錯"
@@ -3695,10 +3695,10 @@ msgid "error.unknown=status"
 msgstr "未知：%1"
 
 msgid "error.unlink-test-file-on-samba-share!"
-msgstr "無法在 Samba 共用中刪除測試文件!!"
+msgstr "無法在 Samba 共用中刪除測試檔案!!"
 
 msgid "error.unpack=file"
-msgstr "不能從 %1 中提取文件"
+msgstr "不能從 %1 中提取檔案"
 
 msgid "error.unsaved-widget"
 msgstr "您有未儲存的更改。"
@@ -3758,7 +3758,7 @@ msgid "error.validation-called-outside-validator"
 msgstr "驗証副程式調用外部驗証器"
 
 msgid "error.video-url-required"
-msgstr "必需填入視頻網址"
+msgstr "必需填入影片網址"
 
 msgid "error.widget-exists-in-"
 msgstr "工具庫中已使用該小工具。"
@@ -3803,7 +3803,7 @@ msgid "error.wikilink-wiki-required"
 msgstr "您必須指定一個工作區."
 
 msgid "error.write-test-file-on-samba-share!"
-msgstr "無法在 Samba 共用中寫入測試文件!!"
+msgstr "無法在 Samba 共用中寫入測試檔案!!"
 
 msgid "event.add-tag-self=tag"
 msgstr "給自身加標籤 %1。"
@@ -3920,7 +3920,7 @@ msgid "example.string"
 msgstr "字串 %1"
 
 msgid "example.title"
-msgstr "範例：Acme Widgets Product Development"
+msgstr "範例：產品研發部"
 
 msgid "example.wiki-email:"
 msgstr "這個郵件位址："
@@ -3974,16 +3974,16 @@ msgid "explore.today"
 msgstr "今天"
 
 msgid "explore.using-filters"
-msgstr "使用下面的過濾器來縮小結果。 使用'x'來過濾掉相應的群組，標籤和好友。"
+msgstr "使用下面的過濾器來篩選結果。點選『x』來取消過濾。"
 
 msgid "export.html"
-msgstr "匯出為HTML"
+msgstr "匯出為 HTML"
 
 msgid "export.pdf"
-msgstr "匯出為PDF"
+msgstr "匯出為 PDF"
 
 msgid "export.word"
-msgstr "匯出為Word"
+msgstr "匯出為 Word"
 
 msgid "feed.avatar=user"
 msgstr "%1 的頭像"
@@ -4004,13 +4004,13 @@ msgid "feed.watchlist=wiki,user"
 msgstr "%1：關注 %2"
 
 msgid "file.add-or-replace=name,size,user,date?"
-msgstr "本頁面已經有名為『%1』（%2 由%3於%4上傳）的附件。 您可以<span class=\"emphasis\">新增</span> 此文件的其他版本或<span class=\"emphasis\">替換</span>已存在的文件。您想怎麼做？"
+msgstr "本頁面已經有名為『%1』（%2 由%3於%4上傳）的附件。您可以<span class=\"emphasis\">新增</span> 此檔案的其他版本或<span class=\"emphasis\">替換</span>已存在的檔案。您想怎麼做？"
 
 msgid "file.add-or-replace=name?"
-msgstr "本頁面已經有名為『%1』的附件。您可以<span class=\"emphasis\">新增</span>此文件的其他版本或<span class=\"emphasis\">替換</span>已存在的文件。您想怎麼做？"
+msgstr "本頁面已經有名為『%1』的附件。您可以<span class=\"emphasis\">新增</span>此檔案的其他版本或<span class=\"emphasis\">替換</span>已存在的檔案。您想怎麼做？"
 
 msgid "file.all"
-msgstr "所有文件"
+msgstr "所有檔案"
 
 msgid "file.attached-to"
 msgstr "附加到"
@@ -4019,13 +4019,13 @@ msgid "file.attached-to-page"
 msgstr "附加到頁面"
 
 msgid "file.browse"
-msgstr "請點選『瀏覽』，並選擇一個文件上傳。"
+msgstr "請點選『瀏覽』，並選擇一個檔案上傳。"
 
 msgid "file.by"
 msgstr "由"
 
 msgid "file.by=date,user"
-msgstr "%1由%2"
+msgstr "%1 由 %2 上傳"
 
 msgid "file.delete"
 msgstr "刪除附件"
@@ -4049,19 +4049,19 @@ msgid "file.keep?"
 msgstr "寄送附件？"
 
 msgid "file.max-size"
-msgstr "文件最大：50MB"
+msgstr "檔案最大：50MB"
 
 msgid "file.name"
-msgstr "文件名"
+msgstr "檔案名"
 
 msgid "file.replace=count,size,user,date"
-msgstr "此文件（最近更新：%2，由%3於%4上傳）有<span class=\"emphasis\">%1以前的版本</span>。如果您點選<strong>替換</strong>，將會<strong>刪除其他所有版本</strong>。"
+msgstr "此檔案（最近更新：%2，由%3於%4上傳）有<span class=\"emphasis\">%1以前的版本</span>。如果您點選<strong>替換</strong>，將會<strong>刪除其他所有版本</strong>。"
 
 msgid "file.size"
 msgstr "大小"
 
 msgid "file.upload"
-msgstr "上傳文件"
+msgstr "上傳檔案"
 
 msgid "file.upload-complete"
 msgstr "上傳完成"
@@ -4070,7 +4070,7 @@ msgid "file.uploaded-by"
 msgstr "上傳者"
 
 msgid "file.uploaded:"
-msgstr "已上傳的文件："
+msgstr "已上傳的檔案："
 
 msgid "file.uploading=name"
 msgstr "正在上傳 %1..."
@@ -4115,7 +4115,7 @@ msgid "group.name"
 msgstr "群組名稱"
 
 msgid "groups.admin-can-change-setting-after-creation"
-msgstr "群組管理員在建立完該群組之後可以更改其設定。"
+msgstr "群組管理員在建立完群組後，可以更改其設定。"
 
 msgid "groups.all-available"
 msgstr "所有可用的群組"
@@ -4136,7 +4136,7 @@ msgid "groups.create"
 msgstr "建立群組"
 
 msgid "groups.create-a-group"
-msgstr "建立一個群組"
+msgstr "建立群組"
 
 msgid "groups.create-group"
 msgstr "建立群組..."
@@ -4148,7 +4148,7 @@ msgid "groups.delete"
 msgstr "刪除群組"
 
 msgid "groups.delete-is-final"
-msgstr "一旦刪除群組之後您不能重建它。用戶將不能登入該群組並且任何通過本群組的工作區訪問將被撤銷。"
+msgstr "一旦刪除群組之後您不能重建它。用戶將不能登入該群組並且任何通過本群組的工作區存取將被撤銷。"
 
 msgid "groups.delete-this"
 msgstr "刪除這個群組"
@@ -4157,7 +4157,7 @@ msgid "groups.delete=name"
 msgstr "刪除 %1"
 
 msgid "groups.directory"
-msgstr "群組名單"
+msgstr "群組目錄"
 
 msgid "groups.edit=name"
 msgstr "編輯群組：%1"
@@ -4184,13 +4184,13 @@ msgid "groups.private"
 msgstr "私密群組"
 
 msgid "groups.private-not-listed-in-directory"
-msgstr "在群組名單中消失並且只有管理員可以邀請新成員。"
+msgstr "不列入群組名單；只有管理員可以邀請新成員。"
 
 msgid "groups.save"
 msgstr "儲存"
 
 msgid "groups.search-before-creating"
-msgstr "在建立群組之前，您可以搜尋按名字和描述搜尋已有的群組。"
+msgstr "在建立群組之前，您可以按名字或描述搜尋已有的群組。"
 
 msgid "groups.search-here"
 msgstr "在這裡輸入您的搜尋..."
@@ -4199,16 +4199,16 @@ msgid "groups.search:"
 msgstr "搜尋群組："
 
 msgid "groups.self-join"
-msgstr "自加入群組"
+msgstr "公開群組"
 
 msgid "groups.self-join-listed-in-directory"
-msgstr "在群組名單的所有人可見並且任何人都可以加入。"
+msgstr "列入群組名單；任何人都可以加入。"
 
 msgid "groups.successfully-deleted=name"
 msgstr "群組 %1 已成功刪除。"
 
 msgid "groups.toggling-self-join-and-private"
-msgstr "將私密群組轉變自加入群組後，群組帳戶里的任何用戶都可以加入群組，之後還可以選擇邀請其他人加入。將自加入群組轉變為私密群組後，該群組將會在群組名單中消失，只能由群組管理員邀請加入。"
+msgstr "將私密群組轉變為公開群組後，群組帳戶里的任何用戶都可以加入群組，之後還可以選擇邀請其他人加入。將公開群組轉變為私密群組後，該群組將會在群組名單中消失，只能由群組管理員邀請加入。"
 
 msgid "groups.you-are-member"
 msgstr "您當前是這個群組的成員。"
@@ -4220,7 +4220,7 @@ msgid "image.web"
 msgstr "圖片已存在於頁面"
 
 msgid "info.about-explore"
-msgstr "<b>Socialtext 瀏覽</b> 讓您輕鬆通過Socialtext訊息知道同事們分享的文件和鏈結。使用頂部的標籤來選擇類型和左邊的篩選功能來減少要顯示的資訊。<br /> <br /> 每個列出的項目都有一個或者更多提及它的訊息會話。您可以點選項目來打開鏈結，或者點選標題左邊的方框來查看和回覆相應的會話。"
+msgstr "<b>Socialtext 探索</b> 讓您輕鬆發現同事們通過 Socialtext 訊息分享的檔案和鏈結。使用頂部的標籤來選擇類型，用左邊的篩選功能來減少要顯示的資訊。<br /> <br /> 每個列出的項目都有一個以上提及它的訊息對話。您可以點選項目來打開鏈結，或者點選標題左邊的方框來查看和回覆對話。"
 
 msgid "info.added-members=user-count,wiki"
 msgstr "恭喜你！你已成功新增 %1 位用戶到 %2 個工作區。他們將會收到邀請到相應工作區的資訊。"
@@ -4232,16 +4232,16 @@ msgid "info.analytics"
 msgstr "您可以新增 Google Analytics 追蹤代碼來使其追蹤 Socialtext 的頁面瀏覽量。您的使用資料最多需要兩天時間就可以被顯示在analytics.google.com上面"
 
 msgid "info.analytics-mask"
-msgstr "Socialtext 預設是不允許身份資訊，如頁面名稱，工作區間名稱，和標籤等資訊在 Google Analytics 的報告中顯示的。如果要讓有權限訪問您的 Google Analytics 帳戶的用戶能夠看到頁面名稱，工作區間名稱和標籤資訊的話，您可以取消下面的複選框來顯示認証資訊。"
+msgstr "Socialtext 預設是不允許身份資訊，如頁面名稱，工作區間名稱，和標籤等資訊在 Google Analytics 的報告中顯示的。如果要讓有權限存取您的 Google Analytics 帳戶的用戶能夠看到頁面名稱，工作區間名稱和標籤資訊的話，您可以取消下面的複選框來顯示認証資訊。"
 
 msgid "info.blog-sort"
 msgstr "您可以選擇按照條目更新的日期或者第一次發布日期進行排序。"
 
 msgid "info.browse"
-msgstr "點選『瀏覽』並選擇上傳圖片或文件。"
+msgstr "點選『瀏覽』並選擇上傳圖片或檔案。"
 
 msgid "info.central=wiki"
-msgstr "當用戶點選工作區標題，會轉到工作區的中間頁面。此頁面跟工作區有一樣的標題（『%1』）。"
+msgstr "當用戶點選工作區標題，會前往工作區首頁。此頁面跟工作區的標題相同（『%1』）。"
 
 msgid "info.change-primary-account:"
 msgstr "這麼做，第一個指定給他們的帳戶就是一個新的主帳戶："
@@ -4262,7 +4262,7 @@ msgid "info.copy"
 msgstr "複製一個存在的頁面..."
 
 msgid "info.created-ldap-group"
-msgstr "群組已被新增，正在刷新用戶列表..."
+msgstr "群組已被新增，正在更新用戶列表..."
 
 msgid "info.created-wiki=user-count,link"
 msgstr "恭喜你！你已成功建立一個包含 %1 位用戶的工作區。他們將會收到鏈結到 %2 的邀請資訊。"
@@ -4277,7 +4277,7 @@ msgid "info.dashboard-save-layout"
 msgstr "點選下面的<b>儲存</b>使當前顯示板成為您帳戶的預設顯示板。在新用戶第一次登入的時候，他們都會有這個顯示板。點選下面『強制升級』複選框來使強制老用戶帳戶也如此。"
 
 msgid "info.deactivated-user:"
-msgstr "如果你想移除用戶的系統訪問權限，請按如下操作："
+msgstr "如果你想移除用戶的系統存取權限，請按如下操作："
 
 msgid "info.default-logo"
 msgstr "如果您沒有選擇圖片，將會用 Socialtext 的標識代替。"
@@ -4292,19 +4292,19 @@ msgid "info.edit-add-tag"
 msgstr "點選按鈕為頁面新增標籤"
 
 msgid "info.edit-code-block"
-msgstr "使用下方的文本區來組織您的代碼資料塊，並可選擇高亮語法。"
+msgstr "使用下方的文本區來組織您的代碼資料區塊，並可選擇高亮語法。"
 
 msgid "info.edit-html-block"
-msgstr "使用下方的文本區來組織您的 HTML 資料塊。"
+msgstr "使用下方的文本區來組織您的 HTML 資料區塊。"
 
 msgid "info.edit-pre-block"
-msgstr "使用下方的文本區來組織您的預格式化文本資料塊。"
+msgstr "使用下方的文本區來組織您的預格式化文本資料區塊。"
 
 msgid "info.edit-summary-signal-visibility"
 msgstr "只有有權查看本頁面的成員會收到訊息。"
 
 msgid "info.edit-upload"
-msgstr "點選此按鈕，為頁面上傳文件"
+msgstr "點選此按鈕，為頁面上傳檔案"
 
 msgid "info.email-confirmation=from"
 msgstr "為確保你能收到來自 %1 的郵件，請將 %1 新增到通訊錄或安全列表中。"
@@ -4325,7 +4325,7 @@ msgid "info.expand-view"
 msgstr "擴展編輯區域以填充瀏覽器視窗"
 
 msgid "info.external-field-update"
-msgstr "此欄位的內容會在用戶資料刷新後自動隨著外部資料更新。"
+msgstr "此欄位的內容會在用戶資料更新後自動隨著外部資料更新。"
 
 msgid "info.files"
 msgstr "附件"
@@ -4346,13 +4346,13 @@ msgid "info.in"
 msgstr "在"
 
 msgid "info.invite-admin-groups"
-msgstr "使用下面的表格邀請用戶加入一個此工作區管理的的群組。這些群組中的任何一個用戶成員都可以進入此工作區。此外，如果你想授予某特定用戶訪問權，您可以取消勾選下面的『邀請用戶加入選取的群組』選框。"
+msgstr "使用下面的表格邀請用戶加入一個此工作區管理的的群組。這些群組中的任何一個用戶成員都可以進入此工作區。此外，如果你想授予某特定用戶存取權，您可以取消勾選下面的『邀請用戶加入選取的群組』選框。"
 
 msgid "info.invite-filter=domain"
 msgstr "您只能邀請跟您一樣使用『%1』郵箱域名的人。"
 
 msgid "info.invite-member-groups"
-msgstr "使用下面的表格來邀請用戶加入此工作區的一個群組。這些群組中的任何一個成員都可以訪問此工作區。此外，如果您想授予某人進入工作區的權限而不想邀請他加入群組，您可以取消勾選下面的『邀請用戶加入選取的群組』選框。強烈建議通過群組新增用戶。"
+msgstr "使用下面的表格來邀請用戶加入此工作區的一個群組。這些群組中的任何一個成員都可以存取此工作區。此外，如果您想授予某人進入工作區的權限而不想邀請他加入群組，您可以取消勾選下面的『邀請用戶加入選取的群組』選框。強烈建議通過群組新增用戶。"
 
 msgid "info.just-joined=user,group!"
 msgstr "大家好！%1 剛加入 %2 群組。"
@@ -4379,7 +4379,7 @@ msgid "info.on"
 msgstr "於"
 
 msgid "info.optional"
-msgstr "可選"
+msgstr "非必填"
 
 msgid "info.page-exists:"
 msgstr "<span id=\"st-newpage-duplicate-emphasis\">已經存在</span>一個名為 <a id=\"st-newpage-duplicate-link\" href=\"#\" target=\"\">XXX</a>的頁面。您是否願意："
@@ -4400,7 +4400,7 @@ msgid "info.relogin"
 msgstr "請用你的郵箱位址和新密碼再次登入。"
 
 msgid "info.required"
-msgstr "必選"
+msgstr "必填"
 
 msgid "info.reset-password"
 msgstr "請根據以下說明更改你的Socialtext密碼"
@@ -4445,7 +4445,7 @@ msgid "info.verbose"
 msgstr "提示嘗試 -- verbose 來獲得關鍵的額外列表"
 
 msgid "info.wafl-uneditable"
-msgstr "該小工具不可編輯。請在維基格式下進行編輯。"
+msgstr "該小工具不可編輯。請在源碼格式下進行編輯。"
 
 msgid "info.warning:"
 msgstr "警告："
@@ -4454,7 +4454,7 @@ msgid "info.welcome=user"
 msgstr "歡迎%1"
 
 msgid "info.wiki-as-blog"
-msgstr "您也可以配置工作區鏈結作為網誌顯示。"
+msgstr "或者您也可以指定一個網誌，作為工作區鏈結的顯示內容。"
 
 msgid "info.wiki-group"
 msgstr "您可以建立一個新的群組，或者新增工作區到已存在的群組。"
@@ -4556,7 +4556,7 @@ msgid "invite.hi"
 msgstr "您好，"
 
 msgid "invite.include-personal-message"
-msgstr "如果您希望的話，可以在邀請信里麵包含個人消息。您可以編輯消息說出您想說的話。"
+msgstr "如果您希望的話，可以在邀請信裡面包含個人消息。您可以編輯消息說出您想說的話。"
 
 msgid "invite.join=account,host"
 msgstr "我邀請您加入%2的群組%1。"
@@ -4787,7 +4787,7 @@ msgid "link.web-link"
 msgstr "網站鏈結"
 
 msgid "link.wiki-link"
-msgstr "維基鏈結"
+msgstr "共筆鏈結"
 
 msgid "link.wiki:"
 msgstr "工作區："
@@ -4886,7 +4886,7 @@ msgid "nav.explore"
 msgstr "探索"
 
 msgid "nav.filter:"
-msgstr "過濾按："
+msgstr "僅顯示："
 
 msgid "nav.first"
 msgstr "最前"
@@ -4961,7 +4961,7 @@ msgid "nav.news=wiki"
 msgstr "工作區 %1 的更新"
 
 msgid "nav.next"
-msgstr "下一個"
+msgstr "下一頁"
 
 msgid "nav.next-page"
 msgstr "下一頁"
@@ -4988,7 +4988,7 @@ msgid "nav.preferences"
 msgstr "偏好"
 
 msgid "nav.previous"
-msgstr "前一個"
+msgstr "上一頁"
 
 msgid "nav.previous-page"
 msgstr "上一頁"
@@ -5123,7 +5123,7 @@ msgid "page.breadcrumbs"
 msgstr "最近瀏覽頁面"
 
 msgid "page.changes=time,changed,total"
-msgstr "在 %1（%2）之內一共更新了（%3）頁面"
+msgstr "%1更新（%2 個頁面，共 %3 個頁面）"
 
 msgid "page.comment"
 msgstr "評論"
@@ -5138,7 +5138,7 @@ msgid "page.copy"
 msgstr "複製到另一個工作區"
 
 msgid "page.copy=title?"
-msgstr "將頁面%1複製到另外一個工作區？"
+msgstr "將頁面『%1』複製到另外一個工作區？"
 
 msgid "page.count=revision"
 msgstr "%1 次更動"
@@ -5192,7 +5192,7 @@ msgid "page.edited=summary,page,wiki"
 msgstr "『%1』（在 %3 中編輯 %2）"
 
 msgid "page.editing=ago"
-msgstr "已於%1打開本頁進行編輯。"
+msgstr "已於 %1打開本頁進行編輯。"
 
 msgid "page.email-to-this"
 msgstr "發送郵件到這個頁面"
@@ -5219,10 +5219,10 @@ msgid "page.last-updated=time,author"
 msgstr "頁面最後更新：%2於%1"
 
 msgid "page.latest=type"
-msgstr "點選這裡轉到%1的最新版本。"
+msgstr "點選這裡前往%1的最新版本。"
 
 msgid "page.latest=uri"
-msgstr "點選<a href=\"%1\">這裡</a>轉到頁面的最新版本。"
+msgstr "點選<a href=\"%1\">這裡</a>前往頁面的最新版本。"
 
 msgid "page.linked-from:"
 msgstr "這個頁面鏈結來自："
@@ -5303,7 +5303,7 @@ msgid "page.save-with-name"
 msgstr "頁面另存為 <span id=\"st-newpage-duplicate-suggest\">XXX</span>"
 
 msgid "page.signal-this!"
-msgstr "發送此頁!"
+msgstr "分享此頁!"
 
 msgid "page.summaries"
 msgstr "摘要"
@@ -5381,7 +5381,7 @@ msgid "people.cancel-add-tag"
 msgstr "取消"
 
 msgid "people.complete-your-profile"
-msgstr "請現在完成<a href=\"/st/edit_profile\">您的個人資料</a>。"
+msgstr "請填寫<a href=\"/st/edit_profile\">您的個人資料</a>。"
 
 msgid "people.count=users"
 msgstr "%1 名用戶"
@@ -5462,13 +5462,13 @@ msgid "plugin.none"
 msgstr "無"
 
 msgid "post.by"
-msgstr "發布者"
+msgstr "來自"
 
 msgid "post.by-email:"
 msgstr "通過郵件向此標籤發布："
 
 msgid "post.new"
-msgstr "發帖"
+msgstr "貼文"
 
 msgid "pref.cleared=plugins"
 msgstr "%1 插件的選項已被清除。"
@@ -5714,7 +5714,7 @@ msgid "report.total-unique-contributors=count"
 msgstr "總貢獻人數：%1"
 
 msgid "report.total-unique-visitors=count"
-msgstr "總訪問人數：%1"
+msgstr "總訪客人數：%1"
 
 msgid "report.total=wiki"
 msgstr "%1 工作區總數"
@@ -6008,10 +6008,10 @@ msgid "sc.recalculation"
 msgstr "重新計算"
 
 msgid "sc.refresh"
-msgstr "刷新"
+msgstr "更新"
 
 msgid "sc.refresh-sheet"
-msgstr "刷新試算表"
+msgstr "更新試算表"
 
 msgid "sc.restore-revision"
 msgstr "還原修訂"
@@ -6173,7 +6173,7 @@ msgid "signals.bookmarklet"
 msgstr "訊息書籤"
 
 msgid "signals.bookmarklet-for-ie-users"
-msgstr "須知：使用Internet Explorer的用戶，右鍵點選下面的按鈕，選擇『新增到收藏夾』，然後選擇『鏈結』文件夾。"
+msgstr "須知：使用Internet Explorer的用戶，右鍵點選下面的按鈕，選擇『新增到收藏夾』，然後選擇『鏈結』檔案夾。"
 
 msgid "signals.bookmarks-bar-missing?"
 msgstr "看不到書籤欄？"
@@ -6194,7 +6194,7 @@ msgid "signals.email-from-socialtext"
 msgstr "此條消息由Socialtext訊息發送。"
 
 msgid "signals.email-link-to-preferences"
-msgstr "不想收到Socialtext訊息的郵件或者更改您的偏好設定，請訪問"
+msgstr "不想收到Socialtext訊息的郵件或者更改您的偏好設定，請存取"
 
 msgid "signals.email-to-private-message"
 msgstr "將 Socialtext 的私人訊息作為電子郵件發送"
@@ -6257,7 +6257,7 @@ msgid "signals.private-to=person,body"
 msgstr "給 %1 發送私人訊息：『%2』。"
 
 msgid "signals.refresh"
-msgstr "刷新"
+msgstr "更新"
 
 msgid "signals.reply"
 msgstr "回覆"
@@ -6341,16 +6341,16 @@ msgid "skin.default"
 msgstr "預設視覺主題"
 
 msgid "skin.file"
-msgstr "文件"
+msgstr "檔案"
 
 msgid "skin.files"
-msgstr "自定義的視覺主題文件"
+msgstr "自定義的視覺主題檔案"
 
 msgid "skin.remove-existing"
-msgstr "移除&nbsp;存在的&nbsp;文件"
+msgstr "移除&nbsp;存在的&nbsp;檔案"
 
 msgid "skin.select-file:"
-msgstr "選取一個包含自定義視覺主題文件的ZIP或TGZ文件："
+msgstr "選取一個包含自定義視覺主題檔案的ZIP或TGZ檔案："
 
 msgid "skin.select:"
 msgstr "選取一個工作區視覺主題："
@@ -6362,7 +6362,7 @@ msgid "skin.support"
 msgstr "自定義視覺主題支援"
 
 msgid "skin.unsupported"
-msgstr "上傳的視覺主題不支援。上傳視覺主題僅用於開發和測試自定義視覺主題。請聯絡sales@socialtext.com獲取更多關於自定義視覺主題的資訊。"
+msgstr "上傳的視覺主題不支援。上傳視覺主題僅用於開發和測試自定義視覺主題。請聯絡 sales@socialtext.com 獲取更多關於自定義視覺主題的資訊。"
 
 msgid "skin.uploaded"
 msgstr "已上傳"
@@ -6473,10 +6473,10 @@ msgid "table.rows:"
 msgstr "行："
 
 msgid "table.show-cell-borders"
-msgstr "顯示單元格"
+msgstr "顯示框線"
 
 msgid "table.table-sortable"
-msgstr "表格可歸類"
+msgstr "表格可排序"
 
 msgid "tag.add"
 msgstr "新增標籤"
@@ -6521,7 +6521,7 @@ msgid "time.1week"
 msgstr "1 周"
 
 msgid "time.at=date,time"
-msgstr "%2 中的 %1"
+msgstr "%1 %2"
 
 msgid "time.count=days"
 msgstr "%1 天"
@@ -6671,10 +6671,10 @@ msgid "tz.dst?"
 msgstr "如何處理夏令時？"
 
 msgid "unplugged.disabled"
-msgstr "Socialtext 離線取消"
+msgstr "關閉 Socialtext 離線"
 
 msgid "unplugged.enabled"
-msgstr "Socialtext 離線開啟"
+msgstr "開啟 Socialtext 離線"
 
 msgid "user.added=count,group"
 msgstr "成功新增 %1 位用戶到 %2 個群組，他們將會收到對應群組的邀請消息。"
@@ -6776,7 +6776,7 @@ msgid "user.updated=name"
 msgstr "已更新用戶 %1"
 
 msgid "video.full-url-required"
-msgstr "請輸入完整的視頻網址。"
+msgstr "請輸入完整的影片網址。"
 
 msgid "video.title:"
 msgstr "標題："
@@ -6788,7 +6788,7 @@ msgid "wafl.#=tag"
 msgstr "#%1"
 
 msgid "wafl.aim"
-msgstr "AIM帳戶名"
+msgstr "AIM 帳戶名"
 
 msgid "wafl.aim-title=id"
 msgstr "使用 AIM 向 '%1' 發送即時資訊。點選進行編輯。"
@@ -6842,13 +6842,13 @@ msgid "wafl.contents"
 msgstr "內容"
 
 msgid "wafl.custom"
-msgstr "Custom"
+msgstr "自定義"
 
 msgid "wafl.date-format"
 msgstr "YYYY-MM-DD&nbsp;HH:MM:SS"
 
 msgid "wafl.date-full=date"
-msgstr "以訪問者的時區顯示 '%1' 。點選進行編輯。"
+msgstr "以存取者的時區顯示 '%1' 。點選進行編輯。"
 
 msgid "wafl.date=string"
 msgstr "日期：%1"
@@ -6863,13 +6863,13 @@ msgid "wafl.fewer-options"
 msgstr "更少選項"
 
 msgid "wafl.file-name"
-msgstr "文件名稱"
+msgstr "檔案名稱"
 
 msgid "wafl.file-title=name"
-msgstr "鏈結到『%1』文件。點選進行編輯。"
+msgstr "鏈結到『%1』檔案。點選進行編輯。"
 
 msgid "wafl.file=name"
-msgstr "文件：%1"
+msgstr "檔案：%1"
 
 msgid "wafl.form-name"
 msgstr "表單名稱"
@@ -6893,7 +6893,7 @@ msgid "wafl.height=px"
 msgstr "高度：%1"
 
 msgid "wafl.html-title"
-msgstr "源 HTML 資料塊。點選進行編輯。"
+msgstr "源 HTML 資料區塊。點選進行編輯。"
 
 msgid "wafl.image-full=name"
 msgstr "顯示 '%1'的圖像。點選進行編輯。"
@@ -6914,13 +6914,13 @@ msgid "wafl.insert-code"
 msgstr "插入代碼"
 
 msgid "wafl.insert-html"
-msgstr "插入HTML"
+msgstr "插入 HTML"
 
 msgid "wafl.insert-pre"
 msgstr "插入預格式化文本"
 
 msgid "wafl.link-text"
-msgstr "鏈結文本"
+msgstr "顯示文字"
 
 msgid "wafl.link-title=url"
 msgstr "鏈結到'%1'。點選進行編輯。"
@@ -6953,7 +6953,7 @@ msgid "wafl.page-title"
 msgstr "頁面標題"
 
 msgid "wafl.page-titled"
-msgstr "the page titled"
+msgstr "其他頁面："
 
 msgid "wafl.pre-edit"
 msgstr "預格式化文本。點選進行編輯。"
@@ -7076,13 +7076,13 @@ msgid "wafl.user=email"
 msgstr "用戶：%1"
 
 msgid "wafl.video-title=url"
-msgstr "在'%1'嵌入視頻。點選進行編輯。"
+msgstr "在'%1'嵌入影片。點選進行編輯。"
 
 msgid "wafl.video-url"
-msgstr "視頻網址"
+msgstr "影片網址"
 
 msgid "wafl.video=url"
-msgstr "視頻：%1"
+msgstr "影片：%1"
 
 msgid "wafl.width:"
 msgstr "寬度："
@@ -7094,7 +7094,7 @@ msgid "wafl.wiki"
 msgstr "工作區"
 
 msgid "wafl.wiki-text"
-msgstr "維基格式"
+msgstr "源碼格式"
 
 msgid "wafl.wiki-this"
 msgstr "當前工作區"
@@ -7160,7 +7160,7 @@ msgid "widget.edit"
 msgstr "編輯小工具"
 
 msgid "widget.file"
-msgstr "文件"
+msgstr "檔案"
 
 msgid "widget.importing-container"
 msgstr "正在導入小工具容器..."
@@ -7229,7 +7229,7 @@ msgid "widgets.delete"
 msgstr "（刪除）"
 
 msgid "widgets.gallery-switch=account:"
-msgstr "這是『%1』賬號的工具庫。轉到帳戶："
+msgstr "這是『%1』賬號的工具庫。前往帳戶："
 
 msgid "widgets.install-this"
 msgstr "安裝小工具"
@@ -7274,7 +7274,7 @@ msgid "widgets.updated=widget"
 msgstr "成功更新您的小工具"
 
 msgid "widgets.upload-xml:"
-msgstr "上傳小工具可擴展標識語言文件："
+msgstr "上傳小工具可擴展標識語言檔案："
 
 msgid "widgets.use-editor"
 msgstr "使用小工具編輯器"
@@ -7292,7 +7292,7 @@ msgid "wiki.appearance"
 msgstr "工作區外觀"
 
 msgid "wiki.central-page"
-msgstr "中間頁面"
+msgstr "工作區首頁"
 
 msgid "wiki.clone"
 msgstr "複製工作區"
@@ -7307,7 +7307,7 @@ msgid "wiki.clone=wiki"
 msgstr "%1的副本"
 
 msgid "wiki.confirm-unsubscribe"
-msgstr "如果您希望從這個工作區退出只需點選下面的按鈕。點選之後您將無法訪問這個工作區，再次訪問需要工作區管理員重新將您加入。 "
+msgstr "如果您希望從這個工作區退出，請點選下面的按鈕。點選之後您將無法存取這個工作區，再次存取需要工作區管理員重新將您加入。 "
 
 msgid "wiki.create"
 msgstr "新建工作區"
@@ -7316,7 +7316,7 @@ msgid "wiki.created!"
 msgstr "恭喜！"
 
 msgid "wiki.created:"
-msgstr "如果您想，您已經可以跳轉到您的新群組。選擇您的下一步："
+msgstr "如果您想，您已經可以跳前往您的新群組。選擇您的下一步："
 
 msgid "wiki.created=title,uri"
 msgstr "您剛剛建立了『%1』，一個全新的 Socialtext 工作區。您是管理員。新工作區的網址是 %2"
@@ -7373,7 +7373,7 @@ msgid "wiki.group-required"
 msgstr "要新建工作區，工作區必須屬於一個群組。"
 
 msgid "wiki.home=name,title"
-msgstr "<a href=\"/%1/\">轉到</a>%2首頁。"
+msgstr "<a href=\"/%1/\">前往</a>%2首頁。"
 
 msgid "wiki.importing=tarball"
 msgstr "正在從 %1 中導入工作區..."
@@ -7442,7 +7442,7 @@ msgid "wiki.public"
 msgstr "公開的工作區"
 
 msgid "wiki.public:"
-msgstr "您可以自由進入查看或者編輯任何公開維基條目："
+msgstr "您可以自由查看或編輯這些公開工作區："
 
 msgid "wiki.removed=group"
 msgstr "%1 群組已從此工作區移除"
@@ -7496,7 +7496,7 @@ msgid "wiki.top-page"
 msgstr "首頁"
 
 msgid "wiki.visit-later=wiki"
-msgstr "您也可以在此工作區繼續工作，稍後再訪問『%1』。"
+msgstr "您也可以在此工作區繼續工作，稍後再前往『%1』。"
 
 msgid "wiki.welcome"
 msgstr "歡迎"
@@ -7505,4 +7505,4 @@ msgid "wiki.welcome-confirm=name"
 msgstr "歡迎來到 %1 工作區 - 請確認註冊郵箱"
 
 msgid "wiki.wiki-named"
-msgstr "工作區命名"
+msgstr "其他工作區："

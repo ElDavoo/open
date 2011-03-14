@@ -10,7 +10,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "about.keywords"
-msgstr "维基，商务维基，文档管理，企业维基，内网维基，知识管理，在线协作，开放资源维基，门户维基，托管维基，协作，社会化软件，社交网络，显示板，项目协作，团队协作，维基应用，维基软件，社区"
+msgstr "维基，商务维基，文档管理，企业维基，内网维基，知识管理，在线协作，开放维基，门户维基，托管维基，协作，社会化软件，社交网络，显示板，项目协作，团队协作，维基应用，维基软件，社区，共笔，商务共笔，企业共笔，内网共笔，开源共笔，门户共笔，托管共笔，共笔应用，共笔软件"
 
 msgid "about.people"
 msgstr "是一个具有强劲社交网络功能的人員目录。您可以找到您同事的联络信息，发现具有特长和共同爱好的人，以及通过您的社交网络找到有价值的信息。"
@@ -19,7 +19,7 @@ msgid "about.signals"
 msgstr "提供与 Socialtext 的企业协作平台整合的社会化消息服务。在提供像其它微博客工具如 Twitter&#0153; 一样的好处的同时，Socialtext 訊息还有更多优点，因为消息服务的运作脉络，是在为共同目标协作的组织成员当中。"
 
 msgid "about.unplugged"
-msgstr "Socialtext 脱机允许用户脱机阅读或者编辑工作区。用户可以“脱机”一个或者更多页面来进行阅读或者编辑。更改将会与工作区同步。"
+msgstr "“Socialtext 脱机”允许用户脱机阅读或者编辑工作区。用户可以“脱机”一个或者更多页面来进行阅读或者编辑。更改将会与工作区同步。"
 
 msgid "account.count=people"
 msgstr "%1 人"
@@ -70,13 +70,13 @@ msgid "blog.create"
 msgstr "新建一个博客"
 
 msgid "blog.edit"
-msgstr "编辑这个文章"
+msgstr "编辑这篇文章"
 
 msgid "blog.go:"
 msgstr "转到："
 
 msgid "blog.naming"
-msgstr "请给您的博客命名。如果您的命名不以“blog”结尾，系统会在您的命名后面自动添加“blog”。点击“创建”之后，您将会直接进入新建的博客。"
+msgstr "请给您的博客命名。如果您的命名不以“博客”结尾，系统会在您的命名后面自动添加“博客”。点击“创建”之后，您将会直接进入新建的博客。"
 
 msgid "blog.navigation"
 msgstr "博客导航"
@@ -94,7 +94,7 @@ msgid "blog.permalink"
 msgstr "永久链接"
 
 msgid "blog.sample"
-msgstr "博客示例"
+msgstr "示例博客"
 
 msgid "blog.show=tag"
 msgstr "%1 博客"
@@ -124,13 +124,13 @@ msgid "comment.type-link"
 msgstr "在此输入链接文本"
 
 msgid "config.all-users"
-msgstr "管理所有用户"
+msgstr "管理用户"
 
 msgid "config.blog-sort"
 msgstr "工作区博客排序"
 
 msgid "config.blog:"
-msgstr "此博客："
+msgstr "指定博客："
 
 msgid "config.email-notify"
 msgstr "工作区邮件通知设置"
@@ -289,7 +289,7 @@ msgid "do.unsubscribe"
 msgstr "退出"
 
 msgid "do.unsubscribe=wiki"
-msgstr "从%1工作区退出"
+msgstr "退出“%1”工作区"
 
 msgid "do.upload"
 msgstr "上传"
@@ -301,7 +301,7 @@ msgid "do.weblink"
 msgstr "网络链接"
 
 msgid "do.wikilink"
-msgstr "维基链接"
+msgstr "共笔链接"
 
 msgid "draft.?"
 msgstr "？"
@@ -484,7 +484,7 @@ msgid "example.logo-url"
 msgstr "示例：http://www.socialtext.com/images/socialtext-logo-30.gif"
 
 msgid "example.title"
-msgstr "示例：Acme Widgets Product Development"
+msgstr "示例：产品研发部"
 
 msgid "example.wiki-email:"
 msgstr "这个邮件地址："
@@ -493,16 +493,16 @@ msgid "example.wiki-url:"
 msgstr "示例：acme-product-dev 创建的工作区地址为："
 
 msgid "export.html"
-msgstr "导出为HTML"
+msgstr "导出为 HTML"
 
 msgid "export.pdf"
-msgstr "导出为PDF"
+msgstr "导出为 PDF"
 
 msgid "export.word"
-msgstr "导出为Word"
+msgstr "导出为 Word"
 
 msgid "file.add-or-replace=name,size,user,date?"
-msgstr "本页面已经有名为“%1”（%2 由%3于%4上传）的附件。 您可以<span class=\"emphasis\">添加</span> 此文件的其它版本或<span class=\"emphasis\">替换</span>已存在的文件。您想怎么做？"
+msgstr "本页面已经有名为“%1”（%2 由%3于%4上传）的附件。您可以<span class=\"emphasis\">添加</span> 此文件的其它版本或<span class=\"emphasis\">替换</span>已存在的文件。您想怎么做？"
 
 msgid "file.add-or-replace=name?"
 msgstr "本页面已经有名为“%1”的附件。您可以<span class=\"emphasis\">添加</span>此文件的其它版本或<span class=\"emphasis\">替换</span>已存在的文件。您想怎么做？"
@@ -523,7 +523,7 @@ msgid "file.by"
 msgstr "由"
 
 msgid "file.by=date,user"
-msgstr "%1由%2"
+msgstr "%1 由 %2 上传"
 
 msgid "file.delete"
 msgstr "删除附件"
@@ -595,7 +595,7 @@ msgid "info.browse"
 msgstr "点击“浏览”并选择一个图片或者文件上传."
 
 msgid "info.central=wiki"
-msgstr "当用户点击工作区标题，会转到工作区的中间页面。此页面跟工作区有一样的标题（“%1”）。"
+msgstr "当用户点击工作区标题，会转到工作区首页。此页面跟工作区的标题相同（“%1”）。"
 
 msgid "info.comment"
 msgstr "点击按钮添加评论到页面"
@@ -706,7 +706,7 @@ msgid "info.welcome=user"
 msgstr "欢迎%1"
 
 msgid "info.wiki-as-blog"
-msgstr "您也可以配置工作区链接作为博客显示。"
+msgstr "或者您也可以指定一个博客，作为工作区链接的显示内容。"
 
 msgid "info.wiki-group"
 msgstr "您可以创建一个新的群组，或者添加工作区到已存在的群组。"
@@ -859,7 +859,7 @@ msgid "nav.error"
 msgstr "错误"
 
 msgid "nav.filter:"
-msgstr "过滤按："
+msgstr "僅顯示："
 
 msgid "nav.first"
 msgstr "最前"
@@ -925,7 +925,7 @@ msgid "nav.news"
 msgstr "最新更动"
 
 msgid "nav.next"
-msgstr "下一个"
+msgstr "下一页"
 
 msgid "nav.next-page"
 msgstr "下一页"
@@ -952,7 +952,7 @@ msgid "nav.preferences"
 msgstr "偏好"
 
 msgid "nav.previous"
-msgstr "前一个"
+msgstr "上一页"
 
 msgid "nav.previous-page"
 msgstr "上一页"
@@ -1048,7 +1048,7 @@ msgid "page.copy"
 msgstr "复制到另一个工作区"
 
 msgid "page.copy=title?"
-msgstr "将页面%1复制到另外一个工作区？"
+msgstr "将页面“%1”复制到另外一个工作区？"
 
 msgid "page.count=revision"
 msgstr "%1 次更动"
@@ -1093,7 +1093,7 @@ msgid "page.edit=title"
 msgstr "编辑%1"
 
 msgid "page.editing=ago"
-msgstr "已於%1打开本页进行编辑。"
+msgstr "已於 %1打开本页进行编辑。"
 
 msgid "page.email-to-this"
 msgstr "发送邮件到这个页面"
@@ -1174,7 +1174,7 @@ msgid "page.revisions=count"
 msgstr "%1 次更动"
 
 msgid "page.signal-this!"
-msgstr "发送此页!"
+msgstr "分享此页!"
 
 msgid "page.summaries"
 msgstr "摘要"
@@ -1222,7 +1222,7 @@ msgid "password.reset"
 msgstr "重设密码"
 
 msgid "post.by"
-msgstr "发布者"
+msgstr "来自"
 
 msgid "post.by-email:"
 msgstr "通过邮件向此标签发布："
@@ -1342,7 +1342,7 @@ msgid "skin.support"
 msgstr "自定义视觉主题支持"
 
 msgid "skin.unsupported"
-msgstr "上传的视觉主题不支持。上传视觉主题仅用于开发和测试自定义视觉主题。请联系sales@socialtext.com获取更多关于自定义视觉主题的信息。"
+msgstr "上传的视觉主题不支持。上传视觉主题仅用于开发和测试自定义视觉主题。请联系 sales@socialtext.com 获取更多关于自定义视觉主题的信息。"
 
 msgid "skin.uploaded"
 msgstr "已上传"
@@ -1405,10 +1405,10 @@ msgid "tag.template"
 msgstr "模版"
 
 msgid "unplugged.disabled"
-msgstr "Socialtext 脱机取消"
+msgstr "关闭 Socialtext 脱机"
 
 msgid "unplugged.enabled"
-msgstr "Socialtext 脱机开启"
+msgstr "开启 Socialtext 脱机"
 
 msgid "user.admin"
 msgstr "管理员"
@@ -1468,7 +1468,7 @@ msgid "wiki.appearance"
 msgstr "工作区外观"
 
 msgid "wiki.central-page"
-msgstr "中间页面"
+msgstr "工作区首页"
 
 msgid "wiki.clone"
 msgstr "复制工作区"
@@ -1483,7 +1483,7 @@ msgid "wiki.clone=wiki"
 msgstr "%1的副本"
 
 msgid "wiki.confirm-unsubscribe"
-msgstr "如果您希望从这个工作区退出只需点击下面的按钮。点击之后您将无法访问这个工作区，再次访问需要工作区管理员重新将您加入。 "
+msgstr "如果您希望从这个工作区退出，请点击下面的按钮。点击之后您将无法访问这个工作区，再次访问需要工作区管理员重新将您加入。 "
 
 msgid "wiki.create"
 msgstr "新建工作区"
@@ -1567,7 +1567,7 @@ msgid "wiki.public"
 msgstr "公开的工作区"
 
 msgid "wiki.public:"
-msgstr "您可以自由进入查看或者编辑任何公开维基条目："
+msgstr "您可以自由查看或编辑这些公开工作区："
 
 msgid "wiki.search-all:"
 msgstr "搜索我的工作区："
@@ -1603,4 +1603,4 @@ msgid "wiki.to-new-group"
 msgstr "要添加一个工作区到<strong>新群组</strong>，请到主导航列的<a href=\"#\" onclick=\"showCreateGroupLightbox(); return false\">“新建群组”</a>，在这里使用“工作区”来创建您的工作区。"
 
 msgid "wiki.visit-later=wiki"
-msgstr "您也可以在此工作区继续工作，稍后再访问“%1”。"
+msgstr "您也可以在此工作区继续工作，稍后再转到“%1”。"

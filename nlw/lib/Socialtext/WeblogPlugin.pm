@@ -100,15 +100,8 @@ sub weblogs_create {
 sub _get_weblog_tag_suffix {
     my $self = shift;
     my $locale = $self->hub->best_locale;
-    my $blog_tag_suffix;
-    if ($locale eq 'ja') {
-        $blog_tag_suffix = qr/ブログ$/i;
-    } else {
-        $blog_tag_suffix = qr/blog$/i;
-    }
-
-    Encode::_utf8_on($blog_tag_suffix) if not Encode::is_utf8($blog_tag_suffix);
-    return $blog_tag_suffix;
+    my $suffix = loc('blog.blog');
+    return qr/\Q$suffix\E$/i;
 }
 
 sub _weblog_title_is_valid {

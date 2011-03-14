@@ -348,18 +348,18 @@ msgstr "less than a minute ago"
 #. (this.round(minutes / 1440))
 #: share/plugin/widgets/share/javascript/template/activities/ago.tt2:9
 msgid "ago.days=count"
-msgstr "%1 days ago"
+msgstr "%*(%1,day) ago"
 
 #. (this.round(minutes / 60)
 #. (this.round(minutes / 60))
 #: share/plugin/widgets/share/javascript/template/activities/ago.tt2:6
 msgid "ago.hours=count"
-msgstr "%1 hours ago"
+msgstr "%*(%1,hour) ago"
 
 #. (minutes)
 #: share/plugin/widgets/share/javascript/template/activities/ago.tt2:4
 msgid "ago.minutes=count"
-msgstr "%1 minutes ago"
+msgstr "%*(%1,minute) ago"
 
 #: share/plugin/widgets/share/javascript/template/activities/ago.tt2:8
 msgid "ago.~1day"
