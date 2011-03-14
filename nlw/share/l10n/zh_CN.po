@@ -31,7 +31,7 @@ msgid "about.signals"
 msgstr "提供与 Socialtext 的企业协作平台整合的社会化消息服务。在提供像其它微博客工具如 Twitter&#0153; 一样的好处的同时，Socialtext 訊息还有更多优点，因为消息服务的运作脉络，是在为共同目标协作的组织成员当中。"
 
 msgid "about.unplugged"
-msgstr "“Socialtext 脱机”允许用户脱机阅读或者编辑工作区。用户可以“脱机”一个或者更多页面来进行阅读或者编辑。更改将会与工作区同步。"
+msgstr "“Socialtext 脱机”允许用户脱机阅读及编辑工作区。用户可以“脱机”一个以上的页面来进行阅读与编辑。更改将会与工作区同步。"
 
 msgid "account.count=people"
 msgstr "%1 人"
@@ -2483,7 +2483,7 @@ msgid "edit.saving"
 msgstr "正在保存..."
 
 msgid "edit.self-join=group?"
-msgstr "您必须成为 %1 群组的成员，才能在此页面进行编辑或者评论。想现在加入吗？"
+msgstr "您必须成为 %1 群组的成员，才能在此页面进行编辑与评论。想现在加入吗？"
 
 msgid "edit.signal-to"
 msgstr "将本编辑发送至"
@@ -2531,10 +2531,10 @@ msgid "email.add-all"
 msgstr "添加所有成员"
 
 msgid "email.add-note?"
-msgstr "在邮件前面添加此标注？"
+msgstr "在邮件前面添加以下段落？"
 
 msgid "email.address-or-name"
-msgstr "請输入邮件地址或者用户名"
+msgstr "請输入邮件地址或用户名"
 
 msgid "email.another-example"
 msgstr "another.friend@example.com"
@@ -2546,7 +2546,7 @@ msgid "email.confirmation-subject=wiki"
 msgstr "已登陆到工作区 %1"
 
 msgid "email.copy-self?"
-msgstr "向自己发送副本？"
+msgstr "发送副本給自己？"
 
 msgid "email.customize"
 msgstr "（您可以自定义下面的文字。）"
@@ -2573,7 +2573,7 @@ msgid "email.page-digest-sort?"
 msgstr "采用哪种顺序显示更新信息？"
 
 msgid "email.page-link:"
-msgstr "您好，这是我想要与您分享的一个工作区页面。此页面也可以在以下网页查看或者编辑："
+msgstr "您好，这是我想要与您分享的一个工作区页面。此页面也可以在以下网页查看与编辑："
 
 msgid "email.page-name-link-author-date"
 msgstr "页面名称和链接，外加作者和日期"
@@ -2582,7 +2582,7 @@ msgid "email.page-name-link-only"
 msgstr "只有页面名称和链接"
 
 msgid "email.position?"
-msgstr "如果已经有改标题的页面存在，邮件正文应该加在什么哪里？"
+msgstr "如果已经有此标题的页面存在，邮件正文应该加在哪里？"
 
 msgid "email.private-message-from=sender"
 msgstr "来自 %1 的私人讯息"
@@ -2591,10 +2591,10 @@ msgid "email.recent-changes=wiki"
 msgstr "%1 工作区的最近更新"
 
 msgid "email.recipient-box"
-msgstr "用上面的收件人栏添加"
+msgstr "請使用上面的“收件人”框"
 
 msgid "email.recipient-box-continued"
-msgstr "这个列表的收件人"
+msgstr "来添加收件人到此列表。"
 
 msgid "email.recipients"
 msgstr "收件人"
@@ -2627,7 +2627,7 @@ msgid "error.account-forbidden"
 msgstr "无权限使用此帐户"
 
 msgid "error.account-id-or-name-required=uri"
-msgstr "必须提供合法的帐户名或帐户ID到此网址（%1）。"
+msgstr "必须提供合法的帐户名或帐户 ID 到此网址（%1）。"
 
 msgid "error.account-name-required"
 msgstr "帐户名称必填。"
@@ -2738,7 +2738,7 @@ msgid "error.check-video-url"
 msgstr "系統出错; 请稍候再重试。"
 
 msgid "error.choose-group"
-msgstr "请选择一个或者更多群组"
+msgstr "请选择一个以上的群组"
 
 msgid "error.cleaning-not-implemented"
 msgstr "清除功能尚未实现。"
@@ -3017,7 +3017,7 @@ msgid "error.invalid-page-name=title"
 msgstr "您选择的新页面名称“%1”不允许使用。请输入或更改页面名称。"
 
 msgid "error.invalid-permission=name"
-msgstr "无效的权限:%1"
+msgstr "无效的权限：%1"
 
 msgid "error.invalid-query"
 msgstr "非法查询。"
@@ -3119,7 +3119,7 @@ msgid "error.invalid=url"
 msgstr "%1 是无效链接。"
 
 msgid "error.is-guest"
-msgstr "您必须注册或者登录以使用此功能。"
+msgstr "您必须注册或登录以使用此功能。"
 
 msgid "error.link-selection-required"
 msgstr "请选择要插入链接的文本。"
@@ -4181,7 +4181,7 @@ msgid "group.created=name,account"
 msgstr "%1 群组已被创建在帐户 %2 中。"
 
 msgid "group.created=name,id"
-msgstr "%1 群组已创建（群组Id:%2）"
+msgstr "%1 群组已创建（群组ID：%2）"
 
 msgid "group.deleted=id"
 msgstr "已删除群组ID：%1"
@@ -4289,7 +4289,7 @@ msgid "groups.search:"
 msgstr "搜索群组："
 
 msgid "groups.self-join"
-msgstr "公開群组"
+msgstr "自行加入群组"
 
 msgid "groups.self-join-listed-in-directory"
 msgstr "列入群组名单；任何人都可以加入。"
@@ -4298,7 +4298,7 @@ msgid "groups.successfully-deleted=name"
 msgstr "群组 %1 已成功删除。"
 
 msgid "groups.toggling-self-join-and-private"
-msgstr "将私密群组转变为公開群组后，群组帐户里的任何用户都可以加入群组，之后还可以选择邀请其他人加入。将公開群组转变为私密群组后，该群组将会在群组名单中消失，只能由群组管理员邀请加入。"
+msgstr "将私密群组转变为自行加入群组后，群组帐户里的任何用户都可以加入群组，之后还可以选择邀请其他人加入。将自行加入群组转变为私密群组后，该群组将会在群组名单中消失，只能由群组管理员邀请加入。"
 
 msgid "groups.you-are-member"
 msgstr "您当前是这个群组的成员。"
@@ -4325,7 +4325,7 @@ msgid "info.analytics-mask"
 msgstr "Socialtext 默认是不允许身份信息，如页面名称，工作区间名称，和标签等信息在 Google Analytics 的报告中显示的。如果要让有权限访问您的 Google Analytics 帐户的用户能够看到页面名称，工作区间名称和标签信息的话，您可以取消下面的复选框来显示认证信息。"
 
 msgid "info.blog-sort"
-msgstr "您可以选择按照条目更新的日期或者第一次发布日期进行排序。"
+msgstr "您可以选择按照条目更新的日期，或第一次发布日期进行排序。"
 
 msgid "info.browse"
 msgstr "点击“浏览”并选择上传图片或文件。"
@@ -4421,7 +4421,7 @@ msgid "info.files"
 msgstr "附件"
 
 msgid "info.following"
-msgstr "...列出您关注的人。您必须先注册或者登录来使用这个功能。"
+msgstr "...列出您关注的人。您必须先注册或登录来使用这个功能。"
 
 msgid "info.forbidden-profile"
 msgstr "注意：不和其他人分享群组，则无法查看他们的个人资料。"
@@ -4502,7 +4502,7 @@ msgid "info.signal-to-sms"
 msgstr "如果勾选上，每次用户通过给您发送私人讯息时，我们会将包含讯息主体的文本信息发送给您。"
 
 msgid "info.skin"
-msgstr "Socialtext可以创建视觉主题来自定义您的工作区的外观和风格。您可以使用由Socialtext提供的默认视觉主题或者自定义视觉主题。"
+msgstr "Socialtext可以创建视觉主题来自定义您的工作区的外观和风格。您可以使用由 Socialtext 提供的默认视觉主题，或自定义视觉主题。"
 
 msgid "info.socialtext"
 msgstr "Socialtext：企业社会化软件"
@@ -4529,7 +4529,7 @@ msgid "info.unplugged"
 msgstr "点击按钮将页面保存到您的电脑离线使用。"
 
 msgid "info.valid-wiki-name"
-msgstr "只能由 3-30 个小写字母、数字、下划线或者破折号组成。"
+msgstr "只能由 3-30 个小写字母、数字、下划线或破折号组成。"
 
 msgid "info.verbose"
 msgstr "提示尝试 -- verbose 来获得关键的额外列表"
@@ -4547,13 +4547,13 @@ msgid "info.wiki-as-blog"
 msgstr "或者您也可以指定一个博客，作为工作区链接的显示内容。"
 
 msgid "info.wiki-group"
-msgstr "您可以创建一个新的群组，或者添加工作区到已存在的群组。"
+msgstr "您可以创建一个新的群组，或添加工作区到已存在的群组。"
 
 msgid "info.wiki-id"
 msgstr "这是一个作为您的工作区网址和邮件地址的唯一短标识。"
 
 msgid "info.wiki-logo"
-msgstr "您可以选择一个图片当作工作区的标识。您可以输入图片网址，或者从您的电脑上传一张图片。"
+msgstr "您可以选择一个图片当作工作区的标识。您可以输入图片网址，或从您的电脑上传一张图片。"
 
 msgid "info.wiki-private"
 msgstr "工作区默认是不开放的。所有用户都需要登录查看页面。只有工作区管理员可以邀请新的用户。"
@@ -4580,7 +4580,7 @@ msgid "invite.append?"
 msgstr "添加下面的个人消息？"
 
 msgid "invite.click-edit"
-msgstr "如果您发现想要添加或者编辑的内容，请点击页面顶部的“编辑”链接。"
+msgstr "如果您发现想要添加或编辑的内容，请点击页面顶部的“编辑”链接。"
 
 msgid "invite.click-to-confirm-email=uri"
 msgstr "请<a href=\"%1\">点击此链接</a>来确认您的电子邮件地址。"
@@ -4661,7 +4661,7 @@ msgid "invite.login-details-after-confirmation"
 msgstr "一旦您确认了您的帐户，您将收到第二封电子邮件，其中有登录的详细信息。"
 
 msgid "invite.lookahead"
-msgstr "输入用户的姓或名的一部分，或者邮件地址。"
+msgstr "输入用户的姓或名的一部分，或邮件地址。"
 
 msgid "invite.make-wikilink"
 msgstr "要链接到其它页面（即使页面还不存在），请给一个词语或词组加上方括号。"
@@ -4805,16 +4805,13 @@ msgstr "%1 区域现已更新为 %2"
 msgid "lang.en"
 msgstr "英文"
 
-msgid "lang.english"
-msgstr "英语"
-
-msgid "lang.fr_CA"
+msgid "lang.fr-ca"
 msgstr "法文 – 加拿大"
 
-msgid "lang.zh_CN"
+msgid "lang.zh-cn"
 msgstr "中文 – 简体"
 
-msgid "lang.zh_TW"
+msgid "lang.zh-tw"
 msgstr "中文 – 繁体"
 
 msgid "last.24hours"
@@ -5259,7 +5256,7 @@ msgid "page.delete"
 msgstr "删除页面"
 
 msgid "page.delete-epilogue"
-msgstr "您是否误删除了这个页面?如果是，您可以恢复页面。"
+msgstr "您是否误删除了这个页面？如果是，您可以恢复页面。"
 
 msgid "page.delete-tag"
 msgstr "删除这个标签"
@@ -6223,7 +6220,7 @@ msgid "search.atom=wiki,query"
 msgstr "%1 - 用 Atom 搜索 %2"
 
 msgid "search.be-more-specific"
-msgstr "请使用更准确的关键字或者添加更多搜索项目。"
+msgstr "请使用更准确的关键字，或添加更多搜索项目。"
 
 msgid "search.error:"
 msgstr "错误："
@@ -7406,6 +7403,18 @@ msgstr "上传小工具 XML 文件："
 
 msgid "widgets.use-editor"
 msgstr "使用小工具编辑器"
+
+msgid "wiki.acl-custom"
+msgstr "自定权限"
+
+msgid "wiki.acl-private"
+msgstr "私密"
+
+msgid "wiki.acl-public"
+msgstr "公开"
+
+msgid "wiki.acl-self-join"
+msgstr "自行加入"
 
 msgid "wiki.all"
 msgstr "我所有的工作区"

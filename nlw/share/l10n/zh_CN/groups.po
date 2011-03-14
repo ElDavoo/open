@@ -112,7 +112,7 @@ msgid "groups.search:"
 msgstr "搜索群组："
 
 msgid "groups.self-join"
-msgstr "公開群组"
+msgstr "自行加入群组"
 
 msgid "groups.self-join-listed-in-directory"
 msgstr "列入群组名单；任何人都可以加入。"
@@ -121,7 +121,7 @@ msgid "groups.successfully-deleted=name"
 msgstr "群组 %1 已成功删除。"
 
 msgid "groups.toggling-self-join-and-private"
-msgstr "将私密群组转变为公開群组后，群组帐户里的任何用户都可以加入群组，之后还可以选择邀请其他人加入。将公開群组转变为私密群组后，该群组将会在群组名单中消失，只能由群组管理员邀请加入。"
+msgstr "将私密群组转变为自行加入群组后，群组帐户里的任何用户都可以加入群组，之后还可以选择邀请其他人加入。将自行加入群组转变为私密群组后，该群组将会在群组名单中消失，只能由群组管理员邀请加入。"
 
 msgid "groups.you-are-member"
 msgstr "您当前是这个群组的成员。"

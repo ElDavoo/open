@@ -19,7 +19,7 @@ msgid "about.signals"
 msgstr "提供与 Socialtext 的企业协作平台整合的社会化消息服务。在提供像其它微博客工具如 Twitter&#0153; 一样的好处的同时，Socialtext 訊息还有更多优点，因为消息服务的运作脉络，是在为共同目标协作的组织成员当中。"
 
 msgid "about.unplugged"
-msgstr "“Socialtext 脱机”允许用户脱机阅读或者编辑工作区。用户可以“脱机”一个或者更多页面来进行阅读或者编辑。更改将会与工作区同步。"
+msgstr "“Socialtext 脱机”允许用户脱机阅读及编辑工作区。用户可以“脱机”一个以上的页面来进行阅读与编辑。更改将会与工作区同步。"
 
 msgid "account.count=people"
 msgstr "%1 人"
@@ -358,7 +358,7 @@ msgid "edit.saved"
 msgstr "（您的修改已经保存。）"
 
 msgid "edit.self-join=group?"
-msgstr "您必须成为 %1 群组的成员，才能在此页面进行编辑或者评论。想现在加入吗？"
+msgstr "您必须成为 %1 群组的成员，才能在此页面进行编辑与评论。想现在加入吗？"
 
 msgid "edit.view-contention=type:"
 msgstr "您刚才编辑的%1显示如下。您可以从此处复制粘贴您的更改："
@@ -376,16 +376,16 @@ msgid "email.add-all"
 msgstr "添加所有成员"
 
 msgid "email.add-note?"
-msgstr "在邮件前面添加此标注？"
+msgstr "在邮件前面添加以下段落？"
 
 msgid "email.address-or-name"
-msgstr "請输入邮件地址或者用户名"
+msgstr "請输入邮件地址或用户名"
 
 msgid "email.another-example"
 msgstr "another.friend@example.com"
 
 msgid "email.copy-self?"
-msgstr "向自己发送副本？"
+msgstr "发送副本給自己？"
 
 msgid "email.customize"
 msgstr "（您可以自定义下面的文字。）"
@@ -397,16 +397,16 @@ msgid "email.message"
 msgstr "消息"
 
 msgid "email.page-link:"
-msgstr "您好，这是我想要与您分享的一个工作区页面。此页面也可以在以下网页查看或者编辑："
+msgstr "您好，这是我想要与您分享的一个工作区页面。此页面也可以在以下网页查看与编辑："
 
 msgid "email.position?"
-msgstr "如果已经有改标题的页面存在，邮件正文应该加在什么哪里？"
+msgstr "如果已经有此标题的页面存在，邮件正文应该加在哪里？"
 
 msgid "email.recipient-box"
-msgstr "用上面的收件人栏添加"
+msgstr "請使用上面的“收件人”框"
 
 msgid "email.recipient-box-continued"
-msgstr "这个列表的收件人"
+msgstr "来添加收件人到此列表。"
 
 msgid "email.recipients"
 msgstr "收件人"
@@ -421,7 +421,7 @@ msgid "error.cannot-reset-pasword"
 msgstr "此用户的密码不能重置。"
 
 msgid "error.choose-group"
-msgstr "请选择一个或者更多群组"
+msgstr "请选择一个以上的群组"
 
 msgid "error.css-disabled"
 msgstr "警告：样式单在移动设备上无法使用。要正确地查看移动版 Socialtext，您需要在浏览器设置里面启用样式单。"
@@ -439,7 +439,7 @@ msgid "error.invalid=email"
 msgstr "“%1”不是有效的电子邮件地址"
 
 msgid "error.is-guest"
-msgstr "您必须注册或者登录以使用此功能。"
+msgstr "您必须注册或登录以使用此功能。"
 
 msgid "error.long-page-name=title"
 msgstr "您选择的新页面名称“%1”，在网址编码之后太长了。"
@@ -604,10 +604,10 @@ msgid "info.after-duplicate"
 msgstr "点击“复制”之后，主窗口会导航到新的页面名称。 "
 
 msgid "info.blog-sort"
-msgstr "您可以选择按照条目更新的日期或者第一次发布日期进行排序。"
+msgstr "您可以选择按照条目更新的日期，或第一次发布日期进行排序。"
 
 msgid "info.browse"
-msgstr "点击“浏览”并选择一个图片或者文件上传."
+msgstr "点击“浏览”并选择一个图片或文件来上传。"
 
 msgid "info.central=wiki"
 msgstr "当用户点击工作区标题，会转到工作区首页。此页面跟工作区的标题相同（“%1”）。"
@@ -652,7 +652,7 @@ msgid "info.files"
 msgstr "附件"
 
 msgid "info.following"
-msgstr "...列出您关注的人。您必须先注册或者登录来使用这个功能。"
+msgstr "...列出您关注的人。您必须先注册或登录来使用这个功能。"
 
 msgid "info.hello=user"
 msgstr "你好，%1"
@@ -700,7 +700,7 @@ msgid "info.showing=from,to,total"
 msgstr "显示第 %1 - %2 項，共 %3 項"
 
 msgid "info.skin"
-msgstr "Socialtext可以创建视觉主题来自定义您的工作区的外观和风格。您可以使用由Socialtext提供的默认视觉主题或者自定义视觉主题。"
+msgstr "Socialtext可以创建视觉主题来自定义您的工作区的外观和风格。您可以使用由 Socialtext 提供的默认视觉主题，或自定义视觉主题。"
 
 msgid "info.socialtext"
 msgstr "Socialtext：企业社会化软件"
@@ -712,7 +712,7 @@ msgid "info.unplugged"
 msgstr "点击按钮将页面保存到您的电脑离线使用。"
 
 msgid "info.valid-wiki-name"
-msgstr "只能由 3-30 个小写字母、数字、下划线或者破折号组成。"
+msgstr "只能由 3-30 个小写字母、数字、下划线或破折号组成。"
 
 msgid "info.warning:"
 msgstr "警告："
@@ -724,13 +724,13 @@ msgid "info.wiki-as-blog"
 msgstr "或者您也可以指定一个博客，作为工作区链接的显示内容。"
 
 msgid "info.wiki-group"
-msgstr "您可以创建一个新的群组，或者添加工作区到已存在的群组。"
+msgstr "您可以创建一个新的群组，或添加工作区到已存在的群组。"
 
 msgid "info.wiki-id"
 msgstr "这是一个作为您的工作区网址和邮件地址的唯一短标识。"
 
 msgid "info.wiki-logo"
-msgstr "您可以选择一个图片当作工作区的标识。您可以输入图片网址，或者从您的电脑上传一张图片。"
+msgstr "您可以选择一个图片当作工作区的标识。您可以输入图片网址，或从您的电脑上传一张图片。"
 
 msgid "info.wiki-private"
 msgstr "工作区默认是不开放的。所有用户都需要登录查看页面。只有工作区管理员可以邀请新的用户。"
@@ -745,7 +745,7 @@ msgid "invite.append?"
 msgstr "添加下面的个人消息？"
 
 msgid "invite.click-edit"
-msgstr "如果您发现想要添加或者编辑的内容，请点击页面顶部的“编辑”链接。"
+msgstr "如果您发现想要添加或编辑的内容，请点击页面顶部的“编辑”链接。"
 
 msgid "invite.edit-save"
 msgstr "在文本框键入您的内容，然后点击“保存”。"
@@ -781,7 +781,7 @@ msgid "invite.include-personal-message"
 msgstr "如果您希望的话，可以在邀请信里面包含个人消息。您可以编辑消息说出您想说的话。"
 
 msgid "invite.lookahead"
-msgstr "输入用户的姓或名的一部分，或者邮件地址。"
+msgstr "输入用户的姓或名的一部分，或邮件地址。"
 
 msgid "invite.make-wikilink"
 msgstr "要链接到其它页面（即使页面还不存在），请给一个词语或词组加上方括号。"
@@ -1087,7 +1087,7 @@ msgid "page.delete"
 msgstr "删除页面"
 
 msgid "page.delete-epilogue"
-msgstr "您是否误删除了这个页面?如果是，您可以恢复页面。"
+msgstr "您是否误删除了这个页面？如果是，您可以恢复页面。"
 
 msgid "page.delete-tag"
 msgstr "删除这个标签"
@@ -1312,7 +1312,7 @@ msgid "revision.view"
 msgstr "查看含格式的"
 
 msgid "search.be-more-specific"
-msgstr "请使用更准确的关键字或者添加更多搜索项目。"
+msgstr "请使用更准确的关键字，或添加更多搜索项目。"
 
 msgid "search.error:"
 msgstr "错误："

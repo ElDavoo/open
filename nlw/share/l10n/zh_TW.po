@@ -31,7 +31,7 @@ msgid "about.signals"
 msgstr "提供與 Socialtext 的企業協作平台整合的社會化消息服務。在提供像其他微網誌工具如 Twitter&#0153; 一樣的好處的同時，Socialtext 訊息還有更多優點，因為消息服務的運作脈絡，是在為共同目標協作的組織成員當中。"
 
 msgid "about.unplugged"
-msgstr "『Socialtext 離線』允許用戶離線閱讀或者編輯工作區。用戶可以『離線』一個或者更多頁面來進行閱讀或者編輯。更改將會與工作區同步。"
+msgstr "『Socialtext 離線』允許用戶離線閱讀及編輯工作區。用戶可以『離線』一個以上的頁面來進行閱讀與編輯。更改將會與工作區同步。"
 
 msgid "account.count=people"
 msgstr "%1 人"
@@ -1226,7 +1226,7 @@ msgid "console.set-backup-destination"
 msgstr "設定備份目標"
 
 msgid "console.set-custom-login-screen-message"
-msgstr "設定自定義登入螢幕資訊"
+msgstr "設定自訂登入螢幕資訊"
 
 msgid "console.set-email-configuration"
 msgstr "設定電子郵件配置"
@@ -1346,7 +1346,7 @@ msgid "control.account"
 msgstr "帳戶"
 
 msgid "control.account-custom-desktop-skin"
-msgstr "帳戶自定義桌面視覺主題"
+msgstr "帳戶自訂桌面視覺主題"
 
 msgid "control.account-logo"
 msgstr "帳戶標識"
@@ -1583,13 +1583,13 @@ msgid "control.creator"
 msgstr "建立者"
 
 msgid "control.custom-desktop-skin"
-msgstr "自定義桌面視覺主題"
+msgstr "自訂桌面視覺主題"
 
 msgid "control.custom-fields"
-msgstr "自定義欄位"
+msgstr "自訂欄位"
 
 msgid "control.custom-skins=name"
-msgstr "自定義視覺主題：%1"
+msgstr "自訂視覺主題：%1"
 
 msgid "control.data-source"
 msgstr "資料來源"
@@ -2483,7 +2483,7 @@ msgid "edit.saving"
 msgstr "正在儲存..."
 
 msgid "edit.self-join=group?"
-msgstr "您必須成為 %1 群組的成員，才能在此頁面進行編輯或者評論。想現在加入嗎？"
+msgstr "您必須成為 %1 群組的成員，才能在此頁面進行編輯與評論。想現在加入嗎？"
 
 msgid "edit.signal-to"
 msgstr "將本編輯發送至"
@@ -2531,10 +2531,10 @@ msgid "email.add-all"
 msgstr "新增所有成員"
 
 msgid "email.add-note?"
-msgstr "在郵件前面新增此標注？"
+msgstr "在郵件前面新增以下段落？"
 
 msgid "email.address-or-name"
-msgstr "請輸入郵件位址或者用戶名"
+msgstr "請輸入郵件位址或用戶名"
 
 msgid "email.another-example"
 msgstr "another.friend@example.com"
@@ -2546,10 +2546,10 @@ msgid "email.confirmation-subject=wiki"
 msgstr "已登陸到工作區 %1"
 
 msgid "email.copy-self?"
-msgstr "向自己發送副本？"
+msgstr "發送副本給自己？"
 
 msgid "email.customize"
-msgstr "（您可以自定義下面的文字。）"
+msgstr "（您可以自訂下面的文字。）"
 
 msgid "email.date:"
 msgstr "日期："
@@ -2573,7 +2573,7 @@ msgid "email.page-digest-sort?"
 msgstr "採用哪種順序顯示更新資訊？"
 
 msgid "email.page-link:"
-msgstr "您好，這是我想要與您分享的一個工作區頁面。此頁面也可以在以下網頁查看或者編輯："
+msgstr "您好，這是我想要與您分享的一個工作區頁面。此頁面也可以在以下網頁查看與編輯："
 
 msgid "email.page-name-link-author-date"
 msgstr "頁面名稱和鏈結，外加作者和日期"
@@ -2582,7 +2582,7 @@ msgid "email.page-name-link-only"
 msgstr "只有頁面名稱和鏈結"
 
 msgid "email.position?"
-msgstr "如果已經有改標題的頁面存在，郵件正文應該加在什麼哪里？"
+msgstr "如果已經有此標題的頁面存在，郵件正文應該加在哪里？"
 
 msgid "email.private-message-from=sender"
 msgstr "來自 %1 的私人訊息"
@@ -2591,10 +2591,10 @@ msgid "email.recent-changes=wiki"
 msgstr "%1 工作區的最近更新"
 
 msgid "email.recipient-box"
-msgstr "用上面的收件人欄新增"
+msgstr "請使用上面的『收件人』框"
 
 msgid "email.recipient-box-continued"
-msgstr "這個列表的收件人"
+msgstr "來新增收件人到此列表。"
 
 msgid "email.recipients"
 msgstr "收件人"
@@ -2627,7 +2627,7 @@ msgid "error.account-forbidden"
 msgstr "無權限使用此帳戶"
 
 msgid "error.account-id-or-name-required=uri"
-msgstr "必須提供合法的帳戶名或帳戶ID到此網址（%1）。"
+msgstr "必須提供合法的帳戶名或帳戶 ID 到此網址（%1）。"
 
 msgid "error.account-name-required"
 msgstr "帳戶名稱必填。"
@@ -2708,7 +2708,7 @@ msgid "error.browser-offline"
 msgstr "瀏覽器為離線狀態，請連入互聯網再重試。"
 
 msgid "error.cannot-change-account-logo-with-custom-skin=name"
-msgstr "由於當前使用的是自定義視覺主題，因此帳戶標識不可更改。正在使用的視覺主題名為『%1』"
+msgstr "由於當前使用的是自訂視覺主題，因此帳戶標識不可更改。正在使用的視覺主題名為『%1』"
 
 msgid "error.cannot-load-revision"
 msgstr "無法載入更動"
@@ -2738,7 +2738,7 @@ msgid "error.check-video-url"
 msgstr "系統出錯; 請稍候再重試。"
 
 msgid "error.choose-group"
-msgstr "請選擇一個或者更多群組"
+msgstr "請選擇一個以上的群組"
 
 msgid "error.cleaning-not-implemented"
 msgstr "清除功能尚未實現。"
@@ -3017,7 +3017,7 @@ msgid "error.invalid-page-name=title"
 msgstr "您選擇的新頁面名稱『%1』不允許使用。請輸入或更改頁面名稱。"
 
 msgid "error.invalid-permission=name"
-msgstr "無效的權限:%1"
+msgstr "無效的權限：%1"
 
 msgid "error.invalid-query"
 msgstr "非法查詢。"
@@ -3119,7 +3119,7 @@ msgid "error.invalid=url"
 msgstr "%1 是無效鏈結。"
 
 msgid "error.is-guest"
-msgstr "您必須註冊或者登入以使用此功能。"
+msgstr "您必須註冊或登入以使用此功能。"
 
 msgid "error.link-selection-required"
 msgstr "請選擇要插入鏈結的文本。"
@@ -3692,7 +3692,7 @@ msgid "error.size-required"
 msgstr "大小不能為 0。"
 
 msgid "error.skin-upload-failed"
-msgstr "一個自定義的主題檔案沒有被上傳。"
+msgstr "一個自訂的主題檔案沒有被上傳。"
 
 msgid "error.socialtext-appliance-backup"
 msgstr "Socialtext 設備備份過程中出錯"
@@ -4181,7 +4181,7 @@ msgid "group.created=name,account"
 msgstr "%1 群組已被建立在帳戶 %2 中。"
 
 msgid "group.created=name,id"
-msgstr "%1 群組已建立（群組Id:%2）"
+msgstr "%1 群組已建立（群組ID：%2）"
 
 msgid "group.deleted=id"
 msgstr "已刪除群組ID：%1"
@@ -4289,7 +4289,7 @@ msgid "groups.search:"
 msgstr "搜尋群組："
 
 msgid "groups.self-join"
-msgstr "公開群組"
+msgstr "自行加入群組"
 
 msgid "groups.self-join-listed-in-directory"
 msgstr "列入群組名單；任何人都可以加入。"
@@ -4298,7 +4298,7 @@ msgid "groups.successfully-deleted=name"
 msgstr "群組 %1 已成功刪除。"
 
 msgid "groups.toggling-self-join-and-private"
-msgstr "將私密群組轉變為公開群組後，群組帳戶里的任何用戶都可以加入群組，之後還可以選擇邀請其他人加入。將公開群組轉變為私密群組後，該群組將會在群組名單中消失，只能由群組管理員邀請加入。"
+msgstr "將私密群組轉變為自行加入群組後，群組帳戶里的任何用戶都可以加入群組，之後還可以選擇邀請其他人加入。將自行加入群組轉變為私密群組後，該群組將會在群組名單中消失，只能由群組管理員邀請加入。"
 
 msgid "groups.you-are-member"
 msgstr "您當前是這個群組的成員。"
@@ -4325,7 +4325,7 @@ msgid "info.analytics-mask"
 msgstr "Socialtext 預設是不允許身份資訊，如頁面名稱，工作區間名稱，和標籤等資訊在 Google Analytics 的報告中顯示的。如果要讓有權限存取您的 Google Analytics 帳戶的用戶能夠看到頁面名稱，工作區間名稱和標籤資訊的話，您可以取消下面的複選框來顯示認証資訊。"
 
 msgid "info.blog-sort"
-msgstr "您可以選擇按照條目更新的日期或者第一次發布日期進行排序。"
+msgstr "您可以選擇按照條目更新的日期，或第一次發布日期進行排序。"
 
 msgid "info.browse"
 msgstr "點選『瀏覽』並選擇上傳圖片或檔案。"
@@ -4421,7 +4421,7 @@ msgid "info.files"
 msgstr "附件"
 
 msgid "info.following"
-msgstr "...列出您關注的人。您必須先註冊或者登入來使用這個功能。"
+msgstr "...列出您關注的人。您必須先註冊或登入來使用這個功能。"
 
 msgid "info.forbidden-profile"
 msgstr "注意：不和其他人分享群組，則無法查看他們的個人資料。"
@@ -4502,7 +4502,7 @@ msgid "info.signal-to-sms"
 msgstr "如果勾選上，每次用戶通過給您發送私人訊息時，我們會將包含訊息主體的文本資訊發送給您。"
 
 msgid "info.skin"
-msgstr "Socialtext可以建立視覺主題來自定義您的工作區的外觀和風格。您可以使用由Socialtext提供的預設視覺主題或者自定義視覺主題。"
+msgstr "Socialtext可以建立視覺主題來自訂您的工作區的外觀和風格。您可以使用由 Socialtext 提供的預設視覺主題，或自訂視覺主題。"
 
 msgid "info.socialtext"
 msgstr "Socialtext：企業社會化軟體"
@@ -4529,7 +4529,7 @@ msgid "info.unplugged"
 msgstr "點選按鈕將頁面儲存到您的電腦離線使用。"
 
 msgid "info.valid-wiki-name"
-msgstr "只能由 3-30 個小寫字母、數字、下劃線或者破折號組成。"
+msgstr "只能由 3-30 個小寫字母、數字、下劃線或破折號組成。"
 
 msgid "info.verbose"
 msgstr "提示嘗試 -- verbose 來獲得關鍵的額外列表"
@@ -4547,13 +4547,13 @@ msgid "info.wiki-as-blog"
 msgstr "或者您也可以指定一個網誌，作為工作區鏈結的顯示內容。"
 
 msgid "info.wiki-group"
-msgstr "您可以建立一個新的群組，或者新增工作區到已存在的群組。"
+msgstr "您可以建立一個新的群組，或新增工作區到已存在的群組。"
 
 msgid "info.wiki-id"
 msgstr "這是一個作為您的工作區網址和郵件位址的唯一短標識。"
 
 msgid "info.wiki-logo"
-msgstr "您可以選擇一個圖片當作工作區的標識。您可以輸入圖片網址，或者從您的電腦上傳一張圖片。"
+msgstr "您可以選擇一個圖片當作工作區的標識。您可以輸入圖片網址，或從您的電腦上傳一張圖片。"
 
 msgid "info.wiki-private"
 msgstr "工作區預設是不開放的。所有用戶都需要登入查看頁面。只有工作區管理員可以邀請新的用戶。"
@@ -4580,7 +4580,7 @@ msgid "invite.append?"
 msgstr "新增下面的個人消息？"
 
 msgid "invite.click-edit"
-msgstr "如果您發現想要新增或者編輯的內容，請點選頁面頂部的『編輯』鏈結。"
+msgstr "如果您發現想要新增或編輯的內容，請點選頁面頂部的『編輯』鏈結。"
 
 msgid "invite.click-to-confirm-email=uri"
 msgstr "請<a href=\"%1\">點選此鏈結</a>來確認您的電子郵件位址。"
@@ -4661,7 +4661,7 @@ msgid "invite.login-details-after-confirmation"
 msgstr "一旦您確認了您的帳戶，您將收到第二封電子郵件，其中有登入的詳細資訊。"
 
 msgid "invite.lookahead"
-msgstr "輸入用戶的姓或名的一部分，或者郵件位址。"
+msgstr "輸入用戶的姓或名的一部分，或郵件位址。"
 
 msgid "invite.make-wikilink"
 msgstr "要鏈結到其他頁面（即使頁面還不存在），請給一個詞語或片語加上方括弧。"
@@ -4805,16 +4805,13 @@ msgstr "%1 區域現已更新為 %2"
 msgid "lang.en"
 msgstr "英文"
 
-msgid "lang.english"
-msgstr "英語"
-
-msgid "lang.fr_CA"
+msgid "lang.fr-ca"
 msgstr "法文 – 加拿大"
 
-msgid "lang.zh_CN"
+msgid "lang.zh-cn"
 msgstr "中文 – 簡體"
 
-msgid "lang.zh_TW"
+msgid "lang.zh-tw"
 msgstr "中文 – 正體"
 
 msgid "last.24hours"
@@ -5259,7 +5256,7 @@ msgid "page.delete"
 msgstr "刪除頁面"
 
 msgid "page.delete-epilogue"
-msgstr "您是否誤刪除了這個頁面?如果是，您可以恢復頁面。"
+msgstr "您是否誤刪除了這個頁面？如果是，您可以恢復頁面。"
 
 msgid "page.delete-tag"
 msgstr "刪除這個標籤"
@@ -5617,7 +5614,7 @@ msgid "profile.created-field=title,account"
 msgstr "已建立帳戶『%2』的檔案欄』%1』"
 
 msgid "profile.custom"
-msgstr "自定義"
+msgstr "自訂"
 
 msgid "profile.facebook:"
 msgstr "Facebook："
@@ -6223,7 +6220,7 @@ msgid "search.atom=wiki,query"
 msgstr "%1 - 用 Atom 搜尋 %2"
 
 msgid "search.be-more-specific"
-msgstr "請使用更准確的關鍵字或者新增更多搜尋項目。"
+msgstr "請使用更准確的關鍵字，或新增更多搜尋項目。"
 
 msgid "search.error:"
 msgstr "錯誤："
@@ -6460,7 +6457,7 @@ msgid "skin.browse"
 msgstr "瀏覽..."
 
 msgid "skin.customized"
-msgstr "自定義的視覺主題"
+msgstr "自訂的視覺主題"
 
 msgid "skin.default"
 msgstr "預設視覺主題"
@@ -6469,13 +6466,13 @@ msgid "skin.file"
 msgstr "檔案"
 
 msgid "skin.files"
-msgstr "自定義的視覺主題檔案"
+msgstr "自訂的視覺主題檔案"
 
 msgid "skin.remove-existing"
 msgstr "移除&nbsp;存在的&nbsp;檔案"
 
 msgid "skin.select-file:"
-msgstr "選取一個包含自定義視覺主題檔案的ZIP或TGZ檔案："
+msgstr "選取一個包含自訂視覺主題檔案的ZIP或TGZ檔案："
 
 msgid "skin.select:"
 msgstr "選取一個工作區視覺主題："
@@ -6484,10 +6481,10 @@ msgid "skin.size"
 msgstr "大小（位元組）"
 
 msgid "skin.support"
-msgstr "自定義視覺主題支援"
+msgstr "自訂視覺主題支援"
 
 msgid "skin.unsupported"
-msgstr "上傳的視覺主題不支援。上傳視覺主題僅用於開發和測試自定義視覺主題。請聯絡 sales@socialtext.com 獲取更多關於自定義視覺主題的資訊。"
+msgstr "上傳的視覺主題不支援。上傳視覺主題僅用於開發和測試自訂視覺主題。請聯絡 sales@socialtext.com 獲取更多關於自訂視覺主題的資訊。"
 
 msgid "skin.uploaded"
 msgstr "已上傳"
@@ -6967,7 +6964,7 @@ msgid "wafl.contents"
 msgstr "內容"
 
 msgid "wafl.custom"
-msgstr "自定義"
+msgstr "自訂"
 
 msgid "wafl.date-format"
 msgstr "YYYY-MM-DD&nbsp;HH:MM:SS"
@@ -7407,6 +7404,18 @@ msgstr "上傳小工具 XML 檔案："
 msgid "widgets.use-editor"
 msgstr "使用小工具編輯器"
 
+msgid "wiki.acl-custom"
+msgstr "自定權限"
+
+msgid "wiki.acl-private"
+msgstr "私密"
+
+msgid "wiki.acl-public"
+msgstr "公開"
+
+msgid "wiki.acl-self-join"
+msgstr "自行加入"
+
 msgid "wiki.all"
 msgstr "我所有的工作區"
 
@@ -7450,7 +7459,7 @@ msgid "wiki.created=title,uri"
 msgstr "您剛剛建立了『%1』，一個全新的 Socialtext 工作區。您是管理員。新工作區的網址是 %2"
 
 msgid "wiki.custom-permission"
-msgstr "自定義"
+msgstr "自訂"
 
 msgid "wiki.dashboard"
 msgstr "控制面板"

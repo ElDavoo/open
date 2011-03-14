@@ -6848,15 +6848,15 @@ msgid "lang.en"
 msgstr "«English»"
 
 #: lib/Socialtext/Locales.pm:56
-msgid "lang.fr_CA"
+msgid "lang.fr-ca"
 msgstr "«French - Canadian»"
 
 #: lib/Socialtext/Locales.pm:57
-msgid "lang.zh_CN"
+msgid "lang.zh-cn"
 msgstr "«Chinese - Simplified»"
 
 #: lib/Socialtext/Locales.pm:58
-msgid "lang.zh_TW"
+msgid "lang.zh-tw"
 msgstr "«Chinese - Traditional»"
 
 #: lib/Socialtext/RecentChangesPlugin.pm:42
@@ -10383,6 +10383,18 @@ msgstr "«Upload Widget XML File:»"
 #: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:44
 msgid "widgets.use-editor"
 msgstr "«Use the Widget Editor»"
+
+msgid "wiki.acl-custom"
+msgstr "«Custom»"
+
+msgid "wiki.acl-private"
+msgstr "«Private»"
+
+msgid "wiki.acl-public"
+msgstr "«Public»"
+
+msgid "wiki.acl-self-join"
+msgstr "«Self-Join»"
 
 #: share/skin/s3/template/element/main_nav/subnav/workspaces:12
 msgid "wiki.all"

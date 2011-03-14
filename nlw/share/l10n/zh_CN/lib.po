@@ -574,7 +574,7 @@ msgid "error.account-forbidden"
 msgstr "无权限使用此帐户"
 
 msgid "error.account-id-or-name-required=uri"
-msgstr "必须提供合法的帐户名或帐户ID到此网址（%1）。"
+msgstr "必须提供合法的帐户名或帐户 ID 到此网址（%1）。"
 
 msgid "error.account-name-required"
 msgstr "帐户名称必填。"
@@ -859,7 +859,7 @@ msgid "error.invalid-page-name"
 msgstr "无效页面名称"
 
 msgid "error.invalid-permission=name"
-msgstr "无效的权限:%1"
+msgstr "无效的权限：%1"
 
 msgid "error.invalid-query"
 msgstr "非法查询。"
@@ -1528,7 +1528,7 @@ msgid "group.created=name,account"
 msgstr "%1 群组已被创建在帐户 %2 中。"
 
 msgid "group.created=name,id"
-msgstr "%1 群组已创建（群组Id:%2）"
+msgstr "%1 群组已创建（群组ID：%2）"
 
 msgid "group.deleted=id"
 msgstr "已删除群组ID：%1"
@@ -1623,16 +1623,13 @@ msgstr "%1 区域现已更新为 %2"
 msgid "lang.en"
 msgstr "英文"
 
-msgid "lang.english"
-msgstr "英语"
-
-msgid "lang.fr_CA"
+msgid "lang.fr-ca"
 msgstr "法文 – 加拿大"
 
-msgid "lang.zh_CN"
+msgid "lang.zh-cn"
 msgstr "中文 – 简体"
 
-msgid "lang.zh_TW"
+msgid "lang.zh-tw"
 msgstr "中文 – 繁体"
 
 msgid "last.24hours"
@@ -2402,3 +2399,15 @@ msgstr "欢迎"
 
 msgid "wiki.welcome-confirm=name"
 msgstr "欢迎来到 %1 工作区 - 请确认注册邮箱"
+
+msgid "wiki.acl-private"
+msgstr "私密"
+
+msgid "wiki.acl-self-join"
+msgstr "自行加入"
+
+msgid "wiki.acl-custom"
+msgstr "自定权限"
+
+msgid "wiki.acl-public"
+msgstr "公开"

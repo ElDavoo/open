@@ -6848,15 +6848,15 @@ msgid "lang.en"
 msgstr "Zzzzzzz"
 
 #: lib/Socialtext/Locales.pm:56
-msgid "lang.fr_CA"
+msgid "lang.fr-ca"
 msgstr "Zzzzzz - Zzzzzzzz"
 
 #: lib/Socialtext/Locales.pm:57
-msgid "lang.zh_CN"
+msgid "lang.zh-cn"
 msgstr "Zzzzzzz - Zzzzzzzzzz"
 
 #: lib/Socialtext/Locales.pm:58
-msgid "lang.zh_TW"
+msgid "lang.zh-tw"
 msgstr "Zzzzzzz - Zzzzzzzzzzz"
 
 #: lib/Socialtext/RecentChangesPlugin.pm:42
@@ -10383,6 +10383,18 @@ msgstr "Zzzzzz Zzzzzz ZZZ Zzzz:"
 #: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:44
 msgid "widgets.use-editor"
 msgstr "Zzz zzz Zzzzzz Zzzzzz"
+
+msgid "wiki.acl-custom"
+msgstr "Zzzzzz"
+
+msgid "wiki.acl-private"
+msgstr "Zzzzzzz"
+
+msgid "wiki.acl-public"
+msgstr "Zzzzzz"
+
+msgid "wiki.acl-self-join"
+msgstr "Zzzz-Zzzz"
 
 #: share/skin/s3/template/element/main_nav/subnav/workspaces:12
 msgid "wiki.all"
