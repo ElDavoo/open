@@ -7716,6 +7716,9 @@ msgstr "«Titles»"
 msgid "page.top"
 msgstr "«Top of page»"
 
+msgid "page.type-spreadsheet"
+msgstr "«Spreadsheet»"
+
 #: share/skin/s3/javascript/lightbox/create_content.js:9
 msgid "page.type-wiki"
 msgstr "«Page»"

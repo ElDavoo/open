@@ -22,7 +22,7 @@ msgid "<! widget.more_desc !>"
 msgstr "<! widget.more_desc !>"
 
 msgid "about.keywords"
-msgstr "維基，商務維基，文檔管理，企業維基，內網維基，知識管理，在線協作，開放維基，門戶維基，托管維基，協作，社會化軟體，社交網路，顯示板，項目協作，團隊協作，維基應用，維基軟體，社區，共筆，商務共筆，企業共筆，內網共筆，開源共筆，門戶共筆，托管共筆，共筆應用，共筆軟體"
+msgstr "維基，商務維基，文檔管理，企業維基，內網維基，知識管理，在線協作，開放維基，門戶維基，托管維基，協作，社會化軟體，社交網路，顯示板，項目協作，團隊協作，維基套用，維基軟體，社區，共筆，商務共筆，企業共筆，內網共筆，開源共筆，門戶共筆，托管共筆，共筆套用，共筆軟體"
 
 msgid "about.people"
 msgstr "是一個具有強勁社交網路功能的人員目錄。您可以找到您同事的聯絡資訊，發現具有特長和共同愛好的人，以及通過您的社交網路找到有價值的資訊。"
@@ -425,10 +425,10 @@ msgid "analytics.use-for:"
 msgstr "這個 Google Analytics 追蹤帳號是用於："
 
 msgid "appliance.added-business-admin=user"
-msgstr "指派 %1 為應用業務管理員。"
+msgstr "指派 %1 為套用業務管理員。"
 
 msgid "appliance.added-technical-admin=user"
-msgstr "指派 %1 為應用技術管理員。"
+msgstr "指派 %1 為套用技術管理員。"
 
 msgid "appliance.archive-directory"
 msgstr "封存目錄"
@@ -515,10 +515,10 @@ msgid "appliance.refreshing-backup-list"
 msgstr "正在備份列表 ..."
 
 msgid "appliance.removed-business-admin=user"
-msgstr "解除 %1 應用業務管理員的角色。"
+msgstr "解除 %1 套用業務管理員的角色。"
 
 msgid "appliance.removed-technical-admin=user"
-msgstr "解除 %1 應用技術管理員的角色。"
+msgstr "解除 %1 套用技術管理員的角色。"
 
 msgid "appliance.restore-already-running"
 msgstr "已經啟用恢復"
@@ -1049,7 +1049,7 @@ msgid "console.about-poxy-server=help-link"
 msgstr "您可以設定一個代理伺服器，以允許用戶可以存取包括面板小工具與RSS源在內的網路服務。更多資訊請查看：%1"
 
 msgid "console.about-support-contact"
-msgstr "在此設定用戶可以通過登入、應用存取或目錄存取方式，以獲取幫助的電子郵件位址或網址"
+msgstr "在此設定用戶可以通過登入、套用存取或目錄存取方式，以獲取幫助的電子郵件位址或網址"
 
 msgid "console.about-username-password-after-initialize-wikis"
 msgstr "以上您輸入的電子郵件位址將作為用戶名，密碼為<strong>password</strong>。您可以稍後更改密碼。"
@@ -1313,7 +1313,7 @@ msgid "control.about-accounts-tab"
 msgstr "帳戶指一大群的用戶，其具有存取用戶目錄、交流對話以及其他內容特征的公共權限。每個帳戶可以設定不同的選項與設定，包括插件、視覺主題以及美化Socialtext桌面。您也可以對帳戶的使用情況進行查看，並對報告進行採納。"
 
 msgid "control.about-control-panel"
-msgstr "自此設備業務管理員可以管理與監控Socialtext應用的使用，包括帳戶、群組、工作區、用戶與報告。"
+msgstr "自此設備業務管理員可以管理與監控Socialtext套用的使用，包括帳戶、群組、工作區、用戶與報告。"
 
 msgid "control.about-create-links"
 msgstr "使用本鏈結在預設帳戶中建立實體。在指定帳戶中建立實體，請存取<a href='/nlw/control/account'>帳戶</a>標籤欄來瀏覽指定帳戶"
@@ -1331,7 +1331,7 @@ msgid "control.about-paid-option=plugin"
 msgstr "%1 為付費選項。關於費用的更多資訊，請聯絡您的銷售代表。"
 
 msgid "control.about-settings-tab"
-msgstr "管理全系統的應用設定"
+msgstr "管理全系統的套用設定"
 
 msgid "control.about-users-tab"
 msgstr "使用本螢幕快捷邀請用戶至群組與工作區"
@@ -1604,10 +1604,10 @@ msgid "control.description"
 msgstr "描述"
 
 msgid "control.desktop-skin-reset-to-current-apply-now?"
-msgstr "值已重置為當前。您希望現在開始應用嗎？"
+msgstr "值已重置為當前。您希望現在開始套用嗎？"
 
 msgid "control.desktop-skin-reset-to-default-apply-now?"
-msgstr "值已重置為預設。您希望現在開始應用嗎？"
+msgstr "值已重置為預設。您希望現在開始套用嗎？"
 
 msgid "control.disable-export-user-data"
 msgstr "禁止輸出用戶資料"
@@ -2216,7 +2216,7 @@ msgid "desktop.relogin-for-default-logo"
 msgstr "（桌面用戶如需看預設標誌，需重新登入。）"
 
 msgid "desktop.relogin-for-logo"
-msgstr "當前帳戶標誌應用至桌面。桌面用戶需重新登入才能看到新的標誌。"
+msgstr "當前帳戶標誌套用至桌面。桌面用戶需重新登入才能看到新的標誌。"
 
 msgid "desktop.relogin-for-new-logo"
 msgstr "（桌面用戶如需看新的標誌，需重新登入）"
@@ -2537,13 +2537,13 @@ msgid "email.add-note?"
 msgstr "在郵件前面新增此標注？"
 
 msgid "email.address-or-name"
-msgstr "輸入一個郵件位址或者用戶名"
+msgstr "請輸入郵件位址或者用戶名"
 
 msgid "email.another-example"
 msgstr "another.friend@example.com"
 
 msgid "email.confirmation-subject=app"
-msgstr "已登陸到應用 %1"
+msgstr "已登陸到套用 %1"
 
 msgid "email.confirmation-subject=wiki"
 msgstr "已登陸到工作區 %1"
@@ -2663,16 +2663,16 @@ msgid "error.already-confirmed=email"
 msgstr "郵箱 %1 已確認。"
 
 msgid "error.application=email,host,error"
-msgstr "在 %2 上 %1 的應用錯誤為：%3"
+msgstr "在 %2 上 %1 的套用錯誤為：%3"
 
 msgid "error.application=host,error"
-msgstr "在 %1 出現的的應用錯誤為：%2"
+msgstr "在 %1 出現的的套用錯誤為：%2"
 
 msgid "error.application=wiki,email,host,error"
-msgstr "在 %3 上 %1 出現了 %2 的應用錯誤為：%4"
+msgstr "在 %3 上 %1 出現了 %2 的套用錯誤為：%4"
 
 msgid "error.application=wiki.host,error"
-msgstr "在 %2 上 %1 的應用錯誤為：%3"
+msgstr "在 %2 上 %1 的套用錯誤為：%3"
 
 msgid "error.at-least-one-admin-required"
 msgstr "您必須至少選擇一個管理員"
@@ -3141,7 +3141,7 @@ msgid "error.long-page-name=title"
 msgstr "您選擇的新頁面名稱『%1』，在網址編碼之後太長了。"
 
 msgid "error.missing-or-unknown=role"
-msgstr "缺失或未識別角色『%1』；應用預設角色"
+msgstr "缺失或未識別角色『%1』；套用預設角色"
 
 msgid "error.missing-people-plugin"
 msgstr "成員插件不可用。"
@@ -3279,7 +3279,7 @@ msgid "error.no-page=template"
 msgstr "名為『%1』的頁面不存在"
 
 msgid "error.no-page=type,tag"
-msgstr "沒有找到『%2』標籤的%1頁面"
+msgstr "找不到有『%2』標籤的%1"
 
 msgid "error.no-password-for-new-user"
 msgstr "建立一個新用戶時需要填寫密碼。"
@@ -3390,7 +3390,7 @@ msgid "error.no-wiki=name-or-id"
 msgstr "%1 工作區不存在。"
 
 msgid "error.non-admin-create-group"
-msgstr "由於您的應用配置限制，只有帳戶管理員可以建立群組。"
+msgstr "由於您的套用配置限制，只有帳戶管理員可以建立群組。"
 
 msgid "error.not-both-visible-and-hidden"
 msgstr "只能指定 --visible 和 --hidden 其中一項參數"
@@ -3420,7 +3420,7 @@ msgid "error.page-conflict"
 msgstr "其他人或程式已被編輯到此頁面。"
 
 msgid "error.page-exists=title,button"
-msgstr "您選擇的新頁面名稱『%1』已經被使用，請選擇其他的名字。如果您確定要覆蓋已經存在的『%1』頁面，請再次點選『%2』。"
+msgstr "您選擇的新頁面名稱『%1』已經被使用，請選擇其他的名字。如果您確定要覆蓋現有的『%1』頁面，請再次點選『%2』。"
 
 msgid "error.page-for-export-required"
 msgstr "錯誤：<pre>匯出頁面不能為空</pre>"
@@ -4118,10 +4118,10 @@ msgid "feed.watchlist=wiki,user"
 msgstr "%1：關注 %2"
 
 msgid "file.add-or-replace=name,size,user,date?"
-msgstr "本頁面已經有名為『%1』（%2 由%3於%4上傳）的附件。您可以<span class=\"emphasis\">新增</span> 此檔案的其他版本或<span class=\"emphasis\">替換</span>已存在的檔案。您想怎麼做？"
+msgstr "本頁面已經有名為『%1』（%2 由%3於%4上傳）的附件。您可以<span class=\"emphasis\">新增</span> 此檔案的其他版本或<span class=\"emphasis\">替換</span>現有的檔案。您想怎麼做？"
 
 msgid "file.add-or-replace=name?"
-msgstr "本頁面已經有名為『%1』的附件。您可以<span class=\"emphasis\">新增</span>此檔案的其他版本或<span class=\"emphasis\">替換</span>已存在的檔案。您想怎麼做？"
+msgstr "本頁面已經有名為『%1』的附件。您可以<span class=\"emphasis\">新增</span>此檔案的其他版本或<span class=\"emphasis\">替換</span>現有的檔案。您想怎麼做？"
 
 msgid "file.all"
 msgstr "所有檔案"
@@ -4377,7 +4377,7 @@ msgid "info.container-exists"
 msgstr "容器已存在...跳過..."
 
 msgid "info.copy"
-msgstr "複製一個存在的頁面..."
+msgstr "複製現有頁面..."
 
 msgid "info.created-ldap-group"
 msgstr "群組已被新增，正在更新用戶列表..."
@@ -4464,7 +4464,7 @@ msgid "info.in"
 msgstr "在"
 
 msgid "info.invite-admin-groups"
-msgstr "使用下面的表格邀請用戶加入一個此工作區管理的的群組。這些群組中的任何一個用戶成員都可以進入此工作區。此外，如果你想授予某特定用戶存取權，您可以取消勾選下面的『邀請用戶加入選取的群組』選框。"
+msgstr "使用下面的表格，邀請用戶加入一個此工作區管理的群組。這些群組中的任何一個用戶成員都可以進入此工作區。此外，如果你想授予某特定用戶存取權，您可以取消勾選下面的『邀請用戶加入選取的群組』選框。"
 
 msgid "info.invite-filter=domain"
 msgstr "您只能邀請跟您一樣使用『%1』郵箱域名的人。"
@@ -4581,7 +4581,7 @@ msgid "info.wiki-id"
 msgstr "這是一個作為您的工作區網址和郵件位址的唯一短標識。"
 
 msgid "info.wiki-logo"
-msgstr "您可以選擇一個圖片當作工作區的標識。您可以輸入一個已經存在的網路圖片鏈結，或者從您的電腦上傳一張圖片。"
+msgstr "您可以選擇一個圖片當作工作區的標識。您可以輸入圖片網址，或者從您的電腦上傳一張圖片。"
 
 msgid "info.wiki-private"
 msgstr "工作區預設是不開放的。所有用戶都需要登入查看頁面。只有工作區管理員可以邀請新的用戶。"
@@ -5394,7 +5394,7 @@ msgid "page.print"
 msgstr "列印本頁"
 
 msgid "page.prompt-name"
-msgstr "開始輸入一個頁面名稱..."
+msgstr "輸入頁面名稱..."
 
 msgid "page.purged=title,wiki"
 msgstr "已在工作區 %2 中清除 %1 頁面。"
@@ -5450,8 +5450,11 @@ msgstr "標題"
 msgid "page.top"
 msgstr "頁面頂部"
 
+msgid "page.type-spreadsheet"
+msgstr "試算表"
+
 msgid "page.type-wiki"
-msgstr "頁"
+msgstr "頁面"
 
 msgid "page.unlock"
 msgstr "解鎖頁面"
@@ -5568,7 +5571,7 @@ msgid "plugin.click-to-disable"
 msgstr "點選以禁止"
 
 msgid "plugin.click-to-enable"
-msgstr "點選以應用"
+msgstr "點選以套用"
 
 msgid "plugin.confirm-disable"
 msgstr "點選『確認』禁止該模組或點選『取消』來退出"
@@ -5973,13 +5976,13 @@ msgid "sc.align"
 msgstr "對齊"
 
 msgid "sc.apply"
-msgstr "應用"
+msgstr "套用"
 
 msgid "sc.apply-and-close-dialog"
-msgstr "應用設定並且關閉當前對話框"
+msgstr "套用設定並且關閉當前對話框"
 
 msgid "sc.apply-current-selection"
-msgstr "將上面的設定應用到當前的選區"
+msgstr "將上面的設定套用到當前的選區"
 
 msgid "sc.apply-sheet-default"
 msgstr "將上面的設定成為試算表的預設值"
@@ -6015,7 +6018,7 @@ msgid "sc.color"
 msgstr "顏色"
 
 msgid "sc.column-width"
-msgstr "列&nbsp;寬度"
+msgstr "列寬"
 
 msgid "sc.confirm-navigate-away?"
 msgstr "您確定要離開此頁面瀏覽？"
@@ -6063,10 +6066,10 @@ msgid "sc.format"
 msgstr "格式"
 
 msgid "sc.formats-will-apply-as-default"
-msgstr "格式化以上會<b>應用</b>作為所有單元格的<b>預設</b>。"
+msgstr "以上格式會<b>套用</b>為所有單元格的<b>預設值</b>。"
 
 msgid "sc.formats-will-apply-to"
-msgstr "格式化以上會<b>應用</b>到"
+msgstr "以上格式會<b>套用</b>到"
 
 msgid "sc.hidden"
 msgstr "隱藏"
@@ -6078,7 +6081,7 @@ msgid "sc.justify"
 msgstr "校正"
 
 msgid "sc.left"
-msgstr "向左"
+msgstr "左側"
 
 msgid "sc.loading"
 msgstr "載入..."
@@ -6126,7 +6129,7 @@ msgid "sc.preview"
 msgstr "預覽"
 
 msgid "sc.preview-of"
-msgstr "的預覽"
+msgstr "預覽"
 
 msgid "sc.range"
 msgstr "範圍"
@@ -6150,7 +6153,7 @@ msgid "sc.richtext-mode"
 msgstr "豐富文本"
 
 msgid "sc.right"
-msgstr "向右"
+msgstr "右側"
 
 msgid "sc.sample"
 msgstr "樣本"
@@ -6162,7 +6165,7 @@ msgid "sc.sample-number"
 msgstr "數字"
 
 msgid "sc.sample-text"
-msgstr "文本"
+msgstr "文字"
 
 msgid "sc.save-as"
 msgstr "另存為..."
@@ -6234,13 +6237,13 @@ msgid "sc.top"
 msgstr "頂部"
 
 msgid "sc.unsaved-changes"
-msgstr "您有為儲存的變更。"
+msgstr "您有未儲存的變更。"
 
 msgid "sc.up"
 msgstr "向上"
 
 msgid "sc.wikitext-mode"
-msgstr "維基格式"
+msgstr "源碼格式"
 
 msgid "search.atom=wiki,query"
 msgstr "%1 - 用 Atom 搜尋 %2"
@@ -6651,7 +6654,7 @@ msgid "tag.suggestions:"
 msgstr "建議："
 
 msgid "tag.template"
-msgstr "模版"
+msgstr "範本"
 
 msgid "test.deleted-containers=count"
 msgstr "已刪除 %1 個容器"

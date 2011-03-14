@@ -2537,7 +2537,7 @@ msgid "email.add-note?"
 msgstr "在邮件前面添加此标注？"
 
 msgid "email.address-or-name"
-msgstr "输入一个邮件地址或者用户名"
+msgstr "請输入邮件地址或者用户名"
 
 msgid "email.another-example"
 msgstr "another.friend@example.com"
@@ -3279,7 +3279,7 @@ msgid "error.no-page=template"
 msgstr "名为“%1”的页面不存在"
 
 msgid "error.no-page=type,tag"
-msgstr "没有找到“%2”标签的%1页面"
+msgstr "找不到有“%2”标签的%1"
 
 msgid "error.no-password-for-new-user"
 msgstr "创建一个新用户时需要填写密码。"
@@ -3420,7 +3420,7 @@ msgid "error.page-conflict"
 msgstr "其他人或程序已被编辑到此页面。"
 
 msgid "error.page-exists=title,button"
-msgstr "您选择的新页面名称“%1”已经被使用，请选择其它的名字。如果您确定要覆盖已经存在的“%1”页面，请再次点击“%2”。"
+msgstr "您选择的新页面名称“%1”已经被使用，请选择其它的名字。如果您确定要覆盖現有的“%1”页面，请再次点击“%2”。"
 
 msgid "error.page-for-export-required"
 msgstr "错误：<pre>导出页面不能为空</pre>"
@@ -4118,10 +4118,10 @@ msgid "feed.watchlist=wiki,user"
 msgstr "%1：关注 %2"
 
 msgid "file.add-or-replace=name,size,user,date?"
-msgstr "本页面已经有名为“%1”（%2 由%3于%4上传）的附件。您可以<span class=\"emphasis\">添加</span> 此文件的其它版本或<span class=\"emphasis\">替换</span>已存在的文件。您想怎么做？"
+msgstr "本页面已经有名为“%1”（%2 由%3于%4上传）的附件。您可以<span class=\"emphasis\">添加</span> 此文件的其它版本或<span class=\"emphasis\">替换</span>現有的文件。您想怎么做？"
 
 msgid "file.add-or-replace=name?"
-msgstr "本页面已经有名为“%1”的附件。您可以<span class=\"emphasis\">添加</span>此文件的其它版本或<span class=\"emphasis\">替换</span>已存在的文件。您想怎么做？"
+msgstr "本页面已经有名为“%1”的附件。您可以<span class=\"emphasis\">添加</span>此文件的其它版本或<span class=\"emphasis\">替换</span>現有的文件。您想怎么做？"
 
 msgid "file.all"
 msgstr "所有文件"
@@ -4377,7 +4377,7 @@ msgid "info.container-exists"
 msgstr "容器已存在...跳过..."
 
 msgid "info.copy"
-msgstr "复制一个存在的页面..."
+msgstr "复制現有页面..."
 
 msgid "info.created-ldap-group"
 msgstr "群组已被添加，正在刷新用户列表..."
@@ -4464,7 +4464,7 @@ msgid "info.in"
 msgstr "在"
 
 msgid "info.invite-admin-groups"
-msgstr "使用下面的表格邀请用户加入一个此工作区管理的的群组。这些群组中的任何一个用户成员都可以进入此工作区。此外，如果你想授予某特定用户访问权，您可以取消勾选下面的“邀请用户加入选取的群组”选框。"
+msgstr "使用下面的表格，邀请用户加入一个此工作区管理的群组。这些群组中的任何一个用户成员都可以进入此工作区。此外，如果你想授予某特定用户访问权，您可以取消勾选下面的“邀请用户加入选取的群组”选框。"
 
 msgid "info.invite-filter=domain"
 msgstr "您只能邀请跟您一样使用“%1”邮箱域名的人。"
@@ -4581,7 +4581,7 @@ msgid "info.wiki-id"
 msgstr "这是一个作为您的工作区网址和邮件地址的唯一短标识。"
 
 msgid "info.wiki-logo"
-msgstr "您可以选择一个图片当作工作区的标识。您可以输入一个已经存在的网络图片链接，或者从您的电脑上传一张图片。"
+msgstr "您可以选择一个图片当作工作区的标识。您可以输入图片网址，或者从您的电脑上传一张图片。"
 
 msgid "info.wiki-private"
 msgstr "工作区默认是不开放的。所有用户都需要登录查看页面。只有工作区管理员可以邀请新的用户。"
@@ -5394,7 +5394,7 @@ msgid "page.print"
 msgstr "打印本页"
 
 msgid "page.prompt-name"
-msgstr "开始输入一个页面名称..."
+msgstr "输入页面名称..."
 
 msgid "page.purged=title,wiki"
 msgstr "已在工作区 %2 中清除 %1 页面。"
@@ -5450,8 +5450,11 @@ msgstr "标题"
 msgid "page.top"
 msgstr "页面顶部"
 
+msgid "page.type-spreadsheet"
+msgstr "电子表格"
+
 msgid "page.type-wiki"
-msgstr "页"
+msgstr "页面"
 
 msgid "page.unlock"
 msgstr "解锁页面"
@@ -6015,7 +6018,7 @@ msgid "sc.color"
 msgstr "颜色"
 
 msgid "sc.column-width"
-msgstr "列&nbsp;宽度"
+msgstr "列宽"
 
 msgid "sc.confirm-navigate-away?"
 msgstr "您确定要离开此页面浏览？"
@@ -6063,10 +6066,10 @@ msgid "sc.format"
 msgstr "格式"
 
 msgid "sc.formats-will-apply-as-default"
-msgstr "格式化以上会<b>应用</b>作为所有单元格的<b>默认</b>。"
+msgstr "以上格式会<b>应用</b>为所有单元格的<b>默认值</b>。"
 
 msgid "sc.formats-will-apply-to"
-msgstr "格式化以上会<b>应用</b>到"
+msgstr "以上格式会<b>应用</b>到"
 
 msgid "sc.hidden"
 msgstr "隐藏"
@@ -6078,7 +6081,7 @@ msgid "sc.justify"
 msgstr "校正"
 
 msgid "sc.left"
-msgstr "向左"
+msgstr "左側"
 
 msgid "sc.loading"
 msgstr "加载..."
@@ -6126,7 +6129,7 @@ msgid "sc.preview"
 msgstr "预览"
 
 msgid "sc.preview-of"
-msgstr "的预览"
+msgstr "预览"
 
 msgid "sc.range"
 msgstr "范围"
@@ -6150,7 +6153,7 @@ msgid "sc.richtext-mode"
 msgstr "丰富文本"
 
 msgid "sc.right"
-msgstr "向右"
+msgstr "右側"
 
 msgid "sc.sample"
 msgstr "样本"
@@ -6162,7 +6165,7 @@ msgid "sc.sample-number"
 msgstr "数字"
 
 msgid "sc.sample-text"
-msgstr "文本"
+msgstr "文字"
 
 msgid "sc.save-as"
 msgstr "另存为..."
@@ -6234,13 +6237,13 @@ msgid "sc.top"
 msgstr "顶部"
 
 msgid "sc.unsaved-changes"
-msgstr "您有为保存的变更。"
+msgstr "您有未保存的变更。"
 
 msgid "sc.up"
 msgstr "向上"
 
 msgid "sc.wikitext-mode"
-msgstr "维基格式"
+msgstr "源码格式"
 
 msgid "search.atom=wiki,query"
 msgstr "%1 - 用 Atom 搜索 %2"

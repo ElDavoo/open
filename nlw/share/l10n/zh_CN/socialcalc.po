@@ -103,7 +103,7 @@ msgid "sc.color"
 msgstr "颜色"
 
 msgid "sc.column-width"
-msgstr "列&nbsp;宽度"
+msgstr "列宽"
 
 msgid "sc.confirm-navigate-away?"
 msgstr "您确定要离开此页面浏览？"
@@ -151,10 +151,10 @@ msgid "sc.format"
 msgstr "格式"
 
 msgid "sc.formats-will-apply-as-default"
-msgstr "格式化以上会<b>应用</b>作为所有单元格的<b>默认</b>。"
+msgstr "以上格式会<b>应用</b>为所有单元格的<b>默认值</b>。"
 
 msgid "sc.formats-will-apply-to"
-msgstr "格式化以上会<b>应用</b>到"
+msgstr "以上格式会<b>应用</b>到"
 
 msgid "sc.hidden"
 msgstr "隐藏"
@@ -166,7 +166,7 @@ msgid "sc.justify"
 msgstr "校正"
 
 msgid "sc.left"
-msgstr "向左"
+msgstr "左側"
 
 msgid "sc.loading"
 msgstr "加载..."
@@ -214,7 +214,7 @@ msgid "sc.preview"
 msgstr "预览"
 
 msgid "sc.preview-of"
-msgstr "的预览"
+msgstr "预览"
 
 msgid "sc.range"
 msgstr "范围"
@@ -238,7 +238,7 @@ msgid "sc.richtext-mode"
 msgstr "丰富文本"
 
 msgid "sc.right"
-msgstr "向右"
+msgstr "右側"
 
 msgid "sc.sample"
 msgstr "样本"
@@ -250,7 +250,7 @@ msgid "sc.sample-number"
 msgstr "数字"
 
 msgid "sc.sample-text"
-msgstr "文本"
+msgstr "文字"
 
 msgid "sc.save-as"
 msgstr "另存为..."
@@ -322,10 +322,10 @@ msgid "sc.top"
 msgstr "顶部"
 
 msgid "sc.unsaved-changes"
-msgstr "您有为保存的变更。"
+msgstr "您有未保存的变更。"
 
 msgid "sc.up"
 msgstr "向上"
 
 msgid "sc.wikitext-mode"
-msgstr "维基格式"
+msgstr "源码格式"

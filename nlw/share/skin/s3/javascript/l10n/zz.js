@@ -1222,6 +1222,7 @@
 "page.title":"Zzzz Zzzzz",
 "page.titles":"Zzzzzz",
 "page.top":"Zzz zz zzzz",
+"page.type-spreadsheet":"Zzzzzzzzzzz",
 "page.type-wiki":"Zzzz",
 "page.unlock":"Zzzzzz Zzzz",
 "page.untitled":"Zzzzzzzz Zzzz",

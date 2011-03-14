@@ -1222,6 +1222,7 @@
 "page.title":"«Page Title»",
 "page.titles":"«Titles»",
 "page.top":"«Top of page»",
+"page.type-spreadsheet":"«Spreadsheet»",
 "page.type-wiki":"«Page»",
 "page.unlock":"«Unlock Page»",
 "page.untitled":"«Untitled Page»",

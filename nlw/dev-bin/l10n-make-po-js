@@ -534,7 +534,10 @@ use constant CN2TW => {qw(
     里面         裡面
     訪問         存取
     視頻         影片
+    模版         範本
     刷新         更新
+    應用         套用
+    單元格       儲存格
 )};
 
 use constant CN2TW_ExactMatch => {qw(

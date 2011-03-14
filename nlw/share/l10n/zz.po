@@ -7716,6 +7716,9 @@ msgstr "Zzzzzz"
 msgid "page.top"
 msgstr "Zzz zz zzzz"
 
+msgid "page.type-spreadsheet"
+msgstr "Zzzzzzzzzzz"
+
 #: share/skin/s3/javascript/lightbox/create_content.js:9
 msgid "page.type-wiki"
 msgstr "Zzzz"

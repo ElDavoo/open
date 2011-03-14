@@ -2239,3 +2239,6 @@ msgstr "<em>To add a workspace to a <strong>new group,</strong></em> go to <a hr
 #: share/skin/s3/template/workspaces_created_section.html:31
 msgid "wiki.visit-later=wiki"
 msgstr "Or you may continue to work in this workspace, and visit \"%1\" later."
+
+msgid "page.type-spreadsheet"
+msgstr "Spreadsheet"
