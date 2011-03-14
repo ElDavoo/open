@@ -4,6 +4,7 @@ use 5.12.0;
 use warnings;
 
 use Socialtext::Account;
+use Socialtext::Cache;
 use Socialtext::Workspace;
 use Socialtext::Paths;
 use Socialtext::Hub;
@@ -597,8 +598,6 @@ sub fetch_metadata {
     return parse_page_headers(read_and_decode_page($file));
 }
 
-# This code inspired by Socialtext::Page::last_edited_by
-use constant DELETED_ACCT_ID => Socialtext::Account->Deleted()->account_id;
 sub editor_to_id {
     my $email_address = shift || '';
     state %userid_cache;
@@ -619,10 +618,12 @@ sub editor_to_id {
         unless ($user) {
             warn "Creating user account for '$email_address'\n";
             try {
+                Socialtext::Cache->clear('accounts');
+                my $deleted = Socialtext::Account->Deleted();
                 $user = Socialtext::User->create(
                     email_address      => $email_address,
                     username           => $email_address,
-                    primary_account_id => DELETED_ACCT_ID,
+                    primary_account_id => $deleted->account_id,
                     missing            => 1,
                 );
             }
