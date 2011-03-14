@@ -1,6 +1,6 @@
 * HighPermissions
 
-IE6 seems to need low permissions to run this test successfully.
+This test will NOT RUN IN any IE because IE presents feed pages as XML, not HTML, and Se simply can't see non-HTML pages.
 
 Selenium seems to need to run multi-window to run this test successfully, because the test
 uses "location_like" to determine if the RSS feed window opened
