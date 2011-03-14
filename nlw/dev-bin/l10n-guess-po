@@ -34,6 +34,7 @@ my %SectionMap = (
     "share/template/email" => "email",
     "share/template/desktop" => "desktop",
     "share/template/errors" => "error",
+    "share/template/authen" => "login",
     "share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu" => "insert",
 );
 
