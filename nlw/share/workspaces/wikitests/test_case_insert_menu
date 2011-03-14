@@ -213,13 +213,9 @@ verifyValue | wikiwyg_wikitext_textarea | foo |
 | click_ok | st-widget-block-cancel |  |
 | wait_for_element_not_visible_ok | st-widget-block-cancel | 30000 |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
-| click_ok | link=HTML... |  |
-| wait_for_element_visible_ok | st-widget-block-content | 30000 |
-| wait_for_element_visible_ok | st-widget-block-save | 30000 |
-| verifyValue | st-widget-block-content | ---- |
-| click_ok | st-widget-block-save |  |
-| wait_for_element_not_visible_ok | st-widget-block-save | 30000 |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+html.+----.+html/s` |
+
+| include | [Test Case: Insert Menu HTML] |  |
+
 
 | *Comment* | Test Case: Insert Menu "Preformatted Text..." |  |
 | type_ok | wikiwyg_wikitext_textarea | foo |
