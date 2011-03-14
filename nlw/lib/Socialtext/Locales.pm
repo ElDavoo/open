@@ -49,9 +49,9 @@ sub available_locales {
     use utf8;
     return {
        'en' => _display_locale(loc('lang.en'), 'English'),
-       'zh_CN' => _display_locale(loc('lang.zh_CN'), 'Chinese - Simplified'),
-       'zh_TW' => _display_locale(loc('lang.zh_TW'), 'Chinese - Traditional'),
-#       'fr_CA' => _display_locale(loc('lang.fr_CA'), 'French - Canadian'),
+       'zh_CN' => _display_locale(loc('lang.zh-cn'), 'Chinese - Simplified'),
+       'zh_TW' => _display_locale(loc('lang.zh-tw'), 'Chinese - Traditional'),
+#       'fr_CA' => _display_locale(loc('lang.fr-ca'), 'French - Canadian'),
     };
 }
 
