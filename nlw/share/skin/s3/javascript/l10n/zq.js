@@ -1230,6 +1230,7 @@
 "page.use-template:":"«Use a template:»",
 "password.again:":"«Type new Password again:»",
 "password.change":"«Change Password»",
+"password.choose:":"«Choose Password:»",
 "password.current:":"«Current password:»",
 "password.minimum-length":"«New passwords must be at least 6 characters long.»",
 "password.new:":"«New password:»",

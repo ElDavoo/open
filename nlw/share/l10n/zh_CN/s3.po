@@ -25,37 +25,37 @@ msgid "account.count=people"
 msgstr "%1 人"
 
 msgid "ago.1day"
-msgstr "一天前"
+msgstr "1 天前"
 
 msgid "ago.1hour"
-msgstr "一个小时前"
+msgstr "1 小时前"
 
 msgid "ago.1min"
-msgstr "一分钟前"
+msgstr "1 分钟前"
 
 msgid "ago.1minute"
-msgstr "一分钟前"
+msgstr "1 分钟前"
 
 msgid "ago.<1minute"
-msgstr "不到一分钟前"
+msgstr "不到 1 分钟前"
 
 msgid "ago.days=count"
-msgstr "%1天前"
+msgstr "%1 天前"
 
 msgid "ago.hours=count"
-msgstr "%1小时前"
+msgstr "%1 小时前"
 
 msgid "ago.mins=count"
-msgstr "%1分钟前"
+msgstr "%1 分钟前"
 
 msgid "ago.minutes=count"
-msgstr "%1分钟前"
+msgstr "%1 分钟前"
 
 msgid "ago.~1day"
-msgstr "大约一天前"
+msgstr "大约 1 天前"
 
 msgid "ago.~1hour"
-msgstr "大约一个小时前"
+msgstr "大约 1 小时前"
 
 msgid "blog.archives"
 msgstr "博客存档"

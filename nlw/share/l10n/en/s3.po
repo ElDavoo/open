@@ -53,12 +53,12 @@ msgstr "less than a minute ago"
 #. (days)
 #: share/skin/s3/template/lite/page_list.html:16 share/skin/s3/template/view/page/display:18
 msgid "ago.days=count"
-msgstr "%1 days ago"
+msgstr "%*(%1,day) ago"
 
 #. (hours)
 #: share/skin/s3/template/lite/page_list.html:12 share/skin/s3/template/view/page/display:13
 msgid "ago.hours=count"
-msgstr "%1 hours ago"
+msgstr "%*(%1,hour) ago"
 
 #. (minutes)
 #: share/skin/s3/template/lite/page_list.html:8
@@ -68,7 +68,7 @@ msgstr "%1 min. ago"
 #. (minutes)
 #: share/skin/s3/template/view/page/display:9
 msgid "ago.minutes=count"
-msgstr "%1 minutes ago"
+msgstr "%*(%1,minute) ago"
 
 #: share/skin/s3/template/view/page/display:15
 msgid "ago.~1day"

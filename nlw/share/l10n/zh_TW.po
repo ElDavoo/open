@@ -371,19 +371,19 @@ msgid "activities.you"
 msgstr "您"
 
 msgid "ago.1day"
-msgstr "一天之前"
+msgstr "1 天前"
 
 msgid "ago.1hour"
-msgstr "一個小時前"
+msgstr "1 小時前"
 
 msgid "ago.1min"
-msgstr "一分鐘前"
+msgstr "1 分鐘前"
 
 msgid "ago.1minute"
-msgstr "一分鐘之前"
+msgstr "1 分鐘前"
 
 msgid "ago.<1minute"
-msgstr "不到一分鐘前"
+msgstr "不到 1 分鐘前"
 
 msgid "ago.days=count"
 msgstr "%1 天前"
@@ -392,16 +392,16 @@ msgid "ago.hours=count"
 msgstr "%1 小時前"
 
 msgid "ago.mins=count"
-msgstr "%1分鐘前"
+msgstr "%1 分鐘前"
 
 msgid "ago.minutes=count"
 msgstr "%1 分鐘前"
 
 msgid "ago.~1day"
-msgstr "大約一天前"
+msgstr "大約 1 天前"
 
 msgid "ago.~1hour"
-msgstr "大約一小時前"
+msgstr "大約 1 小時前"
 
 msgid "analytics.id:"
 msgstr "Google Analytics 帳號"
@@ -4733,6 +4733,7 @@ msgstr "搜尋用戶並邀請"
 msgid "invite.sign-in-with:"
 msgstr "用下面的資訊登入："
 
+#: share/template/email/standard-footer.html:12 share/template/email/standard-footer.txt:5
 msgid "invite.socialtext-footer"
 msgstr "由 Socialtext 為您帶來。"
 
@@ -5479,6 +5480,10 @@ msgstr "再次輸入新密碼："
 
 msgid "password.change"
 msgstr "更改密碼"
+
+#: share/template/authen/element/choose_password_form:20
+msgid "password.choose:"
+msgstr "選擇密碼："
 
 msgid "password.current:"
 msgstr "當前密碼："

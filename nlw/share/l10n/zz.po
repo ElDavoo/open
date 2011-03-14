@@ -654,30 +654,27 @@ msgstr "zzzz zzzz z zzzzzz zzz"
 #. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
 #. (this.round(minutes / 1440)
 #. (this.round(minutes / 1440))
+#. #-#-#-#-#  template.po  #-#-#-#-#
+#. (round(minutes / 1440)
+#. (round(minutes / 1440))
+#. (delta)
 #. #-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#
 #. (days)
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:9 share/skin/s3/template/lite/page_list.html:16 share/skin/s3/template/view/page/display:18
-#, fuzzy
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:9 share/template/data/event:12 share/template/email/page-details.html:11 share/template/email/page-details.txt:11 share/skin/s3/template/lite/page_list.html:16 share/skin/s3/template/view/page/display:18
 msgid "ago.days=count"
-msgstr ""
-"#-#-#-#-#  zzzzzzz.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
-"%*(%1,zzz) zzz\z"
-"#-#-#-#-#  z3.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
-"%1 zzzz zzz"
+msgstr "%*(%1,zzz) zzz"
 
 #. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
 #. (this.round(minutes / 60)
 #. (this.round(minutes / 60))
+#. #-#-#-#-#  template.po  #-#-#-#-#
+#. (round(minutes / 60)
+#. (round(minutes / 60))
 #. #-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#
 #. (hours)
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:6 share/skin/s3/template/lite/page_list.html:12 share/skin/s3/template/view/page/display:13
-#, fuzzy
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:6 share/template/data/event:9 share/skin/s3/template/lite/page_list.html:12 share/skin/s3/template/view/page/display:13
 msgid "ago.hours=count"
-msgstr ""
-"#-#-#-#-#  zzzzzzz.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
-"%*(%1,zzzz) zzz\z"
-"#-#-#-#-#  z3.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
-"%1 zzzzz zzz"
+msgstr "%*(%1,zzzz) zzz"
 
 #. (minutes)
 #: share/skin/s3/template/lite/page_list.html:8
@@ -685,14 +682,9 @@ msgid "ago.mins=count"
 msgstr "%1 zzz. zzz"
 
 #. (minutes)
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:4 share/skin/s3/template/view/page/display:9
-#, fuzzy
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:4 share/template/data/event:7 share/skin/s3/template/view/page/display:9
 msgid "ago.minutes=count"
-msgstr ""
-"#-#-#-#-#  zzzzzzz.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
-"%*(%1,zzzzzz) zzz\z"
-"#-#-#-#-#  z3.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
-"%1 zzzzzzz zzz"
+msgstr "%*(%1,zzzzzz) zzz"
 
 #: share/plugin/widgets/share/javascript/template/activities/ago.tt2:8 share/skin/s3/template/view/page/display:15
 msgid "ago.~1day"
@@ -6717,7 +6709,7 @@ msgstr "Zzzzzz zzz Zzzzz zz Zzzzzz"
 msgid "invite.sign-in-with:"
 msgstr "Zzzz zz zzzzz zzz zzzzzzzzzzz zzzzz:"
 
-#: share/plugin/people/template/email/standard-footer.html:11
+#: share/template/email/standard-footer.html:12 share/template/email/standard-footer.txt:5 share/plugin/people/template/email/standard-footer.html:11
 msgid "invite.socialtext-footer"
 msgstr "Zzzzzzz zz zzz zz Zzzzzzzzzz."
 
@@ -7756,6 +7748,10 @@ msgstr "Zzzz zzz Zzzzzzzz zzzzz:"
 #: share/skin/s3/template/element/settings/users_settings_section:40
 msgid "password.change"
 msgstr "Zzzzzz Zzzzzzzz"
+
+#: share/template/authen/element/choose_password_form:20
+msgid "password.choose:"
+msgstr "Zzzzzz Zzzzzzzz:"
 
 #: share/skin/s3/template/element/settings/users_settings_section:46
 msgid "password.current:"

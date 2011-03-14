@@ -654,30 +654,27 @@ msgstr "less than a minute ago"
 #. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
 #. (this.round(minutes / 1440)
 #. (this.round(minutes / 1440))
+#. #-#-#-#-#  template.po  #-#-#-#-#
+#. (round(minutes / 1440)
+#. (round(minutes / 1440))
+#. (delta)
 #. #-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#
 #. (days)
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:9 share/skin/s3/template/lite/page_list.html:16 share/skin/s3/template/view/page/display:18
-#, fuzzy
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:9 share/template/data/event:12 share/template/email/page-details.html:11 share/template/email/page-details.txt:11 share/skin/s3/template/lite/page_list.html:16 share/skin/s3/template/view/page/display:18
 msgid "ago.days=count"
-msgstr ""
-"#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
-"%*(%1,day) ago\n"
-"#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
-"%1 days ago"
+msgstr "%*(%1,day) ago"
 
 #. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
 #. (this.round(minutes / 60)
 #. (this.round(minutes / 60))
+#. #-#-#-#-#  template.po  #-#-#-#-#
+#. (round(minutes / 60)
+#. (round(minutes / 60))
 #. #-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#
 #. (hours)
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:6 share/skin/s3/template/lite/page_list.html:12 share/skin/s3/template/view/page/display:13
-#, fuzzy
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:6 share/template/data/event:9 share/skin/s3/template/lite/page_list.html:12 share/skin/s3/template/view/page/display:13
 msgid "ago.hours=count"
-msgstr ""
-"#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
-"%*(%1,hour) ago\n"
-"#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
-"%1 hours ago"
+msgstr "%*(%1,hour) ago"
 
 #. (minutes)
 #: share/skin/s3/template/lite/page_list.html:8
@@ -685,14 +682,9 @@ msgid "ago.mins=count"
 msgstr "%1 min. ago"
 
 #. (minutes)
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:4 share/skin/s3/template/view/page/display:9
-#, fuzzy
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:4 share/template/data/event:7 share/skin/s3/template/view/page/display:9
 msgid "ago.minutes=count"
-msgstr ""
-"#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
-"%*(%1,minute) ago\n"
-"#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
-"%1 minutes ago"
+msgstr "%*(%1,minute) ago"
 
 #: share/plugin/widgets/share/javascript/template/activities/ago.tt2:8 share/skin/s3/template/view/page/display:15
 msgid "ago.~1day"
@@ -6717,7 +6709,7 @@ msgstr "Search for Users to Invite"
 msgid "invite.sign-in-with:"
 msgstr "Sign in using the information below:"
 
-#: share/plugin/people/template/email/standard-footer.html:11
+#: share/template/email/standard-footer.html:12 share/template/email/standard-footer.txt:5 share/plugin/people/template/email/standard-footer.html:11
 msgid "invite.socialtext-footer"
 msgstr "Brought to you by Socialtext."
 
@@ -7756,6 +7748,10 @@ msgstr "Type new Password again:"
 #: share/skin/s3/template/element/settings/users_settings_section:40
 msgid "password.change"
 msgstr "Change Password"
+
+#: share/template/authen/element/choose_password_form:20
+msgid "password.choose:"
+msgstr "Choose Password:"
 
 #: share/skin/s3/template/element/settings/users_settings_section:46
 msgid "password.current:"

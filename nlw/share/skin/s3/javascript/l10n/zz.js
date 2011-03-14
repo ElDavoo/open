@@ -1230,6 +1230,7 @@
 "page.use-template:":"Zzz z zzzzzzzz:",
 "password.again:":"Zzzz zzz Zzzzzzzz zzzzz:",
 "password.change":"Zzzzzz Zzzzzzzz",
+"password.choose:":"Zzzzzz Zzzzzzzz:",
 "password.current:":"Zzzzzzz zzzzzzzz:",
 "password.minimum-length":"Zzz zzzzzzzzz zzzz zz zz zzzzz 6 zzzzzzzzzz zzzz.",
 "password.new:":"Zzz zzzzzzzz:",
