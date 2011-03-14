@@ -2,12 +2,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 02:09+0800\n"
-"Language-Team: Socialtext i18n team\n"
+"PO-Revision-Date: 2011-02-20 10:43+0800\n"
 "Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:71
+msgid "do.bold"
+msgstr "Bold"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:750 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:20 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:467 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:493
 msgid "do.cancel"
@@ -16,6 +20,10 @@ msgstr "Cancel"
 #: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:176 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:316 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:356 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:373 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:195
 msgid "do.done"
 msgstr "Done"
+
+#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:72
+msgid "do.italic"
+msgstr "Italic"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:14 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:444
 msgid "do.save"
@@ -70,7 +78,11 @@ msgstr "<a id=\"st-newspreadsheet-duplicate-link\" href=\"#\" target=\"\">XXX</a
 msgid "error.sheet-title-too-long"
 msgstr "Spreadsheet title is too long. Please shorten the name and try again."
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:144
+#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:41
+msgid "page.edit"
+msgstr "Edit"
+
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1024 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:144
 msgid "sc.advanced-formatting"
 msgstr "Advanced Formatting"
 
@@ -110,7 +122,7 @@ msgstr "Borders"
 msgid "sc.borders-on-off"
 msgstr "Borders On/Off"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:93 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:83
+#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:163 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:93 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:83
 msgid "sc.bottom"
 msgstr "Bottom"
 
@@ -122,11 +134,11 @@ msgstr "By:"
 msgid "sc.cancel-edit"
 msgstr "Cancel Edit"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:218
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1014 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:218
 msgid "sc.cell-comment"
 msgstr "Cell Comment"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:142 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:123 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:152
+#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:154 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:142 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:123 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:152
 msgid "sc.center"
 msgstr "Center"
 
@@ -186,7 +198,7 @@ msgstr "Expand"
 msgid "sc.expanded-view"
 msgstr "Expanded View"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:50 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:41
+#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:90 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:50 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:41
 msgid "sc.font"
 msgstr "Font"
 
@@ -194,7 +206,7 @@ msgstr "Font"
 msgid "sc.font-family"
 msgstr "Family"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:28 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:63 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:19
+#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:96 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:28 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:63 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:19
 msgid "sc.format"
 msgstr "Format"
 
@@ -210,15 +222,15 @@ msgstr "Formats above will <b>apply</b> to the"
 msgid "sc.hidden"
 msgstr "Hidden"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:216
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1004 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:216
 msgid "sc.insert-formula"
 msgstr "Insert Formula"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:146 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:127 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:156
+#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:156 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:146 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:127 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:156
 msgid "sc.justify"
 msgstr "Justify"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:139 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:92 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:120 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:149 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:82
+#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:153 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:139 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:92 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:120 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:149 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:82
 msgid "sc.left"
 msgstr "Left"
 
@@ -234,7 +246,7 @@ msgstr "Move"
 msgid "sc.name"
 msgstr "Name"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:217
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1009 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:217
 msgid "sc.named-ranges"
 msgstr "Named Ranges"
 
@@ -278,7 +290,7 @@ msgstr "Padding"
 msgid "sc.paste"
 msgstr "Paste"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2616 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:16
+#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:42 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2616 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:16
 msgid "sc.preview"
 msgstr "Preview"
 
@@ -314,7 +326,7 @@ msgstr "Restore Revision"
 msgid "sc.richtext-mode"
 msgstr "Richtext Mode"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:144 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:94 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:125 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:154 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:84
+#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:155 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:144 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:94 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:125 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:154 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:84
 msgid "sc.right"
 msgstr "Right"
 
@@ -366,7 +378,7 @@ msgstr "Save the spreadsheet with the name \"<span id=\"st-newspreadsheet-duplic
 msgid "sc.sheet-already-exists"
 msgstr "Spreadsheet Already Exists"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:214
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1029 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:214
 msgid "sc.sheet-settings"
 msgstr "Sheet Settings"
 
@@ -378,7 +390,7 @@ msgstr "Spreadsheet Title:"
 msgid "sc.show-preview"
 msgstr "Show Preview"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:61 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:52
+#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:93 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:61 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:52
 msgid "sc.size"
 msgstr "Size"
 
@@ -422,7 +434,7 @@ msgstr "Text"
 msgid "sc.text-color"
 msgstr "Text Color"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:91 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:81
+#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:161 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:91 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:81
 msgid "sc.top"
 msgstr "Top"
 
@@ -437,3 +449,7 @@ msgstr "Up"
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:139
 msgid "sc.wikitext-mode"
 msgstr "Wikitext Mode"
+
+#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:43
+msgid "sort.revisions"
+msgstr "Revisions"
