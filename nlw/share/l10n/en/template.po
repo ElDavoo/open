@@ -1,0 +1,28 @@
+
+#. (round(minutes / 1440)
+#. (round(minutes / 1440))
+#. (delta)
+#: share/template/data/event:12 share/template/email/page-details.html:11
+#: share/template/email/page-details.txt:11
+msgid "ago.days=count"
+msgstr "%*(%1,day) ago"
+
+#. (round(minutes / 60)
+#. (round(minutes / 60))
+#: share/template/data/event:9
+msgid "ago.hours=count"
+msgstr "%*(%1,hour) ago"
+
+#. (minutes)
+#: share/template/data/event:7
+msgid "ago.minutes=count"
+msgstr "%*(%1,minute) ago"
+
+#: share/template/email/standard-footer.html:12
+#: share/template/email/standard-footer.txt:5
+msgid "invite.socialtext-footer"
+msgstr "Brought to you by Socialtext."
+
+#: share/template/authen/element/choose_password_form:20
+msgid "password.choose:"
+msgstr "Choose Password:"
