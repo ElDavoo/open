@@ -3,6 +3,7 @@ package Socialtext::CredentialsExtractor::Extractor::CAC;
 use Moose;
 extends 'Socialtext::CredentialsExtractor::Extractor::SSLCertificate';
 
+use MooseX::ClassAttribute;
 use List::MoreUtils qw(any);
 use Socialtext::l10n qw(loc);
 use Socialtext::Log qw(st_log);
@@ -10,6 +11,13 @@ use Socialtext::Signal;
 use Socialtext::Signal::Attachment;
 use Socialtext::SQL qw(:exec :time);
 use Socialtext::Upload;
+
+# How often do we send notifications (in minutes)?
+class_has 'notification_frequency' => (
+    is      => 'ro',
+    isa     => 'Int',
+    default => 5,
+);
 
 # Regardless of what our parent class says, our username comes from the "CN".
 override '_username_field' => sub {
@@ -166,7 +174,8 @@ sub _notify_business_admins {
 sub _notification_recently_sent_for {
     my $class     = shift;
     my $username  = shift;
-    my $threshold = DateTime->now->subtract(minutes => 1);
+    my $frequency = $class->notification_frequency;
+    my $threshold = DateTime->now->subtract(minutes => $frequency);
 
     # Look in the *DB* and see if we have any recent Signals that have been
     # sent w.r.t. the given $username.
