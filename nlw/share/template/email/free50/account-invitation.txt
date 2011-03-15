@@ -25,6 +25,6 @@
 
 [% loc("If you did not request to join your company's collaboration group, please contact abuse@socialtext.com") %]
 
-[% loc("Happy collaborating!") %]
+[% loc("Happy Collaborating!") %]
 [% loc("The leader in Enterprise 2.0 Social Software") %]
 [% loc("www.socialtext.com") %]

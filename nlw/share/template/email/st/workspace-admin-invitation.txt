@@ -13,4 +13,4 @@
 ** [% loc('Workspace Features') %]
 ** [% loc('Workspace Privacy') %]
 
-[% loc('Or you may continue to work in this workspace, and visit "[_1]" later.', workspace_title) %]
+[% loc('wiki.visit-later=wiki', workspace_title) %]

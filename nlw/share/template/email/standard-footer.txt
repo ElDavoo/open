@@ -2,4 +2,4 @@
 [% IF support_link %]
 [% loc('If you have questions about this email, contact support at [_1].', appconfig.support_address) %]
 [% END %]
-[% loc('Brought to you by Socialtext.') %]
+[% loc('invite.socialtext-footer') %]

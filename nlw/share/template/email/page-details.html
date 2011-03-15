@@ -12,7 +12,7 @@
   [%- END -%]
 [%- END -%]
 
-<li><a href="[% workspace.uri %]?[% page.uri %]">[% page.title %]</a>  [%- IF include_editor %]
+<li><a href="[% workspace.uri %][% page.uri %]">[% page.title %]</a>  [%- IF include_editor %]
     <br />
     [%- IF user.username == page.last_edited_by.username %]
       [% SET escaped_name = loc('you') | html %]

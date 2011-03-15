@@ -16,15 +16,15 @@
 [% ELSE %]
 
   <p>
-    [% loc('web address:') %] <a href="[% account_uri | html %]">[% account_uri | html %]</a><br />
-    [% loc('username:') %] [% username | html %]
+    [% loc('invite.web-address:') %] <a href="[% account_uri | html %]">[% account_uri | html %]</a><br />
+    [% loc('invite.username:') %] [% username | html %]
   </p>
 
   [% IF appconfig.is_default('user_factories') %]
     [% IF app_name; a = 'a'; ELSE; a = 'an'; END %]
     <p>
       [% loc("Because you already have [_1] [_2] group, the password is the same as the password you use for your other [_3] groups.", a, app_name, app_name) %]
-      [% loc("If you don't remember it, follow this link to select a new password:") %]
+      [% loc("invite.link-to-reset-password:") %]
       [% forgot_password_uri %]
     </p>
   [% END %]

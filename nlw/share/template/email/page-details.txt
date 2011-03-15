@@ -8,7 +8,7 @@
   [%- delta = calc.Delta_Days(edit_date.0, edit_date.1, edit_date.2, email_date.0, email_date.1, email_date.2) -%]
   [%- IF delta == 0 -%][% loc('today at [_1]', escaped_timestamp) -%]
   [%- ELSIF delta == 1 -%][% loc('yesterday at [_1]', escaped_timestamp) %]
-  [%- ELSE -%][% loc('[_1] days ago', delta) %]
+  [%- ELSE -%][% loc('ago.days=count', delta) %]
   [%- END -%]
 [%- END -%]
 
