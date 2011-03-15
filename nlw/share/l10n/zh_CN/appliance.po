@@ -82,7 +82,7 @@ msgid "appliance.backups-for-restore:"
 msgstr "可供恢复的备份："
 
 msgid "console.building-diagnostic-tarball"
-msgstr "建立诊断Tarball..."
+msgstr "建立诊断压缩档..."
 
 msgid "console.default-desktop-update-url"
 msgstr "默认状态下，<a _target=\"blank\" href=\"http://www.socialtext.com/products/desktop.php\">Socialtext 桌面</a>会自动从 www.socialtext.com 取得更新"
@@ -106,7 +106,7 @@ msgid "do.close"
 msgstr "关闭"
 
 msgid "console.contact-socialtext-support"
-msgstr "联系Socialtext支持"
+msgstr "联系 Socialtext 支持"
 
 msgid "console.control-panel"
 msgstr "控制台"

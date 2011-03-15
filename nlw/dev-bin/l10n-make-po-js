@@ -552,6 +552,8 @@ use constant CN2TW => {qw(
     移動源       移動來源
     社區         社群
     提交         送出
+    支持         支援
+    禁用         停用
 )};
 
 use constant CN2TW_ExactMatch => {qw(
