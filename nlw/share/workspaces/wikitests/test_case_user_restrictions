@@ -21,9 +21,63 @@
 | text_like | contentContainer | Anyone can send email to %%ws%%. |
 
 | *Comment* | Test Case: User Restrictions - Create confirmations - this will generate emails (this, wikipages) |  |
-| st-admin | add-restriction --email %%emailaddr%% --restriction password_change | has been given the 'password_change' restriction |
 | st-admin | add-restriction --email %%emailaddr%% --restriction email_confirmation | has been given the 'email_confirmation' restriction |
 | st-process-jobs |  |  |
+
+| *Comment* | Test Case: User Restrictions attempt to login, sees confirmation error |  |
+| st-logout |  |  |
+| open_ok | /%%ws%%/ |  |
+| wait_for_element_visible_ok | password | 30000 |
+| wait_for_element_visible_ok | username | 30000 |
+| type_ok | password | %%password%% |
+| type_ok | username | %%emailaddr%% |
+| pause | 10000 |  |
+| wait_for_element_visible_ok | link=Log in | 30000 |
+| click_and_wait | link=Log in |  |
+| wait_for_element_visible_ok | password | 30000 |
+| wait_for_element_visible_ok | username | 30000 |
+| type_ok | password | %%password%% |
+| type_ok | username | %%emailaddr%% |
+| pause | 10000 |  |
+| wait_for_element_visible_ok | link=Log in | 30000 |
+| click_and_wait | link=Log in |  |
+| wait_for_text_present_ok | You need to confirm your email address to activate this account. | 30000 |
+| wait_for_text_present_ok | You should have received an email with a confirmation link. | 30000 |
+| wait_for_element_visible_ok | //input[@value='Resend confirmation'] | 30000 |
+| click_and_wait | //input[@value='Resend confirmation'] |  |
+| wait_for_text_present_ok | The confirmation email has been resent. Please follow the link in this email to activate your account. | 30000 |
+
+| *Comment* | Test Case: User Restrictions Pause 90 seconds for invitation email delivery |  |
+| pause | 90000 |  |
+
+| *Comment* | Test Case: User Restrictions look for both confirmation emails |  |
+| st-login | %%username%% | %%password%% |
+| open_ok | /%%ws%%/?action=recent_changes |  |
+| wait_for_element_visible_ok | link=Welcome to the lucite.socialtext.net community - please confirm your email to join | 30000 |
+| wait_for_element_visible_ok | link=2 Revisions | 30000 |
+| click_and_wait | link=Welcome to the lucite.socialtext.net community - please confirm your email to join |  |
+| wait_for_text_present_ok | Your profile has been added to the people directory. | 30000 |
+| wait_for_element_visible_ok | //a[contains(@href,'confirm_email')][1] | 30000 |
+| wait_for_element_visible_ok | //a[contains(@href,'confirm_email')][2] | 30000 |
+
+| *Comment* | Test Case: User Restrictions confirm email. Login screen opens in new window |  |
+| click_ok | //a[contains(@href,'confirm_email')] |  |
+| pause | 10000 |  |
+| selectWindow | Login |  |
+
+| *Comment* | Test Case: User Restrictions actually login |  |
+| wait_for_text_present_ok | Your email address, %%emailaddr%%, has been confirmed. Please login. | 30000 |
+| wait_for_element_visible_ok | username | 30000 |
+| wait_for_element_visible_ok | password | 30000 |
+| verifyValue | username | %%emailaddr%% |
+| type_ok | password | %%password%% |
+| click_and_wait | login_btn |  |
+| wait_for_text_present_ok | Welcome, New User | 30000 |
+| wait_for_text_present_ok | Please complete your profile now | 30000 |
+
+| *Comment* | Test Case: User Restriction test password change |  |
+| st-logout |  |  |
+| st-admin | add-restriction --email %%emailaddr%% --restriction password_change | has been given the 'password_change' restriction |
 
 | *Comment* | Test Case: User Restrictions Pause 90 seconds for invitation email delivery |  |
 | pause | 90000 |  |
@@ -52,21 +106,10 @@
 | wait_for_element_visible_ok | link=Register | 30000 |
 | click_and_wait | link=Register |  |
 
-TODO: unless it is a bug, go around the confirm_email loop again
-
-| *Comment* | Test Case: User Restrictions attempt to login |  |
-| wait_for_element_visible_ok | password | 30000 |
-| wait_for_element_visible_ok | username | 30000 |
-| type_ok | password | %%password%% |
-| type_ok | username | %%emailaddr%% |
-| wait_for_element_visible_ok | link=Log in | 30000 |
-| click_and_wait | link=Log in |  |
-
 | *Comment* | Test Case:User Restrictions TEARDOWN |  |
 | st-process-jobs |  |  |
 | st-admin | delete-workspace --workspace %%ws%% --no-export | has been deleted |
 | st-admin | deactivate-user --e %%emailaddr%% | removed |
 | delete-account | %%acct%% | Recklessly deleting |
-
 
 | *Comment* | Test Case: User Restrictions COMPLETED |  |
