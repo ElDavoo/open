@@ -63,7 +63,7 @@ for my $po (@ARGV) {
     for (<$in>) {
         when (/^msgid "(.*?)([!:?]?)"$/) {
             print;
-            my $max;
+            my $max = 0;
             my $id = $1;
             $punct = $2;
             while ($id =~ s/%(\d+)/ /) {
