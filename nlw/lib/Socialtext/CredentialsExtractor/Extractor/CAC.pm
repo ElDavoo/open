@@ -3,9 +3,12 @@ package Socialtext::CredentialsExtractor::Extractor::CAC;
 use Moose;
 extends 'Socialtext::CredentialsExtractor::Extractor::SSLCertificate';
 
+use List::MoreUtils qw(any);
 use Socialtext::l10n qw(loc);
+use Socialtext::Log qw(st_log);
 use Socialtext::Signal;
 use Socialtext::Signal::Attachment;
+use Socialtext::SQL qw(:exec :time);
 use Socialtext::Upload;
 
 # Regardless of what our parent class says, our username comes from the "CN".
@@ -66,6 +69,7 @@ Searched for:
 
     # Notify *all* of the Business Admin's on the box about the failure
     $class->_notify_business_admins(
+        username        => $username,
         message         => $err_msg,
         attachment_body => $err_body,
     );
@@ -106,8 +110,13 @@ sub _find_partially_provisioned_users {
 sub _notify_business_admins {
     my $class  = shift;
     my %params = @_;
-    my $subject = $params{message};
-    my $body    = $params{attachment_body};
+    my $username = $params{username};
+    my $subject  = $params{message};
+    my $body     = $params{attachment_body};
+
+    # If we've *recently* sent a notification for this Username, don't send
+    # another one; throttle ourselves to "one notification every 'n' seconds".
+    return if ($class->_notification_recently_sent_for($username));
 
     # Dump the attachment body to file, so we can slurp it in and create an
     # Upload
@@ -145,10 +154,41 @@ sub _notify_business_admins {
             body         => $subject,
             recipient_id => $user->user_id,
             attachments  => [$attachment],
+            annotations  => [
+                { cac => { subject => $username } },
+            ],
         } );
     }
 
     return;
+}
+
+sub _notification_recently_sent_for {
+    my $class     = shift;
+    my $username  = shift;
+    my $threshold = DateTime->now->subtract(minutes => 1);
+
+    # Look in the *DB* and see if we have any recent Signals that have been
+    # sent w.r.t. the given $username.
+    #
+    # We have to look in the DB for this instead of using ST::Signal::Search,
+    # as the Signal may not yet be indexed in Solr.
+    my $sth = sql_execute(qq|
+        SELECT signal_id
+          FROM signal
+         WHERE signal.at >= ?
+           AND anno_blob ~* ?
+    |, sql_format_timestamptz($threshold), $username);
+
+    while (my $row = $sth->fetchrow_arrayref) {
+        my $signal_id = $row->[0];
+        my $signal    = Socialtext::Signal->Get(signal_id => $signal_id);
+        my $annots    = $signal->annotations;
+        return 1 if any { $_->{cac}{subject} eq $username } @{$annots};
+    }
+
+    # Didn't find a Signal with our annotation in the DB; wasn't recently sent
+    return 0;
 }
 
 no Moose;
