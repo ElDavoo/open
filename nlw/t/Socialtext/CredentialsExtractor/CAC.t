@@ -223,9 +223,9 @@ auto_provision_user: {
 # TEST: Auto-provision User, multiple User matches
 auto_provision_multiple_users: {
     my $guard  = Test::Socialtext::User->snapshot;
-    my $first  = 'Ian';
-    my $middle = 'Lancaster';
-    my $last   = 'Fleming';
+    my $first  = 'Lois';
+    my $middle = 'Ruth';
+    my $last   = 'Hooker';
     my $edipin = '123456789';
 
     # Create a Business Admin to receive error notifications
@@ -282,9 +282,9 @@ auto_provision_multiple_users: {
 # TEST: Auto-provision User, *no* matches
 auto_provision_no_users: {
     my $guard = Test::Socialtext::User->snapshot;
-    my $first  = 'Ian';
-    my $middle = 'Lancaster';
-    my $last   = 'Fleming';
+    my $first  = 'Thomas';
+    my $middle = 'Sean';
+    my $last   = 'Connery';
     my $edipin = '123456789';
 
     # Create a Business Admin to receive error notifications
