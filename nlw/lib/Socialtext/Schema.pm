@@ -335,14 +335,15 @@ sub dump {
     $file ||= $ENV{ST_DB_DUMPFILE}
         if $c{db_name} eq 'NLW';
 
-    $file ||= Socialtext::File::catfile($dir, "$c{db_name}-dump.$time.sql");
+    $file ||= Socialtext::File::catfile($dir, "$c{db_name}.$time.dump");
 
     # This is only likely to happen if we pass an output param to new().
     return if -f $file and not $self->{force};
 
     my @parms = (
         'pg_dump',
-        '-C',
+        '-Fc',
+        '--disable-triggers',
         '-U' => $c{user},
         '-f' => $file,
     );
