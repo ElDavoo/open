@@ -54,10 +54,16 @@ msgstr "<a id=\"st-newspreadsheet-duplicate-link\" href=\"#\" target=\"\">XXX</a
 msgid "error.sheet-title-too-long"
 msgstr "电子表格名称太长。请缩短名称，再试一次。"
 
+msgid "sc.add-tags"
+msgstr "添加标签..."
+
 msgid "sc.advanced-formatting"
 msgstr "高级格式"
 
 msgid "sc.align"
+msgstr "对齐"
+
+msgid "sc.alignment"
 msgstr "对齐"
 
 msgid "sc.apply"
@@ -72,6 +78,15 @@ msgstr "将上面的设置应用到当前的选区"
 msgid "sc.apply-sheet-default"
 msgstr "将上面的设置成为电子表格的默认值"
 
+msgid "sc.apply-to-current-cell"
+msgstr "对当前单元格应用输入"
+
+msgid "sc.audit"
+msgstr "稽核"
+
+msgid "sc.audit-trail:"
+msgstr "本次编辑的稽核纪录"
+
 msgid "sc.background"
 msgstr "背景"
 
@@ -85,7 +100,7 @@ msgid "sc.borders-on-off"
 msgstr "边界 开/关"
 
 msgid "sc.bottom"
-msgstr "底部"
+msgstr "置底"
 
 msgid "sc.by:"
 msgstr "上传者："
@@ -107,6 +122,24 @@ msgstr "列宽"
 
 msgid "sc.confirm-navigate-away?"
 msgstr "您确定要离开此页面浏览？"
+
+msgid "sc.copy=hotkey"
+msgstr "复制（按 %1-C 来拷贝到其他应用程序）"
+
+msgid "sc.cut=hotkey"
+msgstr "剪切（按 %1-X 来剪切到其他应用程序）"
+
+msgid "sc.default"
+msgstr "（默认）"
+
+msgid "sc.delete-column"
+msgstr "删除列"
+
+msgid "sc.delete-name"
+msgstr "删除此命名区段"
+
+msgid "sc.delete-row"
+msgstr "删除行"
 
 msgid "sc.description"
 msgstr "描述"
@@ -132,6 +165,9 @@ msgstr "输入新的电子表格的名称"
 msgid "sc.enter-sheet-title"
 msgstr "为您的电子表格输入一个有意义的和独特的名称。"
 
+msgid "sc.erase"
+msgstr "擦除"
+
 msgid "sc.existing-names"
 msgstr "存在的名称"
 
@@ -140,6 +176,12 @@ msgstr "扩展"
 
 msgid "sc.expanded-view"
 msgstr "扩展视图"
+
+msgid "sc.fill-down"
+msgstr "向下填充"
+
+msgid "sc.fill-right"
+msgstr "向右填充"
 
 msgid "sc.font"
 msgstr "字体"
@@ -159,20 +201,62 @@ msgstr "以上格式会<b>应用</b>到"
 msgid "sc.hidden"
 msgstr "隐藏"
 
+msgid "sc.insert-column-left"
+msgstr "在左侧插入一列"
+
+msgid "sc.insert-column-right"
+msgstr "在右侧插入一列"
+
 msgid "sc.insert-formula"
 msgstr "插入公式"
+
+msgid "sc.insert-row-above"
+msgstr "在上方插入一行"
+
+msgid "sc.insert-row-below"
+msgstr "在下方插入一行"
 
 msgid "sc.justify"
 msgstr "校正"
 
 msgid "sc.left"
-msgstr "左側"
+msgstr "置左"
 
 msgid "sc.loading"
 msgstr "加载中..."
 
+msgid "sc.mark-clear-move-source"
+msgstr "标记/清除移动源"
+
+msgid "sc.merge-cells"
+msgstr "合并已选单元格"
+
+msgid "sc.middle"
+msgstr "置中"
+
 msgid "sc.move"
 msgstr "移动"
+
+msgid "sc.move-column-left"
+msgstr "向左移动一列"
+
+msgid "sc.move-column-right"
+msgstr "向右移动一列"
+
+msgid "sc.move-insert"
+msgstr "移动插入"
+
+msgid "sc.move-paste"
+msgstr "移动粘贴"
+
+msgid "sc.move-row-down"
+msgstr "向下移动一行"
+
+msgid "sc.move-row-up"
+msgstr "向上移动一行"
+
+msgid "sc.multi-line-input"
+msgstr "显示多行输入"
 
 msgid "sc.name"
 msgstr "名称"
@@ -183,6 +267,9 @@ msgstr "命名范围"
 msgid "sc.new-name"
 msgstr "[新建]"
 
+msgid "sc.none"
+msgstr "（无）"
+
 msgid "sc.normal"
 msgstr "普通"
 
@@ -191,6 +278,9 @@ msgstr "普通文本"
 
 msgid "sc.normal-view"
 msgstr "普通视图"
+
+msgid "sc.now"
+msgstr "现在"
 
 msgid "sc.number"
 msgstr "数字"
@@ -210,6 +300,9 @@ msgstr "填充"
 msgid "sc.paste"
 msgstr "粘贴"
 
+msgid "sc.paste=hotkey"
+msgstr "粘贴（按 %1-V 来从其它应用程序粘贴）"
+
 msgid "sc.preview"
 msgstr "预览"
 
@@ -220,10 +313,13 @@ msgid "sc.range"
 msgstr "范围"
 
 msgid "sc.recalc-finished"
-msgstr "电子表格依赖的数据已经发生了改变。保存的时候数据变更也将被保存。"
+msgstr "电子表格依赖的数据已经发生了改变。下次保存的时候，数据变更也将被保存。"
 
 msgid "sc.recalculation"
 msgstr "重新计算"
+
+msgid "sc.redo"
+msgstr "重做"
 
 msgid "sc.refresh"
 msgstr "刷新"
@@ -238,7 +334,7 @@ msgid "sc.richtext-mode"
 msgstr "丰富文本"
 
 msgid "sc.right"
-msgstr "右側"
+msgstr "置右"
 
 msgid "sc.sample"
 msgstr "样本"
@@ -285,6 +381,9 @@ msgstr "电子表格名称："
 msgid "sc.show-preview"
 msgstr "显示预览"
 
+msgid "sc.single-line-input"
+msgstr "显示单行输入"
+
 msgid "sc.size"
 msgstr "大小"
 
@@ -299,6 +398,9 @@ msgstr "主要"
 
 msgid "sc.sort-minor"
 msgstr "次要"
+
+msgid "sc.sort-range"
+msgstr "将已选范围排序"
 
 msgid "sc.sum-range"
 msgstr "求和范围"
@@ -318,14 +420,26 @@ msgstr "文本"
 msgid "sc.text-color"
 msgstr "文本颜色"
 
+msgid "sc.this"
+msgstr "本次编辑"
+
 msgid "sc.top"
-msgstr "顶部"
+msgstr "置顶"
+
+msgid "sc.undo"
+msgstr "还原"
+
+msgid "sc.undone-steps:"
+msgstr "已还原步骤:"
 
 msgid "sc.unsaved-changes"
 msgstr "您有未保存的变更。"
 
 msgid "sc.up"
 msgstr "向上"
+
+msgid "sc.upload-files"
+msgstr "上传文件..."
 
 msgid "sc.wikitext-mode"
 msgstr "源码格式"

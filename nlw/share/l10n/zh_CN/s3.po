@@ -1162,7 +1162,7 @@ msgid "page.no-tags"
 msgstr "此页面没有标签。"
 
 msgid "page.opened-for-edit=user,ago"
-msgstr "%1 已于 %2 打开此页编辑。"
+msgstr "%1 已于%2打开此页编辑。"
 
 msgid "page.orphaned"
 msgstr "孤立页面"

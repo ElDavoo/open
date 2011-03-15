@@ -103,7 +103,7 @@ msgid "code.sql"
 msgstr "SQL"
 
 msgid "code.syntax-highlight-as:"
-msgstr "语法高亮："
+msgstr "代码高亮语法："
 
 msgid "code.visualbasic"
 msgstr "VisualBasic"
@@ -335,6 +335,117 @@ msgstr "（预格式化文本，是与输入所显示出来完全一致的纯文
 
 msgid "info.wafl-uneditable"
 msgstr "该小工具不可编辑。请在源码格式下进行编辑。"
+
+msgid "insert.aim"
+msgstr "AIM 链接"
+
+msgid "insert.asis"
+msgstr "无格式文本..."
+
+msgid "insert.atom-feed-items"
+msgstr "Atom 订阅项"
+
+msgid "insert.blog"
+msgstr "某位用户的博客"
+
+msgid "insert.blog-list"
+msgstr "博客帖子"
+
+msgid "insert.code"
+msgstr "代码..."
+
+msgid "insert.communicating"
+msgstr "通讯..."
+
+msgid "insert.date"
+msgstr "本地日期与时间"
+
+msgid "insert.fetchrss"
+msgstr "RSS 订阅项目"
+
+msgid "insert.file"
+msgstr "本页面的附带文件"
+
+msgid "insert.from-the-web"
+msgstr "从网络..."
+
+msgid "insert.from-wikis"
+msgstr "从工作区..."
+
+msgid "insert.googlesearch"
+msgstr "Google 搜索结果"
+
+msgid "insert.hr"
+msgstr "水平线"
+
+msgid "insert.html"
+msgstr "HTML..."
+
+msgid "insert.image"
+msgstr "图片"
+
+msgid "insert.include"
+msgstr "包含页面"
+
+msgid "insert.link-to"
+msgstr "链接到..."
+
+msgid "insert.link2"
+msgstr "一个不同的维基页面"
+
+msgid "insert.link2-hyperlink"
+msgstr "网页"
+
+msgid "insert.link2-section"
+msgstr "本页里的段落"
+
+msgid "insert.name-and-date"
+msgstr "名字与日期..."
+
+msgid "insert.organizing-your-page"
+msgstr "组织您的页面..."
+
+msgid "insert.pre"
+msgstr "预格式化文本..."
+
+msgid "insert.recent-changes"
+msgstr "近期更改"
+
+msgid "insert.search"
+msgstr "共笔搜索结果"
+
+msgid "insert.section"
+msgstr "段落标记"
+
+msgid "insert.skype"
+msgstr "Skype 链接"
+
+msgid "insert.ss"
+msgstr "包含电子表格"
+
+msgid "insert.table"
+msgstr "表格"
+
+msgid "insert.tag"
+msgstr "具有特定标签的页面"
+
+msgid "insert.tag-list"
+msgstr "具有特定标签的页面"
+
+msgid "insert.toc"
+msgstr "页面目录"
+
+msgid "insert.user"
+msgstr "用户名"
+
+msgid "insert.video"
+msgstr "视频"
+
+msgid "insert.widget"
+msgstr "小工具..."
+
+msgid "insert.yahoo"
+msgstr "Yahoo! Messenger 链接"
 
 msgid "link.add"
 msgstr "添加链接"
@@ -854,3 +965,102 @@ msgstr "小工具宽度："
 
 msgid "wiki.wiki-named"
 msgstr "其他工作区："
+
+msgid "wikiwyg.add-column-left"
+msgstr "从左侧添加表格列"
+
+msgid "wikiwyg.add-column-right"
+msgstr "从右侧添加表格列"
+
+msgid "wikiwyg.add-row-above-current-row"
+msgstr "在上方添加表格行"
+
+msgid "wikiwyg.add-row-below-current-row"
+msgstr "在下方添加表格行"
+
+msgid "wikiwyg.bold"
+msgstr "粗体（Ctrl+B）"
+
+msgid "wikiwyg.delete-table-column"
+msgstr "删除当前表格列"
+
+msgid "wikiwyg.delete-table-row"
+msgstr "删除当前表格行"
+
+msgid "wikiwyg.h1"
+msgstr "标题 1"
+
+msgid "wikiwyg.h2"
+msgstr "标题 2"
+
+msgid "wikiwyg.h3"
+msgstr "标题 3"
+
+msgid "wikiwyg.h4"
+msgstr "标题 4"
+
+msgid "wikiwyg.image"
+msgstr "包含一张图片"
+
+msgid "wikiwyg.indent"
+msgstr "增加缩排"
+
+msgid "wikiwyg.italic"
+msgstr "斜体（Ctrl+I）"
+
+msgid "wikiwyg.large"
+msgstr "大"
+
+msgid "wikiwyg.link"
+msgstr "创建链接"
+
+msgid "wikiwyg.medium"
+msgstr "中"
+
+msgid "wikiwyg.move-column-left"
+msgstr "向左移动当前表格列"
+
+msgid "wikiwyg.move-column-right"
+msgstr "向右移动当前表格列"
+
+msgid "wikiwyg.move-row-down"
+msgstr "向下移动当前表格行"
+
+msgid "wikiwyg.move-row-up"
+msgstr "向上移动当前表格行"
+
+msgid "wikiwyg.new-table"
+msgstr "新建表格"
+
+msgid "wikiwyg.ol"
+msgstr "数字编号列表"
+
+msgid "wikiwyg.original-size"
+msgstr "原始尺寸"
+
+msgid "wikiwyg.outdent"
+msgstr "减少缩排"
+
+msgid "wikiwyg.p"
+msgstr "普通文本"
+
+msgid "wikiwyg.scaled-to-fit"
+msgstr "符合页宽"
+
+msgid "wikiwyg.small"
+msgstr "小"
+
+msgid "wikiwyg.strike-through"
+msgstr "删除线（Ctrl+D）"
+
+msgid "wikiwyg.table-settings"
+msgstr "表格设置"
+
+msgid "wikiwyg.ul"
+msgstr "项目符号列表"
+
+msgid "wikiwyg.video"
+msgstr "插入视频"
+
+msgid "wikiwyg.widget"
+msgstr "插入一个小工具"

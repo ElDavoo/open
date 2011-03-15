@@ -537,7 +537,14 @@ use constant CN2TW => {qw(
     模版         範本
     刷新         更新
     應用         套用
+    剪切         剪下
     單元格       儲存格
+    擦除         清除
+    文本         文字
+    代碼         程式碼
+    代碼塊       程式碼區塊
+    移動源       移動來源
+    社區         社群
 )};
 
 use constant CN2TW_ExactMatch => {qw(
