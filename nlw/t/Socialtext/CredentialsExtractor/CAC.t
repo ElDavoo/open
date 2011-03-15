@@ -7,7 +7,7 @@ use Socialtext::CredentialsExtractor;
 use Socialtext::CredentialsExtractor::Extractor::CAC;
 use Socialtext::AppConfig;
 use Socialtext::Signal;
-use Test::Socialtext tests => 45;
+use Test::Socialtext tests => 50;
 use Test::Socialtext::User;
 
 fixtures(qw( empty ));
@@ -305,6 +305,50 @@ auto_provision_no_users: {
         direct => 'both',
     );
     is @signals, 1, '... DM Signal was sent to Business Admin';
+    like $signals[0]->body, qr/no matches found/i,
+        '... ... denoting NO matches found';
+
+    # Verify contents of DM attachment
+    my $att      = $signals[0]->attachments->[0];
+    my $file     = $att->upload->disk_filename;
+    my $contents = slurp($file);
+    like $contents, qr/First name.*?: $first/,   '... ... ... w/first name';
+    like $contents, qr/Middle name.*?: $middle/, '... ... ... w/middle name';
+    like $contents, qr/Last name.*?: $last/,     '... ... ... w/last name';
+}
+
+###############################################################################
+# TEST: Throttling of notification Signals
+notification_throttling: {
+    my $guard = Test::Socialtext::User->snapshot;
+    my $first  = 'Roger';
+    my $middle = 'George';
+    my $last   = 'Moore';
+    my $edipin = time;
+
+    # Create a Business Admin to receive error notifications
+    my $badmin = create_test_user;
+    $badmin->set_business_admin(1);
+
+    # Make multiple attempts to extract creds for this User.
+    my $subject = "C=UK, O=Moonraker, CN=$first\.$middle\.$last\.$edipin";
+    Socialtext::CredentialsExtractor->ExtractCredentials( {
+        X_SSL_CLIENT_SUBJECT => $subject,
+    } );
+    Socialtext::CredentialsExtractor->ExtractCredentials( {
+        X_SSL_CLIENT_SUBJECT => $subject,
+    } );
+    Socialtext::CredentialsExtractor->ExtractCredentials( {
+        X_SSL_CLIENT_SUBJECT => $subject,
+    } );
+    pass 'Made multiple attempts to extract credentials';
+
+    # Verify that the Business Admin got one (and ONLY one) DM
+    my @signals = Socialtext::Signal->All(
+        viewer => $badmin,
+        direct => 'both',
+    );
+    is @signals, 1, '... a single DM Signal was sent to Business Admin';
     like $signals[0]->body, qr/no matches found/i,
         '... ... denoting NO matches found';
 
