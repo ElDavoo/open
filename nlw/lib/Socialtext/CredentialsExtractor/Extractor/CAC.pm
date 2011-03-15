@@ -76,11 +76,14 @@ Searched for:
     }
 
     # Notify *all* of the Business Admin's on the box about the failure
-    $class->_notify_business_admins(
-        username => $username,
-        subject  => $err_msg,
-        body     => $err_body,
-    );
+    unless ($class->_notification_recently_sent_for($username)) {
+        $class->_send_notification(
+            recipients => [ Socialtext::User->AllBusinessAdmins->all ],
+            username   => $username,
+            subject    => $err_msg,
+            body       => $err_body,
+        );
+    }
 
     return;
 };
@@ -113,26 +116,6 @@ sub _find_partially_provisioned_users {
         } )->all;
 
     return @users;
-}
-
-sub _notify_business_admins {
-    my $class  = shift;
-    my %params = @_;
-    my $username = $params{username};
-    my $subject  = $params{subject};
-    my $body     = $params{body};
-
-    # If we've *recently* sent a notification for this Username, don't send
-    # another one; throttle ourselves to "one notification every 'n' seconds".
-    return if ($class->_notification_recently_sent_for($username));
-
-    # Send a notification to *ALL* Business Admin's
-    $class->_send_notification(
-        recipients => [ Socialtext::User->AllBusinessAdmins->all ],
-        username   => $username,
-        subject    => $subject,
-        body       => $body,
-    );
 }
 
 sub _send_notification {
