@@ -1,38 +1,383 @@
 # @COPYRIGHT@
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 22:52+0800\n"
+"PO-Revision-Date: 2011-03-16 00:18+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#. (round(minutes / 1440)
-#. (round(minutes / 1440))
-#. (delta)
-#: share/template/data/event:12 share/template/email/page-details.html:11
-#: share/template/email/page-details.txt:11
-msgid "ago.days=count"
-msgstr "%1 天前"
+msgid "bug.application-error"
+msgstr "程序错误"
 
-#. (round(minutes / 60)
-#. (round(minutes / 60))
-#: share/template/data/event:9
-msgid "ago.hours=count"
-msgstr "%1 小时前"
+msgid "bug.application-error-dump"
+msgstr "清除程序错误"
 
-#. (minutes)
-#: share/template/data/event:7
-msgid "ago.minutes=count"
-msgstr "%1 分钟前"
+msgid "bug.application-error-occurred"
+msgstr "在 Socialtext 系统内产生了一个错误。"
 
-#: share/template/email/standard-footer.html:12
-#: share/template/email/standard-footer.txt:5
-msgid "invite.socialtext-footer"
-msgstr "由 Socialtext 为您带来。"
+msgid "bug.comment-box=script,id"
+msgstr "您可以通过描述当错误发生时您所执行的操作，来帮助 Socialtext 团队来修复这个错误<a href=\"%1?action=bugs_dump;bug_id=%2\" style=\"text-color: black; text-decoration: none;\">。</a>请在底下的文本框输入："
+
+msgid "email.added-you-to-group=user,group"
+msgstr "%1已将您加入“%2”群组"
+
+msgid "email.added-you-to=group"
+msgstr "已将您加入“%1”群组"
+
+msgid "email.address-of-new-wiki-is=uri"
+msgstr "新工作区的网址是 %1"
+
+msgid "email.any-questions-contact-support-link=uri"
+msgstr "如果您有任何疑问，请<a href=\"%1\">联系技术支持</a>。"
+
+msgid "email.any-questions-contact-support=uri"
+msgstr "如果您有任何疑问，请联系技术支持：%1。"
+
+msgid "email.as-member-you-can-send-signals-to-group-and-use-any-of-group-wikis"
+msgstr "作为成员，您可以发讯息到群组，并使用群组的所有工作区。"
+
+msgid "email.change-email-preferences-at=wiki"
+msgstr "要停止或更改接收有关 %1 变动的电子邮件的频率，请访问"
+
+msgid "email.change-email-preferences-at=wiki,uri"
+msgstr "要停止或更改接收有关 %1 变动的电子邮件的频率，您可以<a href=\"%2\">更改您的偏好</a>。"
+
+msgid "email.change-watchlist-preferences-at=wiki,uri"
+msgstr "要停止或更改接收有关 %1 中关注列表变动的电子邮件的频率，您可以<a href=\"%2\">更改您的偏好</a>。"
+
+msgid "email.change-watchlist-preferences-at=wiki:"
+msgstr "要停止或更改接收有关 %1 中关注列表变动的电子邮件的频率，请访问："
+
+msgid "email.choose-new-password"
+msgstr "请选择新的 Socialtext 密码"
+
+msgid "email.click-to-choose-password"
+msgstr "当您点击该链接后，您将被带往一个页面，在那里您可以选择新密码。"
+
+msgid "email.click-to-choose-password=uri"
+msgstr "当您<a href=\"%1\">点击该链接</a>后，您将被带往一个页面，在那里您可以选择新密码。"
+
+msgid "email.click-to-confirm-email-and-login=uri"
+msgstr "请<a target=\"blank\" title=\"（外部链接）\" href=\"%1&account_for=free50\">点击这里</a>以确认您的电子邮件地址并登录。"
+
+msgid "email.click-to-confirm-email:"
+msgstr "请点击该链接以确定您的电子邮件地址："
+
+msgid "email.click-to-confirm-email=uri"
+msgstr "请<a href=\"%1\">点击该链接</a>以确认您的电子邮件地址。"
+
+msgid "email.congratulations!"
+msgstr "恭喜！"
+
+msgid "email.contact-support"
+msgstr "联系技术支持"
+
+msgid "email.copy-url-into-browser-to-confirm-email:"
+msgstr "如果您的电子邮件客户端不支持超链接，则可以将该网址复制并粘贴到浏览器中，以确认您的电子邮件地址："
+
+msgid "email.created-by"
+msgstr "创建者"
+
+msgid "email.email-confirmed-login-to=app"
+msgstr "您已确认了您的电子邮件地址，已经可以登录到 %1 应用。"
+
+msgid "email.email-confirmed-login-to=wiki"
+msgstr "您已确认了您的电子邮件地址，已经可以登录到 %1 工作区。"
+
+msgid "email.enjoy!"
+msgstr "祝您使用愉快！"
+
+msgid "email.follow-link-to-confirm-address-and-update-your-info:"
+msgstr "请使用下列链接以确认您的地址，并更新您的信息："
+
+msgid "email.follow-link-to-confirm-email-and-update-your-info=uri"
+msgstr "请使用<a href=\"%1\">该链接以确认您的电子邮件地址</a>。并更新您的信息。"
+
+msgid "email.follow-link-to-select-password:"
+msgstr "如果您忘记了，可使用下列链接选择新密码："
+
+msgid "email.follow-this-link-to-change-password:"
+msgstr "要更改您的密码，请使用此链接："
+
+msgid "email.following-pages-have-recently-changed=uri,wiki,date,time"
+msgstr "下列位于 <a href=\"%1\">%2</a> 的页面最近已被更改。本电子邮件生成于 %3，%4。"
+
+msgid "error.admin-privileges-needed-to-access-uri"
+msgstr "您必须拥有管理员权限来访问此网址。"
+
+msgid "error.confirm-email-to-activate-account"
+msgstr "您需要验证电子邮件地址来激活此帐户。"
+
+msgid "error.external-id-needed-to-activate-account"
+msgstr "您必须使用外部ID来激活此帐户。"
+
+msgid "error.for-more-info-contact-sysadmin"
+msgstr "如需更多信息，请联系您的系统管理员。"
+
+msgid "error.login-to-edit=wiki"
+msgstr "您必须登录才能编辑 %1 工作区。"
+
+msgid "error.login-to-set-preferences"
+msgstr "您必须登录才可以设定工作区的偏好设置。"
+
+msgid "error.login-to-use-watchlist-in-wiki"
+msgstr "您必须登录才可以在工作区内部使用观测表。"
+
+msgid "error.login-to-view=wiki,register-uri"
+msgstr "您必须登录才可以浏览 %1 工作区。如果您已经拥有帐户，请现在登录。<br />如果没有，您可以<a href=\"/nlw/register.html?redirect_to=%2\">创建一个新帐户。</a>"
+
+msgid "error.register-here=uri"
+msgstr "如果您还没有帐户，您可以<a href=\"/nlw/register.html?redirect_to=%1\">在此注册</a>."
+
+msgid "error.resend-change-of-password"
+msgstr "重新发送密码变更"
+
+msgid "error.resend-confirmation"
+msgstr "重新发送确认函"
+
+msgid "error.you-are-not-authorized-to-view-this-wiki"
+msgstr "您不能访问此工作区。"
+
+msgid "error.you-need-to-set-new-password-for-your-account"
+msgstr "您需要为您的帐户设定新的密码。"
+
+msgid "error.you-should-have-received-email-with-confirmation-link"
+msgstr "您应该已经收到一封含有认证链接的电子邮件。"
+
+msgid "error.you-should-have-received-email-with-link-allowing-you-to-do-so"
+msgstr "您应该已经收到一封电子邮件，该邮件含有的链接可以让您如此操作。"
+
+msgid "event.comment=page,summary"
+msgstr "对 %1 作出评论：“%2”"
+
+msgid "event.delete=page"
+msgstr "删除了 %1。"
+
+msgid "event.duplicate=page"
+msgstr "复制了 %1。"
+
+msgid "event.edit=page"
+msgstr "编辑了 %1。"
+
+msgid "event.edit=page,summary"
+msgstr "对 %1 作出编辑：“%2”"
+
+msgid "event.generic=action,page"
+msgstr "已对 %2 执行了 %1 操作。"
+
+msgid "event.in=page,wiki"
+msgstr "%2 内的 %1"
+
+msgid "event.rename=page"
+msgstr "重命名了 %1。"
+
+msgid "event.tag-delete=tag,page"
+msgstr "从 %2 移除了标签 %1。"
+
+msgid "event.tag=page,tag"
+msgstr "为 %2 添加了标签 %1。"
+
+msgid "event.unknown=event-class"
+msgstr "未知分类的事件：%1"
+
+msgid "event.view=page"
+msgstr "檢視了 %1。"
+
+msgid "event.watch-delete=page"
+msgstr "停止关注 %1。"
+
+msgid "event.watch=page"
+msgstr "开始关注 %1。"
+
+msgid "job.args"
+msgstr "参数"
+
+msgid "job.class"
+msgstr "类型"
+
+msgid "job.coalesce"
+msgstr "合并"
+
+msgid "job.created"
+msgstr "已创建"
+
+msgid "job.delayed"
+msgstr "已延迟"
+
+msgid "job.earliest-nodelay"
+msgstr "最早（无延迟）"
+
+msgid "job.earliest-queued"
+msgstr "最早（等候中）"
+
+msgid "job.grabbed"
+msgstr "已抓取"
+
+msgid "job.grabbed-until"
+msgstr "已抓取至"
+
+msgid "job.id"
+msgstr "编号"
+
+msgid "job.key"
+msgstr "键值"
+
+msgid "job.last-5min"
+msgstr "前 5 分钟"
+
+msgid "job.last-fail"
+msgstr "上次失效"
+
+msgid "job.last-ok"
+msgstr "上次成功"
+
+msgid "job.latest-nodelay"
+msgstr "最新（无延迟）"
+
+msgid "job.latest-queued"
+msgstr "最新（等候中）"
+
+msgid "job.num-fail"
+msgstr "失败数"
+
+msgid "job.num-ok"
+msgstr "成功数"
+
+msgid "job.prio"
+msgstr "优先等级"
+
+msgid "job.queued"
+msgstr "等候中"
+
+msgid "job.run-after"
+msgstr "运行起始"
+
+msgid "login.back-to=uri"
+msgstr "返回 <a href=\"%1\">登录 Socialtext</a>。"
+
+msgid "login.click"
+msgstr "点击"
+
+msgid "login.click-here-to-login-with-existing-account"
+msgstr "点击此处，以使用已有帐号登录。"
+
+msgid "login.click-login-in-upper-right"
+msgstr "点击右上角的“登录”。"
+
+msgid "login.email-address:"
+msgstr "电子邮件地址："
+
+msgid "login.email-we-send-will-come-from=address"
+msgstr "我们将向您发送的电子邮件来自 <strong>%1</strong>。为了确保您能够收到，请将 <strong>%1</strong> 添加到您的地址簿。"
+
+msgid "login.enter-email-below-to-recover-password"
+msgstr "在下方输入您用于 Socialtext 帐户的电子邮件地址。如果您是从电子邮件内的链接被带到此处，请查阅并输入该电子邮件的收件人地址。"
+
+msgid "login.error"
+msgstr "错误"
+
+msgid "login.fill-in-info-to-create-account"
+msgstr "请填入以下信息来创建 Socialtext 帐户。"
+
+msgid "login.fill-in-info-to-create=account-type"
+msgstr "请填入以下信息来创建一个%1。"
+
+msgid "login.fill-in-info-to-register:"
+msgstr "如果您还没有申请 Socialtext 帐号，请键入以下资讯："
+
+msgid "login.first-name:"
+msgstr "名字："
+
+msgid "login.forgot-my-password"
+msgstr "我不知道我的密码。"
+
+msgid "login.forgot-password"
+msgstr "忘记密码"
+
+msgid "login.here"
+msgstr "这里"
+
+msgid "login.join"
+msgstr "加入"
+
+msgid "login.join=wiki"
+msgstr "加入 %1"
+
+msgid "login.last-name:"
+msgstr "姓氏："
+
+msgid "login.log-in"
+msgstr "登入"
+
+msgid "login.logged-out-of-socialtext"
+msgstr "登出 Socialtext"
+
+msgid "login.login"
+msgstr "登入"
+
+msgid "login.login-disabled"
+msgstr "登入已禁用"
+
+msgid "login.login-to-socialtext"
+msgstr "登入到 Socialtext"
+
+msgid "login.login-with-socialtext-account:"
+msgstr "使用您的 Socialtext 帐户来登入："
+
+#: share/template/authen/element/register_form:26 share/template/authen/element/register_form:31
+msgid "login.optional"
+msgstr "(可选)"
+
+#: share/template/authen/element/login_form:17 share/template/authen/element/register_form:15
+msgid "login.password:"
+msgstr "密码："
+
+#: share/template/authen/element/choose_password_form:25 share/template/authen/element/register_form:20
+msgid "login.re-type-password:"
+msgstr "重新键入密码："
+
+#: share/template/authen/element/choose_password_form:35 share/template/authen/element/register_form:41 share/template/authen/register.html:3
+msgid "login.register"
+msgstr "注册"
+
+#: share/template/authen/element/login_form:24
+msgid "login.remember-me"
+msgstr "在这台电脑上保持登入。"
+
+#: share/template/authen/element/forgot_password_form:13
+msgid "login.submit"
+msgstr "提交"
+
+#: share/template/authen/authenticated_join.html:4
+msgid "login.to-continue"
+msgstr "以继续使用 Socialtext。"
+
+#: share/template/authen/element/choose_password_form:13
+msgid "login.username:"
+msgstr "用户名称："
+
+#. (target_workspace.title, target_workspace.account.name)
+#: share/template/authen/authenticated_join.html:4
+msgid "login.you-have-joined-click=wiki,group"
+msgstr "您已成功加入 %2 社群内的 %1 工作区。请点击"
+
+#: share/template/authen/logout.html:18
+msgid "login.you-have-logged-out-of-socialtext"
+msgstr "您已成功登出 Socialtext。"
 
 #: share/template/authen/element/choose_password_form:20
 msgid "password.choose:"
-msgstr "选择密码："
+msgstr "指定密码："
+
+msgid "login.logout"
+msgstr "登出"
+
+msgid "login.no-problem-we-can-send-you-email"
+msgstr "没问题，我们可以发送一封电子邮件给您，让您重新设定密码。"
+
+msgid "login.socialtext-password-help"
+msgstr "Socialtext 密码支持"

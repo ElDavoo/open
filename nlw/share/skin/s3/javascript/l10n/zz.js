@@ -1309,7 +1309,7 @@
 "login.socialtext-password-help":"Zzzzzzzzzz zzzzzzzz zzzz",
 "login.submit":"Zzzzzz",
 "login.title":"Zzzzzzzzzz Zzzzz",
-"login.to-continue":"zz zzzzzzzz",
+"login.to-continue":"zz zzzzzzzz.",
 "login.username:":"Zzzzzzzz:",
 "login.you-have-joined-click=wiki,group":"Zzz zzzz zzzzzz zzz [_1] Zzzzzzzzz zz zzz [_2] Zzzzz. Zzzzz",
 "login.you-have-logged-out-of-socialtext":"Zzz zzzz zzzzzz zzz zz Zzzzzzzzzz.",

@@ -7957,7 +7957,7 @@ msgstr "Zzzzzzzzzz Zzzzz"
 
 #: share/template/authen/authenticated_join.html:4
 msgid "login.to-continue"
-msgstr "zz zzzzzzzz"
+msgstr "zz zzzzzzzz."
 
 #: lib/Socialtext/Handler/Authen.pm:207
 msgid "login.username"

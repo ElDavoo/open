@@ -843,7 +843,7 @@ msgstr "Submit"
 
 #: share/template/authen/authenticated_join.html:4
 msgid "login.to-continue"
-msgstr "to continue"
+msgstr "to continue."
 
 #: share/template/authen/element/choose_password_form:13
 msgid "login.username:"

@@ -551,6 +551,7 @@ use constant CN2TW => {qw(
     代碼塊       程式碼區塊
     移動源       移動來源
     社區         社群
+    提交         送出
 )};
 
 use constant CN2TW_ExactMatch => {qw(

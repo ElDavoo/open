@@ -682,22 +682,17 @@ msgstr "分享此頁!"
 msgid "bookmarklet.tip"
 msgstr "小秘訣：您可利用『"
 
-#: share/template/bugs_content.html:5
 msgid "bug.application-error"
-msgstr "Application Error"
+msgstr "程式錯誤"
 
-#: share/template/bugs_dump.html:5
 msgid "bug.application-error-dump"
-msgstr "Application Error Bug Dump"
+msgstr "清除程式錯誤"
 
-#: share/template/bugs_content.html:17
 msgid "bug.application-error-occurred"
-msgstr "An application error has occurred in the Socialtext Workspace system."
+msgstr "在 Socialtext 系統內產生了一個錯誤。"
 
-#. (script_name, bug_id)
-#: share/template/bugs_content.html:20
 msgid "bug.comment-box=script,id"
-msgstr "You can assist the Socialtext team to fix this bug by entering a comment about what actions you were performing when this bug occurred<a href=\"%1?action=bugs_dump;bug_id=%2\" style=\"text-color: black; text-decoration: none;\">.</a> Please enter your comments in the box below."
+msgstr "您可以通過描述當錯誤發生時您所執行的操作，來幫助 Socialtext 團隊來修複這個錯誤<a href=\"%1?action=bugs_dump;bug_id=%2\" style=\"text-color: black; text-decoration: none;\">。</a>請在底下的文字框輸入："
 
 msgid "bug.contact-support"
 msgstr "請填寫<a href=\"http://www.socialtext.com/customers/support_request.php\">技術支援請求</a>表格，聯絡Socialtext，描述錯誤發生的時間，以及發生錯誤之前的操作。"
@@ -1039,7 +1034,7 @@ msgid "console.about-desktop-nav-setting"
 msgstr "注意：如果該選項被禁用，則<tt>桌面</tt>鏈結將不再出現在全域導航功能表上。"
 
 msgid "console.about-disable-automatic-updates"
-msgstr "若要禁止自動更新，您可以選中本選框並點選提交"
+msgstr "若要禁止自動更新，您可以選中本選框並點選送出"
 
 msgid "console.about-initialize-wikis"
 msgstr "該操作將刪除本設備上全部現有的工作區與用戶，並建立一個管理工作區"
@@ -1285,7 +1280,7 @@ msgid "console.socialtext-support"
 msgstr "Socialtext 支援"
 
 msgid "console.submit"
-msgstr "提交"
+msgstr "送出"
 
 msgid "console.support-contact"
 msgstr "聯絡支援"
@@ -1306,7 +1301,7 @@ msgid "console.total"
 msgstr "總共"
 
 msgid "console.upload-complete=download-link,mailto-link"
-msgstr "%1 上傳完成。您的資訊已提交給 %2。"
+msgstr "%1 上傳完成。您的資訊已送出給 %2。"
 
 msgid "console.upload-support-tarball-to-socialtext"
 msgstr "上傳支援壓縮檔至 Socialtext"
@@ -1993,7 +1988,7 @@ msgid "control.stock-fields"
 msgstr "存儲欄位"
 
 msgid "control.submit"
-msgstr "提交"
+msgstr "送出"
 
 msgid "control.tabs"
 msgstr "標籤欄"
@@ -2550,20 +2545,14 @@ msgstr "新增所有成員"
 msgid "email.add-note?"
 msgstr "在郵件前面新增以下段落？"
 
-#. (inviting_user, group_name)
-#: share/template/email/st/group-invitation.txt:22
 msgid "email.added-you-to-group=user,group"
-msgstr "%1 has added you to the group: %2"
+msgstr "%1已將您加入『%2』群組"
 
-#. (group_name)
-#: share/template/email/st/group-invitation-body.html:36
 msgid "email.added-you-to=group"
-msgstr "has added you to the group: %1"
+msgstr "已將您加入『%1』群組"
 
-#. (workspace_uri)
-#: share/template/email/st/workspace-admin-invitation.txt:5
 msgid "email.address-of-new-wiki-is=uri"
-msgstr "The web address of the new workspace is %1"
+msgstr "新工作區的網址是 %1"
 
 msgid "email.address-or-name"
 msgstr "請輸入郵件位址或用戶名"
@@ -2571,66 +2560,44 @@ msgstr "請輸入郵件位址或用戶名"
 msgid "email.another-example"
 msgstr "another.friend@example.com"
 
-#. (escaped_str2)
-#: share/template/email/password-change.html:20
 msgid "email.any-questions-contact-support-link=uri"
-msgstr "If you have any questions, please feel free to <a href=\"%1\">Contact Support</a>."
+msgstr "如果您有任何疑問，請<a href=\"%1\">聯絡技術支援</a>。"
 
-#. (appconfig.support_address)
-#: share/template/email/password-change.txt:9
 msgid "email.any-questions-contact-support=uri"
-msgstr "If you have any questions, please feel free to contact support at %1."
+msgstr "如果您有任何疑問，請聯絡技術支援：%1。"
 
-#: share/template/email/st/group-invitation-body.html:39 share/template/email/st/group-invitation.txt:24
 msgid "email.as-member-you-can-send-signals-to-group-and-use-any-of-group-wikis"
-msgstr "As a member, you can send Signals to the group and use any of the group workspaces."
+msgstr "作為成員，您可以發訊息到群組，並使用群組的所有工作區。"
 
-#. (workspace.title)
-#: share/template/email/recent-changes.txt:12
 msgid "email.change-email-preferences-at=wiki"
-msgstr "To stop receiving or change how often you receive emails about changes to %1, go to"
+msgstr "要停止或更改接收有關 %1 變動的電子郵件的頻率，請存取"
 
-#. (escaped_title, escaped_uri)
-#: share/template/email/recent-changes.html:28
 msgid "email.change-email-preferences-at=wiki,uri"
-msgstr "To stop receiving or change how often you receive emails about changes to %1, you can <a href=\"%2\">change your preferences</a>."
+msgstr "要停止或更改接收有關 %1 變動的電子郵件的頻率，您可以<a href=\"%2\">更改您的偏好</a>。"
 
-#. (escaped_title, escaped_uri)
-#: share/template/email/watchlist.html:28
 msgid "email.change-watchlist-preferences-at=wiki,uri"
-msgstr "To stop receiving or change how often you receive emails about changes to your watchlist in %1, you can <a href=\"%2\">change your preferences</a>."
+msgstr "要停止或更改接收有關 %1 中關注列表變動的電子郵件的頻率，您可以<a href=\"%2\">更改您的偏好</a>。"
 
-#. (workspace.title)
-#: share/template/email/watchlist.txt:11
 msgid "email.change-watchlist-preferences-at=wiki:"
-msgstr "To stop receiving or change how often you receive emails about changes to your watchlist in %1, go to:"
+msgstr "要停止或更改接收有關 %1 中關注列表變動的電子郵件的頻率，請存取："
 
-#: share/template/email/password-change.html:6
 msgid "email.choose-new-password"
-msgstr "Please choose a new Socialtext password"
+msgstr "請選擇新的 Socialtext 密碼"
 
-#: share/template/email/password-change.txt:7
 msgid "email.click-to-choose-password"
-msgstr "When you click on this link, you will be taken to a page which allows you to choose a new password."
+msgstr "當您點選該鏈結後，您將被帶往一個頁面，在那里您可以選擇新密碼。"
 
-#. (escaped_str1)
-#: share/template/email/password-change.html:16
 msgid "email.click-to-choose-password=uri"
-msgstr "When you <a href=\"%1\">click on this link</a>, you will be taken to a page which allows you to choose a new password."
+msgstr "當您<a href=\"%1\">點選該鏈結</a>後，您將被帶往一個頁面，在那里您可以選擇新密碼。"
 
-#. (uri)
-#: share/template/email/free50/account-invitation-body.html:11
 msgid "email.click-to-confirm-email-and-login=uri"
-msgstr "Please <a target=\"blank\" title=\"(external link)\" href=\"%1&account_for=free50\">click here</a> to confirm your email address and log in."
+msgstr "請<a target=\"blank\" title=\"（外部鏈結）\" href=\"%1&account_for=free50\">點選這裡</a>以確認您的電子郵件位址並登入。"
 
-#: share/template/email/free50/account-invitation.txt:5 share/template/email/st/account-invitation.txt:8 share/template/email/st/group-invitation.txt:11 share/template/email/st/workspace-invitation.txt:8
 msgid "email.click-to-confirm-email:"
-msgstr "Please click on this link to confirm your email address:"
+msgstr "請點選該鏈結以確定您的電子郵件位址："
 
-#. (confirm_uri)
-#: share/template/email/st/group-invitation-body.html:20 share/template/email/st/workspace-invitation-body.html:22
 msgid "email.click-to-confirm-email=uri"
-msgstr "Please <a href=\"%1\">click on this link</a> to confirm your email address."
+msgstr "請<a href=\"%1\">點選該鏈結</a>以確認您的電子郵件位址。"
 
 msgid "email.confirmation-subject=app"
 msgstr "已登陸到套用 %1"
@@ -2638,24 +2605,20 @@ msgstr "已登陸到套用 %1"
 msgid "email.confirmation-subject=wiki"
 msgstr "已登陸到工作區 %1"
 
-#: share/template/email/st/workspace-admin-invitation.txt:1
 msgid "email.congratulations!"
-msgstr "Congratulations!"
+msgstr "恭喜！"
 
-#: share/template/email/email-address-confirmation-completed.html:56
 msgid "email.contact-support"
-msgstr "Contact Support"
+msgstr "聯絡技術支援"
 
 msgid "email.copy-self?"
 msgstr "發送副本給自己？"
 
-#: share/template/email/free50/account-invitation-body.html:12
 msgid "email.copy-url-into-browser-to-confirm-email:"
-msgstr "If your email client does not support hyperlinks, you can also copy and paste this URL into a browser to confirm your email address:"
+msgstr "如果您的電子郵件客戶端不支援超鏈結，則可以將該網址複製並貼上到瀏覽器中，以確認您的電子郵件位址："
 
-#: share/template/email/page-details.html:25 share/template/email/page-details.txt:24
 msgid "email.created-by"
-msgstr "created by"
+msgstr "建立者"
 
 msgid "email.customize"
 msgstr "（您可以自訂下面的文字。）"
@@ -2663,41 +2626,29 @@ msgstr "（您可以自訂下面的文字。）"
 msgid "email.date:"
 msgstr "日期："
 
-#. (escaped_str)
-#: share/template/email/email-address-confirmation-completed.html:28 share/template/email/email-address-confirmation-completed.txt:10
 msgid "email.email-confirmed-login-to=app"
-msgstr "You have confirmed your email address and can now log on to the %1 application."
+msgstr "您已確認了您的電子郵件位址，已經可以登入到 %1 套用。"
 
-#. (escaped_str)
-#: share/template/email/email-address-confirmation-completed.html:15 share/template/email/email-address-confirmation-completed.txt:4
 msgid "email.email-confirmed-login-to=wiki"
-msgstr "You have confirmed your email address and can now log on to the %1 workspace."
+msgstr "您已確認了您的電子郵件位址，已經可以登入到 %1 工作區。"
 
-#: share/template/email/password-change.html:24 share/template/email/password-change.txt:11
 msgid "email.enjoy!"
-msgstr "Enjoy!"
+msgstr "祝您使用愉快！"
 
-#: share/template/email/email-address-confirmation.txt:8
 msgid "email.follow-link-to-confirm-address-and-update-your-info:"
-msgstr "Please follow this link to confirm your address and update your information:"
+msgstr "請使用下列鏈結以確認您的位址，並更新您的資訊："
 
-#. (confirmation_uri)
-#: share/template/email/email-address-confirmation.html:26
 msgid "email.follow-link-to-confirm-email-and-update-your-info=uri"
-msgstr "Please follow <a href=\"%1\">this link to confirm your email address</a>. and update your information."
+msgstr "請使用<a href=\"%1\">該鏈結以確認您的電子郵件位址</a>。並更新您的資訊。"
 
-#: share/template/email/free50/account-invitation.txt:16 share/template/email/st/account-invitation-body.html:38 share/template/email/st/account-invitation.txt:18 share/template/email/st/workspace-invitation-body.html:38 share/template/email/st/workspace-invitation.txt:18
 msgid "email.follow-link-to-select-password:"
-msgstr "If you don't remember it, follow this link to select a new password:"
+msgstr "如果您忘記了，可使用下列鏈結選擇新密碼："
 
-#: share/template/email/password-change.txt:3
 msgid "email.follow-this-link-to-change-password:"
-msgstr "To change your password, please follow this link:"
+msgstr "要更改您的密碼，請使用此鏈結："
 
-#. (workspace.uri, escaped_title, email_date, email_time)
-#: share/template/email/recent-changes.html:16
 msgid "email.following-pages-have-recently-changed=uri,wiki,date,time"
-msgstr "The following pages in <a href=\"%1\">%2</a> have recently changed. This email was generated on %3 at %4."
+msgstr "下列位於 <a href=\"%1\">%2</a> 的頁面最近已被更改。本電子郵件生成於 %3，%4。"
 
 #. (workspace.title, email_date, email_time)
 #: share/template/email/recent-changes.txt:4
@@ -3106,9 +3057,8 @@ msgstr "帳戶名稱為必填"
 msgid "error.add-auw-failed=wikis"
 msgstr "無法開放下列工作區給全體用戶：%1"
 
-#: share/template/errors/require_business_admin:2
 msgid "error.admin-privileges-needed-to-access-uri"
-msgstr "You must have admin privileges to access this URI."
+msgstr "您必須擁有管理員權限來存取此網址。"
 
 msgid "error.admin-role-exists=user,wiki"
 msgstr "%1 已是 %2 工作區的管理員"
@@ -3212,9 +3162,8 @@ msgstr "列數值過大，最大值為 35。"
 msgid "error.configure-ntpd-failed=new-ts"
 msgstr "未能配置網路時間伺服器至 %1"
 
-#: share/template/errors/requires_confirmation:2
 msgid "error.confirm-email-to-activate-account"
-msgstr "You need to confirm your email address to activate this account."
+msgstr "您需要驗証電子郵件位址來啟動此帳戶。"
 
 msgid "error.confirmation-expired"
 msgstr "確認網址已過期。將重新發送確認郵件。"
@@ -3324,9 +3273,8 @@ msgstr "匯出目錄 %1 不可寫。"
 msgid "error.export=file"
 msgstr "無法寫入匯出檔案 %1，正在終止。"
 
-#: share/template/errors/requires_external_id:2
 msgid "error.external-id-needed-to-activate-account"
-msgstr "You need to have an External ID set in order to activate this account."
+msgstr "您必須使用外部ID來啟動此帳戶。"
 
 msgid "error.extract-skin"
 msgstr "無法解壓主題封存。這很可能是由損壞的封存檔案造成的。請檢查你的檔案，並重新上傳。"
@@ -3373,9 +3321,8 @@ msgstr "沒有權限上傳附件"
 msgid "error.filename-too-long"
 msgstr "網址編碼後檔案名太長。"
 
-#: share/template/errors/requires_external_id:4
 msgid "error.for-more-info-contact-sysadmin"
-msgstr "For more information, please contact your system administrator."
+msgstr "如需更多資訊，請聯絡您的系統管理員。"
 
 msgid "error.full-video-url-required"
 msgstr "請輸入完整的影片鏈結位址。"
@@ -3608,23 +3555,17 @@ msgstr "無法載入預覽。"
 msgid "error.loading-revision-failed"
 msgstr "無法載入修訂。"
 
-#. (workspace_name)
-#: share/template/errors/login_to_edit:3
 msgid "error.login-to-edit=wiki"
-msgstr "You must be logged in to edit the %1 workspace."
+msgstr "您必須登入才能編輯 %1 工作區。"
 
-#: share/template/errors/settings_requires_account:4
 msgid "error.login-to-set-preferences"
-msgstr "To set your preferences for a workspace, you must be logged in."
+msgstr "您必須登入才可以設定工作區的偏好設定。"
 
-#: share/template/errors/watchlist_requires_account:4
 msgid "error.login-to-use-watchlist-in-wiki"
-msgstr "To use the watchlist feature in a workspace, you must be logged in."
+msgstr "您必須登入才可以在工作區內部使用觀測表。"
 
-#. (workspace_name, redirect_to)
-#: share/template/errors/authenticate_to_read:3
 msgid "error.login-to-view=wiki,register-uri"
-msgstr "You must be logged in to view the %1 workspace. If you already have an account, please login now.<br /> Otherwise, you can <a href=\"/nlw/register.html?redirect_to=%2\">create a new account</a>"
+msgstr "您必須登入才可以瀏覽 %1 工作區。如果您已經擁有帳戶，請現在登入。<br />如果沒有，您可以<a href=\"/nlw/register.html?redirect_to=%2\">建立一個新帳戶。</a>"
 
 msgid "error.long-page-name=title"
 msgstr "您選擇的新頁面名稱『%1』，在網址編碼之後太長了。"
@@ -3980,10 +3921,8 @@ msgstr "必須指定一個插件。"
 msgid "error.private-and-public-key-required-for-captcha"
 msgstr "必須設定私鑰和公鑰方可開啟驗証碼"
 
-#. (escaped_str)
-#: share/template/errors/settings_requires_account:6 share/template/errors/watchlist_requires_account:6
 msgid "error.register-here=uri"
-msgstr "If you do not already have an account, you can <a href=\"/nlw/register.html?redirect_to=%1\">register here</a>."
+msgstr "如果您還沒有帳戶，您可以<a href=\"/nlw/register.html?redirect_to=%1\">在此註冊</a>."
 
 msgid "error.registration-disabled"
 msgstr "註冊號被停用。"
@@ -4030,13 +3969,11 @@ msgstr "命令（%1）必須指定一個 %2 和一個 %3。"
 msgid "error.required=field"
 msgstr "%1 是必填項。"
 
-#: share/template/errors/requires_password_change:10
 msgid "error.resend-change-of-password"
-msgstr "Resend Change of Password"
+msgstr "重新發送密碼變更"
 
-#: share/template/errors/requires_confirmation:10
 msgid "error.resend-confirmation"
-msgstr "Resend confirmation"
+msgstr "重新發送確認函"
 
 msgid "error.reserved-name=page"
 msgstr "『%1』 已被註冊。請另選其他名字。"
@@ -4341,21 +4278,17 @@ msgstr "您必須指定一個工作區."
 msgid "error.write-test-file-on-samba-share!"
 msgstr "無法在 Samba 共用中寫入測試檔案!!"
 
-#: share/template/errors/unauthorized_workspace:3
 msgid "error.you-are-not-authorized-to-view-this-wiki"
-msgstr "You are not authorized to view this workspace."
+msgstr "您不能存取此工作區。"
 
-#: share/template/errors/requires_password_change:2
 msgid "error.you-need-to-set-new-password-for-your-account"
-msgstr "You need to set a new password for your account."
+msgstr "您需要為您的帳戶設定新的密碼。"
 
-#: share/template/errors/requires_confirmation:4
 msgid "error.you-should-have-received-email-with-confirmation-link"
-msgstr "You should have received an email with a confirmation link."
+msgstr "您應該已經收到一封含有認証鏈結的電子郵件。"
 
-#: share/template/errors/requires_password_change:4
 msgid "error.you-should-have-received-email-with-link-allowing-you-to-do-so"
-msgstr "You should have received an email with a link allowing you to do so."
+msgstr "您應該已經收到一封電子郵件，該郵件含有的鏈結可以讓您如此操作。"
 
 msgid "event.add-tag-self=tag"
 msgstr "給自身加標籤 %1。"
@@ -4369,11 +4302,8 @@ msgstr "給 %1 加標籤 %2。"
 msgid "event.add-widget=user,widget,context"
 msgstr "%1 增加 %2 小工具（%3）。"
 
-#. (page_in_workspace, event.context.summary.remove('\s+$')
-#. (page_in_workspace, event.context.summary.remove("\\s+$"))
-#: share/template/data/events/page:17
 msgid "event.comment=page,summary"
-msgstr "commented on %1, saying, \"%2\""
+msgstr "對 %1 作出評論：『%2』"
 
 msgid "event.comment=page,wiki,summary"
 msgstr "在 %2 中評論 %1：『%3』"
@@ -4387,18 +4317,14 @@ msgstr "從 %3 中的 %2 移除 %1。"
 msgid "event.delete-tag=tag,person"
 msgstr "從 %2 中移除標籤 %1。"
 
-#. (page_in_workspace)
-#: share/template/data/events/page:15
 msgid "event.delete=page"
-msgstr "deleted %1."
+msgstr "刪除了 %1。"
 
 msgid "event.delete=page,wiki"
 msgstr "在 %2 中刪除 %1。"
 
-#. (page_in_workspace)
-#: share/template/data/events/page:11
 msgid "event.duplicate=page"
-msgstr "duplicated %1."
+msgstr "複製了 %1。"
 
 msgid "event.duplicate=page,wiki"
 msgstr "在 %2 中複製 %1。"
@@ -4409,15 +4335,11 @@ msgstr "編輯自身的個人資料。"
 msgid "event.edit-profile=person"
 msgstr "編輯 %1 的個人資料。"
 
-#. (page_in_workspace)
-#: share/template/data/events/page:8
 msgid "event.edit=page"
-msgstr "edited %1."
+msgstr "編輯了 %1。"
 
-#. (page_in_workspace, event.context.edit_summary)
-#: share/template/data/events/page:6
 msgid "event.edit=page,summary"
-msgstr "edited %1, saying \"%2\"."
+msgstr "對 %1 作出編輯：『%2』"
 
 msgid "event.edit=page,wiki"
 msgstr "在 %2 中複製 %1。"
@@ -4431,10 +4353,8 @@ msgstr "開始關注 %1。"
 msgid "event.generic-self=action"
 msgstr "對自身執行動作 %1。"
 
-#. (event.action, page_in_workspace)
-#: share/template/data/events/page:27
 msgid "event.generic=action,page"
-msgstr "performed action %1 on %2."
+msgstr "已對 %2 執行了 %1 操作。"
 
 msgid "event.generic=action,page,wiki"
 msgstr "在 %3 中的 %2 執行動作 %1."
@@ -4442,10 +4362,8 @@ msgstr "在 %3 中的 %2 執行動作 %1."
 msgid "event.generic=action,person"
 msgstr "在 %2 執行動作 %1。"
 
-#. (page, workspace)
-#: share/template/data/event:53
 msgid "event.in=page,wiki"
-msgstr "%1 in %2"
+msgstr "%2 內的 %1"
 
 msgid "event.join=group"
 msgstr "加入群組 %1。"
@@ -4465,46 +4383,32 @@ msgstr "從組 %2 中移除 %1。"
 msgid "event.leave=user,wiki"
 msgstr "從工作區 %2 中移除 %1。"
 
-#. (page_in_workspace)
-#: share/template/data/events/page:13
 msgid "event.rename=page"
-msgstr "renamed %1."
+msgstr "重新命名了 %1。"
 
-#. (page_tag, page_in_workspace)
-#: share/template/data/events/page:21
 msgid "event.tag-delete=tag,page"
-msgstr "removed tag %1 from %2."
+msgstr "從 %2 移除了標籤 %1。"
 
-#. (page_in_workspace, page_tag)
-#: share/template/data/events/page:19
 msgid "event.tag=page,tag"
-msgstr "tagged %1 as %2."
+msgstr "為 %2 新增了標籤 %1。"
 
 msgid "event.unfollow=person"
 msgstr "停止關注 %1。"
 
-#. (event.event_class)
-#: share/template/data/event:75 share/template/data/event:90
 msgid "event.unknown=event-class"
-msgstr "Unknown event class: %1"
+msgstr "未知分類的事件：%1"
 
 msgid "event.update-widget=actor,widget"
 msgstr "%1 更新 %2 小工具。"
 
-#. (page_in_workspace)
-#: share/template/data/events/page:3
 msgid "event.view=page"
-msgstr "viewed %1."
+msgstr "檢視了 %1。"
 
-#. (page_in_workspace)
-#: share/template/data/events/page:25
 msgid "event.watch-delete=page"
-msgstr "stopped watching %1."
+msgstr "停止關注 %1。"
 
-#. (page_in_workspace)
-#: share/template/data/events/page:23
 msgid "event.watch=page"
-msgstr "started watching %1."
+msgstr "開始關注 %1。"
 
 msgid "every.15minutes"
 msgstr "每15分鐘"
@@ -5409,7 +5313,6 @@ msgstr "搜尋用戶並邀請"
 msgid "invite.sign-in-with:"
 msgstr "用下面的資訊登入："
 
-#: share/template/email/standard-footer.html:12 share/template/email/standard-footer.txt:5
 msgid "invite.socialtext-footer"
 msgstr "由 Socialtext 為您帶來。"
 
@@ -5455,20 +5358,17 @@ msgstr "<此處是您的個人消息。>"
 msgid "job.all=class"
 msgstr "所有 %1 工作"
 
-#: share/template/data/job.html:25 share/template/data/job_list.html:29
 msgid "job.args"
-msgstr "Args"
+msgstr "參數"
 
-#: share/template/data/job.html:18 share/template/data/job_stats.html:25
 msgid "job.class"
-msgstr "Class"
+msgstr "類型"
 
 msgid "job.cleaned=count"
 msgstr "完成 %1 的清理作業。"
 
-#: share/template/data/job.html:24 share/template/data/job_list.html:28
 msgid "job.coalesce"
-msgstr "Coalesce"
+msgstr "合並"
 
 msgid "job.count-delay"
 msgstr "有啟動延時的作業數量"
@@ -5485,69 +5385,56 @@ msgstr "『抓取』的作業數量"
 msgid "job.count-success"
 msgstr "成功作業計數"
 
-#: share/template/data/job.html:21 share/template/data/job_list.html:25
 msgid "job.created"
-msgstr "Created"
+msgstr "已建立"
 
-#: share/template/data/job_stats.html:27
 msgid "job.delayed"
-msgstr "Delayed"
+msgstr "已延遲"
 
 msgid "job.deprecated=type"
 msgstr "作業 %1 已經過期，刪除之。"
 
-#: share/template/data/job_stats.html:36
 msgid "job.earliest-nodelay"
-msgstr "Earliest NoDelay"
+msgstr "最早（無延遲）"
 
-#: share/template/data/job_stats.html:35
 msgid "job.earliest-queued"
-msgstr "Earliest Queued"
+msgstr "最早（等候中）"
 
-#: share/template/data/job_stats.html:28
 msgid "job.grabbed"
-msgstr "Grabbed"
+msgstr "已抓取"
 
-#: share/template/data/job.html:23 share/template/data/job_list.html:27
 msgid "job.grabbed-until"
-msgstr "Grabbed Until"
+msgstr "已抓取至"
 
-#: share/template/data/job.html:17 share/template/data/job_list.html:22
 msgid "job.id"
-msgstr "ID"
+msgstr "編號"
 
-#: share/template/data/job.html:19 share/template/data/job_list.html:23
 msgid "job.key"
-msgstr "Key"
+msgstr "鍵值"
 
 msgid "job.key:"
 msgstr "關鍵字："
 
-#: share/template/data/job_stats.html:37
 msgid "job.last-5min"
-msgstr "Last 5min"
+msgstr "前 5 分鐘"
 
-#: share/template/data/job_stats.html:32
 msgid "job.last-fail"
-msgstr "Last Fail"
+msgstr "上次失效"
 
 msgid "job.last-failure"
 msgstr "最近的故障時間"
 
-#: share/template/data/job_stats.html:31
 msgid "job.last-ok"
-msgstr "Last OK"
+msgstr "上次成功"
 
 msgid "job.last-success"
 msgstr "最近的成功時間"
 
-#: share/template/data/job_stats.html:34
 msgid "job.latest-nodelay"
-msgstr "Latest NoDelay"
+msgstr "最新（無延遲）"
 
-#: share/template/data/job_stats.html:33
 msgid "job.latest-queued"
-msgstr "Latest Queued"
+msgstr "最新（等候中）"
 
 msgid "job.newest"
 msgstr "最近（最新）入隊時間"
@@ -5555,13 +5442,11 @@ msgstr "最近（最新）入隊時間"
 msgid "job.newest-without-delay"
 msgstr "最近（最新）入隊的時候，沒有延時啟動"
 
-#: share/template/data/job_stats.html:30
 msgid "job.num-fail"
-msgstr "Num Fail"
+msgstr "失敗數"
 
-#: share/template/data/job_stats.html:29
 msgid "job.num-ok"
-msgstr "Num OK"
+msgstr "成功數"
 
 msgid "job.oldest"
 msgstr "最早（時間最長）入隊時間"
@@ -5569,17 +5454,14 @@ msgstr "最早（時間最長）入隊時間"
 msgid "job.oldest-without-delay"
 msgstr "最早（時間最長）入隊時間，沒有延時啟動"
 
-#: share/template/data/job.html:20 share/template/data/job_list.html:24
 msgid "job.prio"
-msgstr "Prio"
+msgstr "優先等級"
 
-#: share/template/data/job_stats.html:26
 msgid "job.queued"
-msgstr "Queued"
+msgstr "等候中"
 
-#: share/template/data/job.html:22 share/template/data/job_list.html:26
 msgid "job.run-after"
-msgstr "Run After"
+msgstr "運行起始"
 
 msgid "job.total"
 msgstr "作業總數"
@@ -5677,22 +5559,17 @@ msgstr "下一頁"
 msgid "lite.previous-page"
 msgstr "上一頁"
 
-#. (lite ? '/m/login' : '/challenge')
-#: share/template/authen/element/forgot_password_page:17
 msgid "login.back-to=uri"
-msgstr "Back to <a href=\"%1\">Log in to Socialtext</a>."
+msgstr "返回 <a href=\"%1\">登入 Socialtext</a>。"
 
-#: share/template/authen/authenticated_join.html:4
 msgid "login.click"
-msgstr "Click"
+msgstr "點選"
 
-#: share/template/authen/element/choose_password_form:9 share/template/authen/register.html:6
 msgid "login.click-here-to-login-with-existing-account"
-msgstr "Click here to log in with an existing account."
+msgstr "點選此處，以使用已有帳號登入。"
 
-#: share/template/authen/logout.html:21
 msgid "login.click-login-in-upper-right"
-msgstr "Click \"Log in\" in the upper-right to log in."
+msgstr "點選右上角的『登入』。"
 
 msgid "login.confirmed=email"
 msgstr "郵箱 %1 已確認，請登陸。"
@@ -5706,159 +5583,133 @@ msgstr "登入控制面板"
 msgid "login.email-address"
 msgstr "郵件"
 
-#: share/template/authen/element/register_form:10
 msgid "login.email-address:"
-msgstr "Email Address:"
+msgstr "電子郵件位址："
 
 msgid "login.email-required"
 msgstr "請輸入郵箱。"
 
-#. (from_address)
-#: share/template/authen/element/forgot_password_page:13
 msgid "login.email-we-send-will-come-from=address"
-msgstr "The email we will send you will come from <strong>%1</strong>. To ensure you receive it, please add <strong>%1</strong> to your address book or safe list."
+msgstr "我們將向您發送的電子郵件來自 <strong>%1</strong>。為了確保您能夠收到，請將 <strong>%1</strong> 新增到您的位址簿。"
 
 msgid "login.email:"
 msgstr "登入郵箱："
 
-#: share/template/authen/element/forgot_password_page:6
 msgid "login.enter-email-below-to-recover-password"
-msgstr "Enter your email address below. Enter the email address you normally use for your Socialtext account. If you got here by clicking a link you received in an email message, look at that message, and use the email address it was sent to."
+msgstr "在下方輸入您用於 Socialtext 帳戶的電子郵件位址。如果您是從電子郵件內的鏈結被帶到此處，請查閱並輸入該電子郵件的收件人位址。"
 
-#: share/template/authen/error.html:3 share/template/authen/error.html:7
 msgid "login.error"
-msgstr "Error"
+msgstr "錯誤"
 
-#: share/template/authen/register.html:5
 msgid "login.fill-in-info-to-create-account"
-msgstr "Please fill in the following information to create a Socialtext account."
+msgstr "請填入以下資訊來建立 Socialtext 帳戶。"
 
-#. (to_create)
-#: share/template/authen/element/choose_password_form:8
 msgid "login.fill-in-info-to-create=account-type"
-msgstr "Please fill in the following information to create a %1."
+msgstr "請填入以下資訊來建立一個%1。"
 
-#: share/template/authen/join.html:28
 msgid "login.fill-in-info-to-register:"
-msgstr "If you don't have a Socialtext account already, please fill in the following information:"
+msgstr "如果您還沒有申請 Socialtext 帳號，請鍵入以下資訊："
 
-#: share/template/authen/element/register_form:25
 msgid "login.first-name:"
-msgstr "First Name:"
+msgstr "名字："
 
-#: share/template/authen/element/forgot_password_link:4
 msgid "login.forgot-my-password"
-msgstr "I don't know my password."
+msgstr "我不知道我的密碼。"
 
-#: share/template/authen/forgot_password.html:3
 msgid "login.forgot-password"
-msgstr "Forgot Password"
+msgstr "忘記密碼"
 
-#: share/template/authen/authenticated_join.html:4
 msgid "login.here"
-msgstr "here"
+msgstr "這裡"
 
 msgid "login.is-disabled"
 msgstr "無法登入"
 
-#: share/template/authen/authenticated_join.html:3
 msgid "login.join"
-msgstr "Join"
+msgstr "加入"
 
-#. (target_workspace.title)
-#: share/template/authen/join.html:7
 msgid "login.join=wiki"
-msgstr "Join %1"
+msgstr "加入 %1"
 
-#: share/template/authen/element/register_form:30
 msgid "login.last-name:"
-msgstr "Last Name:"
+msgstr "姓氏："
 
-#: share/template/authen/element/login_form:33 share/template/authen/element/login_form:40
 msgid "login.log-in"
-msgstr "Log in"
+msgstr "登入"
 
-#: share/template/authen/logout.html:7
 msgid "login.logged-out-of-socialtext"
-msgstr "Logged out of Socialtext"
+msgstr "登出 Socialtext"
 
-#: share/template/authen/join.html:3 share/template/authen/login.html:3
 msgid "login.login"
-msgstr "Login"
+msgstr "登入"
 
-#: share/template/authen/nologin.html:1 share/template/authen/nologin.html:5
 msgid "login.login-disabled"
-msgstr "Login Disabled"
+msgstr "登入已禁用"
 
-#: share/template/authen/login.html:7
 msgid "login.login-to-socialtext"
-msgstr "Log in to Socialtext"
+msgstr "登入到 Socialtext"
 
-#: share/template/authen/join.html:18
 msgid "login.login-with-socialtext-account:"
-msgstr "Log in with your Socialtext account:"
+msgstr "使用您的 Socialtext 帳戶來登入："
 
-#: share/template/authen/logout.html:3
 msgid "login.logout"
-msgstr "Logout"
+msgstr "登出"
 
 msgid "login.name:"
 msgstr "用戶名"
 
-#: share/template/authen/element/forgot_password_page:2
 msgid "login.no-problem-we-can-send-you-email"
-msgstr "No problem, we can send you an email that will help. You will be able to change your password back to something you know."
+msgstr "沒問題，我們可以發送一封電子郵件給您，讓您重新設定密碼。"
 
 #: share/template/authen/element/register_form:26 share/template/authen/element/register_form:31
 msgid "login.optional"
-msgstr "(Optional)"
+msgstr "(非必填)"
 
 #: share/template/authen/element/login_form:17 share/template/authen/element/register_form:15
 msgid "login.password:"
-msgstr "Password:"
+msgstr "密碼："
 
 #: share/template/authen/element/choose_password_form:25 share/template/authen/element/register_form:20
 msgid "login.re-type-password:"
-msgstr "Re-type Password:"
+msgstr "重新鍵入密碼："
 
 #: share/template/authen/element/choose_password_form:35 share/template/authen/element/register_form:41 share/template/authen/register.html:3
 msgid "login.register"
-msgstr "Register"
+msgstr "註冊"
 
 #: share/template/authen/element/login_form:24
 msgid "login.remember-me"
-msgstr "Remember me on this computer."
+msgstr "在這台電腦上保持登入。"
 
-#: share/template/authen/forgot_password.html:3
 msgid "login.socialtext-password-help"
-msgstr "Socialtext password help"
+msgstr "Socialtext 密碼支援"
 
 #: share/template/authen/element/forgot_password_form:13
 msgid "login.submit"
-msgstr "Submit"
+msgstr "送出"
 
 msgid "login.title"
 msgstr "Socialtext登入"
 
 #: share/template/authen/authenticated_join.html:4
 msgid "login.to-continue"
-msgstr "to continue"
+msgstr "以繼續使用 Socialtext。"
 
 msgid "login.username"
 msgstr "用戶名"
 
 #: share/template/authen/element/choose_password_form:13
 msgid "login.username:"
-msgstr "Username:"
+msgstr "用戶名稱："
 
 #. (target_workspace.title, target_workspace.account.name)
 #: share/template/authen/authenticated_join.html:4
 msgid "login.you-have-joined-click=wiki,group"
-msgstr "You have joined the %1 Workspace in the %2 Group. Click"
+msgstr "您已成功加入 %2 社群內的 %1 工作區。請點選"
 
 #: share/template/authen/logout.html:18
 msgid "login.you-have-logged-out-of-socialtext"
-msgstr "You have logged out of Socialtext."
+msgstr "您已成功登出 Socialtext。"
 
 msgid "lookahead.all-results"
 msgstr "顯示所有結果..."
@@ -6390,7 +6241,7 @@ msgstr "更改密碼"
 
 #: share/template/authen/element/choose_password_form:20
 msgid "password.choose:"
-msgstr "選擇密碼："
+msgstr "指定密碼："
 
 msgid "password.current:"
 msgstr "當前密碼："

@@ -1309,7 +1309,7 @@
 "login.socialtext-password-help":"Socialtext password help",
 "login.submit":"Submit",
 "login.title":"Socialtext Login",
-"login.to-continue":"to continue",
+"login.to-continue":"to continue.",
 "login.username:":"Username:",
 "login.you-have-joined-click=wiki,group":"You have joined the [_1] Workspace in the [_2] Group. Click",
 "login.you-have-logged-out-of-socialtext":"You have logged out of Socialtext.",
