@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 146;
+use Test::Socialtext tests => 159;
 use Test::Differences;
 use Test::Output qw/stderr_is/;
 use Socialtext::CLI;

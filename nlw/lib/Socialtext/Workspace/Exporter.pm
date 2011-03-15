@@ -132,6 +132,10 @@ sub user_to_export {
     delete $exported_user->{user_id};
     $exported_user->{plugin_prefs} = $plugin_prefs if %$plugin_prefs;
 
+    $exported_user->{restrictions} = [
+        map { $_->to_hash } $user->restrictions->all
+    ];
+
     return $exported_user;
 }
 

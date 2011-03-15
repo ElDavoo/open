@@ -38,7 +38,7 @@ has_user 'editor' => (is => 'rw');
 has 'edit_time'   => (
     is => 'rw', isa => 'Pg.DateTime',
     coerce => 1,
-    default => sub { Socialtext::Date->now(hires=>1) },
+    default => sub { Socialtext::Date->now(hires=>1, timezone=>'GMT') },
 );
 
 has 'page_type' => (is => 'rw', isa => 'PageType', default => 'wiki');

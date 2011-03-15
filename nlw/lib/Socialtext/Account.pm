@@ -393,6 +393,10 @@ sub _dump_user_to_hash {
         $hash->{roles}{$acct->name} = $uar->name;
     }
 
+    $hash->{restrictions} = [
+        map { $_->to_hash } $user->restrictions->all
+    ];
+
     return $hash;
 }
 
@@ -528,6 +532,14 @@ sub import_file {
         if (my $profile = delete $user_hash->{profile}) {
             $profile->{user} = $user;
             push @profiles, $profile;
+        }
+
+        # Apply any restrictions that existed in the export back to the User
+        foreach my $r (@{$user_hash->{restrictions}}) {
+            Socialtext::User::Restrictions->CreateOrReplace( {
+                user_id => $user->user_id,
+                %{$r},
+            } );
         }
     }
 

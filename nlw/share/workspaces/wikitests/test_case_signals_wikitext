@@ -26,7 +26,6 @@
 
 | *Comment* | Test Case: Signals Wikitext web link |  |
 | post-signal | `http://www.socialtext.com#%%start_time%%` |  |
-| wait_for_element_visible_ok | `//a[contains(@href,'http://www.socialtext.com#%%start_time%%')]` | 30000 |
 | wait_for_element_visible_ok | `link=http://www.socialtext.com#%%start_time%%` | 30000 |
 
 | *Comment* | Test Case: Signals Wikitext bracketed web link |  |
@@ -35,7 +34,6 @@
 
 | *Comment* | Test Case: Signals Wikitext named web link |  |
 | post-signal | `"MARCOM Website %%start_time%%"<http://www.socialtext.com#%%start_time%%-2>` |  |
-| wait_for_element_visible_ok | `//a[contains(@href,'http://www.socialtext.com#%%start_time%%-2')]` | 30000 |
 | wait_for_element_visible_ok | `link=MARCOM Website %%start_time%%` | 30000 |
 
 | *Comment* | Test Case: Signals Wikitext named web link with mention |  |

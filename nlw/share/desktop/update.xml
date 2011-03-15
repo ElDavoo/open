@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>4.7.0</version>
-  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.7.0.air</url>
-  <description><![CDATA[[4.7.0 - Fri Mar 11 08:39:16 PST 2011]
-* Signals: Disable network toggling when the user clicks "More". {bz: 4979}
+  <version>4.7.0.1</version>
+  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.7.0.1.air</url>
+  <description><![CDATA[[4.7.0.1 - Fri Mar 11 20:06:36 PST 2011]
+(Enhancements)
+* Signals: Disable network toggling when fetching "More" in threadview. {bz: 4979}
 * Activity: Resume requests after server upgrade. {bz: 4834}
 
 [4.6.3 - Thu Feb 17 14:42:55 PST 2011]

@@ -8,6 +8,7 @@ use Socialtext::System ();
 use Socialtext::Log qw/st_log/;
 use Socialtext::AppConfig;
 
+use File::Slurp 'slurp';
 use HTML::Parser ();
 use HTML::HeadParser ();
 use HTML::Entities qw/decode_entities/;
@@ -68,9 +69,9 @@ sub stringify_html {
         my $rv = $? >> 8;
         if ($rv) {
             $@ ||= "code $rv";
-            my $err = do { local (@ARGV,$/) = "$temp_filename.err"; <> } || '';
-            $@ = "HTML stringifier failed: $@ $err";
-            $$buf_ref = '';
+            my $err = '';
+            $err = slurp("$temp_filename.err") if -s "$temp_filename.err";
+            $@ = "HTML stringifier failed: $@ $err (code: $rv)";
             return;
         }
         else {

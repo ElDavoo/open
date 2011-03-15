@@ -943,7 +943,7 @@ sub st_admin {
     # Invocations with redirected input *needs* to be done against the shell,
     # but other commands can be done in-process.  Also have to watch out for
     # "st-admin help", which *has* to be shelled out for.
-    my ($out, $err) = ($options =~ /<|^\s*-*help/)
+    my ($out, $err) = ($options =~ /<|^\s*-*help|index-workspace/)
         ? _st_admin_shell_out(@argv)
         : _st_admin_in_process(@argv);
 

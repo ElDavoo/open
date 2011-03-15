@@ -22,6 +22,7 @@ use Socialtext::System qw/shell_run/;
 use Socialtext::Page::TablePopulator;
 use Socialtext::User::Default::Users;
 use Socialtext::User;
+use Socialtext::User::Restrictions;
 use Socialtext::PreferencesPlugin;
 use YAML ();
 
@@ -410,6 +411,7 @@ sub _import_users {
         delete $info->{primary_account_id};
         my $plugin_prefs = delete($info->{plugin_prefs}) || {};
         my $indirect     = delete($info->{indirect})     || 0;
+        my $restrictions = delete($info->{restrictions}) || [];
 
         my $user = Socialtext::User->new( username => $info->{username} )
                 || Socialtext::User->new( email_address => $info->{email_address} )
@@ -420,6 +422,13 @@ sub _import_users {
             my $adapter = Socialtext::Pluggable::Adapter->new;
             $adapter->make_hub($user);
             $adapter->hook('nlw.import_user_prefs', [$plugin_prefs]);
+        }
+
+        foreach my $r (@{$restrictions}) {
+            Socialtext::User::Restrictions->CreateOrReplace( {
+                user_id => $user->user_id,
+                %{$r},
+            } );
         }
     }
 

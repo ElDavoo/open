@@ -15,9 +15,9 @@
 | set | title | SignalsWikiPage%%start_time%% |
 | set | title_prefix | Signals |
 | set | title_suffix | WikiPage%%start_time%% |
-| set | page | %%title%% |
-| set | page_prefix | %%title_prefix%% |
-| set | page_suffix | %%title_suffix%% |
+| set | page | pageinwiki%%start_time%% |
+| set | page_prefix | pagein |
+| set | page_suffix | wiki%%start_time%% |
 | set | section | signals_section_%%start_time%% |
 
 | st-admin | create-workspace --empty --name %%wiki%% --title %%title%% --account %%acct%% | created |

@@ -1,10 +1,12 @@
+
 | *Comment* | Test Case: Command-Line User Restrictions |  |
 | *Comment* | Test Case: Command-Line User Restrictions NOTE: Other restrictions also in test_case_business_control_panel_confirm_user and test_case_user_restrictions |  |
 
 
 | *Comment* | Test Case: Command-Line User Restrictions |  |
-| set | acct | restrictmd%%start_time%% |
+| set | acct | restrictmd-%%start_time%% |
 | st-admin | create-account --name %%acct%% | was created |
+
 | *Comment* | Test Case: Now test command-line; create user |  |
 | set | user | mattrestrict%%start_time%% |
 | set | euser | %%user%%@matt.socialtext.net |
@@ -62,7 +64,6 @@
 | st-admin | remove-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | '%%euser%%' does not have the 'email_confirmation' restriction |
 | st-admin | list-restrictions --e %%euser%% | No restrictions for user |
 
-
 | st-admin | add-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | %%euser%% has been given the 'email_confirmation' restriction |
 | st-admin | remove-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | 'email_confirmation' restriction has been lifted on '%%euser%%' |
 | st-admin | remove-restriction --e %%euser%% --restriction require_external_id --restriction email_confirmation --restriction password_change | '%%euser%%' does not have the 'email_confirmation' restriction |
@@ -101,9 +102,9 @@
 | wait_for_text_present_ok | Welcome, New User | 30000 |
 
 | *Comment* | Test Case: Command-Line User Restrictions TEARDOWN |  |
+| st-process-jobs |  |  |
 | delete-workspace | %%acct%%-central |  |
 | st-admin | deactivate-user --e %%euser%% | has been deactivated |
-| st-process-jobs |  |  |
-
+| delete-account | %%acct%% |  |
 
 | *Comment* | Test Case: Command-Line User Restrictions COMPLETED |  |
