@@ -84,6 +84,8 @@
 "ago.1min":"一分钟前",
 "ago.1minute":"一分钟之前",
 "ago.<1minute":"不到一分钟前",
+"ago.about-1day":"about one day ago",
+"ago.about-1hour":"about one hour ago",
 "ago.days=count":"[_1] 天前",
 "ago.hours=count":"[_1] 小时前",
 "ago.mins=count":"[_1]分钟前",

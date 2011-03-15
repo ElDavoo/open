@@ -651,6 +651,14 @@ msgstr "zzz zzzzzz zzz"
 msgid "ago.<1minute"
 msgstr "zzzz zzzz z zzzzzz zzz"
 
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:8 share/skin/s3/template/view/page/display:15
+msgid "ago.about-1day"
+msgstr "zzzzz zzz zzz zzz"
+
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:5 share/skin/s3/template/view/page/display:10
+msgid "ago.about-1hour"
+msgstr "zzzzz zzz zzzz zzz"
+
 #. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
 #. (this.round(minutes / 1440)
 #. (this.round(minutes / 1440))
@@ -678,14 +686,6 @@ msgstr "%1 zzz. zzz"
 #: share/plugin/widgets/share/javascript/template/activities/ago.tt2:4 share/skin/s3/template/view/page/display:9
 msgid "ago.minutes=count"
 msgstr "%1 zzzzzzz zzz"
-
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:8 share/skin/s3/template/view/page/display:15
-msgid "ago.~1day"
-msgstr "zzzzz zzz zzz zzz"
-
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:5 share/skin/s3/template/view/page/display:10
-msgid "ago.~1hour"
-msgstr "zzzzz zzz zzzz zzz"
 
 #: share/plugin/analytics/template/cp_google_analytics:6
 msgid "analytics.id:"
