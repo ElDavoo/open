@@ -61,7 +61,7 @@ use base 'Socialtext::Formatter::Phrase';
 use Class::Field qw( const );
 
 const formatter_id  => 'em';
-const pattern_start => qr/(^|(?<=[^${ALPHANUM}_]))_(?=\S[^_]*_(?=\W|\z))/;
+const pattern_start => qr/(^|(?<=[^{$ALPHANUM}_]))_(?=\S)(?!_)/;
 const pattern_end   => qr/(?<![\s_])_(?=[^{$ALPHANUM}_]|\z)/;
 const html_start    => "<em>";
 const html_end      => "</em>";
