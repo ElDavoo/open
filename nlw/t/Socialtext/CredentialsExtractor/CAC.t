@@ -194,7 +194,7 @@ auto_provision_user: {
     my $first  = 'Ian';
     my $middle = 'Lancaster';
     my $last   = 'Fleming';
-    my $edipin = '123456789';
+    my $edipin = time;
 
     # Create a User, flag them as being partially provisioned.
     my $user = create_test_user(
@@ -226,7 +226,7 @@ auto_provision_multiple_users: {
     my $first  = 'Lois';
     my $middle = 'Ruth';
     my $last   = 'Hooker';
-    my $edipin = '123456789';
+    my $edipin = time;
 
     # Create a Business Admin to receive error notifications
     my $badmin = create_test_user;
@@ -285,7 +285,7 @@ auto_provision_no_users: {
     my $first  = 'Thomas';
     my $middle = 'Sean';
     my $last   = 'Connery';
-    my $edipin = '123456789';
+    my $edipin = time;
 
     # Create a Business Admin to receive error notifications
     my $badmin = create_test_user;
