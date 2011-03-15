@@ -126,20 +126,36 @@ sub _notify_business_admins {
     # another one; throttle ourselves to "one notification every 'n' seconds".
     return if ($class->_notification_recently_sent_for($username));
 
+    # Send a notification to *ALL* Business Admin's
+    $class->_send_notification(
+        recipients => [ Socialtext::User->AllBusinessAdmins->all ],
+        username   => $username,
+        subject    => $subject,
+        body       => $body,
+    );
+}
+
+sub _send_notification {
+    my $class  = shift;
+    my %params = @_;
+    my $username   = $params{username};
+    my $subject    = $params{subject};
+    my $body       = $params{body};
+    my $recipients = $params{recipients};
+
     # Dump the attachment body to file, so we can slurp it in and create an
     # Upload
     my $tmpfile = File::Temp->new(CLEANUP => 1);
     $tmpfile->print($body);
     $tmpfile->close;
 
-    # Send a DM Signal to all of the Business Admins, with our attachment.
+    # Send a DM Signal to all recipients, with our attachment.
     #
-    # NOTE: The DM has to come *FROM* the Business Admin *TO* himself; we've
-    # got no other guarantee of visibility from any other User record to the
-    # Business Admin.
-    my $now     = Socialtext::Date->now;
-    my @badmins = Socialtext::User->AllBusinessAdmins->all;
-    foreach my $user (@badmins) {
+    # NOTE: The DM has to come *FROM* the recipient *TO* himself; we've got no
+    # other guarantee of visibility from any other User record to the
+    # recipient.
+    my $now = Socialtext::Date->now;
+    foreach my $user (@{$recipients}) {
         my $creator = $user;
 
         my $upload = Socialtext::Upload->Create(
@@ -167,8 +183,6 @@ sub _notify_business_admins {
             ],
         } );
     }
-
-    return;
 }
 
 sub _notification_recently_sent_for {
