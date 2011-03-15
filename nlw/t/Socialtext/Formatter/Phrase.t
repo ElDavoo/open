@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 17;
+use Test::Socialtext tests => 18;
 fixtures(qw( empty ));
 
 BEGIN {
@@ -197,5 +197,19 @@ NonSmiley_UnFriendly: {
     my $html = $page->to_html;
     unlike $html, qr{:\*\)},
          'Non-smileys are still rendered as phrases';
+}
+
+UnderScore_InBetween: {
+    my $hub = new_hub('empty');
+
+    my $page = Socialtext::Page->new( hub => $hub )->create(
+        title   => 'underscore-inbetween',
+        content => '_hello duckduck_goose moose_',
+        creator => $hub->current_user,
+    );
+
+    my $html = $page->to_html;
+    like $html, qr{<em>},
+         'Underscores inbetween words does not prevent emphasis';
 }
 

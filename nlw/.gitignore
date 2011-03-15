@@ -579,3 +579,5 @@ t/js/activities-eventlist.t.js
 lib/Socialtext/Appliance/PgPITR.pm
 lib/Socialtext/Appliance/PgBackup.pm
 lib/Socialtext/Appliance/PgRestore.pm
+t/js/activities-dm.t.js
+t/js/activities.js
