@@ -121,10 +121,10 @@
   <td class="st-widget-dialog-editfield">
     [% IF !size %][% size='scaled' %][% END %]
     [% sizes = [
-        ['small', loc('Small'), 100],
-        ['medium', loc('Medium'), 300],
-        ['large', loc('Large'), 600],
-        ['scaled', loc('Scaled to fit'), 0]
+        ['small', loc('wikiwyg.small'), 100],
+        ['medium', loc('wikiwyg.medium'), 300],
+        ['large', loc('wikiwyg.large'), 600],
+        ['scaled', loc('wikiwyg.scaled-to-fit'), 0]
        ]
     %]
     <table>
@@ -166,10 +166,10 @@
   <td class="st-widget-dialog-editfield">
     [% IF !size %][% size='original' %][% END %]
     [% sizes = [
-        ['small', loc('Small'), 240],
-        ['medium', loc('Medium'), 480],
-        ['large', loc('Large'), 640],
-        ['original', loc('Original Size'), 0]
+        ['small', loc('wikiwyg.small'), 240],
+        ['medium', loc('wikiwyg.medium'), 480],
+        ['large', loc('wikiwyg.large'), 640],
+        ['original', loc('wikiwyg.original-size'), 0]
        ]
     %]
     <table>
