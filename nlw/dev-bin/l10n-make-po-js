@@ -127,12 +127,18 @@ sub gen_po {
             open my $diff, '<', "$po_file.diff";
             open my $diff_po, '>', "$po_file.diff.txt";
             while (<$diff>) {
-                if (/\+msgid "([^"]+)"/) {
-                    print $diff_po "[[[$1]]]\n";
+                my $out;
+                if (/\+msgid "(.+)"/) {
+                    $out = "[[[$1]]]";
                 }
-                elsif (/\+msgstr "([^"]+)"/) {
-                    print $diff_po "$1\n\n";
+                elsif (/\+msgstr "(.+)"/) {
+                    $out = "$1\n";
                 }
+                else {
+                    next;
+                }
+                $out =~ s/\\([\\"])/$1/g;
+                say $diff_po $out;
             }
             warn "*** Diff for myGengo generated successfully: $po_file.diff.txt\n"
         }

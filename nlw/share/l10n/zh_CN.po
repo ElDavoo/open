@@ -629,7 +629,7 @@ msgid "blog.navigation"
 msgstr "博客导航"
 
 msgid "blog.navigation-for=tag"
-msgstr "导航到：%1"
+msgstr "导航框：%1"
 
 msgid "blog.new"
 msgstr "新建博客"
@@ -681,6 +681,23 @@ msgstr "分享此页!"
 
 msgid "bookmarklet.tip"
 msgstr "小秘诀：您可利用“"
+
+#: share/template/bugs_content.html:5
+msgid "bug.application-error"
+msgstr "Application Error"
+
+#: share/template/bugs_dump.html:5
+msgid "bug.application-error-dump"
+msgstr "Application Error Bug Dump"
+
+#: share/template/bugs_content.html:17
+msgid "bug.application-error-occurred"
+msgstr "An application error has occurred in the Socialtext Workspace system."
+
+#. (script_name, bug_id)
+#: share/template/bugs_content.html:20
+msgid "bug.comment-box=script,id"
+msgstr "You can assist the Socialtext team to fix this bug by entering a comment about what actions you were performing when this bug occurred<a href=\"%1?action=bugs_dump;bug_id=%2\" style=\"text-color: black; text-decoration: none;\">.</a> Please enter your comments in the box below."
 
 msgid "bug.contact-support"
 msgstr "请填写<a href=\"http://www.socialtext.com/customers/support_request.php\">技术支持请求</a>表格，联系Socialtext，描述错误发生的时间，以及发生错误之前的操作。"
@@ -2533,11 +2550,87 @@ msgstr "添加所有成员"
 msgid "email.add-note?"
 msgstr "在邮件前面添加以下段落？"
 
+#. (inviting_user, group_name)
+#: share/template/email/st/group-invitation.txt:22
+msgid "email.added-you-to-group=user,group"
+msgstr "%1 has added you to the group: %2"
+
+#. (group_name)
+#: share/template/email/st/group-invitation-body.html:36
+msgid "email.added-you-to=group"
+msgstr "has added you to the group: %1"
+
+#. (workspace_uri)
+#: share/template/email/st/workspace-admin-invitation.txt:5
+msgid "email.address-of-new-wiki-is=uri"
+msgstr "The web address of the new workspace is %1"
+
 msgid "email.address-or-name"
 msgstr "請输入邮件地址或用户名"
 
 msgid "email.another-example"
 msgstr "another.friend@example.com"
+
+#. (escaped_str2)
+#: share/template/email/password-change.html:20
+msgid "email.any-questions-contact-support-link=uri"
+msgstr "If you have any questions, please feel free to <a href=\"%1\">Contact Support</a>."
+
+#. (appconfig.support_address)
+#: share/template/email/password-change.txt:9
+msgid "email.any-questions-contact-support=uri"
+msgstr "If you have any questions, please feel free to contact support at %1."
+
+#: share/template/email/st/group-invitation-body.html:39 share/template/email/st/group-invitation.txt:24
+msgid "email.as-member-you-can-send-signals-to-group-and-use-any-of-group-wikis"
+msgstr "As a member, you can send Signals to the group and use any of the group workspaces."
+
+#. (workspace.title)
+#: share/template/email/recent-changes.txt:12
+msgid "email.change-email-preferences-at=wiki"
+msgstr "To stop receiving or change how often you receive emails about changes to %1, go to"
+
+#. (escaped_title, escaped_uri)
+#: share/template/email/recent-changes.html:28
+msgid "email.change-email-preferences-at=wiki,uri"
+msgstr "To stop receiving or change how often you receive emails about changes to %1, you can <a href=\"%2\">change your preferences</a>."
+
+#. (escaped_title, escaped_uri)
+#: share/template/email/watchlist.html:28
+msgid "email.change-watchlist-preferences-at=wiki,uri"
+msgstr "To stop receiving or change how often you receive emails about changes to your watchlist in %1, you can <a href=\"%2\">change your preferences</a>."
+
+#. (workspace.title)
+#: share/template/email/watchlist.txt:11
+msgid "email.change-watchlist-preferences-at=wiki:"
+msgstr "To stop receiving or change how often you receive emails about changes to your watchlist in %1, go to:"
+
+#: share/template/email/password-change.html:6
+msgid "email.choose-new-password"
+msgstr "Please choose a new Socialtext password"
+
+#: share/template/email/password-change.txt:7
+msgid "email.click-to-choose-password"
+msgstr "When you click on this link, you will be taken to a page which allows you to choose a new password."
+
+#. (escaped_str1)
+#: share/template/email/password-change.html:16
+msgid "email.click-to-choose-password=uri"
+msgstr "When you <a href=\"%1\">click on this link</a>, you will be taken to a page which allows you to choose a new password."
+
+#. (uri)
+#: share/template/email/free50/account-invitation-body.html:11
+msgid "email.click-to-confirm-email-and-login=uri"
+msgstr "Please <a target=\"blank\" title=\"(external link)\" href=\"%1&account_for=free50\">click here</a> to confirm your email address and log in."
+
+#: share/template/email/free50/account-invitation.txt:5 share/template/email/st/account-invitation.txt:8 share/template/email/st/group-invitation.txt:11 share/template/email/st/workspace-invitation.txt:8
+msgid "email.click-to-confirm-email:"
+msgstr "Please click on this link to confirm your email address:"
+
+#. (confirm_uri)
+#: share/template/email/st/group-invitation-body.html:20 share/template/email/st/workspace-invitation-body.html:22
+msgid "email.click-to-confirm-email=uri"
+msgstr "Please <a href=\"%1\">click on this link</a> to confirm your email address."
 
 msgid "email.confirmation-subject=app"
 msgstr "已登陆到应用 %1"
@@ -2545,14 +2638,81 @@ msgstr "已登陆到应用 %1"
 msgid "email.confirmation-subject=wiki"
 msgstr "已登陆到工作区 %1"
 
+#: share/template/email/st/workspace-admin-invitation.txt:1
+msgid "email.congratulations!"
+msgstr "Congratulations!"
+
+#: share/template/email/email-address-confirmation-completed.html:56
+msgid "email.contact-support"
+msgstr "Contact Support"
+
 msgid "email.copy-self?"
 msgstr "发送副本給自己？"
+
+#: share/template/email/free50/account-invitation-body.html:12
+msgid "email.copy-url-into-browser-to-confirm-email:"
+msgstr "If your email client does not support hyperlinks, you can also copy and paste this URL into a browser to confirm your email address:"
+
+#: share/template/email/page-details.html:25 share/template/email/page-details.txt:24
+msgid "email.created-by"
+msgstr "created by"
 
 msgid "email.customize"
 msgstr "（您可以自定义下面的文字。）"
 
 msgid "email.date:"
 msgstr "日期："
+
+#. (escaped_str)
+#: share/template/email/email-address-confirmation-completed.html:28 share/template/email/email-address-confirmation-completed.txt:10
+msgid "email.email-confirmed-login-to=app"
+msgstr "You have confirmed your email address and can now log on to the %1 application."
+
+#. (escaped_str)
+#: share/template/email/email-address-confirmation-completed.html:15 share/template/email/email-address-confirmation-completed.txt:4
+msgid "email.email-confirmed-login-to=wiki"
+msgstr "You have confirmed your email address and can now log on to the %1 workspace."
+
+#: share/template/email/password-change.html:24 share/template/email/password-change.txt:11
+msgid "email.enjoy!"
+msgstr "Enjoy!"
+
+#: share/template/email/email-address-confirmation.txt:8
+msgid "email.follow-link-to-confirm-address-and-update-your-info:"
+msgstr "Please follow this link to confirm your address and update your information:"
+
+#. (confirmation_uri)
+#: share/template/email/email-address-confirmation.html:26
+msgid "email.follow-link-to-confirm-email-and-update-your-info=uri"
+msgstr "Please follow <a href=\"%1\">this link to confirm your email address</a>. and update your information."
+
+#: share/template/email/free50/account-invitation.txt:16 share/template/email/st/account-invitation-body.html:38 share/template/email/st/account-invitation.txt:18 share/template/email/st/workspace-invitation-body.html:38 share/template/email/st/workspace-invitation.txt:18
+msgid "email.follow-link-to-select-password:"
+msgstr "If you don't remember it, follow this link to select a new password:"
+
+#: share/template/email/password-change.txt:3
+msgid "email.follow-this-link-to-change-password:"
+msgstr "To change your password, please follow this link:"
+
+#. (workspace.uri, escaped_title, email_date, email_time)
+#: share/template/email/recent-changes.html:16
+msgid "email.following-pages-have-recently-changed=uri,wiki,date,time"
+msgstr "The following pages in <a href=\"%1\">%2</a> have recently changed. This email was generated on %3 at %4."
+
+#. (workspace.title, email_date, email_time)
+#: share/template/email/recent-changes.txt:4
+msgid "email.following-pages-have-recently-changed=wiki,date,time"
+msgstr "The following pages in %1 have recently changed. This email was generated on %2 at %3."
+
+#. (watchlist_uri, escaped_title, workspace.uri, email_date, email_time)
+#: share/template/email/watchlist.html:17
+msgid "email.following-pages-in-watchlist-have-recently-changed=watchlist,wiki,uri,date,time"
+msgstr "The following pages in your <a href=\"%1\">watchlist</a> in <a href=\"%3\">%2</a> have recently changed. This email was generated on %4 at %5."
+
+#. (workspace.title, email_date, email_time)
+#: share/template/email/watchlist.txt:3
+msgid "email.following-pages-in-watchlist-have-recently-changed=wiki,date,time"
+msgstr "The following pages in your watchlist in %1 have recently changed. This email was generated on %2 at %3."
 
 msgid "email.frequency?"
 msgstr "你想要多长时间收到一次邮件更新？"
@@ -2563,14 +2723,139 @@ msgstr "寄件人"
 msgid "email.from:"
 msgstr "来自："
 
+#: share/template/email/st/group-invitation-body.html:41 share/template/email/st/group-invitation.txt:26
+msgid "email.go-to"
+msgstr "Go to the"
+
+#: share/template/email/st/workspace-admin-invitation.txt:9
+msgid "email.go-to-test-confirmation-message-home-page"
+msgstr "Go to the test confirmation message home page."
+
+#: share/template/email/password-change.html:12 share/template/email/password-change.txt:1
+msgid "email.greetings-from-socialtext"
+msgstr "Greetings from Socialtext,"
+
+#: share/template/email/free50/account-invitation-body.html:39 share/template/email/free50/account-invitation.txt:28
+msgid "email.happy-collaborating!"
+msgstr "Happy Collaborating!"
+
+#: share/template/email/email-address-confirmation-completed.html:9 share/template/email/email-address-confirmation-completed.txt:1 share/template/email/openid/invite-request-email.html:8 share/template/email/openid/invite-request-email.txt:1 share/template/email/st/invite-request-email.html:8 share/template/email/st/invite-request-email.txt:1
+msgid "email.hello"
+msgstr "Hello,"
+
+#: share/template/email/openid/workspace-invitation-body.html:11 share/template/email/openid/workspace-invitation.txt:3 share/template/email/st/account-invitation-body.html:8 share/template/email/st/account-invitation.txt:3 share/template/email/st/group-invitation-body.html:13 share/template/email/st/group-invitation.txt:7 share/template/email/st/workspace-invitation-body.html:8 share/template/email/st/workspace-invitation.txt:3
+msgid "email.hi"
+msgstr "Hi,"
+
+#: share/template/email/st/group-invitation-body.html:41 share/template/email/st/group-invitation.txt:26
+msgid "email.home-page"
+msgstr "Home Page."
+
+#: share/template/email/free50/account-invitation.txt:26
+msgid "email.if-unsolicited-contact-abuse"
+msgstr "If you did not request to join your company's collaboration group, please contact abuse@socialtext.com"
+
+#: share/template/email/free50/account-invitation-body.html:37
+msgid "email.if-unsolicited-contact-abuse-link"
+msgstr "If you did not request to join your company's collaboration group, please contact <a href=\"mailto:abuse@socialtext.com\">abuse@socialtext.com</a>"
+
+#: share/template/email/openid/invite-request-email.html:4 share/template/email/st/invite-request-email.html:4
+msgid "email.invitation-request"
+msgstr "Invitation Request"
+
+#: share/template/email/st/workspace-admin-invitation.txt:10
+msgid "email.invite-other-people-to-test-confirmation-message"
+msgstr "Invite other people to test confirmation message."
+
+#. (escaped_str)
+#: share/template/email/account-invitation.html:5 share/template/email/group-invitation.html:5 share/template/email/invitation.html:5 share/template/email/workspace-invitation.html:5
+msgid "email.invite-to-join=container"
+msgstr "An Invitation to join %1"
+
+#. (workspace_title)
+#: share/template/email/st/workspace-admin-invitation.txt:3
+msgid "email.invited-as-admin-to-new=wiki"
+msgstr "You have been invited as an administrator to \"%1\", a brand new Socialtext Workspace. You are the administrator."
+
+#. (workspace_title)
+#: share/template/email/openid/workspace-invitation.txt:5
+msgid "email.inviting-you-to-join-sign-in-below=wiki:"
+msgstr "I'm inviting you to join %1, one of our shared workspaces. Sign in using the information below:"
+
+#. (account_name)
+#: share/template/email/st/account-invitation.txt:5
+msgid "email.inviting-you-to-join=account"
+msgstr "I'm inviting you to join %1, one of our shared Socialtext groups."
+
+#. (group_name)
+#: share/template/email/st/group-invitation.txt:9
+msgid "email.inviting-you-to-join=group"
+msgstr "I'm inviting you to join %1, one of our Socialtext groups"
+
+#. (group_name, host)
+#: share/template/email/st/group-invitation-body.html:16
+msgid "email.inviting-you-to-join=group,host"
+msgstr "I'm inviting you to join the %1 group at %2."
+
+#. (escaped_str_1)
+#. (workspace_title)
+#. (wksp_title)
+#: share/template/email/openid/workspace-invitation-body.html:15 share/template/email/st/workspace-invitation-body.html:13 share/template/email/st/workspace-invitation.txt:5
+msgid "email.inviting-you-to-join=wiki"
+msgstr "I'm inviting you to join %1, one of our shared workspaces."
+
+#. (host)
+#: share/template/email/st/group-invitation-body.html:44 share/template/email/st/group-invitation.txt:28
+msgid "email.is-group-on=host"
+msgstr "is a group on %1."
+
+#: share/template/email/email-address-confirmation-completed.html:53 share/template/email/email-address-confirmation-completed.txt:28 share/template/email/free50/account-invitation-body.html:32 share/template/email/free50/account-invitation.txt:20 share/template/email/openid/workspace-invitation-body.html:27 share/template/email/openid/workspace-invitation.txt:12 share/template/email/st/account-invitation-body.html:45 share/template/email/st/account-invitation.txt:22 share/template/email/st/workspace-invitation-body.html:43 share/template/email/st/workspace-invitation.txt:22
+msgid "email.keep-this-for-future-reference"
+msgstr "You may want to keep this email for future reference."
+
+#: share/template/email/page-details.html:27 share/template/email/page-details.txt:26
+msgid "email.last-edited-by"
+msgstr "last edited by"
+
+#: share/template/email/free50/account-invitation.txt:29
+msgid "email.leader-in-enterprise-social-software"
+msgstr "The leader in Enterprise 2.0 Social Software"
+
+#: share/template/email/email-address-confirmation-completed.html:23 share/template/email/email-address-confirmation-completed.html:48 share/template/email/email-address-confirmation-completed.txt:26
+msgid "email.login-with-email-address:"
+msgstr "Log in with your email address:"
+
 msgid "email.message"
 msgstr "消息"
+
+#: share/template/email/st/account-invitation.txt:10 share/template/email/st/group-invitation-body.html:23 share/template/email/st/group-invitation.txt:13 share/template/email/st/workspace-invitation-body.html:26 share/template/email/st/workspace-invitation.txt:10
+msgid "email.once-confirmed-you-will-receive-second-email-with-login-details"
+msgstr "Once you have confirmed your account, you will receive a second email with login details."
 
 msgid "email.page-digest-details?"
 msgstr "在每日邮件中你想得到更新的页面的哪些信息？"
 
 msgid "email.page-digest-sort?"
 msgstr "采用哪种顺序显示更新信息？"
+
+#. (action, escaped_name, profile_uri, edit_time)
+#: share/template/email/page-details.html:33
+msgid "email.page-edit=action,user,profile-uri,time"
+msgstr "%1 <a href=\"%3\">%2</a> %4"
+
+#. (action, escaped_name, escaped_editsummary, profile_uri, edit_time)
+#: share/template/email/page-details.html:31
+msgid "email.page-edit=action,user,summary,profile-uri,time"
+msgstr "%1 <a href=\"%4\">%2</a> %5 saying, \"%3\""
+
+#. (action, user_name, page.edit_summary, edit_time)
+#: share/template/email/page-details.txt:30
+msgid "email.page-edit=action,user,summary,time"
+msgstr "%1 %2 %4 saying, \"%3\""
+
+#: share/template/email/page-details.txt:32
+msgid "email.page-edit=action,user,time"
+msgstr "%1 %2 %3"
 
 msgid "email.page-link:"
 msgstr "您好，这是我想要与您分享的一个工作区页面。此页面也可以在以下网页查看与编辑："
@@ -2587,6 +2872,34 @@ msgstr "如果已经有此标题的页面存在，邮件正文应该加在哪里
 msgid "email.private-message-from=sender"
 msgstr "来自 %1 的私人讯息"
 
+#. (support_link)
+#: share/template/email/standard-footer.html:7
+msgid "email.questions-about-email-contact-support-link=uri"
+msgstr "If you have questions about this email, please %1"
+
+#. (appconfig.support_address)
+#: share/template/email/standard-footer.txt:3
+msgid "email.questions-about-email-contact-support=uri"
+msgstr "If you have questions about this email, contact support at %1."
+
+#. (appconfig.support_address)
+#: share/template/email/email-address-confirmation-completed.txt:30
+msgid "email.questions-contact-support=uri"
+msgstr "If you have questions, please contact support at %1."
+
+#: share/template/email/email-address-confirmation-completed.html:54
+msgid "email.questions-please"
+msgstr "If you have questions, please "
+
+#: share/template/email/st/workspace-admin-invitation.txt:7
+msgid "email.ready-to-set-up-new-wiki-choose-your-next-step:"
+msgstr "You're ready to set up your new workspace, if you want to. Choose your next step:"
+
+#. (escaped_title)
+#: share/template/email/recent-changes.html:6
+msgid "email.recent-changes-in=wiki"
+msgstr "Recent changes in %1"
+
 msgid "email.recent-changes=wiki"
 msgstr "%1 工作区的最近更新"
 
@@ -2599,11 +2912,43 @@ msgstr "来添加收件人到此列表。"
 msgid "email.recipients"
 msgstr "收件人"
 
+#. (inviting_user, workspace_title)
+#: share/template/email/openid/invite-request-email.html:10 share/template/email/openid/invite-request-email.txt:3 share/template/email/st/invite-request-email.html:10 share/template/email/st/invite-request-email.txt:3
+msgid "email.request-invite=user,wiki:"
+msgstr "%1 would like to ask you to invite new users into the %2 workspace:"
+
+#: share/template/email/st/workspace-admin-invitation.txt:11
+msgid "email.review-settings-for-test-confirmation-message:"
+msgstr "Review or change the settings for test confirmation message:"
+
+#. (a, app_name, app_name)
+#: share/template/email/free50/account-invitation.txt:15 share/template/email/st/account-invitation-body.html:37 share/template/email/st/account-invitation.txt:17
+msgid "email.same-password-as-existing-account=a,app,app"
+msgstr "Because you already have %1 %2 account, the password is the same as the password you use for your other %3 groups."
+
+#. (a, app_name, app_name)
+#: share/template/email/free50/account-invitation-body.html:26
+msgid "email.same-password-as-existing-group=a,app,app"
+msgstr "Because you already have %1 %2 group, the password is the same as the password you use for your other %3 groups."
+
+#. (a, app_name, app_name)
+#: share/template/email/st/workspace-invitation-body.html:37 share/template/email/st/workspace-invitation.txt:17
+msgid "email.same-password-as-existing-wiki=a,app,app"
+msgstr "Because you already have %1 %2 account, the password is the same as the password you use for your other %3 workspaces."
+
 msgid "email.send"
 msgstr "发送"
 
 msgid "email.sent-from-socialtext-appliance"
 msgstr "此电子邮件发送自 Socialtext 设备。"
+
+#: share/template/email/openid/workspace-invitation-body.html:18 share/template/email/st/account-invitation-body.html:15 share/template/email/st/account-invitation.txt:5 share/template/email/st/group-invitation.txt:9 share/template/email/st/workspace-invitation-body.html:15 share/template/email/st/workspace-invitation.txt:5
+msgid "email.sign-in-using-information-below:"
+msgstr "Sign in using the information below:"
+
+#: share/template/email/openid/workspace-invitation.txt:10 share/template/email/openid/workspace-invitation-body.html:24
+msgid "email.sign-in-with-openid-now"
+msgstr "You can now sign into our system using OpenID. On the Socialtext login screen, please input your OpenID into the indicated field and you will be redirected to the OpenID site to verify your identity. Once you have verified your identity, you will be sent back to the Socialtext site and be able to access the workspace."
 
 msgid "email.socialtext"
 msgstr "Socialtext"
@@ -2613,6 +2958,120 @@ msgstr "Socialtext 设备"
 
 msgid "email.subject"
 msgstr "主题"
+
+#: share/template/email/free50/account-invitation-body.html:4 share/template/email/free50/account-invitation.txt:1
+msgid "email.thank-you-for-joining-company-collaboration-group-hosted-by-socialtext"
+msgstr "Thank you for joining your company's collaboration group, hosted by Socialtext."
+
+#: share/template/email/openid/workspace-invitation-body.html:32 share/template/email/openid/workspace-invitation.txt:14 share/template/email/st/account-invitation-body.html:50 share/template/email/st/account-invitation.txt:25 share/template/email/st/group-invitation-body.html:26 share/template/email/st/group-invitation.txt:15 share/template/email/st/workspace-invitation-body.html:48 share/template/email/st/workspace-invitation.txt:25
+msgid "email.thanks"
+msgstr "Thanks,"
+
+#: share/template/email/email-address-confirmation-completed.html:19 share/template/email/email-address-confirmation-completed.txt:23 share/template/email/email-address-confirmation-completed.txt:6
+msgid "email.to-do-so-go-to-this-web-address:"
+msgstr "To do so, go to this web address:"
+
+#: share/template/email/openid/invite-request-email.txt:11 share/template/email/st/invite-request-email.txt:11
+msgid "email.to-invite-users-visit-wiki-invite-page"
+msgstr "To invite these users into the workspace, visit the user invite page for the workspace and copy and paste the list above into the invite box."
+
+#: share/template/email/openid/invite-request-email.html:25 share/template/email/st/invite-request-email.html:25
+msgid "email.to-invite-users-visit-wiki-invite-page-link:"
+msgstr "To invite these users into the workspace, visit the user invite page for the <br />workspace and copy and paste the list above into the invite box. The User <br />Invite page can be found at:"
+
+#: share/template/email/free50/account-invitation-body.html:14
+msgid "email.to-start-click-above"
+msgstr "By clicking the above link, you can immediately start sharing &quot;Twitter-like&quot; messages privately with your co-workers, and find a better way to work using social networking and wiki workspaces. You also get your own personal home page."
+
+#: share/template/email/free50/account-invitation.txt:7
+msgid "email.to-start-click-above-link"
+msgstr "By clicking the above link, you can immediately start sharing \"Twitter-like\" messages privately with your co-workers, and find a better way to work using social networking and wiki workspaces. You also get your own personal home page."
+
+#. (escaped_timestamp)
+#: share/template/email/page-details.html:9 share/template/email/page-details.txt:9
+msgid "email.today-at=time"
+msgstr "today at %1"
+
+#: share/template/email/openid/invite-request-email.txt:12 share/template/email/st/invite-request-email.txt:12
+msgid "email.user-invite-page-at:"
+msgstr "The User Invite page can be found at:"
+
+#: share/template/email/free50/account-invitation.txt:11 share/template/email/openid/workspace-invitation-body.html:21 share/template/email/openid/workspace-invitation.txt:8 share/template/email/st/account-invitation-body.html:31 share/template/email/st/account-invitation.txt:13 share/template/email/st/workspace-invitation-body.html:31 share/template/email/st/workspace-invitation.txt:13
+msgid "email.username:"
+msgstr "username:"
+
+#. (escaped_title)
+#: share/template/email/watchlist.html:7
+msgid "email.watchlist-update-for=wiki"
+msgstr "Watchlist Update for %1"
+
+#: share/template/email/free50/account-invitation-body.html:36 share/template/email/free50/account-invitation.txt:24
+msgid "email.we-encourage-you-to-invite-others"
+msgstr "We encourage you to invite other co-workers to join your company's collaboration group."
+
+#: share/template/email/free50/account-invitation.txt:10 share/template/email/openid/workspace-invitation-body.html:20 share/template/email/openid/workspace-invitation.txt:7 share/template/email/st/account-invitation-body.html:30 share/template/email/st/account-invitation.txt:12 share/template/email/st/workspace-invitation-body.html:30 share/template/email/st/workspace-invitation.txt:12
+msgid "email.web-address:"
+msgstr "web address:"
+
+#: share/template/email/email-address-confirmation.html:6
+msgid "email.welcome-confirm-email-to-join"
+msgstr "Welcome to the Socialtext community - please confirm your email address to join"
+
+#. (account_name)
+#: share/template/email/email-address-confirmation.html:8
+msgid "email.welcome-confirm-email-to-join=account"
+msgstr "Welcome to the %1 community - please confirm your email address to join"
+
+#: share/template/email/email-address-confirmation.html:17 share/template/email/email-address-confirmation.txt:1
+msgid "email.welcome-to"
+msgstr "Welcome to"
+
+#: share/template/email/st/workspace-admin-invitation.txt:12
+msgid "email.wiki-appearance"
+msgstr "Workspace Appearance"
+
+#: share/template/email/st/workspace-admin-invitation.txt:13
+msgid "email.wiki-features"
+msgstr "Workspace Features"
+
+#. (target_workspace.title, account_name)
+#: share/template/email/email-address-confirmation.html:17 share/template/email/email-address-confirmation.txt:1
+msgid "email.wiki-in-group-at=wiki,group"
+msgstr "the %1 Workspace in the %2 Group at "
+
+#: share/template/email/st/workspace-admin-invitation.txt:14
+msgid "email.wiki-privacy"
+msgstr "Workspace Privacy"
+
+#. (escaped_timestamp)
+#: share/template/email/page-details.html:10 share/template/email/page-details.txt:10
+msgid "email.yesterday-at=time"
+msgstr "yesterday at %1"
+
+#: share/template/email/page-details.html:18 share/template/email/page-details.txt:19
+msgid "email.you"
+msgstr "you"
+
+#: share/template/email/email-address-confirmation-completed.html:32 share/template/email/email-address-confirmation-completed.txt:13
+msgid "email.you-are-member-of-following-groups:"
+msgstr "You are a member of the following groups:"
+
+#: share/template/email/email-address-confirmation-completed.html:39 share/template/email/email-address-confirmation-completed.txt:18
+msgid "email.you-are-member-of-following-wikis:"
+msgstr "You are a member of the following workspaces:"
+
+#: share/template/email/email-address-confirmation-completed.html:3
+msgid "email.your-email-has-been-confirmed"
+msgstr "Your email address has been confirmed"
+
+#. (account_name)
+#: share/template/email/email-address-confirmation.html:22 share/template/email/email-address-confirmation.txt:4
+msgid "email.your-profile-has-been-added-to-directory=account"
+msgstr "Your profile has been added to the %1 directory."
+
+#: share/template/email/email-address-confirmation.html:24 share/template/email/email-address-confirmation.txt:6
+msgid "email.your-profile-has-been-added-to-people-directory"
+msgstr "Your profile has been added to the people directory."
 
 msgid "error.-forbidden"
 msgstr "没有不能共享帐户到此工具库。"
@@ -2646,6 +3105,10 @@ msgstr "帐户名称为必填"
 
 msgid "error.add-auw-failed=wikis"
 msgstr "无法开放下列工作区给全体用户：%1"
+
+#: share/template/errors/require_business_admin:2
+msgid "error.admin-privileges-needed-to-access-uri"
+msgstr "You must have admin privileges to access this URI."
 
 msgid "error.admin-role-exists=user,wiki"
 msgstr "%1 已是 %2 工作区的管理员"
@@ -2748,6 +3211,10 @@ msgstr "列数值过大，最大值为 35。"
 
 msgid "error.configure-ntpd-failed=new-ts"
 msgstr "未能配置网络时间服务器至 %1"
+
+#: share/template/errors/requires_confirmation:2
+msgid "error.confirm-email-to-activate-account"
+msgstr "You need to confirm your email address to activate this account."
 
 msgid "error.confirmation-expired"
 msgstr "确认网址已过期。将重新发送确认邮件。"
@@ -2857,6 +3324,10 @@ msgstr "导出目录 %1 不可写。"
 msgid "error.export=file"
 msgstr "无法写入导出文件 %1，正在终止。"
 
+#: share/template/errors/requires_external_id:2
+msgid "error.external-id-needed-to-activate-account"
+msgstr "You need to have an External ID set in order to activate this account."
+
 msgid "error.extract-skin"
 msgstr "无法解压主题存档。这很可能是由损坏的存档文件造成的。请检查你的文件，并重新上传。"
 
@@ -2901,6 +3372,10 @@ msgstr "没有权限上传附件"
 
 msgid "error.filename-too-long"
 msgstr "网址编码后文件名太长。"
+
+#: share/template/errors/requires_external_id:4
+msgid "error.for-more-info-contact-sysadmin"
+msgstr "For more information, please contact your system administrator."
 
 msgid "error.full-video-url-required"
 msgstr "请输入完整的视频链接地址。"
@@ -3132,6 +3607,24 @@ msgstr "无法加载预览。"
 
 msgid "error.loading-revision-failed"
 msgstr "无法载入修订。"
+
+#. (workspace_name)
+#: share/template/errors/login_to_edit:3
+msgid "error.login-to-edit=wiki"
+msgstr "You must be logged in to edit the %1 workspace."
+
+#: share/template/errors/settings_requires_account:4
+msgid "error.login-to-set-preferences"
+msgstr "To set your preferences for a workspace, you must be logged in."
+
+#: share/template/errors/watchlist_requires_account:4
+msgid "error.login-to-use-watchlist-in-wiki"
+msgstr "To use the watchlist feature in a workspace, you must be logged in."
+
+#. (workspace_name, redirect_to)
+#: share/template/errors/authenticate_to_read:3
+msgid "error.login-to-view=wiki,register-uri"
+msgstr "You must be logged in to view the %1 workspace. If you already have an account, please login now.<br /> Otherwise, you can <a href=\"/nlw/register.html?redirect_to=%2\">create a new account</a>"
 
 msgid "error.long-page-name=title"
 msgstr "您选择的新页面名称“%1”，在网址编码之后太长了。"
@@ -3487,6 +3980,11 @@ msgstr "必须指定一个插件。"
 msgid "error.private-and-public-key-required-for-captcha"
 msgstr "必须设置私钥和公钥方可开启验证码"
 
+#. (escaped_str)
+#: share/template/errors/settings_requires_account:6 share/template/errors/watchlist_requires_account:6
+msgid "error.register-here=uri"
+msgstr "If you do not already have an account, you can <a href=\"/nlw/register.html?redirect_to=%1\">register here</a>."
+
 msgid "error.registration-disabled"
 msgstr "注册号被停用。"
 
@@ -3531,6 +4029,14 @@ msgstr "命令（%1）必须指定一个 %2 和一个 %3。"
 
 msgid "error.required=field"
 msgstr "%1 是必填项。"
+
+#: share/template/errors/requires_password_change:10
+msgid "error.resend-change-of-password"
+msgstr "Resend Change of Password"
+
+#: share/template/errors/requires_confirmation:10
+msgid "error.resend-confirmation"
+msgstr "Resend confirmation"
 
 msgid "error.reserved-name=page"
 msgstr "“%1” 已被注册。请另选其它名字。"
@@ -3835,6 +4341,22 @@ msgstr "您必须指定一个工作区."
 msgid "error.write-test-file-on-samba-share!"
 msgstr "无法在 Samba 共享中写入测试文件!!"
 
+#: share/template/errors/unauthorized_workspace:3
+msgid "error.you-are-not-authorized-to-view-this-wiki"
+msgstr "You are not authorized to view this workspace."
+
+#: share/template/errors/requires_password_change:2
+msgid "error.you-need-to-set-new-password-for-your-account"
+msgstr "You need to set a new password for your account."
+
+#: share/template/errors/requires_confirmation:4
+msgid "error.you-should-have-received-email-with-confirmation-link"
+msgstr "You should have received an email with a confirmation link."
+
+#: share/template/errors/requires_password_change:4
+msgid "error.you-should-have-received-email-with-link-allowing-you-to-do-so"
+msgstr "You should have received an email with a link allowing you to do so."
+
 msgid "event.add-tag-self=tag"
 msgstr "给自身加标签 %1。"
 
@@ -3846,6 +4368,12 @@ msgstr "给 %1 加标签 %2。"
 
 msgid "event.add-widget=user,widget,context"
 msgstr "%1 增加 %2 小工具（%3）。"
+
+#. (page_in_workspace, event.context.summary.remove('\s+$')
+#. (page_in_workspace, event.context.summary.remove("\\s+$"))
+#: share/template/data/events/page:17
+msgid "event.comment=page,summary"
+msgstr "commented on %1, saying, \"%2\""
 
 msgid "event.comment=page,wiki,summary"
 msgstr "在 %2 中评论 %1：“%3”"
@@ -3859,8 +4387,18 @@ msgstr "从 %3 中的 %2 移除 %1。"
 msgid "event.delete-tag=tag,person"
 msgstr "从 %2 中移除标签 %1。"
 
+#. (page_in_workspace)
+#: share/template/data/events/page:15
+msgid "event.delete=page"
+msgstr "deleted %1."
+
 msgid "event.delete=page,wiki"
 msgstr "在 %2 中删除 %1。"
+
+#. (page_in_workspace)
+#: share/template/data/events/page:11
+msgid "event.duplicate=page"
+msgstr "duplicated %1."
 
 msgid "event.duplicate=page,wiki"
 msgstr "在 %2 中复制 %1。"
@@ -3870,6 +4408,16 @@ msgstr "编辑自身的个人资料。"
 
 msgid "event.edit-profile=person"
 msgstr "编辑 %1 的个人资料。"
+
+#. (page_in_workspace)
+#: share/template/data/events/page:8
+msgid "event.edit=page"
+msgstr "edited %1."
+
+#. (page_in_workspace, event.context.edit_summary)
+#: share/template/data/events/page:6
+msgid "event.edit=page,summary"
+msgstr "edited %1, saying \"%2\"."
 
 msgid "event.edit=page,wiki"
 msgstr "在 %2 中复制 %1。"
@@ -3883,11 +4431,21 @@ msgstr "开始关注 %1。"
 msgid "event.generic-self=action"
 msgstr "對自身执行动作 %1。"
 
+#. (event.action, page_in_workspace)
+#: share/template/data/events/page:27
+msgid "event.generic=action,page"
+msgstr "performed action %1 on %2."
+
 msgid "event.generic=action,page,wiki"
 msgstr "在 %3 中的 %2 执行动作 %1."
 
 msgid "event.generic=action,person"
 msgstr "在 %2 执行动作 %1。"
+
+#. (page, workspace)
+#: share/template/data/event:53
+msgid "event.in=page,wiki"
+msgstr "%1 in %2"
 
 msgid "event.join=group"
 msgstr "加入群组 %1。"
@@ -3907,11 +4465,46 @@ msgstr "从组 %2 中移除 %1。"
 msgid "event.leave=user,wiki"
 msgstr "从工作区 %2 中移除 %1。"
 
+#. (page_in_workspace)
+#: share/template/data/events/page:13
+msgid "event.rename=page"
+msgstr "renamed %1."
+
+#. (page_tag, page_in_workspace)
+#: share/template/data/events/page:21
+msgid "event.tag-delete=tag,page"
+msgstr "removed tag %1 from %2."
+
+#. (page_in_workspace, page_tag)
+#: share/template/data/events/page:19
+msgid "event.tag=page,tag"
+msgstr "tagged %1 as %2."
+
 msgid "event.unfollow=person"
 msgstr "停止关注 %1。"
 
+#. (event.event_class)
+#: share/template/data/event:75 share/template/data/event:90
+msgid "event.unknown=event-class"
+msgstr "Unknown event class: %1"
+
 msgid "event.update-widget=actor,widget"
 msgstr "%1 更新 %2 小工具。"
+
+#. (page_in_workspace)
+#: share/template/data/events/page:3
+msgid "event.view=page"
+msgstr "viewed %1."
+
+#. (page_in_workspace)
+#: share/template/data/events/page:25
+msgid "event.watch-delete=page"
+msgstr "stopped watching %1."
+
+#. (page_in_workspace)
+#: share/template/data/events/page:23
+msgid "event.watch=page"
+msgstr "started watching %1."
 
 msgid "every.15minutes"
 msgstr "每15分钟"
@@ -4862,8 +5455,20 @@ msgstr "<此处是您的个人消息。>"
 msgid "job.all=class"
 msgstr "所有 %1 工作"
 
+#: share/template/data/job.html:25 share/template/data/job_list.html:29
+msgid "job.args"
+msgstr "Args"
+
+#: share/template/data/job.html:18 share/template/data/job_stats.html:25
+msgid "job.class"
+msgstr "Class"
+
 msgid "job.cleaned=count"
 msgstr "完成 %1 的清理作业。"
+
+#: share/template/data/job.html:24 share/template/data/job_list.html:28
+msgid "job.coalesce"
+msgstr "Coalesce"
 
 msgid "job.count-delay"
 msgstr "有启动延时的作业数量"
@@ -4880,17 +5485,69 @@ msgstr "“抓取”的作业数量"
 msgid "job.count-success"
 msgstr "成功作业计数"
 
+#: share/template/data/job.html:21 share/template/data/job_list.html:25
+msgid "job.created"
+msgstr "Created"
+
+#: share/template/data/job_stats.html:27
+msgid "job.delayed"
+msgstr "Delayed"
+
 msgid "job.deprecated=type"
 msgstr "作业 %1 已经过期，删除之。"
+
+#: share/template/data/job_stats.html:36
+msgid "job.earliest-nodelay"
+msgstr "Earliest NoDelay"
+
+#: share/template/data/job_stats.html:35
+msgid "job.earliest-queued"
+msgstr "Earliest Queued"
+
+#: share/template/data/job_stats.html:28
+msgid "job.grabbed"
+msgstr "Grabbed"
+
+#: share/template/data/job.html:23 share/template/data/job_list.html:27
+msgid "job.grabbed-until"
+msgstr "Grabbed Until"
+
+#: share/template/data/job.html:17 share/template/data/job_list.html:22
+msgid "job.id"
+msgstr "ID"
+
+#: share/template/data/job.html:19 share/template/data/job_list.html:23
+msgid "job.key"
+msgstr "Key"
 
 msgid "job.key:"
 msgstr "关键字："
 
+#: share/template/data/job_stats.html:37
+msgid "job.last-5min"
+msgstr "Last 5min"
+
+#: share/template/data/job_stats.html:32
+msgid "job.last-fail"
+msgstr "Last Fail"
+
 msgid "job.last-failure"
 msgstr "最近的故障时间"
 
+#: share/template/data/job_stats.html:31
+msgid "job.last-ok"
+msgstr "Last OK"
+
 msgid "job.last-success"
 msgstr "最近的成功时间"
+
+#: share/template/data/job_stats.html:34
+msgid "job.latest-nodelay"
+msgstr "Latest NoDelay"
+
+#: share/template/data/job_stats.html:33
+msgid "job.latest-queued"
+msgstr "Latest Queued"
 
 msgid "job.newest"
 msgstr "最近（最新）入队时间"
@@ -4898,11 +5555,31 @@ msgstr "最近（最新）入队时间"
 msgid "job.newest-without-delay"
 msgstr "最近（最新）入队的时候，没有延时启动"
 
+#: share/template/data/job_stats.html:30
+msgid "job.num-fail"
+msgstr "Num Fail"
+
+#: share/template/data/job_stats.html:29
+msgid "job.num-ok"
+msgstr "Num OK"
+
 msgid "job.oldest"
 msgstr "最早（时间最长）入队时间"
 
 msgid "job.oldest-without-delay"
 msgstr "最早（时间最长）入队时间，没有延时启动"
+
+#: share/template/data/job.html:20 share/template/data/job_list.html:24
+msgid "job.prio"
+msgstr "Prio"
+
+#: share/template/data/job_stats.html:26
+msgid "job.queued"
+msgstr "Queued"
+
+#: share/template/data/job.html:22 share/template/data/job_list.html:26
+msgid "job.run-after"
+msgstr "Run After"
 
 msgid "job.total"
 msgstr "作业总数"
@@ -5000,6 +5677,23 @@ msgstr "下一页"
 msgid "lite.previous-page"
 msgstr "上一页"
 
+#. (lite ? '/m/login' : '/challenge')
+#: share/template/authen/element/forgot_password_page:17
+msgid "login.back-to=uri"
+msgstr "Back to <a href=\"%1\">Log in to Socialtext</a>."
+
+#: share/template/authen/authenticated_join.html:4
+msgid "login.click"
+msgstr "Click"
+
+#: share/template/authen/element/choose_password_form:9 share/template/authen/register.html:6
+msgid "login.click-here-to-login-with-existing-account"
+msgstr "Click here to log in with an existing account."
+
+#: share/template/authen/logout.html:21
+msgid "login.click-login-in-upper-right"
+msgstr "Click \"Log in\" in the upper-right to log in."
+
 msgid "login.confirmed=email"
 msgstr "邮箱 %1 已确认，请登陆。"
 
@@ -5012,23 +5706,159 @@ msgstr "登录控制面板"
 msgid "login.email-address"
 msgstr "邮件"
 
+#: share/template/authen/element/register_form:10
+msgid "login.email-address:"
+msgstr "Email Address:"
+
 msgid "login.email-required"
 msgstr "请输入邮箱。"
+
+#. (from_address)
+#: share/template/authen/element/forgot_password_page:13
+msgid "login.email-we-send-will-come-from=address"
+msgstr "The email we will send you will come from <strong>%1</strong>. To ensure you receive it, please add <strong>%1</strong> to your address book or safe list."
 
 msgid "login.email:"
 msgstr "登录邮箱："
 
+#: share/template/authen/element/forgot_password_page:6
+msgid "login.enter-email-below-to-recover-password"
+msgstr "Enter your email address below. Enter the email address you normally use for your Socialtext account. If you got here by clicking a link you received in an email message, look at that message, and use the email address it was sent to."
+
+#: share/template/authen/error.html:3 share/template/authen/error.html:7
+msgid "login.error"
+msgstr "Error"
+
+#: share/template/authen/register.html:5
+msgid "login.fill-in-info-to-create-account"
+msgstr "Please fill in the following information to create a Socialtext account."
+
+#. (to_create)
+#: share/template/authen/element/choose_password_form:8
+msgid "login.fill-in-info-to-create=account-type"
+msgstr "Please fill in the following information to create a %1."
+
+#: share/template/authen/join.html:28
+msgid "login.fill-in-info-to-register:"
+msgstr "If you don't have a Socialtext account already, please fill in the following information:"
+
+#: share/template/authen/element/register_form:25
+msgid "login.first-name:"
+msgstr "First Name:"
+
+#: share/template/authen/element/forgot_password_link:4
+msgid "login.forgot-my-password"
+msgstr "I don't know my password."
+
+#: share/template/authen/forgot_password.html:3
+msgid "login.forgot-password"
+msgstr "Forgot Password"
+
+#: share/template/authen/authenticated_join.html:4
+msgid "login.here"
+msgstr "here"
+
 msgid "login.is-disabled"
 msgstr "无法登录"
+
+#: share/template/authen/authenticated_join.html:3
+msgid "login.join"
+msgstr "Join"
+
+#. (target_workspace.title)
+#: share/template/authen/join.html:7
+msgid "login.join=wiki"
+msgstr "Join %1"
+
+#: share/template/authen/element/register_form:30
+msgid "login.last-name:"
+msgstr "Last Name:"
+
+#: share/template/authen/element/login_form:33 share/template/authen/element/login_form:40
+msgid "login.log-in"
+msgstr "Log in"
+
+#: share/template/authen/logout.html:7
+msgid "login.logged-out-of-socialtext"
+msgstr "Logged out of Socialtext"
+
+#: share/template/authen/join.html:3 share/template/authen/login.html:3
+msgid "login.login"
+msgstr "Login"
+
+#: share/template/authen/nologin.html:1 share/template/authen/nologin.html:5
+msgid "login.login-disabled"
+msgstr "Login Disabled"
+
+#: share/template/authen/login.html:7
+msgid "login.login-to-socialtext"
+msgstr "Log in to Socialtext"
+
+#: share/template/authen/join.html:18
+msgid "login.login-with-socialtext-account:"
+msgstr "Log in with your Socialtext account:"
+
+#: share/template/authen/logout.html:3
+msgid "login.logout"
+msgstr "Logout"
 
 msgid "login.name:"
 msgstr "用户名"
 
+#: share/template/authen/element/forgot_password_page:2
+msgid "login.no-problem-we-can-send-you-email"
+msgstr "No problem, we can send you an email that will help. You will be able to change your password back to something you know."
+
+#: share/template/authen/element/register_form:26 share/template/authen/element/register_form:31
+msgid "login.optional"
+msgstr "(Optional)"
+
+#: share/template/authen/element/login_form:17 share/template/authen/element/register_form:15
+msgid "login.password:"
+msgstr "Password:"
+
+#: share/template/authen/element/choose_password_form:25 share/template/authen/element/register_form:20
+msgid "login.re-type-password:"
+msgstr "Re-type Password:"
+
+#: share/template/authen/element/choose_password_form:35 share/template/authen/element/register_form:41 share/template/authen/register.html:3
+msgid "login.register"
+msgstr "Register"
+
+#: share/template/authen/element/login_form:24
+msgid "login.remember-me"
+msgstr "Remember me on this computer."
+
+#: share/template/authen/forgot_password.html:3
+msgid "login.socialtext-password-help"
+msgstr "Socialtext password help"
+
+#: share/template/authen/element/forgot_password_form:13
+msgid "login.submit"
+msgstr "Submit"
+
 msgid "login.title"
 msgstr "Socialtext登录"
 
+#: share/template/authen/authenticated_join.html:4
+msgid "login.to-continue"
+msgstr "to continue"
+
 msgid "login.username"
 msgstr "用户名"
+
+#: share/template/authen/element/choose_password_form:13
+msgid "login.username:"
+msgstr "Username:"
+
+#. (target_workspace.title, target_workspace.account.name)
+#: share/template/authen/authenticated_join.html:4
+msgid "login.you-have-joined-click=wiki,group"
+msgstr "You have joined the %1 Workspace in the %2 Group. Click"
+
+#: share/template/authen/logout.html:18
+msgid "login.you-have-logged-out-of-socialtext"
+msgstr "You have logged out of Socialtext."
 
 msgid "lookahead.all-results"
 msgstr "显示所有结果..."

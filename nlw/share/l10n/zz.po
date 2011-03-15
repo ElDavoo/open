@@ -1027,6 +1027,23 @@ msgstr "Zzzzzz Zzzz!"
 msgid "bookmarklet.tip"
 msgstr "Zzz: Zzz zzz"
 
+#: share/template/bugs_content.html:5
+msgid "bug.application-error"
+msgstr "Zzzzzzzzzzz Zzzzz"
+
+#: share/template/bugs_dump.html:5
+msgid "bug.application-error-dump"
+msgstr "Zzzzzzzzzzz Zzzzz Zzz Zzzz"
+
+#: share/template/bugs_content.html:17
+msgid "bug.application-error-occurred"
+msgstr "Zz zzzzzzzzzzz zzzzz zzz zzzzzzzz zz zzz Zzzzzzzzzz Zzzzzzzzz zzzzzz."
+
+#. (script_name, bug_id)
+#: share/template/bugs_content.html:20
+msgid "bug.comment-box=script,id"
+msgstr "Zzz zzz zzzzzz zzz Zzzzzzzzzz zzzz zz zzz zzzz zzz zz zzzzzzzz z zzzzzzz zzzzz zzzz zzzzzzz zzz zzzz zzzzzzzzzz zzzz zzzz zzz zzzzzzzz<a href=\"%1?action=bugs_dump;bug_id=%2\" style=\"text-color: black; text-decoration: none;\">.</a> Zzzzzz zzzzz zzzz zzzzzzzz zz zzz zzz zzzzz."
+
 #: lib/Socialtext/Hub.pm:197
 msgid "bug.contact-support"
 msgstr "Zzzzzz zzzzzzz Zzzzzzzzzz zzzzzzz zzzzz zzz <a href=\"http://www.socialtext.com/customers/support_request.php\">Zzzzzzzzz Zzzzzzz Zzzzzzz</a> zzzz zzz zzzzzzzz zzz zzz zzzz zzz zzzzz zzzzzzzz, zzz zzzz zzz zzzz zzzzzzzzzz zz zz zzzzz zz zzz zzzzz."
@@ -1035,11 +1052,11 @@ msgstr "Zzzzzz zzzzzzz Zzzzzzzzzz zzzzzzz zzzzz zzz <a href=\"http://www.socialt
 msgid "bug.dump"
 msgstr "Zzz Zzzz"
 
-#: lib/Socialtext/BugsPlugin.pm:32
+#: share/template/bugs_content.html:25 lib/Socialtext/BugsPlugin.pm:32
 msgid "bug.ignore"
 msgstr "Zzzzzz Zzz"
 
-#: lib/Socialtext/BugsPlugin.pm:31
+#: share/template/bugs_content.html:24 lib/Socialtext/BugsPlugin.pm:31
 msgid "bug.report"
 msgstr "Zzzzzz Zzz"
 
@@ -3570,6 +3587,21 @@ msgstr "Zzz Zzz Zzzzzzz"
 msgid "email.add-note?"
 msgstr "Zzz zzzz zzzz zz zzz zzzzz zz zzz zzzzz?"
 
+#. (inviting_user, group_name)
+#: share/template/email/st/group-invitation.txt:22
+msgid "email.added-you-to-group=user,group"
+msgstr "%1 zzz zzzzz zzz zz zzz zzzzz: %2"
+
+#. (group_name)
+#: share/template/email/st/group-invitation-body.html:36
+msgid "email.added-you-to=group"
+msgstr "zzz zzzzz zzz zz zzz zzzzz: %1"
+
+#. (workspace_uri)
+#: share/template/email/st/workspace-admin-invitation.txt:5
+msgid "email.address-of-new-wiki-is=uri"
+msgstr "Zzz zzz zzzzzzz zz zzz zzz zzzzzzzzz zz %1"
+
 #: share/skin/s3/javascript/lightbox/email.tt2:25
 msgid "email.address-or-name"
 msgstr "Zzzz zz zzzzz zzzzzzz zz zzzz zzzz"
@@ -3577,6 +3609,67 @@ msgstr "Zzzz zz zzzzz zzzzzzz zz zzzz zzzz"
 #: share/skin/s3/template/element/settings/users_invite_search_section:23 share/skin/s3/template/element/settings/users_invite_section:69
 msgid "email.another-example"
 msgstr "zzzzzzz.zzzzzz@zzzzzzz.zzz"
+
+#. (escaped_str2)
+#: share/template/email/password-change.html:20
+msgid "email.any-questions-contact-support-link=uri"
+msgstr "Zz zzz zzzz zzz zzzzzzzzz, zzzzzz zzzz zzzz zz <a href=\"%1\">Zzzzzzz Zzzzzzz</a>."
+
+#. (appconfig.support_address)
+#: share/template/email/password-change.txt:9
+msgid "email.any-questions-contact-support=uri"
+msgstr "Zz zzz zzzz zzz zzzzzzzzz, zzzzzz zzzz zzzz zz zzzzzzz zzzzzzz zz %1."
+
+#: share/template/email/st/group-invitation-body.html:39 share/template/email/st/group-invitation.txt:24
+msgid "email.as-member-you-can-send-signals-to-group-and-use-any-of-group-wikis"
+msgstr "Zz z zzzzzz, zzz zzz zzzz Zzzzzzz zz zzz zzzzz zzz zzz zzz zz zzz zzzzz zzzzzzzzzz."
+
+#. (workspace.title)
+#: share/template/email/recent-changes.txt:12
+msgid "email.change-email-preferences-at=wiki"
+msgstr "Zz zzzz zzzzzzzzz zz zzzzzz zzz zzzzz zzz zzzzzzz zzzzzz zzzzz zzzzzzz zz %1, zz zz"
+
+#. (escaped_title, escaped_uri)
+#: share/template/email/recent-changes.html:28
+msgid "email.change-email-preferences-at=wiki,uri"
+msgstr "Zz zzzz zzzzzzzzz zz zzzzzz zzz zzzzz zzz zzzzzzz zzzzzz zzzzz zzzzzzz zz %1, zzz zzz <a href=\"%2\">zzzzzz zzzz zzzzzzzzzzz</a>."
+
+#. (escaped_title, escaped_uri)
+#: share/template/email/watchlist.html:28
+msgid "email.change-watchlist-preferences-at=wiki,uri"
+msgstr "Zz zzzz zzzzzzzzz zz zzzzzz zzz zzzzz zzz zzzzzzz zzzzzz zzzzz zzzzzzz zz zzzz zzzzzzzzz zz %1, zzz zzz <a href=\"%2\">zzzzzz zzzz zzzzzzzzzzz</a>."
+
+#. (workspace.title)
+#: share/template/email/watchlist.txt:11
+msgid "email.change-watchlist-preferences-at=wiki:"
+msgstr "Zz zzzz zzzzzzzzz zz zzzzzz zzz zzzzz zzz zzzzzzz zzzzzz zzzzz zzzzzzz zz zzzz zzzzzzzzz zz %1, zz zz:"
+
+#: share/template/email/password-change.html:6
+msgid "email.choose-new-password"
+msgstr "Zzzzzz zzzzzz z zzz Zzzzzzzzzz zzzzzzzz"
+
+#: share/template/email/password-change.txt:7
+msgid "email.click-to-choose-password"
+msgstr "Zzzz zzz zzzzz zz zzzz zzzz, zzz zzzz zz zzzzz zz z zzzz zzzzz zzzzzz zzz zz zzzzzz z zzz zzzzzzzz."
+
+#. (escaped_str1)
+#: share/template/email/password-change.html:16
+msgid "email.click-to-choose-password=uri"
+msgstr "Zzzz zzz <a href=\"%1\">zzzzz zz zzzz zzzz</a>, zzz zzzz zz zzzzz zz z zzzz zzzzz zzzzzz zzz zz zzzzzz z zzz zzzzzzzz."
+
+#. (uri)
+#: share/template/email/free50/account-invitation-body.html:11
+msgid "email.click-to-confirm-email-and-login=uri"
+msgstr "Zzzzzz <a target=\"blank\" title=\"(external link)\" href=\"%1&account_for=free50\">zzzzz zzzz</a> zz zzzzzzz zzzz zzzzz zzzzzzz zzz zzz zz."
+
+#: share/template/email/free50/account-invitation.txt:5 share/template/email/st/account-invitation.txt:8 share/template/email/st/group-invitation.txt:11 share/template/email/st/workspace-invitation.txt:8
+msgid "email.click-to-confirm-email:"
+msgstr "Zzzzzz zzzzz zz zzzz zzzz zz zzzzzzz zzzz zzzzz zzzzzzz:"
+
+#. (confirm_uri)
+#: share/template/email/st/group-invitation-body.html:20 share/template/email/st/workspace-invitation-body.html:22
+msgid "email.click-to-confirm-email=uri"
+msgstr "Zzzzzz <a href=\"%1\">zzzzz zz zzzz zzzz</a> zz zzzzzzz zzzz zzzzz zzzzzzz."
 
 #. ($app_name)
 #: lib/Socialtext/User/Restrictions/email_confirmation.pm:87
@@ -3588,9 +3681,25 @@ msgstr "Zzz zzz zzz zzzzz zz zzz %1 zzzzzzzzzzz"
 msgid "email.confirmation-subject=wiki"
 msgstr "Zzz zzz zzz zzzzz zz zzz %1 zzzzzzzzz"
 
+#: share/template/email/st/workspace-admin-invitation.txt:1
+msgid "email.congratulations!"
+msgstr "Zzzzzzzzzzzzzzz!"
+
+#: share/template/email/email-address-confirmation-completed.html:56
+msgid "email.contact-support"
+msgstr "Zzzzzzz Zzzzzzz"
+
 #: share/skin/s3/javascript/lightbox/email.tt2:58
 msgid "email.copy-self?"
 msgstr "Zzzz zz z zzzz?"
+
+#: share/template/email/free50/account-invitation-body.html:12
+msgid "email.copy-url-into-browser-to-confirm-email:"
+msgstr "Zz zzzz zzzzz zzzzzz zzzz zzz zzzzzzz zzzzzzzzzz, zzz zzz zzzz zzzz zzz zzzzz zzzz ZZZ zzzz z zzzzzzz zz zzzzzzz zzzz zzzzz zzzzzzz:"
+
+#: share/template/email/page-details.html:25 share/template/email/page-details.txt:24
+msgid "email.created-by"
+msgstr "zzzzzzz zz"
 
 #: share/skin/s3/javascript/lightbox/email.tt2:49
 msgid "email.customize"
@@ -3599,6 +3708,57 @@ msgstr "(Zzz zzz zzzzzzzzz zzz zzzz zzzzz.)"
 #: lib/Socialtext/EmailReceiver/Base.pm:671
 msgid "email.date:"
 msgstr "Zzzz:"
+
+#. (escaped_str)
+#: share/template/email/email-address-confirmation-completed.html:28 share/template/email/email-address-confirmation-completed.txt:10
+msgid "email.email-confirmed-login-to=app"
+msgstr "Zzz zzzz zzzzzzzzz zzzz zzzzz zzzzzzz zzz zzz zzz zzz zz zz zzz %1 zzzzzzzzzzz."
+
+#. (escaped_str)
+#: share/template/email/email-address-confirmation-completed.html:15 share/template/email/email-address-confirmation-completed.txt:4
+msgid "email.email-confirmed-login-to=wiki"
+msgstr "Zzz zzzz zzzzzzzzz zzzz zzzzz zzzzzzz zzz zzz zzz zzz zz zz zzz %1 zzzzzzzzz."
+
+#: share/template/email/password-change.html:24 share/template/email/password-change.txt:11
+msgid "email.enjoy!"
+msgstr "Zzzzz!"
+
+#: share/template/email/email-address-confirmation.txt:8
+msgid "email.follow-link-to-confirm-address-and-update-your-info:"
+msgstr "Zzzzzz zzzzzz zzzz zzzz zz zzzzzzz zzzz zzzzzzz zzz zzzzzz zzzz zzzzzzzzzzz:"
+
+#. (confirmation_uri)
+#: share/template/email/email-address-confirmation.html:26
+msgid "email.follow-link-to-confirm-email-and-update-your-info=uri"
+msgstr "Zzzzzz zzzzzz <a href=\"%1\">zzzz zzzz zz zzzzzzz zzzz zzzzz zzzzzzz</a>. zzz zzzzzz zzzz zzzzzzzzzzz."
+
+#: share/template/email/free50/account-invitation.txt:16 share/template/email/st/account-invitation-body.html:38 share/template/email/st/account-invitation.txt:18 share/template/email/st/workspace-invitation-body.html:38 share/template/email/st/workspace-invitation.txt:18
+msgid "email.follow-link-to-select-password:"
+msgstr "Zz zzz zzz'z zzzzzzzz zz, zzzzzz zzzz zzzz zz zzzzzz z zzz zzzzzzzz:"
+
+#: share/template/email/password-change.txt:3
+msgid "email.follow-this-link-to-change-password:"
+msgstr "Zz zzzzzz zzzz zzzzzzzz, zzzzzz zzzzzz zzzz zzzz:"
+
+#. (workspace.uri, escaped_title, email_date, email_time)
+#: share/template/email/recent-changes.html:16
+msgid "email.following-pages-have-recently-changed=uri,wiki,date,time"
+msgstr "Zzz zzzzzzzzz zzzzz zz <a href=\"%1\">%2</a> zzzz zzzzzzzz zzzzzzz. Zzzz zzzzz zzz zzzzzzzzz zz %3 zz %4."
+
+#. (workspace.title, email_date, email_time)
+#: share/template/email/recent-changes.txt:4
+msgid "email.following-pages-have-recently-changed=wiki,date,time"
+msgstr "Zzz zzzzzzzzz zzzzz zz %1 zzzz zzzzzzzz zzzzzzz. Zzzz zzzzz zzz zzzzzzzzz zz %2 zz %3."
+
+#. (watchlist_uri, escaped_title, workspace.uri, email_date, email_time)
+#: share/template/email/watchlist.html:17
+msgid "email.following-pages-in-watchlist-have-recently-changed=watchlist,wiki,uri,date,time"
+msgstr "Zzz zzzzzzzzz zzzzz zz zzzz <a href=\"%1\">zzzzzzzzz</a> zz <a href=\"%3\">%2</a> zzzz zzzzzzzz zzzzzzz. Zzzz zzzzz zzz zzzzzzzzz zz %4 zz %5."
+
+#. (workspace.title, email_date, email_time)
+#: share/template/email/watchlist.txt:3
+msgid "email.following-pages-in-watchlist-have-recently-changed=wiki,date,time"
+msgstr "Zzz zzzzzzzzz zzzzz zz zzzz zzzzzzzzz zz %1 zzzz zzzzzzzz zzzzzzz. Zzzz zzzzz zzz zzzzzzzzz zz %2 zz %3."
 
 #: lib/Socialtext/EmailNotifyPlugin.pm:29
 msgid "email.frequency?"
@@ -3612,9 +3772,115 @@ msgstr "Zzzz"
 msgid "email.from:"
 msgstr "Zzzz:"
 
+#: share/template/email/st/group-invitation-body.html:41 share/template/email/st/group-invitation.txt:26
+msgid "email.go-to"
+msgstr "Zz zz zzz"
+
+#: share/template/email/st/workspace-admin-invitation.txt:9
+msgid "email.go-to-test-confirmation-message-home-page"
+msgstr "Zz zz zzz zzzz zzzzzzzzzzzz zzzzzzz zzzz zzzz."
+
+#: share/template/email/password-change.html:12 share/template/email/password-change.txt:1
+msgid "email.greetings-from-socialtext"
+msgstr "Zzzzzzzzz zzzz Zzzzzzzzzz,"
+
+#: share/template/email/free50/account-invitation-body.html:39 share/template/email/free50/account-invitation.txt:28
+msgid "email.happy-collaborating!"
+msgstr "Zzzzz Zzzzzzzzzzzzz!"
+
+#: share/template/email/email-address-confirmation-completed.html:9 share/template/email/email-address-confirmation-completed.txt:1 share/template/email/openid/invite-request-email.html:8 share/template/email/openid/invite-request-email.txt:1 share/template/email/st/invite-request-email.html:8 share/template/email/st/invite-request-email.txt:1
+msgid "email.hello"
+msgstr "Zzzzz,"
+
+#: share/template/email/openid/workspace-invitation-body.html:11 share/template/email/openid/workspace-invitation.txt:3 share/template/email/st/account-invitation-body.html:8 share/template/email/st/account-invitation.txt:3 share/template/email/st/group-invitation-body.html:13 share/template/email/st/group-invitation.txt:7 share/template/email/st/workspace-invitation-body.html:8 share/template/email/st/workspace-invitation.txt:3
+msgid "email.hi"
+msgstr "Zz,"
+
+#: share/template/email/st/group-invitation-body.html:41 share/template/email/st/group-invitation.txt:26
+msgid "email.home-page"
+msgstr "Zzzz Zzzz."
+
+#: share/template/email/free50/account-invitation.txt:26
+msgid "email.if-unsolicited-contact-abuse"
+msgstr "Zz zzz zzz zzz zzzzzzz zz zzzz zzzz zzzzzzz'z zzzzzzzzzzzzz zzzzz, zzzzzz zzzzzzz zzzzz@zzzzzzzzzz.zzz"
+
+#: share/template/email/free50/account-invitation-body.html:37
+msgid "email.if-unsolicited-contact-abuse-link"
+msgstr "Zz zzz zzz zzz zzzzzzz zz zzzz zzzz zzzzzzz'z zzzzzzzzzzzzz zzzzz, zzzzzz zzzzzzz <a href=\"mailto:abuse@socialtext.com\">zzzzz@zzzzzzzzzz.zzz</a>"
+
+#: share/template/email/openid/invite-request-email.html:4 share/template/email/st/invite-request-email.html:4
+msgid "email.invitation-request"
+msgstr "Zzzzzzzzzz Zzzzzzz"
+
+#: share/template/email/st/workspace-admin-invitation.txt:10
+msgid "email.invite-other-people-to-test-confirmation-message"
+msgstr "Zzzzzz zzzzz zzzzzz zz zzzz zzzzzzzzzzzz zzzzzzz."
+
+#. (escaped_str)
+#: share/template/email/account-invitation.html:5 share/template/email/group-invitation.html:5 share/template/email/invitation.html:5 share/template/email/workspace-invitation.html:5
+msgid "email.invite-to-join=container"
+msgstr "Zz Zzzzzzzzzz zz zzzz %1"
+
+#. (workspace_title)
+#: share/template/email/st/workspace-admin-invitation.txt:3
+msgid "email.invited-as-admin-to-new=wiki"
+msgstr "Zzz zzzz zzzz zzzzzzz zz zz zzzzzzzzzzzzz zz \"%1\", z zzzzz zzz Zzzzzzzzzz Zzzzzzzzz. Zzz zzz zzz zzzzzzzzzzzzz."
+
+#. (workspace_title)
+#: share/template/email/openid/workspace-invitation.txt:5
+msgid "email.inviting-you-to-join-sign-in-below=wiki:"
+msgstr "Z'z zzzzzzzz zzz zz zzzz %1, zzz zz zzz zzzzzz zzzzzzzzzz. Zzzz zz zzzzz zzz zzzzzzzzzzz zzzzz:"
+
+#. (account_name)
+#: share/template/email/st/account-invitation.txt:5
+msgid "email.inviting-you-to-join=account"
+msgstr "Z'z zzzzzzzz zzz zz zzzz %1, zzz zz zzz zzzzzz Zzzzzzzzzz zzzzzz."
+
+#. (group_name)
+#: share/template/email/st/group-invitation.txt:9
+msgid "email.inviting-you-to-join=group"
+msgstr "Z'z zzzzzzzz zzz zz zzzz %1, zzz zz zzz Zzzzzzzzzz zzzzzz"
+
+#. (group_name, host)
+#: share/template/email/st/group-invitation-body.html:16
+msgid "email.inviting-you-to-join=group,host"
+msgstr "Z'z zzzzzzzz zzz zz zzzz zzz %1 zzzzz zz %2."
+
+#. (escaped_str_1)
+#. (workspace_title)
+#. (wksp_title)
+#: share/template/email/openid/workspace-invitation-body.html:15 share/template/email/st/workspace-invitation-body.html:13 share/template/email/st/workspace-invitation.txt:5
+msgid "email.inviting-you-to-join=wiki"
+msgstr "Z'z zzzzzzzz zzz zz zzzz %1, zzz zz zzz zzzzzz zzzzzzzzzz."
+
+#. (host)
+#: share/template/email/st/group-invitation-body.html:44 share/template/email/st/group-invitation.txt:28
+msgid "email.is-group-on=host"
+msgstr "zz z zzzzz zz %1."
+
+#: share/template/email/email-address-confirmation-completed.html:53 share/template/email/email-address-confirmation-completed.txt:28 share/template/email/free50/account-invitation-body.html:32 share/template/email/free50/account-invitation.txt:20 share/template/email/openid/workspace-invitation-body.html:27 share/template/email/openid/workspace-invitation.txt:12 share/template/email/st/account-invitation-body.html:45 share/template/email/st/account-invitation.txt:22 share/template/email/st/workspace-invitation-body.html:43 share/template/email/st/workspace-invitation.txt:22
+msgid "email.keep-this-for-future-reference"
+msgstr "Zzz zzz zzzz zz zzzz zzzz zzzzz zzz zzzzzz zzzzzzzzz."
+
+#: share/template/email/page-details.html:27 share/template/email/page-details.txt:26
+msgid "email.last-edited-by"
+msgstr "zzzz zzzzzz zz"
+
+#: share/template/email/free50/account-invitation.txt:29
+msgid "email.leader-in-enterprise-social-software"
+msgstr "Zzz zzzzzz zz Zzzzzzzzzz 2.0 Zzzzzz Zzzzzzzz"
+
+#: share/template/email/email-address-confirmation-completed.html:23 share/template/email/email-address-confirmation-completed.html:48 share/template/email/email-address-confirmation-completed.txt:26
+msgid "email.login-with-email-address:"
+msgstr "Zzz zz zzzz zzzz zzzzz zzzzzzz:"
+
 #: share/skin/s3/javascript/lightbox/email.tt2:46
 msgid "email.message"
 msgstr "Zzzzzzz"
+
+#: share/template/email/st/account-invitation.txt:10 share/template/email/st/group-invitation-body.html:23 share/template/email/st/group-invitation.txt:13 share/template/email/st/workspace-invitation-body.html:26 share/template/email/st/workspace-invitation.txt:10
+msgid "email.once-confirmed-you-will-receive-second-email-with-login-details"
+msgstr "Zzzz zzz zzzz zzzzzzzzz zzzz zzzzzzz, zzz zzzz zzzzzzz z zzzzzz zzzzz zzzz zzzzz zzzzzzz."
 
 #: lib/Socialtext/EmailNotifyPlugin.pm:65 lib/Socialtext/WatchlistPlugin.pm:63
 msgid "email.page-digest-details?"
@@ -3623,6 +3889,25 @@ msgstr "Zzzz zzzzzzzzzzz zzzzz zzzzzzz zzzzz zz zzz zzzz zz zzzzz zzzzzzz?"
 #: lib/Socialtext/EmailNotifyPlugin.pm:50
 msgid "email.page-digest-sort?"
 msgstr "Zzzz zzzzz zzzzz zzz zzzz zzz zzzzzzz zz zz zzzzzz?"
+
+#. (action, escaped_name, profile_uri, edit_time)
+#: share/template/email/page-details.html:33
+msgid "email.page-edit=action,user,profile-uri,time"
+msgstr "%1 <a href=\"%3\">%2</a> %4"
+
+#. (action, escaped_name, escaped_editsummary, profile_uri, edit_time)
+#: share/template/email/page-details.html:31
+msgid "email.page-edit=action,user,summary,profile-uri,time"
+msgstr "%1 <a href=\"%4\">%2</a> %5 zzzzzz, \"%3\""
+
+#. (action, user_name, page.edit_summary, edit_time)
+#: share/template/email/page-details.txt:30
+msgid "email.page-edit=action,user,summary,time"
+msgstr "%1 %2 %4 zzzzzz, \"%3\""
+
+#: share/template/email/page-details.txt:32
+msgid "email.page-edit=action,user,time"
+msgstr "%1 %2 %3"
 
 #: share/skin/s3/javascript/lightbox/email.tt2:50
 msgid "email.page-link:"
@@ -3645,6 +3930,34 @@ msgstr "Zz zzzzz zz zzzzzzz zz zzzzzzzz zzzz zzzz zzzz zzzzz, zzzzz zzzzzz zzz z
 msgid "email.private-message-from=sender"
 msgstr "Zzzzzzz zzzzzzz zzzz %1"
 
+#. (support_link)
+#: share/template/email/standard-footer.html:7
+msgid "email.questions-about-email-contact-support-link=uri"
+msgstr "Zz zzz zzzz zzzzzzzzz zzzzz zzzz zzzzz, zzzzzz %1"
+
+#. (appconfig.support_address)
+#: share/template/email/standard-footer.txt:3
+msgid "email.questions-about-email-contact-support=uri"
+msgstr "Zz zzz zzzz zzzzzzzzz zzzzz zzzz zzzzz, zzzzzzz zzzzzzz zz %1."
+
+#. (appconfig.support_address)
+#: share/template/email/email-address-confirmation-completed.txt:30
+msgid "email.questions-contact-support=uri"
+msgstr "Zz zzz zzzz zzzzzzzzz, zzzzzz zzzzzzz zzzzzzz zz %1."
+
+#: share/template/email/email-address-confirmation-completed.html:54
+msgid "email.questions-please"
+msgstr "Zz zzz zzzz zzzzzzzzz, zzzzzz "
+
+#: share/template/email/st/workspace-admin-invitation.txt:7
+msgid "email.ready-to-set-up-new-wiki-choose-your-next-step:"
+msgstr "Zzz'zz zzzzz zz zzz zz zzzz zzz zzzzzzzzz, zz zzz zzzz zz. Zzzzzz zzzz zzzz zzzz:"
+
+#. (escaped_title)
+#: share/template/email/recent-changes.html:6
+msgid "email.recent-changes-in=wiki"
+msgstr "Zzzzzz zzzzzzz zz %1"
+
 #. ($ws->title)
 #: lib/Socialtext/Job/EmailNotifyUser.pm:119
 msgid "email.recent-changes=wiki"
@@ -3662,12 +3975,44 @@ msgstr "zzzzzzzzzz zz zzzz zzzz"
 msgid "email.recipients"
 msgstr "Zzzzzzzzzz"
 
+#. (inviting_user, workspace_title)
+#: share/template/email/openid/invite-request-email.html:10 share/template/email/openid/invite-request-email.txt:3 share/template/email/st/invite-request-email.html:10 share/template/email/st/invite-request-email.txt:3
+msgid "email.request-invite=user,wiki:"
+msgstr "%1 zzzzz zzzz zz zzz zzz zz zzzzzz zzz zzzzz zzzz zzz %2 zzzzzzzzz:"
+
+#: share/template/email/st/workspace-admin-invitation.txt:11
+msgid "email.review-settings-for-test-confirmation-message:"
+msgstr "Zzzzzz zz zzzzzz zzz zzzzzzzz zzz zzzz zzzzzzzzzzzz zzzzzzz:"
+
+#. (a, app_name, app_name)
+#: share/template/email/free50/account-invitation.txt:15 share/template/email/st/account-invitation-body.html:37 share/template/email/st/account-invitation.txt:17
+msgid "email.same-password-as-existing-account=a,app,app"
+msgstr "Zzzzzzz zzz zzzzzzz zzzz %1 %2 zzzzzzz, zzz zzzzzzzz zz zzz zzzz zz zzz zzzzzzzz zzz zzz zzz zzzz zzzzz %3 zzzzzz."
+
+#. (a, app_name, app_name)
+#: share/template/email/free50/account-invitation-body.html:26
+msgid "email.same-password-as-existing-group=a,app,app"
+msgstr "Zzzzzzz zzz zzzzzzz zzzz %1 %2 zzzzz, zzz zzzzzzzz zz zzz zzzz zz zzz zzzzzzzz zzz zzz zzz zzzz zzzzz %3 zzzzzz."
+
+#. (a, app_name, app_name)
+#: share/template/email/st/workspace-invitation-body.html:37 share/template/email/st/workspace-invitation.txt:17
+msgid "email.same-password-as-existing-wiki=a,app,app"
+msgstr "Zzzzzzz zzz zzzzzzz zzzz %1 %2 zzzzzzz, zzz zzzzzzzz zz zzz zzzz zz zzz zzzzzzzz zzz zzz zzz zzzz zzzzz %3 zzzzzzzzzz."
+
 #: share/skin/s3/javascript/lightbox/email.tt2:66
 msgid "email.send"
 msgstr "Zzzz"
 
 msgid "email.sent-from-socialtext-appliance"
 msgstr "Zzzz zzzzz zzz zzzz zzzz zzz Zzzzzzzzzz Zzzzzzzzz."
+
+#: share/template/email/openid/workspace-invitation-body.html:18 share/template/email/st/account-invitation-body.html:15 share/template/email/st/account-invitation.txt:5 share/template/email/st/group-invitation.txt:9 share/template/email/st/workspace-invitation-body.html:15 share/template/email/st/workspace-invitation.txt:5
+msgid "email.sign-in-using-information-below:"
+msgstr "Zzzz zz zzzzz zzz zzzzzzzzzzz zzzzz:"
+
+#: share/template/email/openid/workspace-invitation.txt:10 share/template/email/openid/workspace-invitation-body.html:24
+msgid "email.sign-in-with-openid-now"
+msgstr "Zzz zzz zzz zzzz zzzz zzz zzzzzz zzzzz ZzzzZZ. Zz zzz Zzzzzzzzzz zzzzz zzzzzz, zzzzzz zzzzz zzzz ZzzzZZ zzzz zzz zzzzzzzzz zzzzz zzz zzz zzzz zz zzzzzzzzzz zz zzz ZzzzZZ zzzz zz zzzzzz zzzz zzzzzzzz. Zzzz zzz zzzz zzzzzzzz zzzz zzzzzzzz, zzz zzzz zz zzzz zzzz zz zzz Zzzzzzzzzz zzzz zzz zz zzzz zz zzzzzz zzz zzzzzzzzz."
 
 #: lib/Socialtext/User/Restrictions/email_confirmation.pm:78
 msgid "email.socialtext"
@@ -3680,6 +4025,120 @@ msgstr "Zzzzzzzzzz Zzzzzzzzz"
 #: share/skin/s3/javascript/lightbox/email.tt2:17
 msgid "email.subject"
 msgstr "Zzzzzzz"
+
+#: share/template/email/free50/account-invitation-body.html:4 share/template/email/free50/account-invitation.txt:1
+msgid "email.thank-you-for-joining-company-collaboration-group-hosted-by-socialtext"
+msgstr "Zzzzz zzz zzz zzzzzzz zzzz zzzzzzz'z zzzzzzzzzzzzz zzzzz, zzzzzz zz Zzzzzzzzzz."
+
+#: share/template/email/openid/workspace-invitation-body.html:32 share/template/email/openid/workspace-invitation.txt:14 share/template/email/st/account-invitation-body.html:50 share/template/email/st/account-invitation.txt:25 share/template/email/st/group-invitation-body.html:26 share/template/email/st/group-invitation.txt:15 share/template/email/st/workspace-invitation-body.html:48 share/template/email/st/workspace-invitation.txt:25
+msgid "email.thanks"
+msgstr "Zzzzzz,"
+
+#: share/template/email/email-address-confirmation-completed.html:19 share/template/email/email-address-confirmation-completed.txt:23 share/template/email/email-address-confirmation-completed.txt:6
+msgid "email.to-do-so-go-to-this-web-address:"
+msgstr "Zz zz zz, zz zz zzzz zzz zzzzzzz:"
+
+#: share/template/email/openid/invite-request-email.txt:11 share/template/email/st/invite-request-email.txt:11
+msgid "email.to-invite-users-visit-wiki-invite-page"
+msgstr "Zz zzzzzz zzzzz zzzzz zzzz zzz zzzzzzzzz, zzzzz zzz zzzz zzzzzz zzzz zzz zzz zzzzzzzzz zzz zzzz zzz zzzzz zzz zzzz zzzzz zzzz zzz zzzzzz zzz."
+
+#: share/template/email/openid/invite-request-email.html:25 share/template/email/st/invite-request-email.html:25
+msgid "email.to-invite-users-visit-wiki-invite-page-link:"
+msgstr "Zz zzzzzz zzzzz zzzzz zzzz zzz zzzzzzzzz, zzzzz zzz zzzz zzzzzz zzzz zzz zzz <br />zzzzzzzzz zzz zzzz zzz zzzzz zzz zzzz zzzzz zzzz zzz zzzzzz zzz. Zzz Zzzz <br />Zzzzzz zzzz zzz zz zzzzz zz:"
+
+#: share/template/email/free50/account-invitation-body.html:14
+msgid "email.to-start-click-above"
+msgstr "Zz zzzzzzzz zzz zzzzz zzzz, zzz zzz zzzzzzzzzzz zzzzz zzzzzzz &quot;Zzzzzzz-zzzz&quot; zzzzzzzz zzzzzzzzz zzzz zzzz zz-zzzzzzz, zzz zzzz z zzzzzz zzz zz zzzz zzzzz zzzzzz zzzzzzzzzz zzz zzzz zzzzzzzzzz. Zzz zzzz zzz zzzz zzz zzzzzzzz zzzz zzzz."
+
+#: share/template/email/free50/account-invitation.txt:7
+msgid "email.to-start-click-above-link"
+msgstr "Zz zzzzzzzz zzz zzzzz zzzz, zzz zzz zzzzzzzzzzz zzzzz zzzzzzz \"Zzzzzzz-zzzz\" zzzzzzzz zzzzzzzzz zzzz zzzz zz-zzzzzzz, zzz zzzz z zzzzzz zzz zz zzzz zzzzz zzzzzz zzzzzzzzzz zzz zzzz zzzzzzzzzz. Zzz zzzz zzz zzzz zzz zzzzzzzz zzzz zzzz."
+
+#. (escaped_timestamp)
+#: share/template/email/page-details.html:9 share/template/email/page-details.txt:9
+msgid "email.today-at=time"
+msgstr "zzzzz zz %1"
+
+#: share/template/email/openid/invite-request-email.txt:12 share/template/email/st/invite-request-email.txt:12
+msgid "email.user-invite-page-at:"
+msgstr "Zzz Zzzz Zzzzzz zzzz zzz zz zzzzz zz:"
+
+#: share/template/email/free50/account-invitation.txt:11 share/template/email/openid/workspace-invitation-body.html:21 share/template/email/openid/workspace-invitation.txt:8 share/template/email/st/account-invitation-body.html:31 share/template/email/st/account-invitation.txt:13 share/template/email/st/workspace-invitation-body.html:31 share/template/email/st/workspace-invitation.txt:13
+msgid "email.username:"
+msgstr "zzzzzzzz:"
+
+#. (escaped_title)
+#: share/template/email/watchlist.html:7
+msgid "email.watchlist-update-for=wiki"
+msgstr "Zzzzzzzzz Zzzzzz zzz %1"
+
+#: share/template/email/free50/account-invitation-body.html:36 share/template/email/free50/account-invitation.txt:24
+msgid "email.we-encourage-you-to-invite-others"
+msgstr "Zz zzzzzzzzz zzz zz zzzzzz zzzzz zz-zzzzzzz zz zzzz zzzz zzzzzzz'z zzzzzzzzzzzzz zzzzz."
+
+#: share/template/email/free50/account-invitation.txt:10 share/template/email/openid/workspace-invitation-body.html:20 share/template/email/openid/workspace-invitation.txt:7 share/template/email/st/account-invitation-body.html:30 share/template/email/st/account-invitation.txt:12 share/template/email/st/workspace-invitation-body.html:30 share/template/email/st/workspace-invitation.txt:12
+msgid "email.web-address:"
+msgstr "zzz zzzzzzz:"
+
+#: share/template/email/email-address-confirmation.html:6
+msgid "email.welcome-confirm-email-to-join"
+msgstr "Zzzzzzz zz zzz Zzzzzzzzzz zzzzzzzzz - zzzzzz zzzzzzz zzzz zzzzz zzzzzzz zz zzzz"
+
+#. (account_name)
+#: share/template/email/email-address-confirmation.html:8
+msgid "email.welcome-confirm-email-to-join=account"
+msgstr "Zzzzzzz zz zzz %1 zzzzzzzzz - zzzzzz zzzzzzz zzzz zzzzz zzzzzzz zz zzzz"
+
+#: share/template/email/email-address-confirmation.html:17 share/template/email/email-address-confirmation.txt:1
+msgid "email.welcome-to"
+msgstr "Zzzzzzz zz"
+
+#: share/template/email/st/workspace-admin-invitation.txt:12
+msgid "email.wiki-appearance"
+msgstr "Zzzzzzzzz Zzzzzzzzzz"
+
+#: share/template/email/st/workspace-admin-invitation.txt:13
+msgid "email.wiki-features"
+msgstr "Zzzzzzzzz Zzzzzzzz"
+
+#. (target_workspace.title, account_name)
+#: share/template/email/email-address-confirmation.html:17 share/template/email/email-address-confirmation.txt:1
+msgid "email.wiki-in-group-at=wiki,group"
+msgstr "zzz %1 Zzzzzzzzz zz zzz %2 Zzzzz zz "
+
+#: share/template/email/st/workspace-admin-invitation.txt:14
+msgid "email.wiki-privacy"
+msgstr "Zzzzzzzzz Zzzzzzz"
+
+#. (escaped_timestamp)
+#: share/template/email/page-details.html:10 share/template/email/page-details.txt:10
+msgid "email.yesterday-at=time"
+msgstr "zzzzzzzzz zz %1"
+
+#: share/template/email/page-details.html:18 share/template/email/page-details.txt:19
+msgid "email.you"
+msgstr "zzz"
+
+#: share/template/email/email-address-confirmation-completed.html:32 share/template/email/email-address-confirmation-completed.txt:13
+msgid "email.you-are-member-of-following-groups:"
+msgstr "Zzz zzz z zzzzzz zz zzz zzzzzzzzz zzzzzz:"
+
+#: share/template/email/email-address-confirmation-completed.html:39 share/template/email/email-address-confirmation-completed.txt:18
+msgid "email.you-are-member-of-following-wikis:"
+msgstr "Zzz zzz z zzzzzz zz zzz zzzzzzzzz zzzzzzzzzz:"
+
+#: share/template/email/email-address-confirmation-completed.html:3
+msgid "email.your-email-has-been-confirmed"
+msgstr "Zzzz zzzzz zzzzzzz zzz zzzz zzzzzzzzz"
+
+#. (account_name)
+#: share/template/email/email-address-confirmation.html:22 share/template/email/email-address-confirmation.txt:4
+msgid "email.your-profile-has-been-added-to-directory=account"
+msgstr "Zzzz zzzzzzz zzz zzzz zzzzz zz zzz %1 zzzzzzzzz."
+
+#: share/template/email/email-address-confirmation.html:24 share/template/email/email-address-confirmation.txt:6
+msgid "email.your-profile-has-been-added-to-people-directory"
+msgstr "Zzzz zzzzzzz zzz zzzz zzzzz zz zzz zzzzzz zzzzzzzzz."
 
 #. ($p->{name})
 #: lib/Socialtext/Account.pm:1106
@@ -3726,6 +4185,10 @@ msgstr "zzzzzzz_zzzz zz zzzzzzzz"
 #: lib/Socialtext/Handler/ControlPanel.pm:371
 msgid "error.add-auw-failed=wikis"
 msgstr "Zzzzzz zz zzzz zzz zzzzzzzzz zzzzzzzzzz zzz zzzzz zzzzzzzzzz: %1"
+
+#: share/template/errors/require_business_admin:2
+msgid "error.admin-privileges-needed-to-access-uri"
+msgstr "Zzz zzzz zzzz zzzzz zzzzzzzzzz zz zzzzzz zzzz ZZZ."
 
 #. ($p{name},                $p{ws_name})
 #: lib/Socialtext/CLI.pm:1376
@@ -3870,6 +4333,10 @@ msgstr "Zzzzzzz zz zzz zzz. 35 zzzzzzz."
 
 msgid "error.configure-ntpd-failed=new-ts"
 msgstr "Zzzzzz zz zzzzzzzzz zzzz zzzz zzzzzzzzzz %1"
+
+#: share/template/errors/requires_confirmation:2
+msgid "error.confirm-email-to-activate-account"
+msgstr "Zzz zzzz zz zzzzzzz zzzz zzzzz zzzzzzz zz zzzzzzzz zzzz zzzzzzz."
 
 #: lib/Socialtext/Handler/Authen.pm:497
 msgid "error.confirmation-expired"
@@ -4032,6 +4499,10 @@ msgstr "Zzzzzz zzzzzzzzz %1 zz zzz zzzzzzzz."
 msgid "error.export=file"
 msgstr "Zzzzzz zzzzz zzzzzz zzzz %1, zzzzzzzz."
 
+#: share/template/errors/requires_external_id:2
+msgid "error.external-id-needed-to-activate-account"
+msgstr "Zzz zzzz zz zzzz zz Zzzzzzzz ZZ zzz zz zzzzz zz zzzzzzzz zzzz zzzzzzz."
+
 #: lib/Socialtext/WorkspacesUIPlugin.pm:231
 msgid "error.extract-skin"
 msgstr "Zzzzz zzz zzzzzzz zzzzz zzzz zzz zzzz zzzzzzz. Zzzz zz zzzz zzzzzz zzzzzz zz z zzzzzzz zzzzzzz zzzz. Zzzzzz zzzzz zzzz zzzz zzz zzz zzz zzzzzz zzzzz."
@@ -4098,6 +4569,10 @@ msgstr "Zzz zzz'z zzzz zzzzzzzzzz zz zzzzzz zzzzzzzzzzz"
 #: share/skin/s3/javascript/lightbox/attachment.js:195
 msgid "error.filename-too-long"
 msgstr "Zzzzzzzz zz zzz zzzz zzzzz ZZZ zzzzzzzz."
+
+#: share/template/errors/requires_external_id:4
+msgid "error.for-more-info-contact-sysadmin"
+msgstr "Zzz zzzz zzzzzzzzzzz, zzzzzz zzzzzzz zzzz zzzzzz zzzzzzzzzzzzz."
 
 #: lib/Socialtext/VideoPlugin.pm:203
 msgid "error.full-video-url-required"
@@ -4440,6 +4915,24 @@ msgstr "Zzzzzz zz zzzz zzzzzzz."
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2609
 msgid "error.loading-revision-failed"
 msgstr "Zzzzzz zz zzzz zzzzzzzz."
+
+#. (workspace_name)
+#: share/template/errors/login_to_edit:3
+msgid "error.login-to-edit=wiki"
+msgstr "Zzz zzzz zz zzzzzz zz zz zzzz zzz %1 zzzzzzzzz."
+
+#: share/template/errors/settings_requires_account:4
+msgid "error.login-to-set-preferences"
+msgstr "Zz zzz zzzz zzzzzzzzzzz zzz z zzzzzzzzz, zzz zzzz zz zzzzzz zz."
+
+#: share/template/errors/watchlist_requires_account:4
+msgid "error.login-to-use-watchlist-in-wiki"
+msgstr "Zz zzz zzz zzzzzzzzz zzzzzzz zz z zzzzzzzzz, zzz zzzz zz zzzzzz zz."
+
+#. (workspace_name, redirect_to)
+#: share/template/errors/authenticate_to_read:3
+msgid "error.login-to-view=wiki,register-uri"
+msgstr "Zzz zzzz zz zzzzzz zz zz zzzz zzz %1 zzzzzzzzz. Zz zzz zzzzzzz zzzz zz zzzzzzz, zzzzzz zzzzz zzz.<br /> Zzzzzzzzz, zzz zzz <a href=\"/nlw/register.html?redirect_to=%2\">zzzzzz z zzz zzzzzzz</a>"
 
 #. (new_title)
 #: share/skin/s3/javascript/st-lightbox.js:91
@@ -4972,6 +5465,11 @@ msgstr "Zzz zzzz zzzzzzz z zzzzzz."
 msgid "error.private-and-public-key-required-for-captcha"
 msgstr "Zzzz zzz zzzz zzzzzzz zzz zzzzzz zzz zz zzzzzz zzzzzzz"
 
+#. (escaped_str)
+#: share/template/errors/settings_requires_account:6 share/template/errors/watchlist_requires_account:6
+msgid "error.register-here=uri"
+msgstr "Zz zzz zz zzz zzzzzzz zzzz zz zzzzzzz, zzz zzz <a href=\"/nlw/register.html?redirect_to=%1\">zzzzzzzz zzzz</a>."
+
 #: lib/Socialtext/Handler/Authen.pm:368
 msgid "error.registration-disabled"
 msgstr "Zzzzzzzzzzzz zz zzzzzzzz."
@@ -5039,6 +5537,14 @@ msgstr "Zzz zzzzzzz zzz zzzzzz (%1) zzzzzzzz zzz zz %2 zzz zzz zz %3"
 #: lib/Socialtext/Group/Factory.pm:485 lib/Socialtext/User/Factory.pm:416
 msgid "error.required=field"
 msgstr "%1 zz z zzzzzzzz zzzzz."
+
+#: share/template/errors/requires_password_change:10
+msgid "error.resend-change-of-password"
+msgstr "Zzzzzz Zzzzzz zz Zzzzzzzz"
+
+#: share/template/errors/requires_confirmation:10
+msgid "error.resend-confirmation"
+msgstr "Zzzzzz zzzzzzzzzzzz"
 
 #. ($display_name)
 #: lib/Socialtext/PageRevision.pm:466
@@ -5458,6 +5964,22 @@ msgstr "Zzz zzzz zzzzzzz z zzzzzzzzz."
 msgid "error.write-test-file-on-samba-share!"
 msgstr "Zzzzzz zzzzz zzzz zzzz zz zzzzz zzzzz!"
 
+#: share/template/errors/unauthorized_workspace:3
+msgid "error.you-are-not-authorized-to-view-this-wiki"
+msgstr "Zzz zzz zzz zzzzzzzzzz zz zzzz zzzz zzzzzzzzz."
+
+#: share/template/errors/requires_password_change:2
+msgid "error.you-need-to-set-new-password-for-your-account"
+msgstr "Zzz zzzz zz zzz z zzz zzzzzzzz zzz zzzz zzzzzzz."
+
+#: share/template/errors/requires_confirmation:4
+msgid "error.you-should-have-received-email-with-confirmation-link"
+msgstr "Zzz zzzzzz zzzz zzzzzzzz zz zzzzz zzzz z zzzzzzzzzzzz zzzz."
+
+#: share/template/errors/requires_password_change:4
+msgid "error.you-should-have-received-email-with-link-allowing-you-to-do-so"
+msgstr "Zzz zzzzzz zzzz zzzzzzzz zz zzzzz zzzz z zzzz zzzzzzzz zzz zz zz zz."
+
 #. (person_tag)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:6 share/plugin/people/template/data/events/person:6
 msgid "event.add-tag-self=tag"
@@ -5478,6 +6000,12 @@ msgstr "zzzzzz %1 %2."
 #: share/plugin/widgets/share/javascript/template/activities/widget.tt2:6 share/plugin/widgets/share/javascript/template/activities/widget.tt2:7 share/plugin/widgets/template/data/events/widget:6 share/plugin/widgets/template/data/events/widget:7
 msgid "event.add-widget=user,widget,context"
 msgstr "%1 zzzzz zzz %2 zzzzzz. %3."
+
+#. (page_in_workspace, event.context.summary.remove('\s+$')
+#. (page_in_workspace, event.context.summary.remove("\\s+$"))
+#: share/template/data/events/page:17
+msgid "event.comment=page,summary"
+msgstr "zzzzzzzzz zz %1, zzzzzz, \"%2\""
 
 #. (page, workspace, event.context.summary.replace("[\n ]+\$", '')
 #. (page, workspace, event.context.summary.replace("[\n ]+$", ""))
@@ -5500,10 +6028,20 @@ msgstr "zzzzzzz zzz %1 zzzz %2 zz %3."
 msgid "event.delete-tag=tag,person"
 msgstr "zzzzzzz zzz zzz %1 zzzz %2."
 
+#. (page_in_workspace)
+#: share/template/data/events/page:15
+msgid "event.delete=page"
+msgstr "zzzzzzz %1."
+
 #. (page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:14
 msgid "event.delete=page,wiki"
 msgstr "zzzzzzz %1 zz %2."
+
+#. (page_in_workspace)
+#: share/template/data/events/page:11
+msgid "event.duplicate=page"
+msgstr "zzzzzzzzzz %1."
 
 #. (page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:10
@@ -5518,6 +6056,16 @@ msgstr "zzzzzz zzzzz zzz zzzzzzz."
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:15 share/plugin/people/template/data/events/person:15
 msgid "event.edit-profile=person"
 msgstr "zzzzzz %1'z zzzzzzz."
+
+#. (page_in_workspace)
+#: share/template/data/events/page:8
+msgid "event.edit=page"
+msgstr "zzzzzz %1."
+
+#. (page_in_workspace, event.context.edit_summary)
+#: share/template/data/events/page:6
+msgid "event.edit=page,summary"
+msgstr "zzzzzz %1, zzzzzz \"%2\"."
 
 #. (page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:7
@@ -5539,6 +6087,11 @@ msgstr "zzzzzzz zzzzzzzzz %1."
 msgid "event.generic-self=action"
 msgstr "zzzzzzzzz zzzzzz '%1' zz zzzzzzzz."
 
+#. (event.action, page_in_workspace)
+#: share/template/data/events/page:27
+msgid "event.generic=action,page"
+msgstr "zzzzzzzzz zzzzzz %1 zz %2."
+
 #. (event.action, page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:22
 msgid "event.generic=action,page,wiki"
@@ -5548,6 +6101,11 @@ msgstr "zzzzzzzzz zzzzzz %1 zz %2 zz %3."
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:25 share/plugin/people/template/data/events/person:25
 msgid "event.generic=action,person"
 msgstr "zzzzzzzzz zzzzzz '%1' zz %2."
+
+#. (page, workspace)
+#: share/template/data/event:53
+msgid "event.in=page,wiki"
+msgstr "%1 zz %2"
 
 #. (group)
 #: share/plugin/widgets/share/javascript/template/activities/group.tt2:4
@@ -5579,16 +6137,51 @@ msgstr "zzzzzzz %1 zzzz zzz zzzzz %2."
 msgid "event.leave=user,wiki"
 msgstr "zzzzzzz %1 zzzz zzz zzzzzzzzz %2."
 
+#. (page_in_workspace)
+#: share/template/data/events/page:13
+msgid "event.rename=page"
+msgstr "zzzzzzz %1."
+
+#. (page_tag, page_in_workspace)
+#: share/template/data/events/page:21
+msgid "event.tag-delete=tag,page"
+msgstr "zzzzzzz zzz %1 zzzz %2."
+
+#. (page_in_workspace, page_tag)
+#: share/template/data/events/page:19
+msgid "event.tag=page,tag"
+msgstr "zzzzzz %1 zz %2."
+
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:23 share/plugin/people/template/data/events/person:23
 msgid "event.unfollow=person"
 msgstr "zzzzzzz zzzzzzzzz %1."
+
+#. (event.event_class)
+#: share/template/data/event:75 share/template/data/event:90
+msgid "event.unknown=event-class"
+msgstr "Zzzzzzz zzzzz zzzzz: %1"
 
 #. (actor, widget_link(event.context)
 #. (actor, widget_link(event.context))
 #: share/plugin/widgets/share/javascript/template/activities/widget.tt2:9 share/plugin/widgets/template/data/events/widget:9
 msgid "event.update-widget=actor,widget"
 msgstr "%1 zzzzzzz zzz %2 zzzzzz."
+
+#. (page_in_workspace)
+#: share/template/data/events/page:3
+msgid "event.view=page"
+msgstr "zzzzzz %1."
+
+#. (page_in_workspace)
+#: share/template/data/events/page:25
+msgid "event.watch-delete=page"
+msgstr "zzzzzzz zzzzzzzz %1."
+
+#. (page_in_workspace)
+#: share/template/data/events/page:23
+msgid "event.watch=page"
+msgstr "zzzzzzz zzzzzzzz %1."
 
 #: lib/Socialtext/EmailNotifyPlugin.pm:35
 msgid "every.15minutes"
@@ -6920,10 +7513,22 @@ msgstr "<Your personal message goes here.>"
 msgid "job.all=class"
 msgstr "Zzz %1 Zzzz"
 
+#: share/template/data/job.html:25 share/template/data/job_list.html:29
+msgid "job.args"
+msgstr "Zzzz"
+
+#: share/template/data/job.html:18 share/template/data/job_stats.html:25
+msgid "job.class"
+msgstr "Zzzzz"
+
 #. ($cleaned)
 #: bin/ceq-cleanup:20
 msgid "job.cleaned=count"
 msgstr "Zzzz zzzzzzzz %1 zzz zzzzz."
+
+#: share/template/data/job.html:24 share/template/data/job_list.html:28
+msgid "job.coalesce"
+msgstr "Zzzzzzzz"
 
 #: bin/ceq-stat:33
 msgid "job.count-delay"
@@ -6945,22 +7550,74 @@ msgstr "Zzzzzz zz zzzz \"zzzzzzz\" zzz zzzz"
 msgid "job.count-success"
 msgstr "Zzzzzzzzzz zzz zzzzz"
 
+#: share/template/data/job.html:21 share/template/data/job_list.html:25
+msgid "job.created"
+msgstr "Zzzzzzz"
+
+#: share/template/data/job_stats.html:27
+msgid "job.delayed"
+msgstr "Zzzzzzz"
+
 #. ($job_name)
 #: bin/ceq-cleanup:18
 msgid "job.deprecated=type"
 msgstr "Zzz zzzz %1 zzz zzzz zzzzzzzzzz. Zzzzzzzz zz."
 
+#: share/template/data/job_stats.html:36
+msgid "job.earliest-nodelay"
+msgstr "Zzzzzzzz ZzZzzzz"
+
+#: share/template/data/job_stats.html:35
+msgid "job.earliest-queued"
+msgstr "Zzzzzzzz Zzzzzz"
+
+#: share/template/data/job_stats.html:28
+msgid "job.grabbed"
+msgstr "Zzzzzzz"
+
+#: share/template/data/job.html:23 share/template/data/job_list.html:27
+msgid "job.grabbed-until"
+msgstr "Zzzzzzz Zzzzz"
+
+#: share/template/data/job.html:17 share/template/data/job_list.html:22
+msgid "job.id"
+msgstr "ZZ"
+
+#: share/template/data/job.html:19 share/template/data/job_list.html:23
+msgid "job.key"
+msgstr "Zzz"
+
 #: bin/ceq-stat:72
 msgid "job.key:"
 msgstr "Zzz:"
+
+#: share/template/data/job_stats.html:37
+msgid "job.last-5min"
+msgstr "Zzzz 5zzz"
+
+#: share/template/data/job_stats.html:32
+msgid "job.last-fail"
+msgstr "Zzzz Zzzz"
 
 #: bin/ceq-stat:37
 msgid "job.last-failure"
 msgstr "Zzzz zzzzzz zzzzzzz zzzz"
 
+#: share/template/data/job_stats.html:31
+msgid "job.last-ok"
+msgstr "Zzzz ZZ"
+
 #: bin/ceq-stat:36
 msgid "job.last-success"
 msgstr "Zzzz zzzzzz zzzzzzz zzzz"
+
+#: share/template/data/job_stats.html:34
+msgid "job.latest-nodelay"
+msgstr "Zzzzzz ZzZzzzz"
+
+#: share/template/data/job_stats.html:33
+msgid "job.latest-queued"
+msgstr "Zzzzzz Zzzzzz"
 
 #: bin/ceq-stat:38
 msgid "job.newest"
@@ -6970,6 +7627,14 @@ msgstr "Zzzz zzzzzzzz (zzzzzz) zzzzzzzz zzzz"
 msgid "job.newest-without-delay"
 msgstr "Zzzz zzzzzzzz (zzzzzz) zzzzzzzz zzzz, zzzzzzz z zzzzzzz zzzzz"
 
+#: share/template/data/job_stats.html:30
+msgid "job.num-fail"
+msgstr "Zzz Zzzz"
+
+#: share/template/data/job_stats.html:29
+msgid "job.num-ok"
+msgstr "Zzz ZZ"
+
 #: bin/ceq-stat:40
 msgid "job.oldest"
 msgstr "Zzzzzzzz (zzzzzz) zzzzzzzz zzzz"
@@ -6977,6 +7642,18 @@ msgstr "Zzzzzzzz (zzzzzz) zzzzzzzz zzzz"
 #: bin/ceq-stat:41
 msgid "job.oldest-without-delay"
 msgstr "Zzzzzzzz (zzzzzz) zzzzzzzz zzzz, zzzzzzz z zzzzzzz zzzzz"
+
+#: share/template/data/job.html:20 share/template/data/job_list.html:24
+msgid "job.prio"
+msgstr "Zzzz"
+
+#: share/template/data/job_stats.html:26
+msgid "job.queued"
+msgstr "Zzzzzz"
+
+#: share/template/data/job.html:22 share/template/data/job_list.html:26
+msgid "job.run-after"
+msgstr "Zzz Zzzzz"
 
 #: bin/ceq-stat:69
 msgid "job.total"
@@ -7108,6 +7785,23 @@ msgstr "Zzzz zzzz"
 msgid "lite.previous-page"
 msgstr "Zzzzzzzz zzzz"
 
+#. (lite ? '/m/login' : '/challenge')
+#: share/template/authen/element/forgot_password_page:17
+msgid "login.back-to=uri"
+msgstr "Zzzz zz <a href=\"%1\">Zzz zz zz Zzzzzzzzzz</a>."
+
+#: share/template/authen/authenticated_join.html:4
+msgid "login.click"
+msgstr "Zzzzz"
+
+#: share/template/authen/element/choose_password_form:9 share/template/authen/register.html:6
+msgid "login.click-here-to-login-with-existing-account"
+msgstr "Zzzzz zzzz zz zzz zz zzzz zz zzzzzzzz zzzzzzz."
+
+#: share/template/authen/logout.html:21
+msgid "login.click-login-in-upper-right"
+msgstr "Zzzzz \"Zzz zz\" zz zzz zzzzz-zzzzz zz zzz zz."
+
 #. ($address)
 #: lib/Socialtext/Handler/Authen.pm:531
 msgid "login.confirmed=email"
@@ -7126,25 +7820,161 @@ msgstr "Zzzzz Zzzzzzzz"
 msgid "login.email-address"
 msgstr "zzzzz zzzzzzz"
 
+#: share/template/authen/element/register_form:10
+msgid "login.email-address:"
+msgstr "Zzzzz Zzzzzzz:"
+
+#. (from_address)
+#: share/template/authen/element/forgot_password_page:13
+msgid "login.email-we-send-will-come-from=address"
+msgstr "Zzz zzzzz zz zzzz zzzz zzz zzzz zzzz zzzz <strong>%1</strong>. Zz zzzzzz zzz zzzzzzz zz, zzzzzz zzz <strong>%1</strong> zz zzzz zzzzzzz zzzz zz zzzz zzzz."
+
 #: lib/Socialtext/Authen.pm:37
 msgid "login.email:"
 msgstr "Zzzzz Zzzzzzz:"
+
+#: share/template/authen/element/forgot_password_page:6
+msgid "login.enter-email-below-to-recover-password"
+msgstr "Zzzzz zzzz zzzzz zzzzzzz zzzzz. Zzzzz zzz zzzzz zzzzzzz zzz zzzzzzzz zzz zzz zzzz Zzzzzzzzzz zzzzzzz. Zz zzz zzz zzzz zz zzzzzzzz z zzzz zzz zzzzzzzz zz zz zzzzz zzzzzzz, zzzz zz zzzz zzzzzzz, zzz zzz zzz zzzzz zzzzzzz zz zzz zzzz zz."
+
+#: share/template/authen/error.html:3 share/template/authen/error.html:7
+msgid "login.error"
+msgstr "Zzzzz"
+
+#: share/template/authen/register.html:5
+msgid "login.fill-in-info-to-create-account"
+msgstr "Zzzzzz zzzz zz zzz zzzzzzzzz zzzzzzzzzzz zz zzzzzz z Zzzzzzzzzz zzzzzzz."
+
+#. (to_create)
+#: share/template/authen/element/choose_password_form:8
+msgid "login.fill-in-info-to-create=account-type"
+msgstr "Zzzzzz zzzz zz zzz zzzzzzzzz zzzzzzzzzzz zz zzzzzz z %1."
+
+#: share/template/authen/join.html:28
+msgid "login.fill-in-info-to-register:"
+msgstr "Zz zzz zzz'z zzzz z Zzzzzzzzzz zzzzzzz zzzzzzz, zzzzzz zzzz zz zzz zzzzzzzzz zzzzzzzzzzz:"
+
+#: share/template/authen/element/register_form:25
+msgid "login.first-name:"
+msgstr "Zzzzz Zzzz:"
+
+#: share/template/authen/element/forgot_password_link:4
+msgid "login.forgot-my-password"
+msgstr "Z zzz'z zzzz zz zzzzzzzz."
+
+#: share/template/authen/forgot_password.html:3
+msgid "login.forgot-password"
+msgstr "Zzzzzz Zzzzzzzz"
+
+#: share/template/authen/authenticated_join.html:4
+msgid "login.here"
+msgstr "zzzz"
 
 #: share/skin/s3/template/lite/login/nologin.html:6
 msgid "login.is-disabled"
 msgstr "Zzzzz zz Zzzzzzzz"
 
+#: share/template/authen/authenticated_join.html:3
+msgid "login.join"
+msgstr "Zzzz"
+
+#. (target_workspace.title)
+#: share/template/authen/join.html:7
+msgid "login.join=wiki"
+msgstr "Zzzz %1"
+
+#: share/template/authen/element/register_form:30
+msgid "login.last-name:"
+msgstr "Zzzz Zzzz:"
+
+#: share/template/authen/element/login_form:33 share/template/authen/element/login_form:40
+msgid "login.log-in"
+msgstr "Zzz zz"
+
+#: share/template/authen/logout.html:7
+msgid "login.logged-out-of-socialtext"
+msgstr "Zzzzzz zzz zz Zzzzzzzzzz"
+
+#: share/template/authen/join.html:3 share/template/authen/login.html:3
+msgid "login.login"
+msgstr "Zzzzz"
+
+#: share/template/authen/nologin.html:1 share/template/authen/nologin.html:5
+msgid "login.login-disabled"
+msgstr "Zzzzz Zzzzzzzz"
+
+#: share/template/authen/login.html:7
+msgid "login.login-to-socialtext"
+msgstr "Zzz zz zz Zzzzzzzzzz"
+
+#: share/template/authen/join.html:18
+msgid "login.login-with-socialtext-account:"
+msgstr "Zzz zz zzzz zzzz Zzzzzzzzzz zzzzzzz:"
+
+#: share/template/authen/logout.html:3
+msgid "login.logout"
+msgstr "Zzzzzz"
+
 #: lib/Socialtext/Authen.pm:38
 msgid "login.name:"
 msgstr "Zzzzzzzz:"
+
+#: share/template/authen/element/forgot_password_page:2
+msgid "login.no-problem-we-can-send-you-email"
+msgstr "Zz zzzzzzz, zz zzz zzzz zzz zz zzzzz zzzz zzzz zzzz. Zzz zzzz zz zzzz zz zzzzzz zzzz zzzzzzzz zzzz zz zzzzzzzzz zzz zzzz."
+
+#: share/template/authen/element/register_form:26 share/template/authen/element/register_form:31
+msgid "login.optional"
+msgstr "(Zzzzzzzz)"
+
+#: share/template/authen/element/login_form:17 share/template/authen/element/register_form:15
+msgid "login.password:"
+msgstr "Zzzzzzzz:"
+
+#: share/template/authen/element/choose_password_form:25 share/template/authen/element/register_form:20
+msgid "login.re-type-password:"
+msgstr "Zz-zzzz Zzzzzzzz:"
+
+#: share/template/authen/element/choose_password_form:35 share/template/authen/element/register_form:41 share/template/authen/register.html:3
+msgid "login.register"
+msgstr "Zzzzzzzz"
+
+#: share/template/authen/element/login_form:24
+msgid "login.remember-me"
+msgstr "Zzzzzzzz zz zz zzzz zzzzzzzz."
+
+#: share/template/authen/forgot_password.html:3
+msgid "login.socialtext-password-help"
+msgstr "Zzzzzzzzzz zzzzzzzz zzzz"
+
+#: share/template/authen/element/forgot_password_form:13
+msgid "login.submit"
+msgstr "Zzzzzz"
 
 #: share/skin/s3/template/lite/login/login.html:6 lib/Socialtext/Lite.pm:111
 msgid "login.title"
 msgstr "Zzzzzzzzzz Zzzzz"
 
+#: share/template/authen/authenticated_join.html:4
+msgid "login.to-continue"
+msgstr "zz zzzzzzzz"
+
 #: lib/Socialtext/Handler/Authen.pm:207
 msgid "login.username"
 msgstr "zzzzzzzz"
+
+#: share/template/authen/element/choose_password_form:13
+msgid "login.username:"
+msgstr "Zzzzzzzz:"
+
+#. (target_workspace.title, target_workspace.account.name)
+#: share/template/authen/authenticated_join.html:4
+msgid "login.you-have-joined-click=wiki,group"
+msgstr "Zzz zzzz zzzzzz zzz %1 Zzzzzzzzz zz zzz %2 Zzzzz. Zzzzz"
+
+#: share/template/authen/logout.html:18
+msgid "login.you-have-logged-out-of-socialtext"
+msgstr "Zzz zzzz zzzzzz zzz zz Zzzzzzzzzz."
 
 #: share/skin/s3/javascript/lookahead.js:269
 msgid "lookahead.all-results"

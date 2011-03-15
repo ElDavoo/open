@@ -4,7 +4,7 @@
 [%- SET watchlist_uri = workspace.uri _ '?action=watchlist' -%]
 <html>
 <head>
-  <title>[% loc('Watchlist Update for [_1]', escaped_title) %]</title>
+  <title>[% loc('email.watchlist-update-for=wiki', escaped_title) %]</title>
 </head>
 
 <body>
@@ -14,7 +14,7 @@
 </p>
 
 <p>
-  [% loc('The following pages in your <a href="[_1]">watchlist</a> in <a href="[_3]">[_2]</a> have recently changed. This email was generated on [_4] at [_5].', watchlist_uri, escaped_title, workspace.uri, email_date, email_time) %]
+  [% loc('email.following-pages-in-watchlist-have-recently-changed=watchlist,wiki,uri,date,time', watchlist_uri, escaped_title, workspace.uri, email_date, email_time) %]
 </p>
 
 <ul>
@@ -25,7 +25,7 @@
 
 <hr />
 <p>
-  [% loc('To stop receiving or change how often you receive emails about changes to your watchlist in [_1], you can <a href="[_2]">change your preferences</a>.',  escaped_title, escaped_uri) %]
+  [% loc('email.change-watchlist-preferences-at=wiki,uri',  escaped_title, escaped_uri) %]
 </p>
 
 [% PROCESS 'email/standard-footer.html' support_link = 0 %]

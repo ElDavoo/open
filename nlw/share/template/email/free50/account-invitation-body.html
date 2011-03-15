@@ -1,17 +1,17 @@
 [%# @COPYRIGHT@ -%]
 
 <p style="font-weight: bold;">
-  [% loc("Thank you for joining your company's collaboration group, hosted by Socialtext.") %]
+  [% loc("email.thank-you-for-joining-company-collaboration-group-hosted-by-socialtext") %]
 </p>
 
 
 [% IF requires_confirmation %]
 
   [% SET uri = confirmation_uri | html %]
-  <p>[% loc('Please <a target="blank" title="(external link)" href="[_1]&account_for=free50">click here</a> to confirm your email address and log in.', uri) %]</p>
-  <p>[% loc('If your email client does not support hyperlinks, you can also copy and paste this URL into a browser to confirm your email address:') %]</p>
+  <p>[% loc('email.click-to-confirm-email-and-login=uri', uri) %]</p>
+  <p>[% loc('email.copy-url-into-browser-to-confirm-email:') %]</p>
   <blockquote>[% uri %]&amp;account_for=free50</blockquote>
-  <p>[% loc('By clicking the above link, you can immediately start sharing &quot;Twitter-like&quot; messages privately with your co-workers, and find a better way to work using social networking and wiki workspaces. You also get your own personal home page.') %]</p>
+  <p>[% loc('email.to-start-click-above') %]</p>
 
 [% ELSE %]
 
@@ -23,19 +23,19 @@
   [% IF appconfig.is_default('user_factories') %]
     [% IF app_name; a = 'a'; ELSE; a = 'an'; END %]
     <p>
-      [% loc("Because you already have [_1] [_2] group, the password is the same as the password you use for your other [_3] groups.", a, app_name, app_name) %]
+      [% loc("email.same-password-as-existing-group=a,app,app", a, app_name, app_name) %]
       [% loc("invite.link-to-reset-password:") %]
       [% forgot_password_uri %]
     </p>
   [% END %]
 
-  <p>[% loc('You may want to keep this email for future reference.') %]</p>
+  <p>[% loc('email.keep-this-for-future-reference') %]</p>
 
 [% END %]
 
-<p>[% loc("We encourage you to invite other co-workers to join your company's collaboration group.") %]</p>
-<p>[% loc("If you did not request to join your company's collaboration group, please contact <a href=\"mailto:abuse@socialtext.com\">abuse@socialtext.com</a>") %]</p>
+<p>[% loc("email.we-encourage-you-to-invite-others") %]</p>
+<p>[% loc("email.if-unsolicited-contact-abuse-link") %]</p>
 
-<p>[% loc("Happy Collaborating!") %]</p>
+<p>[% loc("email.happy-collaborating!") %]</p>
 <p><img alt="Socialtext logo" src="http://www.socialtext.com/themes/socialtext/images/header_logo.gif" /></p>
 <p style="font-weight: bold; font-style: italic;"><a href="http://www.socialtext.com">www.socialtext.com</a></p>

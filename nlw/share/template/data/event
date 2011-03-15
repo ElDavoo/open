@@ -50,7 +50,7 @@
 [%- END -%]
 
 [%- MACRO page_in_workspace BLOCK -%]
-    [%- loc("[_1] in [_2]", page, workspace) -%]
+    [%- loc("event.in=page,wiki", page, workspace) -%]
 [%- END -%]
 
 [%- SET event_class=event.event_class -%]
@@ -72,7 +72,7 @@
             [%- TRY -%]
                 [%- INCLUDE "data/events/$event_class" -%]
             [%- CATCH -%]
-                [%- loc('Unknown event class: [_1]', event.event_class) -%]
+                [%- loc('event.unknown=event-class', event.event_class) -%]
             [%- END -%]
         </div>
     </div>
@@ -87,6 +87,6 @@
     [%- TRY -%]
         [%- INCLUDE "data/events/$event_class" out=out -%]
     [%- CATCH -%]
-        [%- loc('Unknown event class: [_1]', event.event_class) -%]
+        [%- loc('event.unknown=event-class', event.event_class) -%]
     [%- END -%]
 [%- END -%]
