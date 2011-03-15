@@ -142,7 +142,7 @@ msgid "acl.public-read-only"
 msgstr "公開唯讀"
 
 msgid "activities.about-insert-wikilink"
-msgstr "選定一個工作區，然後搜尋您想連接的工作區頁面。您可以更改顯示文字，也可以連接到該頁面的。"
+msgstr "選定一個工作區，然後搜尋您想連接的工作區頁面。您可以更改顯示文字，也可以連接到該頁面的特定段落。"
 
 msgid "activities.add-tag"
 msgstr "新增標籤"
@@ -385,6 +385,12 @@ msgstr "1 分鐘前"
 msgid "ago.<1minute"
 msgstr "不到 1 分鐘前"
 
+msgid "ago.about-1day"
+msgstr "大約 1 天前"
+
+msgid "ago.about-1hour"
+msgstr "大約 1 小時前"
+
 msgid "ago.days=count"
 msgstr "%1 天前"
 
@@ -396,12 +402,6 @@ msgstr "%1 分鐘前"
 
 msgid "ago.minutes=count"
 msgstr "%1 分鐘前"
-
-msgid "ago.~1day"
-msgstr "大約 1 天前"
-
-msgid "ago.~1hour"
-msgstr "大約 1 小時前"
 
 msgid "analytics.id:"
 msgstr "Google Analytics 帳號"

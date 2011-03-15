@@ -10,7 +10,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "activities.about-insert-wikilink"
-msgstr "选定一个工作区，然后搜索您想连接的工作区页面。您可以更改显示文字，也可以连接到该页面的。"
+msgstr "選定一個工作區，然後搜索您想連接的工作區頁面。您可以更改顯示文字，也可以連接到該頁面的特定段落。"
 
 msgid "activities.add-tag"
 msgstr "添加标签"
@@ -247,6 +247,12 @@ msgstr "1 分钟前"
 msgid "ago.<1minute"
 msgstr "不到 1 分钟前"
 
+msgid "ago.about-1day"
+msgstr "大约 1 天前"
+
+msgid "ago.about-1hour"
+msgstr "大约 1 小时前"
+
 msgid "ago.days=count"
 msgstr "%1 天前"
 
@@ -255,12 +261,6 @@ msgstr "%1 小时前"
 
 msgid "ago.minutes=count"
 msgstr "%1 分钟前"
-
-msgid "ago.~1day"
-msgstr "大约 1 天前"
-
-msgid "ago.~1hour"
-msgstr "大约 1 小时前"
 
 msgid "bookmarklet.share-via-signals"
 msgstr "”书签，将网页透过讯息来分享给同事。"

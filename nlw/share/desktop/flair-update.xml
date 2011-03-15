@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>394</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-394.air</url>
-<description><![CDATA[[Build 394 - Fri Mar 11 19:41:41 PST 2011]
+  <version>395</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-395.air</url>
+<description><![CDATA[[Build 395 - Mon Mar 14 17:10:03 PDT 2011]
+* SD now redirects correctly when connecting to ssl-only appliances. {bz: 5071}
+
+[Build 394 - Fri Mar 11 19:41:41 PST 2011]
 * Update to the latest AW code for get the reply de-duplication fix. {bz: 5044}
 
 [Build 393 - Fri Mar 11 08:00:35 PST 2011]

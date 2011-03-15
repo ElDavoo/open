@@ -362,11 +362,11 @@ msgid "ago.minutes=count"
 msgstr "%*(%1,minute) ago"
 
 #: share/plugin/widgets/share/javascript/template/activities/ago.tt2:8
-msgid "ago.~1day"
+msgid "ago.about-1day"
 msgstr "about one day ago"
 
 #: share/plugin/widgets/share/javascript/template/activities/ago.tt2:5
-msgid "ago.~1hour"
+msgid "ago.about-1hour"
 msgstr "about one hour ago"
 
 #: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26

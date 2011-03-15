@@ -71,11 +71,11 @@ msgid "ago.minutes=count"
 msgstr "%*(%1,minute) ago"
 
 #: share/skin/s3/template/view/page/display:15
-msgid "ago.~1day"
+msgid "ago.about-1day"
 msgstr "about one day ago"
 
 #: share/skin/s3/template/view/page/display:10
-msgid "ago.~1hour"
+msgid "ago.about-1hour"
 msgstr "about one hour ago"
 
 #: share/skin/s3/template/view/weblog:108

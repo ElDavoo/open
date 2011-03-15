@@ -54,7 +54,7 @@ sub str_to_regex {
 sub is_key {
     my $str = shift;
     return 0 if $str =~ /\bexample\.com"/;
-    return($str =~ /^msg(?:id|str) "(?:###-)?(?:XXX|[a-z][a-z\d]+)\.[^\sA-Z]+"/);
+    return($str =~ /^msg(?:id|str) "(?:###-)?(?:XXX|[a-z][a-z\d]+)\.[^~\[\]\sA-Z]+"/);
 }
 
 sub _unescape {
