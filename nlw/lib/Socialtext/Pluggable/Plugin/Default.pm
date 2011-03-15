@@ -42,7 +42,7 @@ sub register {
         priority    => 99,
     );
 
-    $class->add_content_type('wiki', loc('page.type-wiki'));
+    $class->add_content_type('wiki', _('page.type-wiki'));
 }
 
 sub user_name {

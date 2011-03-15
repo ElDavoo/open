@@ -2,7 +2,7 @@ package Socialtext::l10n;
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Scalar::Defer 'defer';
+use Scalar::Defer qw(defer force);
 use base 'Exporter';
 use Socialtext::AppConfig;
 our @EXPORT_OK = qw(loc loc_lang system_locale best_locale);
@@ -68,6 +68,11 @@ Locale::Maketext::Simple->import (
     Decode => 1,
     Export => "_loc",  # We have our own loc()
 );
+
+
+sub Scalar::Defer::Deferred::TO_JSON {
+    force $_[0];
+}
 
 sub _ {
     my @args = @_;
