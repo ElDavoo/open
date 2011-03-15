@@ -5463,7 +5463,7 @@ msgid "page.nothing-locked=wiki"
 msgstr "工作区 %1 没有锁定页面。"
 
 msgid "page.opened-for-edit=user,ago"
-msgstr "%1 已于%2打开此页编辑。"
+msgstr "%1 已於 %2打开本页进行编辑。"
 
 msgid "page.orphaned"
 msgstr "孤立页面"

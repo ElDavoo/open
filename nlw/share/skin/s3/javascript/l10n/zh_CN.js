@@ -1241,7 +1241,7 @@
 "page.new-name":"新页面名称",
 "page.no-backlinks":"还没有页面链接到此页面。",
 "page.no-tags":"此页面没有标签。",
-"page.opened-for-edit=user,ago":"[_1] 已于[_2]打开此页编辑。",
+"page.opened-for-edit=user,ago":"[_1] 已於 [_2]打开本页进行编辑。",
 "page.orphaned":"孤立页面",
 "page.print":"打印本页",
 "page.prompt-name":"输入页面名称...",

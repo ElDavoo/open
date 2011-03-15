@@ -280,7 +280,7 @@ msgid "blog.navigation"
 msgstr "博客导航"
 
 msgid "blog.navigation-for=tag"
-msgstr "导航到：%1"
+msgstr "导航框：%1"
 
 msgid "blog.new"
 msgstr "创建新博客"

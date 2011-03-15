@@ -1241,7 +1241,7 @@
 "page.new-name":"新頁面名稱",
 "page.no-backlinks":"還沒有頁面鏈結到此頁面。",
 "page.no-tags":"此頁面沒有標籤。",
-"page.opened-for-edit=user,ago":"[_1] 已於[_2]打開此頁編輯。",
+"page.opened-for-edit=user,ago":"[_1] 已於 [_2]打開本頁進行編輯。",
 "page.orphaned":"孤立頁面",
 "page.print":"列印本頁",
 "page.prompt-name":"輸入頁面名稱...",
