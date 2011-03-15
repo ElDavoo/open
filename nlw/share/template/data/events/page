@@ -24,5 +24,5 @@
     [%- CASE "watch_delete" -%]
         [%- loc("stopped watching [_1].", page_in_workspace) -%]
     [%- CASE -%]
-        [%- loc("performed action [_1] on [_1].", event.action, page_in_workspace) -%]
+        [%- loc("performed action [_1] on [_2].", event.action, page_in_workspace) -%]
 [%- END -%]

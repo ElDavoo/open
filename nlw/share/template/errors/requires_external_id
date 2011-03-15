@@ -1,5 +1,5 @@
 <span class="error">
-  [% loc('You need to have an External Id set in order to activate this account.') %]
+  [% loc('You need to have an External ID set in order to activate this account.') %]
   <br/>
   [% loc('For more information, please contact your system administrator.') %]
 </span>
