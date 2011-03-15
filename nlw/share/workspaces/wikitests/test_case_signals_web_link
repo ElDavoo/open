@@ -2,6 +2,7 @@
 
 | *Comment* | Test Case: Signals Web Link SETUP |  |
 
+
 | set_default | www_signaler | %%username%% |
 | set_default | www_signaler_pw | %%password%% |
 | set | text | Signals Web Link Text %%start_time%% |
@@ -26,7 +27,7 @@
 
 | *Comment* | Test Case: Signals Web Link. Click Cancel. Verify invisible elements |  |
 | click_ok | //a[@class='btn cancel'] |  |
-| st_ff_wait_for_text_not_present | Paste or type your link's destination | 30000 |
+| pause | 5000 |  |
 | wait_for_element_visible_ok | //a[contains(@class,'insertWeblink')] | 30000 |
 | click_ok | //a[contains(@class,'insertWeblink')] |  |
 | wait_for_element_visible_ok | //div[@class='weblinkPopup'] | 30000 |
