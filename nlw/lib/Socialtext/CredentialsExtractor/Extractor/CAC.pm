@@ -77,9 +77,9 @@ Searched for:
 
     # Notify *all* of the Business Admin's on the box about the failure
     $class->_notify_business_admins(
-        username        => $username,
-        message         => $err_msg,
-        attachment_body => $err_body,
+        username => $username,
+        subject  => $err_msg,
+        body     => $err_body,
     );
 
     return;
@@ -119,8 +119,8 @@ sub _notify_business_admins {
     my $class  = shift;
     my %params = @_;
     my $username = $params{username};
-    my $subject  = $params{message};
-    my $body     = $params{attachment_body};
+    my $subject  = $params{subject};
+    my $body     = $params{body};
 
     # If we've *recently* sent a notification for this Username, don't send
     # another one; throttle ourselves to "one notification every 'n' seconds".
