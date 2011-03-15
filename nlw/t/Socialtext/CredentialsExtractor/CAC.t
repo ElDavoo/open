@@ -106,9 +106,11 @@ notify_business_admins: {
     # Send a notification message to all Business Admins on the box
     my $subject = 'This is a test';
     my $body    = '... of the emergency broadcast system';
-    Socialtext::CredentialsExtractor::Extractor::CAC->_notify_business_admins(
-        message         => $subject,
-        attachment_body => $body,
+    Socialtext::CredentialsExtractor::Extractor::CAC->_send_notification(
+        recipients => \@badmins,
+        username   => 'failing.cac.login.username',
+        subject    => $subject,
+        body       => $body,
     );
 
     # Get the DM Signal sent to our test User, and verify its contents
