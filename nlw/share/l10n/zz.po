@@ -8969,6 +8969,10 @@ msgstr "Zzzzzzz zzzzzzz zzzzz '%1' zzz zzzzzzz '%2'"
 msgid "profile.custom"
 msgstr "ZZZZZZ"
 
+#: lib/Socialtext/Pluggable/Plugin/People.pm:177
+msgid "profile.edit"
+msgstr "(zzzz)"
+
 #: share/plugin/people/template/profile_hcard:107
 msgid "profile.facebook:"
 msgstr "Zzzzzzzz:"

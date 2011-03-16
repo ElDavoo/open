@@ -6408,6 +6408,10 @@ msgstr "已建立帳戶『%2』的檔案欄』%1』"
 msgid "profile.custom"
 msgstr "自訂"
 
+#: lib/Socialtext/Pluggable/Plugin/People.pm:177
+msgid "profile.edit"
+msgstr "(edit)"
+
 msgid "profile.facebook:"
 msgstr "Facebook："
 

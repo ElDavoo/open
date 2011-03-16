@@ -8969,6 +8969,10 @@ msgstr "Created profile field '%1' for account '%2'"
 msgid "profile.custom"
 msgstr "CUSTOM"
 
+#: lib/Socialtext/Pluggable/Plugin/People.pm:177
+msgid "profile.edit"
+msgstr "(edit)"
+
 #: share/plugin/people/template/profile_hcard:107
 msgid "profile.facebook:"
 msgstr "Facebook:"

@@ -167,95 +167,72 @@ msgstr "Assigned the Appliance Business Administrator role to %1"
 msgid "appliance.added-technical-admin=user"
 msgstr "Assigned the Appliance Technical Administrator role to %1"
 
-#:
 msgid "appliance.archive-directory"
 msgstr "Archive Directory"
 
-#:
 msgid "appliance.backup-destination-updated"
 msgstr "Backup destination updated"
 
-#:
 msgid "appliance.backup-in-progress-started-at-never"
 msgstr "Backup is in progress - started at never"
 
-#:
 msgid "appliance.backup-in-progress=started-at"
 msgstr "Backup is in progress - started at %1"
 
-#:
 msgid "appliance.backup-server-name"
 msgstr "Backup Server name"
 
-#:
 msgid "appliance.collaborativeness=score"
 msgstr "Collaborativeness: %1 - Unique contributors as a percent of unique visitors"
 
-#:
 msgid "appliance.confirm-initialize-wikis"
 msgstr "Do you really want to delete all workspaces and create a new initial workspace? (This action cannot be undone.)"
 
-#:
 msgid "appliance.confirm-reboot?"
 msgstr "Do you really want to reboot the appliance?"
 
-#:
 msgid "appliance.confirm-shutdown?"
 msgstr "Do you really want to shutdown the appliance?"
 
-#:
 msgid "appliance.contributions"
 msgstr "Contributions"
 
-#:
 msgid "appliance.email-required"
 msgstr "Please enter an email address"
 
-#:
 msgid "appliance.initialize-wikis"
 msgstr "Initialize Workspaces"
 
-#:
 msgid "appliance.initialize-wikis?"
 msgstr "Initialize Workspaces?"
 
-#:
 msgid "appliance.invalid-email"
 msgstr "Please enter a valid email address"
 
-#:
 msgid "appliance.last-manual-backup-was-never"
 msgstr "Last manual backup was never"
 
-#:
 msgid "appliance.last-manual-backup-was=last"
 msgstr "Last manual backup was %1"
 
-#:
 msgid "appliance.password"
 msgstr "Password"
 
-#:
 msgid "appliance.reboot"
 msgstr "Reboot"
 
-#:
 msgid "appliance.reboot?"
 msgstr "Reboot Appliance?"
 
-#:
 msgid "appliance.rebooting"
 msgstr "System rebooting ..."
 
-#:
 msgid "appliance.redirecting-to=url"
 msgstr "Redirecting to %1"
 
-#:
 msgid "appliance.refresh-in-progress"
 msgstr "Refresh is in progress, please wait ..."
 
-#:
 msgid "appliance.refreshing-backup-list"
 msgstr "Refreshing the backup list ..."
 
@@ -269,95 +246,72 @@ msgstr "Removed the Appliance Business Administrator role from %1"
 msgid "appliance.removed-technical-admin=user"
 msgstr "Removed the Appliance Technical Administrator role from %1"
 
-#:
 msgid "appliance.restore-already-running"
 msgstr "Restore is already running"
 
-#:
 msgid "appliance.restore-finished=latest-backup"
 msgstr "Restore of %1 finished."
 
-#:
 msgid "appliance.restore-in-progress-started-at-never"
 msgstr "Restore in progress - started at never"
 
-#:
 msgid "appliance.restore-in-progress=started-at"
 msgstr "Restore in progress - started at %1"
 
-#:
 msgid "appliance.restore-latest-already-running"
 msgstr "Restore latest is already running"
 
-#:
 msgid "appliance.retry-after-backup"
 msgstr "Please wait until the backup finishes, then retry."
 
-#:
 msgid "appliance.retry-after-restore"
 msgstr "Please wait until the restore finishes, then retry."
 
-#:
 msgid "appliance.select-backup-to-restore"
 msgstr "Please select a backup to restore"
 
-#:
 msgid "appliance.set-mail-server-to-built-in"
 msgstr "Updated mail server to use built-in server"
 
-#:
 msgid "appliance.set-mail-server=host"
 msgstr "Updated mail server to %1"
 
-#:
 msgid "appliance.shared-directory-name"
 msgstr "Shared Directory Name"
 
-#:
 msgid "appliance.shutdown"
 msgstr "Shutdown"
 
-#:
 msgid "appliance.shutdown?"
 msgstr "Shutdown Appliance?"
 
-#:
 msgid "appliance.shutting-down"
 msgstr "System shutting down ..."
 
-#:
 msgid "appliance.skipping-no-usage=wiki"
 msgstr "Skipping workspace %1, no usage."
 
-#:
 msgid "appliance.synchronized-time-with=ts"
 msgstr "Synchronized time with %1"
 
-#:
 msgid "appliance.test-email"
 msgstr "Socialtext Appliance Test Email"
 
-#:
 msgid "appliance.test-email-sent=recipient"
 msgstr "Sent test email to %1"
 
-#:
 msgid "appliance.timeserver-updated=ts"
 msgstr "Timeserver updated to %1, clock synchronized"
 
-#:
 msgid "appliance.username"
 msgstr "Username"
 
-#:
 msgid "appliance.web-proxy-cleared"
 msgstr "Web proxy cleared."
 
-#:
 msgid "appliance.web-proxy-updated=new-proxy"
 msgstr "Web proxy updated to %1"
 
-#:
 msgid "appliance.wikis-initialized=log"
 msgstr "Workspaces initialized.<br>Log: %1"
 
@@ -664,7 +618,6 @@ msgstr "Importing dashboard for user %1"
 msgid "date.format?"
 msgstr "How should displayed dates be formatted?"
 
-#:
 msgid "date.fri"
 msgstr "Fri"
 
@@ -676,27 +629,21 @@ msgstr "Should times be displayed in 12-hour or 24-hour format?"
 msgid "date.include-seconds?"
 msgstr "Should seconds be included on displayed times?"
 
-#:
 msgid "date.mon"
 msgstr "Mon"
 
-#:
 msgid "date.sat"
 msgstr "Sat"
 
-#:
 msgid "date.sun"
 msgstr "Sun"
 
-#:
 msgid "date.thu"
 msgstr "Thu"
 
-#:
 msgid "date.tue"
 msgstr "Tue"
 
-#:
 msgid "date.wed"
 msgstr "Wed"
 
@@ -781,7 +728,6 @@ msgstr "Private message from %1"
 msgid "email.recent-changes=wiki"
 msgstr "Recent Changes In %1 Workspace"
 
-#:
 msgid "email.sent-from-socialtext-appliance"
 msgstr "This email was sent from the Socialtext Appliance."
 
@@ -882,15 +828,12 @@ msgstr "Application error in %1 on %2: %3"
 msgid "error.at=line,message"
 msgstr "Line %1: %2"
 
-#:
 msgid "error.authentication-token-soft-limit-must-be-lower-than-hard-limit"
 msgstr "Authentication token soft limit must be lower than the hard limit."
 
-#:
 msgid "error.backup-already-running"
 msgstr "Backup already running"
 
-#:
 msgid "error.backup-failed"
 msgstr "Backup failed ..."
 
@@ -932,11 +875,9 @@ msgstr "There was a problem changing password for user %1"
 msgid "error.change-profile-field-failed"
 msgstr "Unable to change profile field."
 
-#:
 msgid "error.cleaning-not-implemented"
 msgstr "Cleaning is not implemented."
 
-#:
 msgid "error.configure-ntpd-failed=new-ts"
 msgstr "Failed to configure ntpd with timeserver %1"
 
@@ -1184,11 +1125,9 @@ msgstr "Sorry, %1 is not able to be changed."
 msgid "error.invalid-archive=file"
 msgstr "%1 is not a valid archive filename. Skin files must end with .zip, .tar.gz or .tgz."
 
-#:
 msgid "error.invalid-authentication-token-hard-limit=min-days,max-days"
 msgstr "Authentication token hard limit must be between %1 and %2 days."
 
-#:
 msgid "error.invalid-authentication-token-soft-limit=min-days,max-days"
 msgstr "Authentication token soft limit must be between %1 and %2 days."
 
@@ -1343,7 +1282,6 @@ msgstr "The email address, %1, is not in the domain %2."
 msgid "error.invalid=field-class"
 msgstr "Cannot create profile field: invalid field-class '%1'"
 
-#:
 msgid "error.invalid=host"
 msgstr "Invalid host: %1"
 
@@ -1357,7 +1295,6 @@ msgstr "'%1' is not a valid locale"
 msgid "error.invalid=page"
 msgstr "An invalid page ID was given: %1"
 
-#:
 msgid "error.invalid=support-uri"
 msgstr "The value '%1' is invalid."
 
@@ -1380,7 +1317,6 @@ msgstr "Missing/unknown Role '%1'; using default Role"
 msgid "error.missing-people-plugin"
 msgstr "The People plugin is not available."
 
-#:
 msgid "error.mount-samba-share"
 msgstr "Cannot mount the SAMBA share."
 
@@ -1627,7 +1563,6 @@ msgstr "There is no tag \"%1\" in the %2 workspace."
 msgid "error.no-thumbnail=url"
 msgstr "Can't find thumbnail image: %1"
 
-#:
 msgid "error.no-timeserver-configured"
 msgstr "Error: No timeserver is configured"
 
@@ -1785,7 +1720,6 @@ msgstr "Passwords must be at least 6 characters long."
 msgid "error.pdf-conversion-failed"
 msgstr "Error:<pre>Unable to convert to PDF</pre>"
 
-#:
 msgid "error.phone-home=url,response"
 msgstr "Unable to post appliance user report data to '%1': %2"
 
@@ -1793,7 +1727,6 @@ msgstr "Unable to post appliance user report data to '%1': %2"
 msgid "error.plugin-required"
 msgstr "You must specify a plugin."
 
-#:
 msgid "error.private-and-public-key-required-for-captcha"
 msgstr "Must set both private and public key to enable captcha"
 
@@ -1873,11 +1806,9 @@ msgstr "Since your password is stored in the directory for your organization, th
 msgid "error.restore-account-widget"
 msgstr "Error restoring account widget."
 
-#:
 msgid "error.restore-failed=log-file"
 msgstr "Restore failed - check %1"
 
-#:
 msgid "error.restore-failed=restore-id"
 msgstr "Restore failed for (%1) ..."
 
@@ -1895,11 +1826,9 @@ msgstr "%1 already has the role of '%2' in the %3 Account"
 msgid "error.role-exists=user,role,wiki"
 msgstr "%1 already has the role of '%2' in the %3 Workspace"
 
-#:
 msgid "error.saving-system-time-to-hardware-clock"
 msgstr "Error saving system time to hardware clock"
 
-#:
 msgid "error.saving-timeserver-to-appliance-configuration=new-ts"
 msgstr "Failed to save timeserver %1 to appliance configuration"
 
@@ -1922,23 +1851,18 @@ msgstr "You may not delete yourself."
 msgid "error.self-join-disabled=wiki"
 msgstr "Self-join is disabled for %1"
 
-#:
 msgid "error.set-authentication-token-limits=message"
 msgstr "Error setting authentication token limits %1"
 
-#:
 msgid "error.set-captcha=message"
 msgstr "Error setting captcha settings: %1"
 
-#:
 msgid "error.set-desktop-update=message"
 msgstr "Error setting desktop update: %1"
 
-#:
 msgid "error.set-login-message=message"
 msgstr "Error setting login message: %1"
 
-#:
 msgid "error.set-proxy-server=message"
 msgstr "Error setting proxy server: %1"
 
@@ -1947,15 +1871,12 @@ msgstr "Error setting proxy server: %1"
 msgid "error.set-self-register=message"
 msgstr "Error setting self register: %1"
 
-#:
 msgid "error.set-signals-only=message"
 msgstr "Error setting signals only: %1"
 
-#:
 msgid "error.set-signals-size-limit=message"
 msgstr "Error setting signals size limit: %1"
 
-#:
 msgid "error.set-support-href=message"
 msgstr "Error setting support href: %1"
 
@@ -1984,7 +1905,6 @@ msgstr "show-plugin-prefs only works on a single plugin"
 msgid "error.signal-too-long=max-length"
 msgstr "Signal length limit is %1, please edit your Signal"
 
-#:
 msgid "error.signals-maximum-size-not-positive-integer"
 msgstr "Signals maximum size must be an positive integer"
 
@@ -1996,11 +1916,9 @@ msgstr "A custom skin file was not uploaded."
 msgid "error.store-revision"
 msgstr "Cannot store page revision"
 
-#:
 msgid "error.synchronizing-with-timeserver=ts"
 msgstr "Error synchronizing with timeserver %1"
 
-#:
 msgid "error.testing-timeserver=new-ts"
 msgstr "Error testing timeserver %1"
 
@@ -2054,7 +1972,6 @@ msgstr "Remotely sourced passwords cannot be updated via Socialtext."
 msgid "error.update-remote-user"
 msgstr "Remotely sourced Users cannot be updated via Socialtext."
 
-#:
 msgid "error.upload-support-tarball-already-started"
 msgstr "Already started!"
 
@@ -2742,6 +2659,10 @@ msgstr "Created profile field \"%1\""
 msgid "profile.created-field=title,account"
 msgstr "Created profile field '%1' for account '%2'"
 
+#: lib/Socialtext/Pluggable/Plugin/People.pm:177
+msgid "profile.edit"
+msgstr "(edit)"
+
 #: lib/Socialtext/Handler/ControlPanel.pm:1005
 msgid "profile.field-hidden"
 msgstr "This field is now visible in users' profiles."
@@ -2826,23 +2747,18 @@ msgstr "People Activity for user %1"
 msgid "report.signals-activity=user"
 msgstr "Signals Activity for user %1"
 
-#:
 msgid "report.total"
 msgstr "Total"
 
-#:
 msgid "report.total-members=count"
 msgstr "Total members (current): %1"
 
-#:
 msgid "report.total-unique-contributors=count"
 msgstr "Total unique contributors: %1"
 
-#:
 msgid "report.total-unique-visitors=count"
 msgstr "Total unique visitors: %1"
 
-#:
 msgid "report.total=wiki"
 msgstr "%1 Workspace Total"
 
@@ -2856,23 +2772,18 @@ msgstr "%1 Account Usage Report"
 msgid "report.usage=wiki"
 msgstr "%1 Workspace Usage Report"
 
-#:
 msgid "report.usage=wiki,start"
 msgstr "%1 Workspace Usage - %2 - past week"
 
-#:
 msgid "report.user"
 msgstr "User"
 
-#:
 msgid "report.views"
 msgstr "Views"
 
-#:
 msgid "report.week-ending=start-time"
 msgstr "Report timeframe: week ending %1"
 
-#:
 msgid "report.wiki-usage-blog"
 msgstr "Workspace Usage Blog"
 
@@ -3402,6 +3313,18 @@ msgstr "Third Party widgets"
 msgid "widget.url"
 msgstr "URL"
 
+msgid "wiki.acl-custom"
+msgstr "Custom"
+
+msgid "wiki.acl-private"
+msgstr "Private"
+
+msgid "wiki.acl-public"
+msgstr "Public"
+
+msgid "wiki.acl-self-join"
+msgstr "Self-Join"
+
 #: lib/Socialtext/CategoryPlugin.pm:83
 msgid "wiki.all-tags"
 msgstr "All Tags in Workspace"
@@ -3516,15 +3439,3 @@ msgstr "Welcome"
 #: lib/Socialtext/User/Restrictions/email_confirmation.pm:62
 msgid "wiki.welcome-confirm=name"
 msgstr "Welcome to the %1 workspace - please confirm your email to join"
-
-msgid "wiki.acl-private"
-msgstr "Private"
-
-msgid "wiki.acl-self-join"
-msgstr "Self-Join"
-
-msgid "wiki.acl-custom"
-msgstr "Custom"
-
-msgid "wiki.acl-public"
-msgstr "Public"
