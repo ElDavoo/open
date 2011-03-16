@@ -554,6 +554,8 @@ use constant CN2TW => {qw(
     提交         送出
     支持         支援
     禁用         停用
+    存儲         存放
+    日志         日誌
 )};
 
 use constant CN2TW_ExactMatch => {qw(

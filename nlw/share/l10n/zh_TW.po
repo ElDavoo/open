@@ -1025,13 +1025,13 @@ msgid "console.about-authentication-token-timeout"
 msgstr "出於安全的原因，認証標記在預先定義的期間過後將自動失效，即使用戶選擇了『在本電腦上記住我』。該期間最短為『1天』，最長為『365天』，預設為『14天』。您可以在此更改該期間。"
 
 msgid "console.about-backup-settings"
-msgstr "本設備可以在另外一台電腦上相容Windows或SMB的目錄或檔案夾中存儲備份檔案。在此設定備份伺服器、目錄與用戶名。"
+msgstr "本設備可以在另外一台電腦上相容Windows或SMB的目錄或檔案夾中存放備份檔案。在此設定備份伺服器、目錄與用戶名。"
 
 msgid "console.about-captcha-setting"
 msgstr "如果您的 Socialtext 設備公開在公共互聯網上，垃圾郵件制造者與自動『機器人』會嘗試自行註冊。『驗証碼』服務會要求註冊者通過辨認一段文字（驗証碼）來証實其為人類。如果您的設備為公開在公共互聯網的話，請使用該設定。"
 
 msgid "console.about-desktop-nav-setting"
-msgstr "注意：如果該選項被禁用，則<tt>桌面</tt>鏈結將不再出現在全域導航功能表上。"
+msgstr "注意：如果該選項被停用，則<tt>桌面</tt>鏈結將不再出現在全域導航功能表上。"
 
 msgid "console.about-disable-automatic-updates"
 msgstr "若要禁止自動更新，您可以選中本選框並點選送出"
@@ -1079,10 +1079,10 @@ msgid "console.allow-automatic-updating"
 msgstr "允許自動更新"
 
 msgid "console.apache-error-log"
-msgstr "Apache 錯誤日志"
+msgstr "Apache 錯誤日誌"
 
 msgid "console.apache-logs"
-msgstr "Apache 日志"
+msgstr "Apache 日誌"
 
 msgid "console.appliance"
 msgstr "設備管理"
@@ -1103,10 +1103,10 @@ msgid "console.backup-now"
 msgstr "立刻備份"
 
 msgid "console.building-diagnostic-tarball"
-msgstr "建立診斷Tarball..."
+msgstr "建立診斷壓縮檔..."
 
 msgid "console.contact-socialtext-support"
-msgstr "聯絡Socialtext支援"
+msgstr "聯絡 Socialtext 支援"
 
 msgid "console.control-panel"
 msgstr "控制台"
@@ -1319,7 +1319,7 @@ msgid "console.your-email-address:"
 msgstr "您的電子郵件位址："
 
 msgid "control.about-account-logo-image"
-msgstr "您可以選擇一個圖像作為帳戶標識。使用下面的表單從電腦上傳圖像。如果您未選擇圖像，則使用Socialtext的標識。標識的大小為寬201像素，高36像素，如果不符合該要求則圖像將被調整。上傳的標識將立即在用戶的瀏覽器中顯示，或者在更新登入Socialtext桌面後顯示（非必填）。"
+msgstr "您可以選擇一個圖像作為帳戶標誌。使用下面的表單從電腦上傳圖像。如果您未選擇圖像，則使用Socialtext的標誌。標誌的大小為寬201像素，高36像素，如果不符合該要求則圖像將被調整。上傳的標誌將立即在用戶的瀏覽器中顯示，或者在更新登入Socialtext桌面後顯示（非必填）。"
 
 msgid "control.about-accounts-tab"
 msgstr "帳戶指一大群的用戶，其具有存取用戶目錄、交流對話以及其他內容特征的公共權限。每個帳戶可以設定不同的選項與設定，包括插件、視覺主題以及美化Socialtext桌面。您也可以對帳戶的使用情況進行查看，並對報告進行採納。"
@@ -1349,7 +1349,7 @@ msgid "control.about-users-tab"
 msgstr "使用本螢幕快捷邀請用戶至群組與工作區"
 
 msgid "control.about-wiki-id"
-msgstr "這是作為您工作區網址與email位址一部分的短唯一識別字。必須由3-30個小寫字母、數字、下劃線或破折號群組成"
+msgstr "這是您工作區獨有的短識別符，用於網址與電郵位址。必須由 3-30 個小寫字母、數字、下劃線或破折號組成"
 
 msgid "control.about-wikis-tab"
 msgstr "工作區是存放維基與文檔的地方。在此建立新的工作區。"
@@ -1361,7 +1361,7 @@ msgid "control.account-custom-desktop-skin"
 msgstr "帳戶自訂桌面視覺主題"
 
 msgid "control.account-logo"
-msgstr "帳戶標識"
+msgstr "帳戶標誌"
 
 msgid "control.account-name"
 msgstr "帳戶名稱"
@@ -1460,10 +1460,10 @@ msgid "control.all-user-wiki"
 msgstr "全部用戶工作區"
 
 msgid "control.also-reset-logo-for-desktop"
-msgstr "在更新登入 Socialtext 桌面後將重置標識。"
+msgstr "也重置 Socialtext 桌面標誌（需重新登入桌面）。"
 
 msgid "control.also-use-logo-for-desktop"
-msgstr "在更新登入 Socialtext 桌面後將使用該標識。"
+msgstr "也用此作為 Socialtext 桌面標誌（需重新登入桌面）。"
 
 msgid "control.appliance-business-administrator?"
 msgstr "設備業務管理員？"
@@ -1880,7 +1880,7 @@ msgid "control.required-field"
 msgstr "必填"
 
 msgid "control.reset-logo-to-default"
-msgstr "重置標識為預設"
+msgstr "重置標誌為預設"
 
 msgid "control.reset-password"
 msgstr "重置密碼"
@@ -1943,7 +1943,7 @@ msgid "control.self-join-group"
 msgstr "<strong>自行加入：</strong>非成員可以瀏覽本群組，但只有成為成員才能進行參與。"
 
 msgid "control.send-invitation-email"
-msgstr "發送邀請email"
+msgstr "發送邀請電子郵件"
 
 msgid "control.set-account-type-to:"
 msgstr "變更帳戶類別為："
@@ -1985,7 +1985,7 @@ msgid "control.step-3-click-to-create-wiki"
 msgstr "第3步：點選按鈕建立工作區"
 
 msgid "control.stock-fields"
-msgstr "存儲欄位"
+msgstr "存放欄位"
 
 msgid "control.submit"
 msgstr "送出"
@@ -2000,10 +2000,10 @@ msgid "control.this-is-name-of-your-group"
 msgstr "這是您的群組名稱."
 
 msgid "control.this-will-also-reset-logo-for-desktop"
-msgstr "在更新登入 Socialtext 桌面後也將重置標識."
+msgstr "在更新登入 Socialtext 桌面後也將重置標誌."
 
 msgid "control.this-will-reset-logo-for-desktop"
-msgstr "在更新登入 Socialtext 桌面後將重置標識"
+msgstr "在更新登入 Socialtext 桌面後將重置標誌"
 
 msgid "control.transform"
 msgstr "轉換"
@@ -2021,16 +2021,16 @@ msgid "control.updating"
 msgstr "正在更新 ..."
 
 msgid "control.upload-account-logo-optional"
-msgstr "上傳帳戶標識（非必填）"
+msgstr "上傳帳戶標誌（非必填）"
 
 msgid "control.uri"
 msgstr "URI"
 
 msgid "control.use-default-logo"
-msgstr "使用預設 Socialtext 標識"
+msgstr "使用預設 Socialtext 標誌"
 
 msgid "control.use-default-logo-for-desktop"
-msgstr "為桌面使用預設 Socialtext 標識"
+msgstr "為桌面使用預設 Socialtext 標誌"
 
 msgid "control.user-added-to-account=user"
 msgstr "用戶 %1 現在已經為帳戶的成員"
@@ -3121,7 +3121,7 @@ msgid "error.browser-offline"
 msgstr "瀏覽器為離線狀態，請連入互聯網再重試。"
 
 msgid "error.cannot-change-account-logo-with-custom-skin=name"
-msgstr "由於當前使用的是自訂視覺主題，因此帳戶標識不可更改。正在使用的視覺主題名為『%1』"
+msgstr "由於當前使用的是自訂視覺主題，因此帳戶標誌不可更改。正在使用的視覺主題名為『%1』"
 
 msgid "error.cannot-load-revision"
 msgstr "無法載入更動"
@@ -3226,7 +3226,7 @@ msgid "error.edit-again"
 msgstr "抱歉，編輯出錯，請重新編輯本頁面。"
 
 msgid "error.email-address-required"
-msgstr "必須確定 E-mail 位址"
+msgstr "必須確定電子郵件位址"
 
 msgid "error.email-adress-required"
 msgstr "未指定電子郵箱"
@@ -4345,7 +4345,7 @@ msgid "event.edit=page,wiki"
 msgstr "在 %2 中複製 %1。"
 
 msgid "event.edit=page,wiki,summary"
-msgstr "在 %2 中編輯 %1：\"%3\""
+msgstr "在 %2 中編輯 %1：『%3』"
 
 msgid "event.follow=person"
 msgstr "開始關注 %1。"
@@ -5197,10 +5197,10 @@ msgid "invite.contact-support=uri"
 msgstr "如果您對此電子郵件有疑問，請 <a href=\"%1\">聯絡支援</a>。"
 
 msgid "invite.disabled-for-group"
-msgstr "對不起，當前伺服器管理員禁用了該群組的這項功能。"
+msgstr "對不起，當前伺服器管理員停用了該群組的這項功能。"
 
 msgid "invite.disabled-for-server"
-msgstr "對不起，當前伺服器管理員禁用了這項功能。"
+msgstr "對不起，當前伺服器管理員停用了這項功能。"
 
 msgid "invite.edit-save"
 msgstr "在文字框鍵入您的內容，然後點選『儲存』。"
@@ -5644,7 +5644,7 @@ msgid "login.login"
 msgstr "登入"
 
 msgid "login.login-disabled"
-msgstr "登入已禁用"
+msgstr "登入已停用"
 
 msgid "login.login-to-socialtext"
 msgstr "登入到 Socialtext"
