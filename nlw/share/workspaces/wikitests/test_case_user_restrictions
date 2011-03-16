@@ -1,5 +1,7 @@
+
 | *Comment* | Test Case: User Restrictions |  |
 | *Comment* | Test Case: User Restrictions GUI and email checks NOTE: Other restrictions also in test_case_business_control_panel_confirm_user and test_case_command_line_user_restrictions |  |
+
 
 | *Comment* | Test Case: User Restrictions - Make sure emails are sent for change password and deactivate user |  |
 | set | acct | restrict%%start_time%% |
@@ -27,20 +29,10 @@
 | *Comment* | Test Case: User Restrictions attempt to login, sees confirmation error |  |
 | st-logout |  |  |
 | open_ok | /%%ws%%/ |  |
-| wait_for_element_visible_ok | password | 30000 |
 | wait_for_element_visible_ok | username | 30000 |
-| type_ok | password | %%password%% |
 | type_ok | username | %%emailaddr%% |
-| pause | 10000 |  |
-| wait_for_element_visible_ok | link=Log in | 30000 |
-| click_and_wait | link=Log in |  |
-| wait_for_element_visible_ok | password | 30000 |
-| wait_for_element_visible_ok | username | 30000 |
-| type_ok | password | %%password%% |
-| type_ok | username | %%emailaddr%% |
-| pause | 10000 |  |
-| wait_for_element_visible_ok | link=Log in | 30000 |
-| click_and_wait | link=Log in |  |
+| wait_for_element_visible_ok | login_btn | 30000 |
+| click_and_wait | login_btn |  |
 | wait_for_text_present_ok | You need to confirm your email address to activate this account. | 30000 |
 | wait_for_text_present_ok | You should have received an email with a confirmation link. | 30000 |
 | wait_for_element_visible_ok | //input[@value='Resend confirmation'] | 30000 |
@@ -57,8 +49,7 @@
 | wait_for_element_visible_ok | link=2 Revisions | 30000 |
 | click_and_wait | link=Welcome to the lucite.socialtext.net community - please confirm your email to join |  |
 | wait_for_text_present_ok | Your profile has been added to the people directory. | 30000 |
-| wait_for_element_visible_ok | //a[contains(@href,'confirm_email')][1] | 30000 |
-| wait_for_element_visible_ok | //a[contains(@href,'confirm_email')][2] | 30000 |
+| wait_for_element_visible_ok | //a[contains(@href,'confirm_email')] | 30000 |
 
 | *Comment* | Test Case: User Restrictions confirm email. Login screen opens in new window |  |
 | click_ok | //a[contains(@href,'confirm_email')] |  |
@@ -83,6 +74,7 @@
 | pause | 90000 |  |
 
 | *Comment* | Test Case: User Restrictions Check email delivery |  |
+| st-login | %%username%% | %%password%% |
 | open_ok | /%%ws%% |  |
 | wait_for_element_visible_ok | link=What's New | 30000 |
 | click_and_wait | link=What's New |  |
