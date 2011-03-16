@@ -39,8 +39,7 @@ sub do_work {
     return $self->completed unless $self->workspace->email_notify_is_enabled;
 
     return $self->completed if $page->is_system_page;
-    local $Socialtext::Page::REFERENCE_TIME = $pages_after;
-    return $self->completed unless $page->is_recently_modified;
+    return $self->completed unless $page->is_recently_modified($pages_after);
 
 
     $hub->log->info( "Sending recent changes notifications from ".$ws->name );
