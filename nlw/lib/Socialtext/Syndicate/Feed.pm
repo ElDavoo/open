@@ -66,7 +66,7 @@ sub _author {
         my $creator = $page->creator->best_full_name(
             workspace => $page->hub->current_workspace
         );
-        return loc("[_1] (updated by [_2])", $creator, $editor);
+        return loc("feed.updated-by=creator,editor", $creator, $editor);
     }
     return $editor;
 }
@@ -137,7 +137,7 @@ sub _item_as_html {
         my @filenames
             = sort { lc($a) cmp lc($b) } map { $_->filename } @attachments;
         push @html_footers,
-            "<div>".loc("Attachments:")." " . join( ", ", @filenames ) . "</div>";
+            "<div>".loc("feed.attachments:")." " . join( ", ", @filenames ) . "</div>";
     }
     Socialtext::Timer->Pause('_item_as_html_attach');
 

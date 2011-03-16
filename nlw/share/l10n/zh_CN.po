@@ -1339,6 +1339,10 @@ msgstr "您可以随时在信息中使用HTML，但是在消息被保存之前�
 msgid "console.send-test-email"
 msgstr "发送测试电子邮件"
 
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:5
+msgid "console.server-wide-settings-moved-to-control-panel=uri"
+msgstr "Server-wide access settings have moved to the <a href=\"%1\">Business Control Panel</a>."
+
 msgid "console.set-authentication-token-timeout"
 msgstr "设置认证标记超时"
 
@@ -1449,6 +1453,14 @@ msgstr "Socialtext 可以让您为帐户添加多用户。要添加多用户，�
 
 msgid "control.about-paid-option=plugin"
 msgstr "%1 为付费选项。关于费用的更多信息，请联系您的销售代表。"
+
+#: share/plugin/control/template/control/settings.html:9
+msgid "control.about-private-accounts"
+msgstr "Accounts on this system are \"private\". Users must be invited to accounts by an administrator."
+
+#: share/plugin/control/template/control/settings.html:8
+msgid "control.about-self-join-accounts"
+msgstr "Accounts on this system are \"self-join\". Any user who can access the Socialtext application can join the default account, create a profile, and participate in the account's Signals channels. Users can invite other users into their account."
 
 msgid "control.about-settings-tab"
 msgstr "管理全系统的应用设置"
@@ -1708,6 +1720,10 @@ msgstr "自定义桌面视觉主题"
 msgid "control.custom-fields"
 msgstr "自定义字段"
 
+#: share/plugin/control/template/control/settings.html:6
+msgid "control.custom-server-wide-permissions-are-in-effect"
+msgstr "Custom server-wide permissions are in effect."
+
 msgid "control.custom-skins=name"
 msgstr "自定义视觉主题：%1"
 
@@ -1818,6 +1834,18 @@ msgstr "转至本群组"
 
 msgid "control.go-to-wiki=name"
 msgstr "转至 %1 工作区"
+
+#: share/plugin/control/template/control/settings.html:16
+msgid "control.group-creation"
+msgstr "Group Creation"
+
+#: share/plugin/control/template/control/settings.html:19
+msgid "control.group-creation-account-admin-only"
+msgstr "Only account administrators can create groups and workspaces."
+
+#: share/plugin/control/template/control/settings.html:18
+msgid "control.group-creation-from-all-members"
+msgstr "Any member in an account can create a group, and become the group's administrator. As the group administrator, that user can create a workspace for that group."
 
 msgid "control.group-name:"
 msgstr "群组名称："
@@ -2049,6 +2077,10 @@ msgstr "<strong>自行加入：</strong>非成员可以浏览本群组，但只�
 
 msgid "control.send-invitation-email"
 msgstr "发送邀请电子邮件"
+
+#: share/plugin/control/template/control/settings.html:3
+msgid "control.server-wide-account-permissions"
+msgstr "Server-Wide Account Permissions"
 
 msgid "control.set-account-type-to:"
 msgstr "变更帐户类别为："
@@ -3165,6 +3197,10 @@ msgstr "帐户名称为必填"
 msgid "error.add-auw-failed=wikis"
 msgstr "无法开放下列工作区给全体用户：%1"
 
+#: share/plugin/people/share/widgets/profile_tags/widget.js:86
+msgid "error.add-profile-tag"
+msgstr "Unable to add tag."
+
 msgid "error.admin-privileges-needed-to-access-uri"
 msgstr "您必须拥有管理员权限来访问此网址。"
 
@@ -3227,6 +3263,10 @@ msgstr "网址中的博客名称太长"
 
 msgid "error.browser-offline"
 msgstr "浏览器为离线状态，请连入互联网再重试。"
+
+#: share/plugin/people/share/widgets/profile_tags/widget.js:122
+msgid "error.build-profile-tags"
+msgstr "Unable to build tag list."
 
 msgid "error.cannot-change-account-logo-with-custom-skin=name"
 msgstr "由于当前使用的是自定义视觉主题，因此帐户标志不可更改。正在使用的视觉主题名为“%1”"
@@ -3323,6 +3363,10 @@ msgstr "本工作区属于帐户 %1 下全体用户，正在终止。"
 
 msgid "error.delete-group=id,message"
 msgstr "删除群组 ID %1 失败：%2"
+
+#: share/plugin/people/share/widgets/profile_tags/widget.js:51
+msgid "error.delete-profile-tag"
+msgstr "Unable to delete tag."
 
 msgid "error.delete=widget,message"
 msgstr "删除“%1”小工具时出错：%2"
@@ -3656,6 +3700,10 @@ msgstr "请选择要插入链接的文本。"
 
 msgid "error.load-feed=url"
 msgstr "加载订阅出错：%1"
+
+#: share/plugin/people/share/widgets/profile_activities/widget.html:2
+msgid "error.load-widget-content"
+msgstr "Unable to load content for this widget."
 
 msgid "error.loading-preview-failed"
 msgstr "无法加载预览。"
@@ -4230,6 +4278,18 @@ msgstr "电子表格名称太长。请缩短名称，再试一次。"
 msgid "error.show-pref-for-multiple-plugins"
 msgstr "show-plugin-prefs 只用于单个插件"
 
+#: share/plugin/people/share/widgets/profile_network/widget.js:6
+msgid "error.show-profile-followers"
+msgstr "Unable to show list of Followers."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:12
+msgid "error.show-profile-following"
+msgstr "Unable to show list of Followed people."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:18
+msgid "error.show-profile-groups"
+msgstr "Unable to show list of groups."
+
 msgid "error.signal-too-long=limit"
 msgstr "您的讯息超过了 %1 字数"
 
@@ -4659,6 +4719,14 @@ msgstr "到"
 msgid "explore.today"
 msgstr "今天"
 
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:181
+msgid "explore.type-to-select-group"
+msgstr "type to select specific group"
+
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:260
+msgid "explore.type-to-select-tag"
+msgstr "type to select specific tag"
+
 msgid "explore.using-filters"
 msgstr "使用下面的过滤器来筛选结果。点击“x”来取消过滤。"
 
@@ -4677,6 +4745,10 @@ msgstr "导出为 PDF"
 msgid "export.word"
 msgstr "导出为 Word"
 
+#: lib/Socialtext/Syndicate/Feed.pm:140
+msgid "feed.attachments:"
+msgstr "Attachments:"
+
 msgid "feed.avatar=user"
 msgstr "%1 的头像"
 
@@ -4689,8 +4761,17 @@ msgstr "在订阅输出中显示多少博客？"
 msgid "feed.search=wiki,query"
 msgstr "%1：搜索 %2"
 
+#. ($self->hub->main->product_version)
+#: lib/Socialtext/SyndicatePlugin.pm:272
+msgid "feed.socialtext-wiki=version"
+msgstr "Socialtext Workspace v%1"
+
 msgid "feed.tags=tags"
 msgstr "标签：%1"
+
+#: lib/Socialtext/Syndicate/Feed.pm:69
+msgid "feed.updated-by=creator,editor"
+msgstr "%1 (updated by %2)"
 
 msgid "feed.watchlist=wiki,user"
 msgstr "%1：关注 %2"
@@ -6504,8 +6585,21 @@ msgstr "选项已保存"
 msgid "pref.updated=plugins"
 msgstr "%1 插件的选项已更新。"
 
+#: share/plugin/people/share/widgets/profile_network/widget.js:4
+msgid "profile.about-no-followers"
+msgstr "No one Follows you yet. When viewing your profile, a person may Follow you by clicking 'Follow this person' near the top of the profile."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:10
+msgid "profile.about-no-following"
+msgstr "You Follow no one yet.  When viewing a profile, you may Follow that person by clicking 'Follow this person' near the top of the profile."
+
 msgid "profile.activities"
 msgstr "活动"
+
+#. ("<span class='realName'>__ENV_owner_name__</span>")
+#: share/plugin/people/share/widgets/profile_activities/widget.html:11
+msgid "profile.activity-rss-link=user"
+msgstr "View <a id='rss_link' href='#'>RSS feed</a> for <b>%1's Activity</b>."
 
 msgid "profile.aim:"
 msgstr "AIM："
@@ -6515,6 +6609,10 @@ msgstr "助理"
 
 msgid "profile.blog:"
 msgstr "博客："
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:54
+msgid "profile.contact"
+msgstr "Contact"
 
 msgid "profile.create"
 msgstr "创建你的档案"
@@ -6541,6 +6639,22 @@ msgstr "此字段在用户资料中可见。"
 msgid "profile.field-visible"
 msgstr "此字段在用户资料中隐藏。"
 
+#: share/plugin/people/share/widgets/profile_network/widget.js:2
+msgid "profile.followers"
+msgstr "Followers"
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:8
+msgid "profile.follows"
+msgstr "Follows"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:31
+msgid "profile.grab-photo"
+msgstr "Grab Photo"
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:14
+msgid "profile.groups"
+msgstr "Groups"
+
 msgid "profile.gtalk:"
 msgstr "GTalk："
 
@@ -6552,6 +6666,10 @@ msgstr "家庭电话"
 
 msgid "profile.home:"
 msgstr "家庭地址："
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:59
+msgid "profile.i"
+msgstr "I"
 
 msgid "profile.im"
 msgstr "聊天室"
@@ -6568,6 +6686,34 @@ msgstr "经理"
 msgid "profile.mobile-number"
 msgstr "移动电话"
 
+#: share/plugin/people/share/widgets/profile_network/widget.js:5
+msgid "profile.no-followers"
+msgstr "No one Follows this person yet."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:11
+msgid "profile.no-following"
+msgstr "This person Follows no one yet."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:16
+msgid "profile.no-groups-for-you"
+msgstr "You are a member of no groups."
+
+#: share/plugin/people/share/widgets/all_tags/widget.js:20
+msgid "profile.no-people-tags"
+msgstr "There are no People tags. Use Add Tags in People profiles to create tags."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:17
+msgid "profile.no-shared-groups"
+msgstr "You share no groups with this person."
+
+#: share/plugin/people/share/widgets/profile_tags/widget.js:12
+msgid "profile.no-tags"
+msgstr "This person has no tags. Click <b>Add tag</b> to add one now."
+
+#: share/plugin/people/share/widgets/profile_tags/widget.js:11
+msgid "profile.no-tags-for-you"
+msgstr "You have no tags. Use <b>Add Tag</b> to add one now."
+
 msgid "profile.organization"
 msgstr "组织"
 
@@ -6576,6 +6722,10 @@ msgstr "个人："
 
 msgid "profile.phone"
 msgstr "电话"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:5
+msgid "profile.photos"
+msgstr "Photos"
 
 msgid "profile.sametime:"
 msgstr "同时&reg;："
@@ -6592,11 +6742,27 @@ msgstr "标签"
 msgid "profile.twitter:"
 msgstr "Twitter："
 
+#: share/plugin/people/share/widgets/profile_edit/widget.html:74
+msgid "profile.update"
+msgstr "Update profile"
+
 msgid "profile.updated=field"
 msgstr "更新个人资料字段“%1”"
 
 msgid "profile.updated=field,account"
 msgstr "帐户“%2”的个人资料“%1”已更新"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:17
+msgid "profile.upload-new-photo:"
+msgstr "Upload new photo:"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:22
+msgid "profile.upload-photo"
+msgstr "Upload Photo"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:29
+msgid "profile.use-photo-on-web:"
+msgstr "Use photo on the web:"
 
 msgid "profile.visible=user"
 msgstr "用户“%1”的资料已显示。"
@@ -8368,6 +8534,10 @@ msgstr "添加小工具"
 msgid "widgets.added"
 msgstr "成功添加您的小工具"
 
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:14
+msgid "widgets.changes"
+msgstr "changes"
+
 msgid "widgets.confirm-delete=widget?"
 msgstr "您确定要永久删除这 \"%1\" 小工具？"
 
@@ -8376,6 +8546,10 @@ msgstr "您确定要移除此 \"%1\" 小工具? 用户将无法在他们的工�
 
 msgid "widgets.confirm-restore=widget?"
 msgstr "您确定要恢复此 \"%1\" 小工具？"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:21
+msgid "widgets.create-new-page-in=wiki"
+msgstr "Create new page in %1"
 
 msgid "widgets.delete"
 msgstr "（删除）"
@@ -8388,6 +8562,10 @@ msgstr "安装小工具"
 
 msgid "widgets.manage-gallery-for-accounts"
 msgstr "管理各账号工具库"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:21
+msgid "widgets.new-page"
+msgstr "new page"
 
 msgid "widgets.no-description"
 msgstr "无描述"
@@ -8416,6 +8594,10 @@ msgstr "成功恢复“%1”小工具"
 msgid "widgets.rss-feed"
 msgstr "RSS 订阅"
 
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:6
+msgid "widgets.this-person-belongs-to-no-wikis"
+msgstr "This person belongs to no workspaces."
+
 msgid "widgets.update"
 msgstr "（更新）"
 
@@ -8433,6 +8615,14 @@ msgstr "上传小工具 XML 文件："
 
 msgid "widgets.use-editor"
 msgstr "使用小工具编辑器"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:13
+msgid "widgets.views"
+msgstr "views"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:4
+msgid "widgets.you-belong-to-no-wikis"
+msgstr "You belong to no workspaces."
 
 msgid "wiki.acl-custom"
 msgstr "自定权限"
@@ -8656,6 +8846,10 @@ msgstr "标签"
 
 msgid "wiki.title"
 msgstr "工作区标题"
+
+#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:24 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:31
+msgid "wiki.title:"
+msgstr "Title:"
 
 msgid "wiki.to-existing-group"
 msgstr "要添加一个工作区到<strong>已存在的群组</strong>，请到主导航列的<a href=\"/st/groups\">“群组目录”</a>下拉菜单中，选择您的群组，并点击“编辑”來创建您的工作区。"

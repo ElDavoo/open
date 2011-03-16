@@ -175,11 +175,9 @@ msgstr "Archive Directory"
 msgid "appliance.backup-destination-updated"
 msgstr "Backup destination updated"
 
-#:
 msgid "appliance.backup-in-progress-started-at-never"
 msgstr "Backup is in progress - started at never"
 
-#:
 msgid "appliance.backup-in-progress=started-at"
 msgstr "Backup is in progress - started at %1"
 
@@ -224,11 +222,9 @@ msgstr "Initialize Workspaces?"
 msgid "appliance.invalid-email"
 msgstr "Please enter a valid email address"
 
-#:
 msgid "appliance.last-manual-backup-was-never"
 msgstr "Last manual backup was never"
 
-#:
 msgid "appliance.last-manual-backup-was=last"
 msgstr "Last manual backup was %1"
 
@@ -253,11 +249,9 @@ msgstr "System rebooting ..."
 msgid "appliance.redirecting-to=url"
 msgstr "Redirecting to %1"
 
-#:
 msgid "appliance.refresh-in-progress"
 msgstr "Refresh is in progress, please wait ..."
 
-#:
 msgid "appliance.refreshing-backup-list"
 msgstr "Refreshing the backup list ..."
 
@@ -271,35 +265,27 @@ msgstr "Removed the Appliance Business Administrator role from %1"
 msgid "appliance.removed-technical-admin=user"
 msgstr "Removed the Appliance Technical Administrator role from %1"
 
-#:
 msgid "appliance.restore-already-running"
 msgstr "Restore is already running"
 
-#:
 msgid "appliance.restore-finished=latest-backup"
 msgstr "Restore of %1 finished."
 
-#:
 msgid "appliance.restore-in-progress-started-at-never"
 msgstr "Restore in progress - started at never"
 
-#:
 msgid "appliance.restore-in-progress=started-at"
 msgstr "Restore in progress - started at %1"
 
-#:
 msgid "appliance.restore-latest-already-running"
 msgstr "Restore latest is already running"
 
-#:
 msgid "appliance.retry-after-backup"
 msgstr "Please wait until the backup finishes, then retry."
 
-#:
 msgid "appliance.retry-after-restore"
 msgstr "Please wait until the restore finishes, then retry."
 
-#:
 msgid "appliance.select-backup-to-restore"
 msgstr "Please select a backup to restore"
 
@@ -821,7 +807,6 @@ msgstr "Importing dashboard for user %1"
 msgid "date.format?"
 msgstr "How should displayed dates be formatted?"
 
-#:
 msgid "date.fri"
 msgstr "Fri"
 
@@ -833,27 +818,21 @@ msgstr "Should times be displayed in 12-hour or 24-hour format?"
 msgid "date.include-seconds?"
 msgstr "Should seconds be included on displayed times?"
 
-#:
 msgid "date.mon"
 msgstr "Mon"
 
-#:
 msgid "date.sat"
 msgstr "Sat"
 
-#:
 msgid "date.sun"
 msgstr "Sun"
 
-#:
 msgid "date.thu"
 msgstr "Thu"
 
-#:
 msgid "date.tue"
 msgstr "Tue"
 
-#:
 msgid "date.wed"
 msgstr "Wed"
 
@@ -1043,11 +1022,9 @@ msgstr "Line %1: %2"
 msgid "error.authentication-token-soft-limit-must-be-lower-than-hard-limit"
 msgstr "Authentication token soft limit must be lower than the hard limit."
 
-#:
 msgid "error.backup-already-running"
 msgstr "Backup already running"
 
-#:
 msgid "error.backup-failed"
 msgstr "Backup failed ..."
 
@@ -2037,11 +2014,9 @@ msgstr "Since your password is stored in the directory for your organization, th
 msgid "error.restore-account-widget"
 msgstr "Error restoring account widget."
 
-#:
 msgid "error.restore-failed=log-file"
 msgstr "Restore failed - check %1"
 
-#:
 msgid "error.restore-failed=restore-id"
 msgstr "Restore failed for (%1) ..."
 
@@ -2349,6 +2324,10 @@ msgstr "Every Week"
 msgid "example.string"
 msgstr "string %1"
 
+#: lib/Socialtext/Syndicate/Feed.pm:140
+msgid "feed.attachments:"
+msgstr "Attachments:"
+
 #. ($user->best_full_name)
 #: lib/Socialtext/Rest/Signals/Feed.pm:89
 msgid "feed.avatar=user"
@@ -2368,10 +2347,19 @@ msgstr "How many posts should be displayed in outgoing feeds?"
 msgid "feed.search=wiki,query"
 msgstr "%1: search for %2"
 
+#. ($self->hub->main->product_version)
+#: lib/Socialtext/SyndicatePlugin.pm:272
+msgid "feed.socialtext-wiki=version"
+msgstr "Socialtext Workspace v%1"
+
 #. (join( ", ", @tags)
 #: lib/Socialtext/Syndicate/Feed.pm:114
 msgid "feed.tags=tags"
 msgstr "Tags: %1"
+
+#: lib/Socialtext/Syndicate/Feed.pm:69
+msgid "feed.updated-by=creator,editor"
+msgstr "%1 (updated by %2)"
 
 #. ($self->hub->current_workspace->title, $user->best_full_name)
 #: lib/Socialtext/SyndicatePlugin.pm:393

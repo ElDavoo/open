@@ -102,6 +102,14 @@ msgstr "TAGS from"
 msgid "explore.to"
 msgstr "to"
 
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:181
+msgid "explore.type-to-select-group"
+msgstr "type to select specific group"
+
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:260
+msgid "explore.type-to-select-tag"
+msgstr "type to select specific tag"
+
 #: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:3
 msgid "explore.using-filters"
 msgstr "Use the filters below to narrow the results. Use the small 'x' by any of the Groups, Tags and People filters to remove them."

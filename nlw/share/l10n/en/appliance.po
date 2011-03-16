@@ -9,27 +9,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#:
 msgid "appliance.archiving-system-config-files"
 msgstr "Archiving system config files ..."
 
-#:
 msgid "appliance.backup-id"
 msgstr "Backup ID"
 
-#:
 msgid "appliance.backup-time"
 msgstr "Backup Time"
 
-#:
 msgid "appliance.backups-for-restore:"
 msgstr "Backups available for restore:"
 
-#:
 msgid "appliance.cleanup-previous-snapshot"
 msgstr "Cleaning up previous snapshot ..."
 
-#:
 msgid "appliance.taking-database-snapshot"
 msgstr "Taking database snapshot ..."
 
@@ -124,7 +118,6 @@ msgstr "Apache Logs"
 msgid "console.appliance"
 msgstr "Appliance Console"
 
-#:
 msgid "console.automatic-backup-schedule"
 msgstr "Automatic Backup Schedule"
 
@@ -300,7 +293,6 @@ msgstr "Report a Problem"
 msgid "console.restore-now"
 msgstr "Restore Now"
 
-#:
 msgid "console.save-backup-schedule"
 msgstr "Save Backup Schedule"
 
@@ -315,6 +307,10 @@ msgstr "Please feel free to use HTML in this message, but SCRIPT tags ( eg JavaS
 #: ../appliance/libsocialtext-appliance-perl/template/setup.html:121 ../appliance/libsocialtext-appliance-perl/template/setup.html:122 ../appliance/libsocialtext-appliance-perl/template/setup.html:126
 msgid "console.send-test-email"
 msgstr "Send Test Email"
+
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:5
+msgid "console.server-wide-settings-moved-to-control-panel=uri"
+msgstr "Server-wide access settings have moved to the <a href=\"%1\">Business Control Panel</a>."
 
 #: ../appliance/libsocialtext-appliance-perl/template/setup.html:51
 msgid "console.set-authentication-token-timeout"
@@ -396,7 +392,6 @@ msgstr "Synchronize Appliance Clock Now"
 msgid "console.tarball-built"
 msgstr "Tarball Built"
 
-#:
 msgid "console.time-each-day:"
 msgstr "Time each day:"
 
@@ -442,7 +437,6 @@ msgstr "Cancel"
 msgid "do.close"
 msgstr "Close"
 
-#:
 msgid "error.backup-id-required"
 msgstr "Must supply a backup ID - or use --list to see available backups."
 
@@ -459,7 +453,6 @@ msgstr "Email and description are required!"
 msgid "error.invalid=email"
 msgstr "\"%1\" is not a valid email address."
 
-#:
 msgid "error.socialtext-appliance-backup"
 msgstr "Error during Socialtext Appliance Backup"
 

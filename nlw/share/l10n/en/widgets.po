@@ -344,6 +344,14 @@ msgstr "one minute ago"
 msgid "ago.<1minute"
 msgstr "less than a minute ago"
 
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:8
+msgid "ago.about-1day"
+msgstr "about one day ago"
+
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:5
+msgid "ago.about-1hour"
+msgstr "about one hour ago"
+
 #. (this.round(minutes / 1440)
 #. (this.round(minutes / 1440))
 #: share/plugin/widgets/share/javascript/template/activities/ago.tt2:9
@@ -360,14 +368,6 @@ msgstr "%*(%1,hour) ago"
 #: share/plugin/widgets/share/javascript/template/activities/ago.tt2:4
 msgid "ago.minutes=count"
 msgstr "%*(%1,minute) ago"
-
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:8
-msgid "ago.about-1day"
-msgstr "about one day ago"
-
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:5
-msgid "ago.about-1hour"
-msgstr "about one hour ago"
 
 #: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:26
 msgid "bookmarklet.share-via-signals"
@@ -803,6 +803,10 @@ msgstr "Add Widget"
 msgid "widgets.added"
 msgstr "Successfully added your widget"
 
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:14
+msgid "widgets.changes"
+msgstr "changes"
+
 #. (this.title)
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:46
 msgid "widgets.confirm-delete=widget?"
@@ -817,6 +821,10 @@ msgstr "Are you sure you want to remove the \"%1\" widget? Users will no longer 
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:44
 msgid "widgets.confirm-restore=widget?"
 msgstr "Are you sure you want to restore the \"%1\" widget?"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:21
+msgid "widgets.create-new-page-in=wiki"
+msgstr "Create new page in %1"
 
 #: share/plugin/widgets/template/view/gallery:119
 msgid "widgets.delete"
@@ -834,6 +842,10 @@ msgstr "Install this widget"
 #: share/plugin/widgets/template/view/gallery:0 share/plugin/widgets/template/view/gallery:24
 msgid "widgets.manage-gallery-for-accounts"
 msgstr "Manage Gallery for Accounts"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:21
+msgid "widgets.new-page"
+msgstr "new page"
 
 #: share/plugin/widgets/template/view/gallery:75
 msgid "widgets.no-description"
@@ -873,6 +885,10 @@ msgstr "Successfully restored the \"%1\" widget"
 msgid "widgets.rss-feed"
 msgstr "RSS feed"
 
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:6
+msgid "widgets.this-person-belongs-to-no-wikis"
+msgstr "This person belongs to no workspaces."
+
 #: share/plugin/widgets/template/view/gallery:107
 msgid "widgets.update"
 msgstr "(update)"
@@ -896,3 +912,11 @@ msgstr "Upload Widget XML File:"
 #: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:44
 msgid "widgets.use-editor"
 msgstr "Use the Widget Editor"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:13
+msgid "widgets.views"
+msgstr "views"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:4
+msgid "widgets.you-belong-to-no-wikis"
+msgstr "You belong to no workspaces."

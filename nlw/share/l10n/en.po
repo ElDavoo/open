@@ -1968,6 +1968,10 @@ msgstr "Please feel free to use HTML in this message, but SCRIPT tags ( eg JavaS
 msgid "console.send-test-email"
 msgstr "Send Test Email"
 
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:5
+msgid "console.server-wide-settings-moved-to-control-panel=uri"
+msgstr "Server-wide access settings have moved to the <a href=\"%1\">Business Control Panel</a>."
+
 #: ../appliance/libsocialtext-appliance-perl/template/setup.html:51
 msgid "console.set-authentication-token-timeout"
 msgstr "Set Authentication Token Timeout"
@@ -2118,6 +2122,14 @@ msgstr "Socialtext enables you to add multiple users to your account. To add mul
 msgid "control.about-paid-option=plugin"
 msgstr "%1 is a paid option. For more information about fees, contact your sales representative."
 
+#: share/plugin/control/template/control/settings.html:9
+msgid "control.about-private-accounts"
+msgstr "Accounts on this system are \"private\". Users must be invited to accounts by an administrator."
+
+#: share/plugin/control/template/control/settings.html:8
+msgid "control.about-self-join-accounts"
+msgstr "Accounts on this system are \"self-join\". Any user who can access the Socialtext application can join the default account, create a profile, and participate in the account's Signals channels. Users can invite other users into their account."
+
 #: share/plugin/control/template/control/index.html:34
 msgid "control.about-settings-tab"
 msgstr "Manage system-wide application settings."
@@ -2214,9 +2226,14 @@ msgstr "Add Group to Workspace"
 msgid "control.add-group-to-wiki:"
 msgstr "Add Group to Workspace:"
 
-#: share/plugin/control/template/control/account.html:76
+#: share/plugin/control/template/control/group.html:33 share/plugin/control/template/control/account.html:76
+#, fuzzy
 msgid "control.add-multiple-users"
-msgstr "Add Multiple Users"
+msgstr ""
+"#-#-#-#-#  control.po  #-#-#-#-#\n"
+"Add multiple users\n"
+"#-#-#-#-#  control.po (Socialtext i18n)  #-#-#-#-#\n"
+"Add Multiple Users"
 
 #: share/plugin/control/template/control/account.html:75
 msgid "control.add-new-user"
@@ -2472,6 +2489,10 @@ msgstr "Custom Desktop Skin"
 msgid "control.custom-fields"
 msgstr "Custom fields"
 
+#: share/plugin/control/template/control/settings.html:6
+msgid "control.custom-server-wide-permissions-are-in-effect"
+msgstr "Custom server-wide permissions are in effect."
+
 #. (skin_name)
 #: share/plugin/control/template/control/account.html:241
 msgid "control.custom-skins=name"
@@ -2622,6 +2643,18 @@ msgstr "Go to this group"
 #: share/plugin/control/template/control/workspace.html:16
 msgid "control.go-to-wiki=name"
 msgstr "Go to the %1 workspace"
+
+#: share/plugin/control/template/control/settings.html:16
+msgid "control.group-creation"
+msgstr "Group Creation"
+
+#: share/plugin/control/template/control/settings.html:19
+msgid "control.group-creation-account-admin-only"
+msgstr "Only account administrators can create groups and workspaces."
+
+#: share/plugin/control/template/control/settings.html:18
+msgid "control.group-creation-from-all-members"
+msgstr "Any member in an account can create a group, and become the group's administrator. As the group administrator, that user can create a workspace for that group."
 
 #: share/plugin/control/share/javascript/lightbox/group-create.tt2:60
 msgid "control.group-name:"
@@ -2942,6 +2975,10 @@ msgstr "<strong>Self-Join:</strong> Non-Members can view and join the group."
 #: share/plugin/control/template/control/account_add_group.html:23 share/plugin/control/template/control/group_add_to_account.html:21 share/plugin/control/template/control/group_add_to_workspace.html:20 share/plugin/control/template/control/workspace_add_group.html:21
 msgid "control.send-invitation-email"
 msgstr "Send invitation email"
+
+#: share/plugin/control/template/control/settings.html:3
+msgid "control.server-wide-account-permissions"
+msgstr "Server-Wide Account Permissions"
 
 #: share/plugin/control/template/control/account.html:57
 msgid "control.set-account-type-to:"
@@ -4372,6 +4409,10 @@ msgstr "account_name is required"
 msgid "error.add-auw-failed=wikis"
 msgstr "Unable to make the following workspaces all users workspaces: %1"
 
+#: share/plugin/people/share/widgets/profile_tags/widget.js:86
+msgid "error.add-profile-tag"
+msgstr "Unable to add tag."
+
 #: share/template/errors/require_business_admin:2
 msgid "error.admin-privileges-needed-to-access-uri"
 msgstr "You must have admin privileges to access this URI."
@@ -4463,6 +4504,10 @@ msgstr "Blog name is too long after URL encoding"
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1048 share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1070
 msgid "error.browser-offline"
 msgstr "The browser is currently offline; please connect to the internet and try again."
+
+#: share/plugin/people/share/widgets/profile_tags/widget.js:122
+msgid "error.build-profile-tags"
+msgstr "Unable to build tag list."
 
 #. (account.skin_name)
 #: share/plugin/control/template/control/design-account.html:77
@@ -4602,6 +4647,10 @@ msgstr "This workspace is the all users workspace for the %1 account. Aborting."
 #: lib/Socialtext/CLI.pm:1214
 msgid "error.delete-group=id,message"
 msgstr "Failed to delete group id %1: %2"
+
+#: share/plugin/people/share/widgets/profile_tags/widget.js:51
+msgid "error.delete-profile-tag"
+msgstr "Unable to delete tag."
 
 #. (this.title, error)
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:78
@@ -5106,6 +5155,10 @@ msgstr "Please select the text you would like to turn into a link."
 #: lib/Socialtext/FetchRSSPlugin.pm:194
 msgid "error.load-feed=url"
 msgstr "Error loading feed: %1"
+
+#: share/plugin/people/share/widgets/profile_activities/widget.html:2
+msgid "error.load-widget-content"
+msgstr "Unable to load content for this widget."
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2953
 msgid "error.loading-preview-failed"
@@ -5961,6 +6014,18 @@ msgstr "Spreadsheet title is too long. Please shorten the name and try again."
 msgid "error.show-pref-for-multiple-plugins"
 msgstr "show-plugin-prefs only works on a single plugin"
 
+#: share/plugin/people/share/widgets/profile_network/widget.js:6
+msgid "error.show-profile-followers"
+msgstr "Unable to show list of Followers."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:12
+msgid "error.show-profile-following"
+msgstr "Unable to show list of Followed people."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:18
+msgid "error.show-profile-groups"
+msgstr "Unable to show list of groups."
+
 #. (limit)
 #: share/plugin/signals/template/bookmarklet/too_long.html:6
 msgid "error.signal-too-long=limit"
@@ -6605,6 +6670,14 @@ msgstr "to"
 msgid "explore.today"
 msgstr "TODAY"
 
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:181
+msgid "explore.type-to-select-group"
+msgstr "type to select specific group"
+
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:260
+msgid "explore.type-to-select-tag"
+msgstr "type to select specific tag"
+
 #: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:3
 msgid "explore.using-filters"
 msgstr "Use the filters below to narrow the results. Use the small 'x' by any of the Groups, Tags and People filters to remove them."
@@ -6629,6 +6702,10 @@ msgstr "Export to PDF"
 msgid "export.word"
 msgstr "Export to Word"
 
+#: lib/Socialtext/Syndicate/Feed.pm:140
+msgid "feed.attachments:"
+msgstr "Attachments:"
+
 #. ($user->best_full_name)
 #: lib/Socialtext/Rest/Signals/Feed.pm:89
 msgid "feed.avatar=user"
@@ -6648,10 +6725,19 @@ msgstr "How many posts should be displayed in outgoing feeds?"
 msgid "feed.search=wiki,query"
 msgstr "%1: search for %2"
 
+#. ($self->hub->main->product_version)
+#: lib/Socialtext/SyndicatePlugin.pm:272
+msgid "feed.socialtext-wiki=version"
+msgstr "Socialtext Workspace v%1"
+
 #. (join( ", ", @tags)
 #: lib/Socialtext/Syndicate/Feed.pm:114
 msgid "feed.tags=tags"
 msgstr "Tags: %1"
+
+#: lib/Socialtext/Syndicate/Feed.pm:69
+msgid "feed.updated-by=creator,editor"
+msgstr "%1 (updated by %2)"
 
 #. ($self->hub->current_workspace->title, $user->best_full_name)
 #: lib/Socialtext/SyndicatePlugin.pm:393
@@ -9176,9 +9262,22 @@ msgstr "Preferences saved"
 msgid "pref.updated=plugins"
 msgstr "Preferences for the %1 plugin(s) have been updated."
 
+#: share/plugin/people/share/widgets/profile_network/widget.js:4
+msgid "profile.about-no-followers"
+msgstr "No one Follows you yet. When viewing your profile, a person may Follow you by clicking 'Follow this person' near the top of the profile."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:10
+msgid "profile.about-no-following"
+msgstr "You Follow no one yet.  When viewing a profile, you may Follow that person by clicking 'Follow this person' near the top of the profile."
+
 #: share/plugin/people/template/lite/profile.html:59 share/plugin/people/template/lite/profile.html:61
 msgid "profile.activities"
 msgstr "Activities"
+
+#. ("<span class='realName'>__ENV_owner_name__</span>")
+#: share/plugin/people/share/widgets/profile_activities/widget.html:11
+msgid "profile.activity-rss-link=user"
+msgstr "View <a id='rss_link' href='#'>RSS feed</a> for <b>%1's Activity</b>."
 
 #: share/plugin/people/template/profile_hcard:52
 msgid "profile.aim:"
@@ -9191,6 +9290,10 @@ msgstr "Assistant"
 #: share/plugin/people/template/profile_hcard:87
 msgid "profile.blog:"
 msgstr "Blog:"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:54
+msgid "profile.contact"
+msgstr "Contact"
 
 #: lib/Socialtext/NewFormPagePlugin.pm:40
 msgid "profile.create"
@@ -9206,9 +9309,14 @@ msgstr "Created profile field \"%1\""
 msgid "profile.created-field=title,account"
 msgstr "Created profile field '%1' for account '%2'"
 
-#: share/plugin/people/template/lite/profile.html:153
+#: share/plugin/people/share/widgets/profile/widget.html:64 share/plugin/people/share/widgets/profile_edit/widget.html:69 share/plugin/people/template/lite/profile.html:153
+#, fuzzy
 msgid "profile.custom"
-msgstr "CUSTOM"
+msgstr ""
+"#-#-#-#-#  people.po  #-#-#-#-#\n"
+"Custom\n"
+"#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
+"CUSTOM"
 
 #: lib/Socialtext/Pluggable/Plugin/People.pm:177
 msgid "profile.edit"
@@ -9226,6 +9334,22 @@ msgstr "This field is now visible in users' profiles."
 msgid "profile.field-visible"
 msgstr "This field is now hidden from users' profiles."
 
+#: share/plugin/people/share/widgets/profile_network/widget.js:2
+msgid "profile.followers"
+msgstr "Followers"
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:8
+msgid "profile.follows"
+msgstr "Follows"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:31
+msgid "profile.grab-photo"
+msgstr "Grab Photo"
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:14
+msgid "profile.groups"
+msgstr "Groups"
+
 #: share/plugin/people/template/profile_hcard:66
 msgid "profile.gtalk:"
 msgstr "GTalk:"
@@ -9242,6 +9366,10 @@ msgstr "Home number"
 #: share/plugin/people/template/profile_hcard:44
 msgid "profile.home:"
 msgstr "Home:"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:59
+msgid "profile.i"
+msgstr "I"
 
 #: share/plugin/people/template/lite/profile.html:108
 msgid "profile.im"
@@ -9263,17 +9391,59 @@ msgstr "Manager"
 msgid "profile.mobile-number"
 msgstr "Mobile number"
 
-#: share/plugin/people/template/lite/profile.html:95
+#: share/plugin/people/share/widgets/profile_network/widget.js:5
+msgid "profile.no-followers"
+msgstr "No one Follows this person yet."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:11
+msgid "profile.no-following"
+msgstr "This person Follows no one yet."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:16
+msgid "profile.no-groups-for-you"
+msgstr "You are a member of no groups."
+
+#: share/plugin/people/share/widgets/all_tags/widget.js:20
+msgid "profile.no-people-tags"
+msgstr "There are no People tags. Use Add Tags in People profiles to create tags."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:17
+msgid "profile.no-shared-groups"
+msgstr "You share no groups with this person."
+
+#: share/plugin/people/share/widgets/profile_tags/widget.js:12
+msgid "profile.no-tags"
+msgstr "This person has no tags. Click <b>Add tag</b> to add one now."
+
+#: share/plugin/people/share/widgets/profile_tags/widget.js:11
+msgid "profile.no-tags-for-you"
+msgstr "You have no tags. Use <b>Add Tag</b> to add one now."
+
+#: share/plugin/people/share/widgets/profile/widget.html:28 share/plugin/people/share/widgets/profile_edit/widget.html:49 share/plugin/people/template/lite/profile.html:95
+#, fuzzy
 msgid "profile.organization"
-msgstr "ORGANIZATION"
+msgstr ""
+"#-#-#-#-#  people.po  #-#-#-#-#\n"
+"Organization\n"
+"#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
+"ORGANIZATION"
 
 #: share/plugin/people/template/profile_hcard:93
 msgid "profile.personal:"
 msgstr "Personal:"
 
-#: share/plugin/people/template/lite/profile.html:79
+#: share/plugin/people/share/widgets/profile/widget.html:17 share/plugin/people/template/lite/profile.html:79
+#, fuzzy
 msgid "profile.phone"
-msgstr "PHONE"
+msgstr ""
+"#-#-#-#-#  people.po  #-#-#-#-#\n"
+"Phone\n"
+"#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
+"PHONE"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:5
+msgid "profile.photos"
+msgstr "Photos"
 
 #: share/plugin/people/template/profile_hcard:79
 msgid "profile.sametime:"
@@ -9296,6 +9466,10 @@ msgstr "TAGS"
 msgid "profile.twitter:"
 msgstr "Twitter:"
 
+#: share/plugin/people/share/widgets/profile_edit/widget.html:74
+msgid "profile.update"
+msgstr "Update profile"
+
 #. (shift->title)
 #: lib/Socialtext/Handler/ControlPanel.pm:1026
 msgid "profile.updated=field"
@@ -9306,14 +9480,31 @@ msgstr "Updated profile field \"%1\""
 msgid "profile.updated=field,account"
 msgstr "Profile field '%1' updated for account '%2'"
 
+#: share/plugin/people/share/widgets/profile_edit/widget.html:17
+msgid "profile.upload-new-photo:"
+msgstr "Upload new photo:"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:22
+msgid "profile.upload-photo"
+msgstr "Upload Photo"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:29
+msgid "profile.use-photo-on-web:"
+msgstr "Use photo on the web:"
+
 #. ($user->username)
 #: lib/Socialtext/CLI.pm:738
 msgid "profile.visible=user"
 msgstr "The profile for \"%1\" is no longer hidden."
 
-#: share/plugin/people/template/lite/profile.html:119
+#: share/plugin/people/share/widgets/profile/widget.html:51 share/plugin/people/share/widgets/profile_edit/widget.html:64 share/plugin/people/template/lite/profile.html:119
+#, fuzzy
 msgid "profile.web"
-msgstr "WEB"
+msgstr ""
+"#-#-#-#-#  people.po  #-#-#-#-#\n"
+"Web\n"
+"#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
+"WEB"
 
 #: lib/Socialtext/Lite/People.pm:167
 msgid "profile.work-number"
@@ -11684,6 +11875,10 @@ msgstr "Add Widget"
 msgid "widgets.added"
 msgstr "Successfully added your widget"
 
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:14
+msgid "widgets.changes"
+msgstr "changes"
+
 #. (this.title)
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:46
 msgid "widgets.confirm-delete=widget?"
@@ -11698,6 +11893,10 @@ msgstr "Are you sure you want to remove the \"%1\" widget? Users will no longer 
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:44
 msgid "widgets.confirm-restore=widget?"
 msgstr "Are you sure you want to restore the \"%1\" widget?"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:21
+msgid "widgets.create-new-page-in=wiki"
+msgstr "Create new page in %1"
 
 #: share/plugin/widgets/template/view/gallery:119
 msgid "widgets.delete"
@@ -11715,6 +11914,10 @@ msgstr "Install this widget"
 #: share/plugin/widgets/template/view/gallery:0 share/plugin/widgets/template/view/gallery:24
 msgid "widgets.manage-gallery-for-accounts"
 msgstr "Manage Gallery for Accounts"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:21
+msgid "widgets.new-page"
+msgstr "new page"
 
 #: share/plugin/widgets/template/view/gallery:75
 msgid "widgets.no-description"
@@ -11754,6 +11957,10 @@ msgstr "Successfully restored the \"%1\" widget"
 msgid "widgets.rss-feed"
 msgstr "RSS feed"
 
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:6
+msgid "widgets.this-person-belongs-to-no-wikis"
+msgstr "This person belongs to no workspaces."
+
 #: share/plugin/widgets/template/view/gallery:107
 msgid "widgets.update"
 msgstr "(update)"
@@ -11777,6 +11984,14 @@ msgstr "Upload Widget XML File:"
 #: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:44
 msgid "widgets.use-editor"
 msgstr "Use the Widget Editor"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:13
+msgid "widgets.views"
+msgstr "views"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:4
+msgid "widgets.you-belong-to-no-wikis"
+msgstr "You belong to no workspaces."
 
 #: lib/Socialtext/Workspace/Permissions.pm:243
 msgid "wiki.acl-custom"
@@ -12091,6 +12306,10 @@ msgstr "Tags"
 #: share/skin/s3/template/element/settings/workspace_clone_section:11 share/skin/s3/template/element/settings/workspaces_create_section:5 share/skin/s3/template/element/settings/workspaces_listall_section:10 share/skin/s3/template/element/settings/workspaces_settings_appearance_section:5
 msgid "wiki.title"
 msgstr "Workspace Title"
+
+#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:24 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:31
+msgid "wiki.title:"
+msgstr "Title:"
 
 #: share/skin/s3/template/element/settings/workspaces_cannot_create_section:15
 msgid "wiki.to-existing-group"

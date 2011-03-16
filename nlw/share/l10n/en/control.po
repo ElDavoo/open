@@ -46,6 +46,14 @@ msgstr "Socialtext enables you to add multiple users to your account. To add mul
 msgid "control.about-paid-option=plugin"
 msgstr "%1 is a paid option. For more information about fees, contact your sales representative."
 
+#: share/plugin/control/template/control/settings.html:9
+msgid "control.about-private-accounts"
+msgstr "Accounts on this system are \"private\". Users must be invited to accounts by an administrator."
+
+#: share/plugin/control/template/control/settings.html:8
+msgid "control.about-self-join-accounts"
+msgstr "Accounts on this system are \"self-join\". Any user who can access the Socialtext application can join the default account, create a profile, and participate in the account's Signals channels. Users can invite other users into their account."
+
 #: share/plugin/control/template/control/index.html:34
 msgid "control.about-settings-tab"
 msgstr "Manage system-wide application settings."
@@ -142,9 +150,14 @@ msgstr "Add Group to Workspace"
 msgid "control.add-group-to-wiki:"
 msgstr "Add Group to Workspace:"
 
-#: share/plugin/control/template/control/account.html:76
+#: share/plugin/control/template/control/group.html:33 share/plugin/control/template/control/account.html:76
+#, fuzzy
 msgid "control.add-multiple-users"
-msgstr "Add Multiple Users"
+msgstr ""
+"#-#-#-#-#  control.po  #-#-#-#-#\n"
+"Add multiple users\n"
+"#-#-#-#-#  control.po (Socialtext i18n)  #-#-#-#-#\n"
+"Add Multiple Users"
 
 #: share/plugin/control/template/control/account.html:75
 msgid "control.add-new-user"
@@ -400,6 +413,10 @@ msgstr "Custom Desktop Skin"
 msgid "control.custom-fields"
 msgstr "Custom fields"
 
+#: share/plugin/control/template/control/settings.html:6
+msgid "control.custom-server-wide-permissions-are-in-effect"
+msgstr "Custom server-wide permissions are in effect."
+
 #. (skin_name)
 #: share/plugin/control/template/control/account.html:241
 msgid "control.custom-skins=name"
@@ -550,6 +567,18 @@ msgstr "Go to this group"
 #: share/plugin/control/template/control/workspace.html:16
 msgid "control.go-to-wiki=name"
 msgstr "Go to the %1 workspace"
+
+#: share/plugin/control/template/control/settings.html:16
+msgid "control.group-creation"
+msgstr "Group Creation"
+
+#: share/plugin/control/template/control/settings.html:19
+msgid "control.group-creation-account-admin-only"
+msgstr "Only account administrators can create groups and workspaces."
+
+#: share/plugin/control/template/control/settings.html:18
+msgid "control.group-creation-from-all-members"
+msgstr "Any member in an account can create a group, and become the group's administrator. As the group administrator, that user can create a workspace for that group."
 
 #: share/plugin/control/share/javascript/lightbox/group-create.tt2:60
 msgid "control.group-name:"
@@ -866,6 +895,10 @@ msgstr "<strong>Self-Join:</strong> Non-Members can view and join the group."
 #: share/plugin/control/template/control/account_add_group.html:23 share/plugin/control/template/control/group_add_to_account.html:21 share/plugin/control/template/control/group_add_to_workspace.html:20 share/plugin/control/template/control/workspace_add_group.html:21
 msgid "control.send-invitation-email"
 msgstr "Send invitation email"
+
+#: share/plugin/control/template/control/settings.html:3
+msgid "control.server-wide-account-permissions"
+msgstr "Server-Wide Account Permissions"
 
 #: share/plugin/control/template/control/account.html:57
 msgid "control.set-account-type-to:"
@@ -1378,3 +1411,7 @@ msgstr "1 Week"
 #: share/plugin/control/template/control/add_user.html:32
 msgid "user.last-name:"
 msgstr "Last name:"
+
+#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:24 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:31
+msgid "wiki.title:"
+msgstr "Title:"

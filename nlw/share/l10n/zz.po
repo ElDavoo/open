@@ -1968,6 +1968,10 @@ msgstr "Zzzzzz zzzz zzzz zz zzz ZZZZ zz zzzz zzzzzzz, zzz ZZZZZZ zzzz ( zz ZzzzZ
 msgid "console.send-test-email"
 msgstr "Zzzz Zzzz Zzzzz"
 
+#: ../appliance/libsocialtext-appliance-perl/template/setup.html:5
+msgid "console.server-wide-settings-moved-to-control-panel=uri"
+msgstr "Zzzzzz-zzzz zzzzzz zzzzzzzz zzzz zzzzz zz zzz <a href=\"%1\">Zzzzzzzz Zzzzzzz Zzzzz</a>."
+
 #: ../appliance/libsocialtext-appliance-perl/template/setup.html:51
 msgid "console.set-authentication-token-timeout"
 msgstr "Zzz Zzzzzzzzzzzzzz Zzzzz Zzzzzzz"
@@ -2118,6 +2122,14 @@ msgstr "Zzzzzzzzzz zzzzzzz zzz zz zzz zzzzzzzz zzzzz zz zzzz zzzzzzz. Zz zzz zzz
 msgid "control.about-paid-option=plugin"
 msgstr "%1 zz z zzzz zzzzzz. Zzz zzzz zzzzzzzzzzz zzzzz zzzz, zzzzzzz zzzz zzzzz zzzzzzzzzzzzzz."
 
+#: share/plugin/control/template/control/settings.html:9
+msgid "control.about-private-accounts"
+msgstr "Zzzzzzzz zz zzzz zzzzzz zzz \"zzzzzzz\". Zzzzz zzzz zz zzzzzzz zz zzzzzzzz zz zz zzzzzzzzzzzzz."
+
+#: share/plugin/control/template/control/settings.html:8
+msgid "control.about-self-join-accounts"
+msgstr "Zzzzzzzz zz zzzz zzzzzz zzz \"zzzz-zzzz\". Zzz zzzz zzz zzz zzzzzz zzz Zzzzzzzzzz zzzzzzzzzzz zzz zzzz zzz zzzzzzz zzzzzzz, zzzzzz z zzzzzzz, zzz zzzzzzzzzzz zz zzz zzzzzzz'z Zzzzzzz zzzzzzzz. Zzzzz zzz zzzzzz zzzzz zzzzz zzzz zzzzz zzzzzzz."
+
 #: share/plugin/control/template/control/index.html:34
 msgid "control.about-settings-tab"
 msgstr "Zzzzzz zzzzzz-zzzz zzzzzzzzzzz zzzzzzzz."
@@ -2214,9 +2226,14 @@ msgstr "Zzz Zzzzz zz Zzzzzzzzz"
 msgid "control.add-group-to-wiki:"
 msgstr "Zzz Zzzzz zz Zzzzzzzzz:"
 
-#: share/plugin/control/template/control/account.html:76
+#: share/plugin/control/template/control/group.html:33 share/plugin/control/template/control/account.html:76
+#, fuzzy
 msgid "control.add-multiple-users"
-msgstr "Zzz Zzzzzzzz Zzzzz"
+msgstr ""
+"#-#-#-#-#  zzzzzzz.zz  #-#-#-#-#\z"
+"Zzz zzzzzzzz zzzzz\z"
+"#-#-#-#-#  zzzzzzz.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
+"Zzz Zzzzzzzz Zzzzz"
 
 #: share/plugin/control/template/control/account.html:75
 msgid "control.add-new-user"
@@ -2472,6 +2489,10 @@ msgstr "Zzzzzz Zzzzzzz Zzzz"
 msgid "control.custom-fields"
 msgstr "Zzzzzz zzzzzz"
 
+#: share/plugin/control/template/control/settings.html:6
+msgid "control.custom-server-wide-permissions-are-in-effect"
+msgstr "Zzzzzz zzzzzz-zzzz zzzzzzzzzzz zzz zz zzzzzz."
+
 #. (skin_name)
 #: share/plugin/control/template/control/account.html:241
 msgid "control.custom-skins=name"
@@ -2622,6 +2643,18 @@ msgstr "Zz zz zzzz zzzzz"
 #: share/plugin/control/template/control/workspace.html:16
 msgid "control.go-to-wiki=name"
 msgstr "Zz zz zzz %1 zzzzzzzzz"
+
+#: share/plugin/control/template/control/settings.html:16
+msgid "control.group-creation"
+msgstr "Zzzzz Zzzzzzzz"
+
+#: share/plugin/control/template/control/settings.html:19
+msgid "control.group-creation-account-admin-only"
+msgstr "Zzzz zzzzzzz zzzzzzzzzzzzzz zzz zzzzzz zzzzzz zzz zzzzzzzzzz."
+
+#: share/plugin/control/template/control/settings.html:18
+msgid "control.group-creation-from-all-members"
+msgstr "Zzz zzzzzz zz zz zzzzzzz zzz zzzzzz z zzzzz, zzz zzzzzz zzz zzzzz'z zzzzzzzzzzzzz. Zz zzz zzzzz zzzzzzzzzzzzz, zzzz zzzz zzz zzzzzz z zzzzzzzzz zzz zzzz zzzzz."
 
 #: share/plugin/control/share/javascript/lightbox/group-create.tt2:60
 msgid "control.group-name:"
@@ -2942,6 +2975,10 @@ msgstr "<strong>Zzzz-Zzzz:</strong> Zzz-Zzzzzzz zzz zzzz zzz zzzz zzz zzzzz."
 #: share/plugin/control/template/control/account_add_group.html:23 share/plugin/control/template/control/group_add_to_account.html:21 share/plugin/control/template/control/group_add_to_workspace.html:20 share/plugin/control/template/control/workspace_add_group.html:21
 msgid "control.send-invitation-email"
 msgstr "Zzzz zzzzzzzzzz zzzzz"
+
+#: share/plugin/control/template/control/settings.html:3
+msgid "control.server-wide-account-permissions"
+msgstr "Zzzzzz-Zzzz Zzzzzzz Zzzzzzzzzzz"
 
 #: share/plugin/control/template/control/account.html:57
 msgid "control.set-account-type-to:"
@@ -4372,6 +4409,10 @@ msgstr "zzzzzzz_zzzz zz zzzzzzzz"
 msgid "error.add-auw-failed=wikis"
 msgstr "Zzzzzz zz zzzz zzz zzzzzzzzz zzzzzzzzzz zzz zzzzz zzzzzzzzzz: %1"
 
+#: share/plugin/people/share/widgets/profile_tags/widget.js:86
+msgid "error.add-profile-tag"
+msgstr "Zzzzzz zz zzz zzz."
+
 #: share/template/errors/require_business_admin:2
 msgid "error.admin-privileges-needed-to-access-uri"
 msgstr "Zzz zzzz zzzz zzzzz zzzzzzzzzz zz zzzzzz zzzz ZZZ."
@@ -4463,6 +4504,10 @@ msgstr "Zzzz zzzz zz zzz zzzz zzzzz ZZZ zzzzzzzz"
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1048 share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1070
 msgid "error.browser-offline"
 msgstr "Zzz zzzzzzz zz zzzzzzzzz zzzzzzz; zzzzzz zzzzzzz zz zzz zzzzzzzz zzz zzz zzzzz."
+
+#: share/plugin/people/share/widgets/profile_tags/widget.js:122
+msgid "error.build-profile-tags"
+msgstr "Zzzzzz zz zzzzz zzz zzzz."
 
 #. (account.skin_name)
 #: share/plugin/control/template/control/design-account.html:77
@@ -4602,6 +4647,10 @@ msgstr "Zzzz zzzzzzzzz zz zzz zzz zzzzz zzzzzzzzz zzz zzz %1 zzzzzzz. Zzzzzzzz."
 #: lib/Socialtext/CLI.pm:1214
 msgid "error.delete-group=id,message"
 msgstr "Zzzzzz zz zzzzzz zzzzz zz %1: %2"
+
+#: share/plugin/people/share/widgets/profile_tags/widget.js:51
+msgid "error.delete-profile-tag"
+msgstr "Zzzzzz zz zzzzzz zzz."
 
 #. (this.title, error)
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:78
@@ -5106,6 +5155,10 @@ msgstr "Zzzzzz zzzzzz zzz zzzz zzz zzzzz zzzz zz zzzz zzzz z zzzz."
 #: lib/Socialtext/FetchRSSPlugin.pm:194
 msgid "error.load-feed=url"
 msgstr "Zzzzz zzzzzzz zzzz: %1"
+
+#: share/plugin/people/share/widgets/profile_activities/widget.html:2
+msgid "error.load-widget-content"
+msgstr "Zzzzzz zz zzzz zzzzzzz zzz zzzz zzzzzz."
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2953
 msgid "error.loading-preview-failed"
@@ -5961,6 +6014,18 @@ msgstr "Zzzzzzzzzzz zzzzz zz zzz zzzz. Zzzzzz zzzzzzz zzz zzzz zzz zzz zzzzz."
 msgid "error.show-pref-for-multiple-plugins"
 msgstr "zzzz-zzzzzz-zzzzz zzzz zzzzz zz z zzzzzz zzzzzz"
 
+#: share/plugin/people/share/widgets/profile_network/widget.js:6
+msgid "error.show-profile-followers"
+msgstr "Zzzzzz zz zzzz zzzz zz Zzzzzzzzz."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:12
+msgid "error.show-profile-following"
+msgstr "Zzzzzz zz zzzz zzzz zz Zzzzzzzz zzzzzz."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:18
+msgid "error.show-profile-groups"
+msgstr "Zzzzzz zz zzzz zzzz zz zzzzzz."
+
 #. (limit)
 #: share/plugin/signals/template/bookmarklet/too_long.html:6
 msgid "error.signal-too-long=limit"
@@ -6605,6 +6670,14 @@ msgstr "zz"
 msgid "explore.today"
 msgstr "ZZZZZ"
 
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:181
+msgid "explore.type-to-select-group"
+msgstr "zzzz zz zzzzzz zzzzzzzz zzzzz"
+
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:260
+msgid "explore.type-to-select-tag"
+msgstr "zzzz zz zzzzzz zzzzzzzz zzz"
+
 #: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:3
 msgid "explore.using-filters"
 msgstr "Zzz zzz zzzzzzz zzzzz zz zzzzzz zzz zzzzzzz. Zzz zzz zzzzz 'z' zz zzz zz zzz Zzzzzz, Zzzz zzz Zzzzzz zzzzzzz zz zzzzzz zzzz."
@@ -6629,6 +6702,10 @@ msgstr "Zzzzzz zz ZZZ"
 msgid "export.word"
 msgstr "Zzzzzz zz Zzzz"
 
+#: lib/Socialtext/Syndicate/Feed.pm:140
+msgid "feed.attachments:"
+msgstr "Zzzzzzzzzzz:"
+
 #. ($user->best_full_name)
 #: lib/Socialtext/Rest/Signals/Feed.pm:89
 msgid "feed.avatar=user"
@@ -6648,10 +6725,19 @@ msgstr "Zzz zzzz zzzzz zzzzzz zz zzzzzzzzz zz zzzzzzzz zzzzz?"
 msgid "feed.search=wiki,query"
 msgstr "%1: zzzzzz zzz %2"
 
+#. ($self->hub->main->product_version)
+#: lib/Socialtext/SyndicatePlugin.pm:272
+msgid "feed.socialtext-wiki=version"
+msgstr "Zzzzzzzzzz Zzzzzzzzz z%1"
+
 #. (join( ", ", @tags)
 #: lib/Socialtext/Syndicate/Feed.pm:114
 msgid "feed.tags=tags"
 msgstr "Zzzz: %1"
+
+#: lib/Socialtext/Syndicate/Feed.pm:69
+msgid "feed.updated-by=creator,editor"
+msgstr "%1 (zzzzzzz zz %2)"
 
 #. ($self->hub->current_workspace->title, $user->best_full_name)
 #: lib/Socialtext/SyndicatePlugin.pm:393
@@ -9176,9 +9262,22 @@ msgstr "Zzzzzzzzzzz zzzzz"
 msgid "pref.updated=plugins"
 msgstr "Zzzzzzzzzzz zzz zzz %1 zzzzzz(z) zzzz zzzz zzzzzzz."
 
+#: share/plugin/people/share/widgets/profile_network/widget.js:4
+msgid "profile.about-no-followers"
+msgstr "Zz zzz Zzzzzzz zzz zzz. Zzzz zzzzzzz zzzz zzzzzzz, z zzzzzz zzz Zzzzzz zzz zz zzzzzzzz 'Zzzzzz zzzz zzzzzz' zzzz zzz zzz zz zzz zzzzzzz."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:10
+msgid "profile.about-no-following"
+msgstr "Zzz Zzzzzz zz zzz zzz.  Zzzz zzzzzzz z zzzzzzz, zzz zzz Zzzzzz zzzz zzzzzz zz zzzzzzzz 'Zzzzzz zzzz zzzzzz' zzzz zzz zzz zz zzz zzzzzzz."
+
 #: share/plugin/people/template/lite/profile.html:59 share/plugin/people/template/lite/profile.html:61
 msgid "profile.activities"
 msgstr "Zzzzzzzzzz"
+
+#. ("<span class='realName'>__ENV_owner_name__</span>")
+#: share/plugin/people/share/widgets/profile_activities/widget.html:11
+msgid "profile.activity-rss-link=user"
+msgstr "Zzzz <a id='rss_link' href='#'>ZZZ zzzz</a> zzz <b>%1'z Zzzzzzzz</b>."
 
 #: share/plugin/people/template/profile_hcard:52
 msgid "profile.aim:"
@@ -9191,6 +9290,10 @@ msgstr "Zzzzzzzzz"
 #: share/plugin/people/template/profile_hcard:87
 msgid "profile.blog:"
 msgstr "Zzzz:"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:54
+msgid "profile.contact"
+msgstr "Zzzzzzz"
 
 #: lib/Socialtext/NewFormPagePlugin.pm:40
 msgid "profile.create"
@@ -9206,9 +9309,14 @@ msgstr "Zzzzzzz zzzzzzz zzzzz \"%1\""
 msgid "profile.created-field=title,account"
 msgstr "Zzzzzzz zzzzzzz zzzzz '%1' zzz zzzzzzz '%2'"
 
-#: share/plugin/people/template/lite/profile.html:153
+#: share/plugin/people/share/widgets/profile/widget.html:64 share/plugin/people/share/widgets/profile_edit/widget.html:69 share/plugin/people/template/lite/profile.html:153
+#, fuzzy
 msgid "profile.custom"
-msgstr "ZZZZZZ"
+msgstr ""
+"#-#-#-#-#  zzzzzz.zz  #-#-#-#-#\z"
+"Zzzzzz\z"
+"#-#-#-#-#  zzzzzz.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
+"ZZZZZZ"
 
 #: lib/Socialtext/Pluggable/Plugin/People.pm:177
 msgid "profile.edit"
@@ -9226,6 +9334,22 @@ msgstr "Zzzz zzzzz zz zzz zzzzzzz zz zzzzz' zzzzzzzz."
 msgid "profile.field-visible"
 msgstr "Zzzz zzzzz zz zzz zzzzzz zzzz zzzzz' zzzzzzzz."
 
+#: share/plugin/people/share/widgets/profile_network/widget.js:2
+msgid "profile.followers"
+msgstr "Zzzzzzzzz"
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:8
+msgid "profile.follows"
+msgstr "Zzzzzzz"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:31
+msgid "profile.grab-photo"
+msgstr "Zzzz Zzzzz"
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:14
+msgid "profile.groups"
+msgstr "Zzzzzz"
+
 #: share/plugin/people/template/profile_hcard:66
 msgid "profile.gtalk:"
 msgstr "ZZzzz:"
@@ -9242,6 +9366,10 @@ msgstr "Zzzz zzzzzz"
 #: share/plugin/people/template/profile_hcard:44
 msgid "profile.home:"
 msgstr "Zzzz:"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:59
+msgid "profile.i"
+msgstr "Z"
 
 #: share/plugin/people/template/lite/profile.html:108
 msgid "profile.im"
@@ -9263,17 +9391,59 @@ msgstr "Zzzzzzz"
 msgid "profile.mobile-number"
 msgstr "Zzzzzz zzzzzz"
 
-#: share/plugin/people/template/lite/profile.html:95
+#: share/plugin/people/share/widgets/profile_network/widget.js:5
+msgid "profile.no-followers"
+msgstr "Zz zzz Zzzzzzz zzzz zzzzzz zzz."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:11
+msgid "profile.no-following"
+msgstr "Zzzz zzzzzz Zzzzzzz zz zzz zzz."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:16
+msgid "profile.no-groups-for-you"
+msgstr "Zzz zzz z zzzzzz zz zz zzzzzz."
+
+#: share/plugin/people/share/widgets/all_tags/widget.js:20
+msgid "profile.no-people-tags"
+msgstr "Zzzzz zzz zz Zzzzzz zzzz. Zzz Zzz Zzzz zz Zzzzzz zzzzzzzz zz zzzzzz zzzz."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:17
+msgid "profile.no-shared-groups"
+msgstr "Zzz zzzzz zz zzzzzz zzzz zzzz zzzzzz."
+
+#: share/plugin/people/share/widgets/profile_tags/widget.js:12
+msgid "profile.no-tags"
+msgstr "Zzzz zzzzzz zzz zz zzzz. Zzzzz <b>Zzz zzz</b> zz zzz zzz zzz."
+
+#: share/plugin/people/share/widgets/profile_tags/widget.js:11
+msgid "profile.no-tags-for-you"
+msgstr "Zzz zzzz zz zzzz. Zzz <b>Zzz Zzz</b> zz zzz zzz zzz."
+
+#: share/plugin/people/share/widgets/profile/widget.html:28 share/plugin/people/share/widgets/profile_edit/widget.html:49 share/plugin/people/template/lite/profile.html:95
+#, fuzzy
 msgid "profile.organization"
-msgstr "ZZZZZZZZZZZZ"
+msgstr ""
+"#-#-#-#-#  zzzzzz.zz  #-#-#-#-#\z"
+"Zzzzzzzzzzzz\z"
+"#-#-#-#-#  zzzzzz.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
+"ZZZZZZZZZZZZ"
 
 #: share/plugin/people/template/profile_hcard:93
 msgid "profile.personal:"
 msgstr "Zzzzzzzz:"
 
-#: share/plugin/people/template/lite/profile.html:79
+#: share/plugin/people/share/widgets/profile/widget.html:17 share/plugin/people/template/lite/profile.html:79
+#, fuzzy
 msgid "profile.phone"
-msgstr "ZZZZZ"
+msgstr ""
+"#-#-#-#-#  zzzzzz.zz  #-#-#-#-#\z"
+"Zzzzz\z"
+"#-#-#-#-#  zzzzzz.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
+"ZZZZZ"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:5
+msgid "profile.photos"
+msgstr "Zzzzzz"
 
 #: share/plugin/people/template/profile_hcard:79
 msgid "profile.sametime:"
@@ -9296,6 +9466,10 @@ msgstr "ZZZZ"
 msgid "profile.twitter:"
 msgstr "Zzzzzzz:"
 
+#: share/plugin/people/share/widgets/profile_edit/widget.html:74
+msgid "profile.update"
+msgstr "Zzzzzz zzzzzzz"
+
 #. (shift->title)
 #: lib/Socialtext/Handler/ControlPanel.pm:1026
 msgid "profile.updated=field"
@@ -9306,14 +9480,31 @@ msgstr "Zzzzzzz zzzzzzz zzzzz \"%1\""
 msgid "profile.updated=field,account"
 msgstr "Zzzzzzz zzzzz '%1' zzzzzzz zzz zzzzzzz '%2'"
 
+#: share/plugin/people/share/widgets/profile_edit/widget.html:17
+msgid "profile.upload-new-photo:"
+msgstr "Zzzzzz zzz zzzzz:"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:22
+msgid "profile.upload-photo"
+msgstr "Zzzzzz Zzzzz"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:29
+msgid "profile.use-photo-on-web:"
+msgstr "Zzz zzzzz zz zzz zzz:"
+
 #. ($user->username)
 #: lib/Socialtext/CLI.pm:738
 msgid "profile.visible=user"
 msgstr "Zzz zzzzzzz zzz \"%1\" zz zz zzzzzz zzzzzz."
 
-#: share/plugin/people/template/lite/profile.html:119
+#: share/plugin/people/share/widgets/profile/widget.html:51 share/plugin/people/share/widgets/profile_edit/widget.html:64 share/plugin/people/template/lite/profile.html:119
+#, fuzzy
 msgid "profile.web"
-msgstr "ZZZ"
+msgstr ""
+"#-#-#-#-#  zzzzzz.zz  #-#-#-#-#\z"
+"Zzz\z"
+"#-#-#-#-#  zzzzzz.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
+"ZZZ"
 
 #: lib/Socialtext/Lite/People.pm:167
 msgid "profile.work-number"
@@ -11684,6 +11875,10 @@ msgstr "Zzz Zzzzzz"
 msgid "widgets.added"
 msgstr "Zzzzzzzzzzzz zzzzz zzzz zzzzzz"
 
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:14
+msgid "widgets.changes"
+msgstr "zzzzzzz"
+
 #. (this.title)
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:46
 msgid "widgets.confirm-delete=widget?"
@@ -11698,6 +11893,10 @@ msgstr "Zzz zzz zzzz zzz zzzz zz zzzzzz zzz \"%1\" zzzzzz? Zzzzz zzzz zz zzzzzz 
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:44
 msgid "widgets.confirm-restore=widget?"
 msgstr "Zzz zzz zzzz zzz zzzz zz zzzzzzz zzz \"%1\" zzzzzz?"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:21
+msgid "widgets.create-new-page-in=wiki"
+msgstr "Zzzzzz zzz zzzz zz %1"
 
 #: share/plugin/widgets/template/view/gallery:119
 msgid "widgets.delete"
@@ -11715,6 +11914,10 @@ msgstr "Zzzzzzz zzzz zzzzzz"
 #: share/plugin/widgets/template/view/gallery:0 share/plugin/widgets/template/view/gallery:24
 msgid "widgets.manage-gallery-for-accounts"
 msgstr "Zzzzzz Zzzzzzz zzz Zzzzzzzz"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:21
+msgid "widgets.new-page"
+msgstr "zzz zzzz"
 
 #: share/plugin/widgets/template/view/gallery:75
 msgid "widgets.no-description"
@@ -11754,6 +11957,10 @@ msgstr "Zzzzzzzzzzzz zzzzzzzz zzz \"%1\" zzzzzz"
 msgid "widgets.rss-feed"
 msgstr "ZZZ zzzz"
 
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:6
+msgid "widgets.this-person-belongs-to-no-wikis"
+msgstr "Zzzz zzzzzz zzzzzzz zz zz zzzzzzzzzz."
+
 #: share/plugin/widgets/template/view/gallery:107
 msgid "widgets.update"
 msgstr "(zzzzzz)"
@@ -11777,6 +11984,14 @@ msgstr "Zzzzzz Zzzzzz ZZZ Zzzz:"
 #: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:44
 msgid "widgets.use-editor"
 msgstr "Zzz zzz Zzzzzz Zzzzzz"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:13
+msgid "widgets.views"
+msgstr "zzzzz"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:4
+msgid "widgets.you-belong-to-no-wikis"
+msgstr "Zzz zzzzzz zz zz zzzzzzzzzz."
 
 #: lib/Socialtext/Workspace/Permissions.pm:243
 msgid "wiki.acl-custom"
@@ -12091,6 +12306,10 @@ msgstr "Zzzz"
 #: share/skin/s3/template/element/settings/workspace_clone_section:11 share/skin/s3/template/element/settings/workspaces_create_section:5 share/skin/s3/template/element/settings/workspaces_listall_section:10 share/skin/s3/template/element/settings/workspaces_settings_appearance_section:5
 msgid "wiki.title"
 msgstr "Zzzzzzzzz Zzzzz"
+
+#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:24 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:31
+msgid "wiki.title:"
+msgstr "Zzzzz:"
 
 #: share/skin/s3/template/element/settings/workspaces_cannot_create_section:15
 msgid "wiki.to-existing-group"
