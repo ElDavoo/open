@@ -332,6 +332,9 @@ sub dump {
     my $dir  = Socialtext::Paths::storage_directory("db-backups");
     my $file = $self->{output};
 
+    # NOTE st-appliance-backup does not use this method (opting to dump the db
+    # directly)
+
     $file ||= $ENV{ST_DB_DUMPFILE}
         if $c{db_name} eq 'NLW';
 
