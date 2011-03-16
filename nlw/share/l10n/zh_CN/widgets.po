@@ -350,7 +350,7 @@ msgid "error.wikilink-wiki-required"
 msgstr "您必须指定一个工作区."
 
 msgid "event.add-tag-self=tag"
-msgstr "给自身加标签 %1。"
+msgstr "给自己加标签 %1。"
 
 msgid "event.add-tag=page,wiki,tag"
 msgstr "给 %2 中的 %1 加标签 %3。"
@@ -380,7 +380,7 @@ msgid "event.duplicate=page,wiki"
 msgstr "在 %2 中复制 %1。"
 
 msgid "event.edit-profile-self"
-msgstr "编辑自身的个人资料。"
+msgstr "编辑自己的个人资料。"
 
 msgid "event.edit-profile=person"
 msgstr "编辑 %1 的个人资料。"
@@ -395,7 +395,7 @@ msgid "event.follow=person"
 msgstr "开始关注 %1。"
 
 msgid "event.generic-self=action"
-msgstr "對自身执行动作 %1。"
+msgstr "對自己执行动作 %1。"
 
 msgid "event.generic=action,page,wiki"
 msgstr "在 %3 中的 %2 执行动作 %1."

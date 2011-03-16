@@ -4435,7 +4435,7 @@ msgid "error.you-should-have-received-email-with-link-allowing-you-to-do-so"
 msgstr "您應該已經收到一封電子郵件，該郵件含有的鏈結可以讓您如此操作。"
 
 msgid "event.add-tag-self=tag"
-msgstr "給自身加標籤 %1。"
+msgstr "給自己加標籤 %1。"
 
 msgid "event.add-tag=page,wiki,tag"
 msgstr "給 %2 中的 %1 加標籤 %3。"
@@ -4474,7 +4474,7 @@ msgid "event.duplicate=page,wiki"
 msgstr "在 %2 中複製 %1。"
 
 msgid "event.edit-profile-self"
-msgstr "編輯自身的個人資料。"
+msgstr "編輯自己的個人資料。"
 
 msgid "event.edit-profile=person"
 msgstr "編輯 %1 的個人資料。"
@@ -4495,7 +4495,7 @@ msgid "event.follow=person"
 msgstr "開始關注 %1。"
 
 msgid "event.generic-self=action"
-msgstr "對自身執行動作 %1。"
+msgstr "對自己執行動作 %1。"
 
 msgid "event.generic=action,page"
 msgstr "已對 %2 執行了 %1 操作。"
