@@ -269,8 +269,7 @@ sub _syndicate {
         pages     => $p{pages},
         feed_id   => $self->hub->current_workspace->uri,
         contact   => 'support@socialtext.com',
-        generator => "Socialtext Workspace v"
-            . $self->hub->main->product_version,
+        generator => loc("Socialtext Workspace v[_1]", $self->hub->main->product_version),
         feed_link => $self->hub->cgi->full_uri_with_query,
 
         # post_link

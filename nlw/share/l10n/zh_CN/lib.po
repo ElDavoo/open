@@ -1498,7 +1498,7 @@ msgid "feed.avatar=user"
 msgstr "%1 的头像"
 
 msgid "feed.created=time"
-msgstr "原创于：%1"
+msgstr "创建于：%1"
 
 msgid "feed.number-of-posts?"
 msgstr "在订阅输出中显示多少博客？"
