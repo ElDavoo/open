@@ -309,6 +309,114 @@ msgstr "忽略错误"
 msgid "bug.report"
 msgstr "报告错误"
 
+msgid "class.analyzer"
+msgstr "分析"
+
+msgid "class.attachments_ui"
+msgstr "附件"
+
+msgid "class.backlinks"
+msgstr "逆向链接"
+
+msgid "class.breadcrumbs"
+msgstr "最近浏览页面"
+
+msgid "class.category"
+msgstr "类别管理"
+
+msgid "class.code"
+msgstr "代码语法插件"
+
+msgid "class.display"
+msgstr "显示方式"
+
+msgid "class.edit"
+msgstr "页面编辑"
+
+msgid "class.email_notify"
+msgstr "电子邮件通知"
+
+msgid "class.email_page_ui"
+msgstr "电子邮件页面"
+
+msgid "class.favorites"
+msgstr "您的记事本"
+
+msgid "class.fetchrss"
+msgstr "获取 RSS"
+
+msgid "class.formatter"
+msgstr "NLW 格式器"
+
+msgid "class.google_search"
+msgstr "Google 搜索"
+
+msgid "class.homepage"
+msgstr "主页链接"
+
+msgid "class.new_form_page"
+msgstr "新表单页面"
+
+msgid "class.page_activity"
+msgstr "页面活动"
+
+msgid "class.pages"
+msgstr "NLW 页面"
+
+msgid "class.pdf_export"
+msgstr "PDF 导出"
+
+msgid "class.pluggable"
+msgstr "插件"
+
+msgid "class.recent_changes"
+msgstr "近期更改"
+
+msgid "class.rtf_export"
+msgstr "Word 导出"
+
+msgid "class.search"
+msgstr "搜索"
+
+msgid "class.shortcut_links"
+msgstr "快捷链接"
+
+msgid "class.syndicate"
+msgstr "联播"
+
+msgid "class.tiddly"
+msgstr "脱机"
+
+msgid "class.timezone"
+msgstr "时间"
+
+msgid "class.user_preferences"
+msgstr "用户偏好"
+
+msgid "class.video"
+msgstr "视频插件"
+
+msgid "class.viewer"
+msgstr "NLW 查看器"
+
+msgid "class.watchlist"
+msgstr "关注列表"
+
+msgid "class.weblog"
+msgstr "博客"
+
+msgid "class.weblog_archive"
+msgstr "博客存档"
+
+msgid "class.widget"
+msgstr "小工具插件"
+
+msgid "class.wikiwyg"
+msgstr "页面编辑"
+
+msgid "class.workspace_list"
+msgstr "工作区列表"
+
 msgid "cli.clearing-caches"
 msgstr "正在清理缓存..."
 
@@ -2322,6 +2430,18 @@ msgstr "第三方小工具"
 msgid "widget.url"
 msgstr "网址"
 
+msgid "wiki.acl-custom"
+msgstr "自定权限"
+
+msgid "wiki.acl-private"
+msgstr "私密"
+
+msgid "wiki.acl-public"
+msgstr "公开"
+
+msgid "wiki.acl-self-join"
+msgstr "自行加入"
+
 msgid "wiki.all-tags"
 msgstr "工作区的所有标签"
 
@@ -2399,15 +2519,3 @@ msgstr "欢迎"
 
 msgid "wiki.welcome-confirm=name"
 msgstr "欢迎来到 %1 工作区 - 请确认注册邮箱"
-
-msgid "wiki.acl-private"
-msgstr "私密"
-
-msgid "wiki.acl-self-join"
-msgstr "自行加入"
-
-msgid "wiki.acl-custom"
-msgstr "自定权限"
-
-msgid "wiki.acl-public"
-msgstr "公开"

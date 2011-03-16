@@ -706,149 +706,113 @@ msgstr "忽略错误"
 msgid "bug.report"
 msgstr "报告错误"
 
-#: lib/Socialtext/Wikiwyg/AnalyzerPlugin.pm:11
 msgid "class.analyzer"
-msgstr "Analyzer That"
+msgstr "分析"
 
-#: lib/Socialtext/AttachmentsUIPlugin.pm:21
 msgid "class.attachments_ui"
-msgstr "Attachments"
+msgstr "附件"
 
-#: lib/Socialtext/BacklinksPlugin.pm:15
 msgid "class.backlinks"
-msgstr "Backlinks"
+msgstr "逆向链接"
 
-#: lib/Socialtext/BreadCrumbsPlugin.pm:18
 msgid "class.breadcrumbs"
-msgstr "Recently Viewed"
+msgstr "最近浏览页面"
 
-#: lib/Socialtext/CategoryPlugin.pm:23
 msgid "class.category"
-msgstr "Category Managment"
+msgstr "类别管理"
 
-#: lib/Socialtext/CodeSyntaxPlugin.pm:9
 msgid "class.code"
-msgstr "CodeSyntaxPlugin"
+msgstr "代码语法插件"
 
-#: lib/Socialtext/DisplayPlugin.pm:25
 msgid "class.display"
-msgstr "Screen Layout"
+msgstr "显示方式"
 
-#: lib/Socialtext/EditPlugin.pm:19
 msgid "class.edit"
-msgstr "Editing Page"
+msgstr "页面编辑"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:11
 msgid "class.email_notify"
-msgstr "Email Notification"
+msgstr "电子邮件通知"
 
-#: lib/Socialtext/EmailPageUIPlugin.pm:12
 msgid "class.email_page_ui"
-msgstr "Email Page"
+msgstr "电子邮件页面"
 
-#: lib/Socialtext/FavoritesPlugin.pm:12
 msgid "class.favorites"
-msgstr "Your Notepad"
+msgstr "您的记事本"
 
-#: lib/Socialtext/FetchRSSPlugin.pm:16
 msgid "class.fetchrss"
-msgstr "Fetch RSS"
+msgstr "获取 RSS"
 
-#: lib/Socialtext/Formatter.pm:16
 msgid "class.formatter"
-msgstr "NLW Formatter"
+msgstr "NLW 格式器"
 
-#: lib/Socialtext/GoogleSearchPlugin.pm:13
 msgid "class.google_search"
-msgstr "Google Search"
+msgstr "Google 搜索"
 
-#: lib/Socialtext/HomepagePlugin.pm:16
 msgid "class.homepage"
-msgstr "Home Link"
+msgstr "主页链接"
 
-#: lib/Socialtext/NewFormPagePlugin.pm:15
 msgid "class.new_form_page"
-msgstr "New Form Page"
+msgstr "新表单页面"
 
-#: lib/Socialtext/PageActivityPlugin.pm:20
 msgid "class.page_activity"
-msgstr "PageActivity"
+msgstr "页面活动"
 
-#: lib/Socialtext/Pages.pm:29
 msgid "class.pages"
-msgstr "NLW Pages"
+msgstr "NLW 页面"
 
-#: lib/Socialtext/PdfExportPlugin.pm:34
 msgid "class.pdf_export"
-msgstr "PDF Export"
+msgstr "PDF 导出"
 
-#: lib/Socialtext/Pluggable/Adapter.pm:26
 msgid "class.pluggable"
-msgstr "Pluggable"
+msgstr "插件"
 
-#: lib/Socialtext/RecentChangesPlugin.pm:18
 msgid "class.recent_changes"
-msgstr "What's New"
+msgstr "近期更改"
 
-#: lib/Socialtext/RtfExportPlugin.pm:31
 msgid "class.rtf_export"
-msgstr "Word Export"
+msgstr "Word 导出"
 
-#: lib/Socialtext/SearchPlugin.pm:19
 msgid "class.search"
-msgstr "Search"
+msgstr "搜索"
 
-#: lib/Socialtext/ShortcutLinksPlugin.pm:12
 msgid "class.shortcut_links"
-msgstr "Shortcut Links"
+msgstr "快捷链接"
 
-#: lib/Socialtext/SyndicatePlugin.pm:44
 msgid "class.syndicate"
-msgstr "Syndicate"
+msgstr "联播"
 
-#: lib/Socialtext/TiddlyPlugin.pm:21
 msgid "class.tiddly"
-msgstr "TiddlyText"
+msgstr "脱机"
 
-#: lib/Socialtext/TimeZonePlugin.pm:17
 msgid "class.timezone"
-msgstr "Time"
+msgstr "时间"
 
-#: lib/Socialtext/UserPreferencesPlugin.pm:17
 msgid "class.user_preferences"
-msgstr "User Preferences"
+msgstr "用户偏好"
 
-#: lib/Socialtext/VideoPlugin.pm:22
 msgid "class.video"
-msgstr "VideoPlugin"
+msgstr "视频插件"
 
-#: lib/Socialtext/Formatter/Viewer.pm:16
 msgid "class.viewer"
-msgstr "NLW Viewer"
+msgstr "NLW 查看器"
 
-#: lib/Socialtext/WatchlistPlugin.pm:15
 msgid "class.watchlist"
-msgstr "Watchlist"
+msgstr "关注列表"
 
-#: lib/Socialtext/WeblogPlugin.pm:21
 msgid "class.weblog"
-msgstr "Blogs"
+msgstr "博客"
 
-#: lib/Socialtext/WeblogArchive.pm:14
 msgid "class.weblog_archive"
-msgstr "Blog Archives"
+msgstr "博客存档"
 
-#: lib/Socialtext/WidgetPlugin.pm:14
 msgid "class.widget"
-msgstr "WidgetPlugin"
+msgstr "小工具插件"
 
-#: lib/Socialtext/WikiwygPlugin.pm:28
 msgid "class.wikiwyg"
-msgstr "Page Editing"
+msgstr "页面编辑"
 
-#: lib/Socialtext/WorkspaceListPlugin.pm:12
 msgid "class.workspace_list"
-msgstr "Workspace List"
+msgstr "工作区列表"
 
 msgid "cli.clearing-caches"
 msgstr "正在清理缓存..."
