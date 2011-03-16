@@ -36,15 +36,15 @@ sub register {
 sub changes_depth {
     my $self = shift;
     my $p = $self->new_preference('changes_depth');
-    $p->query(loc('config.changes-depth?'));
+    $p->query(_('config.changes-depth?'));
     $p->type('pulldown');
     my $choices = [
-        1 => loc('last.24hours'),
-        2 => loc('last.2days'),
-        3 => loc('last.3days'),
-        7 => loc('last.week'),
-        14 => loc('last.2weeks'),
-        31 => loc('last.month'),
+        1 => _('last.24hours'),
+        2 => _('last.2days'),
+        3 => _('last.3days'),
+        7 => _('last.week'),
+        14 => _('last.2weeks'),
+        31 => _('last.month'),
     ];
     $p->choices($choices);
     $p->default(7);
@@ -54,7 +54,7 @@ sub changes_depth {
 sub sidebox_changes_depth {
     my $self = shift;
     my $p = $self->new_preference('sidebox_changes_depth');
-    $p->query(loc('wiki.sidebox-number-of-changes?'));
+    $p->query(_('wiki.sidebox-number-of-changes?'));
     $p->type('pulldown');
     my $choices = [
         2 => 2, 4 => 4, 6 => 6, 8 => 8, 10 => 10, 15 => 15, 20 => 20
@@ -67,7 +67,7 @@ sub sidebox_changes_depth {
 sub include_in_pages {
     my $self = shift;
     my $p = $self->new_preference('include_in_pages');
-    $p->query(loc('wiki.show-sidebox?'));
+    $p->query(_('wiki.show-sidebox?'));
     $p->type('boolean');
     $p->default(0);
     return $p;

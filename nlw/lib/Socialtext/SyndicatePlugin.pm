@@ -141,7 +141,7 @@ is unset for the user, the default, 10, is used.
 sub syndication_depth {
     my $self = shift;
     my $p = $self->new_preference('syndication_depth');
-    $p->query(loc('feed.number-of-posts?'));
+    $p->query(_('feed.number-of-posts?'));
     $p->type('pulldown');
     my $choices = [
         5   => '5',

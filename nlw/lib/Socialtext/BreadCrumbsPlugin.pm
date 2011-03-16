@@ -30,7 +30,7 @@ sub register {
 sub display_as_box {
     my $self = shift;
     my $p = $self->new_preference('display_as_box');
-    $p->query(loc('wiki.show-breadcrumbs-sidebox?') );
+    $p->query(_('wiki.show-breadcrumbs-sidebox?') );
     $p->default(1);
     return $p;
 }
@@ -38,7 +38,7 @@ sub display_as_box {
 sub how_many {
     my $self = shift;
     my $p = $self->new_preference('how_many');
-    $p->query(loc('wiki.sidebox-number-of-breadcrumbs?'));
+    $p->query(_('wiki.sidebox-number-of-breadcrumbs?'));
     $p->type('pulldown');
     my $choices = [
         3 => 3,

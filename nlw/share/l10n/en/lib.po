@@ -2312,35 +2312,35 @@ msgstr "Workspace title is a required field."
 msgid "error.wiki-title-too-long"
 msgstr "Workspace title is too long after URL encoding"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:35
+#: lib/Socialtext/EmailNotifyPlugin.pm:35 lib/Socialtext/WatchlistPlugin.pm:47
 msgid "every.15minutes"
 msgstr "Every 15 Minutes"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:39
+#: lib/Socialtext/EmailNotifyPlugin.pm:39 lib/Socialtext/WatchlistPlugin.pm:51
 msgid "every.3days"
 msgstr "Every 3 Days"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:34
+#: lib/Socialtext/EmailNotifyPlugin.pm:34 lib/Socialtext/WatchlistPlugin.pm:46
 msgid "every.5minutes"
 msgstr "Every 5 Minutes"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:37
+#: lib/Socialtext/EmailNotifyPlugin.pm:37 lib/Socialtext/WatchlistPlugin.pm:49
 msgid "every.6hours"
 msgstr "Every 6 Hours"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:38
+#: lib/Socialtext/EmailNotifyPlugin.pm:38 lib/Socialtext/WatchlistPlugin.pm:50
 msgid "every.day"
 msgstr "Every Day"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:36
+#: lib/Socialtext/EmailNotifyPlugin.pm:36 lib/Socialtext/WatchlistPlugin.pm:48
 msgid "every.hour"
 msgstr "Every Hour"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:33
+#: lib/Socialtext/EmailNotifyPlugin.pm:33 lib/Socialtext/WatchlistPlugin.pm:45
 msgid "every.minute"
 msgstr "Every Minute"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:40
+#: lib/Socialtext/EmailNotifyPlugin.pm:40 lib/Socialtext/WatchlistPlugin.pm:52
 msgid "every.week"
 msgstr "Every Week"
 
@@ -2731,12 +2731,12 @@ msgstr "Invitation to join %1"
 msgid "page.all"
 msgstr "All Pages"
 
-#: lib/Socialtext/BacklinksPlugin.pm:163
+#: lib/Socialtext/BacklinksPlugin.pm:162
 msgid "page.backlinks:"
 msgstr "The page had these Backlinks:"
 
 #. ($page->name)
-#: lib/Socialtext/BacklinksPlugin.pm:65
+#: lib/Socialtext/BacklinksPlugin.pm:64
 msgid "page.backlinks=page"
 msgstr "All backlinks for \"%1\""
 
@@ -2774,7 +2774,7 @@ msgstr "Deleted \"%1\""
 msgid "page.edited=summary,page,wiki"
 msgstr "\"%1\" (edited %2 in %3)"
 
-#: lib/Socialtext/BacklinksPlugin.pm:169
+#: lib/Socialtext/BacklinksPlugin.pm:168
 msgid "page.linked-from:"
 msgstr "This page is linked to from:"
 
@@ -2792,7 +2792,7 @@ msgstr "Page '%1' in workspace '%2' has been locked."
 msgid "page.locking"
 msgstr "Locking page."
 
-#: lib/Socialtext/BacklinksPlugin.pm:178
+#: lib/Socialtext/BacklinksPlugin.pm:177
 msgid "page.no-backlinks"
 msgstr "There are no pages that link to this page yet."
 
@@ -2801,7 +2801,7 @@ msgstr "There are no pages that link to this page yet."
 msgid "page.nothing-locked=wiki"
 msgstr "Workspace '%1' has no locked pages."
 
-#: lib/Socialtext/BacklinksPlugin.pm:107 lib/Socialtext/BacklinksPlugin.pm:81
+#: lib/Socialtext/BacklinksPlugin.pm:106 lib/Socialtext/BacklinksPlugin.pm:80
 msgid "page.orphaned"
 msgstr "Orphaned Pages"
 
@@ -3257,7 +3257,7 @@ msgstr "%1 minutes"
 msgid "time.months=count"
 msgstr "%1 months"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:32
+#: lib/Socialtext/EmailNotifyPlugin.pm:32 lib/Socialtext/WatchlistPlugin.pm:44
 msgid "time.never"
 msgstr "Never"
 
@@ -3704,6 +3704,10 @@ msgstr "Display \"Recently Viewed\" side pane box?"
 #: lib/Socialtext/RecentChangesPlugin.pm:70
 msgid "wiki.show-sidebox?"
 msgstr "Display as a side box in page view?"
+
+#: lib/Socialtext/BacklinksPlugin.pm:16
+msgid "wiki.sidebox-number-of-backlinks?"
+msgstr "How many backlinks to show in side pane box"
 
 #: lib/Socialtext/BreadCrumbsPlugin.pm:41
 msgid "wiki.sidebox-number-of-breadcrumbs?"

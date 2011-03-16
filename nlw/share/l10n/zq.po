@@ -6412,35 +6412,35 @@ msgstr "«stopped watching %1.»"
 msgid "event.watch=page"
 msgstr "«started watching %1.»"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:35
+#: lib/Socialtext/EmailNotifyPlugin.pm:35 lib/Socialtext/WatchlistPlugin.pm:47
 msgid "every.15minutes"
 msgstr "«Every 15 Minutes»"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:39
+#: lib/Socialtext/EmailNotifyPlugin.pm:39 lib/Socialtext/WatchlistPlugin.pm:51
 msgid "every.3days"
 msgstr "«Every 3 Days»"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:34
+#: lib/Socialtext/EmailNotifyPlugin.pm:34 lib/Socialtext/WatchlistPlugin.pm:46
 msgid "every.5minutes"
 msgstr "«Every 5 Minutes»"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:37
+#: lib/Socialtext/EmailNotifyPlugin.pm:37 lib/Socialtext/WatchlistPlugin.pm:49
 msgid "every.6hours"
 msgstr "«Every 6 Hours»"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:38
+#: lib/Socialtext/EmailNotifyPlugin.pm:38 lib/Socialtext/WatchlistPlugin.pm:50
 msgid "every.day"
 msgstr "«Every Day»"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:36
+#: lib/Socialtext/EmailNotifyPlugin.pm:36 lib/Socialtext/WatchlistPlugin.pm:48
 msgid "every.hour"
 msgstr "«Every Hour»"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:33
+#: lib/Socialtext/EmailNotifyPlugin.pm:33 lib/Socialtext/WatchlistPlugin.pm:45
 msgid "every.minute"
 msgstr "«Every Minute»"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:40
+#: lib/Socialtext/EmailNotifyPlugin.pm:40 lib/Socialtext/WatchlistPlugin.pm:52
 msgid "every.week"
 msgstr "«Every Week»"
 
@@ -8592,12 +8592,12 @@ msgstr "«Click here to return to the %1.»"
 msgid "page.back=uri"
 msgstr "«Click <a href=\"%1\">here</a> to return to the page.»"
 
-#: lib/Socialtext/BacklinksPlugin.pm:163
+#: lib/Socialtext/BacklinksPlugin.pm:162
 msgid "page.backlinks:"
 msgstr "«The page had these Backlinks:»"
 
 #. ($page->name)
-#: lib/Socialtext/BacklinksPlugin.pm:65
+#: lib/Socialtext/BacklinksPlugin.pm:64
 msgid "page.backlinks=page"
 msgstr "«All backlinks for \"%1\"»"
 
@@ -8768,7 +8768,7 @@ msgstr "«Click here to go to the latest version of the %1.»"
 msgid "page.latest=uri"
 msgstr "«Click <a href=\"%1\">here</a> to go to the latest version of the page.»"
 
-#: lib/Socialtext/BacklinksPlugin.pm:169
+#: lib/Socialtext/BacklinksPlugin.pm:168
 msgid "page.linked-from:"
 msgstr "«This page is linked to from:»"
 
@@ -8803,7 +8803,7 @@ msgstr "«New Page»"
 msgid "page.new-name"
 msgstr "«New page name»"
 
-#: share/skin/s3/template/view/page/display:212 lib/Socialtext/BacklinksPlugin.pm:178
+#: share/skin/s3/template/view/page/display:212 lib/Socialtext/BacklinksPlugin.pm:177
 msgid "page.no-backlinks"
 msgstr "«There are no pages that link to this page yet.»"
 
@@ -8820,7 +8820,7 @@ msgstr "«Workspace '%1' has no locked pages.»"
 msgid "page.opened-for-edit=user,ago"
 msgstr "«%1 has opened this page for editing %2.»"
 
-#: share/skin/s3/template/element/listview_tabs:11 share/skin/s3/template/view/empty_watchlist:13 lib/Socialtext/BacklinksPlugin.pm:107 lib/Socialtext/BacklinksPlugin.pm:81
+#: share/skin/s3/template/element/listview_tabs:11 share/skin/s3/template/view/empty_watchlist:13 lib/Socialtext/BacklinksPlugin.pm:106 lib/Socialtext/BacklinksPlugin.pm:80
 msgid "page.orphaned"
 msgstr "«Orphaned Pages»"
 
@@ -10822,7 +10822,7 @@ msgstr "«%1 minutes»"
 msgid "time.months=count"
 msgstr "«%1 months»"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:32 bin/ceq-stat:134
+#: lib/Socialtext/EmailNotifyPlugin.pm:32 lib/Socialtext/WatchlistPlugin.pm:44 bin/ceq-stat:134
 msgid "time.never"
 msgstr "«Never»"
 
@@ -12046,6 +12046,10 @@ msgstr "«Display \"Recently Viewed\" side pane box?»"
 #: lib/Socialtext/RecentChangesPlugin.pm:70
 msgid "wiki.show-sidebox?"
 msgstr "«Display as a side box in page view?»"
+
+#: lib/Socialtext/BacklinksPlugin.pm:16
+msgid "wiki.sidebox-number-of-backlinks?"
+msgstr "«How many backlinks to show in side pane box»"
 
 #: lib/Socialtext/BreadCrumbsPlugin.pm:41
 msgid "wiki.sidebox-number-of-breadcrumbs?"

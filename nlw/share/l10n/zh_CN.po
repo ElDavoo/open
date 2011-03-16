@@ -8656,6 +8656,10 @@ msgstr "显示“最近浏览”侧边栏？"
 msgid "wiki.show-sidebox?"
 msgstr "在页面视图中显示为侧边栏？"
 
+#: lib/Socialtext/BacklinksPlugin.pm:16
+msgid "wiki.sidebox-number-of-backlinks?"
+msgstr "How many backlinks to show in side pane box"
+
 msgid "wiki.sidebox-number-of-breadcrumbs?"
 msgstr "显示多少页面在侧边栏？"
 

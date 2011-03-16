@@ -708,7 +708,7 @@ sub power_user {
 sub wikiwyg_double {
     my $self = shift;
     my $p = $self->new_preference('wikiwyg_double');
-    $p->query(loc('wiki.double-click-to-edit?'));
+    $p->query(_('wiki.double-click-to-edit?'));
     $p->default(1);
     return $p;
 }

@@ -107,7 +107,7 @@ sub preview {
 sub mouseover_length {
     my $self = shift;
     my $p = $self->new_preference('mouseover_length');
-    $p->query(loc('wiki.mouseover-link?'));
+    $p->query(_('wiki.mouseover-link?'));
     $p->default(1);
     return $p;
 }
@@ -115,7 +115,7 @@ sub mouseover_length {
 sub include_breadcrumbs {
     my $self = shift;
     my $p = $self->new_preference('include_breadcrumbs');
-    $p->query(loc('wiki.include-breadcrumbs?'));
+    $p->query(_('wiki.include-breadcrumbs?'));
     $p->type('boolean');
     $p->default(0);
     return $p;
@@ -124,7 +124,7 @@ sub include_breadcrumbs {
 sub locale {
     my $self = shift;
     my $p = $self->new_preference('locale');
-    $p->query(loc('config.language?'));
+    $p->query(_('config.language?'));
     $p->type('pulldown');
     my $languages = available_locales();
     my $choices = [ map {$_ => $languages->{$_}} sort keys %$languages ];

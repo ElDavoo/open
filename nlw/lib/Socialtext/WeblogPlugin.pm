@@ -46,7 +46,7 @@ sub register {
 sub weblog_depth {
     my $self = shift;
     my $p = $self->new_preference('weblog_depth');
-    $p->query(loc('blog.number-of-posts?'));
+    $p->query(_('blog.number-of-posts?'));
     $p->type('pulldown');
     my $choices = [
         5 => '5',

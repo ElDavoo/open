@@ -6412,35 +6412,35 @@ msgstr "zzzzzzz zzzzzzzz %1."
 msgid "event.watch=page"
 msgstr "zzzzzzz zzzzzzzz %1."
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:35
+#: lib/Socialtext/EmailNotifyPlugin.pm:35 lib/Socialtext/WatchlistPlugin.pm:47
 msgid "every.15minutes"
 msgstr "Zzzzz 15 Zzzzzzz"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:39
+#: lib/Socialtext/EmailNotifyPlugin.pm:39 lib/Socialtext/WatchlistPlugin.pm:51
 msgid "every.3days"
 msgstr "Zzzzz 3 Zzzz"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:34
+#: lib/Socialtext/EmailNotifyPlugin.pm:34 lib/Socialtext/WatchlistPlugin.pm:46
 msgid "every.5minutes"
 msgstr "Zzzzz 5 Zzzzzzz"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:37
+#: lib/Socialtext/EmailNotifyPlugin.pm:37 lib/Socialtext/WatchlistPlugin.pm:49
 msgid "every.6hours"
 msgstr "Zzzzz 6 Zzzzz"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:38
+#: lib/Socialtext/EmailNotifyPlugin.pm:38 lib/Socialtext/WatchlistPlugin.pm:50
 msgid "every.day"
 msgstr "Zzzzz Zzz"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:36
+#: lib/Socialtext/EmailNotifyPlugin.pm:36 lib/Socialtext/WatchlistPlugin.pm:48
 msgid "every.hour"
 msgstr "Zzzzz Zzzz"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:33
+#: lib/Socialtext/EmailNotifyPlugin.pm:33 lib/Socialtext/WatchlistPlugin.pm:45
 msgid "every.minute"
 msgstr "Zzzzz Zzzzzz"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:40
+#: lib/Socialtext/EmailNotifyPlugin.pm:40 lib/Socialtext/WatchlistPlugin.pm:52
 msgid "every.week"
 msgstr "Zzzzz Zzzz"
 
@@ -8592,12 +8592,12 @@ msgstr "Zzzzz zzzz zz zzzzzz zz zzz %1."
 msgid "page.back=uri"
 msgstr "Zzzzz <a href=\"%1\">zzzz</a> zz zzzzzz zz zzz zzzz."
 
-#: lib/Socialtext/BacklinksPlugin.pm:163
+#: lib/Socialtext/BacklinksPlugin.pm:162
 msgid "page.backlinks:"
 msgstr "Zzz zzzz zzz zzzzz Zzzzzzzzz:"
 
 #. ($page->name)
-#: lib/Socialtext/BacklinksPlugin.pm:65
+#: lib/Socialtext/BacklinksPlugin.pm:64
 msgid "page.backlinks=page"
 msgstr "Zzz zzzzzzzzz zzz \"%1\""
 
@@ -8768,7 +8768,7 @@ msgstr "Zzzzz zzzz zz zz zz zzz zzzzzz zzzzzzz zz zzz %1."
 msgid "page.latest=uri"
 msgstr "Zzzzz <a href=\"%1\">zzzz</a> zz zz zz zzz zzzzzz zzzzzzz zz zzz zzzz."
 
-#: lib/Socialtext/BacklinksPlugin.pm:169
+#: lib/Socialtext/BacklinksPlugin.pm:168
 msgid "page.linked-from:"
 msgstr "Zzzz zzzz zz zzzzzz zz zzzz:"
 
@@ -8803,7 +8803,7 @@ msgstr "Zzz Zzzz"
 msgid "page.new-name"
 msgstr "Zzz zzzz zzzz"
 
-#: share/skin/s3/template/view/page/display:212 lib/Socialtext/BacklinksPlugin.pm:178
+#: share/skin/s3/template/view/page/display:212 lib/Socialtext/BacklinksPlugin.pm:177
 msgid "page.no-backlinks"
 msgstr "Zzzzz zzz zz zzzzz zzzz zzzz zz zzzz zzzz zzz."
 
@@ -8820,7 +8820,7 @@ msgstr "Zzzzzzzzz '%1' zzz zz zzzzzz zzzzz."
 msgid "page.opened-for-edit=user,ago"
 msgstr "%1 zzz zzzzzz zzzz zzzz zzz zzzzzzz %2."
 
-#: share/skin/s3/template/element/listview_tabs:11 share/skin/s3/template/view/empty_watchlist:13 lib/Socialtext/BacklinksPlugin.pm:107 lib/Socialtext/BacklinksPlugin.pm:81
+#: share/skin/s3/template/element/listview_tabs:11 share/skin/s3/template/view/empty_watchlist:13 lib/Socialtext/BacklinksPlugin.pm:106 lib/Socialtext/BacklinksPlugin.pm:80
 msgid "page.orphaned"
 msgstr "Zzzzzzzz Zzzzz"
 
@@ -10822,7 +10822,7 @@ msgstr "%1 zzzzzzz"
 msgid "time.months=count"
 msgstr "%1 zzzzzz"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:32 bin/ceq-stat:134
+#: lib/Socialtext/EmailNotifyPlugin.pm:32 lib/Socialtext/WatchlistPlugin.pm:44 bin/ceq-stat:134
 msgid "time.never"
 msgstr "Zzzzz"
 
@@ -12046,6 +12046,10 @@ msgstr "Zzzzzzz \"Zzzzzzzz Zzzzzz\" zzzz zzzz zzz?"
 #: lib/Socialtext/RecentChangesPlugin.pm:70
 msgid "wiki.show-sidebox?"
 msgstr "Zzzzzzz zz z zzzz zzz zz zzzz zzzz?"
+
+#: lib/Socialtext/BacklinksPlugin.pm:16
+msgid "wiki.sidebox-number-of-backlinks?"
+msgstr "Zzz zzzz zzzzzzzzz zz zzzz zz zzzz zzzz zzz"
 
 #: lib/Socialtext/BreadCrumbsPlugin.pm:41
 msgid "wiki.sidebox-number-of-breadcrumbs?"
