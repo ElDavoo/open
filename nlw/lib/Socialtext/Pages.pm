@@ -25,8 +25,8 @@ use Socialtext::WeblogUpdates;
 use Socialtext::Workspace;
 use Socialtext::l10n qw( loc );
 
-sub class_id { 'pages' }
-const class_title => 'NLW Pages';
+const class_id => 'pages';
+const class_title => _('class.pages');
 
 field current => 
       -init => '$self->new_page($self->current_name)';

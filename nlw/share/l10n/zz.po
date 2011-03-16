@@ -175,7 +175,7 @@ msgstr "Zzz zzzzzzz zzzzzzz zz %1."
 msgid "account.deleting-old-export=path"
 msgstr "Zzzzzzzz zzzzzzzz zzzzzzz zzzzzz zz %1."
 
-#: lib/Socialtext/Account.pm:547
+#: lib/Socialtext/Account.pm:559
 msgid "account.enabling-plugins"
 msgstr "Zzzzzzzz zzzzzzz zzzzzzz ..."
 
@@ -211,7 +211,7 @@ msgstr "Zzzzzzzzz zzzzzzz zzzzzzz ..."
 msgid "account.importing-groups=account"
 msgstr "Zzzzzzzzz zzz zzzzzz zzz zzzzzzz '%1'..."
 
-#: lib/Socialtext/Account.pm:472
+#: lib/Socialtext/Account.pm:476
 msgid "account.importing-logo"
 msgstr "Zzzzzzzzz zzzzzzz zzzz ..."
 
@@ -235,7 +235,7 @@ msgid "account.renamed=old,new"
 msgstr "Zzzzzzz %1 zzzzzzz zz %2"
 
 #. ($plugin_name)
-#: lib/Socialtext/Account.pm:550
+#: lib/Socialtext/Account.pm:562
 msgid "account.skip-missing=plugin"
 msgstr "... '%1' zzzzzz zzzzzzz; zzzzzzzz"
 
@@ -732,12 +732,14 @@ msgstr "Zzzzzzzz zzz Zzzzzzzzz Zzzzzzzz Zzzzzzzzzzzzz zzzz zz %1"
 msgid "appliance.added-technical-admin=user"
 msgstr "Zzzzzzzz zzz Zzzzzzzzz Zzzzzzzzz Zzzzzzzzzzzzz zzzz zz %1"
 
+#: lib/Socialtext/Appliance/Model/Backup.pm:37
 msgid "appliance.archive-directory"
 msgstr "Zzzzzzz Zzzzzzzzz"
 
 msgid "appliance.archiving-system-config-files"
 msgstr "Zzzzzzzzz zzzzzz zzzzzz zzzzz ..."
 
+#: lib/Socialtext/Appliance/Model/Backup.pm:51
 msgid "appliance.backup-destination-updated"
 msgstr "Zzzzzz zzzzzzzzzzz zzzzzzz"
 
@@ -750,6 +752,7 @@ msgstr "Zzzzzz zz zz zzzzzzzz - zzzzzzz zz zzzzz"
 msgid "appliance.backup-in-progress=started-at"
 msgstr "Zzzzzz zz zz zzzzzzzz - zzzzzzz zz %1"
 
+#: lib/Socialtext/Appliance/Model/Backup.pm:33
 msgid "appliance.backup-server-name"
 msgstr "Zzzzzz Zzzzzz zzzz"
 
@@ -762,30 +765,40 @@ msgstr "Zzzzzzz zzzzzzzzz zzz zzzzzzz:"
 msgid "appliance.cleanup-previous-snapshot"
 msgstr "Zzzzzzzz zz zzzzzzzz zzzzzzzz ..."
 
+#. ($data->{collaborativeness})
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:89
 msgid "appliance.collaborativeness=score"
 msgstr "Zzzzzzzzzzzzzzzzz: %1 - Zzzzzz zzzzzzzzzzzz zz z zzzzzzz zz zzzzzz zzzzzzzz"
 
+#: lib/Socialtext/Appliance/ConsoleController.pm:119
 msgid "appliance.confirm-initialize-wikis"
 msgstr "Zz zzz zzzzzz zzzz zz zzzzzz zzz zzzzzzzzzz zzz zzzzzz z zzz zzzzzzz zzzzzzzzz? (Zzzz zzzzzz zzzzzz zz zzzzzz.)"
 
+#: lib/Socialtext/Appliance/ConsoleController.pm:91
 msgid "appliance.confirm-reboot?"
 msgstr "Zz zzz zzzzzz zzzz zz zzzzzz zzz zzzzzzzzz?"
 
+#: lib/Socialtext/Appliance/ConsoleController.pm:105
 msgid "appliance.confirm-shutdown?"
 msgstr "Zz zzz zzzzzz zzzz zz zzzzzzzz zzz zzzzzzzzz?"
 
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:92
 msgid "appliance.contributions"
 msgstr "Zzzzzzzzzzzzz"
 
+#: lib/Socialtext/Appliance/Model/Setup.pm:474
 msgid "appliance.email-required"
 msgstr "Zzzzzz zzzzz zz zzzzz zzzzzzz"
 
+#: lib/Socialtext/Appliance/ConsoleController.pm:120
 msgid "appliance.initialize-wikis"
 msgstr "Zzzzzzzzzz Zzzzzzzzzz"
 
+#: lib/Socialtext/Appliance/ConsoleController.pm:118
 msgid "appliance.initialize-wikis?"
 msgstr "Zzzzzzzzzz Zzzzzzzzzz?"
 
+#: lib/Socialtext/Appliance/Model/Setup.pm:465 lib/Socialtext/Appliance/Model/Setup.pm:485
 msgid "appliance.invalid-email"
 msgstr "Zzzzzz zzzzz z zzzzz zzzzz zzzzzzz"
 
@@ -795,18 +808,24 @@ msgstr "Zzzz zzzzzz zzzzzz zzz zzzzz"
 msgid "appliance.last-manual-backup-was=last"
 msgstr "Zzzz zzzzzz zzzzzz zzz %1"
 
+#: lib/Socialtext/Appliance/Model/Backup.pm:36
 msgid "appliance.password"
 msgstr "Zzzzzzzz"
 
+#: lib/Socialtext/Appliance/ConsoleController.pm:92
 msgid "appliance.reboot"
 msgstr "Zzzzzz"
 
+#: lib/Socialtext/Appliance/ConsoleController.pm:90
 msgid "appliance.reboot?"
 msgstr "Zzzzzz Zzzzzzzzz?"
 
+#: lib/Socialtext/Appliance/Model/System.pm:58
 msgid "appliance.rebooting"
 msgstr "Zzzzzz zzzzzzzzz ..."
 
+#. ($login_url)
+#: lib/Socialtext/Appliance/ConsoleController.pm:131
 msgid "appliance.redirecting-to=url"
 msgstr "Zzzzzzzzzzz zz %1"
 
@@ -850,51 +869,73 @@ msgstr "Zzzzzz zzzz zzzzz zzz zzzzzzz zzzzzzzz, zzzz zzzzz."
 msgid "appliance.select-backup-to-restore"
 msgstr "Zzzzzz zzzzzz z zzzzzz zz zzzzzzz"
 
+#: lib/Socialtext/Appliance/Model/Setup.pm:427
 msgid "appliance.set-mail-server-to-built-in"
 msgstr "Zzzzzzz zzzz zzzzzz zz zzz zzzzz-zz zzzzzz"
 
+#. ($new_host)
+#: lib/Socialtext/Appliance/Model/Setup.pm:423
 msgid "appliance.set-mail-server=host"
 msgstr "Zzzzzzz zzzz zzzzzz zz %1"
 
+#: lib/Socialtext/Appliance/Model/Backup.pm:34
 msgid "appliance.shared-directory-name"
 msgstr "Zzzzzz Zzzzzzzzz Zzzz"
 
+#: lib/Socialtext/Appliance/ConsoleController.pm:106
 msgid "appliance.shutdown"
 msgstr "Zzzzzzzz"
 
+#: lib/Socialtext/Appliance/ConsoleController.pm:104
 msgid "appliance.shutdown?"
 msgstr "Zzzzzzzz Zzzzzzzzz?"
 
+#: lib/Socialtext/Appliance/Model/System.pm:64
 msgid "appliance.shutting-down"
 msgstr "Zzzzzz zzzzzzzz zzzz ..."
 
+#. ($wksp->title)
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:48
 msgid "appliance.skipping-no-usage=wiki"
 msgstr "Zzzzzzzz zzzzzzzzz %1, zz zzzzz."
 
+#. ($ts)
+#: lib/Socialtext/Appliance/Model/Setup.pm:362
 msgid "appliance.synchronized-time-with=ts"
 msgstr "Zzzzzzzzzzzz zzzz zzzz %1"
 
 msgid "appliance.taking-database-snapshot"
 msgstr "Zzzzzz zzzzzzzz zzzzzzzz ..."
 
+#: lib/Socialtext/Appliance/Model/Setup.pm:448
 msgid "appliance.test-email"
 msgstr "Zzzzzzzzzz Zzzzzzzzz Zzzz Zzzzz"
 
+#. ($recip)
+#: lib/Socialtext/Appliance/Model/Setup.pm:442
 msgid "appliance.test-email-sent=recipient"
 msgstr "Zzzz zzzz zzzzz zz %1"
 
+#. ($new_ts)
+#: lib/Socialtext/Appliance/Model/Setup.pm:330
 msgid "appliance.timeserver-updated=ts"
 msgstr "Zzzzzzzzzz zzzzzzz zz %1, zzzzz zzzzzzzzzzzz"
 
+#: lib/Socialtext/Appliance/Model/Backup.pm:35
 msgid "appliance.username"
 msgstr "Zzzzzzzz"
 
+#: lib/Socialtext/Appliance/Model/Setup.pm:397
 msgid "appliance.web-proxy-cleared"
 msgstr "Zzz zzzzz zzzzzzz."
 
+#. ($new_proxy)
+#: lib/Socialtext/Appliance/Model/Setup.pm:394
 msgid "appliance.web-proxy-updated=new-proxy"
 msgstr "Zzz zzzzz zzzzzzz zz %1"
 
+#. ($log)
+#: lib/Socialtext/Appliance/Model/Setup.pm:482
 msgid "appliance.wikis-initialized=log"
 msgstr "Zzzzzzzzzz zzzzzzzzzzz.<br>Zzz: %1"
 
@@ -903,7 +944,7 @@ msgid "blog.archives"
 msgstr "Zzzz Zzzzzzzz"
 
 #. ($self->current_blog_str)
-#: lib/Socialtext/WeblogPlugin.pm:209
+#: lib/Socialtext/WeblogPlugin.pm:202
 msgid "blog.atom=blog"
 msgstr "Zzzz: %1 Zzzz"
 
@@ -924,12 +965,12 @@ msgid "blog.edit"
 msgstr "Zzzz zzzz zzzz"
 
 #. ($blog_tag)
-#: lib/Socialtext/WeblogPlugin.pm:190
+#: lib/Socialtext/WeblogPlugin.pm:183
 msgid "blog.first-post-body=tag"
 msgstr "Zzzz zz zzz zzzzz zzzz zz %1. Zzzzz *Zzz Zzzz* zz zzz zzzzzzz zzzz."
 
 #. ($blog_tag)
-#: lib/Socialtext/WeblogPlugin.pm:131
+#: lib/Socialtext/WeblogPlugin.pm:124
 msgid "blog.first-post=tag"
 msgstr "Zzzzz Zzzz zz %1"
 
@@ -938,7 +979,7 @@ msgid "blog.go:"
 msgstr "Zz zz:"
 
 #. ($blog_tag)
-#: lib/Socialtext/WeblogPlugin.pm:166
+#: lib/Socialtext/WeblogPlugin.pm:159
 msgid "blog.name=tag"
 msgstr "%1 Zzzz"
 
@@ -946,12 +987,12 @@ msgstr "%1 Zzzz"
 msgid "blog.naming"
 msgstr "Zzzzzz zzzz zzzz zzzz z zzzz. Zz zzz zzzz zzz zzzzzzz zzzz zzz zzz zzzz \"Zzzz\", zzz zzzzzz zzzz zzz \"Zzzz\" zz zzz zzzz zzz zzzzzzz. Zzzzz zzz zzzzz \"Zzzzzz\", zzz'zz zz zzzzz zzzzz zz zzz zzz zzzz."
 
-#: share/skin/s3/template/view/weblog:91 lib/Socialtext/WeblogPlugin.pm:474
+#: share/skin/s3/template/view/weblog:91 lib/Socialtext/WeblogPlugin.pm:467
 msgid "blog.navigation"
 msgstr "Zzzz Zzzzzzzzzz"
 
 #. ($self->current_blog_str)
-#: lib/Socialtext/WeblogPlugin.pm:497
+#: lib/Socialtext/WeblogPlugin.pm:490
 msgid "blog.navigation-for=tag"
 msgstr "Zzzzzzzzzz zzz: %1"
 
@@ -986,7 +1027,7 @@ msgid "blog.recent-posts=tag,wiki"
 msgstr "Zzzzzz Zzzzz zzzz %1 zz zzzzzzzzz %2"
 
 #. ($self->current_blog_str)
-#: lib/Socialtext/WeblogPlugin.pm:204
+#: lib/Socialtext/WeblogPlugin.pm:197
 msgid "blog.rss=blog"
 msgstr "Zzzz: %1 ZZZ"
 
@@ -1059,6 +1100,150 @@ msgstr "Zzzzzz Zzz"
 #: share/template/bugs_content.html:24 lib/Socialtext/BugsPlugin.pm:31
 msgid "bug.report"
 msgstr "Zzzzzz Zzz"
+
+#: lib/Socialtext/Wikiwyg/AnalyzerPlugin.pm:11
+msgid "class.analyzer"
+msgstr "Zzzzzzzz Zzzz"
+
+#: lib/Socialtext/AttachmentsUIPlugin.pm:21
+msgid "class.attachments_ui"
+msgstr "Zzzzzzzzzzz"
+
+#: lib/Socialtext/BacklinksPlugin.pm:15
+msgid "class.backlinks"
+msgstr "Zzzzzzzzz"
+
+#: lib/Socialtext/BreadCrumbsPlugin.pm:18
+msgid "class.breadcrumbs"
+msgstr "Zzzzzzzz Zzzzzz"
+
+#: lib/Socialtext/CategoryPlugin.pm:23
+msgid "class.category"
+msgstr "Zzzzzzzz Zzzzzzzzz"
+
+#: lib/Socialtext/CodeSyntaxPlugin.pm:9
+msgid "class.code"
+msgstr "ZzzzZzzzzzZzzzzz"
+
+#: lib/Socialtext/DisplayPlugin.pm:25
+msgid "class.display"
+msgstr "Zzzzzz Zzzzzz"
+
+#: lib/Socialtext/EditPlugin.pm:19
+msgid "class.edit"
+msgstr "Zzzzzzz Zzzz"
+
+#: lib/Socialtext/EmailNotifyPlugin.pm:11
+msgid "class.email_notify"
+msgstr "Zzzzz Zzzzzzzzzzzz"
+
+#: lib/Socialtext/EmailPageUIPlugin.pm:12
+msgid "class.email_page_ui"
+msgstr "Zzzzz Zzzz"
+
+#: lib/Socialtext/FavoritesPlugin.pm:12
+msgid "class.favorites"
+msgstr "Zzzz Zzzzzzz"
+
+#: lib/Socialtext/FetchRSSPlugin.pm:16
+msgid "class.fetchrss"
+msgstr "Zzzzz ZZZ"
+
+#: lib/Socialtext/Formatter.pm:16
+msgid "class.formatter"
+msgstr "ZZZ Zzzzzzzzz"
+
+#: lib/Socialtext/GoogleSearchPlugin.pm:13
+msgid "class.google_search"
+msgstr "Zzzzzz Zzzzzz"
+
+#: lib/Socialtext/HomepagePlugin.pm:16
+msgid "class.homepage"
+msgstr "Zzzz Zzzz"
+
+#: lib/Socialtext/NewFormPagePlugin.pm:15
+msgid "class.new_form_page"
+msgstr "Zzz Zzzz Zzzz"
+
+#: lib/Socialtext/PageActivityPlugin.pm:20
+msgid "class.page_activity"
+msgstr "ZzzzZzzzzzzz"
+
+#: lib/Socialtext/Pages.pm:29
+msgid "class.pages"
+msgstr "ZZZ Zzzzz"
+
+#: lib/Socialtext/PdfExportPlugin.pm:34
+msgid "class.pdf_export"
+msgstr "ZZZ Zzzzzz"
+
+#: lib/Socialtext/Pluggable/Adapter.pm:26
+msgid "class.pluggable"
+msgstr "Zzzzzzzzz"
+
+#: lib/Socialtext/RecentChangesPlugin.pm:18
+msgid "class.recent_changes"
+msgstr "Zzzz'z Zzz"
+
+#: lib/Socialtext/RtfExportPlugin.pm:31
+msgid "class.rtf_export"
+msgstr "Zzzz Zzzzzz"
+
+#: lib/Socialtext/SearchPlugin.pm:19
+msgid "class.search"
+msgstr "Zzzzzz"
+
+#: lib/Socialtext/ShortcutLinksPlugin.pm:12
+msgid "class.shortcut_links"
+msgstr "Zzzzzzzz Zzzzz"
+
+#: lib/Socialtext/SyndicatePlugin.pm:44
+msgid "class.syndicate"
+msgstr "Zzzzzzzzz"
+
+#: lib/Socialtext/TiddlyPlugin.pm:21
+msgid "class.tiddly"
+msgstr "ZzzzzzZzzz"
+
+#: lib/Socialtext/TimeZonePlugin.pm:17
+msgid "class.timezone"
+msgstr "Zzzz"
+
+#: lib/Socialtext/UserPreferencesPlugin.pm:17
+msgid "class.user_preferences"
+msgstr "Zzzz Zzzzzzzzzzz"
+
+#: lib/Socialtext/VideoPlugin.pm:22
+msgid "class.video"
+msgstr "ZzzzzZzzzzz"
+
+#: lib/Socialtext/Formatter/Viewer.pm:16
+msgid "class.viewer"
+msgstr "ZZZ Zzzzzz"
+
+#: lib/Socialtext/WatchlistPlugin.pm:15
+msgid "class.watchlist"
+msgstr "Zzzzzzzzz"
+
+#: lib/Socialtext/WeblogPlugin.pm:21
+msgid "class.weblog"
+msgstr "Zzzzz"
+
+#: lib/Socialtext/WeblogArchive.pm:14
+msgid "class.weblog_archive"
+msgstr "Zzzz Zzzzzzzz"
+
+#: lib/Socialtext/WidgetPlugin.pm:14
+msgid "class.widget"
+msgstr "ZzzzzzZzzzzz"
+
+#: lib/Socialtext/WikiwygPlugin.pm:28
+msgid "class.wikiwyg"
+msgstr "Zzzz Zzzzzzz"
+
+#: lib/Socialtext/WorkspaceListPlugin.pm:12
+msgid "class.workspace_list"
+msgstr "Zzzzzzzzz Zzzz"
 
 #: lib/Socialtext/CLI.pm:534
 msgid "cli.clearing-caches"
@@ -4003,6 +4188,7 @@ msgstr "Zzzzzzz zzz zzzzzzz zzzz %1 %2 zzzzzzz, zzz zzzzzzzz zz zzz zzzz zz zzz 
 msgid "email.send"
 msgstr "Zzzz"
 
+#: lib/Socialtext/Appliance/Model/Setup.pm:449
 msgid "email.sent-from-socialtext-appliance"
 msgstr "Zzzz zzzzz zzz zzzz zzzz zzz Zzzzzzzzzz Zzzzzzzzz."
 
@@ -4141,7 +4327,7 @@ msgid "email.your-profile-has-been-added-to-people-directory"
 msgstr "Zzzz zzzzzzz zzz zzzz zzzzz zz zzz zzzzzz zzzzzzzzz."
 
 #. ($p->{name})
-#: lib/Socialtext/Account.pm:1106
+#: lib/Socialtext/Account.pm:1118
 msgid "error.account-exists=name"
 msgstr "Zzz zzzzzzz zzzz zzz zzzzz, %1, zz zzzzzzz zz zzz."
 
@@ -4158,7 +4344,7 @@ msgstr "Zzz zzzzzzzzzz zz zzz zzzz Zzzzzzz"
 msgid "error.account-id-or-name-required=uri"
 msgstr "Zzz zzzz zzzzzzz z zzzzz zzzzzzz_zz zz zzzzzzz_zzzz zz zzzz ZZZ (%1)."
 
-#: lib/Socialtext/Account.pm:1078
+#: lib/Socialtext/Account.pm:1090
 msgid "error.account-name-required"
 msgstr "Zzzzzzz zzzz zz z zzzzzzzz zzzzz."
 
@@ -4245,6 +4431,7 @@ msgstr "Zzz zzzz zzzzzz zz zzzzz zzz zzzzzzzzz"
 msgid "error.at=line,message"
 msgstr "Zzzz %1: %2"
 
+#: lib/Socialtext/Appliance/Model/Setup.pm:207
 msgid "error.authentication-token-soft-limit-must-be-lower-than-hard-limit"
 msgstr "Zzzzzzzzzzzzzz zzzzz zzzz zzzzz zzzz zz zzzzz zzzz zzz zzzz zzzzz."
 
@@ -4269,7 +4456,7 @@ msgstr "Zzzzzzz: Zzzzzzzzzz Zzzzzz zzzzzzzz ZzzzzZzzzz ZZ z4.5 zz zzzzzz"
 msgid "error.blog-name-required"
 msgstr "Zzz zzzzzzzz z zzzzzzzz zz zzzz, zzz zzz zzz zzzzzz z zzzz zzzz.  Zzzz zzzzzzz zzzz zzz zzzzz"
 
-#: lib/Socialtext/WeblogPlugin.pm:120
+#: lib/Socialtext/WeblogPlugin.pm:113
 msgid "error.blog-name-too-long"
 msgstr "Zzzz zzzz zz zzz zzzz zzzzz ZZZ zzzzzzzz"
 
@@ -4308,7 +4495,7 @@ msgstr "Zzzzz zzz zzzzzz zzzzzzz zzzz zz %1."
 msgid "error.change-password=user"
 msgstr "Zzzzz zzz z zzzzzzz zzzzzzzz zzzzzzzz zzz zzzz %1"
 
-#: lib/Socialtext/Pluggable/Plugin/People.pm:764
+#: lib/Socialtext/Pluggable/Plugin/People.pm:765
 msgid "error.change-profile-field-failed"
 msgstr "Zzzzzz zz zzzzzz zzzzzzz zzzzz."
 
@@ -4324,6 +4511,7 @@ msgstr "Zz zzzzz zzzzzzz; zzzzzz zzz zzzzz."
 msgid "error.choose-group"
 msgstr "Zzzzzz zzzzzz zzz zz zzzz zzzzzz"
 
+#: lib/Socialtext/Appliance/BackupCleanup.pm:29
 msgid "error.cleaning-not-implemented"
 msgstr "Zzzzzzzz zz zzz zzzzzzzzzzz."
 
@@ -4331,6 +4519,8 @@ msgstr "Zzzzzzzz zz zzz zzzzzzzzzzz."
 msgid "error.columns-too-big"
 msgstr "Zzzzzzz zz zzz zzz. 35 zzzzzzz."
 
+#. ($new_ts)
+#: lib/Socialtext/Appliance/Model/Setup.pm:317
 msgid "error.configure-ntpd-failed=new-ts"
 msgstr "Zzzzzz zz zzzzzzzzz zzzz zzzz zzzzzzzzzz %1"
 
@@ -4363,7 +4553,7 @@ msgstr "Zzzzzz zz zzzzzz Zzzzz zzzzz zzzzzzzzzz zz zzz zz zzzzzz."
 msgid "error.create-group=message"
 msgstr "Zzzzz zzzzzzzz zzzzz: %1"
 
-#: lib/Socialtext/Pluggable/Plugin/People.pm:715
+#: lib/Socialtext/Pluggable/Plugin/People.pm:716
 msgid "error.create-profile-field-failed"
 msgstr "Zzzzzz zz zzzzzz zzzzzzz zzzzz."
 
@@ -4475,12 +4665,12 @@ msgid "error.exists=account"
 msgstr "Zz zzzzzzz zzzz zzzz zzzz (%1) zzzzzzz zzzzzz."
 
 #. ($name)
-#: lib/Socialtext/Account.pm:433
+#: lib/Socialtext/Account.pm:437
 msgid "error.exists=account!"
 msgstr "Zzzzzzz %1 zzzzzzz zzzzzz!"
 
 #. ($blog_tag)
-#: lib/Socialtext/WeblogPlugin.pm:179
+#: lib/Socialtext/WeblogPlugin.pm:172
 msgid "error.exists=blog"
 msgstr "Zzzzz zz zzzzzzz z '%1' zzzz. Zzzzzz zzzzzz z zzzzzzzzz zzzz."
 
@@ -4516,21 +4706,21 @@ msgid "error.feed"
 msgstr "Zzzz Zzzzz"
 
 #. ($from_class, $to_class)
-#: lib/Socialtext/Pluggable/Plugin/People.pm:760
+#: lib/Socialtext/Pluggable/Plugin/People.pm:761
 msgid "error.field-conversion-failed=from-class,to-class"
 msgstr "Zzzzzz zzzzzzz zzzzz zzzzz zzzz '%1' zz '%2'"
 
 #. ($opts->{name}, $acct->name)
-#: lib/Socialtext/Pluggable/Plugin/People.pm:708
+#: lib/Socialtext/Pluggable/Plugin/People.pm:709
 msgid "error.field-exists=name,account"
 msgstr "Zzzzzz zzzzzz zzzzzzz zzzzz: Zzz zzzzz zzzz '%1' zz zzzzzzz zzzz zz zzzzzzz '%2'"
 
 #. ($name, $opts->{title}, $acct->name)
-#: lib/Socialtext/Pluggable/Plugin/People.pm:705
+#: lib/Socialtext/Pluggable/Plugin/People.pm:706
 msgid "error.field-exists=name,title,account"
 msgstr "Zzzzzz zzzzzz zzzzzzz zzzzz: Zzz zzzzz zzzz '%1' (zzzzzzz zzzz zzzzz '%2') zz zzzzzzz zzzz zz zzzzzzz '%3'"
 
-#: lib/Socialtext/Pluggable/Plugin/People.pm:729
+#: lib/Socialtext/Pluggable/Plugin/People.pm:730
 msgid "error.field-name-required"
 msgstr "Zzzz zzzzzzz zzz zzzz zz zzz zzzzz zz zzzzzz"
 
@@ -4545,12 +4735,12 @@ msgid "error.field-required=name"
 msgstr "%1 zz z zzzzzzzz zzzzz, zzz zz zz zzz zzzzzzz."
 
 #. ($opts->{name})
-#: lib/Socialtext/Pluggable/Plugin/People.pm:698
+#: lib/Socialtext/Pluggable/Plugin/People.pm:699
 msgid "error.field-reserved=name"
 msgstr "Zzzzzz zzzzzz zzzzzzz zzzzz: Zzz zzzzz zzzz '%1' zz zzzzzzzz zzz Zzzzzzzzzz"
 
 #. ($name, $opts->{title})
-#: lib/Socialtext/Pluggable/Plugin/People.pm:695
+#: lib/Socialtext/Pluggable/Plugin/People.pm:696
 msgid "error.field-reserved=name,title,account"
 msgstr "Zzzzzz zzzzzz zzzzzzz zzzzz: Zzz zzzzz zzzz '%1' (zzzzzzz zzzz zzzzz '%2') zz zzzzzzzz zzz Zzzzzzzzzz"
 
@@ -4633,7 +4823,7 @@ msgid "error.group-required=command"
 msgstr "Zzz zzzzzzz zzz zzzzzz (%1) zzzzzzzz z '--zzzzz' zzzzzzzzz."
 
 #. ($EXPORT_VERSION)
-#: lib/Socialtext/Account.pm:426
+#: lib/Socialtext/Account.pm:430
 msgid "error.import-account=max-version"
 msgstr "Zzzzzz zzzzzz zz Zzzzzzz zzzz z zzzzzzz zzzzzzz zzzz %1"
 
@@ -4667,9 +4857,13 @@ msgstr "Zzzzz, %1 zz zzz zzzz zz zz zzzzzzz."
 msgid "error.invalid-archive=file"
 msgstr "%1 zz zzz z zzzzz zzzzzzz zzzzzzzz. Zzzz zzzzz zzzz zzz zzzz .zzz, .zzz.zz zz .zzz."
 
+#. ($min_days, $max_days)
+#: lib/Socialtext/Appliance/Model/Setup.pm:203
 msgid "error.invalid-authentication-token-hard-limit=min-days,max-days"
 msgstr "Zzzzzzzzzzzzzz zzzzz zzzz zzzzz zzzz zz zzzzzzz %1 zzz %2 zzzz."
 
+#. ($min_days, $max_days)
+#: lib/Socialtext/Appliance/Model/Setup.pm:200
 msgid "error.invalid-authentication-token-soft-limit=min-days,max-days"
 msgstr "Zzzzzzzzzzzzzz zzzzz zzzz zzzzz zzzz zz zzzzzzz %1 zzz %2 zzzz."
 
@@ -4697,7 +4891,7 @@ msgid "error.invalid-email-placement"
 msgstr "Zzzzzzzz zzzzz zzzzzzzzz zzzz zz zzz zz zzz, zzzzzz, zz zzzzzzz."
 
 #. ($source)
-#: lib/Socialtext/Pluggable/Plugin/People.pm:671
+#: lib/Socialtext/Pluggable/Plugin/People.pm:672
 msgid "error.invalid-field=source"
 msgstr "Zzzzzzz zzzzz zzzzzz '%1'"
 
@@ -4840,7 +5034,7 @@ msgid "error.invalid=account"
 msgstr "'%1' zz zzz z zzzzz zzzzzzz zzzz."
 
 #. ($p->{account_type})
-#: lib/Socialtext/Account.pm:1119
+#: lib/Socialtext/Account.pm:1131
 msgid "error.invalid=account-type!"
 msgstr "Zzzzzzz zzzz (%1) zz zzz zzzzz!"
 
@@ -4850,7 +5044,7 @@ msgid "error.invalid=domain"
 msgstr "Zzzzzz (%1) zz zzz zzzzz."
 
 #. ($p->{restrict_to_domain})
-#: lib/Socialtext/Account.pm:1126
+#: lib/Socialtext/Account.pm:1138
 msgid "error.invalid=domain!"
 msgstr "Zzzzzz (%1) zz zzz zzzzz!"
 
@@ -4870,10 +5064,13 @@ msgid "error.invalid=email,domain"
 msgstr "Zzz zzzzz zzzzzzz, %1, zz zzz zz zzz zzzzzz %2."
 
 #. ($opts->{field_class})
-#: lib/Socialtext/Pluggable/Plugin/People.pm:712
+#: lib/Socialtext/Pluggable/Plugin/People.pm:713
 msgid "error.invalid=field-class"
 msgstr "Zzzzzz zzzzzz zzzzzzz zzzzz: zzzzzzz zzzzz-zzzzz '%1'"
 
+#. ($new_ts)
+#. ($new_proxy)
+#: lib/Socialtext/Appliance/Model/Setup.pm:292 lib/Socialtext/Appliance/Model/Setup.pm:377
 msgid "error.invalid=host"
 msgstr "Zzzzzzz zzzz: %1"
 
@@ -4887,6 +5084,8 @@ msgstr "'%1' zz zzz z zzzzz zzzzzz"
 msgid "error.invalid=page"
 msgstr "Zz zzzzzzz zzzz ZZ zzz zzzzz: %1"
 
+#. ($new_href)
+#: lib/Socialtext/Appliance/Model/Setup.pm:237
 msgid "error.invalid=support-uri"
 msgstr "Zzz zzzzz '%1' zz zzzzzzz."
 
@@ -4948,6 +5147,7 @@ msgstr "Zzzzzzz/zzzzzzz Zzzz '%1'; zzzzz zzzzzzz Zzzz"
 msgid "error.missing-people-plugin"
 msgstr "Zzz Zzzzzz zzzzzz zz zzz zzzzzzzzz."
 
+#: lib/Socialtext/Appliance/BackupStore.pm:87
 msgid "error.mount-samba-share"
 msgstr "Zzzzzz zzzzz zzz ZZZZZ zzzzz."
 
@@ -5058,12 +5258,12 @@ msgid "error.no-export-directory=path"
 msgstr "Zzzzzz zzzzzzzzz %1 zzzz zzz zzzzz."
 
 #. ($opts->{profile_field_id}, $acct->name)
-#: lib/Socialtext/Pluggable/Plugin/People.pm:742
+#: lib/Socialtext/Pluggable/Plugin/People.pm:743
 msgid "error.no-field=id,account"
 msgstr "Zzzzzzz zzzzz ZZ '%1' zzzz zzz zzzzz zzz zzzzzzz '%2'"
 
 #. ($opts->{name}, $acct->name)
-#: lib/Socialtext/Pluggable/Plugin/People.pm:748
+#: lib/Socialtext/Pluggable/Plugin/People.pm:749
 msgid "error.no-field=name,account"
 msgstr "Zzzzzzz zzzzz '%1' zzzz zzz zzzzz zzz zzzzzzz '%2'"
 
@@ -5213,7 +5413,7 @@ msgid "error.no-signals-plugin"
 msgstr "Zzz Zzzzzzz zzzzzz zz zzz zzzzzzzzz."
 
 #. ($p->{skin_name})
-#: lib/Socialtext/Account.pm:1093
+#: lib/Socialtext/Account.pm:1105
 msgid "error.no-skin=name"
 msgstr "Zzz zzzz zzz zzzzzzzzz, %1, zzzz zzz zzzzz."
 
@@ -5264,6 +5464,7 @@ msgstr "Zzzzz zz zz zzz \"%1\" zz zzz %2 zzzzzzzzz."
 msgid "error.no-thumbnail=url"
 msgstr "Zzz'z zzzz zzzzzzzzz zzzzz: %1"
 
+#: lib/Socialtext/Appliance/Model/Setup.pm:341
 msgid "error.no-timeserver-configured"
 msgstr "Zzzzz: Zz zzzzzzzzzz zz zzzzzzzzzz"
 
@@ -5405,7 +5606,7 @@ msgid "error.page-title-too-long"
 msgstr "Zzzz zzzzz zz zzz zzzz zzzzz ZZZ zzzzzzzz"
 
 #. (Socialtext::String::MAX_PAGE_ID_LEN)
-#: lib/Socialtext/WeblogPlugin.pm:485
+#: lib/Socialtext/WeblogPlugin.pm:478
 msgid "error.page-title-too-long=max-length"
 msgstr "Zzzz zzzzz zz zzz zzzz; zzzzzzz zzzzzz zz %1"
 
@@ -5455,6 +5656,8 @@ msgstr "Zzzzzzzzz zzzz zz zz zzzzz 6 zzzzzzzzzz zzzz."
 msgid "error.pdf-conversion-failed"
 msgstr "Zzzzz:<pre>Zzzzzz zz zzzzzzz zz ZZZ</pre>"
 
+#. ($post_url, $response->status_line)
+#: lib/Socialtext/Appliance/PhoneHome.pm:104
 msgid "error.phone-home=url,response"
 msgstr "Zzzzzz zz zzzz zzzzzzzzz zzzz zzzzzz zzzz zz '%1': %2"
 
@@ -5462,6 +5665,7 @@ msgstr "Zzzzzz zz zzzz zzzzzzzzz zzzz zzzzzz zzzz zz '%1': %2"
 msgid "error.plugin-required"
 msgstr "Zzz zzzz zzzzzzz z zzzzzz."
 
+#: lib/Socialtext/Appliance/Model/Setup.pm:172
 msgid "error.private-and-public-key-required-for-captcha"
 msgstr "Zzzz zzz zzzz zzzzzzz zzz zzzzzz zzz zz zzzzzz zzzzzzz"
 
@@ -5628,9 +5832,12 @@ msgstr "Zzz zzzzzz zzzzzzz z zzzzzzzz zz zzzzzz."
 msgid "error.save-failed"
 msgstr "Zzzzzz zzzzzz zzz zz zzzzzz zzzzz; zzzzzz zzz zzzzz zzzzz."
 
+#: lib/Socialtext/Appliance/Model/Setup.pm:356
 msgid "error.saving-system-time-to-hardware-clock"
 msgstr "Zzzzz zzzzzz zzzzzz zzzz zz zzzzzzzz zzzzz"
 
+#. ($new_ts)
+#: lib/Socialtext/Appliance/Model/Setup.pm:309
 msgid "error.saving-timeserver-to-appliance-configuration=new-ts"
 msgstr "Zzzzzz zz zzzz zzzzzzzzzz %1 zz zzzzzzzzz zzzzzzzzzzzzz"
 
@@ -5673,18 +5880,28 @@ msgstr "Zzzzz zzzzzzz Zzzzzz, zzzzzz zzz zzzzz"
 msgid "error.server-error"
 msgstr "Zzzzzzzzz zzzzzz zzz zz zzzzzz zzzzz; zzzzzz zzz zzzzz zzzzz."
 
+#. ($err)
+#: lib/Socialtext/Appliance/Model/Setup.pm:224
 msgid "error.set-authentication-token-limits=message"
 msgstr "Zzzzz zzzzzzz zzzzzzzzzzzzzz zzzzz zzzzzz %1"
 
+#. ($err)
+#: lib/Socialtext/Appliance/Model/Setup.pm:182
 msgid "error.set-captcha=message"
 msgstr "Zzzzz zzzzzzz zzzzzzz zzzzzzzz: %1"
 
+#. ($err)
+#: lib/Socialtext/Appliance/Model/Setup.pm:265
 msgid "error.set-desktop-update=message"
 msgstr "Zzzzz zzzzzzz zzzzzzz zzzzzz: %1"
 
+#. ($err)
+#: lib/Socialtext/Appliance/Model/Setup.pm:122
 msgid "error.set-login-message=message"
 msgstr "Zzzzz zzzzzzz zzzzz zzzzzzz: %1"
 
+#. ($err)
+#: lib/Socialtext/Appliance/Model/Setup.pm:388
 msgid "error.set-proxy-server=message"
 msgstr "Zzzzz zzzzzzz zzzzz zzzzzz: %1"
 
@@ -5693,20 +5910,26 @@ msgstr "Zzzzz zzzzzzz zzzzz zzzzzz: %1"
 msgid "error.set-self-register=message"
 msgstr "Zzzzz zzzzzzz zzzz zzzzzzzz: %1"
 
+#. ($err)
+#: lib/Socialtext/Appliance/Model/Setup.pm:142
 msgid "error.set-signals-only=message"
 msgstr "Zzzzz zzzzzzz zzzzzzz zzzz: %1"
 
+#. ($err)
+#: lib/Socialtext/Appliance/Model/Setup.pm:160
 msgid "error.set-signals-size-limit=message"
 msgstr "Zzzzz zzzzzzz zzzzzzz zzzz zzzzz: %1"
 
+#. ($err)
+#: lib/Socialtext/Appliance/Model/Setup.pm:251
 msgid "error.set-support-href=message"
 msgstr "Zzzzz zzzzzzz zzzzzzz zzzz: %1"
 
-#: lib/Socialtext/Account.pm:1114
+#: lib/Socialtext/Account.pm:1126
 msgid "error.set-system-account"
 msgstr "Zzz zzzzzz zzzzzz zz_zzzzzz_zzzzzzz zzz zz zzzzzzz zzzzz zz zzz zzzz zzzzzzz."
 
-#: lib/Socialtext/Account.pm:1110
+#: lib/Socialtext/Account.pm:1122
 msgid "error.set-system-account-name"
 msgstr "Zzz zzzzzz zzzzzz zzz zzzz zz z zzzzzz-zzzzzzz zzzzzzz."
 
@@ -5752,6 +5975,7 @@ msgstr "Zzzz zzzzzz zzzzzzzz %1 zzzzzzzzzz"
 msgid "error.signal-too-long=max-length"
 msgstr "Zzzzzz zzzzzz zzzzz zz %1, zzzzzz zzzz zzzz Zzzzzz"
 
+#: lib/Socialtext/Appliance/Model/Setup.pm:151
 msgid "error.signals-maximum-size-not-positive-integer"
 msgstr "Zzzzzzz zzzzzzz zzzz zzzz zz zz zzzzzzzz zzzzzzz"
 
@@ -5770,9 +5994,13 @@ msgstr "Zzzzz zzzzzz Zzzzzzzzzz Zzzzzzzzz Zzzzzz"
 msgid "error.store-revision"
 msgstr "Zzzzzz zzzzz zzzz zzzzzzzz"
 
+#. ($ts)
+#: lib/Socialtext/Appliance/Model/Setup.pm:348
 msgid "error.synchronizing-with-timeserver=ts"
 msgstr "Zzzzz zzzzzzzzzzzzz zzzz zzzzzzzzzz %1"
 
+#. ($new_ts)
+#: lib/Socialtext/Appliance/Model/Setup.pm:300
 msgid "error.testing-timeserver=new-ts"
 msgstr "Zzzzz zzzzzzz zzzzzzzzzz %1"
 
@@ -5849,6 +6077,7 @@ msgstr "Zzzzzzzz zzzzzzz zzzzzzzzz zzzzzz zz zzzzzzz zzz Zzzzzzzzzz."
 msgid "error.update-remote-user"
 msgstr "Zzzzzzzz zzzzzzz Zzzzz zzzzzz zz zzzzzzz zzz Zzzzzzzzzz."
 
+#: lib/Socialtext/Appliance/Model/SupportTarball.pm:54
 msgid "error.upload-support-tarball-already-started"
 msgstr "Zzzzzzz zzzzzzz!"
 
@@ -6228,7 +6457,7 @@ msgid "example.logo-url"
 msgstr "Zzzzzzz: zzzz://zzz.zzzzzzzzzz.zzz/zzzzzz/zzzzzzzzzz-zzzz-30.zzz"
 
 #. ($arg)
-#: lib/Socialtext/l10n.pm:22
+#: lib/Socialtext/l10n.pm:25 lib/Socialtext/l10n.pm:32
 msgid "example.string"
 msgstr "zzzzzz %1"
 
@@ -7032,7 +7261,7 @@ msgid "info.unplug-breadcrumbs"
 msgstr "Zzzzz zzzz zzzzzz zz zzzz zzzzzzzz zzzzzz zzzzz zz zzzz zzzzzzzz zzz zzzzzzz zzz."
 
 #. ($self->hub->tiddly->default_count)
-#: lib/Socialtext/HomepagePlugin.pm:78 lib/Socialtext/RecentChangesPlugin.pm:96
+#: lib/Socialtext/HomepagePlugin.pm:79 lib/Socialtext/RecentChangesPlugin.pm:96
 msgid "info.unplug-recent=count"
 msgstr "Zzzzz zzzz zzzzzz zz zzzz zzz %1 zzzz zzzzzz zzzzz zz zzzz zzzzzzzz zzz zzzzzzz zzz."
 
@@ -7668,19 +7897,19 @@ msgstr "Zzz Zzzz"
 msgid "lang.changed=user,locale"
 msgstr "Zzzzzz zzz %1 zz zzz %2"
 
-#: lib/Socialtext/Locales.pm:55
+#: lib/Socialtext/Locales.pm:51
 msgid "lang.en"
 msgstr "Zzzzzzz"
 
-#: lib/Socialtext/Locales.pm:56
+#: lib/Socialtext/Locales.pm:54
 msgid "lang.fr-ca"
 msgstr "Zzzzzz - Zzzzzzzz"
 
-#: lib/Socialtext/Locales.pm:57
+#: lib/Socialtext/Locales.pm:52
 msgid "lang.zh-cn"
 msgstr "Zzzzzzz - Zzzzzzzzzz"
 
-#: lib/Socialtext/Locales.pm:58
+#: lib/Socialtext/Locales.pm:53
 msgid "lang.zh-tw"
 msgstr "Zzzzzzz - Zzzzzzzzzzz"
 
@@ -8205,7 +8434,7 @@ msgstr "Zzzz. Zzz"
 msgid "nav.recent-activities"
 msgstr "Zzzzzz Zzzzzzzzzz"
 
-#: share/skin/s3/template/lite/changes/changes.html:5 share/skin/s3/template/view/weblog:20 lib/Socialtext/SyndicatePlugin.pm:379 lib/Socialtext/WeblogPlugin.pm:231 lib/Socialtext/WeblogPlugin.pm:286 lib/Socialtext/WeblogPlugin.pm:339 lib/Socialtext/WeblogPlugin.pm:342
+#: share/skin/s3/template/lite/changes/changes.html:5 share/skin/s3/template/view/weblog:20 lib/Socialtext/SyndicatePlugin.pm:379 lib/Socialtext/WeblogPlugin.pm:224 lib/Socialtext/WeblogPlugin.pm:279 lib/Socialtext/WeblogPlugin.pm:332 lib/Socialtext/WeblogPlugin.pm:335
 msgid "nav.recent-changes"
 msgstr "Zzzzzz Zzzzzzz"
 
@@ -8271,8 +8500,8 @@ msgstr "Zzzzzzzzzz Zzzzzzzzz"
 msgid "nav.summary"
 msgstr "Zzzz zzzzzzz"
 
-#. ($category)
 #. ($tag)
+#. ($category)
 #: lib/Socialtext/CategoryPlugin.pm:167 lib/Socialtext/Lite.pm:366
 msgid "nav.tag=tag"
 msgstr "Zzz: %1"
@@ -8313,8 +8542,8 @@ msgstr "Zzzz:"
 msgid "nav.watchlist"
 msgstr "Zzzzzzzzz"
 
-#. ('<b><a href="/st/profile">' . $self->user->guess_real_name . '</a></b>',        '<a href="/st/edit_profile">' . loc('(edit)
-#: lib/Socialtext/Pluggable/Plugin/People.pm:179
+#. ('<b><a href="/st/profile">' . $self->user->guess_real_name . '</a></b>',        '<a href="/st/edit_profile">' . $edit_link . '</a>')
+#: lib/Socialtext/Pluggable/Plugin/People.pm:181
 msgid "nav.welcome=user,edit-link"
 msgstr "Zzzzzzz %1 %2"
 
@@ -8770,7 +8999,7 @@ msgstr "Zzz zzzz zzz zz zzzzzzz"
 msgid "people.add-tag-to-user=name:"
 msgstr "Zzz zzz \"%1\" zz zzzz:"
 
-#: lib/Socialtext/Pluggable/Plugin/People.pm:270
+#: lib/Socialtext/Pluggable/Plugin/People.pm:271
 msgid "people.all"
 msgstr "Zzz Zzzzzz"
 
@@ -8839,7 +9068,7 @@ msgid "people.stop-following"
 msgstr "Zzzz zzzzzzzzz"
 
 #. ($tag)
-#: lib/Socialtext/Pluggable/Plugin/People.pm:270
+#: lib/Socialtext/Pluggable/Plugin/People.pm:271
 msgid "people.tagged=tag"
 msgstr "Zzz Zzzzzz Zzzzzz '%1'"
 
@@ -8911,7 +9140,7 @@ msgstr "Zzz Zzzz"
 msgid "pref.cleared=plugins"
 msgstr "Zzzzzzzzzzz zzz zzz %1 zzzzzz(z) zzzz zzzz zzzzzzz."
 
-#. (loc($object->class_title)
+#. ($object->class_title)
 #: lib/Socialtext/UserPreferencesPlugin.pm:64
 msgid "pref.for-class=title"
 msgstr "Zzzzzzzzzzz: %1"
@@ -9006,7 +9235,7 @@ msgstr "Zzzz:"
 msgid "profile.im"
 msgstr "ZZ"
 
-#: lib/Socialtext/Account.pm:542
+#: lib/Socialtext/Account.pm:554
 msgid "profile.importing"
 msgstr "Zzzzzzzzz zzzzzz zzzzzzzz ..."
 
@@ -9241,18 +9470,27 @@ msgstr "Zzzzzzz Zzzzzzzz Zzzzzz"
 msgid "report.signals-activity=user"
 msgstr "Zzzzzzz Zzzzzzzz zzz zzzz %1"
 
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:92
 msgid "report.total"
 msgstr "Zzzzz"
 
+#. ($data->{total_members})
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:87
 msgid "report.total-members=count"
 msgstr "Zzzzz zzzzzzz (zzzzzzz): %1"
 
+#. ($data->{unique_contributors})
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:83
 msgid "report.total-unique-contributors=count"
 msgstr "Zzzzz zzzzzz zzzzzzzzzzzz: %1"
 
+#. ($data->{unique_visitors})
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:85
 msgid "report.total-unique-visitors=count"
 msgstr "Zzzzz zzzzzz zzzzzzzz: %1"
 
+#. (ucfirst($wksp->name)
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:103
 msgid "report.total=wiki"
 msgstr "%1 Zzzzzzzzz Zzzzz"
 
@@ -9274,18 +9512,25 @@ msgstr "%1 Zzzzzzz Zzzzz Zzzzzz"
 msgid "report.usage=wiki"
 msgstr "%1 Zzzzzzzzz Zzzzz Zzzzzz"
 
+#. ($wksp->title, $self->start_time,)
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:58
 msgid "report.usage=wiki,start"
 msgstr "%1 Zzzzzzzzz Zzzzz - %2 - zzzz zzzz"
 
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:92
 msgid "report.user"
 msgstr "Zzzz"
 
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:92
 msgid "report.views"
 msgstr "Zzzzz"
 
+#. ($self->start_time)
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:80
 msgid "report.week-ending=start-time"
 msgstr "Zzzzzz zzzzzzzzz: zzzz zzzzzz %1"
 
+#: lib/Socialtext/Appliance/WorkspaceUsageReport.pm:69
 msgid "report.wiki-usage-blog"
 msgstr "Zzzzzzzzz Zzzzz Zzzz"
 
@@ -9294,9 +9539,9 @@ msgstr "Zzzzzzzzz Zzzzz Zzzz"
 msgid "report.workspace.activity=user"
 msgstr "Zzzzzzzzz Zzzzzzzz zzz zzzz %1"
 
-#. ($user->best_full_name)
 #. ($self->_group->display_name)
 #. ($self->_workspace->title)
+#. ($user->best_full_name)
 #: lib/Socialtext/Rest/Events/Activities.pm:12 lib/Socialtext/Rest/Events/Groups.pm:13 lib/Socialtext/Rest/Events/Workspaces.pm:14
 msgid "rest.activity=user"
 msgstr "%1'z Zzzzzzzz"
@@ -9979,7 +10224,7 @@ msgid "search.pages=query"
 msgstr "Zzzzz zzzzzzzz '%1'"
 
 #. ($unescaped_search_term)
-#: lib/Socialtext/Pluggable/Plugin/People.pm:316
+#: lib/Socialtext/Pluggable/Plugin/People.pm:317
 msgid "search.people=query"
 msgstr "Zzzzzz zzzzzzzz '%1'"
 
@@ -10516,22 +10761,22 @@ msgid "tag.template"
 msgstr "zzzzzzzz"
 
 #. ($sth->rows)
-#: lib/Socialtext/WikiFixture/SocialBase.pm:2910
+#: lib/Socialtext/WikiFixture/SocialBase.pm:2930
 msgid "test.deleted-containers=count"
 msgstr "Zzzzzzz %*(%1,zzzzzzzzz)"
 
 #. ($sth->rows)
-#: lib/Socialtext/WikiFixture/SocialBase.pm:2894
+#: lib/Socialtext/WikiFixture/SocialBase.pm:2914
 msgid "test.deleted-galleries=count"
 msgstr "Zzzzzzz %*(%1,zzzzzzz,zzzzzzzzz)"
 
 #. ($sth->rows)
-#: lib/Socialtext/WikiFixture/SocialBase.pm:2921
+#: lib/Socialtext/WikiFixture/SocialBase.pm:2941
 msgid "test.deleted-uploaded-widgets=count"
 msgstr "Zzzzzzz %*(%1,zzzzzzzz zzzzzz)"
 
 #. ($sth->rows)
-#: lib/Socialtext/WikiFixture/SocialBase.pm:2927
+#: lib/Socialtext/WikiFixture/SocialBase.pm:2947
 msgid "test.deleted-widgets=count"
 msgstr "Zzzzzzz %*(%1,zzzzzz)"
 
@@ -10829,7 +11074,7 @@ msgstr "%1 zzz zzzz zzzzz zzz '%2' zzzzzzzzzzz"
 msgid "user.imported=file"
 msgstr "Zzzzzz zzzzz zzzz %1"
 
-#: lib/Socialtext/Account.pm:481
+#: lib/Socialtext/Account.pm:485
 msgid "user.importing"
 msgstr "Zzzzzzzzz zzzzz..."
 
@@ -11521,15 +11766,19 @@ msgstr "Zzzzzz Zzzzzz ZZZ Zzzz:"
 msgid "widgets.use-editor"
 msgstr "Zzz zzz Zzzzzz Zzzzzz"
 
+#: lib/Socialtext/Workspace/Permissions.pm:243
 msgid "wiki.acl-custom"
 msgstr "Zzzzzz"
 
+#: lib/Socialtext/Workspace/Permissions.pm:241
 msgid "wiki.acl-private"
 msgstr "Zzzzzzz"
 
+#: lib/Socialtext/Workspace/Permissions.pm:249
 msgid "wiki.acl-public"
 msgstr "Zzzzzz"
 
+#: lib/Socialtext/Workspace/Permissions.pm:242
 msgid "wiki.acl-self-join"
 msgstr "Zzzz-Zzzz"
 
@@ -11596,7 +11845,7 @@ msgstr "Zzz zzzz zzzz zzzzzzz \"%1\", z zzzzz zzz Zzzzzzzzzz Zzzzzzzzz. Zzz zzz 
 msgid "wiki.custom-permission"
 msgstr "Zzzzzz"
 
-#: lib/Socialtext/HomepagePlugin.pm:68
+#: lib/Socialtext/HomepagePlugin.pm:69
 msgid "wiki.dashboard"
 msgstr "Zzzzzzzzz"
 
@@ -11743,7 +11992,7 @@ msgstr "Zzzzz zzz zz zzzzz zzzzzzzz zzzzzzzzzz zzzz zzzz zzzzzzzzz."
 msgid "wiki.not-member=group"
 msgstr "%1 Zzzzz zz zzz z zzzzzz zz zzzz Zzzzzzzzz"
 
-#: lib/Socialtext/HomepagePlugin.pm:86
+#: lib/Socialtext/HomepagePlugin.pm:87
 msgid "wiki.notes-title"
 msgstr "Zzzzzzzzzzzzz zzz Zzzzz"
 
@@ -11844,7 +12093,7 @@ msgstr "Zzz Zzzz"
 msgid "wiki.visit-later=wiki"
 msgstr "Zz zzz zzz zzzzzzzz zz zzzz zz zzzz zzzzzzzzz, zzz zzzzz \"%1\" zzzzz."
 
-#: lib/Socialtext/Workspace.pm:316 lib/Socialtext/l10n.pm:18
+#: lib/Socialtext/Workspace.pm:316 lib/Socialtext/l10n.pm:18 lib/Socialtext/l10n.pm:20
 msgid "wiki.welcome"
 msgstr "Zzzzzzz"
 

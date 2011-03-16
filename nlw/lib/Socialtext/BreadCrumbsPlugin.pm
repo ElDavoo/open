@@ -14,8 +14,8 @@ use Socialtext::Pages;
 use Socialtext::Timer qw/time_scope/;
 use Try::Tiny;
 
-sub class_id { 'breadcrumbs' }
-const class_title => 'Recently Viewed';
+const class_id => 'breadcrumbs';
+const class_title => _('class.breadcrumbs');
 const cgi_class   => 'Socialtext::BreadCrumbs::CGI';
 
 my $HOW_MANY = 25;

@@ -17,8 +17,8 @@ use Socialtext::SQL qw/sql_txn/;
 use Memoize;
 use Try::Tiny;
 
-sub class_id { 'attachments_ui' }
-const class_title => 'Attachments';
+const class_id => 'attachments_ui';
+const class_title => _('class.attachments_ui');
 const cgi_class   => 'Socialtext::AttachmentsUI::CGI';
 
 field 'sortdir';

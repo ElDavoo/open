@@ -13,8 +13,8 @@ use Socialtext::String ();
 
 use Socialtext::JobCreator;
 
-sub class_id { 'user_preferences' }
-const class_title => 'User Preferences';
+const class_id => 'user_preferences';
+const class_title => _('class.user_preferences');
 const cgi_class => 'Socialtext::UserPreferences::CGI';
 field 'user_id';
 field preference_list => [];
@@ -61,7 +61,7 @@ sub preferences_settings {
         settings_table_id => 'settings-table',
         settings_section  => $settings_section,
         hub               => $self->hub,
-        display_title     => loc('pref.for-class=title',loc($object->class_title)),
+        display_title     => loc('pref.for-class=title', $object->class_title),
         pref_list         => $self->_get_pref_list,
     );
 }

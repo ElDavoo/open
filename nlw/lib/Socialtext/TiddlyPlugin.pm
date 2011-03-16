@@ -17,8 +17,8 @@ use Socialtext::AppConfig;
 use Socialtext::Search 'search_on_behalf';
 use Socialtext::String;
 
-sub class_id {'tiddly'}
-const class_title   => 'TiddlyText';
+const class_id => 'tiddly';
+const class_title   => _('class.tiddly');
 const cgi_class     => 'Socialtext::Tiddly::CGI';
 const default_tag   => 'recent changes';
 const default_count => 50;

@@ -21,8 +21,8 @@ use Socialtext::Events;
 use File::Path qw/mkpath/;
 use List::MoreUtils qw/part/;
 
-sub class_id { 'display' }
-const class_title => 'Screen Layout';
+const class_id => 'display';
+const class_title => _('class.display');
 const maximum_header_attachments => 5;
 const cgi_class => 'Socialtext::Display::CGI';
 

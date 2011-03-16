@@ -12,8 +12,8 @@ use Socialtext::Base;
 use Socialtext::AppConfig;
 use Socialtext::Statistics 'stat_call';
 
-sub class_id { 'formatter' }
-const class_title  => 'NLW Formatter';
+const class_id => 'formatter';
+const class_title  => _('class.formatter');
 const class_prefix => 'Socialtext::Formatter::';
 
 const all_phrases => [

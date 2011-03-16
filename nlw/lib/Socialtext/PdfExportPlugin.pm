@@ -30,8 +30,8 @@ C<htmldoc>.
 
 =cut
 
-sub class_id {'pdf_export'};
-const class_title => 'PDF Export';
+const class_id => 'pdf_export';
+const class_title => _('class.pdf_export');
 const cgi_class   => 'Socialtext::PdfExportPlugin::CGI';
 
 # The full command for converting html files to PDF.  Set TMPDIR since htmldoc

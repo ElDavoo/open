@@ -27,8 +27,8 @@ L<HTML::FormatRTFWithImages>, described below.
 
 =cut
 
-sub class_id {'rtf_export'};
-const class_title => 'Word Export';
+const class_id => 'rtf_export';
+const class_title => _('class.rtf_export');
 const cgi_class   => 'Socialtext::RtfExportPlugin::CGI';
 
 sub register {

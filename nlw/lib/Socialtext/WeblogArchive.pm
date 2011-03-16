@@ -10,8 +10,8 @@ use Socialtext::SQL qw/sql_execute/;
 
 use Class::Field qw( const );
 
-sub class_id { 'weblog_archive' }
-const class_title => 'Blog Archives';
+const class_id => 'weblog_archive';
+const class_title => _('class.weblog_archive');
 
 sub register {
     my $self = shift;

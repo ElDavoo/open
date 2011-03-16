@@ -17,8 +17,8 @@ use Socialtext::Encode ();
 use Socialtext::Timer qw/time_scope/;
 use utf8;
 
-sub class_id { 'weblog' }
-const class_title => 'Blogs';
+const class_id => 'weblog';
+const class_title => _('class.weblog');
 const cgi_class => 'Socialtext::Weblog::CGI';
 const default_weblog_depth => 10;
 field current_weblog => '';

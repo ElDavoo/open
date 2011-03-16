@@ -16,8 +16,8 @@ use Socialtext::BrowserDetect;
 use Socialtext::JSON;
 use Encode;
 
-sub class_id { 'page_activity' }
-const class_title => 'PageActivity';
+const class_id => 'page_activity';
+const class_title => _('class.page_activity');
 const cgi_class   => 'Socialtext::PageActivityPlugin::CGI';
 
 

@@ -40,8 +40,8 @@ on those parameters.
 
 =cut
 
-sub class_id { 'syndicate' }
-const class_title => 'Syndicate';
+const class_id => 'syndicate';
+const class_title => _('class.syndicate');
 const cgi_class => 'Socialtext::Syndicate::CGI';
 const default_tag => 'Recent Changes';
 const default_type => 'RSS20';

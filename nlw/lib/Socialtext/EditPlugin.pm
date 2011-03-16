@@ -15,8 +15,8 @@ use Socialtext::String ();
 use Socialtext::JSON qw/decode_json encode_json/;
 use Try::Tiny;
 
-sub   class_id { 'edit' }
-const class_title => 'Editing Page';
+const class_id => 'edit';
+const class_title => _('class.edit');
 const cgi_class => 'Socialtext::Edit::CGI';
 
 sub register {

@@ -12,8 +12,8 @@ use Socialtext::Statistics 'stat_call';
 use Socialtext::Timer qw/time_scope/;
 use Readonly;
 
-sub class_id { 'viewer' }
-const class_title  => 'NLW Viewer';
+const class_id => 'viewer';
+const class_title  => _('class.viewer');
 use constant NO_PARAGRAPH => 1;
 use constant WITH_PARAGRAPH => 0;
 

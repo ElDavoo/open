@@ -23,9 +23,9 @@ use Encode;
 use YAML;
 use Socialtext::Resting;
 
-sub class_id { 'wikiwyg' }
+const class_id => 'wikiwyg';
 const cgi_class => 'Socialtext::Wikiwyg::CGI';
-const class_title => 'Page Editing';
+const class_title => _('class.wikiwyg');
 field widgets_definition => {} => -init => q{
         my $yaml_path = Socialtext::AppConfig->code_base . "/skin/wikiwyg/javascript/Widgets.yaml";
         YAML::LoadFile($yaml_path);

@@ -11,7 +11,7 @@ use Socialtext::Paths ();
 use Encode ();
 
 const class_id    => 'widget';
-const class_title => 'WidgetPlugin';
+const class_title => _('class.widget');
 const cgi_class   => 'Socialtext::WidgetPlugin::CGI';
 
 sub register {
