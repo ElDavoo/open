@@ -17,10 +17,6 @@ my $inplace;
 GetOptions( 'inplace|i!' => \$inplace ) and @ARGV
     or die "Usage: $0 [--inplace] input.po\n";
 
-my $msgid;
-my @params;
-my $section;
-my $punct = '';
 my %SectionMap = (
     "add-a-block.html" => "code",
     "table-create.html" => "table",
@@ -51,6 +47,10 @@ sub words {
 
 my ($in, $out);
 for my $po (@ARGV) {
+    my $msgid;
+    my @params;
+    my $section;
+    my $punct = '';
     my $default_section = basename($po);
     $default_section =~ s/\..*//;
     $default_section =~ s/socialcalc/sc/;
