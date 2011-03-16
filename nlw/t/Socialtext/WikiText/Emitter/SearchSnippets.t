@@ -30,3 +30,12 @@ but this should be alone
 
 --- snippet
 this is a multiline blob of text that should be in a single paragraph but this should be alone
+
+=== Lists
+--- wikitext
+* Coffee Shops
+** Starbucks
+** Blends
+
+--- snippet
+Coffee Shops Starbucks Blends
