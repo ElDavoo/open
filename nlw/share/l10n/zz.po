@@ -76,7 +76,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  groups.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 07:07+0800\n"
+"PO-Revision-Date: 2011-03-16 23:51+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -4434,6 +4434,10 @@ msgstr "Zzz %1 Zzzzz zzz zzzzzzz zzzz zzzzz zz zzz zzzzzz."
 msgid "error.already-confirmed=email"
 msgstr "Zzz zzzzz zzzzzzz zzz %1 zzz zzzzzzz zzzz zzzzzzzzz."
 
+#: share/plugin/groups/share/widgets/membership/widget.js:615
+msgid "error.already-exists-in-group=member"
+msgstr "%1 zzzzzzz zzzzzz zz zzzz Zzzzz"
+
 #. ($user->email_address, $hostname, $error)
 #: lib/Socialtext/BugsPlugin.pm:120
 msgid "error.application=email,host,error"
@@ -4457,6 +4461,10 @@ msgstr "Zzzzzzzzzzz zzzzz zz %1 zz %2: %3"
 #: share/plugin/control/template/control/workspace_invite.html:324
 msgid "error.at-least-one-admin-required"
 msgstr "Zzz zzzz zzzzzz zz zzzzz zzz zzzzzzzzzzzzz."
+
+#: share/plugin/groups/share/widgets/membership/widget.js:490 share/plugin/groups/share/widgets/membership/widget.js:549
+msgid "error.at-least-one-group-admin-needed"
+msgstr "Zzzzzz zzzz zz zzzzz zzz zzzzz"
 
 #: share/plugin/control/template/control/workspace_invite.html:342
 msgid "error.at-least-one-wiki-required"
@@ -4651,6 +4659,10 @@ msgstr "Zzzzzz zz zzzzzz zzz."
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:78
 msgid "error.delete=widget,message"
 msgstr "Zzzzz zzzzzzzz zzz \"%1\" zzzzzz: %2"
+
+#: share/plugin/groups/share/widgets/workspaces/widget.js:66
+msgid "error.display-list-of-wikis"
+msgstr "Zzzzzz zz zzzzzzz zzzz zz zzzzzzzzzz."
 
 #. (Socialtext::AppConfig->support_address)
 #: lib/Socialtext/Handler/Base.pm:83
@@ -5150,6 +5162,10 @@ msgstr "Zzzzzz zzzzzz zzz zzzz zzz zzzzz zzzz zz zzzz zzzz z zzzz."
 #: lib/Socialtext/FetchRSSPlugin.pm:194
 msgid "error.load-feed=url"
 msgstr "Zzzzz zzzzzzz zzzz: %1"
+
+#: share/plugin/groups/share/widgets/information/jemplate/widget.tt2:3
+msgid "error.load-profile-data"
+msgstr "Zzzzzz zz zzzz zzzzzzz zzzz."
 
 #: share/plugin/people/share/widgets/profile_activities/widget.html:2
 msgid "error.load-widget-content"
@@ -6916,6 +6932,10 @@ msgstr "Zzzzz zzzzz zzz zzzzzzzzzzzz zzzzzzzz '%1'"
 msgid "group.name"
 msgstr "Zzzzz zzzz"
 
+#: share/plugin/groups/share/widgets/membership/jemplate/workspaces.tt2:16
+msgid "groups.add-wikis"
+msgstr "Zzz Zzzzzzzzzz"
+
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:54
 msgid "groups.admin-can-change-setting-after-creation"
 msgstr "Zzz zzzzz zzzzzzzzzzzzzz zzz zzzzzz zzzz zzzzzzz zzzzz zzz zzzzz zz zzzzzzz."
@@ -6924,9 +6944,29 @@ msgstr "Zzz zzzzz zzzzzzzzzzzzzz zzz zzzzzz zzzz zzzzzzz zzzzz zzz zzzzz zz zzzz
 msgid "groups.all-available"
 msgstr "Zzz Zzzzzzzzz Zzzzzz"
 
+#: share/plugin/groups/share/widgets/membership/widget.js:249
+msgid "groups.all-members-in-group-account-can-see-wiki-content"
+msgstr "Zzz zz zzz zzzzzzz zz zzz Zzzzz zzzzzzz zzz zzz zzz zzzzzzzzz zzzzzzz."
+
+#: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:24
+msgid "groups.begin-typing-name-here"
+msgstr "zzzzz zzzzzz zzzz zzzz..."
+
+#: share/plugin/groups/share/widgets/membership/jemplate/workspaces.tt2:21
+msgid "groups.begin-typing-wiki-here"
+msgstr "zzzzz zzzzzz zzzzzzzzz zzzz..."
+
+#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:40
+msgid "groups.change"
+msgstr "Zzzzzz"
+
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:23
 msgid "groups.change-type"
 msgstr "Zzzzzz Zzzzz Zzzz"
+
+#: share/plugin/groups/share/widgets/membership/jemplate/list.tt2:53
+msgid "groups.changed"
+msgstr "zzzzzzz"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:33
 msgid "groups.choose-type-then-click-next"
@@ -6956,6 +6996,19 @@ msgstr "Zzzzzz Zzzzz..."
 msgid "groups.create-new-group"
 msgstr "Zzzzzz Zzz Zzzzz"
 
+#. (ws_title)
+#: share/plugin/groups/share/widgets/workspaces/widget.js:27
+msgid "groups.create-new-page-in=wiki"
+msgstr "Zzzzzz zzz zzzz zz %1"
+
+#: share/plugin/groups/share/widgets/membership/jemplate/workspaces.tt2:41
+msgid "groups.create-new-wiki"
+msgstr "Zzzzzz Zzz Zzzzzzzzz"
+
+#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:31 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:44
+msgid "groups.creating-self-join-wiki"
+msgstr "Zzz zzz zzzzzzzz z zzzz-zzzz zzzzzzzzz. Zzz-zzzzzzz zzzz zz zzzz zz zzzzzzzz zzz zzzzzzzzz zzzzzzz zzzzzz, zzzzzzzz zzzzzzz zzz zzzzzzz zzzzz zz zzzzzzzzz zzzzzzz, zzz zzz zzzz zzzz zz zzzz zzzzz. Zzz-zzzzzzz zzz zzz zzz zzzzzzzzz zzzzzzz."
+
 #: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:2
 msgid "groups.delete"
 msgstr "Zzzzzz Zzzzz"
@@ -6973,18 +7026,50 @@ msgstr "Zzzzzz Zzzz Zzzzz"
 msgid "groups.delete=name"
 msgstr "Zzzzzz %1"
 
+#: share/plugin/groups/share/widgets/edit_information/widget.js:163
+msgid "groups.description-1000-characters-max"
+msgstr "Zzzzzzzzzzz zz zzzzzzz zz 1000 zzzzzzzzzz"
+
+#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:9
+msgid "groups.description:"
+msgstr "Zzzzzzzzzzz:"
+
 #: share/plugin/groups/template/directory_hello:2 share/plugin/groups/template/nav_groups:15
 msgid "groups.directory"
 msgstr "Zzzzz Zzzzzzzzz"
+
+#: share/plugin/groups/share/widgets/information/jemplate/widget.tt2:12
+msgid "groups.edit"
+msgstr "(Zzzz)"
 
 #. (container.group.name)
 #: share/plugin/groups/template/edit_group_hello:4
 msgid "groups.edit=name"
 msgstr "Zzzz Zzzzz: %1"
 
+#: share/plugin/groups/share/widgets/membership/jemplate/list.tt2:11 share/plugin/groups/share/widgets/membership/jemplate/list.tt2:13
+msgid "groups.first"
+msgstr "zzzzz"
+
 #: share/plugin/groups/template/create_group_hello:2
 msgid "groups.group"
 msgstr "Zzzzz"
+
+#: share/plugin/groups/share/widgets/workspaces/widget.js:8
+msgid "groups.group-is-not-member-of-any-wikis"
+msgstr "Zzzz zzzzz zz zzz z zzzzzz zz zzz zzzzzzzzzz."
+
+#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:14
+msgid "groups.group-logo-image:"
+msgstr "Zzzzz Zzzz / Zzzzz:"
+
+#: share/plugin/groups/share/widgets/information/jemplate/widget.tt2:30
+msgid "groups.group-type"
+msgstr "Zzzzz Zzzz"
+
+#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:36
+msgid "groups.group-type:"
+msgstr "Zzzzz Zzzz:"
 
 #: share/plugin/groups/share/javascript/lightbox/leave-group.tt2:3
 msgid "groups.leave"
@@ -6995,16 +7080,61 @@ msgid "groups.member"
 msgstr "zzzzzz"
 
 #: share/plugin/groups/template/grouplist:105 share/plugin/groups/template/grouplist:38
-msgid "groups.members"
+msgid "groups.member-plural"
 msgstr "zzzzzzz"
+
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:6
+msgid "groups.members"
+msgstr "Zzzzzzz"
 
 #: share/plugin/groups/template/grouplist:53
 msgid "groups.name"
 msgstr "Zzzz"
 
+#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:3
+msgid "groups.name-of-group:"
+msgstr "Zzzz zz Zzzzz:"
+
+#: share/plugin/groups/share/widgets/edit_information/widget.js:159
+msgid "groups.name-required"
+msgstr "Zzzz zz zzzzzzzz"
+
+#: share/plugin/groups/share/widgets/workspaces/widget.js:29
+msgid "groups.new-page"
+msgstr "zzz zzzz"
+
+#: share/plugin/groups/share/widgets/membership/jemplate/list.tt2:17 share/plugin/groups/share/widgets/membership/jemplate/list.tt2:19
+msgid "groups.next"
+msgstr "zzzz"
+
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:59
 msgid "groups.next-step"
 msgstr "Zzzz"
+
+#: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:11
+msgid "groups.no-other-members-use-form-below-to-invite"
+msgstr "Zzzzzzzzz, zzz zzz zzz zzzz zzzzzz zz zzzz zzzzz.<br/>Zzz zzz zzzz zzzzz zz zzzzzz zzzz zzzzzzzzzz."
+
+#: share/plugin/groups/share/widgets/membership/jemplate/workspaces.tt2:7
+msgid "groups.no-wikis-use-form-below-to-select"
+msgstr "Zzzzzzzzz, zzzzz zzz zz zzzzzzzzzz zzzzzzzzzz zzzz zzzz zzzzz. Zzz zzz zzzz zzzzz zz zzzzzz zzzzzzzzzz."
+
+#. (button)
+#: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:4
+msgid "groups.note-click-at-bottom-of-screen-to-save-changes=button"
+msgstr "ZZZZ: Zzzzz <b>%1</b> zz zzz zzzzzz zz zzz zzzzzz zz zzzz zzzzzzz."
+
+#: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:39
+msgid "groups.note-message-sent-to-added-members-only"
+msgstr "ZZZZ: zzzzzzz zzzz zz zzzzz zzzzzzz zzzz"
+
+#: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:37
+msgid "groups.personal-message-optional:"
+msgstr "Zzzzzzzz zzzzzzz (zzzzzzzz):"
+
+#: share/plugin/groups/share/widgets/membership/jemplate/list.tt2:5 share/plugin/groups/share/widgets/membership/jemplate/list.tt2:7
+msgid "groups.previous"
+msgstr "zzzzzzzz"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:49
 msgid "groups.private"
@@ -7013,6 +7143,22 @@ msgstr "Zzzzzzz Zzzzz"
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:50
 msgid "groups.private-not-listed-in-directory"
 msgstr "Zzzz zzz zz zzzzzzzzz zz zzz Zzzzz Zzzzzzzzz zzz zzz zzzzzzz zzzz zz zzzzzzz zz zzz zzzzz zzzzzzzzzzzzzz."
+
+#: share/plugin/groups/share/widgets/membership/jemplate/list.tt2:60
+msgid "groups.remove"
+msgstr "zzzzzz"
+
+#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:31
+msgid "groups.reset-photo"
+msgstr "Zzzzz Zzzzz"
+
+#: share/plugin/groups/share/widgets/membership/widget.js:425
+msgid "groups.role-admin"
+msgstr "Zzzzz"
+
+#: share/plugin/groups/share/widgets/membership/widget.js:424
+msgid "groups.role-member"
+msgstr "Zzzzzz"
 
 #: share/plugin/groups/template/edit_group_footer:14 share/plugin/groups/template/group_footer:17
 msgid "groups.save"
@@ -7041,18 +7187,68 @@ msgstr "Zzz zz zzzz zz zzz Zzzzz Zzzzzzzzz zz zzzzzzzz zzz zzzzzz zzz zzzz."
 msgid "groups.showing=from,to,total"
 msgstr "Zzzzzzz Zzzzzz %1 - %2 zz %3 zzzzz."
 
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:7
+msgid "groups.status"
+msgstr "Zzzzzz"
+
 #. (group_name)
 #: share/plugin/groups/share/javascript/lightbox/delete-group.js:21
 msgid "groups.successfully-deleted=name"
 msgstr "Zzz zzzzz, %1, zzz zzzz zzzzzzzzzzzz zzzzzzz."
 
+#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:30 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:43
+msgid "groups.title-of-your-new-wiki-can-changed-later"
+msgstr "Zzzz zzzz zz zzz zzzzz zz zzzz zzz zzzzzzzzz. Zz zzz zz zzzzzzz zzzzz."
+
+#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:23 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:37
+msgid "groups.title:"
+msgstr "Zzzzz:"
+
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:24
 msgid "groups.toggling-self-join-and-private"
 msgstr "Zzzz zzzzzz z Zzzzzzz zzzzz z Zzzz-zzzz zzzzz, zzz zzzz zz zzz zzzzz'z Zzzzzzzz zzzz zz zzzz zz zzzz zzz zzzzz zzz zzzz zzzzzzzzzz zzzzzz zzzzzz zzzz zzz zzzzz. Zzzz zzzzzzzz z Zzzz-zzzz zzzzz zz z Zzzzzzz zzzzz, zz zzzz zz zzzzzz zzzzzz zz zzz Zzzzz Zzzzzzzzz zzz zzzz zzzzzz zzzzzz-zzzz zz zzz zzzzz zzzzzzzzzzzzzz."
 
+#: share/plugin/groups/share/widgets/membership/jemplate/list.tt2:60
+msgid "groups.undo"
+msgstr "zzzz"
+
+#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:50
+msgid "groups.url:"
+msgstr "ZZZ:"
+
+#: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:32
+msgid "groups.use-input-above-to-invite-group-members"
+msgstr "Zzz zzz zzzzz zzzzz zz zzzzzz zzzzzzzzzz zz zzzz zzzzz."
+
+#: share/plugin/groups/share/widgets/membership/jemplate/workspaces.tt2:29
+msgid "groups.use-input-above-to-select-group-wikis"
+msgstr "Zzz zzz zzzzz zzzzz zz zzzzzz zzzzzzzzzz zz zzzzzzzzz zzzz zzzz zzzzz."
+
+#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:44
+msgid "groups.wiki-prevents-updating-group-permissions"
+msgstr "Zzzz zzzzz zzz zz zzzzz zzz zzzzzzzzz zzzz zzzzzzzz zzz zzzz zzzzz zzzz zz zzzzzz zzz zzzzz zzzzzzzzzzz."
+
+#: share/plugin/groups/share/widgets/membership/widget.js:308
+msgid "groups.wiki-with-that-name-already-exists"
+msgstr "Z Zzzzzzzzz zzzz zzzz zzzz zzzzzzz zzzzzz"
+
 #: share/plugin/groups/template/grouplist:30 share/plugin/groups/template/grouplist:88
 msgid "groups.you-are-member"
 msgstr "Zzz zzz zzzzzzzzz z zzzzzz zz zzzz zzzzz."
+
+#: share/plugin/groups/share/widgets/all_groups/widget.js:70
+msgid "groups.you-are-now-member-of-group"
+msgstr "Zzz zzz zzz z zzzzzz zz zzz <strong>&nbsp;</strong> zzzzz."
+
+#. ('<span class="workspace-permission-set">&nbsp;</span>', '<span class="group-permission-set">&nbsp;</span>')
+#. ("<span class=\"workspace-permission-set\">&nbsp;</span>", "<span class=\"group-permission-set\">&nbsp;</span>")
+#: share/plugin/groups/share/widgets/membership/jemplate/workspaces.tt2:30
+msgid "groups.you-can-only-associate=wiki-acl,group-acl"
+msgstr "Zzz zzz zzzz zzzzzzzzz %1 zzzzzzzzzz zzzz z %2 zzzzz."
+
+#: share/plugin/groups/share/widgets/membership/jemplate/workspaces.tt2:32
+msgid "groups.you-must-be-wiki-admin-to-associate-it-with-group"
+msgstr "Zzz zzzz zz zz Zzzzz zz zzz zzzzzzzzz zz zzzzz zz zzzzzzzzz zz zzzz zzzz zzzzz."
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:32
 msgid "image.upload"
