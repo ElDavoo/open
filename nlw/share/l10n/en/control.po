@@ -688,10 +688,6 @@ msgstr "Name of group:"
 msgid "control.name:"
 msgstr "Name:"
 
-#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:46
-msgid "control.next"
-msgstr "Next"
-
 #: share/plugin/control/template/control/groups.html:92
 msgid "control.permission-set"
 msgstr "Permission Set"
@@ -1156,6 +1152,10 @@ msgstr "Create"
 #: share/plugin/control/template/control/group.html:129
 msgid "do.done"
 msgstr "Done"
+
+#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:46
+msgid "do.next"
+msgstr "Next"
 
 #: share/plugin/control/template/control/workspace_invite.html:120
 msgid "do.remove"

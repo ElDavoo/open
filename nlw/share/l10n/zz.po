@@ -2764,10 +2764,6 @@ msgstr "Zzzz:"
 msgid "control.new-wiki"
 msgstr "Zzz Zzzzzzzzz"
 
-#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:46
-msgid "control.next"
-msgstr "Zzzz"
-
 #: share/plugin/control/template/control/groups.html:92
 msgid "control.permission-set"
 msgstr "Zzzzzzzzzz Zzz"
@@ -3465,6 +3461,10 @@ msgstr "Zzzz Zz Zzzz"
 #: share/plugin/groups/share/javascript/lightbox/leave-group.tt2:11 share/plugin/groups/template/group_links:8
 msgid "do.leave"
 msgstr "Zzzzz"
+
+#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:46
+msgid "do.next"
+msgstr "Zzzz"
 
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.tt2:18 share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:13
 msgid "do.no"
@@ -6778,6 +6778,15 @@ msgstr "Zzzz50 Zzzzzzz Zzzzz"
 msgid "google.for=query"
 msgstr "Zzzzzz zzz \"%1\""
 
+msgid "group.acl-member-only"
+msgstr "Zzzzzz Zzzz"
+
+msgid "group.acl-private"
+msgstr "Zzzzzzz"
+
+msgid "group.acl-self-join"
+msgstr "Zzzz-Zzzz"
+
 #: share/skin/s3/template/element/listview_account_filter:5
 msgid "group.all"
 msgstr "Zzz Zzzzzz"
@@ -6947,6 +6956,9 @@ msgstr "Zzzz-Zzzz Zzzzz"
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:40
 msgid "groups.self-join-listed-in-directory"
 msgstr "Zzz zz zzzz zz zzz Zzzzz Zzzzzzzzz zz zzzzzzzz zzz zzzzzz zzz zzzz."
+
+msgid "groups.showing=from,to,total"
+msgstr "Zzzzzzz Zzzzzz %1 - %2 zz %3 zzzzz."
 
 #. (group_name)
 #: share/plugin/groups/share/javascript/lightbox/delete-group.js:21

@@ -134,3 +134,15 @@ msgstr "群组"
 
 msgid "sort.by:"
 msgstr "排序方式："
+
+msgid "group.acl-self-join"
+msgstr "自行加入"
+
+msgid "group.acl-private"
+msgstr "私密"
+
+msgid "group.acl-member-only"
+msgstr "仅限成员"
+
+msgid "groups.showing=from,to,total"
+msgstr "显示第 %1 - %2 个群组，共 %3 个"

@@ -1957,9 +1957,6 @@ msgstr "名稱："
 msgid "control.new-wiki"
 msgstr "新工作區"
 
-msgid "control.next"
-msgstr "下一步"
-
 msgid "control.permission-set"
 msgstr "權限設定"
 
@@ -2466,6 +2463,9 @@ msgstr "加入以編輯"
 
 msgid "do.leave"
 msgstr "離開"
+
+msgid "do.next"
+msgstr "下一步"
 
 msgid "do.no"
 msgstr "無"
@@ -4717,7 +4717,7 @@ msgid "feed.avatar=user"
 msgstr "%1 的頭像"
 
 msgid "feed.created=time"
-msgstr "原創於：%1"
+msgstr "建立於：%1"
 
 msgid "feed.number-of-posts?"
 msgstr "在訂閱輸出中顯示多少網誌？"
@@ -4815,6 +4815,15 @@ msgstr "50個免費帳戶"
 msgid "google.for=query"
 msgstr "搜尋『%1』"
 
+msgid "group.acl-member-only"
+msgstr "僅限成員"
+
+msgid "group.acl-private"
+msgstr "私密"
+
+msgid "group.acl-self-join"
+msgstr "自行加入"
+
 msgid "group.all"
 msgstr "所有群組"
 
@@ -4861,7 +4870,7 @@ msgid "groups.confirm-delete?"
 msgstr "您確認要刪掉這個群組麼？"
 
 msgid "groups.confirm-leave?"
-msgstr "這個操作無法複原。您確定要離開這個群組？"
+msgstr "這個操作無法復原。您確定要離開這個群組？"
 
 msgid "groups.create"
 msgstr "建立群組"
@@ -4934,6 +4943,9 @@ msgstr "自行加入群組"
 
 msgid "groups.self-join-listed-in-directory"
 msgstr "列入群組名單；任何人都可以加入。"
+
+msgid "groups.showing=from,to,total"
+msgstr "顯示第 %1 - %2 個群組，共 %3 個"
 
 msgid "groups.successfully-deleted=name"
 msgstr "群組 %1 已成功刪除。"

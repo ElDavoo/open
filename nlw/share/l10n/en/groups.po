@@ -180,3 +180,15 @@ msgstr "Groups"
 #: share/plugin/groups/template/grouplist:51
 msgid "sort.by:"
 msgstr "Sort by:"
+
+msgid "group.acl-self-join"
+msgstr "Self-Join"
+
+msgid "group.acl-private"
+msgstr "Private"
+
+msgid "group.acl-member-only"
+msgstr "Member Only"
+
+msgid "groups.showing=from,to,total"
+msgstr "Showing Groups %1 - %2 of %3 total."

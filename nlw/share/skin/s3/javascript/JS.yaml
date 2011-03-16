@@ -151,3 +151,11 @@
     compress: 1
     parts:
         - {dir: 'skin/s3/javascript/l10n', file: 'zh_TW.js'}
+'l10n-xx.js':
+    compress: 1
+    parts:
+        - {dir: 'skin/s3/javascript/l10n', file: 'xx.js'}
+'l10n-xq.js':
+    compress: 1
+    parts:
+        - {dir: 'skin/s3/javascript/l10n', file: 'xq.js'}

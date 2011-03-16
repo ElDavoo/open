@@ -51,8 +51,9 @@ for my $lang (sort { en($a) cmp en($b) } @ARGV) {
     gen_po($lang => \%Lexicon);
     gen_js($lang => \%Lexicon);
 
-    if ($lang eq 'zh_CN' and eval { require Encode::HanConvert }) {
+    if ($lang eq 'zh_CN') {
         # Generate zh_TW from zh_CN
+        require Encode::HanConvert;
         my %tw = map { ($_ => tw($Lexicon{$_})) } keys %Lexicon;
         gen_js('zh_TW' => \%tw);
         gen_derived_po(zh_CN => zh_TW => \&tw);
@@ -556,6 +557,7 @@ use constant CN2TW => {qw(
     禁用         停用
     存儲         存放
     日志         日誌
+    複原         復原
 )};
 
 use constant CN2TW_ExactMatch => {qw(

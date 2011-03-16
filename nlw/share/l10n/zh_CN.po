@@ -1957,9 +1957,6 @@ msgstr "名称："
 msgid "control.new-wiki"
 msgstr "新工作区"
 
-msgid "control.next"
-msgstr "下一步"
-
 msgid "control.permission-set"
 msgstr "权限设定"
 
@@ -2466,6 +2463,9 @@ msgstr "加入以编辑"
 
 msgid "do.leave"
 msgstr "离开"
+
+msgid "do.next"
+msgstr "下一步"
 
 msgid "do.no"
 msgstr "无"
@@ -4815,6 +4815,15 @@ msgstr "50个免费帐户"
 msgid "google.for=query"
 msgstr "搜索“%1”"
 
+msgid "group.acl-member-only"
+msgstr "仅限成员"
+
+msgid "group.acl-private"
+msgstr "私密"
+
+msgid "group.acl-self-join"
+msgstr "自行加入"
+
 msgid "group.all"
 msgstr "所有群组"
 
@@ -4934,6 +4943,9 @@ msgstr "自行加入群组"
 
 msgid "groups.self-join-listed-in-directory"
 msgstr "列入群组名单；任何人都可以加入。"
+
+msgid "groups.showing=from,to,total"
+msgstr "显示第 %1 - %2 个群组，共 %3 个"
 
 msgid "groups.successfully-deleted=name"
 msgstr "群组 %1 已成功删除。"

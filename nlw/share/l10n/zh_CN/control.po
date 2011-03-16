@@ -504,9 +504,6 @@ msgstr "群组名称："
 msgid "control.name:"
 msgstr "名称："
 
-msgid "control.next"
-msgstr "下一步"
-
 msgid "control.permission-set"
 msgstr "权限设定"
 
@@ -836,6 +833,9 @@ msgstr "创建"
 
 msgid "do.done"
 msgstr "完成"
+
+msgid "do.next"
+msgstr "下一步"
 
 msgid "do.remove"
 msgstr "移除"
