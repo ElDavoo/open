@@ -96,7 +96,8 @@ sub do_work {
                 funcname => $job_class,
                 priority => -64,
             ),
-            \@jobs
+            \@jobs,
+            ignore_errors => 1,
         );
     }
 
