@@ -1081,6 +1081,14 @@ proto.getSelectionEnd = function () {
     return this.area.selectionEnd;
 }
 
+proto.preserveSelection = function() {
+    this.saved_range = $(this.area).getSelection();
+};
+
+proto.restoreSelection =  function() {
+    $(this.area).setSelection(this.saved_range.start, this.saved_range.end);
+};
+
 
 /*==============================================================================
 Support for Internet Explorer in Wikiwyg.Wikitext
