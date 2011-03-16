@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 02:05+0800\n"
+"PO-Revision-Date: 2011-03-16 23:31+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -403,13 +403,8 @@ msgid "profile.contact"
 msgstr "Contact"
 
 #: share/plugin/people/share/widgets/profile/widget.html:64 share/plugin/people/share/widgets/profile_edit/widget.html:69 share/plugin/people/template/lite/profile.html:153
-#, fuzzy
 msgid "profile.custom"
-msgstr ""
-"#-#-#-#-#  people.po  #-#-#-#-#\n"
-"Custom\n"
-"#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
-"CUSTOM"
+msgstr "Custom"
 
 #: share/plugin/people/template/profile_hcard:107
 msgid "profile.facebook:"
@@ -484,26 +479,16 @@ msgid "profile.no-tags-for-you"
 msgstr "You have no tags. Use <b>Add Tag</b> to add one now."
 
 #: share/plugin/people/share/widgets/profile/widget.html:28 share/plugin/people/share/widgets/profile_edit/widget.html:49 share/plugin/people/template/lite/profile.html:95
-#, fuzzy
 msgid "profile.organization"
-msgstr ""
-"#-#-#-#-#  people.po  #-#-#-#-#\n"
-"Organization\n"
-"#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
-"ORGANIZATION"
+msgstr "Organization"
 
 #: share/plugin/people/template/profile_hcard:93
 msgid "profile.personal:"
 msgstr "Personal:"
 
 #: share/plugin/people/share/widgets/profile/widget.html:17 share/plugin/people/template/lite/profile.html:79
-#, fuzzy
 msgid "profile.phone"
-msgstr ""
-"#-#-#-#-#  people.po  #-#-#-#-#\n"
-"Phone\n"
-"#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
-"PHONE"
+msgstr "Phone"
 
 #: share/plugin/people/share/widgets/profile_edit/widget.html:5
 msgid "profile.photos"
@@ -542,13 +527,8 @@ msgid "profile.use-photo-on-web:"
 msgstr "Use photo on the web:"
 
 #: share/plugin/people/share/widgets/profile/widget.html:51 share/plugin/people/share/widgets/profile_edit/widget.html:64 share/plugin/people/template/lite/profile.html:119
-#, fuzzy
 msgid "profile.web"
-msgstr ""
-"#-#-#-#-#  people.po  #-#-#-#-#\n"
-"Web\n"
-"#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
-"WEB"
+msgstr "Web"
 
 #: share/plugin/people/template/profile_hcard:32
 msgid "profile.work:"

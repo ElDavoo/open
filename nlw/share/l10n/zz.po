@@ -52,7 +52,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 02:05+0800\n"
+"PO-Revision-Date: 2011-03-16 23:31+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -92,7 +92,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  control.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 07:46+0800\n"
+"PO-Revision-Date: 2011-03-16 23:29+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -2227,13 +2227,8 @@ msgid "control.add-group-to-wiki:"
 msgstr "Zzz Zzzzz zz Zzzzzzzzz:"
 
 #: share/plugin/control/template/control/group.html:33 share/plugin/control/template/control/account.html:76
-#, fuzzy
 msgid "control.add-multiple-users"
-msgstr ""
-"#-#-#-#-#  zzzzzzz.zz  #-#-#-#-#\z"
-"Zzz zzzzzzzz zzzzz\z"
-"#-#-#-#-#  zzzzzzz.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
-"Zzz Zzzzzzzz Zzzzz"
+msgstr "Zzz Zzzzzzzz Zzzzz"
 
 #: share/plugin/control/template/control/account.html:75
 msgid "control.add-new-user"
@@ -9310,13 +9305,8 @@ msgid "profile.created-field=title,account"
 msgstr "Zzzzzzz zzzzzzz zzzzz '%1' zzz zzzzzzz '%2'"
 
 #: share/plugin/people/share/widgets/profile/widget.html:64 share/plugin/people/share/widgets/profile_edit/widget.html:69 share/plugin/people/template/lite/profile.html:153
-#, fuzzy
 msgid "profile.custom"
-msgstr ""
-"#-#-#-#-#  zzzzzz.zz  #-#-#-#-#\z"
-"Zzzzzz\z"
-"#-#-#-#-#  zzzzzz.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
-"ZZZZZZ"
+msgstr "Zzzzzz"
 
 #: lib/Socialtext/Pluggable/Plugin/People.pm:177
 msgid "profile.edit"
@@ -9420,26 +9410,16 @@ msgid "profile.no-tags-for-you"
 msgstr "Zzz zzzz zz zzzz. Zzz <b>Zzz Zzz</b> zz zzz zzz zzz."
 
 #: share/plugin/people/share/widgets/profile/widget.html:28 share/plugin/people/share/widgets/profile_edit/widget.html:49 share/plugin/people/template/lite/profile.html:95
-#, fuzzy
 msgid "profile.organization"
-msgstr ""
-"#-#-#-#-#  zzzzzz.zz  #-#-#-#-#\z"
-"Zzzzzzzzzzzz\z"
-"#-#-#-#-#  zzzzzz.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
-"ZZZZZZZZZZZZ"
+msgstr "Zzzzzzzzzzzz"
 
 #: share/plugin/people/template/profile_hcard:93
 msgid "profile.personal:"
 msgstr "Zzzzzzzz:"
 
 #: share/plugin/people/share/widgets/profile/widget.html:17 share/plugin/people/template/lite/profile.html:79
-#, fuzzy
 msgid "profile.phone"
-msgstr ""
-"#-#-#-#-#  zzzzzz.zz  #-#-#-#-#\z"
-"Zzzzz\z"
-"#-#-#-#-#  zzzzzz.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
-"ZZZZZ"
+msgstr "Zzzzz"
 
 #: share/plugin/people/share/widgets/profile_edit/widget.html:5
 msgid "profile.photos"
@@ -9498,13 +9478,8 @@ msgid "profile.visible=user"
 msgstr "Zzz zzzzzzz zzz \"%1\" zz zz zzzzzz zzzzzz."
 
 #: share/plugin/people/share/widgets/profile/widget.html:51 share/plugin/people/share/widgets/profile_edit/widget.html:64 share/plugin/people/template/lite/profile.html:119
-#, fuzzy
 msgid "profile.web"
-msgstr ""
-"#-#-#-#-#  zzzzzz.zz  #-#-#-#-#\z"
-"Zzz\z"
-"#-#-#-#-#  zzzzzz.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
-"ZZZ"
+msgstr "Zzz"
 
 #: lib/Socialtext/Lite/People.pm:167
 msgid "profile.work-number"
