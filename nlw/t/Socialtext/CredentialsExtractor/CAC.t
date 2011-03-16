@@ -7,7 +7,7 @@ use Socialtext::CredentialsExtractor;
 use Socialtext::CredentialsExtractor::Extractor::CAC;
 use Socialtext::AppConfig;
 use Socialtext::Signal;
-use Test::Socialtext tests => 50;
+use Test::Socialtext tests => 51;
 use Test::Socialtext::User;
 
 fixtures(qw( empty ));

@@ -14,10 +14,18 @@ sub do_work {
     my $self = shift;
     my $hub = $self->hub;
 
+    my $regex = $self->arg->{page_content_matches};
+    $regex = qr/$regex/o if $regex;
+
     my $solr_indexer = Socialtext::Search::Solr::Factory->create_indexer();
     for my $page_id ( $hub->pages->all_ids() ) {
         my $page = $hub->pages->new_page($page_id);
         next unless $page and $page->exists and !$page->deleted;
+
+        if ($regex) {
+            my $ref = $page->body_ref;
+            next unless ($ref and $$ref =~ $regex);
+        }
 
         Socialtext::JobCreator->index_page(
             $page, undef,
@@ -45,6 +53,7 @@ Socialtext::Job::Upgrade::ReIndexWorkspace - Index workspace stuff again
     Socialtext::JobCreator->insert(
         'Socialtext::Job::Upgrade::ReIndexWorkspace', {
             workspace_id => $workspace_id,
+            page_content_matches => $regex, # optional
         },
     );
 
