@@ -5,7 +5,7 @@ use warnings;
 use lib 't/lib';
 use Test::WikiText;
 
-plan tests => 1;
+plan tests => 2;
 
 #no_diff;
 
