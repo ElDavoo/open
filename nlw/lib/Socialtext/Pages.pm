@@ -100,7 +100,7 @@ sub all_ids_newest_first {
 
 Returns a list of all page_id's which are currently locked.
 
-=cut 
+=cut
 
 sub all_ids_locked {
     my $self = shift;

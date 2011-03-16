@@ -411,7 +411,7 @@ Say some text is in javascript and is present but not visible.  FF3 and IE can s
 
 Check for text not present ONLY in IE and FF3
 
-=cut 
+=cut
 
 sub st_ff_and_ie_wait_for_text_not_present {
     my ($self, $text, $howlong) = @_;
