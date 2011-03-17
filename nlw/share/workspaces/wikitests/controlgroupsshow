@@ -18,9 +18,13 @@
 | create-workspace | %%workspace1%% | %%groupsacct%% |  |
 | create-workspace | %%workspace2%% | %%groupsacct%% |  |
 | create-workspace | %%workspace3%% | %%groupsacct%% |  |
+| st-process-jobs |  |  |
+| pause | %%gpt%% |  |
 
-| *Comment* | SEE Two Groups Added |  |
+| *Comment* | SEE Two Groups Added - On a 'vanilla' test build now they will be on page 2 |  |
 | open_ok | /nlw/control/group/ |  |
+| wait_for_element_visible_ok | groupTable-page-2 | 30000 |
+| click_and_wait | groupTable-page-2 |  |
 | wait_for_element_visible_ok | link=%%samplegroup1%% | 30000 |
 | wait_for_element_visible_ok | link=%%samplegroup2%% | 30000 |
 | pause | %%gpt%% |  |
@@ -37,7 +41,11 @@
 | add-group-to-workspace | %%group_id%% | %%workspace2%% |
 | add-group-to-workspace | %%group_id%% | %%workspace3%% |
 | add-user-to-group | %%username%% | %%group_id%% |
+
 | open_ok | /nlw/control/group/ |  |
+| wait_for_element_visible_ok | groupTable-page-2 | 30000 |
+| click_and_wait | groupTable-page-2 |  |
+
 | wait_for_element_visible_ok | link=%%samplegroup2%% | 30000 |
 | click_ok | link=%%samplegroup1%% | 30000 |
 
