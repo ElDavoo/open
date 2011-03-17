@@ -151,7 +151,7 @@ msgid "appliance.contributions"
 msgstr "贡献"
 
 msgid "appliance.email-required"
-msgstr "请输入电子邮箱地址"
+msgstr "请输入电子邮件地址"
 
 msgid "appliance.initialize-wikis"
 msgstr "工作区初始化"
@@ -160,7 +160,7 @@ msgid "appliance.initialize-wikis?"
 msgstr "要初始化工作区吗？"
 
 msgid "appliance.invalid-email"
-msgstr "请输入有效的电子邮箱地址"
+msgstr "请输入有效的电子邮件地址"
 
 msgid "appliance.last-manual-backup-was-never"
 msgstr "最近一次手动备份未开始"
@@ -808,16 +808,16 @@ msgid "error.display-page"
 msgstr "页面显示出错。请刷新本页面，如还有问题请联系<a href=\"%1\">Socialtext 客户服务人员</a>"
 
 msgid "error.email-adress-required"
-msgstr "未指定电子邮箱"
+msgstr "未指定电子邮件"
 
 msgid "error.email-for-confirmation-required"
-msgstr "找不到电子邮箱重新发送确认信息。"
+msgstr "找不到电子邮件重新发送确认信息。"
 
 msgid "error.email-missing-for-password-change"
-msgstr "未找到重发变更密码的电子邮箱地址。"
+msgstr "未找到重发变更密码的电子邮件地址。"
 
 msgid "error.email-required"
-msgstr "请输入电子邮箱地址。"
+msgstr "请输入电子邮件地址。"
 
 msgid "error.email-required!"
 msgstr "未提供邮箱"
@@ -1318,7 +1318,7 @@ msgid "error.parse-missing-fields"
 msgstr "字段不足无法解析，跳过此用户。"
 
 msgid "error.password-exists-for=email"
-msgstr "电子邮箱地址 %1 已设有密码。"
+msgstr "电子邮件地址 %1 已设有密码。"
 
 msgid "error.password-mismatch"
 msgstr "密码不匹配。"
@@ -1327,7 +1327,7 @@ msgid "error.password-too-short"
 msgstr "密码必须为6位字符或以上。"
 
 msgid "error.pdf-conversion-failed"
-msgstr "错误：<pre>无法转换为PDF</pre>"
+msgstr "错误：<pre>无法转换为 PDF</pre>"
 
 msgid "error.phone-home=url,response"
 msgstr "不能发送设备用户报告数据至“%1”：%2"
@@ -1602,6 +1602,9 @@ msgstr "每周"
 msgid "example.string"
 msgstr "字符串 %1"
 
+msgid "feed.attachments:"
+msgstr "附件："
+
 msgid "feed.avatar=user"
 msgstr "%1 的头像"
 
@@ -1614,8 +1617,14 @@ msgstr "在订阅输出中显示多少博客？"
 msgid "feed.search=wiki,query"
 msgstr "%1：搜索 %2"
 
+msgid "feed.socialtext-wiki=version"
+msgstr "Socialtext 工作区 v%1"
+
 msgid "feed.tags=tags"
 msgstr "标签：%1"
+
+msgid "feed.updated-by=creator,editor"
+msgstr "%1（由 %2 更新）"
 
 msgid "feed.watchlist=wiki,user"
 msgstr "%1：关注 %2"
@@ -1982,6 +1991,9 @@ msgstr "已创建档案栏“%1”"
 
 msgid "profile.created-field=title,account"
 msgstr "已创建帐户“%2”的档案栏”%1”"
+
+msgid "profile.edit"
+msgstr "（编辑）"
 
 msgid "profile.field-hidden"
 msgstr "此字段在用户资料中可见。"
@@ -2504,6 +2516,9 @@ msgstr "显示“最近浏览”侧边栏？"
 
 msgid "wiki.show-sidebox?"
 msgstr "在页面视图中显示为侧边栏？"
+
+msgid "wiki.sidebox-number-of-backlinks?"
+msgstr "侧窗格中显示的反向链接数量"
 
 msgid "wiki.sidebox-number-of-breadcrumbs?"
 msgstr "显示多少页面在侧边栏？"

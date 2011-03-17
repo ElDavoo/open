@@ -36,6 +36,12 @@ msgstr "Socialtext 可以让您为帐户添加多用户。要添加多用户，�
 msgid "control.about-paid-option=plugin"
 msgstr "%1 为付费选项。关于费用的更多信息，请联系您的销售代表。"
 
+msgid "control.about-private-accounts"
+msgstr "本系统的帐户为“私有”。用户必须由管理员邀请至帐户。"
+
+msgid "control.about-self-join-accounts"
+msgstr "本系统的帐户为“自行加入”。任何用户都可以访问 Socialtext 应用程序，并加入默认帐户，创建个人资料，以及对帐户发送讯息。用户可以邀请其他用户加入到此帐户中。"
+
 msgid "control.about-settings-tab"
 msgstr "管理全系统的应用设置"
 
@@ -294,6 +300,9 @@ msgstr "自定义桌面视觉主题"
 msgid "control.custom-fields"
 msgstr "自定义字段"
 
+msgid "control.custom-server-wide-permissions-are-in-effect"
+msgstr "自定义服务器权限设置已生效。"
+
 msgid "control.custom-skins=name"
 msgstr "自定义视觉主题：%1"
 
@@ -404,6 +413,15 @@ msgstr "转至本群组"
 
 msgid "control.go-to-wiki=name"
 msgstr "转至 %1 工作区"
+
+msgid "control.group-creation"
+msgstr "群组创建"
+
+msgid "control.group-creation-account-admin-only"
+msgstr "仅有管理员帐户可以创建群组和工作区。"
+
+msgid "control.group-creation-from-all-members"
+msgstr "帐户内的所有成员都可以创建群组，并成为群组的管理员。作为群组管理员，用户可以为该群组创建工作区。"
 
 msgid "control.group-name:"
 msgstr "群组名称："
@@ -632,6 +650,9 @@ msgstr "<strong>自行加入：</strong>非成员可以浏览本群组，但只�
 
 msgid "control.send-invitation-email"
 msgstr "发送邀请电子邮件"
+
+msgid "control.server-wide-account-permissions"
+msgstr "服务器上的帐户权限"
 
 msgid "control.set-account-type-to:"
 msgstr "变更帐户类别为："
@@ -998,3 +1019,6 @@ msgstr "1 周"
 
 msgid "user.last-name:"
 msgstr "姓氏："
+
+msgid "wiki.title:"
+msgstr "标题："

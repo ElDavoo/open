@@ -476,7 +476,7 @@ msgid "appliance.contributions"
 msgstr "贡献"
 
 msgid "appliance.email-required"
-msgstr "请输入电子邮箱地址"
+msgstr "请输入电子邮件地址"
 
 msgid "appliance.initialize-wikis"
 msgstr "工作区初始化"
@@ -485,7 +485,7 @@ msgid "appliance.initialize-wikis?"
 msgstr "要初始化工作区吗？"
 
 msgid "appliance.invalid-email"
-msgstr "请输入有效的电子邮箱地址"
+msgstr "请输入有效的电子邮件地址"
 
 msgid "appliance.last-manual-backup-was-never"
 msgstr "最近一次手动备份未开始"
@@ -1339,9 +1339,8 @@ msgstr "您可以随时在信息中使用HTML，但是在消息被保存之前�
 msgid "console.send-test-email"
 msgstr "发送测试电子邮件"
 
-#: ../appliance/libsocialtext-appliance-perl/template/setup.html:5
 msgid "console.server-wide-settings-moved-to-control-panel=uri"
-msgstr "Server-wide access settings have moved to the <a href=\"%1\">Business Control Panel</a>."
+msgstr "服务器范围的访问设置，已移至<a href=\"%1\">业务控制面板</a>。"
 
 msgid "console.set-authentication-token-timeout"
 msgstr "设置认证标记超时"
@@ -1454,13 +1453,11 @@ msgstr "Socialtext 可以让您为帐户添加多用户。要添加多用户，�
 msgid "control.about-paid-option=plugin"
 msgstr "%1 为付费选项。关于费用的更多信息，请联系您的销售代表。"
 
-#: share/plugin/control/template/control/settings.html:9
 msgid "control.about-private-accounts"
-msgstr "Accounts on this system are \"private\". Users must be invited to accounts by an administrator."
+msgstr "本系统的帐户为“私有”。用户必须由管理员邀请至帐户。"
 
-#: share/plugin/control/template/control/settings.html:8
 msgid "control.about-self-join-accounts"
-msgstr "Accounts on this system are \"self-join\". Any user who can access the Socialtext application can join the default account, create a profile, and participate in the account's Signals channels. Users can invite other users into their account."
+msgstr "本系统的帐户为“自行加入”。任何用户都可以访问 Socialtext 应用程序，并加入默认帐户，创建个人资料，以及对帐户发送讯息。用户可以邀请其他用户加入到此帐户中。"
 
 msgid "control.about-settings-tab"
 msgstr "管理全系统的应用设置"
@@ -1720,9 +1717,8 @@ msgstr "自定义桌面视觉主题"
 msgid "control.custom-fields"
 msgstr "自定义字段"
 
-#: share/plugin/control/template/control/settings.html:6
 msgid "control.custom-server-wide-permissions-are-in-effect"
-msgstr "Custom server-wide permissions are in effect."
+msgstr "自定义服务器权限设置已生效。"
 
 msgid "control.custom-skins=name"
 msgstr "自定义视觉主题：%1"
@@ -1835,17 +1831,14 @@ msgstr "转至本群组"
 msgid "control.go-to-wiki=name"
 msgstr "转至 %1 工作区"
 
-#: share/plugin/control/template/control/settings.html:16
 msgid "control.group-creation"
-msgstr "Group Creation"
+msgstr "群组创建"
 
-#: share/plugin/control/template/control/settings.html:19
 msgid "control.group-creation-account-admin-only"
-msgstr "Only account administrators can create groups and workspaces."
+msgstr "仅有管理员帐户可以创建群组和工作区。"
 
-#: share/plugin/control/template/control/settings.html:18
 msgid "control.group-creation-from-all-members"
-msgstr "Any member in an account can create a group, and become the group's administrator. As the group administrator, that user can create a workspace for that group."
+msgstr "帐户内的所有成员都可以创建群组，并成为群组的管理员。作为群组管理员，用户可以为该群组创建工作区。"
 
 msgid "control.group-name:"
 msgstr "群组名称："
@@ -2078,9 +2071,8 @@ msgstr "<strong>自行加入：</strong>非成员可以浏览本群组，但只�
 msgid "control.send-invitation-email"
 msgstr "发送邀请电子邮件"
 
-#: share/plugin/control/template/control/settings.html:3
 msgid "control.server-wide-account-permissions"
-msgstr "Server-Wide Account Permissions"
+msgstr "服务器上的帐户权限"
 
 msgid "control.set-account-type-to:"
 msgstr "变更帐户类别为："
@@ -2790,20 +2782,14 @@ msgstr "要更改您的密码，请使用此链接："
 msgid "email.following-pages-have-recently-changed=uri,wiki,date,time"
 msgstr "下列位于 <a href=\"%1\">%2</a> 的页面最近已被更改。本电子邮件生成于 %3，%4。"
 
-#. (workspace.title, email_date, email_time)
-#: share/template/email/recent-changes.txt:4
 msgid "email.following-pages-have-recently-changed=wiki,date,time"
-msgstr "The following pages in %1 have recently changed. This email was generated on %2 at %3."
+msgstr "%1 的下列页面最近被更改。本电子邮件于 %2 %3 发送。"
 
-#. (watchlist_uri, escaped_title, workspace.uri, email_date, email_time)
-#: share/template/email/watchlist.html:17
 msgid "email.following-pages-in-watchlist-have-recently-changed=watchlist,wiki,uri,date,time"
-msgstr "The following pages in your <a href=\"%1\">watchlist</a> in <a href=\"%3\">%2</a> have recently changed. This email was generated on %4 at %5."
+msgstr "您在 <a href=\"%3\">%2</a> 的<a href=\"%1\">关注列表</a>中的下列页面最近被更改。本电子邮件于 %4 的 %5 创建。"
 
-#. (workspace.title, email_date, email_time)
-#: share/template/email/watchlist.txt:3
 msgid "email.following-pages-in-watchlist-have-recently-changed=wiki,date,time"
-msgstr "The following pages in your watchlist in %1 have recently changed. This email was generated on %2 at %3."
+msgstr "您在 %1 的关注列表中的下列页面最近被更改。本电子邮件于 %2 的 %3 创建。"
 
 msgid "email.frequency?"
 msgstr "你想要多长时间收到一次邮件更新？"
@@ -2814,114 +2800,80 @@ msgstr "寄件人"
 msgid "email.from:"
 msgstr "来自："
 
-#: share/template/email/st/group-invitation-body.html:41 share/template/email/st/group-invitation.txt:26
 msgid "email.go-to"
-msgstr "Go to the"
+msgstr "前往"
 
-#: share/template/email/st/workspace-admin-invitation.txt:9
 msgid "email.go-to-test-confirmation-message-home-page"
-msgstr "Go to the test confirmation message home page."
+msgstr "前往测试确认消息主页。"
 
-#: share/template/email/password-change.html:12 share/template/email/password-change.txt:1
 msgid "email.greetings-from-socialtext"
-msgstr "Greetings from Socialtext,"
+msgstr "来自 Socialtext 的问候，"
 
-#: share/template/email/free50/account-invitation-body.html:39 share/template/email/free50/account-invitation.txt:28
 msgid "email.happy-collaborating!"
-msgstr "Happy Collaborating!"
+msgstr "祝您协作愉快！"
 
-#: share/template/email/email-address-confirmation-completed.html:9 share/template/email/email-address-confirmation-completed.txt:1 share/template/email/openid/invite-request-email.html:8 share/template/email/openid/invite-request-email.txt:1 share/template/email/st/invite-request-email.html:8 share/template/email/st/invite-request-email.txt:1
 msgid "email.hello"
-msgstr "Hello,"
+msgstr "您好，"
 
-#: share/template/email/openid/workspace-invitation-body.html:11 share/template/email/openid/workspace-invitation.txt:3 share/template/email/st/account-invitation-body.html:8 share/template/email/st/account-invitation.txt:3 share/template/email/st/group-invitation-body.html:13 share/template/email/st/group-invitation.txt:7 share/template/email/st/workspace-invitation-body.html:8 share/template/email/st/workspace-invitation.txt:3
 msgid "email.hi"
-msgstr "Hi,"
+msgstr "您好，"
 
-#: share/template/email/st/group-invitation-body.html:41 share/template/email/st/group-invitation.txt:26
 msgid "email.home-page"
-msgstr "Home Page."
+msgstr "主页"
 
-#: share/template/email/free50/account-invitation.txt:26
 msgid "email.if-unsolicited-contact-abuse"
-msgstr "If you did not request to join your company's collaboration group, please contact abuse@socialtext.com"
+msgstr "如果您没有申请加入您公司的协作群组，请联系 abuse@socialtext.com"
 
-#: share/template/email/free50/account-invitation-body.html:37
 msgid "email.if-unsolicited-contact-abuse-link"
-msgstr "If you did not request to join your company's collaboration group, please contact <a href=\"mailto:abuse@socialtext.com\">abuse@socialtext.com</a>"
+msgstr "如果您没有申请加入您公司的协作群组，请联系 <a href=\"mailto:abuse@socialtext.com\">abuse@socialtext.com</a>"
 
-#: share/template/email/openid/invite-request-email.html:4 share/template/email/st/invite-request-email.html:4
 msgid "email.invitation-request"
-msgstr "Invitation Request"
+msgstr "邀请请求"
 
-#: share/template/email/st/workspace-admin-invitation.txt:10
 msgid "email.invite-other-people-to-test-confirmation-message"
-msgstr "Invite other people to test confirmation message."
+msgstr "邀请其他人来测试确认消息。"
 
-#. (escaped_str)
-#: share/template/email/account-invitation.html:5 share/template/email/group-invitation.html:5 share/template/email/invitation.html:5 share/template/email/workspace-invitation.html:5
 msgid "email.invite-to-join=container"
-msgstr "An Invitation to join %1"
+msgstr "邀请别人加入 %1"
 
-#. (workspace_title)
-#: share/template/email/st/workspace-admin-invitation.txt:3
 msgid "email.invited-as-admin-to-new=wiki"
-msgstr "You have been invited as an administrator to \"%1\", a brand new Socialtext Workspace. You are the administrator."
+msgstr "您已受邀成为“%1”的管理员，这是一个全新的 Socialtext 工作区。"
 
-#. (workspace_title)
-#: share/template/email/openid/workspace-invitation.txt:5
 msgid "email.inviting-you-to-join-sign-in-below=wiki:"
-msgstr "I'm inviting you to join %1, one of our shared workspaces. Sign in using the information below:"
+msgstr "我想邀请您加入 %1，这是我们共享的工作区。登录信息如下："
 
-#. (account_name)
-#: share/template/email/st/account-invitation.txt:5
 msgid "email.inviting-you-to-join=account"
-msgstr "I'm inviting you to join %1, one of our shared Socialtext groups."
+msgstr "我想邀请您加入 %1，这是我们共享的 Socialtext 工作区。"
 
-#. (group_name)
-#: share/template/email/st/group-invitation.txt:9
 msgid "email.inviting-you-to-join=group"
-msgstr "I'm inviting you to join %1, one of our Socialtext groups"
+msgstr "我想邀请您加入 %1，这是我们在 Socialtext 的群组。"
 
-#. (group_name, host)
-#: share/template/email/st/group-invitation-body.html:16
 msgid "email.inviting-you-to-join=group,host"
-msgstr "I'm inviting you to join the %1 group at %2."
+msgstr "我想邀请您在 %2 加入 %1 群组。"
 
-#. (escaped_str_1)
-#. (workspace_title)
-#. (wksp_title)
-#: share/template/email/openid/workspace-invitation-body.html:15 share/template/email/st/workspace-invitation-body.html:13 share/template/email/st/workspace-invitation.txt:5
 msgid "email.inviting-you-to-join=wiki"
-msgstr "I'm inviting you to join %1, one of our shared workspaces."
+msgstr "我正在邀请您加入 %1，这是我们共享的工作区。"
 
-#. (host)
-#: share/template/email/st/group-invitation-body.html:44 share/template/email/st/group-invitation.txt:28
 msgid "email.is-group-on=host"
-msgstr "is a group on %1."
+msgstr "是 %1 的一个群组。"
 
-#: share/template/email/email-address-confirmation-completed.html:53 share/template/email/email-address-confirmation-completed.txt:28 share/template/email/free50/account-invitation-body.html:32 share/template/email/free50/account-invitation.txt:20 share/template/email/openid/workspace-invitation-body.html:27 share/template/email/openid/workspace-invitation.txt:12 share/template/email/st/account-invitation-body.html:45 share/template/email/st/account-invitation.txt:22 share/template/email/st/workspace-invitation-body.html:43 share/template/email/st/workspace-invitation.txt:22
 msgid "email.keep-this-for-future-reference"
-msgstr "You may want to keep this email for future reference."
+msgstr "您不妨保留这份邮件，以备日后参考之用。"
 
-#: share/template/email/page-details.html:27 share/template/email/page-details.txt:26
 msgid "email.last-edited-by"
-msgstr "last edited by"
+msgstr "前次编辑"
 
-#: share/template/email/free50/account-invitation.txt:29
 msgid "email.leader-in-enterprise-social-software"
-msgstr "The leader in Enterprise 2.0 Social Software"
+msgstr "企业社会化软件的领导者"
 
-#: share/template/email/email-address-confirmation-completed.html:23 share/template/email/email-address-confirmation-completed.html:48 share/template/email/email-address-confirmation-completed.txt:26
 msgid "email.login-with-email-address:"
-msgstr "Log in with your email address:"
+msgstr "使用您的电子邮件地址登录："
 
 msgid "email.message"
 msgstr "消息"
 
-#: share/template/email/st/account-invitation.txt:10 share/template/email/st/group-invitation-body.html:23 share/template/email/st/group-invitation.txt:13 share/template/email/st/workspace-invitation-body.html:26 share/template/email/st/workspace-invitation.txt:10
 msgid "email.once-confirmed-you-will-receive-second-email-with-login-details"
-msgstr "Once you have confirmed your account, you will receive a second email with login details."
+msgstr "一旦您确认了您的帐户，您将会收到包含登录信息的第二封电子邮件。"
 
 msgid "email.page-digest-details?"
 msgstr "在每日邮件中你想得到更新的页面的哪些信息？"
@@ -2929,22 +2881,15 @@ msgstr "在每日邮件中你想得到更新的页面的哪些信息？"
 msgid "email.page-digest-sort?"
 msgstr "采用哪种顺序显示更新信息？"
 
-#. (action, escaped_name, profile_uri, edit_time)
-#: share/template/email/page-details.html:33
 msgid "email.page-edit=action,user,profile-uri,time"
 msgstr "%1 <a href=\"%3\">%2</a> %4"
 
-#. (action, escaped_name, escaped_editsummary, profile_uri, edit_time)
-#: share/template/email/page-details.html:31
 msgid "email.page-edit=action,user,summary,profile-uri,time"
-msgstr "%1 <a href=\"%4\">%2</a> %5 saying, \"%3\""
+msgstr "%1 <a href=\"%4\">%2</a> %5：\"%3\""
 
-#. (action, user_name, page.edit_summary, edit_time)
-#: share/template/email/page-details.txt:30
 msgid "email.page-edit=action,user,summary,time"
-msgstr "%1 %2 %4 saying, \"%3\""
+msgstr "%1 %2 %4：\"%3\""
 
-#: share/template/email/page-details.txt:32
 msgid "email.page-edit=action,user,time"
 msgstr "%1 %2 %3"
 
@@ -2963,33 +2908,23 @@ msgstr "如果已经有此标题的页面存在，邮件正文应该加在哪里
 msgid "email.private-message-from=sender"
 msgstr "来自 %1 的私人讯息"
 
-#. (support_link)
-#: share/template/email/standard-footer.html:7
 msgid "email.questions-about-email-contact-support-link=uri"
-msgstr "If you have questions about this email, please %1"
+msgstr "如果您有关于该电子邮件的问题，请 %1"
 
-#. (appconfig.support_address)
-#: share/template/email/standard-footer.txt:3
 msgid "email.questions-about-email-contact-support=uri"
-msgstr "If you have questions about this email, contact support at %1."
+msgstr "如果您有关于该电子邮件的问题，请联系技术支持：%1."
 
-#. (appconfig.support_address)
-#: share/template/email/email-address-confirmation-completed.txt:30
 msgid "email.questions-contact-support=uri"
-msgstr "If you have questions, please contact support at %1."
+msgstr "如果您有问题，请联系技术支持：%1."
 
-#: share/template/email/email-address-confirmation-completed.html:54
 msgid "email.questions-please"
-msgstr "If you have questions, please "
+msgstr "如果您有问题，请"
 
-#: share/template/email/st/workspace-admin-invitation.txt:7
 msgid "email.ready-to-set-up-new-wiki-choose-your-next-step:"
-msgstr "You're ready to set up your new workspace, if you want to. Choose your next step:"
+msgstr "已准备好设置您的新工作区。请选择您的下一步操作："
 
-#. (escaped_title)
-#: share/template/email/recent-changes.html:6
 msgid "email.recent-changes-in=wiki"
-msgstr "Recent changes in %1"
+msgstr "%1 的近期变更"
 
 msgid "email.recent-changes=wiki"
 msgstr "%1 工作区的最近更新"
@@ -3003,29 +2938,20 @@ msgstr "来添加收件人到此列表。"
 msgid "email.recipients"
 msgstr "收件人"
 
-#. (inviting_user, workspace_title)
-#: share/template/email/openid/invite-request-email.html:10 share/template/email/openid/invite-request-email.txt:3 share/template/email/st/invite-request-email.html:10 share/template/email/st/invite-request-email.txt:3
 msgid "email.request-invite=user,wiki:"
-msgstr "%1 would like to ask you to invite new users into the %2 workspace:"
+msgstr "%1 需要请您邀请新用户到 %2 工作区："
 
-#: share/template/email/st/workspace-admin-invitation.txt:11
 msgid "email.review-settings-for-test-confirmation-message:"
-msgstr "Review or change the settings for test confirmation message:"
+msgstr "查看或变更测试确认消息设置："
 
-#. (a, app_name, app_name)
-#: share/template/email/free50/account-invitation.txt:15 share/template/email/st/account-invitation-body.html:37 share/template/email/st/account-invitation.txt:17
 msgid "email.same-password-as-existing-account=a,app,app"
-msgstr "Because you already have %1 %2 account, the password is the same as the password you use for your other %3 groups."
+msgstr "因为您已拥有 %2 帐户，密码与您在 %3 群组中使用的密码相同。"
 
-#. (a, app_name, app_name)
-#: share/template/email/free50/account-invitation-body.html:26
 msgid "email.same-password-as-existing-group=a,app,app"
-msgstr "Because you already have %1 %2 group, the password is the same as the password you use for your other %3 groups."
+msgstr "因为您已拥有 %2 群组，密码与您在 %3 群组中使用的密码相同。"
 
-#. (a, app_name, app_name)
-#: share/template/email/st/workspace-invitation-body.html:37 share/template/email/st/workspace-invitation.txt:17
 msgid "email.same-password-as-existing-wiki=a,app,app"
-msgstr "Because you already have %1 %2 account, the password is the same as the password you use for your other %3 workspaces."
+msgstr "因为您已拥有 %2 帐户，密码与您在 %3 工作区中使用的密码相同。"
 
 msgid "email.send"
 msgstr "发送"
@@ -3033,13 +2959,11 @@ msgstr "发送"
 msgid "email.sent-from-socialtext-appliance"
 msgstr "此电子邮件发送自 Socialtext 设备。"
 
-#: share/template/email/openid/workspace-invitation-body.html:18 share/template/email/st/account-invitation-body.html:15 share/template/email/st/account-invitation.txt:5 share/template/email/st/group-invitation.txt:9 share/template/email/st/workspace-invitation-body.html:15 share/template/email/st/workspace-invitation.txt:5
 msgid "email.sign-in-using-information-below:"
-msgstr "Sign in using the information below:"
+msgstr "使用下方信息登录："
 
-#: share/template/email/openid/workspace-invitation.txt:10 share/template/email/openid/workspace-invitation-body.html:24
 msgid "email.sign-in-with-openid-now"
-msgstr "You can now sign into our system using OpenID. On the Socialtext login screen, please input your OpenID into the indicated field and you will be redirected to the OpenID site to verify your identity. Once you have verified your identity, you will be sent back to the Socialtext site and be able to access the workspace."
+msgstr "您现在可以使用 OpenID 登录我们的系统。在 Socialtext 登录界面，请输入您的 OpenID 到指定区域，您即会被重定向至 OpenID 网站以确认您的身份。一旦您完成身份认证，您会返回至 Socialtext 网站并能够访问工作区。"
 
 msgid "email.socialtext"
 msgstr "Socialtext"
@@ -3050,119 +2974,86 @@ msgstr "Socialtext 设备"
 msgid "email.subject"
 msgstr "主题"
 
-#: share/template/email/free50/account-invitation-body.html:4 share/template/email/free50/account-invitation.txt:1
 msgid "email.thank-you-for-joining-company-collaboration-group-hosted-by-socialtext"
-msgstr "Thank you for joining your company's collaboration group, hosted by Socialtext."
+msgstr "感谢您加入您公司的协作群组，该群组由 Socialtext 提供。"
 
-#: share/template/email/openid/workspace-invitation-body.html:32 share/template/email/openid/workspace-invitation.txt:14 share/template/email/st/account-invitation-body.html:50 share/template/email/st/account-invitation.txt:25 share/template/email/st/group-invitation-body.html:26 share/template/email/st/group-invitation.txt:15 share/template/email/st/workspace-invitation-body.html:48 share/template/email/st/workspace-invitation.txt:25
 msgid "email.thanks"
-msgstr "Thanks,"
+msgstr "感谢，"
 
-#: share/template/email/email-address-confirmation-completed.html:19 share/template/email/email-address-confirmation-completed.txt:23 share/template/email/email-address-confirmation-completed.txt:6
 msgid "email.to-do-so-go-to-this-web-address:"
-msgstr "To do so, go to this web address:"
+msgstr "要这样做，请前往此网址："
 
-#: share/template/email/openid/invite-request-email.txt:11 share/template/email/st/invite-request-email.txt:11
 msgid "email.to-invite-users-visit-wiki-invite-page"
-msgstr "To invite these users into the workspace, visit the user invite page for the workspace and copy and paste the list above into the invite box."
+msgstr "要邀请这些用户，请访问工作区的用户邀请页面，并复制以上列表粘贴到邀请框中。"
 
-#: share/template/email/openid/invite-request-email.html:25 share/template/email/st/invite-request-email.html:25
 msgid "email.to-invite-users-visit-wiki-invite-page-link:"
-msgstr "To invite these users into the workspace, visit the user invite page for the <br />workspace and copy and paste the list above into the invite box. The User <br />Invite page can be found at:"
+msgstr "要邀请这些用户到工作区，请访问工作区的用户邀请页面，<br />并复制以上列表粘贴到邀请框中。<br />用户邀请页面的网址是："
 
-#: share/template/email/free50/account-invitation-body.html:14
 msgid "email.to-start-click-above"
-msgstr "By clicking the above link, you can immediately start sharing &quot;Twitter-like&quot; messages privately with your co-workers, and find a better way to work using social networking and wiki workspaces. You also get your own personal home page."
+msgstr "点击上方链接后，您即可立即开始与您的同事分享微博讯息，并利用社交网络和共笔工作区来增进彼此的工作。您也可以设置自己的个人主页。"
 
-#: share/template/email/free50/account-invitation.txt:7
 msgid "email.to-start-click-above-link"
-msgstr "By clicking the above link, you can immediately start sharing \"Twitter-like\" messages privately with your co-workers, and find a better way to work using social networking and wiki workspaces. You also get your own personal home page."
+msgstr "点击上方链接后，您即可立即开始与您的同事分享微博讯息，并利用社交网络和共笔工作区来增进彼此的工作。您也可以设置自己的个人主页。"
 
-#. (escaped_timestamp)
-#: share/template/email/page-details.html:9 share/template/email/page-details.txt:9
 msgid "email.today-at=time"
-msgstr "today at %1"
+msgstr "今天 %1"
 
-#: share/template/email/openid/invite-request-email.txt:12 share/template/email/st/invite-request-email.txt:12
 msgid "email.user-invite-page-at:"
-msgstr "The User Invite page can be found at:"
+msgstr "用户邀请页面的网址是："
 
-#: share/template/email/free50/account-invitation.txt:11 share/template/email/openid/workspace-invitation-body.html:21 share/template/email/openid/workspace-invitation.txt:8 share/template/email/st/account-invitation-body.html:31 share/template/email/st/account-invitation.txt:13 share/template/email/st/workspace-invitation-body.html:31 share/template/email/st/workspace-invitation.txt:13
 msgid "email.username:"
-msgstr "username:"
+msgstr "用户名称："
 
-#. (escaped_title)
-#: share/template/email/watchlist.html:7
 msgid "email.watchlist-update-for=wiki"
-msgstr "Watchlist Update for %1"
+msgstr "%1 的关注列表更新"
 
-#: share/template/email/free50/account-invitation-body.html:36 share/template/email/free50/account-invitation.txt:24
 msgid "email.we-encourage-you-to-invite-others"
-msgstr "We encourage you to invite other co-workers to join your company's collaboration group."
+msgstr "我们鼓励您邀请其他同事来加入您公司的协作群组。"
 
-#: share/template/email/free50/account-invitation.txt:10 share/template/email/openid/workspace-invitation-body.html:20 share/template/email/openid/workspace-invitation.txt:7 share/template/email/st/account-invitation-body.html:30 share/template/email/st/account-invitation.txt:12 share/template/email/st/workspace-invitation-body.html:30 share/template/email/st/workspace-invitation.txt:12
 msgid "email.web-address:"
-msgstr "web address:"
+msgstr "网站地址："
 
-#: share/template/email/email-address-confirmation.html:6
 msgid "email.welcome-confirm-email-to-join"
-msgstr "Welcome to the Socialtext community - please confirm your email address to join"
+msgstr "欢迎来到 Socialtext 社区 – 请确认您的电子邮件地址来加入"
 
-#. (account_name)
-#: share/template/email/email-address-confirmation.html:8
 msgid "email.welcome-confirm-email-to-join=account"
-msgstr "Welcome to the %1 community - please confirm your email address to join"
+msgstr "欢迎来到 %1 社区 – 请确认您的电子邮件地址来加入"
 
-#: share/template/email/email-address-confirmation.html:17 share/template/email/email-address-confirmation.txt:1
 msgid "email.welcome-to"
-msgstr "Welcome to"
+msgstr "欢迎来到"
 
-#: share/template/email/st/workspace-admin-invitation.txt:12
 msgid "email.wiki-appearance"
-msgstr "Workspace Appearance"
+msgstr "工作区外观"
 
-#: share/template/email/st/workspace-admin-invitation.txt:13
 msgid "email.wiki-features"
-msgstr "Workspace Features"
+msgstr "工作区功能"
 
-#. (target_workspace.title, account_name)
-#: share/template/email/email-address-confirmation.html:17 share/template/email/email-address-confirmation.txt:1
 msgid "email.wiki-in-group-at=wiki,group"
-msgstr "the %1 Workspace in the %2 Group at "
+msgstr "%2 群组中的 %1 工作区于"
 
-#: share/template/email/st/workspace-admin-invitation.txt:14
 msgid "email.wiki-privacy"
-msgstr "Workspace Privacy"
+msgstr "工作区隐私"
 
-#. (escaped_timestamp)
-#: share/template/email/page-details.html:10 share/template/email/page-details.txt:10
 msgid "email.yesterday-at=time"
-msgstr "yesterday at %1"
+msgstr "昨天 %1"
 
-#: share/template/email/page-details.html:18 share/template/email/page-details.txt:19
 msgid "email.you"
-msgstr "you"
+msgstr "您"
 
-#: share/template/email/email-address-confirmation-completed.html:32 share/template/email/email-address-confirmation-completed.txt:13
 msgid "email.you-are-member-of-following-groups:"
-msgstr "You are a member of the following groups:"
+msgstr "您是下列群组中的成员："
 
-#: share/template/email/email-address-confirmation-completed.html:39 share/template/email/email-address-confirmation-completed.txt:18
 msgid "email.you-are-member-of-following-wikis:"
-msgstr "You are a member of the following workspaces:"
+msgstr "您是下列工作区的成员："
 
-#: share/template/email/email-address-confirmation-completed.html:3
 msgid "email.your-email-has-been-confirmed"
-msgstr "Your email address has been confirmed"
+msgstr "已确认您的电子邮件地址"
 
-#. (account_name)
-#: share/template/email/email-address-confirmation.html:22 share/template/email/email-address-confirmation.txt:4
 msgid "email.your-profile-has-been-added-to-directory=account"
-msgstr "Your profile has been added to the %1 directory."
+msgstr "您的个人资料已被添加至 %1 目录。"
 
-#: share/template/email/email-address-confirmation.html:24 share/template/email/email-address-confirmation.txt:6
 msgid "email.your-profile-has-been-added-to-people-directory"
-msgstr "Your profile has been added to the people directory."
+msgstr "您的个人资料已被添加至人员目录。"
 
 msgid "error.-forbidden"
 msgstr "没有不能共享帐户到此工具库。"
@@ -3197,9 +3088,8 @@ msgstr "帐户名称为必填"
 msgid "error.add-auw-failed=wikis"
 msgstr "无法开放下列工作区给全体用户：%1"
 
-#: share/plugin/people/share/widgets/profile_tags/widget.js:86
 msgid "error.add-profile-tag"
-msgstr "Unable to add tag."
+msgstr "无法添加标签。"
 
 msgid "error.admin-privileges-needed-to-access-uri"
 msgstr "您必须拥有管理员权限来访问此网址。"
@@ -3216,9 +3106,8 @@ msgstr "已加入系统中以存在 %1 群组。"
 msgid "error.already-confirmed=email"
 msgstr "邮箱 %1 已确认。"
 
-#: share/plugin/groups/share/widgets/membership/widget.js:615
 msgid "error.already-exists-in-group=member"
-msgstr "%1 already exists in this Group"
+msgstr "%1 已经是此群组的成员了。"
 
 msgid "error.application=email,host,error"
 msgstr "在 %2 上 %1 的应用错误为：%3"
@@ -3235,9 +3124,8 @@ msgstr "在 %2 上 %1 的应用错误为：%3"
 msgid "error.at-least-one-admin-required"
 msgstr "您必须至少选择一个管理员"
 
-#: share/plugin/groups/share/widgets/membership/widget.js:490 share/plugin/groups/share/widgets/membership/widget.js:549
 msgid "error.at-least-one-group-admin-needed"
-msgstr "Groups need at least one admin"
+msgstr "群组必须有至少一位管理员。"
 
 msgid "error.at-least-one-wiki-required"
 msgstr "您必须至少选择一个工作区"
@@ -3272,9 +3160,8 @@ msgstr "网址中的博客名称太长"
 msgid "error.browser-offline"
 msgstr "浏览器为离线状态，请连入互联网再重试。"
 
-#: share/plugin/people/share/widgets/profile_tags/widget.js:122
 msgid "error.build-profile-tags"
-msgstr "Unable to build tag list."
+msgstr "无法建立标签列表。"
 
 msgid "error.cannot-change-account-logo-with-custom-skin=name"
 msgstr "由于当前使用的是自定义视觉主题，因此帐户标志不可更改。正在使用的视觉主题名为“%1”"
@@ -3372,16 +3259,14 @@ msgstr "本工作区属于帐户 %1 下全体用户，正在终止。"
 msgid "error.delete-group=id,message"
 msgstr "删除群组 ID %1 失败：%2"
 
-#: share/plugin/people/share/widgets/profile_tags/widget.js:51
 msgid "error.delete-profile-tag"
-msgstr "Unable to delete tag."
+msgstr "无法删除标签。"
 
 msgid "error.delete=widget,message"
 msgstr "删除“%1”小工具时出错：%2"
 
-#: share/plugin/groups/share/widgets/workspaces/widget.js:66
 msgid "error.display-list-of-wikis"
-msgstr "Unable to display list of workspaces."
+msgstr "无法显示工作区列表。"
 
 msgid "error.display-page"
 msgstr "页面显示出错。请刷新本页面，如还有问题请联系<a href=\"%1\">Socialtext 客户服务人员</a>"
@@ -3393,19 +3278,19 @@ msgid "error.email-address-required"
 msgstr "必须确定电子邮件地址"
 
 msgid "error.email-adress-required"
-msgstr "未指定电子邮箱"
+msgstr "未指定电子邮件"
 
 msgid "error.email-and-description-required!"
 msgstr "电子邮件与描述为必填项!"
 
 msgid "error.email-for-confirmation-required"
-msgstr "找不到电子邮箱重新发送确认信息。"
+msgstr "找不到电子邮件重新发送确认信息。"
 
 msgid "error.email-missing-for-password-change"
-msgstr "未找到重发变更密码的电子邮箱地址。"
+msgstr "未找到重发变更密码的电子邮件地址。"
 
 msgid "error.email-required"
-msgstr "请输入电子邮箱地址。"
+msgstr "请输入电子邮件地址。"
 
 msgid "error.email-required!"
 msgstr "未提供邮箱"
@@ -3564,10 +3449,10 @@ msgid "error.invalid-confirmation-url"
 msgstr "无效的确认网址。"
 
 msgid "error.invalid-email-address=count,domain"
-msgstr "对不起，下面的 %1 項电子邮箱地址不在域名 %2 下面"
+msgstr "对不起，下面的 %1 項电子邮件地址不在域名 %2 下面"
 
 msgid "error.invalid-email-address=count:"
-msgstr "对不起，下面的 %1 項电子邮箱地址是无效的："
+msgstr "对不起，下面的 %1 項电子邮件地址是无效的："
 
 msgid "error.invalid-email-placement"
 msgstr "新邮件位置必须位于顶部，底部或覆盖。"
@@ -3713,13 +3598,11 @@ msgstr "请选择要插入链接的文本。"
 msgid "error.load-feed=url"
 msgstr "加载订阅出错：%1"
 
-#: share/plugin/groups/share/widgets/information/jemplate/widget.tt2:3
 msgid "error.load-profile-data"
-msgstr "Unable to load profile data."
+msgstr "无法载入个人信息。"
 
-#: share/plugin/people/share/widgets/profile_activities/widget.html:2
 msgid "error.load-widget-content"
-msgstr "Unable to load content for this widget."
+msgstr "无法载入小工具的内容。"
 
 msgid "error.loading-preview-failed"
 msgstr "无法加载预览。"
@@ -4073,7 +3956,7 @@ msgid "error.parsing-data"
 msgstr "解析数据出错"
 
 msgid "error.password-exists-for=email"
-msgstr "电子邮箱地址 %1 已设有密码。"
+msgstr "电子邮件地址 %1 已设有密码。"
 
 msgid "error.password-mismatch"
 msgstr "密码不匹配。"
@@ -4082,7 +3965,7 @@ msgid "error.password-too-short"
 msgstr "密码必须为6位字符或以上。"
 
 msgid "error.pdf-conversion-failed"
-msgstr "错误：<pre>无法转换为PDF</pre>"
+msgstr "错误：<pre>无法转换为 PDF</pre>"
 
 msgid "error.phone-home=url,response"
 msgstr "不能发送设备用户报告数据至“%1”：%2"
@@ -4294,17 +4177,14 @@ msgstr "电子表格名称太长。请缩短名称，再试一次。"
 msgid "error.show-pref-for-multiple-plugins"
 msgstr "show-plugin-prefs 只用于单个插件"
 
-#: share/plugin/people/share/widgets/profile_network/widget.js:6
 msgid "error.show-profile-followers"
-msgstr "Unable to show list of Followers."
+msgstr "无法显示关注您的人。"
 
-#: share/plugin/people/share/widgets/profile_network/widget.js:12
 msgid "error.show-profile-following"
-msgstr "Unable to show list of Followed people."
+msgstr "无法显示您关注的人。"
 
-#: share/plugin/people/share/widgets/profile_network/widget.js:18
 msgid "error.show-profile-groups"
-msgstr "Unable to show list of groups."
+msgstr "无法显示群组列表。"
 
 msgid "error.signal-too-long=limit"
 msgstr "您的讯息超过了 %1 字数"
@@ -4735,13 +4615,11 @@ msgstr "到"
 msgid "explore.today"
 msgstr "今天"
 
-#: share/plugin/signals/share/widgets/explore_filters/widget.js:181
 msgid "explore.type-to-select-group"
-msgstr "type to select specific group"
+msgstr "输入来选择特定群组"
 
-#: share/plugin/signals/share/widgets/explore_filters/widget.js:260
 msgid "explore.type-to-select-tag"
-msgstr "type to select specific tag"
+msgstr "输入来选择特定标签"
 
 msgid "explore.using-filters"
 msgstr "使用下面的过滤器来筛选结果。点击“x”来取消过滤。"
@@ -4761,9 +4639,8 @@ msgstr "导出为 PDF"
 msgid "export.word"
 msgstr "导出为 Word"
 
-#: lib/Socialtext/Syndicate/Feed.pm:140
 msgid "feed.attachments:"
-msgstr "Attachments:"
+msgstr "附件："
 
 msgid "feed.avatar=user"
 msgstr "%1 的头像"
@@ -4777,17 +4654,14 @@ msgstr "在订阅输出中显示多少博客？"
 msgid "feed.search=wiki,query"
 msgstr "%1：搜索 %2"
 
-#. ($self->hub->main->product_version)
-#: lib/Socialtext/SyndicatePlugin.pm:272
 msgid "feed.socialtext-wiki=version"
-msgstr "Socialtext Workspace v%1"
+msgstr "Socialtext 工作区 v%1"
 
 msgid "feed.tags=tags"
 msgstr "标签：%1"
 
-#: lib/Socialtext/Syndicate/Feed.pm:69
 msgid "feed.updated-by=creator,editor"
-msgstr "%1 (updated by %2)"
+msgstr "%1（由 %2 更新）"
 
 msgid "feed.watchlist=wiki,user"
 msgstr "%1：关注 %2"
@@ -4915,9 +4789,8 @@ msgstr "群组名和描述符合“%1”"
 msgid "group.name"
 msgstr "群组名称"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/workspaces.tt2:16
 msgid "groups.add-wikis"
-msgstr "Add Workspaces"
+msgstr "添加工作区"
 
 msgid "groups.admin-can-change-setting-after-creation"
 msgstr "群组管理员在创建完群组后，可以更改其设置。"
@@ -4925,28 +4798,23 @@ msgstr "群组管理员在创建完群组后，可以更改其设置。"
 msgid "groups.all-available"
 msgstr "所有可用的群组"
 
-#: share/plugin/groups/share/widgets/membership/widget.js:249
 msgid "groups.all-members-in-group-account-can-see-wiki-content"
-msgstr "All of the members in the Group account can see the workspace content."
+msgstr "群组帐户内的所有成员均可看见工作区的内容。"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:24
 msgid "groups.begin-typing-name-here"
-msgstr "begin typing name here..."
+msgstr "键入名字..."
 
-#: share/plugin/groups/share/widgets/membership/jemplate/workspaces.tt2:21
 msgid "groups.begin-typing-wiki-here"
-msgstr "begin typing workspace here..."
+msgstr "键入工作区..."
 
-#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:40
 msgid "groups.change"
-msgstr "Change"
+msgstr "变更"
 
 msgid "groups.change-type"
 msgstr "变更群组类型"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/list.tt2:53
 msgid "groups.changed"
-msgstr "changed"
+msgstr "已变更"
 
 msgid "groups.choose-type-then-click-next"
 msgstr "请选择群组类型，然后点击<b>下一步</b>"
@@ -4969,18 +4837,14 @@ msgstr "创建群组..."
 msgid "groups.create-new-group"
 msgstr "创建新群组"
 
-#. (ws_title)
-#: share/plugin/groups/share/widgets/workspaces/widget.js:27
 msgid "groups.create-new-page-in=wiki"
-msgstr "Create new page in %1"
+msgstr "在 %1 中新建页面"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/workspaces.tt2:41
 msgid "groups.create-new-wiki"
-msgstr "Create New Workspace"
+msgstr "新建工作区"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:31 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:44
 msgid "groups.creating-self-join-wiki"
-msgstr "You are creating a self-join workspace. Non-members will be able to discover the workspace through search, activity updates and profile pages of workspace members, and the home page of this group. Non-members can see the workspace content."
+msgstr "您正在创建自行加入工作区。群组外的用户能通过搜索、活动列表、成员个人页面和首页等等方式找到该工作区，并看见其中的内容。"
 
 msgid "groups.delete"
 msgstr "删除群组"
@@ -4994,46 +4858,38 @@ msgstr "删除这个群组"
 msgid "groups.delete=name"
 msgstr "删除 %1"
 
-#: share/plugin/groups/share/widgets/edit_information/widget.js:163
 msgid "groups.description-1000-characters-max"
-msgstr "Description is limited to 1000 characters"
+msgstr "描述字数限 1000 字符以内"
 
-#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:9
 msgid "groups.description:"
-msgstr "Description:"
+msgstr "描述："
 
 msgid "groups.directory"
 msgstr "群组目录"
 
-#: share/plugin/groups/share/widgets/information/jemplate/widget.tt2:12
 msgid "groups.edit"
-msgstr "(Edit)"
+msgstr "（编辑）"
 
 msgid "groups.edit=name"
 msgstr "编辑群组：%1"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/list.tt2:11 share/plugin/groups/share/widgets/membership/jemplate/list.tt2:13
 msgid "groups.first"
-msgstr "first"
+msgstr "最前"
 
 msgid "groups.group"
 msgstr "群组"
 
-#: share/plugin/groups/share/widgets/workspaces/widget.js:8
 msgid "groups.group-is-not-member-of-any-wikis"
-msgstr "This group is not a member of any workspaces."
+msgstr "本群组不属于任何工作区。"
 
-#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:14
 msgid "groups.group-logo-image:"
-msgstr "Group Logo / Image:"
+msgstr "群组标志图片："
 
-#: share/plugin/groups/share/widgets/information/jemplate/widget.tt2:30
 msgid "groups.group-type"
-msgstr "Group Type"
+msgstr "群组类别"
 
-#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:36
 msgid "groups.group-type:"
-msgstr "Group Type:"
+msgstr "群组类别："
 
 msgid "groups.leave"
 msgstr "离开群组"
@@ -5041,9 +4897,8 @@ msgstr "离开群组"
 msgid "groups.member"
 msgstr "成员"
 
-#: share/plugin/groups/template/grouplist:105 share/plugin/groups/template/grouplist:38
 msgid "groups.member-plural"
-msgstr "members"
+msgstr "成员"
 
 msgid "groups.members"
 msgstr "成员"
@@ -5051,49 +4906,38 @@ msgstr "成员"
 msgid "groups.name"
 msgstr "名称"
 
-#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:3
 msgid "groups.name-of-group:"
-msgstr "Name of Group:"
+msgstr "群组名称："
 
-#: share/plugin/groups/share/widgets/edit_information/widget.js:159
 msgid "groups.name-required"
-msgstr "Name is required"
+msgstr "必须要有名称"
 
-#: share/plugin/groups/share/widgets/workspaces/widget.js:29
 msgid "groups.new-page"
-msgstr "new page"
+msgstr "新页面"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/list.tt2:17 share/plugin/groups/share/widgets/membership/jemplate/list.tt2:19
 msgid "groups.next"
-msgstr "next"
+msgstr "下一个"
 
 msgid "groups.next-step"
 msgstr "下一步"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:11
 msgid "groups.no-other-members-use-form-below-to-invite"
-msgstr "Currently, you are the only member of this group.<br/>Use the form below to invite your colleagues."
+msgstr "当前，您是本群组的唯一成员。<br/>请在下方邀请您的同事。"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/workspaces.tt2:7
 msgid "groups.no-wikis-use-form-below-to-select"
-msgstr "Currently, there are no workspaces associated with this group. Use the form below to select workspaces."
+msgstr "当前，没有任何工作区关联至本群组。请在下方选择工作区。"
 
-#. (button)
-#: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:4
 msgid "groups.note-click-at-bottom-of-screen-to-save-changes=button"
-msgstr "NOTE: Click <b>%1</b> at the bottom of the screen to save changes."
+msgstr "提示：点击屏幕底端的<b>%1</b>来保存所做的更改。"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:39
 msgid "groups.note-message-sent-to-added-members-only"
-msgstr "NOTE: message sent to added members only"
+msgstr "提示：消息只发送给已添加的成员。"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:37
 msgid "groups.personal-message-optional:"
-msgstr "Personal message (optional):"
+msgstr "个人消息（可选）："
 
-#: share/plugin/groups/share/widgets/membership/jemplate/list.tt2:5 share/plugin/groups/share/widgets/membership/jemplate/list.tt2:7
 msgid "groups.previous"
-msgstr "previous"
+msgstr "前一个"
 
 msgid "groups.private"
 msgstr "私密群组"
@@ -5101,21 +4945,17 @@ msgstr "私密群组"
 msgid "groups.private-not-listed-in-directory"
 msgstr "不列入群组名单；只有管理员可以邀请新成员。"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/list.tt2:60
 msgid "groups.remove"
-msgstr "remove"
+msgstr "移除"
 
-#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:31
 msgid "groups.reset-photo"
-msgstr "Reset Photo"
+msgstr "重置照片"
 
-#: share/plugin/groups/share/widgets/membership/widget.js:425
 msgid "groups.role-admin"
-msgstr "Admin"
+msgstr "管理员"
 
-#: share/plugin/groups/share/widgets/membership/widget.js:424
 msgid "groups.role-member"
-msgstr "Member"
+msgstr "成员"
 
 msgid "groups.save"
 msgstr "保存"
@@ -5138,64 +4978,50 @@ msgstr "列入群组名单；任何人都可以加入。"
 msgid "groups.showing=from,to,total"
 msgstr "显示第 %1 - %2 个群组，共 %3 个"
 
-#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:7
 msgid "groups.status"
-msgstr "Status"
+msgstr "状态"
 
 msgid "groups.successfully-deleted=name"
 msgstr "群组 %1 已成功删除。"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:30 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:43
 msgid "groups.title-of-your-new-wiki-can-changed-later"
-msgstr "This will be the title of your new workspace. It can be changed later."
+msgstr "这是您新工作区的标题。以后您还可以修改这个标题。"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:23 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:37
 msgid "groups.title:"
-msgstr "Title:"
+msgstr "标题："
 
 msgid "groups.toggling-self-join-and-private"
 msgstr "将私密群组转变为自行加入群组后，群组帐户里的任何用户都可以加入群组，之后还可以选择邀请其他人加入。将自行加入群组转变为私密群组后，该群组将会在群组名单中消失，只能由群组管理员邀请加入。"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/list.tt2:60
 msgid "groups.undo"
-msgstr "undo"
+msgstr "撤销"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:50
 msgid "groups.url:"
-msgstr "URL:"
+msgstr "链接："
 
-#: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:32
 msgid "groups.use-input-above-to-invite-group-members"
-msgstr "Use the input above to invite colleagues to this group."
+msgstr "使用上方的输入框来邀请同事进入本群组。"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/workspaces.tt2:29
 msgid "groups.use-input-above-to-select-group-wikis"
-msgstr "Use the input above to select workspaces to associate with this group."
+msgstr "使用上方的输入框来将工作区关联至本群组。"
 
-#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:44
 msgid "groups.wiki-prevents-updating-group-permissions"
-msgstr "This group has at least one workspace that prevents you from being able to update the group permissions."
+msgstr "本群组中某些工作区的权限，让您无法更新群组权限。"
 
-#: share/plugin/groups/share/widgets/membership/widget.js:308
 msgid "groups.wiki-with-that-name-already-exists"
-msgstr "A Workspace with that name already exists"
+msgstr "已存在该名称的工作区"
 
 msgid "groups.you-are-member"
 msgstr "您当前是这个群组的成员。"
 
-#: share/plugin/groups/share/widgets/all_groups/widget.js:70
 msgid "groups.you-are-now-member-of-group"
-msgstr "You are now a member of the <strong>&nbsp;</strong> group."
+msgstr "您现在是 <strong>&nbsp;</strong> 群组的成员了。"
 
-#. ('<span class="workspace-permission-set">&nbsp;</span>', '<span class="group-permission-set">&nbsp;</span>')
-#. ("<span class=\"workspace-permission-set\">&nbsp;</span>", "<span class=\"group-permission-set\">&nbsp;</span>")
-#: share/plugin/groups/share/widgets/membership/jemplate/workspaces.tt2:30
 msgid "groups.you-can-only-associate=wiki-acl,group-acl"
-msgstr "You can only associate %1 workspaces with a %2 group."
+msgstr "您只能关联%1工作区到一个%2的群组。"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/workspaces.tt2:32
 msgid "groups.you-must-be-wiki-admin-to-associate-it-with-group"
-msgstr "You must be an Admin of the workspace in order to associate it with this group."
+msgstr "您必须是工作区的管理员，方能关联该工作区至本群组。"
 
 msgid "image.upload"
 msgstr "上传图片"
@@ -6781,21 +6607,17 @@ msgstr "选项已保存"
 msgid "pref.updated=plugins"
 msgstr "%1 插件的选项已更新。"
 
-#: share/plugin/people/share/widgets/profile_network/widget.js:4
 msgid "profile.about-no-followers"
-msgstr "No one Follows you yet. When viewing your profile, a person may Follow you by clicking 'Follow this person' near the top of the profile."
+msgstr "尚未有人关注您。当某人查看您的个人页面时，他可通过点击页面顶部的“关注”来关注您。"
 
-#: share/plugin/people/share/widgets/profile_network/widget.js:10
 msgid "profile.about-no-following"
-msgstr "You Follow no one yet.  When viewing a profile, you may Follow that person by clicking 'Follow this person' near the top of the profile."
+msgstr "您尚未关注他人。当查看某人的个人页面时，您可以通过点击页面顶部的“关注”来关注此人。"
 
 msgid "profile.activities"
 msgstr "活动"
 
-#. ("<span class='realName'>__ENV_owner_name__</span>")
-#: share/plugin/people/share/widgets/profile_activities/widget.html:11
 msgid "profile.activity-rss-link=user"
-msgstr "View <a id='rss_link' href='#'>RSS feed</a> for <b>%1's Activity</b>."
+msgstr "<a id='rss_link' href='#'>RSS 订阅</a> %1 的活动。"
 
 msgid "profile.aim:"
 msgstr "AIM："
@@ -6806,9 +6628,8 @@ msgstr "助理"
 msgid "profile.blog:"
 msgstr "博客："
 
-#: share/plugin/people/share/widgets/profile_edit/widget.html:54
 msgid "profile.contact"
-msgstr "Contact"
+msgstr "联系方式"
 
 msgid "profile.create"
 msgstr "创建你的档案"
@@ -6822,9 +6643,8 @@ msgstr "已创建帐户“%2”的档案栏”%1”"
 msgid "profile.custom"
 msgstr "自定义"
 
-#: lib/Socialtext/Pluggable/Plugin/People.pm:177
 msgid "profile.edit"
-msgstr "(edit)"
+msgstr "（编辑）"
 
 msgid "profile.facebook:"
 msgstr "Facebook："
@@ -6835,21 +6655,17 @@ msgstr "此字段在用户资料中可见。"
 msgid "profile.field-visible"
 msgstr "此字段在用户资料中隐藏。"
 
-#: share/plugin/people/share/widgets/profile_network/widget.js:2
 msgid "profile.followers"
-msgstr "Followers"
+msgstr "受谁关注"
 
-#: share/plugin/people/share/widgets/profile_network/widget.js:8
 msgid "profile.follows"
-msgstr "Follows"
+msgstr "关注谁"
 
-#: share/plugin/people/share/widgets/profile_edit/widget.html:31
 msgid "profile.grab-photo"
-msgstr "Grab Photo"
+msgstr "抓取照片"
 
-#: share/plugin/people/share/widgets/profile_network/widget.js:14
 msgid "profile.groups"
-msgstr "Groups"
+msgstr "群组"
 
 msgid "profile.gtalk:"
 msgstr "GTalk："
@@ -6863,9 +6679,8 @@ msgstr "家庭电话"
 msgid "profile.home:"
 msgstr "家庭地址："
 
-#: share/plugin/people/share/widgets/profile_edit/widget.html:59
 msgid "profile.i"
-msgstr "I"
+msgstr "我"
 
 msgid "profile.im"
 msgstr "聊天室"
@@ -6882,33 +6697,26 @@ msgstr "经理"
 msgid "profile.mobile-number"
 msgstr "移动电话"
 
-#: share/plugin/people/share/widgets/profile_network/widget.js:5
 msgid "profile.no-followers"
-msgstr "No one Follows this person yet."
+msgstr "尚未有人关注此人。"
 
-#: share/plugin/people/share/widgets/profile_network/widget.js:11
 msgid "profile.no-following"
-msgstr "This person Follows no one yet."
+msgstr "此人尚未关注任何人。"
 
-#: share/plugin/people/share/widgets/profile_network/widget.js:16
 msgid "profile.no-groups-for-you"
-msgstr "You are a member of no groups."
+msgstr "您不是任何群组的成员。"
 
-#: share/plugin/people/share/widgets/all_tags/widget.js:20
 msgid "profile.no-people-tags"
-msgstr "There are no People tags. Use Add Tags in People profiles to create tags."
+msgstr "没有人员标签。使用人员个人资料中的“添加标签”功能来创建标签。"
 
-#: share/plugin/people/share/widgets/profile_network/widget.js:17
 msgid "profile.no-shared-groups"
-msgstr "You share no groups with this person."
+msgstr "您与此人没有共享任何群组。"
 
-#: share/plugin/people/share/widgets/profile_tags/widget.js:12
 msgid "profile.no-tags"
-msgstr "This person has no tags. Click <b>Add tag</b> to add one now."
+msgstr "此人没有标签。点击<b>添加标签</b>来添加一个。"
 
-#: share/plugin/people/share/widgets/profile_tags/widget.js:11
 msgid "profile.no-tags-for-you"
-msgstr "You have no tags. Use <b>Add Tag</b> to add one now."
+msgstr "您没有标签。点击<b>添加标签</b>来添加一个。"
 
 msgid "profile.organization"
 msgstr "组织"
@@ -6919,9 +6727,8 @@ msgstr "个人："
 msgid "profile.phone"
 msgstr "电话"
 
-#: share/plugin/people/share/widgets/profile_edit/widget.html:5
 msgid "profile.photos"
-msgstr "Photos"
+msgstr "照片"
 
 msgid "profile.sametime:"
 msgstr "同时&reg;："
@@ -6938,9 +6745,8 @@ msgstr "标签"
 msgid "profile.twitter:"
 msgstr "Twitter："
 
-#: share/plugin/people/share/widgets/profile_edit/widget.html:74
 msgid "profile.update"
-msgstr "Update profile"
+msgstr "更新个人资料"
 
 msgid "profile.updated=field"
 msgstr "更新个人资料字段“%1”"
@@ -6948,17 +6754,14 @@ msgstr "更新个人资料字段“%1”"
 msgid "profile.updated=field,account"
 msgstr "帐户“%2”的个人资料“%1”已更新"
 
-#: share/plugin/people/share/widgets/profile_edit/widget.html:17
 msgid "profile.upload-new-photo:"
-msgstr "Upload new photo:"
+msgstr "上传新照片："
 
-#: share/plugin/people/share/widgets/profile_edit/widget.html:22
 msgid "profile.upload-photo"
-msgstr "Upload Photo"
+msgstr "上传照片"
 
-#: share/plugin/people/share/widgets/profile_edit/widget.html:29
 msgid "profile.use-photo-on-web:"
-msgstr "Use photo on the web:"
+msgstr "使用网络上的照片："
 
 msgid "profile.visible=user"
 msgstr "用户“%1”的资料已显示。"
@@ -8730,9 +8533,8 @@ msgstr "添加小工具"
 msgid "widgets.added"
 msgstr "成功添加您的小工具"
 
-#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:14
 msgid "widgets.changes"
-msgstr "changes"
+msgstr "更改"
 
 msgid "widgets.confirm-delete=widget?"
 msgstr "您确定要永久删除这 \"%1\" 小工具？"
@@ -8743,9 +8545,8 @@ msgstr "您确定要移除此 \"%1\" 小工具? 用户将无法在他们的工�
 msgid "widgets.confirm-restore=widget?"
 msgstr "您确定要恢复此 \"%1\" 小工具？"
 
-#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:21
 msgid "widgets.create-new-page-in=wiki"
-msgstr "Create new page in %1"
+msgstr "在 %1 中创建新页面"
 
 msgid "widgets.delete"
 msgstr "（删除）"
@@ -8759,9 +8560,8 @@ msgstr "安装小工具"
 msgid "widgets.manage-gallery-for-accounts"
 msgstr "管理各账号工具库"
 
-#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:21
 msgid "widgets.new-page"
-msgstr "new page"
+msgstr "新页面"
 
 msgid "widgets.no-description"
 msgstr "无描述"
@@ -8790,9 +8590,8 @@ msgstr "成功恢复“%1”小工具"
 msgid "widgets.rss-feed"
 msgstr "RSS 订阅"
 
-#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:6
 msgid "widgets.this-person-belongs-to-no-wikis"
-msgstr "This person belongs to no workspaces."
+msgstr "此人不属于任何工作区。"
 
 msgid "widgets.update"
 msgstr "（更新）"
@@ -8812,13 +8611,11 @@ msgstr "上传小工具 XML 文件："
 msgid "widgets.use-editor"
 msgstr "使用小工具编辑器"
 
-#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:13
 msgid "widgets.views"
-msgstr "views"
+msgstr "视图"
 
-#: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:4
 msgid "widgets.you-belong-to-no-wikis"
-msgstr "You belong to no workspaces."
+msgstr "您不属于任何工作区。"
 
 msgid "wiki.acl-custom"
 msgstr "自定权限"
@@ -9018,9 +8815,8 @@ msgstr "显示“最近浏览”侧边栏？"
 msgid "wiki.show-sidebox?"
 msgstr "在页面视图中显示为侧边栏？"
 
-#: lib/Socialtext/BacklinksPlugin.pm:16
 msgid "wiki.sidebox-number-of-backlinks?"
-msgstr "How many backlinks to show in side pane box"
+msgstr "侧窗格中显示的反向链接数量"
 
 msgid "wiki.sidebox-number-of-breadcrumbs?"
 msgstr "显示多少页面在侧边栏？"
@@ -9043,9 +8839,8 @@ msgstr "标签"
 msgid "wiki.title"
 msgstr "工作区标题"
 
-#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:24 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:31
 msgid "wiki.title:"
-msgstr "Title:"
+msgstr "标题："
 
 msgid "wiki.to-existing-group"
 msgstr "要添加一个工作区到<strong>已存在的群组</strong>，请到主导航列的<a href=\"/st/groups\">“群组目录”</a>下拉菜单中，选择您的群组，并点击“编辑”來创建您的工作区。"

@@ -106,6 +106,219 @@ msgstr "要更改您的密码，请使用此链接："
 msgid "email.following-pages-have-recently-changed=uri,wiki,date,time"
 msgstr "下列位于 <a href=\"%1\">%2</a> 的页面最近已被更改。本电子邮件生成于 %3，%4。"
 
+msgid "email.following-pages-have-recently-changed=wiki,date,time"
+msgstr "%1 的下列页面最近被更改。本电子邮件于 %2 %3 发送。"
+
+msgid "email.following-pages-in-watchlist-have-recently-changed=watchlist,wiki,uri,date,time"
+msgstr "您在 <a href=\"%3\">%2</a> 的<a href=\"%1\">关注列表</a>中的下列页面最近被更改。本电子邮件于 %4 的 %5 创建。"
+
+msgid "email.following-pages-in-watchlist-have-recently-changed=wiki,date,time"
+msgstr "您在 %1 的关注列表中的下列页面最近被更改。本电子邮件于 %2 的 %3 创建。"
+
+msgid "email.go-to"
+msgstr "前往"
+
+msgid "email.go-to-test-confirmation-message-home-page"
+msgstr "前往测试确认消息主页。"
+
+msgid "email.greetings-from-socialtext"
+msgstr "来自 Socialtext 的问候，"
+
+msgid "email.happy-collaborating!"
+msgstr "祝您协作愉快！"
+
+msgid "email.hello"
+msgstr "您好，"
+
+msgid "email.hi"
+msgstr "您好，"
+
+msgid "email.home-page"
+msgstr "主页"
+
+msgid "email.if-unsolicited-contact-abuse"
+msgstr "如果您没有申请加入您公司的协作群组，请联系 abuse@socialtext.com"
+
+msgid "email.if-unsolicited-contact-abuse-link"
+msgstr "如果您没有申请加入您公司的协作群组，请联系 <a href=\"mailto:abuse@socialtext.com\">abuse@socialtext.com</a>"
+
+msgid "email.invitation-request"
+msgstr "邀请请求"
+
+msgid "email.invite-other-people-to-test-confirmation-message"
+msgstr "邀请其他人来测试确认消息。"
+
+msgid "email.invite-to-join=container"
+msgstr "邀请别人加入 %1"
+
+msgid "email.invited-as-admin-to-new=wiki"
+msgstr "您已受邀成为“%1”的管理员，这是一个全新的 Socialtext 工作区。"
+
+msgid "email.inviting-you-to-join-sign-in-below=wiki:"
+msgstr "我想邀请您加入 %1，这是我们共享的工作区。登录信息如下："
+
+msgid "email.inviting-you-to-join=account"
+msgstr "我想邀请您加入 %1，这是我们共享的 Socialtext 工作区。"
+
+msgid "email.inviting-you-to-join=group"
+msgstr "我想邀请您加入 %1，这是我们在 Socialtext 的群组。"
+
+msgid "email.inviting-you-to-join=group,host"
+msgstr "我想邀请您在 %2 加入 %1 群组。"
+
+msgid "email.inviting-you-to-join=wiki"
+msgstr "我正在邀请您加入 %1，这是我们共享的工作区。"
+
+msgid "email.is-group-on=host"
+msgstr "是 %1 的一个群组。"
+
+msgid "email.keep-this-for-future-reference"
+msgstr "您不妨保留这份邮件，以备日后参考之用。"
+
+msgid "email.last-edited-by"
+msgstr "前次编辑"
+
+msgid "email.leader-in-enterprise-social-software"
+msgstr "企业社会化软件的领导者"
+
+msgid "email.login-with-email-address:"
+msgstr "使用您的电子邮件地址登录："
+
+msgid "email.once-confirmed-you-will-receive-second-email-with-login-details"
+msgstr "一旦您确认了您的帐户，您将会收到包含登录信息的第二封电子邮件。"
+
+msgid "email.page-edit=action,user,profile-uri,time"
+msgstr "%1 <a href=\"%3\">%2</a> %4"
+
+msgid "email.page-edit=action,user,summary,profile-uri,time"
+msgstr "%1 <a href=\"%4\">%2</a> %5：\"%3\""
+
+msgid "email.page-edit=action,user,summary,time"
+msgstr "%1 %2 %4：\"%3\""
+
+msgid "email.page-edit=action,user,time"
+msgstr "%1 %2 %3"
+
+msgid "email.questions-about-email-contact-support-link=uri"
+msgstr "如果您有关于该电子邮件的问题，请 %1"
+
+msgid "email.questions-about-email-contact-support=uri"
+msgstr "如果您有关于该电子邮件的问题，请联系技术支持：%1."
+
+msgid "email.questions-contact-support=uri"
+msgstr "如果您有问题，请联系技术支持：%1."
+
+msgid "email.questions-please"
+msgstr "如果您有问题，请"
+
+msgid "email.ready-to-set-up-new-wiki-choose-your-next-step:"
+msgstr "已准备好设置您的新工作区。请选择您的下一步操作："
+
+msgid "email.recent-changes-in=wiki"
+msgstr "%1 的近期变更"
+
+msgid "email.request-invite=user,wiki:"
+msgstr "%1 需要请您邀请新用户到 %2 工作区："
+
+msgid "email.review-settings-for-test-confirmation-message:"
+msgstr "查看或变更测试确认消息设置："
+
+msgid "email.same-password-as-existing-account=a,app,app"
+msgstr "因为您已拥有 %2 帐户，密码与您在 %3 群组中使用的密码相同。"
+
+msgid "email.same-password-as-existing-group=a,app,app"
+msgstr "因为您已拥有 %2 群组，密码与您在 %3 群组中使用的密码相同。"
+
+msgid "email.same-password-as-existing-wiki=a,app,app"
+msgstr "因为您已拥有 %2 帐户，密码与您在 %3 工作区中使用的密码相同。"
+
+msgid "email.sign-in-using-information-below:"
+msgstr "使用下方信息登录："
+
+msgid "email.sign-in-with-openid-now"
+msgstr "您现在可以使用 OpenID 登录我们的系统。在 Socialtext 登录界面，请输入您的 OpenID 到指定区域，您即会被重定向至 OpenID 网站以确认您的身份。一旦您完成身份认证，您会返回至 Socialtext 网站并能够访问工作区。"
+
+msgid "email.thank-you-for-joining-company-collaboration-group-hosted-by-socialtext"
+msgstr "感谢您加入您公司的协作群组，该群组由 Socialtext 提供。"
+
+msgid "email.thanks"
+msgstr "感谢，"
+
+msgid "email.to-do-so-go-to-this-web-address:"
+msgstr "要这样做，请前往此网址："
+
+msgid "email.to-invite-users-visit-wiki-invite-page"
+msgstr "要邀请这些用户，请访问工作区的用户邀请页面，并复制以上列表粘贴到邀请框中。"
+
+msgid "email.to-invite-users-visit-wiki-invite-page-link:"
+msgstr "要邀请这些用户到工作区，请访问工作区的用户邀请页面，<br />并复制以上列表粘贴到邀请框中。<br />用户邀请页面的网址是："
+
+msgid "email.to-start-click-above"
+msgstr "点击上方链接后，您即可立即开始与您的同事分享微博讯息，并利用社交网络和共笔工作区来增进彼此的工作。您也可以设置自己的个人主页。"
+
+msgid "email.to-start-click-above-link"
+msgstr "点击上方链接后，您即可立即开始与您的同事分享微博讯息，并利用社交网络和共笔工作区来增进彼此的工作。您也可以设置自己的个人主页。"
+
+msgid "email.today-at=time"
+msgstr "今天 %1"
+
+msgid "email.user-invite-page-at:"
+msgstr "用户邀请页面的网址是："
+
+msgid "email.username:"
+msgstr "用户名称："
+
+msgid "email.watchlist-update-for=wiki"
+msgstr "%1 的关注列表更新"
+
+msgid "email.we-encourage-you-to-invite-others"
+msgstr "我们鼓励您邀请其他同事来加入您公司的协作群组。"
+
+msgid "email.web-address:"
+msgstr "网站地址："
+
+msgid "email.welcome-confirm-email-to-join"
+msgstr "欢迎来到 Socialtext 社区 – 请确认您的电子邮件地址来加入"
+
+msgid "email.welcome-confirm-email-to-join=account"
+msgstr "欢迎来到 %1 社区 – 请确认您的电子邮件地址来加入"
+
+msgid "email.welcome-to"
+msgstr "欢迎来到"
+
+msgid "email.wiki-appearance"
+msgstr "工作区外观"
+
+msgid "email.wiki-features"
+msgstr "工作区功能"
+
+msgid "email.wiki-in-group-at=wiki,group"
+msgstr "%2 群组中的 %1 工作区于"
+
+msgid "email.wiki-privacy"
+msgstr "工作区隐私"
+
+msgid "email.yesterday-at=time"
+msgstr "昨天 %1"
+
+msgid "email.you"
+msgstr "您"
+
+msgid "email.you-are-member-of-following-groups:"
+msgstr "您是下列群组中的成员："
+
+msgid "email.you-are-member-of-following-wikis:"
+msgstr "您是下列工作区的成员："
+
+msgid "email.your-email-has-been-confirmed"
+msgstr "已确认您的电子邮件地址"
+
+msgid "email.your-profile-has-been-added-to-directory=account"
+msgstr "您的个人资料已被添加至 %1 目录。"
+
+msgid "email.your-profile-has-been-added-to-people-directory"
+msgstr "您的个人资料已被添加至人员目录。"
+
 msgid "error.admin-privileges-needed-to-access-uri"
 msgstr "您必须拥有管理员权限来访问此网址。"
 
@@ -328,6 +541,12 @@ msgstr "登入到 Socialtext"
 msgid "login.login-with-socialtext-account:"
 msgstr "使用您的 Socialtext 帐户来登入："
 
+msgid "login.logout"
+msgstr "登出"
+
+msgid "login.no-problem-we-can-send-you-email"
+msgstr "没问题，我们可以发送一封电子邮件给您，让您重新设定密码。"
+
 #: share/template/authen/element/register_form:26 share/template/authen/element/register_form:31
 msgid "login.optional"
 msgstr "(可选)"
@@ -347,6 +566,9 @@ msgstr "注册"
 #: share/template/authen/element/login_form:24
 msgid "login.remember-me"
 msgstr "在这台电脑上保持登入。"
+
+msgid "login.socialtext-password-help"
+msgstr "Socialtext 密码支持"
 
 #: share/template/authen/element/forgot_password_form:13
 msgid "login.submit"
@@ -372,12 +594,3 @@ msgstr "您已成功登出 Socialtext。"
 #: share/template/authen/element/choose_password_form:20
 msgid "password.choose:"
 msgstr "指定密码："
-
-msgid "login.logout"
-msgstr "登出"
-
-msgid "login.no-problem-we-can-send-you-email"
-msgstr "没问题，我们可以发送一封电子邮件给您，让您重新设定密码。"
-
-msgid "login.socialtext-password-help"
-msgstr "Socialtext 密码支持"

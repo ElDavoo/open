@@ -9,17 +9,68 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "error.invalid=email"
-msgstr "\"%1\" 不是一个有效的电子邮件地址"
+msgid "appliance.archiving-system-config-files"
+msgstr "正在存档系统配置文件..."
 
-msgid "console.upload-complete=download-link,mailto-link"
-msgstr "%1 上传完成。您的信息已提交给 %2。"
+msgid "appliance.backup-id"
+msgstr "备份ID"
 
-msgid "console.uploading-tarball=download-link"
-msgstr "正在上传压缩档 %1 到 Socialtext..."
+msgid "appliance.backup-time"
+msgstr "备份时间"
 
-msgid "console.leave-blank-to-use-built-in-smtp-server"
-msgstr "（此处留白以使用设备的内置 SMTP 服务器）"
+msgid "appliance.backups-for-restore:"
+msgstr "可供恢复的备份："
+
+msgid "appliance.cleanup-previous-snapshot"
+msgstr "正在清除前一个快照..."
+
+msgid "appliance.taking-database-snapshot"
+msgstr "生成数据库快照..."
+
+msgid "console.about-authentication-token-timeout"
+msgstr "出于安全的原因，认证标记在预先定义的期间过后将自动失效，即使用户选择了“在本计算机上记住我”。该期间最短为“1天”，最长为“365天”，默认为“14天”。您可以在此更改该期间。"
+
+msgid "console.about-backup-settings"
+msgstr "本设备可以在另外一台计算机上兼容Windows或SMB的目录或文件夹中存储备份文件。在此设置备份服务器、目录与用户名。"
+
+msgid "console.about-captcha-setting"
+msgstr "如果您的 Socialtext 设备公开在公共互联网上，垃圾邮件制造者与自动“机器人”会尝试自行注册。“验证码”服务会要求注册者通过辨认一段文本（验证码）来证实其为人类。如果您的设备为公开在公共互联网的话，请使用该设置。"
+
+msgid "console.about-desktop-nav-setting"
+msgstr "注意：如果该选项被禁用，则<tt>桌面</tt>链接将不再出现在全域导航菜单上。"
+
+msgid "console.about-disable-automatic-updates"
+msgstr "若要禁止自动更新，您可以选中本选框并点击提交"
+
+msgid "console.about-initialize-wikis"
+msgstr "该操作将删除本设备上全部现有的工作区与用户，并创建一个管理工作区"
+
+msgid "console.about-invalid-limit"
+msgstr "一旦达到无效限制，系统将强制用户重新登录"
+
+msgid "console.about-login-after-initialize-wikis"
+msgstr "在您点击“初始化工作区”后您将被要求登录控制台"
+
+msgid "console.about-login-message"
+msgstr "您可以添加一条对方可在其 <a href=\"/challenge\">登录屏幕</a>上看到的信息"
+
+msgid "console.about-maximum-signal-length"
+msgstr "您可以为讯息设置一个服务器全局的最大长度。每个帐户可以为发送至该帐户或该帐户的组的讯息设定一个更小的限制。"
+
+msgid "console.about-navigation-tabs"
+msgstr "使用导航标签来选择设备管理的不同部分"
+
+msgid "console.about-ntp-server=help-link"
+msgstr "您可以使用 NTP 协议将本设备的时钟与另一台计算机进行同步。设备必须可以通过123端口访问该服务器。更多信息请查看：%1。"
+
+msgid "console.about-poxy-server=help-link"
+msgstr "您可以设置一个代理服务器，以允许用户可以访问包括面板小工具与RSS源在内的网络服务。更多信息请查看：%1"
+
+msgid "console.about-support-contact"
+msgstr "在此设置用户可以通过登录、应用访问或目录访问方式，以获取帮助的电子邮件地址或网址"
+
+msgid "console.about-username-password-after-initialize-wikis"
+msgstr "以上您输入的电子邮件地址将作为用户名，密码为<strong>password</strong>。您可以稍后更改密码。"
 
 msgid "console.add-administrator"
 msgstr "添加管理员"
@@ -27,35 +78,20 @@ msgstr "添加管理员"
 msgid "console.add-appliance-administrators"
 msgstr "添加设备管理员"
 
-msgid "console.about-invalid-limit"
-msgstr "一旦达到无效限制，系统将强制用户重新登录"
-
 msgid "console.after-renew-limit"
 msgstr "一旦达到更新限制，用户将会立即被要求重新认证，但是如果用户正在工作进行过程，如编辑页面、查看页面或阅读讯息，则用户不会被注销"
 
 msgid "console.allow-automatic-updating"
 msgstr "允许自动更新"
 
-msgid "console.apache-logs"
-msgstr "Apache 日志"
-
 msgid "console.apache-error-log"
 msgstr "Apache 错误日志"
 
+msgid "console.apache-logs"
+msgstr "Apache 日志"
+
 msgid "console.appliance"
 msgstr "设备管理"
-
-msgid "console.documentation"
-msgstr "设备文档"
-
-msgid "console.manual-wiki"
-msgstr "设备手册工作区"
-
-msgid "console.screen-generate-time:"
-msgstr "生成本屏幕时的设备时钟："
-
-msgid "appliance.archiving-system-config-files"
-msgstr "正在存档系统配置文件..."
 
 msgid "console.automatic-backup-schedule"
 msgstr "自动备份计划"
@@ -69,41 +105,11 @@ msgstr "备份"
 msgid "console.backup-destination"
 msgstr "备份目标"
 
-msgid "appliance.backup-id"
-msgstr "备份ID"
-
 msgid "console.backup-now"
 msgstr "立刻备份"
 
-msgid "appliance.backup-time"
-msgstr "备份时间"
-
-msgid "appliance.backups-for-restore:"
-msgstr "可供恢复的备份："
-
 msgid "console.building-diagnostic-tarball"
 msgstr "建立诊断压缩档..."
-
-msgid "console.default-desktop-update-url"
-msgstr "默认状态下，<a _target=\"blank\" href=\"http://www.socialtext.com/products/desktop.php\">Socialtext 桌面</a>会自动从 www.socialtext.com 取得更新"
-
-msgid "do.cancel"
-msgstr "取消"
-
-msgid "error.create-test-file-on-samba-share!"
-msgstr "无法在 Samba 共享中创建测试文件!"
-
-msgid "error.unlink-test-file-on-samba-share!"
-msgstr "无法在 Samba 共享中删除测试文件!!"
-
-msgid "error.write-test-file-on-samba-share!"
-msgstr "无法在 Samba 共享中写入测试文件!!"
-
-msgid "appliance.cleanup-previous-snapshot"
-msgstr "正在清除前一个快照..."
-
-msgid "do.close"
-msgstr "关闭"
 
 msgid "console.contact-socialtext-support"
 msgstr "联系 Socialtext 支持"
@@ -114,29 +120,26 @@ msgstr "控制台"
 msgid "console.create-initial-wiki"
 msgstr "创建初始工作区"
 
+msgid "console.default-desktop-update-url"
+msgstr "默认状态下，<a _target=\"blank\" href=\"http://www.socialtext.com/products/desktop.php\">Socialtext 桌面</a>会自动从 www.socialtext.com 取得更新"
+
 msgid "console.disk-usage"
 msgstr "硬盘使用情况"
+
+msgid "console.documentation"
+msgstr "设备文档"
 
 msgid "console.email-for-testing:"
 msgstr "供测试的电子邮件地址："
 
-msgid "error.email-and-description-required!"
-msgstr "电子邮件与描述为必填项!"
-
 msgid "console.enable-captcha"
 msgstr "允许验证码要求注册用户证实其为人类"
 
-msgid "error.socialtext-appliance-backup"
-msgstr "Socialtext 设备备份过程中出错"
-
-msgid "console.about-authentication-token-timeout"
-msgstr "出于安全的原因，认证标记在预先定义的期间过后将自动失效，即使用户选择了“在本计算机上记住我”。该期间最短为“1天”，最长为“365天”，默认为“14天”。您可以在此更改该期间。"
+msgid "console.free"
+msgstr "空闲"
 
 msgid "console.how-to-configure-web-proxy"
 msgstr "如何配置网页代理"
-
-msgid "console.about-captcha-setting"
-msgstr "如果您的 Socialtext 设备公开在公共互联网上，垃圾邮件制造者与自动“机器人”会尝试自行注册。“验证码”服务会要求注册者通过辨认一段文本（验证码）来证实其为人类。如果您的设备为公开在公共互联网的话，请使用该设置。"
 
 msgid "console.initial-admin-email"
 msgstr "初始设备管理员电子邮件地址"
@@ -144,20 +147,20 @@ msgstr "初始设备管理员电子邮件地址"
 msgid "console.invalid-after-days"
 msgstr "（天）后无效"
 
+msgid "console.leave-blank-to-use-built-in-smtp-server"
+msgstr "（此处留白以使用设备的内置 SMTP 服务器）"
+
+msgid "console.link-to-control-panel"
+msgstr "查看与管理系统的工作区、帐户、组与用户，请转至 <a href=\"/nlw/control/\">控制台</a> 工具."
+
 msgid "console.login-message"
 msgstr "登录信息"
 
 msgid "console.login-screen-setup"
 msgstr "登录屏幕设置"
 
-msgid "error.backup-id-required"
-msgstr "必须提供一个备份ID，或者使用列表查看可用备份"
-
-msgid "console.ntp-server-rfc-1305"
-msgstr "NTP 服务器（RFC 1305）"
-
-msgid "console.about-navigation-tabs"
-msgstr "使用导航标签来选择设备管理的不同部分"
+msgid "console.manual-wiki"
+msgstr "设备手册工作区"
 
 msgid "console.new-admin-email-address:"
 msgstr "新的管理员电子邮件地址："
@@ -165,8 +168,8 @@ msgstr "新的管理员电子邮件地址："
 msgid "console.no-files-available-to-restore"
 msgstr "没有可供恢复的文件"
 
-msgid "console.about-desktop-nav-setting"
-msgstr "注意：如果该选项被禁用，则<tt>桌面</tt>链接将不再出现在全域导航菜单上。"
+msgid "console.ntp-server-rfc-1305"
+msgstr "NTP 服务器（RFC 1305）"
 
 msgid "console.other-settings"
 msgstr "其他设置"
@@ -177,14 +180,14 @@ msgstr "外部邮件服务器"
 msgid "console.overview"
 msgstr "概览"
 
+msgid "console.percent-free"
+msgstr "空闲比例"
+
 msgid "console.perform-backup-now"
 msgstr "立刻执行备份"
 
 msgid "console.perform-restore"
 msgstr "执行恢复"
-
-msgid "console.script-tag-stripped-in-login-message"
-msgstr "您可以随时在信息中使用HTML，但是在消息被保存之前，SCRIPT标签（例如JavaScript）将不会显现"
 
 msgid "console.problem-description:"
 msgstr "问题描述："
@@ -197,6 +200,15 @@ msgstr "重启设备"
 
 msgid "console.reboot-now"
 msgstr "立刻重启"
+
+msgid "console.recaptcha-private-key"
+msgstr "reCaptcha 私钥"
+
+msgid "console.recaptcha-public-key"
+msgstr "reCaptcha 公钥"
+
+msgid "console.refresh"
+msgstr "刷新"
 
 msgid "console.refresh-file-list"
 msgstr "刷新文件列表"
@@ -216,14 +228,26 @@ msgstr "立刻恢复"
 msgid "console.save-backup-schedule"
 msgstr "保存备份计划"
 
+msgid "console.screen-generate-time:"
+msgstr "生成本屏幕时的设备时钟："
+
+msgid "console.script-tag-stripped-in-login-message"
+msgstr "您可以随时在信息中使用HTML，但是在消息被保存之前，SCRIPT标签（例如JavaScript）将不会显现"
+
 msgid "console.send-test-email"
 msgstr "发送测试电子邮件"
+
+msgid "console.server-wide-settings-moved-to-control-panel=uri"
+msgstr "服务器范围的访问设置，已移至<a href=\"%1\">业务控制面板</a>。"
 
 msgid "console.set-authentication-token-timeout"
 msgstr "设置认证标记超时"
 
 msgid "console.set-backup-destination"
 msgstr "设置备份目标"
+
+msgid "console.set-custom-login-screen-message"
+msgstr "设置自定义登录屏幕信息"
 
 msgid "console.set-email-configuration"
 msgstr "设置电子邮件配置"
@@ -239,12 +263,6 @@ msgstr "设置支持联系"
 
 msgid "console.set-web-proxy-server"
 msgstr "设置网页代理服务器"
-
-msgid "console.set-custom-login-screen-message"
-msgstr "设置自定义登录屏幕信息"
-
-msgid "console.about-support-contact"
-msgstr "在此设置用户可以通过登录、应用访问或目录访问方式，以获取帮助的电子邮件地址或网址"
 
 msgid "console.setup"
 msgstr "安装"
@@ -279,77 +297,62 @@ msgstr "联系支持"
 msgid "console.synchronize-appliance-clock-now"
 msgstr "立刻同步设备时钟"
 
-msgid "appliance.taking-database-snapshot"
-msgstr "生成数据库快照..."
-
 msgid "console.tarball-built"
 msgstr "压缩档已建立"
-
-msgid "console.about-backup-settings"
-msgstr "本设备可以在另外一台计算机上兼容Windows或SMB的目录或文件夹中存储备份文件。在此设置备份服务器、目录与用户名。"
-
-msgid "console.about-initialize-wikis"
-msgstr "该操作将删除本设备上全部现有的工作区与用户，并创建一个管理工作区"
-
-msgid "console.time-server"
-msgstr "时间服务器"
 
 msgid "console.time-each-day:"
 msgstr "每日时间："
 
-msgid "console.link-to-control-panel"
-msgstr "查看与管理系统的工作区、帐户、组与用户，请转至 <a href=\"/nlw/control/\">控制台</a> 工具."
+msgid "console.time-server"
+msgstr "时间服务器"
 
-msgid "error.unknown=status"
-msgstr "未知：%1"
+msgid "console.total"
+msgstr "总共"
+
+msgid "console.upload-complete=download-link,mailto-link"
+msgstr "%1 上传完成。您的信息已提交给 %2。"
 
 msgid "console.upload-support-tarball-to-socialtext"
 msgstr "上传支持压缩档至 Socialtext"
 
+msgid "console.uploading-tarball=download-link"
+msgstr "正在上传压缩档 %1 到 Socialtext..."
+
 msgid "console.use-captcha-to-prevent-automated-registration"
 msgstr "使用验证码以防止自动注册"
-
-msgid "console.about-username-password-after-initialize-wikis"
-msgstr "以上您输入的电子邮件地址将作为用户名，密码为<strong>password</strong>。您可以稍后更改密码。"
 
 msgid "console.web-service-proxy-address"
 msgstr "网页服务代理地址"
 
-msgid "console.about-login-message"
-msgstr "您可以添加一条对方可在其 <a href=\"/challenge\">登录屏幕</a>上看到的信息"
-
-msgid "console.about-poxy-server=help-link"
-msgstr "您可以设置一个代理服务器，以允许用户可以访问包括面板小工具与RSS源在内的网络服务。更多信息请查看：%1"
-
-msgid "console.about-maximum-signal-length"
-msgstr "您可以为讯息设置一个服务器全局的最大长度。每个帐户可以为发送至该帐户或该帐户的组的讯息设定一个更小的限制。"
-
-msgid "console.about-ntp-server=help-link"
-msgstr "您可以使用 NTP 协议将本设备的时钟与另一台计算机进行同步。设备必须可以通过123端口访问该服务器。更多信息请查看：%1。"
-
-msgid "console.about-disable-automatic-updates"
-msgstr "若要禁止自动更新，您可以选中本选框并点击提交"
-
-msgid "console.about-login-after-initialize-wikis"
-msgstr "在您点击“初始化工作区”后您将被要求登录控制台"
-
 msgid "console.your-email-address:"
 msgstr "您的电子邮件地址："
 
-msgid "console.free"
-msgstr "空闲"
+msgid "do.cancel"
+msgstr "取消"
 
-msgid "console.percent-free"
-msgstr "空闲比例"
+msgid "do.close"
+msgstr "关闭"
 
-msgid "console.recaptcha-private-key"
-msgstr "reCaptcha 私钥"
+msgid "error.backup-id-required"
+msgstr "必须提供一个备份ID，或者使用列表查看可用备份"
 
-msgid "console.recaptcha-public-key"
-msgstr "reCaptcha 公钥"
+msgid "error.create-test-file-on-samba-share!"
+msgstr "无法在 Samba 共享中创建测试文件!"
 
-msgid "console.refresh"
-msgstr "刷新"
+msgid "error.email-and-description-required!"
+msgstr "电子邮件与描述为必填项!"
 
-msgid "console.total"
-msgstr "总共"
+msgid "error.invalid=email"
+msgstr "\"%1\" 不是一个有效的电子邮件地址"
+
+msgid "error.socialtext-appliance-backup"
+msgstr "Socialtext 设备备份过程中出错"
+
+msgid "error.unknown=status"
+msgstr "未知：%1"
+
+msgid "error.unlink-test-file-on-samba-share!"
+msgstr "无法在 Samba 共享中删除测试文件!!"
+
+msgid "error.write-test-file-on-samba-share!"
+msgstr "无法在 Samba 共享中写入测试文件!!"

@@ -78,6 +78,12 @@ msgstr "标签來自"
 msgid "explore.to"
 msgstr "到"
 
+msgid "explore.type-to-select-group"
+msgstr "输入来选择特定群组"
+
+msgid "explore.type-to-select-tag"
+msgstr "输入来选择特定标签"
+
 msgid "explore.using-filters"
 msgstr "使用下面的过滤器来筛选结果。点击“x”来取消过滤。"
 

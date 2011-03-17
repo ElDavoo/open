@@ -15,14 +15,26 @@ msgstr "取消"
 msgid "do.invite"
 msgstr "邀请"
 
+msgid "error.add-profile-tag"
+msgstr "无法添加标签。"
+
+msgid "error.build-profile-tags"
+msgstr "无法建立标签列表。"
+
+msgid "error.delete-profile-tag"
+msgstr "无法删除标签。"
+
 msgid "error.group-member-exists=count:"
 msgstr "对不起，下面的 %1 名用户已经是群组成员："
 
 msgid "error.invalid-email-address=count,domain"
-msgstr "对不起，下面的 %1 項电子邮箱地址不在域名 %2 下面"
+msgstr "对不起，下面的 %1 項电子邮件地址不在域名 %2 下面"
 
 msgid "error.invalid-email-address=count:"
-msgstr "对不起，下面的 %1 項电子邮箱地址是无效的："
+msgstr "对不起，下面的 %1 項电子邮件地址是无效的："
+
+msgid "error.load-widget-content"
+msgstr "无法载入小工具的内容。"
 
 msgid "error.no-activities"
 msgstr "没有活动可以显示。"
@@ -35,6 +47,15 @@ msgstr "没有人员符合此标准。"
 
 msgid "error.no-signals"
 msgstr "没有人注册。"
+
+msgid "error.show-profile-followers"
+msgstr "无法显示关注您的人。"
+
+msgid "error.show-profile-following"
+msgstr "无法显示您关注的人。"
+
+msgid "error.show-profile-groups"
+msgstr "无法显示群组列表。"
 
 msgid "event.add-tag-self=tag"
 msgstr "给自己添加标签 %1。"
@@ -237,8 +258,17 @@ msgstr "工具"
 msgid "people.welcome-new-user"
 msgstr "欢迎新用户"
 
+msgid "profile.about-no-followers"
+msgstr "尚未有人关注您。当某人查看您的个人页面时，他可通过点击页面顶部的“关注”来关注您。"
+
+msgid "profile.about-no-following"
+msgstr "您尚未关注他人。当查看某人的个人页面时，您可以通过点击页面顶部的“关注”来关注此人。"
+
 msgid "profile.activities"
 msgstr "活动"
+
+msgid "profile.activity-rss-link=user"
+msgstr "<a id='rss_link' href='#'>RSS 订阅</a> %1 的活动。"
 
 msgid "profile.aim:"
 msgstr "AIM："
@@ -249,17 +279,35 @@ msgstr "助理"
 msgid "profile.blog:"
 msgstr "博客："
 
+msgid "profile.contact"
+msgstr "联系方式"
+
 msgid "profile.custom"
 msgstr "自定义"
 
 msgid "profile.facebook:"
 msgstr "Facebook："
 
+msgid "profile.followers"
+msgstr "受谁关注"
+
+msgid "profile.follows"
+msgstr "关注谁"
+
+msgid "profile.grab-photo"
+msgstr "抓取照片"
+
+msgid "profile.groups"
+msgstr "群组"
+
 msgid "profile.gtalk:"
 msgstr "GTalk："
 
 msgid "profile.home:"
 msgstr "家庭地址："
+
+msgid "profile.i"
+msgstr "我"
 
 msgid "profile.im"
 msgstr "聊天室"
@@ -270,6 +318,27 @@ msgstr "Linkedin&reg;："
 msgid "profile.manager"
 msgstr "经理"
 
+msgid "profile.no-followers"
+msgstr "尚未有人关注此人。"
+
+msgid "profile.no-following"
+msgstr "此人尚未关注任何人。"
+
+msgid "profile.no-groups-for-you"
+msgstr "您不是任何群组的成员。"
+
+msgid "profile.no-people-tags"
+msgstr "没有人员标签。使用人员个人资料中的“添加标签”功能来创建标签。"
+
+msgid "profile.no-shared-groups"
+msgstr "您与此人没有共享任何群组。"
+
+msgid "profile.no-tags"
+msgstr "此人没有标签。点击<b>添加标签</b>来添加一个。"
+
+msgid "profile.no-tags-for-you"
+msgstr "您没有标签。点击<b>添加标签</b>来添加一个。"
+
 msgid "profile.organization"
 msgstr "组织"
 
@@ -278,6 +347,9 @@ msgstr "个人："
 
 msgid "profile.phone"
 msgstr "电话"
+
+msgid "profile.photos"
+msgstr "照片"
 
 msgid "profile.sametime:"
 msgstr "同时&reg;："
@@ -290,6 +362,18 @@ msgstr "标签"
 
 msgid "profile.twitter:"
 msgstr "Twitter："
+
+msgid "profile.update"
+msgstr "更新个人资料"
+
+msgid "profile.upload-new-photo:"
+msgstr "上传新照片："
+
+msgid "profile.upload-photo"
+msgstr "上传照片"
+
+msgid "profile.use-photo-on-web:"
+msgstr "使用网络上的照片："
 
 msgid "profile.web"
 msgstr "网页"
