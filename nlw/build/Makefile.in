@@ -464,7 +464,7 @@ hottest: .prove
 hudson-update: .prove
 
 .prove: hudson.prove
-	./build/bin/merge-prove
+	./dev-bin/merge-prove
 
 hudson.prove:
 	curl --insecure https://lucite.socialtext.net:9080/job/Socialtext/lastCompletedBuild/artifact/artifacts/.prove > hudson.prove

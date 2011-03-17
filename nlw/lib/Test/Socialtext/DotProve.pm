@@ -1,12 +1,13 @@
 use 5.12.0;
 
+package Test::Socialtext::DotProve;
+
+use base 'Exporter';
+our @EXPORT_OK = qw(load save);
+
 use TAP::Parser::YAMLish::Reader ();
 use TAP::Parser::YAMLish::Writer ();
 use Carp qw(croak);
-
-package Test::Socialtext::DotProve;
-use parent qw(Exporter);
-our @EXPORT_OK qw(load save);
 
 #stolen frpm App::Prove::State and hacked up.
 #because it uses its own YAML dialect :-(
