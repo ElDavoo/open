@@ -558,6 +558,9 @@ use constant CN2TW => {qw(
     存儲         存放
     日志         日誌
     複原         復原
+    當前         目前
+    微博         微型部落格
+    聯系         聯絡
 )};
 
 use constant CN2TW_ExactMatch => {qw(

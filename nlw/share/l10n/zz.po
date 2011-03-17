@@ -5861,6 +5861,10 @@ msgstr "Zzzzzz zzzzzzz z zzzzzzzzzzz zzzz."
 msgid "error.retrieve-image"
 msgstr "Zzzzz: Zzzzz zzzzzz zz zzzzzzzzz."
 
+#: share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:2
+msgid "error.retrieving-list-of-users"
+msgstr "Zzzzz zzzzzzzzzz zzzz zz zzzzz"
+
 #. ($p{name}, $p{cur_role}->display_name, $p{acct_name})
 #: lib/Socialtext/CLI.pm:1276
 msgid "error.role-exists=user,role,account"
@@ -7067,6 +7071,10 @@ msgstr "zzzzz"
 msgid "groups.group"
 msgstr "Zzzzz"
 
+#: share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:4
+msgid "groups.group-contains-no-member"
+msgstr "Zzzz zzzzz zzzzzzzz zz zzzzzz"
+
 #: share/plugin/groups/share/widgets/workspaces/widget.js:8
 msgid "groups.group-is-not-member-of-any-wikis"
 msgstr "Zzzz zzzzz zz zzz z zzzzzz zz zzz zzzzzzzzzz."
@@ -7082,6 +7090,10 @@ msgstr "Zzzzz Zzzz"
 #: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:36
 msgid "groups.group-type:"
 msgstr "Zzzzz Zzzz:"
+
+#: share/plugin/groups/template/groups_hello:3
+msgid "groups.heading=acl"
+msgstr "%1 zzzzz"
 
 #: share/plugin/groups/share/javascript/lightbox/leave-group.tt2:3
 msgid "groups.leave"

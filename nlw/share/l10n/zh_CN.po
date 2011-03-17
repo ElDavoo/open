@@ -4063,6 +4063,10 @@ msgstr "请指定限制类型。"
 msgid "error.retrieve-image"
 msgstr "出错：图像无法恢复"
 
+#: share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:2
+msgid "error.retrieving-list-of-users"
+msgstr "Error retrieving list of users"
+
 msgid "error.role-exists=user,role,account"
 msgstr "%1 已是 %3 帐户的 %2"
 
@@ -4888,6 +4892,10 @@ msgstr "最前"
 msgid "groups.group"
 msgstr "群组"
 
+#: share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:4
+msgid "groups.group-contains-no-member"
+msgstr "This group contains no member"
+
 msgid "groups.group-is-not-member-of-any-wikis"
 msgstr "本群组不属于任何工作区。"
 
@@ -4899,6 +4907,10 @@ msgstr "群组类别"
 
 msgid "groups.group-type:"
 msgstr "群组类别："
+
+#: share/plugin/groups/template/groups_hello:3
+msgid "groups.heading=acl"
+msgstr "%1 group"
 
 msgid "groups.leave"
 msgstr "离开群组"

@@ -28,7 +28,7 @@ msgid "about.people"
 msgstr "是一個具有強勁社交網路功能的人員目錄。您可以找到您同事的聯絡資訊，發現具有特長和共同愛好的人，以及通過您的社交網路找到有價值的資訊。"
 
 msgid "about.signals"
-msgstr "提供與 Socialtext 的企業協作平台整合的社會化消息服務。在提供像其他微網誌工具如 Twitter&#0153; 一樣的好處的同時，Socialtext 訊息還有更多優點，因為消息服務的運作脈絡，是在為共同目標協作的組織成員當中。"
+msgstr "提供與 Socialtext 的企業協作平台整合的社會化消息服務。在提供像其他微型部落格客工具如 Twitter&#0153; 一樣的好處的同時，Socialtext 訊息還有更多優點，因為消息服務的運作脈絡，是在為共同目標協作的組織成員當中。"
 
 msgid "about.unplugged"
 msgstr "『Socialtext 離線』允許用戶離線閱讀及編輯工作區。用戶可以『離線』一個以上的頁面來進行閱讀與編輯。更改將會與工作區同步。"
@@ -1736,7 +1736,7 @@ msgid "control.description"
 msgstr "描述"
 
 msgid "control.desktop-skin-reset-to-current-apply-now?"
-msgstr "值已重置為當前。您希望現在開始套用嗎？"
+msgstr "值已重置為目前。您希望現在開始套用嗎？"
 
 msgid "control.desktop-skin-reset-to-default-apply-now?"
 msgstr "值已重置為預設。您希望現在開始套用嗎？"
@@ -2012,7 +2012,7 @@ msgid "control.reset-password"
 msgstr "重置密碼"
 
 msgid "control.reset-to-current"
-msgstr "重置為當前"
+msgstr "重置為目前"
 
 msgid "control.reset-to-default"
 msgstr "重置為預設"
@@ -2357,7 +2357,7 @@ msgid "desktop.relogin-for-default-logo"
 msgstr "（桌面用戶如需看預設標誌，需重新登入。）"
 
 msgid "desktop.relogin-for-logo"
-msgstr "當前帳戶標誌套用至桌面。桌面用戶需重新登入才能看到新的標誌。"
+msgstr "目前帳戶標誌套用至桌面。桌面用戶需重新登入才能看到新的標誌。"
 
 msgid "desktop.relogin-for-new-logo"
 msgstr "（桌面用戶如需看新的標誌，需重新登入）"
@@ -2549,7 +2549,7 @@ msgid "edit.add-tags"
 msgstr "新增標籤..."
 
 msgid "edit.append-to-page:"
-msgstr "在當前命名頁面的底部附上您的文字："
+msgstr "在目前命名頁面的底部附上您的文字："
 
 msgid "edit.cancel?"
 msgstr "確定要取消？"
@@ -2990,10 +2990,10 @@ msgid "email.to-invite-users-visit-wiki-invite-page-link:"
 msgstr "要邀請這些用戶到工作區，請存取工作區的用戶邀請頁面，<br />並複製以上列表貼上到邀請框中。<br />用戶邀請頁面的網址是："
 
 msgid "email.to-start-click-above"
-msgstr "點選上方鏈結後，您即可立即開始與您的同事分享微博訊息，並利用社交網路和共筆工作區來增進彼此的工作。您也可以設定自己的個人主頁。"
+msgstr "點選上方鏈結後，您即可立即開始與您的同事分享微型部落格訊息，並利用社交網路和共筆工作區來增進彼此的工作。您也可以設定自己的個人主頁。"
 
 msgid "email.to-start-click-above-link"
-msgstr "點選上方鏈結後，您即可立即開始與您的同事分享微博訊息，並利用社交網路和共筆工作區來增進彼此的工作。您也可以設定自己的個人主頁。"
+msgstr "點選上方鏈結後，您即可立即開始與您的同事分享微型部落格訊息，並利用社交網路和共筆工作區來增進彼此的工作。您也可以設定自己的個人主頁。"
 
 msgid "email.today-at=time"
 msgstr "今天 %1"
@@ -3164,7 +3164,7 @@ msgid "error.build-profile-tags"
 msgstr "無法建立標籤列表。"
 
 msgid "error.cannot-change-account-logo-with-custom-skin=name"
-msgstr "由於當前使用的是自訂視覺主題，因此帳戶標誌不可更改。正在使用的視覺主題名為『%1』"
+msgstr "由於目前使用的是自訂視覺主題，因此帳戶標誌不可更改。正在使用的視覺主題名為『%1』"
 
 msgid "error.cannot-load-revision"
 msgstr "無法載入更動"
@@ -4063,6 +4063,10 @@ msgstr "請指定限制類型。"
 msgid "error.retrieve-image"
 msgstr "出錯：圖像無法恢復"
 
+#: share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:2
+msgid "error.retrieving-list-of-users"
+msgstr "Error retrieving list of users"
+
 msgid "error.role-exists=user,role,account"
 msgstr "%1 已是 %3 帳戶的 %2"
 
@@ -4888,6 +4892,10 @@ msgstr "最前"
 msgid "groups.group"
 msgstr "群組"
 
+#: share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:4
+msgid "groups.group-contains-no-member"
+msgstr "This group contains no member"
+
 msgid "groups.group-is-not-member-of-any-wikis"
 msgstr "本群組不屬於任何工作區。"
 
@@ -4899,6 +4907,10 @@ msgstr "群組類別"
 
 msgid "groups.group-type:"
 msgstr "群組類別："
+
+#: share/plugin/groups/template/groups_hello:3
+msgid "groups.heading=acl"
+msgstr "%1 group"
 
 msgid "groups.leave"
 msgstr "離開群組"
@@ -4931,10 +4943,10 @@ msgid "groups.next-step"
 msgstr "下一步"
 
 msgid "groups.no-other-members-use-form-below-to-invite"
-msgstr "當前，您是本群組的唯一成員。<br/>請在下方邀請您的同事。"
+msgstr "目前，您是本群組的唯一成員。<br/>請在下方邀請您的同事。"
 
 msgid "groups.no-wikis-use-form-below-to-select"
-msgstr "當前，沒有任何工作區關聯至本群組。請在下方選擇工作區。"
+msgstr "目前，沒有任何工作區關聯至本群組。請在下方選擇工作區。"
 
 msgid "groups.note-click-at-bottom-of-screen-to-save-changes=button"
 msgstr "提示：點選螢幕底端的<b>%1</b>來儲存所做的更改。"
@@ -5021,7 +5033,7 @@ msgid "groups.wiki-with-that-name-already-exists"
 msgstr "已存在該名稱的工作區"
 
 msgid "groups.you-are-member"
-msgstr "您當前是這個群組的成員。"
+msgstr "您目前是這個群組的成員。"
 
 msgid "groups.you-are-now-member-of-group"
 msgstr "您現在是 <strong>&nbsp;</strong> 群組的成員了。"
@@ -5087,13 +5099,13 @@ msgid "info.created-wiki=user-count,link"
 msgstr "恭喜您！您已成功建立一個包含 %1 位用戶的工作區。他們將會收到鏈結到 %2 的邀請資訊。"
 
 msgid "info.dashboard-force-update"
-msgstr "如果您強制升級當前顯示板，您會替換這個帳戶下面所有人現有的顯示板。"
+msgstr "如果您強制升級目前顯示板，您會替換這個帳戶下面所有人現有的顯示板。"
 
 msgid "info.dashboard-push-widget"
 msgstr "推送小工具到用戶的顯示板，會導致每個用戶載入顯示板的時候，該小工具出現在在您選擇的列的頂部，也就是現有小工具的上方。"
 
 msgid "info.dashboard-save-layout"
-msgstr "點選下面的<b>儲存</b>使當前顯示板成為您帳戶的預設顯示板。在新用戶第一次登入的時候，他們都會有這個顯示板。點選下面『強制升級』複選框來使強制老用戶帳戶也如此。"
+msgstr "點選下面的<b>儲存</b>使目前顯示板成為您帳戶的預設顯示板。在新用戶第一次登入的時候，他們都會有這個顯示板。點選下面『強制升級』複選框來使強制老用戶帳戶也如此。"
 
 msgid "info.deactivated-user:"
 msgstr "如果您想移除用戶的系統存取權限，請按如下操作："
@@ -5249,7 +5261,7 @@ msgid "info.unplug-search"
 msgstr "點選此按鈕儲存這次搜尋頁面為離線頁面。"
 
 msgid "info.unplug-watchlist"
-msgstr "點選此按鈕儲存當前頁面為離線頁面。"
+msgstr "點選此按鈕儲存目前頁面為離線頁面。"
 
 msgid "info.unplug=tag"
 msgstr "點選此按鈕儲存標記為 %1 的頁面為離線頁面。"
@@ -5429,10 +5441,10 @@ msgid "invite.contact-support=uri"
 msgstr "如果您對此電子郵件有疑問，請 <a href=\"%1\">聯絡支援</a>。"
 
 msgid "invite.disabled-for-group"
-msgstr "對不起，當前伺服器管理員停用了該群組的這項功能。"
+msgstr "對不起，目前伺服器管理員停用了該群組的這項功能。"
 
 msgid "invite.disabled-for-server"
-msgstr "對不起，當前伺服器管理員停用了這項功能。"
+msgstr "對不起，目前伺服器管理員停用了這項功能。"
 
 msgid "invite.edit-save"
 msgstr "在文字框鍵入您的內容，然後點選『儲存』。"
@@ -5744,7 +5756,7 @@ msgid "link.external"
 msgstr "外部鏈結"
 
 msgid "link.if-not-current"
-msgstr "如果不是當前頁面"
+msgstr "如果不是目前頁面"
 
 msgid "link.incipient"
 msgstr "點選新建頁面"
@@ -6476,7 +6488,7 @@ msgid "password.choose:"
 msgstr "指定密碼："
 
 msgid "password.current:"
-msgstr "當前密碼："
+msgstr "目前密碼："
 
 msgid "password.minimum-length"
 msgstr "新密碼至少需6個字符長。"
@@ -6902,7 +6914,7 @@ msgid "report.total"
 msgstr "總共"
 
 msgid "report.total-members=count"
-msgstr "總成員數（當前）：%1"
+msgstr "總成員數（目前）：%1"
 
 msgid "report.total-unique-contributors=count"
 msgstr "總貢獻人數：%1"
@@ -6992,7 +7004,7 @@ msgid "revision.compare=old,new"
 msgstr "對比版本 %1 和 %2"
 
 msgid "revision.current"
-msgstr "回到當前版本"
+msgstr "回到目前版本"
 
 msgid "revision.date"
 msgstr "日期"
@@ -7046,16 +7058,16 @@ msgid "sc.apply"
 msgstr "套用"
 
 msgid "sc.apply-and-close-dialog"
-msgstr "套用設定並且關閉當前對話框"
+msgstr "套用設定並且關閉目前對話框"
 
 msgid "sc.apply-current-selection"
-msgstr "將上面的設定套用到當前的選區"
+msgstr "將上面的設定套用到目前的選區"
 
 msgid "sc.apply-sheet-default"
 msgstr "將上面的設定成為試算表的預設值"
 
 msgid "sc.apply-to-current-cell"
-msgstr "對當前儲存格套用輸入"
+msgstr "對目前儲存格套用輸入"
 
 msgid "sc.audit"
 msgstr "稽核"
@@ -7130,7 +7142,7 @@ msgid "sc.edit-revision"
 msgstr "編輯修改"
 
 msgid "sc.edit-this-revision-instead"
-msgstr "編輯本次修訂，而不是當前編輯器的內容"
+msgstr "編輯本次修訂，而不是目前編輯器的內容"
 
 msgid "sc.editing:"
 msgstr "編輯："
@@ -7265,7 +7277,7 @@ msgid "sc.ok"
 msgstr "好的"
 
 msgid "sc.ok-or-cancel"
-msgstr "按確定繼續，或取消停留在當前頁面。"
+msgstr "按確定繼續，或取消停留在目前頁面。"
 
 msgid "sc.on:"
 msgstr "時間："
@@ -7328,7 +7340,7 @@ msgid "sc.save-as"
 msgstr "另存為..."
 
 msgid "sc.save-as-new-revision"
-msgstr "作為一個新的版本儲存在當前試算表"
+msgstr "作為一個新的版本儲存在目前試算表"
 
 msgid "sc.save-changes"
 msgstr "儲存修改"
@@ -7763,10 +7775,10 @@ msgid "table.create"
 msgstr "建立表格"
 
 msgid "table.current-column:"
-msgstr "當前列："
+msgstr "目前列："
 
 msgid "table.current-row:"
-msgstr "當前行："
+msgstr "目前行："
 
 msgid "table.delete-column"
 msgstr "刪除列"
@@ -7988,10 +8000,10 @@ msgid "tz.dst-never"
 msgstr "無夏令時"
 
 msgid "tz.dst-no"
-msgstr "當前不屬於夏令時"
+msgstr "目前不屬於夏令時"
 
 msgid "tz.dst-yes"
-msgstr "當前屬於夏令時"
+msgstr "目前屬於夏令時"
 
 msgid "tz.dst?"
 msgstr "如何處理夏令時？"
@@ -8273,7 +8285,7 @@ msgid "wafl.or"
 msgstr "或"
 
 msgid "wafl.page-this"
-msgstr "當前頁面"
+msgstr "目前頁面"
 
 msgid "wafl.page-title"
 msgstr "頁面標題"
@@ -8423,7 +8435,7 @@ msgid "wafl.wiki-text"
 msgstr "源碼格式"
 
 msgid "wafl.wiki-this"
-msgstr "當前工作區"
+msgstr "目前工作區"
 
 msgid "wafl.yahoo-id"
 msgstr "Yahoo! ID"
@@ -8441,7 +8453,7 @@ msgid "watch.current-page"
 msgstr "您正在關注的頁面"
 
 msgid "watch.current-pages"
-msgstr "當前頁面"
+msgstr "目前頁面"
 
 msgid "watch.email-frequency?"
 msgstr "您想要多長時間收到一次關注列表郵件？"
@@ -8888,10 +8900,10 @@ msgid "wikiwyg.bold"
 msgstr "粗體（Ctrl+B）"
 
 msgid "wikiwyg.delete-table-column"
-msgstr "刪除當前表格列"
+msgstr "刪除目前表格列"
 
 msgid "wikiwyg.delete-table-row"
-msgstr "刪除當前表格行"
+msgstr "刪除目前表格行"
 
 msgid "wikiwyg.h1"
 msgstr "標題 1"
@@ -8924,16 +8936,16 @@ msgid "wikiwyg.medium"
 msgstr "中"
 
 msgid "wikiwyg.move-column-left"
-msgstr "向左移動當前表格列"
+msgstr "向左移動目前表格列"
 
 msgid "wikiwyg.move-column-right"
-msgstr "向右移動當前表格列"
+msgstr "向右移動目前表格列"
 
 msgid "wikiwyg.move-row-down"
-msgstr "向下移動當前表格行"
+msgstr "向下移動目前表格行"
 
 msgid "wikiwyg.move-row-up"
-msgstr "向上移動當前表格行"
+msgstr "向上移動目前表格行"
 
 msgid "wikiwyg.new-table"
 msgstr "新建表格"

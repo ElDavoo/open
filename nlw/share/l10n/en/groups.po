@@ -49,6 +49,10 @@ msgstr "Unable to load profile data."
 msgid "error.not-member-of-any-groups"
 msgstr "Currently, you are not a member of any groups."
 
+#: share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:2
+msgid "error.retrieving-list-of-users"
+msgstr "Error retrieving list of users"
+
 msgid "group.acl-member-only"
 msgstr "Member Only"
 
@@ -61,10 +65,6 @@ msgstr "Self-Join"
 #: share/plugin/groups/share/widgets/membership/jemplate/workspaces.tt2:16
 msgid "groups.add-wikis"
 msgstr "Add Workspaces"
-
-#: share/plugin/groups/share/widgets/membership/widget.js:425
-msgid "groups.role-admin"
-msgstr "Admin"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:54
 msgid "groups.admin-can-change-setting-after-creation"
@@ -185,6 +185,10 @@ msgstr "first"
 msgid "groups.group"
 msgstr "Group"
 
+#: share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:4
+msgid "groups.group-contains-no-member"
+msgstr "This group contains no member"
+
 #: share/plugin/groups/share/widgets/workspaces/widget.js:8
 msgid "groups.group-is-not-member-of-any-wikis"
 msgstr "This group is not a member of any workspaces."
@@ -201,25 +205,25 @@ msgstr "Group Type"
 msgid "groups.group-type:"
 msgstr "Group Type:"
 
+#: share/plugin/groups/template/groups_hello:3
+msgid "groups.heading=acl"
+msgstr "%1 group"
+
 #: share/plugin/groups/share/javascript/lightbox/leave-group.tt2:3
 msgid "groups.leave"
 msgstr "Leave Group"
-
-#: share/plugin/groups/share/widgets/membership/widget.js:424 
-msgid "groups.role-member"
-msgstr "Member"
 
 #: share/plugin/groups/template/grouplist:103
 msgid "groups.member"
 msgstr "member"
 
-#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:6
-msgid "groups.members"
-msgstr "Members"
-
 #: share/plugin/groups/template/grouplist:105 share/plugin/groups/template/grouplist:38
 msgid "groups.member-plural"
 msgstr "members"
+
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:6
+msgid "groups.members"
+msgstr "Members"
 
 #: share/plugin/groups/template/grouplist:53
 msgid "groups.name"
@@ -285,6 +289,14 @@ msgstr "remove"
 #: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:31
 msgid "groups.reset-photo"
 msgstr "Reset Photo"
+
+#: share/plugin/groups/share/widgets/membership/widget.js:425
+msgid "groups.role-admin"
+msgstr "Admin"
+
+#: share/plugin/groups/share/widgets/membership/widget.js:424
+msgid "groups.role-member"
+msgstr "Member"
 
 #: share/plugin/groups/template/edit_group_footer:14 share/plugin/groups/template/group_footer:17
 msgid "groups.save"
