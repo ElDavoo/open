@@ -6569,6 +6569,10 @@ msgstr "Zzz Zzz"
 msgid "explore.anyone"
 msgstr "Zzzzzz"
 
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:398 share/plugin/signals/share/widgets/explore_filters/widget.js:408
+msgid "explore.anytime"
+msgstr "zzzzzzz"
+
 #: share/plugin/signals/template/explore_header:10
 msgid "explore.attachments"
 msgstr "Zzzzzzzzzzz"
@@ -6633,6 +6637,10 @@ msgstr "zzzz"
 msgid "explore.no-items"
 msgstr "(zz zzzzz zz zzzz)"
 
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:398 share/plugin/signals/share/widgets/explore_filters/widget.js:404
+msgid "explore.now"
+msgstr "zzz"
+
 #: share/plugin/widgets/share/javascript/activities/explore.js:196
 msgid "explore.oldies"
 msgstr "ZZZZZZ"
@@ -6684,6 +6692,10 @@ msgstr "ZZZZZ"
 #: share/plugin/signals/share/widgets/explore_filters/widget.js:181
 msgid "explore.type-to-select-group"
 msgstr "zzzz zz zzzzzz zzzzzzzz zzzzz"
+
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:315
+msgid "explore.type-to-select-person"
+msgstr "zzzz zz zzzzzz zzzzzzzz zzzzzz"
 
 #: share/plugin/signals/share/widgets/explore_filters/widget.js:260
 msgid "explore.type-to-select-tag"

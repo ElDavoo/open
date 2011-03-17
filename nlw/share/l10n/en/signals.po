@@ -38,6 +38,10 @@ msgstr "Any Tag"
 msgid "explore.anyone"
 msgstr "Anyone"
 
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:398 share/plugin/signals/share/widgets/explore_filters/widget.js:408
+msgid "explore.anytime"
+msgstr "anytime"
+
 #: share/plugin/signals/template/explore_header:10
 msgid "explore.attachments"
 msgstr "Attachments"
@@ -74,6 +78,10 @@ msgstr "Mentions"
 msgid "explore.mine"
 msgstr "Mine"
 
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:398 share/plugin/signals/share/widgets/explore_filters/widget.js:404
+msgid "explore.now"
+msgstr "now"
+
 #: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:46
 msgid "explore.people"
 msgstr "PEOPLE"
@@ -105,6 +113,10 @@ msgstr "to"
 #: share/plugin/signals/share/widgets/explore_filters/widget.js:181
 msgid "explore.type-to-select-group"
 msgstr "type to select specific group"
+
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:315
+msgid "explore.type-to-select-person"
+msgstr "type to select specific person"
 
 #: share/plugin/signals/share/widgets/explore_filters/widget.js:260
 msgid "explore.type-to-select-tag"

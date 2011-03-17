@@ -1814,7 +1814,7 @@ msgid "control.field-type"
 msgstr "欄位類別"
 
 msgid "control.first-name:"
-msgstr "名："
+msgstr "名字："
 
 msgid "control.for-cac-authentication"
 msgstr "為 CAC 認証之用"
@@ -4534,6 +4534,9 @@ msgstr "任何標籤"
 msgid "explore.anyone"
 msgstr "任何人"
 
+msgid "explore.anytime"
+msgstr "任何時間"
+
 msgid "explore.attachments"
 msgstr "附件"
 
@@ -4579,6 +4582,9 @@ msgstr "更多"
 msgid "explore.no-items"
 msgstr "（無項目展示）"
 
+msgid "explore.now"
+msgstr "現在"
+
 msgid "explore.oldies"
 msgstr "老人"
 
@@ -4617,6 +4623,9 @@ msgstr "今天"
 
 msgid "explore.type-to-select-group"
 msgstr "輸入來選擇特定群組"
+
+msgid "explore.type-to-select-person"
+msgstr "輸入來選擇特定人員"
 
 msgid "explore.type-to-select-tag"
 msgstr "輸入來選擇特定標籤"

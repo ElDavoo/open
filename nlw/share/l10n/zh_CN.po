@@ -1814,7 +1814,7 @@ msgid "control.field-type"
 msgstr "字段类别"
 
 msgid "control.first-name:"
-msgstr "名："
+msgstr "名字："
 
 msgid "control.for-cac-authentication"
 msgstr "为 CAC 认证之用"
@@ -4534,6 +4534,9 @@ msgstr "任何标签"
 msgid "explore.anyone"
 msgstr "任何人"
 
+msgid "explore.anytime"
+msgstr "任何时间"
+
 msgid "explore.attachments"
 msgstr "附件"
 
@@ -4579,6 +4582,9 @@ msgstr "更多"
 msgid "explore.no-items"
 msgstr "（无项目展示）"
 
+msgid "explore.now"
+msgstr "现在"
+
 msgid "explore.oldies"
 msgstr "老人"
 
@@ -4617,6 +4623,9 @@ msgstr "今天"
 
 msgid "explore.type-to-select-group"
 msgstr "输入来选择特定群组"
+
+msgid "explore.type-to-select-person"
+msgstr "输入来选择特定人员"
 
 msgid "explore.type-to-select-tag"
 msgstr "输入来选择特定标签"
