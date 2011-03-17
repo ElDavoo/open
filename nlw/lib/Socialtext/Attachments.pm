@@ -38,7 +38,7 @@ sub load {
     my ($self, %args) = @_;
     my $t = time_scope 'get_attach';
     my $ws_id   = $self->hub->current_workspace->workspace_id;
-    my $page_id = $args{page_id} || $self->hub->pages->current_page->id;
+    my $page_id = $args{page_id} || $self->hub->pages->current->id;
     my $ident = $args{id} or croak "must supply an attachment id";
     my $deleted = $args{deleted_ok}
         ? '' : "\n AND NOT pa.deleted";

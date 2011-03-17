@@ -191,6 +191,15 @@ sub make_permanent {
     # returning:
     $self->upload->make_permanent(
         actor => $p{user}, no_log => $p{no_log}, guard => 0);
+
+    if ($p{page} and $p{page}->page_id ne $self->page_id) {
+        # Here we need to move $self from an untitled page
+        # into the newly assigned page.
+        sql_execute(q{
+            UPDATE page_attachment SET page_id = ? WHERE attachment_id = ?
+        }, $p{page}->page_id, $self->attachment_id);
+    }
+
     $self->reindex();
 
     return;
