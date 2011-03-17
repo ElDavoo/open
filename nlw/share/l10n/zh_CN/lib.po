@@ -514,7 +514,7 @@ msgid "config.for=group:"
 msgstr "配置为 %1 群组："
 
 msgid "config.language?"
-msgstr "你的语言是？"
+msgstr "您的语言是？"
 
 msgid "config.members-can-email=wiki"
 msgstr "只有工作区成员才能发送邮件到 %1。"
@@ -637,13 +637,13 @@ msgid "email.date:"
 msgstr "日期："
 
 msgid "email.frequency?"
-msgstr "你想要多长时间收到一次邮件更新？"
+msgstr "您想要多长时间收到一次邮件更新？"
 
 msgid "email.from:"
 msgstr "来自："
 
 msgid "email.page-digest-details?"
-msgstr "在每日邮件中你想得到更新的页面的哪些信息？"
+msgstr "在每日邮件中您想得到更新的页面的哪些信息？"
 
 msgid "email.page-digest-sort?"
 msgstr "采用哪种顺序显示更新信息？"
@@ -841,7 +841,7 @@ msgid "error.export=file"
 msgstr "无法写入导出文件 %1，正在终止。"
 
 msgid "error.extract-skin"
-msgstr "无法解压主题存档。这很可能是由损坏的存档文件造成的。请检查你的文件，并重新上传。"
+msgstr "无法解压主题存档。这很可能是由损坏的存档文件造成的。请检查您的文件，并重新上传。"
 
 msgid "error.feed"
 msgstr "订阅错误"
@@ -961,7 +961,7 @@ msgid "error.invalid-mass-add-file"
 msgstr "无法读取该文件。未添加任何用户。"
 
 msgid "error.invalid-name=user,type"
-msgstr "“%1”是无效的 %2。请使用你的 %2 登录。"
+msgstr "“%1”是无效的 %2。请使用您的 %2 登录。"
 
 msgid "error.invalid-page-name"
 msgstr "无效页面名称"
@@ -994,10 +994,10 @@ msgid "error.invalid-widget-type"
 msgstr "只有url和html是小工具类型的有效值。"
 
 msgid "error.invalid-widget=src,message"
-msgstr "你提供的 %1 文件不是一个合法的小工具XML：%2"
+msgstr "您提供的 %1 文件不是一个合法的小工具XML：%2"
 
 msgid "error.invalid-widget=src,url,message"
-msgstr "你提供的 %1 不包含小工具文件。请重新检查并上传。%1 被指定为 %2。错误为 %3。"
+msgstr "您提供的 %1 不包含小工具文件。请重新检查并上传。%1 被指定为 %2。错误为 %3。"
 
 msgid "error.invalid-wiki-logo?"
 msgstr "无法处理标志文件，它是什么图片？"
@@ -1012,7 +1012,7 @@ msgid "error.invalid-wiki-title"
 msgstr "工作区题目必须介于2到64个字符长度，并不能以“-”开头。"
 
 msgid "error.invalid-xml=src,message"
-msgstr "你提供的 %1 文件不是一个合法的XML：%2"
+msgstr "您提供的 %1 文件不是一个合法的XML：%2"
 
 msgid "error.invalid= url"
 msgstr "%1 是无效网址。"
@@ -1105,16 +1105,16 @@ msgid "error.no-directory=path"
 msgstr "目录 %1 不存在。"
 
 msgid "error.no-events-conversations=section"
-msgstr "你没有任何对话记录，无法显示 %1。"
+msgstr "您没有任何对话记录，无法显示活动。"
 
 msgid "error.no-events-followers=section"
-msgstr "你没有关注任何人或者你关注的人未创建，无法显示 %1。请去同事的资料页点击关注。"
+msgstr "您没有关注任何人或者您关注的人未创建，无法显示活动。请去同事的资料页点击关注。"
 
 msgid "error.no-events-mine=section"
-msgstr "%1 未被创建，无法显示。"
+msgstr "您未创建活动，无法显示。"
 
 msgid "error.no-events=section"
-msgstr "%1 未被创建，无法显示。"
+msgstr "活动未被创建，无法显示。"
 
 msgid "error.no-export-directory=path"
 msgstr "导出目录 %1 不存在。"
@@ -1195,16 +1195,16 @@ msgid "error.no-skin=name"
 msgstr "指定主题 %1 不存在。"
 
 msgid "error.no-such-group"
-msgstr "你所访问的群组不存在。请咨询群组管理员或联系<a href=\"%1\">Socialtext 客户服务人员</a>."
+msgstr "您所访问的群组不存在。请咨询群组管理员或联系<a href=\"%1\">Socialtext 客户服务人员</a>."
 
 msgid "error.no-such-page"
-msgstr "你所访问的页面不存在。请咨询系统管理员或联系<a href=\"%1\">Socialtext 客户服务人员</a>."
+msgstr "您所访问的页面不存在。请咨询系统管理员或联系<a href=\"%1\">Socialtext 客户服务人员</a>."
 
 msgid "error.no-such-pending-confirmation"
 msgstr "此确认网址不符合任何待确认用户。"
 
 msgid "error.no-such-person"
-msgstr "你所查看的成员不存在。请咨询系统管理员或联系<a href=\"%1\">Socialtext 客户服务人员</a>."
+msgstr "您所查看的成员不存在。请咨询系统管理员或联系<a href=\"%1\">Socialtext 客户服务人员</a>."
 
 msgid "error.no-such-signal"
 msgstr "对不起，讯息不存在。使用讯息搜索框可以查找想要的讯息。"
@@ -1384,7 +1384,7 @@ msgid "error.reserved-name=wiki"
 msgstr "“%1”是已注册的工作区名，不能使用。"
 
 msgid "error.reset-ldap-password"
-msgstr "如果你的密码保存在组织目录，Socialtext 管理员无法帮你重设密码。"
+msgstr "如果您的密码保存在组织目录，Socialtext 管理员无法帮您重设密码。"
 
 msgid "error.restore-account-widget"
 msgstr "恢复帐户小工具出错。"
@@ -1411,10 +1411,10 @@ msgid "error.saving-timeserver-to-appliance-configuration=new-ts"
 msgstr "未能将时间服务器 %1 保存至设备配置中"
 
 msgid "error.search-too-general"
-msgstr "你的搜索字词过于笼统。请添加更多相关信息。"
+msgstr "您的搜索字词过于笼统。请添加更多相关信息。"
 
 msgid "error.search-too-general=hits"
-msgstr "你的搜索字词过于笼统。%1 个页面和或附件符合搜索，请添加更多相关信息。"
+msgstr "您的搜索字词过于笼统。%1 个页面和或附件符合搜索，请添加更多相关信息。"
 
 msgid "error.self-delete"
 msgstr "无法删除本人"
@@ -1549,7 +1549,7 @@ msgid "error.widget-exists-in-gallery"
 msgstr "该小工具已存在于此工具库中。"
 
 msgid "error.widget-forbidden"
-msgstr "你已失去所有帐户的管理员权限。"
+msgstr "您已失去所有帐户的管理员权限。"
 
 msgid "error.wiki-email-alias-exists=name"
 msgstr "选择的工作空间名 %1，已被作为邮箱别名被占用。"
@@ -1666,7 +1666,7 @@ msgid "group.list=query"
 msgstr "群组名和描述符合“%1”"
 
 msgid "info.added-members=user-count,wiki"
-msgstr "恭喜你！你已成功添加 %1 位用户到 %2 个工作区。他们将会收到邀请到相应工作区的信息。"
+msgstr "恭喜您！您已成功添加 %1 位用户到 %2 个工作区。他们将会收到邀请到相应工作区的信息。"
 
 msgid "info.change-primary-account:"
 msgstr "这么做，第一个指定给他们的帐户就是一个新的主帐户："
@@ -1678,13 +1678,13 @@ msgid "info.created-ldap-group"
 msgstr "群组已被添加，正在刷新用户列表..."
 
 msgid "info.created-wiki=user-count,link"
-msgstr "恭喜你！你已成功创建一个包含 %1 位用户的工作区。他们将会收到链接到 %2 的邀请信息。"
+msgstr "恭喜您！您已成功创建一个包含 %1 位用户的工作区。他们将会收到链接到 %2 的邀请信息。"
 
 msgid "info.deactivated-user:"
-msgstr "如果你想移除用户的系统访问权限，请按如下操作："
+msgstr "如果您想移除用户的系统访问权限，请按如下操作："
 
 msgid "info.email-confirmation=from"
-msgstr "为确保你能收到来自 %1 的邮件，请将 %1 添加到通讯录或安全列表中。"
+msgstr "为确保您能收到来自 %1 的邮件，请将 %1 添加到通讯录或安全列表中。"
 
 msgid "info.email-sent-for-password-change"
 msgstr "密码变更电子邮件已发出。请依照该邮件中的链接重设您的密码。"
@@ -1705,7 +1705,7 @@ msgid "info.login-disabled"
 msgstr "登录名已被停用"
 
 msgid "info.reset-password"
-msgstr "请根据以下说明更改你的Socialtext密码"
+msgstr "请根据以下说明更改您的Socialtext密码"
 
 msgid "info.unplug-breadcrumbs"
 msgstr "点击此按钮保存最近浏览页面为脱机页面。"
@@ -1723,13 +1723,13 @@ msgid "info.unplug=tag"
 msgstr "点击此按钮保存标记为 %1 的页面为脱机页面。"
 
 msgid "invite.group=name"
-msgstr "我邀请你加入 %1 群组"
+msgstr "我邀请您加入 %1 群组"
 
 msgid "invite.request=wiki"
 msgstr "请求邀请新用户到 %1 工作区"
 
 msgid "invite.wiki=title"
-msgstr "我邀请你加入 %1 工作区"
+msgstr "我邀请您加入 %1 工作区"
 
 msgid "job.all=class"
 msgstr "所有 %1 工作"
@@ -1861,7 +1861,7 @@ msgid "nav.wikis"
 msgstr "工作区"
 
 msgid "notepad.set-title"
-msgstr "<p> 你可以在这里设置你想在“你的记事本”面板上看到的页面标题。</p> <p>有些人选择一个已存在的页面，有些人选择新的页面，如“Rupert Jee的记事本”</p>"
+msgstr "<p> 您可以在这里设置您想在“您的记事本”面板上看到的页面标题。</p> <p>有些人选择一个已存在的页面，有些人选择新的页面，如“Rupert Jee的记事本”</p>"
 
 msgid "notepad.title=user"
 msgstr "%1 的记事本"
@@ -1984,7 +1984,7 @@ msgid "pref.updated=plugins"
 msgstr "%1 插件的选项已更新。"
 
 msgid "profile.create"
-msgstr "创建你的档案"
+msgstr "创建您的档案"
 
 msgid "profile.created-field=title"
 msgstr "已创建档案栏“%1”"
@@ -2032,7 +2032,7 @@ msgid "register.confirmation-sent=email"
 msgstr "帐户确认邮件已发送至 %1。"
 
 msgid "register.reset-password-sent=email"
-msgstr "帮助你修改密码的邮件已发送至 %1。"
+msgstr "帮助您修改密码的邮件已发送至 %1。"
 
 msgid "report.dashboard-activity=user"
 msgstr "用户 %1 的活动"
@@ -2407,7 +2407,7 @@ msgid "watch.current-pages"
 msgstr "当前页面"
 
 msgid "watch.email-frequency?"
-msgstr "你想要多长时间收到一次关注列表邮件？"
+msgstr "您想要多长时间收到一次关注列表邮件？"
 
 msgid "watch.email-subject=wiki"
 msgstr "%1 工作区的关注列表更新"

@@ -575,7 +575,7 @@ msgid "widgets.manage-gallery-for-accounts"
 msgstr "管理各账号工具库"
 
 msgid "widgets.new-page"
-msgstr "新页面"
+msgstr "开新页面"
 
 msgid "widgets.no-description"
 msgstr "无描述"
@@ -626,7 +626,7 @@ msgid "widgets.use-editor"
 msgstr "使用小工具编辑器"
 
 msgid "widgets.views"
-msgstr "视图"
+msgstr "检视"
 
 msgid "widgets.you-belong-to-no-wikis"
 msgstr "您不属于任何工作区。"

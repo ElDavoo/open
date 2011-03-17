@@ -40,7 +40,7 @@ msgid "error.no-activities"
 msgstr "没有活动可以显示。"
 
 msgid "error.no-additional-profile-data"
-msgstr "没有额外的个人资料数据。"
+msgstr "没有额外的个人数据。"
 
 msgid "error.no-people-found"
 msgstr "没有人员符合此标准。"
