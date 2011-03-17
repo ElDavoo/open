@@ -319,7 +319,8 @@ sub prepare_to_serve {
     if ($self->is_image && $flavor) {
         my $dim = $self->dimensions($flavor);
         my $spec = 'resize-'.join('x',@$dim) if $dim;
-        if ($spec && $spec ne 'resize-0x0') {
+        if ($spec) {
+            $spec = 'thumb-600x0' if $spec eq 'resize-0x0';
             try {
                 $content_length = $self->upload->ensure_scaled(spec => $spec);
                 $uri = $protected
