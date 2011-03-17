@@ -458,10 +458,16 @@ QUICK_TESTS = \
 quicktest:
 	$(PROVE) --jobs $(TEST_JOBS) $(QUICK_TESTS)
 
+hottest: .prove
+	$(PROVE) --state=hot,fresh,save
+
 hudson-update: .prove
 
-.prove:
-	curl --insecure https://lucite.socialtext.net:9080/job/Socialtext/lastCompletedBuild/artifact/artifacts/.prove > .prove
+.prove: hudson.prove
+	./build/bin/merge-prove
+
+hudson.prove:
+	curl --insecure https://lucite.socialtext.net:9080/job/Socialtext/lastCompletedBuild/artifact/artifacts/.prove > hudson.prove
 
 # cd into custom-workspace-config and make all
 custom-workspaces:
@@ -535,5 +541,5 @@ critic:
         custom-workspaces        \
 	critic                   \
         mac-go	                 \
-	.prove
+	hudson.prove
 

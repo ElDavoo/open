@@ -1,0 +1,55 @@
+#!/usr/bin/env perl
+
+use 5.12.0;
+
+use TAP::Parser::YAMLish::Reader ();
+use TAP::Parser::YAMLish::Writer ();
+use Carp qw(croak);
+
+my $prove = load(".prove");
+
+my $hudson = load("hudson.prove");
+
+while (my ($k, $v) = each %{$hudson->{tests}}) {
+    my $hudson_fail = $v->{last_fail_time};
+    my $prove_fail = $prove->{tests}->{$k}->{last_fail_time};
+
+    if ($hudson_fail > $prove_fail) {
+        $prove->{tests}->{$k} = $v; # use hudson's info if it failed more recently than you.
+    }
+}
+
+save($prove, ".prove");
+
+
+#stolen frpm App::Prove::State and hacked up.
+#because it uses its own YAML dialect :-(
+
+sub save {
+    my ($yaml, $store) = @_;
+
+    my $writer = TAP::Parser::YAMLish::Writer->new;
+    local *FH;
+    open FH, ">", "$store" or croak "Can't write $store ($!)";
+    $writer->write( $yaml, \*FH);
+    close FH;
+}
+
+sub load {
+    my $name = shift;
+    my $reader = TAP::Parser::YAMLish::Reader->new;
+    local *FH;
+    open FH, "<$name" or croak "Can't read $name ($!)";
+
+    # XXX this is temporary
+    my $yaml = $reader->read(
+        sub {
+            my $line = <FH>;
+            defined $line && chomp $line;
+            return $line;
+        }
+    );
+
+    close FH;
+    return $yaml;
+}
