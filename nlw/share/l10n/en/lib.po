@@ -175,11 +175,9 @@ msgstr "Archive Directory"
 msgid "appliance.backup-destination-updated"
 msgstr "Backup destination updated"
 
-#:
 msgid "appliance.backup-in-progress-started-at-never"
 msgstr "Backup is in progress - started at never"
 
-#:
 msgid "appliance.backup-in-progress=started-at"
 msgstr "Backup is in progress - started at %1"
 
@@ -224,11 +222,9 @@ msgstr "Initialize Workspaces?"
 msgid "appliance.invalid-email"
 msgstr "Please enter a valid email address"
 
-#:
 msgid "appliance.last-manual-backup-was-never"
 msgstr "Last manual backup was never"
 
-#:
 msgid "appliance.last-manual-backup-was=last"
 msgstr "Last manual backup was %1"
 
@@ -253,11 +249,9 @@ msgstr "System rebooting ..."
 msgid "appliance.redirecting-to=url"
 msgstr "Redirecting to %1"
 
-#:
 msgid "appliance.refresh-in-progress"
 msgstr "Refresh is in progress, please wait ..."
 
-#:
 msgid "appliance.refreshing-backup-list"
 msgstr "Refreshing the backup list ..."
 
@@ -271,35 +265,27 @@ msgstr "Removed the Appliance Business Administrator role from %1"
 msgid "appliance.removed-technical-admin=user"
 msgstr "Removed the Appliance Technical Administrator role from %1"
 
-#:
 msgid "appliance.restore-already-running"
 msgstr "Restore is already running"
 
-#:
 msgid "appliance.restore-finished=latest-backup"
 msgstr "Restore of %1 finished."
 
-#:
 msgid "appliance.restore-in-progress-started-at-never"
 msgstr "Restore in progress - started at never"
 
-#:
 msgid "appliance.restore-in-progress=started-at"
 msgstr "Restore in progress - started at %1"
 
-#:
 msgid "appliance.restore-latest-already-running"
 msgstr "Restore latest is already running"
 
-#:
 msgid "appliance.retry-after-backup"
 msgstr "Please wait until the backup finishes, then retry."
 
-#:
 msgid "appliance.retry-after-restore"
 msgstr "Please wait until the restore finishes, then retry."
 
-#:
 msgid "appliance.select-backup-to-restore"
 msgstr "Please select a backup to restore"
 
@@ -800,6 +786,46 @@ msgstr "Workspaces: Create New Workspace"
 msgid "config.wiki.unsubscribe"
 msgstr "Workspaces: Unsubscribe"
 
+#: lib/Socialtext/Gadgets/Container/Activities.pm:12
+msgid "container.activities"
+msgstr "Socialtext Activities"
+
+#: lib/Socialtext/Gadgets/Container/AccountDashboard.pm:12 lib/Socialtext/Gadgets/Container/Dashboard.pm:13
+msgid "container.dashboard"
+msgstr "Socialtext Dashboard"
+
+#: lib/Socialtext/Gadgets/Container/Explore.pm:14
+msgid "container.explore"
+msgstr "Socialtext Explore"
+
+#: lib/Socialtext/Gadgets/Container/GroupDirectory.pm:12
+msgid "container.group-directory"
+msgstr "Group Directory"
+
+#: lib/Socialtext/Gadgets/Container/CreateGroup.pm:12 lib/Socialtext/Gadgets/Container/Group.pm:12
+msgid "container.groups"
+msgstr "Socialtext Groups"
+
+#: lib/Socialtext/Gadgets/Container/EditProfile.pm:12 lib/Socialtext/Gadgets/Container/ForbiddenProfile.pm:13 lib/Socialtext/Gadgets/Container/Profile.pm:12
+msgid "container.people"
+msgstr "Socialtext People"
+
+#: lib/Socialtext/Gadgets/Container/Signals.pm:14
+msgid "container.signals"
+msgstr "Socialtext Signals"
+
+#: lib/Socialtext/Gadgets/Container/Signals/Signal.pm:17
+msgid "containers.signals-permalink"
+msgstr "Socialtext Signals - Permalink"
+
+#: lib/Socialtext/Gadgets/Container/Test.pm:12
+msgid "containers.test"
+msgstr "Test Container"
+
+#: lib/Socialtext/Gadgets/Container/WidgetEditor.pm:13
+msgid "containers.widget-editor"
+msgstr "Socialtext Widget Editor"
+
 #: lib/Socialtext/Handler/ControlPanel.pm:2190
 msgid "control.new-wiki"
 msgstr "New Workspace"
@@ -821,7 +847,6 @@ msgstr "Importing dashboard for user %1"
 msgid "date.format?"
 msgstr "How should displayed dates be formatted?"
 
-#:
 msgid "date.fri"
 msgstr "Fri"
 
@@ -833,27 +858,21 @@ msgstr "Should times be displayed in 12-hour or 24-hour format?"
 msgid "date.include-seconds?"
 msgstr "Should seconds be included on displayed times?"
 
-#:
 msgid "date.mon"
 msgstr "Mon"
 
-#:
 msgid "date.sat"
 msgstr "Sat"
 
-#:
 msgid "date.sun"
 msgstr "Sun"
 
-#:
 msgid "date.thu"
 msgstr "Thu"
 
-#:
 msgid "date.tue"
 msgstr "Tue"
 
-#:
 msgid "date.wed"
 msgstr "Wed"
 
@@ -1043,11 +1062,9 @@ msgstr "Line %1: %2"
 msgid "error.authentication-token-soft-limit-must-be-lower-than-hard-limit"
 msgstr "Authentication token soft limit must be lower than the hard limit."
 
-#:
 msgid "error.backup-already-running"
 msgstr "Backup already running"
 
-#:
 msgid "error.backup-failed"
 msgstr "Backup failed ..."
 
@@ -2037,11 +2054,9 @@ msgstr "Since your password is stored in the directory for your organization, th
 msgid "error.restore-account-widget"
 msgstr "Error restoring account widget."
 
-#:
 msgid "error.restore-failed=log-file"
 msgstr "Restore failed - check %1"
 
-#:
 msgid "error.restore-failed=restore-id"
 msgstr "Restore failed for (%1) ..."
 
@@ -2563,19 +2578,15 @@ msgstr "All %1 Jobs"
 msgid "lang.changed=user,locale"
 msgstr "Locale for %1 is now %2"
 
-#:
 msgid "lang.en"
 msgstr "English"
 
-#:
 msgid "lang.fr-ca"
 msgstr "French - Canadian"
 
-#:
 msgid "lang.zh-cn"
 msgstr "Chinese - Simplified"
 
-#:
 msgid "lang.zh-tw"
 msgstr "Chinese - Traditional"
 

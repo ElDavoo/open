@@ -1429,6 +1429,46 @@ msgstr "网页服务代理地址"
 msgid "console.your-email-address:"
 msgstr "您的电子邮件地址："
 
+#: lib/Socialtext/Gadgets/Container/Activities.pm:12
+msgid "container.activities"
+msgstr "Socialtext Activities"
+
+#: lib/Socialtext/Gadgets/Container/AccountDashboard.pm:12 lib/Socialtext/Gadgets/Container/Dashboard.pm:13
+msgid "container.dashboard"
+msgstr "Socialtext Dashboard"
+
+#: lib/Socialtext/Gadgets/Container/Explore.pm:14
+msgid "container.explore"
+msgstr "Socialtext Explore"
+
+#: lib/Socialtext/Gadgets/Container/GroupDirectory.pm:12
+msgid "container.group-directory"
+msgstr "Group Directory"
+
+#: lib/Socialtext/Gadgets/Container/CreateGroup.pm:12 lib/Socialtext/Gadgets/Container/Group.pm:12
+msgid "container.groups"
+msgstr "Socialtext Groups"
+
+#: lib/Socialtext/Gadgets/Container/EditProfile.pm:12 lib/Socialtext/Gadgets/Container/ForbiddenProfile.pm:13 lib/Socialtext/Gadgets/Container/Profile.pm:12
+msgid "container.people"
+msgstr "Socialtext People"
+
+#: lib/Socialtext/Gadgets/Container/Signals.pm:14
+msgid "container.signals"
+msgstr "Socialtext Signals"
+
+#: lib/Socialtext/Gadgets/Container/Signals/Signal.pm:17
+msgid "containers.signals-permalink"
+msgstr "Socialtext Signals - Permalink"
+
+#: lib/Socialtext/Gadgets/Container/Test.pm:12
+msgid "containers.test"
+msgstr "Test Container"
+
+#: lib/Socialtext/Gadgets/Container/WidgetEditor.pm:13
+msgid "containers.widget-editor"
+msgstr "Socialtext Widget Editor"
+
 msgid "control.about-account-logo-image"
 msgstr "您可以选择一个图像作为帐户标志。使用下面的表单从计算机上传图像。如果您未选择图像，则使用Socialtext的标志。标志的大小为宽201像素，高36像素，如果不符合该要求则图像将被调整。上传的标志将立即在用户的浏览器中显示，或者在刷新登录Socialtext桌面后显示（可选）。"
 

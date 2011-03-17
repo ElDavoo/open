@@ -2105,6 +2105,46 @@ msgstr "Zzz Zzzzzzz Zzzzz Zzzzzzz"
 msgid "console.your-email-address:"
 msgstr "Zzzz zzzzz zzzzzzz:"
 
+#: lib/Socialtext/Gadgets/Container/Activities.pm:12
+msgid "container.activities"
+msgstr "Zzzzzzzzzz Zzzzzzzzzz"
+
+#: lib/Socialtext/Gadgets/Container/AccountDashboard.pm:12 lib/Socialtext/Gadgets/Container/Dashboard.pm:13
+msgid "container.dashboard"
+msgstr "Zzzzzzzzzz Zzzzzzzzz"
+
+#: lib/Socialtext/Gadgets/Container/Explore.pm:14
+msgid "container.explore"
+msgstr "Zzzzzzzzzz Zzzzzzz"
+
+#: lib/Socialtext/Gadgets/Container/GroupDirectory.pm:12
+msgid "container.group-directory"
+msgstr "Zzzzz Zzzzzzzzz"
+
+#: lib/Socialtext/Gadgets/Container/CreateGroup.pm:12 lib/Socialtext/Gadgets/Container/Group.pm:12
+msgid "container.groups"
+msgstr "Zzzzzzzzzz Zzzzzz"
+
+#: lib/Socialtext/Gadgets/Container/EditProfile.pm:12 lib/Socialtext/Gadgets/Container/ForbiddenProfile.pm:13 lib/Socialtext/Gadgets/Container/Profile.pm:12
+msgid "container.people"
+msgstr "Zzzzzzzzzz Zzzzzz"
+
+#: lib/Socialtext/Gadgets/Container/Signals.pm:14
+msgid "container.signals"
+msgstr "Zzzzzzzzzz Zzzzzzz"
+
+#: lib/Socialtext/Gadgets/Container/Signals/Signal.pm:17
+msgid "containers.signals-permalink"
+msgstr "Zzzzzzzzzz Zzzzzzz - Zzzzzzzzz"
+
+#: lib/Socialtext/Gadgets/Container/Test.pm:12
+msgid "containers.test"
+msgstr "Zzzz Zzzzzzzzz"
+
+#: lib/Socialtext/Gadgets/Container/WidgetEditor.pm:13
+msgid "containers.widget-editor"
+msgstr "Zzzzzzzzzz Zzzzzz Zzzzzz"
+
 #: share/plugin/control/template/control/design-account.html:21
 msgid "control.about-account-logo-image"
 msgstr "Zzz zzz zzzzzz zz zzzzz zz zzz zz zzz Zzzzzzz zzzz. Zzz zzz zzzz zzzzz zz zzzzzz zz zzzzz zzzz zzzz zzzzzzzz. Zz zzz zzz'z zzzzzz zz zzzzz, zzz Zzzzzzzzzz zzzz zzzz zz zzzz zzzzzzz.  Zzz zzzz zz zzz zzzz zzzzzz zz 201 zzzzzz zzzz zzz 36 zzzzzz zzzz, zzzzzzzzz zzzz zzzzz zzzz zz zzzzzzzzzzz zz zzz.  Zzz zzzzzzzz zzzz zzzz zz zzzzzzzzz zzzzzzzzzzz zz zzzzz zz zzz zzzzzzz zzz (zzzzzzzzzz) zzzzz z zzzzz zzzzz zz Zzzzzzzzzz Zzzzzzz."

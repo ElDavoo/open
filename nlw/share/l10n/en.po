@@ -2105,6 +2105,46 @@ msgstr "Web Service Proxy Address"
 msgid "console.your-email-address:"
 msgstr "Your email address:"
 
+#: lib/Socialtext/Gadgets/Container/Activities.pm:12
+msgid "container.activities"
+msgstr "Socialtext Activities"
+
+#: lib/Socialtext/Gadgets/Container/AccountDashboard.pm:12 lib/Socialtext/Gadgets/Container/Dashboard.pm:13
+msgid "container.dashboard"
+msgstr "Socialtext Dashboard"
+
+#: lib/Socialtext/Gadgets/Container/Explore.pm:14
+msgid "container.explore"
+msgstr "Socialtext Explore"
+
+#: lib/Socialtext/Gadgets/Container/GroupDirectory.pm:12
+msgid "container.group-directory"
+msgstr "Group Directory"
+
+#: lib/Socialtext/Gadgets/Container/CreateGroup.pm:12 lib/Socialtext/Gadgets/Container/Group.pm:12
+msgid "container.groups"
+msgstr "Socialtext Groups"
+
+#: lib/Socialtext/Gadgets/Container/EditProfile.pm:12 lib/Socialtext/Gadgets/Container/ForbiddenProfile.pm:13 lib/Socialtext/Gadgets/Container/Profile.pm:12
+msgid "container.people"
+msgstr "Socialtext People"
+
+#: lib/Socialtext/Gadgets/Container/Signals.pm:14
+msgid "container.signals"
+msgstr "Socialtext Signals"
+
+#: lib/Socialtext/Gadgets/Container/Signals/Signal.pm:17
+msgid "containers.signals-permalink"
+msgstr "Socialtext Signals - Permalink"
+
+#: lib/Socialtext/Gadgets/Container/Test.pm:12
+msgid "containers.test"
+msgstr "Test Container"
+
+#: lib/Socialtext/Gadgets/Container/WidgetEditor.pm:13
+msgid "containers.widget-editor"
+msgstr "Socialtext Widget Editor"
+
 #: share/plugin/control/template/control/design-account.html:21
 msgid "control.about-account-logo-image"
 msgstr "You can choose an image to use as the Account logo. Use the form below to upload an image from your computer. If you don't select an image, the Socialtext logo will be used instead.  The size of the logo should be 201 pixels wide and 36 pixels high, otherwise your image will be transformed to fit.  The uploaded logo will be displayed immediately to users in the browser and (optionally) after a fresh login to Socialtext Desktop."
