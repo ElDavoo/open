@@ -12,6 +12,7 @@ use Socialtext::JSON qw/encode_json/;
 use Socialtext::JSON::Proxy::Helper;
 use Socialtext::Log qw/st_log/;
 use Socialtext::Timer;
+use Socialtext::l10n qw/loc/;
 use namespace::clean -except => 'meta';
 
 has_table 'groups';
@@ -211,11 +212,7 @@ sub update_store {
 
 sub display_permission_set {
     my $self = shift;
-
-    my @parts = map { ucfirst $_ }
-        split('-', $self->permission_set);
-
-    return join('-', @parts);
+    return loc("group.acl-" .  $self->permission_set);
 }
 
 # Delete the Group Homunculus from the system.
