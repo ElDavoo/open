@@ -369,7 +369,7 @@ hudson.prove: get-hudson-prove
 
 get-hudson-prove:
 	curl --insecure https://lucite.socialtext.net:9080/job/Socialtext/lastCompletedBuild/artifact/artifacts/.prove \
-	    --output hudson.prove --remote-time --time-cond hudson.prove
+	    --output hudson.prove  --time-cond hudson.prove
 
 # cd into custom-workspace-config and make all
 custom-workspaces:
