@@ -278,6 +278,12 @@ BEGIN
 END
 $$;
 
+CREATE FUNCTION not_null(anyarray) RETURNS anyarray
+    LANGUAGE sql
+    AS $_$ 
+    SELECT ARRAY(SELECT x FROM unnest($1) g(x) WHERE x IS NOT NULL) 
+$_$;
+
 CREATE FUNCTION on_user_set_delete() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
@@ -2739,4 +2745,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '134');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '135');
