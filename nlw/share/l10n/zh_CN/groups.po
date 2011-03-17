@@ -39,6 +39,9 @@ msgstr "无法载入个人信息。"
 msgid "error.not-member-of-any-groups"
 msgstr "您目前不是任何群组的成员。"
 
+msgid "error.retrieving-list-of-users"
+msgstr "读取用户列表错误"
+
 msgid "group.acl-member-only"
 msgstr "仅限成员"
 
@@ -47,6 +50,18 @@ msgstr "私密"
 
 msgid "group.acl-self-join"
 msgstr "自行加入"
+
+msgid "group.first"
+msgstr "最前"
+
+msgid "group.next"
+msgstr "下一个"
+
+msgid "group.previous"
+msgstr "前一个"
+
+msgid "groups.add-members"
+msgstr "添加成员"
 
 msgid "groups.add-wikis"
 msgstr "添加工作区"
@@ -138,6 +153,9 @@ msgstr "最前"
 msgid "groups.group"
 msgstr "群组"
 
+msgid "groups.group-contains-no-member"
+msgstr "此群组没有成员"
+
 msgid "groups.group-is-not-member-of-any-wikis"
 msgstr "本群组不属于任何工作区。"
 
@@ -149,6 +167,9 @@ msgstr "群组类别"
 
 msgid "groups.group-type:"
 msgstr "群组类别："
+
+msgid "groups.heading=acl"
+msgstr "%1群组"
 
 msgid "groups.leave"
 msgstr "离开群组"

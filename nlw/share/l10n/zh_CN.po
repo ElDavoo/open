@@ -4190,9 +4190,8 @@ msgstr "请指定限制类型。"
 msgid "error.retrieve-image"
 msgstr "出错：图像无法恢复"
 
-#: share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:2
 msgid "error.retrieving-list-of-users"
-msgstr "Error retrieving list of users"
+msgstr "读取用户列表错误"
 
 msgid "error.role-exists=user,role,account"
 msgstr "%1 已是 %3 帐户的 %2"
@@ -4890,10 +4889,8 @@ msgstr "50个免费帐户"
 msgid "google.for=query"
 msgstr "搜索“%1”"
 
-#. ($self->permission_set)
-#: lib/Socialtext/Group/Homunculus.pm:215
 msgid "group.acl-"
-msgstr "Type: "
+msgstr "类型："
 
 msgid "group.acl-member-only"
 msgstr "仅限成员"
@@ -4919,9 +4916,8 @@ msgstr "已删除群组ID：%1"
 msgid "group.exporting=wiki"
 msgstr "正在导出工作区“%1”的全部群组..."
 
-#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:11 share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:13 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:17 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:19
 msgid "group.first"
-msgstr "first"
+msgstr "最前"
 
 msgid "group.importing=wiki"
 msgstr "正在为“%1”工作区导入全部群组..."
@@ -4938,17 +4934,14 @@ msgstr "群组名和描述符合“%1”"
 msgid "group.name"
 msgstr "群组名称"
 
-#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:17 share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:19 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:23 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:25
 msgid "group.next"
-msgstr "next"
+msgstr "下一个"
 
-#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:5 share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:7 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:11 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:13
 msgid "group.previous"
-msgstr "previous"
+msgstr "前一个"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:19
 msgid "groups.add-members"
-msgstr "Add Members"
+msgstr "添加成员"
 
 msgid "groups.add-wikis"
 msgstr "添加工作区"
@@ -5040,9 +5033,8 @@ msgstr "最前"
 msgid "groups.group"
 msgstr "群组"
 
-#: share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:4
 msgid "groups.group-contains-no-member"
-msgstr "This group contains no member"
+msgstr "此群组没有成员"
 
 msgid "groups.group-is-not-member-of-any-wikis"
 msgstr "本群组不属于任何工作区。"
@@ -5056,10 +5048,8 @@ msgstr "群组类别"
 msgid "groups.group-type:"
 msgstr "群组类别："
 
-#. (container.group.display_permission_set)
-#: share/plugin/groups/template/groups_hello:3
 msgid "groups.heading=acl"
-msgstr "%1 group"
+msgstr "%1群组"
 
 msgid "groups.leave"
 msgstr "离开群组"
@@ -6290,10 +6280,8 @@ msgstr "近期查看"
 msgid "nav.search"
 msgstr "搜索"
 
-#. (ws.title)
-#: share/skin/s3/template/lite/search/search.html:4
 msgid "nav.search=wiki"
-msgstr "Search %1"
+msgstr "搜索 %1"
 
 msgid "nav.select"
 msgstr "选取"

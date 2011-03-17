@@ -984,6 +984,9 @@ msgstr "近期查看"
 msgid "nav.search"
 msgstr "搜索"
 
+msgid "nav.search=wiki"
+msgstr "搜索 %1"
+
 msgid "nav.select"
 msgstr "选取"
 

@@ -1641,6 +1641,9 @@ msgstr "50个免费帐户"
 msgid "google.for=query"
 msgstr "搜索“%1”"
 
+msgid "group.acl-"
+msgstr "类型："
+
 msgid "group.created=name,account"
 msgstr "%1 群组已被创建在帐户 %2 中。"
 
