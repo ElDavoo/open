@@ -266,11 +266,11 @@ sub load_page_metadata {
     my ($self, $dir) = @_;
     my $ws_dir = $self->{workspace_data_dir};
 
-    my $t = time_scope 'load_page_meta';
-
     my $ws_id = $self->{workspace}->workspace_id;
     $self->load_revision_metadata($ws_dir, $dir);
     my $sth;
+
+    my $t = time_scope 'load_page_meta';
 
     # Start with latest revision fields.  This *should* exclude "body".
     $sth = sql_execute(q{
