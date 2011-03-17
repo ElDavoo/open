@@ -2,12 +2,40 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-16 23:31+0800\n"
-"Language-Team: Socialtext i18n team\n"
+"PO-Revision-Date: 2011-02-20 10:43+0800\n"
 "Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: share/plugin/people/share/widgets/all_tags/config.yaml:4
+msgid "description.all_tags"
+msgstr "Displays a tag cloud of all tags on people in Socialtext People."
+
+#: share/plugin/people/share/widgets/forbidden_profile/config.yaml:5
+msgid "description.forbidden_profile"
+msgstr "Profile"
+
+#: share/plugin/people/share/widgets/profile/config.yaml:5
+msgid "description.profile"
+msgstr "Profile"
+
+#: share/plugin/people/share/widgets/profile_activities/config.yaml:4
+msgid "description.profile_activities"
+msgstr "Activity"
+
+#: share/plugin/people/share/widgets/profile_edit/config.yaml:4
+msgid "description.profile_edit"
+msgstr "Edit Profile"
+
+#: share/plugin/people/share/widgets/profile_network/config.yaml:4
+msgid "description.profile_network"
+msgstr "People associated with you in your groups."
+
+#: share/plugin/people/share/widgets/profile_tags/config.yaml:5
+msgid "description.profile_tags"
+msgstr "Tags"
 
 #: share/plugin/people/template/invite:109
 msgid "do.cancel"
@@ -16,6 +44,10 @@ msgstr "Cancel"
 #: share/plugin/people/template/invite:102
 msgid "do.invite"
 msgstr "Invite"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:10
+msgid "do.remove"
+msgstr "Remove"
 
 #: share/plugin/people/share/widgets/profile_tags/widget.js:86
 msgid "error.add-profile-tag"
@@ -438,7 +470,7 @@ msgstr "Home:"
 msgid "profile.i"
 msgstr "I"
 
-#: share/plugin/people/template/lite/profile.html:108
+#: share/plugin/people/share/widgets/profile/widget.html:38 share/plugin/people/template/lite/profile.html:108
 msgid "profile.im"
 msgstr "IM"
 
@@ -541,3 +573,39 @@ msgstr "Yahoo!&trade;:"
 #: share/plugin/people/template/view/peoplelist:47
 msgid "sort.by:"
 msgstr "Sort by:"
+
+#: share/plugin/people/share/widgets/profile_tags/widget.html:11
+msgid "tag.add"
+msgstr "Add Tag"
+
+#: share/plugin/people/share/widgets/all_tags/config.yaml:3
+msgid "title.all_tags"
+msgstr "All People Tags"
+
+#: share/plugin/people/share/widgets/forbidden_profile/config.yaml:4
+msgid "title.forbidden_profile"
+msgstr "Profile"
+
+#: share/plugin/people/share/widgets/profile/config.yaml:4
+msgid "title.profile"
+msgstr "Profile"
+
+#: share/plugin/people/share/widgets/profile_activities/config.yaml:3
+msgid "title.profile_activities"
+msgstr "Activity"
+
+#: share/plugin/people/share/widgets/profile_edit/config.yaml:3
+msgid "title.profile_edit"
+msgstr "Edit Profile"
+
+#: share/plugin/people/share/widgets/profile_network/config.yaml:3
+msgid "title.profile_network"
+msgstr "Colleagues"
+
+#: share/plugin/people/share/widgets/profile_tags/config.yaml:4
+msgid "title.profile_tags"
+msgstr "Tags"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:44
+msgid "user.name"
+msgstr "Name"

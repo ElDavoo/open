@@ -12,9 +12,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 07:29+0800\n"
-"Language-Team: Socialtext i18n team\n"
+"PO-Revision-Date: 2011-02-20 10:43+0800\n"
 "Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,6 +23,14 @@ msgstr ""
 "PO-Revision-Date: 2011-02-20 10:38+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"#-#-#-#-#  template.po (Socialtext i18n)  #-#-#-#-#\n"
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-02-20 10:43+0800\n"
+"Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -36,9 +44,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  signals.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 06:36+0800\n"
-"Language-Team: Socialtext i18n team\n"
+"PO-Revision-Date: 2011-02-20 10:43+0800\n"
 "Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -52,9 +60,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-16 23:31+0800\n"
-"Language-Team: Socialtext i18n team\n"
+"PO-Revision-Date: 2011-02-20 10:43+0800\n"
 "Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -320,11 +328,11 @@ msgstr "«Add a tag»"
 msgid "activities.add-video-link"
 msgstr "«Add a video link»"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:330
+#: share/plugin/widgets/share/javascript/activities/appdata.js:329
 msgid "activities.all-events"
 msgstr "«all events»"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:284
+#: share/plugin/widgets/share/javascript/activities/appdata.js:283
 msgid "activities.all-my-groups"
 msgstr "«All my groups»"
 
@@ -332,7 +340,7 @@ msgstr "«All my groups»"
 msgid "activities.all-replies"
 msgstr "«All Replies»"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:285
+#: share/plugin/widgets/share/javascript/activities/appdata.js:284
 msgid "activities.all-shared-groups"
 msgstr "«All shared groups»"
 
@@ -356,7 +364,7 @@ msgstr "«(click here to expand)»"
 msgid "activities.close-this-window"
 msgstr "«Close this window»"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:362
+#: share/plugin/widgets/share/javascript/activities/appdata.js:361
 msgid "activities.comments"
 msgstr "«comments»"
 
@@ -389,7 +397,7 @@ msgstr ""
 "«Are you sure you want to expunge this %1 from the system?\n»"
 "«It cannot be recovered.»"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:352
+#: share/plugin/widgets/share/javascript/activities/appdata.js:351
 msgid "activities.contributions"
 msgstr "«contributions»"
 
@@ -397,7 +405,7 @@ msgstr "«contributions»"
 msgid "activities.delete"
 msgstr "«delete»"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:357
+#: share/plugin/widgets/share/javascript/activities/appdata.js:356
 msgid "activities.edits"
 msgstr "«edits»"
 
@@ -409,11 +417,11 @@ msgstr "«Copy and paste the URL for the video below.  We support embedding vide
 msgid "activities.enter-weblink-url-here"
 msgstr "«Paste or type your link's destination (URL, e.g. http://socialtext.com) and text of the link below. Link destination is required.»"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:329
+#: share/plugin/widgets/share/javascript/activities/appdata.js:328
 msgid "activities.events"
 msgstr "«events»"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:395
+#: share/plugin/widgets/share/javascript/activities/appdata.js:394
 msgid "activities.everyone"
 msgstr "«everyone»"
 
@@ -421,7 +429,7 @@ msgstr "«everyone»"
 msgid "activities.expunge"
 msgstr "«expunge»"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:402
+#: share/plugin/widgets/share/javascript/activities/appdata.js:401
 msgid "activities.following"
 msgstr "«people I follow»"
 
@@ -458,7 +466,7 @@ msgstr "«Make this signal private»"
 msgid "activities.maximum-file-size=mb"
 msgstr "«Maximum file size: %1MB»"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:415
+#: share/plugin/widgets/share/javascript/activities/appdata.js:414
 msgid "activities.me"
 msgstr "«me»"
 
@@ -474,7 +482,7 @@ msgstr "«More»"
 msgid "activities.more-mentions"
 msgstr "«More Mentions...»"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:409
+#: share/plugin/widgets/share/javascript/activities/appdata.js:408
 msgid "activities.my-conversations"
 msgstr "«my conversations»"
 
@@ -484,7 +492,7 @@ msgid "activities.new-events=count"
 msgstr "«%*(%1,activity,activities)»"
 
 #. (self.mentionCount)
-#: share/plugin/widgets/share/javascript/activities/widget.js:473
+#: share/plugin/widgets/share/javascript/activities/widget.js:475
 msgid "activities.new-mentions=count"
 msgstr "«%*(%1,new mention)...»"
 
@@ -503,7 +511,7 @@ msgstr "«%1 new»"
 msgid "activities.other-replies=count"
 msgstr "«%*(%1,other reply,other replies)...»"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:367
+#: share/plugin/widgets/share/javascript/activities/appdata.js:366
 msgid "activities.page-tags"
 msgstr "«page tags»"
 
@@ -511,7 +519,7 @@ msgstr "«page tags»"
 msgid "activities.page:"
 msgstr "«Page:»"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:372
+#: share/plugin/widgets/share/javascript/activities/appdata.js:371
 msgid "activities.people-events"
 msgstr "«people events»"
 
@@ -528,7 +536,7 @@ msgid "activities.private-to-you"
 msgstr "«private to you»"
 
 #. (signal.best_full_name)
-#: share/plugin/widgets/share/javascript/activities/widget.js:538
+#: share/plugin/widgets/share/javascript/activities/widget.js:540
 msgid "activities.private-to-you=sender"
 msgstr "«%1 private to you»"
 
@@ -582,7 +590,7 @@ msgstr "«Your Signal was successfully sent. Click <a href=\"#\" class=\"clearFi
 msgid "activities.signal-this-page"
 msgstr "«Send a signal with a link to this page»"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:345
+#: share/plugin/widgets/share/javascript/activities/appdata.js:344
 msgid "activities.signals"
 msgstr "«signals»"
 
@@ -595,7 +603,7 @@ msgid "activities.socialtext-activities"
 msgstr "«Socialtext Activities»"
 
 #. (self.signalCount, self._originalTitle)
-#: share/plugin/widgets/share/javascript/activities/widget.js:467
+#: share/plugin/widgets/share/javascript/activities/widget.js:469
 msgid "activities.title=signal-count,original-title"
 msgstr "«(%1) %2»"
 
@@ -605,7 +613,7 @@ msgid "activities.to-groups=count"
 msgstr "«to %1 groups»"
 
 #. (signal.best_full_name,                    targets.join(', ')
-#: share/plugin/widgets/share/javascript/activities/widget.js:541
+#: share/plugin/widgets/share/javascript/activities/widget.js:543
 msgid "activities.to=sender,targets"
 msgstr "«%1 to %2»"
 
@@ -631,7 +639,7 @@ msgstr "«within»"
 msgid "activities.you"
 msgstr "«You»"
 
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:7 share/skin/s3/template/lite/page_list.html:13 share/skin/s3/template/view/page/display:14
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:7 share/template/data/event:10 share/skin/s3/template/lite/page_list.html:13 share/skin/s3/template/view/page/display:14
 msgid "ago.1day"
 msgstr "«one day ago»"
 
@@ -643,26 +651,26 @@ msgstr "«one hour ago»"
 msgid "ago.1min"
 msgstr "«one min. ago»"
 
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:3 share/skin/s3/template/view/page/display:8
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:3 share/template/data/event:6 share/skin/s3/template/view/page/display:8
 msgid "ago.1minute"
 msgstr "«one minute ago»"
 
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:2 share/skin/s3/template/view/page/display:7
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:2 share/template/data/event:5 share/skin/s3/template/view/page/display:7
 msgid "ago.<1minute"
 msgstr "«less than a minute ago»"
 
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:8 share/skin/s3/template/view/page/display:15
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:8 share/template/data/event:11 share/skin/s3/template/view/page/display:15
 msgid "ago.about-1day"
 msgstr "«about one day ago»"
 
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:5 share/skin/s3/template/view/page/display:10
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:5 share/template/data/event:8 share/skin/s3/template/view/page/display:10
 msgid "ago.about-1hour"
 msgstr "«about one hour ago»"
 
 #. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
 #. (this.round(minutes / 1440)
 #. (this.round(minutes / 1440))
-#. #-#-#-#-#  template.po  #-#-#-#-#
+#. #-#-#-#-#  template.po (Socialtext i18n)  #-#-#-#-#
 #. (round(minutes / 1440)
 #. (round(minutes / 1440))
 #. (delta)
@@ -675,7 +683,7 @@ msgstr "«%*(%1,day) ago»"
 #. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
 #. (this.round(minutes / 60)
 #. (this.round(minutes / 60))
-#. #-#-#-#-#  template.po  #-#-#-#-#
+#. #-#-#-#-#  template.po (Socialtext i18n)  #-#-#-#-#
 #. (round(minutes / 60)
 #. (round(minutes / 60))
 #. #-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#
@@ -689,8 +697,14 @@ msgstr "«%*(%1,hour) ago»"
 msgid "ago.mins=count"
 msgstr "«%1 min. ago»"
 
+#. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
 #. (minutes)
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:4 share/template/data/event:7 share/skin/s3/template/view/page/display:9
+#. #-#-#-#-#  template.po (Socialtext i18n)  #-#-#-#-#
+#. (minutes)
+#. #-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#
+#. (minutes)
+#. (data.minutes_ago)
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:4 share/template/data/event:7 share/skin/s3/javascript/s3.js:694 share/skin/s3/template/view/page/display:9
 msgid "ago.minutes=count"
 msgstr "«%*(%1,minute) ago»"
 
@@ -948,7 +962,7 @@ msgstr "«Blog Archives»"
 msgid "blog.atom=blog"
 msgstr "«Blog: %1 Atom»"
 
-#: share/skin/s3/template/view/weblog:7
+#: share/skin/s3/template/view/weblog:7 lib/Socialtext/WeblogPlugin.pm:103
 msgid "blog.blog"
 msgstr "«Blog»"
 
@@ -1785,7 +1799,7 @@ msgstr "«Automatic Backup Schedule»"
 msgid "console.automatic-updating"
 msgstr "«Automatic Updating»"
 
-#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:1 ../appliance/libsocialtext-appliance-perl/template/backup.html:2 ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42
 msgid "console.backup"
 msgstr "«Backup»"
 
@@ -1889,7 +1903,7 @@ msgstr "«Other Settings»"
 msgid "console.outgoing-mail-server"
 msgstr "«Outgoing mail server»"
 
-#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42
+#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42 ../appliance/libsocialtext-appliance-perl/template/overview.html:1 ../appliance/libsocialtext-appliance-perl/template/overview.html:2
 msgid "console.overview"
 msgstr "«Overview»"
 
@@ -1968,6 +1982,8 @@ msgstr "«Please feel free to use HTML in this message, but SCRIPT tags ( eg Jav
 msgid "console.send-test-email"
 msgstr "«Send Test Email»"
 
+#. ('/nlw/control/settings')
+#. ("/nlw/control/settings")
 #: ../appliance/libsocialtext-appliance-perl/template/setup.html:5
 msgid "console.server-wide-settings-moved-to-control-panel=uri"
 msgstr "«Server-wide access settings have moved to the <a href=\"%1\">Business Control Panel</a>.»"
@@ -2004,7 +2020,7 @@ msgstr "«Set Support Contact»"
 msgid "console.set-web-proxy-server"
 msgstr "«Set Web Proxy Server»"
 
-#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42
+#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42 ../appliance/libsocialtext-appliance-perl/template/setup.html:1 ../appliance/libsocialtext-appliance-perl/template/setup.html:2
 msgid "console.setup"
 msgstr "«Setup»"
 
@@ -2016,7 +2032,7 @@ msgstr "«Shut Down Appliance»"
 msgid "console.shut-down-now"
 msgstr "«Shut Down Now»"
 
-#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42
+#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42 ../appliance/libsocialtext-appliance-perl/template/shutdown.html:1 ../appliance/libsocialtext-appliance-perl/template/shutdown.html:2
 msgid "console.shutdown"
 msgstr "«Shutdown»"
 
@@ -2036,7 +2052,7 @@ msgstr "«Socialtext Desktop»"
 msgid "console.socialtext-support"
 msgstr "«Socialtext Support»"
 
-#: ../appliance/libsocialtext-appliance-perl/template/help.html:141
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:141 ../appliance/libsocialtext-appliance-perl/template/setup.html:103 ../appliance/libsocialtext-appliance-perl/template/setup.html:33 ../appliance/libsocialtext-appliance-perl/template/setup.html:48 ../appliance/libsocialtext-appliance-perl/template/setup.html:69 ../appliance/libsocialtext-appliance-perl/template/setup.html:84
 msgid "console.submit"
 msgstr "«Submit»"
 
@@ -2138,7 +2154,7 @@ msgstr "«Manage system-wide application settings.»"
 msgid "control.about-users-tab"
 msgstr "«Use this screen to quickly invite Users to Groups and Workspaces.»"
 
-#: share/plugin/control/template/control/workspace_invite.html:94
+#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:41 share/plugin/control/template/control/workspace_invite.html:94
 msgid "control.about-wiki-id"
 msgstr "«This is a short unique identifier used as part of your workspace's web address and email address. It must consist of 3-30 lowercase letters, numbers, underscores, or dashes.»"
 
@@ -2187,9 +2203,9 @@ msgstr "«Account type:»"
 msgid "control.account=name"
 msgstr "«%1 account»"
 
-#. (this.total)
 #. ('<span id="accountsCount"></span>')
 #. ("<span id=\"accountsCount\"></span>")
+#. (this.total)
 #: share/plugin/control/template/control/group.html:316 share/plugin/control/template/control/user.html:135
 msgid "control.accounts=count"
 msgstr "«Accounts (%1)»"
@@ -2226,7 +2242,7 @@ msgstr "«Add Group to Workspace»"
 msgid "control.add-group-to-wiki:"
 msgstr "«Add Group to Workspace:»"
 
-#: share/plugin/control/template/control/group.html:33 share/plugin/control/template/control/account.html:76
+#: share/plugin/control/template/control/account.html:76 share/plugin/control/template/control/group.html:33
 msgid "control.add-multiple-users"
 msgstr "«Add Multiple Users»"
 
@@ -2242,7 +2258,7 @@ msgstr "«Add to Account»"
 msgid "control.add-to-wiki"
 msgstr "«Add to Workspace»"
 
-#: share/plugin/control/template/control/add_user.html:1 share/plugin/control/template/control/add_user.html:56 share/plugin/control/template/control/add_user.html:8
+#: share/plugin/control/template/control/add_user.html:1 share/plugin/control/template/control/add_user.html:60 share/plugin/control/template/control/add_user.html:8
 msgid "control.add-user"
 msgstr "«Add User»"
 
@@ -2355,7 +2371,7 @@ msgid "control.browse"
 msgstr "«Browse ...»"
 
 #. (title)
-#: share/plugin/control/template/control/add_user.html:40
+#: share/plugin/control/template/control/add_user.html:44
 msgid "control.calculated-unless-provided=field"
 msgstr "«%1 is calculated unless provided»"
 
@@ -2434,7 +2450,7 @@ msgstr "«Create New Field»"
 msgid "control.create-new-group"
 msgstr "«Create New Group»"
 
-#: share/plugin/control/template/control/workspace_invite.html:82 share/plugin/control/template/control/workspaces.html:11 share/plugin/control/template/control/workspaces.html:8
+#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:18 share/plugin/control/template/control/workspace_invite.html:82 share/plugin/control/template/control/workspaces.html:11 share/plugin/control/template/control/workspaces.html:8
 msgid "control.create-new-wiki"
 msgstr "«Create New Workspace»"
 
@@ -2529,7 +2545,6 @@ msgstr "«Disable Invitation to Group»"
 msgid "control.edit-field"
 msgstr "«Edit Field»"
 
-#: share/plugin/control/template/control/add_user.html:24
 msgid "control.email-address:"
 msgstr "«E-mail Address:»"
 
@@ -2614,7 +2629,6 @@ msgstr "«Field Title»"
 msgid "control.field-type"
 msgstr "«Field Type»"
 
-#: share/plugin/control/template/control/add_user.html:28
 msgid "control.first-name:"
 msgstr "«First name:»"
 
@@ -2979,7 +2993,7 @@ msgstr "«Server-Wide Account Permissions»"
 msgid "control.set-account-type-to:"
 msgstr "«Change account type to:»"
 
-#: share/plugin/control/template/control/add_user.html:75
+#: share/plugin/control/template/control/add_user.html:79
 msgid "control.set-by-external-directory"
 msgstr "«Set by external Directory»"
 
@@ -3068,7 +3082,7 @@ msgstr "«Transform Accounts to Groups»"
 msgid "control.transform-to-groups"
 msgstr "«Transform to Groups»"
 
-#: share/plugin/control/template/control/account.html:61 share/plugin/control/template/control/group.html:18 share/plugin/control/template/control/plugin_pref_form.html:6 share/plugin/control/template/control/workspace_table:3 share/plugin/control/template/control/workspace_table:70
+#: share/plugin/control/template/control/account.html:61 share/plugin/control/template/control/group.html:18 share/plugin/control/template/control/plugin_pref_form.html:6 share/plugin/control/template/control/settings.html:11 share/plugin/control/template/control/settings.html:21 share/plugin/control/template/control/workspace_table:3 share/plugin/control/template/control/workspace_table:70
 msgid "control.update"
 msgstr "«Update»"
 
@@ -3156,9 +3170,9 @@ msgid "control.via-wiki=count,links"
 msgstr "«Via %*(%1,Workspace): %2»"
 
 #. (item.title)
+#. (workspace.name)
 #. (account.name)
 #. (user.name_and_email)
-#. (workspace.name)
 #: share/plugin/control/share/javascript/workspaces_new.js:320 share/plugin/control/template/control/account_link:1 share/plugin/control/template/control/user_link:1 share/plugin/control/template/control/workspace_link:1 share/plugin/control/template/control/workspaces_new.html:22
 msgid "control.view=name"
 msgstr "«view %1»"
@@ -3190,9 +3204,9 @@ msgstr "«Title»"
 msgid "control.wiki=name"
 msgstr "«%1 workspace»"
 
+#. (this.total)
 #. (account.workspace_count)
 #. (wksp_count)
-#. (this.total)
 #: share/plugin/control/template/control/account.html:216 share/plugin/control/template/control/group.html:50 share/plugin/control/template/control/user.html:272
 msgid "control.wikis=count"
 msgstr "«Workspaces (%1)»"
@@ -3361,6 +3375,133 @@ msgstr "«Tue»"
 msgid "date.wed"
 msgstr "«Wed»"
 
+#: share/plugin/groups/share/widgets/all_groups/config.yaml:4
+msgid "description.all_groups"
+msgstr "«All Available Groups»"
+
+#: share/plugin/people/share/widgets/all_tags/config.yaml:4
+msgid "description.all_tags"
+msgstr "«Displays a tag cloud of all tags on people in Socialtext People.»"
+
+#: share/plugin/widgets/share/widgets/blockerbugs/config.yaml:4
+msgid "description.blockerbugs"
+msgstr "«Display a list of the open blocker bugs.»"
+
+#: share/plugin/groups/share/widgets/edit_information/config.yaml:4
+msgid "description.edit_information"
+msgstr "«Edit Group Information»"
+
+#: share/plugin/groups/share/widgets/edit_people/config.yaml:4
+msgid "description.edit_people"
+msgstr "«Edit Group People»"
+
+#: share/plugin/signals/share/widgets/explore/config.yaml:5
+msgid "description.explore"
+msgstr "«Post signals and display activities, including signals and workspace events.»"
+
+#: share/plugin/signals/share/widgets/explore_filters/config.yaml:5
+msgid "description.explore_filters"
+msgstr "«Filter bookmarks»"
+
+#: share/plugin/people/share/widgets/forbidden_profile/config.yaml:5
+msgid "description.forbidden_profile"
+msgstr "«Profile»"
+
+#: share/plugin/groups/share/widgets/information/config.yaml:4
+msgid "description.information"
+msgstr "«Group Information»"
+
+#: share/plugin/widgets/share/widgets/iterationbugs/config.yaml:4
+msgid "description.iterationbugs"
+msgstr "«Display a list of the bugs assigned to an iteration.»"
+
+#: share/plugin/groups/share/widgets/membership/config.yaml:4
+msgid "description.membership"
+msgstr "«Edit Group Membership»"
+
+#: share/plugin/groups/share/widgets/my_groups/config.yaml:4
+msgid "description.my_groups"
+msgstr "«My Groups»"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/config.yaml:5
+msgid "description.my_workspaces"
+msgstr "«Lists all of the workspaces you have access to.»"
+
+#: share/plugin/widgets/share/widgets/one_page/config.yaml:5
+msgid "description.one_page"
+msgstr "«Displays a single wiki page within a Socialtext Widget.»"
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/config.yaml:4
+msgid "description.one_spreadsheet"
+msgstr "«Displays a single spreadsheet within a Socialtext Widget.»"
+
+#: share/plugin/groups/share/widgets/people/config.yaml:4
+msgid "description.people"
+msgstr "«People in this group.»"
+
+#: share/plugin/signals/share/widgets/profile/config.yaml:4 share/plugin/people/share/widgets/profile/config.yaml:5
+msgid "description.profile"
+msgstr "«Profile»"
+
+#: share/plugin/people/share/widgets/profile_activities/config.yaml:4
+msgid "description.profile_activities"
+msgstr "«Activity»"
+
+#: share/plugin/people/share/widgets/profile_edit/config.yaml:4
+msgid "description.profile_edit"
+msgstr "«Edit Profile»"
+
+#: share/plugin/people/share/widgets/profile_network/config.yaml:4
+msgid "description.profile_network"
+msgstr "«People associated with you in your groups.»"
+
+#: share/plugin/people/share/widgets/profile_tags/config.yaml:5
+msgid "description.profile_tags"
+msgstr "«Tags»"
+
+#: share/plugin/widgets/share/widgets/rest_api/config.yaml:4
+msgid "description.rest_api"
+msgstr "«Rest API Devtool»"
+
+#: share/plugin/widgets/share/widgets/rss/config.yaml:4
+msgid "description.rss"
+msgstr "«Displays an RSS feed.»"
+
+msgid "description.signals-profile"
+msgstr "«Lets a user create signals and display signals from others.»"
+
+#: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:4
+msgid "description.tag_cloud"
+msgstr "«Displays a tag cloud of all tags in a particular workspace.»"
+
+#: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:4
+msgid "description.tagged_pages"
+msgstr "«Displays a list of pages with a certain tag»"
+
+#: share/plugin/groups/share/widgets/teaser/config.yaml:4
+msgid "description.teaser"
+msgstr "«Coming Soon»"
+
+#: share/plugin/widgets/share/widgets/testrunner/config.yaml:4
+msgid "description.testrunner"
+msgstr "«Keep an eye on Testrunner results.»"
+
+#: share/plugin/widgets/share/widgets/userlist/config.yaml:5
+msgid "description.userlist"
+msgstr "«Post signals and display activities, including signals and workspace events.»"
+
+#: share/plugin/dashboard/share/widgets/widget_editor/config.yaml:5
+msgid "description.widget_editor"
+msgstr "«Edit a widget»"
+
+#: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:4
+msgid "description.workspace_activity"
+msgstr "«Show edits»"
+
+#: share/plugin/groups/share/widgets/workspaces/config.yaml:4
+msgid "description.workspaces"
+msgstr "«Lists all of the workspaces in the current group»"
+
 #: lib/Socialtext/Handler/ControlPanel.pm:774
 msgid "desktop.relogin-for-default-logo"
 msgstr "«(Desktop users need to logout and login again to see the default logo.)»"
@@ -3402,7 +3543,7 @@ msgstr "«Add users to %1 group»"
 msgid "do.bold"
 msgstr "«Bold»"
 
-#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:65 share/skin/wikiwyg/javascript/jemplate/add-a-link.html:75 share/skin/wikiwyg/javascript/jemplate/opensocial-gallery.html:10 share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:25 share/skin/wikiwyg/javascript/jemplate/table-create.html:50 share/skin/wikiwyg/javascript/jemplate/table-options.html:54 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:14 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:148 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:168 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:377 share/skin/wikiwyg/javascript/template/widget_edit.tt2:69 share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:18 share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:17 share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:23 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:750 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:20 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:467 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:493 share/skin/s3/javascript/lightbox/attachment.tt2:30 share/skin/s3/javascript/lightbox/attachment.tt2:55 share/skin/s3/javascript/lightbox/comment.tt2:24 share/skin/s3/javascript/lightbox/copy.tt2:39 share/skin/s3/javascript/lightbox/create_content.tt2:51 share/skin/s3/javascript/lightbox/delete.tt2:23 share/skin/s3/javascript/lightbox/duplicate.tt2:34 share/skin/s3/javascript/lightbox/email.tt2:71 share/skin/s3/javascript/lightbox/rename.tt2:31 share/skin/s3/javascript/lightbox/self_join_workspace.tt2:16 share/skin/s3/template/element/settings/start:22 share/skin/s3/template/element/settings/stop:12 share/skin/s3/template/lite/subnav.html:46 share/plugin/people/template/invite:109 share/plugin/groups/share/javascript/lightbox/create-group.tt2:64 share/plugin/groups/share/javascript/lightbox/delete-group.tt2:20 share/plugin/groups/share/javascript/lightbox/leave-group.tt2:17 share/plugin/groups/template/edit_group_footer:11 share/plugin/groups/template/edit_group_footer:4 share/plugin/groups/template/group_footer:14 share/plugin/groups/template/group_footer:7 share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:20 share/plugin/dashboard/template/dashboard_links:18 share/plugin/dashboard/template/widget_editor_links:13 share/plugin/control/share/javascript/lightbox/group-create.tt2:69 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:47 share/plugin/control/template/control/field_form:82 ../appliance/libsocialtext-appliance-perl/template/popup.html:48
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:65 share/skin/wikiwyg/javascript/jemplate/add-a-link.html:75 share/skin/wikiwyg/javascript/jemplate/opensocial-gallery.html:10 share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:25 share/skin/wikiwyg/javascript/jemplate/table-create.html:50 share/skin/wikiwyg/javascript/jemplate/table-options.html:54 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:14 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:148 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:168 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:377 share/skin/wikiwyg/javascript/template/widget_edit.tt2:69 share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:18 share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:17 share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:23 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:751 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:20 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:467 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:493 share/skin/s3/javascript/lightbox/attachment.tt2:30 share/skin/s3/javascript/lightbox/attachment.tt2:55 share/skin/s3/javascript/lightbox/comment.tt2:24 share/skin/s3/javascript/lightbox/copy.tt2:39 share/skin/s3/javascript/lightbox/create_content.tt2:51 share/skin/s3/javascript/lightbox/delete.tt2:23 share/skin/s3/javascript/lightbox/duplicate.tt2:34 share/skin/s3/javascript/lightbox/email.tt2:71 share/skin/s3/javascript/lightbox/rename.tt2:31 share/skin/s3/javascript/lightbox/self_join_workspace.tt2:16 share/skin/s3/template/element/settings/start:22 share/skin/s3/template/element/settings/stop:12 share/skin/s3/template/lite/subnav.html:46 share/plugin/people/template/invite:109 share/plugin/groups/share/javascript/lightbox/create-group.tt2:64 share/plugin/groups/share/javascript/lightbox/delete-group.tt2:20 share/plugin/groups/share/javascript/lightbox/leave-group.tt2:17 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:74 share/plugin/groups/template/edit_group_footer:11 share/plugin/groups/template/edit_group_footer:4 share/plugin/groups/template/group_footer:14 share/plugin/groups/template/group_footer:7 share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:20 share/plugin/dashboard/template/dashboard_links:18 share/plugin/dashboard/template/widget_editor_links:13 share/plugin/control/share/javascript/lightbox/group-create.tt2:69 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:47 share/plugin/control/template/control/field_form:82 ../appliance/libsocialtext-appliance-perl/template/popup.html:48
 msgid "do.cancel"
 msgstr "«Cancel»"
 
@@ -3418,7 +3559,7 @@ msgstr "«Compare Revisions»"
 msgid "do.copy"
 msgstr "«Copy»"
 
-#: share/skin/s3/javascript/lightbox/create_content.tt2:46 share/plugin/groups/template/edit_group_footer:7 share/plugin/groups/template/group_footer:10 share/plugin/control/share/javascript/lightbox/group-create.tt2:68 share/plugin/control/share/javascript/lightbox/workspace-create.js:33 share/plugin/control/template/control/report.html:130
+#: share/skin/s3/javascript/lightbox/create_content.tt2:46 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:69 share/plugin/groups/share/widgets/membership/jemplate/members.tt2:3 share/plugin/groups/template/edit_group_footer:7 share/plugin/groups/template/group_footer:10 share/plugin/control/share/javascript/lightbox/group-create.tt2:68 share/plugin/control/share/javascript/lightbox/workspace-create.js:33 share/plugin/control/template/control/report.html:130
 msgid "do.create"
 msgstr "«Create»"
 
@@ -3470,7 +3611,7 @@ msgstr "«Image»"
 msgid "do.indent"
 msgstr "«More Indented»"
 
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:2062 share/skin/wikiwyg/javascript/lib/Wikiwyg/Toolbar.js:57
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu:3 share/skin/wikiwyg/javascript/lib/Wikiwyg.js:2062 share/skin/wikiwyg/javascript/lib/Wikiwyg/Toolbar.js:57
 msgid "do.insert"
 msgstr "«Insert»"
 
@@ -3494,7 +3635,7 @@ msgstr "«Join To Edit»"
 msgid "do.leave"
 msgstr "«Leave»"
 
-#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:46
+#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:64 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:46
 msgid "do.next"
 msgstr "«Next»"
 
@@ -3522,7 +3663,7 @@ msgstr "«Print»"
 msgid "do.register"
 msgstr "«Register»"
 
-#: share/plugin/widgets/template/view/gallery:123 share/skin/s3/javascript/lightbox/email.tt2:41 share/skin/s3/template/element/settings/users_listall_section:24 share/plugin/control/template/control/workspace_invite.html:120
+#: share/plugin/widgets/template/view/gallery:123 share/skin/s3/javascript/lightbox/email.tt2:41 share/skin/s3/template/element/settings/users_listall_section:24 share/plugin/people/share/widgets/profile_edit/widget.html:10 share/plugin/control/template/control/workspace_invite.html:120
 msgid "do.remove"
 msgstr "«Remove»"
 
@@ -3542,7 +3683,7 @@ msgstr "«Replace»"
 msgid "do.revert-dashboard"
 msgstr "«Revert to Default...»"
 
-#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:58 share/skin/wikiwyg/javascript/jemplate/add-a-link.html:74 share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:18 share/skin/wikiwyg/javascript/jemplate/table-create.html:43 share/skin/wikiwyg/javascript/jemplate/table-options.html:53 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:169 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:370 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:8 share/skin/wikiwyg/javascript/template/widget_edit.tt2:68 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:14 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:444 share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:25
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:58 share/skin/wikiwyg/javascript/jemplate/add-a-link.html:74 share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:18 share/skin/wikiwyg/javascript/jemplate/table-create.html:43 share/skin/wikiwyg/javascript/jemplate/table-options.html:53 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:169 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:370 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:8 share/skin/wikiwyg/javascript/template/widget_edit.tt2:68 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:14 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:444 share/plugin/groups/share/widgets/membership/jemplate/members.tt2:3 share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:25
 msgid "do.save"
 msgstr "«Save»"
 
@@ -3579,7 +3720,7 @@ msgstr "«Unsubscribe from the %1 workspace»"
 msgid "do.upload"
 msgstr "«Upload»"
 
-#: share/skin/s3/javascript/s3.js:923 share/skin/s3/template/view/empty_watchlist:39 share/skin/s3/template/view/page/display:74
+#: share/skin/s3/javascript/s3.js:929 share/skin/s3/template/view/empty_watchlist:39 share/skin/s3/template/view/page/display:74
 msgid "do.watch"
 msgstr "«Watch»"
 
@@ -3595,28 +3736,28 @@ msgstr "«Wiki Link»"
 msgid "do.yes"
 msgstr "«Yes»"
 
-#: share/skin/s3/javascript/s3.js:1190
+#: share/skin/s3/javascript/s3.js:1196
 msgid "draft.?"
 msgstr "«?»"
 
-#: share/skin/s3/javascript/s3.js:1174
+#: share/skin/s3/javascript/s3.js:1180
 msgid "draft.discard"
 msgstr "«Discard»"
 
-#: share/skin/s3/javascript/s3.js:1178
+#: share/skin/s3/javascript/s3.js:1184
 msgid "draft.discard?"
 msgstr "«Are you sure you want to discard the draft?»"
 
-#: share/skin/s3/javascript/s3.js:1171
+#: share/skin/s3/javascript/s3.js:1177
 msgid "draft.or"
 msgstr "«&nbsp;or&nbsp;»"
 
-#: share/skin/s3/javascript/s3.js:1168
+#: share/skin/s3/javascript/s3.js:1174
 msgid "draft.resume"
 msgstr "«Resume»"
 
 #. (draft.page_title, draft.workspace_title, draft.workspace_id)
-#: share/skin/s3/javascript/s3.js:1164
+#: share/skin/s3/javascript/s3.js:1170
 msgid "draft.unsaved=page,wiki,wiki-id:"
 msgstr "«You have an unsaved draft of \"%1\" in the \"%2\" (%3) workspace:»"
 
@@ -3645,7 +3786,7 @@ msgstr "«Somebody else made changes to the page while you were editing it.»"
 msgid "edit.contention=type"
 msgstr "«Somebody else made changes to the %1 while you were editing it.»"
 
-#: share/skin/s3/javascript/s3.js:153
+#: share/skin/s3/javascript/s3.js:156
 msgid "edit.copy-your-changes"
 msgstr "«Please copy your changes, and click Cancel to return to the page.»"
 
@@ -3662,7 +3803,7 @@ msgstr "«Editing:»"
 msgid "edit.editing=page"
 msgstr "«Editing: %1»"
 
-#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:39 share/skin/s3/javascript/s3.js:884
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:39 share/skin/s3/javascript/s3.js:890
 msgid "edit.expand"
 msgstr "«Expand»"
 
@@ -3686,7 +3827,7 @@ msgstr "«Edit More»"
 msgid "edit.navigate-away?"
 msgstr "«Are you sure you want to navigate away from this page?»"
 
-#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:37 share/skin/s3/javascript/s3.js:860
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:37 share/skin/s3/javascript/s3.js:866
 msgid "edit.normal"
 msgstr "«Normal»"
 
@@ -3707,7 +3848,7 @@ msgid "edit.preview"
 msgstr "«Preview»"
 
 #. (tag)
-#: share/skin/s3/javascript/s3.js:302
+#: share/skin/s3/javascript/s3.js:305
 msgid "edit.remove=tag"
 msgstr "«Remove %1 from the queue»"
 
@@ -3723,7 +3864,7 @@ msgstr "«Rich Text»"
 msgid "edit.save"
 msgstr "«Save»"
 
-#: share/skin/s3/javascript/s3.js:136
+#: share/skin/s3/javascript/s3.js:139
 msgid "edit.saved"
 msgstr "«(Your edit was successfully saved.)»"
 
@@ -4122,6 +4263,7 @@ msgstr "«%1 <a href=\"%4\">%2</a> %5 saying, \"%3\"»"
 msgid "email.page-edit=action,user,summary,time"
 msgstr "«%1 %2 %4 saying, \"%3\"»"
 
+#. (action, user_name, edit_time)
 #: share/template/email/page-details.txt:32
 msgid "email.page-edit=action,user,time"
 msgstr "«%1 %2 %3»"
@@ -4228,7 +4370,7 @@ msgstr "«This email was sent from the Socialtext Appliance.»"
 msgid "email.sign-in-using-information-below:"
 msgstr "«Sign in using the information below:»"
 
-#: share/template/email/openid/workspace-invitation.txt:10 share/template/email/openid/workspace-invitation-body.html:24
+#: share/template/email/openid/workspace-invitation-body.html:24 share/template/email/openid/workspace-invitation.txt:10
 msgid "email.sign-in-with-openid-now"
 msgstr "«You can now sign into our system using OpenID. On the Socialtext login screen, please input your OpenID into the indicated field and you will be redirected to the OpenID site to verify your identity. Once you have verified your identity, you will be sent back to the Socialtext site and be able to access the workspace.»"
 
@@ -4434,6 +4576,7 @@ msgstr "«The %1 Group has already been added to the system.»"
 msgid "error.already-confirmed=email"
 msgstr "«The email address for %1 has already been confirmed.»"
 
+#. (item.title)
 #: share/plugin/groups/share/widgets/membership/widget.js:615
 msgid "error.already-exists-in-group=member"
 msgstr "«%1 already exists in this Group»"
@@ -4517,7 +4660,7 @@ msgstr "«Unable to build tag list.»"
 msgid "error.cannot-change-account-logo-with-custom-skin=name"
 msgstr "«Because a custom skin is in use, the account logo cannot be changed.  The skin in use is called '%1'»"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:3008
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:3009
 msgid "error.cannot-load-revision"
 msgstr "«Cannot load revision»"
 
@@ -4640,8 +4783,8 @@ msgstr "«Error saving the default layout.»"
 msgid "error.deactivate=user"
 msgstr "«There was a problem deactivating user %1»"
 
-#. ($ws->account->name)
 #. ($self->account->name)
+#. ($ws->account->name)
 #: lib/Socialtext/CLI.pm:2925 lib/Socialtext/Workspace.pm:654
 msgid "error.delete-auw-workspace"
 msgstr "«This workspace is the all users workspace for the %1 account. Aborting.»"
@@ -4709,8 +4852,8 @@ msgstr "«Sorry, this feature is not available for spreadsheets»"
 msgid "error.error"
 msgstr "«error»"
 
-#. (res.errors[0])
 #. (message)
+#. (res.errors[0])
 #: share/plugin/control/template/control/group.html:127 share/plugin/control/template/control/workspace_invite.html:275 share/plugin/control/template/control/workspace_invite.html:300
 msgid "error.error=message"
 msgstr "«Error: %1»"
@@ -4832,7 +4975,7 @@ msgstr "«gadget_id is a required parameter»"
 msgid "error.gallery-forbidden"
 msgstr "«You do not share an account with this gallery.»"
 
-#: share/plugin/widgets/share/javascript/activities/widget.js:421 share/plugin/widgets/share/javascript/activities/widget.js:587
+#: share/plugin/widgets/share/javascript/activities/widget.js:423 share/plugin/widgets/share/javascript/activities/widget.js:589
 msgid "error.getting-activities"
 msgstr "«There was a problem getting activities»"
 
@@ -5055,7 +5198,7 @@ msgid "error.invalid-widget=src,message"
 msgstr "«The %1 you provided does not appear to be a valid widget XML file: %2»"
 
 #. ($self->_file_or_url, $url, $err)
-#: lib/Socialtext/Gadgets/Gadget.pm:788
+#: lib/Socialtext/Gadgets/Gadget.pm:791
 msgid "error.invalid-widget=src,url,message"
 msgstr "«The %1 you provided does not contain a widget file. Please check the %1 and try again. The %1 specified was: %2. The specific error was %3»"
 
@@ -5171,11 +5314,11 @@ msgstr "«Unable to load profile data.»"
 msgid "error.load-widget-content"
 msgstr "«Unable to load content for this widget.»"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2953
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2954
 msgid "error.loading-preview-failed"
 msgstr "«Failed to load preview.»"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2609
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2610
 msgid "error.loading-revision-failed"
 msgstr "«Failed to load revision.»"
 
@@ -5232,7 +5375,7 @@ msgstr "«You must provide an account type to change the type.»"
 msgid "error.new-password-mismatch"
 msgstr "«New passwords do not match»"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2170
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2171
 msgid "error.new-sheet-name-required"
 msgstr "«Please provide a name for the new sheet.»"
 
@@ -5282,7 +5425,7 @@ msgstr "«A blog title must be provided.»"
 msgid "error.no-conversations-in-30days=title"
 msgstr "«There are no new %1 because you haven't engaged in conversations with your colleagues in the last 30 days.»"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1345
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1346
 msgid "error.no-data-to-sum"
 msgstr "«Couldn't find any data to sum.»"
 
@@ -5386,11 +5529,11 @@ msgstr "«No matches for '%1'»"
 msgid "error.no-page-body"
 msgstr "«A page must have a body to be saved.»"
 
-#: share/skin/s3/javascript/s3.js:826
+#: share/skin/s3/javascript/s3.js:832
 msgid "error.no-page-doc"
 msgstr "«You must check at least one page in order to create a Word document.»"
 
-#: share/skin/s3/javascript/s3.js:814
+#: share/skin/s3/javascript/s3.js:820
 msgid "error.no-page-pdf"
 msgstr "«You must check at least one page in order to create a PDF.»"
 
@@ -5408,8 +5551,8 @@ msgstr "«There is no page with the id \"%1\" in the %2 workspace.»"
 msgid "error.no-page=template"
 msgstr "«No page named '%1' exists»"
 
-#. (type, template)
-#: share/skin/s3/javascript/lightbox/create_content.js:74
+#. (loc("page.type-"+type)
+#: share/skin/s3/javascript/lightbox/create_content.js:73
 msgid "error.no-page=type,tag"
 msgstr "«No %1 pages tagged '%2' could be found»"
 
@@ -5524,7 +5667,7 @@ msgid "error.no-tag=tag,wiki"
 msgstr "«There is no tag \"%1\" in the %2 workspace.»"
 
 #. ($url)
-#: lib/Socialtext/Gadgets/Gadget.pm:767
+#: lib/Socialtext/Gadgets/Gadget.pm:770
 msgid "error.no-thumbnail=url"
 msgstr "«Can't find thumbnail image: %1»"
 
@@ -5653,7 +5796,7 @@ msgstr "«No page ID given»"
 msgid "error.page-name-is-empty"
 msgstr "«No page name given»"
 
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:537 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2085
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:537 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2086
 msgid "error.page-name-required"
 msgstr "«Please specify a page name.»"
 
@@ -5830,7 +5973,7 @@ msgid "error.reserved-page-name"
 msgstr "«\"%1\" is a reserved page name. Please use a different name»"
 
 #. (page_name)
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2091 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2174
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2092 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2175
 msgid "error.reserved-sheet-name=name"
 msgstr "«\"%1\" is a reserved page name. Please use a different name.»"
 
@@ -5896,7 +6039,7 @@ msgstr "«The page name you selected, \"%1\", is the same as the page's current 
 msgid "error.same-revision"
 msgstr "«You cannot compare a revision to itself.»"
 
-#: share/skin/s3/javascript/lightbox/comment.js:91 share/skin/s3/javascript/s3.js:157
+#: share/skin/s3/javascript/lightbox/comment.js:91 share/skin/s3/javascript/s3.js:160
 msgid "error.save-failed"
 msgstr "«Saving failed due to server error; please try again later.»"
 
@@ -5918,7 +6061,7 @@ msgstr "«The search term you have entered is too general. Please add additional
 msgid "error.search-too-general=hits"
 msgstr "«The search term you have entered is too general; %1 pages and/or attachments matched your query. Please add additional search terms that you expect your documents contain.»"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2193 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2340
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2194 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2341
 msgid "error.select-option-or-click-cancel"
 msgstr "«Please select one of the options, or click cancel.»"
 
@@ -6013,7 +6156,7 @@ msgstr "«You cannot change the name of a system-created user.»"
 msgid "error.sheet-contention:"
 msgstr "«While you were editing, <span style=\"font-weight: bold\" id=\"st-contention-user\">XXX</span> saved a version of this sheet, and we are unable to reconcile the changes. Would you like to:»"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2182
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2183
 msgid "error.sheet-name-exists"
 msgstr "«That name is already taken, please enter a different one.»"
 
@@ -6021,7 +6164,7 @@ msgstr "«That name is already taken, please enter a different one.»"
 msgid "error.sheet-name-exists:"
 msgstr "«<a id=\"st-newspreadsheet-duplicate-link\" href=\"#\" target=\"\">XXX</a> is <span id=\"st-newspreadsheet-duplicate-emphasis\">already taken</span>. Would you like to:»"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2097 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2178
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2098 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2179
 msgid "error.sheet-title-too-long"
 msgstr "«Spreadsheet title is too long. Please shorten the name and try again.»"
 
@@ -6417,32 +6560,32 @@ msgid "event.in=page,wiki"
 msgstr "«%1 in %2»"
 
 #. (group)
-#: share/plugin/widgets/share/javascript/template/activities/group.tt2:4
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:4 share/template/data/events/group:4
 msgid "event.join=group"
 msgstr "«joined the group %1.»"
 
 #. (group, workspace)
-#: share/plugin/widgets/share/javascript/template/activities/group.tt2:15
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:15 share/template/data/events/group:15
 msgid "event.join=group,wiki"
 msgstr "«added %1 to the workspace %2.»"
 
 #. (person, group)
-#: share/plugin/widgets/share/javascript/template/activities/group.tt2:11
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:11 share/template/data/events/group:11
 msgid "event.join=user,group"
 msgstr "«added %1 to the group %2.»"
 
 #. (group)
-#: share/plugin/widgets/share/javascript/template/activities/group.tt2:6
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:6 share/template/data/events/group:6
 msgid "event.leave=group"
 msgstr "«left the group %1.»"
 
 #. (person, group)
-#: share/plugin/widgets/share/javascript/template/activities/group.tt2:13
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:13 share/template/data/events/group:13
 msgid "event.leave=user,group"
 msgstr "«removed %1 from the group %2.»"
 
 #. (group, workspace)
-#: share/plugin/widgets/share/javascript/template/activities/group.tt2:17
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:17 share/template/data/events/group:17
 msgid "event.leave=user,wiki"
 msgstr "«removed %1 from the workspace %2.»"
 
@@ -6748,7 +6891,7 @@ msgid "feed.number-of-posts?"
 msgstr "«How many posts should be displayed in outgoing feeds?»"
 
 #. ($self->hub->current_workspace->title, $query)
-#: lib/Socialtext/SyndicatePlugin.pm:386
+#: lib/Socialtext/SyndicatePlugin.pm:385
 msgid "feed.search=wiki,query"
 msgstr "«%1: search for %2»"
 
@@ -6762,12 +6905,13 @@ msgstr "«Socialtext Workspace v%1»"
 msgid "feed.tags=tags"
 msgstr "«Tags: %1»"
 
+#. ($creator, $editor)
 #: lib/Socialtext/Syndicate/Feed.pm:69
 msgid "feed.updated-by=creator,editor"
 msgstr "«%1 (updated by %2)»"
 
 #. ($self->hub->current_workspace->title, $user->best_full_name)
-#: lib/Socialtext/SyndicatePlugin.pm:393
+#: lib/Socialtext/SyndicatePlugin.pm:392
 msgid "feed.watchlist=wiki,user"
 msgstr "«%1: watchlist for %2»"
 
@@ -6891,12 +7035,20 @@ msgstr "«Free50 Account Setup»"
 msgid "google.for=query"
 msgstr "«Search for \"%1\"»"
 
+#. ($self->permission_set)
+#: lib/Socialtext/Group/Homunculus.pm:215
+msgid "group.acl-"
+msgstr "«Type: »"
+
+#: share/plugin/groups/share/widgets/edit_information/widget.js:92
 msgid "group.acl-member-only"
 msgstr "«Member Only»"
 
+#: share/plugin/groups/share/widgets/edit_information/widget.js:91
 msgid "group.acl-private"
 msgstr "«Private»"
 
+#: share/plugin/groups/share/widgets/edit_information/widget.js:90
 msgid "group.acl-self-join"
 msgstr "«Self-Join»"
 
@@ -6924,6 +7076,10 @@ msgstr "«Deleted group id: %1»"
 msgid "group.exporting=wiki"
 msgstr "«Exporting all groups for workspace '%1'...»"
 
+#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:11 share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:13 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:17 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:19
+msgid "group.first"
+msgstr "«first»"
+
 #. ($ws->name)
 #: lib/Socialtext/Pluggable/Plugin/Groups.pm:171
 msgid "group.importing=wiki"
@@ -6947,6 +7103,18 @@ msgstr "«Group names and descriptions matching '%1'»"
 #: share/skin/s3/template/element/settings/users_listall_section:79
 msgid "group.name"
 msgstr "«Group name»"
+
+#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:17 share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:19 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:23 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:25
+msgid "group.next"
+msgstr "«next»"
+
+#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:5 share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:7 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:11 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:13
+msgid "group.previous"
+msgstr "«previous»"
+
+#: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:19
+msgid "groups.add-members"
+msgstr "«Add Members»"
 
 #: share/plugin/groups/share/widgets/membership/jemplate/workspaces.tt2:16
 msgid "groups.add-wikis"
@@ -7067,7 +7235,7 @@ msgstr "«Edit Group: %1»"
 msgid "groups.first"
 msgstr "«first»"
 
-#: share/plugin/groups/template/create_group_hello:2
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:8 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:4 share/plugin/groups/template/create_group_hello:2 share/plugin/groups/template/edit_group_hello:3
 msgid "groups.group"
 msgstr "«Group»"
 
@@ -7091,6 +7259,7 @@ msgstr "«Group Type»"
 msgid "groups.group-type:"
 msgstr "«Group Type:»"
 
+#. (container.group.display_permission_set)
 #: share/plugin/groups/template/groups_hello:3
 msgid "groups.heading=acl"
 msgstr "«%1 group»"
@@ -7107,7 +7276,7 @@ msgstr "«member»"
 msgid "groups.member-plural"
 msgstr "«members»"
 
-#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:6
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:6 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:3
 msgid "groups.members"
 msgstr "«Members»"
 
@@ -7208,6 +7377,9 @@ msgstr "«Self-Join Group»"
 msgid "groups.self-join-listed-in-directory"
 msgstr "«Can be seen in the Group Directory by everyone and anyone can join.»"
 
+#. ((page * per_page)
+#. ((page * per_page) + 1, (more ? ((page + 1) * per_page) : totalResults), totalResults)
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:44
 msgid "groups.showing=from,to,total"
 msgstr "«Showing Groups %1 - %2 of %3 total.»"
 
@@ -7256,7 +7428,7 @@ msgstr "«This group has at least one workspace that prevents you from being abl
 msgid "groups.wiki-with-that-name-already-exists"
 msgstr "«A Workspace with that name already exists»"
 
-#: share/plugin/groups/template/grouplist:30 share/plugin/groups/template/grouplist:88
+#: share/plugin/groups/share/widgets/all_groups/widget.js:11 share/plugin/groups/template/grouplist:30 share/plugin/groups/template/grouplist:88
 msgid "groups.you-are-member"
 msgstr "«You are currently a member of this group.»"
 
@@ -7394,7 +7566,7 @@ msgstr "«Use the text area below to compose your HTML block.»"
 msgid "info.edit-pre-block"
 msgstr "«Use the text area below to compose your preformatted text block.»"
 
-#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/element/edit_summary.html.tt2:14 share/plugin/widgets/share/javascript/activities/appdata.js:546 share/plugin/widgets/share/javascript/template/activities/ui.signalthis.tt2:18 share/skin/s3/javascript/lightbox/comment.tt2:31
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/element/edit_summary.html.tt2:14 share/plugin/widgets/share/javascript/activities/appdata.js:545 share/plugin/widgets/share/javascript/template/activities/ui.signalthis.tt2:18 share/skin/s3/javascript/lightbox/comment.tt2:31
 msgid "info.edit-summary-signal-visibility"
 msgstr "«Only members with permission to view this page will receive the signal.»"
 
@@ -7423,7 +7595,7 @@ msgstr "«When the workspace receives an email, the subject of the email becomes
 msgid "info.error:"
 msgstr "«error:»"
 
-#: share/skin/s3/javascript/s3.js:884
+#: share/skin/s3/javascript/s3.js:890
 msgid "info.expand-view"
 msgstr "«Expand edit area to fill browser window»"
 
@@ -7498,7 +7670,7 @@ msgstr "«Enter a meaningful and distinctive title for your page.»"
 msgid "info.new-page-title"
 msgstr "«Tip: You'll be able to find this page later by using the title you choose.»"
 
-#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:37 share/skin/s3/javascript/s3.js:860
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:37 share/skin/s3/javascript/s3.js:866
 msgid "info.normal-view"
 msgstr "«Return edit area to normal view»"
 
@@ -7595,7 +7767,7 @@ msgstr "«Click this button to save the pages with the tag %1 to your computer f
 msgid "info.unplugged"
 msgstr "«Click this button to save this page to your computer for offline use.»"
 
-#: share/skin/s3/template/element/settings/workspace_clone_section:28 share/skin/s3/template/element/settings/workspaces_create_section:22
+#: share/skin/s3/template/element/settings/workspace_clone_section:28 share/skin/s3/template/element/settings/workspaces_create_section:22 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:55
 msgid "info.valid-wiki-name"
 msgstr "«It must consist of 3-30 lowercase letters, numbers, underscores or dashes.»"
 
@@ -7625,7 +7797,7 @@ msgstr "«You can also configure the workspace link to display as a blog.»"
 msgid "info.wiki-group"
 msgstr "«You can create a new Group, or add a workspace to an existing Group.»"
 
-#: share/skin/s3/template/element/settings/workspace_clone_section:27 share/skin/s3/template/element/settings/workspaces_create_section:21
+#: share/skin/s3/template/element/settings/workspace_clone_section:27 share/skin/s3/template/element/settings/workspaces_create_section:21 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:54
 msgid "info.wiki-id"
 msgstr "«This is a short unique identifier used as part of your workspace's web address and email address.»"
 
@@ -7637,7 +7809,7 @@ msgstr "«You can choose an image to use as the workspace logo. You may enter th
 msgid "info.wiki-private"
 msgstr "«Workspaces are private by default. All users need to log in to view pages. Only workspace admins can invite new users.»"
 
-#: share/skin/s3/template/element/settings/workspace_clone_section:13 share/skin/s3/template/element/settings/workspaces_create_section:7 share/skin/s3/template/element/settings/workspaces_settings_appearance_section:6 share/plugin/control/template/control/workspace_invite.html:89
+#: share/skin/s3/template/element/settings/workspace_clone_section:13 share/skin/s3/template/element/settings/workspaces_create_section:7 share/skin/s3/template/element/settings/workspaces_settings_appearance_section:6 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:28 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:41 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:27 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:33 share/plugin/control/template/control/workspace_invite.html:89
 msgid "info.wiki-title"
 msgstr "«This is the title of your workspace. It may be changed later if you want.»"
 
@@ -7820,7 +7992,7 @@ msgid "invite.click-edit"
 msgstr "«If you see something you'd like to add to or change, click the \"Edit\" link at the top of each page.»"
 
 #. (confirm_uri)
-#: share/plugin/people/template/email/invitation-body.html:22
+#: share/template/email/st/account-invitation-body.html:22 share/plugin/people/template/email/invitation-body.html:22
 msgid "invite.click-to-confirm-email=uri"
 msgstr "«Please <a href=\"%1\">click on this link</a> to confirm your email address.»"
 
@@ -7899,8 +8071,8 @@ msgstr "«friend»"
 msgid "invite.group"
 msgstr "«Group»"
 
-#. ($self->account->name)
 #. ($name)
+#. ($self->account->name)
 #: lib/Socialtext/AccountInvitation.pm:26 lib/Socialtext/GroupInvitation.pm:28
 msgid "invite.group=name"
 msgstr "«I'm inviting you into the %1 group»"
@@ -7914,7 +8086,7 @@ msgid "invite.include-personal-message"
 msgstr "«If you wish, you can include a personal message in the invitation email. You can edit the message to say anything you want.»"
 
 #. (acct_name, host)
-#: share/plugin/people/template/email/invitation-body.html:13
+#: share/template/email/st/account-invitation-body.html:13 share/plugin/people/template/email/invitation-body.html:13
 msgid "invite.join=account,host"
 msgstr "«I'm inviting you to join the %1 group at %2.»"
 
@@ -7922,11 +8094,11 @@ msgstr "«I'm inviting you to join the %1 group at %2.»"
 msgid "invite.keep-this-email-for-reference"
 msgstr "«You may want to keep this email for future reference.»"
 
-#: share/plugin/people/template/email/invitation-body.html:41
+#: share/template/email/free50/account-invitation-body.html:27 share/plugin/people/template/email/invitation-body.html:41
 msgid "invite.link-to-reset-password:"
 msgstr "«If you don't remember it, follow this link to select a new password:»"
 
-#: share/plugin/people/template/email/invitation-body.html:26
+#: share/template/email/st/account-invitation-body.html:26 share/plugin/people/template/email/invitation-body.html:26
 msgid "invite.login-details-after-confirmation"
 msgstr "«Once you have confirmed your account, you will receive a second email with login details.»"
 
@@ -8017,7 +8189,7 @@ msgstr "«Invite people to your group»"
 msgid "invite.to=name"
 msgstr "«Invite people to %1»"
 
-#: share/plugin/people/template/email/invitation-body.html:31
+#: share/template/email/free50/account-invitation-body.html:20 share/plugin/people/template/email/invitation-body.html:31
 msgid "invite.username:"
 msgstr "«username:»"
 
@@ -8025,7 +8197,7 @@ msgstr "«username:»"
 msgid "invite.using-wiki"
 msgstr "«The Workspace is easy to use. Click links to browse through the pages.»"
 
-#: share/plugin/people/template/email/invitation-body.html:30
+#: share/template/email/free50/account-invitation-body.html:19 share/plugin/people/template/email/invitation-body.html:30
 msgid "invite.web-address:"
 msgstr "«web address:»"
 
@@ -8210,19 +8382,15 @@ msgstr "«Job Type»"
 msgid "lang.changed=user,locale"
 msgstr "«Locale for %1 is now %2»"
 
-#: lib/Socialtext/Locales.pm:51
 msgid "lang.en"
 msgstr "«English»"
 
-#: lib/Socialtext/Locales.pm:54
 msgid "lang.fr-ca"
 msgstr "«French - Canadian»"
 
-#: lib/Socialtext/Locales.pm:52
 msgid "lang.zh-cn"
 msgstr "«Chinese - Simplified»"
 
-#: lib/Socialtext/Locales.pm:53
 msgid "lang.zh-tw"
 msgstr "«Chinese - Traditional»"
 
@@ -8598,7 +8766,7 @@ msgstr "«Explore»"
 msgid "nav.filter:"
 msgstr "«Filter By:»"
 
-#: share/skin/s3/template/view/paging:5 share/skin/s3/template/view/paging:8
+#: share/skin/s3/template/view/paging:5 share/skin/s3/template/view/paging:8 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:48 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:50 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:43 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:45
 msgid "nav.first"
 msgstr "«First»"
 
@@ -8614,11 +8782,11 @@ msgstr "«People I follow»"
 msgid "nav.groups"
 msgstr "«Groups»"
 
-#: share/skin/s3/template/layout/html:193 share/skin/s3/template/layout/html:90 share/skin/s3/template/layout/user_frame:198 share/skin/s3/template/layout/user_frame:95 share/plugin/control/template/control/wrapper:138 share/plugin/control/template/control/wrapper:63
+#: share/skin/s3/template/layout/html:193 share/skin/s3/template/layout/html:90 share/skin/s3/template/layout/user_frame:198 share/skin/s3/template/layout/user_frame:95 share/plugin/control/template/control/wrapper:138 share/plugin/control/template/control/wrapper:63 ../appliance/libsocialtext-appliance-perl/template/help.html:1 ../appliance/libsocialtext-appliance-perl/template/help.html:2
 msgid "nav.help"
 msgstr "«Help»"
 
-#: share/skin/s3/javascript/s3.js:343 share/skin/s3/template/view/page/display:131
+#: share/skin/s3/javascript/s3.js:346 share/skin/s3/template/view/page/display:131
 msgid "nav.hide"
 msgstr "«hide»"
 
@@ -8634,7 +8802,7 @@ msgstr "«Invite»"
 msgid "nav.invite!"
 msgstr "«Invite!»"
 
-#: share/skin/s3/template/view/paging:24 share/skin/s3/template/view/paging:27
+#: share/skin/s3/template/view/paging:24 share/skin/s3/template/view/paging:27 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:66 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:68 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:61 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:63
 msgid "nav.last"
 msgstr "«Last»"
 
@@ -8695,7 +8863,7 @@ msgstr "«What's New»"
 msgid "nav.news=wiki"
 msgstr "«What's New in workspace %1»"
 
-#: share/skin/s3/template/view/paging:23 share/skin/s3/template/view/paging:26
+#: share/skin/s3/template/view/paging:23 share/skin/s3/template/view/paging:26 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:60 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:62 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:55 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:57
 msgid "nav.next"
 msgstr "«Next»"
 
@@ -8731,7 +8899,7 @@ msgstr "«People Directory»"
 msgid "nav.preferences"
 msgstr "«Preferences»"
 
-#: share/skin/s3/template/view/paging:6 share/skin/s3/template/view/paging:9
+#: share/skin/s3/template/view/paging:6 share/skin/s3/template/view/paging:9 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:54 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:56 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:49 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:51
 msgid "nav.previous"
 msgstr "«Previous»"
 
@@ -8747,7 +8915,7 @@ msgstr "«Priv. Msg»"
 msgid "nav.recent-activities"
 msgstr "«Recent Activities»"
 
-#: share/skin/s3/template/lite/changes/changes.html:5 share/skin/s3/template/view/weblog:20 lib/Socialtext/SyndicatePlugin.pm:379 lib/Socialtext/WeblogPlugin.pm:224 lib/Socialtext/WeblogPlugin.pm:279 lib/Socialtext/WeblogPlugin.pm:332 lib/Socialtext/WeblogPlugin.pm:335
+#: share/skin/s3/template/lite/changes/changes.html:5 share/skin/s3/template/view/weblog:20 lib/Socialtext/SyndicatePlugin.pm:378 lib/Socialtext/WeblogPlugin.pm:224 lib/Socialtext/WeblogPlugin.pm:279 lib/Socialtext/WeblogPlugin.pm:332 lib/Socialtext/WeblogPlugin.pm:335
 msgid "nav.recent-changes"
 msgstr "«Recent Changes»"
 
@@ -8765,9 +8933,14 @@ msgstr "«Recent Changes in Tag %1 in workspace %2»"
 msgid "nav.recently-viewed"
 msgstr "«Recently Viewed»"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:3 share/skin/s3/template/lite/subnav.html:28 share/skin/s3/template/lite/subnav.html:30
+#: share/skin/s3/template/element/settings/users_invite_search_section:3 share/skin/s3/template/lite/search/search.html:12 share/skin/s3/template/lite/subnav.html:28 share/skin/s3/template/lite/subnav.html:30
 msgid "nav.search"
 msgstr "«Search»"
+
+#. (ws.title)
+#: share/skin/s3/template/lite/search/search.html:4
+msgid "nav.search=wiki"
+msgstr "«Search %1»"
 
 #: share/skin/s3/template/view/page_revision_list:42
 msgid "nav.select"
@@ -8777,7 +8950,7 @@ msgstr "«Select»"
 msgid "nav.settings"
 msgstr "«Settings»"
 
-#: share/skin/s3/javascript/s3.js:343 share/skin/s3/template/view/page/display:131
+#: share/skin/s3/javascript/s3.js:346 share/skin/s3/template/view/page/display:131
 msgid "nav.show"
 msgstr "«show»"
 
@@ -9112,7 +9285,7 @@ msgstr "«Locking page.»"
 msgid "page.new"
 msgstr "«New Page»"
 
-#: share/skin/s3/javascript/lightbox/copy.tt2:19 share/skin/s3/javascript/lightbox/rename.tt2:11
+#: share/skin/s3/javascript/lightbox/copy.tt2:19 share/skin/s3/javascript/lightbox/duplicate.tt2:13 share/skin/s3/javascript/lightbox/rename.tt2:11
 msgid "page.new-name"
 msgstr "«New page name»"
 
@@ -9129,6 +9302,7 @@ msgstr "«There are no tags for this page.»"
 msgid "page.nothing-locked=wiki"
 msgstr "«Workspace '%1' has no locked pages.»"
 
+#. (user_link, time_ago)
 #: share/skin/s3/javascript/lightbox/edit_check.tt2:4
 msgid "page.opened-for-edit=user,ago"
 msgstr "«%1 has opened this page for editing %2.»"
@@ -9228,10 +9402,11 @@ msgstr "«Titles»"
 msgid "page.top"
 msgstr "«Top of page»"
 
+#: lib/Socialtext/Pluggable/Plugin/SocialCalc.pm:23
 msgid "page.type-spreadsheet"
 msgstr "«Spreadsheet»"
 
-#: share/skin/s3/javascript/lightbox/create_content.js:9
+#: share/skin/s3/javascript/lightbox/create_content.js:9 lib/Socialtext/Pluggable/Plugin/Default.pm:45
 msgid "page.type-wiki"
 msgstr "«Page»"
 
@@ -9248,7 +9423,7 @@ msgstr "«Page '%1' in workspace '%2' has been unlocked.»"
 msgid "page.unlocking"
 msgstr "«Unlocking page.»"
 
-#: share/skin/s3/javascript/s3.js:1067 share/skin/s3/javascript/s3.js:15 lib/Socialtext/DisplayPlugin.pm:68 lib/Socialtext/PageRevision.pm:410
+#: share/skin/s3/javascript/s3.js:1073 share/skin/s3/javascript/s3.js:15 lib/Socialtext/DisplayPlugin.pm:68 lib/Socialtext/PageRevision.pm:410
 msgid "page.untitled"
 msgstr "«Untitled Page»"
 
@@ -9581,7 +9756,7 @@ msgstr "«Home:»"
 msgid "profile.i"
 msgstr "«I»"
 
-#: share/plugin/people/template/lite/profile.html:108
+#: share/plugin/people/share/widgets/profile/widget.html:38 share/plugin/people/template/lite/profile.html:108
 msgid "profile.im"
 msgstr "«IM»"
 
@@ -9937,8 +10112,8 @@ msgstr "«Workspace Usage Blog»"
 msgid "report.workspace.activity=user"
 msgstr "«Workspace Activity for user %1»"
 
-#. ($self->_group->display_name)
 #. ($self->_workspace->title)
+#. ($self->_group->display_name)
 #. ($user->best_full_name)
 #: lib/Socialtext/Rest/Events/Activities.pm:12 lib/Socialtext/Rest/Events/Groups.pm:13 lib/Socialtext/Rest/Events/Workspaces.pm:14
 msgid "rest.activity=user"
@@ -10121,7 +10296,7 @@ msgstr "«Borders»"
 msgid "sc.borders-on-off"
 msgstr "«Borders On/Off»"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:163 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:93 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:83
+#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:93 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:163 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:83
 msgid "sc.bottom"
 msgstr "«Bottom»"
 
@@ -10137,7 +10312,7 @@ msgstr "«Cancel Edit»"
 msgid "sc.cell-comment"
 msgstr "«Cell Comment»"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:154 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:142 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:123 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:152
+#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:142 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:154 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:123 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:152
 msgid "sc.center"
 msgstr "«Center»"
 
@@ -10149,7 +10324,7 @@ msgstr "«Color»"
 msgid "sc.column-width"
 msgstr "«Column&nbsp;Width»"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2564
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2565
 msgid "sc.confirm-navigate-away?"
 msgstr "«Are you sure you want to navigate away from this page?»"
 
@@ -10187,7 +10362,7 @@ msgstr "«Description»"
 msgid "sc.down"
 msgstr "«Down»"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2526
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2527
 msgid "sc.edit-more"
 msgstr "«Edit More»"
 
@@ -10235,7 +10410,7 @@ msgstr "«Fill Down»"
 msgid "sc.fill-right"
 msgstr "«Fill Right»"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:90 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:50 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:41
+#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:50 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:90 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:41
 msgid "sc.font"
 msgstr "«Font»"
 
@@ -10243,7 +10418,7 @@ msgstr "«Font»"
 msgid "sc.font-family"
 msgstr "«Family»"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:96 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:28 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:63 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:19
+#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:28 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:63 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:96 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:19
 msgid "sc.format"
 msgstr "«Format»"
 
@@ -10279,15 +10454,15 @@ msgstr "«Insert Row Above»"
 msgid "sc.insert-row-below"
 msgstr "«Insert Row Below»"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:156 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:146 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:127 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:156
+#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:146 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:156 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:127 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:156
 msgid "sc.justify"
 msgstr "«Justify»"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:153 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:139 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:92 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:120 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:149 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:82
+#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:139 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:92 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:153 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:120 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:149 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:82
 msgid "sc.left"
 msgstr "«Left»"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2915 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2938 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:65
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2916 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2939 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:65
 msgid "sc.loading"
 msgstr "«Loading...»"
 
@@ -10375,7 +10550,7 @@ msgstr "«Number»"
 msgid "sc.ok"
 msgstr "«OK»"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2568
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2569
 msgid "sc.ok-or-cancel"
 msgstr "«Press OK to continue, or Cancel to stay on the current page.»"
 
@@ -10387,7 +10562,7 @@ msgstr "«On:»"
 msgid "sc.padding"
 msgstr "«Padding»"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:747
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:748
 msgid "sc.paste"
 msgstr "«Paste»"
 
@@ -10396,7 +10571,7 @@ msgstr "«Paste»"
 msgid "sc.paste=hotkey"
 msgstr "«Paste (Press %1-V to paste from other applications)»"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:42 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2616 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:16
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2617 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:16 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:42
 msgid "sc.preview"
 msgstr "«Preview»"
 
@@ -10408,7 +10583,7 @@ msgstr "«Preview of»"
 msgid "sc.range"
 msgstr "«Range»"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2495
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2496
 msgid "sc.recalc-finished"
 msgstr "«Data that this spreadsheet depends on has changed. When you save, these changes will be saved as well.»"
 
@@ -10436,7 +10611,7 @@ msgstr "«Restore Revision»"
 msgid "sc.richtext-mode"
 msgstr "«Richtext Mode»"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:155 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:144 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:94 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:125 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:154 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:84
+#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:144 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:94 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:155 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:125 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:154 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:84
 msgid "sc.right"
 msgstr "«Right»"
 
@@ -10444,7 +10619,7 @@ msgstr "«Right»"
 msgid "sc.sample"
 msgstr "«Sample»"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:5 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:5
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:107 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:5 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:5
 msgid "sc.sample-lines"
 msgstr "«This is a<br />sample»"
 
@@ -10504,7 +10679,7 @@ msgstr "«Show Preview»"
 msgid "sc.single-line-input"
 msgstr "«Show one line of input»"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:93 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:61 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:52
+#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:61 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:93 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:52
 msgid "sc.size"
 msgstr "«Size»"
 
@@ -10536,11 +10711,11 @@ msgstr "«Sum Range»"
 msgid "sc.swap-foreground-background-colors"
 msgstr "«Swap foreground and background colors»"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:291
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:292
 msgid "sc.target-cell"
 msgstr "«cell»"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:288 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:171
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:289 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:171
 msgid "sc.target-range"
 msgstr "«range»"
 
@@ -10556,7 +10731,7 @@ msgstr "«Text Color»"
 msgid "sc.this"
 msgstr "«This»"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:161 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:91 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:81
+#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:91 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:161 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:81
 msgid "sc.top"
 msgstr "«Top»"
 
@@ -10568,7 +10743,7 @@ msgstr "«Undo»"
 msgid "sc.undone-steps:"
 msgstr "«UNDONE STEPS:»"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2567 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:3042
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2568 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:3043
 msgid "sc.unsaved-changes"
 msgstr "«You have unsaved changes.»"
 
@@ -10648,7 +10823,7 @@ msgstr "«The search you have entered is too general; %1 pages and/or attachment
 msgid "sheet.creating"
 msgstr "«Creating a New Spreadsheet...»"
 
-#: share/skin/s3/javascript/s3.js:1068 share/skin/s3/javascript/s3.js:16 lib/Socialtext/DisplayPlugin.pm:68 lib/Socialtext/PageRevision.pm:412
+#: share/skin/s3/javascript/s3.js:1074 share/skin/s3/javascript/s3.js:16 lib/Socialtext/DisplayPlugin.pm:68 lib/Socialtext/PageRevision.pm:412
 msgid "sheet.untitled"
 msgstr "«Untitled Spreadsheet»"
 
@@ -10747,9 +10922,15 @@ msgstr "«Link text:»"
 msgid "signals.matching=query"
 msgstr "«Signals matching '%1'»"
 
+#. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
+#. (acc.count)
+#. (this.count)
+#. (acc.user_count)
+#. (grp.user_count)
+#. #-#-#-#-#  signals.po (Socialtext i18n)  #-#-#-#-#
 #. (a.user_count)
 #. (g.user_count)
-#: share/plugin/signals/template/lite/signals.html:57 share/plugin/signals/template/lite/signals.html:68
+#: share/plugin/widgets/share/javascript/activities/appdata.js:234 share/plugin/widgets/share/javascript/activities/appdata.js:253 share/plugin/widgets/share/javascript/network-dropdown.js:83 share/plugin/widgets/share/javascript/network-dropdown.js:86 share/plugin/signals/template/lite/signals.html:52 share/plugin/signals/template/lite/signals.html:63
 msgid "signals.network-count=users"
 msgstr "«%*(%1,user)»"
 
@@ -10780,12 +10961,16 @@ msgstr "«%1 on <a href=\"%2\">%3</a> in reply to %4.»"
 msgid "signals.permalink"
 msgstr "«Signals - Permalink»"
 
-#: share/plugin/signals/template/lite/signals.html:45
+#: share/plugin/signals/template/lite/signals.html:40
 msgid "signals.post-to"
 msgstr "«Post to»"
 
+#. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
+#. (acc.count)
+#. (acc.user_count)
+#. #-#-#-#-#  signals.po (Socialtext i18n)  #-#-#-#-#
 #. (a.user_count)
-#: share/plugin/signals/template/lite/signals.html:55
+#: share/plugin/widgets/share/javascript/activities/appdata.js:233 share/plugin/widgets/share/javascript/network-dropdown.js:82 share/plugin/signals/template/lite/signals.html:50
 msgid "signals.primary-account=users"
 msgstr "«primary, %*(%1,user)»"
 
@@ -10915,7 +11100,7 @@ msgstr "«to %1»"
 msgid "signals.try-again:"
 msgstr "«Please try again:»"
 
-#: share/plugin/signals/template/lite/signals.html:41
+#: share/plugin/signals/template/lite/signals.html:36
 msgid "signals.update"
 msgstr "«Update»"
 
@@ -11129,7 +11314,7 @@ msgstr "«Show Cell Borders»"
 msgid "table.table-sortable"
 msgstr "«Table is Sortable»"
 
-#: share/skin/s3/template/view/page/display:175
+#: share/skin/s3/template/view/page/display:175 share/plugin/people/share/widgets/profile_tags/widget.html:11
 msgid "tag.add"
 msgstr "«Add Tag»"
 
@@ -11233,6 +11418,130 @@ msgstr "«%1 seconds»"
 #: lib/Socialtext/PageRevision.pm:378
 msgid "time.weeks=count"
 msgstr "«%1 weeks»"
+
+#: share/plugin/widgets/share/widgets/active_members/config.yaml:4
+msgid "title.active_members"
+msgstr "«Active People»"
+
+#: share/plugin/groups/share/widgets/all_groups/config.yaml:3
+msgid "title.all_groups"
+msgstr "«All Available Groups»"
+
+#: share/plugin/people/share/widgets/all_tags/config.yaml:3
+msgid "title.all_tags"
+msgstr "«All People Tags»"
+
+#: share/plugin/widgets/share/widgets/blockerbugs/config.yaml:3
+msgid "title.blockerbugs"
+msgstr "«Open Blocker Bugs»"
+
+#: share/plugin/groups/share/widgets/edit_information/config.yaml:3
+msgid "title.edit_information"
+msgstr "«Information»"
+
+#: share/plugin/groups/share/widgets/edit_people/config.yaml:3
+msgid "title.edit_people"
+msgstr "«Membership»"
+
+#: share/plugin/signals/share/widgets/explore_filters/config.yaml:4
+msgid "title.explore_filters"
+msgstr "«Filters»"
+
+#: share/plugin/people/share/widgets/forbidden_profile/config.yaml:4
+msgid "title.forbidden_profile"
+msgstr "«Profile»"
+
+#: share/plugin/groups/share/widgets/information/config.yaml:3
+msgid "title.information"
+msgstr "«Information»"
+
+#: share/plugin/widgets/share/widgets/iterationbugs/config.yaml:3
+msgid "title.iterationbugs"
+msgstr "«Iteration Bugs»"
+
+#: share/plugin/groups/share/widgets/my_groups/config.yaml:3
+msgid "title.my_groups"
+msgstr "«My Groups»"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/config.yaml:4
+msgid "title.my_workspaces"
+msgstr "«Workspaces»"
+
+#: share/plugin/widgets/share/widgets/one_page/config.yaml:4
+msgid "title.one_page"
+msgstr "«Wiki Page»"
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/config.yaml:3
+msgid "title.one_spreadsheet"
+msgstr "«Spreadsheet Page»"
+
+#: share/plugin/groups/share/widgets/people/config.yaml:3
+msgid "title.people"
+msgstr "«Membership»"
+
+#: share/plugin/signals/share/widgets/profile/config.yaml:3 share/plugin/people/share/widgets/profile/config.yaml:4
+msgid "title.profile"
+msgstr "«Profile»"
+
+#: share/plugin/people/share/widgets/profile_activities/config.yaml:3
+msgid "title.profile_activities"
+msgstr "«Activity»"
+
+#: share/plugin/people/share/widgets/profile_edit/config.yaml:3
+msgid "title.profile_edit"
+msgstr "«Edit Profile»"
+
+#: share/plugin/people/share/widgets/profile_network/config.yaml:3
+msgid "title.profile_network"
+msgstr "«Colleagues»"
+
+#: share/plugin/people/share/widgets/profile_tags/config.yaml:4
+msgid "title.profile_tags"
+msgstr "«Tags»"
+
+#: share/plugin/widgets/share/widgets/rest_api/config.yaml:3
+msgid "title.rest_api"
+msgstr "«Rest API Devtool»"
+
+#: share/plugin/widgets/share/widgets/rss/config.yaml:3
+msgid "title.rss"
+msgstr "«RSS Viewer»"
+
+#: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:3
+msgid "title.tag_cloud"
+msgstr "«Workspace Tags»"
+
+#: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:3
+msgid "title.tagged_pages"
+msgstr "«Pages tagged X»"
+
+#: share/plugin/groups/share/widgets/teaser/config.yaml:3
+msgid "title.teaser"
+msgstr "«Workspaces»"
+
+#: share/plugin/widgets/share/widgets/testrunner/config.yaml:3
+msgid "title.testrunner"
+msgstr "«Test Results»"
+
+#: share/plugin/widgets/share/widgets/top_content/config.yaml:4
+msgid "title.top_content"
+msgstr "«Active Content»"
+
+#: share/plugin/widgets/share/widgets/userlist/config.yaml:4
+msgid "title.userlist"
+msgstr "«Online Users»"
+
+#: share/plugin/dashboard/share/widgets/widget_editor/config.yaml:4
+msgid "title.widget_editor"
+msgstr "«Widget Editor»"
+
+#: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:3
+msgid "title.workspace_activity"
+msgstr "«Report-o-rama!»"
+
+#: share/plugin/groups/share/widgets/workspaces/config.yaml:3
+msgid "title.workspaces"
+msgstr "«Workspaces»"
 
 #: share/plugin/twilio/template/element/settings/twilio_settings_section:31
 msgid "twilio.edit-profile"
@@ -11443,6 +11752,10 @@ msgstr "«Email»"
 msgid "user.email-address"
 msgstr "«Email Address»"
 
+#: share/plugin/control/template/control/add_user.html:24
+msgid "user.email-address:"
+msgstr "«Email Address:»"
+
 #. ($user->name_and_email)
 #: lib/Socialtext/Handler/ControlPanel.pm:516
 msgid "user.external-id-cleared=name"
@@ -11458,9 +11771,14 @@ msgstr "«External ID requirement added for %1»"
 msgid "user.external-id-requirement-removed=name"
 msgstr "«External ID requirement removed for %1»"
 
-#: share/skin/s3/template/element/settings/users_settings_section:17 share/skin/s3/template/element/settings/users_settings_section:26
+#: share/skin/s3/template/element/settings/users_settings_section:17 share/skin/s3/template/element/settings/users_settings_section:26 share/plugin/control/template/control/add_user.html:28
+#, fuzzy
 msgid "user.first-name:"
-msgstr "«First name:»"
+msgstr ""
+"«#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n»"
+"«First name:\n»"
+"«#-#-#-#-#  control.po (Socialtext i18n)  #-#-#-#-#\n»"
+"«First Name:»"
 
 #. ($user->username, $t)
 #: lib/Socialtext/CLI.pm:998
@@ -11476,7 +11794,7 @@ msgstr "«Loaded users from %1»"
 msgid "user.importing"
 msgstr "«Importing users...»"
 
-#: share/skin/s3/template/element/settings/users_settings_section:13 share/skin/s3/template/element/settings/users_settings_section:34 share/plugin/control/template/control/add_user.html:32
+#: share/skin/s3/template/element/settings/users_settings_section:13 share/skin/s3/template/element/settings/users_settings_section:34 share/plugin/control/template/control/add_user.html:36
 msgid "user.last-name:"
 msgstr "«Last name:»"
 
@@ -11494,11 +11812,16 @@ msgstr "«List All Users»"
 msgid "user.matching=query"
 msgstr "«Users matching \"%1\"»"
 
-#: share/skin/s3/template/element/settings/users_settings_section:21 share/skin/s3/template/element/settings/users_settings_section:30
+#: share/skin/s3/template/element/settings/users_settings_section:21 share/skin/s3/template/element/settings/users_settings_section:30 share/plugin/control/template/control/add_user.html:32
+#, fuzzy
 msgid "user.middle-name:"
-msgstr "«Middle name:»"
+msgstr ""
+"«#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n»"
+"«Middle name:\n»"
+"«#-#-#-#-#  control.po (Socialtext i18n)  #-#-#-#-#\n»"
+"«Middle Name:»"
 
-#: share/skin/s3/template/element/settings/users_settings_section:6
+#: share/skin/s3/template/element/settings/users_settings_section:6 share/plugin/people/share/widgets/profile_edit/widget.html:44
 msgid "user.name"
 msgstr "«Name»"
 
@@ -11897,8 +12220,8 @@ msgstr "«video: %1»"
 msgid "wafl.width:"
 msgstr "«width:»"
 
-#. (choice.2)
 #. (data.width)
+#. (choice.2)
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3583 share/skin/wikiwyg/javascript/template/widget_edit.tt2:140 share/skin/wikiwyg/javascript/template/widget_edit.tt2:186
 msgid "wafl.width=px"
 msgstr "«width: %1»"
@@ -11957,7 +12280,7 @@ msgstr "«Your Watchlist»"
 msgid "watch.look-for"
 msgstr "«Look for»"
 
-#: share/skin/s3/javascript/s3.js:935 share/skin/s3/template/view/listview:166 share/skin/s3/template/view/page/display:72
+#: share/skin/s3/javascript/s3.js:941 share/skin/s3/template/view/listview:166 share/skin/s3/template/view/page/display:72
 msgid "watch.stop"
 msgstr "«Stop Watching»"
 
@@ -11994,7 +12317,7 @@ msgstr "«Adding widget %1...»"
 msgid "widget.edit"
 msgstr "«Edit Widget»"
 
-#: lib/Socialtext/Gadgets/Gadget.pm:781
+#: lib/Socialtext/Gadgets/Gadget.pm:784
 msgid "widget.file"
 msgstr "«file»"
 
@@ -12006,9 +12329,11 @@ msgstr "«Importing widget containers ...»"
 msgid "widget.insert"
 msgstr "«Insert Widget»"
 
+#: share/plugin/widgets/template/view/container.setup:148
 msgid "widget.preview"
 msgstr "«Preview»"
 
+#: share/plugin/widgets/template/widget/element:57
 msgid "widget.push-all"
 msgstr "«Push to all dashboards»"
 
@@ -12017,7 +12342,7 @@ msgstr "«Push to all dashboards»"
 msgid "widget.removing=src"
 msgstr "«Removing widget %1...»"
 
-#: lib/Socialtext/Gadgets/Gadget.pm:780
+#: lib/Socialtext/Gadgets/Gadget.pm:783
 msgid "widget.resource"
 msgstr "«resource»"
 
@@ -12034,7 +12359,7 @@ msgstr "«Socialtext widgets»"
 msgid "widget.third-party"
 msgstr "«Third Party widgets»"
 
-#: lib/Socialtext/Gadgets/Gadget.pm:781
+#: lib/Socialtext/Gadgets/Gadget.pm:784
 msgid "widget.url"
 msgstr "«URL»"
 
@@ -12089,6 +12414,7 @@ msgstr "«Are you sure you want to remove the \"%1\" widget? Users will no longe
 msgid "widgets.confirm-restore=widget?"
 msgstr "«Are you sure you want to restore the \"%1\" widget?»"
 
+#. (ws.title)
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:21
 msgid "widgets.create-new-page-in=wiki"
 msgstr "«Create new page in %1»"
@@ -12246,7 +12572,7 @@ msgstr "«Clone of %1»"
 msgid "wiki.confirm-unsubscribe"
 msgstr "«Only Click the button below if you wish to be unsubscribed from this workspace. After clicking you will no longer have access to this workspace unless you are resubscribed by a Workspace administrator at a later time.»"
 
-#: share/skin/s3/template/element/settings/workspaces_cannot_create_section:4 share/skin/s3/template/view/settings:43 share/skin/s3/template/view/settings:46
+#: share/skin/s3/template/element/settings/workspaces_cannot_create_section:4 share/skin/s3/template/view/settings:43 share/skin/s3/template/view/settings:46 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:17
 msgid "wiki.create"
 msgstr "«Create New Workspace»"
 
@@ -12518,8 +12844,11 @@ msgstr "«<em>To add a workspace to a <strong>new group,</strong></em> go to <a 
 msgid "wiki.top-page"
 msgstr "«Top Page»"
 
+#. #-#-#-#-#  template.po (Socialtext i18n)  #-#-#-#-#
+#. (workspace_title)
+#. #-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#
 #. (workspace.title)
-#: share/skin/s3/template/workspaces_created_section.html:31
+#: share/template/email/st/workspace-admin-invitation.txt:16 share/skin/s3/template/workspaces_created_section.html:31
 msgid "wiki.visit-later=wiki"
 msgstr "«Or you may continue to work in this workspace, and visit \"%1\" later.»"
 
@@ -12667,3 +12996,7 @@ msgstr "«Insert a Video»"
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:21
 msgid "wikiwyg.widget"
 msgstr "«Insert a Widget»"
+
+#: share/template/email/free50/account-invitation.txt:30
+msgid "www.socialtext.com"
+msgstr "«www.socialtext.com»"

@@ -1,3 +1,34 @@
+# @COPYRIGHT@
+msgid ""
+msgstr ""
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-02-20 10:43+0800\n"
+"Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: share/template/data/event:10
+msgid "ago.1day"
+msgstr "one day ago"
+
+#: share/template/data/event:6
+msgid "ago.1minute"
+msgstr "one minute ago"
+
+#: share/template/data/event:5
+msgid "ago.<1minute"
+msgstr "less than a minute ago"
+
+#: share/template/data/event:11
+msgid "ago.about-1day"
+msgstr "about one day ago"
+
+#: share/template/data/event:8
+msgid "ago.about-1hour"
+msgstr "about one hour ago"
+
 #. (round(minutes / 1440)
 #. (round(minutes / 1440))
 #. (delta)
@@ -305,6 +336,7 @@ msgstr "%1 <a href=\"%4\">%2</a> %5 saying, \"%3\""
 msgid "email.page-edit=action,user,summary,time"
 msgstr "%1 %2 %4 saying, \"%3\""
 
+#. (action, user_name, edit_time)
 #: share/template/email/page-details.txt:32
 msgid "email.page-edit=action,user,time"
 msgstr "%1 %2 %3"
@@ -365,7 +397,7 @@ msgstr "Because you already have %1 %2 account, the password is the same as the 
 msgid "email.sign-in-using-information-below:"
 msgstr "Sign in using the information below:"
 
-#: share/template/email/openid/workspace-invitation.txt:10 share/template/email/openid/workspace-invitation-body.html:24
+#: share/template/email/openid/workspace-invitation-body.html:24 share/template/email/openid/workspace-invitation.txt:10
 msgid "email.sign-in-with-openid-now"
 msgstr "You can now sign into our system using OpenID. On the Socialtext login screen, please input your OpenID into the indicated field and you will be redirected to the OpenID site to verify your identity. Once you have verified your identity, you will be sent back to the Socialtext site and be able to access the workspace."
 
@@ -582,6 +614,36 @@ msgstr "performed action %1 on %2."
 msgid "event.in=page,wiki"
 msgstr "%1 in %2"
 
+#. (group)
+#: share/template/data/events/group:4
+msgid "event.join=group"
+msgstr "joined the group %1."
+
+#. (group, workspace)
+#: share/template/data/events/group:15
+msgid "event.join=group,wiki"
+msgstr "added %1 to the workspace %2."
+
+#. (person, group)
+#: share/template/data/events/group:11
+msgid "event.join=user,group"
+msgstr "added %1 to the group %2."
+
+#. (group)
+#: share/template/data/events/group:6
+msgid "event.leave=group"
+msgstr "left the group %1."
+
+#. (person, group)
+#: share/template/data/events/group:13
+msgid "event.leave=user,group"
+msgstr "removed %1 from the group %2."
+
+#. (group, workspace)
+#: share/template/data/events/group:17
+msgid "event.leave=user,wiki"
+msgstr "removed %1 from the workspace %2."
+
 #. (page_in_workspace)
 #: share/template/data/events/page:13
 msgid "event.rename=page"
@@ -617,9 +679,35 @@ msgstr "stopped watching %1."
 msgid "event.watch=page"
 msgstr "started watching %1."
 
+#. (confirm_uri)
+#: share/template/email/st/account-invitation-body.html:22
+msgid "invite.click-to-confirm-email=uri"
+msgstr "Please <a href=\"%1\">click on this link</a> to confirm your email address."
+
+#. (acct_name, host)
+#: share/template/email/st/account-invitation-body.html:13
+msgid "invite.join=account,host"
+msgstr "I'm inviting you to join the %1 group at %2."
+
+#: share/template/email/free50/account-invitation-body.html:27
+msgid "invite.link-to-reset-password:"
+msgstr "If you don't remember it, follow this link to select a new password:"
+
+#: share/template/email/st/account-invitation-body.html:26
+msgid "invite.login-details-after-confirmation"
+msgstr "Once you have confirmed your account, you will receive a second email with login details."
+
 #: share/template/email/standard-footer.html:12 share/template/email/standard-footer.txt:5
 msgid "invite.socialtext-footer"
 msgstr "Brought to you by Socialtext."
+
+#: share/template/email/free50/account-invitation-body.html:20
+msgid "invite.username:"
+msgstr "username:"
+
+#: share/template/email/free50/account-invitation-body.html:19
+msgid "invite.web-address:"
+msgstr "web address:"
 
 #: share/template/data/job.html:25 share/template/data/job_list.html:29
 msgid "job.args"
@@ -861,3 +949,12 @@ msgstr "You have logged out of Socialtext."
 #: share/template/authen/element/choose_password_form:20
 msgid "password.choose:"
 msgstr "Choose Password:"
+
+#. (workspace_title)
+#: share/template/email/st/workspace-admin-invitation.txt:16
+msgid "wiki.visit-later=wiki"
+msgstr "Or you may continue to work in this workspace, and visit \"%1\" later."
+
+#: share/template/email/free50/account-invitation.txt:30
+msgid "www.socialtext.com"
+msgstr "www.socialtext.com"

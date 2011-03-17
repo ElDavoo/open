@@ -175,9 +175,11 @@ msgstr "Archive Directory"
 msgid "appliance.backup-destination-updated"
 msgstr "Backup destination updated"
 
+#:
 msgid "appliance.backup-in-progress-started-at-never"
 msgstr "Backup is in progress - started at never"
 
+#:
 msgid "appliance.backup-in-progress=started-at"
 msgstr "Backup is in progress - started at %1"
 
@@ -222,9 +224,11 @@ msgstr "Initialize Workspaces?"
 msgid "appliance.invalid-email"
 msgstr "Please enter a valid email address"
 
+#:
 msgid "appliance.last-manual-backup-was-never"
 msgstr "Last manual backup was never"
 
+#:
 msgid "appliance.last-manual-backup-was=last"
 msgstr "Last manual backup was %1"
 
@@ -249,9 +253,11 @@ msgstr "System rebooting ..."
 msgid "appliance.redirecting-to=url"
 msgstr "Redirecting to %1"
 
+#:
 msgid "appliance.refresh-in-progress"
 msgstr "Refresh is in progress, please wait ..."
 
+#:
 msgid "appliance.refreshing-backup-list"
 msgstr "Refreshing the backup list ..."
 
@@ -265,27 +271,35 @@ msgstr "Removed the Appliance Business Administrator role from %1"
 msgid "appliance.removed-technical-admin=user"
 msgstr "Removed the Appliance Technical Administrator role from %1"
 
+#:
 msgid "appliance.restore-already-running"
 msgstr "Restore is already running"
 
+#:
 msgid "appliance.restore-finished=latest-backup"
 msgstr "Restore of %1 finished."
 
+#:
 msgid "appliance.restore-in-progress-started-at-never"
 msgstr "Restore in progress - started at never"
 
+#:
 msgid "appliance.restore-in-progress=started-at"
 msgstr "Restore in progress - started at %1"
 
+#:
 msgid "appliance.restore-latest-already-running"
 msgstr "Restore latest is already running"
 
+#:
 msgid "appliance.retry-after-backup"
 msgstr "Please wait until the backup finishes, then retry."
 
+#:
 msgid "appliance.retry-after-restore"
 msgstr "Please wait until the restore finishes, then retry."
 
+#:
 msgid "appliance.select-backup-to-restore"
 msgstr "Please select a backup to restore"
 
@@ -363,7 +377,7 @@ msgstr "Blog: %1 Atom"
 
 #: lib/Socialtext/WeblogPlugin.pm:103
 msgid "blog.blog"
-msgstr ""
+msgstr "Blog"
 
 #. ($blog_tag)
 #: lib/Socialtext/WeblogPlugin.pm:183
@@ -807,6 +821,7 @@ msgstr "Importing dashboard for user %1"
 msgid "date.format?"
 msgstr "How should displayed dates be formatted?"
 
+#:
 msgid "date.fri"
 msgstr "Fri"
 
@@ -818,21 +833,27 @@ msgstr "Should times be displayed in 12-hour or 24-hour format?"
 msgid "date.include-seconds?"
 msgstr "Should seconds be included on displayed times?"
 
+#:
 msgid "date.mon"
 msgstr "Mon"
 
+#:
 msgid "date.sat"
 msgstr "Sat"
 
+#:
 msgid "date.sun"
 msgstr "Sun"
 
+#:
 msgid "date.thu"
 msgstr "Thu"
 
+#:
 msgid "date.tue"
 msgstr "Tue"
 
+#:
 msgid "date.wed"
 msgstr "Wed"
 
@@ -1022,9 +1043,11 @@ msgstr "Line %1: %2"
 msgid "error.authentication-token-soft-limit-must-be-lower-than-hard-limit"
 msgstr "Authentication token soft limit must be lower than the hard limit."
 
+#:
 msgid "error.backup-already-running"
 msgstr "Backup already running"
 
+#:
 msgid "error.backup-failed"
 msgstr "Backup failed ..."
 
@@ -1119,8 +1142,8 @@ msgstr "Could not create workspace %1"
 msgid "error.deactivate=user"
 msgstr "There was a problem deactivating user %1"
 
-#. ($ws->account->name)
 #. ($self->account->name)
+#. ($ws->account->name)
 #: lib/Socialtext/CLI.pm:2925 lib/Socialtext/Workspace.pm:654
 msgid "error.delete-auw-workspace"
 msgstr "This workspace is the all users workspace for the %1 account. Aborting."
@@ -1420,7 +1443,7 @@ msgid "error.invalid-widget=src,message"
 msgstr "The %1 you provided does not appear to be a valid widget XML file: %2"
 
 #. ($self->_file_or_url, $url, $err)
-#: lib/Socialtext/Gadgets/Gadget.pm:788
+#: lib/Socialtext/Gadgets/Gadget.pm:791
 msgid "error.invalid-widget=src,url,message"
 msgstr "The %1 you provided does not contain a widget file. Please check the %1 and try again. The %1 specified was: %2. The specific error was %3"
 
@@ -1763,7 +1786,7 @@ msgid "error.no-tag=tag,wiki"
 msgstr "There is no tag \"%1\" in the %2 workspace."
 
 #. ($url)
-#: lib/Socialtext/Gadgets/Gadget.pm:767
+#: lib/Socialtext/Gadgets/Gadget.pm:770
 msgid "error.no-thumbnail=url"
 msgstr "Can't find thumbnail image: %1"
 
@@ -2014,9 +2037,11 @@ msgstr "Since your password is stored in the directory for your organization, th
 msgid "error.restore-account-widget"
 msgstr "Error restoring account widget."
 
+#:
 msgid "error.restore-failed=log-file"
 msgstr "Restore failed - check %1"
 
+#:
 msgid "error.restore-failed=restore-id"
 msgstr "Restore failed for (%1) ..."
 
@@ -2343,7 +2368,7 @@ msgid "feed.number-of-posts?"
 msgstr "How many posts should be displayed in outgoing feeds?"
 
 #. ($self->hub->current_workspace->title, $query)
-#: lib/Socialtext/SyndicatePlugin.pm:386
+#: lib/Socialtext/SyndicatePlugin.pm:385
 msgid "feed.search=wiki,query"
 msgstr "%1: search for %2"
 
@@ -2357,12 +2382,13 @@ msgstr "Socialtext Workspace v%1"
 msgid "feed.tags=tags"
 msgstr "Tags: %1"
 
+#. ($creator, $editor)
 #: lib/Socialtext/Syndicate/Feed.pm:69
 msgid "feed.updated-by=creator,editor"
 msgstr "%1 (updated by %2)"
 
 #. ($self->hub->current_workspace->title, $user->best_full_name)
-#: lib/Socialtext/SyndicatePlugin.pm:393
+#: lib/Socialtext/SyndicatePlugin.pm:392
 msgid "feed.watchlist=wiki,user"
 msgstr "%1: watchlist for %2"
 
@@ -2382,6 +2408,11 @@ msgstr "Free50 Account Setup"
 #: lib/Socialtext/GoogleSearchPlugin.pm:92
 msgid "google.for=query"
 msgstr "Search for \"%1\""
+
+#. ($self->permission_set)
+#: lib/Socialtext/Group/Homunculus.pm:215
+msgid "group.acl-"
+msgstr "Type: "
 
 #. ($group->driver_group_name,            $opts{account}->name,)
 #: lib/Socialtext/CLI.pm:3616
@@ -2506,8 +2537,8 @@ msgstr "Click this button to save the pages you're watching for offline use."
 msgid "info.unplug=tag"
 msgstr "Click this button to save the pages with the tag %1 to your computer for offline use."
 
-#. ($self->account->name)
 #. ($name)
+#. ($self->account->name)
 #: lib/Socialtext/AccountInvitation.pm:26 lib/Socialtext/GroupInvitation.pm:28
 msgid "invite.group=name"
 msgstr "I'm inviting you into the %1 group"
@@ -2532,19 +2563,19 @@ msgstr "All %1 Jobs"
 msgid "lang.changed=user,locale"
 msgstr "Locale for %1 is now %2"
 
-#: lib/Socialtext/Locales.pm:51
+#:
 msgid "lang.en"
 msgstr "English"
 
-#: lib/Socialtext/Locales.pm:54
+#:
 msgid "lang.fr-ca"
 msgstr "French - Canadian"
 
-#: lib/Socialtext/Locales.pm:52
+#:
 msgid "lang.zh-cn"
 msgstr "Chinese - Simplified"
 
-#: lib/Socialtext/Locales.pm:53
+#:
 msgid "lang.zh-tw"
 msgstr "Chinese - Traditional"
 
@@ -2652,7 +2683,7 @@ msgstr "People"
 msgid "nav.private-message"
 msgstr "Priv. Msg"
 
-#: lib/Socialtext/SyndicatePlugin.pm:379 lib/Socialtext/WeblogPlugin.pm:224 lib/Socialtext/WeblogPlugin.pm:279 lib/Socialtext/WeblogPlugin.pm:332 lib/Socialtext/WeblogPlugin.pm:335
+#: lib/Socialtext/SyndicatePlugin.pm:378 lib/Socialtext/WeblogPlugin.pm:224 lib/Socialtext/WeblogPlugin.pm:279 lib/Socialtext/WeblogPlugin.pm:332 lib/Socialtext/WeblogPlugin.pm:335
 msgid "nav.recent-changes"
 msgstr "Recent Changes"
 
@@ -2815,11 +2846,11 @@ msgstr "(comment)"
 
 #: lib/Socialtext/Pluggable/Plugin/SocialCalc.pm:23
 msgid "page.type-spreadsheet"
-msgstr ""
+msgstr "Spreadsheet"
 
 #: lib/Socialtext/Pluggable/Plugin/Default.pm:45
 msgid "page.type-wiki"
-msgstr ""
+msgstr "Page"
 
 #. ($page->name, $workspace->title()
 #: lib/Socialtext/CLI.pm:2715
@@ -3062,8 +3093,8 @@ msgstr "Workspace Usage Blog"
 msgid "report.workspace.activity=user"
 msgstr "Workspace Activity for user %1"
 
-#. ($self->_group->display_name)
 #. ($self->_workspace->title)
+#. ($self->_group->display_name)
 #. ($user->best_full_name)
 #: lib/Socialtext/Rest/Events/Activities.pm:12 lib/Socialtext/Rest/Events/Groups.pm:13 lib/Socialtext/Rest/Events/Workspaces.pm:14
 msgid "rest.activity=user"
@@ -3549,7 +3580,7 @@ msgstr "Your Watchlist in %1 is empty."
 msgid "widget.adding=src"
 msgstr "Adding widget %1..."
 
-#: lib/Socialtext/Gadgets/Gadget.pm:781
+#: lib/Socialtext/Gadgets/Gadget.pm:784
 msgid "widget.file"
 msgstr "file"
 
@@ -3562,7 +3593,7 @@ msgstr "Importing widget containers ..."
 msgid "widget.removing=src"
 msgstr "Removing widget %1..."
 
-#: lib/Socialtext/Gadgets/Gadget.pm:780
+#: lib/Socialtext/Gadgets/Gadget.pm:783
 msgid "widget.resource"
 msgstr "resource"
 
@@ -3579,7 +3610,7 @@ msgstr "Socialtext widgets"
 msgid "widget.third-party"
 msgstr "Third Party widgets"
 
-#: lib/Socialtext/Gadgets/Gadget.pm:781
+#: lib/Socialtext/Gadgets/Gadget.pm:784
 msgid "widget.url"
 msgstr "URL"
 

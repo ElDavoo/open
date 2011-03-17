@@ -1017,6 +1017,9 @@ msgstr "1 季"
 msgid "time.1week"
 msgstr "1 周"
 
+msgid "user.email-address:"
+msgstr "电子邮件地址："
+
 msgid "user.first-name:"
 msgstr "名字："
 

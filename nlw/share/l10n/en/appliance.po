@@ -9,21 +9,27 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#:
 msgid "appliance.archiving-system-config-files"
 msgstr "Archiving system config files ..."
 
+#:
 msgid "appliance.backup-id"
 msgstr "Backup ID"
 
+#:
 msgid "appliance.backup-time"
 msgstr "Backup Time"
 
+#:
 msgid "appliance.backups-for-restore:"
 msgstr "Backups available for restore:"
 
+#:
 msgid "appliance.cleanup-previous-snapshot"
 msgstr "Cleaning up previous snapshot ..."
 
+#:
 msgid "appliance.taking-database-snapshot"
 msgstr "Taking database snapshot ..."
 
@@ -118,6 +124,7 @@ msgstr "Apache Logs"
 msgid "console.appliance"
 msgstr "Appliance Console"
 
+#:
 msgid "console.automatic-backup-schedule"
 msgstr "Automatic Backup Schedule"
 
@@ -125,7 +132,7 @@ msgstr "Automatic Backup Schedule"
 msgid "console.automatic-updating"
 msgstr "Automatic Updating"
 
-#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:1 ../appliance/libsocialtext-appliance-perl/template/backup.html:2 ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42
 msgid "console.backup"
 msgstr "Backup"
 
@@ -229,7 +236,7 @@ msgstr "Other Settings"
 msgid "console.outgoing-mail-server"
 msgstr "Outgoing mail server"
 
-#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42
+#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42 ../appliance/libsocialtext-appliance-perl/template/overview.html:1 ../appliance/libsocialtext-appliance-perl/template/overview.html:2
 msgid "console.overview"
 msgstr "Overview"
 
@@ -293,6 +300,7 @@ msgstr "Report a Problem"
 msgid "console.restore-now"
 msgstr "Restore Now"
 
+#:
 msgid "console.save-backup-schedule"
 msgstr "Save Backup Schedule"
 
@@ -308,6 +316,8 @@ msgstr "Please feel free to use HTML in this message, but SCRIPT tags ( eg JavaS
 msgid "console.send-test-email"
 msgstr "Send Test Email"
 
+#. ('/nlw/control/settings')
+#. ("/nlw/control/settings")
 #: ../appliance/libsocialtext-appliance-perl/template/setup.html:5
 msgid "console.server-wide-settings-moved-to-control-panel=uri"
 msgstr "Server-wide access settings have moved to the <a href=\"%1\">Business Control Panel</a>."
@@ -344,7 +354,7 @@ msgstr "Set Support Contact"
 msgid "console.set-web-proxy-server"
 msgstr "Set Web Proxy Server"
 
-#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42
+#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42 ../appliance/libsocialtext-appliance-perl/template/setup.html:1 ../appliance/libsocialtext-appliance-perl/template/setup.html:2
 msgid "console.setup"
 msgstr "Setup"
 
@@ -356,7 +366,7 @@ msgstr "Shut Down Appliance"
 msgid "console.shut-down-now"
 msgstr "Shut Down Now"
 
-#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42
+#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42 ../appliance/libsocialtext-appliance-perl/template/shutdown.html:1 ../appliance/libsocialtext-appliance-perl/template/shutdown.html:2
 msgid "console.shutdown"
 msgstr "Shutdown"
 
@@ -376,7 +386,7 @@ msgstr "Socialtext Desktop"
 msgid "console.socialtext-support"
 msgstr "Socialtext Support"
 
-#: ../appliance/libsocialtext-appliance-perl/template/help.html:141
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:141 ../appliance/libsocialtext-appliance-perl/template/setup.html:103 ../appliance/libsocialtext-appliance-perl/template/setup.html:33 ../appliance/libsocialtext-appliance-perl/template/setup.html:48 ../appliance/libsocialtext-appliance-perl/template/setup.html:69 ../appliance/libsocialtext-appliance-perl/template/setup.html:84
 msgid "console.submit"
 msgstr "Submit"
 
@@ -392,6 +402,7 @@ msgstr "Synchronize Appliance Clock Now"
 msgid "console.tarball-built"
 msgstr "Tarball Built"
 
+#:
 msgid "console.time-each-day:"
 msgstr "Time each day:"
 
@@ -437,6 +448,7 @@ msgstr "Cancel"
 msgid "do.close"
 msgstr "Close"
 
+#:
 msgid "error.backup-id-required"
 msgstr "Must supply a backup ID - or use --list to see available backups."
 
@@ -453,6 +465,7 @@ msgstr "Email and description are required!"
 msgid "error.invalid=email"
 msgstr "\"%1\" is not a valid email address."
 
+#:
 msgid "error.socialtext-appliance-backup"
 msgstr "Error during Socialtext Appliance Backup"
 
@@ -468,3 +481,7 @@ msgstr "Cannot unlink test file on samba share!"
 #: ../appliance/libsocialtext-appliance-perl/sbin/st-appliance-mount-samba:87
 msgid "error.write-test-file-on-samba-share!"
 msgstr "Cannot write test file on samba share!"
+
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:1 ../appliance/libsocialtext-appliance-perl/template/help.html:2
+msgid "nav.help"
+msgstr "Help"

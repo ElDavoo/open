@@ -50,6 +50,14 @@ msgstr "one minute ago"
 msgid "ago.<1minute"
 msgstr "less than a minute ago"
 
+#: share/skin/s3/template/view/page/display:15
+msgid "ago.about-1day"
+msgstr "about one day ago"
+
+#: share/skin/s3/template/view/page/display:10
+msgid "ago.about-1hour"
+msgstr "about one hour ago"
+
 #. (days)
 #: share/skin/s3/template/lite/page_list.html:16 share/skin/s3/template/view/page/display:18
 msgid "ago.days=count"
@@ -66,17 +74,10 @@ msgid "ago.mins=count"
 msgstr "%1 min. ago"
 
 #. (minutes)
-#: share/skin/s3/template/view/page/display:9
+#. (data.minutes_ago)
+#: share/skin/s3/javascript/s3.js:694 share/skin/s3/template/view/page/display:9
 msgid "ago.minutes=count"
 msgstr "%*(%1,minute) ago"
-
-#: share/skin/s3/template/view/page/display:15
-msgid "ago.about-1day"
-msgstr "about one day ago"
-
-#: share/skin/s3/template/view/page/display:10
-msgid "ago.about-1hour"
-msgstr "about one hour ago"
 
 #: share/skin/s3/template/view/weblog:108
 msgid "blog.archives"
@@ -191,6 +192,7 @@ msgstr "Workspace Email Receive Setting"
 msgid "config.files"
 msgstr "Manage Files"
 
+#:
 msgid "config.first-name:"
 msgstr "First name:"
 
@@ -396,7 +398,7 @@ msgstr "Unsubscribe from the %1 workspace"
 msgid "do.upload"
 msgstr "Upload"
 
-#: share/skin/s3/javascript/s3.js:923 share/skin/s3/template/view/empty_watchlist:39 share/skin/s3/template/view/page/display:74
+#: share/skin/s3/javascript/s3.js:929 share/skin/s3/template/view/empty_watchlist:39 share/skin/s3/template/view/page/display:74
 msgid "do.watch"
 msgstr "Watch"
 
@@ -408,28 +410,28 @@ msgstr "Web Link"
 msgid "do.wikilink"
 msgstr "Wiki Link"
 
-#: share/skin/s3/javascript/s3.js:1190
+#: share/skin/s3/javascript/s3.js:1196
 msgid "draft.?"
 msgstr "?"
 
-#: share/skin/s3/javascript/s3.js:1174
+#: share/skin/s3/javascript/s3.js:1180
 msgid "draft.discard"
 msgstr "Discard"
 
-#: share/skin/s3/javascript/s3.js:1178
+#: share/skin/s3/javascript/s3.js:1184
 msgid "draft.discard?"
 msgstr "Are you sure you want to discard the draft?"
 
-#: share/skin/s3/javascript/s3.js:1171
+#: share/skin/s3/javascript/s3.js:1177
 msgid "draft.or"
 msgstr "&nbsp;or&nbsp;"
 
-#: share/skin/s3/javascript/s3.js:1168
+#: share/skin/s3/javascript/s3.js:1174
 msgid "draft.resume"
 msgstr "Resume"
 
 #. (draft.page_title, draft.workspace_title, draft.workspace_id)
-#: share/skin/s3/javascript/s3.js:1164
+#: share/skin/s3/javascript/s3.js:1170
 msgid "draft.unsaved=page,wiki,wiki-id:"
 msgstr "You have an unsaved draft of \"%1\" in the \"%2\" (%3) workspace:"
 
@@ -446,11 +448,11 @@ msgstr "Somebody else made changes to the page while you were editing it."
 msgid "edit.contention=type"
 msgstr "Somebody else made changes to the %1 while you were editing it."
 
-#: share/skin/s3/javascript/s3.js:153
+#: share/skin/s3/javascript/s3.js:156
 msgid "edit.copy-your-changes"
 msgstr "Please copy your changes, and click Cancel to return to the page."
 
-#: share/skin/s3/javascript/s3.js:884
+#: share/skin/s3/javascript/s3.js:890
 msgid "edit.expand"
 msgstr "Expand"
 
@@ -462,12 +464,12 @@ msgstr "Edit Anyway"
 msgid "edit.loading"
 msgstr "Loading..."
 
-#: share/skin/s3/javascript/s3.js:860
+#: share/skin/s3/javascript/s3.js:866
 msgid "edit.normal"
 msgstr "Normal"
 
 #. (tag)
-#: share/skin/s3/javascript/s3.js:302
+#: share/skin/s3/javascript/s3.js:305
 msgid "edit.remove=tag"
 msgstr "Remove %1 from the queue"
 
@@ -479,7 +481,7 @@ msgstr "Return to Page View"
 msgid "edit.save"
 msgstr "Save"
 
-#: share/skin/s3/javascript/s3.js:136
+#: share/skin/s3/javascript/s3.js:139
 msgid "edit.saved"
 msgstr "(Your edit was successfully saved.)"
 
@@ -610,11 +612,11 @@ msgstr "The page name you selected, \"%1\", is too long after URL encoding."
 msgid "error.no-match=lookahead"
 msgstr "No matches for '%1'"
 
-#: share/skin/s3/javascript/s3.js:826
+#: share/skin/s3/javascript/s3.js:832
 msgid "error.no-page-doc"
 msgstr "You must check at least one page in order to create a Word document."
 
-#: share/skin/s3/javascript/s3.js:814
+#: share/skin/s3/javascript/s3.js:820
 msgid "error.no-page-pdf"
 msgstr "You must check at least one page in order to create a PDF."
 
@@ -623,8 +625,8 @@ msgstr "You must check at least one page in order to create a PDF."
 msgid "error.no-page=template"
 msgstr "No page named '%1' exists"
 
-#. (type, template)
-#: share/skin/s3/javascript/lightbox/create_content.js:74
+#. (loc("page.type-"+type)
+#: share/skin/s3/javascript/lightbox/create_content.js:73
 msgid "error.no-page=type,tag"
 msgstr "No %1 pages tagged '%2' could be found"
 
@@ -654,7 +656,7 @@ msgstr "The page name you selected, \"%1\", is the same as the page's current ti
 msgid "error.same-revision"
 msgstr "You cannot compare a revision to itself."
 
-#: share/skin/s3/javascript/lightbox/comment.js:91 share/skin/s3/javascript/s3.js:157
+#: share/skin/s3/javascript/lightbox/comment.js:91 share/skin/s3/javascript/s3.js:160
 msgid "error.save-failed"
 msgstr "Saving failed due to server error; please try again later."
 
@@ -888,7 +890,7 @@ msgstr "When the workspace receives an email, the subject of the email becomes t
 msgid "info.error:"
 msgstr "error:"
 
-#: share/skin/s3/javascript/s3.js:884
+#: share/skin/s3/javascript/s3.js:890
 msgid "info.expand-view"
 msgstr "Expand edit area to fill browser window"
 
@@ -929,7 +931,7 @@ msgstr "Use the form below to invite users to one of this workspace's groups. An
 msgid "info.logged-in=name"
 msgstr "You are logged in as %1"
 
-#: share/skin/s3/javascript/s3.js:860
+#: share/skin/s3/javascript/s3.js:866
 msgid "info.normal-view"
 msgstr "Return edit area to normal view"
 
@@ -1225,7 +1227,7 @@ msgstr "Groups"
 msgid "nav.help"
 msgstr "Help"
 
-#: share/skin/s3/javascript/s3.js:343 share/skin/s3/template/view/page/display:131
+#: share/skin/s3/javascript/s3.js:346 share/skin/s3/template/view/page/display:131
 msgid "nav.hide"
 msgstr "hide"
 
@@ -1345,9 +1347,14 @@ msgstr "Recent Changes"
 msgid "nav.recently-viewed"
 msgstr "Recently Viewed"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:3 share/skin/s3/template/lite/subnav.html:28 share/skin/s3/template/lite/subnav.html:30
+#: share/skin/s3/template/element/settings/users_invite_search_section:3 share/skin/s3/template/lite/search/search.html:12 share/skin/s3/template/lite/subnav.html:28 share/skin/s3/template/lite/subnav.html:30
 msgid "nav.search"
 msgstr "Search"
+
+#. (ws.title)
+#: share/skin/s3/template/lite/search/search.html:4
+msgid "nav.search=wiki"
+msgstr "Search %1"
 
 #: share/skin/s3/template/view/page_revision_list:42
 msgid "nav.select"
@@ -1357,7 +1364,7 @@ msgstr "Select"
 msgid "nav.settings"
 msgstr "Settings"
 
-#: share/skin/s3/javascript/s3.js:343 share/skin/s3/template/view/page/display:131
+#: share/skin/s3/javascript/s3.js:346 share/skin/s3/template/view/page/display:131
 msgid "nav.show"
 msgstr "show"
 
@@ -1590,7 +1597,7 @@ msgstr "An administrator has locked this %1 since you opened it for editing. You
 msgid "page.new"
 msgstr "New Page"
 
-#: share/skin/s3/javascript/lightbox/copy.tt2:19 share/skin/s3/javascript/lightbox/rename.tt2:11
+#: share/skin/s3/javascript/lightbox/copy.tt2:19 share/skin/s3/javascript/lightbox/duplicate.tt2:13 share/skin/s3/javascript/lightbox/rename.tt2:11
 msgid "page.new-name"
 msgstr "New page name"
 
@@ -1602,6 +1609,7 @@ msgstr "There are no pages that link to this page yet."
 msgid "page.no-tags"
 msgstr "There are no tags for this page."
 
+#. (user_link, time_ago)
 #: share/skin/s3/javascript/lightbox/edit_check.tt2:4
 msgid "page.opened-for-edit=user,ago"
 msgstr "%1 has opened this page for editing %2."
@@ -1671,6 +1679,10 @@ msgstr "Titles"
 msgid "page.top"
 msgstr "Top of page"
 
+#:
+msgid "page.type-spreadsheet"
+msgstr "Spreadsheet"
+
 #: share/skin/s3/javascript/lightbox/create_content.js:9
 msgid "page.type-wiki"
 msgstr "Page"
@@ -1679,7 +1691,7 @@ msgstr "Page"
 msgid "page.unlock"
 msgstr "Unlock Page"
 
-#: share/skin/s3/javascript/s3.js:1067 share/skin/s3/javascript/s3.js:15
+#: share/skin/s3/javascript/s3.js:1073 share/skin/s3/javascript/s3.js:15
 msgid "page.untitled"
 msgstr "Untitled Page"
 
@@ -1836,7 +1848,7 @@ msgstr "The search you have entered is too general."
 msgid "search.too-many=count"
 msgstr "The search you have entered is too general; %1 pages and/or attachments matched your query."
 
-#: share/skin/s3/javascript/s3.js:1068 share/skin/s3/javascript/s3.js:16
+#: share/skin/s3/javascript/s3.js:1074 share/skin/s3/javascript/s3.js:16
 msgid "sheet.untitled"
 msgstr "Untitled Spreadsheet"
 
@@ -2025,13 +2037,15 @@ msgstr "Your Watchlist"
 msgid "watch.look-for"
 msgstr "Look for"
 
-#: share/skin/s3/javascript/s3.js:935 share/skin/s3/template/view/listview:166 share/skin/s3/template/view/page/display:72
+#: share/skin/s3/javascript/s3.js:941 share/skin/s3/template/view/listview:166 share/skin/s3/template/view/page/display:72
 msgid "watch.stop"
 msgstr "Stop Watching"
 
+#:
 msgid "widget.preview"
 msgstr "Preview"
 
+#:
 msgid "widget.push-all"
 msgstr "Push to all dashboards"
 
@@ -2239,6 +2253,3 @@ msgstr "<em>To add a workspace to a <strong>new group,</strong></em> go to <a hr
 #: share/skin/s3/template/workspaces_created_section.html:31
 msgid "wiki.visit-later=wiki"
 msgstr "Or you may continue to work in this workspace, and visit \"%1\" later."
-
-msgid "page.type-spreadsheet"
-msgstr "Spreadsheet"

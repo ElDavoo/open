@@ -594,3 +594,6 @@ msgstr "您已成功登出 Socialtext。"
 #: share/template/authen/element/choose_password_form:20
 msgid "password.choose:"
 msgstr "指定密码："
+
+msgid "www.socialtext.com"
+msgstr "www.socialtext.com"

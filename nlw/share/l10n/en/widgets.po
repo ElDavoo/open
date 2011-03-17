@@ -2,9 +2,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 07:29+0800\n"
-"Language-Team: Socialtext i18n team\n"
+"PO-Revision-Date: 2011-02-20 10:43+0800\n"
 "Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,11 +21,11 @@ msgstr "Add a tag"
 msgid "activities.add-video-link"
 msgstr "Add a video link"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:330
+#: share/plugin/widgets/share/javascript/activities/appdata.js:329
 msgid "activities.all-events"
 msgstr "all events"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:284
+#: share/plugin/widgets/share/javascript/activities/appdata.js:283
 msgid "activities.all-my-groups"
 msgstr "All my groups"
 
@@ -33,7 +33,7 @@ msgstr "All my groups"
 msgid "activities.all-replies"
 msgstr "All Replies"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:285
+#: share/plugin/widgets/share/javascript/activities/appdata.js:284
 msgid "activities.all-shared-groups"
 msgstr "All shared groups"
 
@@ -57,7 +57,7 @@ msgstr "(click here to expand)"
 msgid "activities.close-this-window"
 msgstr "Close this window"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:362
+#: share/plugin/widgets/share/javascript/activities/appdata.js:361
 msgid "activities.comments"
 msgstr "comments"
 
@@ -90,7 +90,7 @@ msgstr ""
 "Are you sure you want to expunge this %1 from the system?\n"
 "It cannot be recovered."
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:352
+#: share/plugin/widgets/share/javascript/activities/appdata.js:351
 msgid "activities.contributions"
 msgstr "contributions"
 
@@ -98,7 +98,7 @@ msgstr "contributions"
 msgid "activities.delete"
 msgstr "delete"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:357
+#: share/plugin/widgets/share/javascript/activities/appdata.js:356
 msgid "activities.edits"
 msgstr "edits"
 
@@ -110,11 +110,11 @@ msgstr "Copy and paste the URL for the video below.  We support embedding video 
 msgid "activities.enter-weblink-url-here"
 msgstr "Paste or type your link's destination (URL, e.g. http://socialtext.com) and text of the link below. Link destination is required."
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:329
+#: share/plugin/widgets/share/javascript/activities/appdata.js:328
 msgid "activities.events"
 msgstr "events"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:395
+#: share/plugin/widgets/share/javascript/activities/appdata.js:394
 msgid "activities.everyone"
 msgstr "everyone"
 
@@ -122,7 +122,7 @@ msgstr "everyone"
 msgid "activities.expunge"
 msgstr "expunge"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:402
+#: share/plugin/widgets/share/javascript/activities/appdata.js:401
 msgid "activities.following"
 msgstr "people I follow"
 
@@ -159,7 +159,7 @@ msgstr "Make this signal private"
 msgid "activities.maximum-file-size=mb"
 msgstr "Maximum file size: %1MB"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:415
+#: share/plugin/widgets/share/javascript/activities/appdata.js:414
 msgid "activities.me"
 msgstr "me"
 
@@ -175,7 +175,7 @@ msgstr "More"
 msgid "activities.more-mentions"
 msgstr "More Mentions..."
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:409
+#: share/plugin/widgets/share/javascript/activities/appdata.js:408
 msgid "activities.my-conversations"
 msgstr "my conversations"
 
@@ -185,7 +185,7 @@ msgid "activities.new-events=count"
 msgstr "%*(%1,activity,activities)"
 
 #. (self.mentionCount)
-#: share/plugin/widgets/share/javascript/activities/widget.js:473
+#: share/plugin/widgets/share/javascript/activities/widget.js:475
 msgid "activities.new-mentions=count"
 msgstr "%*(%1,new mention)..."
 
@@ -204,7 +204,7 @@ msgstr "%1 new"
 msgid "activities.other-replies=count"
 msgstr "%*(%1,other reply,other replies)..."
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:367
+#: share/plugin/widgets/share/javascript/activities/appdata.js:366
 msgid "activities.page-tags"
 msgstr "page tags"
 
@@ -212,7 +212,7 @@ msgstr "page tags"
 msgid "activities.page:"
 msgstr "Page:"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:372
+#: share/plugin/widgets/share/javascript/activities/appdata.js:371
 msgid "activities.people-events"
 msgstr "people events"
 
@@ -229,7 +229,7 @@ msgid "activities.private-to-you"
 msgstr "private to you"
 
 #. (signal.best_full_name)
-#: share/plugin/widgets/share/javascript/activities/widget.js:538
+#: share/plugin/widgets/share/javascript/activities/widget.js:540
 msgid "activities.private-to-you=sender"
 msgstr "%1 private to you"
 
@@ -283,7 +283,7 @@ msgstr "Your Signal was successfully sent. Click <a href=\"#\" class=\"clearFilt
 msgid "activities.signal-this-page"
 msgstr "Send a signal with a link to this page"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:345
+#: share/plugin/widgets/share/javascript/activities/appdata.js:344
 msgid "activities.signals"
 msgstr "signals"
 
@@ -296,7 +296,7 @@ msgid "activities.socialtext-activities"
 msgstr "Socialtext Activities"
 
 #. (self.signalCount, self._originalTitle)
-#: share/plugin/widgets/share/javascript/activities/widget.js:467
+#: share/plugin/widgets/share/javascript/activities/widget.js:469
 msgid "activities.title=signal-count,original-title"
 msgstr "(%1) %2"
 
@@ -306,7 +306,7 @@ msgid "activities.to-groups=count"
 msgstr "to %1 groups"
 
 #. (signal.best_full_name,                    targets.join(', ')
-#: share/plugin/widgets/share/javascript/activities/widget.js:541
+#: share/plugin/widgets/share/javascript/activities/widget.js:543
 msgid "activities.to=sender,targets"
 msgstr "%1 to %2"
 
@@ -381,6 +381,114 @@ msgstr "Signal This!"
 msgid "bookmarklet.tip"
 msgstr "Tip: Use the"
 
+msgid "description.all_groups"
+msgstr "All Available Groups"
+
+msgid "description.all_tags"
+msgstr "Displays a tag cloud of all tags on people in Socialtext People."
+
+#: share/plugin/widgets/share/widgets/blockerbugs/config.yaml:4
+msgid "description.blockerbugs"
+msgstr "Display a list of the open blocker bugs."
+
+msgid "description.edit_information"
+msgstr "Edit Group Information"
+
+msgid "description.edit_people"
+msgstr "Edit Group People"
+
+msgid "description.explore"
+msgstr "Post signals and display activities, including signals and workspace events."
+
+msgid "description.explore_filters"
+msgstr "Filter bookmarks"
+
+msgid "description.forbidden_profile"
+msgstr "Profile"
+
+msgid "description.information"
+msgstr "Group Information"
+
+#: share/plugin/widgets/share/widgets/iterationbugs/config.yaml:4
+msgid "description.iterationbugs"
+msgstr "Display a list of the bugs assigned to an iteration."
+
+msgid "description.membership"
+msgstr "Edit Group Membership"
+
+msgid "description.my_groups"
+msgstr "My Groups"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/config.yaml:5
+msgid "description.my_workspaces"
+msgstr "Lists all of the workspaces you have access to."
+
+#: share/plugin/widgets/share/widgets/one_page/config.yaml:5
+msgid "description.one_page"
+msgstr "Displays a single wiki page within a Socialtext Widget."
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/config.yaml:4
+msgid "description.one_spreadsheet"
+msgstr "Displays a single spreadsheet within a Socialtext Widget."
+
+msgid "description.people"
+msgstr "People in this group."
+
+msgid "description.profile"
+msgstr "Profile"
+
+msgid "description.profile_activities"
+msgstr "Activity"
+
+msgid "description.profile_edit"
+msgstr "Edit Profile"
+
+msgid "description.profile_network"
+msgstr "People associated with you in your groups."
+
+msgid "description.profile_tags"
+msgstr "Tags"
+
+#: share/plugin/widgets/share/widgets/rest_api/config.yaml:4
+msgid "description.rest_api"
+msgstr "Rest API Devtool"
+
+#: share/plugin/widgets/share/widgets/rss/config.yaml:4
+msgid "description.rss"
+msgstr "Displays an RSS feed."
+
+msgid "description.signals-profile"
+msgstr "Lets a user create signals and display signals from others."
+
+#: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:4
+msgid "description.tag_cloud"
+msgstr "Displays a tag cloud of all tags in a particular workspace."
+
+#: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:4
+msgid "description.tagged_pages"
+msgstr "Displays a list of pages with a certain tag"
+
+msgid "description.teaser"
+msgstr "Coming Soon"
+
+#: share/plugin/widgets/share/widgets/testrunner/config.yaml:4
+msgid "description.testrunner"
+msgstr "Keep an eye on Testrunner results."
+
+#: share/plugin/widgets/share/widgets/userlist/config.yaml:5
+msgid "description.userlist"
+msgstr "Post signals and display activities, including signals and workspace events."
+
+msgid "description.widget_editor"
+msgstr "Edit a widget"
+
+#: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:4
+msgid "description.workspace_activity"
+msgstr "Show edits"
+
+msgid "description.workspaces"
+msgstr "Lists all of the workspaces in the current group"
+
 #: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:18 share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:17 share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:23
 msgid "do.cancel"
 msgstr "Cancel"
@@ -422,7 +530,7 @@ msgstr "error"
 msgid "error.feature-not-supported-in-dashboard"
 msgstr "Sorry, this feature is not yet supported in the Socialtext Dashboard."
 
-#: share/plugin/widgets/share/javascript/activities/widget.js:421 share/plugin/widgets/share/javascript/activities/widget.js:587
+#: share/plugin/widgets/share/javascript/activities/widget.js:423 share/plugin/widgets/share/javascript/activities/widget.js:589
 msgid "error.getting-activities"
 msgstr "There was a problem getting activities"
 
@@ -687,7 +795,7 @@ msgstr "Click \"Browse\" and select an image or file to upload."
 msgid "info.done"
 msgstr "Click \"Done\" to close this window."
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:546 share/plugin/widgets/share/javascript/template/activities/ui.signalthis.tt2:18
+#: share/plugin/widgets/share/javascript/activities/appdata.js:545 share/plugin/widgets/share/javascript/template/activities/ui.signalthis.tt2:18
 msgid "info.edit-summary-signal-visibility"
 msgstr "Only members with permission to view this page will receive the signal."
 
@@ -739,6 +847,20 @@ msgstr "Link destination:"
 msgid "signals.link-text:"
 msgstr "Link text:"
 
+#. (acc.count)
+#. (this.count)
+#. (acc.user_count)
+#. (grp.user_count)
+#: share/plugin/widgets/share/javascript/activities/appdata.js:234 share/plugin/widgets/share/javascript/activities/appdata.js:253 share/plugin/widgets/share/javascript/network-dropdown.js:83 share/plugin/widgets/share/javascript/network-dropdown.js:86
+msgid "signals.network-count=users"
+msgstr "%*(%1,user)"
+
+#. (acc.count)
+#. (acc.user_count)
+#: share/plugin/widgets/share/javascript/activities/appdata.js:233 share/plugin/widgets/share/javascript/network-dropdown.js:82
+msgid "signals.primary-account=users"
+msgstr "primary, %*(%1,user)"
+
 #: share/plugin/widgets/share/javascript/activities/editor.js:1533
 msgid "signals.private-message-to:"
 msgstr "Create private message to:"
@@ -750,6 +872,98 @@ msgstr "Uploaded files:"
 #: share/plugin/widgets/share/javascript/activities/widget.js:27
 msgid "signals.what-are-you-working-on?"
 msgstr "What are you working on?"
+
+#: share/plugin/widgets/share/widgets/active_members/config.yaml:4
+msgid "title.active_members"
+msgstr "Active People"
+
+msgid "title.all_tags"
+msgstr "All People Tags"
+
+#: share/plugin/widgets/share/widgets/blockerbugs/config.yaml:3
+msgid "title.blockerbugs"
+msgstr "Open Blocker Bugs"
+
+msgid "title.edit_information"
+msgstr "Information"
+
+msgid "title.edit_people"
+msgstr "Membership"
+
+msgid "title.forbidden_profile"
+msgstr "Profile"
+
+msgid "title.information"
+msgstr "Information"
+
+#: share/plugin/widgets/share/widgets/iterationbugs/config.yaml:3
+msgid "title.iterationbugs"
+msgstr "Iteration Bugs"
+
+msgid "title.my_groups"
+msgstr "My Groups"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/config.yaml:4
+msgid "title.my_workspaces"
+msgstr "Workspaces"
+
+#: share/plugin/widgets/share/widgets/one_page/config.yaml:4
+msgid "title.one_page"
+msgstr "Wiki Page"
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/config.yaml:3
+msgid "title.one_spreadsheet"
+msgstr "Spreadsheet Page"
+
+msgid "title.profile"
+msgstr "Profile"
+
+msgid "title.profile_edit"
+msgstr "Edit Profile"
+
+msgid "title.profile_network"
+msgstr "Colleagues"
+
+msgid "title.profile_tags"
+msgstr "Tags"
+
+#: share/plugin/widgets/share/widgets/rest_api/config.yaml:3
+msgid "title.rest_api"
+msgstr "Rest API Devtool"
+
+#: share/plugin/widgets/share/widgets/rss/config.yaml:3
+msgid "title.rss"
+msgstr "RSS Viewer"
+
+#: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:3
+msgid "title.tag_cloud"
+msgstr "Workspace Tags"
+
+#: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:3
+msgid "title.tagged_pages"
+msgstr "Pages tagged X"
+
+msgid "title.teaser"
+msgstr "Workspaces"
+
+#: share/plugin/widgets/share/widgets/testrunner/config.yaml:3
+msgid "title.testrunner"
+msgstr "Test Results"
+
+#: share/plugin/widgets/share/widgets/top_content/config.yaml:4
+msgid "title.top_content"
+msgstr "Active Content"
+
+#: share/plugin/widgets/share/widgets/userlist/config.yaml:4
+msgid "title.userlist"
+msgstr "Online Users"
+
+#: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:3
+msgid "title.workspace_activity"
+msgstr "Report-o-rama!"
+
+msgid "title.workspaces"
+msgstr "Workspaces"
 
 #: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:9
 msgid "video.title:"
@@ -769,11 +983,11 @@ msgstr "Add it now"
 
 #: share/plugin/widgets/template/view/container.setup:148
 msgid "widget.preview"
-msgstr ""
+msgstr "Preview"
 
 #: share/plugin/widgets/template/widget/element:57
 msgid "widget.push-all"
-msgstr ""
+msgstr "Push to all dashboards"
 
 #: share/plugin/widgets/template/view/gallery:110
 msgid "widgets.about-restore"
@@ -822,6 +1036,7 @@ msgstr "Are you sure you want to remove the \"%1\" widget? Users will no longer 
 msgid "widgets.confirm-restore=widget?"
 msgstr "Are you sure you want to restore the \"%1\" widget?"
 
+#. (ws.title)
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:21
 msgid "widgets.create-new-page-in=wiki"
 msgstr "Create new page in %1"

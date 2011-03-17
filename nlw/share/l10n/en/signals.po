@@ -2,12 +2,24 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 06:36+0800\n"
-"Language-Team: Socialtext i18n team\n"
+"PO-Revision-Date: 2011-02-20 10:43+0800\n"
 "Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: share/plugin/signals/share/widgets/explore/config.yaml:5
+msgid "description.explore"
+msgstr "Post signals and display activities, including signals and workspace events."
+
+#: share/plugin/signals/share/widgets/explore_filters/config.yaml:5
+msgid "description.explore_filters"
+msgstr "Filter bookmarks"
+
+#: share/plugin/signals/share/widgets/profile/config.yaml:4
+msgid "description.profile"
+msgstr "Profile"
 
 #: share/plugin/signals/share/javascript/lightbox/explore-about.tt2:17
 msgid "do.close"
@@ -222,7 +234,7 @@ msgstr "Maximum value for this appliance is %1"
 
 #. (a.user_count)
 #. (g.user_count)
-#: share/plugin/signals/template/lite/signals.html:57 share/plugin/signals/template/lite/signals.html:68
+#: share/plugin/signals/template/lite/signals.html:52 share/plugin/signals/template/lite/signals.html:63
 msgid "signals.network-count=users"
 msgstr "%*(%1,user)"
 
@@ -248,12 +260,12 @@ msgstr "%1 on <a href=\"%2\">%3</a> in reply to %4."
 msgid "signals.permalink"
 msgstr "Signals - Permalink"
 
-#: share/plugin/signals/template/lite/signals.html:45
+#: share/plugin/signals/template/lite/signals.html:40
 msgid "signals.post-to"
 msgstr "Post to"
 
 #. (a.user_count)
-#: share/plugin/signals/template/lite/signals.html:55
+#: share/plugin/signals/template/lite/signals.html:50
 msgid "signals.primary-account=users"
 msgstr "primary, %*(%1,user)"
 
@@ -370,7 +382,7 @@ msgstr "to %1"
 msgid "signals.try-again:"
 msgstr "Please try again:"
 
-#: share/plugin/signals/template/lite/signals.html:41
+#: share/plugin/signals/template/lite/signals.html:36
 msgid "signals.update"
 msgstr "Update"
 
@@ -381,3 +393,11 @@ msgstr "What are you working on?"
 #: share/plugin/signals/template/email/direct-message.html:29
 msgid "signals.your-settings"
 msgstr "your settings"
+
+#: share/plugin/signals/share/widgets/explore_filters/config.yaml:4
+msgid "title.explore_filters"
+msgstr "Filters"
+
+#: share/plugin/signals/share/widgets/profile/config.yaml:3
+msgid "title.profile"
+msgstr "Profile"

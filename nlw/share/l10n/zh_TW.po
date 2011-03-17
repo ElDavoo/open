@@ -2353,6 +2353,133 @@ msgstr "周二"
 msgid "date.wed"
 msgstr "周三"
 
+#: share/plugin/groups/share/widgets/all_groups/config.yaml:4
+msgid "description.all_groups"
+msgstr "All Available Groups"
+
+#: share/plugin/people/share/widgets/all_tags/config.yaml:4
+msgid "description.all_tags"
+msgstr "Displays a tag cloud of all tags on people in Socialtext People."
+
+#: share/plugin/widgets/share/widgets/blockerbugs/config.yaml:4
+msgid "description.blockerbugs"
+msgstr "Display a list of the open blocker bugs."
+
+#: share/plugin/groups/share/widgets/edit_information/config.yaml:4
+msgid "description.edit_information"
+msgstr "Edit Group Information"
+
+#: share/plugin/groups/share/widgets/edit_people/config.yaml:4
+msgid "description.edit_people"
+msgstr "Edit Group People"
+
+#: share/plugin/signals/share/widgets/explore/config.yaml:5
+msgid "description.explore"
+msgstr "Post signals and display activities, including signals and workspace events."
+
+#: share/plugin/signals/share/widgets/explore_filters/config.yaml:5
+msgid "description.explore_filters"
+msgstr "Filter bookmarks"
+
+#: share/plugin/people/share/widgets/forbidden_profile/config.yaml:5
+msgid "description.forbidden_profile"
+msgstr "Profile"
+
+#: share/plugin/groups/share/widgets/information/config.yaml:4
+msgid "description.information"
+msgstr "Group Information"
+
+#: share/plugin/widgets/share/widgets/iterationbugs/config.yaml:4
+msgid "description.iterationbugs"
+msgstr "Display a list of the bugs assigned to an iteration."
+
+#: share/plugin/groups/share/widgets/membership/config.yaml:4
+msgid "description.membership"
+msgstr "Edit Group Membership"
+
+#: share/plugin/groups/share/widgets/my_groups/config.yaml:4
+msgid "description.my_groups"
+msgstr "My Groups"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/config.yaml:5
+msgid "description.my_workspaces"
+msgstr "Lists all of the workspaces you have access to."
+
+#: share/plugin/widgets/share/widgets/one_page/config.yaml:5
+msgid "description.one_page"
+msgstr "Displays a single wiki page within a Socialtext Widget."
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/config.yaml:4
+msgid "description.one_spreadsheet"
+msgstr "Displays a single spreadsheet within a Socialtext Widget."
+
+#: share/plugin/groups/share/widgets/people/config.yaml:4
+msgid "description.people"
+msgstr "People in this group."
+
+#: share/plugin/signals/share/widgets/profile/config.yaml:4 share/plugin/people/share/widgets/profile/config.yaml:5
+msgid "description.profile"
+msgstr "Profile"
+
+#: share/plugin/people/share/widgets/profile_activities/config.yaml:4
+msgid "description.profile_activities"
+msgstr "Activity"
+
+#: share/plugin/people/share/widgets/profile_edit/config.yaml:4
+msgid "description.profile_edit"
+msgstr "Edit Profile"
+
+#: share/plugin/people/share/widgets/profile_network/config.yaml:4
+msgid "description.profile_network"
+msgstr "People associated with you in your groups."
+
+#: share/plugin/people/share/widgets/profile_tags/config.yaml:5
+msgid "description.profile_tags"
+msgstr "Tags"
+
+#: share/plugin/widgets/share/widgets/rest_api/config.yaml:4
+msgid "description.rest_api"
+msgstr "Rest API Devtool"
+
+#: share/plugin/widgets/share/widgets/rss/config.yaml:4
+msgid "description.rss"
+msgstr "Displays an RSS feed."
+
+msgid "description.signals-profile"
+msgstr "Lets a user create signals and display signals from others."
+
+#: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:4
+msgid "description.tag_cloud"
+msgstr "Displays a tag cloud of all tags in a particular workspace."
+
+#: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:4
+msgid "description.tagged_pages"
+msgstr "Displays a list of pages with a certain tag"
+
+#: share/plugin/groups/share/widgets/teaser/config.yaml:4
+msgid "description.teaser"
+msgstr "Coming Soon"
+
+#: share/plugin/widgets/share/widgets/testrunner/config.yaml:4
+msgid "description.testrunner"
+msgstr "Keep an eye on Testrunner results."
+
+#: share/plugin/widgets/share/widgets/userlist/config.yaml:5
+msgid "description.userlist"
+msgstr "Post signals and display activities, including signals and workspace events."
+
+#: share/plugin/dashboard/share/widgets/widget_editor/config.yaml:5
+msgid "description.widget_editor"
+msgstr "Edit a widget"
+
+#: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:4
+msgid "description.workspace_activity"
+msgstr "Show edits"
+
+#: share/plugin/groups/share/widgets/workspaces/config.yaml:4
+msgid "description.workspaces"
+msgstr "Lists all of the workspaces in the current group"
+
 msgid "desktop.relogin-for-default-logo"
 msgstr "（桌面用戶如需看預設標誌，需重新登入。）"
 
@@ -4763,6 +4890,11 @@ msgstr "50個免費帳戶"
 msgid "google.for=query"
 msgstr "搜尋『%1』"
 
+#. ($self->permission_set)
+#: lib/Socialtext/Group/Homunculus.pm:215
+msgid "group.acl-"
+msgstr "Type: "
+
 msgid "group.acl-member-only"
 msgstr "僅限成員"
 
@@ -4787,6 +4919,10 @@ msgstr "已刪除群組ID：%1"
 msgid "group.exporting=wiki"
 msgstr "正在匯出工作區『%1』的全部群組..."
 
+#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:11 share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:13 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:17 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:19
+msgid "group.first"
+msgstr "first"
+
 msgid "group.importing=wiki"
 msgstr "正在為『%1』工作區導入全部群組..."
 
@@ -4801,6 +4937,18 @@ msgstr "群組名和描述符合『%1』"
 
 msgid "group.name"
 msgstr "群組名稱"
+
+#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:17 share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:19 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:23 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:25
+msgid "group.next"
+msgstr "next"
+
+#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:5 share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:7 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:11 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:13
+msgid "group.previous"
+msgstr "previous"
+
+#: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:19
+msgid "groups.add-members"
+msgstr "Add Members"
 
 msgid "groups.add-wikis"
 msgstr "新增工作區"
@@ -4908,6 +5056,7 @@ msgstr "群組類別"
 msgid "groups.group-type:"
 msgstr "群組類別："
 
+#. (container.group.display_permission_set)
 #: share/plugin/groups/template/groups_hello:3
 msgid "groups.heading=acl"
 msgstr "%1 group"
@@ -6140,6 +6289,11 @@ msgstr "近期查看"
 
 msgid "nav.search"
 msgstr "搜尋"
+
+#. (ws.title)
+#: share/skin/s3/template/lite/search/search.html:4
+msgid "nav.search=wiki"
+msgstr "Search %1"
 
 msgid "nav.select"
 msgstr "選取"
@@ -7885,6 +8039,130 @@ msgstr "%1 秒"
 msgid "time.weeks=count"
 msgstr "%1 周"
 
+#: share/plugin/widgets/share/widgets/active_members/config.yaml:4
+msgid "title.active_members"
+msgstr "Active People"
+
+#: share/plugin/groups/share/widgets/all_groups/config.yaml:3
+msgid "title.all_groups"
+msgstr "All Available Groups"
+
+#: share/plugin/people/share/widgets/all_tags/config.yaml:3
+msgid "title.all_tags"
+msgstr "All People Tags"
+
+#: share/plugin/widgets/share/widgets/blockerbugs/config.yaml:3
+msgid "title.blockerbugs"
+msgstr "Open Blocker Bugs"
+
+#: share/plugin/groups/share/widgets/edit_information/config.yaml:3
+msgid "title.edit_information"
+msgstr "Information"
+
+#: share/plugin/groups/share/widgets/edit_people/config.yaml:3
+msgid "title.edit_people"
+msgstr "Membership"
+
+#: share/plugin/signals/share/widgets/explore_filters/config.yaml:4
+msgid "title.explore_filters"
+msgstr "Filters"
+
+#: share/plugin/people/share/widgets/forbidden_profile/config.yaml:4
+msgid "title.forbidden_profile"
+msgstr "Profile"
+
+#: share/plugin/groups/share/widgets/information/config.yaml:3
+msgid "title.information"
+msgstr "Information"
+
+#: share/plugin/widgets/share/widgets/iterationbugs/config.yaml:3
+msgid "title.iterationbugs"
+msgstr "Iteration Bugs"
+
+#: share/plugin/groups/share/widgets/my_groups/config.yaml:3
+msgid "title.my_groups"
+msgstr "My Groups"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/config.yaml:4
+msgid "title.my_workspaces"
+msgstr "Workspaces"
+
+#: share/plugin/widgets/share/widgets/one_page/config.yaml:4
+msgid "title.one_page"
+msgstr "Wiki Page"
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/config.yaml:3
+msgid "title.one_spreadsheet"
+msgstr "Spreadsheet Page"
+
+#: share/plugin/groups/share/widgets/people/config.yaml:3
+msgid "title.people"
+msgstr "Membership"
+
+#: share/plugin/signals/share/widgets/profile/config.yaml:3 share/plugin/people/share/widgets/profile/config.yaml:4
+msgid "title.profile"
+msgstr "Profile"
+
+#: share/plugin/people/share/widgets/profile_activities/config.yaml:3
+msgid "title.profile_activities"
+msgstr "Activity"
+
+#: share/plugin/people/share/widgets/profile_edit/config.yaml:3
+msgid "title.profile_edit"
+msgstr "Edit Profile"
+
+#: share/plugin/people/share/widgets/profile_network/config.yaml:3
+msgid "title.profile_network"
+msgstr "Colleagues"
+
+#: share/plugin/people/share/widgets/profile_tags/config.yaml:4
+msgid "title.profile_tags"
+msgstr "Tags"
+
+#: share/plugin/widgets/share/widgets/rest_api/config.yaml:3
+msgid "title.rest_api"
+msgstr "Rest API Devtool"
+
+#: share/plugin/widgets/share/widgets/rss/config.yaml:3
+msgid "title.rss"
+msgstr "RSS Viewer"
+
+#: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:3
+msgid "title.tag_cloud"
+msgstr "Workspace Tags"
+
+#: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:3
+msgid "title.tagged_pages"
+msgstr "Pages tagged X"
+
+#: share/plugin/groups/share/widgets/teaser/config.yaml:3
+msgid "title.teaser"
+msgstr "Workspaces"
+
+#: share/plugin/widgets/share/widgets/testrunner/config.yaml:3
+msgid "title.testrunner"
+msgstr "Test Results"
+
+#: share/plugin/widgets/share/widgets/top_content/config.yaml:4
+msgid "title.top_content"
+msgstr "Active Content"
+
+#: share/plugin/widgets/share/widgets/userlist/config.yaml:4
+msgid "title.userlist"
+msgstr "Online Users"
+
+#: share/plugin/dashboard/share/widgets/widget_editor/config.yaml:4
+msgid "title.widget_editor"
+msgstr "Widget Editor"
+
+#: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:3
+msgid "title.workspace_activity"
+msgstr "Report-o-rama!"
+
+#: share/plugin/groups/share/widgets/workspaces/config.yaml:3
+msgid "title.workspaces"
+msgstr "Workspaces"
+
 msgid "twilio.edit-profile"
 msgstr "點選這裡編輯您的個人資料。"
 
@@ -8037,6 +8315,9 @@ msgstr "郵件"
 
 msgid "user.email-address"
 msgstr "郵件位址"
+
+msgid "user.email-address:"
+msgstr "電子郵件位址："
 
 msgid "user.external-id-cleared=name"
 msgstr "已為 %1 清除外部 ID"
@@ -8982,3 +9263,6 @@ msgstr "插入影片"
 
 msgid "wikiwyg.widget"
 msgstr "插入一個小工具"
+
+msgid "www.socialtext.com"
+msgstr "www.socialtext.com"

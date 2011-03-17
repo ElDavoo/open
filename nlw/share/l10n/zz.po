@@ -12,9 +12,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 07:29+0800\n"
-"Language-Team: Socialtext i18n team\n"
+"PO-Revision-Date: 2011-02-20 10:43+0800\n"
 "Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,6 +23,14 @@ msgstr ""
 "PO-Revision-Date: 2011-02-20 10:38+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"#-#-#-#-#  template.po (Socialtext i18n)  #-#-#-#-#\n"
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-02-20 10:43+0800\n"
+"Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -36,9 +44,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  signals.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 06:36+0800\n"
-"Language-Team: Socialtext i18n team\n"
+"PO-Revision-Date: 2011-02-20 10:43+0800\n"
 "Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -52,9 +60,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-16 23:31+0800\n"
-"Language-Team: Socialtext i18n team\n"
+"PO-Revision-Date: 2011-02-20 10:43+0800\n"
 "Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -320,11 +328,11 @@ msgstr "Zzz z zzz"
 msgid "activities.add-video-link"
 msgstr "Zzz z zzzzz zzzz"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:330
+#: share/plugin/widgets/share/javascript/activities/appdata.js:329
 msgid "activities.all-events"
 msgstr "zzz zzzzzz"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:284
+#: share/plugin/widgets/share/javascript/activities/appdata.js:283
 msgid "activities.all-my-groups"
 msgstr "Zzz zz zzzzzz"
 
@@ -332,7 +340,7 @@ msgstr "Zzz zz zzzzzz"
 msgid "activities.all-replies"
 msgstr "Zzz Zzzzzzz"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:285
+#: share/plugin/widgets/share/javascript/activities/appdata.js:284
 msgid "activities.all-shared-groups"
 msgstr "Zzz zzzzzz zzzzzz"
 
@@ -356,7 +364,7 @@ msgstr "(zzzzz zzzz zz zzzzzz)"
 msgid "activities.close-this-window"
 msgstr "Zzzzz zzzz zzzzzz"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:362
+#: share/plugin/widgets/share/javascript/activities/appdata.js:361
 msgid "activities.comments"
 msgstr "zzzzzzzz"
 
@@ -389,7 +397,7 @@ msgstr ""
 "Zzz zzz zzzz zzz zzzz zz zzzzzzz zzzz %1 zzzz zzz zzzzzz?\z"
 "Zz zzzzzz zz zzzzzzzzz."
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:352
+#: share/plugin/widgets/share/javascript/activities/appdata.js:351
 msgid "activities.contributions"
 msgstr "zzzzzzzzzzzzz"
 
@@ -397,7 +405,7 @@ msgstr "zzzzzzzzzzzzz"
 msgid "activities.delete"
 msgstr "zzzzzz"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:357
+#: share/plugin/widgets/share/javascript/activities/appdata.js:356
 msgid "activities.edits"
 msgstr "zzzzz"
 
@@ -409,11 +417,11 @@ msgstr "Zzzz zzz zzzzz zzz ZZZ zzz zzz zzzzz zzzzz.  Zz zzzzzzz zzzzzzzzz zzzzz 
 msgid "activities.enter-weblink-url-here"
 msgstr "Zzzzz zz zzzz zzzz zzzz'z zzzzzzzzzzz (ZZZ, z.z. zzzz://zzzzzzzzzz.zzz) zzz zzzz zz zzz zzzz zzzzz. Zzzz zzzzzzzzzzz zz zzzzzzzz."
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:329
+#: share/plugin/widgets/share/javascript/activities/appdata.js:328
 msgid "activities.events"
 msgstr "zzzzzz"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:395
+#: share/plugin/widgets/share/javascript/activities/appdata.js:394
 msgid "activities.everyone"
 msgstr "zzzzzzzz"
 
@@ -421,7 +429,7 @@ msgstr "zzzzzzzz"
 msgid "activities.expunge"
 msgstr "zzzzzzz"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:402
+#: share/plugin/widgets/share/javascript/activities/appdata.js:401
 msgid "activities.following"
 msgstr "zzzzzz Z zzzzzz"
 
@@ -458,7 +466,7 @@ msgstr "Zzzz zzzz zzzzzz zzzzzzz"
 msgid "activities.maximum-file-size=mb"
 msgstr "Zzzzzzz zzzz zzzz: %1ZZ"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:415
+#: share/plugin/widgets/share/javascript/activities/appdata.js:414
 msgid "activities.me"
 msgstr "zz"
 
@@ -474,7 +482,7 @@ msgstr "Zzzz"
 msgid "activities.more-mentions"
 msgstr "Zzzz Zzzzzzzz..."
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:409
+#: share/plugin/widgets/share/javascript/activities/appdata.js:408
 msgid "activities.my-conversations"
 msgstr "zz zzzzzzzzzzzzz"
 
@@ -484,7 +492,7 @@ msgid "activities.new-events=count"
 msgstr "%*(%1,zzzzzzzz,zzzzzzzzzz)"
 
 #. (self.mentionCount)
-#: share/plugin/widgets/share/javascript/activities/widget.js:473
+#: share/plugin/widgets/share/javascript/activities/widget.js:475
 msgid "activities.new-mentions=count"
 msgstr "%*(%1,zzz zzzzzzz)..."
 
@@ -503,7 +511,7 @@ msgstr "%1 zzz"
 msgid "activities.other-replies=count"
 msgstr "%*(%1,zzzzz zzzzz,zzzzz zzzzzzz)..."
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:367
+#: share/plugin/widgets/share/javascript/activities/appdata.js:366
 msgid "activities.page-tags"
 msgstr "zzzz zzzz"
 
@@ -511,7 +519,7 @@ msgstr "zzzz zzzz"
 msgid "activities.page:"
 msgstr "Zzzz:"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:372
+#: share/plugin/widgets/share/javascript/activities/appdata.js:371
 msgid "activities.people-events"
 msgstr "zzzzzz zzzzzz"
 
@@ -528,7 +536,7 @@ msgid "activities.private-to-you"
 msgstr "zzzzzzz zz zzz"
 
 #. (signal.best_full_name)
-#: share/plugin/widgets/share/javascript/activities/widget.js:538
+#: share/plugin/widgets/share/javascript/activities/widget.js:540
 msgid "activities.private-to-you=sender"
 msgstr "%1 zzzzzzz zz zzz"
 
@@ -582,7 +590,7 @@ msgstr "Zzzz Zzzzzz zzz zzzzzzzzzzzz zzzz. Zzzzz <a href=\"#\" class=\"clearFilt
 msgid "activities.signal-this-page"
 msgstr "Zzzz z zzzzzz zzzz z zzzz zz zzzz zzzz"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:345
+#: share/plugin/widgets/share/javascript/activities/appdata.js:344
 msgid "activities.signals"
 msgstr "zzzzzzz"
 
@@ -595,7 +603,7 @@ msgid "activities.socialtext-activities"
 msgstr "Zzzzzzzzzz Zzzzzzzzzz"
 
 #. (self.signalCount, self._originalTitle)
-#: share/plugin/widgets/share/javascript/activities/widget.js:467
+#: share/plugin/widgets/share/javascript/activities/widget.js:469
 msgid "activities.title=signal-count,original-title"
 msgstr "(%1) %2"
 
@@ -605,7 +613,7 @@ msgid "activities.to-groups=count"
 msgstr "zz %1 zzzzzz"
 
 #. (signal.best_full_name,                    targets.join(', ')
-#: share/plugin/widgets/share/javascript/activities/widget.js:541
+#: share/plugin/widgets/share/javascript/activities/widget.js:543
 msgid "activities.to=sender,targets"
 msgstr "%1 zz %2"
 
@@ -631,7 +639,7 @@ msgstr "zzzzzz"
 msgid "activities.you"
 msgstr "Zzz"
 
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:7 share/skin/s3/template/lite/page_list.html:13 share/skin/s3/template/view/page/display:14
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:7 share/template/data/event:10 share/skin/s3/template/lite/page_list.html:13 share/skin/s3/template/view/page/display:14
 msgid "ago.1day"
 msgstr "zzz zzz zzz"
 
@@ -643,26 +651,26 @@ msgstr "zzz zzzz zzz"
 msgid "ago.1min"
 msgstr "zzz zzz. zzz"
 
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:3 share/skin/s3/template/view/page/display:8
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:3 share/template/data/event:6 share/skin/s3/template/view/page/display:8
 msgid "ago.1minute"
 msgstr "zzz zzzzzz zzz"
 
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:2 share/skin/s3/template/view/page/display:7
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:2 share/template/data/event:5 share/skin/s3/template/view/page/display:7
 msgid "ago.<1minute"
 msgstr "zzzz zzzz z zzzzzz zzz"
 
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:8 share/skin/s3/template/view/page/display:15
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:8 share/template/data/event:11 share/skin/s3/template/view/page/display:15
 msgid "ago.about-1day"
 msgstr "zzzzz zzz zzz zzz"
 
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:5 share/skin/s3/template/view/page/display:10
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:5 share/template/data/event:8 share/skin/s3/template/view/page/display:10
 msgid "ago.about-1hour"
 msgstr "zzzzz zzz zzzz zzz"
 
 #. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
 #. (this.round(minutes / 1440)
 #. (this.round(minutes / 1440))
-#. #-#-#-#-#  template.po  #-#-#-#-#
+#. #-#-#-#-#  template.po (Socialtext i18n)  #-#-#-#-#
 #. (round(minutes / 1440)
 #. (round(minutes / 1440))
 #. (delta)
@@ -675,7 +683,7 @@ msgstr "%*(%1,zzz) zzz"
 #. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
 #. (this.round(minutes / 60)
 #. (this.round(minutes / 60))
-#. #-#-#-#-#  template.po  #-#-#-#-#
+#. #-#-#-#-#  template.po (Socialtext i18n)  #-#-#-#-#
 #. (round(minutes / 60)
 #. (round(minutes / 60))
 #. #-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#
@@ -689,8 +697,14 @@ msgstr "%*(%1,zzzz) zzz"
 msgid "ago.mins=count"
 msgstr "%1 zzz. zzz"
 
+#. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
 #. (minutes)
-#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:4 share/template/data/event:7 share/skin/s3/template/view/page/display:9
+#. #-#-#-#-#  template.po (Socialtext i18n)  #-#-#-#-#
+#. (minutes)
+#. #-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#
+#. (minutes)
+#. (data.minutes_ago)
+#: share/plugin/widgets/share/javascript/template/activities/ago.tt2:4 share/template/data/event:7 share/skin/s3/javascript/s3.js:694 share/skin/s3/template/view/page/display:9
 msgid "ago.minutes=count"
 msgstr "%*(%1,zzzzzz) zzz"
 
@@ -948,7 +962,7 @@ msgstr "Zzzz Zzzzzzzz"
 msgid "blog.atom=blog"
 msgstr "Zzzz: %1 Zzzz"
 
-#: share/skin/s3/template/view/weblog:7
+#: share/skin/s3/template/view/weblog:7 lib/Socialtext/WeblogPlugin.pm:103
 msgid "blog.blog"
 msgstr "Zzzz"
 
@@ -1785,7 +1799,7 @@ msgstr "Zzzzzzzzz Zzzzzz Zzzzzzzz"
 msgid "console.automatic-updating"
 msgstr "Zzzzzzzzz Zzzzzzzz"
 
-#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:1 ../appliance/libsocialtext-appliance-perl/template/backup.html:2 ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42
 msgid "console.backup"
 msgstr "Zzzzzz"
 
@@ -1889,7 +1903,7 @@ msgstr "Zzzzz Zzzzzzzz"
 msgid "console.outgoing-mail-server"
 msgstr "Zzzzzzzz zzzz zzzzzz"
 
-#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42
+#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42 ../appliance/libsocialtext-appliance-perl/template/overview.html:1 ../appliance/libsocialtext-appliance-perl/template/overview.html:2
 msgid "console.overview"
 msgstr "Zzzzzzzz"
 
@@ -1968,6 +1982,8 @@ msgstr "Zzzzzz zzzz zzzz zz zzz ZZZZ zz zzzz zzzzzzz, zzz ZZZZZZ zzzz ( zz ZzzzZ
 msgid "console.send-test-email"
 msgstr "Zzzz Zzzz Zzzzz"
 
+#. ('/nlw/control/settings')
+#. ("/nlw/control/settings")
 #: ../appliance/libsocialtext-appliance-perl/template/setup.html:5
 msgid "console.server-wide-settings-moved-to-control-panel=uri"
 msgstr "Zzzzzz-zzzz zzzzzz zzzzzzzz zzzz zzzzz zz zzz <a href=\"%1\">Zzzzzzzz Zzzzzzz Zzzzz</a>."
@@ -2004,7 +2020,7 @@ msgstr "Zzz Zzzzzzz Zzzzzzz"
 msgid "console.set-web-proxy-server"
 msgstr "Zzz Zzz Zzzzz Zzzzzz"
 
-#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42
+#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42 ../appliance/libsocialtext-appliance-perl/template/setup.html:1 ../appliance/libsocialtext-appliance-perl/template/setup.html:2
 msgid "console.setup"
 msgstr "Zzzzz"
 
@@ -2016,7 +2032,7 @@ msgstr "Zzzz Zzzz Zzzzzzzzz"
 msgid "console.shut-down-now"
 msgstr "Zzzz Zzzz Zzz"
 
-#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42
+#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42 ../appliance/libsocialtext-appliance-perl/template/shutdown.html:1 ../appliance/libsocialtext-appliance-perl/template/shutdown.html:2
 msgid "console.shutdown"
 msgstr "Zzzzzzzz"
 
@@ -2036,7 +2052,7 @@ msgstr "Zzzzzzzzzz Zzzzzzz"
 msgid "console.socialtext-support"
 msgstr "Zzzzzzzzzz Zzzzzzz"
 
-#: ../appliance/libsocialtext-appliance-perl/template/help.html:141
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:141 ../appliance/libsocialtext-appliance-perl/template/setup.html:103 ../appliance/libsocialtext-appliance-perl/template/setup.html:33 ../appliance/libsocialtext-appliance-perl/template/setup.html:48 ../appliance/libsocialtext-appliance-perl/template/setup.html:69 ../appliance/libsocialtext-appliance-perl/template/setup.html:84
 msgid "console.submit"
 msgstr "Zzzzzz"
 
@@ -2138,7 +2154,7 @@ msgstr "Zzzzzz zzzzzz-zzzz zzzzzzzzzzz zzzzzzzz."
 msgid "control.about-users-tab"
 msgstr "Zzz zzzz zzzzzz zz zzzzzzz zzzzzz Zzzzz zz Zzzzzz zzz Zzzzzzzzzz."
 
-#: share/plugin/control/template/control/workspace_invite.html:94
+#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:41 share/plugin/control/template/control/workspace_invite.html:94
 msgid "control.about-wiki-id"
 msgstr "Zzzz zz z zzzzz zzzzzz zzzzzzzzzz zzzz zz zzzz zz zzzz zzzzzzzzz'z zzz zzzzzzz zzz zzzzz zzzzzzz. Zz zzzz zzzzzzz zz 3-30 zzzzzzzzz zzzzzzz, zzzzzzz, zzzzzzzzzzz, zz zzzzzz."
 
@@ -2187,9 +2203,9 @@ msgstr "Zzzzzzz zzzz:"
 msgid "control.account=name"
 msgstr "%1 zzzzzzz"
 
-#. (this.total)
 #. ('<span id="accountsCount"></span>')
 #. ("<span id=\"accountsCount\"></span>")
+#. (this.total)
 #: share/plugin/control/template/control/group.html:316 share/plugin/control/template/control/user.html:135
 msgid "control.accounts=count"
 msgstr "Zzzzzzzz (%1)"
@@ -2226,7 +2242,7 @@ msgstr "Zzz Zzzzz zz Zzzzzzzzz"
 msgid "control.add-group-to-wiki:"
 msgstr "Zzz Zzzzz zz Zzzzzzzzz:"
 
-#: share/plugin/control/template/control/group.html:33 share/plugin/control/template/control/account.html:76
+#: share/plugin/control/template/control/account.html:76 share/plugin/control/template/control/group.html:33
 msgid "control.add-multiple-users"
 msgstr "Zzz Zzzzzzzz Zzzzz"
 
@@ -2242,7 +2258,7 @@ msgstr "Zzz zz Zzzzzzz"
 msgid "control.add-to-wiki"
 msgstr "Zzz zz Zzzzzzzzz"
 
-#: share/plugin/control/template/control/add_user.html:1 share/plugin/control/template/control/add_user.html:56 share/plugin/control/template/control/add_user.html:8
+#: share/plugin/control/template/control/add_user.html:1 share/plugin/control/template/control/add_user.html:60 share/plugin/control/template/control/add_user.html:8
 msgid "control.add-user"
 msgstr "Zzz Zzzz"
 
@@ -2355,7 +2371,7 @@ msgid "control.browse"
 msgstr "Zzzzzz ..."
 
 #. (title)
-#: share/plugin/control/template/control/add_user.html:40
+#: share/plugin/control/template/control/add_user.html:44
 msgid "control.calculated-unless-provided=field"
 msgstr "%1 zz zzzzzzzzzz zzzzzz zzzzzzzz"
 
@@ -2434,7 +2450,7 @@ msgstr "Zzzzzz Zzz Zzzzz"
 msgid "control.create-new-group"
 msgstr "Zzzzzz Zzz Zzzzz"
 
-#: share/plugin/control/template/control/workspace_invite.html:82 share/plugin/control/template/control/workspaces.html:11 share/plugin/control/template/control/workspaces.html:8
+#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:18 share/plugin/control/template/control/workspace_invite.html:82 share/plugin/control/template/control/workspaces.html:11 share/plugin/control/template/control/workspaces.html:8
 msgid "control.create-new-wiki"
 msgstr "Zzzzzz Zzz Zzzzzzzzz"
 
@@ -2529,7 +2545,6 @@ msgstr "Zzzzzzz Zzzzzzzzzz zz Zzzzz"
 msgid "control.edit-field"
 msgstr "Zzzz Zzzzz"
 
-#: share/plugin/control/template/control/add_user.html:24
 msgid "control.email-address:"
 msgstr "Z-zzzz Zzzzzzz:"
 
@@ -2614,7 +2629,6 @@ msgstr "Zzzzz Zzzzz"
 msgid "control.field-type"
 msgstr "Zzzzz Zzzz"
 
-#: share/plugin/control/template/control/add_user.html:28
 msgid "control.first-name:"
 msgstr "Zzzzz zzzz:"
 
@@ -2979,7 +2993,7 @@ msgstr "Zzzzzz-Zzzz Zzzzzzz Zzzzzzzzzzz"
 msgid "control.set-account-type-to:"
 msgstr "Zzzzzz zzzzzzz zzzz zz:"
 
-#: share/plugin/control/template/control/add_user.html:75
+#: share/plugin/control/template/control/add_user.html:79
 msgid "control.set-by-external-directory"
 msgstr "Zzz zz zzzzzzzz Zzzzzzzzz"
 
@@ -3068,7 +3082,7 @@ msgstr "Zzzzzzzzz Zzzzzzzz zz Zzzzzz"
 msgid "control.transform-to-groups"
 msgstr "Zzzzzzzzz zz Zzzzzz"
 
-#: share/plugin/control/template/control/account.html:61 share/plugin/control/template/control/group.html:18 share/plugin/control/template/control/plugin_pref_form.html:6 share/plugin/control/template/control/workspace_table:3 share/plugin/control/template/control/workspace_table:70
+#: share/plugin/control/template/control/account.html:61 share/plugin/control/template/control/group.html:18 share/plugin/control/template/control/plugin_pref_form.html:6 share/plugin/control/template/control/settings.html:11 share/plugin/control/template/control/settings.html:21 share/plugin/control/template/control/workspace_table:3 share/plugin/control/template/control/workspace_table:70
 msgid "control.update"
 msgstr "Zzzzzz"
 
@@ -3156,9 +3170,9 @@ msgid "control.via-wiki=count,links"
 msgstr "Zzz %*(%1,Zzzzzzzzz): %2"
 
 #. (item.title)
+#. (workspace.name)
 #. (account.name)
 #. (user.name_and_email)
-#. (workspace.name)
 #: share/plugin/control/share/javascript/workspaces_new.js:320 share/plugin/control/template/control/account_link:1 share/plugin/control/template/control/user_link:1 share/plugin/control/template/control/workspace_link:1 share/plugin/control/template/control/workspaces_new.html:22
 msgid "control.view=name"
 msgstr "zzzz %1"
@@ -3190,9 +3204,9 @@ msgstr "Zzzzz"
 msgid "control.wiki=name"
 msgstr "%1 zzzzzzzzz"
 
+#. (this.total)
 #. (account.workspace_count)
 #. (wksp_count)
-#. (this.total)
 #: share/plugin/control/template/control/account.html:216 share/plugin/control/template/control/group.html:50 share/plugin/control/template/control/user.html:272
 msgid "control.wikis=count"
 msgstr "Zzzzzzzzzz (%1)"
@@ -3361,6 +3375,133 @@ msgstr "Zzz"
 msgid "date.wed"
 msgstr "Zzz"
 
+#: share/plugin/groups/share/widgets/all_groups/config.yaml:4
+msgid "description.all_groups"
+msgstr "Zzz Zzzzzzzzz Zzzzzz"
+
+#: share/plugin/people/share/widgets/all_tags/config.yaml:4
+msgid "description.all_tags"
+msgstr "Zzzzzzzz z zzz zzzzz zz zzz zzzz zz zzzzzz zz Zzzzzzzzzz Zzzzzz."
+
+#: share/plugin/widgets/share/widgets/blockerbugs/config.yaml:4
+msgid "description.blockerbugs"
+msgstr "Zzzzzzz z zzzz zz zzz zzzz zzzzzzz zzzz."
+
+#: share/plugin/groups/share/widgets/edit_information/config.yaml:4
+msgid "description.edit_information"
+msgstr "Zzzz Zzzzz Zzzzzzzzzzz"
+
+#: share/plugin/groups/share/widgets/edit_people/config.yaml:4
+msgid "description.edit_people"
+msgstr "Zzzz Zzzzz Zzzzzz"
+
+#: share/plugin/signals/share/widgets/explore/config.yaml:5
+msgid "description.explore"
+msgstr "Zzzz zzzzzzz zzz zzzzzzz zzzzzzzzzz, zzzzzzzzz zzzzzzz zzz zzzzzzzzz zzzzzz."
+
+#: share/plugin/signals/share/widgets/explore_filters/config.yaml:5
+msgid "description.explore_filters"
+msgstr "Zzzzzz zzzzzzzzz"
+
+#: share/plugin/people/share/widgets/forbidden_profile/config.yaml:5
+msgid "description.forbidden_profile"
+msgstr "Zzzzzzz"
+
+#: share/plugin/groups/share/widgets/information/config.yaml:4
+msgid "description.information"
+msgstr "Zzzzz Zzzzzzzzzzz"
+
+#: share/plugin/widgets/share/widgets/iterationbugs/config.yaml:4
+msgid "description.iterationbugs"
+msgstr "Zzzzzzz z zzzz zz zzz zzzz zzzzzzzz zz zz zzzzzzzzz."
+
+#: share/plugin/groups/share/widgets/membership/config.yaml:4
+msgid "description.membership"
+msgstr "Zzzz Zzzzz Zzzzzzzzzz"
+
+#: share/plugin/groups/share/widgets/my_groups/config.yaml:4
+msgid "description.my_groups"
+msgstr "Zz Zzzzzz"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/config.yaml:5
+msgid "description.my_workspaces"
+msgstr "Zzzzz zzz zz zzz zzzzzzzzzz zzz zzzz zzzzzz zz."
+
+#: share/plugin/widgets/share/widgets/one_page/config.yaml:5
+msgid "description.one_page"
+msgstr "Zzzzzzzz z zzzzzz zzzz zzzz zzzzzz z Zzzzzzzzzz Zzzzzz."
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/config.yaml:4
+msgid "description.one_spreadsheet"
+msgstr "Zzzzzzzz z zzzzzz zzzzzzzzzzz zzzzzz z Zzzzzzzzzz Zzzzzz."
+
+#: share/plugin/groups/share/widgets/people/config.yaml:4
+msgid "description.people"
+msgstr "Zzzzzz zz zzzz zzzzz."
+
+#: share/plugin/signals/share/widgets/profile/config.yaml:4 share/plugin/people/share/widgets/profile/config.yaml:5
+msgid "description.profile"
+msgstr "Zzzzzzz"
+
+#: share/plugin/people/share/widgets/profile_activities/config.yaml:4
+msgid "description.profile_activities"
+msgstr "Zzzzzzzz"
+
+#: share/plugin/people/share/widgets/profile_edit/config.yaml:4
+msgid "description.profile_edit"
+msgstr "Zzzz Zzzzzzz"
+
+#: share/plugin/people/share/widgets/profile_network/config.yaml:4
+msgid "description.profile_network"
+msgstr "Zzzzzz zzzzzzzzzz zzzz zzz zz zzzz zzzzzz."
+
+#: share/plugin/people/share/widgets/profile_tags/config.yaml:5
+msgid "description.profile_tags"
+msgstr "Zzzz"
+
+#: share/plugin/widgets/share/widgets/rest_api/config.yaml:4
+msgid "description.rest_api"
+msgstr "Zzzz ZZZ Zzzzzzz"
+
+#: share/plugin/widgets/share/widgets/rss/config.yaml:4
+msgid "description.rss"
+msgstr "Zzzzzzzz zz ZZZ zzzz."
+
+msgid "description.signals-profile"
+msgstr "Zzzz z zzzz zzzzzz zzzzzzz zzz zzzzzzz zzzzzzz zzzz zzzzzz."
+
+#: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:4
+msgid "description.tag_cloud"
+msgstr "Zzzzzzzz z zzz zzzzz zz zzz zzzz zz z zzzzzzzzzz zzzzzzzzz."
+
+#: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:4
+msgid "description.tagged_pages"
+msgstr "Zzzzzzzz z zzzz zz zzzzz zzzz z zzzzzzz zzz"
+
+#: share/plugin/groups/share/widgets/teaser/config.yaml:4
+msgid "description.teaser"
+msgstr "Zzzzzz Zzzz"
+
+#: share/plugin/widgets/share/widgets/testrunner/config.yaml:4
+msgid "description.testrunner"
+msgstr "Zzzz zz zzz zz Zzzzzzzzzz zzzzzzz."
+
+#: share/plugin/widgets/share/widgets/userlist/config.yaml:5
+msgid "description.userlist"
+msgstr "Zzzz zzzzzzz zzz zzzzzzz zzzzzzzzzz, zzzzzzzzz zzzzzzz zzz zzzzzzzzz zzzzzz."
+
+#: share/plugin/dashboard/share/widgets/widget_editor/config.yaml:5
+msgid "description.widget_editor"
+msgstr "Zzzz z zzzzzz"
+
+#: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:4
+msgid "description.workspace_activity"
+msgstr "Zzzz zzzzz"
+
+#: share/plugin/groups/share/widgets/workspaces/config.yaml:4
+msgid "description.workspaces"
+msgstr "Zzzzz zzz zz zzz zzzzzzzzzz zz zzz zzzzzzz zzzzz"
+
 #: lib/Socialtext/Handler/ControlPanel.pm:774
 msgid "desktop.relogin-for-default-logo"
 msgstr "(Zzzzzzz zzzzz zzzz zz zzzzzz zzz zzzzz zzzzz zz zzz zzz zzzzzzz zzzz.)"
@@ -3402,7 +3543,7 @@ msgstr "Zzz zzzzz zz %1 zzzzz"
 msgid "do.bold"
 msgstr "Zzzz"
 
-#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:65 share/skin/wikiwyg/javascript/jemplate/add-a-link.html:75 share/skin/wikiwyg/javascript/jemplate/opensocial-gallery.html:10 share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:25 share/skin/wikiwyg/javascript/jemplate/table-create.html:50 share/skin/wikiwyg/javascript/jemplate/table-options.html:54 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:14 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:148 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:168 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:377 share/skin/wikiwyg/javascript/template/widget_edit.tt2:69 share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:18 share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:17 share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:23 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:750 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:20 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:467 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:493 share/skin/s3/javascript/lightbox/attachment.tt2:30 share/skin/s3/javascript/lightbox/attachment.tt2:55 share/skin/s3/javascript/lightbox/comment.tt2:24 share/skin/s3/javascript/lightbox/copy.tt2:39 share/skin/s3/javascript/lightbox/create_content.tt2:51 share/skin/s3/javascript/lightbox/delete.tt2:23 share/skin/s3/javascript/lightbox/duplicate.tt2:34 share/skin/s3/javascript/lightbox/email.tt2:71 share/skin/s3/javascript/lightbox/rename.tt2:31 share/skin/s3/javascript/lightbox/self_join_workspace.tt2:16 share/skin/s3/template/element/settings/start:22 share/skin/s3/template/element/settings/stop:12 share/skin/s3/template/lite/subnav.html:46 share/plugin/people/template/invite:109 share/plugin/groups/share/javascript/lightbox/create-group.tt2:64 share/plugin/groups/share/javascript/lightbox/delete-group.tt2:20 share/plugin/groups/share/javascript/lightbox/leave-group.tt2:17 share/plugin/groups/template/edit_group_footer:11 share/plugin/groups/template/edit_group_footer:4 share/plugin/groups/template/group_footer:14 share/plugin/groups/template/group_footer:7 share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:20 share/plugin/dashboard/template/dashboard_links:18 share/plugin/dashboard/template/widget_editor_links:13 share/plugin/control/share/javascript/lightbox/group-create.tt2:69 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:47 share/plugin/control/template/control/field_form:82 ../appliance/libsocialtext-appliance-perl/template/popup.html:48
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:65 share/skin/wikiwyg/javascript/jemplate/add-a-link.html:75 share/skin/wikiwyg/javascript/jemplate/opensocial-gallery.html:10 share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:25 share/skin/wikiwyg/javascript/jemplate/table-create.html:50 share/skin/wikiwyg/javascript/jemplate/table-options.html:54 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:14 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:148 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:168 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:377 share/skin/wikiwyg/javascript/template/widget_edit.tt2:69 share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:18 share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:17 share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:23 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:751 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:20 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:467 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:493 share/skin/s3/javascript/lightbox/attachment.tt2:30 share/skin/s3/javascript/lightbox/attachment.tt2:55 share/skin/s3/javascript/lightbox/comment.tt2:24 share/skin/s3/javascript/lightbox/copy.tt2:39 share/skin/s3/javascript/lightbox/create_content.tt2:51 share/skin/s3/javascript/lightbox/delete.tt2:23 share/skin/s3/javascript/lightbox/duplicate.tt2:34 share/skin/s3/javascript/lightbox/email.tt2:71 share/skin/s3/javascript/lightbox/rename.tt2:31 share/skin/s3/javascript/lightbox/self_join_workspace.tt2:16 share/skin/s3/template/element/settings/start:22 share/skin/s3/template/element/settings/stop:12 share/skin/s3/template/lite/subnav.html:46 share/plugin/people/template/invite:109 share/plugin/groups/share/javascript/lightbox/create-group.tt2:64 share/plugin/groups/share/javascript/lightbox/delete-group.tt2:20 share/plugin/groups/share/javascript/lightbox/leave-group.tt2:17 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:74 share/plugin/groups/template/edit_group_footer:11 share/plugin/groups/template/edit_group_footer:4 share/plugin/groups/template/group_footer:14 share/plugin/groups/template/group_footer:7 share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:20 share/plugin/dashboard/template/dashboard_links:18 share/plugin/dashboard/template/widget_editor_links:13 share/plugin/control/share/javascript/lightbox/group-create.tt2:69 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:47 share/plugin/control/template/control/field_form:82 ../appliance/libsocialtext-appliance-perl/template/popup.html:48
 msgid "do.cancel"
 msgstr "Zzzzzz"
 
@@ -3418,7 +3559,7 @@ msgstr "Zzzzzzz Zzzzzzzzz"
 msgid "do.copy"
 msgstr "Zzzz"
 
-#: share/skin/s3/javascript/lightbox/create_content.tt2:46 share/plugin/groups/template/edit_group_footer:7 share/plugin/groups/template/group_footer:10 share/plugin/control/share/javascript/lightbox/group-create.tt2:68 share/plugin/control/share/javascript/lightbox/workspace-create.js:33 share/plugin/control/template/control/report.html:130
+#: share/skin/s3/javascript/lightbox/create_content.tt2:46 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:69 share/plugin/groups/share/widgets/membership/jemplate/members.tt2:3 share/plugin/groups/template/edit_group_footer:7 share/plugin/groups/template/group_footer:10 share/plugin/control/share/javascript/lightbox/group-create.tt2:68 share/plugin/control/share/javascript/lightbox/workspace-create.js:33 share/plugin/control/template/control/report.html:130
 msgid "do.create"
 msgstr "Zzzzzz"
 
@@ -3470,7 +3611,7 @@ msgstr "Zzzzz"
 msgid "do.indent"
 msgstr "Zzzz Zzzzzzzz"
 
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:2062 share/skin/wikiwyg/javascript/lib/Wikiwyg/Toolbar.js:57
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu:3 share/skin/wikiwyg/javascript/lib/Wikiwyg.js:2062 share/skin/wikiwyg/javascript/lib/Wikiwyg/Toolbar.js:57
 msgid "do.insert"
 msgstr "Zzzzzz"
 
@@ -3494,7 +3635,7 @@ msgstr "Zzzz Zz Zzzz"
 msgid "do.leave"
 msgstr "Zzzzz"
 
-#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:46
+#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:64 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:46
 msgid "do.next"
 msgstr "Zzzz"
 
@@ -3522,7 +3663,7 @@ msgstr "Zzzzz"
 msgid "do.register"
 msgstr "Zzzzzzzz"
 
-#: share/plugin/widgets/template/view/gallery:123 share/skin/s3/javascript/lightbox/email.tt2:41 share/skin/s3/template/element/settings/users_listall_section:24 share/plugin/control/template/control/workspace_invite.html:120
+#: share/plugin/widgets/template/view/gallery:123 share/skin/s3/javascript/lightbox/email.tt2:41 share/skin/s3/template/element/settings/users_listall_section:24 share/plugin/people/share/widgets/profile_edit/widget.html:10 share/plugin/control/template/control/workspace_invite.html:120
 msgid "do.remove"
 msgstr "Zzzzzz"
 
@@ -3542,7 +3683,7 @@ msgstr "Zzzzzzz"
 msgid "do.revert-dashboard"
 msgstr "Zzzzzz zz Zzzzzzz..."
 
-#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:58 share/skin/wikiwyg/javascript/jemplate/add-a-link.html:74 share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:18 share/skin/wikiwyg/javascript/jemplate/table-create.html:43 share/skin/wikiwyg/javascript/jemplate/table-options.html:53 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:169 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:370 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:8 share/skin/wikiwyg/javascript/template/widget_edit.tt2:68 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:14 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:444 share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:25
+#: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:58 share/skin/wikiwyg/javascript/jemplate/add-a-link.html:74 share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:18 share/skin/wikiwyg/javascript/jemplate/table-create.html:43 share/skin/wikiwyg/javascript/jemplate/table-options.html:53 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:169 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:370 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:8 share/skin/wikiwyg/javascript/template/widget_edit.tt2:68 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:14 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:444 share/plugin/groups/share/widgets/membership/jemplate/members.tt2:3 share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:25
 msgid "do.save"
 msgstr "Zzzz"
 
@@ -3579,7 +3720,7 @@ msgstr "Zzzzzzzzzzz zzzz zzz %1 zzzzzzzzz"
 msgid "do.upload"
 msgstr "Zzzzzz"
 
-#: share/skin/s3/javascript/s3.js:923 share/skin/s3/template/view/empty_watchlist:39 share/skin/s3/template/view/page/display:74
+#: share/skin/s3/javascript/s3.js:929 share/skin/s3/template/view/empty_watchlist:39 share/skin/s3/template/view/page/display:74
 msgid "do.watch"
 msgstr "Zzzzz"
 
@@ -3595,28 +3736,28 @@ msgstr "Zzzz Zzzz"
 msgid "do.yes"
 msgstr "Zzz"
 
-#: share/skin/s3/javascript/s3.js:1190
+#: share/skin/s3/javascript/s3.js:1196
 msgid "draft.?"
 msgstr "?"
 
-#: share/skin/s3/javascript/s3.js:1174
+#: share/skin/s3/javascript/s3.js:1180
 msgid "draft.discard"
 msgstr "Zzzzzzz"
 
-#: share/skin/s3/javascript/s3.js:1178
+#: share/skin/s3/javascript/s3.js:1184
 msgid "draft.discard?"
 msgstr "Zzz zzz zzzz zzz zzzz zz zzzzzzz zzz zzzzz?"
 
-#: share/skin/s3/javascript/s3.js:1171
+#: share/skin/s3/javascript/s3.js:1177
 msgid "draft.or"
 msgstr "&nbsp;zz&nbsp;"
 
-#: share/skin/s3/javascript/s3.js:1168
+#: share/skin/s3/javascript/s3.js:1174
 msgid "draft.resume"
 msgstr "Zzzzzz"
 
 #. (draft.page_title, draft.workspace_title, draft.workspace_id)
-#: share/skin/s3/javascript/s3.js:1164
+#: share/skin/s3/javascript/s3.js:1170
 msgid "draft.unsaved=page,wiki,wiki-id:"
 msgstr "Zzz zzzz zz zzzzzzz zzzzz zz \"%1\" zz zzz \"%2\" (%3) zzzzzzzzz:"
 
@@ -3645,7 +3786,7 @@ msgstr "Zzzzzzzz zzzz zzzz zzzzzzz zz zzz zzzz zzzzz zzz zzzz zzzzzzz zz."
 msgid "edit.contention=type"
 msgstr "Zzzzzzzz zzzz zzzz zzzzzzz zz zzz %1 zzzzz zzz zzzz zzzzzzz zz."
 
-#: share/skin/s3/javascript/s3.js:153
+#: share/skin/s3/javascript/s3.js:156
 msgid "edit.copy-your-changes"
 msgstr "Zzzzzz zzzz zzzz zzzzzzz, zzz zzzzz Zzzzzz zz zzzzzz zz zzz zzzz."
 
@@ -3662,7 +3803,7 @@ msgstr "Zzzzzzz:"
 msgid "edit.editing=page"
 msgstr "Zzzzzzz: %1"
 
-#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:39 share/skin/s3/javascript/s3.js:884
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:39 share/skin/s3/javascript/s3.js:890
 msgid "edit.expand"
 msgstr "Zzzzzz"
 
@@ -3686,7 +3827,7 @@ msgstr "Zzzz Zzzz"
 msgid "edit.navigate-away?"
 msgstr "Zzz zzz zzzz zzz zzzz zz zzzzzzzz zzzz zzzz zzzz zzzz?"
 
-#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:37 share/skin/s3/javascript/s3.js:860
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:37 share/skin/s3/javascript/s3.js:866
 msgid "edit.normal"
 msgstr "Zzzzzz"
 
@@ -3707,7 +3848,7 @@ msgid "edit.preview"
 msgstr "Zzzzzzz"
 
 #. (tag)
-#: share/skin/s3/javascript/s3.js:302
+#: share/skin/s3/javascript/s3.js:305
 msgid "edit.remove=tag"
 msgstr "Zzzzzz %1 zzzz zzz zzzzz"
 
@@ -3723,7 +3864,7 @@ msgstr "Zzzz Zzzz"
 msgid "edit.save"
 msgstr "Zzzz"
 
-#: share/skin/s3/javascript/s3.js:136
+#: share/skin/s3/javascript/s3.js:139
 msgid "edit.saved"
 msgstr "(Zzzz zzzz zzz zzzzzzzzzzzz zzzzz.)"
 
@@ -4122,6 +4263,7 @@ msgstr "%1 <a href=\"%4\">%2</a> %5 zzzzzz, \"%3\""
 msgid "email.page-edit=action,user,summary,time"
 msgstr "%1 %2 %4 zzzzzz, \"%3\""
 
+#. (action, user_name, edit_time)
 #: share/template/email/page-details.txt:32
 msgid "email.page-edit=action,user,time"
 msgstr "%1 %2 %3"
@@ -4228,7 +4370,7 @@ msgstr "Zzzz zzzzz zzz zzzz zzzz zzz Zzzzzzzzzz Zzzzzzzzz."
 msgid "email.sign-in-using-information-below:"
 msgstr "Zzzz zz zzzzz zzz zzzzzzzzzzz zzzzz:"
 
-#: share/template/email/openid/workspace-invitation.txt:10 share/template/email/openid/workspace-invitation-body.html:24
+#: share/template/email/openid/workspace-invitation-body.html:24 share/template/email/openid/workspace-invitation.txt:10
 msgid "email.sign-in-with-openid-now"
 msgstr "Zzz zzz zzz zzzz zzzz zzz zzzzzz zzzzz ZzzzZZ. Zz zzz Zzzzzzzzzz zzzzz zzzzzz, zzzzzz zzzzz zzzz ZzzzZZ zzzz zzz zzzzzzzzz zzzzz zzz zzz zzzz zz zzzzzzzzzz zz zzz ZzzzZZ zzzz zz zzzzzz zzzz zzzzzzzz. Zzzz zzz zzzz zzzzzzzz zzzz zzzzzzzz, zzz zzzz zz zzzz zzzz zz zzz Zzzzzzzzzz zzzz zzz zz zzzz zz zzzzzz zzz zzzzzzzzz."
 
@@ -4434,6 +4576,7 @@ msgstr "Zzz %1 Zzzzz zzz zzzzzzz zzzz zzzzz zz zzz zzzzzz."
 msgid "error.already-confirmed=email"
 msgstr "Zzz zzzzz zzzzzzz zzz %1 zzz zzzzzzz zzzz zzzzzzzzz."
 
+#. (item.title)
 #: share/plugin/groups/share/widgets/membership/widget.js:615
 msgid "error.already-exists-in-group=member"
 msgstr "%1 zzzzzzz zzzzzz zz zzzz Zzzzz"
@@ -4517,7 +4660,7 @@ msgstr "Zzzzzz zz zzzzz zzz zzzz."
 msgid "error.cannot-change-account-logo-with-custom-skin=name"
 msgstr "Zzzzzzz z zzzzzz zzzz zz zz zzz, zzz zzzzzzz zzzz zzzzzz zz zzzzzzz.  Zzz zzzz zz zzz zz zzzzzz '%1'"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:3008
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:3009
 msgid "error.cannot-load-revision"
 msgstr "Zzzzzz zzzz zzzzzzzz"
 
@@ -4640,8 +4783,8 @@ msgstr "Zzzzz zzzzzz zzz zzzzzzz zzzzzz."
 msgid "error.deactivate=user"
 msgstr "Zzzzz zzz z zzzzzzz zzzzzzzzzzzz zzzz %1"
 
-#. ($ws->account->name)
 #. ($self->account->name)
+#. ($ws->account->name)
 #: lib/Socialtext/CLI.pm:2925 lib/Socialtext/Workspace.pm:654
 msgid "error.delete-auw-workspace"
 msgstr "Zzzz zzzzzzzzz zz zzz zzz zzzzz zzzzzzzzz zzz zzz %1 zzzzzzz. Zzzzzzzz."
@@ -4709,8 +4852,8 @@ msgstr "Zzzzz, zzzz zzzzzzz zz zzz zzzzzzzzz zzz zzzzzzzzzzzz"
 msgid "error.error"
 msgstr "zzzzz"
 
-#. (res.errors[0])
 #. (message)
+#. (res.errors[0])
 #: share/plugin/control/template/control/group.html:127 share/plugin/control/template/control/workspace_invite.html:275 share/plugin/control/template/control/workspace_invite.html:300
 msgid "error.error=message"
 msgstr "Zzzzz: %1"
@@ -4832,7 +4975,7 @@ msgstr "zzzzzz_zz zz z zzzzzzzz zzzzzzzzz"
 msgid "error.gallery-forbidden"
 msgstr "Zzz zz zzz zzzzz zz zzzzzzz zzzz zzzz zzzzzzz."
 
-#: share/plugin/widgets/share/javascript/activities/widget.js:421 share/plugin/widgets/share/javascript/activities/widget.js:587
+#: share/plugin/widgets/share/javascript/activities/widget.js:423 share/plugin/widgets/share/javascript/activities/widget.js:589
 msgid "error.getting-activities"
 msgstr "Zzzzz zzz z zzzzzzz zzzzzzz zzzzzzzzzz"
 
@@ -5055,7 +5198,7 @@ msgid "error.invalid-widget=src,message"
 msgstr "Zzz %1 zzz zzzzzzzz zzzz zzz zzzzzz zz zz z zzzzz zzzzzz ZZZ zzzz: %2"
 
 #. ($self->_file_or_url, $url, $err)
-#: lib/Socialtext/Gadgets/Gadget.pm:788
+#: lib/Socialtext/Gadgets/Gadget.pm:791
 msgid "error.invalid-widget=src,url,message"
 msgstr "Zzz %1 zzz zzzzzzzz zzzz zzz zzzzzzz z zzzzzz zzzz. Zzzzzz zzzzz zzz %1 zzz zzz zzzzz. Zzz %1 zzzzzzzzz zzz: %2. Zzz zzzzzzzz zzzzz zzz %3"
 
@@ -5171,11 +5314,11 @@ msgstr "Zzzzzz zz zzzz zzzzzzz zzzz."
 msgid "error.load-widget-content"
 msgstr "Zzzzzz zz zzzz zzzzzzz zzz zzzz zzzzzz."
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2953
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2954
 msgid "error.loading-preview-failed"
 msgstr "Zzzzzz zz zzzz zzzzzzz."
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2609
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2610
 msgid "error.loading-revision-failed"
 msgstr "Zzzzzz zz zzzz zzzzzzzz."
 
@@ -5232,7 +5375,7 @@ msgstr "Zzz zzzz zzzzzzz zz zzzzzzz zzzz zz zzzzzz zzz zzzz."
 msgid "error.new-password-mismatch"
 msgstr "Zzz zzzzzzzzz zz zzz zzzzz"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2170
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2171
 msgid "error.new-sheet-name-required"
 msgstr "Zzzzzz zzzzzzz z zzzz zzz zzz zzz zzzzz."
 
@@ -5282,7 +5425,7 @@ msgstr "Z zzzz zzzzz zzzz zz zzzzzzzz."
 msgid "error.no-conversations-in-30days=title"
 msgstr "Zzzzz zzz zz zzz %1 zzzzzzz zzz zzzzz'z zzzzzzz zz zzzzzzzzzzzzz zzzz zzzz zzzzzzzzzz zz zzz zzzz 30 zzzz."
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1345
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1346
 msgid "error.no-data-to-sum"
 msgstr "Zzzzzz'z zzzz zzz zzzz zz zzz."
 
@@ -5386,11 +5529,11 @@ msgstr "Zz zzzzzzz zzz '%1'"
 msgid "error.no-page-body"
 msgstr "Z zzzz zzzz zzzz z zzzz zz zz zzzzz."
 
-#: share/skin/s3/javascript/s3.js:826
+#: share/skin/s3/javascript/s3.js:832
 msgid "error.no-page-doc"
 msgstr "Zzz zzzz zzzzz zz zzzzz zzz zzzz zz zzzzz zz zzzzzz z Zzzz zzzzzzzz."
 
-#: share/skin/s3/javascript/s3.js:814
+#: share/skin/s3/javascript/s3.js:820
 msgid "error.no-page-pdf"
 msgstr "Zzz zzzz zzzzz zz zzzzz zzz zzzz zz zzzzz zz zzzzzz z ZZZ."
 
@@ -5408,8 +5551,8 @@ msgstr "Zzzzz zz zz zzzz zzzz zzz zz \"%1\" zz zzz %2 zzzzzzzzz."
 msgid "error.no-page=template"
 msgstr "Zz zzzz zzzzz '%1' zzzzzz"
 
-#. (type, template)
-#: share/skin/s3/javascript/lightbox/create_content.js:74
+#. (loc("page.type-"+type)
+#: share/skin/s3/javascript/lightbox/create_content.js:73
 msgid "error.no-page=type,tag"
 msgstr "Zz %1 zzzzz zzzzzz '%2' zzzzz zz zzzzz"
 
@@ -5524,7 +5667,7 @@ msgid "error.no-tag=tag,wiki"
 msgstr "Zzzzz zz zz zzz \"%1\" zz zzz %2 zzzzzzzzz."
 
 #. ($url)
-#: lib/Socialtext/Gadgets/Gadget.pm:767
+#: lib/Socialtext/Gadgets/Gadget.pm:770
 msgid "error.no-thumbnail=url"
 msgstr "Zzz'z zzzz zzzzzzzzz zzzzz: %1"
 
@@ -5653,7 +5796,7 @@ msgstr "Zz zzzz ZZ zzzzz"
 msgid "error.page-name-is-empty"
 msgstr "Zz zzzz zzzz zzzzz"
 
-#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:537 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2085
+#: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:537 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2086
 msgid "error.page-name-required"
 msgstr "Zzzzzz zzzzzzz z zzzz zzzz."
 
@@ -5830,7 +5973,7 @@ msgid "error.reserved-page-name"
 msgstr "\"%1\" zz z zzzzzzzz zzzz zzzz. Zzzzzz zzz z zzzzzzzzz zzzz"
 
 #. (page_name)
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2091 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2174
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2092 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2175
 msgid "error.reserved-sheet-name=name"
 msgstr "\"%1\" zz z zzzzzzzz zzzz zzzz. Zzzzzz zzz z zzzzzzzzz zzzz."
 
@@ -5896,7 +6039,7 @@ msgstr "Zzz zzzz zzzz zzz zzzzzzzz, \"%1\", zz zzz zzzz zz zzz zzzz'z zzzzzzz zz
 msgid "error.same-revision"
 msgstr "Zzz zzzzzz zzzzzzz z zzzzzzzz zz zzzzzz."
 
-#: share/skin/s3/javascript/lightbox/comment.js:91 share/skin/s3/javascript/s3.js:157
+#: share/skin/s3/javascript/lightbox/comment.js:91 share/skin/s3/javascript/s3.js:160
 msgid "error.save-failed"
 msgstr "Zzzzzz zzzzzz zzz zz zzzzzz zzzzz; zzzzzz zzz zzzzz zzzzz."
 
@@ -5918,7 +6061,7 @@ msgstr "Zzz zzzzzz zzzz zzz zzzz zzzzzzz zz zzz zzzzzzz. Zzzzzz zzz zzzzzzzzzz z
 msgid "error.search-too-general=hits"
 msgstr "Zzz zzzzzz zzzz zzz zzzz zzzzzzz zz zzz zzzzzzz; %1 zzzzz zzz/zz zzzzzzzzzzz zzzzzzz zzzz zzzzz. Zzzzzz zzz zzzzzzzzzz zzzzzz zzzzz zzzz zzz zzzzzz zzzz zzzzzzzzz zzzzzzz."
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2193 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2340
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2194 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2341
 msgid "error.select-option-or-click-cancel"
 msgstr "Zzzzzz zzzzzz zzz zz zzz zzzzzzz, zz zzzzz zzzzzz."
 
@@ -6013,7 +6156,7 @@ msgstr "Zzz zzzzzz zzzzzz zzz zzzz zz z zzzzzz-zzzzzzz zzzz."
 msgid "error.sheet-contention:"
 msgstr "Zzzzz zzz zzzz zzzzzzz, <span style=\"font-weight: bold\" id=\"st-contention-user\">ZZZ</span> zzzzz z zzzzzzz zz zzzz zzzzz, zzz zz zzz zzzzzz zz zzzzzzzzz zzz zzzzzzz. Zzzzz zzz zzzz zz:"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2182
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2183
 msgid "error.sheet-name-exists"
 msgstr "Zzzz zzzz zz zzzzzzz zzzzz, zzzzzz zzzzz z zzzzzzzzz zzz."
 
@@ -6021,7 +6164,7 @@ msgstr "Zzzz zzzz zz zzzzzzz zzzzz, zzzzzz zzzzz z zzzzzzzzz zzz."
 msgid "error.sheet-name-exists:"
 msgstr "<a id=\"st-newspreadsheet-duplicate-link\" href=\"#\" target=\"\">ZZZ</a> zz <span id=\"st-newspreadsheet-duplicate-emphasis\">zzzzzzz zzzzz</span>. Zzzzz zzz zzzz zz:"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2097 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2178
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2098 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2179
 msgid "error.sheet-title-too-long"
 msgstr "Zzzzzzzzzzz zzzzz zz zzz zzzz. Zzzzzz zzzzzzz zzz zzzz zzz zzz zzzzz."
 
@@ -6417,32 +6560,32 @@ msgid "event.in=page,wiki"
 msgstr "%1 zz %2"
 
 #. (group)
-#: share/plugin/widgets/share/javascript/template/activities/group.tt2:4
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:4 share/template/data/events/group:4
 msgid "event.join=group"
 msgstr "zzzzzz zzz zzzzz %1."
 
 #. (group, workspace)
-#: share/plugin/widgets/share/javascript/template/activities/group.tt2:15
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:15 share/template/data/events/group:15
 msgid "event.join=group,wiki"
 msgstr "zzzzz %1 zz zzz zzzzzzzzz %2."
 
 #. (person, group)
-#: share/plugin/widgets/share/javascript/template/activities/group.tt2:11
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:11 share/template/data/events/group:11
 msgid "event.join=user,group"
 msgstr "zzzzz %1 zz zzz zzzzz %2."
 
 #. (group)
-#: share/plugin/widgets/share/javascript/template/activities/group.tt2:6
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:6 share/template/data/events/group:6
 msgid "event.leave=group"
 msgstr "zzzz zzz zzzzz %1."
 
 #. (person, group)
-#: share/plugin/widgets/share/javascript/template/activities/group.tt2:13
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:13 share/template/data/events/group:13
 msgid "event.leave=user,group"
 msgstr "zzzzzzz %1 zzzz zzz zzzzz %2."
 
 #. (group, workspace)
-#: share/plugin/widgets/share/javascript/template/activities/group.tt2:17
+#: share/plugin/widgets/share/javascript/template/activities/group.tt2:17 share/template/data/events/group:17
 msgid "event.leave=user,wiki"
 msgstr "zzzzzzz %1 zzzz zzz zzzzzzzzz %2."
 
@@ -6748,7 +6891,7 @@ msgid "feed.number-of-posts?"
 msgstr "Zzz zzzz zzzzz zzzzzz zz zzzzzzzzz zz zzzzzzzz zzzzz?"
 
 #. ($self->hub->current_workspace->title, $query)
-#: lib/Socialtext/SyndicatePlugin.pm:386
+#: lib/Socialtext/SyndicatePlugin.pm:385
 msgid "feed.search=wiki,query"
 msgstr "%1: zzzzzz zzz %2"
 
@@ -6762,12 +6905,13 @@ msgstr "Zzzzzzzzzz Zzzzzzzzz z%1"
 msgid "feed.tags=tags"
 msgstr "Zzzz: %1"
 
+#. ($creator, $editor)
 #: lib/Socialtext/Syndicate/Feed.pm:69
 msgid "feed.updated-by=creator,editor"
 msgstr "%1 (zzzzzzz zz %2)"
 
 #. ($self->hub->current_workspace->title, $user->best_full_name)
-#: lib/Socialtext/SyndicatePlugin.pm:393
+#: lib/Socialtext/SyndicatePlugin.pm:392
 msgid "feed.watchlist=wiki,user"
 msgstr "%1: zzzzzzzzz zzz %2"
 
@@ -6891,12 +7035,20 @@ msgstr "Zzzz50 Zzzzzzz Zzzzz"
 msgid "google.for=query"
 msgstr "Zzzzzz zzz \"%1\""
 
+#. ($self->permission_set)
+#: lib/Socialtext/Group/Homunculus.pm:215
+msgid "group.acl-"
+msgstr "Zzzz: "
+
+#: share/plugin/groups/share/widgets/edit_information/widget.js:92
 msgid "group.acl-member-only"
 msgstr "Zzzzzz Zzzz"
 
+#: share/plugin/groups/share/widgets/edit_information/widget.js:91
 msgid "group.acl-private"
 msgstr "Zzzzzzz"
 
+#: share/plugin/groups/share/widgets/edit_information/widget.js:90
 msgid "group.acl-self-join"
 msgstr "Zzzz-Zzzz"
 
@@ -6924,6 +7076,10 @@ msgstr "Zzzzzzz zzzzz zz: %1"
 msgid "group.exporting=wiki"
 msgstr "Zzzzzzzzz zzz zzzzzz zzz zzzzzzzzz '%1'..."
 
+#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:11 share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:13 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:17 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:19
+msgid "group.first"
+msgstr "zzzzz"
+
 #. ($ws->name)
 #: lib/Socialtext/Pluggable/Plugin/Groups.pm:171
 msgid "group.importing=wiki"
@@ -6947,6 +7103,18 @@ msgstr "Zzzzz zzzzz zzz zzzzzzzzzzzz zzzzzzzz '%1'"
 #: share/skin/s3/template/element/settings/users_listall_section:79
 msgid "group.name"
 msgstr "Zzzzz zzzz"
+
+#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:17 share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:19 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:23 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:25
+msgid "group.next"
+msgstr "zzzz"
+
+#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:5 share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:7 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:11 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:13
+msgid "group.previous"
+msgstr "zzzzzzzz"
+
+#: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:19
+msgid "groups.add-members"
+msgstr "Zzz Zzzzzzz"
 
 #: share/plugin/groups/share/widgets/membership/jemplate/workspaces.tt2:16
 msgid "groups.add-wikis"
@@ -7067,7 +7235,7 @@ msgstr "Zzzz Zzzzz: %1"
 msgid "groups.first"
 msgstr "zzzzz"
 
-#: share/plugin/groups/template/create_group_hello:2
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:8 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:4 share/plugin/groups/template/create_group_hello:2 share/plugin/groups/template/edit_group_hello:3
 msgid "groups.group"
 msgstr "Zzzzz"
 
@@ -7091,6 +7259,7 @@ msgstr "Zzzzz Zzzz"
 msgid "groups.group-type:"
 msgstr "Zzzzz Zzzz:"
 
+#. (container.group.display_permission_set)
 #: share/plugin/groups/template/groups_hello:3
 msgid "groups.heading=acl"
 msgstr "%1 zzzzz"
@@ -7107,7 +7276,7 @@ msgstr "zzzzzz"
 msgid "groups.member-plural"
 msgstr "zzzzzzz"
 
-#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:6
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:6 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:3
 msgid "groups.members"
 msgstr "Zzzzzzz"
 
@@ -7208,6 +7377,9 @@ msgstr "Zzzz-Zzzz Zzzzz"
 msgid "groups.self-join-listed-in-directory"
 msgstr "Zzz zz zzzz zz zzz Zzzzz Zzzzzzzzz zz zzzzzzzz zzz zzzzzz zzz zzzz."
 
+#. ((page * per_page)
+#. ((page * per_page) + 1, (more ? ((page + 1) * per_page) : totalResults), totalResults)
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:44
 msgid "groups.showing=from,to,total"
 msgstr "Zzzzzzz Zzzzzz %1 - %2 zz %3 zzzzz."
 
@@ -7256,7 +7428,7 @@ msgstr "Zzzz zzzzz zzz zz zzzzz zzz zzzzzzzzz zzzz zzzzzzzz zzz zzzz zzzzz zzzz 
 msgid "groups.wiki-with-that-name-already-exists"
 msgstr "Z Zzzzzzzzz zzzz zzzz zzzz zzzzzzz zzzzzz"
 
-#: share/plugin/groups/template/grouplist:30 share/plugin/groups/template/grouplist:88
+#: share/plugin/groups/share/widgets/all_groups/widget.js:11 share/plugin/groups/template/grouplist:30 share/plugin/groups/template/grouplist:88
 msgid "groups.you-are-member"
 msgstr "Zzz zzz zzzzzzzzz z zzzzzz zz zzzz zzzzz."
 
@@ -7394,7 +7566,7 @@ msgstr "Zzz zzz zzzz zzzz zzzzz zz zzzzzzz zzzz ZZZZ zzzzz."
 msgid "info.edit-pre-block"
 msgstr "Zzz zzz zzzz zzzz zzzzz zz zzzzzzz zzzz zzzzzzzzzzzz zzzz zzzzz."
 
-#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/element/edit_summary.html.tt2:14 share/plugin/widgets/share/javascript/activities/appdata.js:546 share/plugin/widgets/share/javascript/template/activities/ui.signalthis.tt2:18 share/skin/s3/javascript/lightbox/comment.tt2:31
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/element/edit_summary.html.tt2:14 share/plugin/widgets/share/javascript/activities/appdata.js:545 share/plugin/widgets/share/javascript/template/activities/ui.signalthis.tt2:18 share/skin/s3/javascript/lightbox/comment.tt2:31
 msgid "info.edit-summary-signal-visibility"
 msgstr "Zzzz zzzzzzz zzzz zzzzzzzzzz zz zzzz zzzz zzzz zzzz zzzzzzz zzz zzzzzz."
 
@@ -7423,7 +7595,7 @@ msgstr "Zzzz zzz zzzzzzzzz zzzzzzzz zz zzzzz, zzz zzzzzzz zz zzz zzzzz zzzzzzz z
 msgid "info.error:"
 msgstr "zzzzz:"
 
-#: share/skin/s3/javascript/s3.js:884
+#: share/skin/s3/javascript/s3.js:890
 msgid "info.expand-view"
 msgstr "Zzzzzz zzzz zzzz zz zzzz zzzzzzz zzzzzz"
 
@@ -7498,7 +7670,7 @@ msgstr "Zzzzz z zzzzzzzzzz zzz zzzzzzzzzzz zzzzz zzz zzzz zzzz."
 msgid "info.new-page-title"
 msgstr "Zzz: Zzz'zz zz zzzz zz zzzz zzzz zzzz zzzzz zz zzzzz zzz zzzzz zzz zzzzzz."
 
-#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:37 share/skin/s3/javascript/s3.js:860
+#: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:37 share/skin/s3/javascript/s3.js:866
 msgid "info.normal-view"
 msgstr "Zzzzzz zzzz zzzz zz zzzzzz zzzz"
 
@@ -7595,7 +7767,7 @@ msgstr "Zzzzz zzzz zzzzzz zz zzzz zzz zzzzz zzzz zzz zzz %1 zz zzzz zzzzzzzz zzz
 msgid "info.unplugged"
 msgstr "Zzzzz zzzz zzzzzz zz zzzz zzzz zzzz zz zzzz zzzzzzzz zzz zzzzzzz zzz."
 
-#: share/skin/s3/template/element/settings/workspace_clone_section:28 share/skin/s3/template/element/settings/workspaces_create_section:22
+#: share/skin/s3/template/element/settings/workspace_clone_section:28 share/skin/s3/template/element/settings/workspaces_create_section:22 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:55
 msgid "info.valid-wiki-name"
 msgstr "Zz zzzz zzzzzzz zz 3-30 zzzzzzzzz zzzzzzz, zzzzzzz, zzzzzzzzzzz zz zzzzzz."
 
@@ -7625,7 +7797,7 @@ msgstr "Zzz zzz zzzz zzzzzzzzz zzz zzzzzzzzz zzzz zz zzzzzzz zz z zzzz."
 msgid "info.wiki-group"
 msgstr "Zzz zzz zzzzzz z zzz Zzzzz, zz zzz z zzzzzzzzz zz zz zzzzzzzz Zzzzz."
 
-#: share/skin/s3/template/element/settings/workspace_clone_section:27 share/skin/s3/template/element/settings/workspaces_create_section:21
+#: share/skin/s3/template/element/settings/workspace_clone_section:27 share/skin/s3/template/element/settings/workspaces_create_section:21 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:54
 msgid "info.wiki-id"
 msgstr "Zzzz zz z zzzzz zzzzzz zzzzzzzzzz zzzz zz zzzz zz zzzz zzzzzzzzz'z zzz zzzzzzz zzz zzzzz zzzzzzz."
 
@@ -7637,7 +7809,7 @@ msgstr "Zzz zzz zzzzzz zz zzzzz zz zzz zz zzz zzzzzzzzz zzzz. Zzz zzz zzzzz zzz 
 msgid "info.wiki-private"
 msgstr "Zzzzzzzzzz zzz zzzzzzz zz zzzzzzz. Zzz zzzzz zzzz zz zzz zz zz zzzz zzzzz. Zzzz zzzzzzzzz zzzzzz zzz zzzzzz zzz zzzzz."
 
-#: share/skin/s3/template/element/settings/workspace_clone_section:13 share/skin/s3/template/element/settings/workspaces_create_section:7 share/skin/s3/template/element/settings/workspaces_settings_appearance_section:6 share/plugin/control/template/control/workspace_invite.html:89
+#: share/skin/s3/template/element/settings/workspace_clone_section:13 share/skin/s3/template/element/settings/workspaces_create_section:7 share/skin/s3/template/element/settings/workspaces_settings_appearance_section:6 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:28 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:41 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:27 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:33 share/plugin/control/template/control/workspace_invite.html:89
 msgid "info.wiki-title"
 msgstr "Zzzz zz zzz zzzzz zz zzzz zzzzzzzzz. Zz zzz zz zzzzzzz zzzzz zz zzz zzzz."
 
@@ -7820,7 +7992,7 @@ msgid "invite.click-edit"
 msgstr "Zz zzz zzz zzzzzzzzz zzz'z zzzz zz zzz zz zz zzzzzz, zzzzz zzz \"Zzzz\" zzzz zz zzz zzz zz zzzz zzzz."
 
 #. (confirm_uri)
-#: share/plugin/people/template/email/invitation-body.html:22
+#: share/template/email/st/account-invitation-body.html:22 share/plugin/people/template/email/invitation-body.html:22
 msgid "invite.click-to-confirm-email=uri"
 msgstr "Zzzzzz <a href=\"%1\">zzzzz zz zzzz zzzz</a> zz zzzzzzz zzzz zzzzz zzzzzzz."
 
@@ -7899,8 +8071,8 @@ msgstr "zzzzzz"
 msgid "invite.group"
 msgstr "Zzzzz"
 
-#. ($self->account->name)
 #. ($name)
+#. ($self->account->name)
 #: lib/Socialtext/AccountInvitation.pm:26 lib/Socialtext/GroupInvitation.pm:28
 msgid "invite.group=name"
 msgstr "Z'z zzzzzzzz zzz zzzz zzz %1 zzzzz"
@@ -7914,7 +8086,7 @@ msgid "invite.include-personal-message"
 msgstr "Zz zzz zzzz, zzz zzz zzzzzzz z zzzzzzzz zzzzzzz zz zzz zzzzzzzzzz zzzzz. Zzz zzz zzzz zzz zzzzzzz zz zzz zzzzzzzz zzz zzzz."
 
 #. (acct_name, host)
-#: share/plugin/people/template/email/invitation-body.html:13
+#: share/template/email/st/account-invitation-body.html:13 share/plugin/people/template/email/invitation-body.html:13
 msgid "invite.join=account,host"
 msgstr "Z'z zzzzzzzz zzz zz zzzz zzz %1 zzzzz zz %2."
 
@@ -7922,11 +8094,11 @@ msgstr "Z'z zzzzzzzz zzz zz zzzz zzz %1 zzzzz zz %2."
 msgid "invite.keep-this-email-for-reference"
 msgstr "Zzz zzz zzzz zz zzzz zzzz zzzzz zzz zzzzzz zzzzzzzzz."
 
-#: share/plugin/people/template/email/invitation-body.html:41
+#: share/template/email/free50/account-invitation-body.html:27 share/plugin/people/template/email/invitation-body.html:41
 msgid "invite.link-to-reset-password:"
 msgstr "Zz zzz zzz'z zzzzzzzz zz, zzzzzz zzzz zzzz zz zzzzzz z zzz zzzzzzzz:"
 
-#: share/plugin/people/template/email/invitation-body.html:26
+#: share/template/email/st/account-invitation-body.html:26 share/plugin/people/template/email/invitation-body.html:26
 msgid "invite.login-details-after-confirmation"
 msgstr "Zzzz zzz zzzz zzzzzzzzz zzzz zzzzzzz, zzz zzzz zzzzzzz z zzzzzz zzzzz zzzz zzzzz zzzzzzz."
 
@@ -8017,7 +8189,7 @@ msgstr "Zzzzzz zzzzzz zz zzzz zzzzz"
 msgid "invite.to=name"
 msgstr "Zzzzzz zzzzzz zz %1"
 
-#: share/plugin/people/template/email/invitation-body.html:31
+#: share/template/email/free50/account-invitation-body.html:20 share/plugin/people/template/email/invitation-body.html:31
 msgid "invite.username:"
 msgstr "zzzzzzzz:"
 
@@ -8025,7 +8197,7 @@ msgstr "zzzzzzzz:"
 msgid "invite.using-wiki"
 msgstr "Zzz Zzzzzzzzz zz zzzz zz zzz. Zzzzz zzzzz zz zzzzzz zzzzzzz zzz zzzzz."
 
-#: share/plugin/people/template/email/invitation-body.html:30
+#: share/template/email/free50/account-invitation-body.html:19 share/plugin/people/template/email/invitation-body.html:30
 msgid "invite.web-address:"
 msgstr "zzz zzzzzzz:"
 
@@ -8210,19 +8382,15 @@ msgstr "Zzz Zzzz"
 msgid "lang.changed=user,locale"
 msgstr "Zzzzzz zzz %1 zz zzz %2"
 
-#: lib/Socialtext/Locales.pm:51
 msgid "lang.en"
 msgstr "Zzzzzzz"
 
-#: lib/Socialtext/Locales.pm:54
 msgid "lang.fr-ca"
 msgstr "Zzzzzz - Zzzzzzzz"
 
-#: lib/Socialtext/Locales.pm:52
 msgid "lang.zh-cn"
 msgstr "Zzzzzzz - Zzzzzzzzzz"
 
-#: lib/Socialtext/Locales.pm:53
 msgid "lang.zh-tw"
 msgstr "Zzzzzzz - Zzzzzzzzzzz"
 
@@ -8598,7 +8766,7 @@ msgstr "Zzzzzzz"
 msgid "nav.filter:"
 msgstr "Zzzzzz Zz:"
 
-#: share/skin/s3/template/view/paging:5 share/skin/s3/template/view/paging:8
+#: share/skin/s3/template/view/paging:5 share/skin/s3/template/view/paging:8 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:48 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:50 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:43 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:45
 msgid "nav.first"
 msgstr "Zzzzz"
 
@@ -8614,11 +8782,11 @@ msgstr "Zzzzzz Z zzzzzz"
 msgid "nav.groups"
 msgstr "Zzzzzz"
 
-#: share/skin/s3/template/layout/html:193 share/skin/s3/template/layout/html:90 share/skin/s3/template/layout/user_frame:198 share/skin/s3/template/layout/user_frame:95 share/plugin/control/template/control/wrapper:138 share/plugin/control/template/control/wrapper:63
+#: share/skin/s3/template/layout/html:193 share/skin/s3/template/layout/html:90 share/skin/s3/template/layout/user_frame:198 share/skin/s3/template/layout/user_frame:95 share/plugin/control/template/control/wrapper:138 share/plugin/control/template/control/wrapper:63 ../appliance/libsocialtext-appliance-perl/template/help.html:1 ../appliance/libsocialtext-appliance-perl/template/help.html:2
 msgid "nav.help"
 msgstr "Zzzz"
 
-#: share/skin/s3/javascript/s3.js:343 share/skin/s3/template/view/page/display:131
+#: share/skin/s3/javascript/s3.js:346 share/skin/s3/template/view/page/display:131
 msgid "nav.hide"
 msgstr "zzzz"
 
@@ -8634,7 +8802,7 @@ msgstr "Zzzzzz"
 msgid "nav.invite!"
 msgstr "Zzzzzz!"
 
-#: share/skin/s3/template/view/paging:24 share/skin/s3/template/view/paging:27
+#: share/skin/s3/template/view/paging:24 share/skin/s3/template/view/paging:27 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:66 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:68 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:61 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:63
 msgid "nav.last"
 msgstr "Zzzz"
 
@@ -8695,7 +8863,7 @@ msgstr "Zzzz'z Zzz"
 msgid "nav.news=wiki"
 msgstr "Zzzz'z Zzz zz zzzzzzzzz %1"
 
-#: share/skin/s3/template/view/paging:23 share/skin/s3/template/view/paging:26
+#: share/skin/s3/template/view/paging:23 share/skin/s3/template/view/paging:26 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:60 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:62 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:55 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:57
 msgid "nav.next"
 msgstr "Zzzz"
 
@@ -8731,7 +8899,7 @@ msgstr "Zzzzzz Zzzzzzzzz"
 msgid "nav.preferences"
 msgstr "Zzzzzzzzzzz"
 
-#: share/skin/s3/template/view/paging:6 share/skin/s3/template/view/paging:9
+#: share/skin/s3/template/view/paging:6 share/skin/s3/template/view/paging:9 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:54 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:56 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:49 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:51
 msgid "nav.previous"
 msgstr "Zzzzzzzz"
 
@@ -8747,7 +8915,7 @@ msgstr "Zzzz. Zzz"
 msgid "nav.recent-activities"
 msgstr "Zzzzzz Zzzzzzzzzz"
 
-#: share/skin/s3/template/lite/changes/changes.html:5 share/skin/s3/template/view/weblog:20 lib/Socialtext/SyndicatePlugin.pm:379 lib/Socialtext/WeblogPlugin.pm:224 lib/Socialtext/WeblogPlugin.pm:279 lib/Socialtext/WeblogPlugin.pm:332 lib/Socialtext/WeblogPlugin.pm:335
+#: share/skin/s3/template/lite/changes/changes.html:5 share/skin/s3/template/view/weblog:20 lib/Socialtext/SyndicatePlugin.pm:378 lib/Socialtext/WeblogPlugin.pm:224 lib/Socialtext/WeblogPlugin.pm:279 lib/Socialtext/WeblogPlugin.pm:332 lib/Socialtext/WeblogPlugin.pm:335
 msgid "nav.recent-changes"
 msgstr "Zzzzzz Zzzzzzz"
 
@@ -8765,9 +8933,14 @@ msgstr "Zzzzzz Zzzzzzz zz Zzz %1 zz zzzzzzzzz %2"
 msgid "nav.recently-viewed"
 msgstr "Zzzzzzzz Zzzzzz"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:3 share/skin/s3/template/lite/subnav.html:28 share/skin/s3/template/lite/subnav.html:30
+#: share/skin/s3/template/element/settings/users_invite_search_section:3 share/skin/s3/template/lite/search/search.html:12 share/skin/s3/template/lite/subnav.html:28 share/skin/s3/template/lite/subnav.html:30
 msgid "nav.search"
 msgstr "Zzzzzz"
+
+#. (ws.title)
+#: share/skin/s3/template/lite/search/search.html:4
+msgid "nav.search=wiki"
+msgstr "Zzzzzz %1"
 
 #: share/skin/s3/template/view/page_revision_list:42
 msgid "nav.select"
@@ -8777,7 +8950,7 @@ msgstr "Zzzzzz"
 msgid "nav.settings"
 msgstr "Zzzzzzzz"
 
-#: share/skin/s3/javascript/s3.js:343 share/skin/s3/template/view/page/display:131
+#: share/skin/s3/javascript/s3.js:346 share/skin/s3/template/view/page/display:131
 msgid "nav.show"
 msgstr "zzzz"
 
@@ -9112,7 +9285,7 @@ msgstr "Zzzzzzz zzzz."
 msgid "page.new"
 msgstr "Zzz Zzzz"
 
-#: share/skin/s3/javascript/lightbox/copy.tt2:19 share/skin/s3/javascript/lightbox/rename.tt2:11
+#: share/skin/s3/javascript/lightbox/copy.tt2:19 share/skin/s3/javascript/lightbox/duplicate.tt2:13 share/skin/s3/javascript/lightbox/rename.tt2:11
 msgid "page.new-name"
 msgstr "Zzz zzzz zzzz"
 
@@ -9129,6 +9302,7 @@ msgstr "Zzzzz zzz zz zzzz zzz zzzz zzzz."
 msgid "page.nothing-locked=wiki"
 msgstr "Zzzzzzzzz '%1' zzz zz zzzzzz zzzzz."
 
+#. (user_link, time_ago)
 #: share/skin/s3/javascript/lightbox/edit_check.tt2:4
 msgid "page.opened-for-edit=user,ago"
 msgstr "%1 zzz zzzzzz zzzz zzzz zzz zzzzzzz %2."
@@ -9228,10 +9402,11 @@ msgstr "Zzzzzz"
 msgid "page.top"
 msgstr "Zzz zz zzzz"
 
+#: lib/Socialtext/Pluggable/Plugin/SocialCalc.pm:23
 msgid "page.type-spreadsheet"
 msgstr "Zzzzzzzzzzz"
 
-#: share/skin/s3/javascript/lightbox/create_content.js:9
+#: share/skin/s3/javascript/lightbox/create_content.js:9 lib/Socialtext/Pluggable/Plugin/Default.pm:45
 msgid "page.type-wiki"
 msgstr "Zzzz"
 
@@ -9248,7 +9423,7 @@ msgstr "Zzzz '%1' zz zzzzzzzzz '%2' zzz zzzz zzzzzzzz."
 msgid "page.unlocking"
 msgstr "Zzzzzzzzz zzzz."
 
-#: share/skin/s3/javascript/s3.js:1067 share/skin/s3/javascript/s3.js:15 lib/Socialtext/DisplayPlugin.pm:68 lib/Socialtext/PageRevision.pm:410
+#: share/skin/s3/javascript/s3.js:1073 share/skin/s3/javascript/s3.js:15 lib/Socialtext/DisplayPlugin.pm:68 lib/Socialtext/PageRevision.pm:410
 msgid "page.untitled"
 msgstr "Zzzzzzzz Zzzz"
 
@@ -9581,7 +9756,7 @@ msgstr "Zzzz:"
 msgid "profile.i"
 msgstr "Z"
 
-#: share/plugin/people/template/lite/profile.html:108
+#: share/plugin/people/share/widgets/profile/widget.html:38 share/plugin/people/template/lite/profile.html:108
 msgid "profile.im"
 msgstr "ZZ"
 
@@ -9937,8 +10112,8 @@ msgstr "Zzzzzzzzz Zzzzz Zzzz"
 msgid "report.workspace.activity=user"
 msgstr "Zzzzzzzzz Zzzzzzzz zzz zzzz %1"
 
-#. ($self->_group->display_name)
 #. ($self->_workspace->title)
+#. ($self->_group->display_name)
 #. ($user->best_full_name)
 #: lib/Socialtext/Rest/Events/Activities.pm:12 lib/Socialtext/Rest/Events/Groups.pm:13 lib/Socialtext/Rest/Events/Workspaces.pm:14
 msgid "rest.activity=user"
@@ -10121,7 +10296,7 @@ msgstr "Zzzzzzz"
 msgid "sc.borders-on-off"
 msgstr "Zzzzzzz Zz/Zzz"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:163 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:93 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:83
+#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:93 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:163 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:83
 msgid "sc.bottom"
 msgstr "Zzzzzz"
 
@@ -10137,7 +10312,7 @@ msgstr "Zzzzzz Zzzz"
 msgid "sc.cell-comment"
 msgstr "Zzzz Zzzzzzz"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:154 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:142 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:123 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:152
+#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:142 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:154 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:123 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:152
 msgid "sc.center"
 msgstr "Zzzzzz"
 
@@ -10149,7 +10324,7 @@ msgstr "Zzzzz"
 msgid "sc.column-width"
 msgstr "Zzzzzz&nbsp;Zzzzz"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2564
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2565
 msgid "sc.confirm-navigate-away?"
 msgstr "Zzz zzz zzzz zzz zzzz zz zzzzzzzz zzzz zzzz zzzz zzzz?"
 
@@ -10187,7 +10362,7 @@ msgstr "Zzzzzzzzzzz"
 msgid "sc.down"
 msgstr "Zzzz"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2526
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2527
 msgid "sc.edit-more"
 msgstr "Zzzz Zzzz"
 
@@ -10235,7 +10410,7 @@ msgstr "Zzzz Zzzz"
 msgid "sc.fill-right"
 msgstr "Zzzz Zzzzz"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:90 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:50 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:41
+#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:50 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:90 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:41
 msgid "sc.font"
 msgstr "Zzzz"
 
@@ -10243,7 +10418,7 @@ msgstr "Zzzz"
 msgid "sc.font-family"
 msgstr "Zzzzzz"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:96 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:28 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:63 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:19
+#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:28 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:63 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:96 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:19
 msgid "sc.format"
 msgstr "Zzzzzz"
 
@@ -10279,15 +10454,15 @@ msgstr "Zzzzzz Zzz Zzzzz"
 msgid "sc.insert-row-below"
 msgstr "Zzzzzz Zzz Zzzzz"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:156 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:146 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:127 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:156
+#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:146 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:156 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:127 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:156
 msgid "sc.justify"
 msgstr "Zzzzzzz"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:153 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:139 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:92 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:120 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:149 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:82
+#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:139 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:92 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:153 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:120 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:149 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:82
 msgid "sc.left"
 msgstr "Zzzz"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2915 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2938 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:65
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2916 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2939 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:65
 msgid "sc.loading"
 msgstr "Zzzzzzz..."
 
@@ -10375,7 +10550,7 @@ msgstr "Zzzzzz"
 msgid "sc.ok"
 msgstr "ZZ"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2568
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2569
 msgid "sc.ok-or-cancel"
 msgstr "Zzzzz ZZ zz zzzzzzzz, zz Zzzzzz zz zzzz zz zzz zzzzzzz zzzz."
 
@@ -10387,7 +10562,7 @@ msgstr "Zz:"
 msgid "sc.padding"
 msgstr "Zzzzzzz"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:747
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:748
 msgid "sc.paste"
 msgstr "Zzzzz"
 
@@ -10396,7 +10571,7 @@ msgstr "Zzzzz"
 msgid "sc.paste=hotkey"
 msgstr "Zzzzz (Zzzzz %1-Z zz zzzzz zzzz zzzzz zzzzzzzzzzzz)"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:42 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2616 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:16
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2617 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:16 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:42
 msgid "sc.preview"
 msgstr "Zzzzzzz"
 
@@ -10408,7 +10583,7 @@ msgstr "Zzzzzzz zz"
 msgid "sc.range"
 msgstr "Zzzzz"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2495
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2496
 msgid "sc.recalc-finished"
 msgstr "Zzzz zzzz zzzz zzzzzzzzzzz zzzzzzz zz zzz zzzzzzz. Zzzz zzz zzzz, zzzzz zzzzzzz zzzz zz zzzzz zz zzzz."
 
@@ -10436,7 +10611,7 @@ msgstr "Zzzzzzz Zzzzzzzz"
 msgid "sc.richtext-mode"
 msgstr "Zzzzzzzz Zzzz"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:155 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:144 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:94 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:125 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:154 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:84
+#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:144 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:94 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:155 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:125 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:154 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:84
 msgid "sc.right"
 msgstr "Zzzzz"
 
@@ -10444,7 +10619,7 @@ msgstr "Zzzzz"
 msgid "sc.sample"
 msgstr "Zzzzzz"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:5 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:5
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:107 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:5 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:5
 msgid "sc.sample-lines"
 msgstr "Zzzz zz z<br />zzzzzz"
 
@@ -10504,7 +10679,7 @@ msgstr "Zzzz Zzzzzzz"
 msgid "sc.single-line-input"
 msgstr "Zzzz zzz zzzz zz zzzzz"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:93 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:61 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:52
+#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:61 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:93 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:52
 msgid "sc.size"
 msgstr "Zzzz"
 
@@ -10536,11 +10711,11 @@ msgstr "Zzz Zzzzz"
 msgid "sc.swap-foreground-background-colors"
 msgstr "Zzzz zzzzzzzzzz zzz zzzzzzzzzz zzzzzz"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:291
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:292
 msgid "sc.target-cell"
 msgstr "zzzz"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:288 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:171
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:289 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:171
 msgid "sc.target-range"
 msgstr "zzzzz"
 
@@ -10556,7 +10731,7 @@ msgstr "Zzzz Zzzzz"
 msgid "sc.this"
 msgstr "Zzzz"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:161 share/plugin/socialcalc/share/javascript/jemplate/advanced_format:91 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:81
+#: share/plugin/socialcalc/share/javascript/jemplate/advanced_format:91 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:161 share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:81
 msgid "sc.top"
 msgstr "Zzz"
 
@@ -10568,7 +10743,7 @@ msgstr "Zzzz"
 msgid "sc.undone-steps:"
 msgstr "ZZZZZZ ZZZZZ:"
 
-#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2567 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:3042
+#: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2568 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:3043
 msgid "sc.unsaved-changes"
 msgstr "Zzz zzzz zzzzzzz zzzzzzz."
 
@@ -10648,7 +10823,7 @@ msgstr "Zzz zzzzzz zzz zzzz zzzzzzz zz zzz zzzzzzz; %1 zzzzz zzz/zz zzzzzzzzzzz 
 msgid "sheet.creating"
 msgstr "Zzzzzzzz z Zzz Zzzzzzzzzzz..."
 
-#: share/skin/s3/javascript/s3.js:1068 share/skin/s3/javascript/s3.js:16 lib/Socialtext/DisplayPlugin.pm:68 lib/Socialtext/PageRevision.pm:412
+#: share/skin/s3/javascript/s3.js:1074 share/skin/s3/javascript/s3.js:16 lib/Socialtext/DisplayPlugin.pm:68 lib/Socialtext/PageRevision.pm:412
 msgid "sheet.untitled"
 msgstr "Zzzzzzzz Zzzzzzzzzzz"
 
@@ -10747,9 +10922,15 @@ msgstr "Zzzz zzzz:"
 msgid "signals.matching=query"
 msgstr "Zzzzzzz zzzzzzzz '%1'"
 
+#. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
+#. (acc.count)
+#. (this.count)
+#. (acc.user_count)
+#. (grp.user_count)
+#. #-#-#-#-#  signals.po (Socialtext i18n)  #-#-#-#-#
 #. (a.user_count)
 #. (g.user_count)
-#: share/plugin/signals/template/lite/signals.html:57 share/plugin/signals/template/lite/signals.html:68
+#: share/plugin/widgets/share/javascript/activities/appdata.js:234 share/plugin/widgets/share/javascript/activities/appdata.js:253 share/plugin/widgets/share/javascript/network-dropdown.js:83 share/plugin/widgets/share/javascript/network-dropdown.js:86 share/plugin/signals/template/lite/signals.html:52 share/plugin/signals/template/lite/signals.html:63
 msgid "signals.network-count=users"
 msgstr "%*(%1,zzzz)"
 
@@ -10780,12 +10961,16 @@ msgstr "%1 zz <a href=\"%2\">%3</a> zz zzzzz zz %4."
 msgid "signals.permalink"
 msgstr "Zzzzzzz - Zzzzzzzzz"
 
-#: share/plugin/signals/template/lite/signals.html:45
+#: share/plugin/signals/template/lite/signals.html:40
 msgid "signals.post-to"
 msgstr "Zzzz zz"
 
+#. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
+#. (acc.count)
+#. (acc.user_count)
+#. #-#-#-#-#  signals.po (Socialtext i18n)  #-#-#-#-#
 #. (a.user_count)
-#: share/plugin/signals/template/lite/signals.html:55
+#: share/plugin/widgets/share/javascript/activities/appdata.js:233 share/plugin/widgets/share/javascript/network-dropdown.js:82 share/plugin/signals/template/lite/signals.html:50
 msgid "signals.primary-account=users"
 msgstr "zzzzzzz, %*(%1,zzzz)"
 
@@ -10915,7 +11100,7 @@ msgstr "zz %1"
 msgid "signals.try-again:"
 msgstr "Zzzzzz zzz zzzzz:"
 
-#: share/plugin/signals/template/lite/signals.html:41
+#: share/plugin/signals/template/lite/signals.html:36
 msgid "signals.update"
 msgstr "Zzzzzz"
 
@@ -11129,7 +11314,7 @@ msgstr "Zzzz Zzzz Zzzzzzz"
 msgid "table.table-sortable"
 msgstr "Zzzzz zz Zzzzzzzz"
 
-#: share/skin/s3/template/view/page/display:175
+#: share/skin/s3/template/view/page/display:175 share/plugin/people/share/widgets/profile_tags/widget.html:11
 msgid "tag.add"
 msgstr "Zzz Zzz"
 
@@ -11233,6 +11418,130 @@ msgstr "%1 zzzzzzz"
 #: lib/Socialtext/PageRevision.pm:378
 msgid "time.weeks=count"
 msgstr "%1 zzzzz"
+
+#: share/plugin/widgets/share/widgets/active_members/config.yaml:4
+msgid "title.active_members"
+msgstr "Zzzzzz Zzzzzz"
+
+#: share/plugin/groups/share/widgets/all_groups/config.yaml:3
+msgid "title.all_groups"
+msgstr "Zzz Zzzzzzzzz Zzzzzz"
+
+#: share/plugin/people/share/widgets/all_tags/config.yaml:3
+msgid "title.all_tags"
+msgstr "Zzz Zzzzzz Zzzz"
+
+#: share/plugin/widgets/share/widgets/blockerbugs/config.yaml:3
+msgid "title.blockerbugs"
+msgstr "Zzzz Zzzzzzz Zzzz"
+
+#: share/plugin/groups/share/widgets/edit_information/config.yaml:3
+msgid "title.edit_information"
+msgstr "Zzzzzzzzzzz"
+
+#: share/plugin/groups/share/widgets/edit_people/config.yaml:3
+msgid "title.edit_people"
+msgstr "Zzzzzzzzzz"
+
+#: share/plugin/signals/share/widgets/explore_filters/config.yaml:4
+msgid "title.explore_filters"
+msgstr "Zzzzzzz"
+
+#: share/plugin/people/share/widgets/forbidden_profile/config.yaml:4
+msgid "title.forbidden_profile"
+msgstr "Zzzzzzz"
+
+#: share/plugin/groups/share/widgets/information/config.yaml:3
+msgid "title.information"
+msgstr "Zzzzzzzzzzz"
+
+#: share/plugin/widgets/share/widgets/iterationbugs/config.yaml:3
+msgid "title.iterationbugs"
+msgstr "Zzzzzzzzz Zzzz"
+
+#: share/plugin/groups/share/widgets/my_groups/config.yaml:3
+msgid "title.my_groups"
+msgstr "Zz Zzzzzz"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/config.yaml:4
+msgid "title.my_workspaces"
+msgstr "Zzzzzzzzzz"
+
+#: share/plugin/widgets/share/widgets/one_page/config.yaml:4
+msgid "title.one_page"
+msgstr "Zzzz Zzzz"
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/config.yaml:3
+msgid "title.one_spreadsheet"
+msgstr "Zzzzzzzzzzz Zzzz"
+
+#: share/plugin/groups/share/widgets/people/config.yaml:3
+msgid "title.people"
+msgstr "Zzzzzzzzzz"
+
+#: share/plugin/signals/share/widgets/profile/config.yaml:3 share/plugin/people/share/widgets/profile/config.yaml:4
+msgid "title.profile"
+msgstr "Zzzzzzz"
+
+#: share/plugin/people/share/widgets/profile_activities/config.yaml:3
+msgid "title.profile_activities"
+msgstr "Zzzzzzzz"
+
+#: share/plugin/people/share/widgets/profile_edit/config.yaml:3
+msgid "title.profile_edit"
+msgstr "Zzzz Zzzzzzz"
+
+#: share/plugin/people/share/widgets/profile_network/config.yaml:3
+msgid "title.profile_network"
+msgstr "Zzzzzzzzzz"
+
+#: share/plugin/people/share/widgets/profile_tags/config.yaml:4
+msgid "title.profile_tags"
+msgstr "Zzzz"
+
+#: share/plugin/widgets/share/widgets/rest_api/config.yaml:3
+msgid "title.rest_api"
+msgstr "Zzzz ZZZ Zzzzzzz"
+
+#: share/plugin/widgets/share/widgets/rss/config.yaml:3
+msgid "title.rss"
+msgstr "ZZZ Zzzzzz"
+
+#: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:3
+msgid "title.tag_cloud"
+msgstr "Zzzzzzzzz Zzzz"
+
+#: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:3
+msgid "title.tagged_pages"
+msgstr "Zzzzz zzzzzz Z"
+
+#: share/plugin/groups/share/widgets/teaser/config.yaml:3
+msgid "title.teaser"
+msgstr "Zzzzzzzzzz"
+
+#: share/plugin/widgets/share/widgets/testrunner/config.yaml:3
+msgid "title.testrunner"
+msgstr "Zzzz Zzzzzzz"
+
+#: share/plugin/widgets/share/widgets/top_content/config.yaml:4
+msgid "title.top_content"
+msgstr "Zzzzzz Zzzzzzz"
+
+#: share/plugin/widgets/share/widgets/userlist/config.yaml:4
+msgid "title.userlist"
+msgstr "Zzzzzz Zzzzz"
+
+#: share/plugin/dashboard/share/widgets/widget_editor/config.yaml:4
+msgid "title.widget_editor"
+msgstr "Zzzzzz Zzzzzz"
+
+#: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:3
+msgid "title.workspace_activity"
+msgstr "Zzzzzz-z-zzzz!"
+
+#: share/plugin/groups/share/widgets/workspaces/config.yaml:3
+msgid "title.workspaces"
+msgstr "Zzzzzzzzzz"
 
 #: share/plugin/twilio/template/element/settings/twilio_settings_section:31
 msgid "twilio.edit-profile"
@@ -11443,6 +11752,10 @@ msgstr "Zzzzz"
 msgid "user.email-address"
 msgstr "Zzzzz Zzzzzzz"
 
+#: share/plugin/control/template/control/add_user.html:24
+msgid "user.email-address:"
+msgstr "Zzzzz Zzzzzzz:"
+
 #. ($user->name_and_email)
 #: lib/Socialtext/Handler/ControlPanel.pm:516
 msgid "user.external-id-cleared=name"
@@ -11458,9 +11771,14 @@ msgstr "Zzzzzzzz ZZ zzzzzzzzzzz zzzzz zzz %1"
 msgid "user.external-id-requirement-removed=name"
 msgstr "Zzzzzzzz ZZ zzzzzzzzzzz zzzzzzz zzz %1"
 
-#: share/skin/s3/template/element/settings/users_settings_section:17 share/skin/s3/template/element/settings/users_settings_section:26
+#: share/skin/s3/template/element/settings/users_settings_section:17 share/skin/s3/template/element/settings/users_settings_section:26 share/plugin/control/template/control/add_user.html:28
+#, fuzzy
 msgid "user.first-name:"
-msgstr "Zzzzz zzzz:"
+msgstr ""
+"#-#-#-#-#  z3.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
+"Zzzzz zzzz:\z"
+"#-#-#-#-#  zzzzzzz.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
+"Zzzzz Zzzz:"
 
 #. ($user->username, $t)
 #: lib/Socialtext/CLI.pm:998
@@ -11476,7 +11794,7 @@ msgstr "Zzzzzz zzzzz zzzz %1"
 msgid "user.importing"
 msgstr "Zzzzzzzzz zzzzz..."
 
-#: share/skin/s3/template/element/settings/users_settings_section:13 share/skin/s3/template/element/settings/users_settings_section:34 share/plugin/control/template/control/add_user.html:32
+#: share/skin/s3/template/element/settings/users_settings_section:13 share/skin/s3/template/element/settings/users_settings_section:34 share/plugin/control/template/control/add_user.html:36
 msgid "user.last-name:"
 msgstr "Zzzz zzzz:"
 
@@ -11494,11 +11812,16 @@ msgstr "Zzzz Zzz Zzzzz"
 msgid "user.matching=query"
 msgstr "Zzzzz zzzzzzzz \"%1\""
 
-#: share/skin/s3/template/element/settings/users_settings_section:21 share/skin/s3/template/element/settings/users_settings_section:30
+#: share/skin/s3/template/element/settings/users_settings_section:21 share/skin/s3/template/element/settings/users_settings_section:30 share/plugin/control/template/control/add_user.html:32
+#, fuzzy
 msgid "user.middle-name:"
-msgstr "Zzzzzz zzzz:"
+msgstr ""
+"#-#-#-#-#  z3.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
+"Zzzzzz zzzz:\z"
+"#-#-#-#-#  zzzzzzz.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
+"Zzzzzz Zzzz:"
 
-#: share/skin/s3/template/element/settings/users_settings_section:6
+#: share/skin/s3/template/element/settings/users_settings_section:6 share/plugin/people/share/widgets/profile_edit/widget.html:44
 msgid "user.name"
 msgstr "Zzzz"
 
@@ -11897,8 +12220,8 @@ msgstr "zzzzz: %1"
 msgid "wafl.width:"
 msgstr "zzzzz:"
 
-#. (choice.2)
 #. (data.width)
+#. (choice.2)
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3583 share/skin/wikiwyg/javascript/template/widget_edit.tt2:140 share/skin/wikiwyg/javascript/template/widget_edit.tt2:186
 msgid "wafl.width=px"
 msgstr "zzzzz: %1"
@@ -11957,7 +12280,7 @@ msgstr "Zzzz Zzzzzzzzz"
 msgid "watch.look-for"
 msgstr "Zzzz zzz"
 
-#: share/skin/s3/javascript/s3.js:935 share/skin/s3/template/view/listview:166 share/skin/s3/template/view/page/display:72
+#: share/skin/s3/javascript/s3.js:941 share/skin/s3/template/view/listview:166 share/skin/s3/template/view/page/display:72
 msgid "watch.stop"
 msgstr "Zzzz Zzzzzzzz"
 
@@ -11994,7 +12317,7 @@ msgstr "Zzzzzz zzzzzz %1..."
 msgid "widget.edit"
 msgstr "Zzzz Zzzzzz"
 
-#: lib/Socialtext/Gadgets/Gadget.pm:781
+#: lib/Socialtext/Gadgets/Gadget.pm:784
 msgid "widget.file"
 msgstr "zzzz"
 
@@ -12006,9 +12329,11 @@ msgstr "Zzzzzzzzz zzzzzz zzzzzzzzzz ..."
 msgid "widget.insert"
 msgstr "Zzzzzz Zzzzzz"
 
+#: share/plugin/widgets/template/view/container.setup:148
 msgid "widget.preview"
 msgstr "Zzzzzzz"
 
+#: share/plugin/widgets/template/widget/element:57
 msgid "widget.push-all"
 msgstr "Zzzz zz zzz zzzzzzzzzz"
 
@@ -12017,7 +12342,7 @@ msgstr "Zzzz zz zzz zzzzzzzzzz"
 msgid "widget.removing=src"
 msgstr "Zzzzzzzz zzzzzz %1..."
 
-#: lib/Socialtext/Gadgets/Gadget.pm:780
+#: lib/Socialtext/Gadgets/Gadget.pm:783
 msgid "widget.resource"
 msgstr "zzzzzzzz"
 
@@ -12034,7 +12359,7 @@ msgstr "Zzzzzzzzzz zzzzzzz"
 msgid "widget.third-party"
 msgstr "Zzzzz Zzzzz zzzzzzz"
 
-#: lib/Socialtext/Gadgets/Gadget.pm:781
+#: lib/Socialtext/Gadgets/Gadget.pm:784
 msgid "widget.url"
 msgstr "ZZZ"
 
@@ -12089,6 +12414,7 @@ msgstr "Zzz zzz zzzz zzz zzzz zz zzzzzz zzz \"%1\" zzzzzz? Zzzzz zzzz zz zzzzzz 
 msgid "widgets.confirm-restore=widget?"
 msgstr "Zzz zzz zzzz zzz zzzz zz zzzzzzz zzz \"%1\" zzzzzz?"
 
+#. (ws.title)
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:21
 msgid "widgets.create-new-page-in=wiki"
 msgstr "Zzzzzz zzz zzzz zz %1"
@@ -12246,7 +12572,7 @@ msgstr "Zzzzz zz %1"
 msgid "wiki.confirm-unsubscribe"
 msgstr "Zzzz Zzzzz zzz zzzzzz zzzzz zz zzz zzzz zz zz zzzzzzzzzzzz zzzz zzzz zzzzzzzzz. Zzzzz zzzzzzzz zzz zzzz zz zzzzzz zzzz zzzzzz zz zzzz zzzzzzzzz zzzzzz zzz zzz zzzzzzzzzzzz zz z Zzzzzzzzz zzzzzzzzzzzzz zz z zzzzz zzzz."
 
-#: share/skin/s3/template/element/settings/workspaces_cannot_create_section:4 share/skin/s3/template/view/settings:43 share/skin/s3/template/view/settings:46
+#: share/skin/s3/template/element/settings/workspaces_cannot_create_section:4 share/skin/s3/template/view/settings:43 share/skin/s3/template/view/settings:46 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:17
 msgid "wiki.create"
 msgstr "Zzzzzz Zzz Zzzzzzzzz"
 
@@ -12518,8 +12844,11 @@ msgstr "<em>Zz zzz z zzzzzzzzz zz z <strong>zzz zzzzz,</strong></em> zz zz <a hr
 msgid "wiki.top-page"
 msgstr "Zzz Zzzz"
 
+#. #-#-#-#-#  template.po (Socialtext i18n)  #-#-#-#-#
+#. (workspace_title)
+#. #-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#
 #. (workspace.title)
-#: share/skin/s3/template/workspaces_created_section.html:31
+#: share/template/email/st/workspace-admin-invitation.txt:16 share/skin/s3/template/workspaces_created_section.html:31
 msgid "wiki.visit-later=wiki"
 msgstr "Zz zzz zzz zzzzzzzz zz zzzz zz zzzz zzzzzzzzz, zzz zzzzz \"%1\" zzzzz."
 
@@ -12667,3 +12996,7 @@ msgstr "Zzzzzz z Zzzzz"
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:21
 msgid "wikiwyg.widget"
 msgstr "Zzzzzz z Zzzzzz"
+
+#: share/template/email/free50/account-invitation.txt:30
+msgid "www.socialtext.com"
+msgstr "zzz.zzzzzzzzzz.zzz"

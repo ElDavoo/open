@@ -9,11 +9,47 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:64 share/plugin/groups/share/javascript/lightbox/delete-group.tt2:20 share/plugin/groups/share/javascript/lightbox/leave-group.tt2:17 share/plugin/groups/template/edit_group_footer:11 share/plugin/groups/template/edit_group_footer:4 share/plugin/groups/template/group_footer:14 share/plugin/groups/template/group_footer:7
+#: share/plugin/groups/share/widgets/all_groups/config.yaml:4
+msgid "description.all_groups"
+msgstr "All Available Groups"
+
+#: share/plugin/groups/share/widgets/edit_information/config.yaml:4
+msgid "description.edit_information"
+msgstr "Edit Group Information"
+
+#: share/plugin/groups/share/widgets/edit_people/config.yaml:4
+msgid "description.edit_people"
+msgstr "Edit Group People"
+
+#: share/plugin/groups/share/widgets/information/config.yaml:4
+msgid "description.information"
+msgstr "Group Information"
+
+#: share/plugin/groups/share/widgets/membership/config.yaml:4
+msgid "description.membership"
+msgstr "Edit Group Membership"
+
+#: share/plugin/groups/share/widgets/my_groups/config.yaml:4
+msgid "description.my_groups"
+msgstr "My Groups"
+
+#: share/plugin/groups/share/widgets/people/config.yaml:4
+msgid "description.people"
+msgstr "People in this group."
+
+#: share/plugin/groups/share/widgets/teaser/config.yaml:4
+msgid "description.teaser"
+msgstr "Coming Soon"
+
+#: share/plugin/groups/share/widgets/workspaces/config.yaml:4
+msgid "description.workspaces"
+msgstr "Lists all of the workspaces in the current group"
+
+#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:64 share/plugin/groups/share/javascript/lightbox/delete-group.tt2:20 share/plugin/groups/share/javascript/lightbox/leave-group.tt2:17 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:74 share/plugin/groups/template/edit_group_footer:11 share/plugin/groups/template/edit_group_footer:4 share/plugin/groups/template/group_footer:14 share/plugin/groups/template/group_footer:7
 msgid "do.cancel"
 msgstr "Cancel"
 
-#: share/plugin/groups/template/edit_group_footer:7 share/plugin/groups/template/group_footer:10
+#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:69 share/plugin/groups/share/widgets/membership/jemplate/members.tt2:3 share/plugin/groups/template/edit_group_footer:7 share/plugin/groups/template/group_footer:10
 msgid "do.create"
 msgstr "Create"
 
@@ -29,6 +65,15 @@ msgstr "Join"
 msgid "do.leave"
 msgstr "Leave"
 
+#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:64
+msgid "do.next"
+msgstr "Next"
+
+#: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:3
+msgid "do.save"
+msgstr "Save"
+
+#. (item.title)
 #: share/plugin/groups/share/widgets/membership/widget.js:615
 msgid "error.already-exists-in-group=member"
 msgstr "%1 already exists in this Group"
@@ -53,14 +98,33 @@ msgstr "Currently, you are not a member of any groups."
 msgid "error.retrieving-list-of-users"
 msgstr "Error retrieving list of users"
 
+#: share/plugin/groups/share/widgets/edit_information/widget.js:92
 msgid "group.acl-member-only"
 msgstr "Member Only"
 
+#: share/plugin/groups/share/widgets/edit_information/widget.js:91
 msgid "group.acl-private"
 msgstr "Private"
 
+#: share/plugin/groups/share/widgets/edit_information/widget.js:90
 msgid "group.acl-self-join"
 msgstr "Self-Join"
+
+#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:11 share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:13 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:17 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:19
+msgid "group.first"
+msgstr "first"
+
+#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:17 share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:19 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:23 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:25
+msgid "group.next"
+msgstr "next"
+
+#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:5 share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:7 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:11 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:13
+msgid "group.previous"
+msgstr "previous"
+
+#: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:19
+msgid "groups.add-members"
+msgstr "Add Members"
 
 #: share/plugin/groups/share/widgets/membership/jemplate/workspaces.tt2:16
 msgid "groups.add-wikis"
@@ -181,7 +245,7 @@ msgstr "Edit Group: %1"
 msgid "groups.first"
 msgstr "first"
 
-#: share/plugin/groups/template/create_group_hello:2
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:8 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:4 share/plugin/groups/template/create_group_hello:2 share/plugin/groups/template/edit_group_hello:3
 msgid "groups.group"
 msgstr "Group"
 
@@ -205,6 +269,7 @@ msgstr "Group Type"
 msgid "groups.group-type:"
 msgstr "Group Type:"
 
+#. (container.group.display_permission_set)
 #: share/plugin/groups/template/groups_hello:3
 msgid "groups.heading=acl"
 msgstr "%1 group"
@@ -221,7 +286,7 @@ msgstr "member"
 msgid "groups.member-plural"
 msgstr "members"
 
-#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:6
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:6 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:3
 msgid "groups.members"
 msgstr "Members"
 
@@ -322,6 +387,9 @@ msgstr "Self-Join Group"
 msgid "groups.self-join-listed-in-directory"
 msgstr "Can be seen in the Group Directory by everyone and anyone can join."
 
+#. ((page * per_page)
+#. ((page * per_page) + 1, (more ? ((page + 1) * per_page) : totalResults), totalResults)
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:44
 msgid "groups.showing=from,to,total"
 msgstr "Showing Groups %1 - %2 of %3 total."
 
@@ -370,7 +438,7 @@ msgstr "This group has at least one workspace that prevents you from being able 
 msgid "groups.wiki-with-that-name-already-exists"
 msgstr "A Workspace with that name already exists"
 
-#: share/plugin/groups/template/grouplist:30 share/plugin/groups/template/grouplist:88
+#: share/plugin/groups/share/widgets/all_groups/widget.js:11 share/plugin/groups/template/grouplist:30 share/plugin/groups/template/grouplist:88
 msgid "groups.you-are-member"
 msgstr "You are currently a member of this group."
 
@@ -393,10 +461,74 @@ msgstr "You must be an Admin of the workspace in order to associate it with this
 msgid "info.showing=from,to,total"
 msgstr "Showing %1 - %2 of %3 total."
 
+#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:55
+msgid "info.valid-wiki-name"
+msgstr "It must consist of 3-30 lowercase letters, numbers, underscores or dashes."
+
+#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:54
+msgid "info.wiki-id"
+msgstr "This is a short unique identifier used as part of your workspace's web address and email address."
+
+#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:28 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:41
+msgid "info.wiki-title"
+msgstr "This is the title of your workspace. It may be changed later if you want."
+
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:48 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:50 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:43 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:45
+msgid "nav.first"
+msgstr "First"
+
 #: share/plugin/groups/template/nav_groups:1
 msgid "nav.groups"
 msgstr "Groups"
 
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:66 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:68 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:61 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:63
+msgid "nav.last"
+msgstr "Last"
+
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:60 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:62 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:55 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:57
+msgid "nav.next"
+msgstr "Next"
+
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:54 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:56 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:49 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:51
+msgid "nav.previous"
+msgstr "Previous"
+
 #: share/plugin/groups/template/grouplist:51
 msgid "sort.by:"
 msgstr "Sort by:"
+
+#: share/plugin/groups/share/widgets/all_groups/config.yaml:3
+msgid "title.all_groups"
+msgstr "All Available Groups"
+
+#: share/plugin/groups/share/widgets/edit_information/config.yaml:3
+msgid "title.edit_information"
+msgstr "Information"
+
+#: share/plugin/groups/share/widgets/edit_people/config.yaml:3
+msgid "title.edit_people"
+msgstr "Membership"
+
+#: share/plugin/groups/share/widgets/information/config.yaml:3
+msgid "title.information"
+msgstr "Information"
+
+#: share/plugin/groups/share/widgets/my_groups/config.yaml:3
+msgid "title.my_groups"
+msgstr "My Groups"
+
+#: share/plugin/groups/share/widgets/people/config.yaml:3
+msgid "title.people"
+msgstr "Membership"
+
+#: share/plugin/groups/share/widgets/teaser/config.yaml:3
+msgid "title.teaser"
+msgstr "Workspaces"
+
+#: share/plugin/groups/share/widgets/workspaces/config.yaml:3
+msgid "title.workspaces"
+msgstr "Workspaces"
+
+#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:17
+msgid "wiki.create"
+msgstr "Create New Workspace"
