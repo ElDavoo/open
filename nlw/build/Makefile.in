@@ -459,7 +459,7 @@ quicktest:
 	$(PROVE) --jobs $(TEST_JOBS) $(QUICK_TESTS)
 
 hottest: .prove
-	$(PROVE) --state=hot,fresh,save
+	$(PROVE) --jobs $(TEST_JOBS) --state=hot,fresh,save
 
 hudson-update: .prove
 
