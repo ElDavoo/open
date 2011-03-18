@@ -1959,6 +1959,8 @@
 "title.edit_people":"成員",
 "title.explore_filters":"篩選",
 "title.forbidden_profile":"個人檔案",
+"title.group-members":"成員",
+"title.group-workspaces":"工作區",
 "title.information":"資訊",
 "title.iterationbugs":"開發周期瑕疵",
 "title.my_groups":"我的群組",

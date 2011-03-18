@@ -1964,33 +1964,43 @@ msgstr "网页服务代理地址"
 msgid "console.your-email-address:"
 msgstr "您的电子邮件地址："
 
+#: lib/Socialtext/Gadgets/Container/Activities.pm:12
 msgid "container.activities"
 msgstr "Socialtext 活动"
 
+#: lib/Socialtext/Gadgets/Container/AccountDashboard.pm:12 lib/Socialtext/Gadgets/Container/Dashboard.pm:13
 msgid "container.dashboard"
 msgstr "Socialtext 显示板"
 
+#: lib/Socialtext/Gadgets/Container/Explore.pm:14
 msgid "container.explore"
 msgstr "Socialtext 探索"
 
+#: lib/Socialtext/Gadgets/Container/GroupDirectory.pm:12
 msgid "container.group-directory"
 msgstr "群组目录"
 
+#: lib/Socialtext/Gadgets/Container/CreateGroup.pm:12 lib/Socialtext/Gadgets/Container/Group.pm:12
 msgid "container.groups"
 msgstr "Socialtext 群组"
 
+#: lib/Socialtext/Gadgets/Container/EditProfile.pm:12 lib/Socialtext/Gadgets/Container/ForbiddenProfile.pm:13 lib/Socialtext/Gadgets/Container/Profile.pm:12
 msgid "container.people"
 msgstr "Socialtext 人员"
 
+#: lib/Socialtext/Gadgets/Container/Signals.pm:14
 msgid "container.signals"
 msgstr "Socialtext 讯息"
 
+#: lib/Socialtext/Gadgets/Container/Signals/Signal.pm:17
 msgid "containers.signals-permalink"
 msgstr "Socialtext 讯息 - 永久链接"
 
+#: lib/Socialtext/Gadgets/Container/Test.pm:12
 msgid "containers.test"
 msgstr "测试容器"
 
+#: lib/Socialtext/Gadgets/Container/WidgetEditor.pm:13
 msgid "containers.widget-editor"
 msgstr "Socialtext 小工具编辑器"
 
@@ -3270,6 +3280,7 @@ msgstr "所有可用群组"
 msgid "description.all_tags"
 msgstr "以标签云方式显示所有人员标签。"
 
+#: share/plugin/widgets/share/widgets/blockerbugs/config.yaml:4
 msgid "description.blockerbugs"
 msgstr "显示阻滞开发的瑕疵列表。"
 
@@ -3291,6 +3302,7 @@ msgstr "个人档案"
 msgid "description.information"
 msgstr "群组信息"
 
+#: share/plugin/widgets/share/widgets/iterationbugs/config.yaml:4
 msgid "description.iterationbugs"
 msgstr "显示当前开发周期的错误列表"
 
@@ -3300,12 +3312,15 @@ msgstr "编辑群组成员"
 msgid "description.my_groups"
 msgstr "我的群组"
 
+#: share/plugin/widgets/share/widgets/my_workspaces/config.yaml:5
 msgid "description.my_workspaces"
 msgstr "您所有的工作区"
 
+#: share/plugin/widgets/share/widgets/one_page/config.yaml:5
 msgid "description.one_page"
 msgstr "在小工具里显示一个共笔页面。"
 
+#: share/plugin/widgets/share/widgets/one_spreadsheet/config.yaml:4
 msgid "description.one_spreadsheet"
 msgstr "在小工具里显示一个电子表格。"
 
@@ -3327,33 +3342,40 @@ msgstr "与您有关联的人"
 msgid "description.profile_tags"
 msgstr "标签"
 
+#: share/plugin/widgets/share/widgets/rest_api/config.yaml:4
 msgid "description.rest_api"
 msgstr "REST API 开发工具"
 
+#: share/plugin/widgets/share/widgets/rss/config.yaml:4
 msgid "description.rss"
 msgstr "订阅一个 RSS 来源"
 
 msgid "description.signals-profile"
 msgstr "创建及显示讯息"
 
+#: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:4
 msgid "description.tag_cloud"
 msgstr "以标签云方式显示特定工作区中的页面标签。"
 
+#: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:4
 msgid "description.tagged_pages"
 msgstr "显示具特定标签的页面列表"
 
 msgid "description.teaser"
 msgstr "即将推出"
 
+#: share/plugin/widgets/share/widgets/testrunner/config.yaml:4
 msgid "description.testrunner"
 msgstr "测试运行现况"
 
+#: share/plugin/widgets/share/widgets/userlist/config.yaml:5
 msgid "description.userlist"
 msgstr "发布讯息及显示活动，包含讯息与工作区活动。"
 
 msgid "description.widget_editor"
 msgstr "编辑小工具"
 
+#: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:4
 msgid "description.workspace_activity"
 msgstr "显示编辑活动"
 
@@ -11248,15 +11270,18 @@ msgstr "%1 秒"
 msgid "time.weeks=count"
 msgstr "%1 周"
 
+#: share/plugin/widgets/share/widgets/active_members/config.yaml:4
 msgid "title.active_members"
 msgstr "热门用户"
 
+#: share/plugin/groups/share/widgets/all_groups/config.yaml:3
 msgid "title.all_groups"
 msgstr "所有可用群组"
 
 msgid "title.all_tags"
 msgstr "所有人员标签"
 
+#: share/plugin/widgets/share/widgets/blockerbugs/config.yaml:3
 msgid "title.blockerbugs"
 msgstr "阻滞开发瑕疵"
 
@@ -11266,36 +11291,49 @@ msgstr "信息"
 msgid "title.edit_people"
 msgstr "成员"
 
+#: share/plugin/signals/share/widgets/explore_filters/config.yaml:4
 msgid "title.explore_filters"
 msgstr "筛选"
 
 msgid "title.forbidden_profile"
 msgstr "个人档案"
 
+msgid "title.group-members"
+msgstr "成员"
+
+msgid "title.group-workspaces"
+msgstr "工作区"
+
 msgid "title.information"
 msgstr "信息"
 
+#: share/plugin/widgets/share/widgets/iterationbugs/config.yaml:3
 msgid "title.iterationbugs"
 msgstr "开发周期瑕疵"
 
 msgid "title.my_groups"
 msgstr "我的群组"
 
+#: share/plugin/widgets/share/widgets/my_workspaces/config.yaml:4
 msgid "title.my_workspaces"
 msgstr "工作区"
 
+#: share/plugin/widgets/share/widgets/one_page/config.yaml:4
 msgid "title.one_page"
 msgstr "共笔页面"
 
+#: share/plugin/widgets/share/widgets/one_spreadsheet/config.yaml:3
 msgid "title.one_spreadsheet"
 msgstr "电子表格页面"
 
+#: share/plugin/groups/share/widgets/people/config.yaml:3
 msgid "title.people"
 msgstr "成员"
 
 msgid "title.profile"
 msgstr "个人档案"
 
+#: share/plugin/people/share/widgets/profile_activities/config.yaml:3
 msgid "title.profile_activities"
 msgstr "活动"
 
@@ -11308,33 +11346,42 @@ msgstr "同事"
 msgid "title.profile_tags"
 msgstr "标签"
 
+#: share/plugin/widgets/share/widgets/rest_api/config.yaml:3
 msgid "title.rest_api"
 msgstr "REST API 开发工具"
 
+#: share/plugin/widgets/share/widgets/rss/config.yaml:3
 msgid "title.rss"
 msgstr "RSS 阅读器"
 
+#: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:3
 msgid "title.tag_cloud"
 msgstr "工作区标签"
 
+#: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:3
 msgid "title.tagged_pages"
 msgstr "具有某标签的页面"
 
 msgid "title.teaser"
 msgstr "工作区"
 
+#: share/plugin/widgets/share/widgets/testrunner/config.yaml:3
 msgid "title.testrunner"
 msgstr "测试结果"
 
+#: share/plugin/widgets/share/widgets/top_content/config.yaml:4
 msgid "title.top_content"
 msgstr "热门内容"
 
+#: share/plugin/widgets/share/widgets/userlist/config.yaml:4
 msgid "title.userlist"
 msgstr "在线用户"
 
+#: share/plugin/dashboard/share/widgets/widget_editor/config.yaml:4
 msgid "title.widget_editor"
 msgstr "小工具编辑器"
 
+#: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:3
 msgid "title.workspace_activity"
 msgstr "报出个未来"
 

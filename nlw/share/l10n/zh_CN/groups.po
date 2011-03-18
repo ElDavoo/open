@@ -582,3 +582,9 @@ msgstr "工作区"
 #: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:17
 msgid "wiki.create"
 msgstr "新建工作区"
+
+msgid "title.group-members"
+msgstr "成员"
+
+msgid "title.group-workspaces"
+msgstr "工作区"

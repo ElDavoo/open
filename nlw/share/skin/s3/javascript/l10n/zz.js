@@ -1958,6 +1958,8 @@
 "title.edit_people":"Zzzzzzzzzz",
 "title.explore_filters":"Zzzzzzz",
 "title.forbidden_profile":"Zzzzzzz",
+"title.group-members":"Zzzzzzz",
+"title.group-workspaces":"Zzzzzzzzzz",
 "title.information":"Zzzzzzzzzzz",
 "title.iterationbugs":"Zzzzzzzzz Zzzz",
 "title.my_groups":"Zz Zzzzzz",

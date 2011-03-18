@@ -11491,6 +11491,12 @@ msgstr "Filters"
 msgid "title.forbidden_profile"
 msgstr "Profile"
 
+msgid "title.group-members"
+msgstr "Members"
+
+msgid "title.group-workspaces"
+msgstr "Workspaces"
+
 #: share/plugin/groups/share/widgets/information/config.yaml:3
 msgid "title.information"
 msgstr "Information"

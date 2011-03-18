@@ -532,3 +532,9 @@ msgstr "Workspaces"
 #: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:17
 msgid "wiki.create"
 msgstr "Create New Workspace"
+
+msgid "title.group-workspaces"
+msgstr "Workspaces"
+
+msgid "title.group-members"
+msgstr "Members"

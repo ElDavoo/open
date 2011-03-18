@@ -1958,6 +1958,8 @@
 "title.edit_people":"Membership",
 "title.explore_filters":"Filters",
 "title.forbidden_profile":"Profile",
+"title.group-members":"Members",
+"title.group-workspaces":"Workspaces",
 "title.information":"Information",
 "title.iterationbugs":"Iteration Bugs",
 "title.my_groups":"My Groups",

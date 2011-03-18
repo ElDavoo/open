@@ -11491,6 +11491,12 @@ msgstr "Zzzzzzz"
 msgid "title.forbidden_profile"
 msgstr "Zzzzzzz"
 
+msgid "title.group-members"
+msgstr "Zzzzzzz"
+
+msgid "title.group-workspaces"
+msgstr "Zzzzzzzzzz"
+
 #: share/plugin/groups/share/widgets/information/config.yaml:3
 msgid "title.information"
 msgstr "Zzzzzzzzzzz"
