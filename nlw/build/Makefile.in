@@ -355,7 +355,7 @@ testlive:
 testall: test testlive testreports testconsole
 
 quicktest: .prove
-	$(PROVE) --jobs $(TEST_JOBS) `./dev-bin/list-tests-faster-than 10`
+	$(PROVE) --jobs $(TEST_JOBS) $(shell list-tests-faster-than 10)
 
 hottest: .prove
 	$(PROVE) --jobs $(TEST_JOBS) --state=hot,fresh,save
