@@ -381,6 +381,9 @@ msgstr "Signal This!"
 msgid "bookmarklet.tip"
 msgstr "Tip: Use the"
 
+msgid "description.activities"
+msgstr "Post signals and display activities, including signals and workspace events."
+
 msgid "description.all_groups"
 msgstr "All Available Groups"
 
@@ -877,6 +880,9 @@ msgstr "What are you working on?"
 msgid "title.active_members"
 msgstr "Active People"
 
+msgid "title.activities"
+msgstr "Activities"
+
 msgid "title.all_tags"
 msgstr "All People Tags"
 
@@ -1045,7 +1051,9 @@ msgstr "Create new page in %1"
 msgid "widgets.delete"
 msgstr "(delete)"
 
-#. (gallery.account_name)
+msgid "widgets.gallery"
+msgstr "Widget Gallery"
+
 #: share/plugin/widgets/template/view/gallery:34
 msgid "widgets.gallery-switch=account:"
 msgstr "This is the widget gallery for the \"%1\" account. Switch to account:"

@@ -3423,6 +3423,9 @@ msgstr "Zzz"
 msgid "date.wed"
 msgstr "Zzz"
 
+msgid "description.activities"
+msgstr "Zzzz zzzzzzz zzz zzzzzzz zzzzzzzzzz, zzzzzzzzz zzzzzzz zzz zzzzzzzzz zzzzzz."
+
 #: share/plugin/groups/share/widgets/all_groups/config.yaml:4
 msgid "description.all_groups"
 msgstr "Zzz Zzzzzzzzz Zzzzzz"
@@ -11543,6 +11546,9 @@ msgstr "%1 zzzzz"
 msgid "title.active_members"
 msgstr "Zzzzzz Zzzzzz"
 
+msgid "title.activities"
+msgstr "Zzzzzzzzzz"
+
 #: share/plugin/groups/share/widgets/all_groups/config.yaml:3
 msgid "title.all_groups"
 msgstr "Zzz Zzzzzzzzz Zzzzzz"
@@ -12539,7 +12545,9 @@ msgstr "Zzzzzz zzz zzzz zz %1"
 msgid "widgets.delete"
 msgstr "(zzzzzz)"
 
-#. (gallery.account_name)
+msgid "widgets.gallery"
+msgstr "Zzzzzz Zzzzzzz"
+
 #: share/plugin/widgets/template/view/gallery:34
 msgid "widgets.gallery-switch=account:"
 msgstr "Zzzz zz zzz zzzzzz zzzzzzz zzz zzz \"%1\" zzzzzzz. Zzzzzz zz zzzzzzz:"

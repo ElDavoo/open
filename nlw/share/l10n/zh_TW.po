@@ -3274,6 +3274,9 @@ msgstr "周二"
 msgid "date.wed"
 msgstr "周三"
 
+msgid "description.activities"
+msgstr "發布訊息及顯示活動，包含訊息與工作區活動。"
+
 msgid "description.all_groups"
 msgstr "所有可用群組"
 
@@ -11346,6 +11349,9 @@ msgstr "%1 周"
 msgid "title.active_members"
 msgstr "熱門用戶"
 
+msgid "title.activities"
+msgstr "活動"
+
 #: share/plugin/groups/share/widgets/all_groups/config.yaml:3
 msgid "title.all_groups"
 msgstr "所有可用群組"
@@ -12329,6 +12335,9 @@ msgstr "在 %1 中建立新頁面"
 #: share/plugin/widgets/template/view/gallery:119
 msgid "widgets.delete"
 msgstr "（刪除）"
+
+msgid "widgets.gallery"
+msgstr "工具庫"
 
 #. (gallery.account_name)
 #: share/plugin/widgets/template/view/gallery:34

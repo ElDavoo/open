@@ -3423,6 +3423,9 @@ msgstr "«Tue»"
 msgid "date.wed"
 msgstr "«Wed»"
 
+msgid "description.activities"
+msgstr "«Post signals and display activities, including signals and workspace events.»"
+
 #: share/plugin/groups/share/widgets/all_groups/config.yaml:4
 msgid "description.all_groups"
 msgstr "«All Available Groups»"
@@ -11543,6 +11546,9 @@ msgstr "«%1 weeks»"
 msgid "title.active_members"
 msgstr "«Active People»"
 
+msgid "title.activities"
+msgstr "«Activities»"
+
 #: share/plugin/groups/share/widgets/all_groups/config.yaml:3
 msgid "title.all_groups"
 msgstr "«All Available Groups»"
@@ -12539,7 +12545,9 @@ msgstr "«Create new page in %1»"
 msgid "widgets.delete"
 msgstr "«(delete)»"
 
-#. (gallery.account_name)
+msgid "widgets.gallery"
+msgstr "«Widget Gallery»"
+
 #: share/plugin/widgets/template/view/gallery:34
 msgid "widgets.gallery-switch=account:"
 msgstr "«This is the widget gallery for the \"%1\" account. Switch to account:»"
