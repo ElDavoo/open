@@ -49,6 +49,10 @@ override 'username_to_user_id' => sub {
         $user = shift @users;
         $user->update_private_external_id($edipin);
         $user->remove_restriction('require_external_id');
+        $user->update_store(
+            password => '*not-needed-authenticates-via-cac*',
+            no_crypt => 1,
+        ) if ($user->can_update_store);
         return $user->user_id;
     }
 

@@ -7,7 +7,7 @@ use Socialtext::CredentialsExtractor;
 use Socialtext::CredentialsExtractor::Extractor::CAC;
 use Socialtext::AppConfig;
 use Socialtext::Signal;
-use Test::Socialtext tests => 53;
+use Test::Socialtext tests => 55;
 use Test::Socialtext::User;
 
 fixtures(qw( empty ));
@@ -227,6 +227,7 @@ auto_provision_user: {
     ok $user, 'Created test User';
     $user->add_restriction('require_external_id');
     ok $user->requires_external_id, '... missing their external id';
+    ok !$user->has_valid_password, '... without a valid password';
 
     # Extract creds for this User
     my $subject = "C=UK, O=Goldeneye, CN=$first\.$middle\.$last\.$edipin";
@@ -239,6 +240,7 @@ auto_provision_user: {
     $user->reload;
     ok !$user->requires_external_id, '... external id no longer required';
     is $user->private_external_id, $edipin, '... and with assigned EDIPIN';
+    ok $user->has_valid_password, '... and noted as having a valid password';
 }
 
 ###############################################################################
