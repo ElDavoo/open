@@ -12,6 +12,8 @@ use Socialtext::System;
 use Readonly;
 use Time::HiRes qw( sleep time );
 use User::pwent;
+use IPC::Run ();
+use Try::Tiny;
 
 # Set this if you want some debugging output.
 our $Verbose = 0;
@@ -173,27 +175,29 @@ sub wait_for_servers_to_quit {
     return;
 }
 
+sub _suppress_nginx_errlog {
+    print STDERR $_[0] unless $_[0] =~
+        m#could not open error log file.+/var/log/nginx/error\.log#;
+}
+
 sub actually_start {
     my $self = shift;
 
     my @command = $self->get_start_command;
-    my @ports = $self->ports;
+    $self->ports(); # to check for ports, don't actually need them here
+
     $self->output_action('Starting');
-    eval { $self->try_system(@command); };
-    if ($@) {
-        die 'Cannot start ', $self->short_binary, " with @command.\n";
+    try {
+        warn "exec: @command\n" if $Verbose;
+        my @parm = (\@command, '<', \undef);
+        push @parm, '2>', \&_suppress_nginx_errlog if ($self->name eq 'nginx');
+        IPC::Run::run(@parm) or die "exited $?\n";
     }
+    catch {
+        chomp;
+        die 'Cannot start ', $self->short_binary, " with @command: $_.\n"
+    };
     $self->maybe_test_verbose("\nStarting ", $self->short_binary, " .\n");
-}
-
-sub try_system {
-    my $self = shift;
-
-    warn "exec: @_\n" if $Verbose;
-
-    if (system(@_) != 0) {
-        Carp::confess "exec @_ exited nonzero: $?";
-    }
 }
 
 sub wait_for_startup {
