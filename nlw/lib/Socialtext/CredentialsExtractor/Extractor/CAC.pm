@@ -105,14 +105,14 @@ sub _find_partially_provisioned_users {
     my $class  = shift;
     my %fields = @_;
 
-    # Find all matching Users, and trim that to *just* those that have an
-    # outstanding "require_external_id" restriction.
+    # Find matching Users, case IN-SENSITIVELY and trim that to *just* those
+    # that have an outstanding "require_external_id" restriction.
     my @users =
         grep { $_->requires_external_id }
         Socialtext::User->Query( {
-            first_name  => $fields{first_name},
-            middle_name => $fields{middle_name},
-            last_name   => $fields{last_name},
+            'LOWER(first_name)'  => lc($fields{first_name}),
+            'LOWER(middle_name)' => lc($fields{middle_name}),
+            'LOWER(last_name)'   => lc($fields{last_name}),
         } )->all;
 
     return @users;
