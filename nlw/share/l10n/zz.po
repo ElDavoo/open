@@ -90,6 +90,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"#-#-#-#-#  fields.po (Socialtext i18n)  #-#-#-#-#\n"
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-02-20 10:43+0800\n"
+"Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  dashboard.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
 "PO-Revision-Date: 2011-02-20 10:52+0800\n"
@@ -6955,6 +6963,75 @@ msgstr "%1 (zzzzzzz zz %2)"
 msgid "feed.watchlist=wiki,user"
 msgstr "%1: zzzzzzzzz zzz %2"
 
+msgid "field.aol_sn"
+msgstr "ZZZ™"
+
+msgid "field.assistant"
+msgstr "Zzzzzzzzz"
+
+msgid "field.blog"
+msgstr "Zzzz"
+
+msgid "field.company"
+msgstr "Zzzzzzz"
+
+msgid "field.email"
+msgstr "Z-Zzzz"
+
+msgid "field.facebook_url"
+msgstr "Zzzzzzzz™"
+
+msgid "field.first_name"
+msgstr "Zzzzz Zzzz"
+
+msgid "field.gtalk_sn"
+msgstr "ZZzzz"
+
+msgid "field.home_phone"
+msgstr "Zzzz"
+
+msgid "field.last_name"
+msgstr "Zzzz Zzzz"
+
+msgid "field.linkedin_url"
+msgstr "ZzzzzzZz®"
+
+msgid "field.location"
+msgstr "Zzzzzzzz"
+
+msgid "field.middle_name"
+msgstr "Zzzzzz Zzzz"
+
+msgid "field.mobile_phone"
+msgstr "Zzzzzz"
+
+msgid "field.personal_url"
+msgstr "Zzzzzzzz"
+
+msgid "field.position"
+msgstr "Zzzzzzzz"
+
+msgid "field.preferred_name"
+msgstr "Zzzzzzzzz"
+
+msgid "field.sametime_sn"
+msgstr "Zzzzzzzz®"
+
+msgid "field.skype_sn"
+msgstr "Zzzzz™"
+
+msgid "field.supervisor"
+msgstr "Zzzzzzz"
+
+msgid "field.twitter_sn"
+msgstr "Zzzzzzz"
+
+msgid "field.work_phone"
+msgstr "Zzzz"
+
+msgid "field.yahoo_sn"
+msgstr "Zzzzz!™"
+
 #. (filename, match.size, match.uploader_name, match.local_date)
 #: share/skin/s3/javascript/lightbox/attachment.js:239
 msgid "file.add-or-replace=name,size,user,date?"
@@ -11818,13 +11895,8 @@ msgid "user.external-id-requirement-removed=name"
 msgstr "Zzzzzzzz ZZ zzzzzzzzzzz zzzzzzz zzz %1"
 
 #: share/skin/s3/template/element/settings/users_settings_section:17 share/skin/s3/template/element/settings/users_settings_section:26 share/plugin/control/template/control/add_user.html:28
-#, fuzzy
 msgid "user.first-name:"
-msgstr ""
-"#-#-#-#-#  z3.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
-"Zzzzz zzzz:\z"
-"#-#-#-#-#  zzzzzzz.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
-"Zzzzz Zzzz:"
+msgstr "Zzzzz zzzz:"
 
 #. ($user->username, $t)
 #: lib/Socialtext/CLI.pm:998
@@ -11859,13 +11931,8 @@ msgid "user.matching=query"
 msgstr "Zzzzz zzzzzzzz \"%1\""
 
 #: share/skin/s3/template/element/settings/users_settings_section:21 share/skin/s3/template/element/settings/users_settings_section:30 share/plugin/control/template/control/add_user.html:32
-#, fuzzy
 msgid "user.middle-name:"
-msgstr ""
-"#-#-#-#-#  z3.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
-"Zzzzzz zzzz:\z"
-"#-#-#-#-#  zzzzzzz.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
-"Zzzzzz Zzzz:"
+msgstr "Zzzzzz zzzz:"
 
 #: share/skin/s3/template/element/settings/users_settings_section:6 share/plugin/people/share/widgets/profile_edit/widget.html:44
 msgid "user.name"

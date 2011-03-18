@@ -6783,6 +6783,75 @@ msgstr "%1（由 %2 更新）"
 msgid "feed.watchlist=wiki,user"
 msgstr "%1：关注 %2"
 
+msgid "field.aol_sn"
+msgstr "AIM™"
+
+msgid "field.assistant"
+msgstr "助理"
+
+msgid "field.blog"
+msgstr "博客"
+
+msgid "field.company"
+msgstr "公司"
+
+msgid "field.email"
+msgstr "电子邮件地址"
+
+msgid "field.facebook_url"
+msgstr "Facebook™"
+
+msgid "field.first_name"
+msgstr "名字"
+
+msgid "field.gtalk_sn"
+msgstr "GTalk"
+
+msgid "field.home_phone"
+msgstr "住家电话"
+
+msgid "field.last_name"
+msgstr "姓氏"
+
+msgid "field.linkedin_url"
+msgstr "LinkedIn®"
+
+msgid "field.location"
+msgstr "地点"
+
+msgid "field.middle_name"
+msgstr "中间名"
+
+msgid "field.mobile_phone"
+msgstr "移动电话"
+
+msgid "field.personal_url"
+msgstr "个人网址"
+
+msgid "field.position"
+msgstr "职位"
+
+msgid "field.preferred_name"
+msgstr "自选名称"
+
+msgid "field.sametime_sn"
+msgstr "Sametime®"
+
+msgid "field.skype_sn"
+msgstr "Skype™"
+
+msgid "field.supervisor"
+msgstr "经理"
+
+msgid "field.twitter_sn"
+msgstr "Twitter"
+
+msgid "field.work_phone"
+msgstr "办公电话"
+
+msgid "field.yahoo_sn"
+msgstr "Yahoo!™"
+
 #. (filename, match.size, match.uploader_name, match.local_date)
 #: share/skin/s3/javascript/lightbox/attachment.js:239
 msgid "file.add-or-replace=name,size,user,date?"

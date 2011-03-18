@@ -1409,7 +1409,7 @@ msgstr "Email Address:"
 
 #: share/plugin/control/template/control/add_user.html:28
 msgid "user.first-name:"
-msgstr "First Name:"
+msgstr "First name:"
 
 #: share/plugin/control/template/control/add_user.html:36
 msgid "user.last-name:"
@@ -1417,7 +1417,7 @@ msgstr "Last name:"
 
 #: share/plugin/control/template/control/add_user.html:32
 msgid "user.middle-name:"
-msgstr "Middle Name:"
+msgstr "Middle name:"
 
 #: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:24 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:31
 msgid "wiki.title:"
