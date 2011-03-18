@@ -7,7 +7,7 @@ use Socialtext::CredentialsExtractor;
 use Socialtext::CredentialsExtractor::Extractor::CAC;
 use Socialtext::AppConfig;
 use Socialtext::Signal;
-use Test::Socialtext tests => 51;
+use Test::Socialtext tests => 53;
 use Test::Socialtext::User;
 
 fixtures(qw( empty ));
@@ -83,6 +83,28 @@ find_partially_provisioned_users: {
     my @found    = map { $_->username } @users;
     my @expected = map { $_->username } ($user_one, $user_two);
     is_deeply \@found, \@expected, 'Found partially provisioned Users';
+}
+
+###############################################################################
+# TEST: Finding partially provisioned Users is case IN-sensitive.
+find_partially_provisioned_users_is_case_insensitive: {
+    my %fields = (
+        first_name  => 'Pierre',
+        middle_name => 'Elliot',
+        last_name   => 'Trudeau',
+    );
+
+    my $user = create_test_user(%fields);
+    $user->add_restriction('require_external_id');
+
+    my @found = Socialtext::CredentialsExtractor::Extractor::CAC
+        ->_find_partially_provisioned_users(
+            first_name  => 'PIERRE',
+            middle_name => 'ELLIOT',
+            last_name   => 'TRUDEAU',
+        );
+    is @found, 1, 'Found one partially provisioned User';
+    is $found[0]->username, $user->username, '... case IN-sensitively';
 }
 
 ###############################################################################
