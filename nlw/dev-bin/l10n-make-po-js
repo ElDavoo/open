@@ -534,6 +534,7 @@ use constant CN2TW => {qw(
     文件         檔案
     必選         必填 
     可選         非必填
+    可選模塊     選用模組
     可選擇       可選擇       
     轉到         前往
     于           於
@@ -561,6 +562,7 @@ use constant CN2TW => {qw(
     當前         目前
     微博         微型部落格
     聯系         聯絡
+    標准         標準
 )};
 
 use constant CN2TW_ExactMatch => {qw(

@@ -1893,7 +1893,7 @@ msgstr "立刻关闭"
 
 #: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42 ../appliance/libsocialtext-appliance-perl/template/shutdown.html:1 ../appliance/libsocialtext-appliance-perl/template/shutdown.html:2
 msgid "console.shutdown"
-msgstr "关闭"
+msgstr "关机"
 
 #: ../appliance/libsocialtext-appliance-perl/template/setup.html:179
 msgid "console.signals-size-limit"

@@ -271,7 +271,7 @@
 "console.setup":"安装",
 "console.shut-down-appliance":"关闭设备",
 "console.shut-down-now":"立刻关闭",
-"console.shutdown":"关闭",
+"console.shutdown":"关机",
 "console.signals-size-limit":"讯息大小限制",
 "console.socialtext-appliance":"Socialtext 设备",
 "console.socialtext-desktop":"Socialtext 桌面",

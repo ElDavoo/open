@@ -1893,7 +1893,7 @@ msgstr "立刻關閉"
 
 #: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42 ../appliance/libsocialtext-appliance-perl/template/shutdown.html:1 ../appliance/libsocialtext-appliance-perl/template/shutdown.html:2
 msgid "console.shutdown"
-msgstr "關閉"
+msgstr "關機"
 
 #: ../appliance/libsocialtext-appliance-perl/template/setup.html:179
 msgid "console.signals-size-limit"
@@ -2611,7 +2611,7 @@ msgstr "圖像檔案："
 
 #: share/plugin/control/template/control/plugins:13
 msgid "control.installed-plugins:"
-msgstr "已安裝的非必填模組："
+msgstr "已安裝的選用模組："
 
 #: share/plugin/control/template/control/index.html:3
 msgid "control.introduction"
@@ -5440,7 +5440,7 @@ msgstr "建立一個新用戶時需要填寫密碼。"
 
 #: share/plugin/people/template/lite/people.html:39
 msgid "error.no-people-found"
-msgstr "沒有人員符合此標准。"
+msgstr "沒有人員符合此標準。"
 
 #: lib/Socialtext/CLI.pm:3029 lib/Socialtext/CLI.pm:3041 lib/Socialtext/CLI.pm:3410 lib/Socialtext/CLI.pm:764
 msgid "error.no-people-plugin"
@@ -8105,7 +8105,7 @@ msgstr "由 Socialtext 為您帶來。"
 
 #: share/plugin/people/template/invite:66
 msgid "invite.standard-welcome-message"
-msgstr "標准歡迎辭"
+msgstr "標準歡迎辭"
 
 #: share/plugin/people/template/email/invitation-body.html:51
 msgid "invite.thanks"
@@ -8142,7 +8142,7 @@ msgstr "新用戶會收到以下歡迎信："
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:140 share/skin/s3/template/element/settings/users_invite_section:95
 msgid "invite.welcome-message"
-msgstr "標准歡迎資訊"
+msgstr "標準歡迎資訊"
 
 #. ($workspace->title)
 #: lib/Socialtext/WorkspaceInvitation.pm:126 lib/Socialtext/WorkspaceInvitation.pm:94
