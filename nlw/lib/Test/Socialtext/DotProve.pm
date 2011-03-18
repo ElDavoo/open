@@ -1,7 +1,6 @@
 use 5.12.0;
 
 package Test::Socialtext::DotProve;
-
 use base 'Exporter';
 our @EXPORT_OK = qw(load save);
 
@@ -40,3 +39,26 @@ sub load {
     close FH;
     return $yaml;
 }
+
+__END__
+
+=head1 NAME
+
+Test::Socialtext::DotProve - Load and save .prove files
+
+=head1 SYNOPSIS
+
+    use Test::Socialtext::DotProve qw(load save);
+    my $prove = load(".prove");
+    save($prove, ".prove");
+
+=head1 DESCRIPTION
+
+This module provides save/load functions to C<.prove> files,
+used as part of build system integration with Hudson.
+
+=head1 SEE ALSO
+
+F<dev-bin/merge-prove>
+
+=cut
