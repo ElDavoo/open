@@ -2006,15 +2006,15 @@ msgstr "Socialtext 小工具編輯器"
 
 #: share/plugin/control/template/control/design-account.html:21
 msgid "control.about-account-logo-image"
-msgstr "您可以選擇一個圖像作為帳戶標誌。使用下面的表單從電腦上傳圖像。如果您未選擇圖像，則使用Socialtext的標誌。標誌的大小為寬201像素，高36像素，如果不符合該要求則圖像將被調整。上傳的標誌將立即在用戶的瀏覽器中顯示，或者在更新登入Socialtext桌面後顯示（非必填）。"
+msgstr "您可以選擇一個圖像作為帳戶標誌。使用下面的表單從電腦上傳圖像。如果您未選擇圖像，則使用 Socialtext 的標誌。標誌的大小為寬 201 像素，高 36 像素，如果不符合該要求則圖像將被調整。上傳的標誌將立即在用戶的瀏覽器中顯示，並在更新登入 Socialtext 桌面後顯示（非必填）。"
 
 #: share/plugin/control/template/control/index.html:26
 msgid "control.about-accounts-tab"
-msgstr "帳戶指一大群的用戶，其具有存取用戶目錄、交流對話以及其他內容特征的公共權限。每個帳戶可以設定不同的選項與設定，包括插件、視覺主題以及美化Socialtext桌面。您也可以對帳戶的使用情況進行查看，並對報告進行採納。"
+msgstr "帳戶指一大群的用戶，其具有存取用戶目錄、交流對話以及其他內容特征的公共權限。每個帳戶可以設定不同的選項與設定，包括插件、視覺主題以及美化 Socialtext 桌面。您也可以對帳戶的使用情況進行查看，並對報告進行採納。"
 
 #: share/plugin/control/template/control/index.html:8
 msgid "control.about-control-panel"
-msgstr "自此設備業務管理員可以管理與監控Socialtext套用的使用，包括帳戶、群組、工作區、用戶與報告。"
+msgstr "自此設備業務管理員可以管理與監控 Socialtext 設備的使用，包括帳戶、群組、工作區、用戶與報告。"
 
 #: share/plugin/control/template/control/index.html:15
 msgid "control.about-create-links"
@@ -2043,11 +2043,11 @@ msgstr "本系統的帳戶為『私有』。用戶必須由管理員邀請至帳
 
 #: share/plugin/control/template/control/settings.html:8
 msgid "control.about-self-join-accounts"
-msgstr "本系統的帳戶為『自行加入』。任何用戶都可以存取 Socialtext 套用程式，並加入預設帳戶，建立個人資料，以及對帳戶發送訊息。用戶可以邀請其他用戶加入到此帳戶中。"
+msgstr "本系統的帳戶為『自行加入』。任何用戶都可以存取 Socialtext 設備，並加入預設帳戶，建立個人資料，以及對帳戶發送訊息。用戶可以邀請其他用戶加入到此帳戶中。"
 
 #: share/plugin/control/template/control/index.html:34
 msgid "control.about-settings-tab"
-msgstr "管理全系統的套用設定"
+msgstr "管理全系統的設備設定"
 
 #: share/plugin/control/template/control/index.html:28
 msgid "control.about-users-tab"
@@ -2323,7 +2323,7 @@ msgstr "建立群組"
 
 #: share/plugin/control/share/javascript/lightbox/group-create.tt2:10
 msgid "control.create-a-socialtext-group"
-msgstr "建立Socialtext群組"
+msgstr "建立 Socialtext 群組"
 
 #: share/plugin/control/template/control/index.html:18
 msgid "control.create-a-user"
@@ -2426,11 +2426,11 @@ msgstr "描述"
 
 #: share/plugin/control/template/control/desktop-account.html:85
 msgid "control.desktop-skin-reset-to-current-apply-now?"
-msgstr "值已重置為目前。您希望現在開始套用嗎？"
+msgstr "值已重置為目前。您希望現在開始設備嗎？"
 
 #: share/plugin/control/template/control/desktop-account.html:71
 msgid "control.desktop-skin-reset-to-default-apply-now?"
-msgstr "值已重置為預設。您希望現在開始套用嗎？"
+msgstr "值已重置為預設。您希望現在開始設備嗎？"
 
 #: share/plugin/control/template/control/account.html:12
 msgid "control.disable-export-user-data"
@@ -2438,7 +2438,7 @@ msgstr "禁止輸出用戶資料"
 
 #: share/plugin/control/template/control/account.html:24
 msgid "control.disable-invitation-to-group"
-msgstr "禁止邀請加入本群組"
+msgstr "禁止邀請加入群組"
 
 #: share/plugin/control/template/control/edit_profile_field.html:8
 msgid "control.edit-field"
@@ -2449,11 +2449,11 @@ msgstr "電子郵件位址："
 
 #: share/plugin/control/template/control/account.html:15
 msgid "control.enable-export-user-data"
-msgstr "禁止輸出用戶資料"
+msgstr "開放輸出用戶資料"
 
 #: share/plugin/control/template/control/account.html:26
 msgid "control.enable-invitation-to-group"
-msgstr "禁止邀請加入本群組"
+msgstr "開放邀請加入群組"
 
 #. (exportable_accounts)
 #: share/plugin/control/template/control/accounts.html:24
@@ -9433,7 +9433,7 @@ msgstr "您要停用 %1。"
 
 #: share/plugin/control/template/control/plugins:30
 msgid "plugin.click-to-disable"
-msgstr "點選以禁止"
+msgstr "點選以停用"
 
 #: share/plugin/control/template/control/plugins:30
 msgid "plugin.click-to-enable"
