@@ -97,7 +97,16 @@ sub _get_entities {
             $all ? () : (viewer => $user),
         );
         $self->{_total_results} = $count;
-        return [ map { $_->group } @{ $results->() } ];
+
+        # This was:
+        #     return [ map { $_->group } @{ $results->() } ];
+        # but somehow it corrupts $_'s memory to "=cut " if LDAP
+        # is enabled; rewrite using named variable for now.
+        my @result;
+        for my $hit (@{ $results->() }) {
+            push @result, $hit->group;
+        }
+        return \@result;
     }
     else {
         if ($all) {

@@ -2,17 +2,21 @@
 | *Comment* | Test Case: User Restrictions |  |
 | *Comment* | Test Case: User Restrictions GUI and email checks NOTE: Other restrictions also in test_case_business_control_panel_confirm_user and test_case_command_line_user_restrictions |  |
 
+| st-config | set self_registration 1 |  |
+| st-config | set allow_network_invitation 1 |  |
+| st-appliance-config | set captcha_enabled 0 | Set captcha_enabled to 'UNDEF' |
 
 | *Comment* | Test Case: User Restrictions - Make sure emails are sent for change password and deactivate user |  |
 | set | acct | restrict%%start_time%% |
 | st-admin | create-account --name %%acct%% | was created |
 | set | ws | restrictws%%start_time%% |
 | set | emailaddr | %%ws%%@%%wikiemail%% |
+| set | new_pw | new_password |
 | st-admin | create-workspace --name %%ws%% --title %%ws%% --account %%acct%% | was created |
 | st-admin | create-user --e %%emailaddr%% --p %%password%% | was created |
-| st-admin | add-member --w %%ws%% --e %%username%% | now has the role of 'member' in the |
+| st-admin | add-member --w %%ws%% --e %%email%% | now has the role of 'member' in the |
 | st-admin | add-member --w %%ws%% --e %%emailaddr%% | now has the role of 'member' in the |
-| st-admin | add-workspace-admin --e %%username%% --w %%ws%% | now has the role of 'admin' in the |
+| st-admin | add-workspace-admin --e %%email%% --w %%ws%% | now has the role of 'admin' in the |
 
 | *Comment* | Test Case: User Restrictions - Make sure submitted emails /will/ become pages |  |
 | open_ok | /%%ws%%/ |  |
@@ -43,7 +47,7 @@
 | pause | 90000 |  |
 
 | *Comment* | Test Case: User Restrictions look for both confirmation emails |  |
-| st-login | %%username%% | %%password%% |
+| st-login | %%email%% | %%password%% |
 | open_ok | /%%ws%%/?action=recent_changes |  |
 | wait_for_element_visible_ok | link=Welcome to the lucite.socialtext.net community - please confirm your email to join | 30000 |
 | wait_for_element_visible_ok | link=2 Revisions | 30000 |
@@ -74,7 +78,7 @@
 | pause | 90000 |  |
 
 | *Comment* | Test Case: User Restrictions Check email delivery |  |
-| st-login | %%username%% | %%password%% |
+| st-login | %%email%% | %%password%% |
 | open_ok | /%%ws%% |  |
 | wait_for_element_visible_ok | link=What's New | 30000 |
 | click_and_wait | link=What's New |  |
@@ -93,10 +97,17 @@
 | wait_for_text_present_ok | Re-type Password: | 30000 |
 | wait_for_element_visible_ok | password | 30000 |
 | wait_for_element_visible_ok | password2 | 30000 |
-| type_ok | password | %%password%% |
-| type_ok | password2 | %%password%% |
+| type_ok | password | %%new_pw%% |
+| type_ok | password2 | %%new_pw%% |
 | wait_for_element_visible_ok | link=Register | 30000 |
 | click_and_wait | link=Register |  |
+| wait_for_text_present_ok | Welcome, New User | 30000 |
+
+| *Comment* | Test Case: User Restrictions make sure old password is deactivated |  |
+| st-logoutin | %%emailaddr%% | %%password%% |
+| wait_for_text_present_ok | Wrong email address or password - please try again | 30000 |
+| st-login | %%emailaddr%% | %%new_pw%% |
+| wait_for_text_present_ok | You are not authorized to view this workspace. | 30000 |
 
 | *Comment* | Test Case:User Restrictions TEARDOWN |  |
 | st-process-jobs |  |  |

@@ -22,6 +22,7 @@ Carefully set up the environment so the tests will run.
 | include | [Test case: Login Logout] |  |
 | include | [Test case: User Resets Password] |  |
 | include | [Test case: Admin Resets Password] |  |
+| include | [Test Case: User Restrictions] |  |
 
 | *Comment* | Default User Testcases: Re-enable LDAP. Bring the LDAP user back to life |  |
 | include | [Enable LDAP] |  |

@@ -24,10 +24,9 @@ This represents a search result hit and provides handy accessors.
 
 =cut
 
-has 'score'   => (is => 'ro', isa => 'Num', required => 1);
+has 'score'    => (is => 'ro', isa => 'Num', required => 1);
 has 'group_id' => (is => 'ro', isa => 'Int', required => 1);
-has 'group' =>
-    (is => 'ro', isa => 'Socialtext::Group', lazy_build => 1);
+has 'group'    => (is => 'ro', isa => 'Socialtext::Group', lazy_build => 1);
 
 sub _build_group {
     my $self = shift;

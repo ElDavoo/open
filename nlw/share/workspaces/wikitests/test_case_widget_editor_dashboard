@@ -1,6 +1,7 @@
-*This is as much of the Story as I can test without being able to type in the editor*
+*This is much as I can test without a way to type multi-line code into the editor*
 
 | *Comment* | Test Case: Widget Editor Dashboard |  |
+
 
 * Fixture: SocialWidgets
 
@@ -25,7 +26,19 @@
 | wait_for_text_present_ok | Hello, world! | 30000 |
 | select-frame | relative=parent |  |
 
+| *Comment* | Test Case: Widget Editor Dashboard type bad code in the editor |  |
+| wait_for_element_visible_ok | //iframe[1] | 30000 |
+| select-frame | //iframe[1] |  |
+| click_ok | //body |  |
+| type_ok | //body | `mal\nadicta` |
+| pause | 5000 | for buttons to activate |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Widget Editor Dashboard click preview |  |
+| wait_for_element_visible_ok | widget-preview | 30000 |
+| click_ok | widget-preview |  |
+| wait_for_text_present_ok | The file you provided does not appear to be valid | 30000 |
+
 | *Comment* | Test Case: Widget Editor Dashboard click cancel |  |
-| wait_for_element_visible_ok | widget-cancel | 30000 |
-| click_and_wait | widget-cancel |  |
-| wait_for_text_present_ok | This is the widget gallery | 30000 |
+| click_ok | widget-cancel |  |
+| wait_for_text_present_ok | This is the widget gallery |  |

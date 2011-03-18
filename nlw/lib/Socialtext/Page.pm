@@ -52,7 +52,6 @@ Readonly my $SYSTEM_EMAIL_ADDRESS       => 'noreply@socialtext.com';
 Readonly my $WIKITEXT_TYPE              => 'text/x.socialtext-wiki';
 Readonly my $HTML_TYPE                  => 'text/html';
 
-my $REFERENCE_TIME = undef;
 our $CACHING_DEBUG = 0;
 our $DISABLE_CACHING = 0;
 

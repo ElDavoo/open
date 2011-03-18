@@ -423,7 +423,7 @@ Lightbox screens:
 | click_ok | st-newpage-save-savebutton |  |
 | *Comment* | SlideShow INVISIBLE SAVE PAGE AS ALERT |  |
 | pause | %%pt%% |  |
-| verifyAlert | You must specify a page name |  |
+| verifyAlert | Please specify a page name. |  |
 | click_ok | st-newpage-save-cancelbutton |  |
 | wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
 | type_ok | st-newpage-pagename-edit | Announcements and Links |
