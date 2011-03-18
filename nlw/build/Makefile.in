@@ -363,7 +363,7 @@ hottest: .prove
 hudson-update: .prove
 
 .prove: hudson.prove
-	./dev-bin/merge-prove
+	merge-prove
 
 hudson.prove: get-hudson-prove
 
