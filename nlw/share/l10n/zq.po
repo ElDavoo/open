@@ -9626,6 +9626,9 @@ msgstr "«%*(%1,user)»"
 msgid "people.directory"
 msgstr "«People Directory»"
 
+msgid "people.edit-profile"
+msgstr "«(Edit)»"
+
 #: share/plugin/people/template/lite/profile.html:15
 msgid "people.follow"
 msgstr "«Follow»"

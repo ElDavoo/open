@@ -1606,6 +1606,7 @@
 "people.complete-your-profile":"Zzzzzz zzzzzzzz <a href=\"/st/edit_profile\">zzzz zzzzzzz</a> zzz.",
 "people.count=users":"[*,_1,zzzz]",
 "people.directory":"Zzzzzz Zzzzzzzzz",
+"people.edit-profile":"(Zzzz)",
 "people.follow":"Zzzzzz",
 "people.mobile:":"Zzzzzz:",
 "people.private-message-send":"Zzzz",

@@ -1607,6 +1607,7 @@
 "people.complete-your-profile":"请填写<a href=\"/st/edit_profile\">您的个人资料</a>。",
 "people.count=users":"[_1] 名用户",
 "people.directory":"人员名单",
+"people.edit-profile":"(编辑)",
 "people.follow":"关注",
 "people.mobile:":"移动电话：",
 "people.private-message-send":"发送",

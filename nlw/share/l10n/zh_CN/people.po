@@ -360,6 +360,9 @@ msgstr "%1 名用户"
 msgid "people.directory"
 msgstr "人员名单"
 
+msgid "people.edit-profile"
+msgstr "(编辑)"
+
 #: share/plugin/people/template/lite/profile.html:15
 msgid "people.follow"
 msgstr "关注"

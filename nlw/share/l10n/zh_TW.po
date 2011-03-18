@@ -9436,6 +9436,9 @@ msgstr "%1 名用戶"
 msgid "people.directory"
 msgstr "人員名單"
 
+msgid "people.edit-profile"
+msgstr "(編輯)"
+
 #: share/plugin/people/template/lite/profile.html:15
 msgid "people.follow"
 msgstr "關注"

@@ -1606,6 +1606,7 @@
 "people.complete-your-profile":"Please complete <a href=\"/st/edit_profile\">your profile</a> now.",
 "people.count=users":"[*,_1,user]",
 "people.directory":"People Directory",
+"people.edit-profile":"(Edit)",
 "people.follow":"Follow",
 "people.mobile:":"Mobile:",
 "people.private-message-send":"Send",
