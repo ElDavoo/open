@@ -3,31 +3,35 @@ $|=1;
 
 use strict;
 use warnings;
+use FindBin;
+use lib "$FindBin::Bin/../lib";
 use Getopt::Long;
 use Pod::Usage;
 use LWP::Simple qw(get);
 use YAML qw();
 use File::Path qw(rmtree);
 use List::MoreUtils qw(before last_index any all uniq);
-use File::Slurp qw(slurp);
+use File::Slurp qw(write_file slurp);
 use Text::ParseWords qw(quotewords);
+use Test::Socialtext::DotProve;
 
 ###############################################################################
 # Read in our command line arguments
 my ($help, $man, $verbose);
-my $stci_url = 'http://galena.socialtext.net/stci';
-my $branch   = 'master';
-my $testrun  = 'current';
-my $testset  = 'socialtext';
-my $dryrun   = undef;
-my $unittest = undef;
+my $hudson_url         = 'https://lucite.socialtext.net:9080';
+my $project            = 'Socialtext';
+my $build              = 'lastCompletedBuild';
+my $dot_prove          = 'artifacts/.prove';
+my $dryrun             = undef;
+my $unittest           = undef;
 my $count_all_failures = undef;
 my @candidates;
 
 GetOptions(
-    'stci=s'      => \$stci_url,
-    'branch=s'    => \$branch,
-    'run=s'       => \$testrun,
+    'hudson=s'    => \$hudson_url,
+    'project=s'   => \$project,
+    'build=s'     => \$build,
+    'dot-prove=s' => \$dot_prove,
     'dryrun'      => \$dryrun,
     'verbose'     => \$verbose,
     'candidate=s' => \@candidates,
@@ -55,12 +59,19 @@ unless (-e $unittest) {
 # last "clean" or "destructive" fixture, leading up to the failing test.
 unless (@candidates) {
     # get the YAML file outlining the order in which the tests were run.
-    verbose("Fetching test order for $branch/$testrun...");
-    my $order_yaml = get("$stci_url/$branch/$testrun/test-order.yaml");
-    die "Unable to get test order YAML file.\n" unless $order_yaml;
+    verbose("Fetching test order for $project...");
+    my $full_url   = "$hudson_url/job/$project/$build/artifact/$dot_prove";
+    my $prove_yaml = get($full_url);
+    die "Unable to get .prove from $project project.\n" unless $prove_yaml;
 
-    my $order     = YAML::Load($order_yaml);
-    my @all_tests = @{ $order->{$testset} };
+    # Parse the .prove file, and extract the list of tests run, in order
+    my $fname = ".prove.$$";
+    END { unlink $fname if ($fname && -e $fname) };
+    write_file($fname, $prove_yaml);
+    my $parsed    = Test::Socialtext::DotProve::load($fname);
+    my $tests     = $parsed->{tests};
+    my @all_tests = sort { $tests->{$a}{seq} <=> $tests->{$b}{seq} }
+        keys %{$tests};
 
     # everything before the failing test
     @candidates = before { $_ eq $unittest } @all_tests;
@@ -362,9 +373,10 @@ why-failing - find out why a unit test is failing
   why-failing [options] <test>
 
   Options:
-    --stci <url>        URL to STCI results (default Galena)
-    --branch <branch>   Branch test is failing on (default 'master')
-    --run <testrun>     Test run test is failing on (default 'current')
+    --hudson <url>      URL to Hudson
+    --project <project> Hudson Project test is failing on ("Socialtext")
+    --build <build>     Build to get test ordering from ("lastCompletedBuild")
+    --dot-prove <prove> Path to the .prove artifact ("artifacts/.prove")
     --candidate <test>  Specify candidate tests explicitly
     --all               Count all failures, not just ones in test
     --dryrun            Dry-run; show candidates, but don't run tests
@@ -373,7 +385,7 @@ why-failing - find out why a unit test is failing
     --man               Display full man page
 
   Example:
-    why-failing -v -b iteration-2009-03-27 t/Socialtext/HTMLArchive.t
+    why-failing -v t/Socialtext/HTMLArchive.t
 
 =head1 DESCRIPTION
 
@@ -411,23 +423,32 @@ environment>, including:
 
 =over
 
-=item B<--stci E<lt>urlE<gt>>
+=item B<--hudson E<lt>urlE<gt>>
 
-Specifies the URL to the STCI test results server.
+Specifies the URL to the Hudson Continuous Integration server.
 
-Defaults to C<http://galena.socialtext.net/stci>
+Defaults to C<https://lucite.socialtext.net:9080>
 
-=item B<--branch E<lt>branchE<gt>>
+=item B<--project E<lt>projectE<gt>>
 
-Specifies the branch whose test results we should be examining.
+Specifies the Project in Hudson whose test results we should be examining.
 
-Defaults to "master".
+Defaults to "Socialtext".
 
-=item B<--run E<lt>testrunE<gt>>
+=item B<--build E<lt>buildE<gt>>
 
-Specifies the test run whose results we should be examining.
+Specifies the build number whose results we should be examining.
 
-Defaults to "current", but "in-progress" is another viable option.
+Defaults to "lastCompletedBuild", but you can specify any build directly by
+number or by any of the other permalinks Hudson provides (e.g.
+"lastFailedBuild").
+
+=item B<--dot-prove E<lt>proveE<gt>>
+
+Specifies the path to the Hudson build artifact that contains the F<.prove>
+file.
+
+Defaults to F<artifacts/.prove>
 
 =item B<--candidate E<lt>testE<gt>>
 
