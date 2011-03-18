@@ -16,7 +16,7 @@ Verify that CAC authentication support works.
 | *Comment*     | Enable CAC support, and create a client-side SSL cert for our test User |                                             |
 | st-config     | set credentials_extractors CAC:Guest                                    |                                             |
 | st-client-ssl | server-on                                                               |                                             |
-| st-client-ssl | client-on                                                               | %%f_name%%.%%m_name%%.%%l_name%%.%%edipin%% |
+| st-client-ssl | client-on                                                               | %%l_name%%.%%f_name%%.%%m_name%%.%%edipin%% |
 
 | *Comment* | Check that the CAC credentials extractor works           |
 | GET       | %%https%%/st/dashboard                                   |
