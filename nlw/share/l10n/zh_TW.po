@@ -1964,45 +1964,35 @@ msgstr "網頁服務代理位址"
 msgid "console.your-email-address:"
 msgstr "您的電子郵件位址："
 
-#: lib/Socialtext/Gadgets/Container/Activities.pm:12
 msgid "container.activities"
-msgstr "Socialtext Activities"
+msgstr "Socialtext 活動"
 
-#: lib/Socialtext/Gadgets/Container/AccountDashboard.pm:12 lib/Socialtext/Gadgets/Container/Dashboard.pm:13
 msgid "container.dashboard"
-msgstr "Socialtext Dashboard"
+msgstr "Socialtext 顯示板"
 
-#: lib/Socialtext/Gadgets/Container/Explore.pm:14
 msgid "container.explore"
-msgstr "Socialtext Explore"
+msgstr "Socialtext 探索"
 
-#: lib/Socialtext/Gadgets/Container/GroupDirectory.pm:12
 msgid "container.group-directory"
-msgstr "Group Directory"
+msgstr "群組目錄"
 
-#: lib/Socialtext/Gadgets/Container/CreateGroup.pm:12 lib/Socialtext/Gadgets/Container/Group.pm:12
 msgid "container.groups"
-msgstr "Socialtext Groups"
+msgstr "Socialtext 群組"
 
-#: lib/Socialtext/Gadgets/Container/EditProfile.pm:12 lib/Socialtext/Gadgets/Container/ForbiddenProfile.pm:13 lib/Socialtext/Gadgets/Container/Profile.pm:12
 msgid "container.people"
-msgstr "Socialtext People"
+msgstr "Socialtext 人員"
 
-#: lib/Socialtext/Gadgets/Container/Signals.pm:14
 msgid "container.signals"
-msgstr "Socialtext Signals"
+msgstr "Socialtext 訊息"
 
-#: lib/Socialtext/Gadgets/Container/Signals/Signal.pm:17
 msgid "containers.signals-permalink"
-msgstr "Socialtext Signals - Permalink"
+msgstr "Socialtext 訊息 - 永久鏈結"
 
-#: lib/Socialtext/Gadgets/Container/Test.pm:12
 msgid "containers.test"
-msgstr "Test Container"
+msgstr "測試容器"
 
-#: lib/Socialtext/Gadgets/Container/WidgetEditor.pm:13
 msgid "containers.widget-editor"
-msgstr "Socialtext Widget Editor"
+msgstr "Socialtext 小工具編輯器"
 
 #: share/plugin/control/template/control/design-account.html:21
 msgid "control.about-account-logo-image"
@@ -3275,112 +3265,100 @@ msgid "date.wed"
 msgstr "周三"
 
 msgid "description.all_groups"
-msgstr "All Available Groups"
+msgstr "所有可用群組"
 
 msgid "description.all_tags"
-msgstr "Displays a tag cloud of all tags on people in Socialtext People."
+msgstr "以標籤雲方式顯示所有人員標籤。"
 
-#: share/plugin/widgets/share/widgets/blockerbugs/config.yaml:4
 msgid "description.blockerbugs"
-msgstr "Display a list of the open blocker bugs."
+msgstr "顯示阻滯開發的瑕疵列表。"
 
 msgid "description.edit_information"
-msgstr "Edit Group Information"
+msgstr "編輯群組資訊"
 
 msgid "description.edit_people"
-msgstr "Edit Group People"
+msgstr "編輯群組成員"
 
 msgid "description.explore"
-msgstr "Post signals and display activities, including signals and workspace events."
+msgstr "發布訊息及顯示活動，包含訊息與工作區活動。"
 
 msgid "description.explore_filters"
-msgstr "Filter bookmarks"
+msgstr "書籤過濾器"
 
 msgid "description.forbidden_profile"
-msgstr "Profile"
+msgstr "個人檔案"
 
 msgid "description.information"
-msgstr "Group Information"
+msgstr "群組資訊"
 
-#: share/plugin/widgets/share/widgets/iterationbugs/config.yaml:4
 msgid "description.iterationbugs"
-msgstr "Display a list of the bugs assigned to an iteration."
+msgstr "顯示目前開發周期的錯誤列表"
 
 msgid "description.membership"
-msgstr "Edit Group Membership"
+msgstr "編輯群組成員"
 
 msgid "description.my_groups"
-msgstr "My Groups"
+msgstr "我的群組"
 
-#: share/plugin/widgets/share/widgets/my_workspaces/config.yaml:5
 msgid "description.my_workspaces"
-msgstr "Lists all of the workspaces you have access to."
+msgstr "您所有的工作區"
 
-#: share/plugin/widgets/share/widgets/one_page/config.yaml:5
 msgid "description.one_page"
-msgstr "Displays a single wiki page within a Socialtext Widget."
+msgstr "在小工具里顯示一個共筆頁面。"
 
-#: share/plugin/widgets/share/widgets/one_spreadsheet/config.yaml:4
 msgid "description.one_spreadsheet"
-msgstr "Displays a single spreadsheet within a Socialtext Widget."
+msgstr "在小工具里顯示一個試算表。"
 
 msgid "description.people"
-msgstr "People in this group."
+msgstr "群組內的成員。"
 
 msgid "description.profile"
-msgstr "Profile"
+msgstr "個人檔案"
 
 msgid "description.profile_activities"
-msgstr "Activity"
+msgstr "活動"
 
 msgid "description.profile_edit"
-msgstr "Edit Profile"
+msgstr "編輯個人檔案"
 
 msgid "description.profile_network"
-msgstr "People associated with you in your groups."
+msgstr "與您有關聯的人"
 
 msgid "description.profile_tags"
-msgstr "Tags"
+msgstr "標籤"
 
-#: share/plugin/widgets/share/widgets/rest_api/config.yaml:4
 msgid "description.rest_api"
-msgstr "Rest API Devtool"
+msgstr "REST API 開發工具"
 
-#: share/plugin/widgets/share/widgets/rss/config.yaml:4
 msgid "description.rss"
-msgstr "Displays an RSS feed."
+msgstr "訂閱一個 RSS 來源"
 
 msgid "description.signals-profile"
-msgstr "Lets a user create signals and display signals from others."
+msgstr "建立及顯示訊息"
 
-#: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:4
 msgid "description.tag_cloud"
-msgstr "Displays a tag cloud of all tags in a particular workspace."
+msgstr "以標籤雲方式顯示特定工作區中的頁面標籤。"
 
-#: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:4
 msgid "description.tagged_pages"
-msgstr "Displays a list of pages with a certain tag"
+msgstr "顯示具特定標籤的頁面列表"
 
 msgid "description.teaser"
-msgstr "Coming Soon"
+msgstr "即將推出"
 
-#: share/plugin/widgets/share/widgets/testrunner/config.yaml:4
 msgid "description.testrunner"
-msgstr "Keep an eye on Testrunner results."
+msgstr "測試運行現況"
 
-#: share/plugin/widgets/share/widgets/userlist/config.yaml:5
 msgid "description.userlist"
-msgstr "Post signals and display activities, including signals and workspace events."
+msgstr "發布訊息及顯示活動，包含訊息與工作區活動。"
 
 msgid "description.widget_editor"
-msgstr "Edit a widget"
+msgstr "編輯小工具"
 
-#: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:4
 msgid "description.workspace_activity"
-msgstr "Show edits"
+msgstr "顯示編輯活動"
 
 msgid "description.workspaces"
-msgstr "Lists all of the workspaces in the current group"
+msgstr "列出群組中的所有工作區"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:774
 msgid "desktop.relogin-for-default-logo"
@@ -11270,117 +11248,98 @@ msgstr "%1 秒"
 msgid "time.weeks=count"
 msgstr "%1 周"
 
-#: share/plugin/widgets/share/widgets/active_members/config.yaml:4
 msgid "title.active_members"
-msgstr "Active People"
+msgstr "熱門用戶"
 
-#: share/plugin/groups/share/widgets/all_groups/config.yaml:3
 msgid "title.all_groups"
-msgstr "All Available Groups"
+msgstr "所有可用群組"
 
 msgid "title.all_tags"
-msgstr "All People Tags"
+msgstr "所有人員標籤"
 
-#: share/plugin/widgets/share/widgets/blockerbugs/config.yaml:3
 msgid "title.blockerbugs"
-msgstr "Open Blocker Bugs"
+msgstr "阻滯開發瑕疵"
 
 msgid "title.edit_information"
-msgstr "Information"
+msgstr "資訊"
 
 msgid "title.edit_people"
-msgstr "Membership"
+msgstr "成員"
 
-#: share/plugin/signals/share/widgets/explore_filters/config.yaml:4
 msgid "title.explore_filters"
-msgstr "Filters"
+msgstr "篩選"
 
 msgid "title.forbidden_profile"
-msgstr "Profile"
+msgstr "個人檔案"
 
 msgid "title.information"
-msgstr "Information"
+msgstr "資訊"
 
-#: share/plugin/widgets/share/widgets/iterationbugs/config.yaml:3
 msgid "title.iterationbugs"
-msgstr "Iteration Bugs"
+msgstr "開發周期瑕疵"
 
 msgid "title.my_groups"
-msgstr "My Groups"
+msgstr "我的群組"
 
-#: share/plugin/widgets/share/widgets/my_workspaces/config.yaml:4
 msgid "title.my_workspaces"
-msgstr "Workspaces"
+msgstr "工作區"
 
-#: share/plugin/widgets/share/widgets/one_page/config.yaml:4
 msgid "title.one_page"
-msgstr "Wiki Page"
+msgstr "共筆頁面"
 
-#: share/plugin/widgets/share/widgets/one_spreadsheet/config.yaml:3
 msgid "title.one_spreadsheet"
-msgstr "Spreadsheet Page"
+msgstr "試算表頁面"
 
-#: share/plugin/groups/share/widgets/people/config.yaml:3
 msgid "title.people"
-msgstr "Membership"
+msgstr "成員"
 
 msgid "title.profile"
-msgstr "Profile"
+msgstr "個人檔案"
 
-#: share/plugin/people/share/widgets/profile_activities/config.yaml:3
 msgid "title.profile_activities"
-msgstr "Activity"
+msgstr "活動"
 
 msgid "title.profile_edit"
-msgstr "Edit Profile"
+msgstr "編輯個人檔案"
 
 msgid "title.profile_network"
-msgstr "Colleagues"
+msgstr "同事"
 
 msgid "title.profile_tags"
-msgstr "Tags"
+msgstr "標籤"
 
-#: share/plugin/widgets/share/widgets/rest_api/config.yaml:3
 msgid "title.rest_api"
-msgstr "Rest API Devtool"
+msgstr "REST API 開發工具"
 
-#: share/plugin/widgets/share/widgets/rss/config.yaml:3
 msgid "title.rss"
-msgstr "RSS Viewer"
+msgstr "RSS 閱讀器"
 
-#: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:3
 msgid "title.tag_cloud"
-msgstr "Workspace Tags"
+msgstr "工作區標籤"
 
-#: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:3
 msgid "title.tagged_pages"
-msgstr "Pages tagged X"
+msgstr "具有某標籤的頁面"
 
 msgid "title.teaser"
-msgstr "Workspaces"
+msgstr "工作區"
 
-#: share/plugin/widgets/share/widgets/testrunner/config.yaml:3
 msgid "title.testrunner"
-msgstr "Test Results"
+msgstr "測試結果"
 
-#: share/plugin/widgets/share/widgets/top_content/config.yaml:4
 msgid "title.top_content"
-msgstr "Active Content"
+msgstr "熱門內容"
 
-#: share/plugin/widgets/share/widgets/userlist/config.yaml:4
 msgid "title.userlist"
-msgstr "Online Users"
+msgstr "在線用戶"
 
-#: share/plugin/dashboard/share/widgets/widget_editor/config.yaml:4
 msgid "title.widget_editor"
-msgstr "Widget Editor"
+msgstr "小工具編輯器"
 
-#: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:3
 msgid "title.workspace_activity"
-msgstr "Report-o-rama!"
+msgstr "報出個未來"
 
 msgid "title.workspaces"
-msgstr "Workspaces"
+msgstr "工作區"
 
 #: share/plugin/twilio/template/element/settings/twilio_settings_section:31
 msgid "twilio.edit-profile"

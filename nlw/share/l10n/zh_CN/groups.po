@@ -11,39 +11,39 @@ msgstr ""
 
 #: share/plugin/groups/share/widgets/all_groups/config.yaml:4
 msgid "description.all_groups"
-msgstr "All Available Groups"
+msgstr "所有可用群组"
 
 #: share/plugin/groups/share/widgets/edit_information/config.yaml:4
 msgid "description.edit_information"
-msgstr "Edit Group Information"
+msgstr "编辑群组信息"
 
 #: share/plugin/groups/share/widgets/edit_people/config.yaml:4
 msgid "description.edit_people"
-msgstr "Edit Group People"
+msgstr "编辑群组成员"
 
 #: share/plugin/groups/share/widgets/information/config.yaml:4
 msgid "description.information"
-msgstr "Group Information"
+msgstr "群组信息"
 
 #: share/plugin/groups/share/widgets/membership/config.yaml:4
 msgid "description.membership"
-msgstr "Edit Group Membership"
+msgstr "编辑群组成员"
 
 #: share/plugin/groups/share/widgets/my_groups/config.yaml:4
 msgid "description.my_groups"
-msgstr "My Groups"
+msgstr "我的群组"
 
 #: share/plugin/groups/share/widgets/people/config.yaml:4
 msgid "description.people"
-msgstr "People in this group."
+msgstr "群组内的成员。"
 
 #: share/plugin/groups/share/widgets/teaser/config.yaml:4
 msgid "description.teaser"
-msgstr "Coming Soon"
+msgstr "即将推出"
 
 #: share/plugin/groups/share/widgets/workspaces/config.yaml:4
 msgid "description.workspaces"
-msgstr "Lists all of the workspaces in the current group"
+msgstr "列出群组中的所有工作区"
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:64
 #: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:20
@@ -549,35 +549,35 @@ msgstr "排序按照："
 
 #: share/plugin/groups/share/widgets/all_groups/config.yaml:3
 msgid "title.all_groups"
-msgstr "All Available Groups"
+msgstr "所有可用群组"
 
 #: share/plugin/groups/share/widgets/edit_information/config.yaml:3
 msgid "title.edit_information"
-msgstr "Information"
+msgstr "信息"
 
 #: share/plugin/groups/share/widgets/edit_people/config.yaml:3
 msgid "title.edit_people"
-msgstr "Membership"
+msgstr "成员"
 
 #: share/plugin/groups/share/widgets/information/config.yaml:3
 msgid "title.information"
-msgstr "Information"
+msgstr "信息"
 
 #: share/plugin/groups/share/widgets/my_groups/config.yaml:3
 msgid "title.my_groups"
-msgstr "My Groups"
+msgstr "我的群组"
 
 #: share/plugin/groups/share/widgets/people/config.yaml:3
 msgid "title.people"
-msgstr "Membership"
+msgstr "成员"
 
 #: share/plugin/groups/share/widgets/teaser/config.yaml:3
 msgid "title.teaser"
-msgstr "Workspaces"
+msgstr "工作区"
 
 #: share/plugin/groups/share/widgets/workspaces/config.yaml:3
 msgid "title.workspaces"
-msgstr "Workspaces"
+msgstr "工作区"
 
 #: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:17
 msgid "wiki.create"

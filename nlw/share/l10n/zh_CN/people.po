@@ -11,31 +11,31 @@ msgstr ""
 
 #: share/plugin/people/share/widgets/all_tags/config.yaml:4
 msgid "description.all_tags"
-msgstr "Displays a tag cloud of all tags on people in Socialtext People."
+msgstr "以标签云方式显示所有人员标签。"
 
 #: share/plugin/people/share/widgets/forbidden_profile/config.yaml:5
 msgid "description.forbidden_profile"
-msgstr "Profile"
+msgstr "个人档案"
 
 #: share/plugin/people/share/widgets/profile/config.yaml:5
 msgid "description.profile"
-msgstr "Profile"
+msgstr "个人档案"
 
 #: share/plugin/people/share/widgets/profile_activities/config.yaml:4
 msgid "description.profile_activities"
-msgstr "Activity"
+msgstr "活动"
 
 #: share/plugin/people/share/widgets/profile_edit/config.yaml:4
 msgid "description.profile_edit"
-msgstr "Edit Profile"
+msgstr "编辑个人档案"
 
 #: share/plugin/people/share/widgets/profile_network/config.yaml:4
 msgid "description.profile_network"
-msgstr "People associated with you in your groups."
+msgstr "与您有关联的人"
 
 #: share/plugin/people/share/widgets/profile_tags/config.yaml:5
 msgid "description.profile_tags"
-msgstr "Tags"
+msgstr "标签"
 
 #: share/plugin/people/template/invite:109
 msgid "do.cancel"
@@ -603,31 +603,31 @@ msgstr "添加标签"
 
 #: share/plugin/people/share/widgets/all_tags/config.yaml:3
 msgid "title.all_tags"
-msgstr "All People Tags"
+msgstr "所有人员标签"
 
 #: share/plugin/people/share/widgets/forbidden_profile/config.yaml:4
 msgid "title.forbidden_profile"
-msgstr "Profile"
+msgstr "个人档案"
 
 #: share/plugin/people/share/widgets/profile/config.yaml:4
 msgid "title.profile"
-msgstr "Profile"
+msgstr "个人档案"
 
 #: share/plugin/people/share/widgets/profile_activities/config.yaml:3
 msgid "title.profile_activities"
-msgstr "Activity"
+msgstr "活动"
 
 #: share/plugin/people/share/widgets/profile_edit/config.yaml:3
 msgid "title.profile_edit"
-msgstr "Edit Profile"
+msgstr "编辑个人档案"
 
 #: share/plugin/people/share/widgets/profile_network/config.yaml:3
 msgid "title.profile_network"
-msgstr "Colleagues"
+msgstr "同事"
 
 #: share/plugin/people/share/widgets/profile_tags/config.yaml:4
 msgid "title.profile_tags"
-msgstr "Tags"
+msgstr "标签"
 
 #: share/plugin/people/share/widgets/profile_edit/widget.html:44
 msgid "user.name"

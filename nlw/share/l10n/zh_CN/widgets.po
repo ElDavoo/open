@@ -401,112 +401,112 @@ msgid "bookmarklet.tip"
 msgstr "小秘诀：您可利用“"
 
 msgid "description.all_groups"
-msgstr "All Available Groups"
+msgstr "所有可用群组"
 
 msgid "description.all_tags"
-msgstr "Displays a tag cloud of all tags on people in Socialtext People."
+msgstr "以标签云方式显示所有人员标签。"
 
 #: share/plugin/widgets/share/widgets/blockerbugs/config.yaml:4
 msgid "description.blockerbugs"
-msgstr "Display a list of the open blocker bugs."
+msgstr "显示阻滞开发的瑕疵列表。"
 
 msgid "description.edit_information"
-msgstr "Edit Group Information"
+msgstr "编辑群组信息"
 
 msgid "description.edit_people"
-msgstr "Edit Group People"
+msgstr "编辑群组成员"
 
 msgid "description.explore"
-msgstr "Post signals and display activities, including signals and workspace events."
+msgstr "发布讯息及显示活动，包含讯息与工作区活动。"
 
 msgid "description.explore_filters"
-msgstr "Filter bookmarks"
+msgstr "书签过滤器"
 
 msgid "description.forbidden_profile"
-msgstr "Profile"
+msgstr "个人档案"
 
 msgid "description.information"
-msgstr "Group Information"
+msgstr "群组信息"
 
 #: share/plugin/widgets/share/widgets/iterationbugs/config.yaml:4
 msgid "description.iterationbugs"
-msgstr "Display a list of the bugs assigned to an iteration."
+msgstr "显示当前开发周期的错误列表"
 
 msgid "description.membership"
-msgstr "Edit Group Membership"
+msgstr "编辑群组成员"
 
 msgid "description.my_groups"
-msgstr "My Groups"
+msgstr "我的群组"
 
 #: share/plugin/widgets/share/widgets/my_workspaces/config.yaml:5
 msgid "description.my_workspaces"
-msgstr "Lists all of the workspaces you have access to."
+msgstr "您所有的工作区"
 
 #: share/plugin/widgets/share/widgets/one_page/config.yaml:5
 msgid "description.one_page"
-msgstr "Displays a single wiki page within a Socialtext Widget."
+msgstr "在小工具里显示一个共笔页面。"
 
 #: share/plugin/widgets/share/widgets/one_spreadsheet/config.yaml:4
 msgid "description.one_spreadsheet"
-msgstr "Displays a single spreadsheet within a Socialtext Widget."
+msgstr "在小工具里显示一个电子表格。"
 
 msgid "description.people"
-msgstr "People in this group."
+msgstr "群组内的成员。"
 
 msgid "description.profile"
-msgstr "Profile"
+msgstr "个人档案"
 
 msgid "description.profile_activities"
-msgstr "Activity"
+msgstr "活动"
 
 msgid "description.profile_edit"
-msgstr "Edit Profile"
+msgstr "编辑个人档案"
 
 msgid "description.profile_network"
-msgstr "People associated with you in your groups."
+msgstr "与您有关联的人"
 
 msgid "description.profile_tags"
-msgstr "Tags"
+msgstr "标签"
 
 #: share/plugin/widgets/share/widgets/rest_api/config.yaml:4
 msgid "description.rest_api"
-msgstr "Rest API Devtool"
+msgstr "REST API 开发工具"
 
 #: share/plugin/widgets/share/widgets/rss/config.yaml:4
 msgid "description.rss"
-msgstr "Displays an RSS feed."
+msgstr "订阅一个 RSS 来源"
 
 msgid "description.signals-profile"
-msgstr "Lets a user create signals and display signals from others."
+msgstr "创建及显示讯息"
 
 #: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:4
 msgid "description.tag_cloud"
-msgstr "Displays a tag cloud of all tags in a particular workspace."
+msgstr "以标签云方式显示特定工作区中的页面标签。"
 
 #: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:4
 msgid "description.tagged_pages"
-msgstr "Displays a list of pages with a certain tag"
+msgstr "显示具特定标签的页面列表"
 
 msgid "description.teaser"
-msgstr "Coming Soon"
+msgstr "即将推出"
 
 #: share/plugin/widgets/share/widgets/testrunner/config.yaml:4
 msgid "description.testrunner"
-msgstr "Keep an eye on Testrunner results."
+msgstr "测试运行现况"
 
 #: share/plugin/widgets/share/widgets/userlist/config.yaml:5
 msgid "description.userlist"
-msgstr "Post signals and display activities, including signals and workspace events."
+msgstr "发布讯息及显示活动，包含讯息与工作区活动。"
 
 msgid "description.widget_editor"
-msgstr "Edit a widget"
+msgstr "编辑小工具"
 
 #: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:4
 msgid "description.workspace_activity"
-msgstr "Show edits"
+msgstr "显示编辑活动"
 
 msgid "description.workspaces"
-msgstr "Lists all of the workspaces in the current group"
+msgstr "列出群组中的所有工作区"
 
 #: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:18
 #: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:17
@@ -918,95 +918,95 @@ msgstr "您在做什么呢？"
 
 #: share/plugin/widgets/share/widgets/active_members/config.yaml:4
 msgid "title.active_members"
-msgstr "Active People"
+msgstr "热门用户"
 
 msgid "title.all_tags"
-msgstr "All People Tags"
+msgstr "所有人员标签"
 
 #: share/plugin/widgets/share/widgets/blockerbugs/config.yaml:3
 msgid "title.blockerbugs"
-msgstr "Open Blocker Bugs"
+msgstr "阻滞开发瑕疵"
 
 msgid "title.edit_information"
-msgstr "Information"
+msgstr "信息"
 
 msgid "title.edit_people"
-msgstr "Membership"
+msgstr "成员"
 
 msgid "title.forbidden_profile"
-msgstr "Profile"
+msgstr "个人档案"
 
 msgid "title.information"
-msgstr "Information"
+msgstr "信息"
 
 #: share/plugin/widgets/share/widgets/iterationbugs/config.yaml:3
 msgid "title.iterationbugs"
-msgstr "Iteration Bugs"
+msgstr "开发周期瑕疵"
 
 msgid "title.my_groups"
-msgstr "My Groups"
+msgstr "我的群组"
 
 #: share/plugin/widgets/share/widgets/my_workspaces/config.yaml:4
 msgid "title.my_workspaces"
-msgstr "Workspaces"
+msgstr "工作区"
 
 #: share/plugin/widgets/share/widgets/one_page/config.yaml:4
 msgid "title.one_page"
-msgstr "Wiki Page"
+msgstr "共笔页面"
 
 #: share/plugin/widgets/share/widgets/one_spreadsheet/config.yaml:3
 msgid "title.one_spreadsheet"
-msgstr "Spreadsheet Page"
+msgstr "电子表格页面"
 
 msgid "title.profile"
-msgstr "Profile"
+msgstr "个人档案"
 
 msgid "title.profile_edit"
-msgstr "Edit Profile"
+msgstr "编辑个人档案"
 
 msgid "title.profile_network"
-msgstr "Colleagues"
+msgstr "同事"
 
 msgid "title.profile_tags"
-msgstr "Tags"
+msgstr "标签"
 
 #: share/plugin/widgets/share/widgets/rest_api/config.yaml:3
 msgid "title.rest_api"
-msgstr "Rest API Devtool"
+msgstr "REST API 开发工具"
 
 #: share/plugin/widgets/share/widgets/rss/config.yaml:3
 msgid "title.rss"
-msgstr "RSS Viewer"
+msgstr "RSS 阅读器"
 
 #: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:3
 msgid "title.tag_cloud"
-msgstr "Workspace Tags"
+msgstr "工作区标签"
 
 #: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:3
 msgid "title.tagged_pages"
-msgstr "Pages tagged X"
+msgstr "具有某标签的页面"
 
 msgid "title.teaser"
-msgstr "Workspaces"
+msgstr "工作区"
 
 #: share/plugin/widgets/share/widgets/testrunner/config.yaml:3
 msgid "title.testrunner"
-msgstr "Test Results"
+msgstr "测试结果"
 
 #: share/plugin/widgets/share/widgets/top_content/config.yaml:4
 msgid "title.top_content"
-msgstr "Active Content"
+msgstr "热门内容"
 
 #: share/plugin/widgets/share/widgets/userlist/config.yaml:4
 msgid "title.userlist"
-msgstr "Online Users"
+msgstr "在线用户"
 
 #: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:3
 msgid "title.workspace_activity"
-msgstr "Report-o-rama!"
+msgstr "报出个未来"
 
 msgid "title.workspaces"
-msgstr "Workspaces"
+msgstr "工作区"
 
 #: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:9
 msgid "video.title:"

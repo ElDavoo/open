@@ -77,7 +77,7 @@ msgstr "下面的小工具将会被推送："
 
 #: share/plugin/dashboard/share/widgets/widget_editor/config.yaml:5
 msgid "description.widget_editor"
-msgstr "Edit a widget"
+msgstr "编辑小工具"
 
 #: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:20
 #: share/plugin/dashboard/template/dashboard_links:18
@@ -131,4 +131,4 @@ msgstr "点击下面的<b>保存</b>使当前显示板成为您帐户的默认�
 
 #: share/plugin/dashboard/share/widgets/widget_editor/config.yaml:4
 msgid "title.widget_editor"
-msgstr "Widget Editor"
+msgstr "小工具编辑器"

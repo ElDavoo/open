@@ -797,47 +797,47 @@ msgstr "工作区：退出"
 
 #: lib/Socialtext/Gadgets/Container/Activities.pm:12
 msgid "container.activities"
-msgstr "Socialtext Activities"
+msgstr "Socialtext 活动"
 
 #: lib/Socialtext/Gadgets/Container/AccountDashboard.pm:12
 #: lib/Socialtext/Gadgets/Container/Dashboard.pm:13
 msgid "container.dashboard"
-msgstr "Socialtext Dashboard"
+msgstr "Socialtext 显示板"
 
 #: lib/Socialtext/Gadgets/Container/Explore.pm:14
 msgid "container.explore"
-msgstr "Socialtext Explore"
+msgstr "Socialtext 探索"
 
 #: lib/Socialtext/Gadgets/Container/GroupDirectory.pm:12
 msgid "container.group-directory"
-msgstr "Group Directory"
+msgstr "群组目录"
 
 #: lib/Socialtext/Gadgets/Container/CreateGroup.pm:12
 #: lib/Socialtext/Gadgets/Container/Group.pm:12
 msgid "container.groups"
-msgstr "Socialtext Groups"
+msgstr "Socialtext 群组"
 
 #: lib/Socialtext/Gadgets/Container/EditProfile.pm:12
 #: lib/Socialtext/Gadgets/Container/ForbiddenProfile.pm:13
 #: lib/Socialtext/Gadgets/Container/Profile.pm:12
 msgid "container.people"
-msgstr "Socialtext People"
+msgstr "Socialtext 人员"
 
 #: lib/Socialtext/Gadgets/Container/Signals.pm:14
 msgid "container.signals"
-msgstr "Socialtext Signals"
+msgstr "Socialtext 讯息"
 
 #: lib/Socialtext/Gadgets/Container/Signals/Signal.pm:17
 msgid "containers.signals-permalink"
-msgstr "Socialtext Signals - Permalink"
+msgstr "Socialtext 讯息 - 永久链接"
 
 #: lib/Socialtext/Gadgets/Container/Test.pm:12
 msgid "containers.test"
-msgstr "Test Container"
+msgstr "测试容器"
 
 #: lib/Socialtext/Gadgets/Container/WidgetEditor.pm:13
 msgid "containers.widget-editor"
-msgstr "Socialtext Widget Editor"
+msgstr "Socialtext 小工具编辑器"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:2190
 msgid "control.new-wiki"

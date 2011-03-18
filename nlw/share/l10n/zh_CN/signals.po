@@ -11,15 +11,15 @@ msgstr ""
 
 #: share/plugin/signals/share/widgets/explore/config.yaml:5
 msgid "description.explore"
-msgstr "Post signals and display activities, including signals and workspace events."
+msgstr "发布讯息及显示活动，包含讯息与工作区活动。"
 
 #: share/plugin/signals/share/widgets/explore_filters/config.yaml:5
 msgid "description.explore_filters"
-msgstr "Filter bookmarks"
+msgstr "书签过滤器"
 
 #: share/plugin/signals/share/widgets/profile/config.yaml:4
 msgid "description.profile"
-msgstr "Profile"
+msgstr "个人档案"
 
 #: share/plugin/signals/share/javascript/lightbox/explore-about.tt2:17
 msgid "do.close"
@@ -412,8 +412,8 @@ msgstr "您的设置"
 
 #: share/plugin/signals/share/widgets/explore_filters/config.yaml:4
 msgid "title.explore_filters"
-msgstr "Filters"
+msgstr "筛选"
 
 #: share/plugin/signals/share/widgets/profile/config.yaml:3
 msgid "title.profile"
-msgstr "Profile"
+msgstr "个人档案"
