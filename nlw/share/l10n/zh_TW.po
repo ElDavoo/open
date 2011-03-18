@@ -2010,7 +2010,7 @@ msgstr "您可以選擇一個圖像作為帳戶標誌。使用下面的表單從
 
 #: share/plugin/control/template/control/index.html:26
 msgid "control.about-accounts-tab"
-msgstr "帳戶指一大群的用戶，其具有存取用戶目錄、交流對話以及其他內容特征的公共權限。每個帳戶可以設定不同的選項與設定，包括插件、視覺主題以及美化 Socialtext 桌面。您也可以對帳戶的使用情況進行查看，並對報告進行採納。"
+msgstr "帳戶指一大群的用戶，其具有存取用戶目錄、交流對話以及其他內容特徵的公共權限。每個帳戶可以設定不同的選項與設定，包括插件、視覺主題以及美化 Socialtext 桌面。您也可以對帳戶的使用情況進行查看，並對報告進行採納。"
 
 #: share/plugin/control/template/control/index.html:8
 msgid "control.about-control-panel"
@@ -2482,7 +2482,7 @@ msgstr "外部ID："
 
 #: share/plugin/control/template/control/account.html:227
 msgid "control.features-and-skins"
-msgstr "特征與視覺主題"
+msgstr "特徵與視覺主題"
 
 #: share/plugin/control/template/control/field_common:4 share/plugin/control/template/control/field_common:7
 msgid "control.field-contact"

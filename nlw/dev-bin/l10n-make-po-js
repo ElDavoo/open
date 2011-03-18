@@ -563,6 +563,7 @@ use constant CN2TW => {qw(
     微博         微型部落格
     聯系         聯絡
     標准         標準
+    特征         特徵
 )};
 
 use constant CN2TW_ExactMatch => {qw(
