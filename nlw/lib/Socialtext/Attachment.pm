@@ -265,7 +265,12 @@ sub inline {
     my $page = $self->page;
     my $guard = $self->hub->pages->ensure_current($page);
     $page->edit_rev();
-    $page->prepend($self->image_or_file_wafl());
+
+    my $body_ref = $page->body_ref;
+    my $body_new = $self->image_or_file_wafl() . $$body_ref;
+    $body_ref = \$body_new;
+    $page->body_ref(\$body_new);
+
     $page->store(user => $user);
 }
 
