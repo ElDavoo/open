@@ -52,7 +52,7 @@ LogFormat "%{User-agent}i" agent
 
 [% SET LOG_DATE_FILTER = "perl -MDateTime -MDateTime::TimeZone -pwE '"
     _ 'our ($tm, $tz, $dst);'
-    _ 'BEGIN { $|=1; $dst = (localtime)[8] }'
+    _ 'BEGIN { $|=1; $dst = (localtime)[8]; $tm = 0 }'
     _ 'if (abs(time - $tm) > 60) {'
         _ '$tm = time;'
         _ 'if ($dst != (localtime)[8]) {'
