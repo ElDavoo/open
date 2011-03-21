@@ -39,6 +39,7 @@ PROVE_ARGS =
 PROVE = nice st-prove --timer --state=save $(PROVE_ARGS)
 TEST_JOBS = 4
 UNIT_TESTS  = $(shell find -L t/ -name '*.t' -not -regex '^t/live/.*' | dev-bin/fixture-sort)
+JS_TESTS  = $(shell find -L t/ -name '*.t.js')
 WIKID_TESTS = $(shell find -L t/wikitests/ -name '*.wiki')
 REPORTS_TESTS = $(shell find -L ../socialtext-reports/t/ -name '*.t')
 CONSOLE_TESTS = $(shell find -L ../appliance/libsocialtext-appliance-perl/t/ -name '*.t')
@@ -332,13 +333,16 @@ tardist: MANIFEST $(PERL_MAKEFILE)
 	$(PERL_MAKE) tardist
 
 test:
-	@$(PROVE) --jobs $(TEST_JOBS) $(UNIT_TESTS) $(WIKID_TESTS)
+	@$(PROVE) --jobs $(TEST_JOBS) $(UNIT_TESTS) $(JS_TESTS) $(WIKID_TESTS)
 
 testunit:
 	@$(PROVE) --jobs $(TEST_JOBS) $(UNIT_TESTS)
 
 testwikid:
 	@$(PROVE) --jobs $(TEST_JOBS) $(WIKID_TESTS)
+
+testjs:
+	@$(PROVE) --jobs $(TEST_JOBS) $(JS_TESTS)
 
 testreports:
 	@$(PROVE) --jobs $(TEST_JOBS) $(REPORTS_TESTS)
