@@ -393,7 +393,6 @@ sub load_revision_metadata {
             unless ($editor) {
                 push @{$self->{pages_with_default_editor}}, {
                     email_address => $pagemeta->{From},
-                    workspace_id => $ws_id,
                     page_id => $pg_dir,
                     revision_id => $revision_id,
                 };
