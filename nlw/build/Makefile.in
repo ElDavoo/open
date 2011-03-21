@@ -355,7 +355,7 @@ testlive:
 testall: test testlive testreports testconsole
 
 quicktest: .prove
-	$(PROVE) --jobs $(TEST_JOBS) `./dev-bin/list-tests-faster-than 10`
+	$(PROVE) --jobs $(TEST_JOBS) $(shell list-tests-faster-than 10)
 
 hottest: .prove
 	$(PROVE) --jobs $(TEST_JOBS) --state=hot,fresh,save
@@ -363,13 +363,13 @@ hottest: .prove
 hudson-update: .prove
 
 .prove: hudson.prove
-	./dev-bin/merge-prove
+	merge-prove
 
 hudson.prove: get-hudson-prove
 
 get-hudson-prove:
 	curl --insecure https://lucite.socialtext.net:9080/job/Socialtext/lastCompletedBuild/artifact/artifacts/.prove \
-	    --output hudson.prove --remote-time --time-cond hudson.prove
+	    --output hudson.prove  --time-cond hudson.prove
 
 # cd into custom-workspace-config and make all
 custom-workspaces:

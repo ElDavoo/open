@@ -34,6 +34,8 @@ sub new {
     die "workspace is mandatory!" unless $opts{workspace_name};
 
     my $self = \%opts;
+    $self->{pages_with_default_editor} = [];
+    $self->{attachments_with_default_editor} = [];
     bless $self, $class;
 
     my $ws = Socialtext::Workspace->new(name => $opts{workspace_name});
@@ -387,22 +389,32 @@ sub load_revision_metadata {
                 $summary = $summary->[-1];
             }
 
+            my $editor =  $self->editor_to_id($pagemeta->{From});
+            unless ($editor) {
+                push @{$self->{pages_with_default_editor}}, {
+                    email_address => $pagemeta->{From},
+                    page_id => $pg_dir,
+                    revision_id => $revision_id,
+                };
+                $editor = Socialtext::User->SystemUser()->user_id();
+            }
+
             my $control = lc($pagemeta->{Control} || '');
             my %cols = (
                 workspace_id => $ws_id,
                 page_id => $pg_dir,
                 body_length => length($$body_ref),
                 revision_id => $revision_id,
-                revision_num => $pagemeta->{Revision}||1,
                 name => $subject,
-                editor_id => editor_to_id($pagemeta->{From}),
+                tags => $tags,
+                summary => $summary,
+                editor_id => $editor,
                 edit_time => $pagemeta->{Date},
                 page_type => $pagemeta->{Type}||'wiki',
                 deleted => $control eq 'deleted' ? 1 : 0,
-                summary => $summary,
                 edit_summary => $pagemeta->{'Revision-Summary'},
                 locked => $pagemeta->{Locked}||0,
-                tags => $tags,
+                revision_num => $pagemeta->{Revision}||1,
             );
 
             sql_txn {
@@ -530,9 +542,13 @@ sub load_page_attachments {
                 # continue
             }
 
+            my $editor = $self->editor_to_id($meta->{from});
+            my $found = $editor ? 1 : 0;
+            $editor ||= Socialtext::User->SystemUser()->user_id();
+
             my %args = (
                 temp_filename  => $disk_filename,
-                creator_id     => editor_to_id($meta->{from}),
+                creator_id     => $self->editor_to_id($meta->{from}),
                 created_at     => $meta->{date},
                 filename       => $meta->{subject},
                 content_length => $disk_size,
@@ -572,6 +588,14 @@ sub load_page_attachments {
                 die "upload de-temping failed"
                     unless $page_att_ins_sth->rows == 1;
                 $upload->is_temporary(0); # just in case of cached
+
+                push(
+                    @{$self->{attachments_with_default_editor}},
+                    {
+                       email_address => $meta->{from},
+                       attachment_id =>  $upload->attachment_id
+                    }
+                ) unless $found;
             };
         }
         catch {
@@ -599,7 +623,9 @@ sub fetch_metadata {
 }
 
 sub editor_to_id {
+    my $self = shift;
     my $email_address = shift || '';
+    my $force = shift;
     state %userid_cache;
     unless ( $userid_cache{ $email_address } ) {
         # We have some very bogus data on our system, so we need to
@@ -616,6 +642,7 @@ sub editor_to_id {
             Socialtext::User->new(email_address => $email_address);
         };
         unless ($user) {
+            return if $self->{skip_user_create} && !$force;
             warn "Creating user account for '$email_address'\n";
             try {
                 Socialtext::Cache->clear('accounts');
@@ -637,6 +664,56 @@ sub editor_to_id {
         $userid_cache{ $email_address } = $user->user_id;
     }
     return $userid_cache{ $email_address };
+}
+
+sub has_missing_editors {
+    my $self = shift;
+    return 0 unless $self->{skip_user_create};
+
+    return scalar(@{$self->{pages_with_default_editor}})
+        || scalar(@{$self->{attachments_with_default_editor}});
+}
+
+sub cleanup_missing_editors {
+    my $self = shift;
+    my $dbh = get_dbh();
+
+    my $page_update_sth = $dbh->prepare_cached(q{
+        UPDATE page_revision
+           SET editor_id = ?
+         WHERE workspace_id = ?
+           AND page_id = ?
+           AND revision_id = ?
+    });
+    for my $pagemeta (@{$self->{pages_with_default_editor}}) {
+        my $editor = $self->editor_to_id($pagemeta->{email_address}, 1);
+        my $ws_id = $self->{workspace}->workspace_id;
+        try {
+            $page_update_sth->execute($editor, $ws_id,
+                $pagemeta->{page_id}, $pagemeta->{revision_id});
+        }
+        catch {
+            warn "Could not update editor to '$editor' for "
+                . "ws_id=($ws_id),page_id=($pagemeta->{page_id}),"
+                . "revision_id=($pagemeta->revision_id)\n";
+        };
+    };
+
+    my $att_update_sth = $dbh->prepare_cached(q{
+        UPDATE attachment
+           SET creator_id = ?
+         WHERE attachment_id = ?
+    });
+    for my $attmeta (@{$self->{attachments_with_default_editor}}) {
+        my $editor = $self->editor_to_id($attmeta->{email_address}, 1);
+        try {
+            $att_update_sth->execute($editor, $attmeta->{attachment_id});
+        }
+        catch {
+            warn "Counld not update editor to '$editor' for "
+                . "attachment_id=($attmeta->{attachment_id})\n";
+        };
+    };
 }
 
 sub format_err {

@@ -991,7 +991,7 @@ sub ResolveId {
 sub Query {
     my $class  = shift;
     my $params = shift;
-    my $t      = time_scope('user_find');
+    my $t      = time_scope('user_query');
 
     my ($sql, @bind) = sql_abstract->select('users', [qw(user_id)], $params);
     my $sth = sql_execute($sql, @bind);

@@ -7,7 +7,7 @@ use Socialtext::CredentialsExtractor;
 use Socialtext::CredentialsExtractor::Extractor::CAC;
 use Socialtext::AppConfig;
 use Socialtext::Signal;
-use Test::Socialtext tests => 51;
+use Test::Socialtext tests => 57;
 use Test::Socialtext::User;
 
 fixtures(qw( empty ));
@@ -24,31 +24,49 @@ Socialtext::AppConfig->set(credentials_extractors => 'CAC:Guest');
 ###############################################################################
 # TEST: Parse username into fields
 parse_username_into_fields: {
-    # Parse successfully.
-    my $username = 'first.middle.last.edipin';
-    my %expected = (
-        first_name  => 'first',
-        middle_name => 'middle',
-        last_name   => 'last',
-        edipin      => 'edipin',
+    # Parse CAC CNs, as documented in Section 4.3.3 of "DoD PKI Functional
+    # Interface Specification, v2.0"
+    my @data = (
+        [
+            'last.first.middle.generation.edipin',
+            first_name  => 'first',
+            middle_name => 'middle',
+            last_name   => 'last',
+            edipin      => 'edipin',
+        ],
+        [
+            'last.first.middle.edipin',
+            first_name  => 'first',
+            middle_name => 'middle',
+            last_name   => 'last',
+            edipin      => 'edipin',
+        ],
+        [
+            'last.first.edipin',
+            first_name  => 'first',
+            middle_name => undef,
+            last_name   => 'last',
+            edipin      => 'edipin',
+        ],
+        [
+            'last.edipin',
+            first_name  => undef,
+            middle_name => undef,
+            last_name   => 'last',
+            edipin      => 'edipin',
+        ],
     );
-    my %fields = Socialtext::CredentialsExtractor::Extractor::CAC
-        ->_parse_cac_username($username);
-    is_deeply \%fields, \%expected, 'Parsed username fields successfully';
 
-    # Parse w/o edipin
-    $username = 'first.middle.last';
-    %expected =  ( );
-    %fields = Socialtext::CredentialsExtractor::Extractor::CAC
-        ->_parse_cac_username($username);
-    is_deeply \%fields, \%expected, 'Cannot parse username when missing EDIPIN';
+    foreach my $test (@data) {
+        my ($cn, %fields) = @{$test};
+        my %results = Socialtext::CredentialsExtractor::Extractor::CAC
+            ->_parse_cac_username($cn);
+        is_deeply \%results, \%fields, "Parsed CAC CN '$cn'";
+    }
 
-    # Parse when malformed (regular LDAP formatted name)
-    $username = 'Bubba Bo Bob Brain';
-    %expected =  ( );
-    %fields = Socialtext::CredentialsExtractor::Extractor::CAC
-        ->_parse_cac_username($username);
-    is_deeply \%fields, \%expected, 'Cannot parse username when malformed';
+    my %results = Socialtext::CredentialsExtractor::Extractor::CAC
+        ->_parse_cac_username('Bubba Bo Bob Brain');
+    is_deeply \%results, { }, 'Parsed malformed CAC CN, got *nothing*';
 }
 
 ###############################################################################
@@ -83,6 +101,28 @@ find_partially_provisioned_users: {
     my @found    = map { $_->username } @users;
     my @expected = map { $_->username } ($user_one, $user_two);
     is_deeply \@found, \@expected, 'Found partially provisioned Users';
+}
+
+###############################################################################
+# TEST: Finding partially provisioned Users is case IN-sensitive.
+find_partially_provisioned_users_is_case_insensitive: {
+    my %fields = (
+        first_name  => 'Pierre',
+        middle_name => 'Elliot',
+        last_name   => 'Trudeau',
+    );
+
+    my $user = create_test_user(%fields);
+    $user->add_restriction('require_external_id');
+
+    my @found = Socialtext::CredentialsExtractor::Extractor::CAC
+        ->_find_partially_provisioned_users(
+            first_name  => 'PIERRE',
+            middle_name => 'ELLIOT',
+            last_name   => 'TRUDEAU',
+        );
+    is @found, 1, 'Found one partially provisioned User';
+    is $found[0]->username, $user->username, '... case IN-sensitively';
 }
 
 ###############################################################################
@@ -168,7 +208,7 @@ invalid_subject_malformed_cn: {
 ###############################################################################
 # TEST: Valid cert, but the User doesn't exist
 unknown_username: {
-    my $subject = 'C=US, ST=CA, O=Socialtext, CN=first.middle.last.987654321';
+    my $subject = 'C=US, ST=CA, O=Socialtext, CN=last.first.middle.987654321';
     my $creds = Socialtext::CredentialsExtractor->ExtractCredentials( {
         X_SSL_CLIENT_SUBJECT => $subject,
     } );
@@ -179,7 +219,7 @@ unknown_username: {
 ###############################################################################
 # TEST: Valid cert, User exists
 valid: {
-    my $subject = "C=US, ST=CA, O=Socialtext, CN=first.middle.last.$edipin";
+    my $subject = "C=US, ST=CA, O=Socialtext, CN=last.first.middle.$edipin";
     my $creds = Socialtext::CredentialsExtractor->ExtractCredentials( {
         X_SSL_CLIENT_SUBJECT => $subject,
     } );
@@ -205,9 +245,10 @@ auto_provision_user: {
     ok $user, 'Created test User';
     $user->add_restriction('require_external_id');
     ok $user->requires_external_id, '... missing their external id';
+    ok !$user->has_valid_password, '... without a valid password';
 
     # Extract creds for this User
-    my $subject = "C=UK, O=Goldeneye, CN=$first\.$middle\.$last\.$edipin";
+    my $subject = "C=UK, O=Goldeneye, CN=$last\.$first\.$middle\.$edipin";
     my $creds   = Socialtext::CredentialsExtractor->ExtractCredentials( {
         X_SSL_CLIENT_SUBJECT => $subject,
     } );
@@ -217,6 +258,7 @@ auto_provision_user: {
     $user->reload;
     ok !$user->requires_external_id, '... external id no longer required';
     is $user->private_external_id, $edipin, '... and with assigned EDIPIN';
+    ok $user->has_valid_password, '... and noted as having a valid password';
 }
 
 ###############################################################################
@@ -248,7 +290,7 @@ auto_provision_multiple_users: {
     $user_two->add_restriction('require_external_id');
 
     # Attempt to extract creds
-    my $subject = "C=UK, O=Goldeneye, CN=$first\.$middle\.$last\.$edipin";
+    my $subject = "C=UK, O=Goldeneye, CN=$last\.$first\.$middle\.$edipin";
     my $creds   = Socialtext::CredentialsExtractor->ExtractCredentials( {
         X_SSL_CLIENT_SUBJECT => $subject,
     } );
@@ -292,7 +334,7 @@ auto_provision_no_users: {
     $badmin->set_business_admin(1);
 
     # Attempt to extract creds for a non-existing User.
-    my $subject = "C=UK, O=Goldeneye, CN=$first\.$middle\.$last\.$edipin";
+    my $subject = "C=UK, O=Goldeneye, CN=$last\.$first\.$middle\.$edipin";
     my $creds   = Socialtext::CredentialsExtractor->ExtractCredentials( {
         X_SSL_CLIENT_SUBJECT => $subject,
     } );
@@ -331,7 +373,7 @@ notification_throttling: {
     $badmin->set_business_admin(1);
 
     # Make multiple attempts to extract creds for this User.
-    my $subject = "C=UK, O=Moonraker, CN=$first\.$middle\.$last\.$edipin";
+    my $subject = "C=UK, O=Moonraker, CN=$last\.$first\.$middle\.$edipin";
     Socialtext::CredentialsExtractor->ExtractCredentials( {
         X_SSL_CLIENT_SUBJECT => $subject,
     } );

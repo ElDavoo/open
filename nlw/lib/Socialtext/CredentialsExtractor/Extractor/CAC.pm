@@ -31,7 +31,7 @@ override 'username_to_user_id' => sub {
 
     # Extract all of the fields out of the username, failing if unable
     my %fields = $class->_parse_cac_username($username);
-    return unless %fields;
+    return unless $fields{edipin};
 
     # Look for an exact match by EDIPIN
     my $edipin = $fields{edipin};
@@ -49,6 +49,10 @@ override 'username_to_user_id' => sub {
         $user = shift @users;
         $user->update_private_external_id($edipin);
         $user->remove_restriction('require_external_id');
+        $user->update_store(
+            password => '*not-needed-authenticates-via-cac*',
+            no_crypt => 1,
+        ) if ($user->can_update_store);
         return $user->user_id;
     }
 
@@ -91,8 +95,18 @@ Searched for:
 sub _parse_cac_username {
     my $class    = shift;
     my $username = shift;
-    my ($first, $middle, $last, $edipin) = split /\./, $username, 4;
-    return unless ($first && $middle && $last && $edipin);
+
+    # Split the username up into its component bits, and make sure that we've
+    # the minimum required set of "at least last name + edipin"
+    my @bits   = split /\./, $username;
+    my $last   = shift @bits;
+    my $edipin = pop @bits;
+    return unless ($last && $edipin);
+
+    # Grab other optional fields out of the extracted bits
+    my $first  = shift @bits;
+    my $middle = shift @bits;
+
     return (
         first_name  => $first,
         middle_name => $middle,
@@ -105,14 +119,14 @@ sub _find_partially_provisioned_users {
     my $class  = shift;
     my %fields = @_;
 
-    # Find all matching Users, and trim that to *just* those that have an
-    # outstanding "require_external_id" restriction.
+    # Find matching Users, case IN-SENSITIVELY and trim that to *just* those
+    # that have an outstanding "require_external_id" restriction.
     my @users =
         grep { $_->requires_external_id }
         Socialtext::User->Query( {
-            first_name  => $fields{first_name},
-            middle_name => $fields{middle_name},
-            last_name   => $fields{last_name},
+            'LOWER(first_name)'  => lc($fields{first_name}),
+            'LOWER(middle_name)' => lc($fields{middle_name}),
+            'LOWER(last_name)'   => lc($fields{last_name}),
         } )->all;
 
     return @users;
@@ -227,6 +241,11 @@ The EDIPIN is is encoded in the Subject of the Client-Side SSL Certificate, look
 
 This module takes the <CN> extracted from the subject, and extracts the last
 portion of it as an EDIPIN.
+
+The official format/notation for the CAC CN, as documented in the DoD PKI
+Functional Interface Specification v2.0, Section 4.3.3, is as follows:
+
+  CN=<last>[.<first>][.<middle>][.<generation>].<edipin>
 
 =head1 SEE ALSO
 
