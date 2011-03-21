@@ -544,7 +544,7 @@ sub load_page_attachments {
             }
 
             my $editor = $self->editor_to_id($meta->{from});
-            my $found = $editor ? 0 : 1;
+            my $found = $editor ? 1 : 0;
             $editor ||= Socialtext::User->SystemUser()->user_id();
 
             my %args = (
@@ -589,8 +589,14 @@ sub load_page_attachments {
                 die "upload de-temping failed"
                     unless $page_att_ins_sth->rows == 1;
                 $upload->is_temporary(0); # just in case of cached
-                push @{$self->{attachments_with_default_editor}},
-                    [$meta->{from}, $upload->attachment_id] unless $found;
+
+                push(
+                    @{$self->{attachments_with_default_editor}},
+                    {
+                       email_address => $meta->{from},
+                       attachment_id =>  $upload->attachment_id
+                    }
+                ) unless $found;
             };
         }
         catch {
