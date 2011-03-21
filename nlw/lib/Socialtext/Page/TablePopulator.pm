@@ -666,6 +666,56 @@ sub editor_to_id {
     return $userid_cache{ $email_address };
 }
 
+sub has_missing_editors {
+    my $self = shift;
+    return 0 unless $self->{skip_user_create};
+
+    return scalar(@{$self->{pages_with_default_editor}})
+        || scalar(@{$self->{attachments_with_default_editor}});
+}
+
+sub cleanup_missing_editors {
+    my $self = shift;
+    my $dbh = get_dbh();
+
+    my $page_update_sth = $dbh->prepare_cached(q{
+        UPDATE page_revision
+           SET editor_id = ?
+         WHERE workspace_id = ?
+           AND page_id = ?
+           AND revision_id = ?
+    });
+    for my $pagemeta (@{$self->{pages_with_default_editor}}) {
+        my $editor = $self->editor_to_id($pagemeta->{email_address}, 1);
+        my $ws_id = $self->{workspace}->workspace_id;
+        try {
+            $page_update_sth->execute($editor, $ws_id,
+                $pagemeta->{page_id}, $pagemeta->{revision_id});
+        }
+        catch {
+            warn "Could not update editor to '$editor' for "
+                . "ws_id=($ws_id),page_id=($pagemeta->{page_id}),"
+                . "revision_id=($pagemeta->revision_id)\n";
+        };
+    };
+
+    my $att_update_sth = $dbh->prepare_cached(q{
+        UPDATE attachment
+           SET creator_id = ?
+         WHERE attachment_id = ?
+    });
+    for my $attmeta (@{$self->{attachments_with_default_editor}}) {
+        my $editor = $self->editor_to_id($attmeta->{email_address}, 1);
+        try {
+            $att_update_sth->execute($editor, $attmeta->{attachment_id});
+        }
+        catch {
+            warn "Counld not update editor to '$editor' for "
+                . "attachment_id=($attmeta->{attachment_id})\n";
+        };
+    };
+}
+
 sub format_err {
     my $err = shift;
     return '' unless $err;
