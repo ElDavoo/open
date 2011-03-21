@@ -73,19 +73,17 @@ sub ssl {
 }
 
 sub client_auth {
+    my $cac   = 0;
+    my $mixed = 0;
     with_ssl_setup(
         needed_certs => [qw/key cert ca/],
         configs => {
-            challenger => 'NoLogin',
-            ssl_only   => 1,
+            ssl_only => 1,
             allow_network_invitation => 0,
         },
         switches => {
-            cac => sub {
-                my $v  = shift;
-                my $ce = $v ? 'CAC' : 'SSLCertificate';
-                return (credentials_extractors => "$ce\:Guest");
-            }
+            cac   => sub { $cac   = shift; return () },
+            mixed => sub { $mixed = shift; return () },
         },
         more => {
             message => sub {
@@ -94,6 +92,15 @@ sub client_auth {
                     error("Message file '$msg' does not exist") unless -f $msg;
                 }
                 return (login_message_file => $msg);
+            },
+            _switches => sub {
+                my $main_ce    = $cac   ? 'CAC'          : 'SSLCertificate';
+                my $other_ce   = $mixed ? 'Cookie:Guest' : 'Guest';
+                my $challenger = $mixed ? 'STLogin'      : 'NoLogin';
+                return (
+                    challenger             => $challenger,
+                    credentials_extractors => "$main_ce:$other_ce",
+                );
             },
         },
     );
@@ -221,6 +228,7 @@ sub update_config {
 
     my $config = Socialtext::AppConfig->new();
     for my $ix (keys %to_update) {
+        next unless $ix;
         my $v = $to_update{$ix};
         message("Update Config: '$ix' => '$v'", 'magenta') if $VERBOSE;
         $config->set($ix, $to_update{$ix});
@@ -286,6 +294,7 @@ st-login-setup - Quick setup of common login configurations
         --ca <file>             File containing SSL Signing Certificates
         --message <file>        Custom login message file
         --cac                   Enable use of CAC formatted certificates
+        --mixed                 Enable mixed-mode authentication
 
     help                Displays help and documentation.
 
@@ -372,6 +381,13 @@ The contents of the file should be an HTML snippet.
 Enables CAC authentication.  When enabled, the SSL Certificates provided by
 the browser are expected to contain a Subject that adheres to the CAC standard
 and which contains an embedded EDIPIN.
+
+=item --mixed
+
+Enables mixed mode authentication; SSL Certificate support is enabled, but is
+I<not> required.  Users that have a username/password B<are> still able to log
+in using their username/password I<as well as> being able to use a Client-Side
+SSL Certificate.
 
 =back
 
