@@ -1,0 +1,59 @@
+| *Comment* | Test Case: All Users Workspace |  |
+
+| set | auw_acct | auw_account_%%start_time%% |
+| set | auw_wiki | auw-workspace-%%start_time%% |
+| set | auw_user | auw_user_%%start_time%%@david.socialtext.net |
+| set | auw_central_wiki | auw-account-%%start_time%%-central |
+| create_account | %%auw_acct%% |  |
+| set | auw_acct_id | %%account_id%% |
+| create_workspace | %%auw_wiki%% | %%auw_acct%% |
+
+| create_user | %%auw_user%% | %%password%% | %%auw_acct%% |
+
+| *Comment* | Test Case: All Users Workspace test CLI commands for adding account |  |
+| st-admin | add-member --account %%auw_acct%% | The command you called (add-member) requires one of --account --username --email --group and one of --workspace --account --group |
+| st-admin | add-member --account %%auw_acct%% --workspace %%auw_wiki%% | %%auw_acct%% now has the role of 'member' in the %%auw_wiki%% Workspace |
+
+| *Comment* | Test Case: All Users Workspace check that the user got added to the wiki |  |
+| st-process-jobs |  |  |
+| st-logoutin | %%auw_user%% | %%password%% |
+| open_ok | /?action=workspaces_listall |  |
+| is_element_present_ok | //div[@id='contentContainer'] | link=%%auw_wiki%% |
+
+| *Comment* | Test Case: All Users Workspace test CLI commands for removing account |  |
+| st-admin | remove-member --account %%auw_acct%% | The command you called (remove-member) requires one of --workspace --username --email --group and one of --account --group --workspace |
+| st-admin | remove-member --account %%auw_acct%% --workspace %%auw_wiki%% | %%auw_acct%% is no longer a member of %%auw_wiki%% |
+
+| *Comment* | Test Case: All Users Workspace check that the user got removed from the wiki |  |
+| st-process-jobs |  |  |
+| open_ok | /?action=workspaces_listall |  |
+| wait_for_element_not_present_ok | link=%%auw_wiki%% | 30000 |
+
+| *Comment* | Test Case: All Users Workspace add account back using Control Panel |  |
+| st-logoutin | %%username%% | %%password%% |
+| open_ok | /nlw/control/account/%%auw_acct_id%% |  |
+| wait_for_element_visible_ok | //input[@name='value'] | 30000 |
+| check_ok | //input[@name='value'] |  |
+| is_checked_ok | //input[@name='value'] |  |
+| wait_for_element_visible_ok | `//input[@value='Update'][2]` | 30000 |
+| click_and_wait | `//input[@value='Update'][2]` |  |
+| wait_for_text_present_ok | Account settings updated. | 30000 |
+| is_checked_ok | //input[@name='value'] |  |
+
+| *Comment* | Test Case: All Users Workspace check that the user got added to the wiki |  |
+| st-process-jobs |  |  |
+| st-logoutin | %%auw_user%% | %%password%% |
+| open_ok | /?action=workspaces_listall |  |
+| is_element_present_ok | //div[@id='contentContainer'] | link=%%auw_wiki%% |
+
+
+
+
+
+
+
+
+| *Comment* | Test Case: All Users Workspace TEARDOWN |  |
+| delete-account | %%auw_acct%% | Recklessly deleting |
+| delete-workspace | %%auw_wiki%% | Recklessly deleting |
+| st-admin | deactivate-user --email %%auw_user%% | deactivated |

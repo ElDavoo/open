@@ -192,7 +192,8 @@ $page with content and other data provided by the CGI data.
 If no revision_id, revision or subject are provided in the CGI
 data, use the information in the provided page object.
 
-=cut 
+=cut
+
 sub edit_save {
     my ($self, %p) = @_;
     my $page = delete $p{page};
@@ -221,7 +222,8 @@ sub edit_save {
 Returns HTML representing the list of the fifty (or less) most 
 recently changed pages in the current workspace.
 
-=cut 
+=cut
+
 
 sub recent_changes {
     my $self     = shift;
@@ -270,7 +272,8 @@ Returns a form for searching the current workspace. If $search_term
 is defined, the results of that search are provided as a list of links
 to pages, with $page_num specifing the 0-based page index.
 
-=cut 
+=cut
+
 sub search {
     my ($self, %args) = @_;
     my $search_term = $self->_utf8_decode($args{search_term});
@@ -330,7 +333,8 @@ in the current workspace. If $tag is defined, provide a list of
 links to all the pages in the tag, with $page_num specifing the
 0-based page index.
 
-=cut 
+=cut
+
 sub tag {
     my ($self, %args) = @_;
     my $tag = $self->_utf8_decode($args{tag});

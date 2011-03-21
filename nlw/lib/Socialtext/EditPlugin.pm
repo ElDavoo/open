@@ -13,6 +13,7 @@ use Socialtext::Events;
 use Socialtext::Log qw(st_log);
 use Socialtext::String ();
 use Socialtext::JSON qw/decode_json encode_json/;
+use Socialtext::PageRevision ();
 use Try::Tiny;
 
 const class_id => 'edit';
@@ -126,11 +127,22 @@ sub edit_content {
 
     my @attach = $self->cgi->attachment;
     for my $att_id (@attach) {
+        my $att_page;
         if ($att_id =~ /^(.+?):(.+)$/) {
             $att_id = $1;
-            die "not attached to this page!" if $2 ne $page->id;
+            $att_page = $2;
+            if ($att_page ne $page->id) {
+                if (Socialtext::PageRevision->is_bad_page_title($att_page))  {
+                    # It was attached during "create new page" to untitled page;
+                    # that's fine and we'll move it under the new name in the
+                    # $att->make_permanent call below.
+                }
+                else {
+                    die "$att_id is attached to $att_page - not to this page: " . $page->id
+                }
+            }
         }
-        my $att = $self->hub->attachments->load(id => $att_id);
+        my $att = $self->hub->attachments->load(id => $att_id, page_id => $att_page);
         die "attachment is not temporary!" unless $att->is_temporary;
         $att->make_permanent(
             page => $page, user => $self->hub->current_user);

@@ -2188,9 +2188,13 @@ proto.do_opensocial_setup = function(src) {
     });
 }
 
+proto.preserveSelection = $.noop;
+proto.restoreSelection = $.noop;
+
 proto._do_insert_block_dialog = function(opts) {
     var self = this;
 
+    self.preserveSelection();
     if (!jQuery('#st-widget-block-dialog').size()) {
         Socialtext.wikiwyg_variables.loc = loc;
         jQuery('body').append(
@@ -2288,6 +2292,7 @@ proto._do_insert_block_dialog = function(opts) {
                 if (id == 'code' && $('#st-widget-block-syntax').val()) {
                     id += '-' + $('#st-widget-block-syntax').val();
                 }
+                self.restoreSelection();
                 self.insert_block(
                     "." + id + "\n"
                         + text.replace(/\n?$/, "\n." + id),

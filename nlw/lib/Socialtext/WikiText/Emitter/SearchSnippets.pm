@@ -8,6 +8,7 @@ use base 'WikiText::Receiver';
 sub content {
     my $self = shift;
     my $content = $self->{output};
+    $content =~ s/^\s+//g;
     $content =~ s/\s\s+/ /g;
     $content =~ s/\s*\z//;
     return $content . "\n";
@@ -26,6 +27,8 @@ sub insert {
 }
 
 sub begin_node {
+    my $self = shift;
+    $self->{output} .= " ";
 }
 
 sub end_node {

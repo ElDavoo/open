@@ -3780,6 +3780,7 @@ table.widgetUserPrefs th {
 
 table.widgetUserPrefs td input {
     width: 95%;
+    *width: auto;
 }
 
 table.widgetUserPrefs td.widgetUserPrefsButtons input {

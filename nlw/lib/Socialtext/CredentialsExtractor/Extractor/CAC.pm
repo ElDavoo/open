@@ -3,10 +3,21 @@ package Socialtext::CredentialsExtractor::Extractor::CAC;
 use Moose;
 extends 'Socialtext::CredentialsExtractor::Extractor::SSLCertificate';
 
+use MooseX::ClassAttribute;
+use List::MoreUtils qw(any);
 use Socialtext::l10n qw(loc);
+use Socialtext::Log qw(st_log);
 use Socialtext::Signal;
 use Socialtext::Signal::Attachment;
+use Socialtext::SQL qw(:exec :time);
 use Socialtext::Upload;
+
+# How often do we send notifications (in minutes)?
+class_has 'notification_frequency' => (
+    is      => 'ro',
+    isa     => 'Int',
+    default => 5,
+);
 
 # Regardless of what our parent class says, our username comes from the "CN".
 override '_username_field' => sub {
@@ -20,7 +31,7 @@ override 'username_to_user_id' => sub {
 
     # Extract all of the fields out of the username, failing if unable
     my %fields = $class->_parse_cac_username($username);
-    return unless %fields;
+    return unless $fields{edipin};
 
     # Look for an exact match by EDIPIN
     my $edipin = $fields{edipin};
@@ -38,6 +49,10 @@ override 'username_to_user_id' => sub {
         $user = shift @users;
         $user->update_private_external_id($edipin);
         $user->remove_restriction('require_external_id');
+        $user->update_store(
+            password => '*not-needed-authenticates-via-cac*',
+            no_crypt => 1,
+        ) if ($user->can_update_store);
         return $user->user_id;
     }
 
@@ -65,10 +80,14 @@ Searched for:
     }
 
     # Notify *all* of the Business Admin's on the box about the failure
-    $class->_notify_business_admins(
-        message         => $err_msg,
-        attachment_body => $err_body,
-    );
+    unless ($class->_notification_recently_sent_for($username)) {
+        $class->_send_notification(
+            recipients => [ Socialtext::User->AllBusinessAdmins->all ],
+            username   => $username,
+            subject    => $err_msg,
+            body       => $err_body,
+        );
+    }
 
     return;
 };
@@ -76,8 +95,18 @@ Searched for:
 sub _parse_cac_username {
     my $class    = shift;
     my $username = shift;
-    my ($first, $middle, $last, $edipin) = split /\./, $username, 4;
-    return unless ($first && $middle && $last && $edipin);
+
+    # Split the username up into its component bits, and make sure that we've
+    # the minimum required set of "at least last name + edipin"
+    my @bits   = split /\./, $username;
+    my $last   = shift @bits;
+    my $edipin = pop @bits;
+    return unless ($last && $edipin);
+
+    # Grab other optional fields out of the extracted bits
+    my $first  = shift @bits;
+    my $middle = shift @bits;
+
     return (
         first_name  => $first,
         middle_name => $middle,
@@ -90,24 +119,26 @@ sub _find_partially_provisioned_users {
     my $class  = shift;
     my %fields = @_;
 
-    # Find all matching Users, and trim that to *just* those that have an
-    # outstanding "require_external_id" restriction.
+    # Find matching Users, case IN-SENSITIVELY and trim that to *just* those
+    # that have an outstanding "require_external_id" restriction.
     my @users =
         grep { $_->requires_external_id }
         Socialtext::User->Query( {
-            first_name  => $fields{first_name},
-            middle_name => $fields{middle_name},
-            last_name   => $fields{last_name},
+            'LOWER(first_name)'  => lc($fields{first_name}),
+            'LOWER(middle_name)' => lc($fields{middle_name}),
+            'LOWER(last_name)'   => lc($fields{last_name}),
         } )->all;
 
     return @users;
 }
 
-sub _notify_business_admins {
+sub _send_notification {
     my $class  = shift;
     my %params = @_;
-    my $subject = $params{message};
-    my $body    = $params{attachment_body};
+    my $username   = $params{username};
+    my $subject    = $params{subject};
+    my $body       = $params{body};
+    my $recipients = $params{recipients};
 
     # Dump the attachment body to file, so we can slurp it in and create an
     # Upload
@@ -115,14 +146,13 @@ sub _notify_business_admins {
     $tmpfile->print($body);
     $tmpfile->close;
 
-    # Send a DM Signal to all of the Business Admins, with our attachment.
+    # Send a DM Signal to all recipients, with our attachment.
     #
-    # NOTE: The DM has to come *FROM* the Business Admin *TO* himself; we've
-    # got no other guarantee of visibility from any other User record to the
-    # Business Admin.
-    my $now     = Socialtext::Date->now;
-    my @badmins = Socialtext::User->AllBusinessAdmins->all;
-    foreach my $user (@badmins) {
+    # NOTE: The DM has to come *FROM* the recipient *TO* himself; we've got no
+    # other guarantee of visibility from any other User record to the
+    # recipient.
+    my $now = Socialtext::Date->now;
+    foreach my $user (@{$recipients}) {
         my $creator = $user;
 
         my $upload = Socialtext::Upload->Create(
@@ -145,10 +175,40 @@ sub _notify_business_admins {
             body         => $subject,
             recipient_id => $user->user_id,
             attachments  => [$attachment],
+            annotations  => [
+                { cac => { subject => $username } },
+            ],
         } );
     }
+}
 
-    return;
+sub _notification_recently_sent_for {
+    my $class     = shift;
+    my $username  = shift;
+    my $frequency = $class->notification_frequency;
+    my $threshold = DateTime->now->subtract(minutes => $frequency);
+
+    # Look in the *DB* and see if we have any recent Signals that have been
+    # sent w.r.t. the given $username.
+    #
+    # We have to look in the DB for this instead of using ST::Signal::Search,
+    # as the Signal may not yet be indexed in Solr.
+    my $sth = sql_execute(qq|
+        SELECT signal_id
+          FROM signal
+         WHERE signal.at >= ?
+           AND anno_blob ~* ?
+    |, sql_format_timestamptz($threshold), $username);
+
+    while (my $row = $sth->fetchrow_arrayref) {
+        my $signal_id = $row->[0];
+        my $signal    = Socialtext::Signal->Get(signal_id => $signal_id);
+        my $annots    = $signal->annotations;
+        return 1 if any { $_->{cac}{subject} eq $username } @{$annots};
+    }
+
+    # Didn't find a Signal with our annotation in the DB; wasn't recently sent
+    return 0;
 }
 
 no Moose;
@@ -181,6 +241,11 @@ The EDIPIN is is encoded in the Subject of the Client-Side SSL Certificate, look
 
 This module takes the <CN> extracted from the subject, and extracts the last
 portion of it as an EDIPIN.
+
+The official format/notation for the CAC CN, as documented in the DoD PKI
+Functional Interface Specification v2.0, Section 4.3.3, is as follows:
+
+  CN=<last>[.<first>][.<middle>][.<generation>].<edipin>
 
 =head1 SEE ALSO
 

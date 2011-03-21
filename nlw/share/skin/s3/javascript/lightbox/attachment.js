@@ -215,7 +215,7 @@ proto.onChangeFilename = function () {
 
             $('#st-attachments-attach-form').submit();
             $('#st-attachments-attach-closebutton').addClass('disabled').addClass('loading');
-            $(this).attr('disabled', true);
+            $('#st-attachments-attach-filename').attr('disabled', true);
         };
 
         if (matches.length) {

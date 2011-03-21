@@ -7,7 +7,7 @@ use Socialtext::CredentialsExtractor;
 use Socialtext::CredentialsExtractor::Extractor::CAC;
 use Socialtext::AppConfig;
 use Socialtext::Signal;
-use Test::Socialtext tests => 45;
+use Test::Socialtext tests => 57;
 use Test::Socialtext::User;
 
 fixtures(qw( empty ));
@@ -24,31 +24,49 @@ Socialtext::AppConfig->set(credentials_extractors => 'CAC:Guest');
 ###############################################################################
 # TEST: Parse username into fields
 parse_username_into_fields: {
-    # Parse successfully.
-    my $username = 'first.middle.last.edipin';
-    my %expected = (
-        first_name  => 'first',
-        middle_name => 'middle',
-        last_name   => 'last',
-        edipin      => 'edipin',
+    # Parse CAC CNs, as documented in Section 4.3.3 of "DoD PKI Functional
+    # Interface Specification, v2.0"
+    my @data = (
+        [
+            'last.first.middle.generation.edipin',
+            first_name  => 'first',
+            middle_name => 'middle',
+            last_name   => 'last',
+            edipin      => 'edipin',
+        ],
+        [
+            'last.first.middle.edipin',
+            first_name  => 'first',
+            middle_name => 'middle',
+            last_name   => 'last',
+            edipin      => 'edipin',
+        ],
+        [
+            'last.first.edipin',
+            first_name  => 'first',
+            middle_name => undef,
+            last_name   => 'last',
+            edipin      => 'edipin',
+        ],
+        [
+            'last.edipin',
+            first_name  => undef,
+            middle_name => undef,
+            last_name   => 'last',
+            edipin      => 'edipin',
+        ],
     );
-    my %fields = Socialtext::CredentialsExtractor::Extractor::CAC
-        ->_parse_cac_username($username);
-    is_deeply \%fields, \%expected, 'Parsed username fields successfully';
 
-    # Parse w/o edipin
-    $username = 'first.middle.last';
-    %expected =  ( );
-    %fields = Socialtext::CredentialsExtractor::Extractor::CAC
-        ->_parse_cac_username($username);
-    is_deeply \%fields, \%expected, 'Cannot parse username when missing EDIPIN';
+    foreach my $test (@data) {
+        my ($cn, %fields) = @{$test};
+        my %results = Socialtext::CredentialsExtractor::Extractor::CAC
+            ->_parse_cac_username($cn);
+        is_deeply \%results, \%fields, "Parsed CAC CN '$cn'";
+    }
 
-    # Parse when malformed (regular LDAP formatted name)
-    $username = 'Bubba Bo Bob Brain';
-    %expected =  ( );
-    %fields = Socialtext::CredentialsExtractor::Extractor::CAC
-        ->_parse_cac_username($username);
-    is_deeply \%fields, \%expected, 'Cannot parse username when malformed';
+    my %results = Socialtext::CredentialsExtractor::Extractor::CAC
+        ->_parse_cac_username('Bubba Bo Bob Brain');
+    is_deeply \%results, { }, 'Parsed malformed CAC CN, got *nothing*';
 }
 
 ###############################################################################
@@ -86,6 +104,28 @@ find_partially_provisioned_users: {
 }
 
 ###############################################################################
+# TEST: Finding partially provisioned Users is case IN-sensitive.
+find_partially_provisioned_users_is_case_insensitive: {
+    my %fields = (
+        first_name  => 'Pierre',
+        middle_name => 'Elliot',
+        last_name   => 'Trudeau',
+    );
+
+    my $user = create_test_user(%fields);
+    $user->add_restriction('require_external_id');
+
+    my @found = Socialtext::CredentialsExtractor::Extractor::CAC
+        ->_find_partially_provisioned_users(
+            first_name  => 'PIERRE',
+            middle_name => 'ELLIOT',
+            last_name   => 'TRUDEAU',
+        );
+    is @found, 1, 'Found one partially provisioned User';
+    is $found[0]->username, $user->username, '... case IN-sensitively';
+}
+
+###############################################################################
 # TEST: Send notification to Business Admins
 notify_business_admins: {
     my $user = create_test_user;
@@ -106,9 +146,11 @@ notify_business_admins: {
     # Send a notification message to all Business Admins on the box
     my $subject = 'This is a test';
     my $body    = '... of the emergency broadcast system';
-    Socialtext::CredentialsExtractor::Extractor::CAC->_notify_business_admins(
-        message         => $subject,
-        attachment_body => $body,
+    Socialtext::CredentialsExtractor::Extractor::CAC->_send_notification(
+        recipients => \@badmins,
+        username   => 'failing.cac.login.username',
+        subject    => $subject,
+        body       => $body,
     );
 
     # Get the DM Signal sent to our test User, and verify its contents
@@ -166,7 +208,7 @@ invalid_subject_malformed_cn: {
 ###############################################################################
 # TEST: Valid cert, but the User doesn't exist
 unknown_username: {
-    my $subject = 'C=US, ST=CA, O=Socialtext, CN=first.middle.last.987654321';
+    my $subject = 'C=US, ST=CA, O=Socialtext, CN=last.first.middle.987654321';
     my $creds = Socialtext::CredentialsExtractor->ExtractCredentials( {
         X_SSL_CLIENT_SUBJECT => $subject,
     } );
@@ -177,7 +219,7 @@ unknown_username: {
 ###############################################################################
 # TEST: Valid cert, User exists
 valid: {
-    my $subject = "C=US, ST=CA, O=Socialtext, CN=first.middle.last.$edipin";
+    my $subject = "C=US, ST=CA, O=Socialtext, CN=last.first.middle.$edipin";
     my $creds = Socialtext::CredentialsExtractor->ExtractCredentials( {
         X_SSL_CLIENT_SUBJECT => $subject,
     } );
@@ -192,7 +234,7 @@ auto_provision_user: {
     my $first  = 'Ian';
     my $middle = 'Lancaster';
     my $last   = 'Fleming';
-    my $edipin = '123456789';
+    my $edipin = time;
 
     # Create a User, flag them as being partially provisioned.
     my $user = create_test_user(
@@ -203,9 +245,10 @@ auto_provision_user: {
     ok $user, 'Created test User';
     $user->add_restriction('require_external_id');
     ok $user->requires_external_id, '... missing their external id';
+    ok !$user->has_valid_password, '... without a valid password';
 
     # Extract creds for this User
-    my $subject = "C=UK, O=Goldeneye, CN=$first\.$middle\.$last\.$edipin";
+    my $subject = "C=UK, O=Goldeneye, CN=$last\.$first\.$middle\.$edipin";
     my $creds   = Socialtext::CredentialsExtractor->ExtractCredentials( {
         X_SSL_CLIENT_SUBJECT => $subject,
     } );
@@ -215,16 +258,17 @@ auto_provision_user: {
     $user->reload;
     ok !$user->requires_external_id, '... external id no longer required';
     is $user->private_external_id, $edipin, '... and with assigned EDIPIN';
+    ok $user->has_valid_password, '... and noted as having a valid password';
 }
 
 ###############################################################################
 # TEST: Auto-provision User, multiple User matches
 auto_provision_multiple_users: {
     my $guard  = Test::Socialtext::User->snapshot;
-    my $first  = 'Ian';
-    my $middle = 'Lancaster';
-    my $last   = 'Fleming';
-    my $edipin = '123456789';
+    my $first  = 'Lois';
+    my $middle = 'Ruth';
+    my $last   = 'Hooker';
+    my $edipin = time;
 
     # Create a Business Admin to receive error notifications
     my $badmin = create_test_user;
@@ -246,7 +290,7 @@ auto_provision_multiple_users: {
     $user_two->add_restriction('require_external_id');
 
     # Attempt to extract creds
-    my $subject = "C=UK, O=Goldeneye, CN=$first\.$middle\.$last\.$edipin";
+    my $subject = "C=UK, O=Goldeneye, CN=$last\.$first\.$middle\.$edipin";
     my $creds   = Socialtext::CredentialsExtractor->ExtractCredentials( {
         X_SSL_CLIENT_SUBJECT => $subject,
     } );
@@ -280,17 +324,17 @@ auto_provision_multiple_users: {
 # TEST: Auto-provision User, *no* matches
 auto_provision_no_users: {
     my $guard = Test::Socialtext::User->snapshot;
-    my $first  = 'Ian';
-    my $middle = 'Lancaster';
-    my $last   = 'Fleming';
-    my $edipin = '123456789';
+    my $first  = 'Thomas';
+    my $middle = 'Sean';
+    my $last   = 'Connery';
+    my $edipin = time;
 
     # Create a Business Admin to receive error notifications
     my $badmin = create_test_user;
     $badmin->set_business_admin(1);
 
     # Attempt to extract creds for a non-existing User.
-    my $subject = "C=UK, O=Goldeneye, CN=$first\.$middle\.$last\.$edipin";
+    my $subject = "C=UK, O=Goldeneye, CN=$last\.$first\.$middle\.$edipin";
     my $creds   = Socialtext::CredentialsExtractor->ExtractCredentials( {
         X_SSL_CLIENT_SUBJECT => $subject,
     } );
@@ -303,6 +347,50 @@ auto_provision_no_users: {
         direct => 'both',
     );
     is @signals, 1, '... DM Signal was sent to Business Admin';
+    like $signals[0]->body, qr/no matches found/i,
+        '... ... denoting NO matches found';
+
+    # Verify contents of DM attachment
+    my $att      = $signals[0]->attachments->[0];
+    my $file     = $att->upload->disk_filename;
+    my $contents = slurp($file);
+    like $contents, qr/First name.*?: $first/,   '... ... ... w/first name';
+    like $contents, qr/Middle name.*?: $middle/, '... ... ... w/middle name';
+    like $contents, qr/Last name.*?: $last/,     '... ... ... w/last name';
+}
+
+###############################################################################
+# TEST: Throttling of notification Signals
+notification_throttling: {
+    my $guard = Test::Socialtext::User->snapshot;
+    my $first  = 'Roger';
+    my $middle = 'George';
+    my $last   = 'Moore';
+    my $edipin = time;
+
+    # Create a Business Admin to receive error notifications
+    my $badmin = create_test_user;
+    $badmin->set_business_admin(1);
+
+    # Make multiple attempts to extract creds for this User.
+    my $subject = "C=UK, O=Moonraker, CN=$last\.$first\.$middle\.$edipin";
+    Socialtext::CredentialsExtractor->ExtractCredentials( {
+        X_SSL_CLIENT_SUBJECT => $subject,
+    } );
+    Socialtext::CredentialsExtractor->ExtractCredentials( {
+        X_SSL_CLIENT_SUBJECT => $subject,
+    } );
+    Socialtext::CredentialsExtractor->ExtractCredentials( {
+        X_SSL_CLIENT_SUBJECT => $subject,
+    } );
+    pass 'Made multiple attempts to extract credentials';
+
+    # Verify that the Business Admin got one (and ONLY one) DM
+    my @signals = Socialtext::Signal->All(
+        viewer => $badmin,
+        direct => 'both',
+    );
+    is @signals, 1, '... a single DM Signal was sent to Business Admin';
     like $signals[0]->body, qr/no matches found/i,
         '... ... denoting NO matches found';
 

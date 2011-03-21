@@ -20,6 +20,7 @@ use Socialtext::LDAP;
 use Socialtext::LDAP::Config;
 
 # XXX: these should be treated as "read-only" fields after instantiation
+field 'nodb';
 field 'name';
 field 'host';
 field 'port';
@@ -58,7 +59,7 @@ sub new {
         host            => $config{host}            || 'localhost',
         port            => $port,
         base_dn         => $config{base_dn}         || 'dc=example,dc=com',
-        root_dn         => $config{root_dn}         || 'cn=Manager,dc=example,dc=com',
+        root_dn         => $config{root_dn}         || 'cn=Manager,dc=common-dc,dc=com',
         root_pw         => $config{root_pw}         || 'its-a-secret',
         requires_auth   => $config{requires_auth}   || 0,
         # openldap specific parameters
@@ -70,6 +71,8 @@ sub new {
         slapd           => $config{slapd}           || _autodetect_slapd(),
         schemadir       => $config{schemadir}       || _autodetect_schema_dir(),
         moduledir       => $config{moduledir}       || _autodetect_module_dir(),
+        # our custom parameters, to control how we set up the configuration
+        nodb            => $config{nodb},
         };
     bless $self, $class;
     $self->conffile( File::Spec->catfile($self->datadir(), 'slapd.conf') );
@@ -494,6 +497,12 @@ sub setup {
         mkpath( $path, 0, 0755 ) or die "can't create '$path'; $!";
     }
 
+    # create common data directory
+    my $common_datadir = "$self->{datadir}/common-dc";
+    unless (-d $common_datadir) {
+        mkpath($common_datadir, 0, 0755) or die "can't create '$common_datadir'; $!";
+    }
+
     # rebuild config file
     my $conf = $self->conffile();
     unless (-f $conf) {
@@ -517,16 +526,31 @@ argsfile $self->{statedir}/slapd-$self->{port}.args
 $requires_auth
 # raw config additions
 $self->{raw_conf}
-# database
+
+# common database, for all slapd back-ends, w/common rootdn User
+database bdb
+suffix "dc=common-dc,dc=com"
+rootdn "$self->{root_dn}"
+rootpw "$self->{root_pw}"
+directory "$common_datadir"
+cachesize 50000
+index default pres,eq
+index objectClass,mail,cn
+END_SLAPD_CONF
+
+        unless ($self->{nodb}) {
+            print $fout <<END_SLAPD_CONF;
+# additional (optional) database, where all the Users/data is kept
 database bdb
 suffix "$self->{base_dn}"
 rootdn "$self->{root_dn}"
-rootpw "$self->{root_pw}"
 directory "$self->{datadir}"
 cachesize 50000
 index default pres,eq
 index objectClass,mail,cn
 END_SLAPD_CONF
+        }
+
         close $fout;
     }
 
@@ -828,6 +852,11 @@ Specifies the full path to the installed OpenLDAP schema directory.
 =item moduledir
 
 Specifies the full path to the OpenLDAP dynamic back-end modules.
+
+=item nodb
+
+Disables the default database used to hold your LDAP data.  This DB may need to
+be disabled if you're trying to configure OpenLDAP to issue referral responses.
 
 =back
 
