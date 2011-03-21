@@ -98,7 +98,7 @@ $_->{impersonator} = [ 'impersonate', @{ $_->{member} } ]
 $_->{affiliate} = []
     for (values %PermissionSets, values %DeprecatedPermissionSets);
 
-my @PermissionSetsLocalize = (loc('public'), loc('member-only'), loc('authenticated-user-only'), loc('public-read-only'), loc('public-comment-only'), loc('public-authenticate-to-edit') ,loc('public-join-to-edit'), loc('intranet'));
+my @PermissionSetsLocalize = (loc('acl.public'), loc('acl.member-only'), loc('acl.authenticated-user-only'), loc('acl.public-read-only'), loc('acl.public-comment-only'), loc('acl.public-authenticate-to-edit') ,loc('acl.public-join-to-edit'), loc('acl.intranet'));
 
 sub IsValidRole {
     my $class = shift;
@@ -238,15 +238,15 @@ EOSQL
     }
 
     my %display_names = (
-        'member-only' => 'Private',
-        'self-join'   => 'Self-Join',
-        'custom'      => 'Custom',
+        'member-only' => _('wiki.acl-private'),
+        'self-join'   => _('wiki.acl-self-join'),
+        'custom'      => _('wiki.acl-custom'),
     );
     sub current_set_display_name {
         my $self = shift;
 
         my $display_name = $display_names{$self->current_set_name};
-        return $display_name || 'Public';
+        return $display_name || _('wiki.acl-public');
     }
 
     sub _perm_set_as_string {

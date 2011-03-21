@@ -304,7 +304,6 @@ sub load_jobs {
     require DBD::Pg;
     require Socialtext::SQL;
     require Socialtext::Search::AbstractFactory;
-    require Socialtext::Search::KinoSearch::Factory;
     require Socialtext::Search::Solr::Factory;
     require Socialtext::User;
     require Socialtext::Workspace;

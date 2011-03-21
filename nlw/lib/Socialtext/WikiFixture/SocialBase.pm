@@ -411,7 +411,7 @@ Say some text is in javascript and is present but not visible.  FF3 and IE can s
 
 Check for text not present ONLY in IE and FF3
 
-=cut 
+=cut
 
 sub st_ff_and_ie_wait_for_text_not_present {
     my ($self, $text, $howlong) = @_;
@@ -422,6 +422,26 @@ sub st_ff_and_ie_wait_for_text_not_present {
        ok 1, 'in googlechrome we do not check for text here'; 
     }
 }
+
+=head2 st_wait_for_text_not_present ($text, $howlong)
+
+Say some text is in javascript and is present but not visible.  FF3 can see the text is not present, other browsers are ... confused.
+
+Check for text not present ONLY in FF3
+
+=cut
+
+sub st_ff_wait_for_text_not_present {
+    my ($self, $text, $howlong) = @_;
+    my $browser = $ENV{'selenium_browser'} || 'chrome';
+    if ($browser=~/chrome|firefox/ig && !($browser=~/googlechrome/ig) )  {
+        $self->handle_command('wait_for_text_not_present_ok',$text,$howlong);
+     } else {
+         ok 1, 'in googlechrome we do not check for text here';
+     }
+}
+
+
 
 sub _relative_filename_to_absolute {
     my $self = shift;
@@ -572,6 +592,21 @@ sub st_search_cp_workspace {
     }
 }
 
+=head2 st_build_cp_name ($email, $variable) 
+
+Transforms matt@foo.com into "matt" <matt@foo.com>
+
+ASSUMES users bestfullname is first half of email.  Avoid periods, dashes, and don't customize first, last, middle, or preferred name, please.
+
+=cut
+
+sub st_build_cp_name { 
+    my ($self, $email, $variable) = @_;
+    my $full = $email;
+    my @arr = split /\@/, $email;
+    my $link = '"' . $arr[0] . '"' . ' <' . $email . '>';
+    $self->{$variable} = $link;
+}
 
 =head2 st_search_cp_users($searchfor)
 
@@ -807,46 +842,6 @@ sub deactivate_user {
     $user->deactivate();
 }
 
-=head2 st_create_health_report 
-
-Runs the appliance health batch job as super-user.  Will only work on a vz.
-
-Sets the variables:
-
-health_report_url: The url output of the call to the batch job that is the local report URL
-health_name_www2: the english pagename that will be set on he www2/st-reports-test workspace when the report is completed
-
-=cut
-
-
-sub st_create_health_report {
-    my $self = shift();
-    my $output = `sudo /usr/sbin/st-appliance-health-report`;
-    $output=~s/\n//g;
-
-    if ( ($output=~/Uploaded/) && ($output=~/_health.+\d\d\d\d.+\d+.+\d+$/)) {
-        ok(1, 'output of st-appliance-health-report indicates the report was created');
-        if ($output=~/Uploaded: (http.+\d\d\d\d\_\d+\_\d+$)/) {
-            my $url = $1;
-            $self->{health_report_url}=$1;
-        } else {
-            ok(0, "failed in match 1 of st_create_health_report: '$output'\n");
-        }
-
-        if ($output=~/(\d\d\d\d\_\d+\_\d+$)/) {
-             my $date_stamp = $1;
-             $date_stamp=~s/_/-/g;
-             my $pagename = $ENV{WIKIEMAIL} . ' - Health - ' . $date_stamp;
-             $self->{health_name_www2} = $pagename;
-         } else {
-             ok(0, "failed in match 2 of st_create_health_report: '$output'\n");
-         }
-    } else {
-         ok(0, 'output of st-appliance-health-report looks ... wrong' . "($output)");
-    }
-}
-
-
 sub create_group {
     my $self         = shift;
     my $group_name   = shift;
@@ -874,7 +869,7 @@ sub create_group {
         });
     };
     if (my $err = $@) {
-        if ($err =~ m/duplicate key violates/) {
+        if ($err =~ m/duplicate key value violates/) {
             diag "Group $group_name already exists";
             return;
         }
@@ -2840,6 +2835,14 @@ sub st_account_type_is {
     is $acct->account_type, $type, "Account type matches";
 }
 
+sub delete_account {
+    my $self = shift;
+    my $name = shift;
+    my $acct = Socialtext::Account->new( name => $name );
+    die "Couldn't find account $name" unless $acct;
+    $acct->delete;
+}
+
 my @exports;
 END { rmtree(\@exports) if @exports };
 
@@ -2858,7 +2861,7 @@ sub st_import_account {
     my $account = shift;
     my $dir = "/tmp/$account.export";
     Socialtext::System::shell_run(
-        'st-admin', 'import-account', '--dir', $dir, '--overwrite',
+        'st-admin', 'import-account', '--dir', $dir,
     );
 }
 
@@ -2908,7 +2911,7 @@ sub st_purge_account_gallery {
     my $sth = sql_execute('
         DELETE FROM gallery WHERE account_id = ?
     ', $acct->account_id);
-    diag loc("Deleted [quant,_1,gallery,galleries]", $sth->rows)."\n";
+    diag loc("test.deleted-galleries=count", $sth->rows)."\n";
 }
 
 sub st_purge_account_containers {
@@ -2924,7 +2927,7 @@ sub st_purge_account_containers {
             )
             OR user_set_id = ' . ACCT_OFFSET . ' + $1
     ', $acct->account_id);
-    diag loc("Deleted [quant,_1,container]", $sth->rows)."\n";
+    diag loc("test.deleted-containers=count", $sth->rows)."\n";
 }
 
 sub st_purge_uploaded_widgets {
@@ -2935,13 +2938,13 @@ sub st_purge_uploaded_widgets {
          WHERE src IS NULL
             OR src like 'file:/tmp/acct-%/%.xml'
     });
-    diag loc("Deleted [quant,_1,uploaded widget]", $sth->rows)."\n";
+    diag loc("test.deleted-uploaded-widgets=count", $sth->rows)."\n";
 }
 
 sub st_purge_widget {
     my ($self, $src) = @_;
     my $sth = sql_execute('DELETE FROM gadget WHERE src = ?', $src);
-    diag loc("Deleted [quant,_1,widget]", $sth->rows)."\n";
+    diag loc("test.deleted-widgets=count", $sth->rows)."\n";
 }
 
 sub enable_ws_plugin    { shift; _change_plugin('Workspace', 1, @_) }
@@ -3469,6 +3472,38 @@ sub restart_userd {
         Time::HiRes::sleep(0.5);
     }
     fail "userd could not be restarted";
+}
+
+sub restart_everything {
+    my $self = shift;
+    Socialtext::System::shell_run(qw( nlwctl restart ));
+
+    my $host = $self->{hostname};
+    my @to_check = (
+        # UserD
+        HTTP::Request->new(
+            GET => 'http://localhost:' . $self->{userd_port} . '/ping',
+            [ Accept => 'application/json' ]
+        ),
+        # NLW
+        HTTP::Request->new(
+            GET => "http://$host:" . $self->{http_port} . '/nlw/login.html'
+        ),
+    );
+
+    my $ua = LWP::UserAgent->new;
+  SERVICE:
+    foreach my $req (@to_check) {
+      ATTEMPT:
+        for (1 .. 18) {
+            my $resp = $ua->request($req);
+            next SERVICE unless ($resp->is_error);
+            Time::HiRes::sleep(0.5);
+        }
+        fail "unable to reach: " . $req->uri;
+        BAIL_OUT("services could not be restarted");
+    }
+    pass "services restarted";
 }
 
 sub jsmake {

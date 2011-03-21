@@ -12,7 +12,6 @@ use Socialtext::MultiCursor;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw(get_dbh :exec :time :txn);
 use Socialtext::SQL::Builder qw(sql_abstract);
-use Socialtext::Pluggable::Adapter;
 use Socialtext::User;
 use Socialtext::UserSet qw/:const/;
 use Socialtext::JobCreator;
@@ -62,9 +61,10 @@ has $_.'_count' => (
 
 with 'Socialtext::UserSetContained',
      'Socialtext::UserSetContainer' => {
-        excludes => [qw(enable_plugin disable_plugin
-                        add_account assign_role_to_account
-        )],
+        # Moose 0.89 renamed to -excludes and -alias
+        ($Moose::VERSION >= 0.89 ? '-excludes' : 'excludes')
+            => [qw(enable_plugin disable_plugin
+                   add_account assign_role_to_account)],
      };
 sub enable_plugin { die "cannot enable a plugin for a group" }
 sub disable_plugin { die "cannot disable a plugin for a group" }
@@ -421,6 +421,10 @@ sub Create {
     my $msg = 'CREATE,GROUP,group_id:' . $group->group_id
               . '[' . $timer->elapsed . ']';
     st_log()->info($msg);
+
+    # Clear the json cache so group navlist get the new group
+    require Socialtext::JSON::Proxy::Helper;
+    Socialtext::JSON::Proxy::Helper->PurgeCache;
 
     return $group;
 }

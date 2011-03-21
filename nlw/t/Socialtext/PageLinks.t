@@ -1,9 +1,9 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 use strict;
 use warnings;
 
-use Test::More tests => 32;
+use Test::More tests => 20;
 use Test::Socialtext;
 use File::Path qw(mkpath);
 use Socialtext::SQL qw(sql_execute);
@@ -53,7 +53,7 @@ Forward_links: {
     is $links2->links->[0]->content, $page1->content, "... with content";
 
     is @{$links3->links}, 2, "page 3 has two forward link";
-    is $links3->links->[0]->active, undef, "... second is incipient";
+    is $links3->links->[0]->active, 0, "... second is incipient";
     is $links3->links->[1]->id, $page1->id, "... first has page id";
     is $links3->links->[1]->content, $page1->content, "... first has content";
     is $links3->links->[1]->active, 1, "... first is not incipient";
@@ -72,46 +72,3 @@ Back_Links: {
     is $links3->backlinks->[0]->id, $page4->id, "... with page id";
     is $links3->backlinks->[0]->content, $page4->content, "... with content";
 }
-
-Filesystem_Links: {
-    # unmigrate a few pages to use filesystem based links 
-    my $page_links = Socialtext::PageLinks->new(page => $page1, hub => $hub);
-    my $path = $page_links->workspace_directory();
-    mkpath($path);
-    my $sth = sql_execute('
-        SELECT * FROM page_link
-         WHERE from_page_id = ?
-           AND from_workspace_id = ?
-    ', $page3->id, $hub->current_workspace->workspace_id);
-    while (my $row = $sth->fetchrow_hashref) {
-        system "touch $path/$row->{from_page_id}____$row->{to_page_id}";
-    }
-    $sth = sql_execute('
-        DELETE FROM page_link
-         WHERE from_page_id = ?
-           AND from_workspace_id = ?
-    ', $page3->id, $hub->current_workspace->workspace_id);
-
-    # Recreate the PageLinks
-    my $links1 = Socialtext::PageLinks->new(page => $page1, hub => $hub);
-    my $links3 = Socialtext::PageLinks->new(page => $page3, hub => $hub);
-
-    is $sth->rows, 2, "Three rows were deleted";
-    is scalar @{$links3->filesystem_links}, 2, "Both filesystem links";
-
-    # Page 3's forward links still work in the filesystem
-    is @{$links3->links}, 2, "page 3 still has two forward link";
-    is $links3->links->[0]->active, undef, "... second is incipient";
-    is $links3->links->[1]->id, $page1->id, "... first has page id";
-    is $links3->links->[1]->content, $page1->content, "... first has content";
-    is $links3->links->[1]->active, 1, "... first is not incipient";
-
-    # Page 3's back links still work in the filesystem
-    is @{$links1->backlinks}, 2, "page 1 still has two backlinks";
-    is $links1->backlinks->[0]->id, $page2->id, "... with page id";
-    is $links1->backlinks->[0]->content, $page2->content, "... with content";
-    is $links1->backlinks->[1]->id, $page3->id, "... with page id";
-    is $links1->backlinks->[1]->content, $page3->content, "... with content";
-}
-
-

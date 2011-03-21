@@ -11,11 +11,11 @@ Should be no activity for a new workspace.
 
 View a page:
 
-| edit-page    | %%workspace%%                | Foo | Blah |
-| GET          | /%%workspace%%/index.cgi?foo |     |      |
-| code-is      | 200                          |     |      |
-| sleep        | 1                            |     |      |
-| consume-logs |                              |     |      |
+| edit-page    | %%workspace%%      | Foo | Blah |
+| GET          | /%%workspace%%/foo |     |      |
+| code-is      | 200                |     |      |
+| sleep        | 1                  |     |      |
+| consume-logs |                    |     |      |
 
 | GET_json  | %%viewers_url%%         |
 | code-is   | 200                     |

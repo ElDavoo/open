@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 clean_out_st_test_tree() {
     rm -rf $1/nlw/t/tmp/

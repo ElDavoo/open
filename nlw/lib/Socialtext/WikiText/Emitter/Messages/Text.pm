@@ -11,9 +11,9 @@ Readonly my %markup => (
     b    => [ '',  '' ],
     i    => [ '',  '' ],
     del  => [ '',  '' ],
-    a    => [ '"',  '"' ],
-    hashmark => ['#',''],
-    video  => [ '',  '' ],
+    hyperlink => [ '"',  '"' ],
+    hashmark  => ['#',''],
+    video     => [ '',  '' ],
 );
 
 sub msg_markup_table { return \%markup }

@@ -1,0 +1,44 @@
+*This is much as I can test without a way to type multi-line code into the editor*
+
+| *Comment* | Test Case: Widget Editor Dashboard |  |
+
+
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Widget Editor Dashboard navigate to editor for new widget |  |
+| open_ok | /st/dashboard |  |
+| wait_for_element_visible_ok | //a[@class='addButton'] | 30000 |
+| click_and_wait | //a[@class='addButton'] |  |
+| wait_for_element_visible_ok | gallery-margin | 30000 |
+| click_and_wait | gallery-margin |  |
+| wait_for_element_visible_ok | gallery-add-content | 30000 |
+| click_ok | gallery-add-content |  |
+| wait_for_element_visible_ok | method-editor | 30000 |
+| click_ok | method-editor |  |
+| wait_for_element_visible_ok | st-add-widget | 30000 |
+| click_and_wait | st-add-widget |  |
+
+| *Comment* | Test Case: Widget Editor Dashboard check elements |  |
+| wait_for_text_present_ok | Hello World! | 30000 |
+| st-name-widget | 2 | preview |
+| st-widget-title-like | preview | Hello World! |
+| st-select-widget-frame | preview |  |
+| wait_for_text_present_ok | Hello, world! | 30000 |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Widget Editor Dashboard type bad code in the editor |  |
+| wait_for_element_visible_ok | //iframe[1] | 30000 |
+| select-frame | //iframe[1] |  |
+| click_ok | //body |  |
+| type_ok | //body | `mal\nadicta` |
+| pause | 5000 | for buttons to activate |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Widget Editor Dashboard click preview |  |
+| wait_for_element_visible_ok | widget-preview | 30000 |
+| click_ok | widget-preview |  |
+| wait_for_text_present_ok | The file you provided does not appear to be valid | 30000 |
+
+| *Comment* | Test Case: Widget Editor Dashboard click cancel |  |
+| click_ok | widget-cancel |  |
+| wait_for_text_present_ok | This is the widget gallery |  |

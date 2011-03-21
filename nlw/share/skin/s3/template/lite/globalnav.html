@@ -9,9 +9,9 @@
 [% IF user.is_guest %]
     <div data-role="controlgroup">
     [% IF ws %]
-        <li><a data-theme="b" rel="external" data-role="button" href="/challenge?/m/page/[% ws.name %]/[% page.uri %]" class="ui-btn-right">[% loc('Log in') %]</a></li>
+        <li><a data-theme="b" rel="external" data-role="button" href="/challenge?/m/page/[% ws.name %]/[% page.uri %]" class="ui-btn-right">[% loc('nav.login') %]</a></li>
     [% ELSE %]
-        <li><a data-theme="b" rel="external" data-role="button" href="/challenge?/m/workspace_list">[% loc('Log in') %]</a></li>
+        <li><a data-theme="b" rel="external" data-role="button" href="/challenge?/m/workspace_list">[% loc('nav.login') %]</a></li>
     [% END %]
     </div>
 [% ELSE %]
@@ -19,7 +19,7 @@
     [% IF bottom %]
 <div id="mobile-bottom-logout">
 <li>
-    <a rel="external" href="/nlw/submit/logout?redirect_to=/m/login">[% loc('Log out') %]</a>
+    <a rel="external" href="/nlw/submit/logout?redirect_to=/m/login">[% loc('nav.logout') %]</a>
     <span class="menu-padding"><hr /></span>
 </li>
 </div>
@@ -41,9 +41,9 @@
     [% END %]
 <li>
     [% IF section == 'activities' %]
-        <a id="[% IF bottom %]bottom-[% END %]mobile-activities" class="ui-btn-active current">[% loc('Activity') %]</a>
+        <a id="[% IF bottom %]bottom-[% END %]mobile-activities" class="ui-btn-active current">[% loc('nav.activity') %]</a>
     [% ELSE %]
-        <a id="[% IF bottom %]bottom-[% END %]mobile-activities" href="/m/activities">[% loc('Activity') %]</a>
+        <a id="[% IF bottom %]bottom-[% END %]mobile-activities" href="/m/activities">[% loc('nav.activity') %]</a>
     [% END %]
 </li>
 
@@ -57,9 +57,9 @@
 
 <li>
     [% IF section == 'workspaces' %]
-        <a id="[% IF bottom %]bottom-[% END %]mobile-workspace_list" class="ui-btn-active current">[% loc('Workspaces') %]</a>
+        <a id="[% IF bottom %]bottom-[% END %]mobile-workspace_list" class="ui-btn-active current">[% loc('nav.wikis') %]</a>
     [% ELSE %]
-        <a id="[% IF bottom %]bottom-[% END %]mobile-workspace_list" href="/m/workspace_list">[% loc('Workspaces') %]</a>
+        <a id="[% IF bottom %]bottom-[% END %]mobile-workspace_list" href="/m/workspace_list">[% loc('nav.wikis') %]</a>
     [% END %]
 </li>
 

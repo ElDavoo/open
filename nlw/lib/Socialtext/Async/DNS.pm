@@ -10,8 +10,8 @@ use Scalar::Util qw/weaken/;
 use List::MoreUtils qw/any firstidx/;
 
 BEGIN {
-    if ($AnyEvent::DNS::VERSION < 5.2 or $AnyEvent::DNS::VERSION > 5.271) {
-        warn "Only AnyEvent::DNS versions 5.2 thru 5.271 have been tested\n";
+    if ($AnyEvent::DNS::VERSION < 5.2 or $AnyEvent::DNS::VERSION > 5.29) {
+        warn "Only AnyEvent::DNS versions 5.2 thru 5.29 have been tested\n";
         # if you see this, please read the REVIEW ON UPGRADE sections BEFORE
         # you up the version check.
         die "AnyEvent::DNS version mismatch; refusing to load";
@@ -35,9 +35,14 @@ patch_it: {
 # REVIEW ON UPGRADE:
 # check that _dec_rr_with_ttl is still the same as the real _dec_rr (minus
 # namespacing) in AnyEvent/DNS.pm, but with an extra $ttl field at the end of
-# the return-value.  The TTL is offset 4 bytes after the "name" field and is
+# the return-value.
+#
+# Easiest way to do this is to diff the old and new sources.
+#
+# The TTL is offset 4 bytes after the "name" field and is
 # an unsigned 32-bit int ("N" in pack/unpack syntax). See section 3.2.1 of
 # ftp://ftp.rfc-editor.org/in-notes/rfc1035.txt
+
 sub _dec_rr_with_ttl {
    my $name = AnyEvent::DNS::_dec_name;
 

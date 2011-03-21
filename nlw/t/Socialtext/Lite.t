@@ -73,7 +73,6 @@ like( $html, qr{<textarea.*we are the children.*except that we're not}sm,
     'edit form contains correct page content' );
 
 # request edit screen for non-existent page
-sleep 1;
 my $incipient_page = $hub->pages->new_from_name('Stronger Than Dust?');
 eval {
     if ($incipient_page->active) {
@@ -207,7 +206,7 @@ $html = $lite->tag(tag => 'Welcome');
 
 is ( lc($html_from_lc_tag), lc($html), 'case of tag does not change content' );
 # XXX case is odd
-like ( $html, qr{\Q<title>Admin Wiki : Tag Welcome</title>},
+like ( $html, qr{<title>Admin Wiki : Tag:? Welcome</title>},
     'tag display for welcome has right title' );
 like ( $html, qr{<li>\s+<a.*href="/m/page/admin/start_here".*>\s*Start here\s*</a>}ms,
     'tag display for welcome links to included page' );

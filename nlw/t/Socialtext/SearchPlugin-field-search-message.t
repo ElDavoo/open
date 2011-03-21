@@ -38,23 +38,6 @@ run {
 }
 
 
-# TODO: these DATA tests fail with KinoSearch because the Kino plugin isn't
-# doing any validation on query strings for valid fields.  It's unclear to Matthew
-# and JJP as to why this 'feature' exists.  JJP is going to follow up with
-# Chris and Ken on this to see whether this feature of the query language is actually
-# desired.
-# === empty field
-# --- query: link:
-# --- expected_results: 0
-# --- message
-# It looks like you are trying to search on a field in the search
-
-# === unused field
-# --- query: link:fartypants
-# --- expected_results: 0
-# --- message 
-# It looks like you are trying to search on a field in the search
-
 __DATA__
 === correct title field
 --- query: title:quick

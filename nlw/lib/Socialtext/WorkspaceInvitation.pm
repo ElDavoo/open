@@ -66,7 +66,7 @@ sub _invite_one_user {
         primary_account_id => $wksp->account_id,
     );
 
-    $user->set_confirmation_info()
+    $user->create_email_confirmation()
         unless $user->has_valid_password();
 
     if (!$wksp->has_user($user, direct => 1)) {
@@ -89,7 +89,7 @@ sub invite_admin_notify {
     my $template_dir = $workspace->invitation_template;
 
     my $subject = loc( 
-        "I'm inviting you to the [_1] workspace", 
+        "invite.wiki=title", 
         $workspace->title
     );
 
@@ -123,7 +123,7 @@ sub invite_notify {
 
     my $template_dir = $workspace->invitation_template;
 
-    my $subject = loc("I'm inviting you into the [_1] workspace", $workspace->title);
+    my $subject = loc("invite.wiki=title", $workspace->title);
 
     my $renderer = Socialtext::TT2::Renderer->instance();
 
@@ -136,7 +136,7 @@ sub invite_notify {
 
     my %vars = (
         username              => $user->username,
-        requires_confirmation => $user->requires_confirmation,
+        requires_confirmation => $user->requires_email_confirmation,
         confirmation_uri      => $user->confirmation_uri || '',
         workspace_title       => $workspace->title,
         workspace_uri         => $workspace->uri,

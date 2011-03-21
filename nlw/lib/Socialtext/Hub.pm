@@ -55,6 +55,17 @@ other stuff, some special considerations have to be made.
 
 =cut
 
+# for helping with XXX.pm, but also affects YAML::Dumper. Hubs should never be
+# serialized anyway.
+sub yaml_dump {
+    my $self = shift;
+    return bless {
+        action => $self->action,
+        current_workspace => $self->current_workspace->name,
+        current_user => $self->current_user->username
+    }, __PACKAGE__;
+}
+
 # Override field 'hub' in Socialtext::Base to make sure we never reference
 # ourself
 sub hub {}
@@ -175,15 +186,15 @@ sub handle_validation_error {
 
     my $msg;
     if ( $error->can('messages') && $error->messages() ) {
-        $msg = loc('There was an error with your request') . ':<br />';
+        $msg = loc('error.request') . ':<br />';
         $msg .= "$_<br />" for $error->messages;
     }
     else {
-        $msg = loc('Malformed query.') . '<br />';
+        $msg = loc('error.invalid-query') . '<br />';
     }
     my $support_address = Socialtext::AppConfig->support_address();
     my $support_form_link = 
-    $msg .= loc('Please contact Socialtext support using the <a href="http://www.socialtext.com/customers/support_request.php">Technical Support Request</a> form and describe the the time the error occurred, and what you were attempting to do prior to the error.');
+    $msg .= loc('bug.contact-support');
     $self->fail_home_with_warning( $msg, $error );
 }
 
@@ -393,7 +404,6 @@ BEGIN {
             Socialtext::RenamePagePlugin
             Socialtext::RevisionPlugin
             Socialtext::ShortcutLinksPlugin
-            Socialtext::SOAPPlugin
             Socialtext::GoogleSearchPlugin
             Socialtext::SyndicatePlugin
             Socialtext::TiddlyPlugin

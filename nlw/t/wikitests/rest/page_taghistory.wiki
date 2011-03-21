@@ -9,7 +9,7 @@ Tests for Tag History for a page via the REST API
 | set              | workspace     | w%%start_time%%                     |
 | create-workspace | %%workspace%% |                                     |
 | add-member       | %%username%%  | %%workspace%%                       |
-| set              | page          | Monkey                  |           |
+| set              | page          | monkey                  |           |
 | edit-page        | %%workspace%% | %%page%%                | Hi there! |
 | set              | tags_uri      | /data/workspaces/%%workspace%%/pages/%%page%%/taghistory |
 
@@ -43,10 +43,10 @@ Tests for Tag History for a page via the REST API
 | POST      | /data/workspaces/%%workspace%%/pages/%%page%%/tags     | Content-Type=text/plain | Foo       |
 | DELETE    | /data/workspaces/%%workspace%%/pages/%%page%%/tags/Kim |
 
-| Comment   | Check tag history is ok       |            |
-| GET       | %%tags_uri%%                  | text/plain |
-| code-is   | 200                           |            |
-| body-like | Tags: \n                    |            |
+| Comment   | Check tag history is ok    |            |
+| GET       | %%tags_uri%%               | text/plain |
+| code-is   | 200                        |            |
+| body-like | Tags: \n                   |            |
 | body-like | Tags: Foo\n                |            |
 | body-like | Tags: Foo, Bar\n           |            |
 | body-like | Tags: Foo, Bar, Kim\n      |            |

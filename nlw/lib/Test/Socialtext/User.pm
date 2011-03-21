@@ -51,6 +51,11 @@ sub delete_recklessly {
          WHERE creator_id = ?
         }, $system_user->user_id, $user_id);
     Socialtext::SQL::sql_execute( q{
+        UPDATE page_revision
+           SET editor_id = ?
+         WHERE editor_id = ?
+        }, $system_user->user_id, $user_id);
+    Socialtext::SQL::sql_execute( q{
         UPDATE page
            SET last_editor_id = ?
          WHERE last_editor_id = ?
@@ -62,6 +67,8 @@ sub delete_recklessly {
         }, $system_user->user_id, $user_id);
 
     # Delete things owned/associated with this user
+    Socialtext::SQL::sql_execute(
+        q{DELETE FROM signal WHERE user_id = ?}, $user_id);
     Socialtext::SQL::sql_execute(
         q{DELETE FROM attachment WHERE creator_id = ?}, $user_id);
     Socialtext::SQL::sql_execute(

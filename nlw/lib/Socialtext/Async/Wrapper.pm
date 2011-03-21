@@ -8,7 +8,7 @@ use Coro::State ();
 use Coro::AnyEvent;
 use Guard;
 use AnyEvent::Worker;
-use Carp qw/carp croak/;
+use Carp qw/carp croak cluck confess/;
 use Scalar::Util qw/blessed/;
 use Try::Tiny;
 use BSD::Resource qw/setrlimit get_rlimits/;
@@ -114,6 +114,7 @@ sub RegisterAtFork {
 
 sub _InWorker {
     my $class = shift;
+    my $name = shift;
 
     # Prevents recursive workers:
     $IN_WORKER = 1;
@@ -153,17 +154,17 @@ sub _InWorker {
 
     # st_log is disconnected by AnyEvent::Worker right after fork.
     # Reconnect it here.
-    Sys::Syslog::disconnect();
-    $Socialtext::Log::Instance = Socialtext::Log->_renew();
+    Sys::Syslog::closelog();
+    Socialtext::Log->_renew();
 
     # If something's messed up with Coro/Ev/AnyEvent this will fail:
     my $cv = AE::cv;
-    my $t = AE::timer 0.0005, 0, sub {
+    my $t = AE::timer 0.000001, 0, sub {
         $cv->send("seems to be working");
     };
     my $ok = eval { $cv->recv };
     $ok ||= 'is broken';
-    st_log()->info("in async worker $$, AnyEvent $ok");
+    st_log()->info("$name async worker, AnyEvent $ok");
 
     my $lim = $VMEM_LIMIT;
     if ($lim) {
@@ -199,12 +200,13 @@ sub _InWorker {
     sub BUILD {
         my $self = shift;
         # This BUILD runs in the child worker process only.
-        Socialtext::Async::Wrapper->_InWorker();
+        Socialtext::Async::Wrapper->_InWorker($self->name);
         return;
     }
 
     sub DEMOLISH {
-        $Socialtext::Log::Instance->info("async worker $$ stopping");
+        my $self = shift;
+        st_log()->info($self->name." async worker stopping");
     }
 
     sub report {
@@ -277,7 +279,7 @@ C<call_orig_in_worker> after perhaps doing some parent-process caching.
 =cut
 
 sub worker_wrap {
-    my $caller = shift;
+    my $caller_or_meta = shift;
     my $replacement = shift;
     my $method_to_wrap = shift;
     my %args = @_;
@@ -285,10 +287,12 @@ sub worker_wrap {
     no warnings 'redefine';
     no strict 'refs';
 
+    my $meta = compat_meta_arg($caller_or_meta);
+
     (my $orig_pkg = $method_to_wrap) =~ s/::.+?$//;
     my $orig_method = \&{$method_to_wrap};
     my $worker_name = "worker_$replacement";
-    my $replacement_method = \&{$caller.'::'.$replacement};
+    my $replacement_method = $meta->find_method_by_name($replacement)->body;
 
     # Install a method to call the original, "real" method.  This
     # worker_method will be called in the AnyEvent::Worker sub-process.
@@ -322,9 +326,11 @@ will actually run in the worker process.
 =cut
 
 sub worker_function {
-    my $caller = shift;
+    my $caller_or_meta = shift;
     my $name = shift;
     my $code = shift;
+
+    my $meta = compat_meta_arg($caller_or_meta);
 
     my $worker_name = "worker_$name";
     my $worker_method = Moose::Meta::Method->wrap(
@@ -342,13 +348,12 @@ sub worker_function {
 
     my $method = Moose::Meta::Method->wrap(
         name => $name,
-        package_name => $caller,
+        package_name => $meta->name,
         body => sub {
             return call_orig_in_worker($name, undef, @_);
         },
     );
 
-    my $meta = Class::MOP::Class->initialize($caller);
     $meta->add_method($name => $method);
     return;
 }
@@ -365,15 +370,23 @@ our $ae_worker;
 
 sub worker_make_immutable {
     my $name = shift;
+    confess "can't make worker immutable in the worker process" if $IN_WORKER;
     Socialtext::Async::Wrapper::Worker->meta->make_immutable(
         inline_constructor => 1);
     _setup_ae_worker($name) unless $ae_worker;
 }
 
 sub _setup_ae_worker {
-    my $name = shift || 'async-worker';
-    die 'IO::AIO shouldnt be loaded' if $INC{'IO/AIO.pm'};
-    st_log()->info("async worker starting...");
+    my $name = shift;
+
+    $name ||= try { $Socialtext::WebDaemon::SINGLETON->Name() };
+    cluck "no name!" unless $name;
+    $name ||= 'async-worker';
+
+    confess "can't start worker in the worker process" if $IN_WORKER;
+    confess 'IO::AIO shouldnt be loaded' if $INC{'IO/AIO.pm'};
+
+    st_log()->info("$name async worker starting...");
 
     my %parent_args = (
         on_error => sub {
@@ -389,7 +402,7 @@ sub _setup_ae_worker {
         args => [{name => $name}],
     );
 
-    my $old_desc = $Coro::current->{desc};
+    # get out of the event handler thread:
     my $coro = async {
         $Coro::current->{desc} = "AnyEvent::Worker";
         with_local_dbh {
@@ -398,6 +411,7 @@ sub _setup_ae_worker {
     };
     $coro->cede_to;
     $coro->join;
+    st_log()->info("$name async worker started");
 }
 
 =item call_orig_in_worker name => $class[, @params]
@@ -415,7 +429,7 @@ sub call_orig_in_worker {
     $tgt_class = ref($tgt_class) if blessed $tgt_class;
     my $worker_method_name = "worker_$replacement";
 
-    Carp::confess "Cannot call_orig_in_worker from within a worker"
+    confess "Cannot call_orig_in_worker from within a worker"
         if $IN_WORKER;
 
     _setup_ae_worker() unless $ae_worker;
@@ -452,7 +466,7 @@ result was corrupted somehow.
 
 sub ping_worker {
     my $result = call_orig_in_worker('ping', undef);
-    die "corrupted result" unless $result->{PING} eq 'PONG';
+    confess "corrupted result" unless $result->{PING} eq 'PONG';
     return $result;
 }
 

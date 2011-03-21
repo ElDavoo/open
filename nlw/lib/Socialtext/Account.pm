@@ -18,10 +18,10 @@ use Socialtext::MultiCursor;
 use Socialtext::Validate qw( validate SCALAR_TYPE );
 use Socialtext::Log qw( st_log );
 use Socialtext::l10n qw(loc);
-use Socialtext::SystemSettings qw( get_system_setting );
+use Socialtext::SystemSettings qw(set_system_setting get_system_setting);
 use Socialtext::Skin;
 use Socialtext::Timer qw/time_scope/;
-use Socialtext::Pluggable::Adapter;
+require Socialtext::Pluggable::Adapter;
 use Socialtext::AccountLogo;
 use Socialtext::Account::Roles;
 use Socialtext::Role;
@@ -59,12 +59,15 @@ Readonly our @ACCT_COLS => qw(
 
 my %ACCT_COLS = map { $_ => 1 } @ACCT_COLS;
 
-foreach my $column ( @ACCT_COLS ) {
+foreach my $column ( grep !/^skin_name$/, @ACCT_COLS ) {
     has $column => (is => 'rw', isa => 'Any');
 }
+has 'skin_name' => (is => 'rw', isa => 'Str', lazy_build => 1);
 
 with 'Socialtext::UserSetContainer' => {
-    excludes => [qw( add_account assign_role_to_account )],
+    # Moose 0.89 renamed to -excludes and -alias
+    ($Moose::VERSION >= 0.89 ? '-excludes' : 'excludes')
+        => [qw( add_account assign_role_to_account )],
 };
 
 
@@ -103,19 +106,16 @@ sub EnsureRequiredDataIsPresent {
 
     if ($class->Default->name eq 'Unknown') {
         # Explicit requires here to avoid extra run-time dependencies
-        require Sys::Hostname;
+        require Socialtext::Hostname;
         my $acct = $class->create(
-            name => Sys::Hostname::hostname(),
+            name => Socialtext::Hostname::fqdn(),
             # This is not a system account, it is intended to be used.
             is_system_created => 0,
         );
         $acct->enable_plugin('dashboard');
         $acct->enable_plugin('widgets');
 
-        require Socialtext::SystemSettings;
-        Socialtext::SystemSettings::set_system_setting(
-            'default-account', $acct->account_id,
-        );
+        set_system_setting('default-account', $acct->account_id);
     }
 }
 
@@ -143,8 +143,7 @@ sub EnablePluginForAll {
     while (my $account = $all->next) {
         $account->enable_plugin($plugin);
     }
-    require Socialtext::SystemSettings;
-    Socialtext::SystemSettings::set_system_setting( "$plugin-enabled-all", 1 );
+    set_system_setting( "$plugin-enabled-all", 1 );
 }
 
 sub DisablePluginForAll {
@@ -153,18 +152,10 @@ sub DisablePluginForAll {
     while (my $account = $all->next) {
         $account->disable_plugin($plugin);
     }
-    require Socialtext::SystemSettings;
-    Socialtext::SystemSettings::set_system_setting( "$plugin-enabled-all", 0 );
+    set_system_setting( "$plugin-enabled-all", 0 );
 }
 
-sub skin_name {
-    my ($self, $skin) = @_;
-
-    if (defined $skin) {
-        $self->{skin_name} = $skin;
-    }
-    return $self->{skin_name} || get_system_setting('default-skin');
-}
+sub _build_skin_name { get_system_setting('default-skin') }
 
 has 'logo' => (
     is => 'ro', isa => 'Socialtext::AccountLogo',
@@ -225,7 +216,7 @@ sub reset_skin {
     while (my $workspace = $workspaces->next) {
         $workspace->update(skin_name => '');
     }
-    return $self->{skin_name};
+    return $self->skin_name;
 }
 
 sub workspaces {
@@ -241,7 +232,7 @@ sub workspace_count {
     return $self->workspaces->count();
 }
 
-around 'groups','group_count' => sub {
+around 'groups', 'group_count' => sub {
     my $code = shift;
     my $self = shift;
     my %p = @_;
@@ -373,7 +364,7 @@ sub user_can {
 sub all_users_as_hash {
     my $self  = shift;
     my %args  = @_;
-    my $iter  = $self->users(show_hidden => 1);
+    my $iter  = $self->users(show_hidden => 1, order => 1);
     my @users = map { $self->_dump_user_to_hash($_,%args) } $iter->all();
     return \@users;
 }
@@ -401,6 +392,10 @@ sub _dump_user_to_hash {
         my $uar = $acct->role_for_user($user);
         $hash->{roles}{$acct->name} = $uar->name;
     }
+
+    $hash->{restrictions} = [
+        map { $_->to_hash } $user->restrictions->all
+    ];
 
     return $hash;
 }
@@ -430,7 +425,7 @@ sub import_file {
     my $version = $hash->{version};
     if ($version && ($version > $EXPORT_VERSION)) {
         die loc(
-            "Cannot import an Account with a version greater than [_1]",
+            "error.import-account=max-version",
             $EXPORT_VERSION
         );
     }
@@ -439,16 +434,14 @@ sub import_file {
     $hash->{import_name} = $name;
     my $account = $class->new(name => $name);
     if ($account && !$account->is_placeholder()) {
-        die loc("Account [_1] already exists!", $name) . "\n" 
-            unless $opts{force};
-        $account->delete;
+        die loc("error.exists=account!", $name) . "\n";
     }
 
     my %acct_params = (
         is_system_created          => $hash->{is_system_created},
         skin_name                  => $hash->{skin_name},
         backup_skin_name           => 's3',
-        email_addresses_are_hidden => $hash->{email_addresses_are_hidden},
+        email_addresses_are_hidden => $hash->{email_addresses_are_hidden} ? 1 : 0,
         allow_invitation           => (
             defined $hash->{allow_invitation}
             ? $hash->{allow_invitation}
@@ -480,7 +473,7 @@ sub import_file {
     }
 
     if ($hash->{logo}) {
-        print loc("Importing account logo ...") . "\n";
+        print loc("account.importing-logo") . "\n";
         eval {
             my $image = MIME::Base64::decode($hash->{logo});
             $account->logo->set(\$image);
@@ -489,11 +482,12 @@ sub import_file {
         warn "Could not import account logo: $@" if $@;
     }
     
-    print loc("Importing users..."), "\n";
+    print loc("user.importing"), "\n";
     my @profiles;
     for my $user_hash (@{ $hash->{users} }) {
 
         next unless Socialtext::User::Default::Users->CanImportUser($user_hash);
+#warn "Importing user $hash->{name}\n";
 
         # Import this user into the new account we're creating. If they were
         # in some other account we'll fix that up below.
@@ -539,6 +533,14 @@ sub import_file {
             $profile->{user} = $user;
             push @profiles, $profile;
         }
+
+        # Apply any restrictions that existed in the export back to the User
+        foreach my $r (@{$user_hash->{restrictions}}) {
+            Socialtext::User::Restrictions->CreateOrReplace( {
+                user_id => $user->user_id,
+                %{$r},
+            } );
+        }
     }
 
     $hub->pluggable->hook('nlw.import_account', [$account, $hash, \%opts]);
@@ -549,15 +551,15 @@ sub import_file {
     # Create all the profiles after so that user references resolve.
     eval "require Socialtext::People::Profile";
     unless ($@) {
-        print loc("Importing people profiles ...") . "\n";
+        print loc("profile.importing") . "\n";
         Socialtext::People::Profile->create_from_hash( $_ ) for @profiles;
     }
 
     if ($hash->{plugins}) {
-        print loc("Enabling account plugins ...") . "\n";
+        print loc("account.enabling-plugins") . "\n";
         for my $plugin_name (@{ $hash->{plugins} }) {
             unless (Socialtext::Pluggable::Adapter->plugin_exists($plugin_name)) {
-                print loc("... '[_1]' plugin missing; skipping", $plugin_name) . "\n";
+                print loc("account.skip-missing=plugin", $plugin_name) . "\n";
                 next;
             }
             eval {
@@ -769,14 +771,11 @@ sub _account_create_hook {
 
 sub _enable_default_plugins {
     my $self = shift;
-    require Socialtext::SystemSettings;
     for (Socialtext::Pluggable::Adapter->plugins) {
         next unless $_->scope eq 'account';
         my $plugin = $_->name;
         $self->enable_plugin($plugin)
-            if Socialtext::SystemSettings::get_system_setting(
-                "$plugin-enabled-all"
-            );
+            if get_system_setting("$plugin-enabled-all");
     }
 
     if ($self->account_type eq 'Free 50') {
@@ -1088,7 +1087,7 @@ sub _validate_and_clean_data {
     if ( ( exists $p->{name} or $is_create )
          and not
          ( defined $p->{name} and length $p->{name} ) ) {
-        push @errors, loc('Account name is a required field.');
+        push @errors, loc('error.account-name-required');
     }
 
     if ($p->{all_users_workspace}) {
@@ -1102,7 +1101,7 @@ sub _validate_and_clean_data {
                 $skin = Socialtext::Skin->new(name => $p->{backup_skin_name});
             }
             my $msg = loc(
-                "The skin you specified, [_1], does not exist.", $p->{skin_name}
+                "error.no-skin=name", $p->{skin_name}
             );
             if ($skin->exists) {
                 warn $msg . "\n";
@@ -1116,27 +1115,27 @@ sub _validate_and_clean_data {
     delete $p->{backup_skin_name};
 
     if ( defined $p->{name} && Socialtext::Account->new( name => $p->{name} ) ) {
-        push @errors, loc('The account name you chose, [_1], is already in use.',$p->{name} );
+        push @errors, loc('error.account-exists=name',$p->{name} );
     }
 
     if ( not $is_create and $self->is_system_created and $p->{name} ) {
-        push @errors, loc('You cannot change the name of a system-created account.');
+        push @errors, loc('error.set-system-account-name');
     }
 
     if ( not $is_create and $p->{is_system_created} ) {
-        push @errors, loc('You cannot change is_system_created for an account after it has been created.');
+        push @errors, loc('error.set-system-account');
     }
 
     if ($p->{account_type} and !$VALID_TYPE{ $p->{account_type} }) {
         push @errors, 
-            loc("Account type ([_1]) is not valid!", $p->{account_type});
+            loc("error.invalid=account-type!", $p->{account_type});
     }
 
     if ($p->{restrict_to_domain}
         and !Socialtext::Helpers->valid_email_domain( $p->{restrict_to_domain} )
     ) {
         push @errors,
-            loc("Domain ([_1]) is not valid!", $p->{restrict_to_domain});
+            loc("error.invalid=domain!", $p->{restrict_to_domain});
     }
 
     unless (defined $p->{allow_invitation}) {

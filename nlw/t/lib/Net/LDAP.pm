@@ -4,7 +4,9 @@ package Net::LDAP;
 use strict;
 use warnings;
 use unmocked 'Test::MockObject';
-use unmocked 'Net::LDAP::Constant', qw(:all);
+use unmocked 'Net::LDAP::Constant', 
+    qw/LDAP_SUCCESS LDAP_TIMEOUT LDAP_NO_RESULTS_RETURNED 
+       LDAP_INVALID_CREDENTIALS/;
 use unmocked 'Net::LDAP::Util';
 
 my %behaviour;

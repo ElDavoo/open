@@ -23,6 +23,8 @@ use Socialtext::Log qw/st_log/;
 use Socialtext::Session;
 use Socialtext::PrefsTable;
 use Socialtext::UserSet qw/:const/;
+use Try::Tiny;
+
 my $prod_ver = Socialtext->product_version;
 
 # Class Methods
@@ -425,8 +427,7 @@ sub created_at {
 
     my $page = $self->get_page(%p);
     return undef if (!defined($page));
-    my $original_revision = $page->original_revision;
-    return $original_revision->datetime_for_user;
+    return $self->hub->timezone->get_date_user($page->create_time);
 }
 
 sub created_by {
@@ -439,8 +440,7 @@ sub created_by {
 
     my $page = $self->get_page(%p);
     return undef if (!defined($page));
-    my $original_revision = $page->original_revision;
-    return $original_revision->last_edited_by;
+    return $page->creator;
 }
 
 sub get_revision {
@@ -454,33 +454,24 @@ sub get_revision {
 
     return undef if (!$p{workspace_name} || !$p{revision_id} || !$p{page_name});
 
-    my $page_id = Socialtext::String::title_to_id($p{page_name});
-    my $cache_key = "page $p{workspace_name} $page_id revision $p{revision_id}";
-    my $revision = $self->value_from_cache($cache_key);
-    return $revision if ($revision);
+    # does permission checks and normalizes the IDs:
+    my $page = $self->get_page(map {$_=>$p{$_}} qw(workspace_name page_name));
 
-    my $workspace = Socialtext::Workspace->new( name => $p{workspace_name} );
-    return undef if (!defined($workspace));
-    my $auth_check = Socialtext::Authz::SimpleChecker->new(
-        user => $self->hub->current_user,
-        container => $workspace,
-    );
-    my $hub = $self->_hub_for_workspace($workspace);
-    return undef unless defined($hub);
-    if ($auth_check->check_permission('read')) {
-        $revision = $hub->pages->new_page($page_id);
-        $revision->revision_id($p{revision_id});
-        $self->cache_value(
-            key => $cache_key,
-            value => $revision,
+    return try {
+        Socialtext::PageRevision->Get(
+            hub => $page->hub,
+            page_id => $page->page_id,
+            revision_id => $p{revision_id},
         );
     }
-    else {
-        return undef;
-    }
-    return $revision;
+    catch {
+        warn "unable to load revision $p{revision_id} for $p{workspace_name}/$p{page_name}: $_";
+        undef;
+    };
 }
 
+# REVIEW this should be relying on a Page cache instead of a custom Pluggable
+# cache
 sub get_page {
     my $self = shift;
     my %p = (
@@ -504,16 +495,13 @@ sub get_page {
     );
     my $hub = $self->_hub_for_workspace($workspace);
     return undef unless defined($hub);
-    if ($auth_check->check_permission('read')) {
-        $page = $hub->pages->new_page($page_id);
-        $self->cache_value(
-            key => $cache_key,
-            value => $page,
-        );
-    }
-    else {
-        return undef;
-    }
+    return undef unless $auth_check->check_permission('read');
+
+    $page = $hub->pages->new_from_name($p{page_name});
+    $self->cache_value(
+        key => $cache_key,
+        value => $page,
+    );
     return $page;
 }
 
@@ -576,7 +564,7 @@ sub tags_for_page {
     my @tags = ();
     my $page = $self->get_page(%p);
     if (defined($page)) {
-        push @tags, @{$page->metadata->Category};
+        push @tags, @{$page->tags};
     }
     return ( grep { lc($_) ne 'recent changes' } @tags );
 }
@@ -842,8 +830,7 @@ sub sheet_renderer {
         $hub         = $self->hub;
     }
     else {
-        my $content = $page_or_ref->content;
-        $content_ref = \$content;
+        $content_ref = $page_or_ref->body_ref;
         $hub         = $page_or_ref->hub;
     }
 

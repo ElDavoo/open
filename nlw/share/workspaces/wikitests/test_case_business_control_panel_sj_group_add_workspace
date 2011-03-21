@@ -15,8 +15,8 @@
 
 | *Comment* | Test Case: Business Control Panel SJ Group Add Workspace create group via groups UI |  |
 | open_ok | /nlw/control/group |  |
-| wait_for_element_visible_ok | //input[@type='button' and @value="Create new Group"] | 30000 |
-| click_ok | //input[@type='button' and @value="Create new Group"] |  |
+| wait_for_element_visible_ok | //input[@type='button' and @value="Create New Group"] | 30000 |
+| click_ok | //input[@type='button' and @value="Create New Group"] |  |
 | wait_for_element_visible_ok | st-groupname | 30000 |
 | wait_for_element_visible_ok | st-group-create-submit | 30000 |
 | type_ok | st-groupname | %%group_name%% |
@@ -29,7 +29,7 @@
 | wait_for_text_present_ok | Users (1) | 10000 |
 | wait_for_text_present_ok | Workspaces (0) | 30000 |
 | wait_for_element_visible_ok | st-group-permission-set-selector | 30000 |
-| is_selected_ok | st-group-permission-set-selector | label=Self-Join: Non-Members can view the group but must become Members to contribute. |
+| is_selected_ok | st-group-permission-set-selector | label=Self-Join: Non-Members can view and join the group. |
 | get_group_id | %%group_name%% | group_id_one |
 | st-admin | create-group --n %%group_two%% --e %%username%% | %%group_two%% Group has been created |
 | get_group_id | %%group_two%% | group_id_two |

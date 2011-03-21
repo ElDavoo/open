@@ -1,7 +1,7 @@
 #!perl
 # @COPYRIGHT@
 use mocked qw(Socialtext::l10n system_locale); # Has to come firstest.
-use Test::Socialtext tests => 121;
+use Test::Socialtext tests => 112;
 use Test::Socialtext::Fatal;
 use strict;
 use warnings;
@@ -21,8 +21,6 @@ use Socialtext::Cache;
 use utf8;
 
 Socialtext::Cache->clear('authz_plugin');
-
-my $has_image_magick = eval { require Image::Magick; 1 };
 
 {
     is( Socialtext::Workspace->Count(), 1, 'Only help workspace in DBMS yet' );
@@ -70,18 +68,6 @@ ALL_WORKSPACE_IDS_AND_NAMES: {
     }
     like( $ws->uri, qr{\Qhttp://$hostname/short-name/\E}i,
           'check workspace uri' );
-
-    for my $dir (
-        Socialtext::Paths::page_data_directory('short-name'),
-        Socialtext::Paths::plugin_directory('short-name'),
-        Socialtext::Paths::user_directory('short-name'),
-    ) {
-        ok( -d $dir, "$dir exists after workspace is created" );
-    }
-
-    my $page_dir =
-        Socialtext::File::catdir( Socialtext::Paths::page_data_directory('short-name'), 'quick_start' );
-    ok( -d $page_dir, "$page_dir exists after workspace is created" );
 
     Workspace_skin_should_override_account_skin: {
         $ws->update(skin_name => 'reds3');
@@ -133,7 +119,7 @@ NO_DASH_IN_TITLE:
         );
     };
     my $e = $@;
-    ok( ( grep { /and may not begin with a -/ } $e->messages ),
+    ok( ( grep { /and may not begin with a '-'/ } $e->messages ),
         'and may not begin with a -' );
 }
 
@@ -184,14 +170,6 @@ Undef_skin_name: {
 Delete_a_workspace: {
     my $ws = Socialtext::Workspace->new( name => 'short-name' );
     $ws->delete;
-
-    for my $dir (
-        Socialtext::Paths::page_data_directory('short-name'),
-        Socialtext::Paths::plugin_directory('short-name'),
-        Socialtext::Paths::user_directory('short-name'),
-    ) {
-        ok( ! -d $dir, "$dir does not exist after workspace is deleted" );
-    }
 
     ok( ! Socialtext::EmailAlias::find_alias('short-name'),
         'alias for short-name-2 does not exist after workspace is deleted' );
@@ -332,13 +310,10 @@ EMAIL_NOTIFICATION_FROM_ADDRESS:
         );
     };
 
-    SKIP: {
-        skip 'Image::Magick not installed.', 1 unless $has_image_magick;
-        like(
-            $@, qr/\QLogo file must be a gif, jpeg, or png file\E/,
-            'cannot set logo with non image file posing as one'
-        );
-    }
+    like(
+        $@, qr/\QLogo file must be a gif, jpeg, or png file\E/,
+        'cannot set logo with non image file posing as one'
+    );
 
     $ws->set_logo_from_uri( uri => 'http://example.com/image.png' );
     is( $ws->logo_uri, 'http://example.com/image.png', 'logo_uri has changed' );
@@ -436,20 +411,6 @@ EMAIL_NOTIFICATION_FROM_ADDRESS:
         'The has-alias workspace exists' );
 }
 
-{
-    Socialtext::Workspace->create(
-        name               => 'no-pages',
-        title              => 'No Pages',
-        account_id         => Socialtext::Account->Socialtext()->account_id,
-        skip_default_pages => 1,
-    );
-
-    my $page_dir =
-        Socialtext::File::catdir( Socialtext::Paths::page_data_directory('no-pages'), 'quick_start' );
-    ok( ! -d $page_dir,
-        "$page_dir does not exist after workspace is created with skip_default_pages flag" );
-}
-
 Clone_from_workspace: {
     # put some non-default content in an empty workspace.
     my $to_clone_hub = new_hub('no-pages');
@@ -470,13 +431,8 @@ Clone_from_workspace: {
         name             => 'cloned',
         title            => 'Cloned from',
         account_id       => Socialtext::Account->Socialtext()->account_id,
-        clone_pages_from => 'no-pages'
+        clone_pages_from => $to_clone_hub->current_workspace->name,
     );
-
-    # make sure that content is in the new workspace.
-    my $page_dir = Socialtext::File::catdir(
-        Socialtext::Paths::page_data_directory('cloned'), 'monkey_favorites');
-    ok( -d $page_dir, "$page_dir exists in a jumpstarted workspace." );
 
     # Make sure the new workspace 'inherits' the homepage.
     my $cloned_hub = new_hub( 'cloned' );
@@ -493,7 +449,7 @@ NON_ASCII_WS_NAME: {
         account_id         => Socialtext::Account->Socialtext()->account_id,
         skip_default_pages => 1,
     ) };
-    like( $@, qr/\Qmust contain only upper- or lower-case letters/,
+    like( $@, qr/\Qmust contain only lower-case letters, numbers, underscores/,
           'workspace name with non-ASCII letters is invalid' );
 }
 

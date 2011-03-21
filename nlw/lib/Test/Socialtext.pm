@@ -30,7 +30,7 @@ use IO::File;
 use IO::Select;
 
 BEGIN {
-    use Socialtext::Pluggable::Adapter;
+    require Socialtext::Pluggable::Adapter;
     use Memoize qw/unmemoize/;
     unmemoize( \&Socialtext::Pluggable::Adapter::plugins );
 
@@ -664,7 +664,9 @@ my @Added_groups;
         my $uniq = delete $opts{unique_id} || create_unique_id;
         my $acct = delete $opts{account} || Socialtext::Account->Default;
 
-        $opts{email_address} = $opts{username} = $uniq.'@ken.socialtext.net';
+        $opts{email_address} ||= $uniq.'@ken.socialtext.net';
+        $opts{username} = delete $opts{username_isnt_email}
+            ? $uniq : $opts{email_address};
         $opts{created_by_user_id} ||= Socialtext::User->SystemUser->user_id;
 
         my $user = Socialtext::User->create(
@@ -720,7 +722,8 @@ my @Added_groups;
     }
 
     sub create_test_hub {
-        my $unique_id = create_unique_id;
+        my $unique_id = shift || '';
+        $unique_id .= create_unique_id;
 
         # create a new test User
         my $user = create_test_user(unique_id => $unique_id);
@@ -936,18 +939,11 @@ sub wrap_wiki_div {
 }
 
 sub new_page {
-    $self->assert_scalar(@_);
-    my $hub = Test::Socialtext::main_hub();
-    my $page = $hub->pages->new_page_from_any(shift);
-    $page->metadata->update( user => $hub->current_user );
-    return $page;
+    Carp::confess "new_page removed; convert your test to construct a page via accessors, sorry";
 }
 
 sub store_new_page {
-    $self->assert_scalar(@_);
-    my $page = $self->new_page(shift);
-    $page->store( user => Test::Socialtext::main_hub()->current_user );
-    return $page;
+    Carp::confess "store_new_page removed; convert your test to construct a page via accessors, sorry";
 }
 
 sub content_pane {

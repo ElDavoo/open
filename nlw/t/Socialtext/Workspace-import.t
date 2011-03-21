@@ -19,6 +19,7 @@ $admin->set_logo_from_uri( uri => 'http://example.com/logo.gif' );
 my $user = $hub->current_user;
 my $singapore = join '', map { chr($_) } 26032, 21152, 22369;
 my $external_id = Test::Socialtext->create_unique_id();
+my $middle_name = 'Ulysses';
 # Perl will treat a string with 0xF6 as not UTF8 unless we force it to
 # "upgrade" the string to utf8.
 my $dot_net = Encode::decode( 'latin-1', 'd' . chr( 0xF6 ) . 't net' );
@@ -26,6 +27,8 @@ $user->update_store(
     # Tests handling of utf8 in export/import
     first_name => $singapore,
     last_name  => $dot_net,
+    # Ensure "middle_name" is preserved
+    middle_name => $middle_name,
     # Used to test that password survives export/import
     password   => 'something or other',
     # Private Ids need to be preserved across export/import too
@@ -33,10 +36,10 @@ $user->update_store(
 );
 
 my $page = $hub->pages->new_from_name('Admin Wiki');
+$page->edit_rev;
 $page->update(
     content          => 'This is new front page content.',
-    original_page_id => $page->id(),
-    revision         => $page->metadata()->Revision(),
+    revision         => $page->revision_num,
     subject          => 'Admin Wiki',
     user             => $user,
 );
@@ -60,16 +63,13 @@ Socialtext::Workspace->ImportFromTarball( tarball => $tarball );
     is( $admin->logo_uri(), 'http://example.com/logo.gif',
         'check that logo_uri survived export/import' );
 
-    my @data_dirs = $admin->_data_dir_paths();
-    ok( ( grep { -d } @data_dirs ) == @data_dirs,
-        'all data dirs are present are a restore' );
-
     ok( $admin->user_count, 'admin workspace has users' );
 
     my $user = Socialtext::User->new( username => 'devnull1@socialtext.com' );
     ok( $admin->has_user( $user ), 'devnull1@socialtext.com is in admin workspace' );
 
     is( $user->first_name(), $singapore, 'user first name is Singapore (in Chinese)' );
+    is( $user->middle_name(), $middle_name, 'user middle name is preserved' );
     is( $user->last_name(), $dot_net, 'user last name is dot net (umlauts on o)' );
     is $user->private_external_id, $external_id, 'private/external id preserved';
     ok( $user->password_is_correct('something or other'), 'password survived import' );

@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 
 use strict;
@@ -97,6 +97,7 @@ sub setup_ldap_servers_with_referrals {
     # this will result in an LDAP referral response
     my $openldap_source = Test::Socialtext::Bootstrap::OpenLDAP->new(
         raw_conf => "referral ldap://${target_host}:${target_port}",
+        nodb     => 1,
     );
     isa_ok $openldap_source, 'Test::Socialtext::Bootstrap::OpenLDAP', 'referral source';
 

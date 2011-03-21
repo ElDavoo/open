@@ -8,9 +8,10 @@ use Socialtext::l10n 'loc';
 use Socialtext::Formatter::Phrase ();
 use Socialtext::String ();
 use Socialtext::Paths ();
+use Encode ();
 
 const class_id    => 'widget';
-const class_title => 'WidgetPlugin';
+const class_title => _('class.widget');
 const cgi_class   => 'Socialtext::WidgetPlugin::CGI';
 
 sub register {
@@ -49,7 +50,12 @@ sub get_container_for_gadget {
     my %new_prefs;
     for my $encoded_pref (split /\s+/, $encoded_prefs) {
         $encoded_pref =~ /^([^\s=]+)=(\S*)/ or next;
-        $new_prefs{$1} = Socialtext::String::uri_unescape($2);
+        my ($key, $val) = ($1, $2);
+        use bytes;
+        $val =~ s/%([0-9A-Fa-f]{2})/chr hex($1)/eg;
+        Encode::_utf8_off($val);
+        $val = Encode::decode_utf8($val);
+        $new_prefs{$key} = $val;
     }
 
     for my $pref (@{ $gadget->preferences || [] }) {
@@ -136,14 +142,19 @@ sub html {
         encoded_prefs => $encoded_prefs,
     });
 
-    return loc("The settings for this widget have become corrupted. Please remove and re-insert the widget.")
+    return loc("error.corrupted-widget-settings")
         unless $container and $widget;
+
+    my $width = $pref->{__width__} || '';
+    if ($width =~ /^\d+$/) {
+        $width .= 'px';
+    }
 
     my $html = $self->hub->template->process($container->view_template,
         $self->hub->helpers->global_template_vars,
         pluggable => $self->hub->pluggable,
         container => $container->template_vars,
-        width     => $pref->{__width__},
+        width     => $width,
     );
 
     # Sometimes page widget's HTML block gets re-formatted again with newlines becoming

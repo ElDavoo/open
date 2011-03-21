@@ -7,6 +7,7 @@ use warnings;
 use base 'Socialtext::Syndicate::Feed';
 
 use Encode;
+use XML::Atom;
 use XML::Atom::Feed;
 use XML::Atom::Entry;
 use XML::Atom::Person;
@@ -15,6 +16,24 @@ use Readonly;
 use Socialtext::l10n qw/loc/;
 
 $XML::Atom::DefaultVersion = "1.0";
+
+# Perl 5.11.0 stopped including newlines and other whitespace in IsPrint.
+# (See perldoc perl5110delta).
+# Override this so that entries with newlines (i.e. almost all of them) don't
+# get mangled as base64.
+{
+    no warnings 'redefine';
+    *XML::Atom::Content::_is_printable = sub {
+        my $data = shift;
+        local $@;
+        # try decoding this $data with UTF-8
+        my $decoded =
+            ( Encode::is_utf8($data)
+              ? $data
+              : eval { Encode::decode("utf-8", $data, Encode::FB_CROAK) } );
+        return ! $@ && $decoded =~ /^[\p{IsPrint}\s]*$/ms;
+    };
+}
 
 sub _New {
     my $class = shift;
@@ -125,7 +144,7 @@ sub _create_feed {
     foreach my $page (@$pages) {
         if ($page->{error_message}) {
             my $entry = XML::Atom::Entry->new();
-            $entry->title( loc('Feed Error') );
+            $entry->title( loc('error.feed') );
             $entry->content( $page->{error_message} );
             $atom->add_entry($entry);
             next;
@@ -146,7 +165,11 @@ sub _content {
     my $self         = shift;
     my $content_body = shift;
 
-    my $content = XML::Atom::Content->new();
+    my $content = (
+        (index($content_body, "\x00") >= 0)
+            ? XML::Atom::Content->new(Version => 0.3)
+            : XML::Atom::Content->new()
+    );
     $content->body($content_body);
 
     return $content;

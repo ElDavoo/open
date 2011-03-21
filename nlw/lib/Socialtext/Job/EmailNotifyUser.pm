@@ -35,7 +35,7 @@ sub do_work {
     return $self->completed
         unless defined $user->email_address
             && length $user->email_address
-            && !$user->requires_confirmation();
+            && !$user->requires_email_confirmation();
 
     return $self->completed unless $ws->has_user($user);
 
@@ -116,7 +116,7 @@ sub _notification_vars {
     my $ws = $self->workspace;
 
     return (
-        subject => loc('Recent Changes In [_1] Workspace', $ws->title),
+        subject => loc('email.recent-changes=wiki', $ws->title),
         text_template => 'email/recent-changes.txt',
         html_template => 'email/recent-changes.html',
     );

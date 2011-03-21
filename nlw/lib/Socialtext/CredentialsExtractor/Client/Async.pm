@@ -48,7 +48,9 @@ sub extract_desired_headers {
         @header_list;
 
     # Strip Google Analytics cache-busting cookies if present
-    $hdrs_to_send{COOKIE} =~ s{__utm[^;]+(?:; )?}{}g;
+    if (defined $hdrs_to_send{COOKIE}) {
+        $hdrs_to_send{COOKIE} =~ s{__utm[^;]+(?:; )?}{}g;
+    }
 
     return \%hdrs_to_send;
 }

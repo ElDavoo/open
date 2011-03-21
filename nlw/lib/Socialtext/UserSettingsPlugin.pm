@@ -59,7 +59,7 @@ sub users_settings {
         settings_table_id => 'settings-table',
         settings_section  => $settings_section,
         hub               => $self->hub,
-        display_title     => loc('Users: My Settings'),
+        display_title     => loc('config.user-settings'),
         pref_list         => $self->_get_pref_list,
     );
 }
@@ -82,9 +82,9 @@ sub _update_current_user {
     if (   $self->cgi->old_password
         or $self->cgi->new_password
         or $self->cgi->new_password_retype ) {
-        $self->add_error(loc('Old password is incorrect'))
+        $self->add_error(loc('error.incorrect-old-password'))
             unless $user->password_is_correct( $self->cgi->old_password );
-        $self->add_error(loc('New passwords do not match'))
+        $self->add_error(loc('error.new-password-mismatch'))
             unless $self->cgi->new_password eq
             $self->cgi->new_password_retype;
 
@@ -98,8 +98,9 @@ sub _update_current_user {
 
     $self->_obfuscate_passwords;
 
-    $update{first_name} = $self->cgi->first_name;
-    $update{last_name}  = $self->cgi->last_name;
+    $update{first_name}  = $self->cgi->first_name;
+    $update{middle_name} = $self->cgi->middle_name;
+    $update{last_name}   = $self->cgi->last_name;
 
     eval { $user->update_store(%update) };
 
@@ -114,7 +115,7 @@ sub _update_current_user {
 
     return if $self->input_errors_found;
 
-    $self->message(loc('Changes Saved'));
+    $self->message(loc('config.saved'));
 }
 
 sub get_admins {
@@ -159,8 +160,8 @@ sub users_listall {
 
     my $display_title =
         $self->hub->checker->check_permission('admin_workspace')
-        ? loc('Users: Manage All Users')
-        : loc('Users: List All Users');
+        ? loc('config.user-admin')
+        : loc('config.user-list');
 
     $self->screen_template('view/settings');
     return $self->render_screen(
@@ -189,9 +190,8 @@ sub _update_users_in_workspace {
 
     for my $user_id ( grep { !$removed{$_} } $self->cgi->reset_password ) {
         my $user = Socialtext::User->new( user_id => $user_id );
-
-        $user->set_confirmation_info( is_password_change => 1 );
-        $user->send_password_change_email();
+        my $confirmation = $user->create_password_change_confirmation;
+        $confirmation->send;
     }
 
     my %should_be_admin = map { $_ => 1 } $self->cgi->should_be_admin;
@@ -234,10 +234,10 @@ sub _update_users_in_workspace {
         }
     }
     else {
-        $self->add_warning(loc("Can't remove privileges of the last admin"));
+        $self->add_warning(loc("error.removing-last-admin"));
     }
 
-    $self->message(loc('Changes Saved'));
+    $self->message(loc('config.saved'));
 
     return;
 }
@@ -298,7 +298,7 @@ sub users_invitation {
         settings_table_id => 'settings-table',
         settings_section  => $settings_section,
         hub               => $self->hub,
-        display_title     => loc('Users: Invite New Users'),
+        display_title     => loc('config.user-invite'),
         pref_list         => $self->_get_pref_list,
     );
 }
@@ -384,7 +384,7 @@ sub users_search {
         settings_table_id => 'settings-table',
         settings_section  => $settings_section,
         hub               => $self->hub,
-        display_title     => loc('Users: Invite New Users'),
+        display_title     => loc('config.user-invite'),
         pref_list         => $self->_get_pref_list,
     );
 }
@@ -487,7 +487,7 @@ sub _invite_users {
         settings_table_id => 'settings-table',
         settings_section  => $settings_section,
         hub               => $self->hub,
-        display_title     => loc('Users: Invite New Users'),
+        display_title     => loc('config.user-invite'),
         pref_list         => $self->_get_pref_list,
     );
 }
@@ -527,7 +527,7 @@ sub invite_request_to_admin {
     }
 
     my $renderer = Socialtext::TT2::Renderer->instance();
-    my $subject  = loc('Request to invite new users to the [_1] workspace',$self->hub->current_workspace->title);
+    my $subject  = loc('invite.request=wiki',$self->hub->current_workspace->title);
 
     my $template_dir = $self->hub->current_workspace->invitation_template;
     my $url = $self->hub->current_workspace->uri . "?action=users_invite";
@@ -616,6 +616,7 @@ cgi 'user_search';
 cgi 'email_addresses';
 cgi 'users_new_ids';
 cgi 'first_name';
+cgi 'middle_name';
 cgi 'last_name';
 cgi 'append_invitation';
 cgi 'invitation_text';

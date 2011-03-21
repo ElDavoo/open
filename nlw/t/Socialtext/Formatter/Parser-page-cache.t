@@ -4,12 +4,12 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 17;
+use Test::Socialtext tests => 18;
 use Test::Socialtext::Fatal;
 fixtures('workspaces', 'public');
 
 use Socialtext::Pages;
-use Socialtext::Page::Base;
+use Socialtext::Page;
 use File::Path ();
 use File::Spec;
 use File::Temp ();
@@ -76,45 +76,6 @@ EOF
     ok( -e $cache_dir, 'cache directory exists' );
 }
 
-OTHER_USER_NO_ACCESS: {
-    my $user = Socialtext::User->create(
-        username      => 'toobad@example.com',
-        email_address => 'toobad@example.com',
-        password      => 'password'
-    );
-    $hub->current_workspace->add_user(
-        user => $user,
-        role => Socialtext::Role->Member(),
-    );
-    check_with_user(
-        user        => 'toobad@example.com',
-        should_fail => 1,
-    );
-
-    open my $fh, '>', $page->current_revision_file
-        or die "Cannot write to ", $page->current_revision_file, ": $!";
-    print $fh $page->headers, <<'EOF';
-
-a brand new page!
-
-{link public [welcome]}
-
-{link foobar [welcome]}
-
-EOF
-    close $fh;
-
-    my $future = time + 10;
-    utime $future, $future, $page->current_revision_file
-        or die "Cannot call utime on ", $page->current_revision_file, ": $!";
-
-    check_with_user(
-        user             => 'devnull1@socialtext.com',
-        new_page_content => 1,
-    );
-
-    ok( -e $cache_dir, 'cache directory exists' );
-}
 
 CACHE_DIR_UNWRITEABLE: {
     my $dir = File::Temp::tempdir( CLEANUP => 1 );
@@ -138,7 +99,11 @@ CACHE_DIR_UNWRITEABLE: {
 }
 
 user_updates_invalidate_cache: {
-    my $user    = create_test_user();
+    my $user = create_test_user(
+        first_name  => 'Bubba',
+        middle_name => 'Bo Bob',
+        last_name   => 'Brain',
+    );
     my $email   = $user->email_address;
 
     my $ws_name = "workspace_" . time;
@@ -155,21 +120,61 @@ user_updates_invalidate_cache: {
     my $before      = $hub->pages->new_from_name($title)->to_html_or_default;
     my $before_name = $user->display_name;
     like $before, qr/$before_name/, 'Page renders with Display Name';
+    is $before_name, 'Bubba Bo Bob Brain', '... based on first/middle/last';
 
-    # sleep a tiny bit so the "page render" and "update the user" don't happen
-    # within the same second.
-    sleep 2;
+    # Change User's "first_name"; should invalidate page cache
+    first_name_invalidates_cache: {
+        # sleep a tiny bit so the "page render" and "update the user" don't
+        # happen within the same second.
+        sleep 2;
 
-    $user->update_store(
-        first_name => 'Jane',
-        last_name  => 'Smith',
-    );
-    my $after_name = $user->display_name;
-    isnt $after_name, $before_name, "User's Display Name has changed";
+        $user->update_store(
+            first_name => 'Jane',
+        );
+        my $after_name = $user->display_name;
+        is $after_name, 'Jane Bo Bob Brain',
+            'Updating first name triggers display_name recalculation';
 
-    my $after = $hub->pages->new_from_name($title)->to_html_or_default;
-    isnt $after, $before, 'Page contents change when User data changes';
-    like $after, qr/$after_name/, '... with new Display Name for User';
+        my $after = $hub->pages->new_from_name($title)->to_html_or_default;
+        isnt $after, $before, 'Page contents change when User data changes';
+        like $after, qr/$after_name/, '... with new Display Name for User';
+    }
+
+    # Change User's "middle_name"; should invalidate page cache
+    middle_name_invalidates_cache: {
+        # sleep a tiny bit so the "page render" and "update the user" don't
+        # happen within the same second.
+        sleep 2;
+
+        $user->update_store(
+            middle_name => 'Penelope',
+        );
+        my $after_name = $user->display_name;
+        is $after_name, 'Jane Penelope Brain',
+            'Updating middle name triggers display_name recalculation';
+
+        my $after = $hub->pages->new_from_name($title)->to_html_or_default;
+        isnt $after, $before, 'Page contents change when User data changes';
+        like $after, qr/$after_name/, '... with new Display Name for User';
+    }
+
+    # Change User's "last_name"; should invalidate page cache
+    last_name_invalidates_cache: {
+        # sleep a tiny bit so the "page render" and "update the user" don't
+        # happen within the same second.
+        sleep 2;
+
+        $user->update_store(
+            last_name => 'Smith',
+        );
+        my $after_name = $user->display_name;
+        is $after_name, 'Jane Penelope Smith',
+            'Updating last name triggers display_name recalculation';
+
+        my $after = $hub->pages->new_from_name($title)->to_html_or_default;
+        isnt $after, $before, 'Page contents change when User data changes';
+        like $after, qr/$after_name/, '... with new Display Name for User';
+    }
 }
 
 sub check_with_user {

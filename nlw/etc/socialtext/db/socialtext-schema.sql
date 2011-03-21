@@ -1,18 +1,22 @@
 
+SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
+SET standard_conforming_strings = off;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
-
+SET escape_string_warning = off;
 
 SET search_path = public, pg_catalog;
 
+CREATE TYPE query_int;
+
 CREATE FUNCTION bqarr_in(cstring) RETURNS query_int
-    AS '$libdir/_int', 'bqarr_in'
-    LANGUAGE c STRICT;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'bqarr_in';
 
 CREATE FUNCTION bqarr_out(query_int) RETURNS cstring
-    AS '$libdir/_int', 'bqarr_out'
-    LANGUAGE c STRICT;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'bqarr_out';
 
 CREATE TYPE query_int (
     INTERNALLENGTH = variable,
@@ -23,62 +27,70 @@ CREATE TYPE query_int (
 );
 
 CREATE FUNCTION _int_contained(integer[], integer[]) RETURNS boolean
-    AS '$libdir/_int', '_int_contained'
-    LANGUAGE c STRICT;
-
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', '_int_contained';
 
 CREATE FUNCTION _int_contains(integer[], integer[]) RETURNS boolean
-    AS '$libdir/_int', '_int_contains'
-    LANGUAGE c STRICT;
-
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', '_int_contains';
 
 CREATE FUNCTION _int_different(integer[], integer[]) RETURNS boolean
-    AS '$libdir/_int', '_int_different'
-    LANGUAGE c STRICT;
-
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', '_int_different';
 
 CREATE FUNCTION _int_inter(integer[], integer[]) RETURNS integer[]
-    AS '$libdir/_int', '_int_inter'
-    LANGUAGE c STRICT;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', '_int_inter';
 
 CREATE FUNCTION _int_overlap(integer[], integer[]) RETURNS boolean
-    AS '$libdir/_int', '_int_overlap'
-    LANGUAGE c STRICT;
-
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', '_int_overlap';
 
 CREATE FUNCTION _int_same(integer[], integer[]) RETURNS boolean
-    AS '$libdir/_int', '_int_same'
-    LANGUAGE c STRICT;
-
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', '_int_same';
 
 CREATE FUNCTION _int_union(integer[], integer[]) RETURNS integer[]
-    AS '$libdir/_int', '_int_union'
-    LANGUAGE c STRICT;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', '_int_union';
 
-CREATE FUNCTION auto_hash_signal() RETURNS "trigger"
+CREATE FUNCTION auto_hash_signal() RETURNS trigger
+    LANGUAGE plpgsql
     AS $$
     BEGIN
         NEW.hash = md5(NEW.at AT TIME ZONE 'UTC' || 'Z' || NEW.body);
         return NEW;
     END
-$$
-    LANGUAGE plpgsql;
+$$;
 
-CREATE FUNCTION auto_vivify_user_rollups() RETURNS "trigger"
+CREATE FUNCTION auto_md5_upload() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+    BEGIN
+        IF NEW.body IS NOT NULL AND NEW.content_md5 IS NULL
+        THEN
+            NEW.content_md5 =
+                encode(decode(md5(NEW.body),'hex'),'base64');
+        END IF;
+        return NEW;
+    END
+$$;
+
+CREATE FUNCTION auto_vivify_user_rollups() RETURNS trigger
+    LANGUAGE plpgsql
     AS $$
     BEGIN
         INSERT INTO rollup_user_signal (user_id) VALUES (NEW.user_id);
         RETURN NULL; -- trigger return val is ignored
     END
-$$
-    LANGUAGE plpgsql;
+$$;
 
 CREATE FUNCTION boolop(integer[], query_int) RETURNS boolean
-    AS '$libdir/_int', 'boolop'
-    LANGUAGE c STRICT;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'boolop';
 
-
-CREATE FUNCTION cleanup_sessions() RETURNS "trigger"
+CREATE FUNCTION cleanup_sessions() RETURNS trigger
+    LANGUAGE plpgsql
     AS $$
     BEGIN
         -- if this is too slow, randomize running the delete
@@ -87,46 +99,46 @@ CREATE FUNCTION cleanup_sessions() RETURNS "trigger"
         WHERE last_updated < 'now'::timestamptz - '28 days'::interval;
         RETURN NULL; -- after trigger
     END
-$$
-    LANGUAGE plpgsql;
+$$;
 
 CREATE FUNCTION g_int_compress(internal) RETURNS internal
-    AS '$libdir/_int', 'g_int_compress'
-    LANGUAGE c;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'g_int_compress';
 
-CREATE FUNCTION g_int_consistent(internal, integer[], integer) RETURNS boolean
-    AS '$libdir/_int', 'g_int_consistent'
-    LANGUAGE c;
+CREATE FUNCTION g_int_consistent(internal, integer[], integer, oid, internal) RETURNS boolean
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'g_int_consistent';
 
 CREATE FUNCTION g_int_decompress(internal) RETURNS internal
-    AS '$libdir/_int', 'g_int_decompress'
-    LANGUAGE c;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'g_int_decompress';
 
 CREATE FUNCTION g_int_penalty(internal, internal, internal) RETURNS internal
-    AS '$libdir/_int', 'g_int_penalty'
-    LANGUAGE c STRICT;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'g_int_penalty';
 
 CREATE FUNCTION g_int_picksplit(internal, internal) RETURNS internal
-    AS '$libdir/_int', 'g_int_picksplit'
-    LANGUAGE c;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'g_int_picksplit';
 
 CREATE FUNCTION g_int_same(integer[], integer[], internal) RETURNS internal
-    AS '$libdir/_int', 'g_int_same'
-    LANGUAGE c;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'g_int_same';
 
 CREATE FUNCTION g_int_union(internal, internal) RETURNS integer[]
-    AS '$libdir/_int', 'g_int_union'
-    LANGUAGE c;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'g_int_union';
 
 CREATE FUNCTION icount(integer[]) RETURNS integer
-    AS '$libdir/_int', 'icount'
-    LANGUAGE c IMMUTABLE STRICT;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'icount';
 
 CREATE FUNCTION idx(integer[], integer) RETURNS integer
-    AS '$libdir/_int', 'idx'
-    LANGUAGE c IMMUTABLE STRICT;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'idx';
 
-CREATE FUNCTION insert_recent_signal() RETURNS "trigger"
+CREATE FUNCTION insert_recent_signal() RETURNS trigger
+    LANGUAGE plpgsql
     AS $$
     BEGIN
         INSERT INTO recent_signal (
@@ -140,61 +152,61 @@ CREATE FUNCTION insert_recent_signal() RETURNS "trigger"
         );
         RETURN NULL;    -- trigger return val is ignored
     END
-    $$
-    LANGUAGE plpgsql;
+    $$;
 
-CREATE FUNCTION insert_recent_signal_user_set() RETURNS "trigger"
+CREATE FUNCTION insert_recent_signal_user_set() RETURNS trigger
+    LANGUAGE plpgsql
     AS $$
     BEGIN
         INSERT INTO recent_signal_user_set (signal_id, user_set_id)
         VALUES (NEW.signal_id, NEW.user_set_id);
         RETURN NULL;    -- trigger return val is ignored
     END
-    $$
-    LANGUAGE plpgsql;
+    $$;
 
 CREATE FUNCTION intarray_del_elem(integer[], integer) RETURNS integer[]
-    AS '$libdir/_int', 'intarray_del_elem'
-    LANGUAGE c IMMUTABLE STRICT;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'intarray_del_elem';
 
 CREATE FUNCTION intarray_push_array(integer[], integer[]) RETURNS integer[]
-    AS '$libdir/_int', 'intarray_push_array'
-    LANGUAGE c IMMUTABLE STRICT;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'intarray_push_array';
 
 CREATE FUNCTION intarray_push_elem(integer[], integer) RETURNS integer[]
-    AS '$libdir/_int', 'intarray_push_elem'
-    LANGUAGE c IMMUTABLE STRICT;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'intarray_push_elem';
 
 CREATE FUNCTION intset(integer) RETURNS integer[]
-    AS '$libdir/_int', 'intset'
-    LANGUAGE c IMMUTABLE STRICT;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'intset';
 
 CREATE FUNCTION intset_subtract(integer[], integer[]) RETURNS integer[]
-    AS '$libdir/_int', 'intset_subtract'
-    LANGUAGE c IMMUTABLE STRICT;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'intset_subtract';
 
 CREATE FUNCTION intset_union_elem(integer[], integer) RETURNS integer[]
-    AS '$libdir/_int', 'intset_union_elem'
-    LANGUAGE c IMMUTABLE STRICT;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'intset_union_elem';
 
 CREATE FUNCTION is_direct_signal(actor_id bigint, person_id bigint) RETURNS boolean
+    LANGUAGE plpgsql IMMUTABLE
     AS $$
 BEGIN
     RETURN (actor_id IS NOT NULL AND person_id IS NOT NULL);
 END;
-$$
-    LANGUAGE plpgsql IMMUTABLE;
+$$;
 
-CREATE FUNCTION is_ignorable_action(event_class text, "action" text) RETURNS boolean
+CREATE FUNCTION is_ignorable_action(event_class text, action text) RETURNS boolean
+    LANGUAGE plpgsql IMMUTABLE
     AS $$
 BEGIN
     RETURN (event_class = 'page' AND action IN ('edit_start', 'edit_cancel', 'edit_contention', 'watch_add', 'watch_delete'))
         OR (event_class = 'widget' AND action <> 'add');
 END;
-$$
-    LANGUAGE plpgsql IMMUTABLE;
+$$;
 
-CREATE FUNCTION is_page_contribution("action" text) RETURNS boolean
+CREATE FUNCTION is_page_contribution(action text) RETURNS boolean
+    LANGUAGE plpgsql IMMUTABLE
     AS $$
 BEGIN
     IF action IN ('edit_save', 'tag_add', 'tag_delete', 'comment', 'rename', 'duplicate', 'delete')
@@ -203,10 +215,10 @@ BEGIN
     END IF;
     RETURN false;
 END;
-$$
-    LANGUAGE plpgsql IMMUTABLE;
+$$;
 
-CREATE FUNCTION is_profile_contribution("action" text) RETURNS boolean
+CREATE FUNCTION is_profile_contribution(action text) RETURNS boolean
+    LANGUAGE plpgsql IMMUTABLE
     AS $$
 BEGIN
     IF action IN ('edit_save', 'tag_add', 'tag_delete')
@@ -215,10 +227,10 @@ BEGIN
     END IF;
     RETURN false;
 END;
-$$
-    LANGUAGE plpgsql IMMUTABLE;
+$$;
 
-CREATE FUNCTION mark_user_as_updated_when_profile_changes() RETURNS "trigger"
+CREATE FUNCTION mark_user_as_updated_when_profile_changes() RETURNS trigger
+    LANGUAGE plpgsql
     AS $$
 BEGIN
 
@@ -234,10 +246,10 @@ BEGIN
     RETURN OLD;
   END IF;
 END;
-$$
-    LANGUAGE plpgsql;
+$$;
 
-CREATE FUNCTION mark_user_as_updated_when_user_changes() RETURNS "trigger"
+CREATE FUNCTION mark_user_as_updated_when_user_changes() RETURNS trigger
+    LANGUAGE plpgsql
     AS $$
 BEGIN
     IF TG_OP = 'INSERT' THEN
@@ -249,10 +261,10 @@ BEGIN
     END IF;
   RETURN NEW;
 END;
-$$
-    LANGUAGE plpgsql;
+$$;
 
-CREATE FUNCTION materialize_event_view() RETURNS "trigger"
+CREATE FUNCTION materialize_event_view() RETURNS trigger
+    LANGUAGE plpgsql
     AS $$
 BEGIN
     IF NEW.event_class = 'page' AND is_page_contribution(NEW.action) THEN
@@ -264,10 +276,16 @@ BEGIN
     END IF;
     RETURN NEW;
 END
-$$
-    LANGUAGE plpgsql;
+$$;
 
-CREATE FUNCTION on_user_set_delete() RETURNS "trigger"
+CREATE FUNCTION not_null(anyarray) RETURNS anyarray
+    LANGUAGE sql
+    AS $_$ 
+    SELECT ARRAY(SELECT x FROM unnest($1) g(x) WHERE x IS NOT NULL) 
+$_$;
+
+CREATE FUNCTION on_user_set_delete() RETURNS trigger
+    LANGUAGE plpgsql
     AS $$
 BEGIN
     IF (TG_RELNAME = 'users') THEN
@@ -278,10 +296,10 @@ BEGIN
 
     RETURN NEW; -- proceed with the delete
 END;
-$$
-    LANGUAGE plpgsql;
+$$;
 
-CREATE FUNCTION on_user_set_path_insert() RETURNS "trigger"
+CREATE FUNCTION on_user_set_path_insert() RETURNS trigger
+    LANGUAGE plpgsql
     AS $$
 DECLARE
     upper_bound int;
@@ -302,10 +320,10 @@ BEGIN
     END LOOP;
     RETURN NEW; -- proceed with the insert
 END;
-$$
-    LANGUAGE plpgsql;
+$$;
 
 CREATE FUNCTION purge_user_set(to_purge integer) RETURNS boolean
+    LANGUAGE plpgsql
     AS $$
     BEGIN
         LOCK user_set_include, user_set_path IN SHARE MODE;
@@ -348,19 +366,18 @@ CREATE FUNCTION purge_user_set(to_purge integer) RETURNS boolean
 
         RETURN true;
     END;
-$$
-    LANGUAGE plpgsql;
+$$;
 
 CREATE FUNCTION querytree(query_int) RETURNS text
-    AS '$libdir/_int', 'querytree'
-    LANGUAGE c STRICT;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'querytree';
 
 CREATE FUNCTION rboolop(query_int, integer[]) RETURNS boolean
-    AS '$libdir/_int', 'rboolop'
-    LANGUAGE c STRICT;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'rboolop';
 
-
-CREATE FUNCTION signal_hide() RETURNS "trigger"
+CREATE FUNCTION signal_hide() RETURNS trigger
+    LANGUAGE plpgsql
     AS $$
 BEGIN
   IF NEW.hidden = TRUE and OLD.hidden = FALSE THEN
@@ -388,10 +405,10 @@ BEGIN
   END IF;
   RETURN NEW;
 END;
-$$
-    LANGUAGE plpgsql;
+$$;
 
-CREATE FUNCTION signal_sent() RETURNS "trigger"
+CREATE FUNCTION signal_sent() RETURNS trigger
+    LANGUAGE plpgsql
     AS $$
     BEGIN
 
@@ -405,38 +422,38 @@ CREATE FUNCTION signal_sent() RETURNS "trigger"
 
         RETURN NULL; -- trigger return val is ignored
     END
-$$
-    LANGUAGE plpgsql;
-
-CREATE FUNCTION sort(integer[], text) RETURNS integer[]
-    AS '$libdir/_int', 'sort'
-    LANGUAGE c IMMUTABLE STRICT;
+$$;
 
 CREATE FUNCTION sort(integer[]) RETURNS integer[]
-    AS '$libdir/_int', 'sort'
-    LANGUAGE c IMMUTABLE STRICT;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'sort';
+
+CREATE FUNCTION sort(integer[], text) RETURNS integer[]
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'sort';
 
 CREATE FUNCTION sort_asc(integer[]) RETURNS integer[]
-    AS '$libdir/_int', 'sort_asc'
-    LANGUAGE c IMMUTABLE STRICT;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'sort_asc';
 
 CREATE FUNCTION sort_desc(integer[]) RETURNS integer[]
-    AS '$libdir/_int', 'sort_desc'
-    LANGUAGE c IMMUTABLE STRICT;
-
-CREATE FUNCTION subarray(integer[], integer, integer) RETURNS integer[]
-    AS '$libdir/_int', 'subarray'
-    LANGUAGE c IMMUTABLE STRICT;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'sort_desc';
 
 CREATE FUNCTION subarray(integer[], integer) RETURNS integer[]
-    AS '$libdir/_int', 'subarray'
-    LANGUAGE c IMMUTABLE STRICT;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'subarray';
+
+CREATE FUNCTION subarray(integer[], integer, integer) RETURNS integer[]
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'subarray';
 
 CREATE FUNCTION uniq(integer[]) RETURNS integer[]
-    AS '$libdir/_int', 'uniq'
-    LANGUAGE c IMMUTABLE STRICT;
+    LANGUAGE c IMMUTABLE STRICT
+    AS '$libdir/_int', 'uniq';
 
-CREATE FUNCTION update_recent_signal() RETURNS "trigger"
+CREATE FUNCTION update_recent_signal() RETURNS trigger
+    LANGUAGE plpgsql
     AS $$
     BEGIN
         UPDATE recent_signal
@@ -449,11 +466,9 @@ CREATE FUNCTION update_recent_signal() RETURNS "trigger"
          WHERE signal_id      = NEW.signal_id;
         RETURN NULL;    -- trigger return val is ignored
     END
-    $$
-    LANGUAGE plpgsql;
+    $$;
 
-CREATE AGGREGATE array_accum (
-    BASETYPE = anyelement,
+CREATE AGGREGATE array_accum(anyelement) (
     SFUNC = array_append,
     STYPE = anyarray,
     INITCOND = '{}'
@@ -511,11 +526,29 @@ CREATE OPERATOR - (
     RIGHTARG = integer[]
 );
 
+CREATE OPERATOR <@ (
+    PROCEDURE = _int_contained,
+    LEFTARG = integer[],
+    RIGHTARG = integer[],
+    COMMUTATOR = @>,
+    RESTRICT = contsel,
+    JOIN = contjoinsel
+);
+
 CREATE OPERATOR @ (
     PROCEDURE = _int_contains,
     LEFTARG = integer[],
     RIGHTARG = integer[],
     COMMUTATOR = ~,
+    RESTRICT = contsel,
+    JOIN = contjoinsel
+);
+
+CREATE OPERATOR @> (
+    PROCEDURE = _int_contains,
+    LEFTARG = integer[],
+    RIGHTARG = integer[],
+    COMMUTATOR = <@,
     RESTRICT = contsel,
     JOIN = contjoinsel
 );
@@ -563,11 +596,13 @@ CREATE OPERATOR ~~ (
 CREATE OPERATOR CLASS gist__int_ops
     DEFAULT FOR TYPE integer[] USING gist AS
     OPERATOR 3 &&(integer[],integer[]) ,
-    OPERATOR 6 =(anyarray,anyarray) RECHECK ,
-    OPERATOR 7 @(integer[],integer[]) ,
-    OPERATOR 8 ~(integer[],integer[]) ,
+    OPERATOR 6 =(anyarray,anyarray) ,
+    OPERATOR 7 @>(integer[],integer[]) ,
+    OPERATOR 8 <@(integer[],integer[]) ,
+    OPERATOR 13 @(integer[],integer[]) ,
+    OPERATOR 14 ~(integer[],integer[]) ,
     OPERATOR 20 @@(integer[],query_int) ,
-    FUNCTION 1 g_int_consistent(internal,integer[],integer) ,
+    FUNCTION 1 g_int_consistent(internal,integer[],integer,oid,internal) ,
     FUNCTION 2 g_int_union(internal,internal) ,
     FUNCTION 3 g_int_compress(internal) ,
     FUNCTION 4 g_int_decompress(internal) ,
@@ -584,7 +619,7 @@ CREATE TABLE "Account" (
     name varchar(250) NOT NULL,
     is_system_created boolean DEFAULT false NOT NULL,
     skin_name varchar(30) DEFAULT 's3'::varchar NOT NULL,
-    email_addresses_are_hidden boolean,
+    email_addresses_are_hidden boolean DEFAULT false NOT NULL,
     is_exportable boolean DEFAULT false NOT NULL,
     desktop_logo_uri varchar(250) DEFAULT '/static/desktop/images/sd-logo.png'::varchar,
     desktop_header_gradient_top varchar(7) DEFAULT '#4C739B'::varchar,
@@ -602,8 +637,8 @@ CREATE TABLE "Account" (
 
 CREATE SEQUENCE "Account___account_id"
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 CREATE TABLE "Permission" (
@@ -613,8 +648,8 @@ CREATE TABLE "Permission" (
 
 CREATE SEQUENCE "Permission___permission_id"
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 CREATE TABLE "Role" (
@@ -625,22 +660,14 @@ CREATE TABLE "Role" (
 
 CREATE SEQUENCE "Role___role_id"
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 CREATE TABLE "System" (
     field varchar(1024) NOT NULL,
     value varchar(1024) NOT NULL,
     last_update timestamptz DEFAULT now()
-);
-
-CREATE TABLE "UserEmailConfirmation" (
-    user_id bigint NOT NULL,
-    sha1_hash varchar(27) NOT NULL,
-    expiration_datetime timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
-    is_password_change boolean DEFAULT false NOT NULL,
-    workspace_id bigint
 );
 
 CREATE TABLE "UserMetadata" (
@@ -731,8 +758,8 @@ CREATE TABLE "WorkspaceRolePermission" (
 
 CREATE SEQUENCE "Workspace___workspace_id"
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 CREATE TABLE account_logo (
@@ -742,8 +769,8 @@ CREATE TABLE account_logo (
 
 CREATE SEQUENCE user_set_path_id_seq
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 CREATE TABLE user_set_path (
@@ -755,12 +782,12 @@ CREATE TABLE user_set_path (
 );
 
 CREATE VIEW user_sets_for_user AS
-  SELECT user_set_path.from_set_id AS user_id, user_set_path.into_set_id AS user_set_id
+ SELECT user_set_path.from_set_id AS user_id, user_set_path.into_set_id AS user_set_id
    FROM user_set_path
   WHERE user_set_path.from_set_id <= B'00010000000000000000000000000000'::"bit"::integer;
 
 CREATE VIEW accounts_for_user AS
-  SELECT user_sets_for_user.user_id, user_sets_for_user.user_set_id, user_sets_for_user.user_set_id - B'00110000000000000000000000000000'::"bit"::integer AS account_id
+ SELECT user_sets_for_user.user_id, user_sets_for_user.user_set_id, user_sets_for_user.user_set_id - B'00110000000000000000000000000000'::"bit"::integer AS account_id
    FROM user_sets_for_user
   WHERE user_sets_for_user.user_set_id >= B'00110000000000000000000000000001'::"bit"::integer AND user_sets_for_user.user_set_id <= B'01000000000000000000000000000000'::"bit"::integer;
 
@@ -773,14 +800,29 @@ CREATE TABLE attachment (
     mime_type text NOT NULL,
     is_image boolean NOT NULL,
     is_temporary boolean DEFAULT false NOT NULL,
-    content_length integer NOT NULL
+    content_length integer NOT NULL,
+    content_md5 character(24),
+    body bytea
 );
 
 CREATE SEQUENCE attachment_id_seq
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
+
+CREATE TABLE backup_file (
+    name text NOT NULL,
+    at timestamptz DEFAULT now() NOT NULL,
+    body bytea NOT NULL
+);
+
+CREATE TABLE breadcrumb (
+    viewer_id integer NOT NULL,
+    workspace_id bigint NOT NULL,
+    page_id text NOT NULL,
+    last_viewed timestamptz NOT NULL
+);
 
 CREATE TABLE container (
     container_id bigint NOT NULL,
@@ -792,14 +834,14 @@ CREATE TABLE container (
 
 CREATE SEQUENCE container_id
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 CREATE SEQUENCE default_gadget_id
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 CREATE TABLE error (
@@ -810,8 +852,8 @@ CREATE TABLE error (
 );
 
 CREATE TABLE event (
-    "at" timestamptz NOT NULL,
-    "action" text NOT NULL,
+    at timestamptz NOT NULL,
+    action text NOT NULL,
     actor_id integer NOT NULL,
     event_class text NOT NULL,
     context text,
@@ -825,8 +867,8 @@ CREATE TABLE event (
 );
 
 CREATE TABLE event_archive (
-    "at" timestamptz NOT NULL,
-    "action" text NOT NULL,
+    at timestamptz NOT NULL,
+    action text NOT NULL,
     actor_id integer NOT NULL,
     event_class text NOT NULL,
     context text,
@@ -840,8 +882,8 @@ CREATE TABLE event_archive (
 );
 
 CREATE TABLE event_page_contrib (
-    "at" timestamptz NOT NULL,
-    "action" text NOT NULL,
+    at timestamptz NOT NULL,
+    action text NOT NULL,
     actor_id integer NOT NULL,
     context text,
     page_id text NOT NULL,
@@ -858,9 +900,17 @@ CREATE TABLE exitstatus (
 );
 
 CREATE TABLE funcmap (
-    funcid serial NOT NULL,
+    funcid integer NOT NULL,
     funcname varchar(255) NOT NULL
 );
+
+CREATE SEQUENCE funcmap_funcid_seq
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER SEQUENCE funcmap_funcid_seq OWNED BY funcmap.funcid;
 
 CREATE TABLE gadget (
     gadget_id bigint NOT NULL,
@@ -882,8 +932,8 @@ CREATE TABLE gadget (
 
 CREATE SEQUENCE gadget_id
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 CREATE TABLE gadget_instance (
@@ -895,13 +945,13 @@ CREATE TABLE gadget_instance (
     minimized boolean DEFAULT false,
     fixed boolean DEFAULT false,
     parent_instance_id bigint,
-    "class" text
+    class text
 );
 
 CREATE SEQUENCE gadget_instance_id
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 CREATE TABLE gadget_instance_user_pref (
@@ -914,7 +964,7 @@ CREATE TABLE gadget_message (
     gadget_id bigint NOT NULL,
     lang text NOT NULL,
     country text DEFAULT '' NOT NULL,
-    "key" text NOT NULL,
+    key text NOT NULL,
     value text NOT NULL
 );
 
@@ -931,8 +981,8 @@ CREATE TABLE gadget_user_pref (
 
 CREATE SEQUENCE gadget_user_pref_id
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 CREATE TABLE gallery (
@@ -951,12 +1001,12 @@ CREATE TABLE gallery_gadget (
     "position" integer NOT NULL,
     removed boolean DEFAULT false,
     socialtext boolean DEFAULT false,
-    "global" boolean DEFAULT false
+    global boolean DEFAULT false
 );
 
 CREATE TABLE group_photo (
     group_id integer NOT NULL,
-    "large" bytea,
+    large bytea,
     small bytea
 );
 
@@ -976,17 +1026,17 @@ CREATE TABLE groups (
 
 CREATE SEQUENCE groups___group_id
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 CREATE VIEW groups_for_user AS
-  SELECT user_sets_for_user.user_id, user_sets_for_user.user_set_id, user_sets_for_user.user_set_id - B'00010000000000000000000000000000'::"bit"::integer AS group_id
+ SELECT user_sets_for_user.user_id, user_sets_for_user.user_set_id, user_sets_for_user.user_set_id - B'00010000000000000000000000000000'::"bit"::integer AS group_id
    FROM user_sets_for_user
   WHERE user_sets_for_user.user_set_id >= B'00010000000000000000000000000001'::"bit"::integer AND user_sets_for_user.user_set_id <= B'00100000000000000000000000000000'::"bit"::integer;
 
 CREATE TABLE job (
-    jobid serial NOT NULL,
+    jobid integer NOT NULL,
     funcid integer NOT NULL,
     arg bytea,
     uniqkey varchar(255),
@@ -996,6 +1046,14 @@ CREATE TABLE job (
     priority smallint,
     "coalesce" varchar(255)
 );
+
+CREATE SEQUENCE job_jobid_seq
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+ALTER SEQUENCE job_jobid_seq OWNED BY job.jobid;
 
 CREATE TABLE note (
     jobid bigint NOT NULL,
@@ -1025,7 +1083,17 @@ CREATE TABLE page (
     deleted boolean NOT NULL,
     summary text,
     edit_summary text,
-    locked boolean DEFAULT false NOT NULL
+    locked boolean DEFAULT false NOT NULL,
+    tags text[] DEFAULT ARRAY[]::text[] NOT NULL,
+    views integer DEFAULT 0 NOT NULL
+);
+
+CREATE TABLE page_attachment (
+    id text NOT NULL,
+    workspace_id bigint NOT NULL,
+    page_id text NOT NULL,
+    attachment_id bigint NOT NULL,
+    deleted boolean NOT NULL
 );
 
 CREATE TABLE page_link (
@@ -1033,6 +1101,24 @@ CREATE TABLE page_link (
     from_page_id text NOT NULL,
     to_workspace_id bigint NOT NULL,
     to_page_id text NOT NULL
+);
+
+CREATE TABLE page_revision (
+    workspace_id bigint NOT NULL,
+    page_id text NOT NULL,
+    revision_id numeric(19,5) NOT NULL,
+    revision_num integer NOT NULL,
+    name text,
+    editor_id bigint NOT NULL,
+    edit_time timestamptz NOT NULL,
+    page_type text NOT NULL,
+    deleted boolean NOT NULL,
+    summary text,
+    edit_summary text,
+    locked boolean DEFAULT false NOT NULL,
+    tags text[] NOT NULL,
+    body_length bigint DEFAULT 0 NOT NULL,
+    body bytea
 );
 
 CREATE TABLE page_tag (
@@ -1053,7 +1139,7 @@ CREATE TABLE person_watched_people__person (
 
 CREATE TABLE plugin_pref (
     plugin text NOT NULL,
-    "key" text NOT NULL,
+    key text NOT NULL,
     value text NOT NULL
 );
 
@@ -1072,18 +1158,18 @@ CREATE TABLE profile_field (
     is_user_editable boolean DEFAULT true NOT NULL,
     is_hidden boolean DEFAULT false NOT NULL,
     CONSTRAINT profile_field_class_check
-            CHECK (field_class IN ('attribute', 'contact', 'relationship'))
+            CHECK (field_class = ANY (ARRAY['attribute', 'contact', 'relationship']))
 );
 
 CREATE SEQUENCE profile_field___profile_field_id
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 CREATE TABLE profile_photo (
     user_id integer NOT NULL,
-    "large" bytea,
+    large bytea,
     small bytea
 );
 
@@ -1095,7 +1181,7 @@ CREATE TABLE profile_relationship (
 
 CREATE TABLE recent_signal (
     signal_id bigint NOT NULL,
-    "at" timestamptz DEFAULT now(),
+    at timestamptz DEFAULT now(),
     user_id bigint NOT NULL,
     body text NOT NULL,
     in_reply_to_id bigint,
@@ -1111,7 +1197,7 @@ CREATE TABLE recent_signal_user_set (
 );
 
 CREATE VIEW roles_for_user AS
-  SELECT user_set_path.from_set_id AS user_id, user_set_path.into_set_id AS user_set_id, user_set_path.role_id
+ SELECT user_set_path.from_set_id AS user_id, user_set_path.into_set_id AS user_set_id, user_set_path.role_id
    FROM user_set_path
   WHERE user_set_path.from_set_id <= B'00010000000000000000000000000000'::"bit"::integer;
 
@@ -1122,23 +1208,6 @@ CREATE TABLE rollup_user_signal (
     sent_count bigint DEFAULT 0 NOT NULL
 );
 
-CREATE TABLE search_set_workspaces (
-    search_set_id bigint NOT NULL,
-    workspace_id bigint NOT NULL
-);
-
-CREATE TABLE search_sets (
-    search_set_id bigint NOT NULL,
-    name varchar(40) NOT NULL,
-    owner_user_id bigint NOT NULL
-);
-
-CREATE SEQUENCE search_sets___search_set_id
-    INCREMENT BY 1
-    NO MAXVALUE
-    NO MINVALUE
-    CACHE 1;
-
 CREATE TABLE sessions (
     id character(32) NOT NULL,
     a_session text NOT NULL,
@@ -1147,7 +1216,7 @@ CREATE TABLE sessions (
 
 CREATE TABLE signal (
     signal_id bigint NOT NULL,
-    "at" timestamptz DEFAULT now(),
+    at timestamptz DEFAULT now(),
     user_id bigint NOT NULL,
     body text NOT NULL,
     in_reply_to_id bigint,
@@ -1164,7 +1233,7 @@ CREATE TABLE signal_asset (
     workspace_id bigint,
     page_id text,
     attachment_id integer,
-    "class" text NOT NULL
+    class text NOT NULL
 );
 
 CREATE TABLE signal_attachment (
@@ -1174,8 +1243,8 @@ CREATE TABLE signal_attachment (
 
 CREATE SEQUENCE signal_id_seq
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 CREATE TABLE signal_tag (
@@ -1196,8 +1265,8 @@ CREATE TABLE signal_user_set (
 
 CREATE SEQUENCE tag_id_seq
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 CREATE TABLE tag_people__person_tags (
@@ -1225,8 +1294,16 @@ CREATE TABLE topic_signal_user (
 CREATE TABLE user_plugin_pref (
     user_id bigint NOT NULL,
     plugin text NOT NULL,
-    "key" text NOT NULL,
+    key text NOT NULL,
     value text NOT NULL
+);
+
+CREATE TABLE user_restrictions (
+    user_id bigint NOT NULL,
+    restriction_type varchar(256) NOT NULL,
+    token varchar(128) NOT NULL,
+    expires_at timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
+    workspace_id bigint
 );
 
 CREATE TABLE user_set_include (
@@ -1238,7 +1315,7 @@ CREATE TABLE user_set_include (
 );
 
 CREATE VIEW user_set_include_tc AS
-  SELECT DISTINCT user_set_path.from_set_id, user_set_path.into_set_id, user_set_path.role_id
+ SELECT DISTINCT user_set_path.from_set_id, user_set_path.into_set_id, user_set_path.role_id
    FROM user_set_path
   ORDER BY user_set_path.from_set_id, user_set_path.into_set_id, user_set_path.role_id;
 
@@ -1255,20 +1332,20 @@ CREATE TABLE user_set_plugin (
 CREATE TABLE user_set_plugin_pref (
     user_set_id integer NOT NULL,
     plugin text NOT NULL,
-    "key" text NOT NULL,
+    key text NOT NULL,
     value text NOT NULL
 );
 
 CREATE VIEW user_set_plugin_tc AS
-  SELECT user_set_plugin.user_set_id, user_set_plugin.plugin
-   FROM user_set_plugin
+         SELECT user_set_plugin.user_set_id, user_set_plugin.plugin
+           FROM user_set_plugin
 UNION ALL 
- SELECT path.from_set_id AS user_set_id, plug.plugin
-   FROM user_set_path path
-   JOIN user_set_plugin plug ON path.into_set_id = plug.user_set_id;
+         SELECT path.from_set_id AS user_set_id, plug.plugin
+           FROM user_set_path path
+      JOIN user_set_plugin plug ON path.into_set_id = plug.user_set_id;
 
 CREATE VIEW user_use_plugin AS
-  SELECT user_set_path.from_set_id AS user_id, user_set_path.into_set_id AS user_set_id, user_set_plugin.plugin
+ SELECT user_set_path.from_set_id AS user_id, user_set_path.into_set_id AS user_set_id, user_set_plugin.plugin
    FROM user_set_path
    JOIN user_set_plugin ON user_set_path.into_set_id = user_set_plugin.user_set_id;
 
@@ -1285,8 +1362,9 @@ CREATE TABLE users (
     driver_unique_id text NOT NULL,
     driver_username text NOT NULL,
     email_address text DEFAULT '' NOT NULL,
-    "password" text DEFAULT '*none*' NOT NULL,
+    password text DEFAULT '*none*' NOT NULL,
     first_name text DEFAULT '' NOT NULL,
+    middle_name text DEFAULT '',
     last_name text DEFAULT '' NOT NULL,
     cached_at timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
     last_profile_update timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
@@ -1298,25 +1376,25 @@ CREATE TABLE users (
 
 CREATE SEQUENCE users___user_id
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 CREATE VIEW users_share_plugin AS
-  SELECT v_path.user_id AS viewer_id, o_path.user_id AS other_id, v_path.user_set_id, plug.plugin
+ SELECT v_path.user_id AS viewer_id, o_path.user_id AS other_id, v_path.user_set_id, plug.plugin
    FROM user_sets_for_user v_path
    JOIN user_set_plugin plug USING (user_set_id)
    JOIN user_sets_for_user o_path USING (user_set_id);
 
 CREATE VIEW users_share_plugin_tc AS
-  SELECT v_path.user_id AS viewer_id, o_path.user_id AS other_id, v_path.user_set_id, plug.plugin
+ SELECT v_path.user_id AS viewer_id, o_path.user_id AS other_id, v_path.user_set_id, plug.plugin
    FROM user_sets_for_user v_path
    JOIN user_set_plugin_tc plug USING (user_set_id)
    JOIN user_sets_for_user o_path USING (user_set_id);
 
 CREATE TABLE view_event (
-    "at" timestamptz NOT NULL,
-    "action" text NOT NULL,
+    at timestamptz NOT NULL,
+    action text NOT NULL,
     actor_id integer NOT NULL,
     event_class text NOT NULL,
     context text,
@@ -1332,7 +1410,7 @@ CREATE TABLE view_event (
 CREATE TABLE webhook (
     id bigint NOT NULL,
     creator_id bigint NOT NULL,
-    "class" text NOT NULL,
+    class text NOT NULL,
     account_id bigint,
     workspace_id bigint,
     details_blob text DEFAULT '{}',
@@ -1342,14 +1420,18 @@ CREATE TABLE webhook (
 
 CREATE SEQUENCE webhook___webhook_id
     INCREMENT BY 1
-    NO MAXVALUE
     NO MINVALUE
+    NO MAXVALUE
     CACHE 1;
 
 CREATE VIEW workspaces_for_user AS
-  SELECT user_sets_for_user.user_id, user_sets_for_user.user_set_id, user_sets_for_user.user_set_id - B'00100000000000000000000000000000'::"bit"::integer AS workspace_id
+ SELECT user_sets_for_user.user_id, user_sets_for_user.user_set_id, user_sets_for_user.user_set_id - B'00100000000000000000000000000000'::"bit"::integer AS workspace_id
    FROM user_sets_for_user
   WHERE user_sets_for_user.user_set_id >= B'00100000000000000000000000000001'::"bit"::integer AND user_sets_for_user.user_set_id <= B'00110000000000000000000000000000'::"bit"::integer;
+
+ALTER TABLE funcmap ALTER COLUMN funcid SET DEFAULT nextval('funcmap_funcid_seq'::regclass);
+
+ALTER TABLE job ALTER COLUMN jobid SET DEFAULT nextval('job_jobid_seq'::regclass);
 
 ALTER TABLE ONLY "Account"
     ADD CONSTRAINT "Account_pkey"
@@ -1362,10 +1444,6 @@ ALTER TABLE ONLY "Permission"
 ALTER TABLE ONLY "Role"
     ADD CONSTRAINT "Role_pkey"
             PRIMARY KEY (role_id);
-
-ALTER TABLE ONLY "UserEmailConfirmation"
-    ADD CONSTRAINT "UserEmailConfirmation_pkey"
-            PRIMARY KEY (user_id);
 
 ALTER TABLE ONLY "UserMetadata"
     ADD CONSTRAINT "UserMetadata_pkey"
@@ -1407,6 +1485,10 @@ ALTER TABLE ONLY attachment
     ADD CONSTRAINT attachment_uuid_key
             UNIQUE (attachment_uuid);
 
+ALTER TABLE ONLY backup_file
+    ADD CONSTRAINT backup_file_pkey
+            PRIMARY KEY (name);
+
 ALTER TABLE ONLY container
     ADD CONSTRAINT container_pk
             PRIMARY KEY (container_id);
@@ -1433,7 +1515,7 @@ ALTER TABLE ONLY gadget_instance_user_pref
 
 ALTER TABLE ONLY gadget_message
     ADD CONSTRAINT gadget_message_pk
-            PRIMARY KEY (gadget_id, lang, country, "key");
+            PRIMARY KEY (gadget_id, lang, country, key);
 
 ALTER TABLE ONLY gadget
     ADD CONSTRAINT gadget_pk
@@ -1483,6 +1565,14 @@ ALTER TABLE ONLY opensocial_appdata
     ADD CONSTRAINT opensocial_appdata_pk
             PRIMARY KEY (app_id, user_set_id, field);
 
+ALTER TABLE ONLY page_attachment
+    ADD CONSTRAINT page_attachment_pkey
+            PRIMARY KEY (workspace_id, page_id, attachment_id);
+
+ALTER TABLE ONLY page_attachment
+    ADD CONSTRAINT page_attachment_workspace_id_page_id_id_key
+            UNIQUE (workspace_id, page_id, id);
+
 ALTER TABLE ONLY page_link
     ADD CONSTRAINT page_link_unique
             UNIQUE (from_workspace_id, from_page_id, to_workspace_id, to_page_id);
@@ -1490,6 +1580,10 @@ ALTER TABLE ONLY page_link
 ALTER TABLE ONLY page
     ADD CONSTRAINT page_pkey
             PRIMARY KEY (workspace_id, page_id);
+
+ALTER TABLE ONLY page_revision
+    ADD CONSTRAINT page_revision_pkey
+            PRIMARY KEY (workspace_id, page_id, revision_id);
 
 ALTER TABLE ONLY person_tag
     ADD CONSTRAINT person_tag_pkey
@@ -1523,10 +1617,6 @@ ALTER TABLE ONLY recent_signal_user_set
     ADD CONSTRAINT recent_signal_user_set_pkey
             PRIMARY KEY (signal_id, user_set_id);
 
-ALTER TABLE ONLY search_sets
-    ADD CONSTRAINT search_sets_pkey
-            PRIMARY KEY (search_set_id);
-
 ALTER TABLE ONLY sessions
     ADD CONSTRAINT sessions_pkey
             PRIMARY KEY (id);
@@ -1541,7 +1631,7 @@ ALTER TABLE ONLY signal_attachment
 
 ALTER TABLE ONLY signal_asset
     ADD CONSTRAINT signal_asset_pkey
-            PRIMARY KEY ("class", href, signal_id, title);
+            PRIMARY KEY (class, href, signal_id, title);
 
 ALTER TABLE ONLY signal
     ADD CONSTRAINT signal_pkey
@@ -1570,6 +1660,10 @@ ALTER TABLE ONLY topic_signal_page
 ALTER TABLE ONLY topic_signal_user
     ADD CONSTRAINT topic_signal_user_pk
             PRIMARY KEY (signal_id, user_id);
+
+ALTER TABLE ONLY user_restrictions
+    ADD CONSTRAINT user_restrictions_pkey
+            PRIMARY KEY (user_id, restriction_type);
 
 ALTER TABLE ONLY user_set_include
     ADD CONSTRAINT user_set_include_pkey
@@ -1604,9 +1698,6 @@ CREATE UNIQUE INDEX "Permission___name"
 CREATE UNIQUE INDEX "Role___name"
 	    ON "Role" (name);
 
-CREATE UNIQUE INDEX "UserEmailConfirmation___sha1_hash"
-	    ON "UserEmailConfirmation" (sha1_hash);
-
 CREATE UNIQUE INDEX "UserMetadata___user_id"
 	    ON "UserMetadata" (user_id);
 
@@ -1619,8 +1710,14 @@ CREATE UNIQUE INDEX "Workspace___lower___name"
 CREATE INDEX "Workspace_account_id"
 	    ON "Workspace" (account_id);
 
+CREATE UNIQUE INDEX "Workspace_lower_name_tpo"
+	    ON "Workspace" (lower((name)::text) text_pattern_ops);
+
 CREATE UNIQUE INDEX account_user_set_id
 	    ON "Account" (user_set_id);
+
+CREATE INDEX breadcrumb_viewer_ws
+	    ON breadcrumb (viewer_id, workspace_id);
 
 CREATE UNIQUE INDEX container__type_name_set
 	    ON container (container_type, name, user_set_id);
@@ -1662,12 +1759,21 @@ CREATE INDEX groups_permission_set_non_priv
 CREATE UNIQUE INDEX groups_user_set_id
 	    ON groups (user_set_id);
 
+CREATE INDEX idx_attach_content_md5
+	    ON attachment (content_md5);
+
 CREATE INDEX idx_attach_created_at
 	    ON attachment (created_at);
 
 CREATE INDEX idx_attach_created_at_temp
 	    ON attachment (created_at)
 	    WHERE (NOT is_temporary);
+
+CREATE INDEX idx_attach_filename
+	    ON attachment (lower(filename) text_pattern_ops);
+
+CREATE INDEX idx_attach_filename_with_id
+	    ON attachment (attachment_id, lower(filename) text_pattern_ops);
 
 CREATE INDEX idx_job_func_coalesce_prio
 	    ON job (funcid, "coalesce", (COALESCE((priority)::integer, 0)));
@@ -1683,6 +1789,50 @@ CREATE INDEX idx_opensocial_appdata_app_user
 
 CREATE UNIQUE INDEX idx_opensocial_appdata_app_user_field
 	    ON opensocial_appdata (app_id, user_set_id, field);
+
+CREATE INDEX idx_page_att_att_fk
+	    ON page_attachment (attachment_id);
+
+CREATE INDEX idx_page_att_att_fk_nodel
+	    ON page_attachment (attachment_id)
+	    WHERE (NOT deleted);
+
+CREATE INDEX idx_page_att_page
+	    ON page_attachment (workspace_id, page_id);
+
+CREATE INDEX idx_page_att_page_nodel
+	    ON page_attachment (workspace_id, page_id)
+	    WHERE (NOT deleted);
+
+CREATE UNIQUE INDEX idx_page_att_pk_nodel
+	    ON page_attachment (workspace_id, page_id, attachment_id)
+	    WHERE (NOT deleted);
+
+CREATE UNIQUE INDEX idx_page_att_uk_nodel
+	    ON page_attachment (workspace_id, page_id, id)
+	    WHERE (NOT deleted);
+
+CREATE INDEX idx_page_lower_name
+	    ON page (workspace_id, lower(name) text_pattern_ops)
+	    WHERE (NOT deleted);
+
+CREATE INDEX idx_page_rev_editor_time
+	    ON page_revision (editor_id, edit_time);
+
+CREATE INDEX idx_page_rev_page
+	    ON page_revision (workspace_id, page_id);
+
+CREATE INDEX idx_page_rev_page_nodel
+	    ON page_revision (workspace_id, page_id)
+	    WHERE (NOT deleted);
+
+CREATE UNIQUE INDEX idx_page_rev_pk_nodel
+	    ON page_revision (workspace_id, page_id, revision_id)
+	    WHERE (NOT deleted);
+
+CREATE UNIQUE INDEX idx_page_rev_pk_nodel_latest
+	    ON page_revision (workspace_id, page_id, revision_id DESC)
+	    WHERE (NOT deleted);
 
 CREATE INDEX idx_signal_tag_lower_tag
 	    ON signal_tag (lower(tag) text_pattern_ops);
@@ -1718,7 +1868,7 @@ CREATE INDEX idx_user_set_plugin_pref
 	    ON user_set_plugin_pref (user_set_id, plugin);
 
 CREATE INDEX idx_user_set_plugin_pref_key
-	    ON user_set_plugin_pref (user_set_id, plugin, "key");
+	    ON user_set_plugin_pref (user_set_id, plugin, key);
 
 CREATE UNIQUE INDEX idx_uspc_set_and_id
 	    ON user_set_path_component (user_set_id, user_set_path_id);
@@ -1727,115 +1877,115 @@ CREATE INDEX ix_container_container_type
 	    ON container (container_type);
 
 CREATE INDEX ix_epc_action_at
-	    ON event_page_contrib ("action", "at");
+	    ON event_page_contrib (action, at);
 
 CREATE INDEX ix_epc_actor_at
-	    ON event_page_contrib (actor_id, "at");
+	    ON event_page_contrib (actor_id, at);
 
 CREATE INDEX ix_epc_actor_page_at
-	    ON event_page_contrib (actor_id, page_workspace_id, page_id, "at");
+	    ON event_page_contrib (actor_id, page_workspace_id, page_id, at);
 
 CREATE INDEX ix_epc_at
-	    ON event_page_contrib ("at");
+	    ON event_page_contrib (at);
 
 CREATE INDEX ix_epc_workspace_at
-	    ON event_page_contrib (page_workspace_id, "at");
+	    ON event_page_contrib (page_workspace_id, at);
 
 CREATE INDEX ix_epc_workspace_page
 	    ON event_page_contrib (page_workspace_id, page_id);
 
 CREATE INDEX ix_epc_workspace_page_at
-	    ON event_page_contrib (page_workspace_id, page_id, "at");
+	    ON event_page_contrib (page_workspace_id, page_id, at);
 
 CREATE INDEX ix_event_action_at
-	    ON event ("action", "at");
+	    ON event (action, at);
 
 CREATE INDEX ix_event_activity_ignore
-	    ON event ("at")
-	    WHERE (NOT is_ignorable_action(event_class, "action"));
+	    ON event (at)
+	    WHERE (NOT is_ignorable_action(event_class, action));
 
 CREATE INDEX ix_event_actor_page_contribs
-	    ON event (actor_id, page_workspace_id, page_id, "at")
-	    WHERE ((event_class = 'page') AND is_page_contribution("action"));
+	    ON event (actor_id, page_workspace_id, page_id, at)
+	    WHERE ((event_class = 'page') AND is_page_contribution(action));
 
 CREATE INDEX ix_event_actor_time
-	    ON event (actor_id, "at");
+	    ON event (actor_id, at);
 
 CREATE INDEX ix_event_at
-	    ON event ("at");
+	    ON event (at);
 
 CREATE INDEX ix_event_event_class_action_at
-	    ON event (event_class, "action", "at");
+	    ON event (event_class, action, at);
 
 CREATE INDEX ix_event_event_class_at
-	    ON event (event_class, "at");
+	    ON event (event_class, at);
 
 CREATE INDEX ix_event_for_group
-	    ON event (group_id, "at")
+	    ON event (group_id, at)
 	    WHERE (event_class = 'group');
 
 CREATE INDEX ix_event_for_page
-	    ON event (page_workspace_id, page_id, "at")
+	    ON event (page_workspace_id, page_id, at)
 	    WHERE (event_class = 'page');
 
 CREATE INDEX ix_event_page_contention
-	    ON event (page_workspace_id, page_id, "at")
-	    WHERE ((event_class = 'page') AND (("action" = 'edit_start') OR ("action" = 'edit_cancel')));
+	    ON event (page_workspace_id, page_id, at)
+	    WHERE ((event_class = 'page') AND ((action = 'edit_start') OR (action = 'edit_cancel')));
 
 CREATE INDEX ix_event_page_contribs
-	    ON event ("at")
-	    WHERE ((event_class = 'page') AND is_page_contribution("action"));
+	    ON event (at)
+	    WHERE ((event_class = 'page') AND is_page_contribution(action));
 
 CREATE INDEX ix_event_person_contribs
-	    ON event ("at")
-	    WHERE ((event_class = 'person') AND is_profile_contribution("action"));
+	    ON event (at)
+	    WHERE ((event_class = 'person') AND is_profile_contribution(action));
 
 CREATE INDEX ix_event_person_contribs_actor
-	    ON event (actor_id, "at")
-	    WHERE ((event_class = 'person') AND is_profile_contribution("action"));
+	    ON event (actor_id, at)
+	    WHERE ((event_class = 'person') AND is_profile_contribution(action));
 
 CREATE INDEX ix_event_person_contribs_person
-	    ON event (person_id, "at")
-	    WHERE ((event_class = 'person') AND is_profile_contribution("action"));
+	    ON event (person_id, at)
+	    WHERE ((event_class = 'person') AND is_profile_contribution(action));
 
 CREATE INDEX ix_event_person_time
-	    ON event (person_id, "at")
+	    ON event (person_id, at)
 	    WHERE (event_class = 'person');
 
 CREATE INDEX ix_event_signal_actor_at
-	    ON event (actor_id, "at")
+	    ON event (actor_id, at)
 	    WHERE (event_class = 'signal');
 
 CREATE INDEX ix_event_signal_at
-	    ON event ("at")
+	    ON event (at)
 	    WHERE (event_class = 'signal');
 
 CREATE INDEX ix_event_signal_direct
-	    ON event ("at")
+	    ON event (at)
 	    WHERE ((event_class = 'signal') AND is_direct_signal((actor_id)::bigint, (person_id)::bigint));
 
 CREATE INDEX ix_event_signal_id_at
-	    ON event (signal_id, "at");
+	    ON event (signal_id, at);
 
 CREATE INDEX ix_event_signal_indirect
-	    ON event ("at")
+	    ON event (at)
 	    WHERE ((event_class = 'signal') AND (NOT is_direct_signal((actor_id)::bigint, (person_id)::bigint)));
 
 CREATE INDEX ix_event_signal_ref
-	    ON event ("at")
+	    ON event (at)
 	    WHERE (signal_id IS NOT NULL);
 
 CREATE INDEX ix_event_signal_ref_actions
-	    ON event ("at")
-	    WHERE ((("action" = 'signal') OR ("action" = 'edit_save')) AND (signal_id IS NOT NULL));
+	    ON event (at)
+	    WHERE (((action = 'signal') OR (action = 'edit_save')) AND (signal_id IS NOT NULL));
 
 CREATE INDEX ix_event_workspace
-	    ON event (page_workspace_id, "at")
+	    ON event (page_workspace_id, at)
 	    WHERE (event_class = 'page');
 
 CREATE INDEX ix_event_workspace_contrib
-	    ON event (page_workspace_id, "at")
-	    WHERE ((event_class = 'page') AND is_page_contribution("action"));
+	    ON event (page_workspace_id, at)
+	    WHERE ((event_class = 'page') AND is_page_contribution(action));
 
 CREATE INDEX ix_event_workspace_page
 	    ON event (page_workspace_id, page_id);
@@ -1856,26 +2006,26 @@ CREATE INDEX ix_job_piro_non_null
 	    ON job ((COALESCE((priority)::integer, 0)));
 
 CREATE INDEX ix_page_events_contribs_actor_time
-	    ON event (actor_id, "at")
-	    WHERE ((event_class = 'page') AND is_page_contribution("action"));
+	    ON event (actor_id, at)
+	    WHERE ((event_class = 'page') AND is_page_contribution(action));
 
 CREATE INDEX ix_recent_signal_at
-	    ON recent_signal ("at");
+	    ON recent_signal (at);
 
 CREATE INDEX ix_recent_signal_at_user
-	    ON recent_signal ("at", user_id);
+	    ON recent_signal (at, user_id);
 
 CREATE UNIQUE INDEX ix_recent_signal_hash
 	    ON recent_signal (hash);
 
 CREATE INDEX ix_recent_signal_recipient_at
-	    ON recent_signal (recipient_id, "at");
+	    ON recent_signal (recipient_id, at);
 
 CREATE INDEX ix_recent_signal_reply
 	    ON recent_signal (in_reply_to_id);
 
 CREATE INDEX ix_recent_signal_user_at
-	    ON recent_signal (user_id, "at");
+	    ON recent_signal (user_id, at);
 
 CREATE INDEX ix_recent_signal_user_set
 	    ON recent_signal_user_set (signal_id);
@@ -1905,16 +2055,16 @@ CREATE INDEX ix_sigasset_attid
 	    ON signal_asset (attachment_id);
 
 CREATE INDEX ix_sigasset_ch
-	    ON signal_asset ("class", href);
+	    ON signal_asset (class, href);
 
 CREATE INDEX ix_sigasset_chs
-	    ON signal_asset ("class", href, signal_id);
+	    ON signal_asset (class, href, signal_id);
 
 CREATE INDEX ix_sigasset_class
-	    ON signal_asset ("class");
+	    ON signal_asset (class);
 
 CREATE INDEX ix_sigasset_classsigid
-	    ON signal_asset ("class", signal_id);
+	    ON signal_asset (class, signal_id);
 
 CREATE INDEX ix_sigasset_href
 	    ON signal_asset (href);
@@ -1926,25 +2076,25 @@ CREATE INDEX ix_sigasset_sigid
 	    ON signal_asset (signal_id);
 
 CREATE INDEX ix_sigasset_sigidclass
-	    ON signal_asset (signal_id, "class");
+	    ON signal_asset (signal_id, class);
 
 CREATE INDEX ix_signal_at
-	    ON signal ("at");
+	    ON signal (at);
 
 CREATE INDEX ix_signal_at_user
-	    ON signal ("at", user_id);
+	    ON signal (at, user_id);
 
 CREATE UNIQUE INDEX ix_signal_hash
 	    ON signal (hash);
 
 CREATE INDEX ix_signal_recipient_at
-	    ON signal (recipient_id, "at");
+	    ON signal (recipient_id, at);
 
 CREATE INDEX ix_signal_reply
 	    ON signal (in_reply_to_id);
 
 CREATE INDEX ix_signal_user_at
-	    ON signal (user_id, "at");
+	    ON signal (user_id, at);
 
 CREATE INDEX ix_signal_user_set
 	    ON signal_user_set (signal_id);
@@ -2006,29 +2156,36 @@ CREATE INDEX job_funcid_runafter
 CREATE INDEX page_creator_time
 	    ON page (creator_id, create_time);
 
+CREATE INDEX page_last_editor_time
+	    ON page (last_editor_id, last_edit_time);
+
 CREATE INDEX page_link__to_page
 	    ON page_link (to_workspace_id, to_page_id);
+
+CREATE UNIQUE INDEX page_pk_nodel
+	    ON page (workspace_id, page_id)
+	    WHERE (NOT deleted);
 
 CREATE INDEX page_tag__page_ix
 	    ON page_tag (workspace_id, page_id);
 
-CREATE INDEX page_tag__tag_ix
-	    ON page_tag (tag);
-
-CREATE INDEX page_tag__workspace_ix
-	    ON page_tag (workspace_id);
-
 CREATE INDEX page_tag__workspace_lower_tag_ix
-	    ON page_tag (workspace_id, lower(tag));
+	    ON page_tag (workspace_id, lower(tag) text_pattern_ops);
+
+CREATE INDEX page_tag__workspace_lower_tag_page_ix
+	    ON page_tag (workspace_id, lower(tag) text_pattern_ops, page_id);
 
 CREATE INDEX page_tag__workspace_tag_ix
 	    ON page_tag (workspace_id, tag);
+
+CREATE INDEX page_tag__workspace_tag_page_ix
+	    ON page_tag (workspace_id, tag, page_id);
 
 CREATE UNIQUE INDEX person_tag__name
 	    ON person_tag (name);
 
 CREATE INDEX plugin_pref_key_idx
-	    ON plugin_pref (plugin, "key");
+	    ON plugin_pref (plugin, key);
 
 CREATE UNIQUE INDEX profile_field_name
 	    ON profile_field (account_id, name);
@@ -2039,12 +2196,6 @@ CREATE INDEX profile_relationship_other_user_id
 CREATE INDEX recent_signal_hidden
 	    ON recent_signal (hidden);
 
-CREATE UNIQUE INDEX search_set_workspaces___search_set_id___search_set_id___workspa
-	    ON search_set_workspaces (search_set_id, workspace_id);
-
-CREATE UNIQUE INDEX search_sets___owner_user_id___owner_user_id___name
-	    ON search_sets (owner_user_id, lower((name)::text));
-
 CREATE INDEX signal_hidden
 	    ON signal (hidden);
 
@@ -2052,7 +2203,13 @@ CREATE INDEX user_plugin_pref_idx
 	    ON user_plugin_pref (user_id, plugin);
 
 CREATE INDEX user_plugin_pref_key_idx
-	    ON user_plugin_pref (user_id, plugin, "key");
+	    ON user_plugin_pref (user_id, plugin, key);
+
+CREATE UNIQUE INDEX user_restrictions_token_key
+	    ON user_restrictions (token);
+
+CREATE INDEX user_restrictions_user_id_key
+	    ON user_restrictions (user_id);
 
 CREATE UNIQUE INDEX user_set_plugin_ukey
 	    ON user_set_plugin (plugin, user_set_id);
@@ -2095,109 +2252,57 @@ CREATE INDEX watchlist_workspace_page
 	    ON "Watchlist" (workspace_id, page_text_id);
 
 CREATE INDEX webhook__class_account_ix
-	    ON webhook ("class", account_id);
+	    ON webhook (class, account_id);
 
 CREATE INDEX webhook__class_group_ix
-	    ON webhook ("class", group_id);
+	    ON webhook (class, group_id);
 
 CREATE INDEX webhook__class_workspace_ix
-	    ON webhook ("class", workspace_id);
+	    ON webhook (class, workspace_id);
 
 CREATE INDEX webhook__workspace_class_ix
-	    ON webhook ("class");
+	    ON webhook (class);
 
 CREATE UNIQUE INDEX workspace_user_set_id
 	    ON "Workspace" (user_set_id);
 
-CREATE TRIGGER account_user_set_delete
-    AFTER DELETE ON "Account"
-    FOR EACH ROW
-    EXECUTE PROCEDURE on_user_set_delete();
+CREATE TRIGGER account_user_set_delete AFTER DELETE ON "Account" FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
 
-CREATE TRIGGER group_user_set_delete
-    AFTER DELETE ON groups
-    FOR EACH ROW
-    EXECUTE PROCEDURE on_user_set_delete();
+CREATE TRIGGER attachment_md5 BEFORE INSERT OR UPDATE ON attachment FOR EACH ROW EXECUTE PROCEDURE auto_md5_upload();
 
-CREATE TRIGGER materialize_event_view_on_insert
-    AFTER INSERT ON event
-    FOR EACH ROW
-    EXECUTE PROCEDURE materialize_event_view();
+CREATE TRIGGER group_user_set_delete AFTER DELETE ON groups FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
 
-CREATE TRIGGER profile_attr_mark_user_updated_when_changed
-    BEFORE INSERT OR DELETE OR UPDATE ON profile_attribute
-    FOR EACH ROW
-    EXECUTE PROCEDURE mark_user_as_updated_when_profile_changes();
+CREATE TRIGGER materialize_event_view_on_insert AFTER INSERT ON event FOR EACH ROW EXECUTE PROCEDURE materialize_event_view();
 
-CREATE TRIGGER profile_photo_mark_user_updated_when_changed
-    BEFORE INSERT OR DELETE OR UPDATE ON profile_photo
-    FOR EACH ROW
-    EXECUTE PROCEDURE mark_user_as_updated_when_profile_changes();
+CREATE TRIGGER profile_attr_mark_user_updated_when_changed BEFORE INSERT OR DELETE OR UPDATE ON profile_attribute FOR EACH ROW EXECUTE PROCEDURE mark_user_as_updated_when_profile_changes();
 
-CREATE TRIGGER profile_rel_mark_user_updated_when_changed
-    BEFORE INSERT OR DELETE OR UPDATE ON profile_relationship
-    FOR EACH ROW
-    EXECUTE PROCEDURE mark_user_as_updated_when_profile_changes();
+CREATE TRIGGER profile_photo_mark_user_updated_when_changed BEFORE INSERT OR DELETE OR UPDATE ON profile_photo FOR EACH ROW EXECUTE PROCEDURE mark_user_as_updated_when_profile_changes();
 
-CREATE TRIGGER sessions_insert
-    AFTER INSERT ON sessions
-    FOR EACH STATEMENT
-    EXECUTE PROCEDURE cleanup_sessions();
+CREATE TRIGGER profile_rel_mark_user_updated_when_changed BEFORE INSERT OR DELETE OR UPDATE ON profile_relationship FOR EACH ROW EXECUTE PROCEDURE mark_user_as_updated_when_profile_changes();
 
-CREATE TRIGGER signal_before_insert
-    BEFORE INSERT ON signal
-    FOR EACH ROW
-    EXECUTE PROCEDURE auto_hash_signal();
+CREATE TRIGGER sessions_insert AFTER INSERT ON sessions FOR EACH STATEMENT EXECUTE PROCEDURE cleanup_sessions();
 
-CREATE TRIGGER signal_hide
-    AFTER UPDATE ON signal
-    FOR EACH ROW
-    EXECUTE PROCEDURE signal_hide();
+CREATE TRIGGER signal_before_insert BEFORE INSERT ON signal FOR EACH ROW EXECUTE PROCEDURE auto_hash_signal();
 
-CREATE TRIGGER signal_insert
-    AFTER INSERT ON signal
-    FOR EACH ROW
-    EXECUTE PROCEDURE signal_sent();
+CREATE TRIGGER signal_hide AFTER UPDATE ON signal FOR EACH ROW EXECUTE PROCEDURE signal_hide();
 
-CREATE TRIGGER signal_insert_recent
-    AFTER INSERT ON signal
-    FOR EACH ROW
-    EXECUTE PROCEDURE insert_recent_signal();
+CREATE TRIGGER signal_insert AFTER INSERT ON signal FOR EACH ROW EXECUTE PROCEDURE signal_sent();
 
-CREATE TRIGGER signal_update_recent
-    AFTER UPDATE ON signal
-    FOR EACH ROW
-    EXECUTE PROCEDURE update_recent_signal();
+CREATE TRIGGER signal_insert_recent AFTER INSERT ON signal FOR EACH ROW EXECUTE PROCEDURE insert_recent_signal();
 
-CREATE TRIGGER signal_uset_insert_recent
-    AFTER INSERT ON signal_user_set
-    FOR EACH ROW
-    EXECUTE PROCEDURE insert_recent_signal_user_set();
+CREATE TRIGGER signal_update_recent AFTER UPDATE ON signal FOR EACH ROW EXECUTE PROCEDURE update_recent_signal();
 
-CREATE TRIGGER user_set_path_insert
-    AFTER INSERT ON user_set_path
-    FOR EACH ROW
-    EXECUTE PROCEDURE on_user_set_path_insert();
+CREATE TRIGGER signal_uset_insert_recent AFTER INSERT ON signal_user_set FOR EACH ROW EXECUTE PROCEDURE insert_recent_signal_user_set();
 
-CREATE TRIGGER user_user_set_delete
-    AFTER DELETE ON users
-    FOR EACH ROW
-    EXECUTE PROCEDURE on_user_set_delete();
+CREATE TRIGGER user_set_path_insert AFTER INSERT ON user_set_path FOR EACH ROW EXECUTE PROCEDURE on_user_set_path_insert();
 
-CREATE TRIGGER users_insert
-    AFTER INSERT ON users
-    FOR EACH ROW
-    EXECUTE PROCEDURE auto_vivify_user_rollups();
+CREATE TRIGGER user_user_set_delete AFTER DELETE ON users FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
 
-CREATE TRIGGER users_mark_as_updated_when_changed
-    BEFORE INSERT OR UPDATE ON users
-    FOR EACH ROW
-    EXECUTE PROCEDURE mark_user_as_updated_when_user_changes();
+CREATE TRIGGER users_insert AFTER INSERT ON users FOR EACH ROW EXECUTE PROCEDURE auto_vivify_user_rollups();
 
-CREATE TRIGGER workspace_user_set_delete
-    AFTER DELETE ON "Workspace"
-    FOR EACH ROW
-    EXECUTE PROCEDURE on_user_set_delete();
+CREATE TRIGGER users_mark_as_updated_when_changed BEFORE INSERT OR UPDATE ON users FOR EACH ROW EXECUTE PROCEDURE mark_user_as_updated_when_user_changes();
+
+CREATE TRIGGER workspace_user_set_delete AFTER DELETE ON "Workspace" FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
 
 ALTER TABLE ONLY account_logo
     ADD CONSTRAINT account_logo_account_fk
@@ -2256,11 +2361,6 @@ ALTER TABLE ONLY "WorkspaceBreadcrumb"
 
 ALTER TABLE ONLY "WorkspaceBreadcrumb"
     ADD CONSTRAINT fk_55d1290a6baacca3b4fec189a739ab5b
-            FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY "UserEmailConfirmation"
-    ADD CONSTRAINT fk_777ad60e2bff785f8ff5ece0f3fc95c8
             FOREIGN KEY (user_id)
             REFERENCES users(user_id) ON DELETE CASCADE;
 
@@ -2359,6 +2459,16 @@ ALTER TABLE ONLY opensocial_appdata
             FOREIGN KEY (app_id)
             REFERENCES gadget_instance(gadget_instance_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY page_attachment
+    ADD CONSTRAINT page_att_attachment
+            FOREIGN KEY (attachment_id)
+            REFERENCES attachment(attachment_id) ON DELETE RESTRICT;
+
+ALTER TABLE ONLY page_attachment
+    ADD CONSTRAINT page_att_workspace_id_fk
+            FOREIGN KEY (workspace_id)
+            REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
+
 ALTER TABLE ONLY page
     ADD CONSTRAINT page_creator_id_fk
             FOREIGN KEY (creator_id)
@@ -2373,6 +2483,16 @@ ALTER TABLE ONLY page_link
     ADD CONSTRAINT page_link__from_page_id_fk
             FOREIGN KEY (from_workspace_id, from_page_id)
             REFERENCES page(workspace_id, page_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY page_revision
+    ADD CONSTRAINT page_rev_last_editor_id_fk
+            FOREIGN KEY (editor_id)
+            REFERENCES users(user_id) ON DELETE RESTRICT;
+
+ALTER TABLE ONLY page_revision
+    ADD CONSTRAINT page_rev_workspace_id_fk
+            FOREIGN KEY (workspace_id)
+            REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY page_tag
     ADD CONSTRAINT page_tag_workspace_id_page_id_fkey
@@ -2457,7 +2577,7 @@ ALTER TABLE ONLY rollup_user_signal
 ALTER TABLE ONLY signal_asset
     ADD CONSTRAINT signal_asset_attach_fk
             FOREIGN KEY (attachment_id)
-            REFERENCES attachment(attachment_id) ON DELETE CASCADE;
+            REFERENCES attachment(attachment_id) ON DELETE RESTRICT;
 
 ALTER TABLE ONLY signal_asset
     ADD CONSTRAINT signal_asset_signal_fk
@@ -2472,7 +2592,7 @@ ALTER TABLE ONLY signal_asset
 ALTER TABLE ONLY signal_attachment
     ADD CONSTRAINT signal_attachment_attachment_fk
             FOREIGN KEY (attachment_id)
-            REFERENCES attachment(attachment_id) ON DELETE CASCADE;
+            REFERENCES attachment(attachment_id) ON DELETE RESTRICT;
 
 ALTER TABLE ONLY signal_attachment
     ADD CONSTRAINT signal_attachment_signal_fk
@@ -2544,6 +2664,16 @@ ALTER TABLE ONLY user_plugin_pref
             FOREIGN KEY (user_id)
             REFERENCES users(user_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY user_restrictions
+    ADD CONSTRAINT user_restrictions_user_id_fkey
+            FOREIGN KEY (user_id)
+            REFERENCES users(user_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY user_restrictions
+    ADD CONSTRAINT user_restrictions_workspace_id_fkey
+            FOREIGN KEY (workspace_id)
+            REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
+
 ALTER TABLE ONLY user_set_include
     ADD CONSTRAINT user_set_include_role
             FOREIGN KEY (role_id)
@@ -2571,11 +2701,6 @@ ALTER TABLE ONLY user_workspace_pref
 
 ALTER TABLE ONLY user_workspace_pref
     ADD CONSTRAINT user_workspace_pref_workspace_fk
-            FOREIGN KEY (workspace_id)
-            REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY "UserEmailConfirmation"
-    ADD CONSTRAINT useremailconfirmation_workpace_id_fk
             FOREIGN KEY (workspace_id)
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
@@ -2620,4 +2745,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '133');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '135');

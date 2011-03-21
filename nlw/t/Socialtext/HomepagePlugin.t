@@ -1,10 +1,10 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 use strict;
 use warnings;
 use mocked 'Socialtext::CGI';
 use mocked 'Apache::Cookie';
-use mocked 'Socialtext::Search::Config';
+use mocked 'Socialtext::Page';
 use mocked 'Socialtext::Hub';
 use Test::Socialtext tests => 8;
 

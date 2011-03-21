@@ -62,6 +62,7 @@ sub get_resource {
         if ($minimal) {
             $user_hash = $user->to_hash(minimal => 1);
             $user_hash->{primary_account_id} = $user->primary_account_id;
+            $user_hash->{is_business_admin} = $user->is_business_admin;
         }
         else {
             $user_hash = {

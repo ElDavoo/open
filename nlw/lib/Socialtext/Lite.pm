@@ -4,7 +4,7 @@ use Moose;
 use Readonly;
 use Date::Parse qw/str2time/;
 use Socialtext::Authen;
-use Socialtext::String;
+use Socialtext::String qw/uri_escape/;
 use Socialtext::Permission 'ST_EDIT_PERM';
 use Socialtext::Helpers;
 use Socialtext::l10n qw(loc);
@@ -12,7 +12,8 @@ use Socialtext::Timer;
 use Socialtext::Session;
 use Socialtext::Formatter::LiteLinkDictionary;
 use Socialtext::Encode;
-use Socialtext::Model::Pages;
+use Socialtext::Pages;
+use Try::Tiny;
 
 use namespace::clean -except => 'meta';
 
@@ -88,30 +89,13 @@ Readonly my $FORGOT_PASSWORD_TEMPLATE => 'lite/forgot_password/forgot_password.h
 Creates a new Socialtext::Lite object. If no hub is passed, the Socialtext::Lite
 object will be unable to perform.
 
-=cut
-sub new {
-    my $class = shift;
-    my %p     = @_;
-
-    $class = ref($class) || $class;
-
-    my $self = bless {}, $class;
-
-    $self->{hub} = $p{hub};
-
-    return $self;
-}
-
 =head2 hub
 
 Returns the hub that will be used to find classes and data. Currently
 only an accessor.
 
 =cut
-sub hub {
-    my $self = shift;
-    return $self->{hub};
-}
+has 'hub' => (is => 'rw', isa => 'Socialtext::Hub', required => 1);
 
 =head2 login()
 
@@ -124,7 +108,7 @@ sub login {
     my $session     = Socialtext::Session->new();
     return $self->_process_template(
         $LOGIN_TEMPLATE,
-        title             => loc('Socialtext Login'),
+        title             => loc('login.title'),
         redirect_to       => $redirect_to,
         errors            => [ $session->errors ],
         messages          => [ $session->messages ],
@@ -140,14 +124,14 @@ sub nologin {
     my $messages;
     my $file = Socialtext::AppConfig->login_message_file();
     if ( $file and -r $file ) {
-        eval {$messages = Socialtext::File::get_contents_utf8($file)};
-        warn $@ if $@;
+        try { $messages = Socialtext::File::get_contents_utf8($file) }
+        catch { warn $_ };
     }
-    $messages ||= '<p>'. loc('Login has been Disabled') .'</p>';
+    $messages //= '<p>'. loc('info.login-disabled') .'</p>';
 
     return $self->_process_template(
         $NOLOGIN_TEMPLATE,
-        title             => loc('Login Disabled'),
+        title             => loc('login.disabled'),
         messages          => [ $messages ],
     );
 }
@@ -208,33 +192,29 @@ $page with content and other data provided by the CGI data.
 If no revision_id, revision or subject are provided in the CGI
 data, use the information in the provided page object.
 
-=cut 
+=cut
+
 sub edit_save {
-    my $self = shift;
-    my %p    = @_;
+    my ($self, %p) = @_;
+    my $page = delete $p{page};
+    my $is_comment = ($p{action} && $p{action} eq 'comment');
 
-    my $page = $p{page};
-    delete $p{page};
-
-    if ($p{action} eq 'comment') {
-        eval { $page->add_comment($p{comment}) };
+    return try {
+        $is_comment ? $page->add_comment($p{comment})
+                    : $page->update_from_remote(%p);
+        return '';    # insure that we are returning no content
     }
-    else {
-        eval { $page->update_from_remote(%p); };
-    }
-
-    if ( $@ =~ /^Contention:/ ) {
-        return $self->_handle_contention( $page, $p{subject}, ($p{action} eq 'comment') ? $p{comment} : $p{content} );
-    }
-    elsif ($@ =~ /Page is locked/) {
-        return $self->_handle_lock( $page, $p{subject}, ($p{action} eq 'comment') ? $p{comment} : $p{content} );
-    }
-    elsif ($@) {
-        # rethrow
-        die $@;
-    }
-
-    return '';    # insure that we are returning no content
+    catch {
+        if (/^Contention:/) {
+            return $self->_handle_contention($page, $p{subject},
+                $is_comment ? $p{comment} : $p{content});
+        }
+        elsif (/Page is locked/) {
+            return $self->_handle_lock($page, $p{subject},
+                $is_comment ? $p{comment} : $p{content});
+        }
+        die $_; 
+    };
 }
 
 =head2 recent_changes
@@ -242,7 +222,8 @@ sub edit_save {
 Returns HTML representing the list of the fifty (or less) most 
 recently changed pages in the current workspace.
 
-=cut 
+=cut
+
 
 sub recent_changes {
     my $self     = shift;
@@ -278,7 +259,7 @@ sub workspace_list {
     my $self  = shift;
     return $self->_process_template(
         $WORKSPACE_LIST_TEMPLATE,
-        title             => loc('Workspace List'),
+        title             => loc('wiki.list'),
         section           => 'workspaces',
         my_workspaces     => [ $self->hub->workspace_list->my_workspaces ],
         public_workspaces => [ $self->hub->workspace_list->public_workspaces ],
@@ -291,7 +272,8 @@ Returns a form for searching the current workspace. If $search_term
 is defined, the results of that search are provided as a list of links
 to pages, with $page_num specifing the 0-based page index.
 
-=cut 
+=cut
+
 sub search {
     my ($self, %args) = @_;
     my $search_term = $self->_utf8_decode($args{search_term});
@@ -302,7 +284,7 @@ sub search {
     my $page_size = 20;
 
     if ( $search_term ) {
-        eval {
+        try {
             my $search = $self->hub->search;
             $search->sortby($search->preferences->default_search_order->value);
             $search->_direction($search->preferences->direction->value);
@@ -311,25 +293,22 @@ sub search {
                 offset => $pagenum * $page_size,
                 limit => $page_size,
             );
-        };
-        if ($@) {
-            $error = $@;
-            $title = 'Search Error';
-        }
-        else {
             $title = $search_results->{display_title};
         }
+        catch {
+            $error = $_;
+            $title = 'Search Error';
+        };
     }
 
     my $more = 0;
+    $search_results->{hits} //= 0;
     if ($search_results->{too_many}) {
-        $error = loc('The search term you have entered is too general; [_1] pages and/or attachments matched your query. Please add additional search terms that you expect your documents contain.', $search_results->{hits});
+        $error = loc('error.search-too-general=hits', $search_results->{hits});
     }
     elsif ($search_results->{hits} > (($pagenum+1) * $page_size)) {
         $more = 1;
     }
-
-    use URI::Escape 'uri_escape_utf8';
 
     return $self->_process_template(
         $SEARCH_TEMPLATE,
@@ -339,7 +318,7 @@ sub search {
         search_error  => $error,
         pagenum       => $pagenum,
         more          => $more,
-        base_uri      => '/m/search/'.$self->hub->current_workspace->name.'?search_term='.uri_escape_utf8($search_term),
+        base_uri      => '/m/search/'.$self->hub->current_workspace->name.'?search_term='.uri_escape($search_term),
         load_row_times => sub {
             return Socialtext::Query::Plugin::load_row_times(@_);
         },
@@ -354,7 +333,8 @@ in the current workspace. If $tag is defined, provide a list of
 links to all the pages in the tag, with $page_num specifing the
 0-based page index.
 
-=cut 
+=cut
+
 sub tag {
     my ($self, %args) = @_;
     my $tag = $self->_utf8_decode($args{tag});
@@ -374,7 +354,7 @@ sub _pages_for_tag {
     my $page_size = 20;
 
     $tag = Socialtext::Encode::ensure_is_utf8($tag);
-    my $rows = Socialtext::Model::Pages->By_tag(
+    my $rows = Socialtext::Pages->By_tag(
         hub          => $self->hub,
         workspace_id => $self->hub->current_workspace->workspace_id,
         tag          => $tag,
@@ -387,7 +367,7 @@ sub _pages_for_tag {
 
     return $self->_process_template(
         $TAG_TEMPLATE,
-        title     => loc("Tag [_1]", $tag),
+        title     => loc("nav.tag=tag", $tag),
         section   => 'tag',
         base_uri  => '/m/tag/'.$self->hub->current_workspace->name.'/'.$tag,
         rows      => $rows,
@@ -419,7 +399,7 @@ sub _all_tags {
     return $self->_process_template(
         $TAG_TEMPLATE,
         base_uri => '/m/tag/'.$self->hub->current_workspace->name,
-        title    => loc('Tags'),
+        title    => loc('nav.tags'),
         section  => 'tags',
         tags     => \@rows,
         pagenum  => $pagenum,
@@ -488,7 +468,7 @@ sub _frame_page {
         user_can_comment_on_page => (
             $self->hub->checker->check_permission('comment') &&
             $self->hub->checker->can_modify_locked($page) &&
-            ($page->metadata->{Type} eq 'wiki')
+            $page->is_wiki
         ),
         user_can_join_to_edit_page => $self->user_can_join_to_edit_page($page),
         %args,
@@ -529,10 +509,11 @@ sub template_vars {
     my $self = shift;
 
     my $warning;
+    # XXX ACK ACK! THIS WON'T WORK WITH PLACK:
     my $ua = $ENV{HTTP_USER_AGENT} || '';
     if (my ($version) = $ua =~ m{^BlackBerry[^/]+/(\d+\.\d+)}) {
         if ($version < 4.5) {
-            $warning = loc("Warning: Socialtext Mobile requires BlackBerry OS v4.5 or higher");
+            $warning = loc("error.blackberry-version-too-low");
         }
     }
 
@@ -558,7 +539,7 @@ sub template_vars {
         pluggable   => $self->hub->pluggable,
         user        => $user,
         minutes_ago => sub { int((time - str2time(shift, 'UTC')) / 60) },
-        enable_jquery_mobile => ($ENV{HTTP_USER_AGENT} =~ /Gecko/) || 0,
+        enable_jquery_mobile => ($ua =~ /Gecko/) || 0,
     };
 }
 
@@ -572,7 +553,9 @@ sub _get_attachments {
     return \@attachments;
 }
 
+__PACKAGE__->meta->make_immutable(inline_constructor => 1);
 1;
+__END__
 
 =head1 AUTHOR
 
@@ -586,6 +569,3 @@ This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
 
 =cut
-
-__PACKAGE__->meta->make_immutable;
-

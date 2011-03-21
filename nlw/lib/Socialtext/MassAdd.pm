@@ -7,13 +7,12 @@ use Socialtext::Encode;
 use Socialtext::Log qw(st_log);
 use Socialtext::User;
 use Socialtext::l10n qw/loc/;
-use Socialtext::Pluggable::Adapter;
 use Socialtext::String;
 use List::MoreUtils qw/mesh/;
 
 our $Has_People_Installed;
 our @Required_fields = qw/username email_address/;
-our @User_fields = qw/first_name last_name password private_external_id/;
+our @User_fields = qw/first_name middle_name last_name password private_external_id/;
 
 # Note: these fields may not be created, now that fields are treated
 # differently.  Please do some poking around before you change these. (See:
@@ -24,11 +23,10 @@ our @Profile_fields
 our @All_fields = (@Required_fields, @User_fields, @Profile_fields);
 our %Non_profile_fields = map {$_ => 1} (@Required_fields, @User_fields, 'account_id');
 
-BEGIN {
-    unless (defined $Has_People_Installed) {
-        $Has_People_Installed = 
-            Socialtext::Pluggable::Adapter->plugin_exists('people');
-    }
+unless (defined $Has_People_Installed) {
+    require Socialtext::Pluggable::Adapter;
+    $Has_People_Installed = 
+        Socialtext::Pluggable::Adapter->plugin_exists('people');
 }
 
 sub new {
@@ -37,6 +35,7 @@ sub new {
     $self->{pass_cb} = delete $opts{pass_cb} or die "pass_cb is mandatory!";
     $self->{fail_cb} = delete $opts{fail_cb} or die "fail_cb is mandatory!";
     $self->{account} = delete $opts{account};
+    $self->{restrictions} = delete $opts{restrictions};
     $self->{failed_fields} = {};
     return $self;
 }
@@ -74,11 +73,11 @@ LINE:
 
         unless ($parsed_ok) {
             unless ($have_parsed_header) {
-                my $msg = loc("could not be parsed.  CSV header invalid; aborting.");
+                my $msg = loc("error.parse-csv-header");
                 $self->_fail($msg);
                 last LINE;
             }
-            my $msg = loc("could not be parsed.  Skipping this user.");
+            my $msg = loc("error.parse-failed");
             $self->_fail($msg);
             next LINE;
         }
@@ -93,7 +92,7 @@ LINE:
             my @missing_fields = grep { !exists $available{$_} } @Required_fields;
             if (@missing_fields) {
                 my $missing = join ', ', @missing_fields;
-                my $msg = loc("could not be parsed.  The file was missing the following required fields ($missing).  The file must have a header row listing the field headers.");
+                my $msg = loc("error.parse-header-missing=fields", $missing);
                 $self->_fail($msg);
                 last LINE;
             }
@@ -107,14 +106,14 @@ LINE:
 
         if (scalar @fields < scalar @header_fields) {
             # user data is missing fields that were defined in the header
-            my $msg = loc("could not be parsed (missing fields).  Skipping this user.");
+            my $msg = loc("error.parse-missing-fields");
             $self->_fail($msg);
             next LINE;
         }
 
         if (scalar @fields > scalar @header_fields) {
             # user data contains fields that were NOT defined in the header
-            my $msg = loc("could not be parsed (extra fields).  Skipping this user.");
+            my $msg = loc("error.parse-extra-fields");
             $self->_fail($msg);
             next LINE;
         }
@@ -176,16 +175,24 @@ sub add_user {
             if @prof_args;
     }
 
+    if ($self->{restrictions}) {
+        foreach my $r (@{$self->{restrictions}}) {
+            my $restriction = $user->add_restriction($r);
+            $restriction->send;
+            $changed_user++;
+        }
+    }
+
     if ($added_user) {
-        my $msg = loc("Added user [_1]", $args{username});
+        my $msg = loc("user.added=name", $args{username});
         $self->_pass($msg);
     }
     elsif ($changed_user) {
-        my $msg = loc("Updated user [_1]", $args{username});
+        my $msg = loc("user.updated=name", $args{username});
         $self->_pass($msg);
     }
     else {
-        my $msg = loc("No changes for user [_1]", $args{username});
+        my $msg = loc("user.no-changes=name", $args{username});
         $self->_pass($msg);
     }
 }
@@ -204,7 +211,7 @@ sub _validate_args {
     for $f ('username','email_address') {
         next if $args->{$f};
         my $mfield = ($f eq 'email_address') ? 'email' : $f;
-        my $msg = loc("[_1] is a required field, but it is not present.", $mfield);
+        my $msg = loc("error.field-required=name", $mfield);
         $self->_fail($msg);
         return;
     }
@@ -249,7 +256,7 @@ sub _create_user {
 
     # Send the user a confirmation email, if they don't have a pw
     unless ($user->has_valid_password) {
-        $user->set_confirmation_info(is_password_change => 0);
+        $user->create_email_confirmation();
         $user->send_confirmation_email();
     }
 
@@ -298,6 +305,7 @@ sub _update_profile {
 
     local $Socialtext::People::Fields::AutomaticStockFields = 1;
 
+    require Socialtext::Pluggable::Adapter;
     my $people = Socialtext::Pluggable::Adapter->plugin_class('people');
     return 0 unless $people;
 
@@ -308,7 +316,7 @@ sub _update_profile {
     foreach my $field (@$failed) {
         next if ($self->{failed_fields}{$field});
         $self->{failed_fields}{$field} = 1;
-        $self->_fail(loc('Profile field "[_1]" could not be updated', $field));
+        $self->_fail(loc('error.update-failed=field', $field));
     }
 
     return $changed_user ? 1 : 0;
@@ -324,7 +332,7 @@ sub _pass {
 sub _fail {
     my $self = shift;
     my $msg = shift;
-    $msg = loc("Line [_1]: ", $self->{line}) . $msg
+    $msg = loc("error.at=line,message", $self->{line}, $msg)
         if ($self->{from_csv});
     st_log->error($msg);
     $self->{fail_cb}->($msg);
@@ -333,6 +341,7 @@ sub _fail {
 sub ProfileFieldsForAccount {
     my $class = shift;
     my $account = shift;
+    require Socialtext::Pluggable::Adapter;
     my $people = Socialtext::Pluggable::Adapter->plugin_class('people');
     return unless $people;
     local $Socialtext::People::Fields::AutomaticStockFields = 1;

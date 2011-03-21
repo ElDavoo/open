@@ -83,7 +83,7 @@ BEGIN {
     }
 }
 
-my $Instance;
+our $Instance;
 
 sub st_timed_log {
     my $method = shift;

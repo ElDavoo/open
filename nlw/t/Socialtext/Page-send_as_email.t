@@ -5,6 +5,7 @@ use warnings;
 use strict;
 
 use Test::Socialtext;
+use IO::File;
 fixtures( 'admin', 'foobar' );
 
 BEGIN {
@@ -15,7 +16,7 @@ BEGIN {
 
 use Socialtext::Page;
 
-plan tests => 48;
+plan tests => 49;
 
 $Socialtext::EmailSender::Base::SendClass = 'Test';
 
@@ -50,27 +51,30 @@ EOF
 
     my $page = $pages->new_from_name($utf8_subject);
 
-    my $attachment =
-        $hub->attachments->new_attachment( page_id => $page->id,
-                                           filename => 'socialtext-logo.gif',
-                                         );
-    $attachment->save('t/attachments/socialtext-logo-30.gif');
-    $attachment->store( user => $hub->current_user );
+    open my $fh, '<', 't/attachments/socialtext-logo-30.gif'
+        or die $!;
 
-    $page->send_as_email
-        ( from => 'devnull1@socialtext.com',
-          to   => 'devnull2@socialtext.com',
-          include_attachments => 1,
-        );
+    my $attachment = $hub->attachments->create(
+        fh => $fh,
+        content_type => 'image/gif',
+        filename => 'socialtext-logo.gif',
+        page => $page,
+        user => $hub->current_user,
+    );
+    ok $attachment, 'created attachment';
+
+    $page->send_as_email(
+        from => 'devnull1@socialtext.com',
+        to   => 'devnull2@socialtext.com',
+        include_attachments => 1,
+    );
 
     my @emails = Email::Send::Test->emails;
 
-    is( scalar @emails, 1,
-        'one email was sent' );
+    is( scalar @emails, 1, 'one email was sent' );
 
     my @parts = $emails[0]->parts;
-    is( scalar @parts, 2,
-        'email has two parts' );
+    is( scalar @parts, 2, 'email has two parts' );
 
     my @html_parts = $parts[1]->parts;
     is( scalar @html_parts, 2, 'mp/related has two parts' );
@@ -90,10 +94,12 @@ EOF
         'attachment; filename="socialtext-logo.gif"',
         q{third part content disposition is 'attachment; filename="socialtext-logo.gif"'} );
 }
+
 {
     Email::Send::Test->clear;
 
     my $page = $pages->new_from_name($utf8_subject);
+    $pages->current($page);
 
     my $buncha_recipients = join ', ', map { "frog$_\@sharpsaw.org" } (0..10);
     $page->send_as_email(
@@ -146,6 +152,7 @@ EOF
     Email::Send::Test->clear;
 
     my $page = $pages->new_from_name($utf8_subject);
+    $pages->current($page);
 
     $page->send_as_email( from => 'devnull1@socialtext.com',
                           to   => 'devnull2@socialtext.com',
@@ -164,6 +171,7 @@ EOF
     Email::Send::Test->clear;
 
     my $page = $pages->new_from_name($utf8_subject);
+    $pages->current($page);
 
     $page->send_as_email
         ( from => 'devnull1@socialtext.com',
@@ -185,6 +193,7 @@ send_copy: {
     Email::Send::Test->clear;
 
     my $page = $pages->new_from_name($utf8_subject);
+    $pages->current($page);
 
     $page->send_as_email
         ( from => 'devnull1@socialtext.com',
@@ -209,6 +218,7 @@ send_copy_one_receiver: {
     Email::Send::Test->clear;
 
     my $page = $pages->new_from_name($utf8_subject);
+    $pages->current($page);
 
     $page->send_as_email
         ( from => 'devnull1@socialtext.com',
@@ -231,6 +241,7 @@ send_copy_duplicate_copy: {
     Email::Send::Test->clear;
 
     my $page = $pages->new_from_name($utf8_subject);
+    $pages->current($page);
 
     $page->send_as_email
         ( from => 'devnull1@socialtext.com',
@@ -256,13 +267,13 @@ send_copy_duplicate_copy: {
     Email::Send::Test->clear;
 
     my $page = $pages->new_from_name($utf8_subject);
+    $pages->current($page);
 
     $page->send_as_email
         ( from => 'devnull1@socialtext.com',
           to   => 'devnull2@socialtext.com',
           body_intro => "Some extra text up front, can have *wiki formatting*\n",
         );
-
     my @emails = Email::Send::Test->emails;
 
     is( scalar @emails, 1,
@@ -283,6 +294,7 @@ send_copy_duplicate_copy: {
     Email::Send::Test->clear;
 
     my $page = $pages->new_from_name($utf8_subject);
+    $pages->current($page);
 
     $page->send_as_email
         ( from => 'devnull1@socialtext.com',
@@ -315,6 +327,7 @@ EOF
     );
 
     my $page = $pages->new_from_name('Has Table');
+    $pages->current($page);
 
     $page->send_as_email(
         from => 'devnull1@socialtext.com',

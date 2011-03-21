@@ -17,6 +17,7 @@ sub user_set_id { $_[0]->user_id }
 has 'username'          => (is => 'rw', isa => 'Str');
 has 'email_address'     => (is => 'rw', isa => 'Str');
 has 'first_name'        => (is => 'rw', isa => 'UniStr', coerce => 1);
+has 'middle_name'       => (is => 'rw', isa => 'UniStr', coerce => 1);
 has 'last_name'         => (is => 'rw', isa => 'UniStr', coerce => 1);
 has 'password'          => (is => 'rw', isa => 'Maybe[Str]');
 has 'display_name'      => (is => 'rw', isa => 'UniStr', coerce => 1);
@@ -45,6 +46,7 @@ Readonly our @fields => qw(
     username
     email_address
     first_name
+    middle_name
     last_name
     password
     display_name
@@ -75,10 +77,11 @@ sub UserFields {
 }
 
 sub proper_name {
-    my $self  = shift;
-    my $first = $self->first_name;
-    my $last  = $self->last_name;
-    return Socialtext::User::Base->GetFullName($first, $last);
+    my $self   = shift;
+    my $first  = $self->first_name;
+    my $middle = $self->middle_name;
+    my $last   = $self->last_name;
+    return Socialtext::User::Base->FormatFullName($first, $middle, $last);
 }
 
 sub preferred_name {
@@ -104,7 +107,9 @@ sub guess_real_name {
         $fn =~ s/\@.+$//;
     }
 
-    $name = Socialtext::User::Base->GetFullName($fn, $self->last_name);
+    $name = Socialtext::User::Base->FormatFullName(
+        $fn, $self->middle_name, $self->last_name,
+    );
     $name =~ s/^\s+//;
     $name =~ s/\s+$//;
     return $name if length $name;
@@ -174,20 +179,36 @@ sub update_display_name {
     }
 }
 
-sub GetFullName {
-    my $class      = shift;
-    my $first_name = shift;
-    my $last_name  = shift;
-    my $full_name;
+# TODO: this method (and 'update_display_name' above) are odd ones as they
+# update *internal* fields for User records that may or may not be pulled from
+# LDAP.  If we have an LDAP User, though, but _don't_ have these fields mapped
+# to come from LDAP, we still need some way of updating them.
+sub update_private_external_id {
+    my $self        = shift;
+    my $external_id = shift;
 
-    if (system_locale() eq 'ja') {
-        $full_name = join ' ', grep { defined and length }
-            $last_name, $first_name;
+    my $factory = $self->factory;
+    if ($factory) {
+        $factory->UpdateUserRecord( {
+            user_id             => $self->user_id,
+            cached_at           => undef,
+            private_external_id => $external_id,
+        } );
     }
-    else {
-        $full_name = join ' ', grep { defined and length }
-        $first_name, $last_name;
-    }
+}
+
+sub FormatFullName {
+    my $class       = shift;
+    my $first_name  = shift;
+    my $middle_name = shift;
+    my $last_name   = shift;
+
+    my @components
+        = system_locale() eq 'ja'
+        ? ($last_name, $first_name, $middle_name)
+        : ($first_name, $middle_name, $last_name);
+
+    my $full_name = join ' ', grep { defined and length } @components;
     return $full_name;
 }
 
@@ -239,7 +260,7 @@ sub expire {
         my $class = shift;
         my %p = validate( @_, $spec );
 
-        return ( loc("Passwords must be at least 6 characters long.") )
+        return ( loc("error.password-too-short") )
             unless length $p{password} >= 6;
 
         return;
@@ -291,6 +312,10 @@ Returns the e-mail address for the user, in all lower-case.
 =item B<first_name()>
 
 Returns the first name for the user.
+
+=item B<middle_name()>
+
+Returns the middle name for the user (if one is known/available).
 
 =item B<last_name()>
 

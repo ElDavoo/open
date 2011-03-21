@@ -56,17 +56,6 @@ sub do_work {
         }
         $pm->wait_all_children;
 
-        my $dir = Socialtext::PageLinks->WorkspaceDirectory($ws_name);
-        if ($dir and -d $dir) {
-            for my $file (glob("$dir/*"), "$dir/.initialized") {
-                next unless -f $file;
-                unlink $file
-                    or $self->hub->log->error(
-                        "Could not unlink $file during backlink cleanup: $!");
-            }
-            rmdir $dir or $self->hub->log->error(
-                        "Could not rmdir $dir during backlink cleanup: $!");
-        }
     };
     $self->hub->log->error($@) if $@;
 

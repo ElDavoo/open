@@ -17,8 +17,8 @@ use Socialtext::Encode ();
 use Socialtext::Timer qw/time_scope/;
 use utf8;
 
-sub class_id { 'weblog' }
-const class_title => 'Blogs';
+const class_id => 'weblog';
+const class_title => _('class.weblog');
 const cgi_class => 'Socialtext::Weblog::CGI';
 const default_weblog_depth => 10;
 field current_weblog => '';
@@ -46,7 +46,7 @@ sub register {
 sub weblog_depth {
     my $self = shift;
     my $p = $self->new_preference('weblog_depth');
-    $p->query(loc('How many posts should be displayed in blog view?'));
+    $p->query(_('blog.number-of-posts?'));
     $p->type('pulldown');
     my $choices = [
         5 => '5',
@@ -78,7 +78,7 @@ sub weblogs_create {
         }
     }
     elsif ( $self->cgi->Button and !$self->cgi->weblog_title ) {
-        my $message = loc("A blog title must be provided.");
+        my $message = loc("error.no-blog-title");
         $self->add_error($message);
     }
 
@@ -92,7 +92,7 @@ sub weblogs_create {
         settings_table_id => 'settings-table',
         settings_section  => $settings_section,
         hub               => $self->hub,
-        display_title     => loc('Create New Blog'),
+        display_title     => loc('blog.new'),
         pref_list         => $self->_get_pref_list,
     );
 }
@@ -100,22 +100,8 @@ sub weblogs_create {
 sub _get_weblog_tag_suffix {
     my $self = shift;
     my $locale = $self->hub->best_locale;
-    my $blog_tag_suffix;
-    if ($locale eq 'ja') {
-        $blog_tag_suffix = qr/ブログ$/i;
-    } else {
-        $blog_tag_suffix = qr/blog$/i;
-    }
-
-    Encode::_utf8_on($blog_tag_suffix) if not Encode::is_utf8($blog_tag_suffix);
-    return $blog_tag_suffix;
-}
-
-sub _create_new_page_for_data_validation_error {
-    my $self = shift;
-    my $page_name = shift;
-    my $page_id = substr(Socialtext::String::title_to_id($page_name), 0, Socialtext::String::MAX_PAGE_ID_LEN);
-    return $self->hub->pages->new_page($page_id); 
+    my $suffix = loc('blog.blog');
+    return qr/\Q$suffix\E$/i;
 }
 
 sub _weblog_title_is_valid {
@@ -124,7 +110,7 @@ sub _weblog_title_is_valid {
     my $message;
 
     if (length Socialtext::String::title_to_id($blog_name) > Socialtext::String::MAX_PAGE_ID_LEN ) {
-       $message = loc("Blog name is too long after URL encoding");
+       $message = loc("error.blog-name-too-long");
        $self->add_error($message);
        return 0;
     }
@@ -135,7 +121,7 @@ sub _weblog_title_is_valid {
 sub _first_post_title_id {
     my $self             = shift;
     my $blog_tag       = shift;
-    my $first_post_title = loc("First Post in [_1]", $blog_tag);
+    my $first_post_title = loc("blog.first-post=tag", $blog_tag);
     my $first_post_id    = Socialtext::String::title_to_id($first_post_title);
     return ( $first_post_title, $first_post_id );
 }
@@ -144,21 +130,9 @@ sub _create_first_post {
     my $self       = shift;
     my $blog_tag = shift;
 
-    my ($first_post_title, $first_post_id)
-        = $self->_first_post_title_id($blog_tag);
-    return if (! $self->_weblog_title_is_valid($first_post_id));
-
-    my $first_post = $self->hub->pages->new_page($first_post_id);
-    if ( !defined $first_post ) {
-        $first_post = $self->_create_new_page_for_data_validation_error(
-            $blog_tag);
-    }
-
-    my $metadata = $first_post->metadata;
-    $metadata->Subject($first_post_title)
-        unless $metadata->Subject;
-
-    return $first_post;
+    my ($first_post_title,$fp_id) = $self->_first_post_title_id($blog_tag);
+    return unless $self->_weblog_title_is_valid($first_post_title);
+    return $self->hub->pages->new_from_name($first_post_title);
 }
 
 =head2 create_weblog($blog_tag)
@@ -182,7 +156,7 @@ sub create_weblog {
 
     my $blog_tag_suffix = $self->_get_weblog_tag_suffix();
     unless ( $blog_tag =~ $blog_tag_suffix ) {
-        $blog_tag = loc( "[_1] Blog", $blog_tag );
+        $blog_tag = loc( "blog.name=tag", $blog_tag );
     }
 
     # If the blog tag is already in use OR there is a similar enough tag
@@ -193,7 +167,7 @@ sub create_weblog {
             || ($self->_first_post_title_id($_))[1] eq
             ($self->_first_post_title_id($blog_tag))[1] ) {
             my $message = loc(
-                "There is already a \'[_1]\' blog. Please choose a different name.",
+                "error.exists=blog",
                 $blog_tag
             );
             $self->add_error($message);
@@ -202,20 +176,15 @@ sub create_weblog {
     }
 
     my $first_post = $self->_create_first_post($blog_tag);
-    return if (!defined $first_post);
+    return unless defined $first_post;
+    my $rev = $first_post->edit_rev();
+    $rev->add_tags($blog_tag);
 
-    my $categories = $first_post->metadata->Category;
-    push @$categories, $blog_tag;
-
-    my $content = loc(
-        "This is the first post in [_1]. Click *New Post* to add another post.",
-        $blog_tag );
-    $first_post->content($content);
-    $first_post->metadata->update( user => $self->hub->current_user );
+    my $content = loc("blog.first-post-body=tag", $blog_tag);
+    $rev->body_ref(\$content);
     $first_post->store( user => $self->hub->current_user );
 
     return $blog_tag;
-
 }
 
 sub _feeds {
@@ -225,12 +194,12 @@ sub _feeds {
     my $feeds = $self->SUPER::_feeds($workspace);
     my $uri_root = $self->hub->syndicate->feed_uri_root($self->hub->current_workspace);
     $feeds->{rss}->{page} = {
-        title => loc('Blog: [_1] RSS', $self->current_blog_str),
+        title => loc('blog.rss=blog', $self->current_blog_str),
         url => $uri_root . '?tag=' . $self->current_blog,
     };
 
     $feeds->{atom}->{page} = {
-        title => loc('Blog: [_1] Atom', $self->current_blog_str),
+        title => loc('blog.atom=blog', $self->current_blog_str),
         url => $uri_root . '?tag=' . $self->current_blog .';type=Atom',
     };
 
@@ -252,7 +221,7 @@ sub current_blog_str {
     $self->current_weblog($tag) && $self->update_current_weblog if $tag;
     return $tag
         || loc($self->cache->{current_weblog})
-        || loc('Recent Changes');
+        || loc('nav.recent-changes');
 }
 
 sub current_blog {
@@ -307,7 +276,7 @@ sub weblog_display {
     my @categories = $self->hub->category->all;
     my @blogs = map {
 	{
-	    display => (lc($_) eq 'recent changes' ? loc('Recent Changes') : $_),
+	    display => (lc($_) eq 'recent changes' ? loc('nav.recent-changes') : $_),
 	    escape_html => $self->html_escape($_),
 	}
     } 'recent changes', (grep {/$blog_tag_suffix/o} @categories);
@@ -360,10 +329,10 @@ sub weblog_display {
     return $self->render_screen(
         box_content_filled => $self->box_content_filled,
         archive => $archive,
-        display_title => ($is_RC ? loc('Recent Changes') : loc($blog_id)),
+        display_title => ($is_RC ? loc('nav.recent-changes') : loc($blog_id)),
         sections => \@sections,
         feeds => $self->_feeds($self->hub->current_workspace),
-        tag => ($is_RC ? loc('Recent Changes') : $blog_id),
+        tag => ($is_RC ? loc('nav.recent-changes') : $blog_id),
         tag_escaped => $self->uri_escape($blog_id),
         is_real_category => ($is_RC ? 0 : 1),
         email_category_address => $self->hub->category->email_address($blog_id),
@@ -430,13 +399,13 @@ sub get_entries {
             weblog_id => $blog_id,
             attachments => $attachments,
         );
-        my $original_page = $page->original_revision;
-        $entry->{is_updated}
-          = $original_page->revision_id != $page->revision_id;
+        my $original_rev_id = $page->original_revision_id;
+        $entry->{is_updated} = $original_rev_id != $page->revision_id;
         if ($entry->{is_updated}) {
+            $page->switch_rev($original_rev_id);
             $entry->{original} = $self->format_page_for_entry(
                 no_post => 1,
-                page => $original_page,
+                page => $page,
                 weblog_id => $blog_id,
                 attachments => $attachments,
             );
@@ -456,10 +425,8 @@ sub format_page_for_entry {
     my $blog_id = $args{weblog_id};
     my $attachments = $args{attachments};
 
-    $page->load;
-    my $metadata = $page->metadata;
-    my ($raw_date, $raw_time) = split(/\s+/, $metadata->Date);
-    my $date_local = $page->datetime_for_user || $metadata->Date;
+    my ($raw_date, $raw_time) = split(/\s+/, $page->datetime_utc);
+    my $date_local = $page->datetime_for_user;
     my ($date, $time) = ($date_local =~ /(.+) (\d+:\d+:*\d*)/);
     my $key = $date_local . $page->id;
     my $entry;
@@ -472,12 +439,11 @@ sub format_page_for_entry {
     $entry->{time} = $time;
     $entry->{raw_date} = $raw_date;
     $entry->{raw_time} = $raw_time;
-    $entry->{title} = $metadata->Subject;
-    $entry->{author} = $metadata->From;
-    $entry->{username} = $page->last_edited_by->username;
+    $entry->{title} = $page->name;
+    $entry->{author} = $page->last_editor->email_address;
+    $entry->{username} = $page->last_editor->username;
     $entry->{post} = $page->to_html_or_default unless $args{no_post};
-    $entry->{attachment_count} =
-      scalar @{$attachments->all( page_id => $page->id )};
+    $entry->{attachment_count} = $attachments->count(page_id => $page->id);
     $entry->{page_locked_for_user} =  
         $page->locked && 
         $self->hub->current_workspace->allows_page_locking &&
@@ -498,7 +464,7 @@ sub box_on {
 
 sub box_title {
     my $self = shift;
-    return loc('Blog Navigation');
+    return loc('blog.navigation');
 }
 
 sub box_content_filled {
@@ -508,19 +474,20 @@ sub box_content_filled {
     if ( defined $title
          and ( length Socialtext::String::title_to_id($title) > Socialtext::String::MAX_PAGE_ID_LEN )
        ) {
-        my $message = loc( "Page title is too long; maximum length is [_1]",
+        my $message = loc( "error.page-title-too-long=max-length",
             Socialtext::String::MAX_PAGE_ID_LEN );
         return $message;
     }
 
     my $page = $self->hub->pages->new_from_name($title);
-    return $page->to_html(($page->content||""), $page);
+    my $content_ref = $page->body_length ? $page->body_ref : \"";
+    return $page->to_html($content_ref, $page);
 }
 
 sub page_title {
     my $self = shift;
 
-    return loc('Navigation for: [_1]', $self->current_blog_str);
+    return loc('blog.navigation-for=tag', $self->current_blog_str);
 }
 
 sub page_edit_path {

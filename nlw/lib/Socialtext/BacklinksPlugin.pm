@@ -4,19 +4,16 @@ use strict;
 use warnings;
 use Class::Field qw( const );
 use Socialtext::Pages;
-use Socialtext::Model::Pages;
 use Socialtext::l10n qw(loc);
 use Socialtext::String();
 use Socialtext::Pageset;
 use Socialtext::PageLinks;
-use Fatal qw/opendir/;
 
 use base 'Socialtext::Query::Plugin';
 
-sub class_id { 'backlinks' }
-const class_title          => 'Backlinks';
-const preference_query     =>
-      'How many backlinks to show in side pane box';
+const class_id => 'backlinks';
+const class_title          => _('class.backlinks');
+const preference_query     => _('wiki.sidebox-number-of-backlinks?');
 const cgi_class => 'Socialtext::Backlinks::CGI';
 
 sub register {
@@ -64,7 +61,7 @@ sub show_all_backlinks {
     my $page_id = $self->cgi->page_id;
     my $page = $self->hub->pages->new_from_name($page_id);
     $self->screen_wrap(
-        loc('All backlinks for "[_1]"', $page->metadata->Subject),
+        loc('page.backlinks=page', $page->name),
         $self->present_tense_description_for_page($page)
     );
 }
@@ -80,7 +77,7 @@ sub orphans_list {
     return $self->display_results(
         \%sortdir,
         feeds => $self->_feeds($self->hub->current_workspace),
-        display_title => loc('Orphaned Pages'),
+        display_title => loc('page.orphaned'),
         Socialtext::Pageset->new(
             cgi => {$self->cgi->all},
             total_entries => $self->result_set->{hits},
@@ -93,26 +90,21 @@ sub _make_result_set {
     my $sortdir = shift;
     my $pages = shift;
 
-    if ($self->cgi->sortby) {
-        $self->result_set($self->sorted_result_set($sortdir));
-    }
-    else {
-        $self->result_set($self->new_result_set());
-        my $rs = $self->result_set;
-        $rs->{predicate} = 'action=orphans_list';
+    $self->result_set($self->new_result_set());
+    my $rs = $self->result_set;
+    $rs->{predicate} = 'action=orphans_list';
 
-        {
-            local $Socialtext::Model::Page::No_result_times = 1;
-            $self->push_result($_) for @$pages;
-        }
-
-        $rs->{rows} = [
-            sort { $b->{Date} cmp $a->{Date} } @{ $rs->{rows} }
-        ];
+    {
+        local $Socialtext::Page::No_result_times = 1;
+        $self->push_result($_) for @$pages;
     }
 
-    $self->result_set->{title} = loc('Orphaned Pages');
-    $self->write_result_set;
+    $rs->{rows} = [
+        sort { $b->{Date} cmp $a->{Date} } @{ $rs->{rows} }
+    ];
+
+    $self->result_set->{title} = loc('page.orphaned');
+    $self->result_set($self->sorted_result_set($sortdir));
 }
 
 sub update {
@@ -167,13 +159,13 @@ sub all_backlinks_for_page {
 sub past_tense_description_for_page {
     my $self = shift;
     my $page = shift;
-    return $self->html_description($page, loc('The page had these Backlinks:'));
+    return $self->html_description($page, loc('page.backlinks:'));
 }
 
 sub present_tense_description_for_page {
     my $self = shift;
     my $page = shift;
-    return $self->html_description($page, loc('This page is linked to from:'));
+    return $self->html_description($page, loc('page.linked-from:'));
 }
 
 sub html_description {
@@ -182,7 +174,7 @@ sub html_description {
     my $text_for_when_there_are_backlinks = shift;
 
     my $links = $self->hub->backlinks->all_backlinks_for_page($page);
-    return '<p>' . loc('The page had no Backlinks.') . '<p>'
+    return '<p>' . loc('page.no-backlinks') . '<p>'
         unless $links and @$links;
     my @items = map {
         '<li>'.$self->hub->helpers->page_display_link($_->{page_title}).'</li>'
@@ -199,7 +191,7 @@ sub get_orphaned_pages {
     my $self = shift;
     return [] unless $self->hub->current_workspace->real;
 
-    my $pages = Socialtext::Model::Pages->All_active(
+    my $pages = Socialtext::Pages->All_active(
         hub => $self->hub,
         workspace_id => $self->hub->current_workspace->workspace_id,
         do_not_need_tags => 1,

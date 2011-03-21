@@ -1,9 +1,9 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 67;
+use Test::Socialtext tests => 71;
 use Socialtext::CLI;
 use Test::Socialtext::User;
 use Test::Socialtext::Workspace;

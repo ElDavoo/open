@@ -11,7 +11,7 @@ use Socialtext::JSON;
 use Readonly;
 use Socialtext::HTTP ':codes';
 use Socialtext::Events;
-use Socialtext::PageMeta qw( EDIT_SUMMARY_MAXLENGTH );
+use Socialtext::Date;
 use Socialtext::Timer qw/time_scope/;
 
 Readonly my $DEFAULT_LINK_DICTIONARY => 'REST';
@@ -149,7 +149,7 @@ sub GET_json {
                     -type   => 'application/json; charset=UTF-8',
                 );
                 $self->hub->pages->current($page);
-                my $page_hash      = $page->hash_representation();
+                my $page_hash = $page->hash_representation();
 
                 my $addtional_content = sub {
                     $page->content_as_type( type => $_[0],
@@ -186,10 +186,11 @@ sub GET_json {
                     $page_hash->{html} = $to_html->();
                 }
 
-                $page_hash->{workspace}{title}
-                    ||= $self->hub->current_workspace->title;
-                $page_hash->{metadata} = $page->metadata->to_hash if $metadata;
-                $page_hash->{locked} = $page->locked;
+                $page_hash->{metadata} =
+                    $page->legacy_metadata_hash($page_hash);
+
+                # Backwards compat
+                $page_hash->{workspace}{title} = $page_hash->{workspace_title};
 
                 $self->_record_view($page);
                 return encode_json($page_hash);
@@ -329,7 +330,12 @@ sub PUT_json {
 
     my $content = $rest->getContent();
     my $object = decode_json( $content );
-    $object->{date} ||= gmtime();
+    if (my $d = $object->{date}) {
+        $object->{date} = $self->make_date_time_date($d);
+    }
+    else {
+        $object->{date} = Socialtext::Date->now(hires => 1);
+    }
 
     if (my $t = $object->{type}) {
         $object->{type} = undef unless $self->_acceptable_page_types($t);
@@ -352,7 +358,7 @@ sub PUT_json {
     $page->update_from_remote(
         content => $object->{content},
         from    => $object->{from},
-        date    => $self->make_date_time_date($object->{date}),
+        date    => $object->{date},
         edit_summary => $edit_summary,
         signal_edit_summary => $signal_edit_summary,
         signal_edit_to_network => $signal_edit_to_network,

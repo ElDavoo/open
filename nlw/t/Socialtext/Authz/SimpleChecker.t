@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 
 use strict;
@@ -126,8 +126,8 @@ guest_user_with_default: {
 # Allows Page Locking
 page_locking: {
     my $hub = Test::Socialtext::new_hub($ws->name, $admin_user->username);
-    my $page = $hub->pages->new_page_from_any('test page');
-    $page->metadata->update( user => $hub->current_user );
+    my $page = $hub->pages->new_from_name('test page '.$^T);
+    $page->store();
 
     my $checker = Socialtext::Authz::SimpleChecker->new(
         user      => $hub->current_user,

@@ -13,7 +13,7 @@ use Socialtext::String;
 sub collection_name {
     ucfirst( $_[0]->link_type() )
         . 's for page '
-        . $_[0]->page->metadata->Subject;
+        . $_[0]->page->name;
 }
 
 sub element_list_item {

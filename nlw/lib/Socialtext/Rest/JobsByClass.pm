@@ -17,7 +17,7 @@ extends 'Socialtext::Rest::Jobs';
 }
 
 sub allowed_methods {'GET'}
-sub collection_name { loc('All [_1] Jobs', $_[0]->jobclass) }
+sub collection_name { loc('job.all=class', $_[0]->jobclass) }
 
 sub get_resource {
     my $self = shift;

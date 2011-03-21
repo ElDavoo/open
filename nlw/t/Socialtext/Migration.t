@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 use strict;
 use warnings;
@@ -143,7 +143,7 @@ sub _create_migration_scripts {
     my $type = shift || '';
 
     my $incrementor = <<EOT;
-#!/bin/sh
+#!/bin/bash
 COUNT=1
 if [ -e "$migration_output_file" ]; then
     COUNT=\$(expr \$COUNT + `cat $migration_output_file`)
@@ -157,9 +157,9 @@ EOT
     );
 
     if ($type eq 'migration already run') {
-        $file{'pre-check'} = "#!/bin/sh\nexit 1\n";
+        $file{'pre-check'} = "#!/bin/bash\nexit 1\n";
     } elsif ($type eq 'pre-check fails') {
-        $file{'pre-check'} = "#!/bin/sh\nexit 2\n";
+        $file{'pre-check'} = "#!/bin/bash\nexit 2\n";
     }
 
     for my $f (keys %file) {

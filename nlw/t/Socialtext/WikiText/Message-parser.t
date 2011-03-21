@@ -1,22 +1,17 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 # This test is for the parser events, not the formatting per se.
 # SEE ALSO t/formatter/signals-html.t
 use strict;
 use warnings;
 # do *not* `use utf8` here
-use Test::More tests => 6 + 7 + 4 + 3*45 + 7;
+use Test::More tests => 5 + 7 + 4 + 4 + 3*48 + 7;
 
 use ok 'WikiText::Socialtext';
 use ok 'Socialtext::WikiText::Parser::Messages';
 use ok 'Socialtext::WikiText::Emitter::Messages::Solr';
 use ok 'Socialtext::WikiText::Emitter::Messages::Canonicalize';
 use ok 'Socialtext::WikiText::Emitter::Messages::HTML';
-
-# there will be things that need fixing ("a"-phrases, for example) if we move
-# beyond 0.14.  Nothing insurmountable, just want to make sure we address it
-# and not just blindly upgrade.
-is $WikiText::Socialtext::VERSION, '0.14', 'WikiText::Socialtext 0.15 and above break our stuff :(';
 
 my @noun_links;
 my @href_links;
@@ -39,7 +34,15 @@ check_nongreedy_a_in_solr: {
     my $content = $parser->parse('"http://example.com/1"<http://example.com/2>');
     ok $content, 'parsed';
     is $content, '"http://example.com/1"<http://example.com/2>';
-    is scalar(@href_links), 1;
+    is scalar(@href_links), 1, 'one href';
+}
+
+canonicalize_hyperlinks: {
+    my $parser = make_parser('Canonicalize');
+    my $content = $parser->parse('this is a link: http://www.google.com');
+    ok $content, 'parsed';
+    is $content, 'this is a link: "http://www.google.com"<http://www.google.com>';
+    is scalar(@href_links), 1, 'one href';
 }
 
 for my $type (qw(Solr Canonicalize HTML)) {
@@ -89,27 +92,27 @@ for my $type (qw(Solr Canonicalize HTML)) {
     is $noun_links[5]{text}, 'other taag', "$type tag is named";
 
     is $noun_links[6]{wafl_type}, 'link', "$type then a link";
-    is $noun_links[6]{page_id}, 'Admin%20Wiki', "$type link has page_id";
+    is $noun_links[6]{page_id}, 'Admin Wiki', "$type link has page_id";
     is $noun_links[6]{workspace_id}, 'admin', "$type link has workspace";
     is $noun_links[6]{section}, 'some%20part', "$type link has section";
 
     {
         is scalar(@href_links), 4, "$type got href links";
-        is $href_links[0]{type}, 'a', "$type a phrase";
+        is $href_links[0]{type}, 'hyperlink', "$type hyperlink phrase";
         is $href_links[0]{text}, '', "$type label is empty";
-        is $href_links[0]{attributes}{href}, 'http://example.com/1', "$type href";
+        is $href_links[0]{attributes}{target}, 'http://example.com/1', "$type href";
 
-        is $href_links[1]{type}, 'a', "$type a phrase";
+        is $href_links[1]{type}, 'hyperlink', "$type hyperlink phrase";
         is $href_links[1]{text}, 'awesomeness', "$type label is not empty";
-        is $href_links[1]{attributes}{href}, 'http://awesome.com/2', "$type href";
+        is $href_links[1]{attributes}{target}, 'http://awesome.com/2', "$type href";
 
-        is $href_links[2]{type}, 'a', "$type a phrase";
+        is $href_links[2]{type}, 'hyperlink', "$type hyperlink phrase";
         is $href_links[2]{text}, 'wikked', "$type label";
-        is $href_links[2]{attributes}{href}, 'http://google.com/3', "$type href";
+        is $href_links[2]{attributes}{target}, 'http://google.com/3', "$type href";
 
-        is $href_links[3]{type}, 'a', "$type a phrase";
+        is $href_links[3]{type}, 'hyperlink', "$type hyperlink phrase";
         is $href_links[3]{text}, '', "$type label is empty";
-        is $href_links[3]{attributes}{href}, 'http://example.com/4', "$type href";
+        is $href_links[3]{attributes}{target}, 'http://example.com/4', "$type href";
     }
 }
 
@@ -159,6 +162,15 @@ for my $char (qw( - * _ )) {
         ok $content, 'parsed';
         like $content, qr/<(b|i|del)>/i, "huggy beginning $char works around WAFLs";
     }
+
+    markup_sanity_zero: {
+        my $parser = make_parser('HTML');
+
+        my $content = $parser->parse("mmm ${char}0$char tomorrow");
+        ok $content, 'parsed';
+        like $content, qr/<(b|i|del)>0/i, "Zero between huggy chars are parsed";
+    }
+
 }
 
 sub make_parser {

@@ -3,7 +3,8 @@
 
 use warnings;
 use strict;
-use Test::Socialtext tests => 16;
+use Test::Socialtext tests => 14;
+use Try::Tiny;
 
 BEGIN {
     use_ok( 'Socialtext::Pages' );
@@ -65,9 +66,11 @@ All_ids_locked: {
 
 Page_existence: {
     unnamed_pages_shouldnt_exist: {
-        my $page = $hub->pages->new_from_name('');
-        ok $page, 'Got page object for un-named page';
-        ok !$page->exists, '... and page does not exist';
+        try {
+            my $page = $hub->pages->new_from_name('');
+        } catch {
+            pass "unnamed page can't be created. Throws";
+        }
     }
 
     actual_page_exists: {

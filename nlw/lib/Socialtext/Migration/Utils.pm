@@ -47,7 +47,8 @@ sub _create_job_for_all {
                 job => {
                     coalesce => $name,
                     ($prio ? (priority => $prio) : ()),
-                }
+                },
+                %{$opts{args} || {}}, # extra args
             },
         );
         $job_count++;

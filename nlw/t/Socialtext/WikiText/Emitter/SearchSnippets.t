@@ -5,7 +5,7 @@ use warnings;
 use lib 't/lib';
 use Test::WikiText;
 
-plan tests => 1;
+plan tests => 2;
 
 #no_diff;
 
@@ -30,3 +30,12 @@ but this should be alone
 
 --- snippet
 this is a multiline blob of text that should be in a single paragraph but this should be alone
+
+=== Lists
+--- wikitext
+* Coffee Shops
+** Starbucks
+** Blends
+
+--- snippet
+Coffee Shops Starbucks Blends

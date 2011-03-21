@@ -88,7 +88,7 @@ GuiEdit.prototype.show = function () {
                 self.close();
             },
             error: function() {
-                alert(loc("Saving failed due to server error; please try again later."));
+                alert(loc("error.save-failed"));
                 $saveButton.parent().removeClass('disabled').removeClass('loading');
             }
         });
@@ -154,7 +154,7 @@ GuiEdit.prototype.alarm_on = function() {
 }
 
 GuiEdit.prototype.report_info = function() {
-    alert(loc("selection_start: [_1]", this.selection_start) + "\nselection_end: " +
+    alert("selection_start: " + this.selection_start + "\nselection_end: " +
       this.selection_end + "\nselection: " + this.sel)
 }
 
@@ -414,7 +414,7 @@ GuiEdit.prototype.do_image = function() {
 }
 
 GuiEdit.prototype.do_wikilink = function() {
-    this.boundword('[', ']', loc('type link text here'))
+    this.boundword('[', ']', loc('comment.type-link'))
 }
 
 GuiEdit.prototype.do_createlink = function() {

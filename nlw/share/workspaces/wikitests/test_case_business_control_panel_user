@@ -36,7 +36,7 @@
 | click_and_wait | link=Add New User |  |
 | type_ok | email_address | bogus |
 | click_and_wait | //input[contains(@id,'add_user')] |  |
-| wait_for_text_present_ok | bogus is not a valid email address | 30000 |
+| wait_for_text_present_ok | "bogus" is not a valid email address | 30000 |
 | type_ok | email_address | foo%%start_time%%@bar.com |
 | type_ok | first_name | firstname |
 | type_ok | last_name | lastname |
@@ -73,7 +73,7 @@
 | text_like | //table[@class='sttable'] | %%new_workspace%% |
 
 | *Comment* | Test case: Business Control Panel User test account table |  |
-| text_like | qr/%%new_acct%%.+Primary Account, Via Workspace: %%new_workspace%%/ism |  |
+| text_like | qr/%%new_acct%%.+Primary Account, Via.+Workspace.+%%new_workspace%%/ism |  |
 | text_like | qr/Appliance Business Administrator\?\s*no/ism |  |
 | text_like | qr/Appliance Technical Administrator\?\s*no/ism |  |
 | click_and_Wait | //input[@value='Assign Appliance Business Administrator Role'] |  |

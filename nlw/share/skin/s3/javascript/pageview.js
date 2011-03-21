@@ -93,7 +93,7 @@ Page = {
                     $('#st-page-editing-revisionid').val(newRev);
                     $('#st-rewind-revision-count').html(newRev);
 
-                    rev_string = loc('[_1] Revisions', data.revision_count);
+                    rev_string = loc('page.revisions=count', data.revision_count);
                     $('#controls-right-revisions').html(rev_string);
                     $('#bottom-buttons-revisions').html(rev_string);
                     $('#update-attribution .st-username').empty().append(
@@ -157,8 +157,8 @@ Page = {
                                 .html('<img src="'+nlw_make_s3_path('/images/delete.png')+'" width="16" height="16" border="0" />')
                                 .addClass('delete_tag')
                                 .attr('name', tag.name)
-                                .attr('alt', loc('Delete this tag'))
-                                .attr('title', loc('Delete this tag'))
+                                .attr('alt', loc('page.delete-tag'))
+                                .attr('title', loc('page.delete-tag'))
                                 .bind('click', function () {
                                     $(this).children('img').attr('src', nlw_make_static_path('/skin/common/images/ajax-loader.gif'));
                                     Page.delTag(this.name);
@@ -170,7 +170,7 @@ Page = {
                 if (tags.length == 0) {
                     $('#st-tags-listing').append( 
                         $('<div id="st-no-tags-placeholder" />')
-                            .html(loc('There are no tags for this page.'))
+                            .html(loc('page.no-tags'))
                     );
                 }
             }

@@ -2,7 +2,7 @@ package Socialtext::MockBase;
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Carp qw/confess/;
+use unmocked 'Carp', qw/confess/;
 
 sub new {
     my $class = shift;

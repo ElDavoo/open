@@ -49,6 +49,7 @@
 
 | *Comment* | Test Case: Group No Change Link Create %%public_group%% |  |  |
 | st-create-group | %%public_group%% | %%public_group_desc%% | self-join-radio |
+| st-process-jobs |  |  |
 
 | *Comment* | Test Case: Group No Change Link Self-Join group is open for editing |  |
 | st-name-widget | 1 | information_widget |
@@ -65,14 +66,16 @@
 | wait_for_text_present_ok | %%public_group%% | 30000 |
 
 | *Comment* | Test Case: Group No Change Link Save Group, add shared workspace to two groups |  |
+| st-process-jobs |  |  |
 | st-admin | add-member --g %%public_group_id%% --w %%ws%% | now has the role of 'member' |
 
 | *Comment* | Test Case: Group No Change Link Save Group, %%public_group%% no change link |  |
+| st-process-jobs |  |  |
 | open_ok | /st/edit_group/%%public_group_id%% |  |
 | wait_for_text_present_ok | Edit Group: | 30000 |
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| wait_for_element_not_present_ok | permission-change | 5000 |
+| wait_for_element_not_present_ok | permission-change | 15000 |
 | text_unlike | //span[@class='permissionType'] | qr/private/ism |
 | text_like | //span[@class='permissionType'] | qr/self-join/ism |
 | select-frame | relative=parent |  |
@@ -82,7 +85,7 @@
 | wait_for_text_present_ok | Edit Group: | 30000 |
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| wait_for_element_not_present_ok | permission-change | 5000 |
+| wait_for_element_not_present_ok | permission-change | 15000 |
 | text_unlike | //span[@class='permissionType'] | qr/private/ism |
 | text_like | //span[@class='permissionType'] | qr/self-join/ism |
 | select-frame | relative=parent |  |
@@ -105,6 +108,7 @@
 
 | *Comment* | Test Case: Group No Change Link Save Group, add %%wstwo%% to two groups |  |
 | st-admin | add-member --w %%wstwo%% --g %%private_group_id%% | has the role of 'member' |
+| st-process-jobs |  |  |
 
 | *Comment* | Test Case: Group No Change Link for %%other_private_group%% |  |
 | open_ok | /st/edit_group/%%other_priv_id%% |  |
@@ -112,7 +116,7 @@
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
-| wait_for_element_not_present_ok | permission-change | 5000 |
+| wait_for_element_not_present_ok | permission-change | 15000 |
 | text_unlike | //span[@class='permissionType'] | qr/self-join/ism |
 | text_like | //span[@class='permissionType'] | qr/private/ism |
 | select-frame | relative=parent |  |
@@ -123,21 +127,24 @@
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
-| wait_for_element_not_present_ok | permission-change | 5000 |
+| wait_for_element_not_present_ok | permission-change | 15000 |
 | text_unlike | //span[@class='permissionType'] | qr/self-join/ism |
 | text_like | //span[@class='permissionType'] | qr/private/ism |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Group No Change Link Save Group, remove %%wstwo%% from one group |  |
+| *Comment* | Test Case: Group No Change Link Save Group, remove %%wstwo%% from private group |  |
 | st-admin | remove-member --w %%wstwo%% --g %%private_group_id%% | is no longer a member |
 
 | *Comment* | Test Case: Group No Change Link Restore %%other_private_group%% |  |
-| open_ok | /st/edit_group/%%other_priv_id%% |  |
+| st-process-jobs |  |  |
+| open_ok | /st/group/%%other_priv_id%% |  |
+| wait_for_element_visible_ok | link=(Edit) | 30000 |
+| click_and_wait | link=(Edit) |  |
 | wait_for_text_present_ok | Edit Group: | 30000 |
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | permission-change | 5000 |
+| wait_for_element_visible_ok | permission-change | 15000 |
 | text_unlike | //span[@class='permissionType'] | qr/self-join/ism |
 | text_like | //span[@class='permissionType'] | qr/private/ism |
 | select-frame | relative=parent |  |
@@ -148,20 +155,21 @@
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | permission-change | 5000 |
+| wait_for_element_visible_ok | permission-change | 15000 |
 | text_unlike | //span[@class='permissionType'] | qr/self-join/ism |
 | text_like | //span[@class='permissionType'] | qr/private/ism |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Group No Change Link Save Group, remove shared workspace from s-j group |  |
+| *Comment* | Test Case: Group No Change Link Save Group, remove %%ws%% from s-j group |  |
 | st-admin | remove-member --g %%public_group_id%% --w %%ws%% | is no longer a member |
 
 | *Comment* | Test Case: Group No Change Link Save Group, %%public_group%% restore change link |  |
+| st-process-jobs |  |  |
 | open_ok | /st/edit_group/%%public_group_id%% |  |
 | wait_for_text_present_ok | Edit Group: | 30000 |
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | permission-change | 5000 |
+| wait_for_element_visible_ok | permission-change | 15000 |
 | text_unlike | //span[@class='permissionType'] | qr/private/ism |
 | text_like | //span[@class='permissionType'] | qr/self-join/ism |
 | select-frame | relative=parent |  |
@@ -171,12 +179,13 @@
 | wait_for_text_present_ok | Edit Group: | 30000 |
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | permission-change | 5000 |
+| wait_for_element_visible_ok | permission-change | 15000 |
 | text_unlike | //span[@class='permissionType'] | qr/private/ism |
 | text_like | //span[@class='permissionType'] | qr/self-join/ism |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Group No Change Link TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | delete-workspace --w %%ws%% --no-export | has been deleted |
 | st-admin | delete-workspace --w %%wstwo%% --no-export | has been deleted |
 

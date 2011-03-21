@@ -1,30 +1,30 @@
-[% loc("Thank you for joining your company's collaboration group, hosted by Socialtext.") %]
+[% loc("email.thank-you-for-joining-company-collaboration-group-hosted-by-socialtext") %]
 
 
 [% IF requires_confirmation -%]
-[% loc("Please click on this link to confirm your email address:") %] [% confirmation_uri %]&account_for=free50
+[% loc("email.click-to-confirm-email:") %] [% confirmation_uri %]&account_for=free50
 
-[% loc('By clicking the above link, you can immediately start sharing "Twitter-like" messages privately with your co-workers, and find a better way to work using social networking and wiki workspaces. You also get your own personal home page.') %]
+[% loc('email.to-start-click-above-link') %]
 
 [% ELSE -%]
-[% loc('web address:') %] [% account_uri | html %]
-[% loc('username:') %] [% username | html %]
+[% loc('email.web-address:') %] [% account_uri | html %]
+[% loc('email.username:') %] [% username | html %]
 
 [% IF appconfig.is_default('user_factories') -%] 
 [% IF app_name; a = 'a'; ELSE; a = 'an'; END -%]
-[% loc("Because you already have [_1] [_2] account, the password is the same as the password you use for your other [_3] groups.", a, app_name, app_name) %]
-[% loc("If you don't remember it, follow this link to select a new password:") %]
+[% loc("email.same-password-as-existing-account=a,app,app", a, app_name, app_name) %]
+[% loc("email.follow-link-to-select-password:") %]
 [% forgot_password_uri %]
 
 [% END -%]
-[% loc("You may want to keep this email for future reference.") %]
+[% loc("email.keep-this-for-future-reference") %]
 
 [% END -%]
 
-[% loc("We encourage you to invite other co-workers to join your company's collaboration group.") %]
+[% loc("email.we-encourage-you-to-invite-others") %]
 
-[% loc("If you did not request to join your company's collaboration group, please contact abuse@socialtext.com") %]
+[% loc("email.if-unsolicited-contact-abuse") %]
 
-[% loc("Happy collaborating!") %]
-[% loc("The leader in Enterprise 2.0 Social Software") %]
+[% loc("email.happy-collaborating!") %]
+[% loc("email.leader-in-enterprise-social-software") %]
 [% loc("www.socialtext.com") %]

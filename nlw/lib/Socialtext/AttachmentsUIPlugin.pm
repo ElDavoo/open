@@ -11,12 +11,14 @@ use Socialtext::Helpers;
 use Socialtext::TT2::Renderer;
 use Socialtext::l10n qw(loc system_locale);
 use Socialtext::String;
-use Socialtext::Timer;
+use Socialtext::Timer qw/time_scope/;
 use Socialtext::Pageset;
+use Socialtext::SQL qw/sql_txn/;
 use Memoize;
+use Try::Tiny;
 
-sub class_id { 'attachments_ui' }
-const class_title => 'Attachments';
+const class_id => 'attachments_ui';
+const class_title => _('class.attachments_ui');
 const cgi_class   => 'Socialtext::AttachmentsUI::CGI';
 
 field 'sortdir';
@@ -51,157 +53,113 @@ sub attachments_download {
     my $self = shift;
     my $id      = $self->cgi->id;
 
-    # find filename
-    my $attachment = $self->hub->attachments->new_attachment( id => $id );
-
-    eval { $attachment->load };
-    if ($@) {
-        return $self->failure_message(
-            loc('Attachment not found. The page name, file name or identifer number in the link may be incorrect, or the attachment may have been deleted or is not present in this workspace.'),
-            $@,
+    return try {
+        my $attachment = $self->hub->attachments->load(id => $id);
+        # Hand this off to the REST API.
+        $self->redirect($attachment->download_uri('original'));
+    }
+    catch {
+        $self->failure_message(
+            loc('error.no-attachment'),
+            $_,
             $self->hub->pages->current
         );
-    }
-
-    # Handle this all off to the REST API.
-    my $ws_name = $self->hub->current_workspace->name;
-    my $page_uri = $attachment->page_id;
-    my $filename = Socialtext::String::uri_escape( $attachment->filename );
-    my $attachment_uri = "/data/workspaces/$ws_name/attachments/$page_uri:$id/"
-                       . "original/$filename";
-    return $self->redirect($attachment_uri);
+    };
 }
 
 sub attachments_extract {
     my $self = shift;
-    my $attachment_id = $self->cgi->attachment_id;
+    my $id = $self->cgi->attachment_id;
     my $page_id = $self->cgi->page_id;
 
-    my $attachment = $self->hub->attachments->new_attachment(
-        id      => $attachment_id,
-        page_id => $page_id,
-    )->load;
-
-    $attachment->extract;
+    return try {
+        my $attachment = $self->hub->attachments->load(
+            id => $id, page_id => $page_id);
+        $attachment->extract;
+    }
+    catch {
+        $self->failure_message(
+            loc('error.no-attachment'),
+            $_,
+            $self->hub->pages->current
+        );
+    };
 }
 
 sub attachments_upload {
     my $self = shift;
+    my $t = time_scope 'upload_attachments';
 
-    Socialtext::Timer->Continue('upload_attachments');
-
-    my @files = $self->cgi->file;
-    my @embeds = $self->cgi->embed unless $self->cgi->editmode;
+    my $temp    = $self->cgi->editmode;
+    my @files   = $self->cgi->file;
+    my @embeds  = $self->cgi->embed;
     my @replace = $self->cgi->replace;
 
-    my $error = $self->process_attachments_upload(
-        files  => \@files,
-        embed  => \@embeds,
-        replace => \@replace,
-    );
-
-    Socialtext::Timer->Pause('upload_attachments');
-
-    return $self->_finish(
-        error => $error,
-        files => [ values %{$self->{_attachment_info}} ],
-    );
-}
-
-sub process_attachments_upload {
-    my $self = shift;
-    my %p    = @_;
-
-    my @files = @{$p{files}};
-    my @embeds = @{$p{embed}};
-    my @replace = @{$p{replace}};
-
     my $count = grep { -s $_->{handle} } @files;
+    my $page = $self->hub->pages->current;
 
-    return loc('The file you are trying to upload does not exist')
+    return loc('error.file-required')
         unless $count;
 
-    return loc('You don\'t have permission to upload attachments')
-        unless $self->hub->checker->check_permission('attachments');
+    return loc('error.file-upload-forbidden')
+        unless ($self->hub->checker->check_permission('attachments')
+            and $self->hub->checker->can_modify_locked($page));
 
-    return loc('You don\'t have permission to upload attachments')
-        unless $self->hub->checker->can_modify_locked($self->hub->pages->current);
+    my $atts = $self->hub->attachments;
+    my $errors = '';
+    my @uploaded;
 
-    my $error = '';
-    for (my $i=0; $i < $count; $i++) {
-        my $file = $files[$i];
-        if ($replace[$i]) {
-            my $filename = $file->{filename} . '';
-            $self->_delete_similar_attachments($filename);
-        }
-        my $error_code = $self->save_attachment(
-            $file,
-            $embeds[$i],
-        );
-        if ($error_code) {
-            $error_code =~ s/\. at.*//s;    # grr... stinkin auto-added backtrace.
-            $error .= $error_code;
-        }
+    # consume as we go to reduce resources
+    while (my $file = shift @files) {
+        my $replace = shift @replace;
+        my $embed   = shift @embeds;
 
+        next unless $file->{handle};
+        my $len = -s $file->{handle};
+        next unless $len;
+
+        # this stringification is to remove tied weirdness:
+        my $filename = "$file->{filename}";
+        $embed = 0 if ($temp || $page->is_spreadsheet);
+
+        sql_txn { 
+            if ($replace) {
+                my $with_name = $atts->all(filename => $filename);
+                for my $att (@$with_name) {
+                    $att->is_temporary ? $att->purge() : $att->delete();
+                }
+            }
+
+            try {
+                my $att = $atts->create(
+                    fh             => $file->{handle},
+                    filename       => $filename,
+                    creator        => $self->hub->current_user,
+                    embed          => $embed,
+                    temporary      => $temp,
+                    content_length => $len,
+                    # TODO: extract mime-type hint?
+                    # mime_type => $file->...->{'Content-Type'},
+                );
+                push @uploaded, $att->to_hash;
+            }
+            catch {
+                s/\. at.*//s;
+                chomp;
+                $errors .= "$_\n";
+            };
+        };
     }
-    return $error;
-}
 
-sub _delete_similar_attachments {
-    my ($self, $filename) = @_;
-
-    for my $att ($self->hub->pages->current->attachments) {
-        next unless lc $filename eq lc $att->filename;
-
-        if ($att->temporary) {
-            $att->purge($att->page);
-        }
-        else {
-            $att->delete(user => $self->hub->current_user);
-        }
-    }
-}
-
-sub _finish {
-    my ($self, %args) = @_;
     my $renderer = Socialtext::TT2::Renderer->instance;
     return $renderer->render(
         paths    => $self->hub->skin->template_paths,
         template => 'view/attachmentresult',
-        vars     => \%args,
+        vars     => {
+            error => $errors,
+            files => \@uploaded,
+        },
     );
-}
-
-sub save_attachment {
-    my $self = shift;
-    my $file = shift; # [in] File object/hash from CGI
-    my $embed = shift; # [in/optional] boolean - true if link to file should be embedded in page; default to true
-
-    $embed = 0
-        if ($self->hub->pages->current->metadata->Type eq 'spreadsheet');
-
-
-    my $filename;
-    eval {
-        $filename = $file->{filename} . '';
-        my @files = $self->hub->attachments->create(
-            fh     => $file->{handle},
-            embed  => $embed ? 1 : 0,
-            temporary => $self->cgi->editmode,
-
-            # this stringification is to remove tied weirdness:
-            filename => $filename,
-            creator  => $self->hub->current_user,
-        );
-        for my $file (@files) {
-            $self->{_attachment_info}{$file->filename} = {
-                filename => $file->filename,
-                id => $file->id,
-            };
-        }
-    };
-
-    return $@;
 }
 
 sub attachments_listall {
@@ -220,11 +178,13 @@ sub attachments_listall {
     my $sortby = $self->cgi->sortby || 'filename';
     my $direction = $self->cgi->direction || $self->sortdir->{$sortby};
 
-    my $attachments = $self->hub->attachments->all_in_workspace();
+    my $attachments = $self->hub->attachments->all_attachments_in_workspace();
+    my $rows = $self->_table_rows($attachments);
+
     $self->screen_template('view/attachmentslist');
     $self->render_screen(
-        rows => $self->_table_rows( $attachments ),
-        display_title => loc("All Files"),
+        rows => $rows,
+        display_title => loc("file.all"),
         sortby => $sortby,
         sortdir => $self->sortdir,
         direction => $direction,
@@ -242,22 +202,23 @@ sub _table_rows {
 
     my @rows;
     for my $att (@$attachments) {
-        my $page = $att->{page} || $self->hub->pages->new_page($att->{page_id});
+        my $page = $att->page();
 
         push @rows, {
-            link      => sub { $self->_attachment_download_link($att) },
-            id        => $att->{id},
-            filename  => $att->{filename},
+            link      => $att->download_link,
+            id        => $att->id,
+            filename  => $att->filename,
             subject   => $page->title,
-            user      => $att->{from},
-            date_str  => $att->{date},
-            date      => sub { $self->hub->timezone->date_local( $att->{date} ) },
+            user      => $att->creator->username, # TODO: pass object
+            date_str  => sub { $att->created_at_str },
+            date      => sub { $att->created_at },
+            user_date => sub { $self->hub->timezone->get_date_user($att->created_at) },
             page_uri  => $page->uri,
             page_link => sub {
                 Socialtext::Helpers->page_display_link_from_page($page) },
-            size                => $att->{length},
+            size                => $att->content_length,
             human_readable_size =>
-                $self->_human_readable_size( $att->{length} ),
+                $self->_human_readable_size( $att->content_length ),
             page_is_locked => $page->locked,
             user_can_modify => sub { $self->hub->checker->can_modify_locked( $page ) },
         };
@@ -354,13 +315,19 @@ sub _gen_sort_closure {
         $sortby = 'date_str' if $sortby eq 'date';
         if ( $direction eq 'asc' ) {
             return sub {
-                lc( $a->{$sortby} ) cmp lc( $b->{$sortby} )
+                my ($af, $bf) = ($a->{$sortby}, $b->{$sortby});
+                $af = &$af if ref $af eq 'CODE';
+                $bf = &$bf if ref $bf eq 'CODE';
+                (lc( $af ) cmp lc( $bf ))
                     or lc( $a->{subject} ) cmp lc( $b->{subject} );
             };
         }
         else {
             return sub {
-                lc( $b->{$sortby} ) cmp lc( $a->{$sortby} )
+                my ($af, $bf) = ($a->{$sortby}, $b->{$sortby});
+                $af = &$af if ref $af eq 'CODE';
+                $bf = &$bf if ref $bf eq 'CODE';
+                (lc( $bf ) cmp lc( $af ))
                     or lc( $a->{subject} ) cmp lc( $b->{subject} );
             };
         }
@@ -368,25 +335,12 @@ sub _gen_sort_closure {
 }
 
 
-sub _attachment_download_link {
-    my $self = shift;
-    my $attachment = shift;
-
-    my $workspace     = $self->hub->current_workspace->name;
-    my $filename_uri  = $self->uri_escape( $attachment->{filename} );
-    my $filename_html = $self->html_escape( $attachment->{filename} );
-    my $page          = $self->hub->pages->new_page( $attachment->{page_id} );
-    my $page_uri      = $page->uri;
-
-    return qq|<a href="/data/workspaces/$workspace/attachments/$page_uri:|
-         . qq|$attachment->{id}/original/$filename_uri">$filename_html</a>|;
-}
-
 sub attachments_delete {
     my $self    = shift;
     my $checker = $self->hub->checker;
 
     return unless $checker->check_permission('delete');
+    my $user = $self->hub->current_user;
 
     for my $attachment_junk ( $self->cgi->selected ) {
         my ( $page_id, $id, undef ) = map { split ',' } $attachment_junk;
@@ -394,11 +348,9 @@ sub attachments_delete {
         next unless $checker->can_modify_locked(
             $self->hub->pages->new_page( $page_id ) );
 
-        my $attachment = $self->hub->attachments->new_attachment(
-            id      => $id,
-            page_id => $page_id,
-        );
-        $attachment->delete( user => $self->hub->current_user );
+        my $att = $self->hub->attachments->load(
+            id => $id, page_id => $page_id, deleted_ok => 1);
+        $att->delete(user => $user) unless $att->is_deleted;
     }
 
     if ( $self->cgi->caller_action eq 'attachments_listall' ) {

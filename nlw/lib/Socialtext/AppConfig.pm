@@ -3,12 +3,11 @@ package Socialtext::AppConfig;
 use strict;
 use warnings;
 
-use Config;
 use Cwd ();
 use File::Basename ();
 use File::Spec ();
 use File::Path qw/mkpath/;
-use Sys::Hostname;
+use Socialtext::Hostname;
 use Socialtext::Validate qw(
     validate validate_with
     SCALAR_TYPE BOOLEAN_TYPE
@@ -32,6 +31,10 @@ my $StartupUser = getpwuid($>);
 my @obviously_not_human_users = qw( www-data wwwrun nobody daemon );
 my %obviously_not_human_users = map {($_,1)} @obviously_not_human_users;
 
+sub is_testrunner {
+    return $StartupUser->name eq 'hudson';
+}
+
 sub startup_user_is_human_user {
     return 0 if $obviously_not_human_users{ $StartupUser->name };
 
@@ -41,6 +44,7 @@ sub startup_user_is_human_user {
     # on any system that was compliant with its distro/OSs usre
     # numbering scheme.
     return 1 if $StartupUser->uid >= 500;
+    return 1 if is_testrunner();
 
     return;
 }
@@ -210,7 +214,7 @@ sub bin_path {
     if ( startup_user_is_human_user() ) {
         return File::Spec->catfile( _user_checkout_dir(), 'bin' );
     }
-    return $Config{installscript};
+    return '/usr/bin';
 }
 
 sub _default_db_name {
@@ -347,6 +351,10 @@ sub instance {
     return $Self || $class->new();
 }
 
+sub clear_instance {
+    $Self = undef;
+}
+
 sub new {
     my $class = shift;
     my %p = @_;
@@ -463,7 +471,12 @@ sub _find_config_dirs {
 }
 
 sub config_dir {
+    my $self = shift;
+
     my @dirs = _find_config_dirs();
+    unshift @dirs, File::Basename::dirname($self->file)
+        if $self && ref($self);
+
     foreach my $dir (@dirs) {
         return $dir if -d $dir;
     }
@@ -544,7 +557,7 @@ sub MAC_secret {
     # REVIEW - is there a better way to distinguish between a real
     # installation and a developer installation?
     die "Cannot generate a MAC secret once app has started except in dev environments"
-        unless $StartupUser->dir =~ m{^(?:/home|/Users)};
+        unless $StartupUser->dir =~ m{^(?:/home|/Users)} || is_testrunner();
 
     return $StartupUser->name . ' needs a better secret';
 }
@@ -963,11 +976,11 @@ was run.
 The hostname used when generating fully-qualified URIs inside NLW.
 
 Defaults to the system's hostname, as returned by
-C<Sys::Hostname::hostname()>.
+C<Socialtext::Hostname::fqdn()>.
 
 Optional.
 
-=for code default => Sys::Hostname::hostname()
+=for code default => Socialtext::Hostname::fqdn()
 
 =for code type => SCALAR_TYPE
 
@@ -976,11 +989,11 @@ Optional.
 The hostname used when generating email addresses inside NLW.
 
 Defaults to the system's hostname, as returned by
-C<Sys::Hostname::hostname()>.
+C<Socialtext::Hostname::fqdn()>.
 
 Optional.
 
-=for code default => Sys::Hostname::hostname()
+=for code default => Socialtext::Hostname::fqdn()
 
 =for code type => SCALAR_TYPE
 
@@ -1036,7 +1049,7 @@ Default: 25
 
 The did you know title
 
-=for code default => loc('Access a Community of Peers')
+=for code default => loc('config.did-you-know-title')
 
 =for code type => SCALAR_TYPE
 
@@ -1044,7 +1057,7 @@ The did you know title
 
 The did you know text
 
-=for code default => loc('As a Socialtext customer, you have access to the <a href="http://www.socialtext.net/exchange/">Socialtext Customer Exchange</a>. It is where you can share tips and best practices with other Socialtext customers.')
+=for code default => loc('config.did-you-know-text')
 
 =for code type => SCALAR_TYPE
 
@@ -1300,8 +1313,7 @@ Default: 0
 
 =head2 search_factory_class
 
-This points the system at different fulltext search implementations.  See
-L<Socialtext::Search::AbstractFactory> for more details.
+Deprecated.
 
 Default: Socialtext::Search::Solr::Factory
 
@@ -1309,9 +1321,7 @@ Default: Socialtext::Search::Solr::Factory
 
 =head2 interwiki_search_set
 
-This allows an administrator to establish a set of workspaces to be searched
-as a default collection. Specified as a colon-separated list of workspace
-names.
+Deprecated.
 
 =for code default => '' 
 
@@ -1462,6 +1472,10 @@ the following methods are available.
 
 Returns an instance of the C<Socialtext::AppConfig> singleton. This does not
 accept any parameters.
+
+=head2 Socialtext::AppConfig->clear_instance()
+
+Clears any existing singleton instance.
 
 =head2 Socialtext::AppConfig->new()
 

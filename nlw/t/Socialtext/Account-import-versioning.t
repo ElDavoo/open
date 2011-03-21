@@ -1,8 +1,8 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 32;
+use Test::Socialtext tests => 36;
 use Test::Socialtext::Account qw/export_and_reimport_account/;
 
 fixtures(qw( db ));

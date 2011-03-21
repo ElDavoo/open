@@ -1,21 +1,21 @@
 [% IF base_uri.match('\?'); char = '&'; ELSE; char = '?'; END %]
 <div class="paging" data-role="controlgroup" data-type="horizontal" style="text-align: center">
     [% IF pagenum > 1 %]
-    <a id="mobile-paging-first" data-icon="back" data-role="button" href="[% base_uri %]"><span class="nav-hint">&lt;&lt;&nbsp;</span>[% loc('First page') %]</a>
+    <a id="mobile-paging-first" data-icon="back" data-role="button" href="[% base_uri %]"><span class="nav-hint">&lt;&lt;&nbsp;</span>[% loc('lite.first-page') %]</a>
     [% ELSIF pagenum > 0 %]
-    <a id="mobile-paging-first" data-icon="back" data-role="button" href="[% base_uri %]"><span class="nav-hint">&lt;&lt;&nbsp;</span>[% loc('First page') %]</a>
+    <a id="mobile-paging-first" data-icon="back" data-role="button" href="[% base_uri %]"><span class="nav-hint">&lt;&lt;&nbsp;</span>[% loc('lite.first-page') %]</a>
     [% ELSE %]
-    <span class="nav-hint">&lt;&lt;&nbsp;[% loc('First page') %]</span>
+    <span class="nav-hint">&lt;&lt;&nbsp;[% loc('lite.first-page') %]</span>
     [% END %]
 
     [% IF pagenum > 0 %]
-    <a id="mobile-paging-previous" data-icon="arrow-l" data-role="button" href="[% base_uri %][% char %]page=[% pagenum - 1 %]"><span class="nav-hint">&lt;&nbsp;</span>[% loc('Previous page') %]</a>
+    <a id="mobile-paging-previous" data-icon="arrow-l" data-role="button" href="[% base_uri %][% char %]page=[% pagenum - 1 %]"><span class="nav-hint">&lt;&nbsp;</span>[% loc('lite.previous-page') %]</a>
     [% ELSE %]
-    <span class="nav-hint">&lt;&nbsp;[% loc('Previous page') %]</span>
+    <span class="nav-hint">&lt;&nbsp;[% loc('lite.previous-page') %]</span>
     [% END %]
     [% IF more %]
-    <a id="mobile-paging-next" data-icon="arrow-r" data-role="button" href="[% base_uri %][% char %]page=[% pagenum + 1 %]">[% loc('Next page') %]<span class="nav-hint">&nbsp;&gt;</span></a>
+    <a id="mobile-paging-next" data-icon="arrow-r" data-role="button" href="[% base_uri %][% char %]page=[% pagenum + 1 %]">[% loc('lite.next-page') %]<span class="nav-hint">&nbsp;&gt;</span></a>
     [% ELSE %]
-    <span class="nav-hint">[% loc('Next page') %]&nbsp;&gt;</span>
+    <span class="nav-hint">[% loc('lite.next-page') %]&nbsp;&gt;</span>
     [% END %]
 </div>

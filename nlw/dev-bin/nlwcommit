@@ -1,4 +1,4 @@
-#!/bin/sh -xe
+#!/bin/bash -xe
 # @COPYRIGHT@
 svn up
 test-less --prove fast # aliased to "tlp fast" in stconfig

@@ -9,11 +9,13 @@ use unmocked 'Data::Dumper';
 use unmocked 'DateTime::Format::Pg';
 use unmocked 'Guard';
 
+use constant NEWEST_FIRST => 'newest';
+use constant OLDEST_FIRST => 'oldest';
+
 our @EXPORT_OK = qw(
     get_dbh disconnect_dbh invalidate_dbh
     sql_execute sql_execute_array sql_selectrow sql_singlevalue
     sql_commit sql_begin_work sql_rollback sql_in_transaction sql_txn
-    sql_convert_to_boolean sql_convert_from_boolean
     sql_parse_timestamptz sql_format_timestamptz sql_timestamptz_now
     sql_ok sql_mock_result sql_mock_row_count ok_no_more_sql
     sql_ensure_temp
@@ -21,7 +23,6 @@ our @EXPORT_OK = qw(
 our %EXPORT_TAGS = (
     'exec' => [qw(sql_execute sql_execute_array sql_selectrow sql_singlevalue)],
     'time' => [qw(sql_parse_timestamptz sql_format_timestamptz)],
-    'bool' => [qw(sql_convert_to_boolean sql_convert_from_boolean)],
     'txn'  => [qw(sql_commit sql_begin_work
                   sql_rollback sql_in_transaction sql_txn)],
 
@@ -82,19 +83,6 @@ sub sql_singlevalue {
     my ($val) = $sth->fetchrow_array();
     return $val;
 };
-
-# copied the real implementation
-sub sql_convert_to_boolean {
-    my $value = shift;
-    my $default = shift;
-
-    return $default if (!defined($value));
-    return $value ? 't' : 'f';
-}
-sub sql_convert_from_boolean {
-    my $value = shift;
-    return $value eq 't' ? 1 : 0;
-}
 
 sub sql_parse_timestamptz {
     my $value = shift;

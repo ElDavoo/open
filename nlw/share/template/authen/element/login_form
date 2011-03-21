@@ -14,14 +14,14 @@
     <dt> <label for="username">[% username_label %]</label> </dt>
     <dd> <input id="username" name="username" type="text" size="30" value="[% username %]" autofocus /> </dd>
 
-    <dt> <label for="password">[% loc('Password:') %]</label> </dt>
+    <dt> <label for="password">[% loc('login.password:') %]</label> </dt>
     <dd> <input id="password" name="password" type="password" size="30" value="" /> </dd>
   </dl>
 
   <div class="form-element">
     <input class="checkbox" name="remember" type="checkbox" id="remember" value="1" />
     <span class="description">
-      <label for="remember">[% loc('Remember me on this computer.') %]</label>
+      <label for="remember">[% loc('login.remember-me') %]</label>
     </span>
     [% UNLESS lite %]
       <a id="remember-lightbox" href="#" onclick="$.showLightbox('Checking this box will keep you logged in for up to [% remember_duration %], or until you sign out.  Un-checking this box will cause you to be automatically logged out when you close your browser.')">[?]</a>
@@ -30,14 +30,14 @@
 
   [% IF lite %]
   </fieldset><fieldset>
-  <input data-theme="b" data-icon="arrow-r" type="submit" value="[% loc('Log in') %]"/>
+  <input data-theme="b" data-icon="arrow-r" type="submit" value="[% loc('login.log-in') %]"/>
   [% ELSE %]
   <div class="hidesubmit"><input type="submit"/></div>
   <div class="loginButtons">
     <ul class="formButtons" style="float: left">
       <li class="flexButtonBlue">
         <a id="login_btn" class="genericBlueButton" href="#" onclick="document.forms['login'].submit(); return false">
-          [% loc('Log in') %]
+          [% loc('login.log-in') %]
         </a>
       </li>
     </ul>

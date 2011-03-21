@@ -2,11 +2,9 @@ package Socialtext::PageLinks;
 # @COPYRIGHT@
 use Moose;
 use Socialtext::Paths;
-use File::Spec;
-use File::Basename qw(basename);
-use Socialtext::File;
-use Socialtext::Model::Pages;
+use Socialtext::Pages;
 use Socialtext::Timer;
+use Socialtext::String qw/MAX_PAGE_ID_LEN/;
 use Socialtext::SQL::Builder qw(sql_insert_many);
 use Socialtext::SQL qw(sql_execute sql_txn);
 use namespace::clean -except => 'meta';
@@ -17,9 +15,9 @@ Socialtext::PageLinks
 
 =head1 SYNOPSIS
 
-my $page_links = Socialtext::PageLinks->new(page => $page);
-my @forward_links = $page_links->links;
-my @backlinks = $page_links->backlinks;
+    my $page_links = Socialtext::PageLinks->new(page => $page);
+    my @forward_links = $page_links->links;
+    my @backlinks = $page_links->backlinks;
 
 =head1 DESCRIPTION
 
@@ -27,17 +25,8 @@ Represents all of a page's links and backlinks
 
 =cut
 
-sub WorkspaceDirectory {
-    my ($class, $workspace) = @_;
-    die "workspace name required" unless $workspace;
-    return File::Spec->catdir(
-        Socialtext::Paths::plugin_directory($workspace),
-        'backlinks',
-    );
-}
-
 has 'page' => (
-    is => 'ro', isa => 'Socialtext::Page::Base',
+    is => 'ro', isa => 'Socialtext::Page',
     required => 1,
 );
 
@@ -57,8 +46,7 @@ sub _build_links {
     my $page_id = $self->page->id;
     my @links =
         map { $self->_create_page($_->{to_workspace_id}, $_->{to_page_id}) }
-        grep { $_->{from_page_id} eq $page_id } $self->db_links,
-        $self->filesystem_links;
+        grep { $_->{from_page_id} eq $page_id } $self->db_links;
     Socialtext::Timer->Pause('build_links');
     return \@links;
 }
@@ -75,7 +63,7 @@ sub _build_backlinks {
     my @backlinks =
         map { $self->_create_page($_->{from_workspace_id}, $_->{from_page_id}) }
         grep { $_->{to_page_id} eq $page_id }
-        $self->db_links, $self->filesystem_links;
+        $self->db_links;
     Socialtext::Timer->Pause('build_backlinks');
     return \@backlinks;
 }
@@ -132,8 +120,10 @@ sub update {
             = qw(from_workspace_id from_page_id to_workspace_id to_page_id);
         if (@$links) {
             my @values = map {
-                [ $workspace_id, $page_id, $_->{workspace_id}, $_->{page_id} ]
-                } grep { not $seen{ $_->{workspace_id} }{ $_->{page_id} }++ }
+                    [ $workspace_id, $page_id, $_->{workspace_id}, $_->{page_id} ]
+                } 
+                grep { length($_->{page_id}) <= MAX_PAGE_ID_LEN }
+                grep { not $seen{ $_->{workspace_id} }{ $_->{page_id} }++ }
                 @$links;
             sql_insert_many('page_link' => \@cols, \@values);
         }
@@ -143,10 +133,9 @@ sub update {
 
 sub _create_page {
     my ($self, $workspace_id, $page_id) = @_;
-    my $page = Socialtext::Model::Pages->By_id(
+    my $page = Socialtext::Pages->By_id(
         hub => $self->hub,
         workspace_id => $workspace_id,
-        do_not_need_tags => 1,
         no_die => 1,
         page_id => $page_id
     );
@@ -160,66 +149,6 @@ sub _create_page {
         $self->hub->current_workspace($old_workspace);
     }
     return $page;
-}
-
-has 'workspace_directory' => (
-    is => 'ro', isa => 'Str',
-    lazy_build => 1,
-);
-
-sub _build_workspace_directory {
-    my $self = shift;
-    return $self->WorkspaceDirectory($self->hub->current_workspace->name);
-}
-
-has 'filesystem_links' => (
-    is => 'ro', isa => 'ArrayRef[HashRef]',
-    lazy_build => 1, auto_deref => 1,
-);
-
-sub _build_filesystem_links {
-    my $self = shift;
-
-    my $dir = $self->workspace_directory;
-    return [] unless -d $dir;
-
-    Socialtext::Timer->Continue('build_filesystem_links');
-    # get forward links and backlinks
-    my $separator    = '____';
-    my $workspace_id = $self->hub->current_workspace->workspace_id;
-    my $page_id      = $self->page->id;
-    my $glob = "$dir/{${page_id}${separator}*,*${separator}${page_id}}";
-
-    # Build a hash table of db links in order to eliminate duplicate.
-    # This might be slightly inefficient, but only happens while we are moving
-    # over from filesystem links to database links.
-    my %in_db;
-    for my $l ($self->db_links) {
-        next unless $l->{from_workspace_id} eq $l->{to_workspace_id};
-        if ($l->{to_page_id} eq $page_id) {
-            $in_db{ $l->{from_page_id} } = 1;
-        }
-        elsif ($l->{to_page_id} eq $page_id) {
-            $in_db{ $l->{to_page_id} } = 1;
-        }
-    }
-
-    my @links;
-    for my $file (glob($glob)) {
-        $file = basename($file);
-        next if $file =~ /^\.\.?$/;
-        my ($from, $to) = split $separator, $file;
-        next if $in_db{$from} or $in_db{$to};
-
-        push @links, {
-            from_workspace_id => $workspace_id,
-            from_page_id      => $from,
-            to_workspace_id   => $workspace_id,
-            to_page_id        => $to,
-        };
-    }
-    Socialtext::Timer->Pause('build_filesystem_links');
-    return \@links;
 }
 
 has 'db_links' => (

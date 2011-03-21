@@ -54,7 +54,7 @@ sub events {
         $base_uri = "/m/$args{section}?mine=1";
         $events = $reporter->get_events_activities(
            %event_args, actor_id => $viewer);
-        $error = loc("There are no [_1] to display because you have not created any.", $args{section}) unless @$events;
+        $error = loc("error.no-events-mine=section", $args{section}) unless @$events;
     }
     elsif ($args{followed}) {
         $base_uri = "/m/$args{section}?followed=1";
@@ -62,7 +62,7 @@ sub events {
             $event_args{'action!'} = 'signal';
         }
         $events = $reporter->get_events_followed(\%event_args);
-        $error = loc("There are no [_1] to display, either because you aren't following anyone yet, or the people you're following haven't created any. Visit the profiles of your colleagues, and click 'Follow this person' to start following colleagues.", $args{section}) unless @$events;
+        $error = loc("error.no-events-followers=section", $args{section}) unless @$events;
     }
     elsif ($args{all}) {
         $base_uri = "/m/$args{section}?all=1";
@@ -73,12 +73,12 @@ sub events {
 
         $events = $reporter->get_events(\%event_args);
 
-        $error = loc("There are no [_1] to display because none have been created.", $args{section}) unless @$events;
+        $error = loc("error.no-events=section", $args{section}) unless @$events;
     }
     else {
         $base_uri = "/m/$args{section}";
         $events = $reporter->get_events_conversations($viewer, \%event_args);
-        $error = loc("There are no [_1] to display because you haven't engaged in conversations with your colleagues.", $args{section}) unless @$events;
+        $error = loc("error.no-events-conversations=section", $args{section}) unless @$events;
     }
     $events ||= [];
     my $more = pop @$events if @$events > 10;

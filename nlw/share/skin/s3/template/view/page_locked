@@ -1,7 +1,7 @@
 [%# @COPYRIGHT@ -%]
 [% WRAPPER $frame_name content_id = 'st-editcontention' %]
 
-[% IF page.metadata.Type == 'spreadsheet' %]
+[% IF page.page_type == 'spreadsheet' %]
   [% PROCESS contention_msg type="spreadsheet" %]
   [% page.to_html %]
 [% ELSE %]
@@ -12,10 +12,10 @@
 [% END %]
 
 [% BLOCK contention_msg %]
-  <p class="error-message">[% loc('An administrator has locked this [_1] since you opened it for editing. You will not be able to save it.', type) %]</p>
+  <p class="error-message">[% loc('page.locked=type', type) %]</p>
 
-  <p>[% loc('The raw wikitext of your changes are below. You can copy your changes from here.') %]</p>
+  <p>[% loc('edit.view-locked') %]</p>
 
-  <p><a href="[% script_name %]?[% page.uri %]">[% loc('Click here to return to the [_1].', type) %]</a></p>
+  <p><a href="[% script_name %]?[% page.uri %]">[% loc('page.back=type', type) %]</a></p>
   <hr />
 [% END %]

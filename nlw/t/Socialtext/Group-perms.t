@@ -1,8 +1,8 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 40;
+use Test::Socialtext tests => 42;
 use Test::Socialtext::Account qw/export_account export_and_reimport_account/;
 use Test::Socialtext::Fatal;
 use YAML qw/LoadFile/;

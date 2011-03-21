@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 use strict;
 use warnings;
@@ -123,7 +123,7 @@ list_locked: {
                 argv => [ qw/--workspace admin/ ]
             )->locked_pages();
         },
-        [ qr/\badmin_wiki\b/, qr/\bconversations\b/, qr/\bmember_directory\b/ ],
+        [ qr/\bAdmin Wiki\b/, qr/\bConversations\b/, qr/\bMember Directory\b/ ],
         'locked_pages success'
     );
 }

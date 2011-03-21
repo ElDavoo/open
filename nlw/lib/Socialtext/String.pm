@@ -5,22 +5,67 @@ use warnings;
 use HTML::Entities ();
 use URI::Escape ();
 use HTML::Truncate;
+use parent 'Exporter';
 
 use constant MAX_PAGE_ID_LEN => 255;
 use constant BOM => chr(0xFEFF);
 
-=head1 Socialtext::String
+our @EXPORT = ();
+our @EXPORT_OK = qw/
+    MAX_PAGE_ID_LEN BOM
+    html_escape html_unescape
+    trim 
+    uri_escape uri_unescape
+    double_space_harden
+    word_truncate html_truncate
+    title_to_id title_to_display_id
+/;
+our %EXPORT_TAGS = (
+    'html' => [qw/html_escape html_unescape/],
+    'uri' => [qw/uri_escape uri_unescape/],
+    'id' => [qw/title_to_id title_to_display_id/],
+);
 
-A collection of random string functions.
+=head1 NAME
+
+Socialtext::String - A collection of handy string functions.
+
+=head1 SYNOPSIS
+
+    use Socialtext::String qw/:uri/;
+    uri_escape("bl/a/h"); # runs uri_escape_utf8
+    uri_unescape("%2F");
+
+    use Socialtext::String qw/:html/;
+    html_escape(">>rad<<"); # escapes minimal html/xml chars
+    html_unescape($escaped);
+
+    use Socialtext::String qw/:id/;
+    title_to_id("Page Title"); # see POD; transforms a page title into a page ID
+    title_to_display_id("Incipient Page Title"); # see POD
+
+=head1 CONSTANTS
 
 =head2 MAX_PAGE_ID_LEN
 
 Returns the maximum length of a page id.
 
-=head2 html_escape( $str )
+=head2 BOM
 
-Returns an HTML-escaped version of the I<$str>, replacing '<', '>',
-'&' and '"' with their HTML entities.
+Returns the BOM as a perl-unicode string (0xFEFF)
+
+=head1 FUNCTIONS
+
+All functions are importable.
+
+=head2 html_escape ($str)
+
+=head2 html_unescape ($entity_str)
+
+Escape returns an HTML-escaped version of the C<$str>, replacing C<< <>&"' >>
+with their HTML entities.
+
+Unescape decodes HTML entities into characters.
 
 =cut
 
@@ -28,33 +73,17 @@ sub html_escape {
     return HTML::Entities::encode_entities(shift, q/<>&"'/);
 }
 
-=head2 html_unescape( $str )
-
-Returns unescaped version of the I<$str>.
-
-=cut
-
 sub html_unescape { 
     return HTML::Entities::decode_entities(shift);
 }
 
-=head2 trim( $str )
+=head2 uri_escape ($str)
 
-Trims leading and trailing whitespace.  Does not remove taintedness from
-the string.
+=head2 uri_unescape ($uri_str)
 
-=cut
+Return an escaped version of C<$str> using L<URI::Escape>'s uri_escape_utf8.
 
-sub trim {
-    my $str = shift;
-    $str =~ s/^\s+//;
-    $str =~ s/\s+$//;
-    return $str;
-}
-
-=head2 uri_escape( $str )
-
-Returns an escaped version of I<$str>
+Unescape reverses this (and should decode utf8 properly).
 
 =cut
 
@@ -62,19 +91,26 @@ sub uri_escape {
     return URI::Escape::uri_escape_utf8(shift);
 }
 
-=head2 uri_unescape( $uri )
-
-Returns an unescaped version of I<$uri>
-
-=cut
-
 sub uri_unescape {
     return URI::Escape::uri_unescape(shift)
 }
 
-=head2 double_space_harden( $str )
+=head2 trim $str
 
-Adds hard spaces in I<$str> where there's two space characters.
+Returns a copy of C<$str> with leading and trailing whitespace removed.
+
+=cut
+
+sub trim ($) {
+    my $str = shift;
+    $str =~ s/^\s+//;
+    $str =~ s/\s+$//;
+    return $str;
+}
+
+=head2 double_space_harden ($str)
+
+Adds hard spaces in C<$str> where there's two space characters.
 
 =cut
 
@@ -84,11 +120,13 @@ sub double_space_harden {
     return $str;
 }
 
-=head2 word_truncate ($str, $length)
+=head2 word_truncate ($str, $length, [$ellipsis])
 
-Return a truncated I<$str> to a maximum of I<$length> characters and append
-I<$ellipsis> if text was truncated.  C<word_truncate> breaks on whitespace, so
+Return a truncated C<$str> to a maximum of C<$length> characters and append
+C<$ellipsis> if text was truncated.  C<word_truncate> breaks on whitespace, so
 that words are not chopped in half.
+
+C<$ellipsis> defaults to '...' (not the unicode one).
 
 =cut
 
@@ -123,9 +161,8 @@ sub word_truncate {
 
 =head2 html_truncate ($str, $length)
 
-Return a truncated I<$str> to a maximum of I<$length> characters and append
-I<$ellipsis> if text was truncated.  C<html_truncate> will not break HTML tags
-apart.
+Return an L<HTML::Truncate>-ed C<$str> to a maximum of C<$length> characters.
+The C<utf8_mode> is on for the truncator.  HTML tags won't be split.
 
 =cut
 
@@ -137,20 +174,47 @@ sub html_truncate {
     return $t->truncate($string);
 }
 
-=head2 title_to_id ($str, [$no_escape])
+=head2 title_to_id ($str)
+
+=head2 title_to_id ($str, 1)
 
 Returns the URI-encoded ID of a page given it's name/title.
 
 For example, this converts "Check it: My  Awesome page" to
 "check_it_my_awesome_page".
 
-If $no_escape is true, the final URI-encoding step is skipped.
+The ID is run through C<uri_escape> by default; pass a second parameter to
+skip this.
+
+The transformation is roughly:
+
+=over 4
+
+=item 1
+
+Replace anything that isn't a Letter, Number, ConnectorPunctuation or Mark
+(L<perlunicode> for what these mean) with an underscore.  Note this means
+whitespace is underscore-ified.
+
+=item 2
+
+Replace runs of underscores with a single underscore and remove
+leading/trailing underscores.
+
+=item 3
+
+If the ID is "0", replace it with "_"
+
+=item 4
+
+Lower-case and optionally uri-escape the ID.
+
+=back
 
 =cut
 
-sub title_to_id {
-    my $id = shift;
-    my $no_escape = shift || 0;
+sub title_to_id ($;$) {
+    my ($id, $no_escape) = @_;
 
     # NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE #
     #                                                         #
@@ -159,6 +223,11 @@ sub title_to_id {
     # -----  uses that javascript function too!               #
     #                                                         #
     # NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE NOTICE #
+
+    # other places this function shows up:
+    # * share/skin/s3/javascript/s3.js
+    # * share/skin/common/javascript/Socialtext/lib/Socialtext/Workspace.js
+    # * lib/Socialtext/Template/Plugin/flatten.pm
 
     $id = '' if not defined $id;
     $id =~ s/^\s+//;
@@ -174,7 +243,9 @@ sub title_to_id {
     return $id;
 }
 
-=head2 title_to_display_id ($str, [$no_escape])
+=head2 title_to_display_id ($str)
+
+=head2 title_to_display_id ($str, 1)
 
 Returns a URI-encoded display id of a page given it's name (title).  Unlike
 C<title_to_id> this function preserves case.  This is handy for making
@@ -183,18 +254,19 @@ incipient links.
 For example, converts "Check it: My  Awesome page/rant" to
 "Check%20it%3A%20My%20Awesome%20page%2Frant".
 
-If $no_escape is true, the final URI-encoding step is skipped.
+The ID is run through C<uri_escape> by default; pass a second parameter to
+skip this.
 
 =cut
 
-sub title_to_display_id {
-    my $id = shift;
+sub title_to_display_id ($;$) {
+    my ($id, $no_escape) = @_;
     $id = '' if not defined $id;
     $id =~ s/\s+/ /g;
     $id =~ s/^\s(?=.)//;
     $id =~ s/(?<=.)\s$//;
     $id =~ s/^0$/_/;
-    return uri_escape($id);
+    return $no_escape ? $id : uri_escape($id);
 }
 
 1;

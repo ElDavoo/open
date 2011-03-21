@@ -30,8 +30,8 @@ C<htmldoc>.
 
 =cut
 
-sub class_id {'pdf_export'};
-const class_title => 'PDF Export';
+const class_id => 'pdf_export';
+const class_title => _('class.pdf_export');
 const cgi_class   => 'Socialtext::PdfExportPlugin::CGI';
 
 # The full command for converting html files to PDF.  Set TMPDIR since htmldoc
@@ -64,7 +64,7 @@ sub pdf_export {
 
     my @page_names = $self->cgi->page_selected;
     if (0 == @page_names) {
-        return loc("Error:<pre>No pages selected for export</pre>\n");
+        return loc("error.page-for-export-required");
     }
 
     # If there is only one page to be exported, set the current
@@ -84,7 +84,7 @@ sub pdf_export {
         );
         return $pdf_content;
     }
-    return "Error:<pre>Unable to convert to PDF</pre>\n";
+    return loc("error.pdf-conversion-failed");
 }
 
 =head2 multi_page_export($page_names, \$output)
@@ -197,9 +197,9 @@ sub _get_html {
     };
 
     my $html = "<html><head><title>"
-        . $page->metadata->Subject
+        . $page->name
         . "</title></head><body><h1>"
-        . $page->metadata->Subject
+        . $page->name
         . "</h1>"
         . $content
         . "</body></html>";

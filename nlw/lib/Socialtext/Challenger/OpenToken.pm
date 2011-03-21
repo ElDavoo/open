@@ -99,6 +99,7 @@ sub challenge {
             username      => $data->{subject},
             email_address => $data->{email_address},
             first_name    => $data->{first_name},
+            middle_name   => $data->{middle_name},
             last_name     => $data->{last_name},
         );
 
@@ -129,7 +130,7 @@ sub challenge {
     # If we don't have a User record, it wasn't provisioned; can't login as
     # the User, so fail.
     unless ($user) {
-        my $err = loc("Have valid token, but for unknown user '[_1]'.", $username);
+        my $err = loc("error.valid-token-for-unknown=user", $username);
         st_log->warning("ST::Challenger::OpenToken: $err");
         return $app->_handle_error(
             error => $err,
@@ -283,6 +284,14 @@ OpenToken:
 =item first_name
 
 =item last_name
+
+=back
+
+Optionally, the following additional attributes may be also be set or updated via auto-provisioning:
+
+=over
+
+=item middle_name
 
 =back
 

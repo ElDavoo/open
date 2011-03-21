@@ -97,7 +97,7 @@ Tests for [Story: Groups ReST API]
 | header-like     | Cache-Control                                                      | private |
 | json-parse      |                                                                    |         |
 | json-array-size | 1                                                                  |         |
-| Body-like       | "group_id":"%%group_id%%"                                          |         |
+| json-like       | [{"group_id":"%%group_id%%"}]                                        |         |
 | body-like       | "best_full_name":"%%bobfirst%% %%boblast%%","user_id":             |         |
 | body-like       | "best_full_name":"%%janefirst%%","user_id":                        |         |
 | body-like       | "username":"%%jane%%"                                              |         |
@@ -148,6 +148,14 @@ Tests for [Story: Groups ReST API]
 | add-user-to-group | %%badmin%% | %%gamma_id%% |
 
 ####################
+| *Comment*       | Simple filter                         |       |
+| GET-json        | /data/groups?q=desc:booya             |       |
+| code-is         | 200                                   |       |
+| json-parse      |                                       |       |
+| json-array-size | 3                                     |       |
+| json-path-is    | $[0].name                             | alpha |
+
+####################
 | *Comment*       | Simple filter             |       |
 | GET-json        | /data/groups?filter=alpha |       |
 | code-is         | 200                       |       |
@@ -182,13 +190,6 @@ Tests for [Story: Groups ReST API]
 ####################
 | *Comment*       | Simple filter                         |       |
 | GET-json        | /data/groups?filter=description:booya |       |
-| code-is         | 200                                   |       |
-| json-parse      |                                       |       |
-| json-array-size | 3                                     |       |
-| json-path-is    | $[0].name                             | alpha |
-
-| *Comment*       | Simple filter                         |       |
-| GET-json        | /data/groups?q=desc:booya             |       |
 | code-is         | 200                                   |       |
 | json-parse      |                                       |       |
 | json-array-size | 3                                     |       |

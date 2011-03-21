@@ -1,10 +1,10 @@
 [%# @COPYRIGHT@ -%]
 [%# vim: set et sts=2 sw=2: %]
-[% WRAPPER layout/html id="loginPage" title=loc("Login") %]
+[% WRAPPER layout/html id="loginPage" title=loc("login.login") %]
 <div id="st-display-mode-container" class="authentication">
   <div id="controls">
     <div id="st-editing-tools-edit">
-        <h2 id="st-page-titletext" class="tableTitle">[% loc('Join [_1]', target_workspace.title) %]</h2>
+        <h2 id="st-page-titletext" class="tableTitle">[% loc('login.join=wiki', target_workspace.title) %]</h2>
     </div>
     <div id="controlsRight">&nbsp;</div>
   </div>
@@ -15,7 +15,7 @@
     <div id="contentColumns">
       <div id="contentLeft">
         <dl class="form">
-          <dd>[% loc('Log in with your Socialtext account:') %]</dd>
+          <dd>[% loc('login.login-with-socialtext-account:') %]</dd>
         </dl>
         [% INCLUDE 'authen/element/login_form' %]
         [% INCLUDE 'authen/element/forgot_password_link' %]
@@ -25,7 +25,7 @@
           <div id="login-message">[% login_message %]</div>
         [% END %]
         <dl class="form">
-          <dd>[% loc("If you don't have a Socialtext account already, please fill in the following information:") %]</dd>
+          <dd>[% loc("login.fill-in-info-to-register:") %]</dd>
         </dl>
         [% INCLUDE 'authen/element/register_form' %]
       </div>

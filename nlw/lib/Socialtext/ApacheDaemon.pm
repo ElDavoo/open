@@ -12,6 +12,8 @@ use Socialtext::System;
 use Readonly;
 use Time::HiRes qw( sleep time );
 use User::pwent;
+use IPC::Run ();
+use Try::Tiny;
 
 # Set this if you want some debugging output.
 our $Verbose = 0;
@@ -24,10 +26,9 @@ Readonly my $SLEEP_SECONDS                    => 0.1;
 Readonly my $PATIENT_SECONDS_AFTER_FIRST_KILL => 3;
 Readonly my $TOTAL_SECONDS_TO_WAIT            => 25;
 
-Readonly my $BIN_DIR => '/usr/sbin';
 Readonly my %BINARY => (
-    'nginx'       => 'nginx',
-    'apache-perl' => 'apache',
+    'nginx'       => '/usr/sbin/nginx',
+    'apache-perl' => '/opt/perl/5.12.2/bin/apache-perl',
 );
 Readonly my %ENV_OVERRIDE => (
     'nginx'       => 'NLW_NGINX_PATH',
@@ -174,27 +175,29 @@ sub wait_for_servers_to_quit {
     return;
 }
 
+sub _suppress_nginx_errlog {
+    print STDERR $_[0] unless $_[0] =~
+        m#could not open error log file.+/var/log/nginx/error\.log#;
+}
+
 sub actually_start {
     my $self = shift;
 
     my @command = $self->get_start_command;
-    my @ports = $self->ports;
+    $self->ports(); # to check for ports, don't actually need them here
+
     $self->output_action('Starting');
-    eval { $self->try_system(@command); };
-    if ($@) {
-        die 'Cannot start ', $self->short_binary, " with @command.\n";
+    try {
+        warn "exec: @command\n" if $Verbose;
+        my @parm = (\@command, '<', \undef);
+        push @parm, '2>', \&_suppress_nginx_errlog if ($self->name eq 'nginx');
+        IPC::Run::run(@parm) or die "exited $?\n";
     }
+    catch {
+        chomp;
+        die 'Cannot start ', $self->short_binary, " with @command: $_.\n"
+    };
     $self->maybe_test_verbose("\nStarting ", $self->short_binary, " .\n");
-}
-
-sub try_system {
-    my $self = shift;
-
-    warn "exec: @_\n" if $Verbose;
-
-    if (system(@_) != 0) {
-        Carp::confess "exec @_ exited nonzero: $?";
-    }
 }
 
 sub wait_for_startup {
@@ -267,7 +270,7 @@ sub _binary_override {
 sub _binary_default {
     my $self = shift;
 
-    return join '/', $BIN_DIR, $BINARY{ $self->name };
+    return  $BINARY{ $self->name };
 }
 
 sub short_binary { return File::Basename::basename( $_[0]->binary ) }
@@ -357,37 +360,32 @@ sub is_running {
 sub servers_running_on_this_port {
     my $self = shift;
 
-    my @ports = $self->ports;
-    my @lsof = map {
-        # COMMAND   PID  USER   FD   TYPE   DEVICE SIZE NODE NAME
-        # apache  12713 rking   16u  IPv4 75237577       TCP *:31008 (LISTEN)
-        my @bits = split /\s+/;
-        my $node = $bits[7];
-        $node = $bits[8] if $node eq 'TCP'; # Hack for OS X output.
-        $node =~ s/.+://;
-        {
-            command => $bits[0],
-            pid => $bits[1],
-            user => $bits[2],
-            port => $node,
+    my %ports = map { $_=>1 } $self->ports;
+    my $shortbin = $self->short_binary;
+
+    # netstat -t tcp, -l listen ports, -p gives PID, -n doesn't resolve names
+    # e.g.:
+    # tcp  0  0  0.0.0.0:22001    0.0.0.0:*  LISTEN  3762/nlw-nginx.conf
+    # tcp  0  0  127.0.0.1:23001  0.0.0.0:*  LISTEN  3736/apache-perl
+    # tcp  0  0  127.0.0.1:24001  0.0.0.0:*  LISTEN  3736/apache-perl
+    # tcp  0  0  0.0.0.0:21001    0.0.0.0:*  LISTEN  3762/nlw-nginx.conf
+    my @netstat = split "\n", backtick(qw(netstat -tnlp));
+    my @pids = 
+        map { $_->{pid} }
+        grep { $ports{$_->{port}} }
+        #grep { $_->{proc} =~ /\Q$shortbin\E/ }
+        map {
+            my @f = split(/\s+/,$_);
+            my ($port) = ($f[3] =~ /^.+:(\d+)$/);
+            my ($pid,$proc) = split('/',$f[6]||'');
+            my $x = +{port => $port, pid => $pid||'?', proc => $proc||'?'};
+#              use Data::Dumper; warn Dumper($x),$/;
+            $x;
         }
-    } split /\n/, backtick(qw(lsof -i -n));
-    shift @lsof;
-    my $username = getpwuid($<)->name;
-    return map {
-        warn "Weird - $_->{command} $_->{pid} isn't owned by $username\n"
-            if $_->{user} ne $username;
-        $_->{pid}
-    } grep {
-        my $found_port = 0;
-        for my $port (@ports) {
-            $found_port = 1
-              if $_->{port} eq $port
-        }
-        $found_port
-    } grep {
-        ($_->{command} eq $self->short_binary || $_->{command} eq 'httpd')
-    } @lsof
+        grep /^tcp/, @netstat; # ensure parsable lines
+
+    warn "found $shortbin PIDs: ".join(', ',@pids)."\n" if @pids;
+    return @pids;
 }
 
 sub parse_from_config_file {

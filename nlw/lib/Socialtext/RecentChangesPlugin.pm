@@ -3,7 +3,7 @@ package Socialtext::RecentChangesPlugin;
 use Socialtext::CategoryPlugin;
 use Socialtext::l10n qw/loc/;
 use Socialtext::Timer qw/time_scope/;
-use Socialtext::Model::Pages;
+use Socialtext::Pages;
 use Socialtext::Pageset;
 use strict;
 use warnings;
@@ -14,8 +14,8 @@ use Class::Field qw( const );
 use Socialtext::l10n qw ( loc );
 use List::Util qw/min/;
 
-sub class_id { 'recent_changes' }
-const class_title      => loc("What's New");
+const class_id => 'recent_changes';
+const class_title      => _('class.recent_changes');
 const cgi_class        => 'Socialtext::RecentChanges::CGI';
 const default_category => 'recent changes';
 
@@ -36,15 +36,15 @@ sub register {
 sub changes_depth {
     my $self = shift;
     my $p = $self->new_preference('changes_depth');
-    $p->query(loc('What time interval should "What\'s New" display?'));
+    $p->query(_('config.changes-depth?'));
     $p->type('pulldown');
     my $choices = [
-        1 => loc('Last 24 hours'),
-        2 => loc('Last 2 Days'),
-        3 => loc('Last 3 Days'),
-        7 => loc('Last Week'),
-        14 => loc('Last 2 Weeks'),
-        31 => loc('Last Month'),
+        1 => _('last.24hours'),
+        2 => _('last.2days'),
+        3 => _('last.3days'),
+        7 => _('last.week'),
+        14 => _('last.2weeks'),
+        31 => _('last.month'),
     ];
     $p->choices($choices);
     $p->default(7);
@@ -54,7 +54,7 @@ sub changes_depth {
 sub sidebox_changes_depth {
     my $self = shift;
     my $p = $self->new_preference('sidebox_changes_depth');
-    $p->query(loc('How many items from that time period should be displayed as a side box on pages?'));
+    $p->query(_('wiki.sidebox-number-of-changes?'));
     $p->type('pulldown');
     my $choices = [
         2 => 2, 4 => 4, 6 => 6, 8 => 8, 10 => 10, 15 => 15, 20 => 20
@@ -67,7 +67,7 @@ sub sidebox_changes_depth {
 sub include_in_pages {
     my $self = shift;
     my $p = $self->new_preference('include_in_pages');
-    $p->query(loc('Display as a side box in page view?'));
+    $p->query(_('wiki.show-sidebox?'));
     $p->type('boolean');
     $p->default(0);
     return $p;
@@ -80,7 +80,7 @@ sub recent_changes {
 
     if ( $self->cgi->changes =~ /\// ) {
         Socialtext::Exception::DataValidation->throw(
-            errors => [loc("Invalid character '/' in changes parameter")] );
+            errors => [loc("error.invalid-/-in-changes")] );
     }
 
     if ($self->cgi->changes eq 'all') {
@@ -93,7 +93,7 @@ sub recent_changes {
         miki_url      => $self->hub->helpers->miki_path('recent_changes_query'),
         feeds         => $self->_feeds( $self->hub->current_workspace ),
         unplug_uri    => "?action=unplug",
-        unplug_phrase => loc('Click this button to save the [_1] most recent pages to your computer for offline use.', $self->hub->tiddly->default_count),
+        unplug_phrase => loc('info.unplug-recent=count', $self->hub->tiddly->default_count),
         Socialtext::Pageset->new(
             cgi => {$self->cgi->all},
             total_entries => $self->result_set->{hits},
@@ -163,27 +163,27 @@ sub new_changes {
     );
     my $pages_ref;
     if ($category) {
-        $pages_ref = Socialtext::Model::Pages->By_tag(%args, tag => $category);
+        $pages_ref = Socialtext::Pages->By_tag(%args, tag => $category);
     }
     else {
-        $pages_ref = Socialtext::Model::Pages->All_active(%args);
+        $pages_ref = Socialtext::Pages->All_active(%args);
     }
 
-    my $total = Socialtext::Model::Pages->ActiveCount(workspace => $ws_id);
+    my $total = Socialtext::Pages->ActiveCount(workspace => $ws_id);
     my $changed_total = $self->count_by_seconds_limit();
 
     my $display_title;
     if (defined $type && $type eq 'all') {
-        $display_title = loc("All Pages");
+        $display_title = loc("page.all");
     }
     else {
         my $depth = $self->preferences->changes_depth;
         my $last_changes_time = loc($depth->value_label);
-        $display_title = loc('Changes in [_1] ([_2]) out of ([_3]) Total Pages', $last_changes_time, $changed_total, $total);
+        $display_title = loc('page.changes=time,changed,total', $last_changes_time, $changed_total, $total);
     }
 
     Socialtext::Timer->Continue('new_changes_push_result');
-    local $Socialtext::Model::Page::No_result_times = 1;
+    local $Socialtext::Page::No_result_times = 1;
     for my $page (@$pages_ref) {
         $self->push_result($page);
     }
@@ -202,7 +202,7 @@ sub by_seconds_limit {
 
     my $prefs = $self->hub->recent_changes->preferences;
     my $seconds = $prefs->changes_depth->value * 1440 * 60;
-    my $pages = Socialtext::Model::Pages->By_seconds_limit(
+    my $pages = Socialtext::Pages->By_seconds_limit(
         seconds          => $seconds,
         hub              => $self->hub,
         count            => $self->preferences->sidebox_changes_depth->value,
@@ -218,7 +218,7 @@ sub count_by_seconds_limit {
 
     my $prefs = $self->hub->recent_changes->preferences;
     my $seconds = $prefs->changes_depth->value * 1440 * 60;
-    return Socialtext::Model::Pages->ChangedCount(
+    return Socialtext::Pages->ChangedCount(
         duration    => $seconds,
         workspace_id => $self->hub->current_workspace->workspace_id,
     );
@@ -263,9 +263,9 @@ sub _set_titles {
     my $self = shift;
     my $title_info;;
     if ($self->target_workspace ne $self->current_workspace_name) {
-        $title_info = loc("What\'s New in workspace [_1]", $self->target_workspace);
+        $title_info = loc("nav.news=wiki", $self->target_workspace);
     } else {
-        $title_info = loc("What\'s New");
+        $title_info = loc("nav.news");
     }
     $self->wafl_query_title($title_info);
     $self->wafl_query_link($self->_set_query_link);

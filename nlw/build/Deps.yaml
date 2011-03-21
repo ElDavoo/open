@@ -7,6 +7,8 @@
 # unless one is actually required.  It will be a false dependency, and we
 # will make people upgrade modules that they don't need to.
 ---
+AnyEvent: 5
+AnyEvent::HTTP: 5
 Algorithm::Diff::XS: 0
 # The change in 0.8902 to not use UNIVERSAL::isa exposed a bug in the
 # handling of an attempt to load a row which doesn't exist in the DBMS.
@@ -66,9 +68,11 @@ Email::Valid: 0.15
 Encode: 2.10
 Encode::JP::H2Z: 2.02
 Encode::Unicode::Japanese: 0.02
+EV: 4.0
 Exception::Class: 1.21
 Exporter: 0
 Fcntl: 1.05
+Feersum: 1.000
 File::Basename: 2.72
 File::chdir: 0.06
 File::CounterFile: 1.04
@@ -100,7 +104,6 @@ Jcode: 2.06
 Jemplate: 0.22
 JSON::Any: 1.19
 JSON::XS: 2.01
-KinoSearch: 0.161
 LWP::UserAgent: 2.033
 Lingua::Stem::Snowball: 0.941
 List::MoreUtils: 0.20
@@ -118,7 +121,7 @@ MIME::Parser: 5.417
 MIME::Types: 1.15
 MLDBM: 2.01
 Module::Pluggable 0
-Moose: 0.72
+Moose: 1.20
 MooseX::AttributeHelpers: 0.14
 MooseX::Traits: 0.03
 Params::Validate: 0.86
@@ -132,8 +135,6 @@ REST::Application: 1.0.8
 REST::Google: 0.992
 RTF::Writer: 0
 Scalar::Util: 1.19
-SOAP::Lite: 0.67
-SOAP::Transport::HTTP: 0
 Storable: 2.15
 Sys::Hostname: 1.11
 Template: 2.19

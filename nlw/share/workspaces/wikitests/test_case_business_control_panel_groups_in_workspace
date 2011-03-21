@@ -105,8 +105,8 @@
 | set | group_id5 | %%group_id%% |  |
 
 | *Comment* | Test Case: Business Control Panel Groups in Workspace Add Group |
-| wait_for_element_present_ok | link=Add Group To Workspace | 30000 |
-| click_and_wait | link=Add Group To Workspace |  |
+| wait_for_element_present_ok | //a[contains(text(),'Add Group')] | 30000 |
+| click_and_wait | //a[contains(text(),'Add Group')] |  |
 | wait_for_element_visible_ok | group_id | 30000 |
 | select_ok | group_id | label=Default,%%group5%% |
 | is_selected_ok | group_id | label=Default,%%group5%% |
@@ -115,10 +115,9 @@
 | check_ok | invite-as-admins |  |
 | click_and_wait | //input[@value='Add to Workspace'] |  |
 
-| *Comment* | Test Case: Business Control Panel Groups in Workspace Verify Group added |
+| *Comment* | Test Case: Business Control Panel Groups in Workspace Verify Group added |  |
 | wait-for-text-present-ok | Group '%%group5%%' now has the role of admin in the %%ws%% Workspace | 30000 |
 | text_like | //body | qr/%%ws%%.+workspace/ism |
-| wait_for_element_visible_ok | link=Add Group To Workspace | 5000 |
 | wait_for_element_visible_ok | link=%%group5%% | 5000 |
 | is_selected_ok | groupTable-dropdown-2-0 | label=Member |
 | is_selected_ok | groupTable-dropdown-2-4 | label=Admin |
@@ -126,5 +125,6 @@
 | *Comment* | Test Case: Business Control Panel Groups in Workspace TEARDOWN |
 
 | st-admin | delete-workspace --w %%ws%% --no-export | has been deleted |
+| delete-account | %%account%% |  |
 
 | *Comment* | Test Case: Business Control Panel Groups in Workspace COMPLETED |

@@ -50,7 +50,7 @@ sub undelete_page {
 
     my @rev_ids = $page->all_revision_ids;
     if ( @rev_ids < 2 ) {
-        my $msg = loc('Cannot undelete a page with only one revision. Returning to front page.');
+        my $msg = loc('error.undelete-page-one-revision');
         return $self->hub->fail_home_with_warning( $msg );
     }
     $page->restore_revision(
@@ -74,7 +74,7 @@ sub delete_epilogue {
 
     $self->screen_template('view/page/delete_epilogue');
     $self->render_screen(
-        display_title => loc("Deleted \"[_1]\"", $page->metadata->Subject),
+        display_title => loc("page.deleted=name", $page->name),
         page_id => $page->uri,
         backlinks_description =>
             $self->hub->backlinks->past_tense_description_for_page($page),

@@ -113,7 +113,7 @@
 | st-send-signal-via-activities-widget | signals_widget | d {user: %%emainuser%%} direct from %%followed%% |
 
 | *Comment* | Wait for frame to appear before proceeding |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
 
 | *Comment* | logoutin hangs in IE. Try explicit %%efriend%% ... |
 
@@ -138,7 +138,7 @@
 | st-send-signal-via-activities-widget | signals_widget | d {user: %%emainuser%%} direct from %%friend%% |
 
 | *Comment* | Wait for frame to appear before proceeding |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
 
 | *Comment* | logoutin hangs in IE. Try explicit %%econversant%% ... |
 
@@ -175,7 +175,7 @@
 | st-send-signal-via-activities-widget | signals_widget | d {user: %%emainuser%%} direct from %%conversant%% |
 
 | *Comment* | Wait for frame to appear before proceeding |  |
-| wait_for_element_visible_ok | link=Add Content | 30000 |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
 
 | *Comment* | logoutin hangs in IE. Try explicit %%esecond%% ... |
 

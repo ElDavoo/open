@@ -423,11 +423,12 @@ sub createdb {
     disconnect_dbh();
     eval {
         my $sudo = _sudo('postgres');
-        $self->_db_shell_run("$sudo createdb -E UTF8 -O $c{user} $c{db_name}");
+        $self->_db_shell_run("$sudo createdb -T template0 -E UTF8 -O $c{user} $c{db_name}");
     };
-    my $createdb_err = $@;
+    if (my $e = $@) {
+        die $e;
+    }
     $self->_createlang;
-    die $createdb_err if $createdb_err;
 }
 
 # sets up plpgsql for the database schema

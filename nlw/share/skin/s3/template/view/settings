@@ -19,57 +19,57 @@
       <div id="contentLeft">
         <div class="widget">
           <div class="widgetHeader">
-          <h4>[% loc('Settings') %]</h4>
+          <h4>[% loc('nav.settings') %]</h4>
           </div><!-- widgetHeader END -->
           <div class="widgetContent">
-            <h4>[% loc('Users') %]</h4>
+            <h4>[% loc('config.users') %]</h4>
             [% FILTER decorate('usersettings_ul') %]
             <ul class="leftNavList">
               [% FILTER decorate('usersettings') %]
-              <li><a href="?action=users_settings">[% loc('My Settings') %]</a></li>
+              <li><a href="?action=users_settings">[% loc('nav.my-settings') %]</a></li>
               [% IF workspace_present %]
-                <li><a href="?action=users_listall">[% IF perm_ws_admin %][% loc('Manage All Users') %][% ELSE %][% loc('List All Users') %][% END %]</a></li>
+                <li><a href="?action=users_listall">[% IF perm_ws_admin %][% loc('config.all-users') %][% ELSE %][% loc('user.list-all') %][% END %]</a></li>
                 [% IF perm_ws_admin || perm_invite %]
-                  <li><a href="?action=users_invitation">[% loc('Invite New Users') %]</a></li>
+                  <li><a href="?action=users_invitation">[% loc('invite.new-users') %]</a></li>
                 [% END %]
               [% END %]
               [% END %]
             </ul>
             [% END %]
-            <h4>[% loc('Workspaces') %]</h4>
+            <h4>[% loc('nav.wikis') %]</h4>
             <ul class="leftNavList">
-              <li><a href="?action=workspaces_listall">[% loc('My Workspaces') %]</a></li>
+              <li><a href="?action=workspaces_listall">[% loc('nav.my-wikis') %]</a></li>
               [% IF perm_acct_admin %]
-              <li><a href="?action=workspaces_create">[% loc('Create New Workspace') %]</a></li>
-              <li><a href="?action=workspace_clone">[% loc('Clone This Workspace') %]</a></li>
+              <li><a href="?action=workspaces_create">[% loc('wiki.create') %]</a></li>
+              <li><a href="?action=workspace_clone">[% loc('wiki.clone-this') %]</a></li>
               [% ELSIF perm_ws_admin %]
-              <li><a href="?action=workspaces_create">[% loc('Create New Workspace') %]</a></li>
+              <li><a href="?action=workspaces_create">[% loc('wiki.create') %]</a></li>
               [% END %]
               [% IF workspace_present %]
-              <li><a href="?action=workspaces_unsubscribe">[% loc('Unsubscribe') %]</a></li>
+              <li><a href="?action=workspaces_unsubscribe">[% loc('do.unsubscribe') %]</a></li>
               [% END %]
             </ul>
             [% IF workspace_present AND perm_ws_admin %]
-            <h4>[% loc('This Workspace') %]</h4>
+            <h4>[% loc('config.wiki') %]</h4>
             <ul class="leftNavList">
               [% FILTER decorate('workspacesettings') %]
-              <li><a href="?action=workspaces_settings_appearance">[% loc('Workspace Appearance') %]</a></li>
-              <li><a href="?action=workspaces_settings_features">[% loc('Workspace Features') %]</a></li>
+              <li><a href="?action=workspaces_settings_appearance">[% loc('wiki.appearance') %]</a></li>
+              <li><a href="?action=workspaces_settings_features">[% loc('wiki.feature') %]</a></li>
               [% IF current_workspace.allows_skin_upload %]
-                <li><a href="?action=workspaces_settings_skin">[% loc('Workspace Skin') %]</a></li>
+                <li><a href="?action=workspaces_settings_skin">[% loc('wiki.skin') %]</a></li>
               [% END %]
-              <li><a href="?action=workspaces_permissions">[% loc('Workspace Privacy') %]</a></li>
+              <li><a href="?action=workspaces_permissions">[% loc('wiki.privacy') %]</a></li>
               [% END %]
             </ul>
             [% END %]
             [% IF perm_edit %]
-            <h4>[% loc('Blogs') %]</h4>
+            <h4>[% loc('blog.blogs') %]</h4>
             <ul class="leftNavList">
-              <li><a href="?action=blogs_create">[% loc('Create New Blog') %]</a></li>
+              <li><a href="?action=blogs_create">[% loc('blog.new') %]</a></li>
             </ul>
             [% END %]
             [% IF workspace_present %]
-              <h4>[% loc('Preferences') %]</h4>
+              <h4>[% loc('nav.preferences') %]</h4>
               <ul class="leftNavList">
               [% FOR pref = pref_list %]
                 [% NEXT IF pref.id == 'email_notify' && !current_workspace.email_notify_is_enabled %]
@@ -77,6 +77,10 @@
               [% END %]
               </ul>
             [% END %]
+            <h4>[% loc('Language') %]</h4>
+            <ul class="leftNavList">
+              <li><a href="?action=language_settings">[% loc('Language Settings') %]</a></li>
+            </ul>
             <div class="clear"></div>
           </div><!-- widgetContent -->
           <div class="widgetBottom"><div class="widgetBottomRight"></div></div><!-- widgetBottom END -->

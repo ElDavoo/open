@@ -366,8 +366,8 @@ proto.resizeEditor = function () {
     this.__resizing = false;
 }
 
-proto.preview_link_text = loc('Preview');
-proto.preview_link_more = loc('Edit More');
+proto.preview_link_text = loc('edit.preview');
+proto.preview_link_more = loc('edit.more');
 
 proto.preview_link_action = function() {
     var self = this;
@@ -378,7 +378,7 @@ proto.preview_link_action = function() {
 
         self.enable_edit_more = function() {
             jQuery(preview)
-                .html(loc('Edit More'))
+                .html(loc('edit.more'))
                 .unbind('click')
                 .click( function () {
                     self.switchMode(current.classname, function(){
@@ -425,7 +425,7 @@ proto.preview_link_reset = function() {
 
     var self = this;
     jQuery(preview)
-        .html(loc('Preview'))
+        .html(loc('edit.preview'))
         .unbind('click')
         .click( function() {
             self.preview_link_action();
@@ -534,19 +534,19 @@ proto.newpage_save = function(page_name, pagename_editfield) {
     page_name = trim(page_name);
 
     if (page_name.length == 0) {
-        alert(loc('You must specify a page name'));
+        alert(loc('error.page-name-required'));
         if (pagename_editfield) {
             pagename_editfield.focus();
         }
     }
     else if (is_reserved_pagename(page_name)) {
-        alert(loc('"[_1]" is a reserved page name. Please use a different name', page_name));
+        alert(loc('error.reserved-page-name', page_name));
         if (pagename_editfield) {
             pagename_editfield.focus();
         }
     }
     else if (encodeURIComponent(page_name).length > 255) {
-        alert(loc('Page title is too long after URL encoding'));
+        alert(loc('error.page-title-too-long'));
         if (pagename_editfield) {
             pagename_editfield.focus();
         }
@@ -577,7 +577,7 @@ proto.saveContent = function() {
     jQuery("#st-edit-summary").hide();
     jQuery('#st-editing-tools-edit ul').hide();
     jQuery('<div id="saving-message" />')
-        .html(loc('Saving...'))
+        .html(loc('edit.saving'))
         .css('color', 'red')
         .appendTo('#st-editing-tools-edit');
 
@@ -611,7 +611,7 @@ proto.newpage_duplicate_ok = function() {
     var options = ['different', 'suggest', 'append'];
     var option = jQuery('input[name=st-newpage-duplicate-option]:checked').val();
     if (!option) {
-        alert(loc('You must select one of the options or click cancel'));
+        alert(loc('error.select-or-cancel'));
         return;
     }
     switch(option) {
@@ -680,7 +680,7 @@ proto.saveNewPage = function() {
         }
         else  {
             if (encodeURIComponent(new_page_name).length > 255) {
-                alert(loc('Page title is too long after URL encoding'));
+                alert(loc('error.page-title-too-long'));
                 this.displayNewPageDialog();
                 return;
             }
@@ -758,7 +758,9 @@ proto.saveChanges = function() {
 
 proto.confirmCancellation = function(msg) {
     return confirm(
-        loc("[_1]\n\nYou have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.", msg)
+        msg + "\n\n"
+        + loc("edit.unsaved-changes") + "\n\n"
+        + loc("edit.ok-or-cancel")
     );
 
 }
@@ -766,7 +768,7 @@ proto.confirmCancellation = function(msg) {
 proto.confirmLinkFromEdit = function() {
     this.signal_edit_cancel();
     if (wikiwyg.contentIsModified()) {
-        var msg = loc("Are you sure you want to navigate away from this page?");
+        var msg = loc("edit.navigate-away?");
         var response =  wikiwyg.confirmCancellation(msg);
 
         // wikiwyg.confirmed is for the situations when multiple confirmations
@@ -799,7 +801,7 @@ proto.enableLinkConfirmations = function() {
             return undefined;
         }
 
-        var msg = loc("You have unsaved changes.");
+        var msg = loc("edit.unsaved-changes");
         if (!ev) ev = window.event;
         if ( wikiwyg.confirmed != true && wikiwyg.contentIsModified() ) {
             if (Wikiwyg.is_safari) {
@@ -1043,7 +1045,7 @@ Wikiwyg.is_safari_unknown = (
 
 Wikiwyg.ensureOnline = function (cbOnline, cbOffline) {
     if (typeof navigator == 'object' && typeof navigator.onLine == 'boolean' && !navigator.onLine) {
-        alert(loc("The browser is currently offline; please connect to the internet and try again."));
+        alert(loc("error.browser-offline"));
         if (cbOffline) { cbOffline(); }
         return false;
     }
@@ -1065,7 +1067,7 @@ Wikiwyg.ensureOnline = function (cbOnline, cbOffline) {
                 cbOnline();
             }
             else {
-                alert(loc("The browser is currently offline; please connect to the internet and try again."));
+                alert(loc("error.browser-offline"));
                 if (cbOffline) { cbOffline(); }
             }
         }
@@ -1118,14 +1120,14 @@ this.addGlobal().setup_wikiwyg = function() {
     var clearRichText = new RegExp(
         ( "^"
         + "\\s*(</?(span|br|div)\\b[^>]*>\\s*)*"
-        + loc("Replace this text with your own.")
+        + loc("edit.default-text")
         + "\\s*(</?(span|br|div)\\b[^>]*>\\s*)*"
         + "$"
         ), "i"
     );
 
     var clearWikiText = new RegExp(
-        "^" + loc("Replace this text with your own.") + "\\s*$"
+        "^" + loc("edit.default-text") + "\\s*$"
     );
 
     // Wikiwyg configuration
@@ -1326,13 +1328,6 @@ this.addGlobal().setup_wikiwyg = function() {
 
             ww.is_editing = true;
 
-            if (Wikiwyg.is_safari) {
-                ww.message.display({
-                    title: loc("Socialtext has limited editing capabilities in Safari."),
-                    body: loc("<a target=\"_blank\" href=\"http://www.mozilla.com/firefox/\">Download Firefox</a> for richer Socialtext editing functionality.")
-                });
-            }
-
             if (firstMode == WW_SIMPLE_MODE) {
                 // Give the browser two seconds to render the initial iframe.
                 // If we don't do this, click on "Wiki text" prematurely will
@@ -1390,7 +1385,7 @@ this.addGlobal().setup_wikiwyg = function() {
         try {
             if (ww.contentIsModified()) {
                 // If it's not confirmed somewhere else, do it right here.
-                if (ww.confirmed != true && !ww.confirmCancellation(loc("Are you sure you want to cancel?") ))
+                if (ww.confirmed != true && !ww.confirmCancellation(loc("edit.cancel?") ))
                     return false;
             }
 
@@ -1431,11 +1426,13 @@ this.addGlobal().setup_wikiwyg = function() {
 
             var summary = ww.edit_summary();
             summary = ww.word_truncate(summary, 140);
-            var html = ' <strong>' + name + '</strong>';
-            if (!summary)
-                html += ' ' + loc('wants you to know about an edit of') + ' <strong>' + page + '</strong> ' + loc('in') + ' ' + workspace;
-            else
-                html += ', ' + loc('"[_1]"', summary) + ' (' + loc('edited') + ' <strong>' + page + '</strong> ' + loc('in') + ' ' + workspace + ')';
+            var html;
+            if (!summary) {
+                html = loc('edit.summary=name,page,wiki', name, page, workspace);
+            }
+            else {
+                html = loc('edit.summary=name,summary,page,wiki', name, summary, page, workspace);
+            }
 
             jQuery('#st-edit-summary .preview .text')
                 .html(html);
@@ -1529,7 +1526,7 @@ this.addGlobal().setup_wikiwyg = function() {
             .css("text-decoration", "line-through")
             .unbind("click")
             .bind("click", function() {
-                alert(loc("Safari does not support Rich Text editing"));
+                alert(loc("error.safari-rich-text-unsupported"));
                 return false;
             });
     }
@@ -1888,7 +1885,7 @@ proto.get_edit_height = function() {
 proto.enableStarted = function() {
     jQuery('#st-editing-tools-edit ul').hide();
     jQuery('<div id="loading-message" />')
-        .html(loc('Loading...'))
+        .html(loc('edit.loading'))
         .appendTo('#st-editing-tools-edit');
     this.wikiwyg.disable_button(this.classname);
     this.wikiwyg.enable_button(this.wikiwyg.current_mode.classname);
@@ -1900,9 +1897,9 @@ proto.enableFinished = function() {
 }
 
 var WW_ERROR_TABLE_SPEC_BAD =
-    loc("That doesn't appear to be a valid number.");
+    loc("error.invalid-number");
 var WW_ERROR_TABLE_SPEC_HAS_ZERO =
-    loc("Can't have a 0 for a size.");
+    loc("error.size-required");
 proto.parse_input_as_table_spec = function(input) {
     var match = input.match(/^\s*(\d+)(?:\s*x\s*(\d+))?\s*$/i);
     if (match == null)
@@ -1918,8 +1915,8 @@ proto.parse_input_as_table_spec = function(input) {
 proto.prompt_for_table_dimensions = function() {
     var rows, columns;
     var errorText = '';
-    var promptTextMessageForRows = loc('Please enter the number of table rows:');
-    var promptTextMessageForColumns = loc('Please enter the number of table columns:');
+    var promptTextMessageForRows = loc('table.enter-rows:');
+    var promptTextMessageForColumns = loc('table.enter-columns:');
     
     while (!(rows && columns)) {
         var promptText;
@@ -1951,11 +1948,11 @@ proto.prompt_for_table_dimensions = function() {
         }
 
         if (rows && rows > 100) {
-            errorText = loc('Rows is too big. 100 maximum.');
+            errorText = loc('error.rows-too-big');
             rows = null;
         }
         if (columns && columns > 35) {
-            errorText = loc('Columns is too big. 35 maximum.');
+            errorText = loc('error.columns-too-big');
             columns = null;
         }
     }
@@ -1965,15 +1962,15 @@ proto.prompt_for_table_dimensions = function() {
 proto.do_widget_code = function(widget_element) {
     return this._do_insert_block_dialog({
         wafl_id: 'code',
-        dialog_title: loc('Insert Code'),
-        dialog_prompt: loc('Use the text area to compose your code block, and optionally select a highlighting syntax.'),
-        dialog_hint: loc('(Note: HTML fragments are not guaranteed to work and may break the UI.)'),
+        dialog_title: loc('wafl.insert-code'),
+        dialog_prompt: loc('info.edit-code-block'),
+        dialog_hint: loc('info.html-fragments'),
         edit_label_function: function(syntax) {
             if (!syntax || syntax == 'plain') {
-                return loc("Code block. Click to edit.");
+                return loc("wafl.code-title");
             }
             else {
-                return loc("Code block with [_1] syntax. Click to edit.", syntax);
+                return loc("wafl.code-title=syntax", syntax);
             }
         },
         widget_element: widget_element
@@ -1983,10 +1980,10 @@ proto.do_widget_code = function(widget_element) {
 proto.do_widget_html = function(widget_element) {
     return this._do_insert_block_dialog({
         wafl_id: 'html',
-        dialog_title: loc('Insert HTML'),
-        dialog_prompt: loc('Use the text area below to compose your HTML block.'),
-        dialog_hint: loc('(Note: HTML fragments are not guaranteed to work and may break the UI.)'),
-        edit_label: loc("Raw HTML block. Click to edit."),
+        dialog_title: loc('wafl.insert-html'),
+        dialog_prompt: loc('info.edit-html-block'),
+        dialog_hint: loc('info.html-fragments'),
+        edit_label: loc("wafl.html-title"),
         widget_element: widget_element
     });
 }
@@ -1994,10 +1991,10 @@ proto.do_widget_html = function(widget_element) {
 proto.do_widget_pre = function(widget_element) {
     return this._do_insert_block_dialog({
         wafl_id: 'pre',
-        dialog_title: loc('Insert Preformatted Text'),
-        dialog_prompt: loc('Use the text area below to compose your preformatted text block.'),
-        dialog_hint: loc('(Preformatted Text is plain text displayed exactly as entered.)'),
-        edit_label: loc("Preformatted text. Click to edit."),
+        dialog_title: loc('wafl.insert-pre'),
+        dialog_prompt: loc('info.edit-pre-block'),
+        dialog_hint: loc('info.preformatted-text'),
+        edit_label: loc("wafl.pre-edit"),
         widget_element: widget_element
     });
 }
@@ -2017,8 +2014,8 @@ proto.do_opensocial_gallery = function() {
             dataType: 'json',
             success: function(gallery) {
                 var tables = [
-                    { widgets: [], title: loc('Socialtext widgets') },
-                    { widgets: [], title: loc('Third Party widgets') }
+                    { widgets: [], title: loc('widget.socialtext') },
+                    { widgets: [], title: loc('widget.third-party') }
                 ];
                 var widgets = gallery.widgets;
                 widgets.sort(function(a, b) {
@@ -2062,7 +2059,7 @@ proto.do_opensocial_gallery = function() {
                                 .append($('<ul class="widgetButton" style="float: left; margin-left: 15px; margin-top: 10px; cursor: pointer" />')
                                     .append($('<li class="flexButtonGrey" style="float: left" />')
                                         .append($('<a class="greyButton" />')
-                                            .text(loc('Insert')))));
+                                            .text(loc('do.insert')))));
 
                             $btnCell.append($button.click(function(){
                                 $('#lightbox').unbind('lightbox-unload').bind('lightbox-unload', function(){
@@ -2125,8 +2122,9 @@ proto.do_opensocial_setup = function(src) {
         });
     }
 
+    $('#st-widget-opensocial-setup-width-options').val(600);
     if (encoded_prefs) {
-        var match = encoded_prefs.match(/\b__width__=(\d+)\b/);
+        var match = encoded_prefs.match(/\b__width__=(\d+%?)\b/);
         if (match) {
             $('#st-widget-opensocial-setup-width-options').val(match[1]);
         }
@@ -2154,24 +2152,34 @@ proto.do_opensocial_setup = function(src) {
         return false;
     });
 
-    $('#st-widget-opensocial-setup-widgets').html('').append(
-        $('<iframe />', {
-            src: '/?action=widget_setup_screen'
-                + ';widget=' + encodeURIComponent(src)
-                + ';workspace_name=' + encodeURIComponent(Socialtext.wiki_id)
-                + ';page_id=' + encodeURIComponent(Socialtext.page_id)
-                + ';serial=' + encodeURIComponent(serial)
-                + ';encoded_prefs=' + encodeURIComponent(encoded_prefs)
-                + ';_=' + Math.random(),
-            width: '600px',
-            height: '400px'
-        })
-    );
+    $('#st-widget-opensocial-setup-widgets').text('');
 
     jQuery.showLightbox({
         content: '#st-widget-opensocial-setup',
         close: '#st-widget-opensocial-setup-cancel',
-        width: '640px'
+        width: '640px',
+        callback: function(){ 
+            $('#st-widget-opensocial-setup-widgets').append(
+                $('<iframe />', {
+                    src: '/?action=widget_setup_screen'
+                        + ';widget=' + encodeURIComponent(src)
+                        + ';workspace_name=' + encodeURIComponent(Socialtext.wiki_id)
+                        + ';page_id=' + encodeURIComponent(Socialtext.page_id)
+                        + ';serial=' + encodeURIComponent(serial)
+                        + ';encoded_prefs=' + encodeURIComponent(encoded_prefs)
+                        + ';_=' + Math.random(),
+                    width: '600px',
+                    height: '400px'
+                }).one('load', function(){
+                    // Workaround the bug that prevented containers from rendering
+                    // correctly the first time.
+                    if ( $(this).contents().find(".st-savebutton").size() == 0 ) {
+                        $(this.contentWindow.document.body).html('');
+                        this.contentWindow.location.reload(true);
+                    }
+                })
+            );
+        }
     });
 
 
@@ -2180,9 +2188,13 @@ proto.do_opensocial_setup = function(src) {
     });
 }
 
+proto.preserveSelection = $.noop;
+proto.restoreSelection = $.noop;
+
 proto._do_insert_block_dialog = function(opts) {
     var self = this;
 
+    self.preserveSelection();
     if (!jQuery('#st-widget-block-dialog').size()) {
         Socialtext.wikiwyg_variables.loc = loc;
         jQuery('body').append(
@@ -2280,6 +2292,7 @@ proto._do_insert_block_dialog = function(opts) {
                 if (id == 'code' && $('#st-widget-block-syntax').val()) {
                     id += '-' + $('#st-widget-block-syntax').val();
                 }
+                self.restoreSelection();
                 self.insert_block(
                     "." + id + "\n"
                         + text.replace(/\n?$/, "\n." + id),
@@ -2369,7 +2382,7 @@ proto._do_link = function(widget_element) {
                 404: function () {
                     var ws = jQuery('#st-widget-workspace_id').val() ||
                              Socialtext.wiki_id;
-                    return(loc('Workspace "[_1]" does not exist on wiki', ws));
+                    return(loc('error.no-wiki-on-server=wiki', ws));
                 }
             }
         });

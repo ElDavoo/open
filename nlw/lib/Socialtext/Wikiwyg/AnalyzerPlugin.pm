@@ -7,8 +7,8 @@ use base 'Socialtext::Plugin';
 
 use Class::Field qw( const );
 
-sub class_id { 'analyzer' }
-const class_title => 'Analyzer That';
+const class_id => 'analyzer';
+const class_title => _('class.analyzer');
 
 sub register {
     my $self = shift; 

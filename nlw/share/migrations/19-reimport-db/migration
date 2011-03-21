@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 OLDDB=`st-config echo db_name`
 NEWDB="${OLDDB}_reimport"

@@ -1,9 +1,3 @@
-*user action* | *correct response* | *comment*
-Add tag "foo", return | appears in sidebar
-Add two word tag "foo bar" to another page, return | appears in sidebar
-Add tag "Foster City", return | appears in sidebar with correct capitalization
-Look ahead: start to type "fo" | sidebar autosuggests "foo", "foo bar", "foster city"
-
 | *Comment* | Starting Test Case: Tagging |  |
 
 | set | t_ws | tagging_ws_%%start_time%% |
@@ -209,6 +203,7 @@ Click that tag | Tag list page appears with two remaining tagged pages
 | text_like | st-tags-listing | foster City %%start_time%% |
 
 | *Comment* | Test Case: Tagging Teardown |  |
-| st-admin | delete-workspace --workspace %%t_ws%% --no-export | has been deleted |
+| st-process-jobs |  |  |
+| delete-workspace | %%t_ws%% | Recklessly deleting workspace (Name: %%t_ws%% |
 
 | *Comment* | Test Case : Tagging COMPLETED |  |

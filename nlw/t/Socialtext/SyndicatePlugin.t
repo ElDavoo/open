@@ -91,8 +91,8 @@ type="xhtml"
 Auth-to-edit Wiki: Recent Changes</title>
 this is the title</title>
 <h3 id="this_is_the_content">This is the content</h3>
-auth-to-edit/index.cgi?this_is_the_title</id>
-auth-to-edit/index.cgi?this_is_the_title"/>
+auth-to-edit/this_is_the_title</id>
+auth-to-edit/this_is_the_title"/>
 this is the ugly one in base 64</title>
 this is bad xhtml</title>
 
@@ -107,8 +107,8 @@ rss version="2.0"
 <title><![CDATA[this is the title]]></title>
 <h3 id="this_is_the_content">This is the content</h3>
 <author>devnull1@hidden</author>
-<guid isPermaLink="true">http://local.example.com/auth-to-edit/index.cgi?this_is_the_title</guid>
-<link>http://local.example.com/auth-to-edit/index.cgi?this_is_the_title</link>
+<guid isPermaLink="true">http://local.example.com/auth-to-edit/this_is_the_title</guid>
+<link>http://local.example.com/auth-to-edit/this_is_the_title</link>
 --- nomatch
 http://www.w3.org/2005/Atom
 
@@ -152,7 +152,7 @@ rss version="2.0"
 <title><![CDATA[this is the title]]></title>
 <h3 id="this_is_the_content">This is the content</h3>
 <author>devnull1@hidden</author>
-<guid isPermaLink="true">http://local.example.com/auth-to-edit/index.cgi?this_is_the_title</guid>
-<link>http://local.example.com/auth-to-edit/index.cgi?this_is_the_title</link>
+<guid isPermaLink="true">http://local.example.com/auth-to-edit/this_is_the_title</guid>
+<link>http://local.example.com/auth-to-edit/this_is_the_title</link>
 --- nomatch
 http://www.w3.org/2005/Atom

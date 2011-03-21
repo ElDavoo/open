@@ -28,25 +28,25 @@ Socialtext.wiki_title = [% ws.title.json || '' %];
         enctype="application/x-www-form-urlencoded">
 <div>
 <img align="left" src="[% user.small_photo || "/data/people/$user.user_id/small_photo" %]"/>
-<b style="margin-left: 3px; line-height: 30px">[% loc('Add your own comment:') %]</b>
+<b style="margin-left: 3px; line-height: 30px">[% loc('comment.add:') %]</b>
 </div>
 <textarea name="comment_body" id="comment_textarea" class="comment_text_area" rows="2" cols="75">
 </textarea>
 <input type="hidden" name="subject" value="[% page.title %]" />
-<input type="hidden" name="revision" value="[% page.metadata.Revision %]" />
+<input type="hidden" name="revision" value="[% page.revision_num %]" />
 <input type="hidden" name="revision_id" value="[% page.revision_id %]" />
 <input type="hidden" name="action" value="comment" />
-<input id="st-miki-comment-submit" type="submit" data-theme="b" data-role="button" value="[% loc('Save comment') %]" />
+<input id="st-miki-comment-submit" type="submit" data-theme="b" data-role="button" value="[% loc('comment.save') %]" />
 </form>
 </div>
 [% END %]
 <div class="pageinfo">
     [% SET author = user_link(name=page.last_edited_by.user_id) %]
     [% SET time = page.datetime_for_user %]
-    [% loc('Page Last Updated: [_1] by [_2]', time, author) %]
+    [% loc('page.last-updated=time,author', time, author) %]
     [% IF attachments.size %]
         <div class="attachments">
-            <p>[% loc('Attachments for this page:') %]</p>
+            <p>[% loc('page.files:') %]</p>
             <ul>
                 [% FOREACH row = attachments %]
                     <li><a rel="external" href="/data/workspaces/[% ws.name %]/attachments/[% page.uri %]:[% row.id %]/original/[% row.filename | uri %]">[% row.filename | html %]</a></li>

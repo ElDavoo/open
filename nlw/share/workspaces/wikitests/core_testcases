@@ -60,7 +60,6 @@ test env properly and are not testing the test-workspace
 * [Test Case: Inter Workspace Search]
 * [Test Case: Untitled Page]
 * [Test Case: Weblog Naming]
-* [Test Case: Page Open Errors]
 * [Test Case: Link Interface]
 * [Test Case: Nasty Double Dashes]
 * [Test Case: Insert Menu]
@@ -69,7 +68,6 @@ test env properly and are not testing the test-workspace
 * [Test Case: Tools: Rename Page]
 * [Test Case: Tools: Copy Page to Workspace]
 * [Test Case: Add Comment]
-* [Test Case: Comment Form Fields]
 * [Test Case: Weblogs]
 * [Test Case: Strings]
 * [Test Case: Single Dash]
@@ -120,6 +118,7 @@ Put tests that don't use the browser here
 * [Test Case: Command Line: LOCK PAGES]
 * [Test Case: Command Line: TAGS]
 * [Test Case: Command Line: NEW]
+* [Test Case: Command Line: User Restrictions]
 * [Test Case: Workspace Config Preservation]
 
 Return to last login fails when People and Dashboard are installed. Keep the test because

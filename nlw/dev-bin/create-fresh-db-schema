@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 DB_SCHEMA=`st-config echo db_name`
 DB_FILE=etc/socialtext/db/socialtext-schema.sql

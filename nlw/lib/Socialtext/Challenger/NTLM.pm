@@ -6,6 +6,7 @@ use warnings;
 use base qw(Socialtext::Challenger::Base);
 use Socialtext::Log qw(st_log);
 use Socialtext::l10n qw(loc);
+use Socialtext::UUID qw(new_uuid);
 
 sub challenge {
     my $class    = shift;
@@ -48,7 +49,7 @@ sub challenge {
         my $workspace = $hub->current_workspace;
         my $username  = $hub->current_user->username();
         my $message   = loc(
-            "User [_1] is not authorized to view workspace [_2]",
+            "error.wiki-forbidden=user,wiki",
             $username . $workspace->title()
         );
         st_log->error($message);
@@ -62,13 +63,7 @@ sub challenge {
     ) if ($hub and $hub->current_workspace);
 
 
-    my $sid;
-    {
-        use OSSP::uuid;
-        my $uuid = new OSSP::uuid;
-        $uuid->make("v4"); # completely random
-        $sid = $uuid->export("str");
-    }
+    my $sid = new_uuid();
     
     return $app->_handle_error(
         error => {

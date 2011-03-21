@@ -8,8 +8,8 @@ use Readonly;
 
 use base 'Socialtext::Plugin';
 
-sub class_id { 'email_page_ui' }
-const class_title => 'Email Page';
+const class_id => 'email_page_ui';
+const class_title => _('class.email_page_ui');
 const cgi_class => 'Socialtext::EmailPageUI::CGI';
 
 sub register {
@@ -39,8 +39,7 @@ sub send_email_popup {
     my ($page, $users, $user_count, $sender, $address_choices, $error, $note) = @_;
     $error ||= '';
 
-    die "Can't email spreadsheets yet"
-        if $page->metadata->Type eq 'spreadsheet';
+    die "Can't email spreadsheets yet" if $page->is_spreadsheet;
 
     $self->template_process('popup/email_page',
         error        => $error,

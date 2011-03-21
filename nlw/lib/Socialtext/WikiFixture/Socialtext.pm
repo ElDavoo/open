@@ -687,8 +687,10 @@ sub st_stop_webserver {
         ok($output=~/done/, 'apache-perl is stopped');
     }
     else {
-        _run_command("killall apache", 'ignore output');
-        _run_command("killall -9 apache", 'ignore output');
+        diag "st_stop_webserver: killall apache-perl";
+        _run_command("killall apache-perl", 'ignore output');
+        diag "st_stop_webserver: killall -9 apache-perl";
+        _run_command("killall -9 apache-perl", 'ignore output');
     }
     $self->pause(5000);
 }
@@ -703,11 +705,12 @@ sub st_start_webserver {
     my ($self) = @_;
     if ($self->_is_appliance) {
         # Appliance-specific
-        diag "/etc/init.d/apache-perl start";
+        diag "st_start_webserver: /etc/init.d/apache-perl start";
         my $output = `sudo /etc/init.d/apache-perl start`;
         ok($output=~/done/, 'apache-perl is started');
     }
     else {
+        diag "st_start_webserver: nlwctl -1 start";
         _run_command("nlwctl -1 start", 'ignore output');
     }
     $self->pause(5000);
@@ -940,7 +943,7 @@ sub st_admin {
     # Invocations with redirected input *needs* to be done against the shell,
     # but other commands can be done in-process.  Also have to watch out for
     # "st-admin help", which *has* to be shelled out for.
-    my ($out, $err) = ($options =~ /<|^\s*-*help/)
+    my ($out, $err) = ($options =~ /<|^\s*-*help|index-workspace/)
         ? _st_admin_shell_out(@argv)
         : _st_admin_in_process(@argv);
 

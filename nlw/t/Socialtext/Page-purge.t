@@ -2,44 +2,65 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 5;
-fixtures(qw( admin no-ceq-jobs destructive ));
-use Socialtext::Jobs;
+use Test::Socialtext tests => 9;
+use Test::Socialtext::Fatal;
+use Socialtext::SQL qw/sql_singlevalue/;
+fixtures(qw(no-ceq-jobs db));
 
+my $hub = create_test_hub();
 
-my $hub = new_hub('admin');
-my $page = $hub->pages->new_from_name('Start here');
+my $upload_id;
+attach: {
+    my $page = $hub->pages->new_from_name('Goes Boom');
+    $page->content("boom!");
+    $page->tags(["Welcome"]);
+    $page->store();
 
-{
-    my @pages = $hub->category->get_pages_for_category('Welcome');
-    my $is_in_help = grep { $_->title eq 'Start here' } @pages;
-    ok( $is_in_help, '"Start here" is in Welcome category before purge()' );
+    open my $fh, '<', 't/attachments/socialtext-logo-30.gif';
+    my $att = $hub->attachments->create(
+        page => $page,
+        fh => $fh,
+        filename => 'logo.gif',
+        mime_type => 'image/gif',
+        embed => 1,
+    );
+    $upload_id = $att->upload->attachment_id;
+    ok $upload_id;
+
+    my $page_clone = $hub->pages->new_from_name('Goes Boom');
+    my ($att_clone) = $page_clone->attachments;
+    isa_ok $att_clone, 'Socialtext::Attachment';
+    like $page_clone->content, qr/\Q{image: logo.gif}/, "inlined";
+
+    my $count = sql_singlevalue(q{
+        SELECT COUNT(1) FROM page_attachment WHERE page_id = ? AND workspace_id = ?}, 'goes_boom', $hub->current_workspace->workspace_id);
+    is $count, 1, "page_attachment exists";
+
+    $count = sql_singlevalue(q{
+        SELECT COUNT(1) FROM attachment WHERE attachment_id = ?
+    }, $upload_id);
+    is $count, 1, "attachment exists";
 }
 
-{
-    my $attachment_path =
-        join '/', $page->hub->attachments->plugin_directory, $page->id;
-    my $page_path = $page->directory_path;
-    my $file_path = $page->file_path;
-
+purge: {
+    my $page = $hub->pages->new_from_name('Goes Boom');
     $page->purge();
 
-    ok( ! -d $attachment_path,
-        'Attachment dir for page is gone after purge()' );
-    ok( ! -d $page_path,
-        'Data dir for page is gone after purge()' );
-
     my @pages = $hub->category->get_pages_for_category('Welcome');
-    my $is_in_help = grep { $_->title eq 'Start here' } @pages;
-    ok( !$is_in_help,
-        '"Start here" is not in Welcome category before purge()' );
+    my $is_in_category = grep { $_->title eq 'Goes Boom' } @pages;
+    ok !$is_in_category, '"Goes Boom" is not in Welcome category';
 
-    my $queue_dir = Socialtext::Paths::change_event_queue_dir();
-    opendir my $dh, $queue_dir
-        or die "Cannot read $queue_dir: $!";
+    my $count = sql_singlevalue(q{
+        SELECT COUNT(1) FROM page_attachment WHERE page_id = ? AND workspace_id = ?}, 'goes_boom', $hub->current_workspace->workspace_id);
+    is $count, 0, "page_attachment purged";
 
-    my @events = grep { -l } map { "$queue_dir/$_" } readdir $dh;
+    $count = sql_singlevalue(q{
+        SELECT COUNT(1) FROM attachment WHERE attachment_id = ?
+    }, $upload_id);
+    is $count, 0, "attachment purged";
 
-    is ( scalar @events, 0,
-        'No change event was recorded when calling purge()' );
+    like exception {
+        my $upload = Socialtext::Upload->Get(attachment_id => $upload_id);
+    }, qr/Uploaded file not found\./, "can't load the Upload object";
 }
+

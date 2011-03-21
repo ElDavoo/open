@@ -35,7 +35,7 @@ sub queue {
         %addtl,
     );
 
-    $user->set_confirmation_info()
+    $user->create_email_confirmation()
         unless $user->has_valid_password();
 
     $object->assign_role_to_user(
@@ -70,7 +70,7 @@ sub invite_notify {
         user                  => $user,
         from_user             => $self->from_user,
         username              => $user->username,
-        requires_confirmation => $user->requires_confirmation,
+        requires_confirmation => $user->requires_email_confirmation,
         confirmation_uri      => $user->confirmation_uri || '',
         host                  => Socialtext::AppConfig->web_hostname(),
         inviting_user         => $self->from_user->best_full_name,

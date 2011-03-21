@@ -14,7 +14,7 @@ use Socialtext::Timer;
 use Socialtext::Watchlist;
 use Socialtext::User;
 use Socialtext::l10n qw (loc);
-use Socialtext::Model::Pages;
+use Socialtext::Pages;
 
 =head1 NAME
 
@@ -40,8 +40,8 @@ on those parameters.
 
 =cut
 
-sub class_id { 'syndicate' }
-const class_title => loc('Syndicate');
+const class_id => 'syndicate';
+const class_title => _('class.syndicate');
 const cgi_class => 'Socialtext::Syndicate::CGI';
 const default_tag => 'Recent Changes';
 const default_type => 'RSS20';
@@ -141,7 +141,7 @@ is unset for the user, the default, 10, is used.
 sub syndication_depth {
     my $self = shift;
     my $p = $self->new_preference('syndication_depth');
-    $p->query(loc('How many posts should be displayed in outgoing feeds?'));
+    $p->query(_('feed.number-of-posts?'));
     $p->type('pulldown');
     my $choices = [
         5   => '5',
@@ -269,8 +269,7 @@ sub _syndicate {
         pages     => $p{pages},
         feed_id   => $self->hub->current_workspace->uri,
         contact   => 'support@socialtext.com',
-        generator => "Socialtext Workspace v"
-            . $self->hub->main->product_version,
+        generator => loc("feed.socialtext-wiki=version", $self->hub->main->product_version),
         feed_link => $self->hub->cgi->full_uri_with_query,
 
         # post_link
@@ -294,7 +293,7 @@ sub _tag_get_items {
     my $tag = shift;
     my $count = shift;
 
-    my $pages = Socialtext::Model::Pages->By_tag(
+    my $pages = Socialtext::Pages->By_tag(
         hub => $self->hub,
         tag => $tag,
         count => $count,
@@ -308,7 +307,7 @@ sub _changes_get_items {
     my $count = shift;
 
     my $days = $self->hub->recent_changes->preferences->changes_depth->value;
-    my $pages = Socialtext::Model::Pages->By_seconds_limit(
+    my $pages = Socialtext::Pages->By_seconds_limit(
         hub => $self->hub,
         count => $count,
         seconds => $days * 1440 * 60,
@@ -376,21 +375,21 @@ sub _tag_feed_title {
 
 sub _changes_feed_title {
     my $self = shift;
-    return $self->hub->current_workspace->title . ': ' . loc('Recent Changes');
+    return $self->hub->current_workspace->title . ': ' . loc('nav.recent-changes');
 }
 
 sub _search_feed_title {
     my $self = shift;
     my $query = shift;
 
-    return loc('[_1]: search for [_2]', $self->hub->current_workspace->title, $query);
+    return loc('feed.search=wiki,query', $self->hub->current_workspace->title, $query);
 }
 
 sub _watchlist_feed_title {
     my $self = shift;
     my $user = shift;
 
-    return loc('[_1]: watchlist for [_2]', $self->hub->current_workspace->title, $user->best_full_name);
+    return loc('feed.watchlist=wiki,user', $self->hub->current_workspace->title, $user->best_full_name);
 }
 
 sub _page_feed_title {
@@ -398,7 +397,7 @@ sub _page_feed_title {
     my $page = shift;
 
     return $self->hub->current_workspace->title . ': '
-        . $page->metadata->Subject;
+        . $page->name;
 }
 
 sub _tag_html_link {

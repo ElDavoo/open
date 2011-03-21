@@ -152,7 +152,8 @@ Set up a second account, but no users.
 | *Comment* | Create a group with users |
 | POST-json | /data/groups | {"name":"%%g7%%","users":[{"username":"%%bowline%%"},{"user_id":"%%figure_eight_id%%","role":"admin"}]} |
 | code-is | 201 |
-| body-like | "user_count":"3" |
+| json-parse |
+| json-path-is | $.user_count | 3 |
 
 ## Set up a group and some workspace aliases
 | set | g8          | g8-%%start_time%%          |

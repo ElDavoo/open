@@ -32,7 +32,7 @@ sub enter_comment {
 # XXX this method has no test coverage
 sub submit_comment {
     my $self = shift;
-    $self->current_page($self->hub->pages->current->load);
+    $self->current_page($self->hub->pages->current);
     $self->current_page->add_comment($self->cgi->comment, $self->cgi->signal_comment_to_network)
         if ($self->hub->checker->check_permission('comment')
             && $self->hub->checker->can_modify_locked($self->hub->pages->current));

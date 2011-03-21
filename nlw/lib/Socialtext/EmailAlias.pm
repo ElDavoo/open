@@ -11,13 +11,15 @@ use Socialtext::Paths;
 sub create_alias {
     my $name = shift;
 
-    my $line = sprintf(
-        q{%s: "|%s deliver-email --workspace %s"},
-        $name,
-        Socialtext::AppConfig->admin_script(),
-        $name
-    );
+    my $admin_cmd = Socialtext::AppConfig->admin_script();
+    if (Socialtext::AppConfig->is_dev_env) {
+        # need to prefix it with the current perl interpreter so that
+        # exim/whatever can run it in a dev-env context (where the #! is
+        # likely "/usr/bin/env perl")
+        $admin_cmd = "$^X $admin_cmd";
+    }
 
+    my $line = qq{$name: "|$admin_cmd deliver-email --workspace $name"};
     my $aliases_file = Socialtext::Paths::aliases_file();
 
     open my $fh, '>>', $aliases_file
@@ -36,9 +38,9 @@ sub delete_alias {
     my @aliases;
     open my $fh, '<', $aliases_file
         or die "Cannot read $aliases_file: $!";
-    while (<$fh>) {
-        next if /^\Q$name\E/;
-        push @aliases, $_;
+    for my $line (qx(grep "^." "$aliases_file")) {
+        next if $line =~ /^\Q$name\E/;
+        push @aliases, $line;
     }
     close $fh;
 
@@ -58,7 +60,7 @@ sub find_alias {
     for my $file ( '/etc/aliases', Socialtext::Paths::aliases_file() ) {
         next unless -e $file;
 
-        for my $line (Socialtext::File::get_contents($file)) {
+        for my $line (qx(grep "^$name: " "$file")) {
             return $2 if $line =~ /^([\w\.\-]+): (.*)$/ and $1 eq $name;
         }
     }

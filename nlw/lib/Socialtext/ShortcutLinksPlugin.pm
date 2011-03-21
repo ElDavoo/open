@@ -9,8 +9,8 @@ use Class::Field qw( const );
 use Socialtext::AppConfig;
 use YAML;
 
-const class_title => 'Shortcut Links';
-sub class_id { 'shortcut_links' }
+const class_title => _('class.shortcut_links');
+const class_id => 'shortcut_links';
 
 
 sub register {

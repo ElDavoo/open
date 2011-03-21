@@ -18,6 +18,7 @@ sub new_from_name {
     return $page;
 }
 
+sub By_seconds_limit { [] }
 sub all_ids { }
 
 sub show_mouseover { 1 }

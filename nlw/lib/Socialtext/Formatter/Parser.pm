@@ -11,6 +11,7 @@ use Socialtext::Formatter::Block;
 use Socialtext::Formatter::Phrase;
 use Socialtext::Log qw( st_log );
 use Socialtext::Statistics 'stat_call';
+use Socialtext::Timer qw/time_scope/;
 use Encode ();
 use Digest::MD5 ();
 use Storable;
@@ -34,10 +35,14 @@ sub new {
 }
 
 sub text_to_parsed {
-    my $self = shift;
-    stat_call( text_to_parsed_et => 'tic' );
-    my $parsed = $self->_parse( $self->top_class->new( text => shift ) );
-    stat_call( text_to_parsed_et => 'toc' );
+    # using numbered parameters means less copying
+    # my ($self, $content_or_ref) = @_;
+    my $self = $_[0];
+    my $t = time_scope 'text_to_parsed';
+    my $parsed = $self->_parse(
+        # body may be a ref; de-ref it before it's copied and munged
+        $self->top_class->new(text => (ref($_[1]) ? ${$_[1]} : $_[1]))
+    );
     return $parsed;
 }
 
@@ -190,39 +195,38 @@ sub cache_dir {
 }
 
 sub get_cached_tree {
-    my $self = shift;
-    my ( $text, $page, $workspace_id ) = @_;
+    my ($self, $text_ref, $page) = @_;
 
     my $page_id = $page->id;
-
-    my $cache_dir = $self->cache_dir($workspace_id);
-    my $text_md5 = $text ? Digest::MD5::md5_hex(Encode::encode_utf8($text)) : '';
+    my $cache_dir = $self->cache_dir($page->workspace_id);
+    # TODO: chunk up text and feed into a md5 object to avoid creating huge
+    # copy of the text. Encoding is necessary for md5_hex() to not croak.
+    my $text_md5 = $$text_ref
+        ? Digest::MD5::md5_hex(Encode::encode_utf8($$text_ref)) : '';
     my $cache_file = "$cache_dir/$text_md5" . '_' . $page_id;
     my $parsed;
 
     # Added test for size of $cache_file in order to stop
     # application errors based on 0 size cached files
-    if (    -f $page->current_revision_file
-        and -f $cache_file
-        and -s $cache_file
-        and ( ( stat _ )[9] > ( stat $page->current_revision_file )[9] ) ) {
+    if (    -f $cache_file
+        and -s _
+        and ( ( stat _ )[9] > $page->modified_time ) )
+    {
         stat_call( formatter_cache_hit_rate => 'observe', 0 );
-
+        # return here so it's an lvalue
         $parsed = Storable::retrieve($cache_file);
     }
     else {
         stat_call( formatter_cache_hit_rate => 'observe', 1 );
-        $parsed = $self->text_to_parsed($text);
+        $parsed = $self->text_to_parsed($text_ref);
         {
             # This hides known warnings when we try to serialize CODE and GLOB
             # objects.
             local $SIG{__WARN__} = sub { };
-
             eval { Storable::nstore( $parsed, $cache_file ) };
             st_log( error => $@ ) if $@;
         }
     }
-
     return $parsed;
 }
 

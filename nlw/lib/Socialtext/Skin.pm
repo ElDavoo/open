@@ -80,19 +80,26 @@ sub parent {
     return Socialtext::Skin->new(name => $parent_skin) if $parent_skin;
 }
 
-sub template_paths {
-    my ($self,$skin) = @_;
-    my $info = $self->skin_info;
-
-    my $dirs = $self->parent ? $self->parent->template_paths : [];
-    push @$dirs, grep { -d $_ } $self->skin_path('template');
-
-    unless (any { $_ =~ m!/user_frame$! } @$dirs) {
-        push @$dirs, Socialtext::Paths::cache_directory('user_frame');
-    }
-
-    return $dirs;
-}
+{                                                                               
+    # Avoid recursing into skins multiple times
+    my %seen_skin;
+    sub template_paths {
+        my ($self,$skin) = @_;
+        my $info = $self->skin_info;                                            
+        my $name = $self->skin_name;                                            
+    
+        return [] if $seen_skin{$name}++;
+        my $dirs = $self->parent ? $self->parent->template_paths : [];          
+        delete $seen_skin{$name};                                               
+        push @$dirs, grep { -d $_ } $self->skin_path('template');               
+    
+        unless (any { m#/user_frame$# } @$dirs) {                         
+            push @$dirs, Socialtext::Paths::cache_directory('user_frame');      
+        }   
+            
+        return $dirs;
+    }       
+} 
 
 sub skin_info {
     my $self = shift;

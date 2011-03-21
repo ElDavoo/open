@@ -12,17 +12,15 @@ HELPEN=0
 FIXTURE='ALL'
 PAUSE=0
 UPDATE_WIDGETS=1
-ST_USERS=0
 MINIFY_JS=1
 CONTEXTUAL=0
-while getopts "hmbpwsc" OPT; do
+while getopts "jhmbpwsc" OPT; do
   case $OPT in
     h) HELPEN=1;;
     m) FIXTURE=admin_no_pages;;
     j) MINIFY_JS=0;;
     p) PAUSE=1;;
     w) UPDATE_WIDGETS=0;;
-    s) ST_USERS=1;;
     c) CONTEXTUAL=1;;
   esac
 done
@@ -66,7 +64,7 @@ rm_dir "formatter_cache_dir";
 set -x
 NLWCTL_QUIET=1 dev-bin/nlwctl stop
 dev-bin/setup-supervisors stop
-dev-bin/st-bootstrap-openldap stop
+bin/st-bootstrap-openldap stop
 
 # when switching to nginx you might have apache2 running still
 killall /usr/sbin/apache2 >/dev/null 2>&1 || true;
@@ -107,7 +105,7 @@ dev-bin/link-reports
 dev-bin/setup-supervisors start
 set -e
 
-[ $MINIFY_JS == 0 ] && st-config set minify_javascript 0
+[ $MINIFY_JS == 0 ] && bin/st-config set minify_javascript 0
 
 if [ $PAUSE == 0 ]; then
     echo "Starting nginx and apache-perl"
@@ -118,19 +116,19 @@ else
 fi
 
 
-st-admin enable-plugin --all-accounts --plugin dashboard \
+bin/st-admin enable-plugin --all-accounts --plugin dashboard \
     --plugin signals --plugin groups --plugin push --plugin analytics
 
-st-config set analytics_id UA-20106506-1 analytics_domains multiple-domains
+bin/st-config set analytics_id UA-20106506-1 analytics_domains multiple-domains
 
 if [ $UPDATE_WIDGETS == 1 ]; then
     set -x
-    st-widgets update-all --verbose
-    st-widgets update-gallery --verbose
+    bin/st-widgets update-all --verbose
+    bin/st-widgets update-gallery --verbose
     set +x
 fi
 
-[ $ST_USERS == 1 ] && create-socialtext-users
+create-staging-users
 
 # Clean up dead symlinks
 find -L -type l -delete

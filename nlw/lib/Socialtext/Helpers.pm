@@ -8,8 +8,6 @@ use Encode;
 use Socialtext;
 use base 'Socialtext::Base';
 use Socialtext::File;
-use Socialtext::Search::Config;
-use Socialtext::Search::Set;
 use Socialtext::TT2::Renderer;
 use Socialtext::l10n qw/loc/;
 use Socialtext::Stax;
@@ -108,7 +106,7 @@ sub page_display_link_from_page {
     my $self = shift;
     my $page = shift;
     my $path = $self->script_path . '?' . $page->uri;
-    my $title = $self->html_escape($page->metadata->Subject);
+    my $title = $self->html_escape($page->name);
     return qq(<a href="$path">$title</a>);
 }
 
@@ -209,19 +207,6 @@ sub desktop_update_enabled {
     $self->_get_appliance_config_value('desktop_update_enabled');
 }
 
-sub _get_history_list_for_template
-{
-    my $self = shift;
-
-    my $history = $self->hub->breadcrumbs->get_crumbs;
-   
-    my @historylist =
-        map { +{ label => $_->{page_title}, link => $_->{page_full_uri} }; }
-        @$history;
-    if ($#historylist > 19) { $#historylist = 19;}
-    return  \@historylist;
-}
-
 sub global_template_vars {
     my $self = shift;
     my $hub = $self->hub;
@@ -270,26 +255,19 @@ sub global_template_vars {
         $thunker->(wiki      => sub { $self->_get_wiki_info }),
         $thunker->(customjs  => sub { $hub->skin->customjs }),
         $thunker->(skin_name => sub { $hub->skin->skin_name }),
+
+        # possibly this is only used for s2 skin stuff?
         $thunker->('search_box_snippet', sub { 
-            my $show_search_set = (
-                ( $cur_user->is_authenticated )
-                    || ( $cur_user->is_guest
-                    && Socialtext::AppConfig->interwiki_search_set )
-            );
-            my $snippet = Socialtext::Search::Config->new->search_box_snippet;
             my $renderer = Socialtext::TT2::Renderer->instance();
             return $renderer->render(
-                template => \$snippet,
+                template => 'element/search_box_snippet',
                 paths => $hub->skin->template_paths,
                 vars => {
                     current_workspace => $cur_ws,
-                    show_search_set   => $show_search_set,
-                    search_sets       => [Socialtext::Search::Set->AllForUser(
-                        $cur_user
-                    )->all],
                 }
             );
         }),
+
         $thunker->(miki_url => sub { $self->miki_path }),
         $thunker->(desktop_url => sub {
             return '' unless $self->desktop_update_enabled;
@@ -499,7 +477,7 @@ sub validate_email_addresses {
         my @lines = $self->_split_email_addresses( $ids );
 
         unless (@lines) {
-            $self->add_error(loc("No email addresses specified"));
+            $self->add_error(loc("error.email-adress-required"));
             return;
         }
 
@@ -520,7 +498,7 @@ sub validate_email_addresses {
     }
     else
     {
-        push @invalid, loc("No email addresses specified");
+        push @invalid, loc("error.email-adress-required");
     }
 
     return(\@emails, \@invalid);

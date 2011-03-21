@@ -22,6 +22,7 @@ use Socialtext::System qw/shell_run/;
 use Socialtext::Page::TablePopulator;
 use Socialtext::User::Default::Users;
 use Socialtext::User;
+use Socialtext::User::Restrictions;
 use Socialtext::PreferencesPlugin;
 use YAML ();
 
@@ -98,8 +99,6 @@ sub import_workspace {
             "$CWD/user/$self->{old_name}",
             $self->{workspace}
         );
-        $self->_import_data_dirs();
-        $self->_fixup_page_symlinks();
         $self->_populate_db_metadata();
         $self->_rebuild_page_links();
 
@@ -281,44 +280,6 @@ sub _load_yaml {
     return YAML::Load($yaml);
 }
 
-sub _import_data_dirs {
-    my $self = shift;
-    my $data_root = Socialtext::AppConfig->data_root_dir();
-    for my $dir (qw(plugin user data)) {
-        my $src = Socialtext::File::catdir( $dir, $self->{old_name} );
-        my $dest = Socialtext::File::catdir( $data_root, $dir, $self->{new_name} );
-        Socialtext::File::Copy::Recursive::dircopy( $src, $dest )
-            or die "Could not copy $src to $dest: $!\n";
-    }
-}
-
-sub _fixup_page_symlinks {
-    my $self = shift;
-
-    File::Find::find(
-        {
-            no_chdir => 1,
-            wanted   => sub {
-                return unless -l $File::Find::name;
-
-                my $target = readlink $File::Find::name;
-
-                unlink $File::Find::name
-                    or die "Cannot unlink $File::Find::name: $!";
-
-                my $abs_target = Socialtext::File::catfile(
-                    File::Basename::dirname($File::Find::name),
-                    File::Basename::basename($target) );
-
-                symlink $abs_target => $File::Find::name
-                    or die
-                    "Cannot symlink $abs_target => $File::Find::name: $!";
-                }
-        },
-        Socialtext::Paths::page_data_directory( $self->{workspace}->name() )
-    );
-}
-
 sub _set_permissions {
     my $self = shift;
 
@@ -408,8 +369,12 @@ sub _populate_db_metadata {
     my $self = shift;
 
     Socialtext::Timer->Continue('populate_db');
+    local $Socialtext::Page::TablePopulator::Noisy = 0;
     my $populator = Socialtext::Page::TablePopulator->new(
-        workspace_name => $self->{new_name} );
+        workspace_name => $self->{new_name},
+        data_dir       => $CWD,
+        old_name       => $self->{old_name},
+    );
     $populator->populate( recreate => 1 );
     Socialtext::Timer->Pause('populate_db');
 }
@@ -446,6 +411,7 @@ sub _import_users {
         delete $info->{primary_account_id};
         my $plugin_prefs = delete($info->{plugin_prefs}) || {};
         my $indirect     = delete($info->{indirect})     || 0;
+        my $restrictions = delete($info->{restrictions}) || [];
 
         my $user = Socialtext::User->new( username => $info->{username} )
                 || Socialtext::User->new( email_address => $info->{email_address} )
@@ -456,6 +422,13 @@ sub _import_users {
             my $adapter = Socialtext::Pluggable::Adapter->new;
             $adapter->make_hub($user);
             $adapter->hook('nlw.import_user_prefs', [$plugin_prefs]);
+        }
+
+        foreach my $r (@{$restrictions}) {
+            Socialtext::User::Restrictions->CreateOrReplace( {
+                user_id => $user->user_id,
+                %{$r},
+            } );
         }
     }
 

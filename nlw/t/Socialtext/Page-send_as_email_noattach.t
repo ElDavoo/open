@@ -49,13 +49,11 @@ EOF
     Email::Send::Test->clear;
 
     my $page = $pages->new_from_name($utf8_subject);
-
-    my $attachment =
-        $hub->attachments->new_attachment( page_id => $page->id,
-                                           filename => 'socialtext-logo.gif',
-                                         );
-    $attachment->save('t/attachments/socialtext-logo-30.gif');
-    $attachment->store( user => $hub->current_user );
+    my $attachment = $hub->attachments->create(
+        page => $page,
+        filename => 'socialtext-logo.gif',
+        fh => 't/attachments/socialtext-logo-30.gif',
+    );
 
     $page->send_as_email
         ( from => 'devnull1@socialtext.com',

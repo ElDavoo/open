@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>4.6.3</version>
-  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.6.3.air</url>
-  <description><![CDATA[[4.6.3 - Thu Feb 17 14:42:55 PST 2011]
+  <version>4.7.0.2</version>
+  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.7.0.2.air</url>
+  <description><![CDATA[[4.7.0.2 - Mon Mar 14 18:57:41 PDT 2011]
+(Enhancements)
+* Redirect to https:// when connecting to ssl-only appliances with http://. {bz: 5071}
+* Signals: Disable network toggling when fetching "More" in threadview. {bz: 4979}
+* Activity: Resume requests after server upgrade. {bz: 4834}
+
+[4.6.3 - Thu Feb 17 14:42:55 PST 2011]
 (Features)
 * OpenSocial Widgets in pages now work in mini-browser and preview pane. {bz: 4933}
 * Syntax-highlighted code blocks now work in mini-browser and preview pane. {bz: 4933}

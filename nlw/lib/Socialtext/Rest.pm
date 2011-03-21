@@ -59,7 +59,7 @@ sub renew_authentication {
     my $here     = shift || $self->rest->query->url(-absolute => 1, -path_info => 1, -query => 1);
     my $location = '/challenge?' . uri_escape($here);
     $self->session->add_error(
-        loc("Login session has expired; please re-authenticate.")
+        loc("error.relogin")
     );
     $self->rest->header(
         -status   => HTTP_302_Found,
@@ -524,7 +524,7 @@ sub decoded_json_body {
 }
 
 # Send a file to the client via nginx
-sub _serve_file {
+sub serve_file {
     my ($self, $rest, $attachment, $file_path, $file_size) = @_;
 
     my $mime_type = $attachment->mime_type;
@@ -544,9 +544,12 @@ sub _serve_file {
         '-type'               => $mime_type,
         '-pragma'             => undef,
         '-cache-control'      => undef,
+        # XXX: this header should be mime-encoded (a la
+        # http://www.ietf.org/rfc/rfc2184.txt) if it contains non-ascii
         'Content-Disposition' => 'filename="'.$attachment->filename.'"',
         '-X-Accel-Redirect'   => $file_path,
     );
+    return '';
 }
 
 {

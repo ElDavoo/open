@@ -7,7 +7,7 @@ use mocked 'Apache';
 use mocked 'Apache::Cookie';
 use mocked 'Socialtext::Events', qw( event_ok is_event_count );
 
-use Test::Socialtext tests => 36;
+use Test::Socialtext tests => 34;
 
 fixtures(qw( empty destructive ));
 
@@ -41,9 +41,9 @@ edit_summary: {
     );
 
     $hub->edit->edit_content;
-    my $page = Socialtext::Page->new(hub => $hub, id => $page_id)->load();
+    my $page = Socialtext::Page->new(hub => $hub, id => $page_id);
     is $page->content, "this is a page body\n";
-    is $page->metadata->RevisionSummary, 'i suck at typing',
+    is $page->edit_summary, 'i suck at typing',
         "edit summary was saved";
     is $page->edit_summary, 'i suck at typing', 'proxy method works';
     $save_revision_id = $page->revision_id;
@@ -62,10 +62,9 @@ edit_summary_via_save: {
     );
 
     $hub->edit->save;
-    my $page = Socialtext::Page->new(hub => $hub, id => $page_id)->load();
+    my $page = Socialtext::Page->new(hub => $hub, id => $page_id);
     is $page->content, "this is a page body\n";
-    is $page->metadata->RevisionSummary, 'i was not put on this earth to listen to meat', "edit summary was saved";
-    is $page->edit_summary, 'i was not put on this earth to listen to meat', 'proxy method works';
+    is $page->edit_summary, 'i was not put on this earth to listen to meat', "edit summary was saved";
     $save_revision_id = $page->revision_id;
     event_ok (
         event_class => 'page',
@@ -82,12 +81,11 @@ edit_summary_signal: {
     );
 
     my $return = $hub->edit->edit_content;
-    my $page = Socialtext::Page->new(hub => $hub, id => $page_id)->load();
+    my $page = Socialtext::Page->new(hub => $hub, id => $page_id);
 
     is $page->content, "this is a page body\n";
-    is $page->metadata->RevisionSummary, 'where you at, dog',
+    is $page->edit_summary, 'where you at, dog',
         "edit summary was saved";
-    is $page->edit_summary, 'where you at, dog', 'accessor method works';
     $save_revision_id = $page->revision_id;
 
     signal_ok (
@@ -111,7 +109,7 @@ long_edit_summary_signal: {
     );
 
     my $return = $hub->edit->edit_content;
-    my $page = Socialtext::Page->new(hub => $hub, id => $page_id)->load();
+    my $page = Socialtext::Page->new(hub => $hub, id => $page_id);
 
     $save_revision_id = $page->revision_id;
 
@@ -135,7 +133,7 @@ no_edit_summary_signal: {
         signal_edit_summary => 1,
     );
     $hub->edit->edit_content;
-    my $page = Socialtext::Page->new(hub => $hub, id => $page_id)->load();
+    my $page = Socialtext::Page->new(hub => $hub, id => $page_id);
     $save_revision_id = $page->revision_id;
 
     signal_ok (
@@ -161,7 +159,7 @@ signals_disabled_signal_edit_summary: {
             signal_edit_summary => 1,
         );
         $hub->edit->edit_content;
-        my $page = Socialtext::Page->new(hub => $hub, id => $page_id)->load();
+        my $page = Socialtext::Page->new(hub => $hub, id => $page_id);
         $save_revision_id = $page->revision_id;
         is_signal_count(0);
         Socialtext::Events::event_ok (

@@ -3,7 +3,6 @@ package Socialtext::Rest::AccountPluginPrefs;
 use Moose;
 use Socialtext::AppConfig;
 use Socialtext::HTTP ':codes';
-use Socialtext::Pluggable::Adapter;
 use Socialtext::JSON 'decode_json';
 use Socialtext::Log 'st_log';
 use Socialtext::JSON::Proxy::Helper;
@@ -31,6 +30,7 @@ sub PUT_json {
 
     $self->can_admin(sub {
         my $rest    = $self->rest;
+        require Socialtext::Pluggable::Adapter;
         my $adapter = Socialtext::Pluggable::Adapter->new;
         $adapter->make_hub($self->rest->user);
         my $plugin  = $adapter->plugin_object($self->plugin);

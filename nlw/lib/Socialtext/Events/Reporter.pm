@@ -6,7 +6,6 @@ use Socialtext::Encode ();
 use Socialtext::SQL qw/:exec :txn sql_format_timestamptz sql_ensure_temp/;
 use Socialtext::JSON qw/decode_json/;
 use Socialtext::User;
-use Socialtext::Pluggable::Adapter;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::WikiText::Parser::Messages;
 use Socialtext::WikiText::Emitter::Messages::HTML;
@@ -149,6 +148,7 @@ sub _extract_person {
 
     my $profile_is_visible = $user->profile_is_visible_to($self->viewer) || 0;
     my $hidden = 1;
+    require Socialtext::Pluggable::Adapter;
     my $adapter = Socialtext::Pluggable::Adapter->new;
     if ($adapter->plugin_exists('people')) {
         require Socialtext::People::Profile;

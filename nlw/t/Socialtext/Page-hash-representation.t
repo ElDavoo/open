@@ -41,7 +41,7 @@ my $page_id   = Socialtext::String::title_to_id($page_name);
         'last_edit_time looks like a date';
     like $hash->{modified_time}, qr{^\d+$},
         'modified time looks like an epoch time';
-    like $hash->{revision_id}, qr{^\d{14}$},
+    like $hash->{revision_id}, qr{^\d+\.\d+$},
         'revision_id is correctly formatted';
     like $hash->{page_uri}, qr{/empty/$page_id},
         'page_uri contains page id';
@@ -49,6 +49,7 @@ my $page_id   = Socialtext::String::title_to_id($page_name);
     # update the page
     # first the obligatory sleep because our revisions ids are lame
     sleep 1;
+    $page->edit_rev();
     $page->content('something new');
     $page->store(user => $hub->current_user);
 }

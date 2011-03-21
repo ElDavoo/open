@@ -11,7 +11,7 @@ Readonly my %markup => (
     b    => [ '*',  '*' ],
     i    => [ '_',  '_' ],
     del  => [ '-',  '-' ],
-    a    => [ '"',  '"<HREF>' ],
+    hyperlink => [ '"',  '"<HREF>' ],
     hashmark => [ '{hashtag: ', '}' ],
     video => [ '{video: ', '}' ],
 );
@@ -64,7 +64,7 @@ sub user_as_id {
     my $ast  = shift;
 
     my $user = eval{ Socialtext::User->Resolve( $ast->{user_string} ) };
-    return loc('Unknown Person') unless $user;
+    return loc('user.unknown') unless $user;
 
     my $user_id = $user->user_id;
     return "{user: $user_id}";

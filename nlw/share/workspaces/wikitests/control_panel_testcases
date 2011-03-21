@@ -25,5 +25,6 @@
 * [Test Case: Business Control Panel]
 * [Test Case: Business Control Panel Sorting]
 * [Test Case: Business Control Panel User Lookup by User Id]
-
-* [Test Case: Custom Fields]
+* [Test Case: Business Control Panel USER External ID]
+* [Test Case: Business Control Panel Confirm User]
+* [Test Case: Business Control Panel Mass Add Users]

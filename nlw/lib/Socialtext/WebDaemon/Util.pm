@@ -34,7 +34,9 @@ our @EXPORT = qw(
     $CRLF
 );
 
-our $DEBUG = $ENV{ST_DEBUG_ASYNC} || $ENV{HARNESS_ACTIVE};
+ # don't do a HARNESS_ACTIVE check; debug output can interfere with some TAP
+ # parsers
+our $DEBUG = $ENV{ST_DEBUG_ASYNC};
 
 sub ignored {}
 

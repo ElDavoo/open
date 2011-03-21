@@ -163,7 +163,7 @@ sub PUT_json {
     }
     catch {
         my $e = $_;
-        if ($e =~ m/duplicate key violates/) {
+        if ($e =~ m/duplicate key value violates/) {
             Socialtext::Exception::Conflict->throw(message =>
                 "Error updating group: $data->{name} already exists.");
         }

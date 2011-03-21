@@ -90,7 +90,7 @@
 | add-member       | %%bar_email_address%%                       | %%ws2%%            |                |
 | edit-page        | %%ws2%%                                     | Foo2               | Sample Content |
 | st-clear-jobs    |                                             |                    |                |
-| PUT              | /data/workspaces/%%ws2%%/pages/Foo/tags/baz |                    |                |
+| PUT              | /data/workspaces/%%ws2%%/pages/Foo2/tags/baz |                    |                |
 | code-is          | 201                                         |                    |                |
 | job-count        | WebHook                                     | 0                  |                |
 

@@ -1,8 +1,8 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::More tests => 6;
+use Test::More tests => 8;
 use utf8;
 
 BEGIN {
@@ -10,7 +10,7 @@ BEGIN {
 }
 
 Valid_codes: {
-    for (qw(en zz zj)) {
+    for (qw(en zz zq xq zh_CN zh_TW)) {
         ok valid_code($_), "$_ is valid";
     }
 }
@@ -19,5 +19,4 @@ Available_locales: {
     my $locales = available_locales();
     isa_ok $locales, 'HASH';
     is $locales->{en}, 'English', 'en locale works';
-#    is $locales->{ja}, 'Japanese (日本語)', 'ja locale works';
 }

@@ -5,7 +5,6 @@ use strict;
 use base 'Exporter';
 
 use Socialtext::AppConfig;
-use Socialtext::Search::Set;
 
 our @EXPORT_OK = qw( search_on_behalf );
 
@@ -20,9 +19,7 @@ sub search_on_behalf {
 
     my @workspaces = _enumerate_workspaces($scope, $user, $ws_name, \$query);
 
-    my $factory = Socialtext::Search::AbstractFactory->GetFactory(
-        ($opts{use_index} ? (use_index => $opts{use_index}) : ()),
-    );
+    my $factory = Socialtext::Search::AbstractFactory->GetFactory();
     return $factory->search_on_behalf(\@workspaces, $query, $user,
         $no_such_ws_handler, $authz_handler, %opts);
 }
@@ -54,11 +51,6 @@ sub _enumerate_workspaces {
             @workspaces = _all_workspaces($user);
         }
     }
-    else {
-        @workspaces
-            = Socialtext::Search::Set->new( name => $scope, user => $user )
-            ->workspace_names->all;
-    }
 
     return @workspaces;
 }
@@ -68,13 +60,6 @@ sub _all_workspaces {
     my ($user, $current_workspace) = @_;
     my @workspaces = map { $_->name }
         $user->workspaces->all();
-
-    # add in all the workspaces (if any) specified in our
-    # application configuration
-    if (Socialtext::AppConfig->interwiki_search_set()) {
-        push @workspaces,
-            split /:/, Socialtext::AppConfig->interwiki_search_set();
-    }
 
     # always include the current workspace, in case the user isn't
     # a member

@@ -14,13 +14,6 @@ use Fatal qw/copy move/;
 use Socialtext::Exceptions qw/data_validation_error/;
 use Try::Tiny;
 
-my %RESIZERS = (
-    profile   => 'Socialtext::People::ProfilePhoto',
-    group     => 'Socialtext::Group::Photo',
-    account   => 'Socialtext::AccountLogo',
-    sigattach => 'Socialtext::Signal::Attachment',
-);
-
 sub permission      { +{} }
 sub allowed_methods {'GET'}
 sub entity_name     { "Upload" }
@@ -29,13 +22,13 @@ sub nonexistence_message { "Uploaded file not found." }
 sub GET {
     my ($self, $rest) = @_;
     my $rv;
-    try   { $rv = $self->_GET() }
+    try   { $rv = $self->_GET($rest) }
     catch { $rv = $self->handle_rest_exception($_) };
     return $rv;
 }
 
 sub _GET {
-    my $self = shift;
+    my ($self, $rest) = @_;
     my $user = $self->rest->user;
 
     return $self->not_authorized unless $user->is_authenticated;
@@ -50,47 +43,27 @@ sub _GET {
         return $self->http_404_force;
     }
 
-    my $file = $upload->temp_filename;
-    unless (-f $file) {
-        return $self->http_404_force;
-    }
-
     # Support image resizing /?resize=group:small will resize for a
     # Socialtext::Group::Photo using the small version
-    my $blob;
+    my $filesize;
+    my $prot_uri = $upload->protected_uri;
     if (my $resize = $self->rest->query->param('resize')) {
         data_validation_error "You can only resize images"
             unless $upload->is_image;
 
         my ($resizer, $size) = split ':', $resize;
         $size ||= 'small';
-
-        my $rclass = $RESIZERS{$resizer}
+        my $spec = Socialtext::Image::spec_resize_get($resizer,$size)
             or data_validation_error "Unknown resizer: $resizer";
-        eval "require $rclass";
-        if ($@) {
-            warn "while looking for resizer: $@";
-            die "Unable to resize image.\n";
-        }
-
-        try  {
-            my $temp;
-            (undef, $temp) = tempfile('/tmp/resizeXXXXXX',
-                OPEN => 0, UNLINK => 1);
-            copy($file, $temp);
-            $rclass->Resize($size, $temp);
-            $blob = Socialtext::File::get_contents_binary($temp);
-        }
-        catch {
-            die "Unable to resize image: $_";
-        };
+        $filesize = $upload->ensure_scaled(spec => $spec);
+        $prot_uri .= ".$spec";
     }
     else {
-        $upload->binary_contents(\$blob);
+        $upload->ensure_stored();
+        $filesize = $upload->content_length;
     }
 
-    $self->rest->header(-type => $upload->mime_type);
-    return $blob;
+    return $self->serve_file($rest, $upload, $prot_uri, $filesize);
 }
 
 1;

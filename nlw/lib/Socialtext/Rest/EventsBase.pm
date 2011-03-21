@@ -19,7 +19,7 @@ use constant MAX_EVENT_COUNT => 500;
 use constant DEFAULT_EVENT_COUNT => 25;
 
 sub allowed_methods { 'GET' }
-sub collection_name { loc('Events') }
+sub collection_name { loc('rest.events') }
 sub events_auth_method { 'default' }
 
 our @ADD_HEADERS = (); # for testing only!

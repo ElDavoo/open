@@ -6,8 +6,9 @@ use warnings;
 use IPC::Run qw(run timeout);
 
 use utf8;
-use Test::Socialtext::Search;
 use Test::Socialtext tests => 204;
+use Test::Socialtext::Search;
+
 fixtures(qw( db no-ceq-jobs ));
 
 use_ok("Socialtext::Search::Solr::Factory");
@@ -271,14 +272,11 @@ sub make_page_ok {
     local $Test::Builder::Level = $Test::Builder::Level + 1;
 
     my ( $title, $content, $tags ) = @_;
-    my $page = $hub->pages->new_from_name($title);
-    $page->update(
-        user             => $hub->current_user,
-        subject          => $title,
-        content          => $content,
-        categories       => $tags || [],
-        original_page_id => $page->id,
-        revision         => $page->metadata->Revision || 0,
+    my $page = Socialtext::Page->new(hub => $hub)->create(
+        title => $title,
+        content => $content,
+        creator => $hub->current_user,
+        categories => $tags || [],
     );
     index_ok( $page->id );
 

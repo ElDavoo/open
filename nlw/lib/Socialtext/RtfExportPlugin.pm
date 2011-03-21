@@ -27,8 +27,8 @@ L<HTML::FormatRTFWithImages>, described below.
 
 =cut
 
-sub class_id {'rtf_export'};
-const class_title => 'Word Export';
+const class_id => 'rtf_export';
+const class_title => _('class.rtf_export');
 const cgi_class   => 'Socialtext::RtfExportPlugin::CGI';
 
 sub register {
@@ -58,7 +58,7 @@ sub rtf_export {
 
     if ( 0 == @page_names ) {
         Socialtext::Exception::DataValidation->throw(
-            errors => [loc('No pages selected for export')] );
+            errors => [loc('error.pages-for-export-required')] );
     }
 
     my @page_ids = sort$self->hub->pages->all_ids;
@@ -66,7 +66,7 @@ sub rtf_export {
     foreach my $page_name (@page_names) {
         unless ( defined $page_name && length $page_name ) {
             Socialtext::Exception::DataValidation->throw(
-                errors => [loc('No page name given')] );
+                errors => [loc('error.page-name-is-empty')] );
         }
 
     }
@@ -157,7 +157,7 @@ sub _get_html {
 
     # FIXME: Add special link dictionary here.
     return "<html><head><title>"
-        . $page->metadata->Subject
+        . $page->name
         . "</title></head><body>"
         . $page->to_absolute_html()
         . "</body></html>";

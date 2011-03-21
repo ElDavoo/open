@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Each of these uses a templating system to just test the cost of filling out a
 # template within that system.  The template and data are the same in every

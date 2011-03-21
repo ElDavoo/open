@@ -91,7 +91,7 @@ sub BuildDir {
 
 sub CleanDir {
     my ($class, $dir) = @_;
-    local $CWD = "$CODE_BASE/$dir";
+    local $CWD = ($dir =~ m{^/} ? $dir : "$CODE_BASE/$dir");
     warn "Cleaning files in dir $dir...\n" if $VERBOSE;
     my @toclean;
     for my $file (keys %{$dirs{$dir}}) {
@@ -116,7 +116,7 @@ sub Build {
     my ($class, $dir, $target) = @_;
     $target =~ s/\.gz$//; # built anyway
 
-    local $CWD = "$CODE_BASE/$dir";
+    local $CWD = ($dir =~ m{^/} ? $dir : "$CODE_BASE/$dir");
 
     my $info = $dirs{$dir}{$target};
     

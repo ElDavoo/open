@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 
 use strict;
@@ -138,7 +138,7 @@ test_user_fails_data_validation: {
     logged_like 'info', qr/loading: invalid-email/,
         '... tried adding invalid User';
 
-    logged_like 'error', qr/invalid-email is not a valid email address/,
+    logged_like 'error', qr/"invalid-email" is not a valid email address/,
         '... which failed due to invalid e-mail address';
 
     my $count_after = Socialtext::User->Count();

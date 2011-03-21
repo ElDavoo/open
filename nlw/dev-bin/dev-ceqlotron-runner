@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # @COPYRIGHT@
 
 # A simple tool for running the ceqlotron in a dev-env while doing

@@ -55,7 +55,7 @@
 
 | *Comment* | Test Case: Global Navigation Help |  |
 | *Comment* | Can't click Help because it opens another tab |  |
-| wait_for_element_present_ok | //a[contains(@href,'help/index.cgi')] | 30000 |
+| wait_for_element_present_ok | //a[contains(@href,'/help/')] | 30000 |
 
 | *Comment* | Test Case: Global Navigation Log out |  |
 | wait_for_element_visible_ok | link=Log out | 30000 |

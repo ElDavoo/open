@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 TABLE=$1
 COLUMN=$2

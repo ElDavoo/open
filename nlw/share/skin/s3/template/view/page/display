@@ -4,18 +4,18 @@
 [%- USE decorate -%]
 
 [%- MACRO ago_text(minutes) BLOCK -%]
-    [%- IF minutes < 1 -%][% loc('less than a minute ago') -%]
-    [%- ELSIF minutes == 1 -%][% loc('one minute ago') -%]
-    [%- ELSIF minutes < 50 -%][% loc('[_1] minutes ago', minutes) -%]
-    [%- ELSIF minutes < 90 -%][% loc('about one hour ago') -%]
+    [%- IF minutes < 1 -%][% loc('ago.<1minute') -%]
+    [%- ELSIF minutes == 1 -%][% loc('ago.1minute') -%]
+    [%- ELSIF minutes < 50 -%][% loc('ago.minutes=count', minutes) -%]
+    [%- ELSIF minutes < 90 -%][% loc('ago.about-1hour') -%]
     [%- ELSIF minutes < 1080 -%]
       [%- hours = minutes / 60 | round(0) -%]
-      [% loc('[_1] hours ago', hours) -%]
-    [%- ELSIF minutes < 1440 -%][% loc('one day ago') -%]
-    [%- ELSIF minutes < 2880 -%][% loc('about one day ago') -%]
+      [% loc('ago.hours=count', hours) -%]
+    [%- ELSIF minutes < 1440 -%][% loc('ago.1day') -%]
+    [%- ELSIF minutes < 2880 -%][% loc('ago.about-1day') -%]
     [%- ELSE -%]
       [%- days = minutes / 1440 | round(0) -%]
-      [% loc('[_1] days ago', days) -%]
+      [% loc('ago.days=count', days) -%]
     [%- END -%]
 [%- END -%]
 
@@ -25,7 +25,7 @@
     [% IF page_locked_for_user %]
       <div id="st-page-lock-notification">
         <img src="/static/skin/s3/images/lock-locked.png" />
-        [% loc('This page is locked and can only be edited by a workspace administrator.') %]
+        [% loc('page.is-locked') %]
       </div>
     [% ELSE %]
       [% IF locking_enabled && can_lock %]
@@ -52,7 +52,7 @@
 
   <!-- XXX: move this somewhere or style it in screen.css -->
   <div style="float:left;position:relative;padding:11px;display:none" id="bootstrap-loader">
-    [% loc("Loading...") %]
+    [% loc("edit.loading") %]
     <img src="/static/skin/common/images/ajax-loader.gif">
   </div>
 
@@ -60,62 +60,62 @@
     <ul class="level1">
       [% FILTER decorate('page_menu') %] 
       [% IF page.revisions && page.revisions > 0 %]
-        <li><a class="revision" id="controls-right-revisions" href="?action=revision_list;page_name=[% page.id %]">[% loc('[quant,_1,Revision]', page.revisions) %]</a></li>
+        <li><a class="revision" id="controls-right-revisions" href="?action=revision_list;page_name=[% page.id %]">[% loc('page.revisions=count', page.revisions) %]</a></li>
       [% END %]
 
       [% UNLESS user.is_guest %]
         [% IF plugins_enabled.grep("signals").size && plugins_enabled_for_current_workspace_account.grep("signals").size -%]
 
-        <li><a id="st-signalthis-indicator" class="signalthis" href="#" title="[% loc('Signal This!') %]">[% loc('Signal This!') %]</a></li>
+        <li><a id="st-signalthis-indicator" class="signalthis" href="#" title="[% loc('page.signal-this!') %]">[% loc('page.signal-this!') %]</a></li>
         [% END %]
         [% IF watching %]
-        <li><a id="st-watchlist-indicator" class="on watch" href="#" title="[% loc('Stop Watching') %]">[% loc('Stop Watching') %]</a></li>
+        <li><a id="st-watchlist-indicator" class="on watch" href="#" title="[% loc('watch.stop') %]">[% loc('watch.stop') %]</a></li>
         [% ELSE %]
-        <li><a id="st-watchlist-indicator" class="watch" href="#" title="[% loc('Watch') %]">[% loc('Watch') %]</a></li>
+        <li><a id="st-watchlist-indicator" class="watch" href="#" title="[% loc('do.watch') %]">[% loc('do.watch') %]</a></li>
         [% END %]
       [% END %]
-      <li><a class="print" title="[% loc('Print this page') %]" id="st-pagetools-print" href="JavaScript:window.print()">[% loc('Print') %]</a></li>
+      <li><a class="print" title="[% loc('page.print') %]" id="st-pagetools-print" href="JavaScript:window.print()">[% loc('do.print') %]</a></li>
       [% IF checker.check_permission('email_out') %]
-      <li><a class="email" title="[% loc('Email this page') %]" id="st-pagetools-email" href="#">[% loc('Email') %]</a></li>
+      <li><a class="email" title="[% loc('info.email-page') %]" id="st-pagetools-email" href="#">[% loc('user.email') %]</a></li>
       [% END %]
-      <li class="last submenu"><a class="tools" id="st-pagetools-tools" href="#">[% loc('Tools') %]</a>
+      <li class="last submenu"><a class="tools" id="st-pagetools-tools" href="#">[% loc('nav.tools') %]</a>
         <ul class="level2">
           [% IF checker.check_permission('edit') AND !page_locked_for_user %]
-          <li class="first"><a id="st-pagetools-duplicate" href="#">[% loc('Duplicate Page') %]</a></li>
-          <li><a id="st-pagetools-rename" href="#">[% loc('Rename Page') %]</a></li>
+          <li class="first"><a id="st-pagetools-duplicate" href="#">[% loc('page.duplicate') %]</a></li>
+          <li><a id="st-pagetools-rename" href="#">[% loc('page.rename') %]</a></li>
           [% END %]
           [% IF current_user_workspace_count > 1 AND !page_locked_for_user %]
-          <li><a href="#" id="st-pagetools-copy">[% loc('Copy Page to Workspace') %]</a></li>
+          <li><a href="#" id="st-pagetools-copy">[% loc('page.copy') %]</a></li>
           [% END %]
           [% IF checker.check_permission('delete') AND !page_locked_for_user %]
-          <li [% not locking_enabled OR not can_lock ? "class=\"separator\"":"" %]><a href="/[% current_workspace.name %]?[% page.id %]" id="st-pagetools-delete">[% loc('Delete Page') %]</a></li>
+          <li [% not locking_enabled OR not can_lock ? "class=\"separator\"":"" %]><a href="/[% current_workspace.name %]?[% page.id %]" id="st-pagetools-delete">[% loc('page.delete') %]</a></li>
           [% END %]
           [% IF locking_enabled AND can_lock %]
             <li class="separator">
               <a href="/[% current_workspace.name %]?page_name=[% page.id %];action=[% page_locked ? "unlock_page" : "lock_page" %]" id="st-pagetools-lock">
-                [% page_locked ? loc('Unlock Page') : loc('Lock Page') %]
+                [% page_locked ? loc('page.unlock') : loc('page.lock') %]
               </a>
             </li>
           [% END %]
           [% USE encode_mailto %]
           [% IF checker.check_permission('email_in') && page.page_type != 'spreadsheet' %]
-          <li [% page_locked_for_user ? "class=\"separator\"" : "" %]><a href="mailto:[% wiki.email_address %]" title="[% wiki.email_address %]">[% loc('Email To This Workspace') %]</a></li>
+          <li [% page_locked_for_user ? "class=\"separator\"" : "" %]><a href="mailto:[% wiki.email_address %]" title="[% wiki.email_address %]">[% loc('wiki.email-to-this') %]</a></li>
             [% IF !page_locked_for_user %]
               [% IF page.page_type == 'spreadsheet' %]
-            <li class="separator"><a href="mailto:[% wiki.email_address %]?subject=[% page.title | html_encode  %]" title="To: [% wiki.email_address %] / subject: [% page.title | html_encode %]" onclick="alert(loc('Sorry, this feature is not available for spreadsheets')); return false;" >[% loc('Email To This Page') %]</a></li>
+            <li class="separator"><a href="mailto:[% wiki.email_address %]?subject=[% page.title | html_encode  %]" title="To: [% wiki.email_address %] / subject: [% page.title | html_encode %]" onclick="alert(loc('error.email-spreadsheet')); return false;" >[% loc('page.email-to-this') %]</a></li>
               [% ELSE %]
-            <li class="separator"><a href="mailto:[% wiki.email_address %]?subject=[% page.title | html_encode  %]" title="To: [% wiki.email_address %] / subject: [% page.title | html_encode %]">[% loc('Email To This Page') %]</a></li>
+            <li class="separator"><a href="mailto:[% wiki.email_address %]?subject=[% page.title | html_encode  %]" title="To: [% wiki.email_address %] / subject: [% page.title | html_encode %]">[% loc('page.email-to-this') %]</a></li>
               [% END %]
             [% END %]
           [% END %]
           [% FILTER decorate('pageexport') %]
           [% END %]
-          <li><a href="/[% current_workspace.name %]?action=display_html;page_name=[% page.id %]" target="_new">[% loc('Export as HTML') %]</a></li>
+          <li><a href="/[% current_workspace.name %]?action=display_html;page_name=[% page.id %]" target="_new">[% loc('export.html') %]</a></li>
 
           [% IF loc_lang != 'ja' %]
-          <li><a href="/[% current_workspace.name %]?action=pdf_export;page_selected=[% page.id %]" target="_new">[% loc('Export to PDF') %]</a></li>
+          <li><a href="/[% current_workspace.name %]?action=pdf_export;page_selected=[% page.id %]" target="_new">[% loc('export.pdf') %]</a></li>
           [% END %]
-          <li class="separator"><a href="/[% current_workspace.name %]?action=rtf_export;page_selected=[% page.id %]" target="_new">[% loc('Export to Word') %]</a></li>
+          <li class="separator"><a href="/[% current_workspace.name %]?action=rtf_export;page_selected=[% page.id %]" target="_new">[% loc('export.word') %]</a></li>
           [% FOREACH tool = tools.keys %]
           <li class="separator"><a href="/[% current_workspace.name %]?action=[% tools.$tool.0 %];page_name=[% page.id %]">[% tool %]</a></li>
           [% END %]
@@ -128,7 +128,7 @@
 
 <div id="contentContainer">
   <div id="contentTitle"><h2 id="st-page-titletext" class="tableTitle" title="[% page.display_title %]">[% page.display_title %]</h2>
-    <a id="st-page-boxes-toggle-link" class="hideTab" href="#">[% IF st_page_accessories == 'show' %][% loc('hide') %][% ELSE %][% loc('show') %][% END %]</a>
+    <a id="st-page-boxes-toggle-link" class="hideTab" href="#">[% IF st_page_accessories == 'show' %][% loc('nav.hide') %][% ELSE %][% loc('nav.show') %][% END %]</a>
   </div>
 
   <div id="contentColumns" class="[% IF st_page_accessories == 'show'%]showbox[% ELSE %]hidebox[% END %]">
@@ -139,8 +139,7 @@
       [% ELSE %]
        <a href="mailto:[% page.edit_in_progress.email_address %]">[% page.edit_in_progress.username %]</a>
       [% END %]
-      [% loc('opened this page for editing') %]
-      [% ago_text(page.edit_in_progress.minutes_ago) %].
+      [% loc('page.editing=ago', ago_text(page.edit_in_progress.minutes_ago)) %]
       <a href="#" id="st-edit-warning-help">(?)</a>
     </div>
     [% END %]
@@ -151,7 +150,7 @@
       [% FILTER decorate('page_sidebar_widget') %][% END %]
       <div class="widget">
         <div class="widgetHeader">
-        <h4>[% loc('Tags') %]</h4>
+        <h4>[% loc('wiki.tags') %]</h4>
         </div><!-- widgetHeader END -->
         <div class="widgetContent">
           <ul id="st-tags-listing">
@@ -159,21 +158,21 @@
             <li>
             <a href="?action=category_display;category=[% tag.name | uri %]" class="tag_name" title="[% tag.name | html %]">[% tag.name | html %]</a>
             [% IF !page_locked_for_user %]
-            <a href="#" class="delete_tag" title="[% loc('Delete this tag') %]" onclick="$(this).children('img').attr('src', '/static/skin/common/images/ajax-loader.gif'); Page.delTag($(this).prev().text()); return false"><img
+            <a href="#" class="delete_tag" title="[% loc('page.delete-tag') %]" onclick="$(this).children('img').attr('src', '/static/skin/common/images/ajax-loader.gif'); Page.delTag($(this).prev().text()); return false"><img
                 src="[% wiki.skin_uri('s3') %]/images/delete.png"
-                width="16" height="16" border="0" alt="[% loc('Delete this tag') %]"
+                width="16" height="16" border="0" alt="[% loc('page.delete-tag') %]"
             /></a>
             [% END %]
             </li>
           [% END %]
           [% IF tags.tags.size == 0 %]
-            <div id="st-no-tags-placeholder">[% loc('There are no tags for this page.') %]</div>
+            <div id="st-no-tags-placeholder">[% loc('page.no-tags') %]</div>
           [% END %]
           </ul>
           [% IF checker.check_permission('edit') AND !page_locked_for_user %]
           <ul id="st-tags-addlink" class="widgetButton">
             <li class="flexButtonGrey">
-              <a class="greyButton" href="#">[% loc('Add Tag') %]</a>
+              <a class="greyButton" href="#">[% loc('tag.add') %]</a>
             </li>
           </ul>
           <form id="st-tags-form" onsubmit="return false;" style="clear: both">
@@ -181,7 +180,7 @@
             <span style="float:left;display: none" id="st-tags-addbutton-link">
               <ul class="widgetButton">
                 <li class="flexButtonGrey">
-                  <a class="greyButton" id="st-tags-plusbutton-link" href="#" onclick="$('#st-tags-form').trigger('submit'); return false">[% loc('&nbsp;+') %]</a>
+                  <a class="greyButton" id="st-tags-plusbutton-link" href="#" onclick="$('#st-tags-form').trigger('submit'); return false">[% loc('page.add-tag') %]</a>
                 </li>
               </ul>
             </span>
@@ -190,7 +189,7 @@
           <div id="st-tags-message"></div>
           <div style="display:none" id="st-tags-suggestion">
             <span class="st-tags-hint">
-              [% loc("Suggestions:") %]
+              [% loc("tag.suggestions:") %]
             </span>
             <span id="st-tags-suggestionlist"></span>
           </div>
@@ -201,7 +200,7 @@
       </div><!-- widget END -->
       <div class="widget">
         <div class="widgetHeader">
-        <h4>[% loc('Incoming Links') %]</h4>
+        <h4>[% loc('page.incoming-links') %]</h4>
         </div><!-- widgetHeader END -->
         <div class="widgetContent">
           <ul>
@@ -210,7 +209,7 @@
           [% END %]
           </ul>
           [% IF page.incoming.size == 0 %]
-            <p>[% loc('There are no pages that link to this page yet.') %]</p>
+            <p>[% loc('page.no-backlinks') %]</p>
           [% END %]
           <div class="clear"></div>
         </div><!-- widgetContent -->
@@ -222,7 +221,7 @@
       [% IF include_recent_changes %]
       <div class="widget">
         <div class="widgetHeader">
-        <h4>[% loc("What's New") %]</h4>
+        <h4>[% loc("nav.news") %]</h4>
         </div><!-- widgetHeader END -->
         <div class="widgetContent">
           <ul>
@@ -239,7 +238,7 @@
       [% IF include_breadcrumbs %]
       <div class="widget">
         <div class="widgetHeader">
-        <h4>[% loc('Recently Viewed') %]</h4>
+        <h4>[% loc('nav.recently-viewed') %]</h4>
         </div><!-- widgetHeader END -->
         <div class="widgetContent">
           <ul>
@@ -276,8 +275,8 @@
     <div id="pageAttribution">
 
 [% IF enable_unplugged %]
-    <a title="[% loc('Click this button to save this page to your computer for offline use.') %]" href="?action=unplug;page_name=[% page.id %]" style="float: right; margin-left: 5px">
-      <img class="st-page-details-feed-icon" alt="[% loc('Click this button to save this page to your computer for offline use.') %]" src="[% wiki.skin_uri('s3') %]/images/plug.png" />
+    <a title="[% loc('info.unplugged') %]" href="?action=unplug;page_name=[% page.id %]" style="float: right; margin-left: 5px">
+      <img class="st-page-details-feed-icon" alt="[% loc('info.unplugged') %]" src="[% wiki.skin_uri('s3') %]/images/plug.png" />
      </a>
 [% END %]
 [% IF feeds.rss %]
@@ -287,14 +286,14 @@
 [% END %]
 
         <span id="create-attribution">
-            [% loc('Created by [_1] on [_2].', create_author, create_date) %]
+            [% loc('page.created=author,date', create_author, create_date) %]
         </span>
         <span id="update-attribution">
-            [% loc('Updated by [_1] on [_2].', update_author, update_date) %]
+            [% loc('page.updated=user,date', update_author, update_date) %]
         </span>
         <span id="statistics-attribution">
-            (<a class="revision" id="bottom-buttons-revisions" href="?action=revision_list;page_name=[% page.id %]">[% loc('[quant,_1,revision]', page.revisions) %]</a>,
-            [% loc('[quant,_1,view]', page.views) %])
+            (<a class="revision" id="bottom-buttons-revisions" href="?action=revision_list;page_name=[% page.id %]">[% loc('page.count=revision', page.revisions) %]</a>,
+            [% loc('page.count=view', page.views) %])
         </span>
     </div>
     [% END %]

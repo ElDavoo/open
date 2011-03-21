@@ -18,10 +18,10 @@ Tests for [Story: Groups ReST API]
 | code-is     | 200                       |         |
 | header-like | Cache-Control             | private |
 | json-parse  |                           |         |
-| body-like   | "group_id":"%%group_id%%" |         |
-| body-like   | "name":"%%group_name%%"   |         |
-| body-like   | "user_count":"1"          |         |
-| body-like   | "workspace_count":"0"     |         |
+| json-like   | {"group_id":"%%group_id%%"} |         |
+| json-like   | {"name":"%%group_name%%"}   |         |
+| json-like   | {"user_count":"1"}          |         |
+| json-like   | {"workspace_count":"0"}     |         |
 | body-unlike | "members"                 |         |
 
 ## visible by Group Creator (Creator sees Groups he created or is a member of)
@@ -34,10 +34,10 @@ Tests for [Story: Groups ReST API]
 | code-is     | 200                       |         |
 | header-like | Cache-Control             | private |
 | json-parse  |                           |         |
-| body-like   | "group_id":"%%group_id%%" |         |
-| body-like   | "name":"%%group_name%%"   |         |
-| body-like   | "user_count":"2"          |         |
-| body-like   | "workspace_count":"0"     |         |
+| json-like   | {"group_id":"%%group_id%%"} |         |
+| json-like   | {"name":"%%group_name%%"}   |         |
+| json-like   | {"user_count":"2"}          |         |
+| json-like   | {"workspace_count":"0"}     |         |
 | body-unlike | "members"                 |         |
 
 | *Comment*   | Group's users are visible to group creator |

@@ -61,7 +61,7 @@ use base 'Socialtext::Formatter::Phrase';
 use Class::Field qw( const );
 
 const formatter_id  => 'em';
-const pattern_start => qr/(^|(?<=[^${ALPHANUM}_]))_(?=\S[^_]*_(?=\W|\z))/;
+const pattern_start => qr/(^|(?<=[^{$ALPHANUM}_]))_(?=\S)(?!_)/;
 const pattern_end   => qr/(?<![\s_])_(?=[^{$ALPHANUM}_]|\z)/;
 const html_start    => "<em>";
 const html_end      => "</em>";
@@ -266,8 +266,8 @@ sub html {
         $match =~ /\.(gif|jpg|jpeg|jpe|png|pbm|bmp)(?:\?\S+)?$/i
         ? qq{<img alt="$href" src="$href" border="0" />}
         : $match =~ /^irc:/
-        ? "<a title=\"(" . loc('start irc session') . ")\" href=\"$href\">$href</a>"
-        : "<a $target rel=\"nofollow\" title=\"(" . loc('external link') . ")\" href=\"$href\">$href</a>";
+        ? "<a title=\"(" . loc('link.irc') . ")\" href=\"$href\">$href</a>"
+        : "<a $target rel=\"nofollow\" title=\"(" . loc('link.external') . ")\" href=\"$href\">$href</a>";
 
 
     return $wrap_start . $output . $wrap_finish;
@@ -328,8 +328,8 @@ sub html {
         $match =~ /\.(gif|jpg|jpeg|jpe|png|pbm|bmp)$/i
         ?  ( $text ? qq{<a href="$href">$text</a>} : qq{<img alt="$escaped_text" src="$href" border="0" />} )
         : $match =~ /^irc:/
-        ? "<a title=\"(" . loc('start irc session') . "\" href=\"$href\">$escaped_text</a>"
-        : "<a $target rel=\"nofollow\" title=\"(" . loc('external link') .')" '
+        ? "<a title=\"(" . loc('link.irc') . "\" href=\"$href\">$escaped_text</a>"
+        : "<a $target rel=\"nofollow\" title=\"(" . loc('link.external') .')" '
         . qq{href="$href">$escaped_text</a>};
     return $wrap_start . $output . $wrap_finish;
 }

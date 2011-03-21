@@ -6,7 +6,7 @@ ST.CreateContent = function () {}
 var proto = ST.CreateContent.prototype = new ST.Lightbox;
 
 proto.visible_types = {
-    wiki: loc('Page')
+    wiki: loc('page.type-wiki')
 };
 
 proto.type_radio = function (type) {
@@ -56,7 +56,7 @@ proto.get_from_page = function() {
 proto.update_templates = function () {
     var self = this;
     var type = this.selected_page_type();
-    var template = loc('template');
+    var template = loc('tag.template');
     $.ajax({
         url: Page.workspaceUrl() + '/tags/' + template + '/pages?type=' + type,
         cache: false,
@@ -69,8 +69,8 @@ proto.update_templates = function () {
                 }
                 self.from_template_radio().attr('disabled', 'disabled');
                 var error = loc(
-                    "No [_1] pages tagged '[_2]' could be found",
-                    type, template
+                    "error.no-page=type,tag",
+                    loc("page.type-"+type), template
                 );
 
                 self.from_template_select()
@@ -163,7 +163,7 @@ proto.show = function () {
         self.from_page_radio().click();
     });
 
-    var default_from_page_text = loc('Start typing a page name...');
+    var default_from_page_text = loc('page.prompt-name');
     this.from_page_text()
         .val(default_from_page_text)
         .unbind('click').click(function () {
@@ -234,14 +234,14 @@ proto.create_url = function () {
             success: function (page) {
                 if (page.type != type) {
                     throw new Error(loc(
-                        "'[_1]' exists, but is not a [_2]",
+                        "error.type-mismatch=template,type",
                         template,
                         self.selected_visible_type()
                     ));
                 }
             },
             error: function () {
-                throw new Error(loc("No page named '[_1]' exists", template));
+                throw new Error(loc("error.no-page=template", template));
             }
         });
     }

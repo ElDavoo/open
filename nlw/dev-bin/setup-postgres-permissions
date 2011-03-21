@@ -1,10 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 
-VER=${1:-"7.4"}
-
-PG_HBA=/etc/postgresql/$VER/main/pg_hba.conf
+PG_HBA=/etc/postgresql/9.0/main/pg_hba.conf
 if [ ! -e "$PG_HBA" ]; then
-    echo "Usage: $0 [7.4|8.0|8.1]"
+    echo "Usage: $0"
     echo "$PG_HBA does not exist."
     exit 1
 fi
@@ -12,14 +10,14 @@ fi
 BEFORE=`md5sum $PG_HBA | awk '{print $1}'`
 cat - <<PG_HBA > $PG_HBA
 # Socialtext Postgres Configuration
-local   all       postgres    ident sameuser
+local   all       postgres    ident
 local   NLW       nlw         trust
 local   template1 nlw         trust
-local   all       all         ident sameuser
+local   sameuser  all         ident
 PG_HBA
 AFTER=`md5sum $PG_HBA | awk '{print $1}'`
 
 if [ "$BEFORE" != "$AFTER" ]; then
     echo "$PG_HBA changed.  Restarting PostgreSQL $VER"
-    /etc/init.d/postgresql-$VER restart
+    /etc/init.d/postgresql restart
 fi

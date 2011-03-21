@@ -6,21 +6,21 @@ use warnings;
 use base 'Socialtext::Query::Plugin';
 
 use Class::Field qw( const field );
-use Socialtext::File;
-use Socialtext::Paths;
-use POSIX ();
-use Readonly;
-use Socialtext::Permission qw( ST_ADMIN_WORKSPACE_PERM );
-use Socialtext::Validate qw( validate SCALAR_TYPE USER_TYPE );
-use URI::Escape ();
-use Socialtext::l10n qw(loc);
-use Socialtext::Timer qw/time_scope/;
-use Socialtext::SQL qw/:exec/;
-use Socialtext::Model::Pages;
 use List::Util qw/min/;
+use Readonly;
+use URI::Escape ();
 
-sub class_id {'category'}
-const class_title => 'Category Managment';
+use Socialtext::File;
+use Socialtext::Pages;
+use Socialtext::Paths;
+use Socialtext::Permission qw( ST_ADMIN_WORKSPACE_PERM );
+use Socialtext::SQL qw/:exec sql_txn/;
+use Socialtext::Timer qw/time_scope/;
+use Socialtext::Validate qw( validate SCALAR_TYPE USER_TYPE );
+use Socialtext::l10n qw(loc);
+
+const class_id => 'category';
+const class_title => _('class.category');
 const cgi_class   => 'Socialtext::Category::CGI';
 
 sub Decode_category_email {
@@ -80,7 +80,7 @@ sub category_list {
 
     $self->screen_template('view/taglistview');
     return $self->render_screen(
-        display_title => loc("All Tags in Workspace"),
+        display_title => loc("wiki.all-tags"),
         rows          => \@rows,
         allow_delete  => 0,
     );
@@ -97,9 +97,7 @@ sub category_delete_from_page {
 
     return unless $self->hub->checker->can_modify_locked($page);
 
-    $page->delete_tag($category);
-    $page->metadata->update(user => $self->hub->current_user);
-    $page->store( user => $self->hub->current_user );
+    $page->delete_tag($category); # automatically saves
 }
 
 sub all {
@@ -166,7 +164,7 @@ sub category_display {
     $self->screen_template('view/category_display');
     return $self->render_screen(
         summaries              => $self->show_summaries,
-        display_title          => loc("Tag: [_1]", $category),
+        display_title          => loc("nav.tag=tag", $category),
         predicate              => 'action=category_display;category=' . $uri_escaped_category,
         rows                   => $results->{rows},
         html_escaped_category  => $html_escaped_category,
@@ -176,7 +174,7 @@ sub category_display {
         sortby                 => $sortby,
         direction              => $direction,
         unplug_uri    => "?action=unplug;tag=$uri_escaped_category",
-        unplug_phrase => loc('Click this button to save the pages with the tag [_1] to your computer for offline use.', $html_escaped_category),
+        unplug_phrase => loc('info.unplug=tag', $html_escaped_category),
         load_row_times         => \&Socialtext::Query::Plugin::load_row_times,
         Socialtext::Pageset->new(
             cgi => {$self->cgi->all},
@@ -184,32 +182,6 @@ sub category_display {
         )->template_vars(),
         partial_set => 1,
     );
-}
-
-sub get_page_info_for_category {
-    my $self = shift;
-    my $category = shift;
-    my $sort_map = shift;
-
-    my $t = time_scope('get_category');
-    my $sort_sub = $self->_sort_closure($sort_map);
-
-    my @rows;
-    for my $page ( $self->get_pages_for_category( $category, 0 ) ) {
-        my $subject = $page->metadata->Subject;
-
-        # XXX some pages or page artifacts don't have subjects, too
-        # torrid to chase. protect against the problem here
-        next unless $subject;
-
-        my $disposition = $self->hub->pages->title_to_disposition($subject);
-
-        my $row = $page->to_result;
-        $row->{disposition} = $disposition;
-        push @rows, $row;
-    }
-
-    return [ sort $sort_sub @rows ];
 }
 
 # REVIEW - this is a somewhat nasty hack to use the sorting
@@ -326,7 +298,7 @@ sub page_count {
     if (lc($tag) eq 'recent changes') {
         my $prefs = $self->hub->recent_changes->preferences;
         my $seconds = $prefs->changes_depth->value * 1440 * 60;
-        return Socialtext::Model::Pages->ChangedCount(
+        return Socialtext::Pages->ChangedCount(
             workspace_id => $self->hub->current_workspace->workspace_id,
             duration => $seconds,
         );
@@ -353,10 +325,10 @@ sub get_pages_for_category {
                         ? 'last_edit_time DESC' 
                         : 'create_time DESC';
 
-    # Load from the database, and then map into old-school page objects
-    my $model_pages = [];
+    # Load from the database
+    my $pages = [];
     if (lc($tag) eq 'recent changes') {
-        $model_pages = Socialtext::Model::Pages->All_active(
+        $pages = Socialtext::Pages->All_active(
             hub          => $self->hub,
             workspace_id => $self->hub->current_workspace->workspace_id,
             order_by     => $order_by,
@@ -366,20 +338,18 @@ sub get_pages_for_category {
     }
     else {
         $tag = Socialtext::Encode::ensure_is_utf8($tag);
-        $model_pages = Socialtext::Model::Pages->By_tag(
+        $pages = Socialtext::Pages->By_tag(
             hub          => $self->hub,
             workspace_id => $self->hub->current_workspace->workspace_id,
             tag          => $tag,
             order_by     => $order_by,
             ($limit ? (limit => $limit) : ()),
             ($offset ? (offset => $offset) : ()),
-            do_not_need_tags => 1,
         );
     }
 
-    # XXX THIS IS REALLY SLOW, this should all be paginated in the DB
-    # _get_pages_for_listview is much faster.
-    return map { $self->hub->pages->new_page($_->id) } @$model_pages
+    return @$pages if wantarray;
+    return $pages;
 }
 
 sub _get_pages_for_listview {
@@ -401,20 +371,20 @@ sub _get_pages_for_listview {
     );
 
     if (lc($tag) eq 'recent changes') {
-        $total = Socialtext::Model::Pages->ActiveCount(
+        $total = Socialtext::Pages->ActiveCount(
             workspace_id => $ws_id
         );
-        $model_pages = Socialtext::Model::Pages->All_active(@args);
+        $model_pages = Socialtext::Pages->All_active(@args);
     }
     else {
         $tag = Socialtext::Encode::ensure_is_utf8($tag);
         push @args, tag => $tag;
 
-        $total = Socialtext::Model::Pages->TaggedCount(
+        $total = Socialtext::Pages->TaggedCount(
             workspace_id => $ws_id,
             tag          => $tag
         );
-        $model_pages = Socialtext::Model::Pages->By_tag(@args);
+        $model_pages = Socialtext::Pages->By_tag(@args);
     }
 
     return {
@@ -445,23 +415,20 @@ sub get_pages_numeric_range {
     sub delete {
         my $self = shift;
         my %p    = validate( @_, $spec );
+        my $tag = $p{tag};
 
         # Delete the tag on each page
-        for my $page ( $self->get_pages_for_category($p{tag}) ) {
-            $page->metadata->Category([
-                grep { lc($_) ne lc($p{tag}) } @{ $page->metadata->Category }
-            ]);
-            $page->store( user => $p{user} );
-        }
+        sql_txn {
+            for my $page ( $self->get_pages_for_category($tag) ) {
+                $page->delete_tags($tag); # automatically stores
+            }
 
-        # Delete any workspace tags
-        sql_execute( <<EOT,
-DELETE FROM page_tag 
-    WHERE workspace_id = ?
-      AND LOWER(tag) = LOWER(?)
-EOT
-            $self->hub->current_workspace->workspace_id, $p{tag},
-        );
+            # Delete any workspace tags
+            sql_execute(q{
+                DELETE FROM page_tag 
+                 WHERE workspace_id = ? AND LOWER(tag) = LOWER(?)
+            }, $self->hub->current_workspace->workspace_id, $tag);
+        };
     }
 }
 
@@ -561,16 +528,16 @@ sub _set_titles {
     if ( $arguments =~ /blog/i ) {
   
         if ( $self->target_workspace ne $self->current_workspace_name ) {
-            $title_info = loc("Recent Posts from [_1] in workspace [_2]", $arguments, $self->target_workspace);
+            $title_info = loc("blog.recent-posts=tag,wiki", $arguments, $self->target_workspace);
         } else {
-            $title_info = loc("Recent Posts from [_1]", $arguments);
+            $title_info = loc("blog.recent-posts=tag", $arguments);
         }
     }
     else {
         if ( $self->target_workspace ne $self->current_workspace_name ) {
-            $title_info = loc("Recent Changes in Tag [_1] in workspace [_2]", $arguments, $self->target_workspace);
+            $title_info = loc("nav.recent-changes=tag,wiki", $arguments, $self->target_workspace);
         } else {
-            $title_info = loc("Recent Changes in Tag [_1]", $arguments);
+            $title_info = loc("nav.recent-changes=tag", $arguments);
         }
     }
     $self->wafl_query_title($title_info);

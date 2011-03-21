@@ -6,7 +6,7 @@ use Socialtext;
 use Socialtext::Workspace;
 use Socialtext::HTTP ':codes';
 use Socialtext::Page;
-use Socialtext::Model::Pages;
+use Socialtext::Pages;
 use Socialtext::Search 'search_on_behalf';
 use Socialtext::String;
 use Socialtext::Timer qw/time_scope/;
@@ -38,7 +38,8 @@ sub _get_entities {
         }
         (my $page_filter = $filter) =~ s/^\\b//;
         $self->{_last_modified} = time;
-        return Socialtext::Model::Pages->Minimal_by_name(
+        return Socialtext::Pages->Minimal_by_name(
+            hub          => $self->hub,
             workspace_id => $self->hub->current_workspace->workspace_id,
             page_filter  => $page_filter,
             limit        => $self->items_per_page,
@@ -142,7 +143,7 @@ sub _entities_for_query {
         @entities = $self->_searched_pages($search_query);
     }
     else {
-        # Specify ordering to Model::Pages, as it only returns 500 items.
+        # Specify ordering to Pages, as it only returns 500 items.
         # We want it to return the *correct* 500.
         my $order_by = undef;
         my $order    = $self->rest->query->param('order') || '';
@@ -156,7 +157,8 @@ sub _entities_for_query {
         elsif  ($order eq 'name') {
             $order_by = 'name'
         }
-        @entities = @{ Socialtext::Model::Pages->All_active(
+        @entities = @{ Socialtext::Pages->All_active(
+            hub          => $self->hub,
             workspace_id => $self->hub->current_workspace->workspace_id,
             order_by     => $order_by,
             count        => $count,
@@ -164,7 +166,7 @@ sub _entities_for_query {
             type         => $type,
         ) || [] };
         $self->total_result_count(
-            Socialtext::Model::Pages->ActiveCount(
+            Socialtext::Pages->ActiveCount(
               workspace_id => $self->hub->current_workspace->workspace_id,
             ));
     }
@@ -228,7 +230,7 @@ sub _searched_pages {
     my @all_pages;
     for my $workspace_name (sort keys %page_ids_by_workspace) {
         my $wksp = Socialtext::Workspace->new( name => $workspace_name ) or next;
-        my $pages = Socialtext::Model::Pages->By_id(
+        my $pages = Socialtext::Pages->By_id(
             hub              => $self->hub,
             workspace_id     => $wksp->workspace_id,
             page_id          => $page_ids_by_workspace{$workspace_name}

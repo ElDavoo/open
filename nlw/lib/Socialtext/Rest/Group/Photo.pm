@@ -81,13 +81,12 @@ sub POST_photo {
         $rest, HTTP_403_Forbidden, 'must be a group admin'
     ) unless $can_admin;
 
-    my $file = $rest->query->{'photo-local'};
+    my $fh = $rest->query->upload('photo-local');
     return $self->_post_failure(
         $rest, HTTP_400_Bad_Request, 'photo-local is a required argument'
-    ) unless $file;
+    ) unless $fh;
     
     eval {
-        my $fh = $file->[0];
         my $blob = do { local $/; <$fh> };
         $group->photo->set( \$blob );
     };

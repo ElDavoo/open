@@ -127,7 +127,7 @@
 | text_like | Name |  |
 | text_like | Account |  |
 | text_like | Administrators |  |
-| text_like | Create a new workspace |  |
+| text_like | qr/Create.+new workspace/i |  |
 | text_like | qr/Invite To existing workspace\(s\)/i |  |
 
 | *Comment* | Test Case: Business Control Panel Sorting radio buttons create or invite |  |
@@ -172,9 +172,8 @@
 | wait_for_page_to_load_ok | 120000 |  |
 | text_like | errors-and-messages | qr/Congratulations! You successfully created a new workspace with \d+ users. They will receive an invitation message with a link to ws-n%%start_time%%./ |
 
-| *Comment* | Test Case: Business Control Panel Sorting Custom Profile testing moved to Test Case: Custom Fields. |  |
-
 | *Comment* | Test case: Business Control Panel Sorting TEARDOWN. Let %%username%% keep accounts admin privileges. |  |
+| st-process-jobs |  |  |
 | st-admin | remove-system-admin --email %%email%% | no longer has system admin access |
 | st-admin | delete-workspace --workspace 0-sort-1-workspace1-%%start_time%% --no-export | has been deleted |
 | st-admin | delete-workspace --workspace 0-sort-2-workspace1-%%start_time%% --no-export | has been deleted |

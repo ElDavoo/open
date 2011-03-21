@@ -5,6 +5,8 @@ package Socialtext::BrowserDetect;
 use strict;
 use warnings;
 
+sub _ua () { lc($ENV{HTTP_USER_AGENT}||'') }
+
 =head1 NAME
 
 Socialtext::BrowserDetect - Determine the Web browser from an HTTP user agent string
@@ -18,8 +20,7 @@ Tell if the user agent is MSIE of some kind or another.
 =cut
 
 sub ie {
-    my $ua = lc $ENV{HTTP_USER_AGENT};
-
+    my $ua = _ua;
     return (index($ua,'msie') != -1) || (index($ua,'microsoft internet explorer') != -1);
 }
 
@@ -30,8 +31,7 @@ Tell if the user agent is Safari.
 =cut
 
 sub safari {
-    my $ua = lc $ENV{HTTP_USER_AGENT};
-
+    my $ua = _ua;
     return (index($ua,'safari') != -1) || (index($ua,'applewebkit') != -1);
 }
 
@@ -42,8 +42,7 @@ Tell if the user agent is Adobe AIR.
 =cut
 
 sub adobe_air {
-    my $ua = lc $ENV{HTTP_USER_AGENT};
-
+    my $ua = _ua;
     return (index($ua,'adobeair') != -1);
 }
 

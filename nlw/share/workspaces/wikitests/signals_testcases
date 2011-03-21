@@ -27,5 +27,6 @@ A convenience testset for running all of our Signals tests
 * [Test Case: Replies]
 
 * [Test Case: Signals Wikitext]
+* [Test Case: Signals Delete]
 
 Test Case: change signal limit - Moved to all_appliance_testcases because it uses /console now

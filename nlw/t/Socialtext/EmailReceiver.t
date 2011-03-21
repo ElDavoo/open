@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::Socialtext tests => 178;
+use Test::Socialtext tests => 174;
 
 # Fixtures: admin_no_pages
 #
@@ -236,7 +236,7 @@ EOF
     my $page = $hub->pages()->new_from_name('In New Cat');
     isa_ok( $page, 'Socialtext::Page' );
     is_deeply(
-        [ sort @{ $page->metadata()->Category() } ],
+        [ sort @{ $page->tags } ],
         [ 'Email', 'New Cat' ],
         'page is in Email and New Cat categories'
     );
@@ -263,7 +263,7 @@ EOF
     my $page = $hub->pages()->new_from_name('In New Cat2');
     isa_ok( $page, 'Socialtext::Page' );
     is_deeply(
-        [ sort @{ $page->metadata()->Category() } ],
+        [ sort @{ $page->tags } ],
         [ 'Email', 'New Cat2' ],
         'page is in Email and New Cat2 categories'
     );
@@ -293,7 +293,7 @@ EOF
     my $page = $hub->pages()->new_from_name('Lists Rule');
     isa_ok( $page, 'Socialtext::Page' );
     is_deeply(
-        [ sort @{ $page->metadata()->Category() } ],
+        [ sort @{ $page->tags } ],
         [ 'Email', 'awesome' ],
         'page is in Email and awesome categories'
     );
@@ -320,7 +320,7 @@ EOF
     my $page = $hub->pages()->new_from_name('In New Cat3');
     isa_ok( $page, 'Socialtext::Page' );
     is_deeply(
-        [ sort @{ $page->metadata()->Category() } ],
+        [ sort @{ $page->tags } ],
         [ 'Email', 'New Cat3' ],
         'page is in Email and New Cat3 categories'
     );
@@ -349,7 +349,7 @@ EOF
     my $page = $hub->pages()->new_from_name('utf8 category');
     isa_ok( $page, 'Socialtext::Page' );
     is_deeply(
-        [ sort @{ $page->metadata()->Category() } ],
+        [ sort @{ $page->tags } ],
         [ 'Email', $singapore_category ],
         'page is in Email and {Singapore Blog} categories'
     );
@@ -376,7 +376,7 @@ EOF
     my $page = $hub->pages()->new_from_name('mixed case ws name');
     isa_ok( $page, 'Socialtext::Page' );
     is_deeply(
-        [ sort @{ $page->metadata()->Category() } ],
+        [ sort @{ $page->tags } ],
         [ 'Email', 'New Cat' ],
         'mixed case ws name - page is in Email and New Cat categories'
     );
@@ -409,7 +409,7 @@ EOF
     my $page = $hub->pages()->new_from_name('Cats in Body');
     isa_ok( $page, 'Socialtext::Page' );
     is_deeply(
-        [ sort @{ $page->metadata()->Category() } ],
+        [ sort @{ $page->tags } ],
         [ 'Cat1', 'Cat2', 'Cat3', 'Cat4', 'Email' ],
         'page is in Cat1, Cat2, Cat3, Cat4 & Email categories'
     );
@@ -441,7 +441,7 @@ EOF
 
     my $page = $hub->pages()->new_from_name('Tags in Body');
     is_deeply(
-        [ sort @{ $page->metadata()->Category() } ],
+        [ sort @{ $page->tags } ],
         [ 'Cat1', 'Cat2', 'Cat3', 'Cat4', 'Email' ],
         'page is in Cat1, Cat2, Cat3, Cat4 & Email categories'
     );
@@ -471,7 +471,7 @@ EOF
     my $page = $hub->pages()->new_from_name('Cats in Body2');
     isa_ok( $page, 'Socialtext::Page' );
     is_deeply(
-        [ sort @{ $page->metadata()->Category() } ],
+        [ sort @{ $page->tags } ],
         [ 'Cat1', 'Email' ],
         'page is in Cat1 & Email categories'
     );
@@ -508,7 +508,7 @@ BAD_FLOWED_CATEGORIES: {
         my $page = $hub->pages()->new_from_name("Bad Format=Flowed Category $num");
         isa_ok( $page, 'Socialtext::Page' );
         is_deeply(
-            [ sort @{ $page->metadata()->Category() } ],
+            [ sort @{ $page->tags } ],
             $tests{$num},
             "bad flowed $num is in correct categories"
         );
@@ -542,7 +542,7 @@ ONE_ATTACHMENT: {
     like( $page->content(), qr/\Q{file: http-recorder}\E/,
           'check that page content contains link to attached file' );
 
-    my $all = $hub->attachments()->all_in_workspace();
+    my $all = $hub->attachments->all_attachments_in_workspace;
     is( @$all, 1,
         'only one attachment in workspace' );
 
@@ -560,7 +560,7 @@ ATTACHMENT_DF_CHECK: {
     my $email_receiver = Socialtext::EmailReceiver::Factory->create(
             {
                 locale => $test_locale,
-                handle    => $fh,,
+                handle    => $fh,
                 workspace => $ws
             });
     $email_receiver->receive();
@@ -666,12 +666,12 @@ BIG5_IN_BODY: {
             });
     $email_receiver->receive();
 
-    my $page = $hub->pages()->new_from_name('Big5 Email');
+    my $page = $hub->pages()->new_from_name('BIG5 EMAIL');
     isa_ok( $page, 'Socialtext::Page' );
 
     ok( $page->active(), "Found a page with the name of 'Big5 Email'" );
-    is( $page->title(), 'Big5 Email',
-        'check that page title matches subject' );
+    is( $page->title(), 'Big5 email',
+        'check that page title matches Subject of email' );
 
     my $singapore = join '', map { chr($_) } 26032, 21152, 22369;
 
@@ -1180,14 +1180,8 @@ sub tests_for_email {
           'content includes date from email headers' );
     like( $page->content(), qr{API changed},
           'content includes string "API changed"' );
-    is( $page->metadata()->MessageID(),
-        '<Pine.LNX.4.33.0409151241140.5203-100000@sharkey.morinda.com>',
-        'check that page metadata Message-ID matches the message id in email' );
-    like( $page->metadata()->Received(),
-          qr/\Qlists.sourceforge.net ([66.35.250.206]\E\s+\Qhelo=sc8-sf-list1.sourceforge.net)\E/,
-          'check that page metadata Received matches part of the Received header in email' );
 
-    my $categories = $page->metadata()->Category();
+    my $categories = $page->tags;
     ok( scalar @$categories, 'page has category metadata' );
     is_deeply( [ sort @$categories ],
                [ 'Email', 'ape', 'monkey' ],

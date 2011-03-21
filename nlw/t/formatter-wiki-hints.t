@@ -2,6 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
+use IO::File;
 
 # HACK: create test fixture *FIRST* before loading Test::Socialtext.  Test::ST
 # causes the Hub to get loaded, which in turn loads the ShortcutsPlugin that
@@ -16,12 +17,12 @@ no_diff;
 my $hub = new_hub('admin');
 
 my $page = $hub->pages->new_from_name('quick start');
-my $attachment = $hub->attachments->new_attachment(
-    page_id => $page->id,
+my $attachment = $hub->attachments->create(
+    fh => IO::File->new('t/attachments/socialtext-logo-30.gif','r'),
     filename => 'socialtext-logo.gif',
+    page_id => $page->id,
+    user => $hub->current_user,
 );
-$attachment->save('t/attachments/socialtext-logo-30.gif');
-$attachment->store( user => $hub->current_user );
 
 run {
     my $case = shift;

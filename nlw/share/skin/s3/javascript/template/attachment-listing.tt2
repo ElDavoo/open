@@ -4,20 +4,20 @@
   <a name="[% item.id %]" href="#" class="extract_attachment">
    <img src="[% wiki.static_path %]/skin/common/images/extract.png"
         width="16" height="16" border="0"
-        alt="[% loc('Extract this attachment') %]"
-        title="[% loc('Extract this attachment') %]"
+        alt="[% loc('file.extract') %]"
+        title="[% loc('file.extract') %]"
     />
   </a>
   [% END %]
   <a href="#" class="delete_attachment">
    <img src="[% wiki.static_path %]/skin/s3/images/delete.png"
         width="16" height="16" border="0"
-        alt="[% loc('Delete this attachment') %]"
-        title="[% loc('Delete this attachment') %]"
+        alt="[% loc('file.delete-this') %]"
+        title="[% loc('file.delete-this') %]"
    />
   </a>
   <div class="fileInfo">
-   [% item.upload_date %] [% loc('by') %]
+   [% item.upload_date %] [% loc('file.by') %]
    <a class="person authorized" userid="[% item.uploader_id %]"
       href="/st/profile/[% item.uploader %]">[% item.uploader_name %]</a>
   </div>

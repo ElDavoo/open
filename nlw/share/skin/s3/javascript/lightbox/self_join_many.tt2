@@ -1,4 +1,4 @@
-<p>[% loc('You must be a member of one of the groups that have access to this workspace. Please select which group(s) you want to join below.') %]</p>
+<p>[% loc('edit.choose-group') %]</p>
 
 <br />
 

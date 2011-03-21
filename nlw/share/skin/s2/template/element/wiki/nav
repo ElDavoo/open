@@ -14,6 +14,6 @@
     <div id="st-home">
         <a id="st-home-link" href="[% wiki.uri %]index.cgi">[% loc('Home') %]</a>
     </div>
-    [% search_box_snippet %]
+    [% INCLUDE element/search_box_snippet %]
     <br clear="both" />
 </div></div></div></div>

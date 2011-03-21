@@ -11,8 +11,8 @@ use Socialtext::BrowserDetect ();
 use Socialtext::Skin;
 use Socialtext::l10n qw(loc);
 
-sub class_id { 'new_form_page' }
-const class_title => 'New Form Page';
+const class_id => 'new_form_page';
+const class_title => _('class.new_form_page');
 
 const cgi_class => 'Socialtext::NewFormPage::CGI';
 
@@ -37,7 +37,7 @@ sub new_form_page {
     my $self = shift;
     $self->_render(
         'new_form_page_input.html',
-        display_title => loc('Create Your Profile'),
+        display_title => loc('profile.create'),
         self => $self,
         $self->cgi->all,
     );
@@ -58,18 +58,16 @@ sub new_form_page_process {
         'new_form_page_output.wiki',
         $self->cgi->vars,
     );
+    my $rev = $page->edit_rev();
+    $page->body_ref(\$content);
 
-    $page->content($content);
-    $page->metadata->Subject($page_title);
     if ($self->cgi->category) {
-        $page->metadata->Category([$self->cgi->category]);
+        $page->tags([$self->cgi->category]);
     } else {
-        $page->metadata->Category(['People']);
+        $page->tags(['People']);
     }
 
     my $user = $self->hub->current_user;
-
-    $page->metadata->update( user => $user );
     $page->store( user => $user );
 
     $self->_set_user_info( $user, $first_name, $last_name )

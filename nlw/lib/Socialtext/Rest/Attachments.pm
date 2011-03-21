@@ -6,8 +6,6 @@ use strict;
 
 use base 'Socialtext::Rest::Collection';
 
-use Fcntl ':seek';
-use File::Temp 'tempfile';
 use Socialtext::HTTP ':codes';
 use Socialtext::Base ();
 use Number::Format;
@@ -58,32 +56,8 @@ sub number_formatter {
 }
 
 sub _entity_hash {
-    my ($self, $attachment) = @_;
-    my $user = $self->rest->user;
-
-    # REVIEW: URI code looks cut and pasted here and in
-    # Socialtext::Rest::PageAttachments.
-    my $bytes = $attachment->Content_Length;
-    return +{
-        id   => $attachment->id,
-        name => $attachment->filename,
-        uri  => '/data/workspaces/' . Socialtext::Base->uri_escape($self->ws) . '/attachments/'
-            . $attachment->page_id . ':'
-            . Socialtext::Base->uri_escape($attachment->id)
-            . '/original/'
-            . Socialtext::Base->uri_escape($attachment->db_filename),
-        'content-type'   => '' . $attachment->mime_type,    # Stringify!
-        'content-length' => $bytes,
-        size             => $bytes < 1024
-                                ? "$bytes bytes"
-                                : $self->number_formatter->format_bytes($bytes),
-        date             => $attachment->Date,
-        uploader         => $attachment->From,
-        uploader_name    => $user->display_name,
-        uploader_id      => $user->user_id,
-        'page-id'        => $attachment->page_id,
-        local_date       => $self->hub->timezone->date_local($attachment->Date),
-    };
+    my ($self, $att) = @_;
+    return $att->to_hash(formatted => 1);
 }
 
 1;

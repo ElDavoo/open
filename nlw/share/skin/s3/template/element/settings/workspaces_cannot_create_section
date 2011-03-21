@@ -1,26 +1,26 @@
 [%# vim: set et sts=2 sw=2: %]
 [%# @COPYRIGHT@ -%]
 <dl class="form">
-  <dt><label>[% loc('Create New Workspace') %]</label></dt>
+  <dt><label>[% loc('wiki.create') %]</label></dt>
   <dd>
     <p>
-      [% loc('In order to create a workspace, the Workspace must belong to a Group.') %]
+      [% loc('wiki.group-required') %]
     </p>
     [% IF can_create_groups %]
     <p>
-         [% loc('You can create a new Group, or add a workspace to an existing Group.') %]
+         [% loc('info.wiki-group') %]
     </p>
     [% END %]
     <p>
-      [% loc('<em>To add a workspace to an <strong>existing group,</strong></em> go to the <a href="/st/groups">"Group Directory"</a> under the Groups pulldown in the main navigation above, go to your chosen group, click "Edit" and create the workspace.') %]
+      [% loc('wiki.to-existing-group') %]
     </p>
     [% IF can_create_groups %]
     <p>
-      [% loc('<em>To add a workspace to a <strong>new group,</strong></em> go to <a href="#" onclick="showCreateGroupLightbox(); return false">"Create Group"</a> under the Groups pulldown in the main navigation above. From there, use the "Workspaces" section to create your workspace.') %]
+      [% loc('wiki.to-new-group') %]
     </p>
     [% ELSE %]
     <p>
-      [% loc('Your appliance is configured so that only account administrators can create new groups.') %]
+      [% loc('error.non-admin-create-group') %]
     </p>
     [% END %]
   </dd>

@@ -1,100 +1,87 @@
-# @COPYRIGHT@
 package Socialtext::HTMLArchive;
-use strict;
-use warnings;
+# @COPYRIGHT@
+use Moose;
 
-use File::Basename ();
-use File::Copy     ();
-use File::Path;
+use File::Basename qw/basename dirname/;
+use File::Copy qw/copy/;
 use File::Temp ();
 use Socialtext::File;
 use Socialtext::Formatter::Parser;
-use Socialtext::Validate qw( validate validate_pos SCALAR_TYPE );
 use Socialtext::String ();
-use Time::Local ();
+use Guard;
 
-sub new {
-    my $class = shift;
-    my %p     = validate( @_, { hub => { can => ['main'] } } );
+use namespace::clean -except => 'meta';
 
-    return bless \%p, $class;
-}
+has 'hub' => (is => 'rw', isa => 'Socialtext::Hub', weak_ref=>1);
 
 sub create_zip {
-    my $self = shift;
-    my ($zip_file) = validate_pos( @_, SCALAR_TYPE );
+    my ($self, $zip_file) = @_;
+    die "Path to zip file does not exist\n" unless ($zip_file);
+    $zip_file .= '.zip' unless $zip_file =~ /\.zip$/;
+    die "Path to zip file does not existsi\n" if (!-e dirname($zip_file));
 
-    my $dir = File::Temp::tempdir();
+    my $dir = File::Temp->newdir(); # will cleanup
 
-    my $formatter = Socialtext::HTMLArchive::Formatter->new( hub => $self->{hub} );
-    $self->{hub}->formatter($formatter);
+    # XXX: we're modifying the hub pretty hard here, would be nice if we could
+    # just clone it.
+    my $hub = $self->hub; # keep it strong while we're using it
+
+    my $formatter
+        = Socialtext::HTMLArchive::Formatter->new(hub => $hub);
+    $hub->formatter($formatter);
+
     my $parser = Socialtext::Formatter::Parser->new(
         table      => $formatter->table,
         wafl_table => $formatter->wafl_table,
     );
     my $viewer = Socialtext::Formatter::Viewer->new(
-        hub => $self->{hub},
+        hub => $hub,
         parser => $parser,
     );
-    $self->{hub}->viewer($viewer);
+    $hub->viewer($viewer);
 
-    for my $page_id ( $self->{hub}->pages->all_ids ) {
-        my $page = $self->{hub}->pages->new_page($page_id);
-        $page->load;
+    for my $page ( $hub->pages->all ) {
 
         # XXX - for the benefit of attachments (why can't we just ask
         # a page what attachments it has?)
-        $self->{hub}->pages->current($page);
-
-        my $metadata = $page->metadata;
-        my $title    = $metadata->Subject;
-
-        # XXX Is this impervious to revisions (regarding caching)
-        my $html = $viewer->process( $page->content );
+        $hub->pages->current($page);
 
         # XXX - calling this on display is a hack, but we cannot call
-        # it on the hub directly
-        my $formatted_page = $self->{hub}->display->template_process(
+        # it on the hub directly (it's from Socialtext::Plugin).
+        my $formatted_page = $hub->display->template_process(
             'html_archive_page.html',
-            html         => $html,
-            title        => $title,
+            # The no-args form of to_html() should skip cache-writing.
+            html         => sub { $page->to_html },
+            title        => $page->name,
             html_archive => $self,
         );
 
-        my $raw_date = $metadata->Date;
-        my ( $year, $mon, $mday, $hour, $min, $sec ) =
-          ( $raw_date =~ /(\d{4})-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)/ );
-        my $unix_time =
-          Time::Local::timegm( $sec, $min, $hour, $mday, $mon - 1, $year );
+        my $file = Socialtext::File::catfile( $dir, $page->page_id.".htm" );
+        open my $fh, '>:utf8', $file or die "Cannot write to $file: $!";
+        print $fh $formatted_page or die "Cannot write to $file: $!";
+        close $fh or die "Cannot write to $file: $!";
 
-        my $file = Socialtext::File::catfile( $dir, "$page_id.htm" );
-        open my $fh, '>:utf8', $file
-          or die "Cannot write to $file: $!";
-        print $fh $formatted_page
-          or die "Cannot write to $file: $!";
-        close $fh
-          or die "Cannot write to $file: $!";
-        utime $unix_time, $unix_time, $file
-          or die "Cannot run utime on $file: $!";
+        # set its timestamp
+        my $mtime = $page->modified_time;
+        utime $mtime, $mtime, $file
+            or die "Cannot run utime on $file: $!";
 
-        for my $att ( @{ $self->{hub}->attachments->all } ) {
-            File::Copy::copy(
-                $att->full_path => Socialtext::File::catfile( $dir, $att->filename )
-            );
+        for my $att ($page->attachments) {
+            my $target = Socialtext::File::catfile($dir, $att->clean_filename);
+            $att->copy_to_file($target); # dies if it can't
+            my $att_mtime = $att->created_at->epoch;
+            utime $att_mtime, $att_mtime, $target
+                or die "Cannot run utime on $target: $!";
         }
     }
 
     for my $css ( $self->{hub}->skin->css_files ) {
-        my $file = Socialtext::File::catfile( $dir, File::Basename::basename($css) );
-        File::Copy::copy( $css => $file );
+        my $file = Socialtext::File::catfile( $dir, basename($css) );
+        copy( $css => $file ) or die "can't copy skin file: $!";
     }
-
-    $zip_file .= '.zip' unless $zip_file =~ /\.zip$/;
 
     system( 'zip', '-q', '-r', '-j', $zip_file, $dir )
         and die "zip of $dir into $zip_file failed: $!";
-
-    File::Path::rmtree( $dir, 0 );
 
     return $zip_file;
 }
@@ -102,7 +89,7 @@ sub create_zip {
 sub css_uris {
     my $self = shift;
 
-    return map { File::Basename::basename($_) } $self->{hub}->skin->css_files;
+    return map { basename($_) } $self->{hub}->skin->css_files;
 }
 
 ################################################################################
@@ -129,14 +116,11 @@ sub wafl_classes {
     } $self->SUPER::wafl_classes(@_);
 }
 
-# contains Socialtext::Formatter::FreeLink
-use Socialtext::Formatter::Phrase;
-# contains Socialtext::Formatter::File
-use Socialtext::Formatter::WaflPhrase;
-
 ################################################################################
 package Socialtext::HTMLArchive::Formatter::FreeLink;
 
+# contains Socialtext::Formatter::FreeLink:
+use Socialtext::Formatter::Phrase;
 use base 'Socialtext::Formatter::FreeLink';
 
 sub html {
@@ -153,6 +137,8 @@ sub html {
 ################################################################################
 package Socialtext::HTMLArchive::Formatter::File;
 
+# contains Socialtext::Formatter::File:
+use Socialtext::Formatter::WaflPhrase;
 use base 'Socialtext::Formatter::File';
 
 sub html {
@@ -175,6 +161,8 @@ sub html {
 ################################################################################
 package Socialtext::HTMLArchive::Formatter::Image;
 
+# contains Socialtext::Formatter::Image:
+use Socialtext::Formatter::WaflPhrase;
 use base 'Socialtext::Formatter::Image';
 
 sub html {
@@ -186,5 +174,6 @@ sub html {
     return qq{<img src="$image_name" />};
 }
 
+package Socialtext::HTMLArchive;
+__PACKAGE__->meta->make_immutable;
 1;
-

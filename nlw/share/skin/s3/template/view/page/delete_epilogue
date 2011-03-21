@@ -14,7 +14,7 @@
     </div>
     <div id="contentColumns">
       <br />
-      [% loc('Did you delete this page in error? If so, you can restore the page.') %]
+      [% loc('page.delete-epilogue') %]
       <br />
       <br />
       <form method="post" action="[% script_name %]">
@@ -23,7 +23,7 @@
         <ul class="formButtons" style="float:left">
           <li class="flexButton">
             <a class="genericOrangeButton" href="#" onclick="jQuery(this).parents('form').submit()">
-              [% loc('Restore Page') %]
+              [% loc('page.restore') %]
             </a>
           </li>
         </ul>

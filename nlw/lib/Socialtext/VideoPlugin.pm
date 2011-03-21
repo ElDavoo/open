@@ -19,7 +19,7 @@ use List::Util qw/max min/;
 our $Cache;
 
 const class_id    => 'video';
-const class_title => 'VideoPlugin';
+const class_title => _('class.video');
 const cgi_class   => 'Socialtext::VideoPlugin::CGI';
 
 our %Services = (
@@ -122,7 +122,7 @@ sub get_oembed_data {
     $autoplay = ($autoplay ? 1 : 0);
 
     unless ($url =~ Socialtext::Formatter::HyperLink->pattern_start) {
-        return { error => loc("[_1] is not a valid URL.", $url) };
+        return { error => loc("error.invalid=url", $url) };
     }
 
     $Cache ||= Cache::FileCache->new({
@@ -194,18 +194,18 @@ sub get_oembed_data {
 
                 return $payload;
             }
-            return { error => loc("Sorry, this URL does not appear to link to an embeddable video.") };
+            return { error => loc("error.invalid-video-url") };
         }
     }
 
     if ($url =~ m{^\w+://(?:$DomainsRegex)/}o) {
         # The user may be partially entering an URL; don't discourage them.
-        return { error => loc("Please enter the full video URL.") };
+        return { error => loc("error.full-video-url-required") };
     }
 
     return {
         error => loc(
-            "Sorry, this URL is not hosted on any of our supported services ([_1]).",
+            "error.invalid-video-url=hosts",
             join(', ', sort keys %Socialtext::VideoPlugin::Services)
         )
     };
@@ -285,9 +285,10 @@ sub get_video_thumbnail {
 ################################################################################
 package Socialtext::VideoPlugin::Wafl;
 
-use base 'Socialtext::Formatter::WaflPhraseDiv';
 use Class::Field qw( const );
 use Socialtext::Formatter::Phrase ();
+use Socialtext::Formatter::WaflPhrase ();
+use base 'Socialtext::Formatter::WaflPhraseDiv';
 
 const wafl_id => 'video';
 const wafl_reference_parse => qr/^\s*<?(@{[

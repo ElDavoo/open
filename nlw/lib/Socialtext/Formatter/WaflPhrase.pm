@@ -153,30 +153,24 @@ sub hub_for_workspace_name {
 }
 
 sub get_file_id {
-    my $self = shift;    # XXX maybe belongs in Socialtext::Attachments
-    my ( $workspace_name, $page_id, $filename ) = @_;
+    my ($self, $workspace_name, $page_id, $filename) = @_;
     my $t = time_scope 'get_file_id';
 
-    my $ws = Socialtext::Workspace->new( name => $workspace_name );
-    return $self->set_error( $self->permission_error )
+    my $ws = Socialtext::Workspace->new(name => $workspace_name);
+    return $self->set_error($self->permission_error)
         unless $ws && $self->authz->user_has_permission_for_workspace(
             user       => $self->current_user,
             permission => ST_READ_PERM,
             workspace  => $ws,
         );
 
-    my $path = Socialtext::Paths::plugin_directory($workspace_name);
-
-    my $hub = $self->hub_for_workspace_name($workspace_name);
-
-    my $all = $hub->attachments->all( page_id => $page_id );
-
-    $filename = lc($filename);
-    my @attachments = sort { $b->Date cmp $a->Date }
-        grep { lc( $_->filename ) eq $filename } @$all
-        or return $self->set_error( $self->existence_error );
-
-    $attachments[0]->id;
+    my $id = Socialtext::Attachments->IDForFilename(
+        workspace_id => $ws->workspace_id,
+        page_id => $page_id,
+        filename => $filename,
+    );
+    return $self->set_error($self->existence_error) unless $id;
+    return $id;
 }
 
 ################################################################################
@@ -221,6 +215,8 @@ package Socialtext::Formatter::Image;
 use base 'Socialtext::Formatter::WaflPhrase';
 use Class::Field qw( const );
 use Socialtext::Timer qw/time_scope/;
+use Socialtext::Permission 'ST_READ_PERM';
+use Guard;
 
 const wafl_id => 'image';
 const wafl_reference_parse => 
@@ -245,39 +241,49 @@ sub html {
 
     return $self->syntax_error unless $image_name;
 
-    my $escaped = $self->uri_escape($image_name);
-    my $file_id = $self->get_file_id( $workspace_name, $page_id, $image_name )
-        or return $self->error;
+    my $ws = Socialtext::Workspace->new(name => $workspace_name);
+    return $self->existence_error unless $ws;
 
-    # We have to save and restore the current workspace so we can set it
-    # properly for inter-workspace links.  This is probably a bug in
-    # Socialtext::Attachment::full_path.
-    my $old_current_workspace = $self->hub->current_workspace;
-    $self->hub->current_workspace(
-        Socialtext::Workspace->new( name => $workspace_name ) );
-    my $link = $self->hub->viewer->link_dictionary->format_link(
-        link       => 'image',
-        url_prefix => $self->url_prefix,
-        workspace  => $workspace_name,
-        filename   => $escaped,
-        page_uri   => $page_uri,
-        id         => $file_id,
-        size       => $size || 'scaled',
-        full_path  => $self->hub->attachments->new_attachment(
-            id       => $file_id,
-            page_id  => $page_id,
+    return $self->permission_error
+        unless $self->authz->user_has_permission_for_workspace(
+            user       => $self->current_user,
+            permission => ST_READ_PERM,
+            workspace  => $ws,
+        );
+
+    my $link;
+    $self->hub->pages->render_in_workspace($page_id, $ws, sub {
+        # the attachment's hub needs to have the correct workspace in order to
+        # generate the file's "path" (i.e. uri)
+        my $page = shift;
+        return $self->set_error($self->existence_error) unless $page;
+
+        my $hub = $page->hub;
+        my $att = $hub->attachments->latest_with_filename(
+            page_id => $page_id,
             filename => $image_name,
-        )->full_path($size),
-    );
-    $self->hub->current_workspace($old_current_workspace);
+        );
+        return $self->set_error($self->existence_error) unless $att;
 
-    return qq{<a href="$link">} . $self->label ."</a>"
-        if $self->label;
+        $size ||= 'scaled';
+        my $full_path = $att->prepare_to_serve($size);
+        $link = $hub->viewer->link_dictionary->format_link(
+            link       => 'image',
+            url_prefix => $hub->viewer->url_prefix,
+            workspace  => $workspace_name,
+            filename   => $self->uri_escape($image_name),
+            page_uri   => $page_uri,
+            id         => $att->id,
+            size       => $size,
+            full_path  => $full_path,
+        );
+    });
 
+    if (my $e = $self->error) { return $e }
+
+    return qq{<a href="$link">}.$self->label."</a>" if $self->label;
     my $widget = $self->wikitext;
-
-    return
-        qq{<img src="$link" alt="st-widget-$widget" />};
+    return qq{<img src="$link" alt="st-widget-$widget" />};
 }
 
 ################################################################################
@@ -309,10 +315,10 @@ sub html {
             and ( $self->current_workspace_name ne $workspace_name );
     }
 
-    my $file_id = $self->get_file_id( $workspace_name, $page_id, $file_name )
+    my $file_id = $self->get_file_id($workspace_name, $page_id, $file_name)
         or return $self->error;
 
-    $file_name      = $self->uri_escape($file_name);
+    $file_name = $self->uri_escape($file_name);
     my $link = $self->hub->viewer->link_dictionary->format_link(
         link       => 'file',
         url_prefix => $self->url_prefix,
@@ -322,8 +328,7 @@ sub html {
         id         => $file_id,
     );
 
-    return
-        qq{<a href="$link">$label</a>};
+    return qq{<a href="$link">$label</a>};
 }
 
 ################################################################################
@@ -340,7 +345,7 @@ sub html {
         = $self->parse_wafl_reference;
     return $self->syntax_error unless $file_name;
 
-    my $file_id = $self->get_file_id( $workspace_name, $page_id, $file_name )
+    my $file_id = $self->get_file_id($workspace_name, $page_id, $file_name)
         or return $self->error;
 
     my $label = $file_name;
@@ -361,8 +366,7 @@ sub html {
         id         => $file_id,
     );
 
-    return
-        qq{<a href="$link;as_page=1" target="_blank">$label</a>};
+    return qq{<a href="$link;as_page=1" target="_blank">$label</a>};
 }
 
 ################################################################################
@@ -383,7 +387,7 @@ sub html {
 
     return $self->syntax_error unless $file_name;
 
-    my $file_id = $self->get_file_id( $workspace_name, $page_id, $file_name )
+    my $file_id = $self->get_file_id($workspace_name, $page_id, $file_name)
         or return $self->error;
 
     my $link = $self->hub->viewer->link_dictionary->format_link(
@@ -394,8 +398,7 @@ sub html {
         page_uri   => $page_uri,
         id         => $file_id,
     );
-    return qq{<link rel="stylesheet" type="text/css" href=}
-        . qq{"$link" />};
+    return qq{<link rel="stylesheet" type="text/css" href="$link" />};
 }
 
 ################################################################################
@@ -472,7 +475,6 @@ sub html {
     );
 
     my $page = Socialtext::Page->new(id => $page_uri, hub => $self->hub);
-    my $page_type = $page->metadata->Type;
 
     my $edit_url;
     if ($edit_perm) {
@@ -482,7 +484,7 @@ sub html {
                 workspace  => $workspace_name,
                 page_uri   => $page_uri_for_url,
                 url_prefix => $self->url_prefix,
-                page_type  => $page_type,
+                page_type  => $page->page_type,
             );
         };
     }
@@ -496,8 +498,8 @@ sub html {
         $edit_icon = $self->edit_icon($edit_url, $page_exists);
     }
 
-    my $activity_class = $page_type eq 'spreadsheet'
-        ? "st-include-activity$page_type"
+    my $activity_class = $page->is_spreadsheet
+        ? "st-include-activityspreadsheet"
         : "st-include-activity";
     my $activity =
         $self->hub->current_workspace->enable_spreadsheet
@@ -510,7 +512,7 @@ sub html {
 
 sub edit_icon {
     my ($self, $edit_url, $page_exists) = @_;
-    my $edit_text = loc('Edit');
+    my $edit_text = loc('wafl.edit');
     return qq{<a class="smallEditButton" href="$edit_url" title="$edit_text">[$edit_text]</a>}
          . qq{<div class="clear"></div>}
 }
@@ -583,7 +585,7 @@ sub html {
     my $content = $section_id;
     eval {
         # implements anti-recursion:
-        $self->hub->pages->_render_in_workspace($page_id, $ws, sub {
+        $self->hub->pages->render_in_workspace($page_id, $ws, sub {
             my $page = shift;
             $content =  $self->cell_value($page, $section_id);
         });
@@ -633,11 +635,11 @@ sub html {
             : $section_id;
         $section_id   = Socialtext::String::title_to_id($section_id);
         $section_text = '#' . Socialtext::Formatter::legalize_sgml_id($section_id);
-        $link_title   = loc("section link");
+        $link_title   = loc("link.section");
     }
     else {
         $label      ||= $page_title;
-        $link_title = loc("inter-workspace link: [_1]", $workspace_name);
+        $link_title = loc("link.interwiki", $workspace_name);
     }
 
     my $ws = Socialtext::Workspace->new( name => $workspace_name );
@@ -695,7 +697,6 @@ use Socialtext::Permission 'ST_READ_PERM';
 use Socialtext::l10n qw( loc );
 
 const wafl_id => 'category';
-my $wafl_id_str_category = loc('category');
 
 sub html {
     my $self = shift;
@@ -733,7 +734,7 @@ sub _link_to_action_display {
     );
 
     my $label = $self->label || $p{category};
-    my $title = loc("[_1] link", loc($p{action}));
+    my $title = loc("wafl.link=action", loc($p{action}));
     return qq(<a title="$title" href="$link">$label</a>);
 }
 
@@ -745,7 +746,6 @@ use Class::Field qw( const );
 use Socialtext::l10n qw( loc );
 
 const wafl_id => 'tag';
-my $wafl_id_str_tag = loc('tag');
 
 ################################################################################
 package Socialtext::Formatter::WeblogLink;
@@ -756,7 +756,6 @@ use Class::Field qw( const );
 use Socialtext::l10n qw( loc );
 
 const wafl_id => 'weblog';
-#const wafl_id_str => loc('weblog');
 
 ################################################################################
 package Socialtext::Formatter::BlogLink;
@@ -767,7 +766,6 @@ use Class::Field qw( const );
 use Socialtext::l10n qw( loc );
 
 const wafl_id => 'blog';
-#const wafl_id_str => loc('blog');
 
 ################################################################################
 package Socialtext::Formatter::TradeMark;
@@ -843,10 +841,12 @@ sub _parse_page_for_headers {
 
     my $content = $self->hub->wikiwyg->cgi->content;
     if ($content && ($cur_page_id eq $page_id || !$page->exists)) {
-        $page->content($content) if $content;
+        # We bypass the ->content() check here to avoid immutability error,
+        # since we're not actually going to store this into a revision object.
+        ${$page->body_ref} = $content;
     }
 
-    my $title = loc('Contents');
+    my $title = loc('wafl.contents');
 
     my $linkref = '';
     if ($self->current_workspace_name ne $workspace_name) {
@@ -915,7 +915,7 @@ sub _parse_page_for_headers {
         );
 
         $error = loc(
-            "[_1] does not have any headers.",
+            "error.no-headers=page",
             "<a href='$page_url'>$page_title</a>",
         );
     }

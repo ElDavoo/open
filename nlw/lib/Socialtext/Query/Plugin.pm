@@ -37,14 +37,6 @@ sub register {
     $registry->add(action => $self->class_id);
 }
 
-sub get_result_set_path {
-    my $self = shift;
-    join '/',
-        $self->user_plugin_directory( $self->hub->current_user->email_address ),
-        $self->class_id . '_result_set',
-    ;
-}
-
 sub push_result {
     my $self = shift;
     my $page = shift;
@@ -54,32 +46,16 @@ sub push_result {
 
 sub read_result_set {
     my $self = shift;
-    my $result_set_path = $self->get_result_set_path;
-    return $self->default_result_set
-        unless -f $result_set_path;
-
-    my $result_set = eval {
-        Storable::lock_retrieve($result_set_path)
-    };
-    return $result_set unless $@;
-
-    unlink $result_set_path;
-    $self->new_result_set;
+    # Never use result sets, they are not useful anymore
+    return $self->default_result_set;
 }
 
 sub write_result_set {
     my $self = shift;
-    Storable::lock_store(
-        $self->result_set,
-        $self->get_result_set_path,
-    );
+    return; # Never write result sets, they are not useful anymore
 }
 
-sub dont_use_cached_result_set {
-    my $self = shift;
-    my $result_set_path = $self->get_result_set_path;
-    unlink $result_set_path;
-}
+sub dont_use_cached_result_set { }
 
 sub _direction {
     my $self = shift;
@@ -287,11 +263,10 @@ sub _load_pages_for_hits {
         my $wksp_pages = $pages{$workspace_name};
         my $pages = [];
         eval {
-            $pages = Socialtext::Model::Pages->By_id(
+            $pages = Socialtext::Pages->By_id(
                 hub              => $hit_hub,
                 workspace_id     => $workspace->workspace_id,
                 page_id          => [ keys %$wksp_pages ],
-                do_not_need_tags => 1,
             );
         };
         warn $@ if $@;
@@ -345,41 +320,37 @@ sub _make_row {
     my $page_uri = $hit->page_uri;
     my $page;
     eval {
-        $page = $hit->{page} || Socialtext::Model::Pages->By_id(
-            hub          => $hit_hub,
-            workspace_id => $workspace->workspace_id,
-            page_id      => $page_uri,
-        );
+        $page = $hit->{page} || $hit_hub->pages->new_page($page_uri);
     };
-    return {} if !$page or $page->deleted;
+    return {} if !$page or $page->deleted or !$page->exists;
 
     my $author = $page->last_edited_by;
     my $document_title = $page->title;
     my $date = $page->last_edit_time;
     my $date_local = $page->datetime_for_user;
-    my $snippet = $hit->snippet || $page->summary;
+    my $snippet;
     my $id = $page->id;
-    my $attachment;
     if ( $hit->isa('Socialtext::Search::AttachmentHit') ) {
-        my $attachment_id = $hit->attachment_id;
-        $attachment = $hit_hub->attachments->new_attachment(
-            id      => $attachment_id,
+        my $att_id = $hit->attachment_id;
+        my $att = $hit_hub->attachments->load(
+            id      => $att_id,
             page_id => $page_uri,
-        )->load();
-
-        return {} if $attachment->deleted;
-        $snippet = $hit->snippet || $attachment->preview_text;
-        $document_title = $attachment->{filename};
-        $date = $attachment->{Date};
-        $date_local = $self->hub->timezone->date_local( $date );
-        $id = $attachment->id;
-        $author = $attachment->uploaded_by;
+        );
+        return {} if $att->is_deleted || $att->is_temporary;
+        $document_title = $att->filename;
+        $date = $att->created_at_str;
+        $date_local = $hit_hub->timezone->get_date($att->created_at);
+        $id = $att->id;
+        $author = $att->uploaded_by;
+        $snippet = $hit->snippet || $att->preview_text;
     }
+    # let the attachment snippet override the page snippet
+    $snippet //= $hit->snippet || $page->summary;
 
     return +{
         Relevance           => $hit->hit->{score},
         Date                => $date,
-        Revision            => $page->current_revision_num,
+        Revision            => $page->revision_num,
         Summary             => $snippet,
         document_title      => $document_title,
         Subject             => $page->title,

@@ -74,7 +74,6 @@
 =etc/init.d/ceqlotron
 =etc/init.d/st-apache
 =share/html/502.html
-=share/wsdl/0.9.wsdl
 =Makefile
 =lib/Socialtext/Build/ConfigureValues.pm
 

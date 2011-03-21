@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 
 use strict;
@@ -12,7 +12,7 @@ use POSIX qw();
 use Crypt::OpenToken;
 use Socialtext::Challenger::OpenToken;
 use Socialtext::User;
-use Test::Socialtext tests => 15;
+use Test::Socialtext tests => 17;
 
 ###############################################################################
 # Create our test fixtures *OUT OF PROCESS* as we're using a mocked Hub.
@@ -85,18 +85,21 @@ log_failure_to_auto_create_user: {
     ok !$rc, 'challenge failed (as expected)';
 
     # verify that we logged that we failed to create the new user
-    logged_like 'error', qr/unable to create user; $email_addr/,
+    logged_like 'error', qr/unable to create user; "$email_addr"/,
         '... failed because we failed to create new user record';
 }
 
+###############################################################################
 # auto-update User info on subsequent request
 auto_update_user: {
-    my $guard      = Test::Socialtext::User->snapshot();
-    my $email_addr = 'auto-update-user-' . time . $$ . '@ken.socialtext.net';
-    my $first_name = 'Auto Updated';
-    my $last_name  = 'Test User';
-    my $new_first  = 'Changed First';
-    my $new_last   = 'Changed Last';
+    my $guard       = Test::Socialtext::User->snapshot();
+    my $email_addr  = 'auto-update-user-' . time . $$ . '@ken.socialtext.net';
+    my $first_name  = 'Auto Updated';
+    my $middle_name = 'Middle';
+    my $last_name   = 'Test User';
+    my $new_first   = 'Changed First';
+    my $new_middle  = 'Changed Middle';
+    my $new_last    = 'Changed Last';
 
     # Issue first challenge, creating the User.
     my $rc = _issue_auto_provisioning_challenge(
@@ -104,6 +107,7 @@ auto_update_user: {
             username        => $email_addr,
             email_address   => $email_addr,
             first_name      => $first_name,
+            middle_name     => $middle_name,
             last_name       => $last_name,
         },
     );
@@ -113,6 +117,7 @@ auto_update_user: {
     my $user = Socialtext::User->new(email_address => $email_addr);
     isa_ok $user, 'Socialtext::User', '... auto-provisioned user';
     is $user->first_name, $first_name, '... ... with original first_name';
+    is $user->middle_name, $middle_name, '... ... with original middle_name';
     is $user->last_name, $last_name, '... ... with original last_name';
 
     # Issue a second challenge, to update the User info.
@@ -121,6 +126,7 @@ auto_update_user: {
             username        => $email_addr,
             email_address   => $email_addr,
             first_name      => $new_first,
+            middle_name     => $new_middle,
             last_name       => $new_last,
         },
     );
@@ -130,6 +136,7 @@ auto_update_user: {
     $user = Socialtext::User->new(email_address => $email_addr);
     isa_ok $user, 'Socialtext::User', '... auto-updated user';
     is $user->first_name, $new_first, '... ... with updated first_name';
+    is $user->middle_name, $new_middle, '... ... with updated middle_name';
     is $user->last_name, $new_last, '... ... with updated last_name';
 }
 

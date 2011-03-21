@@ -1,8 +1,8 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 62;
+use Test::Socialtext tests => 64;
 use Test::Socialtext::Fatal;
 
 fixtures('foobar');
@@ -143,16 +143,23 @@ Blah_does_not_exist: clear_and_run {
 };
 
 Cant_index_untitled_page_attachments: clear_and_run {
-    no warnings 'redefine';
-    local *Socialtext::Attachment::load = sub { die 'do not load' };
-    local *Socialtext::Attachment::temporary = sub { 1 };
-
-    my $att = Socialtext::Attachment->new(
-        hub => $hub,
-        page_id => 'untitled_page',
-        filename => 'foobar.txt',
-    );
+    my $temp = File::Temp->new;
+    print $temp "o hai";
+    close $temp;
+    my $att;
+    is exception {
+        $att = $hub->attachments->create(
+            fh => "$temp", # force filename usage
+            filename => 'o-hai.txt',
+            Content_type => 'text/plain; charset=US-ASCII',
+            page_id => 'untitled_page',
+            creator => Socialtext::User->SystemUser(),
+            embed => 0,
+            temporary => 1,
+        );
+    }, undef, "didn't die when making an untitled_page attachment";
     ok $att, 'made attachment';
+    ok $att->is_temporary, "attachment is temporary";
 
     my $handle;
     ok !exception {

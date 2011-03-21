@@ -65,7 +65,8 @@
 | *Comment* | Test Case: Signals Workspace Privacy Rules TEARDOWN |  |
 | st-process-jobs |  |  |
 | st-admin | delete-workspace --w %%ws%% --no-export | has been deleted |
-| st-admin | deactivate-user --e %%isouser%% | deactivated |
-| st-admin | deactivate-user --e %%default_user%% | removed |
+| st-admin | deactivate-user --e %%isouser%% | has been deactivated |
+| st-admin | deactivate-user --e %%default_user%% | has been removed |
+| delete-account | %%acct%% | Recklessly deleted |
 
 | *Comment* | Test Case: Signals Workspace Privacy Rules COMPLETED |

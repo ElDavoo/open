@@ -13,9 +13,9 @@ Readonly my %markup => (
     b    => [ '<b>',             '</b>' ],
     i    => [ '<i>',             '</i>' ],
     del  => [ '<del>',           '</del>' ],
-    a    => [ '<a href="HREF">', '</a>' ],
-    hashmark => undef, # handled by overriding markup_node()
-    video    => undef, # handled by overriding markup_node()
+    hyperlink => [ '<a href="HREF">', '</a>' ],
+    hashmark  => undef, # handled by overriding markup_node()
+    video     => undef, # handled by overriding markup_node()
 );
 
 sub link_dictionary {
@@ -34,7 +34,7 @@ sub msg_format_link {
         url_prefix => $self->{callbacks}{baseurl} || "",
         link => 'interwiki',
         workspace => $ast->{workspace_id},
-        page_uri => $ast->{page_id},
+        page_uri => Socialtext::String::uri_escape($ast->{page_id}),
     );
     if (defined $ast->{section} && length($ast->{section})) {
         my $section = Socialtext::String::title_to_id(
@@ -91,7 +91,7 @@ sub msg_format_user {
 
     my $user = eval { Socialtext::User->Resolve($userid) };
     unless ($user) {
-        return loc("Unknown Person");
+        return loc("user.unknown");
     }
 
     my $url = $self->link_dictionary->format_link(

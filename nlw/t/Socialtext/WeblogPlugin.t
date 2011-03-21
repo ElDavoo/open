@@ -47,7 +47,7 @@ sub check_category {
     is $returned, $expected, 'return category is correct category';
     my $page = $hub->pages->new_from_name("first post in $expected");
     like ($page->content, qr{This is the first post in $expected}, 'first post created with right content');
-    ok ((grep $expected, @{$page->metadata->Category}), 'post has right category');
+    ok ((grep $expected, @{$page->tags}), 'post has right category');
 }
 
 BLOG_TITLE_IS_VALID: {

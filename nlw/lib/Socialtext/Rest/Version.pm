@@ -6,11 +6,12 @@ use strict;
 use base 'Socialtext::Rest';
 use Socialtext::JSON;
 use Readonly;
+use Socialtext::URI;
 
 # Starting from 1 onward, $API_VERSION should be a simple incrementing integer
 # A version by version breakdown can be found in
 # [Unpushed Changes to REST API Documentation]
-Readonly our $API_VERSION => 32;
+Readonly our $API_VERSION => 33;
 Readonly our $MTIME       => ( stat(__FILE__) )[9];
 
 sub allowed_methods {'GET, HEAD'}
@@ -20,6 +21,7 @@ sub make_getter {
     my @headers = (
         type           => "$type; charset=UTF-8",
         -Last_Modified => __PACKAGE__->make_http_date($MTIME),
+        -X_Location    => Socialtext::URI::uri(path => "/data/version"),
     );
     return sub {
         my ( $self, $rest ) = @_;

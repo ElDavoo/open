@@ -327,8 +327,9 @@ sub _vivify {
     # (ST:U:Def:Factory:create, ST:U:Factory:NewUserRecord), and we're going
     # to do the same here.  Yes, this should be refactored and cleaned up, no,
     # I'm not doing that just yet.
-    $user_attrs->{first_name} ||= '';
-    $user_attrs->{last_name}  ||= '';
+    $user_attrs->{first_name}  ||= '';
+    $user_attrs->{middle_name} ||= '';
+    $user_attrs->{last_name}   ||= '';
 
     # don't encrypt the placeholder password; just store it as-is
     $user_attrs->{no_crypt} = 1;
@@ -528,14 +529,15 @@ sub Search {
     require Socialtext::User;
     my @users;
     foreach my $rec ($mesg->entries()) {
-        my $email = $rec->get_value($attr_map->{email_address});
-        my $first = $rec->get_value($attr_map->{first_name});
-        my $last  = $rec->get_value($attr_map->{last_name});
+        my $email  = $rec->get_value($attr_map->{email_address});
+        my $first  = $rec->get_value($attr_map->{first_name});
+        my $middle = $rec->get_value($attr_map->{middle_name});
+        my $last   = $rec->get_value($attr_map->{last_name});
         push @users, {
             driver_name     => $self->driver_key(),
             email_address   => $email,
             name_and_email  => 
-                Socialtext::User->FormattedEmail($first, $last, $email),
+                Socialtext::User->FormattedEmail($first, $middle, $last, $email),
         };
     }
     return @users;

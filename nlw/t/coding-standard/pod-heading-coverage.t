@@ -114,17 +114,13 @@ my %ToDoModules = map { $_ => 1 } qw(
     Socialtext::MassAdd
     Socialtext::Migration
     Socialtext::Migration::Utils
-    Socialtext::Model::Page
-    Socialtext::Model::Pages
     Socialtext::MultiPlugin
     Socialtext::NewFormPagePlugin
     Socialtext::OpenIdPlugin
     Socialtext::Page
-    Socialtext::Page::Base
     Socialtext::Page::TablePopulator
     Socialtext::PageActivityPlugin
     Socialtext::PageAnchorsPlugin
-    Socialtext::PageMeta
     Socialtext::Pages
     Socialtext::Pageset
     Socialtext::PdfExport::LinkDictionary
@@ -193,7 +189,6 @@ my %ToDoModules = map { $_ => 1 } qw(
     Socialtext::Rest::UserSharedAccounts
     Socialtext::Rest::Users
     Socialtext::Rest::Version
-    Socialtext::Rest::WSDL
     Socialtext::Rest::Wafl
     Socialtext::Rest::Workspace
     Socialtext::Rest::WorkspaceAttachments
@@ -204,25 +199,10 @@ my %ToDoModules = map { $_ => 1 } qw(
     Socialtext::RevisionPlugin
     Socialtext::RtfExportPlugin
     Socialtext::SOAPGoogle
-    Socialtext::SOAPPlugin
-    Socialtext::SOAPServer
     Socialtext::Search::Basic::Factory
     Socialtext::Search::Basic::Indexer
     Socialtext::Search::Basic::Searcher
-    Socialtext::Search::Config
     Socialtext::Search::Hit
-    Socialtext::Search::KinoSearch::Analyzer
-    Socialtext::Search::KinoSearch::Analyzer::Base
-    Socialtext::Search::KinoSearch::Analyzer::Ja::Tokenize
-    Socialtext::Search::KinoSearch::Analyzer::Ja::mecabif
-    Socialtext::Search::KinoSearch::Analyzer::LowerCase
-    Socialtext::Search::KinoSearch::Analyzer::Stem
-    Socialtext::Search::KinoSearch::Analyzer::Tokenize
-    Socialtext::Search::KinoSearch::Factory
-    Socialtext::Search::KinoSearch::Indexer
-    Socialtext::Search::KinoSearch::QueryParser
-    Socialtext::Search::KinoSearch::Searcher
-    Socialtext::Search::Set
     Socialtext::Search::Utils
     Socialtext::SearchPlugin
     Socialtext::ShortcutLinksPlugin
@@ -253,7 +233,6 @@ my %ToDoModules = map { $_ => 1 } qw(
     Socialtext::UploadedImage
     Socialtext::User::Base
     Socialtext::User::Cache
-    Socialtext::User::EmailConfirmation
     Socialtext::User::Factory
     Socialtext::User::Find
     Socialtext::User::Find::Workspace

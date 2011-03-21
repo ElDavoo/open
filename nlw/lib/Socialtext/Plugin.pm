@@ -64,27 +64,6 @@ sub failure_message {
     return $self->hub->display->display();
 }
 
-sub user_plugin_directory {
-    my $self = shift;
-    my $email = shift;
-    my $no_create = shift;
-
-    my $dir = Socialtext::File::catdir(
-        Socialtext::Paths::user_directory(
-            $self->hub->current_workspace->name,
-            $email,
-        ),
-        $self->class_id
-    );
-    return $dir if $no_create;
-
-    if ( not -d $dir ) {
-        File::Path::mkpath($dir)
-            or die "Can't mkpath $dir:\n$!";
-    }
-    return $dir;
-}
-
 sub redirect {
     my $self = shift;
     # This uses Socialtext::WebHelpers::redirect
@@ -137,45 +116,6 @@ sub check_required {
     my $value = $self->$param;
     return 1 if length $value;
     return $self->add_error( _humanify($param) . ' is a required field.' );
-}
-
-sub check_id {
-    my $self = shift;
-    my $param = shift;
-    my $value = $self->$param;
-    unless ( $value =~ /^[a-z0-9\-]+$/ ) {
-        return $self->add_error( _humanify($param)
-                . ' may only contain letters, numbers, and dashes.' );
-    }
-    return 1;
-}
-
-sub check_title {
-    my $self = shift;
-    my $param = shift;
-    my $value = $self->$param;
-    unless ( $value =~ /^[\p{Letter}\p{Number}\p{ConnectorPunctuation}\pM\'\,\:\!\;\-\.\ ]+$/ ) {
-        return $self->add_error( _humanify($param)
-                . " may only contain letters, numbers, spaces "
-                . " and these: '.,:;!-" );
-    }
-    return 1;
-}
-
-sub check_length {
-    my $self = shift;
-    my $param = shift;
-    my $value = $self->$param;
-    my ( $min, $max ) = @_;
-    $min ||= 0;
-    $max ||= 99999;
-    return $self->add_error(
-        _humanify($param) . " should be at least $min characters long." )
-        unless length($value) >= $min;
-    return $self->add_error(
-        _humanify($param) . " should be at most $max characters long." )
-        unless length($value) <= $max;
-    return 1;
 }
 
 sub add_error {

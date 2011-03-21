@@ -3,7 +3,7 @@ function loc() {
         LocalizedStrings = {};
 
     var locale = Socialtext.loc_lang;
-    var dict = LocalizedStrings[locale] || new Array;
+    var dict = LocalizedStrings[locale] || LocalizedStrings['en'] || {};
     var str = arguments[0] || "";
     var l10n = dict[str];
     var nstr = "";
@@ -44,16 +44,30 @@ function loc() {
         l10n = l10n.replace(rx, arguments[i]);
         l10n = l10n.replace(rx2, arguments[i]);
 
-        var quant = new RegExp("\\[quant,_" + i + ",([^\\],]+)(?:,([^\\]]+))?\\]");
+        var quant = new RegExp("\\[(?:quant|\\*),_" + i + ",([^\\],]+)(?:,([^\\]]+))?\\]");
         while (quant.exec(l10n)) {
-            if (arguments[i] && arguments[i] == 1) {
-                l10n = l10n.replace(quant, RegExp.$1);
+            var num = arguments[i] || 0;
+            if (num == 1) {
+                l10n = l10n.replace(quant, num + ' ' + RegExp.$1);
             }
             else {
-                l10n = l10n.replace(quant, RegExp.$2 || RegExp.$1 + 's');
+                l10n = l10n.replace(quant, num + ' ' + (RegExp.$2 || (RegExp.$1 + 's')));
             }
         }
     }
 
     return l10n;
-}
+};
+
+loc.all_widgets = function(){
+    $(function(){
+        $('span[data-loc-text]').each(function(){
+            var $span = $(this);
+            $span.text(loc($span.data('loc-text')));
+        });
+        $('input[data-loc-val]').each(function(){
+            var $input = $(this);
+            $input.val(loc($input.data('loc-val')));
+        });
+    });
+};

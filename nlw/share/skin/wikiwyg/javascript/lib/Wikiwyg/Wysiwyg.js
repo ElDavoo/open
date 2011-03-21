@@ -484,7 +484,7 @@ proto.get_inner_html_async = function( cb, tries ) {
                 }, 500);
             }
             else {
-                html = loc('Sorry, an edit error occured; please re-edit this page.');
+                html = loc('error.edit-again');
             }
         }
         if (html != null) {
@@ -1217,43 +1217,10 @@ proto.set_clear_handler = function () {
     } catch (e) {};
 }
 
-proto.show_messages = function(html) {
-    var advanced_link = this.advanced_link_html();
-    var message_titles = {
-        wiki:  loc('Advanced Content in Grey Border'),
-        table: loc('Table Edit Tip'),
-        both:  loc('Table & Advanced Editing')
-    };
-    var message_bodies = {
-        wiki:
-            loc('Advanced content is shown inside a grey border. Switch to [_1] to edit areas inside a grey border.',advanced_link),
-        table: loc('Use [_1] to change the number of rows and columns in a table.', advanced_link),
-        both: ''
-    };
-    message_bodies.both = message_bodies.table + ' ' + message_bodies.wiki;
-
-    var wiki    = html.match(/<!--\s*wiki:/);
-    var table   = html.match(/<table /i);
-    var message = null;
-    if      (wiki && table) message = 'both'
-    else if (table)         message = 'table'
-    else if (wiki)          message = 'wiki';
-
-    if (message) {
-        this.wikiwyg.message.display({
-            title: message_titles[message],
-            body: message_bodies[message],
-            timeout: 60
-        });
-    }
-}
+proto.show_messages = function(html) {}
 
 proto.do_p = function() {
     this.format_command("p");
-}
-
-proto.do_attach = function() {
-    this.wikiwyg.message.display(this.use_advanced_mode_message(loc('Attachments')));
 }
 
 proto.do_image = function() {
@@ -1350,78 +1317,22 @@ proto.make_web_link = function(url, link_text) {
     this.make_link(link_text, false, url);
 }
 
+
 proto.make_link = function(label, page_name, url) {
-    var span_node = document.createElement("span");
-    var link_node = document.createElement("a");
 
-    // Anchor text
     var text = label || page_name || url;
-    link_node.appendChild( document.createTextNode(text.replace(/"/g, '\uFF02')) );
-
-    // Anchor HREF
-    link_node.href = url || "?" + encodeURIComponent(page_name);
-
+    var href = url || encodeURIComponent(page_name);
+    var attr = "";
     if (page_name) {
-        jQuery(link_node).attr('wiki_page', page_name)
+        attr = " wiki_page=\"" + html_escape(page_name).replace(/"/g, "&quot;") + "\"";
     }
-
-    span_node.appendChild( link_node );
-    span_node.appendChild( document.createTextNode('\u00A0') );
-
-    this.insert_element_at_cursor(span_node);
-}
-
-if (Wikiwyg.is_ie) {
-    proto.make_link = function(label, page_name, url) {
-
-        var text = label || page_name || url;
-        var href = url || "?" + encodeURIComponent(page_name);
-        var attr = "";
-        if (page_name) {
-            attr = " wiki_page=\"" + html_escape(page_name).replace(/"/g, "&quot;") + "\"";
-        }
-        var html = "<a href=\"" + href + "\"" + attr + ">" + html_escape( text.replace(/"/g, '\uFF02').replace(/"/g, "&quot;") );
+    var html = "<a href=\"" + href + "\"" + attr + ">" + html_escape( text.replace(/"/g, '\uFF02').replace(/"/g, "&quot;") );
 
 
-        html += "</a>";
+    html += "</a>";
 
-        this.set_focus(); // Need this before .insert_html
-        this.insert_html(html);
-    }
-}
-
-proto.insert_element_at_cursor = function(ele) {
-    var selection = this.get_edit_window().getSelection();
-    if (selection.toString().length > 0) {
-        selection.deleteFromDocument();
-    }
-
-    selection  = this.get_edit_window().getSelection();
-    var anchor = selection.anchorNode;
-    var offset = selection.anchorOffset;
-
-    if (anchor.nodeName == '#text') {  // Insert into a text element.
-        var secondNode = anchor.splitText(offset);
-        anchor.parentNode.insertBefore(ele, secondNode);
-    } else {  // Insert at the start of the line.
-        var children = selection.anchorNode.childNodes;
-        if (children.length > offset) {
-            selection.anchorNode.insertBefore(ele, children[offset]);
-        } else {
-            anchor.appendChild(ele);
-        }
-    }
-}
-
-proto.use_advanced_mode_message = function(subject) {
-    return {
-        title: loc('Use Advanced Mode for [_1]', subject),
-        body: loc('Switch to [_1] to use this feature.',  this.advanced_link_html()) 
-    }
-}
-
-proto.advanced_link_html = function() {
-    return '<a onclick="wikiwyg.wikitext_link.onclick(); return false" href="#">' + loc('Advanced Mode') + '</a>';
+    this.set_focus(); // Need this before .insert_html
+    this.insert_html(html);
 }
 
 proto.insert_table_html = function(rows, columns, options) {
@@ -1485,17 +1396,17 @@ proto.do_new_table = function() {
         var rows = jQuery('.table-create input[name=rows]').val();
         var cols = jQuery('.table-create input[name=columns]').val();
         if (! rows.match(/^\d+$/))
-            return $error.text(loc('Rows is invalid.'));
+            return $error.text(loc('error.invalid-rows'));
         if (! cols.match(/^\d+$/))
-            return $error.text(loc('Columns is invalid.'));
+            return $error.text(loc('error.invalid-columns'));
         rows = Number(rows);
         cols = Number(cols);
         if (! (rows && cols))
-            return $error.text(loc('Rows and Columns must be non-zero.'));
+            return $error.text(loc('error.rows-and-columns-required'));
         if (rows > 100)
-            return $error.text(loc('Rows is too big. 100 maximum.'));
+            return $error.text(loc('error.rows-too-big'));
         if (cols > 35)
-            return $error.text(loc('Columns is too big. 35 maximum.'));
+            return $error.text(loc('error.columns-too-big'));
         self.set_focus(); // Need this before .insert_html
         var options = self.tableOptionsFromNode(jQuery('.table-create'));
         self.insert_table_html(rows, cols, options);
@@ -1995,7 +1906,7 @@ proto.socialtext_wikiwyg_image = function(image_name) {
 proto.get_link_selection_text = function() {
     var selection = this.get_selection_text();
     if (! selection) {
-        alert(loc("Please select the text you would like to turn into a link."));
+        alert(loc("error.link-selection-required"));
         return;
     }
     return selection;
@@ -2435,7 +2346,7 @@ proto.setWidgetHandlers = function() {
             self.currentWidget = self.parseWidgetElement(e.target);
             var id = self.currentWidget.id;  
             if (widget_data[id] && widget_data[id].uneditable) {
-                alert(loc("This is not an editable widget. Please edit it in Wiki Text mode."))  
+                alert(loc("info.wafl-uneditable"))  
             }
             else {
                 self.getWidgetInput(e.target, false, false);
@@ -2736,7 +2647,7 @@ proto.parseWidget = function(widget) {
         return widget_parse;
     }
     else
-        throw(loc('Unexpected Widget >>[_1]<< in parseWidget', widget));
+        throw(loc('error.unexpected-parse=widget', widget));
 }
 
 for (var i = 0; i < widgets_list.length; i++) {
@@ -3208,7 +3119,7 @@ proto.validate_fields = function(widget, values) {
             var field = required[i];
             if (! values[field].length) {
                 var label = Wikiwyg.Widgets.fields[field];
-                throw(loc("'[_1]' is a required field", label));
+                throw(loc("error.widget-field-required=label", label));
             }
         }
     }
@@ -3225,7 +3136,7 @@ proto.validate_fields = function(widget, values) {
                 found++;
         }
         if (! found)
-            throw(loc("Requires one of: [_1]", labels.join(', ')));
+            throw(loc("error.field-required=labels", labels.join(', ')));
     }
 
     for (var field in values) {
@@ -3240,7 +3151,7 @@ proto.validate_fields = function(widget, values) {
 
         if (!fieldOk) {
             var label = Wikiwyg.Widgets.fields[field];
-            throw(loc("'[_1]' has an invalid value", label));
+            throw(loc("error.invalid-widget-field=label", label));
         }
     }
 
@@ -3255,7 +3166,7 @@ proto.validate_fields = function(widget, values) {
 
 proto.require_valid_video_url = function(values) {
     if (!values.video_url || !values.video_url.length) {
-        throw(loc("Video URL is required"));
+        throw(loc("error.video-url-required"));
     }
 
     var error = null;
@@ -3273,11 +3184,11 @@ proto.require_valid_video_url = function(values) {
                 return true;
             }
             else {
-                error = data.error || loc("Sorry, this URL does not appear to link to an embeddable video.");
+                error = data.error || loc("error.invalid-video-url");
             }
         },
         error: function(xhr) {
-            error = loc("An error occured; please try later.");
+            error = loc("error.check-video-url");
         }
     });
 
@@ -3294,12 +3205,12 @@ proto.require_page_if_workspace = function(values) {
     }
 
     if (values.workspace_id.length && ! values.page_title.length)
-        throw(loc("Page Title required if Workspace Id specified"));
+        throw(loc("edit.page-title-required-for-wiki"));
 }
 
 proto.require_spreadsheet_if_workspace = function(values) {
     if (values.workspace_id.length && ! values.spreadsheet_title.length)
-        throw(loc("Spreadsheet Title required if Workspace Id specified"));
+        throw(loc("edit.spreadsheet-title-required-for-wiki"));
 }
 
 
@@ -3526,14 +3437,14 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
     jQuery('#st-widgets-moreoptions').unbind('click').toggle(
         function () {
             jQuery('#st-widgets-moreoptions')
-                .html(loc('Fewer options'))
+                .html(loc('wafl.fewer-options'))
             jQuery('#st-widgets-optionsicon')
                 .attr('src', nlw_make_s2_path('/images/st/hide_more.gif'));
             jQuery('#st-widgets-moreoptionspanel').show();
         },
         function () {
             jQuery('#st-widgets-moreoptions')
-                .html(loc('More options'))
+                .html(loc('wafl.more-options'))
             jQuery('#st-widgets-optionsicon')
                 .attr('src', nlw_make_s2_path('/images/st/show_more.gif'));
             jQuery('#st-widgets-moreoptionspanel').hide();
@@ -3649,7 +3560,7 @@ proto._preload_video_dimensions = function() {
         if (!url) { return; }
         loading = true;
 
-        $('#st-widget-video-original-width').text(loc('Loading...'));
+        $('#st-widget-video-original-width').text(loc('edit.loading'));
         $('#video_widget_edit_error_msg').text('').hide();
 
         jQuery.ajax({
@@ -3669,9 +3580,9 @@ proto._preload_video_dimensions = function() {
                 }
                 if (data.title) {
                     $('#st-widget-video-original-width').text(
-                        loc('width: [_1]', data.width)
+                        loc('wafl.width=px', data.width)
                             + ' ' +
-                        loc('height: [_1]', data.height)
+                        loc('wafl.height=px', data.height)
                     );
                 }
                 else {

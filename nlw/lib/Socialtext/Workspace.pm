@@ -9,7 +9,6 @@ use DateTime;
 use DateTime::Format::Pg;
 use Digest::MD5;
 use Email::Address;
-use File::chdir;
 use File::Copy ();
 use File::Find ();
 use File::Path ();
@@ -21,12 +20,10 @@ use Socialtext::AppConfig;
 use Socialtext::EmailAlias;
 use Socialtext::Events;
 use Socialtext::File;
-use Socialtext::File::Copy::Recursive qw(dircopy);
 use Socialtext::Helpers;
 use Socialtext::Image;
 use Socialtext::l10n qw(loc system_locale);
 use Socialtext::Log qw( st_log );
-use Socialtext::Paths;
 use Socialtext::SQL qw(:exec :txn);
 use Socialtext::SQL::Builder qw(sql_nextval);
 use Socialtext::String;
@@ -62,6 +59,8 @@ use Socialtext::Validate qw(
 use namespace::clean -except => 'meta';
 
 our $VERSION = '0.01';
+# for workspace exports:
+Readonly my $EXPORT_VERSION => 1;
 
 Readonly our @COLUMNS => (
     'workspace_id',
@@ -113,9 +112,10 @@ use constant real => 1;
 # Hash for quick lookup of columns
 my %COLUMNS = map { $_ => 1 } @COLUMNS;
 
-foreach my $column (@COLUMNS) {
+foreach my $column ( grep !/^skin_name$/, @COLUMNS ) {
     has $column => (is => 'rw', isa => 'Any');
 }
+has 'skin_name' => (is => 'rw', isa => 'Str', default => '');
 
 has 'permissions' => (
     is => 'rw', isa => 'Socialtext::Workspace::Permissions',
@@ -127,11 +127,11 @@ has 'permissions' => (
 
 with 'Socialtext::UserSetContainer',
      'Socialtext::UserSetContained' => {
-        excludes => [qw(sorted_workspace_roles)]
+        # Moose 0.89 renamed to -excludes and -alias
+        ($Moose::VERSION >= 0.89 ? '-excludes' : 'excludes')
+            => [qw(sorted_workspace_roles)]
      };
 
-# for workspace exports:
-Readonly my $EXPORT_VERSION => 1;
 
 # XXX: This is here to support the non-plugin method of checking whether
 # socialcalc is enabled or not.
@@ -160,7 +160,8 @@ sub _new {
     my ( $class, %args ) = @_;
 
     my $sth;
-    if (my $name = lc $args{name}) {
+    if ($args{name}) {
+        my $name = lc $args{name};
         if (my $ws = $class->cache->get("name:$name")) {
             return $ws;
         }
@@ -242,8 +243,6 @@ EOSQL
         $self->permissions->set( set_name => 'member-only' );
     };
 
-    $self->_make_fs_paths();
-
     if ( $clone_pages_from ) {
         $self->_clone_workspace_pages( $clone_pages_from );
     }
@@ -314,8 +313,8 @@ sub _copy_default_pages {
     my $help_hub = $self->_hub_for_workspace( $help );
 
     # Get all the default pages from the help workspace
-    my @pages = $help_hub->category->get_pages_for_category( loc("Welcome") );
-    push @pages, $help_hub->category->get_pages_for_category( loc("Top Page") );
+    my @pages = $help_hub->category->get_pages_for_category( loc("wiki.welcome") );
+    push @pages, $help_hub->category->get_pages_for_category( loc("wiki.top-page") );
 
     my $homepage_id = ( system_locale() eq 'ja' )
         ? '%E3%83%88%E3%83%83%E3%83%97%E3%83%9A%E3%83%BC%E3%82%B8'
@@ -352,23 +351,22 @@ sub _add_workspace_pages {
     my $keep_categories = $params{keep_homepage_categories};
     my @pages           = @{ $params{pages} };
 
-    my ( $main, $hub ) = $self->_main_and_hub();
-
     # Duplicate the pages
     for my $page (@pages) {
-        my $title = $page->title;
+        $page->edit_rev();
+        my $title = $page->name;
 
-        if ( $page->id eq $top_page_id ) {
-            $title = $self->title;
-            my $content = $page->content;
-            my $content_formatted = $hub->template->process(
-                \$content,
+        if ($page->id eq $top_page_id) {
+            my ($main, $hub) = $self->_main_and_hub();
+            $title = $self->title;  # name it after this workspace
+            # don't assign process() output to a var for speed/space
+            $page->content($hub->template->process(
+                $page->body_ref,
                 workspace_title => $self->title
-            );
-            $page->content($content_formatted);
-
-            $page->metadata->Category([]) unless $keep_categories;
-        } else {
+            ));
+            $page->tags([]) unless $keep_categories;
+        }
+        else {
             $page->delete_tag("Top Page");
         }
 
@@ -397,25 +395,6 @@ sub _main_and_hub {
     return ( $main, $hub );
 }
 
-sub _make_fs_paths {
-    my $self = shift;
-
-    for my $dir ( grep { ! -d } $self->_data_dir_paths() ) {
-        File::Path::mkpath( $dir, 0, 0755 );
-    }
-}
-
-sub _data_dir_paths {
-    my $self = shift;
-    my $name = shift || $self->name;
-
-    return (
-        Socialtext::Paths::page_data_directory( $name ),
-        Socialtext::Paths::plugin_directory( $name ),
-        Socialtext::Paths::user_directory( $name ),
-    );
-}
-
 sub _update_aliases_file {
     my $self = shift;
 
@@ -425,6 +404,7 @@ sub _update_aliases_file {
 sub _enable_default_plugins {
     my $self = shift;
     require Socialtext::SystemSettings;
+    require Socialtext::Pluggable::Adapter;
     for my $p (Socialtext::Pluggable::Adapter->plugins) {
         next if $p->scope ne 'workspace';
         my $plugin = $p->name;
@@ -495,12 +475,8 @@ sub _update {
 
     my $new_account = $self->account;
     if ( $old_account->account_id != $new_account->account_id ) {
-        my $adapter = Socialtext::Pluggable::Adapter->new;
-        $adapter->make_hub(Socialtext::User->SystemUser(), $self);
-
         $old_account->user_set->remove_object_role($self);
         $new_account->user_set->add_object_role($self => 'member');
-
         my $users = $self->users;
         while ( my $user = $users->next ) {
             require Socialtext::JobCreator;
@@ -509,17 +485,6 @@ sub _update {
     }
 
     return $self;
-}
-
-sub skin_name {
-    my $self = shift;
-    my $value = shift;
-
-    if (defined $value) {
-        $self->{skin_name} = $value;
-        return $value;
-    }
-    return $self->{skin_name} || '';
 }
 
 # turn a workspace into a hash suitable for JSON and such things.
@@ -555,10 +520,6 @@ sub delete {
 
     $self->delete_search_index();
 
-    for my $dir ( $self->_data_dir_paths() ) {
-        File::Path::rmtree($dir);
-    }
-
     my $mc = $self->users();
     while ( my $user = $mc->next() ) {
         $self->remove_user(user => $user);
@@ -570,6 +531,10 @@ sub delete {
         $self->workspace_id );
 
     $self->cache->clear();
+
+    # clean up any un-referenced uploads (which won't cascade from
+    # page_attchment when the workspace is nuked)
+    Socialtext::JobCreator->tidy_uploads();
 
     st_log()
         ->info( 'DELETE,WORKSPACE,workspace:'
@@ -602,7 +567,6 @@ my %ReservedNames = map { $_ => 1 } qw(
     superuser
     test-selenium
     workspace
-    wsdl
     user
 );
 
@@ -633,7 +597,7 @@ sub _validate_and_clean_data {
         if ( ( exists $p->{name} or $is_create )
              and not
              ( defined $p->{name} and length $p->{name} ) ) {
-            push @errors, loc("Workspace name is a required field.");
+            push @errors, loc("error.wiki-name-required");
         }
     }
 
@@ -644,7 +608,7 @@ sub _validate_and_clean_data {
         if ( ( exists $p->{title} or $is_create )
              and not
              ( defined $p->{title} and length $p->{title} ) ) {
-            push @errors, loc("Workspace title is a required field.");
+            push @errors, loc("error.wiki-title-required");
         }
     }
 
@@ -655,11 +619,11 @@ sub _validate_and_clean_data {
                                             errors => \@errors );
 
         if ( Socialtext::EmailAlias::find_alias( $p->{name} ) ) {
-            push @errors, loc("The workspace name you chose, [_1], is already in use as an email alias.", $p->{name});
+            push @errors, loc("error.wiki-email-alias-exists=name", $p->{name});
         }
 
         if ( Socialtext::Workspace->new( name => $p->{name} ) ) {
-            push @errors, loc("The workspace name you chose, [_1], is already in use by another workspace.", $p->{name});
+            push @errors, loc("error.wiki-exists=name", $p->{name});
         }
     }
 
@@ -670,7 +634,7 @@ sub _validate_and_clean_data {
 
     if ( $p->{incoming_email_placement}
          and $p->{incoming_email_placement} !~ /^(?:top|bottom|replace)$/ ) {
-        push @errors, loc('Incoming email placement must be one of top, bottom, or replace.');
+        push @errors, loc('error.invalid-email-placement');
     }
 
     if ($p->{skin_name}) {
@@ -679,7 +643,7 @@ sub _validate_and_clean_data {
     }
 
     if ( $is_create and not $p->{account_id} ) {
-        push @errors, loc("An account must be specified for all new workspaces.");
+        push @errors, loc("error.account-for-new-wiki-required");
     }
 
     if ($p->{account_id}) {
@@ -687,12 +651,12 @@ sub _validate_and_clean_data {
 
         if ( $account ) {
             if ( ! $is_create and $self->is_all_users_workspace ) {
-                push @errors, loc("This workspace is the all users workspace for the [_1] account. Aborting.", $self->account->name);
+                push @errors, loc("error.delete-auw-workspace", $self->account->name);
             }
         }
         else {
             push @errors,
-                loc("The account_id you specified, [_1], does not exist.",
+                loc("error.no-account=id",
                     $p->{account_id});
         }
     }
@@ -715,6 +679,11 @@ sub _validate_and_clean_data {
 
     # You should never update the user_set_id
     delete $p->{user_set_id};
+
+    # Make uploaded_skin into a boolean
+    if (exists $p->{uploaded_skin}) {
+        $p->{uploaded_skin} = ($p->{uploaded_skin} ? 1 : 0);
+    }
 }
 
 
@@ -735,14 +704,14 @@ sub TitleIsValid {
         and ( $title !~ /^-/ ) ) {
         push @{$errors},
             loc(
-            'Workspace title must be between 2 and 64 characters long and may not begin with a -.'
+            "error.invalid-wiki-title"
             );
     }
 
     if ( defined $title
          and ( length Socialtext::String::title_to_id($title) > Socialtext::String::MAX_PAGE_ID_LEN )
        ) {
-        push @{$errors}, loc('Workspace title is too long after URL encoding');
+        push @{$errors}, loc('error.wiki-title-too-long');
     }
 
     return @{$errors} > 0 ? 0 : 1;
@@ -773,17 +742,17 @@ sub NameIsValid {
 
     if ( $class->NameIsIllegal($name) ) {
         push @{$errors},
-            loc('Workspace name must be between 3 and 30 characters long, and must contain only upper- or lower-case letters, numbers, underscores, and dashes.');
+            loc("error.invalid-wiki-name");
     }
 
     if ( $name =~ /^-/ ) {
         push @{$errors},
-            loc('Workspace name may not begin with -.');
+            loc('error.invalid-wiki-name-begins-with-dash');
     }
 
     if ( $ReservedNames{$name} || ($name =~ /^st_/i) ) {
         push @{$errors},
-            loc("'[_1]' is a reserved workspace name and cannot be used.", $name);
+            loc("error.reserved-name=wiki", $name);
     }
 
     return @{$errors} > 0 ? 0 : 1;
@@ -798,38 +767,9 @@ sub NameIsValid {
         my $timer = Socialtext::Timer->new;
 
         my $old_name  = $self->name();
-        my @old_paths = $self->_data_dir_paths();
 
         local $self->{allow_rename_HACK} = 1;
         $self->update( name => $p{name} );
-
-        my @new_paths = $self->_data_dir_paths();
-
-        for ( my $x = 0; $x < @old_paths; $x++ ) {
-            CORE::rename $old_paths[$x] => $new_paths[$x]
-                or die "Cannot rename $old_paths[$x] => $new_paths[$x]: $!";
-        }
-
-        my @index_links;
-        File::Find::find(
-            sub {
-                push( @index_links, $File::Find::name )
-                    if -l && $_ eq 'index.txt';
-            },
-            Socialtext::Paths::page_data_directory( $self->name )
-        );
-
-        for my $link (@index_links) {
-            my $filename = File::Basename::basename( readlink $link );
-
-            unlink $link or die "Cannot unlink $link: $!";
-
-            my $new
-                = Socialtext::File::catfile( File::Basename::dirname($link),
-                $filename );
-            symlink $new => $link
-                or die "Cannot symlink $new to $link: $!";
-        }
 
         Socialtext::EmailAlias::delete_alias($old_name);
         $self->_update_aliases_file();
@@ -919,7 +859,7 @@ sub logo_filename {
 
         my $mime_type = Socialtext::MIME::Types::mimeTypeOf($p{filename});
         unless ( $mime_type and $ValidTypes{$mime_type} ) {
-            data_validation_error errors => [ loc("Logo file must be a gif, jpeg, or png file.") ];
+            data_validation_error errors => [ loc("error.invalid-logo-image-type") ];
         }
 
         my $new_file = $self->_new_logo_filename( $ValidTypes{$mime_type} );
@@ -940,7 +880,7 @@ sub logo_filename {
         };
         if ($@) {
             data_validation_error errors =>
-                [loc('Unable to process logo file. Is it an image?')];
+                [loc('error.invalid-wiki-logo?')];
         }
 
         my $old_logo_file = $self->logo_filename();
@@ -1176,6 +1116,8 @@ after 'role_change_event' => sub {
 sub _user_role_changed {
     my ($self,$actor,$change,$user,$role) = @_;
 
+    require Socialtext::Pluggable::Adapter;
+
     if ($change eq 'add') {
         # This is needed because of older appliances where users were put in
         # one of three accounts that are not optimal:
@@ -1238,240 +1180,40 @@ sub _group_role_changed {
     };
     sub export_to_tarball {
         my $self = shift;
-        my %p = validate( @_, $spec );
-        $p{name} ||= $self->name;
-        $p{name} = lc $p{name};
+        my %p = validate(@_,$spec);
+        $p{name} //= $self->name;
 
-        die loc("Export directory [_1] does not exist.\n", $p{dir})
-	    if defined $p{dir} && ! -d $p{dir};
+        die loc("error.no-export-directory=path", $p{dir})."\n"
+            if defined $p{dir} && ! -d $p{dir};
 
-        die loc("Export directory [_1] is not writeable.\n", $p{dir})
+        die loc("error.export-directory-not-writable=path", $p{dir})."\n"
             unless defined $p{dir} && -w $p{dir};
 
-        my $tarball_dir
-            = defined $p{dir} ? Cwd::abs_path( $p{dir} ) : $ENV{ST_TMP} || '/tmp';
+        my $tarball_dir = defined $p{dir}
+            ? Cwd::abs_path( $p{dir} )
+            : $ENV{ST_TMP};
+        $tarball_dir ||= '/tmp';
 
         my $tarball = Socialtext::File::catfile( $tarball_dir,
-            $p{name} . '.' . $EXPORT_VERSION . '.tar' );
+            $p{name}.".$EXPORT_VERSION.tar" );
 
         for my $file ( ($tarball, "$tarball.gz") ) {
-            die loc("Cannot write export file [_1], aborting.\n", $file)
+            die loc("error.export=file", $file)."\n"
                 if -f $file && ! -w $file;
         }
 
-        $self->_create_export_tarball($tarball, $p{name});
-
-        # pack up the tarball
-        run "gzip --fast --force $tarball";
-
+        require Socialtext::Workspace::Exporter;
+        my $wx = Socialtext::Workspace::Exporter->new(
+            workspace => $self,
+            name => $p{name} ? $p{name} : $self->name,
+        );
+        $wx->to_tarball("$tarball.gz");
         return "$tarball.gz";
-    }
-}
-
-sub _create_export_tarball {
-    my $self = shift;
-    my $tarball = shift;
-    my $name = shift || $self->name;
-
-    my $tmpdir = File::Temp::tempdir( CLEANUP => 1 );
-    $self->_dump_to_yaml_file($tmpdir, $name);
-    $self->_dump_users_to_yaml_file($tmpdir, $name);
-    $self->_dump_permissions_to_yaml_file($tmpdir, $name);
-    $self->_export_logo_file($tmpdir);
-    $self->_dump_meta_to_yaml_file($tmpdir);
-    $self->_dump_user_workspace_prefs($tmpdir);
-    local $CWD = $tmpdir;
-    run "tar cf $tarball *";
-
-    # Copy all the data for export into a the tempdir.
-    local $CWD = Socialtext::AppConfig->data_root_dir();
-    for my $dir (qw(plugin user data)) {
-        if ($name eq $self->name) {
-            # We can append directly to the tarball to save a copy
-            run "tar rf $tarball "
-                . Socialtext::File::catdir( $dir, $self->name );
-        }
-        else {
-            # Copy the workspace data into the tmpdir, then add to the tarball
-            my $src  = Socialtext::File::catdir( $dir,     $self->name );
-            my $dest = Socialtext::File::catdir( $tmpdir, $dir, $name );
-            dircopy( $src, $dest ) or die "Can't copy $src to $dest: $!\n";
-            local $CWD = $tmpdir;
-            run "tar rf $tarball " . Socialtext::File::catdir( $dir, $name );
-        }
-    }
-}
-
-sub _dump_to_yaml_file {
-    my $self = shift;
-    my $dir  = shift;
-    my $name = shift || $self->name;
-
-    my $file = Socialtext::File::catfile( $dir, $name . '-info.yaml' );
-
-    my %dump;
-    my %do_not_dump = map { $_ => 1 } qw/workspace_id user_set_id/;
-    for my $c ( grep { !$do_not_dump{$_} } @COLUMNS ) {
-        $dump{$c} = $self->$c();
-    }
-    $dump{creator_username} = $self->creator->username;
-    $dump{account_name} = $self->account->name;
-    $dump{logo_filename} = File::Basename::basename( $self->logo_filename() )
-        if $self->logo_filename();
-    $dump{name} = $name;
-    $dump{plugins} = { map { $_ => 1 } $self->plugins_enabled };
-
-    my $adapter = Socialtext::Pluggable::Adapter->new;
-    $adapter->make_hub(Socialtext::User->SystemUser(), $self);
-    $adapter->hook('nlw.export_workspace', [$self, \%dump]);
-
-    _dump_yaml( $file, \%dump );
-}
-
-sub _dump_yaml {
-    my $file = shift;
-    my $data = shift;
-
-    open my $fh, '>:utf8', $file
-        or die "Cannot write to $file: $!";
-    print $fh YAML::Dump($data)
-        or die "Cannot write to $file: $!";
-    close $fh
-        or die "Cannot write to $file: $!";
-}
-
-sub _dump_meta_to_yaml_file {
-    my $self      = shift;
-    my $dir       = shift;
-    my $meta_data = { has_lock => 1 };
-    my $file      = Socialtext::File::catfile( $dir, 'meta.yaml' );
-
-    _dump_yaml( $file, $meta_data );
-}
-
-sub _dump_user_workspace_prefs {
-    my $self = shift;
-    my $dir  = shift;
-
-    my $ws_dir = "$dir/user/" . $self->name;
-    my $users = $self->users(direct => 1);
-    while ( my $user = $users->next ) {
-        my $prefs = Socialtext::PreferencesPlugin->Prefs_for_user($user, $self);
-        next unless keys %$prefs;
-
-        # We dump these prefs to the `preferences.dd` format (instead of 
-        # yaml, say) to preserve backwards compatibility of workspace exports..
-        my $user_dir = "$ws_dir/" . $user->email_address . '/preferences';
-        File::Path::mkpath $user_dir or die "Can't mkpath $user_dir: $!";
-        Socialtext::Base->dumper_to_file("$user_dir/preferences.dd", $prefs);
-    }
-}
-
-sub _dump_users_to_yaml_file {
-    my $self = shift;
-    my $dir = shift;
-    my $name = shift || $self->name;
-
-    my $file = Socialtext::File::catfile( $dir, $name . '-users.yaml' );
-
-    my $user_roles = $self->user_roles(direct => 1);
-    my @dump;
-    while (my $pair = $user_roles->next) {
-        my ($user, $role) = @$pair;
-
-        my $dumped_user = $self->_dump_user_to_hash( $user );
-        $dumped_user->{role_name} = $role->name;
-        push @dump, $dumped_user;
-    }
-
-    my $adapter = Socialtext::Pluggable::Adapter->new;
-    $adapter->make_hub(Socialtext::User->SystemUser(), $self);
-    $adapter->hook('nlw.export_workspace_users', [$self, \@dump]);
-
-    _dump_yaml( $file, \@dump );
-}
-
-sub _dump_user_to_hash {
-    my $self = shift;
-    my $user = shift;
-
-    my $adapter = Socialtext::Pluggable::Adapter->new;
-    $adapter->make_hub($user);
-    my $plugin_prefs = {};
-    $adapter->hook('nlw.export_user_prefs', [$plugin_prefs]);
-
-    my $dump = $user->to_hash(want_private_fields => 1);
-    delete $dump->{user_id};
-    $dump->{plugin_prefs} = $plugin_prefs if keys %$plugin_prefs;
-
-    return $dump;
-}
-
-sub _dump_permissions_to_yaml_file {
-    my $self = shift;
-    my $dir  = shift;
-    my $name = shift || $self->name;
-
-
-    my $sth = sql_execute(<<EOT, $self->workspace_id);
-SELECT role_id, permission_id from "WorkspaceRolePermission"
-    WHERE workspace_id = ?
-EOT
-    my $rows = $sth->fetchall_arrayref;
-
-    my @dump;
-    my @lock_dump;
-    my @self_join_dump;
-    for my $r (@$rows) {
-        my $p = Socialtext::Permission->new(
-            permission_id => $r->[1]);
-
-        # we cannot export 'new' permissions using the default method. let's
-        # ignore 'em here and deal with them down below.
-        #
-        # I think I see a pattern emerging.
-        my $array_ref = \@dump;
-        $array_ref = \@lock_dump if $p->name eq 'lock';
-        $array_ref = \@self_join_dump if $p->name eq 'self_join';
-
-        push @$array_ref, {
-            role_name => Socialtext::Role->new( role_id => $r->[0] )->name,
-            permission_name => $p->name,
-        }
-    }
-
-    my $file = Socialtext::File::catfile( $dir, $name . '-permissions.yaml' );
-    _dump_yaml( $file, \@dump );
-
-    # Deal with the 'new' perms down here.
-    my $lock_perm_file = Socialtext::File::catfile(
-        $dir, $name . '-lock-permissions.yaml');
-    _dump_yaml( $lock_perm_file, \@lock_dump );
-
-    my $self_join_perm_file = Socialtext::File::catfile(
-        $dir, $name . '-self-join-permissions.yaml');
-    _dump_yaml( $self_join_perm_file, \@self_join_dump );
-}
-
-sub _export_logo_file {
-    my $self = shift;
-    my $dir  = shift;
-    if ( my $logo_file = $self->logo_filename() ) {
-
-        # chdir'ing and just using a relative path prevents tar
-        # from giving us warnings about absolute path names.
-        local $CWD = File::Basename::dirname($logo_file);
-        my $basename = File::Basename::basename($logo_file);
-        my $new_logo = Socialtext::File::catdir( $dir, $basename );
-
-        File::Copy::copy( $logo_file, $new_logo )
-            or die "Could not copy $logo_file to $new_logo: $!\n";
     }
 }
 
 sub Any {
     my $class = shift;
-
     return $class->All( limit => 1 )->next;
 }
 
@@ -1947,14 +1689,17 @@ sub load_pages_from_disk {
             or !$hub->pages->new_from_name($page_name)->exists;
 
         if ($data->{attachments}) {
+            my $attachments = $hub->attachments;
             my $page_id = Socialtext::String::title_to_id($page_name);
             for my $name (@{$data->{attachments}}) {
-                my $attachment = $hub->attachments->new_attachment(
+                open my $fh, "$dir/attachments/$data->{page_id}/$name"
+                    or die "Can't open $name: $!";
+                $attachments->create(
                     page_id => $page_id,
+                    creator => Socialtext::User->SystemUser,
                     filename => $name,
+                    fh => $fh,
                 );
-                $attachment->save("$dir/attachments/$data->{page_id}/$name");
-                $attachment->store(user => Socialtext::User->SystemUser);
             }
         }
 
@@ -1985,13 +1730,13 @@ use constant real                       => 0;
 use constant is_plugin_enabled          => 0;
 use constant drop_breadcrumb            => undef;
 
-sub created_by_user_id { Socialtext::User->SystemUser->user_id }
+override 'new' => sub { return bless {}, __PACKAGE__ };
 
-sub new { return bless {}, __PACKAGE__ }
+sub created_by_user_id { Socialtext::User->SystemUser->user_id }
 
 sub impersonation_ok { return } # false
 
-__PACKAGE__->meta->make_immutable;
+__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
 
 __END__

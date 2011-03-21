@@ -13,43 +13,43 @@ use Socialtext::Date;
 use Socialtext::Date::l10n;
 use Socialtext::l10n qw( loc );
 
-sub class_id {'timezone'}
-const class_title => loc('Time');
+const class_id => 'timezone';
+const class_title => _('class.timezone');
 const dcDATE => 1;
 const dcTIME => 2;
 const dcDATETIME => 3;
 
 const zones => {
-    '-1200'   => loc('-1200 International Date Line West'),
-    '-1100'   => loc('-1100 Nome'),
-    '-1000'   => loc('-1000 Hawaii, Central Alaska'),
-    '-0900'   => loc('-0900 Yukon'),
-    '-0800'   => loc('-0800 Pacific'),
-    '-0700'   => loc('-0700 Mountain'),
-    '-0600'   => loc('-0600 Central (Americas)'),
-    '-0500'   => loc('-0500 Eastern (Americas)'),
-    '-0400'   => loc('-0400 Atlantic'),
-    '-0330'   => loc('-0330 Newfoundland'),
-    '-0300'   => loc('-0300 Greenland'),
-    '-0200'   => loc('-0200 Oscar'),
-    '-0100'   => loc('-0100 West Africa'),
-    '+0000'   => loc('+0000 UTC/GMT, Western European'),
-    '+0100'   => loc('+0100 Central European'),
-    '+0200'   => loc('+0200 Eastern European'),
-    '+0300'   => loc('+0300 Baghdad'),
-    '+0330'   => loc('+0330 Iran'),
-    '+0400'   => loc('+0400 Delta/USSR Zone 3'),
-    '+0500'   => loc('+0500 Echo/USSR Zone 4'),
-    '+0530'   => loc('+0530 Indian'),
-    '+0600'   => loc('+0600 Foxtrot/USSR Zone 5'),
-    '+0700'   => loc('+0700 Golf/USSR Zone 6'),
-    '+0800'   => loc('+0800 Western Australian, China Coast'),
-    '+0900'   => loc('+0900 Japan, Korean'),
-    '+0930'   => loc('+0930 Central Australian'),
-    '+1000'   => loc('+1000 Eastern Australian, Guam'),
-    '+1100'   => loc('+1100 Lima'),
-    '+1200id' => loc('+1200 International Date Line East'),
-    '+1200nz' => loc('+1200 New Zealand'),
+    '-1200'   => _('tz.-1200-west'),
+    '-1100'   => _('tz.-1100'),
+    '-1000'   => _('tz.-1000'),
+    '-0900'   => _('tz.-0900'),
+    '-0800'   => _('tz.-0800'),
+    '-0700'   => _('tz.-0700'),
+    '-0600'   => _('tz.-0600'),
+    '-0500'   => _('tz.-0500'),
+    '-0400'   => _('tz.-0400'),
+    '-0330'   => _('tz.-0330'),
+    '-0300'   => _('tz.-0300'),
+    '-0200'   => _('tz.-0200'),
+    '-0100'   => _('tz.-0100'),
+    '+0000'   => _('tz.+0000'),
+    '+0100'   => _('tz.+0100'),
+    '+0200'   => _('tz.+0200'),
+    '+0300'   => _('tz.+0300'),
+    '+0330'   => _('tz.+0330'),
+    '+0400'   => _('tz.+0400'),
+    '+0500'   => _('tz.+0500'),
+    '+0530'   => _('tz.+0530'),
+    '+0600'   => _('tz.+0600'),
+    '+0700'   => _('tz.+0700'),
+    '+0800'   => _('tz.+0800'),
+    '+0900'   => _('tz.+0900'),
+    '+0930'   => _('tz.+0930'),
+    '+1000'   => _('tz.+1000'),
+    '+1100'   => _('tz.+1100'),
+    '+1200id' => _('tz.+1200-east'),
+    '+1200nz' => _('tz.+1200'),
 };
 
 sub register {
@@ -66,7 +66,7 @@ sub timezone {
     my $self   = shift;
     my $locale = $self->hub->best_locale;
     my $p      = $self->new_preference('timezone');
-    $p->query( loc('What time zone should times be displayed in?') );
+    $p->query( _('config.time-zone?') );
     $p->type('pulldown');
     my $zones = $self->zones;
     my $choices = [ map { $_ => $zones->{$_} } sort keys %$zones ];
@@ -90,13 +90,13 @@ sub dst {
     my $self = shift;
     my $p    = $self->new_preference('dst');
 
-    $p->query( loc('How should Daylight Savings/Summer Time be handled?') );
+    $p->query( _('tz.dst?') );
     $p->type('pulldown');
     my $choices = [
-        'on'      => loc('currently in DST'),
-        'off'     => loc('currently not in DST'),
-        'auto-us' => loc('automatic, United States'),
-        'never'   => loc('never in DST'),
+        'on'      => _('tz.dst-yes'),
+        'off'     => _('tz.dst-no'),
+        'auto-us' => _('tz.auto-us'),
+        'never'   => _('tz.dst-never'),
     ];
     $p->choices($choices);
 
@@ -124,7 +124,7 @@ sub date_display_format {
     my $self   = shift;
 
     my $p = $self->new_dynamic_preference('date_display_format');
-    $p->query( loc('How should displayed dates be formatted?') );
+    $p->query( _('date.format?') );
     $p->type('pulldown');
 
     my $time = $self->_now;
@@ -158,7 +158,7 @@ sub time_display_12_24 {
     my $self   = shift;
     my $p      = $self->new_dynamic_preference('time_display_12_24');
     $p->query(
-        loc('Should times be displayed in 12-hour or 24-hour format?') );
+        _('date.hour-format?') );
 
     my $time = $self->_now;
     $p->type('pulldown');
@@ -190,7 +190,7 @@ sub time_display_12_24 {
 sub time_display_seconds {
     my $self = shift;
     my $p    = $self->new_preference('time_display_seconds');
-    $p->query( loc('Should seconds be included on displayed times?') );
+    $p->query( _('date.include-seconds?') );
     $p->type('boolean');
     $p->default(0);
     return $p;

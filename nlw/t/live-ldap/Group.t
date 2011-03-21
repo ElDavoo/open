@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 
 use strict;
@@ -67,13 +67,14 @@ retrieve_ldap_group: {
     isa_ok $users => 'Socialtext::MultiCursor';
     is $users->count => '3', '... with correct number of users';
 
-    my $user = $users->next();
+    my @users = sort {$a->user_id <=> $b->user_id} $users->all;
+    my $user = shift @users;
     is $user->username => 'lemmy kilmister', '... first user has correct name';
 
-    $user = $users->next();
+    $user = shift @users;
     is $user->username => 'phil taylor', '... second user has correct name';
 
-    $user = $users->next();
+    $user = shift @users;
     is $user->username => 'eddie clarke', '... third user has correct name';
 
     # CLEANUP
@@ -116,16 +117,17 @@ retrieve_nested_ldap_group: {
     isa_ok $users => 'Socialtext::MultiCursor';
     is $users->count => '4', '... with correct number of users';
 
-    my $user = $users->next();
+    my @users = sort {$a->user_id <=> $b->user_id} $users->all;
+    my $user = shift @users;
     is $user->username => 'michael moorcock', '... first user has correct name';
 
-    $user = $users->next();
+    $user = shift @users;
     is $user->username => 'lemmy kilmister', '... second user has correct name';
 
-    $user = $users->next();
+    $user = shift @users;
     is $user->username => 'phil taylor', '... third user has correct name';
 
-    $user = $users->next();
+    $user = shift @users;
     is $user->username => 'eddie clarke', '... fourth user has correct name';
 
     # CLEANUP
@@ -148,10 +150,11 @@ retrieve_nested_ldap_group_circular_references: {
     isa_ok $users => 'Socialtext::MultiCursor';
     is $users->count => '2', '... with correct number of users';
 
-    my $user = $users->next();
+    my @users = sort {$a->user_id <=> $b->user_id} $users->all;
+    my $user = shift @users;
     is $user->username => 'michael moorcock', '... first user has correct name';
 
-    $user = $users->next();
+    $user = shift @users;
     is $user->username => 'phil taylor', '... second user has correct name';
 
     # CLEANUP
@@ -197,10 +200,11 @@ remove_user_from_group: {
     isa_ok $users => 'Socialtext::MultiCursor';
     is $users->count => '2', '... with two users';
 
-    my $user = $users->next();
+    my @users = sort {$a->user_id <=> $b->user_id} $users->all;
+    my $user = shift @users;
     is $user->username => 'lemmy kilmister', '... first user has correct name';
 
-    $user = $users->next();
+    $user = shift @users;
     is $user->username => 'eddie clarke', '... third user has correct name';
 
     # CLEANUP

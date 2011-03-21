@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # @COPYRIGHT@
 
 # XXX needs to be tested on a clean install. Completely untested.  I think

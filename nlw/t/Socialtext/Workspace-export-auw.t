@@ -1,13 +1,14 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 # @COPYRIGHT@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 14;
+use Test::Socialtext tests => 15;
 use File::Spec;
 use YAML qw(LoadFile);
 use Socialtext::AppConfig;
 use Socialtext::Workspace;
+use ok 'Socialtext::Workspace::Exporter';
 
 fixtures(qw( db ));
 
@@ -41,10 +42,14 @@ auw_export_only_contains_direct_memberships: {
     ok $ws->has_user($indirect_user),   '... this User has access, indirectly';
     ok $ws->has_group($indirect_group), '... this Group has access, indirectly';
 
+    my $wx = Socialtext::Workspace::Exporter->new(
+        name => $ws->name, workspace => $ws
+    );
+
     # Export the Workspace info, and check for *DIRECT* Groups only
-    {
-        my $file = File::Spec->catfile($tmpdir, $ws->name . '-info.yaml');
-        $ws->_dump_to_yaml_file($tmpdir);
+    direct_groups_only: {
+        $wx->export_info();
+        my $file = $wx->filename($ws->name.'-info.yaml');
 
         ok -e $file, '... exported WS info to YAML file';
         my $yaml   = LoadFile($file);
@@ -56,9 +61,9 @@ auw_export_only_contains_direct_memberships: {
 
     # Export the Workspace membership list for Users, and check that the Users
     # with indirect membership in WS got flagged properly with "indirect: 1"
-    {
-        my $file = File::Spec->catfile($tmpdir, $ws->name . '-users.yaml');
-        $ws->_dump_users_to_yaml_file($tmpdir);
+    direct_users_or_marked: {
+        $wx->export_users();
+        my $file = $wx->filename($ws->name.'-users.yaml');
 
         ok -e $file, '... exported WS Users to YAML file';
         my $yaml  = LoadFile($file);

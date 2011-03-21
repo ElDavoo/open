@@ -24,13 +24,13 @@
             [% PROCESS list_pager %] 
             [% END %]
         </div></th>
-        <th class="sort">[% loc('Sort by:') %]
+        <th class="sort">[% loc('sort.by:') %]
           <select id="sort-picker" onchange="sort_by();">
-            [% PROCESS sort_by_option name = loc('Filename') field = 'filename' %]
-            [% PROCESS sort_by_option name = loc('Page Title') field = 'subject' %]
-            [% PROCESS sort_by_option name = loc('Uploaded By') field = 'user' %]
-            [% PROCESS sort_by_option name = loc('Date Uploaded') field = 'date' %]
-            [% PROCESS sort_by_option name = loc('Size') field = 'size' %]
+            [% PROCESS sort_by_option name = loc('file.name') field = 'filename' %]
+            [% PROCESS sort_by_option name = loc('page.title') field = 'subject' %]
+            [% PROCESS sort_by_option name = loc('sort.uploader') field = 'user' %]
+            [% PROCESS sort_by_option name = loc('nav.uploaded-date') field = 'date' %]
+            [% PROCESS sort_by_option name = loc('file.size') field = 'size' %]
           </select>
         </th>
         <script language="javascript">
@@ -55,11 +55,11 @@
           [% END %]
         </td>
         <td colspan="2">
-          [% row.link %] ([% row.human_readable_size %]), [% loc('attached to') %] <span class="[% row.style %]-row-title-attached-to query-results-row-title-attached-to">[% row.page_link %]</span>
-        [% loc('Uploaded by') %]
+          [% row.link %] ([% row.human_readable_size %]), [% loc('file.attached-to') %] <span class="[% row.style %]-row-title-attached-to query-results-row-title-attached-to">[% row.page_link %]</span>
+        [% loc('file.uploaded-by') %]
         [% row.user | decorate('user_link') %]
-        [% loc('on') %]
-        [% row.date %]
+        [% loc('info.on') %]
+        [% row.user_date %]
         </td>
         </tr>
       [% END %]
@@ -73,7 +73,7 @@
         </table>
       [% END %]
     [% IF checker.check_permission('delete') %]
-        <input type="submit" value="[% loc('Delete Selected Attachments') %]" name="button"/>
+        <input type="submit" value="[% loc('file.delete-selected') %]" name="button"/>
         <input type="hidden" name="action" value="attachments_delete" />
         <input type="hidden" name="caller_action" value="[% hub.action %]" />
       </form>
@@ -89,6 +89,6 @@
 [% END %]
 
 [% BLOCK list_pager %]
-    <b>[% loc('Showing [_1] - [_2] of [_3] total.', offset + 1, last, pager.total_entries) %]</b>
+    <b>[% loc('info.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b>
     [% INCLUDE "view/paging" %]
 [% END %]

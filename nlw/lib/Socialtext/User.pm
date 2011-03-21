@@ -1,5 +1,6 @@
 package Socialtext::User;
 # @COPYRIGHT@
+use 5.12.0;
 use Moose;
 
 our $VERSION = '0.01';
@@ -11,14 +12,15 @@ use Socialtext::Log qw(st_log);
 use Socialtext::MultiCursor;
 use Socialtext::Permission 'ST_READ_PERM';
 use Socialtext::SQL qw(sql_execute sql_selectrow sql_singlevalue sql_txn);
+use Socialtext::SQL::Builder qw(sql_abstract);
 use Socialtext::TT2::Renderer;
 use Socialtext::URI;
 use Socialtext::UserMetadata;
 use Socialtext::User::Deleted;
-use Socialtext::User::EmailConfirmation;
 use Socialtext::User::Factory;
 use Socialtext::UserSet qw/:const/;
 use Socialtext::User::Default::Users qw(:system-user :guest-user);
+use Socialtext::User::Restrictions;
 use Email::Address;
 use Socialtext::l10n qw(system_locale loc);
 use Socialtext::EmailSender::Factory;
@@ -35,7 +37,8 @@ BEGIN {
 }
 
 has 'homunculus' => (
-    is => 'ro', isa => 'Socialtext::User::Base',
+    is => 'rw', isa => 'Socialtext::User::Base',
+    writer => '_set_homunculus',
     required => 1,
     handles => [qw(
         user_id
@@ -44,6 +47,7 @@ has 'homunculus' => (
         password
         email_address
         first_name
+        middle_name
         last_name
         display_name
         password_is_correct
@@ -64,6 +68,7 @@ has 'homunculus' => (
         guess_sortable_name
         name_and_email
         update_display_name
+        update_private_external_id
     )],
 );
 
@@ -97,7 +102,7 @@ sub _build_metadata {
 with 'Socialtext::UserSetContained';
 
 our @public_interface = qw(
-    user_id username email_address password first_name last_name
+    user_id username email_address password first_name middle_name last_name
     display_name creation_datetime last_login_datetime
     email_address_at_import created_by_user_id is_business_admin
     is_technical_admin is_system_created primary_account_id
@@ -136,14 +141,6 @@ sub new_homunculus {
     my $class = shift;
     my $key = shift;
     my $val = shift;
-
-    # if we are passed in an email confirmation hash, we look up the user_id
-    # associated with that hash
-    if ($key eq 'email_confirmation_hash') {
-        my $user_id = Socialtext::User::EmailConfirmation->id_from_hash($val);
-        return undef unless defined $user_id;
-        $key = 'user_id'; $val = $user_id;
-    }
 
     my $homunculus = Socialtext::User::Cache->Fetch($key, $val);
     return $homunculus if $homunculus;
@@ -275,12 +272,33 @@ sub create {
     return $user;
 }
 
+sub reload {
+    my $self    = shift;
+    my $user_id = $self->user_id;
+
+    # Forcably remove ourselves from the cache first; we explicitly *don't*
+    # want the cached copy of this User
+    Socialtext::User::Cache->Remove(user_id => $user_id);
+    $self->metadata->_cache->remove($user_id);
+
+    # Refresh the Homunculus and Metadata for the User.
+    my $homey = $self->new_homunculus(user_id => $user_id);
+    $self->_set_homunculus($homey);
+
+    my $meta = Socialtext::UserMetadata->new(user_id => $user_id);
+    $self->_set_metadata($meta);
+
+    return $self;
+}
+
 sub SystemUser {
-    return shift->new( username => $SystemUsername );
+    state $sysuser = shift->new( username => $SystemUsername );
+    return $sysuser;
 }
 
 sub Guest {
-    return shift->new( username => $GuestUsername );
+    state $guser = shift->new( username => $GuestUsername );
+    return $guser;
 }
 
 sub can_update_store {
@@ -657,7 +675,10 @@ sub Create_user_from_hash {
         return $self->guess_real_name
             unless ($p{workspace} && $p{workspace}->workspace_id != 0);
 
-        return $self->_masked_email_address($p{workspace});
+        return $self->MaskEmailAddress(
+            $self->email_address,
+            $p{workspace},
+        );
     }
 }
 
@@ -704,15 +725,6 @@ sub Create_user_from_hash {
     }
 }
 
-# REVIEW - in the old code, this always returned the unmasked address
-# if the viewing user was an admin
-sub _masked_email_address {
-    my $self = shift;
-    my $workspace = shift;
-
-    return $self->MaskEmailAddress( $self->email_address, $workspace );
-}
-
 sub MaskEmailAddress {
     my ( $class, $email, $workspace ) = @_;
 
@@ -728,19 +740,21 @@ sub MaskEmailAddress {
 }
 
 sub FormattedEmail {
-    my ( $class, $first_name, $last_name, $email_address ) = @_;
+    my $class         = shift;
+    my $first_name    = shift;
+    my $middle_name   = shift;
+    my $last_name     = shift;
+    my $email_address = shift;
 
-    my $name = Socialtext::User::Base->GetFullName($first_name, $last_name);
+    my $name = Socialtext::User::Base->FormatFullName(
+        $first_name, $middle_name, $last_name,
+    );
 
-    # Dave suggested this improvement, but many of our templates anticipate
-    # the previous format, so is being temporarily reverted
-    # return Email::Address->new($name, $email_address)->format;
-
-    if ( length $name ) {
-            return $name . ' <' . $email_address . '>';
+    if (length $name) {
+        return $name . ' <' . $email_address . '>';
     }
     else {
-            return $email_address;
+        return $email_address;
     }
 }
 
@@ -779,10 +793,13 @@ sub is_authenticated {
         return 0;
     }
 
-    # If they have an outstanding e-mail confirmation, we don't treat them as
-    # Authenticated.
-    if ($self->requires_confirmation()) {
-        st_log->info( "user $username has oustanding email confirmation; not treating as authenticated" );
+    # If they have any outstanding restrictions (e.g. e-mail confirmation,
+    # password change), we don't treat them as Authenticated.
+    my @restrictions = map { $_->restriction_type } $self->restrictions->all;
+    if (@restrictions) {
+        map {
+            st_log->info("user $username has outstanding '$_' restriction; not treating as authenticated");
+        } @restrictions;
         return 0;
     }
 
@@ -834,8 +851,8 @@ sub deactivate {
         $self->update_store( password => '*no-password*', no_crypt => 1 );
     }
     else {
-        warn loc("The user has been removed from workspaces and directories.") . "\n";
-        warn loc("Login information is controlled by the [_1] directory administrator.", $self->driver_name) . "\n\n";
+        warn loc("user.deactivated") . "\n";
+        warn loc("info.login-admin=driver", $self->driver_name) . "\n\n";
     }
 
     # leaves things referencing this user in place
@@ -875,7 +892,7 @@ sub reactivate {
     $deleted->remove_user( user => $self );
 
     unless ($self->is_externally_sourced) {
-        $self->set_confirmation_info(is_password_change => 1);
+        $self->create_password_change_confirmation;
     }
 }
 
@@ -904,7 +921,7 @@ sub _call_hook {
         shift;
         my %p = validate( @_, $spec );
 
-        return ( loc("Passwords must be at least 6 characters long.") )
+        return ( loc("error.password-too-short") )
             unless length $p{password} >= 6;
 
         return;
@@ -971,10 +988,22 @@ sub ResolveId {
     return;
 }
 
-my $standard_apply = sub {
-    my $row = shift;
-    return Socialtext::User->new( user_id => $row->[0] );
-};
+sub Query {
+    my $class  = shift;
+    my $params = shift;
+    my $t      = time_scope('user_query');
+
+    my ($sql, @bind) = sql_abstract->select('users', [qw(user_id)], $params);
+    my $sth = sql_execute($sql, @bind);
+    my $mc  = Socialtext::MultiCursor->new(
+        iterables => [ $sth->fetchall_arrayref ],
+        apply     => sub {
+            my $row = shift;
+            $class->new(user_id => $row->[0]);
+        },
+    );
+    return $mc;
+}
 
 sub _UserCursor {
     my ( $class, $sql, $interpolations, %p ) = @_;
@@ -1086,6 +1115,12 @@ SELECT user_id
 EOSQL
 
     return $class->_UserCursor( $sql, [] );
+}
+
+sub AllBusinessAdmins {
+    my $class = shift;
+    my $sql   = qq{SELECT user_id FROM "UserMetadata" WHERE is_business_admin};
+    return $class->_UserCursor($sql, []);
 }
 
 {
@@ -1435,245 +1470,116 @@ sub Count {
 
 # Confirmation methods
 
-{
-    my $spec = { 
-        is_password_change => BOOLEAN_TYPE( default => 0 ),
-        workspace_name => 
-            {
-                type => SCALAR | UNDEF, 
-                default => undef 
-            }
-        };
-
-    sub set_confirmation_info {
-        my $self = shift;
-        my %p    = validate( @_, $spec );
-
-        Socialtext::User::EmailConfirmation->create_or_update(
-            user_id => $self->user_id,
-            %p,
-        );
-    }
+sub restrictions {
+    my $self = shift;
+    return Socialtext::User::Restrictions->AllForUser($self);
 }
 
-sub confirmation_hash {
+sub add_restriction {
     my $self = shift;
-    return $self->email_confirmation->hash;
+    my $type = shift;
+    return Socialtext::User::Restrictions->CreateOrReplace( {
+        user_id          => $self->user_id,
+        restriction_type => $type,
+    } );
 }
 
-sub confirmation_is_for_password_change {
+sub get_restriction {
     my $self = shift;
-    return $self->email_confirmation->is_password_change;
+    my $type = shift;
+    return Socialtext::User::Restrictions->Get( {
+        user_id          => $self->user_id,
+        restriction_type => $type,
+    } );
 }
 
-sub confirmation_workspace_id {
+sub remove_restriction {
     my $self = shift;
-    return $self->email_confirmation->workspace_id;
+    my $type = shift;
+    my $restriction = $self->get_restriction($type);
+    $restriction->confirm if ($restriction);
 }
 
-
-# REVIEW - does this belong in here, or maybe a higher level library
-# like one for all of our emails? I dunno.
-sub send_confirmation_email {
+sub has_restriction {
     my $self = shift;
-
-    return unless $self->email_confirmation();
-
-    my $renderer = Socialtext::TT2::Renderer->instance();
-
-    my $uri = $self->confirmation_uri();
-
-    my $target_workspace;
-
-    if ($self->confirmation_workspace_id) {
-        require Socialtext::Workspace;      # lazy-load, to reduce startup impact
-        $target_workspace = new Socialtext::Workspace(workspace_id => $self->confirmation_workspace_id);
-    }
-    my %vars = (
-        confirmation_uri => $uri,
-        appconfig        => Socialtext::AppConfig->instance(),
-        account_name     => $self->primary_account->name,
-        target_workspace => $target_workspace
-    );
-
-    my $text_body = $renderer->render(
-        template => 'email/email-address-confirmation.txt',
-        vars     => \%vars,
-    );
-
-    my $html_body = $renderer->render(
-        template => 'email/email-address-confirmation.html',
-        vars     => \%vars,
-    );
-
-    # XXX if we add locale per workspace, we have to get the locale from hub.
-    my $locale = system_locale();
-    my $email_sender = Socialtext::EmailSender::Factory->create($locale);
-    $email_sender->send(
-        to        => $self->name_and_email(),
-        subject   => $target_workspace ? 
-            loc('Welcome to the [_1] workspace - please confirm your email to join', $target_workspace->title)
-            :
-            loc('Welcome to the [_1] community - please confirm your email to join', $self->primary_account->name),
-        text_body => $text_body,
-        html_body => $html_body,
-    );
+    my $type = shift;
+    my $restriction = $self->get_restriction($type);
+    return $restriction ? 1 : 0;
 }
 
-sub send_confirmation_completed_email {
+sub is_restricted {
     my $self = shift;
-
-    my $target_workspace = shift;
-
-    return if $self->email_confirmation();
-
-    my $renderer = Socialtext::TT2::Renderer->instance();
-
-    my $app_name =
-        Socialtext::AppConfig->is_appliance()
-        ? 'Socialtext Appliance'
-        : 'Socialtext';
-    my @workspaces = [];
-    my @groups = [];
-    my $subject;
-    my $ws = $target_workspace;
-    if ($ws) {
-        $subject = loc('You can now login to the [_1] workspace', $ws->title());
-    }
-    else {
-        $subject = loc("You can now login to the [_1] application", $app_name);
-        @groups = $self->groups->all;
-        @workspaces = $self->workspaces->all;
-    }
-
-    my %vars = (
-        title => ($ws) ? $ws->title() : $app_name,
-        uri   => ($ws) ? $ws->uri() : Socialtext::URI::uri(path => '/challenge'),
-        workspaces => \@workspaces,
-        groups => \@groups,
-        target_workspace => $target_workspace,
-        user => $self,
-        app_name => $app_name,
-        appconfig => Socialtext::AppConfig->instance(),
-        support_address => Socialtext::AppConfig->instance()->support_address,
-    );
-
-    my $text_body = $renderer->render(
-        template => 'email/email-address-confirmation-completed.txt',
-        vars     => \%vars,
-    );
-
-    my $html_body = $renderer->render(
-        template => 'email/email-address-confirmation-completed.html',
-        vars     => \%vars,
-    );
-    my $locale = system_locale();
-    my $email_sender = Socialtext::EmailSender::Factory->create($locale);
-    $email_sender->send(
-        to        => $self->name_and_email(),
-        subject   => $subject,
-        text_body => $text_body,
-        html_body => $html_body,
-    );
+    return $self->restrictions->count;
 }
 
-sub send_password_change_email {
+# restriction: email confirmation
+sub create_email_confirmation {
     my $self = shift;
-
-    return unless $self->email_confirmation();
-
-    my $renderer = Socialtext::TT2::Renderer->instance();
-
-    my $uri = $self->confirmation_uri();
-
-    my %vars = (
-        appconfig        => Socialtext::AppConfig->instance(),
-        confirmation_uri => $uri,
-    );
-
-    my $text_body = $renderer->render(
-        template => 'email/password-change.txt',
-        vars     => \%vars,
-    );
-
-    my $html_body = $renderer->render(
-        template => 'email/password-change.html',
-        vars     => \%vars,
-    );
-    my $locale = system_locale();
-    my $email_sender = Socialtext::EmailSender::Factory->create($locale);
-    $email_sender->send(
-        to        => $self->name_and_email(),
-        subject   => loc('Please follow these instructions to change your Socialtext password'),
-        text_body => $text_body,
-        html_body => $html_body,
-    );
-}
-
-sub confirmation_uri {
-    my $self = shift;
-
-    return unless $self->requires_confirmation;
-
-    return Socialtext::URI::uri(
-        path  => '/nlw/submit/confirm_email',
-        query => { hash => $self->confirmation_hash() },
-    );
-}
-
-sub requires_confirmation {
-    my $self = shift;
-
-    return $self->email_confirmation ? 1 : 0;
-}
-
-sub confirmation_has_expired {
-    my $self = shift;
-
-    return $self->email_confirmation->has_expired;
-}
-
-sub confirm_email_address {
-    my $self = shift;
-
-    my $uce = $self->email_confirmation;
-    return unless $uce;
-
-    $uce->delete;
-
-    return if $uce->is_password_change;
-    my $target_workspace;
-    if (my $wsid=$uce->workspace_id) {
-        require Socialtext::Workspace;      # lazy-load, to reduce startup impact
-        $target_workspace = Socialtext::Workspace->new(workspace_id => $wsid);
-    }
-
-    $self->send_confirmation_completed_email($target_workspace);
-    $self->send_confirmation_completed_signal unless $target_workspace;
-}
-
-sub send_confirmation_completed_signal {
-    my $self = shift;
-    my $signals = Socialtext::Pluggable::Adapter->plugin_class('signals');
-    return unless $signals;
-
-    my $user_wafl = '{user: '.$self->user_id.'}';
-    my $body =
-        loc('[_1] just joined the [_2] group. Hi everybody!', $user_wafl, $self->primary_account->name);
-    eval {
-        $signals->Send({
-            user => $self,
-            account_ids => [ $self->primary_account_id ],
-            body => $body,
-        });
-    };
-    warn $@ if $@;
+    return $self->add_restriction('email_confirmation');
 }
 
 sub email_confirmation {
     my $self = shift;
-    return Socialtext::User::EmailConfirmation->new( $self->user_id );
+    return $self->get_restriction('email_confirmation');
 }
+
+sub send_confirmation_email {
+    my $self = shift;
+    my $restriction = $self->get_restriction('email_confirmation');
+    $restriction->send if $restriction;
+}
+
+sub confirmation_uri {
+    my $self = shift;
+    my $restriction = $self->email_confirmation;
+    return $restriction->uri if $restriction;
+}
+
+sub confirm_email_address {
+    my $self = shift;
+    return $self->remove_restriction('email_confirmation');
+}
+
+sub requires_email_confirmation {
+    my $self = shift;
+    return $self->has_restriction('email_confirmation');
+}
+
+# restriction: password change
+sub create_password_change_confirmation {
+    my $self = shift;
+    return $self->add_restriction('password_change');
+}
+
+sub password_change_confirmation {
+    my $self = shift;
+    return $self->get_restriction('password_change');
+}
+
+sub send_password_change_email {
+    my $self = shift;
+    my $restriction = $self->get_restriction('password_change');
+    $restriction->send if $restriction;
+}
+
+sub password_change_uri {
+    my $self = shift;
+    my $restriction = $self->get_restriction('password_change');
+    return $restriction->uri if $restriction;
+}
+
+sub requires_password_change {
+    my $self = shift;
+    return $self->has_restriction('password_change');
+}
+
+# restriction:  require external id
+sub requires_external_id {
+    my $self = shift;
+    return $self->has_restriction('require_external_id');
+}
+
+# END restrictions
 
 sub is_plugin_enabled {
     my $self = shift;
@@ -1918,6 +1824,8 @@ considered an error.
 
 =item * first_name
 
+=item * middle_name
+
 =item * last_name
 
 =item * creation_datetime - defaults to CURRENT_TIMESTAMP
@@ -1940,6 +1848,13 @@ considered an error.
 
 Returns the name of the package (used by the Socialtext::MultiPlugin base when
 determining driver classes
+
+=head2 $user->reload()
+
+Reloads the User object from the DB, including any entries in in-memory caches.
+
+Primarily used for I<testing>; when you're operating at a distance on a User
+and need to reload that object quickly to verify the results.
 
 =head2 $user->can_update_store()
 
@@ -1964,6 +1879,8 @@ workspace.
 =head2 $user->email_address()
 
 =head2 $user->first_name()
+
+=head2 $user->middle_name()
 
 =head2 $user->last_name()
 
@@ -2150,7 +2067,7 @@ the user for operations where a user is needed but there is no end
 user, like operations done from the CLI (creating a workspace, for
 example).
 
-=head2 Socialtext::User->FormattedEmail($first_name, $last_name, $email_address)
+=head2 Socialtext::User->FormattedEmail($first_name, $middle_name, $last_name, $email_address)
 
 Returns a formatted email address from the parameters passed in. Will attempt
 to construct a "pretty" presentation:
@@ -2276,6 +2193,11 @@ Checks each of the configured User Factories to see if they know about this
 User, B<without> actually instantiating the User object; useful as a
 peek-ahead to see if we know about a User with this C<driver_unique_id> yet.
 
+=head2 Socialtext::User->Query( $hashref )
+
+Finds User records that match the given hash-ref of field data B<exactly>,
+returning a cursor of the records found.
+
 =head2 Socialtext::User->Create_user_from_hash( $hashref )
 
 Create a user from the data in the specified hash.  This routine is used
@@ -2301,29 +2223,10 @@ the method was called.
 This returns true if there is a row for this user in the
 UseEmailConfirmation table.
 
-=head2 $user->confirmation_is_for_password_change()
-
-This returns true if the user requires confirmation, and this is for
-the purpose of allow them to change their password.
-
-=head2 $user->confirmation_hash()
-
-Returns the hash value which will confirm this user's email address,
-if one exists.
-
 =head2 $user->confirmation_uri()
 
 This is the URI to confirm the user's email address. If the user is
 already confirmation, it returns false.
-
-=head2 $user->confirmation_has_expired()
-
-Returns a boolean indicating whether or not the user's confirmation
-hash has expired.
-
-=head2 $user->confirmation_workspace_id()
-
-Returns the workspace ID of the confirmation workspace.
 
 =head2 $user->send_confirmation_email()
 

@@ -36,11 +36,11 @@ HERE
 # FROM Socialtext::String:
 my $invalid_re = qr/[^\p{Letter}\p{Number}\p{ConnectorPunctuation}\pM]+/;
 
-my $unicore_gc_sc = '/usr/share/perl/5.8.7/unicore/lib/gc_sc';
-my $Letter               = do "$unicore_gc_sc/L.pl";
-my $Number               = do "$unicore_gc_sc/N.pl";
-my $ConnectorPunctuation = do "$unicore_gc_sc/Pc.pl";
-my $M                    = do "$unicore_gc_sc/M.pl";    # aka Mark
+my $unicore_lib = '/opt/perl/5.12.2/lib/unicore/lib';
+my $Letter               = do "$unicore_lib/Gc/L.pl";
+my $Number               = do "$unicore_lib/Gc/N.pl";
+my $ConnectorPunctuation = do "$unicore_lib/WB/EX.pl";
+my $M                    = do "$unicore_lib/Gc/M.pl";    # aka Mark
 
 my $fine = Socialtext::IntSet->new;
 
@@ -67,7 +67,7 @@ explode($M);
 die "first can't be zero" if $fine->nth(1) == 0;
 
 my $all = Socialtext::IntSet->new;
-$all->set($_) for (0 .. 0xFFFF);
+$all->set($_) for (0 .. 0xFFFF); # javascript only handles BMP
 
 # invert the set since the majority of BMP1 characters are Letter-classed.
 my $excl = $all->subtract($fine);

@@ -23,7 +23,7 @@
 | st-admin | disable-email-notify --username %%cli_user%% --workspace %%cmdline_workspace%% | qr/Email notify has been disabled for %%cli_user%% in the %%cmdline_workspace%% workspace/ism |
 
 | *Comment* | Test Case: Command Line LDAP user Set locale |  |
-| st-admin | set-locale --username %%cli_user%% --workspace %%cmdline_workspace%% --locale zz | l0c4l3 F0R %%cli_user%% iS N0W zz |
+| st-admin | set-locale --username %%cli_user%% --workspace %%cmdline_workspace%% --locale zq | Locale for %%cli_user%% is now zq |
 | st-admin | set-locale --username %%cli_user%% --workspace %%cmdline_workspace%% --locale en | Locale for %%cli_user%% is now en |
 
 | *Comment* | Test Case: Command Line LDAP user give-accounts-admin |  |
