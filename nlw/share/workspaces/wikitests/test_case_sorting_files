@@ -17,6 +17,19 @@
 
 | set | sorting_workspace | sorting-data-%%start_time%% |
 
+| set_default | scheme | http |
+| set_default | files_host | wikitest_files.topaz.socialtext.net |
+| set_default | zip | wikitestzip.zip |
+| set_default | txt | wikitest.txt |
+| set_default | pdf | wikitest.pdf |
+| set_default | doc | wikitest.doc |
+| set_default | jpg | wikitest.jpg |
+| set_default | zip_file | %%scheme%%://%%files_host%%/%%zip%% |
+| set_default | jpg_file | %%scheme%%://%%files_host%%/%%jpg%% |
+| set_default | pdf_file | %%scheme%%://%%files_host%%/%%pdf%% |
+| set_default | doc_file | %%scheme%%://%%files_host%%/%%doc%% |
+| set_default | txt_file | %%scheme%%://%%files_host%%/%%txt%% |
+
 | *Comment* | Test Case: Sorting Files Create new ws sorting-data-%%start_time%% |  |
 | st-admin | create-workspace --empty --name %%sorting_workspace%% --title %%sorting_workspace%% --empty | A new workspace named "%%sorting_workspace%%" was created. |
 
@@ -46,7 +59,7 @@
 | st-admin | update-page --email %%user_5%% --workspace %%sorting_workspace%% --page "page5 %%start_time%%" < %%wikitest_client_files%%wikitest.txt | The "page5 %%start_time%%" page has been created. |
 
 | *Comment* | Test Case: Sorting Files files user_1 uploads wikitest.jpg |  |
-| open_ok | /%%sorting_workspace%%/index.cgi?page1_%%start_time%% |  |
+| open_ok | /%%sorting_workspace%%/page1_%%start_time%% |  |
 | wait_for_element_visible_ok | username | 10000 |
 | type_ok | username | %%user_1%% |
 | type_ok | password | 123456 |
@@ -54,12 +67,11 @@
 | wait_for_element_visible_ok | st-attachments-uploadbutton | 30000 |
 | click_ok | st-attachments-uploadbutton |  |
 | wait_for_element_visible_ok | st-attachments-attach-filename | 30000 |
-| type_ok | st-attachments-attach-filename | %%wikitest_files%%wikitest.jpg |
-| wait_for_text_present_ok | Uploaded files: | 10000 |
-| wait_for_element_visible_ok | st-attachments-attach-closebutton | 120000 |
-| click_ok | st-attachments-attach-closebutton |  |
+| attach_file_ok | st-attachments-attach-filename | %%jpg_file%% |
 | wait_for_element_visible_ok | //a[contains(@href,'original/wikitest.jpg')] | 30000 |
 | text_like | //a[contains(@href,'original/wikitest.jpg')] | wikitest.jpg |
+| wait_for_element_visible_ok | st-attachments-attach-closebutton | 120000 |
+| click_ok | st-attachments-attach-closebutton |  |
 
 | *Comment* | Test Case: Sorting Files user_2 uploads wikitest.doc |  |
 | wait_for_element_visible_ok | link=Log out |  |
@@ -73,12 +85,11 @@
 | wait_for_element_visible_ok | st-attachments-uploadbutton | 30000 |
 | click_ok | st-attachments-uploadbutton |  |
 | wait_for_element_visible_ok | st-attachments-attach-filename | 30000 |
-| type_ok | st-attachments-attach-filename | %%wikitest_files%%wikitest.doc |
-| wait_for_text_present_ok | Uploaded files: | 10000 |
-| wait_for_element_visible_ok | st-attachments-attach-closebutton | 120000 |
-| click_ok | st-attachments-attach-closebutton |  |
+| attach_file_ok | st-attachments-attach-filename | %%doc_file%% |
 | wait_for_element_visible_ok | //a[contains(@href,'original/wikitest.doc')] | 30000 |
 | text_like | //a[contains(@href,'original/wikitest.doc')] | wikitest.doc |
+| wait_for_element_visible_ok | st-attachments-attach-closebutton | 120000 |
+| click_ok | st-attachments-attach-closebutton |  |
 
 | *Comment* | Test Case: Sorting Files user_3 uploads wikitestzip.zip |  |
 | wait_for_element_visible_ok | link=Log out |  |
@@ -91,12 +102,11 @@
 | wait_for_element_visible_ok | st-attachments-uploadbutton | 30000 |
 | click_ok | st-attachments-uploadbutton |  |
 | wait_for_element_visible_ok | st-attachments-attach-filename | 30000 |
-| type_ok | st-attachments-attach-filename | %%wikitest_files%%wikitestzip.zip |
-| wait_for_text_present_ok | Uploaded files: | 10000 |
-| wait_for_element_visible_ok | st-attachments-attach-closebutton | 120000 |
-| click_ok | st-attachments-attach-closebutton |  |
+| attach_file_ok | st-attachments-attach-filename | %%zip_file%% |
 | wait_for_element_visible_ok | //a[contains(@href,'original/wikitestzip.zip')] | 30000 |
 | text_like | //a[contains(@href,'original/wikitestzip.zip')] | wikitestzip.zip |
+| wait_for_element_visible_ok | st-attachments-attach-closebutton | 120000 |
+| click_ok | st-attachments-attach-closebutton |  |
 
 | *Comment* | Test Case: Sorting Files user_4 uploads wikitest.pdf |  |
 | wait_for_element_visible_ok | link=Log out |  |
@@ -109,12 +119,11 @@
 | wait_for_element_visible_ok | st-attachments-uploadbutton | 30000 |
 | click_ok | st-attachments-uploadbutton |  |
 | wait_for_element_visible_ok | st-attachments-attach-filename | 30000 |
-| type_ok | st-attachments-attach-filename | %%wikitest_files%%wikitest.pdf |
-| wait_for_text_present_ok | Uploaded files: | 10000 |
-| wait_for_element_visible_ok | st-attachments-attach-closebutton | 120000 |
-| click_ok | st-attachments-attach-closebutton |  |
+| attach_file_ok | st-attachments-attach-filename | %%pdf_file%% |
 | wait_for_element_visible_ok | //a[contains(@href,'original/wikitest.pdf')] | 30000 |
 | text_like | //a[contains(@href,'original/wikitest.pdf')] | wikitest.pdf |
+| wait_for_element_visible_ok | st-attachments-attach-closebutton | 120000 |
+| click_ok | st-attachments-attach-closebutton |  |
 
 | *Comment* | Test Case: Sorting Files user_5 uploads wikitest.txt |  |
 | wait_for_element_visible_ok | logout_btn |  |
@@ -127,12 +136,11 @@
 | wait_for_element_visible_ok | st-attachments-uploadbutton | 30000 |
 | click_ok | st-attachments-uploadbutton |  |
 | wait_for_element_visible_ok | st-attachments-attach-filename | 30000 |
-| type_ok | st-attachments-attach-filename | %%wikitest_files%%wikitest.txt |
-| wait_for_text_present_ok | Uploaded files: | 10000 |
-| wait_for_element_visible_ok | st-attachments-attach-closebutton | 120000 |
-| click_ok | st-attachments-attach-closebutton |  |
+| attach_file_ok | st-attachments-attach-filename | %%txt_file%% |
 | wait_for_element_visible_ok | //a[contains(@href,'original/wikitest.txt')] | 30000 |
 | text_like | //a[contains(@href,'original/wikitest.txt')] | wikitest.txt |
+| wait_for_element_visible_ok | st-attachments-attach-closebutton | 120000 |
+| click_ok | st-attachments-attach-closebutton |  |
 
 | click_and_wait | link=Settings |  |
 | wait_for_element_visible_ok | link=Time | 30000 |

@@ -2,12 +2,24 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 06:36+0800\n"
-"Language-Team: Socialtext i18n team\n"
+"PO-Revision-Date: 2011-02-20 10:43+0800\n"
 "Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: share/plugin/signals/share/widgets/explore/config.yaml:5
+msgid "description.explore"
+msgstr "Post signals and display activities, including signals and workspace events."
+
+#: share/plugin/signals/share/widgets/explore_filters/config.yaml:5
+msgid "description.explore_filters"
+msgstr "Filter bookmarks"
+
+#: share/plugin/signals/share/widgets/profile/config.yaml:4
+msgid "description.profile"
+msgstr "Profile"
 
 #: share/plugin/signals/share/javascript/lightbox/explore-about.tt2:17
 msgid "do.close"
@@ -17,6 +29,34 @@ msgstr "Close"
 #: share/plugin/signals/template/bookmarklet/too_long.html:6
 msgid "error.signal-too-long=limit"
 msgstr "Your signal exceeded %1 characters"
+
+#: share/plugin/signals/template/explore_header:9
+msgid "explore.all-assets"
+msgstr "All Assets"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:8
+msgid "explore.all-people"
+msgstr "All People"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:25 share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:26
+msgid "explore.any-group"
+msgstr "Any Group"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:38 share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:39
+msgid "explore.any-tag"
+msgstr "Any Tag"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:49 share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:50
+msgid "explore.anyone"
+msgstr "Anyone"
+
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:398 share/plugin/signals/share/widgets/explore_filters/widget.js:408
+msgid "explore.anytime"
+msgstr "anytime"
+
+#: share/plugin/signals/template/explore_header:10
+msgid "explore.attachments"
+msgstr "Attachments"
 
 #: share/plugin/signals/template/explore_hello:2
 msgid "explore.beta"
@@ -30,13 +70,81 @@ msgstr "Do not show this information again"
 msgid "explore.everyone"
 msgstr "Everyone"
 
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:15
+msgid "explore.from"
+msgstr "From"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:22
+msgid "explore.groups"
+msgstr "GROUPS"
+
 #: share/plugin/signals/share/widgets/explore_filters/widget.js:289
 msgid "explore.just-me"
 msgstr "Just Me"
 
+#: share/plugin/signals/template/explore_header:17
+msgid "explore.mentions"
+msgstr "Mentions"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:10
+msgid "explore.mine"
+msgstr "Mine"
+
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:398 share/plugin/signals/share/widgets/explore_filters/widget.js:404
+msgid "explore.now"
+msgstr "now"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:46
+msgid "explore.people"
+msgstr "PEOPLE"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:9
+msgid "explore.people-i-follow"
+msgstr "People I follow"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:57
+msgid "explore.permalink-for-this-view"
+msgstr "Permalink for this View"
+
+#: share/plugin/signals/template/explore_header:16
+msgid "explore.recency"
+msgstr "Recency"
+
+#: share/plugin/signals/template/explore_header:14
+msgid "explore.sort-by:"
+msgstr "Sort by:"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:34
+msgid "explore.tags-from"
+msgstr "TAGS from"
+
+#: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:17
+msgid "explore.to"
+msgstr "to"
+
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:181
+msgid "explore.type-to-select-group"
+msgstr "type to select specific group"
+
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:315
+msgid "explore.type-to-select-person"
+msgstr "type to select specific person"
+
+#: share/plugin/signals/share/widgets/explore_filters/widget.js:260
+msgid "explore.type-to-select-tag"
+msgstr "type to select specific tag"
+
 #: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:3
 msgid "explore.using-filters"
 msgstr "Use the filters below to narrow the results. Use the small 'x' by any of the Groups, Tags and People filters to remove them."
+
+#: share/plugin/signals/template/explore_header:12
+msgid "explore.web-links"
+msgstr "Web Links"
+
+#: share/plugin/signals/template/explore_header:11
+msgid "explore.wiki-links"
+msgstr "Workspace Links"
 
 #: share/plugin/signals/share/javascript/lightbox/explore-about.tt2:4
 msgid "info.about-explore"
@@ -126,7 +234,7 @@ msgstr "Maximum value for this appliance is %1"
 
 #. (a.user_count)
 #. (g.user_count)
-#: share/plugin/signals/template/lite/signals.html:57 share/plugin/signals/template/lite/signals.html:68
+#: share/plugin/signals/template/lite/signals.html:52 share/plugin/signals/template/lite/signals.html:63
 msgid "signals.network-count=users"
 msgstr "%*(%1,user)"
 
@@ -152,12 +260,12 @@ msgstr "%1 on <a href=\"%2\">%3</a> in reply to %4."
 msgid "signals.permalink"
 msgstr "Signals - Permalink"
 
-#: share/plugin/signals/template/lite/signals.html:45
+#: share/plugin/signals/template/lite/signals.html:40
 msgid "signals.post-to"
 msgstr "Post to"
 
 #. (a.user_count)
-#: share/plugin/signals/template/lite/signals.html:55
+#: share/plugin/signals/template/lite/signals.html:50
 msgid "signals.primary-account=users"
 msgstr "primary, %*(%1,user)"
 
@@ -274,7 +382,7 @@ msgstr "to %1"
 msgid "signals.try-again:"
 msgstr "Please try again:"
 
-#: share/plugin/signals/template/lite/signals.html:41
+#: share/plugin/signals/template/lite/signals.html:36
 msgid "signals.update"
 msgstr "Update"
 
@@ -285,3 +393,11 @@ msgstr "What are you working on?"
 #: share/plugin/signals/template/email/direct-message.html:29
 msgid "signals.your-settings"
 msgstr "your settings"
+
+#: share/plugin/signals/share/widgets/explore_filters/config.yaml:4
+msgid "title.explore_filters"
+msgstr "Filters"
+
+#: share/plugin/signals/share/widgets/profile/config.yaml:3
+msgid "title.profile"
+msgstr "Profile"

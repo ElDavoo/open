@@ -7,6 +7,7 @@
 | set | e_user | profile.editor@ken.socialtext.net |
 | set | short_e_user | profile.editor |
 | set | fname | Profligate |
+| set | mname | Epitome |
 | set | lname | Edisaurus |
 | set | short_super | epsupervisor |
 | set | short_assistant | epassistant |
@@ -28,7 +29,7 @@
 | st-select-widget-frame | profile |  |
 
 | *Comment* | Test Case: Verify Profile. Verify values. |
-| text_like | %%fname%% %%lname%% |
+| text_like | %%fname%% %%mname%% %%lname%% |
 | text_like | Position %%short_e_user%% |
 | text_like | Company %%short_e_user%% |
 | text_like | Location %%short_e_user%% |
@@ -86,8 +87,8 @@
 | st-widget-title-like | updates | Activities |
 | st-select-widget-frame | updates |  |
 | wait_for_text_present_ok | tagged themself VPT %%start_time%% | 30000 |
-| text_like | qr/%%fname%% %%lname%%.+tagged themself VPT %%start_time%%/ism |  |
-| text_like | qr/%%fname%% %%lname%%.+edited their own profile/ism |  |
+| text_like | qr/%%fname%% %%mname%% %%lname%%.+tagged themself VPT %%start_time%%/ism |  |
+| text_like | qr/%%fname%% %%mname%% %%lname%%.+edited their own profile/ism |  |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Verify Profile. See if Colleagues is there. Can't do much else. |  |

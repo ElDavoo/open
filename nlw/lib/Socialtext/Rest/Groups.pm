@@ -11,6 +11,7 @@ use Socialtext::Role;
 use Socialtext::Permission 'ST_ADMIN_WORKSPACE_PERM';
 use Socialtext::JobCreator;
 use Socialtext::Upload;
+use Scalar::Util qw(blessed);
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Collection';
@@ -24,8 +25,15 @@ sub collection_name { 'Groups' }
 
 sub _entity_hash { 
     my ($self, $group) = @_;
-    return $group if $self->rest->query->param('ids_only');
-    return $group if $self->rest->query->param('minimal');
+    my $minimal = $self->rest->query->param('minimal');
+    if ($minimal or $self->rest->query->param('ids_only')) {
+        if (blessed($group) and $group->can('to_hash')) {
+            return $group->to_hash(minimal => $minimal) ;
+        }
+        else {
+            return $group;
+        }
+    }
     my $show_members = $self->rest->query->param('show_members');
     return {
         group_id => $group->group_id,
@@ -89,7 +97,16 @@ sub _get_entities {
             $all ? () : (viewer => $user),
         );
         $self->{_total_results} = $count;
-        return [ map { $_->group } @{ $results->() } ];
+
+        # This was:
+        #     return [ map { $_->group } @{ $results->() } ];
+        # but somehow it corrupts $_'s memory to "=cut " if LDAP
+        # is enabled; rewrite using named variable for now.
+        my @result;
+        for my $hit (@{ $results->() }) {
+            push @result, $hit->group;
+        }
+        return \@result;
     }
     else {
         if ($all) {

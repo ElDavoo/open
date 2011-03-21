@@ -12,7 +12,7 @@ use Socialtext::Events;
 use Socialtext::Pageset;
 
 const class_id    => 'watchlist';
-const class_title => 'Watchlist';
+const class_title => _('class.watchlist');
 const cgi_class   => 'Socialtext::Watchlist::CGI';
 const listview_extra_columns => { watchlist => 1 };
 field 'lock_handle';
@@ -38,18 +38,18 @@ our $Default_notify_frequency = 1440;
 sub watchlist_notify_frequency {
     my $self = shift;
     my $p    = $self->new_preference('watchlist_notify_frequency');
-    $p->query(loc('watch.email-frequency?'));
+    $p->query(_('watch.email-frequency?'));
     $p->type('pulldown');
     my $choices = [
-        0     => 'Never',
-        1     => 'Every Minute',
-        5     => 'Every 5 Minutes',
-        15    => 'Every 15 Minutes',
-        60    => 'Every Hour',
-        360   => 'Every 6 Hours',
-        1440  => 'Every Day',
-        4320  => 'Every 3 Days',
-        10080 => 'Every Week',
+        0     => _('time.never'),
+        1     => _('every.minute'),
+        5     => _('every.5minutes'),
+        15    => _('every.15minutes'),
+        60    => _('every.hour'),
+        360   => _('every.6hours'),
+        1440  => _('every.day'),
+        4320  => _('every.3days'),
+        10080 => _('every.week'),
     ];
     $p->choices($choices);
     $p->default($Default_notify_frequency);
@@ -60,11 +60,11 @@ sub watchlist_links_only {
     my $self = shift;
     my $p    = $self->new_preference('watchlist_links_only');
     $p->query(
-        loc('email.page-digest-details?'));
+        _('email.page-digest-details?'));
     $p->type('radio');
     my $choices = [
-        condensed => loc('email.page-name-link-only'),
-        expanded  => loc('email.page-name-link-author-date'),
+        condensed => _('email.page-name-link-only'),
+        expanded  => _('email.page-name-link-author-date'),
     ];
     $p->choices($choices);
     $p->default('expanded');

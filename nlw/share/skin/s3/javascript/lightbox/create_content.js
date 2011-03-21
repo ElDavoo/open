@@ -70,7 +70,7 @@ proto.update_templates = function () {
                 self.from_template_radio().attr('disabled', 'disabled');
                 var error = loc(
                     "error.no-page=type,tag",
-                    type, template
+                    loc("page.type-"+type), template
                 );
 
                 self.from_template_select()

@@ -6,8 +6,9 @@
     <head>
         <title>[% "$ws.title : " IF ws.title %][%- title | html %]</title>
         <link rel="apple-touch-icon" href="/static/skin/common/images/apple-touch-icon.png"/>
+        <script src="[% s3_uri('javascript/l10n-' _ loc_lang _ '.js.gz') %]"></script>
         [% IF enable_jquery_mobile %]
-        <link rel="stylesheet" href="/static/skin/common/css/jquery.mobile-1.0a2.min.css" />
+        <link rel="stylesheet" href="/static/skin/common/css/jquery.mobile-1.0a3.min.css" />
         <script src="/static/skin/common/javascript/jquery-1.4.4.min.js"></script>
         <script>
         $(document).bind("mobileinit", function(){
@@ -32,6 +33,7 @@
                 defaultTransition: 'fade',
                 ajaxFormsEnabled: false,
                 ajaxLinksEnabled: false, // !isSelenium,
+                hashListeningEnabled: false,
                 gradeA: function(){
                     return(
                         $.support.mediaquery
@@ -49,23 +51,10 @@
                         $(this).removeClass( "ui-btn-up-" + theme ).addClass( "ui-btn-down-" + theme );
                     }
                 });
-
-                // {bz: 4848}: Make clicking relative links in TOCs scroll
-                // to the section header, instead of triggering hashchange.
-                $('div.wiki a[href^="#"]').live({
-                    click: function(e) {
-                        e.stopImmediatePropagation();
-                        var offset = $($(this).attr('href')).offset();
-                        if (offset) {
-                            window.scrollTo(0, offset.top);
-                        }
-                        return false;
-                    }
-                });
             }
         });
         </script>
-        <script src="/static/skin/common/javascript/jquery.mobile-1.0a2.min.js"></script>
+        <script src="/static/skin/common/javascript/jquery.mobile-1.0a3.min.js"></script>
         [% END %]
         [% INCLUDE element/css_links %]
     <meta name = "viewport" content = "width=device-width, minimum-scale=1, maximum-scale=1">

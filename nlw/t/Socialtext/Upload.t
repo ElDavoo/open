@@ -51,7 +51,7 @@ check_fk_constraints: {
 my $test_body = "Some attachment data\n$^T\n";
 my $expect_md5 = md5_base64($test_body)."==";
 my $user = create_test_user();
-my $tmp = File::Temp->new(CLEANUP => 1);
+my $tmp = File::Temp->new();
 print $tmp $test_body;
 close $tmp;
 
@@ -171,12 +171,12 @@ binary_contents: {
 
 copy_to_file: {
     unlink $ul->disk_filename;
-    my $tmp = File::Temp->new(UNLINK => 1);
+    my $tmp = File::Temp->new();
     is exception { $ul->copy_to_file("$tmp") }, undef;
     is -s "$tmp", $ul->content_length, "copied the file from the db";
 
     $ul->ensure_stored();
-    my $tmp2 = File::Temp->new(UNLINK => 1);
+    my $tmp2 = File::Temp->new();
     is exception { $ul->copy_to_file("$tmp2") }, undef;
     is -s "$tmp", $ul->content_length, "copied the file from disk";
 }

@@ -25,8 +25,8 @@ use Socialtext::WeblogUpdates;
 use Socialtext::Workspace;
 use Socialtext::l10n qw( loc );
 
-sub class_id { 'pages' }
-const class_title => 'NLW Pages';
+const class_id => 'pages';
+const class_title => _('class.pages');
 
 field current => 
       -init => '$self->new_page($self->current_name)';
@@ -100,7 +100,7 @@ sub all_ids_newest_first {
 
 Returns a list of all page_id's which are currently locked.
 
-=cut 
+=cut
 
 sub all_ids_locked {
     my $self = shift;

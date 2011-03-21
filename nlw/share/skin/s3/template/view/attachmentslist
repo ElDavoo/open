@@ -59,7 +59,7 @@
         [% loc('file.uploaded-by') %]
         [% row.user | decorate('user_link') %]
         [% loc('info.on') %]
-        [% row.date %]
+        [% row.user_date %]
         </td>
         </tr>
       [% END %]

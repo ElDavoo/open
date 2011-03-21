@@ -66,7 +66,7 @@ sub _invite_one_user {
         primary_account_id => $wksp->account_id,
     );
 
-    $user->set_confirmation_info()
+    $user->create_email_confirmation()
         unless $user->has_valid_password();
 
     if (!$wksp->has_user($user, direct => 1)) {
@@ -136,7 +136,7 @@ sub invite_notify {
 
     my %vars = (
         username              => $user->username,
-        requires_confirmation => $user->requires_confirmation,
+        requires_confirmation => $user->requires_email_confirmation,
         confirmation_uri      => $user->confirmation_uri || '',
         workspace_title       => $workspace->title,
         workspace_uri         => $workspace->uri,

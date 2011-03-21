@@ -1,0 +1,24 @@
+#!/usr/bin/env perl
+
+use 5.12.0;
+
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+
+use Test::Socialtext::DotProve qw(load save);
+
+my $prove = load(".prove");
+
+my $hudson = load("hudson.prove");
+
+while (my ($k, $v) = each %{$hudson->{tests}}) {
+    my $hudson_fail = $v->{last_fail_time};
+    my $prove_fail = $prove->{tests}->{$k}->{last_fail_time};
+
+    if ($hudson_fail > $prove_fail) {
+        $prove->{tests}->{$k} = $v; # use hudson's info if it failed more recently than you.
+    }
+}
+
+save($prove, ".prove");
+

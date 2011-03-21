@@ -15,12 +15,12 @@ for "non-WS content" was not redirecting properly.
 
 | *Comment*          | Public Workspace (no authen required)  |        |
 | set-ws-permissions | %%workspace%%                          | public |
-| get                | /%%workspace%%/index.cgi?%%workspace%% |        |
+| get                | /%%workspace%%/%%workspace%% |        |
 | code-is            | 200                                    |        |
 
 | *Comment*          | Member Only Workspace                  |                              |
 | set-ws-permissions | %%workspace%%                          | member-only                  |
-| get                | /%%workspace%%/index.cgi?%%workspace%% |                              |
+| get                | /%%workspace%%/%%workspace%% |                              |
 | code-is            | 302                                    |                              |
 | header-like        | Location                               | /nlw/ntlm                    |
 | header-like        | Location                               | redirect_to=%2F%%workspace%% |

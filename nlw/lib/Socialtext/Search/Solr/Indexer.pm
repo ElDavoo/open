@@ -481,6 +481,7 @@ sub _add_person_doc {
         [person_key => $user_id],
 
         [first_name_pf_s => $user->first_name],
+        [middle_name_pf_s => $user->middle_name],
         [last_name_pf_s => $user->last_name],
         [email_address_pf_s => $user->email_address],
         [username_pf_s => $user->username],

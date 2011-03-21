@@ -4,28 +4,28 @@
 --
 [% END %]
 [% IF requires_confirmation -%]
-[% loc('Hi,') %]
+[% loc('email.hi') %]
 
-[% loc("I'm inviting you to join [_1], one of our Socialtext groups", group_name) %] [% UNLESS requires_confirmation %][% loc('Sign in using the information below:') %][% END %]
+[% loc("email.inviting-you-to-join=group", group_name) %] [% UNLESS requires_confirmation %][% loc('email.sign-in-using-information-below:') %][% END %]
 
-[% loc("Please click on this link to confirm your email address:") %] [% confirmation_uri | html %]
+[% loc("email.click-to-confirm-email:") %] [% confirmation_uri | html %]
 
-[% loc("Once you have confirmed your account, you will receive a second email with login details.") %]
+[% loc("email.once-confirmed-you-will-receive-second-email-with-login-details") %]
 
-[% loc('Thanks,') %]
+[% loc('email.thanks') %]
 
 [% inviting_user %]
 [% ELSE -%]
 [% user.best_full_name %],
 
 [% SET acct_name = group_name | html -%]
-[% loc('[_1] has added you to the group: [_2]', inviting_user, group_name) %] 
+[% loc('email.added-you-to-group=user,group', inviting_user, group_name) %] 
 
-[% loc("As a member, you can send Signals to the group and use any of the group workspaces.") %]
+[% loc("email.as-member-you-can-send-signals-to-group-and-use-any-of-group-wikis") %]
 
-[% loc('Go to the')%] [% group_name %] [% loc('Home Page.') %]: [% group_uri %]
+[% loc('email.go-to')%] [% group_name %] [% loc('email.home-page') %]: [% group_uri %]
 
-[% group_name %] [% loc('is a group on [_1].', host) %]
+[% group_name %] [% loc('email.is-group-on=host', host) %]
 [% END -%]
 
 [% PROCESS 'email/standard-footer.txt'

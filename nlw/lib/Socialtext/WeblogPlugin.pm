@@ -17,8 +17,8 @@ use Socialtext::Encode ();
 use Socialtext::Timer qw/time_scope/;
 use utf8;
 
-sub class_id { 'weblog' }
-const class_title => 'Blogs';
+const class_id => 'weblog';
+const class_title => _('class.weblog');
 const cgi_class => 'Socialtext::Weblog::CGI';
 const default_weblog_depth => 10;
 field current_weblog => '';
@@ -46,7 +46,7 @@ sub register {
 sub weblog_depth {
     my $self = shift;
     my $p = $self->new_preference('weblog_depth');
-    $p->query(loc('blog.number-of-posts?'));
+    $p->query(_('blog.number-of-posts?'));
     $p->type('pulldown');
     my $choices = [
         5 => '5',
@@ -100,15 +100,8 @@ sub weblogs_create {
 sub _get_weblog_tag_suffix {
     my $self = shift;
     my $locale = $self->hub->best_locale;
-    my $blog_tag_suffix;
-    if ($locale eq 'ja') {
-        $blog_tag_suffix = qr/ブログ$/i;
-    } else {
-        $blog_tag_suffix = qr/blog$/i;
-    }
-
-    Encode::_utf8_on($blog_tag_suffix) if not Encode::is_utf8($blog_tag_suffix);
-    return $blog_tag_suffix;
+    my $suffix = loc('blog.blog');
+    return qr/\Q$suffix\E$/i;
 }
 
 sub _weblog_title_is_valid {

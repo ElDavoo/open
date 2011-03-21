@@ -1,40 +1,39 @@
-# @COPYRIGHT@
 package Socialtext::Page::Legacy;
-use strict;
+# @COPYRIGHT@
+use 5.12.0;
 use warnings;
-
 use Socialtext::Encode;
+use base 'Exporter';
 
-sub parse_headers {
-    my $self = shift;
-    my $headers = shift;
-    my $metadata = {};
-    for (split /\n/, $headers) {
+our @EXPORT_OK = qw(parse_page_headers read_and_decode_page);
+our @EXPORT = @EXPORT_OK;
+
+sub parse_page_headers {
+    my $head_ref = ref($_[0]) ? $_[0] : \$_[0];
+
+    my %meta;
+    for (split "\n", $$head_ref) {
         next unless /^(\w\S*):\s*(.*)$/;
-        my ($attribute, $value) = ($1, $2);
-        if (defined $metadata->{$attribute}) {
-            $metadata->{$attribute} = [$metadata->{$attribute}]
-              unless ref $metadata->{$attribute};
-            push @{$metadata->{$attribute}}, $value;
+        my ($attr, $value) = ($1, $2);
+        if (defined $meta{$attr}) {
+            $meta{$attr} = [$meta{$attr}] unless ref $meta{$attr};
+            push @{$meta{$attr}}, $value;
         }
         else {
-            $metadata->{$attribute} = $value;
+            $meta{$attr} = $value;
         }
     }
 
     # Putting whacky whitespace in a page title can kill javascript on the
     # front-end. This fixes {bz: 3475}.
-    if ($metadata->{Subject}) {
-        $metadata->{Subject} =~ s/\s/ /g;
-    }
+    $meta{Subject} =~ s/\s/ /g if $meta{Subject};
 
-    return $metadata;
+    return \%meta;
 }
 
-sub read_and_decode_file {
-    my $filename       = shift;
-    my $return_content = shift;
-    my $as_ref_pls     = shift;
+sub read_and_decode_page {
+    my ($filename, $want_content) = @_;
+
     die "No such file $filename" unless -f $filename;
     die "File path contains '..', which is not allowed."
         if $filename =~ /\.\./;
@@ -45,23 +44,19 @@ sub read_and_decode_file {
         or die "Can't open $filename: $!";
 
     my $buffer;
-    {
-        # slurp in the header only:
-        local $/ = "\n\n";
-        $buffer = <$fh>;
+    if ($want_content) {
+        do { local $/="\n\n"; <$fh> }; # throw away header for speed
+        $buffer = do { local $/; <$fh> };
+    }
+    else {
+        $buffer = do { local $/="\n\n"; <$fh> };
     }
 
-    if ($return_content) { 
-        # slurp in the rest of the file:
-        local $/ = undef;
-        $buffer = <$fh> || '';
-    }
-
-    $buffer = Socialtext::Encode::guess_decode($buffer || '');
-
+    $buffer //= '';
+    $buffer = Socialtext::Encode::guess_decode($buffer);
     $buffer =~ s/\015\012/\n/g;
     $buffer =~ s/\015/\n/g;
-    return $as_ref_pls ? \$buffer : $buffer;
+    return \$buffer;
 }
 
 1;

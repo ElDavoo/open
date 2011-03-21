@@ -70,6 +70,9 @@ our $PROFILE_SQL = 0;
 our $COUNT_SQL = 0;
 our $Level = 2;
 
+use constant NEWEST_FIRST => 'newest';
+use constant OLDEST_FIRST => 'oldest';
+
 # ⚠  Don't access these globals directly; use get_dbh(). They're only globals
 # ⚠  (and not lexically scoped via "my") so that with_local_dbh() can work.
 # ⚠  Code in this module is not an exception! It should use get_dbh too.
@@ -126,6 +129,7 @@ sub _connect_dbh {
         temps => {},
     };
 
+    _count_sql("Connected DBH", []) if $COUNT_SQL;
     $_needs_ping = 0;
 }
 
@@ -434,8 +438,7 @@ sub _sql_execute {
             . join('', map { "$_->[0]\n" } @$lines);
     }
 
-    _count_sql($statement) if $COUNT_SQL;
-
+    _count_sql($statement, $bind) if $COUNT_SQL;
     $sth = $dbh->prepare($statement);
     $sth->$exec_sub(@$bind);
     return $sth;
@@ -443,13 +446,14 @@ sub _sql_execute {
 
 sub _count_sql {
     my $sql = shift;
+    my $bind = shift;
     $sql =~ s/\s+/ /smg;
     $sql =~ s/\n/ /smg;
 
     require Digest::SHA1;
     my $sql_file = '/tmp/sql-count';
     open(my $fh, ">>",$sql_file) or die "Can't open $sql_file: $!";
-    print $fh Digest::SHA1::sha1_hex($sql), " $sql\n";
+    print $fh Digest::SHA1::sha1_hex($sql), " $sql - ", join(',', @$bind), "\n";
     close $fh;
 }
 

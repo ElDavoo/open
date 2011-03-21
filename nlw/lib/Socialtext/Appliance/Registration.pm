@@ -1,1 +1,0 @@
-/home/kevinj/src/st/socialtext/nlw/dev-bin/../../appliance/libsocialtext-appliance-perl/lib/Socialtext/Appliance/Registration.pm

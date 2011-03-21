@@ -1,4 +1,4 @@
 <!-- @COPYRIGHT@ -->
 <span class="error">
-  [% loc('You are not authorized to view this workspace.') %]
+  [% loc('error.you-are-not-authorized-to-view-this-wiki') %]
 </span>

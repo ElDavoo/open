@@ -59,7 +59,7 @@
     [%- IF tags.size %]<div class="st-revision-tags">
       [% loc('revision.tags:') %]&nbsp;<span id="st-revision-tags-text" class="text">[% tags.join(', ') %]</span>
     </div>[% END -%]
-    [%- IF edit_summary %][% edit_summary = edit_summary | label_ellipsis(edit_summary_maxlength) %]<div class="st-edit-summary">[% from | decorate('user_avatar') %] <div id="st-edit-summary-text" class="text">[% loc('revision.quote=summary', edit_summary) %]</div></div>[% END -%]
+    [%- IF edit_summary %][% edit_summary = edit_summary | label_ellipsis(edit_summary_maxlength) | html %]<div class="st-edit-summary">[% from | decorate('user_avatar') %] <div id="st-edit-summary-text" class="text">[% loc('revision.quote=summary', edit_summary) %]</div></div>[% END -%]
   </div>
   <div id="st-revision-display">
   <div id="contentColumns">

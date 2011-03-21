@@ -8,7 +8,7 @@
       Rename <span id="st-rename-pagetitle">"[% page_title %]"</span>
     </div>
     <div class="error" id="st-rename-error">&nbsp;</div>
-    [% loc('page.new-name') %]
+    [% loc('page.new-name') %]:
     <input type="text" id="st-rename-newname" name="new_title" size="34" />
     <br/>
 

@@ -46,11 +46,11 @@ Tests for `/data/groups/:group_id/workspaces`, implemented to help fix {bz: 3450
 | body-like | qr/%%bronze%%.+%%gold%%.+%%silver%%/s |
 
 ## GET JSON, workspaces are in order
-| *Comment*       | GET JSON, workspaces are in order    |                             |
-| GET-json        | /data/groups/%%group_id%%/workspaces |                             |
-| code-is         | 200                                  |                             |
-| json-parse      |                                      |                             |
-| json-array-size | 3                                    |                             |
+| *Comment*       | GET JSON, workspaces are in order                        |
+| GET-json        | /data/groups/%%group_id%%/workspaces?exclude_auw_paths=1 |
+| code-is         | 200                                                      |
+| json-parse      |                                                          |
+| json-array-size | 3                                                        |
 
 ## Verify that bronze is first w/correct info
 | *Comment*    | GET JSON; Verify that bronze is first w/correct info |                             |
@@ -76,6 +76,12 @@ Tests for `/data/groups/:group_id/workspaces`, implemented to help fix {bz: 3450
 | json-path-is | $[2].workspace_id                                   | %%silver_id%%               |
 | json-path-is | $[2].uri                                            | /data/workspaces/%%silver%% |
 
+## GET JSON, include AUW workspaces (order depends on hostname, don't test)
+| *Comment*       | GET JSON, workspaces are in order    |                             |
+| GET-json        | /data/groups/%%group_id%%/workspaces |                             |
+| code-is         | 200                                  |                             |
+| json-parse      |                                      |                             |
+| json-array-size | 4                                    |                             |
 
 ## Create a new group for trying out POSTS
 | set          | post     | post-%%start_time%% |
@@ -130,14 +136,14 @@ Tests for `/data/groups/:group_id/workspaces`, implemented to help fix {bz: 3450
 | POST-json | /data/groups/%%post_id%%/workspaces | {"workspace_id":"%%silver_id%%"} |
 | code-is   | 201                                 |                                  |
 | json-parse |
-| json-like | {"workspace_count":"1"}               |                                  |
+| json-like | {"workspace_count":"2"}               |                                  |
 
 ## POST, add to a workspace as admin
 | *Comment* | POST, add to a workspace as admin   |                                               |
 | POST-json | /data/groups/%%post_id%%/workspaces | {"workspace_id":"%%gold_id%%","role":"admin"} |
 | code-is   | 201                                 |                                               |
 | json-parse |
-| json-like | {"workspace_count":"2"}               |                                               |
+| json-like | {"workspace_count":"3"}               |                                               |
 
 ## Make user an admin of some more workspaces
 | add-member | %%admin%% | %%bronze%% | admin |
@@ -148,7 +154,7 @@ Tests for `/data/groups/:group_id/workspaces`, implemented to help fix {bz: 3450
 | POST-json | /data/groups/%%post_id%%/workspaces | [{"workspace_id":"%%bronze_id%%"},{"workspace_id":"%%copper_id%%"}] |
 | code-is   | 201                                 |                                                                     |
 | json-parse |
-| json-like | {"workspace_count":"4"}               |                                                                     |
+| json-like | {"workspace_count":"5"}               |                                                                     |
 
 ## POST, group already has role
 | *Comment* | POST, group already has role        |                                |

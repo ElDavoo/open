@@ -22,6 +22,7 @@ use Socialtext::System qw/shell_run/;
 use Socialtext::Page::TablePopulator;
 use Socialtext::User::Default::Users;
 use Socialtext::User;
+use Socialtext::User::Restrictions;
 use Socialtext::PreferencesPlugin;
 use YAML ();
 
@@ -98,7 +99,6 @@ sub import_workspace {
             "$CWD/user/$self->{old_name}",
             $self->{workspace}
         );
-        $self->_import_data_dirs();
         $self->_populate_db_metadata();
         $self->_rebuild_page_links();
 
@@ -280,17 +280,6 @@ sub _load_yaml {
     return YAML::Load($yaml);
 }
 
-sub _import_data_dirs {
-    my $self = shift;
-    my $data_root = Socialtext::AppConfig->data_root_dir();
-    for my $dir (qw(plugin)) {
-        my $src = Socialtext::File::catdir( $dir, $self->{old_name} );
-        my $dest = Socialtext::File::catdir( $data_root, $dir, $self->{new_name} );
-        Socialtext::File::Copy::Recursive::dircopy( $src, $dest )
-            or die "Could not copy $src to $dest: $!\n";
-    }
-}
-
 sub _set_permissions {
     my $self = shift;
 
@@ -422,6 +411,7 @@ sub _import_users {
         delete $info->{primary_account_id};
         my $plugin_prefs = delete($info->{plugin_prefs}) || {};
         my $indirect     = delete($info->{indirect})     || 0;
+        my $restrictions = delete($info->{restrictions}) || [];
 
         my $user = Socialtext::User->new( username => $info->{username} )
                 || Socialtext::User->new( email_address => $info->{email_address} )
@@ -432,6 +422,13 @@ sub _import_users {
             my $adapter = Socialtext::Pluggable::Adapter->new;
             $adapter->make_hub($user);
             $adapter->hook('nlw.import_user_prefs', [$plugin_prefs]);
+        }
+
+        foreach my $r (@{$restrictions}) {
+            Socialtext::User::Restrictions->CreateOrReplace( {
+                user_id => $user->user_id,
+                %{$r},
+            } );
         }
     }
 

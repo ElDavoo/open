@@ -575,4 +575,14 @@ lib/Socialtext/Handler/Gadget/Group.pm
 t/Socialtext/Gadgets/Gadget-views.t
 t/widget/views-html-good.xml
 t/widget/views-url.xml
+t/wikitests/control/user_restrictions.wiki
 share/skin/s3/javascript/l10n-*.js
+ssl/
+t/js/empty.html
+t/js/activities-eventlist.t.js
+lib/Socialtext/Appliance/PgPITR.pm
+lib/Socialtext/Appliance/PgBackup.pm
+lib/Socialtext/Appliance/PgRestore.pm
+t/js/activities-dm.t.js
+t/js/activities.js
+hudson.prove

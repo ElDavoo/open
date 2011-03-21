@@ -5,8 +5,8 @@ use warnings;
 use base 'Socialtext::Plugin';
 use Class::Field qw(const);
 
-sub class_id { 'code' }
-const class_title    => 'CodeSyntaxPlugin';
+const class_id => 'code';
+const class_title    => _('class.code');
 
 our %Brushes = (
     as3 => 'AS3',

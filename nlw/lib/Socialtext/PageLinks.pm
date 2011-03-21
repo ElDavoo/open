@@ -4,6 +4,7 @@ use Moose;
 use Socialtext::Paths;
 use Socialtext::Pages;
 use Socialtext::Timer;
+use Socialtext::String qw/MAX_PAGE_ID_LEN/;
 use Socialtext::SQL::Builder qw(sql_insert_many);
 use Socialtext::SQL qw(sql_execute sql_txn);
 use namespace::clean -except => 'meta';
@@ -119,8 +120,10 @@ sub update {
             = qw(from_workspace_id from_page_id to_workspace_id to_page_id);
         if (@$links) {
             my @values = map {
-                [ $workspace_id, $page_id, $_->{workspace_id}, $_->{page_id} ]
-                } grep { not $seen{ $_->{workspace_id} }{ $_->{page_id} }++ }
+                    [ $workspace_id, $page_id, $_->{workspace_id}, $_->{page_id} ]
+                } 
+                grep { length($_->{page_id}) <= MAX_PAGE_ID_LEN }
+                grep { not $seen{ $_->{workspace_id} }{ $_->{page_id} }++ }
                 @$links;
             sql_insert_many('page_link' => \@cols, \@values);
         }

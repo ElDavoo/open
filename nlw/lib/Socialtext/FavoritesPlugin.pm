@@ -8,8 +8,8 @@ use base 'Socialtext::Plugin';
 use Class::Field qw( const );
 use Socialtext::l10n qw( loc );
 
-sub class_id { 'favorites' }
-const class_title => 'Your Notepad';
+const class_id => 'favorites';
+const class_title => _('class.favorites');
 
 sub register {
     my $self = shift;
@@ -22,7 +22,7 @@ sub which_page_pref {
     my $self = shift;
     my $p = $self->new_preference('which_page');
     my $title = $self->class_title;
-    my $message = loc('notepad.set-title');
+    my $message = _('notepad.set-title');
     $p->query($message);
     $p->size(30);
     $p->type('input');

@@ -38,7 +38,7 @@ sub load {
     my ($self, %args) = @_;
     my $t = time_scope 'get_attach';
     my $ws_id   = $self->hub->current_workspace->workspace_id;
-    my $page_id = $args{page_id} || $self->hub->pages->current_page->id;
+    my $page_id = $args{page_id} || $self->hub->pages->current->id;
     my $ident = $args{id} or croak "must supply an attachment id";
     my $deleted = $args{deleted_ok}
         ? '' : "\n AND NOT pa.deleted";
@@ -178,7 +178,6 @@ sub attachment_exists {
     return $n ? 1 : 0;
 }
 
-around 'create' => \&sql_txn;
 sub create {
     my ($self, %args) = @_;
     my $t = time_scope 'attach_create';
@@ -201,33 +200,35 @@ sub create {
 
     my $cur_guard = $hub->pages->ensure_current($page);
 
-    my $upload;
-    if ($args{attachment_uuid}) {
-        $upload = Socialtext::Upload->Get(
-            attachment_uuid => $args{attachment_uuid});
-    }
-    else {
-        my $ct = $args{mime_type} ||
-                 $args{content_type} ||
-                 $args{'Content_type'} ||
-                 $args{'content-type'};
-        $upload = Socialtext::Upload->Create(
-            creator        => $args{creator},
-            filename       => $args{filename},
-            temp_filename  => $args{fh},
-            mime_type      => $ct,
-        );
-    }
+    return sql_txn {
+        my $upload;
+        if ($args{attachment_uuid}) {
+            $upload = Socialtext::Upload->Get(
+                attachment_uuid => $args{attachment_uuid});
+        }
+        else {
+            my $ct = $args{mime_type} ||
+                     $args{content_type} ||
+                     $args{'Content_type'} ||
+                     $args{'content-type'};
+            $upload = Socialtext::Upload->Create(
+                creator        => $args{creator},
+                filename       => $args{filename},
+                temp_filename  => $args{fh},
+                mime_type      => $ct,
+            );
+        }
 
-    my $att = Socialtext::Attachment->new(
-        upload  => $upload,
-        hub     => $hub,
-        page_id => $page->page_id,
-        page    => $page,
-    );
-    $att->store(user => $args{creator}, temporary => $args{temporary});
-    $att->inline($args{creator}) if $args{embed};
-    return $att;
+        my $att = Socialtext::Attachment->new(
+            upload  => $upload,
+            hub     => $hub,
+            page_id => $page->page_id,
+            page    => $page,
+        );
+        $att->store(user => $args{creator}, temporary => $args{temporary});
+        $att->inline($args{creator}) if $args{embed};
+        return $att;
+    };
 }
 
 sub all_attachments_in_workspace {

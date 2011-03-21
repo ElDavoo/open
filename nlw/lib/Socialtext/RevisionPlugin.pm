@@ -31,7 +31,7 @@ sub revision_list {
     my $rows = [];
     my $page = $self->hub->pages->current;
 
-    for my $revision_id ( sort { $b cmp $a } $page->all_revision_ids ) {
+    for my $revision_id ( $page->all_revision_ids(Socialtext::SQL::NEWEST_FIRST) ) {
         # TODO make this a SQL query (need to figure out how to produce
         # timezone-preferred timestamp output directly from Pg)
         my $rev = Socialtext::PageRevision->Get(

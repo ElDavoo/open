@@ -9,12 +9,13 @@ use Class::Field qw( const );
 use File::Basename ();
 use File::Path ();
 use Socialtext::l10n qw(loc);
-use Socialtext::SQL qw/get_dbh sql_execute/;
+use Socialtext::SQL qw/get_dbh sql_execute sql_txn/;
 use Socialtext::Pages;
 use Socialtext::Timer qw/time_scope/;
+use Try::Tiny;
 
-sub class_id { 'breadcrumbs' }
-const class_title => 'Recently Viewed';
+const class_id => 'breadcrumbs';
+const class_title => _('class.breadcrumbs');
 const cgi_class   => 'Socialtext::BreadCrumbs::CGI';
 
 my $HOW_MANY = 25;
@@ -29,7 +30,7 @@ sub register {
 sub display_as_box {
     my $self = shift;
     my $p = $self->new_preference('display_as_box');
-    $p->query(loc('wiki.show-breadcrumbs-sidebox?') );
+    $p->query(_('wiki.show-breadcrumbs-sidebox?') );
     $p->default(1);
     return $p;
 }
@@ -37,7 +38,7 @@ sub display_as_box {
 sub how_many {
     my $self = shift;
     my $p = $self->new_preference('how_many');
-    $p->query(loc('wiki.sidebox-number-of-breadcrumbs?'));
+    $p->query(_('wiki.sidebox-number-of-breadcrumbs?'));
     $p->type('pulldown');
     my $choices = [
         3 => 3,
@@ -124,28 +125,27 @@ sub drop_crumb {
     my $user_id = $self->hub->current_user->user_id;
     my $wksp_id = $self->hub->current_workspace->workspace_id;
     my $page_id = $page->id;
-    my $sth = get_dbh()->prepare(
-        "UPDATE breadcrumb SET last_viewed = 'now'::timestamptz
-          WHERE viewer_id = ? AND workspace_id = ? AND page_id = ?",
-    );
-    my $rv = $sth->execute($user_id, $wksp_id, $page_id);
-    if ($rv == 0) {
-        sql_execute(
-            "INSERT INTO breadcrumb VALUES (?,?,?,'now'::timestamptz)",
-            $user_id, $wksp_id, $page_id
-        );
-
-        sql_execute(<<EOT, $user_id, $wksp_id, $HOW_MANY);
-        DELETE FROM breadcrumb
-          WHERE viewer_id = \$1 AND workspace_id = \$2 
-            AND page_id NOT IN (
-                SELECT page_id FROM breadcrumb
-                 WHERE viewer_id = \$1 AND workspace_id = \$2
-                 ORDER BY last_viewed desc
-                 LIMIT \$3
-            )
-EOT
-    }
+    sql_txn {
+        my $sth = sql_execute(q{
+            UPDATE breadcrumb SET last_viewed = 'now'::timestamptz
+              WHERE viewer_id = ? AND workspace_id = ? AND page_id = ?
+        }, $user_id, $wksp_id, $page_id);
+        if ($sth->rows == 0) {
+            sql_execute(q{
+                INSERT INTO breadcrumb VALUES (?,?,?,'now'::timestamptz)
+            }, $user_id, $wksp_id, $page_id);
+            sql_execute(q{
+                DELETE FROM breadcrumb
+                  WHERE viewer_id = $1 AND workspace_id = $2 
+                    AND page_id NOT IN (
+                        SELECT page_id FROM breadcrumb
+                         WHERE viewer_id = $1 AND workspace_id = $2
+                         ORDER BY last_viewed DESC
+                         LIMIT $3
+                    )
+            }, $user_id, $wksp_id, $HOW_MANY);
+        }
+    };
 }
 
 sub _load_trail {

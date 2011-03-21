@@ -23,7 +23,7 @@ Test edit summaries via the REST API
 | json-parse       |                                               |                  |
 | json-array-size  | 1                                             |                  |
 | body-like        | qr/"edit_summary":"lol, cats"/                |                  |
-| set-from-content | revision_id                                   | qr/"revision_id":"(\d+)"/ |
+| set-from-content | revision_id                                   | qr/"revision_id":"([\d.]+)"/ |
 
 | comment | create a revision with no edit summary |                                     |                        |
 | put     | /data/workspaces/%%ws%%/pages/page1    | Content-Type=text/x.socialtext-wiki | i can has cheezeburger |

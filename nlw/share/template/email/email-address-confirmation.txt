@@ -1,11 +1,11 @@
-[% loc('Welcome to')%] [% IF target_workspace %][% loc("the [_1] Workspace in the [_2] Group at ", target_workspace.title, account_name) %][% END %][% PROCESS system_name %].
+[% loc('email.welcome-to')%] [% IF target_workspace %][% loc("email.wiki-in-group-at=wiki,group", target_workspace.title, account_name) %][% END %][% PROCESS system_name %].
 
 [% IF target_workspace %]
-[% loc('Your profile has been added to the [_1] directory.', account_name) %]
+[% loc('email.your-profile-has-been-added-to-directory=account', account_name) %]
 [% ELSE %]
-[% loc('Your profile has been added to the people directory.') %]
+[% loc('email.your-profile-has-been-added-to-people-directory') %]
 [% END %]
-[% loc('Please follow this link to confirm your address and update your information:') %]
+[% loc('email.follow-link-to-confirm-address-and-update-your-info:') %]
 
   [% confirmation_uri %]
 

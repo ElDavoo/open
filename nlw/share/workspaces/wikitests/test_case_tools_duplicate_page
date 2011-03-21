@@ -72,7 +72,6 @@
 
 | *Comment* | Test Case: Tools: Duplicate Page. verify duplicate of edited page |  |
 | open_ok | /%%workspace%%/?action=revision_list;page_name=page_duplicated_%%start_time%% |  |
-| text_like | contentContainer | qr/revision 2/i |
 | click_and_wait | link=Compare Revisions |  |
 | text_like | contentContainer | Duplicate This Page %%start_time%% content |
 | text_like | contentContainer | Duplicate This Page %%start_time%% NEW content |

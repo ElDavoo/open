@@ -85,6 +85,7 @@ sub guess_sortable_name {
 
 sub best_full_name { 'Best FullName' }
 sub first_name { $_[0]->{first_name} ||= 'Mocked First' }
+sub middle_name { $_[0]->{middle_name} ||= 'Mocked Middle' }
 sub last_name { $_[0]->{last_name} ||= 'Mocked Last' }
 
 sub is_authenticated { ! $_[0]->is_guest() }
@@ -143,12 +144,6 @@ sub Resolve {
         die "Couldn't find user $user_id";
     }
     return $user;
-}
-
-our %Confirmation_info;
-sub set_confirmation_info {
-    my ($self, undef, $pw_change) = @_;
-    $Confirmation_info{$self->{username}} = $pw_change;
 }
 
 our %Sent_email;
@@ -212,5 +207,10 @@ sub accounts {
 sub SystemUser {
     return shift->new( username => 'system-user' );
 }
+
+sub display_name {
+    return join ' ', grep defined, @{$_[0]}{qw[ first_name last_name ]};
+}
+
 
 1;

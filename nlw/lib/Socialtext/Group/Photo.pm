@@ -1,27 +1,19 @@
 package Socialtext::Group::Photo;
 # @COPYRIGHT@
 use Moose;
+use Socialtext::Avatar ();
 use namespace::clean -except => 'meta';
 
 use constant ROLES => ('Socialtext::Avatar', 'Socialtext::Avatar::Common');
 
 # Required by Socialtext::Avatar:
 use constant cache         => 'group-photo';
-use constant table         => 'group_photo';
-use constant id_column     => 'group_id';
-use constant default_skin  => 'common';
 use constant default_large => 'groupLarge.png';
+use constant default_skin  => 'common';
 use constant default_small => 'groupSmall.png';
-
-sub Resize {
-    my ($class, $size, $file) = @_;
-    my $width = $size eq 'small' ? 27 : 62;
-    Socialtext::Image::extract_rectangle(
-        image_filename => $file,
-        width => $width,
-        height => $width,
-    );
-}
+use constant id_column     => 'group_id';
+use constant resize_spec   => 'group';
+use constant table         => 'group_photo';
 
 has 'group' => (
     is => 'ro', isa => 'Socialtext::Group',

@@ -411,7 +411,7 @@ Say some text is in javascript and is present but not visible.  FF3 and IE can s
 
 Check for text not present ONLY in IE and FF3
 
-=cut 
+=cut
 
 sub st_ff_and_ie_wait_for_text_not_present {
     my ($self, $text, $howlong) = @_;
@@ -422,6 +422,26 @@ sub st_ff_and_ie_wait_for_text_not_present {
        ok 1, 'in googlechrome we do not check for text here'; 
     }
 }
+
+=head2 st_wait_for_text_not_present ($text, $howlong)
+
+Say some text is in javascript and is present but not visible.  FF3 can see the text is not present, other browsers are ... confused.
+
+Check for text not present ONLY in FF3
+
+=cut
+
+sub st_ff_wait_for_text_not_present {
+    my ($self, $text, $howlong) = @_;
+    my $browser = $ENV{'selenium_browser'} || 'chrome';
+    if ($browser=~/chrome|firefox/ig && !($browser=~/googlechrome/ig) )  {
+        $self->handle_command('wait_for_text_not_present_ok',$text,$howlong);
+     } else {
+         ok 1, 'in googlechrome we do not check for text here';
+     }
+}
+
+
 
 sub _relative_filename_to_absolute {
     my $self = shift;
@@ -572,6 +592,21 @@ sub st_search_cp_workspace {
     }
 }
 
+=head2 st_build_cp_name ($email, $variable) 
+
+Transforms matt@foo.com into "matt" <matt@foo.com>
+
+ASSUMES users bestfullname is first half of email.  Avoid periods, dashes, and don't customize first, last, middle, or preferred name, please.
+
+=cut
+
+sub st_build_cp_name { 
+    my ($self, $email, $variable) = @_;
+    my $full = $email;
+    my @arr = split /\@/, $email;
+    my $link = '"' . $arr[0] . '"' . ' <' . $email . '>';
+    $self->{$variable} = $link;
+}
 
 =head2 st_search_cp_users($searchfor)
 
@@ -3437,6 +3472,38 @@ sub restart_userd {
         Time::HiRes::sleep(0.5);
     }
     fail "userd could not be restarted";
+}
+
+sub restart_everything {
+    my $self = shift;
+    Socialtext::System::shell_run(qw( nlwctl restart ));
+
+    my $host = $self->{hostname};
+    my @to_check = (
+        # UserD
+        HTTP::Request->new(
+            GET => 'http://localhost:' . $self->{userd_port} . '/ping',
+            [ Accept => 'application/json' ]
+        ),
+        # NLW
+        HTTP::Request->new(
+            GET => "http://$host:" . $self->{http_port} . '/nlw/login.html'
+        ),
+    );
+
+    my $ua = LWP::UserAgent->new;
+  SERVICE:
+    foreach my $req (@to_check) {
+      ATTEMPT:
+        for (1 .. 18) {
+            my $resp = $ua->request($req);
+            next SERVICE unless ($resp->is_error);
+            Time::HiRes::sleep(0.5);
+        }
+        fail "unable to reach: " . $req->uri;
+        BAIL_OUT("services could not be restarted");
+    }
+    pass "services restarted";
 }
 
 sub jsmake {

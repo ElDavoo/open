@@ -15,8 +15,8 @@ use Socialtext::Timer;
 use Socialtext::Pageset;
 use Socialtext::String;
 
-sub class_id { 'search' }
-const class_title => 'Search';
+const class_id => 'search';
+const class_title => _('class.search');
 const cgi_class => 'Socialtext::Search::CGI';
 
 const sortdir => {

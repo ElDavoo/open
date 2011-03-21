@@ -29,7 +29,7 @@ has 'hub' => (is => 'rw', isa => 'Socialtext::Hub', weak_ref => 1);
 has 'workspace_id' => (is => 'rw', isa => 'Int');
 has 'page_id'      => (is => 'rw', isa => 'Str');
 *id = *page_id; # legacy code uses this alias
-has 'revision_id'  => (is => 'rw', isa => 'Int');
+has 'revision_id'  => (is => 'rw', isa => 'Num');
 
 has 'revision_num' => (is => 'rw', isa => 'Int', default => 0);
 has 'name'         => (is => 'rw', isa => 'UniStr', coerce => 1);
@@ -38,7 +38,7 @@ has_user 'editor' => (is => 'rw');
 has 'edit_time'   => (
     is => 'rw', isa => 'Pg.DateTime',
     coerce => 1,
-    default => sub { Socialtext::Date->now(hires=>1) },
+    default => sub { Socialtext::Date->now(hires=>1, timezone=>'GMT') },
 );
 
 has 'page_type' => (is => 'rw', isa => 'PageType', default => 'wiki');
@@ -425,6 +425,22 @@ sub datetime_utc {
     return $self->edit_time->strftime('%Y-%m-%d %H:%M:%S GMT');
 }
 
+# For overriding in tests, and potentially for providing legacy-compatible IDs
+our $NextRevisionID;
+sub next_revision_id {
+    return $NextRevisionID++ if defined $NextRevisionID;
+
+    my $hires = Time::HiRes::time();
+    $hires =~ m/^(\d+)(?:\.(\d{0,5})\d*)?$/;
+    my ($time, $fractional) = ($1, $2||0);
+    my ($sec, $min, $hour, $mday, $mon, $year) = gmtime($time);
+    my $id = sprintf(
+        "%4d%02d%02d%02d%02d%02d.$fractional",
+        $year + 1900, $mon + 1, $mday, $hour, $min, $sec
+    );
+    return $id;
+}
+
 sub store {
     my $self = shift;
     confess "PageRevision isn't mutable" unless $self->mutable;
@@ -490,7 +506,7 @@ sub store {
 
     sql_txn {
         # paranoia: never insert with zeros for either of these two:
-        $args{revision_id} ||= sql_nextval('page_revision_id_seq');
+        $args{revision_id} ||= next_revision_id();
         $args{revision_num} ||= 1;
 
         sql_insert(page_revision => \%args);

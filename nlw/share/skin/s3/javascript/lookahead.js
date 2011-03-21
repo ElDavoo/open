@@ -324,8 +324,8 @@
                         padding: '3px 5px',
                         height: '15px', // overridden when there are thumbnails
                         lineHeight: '15px',
-                        float: 'left',
-                        clear: 'both'
+                        'float': 'left',
+                        'clear': 'both'
                     })
                     .appendTo(lookaheadList);
                 if (self.opts.getEntryThumbnail && !item.noThumbnail) {
@@ -358,7 +358,7 @@
         else {
             lookaheadList.html('<li></li>');
             $('li', lookaheadList)
-                .text("No matches for '"+$(this.input).val()+"'")
+                .text(loc("error.no-match=lookahead", $(this.input).val()))
                 .css({padding: '3px 5px'});
             this.show();
         }
@@ -659,7 +659,7 @@
                     .appendTo(self.getLookaheadList());
 
                 if (textStatus == 'parsererror') {
-                    $error.html("Error parsing data");
+                    $error.html(loc("error.parsing-data"));
                 }
                 else if (self.opts.onError) {
                     var errorHandler = self.opts.onError[xhr.status]

@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 use Socialtext::AppConfig;
-use Test::Socialtext tests => 16;
+use Test::Socialtext tests => 17;
 use Test::Socialtext::User;
 fixtures( 'admin', 'destructive' );
 
@@ -19,6 +19,7 @@ $admin->set_logo_from_uri( uri => 'http://example.com/logo.gif' );
 my $user = $hub->current_user;
 my $singapore = join '', map { chr($_) } 26032, 21152, 22369;
 my $external_id = Test::Socialtext->create_unique_id();
+my $middle_name = 'Ulysses';
 # Perl will treat a string with 0xF6 as not UTF8 unless we force it to
 # "upgrade" the string to utf8.
 my $dot_net = Encode::decode( 'latin-1', 'd' . chr( 0xF6 ) . 't net' );
@@ -26,6 +27,8 @@ $user->update_store(
     # Tests handling of utf8 in export/import
     first_name => $singapore,
     last_name  => $dot_net,
+    # Ensure "middle_name" is preserved
+    middle_name => $middle_name,
     # Used to test that password survives export/import
     password   => 'something or other',
     # Private Ids need to be preserved across export/import too
@@ -66,6 +69,7 @@ Socialtext::Workspace->ImportFromTarball( tarball => $tarball );
     ok( $admin->has_user( $user ), 'devnull1@socialtext.com is in admin workspace' );
 
     is( $user->first_name(), $singapore, 'user first name is Singapore (in Chinese)' );
+    is( $user->middle_name(), $middle_name, 'user middle name is preserved' );
     is( $user->last_name(), $dot_net, 'user last name is dot net (umlauts on o)' );
     is $user->private_external_id, $external_id, 'private/external id preserved';
     ok( $user->password_is_correct('something or other'), 'password survived import' );

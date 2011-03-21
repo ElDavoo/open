@@ -9,6 +9,7 @@
 | set | fname | Profile |
 | set | lname | Editor |
 | set | new_fname | Profligate |
+| set | new_mname | Epitome |
 | set | new_lname | Edisaurus |
 | set | super | epsupervisor@ken.socialtext.net |
 | set | short_super | epsupervisor |
@@ -18,7 +19,7 @@
 | *Comment* | Test Case: Edit Profile. Create a user. user may already exist |  |
 | st-admin | `create-user --e %%e_user%% --p %%password%%` |  |
 | st-admin | `change-password --e %%e_user%% --p %%password%%` |  |
-| st-admin | `set-user-names --e %%e_user%% --f %%fname%% --l %%lname%%` |  |
+| st-admin | `set-user-names --e %%e_user%% --f %%fname%% --l %%lname%% --m""` |  |
 | st-admin | `create-user -e %%super%% --p %%password%%` |  |
 | st-admin | `create-user -e %%assistant%% --p %%password%%` |  |
 
@@ -33,7 +34,7 @@
 | *Comment* | Verify original first and last names: %%fname%% %%lname%% |  |
 | text_like | %%fname%% %%lname%% |  |
 | open_ok | /st/profile |  |
-| text_like | st-page-titletext | %%fname%% %%lname%% |  |
+| text_like | st-page-titletext | %%fname%% %%lname%% |
 
 | *Comment* | Test Case: Edit Profile. Open for editing |  |
 | st-name-widget | 1 | profile |
@@ -59,6 +60,7 @@
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Edit Profile. Verify by clicking link=(Edit) from Global Nav |  |
+
 | open_ok | /st/dashboard/ |  |
 | wait_for_element_visible_ok | link=(edit) | 30000 |
 | click_and_wait | link=(edit) |  |
@@ -79,6 +81,7 @@
 
 | *Comment* | Test Case: Edit Profile. Fill in all values |  |
 | type_ok | first_name | %%new_fname%% |
+| type_ok | middle_name | %%new_mname%% |
 | type_ok | last_name | %%new_lname%% |
 | type_ok | position | Position %%short_e_user%% |
 | type_ok | company | Company %%short_e_user%% |
@@ -115,7 +118,5 @@
 | wait_for_text_present_ok | Profile | 30000 |
 | wait_for_text_present_ok | Tag | 30000 |
 | wait_for_text_present_ok | Activities | 30000 |
-
-| *Comment* | Test Case: Edit Profile COMPLETED |  |
 
 | *Comment* | Test Case: Edit Profile COMPLETED |  |

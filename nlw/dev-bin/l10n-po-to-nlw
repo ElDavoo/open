@@ -13,9 +13,9 @@ for my $po (@ARGV) {
     open my $in, '<', $po;
 
     local $/ = "\n\n";
-    scalar <$in>;
-
     while (<$in>) {
+        next if /^msgid ""\nmsgstr ""/m;
+
         my ($comments, $id, $str) = split(/\n(?=msg)/, "\n$_");
         if (is_key($id)) {
             # Great. Do nothing.

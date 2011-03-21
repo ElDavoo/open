@@ -11,10 +11,9 @@ use Socialtext::PageLinks;
 
 use base 'Socialtext::Query::Plugin';
 
-sub class_id { 'backlinks' }
-const class_title          => 'Backlinks';
-const preference_query     =>
-      'How many backlinks to show in side pane box';
+const class_id => 'backlinks';
+const class_title          => _('class.backlinks');
+const preference_query     => _('wiki.sidebox-number-of-backlinks?');
 const cgi_class => 'Socialtext::Backlinks::CGI';
 
 sub register {

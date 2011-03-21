@@ -14,7 +14,10 @@ function is_reserved_pagename(pagename) {
         var name = nlw_name_to_id(trim(pagename));
         var untitled = nlw_name_to_id(loc('page.untitled'));
         var untitledspreadsheet = nlw_name_to_id(loc('sheet.untitled'));
-        return (name == untitled) || (name == untitledspreadsheet);
+        return(
+            (name == untitled) || (name == untitledspreadsheet)
+            || (name == 'untitled_page') || (name == 'untitled_spreadsheet')
+        );
     }
     else {
         return false;
@@ -101,16 +104,14 @@ Socialtext.make_table_unsortable = function(table) {
 }
 
 Socialtext.prepare_attachments_before_save = function() {
-    if (Socialtext.new_page) {
-        var files = Attachments.get_new_attachments();
+    var files = Attachments.get_new_attachments();
 
-        $.each(files, function () {
-            if (this.deleted) return;
-            $('<input type="hidden" name="attachment" />')
-                .val(this['id'] + ':' + this['page-id'])
-                .appendTo('#st-page-editing-files');
-        });
-    }
+    $.each(files, function () {
+        if (this.deleted) return;
+        $('<input type="hidden" name="attachment" />')
+            .val(this['id'] + ':' + this['page-id'])
+            .appendTo('#st-page-editing-files');
+    });
 }
 
 Socialtext.set_save_error_resume_handler = function(cb) {
@@ -686,7 +687,10 @@ $(function() {
 
                     get_lightbox("edit_check", function() {
                         $("body").append(
-                            Jemplate.process("edit_check.tt2", data)
+                            Jemplate.process("edit_check.tt2", $.extend({
+                                loc: loc,
+                                time_ago: loc('ago.minutes=count', data.minutes_ago)
+                            }, data))
                         );
 
                         jQuery.showLightbox({

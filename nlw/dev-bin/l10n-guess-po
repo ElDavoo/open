@@ -11,14 +11,12 @@ use FindBin '$RealBin';
 use lib "$RealBin/../lib";
 use Socialtext::l10n::DevUtils;
 
+# TODO: Use "XXX-assigned.key" for reusable leveraged keys from en.po.
+
 my $inplace;
 GetOptions( 'inplace|i!' => \$inplace ) and @ARGV
     or die "Usage: $0 [--inplace] input.po\n";
 
-my $msgid;
-my @params;
-my $section;
-my $punct = '';
 my %SectionMap = (
     "add-a-block.html" => "code",
     "table-create.html" => "table",
@@ -28,6 +26,14 @@ my %SectionMap = (
     "lib/Socialtext/Appliance" => "appliance",
     "libsocialtext-appliance-perl/sbin" => "appliance",
     "libsocialtext-appliance-perl/template" => "console",
+    "share/template/data/event" => "event",
+    "share/template/data/job" => "job",
+    "share/template/data/bug" => "bug",
+    "share/template/email" => "email",
+    "share/template/desktop" => "desktop",
+    "share/template/errors" => "error",
+    "share/template/authen" => "login",
+    "share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu" => "insert",
 );
 
 sub words {
@@ -41,6 +47,10 @@ sub words {
 
 my ($in, $out);
 for my $po (@ARGV) {
+    my $msgid;
+    my @params;
+    my $section;
+    my $punct = '';
     my $default_section = basename($po);
     $default_section =~ s/\..*//;
     $default_section =~ s/socialcalc/sc/;
@@ -55,7 +65,7 @@ for my $po (@ARGV) {
     for (<$in>) {
         when (/^msgid "(.*?)([!:?]?)"$/) {
             print;
-            my $max;
+            my $max = 0;
             my $id = $1;
             $punct = $2;
             while ($id =~ s/%(\d+)/ /) {

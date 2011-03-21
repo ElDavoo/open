@@ -39,7 +39,10 @@ PROVE_ARGS =
 PROVE = nice st-prove --timer --state=save $(PROVE_ARGS)
 TEST_JOBS = 4
 UNIT_TESTS  = $(shell find -L t/ -name '*.t' -not -regex '^t/live/.*' | dev-bin/fixture-sort)
+JS_TESTS  = $(shell find -L t/ -name '*.t.js')
 WIKID_TESTS = $(shell find -L t/wikitests/ -name '*.wiki')
+REPORTS_TESTS = $(shell find -L ../socialtext-reports/t/ -name '*.t')
+CONSOLE_TESTS = $(shell find -L ../appliance/libsocialtext-appliance-perl/t/ -name '*.t')
 
 # Program locations
 STCTL          = $(PERL) dev-bin/nlwctl
@@ -330,7 +333,7 @@ tardist: MANIFEST $(PERL_MAKEFILE)
 	$(PERL_MAKE) tardist
 
 test:
-	@$(PROVE) --jobs $(TEST_JOBS) $(UNIT_TESTS) $(WIKID_TESTS)
+	@$(PROVE) --jobs $(TEST_JOBS) $(UNIT_TESTS) $(JS_TESTS) $(WIKID_TESTS)
 
 testunit:
 	@$(PROVE) --jobs $(TEST_JOBS) $(UNIT_TESTS)
@@ -338,117 +341,39 @@ testunit:
 testwikid:
 	@$(PROVE) --jobs $(TEST_JOBS) $(WIKID_TESTS)
 
+testjs:
+	@$(PROVE) --jobs $(TEST_JOBS) $(JS_TESTS)
+
+testreports:
+	@$(PROVE) --jobs $(TEST_JOBS) $(REPORTS_TESTS)
+
+testconsole:
+	@$(PROVE) --jobs $(TEST_JOBS) $(CONSOLE_TESTS)
+
 testplugin-%:
 	@$(PROVE) -s $(shell cd share/plugin/$(@:testplugin-%=%) && find -L t -name '*.t' -not -regex '^t/live.*' | dev-bin/fixture-sort)
 
 testlive:
 	@$(PROVE) -r t/live
 
-testall: test testlive
+testall: test testlive testreports testconsole
 
-QUICK_TESTS = \
-	t/chunks.t \
-	t/coding-standard/case-conflict.t \
-	t/coding-standard/migrations.t \
-	t/coding-standard/modules-compile.t \
-	t/coding-standard/pod-heading-coverage.t \
-	t/coding-standard/pod.t \
-	t/coding-standard/tests-have-plans.t \
-	t/coding-standard/tests.t \
-	t/coding-standard/use_strict.t \
-	t/formatter-escape-comments.t \
-	t/gen-config.t \
-	t/schema-migrations.t \
-	t/Socialtext/AppConfig.t \
-	t/Socialtext/ArchiveExtractor.t \
-	t/Socialtext/Base.t \
-	t/Socialtext/Cache.t \
-	t/Socialtext/CategoryPlugin-email-address-encoding.t \
-	t/Socialtext/CLI/fs-perm-check.t \
-	t/Socialtext/Config/Base.t \
-	t/Socialtext/CredentialsExtractor/Apache.t \
-	t/Socialtext/CredentialsExtractor/Cookie.t \
-	t/Socialtext/CredentialsExtractor/Guest.t \
-	t/Socialtext/Date/l10n_ja.t \
-	t/Socialtext/Date/l10n.t \
-	t/Socialtext/DisplayPlugin-events.t \
-	t/Socialtext/DisplayPlugin-qualify-links.t \
-	t/Socialtext/EmailReceiver/local-address-ja.t \
-	t/Socialtext/EmailReceiver-local-address.t \
-	t/Socialtext/EmailReceiver/subject-ja.t \
-	t/Socialtext/EmailReceiver-subject.t \
-	t/Socialtext/EmailSender/ja_real.t \
-	t/Socialtext/EmailSender/ja.t \
-	t/Socialtext/EmailSender.t \
-	t/Socialtext/Events-signal.t \
-	t/Socialtext/Exceptions.t \
-	t/Socialtext/File_guess_en.t \
-	t/Socialtext/File_guess_ja.t \
-	t/Socialtext/File/Stringify.t \
-	t/Socialtext/File.t \
-	t/Socialtext/Formatter/Viewer.t \
-	t/Socialtext/Functional.t \
-	t/Socialtext/Handler/URIMap.t \
-	t/Socialtext/Headers.t \
-	t/Socialtext/HomepagePlugin.t \
-	t/Socialtext/Hostname.t \
-	t/Socialtext/HTTP/Ports.t \
-	t/Socialtext/Image.t \
-	t/Socialtext/LDAP/ActiveDirectory.t \
-	t/Socialtext/LDAP/Base-loads-net-ldap.t \
-	t/Socialtext/LDAP/Base.t \
-	t/Socialtext/LDAP/Config.t \
-	t/Socialtext/LDAP/OpenLDAP.t \
-	t/Socialtext/LDAP.t \
-	t/Socialtext/Locales.t \
-	t/Socialtext/LogParser.t \
-	t/Socialtext/Log-shortcut.t \
-	t/Socialtext/Log-syslog-not-running.t \
-	t/Socialtext/Log.t \
-	t/Socialtext/Migration.t \
-	t/Socialtext/Migration/Utils.t \
-	t/Socialtext/MultiCursor.t \
-	t/Socialtext/NTLM/Config.t \
-	t/Socialtext/People/Directories.t \
-	t/Socialtext/People/Fields.t \
-	t/Socialtext/People/Profile-lazy-field-init.t \
-	t/Socialtext/People/Profile.t \
-	t/Socialtext/People/Rest/Profile.t \
-	t/Socialtext/Pluggable/Adapter-class-methods.t \
-	t/Socialtext/Pluggable/Plugin.t \
-	t/Socialtext/Plugin.t \
-	t/Socialtext/Rest/Events.t \
-	t/Socialtext/RevisionPlugin-side-by-side-diff.t \
-	t/Socialtext/RtfExportPlugin-gif-to-png.t \
-	t/Socialtext/Schema.t \
-	t/Socialtext/Search/SimpleAttachmentHit.t \
-	t/Socialtext/Search/SimplePageHit.t \
-	t/Socialtext/Sheet.t \
-	t/Socialtext/Skin.t \
-	t/Socialtext/SQL/Builder.t \
-	t/Socialtext/String.t \
-	t/Socialtext/System.t \
-	t/Socialtext/Template/Plugin/html_encode.t \
-	t/Socialtext/Template/Plugin/label_ellipsis.t \
-	t/Socialtext/Timer-no-reset.t \
-	t/Socialtext/Timer.t \
-	t/Socialtext/TT2/Renderer.t \
-	t/Socialtext/URI.t \
-	t/Socialtext/User/Base.t \
-	t/Socialtext/User/Default.t \
-	t/Socialtext/User/LDAP.t \
-	t/Socialtext/UserPreferencesPlugin.t \
-	t/Socialtext/UserSettingsPlugin-email-address-parse.t \
-	t/Socialtext/Validate.t \
-	t/Socialtext/WebApp.t \
-	t/Socialtext/WikiFixture/Socialtext.t \
-	t/Socialtext/WikiText/Emitter/SearchSnippets.t \
-	t/Socialtext/WikiText/Parser.t \
-	t/st-migrate.t \
-	t/st-ntlm-config.t
+quicktest: .prove
+	$(PROVE) --jobs $(TEST_JOBS) $(shell list-tests-faster-than 10)
 
-quicktest:
-	$(PROVE) --jobs $(TEST_JOBS) $(QUICK_TESTS)
+hottest: .prove
+	$(PROVE) --jobs $(TEST_JOBS) --state=hot,fresh,save
+
+hudson-update: .prove
+
+.prove: hudson.prove
+	merge-prove
+
+hudson.prove: get-hudson-prove
+
+get-hudson-prove:
+	curl --insecure https://lucite.socialtext.net:9080/job/Socialtext/lastCompletedBuild/artifact/artifacts/.prove \
+	    --output hudson.prove  --time-cond hudson.prove
 
 # cd into custom-workspace-config and make all
 custom-workspaces:
@@ -521,4 +446,6 @@ critic:
         testall                  \
         custom-workspaces        \
 	critic                   \
-        mac-go
+        mac-go	                 \
+	get-hudson-prove
+

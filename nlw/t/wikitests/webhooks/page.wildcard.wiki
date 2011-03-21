@@ -28,7 +28,7 @@
 | json-like             | [{"object":{"tags_deleted":[]}}]                                                      |               |                                         |
 | json-like             | [{"object":{"type":"wiki"}}]                                                          |               |                                         |
 | json-like             | [{"object":{"revision_count":"1"}}]                                                   |               |                                         |
-| webhook-like          | "revision_id":"\d+"                                                                 |               |                                         |
+| webhook-like          | "revision_id":"\d+\.\d+"                                                                 |               |                                         |
 | webhook-like          | "edit_time"                                                                         |               |                                         |
 | webhook-like          | "create_time"                                                                       |               |                                         |
 

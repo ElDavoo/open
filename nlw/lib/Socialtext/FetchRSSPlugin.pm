@@ -12,8 +12,8 @@ use Socialtext::String;
 use LWP::UserAgent;
 use XML::Feed;
 
-sub class_id { 'fetchrss' }
-const class_title    => 'Fetch RSS';
+const class_id => 'fetchrss';
+const class_title    => _('class.fetchrss');
 const agent          => __PACKAGE__;
 const default_expire => '1 h';
 const proxy => '';

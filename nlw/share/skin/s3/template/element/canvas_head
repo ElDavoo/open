@@ -4,7 +4,7 @@
 <script src="[% share %]/javascript/shindig/container-default.js.gz"></script>
 <script src="[% share %]/javascript/canvas.js"></script>
 
-[% INCLUDE syndicator %]
+[% INCLUDE widget/syndicator %]
 
 [% FOR script = container.features %]
     <script src="[% script %]"></script>

@@ -2,12 +2,40 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-24 02:05+0800\n"
-"Language-Team: Socialtext i18n team\n"
+"PO-Revision-Date: 2011-02-20 10:43+0800\n"
 "Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: share/plugin/people/share/widgets/all_tags/config.yaml:4
+msgid "description.all_tags"
+msgstr "Displays a tag cloud of all tags on people in Socialtext People."
+
+#: share/plugin/people/share/widgets/forbidden_profile/config.yaml:5
+msgid "description.forbidden_profile"
+msgstr "Profile"
+
+#: share/plugin/people/share/widgets/profile/config.yaml:5
+msgid "description.profile"
+msgstr "Profile"
+
+#: share/plugin/people/share/widgets/profile_activities/config.yaml:4
+msgid "description.profile_activities"
+msgstr "Activity"
+
+#: share/plugin/people/share/widgets/profile_edit/config.yaml:4
+msgid "description.profile_edit"
+msgstr "Edit Profile"
+
+#: share/plugin/people/share/widgets/profile_network/config.yaml:4
+msgid "description.profile_network"
+msgstr "People associated with you in your groups."
+
+#: share/plugin/people/share/widgets/profile_tags/config.yaml:5
+msgid "description.profile_tags"
+msgstr "Tags"
 
 #: share/plugin/people/template/invite:109
 msgid "do.cancel"
@@ -16,6 +44,22 @@ msgstr "Cancel"
 #: share/plugin/people/template/invite:102
 msgid "do.invite"
 msgstr "Invite"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:10
+msgid "do.remove"
+msgstr "Remove"
+
+#: share/plugin/people/share/widgets/profile_tags/widget.js:86
+msgid "error.add-profile-tag"
+msgstr "Unable to add tag."
+
+#: share/plugin/people/share/widgets/profile_tags/widget.js:122
+msgid "error.build-profile-tags"
+msgstr "Unable to build tag list."
+
+#: share/plugin/people/share/widgets/profile_tags/widget.js:51
+msgid "error.delete-profile-tag"
+msgstr "Unable to delete tag."
 
 #. (users_already_present.size)
 #: share/plugin/people/template/invite_done:17 share/plugin/people/template/invite_done:18
@@ -33,6 +77,10 @@ msgstr "Sorry, the following %*(%1,email address is,email addresses are) not in 
 msgid "error.invalid-email-address=count:"
 msgstr "Sorry, The following %*(%1,email address was,email addresses were) invalid:"
 
+#: share/plugin/people/share/widgets/profile_activities/widget.html:2
+msgid "error.load-widget-content"
+msgstr "Unable to load content for this widget."
+
 #: share/plugin/people/template/lite/profile.html:70
 msgid "error.no-activities"
 msgstr "No activities to display."
@@ -48,6 +96,18 @@ msgstr "No people matching this criteria."
 #: share/plugin/people/template/lite/profile.html:72
 msgid "error.no-signals"
 msgstr "No signals to display."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:6
+msgid "error.show-profile-followers"
+msgstr "Unable to show list of Followers."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:12
+msgid "error.show-profile-following"
+msgstr "Unable to show list of Followed people."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:18
+msgid "error.show-profile-groups"
+msgstr "Unable to show list of groups."
 
 #. (person_tag)
 #: share/plugin/people/template/data/events/person:6
@@ -169,7 +229,7 @@ msgstr "Hi,"
 msgid "invite.join=account,host"
 msgstr "I'm inviting you to join the %1 group at %2."
 
-#: share/plugin/people/template/email/invitation-body.html:48
+#: share/plugin/people/template/email/invitation-body.html:46
 msgid "invite.keep-this-email-for-reference"
 msgstr "You may want to keep this email for future reference."
 
@@ -222,7 +282,7 @@ msgstr "Brought to you by Socialtext."
 msgid "invite.standard-welcome-message"
 msgstr "Standard Welcome Message"
 
-#: share/plugin/people/template/email/invitation-body.html:53
+#: share/plugin/people/template/email/invitation-body.html:51
 msgid "invite.thanks"
 msgstr "Thanks,"
 
@@ -287,6 +347,9 @@ msgstr "%*(%1,user)"
 msgid "people.directory"
 msgstr "People Directory"
 
+msgid "people.edit-profile"
+msgstr "(Edit)"
+
 #: share/plugin/people/template/lite/profile.html:15
 msgid "people.follow"
 msgstr "Follow"
@@ -341,9 +404,22 @@ msgstr "Tools"
 msgid "people.welcome-new-user"
 msgstr "Welcome, New User"
 
+#: share/plugin/people/share/widgets/profile_network/widget.js:4
+msgid "profile.about-no-followers"
+msgstr "No one Follows you yet. When viewing your profile, a person may Follow you by clicking 'Follow this person' near the top of the profile."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:10
+msgid "profile.about-no-following"
+msgstr "You Follow no one yet.  When viewing a profile, you may Follow that person by clicking 'Follow this person' near the top of the profile."
+
 #: share/plugin/people/template/lite/profile.html:59 share/plugin/people/template/lite/profile.html:61
 msgid "profile.activities"
 msgstr "Activities"
+
+#. ("<span class='realName'>__ENV_owner_name__</span>")
+#: share/plugin/people/share/widgets/profile_activities/widget.html:11
+msgid "profile.activity-rss-link=user"
+msgstr "View <a id='rss_link' href='#'>RSS feed</a> for <b>%1's Activity</b>."
 
 #: share/plugin/people/template/profile_hcard:52
 msgid "profile.aim:"
@@ -357,13 +433,33 @@ msgstr "Assistant"
 msgid "profile.blog:"
 msgstr "Blog:"
 
-#: share/plugin/people/template/lite/profile.html:153
+#: share/plugin/people/share/widgets/profile_edit/widget.html:54
+msgid "profile.contact"
+msgstr "Contact"
+
+#: share/plugin/people/share/widgets/profile/widget.html:64 share/plugin/people/share/widgets/profile_edit/widget.html:69 share/plugin/people/template/lite/profile.html:153
 msgid "profile.custom"
-msgstr "CUSTOM"
+msgstr "Custom"
 
 #: share/plugin/people/template/profile_hcard:107
 msgid "profile.facebook:"
 msgstr "Facebook:"
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:2
+msgid "profile.followers"
+msgstr "Followers"
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:8
+msgid "profile.follows"
+msgstr "Follows"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:31
+msgid "profile.grab-photo"
+msgstr "Grab Photo"
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:14
+msgid "profile.groups"
+msgstr "Groups"
 
 #: share/plugin/people/template/profile_hcard:66
 msgid "profile.gtalk:"
@@ -373,7 +469,11 @@ msgstr "GTalk:"
 msgid "profile.home:"
 msgstr "Home:"
 
-#: share/plugin/people/template/lite/profile.html:108
+#: share/plugin/people/share/widgets/profile_edit/widget.html:59
+msgid "profile.i"
+msgstr "I"
+
+#: share/plugin/people/share/widgets/profile/widget.html:38 share/plugin/people/template/lite/profile.html:108
 msgid "profile.im"
 msgstr "IM"
 
@@ -385,17 +485,49 @@ msgstr "Linkedin&reg;:"
 msgid "profile.manager"
 msgstr "Manager"
 
-#: share/plugin/people/template/lite/profile.html:95
+#: share/plugin/people/share/widgets/profile_network/widget.js:5
+msgid "profile.no-followers"
+msgstr "No one Follows this person yet."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:11
+msgid "profile.no-following"
+msgstr "This person Follows no one yet."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:16
+msgid "profile.no-groups-for-you"
+msgstr "You are a member of no groups."
+
+#: share/plugin/people/share/widgets/all_tags/widget.js:20
+msgid "profile.no-people-tags"
+msgstr "There are no People tags. Use Add Tags in People profiles to create tags."
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:17
+msgid "profile.no-shared-groups"
+msgstr "You share no groups with this person."
+
+#: share/plugin/people/share/widgets/profile_tags/widget.js:12
+msgid "profile.no-tags"
+msgstr "This person has no tags. Click <b>Add tag</b> to add one now."
+
+#: share/plugin/people/share/widgets/profile_tags/widget.js:11
+msgid "profile.no-tags-for-you"
+msgstr "You have no tags. Use <b>Add Tag</b> to add one now."
+
+#: share/plugin/people/share/widgets/profile/widget.html:28 share/plugin/people/share/widgets/profile_edit/widget.html:49 share/plugin/people/template/lite/profile.html:95
 msgid "profile.organization"
-msgstr "ORGANIZATION"
+msgstr "Organization"
 
 #: share/plugin/people/template/profile_hcard:93
 msgid "profile.personal:"
 msgstr "Personal:"
 
-#: share/plugin/people/template/lite/profile.html:79
+#: share/plugin/people/share/widgets/profile/widget.html:17 share/plugin/people/template/lite/profile.html:79
 msgid "profile.phone"
-msgstr "PHONE"
+msgstr "Phone"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:5
+msgid "profile.photos"
+msgstr "Photos"
 
 #: share/plugin/people/template/profile_hcard:79
 msgid "profile.sametime:"
@@ -413,9 +545,25 @@ msgstr "TAGS"
 msgid "profile.twitter:"
 msgstr "Twitter:"
 
-#: share/plugin/people/template/lite/profile.html:119
+#: share/plugin/people/share/widgets/profile_edit/widget.html:74
+msgid "profile.update"
+msgstr "Update profile"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:17
+msgid "profile.upload-new-photo:"
+msgstr "Upload new photo:"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:22
+msgid "profile.upload-photo"
+msgstr "Upload Photo"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:29
+msgid "profile.use-photo-on-web:"
+msgstr "Use photo on the web:"
+
+#: share/plugin/people/share/widgets/profile/widget.html:51 share/plugin/people/share/widgets/profile_edit/widget.html:64 share/plugin/people/template/lite/profile.html:119
 msgid "profile.web"
-msgstr "WEB"
+msgstr "Web"
 
 #: share/plugin/people/template/profile_hcard:32
 msgid "profile.work:"
@@ -428,3 +576,39 @@ msgstr "Yahoo!&trade;:"
 #: share/plugin/people/template/view/peoplelist:47
 msgid "sort.by:"
 msgstr "Sort by:"
+
+#: share/plugin/people/share/widgets/profile_tags/widget.html:11
+msgid "tag.add"
+msgstr "Add Tag"
+
+#: share/plugin/people/share/widgets/all_tags/config.yaml:3
+msgid "title.all_tags"
+msgstr "All People Tags"
+
+#: share/plugin/people/share/widgets/forbidden_profile/config.yaml:4
+msgid "title.forbidden_profile"
+msgstr "Profile"
+
+#: share/plugin/people/share/widgets/profile/config.yaml:4
+msgid "title.profile"
+msgstr "Profile"
+
+#: share/plugin/people/share/widgets/profile_activities/config.yaml:3
+msgid "title.profile_activities"
+msgstr "Activity"
+
+#: share/plugin/people/share/widgets/profile_edit/config.yaml:3
+msgid "title.profile_edit"
+msgstr "Edit Profile"
+
+#: share/plugin/people/share/widgets/profile_network/config.yaml:3
+msgid "title.profile_network"
+msgstr "Colleagues"
+
+#: share/plugin/people/share/widgets/profile_tags/config.yaml:4
+msgid "title.profile_tags"
+msgstr "Tags"
+
+#: share/plugin/people/share/widgets/profile_edit/widget.html:44
+msgid "user.name"
+msgstr "Name"

@@ -18,9 +18,6 @@ use Socialtext::Timer qw/time_scope/;
 
 use namespace::clean -except => 'meta';
 
-my $MAX_WIDTH  = 600;
-my $MAX_HEIGHT = 600;
-
 has 'hub' => (
     is => 'ro', isa => 'Socialtext::Hub',
     weak_ref => 1, predicate => 'has_hub'
@@ -194,6 +191,15 @@ sub make_permanent {
     # returning:
     $self->upload->make_permanent(
         actor => $p{user}, no_log => $p{no_log}, guard => 0);
+
+    if ($p{page} and $p{page}->page_id ne $self->page_id) {
+        # Here we need to move $self from an untitled page
+        # into the newly assigned page.
+        sql_execute(q{
+            UPDATE page_attachment SET page_id = ? WHERE attachment_id = ?
+        }, $p{page}->page_id, $self->attachment_id);
+    }
+
     $self->reindex();
 
     return;
@@ -259,7 +265,12 @@ sub inline {
     my $page = $self->page;
     my $guard = $self->hub->pages->ensure_current($page);
     $page->edit_rev();
-    $page->prepend($self->image_or_file_wafl());
+
+    my $body_ref = $page->body_ref;
+    my $body_new = $self->image_or_file_wafl() . $$body_ref;
+    $body_ref = \$body_new;
+    $page->body_ref(\$body_new);
+
     $page->store(user => $user);
 }
 
@@ -314,63 +325,32 @@ sub dimensions {
     return [$1 || 0, $2 || 0] if $size =~ /^(\d+)(?:x(\d+))?$/;
 }
 
-sub _prep_image {
-    my ($self, $flavor) = @_;
-
-    my $original = $self->disk_filename;
-    my $target = "$original.$flavor";
-    my $size;
-    if (-f $target && ($size = -s _)) {
-        # "touch" the atime of the file so this can be used for pruning 
-        utime time, $self->created_at->epoch, $target;
-        return $size;
-    }
-
-    $self->ensure_stored();
-    my $dimensions = $self->dimensions($flavor);
-    (my $dir = $target) =~ s{/[^/]+$}{};
-
-    try {
-        # file *must* have a .png suffix for resize() to work
-        my $tmp = File::Temp->new(CLEANUP => 1,
-            DIR => $dir, TEMPLATE => "resize-XXXXXX", SUFFIX => 'png');
-        die "can't create temp file: $!" unless $tmp;
-
-        Socialtext::Image::resize(
-            new_width   => $dimensions->[0],
-            new_height  => $dimensions->[1],
-            max_height  => $MAX_HEIGHT,
-            max_width   => $MAX_WIDTH,
-            filename    => $original,
-            to_filename => "$tmp", # force-stringify the glob
-        );
-        rename "$tmp" => $target;
-        $size = -s $target;
-    }
-    catch {
-        warn "couldn't scale attachment ".$self->attachment_uuid.": $!";
-        $size = 0;
-    };
-
-    return $size;
-}
-
 sub prepare_to_serve {
     my ($self, $flavor, $protected) = @_;
-    undef $flavor if ($flavor && $flavor eq 'original');
+    undef $flavor if ($flavor && ($flavor eq 'original' || $flavor eq 'files'));
 
     my ($uri,$content_length);
     if ($self->is_image && $flavor) {
-        ($uri) = $protected
-            ? ($self->protected_uri.".$flavor")
-            : ($self->download_uri($flavor));
-        $content_length = $self->_prep_image($flavor);
+        my $dim = $self->dimensions($flavor);
+        my $spec = 'resize-'.join('x',@$dim) if $dim;
+        if ($spec) {
+            $spec = 'thumb-600x0' if $spec eq 'resize-0x0';
+            try {
+                $content_length = $self->upload->ensure_scaled(spec => $spec);
+                $uri = $protected
+                    ? $self->protected_uri.".$spec"
+                    : $self->download_uri($flavor);
+            }
+            catch {
+                warn "while scaling attachment: $_";
+            };
+        }
     }
 
-    if (!$content_length) {
+    unless ($uri) {
         $self->ensure_stored();
-        $uri = $protected ? $self->protected_uri : $self->download_uri;
         $content_length = $self->content_length;
+        $uri = $protected ? $self->protected_uri : $self->download_uri;
     }
 
     return ($uri, $content_length) if wantarray;

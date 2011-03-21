@@ -91,7 +91,8 @@ for ( $START_SCHEMA+1 .. $latest_schema ) {
 
 # Run schema changes for current release
 eval {
-    $schema->run_sql_file("$real_dir/socialtext-$CURR_RELEASE.sql");
+    $schema->run_sql_file("$real_dir/socialtext-$CURR_RELEASE.sql")
+        if -f "$real_dir/socialtext-$CURR_RELEASE.sql";
 };
 if ($@) {
     system("tail -n 20 $log_dir/st-db.log");

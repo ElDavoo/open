@@ -52,7 +52,6 @@ Readonly my $SYSTEM_EMAIL_ADDRESS       => 'noreply@socialtext.com';
 Readonly my $WIKITEXT_TYPE              => 'text/x.socialtext-wiki';
 Readonly my $HTML_TYPE                  => 'text/html';
 
-my $REFERENCE_TIME = undef;
 our $CACHING_DEBUG = 0;
 our $DISABLE_CACHING = 0;
 
@@ -64,7 +63,7 @@ has 'hub' => (
 has 'workspace_id' => (is => 'rw', isa => 'Int', required => 1);
 has 'page_id' => (is => 'rw', isa => 'Str', required => 1);
 *id = *page_id; # legacy alias
-has 'revision_id' => (is => 'rw', isa => 'Int',
+has 'revision_id' => (is => 'rw', isa => 'Num',
     trigger => sub { $_[0]->_revision_id_changed($_[1],$_[2]) },
 );
 *current_revision_id = *revision_id;
@@ -154,6 +153,13 @@ use constant SELECT_COLUMNS_STR => q{
     page.locked,
     page.tags -- ordered array
 };
+
+# This should be the order they show up in on the actual table:
+use constant COLUMNS => qw(
+    workspace_id page_id name last_editor_id last_edit_time creator_id
+    create_time current_revision_id current_revision_num revision_count
+    page_type deleted summary edit_summary locked tags views 
+);
 
 # use 'user' and 'date' instead of 'creator/editor', 'create_time/edit_time'
 sub Blank {
@@ -1950,10 +1956,10 @@ sub duplicate {
         $rev->workspace_id($dest_ws->workspace_id);
         $rev->page_id($target_id);
         $rev->name($target_title);
-        $target->rev($rev);
 
         # Make this the first revision_num unless we're clobbering.
         $rev->revision_num($target->exists ? $target->revision_num+1 : 0);
+        $target->rev($rev);
 
         $rev->tags([]) unless $keep_categories;
 
@@ -2166,13 +2172,12 @@ sub send_as_email {
 
 {
     Readonly my $spec => {
-        revision_id => POSITIVE_INT_TYPE,
+        revision_id => POSITIVE_FLOAT_TYPE,
         user        => USER_TYPE,
     };
     sub restore_revision {
         my $self = shift;
         my %p = validate( @_, $spec );
-        my $id = shift;
 
         $self->switch_rev($p{revision_id});
         my $num = $self->revision_num;
@@ -2191,6 +2196,8 @@ sub send_as_email {
         $rev->summary($rev->prev->summary);
 
         $self->store(user => $p{user}, skip_rev_check => 1);
+
+        # XXX TODO no events or logging for restore actions (by flawed design)
     }
 }
 
@@ -2269,17 +2276,36 @@ sub formatted_date {
     return $res;
 }
 
-sub all_revision_ids {
+sub number_of_revisions {
     my $self = shift;
-    my $agg = wantarray ? 'array_accum' : 'count';
-    my $ids = sql_singlevalue(qq{
-        SELECT $agg(revision_id)
+
+    my $count = sql_singlevalue(qq{
+        SELECT count(revision_id)
           FROM page_revision
          WHERE workspace_id = ? AND page_id = ?
-         GROUP BY workspace_id, page_id
     }, $self->workspace_id, $self->page_id);
-    return sort {$a <=> $b} @$ids if wantarray;
-    return $ids;
+    return $count;
+}
+
+sub all_revision_ids {
+    my $self = shift;
+    my $order = shift || Socialtext::SQL::OLDEST_FIRST;
+
+    $order = $order eq Socialtext::SQL::OLDEST_FIRST ? 'asc' : 'desc';
+    my $sth = sql_execute(qq{
+        SELECT
+          revision_id
+        FROM
+          page_revision
+        WHERE
+          workspace_id = ?
+        AND
+          page_id = ?
+        ORDER BY
+          revision_id $order
+    }, $self->workspace_id, $self->page_id);
+    my @ids = map { $_->[0] } @{$sth->fetchall_arrayref || []};
+    return @ids;
 }
 
 sub original_revision_id {

@@ -238,15 +238,15 @@ EOSQL
     }
 
     my %display_names = (
-        'member-only' => 'Private',
-        'self-join'   => 'Self-Join',
-        'custom'      => 'Custom',
+        'member-only' => _('wiki.acl-private'),
+        'self-join'   => _('wiki.acl-self-join'),
+        'custom'      => _('wiki.acl-custom'),
     );
     sub current_set_display_name {
         my $self = shift;
 
         my $display_name = $display_names{$self->current_set_name};
-        return $display_name || 'Public';
+        return $display_name || _('wiki.acl-public');
     }
 
     sub _perm_set_as_string {

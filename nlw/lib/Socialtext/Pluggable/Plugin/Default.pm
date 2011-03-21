@@ -2,6 +2,7 @@ package Socialtext::Pluggable::Plugin::Default;
 # @COPYRIGHT@
 use strict;
 use warnings;
+use Socialtext::l10n 'loc';
 use Socialtext::BrowserDetect;
 use Socialtext::Workspace;
 
@@ -41,7 +42,7 @@ sub register {
         priority    => 99,
     );
 
-    $class->add_content_type('wiki', 'Page');
+    $class->add_content_type('wiki', _('page.type-wiki'));
 }
 
 sub user_name {

@@ -18,7 +18,12 @@ preserved_across_export: {
     # Set up an Account with a Workspace, Group, and some Users.
     my $account = create_test_account_bypassing_factory();
 
-    my $group_owner = create_test_user(account => $account);
+    my $group_owner = create_test_user(
+        account     => $account,
+        first_name  => 'Guybrush',
+        middle_name => 'Ulysses',
+        last_name   => 'Threepwood',
+    );
     my $group = create_test_group(
         account => $account,
         user    => $group_owner,
@@ -226,6 +231,7 @@ sub _dump_user {
         email_address
         email_address_at_import
         first_name
+        middle_name
         is_business_admin
         is_system_created
         is_technical_admin

@@ -160,7 +160,7 @@ EOF
 
         $user->deactivate;
         is($user->primary_account_id, $deleted->account_id, "User is deleted");
-        ok(!$user->requires_confirmation, "Password confirmation mail has not been sent");
+        ok !$user->requires_password_change, "Password confirmation mail has not been sent";
     }
 
     my $invitation = Socialtext::WorkspaceInvitation->new(
@@ -175,7 +175,7 @@ EOF
         my $user = Socialtext::User->Resolve( 'deleted@ken.socialtext.net' );
         is($user->primary_account_id, $workspace->account_id,
             "User's primary account is re-assigned to workspace's account on re-invite");
-        ok($user->requires_confirmation, "Password confirmation mail has been sent");
+        ok $user->requires_password_change, "Password confirmation mail has been sent";
     }
 }
 
@@ -184,11 +184,12 @@ sub _confirm_user_if_neccessary {
 
     my $user = Socialtext::User->new( username => $username );
 
-    if ($user && $user->requires_confirmation ) {
+    if ($user && $user->requires_email_confirmation) {
         warn "# Confirming user $username\n";
         $user->confirm_email_address();
         $user->update_store( password => 'secret' );
         return 1;
     }
+
     return 0;
 }

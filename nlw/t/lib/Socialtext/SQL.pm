@@ -9,6 +9,9 @@ use unmocked 'Data::Dumper';
 use unmocked 'DateTime::Format::Pg';
 use unmocked 'Guard';
 
+use constant NEWEST_FIRST => 'newest';
+use constant OLDEST_FIRST => 'oldest';
+
 our @EXPORT_OK = qw(
     get_dbh disconnect_dbh invalidate_dbh
     sql_execute sql_execute_array sql_selectrow sql_singlevalue

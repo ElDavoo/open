@@ -105,6 +105,7 @@ autovivify_cache_value: {
         driver_unique_id    => $dn,
         email_address       => $email,
         first_name          => 'Onlyuse',
+        middle_name         => '',
         last_name           => 'Once',
         display_name        => 'Onlyuse Once',
         password            => '*no-password*',
@@ -278,6 +279,7 @@ sub db_cache_ok {
         driver_unique_id    => $TEST_USERS[$user_num]{dn},
         email_address       => lc($TEST_USERS[$user_num]{mail}),    # stored internally as lower-case
         first_name          => $TEST_USERS[$user_num]{gn},
+        middle_name         => '',
         last_name           => $TEST_USERS[$user_num]{sn},
         password            => '*no-password*',
         is_profile_hidden   => '0',

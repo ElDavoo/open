@@ -114,23 +114,13 @@ show-impersonators
 | *Comment* | Test Case: Command Line Tests set-workspace config accepts no third argument |  |
 | st-admin | set-workspace-config --workspace %%cmdline_workspace%% | qr/The workspace config for %%cmdline_workspace%% has been updated/ |
 
-| *Comment* | Test Case: Command Line Tests set-workspace-config without both <key> and <value> values causes a stack trace |  |
-| st-admin | set-workspace-config --workspace %%cmdline_workspace%% comment_form_window_height | qr/Use of uninitialized value in string eq/ |
-
 | *Comment* | Test Case: Command Line Tests checking number, string, boolean set-workspace-config operation |  |
 | *Comment* | Test Case: Command Line Tests these tests actually validates the new conditions, rather than only the return value from st-admin |  |
-| st-admin | set-workspace-config --workspace %%cmdline_workspace%% comment_form_window_height 345 | qr/The workspace config for %%cmdline_workspace%% has been updated/ |
-| st-admin | show-workspace-config --workspace %%cmdline_workspace%% | qr/comment_form_window_height\s+:\s+345/ |
 
 | st-admin | set-workspace-config --workspace %%cmdline_workspace%% homepage_is_dashboard 0 | qr/The workspace config for %%cmdline_workspace%% has been updated/ |
 | st-admin | show-workspace-config --workspace %%cmdline_workspace%% | qr/homepage_is_dashboard\s+:\s+0/ |
 | st-admin | set-workspace-config --workspace %%cmdline_workspace%% homepage_is_dashboard 1 | qr/The workspace config for %%cmdline_workspace%% has been updated/ |
 | st-admin | show-workspace-config --workspace %%cmdline_workspace%% | qr/homepage_is_dashboard\s+:\s+1/ |
-
-| st-admin | set-workspace-config --workspace %%cmdline_workspace%% comment_form_note_top foo | qr/The workspace config for %%cmdline_workspace%% has been updated/ |
-| st-admin | show-workspace-config --workspace %%cmdline_workspace%% | qr/comment_form_note_top\s+:\s+foo/ |
-| st-admin | set-workspace-config --workspace %%cmdline_workspace%% comment_form_note_top "" | qr/The workspace config for %%cmdline_workspace%% has been updated/ |
-| st-admin | show-workspace-config --workspace %%cmdline_workspace%% | qr/comment_form_note_top\s+:\s+''/ |
 
 | *Comment* | Test Case: Command Line Tests WORKSPACE Export workspace | Writes to a unique file on /tmp |
 | st-admin | export-workspace | qr/The command you called \(export-workspace\) requires a workspace to be specified.+A workspace is identified by name with the --workspace option/ |
@@ -181,7 +171,7 @@ mass-copy-pages --workspace --target [--prefix]
 | st-admin | html-archive | qr/The command you called \(html-archive\) requires a workspace to be specified/ |
 | st-admin | html-archive --workspace %%cmdline_workspace%% | qr/The command you called \(html-archive\) requires a file to be specified with the --file option/ |
 | *Comment* | Test Case: Command Line Tests html-archive with a bogus --file causes stack trace |  |
-| st-admin | html-archive --workspace %%cmdline_workspace%% --file /temp/foo | qr/Socialtext::HTMLArchive::create_zip\(undef, undef\) called at/ |
+| st-admin | html-archive --workspace %%cmdline_workspace%% --file /temp/foo | Path to zip file does not exist |
 | st-admin | html-archive --workspace %%cmdline_workspace%% --file /tmp/%%start_time%% | qr/An HTML archive of the %%cmdline_workspace%% workspace has been created in \/tmp\/%%start_time%%\.zip/ |
 
 | *Comment* | Test Case: Command Line Tests WORKSPACE mass-copy-pages going to /tmp |  |

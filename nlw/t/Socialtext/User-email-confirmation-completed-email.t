@@ -3,26 +3,20 @@
 
 use strict;
 use warnings;
-
-use Test::Socialtext;
-fixtures(qw( clean db ));
+use Test::Socialtext tests => 24;
+use Socialtext::Account;
+use Socialtext::User;
+use Socialtext::Workspace;
+use Socialtext::Role;
 
 BEGIN {
     unless ( eval { require Email::Send::Test; 1 } ) {
         plan skip_all => 'These tests require Email::Send::Test to run.';
     }
+    $Socialtext::EmailSender::Base::SendClass = 'Test';
 }
 
-plan tests => 24;
-
-use Socialtext::Account;
-use Socialtext::Group;
-use Socialtext::User;
-use Socialtext::Workspace;
-use Socialtext::GroupInvitation;
-use Socialtext::Role;
-
-$Socialtext::EmailSender::Base::SendClass = 'Test';
+fixtures(qw( clean db ));
 
 my $AdminRole = Socialtext::Role->Admin();
 
@@ -33,7 +27,7 @@ my $user = Socialtext::User->create(
 );
 
 {
-    $user->set_confirmation_info();
+    $user->create_email_confirmation();
 
     my @emails = Email::Send::Test->emails();
     is( scalar @emails, 0, 'no email was sent while user still requires confirmation' );
@@ -63,7 +57,7 @@ my $user = Socialtext::User->create(
     );
     $ws->add_user( user => $user );
 
-    $user->set_confirmation_info();
+    $user->create_email_confirmation();
     $user->confirm_email_address();
 
     my @emails = Email::Send::Test->emails();
@@ -103,7 +97,7 @@ my $user = Socialtext::User->create(
     );
     $ws->add_user( user => $user );
 
-    $user->set_confirmation_info();
+    $user->create_email_confirmation();
     $user->confirm_email_address();
 
     my @emails = Email::Send::Test->emails();
@@ -152,13 +146,13 @@ sub _invite_user_to_group {
 
 {
     Email::Send::Test->clear();
-    
+
     my $inviter = create_test_user();
     my $g1 = _invite_user_to_group('group 1', $inviter, $user);
     my $g2 = _invite_user_to_group('group 2', $inviter, $user);
     my $g3 = _invite_user_to_group('group 3', $inviter, $user);
 
-    $user->set_confirmation_info();
+    $user->create_email_confirmation();
     $user->confirm_email_address();
 
     my @emails = Email::Send::Test->emails();

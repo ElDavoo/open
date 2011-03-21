@@ -1,7 +1,8 @@
 package Socialtext::TheSchwartz;
 # @COPYRIGHT@
 use Moose;
-use Socialtext::SQL (); # call $dbh-> methods in this class.
+use Socialtext::SQL ('sql_txn'); # call $dbh-> methods in this class.
+use Try::Tiny;
 
 sub run_in_txn (&$);
 BEGIN {
@@ -259,6 +260,7 @@ sub bulk_insert {
     my $self = shift;
     my $protojob = shift;
     my $jobs = shift;
+    my %opts = @_;
     my $dbh = Socialtext::SQL::get_dbh();
 
     my $funcid = $self->funcname_to_id($dbh, $protojob->funcname);
@@ -284,7 +286,11 @@ sub bulk_insert {
     for my $job (@$jobs) {
         my $row = { @protorow, %$job, grabbed_until => 0 };
         $row->{run_after} ||= $now;
-        sql_txn { $sth->execute(map { $row->{$_} } @cols) };
+        try { sql_txn { $sth->execute(map { $row->{$_} } @cols) } }
+        catch {
+            die "Error during bulk-insert of " . $protojob->funcname
+                . ": $_" unless $opts{ignore_errors};
+        };
     }
 }
 

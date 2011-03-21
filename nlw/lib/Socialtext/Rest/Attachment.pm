@@ -29,10 +29,8 @@ sub GET {
     if ($attachment) {
         my ($file,$size) = $attachment->prepare_to_serve(
             $self->params->{version}, 'protected');
-        try { $self->_serve_file($rest, $attachment, $file, $size) }
-        catch { 
-            $rv = $self->_invalid_attachment($rest, $_);
-        };
+        $rv = try { $self->serve_file($rest, $attachment, $file, $size) }
+        catch { $self->_invalid_attachment($rest, $_) };
     }
 
     # The frontend will take care of sending the attachment.
@@ -69,6 +67,8 @@ sub _invalid_attachment {
     warn $error;
     $rest->header( -status => HTTP_404_Not_Found, -type => 'text/plain' );
     $error =~ s/\n.+//m;
+    $error =~ s/ at \S+ line \d+//;
+    $error =~ s/\.?\s*\z//s;
     return "Invalid attachment ID. $error.\n";
 }
 

@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 146;
+use Test::Socialtext tests => 159;
 use Test::Differences;
 use Test::Output qw/stderr_is/;
 use Socialtext::CLI;
@@ -26,7 +26,7 @@ my $Impersonator   = Socialtext::Role->Impersonator();
 # TEST: Account export/import preserves GAR, when Group has this Account as
 # its Primary Account.
 account_import_preserves_gar_primary_account: {
-    ok 1, 'TEST: Preserves GARs; Groups Primary Account';
+    pass 'TEST: Preserves GARs; Groups Primary Account';
     my $account = create_test_account_bypassing_factory();
     my $group   = create_test_group(account => $account);
 
@@ -41,7 +41,7 @@ account_import_preserves_gar_primary_account: {
 # TEST: Account export/import preserves GAR, when Group has a Role in this
 # Account (but its not the Groups Primary Account).
 account_import_preserves_gar: {
-    ok 1, 'TEST: Preserves GARs; Group has Role in Account';
+    pass 'TEST: Preserves GARs; Group has Role in Account';
     my $account    = create_test_account_bypassing_factory();
     my $acct_name  = $account->name();
 
@@ -69,7 +69,7 @@ account_import_preserves_gar: {
 # in a Workspace that lives within the Account.  Make sure that the Role is
 # preserved across export/import.
 account_import_preserves_gwrs: {
-    ok 1, 'TEST: Preserves GWRs/GARs';
+    pass 'TEST: Preserves GWRs/GARs';
     my $account    = create_test_account_bypassing_factory();
     my $acct_name  = $account->name();
 
@@ -98,7 +98,7 @@ account_import_preserves_gwrs: {
 # time it ends up in the DB its just a single GAR entry, but this test also
 # verifies that the GWR was properly preserved.
 account_import_preserves_direct_and_indirect_group_roles: {
-    ok 1, 'TEST: Preserves GARs + GWRs/GARs';
+    pass 'TEST: Preserves GARs + GWRs/GARs';
     my $account   = create_test_account_bypassing_factory();
     my $acct_name = $account->name();
 
@@ -125,7 +125,7 @@ account_import_preserves_direct_and_indirect_group_roles: {
 # Group can have multiple *indirect* Roles in an Account.  Make sure that
 # they're all preserved across export/import.
 account_import_preserves_multiple_indirect_roles: {
-    ok 1, 'TEST: Preserves multiple GWRs/GARs';
+    pass 'TEST: Preserves multiple GWRs/GARs';
     my $account = create_test_account_bypassing_factory();
     my $ws_one  = create_test_workspace(account => $account);
     my $ws_two  = create_test_workspace(account => $account);
@@ -147,7 +147,7 @@ account_import_preserves_multiple_indirect_roles: {
 # TEST: Account export/import preserves UAR, when User has this Account as its
 # Primary Account.
 account_import_preserves_uar_primary_account: {
-    ok 1, 'TEST: Preserves UARs; Users Primary Account';
+    pass 'TEST: Preserves UARs; Users Primary Account';
     my $account = create_test_account_bypassing_factory();
     my $user    = create_test_user(account => $account);
 
@@ -168,7 +168,7 @@ account_import_preserves_uar_primary_account: {
 # Users can also have a membership in an Account, which should also be
 # preserved across export/import.
 account_import_preserves_uar: {
-    ok 1, 'TEST: Preserves direct UAR';
+    pass 'TEST: Preserves direct UAR';
     my $account   = create_test_account_bypassing_factory();
     my $acct_name = $account->name();
 
@@ -214,7 +214,7 @@ account_import_preserves_uar: {
 # in a Workspace that lives within the Account.  Make sure that the Role is
 # preserved across export/import.
 account_import_preserves_uwr: {
-    ok 1, 'TEST: Preserves indirect UWR';
+    pass 'TEST: Preserves indirect UWR';
     my $account   = create_test_account_bypassing_factory();
     my $acct_name = $account->name();
 
@@ -261,7 +261,7 @@ account_import_preserves_uwr: {
 # of a Group that happens to have a Role in the Account.  Make sure that Role
 # is preserved across export/import.
 account_import_preserves_user_indirect_role_through_group: {
-    ok 1, 'TEST: Preserves UGRs/GARs';
+    pass 'TEST: Preserves UGRs/GARs';
     my $account = create_test_account_bypassing_factory();
     my $group   = create_test_group(account => $account);
     my $user    = create_test_user();
@@ -283,7 +283,7 @@ account_import_preserves_user_indirect_role_through_group: {
 # User can have a *doubly-indirect* Role in an Account by virtue of being a
 # member of a Group that has a Role in a Workspace in an Account.  Whew!
 account_import_preserves_doubly_indirect_role: {
-    ok 1, 'TEST: Preserves UGR/GWR/GARs (doubly-indirect)';
+    pass 'TEST: Preserves UGR/GWR/GARs (doubly-indirect)';
     my $account   = create_test_account_bypassing_factory();
     my $workspace = create_test_workspace(account => $account);
     my $group     = create_test_group();
@@ -307,7 +307,7 @@ account_import_preserves_doubly_indirect_role: {
 #
 # User can have multiple *indirect* Roles in an Account through various means.
 account_import_preserves_multiple_indirect_uars: {
-    ok 1, 'TEST: Preserves multiple indirect UARs';
+    pass 'TEST: Preserves multiple indirect UARs';
     my $account   = create_test_account_bypassing_factory();
     my $ws_one    = create_test_workspace(account => $account);
     my $ws_two    = create_test_workspace(account => $account);
@@ -340,7 +340,7 @@ account_import_preserves_multiple_indirect_uars: {
 #
 # User can have both a *direct* and an *indirect* Role in an Account.
 account_import_preserves_direct_and_indirect_uars: {
-    ok 1, 'TEST: Preserves direct and indirect UARs';
+    pass 'TEST: Preserves direct and indirect UARs';
     my $account   = create_test_account_bypassing_factory();
     my $ws_one    = create_test_workspace(account => $account);
     my $ws_two    = create_test_workspace(account => $account);

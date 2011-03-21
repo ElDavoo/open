@@ -103,6 +103,9 @@ sub export_and_reimport_account {
     my @gwrs = map { _dump_gwrs($_) } @workspaces;
     my @ugrs = map { _dump_ugrs($_) } @groups;
 
+    # Users should maintain their restrictions across export/import
+    my %restrictions = map { $_->username => _dump_restrictions($_) } @users;
+
     # Export the Account
     expect_success(
         sub {
@@ -207,10 +210,24 @@ sub export_and_reimport_account {
         Test::More::diag "User/Group Roles: "      . Dumper(\@ugrs);
     }
 
+    # Get the list of User Restrictions *after* the export/import
+    my %i_restrictions =
+        map {
+            my $u = Socialtext::User->new(username => $_->username);
+            ($u->username => _dump_restrictions($u));
+        } @users;
+
+    # User Restrictions should be the same after import
+    eq_or_diff \%i_restrictions, \%restrictions, '... User Restrictions preserved';
+
     # CLEANUP: remove our temp directory
     rmtree([$export_base], 0);
 
     return $output;
+}
+
+sub _sort_roles {
+    sort { return join(',', values %$a) cmp join(',', values %$b) } @_;
 }
 
 sub _dump_gars {
@@ -226,7 +243,7 @@ sub _dump_gars {
             };
         }
     }
-    return @gars;
+    return _sort_roles @gars;
 }
 
 sub _dump_uars {
@@ -243,7 +260,7 @@ sub _dump_uars {
             };
         }
     }
-    return @uars;
+    return _sort_roles @uars;
 }
 
 sub _dump_uwrs {
@@ -259,7 +276,7 @@ sub _dump_uwrs {
             };
         }
     }
-    return @uwrs;
+    return _sort_roles @uwrs;
 }
 
 sub _dump_gwrs {
@@ -275,7 +292,7 @@ sub _dump_gwrs {
             };
         }
     }
-    return @gwrs;
+    return _sort_roles @gwrs;
 }
 
 sub _dump_ugrs {
@@ -291,7 +308,13 @@ sub _dump_ugrs {
             };
         }
     }
-    return @ugrs;
+    return _sort_roles @ugrs;
+}
+
+sub _dump_restrictions {
+    my $user = shift;
+    my @restrictions = map { $_->to_hash } $user->restrictions->all;
+    return \@restrictions;
 }
 
 1;

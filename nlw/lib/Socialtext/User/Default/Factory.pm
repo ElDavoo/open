@@ -85,7 +85,10 @@ sub Count {
 }
 
 sub GetUser {
-    my ($self, $id_key, $id_val) = @_;
+    my ($self, $id_key, $id_val, %opts) = @_;
+    if (my $proto = $opts{preload}) {
+        return $self->NewHomunculus($proto);
+    }
     return $self->get_homunculus($id_key, $id_val);
 }
 
@@ -100,6 +103,7 @@ sub create {
     $self->ValidateAndCleanData(undef, \%p);
 
     $p{first_name}         ||= '';
+    $p{middle_name}        ||= '';
     $p{last_name}          ||= '';
     $p{primary_account_id} ||= Socialtext::Account->Default()->account_id;
 
@@ -152,14 +156,14 @@ sub Search {
     my $splat_term = lc "\%$search_term\%";
 
     my $sth = sql_execute(q{
-            SELECT first_name, last_name, email_address
-              FROM users 
-             WHERE ( 
+            SELECT first_name, middle_name, last_name, email_address
+              FROM users
+             WHERE (
                      LOWER( driver_username ) LIKE ? OR
                      LOWER( email_address ) LIKE ? OR
                      LOWER( first_name ) LIKE ? OR
-                     LOWER( last_name ) LIKE ? 
-                   ) 
+                     LOWER( last_name ) LIKE ?
+                   )
                    AND ( driver_key = ? )
                    AND ( driver_username NOT IN (?, ?) )
         },
@@ -175,7 +179,7 @@ sub Search {
             my $name = Socialtext::User->FormattedEmail(@$row);
             return {
                 driver_name    => $self->driver_key,
-                email_address  => $row->[2],
+                email_address  => $row->[3],
                 name_and_email => $name,
             };
         },
@@ -301,6 +305,8 @@ If this is true, then the absence of a "password" parameter is
 considered an error.
 
 =item * first_name
+
+=item * middle_name
 
 =item * last_name
 

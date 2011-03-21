@@ -9,7 +9,7 @@
 | set | to_ws_user | %%to_ws%%@%%wikiemail%% |
 
 | *Comment* | Test Case: Join. Create new acct, self-join ws in it, and brand new (workspace == new user) |  |
-| st-admin | create-account --name "%%acct%%" | created |
+| create-account | %%acct%% |  |
 
 | *Comment* | Test Case: Join. Create the self-join workspace %%acct%% |  |
 | st-admin | create-workspace --name %%acct_ws%% --title "%%acct%%" --account "%%acct%%" | created |
@@ -73,12 +73,14 @@
 
 | *Comment* | Test Case: Join. Navigate to the confirmation email |  |
 | text_like | workspaceName | %%to_ws%% |
+
 | *Comment* | Wait 90 seconds for the confirmation email to arrive |  |
 | pause | 90000 |  |
+
 | wait_for_element_visible_ok | link=What's New | 30000 |
 | click_and_wait | link=What's New |  |
-| wait_for_element_visible_ok | link=Welcome to the %%acct%% workspace - please confirm your email to join | 30000 |
-| click_and_wait | link=Welcome to the %%acct%% workspace - please confirm your email to join |  |
+| wait_for_element_visible_ok | link=Welcome to the %%acct%% community - please confirm your email to join | 30000 |
+| click_and_wait | link=Welcome to the %%acct%% community - please confirm your email to join |  |
 
 | *Comment* | Test Case: Join. click the confirmation link |  |
 | text_like | Your profile has been added |  |
@@ -91,18 +93,20 @@
 
 | *Comment* | Test Case: Join. New user joins, primary account set to %%acct%% |  |
 | wait_for_element_visible_ok | login_btn | 30000 |
-| text_like | Your email address, %%to_ws_user%%, has been confirmed and you have been added to the %%acct%% workspace. Please login. |  |
+| text_like | Your email address, %%to_ws_user%%, has been confirmed |  |
 | type_ok | username | %%to_ws_user%% |
 | type_ok | password | %%password%% |
 | click_and_wait | login_btn |  |
 | location_like | /%%acct_ws%% |  |
-| wait_for_element_visible_ok | link=Edit | 5000 |
-| wait_for_element_visible_ok | link=Comment | 5000 |
+| wait_for_element_visible_ok | st-edit-button-link | 5000 |
+| wait_for_element_visible_ok | st-comment-button-link | 5000 |
 | st-admin | get-user-account --u %%to_ws_user%% | Primary account for "%%to_ws_user%%" is %%acct%%. |
 
 | *Comment* | Test Case: Join TEARDOWN |  |
 | st-process-jobs |  |  |
-| st-admin | delete-workspace --w %%to_ws%% --no-export | has been deleted |
-| st-admin | delete-workspace --w %%acct_ws%% --no-export | has been deleted |
+| delete-workspace | %%to_ws%% | Recklessly deleting workspace |
+| delete-workspace | %%acct_ws%% | Recklessly deleting workspace |
+| st-admin | deactivate-user --e %%to_ws_user%% |  |
+| delete-account | %%acct%% | Recklessly deleting |
 
 | *Comment* | Test Case: Join COMPLETED |  |

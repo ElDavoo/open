@@ -14,6 +14,7 @@ This test case assumes a logged in user.
  wait_for_element_visible_ok | `xpath=(//form[@name='settings']//input[@type='text'])` | 30000 |
  attribute-like | `xpath=(//form[@name='settings']//input[@type='text'])[1]@name` | last_name |
  attribute-like | `xpath=(//form[@name='settings']//input[@type='text'])[2]@name` | first_name |
+ attribute-like | `xpath=(//form[@name='settings']//input[@type='text'])[3]@name` | middle_name |
 
  *Comment* | in "en" locale, its "first, last name" ordering |  |
  st-admin | set-locale --workspace %%workspace%% --username %%username%% --locale en |  |
@@ -21,6 +22,7 @@ This test case assumes a logged in user.
 
  wait_for_element_visible_ok | `xpath=(//form[@name='settings']//input[@type='text'])` | 30000 |
  attribute-like | `xpath=(//form[@name='settings']//input[@type='text'])[1]@name` | first_name |
- attribute-like | `xpath=(//form[@name='settings']//input[@type='text'])[2]@name` | last_name |
+ attribute-like | `xpath=(//form[@name='settings']//input[@type='text'])[2]@name` | middle_name |
+ attribute-like | `xpath=(//form[@name='settings']//input[@type='text'])[3]@name` | last_name |
 
  *Comment* | Test case: User Settings - First/Last locale order  COMPLETED |  |

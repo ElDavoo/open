@@ -10,9 +10,9 @@ use REST::Google::Search;
 use Socialtext::Encode;
 
 const limit => 8;
-const class_title => 'google retrieval';
+const class_title => _('class.google_search');
 
-sub class_id { 'google_search' }
+const class_id => 'google_search';
 
 sub register {
     my $self     = shift;

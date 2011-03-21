@@ -524,7 +524,7 @@ sub decoded_json_body {
 }
 
 # Send a file to the client via nginx
-sub _serve_file {
+sub serve_file {
     my ($self, $rest, $attachment, $file_path, $file_size) = @_;
 
     my $mime_type = $attachment->mime_type;
@@ -549,6 +549,7 @@ sub _serve_file {
         'Content-Disposition' => 'filename="'.$attachment->filename.'"',
         '-X-Accel-Redirect'   => $file_path,
     );
+    return '';
 }
 
 {

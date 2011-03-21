@@ -103,9 +103,8 @@ sub start {
     my $openldap;
     $SIG{INT} = sub { undef $openldap; exit; };
     $openldap = Socialtext::Bootstrap::OpenLDAP->new(
-        base_dn     => 'dc=socialtext,dc=com',
-        root_dn     => 'cn=Manager,dc=socialtext,dc=com',
-        );
+        base_dn => 'dc=socialtext,dc=com',
+    );
 
     my $ldif_fh = tempfile();
     $ldif_fh->print($ldif_data);
@@ -466,6 +465,7 @@ dn: cn=Michael Moorcock,dc=socialtext,dc=com
 objectClass: inetOrgPerson
 mail: michael@socialtext.com
 gn: Michael
+initials: John
 sn: Moorcock
 cn: Michael Moorcock
 userPassword: ld@pu53r
@@ -475,6 +475,7 @@ dn: cn=Sharon Osbourne,dc=socialtext,dc=com
 objectClass: inetOrgPerson
 mail: sharon@socialtext.com
 gn: Sharon
+initials: Rachel
 sn: Osbourne
 cn: Sharon Osbourne
 userPassword: ld@pu53r

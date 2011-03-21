@@ -19,8 +19,8 @@ use Socialtext::Timer qw/time_scope/;
 use Socialtext::Validate qw( validate SCALAR_TYPE USER_TYPE );
 use Socialtext::l10n qw(loc);
 
-sub class_id {'category'}
-const class_title => 'Category Managment';
+const class_id => 'category';
+const class_title => _('class.category');
 const cgi_class   => 'Socialtext::Category::CGI';
 
 sub Decode_category_email {

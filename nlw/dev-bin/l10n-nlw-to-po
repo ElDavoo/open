@@ -8,10 +8,14 @@ use Locale::Maketext::Lexicon 0.85; # Ensures xgettext.pl terminates
 use File::Basename 'basename';
 use Getopt::Long;
 use Socialtext::System qw/shell_run/;
+use File::Path qw(make_path remove_tree);
 chdir "$RealBin/..";
 
-my $new;
-GetOptions( 'new|n!' => \$new ) or die "Usage: $0 [--new] [sections]\n";
+my ($new, $lang);
+GetOptions(
+    'new|n!' => \$new,
+    'lang|l=s' => \$lang,
+) or die "Usage: $0 [--new] [--lang lang] [sections]\n";
 
 my @plugins = map { basename($_) } grep { -d and (-d "$_/share" or -d "$_/template") } glob('share/plugin/*');
 my %Sections = (
@@ -21,6 +25,7 @@ my %Sections = (
     appliance => ['../appliance/libsocialtext-appliance-perl/template', '../appliance/libsocialtext-appliance-perl/sbin'],
 #   s2 => ['share/skin/s2/template', 'share/skin/s2/javascript'],
     s3 => ['share/skin/s3/template', 'share/skin/s3/javascript'],
+    template => 'share/template',
     map {
         $_ => [grep { -d and (join(',', glob("$_/*")) ne "$_/images") } glob("share/plugin/$_/{share,template}")]
     } @plugins
@@ -37,15 +42,21 @@ my %Sections = (
 # Cleanup temporary JS files before extracting
 shell_run("dev-bin/jsmake cleanall");
 
-my $lang = $new ? 'new' : 'en';
-mkdir "share/l10n/$lang" if $new;
+if ($new) {
+    $lang = 'new' if $new;
+    remove_tree "share/l10n/$lang";
+    make_path "share/l10n/$lang";
+}
+else {
+    $lang //= 'en';
+}
 
 for my $key (sort keys %Sections) {
     my $dir = $Sections{$key};
     $dir = [$dir] unless ref $dir;
     next unless @$dir;
 
-    if ($key eq 'wikiwyg') {
+    if ($key eq 'wikiwyg' or $key eq 'lib') {
 #        shell_run('./dev-bin/l10n-widget-to-js');
         unlink 'lib/Socialtext/Widget_resource.pm';
         unlink 'share/skin/wikiwyg/javascript/widget_resource.js';
@@ -57,10 +68,16 @@ for my $key (sort keys %Sections) {
         map { -D => $_ } @$dir
     );
 
-    if ($new) {
-        system("msggrep --msgid -v -e '^<!\\|^[a-z][a-z0-9][a-z0-9]*\\.' share/l10n/$lang/$key.po > share/l10n/$lang/$key.po.new");
-        system("mv share/l10n/$lang/$key.po.new share/l10n/$lang/$key.po");
-        unlink "share/l10n/$lang/$key.po" unless -s "share/l10n/$lang/$key.po";
+    my $po = "share/l10n/$lang/$key.po";
+    if ($new and -e $po) {
+        system("perl -ni -e 'print unless /^# SOME DESCRIPTIVE TITLE./ .. /^#:/ and not /^#:/' $po");
+        system("msggrep -w 99999 --sort-output --msgid -v -e '^<!\\|^[a-z][a-z0-9][a-z0-9]*\\.' $po > $po.new");
+        system("mv $po.new $po");
+        unlink $po unless -s $po;
+    }
+
+    if ($key eq 'wikiwyg' or $key eq 'lib') {
+        shell_run('git checkout share/skin/wikiwyg/javascript/widget_resource.js');
     }
 }
 

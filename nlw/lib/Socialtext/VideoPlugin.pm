@@ -19,7 +19,7 @@ use List::Util qw/max min/;
 our $Cache;
 
 const class_id    => 'video';
-const class_title => 'VideoPlugin';
+const class_title => _('class.video');
 const cgi_class   => 'Socialtext::VideoPlugin::CGI';
 
 our %Services = (

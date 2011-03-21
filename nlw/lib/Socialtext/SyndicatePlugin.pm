@@ -40,8 +40,8 @@ on those parameters.
 
 =cut
 
-sub class_id { 'syndicate' }
-const class_title => 'Syndicate';
+const class_id => 'syndicate';
+const class_title => _('class.syndicate');
 const cgi_class => 'Socialtext::Syndicate::CGI';
 const default_tag => 'Recent Changes';
 const default_type => 'RSS20';
@@ -141,7 +141,7 @@ is unset for the user, the default, 10, is used.
 sub syndication_depth {
     my $self = shift;
     my $p = $self->new_preference('syndication_depth');
-    $p->query(loc('feed.number-of-posts?'));
+    $p->query(_('feed.number-of-posts?'));
     $p->type('pulldown');
     my $choices = [
         5   => '5',
@@ -269,8 +269,7 @@ sub _syndicate {
         pages     => $p{pages},
         feed_id   => $self->hub->current_workspace->uri,
         contact   => 'support@socialtext.com',
-        generator => "Socialtext Workspace v"
-            . $self->hub->main->product_version,
+        generator => loc("feed.socialtext-wiki=version", $self->hub->main->product_version),
         feed_link => $self->hub->cgi->full_uri_with_query,
 
         # post_link

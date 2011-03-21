@@ -8,4 +8,5 @@
 
 <script>
     var containerID = "[% container.id %]";
+    loc.all_widgets();
 </script>

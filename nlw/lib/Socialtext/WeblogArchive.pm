@@ -4,13 +4,14 @@ use strict;
 use warnings;
 
 use base 'Socialtext::WeblogPlugin';
+use Socialtext::l10n 'loc';
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw/sql_execute/;
 
 use Class::Field qw( const );
 
-sub class_id { 'weblog_archive' }
-const class_title => 'Blog Archives';
+const class_id => 'weblog_archive';
+const class_title => _('class.weblog_archive');
 
 sub register {
     my $self = shift;
@@ -106,10 +107,10 @@ sub get_date_of_create {
 
 {
     my @month_names = qw[
-        January February March
-        April   May      June
-        July    August   September
-        October November December
+        date.january date.february date.march
+        date.april   date.may      date.june
+        date.july    date.august   date.september
+        date.october date.november date.december
     ];
     sub _date {
         my ($self, $year, $month) = @_;
@@ -117,7 +118,7 @@ sub get_date_of_create {
         my $date = {
             year       => $year,
             month      => $month,
-            month_name => $month_names[$month - 1],
+            month_name => loc($month_names[$month - 1]),
         };
         return $date;
     }

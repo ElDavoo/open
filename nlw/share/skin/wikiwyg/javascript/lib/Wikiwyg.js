@@ -2052,8 +2052,9 @@ proto.do_opensocial_setup = function(src) {
         });
     }
 
+    $('#st-widget-opensocial-setup-width-options').val(600);
     if (encoded_prefs) {
-        var match = encoded_prefs.match(/\b__width__=(\d+)\b/);
+        var match = encoded_prefs.match(/\b__width__=(\d+%?)\b/);
         if (match) {
             $('#st-widget-opensocial-setup-width-options').val(match[1]);
         }
@@ -2081,24 +2082,34 @@ proto.do_opensocial_setup = function(src) {
         return false;
     });
 
-    $('#st-widget-opensocial-setup-widgets').html('').append(
-        $('<iframe />', {
-            src: '/?action=widget_setup_screen'
-                + ';widget=' + encodeURIComponent(src)
-                + ';workspace_name=' + encodeURIComponent(Socialtext.wiki_id)
-                + ';page_id=' + encodeURIComponent(Socialtext.page_id)
-                + ';serial=' + encodeURIComponent(serial)
-                + ';encoded_prefs=' + encodeURIComponent(encoded_prefs)
-                + ';_=' + Math.random(),
-            width: '600px',
-            height: '400px'
-        })
-    );
+    $('#st-widget-opensocial-setup-widgets').text('');
 
     jQuery.showLightbox({
         content: '#st-widget-opensocial-setup',
         close: '#st-widget-opensocial-setup-cancel',
-        width: '640px'
+        width: '640px',
+        callback: function(){ 
+            $('#st-widget-opensocial-setup-widgets').append(
+                $('<iframe />', {
+                    src: '/?action=widget_setup_screen'
+                        + ';widget=' + encodeURIComponent(src)
+                        + ';workspace_name=' + encodeURIComponent(Socialtext.wiki_id)
+                        + ';page_id=' + encodeURIComponent(Socialtext.page_id)
+                        + ';serial=' + encodeURIComponent(serial)
+                        + ';encoded_prefs=' + encodeURIComponent(encoded_prefs)
+                        + ';_=' + Math.random(),
+                    width: '600px',
+                    height: '400px'
+                }).one('load', function(){
+                    // Workaround the bug that prevented containers from rendering
+                    // correctly the first time.
+                    if ( $(this).contents().find(".st-savebutton").size() == 0 ) {
+                        $(this.contentWindow.document.body).html('');
+                        this.contentWindow.location.reload(true);
+                    }
+                })
+            );
+        }
     });
 
 
@@ -2107,9 +2118,13 @@ proto.do_opensocial_setup = function(src) {
     });
 }
 
+proto.preserveSelection = $.noop;
+proto.restoreSelection = $.noop;
+
 proto._do_insert_block_dialog = function(opts) {
     var self = this;
 
+    self.preserveSelection();
     if (!jQuery('#st-widget-block-dialog').size()) {
         Socialtext.wikiwyg_variables.loc = loc;
         jQuery('body').append(
@@ -2207,6 +2222,7 @@ proto._do_insert_block_dialog = function(opts) {
                 if (id == 'code' && $('#st-widget-block-syntax').val()) {
                     id += '-' + $('#st-widget-block-syntax').val();
                 }
+                self.restoreSelection();
                 self.insert_block(
                     "." + id + "\n"
                         + text.replace(/\n?$/, "\n." + id),

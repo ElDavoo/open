@@ -46,6 +46,12 @@ sub extract_desired_headers {
         grep { defined $_->[1] }
         map  { [$_ => $hdrs->{$_} || $hdrs->{"HTTP_$_"}] }
         @header_list;
+
+    # Strip Google Analytics cache-busting cookies if present
+    if (defined $hdrs_to_send{COOKIE}) {
+        $hdrs_to_send{COOKIE} =~ s{__utm[^;]+(?:; )?}{}g;
+    }
+
     return \%hdrs_to_send;
 }
 

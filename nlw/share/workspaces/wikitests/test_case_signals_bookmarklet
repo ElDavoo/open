@@ -3,9 +3,10 @@
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Signals Bookmarklet See Link on activities widget |  |
-| st_single_widget_in_dashboard | gallery-widget-Activities |  |
+| open_ok | /st/dashboard |  |
 | wait_for_text_present_ok | Welcome | 30000 |
-| st-name-widget | 1 | activities_widget |
+| st-name-widget | 4 | activities_widget |
+| st-widget-title-like | activities_widget | Activities |
 | st-select-widget-frame | activities_widget |  |
 | wait_for_element_present_ok | link=Signal This! | 30000 |
 | click_ok | link=Signal This! |  |

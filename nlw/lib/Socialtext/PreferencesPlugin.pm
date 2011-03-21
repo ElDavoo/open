@@ -88,6 +88,8 @@ sub Prefs_for_user {
     my $workspace_id  = $workspace->workspace_id;
     my $email         = $user->email_address;
 
+    return {} unless $workspace->real;
+
     my $sth = sql_execute('
         SELECT pref_blob
           FROM user_workspace_pref

@@ -31,6 +31,7 @@ field 'max_referral_depth' => 3;
 field 'ttl' => 3600;
 field 'not_found_ttl';
 field 'attr_map';
+field 'sslversion';
 field 'group_attr_map' => +{};
 
 # XXX: possible future config options:
@@ -214,6 +215,13 @@ based on your Group size.
 
 Specifies the TTL (in seconds) for LDAP queries done that return "not found"
 as a result.  Defaults to the configured C<ttl> value.
+
+=item B<sslversion>
+
+Forces the LDAPS connection to connect using the specified C<sslversion>.
+Valid values include "tlsv1", "sslv3", and "sslv2".
+
+Unless specified, we attempt to auto-detect the most secure SSL version.
 
 =item B<attr_map> (required)
 

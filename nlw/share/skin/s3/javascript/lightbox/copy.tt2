@@ -16,7 +16,7 @@
       </select>
     </p>
 
-    [% loc('page.new-name') %]
+    [% loc('page.new-name') %]:
     <input value="[% page_title | html %]" type="text" id="st-copy-newname" name="new_title" size="34" />
     <br/>
 

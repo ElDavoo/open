@@ -278,6 +278,12 @@ BEGIN
 END
 $$;
 
+CREATE FUNCTION not_null(anyarray) RETURNS anyarray
+    LANGUAGE sql
+    AS $_$ 
+    SELECT ARRAY(SELECT x FROM unnest($1) g(x) WHERE x IS NOT NULL) 
+$_$;
+
 CREATE FUNCTION on_user_set_delete() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
@@ -664,14 +670,6 @@ CREATE TABLE "System" (
     last_update timestamptz DEFAULT now()
 );
 
-CREATE TABLE "UserEmailConfirmation" (
-    user_id bigint NOT NULL,
-    sha1_hash varchar(27) NOT NULL,
-    expiration_datetime timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
-    is_password_change boolean DEFAULT false NOT NULL,
-    workspace_id bigint
-);
-
 CREATE TABLE "UserMetadata" (
     user_id bigint NOT NULL,
     creation_datetime timestamptz DEFAULT now() NOT NULL,
@@ -812,6 +810,12 @@ CREATE SEQUENCE attachment_id_seq
     NO MINVALUE
     NO MAXVALUE
     CACHE 1;
+
+CREATE TABLE backup_file (
+    name text NOT NULL,
+    at timestamptz DEFAULT now() NOT NULL,
+    body bytea NOT NULL
+);
 
 CREATE TABLE breadcrumb (
     viewer_id integer NOT NULL,
@@ -1108,7 +1112,7 @@ CREATE TABLE page_link (
 CREATE TABLE page_revision (
     workspace_id bigint NOT NULL,
     page_id text NOT NULL,
-    revision_id bigint NOT NULL,
+    revision_id numeric(19,5) NOT NULL,
     revision_num integer NOT NULL,
     name text,
     editor_id bigint NOT NULL,
@@ -1122,13 +1126,6 @@ CREATE TABLE page_revision (
     body_length bigint DEFAULT 0 NOT NULL,
     body bytea
 );
-
-CREATE SEQUENCE page_revision_id_seq
-    START WITH 30000000000000
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
 
 CREATE TABLE page_tag (
     workspace_id bigint NOT NULL,
@@ -1307,6 +1304,14 @@ CREATE TABLE user_plugin_pref (
     value text NOT NULL
 );
 
+CREATE TABLE user_restrictions (
+    user_id bigint NOT NULL,
+    restriction_type varchar(256) NOT NULL,
+    token varchar(128) NOT NULL,
+    expires_at timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
+    workspace_id bigint
+);
+
 CREATE TABLE user_set_include (
     from_set_id integer NOT NULL,
     into_set_id integer NOT NULL,
@@ -1365,6 +1370,7 @@ CREATE TABLE users (
     email_address text DEFAULT '' NOT NULL,
     password text DEFAULT '*none*' NOT NULL,
     first_name text DEFAULT '' NOT NULL,
+    middle_name text DEFAULT '',
     last_name text DEFAULT '' NOT NULL,
     cached_at timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
     last_profile_update timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
@@ -1445,10 +1451,6 @@ ALTER TABLE ONLY "Role"
     ADD CONSTRAINT "Role_pkey"
             PRIMARY KEY (role_id);
 
-ALTER TABLE ONLY "UserEmailConfirmation"
-    ADD CONSTRAINT "UserEmailConfirmation_pkey"
-            PRIMARY KEY (user_id);
-
 ALTER TABLE ONLY "UserMetadata"
     ADD CONSTRAINT "UserMetadata_pkey"
             PRIMARY KEY (user_id);
@@ -1488,6 +1490,10 @@ ALTER TABLE ONLY attachment
 ALTER TABLE ONLY attachment
     ADD CONSTRAINT attachment_uuid_key
             UNIQUE (attachment_uuid);
+
+ALTER TABLE ONLY backup_file
+    ADD CONSTRAINT backup_file_pkey
+            PRIMARY KEY (name);
 
 ALTER TABLE ONLY container
     ADD CONSTRAINT container_pk
@@ -1665,6 +1671,10 @@ ALTER TABLE ONLY topic_signal_user
     ADD CONSTRAINT topic_signal_user_pk
             PRIMARY KEY (signal_id, user_id);
 
+ALTER TABLE ONLY user_restrictions
+    ADD CONSTRAINT user_restrictions_pkey
+            PRIMARY KEY (user_id, restriction_type);
+
 ALTER TABLE ONLY user_set_include
     ADD CONSTRAINT user_set_include_pkey
             PRIMARY KEY (from_set_id, into_set_id);
@@ -1697,9 +1707,6 @@ CREATE UNIQUE INDEX "Permission___name"
 
 CREATE UNIQUE INDEX "Role___name"
 	    ON "Role" (name);
-
-CREATE UNIQUE INDEX "UserEmailConfirmation___sha1_hash"
-	    ON "UserEmailConfirmation" (sha1_hash);
 
 CREATE UNIQUE INDEX "UserMetadata___user_id"
 	    ON "UserMetadata" (user_id);
@@ -2211,6 +2218,12 @@ CREATE INDEX user_plugin_pref_idx
 CREATE INDEX user_plugin_pref_key_idx
 	    ON user_plugin_pref (user_id, plugin, key);
 
+CREATE UNIQUE INDEX user_restrictions_token_key
+	    ON user_restrictions (token);
+
+CREATE INDEX user_restrictions_user_id_key
+	    ON user_restrictions (user_id);
+
 CREATE UNIQUE INDEX user_set_plugin_ukey
 	    ON user_set_plugin (plugin, user_set_id);
 
@@ -2361,11 +2374,6 @@ ALTER TABLE ONLY "WorkspaceBreadcrumb"
 
 ALTER TABLE ONLY "WorkspaceBreadcrumb"
     ADD CONSTRAINT fk_55d1290a6baacca3b4fec189a739ab5b
-            FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY "UserEmailConfirmation"
-    ADD CONSTRAINT fk_777ad60e2bff785f8ff5ece0f3fc95c8
             FOREIGN KEY (user_id)
             REFERENCES users(user_id) ON DELETE CASCADE;
 
@@ -2674,6 +2682,16 @@ ALTER TABLE ONLY user_plugin_pref
             FOREIGN KEY (user_id)
             REFERENCES users(user_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY user_restrictions
+    ADD CONSTRAINT user_restrictions_user_id_fkey
+            FOREIGN KEY (user_id)
+            REFERENCES users(user_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY user_restrictions
+    ADD CONSTRAINT user_restrictions_workspace_id_fkey
+            FOREIGN KEY (workspace_id)
+            REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
+
 ALTER TABLE ONLY user_set_include
     ADD CONSTRAINT user_set_include_role
             FOREIGN KEY (role_id)
@@ -2701,11 +2719,6 @@ ALTER TABLE ONLY user_workspace_pref
 
 ALTER TABLE ONLY user_workspace_pref
     ADD CONSTRAINT user_workspace_pref_workspace_fk
-            FOREIGN KEY (workspace_id)
-            REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
-
-ALTER TABLE ONLY "UserEmailConfirmation"
-    ADD CONSTRAINT useremailconfirmation_workpace_id_fk
             FOREIGN KEY (workspace_id)
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
 
@@ -2750,4 +2763,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '134');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '135');
