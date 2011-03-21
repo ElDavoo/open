@@ -626,6 +626,7 @@ sub fetch_metadata {
 sub editor_to_id {
     my $self = shift;
     my $email_address = shift || '';
+    my $force = shift;
     state %userid_cache;
     unless ( $userid_cache{ $email_address } ) {
         # We have some very bogus data on our system, so we need to
@@ -642,7 +643,7 @@ sub editor_to_id {
             Socialtext::User->new(email_address => $email_address);
         };
         unless ($user) {
-            return if $self->{skip_user_create};
+            return if $self->{skip_user_create} && !$force;
             warn "Creating user account for '$email_address'\n";
             try {
                 Socialtext::Cache->clear('accounts');
