@@ -50,21 +50,18 @@ LogFormat "%h %l %u %t \"%r\" %>s %b" common
 LogFormat "%{Referer}i -> %U" referer
 LogFormat "%{User-agent}i" agent
 
-[% SET LOG_DATE_FILTER = "perl -MDateTime -MDateTime::TimeZone -pwE '"
-    _ 'our ($tm, $tz, $dst);'
-    _ 'BEGIN { $|=1; $dst = (localtime)[8] }'
-    _ 'if (abs(time - $tm) > 60) {'
-        _ '$tm = time;'
-        _ 'if ($dst != (localtime)[8]) {'
-            _ '$dst = (localtime)[8];'
-            _ 'undef $tz;'
-        _ '}'
-        _ '$tz //= DateTime::TimeZone->offset_as_string('
-            _ 'DateTime::TimeZone->new(name=>q[local])'
-            _                   '->offset_for_datetime(DateTime->now));'
-    _ '}'
-    _ 's<^\[\w{3} (?<mon>\w{3}) (?<day>\d+) (?<time>\d\d:\d\d:\d\d) (?<year>\d+)\]>'
-     _ '<[$+{day}/$+{mon}/$+{year}:$+{time} $tz]>' _ "'"
+[% SET LOG_DATE_FILTER = "perl -MDateTime -MDateTime::TimeZone -pE '"
+    _ "our (\$tm, \$tz, \$dst);"
+    _ "BEGIN{ \$|=1; \$dst=(localtime)[8] }"
+    _ "if (abs(time-\$tm)>60){"
+        _ "\$tm=time;"
+        _ "undef \$tz if \$dst != (localtime)[8];"
+        _ "\$tz //= DateTime::TimeZone->offset_as_string("
+            _ "DateTime::TimeZone->new(name=>q[local])"
+            _                   "->offset_for_datetime(DateTime->now));"
+    _ "}"
+    _ "s<^\\[\\w{3} (?<mon>\\w{3}) (?<day>\\d+) (?<time>\\d\\d:\\d\\d:\\d\\d) (?<year>\\d+)\\]>"
+     _ "<[\$+{day}/\$+{mon}/\$+{year}:\$+{time} \$tz]>'"
 %]
 
 # ErrorLog is filtered to the same time format as CustomLog
