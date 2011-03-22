@@ -358,7 +358,7 @@ sub _create_native_group {
     my $data    = shift;
     my $creator = $self->rest->user;
 
-    Socialtext::Group->GetGroup(
+    Socialtext::Group->GetProtoGroup(
         driver_group_name  => $data->{name},
         primary_account_id => $data->{account_id},
         created_by_user_id => $creator->user_id,
