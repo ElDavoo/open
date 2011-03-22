@@ -4875,3 +4875,8 @@ ul.dropdownOptions li.disabled a:hover {
 #st-signal-this-frame .loader {
     margin-top: 45px;
 }
+
+body#contentPage .widgetHeaderTitleText {
+        color: #333333;
+}
+

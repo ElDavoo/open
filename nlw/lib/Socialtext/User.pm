@@ -1478,9 +1478,11 @@ sub restrictions {
 sub add_restriction {
     my $self = shift;
     my $type = shift;
+    my %params = @_;
     return Socialtext::User::Restrictions->CreateOrReplace( {
         user_id          => $self->user_id,
         restriction_type => $type,
+        %params,
     } );
 }
 
@@ -1515,7 +1517,17 @@ sub is_restricted {
 # restriction: email confirmation
 sub create_email_confirmation {
     my $self = shift;
-    return $self->add_restriction('email_confirmation');
+    my %params = @_;
+
+    my $workspace_id;
+    if ($params{workspace_name}) {
+        require Socialtext::Workspace;
+        $workspace_id = Socialtext::Workspace->new(name => $params{workspace_name})->workspace_id;
+    }
+    return $self->add_restriction(
+        'email_confirmation',
+        workspace_id => $workspace_id,
+    );
 }
 
 sub email_confirmation {
