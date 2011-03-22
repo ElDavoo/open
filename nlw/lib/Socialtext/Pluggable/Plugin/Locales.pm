@@ -31,7 +31,7 @@ sub language_settings {
 
     unshift @$choices, {
         value => "",
-        label => loc("System Default: [_1]", $languages->{system_locale()}),
+        label => loc("loc.system-default=lang", $languages->{system_locale()}),
     };
 
     my $settings_section = $self->template_render(
@@ -43,7 +43,7 @@ sub language_settings {
     return $self->template_render('view/settings',
         settings_table_id => 'settings-table',
         settings_section  => $settings_section,
-        display_title     => loc('Language Settings'),
+        display_title     => loc('loc.settings'),
     );
 }
 
