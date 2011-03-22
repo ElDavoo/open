@@ -938,6 +938,10 @@ msgstr "Zzzzzzzz zzzzzzzzz %1, zz zzzzz."
 msgid "appliance.synchronized-time-with=ts"
 msgstr "Zzzzzzzzzzzz zzzz zzzz %1"
 
+#: lib/Socialtext/Appliance/Model/System.pm:34
+msgid "appliance.system"
+msgstr "Zzzzzz"
+
 msgid "appliance.taking-database-snapshot"
 msgstr "Zzzzzz zzzzzzzz zzzzzzzz ..."
 
@@ -2068,9 +2072,17 @@ msgstr "Zzzzzzzzzz Zzzzzzzzz"
 msgid "console.socialtext-desktop"
 msgstr "Zzzzzzzzzz Zzzzzzz"
 
+#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:71
+msgid "console.socialtext-inc"
+msgstr "Zzzzzzzzzz, Zzz."
+
 #: ../appliance/libsocialtext-appliance-perl/template/help.html:63
 msgid "console.socialtext-support"
 msgstr "Zzzzzzzzzz Zzzzzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:125
+msgid "console.socialtext-support-form"
+msgstr "Zzzzzzzzzz Zzzzzzz Zzzz"
 
 #: ../appliance/libsocialtext-appliance-perl/template/help.html:141 ../appliance/libsocialtext-appliance-perl/template/setup.html:103 ../appliance/libsocialtext-appliance-perl/template/setup.html:33 ../appliance/libsocialtext-appliance-perl/template/setup.html:48 ../appliance/libsocialtext-appliance-perl/template/setup.html:69 ../appliance/libsocialtext-appliance-perl/template/setup.html:84
 msgid "console.submit"
@@ -2920,9 +2932,17 @@ msgstr "Zzzzzzz Zzzzzz"
 msgid "control.profile-section"
 msgstr "Zzzzzzz Zzzzzzz"
 
+#: share/plugin/control/share/javascript/workspaces_new.js:213 share/plugin/control/share/javascript/workspaces_new.js:74 share/plugin/control/template/control/group.html:239 share/plugin/control/template/control/workspace.html:146 share/plugin/control/template/control/workspace.html:288
+msgid "control.promote-to-admin"
+msgstr "Zzzzzzz zz Zzzzz"
+
 #: share/plugin/control/template/control/user.html:168
 msgid "control.relationship"
 msgstr "Zzzzzzzzzzzz"
+
+#: share/plugin/control/share/javascript/workspaces_new.js:223 share/plugin/control/share/javascript/workspaces_new.js:83 share/plugin/control/template/control/group.html:254 share/plugin/control/template/control/workspace.html:160 share/plugin/control/template/control/workspace.html:303
+msgid "control.remove-admin"
+msgstr "Zzzzzz Zzzzz"
 
 #: share/plugin/control/template/control/user.html:80
 msgid "control.remove-appliance-business-administrator-role"
@@ -2936,14 +2956,36 @@ msgstr "Zzzzzz Zzzzzzzzz Zzzzzzzzz Zzzzzzzzzzzzz Zzzz"
 msgid "control.remove-external-id-requirement"
 msgstr "Zzzzzz Zzzzzzzz ZZ Zzzzzzzzzzz"
 
-#: share/plugin/control/template/control/user.html:312
+#: share/plugin/control/template/control/group.html:363
+msgid "control.remove-from-account"
+msgstr "Zzzzzz zzzz zzzzzzz"
+
+#: share/plugin/control/template/control/group.html:221
+msgid "control.remove-from-group"
+msgstr "Zzzzzz zzzz zzzzz"
+
+#: share/plugin/control/share/javascript/workspaces_new.js:198 share/plugin/control/share/javascript/workspaces_new.js:60 share/plugin/control/template/control/workspace.html:130 share/plugin/control/template/control/workspace.html:271
 msgid "control.remove-from-wiki"
+msgstr "Zzzzzz zzzz Zzzzzzzzz"
+
+#: share/plugin/control/template/control/user.html:312
+msgid "control.remove-from-wikis"
 msgstr "Zzzzzz zzzz Zzzzzzzzzz"
 
 #. (accounts.length)
 #: share/plugin/control/template/control/group.html:368
 msgid "control.remove-group-from-accounts=count?"
 msgstr "Zzzzzz zzzz Zzzzz zzzz %*(%1,zzzzzzzz Zzzzzzz)?"
+
+#. (groups.length)
+#: share/plugin/control/share/javascript/workspaces_new.js:202 share/plugin/control/template/control/workspace.html:275
+msgid "control.remove-selected-group-from-wiki=count?"
+msgstr "Zzzzzz zzz zzzzzzzz %*(%1,zzzzz) zzzz zzzz zzzzzzzzz?"
+
+#. (users.length)
+#: share/plugin/control/share/javascript/workspaces_new.js:63 share/plugin/control/template/control/workspace.html:133
+msgid "control.remove-selected-user-from-wiki=count?"
+msgstr "Zzzzzz zzz zzzzzzzz %*(%1,zzzz) zzzz zzzz zzzzzzzzz?"
 
 #. (workspaces.length)
 #: share/plugin/control/template/control/user.html:314
@@ -3107,6 +3149,18 @@ msgstr "Zzzzzzzzzz Zzzzz Zzzzzzzzzzzzz"
 msgid "control.socialtext-control-panel"
 msgstr "Zzzzzzzzzz Zzzzzzz Zzzzz"
 
+#: share/plugin/control/template/control/group.html:43
+msgid "control.start-typing-account-name"
+msgstr "Zzzzz zzzzzz zz Zzzzzzz'z zzzz"
+
+#: share/plugin/control/template/control/workspaces_new.html:45
+msgid "control.start-typing-group-name"
+msgstr "Zzzzz zzzzzz zzzzz'z zzzz"
+
+#: share/plugin/control/template/control/account.html:73 share/plugin/control/template/control/group.html:31 share/plugin/control/template/control/workspaces_new.html:35
+msgid "control.start-typing-user-name"
+msgstr "Zzzzz zzzzzz zzzz'z zzzz"
+
 #: share/plugin/control/template/control/workspaces_new.html:5
 msgid "control.step-1-set-wiki-title"
 msgstr "Zzzz 1: Zzzz zzzz zzzzzzzzz z zzzzz."
@@ -3126,6 +3180,10 @@ msgstr "Zzzzz zzzzzz"
 #: share/plugin/control/template/control/accounts.html:18 share/plugin/control/template/control/accounts.html:5 share/plugin/control/template/control/desktop-account.html:161 share/plugin/control/template/control/group_add_users.html:6 share/plugin/control/template/control/users.html:6 share/plugin/control/template/control/workspace.html:34 share/plugin/control/template/control/workspaces.html:5
 msgid "control.submit"
 msgstr "Zzzzzz"
+
+#: share/plugin/control/template/control/user_table:19
+msgid "control.system-required-user"
+msgstr "Zzzzzz Zzzzzzzz Zzzz"
 
 #: share/plugin/control/template/control/index.html:22
 msgid "control.tabs"
@@ -3269,6 +3327,10 @@ msgstr "Zzzzzzz zz zzz Zzzzzzzzzz Zzzzzzz Zzzzz."
 #: share/plugin/control/template/control/user.html:320
 msgid "control.wiki-removed"
 msgstr "Zzzzzzzzz zzzzzzzz zzzz zzzzzzzzzz."
+
+#: share/plugin/control/share/javascript/workspaces_new.js:199 share/plugin/control/share/javascript/workspaces_new.js:214 share/plugin/control/share/javascript/workspaces_new.js:224 share/plugin/control/template/control/workspace.html:140 share/plugin/control/template/control/workspace.html:154 share/plugin/control/template/control/workspace.html:168 share/plugin/control/template/control/workspace.html:272 share/plugin/control/template/control/workspace.html:282 share/plugin/control/template/control/workspace.html:289 share/plugin/control/template/control/workspace.html:297 share/plugin/control/template/control/workspace.html:304 share/plugin/control/template/control/workspace.html:312
+msgid "control.wiki-role-changes-were-successful"
+msgstr "Zzzzzzzzz zzzz zzzzzzz zzzz zzzzzzzzzz."
 
 #. (custom_skin,                  custom_skins.$custom_skin)
 #. (custom_skin, custom_skins.$custom_skin)
@@ -3586,6 +3648,66 @@ msgstr "Zzzz zzzzz"
 msgid "description.workspaces"
 msgstr "Zzzzz zzz zz zzz zzzzzzzzzz zz zzz zzzzzzz zzzzz"
 
+#: lib/Socialtext/Handler/ControlPanel.pm:703
+msgid "desktop.2nd-bg-color"
+msgstr "Zzzzzzzzz zzzzzzzzzz zzzzz"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:705
+msgid "desktop.about-2nd-bg-color"
+msgstr "Zzzz zz zzz zzzzzzzzzz zzz zzzzz, zzzzzzzz zzzzzzz zzz zz-zzzzzzzz zzzz"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:698
+msgid "desktop.about-bg-color"
+msgstr "Zzzzzzzzzz zzzzz zzz zzz zzzzzzz zzzzzz Zzzzzzzzzz Zzzzzzz. Zzzzzzz zzzz [Zzzz zzzzz] zz zzzzzz zzzzzzzz zzzzzzz."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:691
+msgid "desktop.about-header-gradient-bottom"
+msgstr "Zzz zzzzzz zzzzz zz zzz zzzzzz'z zzzzzzzz. Zzzzzz zzz zzzz zzzzz zz zzz zzz zzzzz zz zzzzzz z zzzzz zzzzzzzzzz zzzzzzz."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:684
+msgid "desktop.about-header-gradient-top"
+msgstr "Zzz zzz zzzzz zz zzz zzzzzz'z zzzzzzzz. Zzzzzzz zzzz zzzz [Zzzzzz Zzzzzzzz (zzzzzz)] zz zzzzzz z zzzzzz zzzzz zzzzzzzzzz."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:726
+msgid "desktop.about-highlight-color"
+msgstr "Zzz zzzzz zzzzzzz zz zzzzzzzzzzz zzzzzzzz, zzzz zz zzz zzzzzzzzzz zz zzz Zzzz zzzzzz."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:719
+msgid "desktop.about-link-color"
+msgstr "Zzz zzzzz zzzzzzz zz zzzzz. Zzzz zzzzzzzzzzzz zzz z zzzzz zz zzzz."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:677
+msgid "desktop.about-logo-uri"
+msgstr "Zzzzzzzzzz Zzzzzzz'z zzzz (zzzzzzzzzzzzz zzzzzz zz 240 z 34 zzzzzz)."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:712
+msgid "desktop.about-text-color"
+msgstr "Zzz zzzzz zz zzz zzzz zzzzzz zzzzz zzzzzz Zzzzzzzzzz Zzzzzzz. Zzzzzzz zzzz [Zzzzzzzzzz zzzzz] zzzzz zz zzzzzz zzzzzzzz zzzzzzz."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:696
+msgid "desktop.bg-color"
+msgstr "Zzzzzzzzzz zzzzz"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:689
+msgid "desktop.header-gradient-bottom"
+msgstr "Zzzzzz Zzzzzzzz (zzzzzz)"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:682
+msgid "desktop.header-gradient-top"
+msgstr "Zzzzzz Zzzzzzzz (zzz)"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:724
+msgid "desktop.highlight-color"
+msgstr "Zzzzzzzzz zzzzz"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:717
+msgid "desktop.link-color"
+msgstr "Zzzz zzzzz"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:675
+msgid "desktop.logo-uri"
+msgstr "Zzzz ZZZ"
+
 #: lib/Socialtext/Handler/ControlPanel.pm:774
 msgid "desktop.relogin-for-default-logo"
 msgstr "(Zzzzzzz zzzzz zzzz zz zzzzzz zzz zzzzz zzzzz zz zzz zzz zzzzzzz zzzz.)"
@@ -3605,6 +3727,10 @@ msgstr "Zzzzz Zzzzzzz zzzz zz zzzzzzz. Zzzzzzz zzzzz zzzz zz zzzzzz zzz zzzzz zz
 #: lib/Socialtext/Handler/ControlPanel.pm:872
 msgid "desktop.relogin-for-skin"
 msgstr "Zzzzzzzz zzzz zzzz zzzzz.  Zzzzzzz zzzzz zzzz zz zzzzzz zzz zzzzz zzzzz zz zzzzz zzz zzz zzzz."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:710
+msgid "desktop.text-color"
+msgstr "Zzzz zzzzz"
 
 #: share/skin/s3/javascript/lightbox/attachment.tt2:28 share/skin/s3/javascript/lightbox/email.tt2:28
 msgid "do.add"

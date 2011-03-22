@@ -9,27 +9,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#:
 msgid "appliance.archiving-system-config-files"
 msgstr "Archiving system config files ..."
 
-#:
 msgid "appliance.backup-id"
 msgstr "Backup ID"
 
-#:
 msgid "appliance.backup-time"
 msgstr "Backup Time"
 
-#:
 msgid "appliance.backups-for-restore:"
 msgstr "Backups available for restore:"
 
-#:
 msgid "appliance.cleanup-previous-snapshot"
 msgstr "Cleaning up previous snapshot ..."
 
-#:
 msgid "appliance.taking-database-snapshot"
 msgstr "Taking database snapshot ..."
 
@@ -124,7 +118,6 @@ msgstr "Apache Logs"
 msgid "console.appliance"
 msgstr "Appliance Console"
 
-#:
 msgid "console.automatic-backup-schedule"
 msgstr "Automatic Backup Schedule"
 
@@ -300,7 +293,6 @@ msgstr "Report a Problem"
 msgid "console.restore-now"
 msgstr "Restore Now"
 
-#:
 msgid "console.save-backup-schedule"
 msgstr "Save Backup Schedule"
 
@@ -382,9 +374,17 @@ msgstr "Socialtext Appliance"
 msgid "console.socialtext-desktop"
 msgstr "Socialtext Desktop"
 
+#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:71
+msgid "console.socialtext-inc"
+msgstr "Socialtext, Inc."
+
 #: ../appliance/libsocialtext-appliance-perl/template/help.html:63
 msgid "console.socialtext-support"
 msgstr "Socialtext Support"
+
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:125
+msgid "console.socialtext-support-form"
+msgstr "Socialtext Support Form"
 
 #: ../appliance/libsocialtext-appliance-perl/template/help.html:141 ../appliance/libsocialtext-appliance-perl/template/setup.html:103 ../appliance/libsocialtext-appliance-perl/template/setup.html:33 ../appliance/libsocialtext-appliance-perl/template/setup.html:48 ../appliance/libsocialtext-appliance-perl/template/setup.html:69 ../appliance/libsocialtext-appliance-perl/template/setup.html:84
 msgid "console.submit"
@@ -402,7 +402,6 @@ msgstr "Synchronize Appliance Clock Now"
 msgid "console.tarball-built"
 msgstr "Tarball Built"
 
-#:
 msgid "console.time-each-day:"
 msgstr "Time each day:"
 
@@ -448,7 +447,6 @@ msgstr "Cancel"
 msgid "do.close"
 msgstr "Close"
 
-#:
 msgid "error.backup-id-required"
 msgstr "Must supply a backup ID - or use --list to see available backups."
 
@@ -465,7 +463,6 @@ msgstr "Email and description are required!"
 msgid "error.invalid=email"
 msgstr "\"%1\" is not a valid email address."
 
-#:
 msgid "error.socialtext-appliance-backup"
 msgstr "Error during Socialtext Appliance Backup"
 

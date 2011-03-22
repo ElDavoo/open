@@ -938,6 +938,10 @@ msgstr "«Skipping workspace %1, no usage.»"
 msgid "appliance.synchronized-time-with=ts"
 msgstr "«Synchronized time with %1»"
 
+#: lib/Socialtext/Appliance/Model/System.pm:34
+msgid "appliance.system"
+msgstr "«System»"
+
 msgid "appliance.taking-database-snapshot"
 msgstr "«Taking database snapshot ...»"
 
@@ -2068,9 +2072,17 @@ msgstr "«Socialtext Appliance»"
 msgid "console.socialtext-desktop"
 msgstr "«Socialtext Desktop»"
 
+#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:71
+msgid "console.socialtext-inc"
+msgstr "«Socialtext, Inc.»"
+
 #: ../appliance/libsocialtext-appliance-perl/template/help.html:63
 msgid "console.socialtext-support"
 msgstr "«Socialtext Support»"
+
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:125
+msgid "console.socialtext-support-form"
+msgstr "«Socialtext Support Form»"
 
 #: ../appliance/libsocialtext-appliance-perl/template/help.html:141 ../appliance/libsocialtext-appliance-perl/template/setup.html:103 ../appliance/libsocialtext-appliance-perl/template/setup.html:33 ../appliance/libsocialtext-appliance-perl/template/setup.html:48 ../appliance/libsocialtext-appliance-perl/template/setup.html:69 ../appliance/libsocialtext-appliance-perl/template/setup.html:84
 msgid "console.submit"
@@ -2920,9 +2932,17 @@ msgstr "«Profile Fields»"
 msgid "control.profile-section"
 msgstr "«Profile Section»"
 
+#: share/plugin/control/share/javascript/workspaces_new.js:213 share/plugin/control/share/javascript/workspaces_new.js:74 share/plugin/control/template/control/group.html:239 share/plugin/control/template/control/workspace.html:146 share/plugin/control/template/control/workspace.html:288
+msgid "control.promote-to-admin"
+msgstr "«Promote to Admin»"
+
 #: share/plugin/control/template/control/user.html:168
 msgid "control.relationship"
 msgstr "«Relationship»"
+
+#: share/plugin/control/share/javascript/workspaces_new.js:223 share/plugin/control/share/javascript/workspaces_new.js:83 share/plugin/control/template/control/group.html:254 share/plugin/control/template/control/workspace.html:160 share/plugin/control/template/control/workspace.html:303
+msgid "control.remove-admin"
+msgstr "«Remove Admin»"
 
 #: share/plugin/control/template/control/user.html:80
 msgid "control.remove-appliance-business-administrator-role"
@@ -2936,14 +2956,36 @@ msgstr "«Remove Appliance Technical Administrator Role»"
 msgid "control.remove-external-id-requirement"
 msgstr "«Remove External ID Requirement»"
 
-#: share/plugin/control/template/control/user.html:312
+#: share/plugin/control/template/control/group.html:363
+msgid "control.remove-from-account"
+msgstr "«Remove from account»"
+
+#: share/plugin/control/template/control/group.html:221
+msgid "control.remove-from-group"
+msgstr "«Remove from group»"
+
+#: share/plugin/control/share/javascript/workspaces_new.js:198 share/plugin/control/share/javascript/workspaces_new.js:60 share/plugin/control/template/control/workspace.html:130 share/plugin/control/template/control/workspace.html:271
 msgid "control.remove-from-wiki"
+msgstr "«Remove from Workspace»"
+
+#: share/plugin/control/template/control/user.html:312
+msgid "control.remove-from-wikis"
 msgstr "«Remove from Workspaces»"
 
 #. (accounts.length)
 #: share/plugin/control/template/control/group.html:368
 msgid "control.remove-group-from-accounts=count?"
 msgstr "«Remove this Group from %*(%1,selected Account)?»"
+
+#. (groups.length)
+#: share/plugin/control/share/javascript/workspaces_new.js:202 share/plugin/control/template/control/workspace.html:275
+msgid "control.remove-selected-group-from-wiki=count?"
+msgstr "«Remove the selected %*(%1,group) from this workspace?»"
+
+#. (users.length)
+#: share/plugin/control/share/javascript/workspaces_new.js:63 share/plugin/control/template/control/workspace.html:133
+msgid "control.remove-selected-user-from-wiki=count?"
+msgstr "«Remove the selected %*(%1,user) from this workspace?»"
 
 #. (workspaces.length)
 #: share/plugin/control/template/control/user.html:314
@@ -3107,6 +3149,18 @@ msgstr "«Socialtext Admin Configuration»"
 msgid "control.socialtext-control-panel"
 msgstr "«Socialtext Control Panel»"
 
+#: share/plugin/control/template/control/group.html:43
+msgid "control.start-typing-account-name"
+msgstr "«Start typing an Account's name»"
+
+#: share/plugin/control/template/control/workspaces_new.html:45
+msgid "control.start-typing-group-name"
+msgstr "«Start typing group's name»"
+
+#: share/plugin/control/template/control/account.html:73 share/plugin/control/template/control/group.html:31 share/plugin/control/template/control/workspaces_new.html:35
+msgid "control.start-typing-user-name"
+msgstr "«Start typing user's name»"
+
 #: share/plugin/control/template/control/workspaces_new.html:5
 msgid "control.step-1-set-wiki-title"
 msgstr "«Step 1: Give your workspace a title.»"
@@ -3126,6 +3180,10 @@ msgstr "«Stock fields»"
 #: share/plugin/control/template/control/accounts.html:18 share/plugin/control/template/control/accounts.html:5 share/plugin/control/template/control/desktop-account.html:161 share/plugin/control/template/control/group_add_users.html:6 share/plugin/control/template/control/users.html:6 share/plugin/control/template/control/workspace.html:34 share/plugin/control/template/control/workspaces.html:5
 msgid "control.submit"
 msgstr "«Submit»"
+
+#: share/plugin/control/template/control/user_table:19
+msgid "control.system-required-user"
+msgstr "«System Required User»"
 
 #: share/plugin/control/template/control/index.html:22
 msgid "control.tabs"
@@ -3269,6 +3327,10 @@ msgstr "«Welcome to the Socialtext Control Panel.»"
 #: share/plugin/control/template/control/user.html:320
 msgid "control.wiki-removed"
 msgstr "«Workspace removals were successful.»"
+
+#: share/plugin/control/share/javascript/workspaces_new.js:199 share/plugin/control/share/javascript/workspaces_new.js:214 share/plugin/control/share/javascript/workspaces_new.js:224 share/plugin/control/template/control/workspace.html:140 share/plugin/control/template/control/workspace.html:154 share/plugin/control/template/control/workspace.html:168 share/plugin/control/template/control/workspace.html:272 share/plugin/control/template/control/workspace.html:282 share/plugin/control/template/control/workspace.html:289 share/plugin/control/template/control/workspace.html:297 share/plugin/control/template/control/workspace.html:304 share/plugin/control/template/control/workspace.html:312
+msgid "control.wiki-role-changes-were-successful"
+msgstr "«Workspace role changes were successful.»"
 
 #. (custom_skin,                  custom_skins.$custom_skin)
 #. (custom_skin, custom_skins.$custom_skin)
@@ -3586,6 +3648,66 @@ msgstr "«Show edits»"
 msgid "description.workspaces"
 msgstr "«Lists all of the workspaces in the current group»"
 
+#: lib/Socialtext/Handler/ControlPanel.pm:703
+msgid "desktop.2nd-bg-color"
+msgstr "«Secondary background color»"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:705
+msgid "desktop.about-2nd-bg-color"
+msgstr "«Used as the background for forms, settings headers and un-selected tabs»"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:698
+msgid "desktop.about-bg-color"
+msgstr "«Background color for all content within Socialtext Desktop. Combine with [Text color] to create readable content.»"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:691
+msgid "desktop.about-header-gradient-bottom"
+msgstr "«The bottom color of the header's gradient. Choose the same color as the top value to create a solid background instead.»"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:684
+msgid "desktop.about-header-gradient-top"
+msgstr "«The top color of the header's gradient. Combine this with [Header Gradient (bottom)] to create a smooth color transition.»"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:726
+msgid "desktop.about-highlight-color"
+msgstr "«The color applied to highlighted elements, such as the background of the Post button.»"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:719
+msgid "desktop.about-link-color"
+msgstr "«The color applied to links. Most applications use a shade of blue.»"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:677
+msgid "desktop.about-logo-uri"
+msgstr "«Socialtext Desktop's logo (automatically scaled to 240 x 34 pixels).»"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:712
+msgid "desktop.about-text-color"
+msgstr "«The color of all text except links within Socialtext Desktop. Combine with [Background color] above to create readable content.»"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:696
+msgid "desktop.bg-color"
+msgstr "«Background color»"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:689
+msgid "desktop.header-gradient-bottom"
+msgstr "«Header Gradient (bottom)»"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:682
+msgid "desktop.header-gradient-top"
+msgstr "«Header Gradient (top)»"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:724
+msgid "desktop.highlight-color"
+msgstr "«Highlight color»"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:717
+msgid "desktop.link-color"
+msgstr "«Link color»"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:675
+msgid "desktop.logo-uri"
+msgstr "«Logo URI»"
+
 #: lib/Socialtext/Handler/ControlPanel.pm:774
 msgid "desktop.relogin-for-default-logo"
 msgstr "«(Desktop users need to logout and login again to see the default logo.)»"
@@ -3605,6 +3727,10 @@ msgstr "«Reset Desktop logo to default. Desktop users need to logout and login 
 #: lib/Socialtext/Handler/ControlPanel.pm:872
 msgid "desktop.relogin-for-skin"
 msgstr "«Settings have been saved.  Desktop users need to logout and login again to apply the new skin.»"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:710
+msgid "desktop.text-color"
+msgstr "«Text color»"
 
 #: share/skin/s3/javascript/lightbox/attachment.tt2:28 share/skin/s3/javascript/lightbox/email.tt2:28
 msgid "do.add"

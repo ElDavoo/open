@@ -764,9 +764,17 @@ msgstr "Profile Fields"
 msgid "control.profile-section"
 msgstr "Profile Section"
 
+#: share/plugin/control/share/javascript/workspaces_new.js:213 share/plugin/control/share/javascript/workspaces_new.js:74 share/plugin/control/template/control/group.html:239 share/plugin/control/template/control/workspace.html:146 share/plugin/control/template/control/workspace.html:288
+msgid "control.promote-to-admin"
+msgstr "Promote to Admin"
+
 #: share/plugin/control/template/control/user.html:168
 msgid "control.relationship"
 msgstr "Relationship"
+
+#: share/plugin/control/share/javascript/workspaces_new.js:223 share/plugin/control/share/javascript/workspaces_new.js:83 share/plugin/control/template/control/group.html:254 share/plugin/control/template/control/workspace.html:160 share/plugin/control/template/control/workspace.html:303
+msgid "control.remove-admin"
+msgstr "Remove Admin"
 
 #: share/plugin/control/template/control/user.html:80
 msgid "control.remove-appliance-business-administrator-role"
@@ -780,14 +788,36 @@ msgstr "Remove Appliance Technical Administrator Role"
 msgid "control.remove-external-id-requirement"
 msgstr "Remove External ID Requirement"
 
-#: share/plugin/control/template/control/user.html:312
+#: share/plugin/control/template/control/group.html:363
+msgid "control.remove-from-account"
+msgstr "Remove from account"
+
+#: share/plugin/control/template/control/group.html:221
+msgid "control.remove-from-group"
+msgstr "Remove from group"
+
+#: share/plugin/control/share/javascript/workspaces_new.js:198 share/plugin/control/share/javascript/workspaces_new.js:60 share/plugin/control/template/control/workspace.html:130 share/plugin/control/template/control/workspace.html:271
 msgid "control.remove-from-wiki"
+msgstr "Remove from Workspace"
+
+#: share/plugin/control/template/control/user.html:312
+msgid "control.remove-from-wikis"
 msgstr "Remove from Workspaces"
 
 #. (accounts.length)
 #: share/plugin/control/template/control/group.html:368
 msgid "control.remove-group-from-accounts=count?"
 msgstr "Remove this Group from %*(%1,selected Account)?"
+
+#. (groups.length)
+#: share/plugin/control/share/javascript/workspaces_new.js:202 share/plugin/control/template/control/workspace.html:275
+msgid "control.remove-selected-group-from-wiki=count?"
+msgstr "Remove the selected %*(%1,group) from this workspace?"
+
+#. (users.length)
+#: share/plugin/control/share/javascript/workspaces_new.js:63 share/plugin/control/template/control/workspace.html:133
+msgid "control.remove-selected-user-from-wiki=count?"
+msgstr "Remove the selected %*(%1,user) from this workspace?"
 
 #. (workspaces.length)
 #: share/plugin/control/template/control/user.html:314
@@ -951,6 +981,18 @@ msgstr "Socialtext Admin Configuration"
 msgid "control.socialtext-control-panel"
 msgstr "Socialtext Control Panel"
 
+#: share/plugin/control/template/control/group.html:43
+msgid "control.start-typing-account-name"
+msgstr "Start typing an Account's name"
+
+#: share/plugin/control/template/control/workspaces_new.html:45
+msgid "control.start-typing-group-name"
+msgstr "Start typing group's name"
+
+#: share/plugin/control/template/control/account.html:73 share/plugin/control/template/control/group.html:31 share/plugin/control/template/control/workspaces_new.html:35
+msgid "control.start-typing-user-name"
+msgstr "Start typing user's name"
+
 #: share/plugin/control/template/control/workspaces_new.html:5
 msgid "control.step-1-set-wiki-title"
 msgstr "Step 1: Give your workspace a title."
@@ -970,6 +1012,10 @@ msgstr "Stock fields"
 #: share/plugin/control/template/control/accounts.html:18 share/plugin/control/template/control/accounts.html:5 share/plugin/control/template/control/desktop-account.html:161 share/plugin/control/template/control/group_add_users.html:6 share/plugin/control/template/control/users.html:6 share/plugin/control/template/control/workspace.html:34 share/plugin/control/template/control/workspaces.html:5
 msgid "control.submit"
 msgstr "Submit"
+
+#: share/plugin/control/template/control/user_table:19
+msgid "control.system-required-user"
+msgstr "System Required User"
 
 #: share/plugin/control/template/control/index.html:22
 msgid "control.tabs"
@@ -1113,6 +1159,10 @@ msgstr "Welcome to the Socialtext Control Panel."
 #: share/plugin/control/template/control/user.html:320
 msgid "control.wiki-removed"
 msgstr "Workspace removals were successful."
+
+#: share/plugin/control/share/javascript/workspaces_new.js:199 share/plugin/control/share/javascript/workspaces_new.js:214 share/plugin/control/share/javascript/workspaces_new.js:224 share/plugin/control/template/control/workspace.html:140 share/plugin/control/template/control/workspace.html:154 share/plugin/control/template/control/workspace.html:168 share/plugin/control/template/control/workspace.html:272 share/plugin/control/template/control/workspace.html:282 share/plugin/control/template/control/workspace.html:289 share/plugin/control/template/control/workspace.html:297 share/plugin/control/template/control/workspace.html:304 share/plugin/control/template/control/workspace.html:312
+msgid "control.wiki-role-changes-were-successful"
+msgstr "Workspace role changes were successful."
 
 #. (custom_skin,                  custom_skins.$custom_skin)
 #. (custom_skin, custom_skins.$custom_skin)
