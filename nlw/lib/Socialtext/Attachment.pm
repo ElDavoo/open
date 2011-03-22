@@ -302,12 +302,17 @@ sub extract {
                 filename  => $filename,
                 fh        => $file,
                 page_id   => $self->page_id,
-                embed     => 1,
+                embed     => 0,
                 temporary => 1,
             );
             push @atts, $att;
         }
         $_->make_permanent(user => $self->hub->current_user) for @atts;
+        $self->hub->attachments->inline_all(
+            $self->hub->current_user,
+            $self->page,
+            \@atts,
+        );
     };
 
     return;

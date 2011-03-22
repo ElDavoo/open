@@ -231,6 +231,26 @@ sub create {
     };
 }
 
+sub inline_all {
+    my ($self, $user, $page, $attachments) = @_;
+    croak "User is mandatory!" unless $user;
+
+    my $guard = $self->hub->pages->ensure_current($page);
+    $page->edit_rev();
+
+    my $body_ref = $page->body_ref;
+    my $body_new = '';
+    for my $att (@$attachments) {
+        $body_new .= $att->image_or_file_wafl();
+    }
+    $body_new .= $$body_ref;
+    $body_ref = \$body_new;
+    $page->body_ref(\$body_new);
+
+    $page->store(user => $user);
+}
+
+
 sub all_attachments_in_workspace {
     my $self = shift;
     my @attachments;
