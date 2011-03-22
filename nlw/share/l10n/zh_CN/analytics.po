@@ -35,7 +35,7 @@ msgstr "单个域名（如果您不清楚，请选择此项）"
 
 #: share/plugin/analytics/template/cp_google_analytics:13
 msgid "analytics.use-for:"
-msgstr "这个 Google Analytics 追踪帐号是用於："
+msgstr "这个 Google Analytics 追踪帐号是用于："
 
 #: share/plugin/analytics/template/cp_google_analytics:4
 msgid "info.analytics"

@@ -249,30 +249,30 @@ msgstr "評論"
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:11
 msgid "activities.composing-message-to=user"
-msgstr "您正在編輯一條資訊至 %1"
+msgstr "您正在編輯給 %1 的訊息"
 
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:5 share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:9
 msgid "activities.composing-private-message-to=person"
-msgstr "您正在編輯條私人資訊至 %1"
+msgstr "您正在編輯給 %1 的私人訊息"
 
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:16
 msgid "activities.composing-reply-to=person"
-msgstr "您正在編輯一條回覆至 %1"
+msgstr "您正在編輯回覆給 %1 的訊息"
 
 #. (evt.replies.length ? loc('entire Conversation')
 #: share/plugin/widgets/share/javascript/activities/event_list.js:938
 msgid "activities.confirm-delete=target"
 msgstr ""
-"您確定要刪除這 %1？\n"
+"您確定要刪除這%1？\n"
 "一旦刪除，無法恢復。"
 
 #. (evt.replies.length ? loc('entire Conversation')
 #: share/plugin/widgets/share/javascript/activities/event_list.js:953
 msgid "activities.confirm-expunge=target"
 msgstr ""
-"您確定要將此 %1 從系統中刪除？\n"
+"您確定要將這%1從系統中刪除？\n"
 "一旦刪除，無法恢復。"
 
 #: share/plugin/widgets/share/javascript/activities/appdata.js:351
@@ -294,6 +294,10 @@ msgstr "複製和貼上以下影片的網址。我們支援插入來自YouTube�
 #: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:2
 msgid "activities.enter-weblink-url-here"
 msgstr "請在底下貼上或鍵入鏈結的目標（網址，如http://socialtext.com）。鏈結目標是必填的。"
+
+#: share/plugin/widgets/share/javascript/activities/event_list.js:938
+msgid "activities.entire-conversation"
+msgstr "整串對話"
 
 #: share/plugin/widgets/share/javascript/activities/appdata.js:328
 msgid "activities.events"
@@ -337,7 +341,7 @@ msgstr "下載中..."
 
 #: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:13
 msgid "activities.make-signal-private"
-msgstr "使此訊息私有"
+msgstr "發布為私人訊息"
 
 #. (this.max_filesize)
 #: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:8
@@ -347,6 +351,9 @@ msgstr "最大檔案大小：%1MB"
 #: share/plugin/widgets/share/javascript/activities/appdata.js:414
 msgid "activities.me"
 msgstr "我"
+
+msgid "activities.mention"
+msgstr "  提及"
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:116 share/plugin/widgets/share/javascript/template/activities/event.tt2:81
 msgid "activities.mention-user"
@@ -409,23 +416,26 @@ msgstr "發送"
 msgid "activities.post-to"
 msgstr "發送至"
 
+msgid "activities.private"
+msgstr "  私人"
+
 #: share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:6
 msgid "activities.private-to-you"
-msgstr "歸您私有"
+msgstr "給您的私人訊息"
 
 #. (signal.best_full_name)
 #: share/plugin/widgets/share/javascript/activities/widget.js:540
 msgid "activities.private-to-you=sender"
-msgstr "%1 屬於您私有"
+msgstr "%1 給您的私人訊息"
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:112
 msgid "activities.private-to:"
-msgstr "發送私人訊息至"
+msgstr "發送私人訊息："
 
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:8
 msgid "activities.private-to=user"
-msgstr "歸 %1 私有"
+msgstr "給 %1 的私人訊息"
 
 #. (page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:12
@@ -446,7 +456,7 @@ msgstr "區域："
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:113
 msgid "activities.send-private-message"
-msgstr "發送私人資訊"
+msgstr "發送私人訊息"
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:68
 msgid "activities.showing"
@@ -2049,6 +2059,9 @@ msgstr "本系統的帳戶為『自行加入』。任何用戶都可以存取 So
 msgid "control.about-settings-tab"
 msgstr "管理全系統的設備設定"
 
+msgid "control.about-user-restrictions"
+msgstr "在新增或更新用戶時，您可選擇將限制套用在用戶記錄上。這些限制必須先滿足並清除之後，用戶方能開始登入系統。"
+
 #: share/plugin/control/template/control/index.html:28
 msgid "control.about-users-tab"
 msgstr "使用本螢幕快捷邀請用戶至群組與工作區"
@@ -2444,6 +2457,12 @@ msgstr "禁止邀請加入群組"
 msgid "control.edit-field"
 msgstr "編輯欄位"
 
+msgid "control.edit-user"
+msgstr "編輯用戶"
+
+msgid "control.edit-user=name"
+msgstr "編輯用戶：%1"
+
 msgid "control.email-address:"
 msgstr "電子郵件位址："
 
@@ -2533,6 +2552,10 @@ msgstr "名字："
 
 #: share/plugin/control/template/control/user.html:103
 msgid "control.for-cac-authentication"
+msgstr "（為 CAC 認証之用）"
+
+#: share/plugin/control/template/control/user.html:103
+msgid "control.for-use-with-cac-authentication"
 msgstr "為 CAC 認証之用"
 
 #: share/plugin/control/template/control/add_users.html:31
@@ -2984,6 +3007,9 @@ msgstr "轉換為群組"
 #: share/plugin/control/template/control/account.html:61 share/plugin/control/template/control/group.html:18 share/plugin/control/template/control/plugin_pref_form.html:6 share/plugin/control/template/control/settings.html:11 share/plugin/control/template/control/settings.html:21 share/plugin/control/template/control/workspace_table:3 share/plugin/control/template/control/workspace_table:70
 msgid "control.update"
 msgstr "更新"
+
+msgid "control.update-user"
+msgstr "更新用戶：%1"
 
 #: share/plugin/control/template/control/group.html:122
 msgid "control.updating"
@@ -3781,7 +3807,7 @@ msgstr "<strong>%1</strong>想讓您知道位於 %3 的<strong>%2</strong>所進
 #. (name, summary, page, workspace)
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1434
 msgid "edit.summary=name,summary,page,wiki"
-msgstr "<strong>%1</strong>，\"%2\"（編輯了位於 %4 的<strong>%3</strong>）"
+msgstr "<strong>%1</strong>，『%2』（編輯了位於 %4 的<strong>%3</strong>）"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:113
 msgid "edit.tag-prompt:"
@@ -5587,7 +5613,7 @@ msgstr "無權存取工作區"
 #. (ws)
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:2380
 msgid "error.no-wiki-on-server=wiki"
-msgstr "系統中不存在 \"%1\" 工作區"
+msgstr "系統中不存在『%1』工作區"
 
 #. ($workspace_name)
 #: lib/Socialtext/CLI.pm:2016
@@ -5844,7 +5870,7 @@ msgstr "『%1』是已註冊的工作區名，不能使用。"
 #. (page_name)
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:543
 msgid "error.reserved-page-name"
-msgstr "\"%1\" 是一個保留的頁面名稱，請使用另外一個名稱"
+msgstr "『%1』是一個保留的頁面名稱，請使用另外一個名稱"
 
 #. (page_name)
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2092 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2175
@@ -6689,7 +6715,7 @@ msgstr "此檢視的永久鏈結"
 
 #: share/plugin/signals/template/explore_header:16
 msgid "explore.recency"
-msgstr "發佈時間"
+msgstr "發布時間"
 
 #: share/plugin/signals/template/explore_header:14
 msgid "explore.sort-by:"
@@ -6936,6 +6962,15 @@ msgstr "此檔案（最近更新：%2，由%3於%4上傳）有<span class=\"emph
 #: share/skin/s3/template/view/attachmentslist:33
 msgid "file.size"
 msgstr "大小"
+
+msgid "file.size=bytes"
+msgstr "%1 位元組"
+
+msgid "file.size=kb"
+msgstr "%1K"
+
+msgid "file.size=mb"
+msgstr "%1M"
 
 #: share/skin/s3/javascript/lightbox/attachment.tt2:6 share/skin/s3/template/element/page/display/attachments:51
 msgid "file.upload"
@@ -8429,6 +8464,15 @@ msgstr "下一頁"
 #: share/skin/s3/template/lite/paging.html:12 share/skin/s3/template/lite/paging.html:14
 msgid "lite.previous-page"
 msgstr "上一頁"
+
+msgid "loc.language"
+msgstr "語言"
+
+msgid "loc.settings"
+msgstr "語言設定"
+
+msgid "loc.system-default=lang"
+msgstr "系統預設：%1"
 
 #. (lite ? '/m/login' : '/challenge')
 #: share/template/authen/element/forgot_password_page:17
@@ -10898,7 +10942,7 @@ msgstr "發布到"
 #. (acc.user_count)
 #: share/plugin/widgets/share/javascript/activities/appdata.js:233 share/plugin/widgets/share/javascript/network-dropdown.js:82
 msgid "signals.primary-account=users"
-msgstr "主要，%1 名用戶"
+msgstr "主帳戶，%1 名用戶"
 
 #. ("<a href=\"$webroot/st/profile/$sender.user_id\">$sender.best_full_name</a>")
 #. (('<a href="' _ webroot _ '/st/profile/' _ sender.user_id _ '">' _ sender.best_full_name _ '</a>'))
@@ -10916,7 +10960,7 @@ msgstr "如果勾選上，每次別人給您發送私人訊息，您將會收到
 
 #: share/plugin/widgets/share/javascript/activities/editor.js:1533
 msgid "signals.private-message-to:"
-msgstr "發送私信給："
+msgstr "發送私人訊息給："
 
 #: share/plugin/signals/template/element/settings/private_menu:3 share/plugin/signals/template/element/settings/signals_settings_section:5
 msgid "signals.private-messages"

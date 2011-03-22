@@ -768,7 +768,7 @@ msgstr "未知分类的事件：%1"
 #. (page_in_workspace)
 #: share/template/data/events/page:3
 msgid "event.view=page"
-msgstr "檢視了 %1。"
+msgstr "检视了 %1。"
 
 #. (page_in_workspace)
 #: share/template/data/events/page:25

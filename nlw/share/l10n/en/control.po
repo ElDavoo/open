@@ -58,6 +58,10 @@ msgstr "Accounts on this system are \"self-join\". Any user who can access the S
 msgid "control.about-settings-tab"
 msgstr "Manage system-wide application settings."
 
+#: share/plugin/control/template/control/add_users.html:32
+msgid "control.about-user-restrictions"
+msgstr "When adding/updating Users, you may also specify a series of optional restrictions to be placed on their User records.  Until these restrictions have been satisfied and cleared, Users will be unable to log in to the system."
+
 #: share/plugin/control/template/control/index.html:28
 msgid "control.about-users-tab"
 msgstr "Use this screen to quickly invite Users to Groups and Workspaces."
@@ -453,7 +457,15 @@ msgstr "Disable Invitation to Group"
 msgid "control.edit-field"
 msgstr "Edit Field"
 
-#:
+#: share/plugin/control/template/control/edit_user.html:1
+msgid "control.edit-user"
+msgstr "Edit User"
+
+#. (u.display_name)
+#: share/plugin/control/template/control/edit_user.html:2
+msgid "control.edit-user=name"
+msgstr "Edit User: %1"
+
 msgid "control.email-address:"
 msgstr "E-mail Address:"
 
@@ -538,12 +550,15 @@ msgstr "Field Title"
 msgid "control.field-type"
 msgstr "Field Type"
 
-#:
 msgid "control.first-name:"
 msgstr "First name:"
 
-#: share/plugin/control/template/control/user.html:103
+#: share/plugin/control/template/control/add_users.html:46
 msgid "control.for-cac-authentication"
+msgstr "(for CAC authentication)"
+
+#: share/plugin/control/template/control/user.html:103
+msgid "control.for-use-with-cac-authentication"
 msgstr "For use with CAC Authentication"
 
 #: share/plugin/control/template/control/add_users.html:31
@@ -991,6 +1006,10 @@ msgstr "Transform to Groups"
 #: share/plugin/control/template/control/account.html:61 share/plugin/control/template/control/group.html:18 share/plugin/control/template/control/plugin_pref_form.html:6 share/plugin/control/template/control/settings.html:11 share/plugin/control/template/control/settings.html:21 share/plugin/control/template/control/workspace_table:3 share/plugin/control/template/control/workspace_table:70
 msgid "control.update"
 msgstr "Update"
+
+#: share/plugin/control/template/control/edit_user.html:28
+msgid "control.update-user"
+msgstr "Update User"
 
 #: share/plugin/control/template/control/group.html:122
 msgid "control.updating"

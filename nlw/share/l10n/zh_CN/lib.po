@@ -218,8 +218,7 @@ msgstr "工作区初始化"
 msgid "appliance.initialize-wikis?"
 msgstr "要初始化工作区吗？"
 
-#: lib/Socialtext/Appliance/Model/Setup.pm:465
-#: lib/Socialtext/Appliance/Model/Setup.pm:485
+#: lib/Socialtext/Appliance/Model/Setup.pm:465 lib/Socialtext/Appliance/Model/Setup.pm:485
 msgid "appliance.invalid-email"
 msgstr "请输入有效的电子邮件地址"
 
@@ -625,8 +624,7 @@ msgstr "# 工作区"
 #. ($user->username, $role->display_name, $thing->name)
 #. ($condemned->name, $role->display_name, $container->name)
 #. ($thingy->display_name, $current_role->name, $container->name,)
-#: lib/Socialtext/CLI.pm:1461 lib/Socialtext/CLI.pm:1582
-#: lib/Socialtext/CLI.pm:1650
+#: lib/Socialtext/CLI.pm:1461 lib/Socialtext/CLI.pm:1582 lib/Socialtext/CLI.pm:1650
 msgid "cli.indirect-member=name,role,container"
 msgstr "%1 现是 %3 的“%2”，归于一个群组内的成员。"
 
@@ -736,11 +734,7 @@ msgstr "只有工作区成员才能发送邮件到 %1。"
 msgid "config.registered-can-email=wiki"
 msgstr "只有已注册的用户才能发送邮件到 %1。"
 
-#: lib/Socialtext/Pluggable/Plugin/Signals.pm:487
-#: lib/Socialtext/UserSettingsPlugin.pm:118
-#: lib/Socialtext/UserSettingsPlugin.pm:240
-#: lib/Socialtext/WorkspacesUIPlugin.pm:415
-#: lib/Socialtext/WorkspacesUIPlugin.pm:72
+#: lib/Socialtext/Pluggable/Plugin/Signals.pm:487 lib/Socialtext/UserSettingsPlugin.pm:118 lib/Socialtext/UserSettingsPlugin.pm:240 lib/Socialtext/WorkspacesUIPlugin.pm:415 lib/Socialtext/WorkspacesUIPlugin.pm:72
 msgid "config.saved"
 msgstr "更改已保存"
 
@@ -752,9 +746,7 @@ msgstr "显示哪个时区的时间？"
 msgid "config.user-admin"
 msgstr "用户：管理用户"
 
-#: lib/Socialtext/OpenIdPlugin.pm:91 lib/Socialtext/UserSettingsPlugin.pm:301
-#: lib/Socialtext/UserSettingsPlugin.pm:387
-#: lib/Socialtext/UserSettingsPlugin.pm:490
+#: lib/Socialtext/OpenIdPlugin.pm:91 lib/Socialtext/UserSettingsPlugin.pm:301 lib/Socialtext/UserSettingsPlugin.pm:387 lib/Socialtext/UserSettingsPlugin.pm:490
 msgid "config.user-invite"
 msgstr "用户：邀请新用户"
 
@@ -778,8 +770,7 @@ msgstr "工作区：克隆工作区"
 msgid "config.wiki-created"
 msgstr "工作区：已创建新工作区"
 
-#: lib/Socialtext/WorkspacesUIPlugin.pm:358
-#: lib/Socialtext/WorkspacesUIPlugin.pm:99
+#: lib/Socialtext/WorkspacesUIPlugin.pm:358 lib/Socialtext/WorkspacesUIPlugin.pm:99
 msgid "config.wiki-current"
 msgstr "工作区：本工作区"
 
@@ -799,8 +790,7 @@ msgstr "工作区：退出"
 msgid "container.activities"
 msgstr "Socialtext 活动"
 
-#: lib/Socialtext/Gadgets/Container/AccountDashboard.pm:12
-#: lib/Socialtext/Gadgets/Container/Dashboard.pm:13
+#: lib/Socialtext/Gadgets/Container/AccountDashboard.pm:12 lib/Socialtext/Gadgets/Container/Dashboard.pm:13
 msgid "container.dashboard"
 msgstr "Socialtext 显示板"
 
@@ -812,14 +802,11 @@ msgstr "Socialtext 探索"
 msgid "container.group-directory"
 msgstr "群组目录"
 
-#: lib/Socialtext/Gadgets/Container/CreateGroup.pm:12
-#: lib/Socialtext/Gadgets/Container/Group.pm:12
+#: lib/Socialtext/Gadgets/Container/CreateGroup.pm:12 lib/Socialtext/Gadgets/Container/Group.pm:12
 msgid "container.groups"
 msgstr "Socialtext 群组"
 
-#: lib/Socialtext/Gadgets/Container/EditProfile.pm:12
-#: lib/Socialtext/Gadgets/Container/ForbiddenProfile.pm:13
-#: lib/Socialtext/Gadgets/Container/Profile.pm:12
+#: lib/Socialtext/Gadgets/Container/EditProfile.pm:12 lib/Socialtext/Gadgets/Container/ForbiddenProfile.pm:13 lib/Socialtext/Gadgets/Container/Profile.pm:12
 msgid "container.people"
 msgstr "Socialtext 人员"
 
@@ -1005,8 +992,7 @@ msgid "error.account-name-required"
 msgstr "帐户名称必填。"
 
 #. ($self->{command})
-#: lib/Socialtext/CLI.pm:2634 lib/Socialtext/CLI.pm:274
-#: lib/Socialtext/CLI.pm:316
+#: lib/Socialtext/CLI.pm:2634 lib/Socialtext/CLI.pm:274 lib/Socialtext/CLI.pm:316
 msgid "error.account-or-wiki-required=command"
 msgstr "命令（%1）必须指定帐户或工作区。"
 
@@ -1038,8 +1024,7 @@ msgstr "%1 已是 %2 的非管理员成员。"
 #. ($name,)
 #. ($proto->{driver_group_name},)
 #. ($proto->{driver_group_name})
-#: lib/Socialtext/CLI.pm:3561 lib/Socialtext/CLI.pm:3596
-#: lib/Socialtext/Handler/ControlPanel.pm:1613
+#: lib/Socialtext/CLI.pm:3561 lib/Socialtext/CLI.pm:3596 lib/Socialtext/Handler/ControlPanel.pm:1613
 msgid "error.already-added=group"
 msgstr "已加入系统中以存在 %1 群组。"
 
@@ -1294,8 +1279,7 @@ msgstr "没有权限上传附件"
 msgid "error.full-video-url-required"
 msgstr "请输入完整的视频链接地址。"
 
-#: lib/Socialtext/Rest/Gadgets/Gallery.pm:50
-#: lib/Socialtext/Rest/Gadgets/Gallery.pm:64
+#: lib/Socialtext/Rest/Gadgets/Gallery.pm:50 lib/Socialtext/Rest/Gadgets/Gallery.pm:64
 msgid "error.gadget-id-required"
 msgstr "gadget_id 为必要参数"
 
@@ -1385,8 +1369,7 @@ msgstr "认证所采用的硬限制须介于 %1 与%2 天之间。"
 msgid "error.invalid-authentication-token-soft-limit=min-days,max-days"
 msgstr "认证所采用的软限制须介于 %1 与 %2 天之间。"
 
-#: lib/Socialtext/Handler/Authen.pm:486 lib/Socialtext/Handler/Authen.pm:545
-#: lib/Socialtext/Handler/Authen.pm:66
+#: lib/Socialtext/Handler/Authen.pm:486 lib/Socialtext/Handler/Authen.pm:545 lib/Socialtext/Handler/Authen.pm:66
 msgid "error.invalid-confirmation-url"
 msgstr "无效的确认网址。"
 
@@ -1539,8 +1522,7 @@ msgstr "不能创建个人资料字段： 字段 “%1”无效"
 
 #. ($new_ts)
 #. ($new_proxy)
-#: lib/Socialtext/Appliance/Model/Setup.pm:292
-#: lib/Socialtext/Appliance/Model/Setup.pm:377
+#: lib/Socialtext/Appliance/Model/Setup.pm:292 lib/Socialtext/Appliance/Model/Setup.pm:377
 msgid "error.invalid=host"
 msgstr "无效伺服：%1"
 
@@ -1570,8 +1552,7 @@ msgid "error.load-feed=url"
 msgstr "加载订阅出错：%1"
 
 #. ($group_info->{role_name})
-#: lib/Socialtext/Pluggable/Plugin/Groups.pm:100
-#: lib/Socialtext/Pluggable/Plugin/Groups.pm:183
+#: lib/Socialtext/Pluggable/Plugin/Groups.pm:100 lib/Socialtext/Pluggable/Plugin/Groups.pm:183
 msgid "error.missing-or-unknown=role"
 msgstr "缺失或未识别角色“%1”；应用默认角色"
 
@@ -1600,8 +1581,7 @@ msgstr "必须指定更新的帐户类型。"
 msgid "error.new-password-mismatch"
 msgstr "新密码不匹配"
 
-#: lib/Socialtext/Handler/ControlPanel.pm:1139
-#: lib/Socialtext/Handler/ControlPanel.pm:1187
+#: lib/Socialtext/Handler/ControlPanel.pm:1139 lib/Socialtext/Handler/ControlPanel.pm:1187
 msgid "error.no-account-id!"
 msgstr "帐户ID未填写！"
 
@@ -1630,8 +1610,7 @@ msgstr "%1 帐户不存在"
 msgid "error.no-activities"
 msgstr "没有活动可以显示。"
 
-#: lib/Socialtext/AttachmentsUIPlugin.pm:63
-#: lib/Socialtext/AttachmentsUIPlugin.pm:82
+#: lib/Socialtext/AttachmentsUIPlugin.pm:63 lib/Socialtext/AttachmentsUIPlugin.pm:82
 msgid "error.no-attachment"
 msgstr "找不到附件。页面名，文件名或链接中的识别码可能有错误，或附件已被删除或不存在于此工作区。"
 
@@ -1729,8 +1708,7 @@ msgstr "无法在 %2 工作区中找到ID为“%1”的页面。"
 msgid "error.no-password-for-new-user"
 msgstr "创建一个新用户时需要填写密码。"
 
-#: lib/Socialtext/CLI.pm:3029 lib/Socialtext/CLI.pm:3041
-#: lib/Socialtext/CLI.pm:3410 lib/Socialtext/CLI.pm:764
+#: lib/Socialtext/CLI.pm:3029 lib/Socialtext/CLI.pm:3041 lib/Socialtext/CLI.pm:3410 lib/Socialtext/CLI.pm:764
 msgid "error.no-people-plugin"
 msgstr "成员插件未安装。"
 
@@ -1877,8 +1855,7 @@ msgstr "只能指定 --visible 和 --hidden 其中一项参数"
 #. ($user->username, $thing->name)
 #. ($user->username, $group->driver_group_name)
 #. ($condemned->name, $container->name)
-#: lib/Socialtext/CLI.pm:1445 lib/Socialtext/CLI.pm:1490
-#: lib/Socialtext/CLI.pm:1573
+#: lib/Socialtext/CLI.pm:1445 lib/Socialtext/CLI.pm:1490 lib/Socialtext/CLI.pm:1573
 msgid "error.not-member=name,container"
 msgstr "%1 不是 %2 的成员"
 
@@ -1937,9 +1914,7 @@ msgstr "页面名称太长"
 msgid "error.page-title-required"
 msgstr "缺少页面标题"
 
-#: lib/Socialtext/EditPlugin.pm:44 lib/Socialtext/EmailReceiver/Base.pm:184
-#: lib/Socialtext/EmailReceiver/Base.pm:190 lib/Socialtext/PageRevision.pm:474
-#: lib/Socialtext/UserPreferencesPlugin.pm:143
+#: lib/Socialtext/EditPlugin.pm:44 lib/Socialtext/EmailReceiver/Base.pm:184 lib/Socialtext/EmailReceiver/Base.pm:190 lib/Socialtext/PageRevision.pm:474 lib/Socialtext/UserPreferencesPlugin.pm:143
 msgid "error.page-title-too-long"
 msgstr "在网址编码后，页面标题过长"
 
@@ -2007,8 +1982,7 @@ msgstr "必须设置私钥和公钥方可开启验证码"
 msgid "error.registration-disabled"
 msgstr "注册号被停用。"
 
-#: lib/Socialtext/Handler/Base.pm:122
-#: lib/Socialtext/Handler/ControlPanel.pm:52 lib/Socialtext/Rest.pm:62
+#: lib/Socialtext/Handler/Base.pm:122 lib/Socialtext/Handler/ControlPanel.pm:52 lib/Socialtext/Rest.pm:62
 msgid "error.relogin"
 msgstr "登录会话已过期，请重新认证。"
 
@@ -2312,8 +2286,7 @@ msgstr "验证子程序调用外部验证器"
 msgid "error.widget-exists-in-gallery"
 msgstr "该小工具已存在于此工具库中。"
 
-#: lib/Socialtext/Rest/Gadgets/Gadget.pm:23
-#: lib/Socialtext/Rest/Gadgets/Gallery.pm:21
+#: lib/Socialtext/Rest/Gadgets/Gadget.pm:23 lib/Socialtext/Rest/Gadgets/Gallery.pm:21
 msgid "error.widget-forbidden"
 msgstr "您已失去所有帐户的管理员权限。"
 
@@ -2437,6 +2410,15 @@ msgstr "%1：关注 %2"
 #: lib/Socialtext/AttachmentsUIPlugin.pm:187
 msgid "file.all"
 msgstr "所有文件"
+
+msgid "file.size=bytes"
+msgstr "%1 字节"
+
+msgid "file.size=kb"
+msgstr "%1K"
+
+msgid "file.size=mb"
+msgstr "%1M"
 
 #: lib/Socialtext/Handler/Authen.pm:79
 msgid "free50.account"
@@ -2562,8 +2544,7 @@ msgid "info.unplug-breadcrumbs"
 msgstr "点击此按钮保存最近浏览页面为脱机页面。"
 
 #. ($self->hub->tiddly->default_count)
-#: lib/Socialtext/HomepagePlugin.pm:79
-#: lib/Socialtext/RecentChangesPlugin.pm:96
+#: lib/Socialtext/HomepagePlugin.pm:79 lib/Socialtext/RecentChangesPlugin.pm:96
 msgid "info.unplug-recent=count"
 msgstr "点击此按钮保存最新 %1 页面为脱机页面。"
 
@@ -2592,8 +2573,7 @@ msgid "invite.request=wiki"
 msgstr "请求邀请新用户到 %1 工作区"
 
 #. ($workspace->title)
-#: lib/Socialtext/WorkspaceInvitation.pm:126
-#: lib/Socialtext/WorkspaceInvitation.pm:94
+#: lib/Socialtext/WorkspaceInvitation.pm:126 lib/Socialtext/WorkspaceInvitation.pm:94
 msgid "invite.wiki=title"
 msgstr "我邀请您加入 %1 工作区"
 
@@ -2643,8 +2623,7 @@ msgstr "上个月"
 msgid "last.week"
 msgstr "上周"
 
-#: lib/Socialtext/Formatter/Phrase.pm:270
-#: lib/Socialtext/Formatter/Phrase.pm:332
+#: lib/Socialtext/Formatter/Phrase.pm:270 lib/Socialtext/Formatter/Phrase.pm:332
 msgid "link.external"
 msgstr "外部链接"
 
@@ -2657,14 +2636,19 @@ msgstr "点击新建页面"
 msgid "link.interwiki"
 msgstr "内部工作区链接：%1"
 
-#: lib/Socialtext/Formatter/Phrase.pm:269
-#: lib/Socialtext/Formatter/Phrase.pm:331
+#: lib/Socialtext/Formatter/Phrase.pm:269 lib/Socialtext/Formatter/Phrase.pm:331
 msgid "link.irc"
 msgstr "进入IRC会话"
 
 #: lib/Socialtext/Formatter/WaflPhrase.pm:638
 msgid "link.section"
 msgstr "章节链接"
+
+msgid "loc.settings"
+msgstr "语言设定"
+
+msgid "loc.system-default=lang"
+msgstr "系统默认：%1"
 
 #. ($address)
 #: lib/Socialtext/Handler/Authen.pm:531
@@ -2717,18 +2701,15 @@ msgstr "最新更动"
 msgid "nav.news=wiki"
 msgstr "工作区 %1 的更新"
 
-#: lib/Socialtext/Pluggable/Plugin/People.pm:71
-#: lib/Socialtext/Pluggable/Plugin/People.pm:82
+#: lib/Socialtext/Pluggable/Plugin/People.pm:71 lib/Socialtext/Pluggable/Plugin/People.pm:82
 msgid "nav.people"
-msgstr "人員"
+msgstr "人员"
 
 #: lib/Socialtext/Pluggable/Plugin/Signals.pm:141
 msgid "nav.private-message"
 msgstr "私人讯息"
 
-#: lib/Socialtext/SyndicatePlugin.pm:378 lib/Socialtext/WeblogPlugin.pm:224
-#: lib/Socialtext/WeblogPlugin.pm:279 lib/Socialtext/WeblogPlugin.pm:332
-#: lib/Socialtext/WeblogPlugin.pm:335
+#: lib/Socialtext/SyndicatePlugin.pm:378 lib/Socialtext/WeblogPlugin.pm:224 lib/Socialtext/WeblogPlugin.pm:279 lib/Socialtext/WeblogPlugin.pm:332 lib/Socialtext/WeblogPlugin.pm:335
 msgid "nav.recent-changes"
 msgstr "近期更改"
 
@@ -2746,10 +2727,7 @@ msgstr "%2 工作区中标签 %1 的最近更新"
 msgid "nav.settings"
 msgstr "设置"
 
-#: lib/Socialtext/Pluggable/Plugin/Signals.pm:119
-#: lib/Socialtext/Pluggable/Plugin/Signals.pm:129
-#: lib/Socialtext/Pluggable/Plugin/Signals.pm:140
-#: lib/Socialtext/Pluggable/Plugin/Signals.pm:507
+#: lib/Socialtext/Pluggable/Plugin/Signals.pm:119 lib/Socialtext/Pluggable/Plugin/Signals.pm:129 lib/Socialtext/Pluggable/Plugin/Signals.pm:140 lib/Socialtext/Pluggable/Plugin/Signals.pm:507
 msgid "nav.signals"
 msgstr "讯息"
 
@@ -3144,9 +3122,7 @@ msgstr "用户 %1 的工作区活动"
 #. ($self->_workspace->title)
 #. ($self->_group->display_name)
 #. ($user->best_full_name)
-#: lib/Socialtext/Rest/Events/Activities.pm:12
-#: lib/Socialtext/Rest/Events/Groups.pm:13
-#: lib/Socialtext/Rest/Events/Workspaces.pm:14
+#: lib/Socialtext/Rest/Events/Activities.pm:12 lib/Socialtext/Rest/Events/Groups.pm:13 lib/Socialtext/Rest/Events/Workspaces.pm:14
 msgid "rest.activity=user"
 msgstr "%1 的活跃度"
 
@@ -3501,8 +3477,7 @@ msgstr "用户已被删除出工作区和目录。"
 
 #. ($username)
 #. ($user->username)
-#: lib/Socialtext/Handler/Authen.pm:336
-#: lib/Socialtext/Handler/ControlPanel.pm:574
+#: lib/Socialtext/Handler/Authen.pm:336 lib/Socialtext/Handler/ControlPanel.pm:574
 msgid "user.deactivated=name"
 msgstr "用户 %1 已被停用。"
 
@@ -3586,8 +3561,7 @@ msgstr "所选用户"
 msgid "user.selected-for=group"
 msgstr "添加所选用户到 %1 群组"
 
-#: lib/Socialtext/WikiText/Emitter/Messages/Canonicalize.pm:67
-#: lib/Socialtext/WikiText/Emitter/Messages/HTML.pm:94
+#: lib/Socialtext/WikiText/Emitter/Messages/Canonicalize.pm:67 lib/Socialtext/WikiText/Emitter/Messages/HTML.pm:94
 msgid "user.unknown"
 msgstr "未知用户"
 
@@ -3792,8 +3766,7 @@ msgstr "一段时间内，页面侧边栏应该显示多少项目？"
 msgid "wiki.top-page"
 msgstr "首页"
 
-#: lib/Socialtext/Workspace.pm:316 lib/Socialtext/l10n.pm:18
-#: lib/Socialtext/l10n.pm:20
+#: lib/Socialtext/Workspace.pm:316 lib/Socialtext/l10n.pm:18 lib/Socialtext/l10n.pm:20
 msgid "wiki.welcome"
 msgstr "欢迎"
 

@@ -425,6 +425,10 @@ msgstr "Zzzz zzz zzzzz zzz ZZZ zzz zzz zzzzz zzzzz.  Zz zzzzzzz zzzzzzzzz zzzzz 
 msgid "activities.enter-weblink-url-here"
 msgstr "Zzzzz zz zzzz zzzz zzzz'z zzzzzzzzzzz (ZZZ, z.z. zzzz://zzzzzzzzzz.zzz) zzz zzzz zz zzz zzzz zzzzz. Zzzz zzzzzzzzzzz zz zzzzzzzz."
 
+#: share/plugin/widgets/share/javascript/activities/event_list.js:938
+msgid "activities.entire-conversation"
+msgstr "zzzzzz Zzzzzzzzzzzz"
+
 #: share/plugin/widgets/share/javascript/activities/appdata.js:328
 msgid "activities.events"
 msgstr "zzzzzz"
@@ -477,6 +481,10 @@ msgstr "Zzzzzzz zzzz zzzz: %1ZZ"
 #: share/plugin/widgets/share/javascript/activities/appdata.js:414
 msgid "activities.me"
 msgstr "zz"
+
+#: share/plugin/widgets/share/javascript/template/activities/event.tt2:16
+msgid "activities.mention"
+msgstr "zzzzzzz"
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:116 share/plugin/widgets/share/javascript/template/activities/event.tt2:81
 msgid "activities.mention-user"
@@ -538,6 +546,10 @@ msgstr "Zzzz"
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:137 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:90
 msgid "activities.post-to"
 msgstr "Zzzz zz"
+
+#: share/plugin/widgets/share/javascript/template/activities/event.tt2:14
+msgid "activities.private"
+msgstr "zzzzzzz"
 
 #: share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:6
 msgid "activities.private-to-you"
@@ -2198,6 +2210,10 @@ msgstr "Zzzzzzzz zz zzzz zzzzzz zzz \"zzzz-zzzz\". Zzz zzzz zzz zzz zzzzzz zzz Z
 msgid "control.about-settings-tab"
 msgstr "Zzzzzz zzzzzz-zzzz zzzzzzzzzzz zzzzzzzz."
 
+#: share/plugin/control/template/control/add_users.html:32
+msgid "control.about-user-restrictions"
+msgstr "Zzzz zzzzzz/zzzzzzzz Zzzzz, zzz zzz zzzz zzzzzzz z zzzzzz zz zzzzzzzz zzzzzzzzzzzz zz zz zzzzzz zz zzzzz Zzzz zzzzzzz.  Zzzzz zzzzz zzzzzzzzzzzz zzzz zzzz zzzzzzzzz zzz zzzzzzz, Zzzzz zzzz zz zzzzzz zz zzz zz zz zzz zzzzzz."
+
 #: share/plugin/control/template/control/index.html:28
 msgid "control.about-users-tab"
 msgstr "Zzz zzzz zzzzzz zz zzzzzzz zzzzzz Zzzzz zz Zzzzzz zzz Zzzzzzzzzz."
@@ -2593,6 +2609,15 @@ msgstr "Zzzzzzz Zzzzzzzzzz zz Zzzzz"
 msgid "control.edit-field"
 msgstr "Zzzz Zzzzz"
 
+#: share/plugin/control/template/control/edit_user.html:1
+msgid "control.edit-user"
+msgstr "Zzzz Zzzz"
+
+#. (u.display_name)
+#: share/plugin/control/template/control/edit_user.html:2
+msgid "control.edit-user=name"
+msgstr "Zzzz Zzzz: %1"
+
 msgid "control.email-address:"
 msgstr "Z-zzzz Zzzzzzz:"
 
@@ -2680,8 +2705,12 @@ msgstr "Zzzzz Zzzz"
 msgid "control.first-name:"
 msgstr "Zzzzz zzzz:"
 
-#: share/plugin/control/template/control/user.html:103
+#: share/plugin/control/template/control/add_users.html:46
 msgid "control.for-cac-authentication"
+msgstr "(zzz ZZZ zzzzzzzzzzzzzz)"
+
+#: share/plugin/control/template/control/user.html:103
+msgid "control.for-use-with-cac-authentication"
 msgstr "Zzz zzz zzzz ZZZ Zzzzzzzzzzzzzz"
 
 #: share/plugin/control/template/control/add_users.html:31
@@ -3133,6 +3162,10 @@ msgstr "Zzzzzzzzz zz Zzzzzz"
 #: share/plugin/control/template/control/account.html:61 share/plugin/control/template/control/group.html:18 share/plugin/control/template/control/plugin_pref_form.html:6 share/plugin/control/template/control/settings.html:11 share/plugin/control/template/control/settings.html:21 share/plugin/control/template/control/workspace_table:3 share/plugin/control/template/control/workspace_table:70
 msgid "control.update"
 msgstr "Zzzzzz"
+
+#: share/plugin/control/template/control/edit_user.html:28
+msgid "control.update-user"
+msgstr "Zzzzzz Zzzz"
 
 #: share/plugin/control/template/control/group.html:122
 msgid "control.updating"
@@ -7117,6 +7150,30 @@ msgstr "Zzzzz zzz <span class=\"emphasis\">%1 zzzzzzzz zzzzzzzz</span> zz zzzz z
 msgid "file.size"
 msgstr "Zzzz"
 
+#: share/plugin/widgets/share/javascript/activities/event_list.js:1027 lib/Socialtext/Lite/Activities.pm:91
+msgid "file.size=bytes"
+msgstr "%1 zzzzz"
+
+#. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
+#. ((rawcl/1000)
+#. #-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#
+#. (sprintf("%.2f", ($size/1000)
+#. (sprintf("%.1f", ($size/1000)
+#. (sprintf("%.0f", ($size/1000)
+#: share/plugin/widgets/share/javascript/activities/event_list.js:1029 share/plugin/widgets/share/javascript/activities/event_list.js:1031 share/plugin/widgets/share/javascript/activities/event_list.js:1033 lib/Socialtext/Lite/Activities.pm:93 lib/Socialtext/Lite/Activities.pm:95 lib/Socialtext/Lite/Activities.pm:97
+msgid "file.size=kb"
+msgstr "%1Z"
+
+#. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
+#. ((rawcl/1000000)
+#. #-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#
+#. (sprintf("%.2f", ($size/1000000)
+#. (sprintf("%.1f", ($size/1000000)
+#. (sprintf("%.0f", ($size/1000000)
+#: share/plugin/widgets/share/javascript/activities/event_list.js:1035 share/plugin/widgets/share/javascript/activities/event_list.js:1037 share/plugin/widgets/share/javascript/activities/event_list.js:1039 lib/Socialtext/Lite/Activities.pm:101 lib/Socialtext/Lite/Activities.pm:103 lib/Socialtext/Lite/Activities.pm:99
+msgid "file.size=mb"
+msgstr "%1Z"
+
 #: share/skin/s3/javascript/lightbox/attachment.tt2:6 share/skin/s3/template/element/page/display/attachments:51
 msgid "file.upload"
 msgstr "Zzzzzz Zzzzz"
@@ -8614,6 +8671,19 @@ msgstr "Zzzz zzzz"
 #: share/skin/s3/template/lite/paging.html:12 share/skin/s3/template/lite/paging.html:14
 msgid "lite.previous-page"
 msgstr "Zzzzzzzz zzzz"
+
+#: share/skin/s3/template/view/settings:80
+msgid "loc.language"
+msgstr "Zzzzzzzz"
+
+#: share/skin/s3/template/element/settings/language_settings_section:5 share/skin/s3/template/view/settings:82 lib/Socialtext/Pluggable/Plugin/Locales.pm:46
+msgid "loc.settings"
+msgstr "Zzzzzzzz Zzzzzzzz"
+
+#. ($languages->{system_locale()
+#: lib/Socialtext/Pluggable/Plugin/Locales.pm:34
+msgid "loc.system-default=lang"
+msgstr "Zzzzzz Zzzzzzz: %1"
 
 #. (lite ? '/m/login' : '/challenge')
 #: share/template/authen/element/forgot_password_page:17

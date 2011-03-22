@@ -2411,6 +2411,24 @@ msgstr "%1: watchlist for %2"
 msgid "file.all"
 msgstr "All Files"
 
+#: lib/Socialtext/Lite/Activities.pm:91
+msgid "file.size=bytes"
+msgstr "%1 bytes"
+
+#. (sprintf("%.2f", ($size/1000)
+#. (sprintf("%.1f", ($size/1000)
+#. (sprintf("%.0f", ($size/1000)
+#: lib/Socialtext/Lite/Activities.pm:93 lib/Socialtext/Lite/Activities.pm:95 lib/Socialtext/Lite/Activities.pm:97
+msgid "file.size=kb"
+msgstr "%1K"
+
+#. (sprintf("%.2f", ($size/1000000)
+#. (sprintf("%.1f", ($size/1000000)
+#. (sprintf("%.0f", ($size/1000000)
+#: lib/Socialtext/Lite/Activities.pm:101 lib/Socialtext/Lite/Activities.pm:103 lib/Socialtext/Lite/Activities.pm:99
+msgid "file.size=mb"
+msgstr "%1M"
+
 #: lib/Socialtext/Handler/Authen.pm:79
 msgid "free50.account"
 msgstr "Socialtext Free50 account"
@@ -2634,6 +2652,15 @@ msgstr "start irc session"
 #: lib/Socialtext/Formatter/WaflPhrase.pm:638
 msgid "link.section"
 msgstr "section link"
+
+#: lib/Socialtext/Pluggable/Plugin/Locales.pm:46
+msgid "loc.settings"
+msgstr "Language Settings"
+
+#. ($languages->{system_locale()
+#: lib/Socialtext/Pluggable/Plugin/Locales.pm:34
+msgid "loc.system-default=lang"
+msgstr "System Default: %1"
 
 #. ($address)
 #: lib/Socialtext/Handler/Authen.pm:531

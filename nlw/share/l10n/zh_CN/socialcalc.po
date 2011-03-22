@@ -39,7 +39,7 @@ msgstr "保存"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:3009
 msgid "error.cannot-load-revision"
-msgstr "无法加载更動"
+msgstr "无法加载更动"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2954
 msgid "error.loading-preview-failed"
@@ -677,4 +677,4 @@ msgstr "源码格式"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:43
 msgid "sort.revisions"
-msgstr "更動次數"
+msgstr "更动次数"

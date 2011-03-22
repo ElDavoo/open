@@ -101,7 +101,7 @@ msgstr "现在"
 
 #: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:46
 msgid "explore.people"
-msgstr "人員"
+msgstr "人员"
 
 #: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:9
 msgid "explore.people-i-follow"
@@ -109,11 +109,11 @@ msgstr "我关注的人"
 
 #: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:57
 msgid "explore.permalink-for-this-view"
-msgstr "此檢视的永久链接"
+msgstr "此检视的永久链接"
 
 #: share/plugin/signals/template/explore_header:16
 msgid "explore.recency"
-msgstr "發佈時間"
+msgstr "发布时间"
 
 #: share/plugin/signals/template/explore_header:14
 msgid "explore.sort-by:"
@@ -121,7 +121,7 @@ msgstr "排序按："
 
 #: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:34
 msgid "explore.tags-from"
-msgstr "标签來自"
+msgstr "标签来自"
 
 #: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:17
 msgid "explore.to"
@@ -288,7 +288,7 @@ msgstr "您收到了 %1 的私人讯息："
 
 #: share/plugin/signals/template/element/settings/signals_settings_section:8
 msgid "signals.private-message-to-email"
-msgstr "如果勾选上，每次别人給您发送私人讯息，您将会收到包含该消息的电子邮件。"
+msgstr "如果勾选上，每次别人给您发送私人讯息，您将会收到包含该消息的电子邮件。"
 
 #: share/plugin/signals/template/element/settings/private_menu:3
 #: share/plugin/signals/template/element/settings/signals_settings_section:5
@@ -340,15 +340,15 @@ msgstr "使用这个方便的书签来通过讯息分享所有网站上的页面
 #. (offset + 1, last, pager.total_entries)
 #: share/plugin/signals/template/view/signallist:26
 msgid "signals.showing=from,to,total"
-msgstr "显示第 %1 - %2 項，共 %3 項。"
+msgstr "显示第 %1 - %2 项，共 %3 项。"
 
 #: share/plugin/signals/template/bookmarklet/index.html:57
 msgid "signals.signal-this!"
-msgstr "发送此頁！"
+msgstr "发送此页！"
 
 #: share/plugin/signals/template/bookmarklet/index.html:4
 msgid "signals.signal-this-bookmarklet"
-msgstr "“发送此頁”书签"
+msgstr "“发送此页”书签"
 
 #: share/plugin/signals/share/widgets/profile/widget.html:19
 msgid "signals.signal-to"
@@ -356,7 +356,7 @@ msgstr "发送到"
 
 #: share/plugin/signals/template/cp_signal_size_limit:3
 msgid "signals.size-limit:"
-msgstr "最大長度："
+msgstr "最大长度："
 
 #: share/plugin/signals/template/view/signallist:28
 msgid "signals.sort-by:"
