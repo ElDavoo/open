@@ -11,9 +11,17 @@ use Socialtext::Challenger;
 use Socialtext::HTTP ':codes';
 use Socialtext::HTTP::Cookie;
 use Socialtext::Events;
+use Socialtext::l10n qw( loc_lang best_locale );
 
 # basically just a dispatcher to NLW::Lite
 # need some deduping
+
+sub new {
+    my $class = shift;
+    my $self = $class->SUPER::new(@_);
+    loc_lang( best_locale() );
+    return $self;
+}
 
 sub if_plugin_authorized {
     my ($self, $plugin, $method, $perl_method) = @_;
