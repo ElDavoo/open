@@ -5,7 +5,8 @@
     <input type="hidden" name="json" value="1" />
     <input type="hidden" name="page_name" value="[% page_title | html_encode %]" />
     <div class="title">
-      Rename <span id="st-rename-pagetitle">"[% page_title %]"</span>
+      [% loc('do.rename') %]
+      <span id="st-rename-pagetitle">"[% page_title %]"</span>
     </div>
     <div class="error" id="st-rename-error">&nbsp;</div>
     [% loc('page.new-name') %]:
