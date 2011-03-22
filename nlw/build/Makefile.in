@@ -372,8 +372,8 @@ hudson-update: .prove
 hudson.prove: get-hudson-prove
 
 get-hudson-prove:
-	curl --insecure https://lucite.socialtext.net:9080/job/Socialtext/lastCompletedBuild/artifact/artifacts/.prove \
-	    --output hudson.prove  --time-cond hudson.prove
+	curl --insecure https://lucite.socialtext.net:9080/job/Socialtext-`git branch | perl -ne '@x = split; print $$x[1] if $$x[0] eq "*";'`/lastCompletedBuild/artifact/artifacts/.prove \
+        --output hudson.prove  --time-cond hudson.prove
 
 # cd into custom-workspace-config and make all
 custom-workspaces:
