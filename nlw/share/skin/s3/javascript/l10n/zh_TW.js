@@ -1129,6 +1129,7 @@
 "groups.add-members":"新增成員",
 "groups.add-wikis":"新增工作區",
 "groups.admin-can-change-setting-after-creation":"群組管理員在建立完群組後，可以更改其設定。",
+"groups.administrators":"管理員",
 "groups.all-available":"所有可用的群組",
 "groups.all-members-in-group-account-can-see-wiki-content":"群組帳戶內的所有成員均可看見工作區的內容。",
 "groups.begin-typing-name-here":"鍵入名字...",

@@ -1128,6 +1128,7 @@
 "groups.add-members":"Zzz Zzzzzzz",
 "groups.add-wikis":"Zzz Zzzzzzzzzz",
 "groups.admin-can-change-setting-after-creation":"Zzz zzzzz zzzzzzzzzzzzzz zzz zzzzzz zzzz zzzzzzz zzzzz zzz zzzzz zz zzzzzzz.",
+"groups.administrators":"Zzzzzzzzzzzzzz",
 "groups.all-available":"Zzz Zzzzzzzzz Zzzzzz",
 "groups.all-members-in-group-account-can-see-wiki-content":"Zzz zz zzz zzzzzzz zz zzz Zzzzz zzzzzzz zzz zzz zzz zzzzzzzzz zzzzzzz.",
 "groups.begin-typing-name-here":"zzzzz zzzzzz zzzz zzzz...",

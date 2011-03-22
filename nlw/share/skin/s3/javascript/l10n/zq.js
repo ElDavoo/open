@@ -1128,6 +1128,7 @@
 "groups.add-members":"«Add Members»",
 "groups.add-wikis":"«Add Workspaces»",
 "groups.admin-can-change-setting-after-creation":"«The group administrators can change this setting after the group is created.»",
+"groups.administrators":"«Administrators»",
 "groups.all-available":"«All Available Groups»",
 "groups.all-members-in-group-account-can-see-wiki-content":"«All of the members in the Group account can see the workspace content.»",
 "groups.begin-typing-name-here":"«begin typing name here...»",

@@ -7099,6 +7099,10 @@ msgstr "添加工作区"
 msgid "groups.admin-can-change-setting-after-creation"
 msgstr "群组管理员在创建完群组后，可以更改其设置。"
 
+#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:25
+msgid "groups.administrators"
+msgstr "管理员"
+
 #: share/plugin/groups/share/widgets/all_groups/widget.html:2
 msgid "groups.all-available"
 msgstr "所有可用的群组"

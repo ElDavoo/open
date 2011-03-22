@@ -7301,6 +7301,10 @@ msgstr "Zzz Zzzzzzzzzz"
 msgid "groups.admin-can-change-setting-after-creation"
 msgstr "Zzz zzzzz zzzzzzzzzzzzzz zzz zzzzzz zzzz zzzzzzz zzzzz zzz zzzzz zz zzzzzzz."
 
+#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:25
+msgid "groups.administrators"
+msgstr "Zzzzzzzzzzzzzz"
+
 #: share/plugin/groups/share/widgets/all_groups/widget.html:2
 msgid "groups.all-available"
 msgstr "Zzz Zzzzzzzzz Zzzzzz"

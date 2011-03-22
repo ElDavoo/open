@@ -123,6 +123,10 @@ msgstr "私密"
 msgid "group.acl-self-join"
 msgstr "自行加入"
 
+#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:25
+msgid "groups.administrators"
+msgstr "管理员"
+
 #: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:11
 #: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:13
 #: share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:17

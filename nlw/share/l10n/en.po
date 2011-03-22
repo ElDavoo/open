@@ -7301,6 +7301,10 @@ msgstr "Add Workspaces"
 msgid "groups.admin-can-change-setting-after-creation"
 msgstr "The group administrators can change this setting after the group is created."
 
+#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:25
+msgid "groups.administrators"
+msgstr "Administrators"
+
 #: share/plugin/groups/share/widgets/all_groups/widget.html:2
 msgid "groups.all-available"
 msgstr "All Available Groups"
