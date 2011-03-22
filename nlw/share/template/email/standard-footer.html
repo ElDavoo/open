@@ -3,7 +3,7 @@
 [% IF support_link %]
 <p>
 [% SET support_address = appconfig.support_address | html %]
-[% SET support_link = '<a href="' _ support_address _ '">Contact Support</a>' %]
+[% SET support_link = '<a href="' _ support_address _ '">' _ loc('email.contact-support') _ '</a>' %]
 [% loc('email.questions-about-email-contact-support-link=uri', support_link) %]
 </p>
 [% END %]
