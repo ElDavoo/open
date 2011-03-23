@@ -285,13 +285,24 @@ sub to_hash {
 }
 
 sub to_string {
-    my ($self, $buf_ref) = @_;
+    my ($self, $buf_ref, $is_temp) = @_;
     croak "must supply a buffer reference for to_string()"
         unless $buf_ref && ref($buf_ref);
     require Socialtext::File::Stringify;
-    $self->ensure_stored();
+    my $file;
+
+    if ($is_temp) {
+        $file = File::Temp->new;
+        $self->copy_to_fh($file);
+        close $file;
+    }
+    else {
+        $self->ensure_stored();
+        $file = $self->disk_filename;
+    }
+
     Socialtext::File::Stringify->to_string(
-        $buf_ref, $self->disk_filename, $self->mime_type);
+        $buf_ref, "$file", $self->mime_type);
     return;
 }
 
@@ -475,12 +486,17 @@ sub binary_contents {
 
 sub copy_to_file {
     my ($self, $target) = @_;
-    my $blob;
     open my $fh, '>:mmap', $target; # Fatal
-    $self->binary_contents(\$blob); # either maps or singleblobs
-    my $wrote = syswrite $fh, $blob;
-    die "failed to copy to file: $_" unless $wrote == length($blob);
+    $self->copy_to_fh($fh);
     close $fh; # Fatal
+}
+
+sub copy_to_fh {
+    my ($self, $target_fh) = @_;
+    my $blob;
+    $self->binary_contents(\$blob); # either maps or sql_singleblobs
+    my $wrote = syswrite $target_fh, $blob;
+    die "failed to copy to file: $!" unless $wrote == length($blob);
 }
 
 my $encoding_charset_map = {
