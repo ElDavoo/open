@@ -6458,7 +6458,7 @@ msgstr "在 %2 中評論 %1：『%3』"
 #. (person_tag)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:8
 msgid "event.delete-tag-self=tag"
-msgstr "移除他們的標籤 %1。"
+msgstr "給自己移除標籤 %1。"
 
 #. (page_tag, page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:20
@@ -6468,7 +6468,7 @@ msgstr "從 %3 中的 %2 移除 %1。"
 #. (person_tag, person)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:19
 msgid "event.delete-tag=tag,person"
-msgstr "從 %2 中移除標籤 %1。"
+msgstr "給 %2 移除標籤 %1。"
 
 #. (page_in_workspace)
 #: share/template/data/events/page:15

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 22:57+0800\n"
+"PO-Revision-Date: 2011-03-19 19:39+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -125,12 +125,12 @@ msgstr "给 %1 加标签 %2。"
 #. (person_tag)
 #: share/plugin/people/template/data/events/person:8
 msgid "event.delete-tag-self=tag"
-msgstr "移除他们的标签 %1。"
+msgstr "给自己移除标签 %1。"
 
 #. (person_tag, person)
 #: share/plugin/people/template/data/events/person:19
 msgid "event.delete-tag=tag,person"
-msgstr "从 %2 中移除标签 %1。"
+msgstr "给 %2 移除标签 %1。"
 
 #: share/plugin/people/template/data/events/person:4
 msgid "event.edit-profile-self"

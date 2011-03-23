@@ -277,7 +277,7 @@ msgstr "发布到"
 #. (a.user_count)
 #: share/plugin/signals/template/lite/signals.html:50
 msgid "signals.primary-account=users"
-msgstr "主要，%1 名用户"
+msgstr "主帐户，%1 名用户"
 
 #. ("<a href=\"$webroot/st/profile/$sender.user_id\">$sender.best_full_name</a>")
 #. (('<a href="' _ webroot _ '/st/profile/' _ sender.user_id _ '">' _ sender.best_full_name _ '</a>'))
