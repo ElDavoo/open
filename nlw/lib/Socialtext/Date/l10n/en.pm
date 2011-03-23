@@ -141,3 +141,22 @@ sub get_time_sec_format {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::Date::l10n::en - Date formatting for English language
+
+=head1 SYNOPSIS
+
+    use Socialtext::Date::l10n;
+    my $date = Socialtext::Date::l10n->get_formated_date(
+        $time, $format, 'en'
+    );
+
+=head1 DESCRIPTION
+
+Internal module used by L<Socialtext::Date::l10n>; no user-serviceable parts inside.
+
+=cut
