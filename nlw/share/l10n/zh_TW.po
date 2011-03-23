@@ -1894,7 +1894,7 @@ msgstr "設定網頁代理伺服器"
 
 #: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42 ../appliance/libsocialtext-appliance-perl/template/setup.html:1 ../appliance/libsocialtext-appliance-perl/template/setup.html:2
 msgid "console.setup"
-msgstr "安裝"
+msgstr "設定"
 
 #: ../appliance/libsocialtext-appliance-perl/template/shutdown.html:6
 msgid "console.shut-down-appliance"
@@ -1955,7 +1955,7 @@ msgstr "時間伺服器"
 
 #: ../appliance/libsocialtext-appliance-perl/template/overview.html:13
 msgid "console.total"
-msgstr "總共"
+msgstr "總計"
 
 #. (download_link, mailto_link)
 #: ../appliance/libsocialtext-appliance-perl/template/help.html:73
