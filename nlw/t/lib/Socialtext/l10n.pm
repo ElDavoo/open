@@ -36,6 +36,7 @@ sub _rebind_overrides {
     *loc_lang = \&_loc_lang;
     *best_locale = \&_best_locale;
     *system_locale = \&_system_locale;
+    *_ = \&loc;
 }
 
 _rebind_overrides();
