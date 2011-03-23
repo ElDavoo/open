@@ -5,7 +5,6 @@
   <dt><label>[% loc("loc.settings") %]</label></dt>
   <dd>
     <div style="white-space: nowrap"><label>
-      <input type="hidden" name="locale_set" value="1" />
       [% loc('config.language?') %]
       <select name="locale">
         [% FOR l IN locales %]

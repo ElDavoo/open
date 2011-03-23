@@ -9,7 +9,7 @@ use Socialtext;
 use base 'Socialtext::Base';
 use Socialtext::File;
 use Socialtext::TT2::Renderer;
-use Socialtext::l10n qw/loc/;
+use Socialtext::l10n qw/loc loc_lang/;
 use Socialtext::Stax;
 use Socialtext::Timer;
 use Socialtext::String ();
@@ -224,7 +224,8 @@ sub global_template_vars {
         return $name => sub { $thunked{$name} ||= $sub->() };
     };
 
-    my $locale = $hub->display->preferences->locale;
+    my $locale = $hub->best_locale;
+
     my $use_frame_cache
         = $ENABLE_FRAME_CACHE && $self->hub->skin->skin_name ne 's2';
     my $frame_name
@@ -238,7 +239,7 @@ sub global_template_vars {
         acct_checker      => Socialtext::Authz::SimpleChecker->new(
             user => $cur_user, container => $cur_ws->account),
         loc               => \&loc,
-        loc_lang          => ($locale ? $locale->value : undef),
+        loc_lang          => $locale,
         current_workspace => $cur_ws,
         current_page      => $hub->pages->current,
         home_is_dashboard => $cur_ws->homepage_is_dashboard,
@@ -342,7 +343,7 @@ sub _render_user_frame {
     $user_id =~ m/^(\d\d?)/;
     my $user_prefix = $1;
 
-    my $loc_lang = $self->hub->display->preferences->locale->value || 0;
+    my $loc_lang = $self->hub->best_locale;
     my $is_guest = $self->hub->current_user->is_guest ? 1 : 0;
 
     my $can_invite = $self->hub->pluggable->hook('template_var.invite_url');
