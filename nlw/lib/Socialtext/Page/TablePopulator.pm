@@ -795,8 +795,8 @@ sub load_breadcrumbs {
         my $trail = "$ws_user_dir/$user_dir/.trail";
         next unless -e $trail;
 
-        my $user = Socialtext::User->new(email_address => $user_dir);
-        next unless $user;
+        my $user_id = $self->get_user_id($user_dir);
+        next unless $user_id;
 
         my @page_ids =
             map { Socialtext::String::title_to_id($_) }
@@ -812,7 +812,7 @@ sub load_breadcrumbs {
         sql_txn {
             my @status;
             $bc_insert->execute_array({ArrayTupleStatus=>\@status},
-                $user->user_id, $ws_id, \@page_ids, \@offsets);
+                $user_id, $ws_id, \@page_ids, \@offsets);
             die "one or more breadcrumbs failed to insert\n"
                 if any { $_ != 1 } @status;
         };
@@ -822,5 +822,12 @@ sub load_breadcrumbs {
     return;
 }
 
+sub get_user_id {
+    my $self = shift;
+    my $email = shift;
+    my $user = Socialtext::User->new(email_address => $email);
+
+    return $user ? $user->user_id : undef;
+}
 
 1;
