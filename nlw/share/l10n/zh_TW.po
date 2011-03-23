@@ -787,9 +787,8 @@ msgstr "跳過工作區 %1，未使用。"
 msgid "appliance.synchronized-time-with=ts"
 msgstr "同步時間 %1"
 
-#: lib/Socialtext/Appliance/Model/System.pm:34
 msgid "appliance.system"
-msgstr "System"
+msgstr "系統"
 
 msgid "appliance.taking-database-snapshot"
 msgstr "生成資料庫快照..."
@@ -1921,17 +1920,15 @@ msgstr "Socialtext 設備"
 msgid "console.socialtext-desktop"
 msgstr "Socialtext 桌面"
 
-#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:71
 msgid "console.socialtext-inc"
-msgstr "Socialtext, Inc."
+msgstr "Socialtext 公司"
 
 #: ../appliance/libsocialtext-appliance-perl/template/help.html:63
 msgid "console.socialtext-support"
 msgstr "Socialtext 支援"
 
-#: ../appliance/libsocialtext-appliance-perl/template/help.html:125
 msgid "console.socialtext-support-form"
-msgstr "Socialtext Support Form"
+msgstr "Socialtext 支援論壇"
 
 #: ../appliance/libsocialtext-appliance-perl/template/help.html:141 ../appliance/libsocialtext-appliance-perl/template/setup.html:103 ../appliance/libsocialtext-appliance-perl/template/setup.html:33 ../appliance/libsocialtext-appliance-perl/template/setup.html:48 ../appliance/libsocialtext-appliance-perl/template/setup.html:69 ../appliance/libsocialtext-appliance-perl/template/setup.html:84
 msgid "console.submit"
@@ -2777,17 +2774,15 @@ msgstr "資料欄位"
 msgid "control.profile-section"
 msgstr "資料段落"
 
-#: share/plugin/control/share/javascript/workspaces_new.js:213 share/plugin/control/share/javascript/workspaces_new.js:74 share/plugin/control/template/control/group.html:239 share/plugin/control/template/control/workspace.html:146 share/plugin/control/template/control/workspace.html:288
 msgid "control.promote-to-admin"
-msgstr "Promote to Admin"
+msgstr "給予管理員資格"
 
 #: share/plugin/control/template/control/user.html:168
 msgid "control.relationship"
 msgstr "關系"
 
-#: share/plugin/control/share/javascript/workspaces_new.js:223 share/plugin/control/share/javascript/workspaces_new.js:83 share/plugin/control/template/control/group.html:254 share/plugin/control/template/control/workspace.html:160 share/plugin/control/template/control/workspace.html:303
 msgid "control.remove-admin"
-msgstr "Remove Admin"
+msgstr "移除管理員資格"
 
 #: share/plugin/control/template/control/user.html:80
 msgid "control.remove-appliance-business-administrator-role"
@@ -2801,36 +2796,29 @@ msgstr "移除設備技術管理員角色"
 msgid "control.remove-external-id-requirement"
 msgstr "刪除外部 ID 要求"
 
-#: share/plugin/control/template/control/group.html:363
 msgid "control.remove-from-account"
-msgstr "Remove from account"
+msgstr "從帳戶刪除"
 
-#: share/plugin/control/template/control/group.html:221
 msgid "control.remove-from-group"
-msgstr "Remove from group"
+msgstr "從群組刪除"
 
 #: share/plugin/control/template/control/user.html:312
 msgid "control.remove-from-wiki"
 msgstr "從工作區中移除"
 
-#: share/plugin/control/template/control/user.html:312
 msgid "control.remove-from-wikis"
-msgstr "Remove from Workspaces"
+msgstr "從工作區刪除"
 
 #. (accounts.length)
 #: share/plugin/control/template/control/group.html:368
 msgid "control.remove-group-from-accounts=count?"
 msgstr "從 %1 個選中帳戶中移除群組？"
 
-#. (groups.length)
-#: share/plugin/control/share/javascript/workspaces_new.js:202 share/plugin/control/template/control/workspace.html:275
 msgid "control.remove-selected-group-from-wiki=count?"
-msgstr "Remove the selected %*(%1,group) from this workspace?"
+msgstr "把選擇的 %1 個群組從此工作區刪除？"
 
-#. (users.length)
-#: share/plugin/control/share/javascript/workspaces_new.js:63 share/plugin/control/template/control/workspace.html:133
 msgid "control.remove-selected-user-from-wiki=count?"
-msgstr "Remove the selected %*(%1,user) from this workspace?"
+msgstr "把選擇的 %1 位用戶從此工作區刪除？"
 
 #. (workspaces.length)
 #: share/plugin/control/template/control/user.html:314
@@ -2994,17 +2982,14 @@ msgstr "Socialtext 管理設定"
 msgid "control.socialtext-control-panel"
 msgstr "Socialtext 控制台"
 
-#: share/plugin/control/template/control/group.html:43
 msgid "control.start-typing-account-name"
-msgstr "Start typing an Account's name"
+msgstr "開始鍵入一個帳戶名稱"
 
-#: share/plugin/control/template/control/workspaces_new.html:45
 msgid "control.start-typing-group-name"
-msgstr "Start typing group's name"
+msgstr "開始鍵入群組名稱"
 
-#: share/plugin/control/template/control/account.html:73 share/plugin/control/template/control/group.html:31 share/plugin/control/template/control/workspaces_new.html:35
 msgid "control.start-typing-user-name"
-msgstr "Start typing user's name"
+msgstr "開始鍵入用戶名稱"
 
 #: share/plugin/control/template/control/workspaces_new.html:5
 msgid "control.step-1-set-wiki-title"
@@ -3026,9 +3011,8 @@ msgstr "存放欄位"
 msgid "control.submit"
 msgstr "送出"
 
-#: share/plugin/control/template/control/user_table:19
 msgid "control.system-required-user"
-msgstr "System Required User"
+msgstr "系統用戶"
 
 #: share/plugin/control/template/control/index.html:22
 msgid "control.tabs"
@@ -3172,9 +3156,8 @@ msgstr "歡迎存取 Socialtext 控制台"
 msgid "control.wiki-removed"
 msgstr "工作區移除成功"
 
-#: share/plugin/control/share/javascript/workspaces_new.js:199 share/plugin/control/share/javascript/workspaces_new.js:214 share/plugin/control/share/javascript/workspaces_new.js:224 share/plugin/control/template/control/workspace.html:140 share/plugin/control/template/control/workspace.html:154 share/plugin/control/template/control/workspace.html:168 share/plugin/control/template/control/workspace.html:272 share/plugin/control/template/control/workspace.html:282 share/plugin/control/template/control/workspace.html:289 share/plugin/control/template/control/workspace.html:297 share/plugin/control/template/control/workspace.html:304 share/plugin/control/template/control/workspace.html:312
 msgid "control.wiki-role-changes-were-successful"
-msgstr "Workspace role changes were successful."
+msgstr "工作區角色轉變成功。"
 
 #. (custom_skin,                  custom_skins.$custom_skin)
 #. (custom_skin, custom_skins.$custom_skin)
@@ -3473,65 +3456,50 @@ msgstr "顯示編輯活動"
 msgid "description.workspaces"
 msgstr "列出群組中的所有工作區"
 
-#: lib/Socialtext/Handler/ControlPanel.pm:703
 msgid "desktop.2nd-bg-color"
-msgstr "Secondary background color"
+msgstr "次要背景顏色"
 
-#: lib/Socialtext/Handler/ControlPanel.pm:705
 msgid "desktop.about-2nd-bg-color"
-msgstr "Used as the background for forms, settings headers and un-selected tabs"
+msgstr "為表單、設定頁標題和未選擇的標籤使用"
 
-#: lib/Socialtext/Handler/ControlPanel.pm:698
 msgid "desktop.about-bg-color"
-msgstr "Background color for all content within Socialtext Desktop. Combine with [Text color] to create readable content."
+msgstr "Socialtext 桌面內所有內容的背景顏色。與『文字顏色』搭配作為可讀內容。"
 
-#: lib/Socialtext/Handler/ControlPanel.pm:691
 msgid "desktop.about-header-gradient-bottom"
-msgstr "The bottom color of the header's gradient. Choose the same color as the top value to create a solid background instead."
+msgstr "標題的底端漸層顏色。與『標題（頂端）』選擇同樣顏色時，將不會顯示漸層。"
 
-#: lib/Socialtext/Handler/ControlPanel.pm:684
 msgid "desktop.about-header-gradient-top"
-msgstr "The top color of the header's gradient. Combine this with [Header Gradient (bottom)] to create a smooth color transition."
+msgstr "標題的頂端漸層顏色。與『標題（底端）』搭配，以創造漸層效果。"
 
-#: lib/Socialtext/Handler/ControlPanel.pm:726
 msgid "desktop.about-highlight-color"
-msgstr "The color applied to highlighted elements, such as the background of the Post button."
+msgstr "高亮元素使用的顏色，例如發布按鈕的背景色。"
 
-#: lib/Socialtext/Handler/ControlPanel.pm:719
 msgid "desktop.about-link-color"
-msgstr "The color applied to links. Most applications use a shade of blue."
+msgstr "鏈結使用的顏色。通常使用深藍色。"
 
-#: lib/Socialtext/Handler/ControlPanel.pm:677
 msgid "desktop.about-logo-uri"
-msgstr "Socialtext Desktop's logo (automatically scaled to 240 x 34 pixels)."
+msgstr "Socialtext 桌面標誌（自動縮放至 240 x 34 像素）。"
 
-#: lib/Socialtext/Handler/ControlPanel.pm:712
 msgid "desktop.about-text-color"
-msgstr "The color of all text except links within Socialtext Desktop. Combine with [Background color] above to create readable content."
+msgstr "Socialtext 桌面內所有文字的顏色（鏈結除外）。與『背景顏色』搭配作為可讀內容。"
 
-#: lib/Socialtext/Handler/ControlPanel.pm:696
 msgid "desktop.bg-color"
-msgstr "Background color"
+msgstr "背景顏色"
 
-#: lib/Socialtext/Handler/ControlPanel.pm:689
 msgid "desktop.header-gradient-bottom"
-msgstr "Header Gradient (bottom)"
+msgstr "標題（底部）"
 
-#: lib/Socialtext/Handler/ControlPanel.pm:682
 msgid "desktop.header-gradient-top"
-msgstr "Header Gradient (top)"
+msgstr "標題（頂部）"
 
-#: lib/Socialtext/Handler/ControlPanel.pm:724
 msgid "desktop.highlight-color"
-msgstr "Highlight color"
+msgstr "高亮顏色"
 
-#: lib/Socialtext/Handler/ControlPanel.pm:717
 msgid "desktop.link-color"
-msgstr "Link color"
+msgstr "鏈結顏色"
 
-#: lib/Socialtext/Handler/ControlPanel.pm:675
 msgid "desktop.logo-uri"
-msgstr "Logo URI"
+msgstr "圖示網址"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:774
 msgid "desktop.relogin-for-default-logo"
@@ -3553,9 +3521,8 @@ msgstr "重置為預設桌面標誌。桌面用戶需要登出並重新登入才
 msgid "desktop.relogin-for-skin"
 msgstr "設定已儲存。桌面用戶需要重新登陸才能啟用新的主題。"
 
-#: lib/Socialtext/Handler/ControlPanel.pm:710
 msgid "desktop.text-color"
-msgstr "Text color"
+msgstr "文字顏色"
 
 #: share/skin/s3/javascript/lightbox/attachment.tt2:28 share/skin/s3/javascript/lightbox/email.tt2:28
 msgid "do.add"

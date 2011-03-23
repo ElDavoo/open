@@ -760,9 +760,15 @@ msgstr "资料字段"
 msgid "control.profile-section"
 msgstr "资料段落"
 
+msgid "control.promote-to-admin"
+msgstr "给予管理员资格"
+
 #: share/plugin/control/template/control/user.html:168
 msgid "control.relationship"
 msgstr "关系"
+
+msgid "control.remove-admin"
+msgstr "移除管理员资格"
 
 #: share/plugin/control/template/control/user.html:80
 msgid "control.remove-appliance-business-administrator-role"
@@ -776,14 +782,29 @@ msgstr "移除设备技术管理员角色"
 msgid "control.remove-external-id-requirement"
 msgstr "删除外部 ID 要求"
 
+msgid "control.remove-from-account"
+msgstr "从帐户删除"
+
+msgid "control.remove-from-group"
+msgstr "从群组删除"
+
 #: share/plugin/control/template/control/user.html:312
 msgid "control.remove-from-wiki"
 msgstr "从工作区中移除"
+
+msgid "control.remove-from-wikis"
+msgstr "从工作区删除"
 
 #. (accounts.length)
 #: share/plugin/control/template/control/group.html:368
 msgid "control.remove-group-from-accounts=count?"
 msgstr "从 %1 个选中帐户中移除群组？"
+
+msgid "control.remove-selected-group-from-wiki=count?"
+msgstr "把选择的 %1 个群组从此工作区删除？"
+
+msgid "control.remove-selected-user-from-wiki=count?"
+msgstr "把选择的 %1 位用户从此工作区删除？"
 
 #. (workspaces.length)
 #: share/plugin/control/template/control/user.html:314
@@ -947,6 +968,15 @@ msgstr "Socialtext 管理设置"
 msgid "control.socialtext-control-panel"
 msgstr "Socialtext 控制台"
 
+msgid "control.start-typing-account-name"
+msgstr "开始键入一个帐户名称"
+
+msgid "control.start-typing-group-name"
+msgstr "开始键入群组名称"
+
+msgid "control.start-typing-user-name"
+msgstr "开始键入用户名称"
+
 #: share/plugin/control/template/control/workspaces_new.html:5
 msgid "control.step-1-set-wiki-title"
 msgstr "第1步：给您的工作区命一个标题"
@@ -966,6 +996,9 @@ msgstr "存储字段"
 #: share/plugin/control/template/control/accounts.html:18 share/plugin/control/template/control/accounts.html:5 share/plugin/control/template/control/desktop-account.html:161 share/plugin/control/template/control/group_add_users.html:6 share/plugin/control/template/control/users.html:6 share/plugin/control/template/control/workspace.html:34 share/plugin/control/template/control/workspaces.html:5
 msgid "control.submit"
 msgstr "提交"
+
+msgid "control.system-required-user"
+msgstr "系统用户"
 
 #: share/plugin/control/template/control/index.html:22
 msgid "control.tabs"
@@ -1108,6 +1141,9 @@ msgstr "欢迎访问 Socialtext 控制台"
 #: share/plugin/control/template/control/user.html:320
 msgid "control.wiki-removed"
 msgstr "工作区移除成功"
+
+msgid "control.wiki-role-changes-were-successful"
+msgstr "工作区角色转变成功。"
 
 #. (custom_skin,                  custom_skins.$custom_skin)
 #. (custom_skin, custom_skins.$custom_skin)

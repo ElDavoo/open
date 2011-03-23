@@ -3658,7 +3658,7 @@ msgstr "Zzzz zz zzz zzzzzzzzzz zzz zzzzz, zzzzzzzz zzzzzzz zzz zz-zzzzzzzz zzzz"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:698
 msgid "desktop.about-bg-color"
-msgstr "Zzzzzzzzzz zzzzz zzz zzz zzzzzzz zzzzzz Zzzzzzzzzz Zzzzzzz. Zzzzzzz zzzz [Zzzz zzzzz] zz zzzzzz zzzzzzzz zzzzzzz."
+msgstr "Zzzzzzzzzz zzzzz zzz zzz zzzzzzz zzzzzz Zzzzzzzzzz Zzzzzzz. Zzzzzzz zzzz “Zzzz zzzzz” zz zzzzzz zzzzzzzz zzzzzzz."
 
 #: lib/Socialtext/Handler/ControlPanel.pm:691
 msgid "desktop.about-header-gradient-bottom"
@@ -3666,7 +3666,7 @@ msgstr "Zzz zzzzzz zzzzz zz zzz zzzzzz'z zzzzzzzz. Zzzzzz zzz zzzz zzzzz zz zzz 
 
 #: lib/Socialtext/Handler/ControlPanel.pm:684
 msgid "desktop.about-header-gradient-top"
-msgstr "Zzz zzz zzzzz zz zzz zzzzzz'z zzzzzzzz. Zzzzzzz zzzz zzzz [Zzzzzz Zzzzzzzz (zzzzzz)] zz zzzzzz z zzzzzz zzzzz zzzzzzzzzz."
+msgstr "Zzz zzz zzzzz zz zzz zzzzzz'z zzzzzzzz. Zzzzzzz zzzz zzzz “Zzzzzz Zzzzzzzz (zzzzzz)” zz zzzzzz z zzzzzz zzzzz zzzzzzzzzz."
 
 #: lib/Socialtext/Handler/ControlPanel.pm:726
 msgid "desktop.about-highlight-color"
@@ -3682,7 +3682,7 @@ msgstr "Zzzzzzzzzz Zzzzzzz'z zzzz (zzzzzzzzzzzzz zzzzzz zz 240 z 34 zzzzzz)."
 
 #: lib/Socialtext/Handler/ControlPanel.pm:712
 msgid "desktop.about-text-color"
-msgstr "Zzz zzzzz zz zzz zzzz zzzzzz zzzzz zzzzzz Zzzzzzzzzz Zzzzzzz. Zzzzzzz zzzz [Zzzzzzzzzz zzzzz] zzzzz zz zzzzzz zzzzzzzz zzzzzzz."
+msgstr "Zzz zzzzz zz zzz zzzz zzzzzz zzzzz zzzzzz Zzzzzzzzzz Zzzzzzz. Zzzzzzz zzzz “Zzzzzzzzzz zzzzz” zzzzz zz zzzzzz zzzzzzzz zzzzzzz."
 
 #: lib/Socialtext/Handler/ControlPanel.pm:696
 msgid "desktop.bg-color"

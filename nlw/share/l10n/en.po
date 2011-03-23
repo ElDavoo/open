@@ -3658,7 +3658,7 @@ msgstr "Used as the background for forms, settings headers and un-selected tabs"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:698
 msgid "desktop.about-bg-color"
-msgstr "Background color for all content within Socialtext Desktop. Combine with [Text color] to create readable content."
+msgstr "Background color for all content within Socialtext Desktop. Combine with “Text color” to create readable content."
 
 #: lib/Socialtext/Handler/ControlPanel.pm:691
 msgid "desktop.about-header-gradient-bottom"
@@ -3666,7 +3666,7 @@ msgstr "The bottom color of the header's gradient. Choose the same color as the 
 
 #: lib/Socialtext/Handler/ControlPanel.pm:684
 msgid "desktop.about-header-gradient-top"
-msgstr "The top color of the header's gradient. Combine this with [Header Gradient (bottom)] to create a smooth color transition."
+msgstr "The top color of the header's gradient. Combine this with “Header Gradient (bottom)” to create a smooth color transition."
 
 #: lib/Socialtext/Handler/ControlPanel.pm:726
 msgid "desktop.about-highlight-color"
@@ -3682,7 +3682,7 @@ msgstr "Socialtext Desktop's logo (automatically scaled to 240 x 34 pixels)."
 
 #: lib/Socialtext/Handler/ControlPanel.pm:712
 msgid "desktop.about-text-color"
-msgstr "The color of all text except links within Socialtext Desktop. Combine with [Background color] above to create readable content."
+msgstr "The color of all text except links within Socialtext Desktop. Combine with “Background color” above to create readable content."
 
 #: lib/Socialtext/Handler/ControlPanel.pm:696
 msgid "desktop.bg-color"

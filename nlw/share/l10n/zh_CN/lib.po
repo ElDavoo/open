@@ -324,6 +324,9 @@ msgstr "跳过工作区 %1，未使用。"
 msgid "appliance.synchronized-time-with=ts"
 msgstr "同步时间 %1"
 
+msgid "appliance.system"
+msgstr "系统"
+
 #: lib/Socialtext/Appliance/Model/Setup.pm:448
 msgid "appliance.test-email"
 msgstr "Socialtext 设备的测试邮件"
@@ -876,6 +879,51 @@ msgstr "周二"
 msgid "date.wed"
 msgstr "周三"
 
+msgid "desktop.2nd-bg-color"
+msgstr "次要背景颜色"
+
+msgid "desktop.about-2nd-bg-color"
+msgstr "为表单、设定页标题和未选择的标签使用"
+
+msgid "desktop.about-bg-color"
+msgstr "Socialtext 桌面内所有内容的背景颜色。与“文本颜色”搭配作为可读内容。"
+
+msgid "desktop.about-header-gradient-bottom"
+msgstr "标题的底端渐层颜色。与“标题（顶端）”选择同样颜色时，将不会显示渐层。"
+
+msgid "desktop.about-header-gradient-top"
+msgstr "标题的顶端渐层颜色。与“标题（底端）”搭配，以创造渐层效果。"
+
+msgid "desktop.about-highlight-color"
+msgstr "高亮元素使用的颜色，例如发布按钮的背景色。"
+
+msgid "desktop.about-link-color"
+msgstr "链接使用的颜色。通常使用深蓝色。"
+
+msgid "desktop.about-logo-uri"
+msgstr "Socialtext 桌面标志（自动缩放至 240 x 34 像素）。"
+
+msgid "desktop.about-text-color"
+msgstr "Socialtext 桌面内所有文本的颜色（链接除外）。与“背景颜色”搭配作为可读内容。"
+
+msgid "desktop.bg-color"
+msgstr "背景颜色"
+
+msgid "desktop.header-gradient-bottom"
+msgstr "标题（底部）"
+
+msgid "desktop.header-gradient-top"
+msgstr "标题（顶部）"
+
+msgid "desktop.highlight-color"
+msgstr "高亮颜色"
+
+msgid "desktop.link-color"
+msgstr "链接颜色"
+
+msgid "desktop.logo-uri"
+msgstr "图标网址"
+
 #: lib/Socialtext/Handler/ControlPanel.pm:774
 msgid "desktop.relogin-for-default-logo"
 msgstr "（桌面用户如需看默认标志，需重新登录。）"
@@ -895,6 +943,9 @@ msgstr "重置为默认桌面标志。桌面用户需要注销并重新登录才
 #: lib/Socialtext/Handler/ControlPanel.pm:872
 msgid "desktop.relogin-for-skin"
 msgstr "设置已保存。桌面用户需要重新登陆才能启用新的主题。"
+
+msgid "desktop.text-color"
+msgstr "文本颜色"
 
 #. ($group->driver_group_name)
 #: lib/Socialtext/Handler/ControlPanel.pm:1309
