@@ -266,11 +266,11 @@ sub load_page_metadata {
     my ($self, $dir) = @_;
     my $ws_dir = $self->{workspace_data_dir};
 
+    my $t = time_scope 'load_page_meta';
+
     my $ws_id = $self->{workspace}->workspace_id;
     $self->load_revision_metadata($ws_dir, $dir);
     my $sth;
-
-    my $t = time_scope 'load_page_meta';
 
     # Start with latest revision fields.  This *should* exclude "body".
     $sth = sql_execute(q{
@@ -622,19 +622,28 @@ sub fetch_metadata {
     return parse_page_headers(read_and_decode_page($file));
 }
 
+sub _clean_email_address {
+    my $self = shift;
+    my $email_address = shift;
+
+    # We have some very bogus data on our system, so we need to
+    # be very cautious.
+    unless ( Email::Valid->address($email_address) ) {
+        my ($name) = $email_address =~ /([\w-]+)/;
+        $name = 'unknown' unless defined $name;
+        $email_address = $name . '@example.com';
+    }
+
+   return $email_address;
+}
+
 sub editor_to_id {
     my $self = shift;
     my $email_address = shift || '';
     my $force = shift;
     state %userid_cache;
+    $email_address = $self->_clean_email_address($email_address);
     unless ( $userid_cache{ $email_address } ) {
-        # We have some very bogus data on our system, so we need to
-        # be very cautious.
-        unless ( Email::Valid->address($email_address) ) {
-            my ($name) = $email_address =~ /([\w-]+)/;
-            $name = 'unknown' unless defined $name;
-            $email_address = $name . '@example.com';
-        }
 
         # Load or create a new user with the given email.
         # Email addresses are always written to disk, even for ldap users.
@@ -643,27 +652,38 @@ sub editor_to_id {
         };
         unless ($user) {
             return if $self->{skip_user_create} && !$force;
-            warn "Creating user account for '$email_address'\n";
-            try {
-                Socialtext::Cache->clear('accounts');
-                my $deleted = Socialtext::Account->Deleted();
-                $user = Socialtext::User->create(
-                    email_address      => $email_address,
-                    username           => $email_address,
-                    primary_account_id => $deleted->account_id,
-                    missing            => 1,
-                );
-            }
-            catch {
-                warn "Failed to create user '$email_address', ".
-                     "defaulting to system-user: $_\n";
-            };
-            $user ||= Socialtext::User->SystemUser();
+            $user = $self->_create_user_from_email($email_address);
         }
 
         $userid_cache{ $email_address } = $user->user_id;
     }
     return $userid_cache{ $email_address };
+}
+
+sub _create_user_from_email {
+    my $self = shift;
+    my $email_address = shift;
+
+    my $user;
+    warn "Creating user account for '$email_address'\n";
+    try {
+        Socialtext::Cache->clear('accounts');
+        my $deleted = Socialtext::Account->Deleted();
+        $user = Socialtext::User->create(
+            email_address      => $email_address,
+            username           => $email_address,
+            primary_account_id => $deleted->account_id,
+            missing            => 1,
+        );
+    	$user ||= Socialtext::User->SystemUser();
+    }
+    catch {
+        warn "Failed to create user '$email_address', ".
+             "defaulting to system-user: $_\n";
+    	$user = Socialtext::User->SystemUser();
+    };
+
+    return $user;
 }
 
 sub has_missing_editors {
@@ -695,7 +715,7 @@ sub cleanup_missing_editors {
         catch {
             warn "Could not update editor to '$editor' for "
                 . "ws_id=($ws_id),page_id=($pagemeta->{page_id}),"
-                . "revision_id=($pagemeta->revision_id)\n";
+                . "revision_id=($pagemeta->{revision_id})\n";
         };
     };
 
