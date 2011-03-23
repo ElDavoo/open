@@ -30,7 +30,7 @@ sub language_settings {
     if ($cgi_vars{Button}) {
         $locale = $cgi_vars{locale} // '';
         $self->set_user_prefs(locale => $locale);
-        loc_lang($locale);
+        loc_lang($locale || system_locale());
         $message = loc('config.saved');
     }
 
