@@ -564,6 +564,8 @@ use constant CN2TW => {qw(
     聯系         聯絡
     標准         標準
     特征         特徵
+    硬盤         硬碟
+    空閒         閒置
 )};
 
 use constant CN2TW_ExactMatch => {qw(

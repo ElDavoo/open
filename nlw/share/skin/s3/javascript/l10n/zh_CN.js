@@ -233,7 +233,7 @@
 "console.initial-admin-email":"初始设备管理员电子邮件地址",
 "console.invalid-after-days":"（天）后无效",
 "console.leave-blank-to-use-built-in-smtp-server":"（此处留白以使用设备的内置 SMTP 服务器）",
-"console.link-to-control-panel":"查看与管理系统的工作区、帐户、组与用户，请转至 <a href=\"/nlw/control/\">控制台</a> 工具.",
+"console.link-to-control-panel":"查看与管理系统的工作区、帐户、群组与用户，请转至 <a href=\"/nlw/control/\">控制台</a> 工具。",
 "console.login-message":"登录信息",
 "console.login-screen-setup":"登录屏幕设置",
 "console.manual-wiki":"设备手册工作区",

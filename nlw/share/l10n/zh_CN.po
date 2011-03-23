@@ -1741,7 +1741,7 @@ msgstr "（此处留白以使用设备的内置 SMTP 服务器）"
 
 #: ../appliance/libsocialtext-appliance-perl/template/overview.html:8
 msgid "console.link-to-control-panel"
-msgstr "查看与管理系统的工作区、帐户、组与用户，请转至 <a href=\"/nlw/control/\">控制台</a> 工具."
+msgstr "查看与管理系统的工作区、帐户、群组与用户，请转至 <a href=\"/nlw/control/\">控制台</a> 工具。"
 
 #: ../appliance/libsocialtext-appliance-perl/template/setup.html:44
 msgid "console.login-message"
