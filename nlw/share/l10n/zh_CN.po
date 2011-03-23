@@ -13050,7 +13050,3 @@ msgstr "插入视频"
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:21
 msgid "wikiwyg.widget"
 msgstr "插入一个小工具"
-
-#: share/template/email/free50/account-invitation.txt:30
-msgid "www.socialtext.com"
-msgstr "www.socialtext.com"

@@ -954,7 +954,3 @@ msgstr "Choose Password:"
 #: share/template/email/st/workspace-admin-invitation.txt:16
 msgid "wiki.visit-later=wiki"
 msgstr "Or you may continue to work in this workspace, and visit \"%1\" later."
-
-#: share/template/email/free50/account-invitation.txt:30
-msgid "www.socialtext.com"
-msgstr "www.socialtext.com"
