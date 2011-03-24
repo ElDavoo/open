@@ -2081,7 +2081,7 @@ msgstr "这是您工作区独有的短识别符，用于网址与电邮地址。
 
 #: share/plugin/control/template/control/index.html:32
 msgid "control.about-wikis-tab"
-msgstr "工作区是存放维基与文档的地方。在此创建新的工作区。"
+msgstr "工作区是存放共笔与文档的地方。在此创建新的工作区。"
 
 #: share/plugin/control/template/control/group.html:77 share/plugin/control/template/control/user.html:290 share/plugin/control/template/control/workspace.html:10 share/plugin/control/template/control/workspace_invite.html:98 share/plugin/control/template/control/workspace_table:17 share/plugin/control/template/control/workspace_table:28 share/plugin/control/template/control/workspaces_new.html:20
 msgid "control.account"
@@ -5146,10 +5146,8 @@ msgstr "无效的权限：%1"
 msgid "error.invalid-query"
 msgstr "非法查询。"
 
-#. ($report_module, $@)
-#: ../socialtext-reports/lib/Socialtext/Reports/REST.pm:125
 msgid "error.invalid-report=module,message"
-msgstr "Invalid report (%1): %2"
+msgstr "无效报告：%1（%2）"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1399
 msgid "error.invalid-rows"
@@ -5933,17 +5931,14 @@ msgstr "移除“%1”小工具时出错：%2"
 msgid "error.removing-last-admin"
 msgstr "不能取消最后管理员的权限。"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/REST.pm:135
 msgid "error.reports-date-required!"
-msgstr "This report requires a date!"
+msgstr "该报告需要日期！"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:29
 msgid "error.reports-duration-required!"
-msgstr "duration is mandatory!"
+msgstr "必须提供持续时间！"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:28
 msgid "error.reports-start_time-required!"
-msgstr "start_time is mandatory!"
+msgstr "必须提供开始时间！"
 
 #: lib/Socialtext/Hub.pm:189
 msgid "error.request"
@@ -7535,93 +7530,71 @@ msgstr "您只能关联%1工作区到一个%2的群组。"
 msgid "groups.you-must-be-wiki-admin-to-associate-it-with-group"
 msgstr "您必须是工作区的管理员，方能关联该工作区至本群组。"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:244
 msgid "heading.account_id"
-msgstr "account_id"
+msgstr "帐户ID"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:245
 msgid "heading.action"
-msgstr "action"
+msgstr "操作"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:246
 msgid "heading.actor"
-msgstr "actor"
+msgstr "操作者"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:247
 msgid "heading.contributions"
-msgstr "contributions"
+msgstr "贡献者"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:248
 msgid "heading.count"
-msgstr "count"
+msgstr "数量"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:249
 msgid "heading.detail_headings"
-msgstr "detail_headings"
+msgstr "标题详情"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:250
 msgid "heading.gadget_id"
-msgstr "gadget_id"
+msgstr "小工具ID"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:251
 msgid "heading.page_id"
-msgstr "page_id"
+msgstr "页面ID"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:252
 msgid "heading.page_views"
 msgstr ""
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:253
 msgid "heading.pages"
-msgstr "pages"
+msgstr "页面"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:254
 msgid "heading.period"
-msgstr "period"
+msgstr "周期"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:255
 msgid "heading.period_start"
-msgstr "period_start"
+msgstr "周期始于"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:256
 msgid "heading.tally"
-msgstr "tally"
+msgstr "总数"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:257
 msgid "heading.title"
-msgstr "title"
+msgstr "标题"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:258
 msgid "heading.unique_contributors"
-msgstr "unique_contributors"
+msgstr "独立贡献者"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:259
 msgid "heading.unique_members"
-msgstr "unique_members"
+msgstr "独立成员"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:260
 msgid "heading.unique_visitors"
-msgstr "unique_visitors"
+msgstr "独立访客"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:261
 msgid "heading.user_id"
-msgstr "user_id"
+msgstr "用户ID"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:262
 msgid "heading.username"
-msgstr "username"
+msgstr "用户名"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:263
 msgid "heading.views"
-msgstr "views"
+msgstr "查看"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:264
 msgid "heading.workspace"
-msgstr "workspace"
+msgstr "工作区"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:265
 msgid "heading.workspaces"
-msgstr "workspaces"
+msgstr "工作区"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:32
 msgid "image.upload"
@@ -8063,7 +8036,7 @@ msgstr "链接到..."
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu:13
 msgid "insert.link2"
-msgstr "一个不同的维基页面"
+msgstr "另一个共笔页面"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu:16
 msgid "insert.link2-hyperlink"
@@ -10291,303 +10264,224 @@ msgstr "工作区用量统计博客"
 msgid "report.workspace.activity=user"
 msgstr "用户 %1 的工作区活动"
 
-#: ../socialtext-reports/template/workspace_dashboard.tmpl:30 ../socialtext-reports/template/workspace_dashboard.tmpl:31
 msgid "reports.actions-by-wiki"
-msgstr "Actions by Workspace"
+msgstr "按工作区显示操作"
 
-#: ../socialtext-reports/template/user_dashboard.tmpl:40 ../socialtext-reports/template/user_dashboard.tmpl:41 ../socialtext-reports/template/user_dashboard.tmpl:47 ../socialtext-reports/template/user_dashboard.tmpl:48
 msgid "reports.audience-by-user"
-msgstr "Audience by User"
+msgstr "按用户显示受众"
 
-#: ../socialtext-reports/template/available_reports.tmpl:1
 msgid "reports.available-reports:"
-msgstr "Available Reports:"
+msgstr "可用报告："
 
-#. ($opts)
-#: ../socialtext-reports/lib/Socialtext/Reports/REST.pm:196
 msgid "reports.cgi=options"
-msgstr "CGI options: %1"
+msgstr "CGI选项：%1"
 
-#: ../socialtext-reports/template/user_dashboard.tmpl:33 ../socialtext-reports/template/user_dashboard.tmpl:34
 msgid "reports.coeditors-by-user"
-msgstr "Coeditors by User"
+msgstr "按用户显示合作者"
 
-#: ../socialtext-reports/template/usage_by.tmpl:22 ../socialtext-reports/template/usage_by_workspace.tmpl:22
 msgid "reports.collaborativeness:"
-msgstr "Collaborativeness:"
+msgstr "合作方："
 
-#: ../socialtext-reports/template/user_dashboard.tmpl:24 ../socialtext-reports/template/user_dashboard.tmpl:25
 msgid "reports.comments-per-wiki"
-msgstr "Comments per Workspace"
+msgstr "每个工作区的评论次数"
 
-#: ../socialtext-reports/template/usage_by.tmpl:32 ../socialtext-reports/template/usage_by.tmpl:35 ../socialtext-reports/template/usage_by_workspace.tmpl:30 ../socialtext-reports/template/workspace_growth.tmpl:29
 msgid "reports.contributions"
-msgstr "Contributions"
+msgstr "贡献者"
 
-#: ../socialtext-reports/template/usage_by.tmpl:29 ../socialtext-reports/template/usage_by.tmpl:30
 msgid "reports.dashboard"
-msgstr "Dashboard"
+msgstr "显示板"
 
-#: ../socialtext-reports/template/account_growth.tmpl:30
 msgid "reports.dashboard-views"
-msgstr "Dashboard Views"
+msgstr "显示板视图"
 
-#: ../socialtext-reports/template/user_dashboard.tmpl:2
 msgid "reports.dashboard=user"
-msgstr "%1 User Dashboard"
+msgstr "%1 用户显示板"
 
-#. (workspace)
-#: ../socialtext-reports/template/workspace_dashboard.tmpl:2
 msgid "reports.dashboard=wiki"
-msgstr "%1 Workspace Dashboard"
+msgstr "%1 工作区显示板"
 
-#: ../socialtext-reports/template/account_growth.tmpl:23 ../socialtext-reports/template/workspace_growth.tmpl:23
 msgid "reports.date"
-msgstr "Date"
+msgstr "日期"
 
-#: ../socialtext-reports/lib/Socialtext/Reports/REST.pm:130
 msgid "reports.date-supplied-but-this-report-needs-none!"
-msgstr "Date supplied, but this report doesn't need one!"
+msgstr "已提供日期，但该报告不需要日期！"
 
-#: ../socialtext-reports/template/analytics.tmpl:46
 msgid "reports.duration:"
-msgstr "Duration:"
+msgstr "持续时间："
 
-#: ../socialtext-reports/template/workspace_dashboard.tmpl:16 ../socialtext-reports/template/workspace_dashboard.tmpl:17
 msgid "reports.edits-by-user"
-msgstr "Edits by User"
+msgstr "被用户编辑"
 
-#. (username)
-#: ../socialtext-reports/template/user_dashboard.tmpl:40 ../socialtext-reports/template/user_dashboard.tmpl:42
 msgid "reports.edits-pages-read-by-these-people=user:"
-msgstr "%1 edits pages read by these people:"
+msgstr "%1 编辑页面被下列人员阅读过："
 
-#. (username)
-#: ../socialtext-reports/template/user_dashboard.tmpl:33 ../socialtext-reports/template/user_dashboard.tmpl:36
 msgid "reports.edits-pages-with-these-people=user:"
-msgstr "%1 edits pages with these people:"
+msgstr "%1 与下列人员合作编辑过页面："
 
-#: ../socialtext-reports/template/user_dashboard.tmpl:10 ../socialtext-reports/template/user_dashboard.tmpl:11
 msgid "reports.edits-per-wiki"
-msgstr "Edits per Workspace"
+msgstr "各工作区的编辑次数"
 
-#: ../socialtext-reports/template/available_reports.tmpl:4
 msgid "reports.example-actions-today-1month-txt"
-msgstr "Example: /actions/today/-1month.txt"
+msgstr "范例：/actions/today/-1month.txt"
 
-#: ../socialtext-reports/template/controls.tmpl:4
 msgid "reports.generate!"
-msgstr "Generate!"
+msgstr "制表！"
 
-#: ../socialtext-reports/template/analytics.tmpl:15
 msgid "reports.healthy"
-msgstr "Healthy"
+msgstr "健康"
 
-#: ../socialtext-reports/template/analytics.tmpl:27
 msgid "reports.healthy-csv"
-msgstr "Healthy CSV"
+msgstr "健康CSV"
 
-#: ../socialtext-reports/template/analytics.tmpl:50
 msgid "reports.healthy-wikis"
-msgstr "Healthy Workspaces"
+msgstr "健康工作区"
 
-#. (r.name)
-#: ../socialtext-reports/template/available_reports.tmpl:12
 msgid "reports.in-past-week=name"
-msgstr "%1 in the past week"
+msgstr "过去一周的%1"
 
-#: ../socialtext-reports/template/inline_report.tmpl:9
 msgid "reports.loading-report"
-msgstr "Loading Report..."
+msgstr "正在加载报告..."
 
-#: ../socialtext-reports/template/analytics.tmpl:23
 msgid "reports.mean"
-msgstr "Mean"
+msgstr "平均值"
 
-#: ../socialtext-reports/template/analytics.tmpl:30
 msgid "reports.median"
-msgstr "Median"
+msgstr "中间值"
 
-#: ../socialtext-reports/template/usage_by.tmpl:58 ../socialtext-reports/template/usage_by_workspace.tmpl:48
 msgid "reports.no-user-stats-for-this-period"
-msgstr "No user stats are available for this period."
+msgstr "这段时期没有可用的用户状态。"
 
-#: ../socialtext-reports/template/analytics.tmpl:27
 msgid "reports.other-csv"
-msgstr "Other CSV"
+msgstr "其他CSV"
 
-#: ../socialtext-reports/template/analytics.tmpl:54
 msgid "reports.other-wikis"
-msgstr "Other Workspaces"
+msgstr "其他工作区"
 
-#: ../socialtext-reports/template/analytics.tmpl:16
 msgid "reports.others"
-msgstr "Others"
+msgstr "其他"
 
-#: ../socialtext-reports/template/usage_by.tmpl:34 ../socialtext-reports/template/usage_by.tmpl:35 ../socialtext-reports/template/usage_by_workspace.tmpl:29 ../socialtext-reports/template/usage_by_workspace.tmpl:30
 msgid "reports.page"
-msgstr "Page"
+msgstr "页面"
 
-#: ../socialtext-reports/template/account_growth.tmpl:34 ../socialtext-reports/template/workspace_growth.tmpl:28
 msgid "reports.page-views"
-msgstr "Page Views"
+msgstr "页面视图"
 
-#: ../socialtext-reports/template/account_growth.tmpl:33 ../socialtext-reports/template/workspace_growth.tmpl:27
 msgid "reports.pages"
-msgstr "Pages"
+msgstr "页面"
 
-#: ../socialtext-reports/template/usage_by.tmpl:31 ../socialtext-reports/template/usage_by.tmpl:32
 msgid "reports.people"
-msgstr "People"
+msgstr "人员"
 
-#: ../socialtext-reports/template/account_growth.tmpl:29
 msgid "reports.people-views"
-msgstr "People Views"
+msgstr "人员检视"
 
-#: ../socialtext-reports/template/usage_by.tmpl:30
 msgid "reports.personalizations"
-msgstr "Personalizations"
+msgstr "个人化"
 
-#: ../socialtext-reports/template/account_growth.tmpl:27
 msgid "reports.personalized-dashboards"
-msgstr "Personalized Dashboards"
+msgstr "个人化的显示板"
 
-#: ../socialtext-reports/template/account_growth.tmpl:28
 msgid "reports.personalized-profiles"
-msgstr "Personalized Profiles"
+msgstr "个人化的用户信息页面"
 
-#. (username)
-#: ../socialtext-reports/template/user_dashboard.tmpl:47 ../socialtext-reports/template/user_dashboard.tmpl:49
 msgid "reports.reads-pages-edited-by-these-people=user:"
-msgstr "%1 reads pages edited by these people:"
+msgstr "这些用户编辑了 %1 阅读页面："
 
-#: ../socialtext-reports/template/controls.tmpl:3 ../socialtext-reports/template/usage_by.tmpl:17 ../socialtext-reports/template/usage_by_workspace.tmpl:17
 msgid "reports.report-duration:"
-msgstr "Report duration:"
+msgstr "报告持续时间："
 
-#: ../socialtext-reports/template/controls.tmpl:2
 msgid "reports.report-start-date:"
-msgstr "Report Start Date:"
+msgstr "报告开始日期："
 
-#: ../socialtext-reports/template/analytics.tmpl:45
 msgid "reports.report-start-time:"
-msgstr "Report Start time:"
+msgstr "报告开始时间："
 
-#: ../socialtext-reports/template/usage_by.tmpl:16 ../socialtext-reports/template/usage_by_workspace.tmpl:16
 msgid "reports.report-starting-on:"
-msgstr "Report starting on:"
+msgstr "报告开始于："
 
-#: ../socialtext-reports/template/dashboard.tmpl:2 ../socialtext-reports/template/wrapper.tmpl:3
 msgid "reports.reports-dashboard"
-msgstr "Reports Dashboard"
+msgstr "报告显示板"
 
-#: ../socialtext-reports/template/usage_by.tmpl:33
 msgid "reports.sent"
-msgstr "Sent"
+msgstr "已发送"
 
-#: ../socialtext-reports/template/usage_by.tmpl:33
 msgid "reports.signals"
-msgstr "Signals"
+msgstr "讯息"
 
-#: ../socialtext-reports/template/account_growth.tmpl:31
 msgid "reports.signals-sent"
-msgstr "Signals Sent"
+msgstr "已发送讯息"
 
-#: ../socialtext-reports/template/analytics.tmpl:36
 msgid "reports.stddev"
-msgstr "StdDev"
+msgstr "标准差"
 
-#: ../socialtext-reports/template/analytics.tmpl:47
 msgid "reports.submit"
-msgstr "Submit"
+msgstr "提交"
 
-#: ../socialtext-reports/template/usage_by.tmpl:21 ../socialtext-reports/template/usage_by_workspace.tmpl:21
 msgid "reports.total-members-current:"
-msgstr "Total members (current):"
+msgstr "完整成员（当前）："
 
-#: ../socialtext-reports/template/usage_by.tmpl:19 ../socialtext-reports/template/usage_by_workspace.tmpl:19
 msgid "reports.total-unique-contributors:"
-msgstr "Total unique contributors:"
+msgstr "完整独立贡献者："
 
-#: ../socialtext-reports/template/usage_by.tmpl:20 ../socialtext-reports/template/usage_by_workspace.tmpl:20
 msgid "reports.total-unique-visitors:"
-msgstr "Total unique visitors:"
+msgstr "完整独立访客："
 
-#: ../socialtext-reports/template/account_growth.tmpl:26 ../socialtext-reports/template/workspace_growth.tmpl:26
 msgid "reports.unique-contributors"
-msgstr "Unique Contributors"
+msgstr "独立贡献者"
 
-#: ../socialtext-reports/template/usage_by.tmpl:22 ../socialtext-reports/template/usage_by_workspace.tmpl:22
 msgid "reports.unique-contributors-as-percent-of-unique-visitors"
-msgstr "(unique contributors as a percent of unique visitors)"
+msgstr "（独立贡献者在独立访客中所占比率）"
 
-#: ../socialtext-reports/template/account_growth.tmpl:24 ../socialtext-reports/template/workspace_growth.tmpl:24
 msgid "reports.unique-members"
-msgstr "Unique Members"
+msgstr "独立成员"
 
-#: ../socialtext-reports/template/account_growth.tmpl:25 ../socialtext-reports/template/workspace_growth.tmpl:25
 msgid "reports.unique-visitors"
-msgstr "Unique Visitors"
+msgstr "独立访客"
 
-#: ../socialtext-reports/template/analytics.tmpl:10 ../socialtext-reports/template/user_dashboard.tmpl:3 ../socialtext-reports/template/workspace_dashboard.tmpl:3
 msgid "reports.up-to-main-dashboard"
-msgstr "Up to main dashboard"
+msgstr "退回主显示板"
 
-#: ../socialtext-reports/template/available_reports.tmpl:3
 msgid "reports.url-format-report-name-start-time-duration-type"
-msgstr "URL Format: /&lt;report_name&gt;/&lt;start_time&gt;/&lt;duration&gt;.&lt;type&gt;"
+msgstr "网址格式： /&lt;report_name&gt;/&lt;start_time&gt;/&lt;duration&gt;.&lt;type&gt;"
 
-#: ../socialtext-reports/template/usage_by.tmpl:28 ../socialtext-reports/template/usage_by_workspace.tmpl:28
 msgid "reports.username"
-msgstr "Username"
+msgstr "用户名"
 
-#: ../socialtext-reports/template/usage_by.tmpl:29 ../socialtext-reports/template/usage_by.tmpl:31 ../socialtext-reports/template/usage_by.tmpl:34 ../socialtext-reports/template/usage_by_workspace.tmpl:29
 msgid "reports.views"
-msgstr "Views"
+msgstr "查看"
 
-#: ../socialtext-reports/template/dashboard.tmpl:15 ../socialtext-reports/template/dashboard.tmpl:16 ../socialtext-reports/template/workspace_dashboard.tmpl:24 ../socialtext-reports/template/workspace_dashboard.tmpl:25
 msgid "reports.views-by-page"
-msgstr "Views by Page"
+msgstr "按页面查看"
 
-#: ../socialtext-reports/template/workspace_dashboard.tmpl:10 ../socialtext-reports/template/workspace_dashboard.tmpl:11
 msgid "reports.views-by-user"
-msgstr "Views by User"
+msgstr "按用户查看"
 
-#: ../socialtext-reports/template/dashboard.tmpl:10 ../socialtext-reports/template/dashboard.tmpl:9
 msgid "reports.views-by-wiki"
-msgstr "Views by Workspace"
+msgstr "按工作区查看"
 
-#: ../socialtext-reports/template/user_dashboard.tmpl:17 ../socialtext-reports/template/user_dashboard.tmpl:18
 msgid "reports.views-per-wiki"
-msgstr "Views per Workspace"
+msgstr "每工作区查看"
 
-#: ../socialtext-reports/template/dashboard.tmpl:21 ../socialtext-reports/template/dashboard.tmpl:22
 msgid "reports.wiki-actions"
-msgstr "Workspace Actions"
+msgstr "工作区操作"
 
-#: ../socialtext-reports/template/analytics.tmpl:9
 msgid "reports.wiki-analytics"
-msgstr "Wiki Analytics"
+msgstr "共笔分析"
 
-#: ../socialtext-reports/template/account_growth.tmpl:35
 msgid "reports.wiki-contributions"
-msgstr "Workspace Contributions"
+msgstr "工作区贡献者"
 
-#: ../socialtext-reports/template/dashboard.tmpl:29 ../socialtext-reports/template/dashboard.tmpl:30
 msgid "reports.wiki-edits-by-user"
-msgstr "Workspace Edits by User"
+msgstr "工作区被用户编辑"
 
-#: ../socialtext-reports/template/usage_by.tmpl:46 ../socialtext-reports/template/usage_by_workspace.tmpl:41
 msgid "reports.wiki-total"
-msgstr "Workspace total"
+msgstr "工作区总量"
 
-#: ../socialtext-reports/template/dashboard.tmpl:35 ../socialtext-reports/template/dashboard.tmpl:36
 msgid "reports.wiki-views-by-user"
-msgstr "Workspace Views by User"
+msgstr "按用户查看工作区"
 
-#: ../socialtext-reports/template/account_growth.tmpl:32
 msgid "reports.wikis"
-msgstr "Workspaces"
+msgstr "工作区"
 
 #. ($self->_workspace->title)
 #. ($self->_group->display_name)

@@ -71,7 +71,7 @@ msgstr "这是您工作区独有的短识别符，用于网址与电邮地址。
 
 #: share/plugin/control/template/control/index.html:32
 msgid "control.about-wikis-tab"
-msgstr "工作区是存放维基与文档的地方。在此创建新的工作区。"
+msgstr "工作区是存放共笔与文档的地方。在此创建新的工作区。"
 
 #: share/plugin/control/template/control/group.html:77 share/plugin/control/template/control/user.html:290 share/plugin/control/template/control/workspace.html:10 share/plugin/control/template/control/workspace_invite.html:98 share/plugin/control/template/control/workspace_table:17 share/plugin/control/template/control/workspace_table:28 share/plugin/control/template/control/workspaces_new.html:20
 msgid "control.account"

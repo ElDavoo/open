@@ -569,7 +569,7 @@ msgstr "链接到..."
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu:13
 msgid "insert.link2"
-msgstr "一个不同的维基页面"
+msgstr "另一个共笔页面"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu:16
 msgid "insert.link2-hyperlink"
