@@ -1,5 +1,7 @@
 #!/usr/bin/env perl
 # @COPYRIGHT@
+use strict;
+no strict 'subs';
 use warnings;
 use Test::More tests=>3;
 use Test::LectroTest::Compat;
