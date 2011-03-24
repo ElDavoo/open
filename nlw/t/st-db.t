@@ -4,6 +4,7 @@ use strict;
 use warnings;
 
 use Test::Socialtext tests => 5;
+use Socialtext::AppConfig;
 use Socialtext::Paths;
 use File::Path qw/mkpath/;
 fixtures('db');
@@ -22,5 +23,7 @@ ST_DB_DUMP_DATA: {
     ok($rv, "Safely opened $dir");
     my @files = grep { /\.dump$/  } readdir($fh);
     is(scalar(@files), 1, "Found exactly one file");
-    like($files[0], qr/^NLW_.*?-dump\.\d+\.sql$/, "Ensure we got a dump file");
+
+    my $db_name = Socialtext::AppConfig->db_name;
+    like $files[0], qr/^$db_name\.\d+\.dump$/, 'Ensure we got a dump file';
 }
