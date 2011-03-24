@@ -2004,14 +2004,11 @@ proto.do_opensocial_gallery = function() {
 
     get_plugin_lightbox('widgets', 'opensocial-gallery', function () {
         var gallery = new ST.OpenSocialGallery({
+            container_type: 'page',
             account_id: Socialtext.current_workspace_account_id,
             onAddWidget: function(src) {
                 Wikiwyg.Widgets.widget_editing = 1;
                 self.do_opensocial_setup(src);
-            },
-            hidden: {
-                'local:widgets:activities': true,
-                'http://www.google.com/ig/modules/calendar3.xml': true
             }
         });
         gallery.showLightbox();
