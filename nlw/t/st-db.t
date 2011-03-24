@@ -20,7 +20,7 @@ ST_DB_DUMP_DATA: {
     ok((-d $dir), "db-backups directory exists");
     $rv = opendir(my $fh, $dir);
     ok($rv, "Safely opened $dir");
-    my @files = grep { /\.sql$/  } readdir($fh);
+    my @files = grep { /\.dump$/  } readdir($fh);
     is(scalar(@files), 1, "Found exactly one file");
     like($files[0], qr/^NLW_.*?-dump\.\d+\.sql$/, "Ensure we got a dump file");
 }
