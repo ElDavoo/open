@@ -7518,6 +7518,94 @@ msgstr "您只能關聯%1工作區到一個%2的群組。"
 msgid "groups.you-must-be-wiki-admin-to-associate-it-with-group"
 msgstr "您必須是工作區的管理員，方能關聯該工作區至本群組。"
 
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:244
+msgid "heading.account_id"
+msgstr "account_id"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:245
+msgid "heading.action"
+msgstr "action"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:246
+msgid "heading.actor"
+msgstr "actor"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:247
+msgid "heading.contributions"
+msgstr "contributions"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:248
+msgid "heading.count"
+msgstr "count"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:249
+msgid "heading.detail_headings"
+msgstr "detail_headings"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:250
+msgid "heading.gadget_id"
+msgstr "gadget_id"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:251
+msgid "heading.page_id"
+msgstr "page_id"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:252
+msgid "heading.page_views"
+msgstr ""
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:253
+msgid "heading.pages"
+msgstr "pages"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:254
+msgid "heading.period"
+msgstr "period"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:255
+msgid "heading.period_start"
+msgstr "period_start"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:256
+msgid "heading.tally"
+msgstr "tally"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:257
+msgid "heading.title"
+msgstr "title"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:258
+msgid "heading.unique_contributors"
+msgstr "unique_contributors"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:259
+msgid "heading.unique_members"
+msgstr "unique_members"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:260
+msgid "heading.unique_visitors"
+msgstr "unique_visitors"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:261
+msgid "heading.user_id"
+msgstr "user_id"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:262
+msgid "heading.username"
+msgstr "username"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:263
+msgid "heading.views"
+msgstr "views"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:264
+msgid "heading.workspace"
+msgstr "workspace"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:265
+msgid "heading.workspaces"
+msgstr "workspaces"
+
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:32
 msgid "image.upload"
 msgstr "上傳圖片"

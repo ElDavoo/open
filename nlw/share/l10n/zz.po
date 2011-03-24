@@ -1,3 +1,36 @@
+# #-#-#-#-#  wikiwyg.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  twilio.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  template.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  socialcalc.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  signals.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  mediawiki.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  groups.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  fields.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  dashboard.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  control.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  bin.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  appliance.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  analytics.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
 #, fuzzy
 msgid ""
@@ -53,6 +86,14 @@ msgstr ""
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
 "PO-Revision-Date: 2011-02-25 12:38+0800\n"
+"Language-Team: Socialtext i18n team\n"
+"Last-Translator: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"#-#-#-#-#  reports.po (Socialtext i18n)  #-#-#-#-#\n"
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-02-24 01:39+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -7752,6 +7793,94 @@ msgstr "Zzz zzz zzzz zzzzzzzzz %1 zzzzzzzzzz zzzz z %2 zzzzz."
 #: share/plugin/groups/share/widgets/membership/jemplate/workspaces.tt2:32
 msgid "groups.you-must-be-wiki-admin-to-associate-it-with-group"
 msgstr "Zzz zzzz zz zz Zzzzz zz zzz zzzzzzzzz zz zzzzz zz zzzzzzzzz zz zzzz zzzz zzzzz."
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:244
+msgid "heading.account_id"
+msgstr "zzzzzzz_zz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:245
+msgid "heading.action"
+msgstr "zzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:246
+msgid "heading.actor"
+msgstr "zzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:247
+msgid "heading.contributions"
+msgstr "zzzzzzzzzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:248
+msgid "heading.count"
+msgstr "zzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:249
+msgid "heading.detail_headings"
+msgstr "zzzzzz_zzzzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:250
+msgid "heading.gadget_id"
+msgstr "zzzzzz_zz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:251
+msgid "heading.page_id"
+msgstr "zzzz_zz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:252
+msgid "heading.page_views"
+msgstr ""
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:253
+msgid "heading.pages"
+msgstr "zzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:254
+msgid "heading.period"
+msgstr "zzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:255
+msgid "heading.period_start"
+msgstr "zzzzzz_zzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:256
+msgid "heading.tally"
+msgstr "zzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:257
+msgid "heading.title"
+msgstr "zzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:258
+msgid "heading.unique_contributors"
+msgstr "zzzzzz_zzzzzzzzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:259
+msgid "heading.unique_members"
+msgstr "zzzzzz_zzzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:260
+msgid "heading.unique_visitors"
+msgstr "zzzzzz_zzzzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:261
+msgid "heading.user_id"
+msgstr "zzzz_zz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:262
+msgid "heading.username"
+msgstr "zzzzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:263
+msgid "heading.views"
+msgstr "zzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:264
+msgid "heading.workspace"
+msgstr "zzzzzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:265
+msgid "heading.workspaces"
+msgstr "zzzzzzzzzz"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:32
 msgid "image.upload"
