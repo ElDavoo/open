@@ -6203,6 +6203,14 @@ msgstr "account_id is mandatory"
 msgid "error.report-wiki-required"
 msgstr "workspace is mandatory"
 
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/GrowthByAccount.pm:62
+msgid "error.reports-account-id-required!"
+msgstr "Account ID is mandatory!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UserWorkspaceUsage.pm:29
+msgid "error.reports-current-user-required"
+msgstr "this report does not work without a current user"
+
 #: ../socialtext-reports/lib/Socialtext/Reports/REST.pm:135
 msgid "error.reports-date-required!"
 msgstr "This report requires a date!"
@@ -6211,9 +6219,48 @@ msgstr "This report requires a date!"
 msgid "error.reports-duration-required!"
 msgstr "duration is mandatory!"
 
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UserWorkspaceUsage.pm:33
+msgid "error.reports-invalid=user"
+msgstr "'%1' is an invalid user"
+
+#. ($acct_name)
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/TopContent.pm:87
+msgid "error.reports-no-account=name"
+msgstr "No account named %1"
+
+#. ($group_id)
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/GroupWorkspaceUsage.pm:23
+msgid "error.reports-no-group=id"
+msgstr "Can't find group '%1'"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/Growth.pm:47
+msgid "error.reports-no-growth-data-available"
+msgstr "No growth data available."
+
+#. ($ws_name)
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/TopContent.pm:74
+msgid "error.reports-no-wiki=name"
+msgstr "No workspace named %1"
+
 #: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:28
 msgid "error.reports-start_time-required!"
 msgstr "start_time is mandatory!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/SocialByUser.pm:18
+msgid "error.reports-username-required!"
+msgstr "Username is mandatory!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/ViewersByPage.pm:16
+msgid "error.reports-wiki-and-page_id-required"
+msgstr "workspace and page_id are mandatory!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/WorkspaceGrowth.pm:40
+msgid "error.reports-wiki-required!"
+msgstr "Workspace is mandatory!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/WorkspaceActionByTime.pm:34
+msgid "error.reports-wiki-required-specify-on-url"
+msgstr "Workspace is mandatory! - Give a workspace=name on the URL"
 
 #: lib/Socialtext/Hub.pm:189
 msgid "error.request"
@@ -6524,6 +6571,11 @@ msgstr "Unexpected Widget >>%1<< in parseWidget"
 #: lib/Socialtext/Gadgets/Gadget/XML.pm:35
 msgid "error.unknown"
 msgstr "Unknown error"
+
+#. ($type)
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/TopUsers.pm:48
+msgid "error.unknown-report=type"
+msgstr "Unknown report (%1)"
 
 #. ($type)
 #: lib/Socialtext/CLI.pm:1054

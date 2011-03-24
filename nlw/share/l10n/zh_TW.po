@@ -5940,14 +5940,47 @@ msgstr "必須要有 account_id"
 msgid "error.report-wiki-required"
 msgstr "必須要有 workspace"
 
+msgid "error.reports-account-id-required!"
+msgstr "必須要有 Account ID！"
+
+msgid "error.reports-current-user-required"
+msgstr "此報表必須要指定現行用戶"
+
 msgid "error.reports-date-required!"
 msgstr "該報告需要日期！"
 
 msgid "error.reports-duration-required!"
 msgstr "必須提供持續時間！"
 
+msgid "error.reports-invalid=user"
+msgstr "'%1' 不是正確的用戶"
+
+msgid "error.reports-no-account=name"
+msgstr "找不到名為 %1 的帳戶"
+
+msgid "error.reports-no-group=id"
+msgstr "找不到編號為 %1 的群組"
+
+msgid "error.reports-no-growth-data-available"
+msgstr "目前沒有增長用量資料。"
+
+msgid "error.reports-no-wiki=name"
+msgstr "找不到名為 %1 的工作區"
+
 msgid "error.reports-start_time-required!"
 msgstr "必須提供開始時間！"
+
+msgid "error.reports-username-required!"
+msgstr "必須要有用戶名稱！"
+
+msgid "error.reports-wiki-and-page_id-required"
+msgstr "必須要有工作區和頁面名稱！"
+
+msgid "error.reports-wiki-required!"
+msgstr "必須要有工作區！"
+
+msgid "error.reports-wiki-required-specify-on-url"
+msgstr "必須要有工作區！請在網址列填上 workspace=名稱"
 
 #: lib/Socialtext/Hub.pm:189
 msgid "error.request"
@@ -6255,6 +6288,9 @@ msgstr "parseWidget：小工具 >>%1<< 無效"
 #: lib/Socialtext/Gadgets/Gadget/XML.pm:35
 msgid "error.unknown"
 msgstr "未知錯誤"
+
+msgid "error.unknown-report=type"
+msgstr "未知的報表（%1）"
 
 #. ($type)
 #: lib/Socialtext/CLI.pm:1054
@@ -10430,13 +10466,13 @@ msgid "reports.submit"
 msgstr "送出"
 
 msgid "reports.total-members-current:"
-msgstr "成員總計（目前）："
+msgstr "完整成員（目前）："
 
 msgid "reports.total-unique-contributors:"
-msgstr "獨立貢獻者總計："
+msgstr "完整獨立貢獻者："
 
 msgid "reports.total-unique-visitors:"
-msgstr "獨立訪客總計："
+msgstr "完整獨立訪客："
 
 msgid "reports.unique-contributors"
 msgstr "獨立貢獻者"
@@ -10484,7 +10520,7 @@ msgid "reports.wiki-actions"
 msgstr "工作區操作"
 
 msgid "reports.wiki-analytics"
-msgstr "共筆分析"
+msgstr "維基分析"
 
 msgid "reports.wiki-contributions"
 msgstr "工作區貢獻者"

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-24 06:46:13+0000\n"
+"PO-Revision-Date: 2011-03-24 07:31:35+0000\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -21,14 +21,50 @@ msgstr "必须要有 account_id"
 msgid "error.report-wiki-required"
 msgstr "必须要有 workspace"
 
+msgid "error.reports-account-id-required!"
+msgstr "必须要有 Account ID！"
+
+msgid "error.reports-current-user-required"
+msgstr "此报表必须要指定现行用户"
+
 msgid "error.reports-date-required!"
 msgstr "该报告需要日期！"
 
 msgid "error.reports-duration-required!"
 msgstr "必须提供持续时间！"
 
+msgid "error.reports-invalid=user"
+msgstr "'%1' 不是正确的用户"
+
+msgid "error.reports-no-account=name"
+msgstr "找不到名为 %1 的帐户"
+
+msgid "error.reports-no-group=id"
+msgstr "找不到编号为 %1 的群组"
+
+msgid "error.reports-no-growth-data-available"
+msgstr "目前没有增长用量数据。"
+
+msgid "error.reports-no-wiki=name"
+msgstr "找不到名为 %1 的工作区"
+
 msgid "error.reports-start_time-required!"
 msgstr "必须提供开始时间！"
+
+msgid "error.reports-username-required!"
+msgstr "必须要有用户名称！"
+
+msgid "error.reports-wiki-and-page_id-required"
+msgstr "必须要有工作区和页面名称！"
+
+msgid "error.reports-wiki-required!"
+msgstr "必须要有工作区！"
+
+msgid "error.reports-wiki-required-specify-on-url"
+msgstr "必须要有工作区！请在网址列填上 workspace=名称"
+
+msgid "error.unknown-report=type"
+msgstr "未知的报表（%1）"
 
 msgid "heading.account_id"
 msgstr "帐户ID"
@@ -253,13 +289,13 @@ msgid "reports.submit"
 msgstr "提交"
 
 msgid "reports.total-members-current:"
-msgstr "成员总计（当前）："
+msgstr "完整成员（当前）："
 
 msgid "reports.total-unique-contributors:"
-msgstr "独立贡献者总计："
+msgstr "完整独立贡献者："
 
 msgid "reports.total-unique-visitors:"
-msgstr "独立访客总计："
+msgstr "完整独立访客："
 
 msgid "reports.unique-contributors"
 msgstr "独立贡献者"
@@ -307,7 +343,7 @@ msgid "reports.wiki-actions"
 msgstr "工作区操作"
 
 msgid "reports.wiki-analytics"
-msgstr "共笔分析"
+msgstr "维基分析"
 
 msgid "reports.wiki-contributions"
 msgstr "工作区贡献者"

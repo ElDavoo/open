@@ -6203,6 +6203,14 @@ msgstr "zzzzzzz_zz zz zzzzzzzzz"
 msgid "error.report-wiki-required"
 msgstr "zzzzzzzzz zz zzzzzzzzz"
 
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/GrowthByAccount.pm:62
+msgid "error.reports-account-id-required!"
+msgstr "Zzzzzzz ZZ zz zzzzzzzzz!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UserWorkspaceUsage.pm:29
+msgid "error.reports-current-user-required"
+msgstr "zzzz zzzzzz zzzz zzz zzzz zzzzzzz z zzzzzzz zzzz"
+
 #: ../socialtext-reports/lib/Socialtext/Reports/REST.pm:135
 msgid "error.reports-date-required!"
 msgstr "Zzzz zzzzzz zzzzzzzz z zzzz!"
@@ -6211,9 +6219,48 @@ msgstr "Zzzz zzzzzz zzzzzzzz z zzzz!"
 msgid "error.reports-duration-required!"
 msgstr "zzzzzzzz zz zzzzzzzzz!"
 
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UserWorkspaceUsage.pm:33
+msgid "error.reports-invalid=user"
+msgstr "'%1' zz zz zzzzzzz zzzz"
+
+#. ($acct_name)
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/TopContent.pm:87
+msgid "error.reports-no-account=name"
+msgstr "Zz zzzzzzz zzzzz %1"
+
+#. ($group_id)
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/GroupWorkspaceUsage.pm:23
+msgid "error.reports-no-group=id"
+msgstr "Zzz'z zzzz zzzzz '%1'"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/Growth.pm:47
+msgid "error.reports-no-growth-data-available"
+msgstr "Zz zzzzzz zzzz zzzzzzzzz."
+
+#. ($ws_name)
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/TopContent.pm:74
+msgid "error.reports-no-wiki=name"
+msgstr "Zz zzzzzzzzz zzzzz %1"
+
 #: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:28
 msgid "error.reports-start_time-required!"
 msgstr "zzzzz_zzzz zz zzzzzzzzz!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/SocialByUser.pm:18
+msgid "error.reports-username-required!"
+msgstr "Zzzzzzzz zz zzzzzzzzz!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/ViewersByPage.pm:16
+msgid "error.reports-wiki-and-page_id-required"
+msgstr "zzzzzzzzz zzz zzzz_zz zzz zzzzzzzzz!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/WorkspaceGrowth.pm:40
+msgid "error.reports-wiki-required!"
+msgstr "Zzzzzzzzz zz zzzzzzzzz!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/WorkspaceActionByTime.pm:34
+msgid "error.reports-wiki-required-specify-on-url"
+msgstr "Zzzzzzzzz zz zzzzzzzzz! - Zzzz z zzzzzzzzz=zzzz zz zzz ZZZ"
 
 #: lib/Socialtext/Hub.pm:189
 msgid "error.request"
@@ -6524,6 +6571,11 @@ msgstr "Zzzzzzzzzz Zzzzzz >>%1<< in parseWidget"
 #: lib/Socialtext/Gadgets/Gadget/XML.pm:35
 msgid "error.unknown"
 msgstr "Zzzzzzz zzzzz"
+
+#. ($type)
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/TopUsers.pm:48
+msgid "error.unknown-report=type"
+msgstr "Zzzzzzz zzzzzz (%1)"
 
 #. ($type)
 #: lib/Socialtext/CLI.pm:1054
