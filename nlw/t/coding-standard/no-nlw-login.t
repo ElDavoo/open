@@ -9,26 +9,34 @@ use Test::Differences;
 
 # List of things that are OK to include "/nlw/login.html" in them.
 my @skip_paths = qw(
-    share/migrations/
-    share/workspaces/stl10n/
-    t/
+    ./share/migrations/
+    ./share/workspaces/stl10n/
 );
 my %skip_files =
     map { $_ => 1 }
     qw(
-        dev-bin/st-create-account-data
-        lib/Socialtext/Challenger/STLogin.pm
-        share/skin/js-test/s3/t/bz-1379.t.js
-        share/skin/js-test/s3/t/bz-1500.t.js
-        share/workspaces/wikitests/test_case_login_logout
-        share/workspaces/wikitests/test_case_appliance_health_report
-        build/templates/apache-perl/nlw.tt2
+        ./dev-bin/st-create-account-data
+        ./lib/Socialtext/Challenger/STLogin.pm
+        ./share/skin/js-test/s3/t/bz-1379.t.js
+        ./share/skin/js-test/s3/t/bz-1500.t.js
+        ./share/workspaces/wikitests/test_case_login_logout
+        ./share/workspaces/wikitests/test_case_appliance_health_report
+        ./build/templates/apache-perl/nlw.tt2
     );
 
 SKIP: {
-    skip 'No `ack` available', 1, unless `which ack` =~ /\w/;
+    skip 'No `grep` available', 1, unless `which grep` =~ /\w/;
 
-    my @candidates = `ack --follow --nocolor --all -l /nlw/login.html .`;
+    my @args = qw(
+        --recursive
+        --files-with-matches
+        --devices=skip
+        --exclude-dir=.git
+        --exclude-dir=blib
+        --exclude-dir=tmp
+        --exclude-dir=t
+    );
+    my @candidates = `grep @args /nlw/login.html .`;
     chomp @candidates;
 
     my @bad_files;
