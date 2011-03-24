@@ -33,6 +33,7 @@ for my $lang (sort { en($a) cmp en($b) } @ARGV) {
     $lang =~ s/(_\w+)$/uc $1/e;
     for my $po (glob("share/l10n/$lang/*.po")) {
         next if $po =~ /lib\.po$/; # Not going to occur in JS
+        next if $po =~ /reports\.po$/; # Not going to occur in JS
 
         open my $in, '<:utf8', $po;
 
