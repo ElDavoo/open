@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>398</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-398.air</url>
-<description><![CDATA[[Build 398 - Tue Mar 22 05:14:48 PDT 2011]
+  <version>400</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-400.air</url>
+<description><![CDATA[[Build 400 - Wed Mar 23 22:59:54 PDT 2011]
+* Sync to the latest AW code. {bz: 5050}
+
+[Build 399 - Wed Mar 23 01:36:27 PDT 2011]
+* Speed up display of the just-posted signal using the POST response data. (Ken)
+
+[Build 398 - Tue Mar 22 05:14:48 PDT 2011]
 * Repair compatibility with Adobe AIR 2.6 runtime.
 
 [Build 397 - Tue Mar 22 03:38:25 PDT 2011]
