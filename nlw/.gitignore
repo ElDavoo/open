@@ -587,13 +587,3 @@ t/js/activities-dm.t.js
 t/js/activities.js
 hudson.prove
 t/js/lib/mocked-push-client.js
-lib/Socialtext/Page/BMTablePopulator.pm
-lib/Socialtext/Gadgets/Feature.pm
-lib/Socialtext/Rest/Group/Peopletags.pm
-t/wikitests/groups/peopletags.wiki
-lib/Socialtext/Gadget/Base.pm
-lib/Socialtext/Gadget/Renderer.pm
-t/share/plugin/fakeplugin/views-inline-good.xml
-t/share/plugin/fakeplugin/share/widgets/views-inline-good.xml
-t/wikitests/rest/data_gadget.wiki
-lib/Socialtext/Pluggable/Plugin/TestPlugin.pm
