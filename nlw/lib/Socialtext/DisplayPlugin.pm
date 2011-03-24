@@ -37,7 +37,6 @@ sub register {
     $registry->add(action => 'preview');
     $registry->add(preference => $self->mouseover_length);
     $registry->add(preference => $self->include_breadcrumbs);
-    $registry->add(preference => $self->locale);
 }
 
 sub page_info {
@@ -118,20 +117,6 @@ sub include_breadcrumbs {
     $p->query(_('wiki.include-breadcrumbs?'));
     $p->type('boolean');
     $p->default(0);
-    return $p;
-}
-
-sub locale {
-    my $self = shift;
-    my $p = $self->new_preference('locale');
-    $p->query(_('config.language?'));
-    $p->type('pulldown');
-    my $languages = available_locales();
-    my $choices = [ map {$_ => $languages->{$_}} sort keys %$languages ];
-    $p->choices($choices);
-
-    # XXX default value should be server locale
-    $p->default(system_locale());
     return $p;
 }
 
