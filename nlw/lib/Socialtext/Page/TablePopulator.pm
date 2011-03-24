@@ -634,7 +634,7 @@ sub _clean_email_address {
         $email_address = $name . '@example.com';
     }
 
-   return $email_address;
+   return lc $email_address;
 }
 
 sub editor_to_id {
@@ -730,7 +730,7 @@ sub cleanup_missing_editors {
             $att_update_sth->execute($editor, $attmeta->{attachment_id});
         }
         catch {
-            warn "Counld not update editor to '$editor' for "
+            warn "Could not update editor to '$editor' for "
                 . "attachment_id=($attmeta->{attachment_id})\n";
         };
     };
