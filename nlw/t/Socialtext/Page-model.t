@@ -6,6 +6,8 @@ use mocked 'Socialtext::Events';
 use Test::Socialtext tests => 43;
 use ok 'Socialtext::Page';
 
+fixtures(qw( db ));
+
 my $hub = create_test_hub();
 my $ws = $hub->current_workspace;
 my $editor = create_test_user(username_isnt_email => 1);
