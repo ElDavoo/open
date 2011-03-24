@@ -9,10 +9,7 @@ use Socialtext::Paths;
 use File::Path qw/mkpath/;
 fixtures('db');
 
-# This is normally created by fdefs, but doesn't exist in the unit-test
-# environment
 my $dir = Socialtext::Paths::storage_directory("db-backups");
-mkpath $dir unless -d $dir;
 
 ST_DB_DUMP_DATA: {
     my $rv = system("bin/st-db", "dump");
