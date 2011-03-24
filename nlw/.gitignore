@@ -582,3 +582,4 @@ lib/Socialtext/Appliance/PgRestore.pm
 t/js/activities-dm.t.js
 t/js/activities.js
 hudson.prove
+t/js/lib/mocked-push-client.js
