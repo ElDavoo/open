@@ -6,7 +6,6 @@ use warnings;
 use Test::Socialtext tests => 5;
 use Socialtext::AppConfig;
 use Socialtext::Paths;
-use File::Path qw/mkpath/;
 fixtures('db');
 
 my $dir = Socialtext::Paths::storage_directory("db-backups");
