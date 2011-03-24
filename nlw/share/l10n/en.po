@@ -866,8 +866,8 @@ msgid "appliance.email-required"
 msgstr "Please enter an email address"
 
 #: lib/Socialtext/Appliance/Model/System.pm:52
-msgid "appliance.format-gb"
-msgstr "%0.2f Gb"
+msgid "appliance.gb=format"
+msgstr "%1 Gb"
 
 #: lib/Socialtext/Appliance/ConsoleController.pm:120
 msgid "appliance.initialize-wikis"

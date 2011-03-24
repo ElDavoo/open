@@ -673,8 +673,8 @@ msgstr "贡献"
 msgid "appliance.email-required"
 msgstr "请输入电子邮件地址"
 
-msgid "appliance.format-gb"
-msgstr "%0.2f Gb"
+msgid "appliance.gb=format"
+msgstr "%1 Gb"
 
 #: lib/Socialtext/Appliance/ConsoleController.pm:120
 msgid "appliance.initialize-wikis"
