@@ -14,6 +14,14 @@
 | st-logoutin | %%custom_user%% | %%password%% |
 | wait-for-element-visible-ok | link=Settings | 30000 |
 | click_and_wait | link=Settings |  |
+| wait_for_element_visible_ok | link=Language Settings | 30000 |
+| click_and_wait | link=Language Settings |  |
+| wait_for_element_visible_ok | locale | 30000 |
+| is_selected_ok | locale | label=System Default: English |
+| wait_for_element_visible_ok | -savelink | 30000 |
+| wait_for_element_visible_ok | -cancellink | 30000 |
+| select_ok | locale | label=System Default: English |
+
 
 | *Comment* | Test Case: Settings: Custom Language - Logout, login, still customized |  |
 | wait_for_element_visible_ok | logout_btn | 30000 |
@@ -30,6 +38,12 @@
 
 | *Comment* | Test Case: Settings: Custom Language - login as %%username%%, see ENGLISH |  |
 | st-login |  |  |
+| wait-for-element-visible-ok | link=Settings | 30000 |
+| click_and_wait | link=Settings |  |
+| wait_for_element_visible_ok | link=Language Settings | 30000 |
+| wait_for_element_visible_ok | locale | 30000 |
+| is_selected_ok | locale | label=System Default: English |
+
 
 
 | *Comment* | Test Case: Settings:: Custom Languag COMPLETED |  |
