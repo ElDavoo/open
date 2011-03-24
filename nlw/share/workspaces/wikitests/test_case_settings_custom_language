@@ -25,10 +25,15 @@
 | click_ok | -cancellink |  |
 | pause | 1000 |  |
 | is_selected_ok | locale | label=System Default: English |
-| click_and_wait | -savelink |  |  | *Comment* | Test Case: Settings: Custom Language - Logout, login, still customized |  |
+| click_and_wait | -savelink |  |
+| wait_for_text_present_ok | Zzzzzzz Zzzzz | 30000 |
+| wait_for_element_present_ok | link=Zzzzzzz Zzzzzzzz | 30000 |
+
+| *Comment* | Test Case: Settings: Custom Language - Logout, login, still customized |  |
 | wait_for_element_visible_ok | logout_btn | 30000 |
 | click_and_wait | logout_btn |  |
 | st-login | %%custom_user%% | %%password%% |
+| wait_for_text_present_ok | Zzzzzzz, Zzz Zzzz | 300000 |
 
 | *Comment* | Test Case: Settings: Custom Language - change back to english |  |
 
