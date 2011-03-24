@@ -5023,6 +5023,9 @@ msgstr "只能更改群组或工作区的权限。"
 msgid "error.group-required=command"
 msgstr "命令（%1）必须带有 --group 参数。"
 
+msgid "error.html-report-not-implemented"
+msgstr "HTML 报告未实作"
+
 #. ($EXPORT_VERSION)
 #: lib/Socialtext/Account.pm:430
 msgid "error.import-account=max-version"
@@ -5930,6 +5933,12 @@ msgstr "移除“%1”小工具时出错：%2"
 #: lib/Socialtext/UserSettingsPlugin.pm:237
 msgid "error.removing-last-admin"
 msgstr "不能取消最后管理员的权限。"
+
+msgid "error.report-account_id-required"
+msgstr "必须要有 account_id"
+
+msgid "error.report-wiki-required"
+msgstr "必须要有 workspace"
 
 msgid "error.reports-date-required!"
 msgstr "该报告需要日期！"
@@ -10264,6 +10273,9 @@ msgstr "工作区用量统计博客"
 msgid "report.workspace.activity=user"
 msgstr "用户 %1 的工作区活动"
 
+msgid "reports.account-growth"
+msgstr "帐户增长"
+
 msgid "reports.actions-by-wiki"
 msgstr "按工作区显示操作"
 
@@ -10418,13 +10430,13 @@ msgid "reports.submit"
 msgstr "提交"
 
 msgid "reports.total-members-current:"
-msgstr "完整成员（当前）："
+msgstr "成员总计（当前）："
 
 msgid "reports.total-unique-contributors:"
-msgstr "完整独立贡献者："
+msgstr "独立贡献者总计："
 
 msgid "reports.total-unique-visitors:"
-msgstr "完整独立访客："
+msgstr "独立访客总计："
 
 msgid "reports.unique-contributors"
 msgstr "独立贡献者"
@@ -10443,6 +10455,12 @@ msgstr "退回主显示板"
 
 msgid "reports.url-format-report-name-start-time-duration-type"
 msgstr "网址格式： /&lt;report_name&gt;/&lt;start_time&gt;/&lt;duration&gt;.&lt;type&gt;"
+
+msgid "reports.usage-by-account"
+msgstr "按帐户显示用量"
+
+msgid "reports.usage-by-wiki"
+msgstr "按工作区显示用量"
 
 msgid "reports.username"
 msgstr "用户名"
@@ -10473,6 +10491,9 @@ msgstr "工作区贡献者"
 
 msgid "reports.wiki-edits-by-user"
 msgstr "工作区被用户编辑"
+
+msgid "reports.wiki-growth"
+msgstr "工作区增长报告"
 
 msgid "reports.wiki-total"
 msgstr "工作区总量"

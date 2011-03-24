@@ -5272,6 +5272,10 @@ msgstr "Zzz zzzz zzzzzz zzzzzzzzzzz zz z zzzzz zz zzzzzzzzz."
 msgid "error.group-required=command"
 msgstr "Zzz zzzzzzz zzz zzzzzz (%1) zzzzzzzz z '--zzzzz' zzzzzzzzz."
 
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/GrowthByAppliance.pm:16 ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByAppliance.pm:17
+msgid "error.html-report-not-implemented"
+msgstr "ZZZZ Zzzzzz zz zzz zzzzzzzzzzz"
+
 #. ($EXPORT_VERSION)
 #: lib/Socialtext/Account.pm:430
 msgid "error.import-account=max-version"
@@ -6190,6 +6194,14 @@ msgstr "Zzzzz zzzzzzzz zzz \"%1\" zzzzzz: %2"
 #: lib/Socialtext/UserSettingsPlugin.pm:237
 msgid "error.removing-last-admin"
 msgstr "Zzz'z zzzzzz zzzzzzzzzz zz zzz zzzz zzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByAccount.pm:18
+msgid "error.report-account_id-required"
+msgstr "zzzzzzz_zz zz zzzzzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByWorkspace.pm:20
+msgid "error.report-wiki-required"
+msgstr "zzzzzzzzz zz zzzzzzzzz"
 
 #: ../socialtext-reports/lib/Socialtext/Reports/REST.pm:135
 msgid "error.reports-date-required!"
@@ -10581,6 +10593,10 @@ msgstr "Zzzzzzzzz Zzzzz Zzzz"
 msgid "report.workspace.activity=user"
 msgstr "Zzzzzzzzz Zzzzzzzz zzz zzzz %1"
 
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/GrowthByAccount.pm:19
+msgid "reports.account-growth"
+msgstr "Zzzzzzz Zzzzzz"
+
 #: ../socialtext-reports/template/workspace_dashboard.tmpl:30 ../socialtext-reports/template/workspace_dashboard.tmpl:31
 msgid "reports.actions-by-wiki"
 msgstr "Zzzzzzz zz Zzzzzzzzz"
@@ -10827,6 +10843,14 @@ msgstr "Zz zz zzzz zzzzzzzzz"
 msgid "reports.url-format-report-name-start-time-duration-type"
 msgstr "ZZZ Zzzzzz: /&lt;zzzzzz_zzzz&gt;/&lt;zzzzz_zzzz&gt;/&lt;zzzzzzzz&gt;.&lt;zzzz&gt;"
 
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByAccount.pm:12
+msgid "reports.usage-by-account"
+msgstr "Zzzzz Zz Zzzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByWorkspace.pm:14
+msgid "reports.usage-by-wiki"
+msgstr "Zzzzz Zz Zzzzzzzzz"
+
 #: ../socialtext-reports/template/usage_by.tmpl:28 ../socialtext-reports/template/usage_by_workspace.tmpl:28
 msgid "reports.username"
 msgstr "Zzzzzzzz"
@@ -10866,6 +10890,10 @@ msgstr "Zzzzzzzzz Zzzzzzzzzzzzz"
 #: ../socialtext-reports/template/dashboard.tmpl:29 ../socialtext-reports/template/dashboard.tmpl:30
 msgid "reports.wiki-edits-by-user"
 msgstr "Zzzzzzzzz Zzzzz zz Zzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/WorkspaceGrowth.pm:13
+msgid "reports.wiki-growth"
+msgstr "Zzzzzzzzz Zzzzzz"
 
 #: ../socialtext-reports/template/usage_by.tmpl:46 ../socialtext-reports/template/usage_by_workspace.tmpl:41
 msgid "reports.wiki-total"

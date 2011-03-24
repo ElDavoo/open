@@ -5272,6 +5272,10 @@ msgstr "Can only change permissions on a group or workspace."
 msgid "error.group-required=command"
 msgstr "The command you called (%1) requires a '--group' parameter."
 
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/GrowthByAppliance.pm:16 ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByAppliance.pm:17
+msgid "error.html-report-not-implemented"
+msgstr "HTML Report is not implemented"
+
 #. ($EXPORT_VERSION)
 #: lib/Socialtext/Account.pm:430
 msgid "error.import-account=max-version"
@@ -6190,6 +6194,14 @@ msgstr "Error removing the \"%1\" widget: %2"
 #: lib/Socialtext/UserSettingsPlugin.pm:237
 msgid "error.removing-last-admin"
 msgstr "Can't remove privileges of the last admin"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByAccount.pm:18
+msgid "error.report-account_id-required"
+msgstr "account_id is mandatory"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByWorkspace.pm:20
+msgid "error.report-wiki-required"
+msgstr "workspace is mandatory"
 
 #: ../socialtext-reports/lib/Socialtext/Reports/REST.pm:135
 msgid "error.reports-date-required!"
@@ -10581,6 +10593,10 @@ msgstr "Workspace Usage Blog"
 msgid "report.workspace.activity=user"
 msgstr "Workspace Activity for user %1"
 
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/GrowthByAccount.pm:19
+msgid "reports.account-growth"
+msgstr "Account Growth"
+
 #: ../socialtext-reports/template/workspace_dashboard.tmpl:30 ../socialtext-reports/template/workspace_dashboard.tmpl:31
 msgid "reports.actions-by-wiki"
 msgstr "Actions by Workspace"
@@ -10827,6 +10843,14 @@ msgstr "Up to main dashboard"
 msgid "reports.url-format-report-name-start-time-duration-type"
 msgstr "URL Format: /&lt;report_name&gt;/&lt;start_time&gt;/&lt;duration&gt;.&lt;type&gt;"
 
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByAccount.pm:12
+msgid "reports.usage-by-account"
+msgstr "Usage By Account"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByWorkspace.pm:14
+msgid "reports.usage-by-wiki"
+msgstr "Usage By Workspace"
+
 #: ../socialtext-reports/template/usage_by.tmpl:28 ../socialtext-reports/template/usage_by_workspace.tmpl:28
 msgid "reports.username"
 msgstr "Username"
@@ -10866,6 +10890,10 @@ msgstr "Workspace Contributions"
 #: ../socialtext-reports/template/dashboard.tmpl:29 ../socialtext-reports/template/dashboard.tmpl:30
 msgid "reports.wiki-edits-by-user"
 msgstr "Workspace Edits by User"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/WorkspaceGrowth.pm:13
+msgid "reports.wiki-growth"
+msgstr "Workspace Growth"
 
 #: ../socialtext-reports/template/usage_by.tmpl:46 ../socialtext-reports/template/usage_by_workspace.tmpl:41
 msgid "reports.wiki-total"
