@@ -9,7 +9,7 @@ plan tests => 3;
 my (@perlfail, @megaperlfail, @shfail);
 my $perl_re = qr{/usr(?:/local)?/bin/perl};
 my $megaperl_re = qr{/opt/perl/[^/]+/bin/perl};
-my $sh_re = qr{/bin/\bsh};
+my $sh_re = qr{/bin/\bsh\b};
 
 my %IGNORE_PERL = map {$_ => 1} qw(
     nlw/docs/INSTALL.apache-perl
