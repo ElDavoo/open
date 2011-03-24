@@ -48,7 +48,8 @@
 | type_ok | home_phone | home phone |
 | click_and_wait | //input[contains(@id,'add_user')] |  |
 | wait_for_text_present_ok | Added user foo%%start_time%%@bar.com | 30000 |
-| click_and_wait | link=Back |  |
+| wait_for_element_visible_ok | link=%%new_acct%% | 30000 |
+| click_and_wait | link=%%new_acct%% |
 | wait_for_element_visible_ok | link=firstname lastname <foo%%start_time%%@bar.com> |  |
 
 | *Comment* | Test case: Business Control Panel User reassign accounts for users and workspaces |  |

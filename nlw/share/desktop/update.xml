@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>4.7.0.3</version>
-  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.7.0.3.air</url>
-  <description><![CDATA[[4.7.0.3 - Tue Mar 22 05:42:01 PDT 2011]
+  <version>4.7.0.4</version>
+  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.7.0.4.air</url>
+  <description><![CDATA[[4.7.0.4 - Wed Mar 23 22:55:49 PDT 2011]
 (Enhancements)
+* Signals: Posted signals show up much faster than before.
 * Signals: Expanding thread replies is now much faster than before.
 * Signals: Disable network toggling when fetching "More" in threadview. {bz: 4979}
 * Activity: Resume requests after server upgrade. {bz: 4834}

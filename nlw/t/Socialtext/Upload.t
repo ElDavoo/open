@@ -1,7 +1,7 @@
 #!perl
 use warnings;
 use strict;
-use Test::Socialtext tests => 51;
+use Test::Socialtext tests => 58;
 use Test::Socialtext::Fatal;
 use Socialtext::SQL qw/:txn :exec :time/;
 use File::Temp qw/tempdir tempfile/;
@@ -178,7 +178,18 @@ copy_to_file: {
     $ul->ensure_stored();
     my $tmp2 = File::Temp->new();
     is exception { $ul->copy_to_file("$tmp2") }, undef;
-    is -s "$tmp", $ul->content_length, "copied the file from disk";
+    is -s "$tmp2", $ul->content_length, "copied the file from disk";
+
+    unlink $ul->disk_filename;
+    my $tmp3 = File::Temp->new();
+    is exception { $ul->copy_to_fh($tmp3) }, undef;
+    $tmp3->close;
+    is -s "$tmp3", $ul->content_length, "copied to fh from db";
+
+    my $tmp4 = File::Temp->new();
+    is exception { $ul->copy_to_fh($tmp4) }, undef;
+    $tmp4->close;
+    is -s "$tmp4", $ul->content_length, "copied to fh from disk";
 }
 
 force_md5: {
@@ -195,6 +206,22 @@ force_md5: {
     }, undef, "created upload";
     isa_ok $ul, 'Socialtext::Upload';
     is $ul->content_md5, "1234567890123456789012==", "preserved old md5";
+}
+
+to_string_temp: {
+    my $path;
+    no warnings 'redefine';
+    local *Socialtext::File::Stringify::to_string = sub { $path = $_[2] };
+    my $buf;
+
+    unlink $ul->disk_filename;
+    $ul->to_string(\$buf, 'temp');
+    like $path, qr#^/tmp#, "copied content to a tempfile (from db)";
+    ok !-f $ul->disk_filename, "file didn't get stored";
+
+    $ul->ensure_stored();
+    $ul->to_string(\$buf, 'temp');
+    like $path, qr#^/tmp#, "copied content to a tempfile (from disk)";
 }
 
 pass "done";
