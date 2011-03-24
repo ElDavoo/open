@@ -345,12 +345,7 @@ sub run_tests {
 # Cleans out the test environment
 sub clean_test_environment {
     my $HOME = $ENV{HOME};
-    rmtree("$HOME/.nlw", 0);
-    rmtree("$HOME/stci/socialtext/nlw/t/tmp");
     rmtree("$HOME/src/st/socialtext/nlw/t/tmp");
-
-    my $USERNAME = $ENV{USER};
-    `dropdb NLW_${USERNAME}_testing 2>/dev/null`;
 }
 
 ###############################################################################
