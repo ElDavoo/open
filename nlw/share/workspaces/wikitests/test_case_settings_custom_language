@@ -1,0 +1,35 @@
+| *Comment* | Test Case: Settings: Custom Language |  |
+
+| *Comment* | Test Case: Settings: Custom Language - Create User |  |
+| set | custom_user | customuser%%start_time%%@matt.socialtext.net |
+| set | acct | customacct%%start_time%% |
+| set | ws | customerws%%start_time%% |
+
+| st-admin | create-account --name %%acct%% | created |
+| st-admin | create-user --email %%custom_user%% --p %%password%% | created |
+| st-admin | create-workspace --name %%ws%% --title %%ws%% | created |
+| st-admin | add-member --e %%custom_user%% --w %%ws%% | now has the role |
+
+| *Comment* | Test Case: Settings: Custom Language - customize language from dashboard |  |
+| st-logoutin | %%custom_user%% | %%password%% |
+| wait-for-element-visible-ok | link=Settings | 30000 |
+| click_and_wait | link=Settings |  |
+
+| *Comment* | Test Case: Settings: Custom Language - Logout, login, still customized |  |
+| wait_for_element_visible_ok | logout_btn | 30000 |
+| click_and_wait | logout_btn |  |
+| st-login | %%custom_user%% | %%password%% |
+
+| *Comment* | Test Case: Settings: Custom Language - change back to english |  |
+
+| *Comment* | Test Case: Settings: Custom Language - customize language from %%ws%% |  |
+
+| *Comment* | Test Case: Settings: Custom Language - Logout, login, still customized |  |
+| wait_for_element_visible_ok | logout_btn | 30000 |
+| st-logoutin | %%custom_user%% | %%password%% |
+
+| *Comment* | Test Case: Settings: Custom Language - login as %%username%%, see ENGLISH |  |
+| st-login |  |  |
+
+
+| *Comment* | Test Case: Settings:: Custom Languag COMPLETED |  |
