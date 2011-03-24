@@ -1,9 +1,8 @@
 #!/usr/bin/env perl
 # @COPYRIGHT@
 use strict;
-no strict 'subs';
 use warnings;
-use Test::More tests=>3;
+use Test::Socialtext tests=>3;
 use Test::LectroTest::Compat;
 use Test::Differences;
 use Socialtext::SQL qw/sql_execute/;
@@ -15,6 +14,9 @@ use Socialtext::UserSet;
 use Data::Dumper;
 use List::MoreUtils qw(any all);
 use Time::HiRes;
+no strict 'subs';
+
+fixtures(qw( db ));
 
 my $now=time;
 srand($now);
