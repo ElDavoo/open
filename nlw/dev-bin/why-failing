@@ -321,7 +321,7 @@ sub run_tests {
 
     # run the tests
     my @results =
-        grep {/Tests:.*Failed/} `prove -l -Q @tests $unittest 2>/dev/null`;
+        grep {/Tests:.*Failed/} `st-prove --jobs=1 -Q @tests $unittest 2>/dev/null`;
 
     # find the failures from the unit test that we're running.  If _other_
     # tests failed along the way we don't care.
