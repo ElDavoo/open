@@ -29,10 +29,9 @@
 | *Comment* | Test Case: Friendly Name 1 check wiki page and user wafl |  |
 | open_ok | /%%fname_wiki%%/index.cgi?%%fname_page%% |  |
 | wait_for_text_present_ok | comment text | 30000 |
-| wait_for_text_present_ok | contributed by %%fname%% | 30000 |
-| wait_for_text_present_ok | Created by %%fname%% | 30000 |
-| wait_for_text_present_ok | Updated by %%fname%% | 30000 |
-| text_like | st-page-content | user wafl %%fname%% |
+| text_like | st-page-content | qr/user wafl.+%%fname%%.+contributed by.+%%fname%%/ |
+| text_like | create-attribution | qr/Created by.+%%fname%%/ |
+| text_like | update-attribution | qr/Updated by.+%%fname%%/ |
 
 | *Comment* | Test Case: Friendly Name 1 check Hcard popup |  |
 | wait_for_element_visible_ok | //span[@id='create-attribution']//a | 30000 |

@@ -33,6 +33,8 @@
 | click_and_wait | st-search-submit |  |
 | wait_for_element_visible_ok | link=%%fname%% | 30000 |
 | open_ok | /%%fname_wiki%%/index.cgi?%%fname_wiki%% |  |
+| wait_for_element_visible_ok | st-search-action | 30000 |
+| select_ok | st-search-action | label=Search People: |
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | type_ok | st-search-term | %%fname%% |
 | wait_for_element_visible_ok | st-search-submit | 30000 |
@@ -57,10 +59,9 @@
 | *Comment* | Test Case: Friendly Name 3 check for new name |  |
 | open_ok | /%%fname_wiki%%/index.cgi?%%fname_page%% |  |
 | wait_for_text_present_ok | comment text | 30000 |
-| wait_for_text_present_ok | contributed by %%fname2%% | 30000 |
-| wait_for_text_present_ok | Created by %%fname2%% | 30000 |
-| wait_for_text_present_ok | Updated by %%fname2%% | 30000 |
-| text_like | st-page-content | user wafl %%fname2%% |
+| text_like | st-page-content | qr/user wafl.+%%fname2%%.+contributed by.+%%fname2%%/ |
+| text_like | create-attribution | qr/Created by.+%%fname2%%/ |
+| text_like | update-attribution | qr/Updated by.+%%fname2%%/ |
 
 | include | [Test Case: Friendly Name Teardown] |
 

@@ -9,6 +9,9 @@
 
 | *Comment* | Test Case: Explore 3 Filter by person to get known explore window |  |
 | open_ok | /st/explore |  |
+| wait_for_element_visible_ok | //a[@class='close genericOrangeButton'] | 30000 |
+| click_ok | //a[@class='close genericOrangeButton'] |  |
+| pause | 2000 |  |
 | wait_for_text_present_ok | TODAY | 30000 |
 | wait_for_element_visible_ok | //a[contains(text(),'mention')] | 30000 |
 | wait_for_element_visible_ok | //div[@class='filterSection people']/input | 30000 |
@@ -20,6 +23,7 @@
 | wait_for_element_visible_ok | link=Bay Area Home Owners Association | 30000 |
 
 | *Comment* | Test Case: Explore 3 Sort by Mentions |  |
+| wait_for_element_visible_ok | //select[@class='sort'] | 30000 |
 | select_ok | class=sort | label=Mentions |
 | wait_for_text_not_present_ok | TODAY | 30000 |
 | text_like | qr/Bay Area Home Owners Association.+Alternative Energy Tech.+Inventory Status Report/ |  |
