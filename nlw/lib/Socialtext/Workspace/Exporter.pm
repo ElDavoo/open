@@ -311,7 +311,6 @@ sub export_attachments {
     my $atts = $self->hub->attachments;
     while (my $row = $sth->fetchrow_hashref()) {
         $row->{workspace} = $ws;
-        $row->{created_at} = delete $row->{created_at_utc};
         my $att = $atts->_new_from_row($row);
         my $dir = "$plugin_dir/".$att->page_id;
         unless (-d $dir) {
