@@ -36,6 +36,17 @@
 | wait_for_text_present_ok | Zzzzzzz, Zzz Zzzz | 300000 |
 
 | *Comment* | Test Case: Settings: Custom Language - change back to english |  |
+| open_ok | /?action=language_settings |
+| wait_for_element_visible_ok | locale | 30000 |
+| is_selected_ok | locale | label=zz - DEV MODE ONLY |
+| wait_for_element_visible_ok | -savelink | 30000 |
+| select_ok | locale | label=Zzzzzz Zzzzzzz: Zzzzzzz (English) |
+| is_selected_ok | locale | label=Zzzzzz Zzzzzzz: Zzzzzzz (English) |
+| click_and_wait | -savelink |  |
+| wait_for_text_present_ok | Changes Saved | 30000 |
+| is_selected_ok | locale | label=System Default: English |
+| open_ok | /st/dashboard |  |
+| wait_for_text_present_ok | Welcome, New User | 30000 |
 
 | *Comment* | Test Case: Settings: Custom Language - customize language from %%ws%% |  |
 
