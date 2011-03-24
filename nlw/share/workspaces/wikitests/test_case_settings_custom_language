@@ -20,10 +20,12 @@
 | is_selected_ok | locale | label=System Default: English |
 | wait_for_element_visible_ok | -savelink | 30000 |
 | wait_for_element_visible_ok | -cancellink | 30000 |
-| select_ok | locale | label=System Default: English |
-
-
-| *Comment* | Test Case: Settings: Custom Language - Logout, login, still customized |  |
+| select_ok | locale | label=zz - DEV MODE ONLY |
+| is_selected_ok | locale | label=zz - DEV MODE ONLY |
+| click_ok | -cancellink |  |
+| pause | 1000 |  |
+| is_selected_ok | locale | label=System Default: English |
+| click_and_wait | -savelink |  |  | *Comment* | Test Case: Settings: Custom Language - Logout, login, still customized |  |
 | wait_for_element_visible_ok | logout_btn | 30000 |
 | click_and_wait | logout_btn |  |
 | st-login | %%custom_user%% | %%password%% |
