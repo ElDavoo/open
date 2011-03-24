@@ -673,6 +673,9 @@ msgstr "貢獻"
 msgid "appliance.email-required"
 msgstr "請輸入電子郵件位址"
 
+msgid "appliance.format-gb"
+msgstr "%0.2f Gb"
+
 #: lib/Socialtext/Appliance/ConsoleController.pm:120
 msgid "appliance.initialize-wikis"
 msgstr "工作區初始化"

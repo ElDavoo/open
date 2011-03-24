@@ -865,6 +865,10 @@ msgstr "Zzzzzzzzzzzzz"
 msgid "appliance.email-required"
 msgstr "Zzzzzz zzzzz zz zzzzz zzzzzzz"
 
+#: lib/Socialtext/Appliance/Model/System.pm:52
+msgid "appliance.format-gb"
+msgstr "%0.2z Zz"
+
 #: lib/Socialtext/Appliance/ConsoleController.pm:120
 msgid "appliance.initialize-wikis"
 msgstr "Zzzzzzzzzz Zzzzzzzzzz"
