@@ -17,6 +17,7 @@ my %skip_files =
     qw(
         ./dev-bin/st-create-account-data
         ./lib/Socialtext/Challenger/STLogin.pm
+        ./lib/Socialtext/WikiFixture/SocialBase.pm
         ./share/skin/js-test/s3/t/bz-1379.t.js
         ./share/skin/js-test/s3/t/bz-1500.t.js
         ./share/workspaces/wikitests/test_case_login_logout
