@@ -98,8 +98,8 @@ find_partially_provisioned_users: {
             middle_name => 'Michael',
             last_name   => 'Smith',
         );
-    my @found    = map { $_->username } @users;
-    my @expected = map { $_->username } ($user_one, $user_two);
+    my @found    = sort map { $_->username } @users;
+    my @expected = sort map { $_->username } ($user_one, $user_two);
     is_deeply \@found, \@expected, 'Found partially provisioned Users';
 }
 
