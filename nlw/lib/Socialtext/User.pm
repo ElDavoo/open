@@ -2215,59 +2215,87 @@ returning a cursor of the records found.
 Create a user from the data in the specified hash.  This routine is used
 by import/export scripts.
 
-=head2 $user->set_confirmation_info()
+=head2 $user->create_email_confirmation(%params)
 
-Creates a confirmation hash and an expiration date for this user.
-When this exists, the C<< $user->requires_confirmation() >> will return true.
+Adds the "email_confirmation" restriction to the User, requiring that they
+confirm their e-mail address before they are able to log into the system.
 
-This method accepts a single boolean argument, "is_password_change",
-which defaults to false. Set this to true if the confirmation is being
-set to allow a user to change their password.
+Valid parameters include:
 
-Confirmations expire fourteen days after they are created.
+=over
 
-If the user already has an existing confirmation row, then its
-expiration datetime is updated to one day after the datetime at which
-the method was called.
+=item workspace_name
 
-=head2 $user->requires_confirmation()
+Name of Workspace to automatically add the User to as a Member when they have
+confirmed their e-mail address.
 
-This returns true if there is a row for this user in the
-UseEmailConfirmation table.
+=back
 
-=head2 $user->confirmation_uri()
-
-This is the URI to confirm the user's email address. If the user is
-already confirmation, it returns false.
-
-=head2 $user->send_confirmation_email()
-
-If the user has a EmailConfirmation object, this method sends them
-an email with a link they can use to confirm their email address.
-
-=head2 $user->send_confirmation_completed_email()
-
-If the user I<does not> have a EmailConfirmation object, this
-method sends them an email saying that their email confirmation has
-been completed.
-
-=head2 $user->send_password_change_email()
-
-If the user has a EmailConfirmation object, this method sends them
-an email with a link they can use to change their password.
-
-=head2 $user->confirm_email_address()
-
-Marks the user's email address as confirmed by deleting the row for
-the user in UserConfirmationEmail.
+If the User already has an outstanding e-mail confirmation, it is replaced.
 
 =head2 $user->email_confirmation()
 
-Create and return an Socialtext::User::EmailConfirmation object for the user.
+Returns the restriction object for the "e-mail confirmation" restriction.  If
+the restriction has not been placed on the User, this method returns
+empty-handed.
 
-=head2 $user->send_confirmation_completed_signal()
+=head2 $user->send_confirmation_email()
 
-If possible, send a signal to the system saying that the user has been confirmed.
+Sends the e-mail message to the User, asking them to confirm their e-mail
+address.
+
+If the User does not have the "e-mail confirmation" restriction on their User
+record, calling this method does B<nothing>.
+
+=head2 $user->confirmation_uri()
+
+Returns the URI to confirm the User's e-mail address.  If the User is already
+confirmed, this method returns empty-handed.
+
+=head2 $user->confirm_email_address()
+
+Confirms the User's e-mail address, and removes the restriction from their
+User record.
+
+=head2 $user->requires_email_confirmation()
+
+Returns true if the User has the "e-mail confirmation" restriction on their User
+record, returning false otherwise.
+
+=head2 $user->create_password_change_confirmation()
+
+Adds the "password_change" restriction to the User, requiring that they change
+their password before they are able to log in to the system.
+
+=head2 $user->password_change_confirmation()
+
+Returns the restriction object for the "need to change your password"
+restriction.  If this restriction has not been placed on the User, this method
+returns empty-handed.
+
+=head2 $user->send_password_change_email()
+
+Sends an e-mail message to the User, telling them that they need to change the
+password on their User record.
+
+If the User does not have the "need to change your password" restriction on
+their User record, calling this method does B<nothing>.
+
+=head2 $user->password_change_uri()
+
+Returns the URI to change the User's password.  If the User has already set
+their password and no longer has the "need to change your password"
+restriction, this method returns empty-handed.
+
+=head2 $user->requires_password_change()
+
+Returns true if the User has the "need to change your password" restriction on
+their User record, returning false otherwise.
+
+=head2 $user->requires_external_id()
+
+Returns true if the User has the "requires an external id" restriction on
+their User record, returning false otherwise.
 
 =head2 $user->primary_account([$acct])
 
