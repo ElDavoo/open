@@ -29,7 +29,8 @@ sub _new_from_row {
     my ($self, $upload_args) = @_;
     my %att_args;
     @att_args{@att_cols} = delete @$upload_args{@att_cols};
-    $upload_args->{created_at} = delete $upload_args->{created_at_utc};
+    $upload_args->{created_at} = delete $upload_args->{created_at_utc}
+        if $upload_args->{created_at_utc};
     $att_args{upload} = Socialtext::Upload->new($upload_args);
     $att_args{hub} = $self->hub;
     return Socialtext::Attachment->new(\%att_args);
