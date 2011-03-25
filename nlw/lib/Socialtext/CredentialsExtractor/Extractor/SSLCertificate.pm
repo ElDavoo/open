@@ -27,7 +27,11 @@ sub extract_credentials {
     }
 
     my $user_id = $class->username_to_user_id($username);
-    return $class->valid_creds(user_id => $user_id) if ($user_id);
+    if ($user_id) {
+        my $user = Socialtext::User->new(user_id => $user_id);
+        $user->record_login;
+        return $class->valid_creds(user_id => $user_id);
+    }
     return $class->invalid_creds(reason => "invalid username: $username");
 }
 

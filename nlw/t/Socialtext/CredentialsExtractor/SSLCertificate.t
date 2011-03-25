@@ -4,7 +4,7 @@ use strict;
 use warnings;
 use Socialtext::CredentialsExtractor;
 use Socialtext::AppConfig;
-use Test::Socialtext tests => 12;
+use Test::Socialtext tests => 17;
 
 fixtures(qw( empty ));
 
@@ -76,4 +76,29 @@ valid_comma_delimited: {
     } );
     ok $creds->{valid}, 'extracted creds from comma delimited subject';
     is $creds->{user_id}, $valid_user_id, '... with valid User';
+}
+
+###############################################################################
+# TEST: Valid cert updates User's "last login date"
+updates_last_login: {
+    my $guard  = Test::Socialtext::User->snapshot;
+    my $user   = create_test_user();
+    ok $user, 'Created test User';
+
+    my $last_login = $user->last_login_datetime_object;
+    is $last_login, DateTime::Infinite::Past->new, '... who has never logged in';
+
+    # Extract creds for this User
+    my $username = $user->username;
+    my $subject  = "CN=$username";
+    my $creds    = Socialtext::CredentialsExtractor->ExtractCredentials( {
+        X_SSL_CLIENT_SUBJECT => $subject,
+    } );
+    ok $creds->{valid}, 'extracted creds for User';
+    is $creds->{user_id}, $user->user_id, '... the correct User';
+
+    # VERIFY: last_login got updated for the User
+    $user->reload;
+    $last_login = $user->last_login_datetime_object;
+    isnt $last_login, DateTime::Infinite::Past->new, '... login has been recorded';
 }
