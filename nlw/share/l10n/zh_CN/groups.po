@@ -123,6 +123,10 @@ msgstr "私密"
 msgid "group.acl-self-join"
 msgstr "自行加入"
 
+#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:25
+msgid "groups.administrators"
+msgstr "管理员"
+
 #: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:11
 #: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:13
 #: share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:17
@@ -496,7 +500,7 @@ msgstr "您必须是工作区的管理员，方能关联该工作区至本群组
 #. (offset + 1, last, pager.total_entries)
 #: share/plugin/groups/template/grouplist:49
 msgid "info.showing=from,to,total"
-msgstr "显示第 %1 - %2 項，共 %3 項"
+msgstr "显示第 %1 - %2 项，共 %3 项"
 
 #: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:55
 msgid "info.valid-wiki-name"

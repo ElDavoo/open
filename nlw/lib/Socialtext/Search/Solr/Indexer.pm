@@ -237,7 +237,7 @@ sub _add_attachment_doc {
     my ($body, $key);
     {
         my $t = time_scope('solr_attach_body');
-        $att->to_string(\$body);
+        $att->to_string(\$body,'temp');
         $key = $self->page_key($att->page_id);
 
         if (length $body) {

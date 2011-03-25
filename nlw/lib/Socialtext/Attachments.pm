@@ -29,6 +29,7 @@ sub _new_from_row {
     my ($self, $upload_args) = @_;
     my %att_args;
     @att_args{@att_cols} = delete @$upload_args{@att_cols};
+    $upload_args->{created_at} = delete $upload_args->{created_at_utc};
     $att_args{upload} = Socialtext::Upload->new($upload_args);
     $att_args{hub} = $self->hub;
     return Socialtext::Attachment->new(\%att_args);
@@ -43,7 +44,9 @@ sub load {
     my $deleted = $args{deleted_ok}
         ? '' : "\n AND NOT pa.deleted";
     my $sql = q{
-        SELECT }.COLUMNS_STR.q{ FROM page_attachment pa
+        SELECT }.COLUMNS_STR.q{,
+               created_at AT TIME ZONE 'UTC' || '+0000' AS created_at_utc
+          FROM page_attachment pa
           JOIN attachment a USING (attachment_id)
          WHERE workspace_id = $1 AND page_id = $2 AND pa.id = $3 }.
          $deleted;
@@ -66,7 +69,9 @@ sub all {
     my $not_deleted = $p->{deleted_ok} ? '' : 'AND NOT deleted';
 
     my $sql = q{
-        SELECT }.COLUMNS_STR.qq{ FROM page_attachment pa
+        SELECT }.COLUMNS_STR.qq{,
+               created_at AT TIME ZONE 'UTC' || '+0000' AS created_at_utc
+          FROM page_attachment pa
           JOIN attachment a USING (attachment_id)
          WHERE workspace_id = ? AND page_id = ? $not_deleted
     };
@@ -136,7 +141,9 @@ sub latest_with_filename {
     my $filename = $p->{filename};
 
     my $sth = sql_execute(q{
-        SELECT }.COLUMNS_STR.q{ FROM page_attachment pa
+        SELECT }.COLUMNS_STR.q{,
+               created_at AT TIME ZONE 'UTC' || '+0000' AS created_at_utc
+          FROM page_attachment pa
           JOIN attachment a USING (attachment_id)
          WHERE workspace_id = $1 AND page_id = $2
            AND lower(filename) = lower($3)
@@ -231,12 +238,34 @@ sub create {
     };
 }
 
+sub inline_all {
+    my ($self, $user, $page, $attachments) = @_;
+    croak "User is mandatory!" unless $user;
+
+    my $guard = $self->hub->pages->ensure_current($page);
+    $page->edit_rev();
+
+    my $body_ref = $page->body_ref;
+    my $body_new = '';
+    for my $att (@$attachments) {
+        $body_new .= $att->image_or_file_wafl();
+    }
+    $body_new .= $$body_ref;
+    $body_ref = \$body_new;
+    $page->body_ref(\$body_new);
+
+    $page->store(user => $user);
+}
+
+
 sub all_attachments_in_workspace {
     my $self = shift;
     my @attachments;
     my $t = time_scope 'all_attach';
     my $sth = sql_execute(q{
-        SELECT }.COLUMNS_STR.q{ FROM page_attachment pa
+        SELECT }.COLUMNS_STR.q{,
+               created_at AT TIME ZONE 'UTC' || '+0000' AS created_at_utc
+          FROM page_attachment pa
           JOIN attachment a USING (attachment_id)
          WHERE pa.workspace_id = $1
            AND NOT pa.deleted

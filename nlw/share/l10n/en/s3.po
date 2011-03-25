@@ -192,7 +192,6 @@ msgstr "Workspace Email Receive Setting"
 msgid "config.files"
 msgstr "Manage Files"
 
-#:
 msgid "config.first-name:"
 msgstr "First name:"
 
@@ -1143,6 +1142,14 @@ msgstr "Next page"
 msgid "lite.previous-page"
 msgstr "Previous page"
 
+#: share/skin/s3/template/view/settings:80
+msgid "loc.language"
+msgstr "Language"
+
+#: share/skin/s3/template/element/settings/language_settings_section:5 share/skin/s3/template/view/settings:82
+msgid "loc.settings"
+msgstr "Language Settings"
+
 #: share/skin/s3/template/lite/login/nologin.html:6
 msgid "login.is-disabled"
 msgstr "Login is Disabled"
@@ -1679,7 +1686,6 @@ msgstr "Titles"
 msgid "page.top"
 msgstr "Top of page"
 
-#:
 msgid "page.type-spreadsheet"
 msgstr "Spreadsheet"
 
@@ -2041,11 +2047,9 @@ msgstr "Look for"
 msgid "watch.stop"
 msgstr "Stop Watching"
 
-#:
 msgid "widget.preview"
 msgstr "Preview"
 
-#:
 msgid "widget.push-all"
 msgstr "Push to all dashboards"
 

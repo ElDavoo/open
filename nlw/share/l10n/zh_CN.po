@@ -31,11 +31,11 @@ msgstr "维基，商务维基，文档管理，企业维基，内网维基，知
 
 #: share/skin/s3/template/element/main_nav/subnav/people:8
 msgid "about.people"
-msgstr "是一个具有强劲社交网络功能的人員目录。您可以找到您同事的联络信息，发现具有特长和共同爱好的人，以及通过您的社交网络找到有价值的信息。"
+msgstr "是一个具有强劲社交网络功能的人员目录。您可以找到您同事的联络信息，发现具有特长和共同爱好的人，以及通过您的社交网络找到有价值的信息。"
 
 #: share/skin/s3/template/element/main_nav/subnav/signals:8
 msgid "about.signals"
-msgstr "提供与 Socialtext 的企业协作平台整合的社会化消息服务。在提供像其它微博客工具如 Twitter&#0153; 一样的好处的同时，Socialtext 訊息还有更多优点，因为消息服务的运作脉络，是在为共同目标协作的组织成员当中。"
+msgstr "提供与 Socialtext 的企业协作平台整合的社会化消息服务。在提供像其它微博客工具如 Twitter&#0153; 一样的好处的同时，Socialtext 讯息还有更多优点，因为消息服务的运作脉络，是在为共同目标协作的组织成员当中。"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:77
 msgid "about.unplugged"
@@ -196,7 +196,7 @@ msgstr "公开只读"
 
 #: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:2
 msgid "activities.about-insert-wikilink"
-msgstr "選定一個工作區，然後搜索您想連接的工作區頁面。您可以更改顯示文字，也可以連接到該頁面的特定段落。"
+msgstr "选定一个工作区，然后搜索您想连接的工作区页面。您可以更改显示文字，也可以连接到该页面的特定段落。"
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:118 share/plugin/widgets/share/javascript/template/activities/event.tt2:83
 msgid "activities.add-tag"
@@ -249,30 +249,30 @@ msgstr "评论"
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:11
 msgid "activities.composing-message-to=user"
-msgstr "您正在编辑一条信息至 %1"
+msgstr "您正在编辑给 %1 的讯息"
 
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:5 share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:9
 msgid "activities.composing-private-message-to=person"
-msgstr "您正在编辑条私人信息至 %1"
+msgstr "您正在编辑给 %1 的私人讯息"
 
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:16
 msgid "activities.composing-reply-to=person"
-msgstr "您正在编辑一条回复至 %1"
+msgstr "您正在编辑回复给 %1 的讯息"
 
 #. (evt.replies.length ? loc('entire Conversation')
 #: share/plugin/widgets/share/javascript/activities/event_list.js:938
 msgid "activities.confirm-delete=target"
 msgstr ""
-"您确定要删除这 %1？\n"
+"您确定要删除这%1？\n"
 "一旦删除，无法恢复。"
 
 #. (evt.replies.length ? loc('entire Conversation')
 #: share/plugin/widgets/share/javascript/activities/event_list.js:953
 msgid "activities.confirm-expunge=target"
 msgstr ""
-"您确定要将此 %1 从系统中删除？\n"
+"您确定要将这%1从系统中删除？\n"
 "一旦删除，无法恢复。"
 
 #: share/plugin/widgets/share/javascript/activities/appdata.js:351
@@ -294,6 +294,10 @@ msgstr "复制和粘贴以下视频的网址。我们支持插入来自YouTube�
 #: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:2
 msgid "activities.enter-weblink-url-here"
 msgstr "请在底下贴上或键入链接的目标（网址，如http://socialtext.com）。链接目标是必填的。"
+
+#: share/plugin/widgets/share/javascript/activities/event_list.js:938
+msgid "activities.entire-conversation"
+msgstr "整串对话"
 
 #: share/plugin/widgets/share/javascript/activities/appdata.js:328
 msgid "activities.events"
@@ -337,7 +341,7 @@ msgstr "下载中..."
 
 #: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:13
 msgid "activities.make-signal-private"
-msgstr "使此讯息私有"
+msgstr "发布为私人讯息"
 
 #. (this.max_filesize)
 #: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:8
@@ -347,6 +351,9 @@ msgstr "最大文件大小：%1MB"
 #: share/plugin/widgets/share/javascript/activities/appdata.js:414
 msgid "activities.me"
 msgstr "我"
+
+msgid "activities.mention"
+msgstr "  提及"
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:116 share/plugin/widgets/share/javascript/template/activities/event.tt2:81
 msgid "activities.mention-user"
@@ -362,22 +369,22 @@ msgstr "更多提及..."
 
 #: share/plugin/widgets/share/javascript/activities/appdata.js:408
 msgid "activities.my-conversations"
-msgstr "我的對話"
+msgstr "我的对话"
 
 #. (new_events)
 #: share/plugin/widgets/share/javascript/activities/event_list.js:428
 msgid "activities.new-events=count"
-msgstr "%1 項活动"
+msgstr "%1 项活动"
 
 #. (self.mentionCount)
 #: share/plugin/widgets/share/javascript/activities/widget.js:475
 msgid "activities.new-mentions=count"
-msgstr "%1 項新提及..."
+msgstr "%1 项新提及..."
 
 #. (new_replies)
 #: share/plugin/widgets/share/javascript/activities/event_list.js:433
 msgid "activities.new-replies=count"
-msgstr "%1 項回复"
+msgstr "%1 项回复"
 
 #. (new_events + new_replies)
 #: share/plugin/widgets/share/javascript/activities/event_list.js:438
@@ -387,7 +394,7 @@ msgstr "%1 新的"
 #. (older)
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:20 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:22
 msgid "activities.other-replies=count"
-msgstr "%1 項其它回复..."
+msgstr "%1 项其它回复..."
 
 #: share/plugin/widgets/share/javascript/activities/appdata.js:366
 msgid "activities.page-tags"
@@ -409,23 +416,26 @@ msgstr "发送"
 msgid "activities.post-to"
 msgstr "发送至"
 
+msgid "activities.private"
+msgstr "  私人"
+
 #: share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:6
 msgid "activities.private-to-you"
-msgstr "归您私有"
+msgstr "给您的私人讯息"
 
 #. (signal.best_full_name)
 #: share/plugin/widgets/share/javascript/activities/widget.js:540
 msgid "activities.private-to-you=sender"
-msgstr "%1 属于您私有"
+msgstr "%1 给您的私人讯息"
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:112
 msgid "activities.private-to:"
-msgstr "发送私人讯息至"
+msgstr "发送私人讯息："
 
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:8
 msgid "activities.private-to=user"
-msgstr "归 %1 私有"
+msgstr "给 %1 的私人讯息"
 
 #. (page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:12
@@ -438,7 +448,7 @@ msgstr "回复"
 
 #: share/plugin/widgets/share/javascript/template/activities/event.tt2:74
 msgid "activities.reply-to-conversation"
-msgstr "回复對話 ..."
+msgstr "回复对话 ..."
 
 #: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:16
 msgid "activities.section:"
@@ -446,7 +456,7 @@ msgstr "区域："
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:113
 msgid "activities.send-private-message"
-msgstr "发送私人信息"
+msgstr "发送私人讯息"
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:68
 msgid "activities.showing"
@@ -593,7 +603,7 @@ msgstr "单个域名（如果您不清楚，请选择此项）"
 
 #: share/plugin/analytics/template/cp_google_analytics:13
 msgid "analytics.use-for:"
-msgstr "这个 Google Analytics 追踪帐号是用於："
+msgstr "这个 Google Analytics 追踪帐号是用于："
 
 #. (shift)
 #: lib/Socialtext/Handler/ControlPanel.pm:616
@@ -662,6 +672,9 @@ msgstr "贡献"
 #: lib/Socialtext/Appliance/Model/Setup.pm:474
 msgid "appliance.email-required"
 msgstr "请输入电子邮件地址"
+
+msgid "appliance.gb=format"
+msgstr "%1 Gb"
 
 #: lib/Socialtext/Appliance/ConsoleController.pm:120
 msgid "appliance.initialize-wikis"
@@ -776,6 +789,9 @@ msgstr "跳过工作区 %1，未使用。"
 #: lib/Socialtext/Appliance/Model/Setup.pm:362
 msgid "appliance.synchronized-time-with=ts"
 msgstr "同步时间 %1"
+
+msgid "appliance.system"
+msgstr "系统"
 
 msgid "appliance.taking-database-snapshot"
 msgstr "生成数据库快照..."
@@ -1728,7 +1744,7 @@ msgstr "（此处留白以使用设备的内置 SMTP 服务器）"
 
 #: ../appliance/libsocialtext-appliance-perl/template/overview.html:8
 msgid "console.link-to-control-panel"
-msgstr "查看与管理系统的工作区、帐户、组与用户，请转至 <a href=\"/nlw/control/\">控制台</a> 工具."
+msgstr "查看与管理系统的工作区、帐户、群组与用户，请转至 <a href=\"/nlw/control/\">控制台</a> 工具。"
 
 #: ../appliance/libsocialtext-appliance-perl/template/setup.html:44
 msgid "console.login-message"
@@ -1881,7 +1897,7 @@ msgstr "设置网页代理服务器"
 
 #: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:42 ../appliance/libsocialtext-appliance-perl/template/setup.html:1 ../appliance/libsocialtext-appliance-perl/template/setup.html:2
 msgid "console.setup"
-msgstr "安装"
+msgstr "设置"
 
 #: ../appliance/libsocialtext-appliance-perl/template/shutdown.html:6
 msgid "console.shut-down-appliance"
@@ -1907,9 +1923,15 @@ msgstr "Socialtext 设备"
 msgid "console.socialtext-desktop"
 msgstr "Socialtext 桌面"
 
+msgid "console.socialtext-inc"
+msgstr "Socialtext 公司"
+
 #: ../appliance/libsocialtext-appliance-perl/template/help.html:63
 msgid "console.socialtext-support"
 msgstr "Socialtext 支持"
+
+msgid "console.socialtext-support-form"
+msgstr "Socialtext 支持论坛"
 
 #: ../appliance/libsocialtext-appliance-perl/template/help.html:141 ../appliance/libsocialtext-appliance-perl/template/setup.html:103 ../appliance/libsocialtext-appliance-perl/template/setup.html:33 ../appliance/libsocialtext-appliance-perl/template/setup.html:48 ../appliance/libsocialtext-appliance-perl/template/setup.html:69 ../appliance/libsocialtext-appliance-perl/template/setup.html:84
 msgid "console.submit"
@@ -1936,7 +1958,7 @@ msgstr "时间服务器"
 
 #: ../appliance/libsocialtext-appliance-perl/template/overview.html:13
 msgid "console.total"
-msgstr "总共"
+msgstr "总計"
 
 #. (download_link, mailto_link)
 #: ../appliance/libsocialtext-appliance-perl/template/help.html:73
@@ -2049,17 +2071,20 @@ msgstr "本系统的帐户为“自行加入”。任何用户都可以访问 So
 msgid "control.about-settings-tab"
 msgstr "管理全系统的设备设置"
 
+msgid "control.about-user-restrictions"
+msgstr "在添加或更新用户时，您可选择将限制应用在用户记录上。这些限制必须先满足并清除之后，用户方能开始登录系统。"
+
 #: share/plugin/control/template/control/index.html:28
 msgid "control.about-users-tab"
 msgstr "使用本屏幕快捷邀请用户至群组与工作区"
 
 #: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:41 share/plugin/control/template/control/workspace_invite.html:94
 msgid "control.about-wiki-id"
-msgstr "这是您工作区独有的短识別符，用于网址与电邮地址。必须由 3-30 个小写字母、数字、下划线或破折号组成"
+msgstr "这是您工作区独有的短识别符，用于网址与电邮地址。必须由 3-30 个小写字母、数字、下划线或破折号组成"
 
 #: share/plugin/control/template/control/index.html:32
 msgid "control.about-wikis-tab"
-msgstr "工作区是存放維基与文档的地方。在此创建新的工作区。"
+msgstr "工作区是存放共笔与文档的地方。在此创建新的工作区。"
 
 #: share/plugin/control/template/control/group.html:77 share/plugin/control/template/control/user.html:290 share/plugin/control/template/control/workspace.html:10 share/plugin/control/template/control/workspace_invite.html:98 share/plugin/control/template/control/workspace_table:17 share/plugin/control/template/control/workspace_table:28 share/plugin/control/template/control/workspaces_new.html:20
 msgid "control.account"
@@ -2444,6 +2469,12 @@ msgstr "禁止邀请加入群组"
 msgid "control.edit-field"
 msgstr "编辑字段"
 
+msgid "control.edit-user"
+msgstr "编辑用户"
+
+msgid "control.edit-user=name"
+msgstr "编辑用户：%1"
+
 msgid "control.email-address:"
 msgstr "电子邮件地址："
 
@@ -2533,6 +2564,10 @@ msgstr "名字："
 
 #: share/plugin/control/template/control/user.html:103
 msgid "control.for-cac-authentication"
+msgstr "（为 CAC 认证之用）"
+
+#: share/plugin/control/template/control/user.html:103
+msgid "control.for-use-with-cac-authentication"
 msgstr "为 CAC 认证之用"
 
 #: share/plugin/control/template/control/add_users.html:31
@@ -2742,9 +2777,15 @@ msgstr "资料字段"
 msgid "control.profile-section"
 msgstr "资料段落"
 
+msgid "control.promote-to-admin"
+msgstr "给予管理员资格"
+
 #: share/plugin/control/template/control/user.html:168
 msgid "control.relationship"
 msgstr "关系"
+
+msgid "control.remove-admin"
+msgstr "移除管理员资格"
 
 #: share/plugin/control/template/control/user.html:80
 msgid "control.remove-appliance-business-administrator-role"
@@ -2758,14 +2799,29 @@ msgstr "移除设备技术管理员角色"
 msgid "control.remove-external-id-requirement"
 msgstr "删除外部 ID 要求"
 
+msgid "control.remove-from-account"
+msgstr "从帐户删除"
+
+msgid "control.remove-from-group"
+msgstr "从群组删除"
+
 #: share/plugin/control/template/control/user.html:312
 msgid "control.remove-from-wiki"
 msgstr "从工作区中移除"
+
+msgid "control.remove-from-wikis"
+msgstr "从工作区删除"
 
 #. (accounts.length)
 #: share/plugin/control/template/control/group.html:368
 msgid "control.remove-group-from-accounts=count?"
 msgstr "从 %1 个选中帐户中移除群组？"
+
+msgid "control.remove-selected-group-from-wiki=count?"
+msgstr "把选择的 %1 个群组从此工作区删除？"
+
+msgid "control.remove-selected-user-from-wiki=count?"
+msgstr "把选择的 %1 位用户从此工作区删除？"
 
 #. (workspaces.length)
 #: share/plugin/control/template/control/user.html:314
@@ -2919,7 +2975,7 @@ msgstr "显示全部选中的条目"
 #. (from, to, total)
 #: share/plugin/control/share/javascript/template/control_table.tt2:46
 msgid "control.showing=from,to,total"
-msgstr "显示第 %1 - %2 項，共 %3 項"
+msgstr "显示第 %1 - %2 项，共 %3 项"
 
 #: share/plugin/control/template/control/config.html:2
 msgid "control.socialtext-admin-configuration"
@@ -2928,6 +2984,15 @@ msgstr "Socialtext 管理设置"
 #: share/plugin/control/template/control/wrapper:104 share/plugin/control/template/control/wrapper:19
 msgid "control.socialtext-control-panel"
 msgstr "Socialtext 控制台"
+
+msgid "control.start-typing-account-name"
+msgstr "开始键入一个帐户名称"
+
+msgid "control.start-typing-group-name"
+msgstr "开始键入群组名称"
+
+msgid "control.start-typing-user-name"
+msgstr "开始键入用户名称"
 
 #: share/plugin/control/template/control/workspaces_new.html:5
 msgid "control.step-1-set-wiki-title"
@@ -2948,6 +3013,9 @@ msgstr "存储字段"
 #: share/plugin/control/template/control/accounts.html:18 share/plugin/control/template/control/accounts.html:5 share/plugin/control/template/control/desktop-account.html:161 share/plugin/control/template/control/group_add_users.html:6 share/plugin/control/template/control/users.html:6 share/plugin/control/template/control/workspace.html:34 share/plugin/control/template/control/workspaces.html:5
 msgid "control.submit"
 msgstr "提交"
+
+msgid "control.system-required-user"
+msgstr "系统用户"
 
 #: share/plugin/control/template/control/index.html:22
 msgid "control.tabs"
@@ -2984,6 +3052,9 @@ msgstr "转换为群组"
 #: share/plugin/control/template/control/account.html:61 share/plugin/control/template/control/group.html:18 share/plugin/control/template/control/plugin_pref_form.html:6 share/plugin/control/template/control/settings.html:11 share/plugin/control/template/control/settings.html:21 share/plugin/control/template/control/workspace_table:3 share/plugin/control/template/control/workspace_table:70
 msgid "control.update"
 msgstr "更新"
+
+msgid "control.update-user"
+msgstr "更新用户：%1"
 
 #: share/plugin/control/template/control/group.html:122
 msgid "control.updating"
@@ -3088,6 +3159,9 @@ msgstr "欢迎访问 Socialtext 控制台"
 msgid "control.wiki-removed"
 msgstr "工作区移除成功"
 
+msgid "control.wiki-role-changes-were-successful"
+msgstr "工作区角色转变成功。"
+
 #. (custom_skin,                  custom_skins.$custom_skin)
 #. (custom_skin, custom_skins.$custom_skin)
 #: share/plugin/control/template/control/account.html:245 share/plugin/control/template/control/account.html:247
@@ -3133,7 +3207,7 @@ msgstr "%1 的显示板"
 
 #: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:31
 msgid "dashboard.force-update"
-msgstr "同时强制升级現有用户的显示板"
+msgstr "同时强制升级现有用户的显示板"
 
 #: lib/Socialtext/Pluggable/Plugin/Widgets.pm:244
 msgid "dashboard.importing-default"
@@ -3385,6 +3459,51 @@ msgstr "显示编辑活动"
 msgid "description.workspaces"
 msgstr "列出群组中的所有工作区"
 
+msgid "desktop.2nd-bg-color"
+msgstr "次要背景颜色"
+
+msgid "desktop.about-2nd-bg-color"
+msgstr "为表单、设定页标题和未选择的标签使用"
+
+msgid "desktop.about-bg-color"
+msgstr "Socialtext 桌面内所有内容的背景颜色。与“文本颜色”搭配作为可读内容。"
+
+msgid "desktop.about-header-gradient-bottom"
+msgstr "标题的底端渐层颜色。与“标题（顶端）”选择同样颜色时，将不会显示渐层。"
+
+msgid "desktop.about-header-gradient-top"
+msgstr "标题的顶端渐层颜色。与“标题（底端）”搭配，以创造渐层效果。"
+
+msgid "desktop.about-highlight-color"
+msgstr "高亮元素使用的颜色，例如发布按钮的背景色。"
+
+msgid "desktop.about-link-color"
+msgstr "链接使用的颜色。通常使用深蓝色。"
+
+msgid "desktop.about-logo-uri"
+msgstr "Socialtext 桌面标志（自动缩放至 240 x 34 像素）。"
+
+msgid "desktop.about-text-color"
+msgstr "Socialtext 桌面内所有文本的颜色（链接除外）。与“背景颜色”搭配作为可读内容。"
+
+msgid "desktop.bg-color"
+msgstr "背景颜色"
+
+msgid "desktop.header-gradient-bottom"
+msgstr "标题（底部）"
+
+msgid "desktop.header-gradient-top"
+msgstr "标题（顶部）"
+
+msgid "desktop.highlight-color"
+msgstr "高亮颜色"
+
+msgid "desktop.link-color"
+msgstr "链接颜色"
+
+msgid "desktop.logo-uri"
+msgstr "图标网址"
+
 #: lib/Socialtext/Handler/ControlPanel.pm:774
 msgid "desktop.relogin-for-default-logo"
 msgstr "（桌面用户如需看默认标志，需重新登录。）"
@@ -3404,6 +3523,9 @@ msgstr "重置为默认桌面标志。桌面用户需要注销并重新登录才
 #: lib/Socialtext/Handler/ControlPanel.pm:872
 msgid "desktop.relogin-for-skin"
 msgstr "设置已保存。桌面用户需要重新登陆才能启用新的主题。"
+
+msgid "desktop.text-color"
+msgstr "文本颜色"
 
 #: share/skin/s3/javascript/lightbox/attachment.tt2:28 share/skin/s3/javascript/lightbox/email.tt2:28
 msgid "do.add"
@@ -3572,7 +3694,7 @@ msgstr "保存"
 
 #: share/skin/s3/template/view/page/revision:34
 msgid "do.source-view"
-msgstr "源碼查看"
+msgstr "源码查看"
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:7
 msgid "do.strike"
@@ -3737,7 +3859,7 @@ msgstr "将%1从此队列中移除"
 
 #: share/skin/s3/javascript/lightbox/edit_check.tt2:10
 msgid "edit.return-to-page-view"
-msgstr "返回页面檢视"
+msgstr "返回页面检视"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:19
 msgid "edit.rich-text"
@@ -3781,7 +3903,7 @@ msgstr "<strong>%1</strong>想让您知道位于 %3 的<strong>%2</strong>所进
 #. (name, summary, page, workspace)
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1434
 msgid "edit.summary=name,summary,page,wiki"
-msgstr "<strong>%1</strong>，\"%2\"（编辑了位于 %4 的<strong>%3</strong>）"
+msgstr "<strong>%1</strong>，“%2”（编辑了位于 %4 的<strong>%3</strong>）"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:113
 msgid "edit.tag-prompt:"
@@ -3845,7 +3967,7 @@ msgstr "新工作区的网址是 %1"
 
 #: share/skin/s3/javascript/lightbox/email.tt2:25
 msgid "email.address-or-name"
-msgstr "請输入邮件地址或用户名"
+msgstr "请输入邮件地址或用户名"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:23 share/skin/s3/template/element/settings/users_invite_section:69
 msgid "email.another-example"
@@ -3932,7 +4054,7 @@ msgstr "联系技术支持"
 
 #: share/skin/s3/javascript/lightbox/email.tt2:58
 msgid "email.copy-self?"
-msgstr "发送副本給自己？"
+msgstr "发送副本给自己？"
 
 #: share/template/email/free50/account-invitation-body.html:12
 msgid "email.copy-url-into-browser-to-confirm-email:"
@@ -4207,7 +4329,7 @@ msgstr "%1 工作区的最近更新"
 
 #: share/skin/s3/javascript/lightbox/email.tt2:35
 msgid "email.recipient-box"
-msgstr "請使用上面的“收件人”框"
+msgstr "请使用上面的“收件人”框"
 
 #: share/skin/s3/javascript/lightbox/email.tt2:36
 msgid "email.recipient-box-continued"
@@ -4545,7 +4667,7 @@ msgstr "由于当前使用的是自定义视觉主题，因此帐户标志不可
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:3009
 msgid "error.cannot-load-revision"
-msgstr "无法加载更動"
+msgstr "无法加载更动"
 
 #: share/skin/s3/template/element/settings/users_listall_section:61
 msgid "error.cannot-reset-pasword"
@@ -4579,7 +4701,7 @@ msgstr "请再次确认？"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3191
 msgid "error.check-video-url"
-msgstr "系統出错; 请稍候再重试。"
+msgstr "系统出错; 请稍候再重试。"
 
 #: share/skin/s3/javascript/lightbox/self_join_workspace.js:58
 msgid "error.choose-group"
@@ -4781,7 +4903,7 @@ msgstr "无法解压主题存档。这很可能是由损坏的存档文件造成
 
 #: share/plugin/widgets/share/javascript/gadgets.js:353
 msgid "error.feature-not-supported-in-dashboard"
-msgstr "抱歉，顯示板暂不支持此项特性。"
+msgstr "抱歉，显示板暂不支持此项特性。"
 
 #: lib/Socialtext/Syndicate/Atom.pm:147 lib/Socialtext/Syndicate/RSS20.pm:31
 msgid "error.feed"
@@ -4904,6 +5026,9 @@ msgstr "只能更改群组或工作区的权限。"
 msgid "error.group-required=command"
 msgstr "命令（%1）必须带有 --group 参数。"
 
+msgid "error.html-report-not-implemented"
+msgstr "HTML 报告未实作"
+
 #. ($EXPORT_VERSION)
 #: lib/Socialtext/Account.pm:430
 msgid "error.import-account=max-version"
@@ -4961,12 +5086,12 @@ msgstr "无效的确认网址。"
 #. (wrong_domain.size, "<span style=\"color: red\">' _ restrict_to_domain _ '</span>")
 #: share/plugin/people/template/invite_done:17 share/plugin/people/template/invite_done:26
 msgid "error.invalid-email-address=count,domain"
-msgstr "对不起，下面的 %1 項电子邮件地址不在域名 %2 下面"
+msgstr "对不起，下面的 %1 项电子邮件地址不在域名 %2 下面"
 
 #. (invalid_addresses.size)
 #: share/plugin/people/template/invite_done:17 share/plugin/people/template/invite_done:22
 msgid "error.invalid-email-address=count:"
-msgstr "对不起，下面的 %1 項电子邮件地址是无效的："
+msgstr "对不起，下面的 %1 项电子邮件地址是无效的："
 
 #: lib/Socialtext/Workspace.pm:637
 msgid "error.invalid-email-placement"
@@ -5026,6 +5151,9 @@ msgstr "无效的权限：%1"
 #: lib/Socialtext/Hub.pm:193
 msgid "error.invalid-query"
 msgstr "非法查询。"
+
+msgid "error.invalid-report=module,message"
+msgstr "无效报告：%1（%2）"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1399
 msgid "error.invalid-rows"
@@ -5301,7 +5429,7 @@ msgstr "必须提供一个博客标题。"
 #. (action.error_title || action.title)
 #: share/plugin/widgets/share/javascript/template/activities/empty.tt2:4
 msgid "error.no-conversations-in-30days=title"
-msgstr "没有新的 %1 因为在过去的 30 天内，您没有与您的同事對話。"
+msgstr "没有新的 %1 因为在过去的 30 天内，您没有与您的同事对话。"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1346
 msgid "error.no-data-to-sum"
@@ -5587,7 +5715,7 @@ msgstr "无权访问工作区"
 #. (ws)
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:2380
 msgid "error.no-wiki-on-server=wiki"
-msgstr "系統中不存在 \"%1\" 工作区"
+msgstr "系统中不存在“%1”工作区"
 
 #. ($workspace_name)
 #: lib/Socialtext/CLI.pm:2016
@@ -5601,7 +5729,7 @@ msgstr "%1 工作区不存在。"
 
 #: share/skin/s3/template/element/settings/workspaces_cannot_create_section:23
 msgid "error.non-admin-create-group"
-msgstr "由於您的应用配置限制，只有帐户管理员可以创建群组。"
+msgstr "由于您的应用配置限制，只有帐户管理员可以创建群组。"
 
 #: lib/Socialtext/CLI.pm:3425
 msgid "error.not-both-visible-and-hidden"
@@ -5647,7 +5775,7 @@ msgstr "其他人或程序已被编辑到此页面。"
 #. (new_title, button)
 #: share/skin/s3/javascript/st-lightbox.js:81
 msgid "error.page-exists=title,button"
-msgstr "您选择的新页面名称“%1”已经被使用，请选择其它的名字。如果您确定要覆盖現有的“%1”页面，请再次点击“%2”。"
+msgstr "您选择的新页面名称“%1”已经被使用，请选择其它的名字。如果您确定要覆盖现有的“%1”页面，请再次点击“%2”。"
 
 #: lib/Socialtext/PdfExportPlugin.pm:67
 msgid "error.page-for-export-required"
@@ -5809,6 +5937,54 @@ msgstr "移除“%1”小工具时出错：%2"
 msgid "error.removing-last-admin"
 msgstr "不能取消最后管理员的权限。"
 
+msgid "error.report-account_id-required"
+msgstr "必须要有 account_id"
+
+msgid "error.report-wiki-required"
+msgstr "必须要有 workspace"
+
+msgid "error.reports-account-id-required!"
+msgstr "必须要有 Account ID！"
+
+msgid "error.reports-current-user-required"
+msgstr "此报表必须要指定现行用户"
+
+msgid "error.reports-date-required!"
+msgstr "该报告需要日期！"
+
+msgid "error.reports-duration-required!"
+msgstr "必须提供持续时间！"
+
+msgid "error.reports-invalid=user"
+msgstr "'%1' 不是正确的用户"
+
+msgid "error.reports-no-account=name"
+msgstr "找不到名为 %1 的帐户"
+
+msgid "error.reports-no-group=id"
+msgstr "找不到编号为 %1 的群组"
+
+msgid "error.reports-no-growth-data-available"
+msgstr "目前没有增长用量数据。"
+
+msgid "error.reports-no-wiki=name"
+msgstr "找不到名为 %1 的工作区"
+
+msgid "error.reports-start_time-required!"
+msgstr "必须提供开始时间！"
+
+msgid "error.reports-username-required!"
+msgstr "必须要有用户名称！"
+
+msgid "error.reports-wiki-and-page_id-required"
+msgstr "必须要有工作区和页面名称！"
+
+msgid "error.reports-wiki-required!"
+msgstr "必须要有工作区！"
+
+msgid "error.reports-wiki-required-specify-on-url"
+msgstr "必须要有工作区！请在网址列填上 workspace=名称"
+
 #: lib/Socialtext/Hub.pm:189
 msgid "error.request"
 msgstr "请求出错"
@@ -5844,7 +6020,7 @@ msgstr "“%1”是已注册的工作区名，不能使用。"
 #. (page_name)
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:543
 msgid "error.reserved-page-name"
-msgstr "\"%1\" 是一个保留的页面名称，请使用另外一个名称"
+msgstr "“%1”是一个保留的页面名称，请使用另外一个名称"
 
 #. (page_name)
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2092 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2175
@@ -6116,6 +6292,9 @@ msgstr "parseWidget：小工具 >>%1<< 无效"
 msgid "error.unknown"
 msgstr "未知错误"
 
+msgid "error.unknown-report=type"
+msgstr "未知的报表（%1）"
+
 #. ($type)
 #: lib/Socialtext/CLI.pm:1054
 msgid "error.unknown-restriction=type"
@@ -6339,7 +6518,7 @@ msgstr "在 %2 中评论 %1：“%3”"
 #. (person_tag)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:8
 msgid "event.delete-tag-self=tag"
-msgstr "移除他们的标签 %1。"
+msgstr "给自己移除标签 %1。"
 
 #. (page_tag, page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:20
@@ -6349,7 +6528,7 @@ msgstr "从 %3 中的 %2 移除 %1。"
 #. (person_tag, person)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:19
 msgid "event.delete-tag=tag,person"
-msgstr "从 %2 中移除标签 %1。"
+msgstr "给 %2 移除标签 %1。"
 
 #. (page_in_workspace)
 #: share/template/data/events/page:15
@@ -6408,7 +6587,7 @@ msgstr "开始关注 %1。"
 #. (event.action)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:10
 msgid "event.generic-self=action"
-msgstr "對自己执行动作 %1。"
+msgstr "对自己执行动作 %1。"
 
 #. (event.action, page_in_workspace)
 #: share/template/data/events/page:27
@@ -6494,7 +6673,7 @@ msgstr "%1 更新 %2 小工具。"
 #. (page_in_workspace)
 #: share/template/data/events/page:3
 msgid "event.view=page"
-msgstr "檢視了 %1。"
+msgstr "检视了 %1。"
 
 #. (page_in_workspace)
 #: share/template/data/events/page:25
@@ -6602,17 +6781,17 @@ msgstr "探索（测试）"
 #. (asset.count)
 #: share/plugin/widgets/share/javascript/template/activities/assets.tt2:8 share/plugin/widgets/share/javascript/template/activities/assets.tt2:9
 msgid "explore.click-to-collapse-mentions=count"
-msgstr "%1 項提及，点击此处收回"
+msgstr "%1 项提及，点击此处收回"
 
 #. (asset.count)
 #: share/plugin/widgets/share/javascript/template/activities/assets.tt2:14 share/plugin/widgets/share/javascript/template/activities/assets.tt2:8
 msgid "explore.click-to-expand-mentions=count"
-msgstr "%1 項提及，点击此处展开"
+msgstr "%1 项提及，点击此处展开"
 
 #. (asset.count, asset.eventList.size || 5)
 #: share/plugin/widgets/share/javascript/template/activities/assets.tt2:12 share/plugin/widgets/share/javascript/template/activities/assets.tt2:8
 msgid "explore.click-to-expand-mentions=count,first-page"
-msgstr "%1 項提及，点击此处查看最先的 %2 則"
+msgstr "%1 项提及，点击此处查看最先的 %2 则"
 
 #: share/plugin/signals/share/javascript/lightbox/explore-about.tt2:10
 msgid "explore.do-not-show-again"
@@ -6641,7 +6820,7 @@ msgstr "提及"
 #. (asset.count)
 #: share/plugin/widgets/share/javascript/template/activities/assets.tt2:26
 msgid "explore.mentions=count"
-msgstr "%1 項提及"
+msgstr "%1 项提及"
 
 #: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:10
 msgid "explore.mine"
@@ -6677,7 +6856,7 @@ msgstr "过去的一年"
 
 #: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:46
 msgid "explore.people"
-msgstr "人員"
+msgstr "人员"
 
 #: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:9
 msgid "explore.people-i-follow"
@@ -6685,11 +6864,11 @@ msgstr "我关注的人"
 
 #: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:57
 msgid "explore.permalink-for-this-view"
-msgstr "此檢视的永久链接"
+msgstr "此检视的永久链接"
 
 #: share/plugin/signals/template/explore_header:16
 msgid "explore.recency"
-msgstr "發佈時間"
+msgstr "发布时间"
 
 #: share/plugin/signals/template/explore_header:14
 msgid "explore.sort-by:"
@@ -6697,7 +6876,7 @@ msgstr "排序按："
 
 #: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:34
 msgid "explore.tags-from"
-msgstr "标签來自"
+msgstr "标签来自"
 
 #: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:17
 msgid "explore.to"
@@ -6858,12 +7037,12 @@ msgstr "Yahoo!™"
 #. (filename, match.size, match.uploader_name, match.local_date)
 #: share/skin/s3/javascript/lightbox/attachment.js:239
 msgid "file.add-or-replace=name,size,user,date?"
-msgstr "本页面已经有名为“%1”（%2 由%3于%4上传）的附件。您可以<span class=\"emphasis\">添加</span> 此文件的其它版本或<span class=\"emphasis\">替换</span>現有的文件。您想怎么做？"
+msgstr "本页面已经有名为“%1”（%2 由%3于%4上传）的附件。您可以<span class=\"emphasis\">添加</span> 此文件的其它版本或<span class=\"emphasis\">替换</span>现有的文件。您想怎么做？"
 
 #. (filename)
 #: share/skin/s3/javascript/lightbox/attachment.js:229
 msgid "file.add-or-replace=name?"
-msgstr "本页面已经有名为“%1”的附件。您可以<span class=\"emphasis\">添加</span>此文件的其它版本或<span class=\"emphasis\">替换</span>現有的文件。您想怎么做？"
+msgstr "本页面已经有名为“%1”的附件。您可以<span class=\"emphasis\">添加</span>此文件的其它版本或<span class=\"emphasis\">替换</span>现有的文件。您想怎么做？"
 
 #: share/skin/s3/template/element/listview_tabs:22 share/skin/s3/template/view/empty_watchlist:21
 msgid "file.all"
@@ -6936,6 +7115,15 @@ msgstr "此文件（最近更新：%2，由%3于%4上传）有<span class=\"emph
 #: share/skin/s3/template/view/attachmentslist:33
 msgid "file.size"
 msgstr "大小"
+
+msgid "file.size=bytes"
+msgstr "%1 字节"
+
+msgid "file.size=kb"
+msgstr "%1K"
+
+msgid "file.size=mb"
+msgstr "%1M"
 
 #: share/skin/s3/javascript/lightbox/attachment.tt2:6 share/skin/s3/template/element/page/display/attachments:51
 msgid "file.upload"
@@ -7063,6 +7251,10 @@ msgstr "添加工作区"
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:54
 msgid "groups.admin-can-change-setting-after-creation"
 msgstr "群组管理员在创建完群组后，可以更改其设置。"
+
+#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:25
+msgid "groups.administrators"
+msgstr "管理员"
 
 #: share/plugin/groups/share/widgets/all_groups/widget.html:2
 msgid "groups.all-available"
@@ -7386,6 +7578,72 @@ msgstr "您只能关联%1工作区到一个%2的群组。"
 msgid "groups.you-must-be-wiki-admin-to-associate-it-with-group"
 msgstr "您必须是工作区的管理员，方能关联该工作区至本群组。"
 
+msgid "heading.account_id"
+msgstr "帐户ID"
+
+msgid "heading.action"
+msgstr "操作"
+
+msgid "heading.actor"
+msgstr "操作者"
+
+msgid "heading.contributions"
+msgstr "贡献者"
+
+msgid "heading.count"
+msgstr "数量"
+
+msgid "heading.detail_headings"
+msgstr "标题详情"
+
+msgid "heading.gadget_id"
+msgstr "小工具ID"
+
+msgid "heading.page_id"
+msgstr "页面ID"
+
+msgid "heading.page_views"
+msgstr ""
+
+msgid "heading.pages"
+msgstr "页面"
+
+msgid "heading.period"
+msgstr "周期"
+
+msgid "heading.period_start"
+msgstr "周期始于"
+
+msgid "heading.tally"
+msgstr "总数"
+
+msgid "heading.title"
+msgstr "标题"
+
+msgid "heading.unique_contributors"
+msgstr "独立贡献者"
+
+msgid "heading.unique_members"
+msgstr "独立成员"
+
+msgid "heading.unique_visitors"
+msgstr "独立访客"
+
+msgid "heading.user_id"
+msgstr "用户ID"
+
+msgid "heading.username"
+msgstr "用户名"
+
+msgid "heading.views"
+msgstr "查看"
+
+msgid "heading.workspace"
+msgstr "工作区"
+
+msgid "heading.workspaces"
+msgstr "工作区"
+
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:32
 msgid "image.upload"
 msgstr "上传图片"
@@ -7451,7 +7709,7 @@ msgstr "容器已存在...跳过..."
 
 #: share/skin/s3/javascript/lightbox/create_content.tt2:37
 msgid "info.copy"
-msgstr "复制現有页面..."
+msgstr "复制现有页面..."
 
 #: lib/Socialtext/Handler/ControlPanel.pm:1623
 msgid "info.created-ldap-group"
@@ -7468,7 +7726,7 @@ msgstr "如果您强制升级当前显示板，您会替换这个帐户下面所
 
 #: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:9
 msgid "info.dashboard-push-widget"
-msgstr "推送小工具到用户的显示板，会导致每个用户载入显示板的时候，该小工具出现在在您选择的列的顶部，也就是現有小工具的上方。"
+msgstr "推送小工具到用户的显示板，会导致每个用户载入显示板的时候，该小工具出现在在您选择的列的顶部，也就是现有小工具的上方。"
 
 #: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:4
 msgid "info.dashboard-save-layout"
@@ -7616,7 +7874,7 @@ msgstr "使编辑区域回到正常视图"
 
 #: share/skin/s3/template/view/attachmentslist:61 share/skin/s3/template/view/listview:158 share/skin/s3/template/view/listview:160 share/skin/s3/template/view/page/revision_compare:64 share/skin/s3/template/view/weblog:53 share/skin/s3/template/view/weblog:55 share/skin/s3/template/view/weblog:64 share/skin/s3/template/view/weblog:65 share/skin/s3/template/view/weblog:67
 msgid "info.on"
-msgstr "於"
+msgstr "于"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:25 share/skin/s3/template/element/settings/workspaces_settings_appearance_section:33
 msgid "info.optional"
@@ -7658,7 +7916,7 @@ msgstr "请根据以下说明更改您的Socialtext密码"
 #. (offset + 1, last, pager.total_entries)
 #: share/skin/s3/template/view/attachmentslist:92 share/skin/s3/template/view/listview:199
 msgid "info.showing=from,to,total"
-msgstr "显示第 %1 - %2 項，共 %3 項"
+msgstr "显示第 %1 - %2 项，共 %3 项"
 
 #: share/plugin/twilio/template/element/settings/twilio_settings_section:13
 msgid "info.signal-to-sms"
@@ -7826,7 +8084,7 @@ msgstr "链接到..."
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu:13
 msgid "insert.link2"
-msgstr "一个不同的维基页面"
+msgstr "另一个共笔页面"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu:16
 msgid "insert.link2-hyperlink"
@@ -8430,6 +8688,15 @@ msgstr "下一页"
 msgid "lite.previous-page"
 msgstr "上一页"
 
+msgid "loc.language"
+msgstr "语言"
+
+msgid "loc.settings"
+msgstr "语言设定"
+
+msgid "loc.system-default=lang"
+msgstr "系统默认：%1"
+
 #. (lite ? '/m/login' : '/challenge')
 #: share/template/authen/element/forgot_password_page:17
 msgid "login.back-to=uri"
@@ -8699,7 +8966,7 @@ msgstr "探索"
 
 #: share/skin/s3/template/element/listview_account_filter:3
 msgid "nav.filter:"
-msgstr "僅顯示："
+msgstr "仅显示："
 
 #: share/skin/s3/template/view/paging:5 share/skin/s3/template/view/paging:8
 msgid "nav.first"
@@ -8824,11 +9091,11 @@ msgstr "页面锁定"
 
 #: share/plugin/widgets/template/mobile-signals.tt2:121
 msgid "nav.people"
-msgstr "人員"
+msgstr "人员"
 
 #: share/skin/s3/javascript/nav-list.js:71
 msgid "nav.people-directory"
-msgstr "人員目录"
+msgstr "人员目录"
 
 #: share/skin/s3/template/element/settings/preferences_settings_section:5 share/skin/s3/template/view/settings:72
 msgid "nav.preferences"
@@ -8907,7 +9174,7 @@ msgstr "Socialtext 探索"
 
 #: share/skin/s3/template/element/main_nav/subnav/people:8
 msgid "nav.socialtext-people"
-msgstr "Socialtext人員"
+msgstr "Socialtext人员"
 
 #: share/skin/s3/template/element/main_nav/subnav/signals:8
 msgid "nav.socialtext-signals"
@@ -9144,7 +9411,7 @@ msgstr "“%1”（在 %3 中编辑 %2）"
 #. (ago_text(page.edit_in_progress.minutes_ago))
 #: share/skin/s3/template/view/page/display:142
 msgid "page.editing=ago"
-msgstr "已於 %1打开本页进行编辑。"
+msgstr "已于 %1打开本页进行编辑。"
 
 #: share/skin/s3/template/view/page/display:105 share/skin/s3/template/view/page/display:107
 msgid "page.email-to-this"
@@ -9240,7 +9507,7 @@ msgstr "工作区 %1 没有锁定页面。"
 #. (user_link, time_ago)
 #: share/skin/s3/javascript/lightbox/edit_check.tt2:4
 msgid "page.opened-for-edit=user,ago"
-msgstr "%1 已於 %2打开本页进行编辑。"
+msgstr "%1 已于 %2打开本页进行编辑。"
 
 #: share/skin/s3/template/element/listview_tabs:11 share/skin/s3/template/view/empty_watchlist:13
 msgid "page.orphaned"
@@ -9474,7 +9741,7 @@ msgstr "搜索人员："
 #. (offset + 1, last, pager.total_entries)
 #: share/plugin/people/template/view/peoplelist:44
 msgid "people.showing=from,to,total"
-msgstr "显示第 %1 - %2 項，共 %3 項。"
+msgstr "显示第 %1 - %2 项，共 %3 项。"
 
 #: share/plugin/people/template/view/peoplelist:50
 msgid "people.sort-name"
@@ -10044,6 +10311,237 @@ msgstr "工作区用量统计博客"
 #: lib/Socialtext/Handler/ControlPanel.pm:1879
 msgid "report.workspace.activity=user"
 msgstr "用户 %1 的工作区活动"
+
+msgid "reports.account-growth"
+msgstr "帐户增长"
+
+msgid "reports.actions-by-wiki"
+msgstr "按工作区显示操作"
+
+msgid "reports.audience-by-user"
+msgstr "按用户显示受众"
+
+msgid "reports.available-reports:"
+msgstr "可用报告："
+
+msgid "reports.cgi=options"
+msgstr "CGI选项：%1"
+
+msgid "reports.coeditors-by-user"
+msgstr "按用户显示合作者"
+
+msgid "reports.collaborativeness:"
+msgstr "合作方："
+
+msgid "reports.comments-per-wiki"
+msgstr "每个工作区的评论次数"
+
+msgid "reports.contributions"
+msgstr "贡献者"
+
+msgid "reports.dashboard"
+msgstr "显示板"
+
+msgid "reports.dashboard-views"
+msgstr "显示板视图"
+
+msgid "reports.dashboard=user"
+msgstr "%1 用户显示板"
+
+msgid "reports.dashboard=wiki"
+msgstr "%1 工作区显示板"
+
+msgid "reports.date"
+msgstr "日期"
+
+msgid "reports.date-supplied-but-this-report-needs-none!"
+msgstr "已提供日期，但该报告不需要日期！"
+
+msgid "reports.duration:"
+msgstr "持续时间："
+
+msgid "reports.edits-by-user"
+msgstr "被用户编辑"
+
+msgid "reports.edits-pages-read-by-these-people=user:"
+msgstr "%1 编辑页面被下列人员阅读过："
+
+msgid "reports.edits-pages-with-these-people=user:"
+msgstr "%1 与下列人员合作编辑过页面："
+
+msgid "reports.edits-per-wiki"
+msgstr "各工作区的编辑次数"
+
+msgid "reports.example-actions-today-1month-txt"
+msgstr "范例：/actions/today/-1month.txt"
+
+msgid "reports.generate!"
+msgstr "制表！"
+
+msgid "reports.healthy"
+msgstr "健康"
+
+msgid "reports.healthy-csv"
+msgstr "健康CSV"
+
+msgid "reports.healthy-wikis"
+msgstr "健康工作区"
+
+msgid "reports.in-past-week=name"
+msgstr "过去一周的%1"
+
+msgid "reports.loading-report"
+msgstr "正在加载报告..."
+
+msgid "reports.mean"
+msgstr "平均值"
+
+msgid "reports.median"
+msgstr "中间值"
+
+msgid "reports.no-user-stats-for-this-period"
+msgstr "这段时期没有可用的用户状态。"
+
+msgid "reports.other-csv"
+msgstr "其他CSV"
+
+msgid "reports.other-wikis"
+msgstr "其他工作区"
+
+msgid "reports.others"
+msgstr "其他"
+
+msgid "reports.page"
+msgstr "页面"
+
+msgid "reports.page-views"
+msgstr "页面视图"
+
+msgid "reports.pages"
+msgstr "页面"
+
+msgid "reports.people"
+msgstr "人员"
+
+msgid "reports.people-views"
+msgstr "人员检视"
+
+msgid "reports.personalizations"
+msgstr "个人化"
+
+msgid "reports.personalized-dashboards"
+msgstr "个人化的显示板"
+
+msgid "reports.personalized-profiles"
+msgstr "个人化的用户信息页面"
+
+msgid "reports.reads-pages-edited-by-these-people=user:"
+msgstr "这些用户编辑了 %1 阅读页面："
+
+msgid "reports.report-duration:"
+msgstr "报告持续时间："
+
+msgid "reports.report-start-date:"
+msgstr "报告开始日期："
+
+msgid "reports.report-start-time:"
+msgstr "报告开始时间："
+
+msgid "reports.report-starting-on:"
+msgstr "报告开始于："
+
+msgid "reports.reports-dashboard"
+msgstr "报告显示板"
+
+msgid "reports.sent"
+msgstr "已发送"
+
+msgid "reports.signals"
+msgstr "讯息"
+
+msgid "reports.signals-sent"
+msgstr "已发送讯息"
+
+msgid "reports.stddev"
+msgstr "标准差"
+
+msgid "reports.submit"
+msgstr "提交"
+
+msgid "reports.total-members-current:"
+msgstr "完整成员（当前）："
+
+msgid "reports.total-unique-contributors:"
+msgstr "完整独立贡献者："
+
+msgid "reports.total-unique-visitors:"
+msgstr "完整独立访客："
+
+msgid "reports.unique-contributors"
+msgstr "独立贡献者"
+
+msgid "reports.unique-contributors-as-percent-of-unique-visitors"
+msgstr "（独立贡献者在独立访客中所占比率）"
+
+msgid "reports.unique-members"
+msgstr "独立成员"
+
+msgid "reports.unique-visitors"
+msgstr "独立访客"
+
+msgid "reports.up-to-main-dashboard"
+msgstr "退回主显示板"
+
+msgid "reports.url-format-report-name-start-time-duration-type"
+msgstr "网址格式： /&lt;report_name&gt;/&lt;start_time&gt;/&lt;duration&gt;.&lt;type&gt;"
+
+msgid "reports.usage-by-account"
+msgstr "按帐户显示用量"
+
+msgid "reports.usage-by-wiki"
+msgstr "按工作区显示用量"
+
+msgid "reports.username"
+msgstr "用户名"
+
+msgid "reports.views"
+msgstr "查看"
+
+msgid "reports.views-by-page"
+msgstr "按页面查看"
+
+msgid "reports.views-by-user"
+msgstr "按用户查看"
+
+msgid "reports.views-by-wiki"
+msgstr "按工作区查看"
+
+msgid "reports.views-per-wiki"
+msgstr "每工作区查看"
+
+msgid "reports.wiki-actions"
+msgstr "工作区操作"
+
+msgid "reports.wiki-analytics"
+msgstr "维基分析"
+
+msgid "reports.wiki-contributions"
+msgstr "工作区贡献者"
+
+msgid "reports.wiki-edits-by-user"
+msgstr "工作区被用户编辑"
+
+msgid "reports.wiki-growth"
+msgstr "工作区增长报告"
+
+msgid "reports.wiki-total"
+msgstr "工作区总量"
+
+msgid "reports.wiki-views-by-user"
+msgstr "按用户查看工作区"
+
+msgid "reports.wikis"
+msgstr "工作区"
 
 #. ($self->_workspace->title)
 #. ($self->_group->display_name)
@@ -10848,7 +11346,7 @@ msgstr "链接目的地："
 
 #: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:5
 msgid "signals.link-text:"
-msgstr "顯示文字："
+msgstr "显示文字："
 
 #. ($search_term)
 #: lib/Socialtext/Pluggable/Plugin/Signals.pm:656
@@ -10898,7 +11396,7 @@ msgstr "发布到"
 #. (acc.user_count)
 #: share/plugin/widgets/share/javascript/activities/appdata.js:233 share/plugin/widgets/share/javascript/network-dropdown.js:82
 msgid "signals.primary-account=users"
-msgstr "主要，%1 名用户"
+msgstr "主帐户，%1 名用户"
 
 #. ("<a href=\"$webroot/st/profile/$sender.user_id\">$sender.best_full_name</a>")
 #. (('<a href="' _ webroot _ '/st/profile/' _ sender.user_id _ '">' _ sender.best_full_name _ '</a>'))
@@ -10912,11 +11410,11 @@ msgstr "已发送的私人讯息"
 
 #: share/plugin/signals/template/element/settings/signals_settings_section:8
 msgid "signals.private-message-to-email"
-msgstr "如果勾选上，每次别人給您发送私人讯息，您将会收到包含该消息的电子邮件。"
+msgstr "如果勾选上，每次别人给您发送私人讯息，您将会收到包含该消息的电子邮件。"
 
 #: share/plugin/widgets/share/javascript/activities/editor.js:1533
 msgid "signals.private-message-to:"
-msgstr "發送私信給："
+msgstr "发送私人讯息给："
 
 #: share/plugin/signals/template/element/settings/private_menu:3 share/plugin/signals/template/element/settings/signals_settings_section:5
 msgid "signals.private-messages"
@@ -10966,15 +11464,15 @@ msgstr "使用这个方便的书签来通过讯息分享所有网站上的页面
 #. (offset + 1, last, pager.total_entries)
 #: share/plugin/signals/template/view/signallist:26
 msgid "signals.showing=from,to,total"
-msgstr "显示第 %1 - %2 項，共 %3 項。"
+msgstr "显示第 %1 - %2 项，共 %3 项。"
 
 #: share/plugin/signals/template/bookmarklet/index.html:57
 msgid "signals.signal-this!"
-msgstr "发送此頁！"
+msgstr "发送此页！"
 
 #: share/plugin/signals/template/bookmarklet/index.html:4
 msgid "signals.signal-this-bookmarklet"
-msgstr "“发送此頁”书签"
+msgstr "“发送此页”书签"
 
 #: share/plugin/signals/share/widgets/profile/widget.html:19
 msgid "signals.signal-to"
@@ -10982,7 +11480,7 @@ msgstr "发送到"
 
 #: share/plugin/signals/template/cp_signal_size_limit:3
 msgid "signals.size-limit:"
-msgstr "最大長度："
+msgstr "最大长度："
 
 #: share/plugin/signals/template/view/signallist:28
 msgid "signals.sort-by:"
@@ -11146,7 +11644,7 @@ msgstr "相关性"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:43
 msgid "sort.revisions"
-msgstr "更動次數"
+msgstr "更动次数"
 
 #: share/skin/s3/template/view/listview:100
 msgid "sort.title"
@@ -12750,7 +13248,7 @@ msgstr "标题："
 
 #: share/skin/s3/template/element/settings/workspaces_cannot_create_section:15
 msgid "wiki.to-existing-group"
-msgstr "要添加一个工作区到<strong>已存在的群组</strong>，请到主导航列的<a href=\"/st/groups\">“群组目录”</a>下拉菜单中，选择您的群组，并点击“编辑”來创建您的工作区。"
+msgstr "要添加一个工作区到<strong>已存在的群组</strong>，请到主导航列的<a href=\"/st/groups\">“群组目录”</a>下拉菜单中，选择您的群组，并点击“编辑”来创建您的工作区。"
 
 #: share/skin/s3/template/element/settings/workspaces_cannot_create_section:19
 msgid "wiki.to-new-group"
@@ -12909,7 +13407,3 @@ msgstr "插入视频"
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:21
 msgid "wikiwyg.widget"
 msgstr "插入一个小工具"
-
-#: share/template/email/free50/account-invitation.txt:30
-msgid "www.socialtext.com"
-msgstr "www.socialtext.com"

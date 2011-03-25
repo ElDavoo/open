@@ -210,6 +210,10 @@ msgstr "Contributions"
 msgid "appliance.email-required"
 msgstr "Please enter an email address"
 
+#: lib/Socialtext/Appliance/Model/System.pm:52
+msgid "appliance.gb=format"
+msgstr "%1 Gb"
+
 #: lib/Socialtext/Appliance/ConsoleController.pm:120
 msgid "appliance.initialize-wikis"
 msgstr "Initialize Workspaces"
@@ -323,6 +327,10 @@ msgstr "Skipping workspace %1, no usage."
 #: lib/Socialtext/Appliance/Model/Setup.pm:362
 msgid "appliance.synchronized-time-with=ts"
 msgstr "Synchronized time with %1"
+
+#: lib/Socialtext/Appliance/Model/System.pm:34
+msgid "appliance.system"
+msgstr "System"
 
 #: lib/Socialtext/Appliance/Model/Setup.pm:448
 msgid "appliance.test-email"
@@ -876,6 +884,66 @@ msgstr "Tue"
 msgid "date.wed"
 msgstr "Wed"
 
+#: lib/Socialtext/Handler/ControlPanel.pm:703
+msgid "desktop.2nd-bg-color"
+msgstr "Secondary background color"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:705
+msgid "desktop.about-2nd-bg-color"
+msgstr "Used as the background for forms, settings headers and un-selected tabs"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:698
+msgid "desktop.about-bg-color"
+msgstr "Background color for all content within Socialtext Desktop. Combine with “Text color” to create readable content."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:691
+msgid "desktop.about-header-gradient-bottom"
+msgstr "The bottom color of the header's gradient. Choose the same color as the top value to create a solid background instead."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:684
+msgid "desktop.about-header-gradient-top"
+msgstr "The top color of the header's gradient. Combine this with “Header Gradient (bottom)” to create a smooth color transition."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:726
+msgid "desktop.about-highlight-color"
+msgstr "The color applied to highlighted elements, such as the background of the Post button."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:719
+msgid "desktop.about-link-color"
+msgstr "The color applied to links. Most applications use a shade of blue."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:677
+msgid "desktop.about-logo-uri"
+msgstr "Socialtext Desktop's logo (automatically scaled to 240 x 34 pixels)."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:712
+msgid "desktop.about-text-color"
+msgstr "The color of all text except links within Socialtext Desktop. Combine with “Background color” above to create readable content."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:696
+msgid "desktop.bg-color"
+msgstr "Background color"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:689
+msgid "desktop.header-gradient-bottom"
+msgstr "Header Gradient (bottom)"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:682
+msgid "desktop.header-gradient-top"
+msgstr "Header Gradient (top)"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:724
+msgid "desktop.highlight-color"
+msgstr "Highlight color"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:717
+msgid "desktop.link-color"
+msgstr "Link color"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:675
+msgid "desktop.logo-uri"
+msgstr "Logo URI"
+
 #: lib/Socialtext/Handler/ControlPanel.pm:774
 msgid "desktop.relogin-for-default-logo"
 msgstr "(Desktop users need to logout and login again to see the default logo.)"
@@ -895,6 +963,10 @@ msgstr "Reset Desktop logo to default. Desktop users need to logout and login ag
 #: lib/Socialtext/Handler/ControlPanel.pm:872
 msgid "desktop.relogin-for-skin"
 msgstr "Settings have been saved.  Desktop users need to logout and login again to apply the new skin."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:710
+msgid "desktop.text-color"
+msgstr "Text color"
 
 #. ($group->driver_group_name)
 #: lib/Socialtext/Handler/ControlPanel.pm:1309
@@ -2411,6 +2483,24 @@ msgstr "%1: watchlist for %2"
 msgid "file.all"
 msgstr "All Files"
 
+#: lib/Socialtext/Lite/Activities.pm:91
+msgid "file.size=bytes"
+msgstr "%1 bytes"
+
+#. (sprintf("%.2f", ($size/1000)
+#. (sprintf("%.1f", ($size/1000)
+#. (sprintf("%.0f", ($size/1000)
+#: lib/Socialtext/Lite/Activities.pm:93 lib/Socialtext/Lite/Activities.pm:95 lib/Socialtext/Lite/Activities.pm:97
+msgid "file.size=kb"
+msgstr "%1K"
+
+#. (sprintf("%.2f", ($size/1000000)
+#. (sprintf("%.1f", ($size/1000000)
+#. (sprintf("%.0f", ($size/1000000)
+#: lib/Socialtext/Lite/Activities.pm:101 lib/Socialtext/Lite/Activities.pm:103 lib/Socialtext/Lite/Activities.pm:99
+msgid "file.size=mb"
+msgstr "%1M"
+
 #: lib/Socialtext/Handler/Authen.pm:79
 msgid "free50.account"
 msgstr "Socialtext Free50 account"
@@ -2634,6 +2724,15 @@ msgstr "start irc session"
 #: lib/Socialtext/Formatter/WaflPhrase.pm:638
 msgid "link.section"
 msgstr "section link"
+
+#: lib/Socialtext/Pluggable/Plugin/Locales.pm:46
+msgid "loc.settings"
+msgstr "Language Settings"
+
+#. ($languages->{system_locale()
+#: lib/Socialtext/Pluggable/Plugin/Locales.pm:34
+msgid "loc.system-default=lang"
+msgstr "System Default: %1"
 
 #. ($address)
 #: lib/Socialtext/Handler/Authen.pm:531

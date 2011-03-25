@@ -9,11 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: share/plugin/control/share/javascript/workspaces_new.js:135
-#: share/plugin/control/template/control/group_table:17
-#: share/plugin/control/template/control/group_table:6
-#: share/plugin/control/template/control/groups.html:50
-#: share/plugin/control/template/control/workspace.html:203
+#: share/plugin/control/share/javascript/workspaces_new.js:135 share/plugin/control/template/control/group_table:17 share/plugin/control/template/control/group_table:6 share/plugin/control/template/control/groups.html:50 share/plugin/control/template/control/workspace.html:203
 msgid "cli.group-id"
 msgstr "ID"
 
@@ -62,26 +58,22 @@ msgstr "本系统的帐户为“自行加入”。任何用户都可以访问 So
 msgid "control.about-settings-tab"
 msgstr "管理全系统的设备设置"
 
+msgid "control.about-user-restrictions"
+msgstr "在添加或更新用户时，您可选择将限制应用在用户记录上。这些限制必须先满足并清除之后，用户方能开始登录系统。"
+
 #: share/plugin/control/template/control/index.html:28
 msgid "control.about-users-tab"
 msgstr "使用本屏幕快捷邀请用户至群组与工作区"
 
-#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:41
-#: share/plugin/control/template/control/workspace_invite.html:94
+#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:41 share/plugin/control/template/control/workspace_invite.html:94
 msgid "control.about-wiki-id"
-msgstr "这是您工作区独有的短识別符，用于网址与电邮地址。必须由 3-30 个小写字母、数字、下划线或破折号组成"
+msgstr "这是您工作区独有的短识别符，用于网址与电邮地址。必须由 3-30 个小写字母、数字、下划线或破折号组成"
 
 #: share/plugin/control/template/control/index.html:32
 msgid "control.about-wikis-tab"
-msgstr "工作区是存放維基与文档的地方。在此创建新的工作区。"
+msgstr "工作区是存放共笔与文档的地方。在此创建新的工作区。"
 
-#: share/plugin/control/template/control/group.html:77
-#: share/plugin/control/template/control/user.html:290
-#: share/plugin/control/template/control/workspace.html:10
-#: share/plugin/control/template/control/workspace_invite.html:98
-#: share/plugin/control/template/control/workspace_table:17
-#: share/plugin/control/template/control/workspace_table:28
-#: share/plugin/control/template/control/workspaces_new.html:20
+#: share/plugin/control/template/control/group.html:77 share/plugin/control/template/control/user.html:290 share/plugin/control/template/control/workspace.html:10 share/plugin/control/template/control/workspace_invite.html:98 share/plugin/control/template/control/workspace_table:17 share/plugin/control/template/control/workspace_table:28 share/plugin/control/template/control/workspaces_new.html:20
 msgid "control.account"
 msgstr "帐户"
 
@@ -89,8 +81,7 @@ msgstr "帐户"
 msgid "control.account-custom-desktop-skin"
 msgstr "帐户自定义桌面视觉主题"
 
-#: share/plugin/control/template/control/account.html:230
-#: share/plugin/control/template/control/design-account.html:8
+#: share/plugin/control/template/control/account.html:230 share/plugin/control/template/control/design-account.html:8
 msgid "control.account-logo"
 msgstr "帐户标志"
 
@@ -119,23 +110,14 @@ msgid "control.account-type:"
 msgstr "帐户类别："
 
 #. (account.name)
-#: share/plugin/control/template/control/account.html:4
-#: share/plugin/control/template/control/add_profile_field.html:2
-#: share/plugin/control/template/control/add_user.html:2
-#: share/plugin/control/template/control/add_users.html:2
-#: share/plugin/control/template/control/design-account.html:2
-#: share/plugin/control/template/control/desktop-account.html:8
-#: share/plugin/control/template/control/edit_profile_field.html:2
-#: share/plugin/control/template/control/fields-account.html:2
-#: share/plugin/control/template/control/rename-account.html:2
+#: share/plugin/control/template/control/account.html:4 share/plugin/control/template/control/add_profile_field.html:2 share/plugin/control/template/control/add_user.html:2 share/plugin/control/template/control/add_users.html:2 share/plugin/control/template/control/design-account.html:2 share/plugin/control/template/control/desktop-account.html:8 share/plugin/control/template/control/edit_profile_field.html:2 share/plugin/control/template/control/fields-account.html:2 share/plugin/control/template/control/rename-account.html:2
 msgid "control.account=name"
 msgstr "%1 帐户"
 
 #. ('<span id="accountsCount"></span>')
 #. ("<span id=\"accountsCount\"></span>")
 #. (this.total)
-#: share/plugin/control/template/control/group.html:316
-#: share/plugin/control/template/control/user.html:135
+#: share/plugin/control/template/control/group.html:316 share/plugin/control/template/control/user.html:135
 msgid "control.accounts=count"
 msgstr "帐户（%1）"
 
@@ -155,8 +137,7 @@ msgstr "添加全部"
 msgid "control.add-existing-user"
 msgstr "添加已有用户："
 
-#: share/plugin/control/template/control/account_add_group.html:2
-#: share/plugin/control/template/control/group_add_to_account.html:2
+#: share/plugin/control/template/control/account_add_group.html:2 share/plugin/control/template/control/group_add_to_account.html:2
 msgid "control.add-group-to-account"
 msgstr "添加群组至帐户"
 
@@ -164,11 +145,7 @@ msgstr "添加群组至帐户"
 msgid "control.add-group-to-account:"
 msgstr "添加群组至帐户："
 
-#: share/plugin/control/template/control/group.html:0
-#: share/plugin/control/template/control/group.html:58
-#: share/plugin/control/template/control/group_add_to_workspace.html:2
-#: share/plugin/control/template/control/workspace.html:183
-#: share/plugin/control/template/control/workspace_add_group.html:2
+#: share/plugin/control/template/control/group.html:0 share/plugin/control/template/control/group.html:58 share/plugin/control/template/control/group_add_to_workspace.html:2 share/plugin/control/template/control/workspace.html:183 share/plugin/control/template/control/workspace_add_group.html:2
 msgid "control.add-group-to-wiki"
 msgstr "添加群组至工作区"
 
@@ -176,8 +153,7 @@ msgstr "添加群组至工作区"
 msgid "control.add-group-to-wiki:"
 msgstr "添加群组至工作区："
 
-#: share/plugin/control/template/control/account.html:76
-#: share/plugin/control/template/control/group.html:33
+#: share/plugin/control/template/control/account.html:76 share/plugin/control/template/control/group.html:33
 msgid "control.add-multiple-users"
 msgstr "添加多名用户"
 
@@ -185,19 +161,15 @@ msgstr "添加多名用户"
 msgid "control.add-new-user"
 msgstr "添加新用户"
 
-#: share/plugin/control/template/control/account_add_group.html:27
-#: share/plugin/control/template/control/group_add_to_account.html:25
+#: share/plugin/control/template/control/account_add_group.html:27 share/plugin/control/template/control/group_add_to_account.html:25
 msgid "control.add-to-account"
 msgstr "添加至帐户"
 
-#: share/plugin/control/template/control/group_add_to_workspace.html:31
-#: share/plugin/control/template/control/workspace_add_group.html:31
+#: share/plugin/control/template/control/group_add_to_workspace.html:31 share/plugin/control/template/control/workspace_add_group.html:31
 msgid "control.add-to-wiki"
 msgstr "添加至工作区"
 
-#: share/plugin/control/template/control/add_user.html:1
-#: share/plugin/control/template/control/add_user.html:60
-#: share/plugin/control/template/control/add_user.html:8
+#: share/plugin/control/template/control/add_user.html:1 share/plugin/control/template/control/add_user.html:60 share/plugin/control/template/control/add_user.html:8
 msgid "control.add-user"
 msgstr "添加用户"
 
@@ -213,8 +185,7 @@ msgstr "添加用户至帐户："
 msgid "control.add-user-to-wiki:"
 msgstr "添加用户至工作区："
 
-#: share/plugin/control/template/control/add_users.html:8
-#: share/plugin/control/template/control/invite_to_group:1
+#: share/plugin/control/template/control/add_users.html:8 share/plugin/control/template/control/invite_to_group:1
 msgid "control.add-users"
 msgstr "添加用户"
 
@@ -238,12 +209,7 @@ msgstr "添加群组 %1（%2）至工作区"
 msgid "control.adding-group-to-wiki=name"
 msgstr "添加群组至工作区 %1"
 
-#: share/plugin/control/share/javascript/workspaces_new.js:157
-#: share/plugin/control/share/javascript/workspaces_new.js:49
-#: share/plugin/control/template/control/account.html:134
-#: share/plugin/control/template/control/group.html:184
-#: share/plugin/control/template/control/workspace.html:225
-#: share/plugin/control/template/control/workspace.html:91
+#: share/plugin/control/share/javascript/workspaces_new.js:157 share/plugin/control/share/javascript/workspaces_new.js:49 share/plugin/control/template/control/account.html:134 share/plugin/control/template/control/group.html:184 share/plugin/control/template/control/workspace.html:225 share/plugin/control/template/control/workspace.html:91
 msgid "control.admin"
 msgstr "管理"
 
@@ -287,12 +253,7 @@ msgstr "分配给新帐户"
 msgid "control.available-groups"
 msgstr "可用群组"
 
-#: share/plugin/control/template/control/add_user.html:5
-#: share/plugin/control/template/control/add_users.html:5
-#: share/plugin/control/template/control/design-account.html:5
-#: share/plugin/control/template/control/desktop-account.html:12
-#: share/plugin/control/template/control/fields-account.html:6
-#: share/plugin/control/template/control/rename-account.html:5
+#: share/plugin/control/template/control/add_user.html:5 share/plugin/control/template/control/add_users.html:5 share/plugin/control/template/control/design-account.html:5 share/plugin/control/template/control/desktop-account.html:12 share/plugin/control/template/control/fields-account.html:6 share/plugin/control/template/control/rename-account.html:5
 msgid "control.back"
 msgstr "返回"
 
@@ -304,8 +265,7 @@ msgstr "返回帐户"
 msgid "control.back-to-account-fields"
 msgstr "返回帐户字段"
 
-#: share/plugin/control/template/control/growth_report.html:12
-#: share/plugin/control/template/control/report.html:147
+#: share/plugin/control/template/control/growth_report.html:12 share/plugin/control/template/control/report.html:147
 msgid "control.back-to-account-page"
 msgstr "返回帐户页面"
 
@@ -313,8 +273,7 @@ msgstr "返回帐户页面"
 msgid "control.back-to-user-page"
 msgstr "返回用户页面"
 
-#: share/plugin/control/template/control/growth_report.html:14
-#: share/plugin/control/template/control/report.html:149
+#: share/plugin/control/template/control/growth_report.html:14 share/plugin/control/template/control/report.html:149
 msgid "control.back-to-wiki-page"
 msgstr "返回工作区页面"
 
@@ -331,8 +290,7 @@ msgstr "若未设定，将自动计算 %1"
 msgid "control.clear-external-id"
 msgstr "清除外部 ID"
 
-#: share/plugin/control/share/javascript/template/control_table.tt2:18
-#: share/plugin/control/template/control/user_table_header:10
+#: share/plugin/control/share/javascript/template/control_table.tt2:18 share/plugin/control/template/control/user_table_header:10
 msgid "control.clear-selection"
 msgstr "清除选择"
 
@@ -395,60 +353,35 @@ msgstr "创建群组"
 msgid "control.create-new-account"
 msgstr "创建新帐户"
 
-#: share/plugin/control/template/control/add_profile_field.html:8
-#: share/plugin/control/template/control/field_form:81
-#: share/plugin/control/template/control/fields-account.html:12
+#: share/plugin/control/template/control/add_profile_field.html:8 share/plugin/control/template/control/field_form:81 share/plugin/control/template/control/fields-account.html:12
 msgid "control.create-new-field"
 msgstr "创建新字段"
 
-#: share/plugin/control/template/control/group_invite.html:85
-#: share/plugin/control/template/control/groups.html:109
+#: share/plugin/control/template/control/group_invite.html:85 share/plugin/control/template/control/groups.html:109
 msgid "control.create-new-group"
 msgstr "创建新群组"
 
-#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:18
-#: share/plugin/control/template/control/workspace_invite.html:82
-#: share/plugin/control/template/control/workspaces.html:11
-#: share/plugin/control/template/control/workspaces.html:8
+#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:18 share/plugin/control/template/control/workspace_invite.html:82 share/plugin/control/template/control/workspaces.html:11 share/plugin/control/template/control/workspaces.html:8
 msgid "control.create-new-wiki"
 msgstr "创建新工作区"
 
-#: share/plugin/control/template/control/group.html:0
-#: share/plugin/control/template/control/group.html:62
+#: share/plugin/control/template/control/group.html:0 share/plugin/control/template/control/group.html:62
 msgid "control.create-new-wiki-for-group"
 msgstr "为本群组创建新工作区"
 
-#: share/plugin/control/template/control/account.html:0
-#: share/plugin/control/template/control/account.html:221
+#: share/plugin/control/template/control/account.html:0 share/plugin/control/template/control/account.html:221
 msgid "control.create-new-wiki-in-account"
 msgstr "为本帐户创建新工作区"
 
-#: share/plugin/control/template/control/workspaces_new.html:3
-#: share/plugin/control/template/control/workspaces_new.html:53
+#: share/plugin/control/template/control/workspaces_new.html:3 share/plugin/control/template/control/workspaces_new.html:53
 msgid "control.create-wiki"
 msgstr "创建工作区"
 
-#: share/plugin/control/share/javascript/workspaces_new.js:183
-#: share/plugin/control/template/control/group.html:80
-#: share/plugin/control/template/control/group_table:11
-#: share/plugin/control/template/control/group_table:32
-#: share/plugin/control/template/control/groups.html:87
-#: share/plugin/control/template/control/user.html:18
-#: share/plugin/control/template/control/user.html:298
-#: share/plugin/control/template/control/workspace.html:256
-#: share/plugin/control/template/control/workspace.html:38
-#: share/plugin/control/template/control/workspace_table:18
-#: share/plugin/control/template/control/workspace_table:31
+#: share/plugin/control/share/javascript/workspaces_new.js:183 share/plugin/control/template/control/group.html:80 share/plugin/control/template/control/group_table:11 share/plugin/control/template/control/group_table:32 share/plugin/control/template/control/groups.html:87 share/plugin/control/template/control/user.html:18 share/plugin/control/template/control/user.html:298 share/plugin/control/template/control/workspace.html:256 share/plugin/control/template/control/workspace.html:38 share/plugin/control/template/control/workspace_table:18 share/plugin/control/template/control/workspace_table:31
 msgid "control.created"
 msgstr "创建日期"
 
-#: share/plugin/control/template/control/group.html:83
-#: share/plugin/control/template/control/group_table:12
-#: share/plugin/control/template/control/group_table:35
-#: share/plugin/control/template/control/user.html:302
-#: share/plugin/control/template/control/workspace.html:41
-#: share/plugin/control/template/control/workspace_table:19
-#: share/plugin/control/template/control/workspace_table:34
+#: share/plugin/control/template/control/group.html:83 share/plugin/control/template/control/group_table:12 share/plugin/control/template/control/group_table:35 share/plugin/control/template/control/user.html:302 share/plugin/control/template/control/workspace.html:41 share/plugin/control/template/control/workspace_table:19 share/plugin/control/template/control/workspace_table:34
 msgid "control.created-by"
 msgstr "创建人"
 
@@ -466,9 +399,7 @@ msgstr "于 %1 创建"
 msgid "control.creating"
 msgstr "创建"
 
-#: share/plugin/control/share/javascript/workspaces_new.js:188
-#: share/plugin/control/template/control/groups.html:97
-#: share/plugin/control/template/control/workspace.html:261
+#: share/plugin/control/share/javascript/workspaces_new.js:188 share/plugin/control/template/control/groups.html:97 share/plugin/control/template/control/workspace.html:261
 msgid "control.creator"
 msgstr "创建者"
 
@@ -525,6 +456,12 @@ msgstr "禁止邀请加入群组"
 msgid "control.edit-field"
 msgstr "编辑字段"
 
+msgid "control.edit-user"
+msgstr "编辑用户"
+
+msgid "control.edit-user=name"
+msgstr "编辑用户：%1"
+
 msgid "control.email-address:"
 msgstr "电子邮件地址："
 
@@ -541,16 +478,11 @@ msgstr "开放邀请加入群组"
 msgid "control.export-user-for-selected-accounts=count"
 msgstr "为 %1 个选中帐户输出用户数据"
 
-#: share/plugin/control/template/control/field_form:59
-#: share/plugin/control/template/control/fields-account.html:44
+#: share/plugin/control/template/control/field_form:59 share/plugin/control/template/control/fields-account.html:44
 msgid "control.external-field"
 msgstr "外部"
 
-#: share/plugin/control/template/control/account.html:160
-#: share/plugin/control/template/control/group.html:210
-#: share/plugin/control/template/control/selected_user_table_header:17
-#: share/plugin/control/template/control/user_table_header:31
-#: share/plugin/control/template/control/workspace.html:119
+#: share/plugin/control/template/control/account.html:160 share/plugin/control/template/control/group.html:210 share/plugin/control/template/control/selected_user_table_header:17 share/plugin/control/template/control/user_table_header:31 share/plugin/control/template/control/workspace.html:119
 msgid "control.external-id"
 msgstr "外部ID"
 
@@ -570,8 +502,7 @@ msgstr "外部ID："
 msgid "control.features-and-skins"
 msgstr "特征与视觉主题"
 
-#: share/plugin/control/template/control/field_common:4
-#: share/plugin/control/template/control/field_common:7
+#: share/plugin/control/template/control/field_common:4 share/plugin/control/template/control/field_common:7
 msgid "control.field-contact"
 msgstr "联系"
 
@@ -587,8 +518,7 @@ msgstr "编辑"
 msgid "control.field-is-hidden"
 msgstr "是"
 
-#: share/plugin/control/template/control/field_form:46
-#: share/plugin/control/template/control/fields-account.html:25
+#: share/plugin/control/template/control/field_form:46 share/plugin/control/template/control/fields-account.html:25
 msgid "control.field-name"
 msgstr "字段名称"
 
@@ -596,13 +526,11 @@ msgstr "字段名称"
 msgid "control.field-not-hidden"
 msgstr "否"
 
-#: share/plugin/control/template/control/field_common:4
-#: share/plugin/control/template/control/field_common:8
+#: share/plugin/control/template/control/field_common:4 share/plugin/control/template/control/field_common:8
 msgid "control.field-person"
 msgstr "人物"
 
-#: share/plugin/control/template/control/field_common:4
-#: share/plugin/control/template/control/field_common:6
+#: share/plugin/control/template/control/field_common:4 share/plugin/control/template/control/field_common:6
 msgid "control.field-regular"
 msgstr "常规"
 
@@ -610,13 +538,11 @@ msgstr "常规"
 msgid "control.field-source"
 msgstr "来源"
 
-#: share/plugin/control/template/control/field_form:42
-#: share/plugin/control/template/control/fields-account.html:24
+#: share/plugin/control/template/control/field_form:42 share/plugin/control/template/control/fields-account.html:24
 msgid "control.field-title"
 msgstr "字段标题"
 
-#: share/plugin/control/template/control/field_form:64
-#: share/plugin/control/template/control/fields-account.html:26
+#: share/plugin/control/template/control/field_form:64 share/plugin/control/template/control/fields-account.html:26
 msgid "control.field-type"
 msgstr "字段类别"
 
@@ -625,14 +551,17 @@ msgstr "名字："
 
 #: share/plugin/control/template/control/user.html:103
 msgid "control.for-cac-authentication"
+msgstr "（为 CAC 认证之用）"
+
+#: share/plugin/control/template/control/user.html:103
+msgid "control.for-use-with-cac-authentication"
 msgstr "为 CAC 认证之用"
 
 #: share/plugin/control/template/control/add_users.html:31
 msgid "control.force-password-change"
 msgstr "强制更改密码"
 
-#: share/plugin/control/template/control/group_add_to_workspace.html:27
-#: share/plugin/control/template/control/workspace_add_group.html:28
+#: share/plugin/control/template/control/group_add_to_workspace.html:27 share/plugin/control/template/control/workspace_add_group.html:28
 msgid "control.give-group-admin-privileges"
 msgstr "为整群组授予管理权限"
 
@@ -665,11 +594,7 @@ msgstr "群组名称："
 msgid "control.group-permissions:"
 msgstr "群组权限："
 
-#: share/plugin/control/template/control/group.html:188
-#: share/plugin/control/template/control/group.html:232
-#: share/plugin/control/template/control/group.html:247
-#: share/plugin/control/template/control/group.html:262
-#: share/plugin/control/template/control/group.html:381
+#: share/plugin/control/template/control/group.html:188 share/plugin/control/template/control/group.html:232 share/plugin/control/template/control/group.html:247 share/plugin/control/template/control/group.html:262 share/plugin/control/template/control/group.html:381
 msgid "control.group-role-changed"
 msgstr "群组角色变更成功."
 
@@ -690,15 +615,11 @@ msgstr "%1 群组"
 
 #. (this.total)
 #. (account.group_count)
-#: share/plugin/control/share/javascript/workspaces_new.js:130
-#: share/plugin/control/template/control/account.html:84
-#: share/plugin/control/template/control/groups.html:45
-#: share/plugin/control/template/control/workspace.html:198
+#: share/plugin/control/share/javascript/workspaces_new.js:130 share/plugin/control/template/control/account.html:84 share/plugin/control/template/control/groups.html:45 share/plugin/control/template/control/workspace.html:198
 msgid "control.groups=count"
 msgstr "群组（%1）"
 
-#: share/plugin/control/template/control/field_form:75
-#: share/plugin/control/template/control/fields-account.html:28
+#: share/plugin/control/template/control/field_form:75 share/plugin/control/template/control/fields-account.html:28
 msgid "control.hidden-field"
 msgstr "隐藏"
 
@@ -738,14 +659,11 @@ msgstr "邀请到群组"
 msgid "control.invite-to-wiki"
 msgstr "邀请到工作区"
 
-#: share/plugin/control/template/control/selected_user_table_header:20
-#: share/plugin/control/template/control/user_table_header:47
+#: share/plugin/control/template/control/selected_user_table_header:20 share/plugin/control/template/control/user_table_header:47
 msgid "control.invited"
 msgstr "已邀请"
 
-#: share/plugin/control/template/control/selected_user_table_header:21
-#: share/plugin/control/template/control/user_table_header:51
-#: share/plugin/control/template/control/user_table_header:53
+#: share/plugin/control/template/control/selected_user_table_header:21 share/plugin/control/template/control/user_table_header:51 share/plugin/control/template/control/user_table_header:53
 msgid "control.invited-by"
 msgstr "邀请"
 
@@ -753,9 +671,7 @@ msgstr "邀请"
 msgid "control.invited-by:"
 msgstr "邀请人："
 
-#: share/plugin/control/template/control/account.html:164
-#: share/plugin/control/template/control/group.html:214
-#: share/plugin/control/template/control/workspace.html:123
+#: share/plugin/control/template/control/account.html:164 share/plugin/control/template/control/group.html:214 share/plugin/control/template/control/workspace.html:123
 msgid "control.invited-to-system"
 msgstr "邀请（到系统）"
 
@@ -771,9 +687,7 @@ msgstr "LDAP驱动："
 msgid "control.load-existing-group-from-ldap"
 msgstr "从LDAP加载已有群组"
 
-#: share/plugin/control/template/control/selected_user_table_header:3
-#: share/plugin/control/template/control/user_table_header:4
-#: share/plugin/control/template/control/user_table_header:8
+#: share/plugin/control/template/control/selected_user_table_header:3 share/plugin/control/template/control/user_table_header:4 share/plugin/control/template/control/user_table_header:8
 msgid "control.loading-selected-users"
 msgstr "正在加载选中用户"
 
@@ -789,12 +703,7 @@ msgstr "开始输入工作区的名称："
 msgid "control.manually-set-uri:"
 msgstr "手工设置URI："
 
-#: share/plugin/control/share/javascript/workspaces_new.js:158
-#: share/plugin/control/share/javascript/workspaces_new.js:50
-#: share/plugin/control/template/control/account.html:135
-#: share/plugin/control/template/control/group.html:185
-#: share/plugin/control/template/control/workspace.html:226
-#: share/plugin/control/template/control/workspace.html:92
+#: share/plugin/control/share/javascript/workspaces_new.js:158 share/plugin/control/share/javascript/workspaces_new.js:50 share/plugin/control/template/control/account.html:135 share/plugin/control/template/control/group.html:185 share/plugin/control/template/control/workspace.html:226 share/plugin/control/template/control/workspace.html:92
 msgid "control.member"
 msgstr "成员"
 
@@ -802,29 +711,7 @@ msgstr "成员"
 msgid "control.member-of-account"
 msgstr "帐户成员"
 
-#: share/plugin/control/share/javascript/workspaces_new.js:144
-#: share/plugin/control/share/javascript/workspaces_new.js:27
-#: share/plugin/control/template/control/account.html:116
-#: share/plugin/control/template/control/account_table:9
-#: share/plugin/control/template/control/desktop-account.html:25
-#: share/plugin/control/template/control/group.html:166
-#: share/plugin/control/template/control/group.html:321
-#: share/plugin/control/template/control/group.html:71
-#: share/plugin/control/template/control/group_invite.html:91
-#: share/plugin/control/template/control/group_table:20
-#: share/plugin/control/template/control/group_table:7
-#: share/plugin/control/template/control/groups.html:59
-#: share/plugin/control/template/control/selected_user_table_header:16
-#: share/plugin/control/template/control/user.html:159
-#: share/plugin/control/template/control/user.html:277
-#: share/plugin/control/template/control/user_table_header:26
-#: share/plugin/control/template/control/user_table_header:28
-#: share/plugin/control/template/control/workspace.html:212
-#: share/plugin/control/template/control/workspace.html:72
-#: share/plugin/control/template/control/workspace_invite.html:144
-#: share/plugin/control/template/control/workspace_invite.html:93
-#: share/plugin/control/template/control/workspace_table:15
-#: share/plugin/control/template/control/workspace_table:22
+#: share/plugin/control/share/javascript/workspaces_new.js:144 share/plugin/control/share/javascript/workspaces_new.js:27 share/plugin/control/template/control/account.html:116 share/plugin/control/template/control/account_table:9 share/plugin/control/template/control/desktop-account.html:25 share/plugin/control/template/control/group.html:166 share/plugin/control/template/control/group.html:321 share/plugin/control/template/control/group.html:71 share/plugin/control/template/control/group_invite.html:91 share/plugin/control/template/control/group_table:20 share/plugin/control/template/control/group_table:7 share/plugin/control/template/control/groups.html:59 share/plugin/control/template/control/selected_user_table_header:16 share/plugin/control/template/control/user.html:159 share/plugin/control/template/control/user.html:277 share/plugin/control/template/control/user_table_header:26 share/plugin/control/template/control/user_table_header:28 share/plugin/control/template/control/workspace.html:212 share/plugin/control/template/control/workspace.html:72 share/plugin/control/template/control/workspace_invite.html:144 share/plugin/control/template/control/workspace_invite.html:93 share/plugin/control/template/control/workspace_table:15 share/plugin/control/template/control/workspace_table:22
 msgid "control.name"
 msgstr "名称"
 
@@ -849,23 +736,11 @@ msgstr "权限设定："
 msgid "control.prefers-to-be-called"
 msgstr "起一个名字"
 
-#: share/plugin/control/template/control/group.html:340
-#: share/plugin/control/template/control/user.html:175
+#: share/plugin/control/template/control/group.html:340 share/plugin/control/template/control/user.html:175
 msgid "control.primary"
 msgstr "主要"
 
-#: share/plugin/control/share/javascript/useraccountrole.js:35
-#: share/plugin/control/share/javascript/workspaces_new.js:174
-#: share/plugin/control/template/control/account.html:151
-#: share/plugin/control/template/control/group.html:201
-#: share/plugin/control/template/control/group_table:10
-#: share/plugin/control/template/control/group_table:29
-#: share/plugin/control/template/control/groups.html:78
-#: share/plugin/control/template/control/selected_user_table_header:19
-#: share/plugin/control/template/control/user_table_header:41
-#: share/plugin/control/template/control/user_table_header:43
-#: share/plugin/control/template/control/workspace.html:110
-#: share/plugin/control/template/control/workspace.html:247
+#: share/plugin/control/share/javascript/useraccountrole.js:35 share/plugin/control/share/javascript/workspaces_new.js:174 share/plugin/control/template/control/account.html:151 share/plugin/control/template/control/group.html:201 share/plugin/control/template/control/group_table:10 share/plugin/control/template/control/group_table:29 share/plugin/control/template/control/groups.html:78 share/plugin/control/template/control/selected_user_table_header:19 share/plugin/control/template/control/user_table_header:41 share/plugin/control/template/control/user_table_header:43 share/plugin/control/template/control/workspace.html:110 share/plugin/control/template/control/workspace.html:247
 msgid "control.primary-account"
 msgstr "主要帐户"
 
@@ -873,8 +748,7 @@ msgstr "主要帐户"
 msgid "control.primary-account-for-new-groups:"
 msgstr "新群组的主要帐户为："
 
-#: share/plugin/control/share/javascript/lightbox/group-create.tt2:31
-#: share/plugin/control/template/control/group.html:16
+#: share/plugin/control/share/javascript/lightbox/group-create.tt2:31 share/plugin/control/template/control/group.html:16
 msgid "control.private-group"
 msgstr "<strong>私人：</strong>只有成员才能浏览与访问本群组。"
 
@@ -886,9 +760,15 @@ msgstr "资料字段"
 msgid "control.profile-section"
 msgstr "资料段落"
 
+msgid "control.promote-to-admin"
+msgstr "给予管理员资格"
+
 #: share/plugin/control/template/control/user.html:168
 msgid "control.relationship"
 msgstr "关系"
+
+msgid "control.remove-admin"
+msgstr "移除管理员资格"
 
 #: share/plugin/control/template/control/user.html:80
 msgid "control.remove-appliance-business-administrator-role"
@@ -902,14 +782,29 @@ msgstr "移除设备技术管理员角色"
 msgid "control.remove-external-id-requirement"
 msgstr "删除外部 ID 要求"
 
+msgid "control.remove-from-account"
+msgstr "从帐户删除"
+
+msgid "control.remove-from-group"
+msgstr "从群组删除"
+
 #: share/plugin/control/template/control/user.html:312
 msgid "control.remove-from-wiki"
 msgstr "从工作区中移除"
+
+msgid "control.remove-from-wikis"
+msgstr "从工作区删除"
 
 #. (accounts.length)
 #: share/plugin/control/template/control/group.html:368
 msgid "control.remove-group-from-accounts=count?"
 msgstr "从 %1 个选中帐户中移除群组？"
+
+msgid "control.remove-selected-group-from-wiki=count?"
+msgstr "把选择的 %1 个群组从此工作区删除？"
+
+msgid "control.remove-selected-user-from-wiki=count?"
+msgstr "把选择的 %1 位用户从此工作区删除？"
 
 #. (workspaces.length)
 #: share/plugin/control/template/control/user.html:314
@@ -921,8 +816,7 @@ msgstr "从 %1 个选中工作区中移除本用户？"
 msgid "control.removed-user=account"
 msgstr "已从帐户 %1 中移除用户"
 
-#: share/plugin/control/template/control/account.html:6
-#: share/plugin/control/template/control/rename-account.html:8
+#: share/plugin/control/template/control/account.html:6 share/plugin/control/template/control/rename-account.html:8
 msgid "control.rename-account"
 msgstr "重命名帐户"
 
@@ -930,8 +824,7 @@ msgstr "重命名帐户"
 msgid "control.reports"
 msgstr "报告"
 
-#: share/plugin/control/template/control/add_users.html:35
-#: share/plugin/control/template/control/user.html:130
+#: share/plugin/control/template/control/add_users.html:35 share/plugin/control/template/control/user.html:130
 msgid "control.require-external-id"
 msgstr "要求外部 ID"
 
@@ -964,29 +857,21 @@ msgstr "限制邀请至域："
 msgid "control.return-to-group=name"
 msgstr "返回 %1群组"
 
-#: share/plugin/control/share/javascript/workspaces_new.js:153
-#: share/plugin/control/share/javascript/workspaces_new.js:45
-#: share/plugin/control/template/control/account.html:130
-#: share/plugin/control/template/control/group.html:180
-#: share/plugin/control/template/control/workspace.html:221
-#: share/plugin/control/template/control/workspace.html:87
+#: share/plugin/control/share/javascript/workspaces_new.js:153 share/plugin/control/share/javascript/workspaces_new.js:45 share/plugin/control/template/control/account.html:130 share/plugin/control/template/control/group.html:180 share/plugin/control/template/control/workspace.html:221 share/plugin/control/template/control/workspace.html:87
 msgid "control.role"
 msgstr "角色"
 
-#: share/plugin/control/template/control/user.html:75
-#: share/plugin/control/template/control/user.html:90
+#: share/plugin/control/template/control/user.html:75 share/plugin/control/template/control/user.html:90
 msgid "control.role-no"
 msgstr "否"
 
-#: share/plugin/control/template/control/user.html:73
-#: share/plugin/control/template/control/user.html:88
+#: share/plugin/control/template/control/user.html:73 share/plugin/control/template/control/user.html:88
 msgid "control.role-yes"
 msgstr "是"
 
 #. ("<span class=\"numSelected\">$numSelected</span>")
 #. (('<span class="numSelected">' _ numSelected _ '</span>'))
-#: share/plugin/control/share/javascript/template/control_table.tt2:0
-#: share/plugin/control/share/javascript/template/control_table.tt2:9
+#: share/plugin/control/share/javascript/template/control_table.tt2:0 share/plugin/control/share/javascript/template/control_table.tt2:9
 msgid "control.rows-selected=count:"
 msgstr "%1 行选中："
 
@@ -994,13 +879,11 @@ msgstr "%1 行选中："
 msgid "control.save-field"
 msgstr "保存字段"
 
-#: share/plugin/control/template/control/accounts.html:3
-#: share/plugin/control/template/control/workspaces.html:3
+#: share/plugin/control/template/control/accounts.html:3 share/plugin/control/template/control/workspaces.html:3
 msgid "control.search-by-name"
 msgstr "根据名称搜索"
 
-#: share/plugin/control/template/control/group_add_users.html:4
-#: share/plugin/control/template/control/users.html:4
+#: share/plugin/control/template/control/group_add_users.html:4 share/plugin/control/template/control/users.html:4
 msgid "control.search-by-username"
 msgstr "根据用户名搜索"
 
@@ -1016,8 +899,7 @@ msgstr "选择您希望转换成群组的帐户"
 msgid "control.select-admins-of-new-wiki"
 msgstr "选择下面的一名或多名用户成为您新工作区的管理员"
 
-#: share/plugin/control/template/control/account_add_group.html:10
-#: share/plugin/control/template/control/workspace_add_group.html:14
+#: share/plugin/control/template/control/account_add_group.html:10 share/plugin/control/template/control/workspace_add_group.html:14
 msgid "control.select-group"
 msgstr "请选择一个群组"
 
@@ -1033,15 +915,11 @@ msgstr "请选择多名用户添加至群组。"
 msgid "control.select-wiki"
 msgstr "请选择一个工作区"
 
-#: share/plugin/control/share/javascript/lightbox/group-create.tt2:27
-#: share/plugin/control/template/control/group.html:14
+#: share/plugin/control/share/javascript/lightbox/group-create.tt2:27 share/plugin/control/template/control/group.html:14
 msgid "control.self-join-group"
 msgstr "<strong>自行加入：</strong>非成员可以浏览本群组，但只有成为成员才能进行参与。"
 
-#: share/plugin/control/template/control/account_add_group.html:23
-#: share/plugin/control/template/control/group_add_to_account.html:21
-#: share/plugin/control/template/control/group_add_to_workspace.html:20
-#: share/plugin/control/template/control/workspace_add_group.html:21
+#: share/plugin/control/template/control/account_add_group.html:23 share/plugin/control/template/control/group_add_to_account.html:21 share/plugin/control/template/control/group_add_to_workspace.html:20 share/plugin/control/template/control/workspace_add_group.html:21
 msgid "control.send-invitation-email"
 msgstr "发送邀请电子邮件"
 
@@ -1057,8 +935,7 @@ msgstr "变更帐户类别为："
 msgid "control.set-by-external-directory"
 msgstr "根据外部目录设置"
 
-#: share/plugin/control/share/javascript/table.js:27
-#: share/plugin/control/template/control/groups.html:23
+#: share/plugin/control/share/javascript/table.js:27 share/plugin/control/template/control/groups.html:23
 msgid "control.show-all"
 msgstr "显示全部"
 
@@ -1070,8 +947,7 @@ msgstr "显示已删除"
 msgid "control.show-field"
 msgstr "显示"
 
-#: share/plugin/control/share/javascript/table.js:33
-#: share/plugin/control/template/control/groups.html:30
+#: share/plugin/control/share/javascript/table.js:33 share/plugin/control/template/control/groups.html:30
 msgid "control.show-only-selected"
 msgstr "仅显示已删除"
 
@@ -1082,16 +958,24 @@ msgstr "显示全部选中的条目"
 #. (from, to, total)
 #: share/plugin/control/share/javascript/template/control_table.tt2:46
 msgid "control.showing=from,to,total"
-msgstr "显示第 %1 - %2 項，共 %3 項"
+msgstr "显示第 %1 - %2 项，共 %3 项"
 
 #: share/plugin/control/template/control/config.html:2
 msgid "control.socialtext-admin-configuration"
 msgstr "Socialtext 管理设置"
 
-#: share/plugin/control/template/control/wrapper:104
-#: share/plugin/control/template/control/wrapper:19
+#: share/plugin/control/template/control/wrapper:104 share/plugin/control/template/control/wrapper:19
 msgid "control.socialtext-control-panel"
 msgstr "Socialtext 控制台"
+
+msgid "control.start-typing-account-name"
+msgstr "开始键入一个帐户名称"
+
+msgid "control.start-typing-group-name"
+msgstr "开始键入群组名称"
+
+msgid "control.start-typing-user-name"
+msgstr "开始键入用户名称"
 
 #: share/plugin/control/template/control/workspaces_new.html:5
 msgid "control.step-1-set-wiki-title"
@@ -1109,15 +993,12 @@ msgstr "第3步：点击按钮创建工作区"
 msgid "control.stock-fields"
 msgstr "存储字段"
 
-#: share/plugin/control/template/control/accounts.html:18
-#: share/plugin/control/template/control/accounts.html:5
-#: share/plugin/control/template/control/desktop-account.html:161
-#: share/plugin/control/template/control/group_add_users.html:6
-#: share/plugin/control/template/control/users.html:6
-#: share/plugin/control/template/control/workspace.html:34
-#: share/plugin/control/template/control/workspaces.html:5
+#: share/plugin/control/template/control/accounts.html:18 share/plugin/control/template/control/accounts.html:5 share/plugin/control/template/control/desktop-account.html:161 share/plugin/control/template/control/group_add_users.html:6 share/plugin/control/template/control/users.html:6 share/plugin/control/template/control/workspace.html:34 share/plugin/control/template/control/workspaces.html:5
 msgid "control.submit"
 msgstr "提交"
+
+msgid "control.system-required-user"
+msgstr "系统用户"
 
 #: share/plugin/control/template/control/index.html:22
 msgid "control.tabs"
@@ -1151,15 +1032,12 @@ msgstr "转换帐户为群组"
 msgid "control.transform-to-groups"
 msgstr "转换为群组"
 
-#: share/plugin/control/template/control/account.html:61
-#: share/plugin/control/template/control/group.html:18
-#: share/plugin/control/template/control/plugin_pref_form.html:6
-#: share/plugin/control/template/control/settings.html:11
-#: share/plugin/control/template/control/settings.html:21
-#: share/plugin/control/template/control/workspace_table:3
-#: share/plugin/control/template/control/workspace_table:70
+#: share/plugin/control/template/control/account.html:61 share/plugin/control/template/control/group.html:18 share/plugin/control/template/control/plugin_pref_form.html:6 share/plugin/control/template/control/settings.html:11 share/plugin/control/template/control/settings.html:21 share/plugin/control/template/control/workspace_table:3 share/plugin/control/template/control/workspace_table:70
 msgid "control.update"
 msgstr "更新"
+
+msgid "control.update-user"
+msgstr "更新用户：%1"
 
 #: share/plugin/control/template/control/group.html:122
 msgid "control.updating"
@@ -1169,13 +1047,11 @@ msgstr "正在更新 ..."
 msgid "control.upload-account-logo-optional"
 msgstr "上传帐户标志（可选）"
 
-#: share/plugin/control/template/control/workspace.html:14
-#: share/plugin/control/template/control/workspaces_new.html:13
+#: share/plugin/control/template/control/workspace.html:14 share/plugin/control/template/control/workspaces_new.html:13
 msgid "control.uri"
 msgstr "URI"
 
-#: share/plugin/control/template/control/design-account.html:62
-#: share/plugin/control/template/control/design-account.html:67
+#: share/plugin/control/template/control/design-account.html:62 share/plugin/control/template/control/design-account.html:67
 msgid "control.use-default-logo"
 msgstr "使用默认 Socialtext 标志"
 
@@ -1193,8 +1069,7 @@ msgstr "用户 %1 现在已经为帐户的成员"
 msgid "control.user-added=account"
 msgstr "用户已添加至 %1 帐户"
 
-#: share/plugin/control/template/control/field_form:58
-#: share/plugin/control/template/control/fields-account.html:44
+#: share/plugin/control/template/control/field_form:58 share/plugin/control/template/control/fields-account.html:44
 msgid "control.user-field"
 msgstr "用户"
 
@@ -1215,27 +1090,11 @@ msgstr "已从 %1 个帐户中移除用户"
 msgid "control.user-requires-confirmation"
 msgstr "用户必要信息"
 
-#: share/plugin/control/share/javascript/workspaces_new.js:36
-#: share/plugin/control/template/control/user.html:16
+#: share/plugin/control/share/javascript/workspaces_new.js:36 share/plugin/control/template/control/user.html:16
 msgid "control.username"
 msgstr "用户"
 
-#: share/plugin/control/share/javascript/workspaces_new.js:170
-#: share/plugin/control/template/control/account.html:69
-#: share/plugin/control/template/control/account_table:15
-#: share/plugin/control/template/control/group.html:27
-#: share/plugin/control/template/control/group.html:335
-#: share/plugin/control/template/control/group.html:74
-#: share/plugin/control/template/control/group_table:23
-#: share/plugin/control/template/control/group_table:8
-#: share/plugin/control/template/control/groups.html:73
-#: share/plugin/control/template/control/user.html:286
-#: share/plugin/control/template/control/workspace.html:243
-#: share/plugin/control/template/control/workspace.html:46
-#: share/plugin/control/template/control/workspace_table:16
-#: share/plugin/control/template/control/workspace_table:25
-#: share/plugin/control/template/control/workspaces_new.html:31
-#: share/plugin/control/template/control/wrapper:89
+#: share/plugin/control/share/javascript/workspaces_new.js:170 share/plugin/control/template/control/account.html:69 share/plugin/control/template/control/account_table:15 share/plugin/control/template/control/group.html:27 share/plugin/control/template/control/group.html:335 share/plugin/control/template/control/group.html:74 share/plugin/control/template/control/group_table:23 share/plugin/control/template/control/group_table:8 share/plugin/control/template/control/groups.html:73 share/plugin/control/template/control/user.html:286 share/plugin/control/template/control/workspace.html:243 share/plugin/control/template/control/workspace.html:46 share/plugin/control/template/control/workspace_table:16 share/plugin/control/template/control/workspace_table:25 share/plugin/control/template/control/workspaces_new.html:31 share/plugin/control/template/control/wrapper:89
 msgid "control.users"
 msgstr "用户"
 
@@ -1245,10 +1104,7 @@ msgid "control.users-selected=count"
 msgstr "选中 %1 个用户"
 
 #. (this.total)
-#: share/plugin/control/share/javascript/workspaces_new.js:22
-#: share/plugin/control/template/control/account.html:111
-#: share/plugin/control/template/control/group.html:161
-#: share/plugin/control/template/control/workspace.html:67
+#: share/plugin/control/share/javascript/workspaces_new.js:22 share/plugin/control/template/control/account.html:111 share/plugin/control/template/control/group.html:161 share/plugin/control/template/control/workspace.html:67
 msgid "control.users=count"
 msgstr "用户（%1）"
 
@@ -1270,11 +1126,7 @@ msgstr "源于 %1 个工作区：%2"
 #. (workspace.name)
 #. (account.name)
 #. (user.name_and_email)
-#: share/plugin/control/share/javascript/workspaces_new.js:320
-#: share/plugin/control/template/control/account_link:1
-#: share/plugin/control/template/control/user_link:1
-#: share/plugin/control/template/control/workspace_link:1
-#: share/plugin/control/template/control/workspaces_new.html:22
+#: share/plugin/control/share/javascript/workspaces_new.js:320 share/plugin/control/template/control/account_link:1 share/plugin/control/template/control/user_link:1 share/plugin/control/template/control/workspace_link:1 share/plugin/control/template/control/workspaces_new.html:22
 msgid "control.view=name"
 msgstr "查看 %1"
 
@@ -1290,15 +1142,16 @@ msgstr "欢迎访问 Socialtext 控制台"
 msgid "control.wiki-removed"
 msgstr "工作区移除成功"
 
+msgid "control.wiki-role-changes-were-successful"
+msgstr "工作区角色转变成功。"
+
 #. (custom_skin,                  custom_skins.$custom_skin)
 #. (custom_skin, custom_skins.$custom_skin)
-#: share/plugin/control/template/control/account.html:245
-#: share/plugin/control/template/control/account.html:247
+#: share/plugin/control/template/control/account.html:245 share/plugin/control/template/control/account.html:247
 msgid "control.wiki-skin=name,wikis"
 msgstr "%1 视觉主题：“%2”个工作区的视觉主题"
 
-#: share/plugin/control/template/control/workspace_invite.html:88
-#: share/plugin/control/template/control/workspaces_new.html:9
+#: share/plugin/control/template/control/workspace_invite.html:88 share/plugin/control/template/control/workspaces_new.html:9
 msgid "control.wiki-title"
 msgstr "标题"
 
@@ -1310,9 +1163,7 @@ msgstr "%1 工作区"
 #. (this.total)
 #. (account.workspace_count)
 #. (wksp_count)
-#: share/plugin/control/template/control/account.html:216
-#: share/plugin/control/template/control/group.html:50
-#: share/plugin/control/template/control/user.html:272
+#: share/plugin/control/template/control/account.html:216 share/plugin/control/template/control/group.html:50 share/plugin/control/template/control/user.html:272
 msgid "control.wikis=count"
 msgstr "工作区（%1）"
 
@@ -1368,15 +1219,11 @@ msgstr "十月"
 msgid "date.september"
 msgstr "九月"
 
-#: share/plugin/control/share/javascript/lightbox/group-create.tt2:69
-#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:47
-#: share/plugin/control/template/control/field_form:82
+#: share/plugin/control/share/javascript/lightbox/group-create.tt2:69 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:47 share/plugin/control/template/control/field_form:82
 msgid "do.cancel"
 msgstr "取消"
 
-#: share/plugin/control/share/javascript/lightbox/group-create.tt2:68
-#: share/plugin/control/share/javascript/lightbox/workspace-create.js:33
-#: share/plugin/control/template/control/report.html:130
+#: share/plugin/control/share/javascript/lightbox/group-create.tt2:68 share/plugin/control/share/javascript/lightbox/workspace-create.js:33 share/plugin/control/template/control/report.html:130
 msgid "do.create"
 msgstr "新建"
 
@@ -1427,9 +1274,7 @@ msgstr "必须确定电子邮件地址"
 
 #. (message)
 #. (res.errors[0])
-#: share/plugin/control/template/control/group.html:127
-#: share/plugin/control/template/control/workspace_invite.html:275
-#: share/plugin/control/template/control/workspace_invite.html:300
+#: share/plugin/control/template/control/group.html:127 share/plugin/control/template/control/workspace_invite.html:275 share/plugin/control/template/control/workspace_invite.html:300
 msgid "error.error=message"
 msgstr "出错：%1"
 
@@ -1481,17 +1326,13 @@ msgstr "工作区题目是必填字段"
 #. (pager.first, pager.last, pager.total_entries)
 #: share/plugin/control/template/control/paging_controls:11
 msgid "info.showing=from,to,total"
-msgstr "显示第 %1 - %2 項，共 %3 項"
+msgstr "显示第 %1 - %2 项，共 %3 项"
 
-#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:27
-#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:33
-#: share/plugin/control/template/control/workspace_invite.html:89
+#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:27 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:33 share/plugin/control/template/control/workspace_invite.html:89
 msgid "info.wiki-title"
 msgstr "这是您工作区的标题。需要的话稍后可以更改。"
 
-#: share/plugin/control/template/control/group.html:39
-#: share/plugin/control/template/control/index.html:25
-#: share/plugin/control/template/control/wrapper:87
+#: share/plugin/control/template/control/group.html:39 share/plugin/control/template/control/index.html:25 share/plugin/control/template/control/wrapper:87
 msgid "nav.accounts"
 msgstr "帐户"
 
@@ -1503,41 +1344,31 @@ msgstr "控制台"
 msgid "nav.desktop"
 msgstr "桌面"
 
-#: share/plugin/control/template/control/groups.html:4
-#: share/plugin/control/template/control/index.html:29
-#: share/plugin/control/template/control/workspace.html:180
-#: share/plugin/control/template/control/workspaces_new.html:41
-#: share/plugin/control/template/control/wrapper:90
+#: share/plugin/control/template/control/groups.html:4 share/plugin/control/template/control/index.html:29 share/plugin/control/template/control/workspace.html:180 share/plugin/control/template/control/workspaces_new.html:41 share/plugin/control/template/control/wrapper:90
 msgid "nav.groups"
 msgstr "群组"
 
-#: share/plugin/control/template/control/wrapper:138
-#: share/plugin/control/template/control/wrapper:63
+#: share/plugin/control/template/control/wrapper:138 share/plugin/control/template/control/wrapper:63
 msgid "nav.help"
 msgstr "帮助"
 
-#: share/plugin/control/template/control/group_invite.html:128
-#: share/plugin/control/template/control/workspace_invite.html:161
+#: share/plugin/control/template/control/group_invite.html:128 share/plugin/control/template/control/workspace_invite.html:161
 msgid "nav.invite"
 msgstr "邀请"
 
-#: share/plugin/control/template/control/wrapper:139
-#: share/plugin/control/template/control/wrapper:64
+#: share/plugin/control/template/control/wrapper:139 share/plugin/control/template/control/wrapper:64
 msgid "nav.logout"
 msgstr "登出"
 
-#: share/plugin/control/template/control/wrapper:132
-#: share/plugin/control/template/control/wrapper:57
+#: share/plugin/control/template/control/wrapper:132 share/plugin/control/template/control/wrapper:57
 msgid "nav.mobile"
 msgstr "移动版"
 
-#: share/plugin/control/template/control/wrapper:137
-#: share/plugin/control/template/control/wrapper:62
+#: share/plugin/control/template/control/wrapper:137 share/plugin/control/template/control/wrapper:62
 msgid "nav.my-settings"
 msgstr "我的设置"
 
-#: share/plugin/control/template/control/index.html:33
-#: share/plugin/control/template/control/wrapper:91
+#: share/plugin/control/template/control/index.html:33 share/plugin/control/template/control/wrapper:91
 msgid "nav.settings"
 msgstr "设置"
 
@@ -1549,23 +1380,7 @@ msgstr "Socialtext"
 msgid "nav.users"
 msgstr "用户"
 
-#: share/plugin/control/share/javascript/workspaces_new.js:166
-#: share/plugin/control/template/control/account.html:146
-#: share/plugin/control/template/control/account_table:12
-#: share/plugin/control/template/control/group.html:196
-#: share/plugin/control/template/control/group.html:330
-#: share/plugin/control/template/control/group_table:26
-#: share/plugin/control/template/control/group_table:9
-#: share/plugin/control/template/control/groups.html:68
-#: share/plugin/control/template/control/index.html:31
-#: share/plugin/control/template/control/selected_user_table_header:18
-#: share/plugin/control/template/control/user.html:256
-#: share/plugin/control/template/control/user_table_header:34
-#: share/plugin/control/template/control/user_table_header:36
-#: share/plugin/control/template/control/workspace.html:105
-#: share/plugin/control/template/control/workspace.html:239
-#: share/plugin/control/template/control/workspace_invite.html:153
-#: share/plugin/control/template/control/wrapper:88
+#: share/plugin/control/share/javascript/workspaces_new.js:166 share/plugin/control/template/control/account.html:146 share/plugin/control/template/control/account_table:12 share/plugin/control/template/control/group.html:196 share/plugin/control/template/control/group.html:330 share/plugin/control/template/control/group_table:26 share/plugin/control/template/control/group_table:9 share/plugin/control/template/control/groups.html:68 share/plugin/control/template/control/index.html:31 share/plugin/control/template/control/selected_user_table_header:18 share/plugin/control/template/control/user.html:256 share/plugin/control/template/control/user_table_header:34 share/plugin/control/template/control/user_table_header:36 share/plugin/control/template/control/workspace.html:105 share/plugin/control/template/control/workspace.html:239 share/plugin/control/template/control/workspace_invite.html:153 share/plugin/control/template/control/wrapper:88
 msgid "nav.wikis"
 msgstr "工作区"
 
@@ -1606,8 +1421,7 @@ msgstr "以 CSV 输出摘要数据"
 msgid "report.export-user-as-csv"
 msgstr "以 CSV 输出用户数据"
 
-#: share/plugin/control/template/control/account.html:35
-#: share/plugin/control/template/control/workspace.html:7
+#: share/plugin/control/template/control/account.html:35 share/plugin/control/template/control/workspace.html:7
 msgid "report.growth"
 msgstr "增长报告"
 
@@ -1615,13 +1429,11 @@ msgstr "增长报告"
 msgid "report.period:"
 msgstr "报告期间："
 
-#: share/plugin/control/template/control/growth_report.html:4
-#: share/plugin/control/template/control/report.html:135
+#: share/plugin/control/template/control/growth_report.html:4 share/plugin/control/template/control/report.html:135
 msgid "report.printer-friendly"
 msgstr "打印版本的报告"
 
-#: share/plugin/control/template/control/account.html:34
-#: share/plugin/control/template/control/workspace.html:6
+#: share/plugin/control/template/control/account.html:34 share/plugin/control/template/control/workspace.html:6
 msgid "report.usage"
 msgstr "使用报告"
 
@@ -1657,7 +1469,6 @@ msgstr "姓："
 msgid "user.middle-name:"
 msgstr "中间名："
 
-#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:24
-#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:31
+#: share/plugin/control/share/javascript/lightbox/workspace-create.tt2:24 share/plugin/control/share/javascript/lightbox/workspace-create.tt2:31
 msgid "wiki.title:"
 msgstr "标题："

@@ -61,6 +61,7 @@ sub link_directory {
                 $to =~ s{^$todir/}{};
                 unless (`grep $to .gitignore`) {
                     system("echo $to >> .gitignore");
+                    system("git commit -m 'Added $to to gitignore' .gitignore");
                 }
             }
         },

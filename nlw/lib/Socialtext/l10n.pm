@@ -142,7 +142,11 @@ sub loc_lang { return _loc_lang(@_) }
 
 sub best_locale {
     my $hub = shift;
-    my $loc = eval { no warnings; $hub->preferences_object->locale->value };
+    local $@;
+    my $loc = eval {
+        $hub->pluggable->plugin_object('locales')->get_user_prefs()->{locale};
+    };
+    warn $@ if $@;
     return $loc || system_locale();
 }
 

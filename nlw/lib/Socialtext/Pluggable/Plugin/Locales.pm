@@ -2,7 +2,7 @@ package Socialtext::Pluggable::Plugin::Locales;
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Socialtext::l10n qw/loc system_locale/;
+use Socialtext::l10n qw/loc system_locale loc_lang/;
 use Socialtext::Locales qw/available_locales/;
 use base 'Socialtext::Pluggable::Plugin';
 
@@ -23,27 +23,41 @@ sub language_settings {
     $self->challenge(type => 'settings_requires_account')
         unless ($self->logged_in);
 
+    my $prefs = $self->get_user_prefs();
+    my $locale = $prefs->{locale} // '';
+
+    my $message = '';
+    if ($cgi_vars{Button}) {
+        $locale = $cgi_vars{locale} // '';
+        $self->set_user_prefs(locale => $locale);
+        loc_lang($locale || system_locale());
+        $message = loc('config.saved');
+    }
+
     my $languages = available_locales();
     my $choices = [ map { +{
         value => $_,
-        label => $languages->{$_}
+        label => $languages->{$_},
+        selected => ($locale eq $_),
     }} sort keys %$languages ];
 
     unshift @$choices, {
         value => "",
-        label => loc("System Default: [_1]", $languages->{system_locale()}),
+        label => loc("loc.system-default=lang", $languages->{system_locale()}),
+        selected => ($locale eq ''),
     };
 
     my $settings_section = $self->template_render(
         'element/settings/language_settings_section',
         form_action    => 'language_settings',
+        message        => $message,
         locales        => $choices,
     );
 
     return $self->template_render('view/settings',
         settings_table_id => 'settings-table',
         settings_section  => $settings_section,
-        display_title     => loc('Language Settings'),
+        display_title     => loc('loc.settings'),
     );
 }
 

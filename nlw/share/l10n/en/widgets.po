@@ -110,6 +110,10 @@ msgstr "Copy and paste the URL for the video below.  We support embedding video 
 msgid "activities.enter-weblink-url-here"
 msgstr "Paste or type your link's destination (URL, e.g. http://socialtext.com) and text of the link below. Link destination is required."
 
+#: share/plugin/widgets/share/javascript/activities/event_list.js:938
+msgid "activities.entire-conversation"
+msgstr "entire Conversation"
+
 #: share/plugin/widgets/share/javascript/activities/appdata.js:328
 msgid "activities.events"
 msgstr "events"
@@ -162,6 +166,10 @@ msgstr "Maximum file size: %1MB"
 #: share/plugin/widgets/share/javascript/activities/appdata.js:414
 msgid "activities.me"
 msgstr "me"
+
+#: share/plugin/widgets/share/javascript/template/activities/event.tt2:16
+msgid "activities.mention"
+msgstr "mention"
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:116 share/plugin/widgets/share/javascript/template/activities/event.tt2:81
 msgid "activities.mention-user"
@@ -223,6 +231,10 @@ msgstr "Post"
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:137 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:90
 msgid "activities.post-to"
 msgstr "Post to"
+
+#: share/plugin/widgets/share/javascript/template/activities/event.tt2:14
+msgid "activities.private"
+msgstr "private"
 
 #: share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:6
 msgid "activities.private-to-you"
@@ -785,6 +797,20 @@ msgstr "PAST YEAR"
 #: share/plugin/widgets/share/javascript/activities/explore.js:180
 msgid "explore.today"
 msgstr "TODAY"
+
+#: share/plugin/widgets/share/javascript/activities/event_list.js:1027
+msgid "file.size=bytes"
+msgstr "%1 bytes"
+
+#. ((rawcl/1000)
+#: share/plugin/widgets/share/javascript/activities/event_list.js:1029 share/plugin/widgets/share/javascript/activities/event_list.js:1031 share/plugin/widgets/share/javascript/activities/event_list.js:1033
+msgid "file.size=kb"
+msgstr "%1K"
+
+#. ((rawcl/1000000)
+#: share/plugin/widgets/share/javascript/activities/event_list.js:1035 share/plugin/widgets/share/javascript/activities/event_list.js:1037 share/plugin/widgets/share/javascript/activities/event_list.js:1039
+msgid "file.size=mb"
+msgstr "%1M"
 
 #: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:15
 msgid "files.none"

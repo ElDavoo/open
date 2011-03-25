@@ -52,6 +52,10 @@ sub available_locales {
        'en' => _display_locale('lang.en' => 'English'),
        'zh_CN' => _display_locale('lang.zh-cn' => '中文 - 简体'),
        'zh_TW' => _display_locale('lang.zh-tw' => '中文 - 正體'),
+       $ENV{NLW_DEV_MODE} ? (
+            'zz' => 'zz - DEV_MODE ONLY',
+            'zq' => '«zq» - DEV_MODE ONLY',
+       ) : ()
 #       'fr_CA' => _display_locale('lang.fr-ca' => 'Français - Canadien'),
     };
 }

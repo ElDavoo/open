@@ -25,7 +25,7 @@ use Socialtext::Log 'st_log';
 use Socialtext::URI;
 use Socialtext::Session;
 use Socialtext::JSON qw/decode_json/;
-use Socialtext::l10n qw(system_locale loc);
+use Socialtext::l10n qw( system_locale loc loc_lang best_locale );
 
 our $AUTOLOAD;
 
@@ -222,6 +222,8 @@ sub _new_main {
     );
     $main->hub->registry->load;
     $main->debug;
+
+    loc_lang( best_locale($main->hub) );
 
     return $main;
 }

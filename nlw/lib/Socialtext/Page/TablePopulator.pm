@@ -622,19 +622,28 @@ sub fetch_metadata {
     return parse_page_headers(read_and_decode_page($file));
 }
 
+sub _clean_email_address {
+    my $self = shift;
+    my $email_address = shift;
+
+    # We have some very bogus data on our system, so we need to
+    # be very cautious.
+    unless ( Email::Valid->address($email_address) ) {
+        my ($name) = $email_address =~ /([\w-]+)/;
+        $name = 'unknown' unless defined $name;
+        $email_address = $name . '@example.com';
+    }
+
+   return lc $email_address;
+}
+
 sub editor_to_id {
     my $self = shift;
     my $email_address = shift || '';
     my $force = shift;
     state %userid_cache;
+    $email_address = $self->_clean_email_address($email_address);
     unless ( $userid_cache{ $email_address } ) {
-        # We have some very bogus data on our system, so we need to
-        # be very cautious.
-        unless ( Email::Valid->address($email_address) ) {
-            my ($name) = $email_address =~ /([\w-]+)/;
-            $name = 'unknown' unless defined $name;
-            $email_address = $name . '@example.com';
-        }
 
         # Load or create a new user with the given email.
         # Email addresses are always written to disk, even for ldap users.
@@ -643,27 +652,38 @@ sub editor_to_id {
         };
         unless ($user) {
             return if $self->{skip_user_create} && !$force;
-            warn "Creating user account for '$email_address'\n";
-            try {
-                Socialtext::Cache->clear('accounts');
-                my $deleted = Socialtext::Account->Deleted();
-                $user = Socialtext::User->create(
-                    email_address      => $email_address,
-                    username           => $email_address,
-                    primary_account_id => $deleted->account_id,
-                    missing            => 1,
-                );
-            }
-            catch {
-                warn "Failed to create user '$email_address', ".
-                     "defaulting to system-user: $_\n";
-            };
-            $user ||= Socialtext::User->SystemUser();
+            $user = $self->_create_user_from_email($email_address);
         }
 
         $userid_cache{ $email_address } = $user->user_id;
     }
     return $userid_cache{ $email_address };
+}
+
+sub _create_user_from_email {
+    my $self = shift;
+    my $email_address = shift;
+
+    my $user;
+    warn "Creating user account for '$email_address'\n";
+    try {
+        Socialtext::Cache->clear('accounts');
+        my $deleted = Socialtext::Account->Deleted();
+        $user = Socialtext::User->create(
+            email_address      => $email_address,
+            username           => $email_address,
+            primary_account_id => $deleted->account_id,
+            missing            => 1,
+        );
+    	$user ||= Socialtext::User->SystemUser();
+    }
+    catch {
+        warn "Failed to create user '$email_address', ".
+             "defaulting to system-user: $_\n";
+    	$user = Socialtext::User->SystemUser();
+    };
+
+    return $user;
 }
 
 sub has_missing_editors {
@@ -695,7 +715,7 @@ sub cleanup_missing_editors {
         catch {
             warn "Could not update editor to '$editor' for "
                 . "ws_id=($ws_id),page_id=($pagemeta->{page_id}),"
-                . "revision_id=($pagemeta->revision_id)\n";
+                . "revision_id=($pagemeta->{revision_id})\n";
         };
     };
 
@@ -710,7 +730,7 @@ sub cleanup_missing_editors {
             $att_update_sth->execute($editor, $attmeta->{attachment_id});
         }
         catch {
-            warn "Counld not update editor to '$editor' for "
+            warn "Could not update editor to '$editor' for "
                 . "attachment_id=($attmeta->{attachment_id})\n";
         };
     };
@@ -775,8 +795,8 @@ sub load_breadcrumbs {
         my $trail = "$ws_user_dir/$user_dir/.trail";
         next unless -e $trail;
 
-        my $user = Socialtext::User->new(email_address => $user_dir);
-        next unless $user;
+        my $user_id = $self->get_user_id($user_dir);
+        next unless $user_id;
 
         my @page_ids =
             map { Socialtext::String::title_to_id($_) }
@@ -792,7 +812,7 @@ sub load_breadcrumbs {
         sql_txn {
             my @status;
             $bc_insert->execute_array({ArrayTupleStatus=>\@status},
-                $user->user_id, $ws_id, \@page_ids, \@offsets);
+                $user_id, $ws_id, \@page_ids, \@offsets);
             die "one or more breadcrumbs failed to insert\n"
                 if any { $_ != 1 } @status;
         };
@@ -802,5 +822,12 @@ sub load_breadcrumbs {
     return;
 }
 
+sub get_user_id {
+    my $self = shift;
+    my $email = shift;
+    my $user = Socialtext::User->new(email_address => $email);
+
+    return $user ? $user->user_id : undef;
+}
 
 1;

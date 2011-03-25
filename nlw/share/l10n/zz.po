@@ -1,3 +1,36 @@
+# #-#-#-#-#  wikiwyg.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  twilio.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  template.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  socialcalc.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  signals.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  mediawiki.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  groups.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  fields.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  dashboard.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  control.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  bin.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  appliance.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  analytics.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
 #, fuzzy
 msgid ""
@@ -53,6 +86,14 @@ msgstr ""
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
 "PO-Revision-Date: 2011-02-25 12:38+0800\n"
+"Language-Team: Socialtext i18n team\n"
+"Last-Translator: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"#-#-#-#-#  reports.po (Socialtext i18n)  #-#-#-#-#\n"
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-02-24 01:39+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -425,6 +466,10 @@ msgstr "Zzzz zzz zzzzz zzz ZZZ zzz zzz zzzzz zzzzz.  Zz zzzzzzz zzzzzzzzz zzzzz 
 msgid "activities.enter-weblink-url-here"
 msgstr "Zzzzz zz zzzz zzzz zzzz'z zzzzzzzzzzz (ZZZ, z.z. zzzz://zzzzzzzzzz.zzz) zzz zzzz zz zzz zzzz zzzzz. Zzzz zzzzzzzzzzz zz zzzzzzzz."
 
+#: share/plugin/widgets/share/javascript/activities/event_list.js:938
+msgid "activities.entire-conversation"
+msgstr "zzzzzz Zzzzzzzzzzzz"
+
 #: share/plugin/widgets/share/javascript/activities/appdata.js:328
 msgid "activities.events"
 msgstr "zzzzzz"
@@ -477,6 +522,10 @@ msgstr "Zzzzzzz zzzz zzzz: %1ZZ"
 #: share/plugin/widgets/share/javascript/activities/appdata.js:414
 msgid "activities.me"
 msgstr "zz"
+
+#: share/plugin/widgets/share/javascript/template/activities/event.tt2:16
+msgid "activities.mention"
+msgstr "zzzzzzz"
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:116 share/plugin/widgets/share/javascript/template/activities/event.tt2:81
 msgid "activities.mention-user"
@@ -538,6 +587,10 @@ msgstr "Zzzz"
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:137 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:90
 msgid "activities.post-to"
 msgstr "Zzzz zz"
+
+#: share/plugin/widgets/share/javascript/template/activities/event.tt2:14
+msgid "activities.private"
+msgstr "zzzzzzz"
 
 #: share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:6
 msgid "activities.private-to-you"
@@ -812,6 +865,10 @@ msgstr "Zzzzzzzzzzzzz"
 msgid "appliance.email-required"
 msgstr "Zzzzzz zzzzz zz zzzzz zzzzzzz"
 
+#: lib/Socialtext/Appliance/Model/System.pm:52
+msgid "appliance.gb=format"
+msgstr "%1 Zz"
+
 #: lib/Socialtext/Appliance/ConsoleController.pm:120
 msgid "appliance.initialize-wikis"
 msgstr "Zzzzzzzzzz Zzzzzzzzzz"
@@ -925,6 +982,10 @@ msgstr "Zzzzzzzz zzzzzzzzz %1, zz zzzzz."
 #: lib/Socialtext/Appliance/Model/Setup.pm:362
 msgid "appliance.synchronized-time-with=ts"
 msgstr "Zzzzzzzzzzzz zzzz zzzz %1"
+
+#: lib/Socialtext/Appliance/Model/System.pm:34
+msgid "appliance.system"
+msgstr "Zzzzzz"
 
 msgid "appliance.taking-database-snapshot"
 msgstr "Zzzzzz zzzzzzzz zzzzzzzz ..."
@@ -2056,9 +2117,17 @@ msgstr "Zzzzzzzzzz Zzzzzzzzz"
 msgid "console.socialtext-desktop"
 msgstr "Zzzzzzzzzz Zzzzzzz"
 
+#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:71
+msgid "console.socialtext-inc"
+msgstr "Zzzzzzzzzz, Zzz."
+
 #: ../appliance/libsocialtext-appliance-perl/template/help.html:63
 msgid "console.socialtext-support"
 msgstr "Zzzzzzzzzz Zzzzzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:125
+msgid "console.socialtext-support-form"
+msgstr "Zzzzzzzzzz Zzzzzzz Zzzz"
 
 #: ../appliance/libsocialtext-appliance-perl/template/help.html:141 ../appliance/libsocialtext-appliance-perl/template/setup.html:103 ../appliance/libsocialtext-appliance-perl/template/setup.html:33 ../appliance/libsocialtext-appliance-perl/template/setup.html:48 ../appliance/libsocialtext-appliance-perl/template/setup.html:69 ../appliance/libsocialtext-appliance-perl/template/setup.html:84
 msgid "console.submit"
@@ -2197,6 +2266,10 @@ msgstr "Zzzzzzzz zz zzzz zzzzzz zzz \"zzzz-zzzz\". Zzz zzzz zzz zzz zzzzzz zzz Z
 #: share/plugin/control/template/control/index.html:34
 msgid "control.about-settings-tab"
 msgstr "Zzzzzz zzzzzz-zzzz zzzzzzzzzzz zzzzzzzz."
+
+#: share/plugin/control/template/control/add_users.html:32
+msgid "control.about-user-restrictions"
+msgstr "Zzzz zzzzzz/zzzzzzzz Zzzzz, zzz zzz zzzz zzzzzzz z zzzzzz zz zzzzzzzz zzzzzzzzzzzz zz zz zzzzzz zz zzzzz Zzzz zzzzzzz.  Zzzzz zzzzz zzzzzzzzzzzz zzzz zzzz zzzzzzzzz zzz zzzzzzz, Zzzzz zzzz zz zzzzzz zz zzz zz zz zzz zzzzzz."
 
 #: share/plugin/control/template/control/index.html:28
 msgid "control.about-users-tab"
@@ -2593,6 +2666,15 @@ msgstr "Zzzzzzz Zzzzzzzzzz zz Zzzzz"
 msgid "control.edit-field"
 msgstr "Zzzz Zzzzz"
 
+#: share/plugin/control/template/control/edit_user.html:1
+msgid "control.edit-user"
+msgstr "Zzzz Zzzz"
+
+#. (u.display_name)
+#: share/plugin/control/template/control/edit_user.html:2
+msgid "control.edit-user=name"
+msgstr "Zzzz Zzzz: %1"
+
 msgid "control.email-address:"
 msgstr "Z-zzzz Zzzzzzz:"
 
@@ -2680,8 +2762,12 @@ msgstr "Zzzzz Zzzz"
 msgid "control.first-name:"
 msgstr "Zzzzz zzzz:"
 
-#: share/plugin/control/template/control/user.html:103
+#: share/plugin/control/template/control/add_users.html:46
 msgid "control.for-cac-authentication"
+msgstr "(zzz ZZZ zzzzzzzzzzzzzz)"
+
+#: share/plugin/control/template/control/user.html:103
+msgid "control.for-use-with-cac-authentication"
 msgstr "Zzz zzz zzzz ZZZ Zzzzzzzzzzzzzz"
 
 #: share/plugin/control/template/control/add_users.html:31
@@ -2891,9 +2977,17 @@ msgstr "Zzzzzzz Zzzzzz"
 msgid "control.profile-section"
 msgstr "Zzzzzzz Zzzzzzz"
 
+#: share/plugin/control/share/javascript/workspaces_new.js:213 share/plugin/control/share/javascript/workspaces_new.js:74 share/plugin/control/template/control/group.html:239 share/plugin/control/template/control/workspace.html:146 share/plugin/control/template/control/workspace.html:288
+msgid "control.promote-to-admin"
+msgstr "Zzzzzzz zz Zzzzz"
+
 #: share/plugin/control/template/control/user.html:168
 msgid "control.relationship"
 msgstr "Zzzzzzzzzzzz"
+
+#: share/plugin/control/share/javascript/workspaces_new.js:223 share/plugin/control/share/javascript/workspaces_new.js:83 share/plugin/control/template/control/group.html:254 share/plugin/control/template/control/workspace.html:160 share/plugin/control/template/control/workspace.html:303
+msgid "control.remove-admin"
+msgstr "Zzzzzz Zzzzz"
 
 #: share/plugin/control/template/control/user.html:80
 msgid "control.remove-appliance-business-administrator-role"
@@ -2907,14 +3001,36 @@ msgstr "Zzzzzz Zzzzzzzzz Zzzzzzzzz Zzzzzzzzzzzzz Zzzz"
 msgid "control.remove-external-id-requirement"
 msgstr "Zzzzzz Zzzzzzzz ZZ Zzzzzzzzzzz"
 
-#: share/plugin/control/template/control/user.html:312
+#: share/plugin/control/template/control/group.html:363
+msgid "control.remove-from-account"
+msgstr "Zzzzzz zzzz zzzzzzz"
+
+#: share/plugin/control/template/control/group.html:221
+msgid "control.remove-from-group"
+msgstr "Zzzzzz zzzz zzzzz"
+
+#: share/plugin/control/share/javascript/workspaces_new.js:198 share/plugin/control/share/javascript/workspaces_new.js:60 share/plugin/control/template/control/workspace.html:130 share/plugin/control/template/control/workspace.html:271
 msgid "control.remove-from-wiki"
+msgstr "Zzzzzz zzzz Zzzzzzzzz"
+
+#: share/plugin/control/template/control/user.html:312
+msgid "control.remove-from-wikis"
 msgstr "Zzzzzz zzzz Zzzzzzzzzz"
 
 #. (accounts.length)
 #: share/plugin/control/template/control/group.html:368
 msgid "control.remove-group-from-accounts=count?"
 msgstr "Zzzzzz zzzz Zzzzz zzzz %*(%1,zzzzzzzz Zzzzzzz)?"
+
+#. (groups.length)
+#: share/plugin/control/share/javascript/workspaces_new.js:202 share/plugin/control/template/control/workspace.html:275
+msgid "control.remove-selected-group-from-wiki=count?"
+msgstr "Zzzzzz zzz zzzzzzzz %*(%1,zzzzz) zzzz zzzz zzzzzzzzz?"
+
+#. (users.length)
+#: share/plugin/control/share/javascript/workspaces_new.js:63 share/plugin/control/template/control/workspace.html:133
+msgid "control.remove-selected-user-from-wiki=count?"
+msgstr "Zzzzzz zzz zzzzzzzz %*(%1,zzzz) zzzz zzzz zzzzzzzzz?"
 
 #. (workspaces.length)
 #: share/plugin/control/template/control/user.html:314
@@ -3078,6 +3194,18 @@ msgstr "Zzzzzzzzzz Zzzzz Zzzzzzzzzzzzz"
 msgid "control.socialtext-control-panel"
 msgstr "Zzzzzzzzzz Zzzzzzz Zzzzz"
 
+#: share/plugin/control/template/control/group.html:43
+msgid "control.start-typing-account-name"
+msgstr "Zzzzz zzzzzz zz Zzzzzzz'z zzzz"
+
+#: share/plugin/control/template/control/workspaces_new.html:45
+msgid "control.start-typing-group-name"
+msgstr "Zzzzz zzzzzz zzzzz'z zzzz"
+
+#: share/plugin/control/template/control/account.html:73 share/plugin/control/template/control/group.html:31 share/plugin/control/template/control/workspaces_new.html:35
+msgid "control.start-typing-user-name"
+msgstr "Zzzzz zzzzzz zzzz'z zzzz"
+
 #: share/plugin/control/template/control/workspaces_new.html:5
 msgid "control.step-1-set-wiki-title"
 msgstr "Zzzz 1: Zzzz zzzz zzzzzzzzz z zzzzz."
@@ -3097,6 +3225,10 @@ msgstr "Zzzzz zzzzzz"
 #: share/plugin/control/template/control/accounts.html:18 share/plugin/control/template/control/accounts.html:5 share/plugin/control/template/control/desktop-account.html:161 share/plugin/control/template/control/group_add_users.html:6 share/plugin/control/template/control/users.html:6 share/plugin/control/template/control/workspace.html:34 share/plugin/control/template/control/workspaces.html:5
 msgid "control.submit"
 msgstr "Zzzzzz"
+
+#: share/plugin/control/template/control/user_table:19
+msgid "control.system-required-user"
+msgstr "Zzzzzz Zzzzzzzz Zzzz"
 
 #: share/plugin/control/template/control/index.html:22
 msgid "control.tabs"
@@ -3133,6 +3265,10 @@ msgstr "Zzzzzzzzz zz Zzzzzz"
 #: share/plugin/control/template/control/account.html:61 share/plugin/control/template/control/group.html:18 share/plugin/control/template/control/plugin_pref_form.html:6 share/plugin/control/template/control/settings.html:11 share/plugin/control/template/control/settings.html:21 share/plugin/control/template/control/workspace_table:3 share/plugin/control/template/control/workspace_table:70
 msgid "control.update"
 msgstr "Zzzzzz"
+
+#: share/plugin/control/template/control/edit_user.html:28
+msgid "control.update-user"
+msgstr "Zzzzzz Zzzz"
 
 #: share/plugin/control/template/control/group.html:122
 msgid "control.updating"
@@ -3236,6 +3372,10 @@ msgstr "Zzzzzzz zz zzz Zzzzzzzzzz Zzzzzzz Zzzzz."
 #: share/plugin/control/template/control/user.html:320
 msgid "control.wiki-removed"
 msgstr "Zzzzzzzzz zzzzzzzz zzzz zzzzzzzzzz."
+
+#: share/plugin/control/share/javascript/workspaces_new.js:199 share/plugin/control/share/javascript/workspaces_new.js:214 share/plugin/control/share/javascript/workspaces_new.js:224 share/plugin/control/template/control/workspace.html:140 share/plugin/control/template/control/workspace.html:154 share/plugin/control/template/control/workspace.html:168 share/plugin/control/template/control/workspace.html:272 share/plugin/control/template/control/workspace.html:282 share/plugin/control/template/control/workspace.html:289 share/plugin/control/template/control/workspace.html:297 share/plugin/control/template/control/workspace.html:304 share/plugin/control/template/control/workspace.html:312
+msgid "control.wiki-role-changes-were-successful"
+msgstr "Zzzzzzzzz zzzz zzzzzzz zzzz zzzzzzzzzz."
 
 #. (custom_skin,                  custom_skins.$custom_skin)
 #. (custom_skin, custom_skins.$custom_skin)
@@ -3553,6 +3693,66 @@ msgstr "Zzzz zzzzz"
 msgid "description.workspaces"
 msgstr "Zzzzz zzz zz zzz zzzzzzzzzz zz zzz zzzzzzz zzzzz"
 
+#: lib/Socialtext/Handler/ControlPanel.pm:703
+msgid "desktop.2nd-bg-color"
+msgstr "Zzzzzzzzz zzzzzzzzzz zzzzz"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:705
+msgid "desktop.about-2nd-bg-color"
+msgstr "Zzzz zz zzz zzzzzzzzzz zzz zzzzz, zzzzzzzz zzzzzzz zzz zz-zzzzzzzz zzzz"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:698
+msgid "desktop.about-bg-color"
+msgstr "Zzzzzzzzzz zzzzz zzz zzz zzzzzzz zzzzzz Zzzzzzzzzz Zzzzzzz. Zzzzzzz zzzz “Zzzz zzzzz” zz zzzzzz zzzzzzzz zzzzzzz."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:691
+msgid "desktop.about-header-gradient-bottom"
+msgstr "Zzz zzzzzz zzzzz zz zzz zzzzzz'z zzzzzzzz. Zzzzzz zzz zzzz zzzzz zz zzz zzz zzzzz zz zzzzzz z zzzzz zzzzzzzzzz zzzzzzz."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:684
+msgid "desktop.about-header-gradient-top"
+msgstr "Zzz zzz zzzzz zz zzz zzzzzz'z zzzzzzzz. Zzzzzzz zzzz zzzz “Zzzzzz Zzzzzzzz (zzzzzz)” zz zzzzzz z zzzzzz zzzzz zzzzzzzzzz."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:726
+msgid "desktop.about-highlight-color"
+msgstr "Zzz zzzzz zzzzzzz zz zzzzzzzzzzz zzzzzzzz, zzzz zz zzz zzzzzzzzzz zz zzz Zzzz zzzzzz."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:719
+msgid "desktop.about-link-color"
+msgstr "Zzz zzzzz zzzzzzz zz zzzzz. Zzzz zzzzzzzzzzzz zzz z zzzzz zz zzzz."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:677
+msgid "desktop.about-logo-uri"
+msgstr "Zzzzzzzzzz Zzzzzzz'z zzzz (zzzzzzzzzzzzz zzzzzz zz 240 z 34 zzzzzz)."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:712
+msgid "desktop.about-text-color"
+msgstr "Zzz zzzzz zz zzz zzzz zzzzzz zzzzz zzzzzz Zzzzzzzzzz Zzzzzzz. Zzzzzzz zzzz “Zzzzzzzzzz zzzzz” zzzzz zz zzzzzz zzzzzzzz zzzzzzz."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:696
+msgid "desktop.bg-color"
+msgstr "Zzzzzzzzzz zzzzz"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:689
+msgid "desktop.header-gradient-bottom"
+msgstr "Zzzzzz Zzzzzzzz (zzzzzz)"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:682
+msgid "desktop.header-gradient-top"
+msgstr "Zzzzzz Zzzzzzzz (zzz)"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:724
+msgid "desktop.highlight-color"
+msgstr "Zzzzzzzzz zzzzz"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:717
+msgid "desktop.link-color"
+msgstr "Zzzz zzzzz"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:675
+msgid "desktop.logo-uri"
+msgstr "Zzzz ZZZ"
+
 #: lib/Socialtext/Handler/ControlPanel.pm:774
 msgid "desktop.relogin-for-default-logo"
 msgstr "(Zzzzzzz zzzzz zzzz zz zzzzzz zzz zzzzz zzzzz zz zzz zzz zzzzzzz zzzz.)"
@@ -3572,6 +3772,10 @@ msgstr "Zzzzz Zzzzzzz zzzz zz zzzzzzz. Zzzzzzz zzzzz zzzz zz zzzzzz zzz zzzzz zz
 #: lib/Socialtext/Handler/ControlPanel.pm:872
 msgid "desktop.relogin-for-skin"
 msgstr "Zzzzzzzz zzzz zzzz zzzzz.  Zzzzzzz zzzzz zzzz zz zzzzzz zzz zzzzz zzzzz zz zzzzz zzz zzz zzzz."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:710
+msgid "desktop.text-color"
+msgstr "Zzzz zzzzz"
 
 #: share/skin/s3/javascript/lightbox/attachment.tt2:28 share/skin/s3/javascript/lightbox/email.tt2:28
 msgid "do.add"
@@ -5072,6 +5276,10 @@ msgstr "Zzz zzzz zzzzzz zzzzzzzzzzz zz z zzzzz zz zzzzzzzzz."
 msgid "error.group-required=command"
 msgstr "Zzz zzzzzzz zzz zzzzzz (%1) zzzzzzzz z '--zzzzz' zzzzzzzzz."
 
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/GrowthByAppliance.pm:16 ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByAppliance.pm:17
+msgid "error.html-report-not-implemented"
+msgstr "ZZZZ Zzzzzz zz zzz zzzzzzzzzzz"
+
 #. ($EXPORT_VERSION)
 #: lib/Socialtext/Account.pm:430
 msgid "error.import-account=max-version"
@@ -5194,6 +5402,11 @@ msgstr "Zzzzzzz zzzzzzzzzzz zzzz: %1"
 #: lib/Socialtext/Hub.pm:193
 msgid "error.invalid-query"
 msgstr "Zzzzzzzzz zzzzz."
+
+#. ($report_module, $@)
+#: ../socialtext-reports/lib/Socialtext/Reports/REST.pm:125
+msgid "error.invalid-report=module,message"
+msgstr "Zzzzzzz zzzzzz (%1): %2"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1399
 msgid "error.invalid-rows"
@@ -5986,6 +6199,73 @@ msgstr "Zzzzz zzzzzzzz zzz \"%1\" zzzzzz: %2"
 msgid "error.removing-last-admin"
 msgstr "Zzz'z zzzzzz zzzzzzzzzz zz zzz zzzz zzzzz"
 
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByAccount.pm:18
+msgid "error.report-account_id-required"
+msgstr "zzzzzzz_zz zz zzzzzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByWorkspace.pm:20
+msgid "error.report-wiki-required"
+msgstr "zzzzzzzzz zz zzzzzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/GrowthByAccount.pm:62
+msgid "error.reports-account-id-required!"
+msgstr "Zzzzzzz ZZ zz zzzzzzzzz!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UserWorkspaceUsage.pm:29
+msgid "error.reports-current-user-required"
+msgstr "zzzz zzzzzz zzzz zzz zzzz zzzzzzz z zzzzzzz zzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/REST.pm:135
+msgid "error.reports-date-required!"
+msgstr "Zzzz zzzzzz zzzzzzzz z zzzz!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:29
+msgid "error.reports-duration-required!"
+msgstr "zzzzzzzz zz zzzzzzzzz!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UserWorkspaceUsage.pm:33
+msgid "error.reports-invalid=user"
+msgstr "'%1' zz zz zzzzzzz zzzz"
+
+#. ($acct_name)
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/TopContent.pm:87
+msgid "error.reports-no-account=name"
+msgstr "Zz zzzzzzz zzzzz %1"
+
+#. ($group_id)
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/GroupWorkspaceUsage.pm:23
+msgid "error.reports-no-group=id"
+msgstr "Zzz'z zzzz zzzzz '%1'"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/Growth.pm:47
+msgid "error.reports-no-growth-data-available"
+msgstr "Zz zzzzzz zzzz zzzzzzzzz."
+
+#. ($ws_name)
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/TopContent.pm:74
+msgid "error.reports-no-wiki=name"
+msgstr "Zz zzzzzzzzz zzzzz %1"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:28
+msgid "error.reports-start_time-required!"
+msgstr "zzzzz_zzzz zz zzzzzzzzz!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/SocialByUser.pm:18
+msgid "error.reports-username-required!"
+msgstr "Zzzzzzzz zz zzzzzzzzz!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/ViewersByPage.pm:16
+msgid "error.reports-wiki-and-page_id-required"
+msgstr "zzzzzzzzz zzz zzzz_zz zzz zzzzzzzzz!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/WorkspaceGrowth.pm:40
+msgid "error.reports-wiki-required!"
+msgstr "Zzzzzzzzz zz zzzzzzzzz!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/WorkspaceActionByTime.pm:34
+msgid "error.reports-wiki-required-specify-on-url"
+msgstr "Zzzzzzzzz zz zzzzzzzzz! - Zzzz z zzzzzzzzz=zzzz zz zzz ZZZ"
+
 #: lib/Socialtext/Hub.pm:189
 msgid "error.request"
 msgstr "Zzzzz zzz zz zzzzz zzzz zzzz zzzzzzz"
@@ -6295,6 +6575,11 @@ msgstr "Zzzzzzzzzz Zzzzzz >>%1<< in parseWidget"
 #: lib/Socialtext/Gadgets/Gadget/XML.pm:35
 msgid "error.unknown"
 msgstr "Zzzzzzz zzzzz"
+
+#. ($type)
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/TopUsers.pm:48
+msgid "error.unknown-report=type"
+msgstr "Zzzzzzz zzzzzz (%1)"
 
 #. ($type)
 #: lib/Socialtext/CLI.pm:1054
@@ -7117,6 +7402,30 @@ msgstr "Zzzzz zzz <span class=\"emphasis\">%1 zzzzzzzz zzzzzzzz</span> zz zzzz z
 msgid "file.size"
 msgstr "Zzzz"
 
+#: share/plugin/widgets/share/javascript/activities/event_list.js:1027 lib/Socialtext/Lite/Activities.pm:91
+msgid "file.size=bytes"
+msgstr "%1 zzzzz"
+
+#. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
+#. ((rawcl/1000)
+#. #-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#
+#. (sprintf("%.2f", ($size/1000)
+#. (sprintf("%.1f", ($size/1000)
+#. (sprintf("%.0f", ($size/1000)
+#: share/plugin/widgets/share/javascript/activities/event_list.js:1029 share/plugin/widgets/share/javascript/activities/event_list.js:1031 share/plugin/widgets/share/javascript/activities/event_list.js:1033 lib/Socialtext/Lite/Activities.pm:93 lib/Socialtext/Lite/Activities.pm:95 lib/Socialtext/Lite/Activities.pm:97
+msgid "file.size=kb"
+msgstr "%1Z"
+
+#. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
+#. ((rawcl/1000000)
+#. #-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#
+#. (sprintf("%.2f", ($size/1000000)
+#. (sprintf("%.1f", ($size/1000000)
+#. (sprintf("%.0f", ($size/1000000)
+#: share/plugin/widgets/share/javascript/activities/event_list.js:1035 share/plugin/widgets/share/javascript/activities/event_list.js:1037 share/plugin/widgets/share/javascript/activities/event_list.js:1039 lib/Socialtext/Lite/Activities.pm:101 lib/Socialtext/Lite/Activities.pm:103 lib/Socialtext/Lite/Activities.pm:99
+msgid "file.size=mb"
+msgstr "%1Z"
+
 #: share/skin/s3/javascript/lightbox/attachment.tt2:6 share/skin/s3/template/element/page/display/attachments:51
 msgid "file.upload"
 msgstr "Zzzzzz Zzzzz"
@@ -7243,6 +7552,10 @@ msgstr "Zzz Zzzzzzzzzz"
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:54
 msgid "groups.admin-can-change-setting-after-creation"
 msgstr "Zzz zzzzz zzzzzzzzzzzzzz zzz zzzzzz zzzz zzzzzzz zzzzz zzz zzzzz zz zzzzzzz."
+
+#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:25
+msgid "groups.administrators"
+msgstr "Zzzzzzzzzzzzzz"
 
 #: share/plugin/groups/share/widgets/all_groups/widget.html:2
 msgid "groups.all-available"
@@ -7565,6 +7878,94 @@ msgstr "Zzz zzz zzzz zzzzzzzzz %1 zzzzzzzzzz zzzz z %2 zzzzz."
 #: share/plugin/groups/share/widgets/membership/jemplate/workspaces.tt2:32
 msgid "groups.you-must-be-wiki-admin-to-associate-it-with-group"
 msgstr "Zzz zzzz zz zz Zzzzz zz zzz zzzzzzzzz zz zzzzz zz zzzzzzzzz zz zzzz zzzz zzzzz."
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:244
+msgid "heading.account_id"
+msgstr "zzzzzzz_zz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:245
+msgid "heading.action"
+msgstr "zzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:246
+msgid "heading.actor"
+msgstr "zzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:247
+msgid "heading.contributions"
+msgstr "zzzzzzzzzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:248
+msgid "heading.count"
+msgstr "zzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:249
+msgid "heading.detail_headings"
+msgstr "zzzzzz_zzzzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:250
+msgid "heading.gadget_id"
+msgstr "zzzzzz_zz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:251
+msgid "heading.page_id"
+msgstr "zzzz_zz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:252
+msgid "heading.page_views"
+msgstr ""
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:253
+msgid "heading.pages"
+msgstr "zzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:254
+msgid "heading.period"
+msgstr "zzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:255
+msgid "heading.period_start"
+msgstr "zzzzzz_zzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:256
+msgid "heading.tally"
+msgstr "zzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:257
+msgid "heading.title"
+msgstr "zzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:258
+msgid "heading.unique_contributors"
+msgstr "zzzzzz_zzzzzzzzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:259
+msgid "heading.unique_members"
+msgstr "zzzzzz_zzzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:260
+msgid "heading.unique_visitors"
+msgstr "zzzzzz_zzzzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:261
+msgid "heading.user_id"
+msgstr "zzzz_zz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:262
+msgid "heading.username"
+msgstr "zzzzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:263
+msgid "heading.views"
+msgstr "zzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:264
+msgid "heading.workspace"
+msgstr "zzzzzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:265
+msgid "heading.workspaces"
+msgstr "zzzzzzzzzz"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:32
 msgid "image.upload"
@@ -8614,6 +9015,19 @@ msgstr "Zzzz zzzz"
 #: share/skin/s3/template/lite/paging.html:12 share/skin/s3/template/lite/paging.html:14
 msgid "lite.previous-page"
 msgstr "Zzzzzzzz zzzz"
+
+#: share/skin/s3/template/view/settings:80
+msgid "loc.language"
+msgstr "Zzzzzzzz"
+
+#: share/skin/s3/template/element/settings/language_settings_section:5 share/skin/s3/template/view/settings:82 lib/Socialtext/Pluggable/Plugin/Locales.pm:46
+msgid "loc.settings"
+msgstr "Zzzzzzzz Zzzzzzzz"
+
+#. ($languages->{system_locale()
+#: lib/Socialtext/Pluggable/Plugin/Locales.pm:34
+msgid "loc.system-default=lang"
+msgstr "Zzzzzz Zzzzzzz: %1"
 
 #. (lite ? '/m/login' : '/challenge')
 #: share/template/authen/element/forgot_password_page:17
@@ -10234,6 +10648,320 @@ msgstr "Zzzzzzzzz Zzzzz Zzzz"
 #: lib/Socialtext/Handler/ControlPanel.pm:1879
 msgid "report.workspace.activity=user"
 msgstr "Zzzzzzzzz Zzzzzzzz zzz zzzz %1"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/GrowthByAccount.pm:19
+msgid "reports.account-growth"
+msgstr "Zzzzzzz Zzzzzz"
+
+#: ../socialtext-reports/template/workspace_dashboard.tmpl:30 ../socialtext-reports/template/workspace_dashboard.tmpl:31
+msgid "reports.actions-by-wiki"
+msgstr "Zzzzzzz zz Zzzzzzzzz"
+
+#: ../socialtext-reports/template/user_dashboard.tmpl:40 ../socialtext-reports/template/user_dashboard.tmpl:41 ../socialtext-reports/template/user_dashboard.tmpl:47 ../socialtext-reports/template/user_dashboard.tmpl:48
+msgid "reports.audience-by-user"
+msgstr "Zzzzzzzz zz Zzzz"
+
+#: ../socialtext-reports/template/available_reports.tmpl:1
+msgid "reports.available-reports:"
+msgstr "Zzzzzzzzz Zzzzzzz:"
+
+#. ($opts)
+#: ../socialtext-reports/lib/Socialtext/Reports/REST.pm:196
+msgid "reports.cgi=options"
+msgstr "ZZZ zzzzzzz: %1"
+
+#: ../socialtext-reports/template/user_dashboard.tmpl:33 ../socialtext-reports/template/user_dashboard.tmpl:34
+msgid "reports.coeditors-by-user"
+msgstr "Zzzzzzzzz zz Zzzz"
+
+#: ../socialtext-reports/template/usage_by.tmpl:22 ../socialtext-reports/template/usage_by_workspace.tmpl:22
+msgid "reports.collaborativeness:"
+msgstr "Zzzzzzzzzzzzzzzzz:"
+
+#: ../socialtext-reports/template/user_dashboard.tmpl:24 ../socialtext-reports/template/user_dashboard.tmpl:25
+msgid "reports.comments-per-wiki"
+msgstr "Zzzzzzzz zzz Zzzzzzzzz"
+
+#: ../socialtext-reports/template/usage_by.tmpl:32 ../socialtext-reports/template/usage_by.tmpl:35 ../socialtext-reports/template/usage_by_workspace.tmpl:30 ../socialtext-reports/template/workspace_growth.tmpl:29
+msgid "reports.contributions"
+msgstr "Zzzzzzzzzzzzz"
+
+#: ../socialtext-reports/template/usage_by.tmpl:29 ../socialtext-reports/template/usage_by.tmpl:30
+msgid "reports.dashboard"
+msgstr "Zzzzzzzzz"
+
+#: ../socialtext-reports/template/account_growth.tmpl:30
+msgid "reports.dashboard-views"
+msgstr "Zzzzzzzzz Zzzzz"
+
+#: ../socialtext-reports/template/user_dashboard.tmpl:2
+msgid "reports.dashboard=user"
+msgstr "%1 Zzzz Zzzzzzzzz"
+
+#. (workspace)
+#: ../socialtext-reports/template/workspace_dashboard.tmpl:2
+msgid "reports.dashboard=wiki"
+msgstr "%1 Zzzzzzzzz Zzzzzzzzz"
+
+#: ../socialtext-reports/template/account_growth.tmpl:23 ../socialtext-reports/template/workspace_growth.tmpl:23
+msgid "reports.date"
+msgstr "Zzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/REST.pm:130
+msgid "reports.date-supplied-but-this-report-needs-none!"
+msgstr "Zzzz zzzzzzzz, zzz zzzz zzzzzz zzzzz'z zzzz zzz!"
+
+#: ../socialtext-reports/template/analytics.tmpl:46
+msgid "reports.duration:"
+msgstr "Zzzzzzzz:"
+
+#: ../socialtext-reports/template/workspace_dashboard.tmpl:16 ../socialtext-reports/template/workspace_dashboard.tmpl:17
+msgid "reports.edits-by-user"
+msgstr "Zzzzz zz Zzzz"
+
+#. (username)
+#: ../socialtext-reports/template/user_dashboard.tmpl:40 ../socialtext-reports/template/user_dashboard.tmpl:42
+msgid "reports.edits-pages-read-by-these-people=user:"
+msgstr "%1 zzzzz zzzzz zzzz zz zzzzz zzzzzz:"
+
+#. (username)
+#: ../socialtext-reports/template/user_dashboard.tmpl:33 ../socialtext-reports/template/user_dashboard.tmpl:36
+msgid "reports.edits-pages-with-these-people=user:"
+msgstr "%1 zzzzz zzzzz zzzz zzzzz zzzzzz:"
+
+#: ../socialtext-reports/template/user_dashboard.tmpl:10 ../socialtext-reports/template/user_dashboard.tmpl:11
+msgid "reports.edits-per-wiki"
+msgstr "Zzzzz zzz Zzzzzzzzz"
+
+#: ../socialtext-reports/template/available_reports.tmpl:4
+msgid "reports.example-actions-today-1month-txt"
+msgstr "Zzzzzzz: /zzzzzzz/zzzzz/-1zzzzz.zzz"
+
+#: ../socialtext-reports/template/controls.tmpl:4
+msgid "reports.generate!"
+msgstr "Zzzzzzzz!"
+
+#: ../socialtext-reports/template/analytics.tmpl:15
+msgid "reports.healthy"
+msgstr "Zzzzzzz"
+
+#: ../socialtext-reports/template/analytics.tmpl:27
+msgid "reports.healthy-csv"
+msgstr "Zzzzzzz ZZZ"
+
+#: ../socialtext-reports/template/analytics.tmpl:50
+msgid "reports.healthy-wikis"
+msgstr "Zzzzzzz Zzzzzzzzzz"
+
+#. (r.name)
+#: ../socialtext-reports/template/available_reports.tmpl:12
+msgid "reports.in-past-week=name"
+msgstr "%1 zz zzz zzzz zzzz"
+
+#: ../socialtext-reports/template/inline_report.tmpl:9
+msgid "reports.loading-report"
+msgstr "Zzzzzzz Zzzzzz..."
+
+#: ../socialtext-reports/template/analytics.tmpl:23
+msgid "reports.mean"
+msgstr "Zzzz"
+
+#: ../socialtext-reports/template/analytics.tmpl:30
+msgid "reports.median"
+msgstr "Zzzzzz"
+
+#: ../socialtext-reports/template/usage_by.tmpl:58 ../socialtext-reports/template/usage_by_workspace.tmpl:48
+msgid "reports.no-user-stats-for-this-period"
+msgstr "Zz zzzz zzzzz zzz zzzzzzzzz zzz zzzz zzzzzz."
+
+#: ../socialtext-reports/template/analytics.tmpl:27
+msgid "reports.other-csv"
+msgstr "Zzzzz ZZZ"
+
+#: ../socialtext-reports/template/analytics.tmpl:54
+msgid "reports.other-wikis"
+msgstr "Zzzzz Zzzzzzzzzz"
+
+#: ../socialtext-reports/template/analytics.tmpl:16
+msgid "reports.others"
+msgstr "Zzzzzz"
+
+#: ../socialtext-reports/template/usage_by.tmpl:34 ../socialtext-reports/template/usage_by.tmpl:35 ../socialtext-reports/template/usage_by_workspace.tmpl:29 ../socialtext-reports/template/usage_by_workspace.tmpl:30
+msgid "reports.page"
+msgstr "Zzzz"
+
+#: ../socialtext-reports/template/account_growth.tmpl:34 ../socialtext-reports/template/workspace_growth.tmpl:28
+msgid "reports.page-views"
+msgstr "Zzzz Zzzzz"
+
+#: ../socialtext-reports/template/account_growth.tmpl:33 ../socialtext-reports/template/workspace_growth.tmpl:27
+msgid "reports.pages"
+msgstr "Zzzzz"
+
+#: ../socialtext-reports/template/usage_by.tmpl:31 ../socialtext-reports/template/usage_by.tmpl:32
+msgid "reports.people"
+msgstr "Zzzzzz"
+
+#: ../socialtext-reports/template/account_growth.tmpl:29
+msgid "reports.people-views"
+msgstr "Zzzzzz Zzzzz"
+
+#: ../socialtext-reports/template/usage_by.tmpl:30
+msgid "reports.personalizations"
+msgstr "Zzzzzzzzzzzzzzzz"
+
+#: ../socialtext-reports/template/account_growth.tmpl:27
+msgid "reports.personalized-dashboards"
+msgstr "Zzzzzzzzzzzz Zzzzzzzzzz"
+
+#: ../socialtext-reports/template/account_growth.tmpl:28
+msgid "reports.personalized-profiles"
+msgstr "Zzzzzzzzzzzz Zzzzzzzz"
+
+#. (username)
+#: ../socialtext-reports/template/user_dashboard.tmpl:47 ../socialtext-reports/template/user_dashboard.tmpl:49
+msgid "reports.reads-pages-edited-by-these-people=user:"
+msgstr "%1 zzzzz zzzzz zzzzzz zz zzzzz zzzzzz:"
+
+#: ../socialtext-reports/template/controls.tmpl:3 ../socialtext-reports/template/usage_by.tmpl:17 ../socialtext-reports/template/usage_by_workspace.tmpl:17
+msgid "reports.report-duration:"
+msgstr "Zzzzzz zzzzzzzz:"
+
+#: ../socialtext-reports/template/controls.tmpl:2
+msgid "reports.report-start-date:"
+msgstr "Zzzzzz Zzzzz Zzzz:"
+
+#: ../socialtext-reports/template/analytics.tmpl:45
+msgid "reports.report-start-time:"
+msgstr "Zzzzzz Zzzzz zzzz:"
+
+#: ../socialtext-reports/template/usage_by.tmpl:16 ../socialtext-reports/template/usage_by_workspace.tmpl:16
+msgid "reports.report-starting-on:"
+msgstr "Zzzzzz zzzzzzzz zz:"
+
+#: ../socialtext-reports/template/dashboard.tmpl:2 ../socialtext-reports/template/wrapper.tmpl:3
+msgid "reports.reports-dashboard"
+msgstr "Zzzzzzz Zzzzzzzzz"
+
+#: ../socialtext-reports/template/usage_by.tmpl:33
+msgid "reports.sent"
+msgstr "Zzzz"
+
+#: ../socialtext-reports/template/usage_by.tmpl:33
+msgid "reports.signals"
+msgstr "Zzzzzzz"
+
+#: ../socialtext-reports/template/account_growth.tmpl:31
+msgid "reports.signals-sent"
+msgstr "Zzzzzzz Zzzz"
+
+#: ../socialtext-reports/template/analytics.tmpl:36
+msgid "reports.stddev"
+msgstr "ZzzZzz"
+
+#: ../socialtext-reports/template/analytics.tmpl:47
+msgid "reports.submit"
+msgstr "Zzzzzz"
+
+#: ../socialtext-reports/template/usage_by.tmpl:21 ../socialtext-reports/template/usage_by_workspace.tmpl:21
+msgid "reports.total-members-current:"
+msgstr "Zzzzz zzzzzzz (zzzzzzz):"
+
+#: ../socialtext-reports/template/usage_by.tmpl:19 ../socialtext-reports/template/usage_by_workspace.tmpl:19
+msgid "reports.total-unique-contributors:"
+msgstr "Zzzzz zzzzzz zzzzzzzzzzzz:"
+
+#: ../socialtext-reports/template/usage_by.tmpl:20 ../socialtext-reports/template/usage_by_workspace.tmpl:20
+msgid "reports.total-unique-visitors:"
+msgstr "Zzzzz zzzzzz zzzzzzzz:"
+
+#: ../socialtext-reports/template/account_growth.tmpl:26 ../socialtext-reports/template/workspace_growth.tmpl:26
+msgid "reports.unique-contributors"
+msgstr "Zzzzzz Zzzzzzzzzzzz"
+
+#: ../socialtext-reports/template/usage_by.tmpl:22 ../socialtext-reports/template/usage_by_workspace.tmpl:22
+msgid "reports.unique-contributors-as-percent-of-unique-visitors"
+msgstr "(zzzzzz zzzzzzzzzzzz zz z zzzzzzz zz zzzzzz zzzzzzzz)"
+
+#: ../socialtext-reports/template/account_growth.tmpl:24 ../socialtext-reports/template/workspace_growth.tmpl:24
+msgid "reports.unique-members"
+msgstr "Zzzzzz Zzzzzzz"
+
+#: ../socialtext-reports/template/account_growth.tmpl:25 ../socialtext-reports/template/workspace_growth.tmpl:25
+msgid "reports.unique-visitors"
+msgstr "Zzzzzz Zzzzzzzz"
+
+#: ../socialtext-reports/template/analytics.tmpl:10 ../socialtext-reports/template/user_dashboard.tmpl:3 ../socialtext-reports/template/workspace_dashboard.tmpl:3
+msgid "reports.up-to-main-dashboard"
+msgstr "Zz zz zzzz zzzzzzzzz"
+
+#: ../socialtext-reports/template/available_reports.tmpl:3
+msgid "reports.url-format-report-name-start-time-duration-type"
+msgstr "ZZZ Zzzzzz: /&lt;zzzzzz_zzzz&gt;/&lt;zzzzz_zzzz&gt;/&lt;zzzzzzzz&gt;.&lt;zzzz&gt;"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByAccount.pm:12
+msgid "reports.usage-by-account"
+msgstr "Zzzzz Zz Zzzzzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByWorkspace.pm:14
+msgid "reports.usage-by-wiki"
+msgstr "Zzzzz Zz Zzzzzzzzz"
+
+#: ../socialtext-reports/template/usage_by.tmpl:28 ../socialtext-reports/template/usage_by_workspace.tmpl:28
+msgid "reports.username"
+msgstr "Zzzzzzzz"
+
+#: ../socialtext-reports/template/usage_by.tmpl:29 ../socialtext-reports/template/usage_by.tmpl:31 ../socialtext-reports/template/usage_by.tmpl:34 ../socialtext-reports/template/usage_by_workspace.tmpl:29
+msgid "reports.views"
+msgstr "Zzzzz"
+
+#: ../socialtext-reports/template/dashboard.tmpl:15 ../socialtext-reports/template/dashboard.tmpl:16 ../socialtext-reports/template/workspace_dashboard.tmpl:24 ../socialtext-reports/template/workspace_dashboard.tmpl:25
+msgid "reports.views-by-page"
+msgstr "Zzzzz zz Zzzz"
+
+#: ../socialtext-reports/template/workspace_dashboard.tmpl:10 ../socialtext-reports/template/workspace_dashboard.tmpl:11
+msgid "reports.views-by-user"
+msgstr "Zzzzz zz Zzzz"
+
+#: ../socialtext-reports/template/dashboard.tmpl:10 ../socialtext-reports/template/dashboard.tmpl:9
+msgid "reports.views-by-wiki"
+msgstr "Zzzzz zz Zzzzzzzzz"
+
+#: ../socialtext-reports/template/user_dashboard.tmpl:17 ../socialtext-reports/template/user_dashboard.tmpl:18
+msgid "reports.views-per-wiki"
+msgstr "Zzzzz zzz Zzzzzzzzz"
+
+#: ../socialtext-reports/template/dashboard.tmpl:21 ../socialtext-reports/template/dashboard.tmpl:22
+msgid "reports.wiki-actions"
+msgstr "Zzzzzzzzz Zzzzzzz"
+
+#: ../socialtext-reports/template/analytics.tmpl:9
+msgid "reports.wiki-analytics"
+msgstr "Zzzz Zzzzzzzzz"
+
+#: ../socialtext-reports/template/account_growth.tmpl:35
+msgid "reports.wiki-contributions"
+msgstr "Zzzzzzzzz Zzzzzzzzzzzzz"
+
+#: ../socialtext-reports/template/dashboard.tmpl:29 ../socialtext-reports/template/dashboard.tmpl:30
+msgid "reports.wiki-edits-by-user"
+msgstr "Zzzzzzzzz Zzzzz zz Zzzz"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/WorkspaceGrowth.pm:13
+msgid "reports.wiki-growth"
+msgstr "Zzzzzzzzz Zzzzzz"
+
+#: ../socialtext-reports/template/usage_by.tmpl:46 ../socialtext-reports/template/usage_by_workspace.tmpl:41
+msgid "reports.wiki-total"
+msgstr "Zzzzzzzzz zzzzz"
+
+#: ../socialtext-reports/template/dashboard.tmpl:35 ../socialtext-reports/template/dashboard.tmpl:36
+msgid "reports.wiki-views-by-user"
+msgstr "Zzzzzzzzz Zzzzz zz Zzzz"
+
+#: ../socialtext-reports/template/account_growth.tmpl:32
+msgid "reports.wikis"
+msgstr "Zzzzzzzzzz"
 
 #. ($self->_workspace->title)
 #. ($self->_group->display_name)
@@ -13120,7 +13848,3 @@ msgstr "Zzzzzz z Zzzzz"
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:21
 msgid "wikiwyg.widget"
 msgstr "Zzzzzz z Zzzzzz"
-
-#: share/template/email/free50/account-invitation.txt:30
-msgid "www.socialtext.com"
-msgstr "zzz.zzzzzzzzzz.zzz"

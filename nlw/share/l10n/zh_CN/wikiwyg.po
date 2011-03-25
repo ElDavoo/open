@@ -313,7 +313,7 @@ msgstr "<strong>%1</strong>想让您知道位于 %3 的<strong>%2</strong>所进
 #. (name, summary, page, workspace)
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1434
 msgid "edit.summary=name,summary,page,wiki"
-msgstr "<strong>%1</strong>，\"%2\"（编辑了位于 %4 的<strong>%3</strong>）"
+msgstr "<strong>%1</strong>，“%2”（编辑了位于 %4 的<strong>%3</strong>）"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:113
 msgid "edit.tag-prompt:"
@@ -343,7 +343,7 @@ msgstr "浏览器为离线状态，请连入互联网再重试。"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3191
 msgid "error.check-video-url"
-msgstr "系統出错; 请稍候再重试。"
+msgstr "系统出错; 请稍候再重试。"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:1955
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1409
@@ -387,7 +387,7 @@ msgstr "请选择要插入链接的文本。"
 #. (ws)
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:2380
 msgid "error.no-wiki-on-server=wiki"
-msgstr "系統中不存在 \"%1\" 工作区"
+msgstr "系统中不存在“%1”工作区"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:537
 msgid "error.page-name-required"
@@ -401,7 +401,7 @@ msgstr "在网址编码后，页面标题过长"
 #. (page_name)
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg.js:543
 msgid "error.reserved-page-name"
-msgstr "\"%1\" 是一个保留的页面名称，请使用另外一个名称"
+msgstr "“%1”是一个保留的页面名称，请使用另外一个名称"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1405
 msgid "error.rows-and-columns-required"
@@ -569,7 +569,7 @@ msgstr "链接到..."
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu:13
 msgid "insert.link2"
-msgstr "一个不同的维基页面"
+msgstr "另一个共笔页面"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu:16
 msgid "insert.link2-hyperlink"

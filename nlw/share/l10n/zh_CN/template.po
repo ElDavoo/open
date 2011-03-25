@@ -768,7 +768,7 @@ msgstr "未知分类的事件：%1"
 #. (page_in_workspace)
 #: share/template/data/events/page:3
 msgid "event.view=page"
-msgstr "檢視了 %1。"
+msgstr "检视了 %1。"
 
 #. (page_in_workspace)
 #: share/template/data/events/page:25
@@ -1063,7 +1063,3 @@ msgstr "指定密码："
 #: share/template/email/st/workspace-admin-invitation.txt:16
 msgid "wiki.visit-later=wiki"
 msgstr "您也可以在此工作区继续工作，稍后再转到“%1”。"
-
-#: share/template/email/free50/account-invitation.txt:30
-msgid "www.socialtext.com"
-msgstr "www.socialtext.com"

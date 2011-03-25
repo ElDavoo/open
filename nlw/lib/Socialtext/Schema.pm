@@ -328,6 +328,25 @@ Dumps out the database to a sql dump file.
 sub dump {
     my $self = shift;
     my %c    = $self->connect_params();
+
+    # NOTE st-appliance-backup does not use this method (opting to dump the db
+    # directly).  st-appliance-upgrade will set this environment variable,
+    # opting to use `st-appliance-backup checkpoint` instead:
+    if ($ENV{ST_DB_NODUMP}) {
+        my $msg = $ENV{ST_UPGRADE_IN_PROGRESS}
+            ? "skipping dump of $c{db_name}: an upgrade is in progress"
+            : "skipping dump of $c{db_name}: ST_DB_NODUMP env-var is set";
+        require Socialtext::Log;
+        Socialtext::Log::st_log(info => $msg);
+
+        open my $db_log, '>>', $self->_log_file;
+        print $db_log "$msg\n";
+        close $db_log;
+
+        $self->_display("$msg\n");
+        return;
+    }
+
     my $time = time;
     my $dir  = Socialtext::Paths::storage_directory("db-backups");
     my $file = $self->{output};
@@ -335,14 +354,15 @@ sub dump {
     $file ||= $ENV{ST_DB_DUMPFILE}
         if $c{db_name} eq 'NLW';
 
-    $file ||= Socialtext::File::catfile($dir, "$c{db_name}-dump.$time.sql");
+    $file ||= Socialtext::File::catfile($dir, "$c{db_name}.$time.dump");
 
     # This is only likely to happen if we pass an output param to new().
     return if -f $file and not $self->{force};
 
     my @parms = (
         'pg_dump',
-        '-C',
+        '-Fc',
+        '--disable-triggers',
         '-U' => $c{user},
         '-f' => $file,
     );

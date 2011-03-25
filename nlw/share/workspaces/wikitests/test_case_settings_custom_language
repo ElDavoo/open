@@ -1,0 +1,67 @@
+| *Comment* | Test Case: Settings: Custom Language |  |
+
+| *Comment* | Test Case: Settings: Custom Language - Create User |  |
+| set | custom_user | customuser%%start_time%%@matt.socialtext.net |
+| set | acct | customacct%%start_time%% |
+| set | ws | customerws%%start_time%% |
+
+| st-admin | create-account --name %%acct%% | created |
+| st-admin | create-user --email %%custom_user%% --p %%password%% | created |
+| st-admin | create-workspace --name %%ws%% --title %%ws%% | created |
+| st-admin | add-member --e %%custom_user%% --w %%ws%% | now has the role |
+
+| *Comment* | Test Case: Settings: Custom Language - customize language from dashboard |  |
+| st-logoutin | %%custom_user%% | %%password%% |
+| wait-for-element-visible-ok | link=Settings | 30000 |
+| click_and_wait | link=Settings |  |
+| wait_for_element_visible_ok | link=Language Settings | 30000 |
+| click_and_wait | link=Language Settings |  |
+| wait_for_element_visible_ok | locale | 30000 |
+| is_selected_ok | locale | label=System Default: English |
+| wait_for_element_visible_ok | -savelink | 30000 |
+| wait_for_element_visible_ok | -cancellink | 30000 |
+| select_ok | locale | label=zz - DEV MODE ONLY |
+| is_selected_ok | locale | label=zz - DEV MODE ONLY |
+| click_ok | -cancellink |  |
+| pause | 1000 |  |
+| is_selected_ok | locale | label=System Default: English |
+| click_and_wait | -savelink |  |
+| wait_for_text_present_ok | Zzzzzzz Zzzzz | 30000 |
+| wait_for_element_present_ok | link=Zzzzzzz Zzzzzzzz | 30000 |
+
+| *Comment* | Test Case: Settings: Custom Language - Logout, login, still customized |  |
+| wait_for_element_visible_ok | logout_btn | 30000 |
+| click_and_wait | logout_btn |  |
+| st-login | %%custom_user%% | %%password%% |
+| wait_for_text_present_ok | Zzzzzzz, Zzz Zzzz | 300000 |
+
+| *Comment* | Test Case: Settings: Custom Language - change back to english |  |
+| open_ok | /?action=language_settings |
+| wait_for_element_visible_ok | locale | 30000 |
+| is_selected_ok | locale | label=zz - DEV MODE ONLY |
+| wait_for_element_visible_ok | -savelink | 30000 |
+| select_ok | locale | label=Zzzzzz Zzzzzzz: Zzzzzzz (English) |
+| is_selected_ok | locale | label=Zzzzzz Zzzzzzz: Zzzzzzz (English) |
+| click_and_wait | -savelink |  |
+| wait_for_text_present_ok | Changes Saved | 30000 |
+| is_selected_ok | locale | label=System Default: English |
+| open_ok | /st/dashboard |  |
+| wait_for_text_present_ok | Welcome, New User | 30000 |
+
+| *Comment* | Test Case: Settings: Custom Language - customize language from %%ws%% |  |
+
+| *Comment* | Test Case: Settings: Custom Language - Logout, login, still customized |  |
+| wait_for_element_visible_ok | logout_btn | 30000 |
+| st-logoutin | %%custom_user%% | %%password%% |
+
+| *Comment* | Test Case: Settings: Custom Language - login as %%username%%, see ENGLISH |  |
+| st-login |  |  |
+| wait-for-element-visible-ok | link=Settings | 30000 |
+| click_and_wait | link=Settings |  |
+| wait_for_element_visible_ok | link=Language Settings | 30000 |
+| wait_for_element_visible_ok | locale | 30000 |
+| is_selected_ok | locale | label=System Default: English |
+
+
+
+| *Comment* | Test Case: Settings:: Custom Languag COMPLETED |  |

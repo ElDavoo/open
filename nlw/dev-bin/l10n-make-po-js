@@ -33,6 +33,7 @@ for my $lang (sort { en($a) cmp en($b) } @ARGV) {
     $lang =~ s/(_\w+)$/uc $1/e;
     for my $po (glob("share/l10n/$lang/*.po")) {
         next if $po =~ /lib\.po$/; # Not going to occur in JS
+        next if $po =~ /reports\.po$/; # Not going to occur in JS
 
         open my $in, '<:utf8', $po;
 
@@ -105,6 +106,7 @@ sub gen_js {
     my $json = encode_json $lexicon;
     utf8::decode($json);
     $json =~ s/\x{FFFC}/\\n/g;
+    $json =~ s/([^\x00-\xff])/sprintf('\\u%04X', ord $1)/eg;
     $json =~ s/^\{//;
     $json =~ s/","/"\n"/g;
     $json =~ s/\}$//;
@@ -564,6 +566,8 @@ use constant CN2TW => {qw(
     聯系         聯絡
     標准         標準
     特征         特徵
+    硬盤         硬碟
+    空閒         閒置
 )};
 
 use constant CN2TW_ExactMatch => {qw(

@@ -99,6 +99,7 @@ test env properly and are not testing the test-workspace
 * [Mobile Testcases]
 * [Explore Testcases]
 * [Test Case: Sticky Search Selection]
+* [Test Case: All Users Workspace]
 
 Keep these Miki test cases at the end since they create a large number of users
 

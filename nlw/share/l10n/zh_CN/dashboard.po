@@ -28,7 +28,7 @@ msgstr "%1 的显示板"
 
 #: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:31
 msgid "dashboard.force-update"
-msgstr "同时强制升级現有用户的显示板"
+msgstr "同时强制升级现有用户的显示板"
 
 #: share/plugin/dashboard/template/widget_editor_links:3
 msgid "dashboard.preview"
@@ -123,7 +123,7 @@ msgstr "如果您强制升级当前显示板，您会替换这个帐户下面所
 
 #: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:9
 msgid "info.dashboard-push-widget"
-msgstr "推送小工具到用户的显示板，会导致每个用户载入显示板的时候，该小工具出现在在您选择的列的顶部，也就是現有小工具的上方。"
+msgstr "推送小工具到用户的显示板，会导致每个用户载入显示板的时候，该小工具出现在在您选择的列的顶部，也就是现有小工具的上方。"
 
 #: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:4
 msgid "info.dashboard-save-layout"

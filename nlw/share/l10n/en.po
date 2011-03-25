@@ -1,3 +1,36 @@
+# #-#-#-#-#  wikiwyg.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  twilio.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  template.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  socialcalc.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  signals.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  mediawiki.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  groups.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  fields.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  dashboard.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  control.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  bin.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  appliance.po (Socialtext i18n)  #-#-#-#-#
+# @COPYRIGHT@
+# #-#-#-#-#  analytics.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
 #, fuzzy
 msgid ""
@@ -53,6 +86,14 @@ msgstr ""
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
 "PO-Revision-Date: 2011-02-25 12:38+0800\n"
+"Language-Team: Socialtext i18n team\n"
+"Last-Translator: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"#-#-#-#-#  reports.po (Socialtext i18n)  #-#-#-#-#\n"
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-02-24 01:39+0800\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -425,6 +466,10 @@ msgstr "Copy and paste the URL for the video below.  We support embedding video 
 msgid "activities.enter-weblink-url-here"
 msgstr "Paste or type your link's destination (URL, e.g. http://socialtext.com) and text of the link below. Link destination is required."
 
+#: share/plugin/widgets/share/javascript/activities/event_list.js:938
+msgid "activities.entire-conversation"
+msgstr "entire Conversation"
+
 #: share/plugin/widgets/share/javascript/activities/appdata.js:328
 msgid "activities.events"
 msgstr "events"
@@ -477,6 +522,10 @@ msgstr "Maximum file size: %1MB"
 #: share/plugin/widgets/share/javascript/activities/appdata.js:414
 msgid "activities.me"
 msgstr "me"
+
+#: share/plugin/widgets/share/javascript/template/activities/event.tt2:16
+msgid "activities.mention"
+msgstr "mention"
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:116 share/plugin/widgets/share/javascript/template/activities/event.tt2:81
 msgid "activities.mention-user"
@@ -538,6 +587,10 @@ msgstr "Post"
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:137 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:90
 msgid "activities.post-to"
 msgstr "Post to"
+
+#: share/plugin/widgets/share/javascript/template/activities/event.tt2:14
+msgid "activities.private"
+msgstr "private"
 
 #: share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:6
 msgid "activities.private-to-you"
@@ -812,6 +865,10 @@ msgstr "Contributions"
 msgid "appliance.email-required"
 msgstr "Please enter an email address"
 
+#: lib/Socialtext/Appliance/Model/System.pm:52
+msgid "appliance.gb=format"
+msgstr "%1 Gb"
+
 #: lib/Socialtext/Appliance/ConsoleController.pm:120
 msgid "appliance.initialize-wikis"
 msgstr "Initialize Workspaces"
@@ -925,6 +982,10 @@ msgstr "Skipping workspace %1, no usage."
 #: lib/Socialtext/Appliance/Model/Setup.pm:362
 msgid "appliance.synchronized-time-with=ts"
 msgstr "Synchronized time with %1"
+
+#: lib/Socialtext/Appliance/Model/System.pm:34
+msgid "appliance.system"
+msgstr "System"
 
 msgid "appliance.taking-database-snapshot"
 msgstr "Taking database snapshot ..."
@@ -2056,9 +2117,17 @@ msgstr "Socialtext Appliance"
 msgid "console.socialtext-desktop"
 msgstr "Socialtext Desktop"
 
+#: ../appliance/libsocialtext-appliance-perl/template/console_wrapper.tmpl:71
+msgid "console.socialtext-inc"
+msgstr "Socialtext, Inc."
+
 #: ../appliance/libsocialtext-appliance-perl/template/help.html:63
 msgid "console.socialtext-support"
 msgstr "Socialtext Support"
+
+#: ../appliance/libsocialtext-appliance-perl/template/help.html:125
+msgid "console.socialtext-support-form"
+msgstr "Socialtext Support Form"
 
 #: ../appliance/libsocialtext-appliance-perl/template/help.html:141 ../appliance/libsocialtext-appliance-perl/template/setup.html:103 ../appliance/libsocialtext-appliance-perl/template/setup.html:33 ../appliance/libsocialtext-appliance-perl/template/setup.html:48 ../appliance/libsocialtext-appliance-perl/template/setup.html:69 ../appliance/libsocialtext-appliance-perl/template/setup.html:84
 msgid "console.submit"
@@ -2197,6 +2266,10 @@ msgstr "Accounts on this system are \"self-join\". Any user who can access the S
 #: share/plugin/control/template/control/index.html:34
 msgid "control.about-settings-tab"
 msgstr "Manage system-wide application settings."
+
+#: share/plugin/control/template/control/add_users.html:32
+msgid "control.about-user-restrictions"
+msgstr "When adding/updating Users, you may also specify a series of optional restrictions to be placed on their User records.  Until these restrictions have been satisfied and cleared, Users will be unable to log in to the system."
 
 #: share/plugin/control/template/control/index.html:28
 msgid "control.about-users-tab"
@@ -2593,6 +2666,15 @@ msgstr "Disable Invitation to Group"
 msgid "control.edit-field"
 msgstr "Edit Field"
 
+#: share/plugin/control/template/control/edit_user.html:1
+msgid "control.edit-user"
+msgstr "Edit User"
+
+#. (u.display_name)
+#: share/plugin/control/template/control/edit_user.html:2
+msgid "control.edit-user=name"
+msgstr "Edit User: %1"
+
 msgid "control.email-address:"
 msgstr "E-mail Address:"
 
@@ -2680,8 +2762,12 @@ msgstr "Field Type"
 msgid "control.first-name:"
 msgstr "First name:"
 
-#: share/plugin/control/template/control/user.html:103
+#: share/plugin/control/template/control/add_users.html:46
 msgid "control.for-cac-authentication"
+msgstr "(for CAC authentication)"
+
+#: share/plugin/control/template/control/user.html:103
+msgid "control.for-use-with-cac-authentication"
 msgstr "For use with CAC Authentication"
 
 #: share/plugin/control/template/control/add_users.html:31
@@ -2891,9 +2977,17 @@ msgstr "Profile Fields"
 msgid "control.profile-section"
 msgstr "Profile Section"
 
+#: share/plugin/control/share/javascript/workspaces_new.js:213 share/plugin/control/share/javascript/workspaces_new.js:74 share/plugin/control/template/control/group.html:239 share/plugin/control/template/control/workspace.html:146 share/plugin/control/template/control/workspace.html:288
+msgid "control.promote-to-admin"
+msgstr "Promote to Admin"
+
 #: share/plugin/control/template/control/user.html:168
 msgid "control.relationship"
 msgstr "Relationship"
+
+#: share/plugin/control/share/javascript/workspaces_new.js:223 share/plugin/control/share/javascript/workspaces_new.js:83 share/plugin/control/template/control/group.html:254 share/plugin/control/template/control/workspace.html:160 share/plugin/control/template/control/workspace.html:303
+msgid "control.remove-admin"
+msgstr "Remove Admin"
 
 #: share/plugin/control/template/control/user.html:80
 msgid "control.remove-appliance-business-administrator-role"
@@ -2907,14 +3001,36 @@ msgstr "Remove Appliance Technical Administrator Role"
 msgid "control.remove-external-id-requirement"
 msgstr "Remove External ID Requirement"
 
-#: share/plugin/control/template/control/user.html:312
+#: share/plugin/control/template/control/group.html:363
+msgid "control.remove-from-account"
+msgstr "Remove from account"
+
+#: share/plugin/control/template/control/group.html:221
+msgid "control.remove-from-group"
+msgstr "Remove from group"
+
+#: share/plugin/control/share/javascript/workspaces_new.js:198 share/plugin/control/share/javascript/workspaces_new.js:60 share/plugin/control/template/control/workspace.html:130 share/plugin/control/template/control/workspace.html:271
 msgid "control.remove-from-wiki"
+msgstr "Remove from Workspace"
+
+#: share/plugin/control/template/control/user.html:312
+msgid "control.remove-from-wikis"
 msgstr "Remove from Workspaces"
 
 #. (accounts.length)
 #: share/plugin/control/template/control/group.html:368
 msgid "control.remove-group-from-accounts=count?"
 msgstr "Remove this Group from %*(%1,selected Account)?"
+
+#. (groups.length)
+#: share/plugin/control/share/javascript/workspaces_new.js:202 share/plugin/control/template/control/workspace.html:275
+msgid "control.remove-selected-group-from-wiki=count?"
+msgstr "Remove the selected %*(%1,group) from this workspace?"
+
+#. (users.length)
+#: share/plugin/control/share/javascript/workspaces_new.js:63 share/plugin/control/template/control/workspace.html:133
+msgid "control.remove-selected-user-from-wiki=count?"
+msgstr "Remove the selected %*(%1,user) from this workspace?"
 
 #. (workspaces.length)
 #: share/plugin/control/template/control/user.html:314
@@ -3078,6 +3194,18 @@ msgstr "Socialtext Admin Configuration"
 msgid "control.socialtext-control-panel"
 msgstr "Socialtext Control Panel"
 
+#: share/plugin/control/template/control/group.html:43
+msgid "control.start-typing-account-name"
+msgstr "Start typing an Account's name"
+
+#: share/plugin/control/template/control/workspaces_new.html:45
+msgid "control.start-typing-group-name"
+msgstr "Start typing group's name"
+
+#: share/plugin/control/template/control/account.html:73 share/plugin/control/template/control/group.html:31 share/plugin/control/template/control/workspaces_new.html:35
+msgid "control.start-typing-user-name"
+msgstr "Start typing user's name"
+
 #: share/plugin/control/template/control/workspaces_new.html:5
 msgid "control.step-1-set-wiki-title"
 msgstr "Step 1: Give your workspace a title."
@@ -3097,6 +3225,10 @@ msgstr "Stock fields"
 #: share/plugin/control/template/control/accounts.html:18 share/plugin/control/template/control/accounts.html:5 share/plugin/control/template/control/desktop-account.html:161 share/plugin/control/template/control/group_add_users.html:6 share/plugin/control/template/control/users.html:6 share/plugin/control/template/control/workspace.html:34 share/plugin/control/template/control/workspaces.html:5
 msgid "control.submit"
 msgstr "Submit"
+
+#: share/plugin/control/template/control/user_table:19
+msgid "control.system-required-user"
+msgstr "System Required User"
 
 #: share/plugin/control/template/control/index.html:22
 msgid "control.tabs"
@@ -3133,6 +3265,10 @@ msgstr "Transform to Groups"
 #: share/plugin/control/template/control/account.html:61 share/plugin/control/template/control/group.html:18 share/plugin/control/template/control/plugin_pref_form.html:6 share/plugin/control/template/control/settings.html:11 share/plugin/control/template/control/settings.html:21 share/plugin/control/template/control/workspace_table:3 share/plugin/control/template/control/workspace_table:70
 msgid "control.update"
 msgstr "Update"
+
+#: share/plugin/control/template/control/edit_user.html:28
+msgid "control.update-user"
+msgstr "Update User"
 
 #: share/plugin/control/template/control/group.html:122
 msgid "control.updating"
@@ -3236,6 +3372,10 @@ msgstr "Welcome to the Socialtext Control Panel."
 #: share/plugin/control/template/control/user.html:320
 msgid "control.wiki-removed"
 msgstr "Workspace removals were successful."
+
+#: share/plugin/control/share/javascript/workspaces_new.js:199 share/plugin/control/share/javascript/workspaces_new.js:214 share/plugin/control/share/javascript/workspaces_new.js:224 share/plugin/control/template/control/workspace.html:140 share/plugin/control/template/control/workspace.html:154 share/plugin/control/template/control/workspace.html:168 share/plugin/control/template/control/workspace.html:272 share/plugin/control/template/control/workspace.html:282 share/plugin/control/template/control/workspace.html:289 share/plugin/control/template/control/workspace.html:297 share/plugin/control/template/control/workspace.html:304 share/plugin/control/template/control/workspace.html:312
+msgid "control.wiki-role-changes-were-successful"
+msgstr "Workspace role changes were successful."
 
 #. (custom_skin,                  custom_skins.$custom_skin)
 #. (custom_skin, custom_skins.$custom_skin)
@@ -3553,6 +3693,66 @@ msgstr "Show edits"
 msgid "description.workspaces"
 msgstr "Lists all of the workspaces in the current group"
 
+#: lib/Socialtext/Handler/ControlPanel.pm:703
+msgid "desktop.2nd-bg-color"
+msgstr "Secondary background color"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:705
+msgid "desktop.about-2nd-bg-color"
+msgstr "Used as the background for forms, settings headers and un-selected tabs"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:698
+msgid "desktop.about-bg-color"
+msgstr "Background color for all content within Socialtext Desktop. Combine with “Text color” to create readable content."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:691
+msgid "desktop.about-header-gradient-bottom"
+msgstr "The bottom color of the header's gradient. Choose the same color as the top value to create a solid background instead."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:684
+msgid "desktop.about-header-gradient-top"
+msgstr "The top color of the header's gradient. Combine this with “Header Gradient (bottom)” to create a smooth color transition."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:726
+msgid "desktop.about-highlight-color"
+msgstr "The color applied to highlighted elements, such as the background of the Post button."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:719
+msgid "desktop.about-link-color"
+msgstr "The color applied to links. Most applications use a shade of blue."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:677
+msgid "desktop.about-logo-uri"
+msgstr "Socialtext Desktop's logo (automatically scaled to 240 x 34 pixels)."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:712
+msgid "desktop.about-text-color"
+msgstr "The color of all text except links within Socialtext Desktop. Combine with “Background color” above to create readable content."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:696
+msgid "desktop.bg-color"
+msgstr "Background color"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:689
+msgid "desktop.header-gradient-bottom"
+msgstr "Header Gradient (bottom)"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:682
+msgid "desktop.header-gradient-top"
+msgstr "Header Gradient (top)"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:724
+msgid "desktop.highlight-color"
+msgstr "Highlight color"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:717
+msgid "desktop.link-color"
+msgstr "Link color"
+
+#: lib/Socialtext/Handler/ControlPanel.pm:675
+msgid "desktop.logo-uri"
+msgstr "Logo URI"
+
 #: lib/Socialtext/Handler/ControlPanel.pm:774
 msgid "desktop.relogin-for-default-logo"
 msgstr "(Desktop users need to logout and login again to see the default logo.)"
@@ -3572,6 +3772,10 @@ msgstr "Reset Desktop logo to default. Desktop users need to logout and login ag
 #: lib/Socialtext/Handler/ControlPanel.pm:872
 msgid "desktop.relogin-for-skin"
 msgstr "Settings have been saved.  Desktop users need to logout and login again to apply the new skin."
+
+#: lib/Socialtext/Handler/ControlPanel.pm:710
+msgid "desktop.text-color"
+msgstr "Text color"
 
 #: share/skin/s3/javascript/lightbox/attachment.tt2:28 share/skin/s3/javascript/lightbox/email.tt2:28
 msgid "do.add"
@@ -5072,6 +5276,10 @@ msgstr "Can only change permissions on a group or workspace."
 msgid "error.group-required=command"
 msgstr "The command you called (%1) requires a '--group' parameter."
 
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/GrowthByAppliance.pm:16 ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByAppliance.pm:17
+msgid "error.html-report-not-implemented"
+msgstr "HTML Report is not implemented"
+
 #. ($EXPORT_VERSION)
 #: lib/Socialtext/Account.pm:430
 msgid "error.import-account=max-version"
@@ -5194,6 +5402,11 @@ msgstr "Invalid permissions name: %1"
 #: lib/Socialtext/Hub.pm:193
 msgid "error.invalid-query"
 msgstr "Malformed query."
+
+#. ($report_module, $@)
+#: ../socialtext-reports/lib/Socialtext/Reports/REST.pm:125
+msgid "error.invalid-report=module,message"
+msgstr "Invalid report (%1): %2"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1399
 msgid "error.invalid-rows"
@@ -5986,6 +6199,73 @@ msgstr "Error removing the \"%1\" widget: %2"
 msgid "error.removing-last-admin"
 msgstr "Can't remove privileges of the last admin"
 
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByAccount.pm:18
+msgid "error.report-account_id-required"
+msgstr "account_id is mandatory"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByWorkspace.pm:20
+msgid "error.report-wiki-required"
+msgstr "workspace is mandatory"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/GrowthByAccount.pm:62
+msgid "error.reports-account-id-required!"
+msgstr "Account ID is mandatory!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UserWorkspaceUsage.pm:29
+msgid "error.reports-current-user-required"
+msgstr "this report does not work without a current user"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/REST.pm:135
+msgid "error.reports-date-required!"
+msgstr "This report requires a date!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:29
+msgid "error.reports-duration-required!"
+msgstr "duration is mandatory!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UserWorkspaceUsage.pm:33
+msgid "error.reports-invalid=user"
+msgstr "'%1' is an invalid user"
+
+#. ($acct_name)
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/TopContent.pm:87
+msgid "error.reports-no-account=name"
+msgstr "No account named %1"
+
+#. ($group_id)
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/GroupWorkspaceUsage.pm:23
+msgid "error.reports-no-group=id"
+msgstr "Can't find group '%1'"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/Growth.pm:47
+msgid "error.reports-no-growth-data-available"
+msgstr "No growth data available."
+
+#. ($ws_name)
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/TopContent.pm:74
+msgid "error.reports-no-wiki=name"
+msgstr "No workspace named %1"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:28
+msgid "error.reports-start_time-required!"
+msgstr "start_time is mandatory!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/SocialByUser.pm:18
+msgid "error.reports-username-required!"
+msgstr "Username is mandatory!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/ViewersByPage.pm:16
+msgid "error.reports-wiki-and-page_id-required"
+msgstr "workspace and page_id are mandatory!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/WorkspaceGrowth.pm:40
+msgid "error.reports-wiki-required!"
+msgstr "Workspace is mandatory!"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/WorkspaceActionByTime.pm:34
+msgid "error.reports-wiki-required-specify-on-url"
+msgstr "Workspace is mandatory! - Give a workspace=name on the URL"
+
 #: lib/Socialtext/Hub.pm:189
 msgid "error.request"
 msgstr "There was an error with your request"
@@ -6295,6 +6575,11 @@ msgstr "Unexpected Widget >>%1<< in parseWidget"
 #: lib/Socialtext/Gadgets/Gadget/XML.pm:35
 msgid "error.unknown"
 msgstr "Unknown error"
+
+#. ($type)
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/TopUsers.pm:48
+msgid "error.unknown-report=type"
+msgstr "Unknown report (%1)"
 
 #. ($type)
 #: lib/Socialtext/CLI.pm:1054
@@ -7117,6 +7402,30 @@ msgstr "There are <span class=\"emphasis\">%1 previous versions</span> of this f
 msgid "file.size"
 msgstr "Size"
 
+#: share/plugin/widgets/share/javascript/activities/event_list.js:1027 lib/Socialtext/Lite/Activities.pm:91
+msgid "file.size=bytes"
+msgstr "%1 bytes"
+
+#. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
+#. ((rawcl/1000)
+#. #-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#
+#. (sprintf("%.2f", ($size/1000)
+#. (sprintf("%.1f", ($size/1000)
+#. (sprintf("%.0f", ($size/1000)
+#: share/plugin/widgets/share/javascript/activities/event_list.js:1029 share/plugin/widgets/share/javascript/activities/event_list.js:1031 share/plugin/widgets/share/javascript/activities/event_list.js:1033 lib/Socialtext/Lite/Activities.pm:93 lib/Socialtext/Lite/Activities.pm:95 lib/Socialtext/Lite/Activities.pm:97
+msgid "file.size=kb"
+msgstr "%1K"
+
+#. #-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#
+#. ((rawcl/1000000)
+#. #-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#
+#. (sprintf("%.2f", ($size/1000000)
+#. (sprintf("%.1f", ($size/1000000)
+#. (sprintf("%.0f", ($size/1000000)
+#: share/plugin/widgets/share/javascript/activities/event_list.js:1035 share/plugin/widgets/share/javascript/activities/event_list.js:1037 share/plugin/widgets/share/javascript/activities/event_list.js:1039 lib/Socialtext/Lite/Activities.pm:101 lib/Socialtext/Lite/Activities.pm:103 lib/Socialtext/Lite/Activities.pm:99
+msgid "file.size=mb"
+msgstr "%1M"
+
 #: share/skin/s3/javascript/lightbox/attachment.tt2:6 share/skin/s3/template/element/page/display/attachments:51
 msgid "file.upload"
 msgstr "Upload Files"
@@ -7243,6 +7552,10 @@ msgstr "Add Workspaces"
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:54
 msgid "groups.admin-can-change-setting-after-creation"
 msgstr "The group administrators can change this setting after the group is created."
+
+#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:25
+msgid "groups.administrators"
+msgstr "Administrators"
 
 #: share/plugin/groups/share/widgets/all_groups/widget.html:2
 msgid "groups.all-available"
@@ -7565,6 +7878,94 @@ msgstr "You can only associate %1 workspaces with a %2 group."
 #: share/plugin/groups/share/widgets/membership/jemplate/workspaces.tt2:32
 msgid "groups.you-must-be-wiki-admin-to-associate-it-with-group"
 msgstr "You must be an Admin of the workspace in order to associate it with this group."
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:244
+msgid "heading.account_id"
+msgstr "account_id"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:245
+msgid "heading.action"
+msgstr "action"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:246
+msgid "heading.actor"
+msgstr "actor"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:247
+msgid "heading.contributions"
+msgstr "contributions"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:248
+msgid "heading.count"
+msgstr "count"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:249
+msgid "heading.detail_headings"
+msgstr "detail_headings"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:250
+msgid "heading.gadget_id"
+msgstr "gadget_id"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:251
+msgid "heading.page_id"
+msgstr "page_id"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:252
+msgid "heading.page_views"
+msgstr ""
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:253
+msgid "heading.pages"
+msgstr "pages"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:254
+msgid "heading.period"
+msgstr "period"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:255
+msgid "heading.period_start"
+msgstr "period_start"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:256
+msgid "heading.tally"
+msgstr "tally"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:257
+msgid "heading.title"
+msgstr "title"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:258
+msgid "heading.unique_contributors"
+msgstr "unique_contributors"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:259
+msgid "heading.unique_members"
+msgstr "unique_members"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:260
+msgid "heading.unique_visitors"
+msgstr "unique_visitors"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:261
+msgid "heading.user_id"
+msgstr "user_id"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:262
+msgid "heading.username"
+msgstr "username"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:263
+msgid "heading.views"
+msgstr "views"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:264
+msgid "heading.workspace"
+msgstr "workspace"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:265
+msgid "heading.workspaces"
+msgstr "workspaces"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:32
 msgid "image.upload"
@@ -8614,6 +9015,19 @@ msgstr "Next page"
 #: share/skin/s3/template/lite/paging.html:12 share/skin/s3/template/lite/paging.html:14
 msgid "lite.previous-page"
 msgstr "Previous page"
+
+#: share/skin/s3/template/view/settings:80
+msgid "loc.language"
+msgstr "Language"
+
+#: share/skin/s3/template/element/settings/language_settings_section:5 share/skin/s3/template/view/settings:82 lib/Socialtext/Pluggable/Plugin/Locales.pm:46
+msgid "loc.settings"
+msgstr "Language Settings"
+
+#. ($languages->{system_locale()
+#: lib/Socialtext/Pluggable/Plugin/Locales.pm:34
+msgid "loc.system-default=lang"
+msgstr "System Default: %1"
 
 #. (lite ? '/m/login' : '/challenge')
 #: share/template/authen/element/forgot_password_page:17
@@ -10234,6 +10648,320 @@ msgstr "Workspace Usage Blog"
 #: lib/Socialtext/Handler/ControlPanel.pm:1879
 msgid "report.workspace.activity=user"
 msgstr "Workspace Activity for user %1"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/GrowthByAccount.pm:19
+msgid "reports.account-growth"
+msgstr "Account Growth"
+
+#: ../socialtext-reports/template/workspace_dashboard.tmpl:30 ../socialtext-reports/template/workspace_dashboard.tmpl:31
+msgid "reports.actions-by-wiki"
+msgstr "Actions by Workspace"
+
+#: ../socialtext-reports/template/user_dashboard.tmpl:40 ../socialtext-reports/template/user_dashboard.tmpl:41 ../socialtext-reports/template/user_dashboard.tmpl:47 ../socialtext-reports/template/user_dashboard.tmpl:48
+msgid "reports.audience-by-user"
+msgstr "Audience by User"
+
+#: ../socialtext-reports/template/available_reports.tmpl:1
+msgid "reports.available-reports:"
+msgstr "Available Reports:"
+
+#. ($opts)
+#: ../socialtext-reports/lib/Socialtext/Reports/REST.pm:196
+msgid "reports.cgi=options"
+msgstr "CGI options: %1"
+
+#: ../socialtext-reports/template/user_dashboard.tmpl:33 ../socialtext-reports/template/user_dashboard.tmpl:34
+msgid "reports.coeditors-by-user"
+msgstr "Coeditors by User"
+
+#: ../socialtext-reports/template/usage_by.tmpl:22 ../socialtext-reports/template/usage_by_workspace.tmpl:22
+msgid "reports.collaborativeness:"
+msgstr "Collaborativeness:"
+
+#: ../socialtext-reports/template/user_dashboard.tmpl:24 ../socialtext-reports/template/user_dashboard.tmpl:25
+msgid "reports.comments-per-wiki"
+msgstr "Comments per Workspace"
+
+#: ../socialtext-reports/template/usage_by.tmpl:32 ../socialtext-reports/template/usage_by.tmpl:35 ../socialtext-reports/template/usage_by_workspace.tmpl:30 ../socialtext-reports/template/workspace_growth.tmpl:29
+msgid "reports.contributions"
+msgstr "Contributions"
+
+#: ../socialtext-reports/template/usage_by.tmpl:29 ../socialtext-reports/template/usage_by.tmpl:30
+msgid "reports.dashboard"
+msgstr "Dashboard"
+
+#: ../socialtext-reports/template/account_growth.tmpl:30
+msgid "reports.dashboard-views"
+msgstr "Dashboard Views"
+
+#: ../socialtext-reports/template/user_dashboard.tmpl:2
+msgid "reports.dashboard=user"
+msgstr "%1 User Dashboard"
+
+#. (workspace)
+#: ../socialtext-reports/template/workspace_dashboard.tmpl:2
+msgid "reports.dashboard=wiki"
+msgstr "%1 Workspace Dashboard"
+
+#: ../socialtext-reports/template/account_growth.tmpl:23 ../socialtext-reports/template/workspace_growth.tmpl:23
+msgid "reports.date"
+msgstr "Date"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/REST.pm:130
+msgid "reports.date-supplied-but-this-report-needs-none!"
+msgstr "Date supplied, but this report doesn't need one!"
+
+#: ../socialtext-reports/template/analytics.tmpl:46
+msgid "reports.duration:"
+msgstr "Duration:"
+
+#: ../socialtext-reports/template/workspace_dashboard.tmpl:16 ../socialtext-reports/template/workspace_dashboard.tmpl:17
+msgid "reports.edits-by-user"
+msgstr "Edits by User"
+
+#. (username)
+#: ../socialtext-reports/template/user_dashboard.tmpl:40 ../socialtext-reports/template/user_dashboard.tmpl:42
+msgid "reports.edits-pages-read-by-these-people=user:"
+msgstr "%1 edits pages read by these people:"
+
+#. (username)
+#: ../socialtext-reports/template/user_dashboard.tmpl:33 ../socialtext-reports/template/user_dashboard.tmpl:36
+msgid "reports.edits-pages-with-these-people=user:"
+msgstr "%1 edits pages with these people:"
+
+#: ../socialtext-reports/template/user_dashboard.tmpl:10 ../socialtext-reports/template/user_dashboard.tmpl:11
+msgid "reports.edits-per-wiki"
+msgstr "Edits per Workspace"
+
+#: ../socialtext-reports/template/available_reports.tmpl:4
+msgid "reports.example-actions-today-1month-txt"
+msgstr "Example: /actions/today/-1month.txt"
+
+#: ../socialtext-reports/template/controls.tmpl:4
+msgid "reports.generate!"
+msgstr "Generate!"
+
+#: ../socialtext-reports/template/analytics.tmpl:15
+msgid "reports.healthy"
+msgstr "Healthy"
+
+#: ../socialtext-reports/template/analytics.tmpl:27
+msgid "reports.healthy-csv"
+msgstr "Healthy CSV"
+
+#: ../socialtext-reports/template/analytics.tmpl:50
+msgid "reports.healthy-wikis"
+msgstr "Healthy Workspaces"
+
+#. (r.name)
+#: ../socialtext-reports/template/available_reports.tmpl:12
+msgid "reports.in-past-week=name"
+msgstr "%1 in the past week"
+
+#: ../socialtext-reports/template/inline_report.tmpl:9
+msgid "reports.loading-report"
+msgstr "Loading Report..."
+
+#: ../socialtext-reports/template/analytics.tmpl:23
+msgid "reports.mean"
+msgstr "Mean"
+
+#: ../socialtext-reports/template/analytics.tmpl:30
+msgid "reports.median"
+msgstr "Median"
+
+#: ../socialtext-reports/template/usage_by.tmpl:58 ../socialtext-reports/template/usage_by_workspace.tmpl:48
+msgid "reports.no-user-stats-for-this-period"
+msgstr "No user stats are available for this period."
+
+#: ../socialtext-reports/template/analytics.tmpl:27
+msgid "reports.other-csv"
+msgstr "Other CSV"
+
+#: ../socialtext-reports/template/analytics.tmpl:54
+msgid "reports.other-wikis"
+msgstr "Other Workspaces"
+
+#: ../socialtext-reports/template/analytics.tmpl:16
+msgid "reports.others"
+msgstr "Others"
+
+#: ../socialtext-reports/template/usage_by.tmpl:34 ../socialtext-reports/template/usage_by.tmpl:35 ../socialtext-reports/template/usage_by_workspace.tmpl:29 ../socialtext-reports/template/usage_by_workspace.tmpl:30
+msgid "reports.page"
+msgstr "Page"
+
+#: ../socialtext-reports/template/account_growth.tmpl:34 ../socialtext-reports/template/workspace_growth.tmpl:28
+msgid "reports.page-views"
+msgstr "Page Views"
+
+#: ../socialtext-reports/template/account_growth.tmpl:33 ../socialtext-reports/template/workspace_growth.tmpl:27
+msgid "reports.pages"
+msgstr "Pages"
+
+#: ../socialtext-reports/template/usage_by.tmpl:31 ../socialtext-reports/template/usage_by.tmpl:32
+msgid "reports.people"
+msgstr "People"
+
+#: ../socialtext-reports/template/account_growth.tmpl:29
+msgid "reports.people-views"
+msgstr "People Views"
+
+#: ../socialtext-reports/template/usage_by.tmpl:30
+msgid "reports.personalizations"
+msgstr "Personalizations"
+
+#: ../socialtext-reports/template/account_growth.tmpl:27
+msgid "reports.personalized-dashboards"
+msgstr "Personalized Dashboards"
+
+#: ../socialtext-reports/template/account_growth.tmpl:28
+msgid "reports.personalized-profiles"
+msgstr "Personalized Profiles"
+
+#. (username)
+#: ../socialtext-reports/template/user_dashboard.tmpl:47 ../socialtext-reports/template/user_dashboard.tmpl:49
+msgid "reports.reads-pages-edited-by-these-people=user:"
+msgstr "%1 reads pages edited by these people:"
+
+#: ../socialtext-reports/template/controls.tmpl:3 ../socialtext-reports/template/usage_by.tmpl:17 ../socialtext-reports/template/usage_by_workspace.tmpl:17
+msgid "reports.report-duration:"
+msgstr "Report duration:"
+
+#: ../socialtext-reports/template/controls.tmpl:2
+msgid "reports.report-start-date:"
+msgstr "Report Start Date:"
+
+#: ../socialtext-reports/template/analytics.tmpl:45
+msgid "reports.report-start-time:"
+msgstr "Report Start time:"
+
+#: ../socialtext-reports/template/usage_by.tmpl:16 ../socialtext-reports/template/usage_by_workspace.tmpl:16
+msgid "reports.report-starting-on:"
+msgstr "Report starting on:"
+
+#: ../socialtext-reports/template/dashboard.tmpl:2 ../socialtext-reports/template/wrapper.tmpl:3
+msgid "reports.reports-dashboard"
+msgstr "Reports Dashboard"
+
+#: ../socialtext-reports/template/usage_by.tmpl:33
+msgid "reports.sent"
+msgstr "Sent"
+
+#: ../socialtext-reports/template/usage_by.tmpl:33
+msgid "reports.signals"
+msgstr "Signals"
+
+#: ../socialtext-reports/template/account_growth.tmpl:31
+msgid "reports.signals-sent"
+msgstr "Signals Sent"
+
+#: ../socialtext-reports/template/analytics.tmpl:36
+msgid "reports.stddev"
+msgstr "StdDev"
+
+#: ../socialtext-reports/template/analytics.tmpl:47
+msgid "reports.submit"
+msgstr "Submit"
+
+#: ../socialtext-reports/template/usage_by.tmpl:21 ../socialtext-reports/template/usage_by_workspace.tmpl:21
+msgid "reports.total-members-current:"
+msgstr "Total members (current):"
+
+#: ../socialtext-reports/template/usage_by.tmpl:19 ../socialtext-reports/template/usage_by_workspace.tmpl:19
+msgid "reports.total-unique-contributors:"
+msgstr "Total unique contributors:"
+
+#: ../socialtext-reports/template/usage_by.tmpl:20 ../socialtext-reports/template/usage_by_workspace.tmpl:20
+msgid "reports.total-unique-visitors:"
+msgstr "Total unique visitors:"
+
+#: ../socialtext-reports/template/account_growth.tmpl:26 ../socialtext-reports/template/workspace_growth.tmpl:26
+msgid "reports.unique-contributors"
+msgstr "Unique Contributors"
+
+#: ../socialtext-reports/template/usage_by.tmpl:22 ../socialtext-reports/template/usage_by_workspace.tmpl:22
+msgid "reports.unique-contributors-as-percent-of-unique-visitors"
+msgstr "(unique contributors as a percent of unique visitors)"
+
+#: ../socialtext-reports/template/account_growth.tmpl:24 ../socialtext-reports/template/workspace_growth.tmpl:24
+msgid "reports.unique-members"
+msgstr "Unique Members"
+
+#: ../socialtext-reports/template/account_growth.tmpl:25 ../socialtext-reports/template/workspace_growth.tmpl:25
+msgid "reports.unique-visitors"
+msgstr "Unique Visitors"
+
+#: ../socialtext-reports/template/analytics.tmpl:10 ../socialtext-reports/template/user_dashboard.tmpl:3 ../socialtext-reports/template/workspace_dashboard.tmpl:3
+msgid "reports.up-to-main-dashboard"
+msgstr "Up to main dashboard"
+
+#: ../socialtext-reports/template/available_reports.tmpl:3
+msgid "reports.url-format-report-name-start-time-duration-type"
+msgstr "URL Format: /&lt;report_name&gt;/&lt;start_time&gt;/&lt;duration&gt;.&lt;type&gt;"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByAccount.pm:12
+msgid "reports.usage-by-account"
+msgstr "Usage By Account"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByWorkspace.pm:14
+msgid "reports.usage-by-wiki"
+msgstr "Usage By Workspace"
+
+#: ../socialtext-reports/template/usage_by.tmpl:28 ../socialtext-reports/template/usage_by_workspace.tmpl:28
+msgid "reports.username"
+msgstr "Username"
+
+#: ../socialtext-reports/template/usage_by.tmpl:29 ../socialtext-reports/template/usage_by.tmpl:31 ../socialtext-reports/template/usage_by.tmpl:34 ../socialtext-reports/template/usage_by_workspace.tmpl:29
+msgid "reports.views"
+msgstr "Views"
+
+#: ../socialtext-reports/template/dashboard.tmpl:15 ../socialtext-reports/template/dashboard.tmpl:16 ../socialtext-reports/template/workspace_dashboard.tmpl:24 ../socialtext-reports/template/workspace_dashboard.tmpl:25
+msgid "reports.views-by-page"
+msgstr "Views by Page"
+
+#: ../socialtext-reports/template/workspace_dashboard.tmpl:10 ../socialtext-reports/template/workspace_dashboard.tmpl:11
+msgid "reports.views-by-user"
+msgstr "Views by User"
+
+#: ../socialtext-reports/template/dashboard.tmpl:10 ../socialtext-reports/template/dashboard.tmpl:9
+msgid "reports.views-by-wiki"
+msgstr "Views by Workspace"
+
+#: ../socialtext-reports/template/user_dashboard.tmpl:17 ../socialtext-reports/template/user_dashboard.tmpl:18
+msgid "reports.views-per-wiki"
+msgstr "Views per Workspace"
+
+#: ../socialtext-reports/template/dashboard.tmpl:21 ../socialtext-reports/template/dashboard.tmpl:22
+msgid "reports.wiki-actions"
+msgstr "Workspace Actions"
+
+#: ../socialtext-reports/template/analytics.tmpl:9
+msgid "reports.wiki-analytics"
+msgstr "Wiki Analytics"
+
+#: ../socialtext-reports/template/account_growth.tmpl:35
+msgid "reports.wiki-contributions"
+msgstr "Workspace Contributions"
+
+#: ../socialtext-reports/template/dashboard.tmpl:29 ../socialtext-reports/template/dashboard.tmpl:30
+msgid "reports.wiki-edits-by-user"
+msgstr "Workspace Edits by User"
+
+#: ../socialtext-reports/lib/Socialtext/Reports/Report/WorkspaceGrowth.pm:13
+msgid "reports.wiki-growth"
+msgstr "Workspace Growth"
+
+#: ../socialtext-reports/template/usage_by.tmpl:46 ../socialtext-reports/template/usage_by_workspace.tmpl:41
+msgid "reports.wiki-total"
+msgstr "Workspace total"
+
+#: ../socialtext-reports/template/dashboard.tmpl:35 ../socialtext-reports/template/dashboard.tmpl:36
+msgid "reports.wiki-views-by-user"
+msgstr "Workspace Views by User"
+
+#: ../socialtext-reports/template/account_growth.tmpl:32
+msgid "reports.wikis"
+msgstr "Workspaces"
 
 #. ($self->_workspace->title)
 #. ($self->_group->display_name)
@@ -13120,7 +13848,3 @@ msgstr "Insert a Video"
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/st_page_editing_toolbar:21
 msgid "wikiwyg.widget"
 msgstr "Insert a Widget"
-
-#: share/template/email/free50/account-invitation.txt:30
-msgid "www.socialtext.com"
-msgstr "www.socialtext.com"

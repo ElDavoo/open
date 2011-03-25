@@ -27,4 +27,4 @@
 
 [% loc("email.happy-collaborating!") %]
 [% loc("email.leader-in-enterprise-social-software") %]
-[% loc("www.socialtext.com") %]
+www.socialtext.com

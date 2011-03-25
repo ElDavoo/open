@@ -9,32 +9,28 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: share/skin/s3/template/layout/html:66
-#: share/skin/s3/template/layout/simple_html:54
-#: share/skin/s3/template/layout/user_frame:71
+#: share/skin/s3/template/layout/html:66 share/skin/s3/template/layout/simple_html:54 share/skin/s3/template/layout/user_frame:71
 msgid "about.keywords"
 msgstr "维基，商务维基，文档管理，企业维基，内网维基，知识管理，在线协作，开放维基，门户维基，托管维基，协作，社会化软件，社交网络，显示板，项目协作，团队协作，维基应用，维基软件，社区，共笔，商务共笔，企业共笔，内网共笔，开源共笔，门户共笔，托管共笔，共笔应用，共笔软件"
 
 #: share/skin/s3/template/element/main_nav/subnav/people:8
 msgid "about.people"
-msgstr "是一个具有强劲社交网络功能的人員目录。您可以找到您同事的联络信息，发现具有特长和共同爱好的人，以及通过您的社交网络找到有价值的信息。"
+msgstr "是一个具有强劲社交网络功能的人员目录。您可以找到您同事的联络信息，发现具有特长和共同爱好的人，以及通过您的社交网络找到有价值的信息。"
 
 #: share/skin/s3/template/element/main_nav/subnav/signals:8
 msgid "about.signals"
-msgstr "提供与 Socialtext 的企业协作平台整合的社会化消息服务。在提供像其它微博客工具如 Twitter&#0153; 一样的好处的同时，Socialtext 訊息还有更多优点，因为消息服务的运作脉络，是在为共同目标协作的组织成员当中。"
+msgstr "提供与 Socialtext 的企业协作平台整合的社会化消息服务。在提供像其它微博客工具如 Twitter&#0153; 一样的好处的同时，Socialtext 讯息还有更多优点，因为消息服务的运作脉络，是在为共同目标协作的组织成员当中。"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:77
 msgid "about.unplugged"
 msgstr "“Socialtext 脱机”允许用户脱机阅读及编辑工作区。用户可以“脱机”一个以上的页面来进行阅读与编辑。更改将会与工作区同步。"
 
 #. (user_count)
-#: share/skin/s3/template/element/listview_account_filter:13
-#: share/skin/s3/template/element/listview_account_filter:22
+#: share/skin/s3/template/element/listview_account_filter:13 share/skin/s3/template/element/listview_account_filter:22
 msgid "account.count=people"
 msgstr "%1 人"
 
-#: share/skin/s3/template/lite/page_list.html:13
-#: share/skin/s3/template/view/page/display:14
+#: share/skin/s3/template/lite/page_list.html:13 share/skin/s3/template/view/page/display:14
 msgid "ago.1day"
 msgstr "1 天前"
 
@@ -63,14 +59,12 @@ msgid "ago.about-1hour"
 msgstr "大约 1 小时前"
 
 #. (days)
-#: share/skin/s3/template/lite/page_list.html:16
-#: share/skin/s3/template/view/page/display:18
+#: share/skin/s3/template/lite/page_list.html:16 share/skin/s3/template/view/page/display:18
 msgid "ago.days=count"
 msgstr "%1 天前"
 
 #. (hours)
-#: share/skin/s3/template/lite/page_list.html:12
-#: share/skin/s3/template/view/page/display:13
+#: share/skin/s3/template/lite/page_list.html:12 share/skin/s3/template/view/page/display:13
 msgid "ago.hours=count"
 msgstr "%1 小时前"
 
@@ -81,8 +75,7 @@ msgstr "%1 分钟前"
 
 #. (minutes)
 #. (data.minutes_ago)
-#: share/skin/s3/javascript/s3.js:694
-#: share/skin/s3/template/view/page/display:9
+#: share/skin/s3/javascript/s3.js:694 share/skin/s3/template/view/page/display:9
 msgid "ago.minutes=count"
 msgstr "%1 分钟前"
 
@@ -94,9 +87,7 @@ msgstr "博客存档"
 msgid "blog.blog"
 msgstr "博客"
 
-#: share/skin/s3/template/layout/html:146
-#: share/skin/s3/template/layout/user_frame:151
-#: share/skin/s3/template/view/settings:66
+#: share/skin/s3/template/layout/html:146 share/skin/s3/template/layout/user_frame:151 share/skin/s3/template/view/settings:66
 msgid "blog.blogs"
 msgstr "博客"
 
@@ -233,9 +224,7 @@ msgstr "已注册用户"
 msgid "config.review-settings=wiki:"
 msgstr "查看或更改%1的设置："
 
-#: share/skin/s3/template/element/settings/users_listall_section:15
-#: share/skin/s3/template/element/settings/users_listall_section:80
-#: share/skin/s3/template/view/settings:25
+#: share/skin/s3/template/element/settings/users_listall_section:15 share/skin/s3/template/element/settings/users_listall_section:80 share/skin/s3/template/view/settings:25
 msgid "config.users"
 msgstr "用户"
 
@@ -259,8 +248,7 @@ msgstr "用户无需登录即可查看页面。"
 msgid "config.yes"
 msgstr "是"
 
-#: share/skin/s3/javascript/lightbox/attachment.tt2:28
-#: share/skin/s3/javascript/lightbox/email.tt2:28
+#: share/skin/s3/javascript/lightbox/attachment.tt2:28 share/skin/s3/javascript/lightbox/email.tt2:28
 msgid "do.add"
 msgstr "添加"
 
@@ -268,19 +256,7 @@ msgstr "添加"
 msgid "do.bold"
 msgstr "加粗"
 
-#: share/skin/s3/javascript/lightbox/attachment.tt2:30
-#: share/skin/s3/javascript/lightbox/attachment.tt2:55
-#: share/skin/s3/javascript/lightbox/comment.tt2:24
-#: share/skin/s3/javascript/lightbox/copy.tt2:39
-#: share/skin/s3/javascript/lightbox/create_content.tt2:51
-#: share/skin/s3/javascript/lightbox/delete.tt2:23
-#: share/skin/s3/javascript/lightbox/duplicate.tt2:34
-#: share/skin/s3/javascript/lightbox/email.tt2:71
-#: share/skin/s3/javascript/lightbox/rename.tt2:31
-#: share/skin/s3/javascript/lightbox/self_join_workspace.tt2:16
-#: share/skin/s3/template/element/settings/start:22
-#: share/skin/s3/template/element/settings/stop:12
-#: share/skin/s3/template/lite/subnav.html:46
+#: share/skin/s3/javascript/lightbox/attachment.tt2:30 share/skin/s3/javascript/lightbox/attachment.tt2:55 share/skin/s3/javascript/lightbox/comment.tt2:24 share/skin/s3/javascript/lightbox/copy.tt2:39 share/skin/s3/javascript/lightbox/create_content.tt2:51 share/skin/s3/javascript/lightbox/delete.tt2:23 share/skin/s3/javascript/lightbox/duplicate.tt2:34 share/skin/s3/javascript/lightbox/email.tt2:71 share/skin/s3/javascript/lightbox/rename.tt2:31 share/skin/s3/javascript/lightbox/self_join_workspace.tt2:16 share/skin/s3/template/element/settings/start:22 share/skin/s3/template/element/settings/stop:12 share/skin/s3/template/lite/subnav.html:46
 msgid "do.cancel"
 msgstr "取消"
 
@@ -300,8 +276,7 @@ msgstr "复制"
 msgid "do.create"
 msgstr "新建"
 
-#: share/skin/s3/javascript/lightbox/attachment.tt2:54
-#: share/skin/s3/javascript/lightbox/delete.tt2:18
+#: share/skin/s3/javascript/lightbox/attachment.tt2:54 share/skin/s3/javascript/lightbox/delete.tt2:18
 msgid "do.delete"
 msgstr "删除"
 
@@ -309,8 +284,7 @@ msgstr "删除"
 msgid "do.done"
 msgstr "完成"
 
-#: share/skin/s3/javascript/lightbox/duplicate.tt2:29
-#: share/skin/s3/javascript/lightbox/duplicate.tt2:8
+#: share/skin/s3/javascript/lightbox/duplicate.tt2:29 share/skin/s3/javascript/lightbox/duplicate.tt2:8
 msgid "do.duplicate"
 msgstr "复制"
 
@@ -366,20 +340,15 @@ msgstr "编号列表"
 msgid "do.outdent"
 msgstr "减少缩进"
 
-#: share/skin/s3/template/view/page/display:77
-#: share/skin/s3/template/view/weblog:10
+#: share/skin/s3/template/view/page/display:77 share/skin/s3/template/view/weblog:10
 msgid "do.print"
 msgstr "打印"
 
-#: share/skin/s3/template/layout/html:198
-#: share/skin/s3/template/layout/html:94
-#: share/skin/s3/template/layout/user_frame:203
-#: share/skin/s3/template/layout/user_frame:99
+#: share/skin/s3/template/layout/html:198 share/skin/s3/template/layout/html:94 share/skin/s3/template/layout/user_frame:203 share/skin/s3/template/layout/user_frame:99
 msgid "do.register"
 msgstr "注册"
 
-#: share/skin/s3/javascript/lightbox/email.tt2:41
-#: share/skin/s3/template/element/settings/users_listall_section:24
+#: share/skin/s3/javascript/lightbox/email.tt2:41 share/skin/s3/template/element/settings/users_listall_section:24
 msgid "do.remove"
 msgstr "移除"
 
@@ -397,7 +366,7 @@ msgstr "替换"
 
 #: share/skin/s3/template/view/page/revision:34
 msgid "do.source-view"
-msgstr "源碼查看"
+msgstr "源码查看"
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:7
 msgid "do.strike"
@@ -415,8 +384,7 @@ msgstr "项目符号列表"
 msgid "do.unfollow"
 msgstr "停止关注此人"
 
-#: share/skin/s3/template/element/settings/workspaces_unsubscribe_section:7
-#: share/skin/s3/template/view/settings:49
+#: share/skin/s3/template/element/settings/workspaces_unsubscribe_section:7 share/skin/s3/template/view/settings:49
 msgid "do.unsubscribe"
 msgstr "退出"
 
@@ -429,9 +397,7 @@ msgstr "退出“%1”工作区"
 msgid "do.upload"
 msgstr "上传"
 
-#: share/skin/s3/javascript/s3.js:929
-#: share/skin/s3/template/view/empty_watchlist:39
-#: share/skin/s3/template/view/page/display:74
+#: share/skin/s3/javascript/s3.js:929 share/skin/s3/template/view/empty_watchlist:39 share/skin/s3/template/view/page/display:74
 msgid "do.watch"
 msgstr "关注"
 
@@ -508,14 +474,9 @@ msgstr "将%1从此队列中移除"
 
 #: share/skin/s3/javascript/lightbox/edit_check.tt2:10
 msgid "edit.return-to-page-view"
-msgstr "返回页面檢视"
+msgstr "返回页面检视"
 
-#: share/skin/s3/javascript/lightbox/comment.tt2:23
-#: share/skin/s3/template/element/settings/start:16
-#: share/skin/s3/template/element/settings/start:8
-#: share/skin/s3/template/element/settings/stop:6
-#: share/skin/s3/template/lite/page/edit.html:10
-#: share/skin/s3/template/lite/page/edit.html:15
+#: share/skin/s3/javascript/lightbox/comment.tt2:23 share/skin/s3/template/element/settings/start:16 share/skin/s3/template/element/settings/start:8 share/skin/s3/template/element/settings/stop:6 share/skin/s3/template/lite/page/edit.html:10 share/skin/s3/template/lite/page/edit.html:15
 msgid "edit.save"
 msgstr "保存"
 
@@ -525,8 +486,7 @@ msgstr "（您的修改已经保存。）"
 
 #. ('<a target="_blank" href="/st/group/' + group.group_id + '">' + group.name + '</a>')
 #. ("<a target=\"_blank\" href=\"/st/group/' + group.group_id + '\">' + group.name + '</a>")
-#: share/skin/s3/javascript/lightbox/self_join_single.tt2:1
-#: share/skin/s3/javascript/lightbox/self_join_single.tt2:2
+#: share/skin/s3/javascript/lightbox/self_join_single.tt2:1 share/skin/s3/javascript/lightbox/self_join_single.tt2:2
 msgid "edit.self-join=group?"
 msgstr "您必须成为 %1 群组的成员，才能在此页面进行编辑与评论。想现在加入吗？"
 
@@ -539,8 +499,7 @@ msgstr "您刚才编辑的%1显示如下。您可以从此处复制粘贴您的�
 msgid "edit.view-locked"
 msgstr "您的更改的原始wikitext 如下。您可以从此处复制您的更改。"
 
-#: share/skin/s3/template/lite/page/contention.html:7
-#: share/skin/s3/template/lite/page/page_locked.html:7
+#: share/skin/s3/template/lite/page/contention.html:7 share/skin/s3/template/lite/page/page_locked.html:7
 msgid "edit.view-unsaved:"
 msgstr "您刚编辑的文本显示如下。您可以从此处复制您的更改。"
 
@@ -558,16 +517,15 @@ msgstr "在邮件前面添加以下段落？"
 
 #: share/skin/s3/javascript/lightbox/email.tt2:25
 msgid "email.address-or-name"
-msgstr "請输入邮件地址或用户名"
+msgstr "请输入邮件地址或用户名"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:23
-#: share/skin/s3/template/element/settings/users_invite_section:69
+#: share/skin/s3/template/element/settings/users_invite_search_section:23 share/skin/s3/template/element/settings/users_invite_section:69
 msgid "email.another-example"
 msgstr "another.friend@example.com"
 
 #: share/skin/s3/javascript/lightbox/email.tt2:58
 msgid "email.copy-self?"
-msgstr "发送副本給自己？"
+msgstr "发送副本给自己？"
 
 #: share/skin/s3/javascript/lightbox/email.tt2:49
 msgid "email.customize"
@@ -591,7 +549,7 @@ msgstr "如果已经有此标题的页面存在，邮件正文应该加在哪里
 
 #: share/skin/s3/javascript/lightbox/email.tt2:35
 msgid "email.recipient-box"
-msgstr "請使用上面的“收件人”框"
+msgstr "请使用上面的“收件人”框"
 
 #: share/skin/s3/javascript/lightbox/email.tt2:36
 msgid "email.recipient-box-continued"
@@ -677,12 +635,12 @@ msgstr "错误：要发送邮件，您必须指定收件人。"
 
 #: share/skin/s3/template/element/settings/workspaces_cannot_create_section:23
 msgid "error.non-admin-create-group"
-msgstr "由於您的应用配置限制，只有帐户管理员可以创建群组。"
+msgstr "由于您的应用配置限制，只有帐户管理员可以创建群组。"
 
 #. (new_title, button)
 #: share/skin/s3/javascript/st-lightbox.js:81
 msgid "error.page-exists=title,button"
-msgstr "您选择的新页面名称“%1”已经被使用，请选择其它的名字。如果您确定要覆盖現有的“%1”页面，请再次点击“%2”。"
+msgstr "您选择的新页面名称“%1”已经被使用，请选择其它的名字。如果您确定要覆盖现有的“%1”页面，请再次点击“%2”。"
 
 #: share/skin/s3/javascript/lookahead.js:662
 msgid "error.parsing-data"
@@ -697,8 +655,7 @@ msgstr "您选择的新页面名称“%1”，跟现在的名称一样。请输�
 msgid "error.same-revision"
 msgstr "您不能让版本跟自己比较。"
 
-#: share/skin/s3/javascript/lightbox/comment.js:91
-#: share/skin/s3/javascript/s3.js:160
+#: share/skin/s3/javascript/lightbox/comment.js:91 share/skin/s3/javascript/s3.js:160
 msgid "error.save-failed"
 msgstr "服务器错误导致保存失败，请稍候再试。"
 
@@ -727,19 +684,15 @@ msgstr "示例：C:\\My Pictures\\socialtext-logo-30.gif"
 msgid "example.logo-url"
 msgstr "示例：http://www.socialtext.com/images/socialtext-logo-30.gif"
 
-#: share/skin/s3/template/element/settings/workspace_clone_section:20
-#: share/skin/s3/template/element/settings/workspaces_create_section:14
-#: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:13
+#: share/skin/s3/template/element/settings/workspace_clone_section:20 share/skin/s3/template/element/settings/workspaces_create_section:14 share/skin/s3/template/element/settings/workspaces_settings_appearance_section:13
 msgid "example.title"
 msgstr "示例：产品研发部"
 
-#: share/skin/s3/template/element/settings/workspace_clone_section:37
-#: share/skin/s3/template/element/settings/workspaces_create_section:31
+#: share/skin/s3/template/element/settings/workspace_clone_section:37 share/skin/s3/template/element/settings/workspaces_create_section:31
 msgid "example.wiki-email:"
 msgstr "这个邮件地址："
 
-#: share/skin/s3/template/element/settings/workspace_clone_section:35
-#: share/skin/s3/template/element/settings/workspaces_create_section:29
+#: share/skin/s3/template/element/settings/workspace_clone_section:35 share/skin/s3/template/element/settings/workspaces_create_section:29
 msgid "example.wiki-url:"
 msgstr "示例：acme-product-dev 创建的工作区地址为："
 
@@ -747,28 +700,25 @@ msgstr "示例：acme-product-dev 创建的工作区地址为："
 msgid "export.html"
 msgstr "导出为 HTML"
 
-#: share/skin/s3/template/view/listview:24
-#: share/skin/s3/template/view/page/display:116
+#: share/skin/s3/template/view/listview:24 share/skin/s3/template/view/page/display:116
 msgid "export.pdf"
 msgstr "导出为 PDF"
 
-#: share/skin/s3/template/view/listview:26
-#: share/skin/s3/template/view/page/display:118
+#: share/skin/s3/template/view/listview:26 share/skin/s3/template/view/page/display:118
 msgid "export.word"
 msgstr "导出为 Word"
 
 #. (filename, match.size, match.uploader_name, match.local_date)
 #: share/skin/s3/javascript/lightbox/attachment.js:239
 msgid "file.add-or-replace=name,size,user,date?"
-msgstr "本页面已经有名为“%1”（%2 由%3于%4上传）的附件。您可以<span class=\"emphasis\">添加</span> 此文件的其它版本或<span class=\"emphasis\">替换</span>現有的文件。您想怎么做？"
+msgstr "本页面已经有名为“%1”（%2 由%3于%4上传）的附件。您可以<span class=\"emphasis\">添加</span> 此文件的其它版本或<span class=\"emphasis\">替换</span>现有的文件。您想怎么做？"
 
 #. (filename)
 #: share/skin/s3/javascript/lightbox/attachment.js:229
 msgid "file.add-or-replace=name?"
-msgstr "本页面已经有名为“%1”的附件。您可以<span class=\"emphasis\">添加</span>此文件的其它版本或<span class=\"emphasis\">替换</span>現有的文件。您想怎么做？"
+msgstr "本页面已经有名为“%1”的附件。您可以<span class=\"emphasis\">添加</span>此文件的其它版本或<span class=\"emphasis\">替换</span>现有的文件。您想怎么做？"
 
-#: share/skin/s3/template/element/listview_tabs:22
-#: share/skin/s3/template/view/empty_watchlist:21
+#: share/skin/s3/template/element/listview_tabs:22 share/skin/s3/template/view/empty_watchlist:21
 msgid "file.all"
 msgstr "所有文件"
 
@@ -802,11 +752,7 @@ msgstr "删除附件"
 msgid "file.delete-selected"
 msgstr "删除选择的附件"
 
-#: share/skin/s3/javascript/template/attachment-listing.tt2:15
-#: share/skin/s3/javascript/template/attachment-listing.tt2:16
-#: share/skin/s3/template/element/page/display/attachments:34
-#: share/skin/s3/template/element/page/display/attachments:37
-#: share/skin/s3/template/element/page/display/attachments:38
+#: share/skin/s3/javascript/template/attachment-listing.tt2:15 share/skin/s3/javascript/template/attachment-listing.tt2:16 share/skin/s3/template/element/page/display/attachments:34 share/skin/s3/template/element/page/display/attachments:37 share/skin/s3/template/element/page/display/attachments:38
 msgid "file.delete-this"
 msgstr "删除这个附件"
 
@@ -815,16 +761,11 @@ msgstr "删除这个附件"
 msgid "file.delete=name?"
 msgstr "您确定要从本页面删除此附件'%1'？"
 
-#: share/skin/s3/javascript/template/attachment-listing.tt2:7
-#: share/skin/s3/javascript/template/attachment-listing.tt2:8
-#: share/skin/s3/template/element/page/display/attachments:28
-#: share/skin/s3/template/element/page/display/attachments:29
+#: share/skin/s3/javascript/template/attachment-listing.tt2:7 share/skin/s3/javascript/template/attachment-listing.tt2:8 share/skin/s3/template/element/page/display/attachments:28 share/skin/s3/template/element/page/display/attachments:29
 msgid "file.extract"
 msgstr "提取附件"
 
-#: share/skin/s3/javascript/lightbox/copy.tt2:27
-#: share/skin/s3/javascript/lightbox/duplicate.tt2:21
-#: share/skin/s3/javascript/lightbox/rename.tt2:19
+#: share/skin/s3/javascript/lightbox/copy.tt2:27 share/skin/s3/javascript/lightbox/duplicate.tt2:21 share/skin/s3/javascript/lightbox/rename.tt2:19
 msgid "file.keep"
 msgstr "保留附件"
 
@@ -849,8 +790,7 @@ msgstr "此文件（最近更新：%2，由%3于%4上传）有<span class=\"emph
 msgid "file.size"
 msgstr "大小"
 
-#: share/skin/s3/javascript/lightbox/attachment.tt2:6
-#: share/skin/s3/template/element/page/display/attachments:51
+#: share/skin/s3/javascript/lightbox/attachment.tt2:6 share/skin/s3/template/element/page/display/attachments:51
 msgid "file.upload"
 msgstr "上传文件"
 
@@ -908,8 +848,7 @@ msgstr "当用户点击工作区标题，会转到工作区首页。此页面跟
 msgid "info.comment"
 msgstr "点击按钮添加评论到页面"
 
-#: share/skin/s3/template/element/main_nav/subnav/people:10
-#: share/skin/s3/template/element/main_nav/subnav/signals:10
+#: share/skin/s3/template/element/main_nav/subnav/people:10 share/skin/s3/template/element/main_nav/subnav/signals:10
 msgid "info.contact-link"
 msgstr "如果链接无效，请联系"
 
@@ -920,7 +859,7 @@ msgstr "请与您的%1管理员联系。"
 
 #: share/skin/s3/javascript/lightbox/create_content.tt2:37
 msgid "info.copy"
-msgstr "复制現有页面..."
+msgstr "复制现有页面..."
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:21
 msgid "info.default-logo"
@@ -930,8 +869,7 @@ msgstr "如果您没有选择图片，将会用 Socialtext 的标识代替。"
 msgid "info.done"
 msgstr "点击“完成”关闭窗口。"
 
-#: share/skin/s3/template/element/page/display/edit-button:12
-#: share/skin/s3/template/element/page/display/edit-button:6
+#: share/skin/s3/template/element/page/display/edit-button:12 share/skin/s3/template/element/page/display/edit-button:6
 msgid "info.edit"
 msgstr "点击按钮编辑页面"
 
@@ -939,8 +877,7 @@ msgstr "点击按钮编辑页面"
 msgid "info.edit-summary-signal-visibility"
 msgstr "只有有权查看本页面的成员会收到讯息。"
 
-#: share/skin/s3/javascript/lightbox/email.tt2:7
-#: share/skin/s3/template/view/page/display:79
+#: share/skin/s3/javascript/lightbox/email.tt2:7 share/skin/s3/template/view/page/display:79
 msgid "info.email-page"
 msgstr "用邮件发送这个页面"
 
@@ -979,8 +916,7 @@ msgid "info.invite-admin-groups"
 msgstr "使用下面的表格，邀请用户加入一个此工作区管理的群组。这些群组中的任何一个用户成员都可以进入此工作区。此外，如果你想授予某特定用户访问权，您可以取消勾选下面的“邀请用户加入选取的群组”选框。"
 
 #. (restrict_domain)
-#: share/skin/s3/template/element/settings/users_invite_search_section:10
-#: share/skin/s3/template/element/settings/users_invite_section:58
+#: share/skin/s3/template/element/settings/users_invite_search_section:10 share/skin/s3/template/element/settings/users_invite_section:58
 msgid "info.invite-filter=domain"
 msgstr "您只能邀请跟您一样使用“%1”邮箱域名的人。"
 
@@ -998,18 +934,11 @@ msgstr "您已登入为 %1"
 msgid "info.normal-view"
 msgstr "使编辑区域回到正常视图"
 
-#: share/skin/s3/template/view/attachmentslist:61
-#: share/skin/s3/template/view/listview:158
-#: share/skin/s3/template/view/listview:160
-#: share/skin/s3/template/view/page/revision_compare:64
-#: share/skin/s3/template/view/weblog:53 share/skin/s3/template/view/weblog:55
-#: share/skin/s3/template/view/weblog:64 share/skin/s3/template/view/weblog:65
-#: share/skin/s3/template/view/weblog:67
+#: share/skin/s3/template/view/attachmentslist:61 share/skin/s3/template/view/listview:158 share/skin/s3/template/view/listview:160 share/skin/s3/template/view/page/revision_compare:64 share/skin/s3/template/view/weblog:53 share/skin/s3/template/view/weblog:55 share/skin/s3/template/view/weblog:64 share/skin/s3/template/view/weblog:65 share/skin/s3/template/view/weblog:67
 msgid "info.on"
-msgstr "於"
+msgstr "于"
 
-#: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:25
-#: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:33
+#: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:25 share/skin/s3/template/element/settings/workspaces_settings_appearance_section:33
 msgid "info.optional"
 msgstr "可选"
 
@@ -1030,27 +959,20 @@ msgstr "如果您想要无需登陆即可让用户查看的公共工作区，请
 msgid "info.relogin"
 msgstr "请用你的邮箱地址和新密码再次登录。"
 
-#: share/skin/s3/template/element/settings/weblog_create:11
-#: share/skin/s3/template/element/settings/workspace_clone_section:17
-#: share/skin/s3/template/element/settings/workspace_clone_section:32
-#: share/skin/s3/template/element/settings/workspaces_create_section:11
-#: share/skin/s3/template/element/settings/workspaces_create_section:26
-#: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:10
+#: share/skin/s3/template/element/settings/weblog_create:11 share/skin/s3/template/element/settings/workspace_clone_section:17 share/skin/s3/template/element/settings/workspace_clone_section:32 share/skin/s3/template/element/settings/workspaces_create_section:11 share/skin/s3/template/element/settings/workspaces_create_section:26 share/skin/s3/template/element/settings/workspaces_settings_appearance_section:10
 msgid "info.required"
 msgstr "必选"
 
 #. (offset + 1, last, pager.total_entries)
-#: share/skin/s3/template/view/attachmentslist:92
-#: share/skin/s3/template/view/listview:199
+#: share/skin/s3/template/view/attachmentslist:92 share/skin/s3/template/view/listview:199
 msgid "info.showing=from,to,total"
-msgstr "显示第 %1 - %2 項，共 %3 項"
+msgstr "显示第 %1 - %2 项，共 %3 项"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_skin_section:8
 msgid "info.skin"
 msgstr "Socialtext可以创建视觉主题来自定义您的工作区的外观和风格。您可以使用由 Socialtext 提供的默认视觉主题，或自定义视觉主题。"
 
-#: share/skin/s3/template/layout/html:173
-#: share/skin/s3/template/layout/user_frame:178
+#: share/skin/s3/template/layout/html:173 share/skin/s3/template/layout/user_frame:178
 msgid "info.socialtext"
 msgstr "Socialtext：企业社会化软件"
 
@@ -1058,13 +980,11 @@ msgstr "Socialtext：企业社会化软件"
 msgid "info.success"
 msgstr "成功"
 
-#: share/skin/s3/template/view/page/display:278
-#: share/skin/s3/template/view/page/display:279
+#: share/skin/s3/template/view/page/display:278 share/skin/s3/template/view/page/display:279
 msgid "info.unplugged"
 msgstr "点击按钮将页面保存到您的电脑离线使用。"
 
-#: share/skin/s3/template/element/settings/workspace_clone_section:28
-#: share/skin/s3/template/element/settings/workspaces_create_section:22
+#: share/skin/s3/template/element/settings/workspace_clone_section:28 share/skin/s3/template/element/settings/workspaces_create_section:22
 msgid "info.valid-wiki-name"
 msgstr "只能由 3-30 个小写字母、数字、下划线或破折号组成。"
 
@@ -1074,8 +994,7 @@ msgstr "警告："
 
 #. ('<b>' _ user.username _ '</b>')
 #. ("<b>' _ user.username _ '</b>")
-#: share/skin/s3/template/layout/html:78
-#: share/skin/s3/template/layout/user_frame:83
+#: share/skin/s3/template/layout/html:78 share/skin/s3/template/layout/user_frame:83
 msgid "info.welcome=user"
 msgstr "欢迎%1"
 
@@ -1087,8 +1006,7 @@ msgstr "或者您也可以指定一个博客，作为工作区链接的显示内
 msgid "info.wiki-group"
 msgstr "您可以创建一个新的群组，或添加工作区到已存在的群组。"
 
-#: share/skin/s3/template/element/settings/workspace_clone_section:27
-#: share/skin/s3/template/element/settings/workspaces_create_section:21
+#: share/skin/s3/template/element/settings/workspace_clone_section:27 share/skin/s3/template/element/settings/workspaces_create_section:21
 msgid "info.wiki-id"
 msgstr "这是一个作为您的工作区网址和邮件地址的唯一短标识。"
 
@@ -1100,9 +1018,7 @@ msgstr "您可以选择一个图片当作工作区的标识。您可以输入图
 msgid "info.wiki-private"
 msgstr "工作区默认是不开放的。所有用户都需要登录查看页面。只有工作区管理员可以邀请新的用户。"
 
-#: share/skin/s3/template/element/settings/workspace_clone_section:13
-#: share/skin/s3/template/element/settings/workspaces_create_section:7
-#: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:6
+#: share/skin/s3/template/element/settings/workspace_clone_section:13 share/skin/s3/template/element/settings/workspaces_create_section:7 share/skin/s3/template/element/settings/workspaces_settings_appearance_section:6
 msgid "info.wiki-title"
 msgstr "这是您工作区的标题。需要的话稍后可以更改。"
 
@@ -1110,18 +1026,15 @@ msgstr "这是您工作区的标题。需要的话稍后可以更改。"
 msgid "info.wikis"
 msgstr "...列出您所属的工作区。您必须登录查看您的列表。"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:126
-#: share/skin/s3/template/element/settings/users_invite_section:81
+#: share/skin/s3/template/element/settings/users_invite_search_section:126 share/skin/s3/template/element/settings/users_invite_section:81
 msgid "invite.append?"
 msgstr "添加下面的个人消息？"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:131
-#: share/skin/s3/template/element/settings/users_invite_section:86
+#: share/skin/s3/template/element/settings/users_invite_search_section:131 share/skin/s3/template/element/settings/users_invite_section:86
 msgid "invite.click-edit"
 msgstr "如果您发现想要添加或编辑的内容，请点击页面顶部的“编辑”链接。"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:131
-#: share/skin/s3/template/element/settings/users_invite_section:86
+#: share/skin/s3/template/element/settings/users_invite_search_section:131 share/skin/s3/template/element/settings/users_invite_section:86
 msgid "invite.edit-save"
 msgstr "在文本框键入您的内容，然后点击“保存”。"
 
@@ -1133,8 +1046,7 @@ msgstr "姓名 &lt;u01234@example.com&gt;"
 msgid "invite.enter-email-list"
 msgstr "输入一个邮件列表（每个地址一行），包含您想要邀请加入这个工作区的人。"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:133
-#: share/skin/s3/template/element/settings/users_invite_section:88
+#: share/skin/s3/template/element/settings/users_invite_search_section:133 share/skin/s3/template/element/settings/users_invite_section:88
 msgid "invite.entering-text"
 msgstr "当您输入本文的时候，请按段落录入。"
 
@@ -1142,8 +1054,7 @@ msgstr "当您输入本文的时候，请按段落录入。"
 msgid "invite.example"
 msgstr "范例"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:22
-#: share/skin/s3/template/element/settings/users_invite_section:68
+#: share/skin/s3/template/element/settings/users_invite_search_section:22 share/skin/s3/template/element/settings/users_invite_section:68
 msgid "invite.example-address"
 msgstr "your.friend@example.com"
 
@@ -1151,8 +1062,7 @@ msgstr "your.friend@example.com"
 msgid "invite.example-domain"
 msgstr "example.com"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:19
-#: share/skin/s3/template/element/settings/users_invite_section:67
+#: share/skin/s3/template/element/settings/users_invite_search_section:19 share/skin/s3/template/element/settings/users_invite_section:67
 msgid "invite.example:"
 msgstr "示例："
 
@@ -1160,13 +1070,11 @@ msgstr "示例："
 msgid "invite.friend"
 msgstr "好友"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:35
-#: share/skin/s3/template/element/settings/users_invite_section:14
+#: share/skin/s3/template/element/settings/users_invite_search_section:35 share/skin/s3/template/element/settings/users_invite_section:14
 msgid "invite.group"
 msgstr "群组"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:123
-#: share/skin/s3/template/element/settings/users_invite_section:78
+#: share/skin/s3/template/element/settings/users_invite_search_section:123 share/skin/s3/template/element/settings/users_invite_section:78
 msgid "invite.include-personal-message"
 msgstr "如果您希望的话，可以在邀请信里面包含个人消息。您可以编辑消息说出您想说的话。"
 
@@ -1174,8 +1082,7 @@ msgstr "如果您希望的话，可以在邀请信里面包含个人消息。您
 msgid "invite.lookahead"
 msgstr "输入用户的姓或名的一部分，或邮件地址。"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:135
-#: share/skin/s3/template/element/settings/users_invite_section:90
+#: share/skin/s3/template/element/settings/users_invite_search_section:135 share/skin/s3/template/element/settings/users_invite_section:90
 msgid "invite.make-wikilink"
 msgstr "要链接到其它页面（即使页面还不存在），请给一个词语或词组加上方括号。"
 
@@ -1183,8 +1090,7 @@ msgstr "要链接到其它页面（即使页面还不存在），请给一个词
 msgid "invite.new-users"
 msgstr "邀请新用户"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:133
-#: share/skin/s3/template/element/settings/users_invite_section:88
+#: share/skin/s3/template/element/settings/users_invite_search_section:133 share/skin/s3/template/element/settings/users_invite_section:88
 msgid "invite.no-worries"
 msgstr "请不用担心破坏任何东西--先前的版本都已经保存，因此总有一个您正在操作页面的备份。"
 
@@ -1192,8 +1098,7 @@ msgstr "请不用担心破坏任何东西--先前的版本都已经保存，因�
 msgid "invite.other-users"
 msgstr "邀请其他用户"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:122
-#: share/skin/s3/template/element/settings/users_invite_section:77
+#: share/skin/s3/template/element/settings/users_invite_search_section:122 share/skin/s3/template/element/settings/users_invite_section:77
 msgid "invite.personal-message"
 msgstr "个人消息"
 
@@ -1201,23 +1106,19 @@ msgstr "个人消息"
 msgid "invite.search-users"
 msgstr "搜索用户并邀请"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:61
-#: share/skin/s3/template/element/settings/users_invite_section:42
+#: share/skin/s3/template/element/settings/users_invite_search_section:61 share/skin/s3/template/element/settings/users_invite_section:42
 msgid "invite.to-groups"
 msgstr "邀请用户到选定的群组"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:129
-#: share/skin/s3/template/element/settings/users_invite_section:84
+#: share/skin/s3/template/element/settings/users_invite_search_section:129 share/skin/s3/template/element/settings/users_invite_section:84
 msgid "invite.using-wiki"
 msgstr "工作区简单易用。点击这里总览页面。"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:141
-#: share/skin/s3/template/element/settings/users_invite_section:96
+#: share/skin/s3/template/element/settings/users_invite_search_section:141 share/skin/s3/template/element/settings/users_invite_section:96
 msgid "invite.welcome-email:"
 msgstr "新用户会收到以下欢迎信："
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:140
-#: share/skin/s3/template/element/settings/users_invite_section:95
+#: share/skin/s3/template/element/settings/users_invite_search_section:140 share/skin/s3/template/element/settings/users_invite_section:95
 msgid "invite.welcome-message"
 msgstr "标准欢迎信息"
 
@@ -1225,28 +1126,27 @@ msgstr "标准欢迎信息"
 msgid "invite.your"
 msgstr "您的"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:147
-#: share/skin/s3/template/element/settings/users_invite_search_section:153
-#: share/skin/s3/template/element/settings/users_invite_section:102
-#: share/skin/s3/template/element/settings/users_invite_section:108
+#: share/skin/s3/template/element/settings/users_invite_search_section:147 share/skin/s3/template/element/settings/users_invite_search_section:153 share/skin/s3/template/element/settings/users_invite_section:102 share/skin/s3/template/element/settings/users_invite_section:108
 msgid "invite.your-personal-message"
 msgstr "<此处是您的个人消息。>"
 
-#: share/skin/s3/template/lite/paging.html:4
-#: share/skin/s3/template/lite/paging.html:6
-#: share/skin/s3/template/lite/paging.html:8
+#: share/skin/s3/template/lite/paging.html:4 share/skin/s3/template/lite/paging.html:6 share/skin/s3/template/lite/paging.html:8
 msgid "lite.first-page"
 msgstr "第一页"
 
-#: share/skin/s3/template/lite/paging.html:17
-#: share/skin/s3/template/lite/paging.html:19
+#: share/skin/s3/template/lite/paging.html:17 share/skin/s3/template/lite/paging.html:19
 msgid "lite.next-page"
 msgstr "下一页"
 
-#: share/skin/s3/template/lite/paging.html:12
-#: share/skin/s3/template/lite/paging.html:14
+#: share/skin/s3/template/lite/paging.html:12 share/skin/s3/template/lite/paging.html:14
 msgid "lite.previous-page"
 msgstr "上一页"
+
+msgid "loc.language"
+msgstr "语言"
+
+msgid "loc.settings"
+msgstr "语言设定"
 
 #: share/skin/s3/template/lite/login/nologin.html:6
 msgid "login.is-disabled"
@@ -1260,28 +1160,23 @@ msgstr "Socialtext登录"
 msgid "lookahead.all-results"
 msgstr "显示所有结果..."
 
-#: share/skin/s3/template/lite/globalnav.html:44
-#: share/skin/s3/template/lite/globalnav.html:46
+#: share/skin/s3/template/lite/globalnav.html:44 share/skin/s3/template/lite/globalnav.html:46
 msgid "nav.activity"
 msgstr "活动"
 
-#: share/skin/s3/template/lite/event_list_nav.html:30
-#: share/skin/s3/template/lite/event_list_nav.html:32
+#: share/skin/s3/template/lite/event_list_nav.html:30 share/skin/s3/template/lite/event_list_nav.html:32
 msgid "nav.all"
 msgstr "所有"
 
-#: share/skin/s3/template/layout/html:179
-#: share/skin/s3/template/layout/user_frame:184
+#: share/skin/s3/template/layout/html:179 share/skin/s3/template/layout/user_frame:184
 msgid "nav.community"
 msgstr "社区"
 
-#: share/skin/s3/template/layout/html:88
-#: share/skin/s3/template/layout/user_frame:93
+#: share/skin/s3/template/layout/html:88 share/skin/s3/template/layout/user_frame:93
 msgid "nav.control-panel"
 msgstr "控制台"
 
-#: share/skin/s3/template/lite/event_list_nav.html:38
-#: share/skin/s3/template/lite/event_list_nav.html:40
+#: share/skin/s3/template/lite/event_list_nav.html:38 share/skin/s3/template/lite/event_list_nav.html:40
 msgid "nav.conversations"
 msgstr "我的对话"
 
@@ -1305,19 +1200,17 @@ msgstr "显示板"
 msgid "nav.default"
 msgstr "默认"
 
-#: share/skin/s3/template/layout/html:8
-#: share/skin/s3/template/layout/user_frame:13
+#: share/skin/s3/template/layout/html:8 share/skin/s3/template/layout/user_frame:13
 msgid "nav.desktop"
 msgstr "桌面"
 
-#: share/skin/s3/javascript/lightbox/simple.js:25
-#: share/skin/s3/template/view/error:3 share/skin/s3/template/view/error:7
+#: share/skin/s3/javascript/lightbox/simple.js:25 share/skin/s3/template/view/error:3 share/skin/s3/template/view/error:7
 msgid "nav.error"
 msgstr "错误"
 
 #: share/skin/s3/template/element/listview_account_filter:3
 msgid "nav.filter:"
-msgstr "僅顯示："
+msgstr "仅显示："
 
 #: share/skin/s3/template/view/paging:5 share/skin/s3/template/view/paging:8
 msgid "nav.first"
@@ -1327,26 +1220,19 @@ msgstr "最前"
 msgid "nav.first-page"
 msgstr "第一页"
 
-#: share/skin/s3/template/lite/event_list_nav.html:46
-#: share/skin/s3/template/lite/event_list_nav.html:48
+#: share/skin/s3/template/lite/event_list_nav.html:46 share/skin/s3/template/lite/event_list_nav.html:48
 msgid "nav.following"
 msgstr "我关注的人"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:37
-#: share/skin/s3/template/element/settings/users_invite_section:16
-#: share/skin/s3/template/element/settings/users_listall_section:72
+#: share/skin/s3/template/element/settings/users_invite_search_section:37 share/skin/s3/template/element/settings/users_invite_section:16 share/skin/s3/template/element/settings/users_listall_section:72
 msgid "nav.groups"
 msgstr "群组"
 
-#: share/skin/s3/template/layout/html:193
-#: share/skin/s3/template/layout/html:90
-#: share/skin/s3/template/layout/user_frame:198
-#: share/skin/s3/template/layout/user_frame:95
+#: share/skin/s3/template/layout/html:193 share/skin/s3/template/layout/html:90 share/skin/s3/template/layout/user_frame:198 share/skin/s3/template/layout/user_frame:95
 msgid "nav.help"
 msgstr "帮助"
 
-#: share/skin/s3/javascript/s3.js:346
-#: share/skin/s3/template/view/page/display:131
+#: share/skin/s3/javascript/s3.js:346 share/skin/s3/template/view/page/display:131
 msgid "nav.hide"
 msgstr "隐藏"
 
@@ -1354,9 +1240,7 @@ msgstr "隐藏"
 msgid "nav.history"
 msgstr "我的历史"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:105
-#: share/skin/s3/template/element/settings/users_invite_search_section:79
-#: share/skin/s3/template/element/settings/users_invite_section:3
+#: share/skin/s3/template/element/settings/users_invite_search_section:105 share/skin/s3/template/element/settings/users_invite_search_section:79 share/skin/s3/template/element/settings/users_invite_section:3
 msgid "nav.invite"
 msgstr "邀请"
 
@@ -1372,24 +1256,11 @@ msgstr "最后"
 msgid "nav.last-page"
 msgstr "末页"
 
-#: share/skin/s3/template/layout/html:196
-#: share/skin/s3/template/layout/html:201
-#: share/skin/s3/template/layout/html:93 share/skin/s3/template/layout/html:96
-#: share/skin/s3/template/layout/user_frame:101
-#: share/skin/s3/template/layout/user_frame:201
-#: share/skin/s3/template/layout/user_frame:206
-#: share/skin/s3/template/layout/user_frame:98
-#: share/skin/s3/template/lite/globalnav.html:12
-#: share/skin/s3/template/lite/globalnav.html:14
+#: share/skin/s3/template/layout/html:196 share/skin/s3/template/layout/html:201 share/skin/s3/template/layout/html:93 share/skin/s3/template/layout/html:96 share/skin/s3/template/layout/user_frame:101 share/skin/s3/template/layout/user_frame:201 share/skin/s3/template/layout/user_frame:206 share/skin/s3/template/layout/user_frame:98 share/skin/s3/template/lite/globalnav.html:12 share/skin/s3/template/lite/globalnav.html:14
 msgid "nav.login"
 msgstr "登录"
 
-#: share/skin/s3/template/layout/html:204
-#: share/skin/s3/template/layout/html:99
-#: share/skin/s3/template/layout/user_frame:104
-#: share/skin/s3/template/layout/user_frame:209
-#: share/skin/s3/template/lite/globalnav.html:22
-#: share/skin/s3/template/view/workspace_list:19
+#: share/skin/s3/template/layout/html:204 share/skin/s3/template/layout/html:99 share/skin/s3/template/layout/user_frame:104 share/skin/s3/template/layout/user_frame:209 share/skin/s3/template/lite/globalnav.html:22 share/skin/s3/template/view/workspace_list:19
 msgid "nav.logout"
 msgstr "登出"
 
@@ -1397,15 +1268,11 @@ msgstr "登出"
 msgid "nav.lost-password"
 msgstr "我忘记密码了"
 
-#: share/skin/s3/template/lite/event_list_nav.html:22
-#: share/skin/s3/template/lite/event_list_nav.html:24
+#: share/skin/s3/template/lite/event_list_nav.html:22 share/skin/s3/template/lite/event_list_nav.html:24
 msgid "nav.mine"
 msgstr "我的"
 
-#: share/skin/s3/template/layout/html:187
-#: share/skin/s3/template/layout/html:81
-#: share/skin/s3/template/layout/user_frame:192
-#: share/skin/s3/template/layout/user_frame:86
+#: share/skin/s3/template/layout/html:187 share/skin/s3/template/layout/html:81 share/skin/s3/template/layout/user_frame:192 share/skin/s3/template/layout/user_frame:86
 msgid "nav.mobile"
 msgstr "移动版"
 
@@ -1417,23 +1284,15 @@ msgstr "所有我最近浏览的"
 msgid "nav.my-settings"
 msgstr "我的设置"
 
-#: share/skin/s3/template/layout/html:144
-#: share/skin/s3/template/layout/user_frame:149
+#: share/skin/s3/template/layout/html:144 share/skin/s3/template/layout/user_frame:149
 msgid "nav.my-watchlist"
 msgstr "我的关注列表"
 
-#: share/skin/s3/template/lite/workspace_list/my_workspaces:5
-#: share/skin/s3/template/view/settings:41
+#: share/skin/s3/template/lite/workspace_list/my_workspaces:5 share/skin/s3/template/view/settings:41
 msgid "nav.my-wikis"
 msgstr "我的工作区"
 
-#: share/skin/s3/template/element/listview_tabs:5
-#: share/skin/s3/template/layout/html:142
-#: share/skin/s3/template/layout/user_frame:147
-#: share/skin/s3/template/lite/subnav.html:14
-#: share/skin/s3/template/lite/subnav.html:16
-#: share/skin/s3/template/view/empty_watchlist:8
-#: share/skin/s3/template/view/page/display:224
+#: share/skin/s3/template/element/listview_tabs:5 share/skin/s3/template/layout/html:142 share/skin/s3/template/layout/user_frame:147 share/skin/s3/template/lite/subnav.html:14 share/skin/s3/template/lite/subnav.html:16 share/skin/s3/template/view/empty_watchlist:8 share/skin/s3/template/view/page/display:224
 msgid "nav.news"
 msgstr "最新更动"
 
@@ -1463,14 +1322,13 @@ msgstr "页面锁定"
 
 #: share/skin/s3/template/element/main_nav/subnav/people:3
 msgid "nav.people"
-msgstr "人員"
+msgstr "人员"
 
 #: share/skin/s3/javascript/nav-list.js:71
 msgid "nav.people-directory"
-msgstr "人員目录"
+msgstr "人员目录"
 
-#: share/skin/s3/template/element/settings/preferences_settings_section:5
-#: share/skin/s3/template/view/settings:72
+#: share/skin/s3/template/element/settings/preferences_settings_section:5 share/skin/s3/template/view/settings:72
 msgid "nav.preferences"
 msgstr "偏好"
 
@@ -1486,21 +1344,15 @@ msgstr "上一页"
 msgid "nav.recent-activities"
 msgstr "近期活动"
 
-#: share/skin/s3/template/lite/changes/changes.html:5
-#: share/skin/s3/template/view/weblog:20
+#: share/skin/s3/template/lite/changes/changes.html:5 share/skin/s3/template/view/weblog:20
 msgid "nav.recent-changes"
 msgstr "近期更改"
 
-#: share/skin/s3/template/element/listview_tabs:7
-#: share/skin/s3/template/view/empty_watchlist:9
-#: share/skin/s3/template/view/page/display:241
+#: share/skin/s3/template/element/listview_tabs:7 share/skin/s3/template/view/empty_watchlist:9 share/skin/s3/template/view/page/display:241
 msgid "nav.recently-viewed"
 msgstr "近期查看"
 
-#: share/skin/s3/template/element/settings/users_invite_search_section:3
-#: share/skin/s3/template/lite/search/search.html:12
-#: share/skin/s3/template/lite/subnav.html:28
-#: share/skin/s3/template/lite/subnav.html:30
+#: share/skin/s3/template/element/settings/users_invite_search_section:3 share/skin/s3/template/lite/search/search.html:12 share/skin/s3/template/lite/subnav.html:28 share/skin/s3/template/lite/subnav.html:30
 msgid "nav.search"
 msgstr "搜索"
 
@@ -1513,16 +1365,11 @@ msgstr "搜索 %1"
 msgid "nav.select"
 msgstr "选取"
 
-#: share/skin/s3/template/layout/html:192
-#: share/skin/s3/template/layout/html:86
-#: share/skin/s3/template/layout/user_frame:197
-#: share/skin/s3/template/layout/user_frame:91
-#: share/skin/s3/template/view/settings:22
+#: share/skin/s3/template/layout/html:192 share/skin/s3/template/layout/html:86 share/skin/s3/template/layout/user_frame:197 share/skin/s3/template/layout/user_frame:91 share/skin/s3/template/view/settings:22
 msgid "nav.settings"
 msgstr "设置"
 
-#: share/skin/s3/javascript/s3.js:346
-#: share/skin/s3/template/view/page/display:131
+#: share/skin/s3/javascript/s3.js:346 share/skin/s3/template/view/page/display:131
 msgid "nav.show"
 msgstr "显示"
 
@@ -1534,14 +1381,13 @@ msgstr "显示："
 msgid "nav.signals"
 msgstr "讯息"
 
-#: share/skin/s3/template/layout/html:74
-#: share/skin/s3/template/layout/user_frame:79
+#: share/skin/s3/template/layout/html:74 share/skin/s3/template/layout/user_frame:79
 msgid "nav.socialtext"
 msgstr "Socialtext"
 
 #: share/skin/s3/template/element/main_nav/subnav/people:8
 msgid "nav.socialtext-people"
-msgstr "Socialtext人員"
+msgstr "Socialtext人员"
 
 #: share/skin/s3/template/element/main_nav/subnav/signals:8
 msgid "nav.socialtext-signals"
@@ -1575,21 +1421,15 @@ msgstr "试试Socialtext Signals"
 msgid "nav.uploaded-date"
 msgstr "上传的日期"
 
-#: share/skin/s3/template/element/listview_tabs:16
-#: share/skin/s3/template/view/empty_watchlist:17
+#: share/skin/s3/template/element/listview_tabs:16 share/skin/s3/template/view/empty_watchlist:17
 msgid "nav.view:"
 msgstr "查看："
 
-#: share/skin/s3/template/layout/html:134
-#: share/skin/s3/template/layout/user_frame:139
+#: share/skin/s3/template/layout/html:134 share/skin/s3/template/layout/user_frame:139
 msgid "nav.wiki"
 msgstr "工作区"
 
-#: share/skin/s3/template/element/main_nav/subnav/workspaces:1
-#: share/skin/s3/template/element/settings/workspaces_listall_section:4
-#: share/skin/s3/template/lite/globalnav.html:60
-#: share/skin/s3/template/lite/globalnav.html:62
-#: share/skin/s3/template/view/settings:39
+#: share/skin/s3/template/element/main_nav/subnav/workspaces:1 share/skin/s3/template/element/settings/workspaces_listall_section:4 share/skin/s3/template/lite/globalnav.html:60 share/skin/s3/template/lite/globalnav.html:62 share/skin/s3/template/view/settings:39
 msgid "nav.wikis"
 msgstr "工作区"
 
@@ -1597,8 +1437,7 @@ msgstr "工作区"
 msgid "page.add-tag"
 msgstr "&nbsp;+"
 
-#: share/skin/s3/template/element/listview_tabs:18
-#: share/skin/s3/template/view/empty_watchlist:19
+#: share/skin/s3/template/element/listview_tabs:18 share/skin/s3/template/view/empty_watchlist:19
 msgid "page.all"
 msgstr "所有页面"
 
@@ -1625,8 +1464,7 @@ msgstr "空白页"
 msgid "page.bottom"
 msgstr "页面底部"
 
-#: share/skin/s3/template/element/page/display/comment-button:6
-#: share/skin/s3/template/view/weblog:73
+#: share/skin/s3/template/element/page/display/comment-button:6 share/skin/s3/template/view/weblog:73
 msgid "page.comment"
 msgstr "评论"
 
@@ -1662,8 +1500,7 @@ msgstr "由 %1 于 %2 创建"
 msgid "page.creator"
 msgstr "原<strong>创建者</strong>为"
 
-#: share/skin/s3/javascript/lightbox/delete.tt2:7
-#: share/skin/s3/template/view/page/display:91
+#: share/skin/s3/javascript/lightbox/delete.tt2:7 share/skin/s3/template/view/page/display:91
 msgid "page.delete"
 msgstr "删除页面"
 
@@ -1671,10 +1508,7 @@ msgstr "删除页面"
 msgid "page.delete-epilogue"
 msgstr "您是否误删除了这个页面？如果是，您可以恢复页面。"
 
-#: share/skin/s3/javascript/pageview.js:160
-#: share/skin/s3/javascript/pageview.js:161
-#: share/skin/s3/template/view/page/display:161
-#: share/skin/s3/template/view/page/display:163
+#: share/skin/s3/javascript/pageview.js:160 share/skin/s3/javascript/pageview.js:161 share/skin/s3/template/view/page/display:161 share/skin/s3/template/view/page/display:163
 msgid "page.delete-tag"
 msgstr "删除这个标签"
 
@@ -1697,10 +1531,7 @@ msgstr "复制页面"
 msgid "page.duplicate=title"
 msgstr "%1的副本"
 
-#: share/skin/s3/template/element/page/display/edit-button:13
-#: share/skin/s3/template/element/page/display/edit-button:7
-#: share/skin/s3/template/lite/subnav.html:40
-#: share/skin/s3/template/view/weblog:98
+#: share/skin/s3/template/element/page/display/edit-button:13 share/skin/s3/template/element/page/display/edit-button:7 share/skin/s3/template/lite/subnav.html:40 share/skin/s3/template/view/weblog:98
 msgid "page.edit"
 msgstr "编辑"
 
@@ -1713,10 +1544,9 @@ msgstr "编辑%1"
 #. (ago_text(page.edit_in_progress.minutes_ago))
 #: share/skin/s3/template/view/page/display:142
 msgid "page.editing=ago"
-msgstr "已於 %1打开本页进行编辑。"
+msgstr "已于 %1打开本页进行编辑。"
 
-#: share/skin/s3/template/view/page/display:105
-#: share/skin/s3/template/view/page/display:107
+#: share/skin/s3/template/view/page/display:105 share/skin/s3/template/view/page/display:107
 msgid "page.email-to-this"
 msgstr "发送邮件到这个页面"
 
@@ -1728,13 +1558,11 @@ msgstr "本页面的附件："
 msgid "page.incoming-links"
 msgstr "外部链接"
 
-#: share/skin/s3/template/lite/page/page_locked.html:5
-#: share/skin/s3/template/view/page/display:28
+#: share/skin/s3/template/lite/page/page_locked.html:5 share/skin/s3/template/view/page/display:28
 msgid "page.is-locked"
 msgstr "本页面已锁定，只有工作区管理员可以进行编辑。"
 
-#: share/skin/s3/template/element/page/display/edit-button:18
-#: share/skin/s3/template/lite/subnav.html:42
+#: share/skin/s3/template/element/page/display/edit-button:18 share/skin/s3/template/lite/subnav.html:42
 msgid "page.join-to-edit"
 msgstr "加入以编辑"
 
@@ -1770,14 +1598,11 @@ msgstr "锁定页面"
 msgid "page.locked=type"
 msgstr "在您打开并进行编辑之后一位管理员已经锁定了这个%1。您将无法保存修改。"
 
-#: share/skin/s3/template/layout/html:154
-#: share/skin/s3/template/layout/user_frame:159
+#: share/skin/s3/template/layout/html:154 share/skin/s3/template/layout/user_frame:159
 msgid "page.new"
 msgstr "新页面"
 
-#: share/skin/s3/javascript/lightbox/copy.tt2:19
-#: share/skin/s3/javascript/lightbox/duplicate.tt2:13
-#: share/skin/s3/javascript/lightbox/rename.tt2:11
+#: share/skin/s3/javascript/lightbox/copy.tt2:19 share/skin/s3/javascript/lightbox/duplicate.tt2:13 share/skin/s3/javascript/lightbox/rename.tt2:11
 msgid "page.new-name"
 msgstr "新页面名称"
 
@@ -1785,18 +1610,16 @@ msgstr "新页面名称"
 msgid "page.no-backlinks"
 msgstr "还没有页面链接到此页面。"
 
-#: share/skin/s3/javascript/pageview.js:173
-#: share/skin/s3/template/view/page/display:169
+#: share/skin/s3/javascript/pageview.js:173 share/skin/s3/template/view/page/display:169
 msgid "page.no-tags"
 msgstr "此页面没有标签。"
 
 #. (user_link, time_ago)
 #: share/skin/s3/javascript/lightbox/edit_check.tt2:4
 msgid "page.opened-for-edit=user,ago"
-msgstr "%1 已於 %2打开本页进行编辑。"
+msgstr "%1 已于 %2打开本页进行编辑。"
 
-#: share/skin/s3/template/element/listview_tabs:11
-#: share/skin/s3/template/view/empty_watchlist:13
+#: share/skin/s3/template/element/listview_tabs:11 share/skin/s3/template/view/empty_watchlist:13
 msgid "page.orphaned"
 msgstr "孤立页面"
 
@@ -1837,9 +1660,7 @@ msgstr "版本%1"
 #. (row.revision_count)
 #. (page.revisions)
 #. (data.revision_count)
-#: share/skin/s3/javascript/pageview.js:96
-#: share/skin/s3/template/view/listview:161
-#: share/skin/s3/template/view/page/display:63
+#: share/skin/s3/javascript/pageview.js:96 share/skin/s3/template/view/listview:161 share/skin/s3/template/view/page/display:63
 msgid "page.revisions=count"
 msgstr "%1 次更动"
 
@@ -1847,8 +1668,7 @@ msgstr "%1 次更动"
 msgid "page.signal-this!"
 msgstr "分享此页!"
 
-#: share/skin/s3/template/view/listview:82
-#: share/skin/s3/template/view/listview:85
+#: share/skin/s3/template/view/listview:82 share/skin/s3/template/view/listview:85
 msgid "page.summaries"
 msgstr "摘要"
 
@@ -1856,8 +1676,7 @@ msgstr "摘要"
 msgid "page.title"
 msgstr "页面标题"
 
-#: share/skin/s3/template/view/listview:81
-#: share/skin/s3/template/view/listview:84
+#: share/skin/s3/template/view/listview:81 share/skin/s3/template/view/listview:84
 msgid "page.titles"
 msgstr "标题"
 
@@ -1925,8 +1744,7 @@ msgstr "通过邮件向此标签发布："
 msgid "post.new"
 msgstr "发帖"
 
-#: share/skin/s3/template/view/page/revision:21
-#: share/skin/s3/template/view/page/revision_compare:21
+#: share/skin/s3/template/view/page/revision:21 share/skin/s3/template/view/page/revision_compare:21
 msgid "revision.all"
 msgstr "所有版本"
 
@@ -1951,9 +1769,7 @@ msgstr "颜色查看（无格式的）"
 msgid "revision.compare"
 msgstr "版本比较"
 
-#: share/skin/s3/template/view/page/revision:11
-#: share/skin/s3/template/view/page/revision_compare:11
-#: share/skin/s3/template/view/page_revision_list:26
+#: share/skin/s3/template/view/page/revision:11 share/skin/s3/template/view/page/revision_compare:11 share/skin/s3/template/view/page_revision_list:26
 msgid "revision.current"
 msgstr "回到当前版本"
 
@@ -1998,8 +1814,7 @@ msgstr "“%1”"
 msgid "revision.summary"
 msgstr "编辑摘要"
 
-#: share/skin/s3/template/view/page/revision:60
-#: share/skin/s3/template/view/page/revision_compare:60
+#: share/skin/s3/template/view/page/revision:60 share/skin/s3/template/view/page/revision_compare:60
 msgid "revision.tags:"
 msgstr "标签："
 
@@ -2007,8 +1822,7 @@ msgstr "标签："
 msgid "revision.view"
 msgstr "查看含格式的"
 
-#: share/skin/s3/template/view/listview:44
-#: share/skin/s3/template/view/listview:57
+#: share/skin/s3/template/view/listview:44 share/skin/s3/template/view/listview:57
 msgid "search.be-more-specific"
 msgstr "请使用更准确的关键字，或添加更多搜索项目。"
 
@@ -2098,8 +1912,7 @@ msgstr "按首次发布时间对条目排序"
 msgid "sort.by-updated"
 msgstr "按最后更新时间对条目排序"
 
-#: share/skin/s3/template/view/attachmentslist:27
-#: share/skin/s3/template/view/listview:95
+#: share/skin/s3/template/view/attachmentslist:27 share/skin/s3/template/view/listview:95
 msgid "sort.by:"
 msgstr "排序按照："
 
@@ -2125,7 +1938,7 @@ msgstr "相关性"
 
 #: share/skin/s3/template/view/listview:110
 msgid "sort.revisions"
-msgstr "更動次數"
+msgstr "更动次数"
 
 #: share/skin/s3/template/view/listview:100
 msgid "sort.title"
@@ -2143,8 +1956,7 @@ msgstr "工作区"
 msgid "tag.add"
 msgstr "添加标签"
 
-#: share/skin/s3/template/element/listview_tabs:20
-#: share/skin/s3/template/view/empty_watchlist:20
+#: share/skin/s3/template/element/listview_tabs:20 share/skin/s3/template/view/empty_watchlist:20
 msgid "tag.all"
 msgstr "所有标签"
 
@@ -2153,9 +1965,7 @@ msgstr "所有标签"
 msgid "tag.all=wiki"
 msgstr "所有标签"
 
-#: share/skin/s3/javascript/lightbox/copy.tt2:23
-#: share/skin/s3/javascript/lightbox/duplicate.tt2:17
-#: share/skin/s3/javascript/lightbox/rename.tt2:15
+#: share/skin/s3/javascript/lightbox/copy.tt2:23 share/skin/s3/javascript/lightbox/duplicate.tt2:17 share/skin/s3/javascript/lightbox/rename.tt2:15
 msgid "tag.keep"
 msgstr "保留标签"
 
@@ -2183,8 +1993,7 @@ msgstr "开启 Socialtext 脱机"
 msgid "user.admin"
 msgstr "管理员"
 
-#: share/skin/s3/template/element/settings/users_settings_section:8
-#: share/skin/s3/template/view/page/display:79
+#: share/skin/s3/template/element/settings/users_settings_section:8 share/skin/s3/template/view/page/display:79
 msgid "user.email"
 msgstr "邮件"
 
@@ -2192,13 +2001,11 @@ msgstr "邮件"
 msgid "user.email-address"
 msgstr "邮件地址"
 
-#: share/skin/s3/template/element/settings/users_settings_section:17
-#: share/skin/s3/template/element/settings/users_settings_section:26
+#: share/skin/s3/template/element/settings/users_settings_section:17 share/skin/s3/template/element/settings/users_settings_section:26
 msgid "user.first-name:"
 msgstr "名字："
 
-#: share/skin/s3/template/element/settings/users_settings_section:13
-#: share/skin/s3/template/element/settings/users_settings_section:34
+#: share/skin/s3/template/element/settings/users_settings_section:13 share/skin/s3/template/element/settings/users_settings_section:34
 msgid "user.last-name:"
 msgstr "姓："
 
@@ -2206,8 +2013,7 @@ msgstr "姓："
 msgid "user.list-all"
 msgstr "列出所有用户"
 
-#: share/skin/s3/template/element/settings/users_settings_section:21
-#: share/skin/s3/template/element/settings/users_settings_section:30
+#: share/skin/s3/template/element/settings/users_settings_section:21 share/skin/s3/template/element/settings/users_settings_section:30
 msgid "user.middle-name:"
 msgstr "中间名："
 
@@ -2227,8 +2033,7 @@ msgstr "在您想关注的页面上点击，以添加页面到您的关注列表
 msgid "watch.current-page"
 msgstr "您正在关注的页面"
 
-#: share/skin/s3/template/element/listview_tabs:9
-#: share/skin/s3/template/view/empty_watchlist:11
+#: share/skin/s3/template/element/listview_tabs:9 share/skin/s3/template/view/empty_watchlist:11
 msgid "watch.list"
 msgstr "您的关注列表"
 
@@ -2236,8 +2041,7 @@ msgstr "您的关注列表"
 msgid "watch.look-for"
 msgstr "寻找"
 
-#: share/skin/s3/javascript/s3.js:941 share/skin/s3/template/view/listview:166
-#: share/skin/s3/template/view/page/display:72
+#: share/skin/s3/javascript/s3.js:941 share/skin/s3/template/view/listview:166 share/skin/s3/template/view/page/display:72
 msgid "watch.stop"
 msgstr "停止关注"
 
@@ -2255,8 +2059,7 @@ msgstr "我所有的工作区"
 msgid "wiki.anyone-can-email"
 msgstr "任何人都可以向这个工作区发送邮件。"
 
-#: share/skin/s3/template/view/settings:56
-#: share/skin/s3/template/workspaces_created_section.html:23
+#: share/skin/s3/template/view/settings:56 share/skin/s3/template/workspaces_created_section.html:23
 msgid "wiki.appearance"
 msgstr "工作区外观"
 
@@ -2286,9 +2089,7 @@ msgstr "%1的副本"
 msgid "wiki.confirm-unsubscribe"
 msgstr "如果您希望从这个工作区退出，请点击下面的按钮。点击之后您将无法访问这个工作区，再次访问需要工作区管理员重新将您加入。 "
 
-#: share/skin/s3/template/element/settings/workspaces_cannot_create_section:4
-#: share/skin/s3/template/view/settings:43
-#: share/skin/s3/template/view/settings:46
+#: share/skin/s3/template/element/settings/workspaces_cannot_create_section:4 share/skin/s3/template/view/settings:43 share/skin/s3/template/view/settings:46
 msgid "wiki.create"
 msgstr "新建工作区"
 
@@ -2329,8 +2130,7 @@ msgstr "为这个工作区开启邮件通知？"
 msgid "wiki.enable-page-locking"
 msgstr "开启页面锁定。工作区管理员可以选择锁定任何页面，只有管理员可以编辑锁定的页面。 谨慎使用，如果成员能轻松编辑页面才能更多参与。"
 
-#: share/skin/s3/template/view/settings:57
-#: share/skin/s3/template/workspaces_created_section.html:24
+#: share/skin/s3/template/view/settings:57 share/skin/s3/template/workspaces_created_section.html:24
 msgid "wiki.feature"
 msgstr "工作区功能"
 
@@ -2343,8 +2143,7 @@ msgstr "要新建工作区，工作区必须属于一个群组。"
 msgid "wiki.home=name,title"
 msgstr "<a href=\"/%1/\">转到</a>%2首页。"
 
-#: share/skin/s3/template/layout/html:148
-#: share/skin/s3/template/layout/user_frame:153
+#: share/skin/s3/template/layout/html:148 share/skin/s3/template/layout/user_frame:153
 msgid "wiki.invite"
 msgstr "添加成员"
 
@@ -2369,9 +2168,7 @@ msgstr "工作区标识"
 msgid "wiki.members"
 msgstr "工作区成员"
 
-#: share/skin/s3/template/element/settings/workspace_clone_section:25
-#: share/skin/s3/template/element/settings/workspaces_create_section:19
-#: share/skin/s3/template/element/settings/workspaces_listall_section:13
+#: share/skin/s3/template/element/settings/workspace_clone_section:25 share/skin/s3/template/element/settings/workspaces_create_section:19 share/skin/s3/template/element/settings/workspaces_listall_section:13
 msgid "wiki.name"
 msgstr "工作区名称"
 
@@ -2396,9 +2193,7 @@ msgstr "只有%1可以向这个工作区发邮件。"
 msgid "wiki.permission-type:"
 msgstr "您是否想将此工作区设立为："
 
-#: share/skin/s3/template/element/settings/workspaces_permissions_section:6
-#: share/skin/s3/template/view/settings:61
-#: share/skin/s3/template/workspaces_created_section.html:25
+#: share/skin/s3/template/element/settings/workspaces_permissions_section:6 share/skin/s3/template/view/settings:61 share/skin/s3/template/workspaces_created_section.html:25
 msgid "wiki.privacy"
 msgstr "工作区隐私"
 
@@ -2414,8 +2209,7 @@ msgstr "您可以自由查看或编辑这些公开工作区："
 msgid "wiki.search-all:"
 msgstr "搜索我的工作区："
 
-#: share/skin/s3/template/element/search_form:14
-#: share/skin/s3/template/element/search_form:21
+#: share/skin/s3/template/element/search_form:14 share/skin/s3/template/element/search_form:21
 msgid "wiki.search:"
 msgstr "搜索此工作区："
 
@@ -2424,13 +2218,11 @@ msgid "wiki.send-email-notifications?"
 msgstr "通过邮件向此工作区的用户发送工作区更改通知吗？"
 
 #. (invitation_filter)
-#: share/skin/s3/template/element/settings/users_invite_search_section:14
-#: share/skin/s3/template/element/settings/users_invite_section:62
+#: share/skin/s3/template/element/settings/users_invite_search_section:14 share/skin/s3/template/element/settings/users_invite_section:62
 msgid "wiki.set=filter"
 msgstr "已在此工作区设置一个过滤器。所有邮件地址必须匹配此式样：<span style=\"color: red\">%1</span>"
 
-#: share/skin/s3/template/element/settings/workspaces_settings_skin_section:6
-#: share/skin/s3/template/view/settings:59
+#: share/skin/s3/template/element/settings/workspaces_settings_skin_section:6 share/skin/s3/template/view/settings:59
 msgid "wiki.skin"
 msgstr "工作区视觉主题"
 
@@ -2443,22 +2235,17 @@ msgstr "标签"
 msgid "wiki.tag=tag"
 msgstr "标签：%1"
 
-#: share/skin/s3/template/lite/subnav.html:21
-#: share/skin/s3/template/lite/subnav.html:23
-#: share/skin/s3/template/view/page/display:153
+#: share/skin/s3/template/lite/subnav.html:21 share/skin/s3/template/lite/subnav.html:23 share/skin/s3/template/view/page/display:153
 msgid "wiki.tags"
 msgstr "标签"
 
-#: share/skin/s3/template/element/settings/workspace_clone_section:11
-#: share/skin/s3/template/element/settings/workspaces_create_section:5
-#: share/skin/s3/template/element/settings/workspaces_listall_section:10
-#: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:5
+#: share/skin/s3/template/element/settings/workspace_clone_section:11 share/skin/s3/template/element/settings/workspaces_create_section:5 share/skin/s3/template/element/settings/workspaces_listall_section:10 share/skin/s3/template/element/settings/workspaces_settings_appearance_section:5
 msgid "wiki.title"
 msgstr "工作区标题"
 
 #: share/skin/s3/template/element/settings/workspaces_cannot_create_section:15
 msgid "wiki.to-existing-group"
-msgstr "要添加一个工作区到<strong>已存在的群组</strong>，请到主导航列的<a href=\"/st/groups\">“群组目录”</a>下拉菜单中，选择您的群组，并点击“编辑”來创建您的工作区。"
+msgstr "要添加一个工作区到<strong>已存在的群组</strong>，请到主导航列的<a href=\"/st/groups\">“群组目录”</a>下拉菜单中，选择您的群组，并点击“编辑”来创建您的工作区。"
 
 #: share/skin/s3/template/element/settings/workspaces_cannot_create_section:19
 msgid "wiki.to-new-group"

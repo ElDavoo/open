@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 22:57+0800\n"
+"PO-Revision-Date: 2011-03-19 19:39+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -11,15 +11,13 @@ msgstr ""
 
 #: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:2
 msgid "activities.about-insert-wikilink"
-msgstr "選定一個工作區，然後搜索您想連接的工作區頁面。您可以更改顯示文字，也可以連接到該頁面的特定段落。"
+msgstr "选定一个工作区，然后搜索您想连接的工作区页面。您可以更改显示文字，也可以连接到该页面的特定段落。"
 
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:118
-#: share/plugin/widgets/share/javascript/template/activities/event.tt2:83
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:118 share/plugin/widgets/share/javascript/template/activities/event.tt2:83
 msgid "activities.add-tag"
 msgstr "添加标签"
 
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:121
-#: share/plugin/widgets/share/javascript/template/activities/event.tt2:86
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:121 share/plugin/widgets/share/javascript/template/activities/event.tt2:86
 msgid "activities.add-video-link"
 msgstr "添加视频连接"
 
@@ -39,8 +37,7 @@ msgstr "所有回复"
 msgid "activities.all-shared-groups"
 msgstr "所有共享群组"
 
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:117
-#: share/plugin/widgets/share/javascript/template/activities/event.tt2:82
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:117 share/plugin/widgets/share/javascript/template/activities/event.tt2:82
 msgid "activities.attach-file"
 msgstr "添加附件"
 
@@ -67,31 +64,30 @@ msgstr "评论"
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:11
 msgid "activities.composing-message-to=user"
-msgstr "您正在编辑一条信息至 %1"
+msgstr "您正在编辑给 %1 的讯息"
 
 #. (person)
-#: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:5
-#: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:9
+#: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:5 share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:9
 msgid "activities.composing-private-message-to=person"
-msgstr "您正在编辑条私人信息至 %1"
+msgstr "您正在编辑给 %1 的私人讯息"
 
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:16
 msgid "activities.composing-reply-to=person"
-msgstr "您正在编辑一条回复至 %1"
+msgstr "您正在编辑回复给 %1 的讯息"
 
 #. (evt.replies.length ? loc('entire Conversation')
 #: share/plugin/widgets/share/javascript/activities/event_list.js:938
 msgid "activities.confirm-delete=target"
 msgstr ""
-"您确定要删除这 %1？\n"
+"您确定要删除这%1？\n"
 "一旦删除，无法恢复。"
 
 #. (evt.replies.length ? loc('entire Conversation')
 #: share/plugin/widgets/share/javascript/activities/event_list.js:953
 msgid "activities.confirm-expunge=target"
 msgstr ""
-"您确定要将此 %1 从系统中删除？\n"
+"您确定要将这%1从系统中删除？\n"
 "一旦删除，无法恢复。"
 
 #: share/plugin/widgets/share/javascript/activities/appdata.js:351
@@ -114,6 +110,10 @@ msgstr "复制和粘贴以下视频的网址。我们支持插入来自YouTube�
 msgid "activities.enter-weblink-url-here"
 msgstr "请在底下贴上或键入链接的目标（网址，如http://socialtext.com）。链接目标是必填的。"
 
+#: share/plugin/widgets/share/javascript/activities/event_list.js:938
+msgid "activities.entire-conversation"
+msgstr "整串对话"
+
 #: share/plugin/widgets/share/javascript/activities/appdata.js:328
 msgid "activities.events"
 msgstr "事件"
@@ -134,8 +134,7 @@ msgstr "我关注的人"
 msgid "activities.from"
 msgstr "来自"
 
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:115
-#: share/plugin/widgets/share/javascript/template/activities/event.tt2:80
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:115 share/plugin/widgets/share/javascript/template/activities/event.tt2:80
 msgid "activities.insert:"
 msgstr "插入："
 
@@ -143,13 +142,11 @@ msgstr "插入："
 msgid "activities.link-text:"
 msgstr "显示文字："
 
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:120
-#: share/plugin/widgets/share/javascript/template/activities/event.tt2:85
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:120 share/plugin/widgets/share/javascript/template/activities/event.tt2:85
 msgid "activities.link-to-web"
 msgstr "链接至网页"
 
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:119
-#: share/plugin/widgets/share/javascript/template/activities/event.tt2:84
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:119 share/plugin/widgets/share/javascript/template/activities/event.tt2:84
 msgid "activities.link-to-wiki"
 msgstr "链接至工作区页面"
 
@@ -159,7 +156,7 @@ msgstr "下载中..."
 
 #: share/plugin/widgets/share/javascript/template/activities/message_notice.tt2:13
 msgid "activities.make-signal-private"
-msgstr "使此讯息私有"
+msgstr "发布为私人讯息"
 
 #. (this.max_filesize)
 #: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:8
@@ -170,14 +167,14 @@ msgstr "最大文件大小：%1MB"
 msgid "activities.me"
 msgstr "我"
 
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:116
-#: share/plugin/widgets/share/javascript/template/activities/event.tt2:81
+msgid "activities.mention"
+msgstr "  提及"
+
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:116 share/plugin/widgets/share/javascript/template/activities/event.tt2:81
 msgid "activities.mention-user"
 msgstr "提及另一个人"
 
-#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:21
-#: share/plugin/widgets/share/javascript/template/activities/ui.mobile-signals.tt2:21
-#: share/plugin/widgets/share/javascript/template/activities/ui.viewer.tt2:17
+#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:21 share/plugin/widgets/share/javascript/template/activities/ui.mobile-signals.tt2:21 share/plugin/widgets/share/javascript/template/activities/ui.viewer.tt2:17
 msgid "activities.more"
 msgstr "更多"
 
@@ -187,22 +184,22 @@ msgstr "更多提及..."
 
 #: share/plugin/widgets/share/javascript/activities/appdata.js:408
 msgid "activities.my-conversations"
-msgstr "我的對話"
+msgstr "我的对话"
 
 #. (new_events)
 #: share/plugin/widgets/share/javascript/activities/event_list.js:428
 msgid "activities.new-events=count"
-msgstr "%1 項活动"
+msgstr "%1 项活动"
 
 #. (self.mentionCount)
 #: share/plugin/widgets/share/javascript/activities/widget.js:475
 msgid "activities.new-mentions=count"
-msgstr "%1 項新提及..."
+msgstr "%1 项新提及..."
 
 #. (new_replies)
 #: share/plugin/widgets/share/javascript/activities/event_list.js:433
 msgid "activities.new-replies=count"
-msgstr "%1 項回复"
+msgstr "%1 项回复"
 
 #. (new_events + new_replies)
 #: share/plugin/widgets/share/javascript/activities/event_list.js:438
@@ -210,10 +207,9 @@ msgid "activities.new=count"
 msgstr "%1 新的"
 
 #. (older)
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:20
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:22
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:20 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:22
 msgid "activities.other-replies=count"
-msgstr "%1 項其它回复..."
+msgstr "%1 项其它回复..."
 
 #: share/plugin/widgets/share/javascript/activities/appdata.js:366
 msgid "activities.page-tags"
@@ -227,48 +223,47 @@ msgstr "页面："
 msgid "activities.people-events"
 msgstr "人际事件"
 
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:101
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:148
-#: share/plugin/widgets/share/javascript/template/activities/event.tt2:69
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:101 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:148 share/plugin/widgets/share/javascript/template/activities/event.tt2:69
 msgid "activities.post"
 msgstr "发送"
 
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:137
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:90
+#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:137 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:90
 msgid "activities.post-to"
 msgstr "发送至"
 
+msgid "activities.private"
+msgstr "  私人"
+
 #: share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:6
 msgid "activities.private-to-you"
-msgstr "归您私有"
+msgstr "给您的私人讯息"
 
 #. (signal.best_full_name)
 #: share/plugin/widgets/share/javascript/activities/widget.js:540
 msgid "activities.private-to-you=sender"
-msgstr "%1 属于您私有"
+msgstr "%1 给您的私人讯息"
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:112
 msgid "activities.private-to:"
-msgstr "发送私人讯息至"
+msgstr "发送私人讯息："
 
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:8
 msgid "activities.private-to=user"
-msgstr "归 %1 私有"
+msgstr "给 %1 的私人讯息"
 
 #. (page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:12
 msgid "activities.rename=page,wiki"
 msgstr "重命名 %2 中的 %1。"
 
-#: share/plugin/widgets/share/javascript/template/activities/page.icons.tt2:12
-#: share/plugin/widgets/share/javascript/template/activities/signal.icons.tt2:8
+#: share/plugin/widgets/share/javascript/template/activities/page.icons.tt2:12 share/plugin/widgets/share/javascript/template/activities/signal.icons.tt2:8
 msgid "activities.reply"
 msgstr "回复"
 
 #: share/plugin/widgets/share/javascript/template/activities/event.tt2:74
 msgid "activities.reply-to-conversation"
-msgstr "回复對話 ..."
+msgstr "回复对话 ..."
 
 #: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:16
 msgid "activities.section:"
@@ -276,14 +271,13 @@ msgstr "区域："
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:113
 msgid "activities.send-private-message"
-msgstr "发送私人信息"
+msgstr "发送私人讯息"
 
 #: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:68
 msgid "activities.showing"
 msgstr "显示"
 
-#: share/plugin/widgets/share/javascript/activities/event_list.js:938
-#: share/plugin/widgets/share/javascript/activities/event_list.js:953
+#: share/plugin/widgets/share/javascript/activities/event_list.js:938 share/plugin/widgets/share/javascript/activities/event_list.js:953
 msgid "activities.signal"
 msgstr "讯息"
 
@@ -317,8 +311,7 @@ msgid "activities.title=signal-count,original-title"
 msgstr "（%1）%2"
 
 #. (targets.size)
-#: share/plugin/widgets/share/javascript/template/activities/page.meta.tt2:5
-#: share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:13
+#: share/plugin/widgets/share/javascript/template/activities/page.meta.tt2:5 share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:13
 msgid "activities.to-groups=count"
 msgstr "至 %1 群组"
 
@@ -328,8 +321,7 @@ msgid "activities.to=sender,targets"
 msgstr "%1 至 %2"
 
 #. (targets.0)
-#: share/plugin/widgets/share/javascript/template/activities/page.meta.tt2:9
-#: share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:17
+#: share/plugin/widgets/share/javascript/template/activities/page.meta.tt2:9 share/plugin/widgets/share/javascript/template/activities/signal.meta.tt2:17
 msgid "activities.to=target"
 msgstr "至 %1"
 
@@ -346,8 +338,7 @@ msgstr "工作区："
 msgid "activities.within"
 msgstr "群组为"
 
-#: share/plugin/widgets/share/javascript/template/activities/event.tt2:23
-#: share/plugin/widgets/share/javascript/template/activities/reply.tt2:14
+#: share/plugin/widgets/share/javascript/template/activities/event.tt2:23 share/plugin/widgets/share/javascript/template/activities/reply.tt2:14
 msgid "activities.you"
 msgstr "您"
 
@@ -511,14 +502,11 @@ msgstr "显示编辑活动"
 msgid "description.workspaces"
 msgstr "列出群组中的所有工作区"
 
-#: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:18
-#: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:17
-#: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:23
+#: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:18 share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:17 share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:23
 msgid "do.cancel"
 msgstr "取消"
 
-#: share/plugin/widgets/share/javascript/activities/event_list.js:775
-#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:62
+#: share/plugin/widgets/share/javascript/activities/event_list.js:775 share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:62
 msgid "do.close"
 msgstr "关闭"
 
@@ -530,9 +518,7 @@ msgstr "完成"
 msgid "do.no"
 msgstr "无"
 
-#: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:17
-#: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:16
-#: share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:22
+#: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:17 share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:16 share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:22
 msgid "do.ok"
 msgstr "确定"
 
@@ -555,10 +541,9 @@ msgstr "错误"
 
 #: share/plugin/widgets/share/javascript/gadgets.js:353
 msgid "error.feature-not-supported-in-dashboard"
-msgstr "抱歉，顯示板暂不支持此项特性。"
+msgstr "抱歉，显示板暂不支持此项特性。"
 
-#: share/plugin/widgets/share/javascript/activities/widget.js:423
-#: share/plugin/widgets/share/javascript/activities/widget.js:589
+#: share/plugin/widgets/share/javascript/activities/widget.js:423 share/plugin/widgets/share/javascript/activities/widget.js:589
 msgid "error.getting-activities"
 msgstr "参加活动时出错。"
 
@@ -577,11 +562,10 @@ msgstr "非有效工作区。请输入一个包含网页链接的有效工作区
 #. (action.error_title || action.title)
 #: share/plugin/widgets/share/javascript/template/activities/empty.tt2:4
 msgid "error.no-conversations-in-30days=title"
-msgstr "没有新的 %1 因为在过去的 30 天内，您没有与您的同事對話。"
+msgstr "没有新的 %1 因为在过去的 30 天内，您没有与您的同事对话。"
 
 #. (action.error_title || action.title)
-#: share/plugin/widgets/share/javascript/template/activities/empty.tt2:2
-#: share/plugin/widgets/share/javascript/template/activities/empty.tt2:8
+#: share/plugin/widgets/share/javascript/template/activities/empty.tt2:2 share/plugin/widgets/share/javascript/template/activities/empty.tt2:8
 msgid "error.no-events-in-30days=title"
 msgstr "在过去 30 天内，没有新的 %1。"
 
@@ -600,11 +584,9 @@ msgstr "您输入的工作区不存在，请重试"
 
 #. (ws)
 #. (workspace)
-#: share/plugin/widgets/share/javascript/activities/editor.js:1105
-#: share/plugin/widgets/share/javascript/gadgets.js:256
-#: share/plugin/widgets/share/javascript/gadgets.js:280
+#: share/plugin/widgets/share/javascript/activities/editor.js:1105 share/plugin/widgets/share/javascript/gadgets.js:256 share/plugin/widgets/share/javascript/gadgets.js:280
 msgid "error.no-wiki-on-server=wiki"
-msgstr "系統中不存在 \"%1\" 工作区"
+msgstr "系统中不存在“%1”工作区"
 
 #. (this.title, error)
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:75
@@ -622,8 +604,7 @@ msgstr "传递讯息时出错，请重试。"
 
 #. (self.maxSignalLength()
 #. (limit)
-#: share/plugin/widgets/share/javascript/activities/editor.js:357
-#: share/plugin/widgets/share/javascript/activities/editor.js:653
+#: share/plugin/widgets/share/javascript/activities/editor.js:357 share/plugin/widgets/share/javascript/activities/editor.js:653
 msgid "error.signal-too-long=max-length"
 msgstr "讯息长度限制为 %1，请编辑您的讯息"
 
@@ -652,10 +633,7 @@ msgstr "给 %1 加标签 %2。"
 
 #. (actor, widget_link(event.context)
 #. (actor, widget_link(event.context), event.context.description)
-#: share/plugin/widgets/share/javascript/template/activities/widget.tt2:6
-#: share/plugin/widgets/share/javascript/template/activities/widget.tt2:7
-#: share/plugin/widgets/template/data/events/widget:6
-#: share/plugin/widgets/template/data/events/widget:7
+#: share/plugin/widgets/share/javascript/template/activities/widget.tt2:6 share/plugin/widgets/share/javascript/template/activities/widget.tt2:7 share/plugin/widgets/template/data/events/widget:6 share/plugin/widgets/template/data/events/widget:7
 msgid "event.add-widget=user,widget,context"
 msgstr "%1 增加 %2 小工具（%3）。"
 
@@ -668,7 +646,7 @@ msgstr "在 %2 中评论 %1：“%3”"
 #. (person_tag)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:8
 msgid "event.delete-tag-self=tag"
-msgstr "移除他们的标签 %1。"
+msgstr "给自己移除标签 %1。"
 
 #. (page_tag, page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:20
@@ -678,7 +656,7 @@ msgstr "从 %3 中的 %2 移除 %1。"
 #. (person_tag, person)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:19
 msgid "event.delete-tag=tag,person"
-msgstr "从 %2 中移除标签 %1。"
+msgstr "给 %2 移除标签 %1。"
 
 #. (page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:14
@@ -717,7 +695,7 @@ msgstr "开始关注 %1。"
 #. (event.action)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:10
 msgid "event.generic-self=action"
-msgstr "對自己执行动作 %1。"
+msgstr "对自己执行动作 %1。"
 
 #. (event.action, page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:22
@@ -766,33 +744,29 @@ msgstr "停止关注 %1。"
 
 #. (actor, widget_link(event.context)
 #. (actor, widget_link(event.context))
-#: share/plugin/widgets/share/javascript/template/activities/widget.tt2:9
-#: share/plugin/widgets/template/data/events/widget:9
+#: share/plugin/widgets/share/javascript/template/activities/widget.tt2:9 share/plugin/widgets/template/data/events/widget:9
 msgid "event.update-widget=actor,widget"
 msgstr "%1 更新 %2 小工具。"
 
 #. (asset.count)
-#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:8
-#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:9
+#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:8 share/plugin/widgets/share/javascript/template/activities/assets.tt2:9
 msgid "explore.click-to-collapse-mentions=count"
-msgstr "%1 項提及，点击此处收回"
+msgstr "%1 项提及，点击此处收回"
 
 #. (asset.count)
-#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:14
-#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:8
+#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:14 share/plugin/widgets/share/javascript/template/activities/assets.tt2:8
 msgid "explore.click-to-expand-mentions=count"
-msgstr "%1 項提及，点击此处展开"
+msgstr "%1 项提及，点击此处展开"
 
 #. (asset.count, asset.eventList.size || 5)
-#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:12
-#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:8
+#: share/plugin/widgets/share/javascript/template/activities/assets.tt2:12 share/plugin/widgets/share/javascript/template/activities/assets.tt2:8
 msgid "explore.click-to-expand-mentions=count,first-page"
-msgstr "%1 項提及，点击此处查看最先的 %2 則"
+msgstr "%1 项提及，点击此处查看最先的 %2 则"
 
 #. (asset.count)
 #: share/plugin/widgets/share/javascript/template/activities/assets.tt2:26
 msgid "explore.mentions=count"
-msgstr "%1 項提及"
+msgstr "%1 项提及"
 
 #: share/plugin/widgets/share/javascript/template/activities/assets.tt2:3
 msgid "explore.more"
@@ -822,6 +796,15 @@ msgstr "过去的一年"
 msgid "explore.today"
 msgstr "今天"
 
+msgid "file.size=bytes"
+msgstr "%1 字节"
+
+msgid "file.size=kb"
+msgstr "%1K"
+
+msgid "file.size=mb"
+msgstr "%1M"
+
 #: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:15
 msgid "files.none"
 msgstr "无"
@@ -834,8 +817,7 @@ msgstr "点击“浏览”并选择上传图片或文件。"
 msgid "info.done"
 msgstr "点击“完成”关闭窗口。"
 
-#: share/plugin/widgets/share/javascript/activities/appdata.js:545
-#: share/plugin/widgets/share/javascript/template/activities/ui.signalthis.tt2:18
+#: share/plugin/widgets/share/javascript/activities/appdata.js:545 share/plugin/widgets/share/javascript/template/activities/ui.signalthis.tt2:18
 msgid "info.edit-summary-signal-visibility"
 msgstr "只有有权查看本页面的成员会收到讯息。"
 
@@ -861,11 +843,9 @@ msgstr "登出"
 
 #: share/plugin/widgets/template/mobile-signals.tt2:121
 msgid "nav.people"
-msgstr "人員"
+msgstr "人员"
 
-#: share/plugin/widgets/template/mobile-signals.tt2:116
-#: share/plugin/widgets/template/mobile-signals.tt2:118
-#: share/plugin/widgets/template/mobile-signals.tt2:7
+#: share/plugin/widgets/template/mobile-signals.tt2:116 share/plugin/widgets/template/mobile-signals.tt2:118 share/plugin/widgets/template/mobile-signals.tt2:7
 msgid "nav.signals"
 msgstr "讯息"
 
@@ -887,29 +867,25 @@ msgstr "链接目的地："
 
 #: share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:5
 msgid "signals.link-text:"
-msgstr "顯示文字："
+msgstr "显示文字："
 
 #. (acc.count)
 #. (this.count)
 #. (acc.user_count)
 #. (grp.user_count)
-#: share/plugin/widgets/share/javascript/activities/appdata.js:234
-#: share/plugin/widgets/share/javascript/activities/appdata.js:253
-#: share/plugin/widgets/share/javascript/network-dropdown.js:83
-#: share/plugin/widgets/share/javascript/network-dropdown.js:86
+#: share/plugin/widgets/share/javascript/activities/appdata.js:234 share/plugin/widgets/share/javascript/activities/appdata.js:253 share/plugin/widgets/share/javascript/network-dropdown.js:83 share/plugin/widgets/share/javascript/network-dropdown.js:86
 msgid "signals.network-count=users"
 msgstr "%1 名用户"
 
 #. (acc.count)
 #. (acc.user_count)
-#: share/plugin/widgets/share/javascript/activities/appdata.js:233
-#: share/plugin/widgets/share/javascript/network-dropdown.js:82
+#: share/plugin/widgets/share/javascript/activities/appdata.js:233 share/plugin/widgets/share/javascript/network-dropdown.js:82
 msgid "signals.primary-account=users"
-msgstr "主要，%1 名用户"
+msgstr "主帐户，%1 名用户"
 
 #: share/plugin/widgets/share/javascript/activities/editor.js:1533
 msgid "signals.private-message-to:"
-msgstr "發送私信給："
+msgstr "发送私人讯息给："
 
 #: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:15
 msgid "signals.uploaded-files:"
@@ -1026,8 +1002,7 @@ msgstr "网址："
 msgid "widget.about-delete"
 msgstr "删除"
 
-#: share/plugin/widgets/template/view/gallery:0
-#: share/plugin/widgets/template/view/gallery:81
+#: share/plugin/widgets/template/view/gallery:0 share/plugin/widgets/template/view/gallery:81
 msgid "widget.add-it-now"
 msgstr "现在添加"
 
@@ -1043,8 +1018,7 @@ msgstr "推送到所有显示板"
 msgid "widgets.about-restore"
 msgstr "恢复"
 
-#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:55
-#: share/plugin/widgets/template/view/gallery:104
+#: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:55 share/plugin/widgets/template/view/gallery:104
 msgid "widgets.about-update"
 msgstr "更新"
 
@@ -1052,8 +1026,7 @@ msgstr "更新"
 msgid "widgets.add"
 msgstr "添加"
 
-#: share/plugin/widgets/template/view/gallery:11
-#: share/plugin/widgets/template/view/gallery:15
+#: share/plugin/widgets/template/view/gallery:11 share/plugin/widgets/template/view/gallery:15
 msgid "widgets.add-to-gallery"
 msgstr "添加小工具至工具库"
 
@@ -1105,13 +1078,11 @@ msgstr "工具库"
 msgid "widgets.gallery-switch=account:"
 msgstr "这是“%1”账号的工具库。转到帐户："
 
-#: share/plugin/widgets/share/javascript/template/activities/widget.tt2:2
-#: share/plugin/widgets/template/data/events/widget:2
+#: share/plugin/widgets/share/javascript/template/activities/widget.tt2:2 share/plugin/widgets/template/data/events/widget:2
 msgid "widgets.install-this"
 msgstr "安装小工具"
 
-#: share/plugin/widgets/template/view/gallery:0
-#: share/plugin/widgets/template/view/gallery:24
+#: share/plugin/widgets/template/view/gallery:0 share/plugin/widgets/template/view/gallery:24
 msgid "widgets.manage-gallery-for-accounts"
 msgstr "管理各账号工具库"
 
