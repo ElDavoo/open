@@ -19,7 +19,7 @@ use Test::Socialtext::DotProve;
 # Read in our command line arguments
 my ($help, $man, $verbose);
 my $hudson_url         = 'https://lucite.socialtext.net:9080';
-my $project            = 'Socialtext';
+my $project            = 'Socialtext-master';
 my $build              = 'lastCompletedBuild';
 my $dot_prove          = 'artifacts/.prove';
 my $dryrun             = undef;
@@ -433,7 +433,7 @@ Defaults to C<https://lucite.socialtext.net:9080>
 
 Specifies the Project in Hudson whose test results we should be examining.
 
-Defaults to "Socialtext".
+Defaults to "Socialtext-master".
 
 =item B<--build E<lt>buildE<gt>>
 
