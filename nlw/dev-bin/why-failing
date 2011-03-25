@@ -360,7 +360,9 @@ sub clean_test_environment {
     }
 
     # Optionally re-run fdefs
-    system('dev-bin/fresh-dev-env-from-scratch >/dev/null 2>/dev/null') if ($fdefs);
+    if ($fdefs) {
+        system('dev-bin/fresh-dev-env-from-scratch >/dev/null 2>/dev/null');
+    }
 }
 
 ###############################################################################
