@@ -25,6 +25,7 @@ my $dot_prove          = 'artifacts/.prove';
 my $dryrun             = undef;
 my $unittest           = undef;
 my $count_all_failures = undef;
+my $fdefs;
 my @candidates;
 
 GetOptions(
@@ -35,6 +36,7 @@ GetOptions(
     'dryrun'      => \$dryrun,
     'verbose'     => \$verbose,
     'candidate=s' => \@candidates,
+    'fdefs'       => \$fdefs,
     'all'         => \$count_all_failures,
     'help|?'      => \$help,
     'man'         => \$man,
@@ -346,6 +348,8 @@ sub run_tests {
 sub clean_test_environment {
     my $HOME = $ENV{HOME};
     rmtree("$HOME/src/st/socialtext/nlw/t/tmp");
+
+    system('dev-bin/fresh-dev-env-from-scratch >/dev/null 2>/dev/null') if ($fdefs);
 }
 
 ###############################################################################
@@ -374,6 +378,7 @@ why-failing - find out why a unit test is failing
     --dot-prove <prove> Path to the .prove artifact ("artifacts/.prove")
     --candidate <test>  Specify candidate tests explicitly
     --all               Count all failures, not just ones in test
+    --fdefs             Run "fdefs" between tests
     --dryrun            Dry-run; show candidates, but don't run tests
     --verbose           Display verbose output
     --help/-?           Display a brief usage statement
@@ -463,6 +468,12 @@ ignore failures in the candidates.  With C<--all>, we also track failures in
 the candidates.
 
 Useful for helping hunt down chains of failures in a single run.
+
+=item B<--fdefs>
+
+Runs F<fresh-dev-env-from-scratch> between test runs, to ensure that not only
+have we cleaned out the test environment but also that F<~/.nlw/> has been
+properly reset.
 
 =item B<--dryrun>
 
