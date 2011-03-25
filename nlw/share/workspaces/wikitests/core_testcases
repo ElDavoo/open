@@ -56,6 +56,7 @@ test env properly and are not testing the test-workspace
 * [Test Case: Public]
 * [Test Case: Intranet]
 * [Test Case: Settings: Email Notification]
+* [Test Case: Settings: Custom Language]
 * [Test Case: Direct URI]
 * [Test Case: Inter Workspace Search]
 * [Test Case: Untitled Page]
