@@ -10,6 +10,7 @@
 | st-admin | create-workspace --name %%ws%% --title %%ws%% | created |
 | st-admin | add-member --e %%custom_user%% --w %%ws%% | now has the role |
 | st-admin | give-accounts-admin --e %%custom_user%% | now has accounts admin access |
+| st-admin | give-system-admin -e %%custom_user%% | now has system admin access |
 
 | *Comment* | Test Case: Settings: Custom Language - customize language from dashboard |  |
 | st-logoutin | %%custom_user%% | %%password%% |
@@ -34,11 +35,14 @@
 | is_selected_ok | locale | label=zz - DEV_MODE ONLY |
 
 | *Comment* | Test Case: Settings: Custom Language - Logout, login, still customized |  |
+| st-process-jobs |  |  |
 | wait_for_element_visible_ok | logout_btn | 30000 |
 | click_and_wait | logout_btn |  |
 | st-login | %%custom_user%% | %%password%% |
-| open_ok | /st/dashboard |
+| open_ok | /st/dashboard |  |
 | wait_for_text_present_ok | Zzzzzzz, Zzz Zzzz | 300000 |
+| open_ok | /%%ws%%/ |  |
+| wait_for_element_present_ok | link=Zzzzzz | 30000 |
 
 | *Comment* | Test Case: Settings: Custom Language - Check Control Panel, Console, and Mobile |  |
 | open_ok | /nlw/control |  |
@@ -48,8 +52,17 @@
 | open_ok | /m |  |
 | text_like | //body | Zzzz |
 
+| *Comment* | Test Case: Settings: Custom Language - but for %%username%% it's still english |  |
+| open_ok | /st/dashboard |  |
+| wait_for_element_visible_ok | logout_btn | 30000 |
+| click_and_wait | logout_btn |  |
+| st-login |  |  |
+| open_ok | /%%workspace%%/ |  |
+| wait_for_element_visible_ok | link=Edit | 30000 |
+| wait_for_element_visible_ok | link=Comment | 30000 |
 
 | *Comment* | Test Case: Settings: Custom Language - change back to english |  |
+| st-logoutin | %%custom_user%% | %%password%% |
 | open_ok | /?action=language_settings |  |
 | wait_for_element_visible_ok | locale | 30000 |
 | is_selected_ok | locale | label=zz - DEV_MODE ONLY |
@@ -71,6 +84,8 @@
 
 | *Comment* | Test Case: Settings: Custom Language - customize language from %%ws%% |  |
 | open_ok | /%%ws%%/ |  |
+| wait_for_element_visible_ok | link=Settings | 30000 |
+| click_and_wait | link=Settings |  |
 | wait_for_element_visible_ok | link=Language Settings | 30000 |
 | click_and_wait | link=Language Settings | 30000 |
 | wait_for_element_visible_ok | locale | 30000 |
@@ -92,6 +107,7 @@
 | wait-for-element-visible-ok | link=Settings | 30000 |
 | click_and_wait | link=Settings |  |
 | wait_for_element_visible_ok | link=Language Settings | 30000 |
+| click_and_wait | link=Language Settings |  |
 | wait_for_element_visible_ok | locale | 30000 |
 | is_selected_ok | locale | label=System Default: English |
 | click_and_wait | logout_btn |  |
