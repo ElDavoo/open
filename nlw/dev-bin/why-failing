@@ -411,11 +411,7 @@ environment>, including:
 
 =item * dropping your test DB
 
-=item * erasing ~/.nlw/
-
 =item * erasing t/tmp/ in your dev-env
-
-=item * erasing t/tmp/ in your stci environment
 
 =back
 
