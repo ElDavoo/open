@@ -145,7 +145,7 @@ sub PUT_json {
             );
 
             Socialtext::Exception::DataValidation->throw( 
-                message => "user cannot manage workspaces this group is associated with",
+                message => loc("user cannot manage workspaces this group is associated with"),
                 http_status => HTTP_403_Forbidden
 
             ) unless $can_admin_ws;
@@ -165,11 +165,11 @@ sub PUT_json {
         my $e = $_;
         if ($e =~ m/duplicate key value violates/) {
             Socialtext::Exception::Conflict->throw(message =>
-                "Error updating group: $data->{name} already exists.");
+                loc("Error updating group: [_1] already exists.", $data->{name}));
         }
         elsif ($e =~ m/workspace has multiple groups/) {
             Socialtext::Exception::Conflict->throw(
-                message => "Error updating group: $e", 
+                message => loc("Error updating group: [_1]", $e),
                 http_status => HTTP_403_Forbidden
             );
 
@@ -205,7 +205,7 @@ sub PUT_json {
 sub _check_one_admin {
     my $self = shift;
     Socialtext::Exception::Conflict->throw(
-        message => "The group needs to include at least one admin."
+        message => loc("The group needs to include at least one admin.")
     ) unless $self->group->has_at_least_one_admin;
 }
 
@@ -378,7 +378,7 @@ sub _parse_data {
     # We still may have passed bad data, return if we don't have an arrayref
     # at this point.
     Socialtext::Exception::BadRequest->throw(
-        message => "Expected a list of users, got none.")
+        message => loc("Expected a list of users, got none."))
         unless ref($data->{users}) eq 'ARRAY';
 
     for my $user_entry (@{$data->{users}}) {
