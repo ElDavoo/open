@@ -97,5 +97,17 @@
 | click_and_wait | logout_btn |  |
 | st-login | %%custom_user%% | %%password%% |
 
+| *Comment* | Test Case: Settings: Custom Language - Test ServerWide Settings |  |
+| wait_for_element_visible_ok | logout_btn | 30000 |
+| click_and_wait | logout_btn |  |
+| st-config | set locale zz |  |
+| open_ok | / |  |
+| wait_for_text_present_ok | Zzz zz zz Zzzzzzzzzz | 30000 |
+| text_unlike | //body | Log in to Socialtext |
+| st-config | set locale English |  |
+| open_ok | / |  |
+| wait_for_text_present_ok | Log in to Socialtext | 30000 |
+| text_unlike | //body | Zzz zz zz Zzzzzzzzzz |
 
-| *Comment* | Test Case: Settings: Custom Languag COMPLETED |  |
+
+| *Comment* | Test Case: Settings: Custom Language COMPLETED |  |
