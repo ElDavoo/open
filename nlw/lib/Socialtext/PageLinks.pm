@@ -7,6 +7,7 @@ use Socialtext::Timer;
 use Socialtext::String qw/MAX_PAGE_ID_LEN/;
 use Socialtext::SQL::Builder qw(sql_insert_many);
 use Socialtext::SQL qw(sql_execute sql_txn);
+use Digest::MD5 qw(md5_hex);
 use namespace::clean -except => 'meta';
 
 =head1 NAME
@@ -112,15 +113,15 @@ sub update {
         sql_execute('
             DELETE FROM page_link
              WHERE from_workspace_id = ?
-               AND from_page_id = ?
+               AND from_page_md5 = md5(?)
         ', $workspace_id, $page_id);
 
         my %seen;
         my @cols
-            = qw(from_workspace_id from_page_id to_workspace_id to_page_id);
+            = qw(from_workspace_id from_page_id from_page_md5 to_workspace_id to_page_id to_page_md5);
         if (@$links) {
             my @values = map {
-                    [ $workspace_id, $page_id, $_->{workspace_id}, $_->{page_id} ]
+                    [ $workspace_id, $page_id, md5_hex($page_id), $_->{workspace_id}, $_->{page_id}, md5_hex($_->{page_id}) ]
                 } 
                 grep { length($_->{page_id}) <= MAX_PAGE_ID_LEN }
                 grep { not $seen{ $_->{workspace_id} }{ $_->{page_id} }++ }
@@ -162,10 +163,11 @@ sub _build_db_links {
     my $workspace_id = $self->hub->current_workspace->workspace_id;
     my $page_id      = $self->page->id;
     my $sth = sql_execute('
-        SELECT * FROM page_link
+        SELECT from_workspace_id, from_page_id, to_workspace_id, to_page_id
+          FROM page_link
          WHERE (
-                 ( from_workspace_id = ? AND from_page_id = ? )
-              OR ( to_workspace_id = ? AND to_page_id = ? )
+                 ( from_workspace_id = ? AND from_page_md5 = md5(?) )
+              OR ( to_workspace_id   = ? AND to_page_md5   = md5(?) )
             )
            AND to_workspace_id = from_workspace_id -- disable interworkspace
          ORDER BY from_workspace_id, to_workspace_id, from_page_id, to_page_id

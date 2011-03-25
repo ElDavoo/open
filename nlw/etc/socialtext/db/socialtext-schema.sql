@@ -1100,7 +1100,9 @@ CREATE TABLE page_link (
     from_workspace_id bigint NOT NULL,
     from_page_id text NOT NULL,
     to_workspace_id bigint NOT NULL,
-    to_page_id text NOT NULL
+    to_page_id text NOT NULL,
+    from_page_md5 text NOT NULL,
+    to_page_md5 text NOT NULL
 );
 
 CREATE TABLE page_revision (
@@ -1575,7 +1577,7 @@ ALTER TABLE ONLY page_attachment
 
 ALTER TABLE ONLY page_link
     ADD CONSTRAINT page_link_unique
-            UNIQUE (from_workspace_id, from_page_id, to_workspace_id, to_page_id);
+            UNIQUE (from_workspace_id, from_page_md5, to_workspace_id, to_page_md5);
 
 ALTER TABLE ONLY page
     ADD CONSTRAINT page_pkey
@@ -2159,8 +2161,11 @@ CREATE INDEX page_creator_time
 CREATE INDEX page_last_editor_time
 	    ON page (last_editor_id, last_edit_time);
 
-CREATE INDEX page_link__to_page
-	    ON page_link (to_workspace_id, to_page_id);
+CREATE INDEX page_link__from_page_md5
+	    ON page_link (from_workspace_id, from_page_md5);
+
+CREATE INDEX page_link__to_page_md5
+	    ON page_link (to_workspace_id, to_page_md5);
 
 CREATE UNIQUE INDEX page_pk_nodel
 	    ON page (workspace_id, page_id)
