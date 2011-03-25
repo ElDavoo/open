@@ -287,6 +287,10 @@ msgstr "Browse ..."
 msgid "control.calculated-unless-provided=field"
 msgstr "%1 is calculated unless provided"
 
+#: share/plugin/control/template/control/workspaces_new.html:23
+msgid "control.change"
+msgstr "change"
+
 #: share/plugin/control/template/control/user.html:119
 msgid "control.clear-external-id"
 msgstr "Clear External ID"
@@ -715,6 +719,12 @@ msgstr "Member"
 msgid "control.member-of-account"
 msgstr "Member of Account"
 
+#. ('<a href="https://www.socialtext.net/help-adminguide/adding_and_updating_users#updating_users_with_a_csv">' _ mass_add_label _ '</a>')
+#. ("<a href=\"https://www.socialtext.net/help-adminguide/adding_and_updating_users#updating_users_with_a_csv\">' _ mass_add_label _ '</a>")
+#: share/plugin/control/template/control/add_users.html:17
+msgid "control.more-info=link"
+msgstr "Please refer to %1 for more information."
+
 #: share/plugin/control/share/javascript/workspaces_new.js:144 share/plugin/control/share/javascript/workspaces_new.js:27 share/plugin/control/template/control/account.html:116 share/plugin/control/template/control/account_table:9 share/plugin/control/template/control/desktop-account.html:25 share/plugin/control/template/control/group.html:166 share/plugin/control/template/control/group.html:321 share/plugin/control/template/control/group.html:71 share/plugin/control/template/control/group_invite.html:91 share/plugin/control/template/control/group_table:20 share/plugin/control/template/control/group_table:7 share/plugin/control/template/control/groups.html:59 share/plugin/control/template/control/selected_user_table_header:16 share/plugin/control/template/control/user.html:159 share/plugin/control/template/control/user.html:277 share/plugin/control/template/control/user_table_header:26 share/plugin/control/template/control/user_table_header:28 share/plugin/control/template/control/workspace.html:212 share/plugin/control/template/control/workspace.html:72 share/plugin/control/template/control/workspace_invite.html:144 share/plugin/control/template/control/workspace_invite.html:93 share/plugin/control/template/control/workspace_table:15 share/plugin/control/template/control/workspace_table:22
 msgid "control.name"
 msgstr "Name"
@@ -792,6 +802,10 @@ msgstr "Remove External ID Requirement"
 msgid "control.remove-from-account"
 msgstr "Remove from account"
 
+#: share/plugin/control/template/control/user.html:199
+msgid "control.remove-from-accounts"
+msgstr "Remove from account(s)"
+
 #: share/plugin/control/template/control/group.html:221
 msgid "control.remove-from-group"
 msgstr "Remove from group"
@@ -818,6 +832,11 @@ msgstr "Remove the selected %*(%1,group) from this workspace?"
 #: share/plugin/control/share/javascript/workspaces_new.js:63 share/plugin/control/template/control/workspace.html:133
 msgid "control.remove-selected-user-from-wiki=count?"
 msgstr "Remove the selected %*(%1,user) from this workspace?"
+
+#. (users.length)
+#: share/plugin/control/template/control/group.html:224
+msgid "control.remove-selected-users-from-group=count?"
+msgstr "Remove the selected %*(%1,user) from this group?"
 
 #. (workspaces.length)
 #: share/plugin/control/template/control/user.html:314
@@ -915,6 +934,10 @@ msgstr "Select one or more of the users below to become administrators of your n
 #: share/plugin/control/template/control/account_add_group.html:10 share/plugin/control/template/control/workspace_add_group.html:14
 msgid "control.select-group"
 msgstr "Please select a group"
+
+#: share/plugin/control/template/control/group.html:376
+msgid "control.select-new-primary-account-before-removing-original"
+msgstr "A Group must have a primary Account. Select a new primary Account, then remove the original Account(s)."
 
 #: share/plugin/control/template/control/add_users.html:15
 msgid "control.select-users-csv:"
@@ -1053,6 +1076,10 @@ msgstr "Transform to Groups"
 msgid "control.update"
 msgstr "Update"
 
+#: share/plugin/control/share/javascript/table.js:265
+msgid "control.update-successful"
+msgstr "Update successful."
+
 #: share/plugin/control/template/control/edit_user.html:28
 msgid "control.update-user"
 msgstr "Update User"
@@ -1060,6 +1087,10 @@ msgstr "Update User"
 #: share/plugin/control/template/control/group.html:122
 msgid "control.updating"
 msgstr "Updating ..."
+
+#: share/plugin/control/template/control/add_users.html:15
+msgid "control.updating-users-with-csv"
+msgstr "Updating Users with a CSV"
 
 #: share/plugin/control/template/control/design-account.html:24
 msgid "control.upload-account-logo-optional"
@@ -1076,6 +1107,10 @@ msgstr "Use Default Socialtext Logo"
 #: share/plugin/control/template/control/design-account.html:56
 msgid "control.use-default-logo-for-desktop"
 msgstr "Use Default Socialtext Logo for Desktop"
+
+#: share/plugin/control/template/control/add_users.html:16
+msgid "control.use-this-form-also-for-updates"
+msgstr "This form can also be used to perform updates to existing Users."
 
 #. (item.title)
 #: share/plugin/control/template/control/account.html:200

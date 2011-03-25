@@ -91,7 +91,7 @@ msgid "heading.page_id"
 msgstr "页面ID"
 
 msgid "heading.page_views"
-msgstr ""
+msgstr "页面检视"
 
 msgid "heading.pages"
 msgstr "页面"
@@ -124,7 +124,7 @@ msgid "heading.username"
 msgstr "用户名"
 
 msgid "heading.views"
-msgstr "查看"
+msgstr "检视"
 
 msgid "heading.workspace"
 msgstr "工作区"

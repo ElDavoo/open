@@ -240,6 +240,14 @@ msgstr "Group Directory"
 msgid "groups.edit"
 msgstr "(Edit)"
 
+#: share/plugin/groups/template/group_links:10
+msgid "groups.edit-group"
+msgstr "Edit Group"
+
+#: share/plugin/groups/template/group_links:16
+msgid "groups.edit-layout"
+msgstr "Edit Layout"
+
 #. (container.group.name)
 #: share/plugin/groups/template/edit_group_hello:4
 msgid "groups.edit=name"
@@ -513,6 +521,12 @@ msgstr "Information"
 msgid "title.edit_people"
 msgstr "Membership"
 
+msgid "title.group-members"
+msgstr "Members"
+
+msgid "title.group-workspaces"
+msgstr "Workspaces"
+
 #: share/plugin/groups/share/widgets/information/config.yaml:3
 msgid "title.information"
 msgstr "Information"
@@ -536,9 +550,3 @@ msgstr "Workspaces"
 #: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:17
 msgid "wiki.create"
 msgstr "Create New Workspace"
-
-msgid "title.group-workspaces"
-msgstr "Workspaces"
-
-msgid "title.group-members"
-msgstr "Members"
