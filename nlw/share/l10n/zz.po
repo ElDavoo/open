@@ -9404,6 +9404,10 @@ msgstr "Zzzzzzzzz Zzzzzz Zzzz"
 msgid "nav.accounts"
 msgstr "Zzzzzzzz"
 
+#: lib/Socialtext/Handler/ControlPanel.pm:2004
+msgid "nav.activities"
+msgstr "Zzzzzzzzzz"
+
 #: share/plugin/widgets/template/mobile-signals.tt2:125 share/skin/s3/template/lite/globalnav.html:44 share/skin/s3/template/lite/globalnav.html:46
 msgid "nav.activity"
 msgstr "Zzzzzzzz"

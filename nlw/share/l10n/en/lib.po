@@ -2897,6 +2897,10 @@ msgstr "username"
 msgid "nav.accounts"
 msgstr "Accounts"
 
+#: lib/Socialtext/Handler/ControlPanel.pm:2004
+msgid "nav.activities"
+msgstr "Activities"
+
 #: lib/Socialtext/Handler/ControlPanel.pm:2176
 msgid "nav.groups"
 msgstr "Groups"

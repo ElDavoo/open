@@ -5526,12 +5526,12 @@ msgstr "目錄 %1 不存在。"
 #. ($args{section})
 #: lib/Socialtext/Lite/Activities.pm:81
 msgid "error.no-events-conversations=section"
-msgstr "您沒有任何對話記錄，無法顯示活動。"
+msgstr "您沒有任何對話記錄，無法顯示%1。"
 
 #. ($args{section})
 #: lib/Socialtext/Lite/Activities.pm:65
 msgid "error.no-events-followers=section"
-msgstr "您沒有關注任何人或者您關注的人未建立，無法顯示活動。請去同事的資料頁點選關注。"
+msgstr "您沒有關注任何人或者您關注的人未建立%1，無法顯示。請去同事的資料頁點選關注。"
 
 #. (action.error_title || action.title)
 #: share/plugin/widgets/share/javascript/template/activities/empty.tt2:2 share/plugin/widgets/share/javascript/template/activities/empty.tt2:8
@@ -5541,12 +5541,12 @@ msgstr "在過去 30 天內，沒有新的 %1。"
 #. ($args{section})
 #: lib/Socialtext/Lite/Activities.pm:57
 msgid "error.no-events-mine=section"
-msgstr "您未建立活動，無法顯示。"
+msgstr "您未建立%1，無法顯示。"
 
 #. ($args{section})
 #: lib/Socialtext/Lite/Activities.pm:76
 msgid "error.no-events=section"
-msgstr "活動未被建立，無法顯示。"
+msgstr "%1未被建立，無法顯示。"
 
 #. ($p{dir})
 #: lib/Socialtext/Workspace.pm:1186
@@ -9026,6 +9026,9 @@ msgstr "工作區的導航條名稱"
 #: lib/Socialtext/Handler/ControlPanel.pm:2004
 msgid "nav.accounts"
 msgstr "帳戶"
+
+msgid "nav.activities"
+msgstr "活動"
 
 #: share/plugin/widgets/template/mobile-signals.tt2:125
 msgid "nav.activity"

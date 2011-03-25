@@ -1743,22 +1743,22 @@ msgstr "目录 %1 不存在。"
 #. ($args{section})
 #: lib/Socialtext/Lite/Activities.pm:81
 msgid "error.no-events-conversations=section"
-msgstr "您没有任何对话记录，无法显示活动。"
+msgstr "您没有任何对话记录，无法显示%1。"
 
 #. ($args{section})
 #: lib/Socialtext/Lite/Activities.pm:65
 msgid "error.no-events-followers=section"
-msgstr "您没有关注任何人或者您关注的人未创建，无法显示活动。请去同事的资料页点击关注。"
+msgstr "您没有关注任何人或者您关注的人未创建%1，无法显示。请去同事的资料页点击关注。"
 
 #. ($args{section})
 #: lib/Socialtext/Lite/Activities.pm:57
 msgid "error.no-events-mine=section"
-msgstr "您未创建活动，无法显示。"
+msgstr "您未创建%1，无法显示。"
 
 #. ($args{section})
 #: lib/Socialtext/Lite/Activities.pm:76
 msgid "error.no-events=section"
-msgstr "活动未被创建，无法显示。"
+msgstr "%1未被创建，无法显示。"
 
 #. ($p{dir})
 #: lib/Socialtext/Workspace.pm:1186
@@ -2834,6 +2834,9 @@ msgstr "用户名"
 #: lib/Socialtext/Handler/ControlPanel.pm:2004
 msgid "nav.accounts"
 msgstr "帐户"
+
+msgid "nav.activities"
+msgstr "活动"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:2176
 msgid "nav.groups"

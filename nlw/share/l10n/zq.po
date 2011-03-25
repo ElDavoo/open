@@ -9404,6 +9404,10 @@ msgstr "«Workspace Navbar Name»"
 msgid "nav.accounts"
 msgstr "«Accounts»"
 
+#: lib/Socialtext/Handler/ControlPanel.pm:2004
+msgid "nav.activities"
+msgstr "«Activities»"
+
 #: share/plugin/widgets/template/mobile-signals.tt2:125 share/skin/s3/template/lite/globalnav.html:44 share/skin/s3/template/lite/globalnav.html:46
 msgid "nav.activity"
 msgstr "«Activity»"
