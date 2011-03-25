@@ -1007,7 +1007,8 @@ CREATE TABLE gallery_gadget (
     "position" integer NOT NULL,
     removed boolean DEFAULT false,
     socialtext boolean DEFAULT false,
-    global boolean DEFAULT false
+    global boolean DEFAULT false,
+    container_types text[]
 );
 
 CREATE TABLE group_photo (

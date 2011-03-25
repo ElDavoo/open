@@ -35,7 +35,7 @@ ALTER TABLE ONLY gadget
 
 /* Add a column in the gallery_gadget table for available target containers */
 ALTER TABLE ONLY gallery_gadget
-    ADD COLUMN container_types text[]
+    ADD COLUMN container_types text[];
 
 UPDATE "System"
    SET value = '136'
