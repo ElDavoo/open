@@ -1175,6 +1175,24 @@ sub st_open_confirmation_uri {
     $self->{selenium}->open_ok($uri);
 }
 
+=head2 st_open_change_password_uri
+
+Open the correct URL to change a User's password.
+
+=cut
+
+sub st_open_change_password_uri {
+    my ($self, $email) = @_;
+
+    require Socialtext::User;
+    my $user = Socialtext::User->new(email_address => $email);
+    my $uri  = $user->password_change_uri;
+
+    # strip off host part
+    $uri =~ s#.+(/nlw/submit/confirm)#$1#;
+    $self->{selenium}->open_ok($uri);
+}
+
 =head2 st_should_be_admin( $email, $should_be )
 
 Clicks the admin check box to for the given user.
