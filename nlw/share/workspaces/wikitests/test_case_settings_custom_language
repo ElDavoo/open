@@ -38,6 +38,7 @@
 | st-process-jobs |  |  |
 | wait_for_element_visible_ok | logout_btn | 30000 |
 | click_and_wait | logout_btn |  |
+| pause | 25000 | needed. If you *immediately* log out and log in to a workspace you don't have access to, (faster than humans type), the software can get confused. |
 | st-login | %%custom_user%% | %%password%% |
 | open_ok | /st/dashboard |  |
 | wait_for_text_present_ok | Zzzzzzz, Zzz Zzzz | 300000 |
@@ -120,7 +121,7 @@
 | open_ok | / |  |
 | wait_for_text_present_ok | Zzz zz zz Zzzzzzzzzz | 30000 |
 | text_unlike | //body | Log in to Socialtext |
-| st-config | set locale English |  |
+| st-config | set locale en |  |
 | open_ok | / |  |
 | wait_for_text_present_ok | Log in to Socialtext | 30000 |
 | text_unlike | //body | Zzz zz zz Zzzzzzzzzz |
