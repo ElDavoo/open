@@ -89,12 +89,12 @@ sub st_client_ssl {
         $self->_manage_certs(qw( init --force ));
         $self->_manage_certs(qw( install ));
         $self->st_config('set ssl_only 1');
-        shell_run(qw( gen-config --sitewide ));
+        shell_run(qw( gen-config ));
         $self->restart_everything;
     }
     elsif ($command eq 'server-off') {
         $self->st_config('set ssl_only 0');
-        shell_run(qw( gen-config --sitewide ));
+        shell_run(qw( gen-config ));
         $self->restart_everything;
     }
     elsif ($command eq 'client-on') {
