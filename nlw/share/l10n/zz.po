@@ -4899,6 +4899,10 @@ msgstr "Zzz zzzz zzzzzz zz zzzzz zzz zzzzzzzzzzzzz."
 msgid "error.at-least-one-group-admin-needed"
 msgstr "Zzzzzz zzzz zz zzzzz zzz zzzzz"
 
+#: lib/Socialtext/Rest/Workspaces.pm:169
+msgid "error.at-least-one-wiki-administrator-required"
+msgstr "Zzz zzzz zzz zz zzzzz zzz zzzzzzzzz zzzzzzzzzzzzz."
+
 #: share/plugin/control/template/control/workspace_invite.html:342
 msgid "error.at-least-one-wiki-required"
 msgstr "Zzz zzzz zzzzzz zz zzzzz zzz zzzzzzzzz"
@@ -4920,6 +4924,10 @@ msgstr "Zzzzzz zzzzzz ..."
 
 msgid "error.backup-id-required"
 msgstr "Zzzz zzzzzz z zzzzzz ZZ - zz zzz --zzzz zz zzz zzzzzzzzz zzzzzzz."
+
+#: lib/Socialtext/Rest/Workspaces.pm:297
+msgid "error.bad-json"
+msgstr "zzz zzzz"
 
 #: lib/Socialtext/Handler/Base.pm:131
 msgid "error.bad-request"
@@ -5269,6 +5277,14 @@ msgstr "Zzz zz zzz zzzzz zz zzzzzzz zzzz zzzz zzzzzzz."
 msgid "error.getting-activities"
 msgstr "Zzzzz zzz z zzzzzzz zzzzzzz zzzzzzzzzz"
 
+#: lib/Socialtext/Rest/Workspaces.pm:307
+msgid "error.group-already-in-wiki"
+msgstr "zzzzz zzzzzzz zz zzzzzzzzz"
+
+#: lib/Socialtext/Rest/Workspaces.pm:303
+msgid "error.group-does-not-exist"
+msgstr "zzzzz zzzz zzz zzzzz"
+
 #: lib/Socialtext/CLI.pm:3540
 msgid "error.group-email-required"
 msgstr "--zzzzz zzzz zz zzzzzzzz zz zzzzzz z zzzzz."
@@ -5301,6 +5317,10 @@ msgstr "Zzzzz zz zzzzzzz z zzzzzz zz zzz %1 Zzzzzzzzz"
 #: lib/Socialtext/CLI.pm:3535
 msgid "error.group-name-or-ldap-dn-required"
 msgstr "--zzzz zz --zzzz-zz zzzz zz zzzzzzzz zz zzzzzz z zzzzz."
+
+#: lib/Socialtext/Rest/Group.pm:208
+msgid "error.group-needs-at-least-one-admin"
+msgstr "Zzz zzzzz zzzzz zz zzzzzzz zz zzzzz zzz zzzzz."
 
 #: lib/Socialtext/CLI.pm:2103
 msgid "error.group-or-wiki-required"
@@ -5442,6 +5462,10 @@ msgstr "Zzzzzzzzz zzzzz."
 #: ../socialtext-reports/lib/Socialtext/Reports/REST.pm:125
 msgid "error.invalid-report=module,message"
 msgstr "Zzzzzzz zzzzzz (%1): %2"
+
+#: lib/Socialtext/Rest/Workspaces.pm:316
+msgid "error.invalid-role-for-group"
+msgstr "zzzzzzz zzzz zzz zzzzz"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1399
 msgid "error.invalid-rows"
@@ -5600,6 +5624,10 @@ msgstr "Zzz zzzz zzzzzzzz zz zz zzzzzz zz zz zzz zzzz zzzzzzz."
 msgid "error.link-selection-required"
 msgstr "Zzzzzz zzzzzz zzz zzzz zzz zzzzz zzzz zz zzzz zzzz z zzzz."
 
+#: lib/Socialtext/Rest/Group.pm:381
+msgid "error.list-of-users-required"
+msgstr "Zzzzzzzz z zzzz zz zzzzz, zzz zzzz."
+
 #. ($url)
 #: lib/Socialtext/FetchRSSPlugin.pm:194
 msgid "error.load-feed=url"
@@ -5661,6 +5689,14 @@ msgstr "Zzzzzz zzzzz zzz ZZZZZ zzzzz."
 #: lib/Socialtext/CredentialsExtractor/Extractor/CAC.pm:61
 msgid "error.multiple-user-matched=name"
 msgstr "Zzzzzzzz zzzzzzz zzzzz zzzz zzzzzzzzz zzz Zzzz zzzzzzzz \"%1\""
+
+#: lib/Socialtext/Rest/Workspaces.pm:164
+msgid "error.must-be-business-admin-to-set-members-of-wiki"
+msgstr "Zzzz zz z zzzzzzzz zzzzz zz zzz zzzzzzz zz z zzzzzzzzz"
+
+#: lib/Socialtext/Rest/Workspaces.pm:249
+msgid "error.name-title-required"
+msgstr "zzzz, zzzzz zzzzzzzz"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:470
 msgid "error.new-account-name-required"
@@ -6671,6 +6707,15 @@ msgstr "Zzzzzzzz zzzzzzz zzzzzzzzz zzzzzz zz zzzzzzz zzz Zzzzzzzzzz."
 msgid "error.update-remote-user"
 msgstr "Zzzzzzzz zzzzzzz Zzzzz zzzzzz zz zzzzzzz zzz Zzzzzzzzzz."
 
+#. ($data->{name})
+#: lib/Socialtext/Rest/Group.pm:168
+msgid "error.updating-group-exists=name"
+msgstr "Zzzzz zzzzzzzz zzzzz: %1 zzzzzzz zzzzzz."
+
+#: lib/Socialtext/Rest/Group.pm:172
+msgid "error.updating-group=name"
+msgstr "Zzzzz zzzzzzzz zzzzz: %1"
+
 #: lib/Socialtext/Appliance/Model/SupportTarball.pm:54
 msgid "error.upload-support-tarball-already-started"
 msgstr "Zzzzzzz zzzzzzz!"
@@ -6679,6 +6724,14 @@ msgstr "Zzzzzzz zzzzzzz!"
 #: lib/Socialtext/Handler/ControlPanel.pm:299
 msgid "error.user-can-create-groups=message"
 msgstr "Zzzzz zzzzzzz zzzzz_zzz_zzzzzz_zzzzzz: %1"
+
+#: lib/Socialtext/Rest/Workspaces.pm:254
+msgid "error.user-cannot-access-account"
+msgstr "zzzz zzzzzz zzzzzz zzzzzzz"
+
+#: lib/Socialtext/Rest/Group.pm:148
+msgid "error.user-cannot-manage-associated-wikis-for-group"
+msgstr "zzzz zzzzzz zzzzzz zzzzzzzzzz zzzz zzzzz zz zzzzzzzzzz zzzz"
 
 #: share/skin/s3/javascript/people-avatar.js:195
 msgid "error.user-data"
@@ -6699,6 +6752,10 @@ msgstr "Zzz %1 zzz zzzzzzzz (%2) zz zzzzzzz zz zzz."
 msgid "error.user-id-required=uri"
 msgstr "Zzz zzzz zzzzzzz z zzzz_zz zz zzzz ZZZ (%1)."
 
+#: lib/Socialtext/Rest/Workspaces.pm:312
+msgid "error.user-is-not-group-admin"
+msgstr "zzzz zz zzz zzzzz zzzzz"
+
 #: share/plugin/control/template/control/user.html:32
 msgid "error.user-missing-from-ldap-during-last-refresh"
 msgstr "Zzzz zzzz zzz zzzzzzz zzzz zzz ZZZZ zzzzzzzzz zzzzzz zzz zzzz zzzzzzz."
@@ -6711,6 +6768,10 @@ msgstr "Zzzz zzzzzzz zzz zzz zzzz zz '%1' zz zzz %2 Zzzzz"
 #: share/plugin/control/share/javascript/useraccountrole.js:11
 msgid "error.username-required"
 msgstr "zzzzzzzz zz zzzzzzzz"
+
+#: lib/Socialtext/Rest/Workspaces.pm:158
+msgid "error.valid-account-for-this-wiki-required"
+msgstr "Zzz zzzz zzzzzzz z zzzzz zzzzzzz zzz zzzz zzzzzzzzz."
 
 #. ($username)
 #: lib/Socialtext/Challenger/OpenToken.pm:133
@@ -6742,6 +6803,10 @@ msgstr "Zzz zz zzzzzz zzzz zzzzzzzz zzzzzzzzzzzzzz zzzzzzzzzz."
 #: lib/Socialtext/Workspace.pm:622
 msgid "error.wiki-email-alias-exists=name"
 msgstr "Zzz zzzzzzzzz zzzz zzz zzzzz, %1, zz zzzzzzz zz zzz zz zz zzzzz zzzzz."
+
+#: lib/Socialtext/Rest/Workspaces.pm:258
+msgid "error.wiki-exists"
+msgstr "zzzzzzzzz zzzzzz"
 
 #. ($p->{name})
 #: lib/Socialtext/Workspace.pm:626

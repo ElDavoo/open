@@ -1125,6 +1125,10 @@ msgstr "Application error in %1 for %2 on %3: %4"
 msgid "error.application=wiki.host,error"
 msgstr "Application error in %1 on %2: %3"
 
+#: lib/Socialtext/Rest/Workspaces.pm:169
+msgid "error.at-least-one-wiki-administrator-required"
+msgstr "You must add at least one workspace administrator."
+
 #. ($self->{line}, $msg)
 #: lib/Socialtext/MassAdd.pm:335
 msgid "error.at=line,message"
@@ -1139,6 +1143,10 @@ msgstr "Backup already running"
 
 msgid "error.backup-failed"
 msgstr "Backup failed ..."
+
+#: lib/Socialtext/Rest/Workspaces.pm:297
+msgid "error.bad-json"
+msgstr "bad json"
 
 #: lib/Socialtext/Handler/Base.pm:131
 msgid "error.bad-request"
@@ -1359,6 +1367,14 @@ msgstr "gadget_id is a required parameter"
 msgid "error.gallery-forbidden"
 msgstr "You do not share an account with this gallery."
 
+#: lib/Socialtext/Rest/Workspaces.pm:307
+msgid "error.group-already-in-wiki"
+msgstr "group already in workspace"
+
+#: lib/Socialtext/Rest/Workspaces.pm:303
+msgid "error.group-does-not-exist"
+msgstr "group does not exist"
+
 #: lib/Socialtext/CLI.pm:3540
 msgid "error.group-email-required"
 msgstr "--email must be supplied to create a group."
@@ -1386,6 +1402,10 @@ msgstr "Group is already a member of the %1 Workspace"
 #: lib/Socialtext/CLI.pm:3535
 msgid "error.group-name-or-ldap-dn-required"
 msgstr "--name or --ldap-dn must be supplied to create a group."
+
+#: lib/Socialtext/Rest/Group.pm:208
+msgid "error.group-needs-at-least-one-admin"
+msgstr "The group needs to include at least one admin."
 
 #: lib/Socialtext/CLI.pm:2103
 msgid "error.group-or-wiki-required"
@@ -1494,6 +1514,10 @@ msgstr "Invalid permissions name: %1"
 #: lib/Socialtext/Hub.pm:193
 msgid "error.invalid-query"
 msgstr "Malformed query."
+
+#: lib/Socialtext/Rest/Workspaces.pm:316
+msgid "error.invalid-role-for-group"
+msgstr "invalid role for group"
 
 #. ($plugin, $scope)
 #: lib/Socialtext/UserSetContainer.pm:105
@@ -1618,6 +1642,10 @@ msgstr "The value '%1' is invalid."
 msgid "error.invalid=url"
 msgstr "%1 is not a valid URL."
 
+#: lib/Socialtext/Rest/Group.pm:381
+msgid "error.list-of-users-required"
+msgstr "Expected a list of users, got none."
+
 #. ($url)
 #: lib/Socialtext/FetchRSSPlugin.pm:194
 msgid "error.load-feed=url"
@@ -1640,6 +1668,14 @@ msgstr "Cannot mount the SAMBA share."
 #: lib/Socialtext/CredentialsExtractor/Extractor/CAC.pm:61
 msgid "error.multiple-user-matched=name"
 msgstr "Multiple matches found when searching for User matching \"%1\""
+
+#: lib/Socialtext/Rest/Workspaces.pm:164
+msgid "error.must-be-business-admin-to-set-members-of-wiki"
+msgstr "Must be a business admin to set members of a workspace"
+
+#: lib/Socialtext/Rest/Workspaces.pm:249
+msgid "error.name-title-required"
+msgstr "name, title required"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:470
 msgid "error.new-account-name-required"
@@ -2316,6 +2352,15 @@ msgstr "Remotely sourced passwords cannot be updated via Socialtext."
 msgid "error.update-remote-user"
 msgstr "Remotely sourced Users cannot be updated via Socialtext."
 
+#. ($data->{name})
+#: lib/Socialtext/Rest/Group.pm:168
+msgid "error.updating-group-exists=name"
+msgstr "Error updating group: %1 already exists."
+
+#: lib/Socialtext/Rest/Group.pm:172
+msgid "error.updating-group=name"
+msgstr "Error updating group: %1"
+
 #: lib/Socialtext/Appliance/Model/SupportTarball.pm:54
 msgid "error.upload-support-tarball-already-started"
 msgstr "Already started!"
@@ -2324,6 +2369,14 @@ msgstr "Already started!"
 #: lib/Socialtext/Handler/ControlPanel.pm:299
 msgid "error.user-can-create-groups=message"
 msgstr "Error setting users_can_create_groups: %1"
+
+#: lib/Socialtext/Rest/Workspaces.pm:254
+msgid "error.user-cannot-access-account"
+msgstr "user cannot access account"
+
+#: lib/Socialtext/Rest/Group.pm:148
+msgid "error.user-cannot-manage-associated-wikis-for-group"
+msgstr "user cannot manage workspaces this group is associated with"
 
 #. ($email_address)
 #: lib/Socialtext/Handler/Authen.pm:421
@@ -2340,10 +2393,18 @@ msgstr "The %1 you provided (%2) is already in use."
 msgid "error.user-id-required=uri"
 msgstr "You must provide a user_id to this URI (%1)."
 
+#: lib/Socialtext/Rest/Workspaces.pm:312
+msgid "error.user-is-not-group-admin"
+msgstr "user is not group admin"
+
 #. ($current_role->display_name, $group->display_name)
 #: lib/Socialtext/CLI.pm:1195
 msgid "error.user-role-exists=role,group"
 msgstr "User already has the role of '%1' in the %2 Group"
+
+#: lib/Socialtext/Rest/Workspaces.pm:158
+msgid "error.valid-account-for-this-wiki-required"
+msgstr "You must specify a valid account for this workspace."
 
 #. ($username)
 #: lib/Socialtext/Challenger/OpenToken.pm:133
@@ -2366,6 +2427,10 @@ msgstr "You no longer have accounts administration privileges."
 #: lib/Socialtext/Workspace.pm:622
 msgid "error.wiki-email-alias-exists=name"
 msgstr "The workspace name you chose, %1, is already in use as an email alias."
+
+#: lib/Socialtext/Rest/Workspaces.pm:258
+msgid "error.wiki-exists"
+msgstr "workspace exists"
 
 #. ($p->{name})
 #: lib/Socialtext/Workspace.pm:626

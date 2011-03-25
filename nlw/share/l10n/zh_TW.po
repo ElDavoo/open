@@ -4649,6 +4649,10 @@ msgstr "您必須至少選擇一個管理員"
 msgid "error.at-least-one-group-admin-needed"
 msgstr "群組必須有至少一位管理員。"
 
+#: lib/Socialtext/Rest/Workspaces.pm:169
+msgid "error.at-least-one-wiki-administrator-required"
+msgstr "You must add at least one workspace administrator."
+
 #: share/plugin/control/template/control/workspace_invite.html:342
 msgid "error.at-least-one-wiki-required"
 msgstr "您必須至少選擇一個工作區"
@@ -4670,6 +4674,10 @@ msgstr "備份失敗 ..."
 
 msgid "error.backup-id-required"
 msgstr "必須提供一個備份ID，或者使用列表查看可用備份"
+
+#: lib/Socialtext/Rest/Workspaces.pm:297
+msgid "error.bad-json"
+msgstr "bad json"
 
 #: lib/Socialtext/Handler/Base.pm:131
 msgid "error.bad-request"
@@ -5019,6 +5027,14 @@ msgstr "您沒有對任何帳戶共用該工具庫。"
 msgid "error.getting-activities"
 msgstr "參加活動時出錯。"
 
+#: lib/Socialtext/Rest/Workspaces.pm:307
+msgid "error.group-already-in-wiki"
+msgstr "group already in workspace"
+
+#: lib/Socialtext/Rest/Workspaces.pm:303
+msgid "error.group-does-not-exist"
+msgstr "group does not exist"
+
 #: lib/Socialtext/CLI.pm:3540
 msgid "error.group-email-required"
 msgstr "建立新的群組時，必須指定 --email。"
@@ -5051,6 +5067,10 @@ msgstr "群組已在工作區 %1 中"
 #: lib/Socialtext/CLI.pm:3535
 msgid "error.group-name-or-ldap-dn-required"
 msgstr "建立新的群組時，必須帶有 --name 或 --ldap-dn 參數。"
+
+#: lib/Socialtext/Rest/Group.pm:208
+msgid "error.group-needs-at-least-one-admin"
+msgstr "The group needs to include at least one admin."
 
 #: lib/Socialtext/CLI.pm:2103
 msgid "error.group-or-wiki-required"
@@ -5189,6 +5209,10 @@ msgstr "非法查詢。"
 
 msgid "error.invalid-report=module,message"
 msgstr "無效報告：%1（%2）"
+
+#: lib/Socialtext/Rest/Workspaces.pm:316
+msgid "error.invalid-role-for-group"
+msgstr "invalid role for group"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1399
 msgid "error.invalid-rows"
@@ -5342,6 +5366,10 @@ msgstr "您必須註冊或登入以使用此功能。"
 msgid "error.link-selection-required"
 msgstr "請選擇要插入鏈結的文字。"
 
+#: lib/Socialtext/Rest/Group.pm:381
+msgid "error.list-of-users-required"
+msgstr "Expected a list of users, got none."
+
 #. ($url)
 #: lib/Socialtext/FetchRSSPlugin.pm:194
 msgid "error.load-feed=url"
@@ -5403,6 +5431,14 @@ msgstr "無法增加 SAMBA 共用。"
 #: lib/Socialtext/CredentialsExtractor/Extractor/CAC.pm:61
 msgid "error.multiple-user-matched=name"
 msgstr "搜尋符合『%1』的用戶有多重結果"
+
+#: lib/Socialtext/Rest/Workspaces.pm:164
+msgid "error.must-be-business-admin-to-set-members-of-wiki"
+msgstr "Must be a business admin to set members of a workspace"
+
+#: lib/Socialtext/Rest/Workspaces.pm:249
+msgid "error.name-title-required"
+msgstr "name, title required"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:470
 msgid "error.new-account-name-required"
@@ -6385,6 +6421,15 @@ msgstr "不能通過 Socialtext 更新遠端密碼。"
 msgid "error.update-remote-user"
 msgstr "不能通過 Socialtext 更新遠端用戶。"
 
+#. ($data->{name})
+#: lib/Socialtext/Rest/Group.pm:168
+msgid "error.updating-group-exists=name"
+msgstr "Error updating group: %1 already exists."
+
+#: lib/Socialtext/Rest/Group.pm:172
+msgid "error.updating-group=name"
+msgstr "Error updating group: %1"
+
 #: lib/Socialtext/Appliance/Model/SupportTarball.pm:54
 msgid "error.upload-support-tarball-already-started"
 msgstr "上傳已經開始!"
@@ -6393,6 +6438,14 @@ msgstr "上傳已經開始!"
 #: lib/Socialtext/Handler/ControlPanel.pm:299
 msgid "error.user-can-create-groups=message"
 msgstr "『用戶建立群組』設定出錯：%1"
+
+#: lib/Socialtext/Rest/Workspaces.pm:254
+msgid "error.user-cannot-access-account"
+msgstr "user cannot access account"
+
+#: lib/Socialtext/Rest/Group.pm:148
+msgid "error.user-cannot-manage-associated-wikis-for-group"
+msgstr "user cannot manage workspaces this group is associated with"
 
 #: share/skin/s3/javascript/people-avatar.js:195
 msgid "error.user-data"
@@ -6413,6 +6466,10 @@ msgstr "欄位 %1（%2）已被占用。"
 msgid "error.user-id-required=uri"
 msgstr "必須提供用戶 ID 到此網址（%1）"
 
+#: lib/Socialtext/Rest/Workspaces.pm:312
+msgid "error.user-is-not-group-admin"
+msgstr "user is not group admin"
+
 #: share/plugin/control/template/control/user.html:32
 msgid "error.user-missing-from-ldap-during-last-refresh"
 msgstr "上次更新時該用戶從 LDAP 位址中遺失。"
@@ -6425,6 +6482,10 @@ msgstr "用戶在 %2 群組具有『%1』身份"
 #: share/plugin/control/share/javascript/useraccountrole.js:11
 msgid "error.username-required"
 msgstr "用戶名為必填"
+
+#: lib/Socialtext/Rest/Workspaces.pm:158
+msgid "error.valid-account-for-this-wiki-required"
+msgstr "You must specify a valid account for this workspace."
 
 #. ($username)
 #: lib/Socialtext/Challenger/OpenToken.pm:133
@@ -6456,6 +6517,10 @@ msgstr "您已失去所有帳戶的管理員權限。"
 #: lib/Socialtext/Workspace.pm:622
 msgid "error.wiki-email-alias-exists=name"
 msgstr "選擇的工作空間名 %1，已被作為郵箱別名被占用。"
+
+#: lib/Socialtext/Rest/Workspaces.pm:258
+msgid "error.wiki-exists"
+msgstr "workspace exists"
 
 #. ($p->{name})
 #: lib/Socialtext/Workspace.pm:626
