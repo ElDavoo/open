@@ -1154,7 +1154,7 @@ sub st_force_confirmation {
     my ($self, $email, $password) = @_;
 
     require Socialtext::User;
-    Socialtext::User->new(username => $email)->confirm_email_address();
+    Socialtext::User->new(email_address => $email)->confirm_email_address();
     $self->st_admin("change-password --email '$email' --password '$password'",
                     'has been changed');
 }
@@ -1169,7 +1169,7 @@ sub st_open_confirmation_uri {
     my ($self, $email) = @_;
 
     require Socialtext::User;
-    my $uri = Socialtext::User->new(username => $email)->confirmation_uri();
+    my $uri = Socialtext::User->new(email_address => $email)->confirmation_uri();
     # strip off host part
     $uri =~ s#.+(/nlw/submit/confirm)#$1#;
     $self->{selenium}->open_ok($uri);
