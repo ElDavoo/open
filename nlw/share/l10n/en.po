@@ -3513,17 +3513,33 @@ msgstr "Welcome"
 msgid "dashboard.widgets-to-push:"
 msgstr "The following widgets will be pushed:"
 
+#: lib/Socialtext/Reports/Utils.pm:55
+msgid "date.apr"
+msgstr "Apr"
+
 #: share/plugin/control/template/control/report.html:105
 msgid "date.april"
 msgstr "April"
+
+#: lib/Socialtext/Reports/Utils.pm:56
+msgid "date.aug"
+msgstr "Aug"
 
 #: share/plugin/control/template/control/report.html:109
 msgid "date.august"
 msgstr "August"
 
+#: lib/Socialtext/Reports/Utils.pm:57
+msgid "date.dec"
+msgstr "Dec"
+
 #: share/plugin/control/template/control/report.html:113
 msgid "date.december"
 msgstr "December"
+
+#: lib/Socialtext/Reports/Utils.pm:55
+msgid "date.feb"
+msgstr "Feb"
 
 #: share/plugin/control/template/control/report.html:103
 msgid "date.february"
@@ -3544,23 +3560,39 @@ msgstr "Should times be displayed in 12-hour or 24-hour format?"
 msgid "date.include-seconds?"
 msgstr "Should seconds be included on displayed times?"
 
+#: lib/Socialtext/Reports/Utils.pm:55
+msgid "date.jan"
+msgstr "Jan"
+
 #: share/plugin/control/template/control/report.html:102
 msgid "date.january"
 msgstr "January"
+
+#: lib/Socialtext/Reports/Utils.pm:56
+msgid "date.jul"
+msgstr "Jul"
 
 #: share/plugin/control/template/control/report.html:108
 msgid "date.july"
 msgstr "July"
 
+#: lib/Socialtext/Reports/Utils.pm:56
+msgid "date.jun"
+msgstr "Jun"
+
 #: share/plugin/control/template/control/report.html:107
 msgid "date.june"
 msgstr "June"
+
+#: lib/Socialtext/Reports/Utils.pm:55
+msgid "date.mar"
+msgstr "Mar"
 
 #: share/plugin/control/template/control/report.html:104
 msgid "date.march"
 msgstr "March"
 
-#: share/plugin/control/template/control/report.html:106
+#: lib/Socialtext/Reports/Utils.pm:56 share/plugin/control/template/control/report.html:106
 msgid "date.may"
 msgstr "May"
 
@@ -3571,9 +3603,17 @@ msgstr "Mon"
 msgid "date.never"
 msgstr "never"
 
+#: lib/Socialtext/Reports/Utils.pm:57
+msgid "date.nov"
+msgstr "Nov"
+
 #: share/plugin/control/template/control/report.html:112
 msgid "date.novemeber"
 msgstr "Novemeber"
+
+#: lib/Socialtext/Reports/Utils.pm:57
+msgid "date.oct"
+msgstr "Oct"
 
 #: share/plugin/control/template/control/report.html:111
 msgid "date.october"
@@ -3581,6 +3621,10 @@ msgstr "October"
 
 msgid "date.sat"
 msgstr "Sat"
+
+#: lib/Socialtext/Reports/Utils.pm:57
+msgid "date.sep"
+msgstr "Sep"
 
 #: share/plugin/control/template/control/report.html:110
 msgid "date.september"
@@ -8021,7 +8065,7 @@ msgstr "page_id"
 
 #: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:252
 msgid "heading.page_views"
-msgstr "page_views"
+msgstr ""
 
 #: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:253
 msgid "heading.pages"

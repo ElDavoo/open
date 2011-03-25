@@ -849,6 +849,18 @@ msgstr "正在导入默认控制面板"
 msgid "dashboard.importing=user"
 msgstr "正在为“%1”用户导入控制面板"
 
+msgid "date.apr"
+msgstr "四月"
+
+msgid "date.aug"
+msgstr "八月"
+
+msgid "date.dec"
+msgstr "十二月"
+
+msgid "date.feb"
+msgstr "二月"
+
 #: lib/Socialtext/TimeZonePlugin.pm:127
 msgid "date.format?"
 msgstr "如何显示日期格式？"
@@ -864,11 +876,35 @@ msgstr "显示时间为 12 小时制或是 24 小时制？"
 msgid "date.include-seconds?"
 msgstr "在时间里显示秒数？"
 
+msgid "date.jan"
+msgstr "一月"
+
+msgid "date.jul"
+msgstr "七月"
+
+msgid "date.jun"
+msgstr "六月"
+
+msgid "date.mar"
+msgstr "三月"
+
+msgid "date.may"
+msgstr "五月"
+
 msgid "date.mon"
 msgstr "周一"
 
+msgid "date.nov"
+msgstr "十一月"
+
+msgid "date.oct"
+msgstr "十月"
+
 msgid "date.sat"
 msgstr "周六"
+
+msgid "date.sep"
+msgstr "九月"
 
 msgid "date.sun"
 msgstr "周日"

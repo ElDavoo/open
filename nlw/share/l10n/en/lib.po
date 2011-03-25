@@ -884,6 +884,54 @@ msgstr "Tue"
 msgid "date.wed"
 msgstr "Wed"
 
+#: lib/Socialtext/Reports/Utils.pm:55
+msgid "date.apr"
+msgstr "Apr"
+
+#: lib/Socialtext/Reports/Utils.pm:56
+msgid "date.aug"
+msgstr "Aug"
+
+#: lib/Socialtext/Reports/Utils.pm:57
+msgid "date.dec"
+msgstr "Dec"
+
+#: lib/Socialtext/Reports/Utils.pm:55
+msgid "date.feb"
+msgstr "Feb"
+
+#: lib/Socialtext/Reports/Utils.pm:55
+msgid "date.jan"
+msgstr "Jan"
+
+#: lib/Socialtext/Reports/Utils.pm:56
+msgid "date.jul"
+msgstr "Jul"
+
+#: lib/Socialtext/Reports/Utils.pm:56
+msgid "date.jun"
+msgstr "Jun"
+
+#: lib/Socialtext/Reports/Utils.pm:55
+msgid "date.mar"
+msgstr "Mar"
+
+#: lib/Socialtext/Reports/Utils.pm:56
+msgid "date.may"
+msgstr "May"
+
+#: lib/Socialtext/Reports/Utils.pm:57
+msgid "date.nov"
+msgstr "Nov"
+
+#: lib/Socialtext/Reports/Utils.pm:57
+msgid "date.oct"
+msgstr "Oct"
+
+#: lib/Socialtext/Reports/Utils.pm:57
+msgid "date.sep"
+msgstr "Sep"
+
 #: lib/Socialtext/Handler/ControlPanel.pm:703
 msgid "desktop.2nd-bg-color"
 msgstr "Secondary background color"

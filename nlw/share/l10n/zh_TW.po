@@ -3298,17 +3298,29 @@ msgstr "歡迎"
 msgid "dashboard.widgets-to-push:"
 msgstr "下面的小工具將會被推送："
 
+msgid "date.apr"
+msgstr "四月"
+
 #: share/plugin/control/template/control/report.html:105
 msgid "date.april"
 msgstr "四月"
+
+msgid "date.aug"
+msgstr "八月"
 
 #: share/plugin/control/template/control/report.html:109
 msgid "date.august"
 msgstr "八月"
 
+msgid "date.dec"
+msgstr "十二月"
+
 #: share/plugin/control/template/control/report.html:113
 msgid "date.december"
 msgstr "十二月"
+
+msgid "date.feb"
+msgstr "二月"
 
 #: share/plugin/control/template/control/report.html:103
 msgid "date.february"
@@ -3329,23 +3341,34 @@ msgstr "顯示時間為 12 小時制或是 24 小時制？"
 msgid "date.include-seconds?"
 msgstr "在時間里顯示秒數？"
 
+msgid "date.jan"
+msgstr "一月"
+
 #: share/plugin/control/template/control/report.html:102
 msgid "date.january"
 msgstr "一月"
+
+msgid "date.jul"
+msgstr "七月"
 
 #: share/plugin/control/template/control/report.html:108
 msgid "date.july"
 msgstr "七月"
 
+msgid "date.jun"
+msgstr "六月"
+
 #: share/plugin/control/template/control/report.html:107
 msgid "date.june"
 msgstr "六月"
+
+msgid "date.mar"
+msgstr "三月"
 
 #: share/plugin/control/template/control/report.html:104
 msgid "date.march"
 msgstr "三月"
 
-#: share/plugin/control/template/control/report.html:106
 msgid "date.may"
 msgstr "五月"
 
@@ -3356,9 +3379,15 @@ msgstr "周一"
 msgid "date.never"
 msgstr "從未"
 
+msgid "date.nov"
+msgstr "十一月"
+
 #: share/plugin/control/template/control/report.html:112
 msgid "date.novemeber"
 msgstr "十一月"
+
+msgid "date.oct"
+msgstr "十月"
 
 #: share/plugin/control/template/control/report.html:111
 msgid "date.october"
@@ -3366,6 +3395,9 @@ msgstr "十月"
 
 msgid "date.sat"
 msgstr "周六"
+
+msgid "date.sep"
+msgstr "九月"
 
 #: share/plugin/control/template/control/report.html:110
 msgid "date.september"
