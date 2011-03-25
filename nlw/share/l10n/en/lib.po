@@ -851,39 +851,6 @@ msgstr "Importing default dashboard"
 msgid "dashboard.importing=user"
 msgstr "Importing dashboard for user %1"
 
-#: lib/Socialtext/TimeZonePlugin.pm:127
-msgid "date.format?"
-msgstr "How should displayed dates be formatted?"
-
-msgid "date.fri"
-msgstr "Fri"
-
-#: lib/Socialtext/TimeZonePlugin.pm:161
-msgid "date.hour-format?"
-msgstr "Should times be displayed in 12-hour or 24-hour format?"
-
-#: lib/Socialtext/TimeZonePlugin.pm:193
-msgid "date.include-seconds?"
-msgstr "Should seconds be included on displayed times?"
-
-msgid "date.mon"
-msgstr "Mon"
-
-msgid "date.sat"
-msgstr "Sat"
-
-msgid "date.sun"
-msgstr "Sun"
-
-msgid "date.thu"
-msgstr "Thu"
-
-msgid "date.tue"
-msgstr "Tue"
-
-msgid "date.wed"
-msgstr "Wed"
-
 #: lib/Socialtext/Reports/Utils.pm:55
 msgid "date.apr"
 msgstr "Apr"
@@ -899,6 +866,21 @@ msgstr "Dec"
 #: lib/Socialtext/Reports/Utils.pm:55
 msgid "date.feb"
 msgstr "Feb"
+
+#: lib/Socialtext/TimeZonePlugin.pm:127
+msgid "date.format?"
+msgstr "How should displayed dates be formatted?"
+
+msgid "date.fri"
+msgstr "Fri"
+
+#: lib/Socialtext/TimeZonePlugin.pm:161
+msgid "date.hour-format?"
+msgstr "Should times be displayed in 12-hour or 24-hour format?"
+
+#: lib/Socialtext/TimeZonePlugin.pm:193
+msgid "date.include-seconds?"
+msgstr "Should seconds be included on displayed times?"
 
 #: lib/Socialtext/Reports/Utils.pm:55
 msgid "date.jan"
@@ -920,6 +902,9 @@ msgstr "Mar"
 msgid "date.may"
 msgstr "May"
 
+msgid "date.mon"
+msgstr "Mon"
+
 #: lib/Socialtext/Reports/Utils.pm:57
 msgid "date.nov"
 msgstr "Nov"
@@ -928,9 +913,24 @@ msgstr "Nov"
 msgid "date.oct"
 msgstr "Oct"
 
+msgid "date.sat"
+msgstr "Sat"
+
 #: lib/Socialtext/Reports/Utils.pm:57
 msgid "date.sep"
 msgstr "Sep"
+
+msgid "date.sun"
+msgstr "Sun"
+
+msgid "date.thu"
+msgstr "Thu"
+
+msgid "date.tue"
+msgstr "Tue"
+
+msgid "date.wed"
+msgstr "Wed"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:703
 msgid "desktop.2nd-bg-color"
@@ -1897,6 +1897,10 @@ msgstr "No preferences set for the %1 plugin."
 msgid "error.no-profile-field=name"
 msgstr "Unknown Profile Field '%1'."
 
+#: lib/Socialtext/Rest.pm:480
+msgid "error.no-requested-resource"
+msgstr "The requested resource does not exist."
+
 #. ($user->username, $member->display_name, $thing->name)
 #: lib/Socialtext/CLI.pm:1452
 msgid "error.no-role=name,role,container"
@@ -2007,6 +2011,10 @@ msgstr "No Workspace identified by %1"
 #: lib/Socialtext/CLI.pm:3425
 msgid "error.not-both-visible-and-hidden"
 msgstr "Can only specify one of --visible or --hidden"
+
+#: lib/Socialtext/Rest.pm:350
+msgid "error.not-found=entity"
+msgstr "%1 not found"
 
 #. ($user->username, $thing->name)
 #. ($user->username, $group->driver_group_name)
@@ -2444,6 +2452,10 @@ msgstr "You must provide a user_id to this URI (%1)."
 #: lib/Socialtext/Rest/Workspaces.pm:312
 msgid "error.user-is-not-group-admin"
 msgstr "user is not group admin"
+
+#: lib/Socialtext/Rest.pm:320
+msgid "error.user-not-authorized"
+msgstr "User not authorized"
 
 #. ($current_role->display_name, $group->display_name)
 #: lib/Socialtext/CLI.pm:1195

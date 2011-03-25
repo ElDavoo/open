@@ -45,21 +45,11 @@ msgstr "即将推出"
 msgid "description.workspaces"
 msgstr "列出群组中的所有工作区"
 
-#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:64
-#: share/plugin/groups/share/javascript/lightbox/delete-group.tt2:20
-#: share/plugin/groups/share/javascript/lightbox/leave-group.tt2:17
-#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:74
-#: share/plugin/groups/template/edit_group_footer:11
-#: share/plugin/groups/template/edit_group_footer:4
-#: share/plugin/groups/template/group_footer:14
-#: share/plugin/groups/template/group_footer:7
+#: share/plugin/groups/share/javascript/lightbox/create-group.tt2:64 share/plugin/groups/share/javascript/lightbox/delete-group.tt2:20 share/plugin/groups/share/javascript/lightbox/leave-group.tt2:17 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:74 share/plugin/groups/template/edit_group_footer:11 share/plugin/groups/template/edit_group_footer:4 share/plugin/groups/template/group_footer:14 share/plugin/groups/template/group_footer:7
 msgid "do.cancel"
 msgstr "取消"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:69
-#: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:3
-#: share/plugin/groups/template/edit_group_footer:7
-#: share/plugin/groups/template/group_footer:10
+#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:69 share/plugin/groups/share/widgets/membership/jemplate/members.tt2:3 share/plugin/groups/template/edit_group_footer:7 share/plugin/groups/template/group_footer:10
 msgid "do.create"
 msgstr "新建"
 
@@ -67,13 +57,11 @@ msgstr "新建"
 msgid "do.delete"
 msgstr "删除"
 
-#: share/plugin/groups/template/group_links:11
-#: share/plugin/groups/template/grouplist:93
+#: share/plugin/groups/template/group_links:11 share/plugin/groups/template/grouplist:93
 msgid "do.join"
 msgstr "加入"
 
-#: share/plugin/groups/share/javascript/lightbox/leave-group.tt2:11
-#: share/plugin/groups/template/group_links:8
+#: share/plugin/groups/share/javascript/lightbox/leave-group.tt2:11 share/plugin/groups/template/group_links:8
 msgid "do.leave"
 msgstr "离开"
 
@@ -90,8 +78,7 @@ msgstr "保存"
 msgid "error.already-exists-in-group=member"
 msgstr "%1 已经是此群组的成员了。"
 
-#: share/plugin/groups/share/widgets/membership/widget.js:490
-#: share/plugin/groups/share/widgets/membership/widget.js:549
+#: share/plugin/groups/share/widgets/membership/widget.js:490 share/plugin/groups/share/widgets/membership/widget.js:549
 msgid "error.at-least-one-group-admin-needed"
 msgstr "群组必须有至少一位管理员。"
 
@@ -123,28 +110,15 @@ msgstr "私密"
 msgid "group.acl-self-join"
 msgstr "自行加入"
 
-#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:25
-msgid "groups.administrators"
-msgstr "管理员"
-
-#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:11
-#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:13
-#: share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:17
-#: share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:19
+#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:11 share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:13 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:17 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:19
 msgid "group.first"
 msgstr "最前"
 
-#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:17
-#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:19
-#: share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:23
-#: share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:25
+#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:17 share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:19 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:23 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:25
 msgid "group.next"
 msgstr "下一个"
 
-#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:5
-#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:7
-#: share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:11
-#: share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:13
+#: share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:5 share/plugin/groups/share/widgets/edit_people/jemplate/existingUsers.tt2:7 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:11 share/plugin/groups/share/widgets/people/jemplate/peoplelist.tt2:13
 msgid "group.previous"
 msgstr "前一个"
 
@@ -159,6 +133,10 @@ msgstr "添加工作区"
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:54
 msgid "groups.admin-can-change-setting-after-creation"
 msgstr "群组管理员在创建完群组后，可以更改其设置。"
+
+#: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:25
+msgid "groups.administrators"
+msgstr "管理员"
 
 #: share/plugin/groups/share/widgets/all_groups/widget.html:2
 msgid "groups.all-available"
@@ -225,8 +203,7 @@ msgstr "在 %1 中新建页面"
 msgid "groups.create-new-wiki"
 msgstr "新建工作区"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:31
-#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:44
+#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:31 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:44
 msgid "groups.creating-self-join-wiki"
 msgstr "您正在创建自行加入工作区。群组外的用户能通过搜索、活动列表、成员个人页面和首页等等方式找到该工作区，并看见其中的内容。"
 
@@ -255,8 +232,7 @@ msgstr "描述字数限 1000 字符以内"
 msgid "groups.description:"
 msgstr "描述："
 
-#: share/plugin/groups/template/directory_hello:2
-#: share/plugin/groups/template/nav_groups:15
+#: share/plugin/groups/template/directory_hello:2 share/plugin/groups/template/nav_groups:15
 msgid "groups.directory"
 msgstr "群组目录"
 
@@ -264,20 +240,22 @@ msgstr "群组目录"
 msgid "groups.edit"
 msgstr "（编辑）"
 
+msgid "groups.edit-group"
+msgstr "编辑群组"
+
+msgid "groups.edit-layout"
+msgstr "编辑布局"
+
 #. (container.group.name)
 #: share/plugin/groups/template/edit_group_hello:4
 msgid "groups.edit=name"
 msgstr "编辑群组：%1"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/list.tt2:11
-#: share/plugin/groups/share/widgets/membership/jemplate/list.tt2:13
+#: share/plugin/groups/share/widgets/membership/jemplate/list.tt2:11 share/plugin/groups/share/widgets/membership/jemplate/list.tt2:13
 msgid "groups.first"
 msgstr "最前"
 
-#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:8
-#: share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:4
-#: share/plugin/groups/template/create_group_hello:2
-#: share/plugin/groups/template/edit_group_hello:3
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:8 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:4 share/plugin/groups/template/create_group_hello:2 share/plugin/groups/template/edit_group_hello:3
 msgid "groups.group"
 msgstr "群组"
 
@@ -314,13 +292,11 @@ msgstr "离开群组"
 msgid "groups.member"
 msgstr "成员"
 
-#: share/plugin/groups/template/grouplist:105
-#: share/plugin/groups/template/grouplist:38
+#: share/plugin/groups/template/grouplist:105 share/plugin/groups/template/grouplist:38
 msgid "groups.member-plural"
 msgstr "成员"
 
-#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:6
-#: share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:3
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:6 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:3
 msgid "groups.members"
 msgstr "成员"
 
@@ -340,8 +316,7 @@ msgstr "必须要有名称"
 msgid "groups.new-page"
 msgstr "新页面"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/list.tt2:17
-#: share/plugin/groups/share/widgets/membership/jemplate/list.tt2:19
+#: share/plugin/groups/share/widgets/membership/jemplate/list.tt2:17 share/plugin/groups/share/widgets/membership/jemplate/list.tt2:19
 msgid "groups.next"
 msgstr "下一个"
 
@@ -370,8 +345,7 @@ msgstr "提示：消息只发送给已添加的成员。"
 msgid "groups.personal-message-optional:"
 msgstr "个人消息（可选）："
 
-#: share/plugin/groups/share/widgets/membership/jemplate/list.tt2:5
-#: share/plugin/groups/share/widgets/membership/jemplate/list.tt2:7
+#: share/plugin/groups/share/widgets/membership/jemplate/list.tt2:5 share/plugin/groups/share/widgets/membership/jemplate/list.tt2:7
 msgid "groups.previous"
 msgstr "前一个"
 
@@ -399,8 +373,7 @@ msgstr "管理员"
 msgid "groups.role-member"
 msgstr "成员"
 
-#: share/plugin/groups/template/edit_group_footer:14
-#: share/plugin/groups/template/group_footer:17
+#: share/plugin/groups/template/edit_group_footer:14 share/plugin/groups/template/group_footer:17
 msgid "groups.save"
 msgstr "保存"
 
@@ -439,13 +412,11 @@ msgstr "状态"
 msgid "groups.successfully-deleted=name"
 msgstr "群组 %1 已成功删除。"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:30
-#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:43
+#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:30 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:43
 msgid "groups.title-of-your-new-wiki-can-changed-later"
 msgstr "这是您新工作区的标题。以后您还可以修改这个标题。"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:23
-#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:37
+#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:23 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:37
 msgid "groups.title:"
 msgstr "标题："
 
@@ -477,9 +448,7 @@ msgstr "本群组中某些工作区的权限，让您无法更新群组权限。
 msgid "groups.wiki-with-that-name-already-exists"
 msgstr "已存在该名称的工作区"
 
-#: share/plugin/groups/share/widgets/all_groups/widget.js:11
-#: share/plugin/groups/template/grouplist:30
-#: share/plugin/groups/template/grouplist:88
+#: share/plugin/groups/share/widgets/all_groups/widget.js:11 share/plugin/groups/template/grouplist:30 share/plugin/groups/template/grouplist:88
 msgid "groups.you-are-member"
 msgstr "您当前是这个群组的成员。"
 
@@ -510,15 +479,11 @@ msgstr "只能由 3-30 个小写字母、数字、下划线或破折号组成。
 msgid "info.wiki-id"
 msgstr "这是一个作为您的工作区网址和邮件地址的唯一短标识。"
 
-#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:28
-#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:41
+#: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:28 share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:41
 msgid "info.wiki-title"
 msgstr "这是您工作区的标题。需要的话稍后可以更改。"
 
-#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:48
-#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:50
-#: share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:43
-#: share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:45
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:48 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:50 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:43 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:45
 msgid "nav.first"
 msgstr "最前"
 
@@ -526,24 +491,15 @@ msgstr "最前"
 msgid "nav.groups"
 msgstr "群组"
 
-#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:66
-#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:68
-#: share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:61
-#: share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:63
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:66 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:68 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:61 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:63
 msgid "nav.last"
 msgstr "最后"
 
-#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:60
-#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:62
-#: share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:55
-#: share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:57
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:60 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:62 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:55 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:57
 msgid "nav.next"
 msgstr "下一页"
 
-#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:54
-#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:56
-#: share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:49
-#: share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:51
+#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:54 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:56 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:49 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:51
 msgid "nav.previous"
 msgstr "上一页"
 
@@ -562,6 +518,12 @@ msgstr "信息"
 #: share/plugin/groups/share/widgets/edit_people/config.yaml:3
 msgid "title.edit_people"
 msgstr "成员"
+
+msgid "title.group-members"
+msgstr "成员"
+
+msgid "title.group-workspaces"
+msgstr "工作区"
 
 #: share/plugin/groups/share/widgets/information/config.yaml:3
 msgid "title.information"
@@ -586,9 +548,3 @@ msgstr "工作区"
 #: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:17
 msgid "wiki.create"
 msgstr "新建工作区"
-
-msgid "title.group-members"
-msgstr "成员"
-
-msgid "title.group-workspaces"
-msgstr "工作区"

@@ -286,6 +286,9 @@ msgstr "浏览 ..."
 msgid "control.calculated-unless-provided=field"
 msgstr "若未设定，将自动计算 %1"
 
+msgid "control.change"
+msgstr "更改"
+
 #: share/plugin/control/template/control/user.html:119
 msgid "control.clear-external-id"
 msgstr "清除外部 ID"
@@ -711,6 +714,9 @@ msgstr "成员"
 msgid "control.member-of-account"
 msgstr "帐户成员"
 
+msgid "control.more-info=link"
+msgstr "更多信息请参考%1"
+
 #: share/plugin/control/share/javascript/workspaces_new.js:144 share/plugin/control/share/javascript/workspaces_new.js:27 share/plugin/control/template/control/account.html:116 share/plugin/control/template/control/account_table:9 share/plugin/control/template/control/desktop-account.html:25 share/plugin/control/template/control/group.html:166 share/plugin/control/template/control/group.html:321 share/plugin/control/template/control/group.html:71 share/plugin/control/template/control/group_invite.html:91 share/plugin/control/template/control/group_table:20 share/plugin/control/template/control/group_table:7 share/plugin/control/template/control/groups.html:59 share/plugin/control/template/control/selected_user_table_header:16 share/plugin/control/template/control/user.html:159 share/plugin/control/template/control/user.html:277 share/plugin/control/template/control/user_table_header:26 share/plugin/control/template/control/user_table_header:28 share/plugin/control/template/control/workspace.html:212 share/plugin/control/template/control/workspace.html:72 share/plugin/control/template/control/workspace_invite.html:144 share/plugin/control/template/control/workspace_invite.html:93 share/plugin/control/template/control/workspace_table:15 share/plugin/control/template/control/workspace_table:22
 msgid "control.name"
 msgstr "名称"
@@ -785,6 +791,9 @@ msgstr "删除外部 ID 要求"
 msgid "control.remove-from-account"
 msgstr "从帐户删除"
 
+msgid "control.remove-from-accounts"
+msgstr "从帐户中移除"
+
 msgid "control.remove-from-group"
 msgstr "从群组删除"
 
@@ -805,6 +814,9 @@ msgstr "把选择的 %1 个群组从此工作区删除？"
 
 msgid "control.remove-selected-user-from-wiki=count?"
 msgstr "把选择的 %1 位用户从此工作区删除？"
+
+msgid "control.remove-selected-users-from-group=count?"
+msgstr "将选定用户从该群组移除"
 
 #. (workspaces.length)
 #: share/plugin/control/template/control/user.html:314
@@ -902,6 +914,9 @@ msgstr "选择下面的一名或多名用户成为您新工作区的管理员"
 #: share/plugin/control/template/control/account_add_group.html:10 share/plugin/control/template/control/workspace_add_group.html:14
 msgid "control.select-group"
 msgstr "请选择一个群组"
+
+msgid "control.select-new-primary-account-before-removing-original"
+msgstr "一个群组必须要有一个主帐户。请选择一个新的主帐户，然后移除以前的帐户。"
 
 #: share/plugin/control/template/control/add_users.html:15
 msgid "control.select-users-csv:"
@@ -1036,12 +1051,18 @@ msgstr "转换为群组"
 msgid "control.update"
 msgstr "更新"
 
+msgid "control.update-successful"
+msgstr "升级成功"
+
 msgid "control.update-user"
 msgstr "更新用户：%1"
 
 #: share/plugin/control/template/control/group.html:122
 msgid "control.updating"
 msgstr "正在更新 ..."
+
+msgid "control.updating-users-with-csv"
+msgstr "用CSV文件来更新用户信息"
 
 #: share/plugin/control/template/control/design-account.html:24
 msgid "control.upload-account-logo-optional"
@@ -1058,6 +1079,9 @@ msgstr "使用默认 Socialtext 标志"
 #: share/plugin/control/template/control/design-account.html:56
 msgid "control.use-default-logo-for-desktop"
 msgstr "为桌面使用默认 Socialtext 标志"
+
+msgid "control.use-this-form-also-for-updates"
+msgstr "这个表格也可以用来更新现有用户。"
 
 #. (item.title)
 #: share/plugin/control/template/control/account.html:200

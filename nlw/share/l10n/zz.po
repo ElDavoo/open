@@ -5980,6 +5980,10 @@ msgstr "Zzzzzzz Zzzzzzz Zzzzz '%1'."
 msgid "error.no-recipient"
 msgstr "Zzzzz: Zz zzzz zzzzz, zzz zzzz zzzzzzz z zzzzzzzzz."
 
+#: lib/Socialtext/Rest.pm:480
+msgid "error.no-requested-resource"
+msgstr "Zzz zzzzzzzzz zzzzzzzz zzzz zzz zzzzz."
+
 #. ($user->username, $member->display_name, $thing->name)
 #: lib/Socialtext/CLI.pm:1452
 msgid "error.no-role=name,role,container"
@@ -6111,6 +6115,10 @@ msgstr "Zzzz zzzzzzzzz zz zzzzzzzzzz zz zzzz zzzz zzzzzzz zzzzzzzzzzzzzz zzz zzz
 #: lib/Socialtext/CLI.pm:3425
 msgid "error.not-both-visible-and-hidden"
 msgstr "Zzz zzzz zzzzzzz zzz zz --zzzzzzz zz --zzzzzz"
+
+#: lib/Socialtext/Rest.pm:350
+msgid "error.not-found=entity"
+msgstr "%1 zzz zzzzz"
 
 #: share/plugin/groups/template/nav_groups:23
 msgid "error.not-member-of-any-groups"
@@ -6803,6 +6811,10 @@ msgstr "zzzz zz zzz zzzzz zzzzz"
 #: share/plugin/control/template/control/user.html:32
 msgid "error.user-missing-from-ldap-during-last-refresh"
 msgstr "Zzzz zzzz zzz zzzzzzz zzzz zzz ZZZZ zzzzzzzzz zzzzzz zzz zzzz zzzzzzz."
+
+#: lib/Socialtext/Rest.pm:320
+msgid "error.user-not-authorized"
+msgstr "Zzzz zzz zzzzzzzzzz"
 
 #. ($current_role->display_name, $group->display_name)
 #: lib/Socialtext/CLI.pm:1195

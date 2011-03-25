@@ -2299,9 +2299,8 @@ msgstr "浏览 ..."
 msgid "control.calculated-unless-provided=field"
 msgstr "若未设定，将自动计算 %1"
 
-#: share/plugin/control/template/control/workspaces_new.html:23
 msgid "control.change"
-msgstr "change"
+msgstr "更改"
 
 #: share/plugin/control/template/control/user.html:119
 msgid "control.clear-external-id"
@@ -2728,11 +2727,8 @@ msgstr "成员"
 msgid "control.member-of-account"
 msgstr "帐户成员"
 
-#. ('<a href="https://www.socialtext.net/help-adminguide/adding_and_updating_users#updating_users_with_a_csv">' _ mass_add_label _ '</a>')
-#. ("<a href=\"https://www.socialtext.net/help-adminguide/adding_and_updating_users#updating_users_with_a_csv\">' _ mass_add_label _ '</a>")
-#: share/plugin/control/template/control/add_users.html:17
 msgid "control.more-info=link"
-msgstr "Please refer to %1 for more information."
+msgstr "更多信息请参考%1"
 
 #: share/plugin/control/share/javascript/workspaces_new.js:144 share/plugin/control/share/javascript/workspaces_new.js:27 share/plugin/control/template/control/account.html:116 share/plugin/control/template/control/account_table:9 share/plugin/control/template/control/desktop-account.html:25 share/plugin/control/template/control/group.html:166 share/plugin/control/template/control/group.html:321 share/plugin/control/template/control/group.html:71 share/plugin/control/template/control/group_invite.html:91 share/plugin/control/template/control/group_table:20 share/plugin/control/template/control/group_table:7 share/plugin/control/template/control/groups.html:59 share/plugin/control/template/control/selected_user_table_header:16 share/plugin/control/template/control/user.html:159 share/plugin/control/template/control/user.html:277 share/plugin/control/template/control/user_table_header:26 share/plugin/control/template/control/user_table_header:28 share/plugin/control/template/control/workspace.html:212 share/plugin/control/template/control/workspace.html:72 share/plugin/control/template/control/workspace_invite.html:144 share/plugin/control/template/control/workspace_invite.html:93 share/plugin/control/template/control/workspace_table:15 share/plugin/control/template/control/workspace_table:22
 msgid "control.name"
@@ -2812,9 +2808,8 @@ msgstr "删除外部 ID 要求"
 msgid "control.remove-from-account"
 msgstr "从帐户删除"
 
-#: share/plugin/control/template/control/user.html:199
 msgid "control.remove-from-accounts"
-msgstr "Remove from account(s)"
+msgstr "从帐户中移除"
 
 msgid "control.remove-from-group"
 msgstr "从群组删除"
@@ -2837,10 +2832,8 @@ msgstr "把选择的 %1 个群组从此工作区删除？"
 msgid "control.remove-selected-user-from-wiki=count?"
 msgstr "把选择的 %1 位用户从此工作区删除？"
 
-#. (users.length)
-#: share/plugin/control/template/control/group.html:224
 msgid "control.remove-selected-users-from-group=count?"
-msgstr "Remove the selected %*(%1,user) from this group?"
+msgstr "将选定用户从该群组移除"
 
 #. (workspaces.length)
 #: share/plugin/control/template/control/user.html:314
@@ -2939,9 +2932,8 @@ msgstr "选择下面的一名或多名用户成为您新工作区的管理员"
 msgid "control.select-group"
 msgstr "请选择一个群组"
 
-#: share/plugin/control/template/control/group.html:376
 msgid "control.select-new-primary-account-before-removing-original"
-msgstr "A Group must have a primary Account. Select a new primary Account, then remove the original Account(s)."
+msgstr "一个群组必须要有一个主帐户。请选择一个新的主帐户，然后移除以前的帐户。"
 
 #: share/plugin/control/template/control/add_users.html:15
 msgid "control.select-users-csv:"
@@ -3076,9 +3068,8 @@ msgstr "转换为群组"
 msgid "control.update"
 msgstr "更新"
 
-#: share/plugin/control/share/javascript/table.js:265
 msgid "control.update-successful"
-msgstr "Update successful."
+msgstr "升级成功"
 
 msgid "control.update-user"
 msgstr "更新用户：%1"
@@ -3087,9 +3078,8 @@ msgstr "更新用户：%1"
 msgid "control.updating"
 msgstr "正在更新 ..."
 
-#: share/plugin/control/template/control/add_users.html:15
 msgid "control.updating-users-with-csv"
-msgstr "Updating Users with a CSV"
+msgstr "用CSV文件来更新用户信息"
 
 #: share/plugin/control/template/control/design-account.html:24
 msgid "control.upload-account-logo-optional"
@@ -3107,9 +3097,8 @@ msgstr "使用默认 Socialtext 标志"
 msgid "control.use-default-logo-for-desktop"
 msgstr "为桌面使用默认 Socialtext 标志"
 
-#: share/plugin/control/template/control/add_users.html:16
 msgid "control.use-this-form-also-for-updates"
-msgstr "This form can also be used to perform updates to existing Users."
+msgstr "这个表格也可以用来更新现有用户。"
 
 #. (item.title)
 #: share/plugin/control/template/control/account.html:200
@@ -4681,9 +4670,8 @@ msgstr "您必须至少选择一个管理员"
 msgid "error.at-least-one-group-admin-needed"
 msgstr "群组必须有至少一位管理员。"
 
-#: lib/Socialtext/Rest/Workspaces.pm:169
 msgid "error.at-least-one-wiki-administrator-required"
-msgstr "You must add at least one workspace administrator."
+msgstr "你必须至少添加一个工作区管理员。"
 
 #: share/plugin/control/template/control/workspace_invite.html:342
 msgid "error.at-least-one-wiki-required"
@@ -4707,9 +4695,8 @@ msgstr "备份失败 ..."
 msgid "error.backup-id-required"
 msgstr "必须提供一个备份ID，或者使用列表查看可用备份"
 
-#: lib/Socialtext/Rest/Workspaces.pm:297
 msgid "error.bad-json"
-msgstr "bad json"
+msgstr "错误的json"
 
 #: lib/Socialtext/Handler/Base.pm:131
 msgid "error.bad-request"
@@ -5059,13 +5046,11 @@ msgstr "您没有对任何帐户共享该工具库。"
 msgid "error.getting-activities"
 msgstr "参加活动时出错。"
 
-#: lib/Socialtext/Rest/Workspaces.pm:307
 msgid "error.group-already-in-wiki"
-msgstr "group already in workspace"
+msgstr "该群组已经在工作区内"
 
-#: lib/Socialtext/Rest/Workspaces.pm:303
 msgid "error.group-does-not-exist"
-msgstr "group does not exist"
+msgstr "群组不存在"
 
 #: lib/Socialtext/CLI.pm:3540
 msgid "error.group-email-required"
@@ -5100,9 +5085,8 @@ msgstr "群组已在工作区 %1 中"
 msgid "error.group-name-or-ldap-dn-required"
 msgstr "创建新的群组时，必须带有 --name 或 --ldap-dn 参数。"
 
-#: lib/Socialtext/Rest/Group.pm:208
 msgid "error.group-needs-at-least-one-admin"
-msgstr "The group needs to include at least one admin."
+msgstr "群组需要至少有一个管理员。"
 
 #: lib/Socialtext/CLI.pm:2103
 msgid "error.group-or-wiki-required"
@@ -5242,9 +5226,8 @@ msgstr "非法查询。"
 msgid "error.invalid-report=module,message"
 msgstr "无效报告：%1（%2）"
 
-#: lib/Socialtext/Rest/Workspaces.pm:316
 msgid "error.invalid-role-for-group"
-msgstr "invalid role for group"
+msgstr "无效的群组角色"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:1399
 msgid "error.invalid-rows"
@@ -5398,9 +5381,8 @@ msgstr "您必须注册或登录以使用此功能。"
 msgid "error.link-selection-required"
 msgstr "请选择要插入链接的文本。"
 
-#: lib/Socialtext/Rest/Group.pm:381
 msgid "error.list-of-users-required"
-msgstr "Expected a list of users, got none."
+msgstr "没有提供预期的用户清单。"
 
 #. ($url)
 #: lib/Socialtext/FetchRSSPlugin.pm:194
@@ -5464,13 +5446,11 @@ msgstr "无法增加 SAMBA 共享。"
 msgid "error.multiple-user-matched=name"
 msgstr "搜索符合“%1”的用户有多重结果"
 
-#: lib/Socialtext/Rest/Workspaces.pm:164
 msgid "error.must-be-business-admin-to-set-members-of-wiki"
-msgstr "Must be a business admin to set members of a workspace"
+msgstr "必须是业务管理员才能设置工作区成员。"
 
-#: lib/Socialtext/Rest/Workspaces.pm:249
 msgid "error.name-title-required"
-msgstr "name, title required"
+msgstr "必须要有名字和标题"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:470
 msgid "error.new-account-name-required"
@@ -5710,6 +5690,9 @@ msgstr "未知资料字段“%1”"
 msgid "error.no-recipient"
 msgstr "错误：要发送邮件，您必须指定收件人。"
 
+msgid "error.no-requested-resource"
+msgstr "所要求的資源不存在。"
+
 #. ($user->username, $member->display_name, $thing->name)
 #: lib/Socialtext/CLI.pm:1452
 msgid "error.no-role=name,role,container"
@@ -5837,6 +5820,9 @@ msgstr "由于您的应用配置限制，只有帐户管理员可以创建群组
 #: lib/Socialtext/CLI.pm:3425
 msgid "error.not-both-visible-and-hidden"
 msgstr "只能指定 --visible 和 --hidden 其中一项参数"
+
+msgid "error.not-found=entity"
+msgstr "找不到%1"
 
 #: share/plugin/groups/template/nav_groups:23
 msgid "error.not-member-of-any-groups"
@@ -6453,14 +6439,11 @@ msgstr "不能通过 Socialtext 更新远程密码。"
 msgid "error.update-remote-user"
 msgstr "不能通过 Socialtext 更新远程用户。"
 
-#. ($data->{name})
-#: lib/Socialtext/Rest/Group.pm:168
 msgid "error.updating-group-exists=name"
-msgstr "Error updating group: %1 already exists."
+msgstr "更新群组出错：%1已经存在。"
 
-#: lib/Socialtext/Rest/Group.pm:172
 msgid "error.updating-group=name"
-msgstr "Error updating group: %1"
+msgstr "更新群组出错：%1"
 
 #: lib/Socialtext/Appliance/Model/SupportTarball.pm:54
 msgid "error.upload-support-tarball-already-started"
@@ -6471,13 +6454,11 @@ msgstr "上传已经开始!"
 msgid "error.user-can-create-groups=message"
 msgstr "“用户创建群组”设定出错：%1"
 
-#: lib/Socialtext/Rest/Workspaces.pm:254
 msgid "error.user-cannot-access-account"
-msgstr "user cannot access account"
+msgstr "用户无权进入该帐户"
 
-#: lib/Socialtext/Rest/Group.pm:148
 msgid "error.user-cannot-manage-associated-wikis-for-group"
-msgstr "user cannot manage workspaces this group is associated with"
+msgstr "用户不能管理该群组关联的工作区"
 
 #: share/skin/s3/javascript/people-avatar.js:195
 msgid "error.user-data"
@@ -6498,13 +6479,15 @@ msgstr "字段 %1（%2）已被占用。"
 msgid "error.user-id-required=uri"
 msgstr "必须提供用户 ID 到此网址（%1）"
 
-#: lib/Socialtext/Rest/Workspaces.pm:312
 msgid "error.user-is-not-group-admin"
-msgstr "user is not group admin"
+msgstr "用户非群组管理员"
 
 #: share/plugin/control/template/control/user.html:32
 msgid "error.user-missing-from-ldap-during-last-refresh"
 msgstr "上次更新时该用户从 LDAP 地址中丢失。"
+
+msgid "error.user-not-authorized"
+msgstr "用戶未認證"
 
 #. ($current_role->display_name, $group->display_name)
 #: lib/Socialtext/CLI.pm:1195
@@ -6515,9 +6498,8 @@ msgstr "用户在 %2 群组具有“%1”身份"
 msgid "error.username-required"
 msgstr "用户名为必填"
 
-#: lib/Socialtext/Rest/Workspaces.pm:158
 msgid "error.valid-account-for-this-wiki-required"
-msgstr "You must specify a valid account for this workspace."
+msgstr "你必须为该工作区选定一个有效的帐户。"
 
 #. ($username)
 #: lib/Socialtext/Challenger/OpenToken.pm:133
@@ -6550,9 +6532,8 @@ msgstr "您已失去所有帐户的管理员权限。"
 msgid "error.wiki-email-alias-exists=name"
 msgstr "选择的工作空间名 %1，已被作为邮箱别名被占用。"
 
-#: lib/Socialtext/Rest/Workspaces.pm:258
 msgid "error.wiki-exists"
-msgstr "workspace exists"
+msgstr "工作区已存在。"
 
 #. ($p->{name})
 #: lib/Socialtext/Workspace.pm:626
@@ -7490,13 +7471,11 @@ msgstr "群组目录"
 msgid "groups.edit"
 msgstr "（编辑）"
 
-#: share/plugin/groups/template/group_links:10
 msgid "groups.edit-group"
-msgstr "Edit Group"
+msgstr "编辑群组"
 
-#: share/plugin/groups/template/group_links:16
 msgid "groups.edit-layout"
-msgstr "Edit Layout"
+msgstr "编辑布局"
 
 #. (container.group.name)
 #: share/plugin/groups/template/edit_group_hello:4

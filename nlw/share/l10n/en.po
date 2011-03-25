@@ -5980,6 +5980,10 @@ msgstr "Unknown Profile Field '%1'."
 msgid "error.no-recipient"
 msgstr "Error: To send email, you must specify a recipient."
 
+#: lib/Socialtext/Rest.pm:480
+msgid "error.no-requested-resource"
+msgstr "The requested resource does not exist."
+
 #. ($user->username, $member->display_name, $thing->name)
 #: lib/Socialtext/CLI.pm:1452
 msgid "error.no-role=name,role,container"
@@ -6111,6 +6115,10 @@ msgstr "Your appliance is configured so that only account administrators can cre
 #: lib/Socialtext/CLI.pm:3425
 msgid "error.not-both-visible-and-hidden"
 msgstr "Can only specify one of --visible or --hidden"
+
+#: lib/Socialtext/Rest.pm:350
+msgid "error.not-found=entity"
+msgstr "%1 not found"
 
 #: share/plugin/groups/template/nav_groups:23
 msgid "error.not-member-of-any-groups"
@@ -6803,6 +6811,10 @@ msgstr "user is not group admin"
 #: share/plugin/control/template/control/user.html:32
 msgid "error.user-missing-from-ldap-during-last-refresh"
 msgstr "This user was missing from the LDAP directory during the last refresh."
+
+#: lib/Socialtext/Rest.pm:320
+msgid "error.user-not-authorized"
+msgstr "User not authorized"
 
 #. ($current_role->display_name, $group->display_name)
 #: lib/Socialtext/CLI.pm:1195

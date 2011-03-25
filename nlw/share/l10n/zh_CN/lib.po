@@ -1143,6 +1143,9 @@ msgstr "在 %3 上 %1 出现了 %2 的应用错误为：%4"
 msgid "error.application=wiki.host,error"
 msgstr "在 %2 上 %1 的应用错误为：%3"
 
+msgid "error.at-least-one-wiki-administrator-required"
+msgstr "你必须至少添加一个工作区管理员。"
+
 #. ($self->{line}, $msg)
 #: lib/Socialtext/MassAdd.pm:335
 msgid "error.at=line,message"
@@ -1157,6 +1160,9 @@ msgstr "备份已经开始"
 
 msgid "error.backup-failed"
 msgstr "备份失败 ..."
+
+msgid "error.bad-json"
+msgstr "错误的json"
 
 #: lib/Socialtext/Handler/Base.pm:131
 msgid "error.bad-request"
@@ -1377,6 +1383,12 @@ msgstr "gadget_id 为必要参数"
 msgid "error.gallery-forbidden"
 msgstr "您没有对任何帐户共享该工具库。"
 
+msgid "error.group-already-in-wiki"
+msgstr "该群组已经在工作区内"
+
+msgid "error.group-does-not-exist"
+msgstr "群组不存在"
+
 #: lib/Socialtext/CLI.pm:3540
 msgid "error.group-email-required"
 msgstr "创建新的群组时，必须指定 --email。"
@@ -1404,6 +1416,9 @@ msgstr "群组已在工作区 %1 中"
 #: lib/Socialtext/CLI.pm:3535
 msgid "error.group-name-or-ldap-dn-required"
 msgstr "创建新的群组时，必须带有 --name 或 --ldap-dn 参数。"
+
+msgid "error.group-needs-at-least-one-admin"
+msgstr "群组需要至少有一个管理员。"
 
 #: lib/Socialtext/CLI.pm:2103
 msgid "error.group-or-wiki-required"
@@ -1512,6 +1527,9 @@ msgstr "无效的权限：%1"
 #: lib/Socialtext/Hub.pm:193
 msgid "error.invalid-query"
 msgstr "非法查询。"
+
+msgid "error.invalid-role-for-group"
+msgstr "无效的群组角色"
 
 #. ($plugin, $scope)
 #: lib/Socialtext/UserSetContainer.pm:105
@@ -1636,6 +1654,9 @@ msgstr "网址“%1”无效。"
 msgid "error.invalid=url"
 msgstr "%1 是无效链接。"
 
+msgid "error.list-of-users-required"
+msgstr "没有提供预期的用户清单。"
+
 #. ($url)
 #: lib/Socialtext/FetchRSSPlugin.pm:194
 msgid "error.load-feed=url"
@@ -1658,6 +1679,12 @@ msgstr "无法增加 SAMBA 共享。"
 #: lib/Socialtext/CredentialsExtractor/Extractor/CAC.pm:61
 msgid "error.multiple-user-matched=name"
 msgstr "搜索符合“%1”的用户有多重结果"
+
+msgid "error.must-be-business-admin-to-set-members-of-wiki"
+msgstr "必须是业务管理员才能设置工作区成员。"
+
+msgid "error.name-title-required"
+msgstr "必须要有名字和标题"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:470
 msgid "error.new-account-name-required"
@@ -1831,6 +1858,9 @@ msgstr "%1 插件没有参数选项"
 msgid "error.no-profile-field=name"
 msgstr "未知资料字段“%1”"
 
+msgid "error.no-requested-resource"
+msgstr "所要求的資源不存在。"
+
 #. ($user->username, $member->display_name, $thing->name)
 #: lib/Socialtext/CLI.pm:1452
 msgid "error.no-role=name,role,container"
@@ -1941,6 +1971,9 @@ msgstr "%1 工作区不存在。"
 #: lib/Socialtext/CLI.pm:3425
 msgid "error.not-both-visible-and-hidden"
 msgstr "只能指定 --visible 和 --hidden 其中一项参数"
+
+msgid "error.not-found=entity"
+msgstr "找不到%1"
 
 #. ($user->username, $thing->name)
 #. ($user->username, $group->driver_group_name)
@@ -2334,6 +2367,12 @@ msgstr "不能通过 Socialtext 更新远程密码。"
 msgid "error.update-remote-user"
 msgstr "不能通过 Socialtext 更新远程用户。"
 
+msgid "error.updating-group-exists=name"
+msgstr "更新群组出错：%1已经存在。"
+
+msgid "error.updating-group=name"
+msgstr "更新群组出错：%1"
+
 #: lib/Socialtext/Appliance/Model/SupportTarball.pm:54
 msgid "error.upload-support-tarball-already-started"
 msgstr "上传已经开始!"
@@ -2342,6 +2381,12 @@ msgstr "上传已经开始!"
 #: lib/Socialtext/Handler/ControlPanel.pm:299
 msgid "error.user-can-create-groups=message"
 msgstr "“用户创建群组”设定出错：%1"
+
+msgid "error.user-cannot-access-account"
+msgstr "用户无权进入该帐户"
+
+msgid "error.user-cannot-manage-associated-wikis-for-group"
+msgstr "用户不能管理该群组关联的工作区"
 
 #. ($email_address)
 #: lib/Socialtext/Handler/Authen.pm:421
@@ -2358,10 +2403,19 @@ msgstr "字段 %1（%2）已被占用。"
 msgid "error.user-id-required=uri"
 msgstr "必须提供用户 ID 到此网址（%1）"
 
+msgid "error.user-is-not-group-admin"
+msgstr "用户非群组管理员"
+
+msgid "error.user-not-authorized"
+msgstr "用戶未認證"
+
 #. ($current_role->display_name, $group->display_name)
 #: lib/Socialtext/CLI.pm:1195
 msgid "error.user-role-exists=role,group"
 msgstr "用户在 %2 群组具有“%1”身份"
+
+msgid "error.valid-account-for-this-wiki-required"
+msgstr "你必须为该工作区选定一个有效的帐户。"
 
 #. ($username)
 #: lib/Socialtext/Challenger/OpenToken.pm:133
@@ -2384,6 +2438,9 @@ msgstr "您已失去所有帐户的管理员权限。"
 #: lib/Socialtext/Workspace.pm:622
 msgid "error.wiki-email-alias-exists=name"
 msgstr "选择的工作空间名 %1，已被作为邮箱别名被占用。"
+
+msgid "error.wiki-exists"
+msgstr "工作区已存在。"
 
 #. ($p->{name})
 #: lib/Socialtext/Workspace.pm:626
