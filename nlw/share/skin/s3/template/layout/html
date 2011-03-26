@@ -78,7 +78,7 @@
               <li id="st-wikinav-profile">[% loc('info.welcome=user', '<b>' _ user.username _ '</b>') | decorate('welcome') %]</li>
             [% END %]
             [% IF miki_url %]
-            <li id="st-wikinav-mobile"><a href="[% miki_url %]">[% loc('nav.mobile') %]</a></li>
+            <li id="st-wikinav-mobile"><a href="[% miki_url |html %]">[% loc('nav.mobile') %]</a></li>
             [% END %]
             [% IF desktop_url %]
             <li id="st-wikinav-desktop">[%- desktop_link(id="st-wikinav-link-desktop") -%]</li>
@@ -184,7 +184,7 @@
           <div id="footerGlobal">
             <ul>
               [% IF miki_url %]
-                <li><a id="st-footer-link-mobile" href="[% miki_url %]">[% loc('nav.mobile') %]</a></li>
+                <li><a id="st-footer-link-mobile" href="[% miki_url |html %]">[% loc('nav.mobile') %]</a></li>
               [% END %]
               [% IF desktop_url %]
                 <li>[%- desktop_link(id="st-footer-link-desktop") -%]</li>

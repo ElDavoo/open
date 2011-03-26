@@ -133,7 +133,7 @@ v.new_tags = [];
 v.new_tags.push("[% tag | html %]");
 [% END %]
 
-v.miki_url = "[% miki_url %]";
+v.miki_url = [% miki_url.json %];
 
 v.user = {};
 v.user.is_guest = "[% user.is_guest %]";
