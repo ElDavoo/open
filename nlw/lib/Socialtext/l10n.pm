@@ -6,6 +6,7 @@ use Scalar::Defer qw(defer force);
 use base 'Exporter';
 use Socialtext::AppConfig;
 our @EXPORT_OK = qw(loc loc_lang system_locale best_locale);
+use Socialtext::l10n::I18N::zz;
 
 =head1 NAME
 

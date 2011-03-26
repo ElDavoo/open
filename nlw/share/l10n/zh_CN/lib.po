@@ -211,7 +211,7 @@ msgid "appliance.email-required"
 msgstr "请输入电子邮件地址"
 
 msgid "appliance.gb=format"
-msgstr "%1 Gb"
+msgstr "%#(%1) Gb"
 
 #: lib/Socialtext/Appliance/ConsoleController.pm:120
 msgid "appliance.initialize-wikis"
