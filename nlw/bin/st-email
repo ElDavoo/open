@@ -32,7 +32,7 @@ case "$1" in
   *)
     echo "Usage: st-email [enable|disable|hardstop]"
     echo
-    echo "  disable - set exim delivery to 'local' mode
+    echo "  disable - set exim delivery to 'local' mode"
     echo "  enable - sets exim delivery back to 'internet' mode"
     echo "  hardstop - disables the exim binary and sets 'local' mode just in case"
     ;;
