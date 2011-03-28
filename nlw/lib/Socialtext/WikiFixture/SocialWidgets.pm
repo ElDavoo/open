@@ -391,6 +391,42 @@ sub st_send_page_signal {
 
 }
 
+=head2 st_send_reply
+
+Parameters: You pass in the signal text, followed by 1 if this is a mobile signal 
+
+=cut
+
+sub st_send_reply {
+    my ($self, $signaltosend, $is_mobile) = @_;
+    $self->handle_command('wait_for_element_visible_ok', '//a[@class="replyLink"]', 5000);
+    $self->handle_command('click_ok', '//a[@class="replyLink"]');
+
+    $self->handle_command('set_Speed',4000);
+    if ($self->_is_wikiwyg() ) { #wikiwyg
+        $self->handle_command('wait_for_element_visible_ok', '//div[@class="replies"]//iframe[@name="signalFrame"]', 5000);
+        $self->handle_command('selectFrame', '//div[@class="replies"]//iframe[@name="signalFrame"]');
+        $self->handle_command('click_ok' ,'//body', $signaltosend);
+        $self->handle_command('type_ok' ,'//body', $signaltosend);
+        $self->handle_command('select-frame' ,'relative=parent');
+     } else { #IE. When IE is driven by Selenium, we start it without wikiwyg
+         my $textbox_name;
+         if ($is_mobile) {
+             $textbox_name = 'st-signal-text';
+         } else {
+             $textbox_name = 'wikiwyg_wikitext_textarea';
+         }
+         $self->handle_command('wait_for_element_visible_ok','//div[@class="wikiwyg"][last()]', 5000);
+         $self->handle_command('click_ok','//div[@class="wikiwyg"][last()]');
+         $self->handle_command('wait_for_element_visible_ok',$textbox_name, 5000);
+         $self->handle_command('type_ok',$textbox_name,$signaltosend);
+    }
+    
+    $self->handle_command('wait_for_element_visible_ok','//a[@class="btn post postReply"]', 5000);
+    $self->handle_command('click_ok', '//a[@class="btn post postReply"]');
+    $self->handle_command('set_Speed',0);
+}
+
 =head2 st_type_signal 
 
 Parameters: You pass in the signal text, followed by 1 if this is a mobile signal 
@@ -417,7 +453,6 @@ sub st_type_signal {
          $self->handle_command('type_ok',$textbox_name,$signaltosend);
     }
 }
-
 
 =head2 st_prepare_signal_within_activities_widget
 

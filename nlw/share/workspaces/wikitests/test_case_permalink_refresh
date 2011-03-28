@@ -37,18 +37,8 @@
 | post-json | /data/signals | {"signal":"%%pr3%%", "in_reply_to":{"signal_id":%%parent%%},"group_ids":[%%ps_id%%]} |
 | wait_for_text_present_ok | %%pr3%% | 20000 |
 
-| *Comment* | Test Case: Permalink Refresh. Click group Reply to Conversation and reply |  |
-| wait_for_element_visible_ok | //a[@class='replyLink'] | 10000 |
-| click_ok | //a[@class='replyLink'][last()] |  |
-| wait_for_element_visible_ok | //div[@class='replies']//iframe[@name='signalFrame'] | 5000 |
-| pause | 3000 |  |
-| select_frame | //div[@class='replies']//iframe[@name='signalFrame'] |  |
-| click_ok | //body |  |
-| type_ok | //body | %%pr4%% |
-| select_frame | relative=parent |  |
-| wait_for_element_visible_ok | //a[@class='btn post postReply'] | 5000 |
-| pause | 3000 |  |
-| click_ok | //a[@class='btn post postReply'] |  |
+| *Comment* | Test Case: Permalink Refresh. Click group Reply to Conversation and reply |  |  |
+| st-send-reply | %%pr4%% |
 
 | *Comment* | Test Case: Permalink Refresh. Wait for the new group reply |  |
 | wait_for_text_present_ok | %%pr4%% | 20000 |
@@ -83,17 +73,7 @@
 | wait_for_text_present_ok | %%r3%% | 30000 |
 
 | *Comment* | Test Case: Permalink Refresh. Click Reply to Conversation and reply |  |
-| wait_for_element_visible_ok | //a[@class='replyLink'] | 10000 |
-| click_ok | //a[@class='replyLink'][last()] |  |
-| wait_for_element_visible_ok | //div[@class='replies']//iframe[@name='signalFrame'] | 5000 |
-| pause | 3000 |  |
-| select_frame | //div[@class='replies']//iframe[@name='signalFrame'] |  |
-| click_ok | //body |  |
-| type_ok | //body | %%r4%% |
-| select_frame | relative=parent |  |
-| wait_for_element_visible_ok | //a[@class='btn post postReply'] | 5000 |
-| pause | 3000 |  |
-| click_ok | //a[@class='btn post postReply'] |  |
+| st-send-reply | %%r4%% |
 
 | *Comment* | Test Case: Permalink Refresh. Wait for the new reply |  |
 | wait_for_text_present_ok | %%r4%% | 30000 |
