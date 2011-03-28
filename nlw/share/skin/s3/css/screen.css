@@ -4513,9 +4513,19 @@ table.st-ss th span {
 
 .groupsTitle,
 .exploreTitle {
-    position: static;
+    position: relative;
     margin-top: 18px;
     margin-left: 5px;
+}
+
+.groupsTitle img {
+    position: absolute;
+    top: -10px;
+    left: 108px;
+    border: 1px solid #c5c5c5;
+}
+.groupsTitle .groupName {
+    margin-left: 27px;
 }
 
 .exploreTitle .prefix,
