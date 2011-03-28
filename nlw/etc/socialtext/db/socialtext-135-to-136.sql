@@ -37,6 +37,10 @@ ALTER TABLE ONLY gadget
 ALTER TABLE ONLY gallery_gadget
     ADD COLUMN container_types text[];
 
+UPDATE gadget
+   SET src = 'local:people:all_tags.xml'
+ WHERE src = 'local:people:all_tags'
+
 UPDATE "System"
    SET value = '136'
  WHERE field = 'socialtext-schema-version';
