@@ -673,11 +673,7 @@ msgstr "贡献"
 msgid "appliance.email-required"
 msgstr "请输入电子邮件地址"
 
-#: lib/Socialtext/Appliance/Model/System.pm:52
 msgid "appliance.format=gb"
-msgstr "%#(%1) Gb"
-
-msgid "appliance.gb=format"
 msgstr "%#(%1) Gb"
 
 #: lib/Socialtext/Appliance/ConsoleController.pm:120
@@ -833,7 +829,7 @@ msgid "appliance.wikis-initialized=log"
 msgstr "工作区已初始化。<br>记录：%1"
 
 msgid "badge.close"
-msgstr "Close"
+msgstr "關閉"
 
 msgid "badge.err_airswf"
 msgstr "Unable to load the Adobe® AIR™ Browser API swf."
@@ -845,10 +841,10 @@ msgid "badge.err_params"
 msgstr "Invalid installer parameters."
 
 msgid "badge.error"
-msgstr "Error!"
+msgstr "錯誤!"
 
 msgid "badge.help"
-msgstr "Help"
+msgstr "帮助"
 
 msgid "badge.helptext"
 msgstr "Click the button to start. The Adobe® AIR™ Runtime will be installed automatically if needed."
@@ -872,7 +868,7 @@ msgid "badge.launchingtext"
 msgstr "Please wait while the application launches."
 
 msgid "badge.loading"
-msgstr "Loading..."
+msgstr "正在加载..."
 
 msgid "badge.tryagain"
 msgstr "Try Again"
@@ -3615,9 +3611,8 @@ msgstr "After installation, please <b>restart your browser</b>, then open this d
 msgid "desktop.bg-color"
 msgstr "背景颜色"
 
-#: share/template/desktop/badge.tt2:37 share/template/desktop/badge.tt2:32 share/template/desktop/badge.tt2:33
 msgid "desktop.click-here"
-msgstr "click&nbsp;here"
+msgstr "按此"
 
 #. (getFlash, getAIR, target)
 #: share/template/desktop/badge.tt2:34
@@ -3663,20 +3658,17 @@ msgstr "重置为默认桌面标志。桌面用户需要注销并重新登录才
 msgid "desktop.relogin-for-skin"
 msgstr "设置已保存。桌面用户需要重新登陆才能启用新的主题。"
 
-#: share/template/desktop/badge.html:1 share/template/desktop/badge.html:2
 msgid "desktop.socialtext-desktop"
-msgstr "Socialtext Desktop"
+msgstr "Socialtext 桌面"
 
-#: share/template/desktop/flair-badge.html:1 share/template/desktop/flair-badge.html:2
 msgid "desktop.socialtext-desktop-flair"
-msgstr "Socialtext Desktop Flair"
+msgstr "Socialtext 酷炫桌面"
 
 msgid "desktop.text-color"
 msgstr "文本颜色"
 
-#: share/template/desktop/badge.tt2:39
 msgid "desktop.thank-you"
-msgstr "Thank you! :-)"
+msgstr "感謝！ :-)"
 
 #: share/skin/s3/javascript/lightbox/attachment.tt2:28 share/skin/s3/javascript/lightbox/email.tt2:28
 msgid "do.add"
@@ -4965,9 +4957,8 @@ msgstr "无法删除标签。"
 msgid "error.delete=widget,message"
 msgstr "删除“%1”小工具时出错：%2"
 
-#: share/template/desktop/badge.tt2:31
 msgid "error.desktop-runtime-required=target"
-msgstr "%1 is required."
+msgstr "必須要有 %1。"
 
 #: share/plugin/groups/share/widgets/workspaces/widget.js:66
 msgid "error.display-list-of-wikis"
