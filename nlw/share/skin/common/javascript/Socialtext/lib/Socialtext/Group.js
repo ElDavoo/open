@@ -39,7 +39,7 @@ $.extend(Socialtext.Group.prototype, {
     saveInfo: function(callback) {
         var self = this;
         if (!this.name && !this.ldap_dn) {
-            throw new Error(loc("LDAP DN or group name required"));
+            throw new Error(loc("api.ldap-dn-or-group-name-required"));
         }
 
         var data = {};
@@ -228,7 +228,7 @@ Socialtext.Group.Args = {
 
 Socialtext.Group.Create = function(opts, callback) {
     if (!opts.name && !opts.ldap_dn) {
-        throw new Error(loc("LDAP DN or group name required"));
+        throw new Error(loc("api.ldap-dn-or-group-name-required"));
     }
 
     var data = {};

@@ -10,18 +10,18 @@ Socialtext.User.prototype = new Socialtext.Base();
 
 $.extend(Socialtext.User.prototype, {
     create: function() {
-        throw new Error("Unimplemented");
+        throw new Error(loc("api.unimplemented"));
     },
 
     url: function() {
-        if (!this.user_id) throw new Error("No user_id");
+        if (!this.user_id) throw new Error(loc("api.no-user-id"));
         return '/data/users/' + this.user_id;
     },
 
     setPrimaryAccountId: function(id, callback) {
         var self = this;
         if (!callback) callback = function(r) { if (r.error) alert(r.error) };
-        if (!id) throw new Error("ID required");
+        if (!id) throw new Error(loc("api.id-required"));
         $.ajax({
             url: this.url(),
             type: 'put',

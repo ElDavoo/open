@@ -27,6 +27,7 @@ my %Sections = (
     s3 => ['share/skin/s3/template', 'share/skin/s3/javascript'],
     template => 'share/template',
     reports => ['../socialtext-reports/template', '../socialtext-reports/lib'],
+    common => 'share/skin/common/javascript',
     map {
         $_ => [grep { -d and (join(',', glob("$_/*")) ne "$_/images") } glob("share/plugin/$_/{share,template}")]
     } @plugins

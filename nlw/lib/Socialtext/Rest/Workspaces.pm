@@ -20,6 +20,7 @@ use Socialtext::Workspace::Permissions;
 use Socialtext::JobCreator;
 use Socialtext::AppConfig;
 use Socialtext::Timer;
+use Socialtext::l10n 'loc';
 
 # Anybody can see these, since they are just the list of workspaces the user
 # has 'selected'.

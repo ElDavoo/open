@@ -797,6 +797,100 @@ msgstr "Z zzzzzz zzzzzz (zz zzz'zz zzzzzz, zzz zzzz zzzzz)"
 msgid "analytics.use-for:"
 msgstr "Zzzz Zzzzzz Zzzzzzzzz zzzzzzzz ZZ zz zzzz zzz:"
 
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/Workspace.js:224
+msgid "api.about-wiki-name"
+msgstr "Zzzzzzzzz zzzzz zzzz zzzzzzz zz 3-30 zzzzzzzzz zzzzzzz, zzzzzzz, zzzzzzzzzzz zz zzzzzz."
+
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/Workspace.js:210
+msgid "api.about-wiki-title"
+msgstr "Zzzzzzzzz zzzzzz zzzz zz zzzzzzz 2 zzz 64 zzzzzzzzzz"
+
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/Account.js:13
+msgid "api.account-name-required"
+msgstr "Zzzzzzz zzzz zz zzzzzzzz"
+
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/UserAccountRole.js:15
+msgid "api.account_name-required"
+msgstr "zzzzzzz_zzzz zz zzzzzzzz"
+
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/Workspace.js:260
+msgid "api.error-checking-for-wiki-existence"
+msgstr "Zzzzz zzzzzzzz zzz zzzzzzzzz zzzzzzzzz"
+
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/Account.js:33 share/skin/common/javascript/Socialtext/lib/Socialtext/Account.js:46
+msgid "api.group_id-required"
+msgstr "zzzzz_zz zz zzzzzzzz"
+
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/User.js:24
+msgid "api.id-required"
+msgstr "ZZ zzzzzzzz"
+
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/Workspace.js:74
+msgid "api.impersonators-can-only-be-managed-by-admins"
+msgstr "Zzzzzzzzzzzzz zzz zzzz zz zzzzzzz zz zzzzzz zzzzzzzzzzzzzz"
+
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/Workspace.js:217
+msgid "api.is-reserved-word=name"
+msgstr "%1 zz z zzzzzzzz zzzz"
+
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/Group.js:231 share/skin/common/javascript/Socialtext/lib/Socialtext/Group.js:42
+msgid "api.ldap-dn-or-group-name-required"
+msgstr "ZZZZ ZZ zz zzzzz zzzz zzzzzzzz"
+
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/UserAccountRole.js:38
+msgid "api.member-of-account"
+msgstr "Zzzzzz zz Zzzzzzz"
+
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/Workspace.js:163
+msgid "api.name-required"
+msgstr "Zzzz zz zzzzzzzz"
+
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/Workspace.js:79
+msgid "api.no-members-specified"
+msgstr "Zz zzzzzzz zzzzzzzzz"
+
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/User.js:17
+msgid "api.no-user-id"
+msgstr "Zz zzzz_zz"
+
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/UserAccountRole.js:35
+msgid "api.primary-account"
+msgstr "Zzzzzzz Zzzzzzz"
+
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/Workspace.js:162
+msgid "api.title-required"
+msgstr "Zzzzz zz zzzzzzzz"
+
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/User.js:13
+msgid "api.unimplemented"
+msgstr "Zzzzzzzzzzzzz"
+
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/Account.js:20
+msgid "api.user_id-required"
+msgstr "zzzz_zz zz zzzzzzzz"
+
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/UserAccountRole.js:13
+msgid "api.username-required"
+msgstr "zzzzzzzz zz zzzzzzzz"
+
+#. (this.via_group.length,                $.map(this.via_group, function (g)
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/UserAccountRole.js:55
+msgid "api.via-group-count=length,map"
+msgstr "Zzz %quant(%1,Zzzzz): %2"
+
+#. (this.via_workspace.length,                $.map(this.via_workspace, function (w)
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/UserAccountRole.js:45
+msgid "api.via-wiki-count=length,map"
+msgstr "Zzz %quant(%1,Zzzzzzzzz): %2"
+
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/Workspace.js:220
+msgid "api.wiki-name-cannot-begin-with-dash"
+msgstr "Zzzzzzzzz zzzzz zzzzzz zzzzz zzzz z zzzz"
+
+#: share/skin/common/javascript/Socialtext/lib/Socialtext/Workspace.js:207
+msgid "api.wiki-title-cannot-begin-with-dash"
+msgstr "Zzzzzzzzz zzzzzz zzzzzz zzzzz zzzz z zzzz"
+
 #. (shift)
 #: lib/Socialtext/Handler/ControlPanel.pm:616
 msgid "appliance.added-business-admin=user"
