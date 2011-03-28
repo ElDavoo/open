@@ -47,6 +47,54 @@ msgstr "%*(%1,hour) ago"
 msgid "ago.minutes=count"
 msgstr "%*(%1,minute) ago"
 
+msgid "badge.close"
+msgstr "Close"
+
+msgid "badge.err_airswf"
+msgstr "Unable to load the Adobe® AIR™ Browser API swf."
+
+msgid "badge.err_airunavailable"
+msgstr "Adobe® AIR™ is not available for your system."
+
+msgid "badge.err_params"
+msgstr "Invalid installer parameters."
+
+msgid "badge.error"
+msgstr "Error!"
+
+msgid "badge.help"
+msgstr "Help"
+
+msgid "badge.helptext"
+msgstr "Click the button to start. The Adobe® AIR™ Runtime will be installed automatically if needed."
+
+msgid "badge.install"
+msgstr "Click to Start"
+
+msgid "badge.installing"
+msgstr "Installing Application"
+
+msgid "badge.installingtext"
+msgstr "Please wait while the application installs."
+
+msgid "badge.launch"
+msgstr "Click to Launch"
+
+msgid "badge.launching"
+msgstr "Launching Application"
+
+msgid "badge.launchingtext"
+msgstr "Please wait while the application launches."
+
+msgid "badge.loading"
+msgstr "Loading..."
+
+msgid "badge.tryagain"
+msgstr "Try Again"
+
+msgid "badge.upgrade"
+msgstr "Click to Upgrade"
+
 #: share/template/bugs_content.html:5
 msgid "bug.application-error"
 msgstr "Application Error"
@@ -71,6 +119,49 @@ msgstr "Ignore Bug"
 #: share/template/bugs_content.html:24
 msgid "bug.report"
 msgstr "Report Bug"
+
+#. (target)
+#: share/template/desktop/badge.tt2:35
+msgid "desktop.admin-privilege-needed-to-install=target"
+msgstr "(You will need Administrator privileges on your workstation to install %1.)"
+
+#: share/template/desktop/badge.tt2:157
+msgid "desktop.adobe-air-2"
+msgstr "Adobe AIR 2"
+
+#. (clickHere)
+#: share/template/desktop/badge.tt2:38
+msgid "desktop.after-installation-click-to-launch-desktop=link"
+msgstr "After installation, please %1 to launch Socialtext&nbsp;Desktop."
+
+#: share/template/desktop/badge.tt2:36
+msgid "desktop.after-installation-restart-browser"
+msgstr "After installation, please <b>restart your browser</b>, then open this dialog box again."
+
+#: share/template/desktop/badge.tt2:37 share/template/desktop/badge.tt2:32 share/template/desktop/badge.tt2:33
+msgid "desktop.click-here"
+msgstr "click&nbsp;here"
+
+#. (getFlash, getAIR, target)
+#: share/template/desktop/badge.tt2:34
+msgid "desktop.download-and-run-installer=flash,air,target"
+msgstr "Please %1%2 to download and run the installer for %3."
+
+#: share/template/desktop/badge.tt2:30
+msgid "desktop.flash-player"
+msgstr "Flash Player"
+
+#: share/template/desktop/badge.html:1 share/template/desktop/badge.html:2
+msgid "desktop.socialtext-desktop"
+msgstr "Socialtext Desktop"
+
+#: share/template/desktop/flair-badge.html:1 share/template/desktop/flair-badge.html:2
+msgid "desktop.socialtext-desktop-flair"
+msgstr "Socialtext Desktop Flair"
+
+#: share/template/desktop/badge.tt2:39
+msgid "desktop.thank-you"
+msgstr "Thank you! :-)"
 
 #. (inviting_user, group_name)
 #: share/template/email/st/group-invitation.txt:22
@@ -522,6 +613,10 @@ msgstr "You must have admin privileges to access this URI."
 #: share/template/errors/requires_confirmation:2
 msgid "error.confirm-email-to-activate-account"
 msgstr "You need to confirm your email address to activate this account."
+
+#: share/template/desktop/badge.tt2:31
+msgid "error.desktop-runtime-required=target"
+msgstr "%1 is required."
 
 #: share/template/errors/requires_external_id:2
 msgid "error.external-id-needed-to-activate-account"

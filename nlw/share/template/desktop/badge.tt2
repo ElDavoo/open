@@ -1,3 +1,4 @@
+[%- USE JSON -%]
 <html><head>
     <link media="screen" href="/static/skin/s3/css/screen.css" type="text/css" rel="stylesheet" />
   <!--[if gte IE 6]>
@@ -26,22 +27,23 @@
     ">
 <ol id="getThings" style="display: none; text-align: left">
 
-<li><span class="target">Flash Player</span> is required.</li>
-<li>Please
-<a class="getFlash" style="font-weight: bold" id="flash-link" target="_blank" href="http://get.adobe.com/flashplayer/">click&nbsp;here</a>
-<a class="getAIR" style="font-weight: bold" id="air-link" target="_blank" href="http://get.adobe.com/air/">click&nbsp;here</a>
-to download and run the installer for <span class="target">Flash Player</span>.</li>
-<li><i>(You will need Administrator privileges on your workstation to install <span class="target">Flash Player</span>.)</i></li>
-<li class="getFlash" style="margin-bottom: 10px">After installation, please <b>restart your browser</b>, then open this dialog box again.</a></li>
-<li class="getAIR" style="margin-bottom: 10px; display: none">After installation, please <a href="/" onclick="$('#flashcontent').css('background', 'url(/static/skin/common/images/ajax-loader.gif) no-repeat center'); $('#getThings').hide(); location.replace(location.href); return false">click here</a> to launch Socialtext&nbsp;Desktop.</a></li>
-<li>Thank you! :-)</li>
+[% SET target = '<span class="target">' _ loc('desktop.flash-player') _ '</span>' %]
+<li>[% loc('error.desktop-runtime-required=target', target) %]</li>
+[% SET getFlash = '<a class="getFlash" style="font-weight: bold" id="flash-link" target="_blank" href="http://get.adobe.com/flashplayer/">' _ loc('desktop.click-here') _ '</a>' %]
+[% SET getAIR = '<a class="getAIR" style="font-weight: bold" id="air-link" target="_blank" href="http://get.adobe.com/air/">' _ loc('desktop.click-here') _ '</a>' %]
+<li>[% loc('desktop.download-and-run-installer=flash,air,target', getFlash, getAIR, target) %]</li>
+<li><i>[% loc('desktop.admin-privilege-needed-to-install=target', target) %]</i></li>
+<li class="getFlash" style="margin-bottom: 10px">[% loc('desktop.after-installation-restart-browser') %]</a></li>
+[% SET clickHere = '<a href="/" onclick="$(' _ "'#flashcontent').css('background', 'url(/static/skin/common/images/ajax-loader.gif) no-repeat center'); $('#getThings').hide(); location.replace(location.href); return false" _ '">' _ loc('desktop.click-here') _ '</a>' %]
+<li class="getAIR" style="margin-bottom: 10px; display: none">[% loc('desktop.after-installation-click-to-launch-desktop=link', clickHere) %]</a></li>
+<li>[% loc('desktop.thank-you') %]</li>
 </ol>
 </span>
 
 <div class="buttons" style="position: absolute; right: 10px; bottom: 10px">
         <ul style="float: left; padding: 10px;" class="widgetButton">
           <li id="st-desktop-close" class="flexButton disabled">
-              <a href="#" id="st-desktop-cancellink" class="close genericOrangeButton" onclick="if (parent && parent.$) { parent.$.hideLightbox() }">Close</a>
+              <a href="#" id="st-desktop-cancellink" class="close genericOrangeButton" onclick="if (parent && parent.$) { parent.$.hideLightbox() }">[% loc('do.close') %]</a>
           </li>
         </ul>
     </div>
@@ -128,6 +130,22 @@ so.addVariable('appinstallarg', server);
 so.addVariable('applauncharg', server);
 so.addVariable("pubid", "[% pub_id %]");
 so.addVariable("appversion", "[% app_version %]");
+so.addVariable("str_error", [% loc('badge.error').json %]);
+so.addVariable("str_err_params", [% loc('badge.err_params').json %]);
+so.addVariable("str_err_airunavailable", [% loc('badge.err_airunavailable').json %]);
+so.addVariable("str_err_airswf", [% loc('badge.err_airswf').json %]);
+so.addVariable("str_loading", [% loc('badge.loading').json %]);
+so.addVariable("str_install", [% loc('badge.install').json %]);
+so.addVariable("str_launch", [% loc('badge.launch').json %]);
+so.addVariable("str_upgrade", [% loc('badge.upgrade').json %]);
+so.addVariable("str_close", [% loc('badge.close').json %]);
+so.addVariable("str_launching", [% loc('badge.launching').json %]);
+so.addVariable("str_launchingtext", [% loc('badge.launchingtext').json %]);
+so.addVariable("str_installing", [% loc('badge.installing').json %]);
+so.addVariable("str_installingtext", [% loc('badge.installingtext').json %]);
+so.addVariable("str_tryagain", [% loc('badge.tryagain').json %]);
+so.addVariable("str_help", [% loc('badge.help').json %]);
+so.addVariable("str_helptext", [% loc('badge.helptext').json %]);
 so.addParam("allowScriptAccess", "always");
 
 var prevHTML;
@@ -136,7 +154,7 @@ function hide_swfobject () {
     setTimeout(function(){
         $('#flashcontent').html(prevHTML);
         $('#getThings').show();
-        $('.target').text('Adobe AIR 2');
+        $('.target').text([% loc('desktop.adobe-air-2').json %]);
         $('.getFlash').hide();
         $('.getAIR').show();
     }, 100);

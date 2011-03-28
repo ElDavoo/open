@@ -1022,6 +1022,54 @@ msgstr "Zzz zzzzz zzzzzzz zz %1"
 msgid "appliance.wikis-initialized=log"
 msgstr "Zzzzzzzzzz zzzzzzzzzzz.<br>Zzz: %1"
 
+msgid "badge.close"
+msgstr "Zzzzz"
+
+msgid "badge.err_airswf"
+msgstr "Zzzzzz zz zzzz zzz Zzzzz® ZZZ™ Zzzzzzz ZZZ zzz."
+
+msgid "badge.err_airunavailable"
+msgstr "Zzzzz® ZZZ™ zz zzz zzzzzzzzz zzz zzzz zzzzzz."
+
+msgid "badge.err_params"
+msgstr "Zzzzzzz zzzzzzzzz zzzzzzzzzz."
+
+msgid "badge.error"
+msgstr "Zzzzz!"
+
+msgid "badge.help"
+msgstr "Zzzz"
+
+msgid "badge.helptext"
+msgstr "Zzzzz zzz zzzzzz zz zzzzz. Zzz Zzzzz® ZZZ™ Zzzzzzz zzzz zz zzzzzzzzz zzzzzzzzzzzzz zz zzzzzz."
+
+msgid "badge.install"
+msgstr "Zzzzz zz Zzzzz"
+
+msgid "badge.installing"
+msgstr "Zzzzzzzzzz Zzzzzzzzzzz"
+
+msgid "badge.installingtext"
+msgstr "Zzzzzz zzzz zzzzz zzz zzzzzzzzzzz zzzzzzzz."
+
+msgid "badge.launch"
+msgstr "Zzzzz zz Zzzzzz"
+
+msgid "badge.launching"
+msgstr "Zzzzzzzzz Zzzzzzzzzzz"
+
+msgid "badge.launchingtext"
+msgstr "Zzzzzz zzzz zzzzz zzz zzzzzzzzzzz zzzzzzzz."
+
+msgid "badge.loading"
+msgstr "Zzzzzzz..."
+
+msgid "badge.tryagain"
+msgstr "Zzz Zzzzz"
+
+msgid "badge.upgrade"
+msgstr "Zzzzz zz Zzzzzzz"
+
 #: share/skin/s3/template/view/weblog:108
 msgid "blog.archives"
 msgstr "Zzzz Zzzzzzzz"
@@ -3808,9 +3856,40 @@ msgstr "Zzzzzzzzzz Zzzzzzz'z zzzz (zzzzzzzzzzzzz zzzzzz zz 240 z 34 zzzzzz)."
 msgid "desktop.about-text-color"
 msgstr "Zzz zzzzz zz zzz zzzz zzzzzz zzzzz zzzzzz Zzzzzzzzzz Zzzzzzz. Zzzzzzz zzzz “Zzzzzzzzzz zzzzz” zzzzz zz zzzzzz zzzzzzzz zzzzzzz."
 
+#. (target)
+#: share/template/desktop/badge.tt2:35
+msgid "desktop.admin-privilege-needed-to-install=target"
+msgstr "(Zzz zzzz zzzz Zzzzzzzzzzzzz zzzzzzzzzz zz zzzz zzzzzzzzzzz zz zzzzzzz %1.)"
+
+#: share/template/desktop/badge.tt2:157
+msgid "desktop.adobe-air-2"
+msgstr "Zzzzz ZZZ 2"
+
+#. (clickHere)
+#: share/template/desktop/badge.tt2:38
+msgid "desktop.after-installation-click-to-launch-desktop=link"
+msgstr "Zzzzz zzzzzzzzzzzz, zzzzzz %1 zz zzzzzz Zzzzzzzzzz&nbsp;Zzzzzzz."
+
+#: share/template/desktop/badge.tt2:36
+msgid "desktop.after-installation-restart-browser"
+msgstr "Zzzzz zzzzzzzzzzzz, zzzzzz <b>zzzzzzz zzzz zzzzzzz</b>, zzzz zzzz zzzz zzzzzz zzz zzzzz."
+
 #: lib/Socialtext/Handler/ControlPanel.pm:696
 msgid "desktop.bg-color"
 msgstr "Zzzzzzzzzz zzzzz"
+
+#: share/template/desktop/badge.tt2:37 share/template/desktop/badge.tt2:32 share/template/desktop/badge.tt2:33
+msgid "desktop.click-here"
+msgstr "zzzzz&nbsp;zzzz"
+
+#. (getFlash, getAIR, target)
+#: share/template/desktop/badge.tt2:34
+msgid "desktop.download-and-run-installer=flash,air,target"
+msgstr "Zzzzzz %1%2 zz zzzzzzzz zzz zzz zzz zzzzzzzzz zzz %3."
+
+#: share/template/desktop/badge.tt2:30
+msgid "desktop.flash-player"
+msgstr "Zzzzz Zzzzzz"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:689
 msgid "desktop.header-gradient-bottom"
@@ -3852,9 +3931,21 @@ msgstr "Zzzzz Zzzzzzz zzzz zz zzzzzzz. Zzzzzzz zzzzz zzzz zz zzzzzz zzz zzzzz zz
 msgid "desktop.relogin-for-skin"
 msgstr "Zzzzzzzz zzzz zzzz zzzzz.  Zzzzzzz zzzzz zzzz zz zzzzzz zzz zzzzz zzzzz zz zzzzz zzz zzz zzzz."
 
+#: share/template/desktop/badge.html:1 share/template/desktop/badge.html:2
+msgid "desktop.socialtext-desktop"
+msgstr "Zzzzzzzzzz Zzzzzzz"
+
+#: share/template/desktop/flair-badge.html:1 share/template/desktop/flair-badge.html:2
+msgid "desktop.socialtext-desktop-flair"
+msgstr "Zzzzzzzzzz Zzzzzzz Zzzzz"
+
 #: lib/Socialtext/Handler/ControlPanel.pm:710
 msgid "desktop.text-color"
 msgstr "Zzzz zzzzz"
+
+#: share/template/desktop/badge.tt2:39
+msgid "desktop.thank-you"
+msgstr "Zzzzz zzz! :-)"
 
 #: share/skin/s3/javascript/lightbox/attachment.tt2:28 share/skin/s3/javascript/lightbox/email.tt2:28
 msgid "do.add"
@@ -5144,6 +5235,10 @@ msgstr "Zzzzzz zz zzzzzz zzz."
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:78
 msgid "error.delete=widget,message"
 msgstr "Zzzzz zzzzzzzz zzz \"%1\" zzzzzz: %2"
+
+#: share/template/desktop/badge.tt2:31
+msgid "error.desktop-runtime-required=target"
+msgstr "%1 zz zzzzzzzz."
 
 #: share/plugin/groups/share/widgets/workspaces/widget.js:66
 msgid "error.display-list-of-wikis"
