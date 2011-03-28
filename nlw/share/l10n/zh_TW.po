@@ -832,13 +832,13 @@ msgid "badge.close"
 msgstr "關閉"
 
 msgid "badge.err_airswf"
-msgstr "Unable to load the Adobe® AIR™ Browser API swf."
+msgstr "無法讀取 Adobe@AIR™ 瀏覽器 API swf檔案。"
 
 msgid "badge.err_airunavailable"
-msgstr "Adobe® AIR™ is not available for your system."
+msgstr "Adobe® AIR™ 不支援您的系統。"
 
 msgid "badge.err_params"
-msgstr "Invalid installer parameters."
+msgstr "安裝參數無效。"
 
 msgid "badge.error"
 msgstr "錯誤!"
@@ -847,34 +847,34 @@ msgid "badge.help"
 msgstr "輔助說明"
 
 msgid "badge.helptext"
-msgstr "Click the button to start. The Adobe® AIR™ Runtime will be installed automatically if needed."
+msgstr "點選按鈕開始。如有需要，Adobe® AIR™ 執行環境將會自動安裝。"
 
 msgid "badge.install"
-msgstr "Click to Start"
+msgstr "點選按鈕開始"
 
 msgid "badge.installing"
-msgstr "Installing Application"
+msgstr "正在安裝"
 
 msgid "badge.installingtext"
-msgstr "Please wait while the application installs."
+msgstr "請等待套用程式安裝。"
 
 msgid "badge.launch"
-msgstr "Click to Launch"
+msgstr "點此啟動"
 
 msgid "badge.launching"
-msgstr "Launching Application"
+msgstr "啟動程式中"
 
 msgid "badge.launchingtext"
-msgstr "Please wait while the application launches."
+msgstr "請等待程式啟動"
 
 msgid "badge.loading"
 msgstr "正在載入..."
 
 msgid "badge.tryagain"
-msgstr "Try Again"
+msgstr "重試"
 
 msgid "badge.upgrade"
-msgstr "Click to Upgrade"
+msgstr "點此更新"
 
 #: share/skin/s3/template/view/weblog:108
 msgid "blog.archives"
@@ -3590,38 +3590,29 @@ msgstr "Socialtext 桌面標誌（自動縮放至 240 x 34 像素）。"
 msgid "desktop.about-text-color"
 msgstr "Socialtext 桌面內所有文字的顏色（鏈結除外）。與『背景顏色』搭配作為可讀內容。"
 
-#. (target)
-#: share/template/desktop/badge.tt2:35
 msgid "desktop.admin-privilege-needed-to-install=target"
-msgstr "(You will need Administrator privileges on your workstation to install %1.)"
+msgstr "（您需要有本機的管理員權限，才能安裝%1）"
 
-#: share/template/desktop/badge.tt2:157
 msgid "desktop.adobe-air-2"
 msgstr "Adobe AIR 2"
 
-#. (clickHere)
-#: share/template/desktop/badge.tt2:38
 msgid "desktop.after-installation-click-to-launch-desktop=link"
-msgstr "After installation, please %1 to launch Socialtext&nbsp;Desktop."
+msgstr "安裝完成後，請%1以啟動社會文字桌面。"
 
-#: share/template/desktop/badge.tt2:36
 msgid "desktop.after-installation-restart-browser"
-msgstr "After installation, please <b>restart your browser</b>, then open this dialog box again."
+msgstr "安裝完成後，請<b>重啟瀏覽器</b>，然後再次開啟此對話框。"
 
 msgid "desktop.bg-color"
 msgstr "背景顏色"
 
 msgid "desktop.click-here"
-msgstr "按此"
+msgstr "點此"
 
-#. (getFlash, getAIR, target)
-#: share/template/desktop/badge.tt2:34
 msgid "desktop.download-and-run-installer=flash,air,target"
-msgstr "Please %1%2 to download and run the installer for %3."
+msgstr "請%1%2以下載並運行%3的安裝程式。"
 
-#: share/template/desktop/badge.tt2:30
 msgid "desktop.flash-player"
-msgstr "Flash Player"
+msgstr "Flash 播放器"
 
 msgid "desktop.header-gradient-bottom"
 msgstr "標題（底部）"

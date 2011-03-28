@@ -829,52 +829,52 @@ msgid "appliance.wikis-initialized=log"
 msgstr "工作区已初始化。<br>记录：%1"
 
 msgid "badge.close"
-msgstr "關閉"
+msgstr "关闭"
 
 msgid "badge.err_airswf"
-msgstr "Unable to load the Adobe® AIR™ Browser API swf."
+msgstr "无法读取 Adobe@AIR™ 浏览器 API swf文件。"
 
 msgid "badge.err_airunavailable"
-msgstr "Adobe® AIR™ is not available for your system."
+msgstr "Adobe® AIR™ 不支持您的系统。"
 
 msgid "badge.err_params"
-msgstr "Invalid installer parameters."
+msgstr "安装参数无效。"
 
 msgid "badge.error"
-msgstr "錯誤!"
+msgstr "错误!"
 
 msgid "badge.help"
 msgstr "帮助"
 
 msgid "badge.helptext"
-msgstr "Click the button to start. The Adobe® AIR™ Runtime will be installed automatically if needed."
+msgstr "点击按钮开始。如有需要，Adobe® AIR™ 执行环境将会自动安装。"
 
 msgid "badge.install"
-msgstr "Click to Start"
+msgstr "点击按钮开始"
 
 msgid "badge.installing"
-msgstr "Installing Application"
+msgstr "正在安装"
 
 msgid "badge.installingtext"
-msgstr "Please wait while the application installs."
+msgstr "请等待应用程序安装。"
 
 msgid "badge.launch"
-msgstr "Click to Launch"
+msgstr "点此启动"
 
 msgid "badge.launching"
-msgstr "Launching Application"
+msgstr "启动程序中"
 
 msgid "badge.launchingtext"
-msgstr "Please wait while the application launches."
+msgstr "请等待程序启动"
 
 msgid "badge.loading"
 msgstr "正在加载..."
 
 msgid "badge.tryagain"
-msgstr "Try Again"
+msgstr "重试"
 
 msgid "badge.upgrade"
-msgstr "Click to Upgrade"
+msgstr "点此更新"
 
 #: share/skin/s3/template/view/weblog:108
 msgid "blog.archives"
@@ -3590,38 +3590,29 @@ msgstr "Socialtext 桌面标志（自动缩放至 240 x 34 像素）。"
 msgid "desktop.about-text-color"
 msgstr "Socialtext 桌面内所有文本的颜色（链接除外）。与“背景颜色”搭配作为可读内容。"
 
-#. (target)
-#: share/template/desktop/badge.tt2:35
 msgid "desktop.admin-privilege-needed-to-install=target"
-msgstr "(You will need Administrator privileges on your workstation to install %1.)"
+msgstr "（您需要有本機的管理员权限，才能安装%1）"
 
-#: share/template/desktop/badge.tt2:157
 msgid "desktop.adobe-air-2"
 msgstr "Adobe AIR 2"
 
-#. (clickHere)
-#: share/template/desktop/badge.tt2:38
 msgid "desktop.after-installation-click-to-launch-desktop=link"
-msgstr "After installation, please %1 to launch Socialtext&nbsp;Desktop."
+msgstr "安装完成后，请%1以启动社会文本桌面。"
 
-#: share/template/desktop/badge.tt2:36
 msgid "desktop.after-installation-restart-browser"
-msgstr "After installation, please <b>restart your browser</b>, then open this dialog box again."
+msgstr "安装完成后，请<b>重启浏览器</b>，然后再次开启此对话框。"
 
 msgid "desktop.bg-color"
 msgstr "背景颜色"
 
 msgid "desktop.click-here"
-msgstr "按此"
+msgstr "点此"
 
-#. (getFlash, getAIR, target)
-#: share/template/desktop/badge.tt2:34
 msgid "desktop.download-and-run-installer=flash,air,target"
-msgstr "Please %1%2 to download and run the installer for %3."
+msgstr "请%1%2以下载并运行%3的安装程序。"
 
-#: share/template/desktop/badge.tt2:30
 msgid "desktop.flash-player"
-msgstr "Flash Player"
+msgstr "Flash 播放器"
 
 msgid "desktop.header-gradient-bottom"
 msgstr "标题（底部）"
@@ -3668,7 +3659,7 @@ msgid "desktop.text-color"
 msgstr "文本颜色"
 
 msgid "desktop.thank-you"
-msgstr "感謝！ :-)"
+msgstr "感谢！ :-)"
 
 #: share/skin/s3/javascript/lightbox/attachment.tt2:28 share/skin/s3/javascript/lightbox/email.tt2:28
 msgid "do.add"
@@ -4958,7 +4949,7 @@ msgid "error.delete=widget,message"
 msgstr "删除“%1”小工具时出错：%2"
 
 msgid "error.desktop-runtime-required=target"
-msgstr "必須要有 %1。"
+msgstr "必须要有 %1。"
 
 #: share/plugin/groups/share/widgets/workspaces/widget.js:66
 msgid "error.display-list-of-wikis"

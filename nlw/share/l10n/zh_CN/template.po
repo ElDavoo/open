@@ -48,16 +48,52 @@ msgid "ago.minutes=count"
 msgstr "%1 分钟前"
 
 msgid "badge.close"
-msgstr "關閉"
+msgstr "关闭"
+
+msgid "badge.err_airswf"
+msgstr "无法读取 Adobe@AIR™ 浏览器 API swf文件。"
+
+msgid "badge.err_airunavailable"
+msgstr "Adobe® AIR™ 不支持您的系统。"
+
+msgid "badge.err_params"
+msgstr "安装参数无效。"
 
 msgid "badge.error"
-msgstr "錯誤!"
+msgstr "错误!"
 
 msgid "badge.help"
 msgstr "帮助"
 
+msgid "badge.helptext"
+msgstr "点击按钮开始。如有需要，Adobe® AIR™ 执行环境将会自动安装。"
+
+msgid "badge.install"
+msgstr "点击按钮开始"
+
+msgid "badge.installing"
+msgstr "正在安装"
+
+msgid "badge.installingtext"
+msgstr "请等待应用程序安装。"
+
+msgid "badge.launch"
+msgstr "点此启动"
+
+msgid "badge.launching"
+msgstr "启动程序中"
+
+msgid "badge.launchingtext"
+msgstr "请等待程序启动"
+
 msgid "badge.loading"
 msgstr "正在加载..."
+
+msgid "badge.tryagain"
+msgstr "重试"
+
+msgid "badge.upgrade"
+msgstr "点此更新"
 
 #: share/template/bugs_content.html:5
 msgid "bug.application-error"
@@ -84,8 +120,26 @@ msgstr "忽略错误"
 msgid "bug.report"
 msgstr "报告错误"
 
+msgid "desktop.admin-privilege-needed-to-install=target"
+msgstr "（您需要有本機的管理员权限，才能安装%1）"
+
+msgid "desktop.adobe-air-2"
+msgstr "Adobe AIR 2"
+
+msgid "desktop.after-installation-click-to-launch-desktop=link"
+msgstr "安装完成后，请%1以启动社会文本桌面。"
+
+msgid "desktop.after-installation-restart-browser"
+msgstr "安装完成后，请<b>重启浏览器</b>，然后再次开启此对话框。"
+
 msgid "desktop.click-here"
-msgstr "按此"
+msgstr "点此"
+
+msgid "desktop.download-and-run-installer=flash,air,target"
+msgstr "请%1%2以下载并运行%3的安装程序。"
+
+msgid "desktop.flash-player"
+msgstr "Flash 播放器"
 
 msgid "desktop.socialtext-desktop"
 msgstr "Socialtext 桌面"
@@ -94,7 +148,7 @@ msgid "desktop.socialtext-desktop-flair"
 msgstr "Socialtext 酷炫桌面"
 
 msgid "desktop.thank-you"
-msgstr "感謝！ :-)"
+msgstr "感谢！ :-)"
 
 #. (inviting_user, group_name)
 #: share/template/email/st/group-invitation.txt:22
@@ -548,7 +602,7 @@ msgid "error.confirm-email-to-activate-account"
 msgstr "您需要验证电子邮件地址来激活此帐户。"
 
 msgid "error.desktop-runtime-required=target"
-msgstr "必須要有 %1。"
+msgstr "必须要有 %1。"
 
 #: share/template/errors/requires_external_id:2
 msgid "error.external-id-needed-to-activate-account"
