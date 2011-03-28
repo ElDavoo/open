@@ -445,6 +445,7 @@ sub has_required_meta {
     return all { defined($pagemeta->{$_}) } qw/Subject From Date/;
 }
 
+use constant CONTENT_LIMIT => 8388608; # 100MB
 sub load_page_attachments {
     my ($self, $page_hash) = @_;
     my $ws_dir = $self->{workspace_data_dir};
@@ -534,6 +535,11 @@ sub load_page_attachments {
             }
             elsif (!$disk_size) {
                 die "zero-length attachment\n" if $Noisy;
+                return; # from the try
+            }
+            elsif ($disk_size > CONTENT_LIMIT) {
+                warn "attachment length greater than ". CONTENT_LIMIT
+                    .", skipping\n";
                 return; # from the try
             }
             elsif ($meta->{content_length} != $disk_size) {
