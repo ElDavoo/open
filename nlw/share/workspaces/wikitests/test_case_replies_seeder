@@ -33,6 +33,7 @@ It should be included by the top-level replies testcase
 | open_ok | /st/signals |  |
 | st-send-signal-in-activities-widget | %%topic_signal%% |  |
 | wait_for_text_present_ok | %%topic_signal%% | 30000 |
+| open_ok | /st/signals |  |
 
 | set | i | 0-0 |
 | include | [Test Case: Replies Include] |  |

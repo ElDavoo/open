@@ -7,22 +7,7 @@
 
 | *Comment* | Test Case: Replies Include. The somewhat tortured xpath expressions here work in IE |  |
 
-| *Comment* | Test Case: Replies Include. Click the ostensibly last Reply To Conversation link |  |
-| wait_for_element_visible_ok | //a[@class='replyLink'] | 10000 |
-| click_ok | //a[@class='replyLink'][last()] |  |
-| wait_for_element_visible_ok | //div[@class='replies']//iframe[@name='signalFrame'] | 5000 |
-| pause | %%frame_pause%% |  |
-
-| *Comment* | Test Case: Replies Include. Type the reply |  |
-| select_frame | //div[@class='replies']//iframe[@name='signalFrame'] |  |
-| click_ok | //body |  |
-| type_ok | //body | %%reply_signal%% |
-| select_frame | relative=parent |  |
-
-| *Comment* | Test Case: Replies Include. Post the reply |  |
-| wait_for_element_visible_ok | //a[@class='btn post postReply'] | 5000 |
-| pause | %%post_pause%% |  |
-| click_ok | //a[@class='btn post postReply'] |  |
+| st-send-reply | %%reply_signal%% |  |
 
 | *Comment* | Test Case: Replies Include. Wait for the reply to appear |  |
 | pause | %%my_wait%% |  |
