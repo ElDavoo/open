@@ -85,30 +85,23 @@ sub st_client_ssl {
     my $command = shift;
     my @args    = @_;
 
-    my $ssl_dir = 'ssl';
-    my $old_dir = getcwd();
-
-    mkdir($ssl_dir, 0755) unless (-e $ssl_dir);
-    chdir($ssl_dir) || die "Can't cd to '$ssl_dir'; $!";
-    scope_guard { chdir($old_dir) };
-
     if ($command eq 'server-on') {
-        shell_run(qw( manage-certs init --force ));
-        shell_run(qw( manage-certs install ));
+        $self->_manage_certs(qw( init --force ));
+        $self->_manage_certs(qw( install ));
         $self->st_config('set ssl_only 1');
-        shell_run(qw( gen-config --sitewide ));
+        shell_run(qw( gen-config ));
         $self->restart_everything;
     }
     elsif ($command eq 'server-off') {
         $self->st_config('set ssl_only 0');
-        shell_run(qw( gen-config --sitewide ));
+        shell_run(qw( gen-config ));
         $self->restart_everything;
     }
     elsif ($command eq 'client-on') {
         my $username = shift @args;
         die "cannot 'st-client-ssl client-on' without a username\n" unless $username;
-        shell_run(qw( manage-certs client --force --username ), $username );
-        $ENV{HTTPS_PKCS12_FILE} = "$ssl_dir/binary/${username}.p12";
+        $self->_manage_certs(qw( client --force --username ), $username);
+        $ENV{HTTPS_PKCS12_FILE} = "ssl/binary/${username}.p12";
         $ENV{HTTPS_PKCS12_PASSWORD} = "password";
     }
     elsif ($command eq 'client-off') {
@@ -118,6 +111,20 @@ sub st_client_ssl {
     else {
         die "unknown st-client-ssl option '$command'\n";
     }
+}
+
+sub _manage_certs {
+    my $self = shift;
+    my @cmds = @_;
+
+    my $ssl_dir = 'ssl';
+    my $old_dir = getcwd();
+
+    mkdir($ssl_dir, 0755) unless (-e $ssl_dir);
+    chdir($ssl_dir) || die "Can't cd to '$ssl_dir'; $!";
+    scope_guard { chdir($old_dir) };
+
+    shell_run('manage-certs', @cmds);
 }
 
 =head1 AUTHOR

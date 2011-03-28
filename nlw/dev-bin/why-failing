@@ -19,12 +19,13 @@ use Test::Socialtext::DotProve;
 # Read in our command line arguments
 my ($help, $man, $verbose);
 my $hudson_url         = 'https://lucite.socialtext.net:9080';
-my $project            = 'Socialtext';
+my $project            = 'Socialtext-master';
 my $build              = 'lastCompletedBuild';
 my $dot_prove          = 'artifacts/.prove';
 my $dryrun             = undef;
 my $unittest           = undef;
 my $count_all_failures = undef;
+my $fdefs;
 my @candidates;
 
 GetOptions(
@@ -35,6 +36,7 @@ GetOptions(
     'dryrun'      => \$dryrun,
     'verbose'     => \$verbose,
     'candidate=s' => \@candidates,
+    'fdefs'       => \$fdefs,
     'all'         => \$count_all_failures,
     'help|?'      => \$help,
     'man'         => \$man,
@@ -344,8 +346,23 @@ sub run_tests {
 ###############################################################################
 # Cleans out the test environment
 sub clean_test_environment {
+    # Purge test environment tree
     my $HOME = $ENV{HOME};
     rmtree("$HOME/src/st/socialtext/nlw/t/tmp");
+
+    # Purge test DBs (if a test needs one, it should list it as a fixture
+    # dependency and it'll get rebuilt automatically)
+    my $USER = $ENV{USER};
+    foreach my $db (`psql -l`) {
+        if ($db =~ /(NLW_${USER}_testing\S*)\s/) {
+            `dropdb $1`;
+        }
+    }
+
+    # Optionally re-run fdefs
+    if ($fdefs) {
+        system('dev-bin/fresh-dev-env-from-scratch >/dev/null 2>/dev/null');
+    }
 }
 
 ###############################################################################
@@ -374,6 +391,7 @@ why-failing - find out why a unit test is failing
     --dot-prove <prove> Path to the .prove artifact ("artifacts/.prove")
     --candidate <test>  Specify candidate tests explicitly
     --all               Count all failures, not just ones in test
+    --fdefs             Run "fdefs" between tests
     --dryrun            Dry-run; show candidates, but don't run tests
     --verbose           Display verbose output
     --help/-?           Display a brief usage statement
@@ -406,11 +424,7 @@ environment>, including:
 
 =item * dropping your test DB
 
-=item * erasing ~/.nlw/
-
 =item * erasing t/tmp/ in your dev-env
-
-=item * erasing t/tmp/ in your stci environment
 
 =back
 
@@ -428,7 +442,7 @@ Defaults to C<https://lucite.socialtext.net:9080>
 
 Specifies the Project in Hudson whose test results we should be examining.
 
-Defaults to "Socialtext".
+Defaults to "Socialtext-master".
 
 =item B<--build E<lt>buildE<gt>>
 
@@ -463,6 +477,12 @@ ignore failures in the candidates.  With C<--all>, we also track failures in
 the candidates.
 
 Useful for helping hunt down chains of failures in a single run.
+
+=item B<--fdefs>
+
+Runs F<fresh-dev-env-from-scratch> between test runs, to ensure that not only
+have we cleaned out the test environment but also that F<~/.nlw/> has been
+properly reset.
 
 =item B<--dryrun>
 

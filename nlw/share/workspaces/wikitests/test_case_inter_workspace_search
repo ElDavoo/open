@@ -1,4 +1,6 @@
+
 | *Comment* | Test Case: Inter Workspace Search |  |
+
 
 | *Comment* | This test relies on the presence of test-data and deliberately overwrites fixed workspace names so subsequent runs will work with `workspaces:*` |  |
 
@@ -12,7 +14,11 @@
 | st-admin | delete-workspace --workspace test-data3 --no-export |  |
 | st-admin | clone-workspace --workspace test-data --target test-data3 | The test-data workspace has been cloned to test-data3 |
 | st-admin | set-workspace-config --workspace test-data3 title test-data3 | The workspace config for test-data3 has been updated. |
-| st-process-jobs |  |  |
+
+| *Comment* | Test Case: Inter Workspace Search set long timeout so jobs can process while Selenium waits |  |
+| set_timeout | 600000 |  |
+| pause | 60000 |  |
+| set_timeout | 30000 |  |
 
 | *Comment* | Test Case: Inter Workspace Search. Select My Workspaces in Dashboard-context |  |
 | open_ok | /st/dashboard |  |

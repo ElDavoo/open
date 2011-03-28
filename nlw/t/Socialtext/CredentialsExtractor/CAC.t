@@ -7,7 +7,7 @@ use Socialtext::CredentialsExtractor;
 use Socialtext::CredentialsExtractor::Extractor::CAC;
 use Socialtext::AppConfig;
 use Socialtext::Signal;
-use Test::Socialtext tests => 57;
+use Test::Socialtext tests => 62;
 use Test::Socialtext::User;
 
 fixtures(qw( empty ));
@@ -225,6 +225,41 @@ valid: {
     } );
     ok $creds->{valid}, 'extracted creds from slash delimited subject';
     is $creds->{user_id}, $test_user_id, '... with valid User';
+}
+
+###############################################################################
+# TEST: Credentials Extraction updates "last_login"
+updates_last_login: {
+    my $guard  = Test::Socialtext::User->snapshot;
+    my $first  = 'Desmond';
+    my $middle = 'Wilkinson';
+    my $last   = 'Llewelyn';
+    my $edipin = Test::Socialtext->create_unique_id();
+
+    # Create a User, and provision them fully.
+    my $user = create_test_user(
+        first_name          => $first,
+        middle_name         => $middle,
+        last_name           => $last,
+        private_external_id => $edipin,
+    );
+    ok $user, 'Created test User';
+
+    my $last_login = $user->last_login_datetime_object;
+    is $last_login, DateTime::Infinite::Past->new, '... who has never logged in';
+
+    # Extract creds for this User
+    my $subject = "C=UK, O=Q Branch, CN=$last\.$first\.$middle\.$edipin";
+    my $creds   = Socialtext::CredentialsExtractor->ExtractCredentials( {
+        X_SSL_CLIENT_SUBJECT => $subject,
+    } );
+    ok $creds->{valid}, 'extracted creds for User';
+    is $creds->{user_id}, $user->user_id, '... the correct User';
+
+    # VERIFY: last_login got updated for the User
+    $user->reload;
+    $last_login = $user->last_login_datetime_object;
+    isnt $last_login, DateTime::Infinite::Past->new, '... login has been recorded';
 }
 
 ###############################################################################
