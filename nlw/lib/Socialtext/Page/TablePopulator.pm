@@ -430,7 +430,8 @@ sub load_revision_metadata {
             };
         }
         catch {
-            warn "Couldn't parse revision $ws_dir/$pg_dir/$file, skipping: $_\n";
+            my $err = format_error($_);
+            warn "Couldn't parse revision $ws_dir/$pg_dir/$file, skipping: $err\n";
         };
     }
 
