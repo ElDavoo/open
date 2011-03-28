@@ -629,13 +629,17 @@ sub _clean_email_address {
 
     # We have some very bogus data on our system, so we need to
     # be very cautious.
-    unless ( Email::Valid->address($email_address) ) {
-        my ($name) = $email_address =~ /([\w-]+)/;
-        $name = 'unknown' unless defined $name;
-        $email_address = $name . '@example.com';
-    }
+    $email_address = lc($email_address);
+    return $email_address if Email::Valid->address($email_address);
 
-   return lc $email_address;
+    my $unknown = 'unknown@example.com';
+
+    my ($name) = $email_address =~ /([\w-]+)/;
+    return $unknown unless defined $name;
+
+    # appending '@example.com' does not guarantee a valid email.
+    my $retry = "$name\@example.com";
+    return Email::Valid->address($retry) ? $retry : $unknown;
 }
 
 sub editor_to_id {
