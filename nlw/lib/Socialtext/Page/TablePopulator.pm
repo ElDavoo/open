@@ -549,7 +549,7 @@ sub load_page_attachments {
 
             my %args = (
                 temp_filename  => $disk_filename,
-                creator_id     => $self->editor_to_id($meta->{from}),
+                creator_id     => $editor,
                 created_at     => $meta->{date},
                 filename       => $meta->{subject},
                 content_length => $disk_size,
