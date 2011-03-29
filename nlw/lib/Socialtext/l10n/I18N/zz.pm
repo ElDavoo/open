@@ -12,3 +12,19 @@ sub numf {
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Socialtext::l10n::I18N::zz
+
+=head1 SYNOPSIS
+
+  Blah => Zzzz
+
+=head1 DESCRIPTION
+
+Replace all the text with Zzzzz.
+
+=cut
