@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 159;
+use Test::Socialtext tests => 162;
 use Test::Differences;
 use Test::Output qw/stderr_is/;
 use Socialtext::CLI;
@@ -178,14 +178,18 @@ account_import_preserves_uar: {
     my $impersonator      = create_test_user();
     my $impersonator_name = $impersonator->username();
 
+    my $acct_admin      = create_test_user();
+    my $acct_admin_name = $acct_admin->username();
+
     # give the User a direct Role in the Account
     $account->add_user(user => $user, role => $Member);
     $account->add_user(user => $impersonator, role => $Impersonator);
+    $account->add_user(user => $acct_admin, role => $Admin);
 
     # Export and re-import the Account
     export_and_reimport_account(
         account => $account,
-        users   => [$user, $impersonator],
+        users   => [$user, $impersonator, $acct_admin],
     );
 
     # Users should have the correct Role in the Account
@@ -208,6 +212,15 @@ account_import_preserves_uar: {
         my $role = $account->role_for_user($found);
         ok defined $role, '... Impersonator has Role in Account';
         is $role->name, $Impersonator->name, '... ... Impersonator Role';
+    }
+
+    check_account_admin: {
+        my $found = Socialtext::User->new(username => $acct_admin_name);
+        isa_ok $found, 'Socialtext::User', '... found re-imported Account Admin';
+
+        my $role = $account->role_for_user($found);
+        ok defined $role, '... Impersonator has Role in Account';
+        is $role->name, $Admin->name, '... ... Admin Role';
     }
 }
 
