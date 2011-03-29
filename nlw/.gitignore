@@ -591,3 +591,4 @@ lib/Socialtext/Page/BMTablePopulator.pm
 lib/Socialtext/Gadgets/Feature.pm
 lib/Socialtext/Rest/Group/Peopletags.pm
 t/wikitests/groups/peopletags.wiki
+lib/Socialtext/Gadget/Base.pm
