@@ -11,6 +11,8 @@
 
 | include | [Test Case: Replies Checker] |  |
 
-| include | [Test Case: Mobile Replies] |  |
+| include | [Test Case: Mobile Replies FF] |  |
+
+| include | [Test Case: Mobile Replies IE] |  |
 
 | *Comment* | Test Case: Replies COMPLETED |  |

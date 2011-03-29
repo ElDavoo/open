@@ -1,7 +1,7 @@
 
 * Fixture: SocialWidgets
 
-| *Comment* | Test Case: Clear Profile Fields |  |
+| *Comment* | Test Case: Clear Profile Fields - REMOVED run.ff and run.safari tags - retest in IE |  |
 
 | *Comment* | [Test Case: Edit Profile] and [Test Case: Verify Profile] should have run before Clear Profile Fields |  |
 
