@@ -45,9 +45,43 @@
 | open_ok | /%%ws%%/ |  |
 | wait_for_element_present_ok | link=Zzzzzz | 30000 |
 
-| *Comment* | Test Case: Settings: Custom Language - Check Control Panel, Console, and Mobile |  |
+| *Comment* | Test Case: Settings: Custom Language - Check Control Panel |  |
 | open_ok | /nlw/control |  |
 | wait_for_text_present_ok | Zzzz zzzz, Zzzzzzzzz Zzzzzzzz Zzzzzzzzzzzzzz zzz zzzzzz zzz zzzzzzz zzz zzz zz zzz Zzzzzzzzzz zzzzzzzzzzz, zzzzzzzzz Zzzzzzzz, Zzzzzz, Zzzzzzzzzz, Zzzzz, zzz Zzzzzzz. | 30000 |
+| wait_for_element_visible_ok | //a[@title='accounts'] | 30000 |
+| text_like | //a[@title='accounts'] | Zzzzzzzz |
+| wait_for_element_visible_ok | //a[@title='workspaces'] | 30000 |
+| text_like | //a[@title='workspaces'] | Zzzzzzzzzz |
+| wait_for_element_visible_ok | //a[@title='users'] | 30000 |
+| text_like | //a[@title='users'] | Zzzzz |
+| wait_for_element_visible_ok | //a[@title='groups'] | 30000 |
+| text_like | //a[@title='groups'] | Zzzzzz |
+| wait_for_element_visible_ok | //a[@title='settings'] | 30000 |
+| text_like | //a[@title='settings'] | Zzzzzzzz |
+| wait_for_element_visible_ok | //a[@title='console'] | 30000 |
+| text_like | //a[@title='console'] | Zzzzzzz |
+| click_and_wait | //a[@title='accounts'] |  |
+| wait_for_text_present_ok | Zzzzzzzzzz Zzzzzzz Zzzzz - Zzzzzzzz | 30000 |
+| wait_for_element_visible_ok | //a[@title='workspaces'] | 30000 |
+| click_and_wait | //a[@title='workspaces'] |  |
+| text_like | //body | Zzzzzz zz zzzz: |
+| wait_for_element_visible_ok | //a[@title='users'] | 30000 |
+| click_and_wait | //a[@title='users'] |  |
+| wait_for_text_present_ok | Zzzzzz zz zzzzzzzz: | 300000 |
+| wait_for_element_visible_ok | //a[@title='groups'] | 30000 |
+| click_and_wait | //a[@title='groups'] |  |
+| wait_for_text_present_ok | zzzz zzzzzzzz: | 30000 |
+| wait_for_element_visible_ok | //a[@title='users'] | 30000 |
+| click_and_wait | //a[@title='users'] |  |
+| wait_for_text_present_ok | Zzzzzz zz zzzzzzzz: | 30000 |
+| wait_for_element_visible_ok | //a[@title='settings'] | 30000 |
+| click_and_wait | //a[@title='settings'] |  |
+| wait_for_text_present_ok | Zzzzzz-Zzzz Zzzzzzz Zzzzzzzzzzz | 30000 |
+| wait_for_element_visible_ok | //a[@title='console'] | 30000 |
+| click_and_wait | //a[@title='console'] |  |
+| wait_for_text_present_ok | Zz zzzz zzz zzzzzz zzz Zzzzzzzzzz, Zzzzzzzz, Zzzzzz zzz Zzzzz zz zzz zzzzzz, zz zz zzz Zzzzzzz Zzzzz zzzz. | 30000 |
+
+| *Comment* | Test Case: Settings: Custom Language - Console and Mobile |  |
 | open_ok | /console/ |  |
 | text_like | //body | zzzzzz |
 | open_ok | /m |  |
