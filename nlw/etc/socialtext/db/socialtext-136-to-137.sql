@@ -42,7 +42,7 @@ UPDATE gadget
  WHERE src = 'local:people:all_tags';
 
 UPDATE "System"
-   SET value = '136'
+   SET value = '137'
  WHERE field = 'socialtext-schema-version';
 
 COMMIT;
