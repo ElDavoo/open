@@ -18,9 +18,9 @@ fixtures(qw(db));
 
 ###############################################################################
 # Grab short-hand versions of the Roles we're going to use
-my $Member         = Socialtext::Role->Member();
-my $WorkspaceAdmin = Socialtext::Role->Admin();
-my $Impersonator   = Socialtext::Role->Impersonator();
+my $Member       = Socialtext::Role->Member();
+my $Admin        = Socialtext::Role->Admin();
+my $Impersonator = Socialtext::Role->Impersonator();
 
 ###############################################################################
 # TEST: Account export/import preserves GAR, when Group has this Account as
@@ -81,7 +81,7 @@ account_import_preserves_gwrs: {
 
     # Give the Group a Role in a Workspace, indirectly giving it a Role in the
     # Account.
-    $workspace->add_group(group => $group, role => $WorkspaceAdmin);
+    $workspace->add_group(group => $group, role => $Admin);
 
     # Export and re-import the Account; GWRs/GARs should be preserved
     export_and_reimport_account(
@@ -133,7 +133,7 @@ account_import_preserves_multiple_indirect_roles: {
 
     # Give the Group some Roles in multiple Workspaces
     $ws_one->add_group(group => $group, role => $Member);
-    $ws_two->add_group(group => $group, role => $WorkspaceAdmin);
+    $ws_two->add_group(group => $group, role => $Admin);
 
     # Export and re-import the Account
     export_and_reimport_account(
