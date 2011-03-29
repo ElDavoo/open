@@ -1433,6 +1433,10 @@ sub _cache_html {
                         # Hashtags are just links, so they are cacheable.
                         return;
                     }
+                    elsif ($wafl->{method} =~ m/^st_/) {
+                        # All the agile plugin st_* wafls are not cacheable
+                        $expires_at = -1;
+                    }
                     else {
                         $unknown = 1;
                     }
