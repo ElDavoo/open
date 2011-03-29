@@ -372,6 +372,18 @@ sub st_single_widget_in_dashboard {
     ok(!$@, 'st_single_widget_in_dashboard' );
 }
 
+=head2 st_open_m_signals
+
+Opens the mobile signals page as a function of is_wikiwyg
+
+=cut
+
+sub st_open_m_signals {
+    my ($self) = @_;
+    my $msignal =  $self->_is_wikiwyg() ? '/st/m/signals' : '/st/signals';
+    $self->handle_command('open_ok',$msignal); 
+}
+
 =head2 st_send_page_signal ($signaltosend)
 
 The send page signal box does not contain the wikiwkg stuff that the ActivitiesWidget does.
