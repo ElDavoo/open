@@ -1,0 +1,367 @@
+# @COPYRIGHT@
+msgid ""
+msgstr ""
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-03-29 16:42+0800\n"
+"Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "error.html-report-not-implemented"
+msgstr "HTML Report is not implemented"
+
+msgid "error.invalid-report=module,message"
+msgstr "Invalid report (%1): %2"
+
+msgid "error.report-account_id-required"
+msgstr "account_id is mandatory"
+
+msgid "error.report-wiki-required"
+msgstr "workspace is mandatory"
+
+msgid "error.reports-account-id-required!"
+msgstr "Account ID is mandatory!"
+
+msgid "error.reports-current-user-required"
+msgstr "this report does not work without a current user"
+
+msgid "error.reports-date-required!"
+msgstr "This report requires a date!"
+
+msgid "error.reports-duration-required!"
+msgstr "duration is mandatory!"
+
+msgid "error.reports-invalid=user"
+msgstr "'%1' is an invalid user"
+
+msgid "error.reports-no-account=name"
+msgstr "No account named %1"
+
+msgid "error.reports-no-group=id"
+msgstr "Can't find group '%1'"
+
+msgid "error.reports-no-growth-data-available"
+msgstr "No growth data available."
+
+msgid "error.reports-no-wiki=name"
+msgstr "No workspace named %1"
+
+msgid "error.reports-start_time-required!"
+msgstr "start_time is mandatory!"
+
+msgid "error.reports-username-required!"
+msgstr "Username is mandatory!"
+
+msgid "error.reports-wiki-and-page_id-required"
+msgstr "workspace and page_id are mandatory!"
+
+msgid "error.reports-wiki-required!"
+msgstr "Workspace is mandatory!"
+
+msgid "error.reports-wiki-required-specify-on-url"
+msgstr "Workspace is mandatory! - Give a workspace=name on the URL"
+
+msgid "error.unknown-report=type"
+msgstr "Unknown report (%1)"
+
+msgid "heading.account_id"
+msgstr "account_id"
+
+msgid "heading.action"
+msgstr "action"
+
+msgid "heading.actor"
+msgstr "actor"
+
+msgid "heading.contributions"
+msgstr "contributions"
+
+msgid "heading.count"
+msgstr "count"
+
+msgid "heading.detail_headings"
+msgstr "detail_headings"
+
+msgid "heading.gadget_id"
+msgstr "gadget_id"
+
+msgid "heading.page_id"
+msgstr "page_id"
+
+msgid "heading.page_views"
+msgstr "page_views"
+
+msgid "heading.pages"
+msgstr "pages"
+
+msgid "heading.period"
+msgstr "period"
+
+msgid "heading.period_start"
+msgstr "period_start"
+
+msgid "heading.tally"
+msgstr "tally"
+
+msgid "heading.title"
+msgstr "title"
+
+msgid "heading.unique_contributors"
+msgstr "unique_contributors"
+
+msgid "heading.unique_members"
+msgstr "unique_members"
+
+msgid "heading.unique_visitors"
+msgstr "unique_visitors"
+
+msgid "heading.user_id"
+msgstr "user_id"
+
+msgid "heading.username"
+msgstr "username"
+
+msgid "heading.views"
+msgstr "views"
+
+msgid "heading.workspace"
+msgstr "workspace"
+
+msgid "heading.workspaces"
+msgstr "workspaces"
+
+msgid "reports.account-growth"
+msgstr "Account Growth"
+
+msgid "reports.actions-by-wiki"
+msgstr "Actions by Workspace"
+
+msgid "reports.audience-by-user"
+msgstr "Audience by User"
+
+msgid "reports.available-reports:"
+msgstr "Available Reports:"
+
+msgid "reports.cgi=options"
+msgstr "CGI options: %1"
+
+msgid "reports.coeditors-by-user"
+msgstr "Coeditors by User"
+
+msgid "reports.collaborativeness:"
+msgstr "Collaborativeness:"
+
+msgid "reports.comments-per-wiki"
+msgstr "Comments per Workspace"
+
+msgid "reports.contributions"
+msgstr "Contributions"
+
+msgid "reports.dashboard"
+msgstr "Dashboard"
+
+msgid "reports.dashboard-views"
+msgstr "Dashboard Views"
+
+msgid "reports.dashboard=user"
+msgstr "%1 User Dashboard"
+
+msgid "reports.dashboard=wiki"
+msgstr "%1 Workspace Dashboard"
+
+msgid "reports.date"
+msgstr "Date"
+
+msgid "reports.date-supplied-but-this-report-needs-none!"
+msgstr "Date supplied, but this report doesn't need one!"
+
+msgid "reports.duration:"
+msgstr "Duration:"
+
+msgid "reports.edits-by-user"
+msgstr "Edits by User"
+
+msgid "reports.edits-pages-read-by-these-people=user:"
+msgstr "%1 edits pages read by these people:"
+
+msgid "reports.edits-pages-with-these-people=user:"
+msgstr "%1 edits pages with these people:"
+
+msgid "reports.edits-per-wiki"
+msgstr "Edits per Workspace"
+
+msgid "reports.example-actions-today-1month-txt"
+msgstr "Example: /actions/today/-1month.txt"
+
+msgid "reports.generate!"
+msgstr "Generate!"
+
+msgid "reports.healthy"
+msgstr "Healthy"
+
+msgid "reports.healthy-csv"
+msgstr "Healthy CSV"
+
+msgid "reports.healthy-wikis"
+msgstr "Healthy Workspaces"
+
+msgid "reports.in-past-week=name"
+msgstr "%1 in the past week"
+
+msgid "reports.loading-report"
+msgstr "Loading Report..."
+
+msgid "reports.mean"
+msgstr "Mean"
+
+msgid "reports.median"
+msgstr "Median"
+
+msgid "reports.no-user-stats-for-this-period"
+msgstr "No user stats are available for this period."
+
+msgid "reports.other-csv"
+msgstr "Other CSV"
+
+msgid "reports.other-wikis"
+msgstr "Other Workspaces"
+
+msgid "reports.others"
+msgstr "Others"
+
+msgid "reports.page"
+msgstr "Page"
+
+msgid "reports.page-views"
+msgstr "Page Views"
+
+msgid "reports.pages"
+msgstr "Pages"
+
+msgid "reports.people"
+msgstr "People"
+
+msgid "reports.people-views"
+msgstr "People Views"
+
+msgid "reports.personalizations"
+msgstr "Personalizations"
+
+msgid "reports.personalized-dashboards"
+msgstr "Personalized Dashboards"
+
+msgid "reports.personalized-profiles"
+msgstr "Personalized Profiles"
+
+msgid "reports.reads-pages-edited-by-these-people=user:"
+msgstr "%1 reads pages edited by these people:"
+
+msgid "reports.report-duration:"
+msgstr "Report duration:"
+
+msgid "reports.report-start-date:"
+msgstr "Report Start Date:"
+
+msgid "reports.report-start-time:"
+msgstr "Report Start time:"
+
+msgid "reports.report-starting-on:"
+msgstr "Report starting on:"
+
+msgid "reports.reports-dashboard"
+msgstr "Reports Dashboard"
+
+msgid "reports.sent"
+msgstr "Sent"
+
+msgid "reports.signals"
+msgstr "Signals"
+
+msgid "reports.signals-sent"
+msgstr "Signals Sent"
+
+msgid "reports.stddev"
+msgstr "StdDev"
+
+msgid "reports.submit"
+msgstr "Submit"
+
+msgid "reports.total-members-current:"
+msgstr "Total members (current):"
+
+msgid "reports.total-unique-contributors:"
+msgstr "Total unique contributors:"
+
+msgid "reports.total-unique-visitors:"
+msgstr "Total unique visitors:"
+
+msgid "reports.unique-contributors"
+msgstr "Unique Contributors"
+
+msgid "reports.unique-contributors-as-percent-of-unique-visitors"
+msgstr "(unique contributors as a percent of unique visitors)"
+
+msgid "reports.unique-members"
+msgstr "Unique Members"
+
+msgid "reports.unique-visitors"
+msgstr "Unique Visitors"
+
+msgid "reports.up-to-main-dashboard"
+msgstr "Up to main dashboard"
+
+msgid "reports.url-format-report-name-start-time-duration-type"
+msgstr ""
+"URL Format: /&lt;report_name&gt;/&lt;start_time&gt;/&lt;duration&gt;.&lt;"
+"type&gt;"
+
+msgid "reports.usage-by-account"
+msgstr "Usage By Account"
+
+msgid "reports.usage-by-wiki"
+msgstr "Usage By Workspace"
+
+msgid "reports.username"
+msgstr "Username"
+
+msgid "reports.views"
+msgstr "Views"
+
+msgid "reports.views-by-page"
+msgstr "Views by Page"
+
+msgid "reports.views-by-user"
+msgstr "Views by User"
+
+msgid "reports.views-by-wiki"
+msgstr "Views by Workspace"
+
+msgid "reports.views-per-wiki"
+msgstr "Views per Workspace"
+
+msgid "reports.wiki-actions"
+msgstr "Workspace Actions"
+
+msgid "reports.wiki-analytics"
+msgstr "Wiki Analytics"
+
+msgid "reports.wiki-contributions"
+msgstr "Workspace Contributions"
+
+msgid "reports.wiki-edits-by-user"
+msgstr "Workspace Edits by User"
+
+msgid "reports.wiki-growth"
+msgstr "Workspace Growth"
+
+msgid "reports.wiki-total"
+msgstr "Workspace total"
+
+msgid "reports.wiki-views-by-user"
+msgstr "Workspace Views by User"
+
+msgid "reports.wikis"
+msgstr "Workspaces"

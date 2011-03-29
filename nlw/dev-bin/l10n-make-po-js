@@ -567,6 +567,7 @@ use constant CN2TW => {qw(
     特征         特徵
     硬盤         硬碟
     空閒         閒置
+    馬甲         分身
 )};
 
 use constant CN2TW_ExactMatch => {qw(
