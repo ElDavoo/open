@@ -24,12 +24,12 @@
 | code-is   | 401                                   |           |
 | header-is | Content-type                          | image/png |
 
-| *Comment* | Unauthorized, POST              |                                |             |                          |
-| POST-file | /data/groups/%%group_id%%/photo | method=file                    | photo-local | t/widget/creepy_goat.jpg |
-| code-is   | 403                             |                                |             |                          |
-| header-is | Content-type                    | text/plain; charset=ISO-8859-1 |             |                          |
-| body-like | must be a group admin           |                                |             |                          |
-# The Group does not exist
+| *Comment* | Unauthorized, POST              |                           |             |                          |
+| POST-file | /data/groups/%%group_id%%/photo | method=file               | photo-local | t/widget/creepy_goat.jpg |
+| code-is   | 403                             |                           |             |                          |
+| header-is | Content-type                    | text/plain; charset=UTF-8 |             |                          |
+| body-like | must be a group admin           |                           |             |                          |
+|           |                                 |                           |             |                          |
 
 | *Comment* | No Group, GET              |           |
 | GET       | /data/groups/0/photo       |           |
@@ -39,11 +39,11 @@
 | code-is   | 404                        |           |
 | header-is | Content-type               | image/png |
 
-| *Comment* | No Group, POST       |                                |             |                          |
-| POST-file | /data/groups/0/photo | method=file                    | photo-local | t/widget/creepy_goat.jpg |
-| code-is   | 404                  |                                |             |                          |
-| header-is | Content-type         | text/plain; charset=ISO-8859-1 |             |                          |
-| body-like | group does not exist |                                |             |                          |
+| *Comment* | No Group, POST       |                           |             |                          |
+| POST-file | /data/groups/0/photo | method=file               | photo-local | t/widget/creepy_goat.jpg |
+| code-is   | 404                  |                           |             |                          |
+| header-is | Content-type         | text/plain; charset=UTF-8 |             |                          |
+| body-like | group does not exist |                           |             |                          |
 
 # User is in Group as Member
 
@@ -56,11 +56,11 @@
 | code-is        | 200                                   |           |
 | header-is      | Content-type                          | image/png |
 
-| *Comment* | Member of Group, POST           |                                |             |                          |
-| POST-file | /data/groups/%%group_id%%/photo | method=file                    | photo-local | t/widget/creepy_goat.jpg |
-| code-is   | 403                             |                                |             |                          |
-| header-is | Content-type                    | text/plain; charset=ISO-8859-1 |             |                          |
-| body-like | must be a group admin           |                                |             |                          |
+| *Comment* | Member of Group, POST           |                           |             |                          |
+| POST-file | /data/groups/%%group_id%%/photo | method=file               | photo-local | t/widget/creepy_goat.jpg |
+| code-is   | 403                             |                           |             |                          |
+| header-is | Content-type                    | text/plain; charset=UTF-8 |             |                          |
+| body-like | must be a group admin           |                           |             |                          |
 
 # User is in Group as Admin
 
@@ -73,14 +73,14 @@
 | code-is        | 200                                   |           |
 | header-is      | Content-type                          | image/png |
 
-| *Comment* | Admin of Group, POST            |                                |             |                          |
-| POST-file | /data/groups/%%group_id%%/photo | method=file                    | photo-local | t/widget/creepy_goat.jpg |
-| code-is   | 201                             |                                |             |                          |
-| header-is | Content-type                    | text/plain; charset=ISO-8859-1 |             |                          |
-| body-like | photo uploaded                  |                                |             |                          |
+| *Comment* | Admin of Group, POST            |                           |             |                          |
+| POST-file | /data/groups/%%group_id%%/photo | method=file               | photo-local | t/widget/creepy_goat.jpg |
+| code-is   | 201                             |                           |             |                          |
+| header-is | Content-type                    | text/plain; charset=UTF-8 |             |                          |
+| body-like | photo uploaded                  |                           |             |                          |
 
-| *Comment* | Bad Args, POST                     |                                |                 |                          |
-| POST-file | /data/groups/%%group_id%%/photo    | method=file                    | not-photo-local | t/widget/creepy_goat.jpg |
-| code-is   | 400                                |                                |                 |                          |
-| header-is | Content-type                       | text/plain; charset=ISO-8859-1 |                 |                          |
-| body-like | photo-local is a required argument |                                |                 |                          |
+| *Comment* | Bad Args, POST                     |                           |                 |                          |
+| POST-file | /data/groups/%%group_id%%/photo    | method=file               | not-photo-local | t/widget/creepy_goat.jpg |
+| code-is   | 400                                |                           |                 |                          |
+| header-is | Content-type                       | text/plain; charset=UTF-8 |                 |                          |
+| body-like | photo-local is a required argument |                           |                 |                          |
