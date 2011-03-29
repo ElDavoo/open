@@ -1,6 +1,6 @@
 [%# vim: set et sts=2 sw=2: %]
 <div class="lightbox" id="st-delete-lightbox">
-  <form id="st-delete-form" action="index.cgi" method="GET">
+  <form id="st-delete-form" action="" method="GET">
     <input type="hidden" name="action" value="delete_page" />
     <input type="hidden" name="page_name" value="[% page_title | html_encode %]" />
     <div class="title">
