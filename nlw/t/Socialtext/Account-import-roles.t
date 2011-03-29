@@ -188,23 +188,27 @@ account_import_preserves_uar: {
         users   => [$user, $impersonator],
     );
 
-    # User should have the correct Role in the Account
+    # Users should have the correct Role in the Account
     $account = Socialtext::Account->new(name => $acct_name);
     isa_ok $account, 'Socialtext::Account', '... found re-imported Account';
 
-    $user = Socialtext::User->new(username => $user_name);
-    isa_ok $user, 'Socialtext::User', '... found re-imported User';
+    check_member: {
+        my $found = Socialtext::User->new(username => $user_name);
+        isa_ok $found, 'Socialtext::User', '... found re-imported User';
 
-    my $role = $account->role_for_user($user);
-    ok defined $role, '... User has Role in Account';
-    is $role->name, $Member->name, '... ... with *correct* Role';
+        my $role = $account->role_for_user($found);
+        ok defined $role, '... User has Role in Account';
+        is $role->name, $Member->name, '... ... with *correct* Role';
+    }
 
-    $impersonator = Socialtext::User->new(username => $impersonator_name);
-    isa_ok $impersonator, 'Socialtext::User', '... found re-imported Impersonator';
+    check_impersonator: {
+        my $found = Socialtext::User->new(username => $impersonator_name);
+        isa_ok $found, 'Socialtext::User', '... found re-imported Impersonator';
 
-    $role = $account->role_for_user($impersonator);
-    ok defined $role, '... Impersonator has Role in Account';
-    is $role->name, $Impersonator->name, '... ... Impersonator Role';
+        my $role = $account->role_for_user($found);
+        ok defined $role, '... Impersonator has Role in Account';
+        is $role->name, $Impersonator->name, '... ... Impersonator Role';
+    }
 }
 
 ###############################################################################
