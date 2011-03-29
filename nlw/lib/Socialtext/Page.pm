@@ -1353,6 +1353,7 @@ sub _cache_html {
         Socialtext::Wikiwyg::FormattingTestRunAll
         Socialtext::Wikiwyg::FormattingTest
         Socialtext::ShortcutLinks::Wafl
+        Socialtext::WidgetPlugin::Wafl
     /;
     require Socialtext::CodeSyntaxPlugin;
     for my $brush (keys %Socialtext::CodeSyntaxPlugin::Brushes) {
