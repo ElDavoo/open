@@ -18,7 +18,7 @@ my $l10n_dir = "$share_dir/l10n";
 
 my $hub = new_hub('empty');
 my $prefs = $hub->preferences_object;
-$prefs->locale->value('en');
+#$prefs->locale->value('en');
 loc_lang('en');
 
 my $page = $hub->pages->new_from_name("Empty wiki");
