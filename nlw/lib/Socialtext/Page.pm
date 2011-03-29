@@ -1429,6 +1429,10 @@ sub _cache_html {
                     if ($wafl->{method} eq 'user') {
                         $users{$wafl->{arguments}}++ if $wafl->{arguments};
                     }
+                    elsif ($wafl->{method} eq 'hashtag') {
+                        # Hashtags are just links, so they are cacheable.
+                        return;
+                    }
                     else {
                         $unknown = 1;
                     }
