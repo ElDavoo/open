@@ -15,21 +15,6 @@ ALTER TABLE "Account"
 -- Delete long spammy links
 DELETE FROM page_link WHERE LENGTH(to_page_id) > 255;
 
-ALTER TABLE page_link ADD COLUMN from_page_md5 text;
-UPDATE page_link SET from_page_md5 = md5(from_page_id);
-ALTER TABLE page_link ALTER COLUMN from_page_md5 SET NOT NULL;
-CREATE INDEX page_link__from_page_md5 ON page_link (from_workspace_id, from_page_md5);
-
-ALTER TABLE page_link ADD COLUMN to_page_md5 text;
-UPDATE page_link SET to_page_md5 = md5(to_page_id);
-ALTER TABLE page_link ALTER COLUMN to_page_md5 SET NOT NULL;
-CREATE INDEX page_link__to_page_md5 ON page_link (to_workspace_id,   to_page_md5);
-
-ALTER TABLE ONLY page_link
-    ADD CONSTRAINT page_link_unique
-            UNIQUE (from_workspace_id, from_page_md5, to_workspace_id, to_page_md5);
-
-
 
 -- ensure that all User's have a default value for their "middle_name"
 UPDATE users SET middle_name='';

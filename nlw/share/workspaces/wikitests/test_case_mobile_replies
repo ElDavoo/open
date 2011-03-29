@@ -1,5 +1,9 @@
 * Fixture: SocialWidgets
 
+| set_default | shared_account | Replies-1301372332 |
+| set_default | topic_signal | Topic for Reply at 1301372332 |
+| set_default | reply_prefix | Reply at 1301372332 |
+
 | *Comment* | Test Case: Mobile Replies Imported variables |  |
 | *Comment* | %%shared_account%% %%topic_signal%% %%reply_prefix%% |  |
 
@@ -7,10 +11,12 @@
 | set | my_acct | %%shared_account%% |
 | set | my_user | `%%my_acct%%_mobile_checker@david.socialtext.net` |
 | st-admin | create-user --account %%my_acct%% --e %%my_user%% --p %%password%% |  |
-| st-login | %%my_user%% | %%password%% |
+| st-process-jobs |  |  |
+| st-logoutin | %%my_user%% | %%password%% |
 
 | *Comment* | Test Case: Mobile Replies Checks for only two most recent replies |  |
-| open_ok | /st/m/signals |  |
+
+| st-open-m-signals |  |  |
 | wait_for_text_present_ok | %%topic_signal%% | 30000 |
 | text_like | qr/%%topic_signal%%.+%%reply_prefix%%-1.+%%reply_prefix%%-2/ |  |
 | wait_for_text_not_present_ok | %%reply_prefix%%-0-0 | 5000 |
@@ -25,15 +31,15 @@
 
 | *Comment* | Test Case: Mobile Replies Check Permalink View |  |
 | wait_for_element_present_ok | //a[contains(text(),'minute')] | 30000 |
-
-| *Comment* | Test Case: Mobile Replies click and wait doesn't work, use click_ok |  |
 | click_ok | //a[contains(text(),'minute')] |  |
+| pause | 10000 | for popup |
+| selectWindow | Signals - Permalink |  |
 | wait_for_text_present_ok | %%topic_signal%% | 30000 |
 | wait_for_text_present_ok | All Replies | 30000 |
 | text_like | qr/%%reply_prefix%%-0-0.+%%reply_prefix%%-0-1.+%%reply_prefix%%-0-2.+%%reply_prefix%%-1.+%%reply_prefix%%-2/ |  |
 
 | *Comment* | Test Case: Mobile Replies Post New Signal from Mobile UI |  |
-| open_ok | /st/m/signals |  |
+| st-open-m-signals |  |  |
 | wait_for_text_present_ok | %%topic_signal%% | 30000 |
 | st-send-page-signal | new_signal_%%start_time%% |  |
 | wait_for_text_present_ok | new_signal_%%start_time%% | 30000 |
@@ -43,18 +49,7 @@
 | text_like | qr/You.+replies %%start_time%% seeder/ism |  |
 
 | *Comment* | Test Case: Mobile Replies use Mobile UI to Post reply to new signal |  |
-| wait_for_element_visible_ok | //a[@class='replyLink'] | 30000 |
-| click_ok | //a[@class='replyLink'] |  |
-| wait_for_element_visible_ok | //div[@class='replies']//iframe[@name='signalFrame'] | 30000 |
-| pause | %%frame_pause%% |  |
-| select_frame | //div[@class='replies']//iframe[@name='signalFrame'] |  |
-| click_ok | //body |  |
-| type_ok | //body | new_signal_reply_%%start_time%% |
-| select_frame | relative=parent |  |
-| wait_for_element_visible_ok | //a[@class='btn post postReply'] | 5000 |
-| pause | %%post_pause%% |  |
-| click_ok | //a[@class='btn post postReply'] |  |
-| pause | %%my_wait%% |  |
+| st-send-reply | new_signal_reply_%%start_time%% |  |
 | wait_for_text_present_ok | new_signal_reply_%%start_time%% | 30000 |
 | text_like | qr/new_signal_%%start_time%%.+new_signal_reply_%%start_time%%/ |  |
 
@@ -65,7 +60,10 @@
 | wait_for_element_visible_ok | link=Follow this person | 30000 |
 | wait_for_element_visible_ok | `//div[@class='older'][last()]` | 30000 |
 | click_ok | `//div[@class='older'][last()]` |  |
-| pause | %%first_wait%% |  |
+| st-name-widget | 3 | signals |
+| st-widget-title-like | signals | Activities |
+| st-select-widget-frame | signals |  |
+
 | set | i | 3 |
 | include | [Test Case: Replies Include] |  |
 
