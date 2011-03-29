@@ -46,3 +46,54 @@ var sametime_helper = {
         } 
     }
 };
+
+var ocs_helper = {
+    statuses: {
+        0: [loc('Online'), 'ocs-green.png'], 
+        1: [loc('Offline'), 'ocs-gray.png'],
+        2: [loc('Away'), 'ocs-red.png'], 
+        3: [loc('Busy'), 'ocs-orange.png'],
+        4: [loc('Be right back'), 'ocs-gold.png'], 
+        5: [loc('On the phone'), 'ocs-gold.png'],
+        6: [loc('Lunch'), 'ocs-gold.png'],
+        7: [loc('Meeting'), 'ocs-gold.png'],
+        8: [loc('Out of office'), 'ocs-gold.png'],
+        9: [loc('Do not disturb'), 'ocs-donotenter.png'],
+        15: [loc('Do not disturb but allowed'), 'ocs-donotenter.png'],
+        16: [loc('Idle online'), 'ocs-turquoise.png']
+    },
+
+    create_ocs_field: function($span, username) {
+        if (! $.browser.msie) {
+            $span.text(username+" "+loc('(requires Internet Explorer)'));
+        } 
+        else {
+            $span.text(username); 
+            var namectrl;
+            try {
+                namectrl = new ActiveXObject('Name.NameCtrl.1');
+                $span.wrap($('<a></a>').click(
+                    function(e) {
+                        namectrl.ShowOOUI(username, 0, 100,100);
+                        e.preventDefault();
+                    }));
+                if (namectrl.PresenceEnabled) {
+                    namectrl.GetStatus(username, "empty");
+                    var $statusspan = $('<span></span>');
+                    $span.append($statusspan);
+                    namectrl.OnStatusChange = function(name, status, id) {
+                        var statusarray=ocs_helper.statuses[status];
+                        if (statusarray) {
+                            $statusspan.empty().append($("<img></img>").
+                            attr('src', '/static/skin/s3/images/'+statusarray[1]).
+                            attr('title', statusarray[0]));
+                        }
+                    }
+                };
+            } 
+            catch(e) {
+                // No namectrl ActiveX
+            }
+        }
+    }
+};

@@ -214,10 +214,19 @@ Avatar.prototype = {
                         $('<ul></ul>').append($('<li></li>').append(followLink))
                     )
                     .appendTo(self.contentNode);
-            }
+                }
+            self.showCommunicatorInfo();
             self.showSametimeInfo();
             self.mouseOver();
         });
+    },
+
+    showCommunicatorInfo: function() {
+        var communicator_elem = this.popup.find('.communicator');
+        var communicator_elem_parent = communicator_elem.parent();
+        var communicator_sn = communicator_elem.text();
+
+        ocs_helper.create_ocs_field(communicator_elem, communicator_sn);
     },
 
     showSametimeInfo: function() {
