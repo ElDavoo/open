@@ -239,6 +239,7 @@ around 'groups', 'group_count' => sub {
     $p{direct} = 1 unless exists $p{direct};
     $code->($self, %p);
 };
+# ' # <= fix vim highlighting
 
 sub invite {
     my $self = shift;
@@ -310,6 +311,7 @@ after 'enable_plugin','disable_plugin' => sub {
     Socialtext::JSON::Proxy::Helper->ClearForAccount($self->account_id);
     Socialtext::Helpers->clean_user_frame_cache();
 };
+# ' # <= fix vim highlighting
 
 sub export {
     my $self = shift;
