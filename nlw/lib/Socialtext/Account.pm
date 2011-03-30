@@ -492,7 +492,6 @@ sub import_file {
     for my $user_hash (@{ $hash->{users} }) {
 
         next unless Socialtext::User::Default::Users->CanImportUser($user_hash);
-#warn "Importing user $hash->{name}\n";
 
         # Import this user into the new account we're creating. If they were
         # in some other account we'll fix that up below.
