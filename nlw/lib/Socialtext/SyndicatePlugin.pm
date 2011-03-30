@@ -13,7 +13,7 @@ use Socialtext::Syndicate::Feed;
 use Socialtext::Timer;
 use Socialtext::Watchlist;
 use Socialtext::User;
-use Socialtext::l10n qw (loc);
+use Socialtext::l10n qw(loc __);
 use Socialtext::Pages;
 
 =head1 NAME
@@ -41,7 +41,7 @@ on those parameters.
 =cut
 
 const class_id => 'syndicate';
-const class_title => _('class.syndicate');
+const class_title => __('class.syndicate');
 const cgi_class => 'Socialtext::Syndicate::CGI';
 const default_tag => 'Recent Changes';
 const default_type => 'RSS20';
@@ -141,7 +141,7 @@ is unset for the user, the default, 10, is used.
 sub syndication_depth {
     my $self = shift;
     my $p = $self->new_preference('syndication_depth');
-    $p->query(_('feed.number-of-posts?'));
+    $p->query(__('feed.number-of-posts?'));
     $p->type('pulldown');
     my $choices = [
         5   => '5',

@@ -2,9 +2,10 @@
 package Socialtext::l10n;
 use strict;
 use warnings;
+use Scalar::Defer 'defer';
 use base 'Exporter';
 
-our @EXPORT_OK = qw(best_locale system_locale loc loc_lang );
+our @EXPORT_OK = qw(best_locale system_locale loc loc_lang __);
 our $CUR_LOCALE = 'en';
 our $SYS_LOCALE = 'en';
 
@@ -36,8 +37,13 @@ sub _rebind_overrides {
     *loc_lang = \&_loc_lang;
     *best_locale = \&_best_locale;
     *system_locale = \&_system_locale;
-    *_ = \&loc;
+    *__ = sub {
+        my @args = @_;
+        defer { loc(@args) };
+    }
 }
+
+
 
 _rebind_overrides();
 

@@ -5,7 +5,7 @@ use warnings;
 use Scalar::Defer qw(defer force);
 use base 'Exporter';
 use Socialtext::AppConfig;
-our @EXPORT_OK = qw(loc loc_lang system_locale best_locale);
+our @EXPORT_OK = qw(__ loc loc_lang system_locale best_locale);
 use Socialtext::l10n::I18N::zz;
 
 =head1 NAME
@@ -16,7 +16,7 @@ Socialtext::l10n - Provides localization functions
 
     use Socialtext::l10n qw(loc loc_lang);
 
-    my $deferred = _('wiki.welcome');    # deferred loc()
+    my $deferred = __('wiki.welcome');    # deferred loc()
     loc_lang('fr');                      # set the locale
     is loc('wiki.welcome'), 'Bienvenue'; # find localized text
     is $deferred, 'Bienvenue';           # this also works
@@ -30,12 +30,10 @@ no localized string can be found, the english string will be used.
 
 See Locale::Maketext::Simple for information on string formats.
 
-=head2 _("example.string", $arg)
+=head2 __("example.string", $arg)
 
 Creates a I<deferred> string. It's evaluated in the active locale whenever
 its value is used.
-
-There is no need to import C<_> explicitly; it's a global function.
 
 =cut
 
@@ -75,7 +73,7 @@ sub Scalar::Defer::Deferred::TO_JSON {
     force $_[0];
 }
 
-sub _ {
+sub __ {
     my @args = @_;
     defer { loc(@args) };
 }

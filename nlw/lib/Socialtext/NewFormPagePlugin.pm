@@ -9,10 +9,10 @@ use Class::Field qw( const );
 use Socialtext::AppConfig;
 use Socialtext::BrowserDetect ();
 use Socialtext::Skin;
-use Socialtext::l10n qw(loc);
+use Socialtext::l10n qw(loc __);
 
 const class_id => 'new_form_page';
-const class_title => _('class.new_form_page');
+const class_title => __('class.new_form_page');
 
 const cgi_class => 'Socialtext::NewFormPage::CGI';
 

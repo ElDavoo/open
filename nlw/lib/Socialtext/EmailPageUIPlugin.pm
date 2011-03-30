@@ -5,11 +5,12 @@ use warnings;
 use Socialtext::JobCreator;
 use Class::Field qw( const );
 use Readonly;
+use Socialtext::l10n '__';
 
 use base 'Socialtext::Plugin';
 
 const class_id => 'email_page_ui';
-const class_title => _('class.email_page_ui');
+const class_title => __('class.email_page_ui');
 const cgi_class => 'Socialtext::EmailPageUI::CGI';
 
 sub register {

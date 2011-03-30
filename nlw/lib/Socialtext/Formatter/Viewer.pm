@@ -11,9 +11,10 @@ use Socialtext::Formatter::Parser;
 use Socialtext::Statistics 'stat_call';
 use Socialtext::Timer qw/time_scope/;
 use Readonly;
+use Socialtext::l10n qw(loc __);
 
 const class_id => 'viewer';
-const class_title  => _('class.viewer');
+const class_title  => __('class.viewer');
 use constant NO_PARAGRAPH => 1;
 use constant WITH_PARAGRAPH => 0;
 

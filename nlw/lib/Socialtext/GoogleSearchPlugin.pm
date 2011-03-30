@@ -3,6 +3,7 @@ package Socialtext::GoogleSearchPlugin;
 use strict;
 use warnings;
 use base 'Socialtext::Plugin';
+use Socialtext::l10n qw(__);
 
 use Class::Field qw( const );
 use Socialtext::URI;
@@ -10,7 +11,7 @@ use REST::Google::Search;
 use Socialtext::Encode;
 
 const limit => 8;
-const class_title => _('class.google_search');
+const class_title => __('class.google_search');
 
 const class_id => 'google_search';
 
@@ -66,7 +67,7 @@ sub get_result {
 }
 
 package Socialtext::GoogleSearchPlugin::Wafl;
-use Socialtext::l10n qw(loc);
+use Socialtext::l10n qw(loc __);
 
 use Socialtext::Formatter::WaflPhrase;
 use base 'Socialtext::Formatter::WaflPhraseDiv';

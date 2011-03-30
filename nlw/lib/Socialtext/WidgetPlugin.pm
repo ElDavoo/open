@@ -4,14 +4,14 @@ use warnings;
 
 use base 'Socialtext::Plugin';
 use Class::Field qw(const);
-use Socialtext::l10n 'loc';
+use Socialtext::l10n qw(loc __);
 use Socialtext::Formatter::Phrase ();
 use Socialtext::String ();
 use Socialtext::Paths ();
 use Encode ();
 
 const class_id    => 'widget';
-const class_title => _('class.widget');
+const class_title => __('class.widget');
 const cgi_class   => 'Socialtext::WidgetPlugin::CGI';
 
 sub register {

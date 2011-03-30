@@ -7,12 +7,12 @@ use base 'Socialtext::Query::Plugin';
 use Class::Field qw( const field );
 use Socialtext::EmailNotifier;
 use Socialtext::Watchlist;
-use Socialtext::l10n qw( loc );
+use Socialtext::l10n qw(loc __);
 use Socialtext::Events;
 use Socialtext::Pageset;
 
 const class_id    => 'watchlist';
-const class_title => _('class.watchlist');
+const class_title => __('class.watchlist');
 const cgi_class   => 'Socialtext::Watchlist::CGI';
 const listview_extra_columns => { watchlist => 1 };
 field 'lock_handle';
@@ -38,18 +38,18 @@ our $Default_notify_frequency = 1440;
 sub watchlist_notify_frequency {
     my $self = shift;
     my $p    = $self->new_preference('watchlist_notify_frequency');
-    $p->query(_('watch.email-frequency?'));
+    $p->query(__('watch.email-frequency?'));
     $p->type('pulldown');
     my $choices = [
-        0     => _('time.never'),
-        1     => _('every.minute'),
-        5     => _('every.5minutes'),
-        15    => _('every.15minutes'),
-        60    => _('every.hour'),
-        360   => _('every.6hours'),
-        1440  => _('every.day'),
-        4320  => _('every.3days'),
-        10080 => _('every.week'),
+        0     => __('time.never'),
+        1     => __('every.minute'),
+        5     => __('every.5minutes'),
+        15    => __('every.15minutes'),
+        60    => __('every.hour'),
+        360   => __('every.6hours'),
+        1440  => __('every.day'),
+        4320  => __('every.3days'),
+        10080 => __('every.week'),
     ];
     $p->choices($choices);
     $p->default($Default_notify_frequency);
@@ -60,11 +60,11 @@ sub watchlist_links_only {
     my $self = shift;
     my $p    = $self->new_preference('watchlist_links_only');
     $p->query(
-        _('email.page-digest-details?'));
+        __('email.page-digest-details?'));
     $p->type('radio');
     my $choices = [
-        condensed => _('email.page-name-link-only'),
-        expanded  => _('email.page-name-link-author-date'),
+        condensed => __('email.page-name-link-only'),
+        expanded  => __('email.page-name-link-author-date'),
     ];
     $p->choices($choices);
     $p->default('expanded');

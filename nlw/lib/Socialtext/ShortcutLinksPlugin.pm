@@ -2,6 +2,7 @@
 package Socialtext::ShortcutLinksPlugin;
 use strict;
 use warnings;
+use Socialtext::l10n '__';
 
 use base 'Socialtext::Plugin';
 
@@ -9,7 +10,7 @@ use Class::Field qw( const );
 use Socialtext::AppConfig;
 use YAML;
 
-const class_title => _('class.shortcut_links');
+const class_title => __('class.shortcut_links');
 const class_id => 'shortcut_links';
 
 

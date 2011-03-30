@@ -2,6 +2,7 @@
 package Socialtext::TiddlyPlugin;
 use strict;
 use warnings;
+use Socialtext::l10n '__';
 
 # See
 # http://www.socialtext.net/tiddlytext/index.cgi?tiddlywiki_template_for_socialtext
@@ -18,7 +19,7 @@ use Socialtext::Search 'search_on_behalf';
 use Socialtext::String;
 
 const class_id => 'tiddly';
-const class_title   => _('class.tiddly');
+const class_title   => __('class.tiddly');
 const cgi_class     => 'Socialtext::Tiddly::CGI';
 const default_tag   => 'recent changes';
 const default_count => 50;

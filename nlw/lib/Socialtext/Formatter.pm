@@ -11,9 +11,10 @@ use Socialtext::Base;
 
 use Socialtext::AppConfig;
 use Socialtext::Statistics 'stat_call';
+use Socialtext::l10n '__';
 
 const class_id => 'formatter';
-const class_title  => _('class.formatter');
+const class_title  => __('class.formatter');
 const class_prefix => 'Socialtext::Formatter::';
 
 const all_phrases => [

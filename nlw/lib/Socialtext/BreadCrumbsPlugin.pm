@@ -8,14 +8,14 @@ use base 'Socialtext::Query::Plugin';
 use Class::Field qw( const );
 use File::Basename ();
 use File::Path ();
-use Socialtext::l10n qw(loc);
+use Socialtext::l10n qw(loc __);
 use Socialtext::SQL qw/get_dbh sql_execute sql_txn/;
 use Socialtext::Pages;
 use Socialtext::Timer qw/time_scope/;
 use Try::Tiny;
 
 const class_id => 'breadcrumbs';
-const class_title => _('class.breadcrumbs');
+const class_title => __('class.breadcrumbs');
 const cgi_class   => 'Socialtext::BreadCrumbs::CGI';
 
 my $HOW_MANY = 25;
@@ -30,7 +30,7 @@ sub register {
 sub display_as_box {
     my $self = shift;
     my $p = $self->new_preference('display_as_box');
-    $p->query(_('wiki.show-breadcrumbs-sidebox?') );
+    $p->query(__('wiki.show-breadcrumbs-sidebox?') );
     $p->default(1);
     return $p;
 }
@@ -38,7 +38,7 @@ sub display_as_box {
 sub how_many {
     my $self = shift;
     my $p = $self->new_preference('how_many');
-    $p->query(_('wiki.sidebox-number-of-breadcrumbs?'));
+    $p->query(__('wiki.sidebox-number-of-breadcrumbs?'));
     $p->type('pulldown');
     my $choices = [
         3 => 3,

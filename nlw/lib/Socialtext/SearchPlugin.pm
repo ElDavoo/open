@@ -9,14 +9,14 @@ use Class::Field qw( const field );
 use Socialtext::Search qw( search_on_behalf );
 use Socialtext::Search::AbstractFactory;
 use Socialtext::Workspace;
-use Socialtext::l10n qw(loc);
+use Socialtext::l10n qw(loc __);
 use Socialtext::Log qw( st_log );
 use Socialtext::Timer;
 use Socialtext::Pageset;
 use Socialtext::String;
 
 const class_id => 'search';
-const class_title => _('class.search');
+const class_title => __('class.search');
 const cgi_class => 'Socialtext::Search::CGI';
 
 const sortdir => {

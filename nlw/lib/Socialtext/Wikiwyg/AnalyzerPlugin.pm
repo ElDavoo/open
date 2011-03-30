@@ -2,13 +2,14 @@
 package Socialtext::Wikiwyg::AnalyzerPlugin;
 use strict;
 use warnings;
+use Socialtext::l10n '__';
 
 use base 'Socialtext::Plugin';
 
 use Class::Field qw( const );
 
 const class_id => 'analyzer';
-const class_title => _('class.analyzer');
+const class_title => __('class.analyzer');
 
 sub register {
     my $self = shift; 

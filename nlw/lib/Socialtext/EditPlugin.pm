@@ -8,7 +8,7 @@ use base 'Socialtext::Plugin';
 use Class::Field qw( const );
 use Socialtext::Pages;
 use Socialtext::Exceptions qw( data_validation_error );
-use Socialtext::l10n qw(loc);
+use Socialtext::l10n qw(loc __);
 use Socialtext::Events;
 use Socialtext::Log qw(st_log);
 use Socialtext::String ();
@@ -17,7 +17,7 @@ use Socialtext::PageRevision ();
 use Try::Tiny;
 
 const class_id => 'edit';
-const class_title => _('class.edit');
+const class_title => __('class.edit');
 const cgi_class => 'Socialtext::Edit::CGI';
 
 sub register {

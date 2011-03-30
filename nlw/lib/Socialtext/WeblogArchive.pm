@@ -4,14 +4,14 @@ use strict;
 use warnings;
 
 use base 'Socialtext::WeblogPlugin';
-use Socialtext::l10n 'loc';
+use Socialtext::l10n qw(loc __);
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw/sql_execute/;
 
 use Class::Field qw( const );
 
 const class_id => 'weblog_archive';
-const class_title => _('class.weblog_archive');
+const class_title => __('class.weblog_archive');
 
 sub register {
     my $self = shift;

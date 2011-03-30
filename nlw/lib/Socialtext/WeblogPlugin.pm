@@ -9,7 +9,7 @@ use Class::Field qw( const field );
 use Socialtext::Pages;
 use URI;
 use URI::QueryParam;
-use Socialtext::l10n qw( loc );
+use Socialtext::l10n qw(loc __);
 use Encode;
 use Socialtext::Log qw(st_log);
 use Socialtext::String ();
@@ -18,7 +18,7 @@ use Socialtext::Timer qw/time_scope/;
 use utf8;
 
 const class_id => 'weblog';
-const class_title => _('class.weblog');
+const class_title => __('class.weblog');
 const cgi_class => 'Socialtext::Weblog::CGI';
 const default_weblog_depth => 10;
 field current_weblog => '';
@@ -46,7 +46,7 @@ sub register {
 sub weblog_depth {
     my $self = shift;
     my $p = $self->new_preference('weblog_depth');
-    $p->query(_('blog.number-of-posts?'));
+    $p->query(__('blog.number-of-posts?'));
     $p->type('pulldown');
     my $choices = [
         5 => '5',

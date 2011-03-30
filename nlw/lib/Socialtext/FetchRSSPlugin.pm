@@ -11,9 +11,10 @@ use Socialtext::Paths;
 use Socialtext::String;
 use LWP::UserAgent;
 use XML::Feed;
+use Socialtext::l10n qw(__);
 
 const class_id => 'fetchrss';
-const class_title    => _('class.fetchrss');
+const class_title    => __('class.fetchrss');
 const agent          => __PACKAGE__;
 const default_expire => '1 h';
 const proxy => '';
@@ -156,7 +157,7 @@ use Socialtext::Formatter::WaflPhrase;
 use base 'Socialtext::Formatter::WaflPhraseDiv';
 use Apache::Request;
 use Socialtext::Log qw/st_log/;
-use Socialtext::l10n qw/loc/;
+use Socialtext::l10n qw(loc __);
 
 sub html {
     my $self = shift;

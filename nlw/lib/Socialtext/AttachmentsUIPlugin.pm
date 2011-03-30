@@ -9,7 +9,7 @@ use Class::Field qw( const field );
 use Socialtext::AppConfig;
 use Socialtext::Helpers;
 use Socialtext::TT2::Renderer;
-use Socialtext::l10n qw(loc system_locale);
+use Socialtext::l10n qw(loc system_locale __);
 use Socialtext::String;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::Pageset;
@@ -18,7 +18,7 @@ use Memoize;
 use Try::Tiny;
 
 const class_id => 'attachments_ui';
-const class_title => _('class.attachments_ui');
+const class_title => __('class.attachments_ui');
 const cgi_class   => 'Socialtext::AttachmentsUI::CGI';
 
 field 'sortdir';

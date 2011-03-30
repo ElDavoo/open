@@ -16,7 +16,7 @@ use Socialtext::Helpers;
 use File::Path ();
 use List::Util;
 use Socialtext::File;
-use Socialtext::l10n qw( loc );
+use Socialtext::l10n qw( loc __ );
 use Imager;
 use Digest::MD5;
 use Encode;
@@ -25,7 +25,7 @@ use Socialtext::Resting;
 
 const class_id => 'wikiwyg';
 const cgi_class => 'Socialtext::Wikiwyg::CGI';
-const class_title => _('class.wikiwyg');
+const class_title => __('class.wikiwyg');
 field widgets_definition => {} => -init => q{
         my $yaml_path = Socialtext::AppConfig->code_base . "/skin/wikiwyg/javascript/Widgets.yaml";
         YAML::LoadFile($yaml_path);
@@ -708,7 +708,7 @@ sub power_user {
 sub wikiwyg_double {
     my $self = shift;
     my $p = $self->new_preference('wikiwyg_double');
-    $p->query(_('wiki.double-click-to-edit?'));
+    $p->query(__('wiki.double-click-to-edit?'));
     $p->default(1);
     return $p;
 }

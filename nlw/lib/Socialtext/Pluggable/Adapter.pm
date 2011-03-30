@@ -2,6 +2,7 @@ package Socialtext::Pluggable::Adapter;
 # @COPYRIGHT@
 use strict;
 use warnings;
+use Socialtext::l10n '__';
 
 our @libs;
 our $AUTOLOAD;
@@ -23,7 +24,7 @@ use Memoize;
 use Class::Field qw(const);
 
 const class_id => 'pluggable';
-const class_title => _('class.pluggable');
+const class_title => __('class.pluggable');
 
 sub plugins { grep !/SUPER$/, _plugins() } # grep prevents a Pluggable bug?
 BEGIN { memoize('plugins', NORMALIZER => sub { '' } ) } # memoize ignores args

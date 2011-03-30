@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use base 'Socialtext::Plugin';
-use Socialtext::l10n qw( loc loc_lang );
+use Socialtext::l10n qw( loc loc_lang __ );
 use Socialtext::Locales qw( valid_code );
 
 use Class::Field qw( const field );
@@ -14,7 +14,7 @@ use Socialtext::String ();
 use Socialtext::JobCreator;
 
 const class_id => 'user_preferences';
-const class_title => _('class.user_preferences');
+const class_title => __('class.user_preferences');
 const cgi_class => 'Socialtext::UserPreferences::CGI';
 field 'user_id';
 field preference_list => [];

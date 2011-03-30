@@ -11,45 +11,45 @@ use DateTime;
 
 use Socialtext::Date;
 use Socialtext::Date::l10n;
-use Socialtext::l10n qw( loc );
+use Socialtext::l10n qw(loc __);
 
 const class_id => 'timezone';
-const class_title => _('class.timezone');
+const class_title => __('class.timezone');
 const dcDATE => 1;
 const dcTIME => 2;
 const dcDATETIME => 3;
 
 const zones => {
-    '-1200'   => _('tz.-1200-west'),
-    '-1100'   => _('tz.-1100'),
-    '-1000'   => _('tz.-1000'),
-    '-0900'   => _('tz.-0900'),
-    '-0800'   => _('tz.-0800'),
-    '-0700'   => _('tz.-0700'),
-    '-0600'   => _('tz.-0600'),
-    '-0500'   => _('tz.-0500'),
-    '-0400'   => _('tz.-0400'),
-    '-0330'   => _('tz.-0330'),
-    '-0300'   => _('tz.-0300'),
-    '-0200'   => _('tz.-0200'),
-    '-0100'   => _('tz.-0100'),
-    '+0000'   => _('tz.+0000'),
-    '+0100'   => _('tz.+0100'),
-    '+0200'   => _('tz.+0200'),
-    '+0300'   => _('tz.+0300'),
-    '+0330'   => _('tz.+0330'),
-    '+0400'   => _('tz.+0400'),
-    '+0500'   => _('tz.+0500'),
-    '+0530'   => _('tz.+0530'),
-    '+0600'   => _('tz.+0600'),
-    '+0700'   => _('tz.+0700'),
-    '+0800'   => _('tz.+0800'),
-    '+0900'   => _('tz.+0900'),
-    '+0930'   => _('tz.+0930'),
-    '+1000'   => _('tz.+1000'),
-    '+1100'   => _('tz.+1100'),
-    '+1200id' => _('tz.+1200-east'),
-    '+1200nz' => _('tz.+1200'),
+    '-1200'   => __('tz.-1200-west'),
+    '-1100'   => __('tz.-1100'),
+    '-1000'   => __('tz.-1000'),
+    '-0900'   => __('tz.-0900'),
+    '-0800'   => __('tz.-0800'),
+    '-0700'   => __('tz.-0700'),
+    '-0600'   => __('tz.-0600'),
+    '-0500'   => __('tz.-0500'),
+    '-0400'   => __('tz.-0400'),
+    '-0330'   => __('tz.-0330'),
+    '-0300'   => __('tz.-0300'),
+    '-0200'   => __('tz.-0200'),
+    '-0100'   => __('tz.-0100'),
+    '+0000'   => __('tz.+0000'),
+    '+0100'   => __('tz.+0100'),
+    '+0200'   => __('tz.+0200'),
+    '+0300'   => __('tz.+0300'),
+    '+0330'   => __('tz.+0330'),
+    '+0400'   => __('tz.+0400'),
+    '+0500'   => __('tz.+0500'),
+    '+0530'   => __('tz.+0530'),
+    '+0600'   => __('tz.+0600'),
+    '+0700'   => __('tz.+0700'),
+    '+0800'   => __('tz.+0800'),
+    '+0900'   => __('tz.+0900'),
+    '+0930'   => __('tz.+0930'),
+    '+1000'   => __('tz.+1000'),
+    '+1100'   => __('tz.+1100'),
+    '+1200id' => __('tz.+1200-east'),
+    '+1200nz' => __('tz.+1200'),
 };
 
 sub register {
@@ -66,7 +66,7 @@ sub timezone {
     my $self   = shift;
     my $locale = $self->hub->best_locale;
     my $p      = $self->new_preference('timezone');
-    $p->query( _('config.time-zone?') );
+    $p->query( __('config.time-zone?') );
     $p->type('pulldown');
     my $zones = $self->zones;
     my $choices = [ map { $_ => $zones->{$_} } sort keys %$zones ];
@@ -90,13 +90,13 @@ sub dst {
     my $self = shift;
     my $p    = $self->new_preference('dst');
 
-    $p->query( _('tz.dst?') );
+    $p->query( __('tz.dst?') );
     $p->type('pulldown');
     my $choices = [
-        'on'      => _('tz.dst-yes'),
-        'off'     => _('tz.dst-no'),
-        'auto-us' => _('tz.auto-us'),
-        'never'   => _('tz.dst-never'),
+        'on'      => __('tz.dst-yes'),
+        'off'     => __('tz.dst-no'),
+        'auto-us' => __('tz.auto-us'),
+        'never'   => __('tz.dst-never'),
     ];
     $p->choices($choices);
 
@@ -124,7 +124,7 @@ sub date_display_format {
     my $self   = shift;
 
     my $p = $self->new_dynamic_preference('date_display_format');
-    $p->query( _('date.format?') );
+    $p->query( __('date.format?') );
     $p->type('pulldown');
 
     my $time = $self->_now;
@@ -158,7 +158,7 @@ sub time_display_12_24 {
     my $self   = shift;
     my $p      = $self->new_dynamic_preference('time_display_12_24');
     $p->query(
-        _('date.hour-format?') );
+        __('date.hour-format?') );
 
     my $time = $self->_now;
     $p->type('pulldown');
@@ -190,7 +190,7 @@ sub time_display_12_24 {
 sub time_display_seconds {
     my $self = shift;
     my $p    = $self->new_preference('time_display_seconds');
-    $p->query( _('date.include-seconds?') );
+    $p->query( __('date.include-seconds?') );
     $p->type('boolean');
     $p->default(0);
     return $p;

@@ -10,7 +10,7 @@ use DateTime::Format::Strptime;
 use Socialtext::User;
 use Socialtext::String qw/html_escape title_to_id uri_escape/;
 use Socialtext::BrowserDetect ();
-use Socialtext::l10n qw/loc system_locale/;
+use Socialtext::l10n qw/loc system_locale __/;
 use Socialtext::Locales qw/available_locales/;
 use Socialtext::JSON;
 use Socialtext::Timer;
@@ -22,7 +22,7 @@ use File::Path qw/mkpath/;
 use List::MoreUtils qw/part/;
 
 const class_id => 'display';
-const class_title => _('class.display');
+const class_title => __('class.display');
 const maximum_header_attachments => 5;
 const cgi_class => 'Socialtext::Display::CGI';
 
@@ -106,7 +106,7 @@ sub preview {
 sub mouseover_length {
     my $self = shift;
     my $p = $self->new_preference('mouseover_length');
-    $p->query(_('wiki.mouseover-link?'));
+    $p->query(__('wiki.mouseover-link?'));
     $p->default(1);
     return $p;
 }
@@ -114,7 +114,7 @@ sub mouseover_length {
 sub include_breadcrumbs {
     my $self = shift;
     my $p = $self->new_preference('include_breadcrumbs');
-    $p->query(_('wiki.include-breadcrumbs?'));
+    $p->query(__('wiki.include-breadcrumbs?'));
     $p->type('boolean');
     $p->default(0);
     return $p;

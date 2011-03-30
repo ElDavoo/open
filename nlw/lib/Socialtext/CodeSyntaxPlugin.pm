@@ -1,12 +1,13 @@
 package Socialtext::CodeSyntaxPlugin;
 use strict;
 use warnings;
+use Socialtext::l10n '__';
 
 use base 'Socialtext::Plugin';
 use Class::Field qw(const);
 
 const class_id => 'code';
-const class_title    => _('class.code');
+const class_title    => __('class.code');
 
 our %Brushes = (
     as3 => 'AS3',

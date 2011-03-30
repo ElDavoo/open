@@ -4,7 +4,7 @@ use warnings;
 
 use base 'Socialtext::Plugin';
 use Class::Field qw(const);
-use Socialtext::l10n 'loc';
+use Socialtext::l10n qw(loc __);
 use Socialtext::JSON qw/encode_json decode_json_utf8/;
 use Socialtext::Formatter::Phrase ();
 use Socialtext::String ();
@@ -19,7 +19,7 @@ use List::Util qw/max min/;
 our $Cache;
 
 const class_id    => 'video';
-const class_title => _('class.video');
+const class_title => __('class.video');
 const cgi_class   => 'Socialtext::VideoPlugin::CGI';
 
 our %Services = (
