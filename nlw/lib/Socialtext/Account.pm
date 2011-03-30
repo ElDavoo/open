@@ -433,7 +433,8 @@ sub import_file {
     }
 
     # Make sure we've got a name for this Account that's being imported
-    $import_name ||= $hash->{name};
+    my $export_name = $hash->{name};
+    $import_name ||= $export_name;
     $hash->{import_name} = $import_name;
 
     # Fail if the Account already exists
@@ -495,8 +496,7 @@ sub import_file {
 
         # Import this user into the new account we're creating. If they were
         # in some other account we'll fix that up below.
-        my $user_orig_acct = $user_hash->{primary_account_name}
-            || $hash->{name};
+        my $user_orig_acct = $user_hash->{primary_account_name} || $export_name;
         $user_hash->{primary_account_name} = $import_name;
 
         my $existing_user
@@ -508,7 +508,7 @@ sub import_file {
         # we're currently importing, then keep that relationship, even if we
         # need to create a blank/empty account with that name.
         my $pri_acct = $account;
-        if ($user_orig_acct ne $hash->{name}) {
+        if ($user_orig_acct ne $export_name) {
             # User had a Primary Account that was *not* the Account that we're
             # re-importing (possibly under a new name).
             $pri_acct = Socialtext::Account->new(name => $user_orig_acct)
@@ -531,7 +531,7 @@ sub import_file {
         # either "give this User a new Role here that they didn't have before"
         # or could be "change their role to the one specified in the import".
         eval {
-            my $role_name = $user_hash->{roles}{$hash->{name}} || 'member';
+            my $role_name = $user_hash->{roles}{$export_name} || 'member';
             my $acct_role = Socialtext::Role->new(name => $role_name);
             if ($account->has_user($user, direct => 1)) {
                 $account->assign_role_to_user(user => $user, role => $acct_role);
