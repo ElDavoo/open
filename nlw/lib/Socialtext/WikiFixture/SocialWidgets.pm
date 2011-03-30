@@ -380,7 +380,7 @@ Opens the mobile signals page as a function of is_wikiwyg
 
 sub st_open_m_signals {
     my ($self) = @_;
-    my $msignal =  $self->_is_wikiwyg() ? '/st/m/signals' : '/st/signals';
+    my $msignal =  $self->_is_wikiwyg() ? '/st/m/signals' : '/m/signals';
     $self->handle_command('open_ok',$msignal); 
 }
 

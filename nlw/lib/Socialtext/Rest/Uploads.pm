@@ -35,10 +35,6 @@ sub _entity_hash {
 }
 
 around 'POST_file' => \&sql_txn;
-after 'POST_file' => sub {
-    # this executes outside of the above sql_txn
-    Socialtext::Upload->CleanTemps();
-};
 sub POST_file {
     my $self = shift;
     my $rest = shift;

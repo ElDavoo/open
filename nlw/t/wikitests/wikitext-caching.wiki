@@ -246,6 +246,12 @@ These tag/category/blog wafls just generate a link, so we can safely cache them.
 | fetch-page       | tags          | hit  |                |
 | question-file-is | tags           | w%%ws2_id%% |                |
 
+| Comment          | Hashtag Wafl      |      |                |
+| edit-page        | %%workspace%% | hashtags | {hashtag: welcome} |
+| fetch-page       | hashtags          | miss  |                |
+| fetch-page       | hashtags          | hit  |                |
+| question-file-is | hashtags           | null |                |
+
 | Comment          | Category Wafl      |      |                |
 | edit-page        | %%workspace%% | category | {category: welcome} |
 | fetch-page       | category          | miss  |                |

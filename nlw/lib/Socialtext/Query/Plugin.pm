@@ -219,13 +219,17 @@ sub _gen_sort_closure {
     else { # anything else, most likely a string
         if ( $direction eq 'asc' ) {
             return sub {
-                lc( $a->{$sortby} ) cmp lc( $b->{$sortby} )
+                warn "$sortby is undef for $a->{Subject}!" unless defined $a->{$sortby};
+                warn "$sortby is undef for $b->{Subject}!" unless defined $b->{$sortby};
+                lc( $a->{$sortby}||'' ) cmp lc( $b->{$sortby}||'' )
                     or lc( $a->{Subject} ) cmp lc( $b->{Subject} );
             };
         }
         else {
             return sub {
-                lc( $b->{$sortby} ) cmp lc( $a->{$sortby} )
+                warn "$sortby is undef for $a->{Subject}!" unless defined $a->{$sortby};
+                warn "$sortby is undef for $b->{Subject}!" unless defined $b->{$sortby};
+                lc( $b->{$sortby}||'' ) cmp lc( $a->{$sortby}||'' )
                     or lc( $a->{Subject} ) cmp lc( $b->{Subject} );
             };
         }

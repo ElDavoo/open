@@ -1,4 +1,6 @@
-| *Comment* | Test Case: Link Interface Web link (fails under GoogleChrome, IE6), marking run.ff |  |
+| *Comment* | Test Case: Link Interface Web link REMOVED run.ff tag - works in GC, retest in IE |  |
+
+
 | *Comment* | Test Case: Link Interface Web Link must be included from TC: Link Interface |  |
 
 | *Comment* | Test Case: Link Interface Web Link create a web link |  |
@@ -6,8 +8,14 @@
 | click_ok | wikiwyg_button_link |  |
 | wait_for_element_visible_ok | add-web-link | 30000 |
 | click_ok | add-web-link |  |
+| type_ok | wiki-link-text |  |
+| type_ok | st-widget-workspace_id |  |
+| type_ok | st-widget-page_title |  |
+| type_ok | wiki-link-section |  |
 | type_ok | web-link-text | Socialtext |
 | type_ok | web-link-destination | `http://www.socialtext.com` |
+
+| *Comment* | This is where the problem is in IE, but I can't quite figure out why it doesn't save properly |  |
 | click_ok | st-widget-link-savebutton |  |
 
 | *Comment* | Test Case: Link Interface Web link pause for the link lozenge to render |  |

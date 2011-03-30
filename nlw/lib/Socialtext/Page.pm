@@ -1364,6 +1364,7 @@ sub _cache_html {
         Socialtext::RecentChanges::Wafl
         Socialtext::Category::Wafl
         Socialtext::Search::Wafl
+        Socialtext::WidgetPlugin::Wafl
     /;
     my @cache_questions;
     my %interwiki;
@@ -1428,6 +1429,14 @@ sub _cache_html {
                 elsif ($wafl_class eq 'Socialtext::Pluggable::WaflPhrase') {
                     if ($wafl->{method} eq 'user') {
                         $users{$wafl->{arguments}}++ if $wafl->{arguments};
+                    }
+                    elsif ($wafl->{method} eq 'hashtag') {
+                        # Hashtags are just links, so they are cacheable.
+                        return;
+                    }
+                    elsif ($wafl->{method} =~ m/^st_/) {
+                        # All the agile plugin st_* wafls are not cacheable
+                        $expires_at = -1;
                     }
                     else {
                         $unknown = 1;

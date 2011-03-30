@@ -430,7 +430,7 @@ sub load_revision_metadata {
             };
         }
         catch {
-            my $err = format_error($_);
+            my $err = format_err($_);
             warn "Couldn't parse revision $ws_dir/$pg_dir/$file, skipping: $err\n";
         };
     }
@@ -445,7 +445,7 @@ sub has_required_meta {
     return all { defined($pagemeta->{$_}) } qw/Subject From Date/;
 }
 
-use constant CONTENT_LIMIT => 8388608; # 100MB
+use constant CONTENT_LIMIT => 2147483647; # 2GB-1byte, the max val for an Int in Pg.
 sub load_page_attachments {
     my ($self, $page_hash) = @_;
     my $ws_dir = $self->{workspace_data_dir};

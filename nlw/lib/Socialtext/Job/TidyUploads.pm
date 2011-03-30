@@ -36,6 +36,9 @@ sub do_work {
         };
     }
 
+    # Now clean up temp attachments
+    Socialtext::Upload->CleanTemps();
+
     # Check again in FREQUENCY seconds.  We'll stop when there's no more work
     # to do.
     my $next = TheSchwartz::Moosified::Job->new({
