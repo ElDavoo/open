@@ -412,4 +412,3 @@ account_import_system_user_roles: {
     is $account->user_count(direct => 1), 1, "still got imported";
     ok !$user->is_system_created, "but is not a system user";
 }
-
