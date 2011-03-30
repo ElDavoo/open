@@ -14,13 +14,13 @@ for help in $SHAREDIR/help-*.tar.gz; do
     if [ -e "$help" ]; then
         help_file=`basename $help`
         echo "========== $help_file =========="
-        ACCTOPT=""
         JUMPSTART=`(echo "$help_file" | grep "^help-jumpstart") >/dev/null; echo $?`
         if [ "$JUMPSTART" == "0" ]; then
-            ACCT=`$DIR/st-default-account`
-            ACCTOPT="--account '$ACCT'";
-        fi
-        $DIR/st-create-help-workspace $ACCTOPT $help
+            ACCT="`$DIR/st-default-account`"
+	    $DIR/st-create-help-workspace --account "$ACCT" $help
+        else
+	    $DIR/st-create-help-workspace $help
+	fi
     fi
 done
 
