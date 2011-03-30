@@ -432,11 +432,14 @@ sub import_file {
         );
     }
 
-    my $name = $import_name || $hash->{name};
-    $hash->{import_name} = $name;
-    my $account = $class->new(name => $name);
+    # Make sure we've got a name for this Account that's being imported
+    $import_name ||= $hash->{name};
+    $hash->{import_name} = $import_name;
+
+    # Fail if the Account already exists
+    my $account = $class->new(name => $import_name);
     if ($account && !$account->is_placeholder()) {
-        die loc("error.exists=account!", $name) . "\n";
+        die loc("error.exists=account!", $import_name) . "\n";
     }
 
     my %acct_params = (
@@ -470,7 +473,7 @@ sub import_file {
     else {
         $account = $class->create(
             %acct_params,
-            name => $name,
+            name => $import_name,
         );
     }
 
@@ -495,7 +498,7 @@ sub import_file {
         # in some other account we'll fix that up below.
         my $user_orig_acct = $user_hash->{primary_account_name}
             || $hash->{name};
-        $user_hash->{primary_account_name} = $name;
+        $user_hash->{primary_account_name} = $import_name;
 
         my $existing_user
             = Socialtext::User->new(username => $user_hash->{username});
