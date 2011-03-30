@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 162;
+use Test::Socialtext tests => 180;
 use Test::Differences;
 use Test::Output qw/stderr_is/;
 use Socialtext::CLI;
@@ -411,4 +411,55 @@ account_import_system_user_roles: {
     $user    = Socialtext::User->new(username => $username);
     is $account->user_count(direct => 1), 1, "still got imported";
     ok !$user->is_system_created, "but is not a system user";
+}
+
+###############################################################################
+# TEST: Preserve Role in Primary Account
+preserve_role_in_primary_account: {
+    pass 'TEST: preserve role in primary account';
+    my $account   = create_test_account_bypassing_factory();
+    my $acct_name = $account->name;
+
+    my $u_member = create_test_user(account => $account);
+
+    my $u_impersonator = create_test_user(account => $account);
+    $account->assign_role_to_user(user => $u_impersonator, role => $Impersonator);
+
+    my $u_admin = create_test_user(account => $account);
+    $account->assign_role_to_user(user => $u_admin, role => $Admin);
+
+    # Export and re-import the Account
+    export_and_reimport_account(
+        account => $account,
+        users   => [$u_member, $u_impersonator, $u_admin],
+    );
+
+    # Double-check Roles for the Users
+    $account = Socialtext::Account->new(name => $acct_name);
+    isa_ok $account, 'Socialtext::Account', '... found re-imported Account';
+
+    check_member: {
+        my $found = Socialtext::User->new(username => $u_member->username);
+        isa_ok $found, 'Socialtext::User', '... found re-imported Member';
+
+
+        my $role = $account->role_for_user($found);
+        is $role->name, $Member->name, '... ... with Member Role';
+    }
+
+    check_impersonator: {
+        my $found = Socialtext::User->new(username => $u_impersonator->username);
+        isa_ok $found, 'Socialtext::User', '... found re-imported Impersonator';
+
+        my $role = $account->role_for_user($found);
+        is $role->name, $Impersonator->name, '... ... with Impersonator Role';
+    }
+
+    check_admin: {
+        my $found = Socialtext::User->new(username => $u_admin->username);
+        isa_ok $found, 'Socialtext::User', '... found re-imported Admin';
+
+        my $role = $account->role_for_user($found);
+        is $role->name, $Admin->name, '... ... with Admin Role';
+    }
 }
