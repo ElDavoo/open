@@ -593,3 +593,4 @@ lib/Socialtext/Rest/Group/Peopletags.pm
 t/wikitests/groups/peopletags.wiki
 lib/Socialtext/Gadget/Base.pm
 lib/Socialtext/Gadget/Renderer.pm
+t/share/plugin/fakeplugin/views-inline-good.xml
