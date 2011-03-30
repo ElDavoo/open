@@ -388,12 +388,14 @@ account_import_preserves_direct_and_indirect_uars: {
     );
 }
 
+###############################################################################
+# TEST: "system created Users" revert to regular Users on import.
 account_import_system_user_roles: {
     pass 'TEST: importing of system-created user roles';
-    my $account = create_test_account_bypassing_factory();
+    my $account   = create_test_account_bypassing_factory();
     my $acct_name = $account->name;
-    my $user    = create_test_user(account => $account);
-    my $username = $user->username;
+    my $user      = create_test_user(account => $account);
+    my $username  = $user->username;
 
     sql_execute(q{UPDATE "UserMetadata" SET is_system_created = true WHERE user_id = ?}, $user->user_id);
 
@@ -406,7 +408,7 @@ account_import_system_user_roles: {
     } "$username was system created. Importing as regular user.\n";
 
     $account = Socialtext::Account->new(name => $acct_name);
-    $user = Socialtext::User->new(username => $username);
+    $user    = Socialtext::User->new(username => $username);
     is $account->user_count(direct => 1), 1, "still got imported";
     ok !$user->is_system_created, "but is not a system user";
 }
