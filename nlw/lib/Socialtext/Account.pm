@@ -520,11 +520,11 @@ sub import_file {
 
         $user->primary_account($pri_acct, no_hooks => 1);
 
-        my $default = Socialtext::Account->Default();
-        if (!$existing_user and $pri_acct->account_id != $default->account_id) {
+        my $default_acct = Socialtext::Account->Default();
+        if (!$existing_user and $pri_acct->account_id != $default_acct->account_id) {
             # When we create a user, she is assigned to the default account
             # so we should remove her from that account.
-            $default->remove_user(user => $user);
+            $default_acct->remove_user(user => $user);
         }
 
         # Give the User the correct Role in this Account (which could be
