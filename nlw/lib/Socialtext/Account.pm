@@ -536,6 +536,7 @@ sub import_file {
                 $account->add_user(user => $user, role => $acct_role);
             }
         };
+        warn $@ if $@;
 
         # Hang onto the profile so we can create it later.
         if (my $profile = delete $user_hash->{profile}) {
