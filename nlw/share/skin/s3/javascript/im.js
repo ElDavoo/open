@@ -65,7 +65,9 @@ var ocs_helper = {
 
     create_ocs_field: function($span, username) {
         if (! $.browser.msie) {
-            $span.text(username+" "+loc('(requires Internet Explorer)'));
+            $span.text(username+' ').append(
+                $('<span></span>').addClass('requiresie').
+                    text(loc('(requires Internet Explorer)')));
         } 
         else {
             $span.text(username); 

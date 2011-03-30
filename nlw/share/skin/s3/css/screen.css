@@ -4859,3 +4859,12 @@ body#contentPage .widgetHeaderTitleText {
         color: #333333;
 }
 
+/* Common styles for profile fields */
+
+.fieldTitle {
+    font-style: italic;
+}
+
+.requiresie {
+    color: #666;
+}
