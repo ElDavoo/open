@@ -80,7 +80,7 @@ var ocs_helper = {
                 if (namectrl.PresenceEnabled) {
                     namectrl.GetStatus(username, "empty");
                     var $statusspan = $('<span></span>');
-                    $span.append($statusspan);
+                    $span.prepend($statusspan);
                     namectrl.OnStatusChange = function(name, status, id) {
                         var statusarray=ocs_helper.statuses[status];
                         if (statusarray) {
