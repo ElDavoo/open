@@ -2,6 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
+use Module::Load;
 
 my @containers = qw(
     Socialtext::Gadgets::Container::Signals::Signal
@@ -13,7 +14,7 @@ my @containers = qw(
 );
 for my $class (@containers) {
     warn "Resetting all $class containers...\n";
-    eval "require $class";
+    load $class;
     $class->DeleteAll;
 }
 
