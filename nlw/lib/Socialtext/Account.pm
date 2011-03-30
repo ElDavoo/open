@@ -523,11 +523,20 @@ sub import_file {
             $default->remove_user(user => $user);
         }
 
+        # Give the User the correct Role in this Account (which could be
+        # either "give this User a new Role here that they didn't have before"
+        # or could be "change their role to the one specified in the import".
         eval {
             my $role_name = $user_hash->{roles}{$hash->{name}} || 'member';
             my $acct_role = Socialtext::Role->new(name => $role_name);
-            $account->add_user(user => $user, role => $acct_role);
+            if ($account->has_user($user, direct => 1)) {
+                $account->assign_role_to_user(user => $user, role => $acct_role);
+            }
+            else {
+                $account->add_user(user => $user, role => $acct_role);
+            }
         };
+
         # Hang onto the profile so we can create it later.
         if (my $profile = delete $user_hash->{profile}) {
             $profile->{user} = $user;
