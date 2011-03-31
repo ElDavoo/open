@@ -1300,6 +1300,7 @@ sub to_html {
     my $q_file = $self->_question_file;
     if ($q_file and -e $q_file) {
         my $q_str = Socialtext::File::get_contents($q_file);
+        warn "QUESTION: $q_str\n" if $CACHING_DEBUG;
         my $a_str = $self->_questions_to_answers($q_str);
         my $cache_file = $self->_answer_file($a_str);
         my $cache_file_exists = $cache_file && -e $cache_file;
@@ -1308,6 +1309,7 @@ sub to_html {
             my $cached_at = (stat($cache_file))[9];
             $users_changed = $self->_users_modified_since($q_str, $cached_at)
         }
+        warn "MISS - Users changed!" if $CACHING_DEBUG and $users_changed;
         if ($cache_file_exists and !$users_changed) {
             my $t = time_scope('wikitext_HIT');
             $self->{__cache_hit}++;
@@ -1316,7 +1318,7 @@ sub to_html {
         }
 
         my $t = time_scope('wikitext_MISS');
-        warn "MISS on content" if $CACHING_DEBUG;
+        warn "MISS on content ($a_str)" if $CACHING_DEBUG;
         my $html = $self->hub->viewer->process($content_ref, $page);
 
         # Check if we are the "current" page, and do not cache if we are not.
@@ -1330,6 +1332,9 @@ sub to_html {
                 if $cache_file;
             warn "MISSED: $cache_file" if $CACHING_DEBUG;
             return $html;
+        }
+        else {
+            warn "MISSED but not caching" if $CACHING_DEBUG;
         }
         # Our answer string was invalid, so we'll need to re-generate the Q file
         # We will pass in the rendered html to save work
