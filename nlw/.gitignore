@@ -595,3 +595,4 @@ lib/Socialtext/Gadget/Base.pm
 lib/Socialtext/Gadget/Renderer.pm
 t/share/plugin/fakeplugin/views-inline-good.xml
 t/share/plugin/fakeplugin/share/widgets/views-inline-good.xml
+t/wikitests/rest/data_gadget.wiki
