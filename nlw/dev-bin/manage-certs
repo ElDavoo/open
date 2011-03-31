@@ -3,6 +3,7 @@
 use strict;
 use warnings;
 use Getopt::Long;
+use Pod::Usage;
 use FindBin qw($Bin);
 use lib "$Bin/../lib";
 use Socialtext::System qw/shell_run/;
@@ -12,21 +13,26 @@ use Socialtext::AppConfig;
 
 my $STUB = '/C=US/ST=CA/L=Palo Alto/O=Socialtext';
 
-my $action = shift;
-usage() unless $action;
-
 my $name    = '';
 my $server  = '';
 my $force   = 0;
 my $dryrun  = 0;
 my $expired = 0;
+my ($help, $man);
 GetOptions(
     'username=s' => \$name,
     'server=s'   => \$server,
     'expired'    => \$expired,
     'force'      => \$force,
     'dry-run'    => \$dryrun,
-);
+    'help|?'     => \$help,
+    'man'        => \$man,
+) || pod2usage( -sections => [qw( SYNOPSIS )] );
+pod2usage(1) if ($help);
+pod2usage( -exitstatus=>0, -verbose=>2 ) if ($man);
+
+my $action = shift @ARGV;
+pod2usage( -sections => [qw( SYNOPSIS )] ) unless ($action);
 
 my $ca_cert = 'ca/cert';
 my $ca_key  = 'ca/key.nopass';
@@ -123,29 +129,120 @@ sub error {
     die color('red'), "\n$msg", color('reset'), "\n\n";
 }
 
-sub usage {
-    print <<EOT;
-  USAGE: $0 init|client|install [--username] [--server] [--force] [--dry-run]
 
-  Manage a very simple CA.
+=head1 NAME
 
-  COMMANDS:
-    init: Initialize your CA. More specific, make a passwordless key and
-          self-sign it. If you've already got a CA cert, you can
-          re-initialize by passing this command the `--force` option.
-          Doing so will invalidate any existing client or server certs.
+manage-certs - Tool to help manage SSL certificates for testing
 
-    client: Create a client cert. Requires the `--username` param. You may
-         re-create a client cert with the `--force` option.
+=head1 SYNOPSIS
 
-    install: Install the CA cert and a custom server cert in a dev-env or
-         VE for testing. By default, the command will create a server cert
-         with the same name as the machine is running on. You can override
-         this by passing in a `--server` param. The certs will not be
-         copied into place if a `--dry-run` param is passed in.
+  manage-certs <action> [options]
 
-EOT
-    exit;
-}
+  Actions:
+    init            Initialize SSL certificate chain
+        --force             Force, and over-write existing certs
 
-die $action;
+    install         Generate/install server certificate chain
+        --server <name>     Server name to create server cert for
+        --dryrun            Dry-run; install nothing
+
+    client          Generate client-side SSL certificate
+        --force             Force, and over-write existing certs
+        --username <name>   Username for certificate to create
+        --expired           Make an expired cert, not a valid one
+
+  Options:
+    --help/-?       Brief help message
+    --man           Full documentation
+
+  Example:
+    manage-certs init
+    manage-certs install
+    manage-certs client --username davey.jones@locker.com --expired
+
+=head1 DESCRIPTION
+
+F<manage-certs> is a command line utility to help manage SSL certificates for
+testing and development purposes.
+
+=head1 OPTIONS
+
+=over
+
+=item B<init>
+
+Initializes the SSL certificate chain, creating a passwordless CA key and
+self-signing it.
+
+=over
+
+=item --force
+
+Forces overwrite of any existing CA cert from a previous run.
+
+=back
+
+=item B<install>
+
+Installs the SSL certificate chain for the CA, as well as creating and
+installing a self-signed SSL server certificate.
+
+=over
+
+=item --server <name>
+
+Specifies the server name to be used for the generated server certificate.  By
+default it will be named the same as the machine that it is running on.
+
+=item --dryrun
+
+Dry-run for the install; generate the certificates but do B<not> copy them
+into place.
+
+=back
+
+=item B<client>
+
+Generates a Client-Side SSL Certificate, which can be manually installed in
+your browser and used to authenticate against the server.
+
+=over
+
+=item --force
+
+Forces overwrite of any existing client-side SSL certificate with the same
+name from a previous run.
+
+=item --username <name>
+
+B<Required>.  Specifies the username to be placed inside the client-side SSL
+certificate.
+
+=item --expired
+
+Generates a client-side SSL certificate that has already expired.
+
+By default, valid SSL certificates are generated, but using this option you
+can explicitly generate an expired certificate.
+
+=back
+
+=item B<--help/-?>
+
+Displays a brief help message.
+
+=item B<--man>
+
+Displays the full documentation.
+
+=back
+
+=head1 AUTHOR
+
+Socialtext, Inc.  C<< <code@socialtext.com> >>
+
+=head1 COPYRIGHT
+
+Copyright 2011 Socialtext, Inc.,  All Rights Reserved.
+
+=cut
