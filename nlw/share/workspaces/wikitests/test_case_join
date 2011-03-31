@@ -64,21 +64,14 @@
 | text_like | An email confirming your registration has been sent to %%to_ws_user%% |  |
 
 | *Comment* | Test Case: Join. login to %%to_ws%% as %%username%% and open the confirmation email |  |
-| open_ok | /%%to_ws%%/ |  |
-| wait_for_element_visible_ok | username | 30000 |
-| wait_for_element_visible_ok | password | 30000 |
-| type_ok | username | %%username%% |
-| type_ok | password | %%password%% |
-| click_and_wait | login_btn |  |
-
-| *Comment* | Test Case: Join. Navigate to the confirmation email |  |
-| text_like | workspaceName | %%to_ws%% |
+| st-logoutin | %%username%% | %%password%% |
 
 | *Comment* | Wait 90 seconds for the confirmation email to arrive |  |
 | pause | 90000 |  |
 
-| wait_for_element_visible_ok | link=What's New | 30000 |
-| click_and_wait | link=What's New |  |
+| *Comment* | Test Case: Join. Navigate to the confirmation email |  |
+| open_ok | /%%to_ws%%/?action=recent_changes |  |
+| text_like | workspaceName | %%to_ws%% |
 | wait_for_element_visible_ok | link=Welcome to the %%acct%% workspace - please confirm your email to join | 30000 |
 | click_and_wait | link=Welcome to the %%acct%% workspace - please confirm your email to join |  |
 
