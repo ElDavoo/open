@@ -38,29 +38,6 @@ sub GET_json {
     });
 }
 
-sub GET_temp_json {
-    my $self = shift;
-    $self->if_authorized_to_view(sub {
-        $self->rest->header(-type => 'application/json');
-
-        # This is a temporary action, so roll back when $rollback goes out of
-        # scope
-        sql_begin_work();
-        my $rollback = guard { sql_rollback() };
-
-        my $gadget_instance = $self->container->install_gadget(
-            gadget_id => $self->gadget_id,
-            gadget_instance_id => $self->rest->query->param('instance_id'),
-        );
-        $gadget_instance->override_preferences($self->extract_prefs);
-
-        return encode_json({
-            content => $gadget_instance->content,
-            %{$gadget_instance->template_vars},
-        });
-    });
-}
-
 sub extract_prefs {
     my $self = shift;
     my %prefs;
