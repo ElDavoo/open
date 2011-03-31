@@ -105,6 +105,7 @@ sub _item_as_html {
     my @html_headers;
     my @html_footers;
     Socialtext::Timer->Continue('_item_as_html_html');
+    $page->hub->pages->current($page);
     my $html    = $page->to_absolute_html;
     Socialtext::Timer->Pause('_item_as_html_html');
 
