@@ -393,6 +393,7 @@ sub get_entries {
     );
 
     for my $page (@pages) {
+        $self->hub->pages->current($page);
         my $entry = $self->format_page_for_entry(
             no_post => $no_post,
             page => $page,
