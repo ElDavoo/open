@@ -51,7 +51,7 @@ var ocs_helper = {
     statuses: {
         0: [loc('Online'), 'ocs-green.png'], 
         1: [loc('Offline'), 'ocs-gray.png'],
-        2: [loc('Away'), 'ocs-red.png'], 
+        2: [loc('Away'), 'ocs-gold.png'], 
         3: [loc('Busy'), 'ocs-orange.png'],
         4: [loc('Be right back'), 'ocs-gold.png'], 
         5: [loc('On the phone'), 'ocs-gold.png'],
