@@ -3,8 +3,6 @@
 use strict;
 use warnings;
 
-BEGIN { push @INC, 't/share/plugin/fakeplugin/lib' };
-
 use Test::More tests => 21;
 use Data::Dumper;
 #use mocked 'Module::Pluggable';
@@ -47,7 +45,7 @@ foreach my $method (qw(EnablePlugin
     {
         no strict 'refs';
         no warnings 'redefine';
-        *{"Socialtext::Pluggable::Plugin::FakePlugin::$method"} = 
+        *{"Socialtext::Pluggable::Plugin::TestPlugin::$method"} = 
             sub { my $class=shift; $mock_calls += @_ };
         *{"Socialtext::Pluggable::Plugin::Test::$method"} = 
             sub { my $class=shift; $test_calls += @_ };
@@ -55,11 +53,11 @@ foreach my $method (qw(EnablePlugin
 
     my $some_arg = { foo => 'bar' };
 
-    Socialtext::Pluggable::Adapter->$method('fakeplugin' => $some_arg);
-    is $mock_calls, 1, "fakeplugin plugin called for the first time";
+    Socialtext::Pluggable::Adapter->$method('testplugin' => $some_arg);
+    is $mock_calls, 1, "testplugin plugin called for the first time";
     is $test_calls, 0, "test plugin got skipped";
     Socialtext::Pluggable::Adapter->$method('test' => $some_arg);
-    is $mock_calls, 1, "fakeplugin plugin didn't get called twice";
+    is $mock_calls, 1, "testplugin plugin didn't get called twice";
     is $test_calls, 1, "test plugin called for the first time";
 }
 
@@ -81,18 +79,18 @@ foreach my $method (qw(EnsureRequiredDataIsPresent))
     {
         no strict 'refs';
         no warnings 'redefine';
-        *{"Socialtext::Pluggable::Plugin::FakePlugin::$method"} = 
+        *{"Socialtext::Pluggable::Plugin::TestPlugin::$method"} = 
             sub { my $class=shift; $mock_calls += @_ };
         *{"Socialtext::Pluggable::Plugin::Test::$method"} = 
             sub { my $class=shift; $test_calls += @_ };
     }
 
     Socialtext::Pluggable::Adapter->$method($some_arg);
-    is $mock_calls, 1, 'fakeplugin plugin got called for the first time';
+    is $mock_calls, 1, 'testplugin plugin got called for the first time';
     is $test_calls, 1, 'test plugin got called for the first time';
 
     Socialtext::Pluggable::Adapter->$method($some_arg, $some_arg);
-    is $mock_calls, 3, 'fakeplugin plugin got called for the first time';
+    is $mock_calls, 3, 'testplugin plugin got called for the first time';
     is $test_calls, 3, 'test plugin got called for the first time';
 }
 

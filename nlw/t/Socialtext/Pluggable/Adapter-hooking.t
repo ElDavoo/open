@@ -3,8 +3,6 @@
 use strict;
 use warnings;
 
-use lib "$ENV{ST_SRC_BASE}/socialtext/nlw/t/share/plugin/fakeplugin/lib";
-
 use Socialtext::SQL;
 use Socialtext::Account;
 use Socialtext::User;

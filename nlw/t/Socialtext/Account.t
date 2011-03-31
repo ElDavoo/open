@@ -11,9 +11,7 @@ use Socialtext::File;
 use MIME::Base64 ();
 use YAML qw/LoadFile/;
 
-BEGIN { push @INC, 't/share/plugin/fakeplugin/lib' }
-
-use Socialtext::Pluggable::Plugin::FakePlugin;
+use Socialtext::Pluggable::Plugin::TestPlugin;
 
 BEGIN {
     use_ok( 'Socialtext::Account' );
@@ -239,21 +237,21 @@ Wierd_corner_case: {
 }
 
 Plugins_enabled_for_all: {
-    Socialtext::Account->DisablePluginForAll('fakeplugin');
+    Socialtext::Account->DisablePluginForAll('testplugin');
 
     my $account1 = Socialtext::Account->create(name => "new_account_$^T");
-    ok !$account1->is_plugin_enabled('fakeplugin'),
-       'fakeplugin is not enabled by default';
+    ok !$account1->is_plugin_enabled('testplugin'),
+       'testplugin is not enabled by default';
 
-    Socialtext::Account->EnablePluginForAll('fakeplugin');
-    ok Socialtext::SystemSettings::get_system_setting('fakeplugin-enabled-all'),
+    Socialtext::Account->EnablePluginForAll('testplugin');
+    ok Socialtext::SystemSettings::get_system_setting('testplugin-enabled-all'),
        'System entry created for enabled plugin';
-    ok $account1->is_plugin_enabled('fakeplugin'),
-        'fakeplugin is now after EnablePluginForAll';
+    ok $account1->is_plugin_enabled('testplugin'),
+        'testplugin is now after EnablePluginForAll';
 
     my $account2 = Socialtext::Account->create(name => "newer_account_$^T");
-    ok $account2->is_plugin_enabled('fakeplugin'),
-       'fakeplugin is enabled for new accounts after EnablePluginForAll';
+    ok $account2->is_plugin_enabled('testplugin'),
+       'testplugin is enabled for new accounts after EnablePluginForAll';
 }
 
 account_has_user_primary_account: {

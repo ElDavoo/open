@@ -3,8 +3,6 @@
 use strict;
 use warnings;
 
-BEGIN { push @INC, 't/share/plugin/fakeplugin/lib' }
-
 use Test::More tests => 35;
 use mocked 'Socialtext::CGI';
 use mocked 'Socialtext::SQL';
@@ -71,7 +69,7 @@ is $plug->current_page_rest_uri, '/data/workspaces/current/pages/welcome';
 
 # Plugin functions
 my %plugins = map { $_ => 1 } $plug->plugins;
-ok $plugins{fakeplugin}, 'Fakeplugin plugin exists';
+ok $plugins{testplugin}, 'TestPlugin plugin exists';
 is $plug->plugin_dir('mocked'), "$Socialtext::AppConfig::CODE_BASE/plugin/mocked",
    'Mocked directory is correct';
 
