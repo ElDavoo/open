@@ -20,7 +20,7 @@ This test case is an aid to visually observing each screen type in the applicati
 
 | open_ok | /nlw/control/account |  |
 
-| click_and_wait | //a[@title='workspaces'] |  |
+| click_and_wait | //a[@name='workspaces'] |  |
 | *Comment* | SEE Workspaces |  |
 | pause | %%pt%% |  |
 
