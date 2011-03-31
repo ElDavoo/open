@@ -25,12 +25,13 @@ sub language_settings {
 
     my $prefs = $self->get_user_prefs();
     my $locale = $prefs->{locale} // '';
+    my $system_locale = system_locale();
 
     my $message = '';
     if ($cgi_vars{Button}) {
         $locale = $cgi_vars{locale} // '';
         $self->set_user_prefs(locale => $locale);
-        loc_lang($locale || system_locale());
+        loc_lang($locale || $system_locale);
         $message = loc('config.saved');
     }
 
@@ -39,7 +40,9 @@ sub language_settings {
         value => $_,
         label => $languages->{$_},
         selected => ($locale eq $_),
-    }} sort { ($languages->{$a} =~ /DEV/ cmp $languages->{$b} =~ /DEV/) or ($a cmp $b) } keys %$languages ];
+    }} sort { ($languages->{$a} =~ /DEV/ cmp $languages->{$b} =~ /DEV/) or ($a cmp $b) } grep {
+        $_ ne $system_locale
+    } keys %$languages ];
 
     unshift @$choices, {
         value => "",

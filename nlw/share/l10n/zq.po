@@ -9380,7 +9380,7 @@ msgstr "«Language Settings»"
 #. ($languages->{system_locale()
 #: lib/Socialtext/Pluggable/Plugin/Locales.pm:34
 msgid "loc.system-default=lang"
-msgstr "«System Default: %1»"
+msgstr "«%1 (Default)»"
 
 #. (lite ? '/m/login' : '/challenge')
 #: share/template/authen/element/forgot_password_page:17

@@ -2857,7 +2857,7 @@ msgstr "Language Settings"
 #. ($languages->{system_locale()
 #: lib/Socialtext/Pluggable/Plugin/Locales.pm:34
 msgid "loc.system-default=lang"
-msgstr "System Default: %1"
+msgstr "%1 (Default)"
 
 #. ($address)
 #: lib/Socialtext/Handler/Authen.pm:531

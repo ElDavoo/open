@@ -2795,7 +2795,7 @@ msgid "loc.settings"
 msgstr "语言设定"
 
 msgid "loc.system-default=lang"
-msgstr "系统默认：%1"
+msgstr "%1（默认）"
 
 #. ($address)
 #: lib/Socialtext/Handler/Authen.pm:531
