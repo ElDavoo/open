@@ -3,6 +3,8 @@
 
 use strict;
 use warnings;
+use Scalar::Defer;
+use mocked 'Socialtext::l10n' => qw( loc loc_lang ); loc(); loc_lang('ja');
 use utf8;
 binmode STDOUT, ':utf8';
 binmode STDERR, ':utf8';

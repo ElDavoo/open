@@ -19,24 +19,25 @@ sub loc {
     goto &Socialtext::l10n::loc;
 }
 
-sub _loc_lang {
+sub __loc_lang__ {
     $CUR_LOCALE = shift if @_;
     return $CUR_LOCALE;
 }
 
-sub _best_locale {
-    return loc_lang() || system_locale();
+sub __best_locale__ {
+    my $x = __loc_lang__() || __system_locale__();
+    return $x;
 }
 
-sub _system_locale {
+sub __system_locale__ {
     $SYS_LOCALE = shift if @_;
     return $SYS_LOCALE;
 }
 
 sub _rebind_overrides {
-    *loc_lang = \&_loc_lang;
-    *best_locale = \&_best_locale;
-    *system_locale = \&_system_locale;
+    *loc_lang = \&__loc_lang__;
+    *best_locale = \&__best_locale__;
+    *system_locale = \&__system_locale__;
     *__ = sub {
         my @args = @_;
         defer { loc(@args) };
