@@ -1976,8 +1976,10 @@ sub duplicate {
         $rev->tags([]) unless $keep_categories;
 
         if ($keep_attachments) {
-            my @attachments = $self->attachments();
-            for my $source_attachment (@attachments) {
+            my %target_attachments = map { $_->attachment_id => 1 }
+                $target->attachments;
+            for my $source_attachment ($self->attachments) {
+                next if $target_attachments{$source_attachment->attachment_id};
                 $source_attachment->clone(page => $target);
             }
         }
