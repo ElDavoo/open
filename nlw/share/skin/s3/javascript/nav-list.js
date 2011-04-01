@@ -74,7 +74,7 @@ $.fn.peopleNavList = function(nodes) {
                 icon: function(p) {
                     return '/data/people/' + p.id + '/small_photo'
                 },
-                href: function(p) { return '/st/profile/' + p.id },
+                href: function(p) { if (p) return '/st/profile/' + p.id },
                 title: function(p) { return p.best_full_name },
                 emptyMessage:
                     loc("nav.no-followers")

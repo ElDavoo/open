@@ -63,9 +63,6 @@ fi
 
 # Construct commands to execute
 STADMIN=$(abs_path `which st-admin`)
-DELETE="$STADMIN delete-workspace --workspace $WS_NAME --no-export"
-IMPORT="$STADMIN import-workspace --tarball $TARBALL"
-ASSIGN="$STADMIN set-workspace-config --workspace $WS_NAME account_name $ACCOUNT"
 
 # Check that we found the st-admin command.
 if [ ! -x "$STADMIN" ]; then
@@ -76,17 +73,16 @@ fi
 # Turn commands into echos if --dry-run was given.
 if [ -n "$DRYRUN" ]; then
     echo "Dry running..."
-    DELETE="echo $DELETE"
-    IMPORT="echo $IMPORT"
-    ASSIGN="echo $ASSIGN"
+    echo $STADMIN delete-workspace --workspace $WS_NAME --no-export
+    echo $STADMIN import-workspace --tarball $TARBALL
+    echo $STADMIN set-workspace-config --workspace $WS_NAME account_name $ACCOUNT
+else
+    echo "Deleting workspace $WS_NAME."
+    $STADMIN delete-workspace --workspace $WS_NAME --no-export || /bin/true
+    echo "Importing $(basename $TARBALL) as workspace $WS_NAME."
+    $STADMIN import-workspace --tarball $TARBALL
+    $STADMIN set-workspace-config --workspace $WS_NAME account_name "$ACCOUNT"
 fi
-
-echo "Deleting workspace $WS_NAME."
-$DELETE || /bin/true
-
-echo "Importing $(basename $TARBALL) as workspace $WS_NAME."
-$IMPORT
-$ASSIGN
 
 echo "Done updating workspace $WS_NAME."
 exit 0

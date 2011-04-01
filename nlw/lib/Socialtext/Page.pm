@@ -1941,6 +1941,9 @@ sub duplicate {
     }
 
     my $target = $dest_hub->pages->new_from_name($target_title);
+    my $rev = $target->edit_rev();
+    my $body_ref = $self->body_ref;
+    $rev->body_ref($body_ref);
     my $target_id = $target->page_id;
 
     # XXX need exception handling of better kind

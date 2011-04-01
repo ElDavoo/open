@@ -22,7 +22,7 @@
 | wait_for_element_visible_ok | restriction-password-change | 30000 |
 | wait_for_element_visible_ok | restriction-require-external-id | 30000 |
 | text_like | //body | Socialtext enables you to add multiple users to your account. To add multiple users, download the sample data file, and add your user data. Then upload the file here. Complete documentation about adding multiple users is available here |
-| text_like | //body | When adding/updating Users, you may also specify a series of optional restrictions to be placed on their User records. Until these restrictions have been satisfied and cleared, Users will be unable to log in to the system |
+| text_like | //body | When adding/updating Users, you may also specify a series of optional restrictions to be placed on their User records. Until these restrictions have been satisfied, Users will be unable to log in to the system |
 
 
 | *Comment* | Test Case: Business Control Panel Mass Add Users TEARDOWN |
