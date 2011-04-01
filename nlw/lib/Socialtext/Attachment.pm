@@ -216,8 +216,9 @@ sub delete {
 
     sql_txn {
         sql_execute(q{
-            UPDATE page_attachment SET deleted = true WHERE attachment_id = ?
-        }, $self->attachment_id);
+            UPDATE page_attachment SET deleted = true
+            WHERE page_id = ? AND attachment_id = ?
+        }, $self->page_id, $self->attachment_id);
         local $!;
         $self->upload->delete(actor => $p{user});
     };
