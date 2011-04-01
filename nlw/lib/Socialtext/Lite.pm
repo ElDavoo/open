@@ -451,6 +451,7 @@ sub _frame_page {
     $self->hub->viewer->link_dictionary($self->link_dictionary);
 
     Socialtext::Timer->Continue('lite_page_html');
+    $self->hub->pages->current($page);
     my $html = $page->to_html_or_default;
     Socialtext::Timer->Pause('lite_page_html');
     return $self->_process_template(
