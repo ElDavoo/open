@@ -74,7 +74,8 @@
 | *Comment* | Test Case: Groups UI mismatched Workspace Verify private group language |  |
 | st-name-widget | 2 | workspaces_widget |
 | st-select-widget-frame | workspaces_widget |  |
-| wait_for_text_present_ok | Use the input above to select workspaces to associate with this group. | 30000 |
+| wait_for_text_present_ok | Use the input | 30000 |
+| text_like | qr/Use the input.+above to select.+workspaces to associate.+with this group./ |  |
 | text_like | qr/You can only associate\s*member-only\s*workspaces with a\s*private\s*group/ism |  |
 | wait_for_element_present_ok | lookahead | 30000 |
 | wait_for_element_present_ok | new_workspace | 30000 |

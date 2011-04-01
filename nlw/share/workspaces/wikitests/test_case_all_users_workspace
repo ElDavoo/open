@@ -77,12 +77,14 @@
 | *Comment* | Test Case: All Users Workspace check content of wiki settings UI |  |
 | st-logoutin | %%auw_admin%% | %%password%% |
 | open_ok | /%%auw_wiki%%/?action=users_listall |  |
-| wait_for_text_present_ok | All users from the %%auw_acct%% account are also members of this "all users" workspace. | 30000 |
+| wait_for_text_present_ok | All users from the %%auw_acct%% account | 30000 |
+| text_like | qr/All users from the.+%%auw_acct%%.+account are also members of this.+"all users".+workspace./ |  |
 
 | *Comment* | Test Case: All Users Workspace check that AUW text appears on wiki's control panel page |  |
 | st-logoutin | %%username%% | %%password%% |
 | open_ok | /nlw/control/workspace/%%auw_wiki_id%% |  |
-| wait_for_text_present_ok | This is an all users workspace for the account: %%auw_acct%% | 30000 |
+| wait_for_text_present_ok | This is an all users workspace for | 30000 |
+| text_like | qr/This is an all users workspace for the.+account:.+%%auw_acct%%/ |  |
 | wait_for_text_not_present_ok | Assign to a new account: | 30000 |
 | wait_for_element_not_present_ok | //select[@name='account_id'] | 30000 |
 
