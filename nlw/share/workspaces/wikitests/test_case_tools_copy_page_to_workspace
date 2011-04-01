@@ -1,3 +1,5 @@
+* HighPermissions
+
 | *Comment* | Test Case: Tools: Copy Page to Workspace |
 
 | set | newspace | newspace-%%start_time%% |
@@ -25,6 +27,8 @@
 | click_ok | st-tagqueue-close |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | st-page-save |  |  |
+| wait_for_element_visible_ok | link=Copy This Tag %%start_time%% |
+| st_upload_if_highperms | wikitest.jpg |  |
 
 TODO: upload a file and test for Keep Attachments
 
@@ -86,6 +90,10 @@ TODO: come back and finish this test when {bz: 1039} is fixed. Can't seem to cli
 | click_ok | st-copy-savelink |  |
 
 | *Comment* | Test Case: Tools: Copy Page to Workspace. verify copy of edited page |  |
+| open_ok | /%%newspace%%/page_copied_%%start_time%% |
+| wait_for_element_visible_ok | link=Copy This Tag %%start_time%% |
+| st_check_files_if_highperms | wikitest.jpg |
+
 | open_ok | /%%newspace%%/index.cgi?action=revision_list;page_name=page_copied_%%start_time%% |  |
 | click_and_wait | link=Compare Revisions |  |
 | text_like | contentContainer | Copy This Page %%start_time%% content |
