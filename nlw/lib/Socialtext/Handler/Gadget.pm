@@ -27,17 +27,6 @@ sub if_authorized_to_view_gadget {
     return $self->if_authorized_to_view($cb);
 }
 
-sub GET_json {
-    my $self = shift;
-    $self->if_authorized_to_view_gadget(sub {
-        $self->rest->header(-type => 'application/json');
-        return encode_json({
-            content => $self->gadget->content,
-            %{$self->gadget->template_vars},
-        });
-    });
-}
-
 sub extract_prefs {
     my $self = shift;
     my %prefs;
