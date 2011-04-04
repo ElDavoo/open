@@ -48,6 +48,9 @@ for my $po (glob("share/l10n/$lang/*.po")) {
 
     rename $po => "$po.unsorted";
     system("msgcat -w 99999 -n -s $po.unsorted > $po");
+    unlink "$po.unsorted";
     
     warn "*** Patched $po\n";
 }
+
+system("dev-bin/l10n-make-po-js");
