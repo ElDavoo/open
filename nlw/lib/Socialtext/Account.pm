@@ -293,10 +293,20 @@ around 'users' => sub {
 
 sub to_hash {
     my $self = shift;
-    my $hash = {
-        map { $_ => $self->$_ } @ACCT_COLS
-    };
-    return $hash;
+    my %p = @_;
+
+    if ($p{minimal}) {
+        return +{
+            account_id => $self->account_id,
+            name => $self->name,
+        };
+    }
+    else {
+        my $hash = {
+            map { $_ => $self->$_ } @ACCT_COLS
+        };
+        return $hash;
+    }
 }
 
 sub is_placeholder {
