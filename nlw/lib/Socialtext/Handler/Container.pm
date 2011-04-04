@@ -141,9 +141,24 @@ sub GET_layout {
     my $gadgets = $self->container->gadgets;
     my @cols;
     for (sort { $a->row <=> $b->row } @$gadgets) {
-        push @{ $cols[ $_->col ] }, $_->as_hash;
+        push @{ $cols[ $_->col ] }, old_as_hash_format($_);
     }
     return encode_json(\@cols);
+}
+
+sub old_as_hash_format {
+    my $gadget = shift;
+    
+   return {
+       id => $gadget->gadget_instance_id + 0,
+       title => $gadget->title,
+       src => $gadget->src,
+       col => $gadget->col,
+       row => $gadget->row,
+       fixed => $gadget->fixed || 0,
+       preferences => $gadget->preference_hash,
+   };
+
 }
 
 1;
