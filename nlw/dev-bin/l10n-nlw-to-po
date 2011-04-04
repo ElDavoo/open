@@ -68,8 +68,6 @@ for my $key (sort keys %Sections) {
     if ($new and -e $po) {
         system("perl -ni -e 'print unless /^# SOME DESCRIPTIVE TITLE./ .. /^#:/ and not /^#:/' $po");
         system("msggrep --msgid -v -e '^<!\\|^[a-z][a-z0-9][a-z0-9]*\\.' $po > $po.new");
-        system("dev-bin/l10n-guess-po --inplace $po.new");
-        system("dev-bin/l10n-reverse-po --msgid --inplace $po.new");
         system("mv $po.new $po");
         unlink $po unless -s $po;
     }

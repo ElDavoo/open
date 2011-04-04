@@ -88,8 +88,7 @@ for my $po (@ARGV) {
             print;
         }
         when (/^msgstr "(.*)"$/) {
-            if ($1 eq '' or $1 ~~ /^(###|XXX)/) {
-                $section //= "###-$default_section";
+            if ($section and ($1 eq '' or $1 ~~ /^(###|XXX)/)) {
                 say qq[msgstr "$section.$msgid$punct"];
             }
             else {
