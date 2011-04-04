@@ -11,11 +11,14 @@ use Socialtext::System qw/shell_run/;
 use File::Path qw(make_path remove_tree);
 chdir "$RealBin/..";
 
-my ($new, $lang);
+my ($new, $lang, $reuse);
 GetOptions(
     'new|n!' => \$new,
+    'reuse|r!' => \$reuse,
     'lang|l=s' => \$lang,
 ) or die "Usage: $0 [--new] [--lang lang] [sections]\n";
+
+$new = 1 if $reuse;
 
 my @plugins = map { basename($_) } grep { -d and (-d "$_/share" or -d "$_/template") } glob('share/plugin/*');
 my %Sections = (
@@ -74,8 +77,10 @@ for my $key (sort keys %Sections) {
     if ($new and -e $po) {
         system("perl -ni -e 'print unless /^# SOME DESCRIPTIVE TITLE./ .. /^#:/ and not /^#:/' $po");
         system("msggrep -w 99999 --sort-output --msgid -v -e '^<!\\|^[a-z][a-z0-9][a-z0-9]*\\.' $po > $po.new");
-        system("dev-bin/l10n-guess-po --inplace $po.new");
-        system("dev-bin/l10n-reverse-po --msgid --inplace $po.new");
+        unless ($reuse) {
+            system("dev-bin/l10n-guess-po --inplace $po.new");
+            system("dev-bin/l10n-reverse-po --msgid --inplace $po.new");
+        }
         system("mv $po.new $po");
         unlink $po unless -s $po;
     }
@@ -83,6 +88,16 @@ for my $key (sort keys %Sections) {
     if ($key eq 'wikiwyg' or $key eq 'lib') {
         shell_run('git checkout share/skin/wikiwyg/javascript/widget_resource.js');
     }
+}
+
+if ($reuse) {
+    system("msgcat --no-wrap share/l10n/new/*.po > new.po");
+    system("dev-bin/l10n-reverse-po share/l10n/en.po  | msguniq --no-wrap -s > en.pot");
+    system("msgmerge --no-wrap -N -s en.pot new.po | msggrep --no-wrap -T -e . | grep -v '^#[,~]' > reusable.po.new");
+    system("msgcat --no-wrap reusable.po.new | perl -ne 'print if /^\$/..0' > reusable.po");
+    unlink "reusable.po.new";
+    warn "*** Generated reusable keys: reusable.po\n";
+    warn "    Please edit it and run: ./dev-bin/l10n-po-to-nlw reusable.po\n"
 }
 
 #shell_run("msgcat share/l10n/en/*.po > share/l10n/en.po");
