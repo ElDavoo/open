@@ -49,9 +49,9 @@
 | *Comment* | Test Case: User Restrictions look for both confirmation emails |  |
 | st-login | %%email%% | %%password%% |
 | open_ok | /%%ws%%/?action=recent_changes |  |
-| wait_for_element_visible_ok | link=Welcome to the lucite.socialtext.net community - please confirm your email to join | 30000 |
+| wait_for_element_visible_ok | link=Welcome to the %%defaultaccount%% community - please confirm your email to join | 30000 |
 | wait_for_element_visible_ok | link=2 Revisions | 30000 |
-| click_and_wait | link=Welcome to the lucite.socialtext.net community - please confirm your email to join |  |
+| click_and_wait | link=Welcome to the %%defaultaccount%% community - please confirm your email to join |  |
 | wait_for_text_present_ok | Your profile has been added to the people directory. | 30000 |
 | wait_for_element_visible_ok | //a[contains(@href,'confirm_email')] | 30000 |
 

@@ -1,3 +1,5 @@
+* HighPermissions
+
 | *Comment* | Test Case: Tools: Duplicate Page |
 
 | *Comment* | Test Case: Tools: Duplicate Page Create test page |  |
@@ -18,6 +20,8 @@
 | click_ok | st-tagqueue-close |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | st-page-save |  |  |
+| wait_for_element_visible_ok | link=Duplicate This Tag %%start_time%% | 30000 |
+| st_upload_if_highperms | wikitest.jpg |  |
 
 | *Comment* | Test Case: Tools: Duplicate Page. Duplicate the page |  |
 | click_ok | link=Duplicate Page |  |
@@ -32,7 +36,9 @@
 | location_like | `/%%workspace%%/Page_Duplicated_%%start_time%%` |  |
 | wait_for_element_visible_ok | contentRight | 30000 |
 | text_like | contentRight | Duplicate This Tag %%start_time%% |
+| wait_for_element_visible_ok | link=Duplicate This Tag %%start_time%% | 30000 |
 | text_like | st-page-titletext | Page_Duplicated_%%start_time%% |
+| st_check_files_if_highperms | wikitest.jpg |
 
 | *Comment* | Test Case: Tools: Duplicate Page. Edit the original the page |  |
 | open_ok | /%%workspace%%/?Duplicate This Page %%start_time%% |  |

@@ -330,7 +330,6 @@ sub purge {
     }}
     catch {
         die $_ unless (/violates foreign key constraint/i);
-        warn $_;
     };
 
     # trigger cleaning up any others that may have been purged

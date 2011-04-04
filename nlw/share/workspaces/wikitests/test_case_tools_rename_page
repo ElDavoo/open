@@ -1,3 +1,5 @@
+*HighPermissions
+
 | *Comment* | Test Case: Tools: Rename Page |
 
 | *Comment* | Test Case: Tools: Rename Page Create test page |  |
@@ -18,6 +20,8 @@
 | click_ok | st-tagqueue-close |  |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | st-page-save |  |  |
+| wait_for_element_visible_ok | link=Rename This Tag %%start_time%% | 30000 |
+| st_upload_if_highperms | wikitest.jpg |  |
 
 | *Comment* | Test Case: Tools: Rename Page. Rename the page |  |
 | click_ok | link=Rename Page |  |
@@ -36,6 +40,8 @@
 | click_and_wait | link=Rename This Page %%start_time%% |  |
 | text_like | st-page-titletext | Rename This Page %%start_time%% |
 | text_like | contentContainer | Page renamed to Page_Renamed_%%start_time%% |
+| wait_for_element_visible_ok | link=Rename This Tag %%start_time%% | 30000 |
+| st_check_files_if_highperms | wikitest.jpg |
 
 | *Comment* | Test Case: Tools: Rename Page. Edit the original the page |  |
 | open_ok | /%%workspace%%/?Rename This Page %%start_time%% |  |
@@ -75,7 +81,7 @@
 
 | *Comment* | Test Case: Tools: Rename Page. verify rename of edited page |  |
 | open_ok | /%%workspace%%/?action=revision_list;page_name=page_renamed_%%start_time%% |  |
-| text_like | contentContainer | qr/revision 2/i |
+| text_like | contentContainer | qr/revision 3/i |
 | click_and_wait | link=Compare Revisions |  |
 | text_like | contentContainer | Rename This Page %%start_time%% content |
 | text_like | contentContainer | Rename This Page %%start_time%% NEW content |

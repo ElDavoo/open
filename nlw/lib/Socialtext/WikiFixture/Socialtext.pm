@@ -280,6 +280,36 @@ sub st_check_workspaces_stickyness {
     $self->st_check_search_stickyness($label, '','/?action=workspaces_listall');
 }
 
+sub st_upload_if_highperms {
+    my ($self, $file) = @_;
+    my $browser = $ENV{'selenium_browser'} || 'chrome';
+    if ($browser=~/chrome/ig )  {
+        $self->st_upload_attachment_to_wikipage($file);
+    }
+}
+
+sub st_check_files_if_highperms {
+    my ($self, $file) = @_;
+    my $browser = $ENV{'selenium_browser'} || 'chrome';
+    if ($browser=~/chrome/ig )  {
+        $self->handle_command('text_like','contentRight',$file);
+    }
+}
+
+sub st_upload_attachment_to_wikipage {
+    my ($self, $file) = @_;
+    $self->handle_command('wait_for_element_visible_ok', 'st-attachments-uploadbutton','60000');
+    $self->handle_command('click_ok', 'st-attachments-uploadbutton');
+    $self->handle_command('wait_for_element_visible_ok', 'st-attachments-attach-filename', 30000);
+    $self->handle_command('type_ok', 'st-attachments-attach-filename', '%%wikitest_files%%'.$file);
+    $self->handle_command('wait_for_text_present_ok','Uploaded files: ' . $file, 30000);
+    $self->handle_command('wait_for_element_visible_ok', 'st-attachments-attach-closebutton', 30000);
+    $self->handle_command('click_ok', 'st-attachments-attach-closebutton');
+    $self->handle_command('pause', 5000, 'pause to register index job');
+    $self->handle_command('st_process_jobs','AttachmentIndex');
+    $self->handle_command('wait_for_element_visible_ok','link='.$file,30000);
+}
+
 
 =head2 st_toggle_captcha ($toggle - default to 0, or off)
 

@@ -26,7 +26,6 @@
 | is_element_present_ok | timeserver |  |
 | is_element_present_ok | timeserver_config |  |
 | is_element_present_ok | timeserver_sync |  |
-| is_element_present_ok | apache_error_log |  |
 | is_element_present_ok | smarthost |  |
 | is_element_present_ok | config_email |  |
 | is_element_present_ok | recipient_email |  |
@@ -90,7 +89,6 @@
 | is_text_present_ok | Time Server |  |
 | is_text_present_ok | Appliance clock when this screen was generated: |  |
 | is_text_present_ok | You can synchronize the appliance clock with another computer using the NTP protocol. The appliance must be able to contact that server via port 123. |  |
-| is_text_present_ok | Apache Logs |  |
 
 | *Comment* | Test Case: Console Setup. Email server, appliance admin, initial workspace |  |
 | is_text_present_ok | Set Email Configuration |  |
@@ -138,13 +136,6 @@
 | value_is | timeserver | ntp.ubuntu.com |
 | click_and_wait | timeserver_sync |  |
 | is_text_present_ok | Synchronized time with ntp.ubuntu.com |  |
-
-| *Comment* | Test Case: Console Setup. apache logs |  |
-| click_and_wait | apache_error_log |  |
-| text_like | `resuming normal operations` |  |
-| open_ok | /console |  |
-| wait_for_element_visible_ok | link=Setup | 60000 |
-| click_and_wait | link=Setup |  |
 
 | *Comment* | Set Login Message |  |
 | wait_for_element_visible_ok | login_message | 30000 |
