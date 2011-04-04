@@ -591,3 +591,4 @@ lib/Socialtext/Gadgets/Feature.pm
 lib/Socialtext/Rest/Group/Peopletags.pm
 t/wikitests/groups/peopletags.wiki
 lib/Socialtext/Gadget/Renderer.pm
+t/wikitests/rest/data_gadget.wiki
