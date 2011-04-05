@@ -410,6 +410,7 @@ sub _get_user_info {
         email_address      => $user->email_address,
         is_guest           => $user->is_guest,
         is_business_admin  => $user->is_business_admin,
+        is_technical_admin  => $user->is_technical_admin,
         primary_account_id => $user->primary_account_id,
         accounts           => sub {
             return [
