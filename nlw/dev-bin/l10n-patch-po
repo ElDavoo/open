@@ -21,6 +21,14 @@ my $patchPo = shift;
 chdir "$RealBin/..";
 
 my $patch = slurp($patchPo);
+if ($patch =~ /^\[\[\[/m) {
+    # It's a .txt file - turn it into .po first.
+    system("dev-bin/l10n-txt-to-po" => $patchPo);
+    $patchPo =~ s/\.txt\b//;
+    $patchPo =~ s/\.po\b//;
+    $patch = slurp("$patchPo.po");
+    unlink "$patchPo.po";
+}
 
 for my $po (glob("share/l10n/$lang/*.po")) {
     (my $en = $po) =~ s!/$lang/!/en/!;
@@ -36,7 +44,7 @@ for my $po (glob("share/l10n/$lang/*.po")) {
             $out .= "\n$1";
         }
         else {
-            warn "Cannot find: $id";
+            warn "*** Cannot find: $id\n";
         }
     }
 
@@ -50,7 +58,7 @@ for my $po (glob("share/l10n/$lang/*.po")) {
     system("msgcat -w 99999 -n -s $po.unsorted > $po");
     unlink "$po.unsorted";
     
-    warn "*** Patched $po\n";
+    say "*** Patched: $po\n";
 }
 
 system("dev-bin/l10n-make-po-js");

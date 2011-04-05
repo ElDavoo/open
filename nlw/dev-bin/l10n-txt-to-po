@@ -47,5 +47,6 @@ msgstr ""
 
     close $in;
     close $out;
-    warn "*** $out_file.po\n";
+    select STDOUT;
+    say "*** Converted: $out_file.po";
 }
