@@ -636,6 +636,7 @@ sub to_hash {
 
     # This field should never default to ''
     delete $hash->{private_external_id} unless $hash->{private_external_id};
+    delete $hash->{password} if ($args{no_password});
 
     return $hash;
 }
