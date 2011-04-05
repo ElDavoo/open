@@ -28,7 +28,7 @@ for my $po (@ARGV) {
         $str =~ s/msgid "(.*)"/[[[$1]]]/;
         $id =~ s/msgstr ""\n//;
         $id =~ s/msgstr "(.*)"/$1\n/;
-        $id =~ s/^"(.*?)(\\n)?"\n/$1 . ($2 ? '[[[\\n]]]' : '')/meg;
+        $id =~ s!^"(.*?)(\\n)?"\n!$1 . ($2 ? '</>' : '')!meg;
         $id =~ s/\\([^n])/$1/g;
         outs $str;
         outs $id;

@@ -39,6 +39,7 @@ msgstr ""
         s/\n+$//;
         s/"/\\"/g;
         s/^/msgid "/;
+        s!</>!\\n!;
         s/\]\]\]\s*/"\nmsgstr "/;
         s/\s*\[\[\[\s*/"\n\n/;
         print;
