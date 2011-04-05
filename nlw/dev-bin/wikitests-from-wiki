@@ -21,4 +21,8 @@ if [ "$1" == "testset" ] || [ "$1" == "" ]; then
     stu-local-copy -s $SERVER -w wikitests  --username devnull1@socialtext.com -p d3vnu11l --to $DIR --tag testset
 fi
 
+if [ "$1" == "method" ] || [ "$1" == "" ]; then
+    stu-local-copy -s $SERVER -w wikitests  --username devnull1@socialtext.com -p d3vnu11l --to $DIR --tag method
+fi
+
 echo "$DIR has been updated."
