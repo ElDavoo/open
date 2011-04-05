@@ -1,7 +1,11 @@
 package Socialtext::l10n::DevUtils;
 use 5.12.0;
 use parent 'Exporter';
-our @EXPORT = qw( trim gettext_to_maketext str_to_regex is_key outs );
+our @EXPORT = qw( trim gettext_to_maketext str_to_regex is_key outs $po_revision_date );
+
+use DateTime;
+my $now = DateTime->now;
+our $po_revision_date = $now->ymd . ' ' . $now->hms . '+0000';
 
 sub trim {
     my $str = shift;

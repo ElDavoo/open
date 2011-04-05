@@ -6,9 +6,6 @@ use Getopt::Long;
 use FindBin '$RealBin';
 use lib "$RealBin/../lib";
 use Socialtext::l10n::DevUtils;
-use DateTime;
-my $now = DateTime->now;
-my $date = $now->ymd . ' ' . $now->hms . '+0000';
 
 my ($in, $out);
 for my $txt (@ARGV) {
@@ -26,7 +23,7 @@ for my $txt (@ARGV) {
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\\n"
-"PO-Revision-Date: $date\\n"
+"PO-Revision-Date: $po_revision_date\\n"
 "Language-Team: Socialtext i18n team\\n"
 "Last-Translator: Socialtext i18n team\\n"
 "MIME-Version: 1.0\\n"
