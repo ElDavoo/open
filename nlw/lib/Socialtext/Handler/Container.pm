@@ -148,17 +148,21 @@ sub GET_layout {
 
 sub old_as_hash_format {
     my $gadget = shift;
-    
-   return {
-       id => $gadget->gadget_instance_id + 0,
-       title => $gadget->title,
-       src => $gadget->src,
-       col => $gadget->col,
-       row => $gadget->row,
-       fixed => $gadget->fixed || 0,
-       preferences => $gadget->preference_hash,
-   };
 
+    my $renderer = Socialtext::Gadget::Renderer->new(
+        gadget => $gadget->spec,
+        overrides => $gadget->hangman_dict,
+    );
+    
+    return {
+        id => $gadget->gadget_instance_id + 0,
+        title => $renderer->render($gadget->title),
+        src => $gadget->src,
+        col => $gadget->col,
+        row => $gadget->row,
+        fixed => $gadget->fixed || 0,
+        preferences => $gadget->preference_hash,
+    };
 }
 
 1;
