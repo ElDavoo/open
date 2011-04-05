@@ -1,0 +1,57 @@
+#!/usr/bin/env perl
+# @COPYRIGHT@
+use 5.12.0;
+use autodie;
+use warnings;
+use open qw(:std :utf8);
+use Getopt::Long;
+use FindBin '$RealBin';
+use lib "$RealBin/../lib";
+use Socialtext::l10n::DevUtils;
+use File::Slurp qw( read_file write_file );
+
+my $lang = shift or die "Usage: $0 lang\n";
+
+if (-d "share/l10n/$lang" and glob("share/l10n/$lang/*")) {
+    die "share/l10n/$lang is non-empty, aborting";
+}
+
+if ($lang ~~ [qw( zh_TW zz zq xx xq )]) {
+    die "Cannot generate templates for derived language $lang, aborting";
+}
+
+mkdir "share/l10n/$lang" unless -d "share/l10n/$lang";
+
+for my $in (glob("share/l10n/en/*.po")) {
+    (my $out = $in) =~ s!/en/!/$lang/!;
+    my $po = read_file($in);
+    $po =~ s/msgid ".+"\nmsgstr \K(?:.+\n)+/""\n/g;
+    write_file($out => $po);
+    say "*** Created: $out";
+}
+
+__END__
+my $cut = 250;
+my $sum = 0;
+my @bunch;
+for (<DATA>) {
+    /(\d+)\W*(\w+)/ or next;
+    $sum += $1;
+    push @bunch, $2;
+    if ($sum >= $cut) {
+        say "$sum - @bunch";
+        $sum = 0;
+        @bunch = ();
+    }
+}
+if ($sum) {
+    say "$sum - @bunch";
+}
+
+# grep '\[\[\[' en.po.txt  | cut -d . -f 1 |  uniq -c  | sort -n
+system("msgcat --width 99999 -s @{[reverse sort glob(qq[share/l10n/en/*.po])]} > tmp.po");
+system("msggrep -w 99999 --sort-output --msgid -v -e '^<!\\\\|^[a-z][a-z0-9][a-z0-9]*\\\\.' tmp.po > foo.po");
+system("./dev-bin/l10n-po-to-txt foo.po");
+
+__END__
+
