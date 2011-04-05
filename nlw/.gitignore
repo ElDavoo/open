@@ -9,7 +9,7 @@ build/tmp/
 share/skin/.gitignore
 share/html/502.html
 t/test-data/ja/mecabif
-t/share/plugin/fakeplugin/etc/widgets.yaml
+t/share/plugin
 blib
 share/l10n/mecab/char.bin
 share/l10n/mecab/dicrc
