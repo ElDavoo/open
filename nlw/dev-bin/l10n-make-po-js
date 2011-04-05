@@ -19,6 +19,12 @@ if (!@ARGV) {
     } glob("share/l10n/*/lib.po")
 }
 
+no warnings 'redefine';
+my @outs;
+sub outs {
+    push @outs, @_;
+}
+
 sub en {
     # Sort "en" before everything else
     ($_[0] eq 'en') ? '' : $_[0];
@@ -74,6 +80,8 @@ for my $lang (sort { en($a) cmp en($b) } @ARGV) {
 
 system("dev-bin/jsmake 2>/dev/null");
 
+say $_ for sort @outs;
+
 sub zz {
     my @tokens = split(/(&\w+;|<[^>]*|quant)/, shift);
     my $result = '';
@@ -112,7 +120,7 @@ sub gen_js {
     print $js join(",\n", sort split /\n/, $json);
     print $js "\n}};\n";
     close $js;
-    warn "*** Generated successfully: $js_file\n";
+    outs "*** Generated successfully: $js_file";
 }
 
 sub gen_po {
@@ -142,10 +150,10 @@ sub gen_po {
                 $out =~ s/\\([\\"])/$1/g;
                 say $diff_po $out;
             }
-            warn "*** Diff for myGengo generated successfully: $po_file.diff.txt\n"
+            outs "*** myGengo diff generated successfully: $po_file.diff.txt"
         }
     }
-    warn "*** Generated successfully: $po_file\n";
+    outs "*** Generated successfully: $po_file";
 }
 
 sub gen_derived_po {
@@ -175,7 +183,7 @@ sub gen_derived_po {
             print $out $_;
         }
     }
-    warn "*** Generated successfully: $out_file\n";
+    outs "*** Generated successfully: $out_file";
 }
 
 use constant CN2TW => {qw(
