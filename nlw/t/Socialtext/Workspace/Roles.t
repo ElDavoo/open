@@ -342,7 +342,8 @@ workspaces_by_user_id: {
             'list of Workspaces that User has access to';
         eq_or_diff(
             [ map { $_->workspace_id } $cursor->all ],
-            [ sort map { $_->workspace_id } ($ws_one, $ws_two, $ws_three) ],
+            [ sort { $a <=> $b } 
+                map { $_->workspace_id } ($ws_one, $ws_two, $ws_three) ],
             '... WS returned ordered by id'
         );
     }
