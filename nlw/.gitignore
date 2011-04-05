@@ -595,3 +595,4 @@ t/wikitests/rest/data_gadget.wiki
 t/wikitests/people/relationships.wiki
 lib/Socialtext/Page/BMTablePopulator.pm
 lib/Socialtext/People/Rest/Relationships.pm
+lib/Socialtext/Pluggable/Plugin/TestPlugin.pm
