@@ -10,7 +10,6 @@ use Class::Field qw(field const);
 use Socialtext::Encode;
 use Socialtext::LDAP;
 use Socialtext::User::LDAP;
-use Socialtext::UserMetadata;
 use Socialtext::Log qw(st_log);
 use Socialtext::SQL::Builder qw(sql_abstract);
 use Net::LDAP::Util qw(escape_filter_value);
@@ -135,6 +134,7 @@ sub GetUser {
                 user_id   => $homey->{user_id},
                 cached_at => $self->Now(),
             } );
+            require Socialtext::User::Deleted;
             return Socialtext::User::Deleted->new($homey);
         }
         else {
@@ -314,6 +314,10 @@ sub ResolveId {
 sub _vivify {
     my ($self, $proto_user) = @_;
 
+    require Socialtext::User;
+    require Socialtext::UserMetadata;
+    require Socialtext::JobCreator;
+
     # set some defaults into the proto user
     $proto_user->{driver_key} ||= $self->driver_key;
     $proto_user->{cached_at} = 'now';           # auto-set to 'now'
@@ -321,7 +325,7 @@ sub _vivify {
 
     # separate out "core" fields from "profile" fields
     my ($user_attrs, $extra_attrs) = 
-        Socialtext::User::Base->UserFields($proto_user);
+        Socialtext::User::LDAP->UserFields($proto_user);
 
     # XXX: some fields are explicitly set to '' elsewhere
     # (ST:U:Def:Factory:create, ST:U:Factory:NewUserRecord), and we're going

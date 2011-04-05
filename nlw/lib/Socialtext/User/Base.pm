@@ -2,13 +2,16 @@ package Socialtext::User::Base;
 # @COPYRIGHT@
 use Moose;
 use Readonly;
-use Socialtext::Authz;
+use List::MoreUtils qw(part);
+
+# Be *very* conservative on what you use here.  If unsure, `require` it where
+# it should be used.
 use Socialtext::SQL qw(sql_parse_timestamptz);
 use Socialtext::Validate qw(validate SCALAR_TYPE);
 use Socialtext::l10n qw(system_locale loc);
 use Socialtext::MooseX::Types::Pg;
 use Socialtext::MooseX::Types::UniStr;
-use List::MoreUtils qw(part);
+
 use namespace::clean -except => 'meta';
 
 has 'user_id' => (is => 'rw', isa => 'Int', writer => '_set_user_id');
@@ -37,6 +40,7 @@ has profile => (
 sub _build_profile {
     my $self = shift;
     return unless $self->can_use_plugin('people');
+    require Socialtext::People::Profile;
     return Socialtext::People::Profile->GetProfile($self);
 }
 
@@ -81,7 +85,7 @@ sub proper_name {
     my $first  = $self->first_name;
     my $middle = $self->middle_name;
     my $last   = $self->last_name;
-    return Socialtext::User::Base->FormatFullName($first, $middle, $last);
+    return $self->FormatFullName($first, $middle, $last);
 }
 
 sub preferred_name {
@@ -107,7 +111,7 @@ sub guess_real_name {
         $fn =~ s/\@.+$//;
     }
 
-    $name = Socialtext::User::Base->FormatFullName(
+    $name = $self->FormatFullName(
         $fn, $self->middle_name, $self->last_name,
     );
     $name =~ s/^\s+//;
@@ -236,7 +240,7 @@ sub to_hash {
 
 sub can_use_plugin {
     my ($self, $plugin_name) = @_;
-
+    require Socialtext::Authz;
     my $authz = Socialtext::Authz->new();
     return $authz->plugin_enabled_for_user(
         plugin_name => $plugin_name,

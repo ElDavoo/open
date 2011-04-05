@@ -7,13 +7,10 @@ use Class::Field qw(field);
 use Socialtext::Date;
 use Socialtext::SQL qw(:exec :time);
 use Socialtext::SQL::Builder qw(:all);
-use Socialtext::User::Cache;
 use Socialtext::Exceptions qw( data_validation_error );
-use Socialtext::UserMetadata;
 use Socialtext::String;
 use Socialtext::Data;
 use Socialtext::User::Base;
-use Socialtext::User::Default;
 use Socialtext::User::Default::Users qw(:system-user :guest-user);
 use Socialtext::l10n qw(loc);
 use Email::Valid;
@@ -243,6 +240,7 @@ sub UpdateUserRecord {
     sql_update('users' => \%update_args, 'user_id');
 
     # flush cache; updated User in DB
+    require Socialtext::User::Cache;
     Socialtext::User::Cache->Remove( user_id => $proto_user->{user_id} );
 }
 
@@ -255,6 +253,7 @@ sub ExpireUserRecord {
             SET cached_at = '-infinity'
             WHERE user_id = ?
         }, $p{user_id});
+    require Socialtext::User::Cache;
     Socialtext::User::Cache->Remove( user_id => $p{user_id} );
 }
 
@@ -328,6 +327,7 @@ sub ExpireUserRecord {
 
         # Can't change the username/email for a system-created User
         unless ($is_create) {
+            require Socialtext::UserMetadata;
             my $metadata = Socialtext::UserMetadata->new(
                 user_id => $user->{user_id},
             );
@@ -453,6 +453,7 @@ sub ExpireUserRecord {
         my ($self, $p) = @_;
         my $password = $p->{password};
         if (defined $password) {
+            require Socialtext::User::Default;
             return Socialtext::User::Default->ValidatePassword(
                 password => $password,
             );
@@ -482,6 +483,7 @@ sub ExpireUserRecord {
             # we're encrypting to obscure passwords from ST admins, not for
             # _real_ protection (in which case we wouldn't be using 'crypt()'
             # in the first place).
+            require Socialtext::User::Default;
             $p->{password} =
                 Socialtext::User::Default->_crypt( $p->{password}, 'salty' );
         }

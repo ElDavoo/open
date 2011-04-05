@@ -2,7 +2,6 @@ package Socialtext::User::Default;
 # @COPYRIGHT@
 use Moose;
 our $VERSION = '0.03';
-use Socialtext::User::Base;
 use Socialtext::String;
 use DateTime::Infinite;
 use Digest::SHA;

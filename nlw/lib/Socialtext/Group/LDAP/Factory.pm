@@ -4,7 +4,6 @@ package Socialtext::Group::LDAP::Factory;
 use Moose;
 use Socialtext::LDAP;
 use Socialtext::LDAP::Config;
-use Socialtext::User::LDAP::Factory;
 use Socialtext::Log qw(st_log);
 use DateTime::Duration;
 use Socialtext::SQL qw(sql_txn);
@@ -12,9 +11,7 @@ use Net::LDAP::Util qw(escape_filter_value);
 use Socialtext::IntSet;
 use namespace::clean -except => 'meta';
 
-with qw(
-    Socialtext::Group::Factory
-);
+with qw(Socialtext::Group::Factory);
 
 sub BUILD {
     my $self = shift;
@@ -235,6 +232,8 @@ sub _update_group_members {
     my $self    = shift;
     my $homey   = shift;
     my $members = shift;
+
+    require Socialtext::Group;
     my $group   = Socialtext::Group->new(homunculus => $homey);
 
     # Watch out for recursion during Group updates.
