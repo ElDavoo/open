@@ -1154,7 +1154,8 @@ $(function() {
     if (typeof localStorage != 'undefined' && !(/^#draft-\d+$/.test(location.hash || ''))) {
       $(function(){
         try {
-          var all_drafts = $.secureEvalJSON(localStorage.getItem('st-drafts-' + Socialtext.real_user_id));
+          var draft_json = localStorage.getItem('st-drafts-' + Socialtext.real_user_id);
+          var all_drafts = draft_json ? $.secureEvalJSON(draft_json) : {};
           for (var key in all_drafts) {
             var draft = all_drafts[key];
             if (((new Date()).getTime() - draft.last_updated) > 30 * 1000)  {
