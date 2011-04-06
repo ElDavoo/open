@@ -116,13 +116,12 @@ sub LoadUsers {
         # Once we're done grabbing the letters we're expecting, we'll need to
         # do *one last* query to get "anyone else we may have missed"
         # (basically "anything that wasn't matched by an earlier query").
-        my @ltrs = ('a'..'z', '0'..'9');
         eval {
             my $ldap = Socialtext::LDAP->new($cfg);
             my @clauses;
 
             # First, get everyone by the first letter of their e-mail address.
-            foreach my $ltr (@ltrs) {
+            foreach my $ltr ('a'..'z', '0'..'9') {
                 my $filter = "($mail_attr=$ltr*)";
                 push @clauses, $filter;
 
