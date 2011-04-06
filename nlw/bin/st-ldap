@@ -23,6 +23,7 @@ GetOptions(
     'driver:s',
     'email:s',
     'username:s',
+    'id:i',
 ) || pod2usage(1);
 pod2usage(1) if ($opts{help});
 pod2usage( -exitstatus=>0, -verbose=>2 ) if ($opts{man});
@@ -70,7 +71,7 @@ unless ($callback) {
 # ... build the list of arguments for this command
 my %accepted_args = (
     'refresh-users'  => [qw( force email username )],
-    'refresh-groups' => [qw( force )],
+    'refresh-groups' => [qw( force id )],
     'refresh'        => [qw( force )],
     'load-users'     => [qw( dryrun email username )],
     'list-groups'    => [qw( driver )],
@@ -113,7 +114,8 @@ st-ldap - Socialtext LDAP integration utility
         --username <name>   Refresh one User, by username
 
     refresh-groups  Refreshes group data from LDAP
-        --force         Force refresh for all LDAP groups
+        --force             Force refresh for all LDAP groups
+        --id <group_id>     Refresh one Group, by Id
 
     refresh         Refreshes user and group data from LDAP
         --force         Force refresh for all LDAP users/groups
@@ -242,6 +244,10 @@ refresh of B<all> LDAP users.
 Refreshes the local DB cache with information on LDAP groups.
 
 =over
+
+=item B<--id E<lt>group_idE<gt>>
+
+Refreshes a single Group, by Id.
 
 =item B<--force>
 

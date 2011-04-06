@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use mocked 'Socialtext::Log', qw(:tests);
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 34;
+use Test::Socialtext tests => 38;
 use Test::Socialtext::Group;
 use File::Slurp qw(write_file);
 use Benchmark qw(timeit timestr);
@@ -188,6 +188,51 @@ test_force_refresh: {
 
     # cleanup; don't want to pollute other tests
     Test::Socialtext::Group->delete_recklessly($ldap_group );
+}
+
+###############################################################################
+# TEST: refresh a single LDAP Group, by group_id
+test_refresh_group_by_id: {
+    my $ldap = set_up_openldap();
+    my $other_dn = 'cn=Hawkwind,dc=example,dc=com';
+
+    # add some LDAP Groups
+    my $ldap_group = Socialtext::Group->GetGroup(driver_unique_id => $GROUP_DN);
+    my $ldap_homey = $ldap_group->homunculus;
+
+    my $other_group = Socialtext::Group->GetGroup(driver_unique_id => $other_dn);
+    my $other_homey = $other_group->homunculus;
+
+    # refresh LDAP Groups
+    my $time_before_refresh = Socialtext::Date->now(hires=>1);
+    {
+        Socialtext::LDAP::Operations->RefreshGroups(
+            force => 1,
+            id    => $ldap_group->group_id,
+        );
+        logged_like 'info', qr/found 1 LDAP groups/,
+            'one LDAP group refreshed, by Id';
+    }
+    my $time_after_refresh = Socialtext::Date->now(hires=>1);
+
+    # VERIFY: Group was refreshed by RefreshGroups()
+    my $refreshed_group = Socialtext::Group->GetGroup(driver_unique_id => $GROUP_DN);
+    my $refreshed_homey = $refreshed_group->homunculus;
+
+    my $refreshed_at = $refreshed_homey->cached_at->hires_epoch();
+    ok $refreshed_at > $time_before_refresh->hires_epoch(), 'group was refreshed';
+    ok $refreshed_at < $time_after_refresh->hires_epoch(),  '... by RefreshGroups()';
+
+    # VERIFY: Other Group was *not* refreshed
+    $refreshed_group = Socialtext::Group->GetGroup(driver_unique_id => $other_dn);
+    $refreshed_homey = $refreshed_group->homunculus;
+
+    $refreshed_at = $refreshed_homey->cached_at->hires_epoch();
+    ok $refreshed_at < $time_before_refresh->hires_epoch(), 'other group was NOT refreshed';
+
+    # cleanup; don't want to pollute other tests
+    Test::Socialtext::Group->delete_recklessly($ldap_group);
+    Test::Socialtext::Group->delete_recklessly($other_group);
 }
 
 ###############################################################################

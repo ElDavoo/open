@@ -246,7 +246,8 @@ sub _paged_ldap_query {
 # Refreshes existing LDAP Groups.
 sub RefreshGroups {
     my ($class, %opts) = @_;
-    my $force = $opts{force};
+    my $force   = $opts{force};
+    my $want_id = $opts{id};
 
     # Disable cache freshness checks if we're forcing the refresh of all
     # Groups.
@@ -262,6 +263,9 @@ sub RefreshGroups {
         [qw( group_id driver_key driver_unique_id driver_group_name )],
         {
             driver_key => { '~*' => 'LDAP' },
+            (
+                $want_id ? (group_id => $want_id) : (),
+            ),
         },
         [qw( driver_key driver_group_name )],
     );
