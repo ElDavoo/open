@@ -3,9 +3,11 @@
 
 
 | *Comment* | Test Case: Show Direct Reports - Create Account, Users |  |
+| set | ws | directreportws%%start_time%% |
 | set | acct | directreportacct%%start_time%% |
 | st-admin | create-account --name %%acct%% | was created |
 | st-admin | enable-plugin --plugin dashboard --account %%acct%% |  |
+
 | set | user1 | subordinate1%%start_time%%@matt.socialtext.net |
 | set | user2 | subordinate2%%start_time%%@matt.socialtext.net |
 | set | user3 | subordinate3%%start_time%%@matt.socialtext.net |
@@ -14,26 +16,29 @@
 | set | short_manager | managerwithdirects%%start_time%% |
 | set | manager | %%short_manager%%@matt.socialtext.net |
 
-| st-admin | create-user --e %%user1%% --p %%password%% --account %%acct%% | was created |
-| st-admin | create-user --e %%user2%% --p %%password%% --account %%acct%% | was created |
-| st-admin | create-user --e %%user3%% --p %%password%% --account %%acct%% | was created |
-| st-admin | create-user --e %%user4%% --p %%password%% --account %%acct%% | was created |
-| st-admin | create-user --e %%user5%% --p %%password%% --account %%acct%% | was created |
-| st-admin | create-user --e %%manager%% --p %%password%% --account %%acct%% | was created |
+
+| *Comment* | Test Case: Show Direct Reports Create Users. Add --account %%acct%% when {bz: 5166} is fixed |  |
+| st-admin | create-user --e %%user1%% --p %%password%% | was created |
+| st-admin | create-user --e %%user2%% --p %%password%% | was created |
+| st-admin | create-user --e %%user3%% --p %%password%% | was created |
+| st-admin | create-user --e %%user4%% --p %%password%% | was created |
+| st-admin | create-user --e %%user5%% --p %%password%% | was created |
+| st-admin | create-user --e %%manager%% --p %%password%% | was created |
+| st-admin | add-member --e %%manager%% --w %%workspace%% | now has the role |
 | st-process-jobs |  |  |
-| pause | 25000 |  |
+| pause | 10000 |  |
 
 | *Comment* | Test Case: Show Direct Reports - Edit Manager field for the users |  |
 | st-logoutin | %%user1%% | %%password%% |
 | call | [st-add-manager] | short_manager=%%short_manager%% |
 | st-logoutin | %%user2%% | %%password%% |
-| call | [st-add-manager] | %%short_manager%% |
+| call | [st-add-manager] | short_manager=%%short_manager%% |
 | st-logoutin | %%user3%% | %%password%% |
-| call | [st-add-manager] | %%short_manager%% |
+| call | [st-add-manager] | short_manager=%%short_manager%% |
 | st-logoutin | %%user4%% | %%password%% |
-| call | [st-add-manager] | %%short_manager%% |
+| call | [st-add-manager] | short_manager=%%short_manager%% |
 | st-logoutin | %%user5%% | %%password%% |
-| call | [st-add-manager] | %%short_manager%% |
+| call | [st-add-manager] | short_manager=%%short_manager%% |
 
 | *Comment* | Test Case: Show Direct Reports - Login as Manager, see direct reports |  |
 | st-logoutin | %%manager%% | %%password%% |
