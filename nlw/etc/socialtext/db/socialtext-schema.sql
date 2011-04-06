@@ -1112,6 +1112,14 @@ CREATE TABLE page_link (
     to_page_md5 text NOT NULL
 );
 
+CREATE TABLE page_plugin_pref (
+    workspace_id bigint NOT NULL,
+    page_name text NOT NULL,
+    plugin text NOT NULL,
+    key text NOT NULL,
+    value text NOT NULL
+);
+
 CREATE TABLE page_revision (
     workspace_id bigint NOT NULL,
     page_id text NOT NULL,
@@ -2185,6 +2193,9 @@ CREATE UNIQUE INDEX page_pk_nodel
 	    ON page (workspace_id, page_id)
 	    WHERE (NOT deleted);
 
+CREATE INDEX page_plugin_pref_key_idx
+	    ON page_plugin_pref (workspace_id, page_name, plugin, key);
+
 CREATE INDEX page_tag__page_ix
 	    ON page_tag (workspace_id, page_id);
 
@@ -2769,4 +2780,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '137');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '138');
