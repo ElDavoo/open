@@ -22,6 +22,7 @@ GetOptions(
     'dryrun',
     'driver:s',
     'email:s',
+    'username:s',
 ) || pod2usage(1);
 pod2usage(1) if ($opts{help});
 pod2usage( -exitstatus=>0, -verbose=>2 ) if ($opts{man});
@@ -71,7 +72,7 @@ my %accepted_args = (
     'refresh-users'  => [qw( force email )],
     'refresh-groups' => [qw( force )],
     'refresh'        => [qw( force )],
-    'load-users'     => [qw( dryrun email )],
+    'load-users'     => [qw( dryrun email username )],
     'list-groups'    => [qw( driver )],
 );
 my %args = map { $_ => $opts{$_} } @{$accepted_args{$command}};
@@ -99,8 +100,9 @@ st-ldap - Socialtext LDAP integration utility
 
   Commands:
     load-users      Loads Users from LDAP
-        --dryrun        Dry-run; show Users, but don't add them
-        --email <addr>  Load one User, by e-mail address
+        --dryrun            Dry-run; show Users, but don't add them
+        --email <addr>      Load one User, by e-mail address
+        --username <name>   Load one User, by username
 
     list-groups     Lists Groups known in the specified LDAP directory
         --driver <id>   LDAP Group Factory id (from "group_factories")
@@ -144,6 +146,10 @@ Loads users from LDAP into Socialtext.
 =item B<--email E<lt>addrE<gt>>
 
 Loads a I<single> User, by e-mail address.
+
+=item B<--username E<lt>nameE<gt>>
+
+Loads a I<single> User, by username.
 
 =item B<--dryrun>
 

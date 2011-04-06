@@ -82,8 +82,9 @@ sub RefreshUsers {
 # Loads Users from LDAP into Socialtext.
 sub LoadUsers {
     my ($class, %opts) = @_;
-    my $dryrun     = $opts{dryrun};
-    my $want_email = $opts{email};
+    my $dryrun        = $opts{dryrun};
+    my $want_email    = $opts{email};
+    my $want_username = $opts{username};
 
     # SANITY CHECK: make sure that *ALL* of the LDAP configurations have a
     # "filter" specified.
@@ -102,8 +103,9 @@ sub LoadUsers {
     my @emails;
     st_log->info( "getting list of LDAP users to load" );
     foreach my $cfg (@configs) {
-        # get the LDAP attribute that contains the e-mail address
-        my $mail_attr = $cfg->attr_map->{email_address};
+        # figure out which LDAP attributes we need to query
+        my $mail_attr     = $cfg->attr_map->{email_address};
+        my $username_attr = $cfg->attr_map->{username};
 
         # the basic/unchanging parts of the query that we're going to ask
         my %query = (
@@ -140,6 +142,9 @@ sub LoadUsers {
             # filters to search for *just* that one User
             if ($want_email) {
                 @filters = ("($mail_attr=$want_email)");
+            }
+            if ($want_username) {
+                @filters = ("($username_attr=$want_username)");
             }
 
             # Execute all the queries, and load all of the Users
