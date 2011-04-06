@@ -186,7 +186,8 @@ refresh_single_user_via_email: {
             force => 1,
             email => $ldap_user->email_address,
         );
-        logged_like 'info', qr/found 1 LDAP users/, 'one LDAP user refreshed';
+        logged_like 'info', qr/found 1 LDAP users/,
+            'one LDAP user refreshed, by e-mail address';
     }
     my $time_after_refresh = Socialtext::Date->now(hires=>1);
 
