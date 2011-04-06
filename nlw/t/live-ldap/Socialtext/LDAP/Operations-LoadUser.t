@@ -213,7 +213,7 @@ test_load_one_user_via_email: {
     my $rc = Socialtext::LDAP::Operations->LoadUsers(
         email => 'john.doe@example.com',
     );
-    is $rc, 1, 'loaded single LDAP User';
+    is $rc, 1, 'loaded single LDAP User, by e-mail address';
     logged_like 'info', qr/found 1 LDAP users to load/,
         '... logged number of LDAP Users found';
 
