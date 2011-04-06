@@ -427,6 +427,14 @@ Supports the following options:
 Forces a refresh of the LDAP User data regardless of whether our local cached
 copy is stale or not.  By default, only stale Users are refreshed.
 
+=item email => $email
+
+Refreshes a single User, selecting by e-mail address.
+
+=item username => $username
+
+Refreshes a single User, selecting by username.
+
 =back
 
 =item B<Socialtext::LDAP::Operations-e<gt>LoadUsers(%opts)>
@@ -467,6 +475,14 @@ Supports the following options:
 Dry-run; Users are searched for in the configured LDAP directories, but are
 B<not> actually added to Socialtext.
 
+=item email => $email
+
+Loads a single LDAP User, selecting by e-mail address.
+
+=item username => $username
+
+Loads a single LDAP User, selecting by username.
+
 =back
 
 =item B<Socialtext::LDAP::Operations-E<gt>RefreshGroups(%opts)>
@@ -481,6 +497,10 @@ Supports the following options:
 
 Forces a refresh of the LDAP Group data regardless of whether our local cached
 copy is stale or not.  By default, only stale Groups are refreshed.
+
+=item id => $group_id
+
+Refreshes a single LDAP Group, selecting by internal Group Id.
 
 =back
 
