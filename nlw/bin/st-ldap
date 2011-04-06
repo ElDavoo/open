@@ -68,7 +68,7 @@ unless ($callback) {
 
 # ... build the list of arguments for this command
 my %accepted_args = (
-    'refresh-users'  => [qw( force )],
+    'refresh-users'  => [qw( force email )],
     'refresh-groups' => [qw( force )],
     'refresh'        => [qw( force )],
     'load-users'     => [qw( dryrun email )],
@@ -107,6 +107,7 @@ st-ldap - Socialtext LDAP integration utility
 
     refresh-users   Refreshes user data from LDAP
         --force         Force refresh for all LDAP users
+        --email <addr>  Refresh one User, by e-mail address
 
     refresh-groups  Refreshes group data from LDAP
         --force         Force refresh for all LDAP groups
@@ -190,6 +191,10 @@ Group Factories.
 Refreshes the local DB cache with information on LDAP users.
 
 =over
+
+=item B<--email E<lt>addrE<gt>>
+
+Refreshes a I<single> User, by e-mail address.
 
 =item B<--force>
 

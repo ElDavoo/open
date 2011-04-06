@@ -21,7 +21,8 @@ our $LDAP_PAGE_SIZE = 500;
 # Refreshes existing LDAP Users.
 sub RefreshUsers {
     my ($class, %opts) = @_;
-    my $force = $opts{force};
+    my $force      = $opts{force};
+    my $want_email = $opts{email};
 
     # Disable cache freshness checks if we're forcing the refresh of all
     # users.
@@ -38,6 +39,9 @@ sub RefreshUsers {
         [qw( driver_key driver_unique_id driver_username )],
         {
             driver_key => { '~*' => 'LDAP' },
+            (
+                $want_email ? (email_address => $want_email) : ()
+            ),
         },
         [qw( driver_key driver_username )],
     );
