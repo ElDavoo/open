@@ -21,8 +21,9 @@ our $LDAP_PAGE_SIZE = 500;
 # Refreshes existing LDAP Users.
 sub RefreshUsers {
     my ($class, %opts) = @_;
-    my $force      = $opts{force};
-    my $want_email = $opts{email};
+    my $force         = $opts{force};
+    my $want_email    = $opts{email};
+    my $want_username = $opts{username};
 
     # Disable cache freshness checks if we're forcing the refresh of all
     # users.
@@ -42,9 +43,13 @@ sub RefreshUsers {
             (
                 $want_email ? (email_address => $want_email) : ()
             ),
+            (
+                $want_username ? (driver_username => lc($want_username)) : ()
+            ),
         },
         [qw( driver_key driver_username )],
     );
+
     my $sth = sql_execute($sql, @bind);
     st_log->info( "... found " . $sth->rows . " LDAP users" );
 

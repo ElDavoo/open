@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use mocked 'Socialtext::Log', qw(:tests);
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 65;
+use Test::Socialtext tests => 69;
 use Test::Socialtext::User;
 use File::Slurp qw(write_file);
 use Benchmark qw(timeit timestr);
@@ -188,6 +188,47 @@ refresh_single_user_via_email: {
         );
         logged_like 'info', qr/found 1 LDAP users/,
             'one LDAP user refreshed, by e-mail address';
+    }
+    my $time_after_refresh = Socialtext::Date->now(hires=>1);
+
+    # VERIFY: User was refreshed by RefreshUsers()
+    my $refreshed_user  = Socialtext::User->new(email_address => 'john.doe@example.com');
+    my $refreshed_homey = $refreshed_user->homunculus;
+
+    my $refreshed_at = $refreshed_homey->cached_at->hires_epoch();
+    ok $refreshed_at > $time_before_refresh->hires_epoch(), 'user was refreshed';
+    ok $refreshed_at < $time_after_refresh->hires_epoch(), '... by RefreshUsers()';
+
+    # VERIFY: Other User was *not* refreshed
+    $refreshed_user  = Socialtext::User->new(email_address => 'jane.smith@example.com');
+    $refreshed_homey = $refreshed_user->homunculus;
+
+    $refreshed_at = $refreshed_homey->cached_at->hires_epoch();
+    ok $refreshed_at < $time_before_refresh->hires_epoch(), 'other user was NOT refreshed';
+}
+
+###############################################################################
+# TEST: refresh a *single* LDAP User, by username
+refresh_single_user_via_username: {
+    my $guard = Test::Socialtext::User->snapshot();
+    my $ldap  = set_up_openldap();
+
+    # add some LDAP Users to our DB cache
+    my $ldap_user  = Socialtext::User->new(email_address => 'john.doe@example.com');
+    my $ldap_homey = $ldap_user->homunculus;
+
+    my $other_user  = Socialtext::User->new(email_address => 'jane.smith@example.com');
+    my $other_homey = $other_user->homunculus;
+
+    # refresh *one* LDAP User, by Username
+    my $time_before_refresh = Socialtext::Date->now(hires=>1);
+    {
+        Socialtext::LDAP::Operations->RefreshUsers(
+            force    => 1,
+            username => 'John Doe',
+        );
+        logged_like 'info', qr/found 1 LDAP users/,
+            'one LDAP user refreshed, by username';
     }
     my $time_after_refresh = Socialtext::Date->now(hires=>1);
 
