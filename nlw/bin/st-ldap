@@ -12,21 +12,18 @@ use Socialtext::LDAP::Operations;
 
 ###############################################################################
 # Read in our command line options.
-my ($help, $man);
-my $verbose = 0;
-my $force   = 0;
-my $dryrun  = 0;
-my $driver;
+my %opts;
 GetOptions(
-    'help|?'    => \$help,
-    'man'       => \$man,
-    'verbose'   => \$verbose,
-    'force'     => \$force,
-    'dryrun'    => \$dryrun,
-    'driver:s'  => \$driver,
+    \%opts,
+    'help|?',
+    'man',
+    'verbose',
+    'force',
+    'dryrun',
+    'driver:s',
 ) || pod2usage(1);
-pod2usage(1) if ($help);
-pod2usage( -exitstatus=>0, -verbose=>2 ) if ($man);
+pod2usage(1) if ($opts{help});
+pod2usage( -exitstatus=>0, -verbose=>2 ) if ($opts{man});
 
 my $command = shift @ARGV;
 pod2usage(1) unless ($command);
@@ -36,7 +33,7 @@ pod2usage(1) unless ($command);
 my $logger = Socialtext::Log->new();
 $logger->log->add( Log::Dispatch::Screen->new(
     name        => 'screen',
-    min_level   => $verbose ? 'info' : 'notice',
+    min_level   => $opts{verbose} ? 'info' : 'notice',
     stderr      => 1,
     callbacks   => [\&_add_newline],
 ) );
@@ -46,28 +43,40 @@ binmode(STDERR, ':utf8');
 # Execute the requested command.
 my %commands = (
     'refresh-users' => sub {
-        Socialtext::LDAP::Operations->RefreshUsers(force => $force);
+        Socialtext::LDAP::Operations->RefreshUsers(@_);
     },
     'refresh-groups' => sub {
-        Socialtext::LDAP::Operations->RefreshGroups(force => $force);
+        Socialtext::LDAP::Operations->RefreshGroups(@_);
     },
     'refresh' => sub {
-        Socialtext::LDAP::Operations->RefreshUsers(force => $force);
-        Socialtext::LDAP::Operations->RefreshGroups(force => $force);
+        Socialtext::LDAP::Operations->RefreshUsers(@_);
+        Socialtext::LDAP::Operations->RefreshGroups(@_);
     },
     'load-users' => sub {
-        Socialtext::LDAP::Operations->LoadUsers(dryrun => $dryrun);
+        Socialtext::LDAP::Operations->LoadUsers(@_);
     },
     'list-groups' => sub {
-        Socialtext::LDAP::Operations->ListGroups(driver => $driver);
+        Socialtext::LDAP::Operations->ListGroups(@_);
     },
 );
-unless ($commands{$command}) {
+
+my $callback = $commands{$command};
+unless ($callback) {
     die "Unknown command, '$command'.\n";
 }
 
-$commands{$command}->();
+# ... build the list of arguments for this command
+my %accepted_args = (
+    'refresh-users'  => [qw( force )],
+    'refresh-groups' => [qw( force )],
+    'refresh'        => [qw( force )],
+    'load-users'     => [qw( dryrun )],
+    'list-groups'    => [qw( driver )],
+);
+my %args = map { $_ => $opts{$_} } @{$accepted_args{$command}};
 
+# ... execute the command
+$callback->(%args);
 exit;
 
 
