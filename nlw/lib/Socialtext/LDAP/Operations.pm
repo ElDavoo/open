@@ -437,7 +437,7 @@ Refreshes a single User, selecting by username.
 
 =back
 
-=item B<Socialtext::LDAP::Operations-e<gt>LoadUsers(%opts)>
+=item B<Socialtext::LDAP::Operations-E<gt>LoadUsers(%opts)>
 
 Loads User records from LDAP into Socialtext from all configured LDAP
 directories.
