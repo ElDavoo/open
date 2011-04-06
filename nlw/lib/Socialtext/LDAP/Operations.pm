@@ -118,28 +118,24 @@ sub LoadUsers {
         # (basically "anything that wasn't matched by an earlier query").
         eval {
             my $ldap = Socialtext::LDAP->new($cfg);
-            my @clauses;
 
-            # First, get everyone by the first letter of their e-mail address.
-            foreach my $ltr ('a'..'z', '0'..'9') {
-                my $filter = "($mail_attr=$ltr*)";
-                push @clauses, $filter;
+            # Build up the full list of clauses to "get everyone by the first
+            # letter of their e-mail address, and *then* get anyone that
+            # didn't match any of the above".
+            my @filters = map { "($mail_attr=$_*)" } ('a'..'z', '0'..'9');
+            {
+                local $" = '';
+                push @filters, "(!(|@filters))";
+            }
 
+            # Execute all the queries, and load all of the Users
+            foreach my $f (@filters) {
                 $class->_paged_ldap_query(
                     %query,
                     ldap   => $ldap,
-                    filter => $filter,
+                    filter => $f,
                 );
             }
-
-            # Then, get anyone that didn't match any of the above.
-            local $" = '';
-            my $filter = "(!(|@clauses))";
-            $class->_paged_ldap_query(
-                %query,
-                ldap   => $ldap,
-                filter => $filter,
-            );
         };
         if ($@) {
             my $err = $@;
