@@ -18,13 +18,12 @@
 
 
 | *Comment* | Test Case: Show Direct Reports Create Users. Add --account %%acct%% when {bz: 5166} is fixed |  |
-| st-admin | create-user --e %%user1%% --p %%password%% | was created |
-| st-admin | create-user --e %%user2%% --p %%password%% | was created |
-| st-admin | create-user --e %%user3%% --p %%password%% | was created |
-| st-admin | create-user --e %%user4%% --p %%password%% | was created |
-| st-admin | create-user --e %%user5%% --p %%password%% | was created |
-| st-admin | create-user --e %%manager%% --p %%password%% | was created |
-| st-admin | add-member --e %%manager%% --w %%workspace%% | now has the role |
+| st-admin | create-user --e %%user1%% --p %%password%% --account %%acct%% | was created |
+| st-admin | create-user --e %%user2%% --p %%password%% --account %%acct%% | was created |
+| st-admin | create-user --e %%user3%% --p %%password%% --account %%acct%% | was created |
+| st-admin | create-user --e %%user4%% --p %%password%% --account %%acct%% | was created |
+| st-admin | create-user --e %%user5%% --p %%password%% --account %%acct%% | was created |
+| st-admin | create-user --e %%manager%% --p %%password%% --account %%acct%% | was created |
 | st-process-jobs |  |  |
 | pause | 10000 |  |
 

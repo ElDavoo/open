@@ -1,10 +1,9 @@
-| open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | link=edit |  |
-| click_and_wait | link=edit |  |
+| wait_for_element_visible_ok | link=(edit) |  |
+| click_and_wait | link=(edit) |  |
 | wait_for_element_visible_ok | field_supervisor | 30000 |
 | type-lookahead-ok | xpath=//div[@id='field_supervisor']/input[@class='relationship'] | %%short_manager%% |
 | wait-for-element-present-ok | link=%%short_manager%% |  |
-| click-ok | link=%%short_super%% |  |
+| click-ok | link=%%short_manager%% |  |
 | wait_for_element_visible_ok | update_profile | 30000 |
 | pause | 5000 | settling time |
 | click_and_wait | update_profile |  |
