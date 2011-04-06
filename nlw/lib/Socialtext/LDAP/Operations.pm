@@ -258,15 +258,15 @@ sub RefreshGroups {
     # for a single server together; if we spread them out we risk having the
     # LDAP connection time out between lookups.
     st_log->info( "getting list of LDAP groups to refresh" );
-    my $sth = sql_execute( qq{
-        SELECT group_id,
-               driver_key,
-               driver_unique_id,
-               driver_group_name
-          FROM groups
-         WHERE driver_key ~* 'LDAP'
-         ORDER BY driver_key, driver_group_name
-    } );
+    my ($sql, @bind) = sql_abstract->select('groups',
+        [qw( group_id driver_key driver_unique_id driver_group_name )],
+        {
+            driver_key => { '~*' => 'LDAP' },
+        },
+        [qw( driver_key driver_group_name )],
+    );
+
+    my $sth = sql_execute($sql, @bind);
     st_log->info( "... found " . $sth->rows . " LDAP groups" );
 
     my $rows = $sth->fetchall_arrayref({});
