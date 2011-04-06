@@ -7,6 +7,7 @@ use List::MoreUtils qw(uniq);
 use Socialtext::LDAP;
 use Socialtext::Log qw(st_log);
 use Socialtext::SQL qw(sql_execute sql_txn);
+use Socialtext::SQL::Builder qw(sql_abstract);
 use Socialtext::Group;
 use Socialtext::Group::Factory;         # needed for cache/async over-ride
 use Socialtext::User::LDAP::Factory;    # needed for cache/async over-ride
@@ -33,12 +34,14 @@ sub RefreshUsers {
     # for a single server together; if we spread them out we risk having the
     # LDAP connection time out in between user lookups.
     st_log->info( "getting list of LDAP users to refresh" );
-    my $sth = sql_execute( qq{
-        SELECT driver_key, driver_unique_id, driver_username
-          FROM users
-         WHERE driver_key ~* 'LDAP'
-         ORDER BY driver_key, driver_username
-    } );
+    my ($sql, @bind) = sql_abstract->select('users',
+        [qw( driver_key driver_unique_id driver_username )],
+        {
+            driver_key => { '~*' => 'LDAP' },
+        },
+        [qw( driver_key driver_username )],
+    );
+    my $sth = sql_execute($sql, @bind);
     st_log->info( "... found " . $sth->rows . " LDAP users" );
 
     my $rows_aref = $sth->fetchall_arrayref();
