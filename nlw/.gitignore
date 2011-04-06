@@ -584,3 +584,4 @@ t/js/activities.js
 hudson.prove
 t/js/lib/mocked-push-client.js
 lib/Socialtext/Page/BMTablePopulator.pm
+bin/search-numbers
