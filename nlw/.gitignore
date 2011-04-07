@@ -598,3 +598,4 @@ lib/Socialtext/People/Rest/Relationships.pm
 lib/Socialtext/Pluggable/Plugin/TestPlugin.pm
 t/wikitests/miki/profile-relationships.wiki
 lib/Socialtext/People/Relationships.pm
+t/Socialtext/People/Relationships.t
