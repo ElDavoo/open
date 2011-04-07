@@ -111,6 +111,7 @@ sub PUT_layout {
                     $gadget = $self->container->install_gadget(
                         gadget_id => $g->{gadget_id},
                         fixed => $g->{fixed},
+                        class => $g->{class}
                     );
                 }
             
@@ -143,7 +144,31 @@ sub GET_layout {
     for (sort { $a->row <=> $b->row } @$gadgets) {
         push @{ $cols[ $_->col ] }, old_as_hash_format($_);
     }
+    $self->rest->header(-type => 'application/json; charset=utf-8');
     return encode_json(\@cols);
+}
+
+sub GET_default_gadgets {
+    my $self = shift;
+    my @gadgets;
+    my $instance_id = 1;
+    my @cols;
+    for my $gadget_info ($self->container->default_gadgets) {
+        $cols[$gadget_info->{col}] ||= 0;
+        my $row = $cols[$gadget_info->{col}]++;
+
+        my $instance = Socialtext::Gadgets::GadgetInstance->new(
+            spec => Socialtext::Gadgets::Gadget->Fetch(%$gadget_info),
+            container_id => $self->container->container_id,
+            container => $self->container,
+            gadget_instance_id => $instance_id++,
+            row => $row,
+            %$gadget_info,
+        );
+        push @gadgets, $self->container->gadget_vars($instance);
+    }
+    $self->rest->header(-type => 'application/json; charset=utf-8');
+    return encode_json(\@gadgets);
 }
 
 sub old_as_hash_format {
