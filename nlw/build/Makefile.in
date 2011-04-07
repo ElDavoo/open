@@ -38,7 +38,8 @@ PERL = @PERL@
 PROVE_ARGS =
 PROVE = nice st-prove --timer --state=save $(PROVE_ARGS)
 TEST_JOBS = 4
-UNIT_TESTS  = $(shell find -L t/ -name '*.t' -not -regex '^t/live/.*' | dev-bin/fixture-sort)
+SERIAL_UNIT_TESTS = $(shell grep -l 'fixtures(.*serial.*)' -r t | grep '\.t$$' | grep -v '^t/live/' | dev-bin/fixture-sort)
+PARALLEL_UNIT_TESTS = $(shell grep -L 'fixtures(.*serial.*)' -r t | grep '\.t$$' | grep -v '^t/live/' | dev-bin/fixture-sort)
 JS_TESTS  = $(shell find -L t/ -name '*.t.js')
 WIKID_TESTS = $(shell find -L t/wikitests/ -name '*.wiki')
 REPORTS_TESTS = $(shell find -L ../socialtext-reports/t/ -name '*.t')
@@ -334,8 +335,13 @@ tardist: MANIFEST $(PERL_MAKEFILE)
 
 test: testunit testwikid testjs testreports testconsole
 
-testunit:
-	@$(PROVE) --jobs $(TEST_JOBS) $(UNIT_TESTS)
+testunit: testunit-parallel testunit-serial
+
+testunit-serial:
+	@$(PROVE) --jobs $(TEST_JOBS) $(SERIAL_UNIT_TESTS)
+
+testunit-parallel:
+	@$(PROVE) --jobs $(TEST_JOBS) $(PARALLEL_UNIT_TESTS)
 
 testwikid:
 	@$(PROVE) --jobs $(TEST_JOBS) $(WIKID_TESTS)

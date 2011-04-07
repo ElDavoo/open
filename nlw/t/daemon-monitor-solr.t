@@ -8,7 +8,7 @@ use Test::Socialtext::Async;
 
 POSIX::setsid;
 
-fixtures(qw( base_config ));
+fixtures(qw( base_config serial ));
 
 ok -x 'bin/st-daemon-monitor', "it's executable";
 
