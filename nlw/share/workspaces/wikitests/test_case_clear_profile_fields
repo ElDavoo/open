@@ -40,46 +40,10 @@
 | verifyValue | last_name | %%lname%% |
 | verifyValue | middle_name | %%mname%% |
 
-| *Comment* | Test Case: Clear Profile Fields - Manipulate the values through backspace |  |
-| KeyPressOk | first_name | \8 |
-| KeyPressOk | first_name | \8 |
-| KeyPressOk | first_name | \8 |
-| KeyPressOk | first_name | \8 |
-| KeyPressOk | first_name | \8 |
-| KeyPressOk | first_name | \8 |
-| KeyPressOk | first_name | \8 |
-| KeyPressOk | first_name | \8 |
-| KeyPressOk | first_name | \8 |
-| KeyPressOk | first_name | \8 |
-
-| KeyPressOk | middle_name | \8 |
-| KeyPressOk | middle_name | \8 |
-| KeyPressOk | middle_name | \8 |
-| KeyPressOk | middle_name | \8 |
-| KeyPressOk | middle_name | \8 |
-| KeyPressOk | middle_name | \8 |
-| KeyPressOk | middle_name | \8 |
-| KeyPressOk | middle_name | \8 |
-| KeyPressOk | middle_name | \8 |
-| KeyPressOk | middle_name | \8 |
-| KeyPressOk | middle_name | \8 |
-
-| KeyPressOk | last_name | \8 |
-| KeyPressOk | last_name | \8 |
-| KeyPressOk | last_name | \8 |
-| KeyPressOk | last_name | \8 |
-| KeyPressOk | last_name | \8 |
-| KeyPressOk | last_name | \8 |
-| KeyPressOk | last_name | \8 |
-| KeyPressOk | last_name | \8 |
-| KeyPressOk | last_name | \8 |
-| KeyPressOk | last_name | \8 |
-| KeyPressOk | last_name | \8 |
-| KeyPressOk | last_name | \8 |
-| KeyPressOk | last_name | \8 |
-| KeyPressOk | last_name | \8 |
-| KeyPressOk | last_name | \8 |
-| KeyPressOk | last_name | \8 |
+| *Comment* | Test Case: Clear Profile Fields - Clear the name fields |  |
+| type_ok | first_name |  |
+| type_ok | middle_name |  |
+| type_ok | last_name |  |
 
 | wait_for_element_visible_ok | update_profile | 30000 |
 | pause | 10000 | settling time |

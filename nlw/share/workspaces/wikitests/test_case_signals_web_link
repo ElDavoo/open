@@ -3,10 +3,11 @@
 | *Comment* | Test Case: Signals Web Link SETUP |  |
 
 
-| set_default | www_signaler | %%username%% |
+| set_default | www_signaler | www_signaler_%%start_time%%@david.socialtext.net |
 | set_default | www_signaler_pw | %%password%% |
 | set | text | Signals Web Link Text %%start_time%% |
 | set | url | `http://ken.socialtext.net.%%start_time%%/` |
+| st-admin | create-user --email %%www_signaler%% --password %%password%% |  |
 
 | st-logoutin | %%www_signaler%% | %%www_signaler_pw%% |
 | open_ok | /st/signals |  |
@@ -50,6 +51,7 @@
 | wait_for_element_visible_ok | link=Post | 5000 |
 | pause | 3000 |  |
 | click_ok | link=Post |  |
+| wait_for_text_present_ok | You | 30000 |
 | wait_for_element_visible_ok | link=%%text%% | 30000 |
 | wait_for_element_visible_ok | //a[contains(@href,'%%url%%')] | 30000 |
 
