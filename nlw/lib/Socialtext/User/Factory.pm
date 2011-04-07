@@ -479,13 +479,9 @@ sub ExpireUserRecord {
     sub _validate_encrypt_password {
         my ($self, $p) = @_;
         if ((exists $p->{password}) and (not delete $p->{no_crypt})) {
-            # NOTE: doesn't matter if we have/use a different salt per-user;
-            # we're encrypting to obscure passwords from ST admins, not for
-            # _real_ protection (in which case we wouldn't be using 'crypt()'
-            # in the first place).
             require Socialtext::User::Default;
             $p->{password} =
-                Socialtext::User::Default->_crypt( $p->{password}, 'salty' );
+                Socialtext::User::Default->_encode_password($p->{password});
         }
         return;
     }
