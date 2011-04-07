@@ -81,8 +81,9 @@
 | click_ok | //a[@class='btn post'] |  |
 
 | *Comment* | Test Case: Private Signal send and verify the public signal |  |
-| st-verify-text-within-activities-widget | You less than a minute ago |  |
-| st-verify-text-within-activities-widget | %%cancel%% |  |
-| st-text-unlike-in-activities-widget | signals | You.+private to.+%%psshort%% |
+| open_ok | /st/signals |  |
+| wait_for_text_present_ok | %%cancel%% | 30000 |
+| text_like | qr/You.+less than a minute ago/ |  |
+| wait_for_text_not_present_ok | You.+private to.+%%psshort%% | 30000 |
 
 | *Comment* | Test Case: Private Signal COMPLETED |  |

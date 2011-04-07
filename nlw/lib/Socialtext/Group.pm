@@ -12,7 +12,6 @@ use Socialtext::MultiCursor;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::SQL qw(get_dbh :exec :time :txn);
 use Socialtext::SQL::Builder qw(sql_abstract);
-use Socialtext::User;
 use Socialtext::UserSet qw/:const/;
 use Socialtext::JobCreator;
 use Socialtext::Authz::SimpleChecker;
@@ -319,7 +318,7 @@ sub All {
         my $ws = Socialtext::Workspace->new(workspace_id => $p{workspace_id});
         $apply = sub {
             my $row = shift;
-            my $group = Socialtext::Group->GetGroup(group_id=>$row->{group_id});
+            my $group = $class->GetGroup(group_id=>$row->{group_id});
             my $role = $ws->role_for_group($group);
             if ($p{include_aggregates}) {
                 $group->$_($row->{$_}) for qw(user_count workspace_count);
@@ -340,7 +339,7 @@ sub All {
     else {
         $apply = sub {
             my $row = shift;
-            my $group = Socialtext::Group->GetGroup(group_id=>$row->{group_id});
+            my $group = $class->GetGroup(group_id=>$row->{group_id});
             unless ($group) {
                 warn "Couldn't fetch group_id: $row->{group_id}";
                 return;
@@ -388,7 +387,7 @@ sub Factory {
 
     my $driver_class = join '::', $class->base_package(), $driver_name, 'Factory';
     eval "require $driver_class";
-    die "couldn't load $driver_class: $@" if $@;
+    die "couldn't load $driver_class in call to Socialtext::Group->Factory: $@" if $@;
 
     my $factory = eval { $driver_class->new(driver_key => $driver_key) };
     if ($@) {

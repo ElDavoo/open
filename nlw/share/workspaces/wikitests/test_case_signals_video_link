@@ -35,6 +35,8 @@
 | wait_for_text_present_ok | %%vimeo_title%% | 30000 |
 
 | *Comment* | Test Case: Signals Video Link send youtube signal |  |
+| open_ok | /st/signals |  |
+| wait_for_element_visible_ok | //a[@title='Add a video link'] | 30000 |
 | click_ok | //a[@title='Add a video link'] |  |
 | wait_for_text_present_ok | Copy and paste the URL for the video below. We support embedding video from YouTube, Vimeo, SlideShare and Google Video. | 30000 |
 | wait_for_element_visible_ok | //input[@name='video_url'] | 30000 |
@@ -49,6 +51,8 @@
 | wait_for_text_present_ok | %%youtube_title%% | 30000 |
 
 | *Comment* | Test Case: Signals Video Link send slideshare signal |  |
+| open_ok | /st/signals |  |
+| wait_for_element_visible_ok | //a[@title='Add a video link'] | 30000 |
 | click_ok | //a[@title='Add a video link'] |  |
 | wait_for_text_present_ok | Copy and paste the URL for the video below. We support embedding video from YouTube, Vimeo, SlideShare and Google Video. | 30000 |
 | wait_for_element_visible_ok | //input[@name='video_url'] | 30000 |
@@ -63,6 +67,8 @@
 | wait_for_text_present_ok | %%slide_title%% | 30000 |
 
 | *Comment* | Test Case: Signals Video Link send google signal |  |
+| open_ok | /st/signals |  |
+| wait_for_element_visible_ok | //a[@title='Add a video link'] | 30000 |
 | click_ok | //a[@title='Add a video link'] |  |
 | wait_for_text_present_ok | Copy and paste the URL for the video below. We support embedding video from YouTube, Vimeo, SlideShare and Google Video. | 30000 |
 | wait_for_element_visible_ok | //input[@name='video_url'] | 30000 |
@@ -77,6 +83,8 @@
 | wait_for_text_present_ok | %%google_title%% | 30000 |
 
 | *Comment* | Test Case: Signals Video Link check bad signal |  |
+| open_ok | /st/signals |  |
+| wait_for_element_visible_ok | //a[@title='Add a video link'] | 30000 |
 | click_ok | //a[@title='Add a video link'] |  |
 | wait_for_text_present_ok | Copy and paste the URL for the video below. We support embedding video from YouTube, Vimeo, SlideShare and Google Video. | 30000 |
 | wait_for_element_visible_ok | //input[@name='video_url'] | 30000 |

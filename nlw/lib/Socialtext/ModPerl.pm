@@ -2,7 +2,6 @@
 package Socialtext::ModPerl;
 use strict;
 use warnings;
-
 use Carp ();
 use File::Path ();
 use Socialtext::Workspace;
