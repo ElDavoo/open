@@ -338,7 +338,7 @@ test: testunit testwikid testjs testreports testconsole
 testunit: testunit-parallel testunit-serial
 
 testunit-serial:
-	@$(PROVE) --jobs $(TEST_JOBS) $(SERIAL_UNIT_TESTS)
+	@$(PROVE) --jobs 1 $(SERIAL_UNIT_TESTS)
 
 testunit-parallel:
 	@$(PROVE) --jobs $(TEST_JOBS) $(PARALLEL_UNIT_TESTS)
