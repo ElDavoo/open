@@ -332,8 +332,7 @@ MANIFEST:
 tardist: MANIFEST $(PERL_MAKEFILE)
 	$(PERL_MAKE) tardist
 
-test:
-	@$(PROVE) --jobs $(TEST_JOBS) $(UNIT_TESTS) $(JS_TESTS) $(WIKID_TESTS)
+test: testunit testwikid testjs testreports testconsole
 
 testunit:
 	@$(PROVE) --jobs $(TEST_JOBS) $(UNIT_TESTS)
