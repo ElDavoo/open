@@ -20,10 +20,14 @@
 
   <div class="form-element">
     <input class="checkbox" name="remember" type="checkbox" id="remember" value="1" />
-    <span class="description">
-      <label for="remember">[% loc('login.remember-me') %]</label>
-    </span>
-    [% UNLESS lite %]
+    [% IF lite %]
+      <span class="description">
+        <label for="remember">[% loc('Remember me on this device') %]</label>
+      </span>
+    [% ELSE %]
+      <span class="description">
+        <label for="remember">[% loc('login.remember-me') %]</label>
+      </span>
       <a id="remember-lightbox" href="#" onclick="$.showLightbox('Checking this box will keep you logged in for up to [% remember_duration %], or until you sign out.  Un-checking this box will cause you to be automatically logged out when you close your browser.')">[?]</a>
     [% END %]
   </div>

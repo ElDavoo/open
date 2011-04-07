@@ -9538,7 +9538,7 @@ msgstr "Register"
 
 #: share/template/authen/element/login_form:24
 msgid "login.remember-me"
-msgstr "Remember me on this device."
+msgstr "Remember me on this computer."
 
 #: share/template/authen/forgot_password.html:3
 msgid "login.socialtext-password-help"
