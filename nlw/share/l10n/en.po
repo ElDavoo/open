@@ -12764,6 +12764,14 @@ msgstr "Workspaces"
 msgid "twilio.edit-profile"
 msgstr "Click here to edit your profile."
 
+#: share/plugin/twilio/template/element/settings/twilio_settings_section:23
+msgid "twilio.if-checked-send-mentions-as-sms"
+msgstr "If checked, each time a user mentions you in a Signal, we'll send you a text message with the signal body."
+
+#: share/plugin/twilio/template/element/settings/twilio_settings_section:14
+msgid "twilio.if-checked-send-private-messages-as-sms"
+msgstr "If checked, each time a user sends you a private message via Signals, we'll send you a text message with the signal body."
+
 #: share/plugin/twilio/template/element/settings/twilio_menu:3
 msgid "twilio.manage-services"
 msgstr "Manage Phone Services"
@@ -12771,6 +12779,14 @@ msgstr "Manage Phone Services"
 #: share/plugin/twilio/template/element/settings/twilio_settings_section:28
 msgid "twilio.mobile-phone-required"
 msgstr "Please add your mobile phone number to your profile to use this feature."
+
+#: share/plugin/twilio/template/element/settings/twilio_settings_section:19
+msgid "twilio.send-mentions-as-sms?"
+msgstr "Send Signals you are mentioned in as a text message (SMS) to your phone?"
+
+#: share/plugin/twilio/template/element/settings/twilio_settings_section:10
+msgid "twilio.send-private-messages-as-sms?"
+msgstr "Send Socialtext Signals private messages as a text message (SMS) to your phone?"
 
 #: share/plugin/twilio/template/element/settings/twilio_menu:1 share/plugin/twilio/template/element/settings/twilio_settings_section:5
 msgid "twilio.services"

@@ -12764,6 +12764,14 @@ msgstr "Zzzzzzzzzz"
 msgid "twilio.edit-profile"
 msgstr "Zzzzz zzzz zz zzzz zzzz zzzzzzz."
 
+#: share/plugin/twilio/template/element/settings/twilio_settings_section:23
+msgid "twilio.if-checked-send-mentions-as-sms"
+msgstr "Zz zzzzzzz, zzzz zzzz z zzzz zzzzzzzz zzz zz z Zzzzzz, zz'zz zzzz zzz z zzzz zzzzzzz zzzz zzz zzzzzz zzzz."
+
+#: share/plugin/twilio/template/element/settings/twilio_settings_section:14
+msgid "twilio.if-checked-send-private-messages-as-sms"
+msgstr "Zz zzzzzzz, zzzz zzzz z zzzz zzzzz zzz z zzzzzzz zzzzzzz zzz Zzzzzzz, zz'zz zzzz zzz z zzzz zzzzzzz zzzz zzz zzzzzz zzzz."
+
 #: share/plugin/twilio/template/element/settings/twilio_menu:3
 msgid "twilio.manage-services"
 msgstr "Zzzzzz Zzzzz Zzzzzzzz"
@@ -12771,6 +12779,14 @@ msgstr "Zzzzzz Zzzzz Zzzzzzzz"
 #: share/plugin/twilio/template/element/settings/twilio_settings_section:28
 msgid "twilio.mobile-phone-required"
 msgstr "Zzzzzz zzz zzzz zzzzzz zzzzz zzzzzz zz zzzz zzzzzzz zz zzz zzzz zzzzzzz."
+
+#: share/plugin/twilio/template/element/settings/twilio_settings_section:19
+msgid "twilio.send-mentions-as-sms?"
+msgstr "Zzzz Zzzzzzz zzz zzz zzzzzzzzz zz zz z zzzz zzzzzzz (ZZZ) zz zzzz zzzzz?"
+
+#: share/plugin/twilio/template/element/settings/twilio_settings_section:10
+msgid "twilio.send-private-messages-as-sms?"
+msgstr "Zzzz Zzzzzzzzzz Zzzzzzz zzzzzzz zzzzzzzz zz z zzzz zzzzzzz (ZZZ) zz zzzz zzzzz?"
 
 #: share/plugin/twilio/template/element/settings/twilio_menu:1 share/plugin/twilio/template/element/settings/twilio_settings_section:5
 msgid "twilio.services"
