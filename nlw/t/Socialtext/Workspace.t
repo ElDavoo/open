@@ -687,7 +687,7 @@ HELP_WORKSPACE_WITH_WS_NOT_MISSING: {
 
 HELP_WORKSPACES: {
     my @ws = Socialtext::Workspace->Help_workspaces();
-    is scalar(@ws), 3;
+    is scalar(@ws), 3, "count of help workspaces"
 }
 
 CASCADE_CSS: {

@@ -101,7 +101,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-20 10:43+0800\n"
+"PO-Revision-Date: 2011-04-08 06:35-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -10684,7 +10684,7 @@ msgstr "Zzz zzz z zzzzzz zz zz zzzzzz."
 
 #: share/plugin/people/share/widgets/all_tags/widget.js:20
 msgid "profile.no-people-tags"
-msgstr "Zzzzz zzz zz Zzzzzz zzzz. Zzz Zzz Zzzz zz Zzzzzz zzzzzzzz zz zzzzzz zzzz."
+msgstr "Zzzzz zzz zz Zzzzzz zzzz zzz zzzzzz zz zzzz zzzzz zzz. Zz zzzzz zzzzzz zzz zzzzzzzzz, zz zz zzz Zzzzzzz Zzzzz zz zzzzzz zz zzzz zzzzz zz Zzz Zzzz"
 
 #: share/plugin/people/share/widgets/profile_network/widget.js:17
 msgid "profile.no-shared-groups"
