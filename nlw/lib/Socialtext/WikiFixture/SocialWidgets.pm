@@ -638,7 +638,7 @@ sub st_create_group {
     $self->handle_command('check_ok', $radiotype);
     $self->handle_command('click_ok','st-create-group-next');
     $self->handle_command('wait_for_element_not_present_ok','st-create-group-next', 30000);
-    $self->handle_command('wait_for_element_visible_ok','create-group', 30000);
+    $self->handle_command('pause','8000');
     $self->handle_command('text_like','//body','Create a Group');
     $self->handle_command('st-name-widget', 1,'create_group');
     $self->handle_command('st-select-widget-frame','create_group');
