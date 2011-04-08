@@ -12240,13 +12240,11 @@ msgstr "工作区"
 msgid "twilio.edit-profile"
 msgstr "点击这里编辑您的个人资料。"
 
-#: share/plugin/twilio/template/element/settings/twilio_settings_section:23
 msgid "twilio.if-checked-send-mentions-as-sms"
-msgstr "If checked, each time a user mentions you in a Signal, we'll send you a text message with the signal body."
+msgstr "勾选此项后，每当有人在讯息中提到您时，我们会将其内容以手机简讯发送给您。"
 
-#: share/plugin/twilio/template/element/settings/twilio_settings_section:14
 msgid "twilio.if-checked-send-private-messages-as-sms"
-msgstr "If checked, each time a user sends you a private message via Signals, we'll send you a text message with the signal body."
+msgstr "勾选此项后，每当有人寄送私人讯息给您时，我们会将其内容以手机简讯发送给您。"
 
 #: share/plugin/twilio/template/element/settings/twilio_menu:3
 msgid "twilio.manage-services"
@@ -12256,13 +12254,11 @@ msgstr "管理电话服务"
 msgid "twilio.mobile-phone-required"
 msgstr "请添加您的手机号码到您的个人资料以使用此功能。"
 
-#: share/plugin/twilio/template/element/settings/twilio_settings_section:19
 msgid "twilio.send-mentions-as-sms?"
-msgstr "Send Signals you are mentioned in as a text message (SMS) to your phone?"
+msgstr "以手机简讯（SMS）接收提及您的讯息？"
 
-#: share/plugin/twilio/template/element/settings/twilio_settings_section:10
 msgid "twilio.send-private-messages-as-sms?"
-msgstr "Send Socialtext Signals private messages as a text message (SMS) to your phone?"
+msgstr "以手机简讯（SMS）接收给您的私人讯息？"
 
 #: share/plugin/twilio/template/element/settings/twilio_menu:1 share/plugin/twilio/template/element/settings/twilio_settings_section:5
 msgid "twilio.services"
