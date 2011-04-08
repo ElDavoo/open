@@ -333,7 +333,7 @@ MANIFEST:
 tardist: MANIFEST $(PERL_MAKEFILE)
 	$(PERL_MAKE) tardist
 
-test: testunit testwikid testjs testreports testconsole
+test: testunit testwikid testjs 
 
 testunit: testunit-parallel testunit-serial
 
