@@ -1,5 +1,3 @@
-* HighPermssions
-
 | *Comment* | Test Case: Calc Tools: Rename Page |
 
 | *Comment* | Test Case: Calc Tools: Rename Page Create test page |  |
@@ -29,7 +27,7 @@
 | location_like | `/%%workspace%%/Renamed_Spreadsheet_%%start_time%%` |  |
 | wait_for_element_visible_ok | contentRight | 30000 |
 | text_like | contentRight | SC Rename Tag %%start_time%% |
-| st_check_files_if_highperms | wikitest.jpg |
+| st_check_files_if_highperms | wikitest.jpg |  |
 | text_like | st-page-titletext | Renamed_Spreadsheet_%%start_time%% |
 | click_and_wait | link=Rename Spreadsheet %%start_time%% |  |
 | text_like | st-page-titletext | Rename Spreadsheet %%start_time%% |
@@ -61,7 +59,8 @@
 | click_and_wait | controls-right-revisions |  |
 | text_like | contentContainer | Revision 2 |
 
-| *Comment* | Test Case: Calc Tools: Rename Page Teardown |  |
+| *Comment* | Test Case: Calc Tools: Rename Page TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | purge-page --w %%workspace%% --page rename_spreadsheet_%%start_time%% | was purged |
 | st-admin | purge-page --w %%workspace%% --page renamed_spreadsheet_%%start_time%% | was purged |
 
