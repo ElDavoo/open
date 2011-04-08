@@ -11,14 +11,19 @@ use Socialtext::System qw/shell_run/;
 use File::Path qw(make_path remove_tree);
 chdir "$RealBin/..";
 
-my ($new, $lang, $reuse);
+my ($new, $old, $lang, $reuse);
 GetOptions(
     'new|n!' => \$new,
+    'old|o!' => \$old,
     'reuse|r!' => \$reuse,
     'lang|l=s' => \$lang,
-) or die "Usage: $0 [--new] [--lang lang] [sections]\n";
+) or die "Usage: $0 [--new|--reuse|--old] [--lang lang] [sections]\n";
 
 $new = 1 if $reuse;
+
+if (!$old and !$new) {
+    die "Please specify one of --new, --reuse or --old.\n";
+}
 
 my @plugins = map { basename($_) } grep { -d and (-d "$_/share" or -d "$_/template") } glob('share/plugin/*');
 my %Sections = (
