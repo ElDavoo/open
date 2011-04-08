@@ -6,7 +6,7 @@
   <dd>
     <div style="white-space: nowrap"><label>
       [% loc('config.language?') %]
-      <select name="locale">
+      <select id="locale" name="locale">
         [% FOR l IN locales %]
         <option value="[% l.value %]" [% IF l.selected %]selected="selected"[% END %]>[% l.label %]</option>
         [% END %]
@@ -16,4 +16,15 @@
 </dl>
 <br>
 <br>
+<script>
+$(function(){
+    $('#locale').change(function(){
+        setTimeout(function(){
+            document.forms['settings'].submit();
+        }, 100);
+        return true;
+    });
+    $('form[name=settings] li.flexButton').hide();
+});
+</script>
 [% INCLUDE element/settings/stop %]
