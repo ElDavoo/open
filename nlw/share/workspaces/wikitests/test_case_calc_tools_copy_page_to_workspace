@@ -1,5 +1,3 @@
-* HighPermissions
-
 | *Comment* | Test Case: Calc Tools: Copy Page to Workspace |
 
 | set | newspace | newspace-ss-%%start_time%% |
@@ -43,7 +41,7 @@ NOT the target WS |  |
 | *Comment* | Test Case: Calc Tools: Copy Page to Workspace. Verify copy. |  |
 | open_ok | /%%newspace%%/?New Copy Page Spreadsheet %%start_time%% |  |
 | wait_for_element_visible_ok | link=Copy Spreadsheet Tag %%start_time%% | 30000 |
-| st_check_files_if_highperms | wikitest.jpg |
+| st_check_files_if_highperms | wikitest.jpg |  |
 
 | *Comment* | Test Case: Calc Tools: Copy Page to Workspace. Create new content. |  |
 | open_ok | /%%workspace%%/?Copy Page Spreadsheet %%start_time%% |  |

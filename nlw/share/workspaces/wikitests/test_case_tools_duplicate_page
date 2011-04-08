@@ -1,5 +1,3 @@
-* HighPermissions
-
 | *Comment* | Test Case: Tools: Duplicate Page |
 
 | *Comment* | Test Case: Tools: Duplicate Page Create test page |  |
@@ -28,7 +26,7 @@
 | wait_for_element_visible_ok | st-duplicate-form | 30000 |
 | wait_for_element_visible_ok | st-duplicate-newname | 30000 |
 
-| *Comment* | Deliberately use non-space containing pagename for location_like_ok test |
+| *Comment* | Deliberately use non-space containing pagename for location_like_ok test |  |
 | type_ok | st-duplicate-newname | Page_Duplicated_%%start_time%% |
 | click_and_wait | st-duplicate-savelink |  |
 
@@ -38,7 +36,7 @@
 | text_like | contentRight | Duplicate This Tag %%start_time%% |
 | wait_for_element_visible_ok | link=Duplicate This Tag %%start_time%% | 30000 |
 | text_like | st-page-titletext | Page_Duplicated_%%start_time%% |
-| st_check_files_if_highperms | wikitest.jpg |
+| st_check_files_if_highperms | wikitest.jpg |  |
 
 | *Comment* | Test Case: Tools: Duplicate Page. Edit the original the page |  |
 | open_ok | /%%workspace%%/?Duplicate This Page %%start_time%% |  |
@@ -83,7 +81,7 @@
 | text_like | contentContainer | Duplicate This Page %%start_time%% NEW content |
 
 | *Comment* | Test Case: Tools: Duplicate Page TEARDOWN |  |
-| st-process-jobs | PageIndex | %%workspace%% |
+| st-process-jobs |  |  |
 | st-admin | purge-page --w %%workspace%% --page duplicate_this_page_%%start_time%% | was purged |
 | st-admin | purge-page --w %%workspace%% --page page_duplicated_%%start_time%% | was purged |
 

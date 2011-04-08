@@ -3,6 +3,7 @@
 use mocked qw(Socialtext::l10n system_locale); # Has to come firstest.
 use Test::Socialtext tests => 112;
 use Test::Socialtext::Fatal;
+use Test::Differences;
 use strict;
 use warnings;
 
@@ -686,8 +687,8 @@ HELP_WORKSPACE_WITH_WS_NOT_MISSING: {
 }
 
 HELP_WORKSPACES: {
-    my @ws = Socialtext::Workspace->Help_workspaces();
-    is scalar(@ws), 3, "count of help workspaces"
+    my $ws = [ sort Socialtext::Workspace->Help_workspaces() ];
+    eq_or_diff $ws, [ qw/help-adminguide help-en/ ], 'have proper help wksp';
 }
 
 CASCADE_CSS: {

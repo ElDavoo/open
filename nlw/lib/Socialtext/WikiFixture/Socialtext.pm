@@ -282,16 +282,17 @@ sub st_check_workspaces_stickyness {
 
 sub st_upload_if_highperms {
     my ($self, $file) = @_;
-    my $browser = $ENV{'selenium_browser'} || 'chrome';
-    if ($browser=~/chrome/ig )  {
+    my $browser = ((($ENV{sauce_browser} || $ENV{selenium_browser} || '') =~ /(\w+)/) ? $1 : 'firefox');
+    diag "Browser is $browser\n";
+    if ($browser=~/firefox/ )  {
         $self->st_upload_attachment_to_wikipage($file);
     }
 }
 
 sub st_check_files_if_highperms {
     my ($self, $file) = @_;
-    my $browser = $ENV{'selenium_browser'} || 'chrome';
-    if ($browser=~/chrome/ig )  {
+    my $browser = ((($ENV{sauce_browser} || $ENV{selenium_browser} || '') =~ /(\w+)/) ? $1 : 'firefox');
+    if ($browser=~/firefox/ )  {
         $self->handle_command('text_like','contentRight',$file);
     }
 }
