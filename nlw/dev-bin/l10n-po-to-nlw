@@ -11,7 +11,7 @@ use Socialtext::l10n::DevUtils;
 
 if (!@ARGV) {
     push @ARGV, glob("share/l10n/new/*.po");
-    die << ".";
+    die << "." unless @ARGV;
 *** No files matching share/l10n/new/*.po
     Usage: $0 [po-files].
 .
