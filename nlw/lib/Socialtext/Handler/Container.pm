@@ -136,18 +136,6 @@ sub PUT_layout {
     });
 }
 
-# Used in wikitests
-sub GET_layout {
-    my $self = shift;
-    my $gadgets = $self->container->gadgets;
-    my @cols;
-    for (sort { $a->row <=> $b->row } @$gadgets) {
-        push @{ $cols[ $_->col ] }, old_as_hash_format($_);
-    }
-    $self->rest->header(-type => 'application/json; charset=utf-8');
-    return encode_json(\@cols);
-}
-
 sub GET_default_gadgets {
     my $self = shift;
     my @gadgets;
@@ -169,25 +157,6 @@ sub GET_default_gadgets {
     }
     $self->rest->header(-type => 'application/json; charset=utf-8');
     return encode_json(\@gadgets);
-}
-
-sub old_as_hash_format {
-    my $gadget = shift;
-
-    my $renderer = Socialtext::Gadget::Renderer->new(
-        gadget => $gadget->spec,
-        overrides => $gadget->hangman_dict,
-    );
-    
-    return {
-        id => $gadget->gadget_instance_id + 0,
-        title => $renderer->render($gadget->title),
-        src => $gadget->src,
-        col => $gadget->col,
-        row => $gadget->row,
-        fixed => $gadget->fixed || 0,
-        preferences => $gadget->preference_hash,
-    };
 }
 
 1;
