@@ -42,8 +42,6 @@ SERIAL_UNIT_TESTS = $(shell grep -l 'fixtures(.*serial.*)' -r t | grep '\.t$$' |
 PARALLEL_UNIT_TESTS = $(shell grep -L 'fixtures(.*serial.*)' -r t | grep '\.t$$' | grep -v '^t/live/' | dev-bin/fixture-sort)
 JS_TESTS  = $(shell find -L t/ -name '*.t.js')
 WIKID_TESTS = $(shell find -L t/wikitests/ -name '*.wiki')
-REPORTS_TESTS = $(shell find -L ../socialtext-reports/t/ -name '*.t')
-CONSOLE_TESTS = $(shell find -L ../appliance/libsocialtext-appliance-perl/t/ -name '*.t')
 
 # Program locations
 STCTL          = $(PERL) dev-bin/nlwctl
@@ -350,10 +348,10 @@ testjs:
 	@$(PROVE) --jobs $(TEST_JOBS) $(JS_TESTS)
 
 testreports:
-	@$(PROVE) --jobs $(TEST_JOBS) $(REPORTS_TESTS)
+	@cd ../socialtext-reports/ && $(PROVE) --jobs $(TEST_JOBS) t/
 
 testconsole:
-	@$(PROVE) --jobs $(TEST_JOBS) $(CONSOLE_TESTS)
+	@cd ../appliance/libsocialtext-appliance-perl/ && $(PROVE) --jobs $(TEST_JOBS) t/
 
 testplugin-%:
 	@$(PROVE) -s $(shell cd share/plugin/$(@:testplugin-%=%) && find -L t -name '*.t' -not -regex '^t/live.*' | dev-bin/fixture-sort)
