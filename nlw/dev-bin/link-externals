@@ -18,12 +18,14 @@ use Socialtext::System qw(shell_run);
 my $all;
 my $plugin;
 my $reports;
+my $libonly;
 my ($help, $man);
 
 GetOptions(
     'all'      => \$all,
     'plugin:s' => \$plugin,
     'reports'  => \$reports,
+    'lib-only' => \$libonly,
     'help|?'   => \$help,
     'man'      => \$man,
 ) || pod2usage(1);
@@ -70,6 +72,8 @@ sub link_plugins {
         }
 
         _link_contents($root, 'lib',   "$FindBin::Bin/..");
+        next if ($libonly);
+
         _link_contents($root, 'bin',   "$FindBin::Bin/..");
         _link_contents($root, 't',     "$FindBin::Bin/..");
         _link_contents($root, 'build', "$FindBin::Bin/..");
@@ -83,6 +87,8 @@ sub link_reports {
     status("Linking Reports");
     _link_directory($base, 'lib/Socialtext/Reports', "$FindBin::Bin/..");
     _link_contents($base, 'lib/Socialtext/WikiFixture', "$FindBin::Bin/..");
+    return if ($libonly);
+
     shell_run("cd $base && ./setup-dev-env");
 }
 
@@ -204,6 +210,11 @@ Links the one specified plugin.
 =item --reports
 
 Link in the reports repo.
+
+=item --lib-only
+
+Only link in files from F<lib/>; do B<not> link anything else in or perform any
+other actions.
 
 =back
 
