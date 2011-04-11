@@ -65,8 +65,15 @@ exit;
 
 sub link_plugins {
     my $base = "$FindBin::Bin/../../plugins";
-    my @plugins = $all ? _subdirs_under($base) : ($plugin);
 
+    # Get the full list of plugins to link in
+    my @plugins = ($plugin);
+    if ($all) {
+        my %skip = map { $_ => 1 } qw(mediawiki workspaces);
+        @plugins = grep { !$skip{$_} } _subdirs_under($base);
+    }
+
+    # Link all of the plugins in
     foreach my $p (@plugins) {
         status("Linking the $p plugin");
 
