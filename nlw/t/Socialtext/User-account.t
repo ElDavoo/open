@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use warnings;
 use strict;
-use Test::Socialtext tests => 22;
+use Test::Socialtext tests => 26;
 fixtures('db');
 
 BEGIN {
@@ -86,6 +86,19 @@ Back_to_one_account: {
     is scalar(@acct_list), 1, 'back to one account';
     is_deeply [ map {$_->account_id} @acct_list ],
               [ map {$_->account_id} $acct_b ];
+}
+
+shares_account: {
+    my $acct_c = create_test_account_bypassing_factory();
+    $acct_c->enable_plugin('test');
+    my $user_b = create_test_user(account => $acct_b);
+    my $user_c = create_test_user(account => $acct_c);
+
+    ok $user->shares_account(intersect_with => $user_b->user_id), 'Users A & B share an account';
+    ok $user_b->shares_account(intersect_with => $user->user_id), 'Users B & A share an account';
+    ok !$user->shares_account(intersect_with => $user_c->user_id), 'Users A & C do not share an account';
+    ok !$user_c->shares_account(intersect_with => $user->user_id), 'Users C & A do not share an account';
+
 }
 
 pass 'done';

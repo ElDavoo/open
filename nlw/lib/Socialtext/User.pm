@@ -354,6 +354,29 @@ sub recently_viewed_workspaces {
     return @viewed;
 }
 
+sub shares_account {
+    my $self = shift;
+    my %p = @_;
+    my $intersect_with = delete $p{intersect_with};
+
+    my $t = time_scope 'user_shares_acct';
+
+    my $sql = q{
+        SELECT into_set_id 
+        FROM user_set_path 
+        WHERE from_set_id = ?
+          AND into_set_id }.PG_ACCT_FILTER.q{
+          AND into_set_id in (
+            SELECT DISTINCT into_set_id 
+            FROM user_set_path 
+            WHERE from_set_id = ?
+              AND into_set_id }.PG_ACCT_FILTER
+          . ') 
+          LIMIT 1';
+    my @args = ($self->user_id, $intersect_with);
+
+   return sql_singlevalue($sql, @args);
+}
 
 sub accounts {
     my $self = shift;
