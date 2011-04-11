@@ -16,12 +16,16 @@
 | create-user            | %%admin%%     | password      |
 | create-workspace       | %%workspace%% |               |
 | create-group           | %%dogs%%      |               |
+| set                    | dogs_id       | %%group_id%%  |
 | add-group-to-workspace | %%group_id%%  | %%workspace%% |
 | create-group           | %%cats%%      |               |
+| set                    | cats_id       | %%group_id%%  |
 | add-group-to-workspace | %%group_id%%  | %%workspace%% |
 | create-group           | %%zebras%%    |               |
+| set                    | zebras_id     | %%group_id%%  |
 | add-group-to-workspace | %%group_id%%  | %%workspace%% |
 | create-group           | %%fish%%      |               |
+| set                    | fish_id       | %%group_id%%  |
 | add-group-to-workspace | %%group_id%%  | %%workspace%% |
 
 | http-user-pass | %%admin%% | password |
@@ -57,6 +61,16 @@
 | json-path-is    | $[2].name                       | %%fish%%   |
 | json-path-is    | $[3].name                       | %%zebras%% |
 
+########
+| *Comment*    | GROUPS are reported for admin in /data/workspaces/%%workspace%% |               |
+| GET-json     | /data/workspaces/%%workspace%%                                     |               |
+| code-is      | 200                                                                |               |
+| json-parse   |                                                                    |               |
+| json-in-array| $.group_ids | %%cats_id%% |
+| json-in-array| $.group_ids | %%dogs_id%% |
+| json-in-array| $.group_ids | %%fish_id%% |
+| json-in-array| $.group_ids | %%zebras_id%% |
+
 ################
 | *Comment* | GET HTML, groups are in order     |
 
@@ -87,3 +101,4 @@
 | http-user-pass | %%auth_user%% | password |
 | GET-json | /data/workspaces/%%self_join%%/groups |
 | json-response-is | 200 |
+
