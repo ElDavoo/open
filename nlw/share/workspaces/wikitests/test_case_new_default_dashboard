@@ -108,6 +108,7 @@
 | wait_for_element_visible_ok | dashboard-revert-layout | 30000 |
 | click_ok | dashboard-revert-layout |  |
 | wait_for_element_visible_ok | dashboard-revert-yes | 30000 |
+| pause | 5000 |  |
 | click_and_wait | dashboard-revert-yes |  |
 | wait_for_element_visible_ok | dashboard-save-layout | 30000 |
 | click_ok | dashboard-save-layout |  |
