@@ -6,7 +6,7 @@ use FindBin;
 use lib "$FindBin::Bin/../lib";
 use DirHandle;
 use Fatal qw(chdir mkdir symlink);
-use File::Basename qw(basename);
+use File::Basename qw(basename dirname);
 use File::Find qw(find);
 use File::Path qw(mkpath);
 use File::Spec;
@@ -98,6 +98,12 @@ sub _link_directory {
 
     my $from = "$fromdir/$subdir";
     my $to   = "$todir/$subdir";
+
+    my $parent = dirname($to);
+    unless (-d $parent) {
+        mkpath [$parent] or die "Cannot mkpath $parent; $!";
+    }
+
     unlink $to if -l $to;
     error("$to already exists! Remove it first\n") if -e $to;
     symlink $from, $to;
