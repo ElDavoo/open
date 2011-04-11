@@ -1,0 +1,177 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+use DirHandle;
+use Fatal qw(chdir mkdir symlink);
+use File::Basename qw(basename);
+use File::Find qw(find);
+use File::Path qw(mkpath);
+use File::Spec;
+use Getopt::Long;
+use Pod::Usage;
+use Term::ANSIColor;
+use Socialtext::System qw(shell_run);
+
+my $all;
+my $plugin;
+my ($help, $man);
+
+GetOptions(
+    'all'      => \$all,
+    'plugin:s' => \$plugin,
+    'help|?'   => \$help,
+    'man'      => \$man,
+) || pod2usage(1);
+
+pod2usage(1) if ($help);
+pod2usage(1) unless ($all || $plugin);
+pod2usage( -exitstatus=>0, -verbose=>2 ) if ($man);
+
+my $dot_nlw = "$ENV{HOME}/.nlw";
+
+###############################################################################
+# Make sure we're in the "nlw/" directory.
+if (-d './nlw') {
+    chdir './nlw';
+}
+elsif ($ENV{ST_CURRENT} && -d $ENV{ST_CURRENT}) {
+    chdir "$ENV{ST_CURRENT}/nlw";
+}
+else {
+    die "no ./nlw or ST_CURRENT env-var";
+}
+
+###############################################################################
+# Link in everything we were asked to.
+link_plugins() if ($plugin || $all);
+exit;
+
+
+
+
+
+
+sub link_plugins {
+    my $base = "$FindBin::Bin/../../plugins";
+    my @plugins = $all ? _subdirs_under($base) : ($plugin);
+
+    foreach my $p (@plugins) {
+        status("Linking the $p plugin");
+
+        my $root = File::Spec->catdir($base, $p);
+        unless (-d $root) {
+            die "... plugin $p doesn't exist!\n";
+        }
+
+        _link_contents($root, 'lib',   "$FindBin::Bin/..");
+        _link_contents($root, 'bin',   "$FindBin::Bin/..");
+        _link_contents($root, 't',     "$FindBin::Bin/..");
+        _link_contents($root, 'build', "$FindBin::Bin/..");
+        _link_contents($root, 'etc/socialtext', $dot_nlw);
+    }
+}
+
+sub _link_contents {
+    my ($fromdir, $subdir, $todir) = @_;
+    return unless -d "$fromdir/$subdir";
+
+    if (!-d $todir) {
+        status("Making directory $todir");
+        mkpath [$todir] or die "Cannot mkpath $todir: $!";
+    }
+
+    find( {
+        wanted => sub {
+            return if m{/\.(?:svn|git)/};
+            return if basename($_) =~ m{^\.};
+            my $from = $_;
+            (my $to = $from) =~ s{^$fromdir}{$todir};
+
+            if (-d $from) {
+                unlink $to if -l $to;
+                if (!-d $to) {
+                    status("Making directory $to");
+                    unlink $to if (-l $to);
+                    mkpath [$to] or die "Cannot mkpath $to: $!";
+                }
+            }
+            else {
+                unlink $to if (-l $to);
+                error("$to already exists and is a file! Remove it first\n")
+                    if -e $to;
+
+                symlink $from, $to;
+
+                # add an entry to the local .gitignore if it's missing
+                $to =~ s{^$todir/}{};
+                unless (`grep $to .gitignore`) {
+                    system("echo $to >> .gitignore");
+                    system("git commit -m 'Added $to to gitignore' .gitignore");
+                }
+            }
+        },
+        no_chdir => 1,
+    }, "$fromdir/$subdir");
+}
+
+sub status {
+    my $msg = shift;
+    chomp $msg;
+    print "$msg\n";
+}
+
+sub error {
+    my $error = shift;
+
+    print color 'yellow';
+    print "\n\n$error\n\n";
+    print color 'reset';
+
+    exit;
+}
+
+sub _subdirs_under {
+    my $path = shift;
+    my @dirs;
+
+    my $dirh = DirHandle->new($path);
+    while (my $entry = $dirh->read) {
+        next if ($entry =~ /^\./);
+        next if ($entry eq 'debian');
+        push @dirs, $entry if (-d "$path/$entry");
+    }
+    return @dirs;
+}
+
+=head1 NAME
+
+link-externals - Links in external files for Socialtext build
+
+=head1 SYNOPSIS
+
+  link-externals [options]
+
+=head1 DESCRIPTION
+
+F<link-externals> links in files from external repos into the source tree, so
+that the files will be present for a Socialtext build.
+
+=head1 OPTIONS
+
+=over
+
+=item --all
+
+Links B<everything>, all in one command.
+
+=item --plugin <plugin>
+
+Links the one specified plugin.
+
+=back
+
+=cut
+
