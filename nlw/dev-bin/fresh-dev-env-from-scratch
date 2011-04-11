@@ -101,7 +101,7 @@ echo "Linking in extra modules ..."
 # otherwise everyone is forced to have all this code checked out
 set +e
 QUIET=1 dev-bin/link-console
-dev-bin/link-reports
+dev-bin/link-externals --reports
 
 # Start the supervisor
 dev-bin/setup-supervisors start
