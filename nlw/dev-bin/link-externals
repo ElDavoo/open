@@ -5,7 +5,7 @@ use warnings;
 use FindBin;
 use lib "$FindBin::Bin/../lib";
 use DirHandle;
-use Fatal qw(chdir mkdir symlink);
+use Fatal qw(chdir mkdir symlink chmod);
 use File::Basename qw(basename dirname);
 use File::Find qw(find);
 use File::Path qw(mkpath);
@@ -13,11 +13,13 @@ use File::Spec;
 use Getopt::Long;
 use Pod::Usage;
 use Term::ANSIColor;
+use Socialtext::File qw(set_contents);
 use Socialtext::System qw(shell_run);
 
 my $all;
 my $plugin;
 my $reports;
+my $console;
 my $libonly;
 my ($help, $man);
 
@@ -25,13 +27,14 @@ GetOptions(
     'all'      => \$all,
     'plugin:s' => \$plugin,
     'reports'  => \$reports,
+    'console'  => \$console,
     'lib-only' => \$libonly,
     'help|?'   => \$help,
     'man'      => \$man,
 ) || pod2usage(1);
 
 pod2usage(1) if ($help);
-pod2usage(1) unless ($all || $plugin || $reports);
+pod2usage(1) unless ($all || $plugin || $reports || $console);
 pod2usage( -exitstatus=>0, -verbose=>2 ) if ($man);
 
 my $dot_nlw = "$ENV{HOME}/.nlw";
@@ -52,6 +55,7 @@ else {
 # Link in everything we were asked to.
 link_plugins() if ($plugin  || $all);
 link_reports() if ($reports || $all);
+link_console() if ($console || $all);
 exit;
 
 
@@ -90,6 +94,31 @@ sub link_reports {
     return if ($libonly);
 
     shell_run("cd $base && ./setup-dev-env");
+}
+
+sub link_console {
+    my $base = "$FindBin::Bin/../../appliance/libsocialtext-appliance-perl";
+
+    status("Linking Console");
+    _link_contents($base, 'lib', "$FindBin::Bin/..");
+    return if ($libonly);
+
+    _link_directory($base, 'template', "$FindBin::Bin/../share/console-template");
+
+    # Create the "index.cgi" script for a dev-env
+    my $cgidir = "$dot_nlw/root/console";
+    unless (-d $cgidir) {
+        mkpath [$cgidir] or die "Cannot mkpath $cgidir: $!";
+    }
+
+    my $console_cgi = "$cgidir/index.cgi";
+    unlink $console_cgi;
+    set_contents($console_cgi, <<EOT);
+#!/bin/bash
+export ST_APP_CONFIG=$dot_nlw/etc/socialtext/appliance.conf
+perl -I$ENV{HOME}/src/st/current/nlw/lib $base/cgi/appliance.cgi
+EOT
+    chmod 0755, $console_cgi;
 }
 
 sub _link_directory {
@@ -216,6 +245,10 @@ Links the one specified plugin.
 =item --reports
 
 Link in the reports repo.
+
+=item --console
+
+Link in the console repo.
 
 =item --lib-only
 
