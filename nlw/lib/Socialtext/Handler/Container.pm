@@ -44,7 +44,6 @@ sub if_authorized_to_edit {
     return $self->if_authorized_to_view($cb);
 }
 
-
 sub get_html {
     my $self = shift;
     $self->if_authorized_to_view(sub {
@@ -157,6 +156,13 @@ sub GET_default_gadgets {
     }
     $self->rest->header(-type => 'application/json; charset=utf-8');
     return encode_json(\@gadgets);
+}
+
+sub GET_gadgets {
+    my $self = shift;
+    my $gadgets = $self->container->gadgets;
+    $self->rest->header(-type => 'application/json; charset=utf-8');
+    return encode_json([ map { $self->container->gadget_vars($_) } @$gadgets ]);
 }
 
 1;
