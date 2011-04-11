@@ -17,17 +17,19 @@ use Socialtext::System qw(shell_run);
 
 my $all;
 my $plugin;
+my $reports;
 my ($help, $man);
 
 GetOptions(
     'all'      => \$all,
     'plugin:s' => \$plugin,
+    'reports'  => \$reports,
     'help|?'   => \$help,
     'man'      => \$man,
 ) || pod2usage(1);
 
 pod2usage(1) if ($help);
-pod2usage(1) unless ($all || $plugin);
+pod2usage(1) unless ($all || $plugin || $reports);
 pod2usage( -exitstatus=>0, -verbose=>2 ) if ($man);
 
 my $dot_nlw = "$ENV{HOME}/.nlw";
@@ -46,7 +48,8 @@ else {
 
 ###############################################################################
 # Link in everything we were asked to.
-link_plugins() if ($plugin || $all);
+link_plugins() if ($plugin  || $all);
+link_reports() if ($reports || $all);
 exit;
 
 
@@ -71,6 +74,33 @@ sub link_plugins {
         _link_contents($root, 't',     "$FindBin::Bin/..");
         _link_contents($root, 'build', "$FindBin::Bin/..");
         _link_contents($root, 'etc/socialtext', $dot_nlw);
+    }
+}
+
+sub link_reports {
+    my $base = "$FindBin::Bin/../../socialtext-reports";
+
+    status("Linking Reports");
+    _link_directory($base, 'lib/Socialtext/Reports', "$FindBin::Bin/..");
+    _link_contents($base, 'lib/Socialtext/WikiFixture', "$FindBin::Bin/..");
+    shell_run("cd $base && ./setup-dev-env");
+}
+
+sub _link_directory {
+    my ($fromdir, $subdir, $todir) = @_;
+    return unless -d "$fromdir/$subdir";
+
+    my $from = "$fromdir/$subdir";
+    my $to   = "$todir/$subdir";
+    unlink $to if -l $to;
+    error("$to already exists! Remove it first\n") if -e $to;
+    symlink $from, $to;
+
+    # add an entry to the local .gitignore if it's missing
+    $to =~ s{^$todir/}{};
+    unless (`grep $to .gitignore`) {
+        system("echo $to >> .gitignore");
+        system("git commit -m 'Added $to to gitignore' .gitignore");
     }
 }
 
@@ -170,6 +200,10 @@ Links B<everything>, all in one command.
 =item --plugin <plugin>
 
 Links the one specified plugin.
+
+=item --reports
+
+Link in the reports repo.
 
 =back
 
