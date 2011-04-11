@@ -73,10 +73,7 @@ killall json-proxy.scgi 2>&1 || true;
 
 # Create the basic dev-env
 rm -rf $HOME/.nlw/
-PLUGINS=${PLUGINS:-widgets agile csskit dashboard people signals socialcalc apache socialpoint control groups provisioning push multilogin testplugin}
-for PLUG in $PLUGINS; do
-    dev-bin/link-externals --plugin $PLUG
-done
+dev-bin/link-externals --all --lib-only
 dev-bin/st-make-all @clean
 dev-bin/st-make-all @all
 
@@ -84,9 +81,6 @@ dev-bin/st-make-all @all
 (cd ../plugins/socialcalc && make)
 
 rm -f etc/socialtext/db/cache.*.sql
-set +e
-dev-bin/link-externals --console
-set -e
 dev-bin/make-test-fixture --home_dir $HOME --fixture clean
 dev-bin/make-test-fixture --home_dir $HOME --fixture base_config
 dev-bin/make-test-fixture --home_dir $HOME --fixture $FIXTURE
@@ -96,12 +90,10 @@ dev-bin/make-test-fixture --home_dir $HOME --fixture $FIXTURE
 # Setup robots.txt file to prevent dev-env heat death
 perl -le 'print "User-agent: *\nDisallow: /"' > ~/.nlw/root/docroot/robots.txt
 
-echo "Linking in extra modules ..."
 # We set +e here so that if these fail, fdefs continues
 # otherwise everyone is forced to have all this code checked out
 set +e
-dev-bin/link-externals --console
-dev-bin/link-externals --reports
+dev-bin/link-externals --all
 
 # Start the supervisor
 dev-bin/setup-supervisors start
