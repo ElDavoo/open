@@ -331,7 +331,11 @@ MANIFEST:
 tardist: MANIFEST $(PERL_MAKEFILE)
 	$(PERL_MAKE) tardist
 
-test: testunit testwikid testjs 
+test: testunit testwikid testjs testreports testconsole merge-test-results
+
+merge-test-results:
+	@merge-prove ../socialtext-reports/.prove .prove
+	@merge-prove ../appliance/libsocialtext-appliance-perl/.prove .prove
 
 testunit: testunit-parallel testunit-serial
 
