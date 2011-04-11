@@ -137,11 +137,15 @@ sub _link_directory {
     error("$to already exists! Remove it first\n") if -e $to;
     symlink $from, $to;
 
-    # add an entry to the local .gitignore if it's missing
-    $to =~ s{^$todir/}{};
-    unless (`grep $to .gitignore`) {
-        system("echo $to >> .gitignore");
-        system("git commit -m 'Added $to to gitignore' .gitignore");
+    _ensure_scm_ignored($to, $todir);
+}
+
+sub _ensure_scm_ignored {
+    my ($path, $under) = @_;
+    $path =~ s{^$under/}{} if ($under);
+    unless (`grep $path .gitignore`) {
+        system("echo $path >> .gitignore");
+        system("git commit -m 'Added $path to gitignore' .gitignore");
     }
 }
 
@@ -175,13 +179,7 @@ sub _link_contents {
                     if -e $to;
 
                 symlink $from, $to;
-
-                # add an entry to the local .gitignore if it's missing
-                $to =~ s{^$todir/}{};
-                unless (`grep $to .gitignore`) {
-                    system("echo $to >> .gitignore");
-                    system("git commit -m 'Added $to to gitignore' .gitignore");
-                }
+                _ensure_scm_ignored($to, $todir);
             }
         },
         no_chdir => 1,
