@@ -7,18 +7,20 @@ use lib "$FindBin::Bin/../lib";
 
 use Test::Socialtext::DotProve qw(load save);
 
-my $prove = load(".prove");
+my @files  = @ARGV;
+my $target = pop @files;
 
-my $hudson = load("hudson.prove");
+my $into = load($target);
+foreach my $file (@files) {
+    my $from = load($file);
+    while (my ($k, $v) = each %{$from->{tests}}) {
+        my $from_fail = $v->{last_fail_time};
+        my $into_fail = $into->{tests}->{$k}->{last_fail_time};
 
-while (my ($k, $v) = each %{$hudson->{tests}}) {
-    my $hudson_fail = $v->{last_fail_time};
-    my $prove_fail = $prove->{tests}->{$k}->{last_fail_time};
-
-    if ($hudson_fail > $prove_fail) {
-        $prove->{tests}->{$k} = $v; # use hudson's info if it failed more recently than you.
+        if ($from_fail > $into_fail) {
+            $into->{tests}->{$k} = $v;  # keep most recent fail timestamp
+        }
     }
 }
 
-save($prove, ".prove");
-
+save($into, $target);

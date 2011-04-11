@@ -370,7 +370,7 @@ hottest: .prove
 hudson-update: .prove
 
 .prove: hudson.prove
-	merge-prove
+	merge-prove hudson.prove .prove
 
 hudson.prove: get-hudson-prove
 
