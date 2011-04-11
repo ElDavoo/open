@@ -85,7 +85,7 @@ dev-bin/st-make-all @all
 
 rm -f etc/socialtext/db/cache.*.sql
 set +e
-QUIET=1 dev-bin/link-console
+dev-bin/link-externals --console
 set -e
 dev-bin/make-test-fixture --home_dir $HOME --fixture clean
 dev-bin/make-test-fixture --home_dir $HOME --fixture base_config
@@ -100,7 +100,7 @@ echo "Linking in extra modules ..."
 # We set +e here so that if these fail, fdefs continues
 # otherwise everyone is forced to have all this code checked out
 set +e
-QUIET=1 dev-bin/link-console
+dev-bin/link-externals --console
 dev-bin/link-externals --reports
 
 # Start the supervisor
