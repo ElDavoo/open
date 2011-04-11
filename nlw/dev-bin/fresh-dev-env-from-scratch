@@ -90,14 +90,11 @@ dev-bin/make-test-fixture --home_dir $HOME --fixture $FIXTURE
 # Setup robots.txt file to prevent dev-env heat death
 perl -le 'print "User-agent: *\nDisallow: /"' > ~/.nlw/root/docroot/robots.txt
 
-# We set +e here so that if these fail, fdefs continues
-# otherwise everyone is forced to have all this code checked out
-set +e
+# Finish linking in external repos
 dev-bin/link-externals --all
 
 # Start the supervisor
 dev-bin/setup-supervisors start
-set -e
 
 [ $MINIFY_JS == 0 ] && bin/st-config set minify_javascript 0
 
