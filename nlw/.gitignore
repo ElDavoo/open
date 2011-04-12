@@ -607,3 +607,4 @@ template/console_wrapper.tmpl
 template/popup.html
 template/shutdown.html
 template/form.tmpl
+template/backup.html
