@@ -602,3 +602,4 @@ t/Socialtext/People/Relationships.t
 bin/search-numbers
 template/setup.html
 template/css.tmpl
+template/help.html
