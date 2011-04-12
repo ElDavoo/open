@@ -1,16 +1,16 @@
 package Socialtext::Job::Upgrade::RebuildPageLinks;
 # @COPYRIGHT@
 use Moose;
-use Parallel::ForkManager;
 use Socialtext::l10n qw/loc loc_lang system_locale/;
-use Socialtext::SQL qw/disconnect_dbh get_dbh/;
 use Socialtext::PageLinks;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
 
-# This can take a while, especially for super huge workspaces
-override 'grab_for'             => sub {3600 * 16};
+# This can take a while, especially for super huge workspaces. Never retry.
+override 'keep_exit_status_for' => sub { 3600 * 32 };
+override 'grab_for'             => sub { 3600 * 16 };
+override 'max_retries'          => sub {0};
 
 # Re-parsing all the content for each page can take a long time, so
 # we should not allow many of these jobs to run at the same time so that we
@@ -27,40 +27,11 @@ sub do_work {
     my $ws_name = $ws->name;
     $self->hub->log->info("Rebuilding page links for workspace: $ws_name");
 
-    my @pages = $self->hub->pages->all;
-    my $pm = Parallel::ForkManager->new(1);
+    for my $page ($self->hub->pages->all) {
+        my $links = Socialtext::PageLinks->new(hub => $hub, page => $page);
+        $links->update;
+    }
 
-    # Log any pages that cause core dumps!
-    $pm->run_on_finish( sub {
-            my $id = $_[2];
-            my $core_dump = $_[4];
-            $self->hub->log->error("Core dump while parsing $ws_name/$id")
-                if $core_dump;
-        }
-    );
-
-    # Disconnect the DBH so that child processes will create their own
-    # connections.
-    disconnect_dbh();
-
-    eval {
-        for my $page (@pages) {
-            # Process each page in a separate process.  This should lessen
-            # the impact of core dumps, should they occur.
-            $pm->start($page->id) and next;
-
-            my $links = Socialtext::PageLinks->new(hub => $hub, page => $page);
-            $links->update;
-
-            $pm->finish;
-        }
-        $pm->wait_all_children;
-
-    };
-    $self->hub->log->error($@) if $@;
-
-    # Need to explicitly re-connect the DBH after we disconnected it earlier.
-    $self->job->dbh(get_dbh());
     $self->completed();
 }
 
