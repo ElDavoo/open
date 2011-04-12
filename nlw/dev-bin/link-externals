@@ -1,0 +1,9 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use FindBin;
+
+my @args = grep { $_ ne '--plugin' } @ARGV;
+my $cmd  = "$FindBin::Bin/link-plugins";
+exec($cmd, @args);
