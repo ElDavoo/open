@@ -110,7 +110,7 @@ sub link_console {
     _link_contents($base, 'lib', "$FindBin::Bin/..");
     return if ($libonly);
 
-    _link_directory($base, 'template', "$FindBin::Bin/../share/console-template");
+    _link_contents($base, 'template', "$FindBin::Bin/../share/console-template");
 
     # Create the "index.cgi" script for a dev-env
     my $cgidir = "$dot_nlw/root/console";
