@@ -120,6 +120,12 @@ sub user_can {
 
     require Socialtext::Authz;
     my $authz = Socialtext::Authz->new();
+    if ($p{permission}->name eq 'admin') {
+        return 1 if $authz->user_has_permission_for_account(
+            account => $self->primary_account,
+            %p,
+        );
+    }
     return $authz->user_has_permission_for_group(
         group      => $self,
         %p,
