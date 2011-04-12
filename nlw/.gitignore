@@ -609,3 +609,4 @@ template/shutdown.html
 template/form.tmpl
 template/backup.html
 template/small_form.tmpl
+template/overview.html
