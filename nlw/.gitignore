@@ -605,3 +605,4 @@ template/css.tmpl
 template/help.html
 template/console_wrapper.tmpl
 template/popup.html
+template/shutdown.html
