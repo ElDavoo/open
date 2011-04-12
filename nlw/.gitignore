@@ -608,3 +608,4 @@ template/popup.html
 template/shutdown.html
 template/form.tmpl
 template/backup.html
+template/small_form.tmpl
