@@ -611,3 +611,4 @@ template/backup.html
 template/small_form.tmpl
 template/overview.html
 template/health.sheet
+t/wikitests/dashboard/widget-editor.wiki
