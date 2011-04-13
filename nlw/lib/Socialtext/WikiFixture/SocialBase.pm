@@ -3544,10 +3544,16 @@ sub _is_wikiwyg {
 sub masked_url_is {
     my ($self, $url, $expected) = @_;
     $self->get($url, 'text/html', "User-Agent=Gecko");
+
+    my $resp = $self->{http}->response;
+    if ($resp->code == 301 or $resp->code == 302) {
+        my $location = $resp->header('Location') || die 'No Location header';
+        diag "Redirect $location";
+        return $self->masked_url_is($location, $expected);
+    }
+
     $self->code_is(200);
-    my $content = $self->{http}->response->content;
-    
-    if ($content =~ /Socialtext\.masked_url = "([^"]*)";/) {
+    if ($resp->content =~ /Socialtext\.masked_url = "([^"]*)";/) {
         is $1, $expected, "masked-url-is $expected";
     }
     else {
