@@ -86,15 +86,33 @@ sub NewUserId {
     return sql_nextval('users___user_id');
 }
 
+my @resolve_id_order = (
+    [ driver_unique_id => 'driver_unique_id = ?' ],
+    [ driver_username  => 'LOWER(driver_username) = LOWER(?)' ],
+    [ email_address    => 'LOWER(email_address) = LOWER(?)' ],
+);
 sub ResolveId {
     my $class = shift;
-    my $p = shift;
-    my $user_id = sql_singlevalue(
-        q{SELECT user_id FROM users 
-          WHERE driver_key = ? AND driver_unique_id = ?},
-        $p->{driver_key},
-        $p->{driver_unique_id}
-    );
+    my $p = (@_==1) ? shift(@_) : {@_};
+
+    # HACK: map "object -> DB"
+    # - ideally we get rid of this thing having two names at different levels
+    # of the system, but for now this is needed to address Bug #2658
+    if ($p->{username} and not $p->{driver_username}) {
+        $p->{driver_username} = $p->{username};
+    }
+
+    foreach my $r (@resolve_id_order) {
+        my ($field,$sql_suffix) = @$r;
+        my $user_id = sql_singlevalue(
+            "SELECT user_id FROM users WHERE driver_key = ? AND $sql_suffix",
+            $p->{driver_key}, $p->{$field}
+        );
+        return $user_id if $user_id;
+    }
+
+    # nope, couldn't find the user.
+    return;
 }
 
 sub Now {
