@@ -613,3 +613,4 @@ template/overview.html
 template/health.sheet
 t/wikitests/dashboard/widget-editor.wiki
 t/wikitests/miki/profile-relationships-lots.wiki
+t/wikitests/miki/profile-relationships-hidden.wiki
