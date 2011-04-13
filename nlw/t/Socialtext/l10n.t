@@ -3,7 +3,7 @@
 use utf8;
 use strict;
 use warnings;
-use Test::Socialtext tests => 9;
+use Test::Socialtext tests => 10;
 use Socialtext::AppConfig;
 
 fixtures(qw( empty ));
@@ -43,6 +43,13 @@ Best_locale: {
 UnicodeCollation: {
     is(
         join(',', lsort(qw[ Ångström xylophone ḿegashark numanuma LOLcat ])),
+        'Ångström,LOLcat,ḿegashark,numanuma,xylophone'
+    );
+
+    is(
+        join(',', map { $_->{name} } lsort_by(name => map {
+            +{ name => $_ }
+        } qw[ Ångström xylophone ḿegashark numanuma LOLcat ])),
         'Ångström,LOLcat,ḿegashark,numanuma,xylophone'
     );
 }

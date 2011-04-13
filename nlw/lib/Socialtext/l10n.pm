@@ -5,7 +5,7 @@ use warnings;
 use Scalar::Defer qw(defer force);
 use base 'Exporter';
 use Socialtext::AppConfig;
-our @EXPORT = qw(__ loc lsort);
+our @EXPORT = qw(__ loc lsort lsort_by);
 our @EXPORT_OK = qw(loc_lang system_locale best_locale);
 our %EXPORT_TAGS = (all => [@EXPORT, @EXPORT_OK]);
 
@@ -18,8 +18,11 @@ Socialtext::l10n - Provides localization functions
 
 =head1 SYNOPSIS
 
-    # Exports "__", "loc" and "lsort" by default
+    # Exports "__", "loc", "lsort" and "lsort_by"
     use Socialtext::l10n;
+
+    my @foo = lsort("a", "B", "c");
+    my @bar = lsort_by( name => ($obj1, $obj2, $obj3));
 
     # Exports "loc_lang", "system_locale" and "best_locale" too
     use Socialtext::l10n ':all';
@@ -43,8 +46,6 @@ See Locale::Maketext::Simple for information on string formats.
 Creates a I<deferred> string. It's evaluated in the active locale whenever
 its value is used.
 
-=cut
-
 =head2 loc_lang
 
 Set the locale.
@@ -60,9 +61,20 @@ return the system locale.
 
 Returns the current system wide locale code.
 
+=head1 Unicode Collation
+
+=head2 lsort(@list)
+
+Sort a list of strings case-insensitively using Unicode collation algorithm,
+with proper ordering for accented characters.
+
+=head2 lsort_by($field => @list_of_hashes)
+
+Sort a list of hash references by a specific field, using Unicode collation algorithm.
+
 =head1 Localization Files
 
-The .po files are kept in share/l10n.
+The .po files are kept in F<share/l10n>.
 
 =cut
 
@@ -70,7 +82,14 @@ my $share_dir = Socialtext::AppConfig->new->code_base();
 my $l10n_dir = "$share_dir/l10n";
 my $collator = Unicode::Collate->new;
 
-sub lsort { $collator->sort(@_) }
+sub lsort_by {
+    my $field = shift;
+    sort { $collator->cmp($a->{$field}, $b->{$field}) } @_
+}
+
+sub lsort {
+    $collator->sort(@_)
+}
 
 require Locale::Maketext::Simple;
 Locale::Maketext::Simple->import (

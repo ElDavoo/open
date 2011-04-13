@@ -7,7 +7,7 @@ use Socialtext::Authen;
 use Socialtext::String qw/uri_escape/;
 use Socialtext::Permission 'ST_EDIT_PERM';
 use Socialtext::Helpers;
-use Socialtext::l10n qw(loc);
+use Socialtext::l10n;
 use Socialtext::Timer;
 use Socialtext::Session;
 use Socialtext::Formatter::LiteLinkDictionary;
@@ -386,7 +386,7 @@ sub _all_tags {
     my %weighted = $self->hub->category->weight_categories;
     my $tags = $weighted{tags};
 
-    my @rows = sort { lc $a->{name} cmp lc $b->{name} } grep {
+    my @rows = lsort_by name => grep {
         $_->{page_count} > 0
     } @$tags;
 
