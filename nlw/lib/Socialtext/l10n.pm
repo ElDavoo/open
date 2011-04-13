@@ -5,8 +5,12 @@ use warnings;
 use Scalar::Defer qw(defer force);
 use base 'Exporter';
 use Socialtext::AppConfig;
-our @EXPORT_OK = qw(__ loc loc_lang system_locale best_locale);
+our @EXPORT = qw(__ loc lsort);
+our @EXPORT_OK = qw(loc_lang system_locale best_locale);
+our %EXPORT_TAGS = (all => [@EXPORT, @EXPORT_OK]);
+
 use Socialtext::l10n::I18N::zz;
+use Unicode::Collate ();
 
 =head1 NAME
 
@@ -14,9 +18,13 @@ Socialtext::l10n - Provides localization functions
 
 =head1 SYNOPSIS
 
-    use Socialtext::l10n qw(loc loc_lang);
+    # Exports "__", "loc" and "lsort" by default
+    use Socialtext::l10n;
 
-    my $deferred = __('wiki.welcome');    # deferred loc()
+    # Exports "loc_lang", "system_locale" and "best_locale" too
+    use Socialtext::l10n ':all';
+
+    my $deferred = __('wiki.welcome');   # deferred loc()
     loc_lang('fr');                      # set the locale
     is loc('wiki.welcome'), 'Bienvenue'; # find localized text
     is $deferred, 'Bienvenue';           # this also works
@@ -60,6 +68,9 @@ The .po files are kept in share/l10n.
 
 my $share_dir = Socialtext::AppConfig->new->code_base();
 my $l10n_dir = "$share_dir/l10n";
+my $collator = Unicode::Collate->new;
+
+sub lsort { $collator->sort(@_) }
 
 require Locale::Maketext::Simple;
 Locale::Maketext::Simple->import (
