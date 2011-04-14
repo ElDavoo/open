@@ -348,10 +348,10 @@ testjs:
 	@$(PROVE) --jobs $(TEST_JOBS) $(JS_TESTS)
 
 testreports:
-	@cd ../socialtext-reports/ && $(PROVE) --jobs $(TEST_JOBS) t/
+	@cd ../socialtext-reports/ && $(PROVE) --jobs 1 t/
 
 testconsole:
-	@cd ../appliance/libsocialtext-appliance-perl/ && $(PROVE) --jobs $(TEST_JOBS) t/
+	@cd ../appliance/libsocialtext-appliance-perl/ && $(PROVE) --jobs 1 t/
 
 testplugin-%:
 	@$(PROVE) -s $(shell cd share/plugin/$(@:testplugin-%=%) && find -L t -name '*.t' -not -regex '^t/live.*' | dev-bin/fixture-sort)
@@ -359,7 +359,7 @@ testplugin-%:
 testlive:
 	@$(PROVE) -r t/live
 
-testall: test testlive testreports testconsole
+testall: test testlive
 
 quicktest: .prove
 	$(PROVE) --jobs $(TEST_JOBS) $(shell list-tests-faster-than 10)
