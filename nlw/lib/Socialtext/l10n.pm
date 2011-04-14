@@ -4,6 +4,7 @@ use strict;
 use warnings;
 use Scalar::Defer qw(defer force);
 use base 'Exporter';
+use Scalar::Util 'blessed';
 use Socialtext::AppConfig;
 our @EXPORT = qw(__ loc lsort lsort_by);
 our @EXPORT_OK = qw(loc_lang system_locale best_locale);
@@ -70,7 +71,7 @@ with proper ordering for accented characters.
 
 =head2 lsort_by($field => @list_of_hashes)
 
-Sort a list of hash references by a specific field, using Unicode collation algorithm.
+Sort a list of objects or hash references by a specific field, using Unicode collation algorithm.
 
 =head1 Localization Files
 
@@ -84,7 +85,10 @@ my $collator = Unicode::Collate->new;
 
 sub lsort_by {
     my $field = shift;
-    sort { $collator->cmp($a->{$field}, $b->{$field}) } @_
+    sort { $collator->cmp(
+        ((blessed($a) and $a->can($field)) ? $a->$field : $a->{$field}),
+        ((blessed($b) and $b->can($field)) ? $b->$field : $b->{$field})
+    ) } @_
 }
 
 sub lsort {

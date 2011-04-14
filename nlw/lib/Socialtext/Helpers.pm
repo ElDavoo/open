@@ -9,7 +9,7 @@ use Socialtext;
 use base 'Socialtext::Base';
 use Socialtext::File;
 use Socialtext::TT2::Renderer;
-use Socialtext::l10n qw/loc loc_lang/;
+use Socialtext::l10n;
 use Socialtext::Stax;
 use Socialtext::Timer;
 use Socialtext::String ();
@@ -161,8 +161,7 @@ sub _get_workspace_list_for_template {
 
     my @workspaces = 
     return $self->{_workspacelist} = [
-        sort { lc($a->{label}) cmp lc($b->{label})} 
-        map {+{
+        lsort_by label => map {+{
             label => $_->title,
             name => $_->name,
             account => $_->account->name,
