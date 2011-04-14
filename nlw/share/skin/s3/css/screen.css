@@ -4521,11 +4521,10 @@ table.st-ss th span {
 .groupsTitle img {
     position: absolute;
     top: -10px;
-    left: 108px;
     border: 1px solid #c5c5c5;
 }
 .groupsTitle .groupName {
-    margin-left: 27px;
+    margin-left: 40px;
 }
 
 .exploreTitle .prefix,
