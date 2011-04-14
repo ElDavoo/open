@@ -214,16 +214,20 @@ $SendClass                       = 'Sendmail';
 
         my @attachments;
         my $total_size = 0;
-        for my $file ( grep {-f} @{ $p{attachments} } ) {
+        for my $attach ( @{ $p{attachments} } ) {
+            # could be an object or filename
+            next unless ref($attach) || -f $attach;
 
-            my $att_size = -s $file;
+            my $att_size = ref($attach)
+                ? $attach->content_length
+                : -s $attach;
+
             next if $p{max_size} and $total_size + $att_size > $p{max_size};
 
-            push @attachments, $self->_attachment_part($file);
+            push @attachments, $self->_attachment_part($attach);
 
             $total_size += $att_size;
         }
-
         my $email;
         if (@attachments) {
 
