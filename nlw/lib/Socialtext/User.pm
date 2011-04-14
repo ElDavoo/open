@@ -806,6 +806,7 @@ sub workspaces {
     return Socialtext::Workspace::Roles->WorkspacesByUserId(
         @_,
         user_id => $self->user_id,
+        order_by => 'alpha',
     );
 }
 
