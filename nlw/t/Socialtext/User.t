@@ -390,7 +390,7 @@ to_hash: {
 
     # List of fields we expect in each of the hash reprs
     my @minimal_fields = qw(
-        user_id username best_full_name
+        user_id username best_full_name display_name
     );
     my @standard_fields = qw(
         user_id username email_address password
