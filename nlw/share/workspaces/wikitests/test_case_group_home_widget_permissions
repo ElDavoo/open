@@ -22,6 +22,7 @@
 | *Comment* | Test Case: Group Home Widget Permissions Promote to admin, *do* see edit group or edit layout buttons |  |
 | st-admin | add-group-admin --g %%group_id%% --e %%group_user%% | is now a admin of the |
 | open_ok | /st/group/%%group_id%% |  |
+| wait_for_text_present_ok | There are no People tags for people in this group yet. | 30000 |
 | wait_for_element_visible_ok | st-edit-group | 30000 |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
 | click_ok | st-edit-layout |  |
@@ -45,6 +46,7 @@
 | wait_for_element_visible_ok | link=%%tag_visible_one%% | 30000 |
 | wait_for_element_visible_ok | link=%%tag_visible_two%% | 30000 |
 | wait_for_element_not_present_ok | link=%%tag_invisible%% | 30000 |
+| wait_for_text_not_present_ok | There are no People tags for people in this group yet. | 30000 |
 
 | *Comment* | Test Case: Group Home Widget Permissions TODO Active Content Widget disappears if you remove the workspace associated |  |
 | set | test_ws | testwsgroup%%start_time%% |
