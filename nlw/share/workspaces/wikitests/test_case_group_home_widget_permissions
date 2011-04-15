@@ -1,0 +1,61 @@
+| *Comment* | Test Case: Group Home Widget P {link: static [3.4.0.1/skin/s2/images/wikiwyg icons/video.pngermissions]} |
+
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Group Home Widget Permissions Setup |  |  |
+| st-setup-a-group | 1 | 1 | 1 |
+| set | just_a_member | justgroupmbr%%start_time%%@matt.socialtext.net |  |
+| set | non_member | non_group_member%%start_time%%@matt.socialtext.net |  |
+| st-admin | create-user --e %%just_a_member%% --p %%password%% --account %%group_acct%% | was created |  |
+| st-admin | add-member --e %%just_a_member%% --g %%group_id%% | is now a member of |  |
+| st-admin | creae-user --e %%non_member%% --p %%passwrod%% --account %%group_acct%% | was created |  |
+
+| *Comment* | Test Case: Group Home Widget Permissions TODO Tags in "People Tags" Widgeet are localized to the group |  |
+
+
+| *Comment* | Test Case: Group Home Widget Permissions Console ('system') Admin has edit group and edit layout buttons |  |
+| set | group_biz_admin | group_biz%%start_time%%@matt.socialtext.net |  |
+| st-admin | create-user --e %%group_biz_admin%% --p %%password%% --account %%group_acct%% | was created |
+| st-admin | give-system-admin --e %%group_biz_admin%% | now has system admin access |
+| st-admin | add-member --e %%group_biz_admin%% --g %%group_id%% | is now a member of |  |
+| st-logoutin | %%group_biz_admin%% | %%password%% |
+| open_ok | /st/group/%%group_id%% |  |
+| wait_for_element_visible_ok | st-edit-group | 30000 |
+| wait_for_element_visible_ok | st-edit-layout | 30000 |
+| click_ok | st-edit-layout |  |
+| wait_for_text_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
+| wait_for_element_visible_ok | st-revert-layout | 30000 |
+
+| *Comment* | Test Case: Group Home Widget Permissions - Control Panel ('accounts') Admin has edit group and edit layout buttons |  |
+| set | group_cp_admin | group_cp_admin%%start_time%%@matt.socialtext.net |  |
+| st-admin | create-user --e %%group_cp_admin%% --p %%password%% --account %%group_acct%% | was created |
+| st-admin | give-accounts-admin --e %%group_cp_admin%% | now has accounts admin access |
+| st-admin | add-member --e %%group_cp_admin%% --g %%group_id%% | is now a member of |  |
+| st-logoutin | %%group_cp_admin%% | %%password%% |  |
+| wait_for_element_visible_ok | st-edit-group | 30000 |
+| wait_for_element_visible_ok | st-edit-layout | 30000 |
+| click_ok | st-edit-layout |  |
+| wait_for_text_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
+| wait_for_element_visible_ok | st-revert-layout | 30000 |
+
+
+| *Comment* | Test Case: Group Home Widget Permissions Login as %%group_user%%, do not see edit group or edit layout buttons |  |
+| st-logoutin | %%group_user%% | %%password%% |  |
+| open_ok | /st/group/%%group_id%% |  |
+| wait_for_element_not_present_ok | st-edit-group | 30000 |
+| wait_for_element_not_present_ok | st-edit-layout | 30000 |
+
+| *Comment* | Test Case: Group Home Widget Permissions Promote to admin, *do* see edit group or edit layout buttons |  |
+| st-admin | add-group-admin --g %%group_id%% --e %%group_user%% | is now a admin of the |
+| open_ok | /st/group/%%group_id%% |  |
+| wait_for_element_visible_ok | st-edit-group | 30000 |
+| wait_for_element_visible_ok | st-edit-layout | 30000 |
+| click_ok | st-edit-layout |  |
+
+
+
+| *Comment* | Test Case: Group Home Widget Permissions TEARDOWN |  |
+| st-admin | delete-workspace --no-export --w %%group_acct%%_central | was deleted |
+| delete-group | %%group_id%% |  |
+
+| *Comment* | Test Case: Group Home Widget Permissions COMPLETED |  |
