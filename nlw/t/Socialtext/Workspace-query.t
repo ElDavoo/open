@@ -192,7 +192,7 @@ sub workspace_names {
             DateTime::Format::Pg->format_timestamptz($now),
     );
 
-    for my $username ( qw( devnull6@urth.org devnull7@urth.org ) ) {
+    for my $username ( qw( devnull6@socialtext.com devnull7@socialtext.com ) ) {
         my $user = Socialtext::User->new( username => $username );
         $ws->add_user( user => $user );
     }

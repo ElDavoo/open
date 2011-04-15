@@ -6,7 +6,7 @@ workspaces:
   foobar:
     extra_pages: 1
     extra_users:
-      member: [devnull@urth.org]
+      member: [devnull@socialtext.com]
       impersonator: [devnull2@socialtext.com]
 
 conflicts:
