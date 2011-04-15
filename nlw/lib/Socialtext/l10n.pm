@@ -7,7 +7,7 @@ use base 'Exporter';
 use Scalar::Util 'blessed';
 use Socialtext::AppConfig;
 our @EXPORT = qw(__ loc lcmp lsort lsort_by);
-our @EXPORT_OK = qw(loc_lang system_locale best_locale);
+our @EXPORT_OK = qw(loc_lang system_locale best_locale getSortKey);
 our %EXPORT_TAGS = (all => [@EXPORT, @EXPORT_OK]);
 
 use Socialtext::l10n::I18N::zz;
@@ -25,7 +25,7 @@ Socialtext::l10n - Provides localization functions
     my @foo = lsort("a", "B", "c");
     my @bar = lsort_by( name => ($obj1, $obj2, $obj3));
 
-    # Exports "loc_lang", "system_locale" and "best_locale" too
+    # Exports "loc_lang", "system_locale", "best_locale" and "getSortKey" too
     use Socialtext::l10n ':all';
 
     my $deferred = __('wiki.welcome');   # deferred loc()
@@ -77,6 +77,10 @@ Sort a list of objects or hash references by a specific field, using Unicode col
 
 Like C<$a cmp $b>, except with Unicode collation order.
 
+=head2 getSortKey($string)
+
+Return the collation key for a given string.
+
 =head1 Localization Files
 
 The .po files are kept in F<share/l10n>.
@@ -101,6 +105,10 @@ sub lsort {
 
 sub lcmp {
     $collator->cmp(@_);
+}
+
+sub getSortKey {
+    $collator->getSortKey(@_);
 }
 
 require Locale::Maketext::Simple;
