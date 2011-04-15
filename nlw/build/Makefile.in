@@ -331,7 +331,12 @@ MANIFEST:
 tardist: MANIFEST $(PERL_MAKEFILE)
 	$(PERL_MAKE) tardist
 
-test: testunit testwikid testjs testreports testconsole
+test-deps: testunit testwikid testjs testreports testconsole
+
+test: test-allinone
+
+test-allinone:
+	@$(PROVE) --jobs $(TEST_JOBS) $(PARALLEL_UNIT_TESTS) $(SERIAL_UNIT_TESTS) $(WIKID_TESTS) $(JS_TESTS)
 
 testunit: testunit-parallel testunit-serial
 
