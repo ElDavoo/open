@@ -15,7 +15,7 @@ use Socialtext::Group;
 use Socialtext::WorkspaceInvitation;
 use Socialtext::GroupInvitation;
 use Socialtext::URI;
-use Socialtext::l10n qw( loc system_locale);
+use Socialtext::l10n qw(:all);
 use Socialtext::Helpers;
 
 sub class_id {'user_settings'}
@@ -143,7 +143,7 @@ sub users_listall {
         if $self->cgi->Button;
 
     my $ws = $self->hub->current_workspace;
-    my @uwr = sort { $a->[0]->best_full_name cmp $b->[0]->best_full_name }
+    my @uwr = sort { lcmp($a->[0]->best_full_name, $b->[0]->best_full_name) }
         $ws->user_roles(direct => 1)->all;
 
     my @gwr = $ws->group_roles->all;

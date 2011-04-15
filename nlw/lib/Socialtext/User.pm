@@ -22,7 +22,7 @@ use Socialtext::UserSet qw/:const/;
 use Socialtext::User::Default::Users qw(:system-user :guest-user);
 use Socialtext::User::Restrictions;
 use Email::Address;
-use Socialtext::l10n qw(system_locale loc);
+use Socialtext::l10n qw(:all);
 use Socialtext::EmailSender::Factory;
 use Socialtext::User::Cache;
 use Socialtext::Cache;
@@ -435,7 +435,7 @@ sub accounts {
         return (wantarray ? @$acct_ids : $acct_ids);
     }
     else {
-        my @accounts = sort {$a->name cmp $b->name} 
+        my @accounts = lsort_by name =>
                        map {
                            Socialtext::Account->new(account_id => $_)
                        } @$acct_ids;
@@ -1735,7 +1735,7 @@ sub accounts_and_groups {
     my $group_count = 0;
     my %acct_group_set;
 
-    my @accounts = sort { lc($a->name) cmp lc($b->name)} 
+    my @accounts = lsort_by name =>
         @{$self->accounts(plugin => $p{plugin})};
     for my $acct (@accounts) {
         # List groups this user is in that are directly-connected to the

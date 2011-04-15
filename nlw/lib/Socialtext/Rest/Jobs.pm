@@ -10,7 +10,7 @@ use Socialtext::JSON;
 use Socialtext::HTTP ':codes';
 use Socialtext::Exceptions;
 use Socialtext::Jobs;
-use Socialtext::l10n qw(loc);
+use Socialtext::l10n;
 use POSIX qw/strftime/;
 
 {
@@ -67,7 +67,7 @@ sub get_resource {
         @job_stats = grep { $filter{$_->{name}} } @job_stats;
     }
 
-    @job_stats = sort {$a->{name} cmp $b->{name}} @job_stats;
+    @job_stats = lsort_by name => @job_stats;
 
     return \@job_stats;
 }

@@ -8,24 +8,25 @@ use base 'Socialtext::Rest::Collection';
 
 use Socialtext::HTTP ':codes';
 use Socialtext::Base ();
+use Socialtext::l10n;
 use Number::Format;
 
 sub SORTS {
     return +{
         alpha => sub {
-            $Socialtext::Rest::Collection::a->{name}
-                cmp $Socialtext::Rest::Collection::b->{name};
+            lcmp($Socialtext::Rest::Collection::a->{name},
+                 $Socialtext::Rest::Collection::b->{name});
         },
         size => sub {
             $Socialtext::Rest::Collection::b->{'content-length'} <=>
                 $Socialtext::Rest::Collection::a->{'content-length'};
         },
         alpha_date => sub {
-            lc($Socialtext::Rest::Collection::a->{name}
-                . "\0" . $Socialtext::Rest::Collection::a->{date})
-            cmp
-            lc($Socialtext::Rest::Collection::b->{name}
-                . "\0" . $Socialtext::Rest::Collection::b->{date});
+            lcmp($Socialtext::Rest::Collection::a->{name},
+                 $Socialtext::Rest::Collection::b->{name})
+                or
+            ($Socialtext::Rest::Collection::a->{date} <=>
+                $Socialtext::Rest::Collection::b->{date});
         }
     };
 }

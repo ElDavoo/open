@@ -3,6 +3,7 @@ package Socialtext::Rest::UserAccounts;
 use Moose;
 use Socialtext::User;
 use Socialtext::HTTP qw(:codes);
+use Socialtext::l10n;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Collection';
@@ -114,12 +115,12 @@ sub _get_entities {
     if ($self->reverse) {
         @sorted = $order eq 'account_id'
             ? sort { $b->{$order} <=> $a->{$order} } @$accounts
-            : sort { lc($b->{$order}) cmp lc($a->{$order}) } @$accounts;
+            : reverse lsort_by $order => @$accounts;
     }
     else {
         @sorted = $order eq 'account_id'
             ? sort { $a->{$order} <=> $b->{$order} } @$accounts
-            : sort { lc($a->{$order}) cmp lc($b->{$order}) } @$accounts;
+            : lsort_by $order => @$accounts;
     }
     return [
         $self->pageable

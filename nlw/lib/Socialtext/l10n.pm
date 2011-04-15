@@ -6,7 +6,7 @@ use Scalar::Defer qw(defer force);
 use base 'Exporter';
 use Scalar::Util 'blessed';
 use Socialtext::AppConfig;
-our @EXPORT = qw(__ loc lsort lsort_by);
+our @EXPORT = qw(__ loc lcmp lsort lsort_by);
 our @EXPORT_OK = qw(loc_lang system_locale best_locale);
 our %EXPORT_TAGS = (all => [@EXPORT, @EXPORT_OK]);
 
@@ -19,7 +19,7 @@ Socialtext::l10n - Provides localization functions
 
 =head1 SYNOPSIS
 
-    # Exports "__", "loc", "lsort" and "lsort_by"
+    # Exports "__", "loc", "lcmp", "lsort" and "lsort_by"
     use Socialtext::l10n;
 
     my @foo = lsort("a", "B", "c");
@@ -73,6 +73,10 @@ with proper ordering for accented characters.
 
 Sort a list of objects or hash references by a specific field, using Unicode collation algorithm.
 
+=head2 lcmp($a, $b)
+
+Like C<$a cmp $b>, except with Unicode collation order.
+
 =head1 Localization Files
 
 The .po files are kept in F<share/l10n>.
@@ -92,7 +96,11 @@ sub lsort_by {
 }
 
 sub lsort {
-    $collator->sort(@_)
+    $collator->sort(@_);
+}
+
+sub lcmp {
+    $collator->cmp(@_);
 }
 
 require Locale::Maketext::Simple;

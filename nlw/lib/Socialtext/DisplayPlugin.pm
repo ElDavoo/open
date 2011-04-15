@@ -10,7 +10,7 @@ use DateTime::Format::Strptime;
 use Socialtext::User;
 use Socialtext::String qw/html_escape title_to_id uri_escape/;
 use Socialtext::BrowserDetect ();
-use Socialtext::l10n qw/loc system_locale __/;
+use Socialtext::l10n qw/:all/;
 use Socialtext::Locales qw/available_locales/;
 use Socialtext::JSON;
 use Socialtext::Timer;
@@ -429,8 +429,7 @@ sub _getCurrentTags {
         %weighted_tags = $self->hub->category->weight_categories(@$page_tags);
 
         $weighted_tags{sorted_tags} = [
-            sort { lc($a->{name}) cmp lc($b->{name}) }
-            @{ $weighted_tags{tags} }
+            lsort_by name => @{ $weighted_tags{tags} }
         ];
     }
 

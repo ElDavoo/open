@@ -22,7 +22,7 @@ use Try::Tiny;
 
 use Socialtext::Search::AbstractFactory;
 use Socialtext::Validate qw( validate SCALAR_TYPE ARRAYREF_TYPE );
-use Socialtext::l10n qw( loc loc_lang system_locale );
+use Socialtext::l10n qw(:all);
 use Socialtext::Locales qw( valid_code );
 use Socialtext::Log qw( st_log st_timed_log );
 use Socialtext::Workspace;
@@ -2463,7 +2463,7 @@ sub show_acls {
     my @roles = map { delete $all_roles{$_} }
         grep { exists $all_roles{$_} }
         Socialtext::Role->DefaultRoleNames;
-    push @roles, sort { $a->name() cmp $b->name() } values %all_roles;
+    push @roles, lsort_by name => values %all_roles;
 
     for my $role (@roles) {
         my $col = '|' x length $role->display_name();

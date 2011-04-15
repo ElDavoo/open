@@ -7,7 +7,7 @@ use DateTime;
 use DateTime::Format::W3CDTF;
 use Socialtext::Timer;
 use Socialtext::URI;
-use Socialtext::l10n qw(loc);
+use Socialtext::l10n;
 
 our $VERSION = 0.01;
 
@@ -136,7 +136,7 @@ sub _item_as_html {
     my @attachments = $page->attachments;
     if ( scalar @attachments ) {
         my @filenames
-            = sort { lc($a) cmp lc($b) } map { $_->filename } @attachments;
+            = lsort map { $_->filename } @attachments;
         push @html_footers,
             "<div>".loc("feed.attachments:")." " . join( ", ", @filenames ) . "</div>";
     }

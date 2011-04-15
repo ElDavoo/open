@@ -8,6 +8,7 @@ use base 'Socialtext::Plugin';
 use Socialtext::User;
 use Class::Field qw( const field );
 use Storable ();
+use Socialtext::l10n;
 
 const sortdir => {
     Summary        => 'asc',
@@ -152,13 +153,13 @@ sub _gen_sort_closure {
         if ( $direction eq 'asc' ) {
             return sub {
                 $a->{revision_count} <=> $b->{revision_count}
-                    or lc( $a->{Subject} ) cmp lc( $b->{Subject} );
+                    or lcmp( $a->{Subject}, $b->{Subject} );
                 }
         }
         else {
             return sub {
                 $b->{revision_count} <=> $a->{revision_count}
-                    or lc( $a->{Subject} ) cmp lc( $b->{Subject} );
+                    or lcmp( $a->{Subject}, $b->{Subject} );
                 }
         }
     }
@@ -167,52 +168,48 @@ sub _gen_sort_closure {
         # may not be the same as the From header.
         if ( $direction eq 'asc' ) {
             return sub {
-                lc( Socialtext::User->new( 
+                lcmp( Socialtext::User->new( 
                     username => $a->{username} 
-                )->guess_sortable_name )
-                cmp 
-                lc( Socialtext::User->new(
+                )->guess_sortable_name,
+                Socialtext::User->new(
                     username => $b->{username}
                 )->guess_sortable_name )
-                or lc( $a->{Subject} ) cmp lc( $b->{Subject} );
+                or lcmp( $a->{Subject}, $b->{Subject} );
             }
         }
         else {
             return sub {
-                lc( Socialtext::User->new( 
+                lcmp( Socialtext::User->new( 
                     username => $b->{username} 
-                )->guess_sortable_name )
-                cmp 
-                lc( Socialtext::User->new(
+                )->guess_sortable_name,
+                Socialtext::User->new(
                     username => $a->{username}
                 )->guess_sortable_name )
-                or lc( $b->{Subject} ) cmp lc( $a->{Subject} );
+                or lcmp( $b->{Subject}, $a->{Subject} );
             }
         }
     }
     elsif ( $sortby eq 'creator' ) { 
         if ( $direction eq 'asc' ) {
             return sub {
-                lc( Socialtext::User->new( 
+                lcmp( Socialtext::User->new( 
                     username => $a->{creator} 
-                )->guess_sortable_name )
-                cmp 
-                lc( Socialtext::User->new(
+                )->guess_sortable_name,
+                Socialtext::User->new(
                     username => $b->{creator}
                 )->guess_sortable_name )
-                or lc( $a->{Subject} ) cmp lc( $b->{Subject} );
+                or lcmp( $a->{Subject}, $b->{Subject} );
             }
         }
         else {
             return sub {
-                lc( Socialtext::User->new( 
+                lcmp( Socialtext::User->new( 
                     username => $b->{creator} 
-                )->guess_sortable_name )
-                cmp 
-                lc( Socialtext::User->new(
+                )->guess_sortable_name,
+                Socialtext::User->new(
                     username => $a->{creator}
                 )->guess_sortable_name )
-                or lc( $b->{Subject} ) cmp lc( $a->{Subject} );
+                or lcmp( $b->{Subject}, $a->{Subject} );
             }
         }
     }

@@ -4,6 +4,7 @@ package Socialtext::Rest::Tags;
 use strict;
 use warnings;
 
+use Socialtext::l10n;
 use Socialtext::String;
 
 use base 'Socialtext::Rest::Collection';
@@ -11,8 +12,8 @@ use base 'Socialtext::Rest::Collection';
 sub SORTS {
     return +{
         alpha => sub {
-            lc($Socialtext::Rest::Collection::a->{name})
-                cmp lc($Socialtext::Rest::Collection::b->{name});
+            lcmp($Socialtext::Rest::Collection::a->{name},
+                 $Socialtext::Rest::Collection::b->{name});
         },
         weighted => sub {
             $Socialtext::Rest::Collection::b->{page_count} <=>
