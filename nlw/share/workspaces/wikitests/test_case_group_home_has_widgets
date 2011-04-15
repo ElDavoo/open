@@ -7,10 +7,35 @@
 | set | just_a_member | justgroupmbr%%start_time%%@matt.socialtext.net |  |
 | st-admin | create-user --e %%just_a_member%% --p %%password%% --account %%group_acct%% | was created |  |
 | st-admin | add-member --e %%just_a_member%% --g %%group_id%% | is now a member of |  |
-| st-logoutin | %%group_user%% | %%password%% |  |
+
+| *Comment* | Test Case: Self Join Has Widgets Console ('system') Admin has edit group and edit layout buttons |  |
+| set | group_biz_admin | group_biz%%start_time%%@matt.socialtext.net |  |
+| st-admin | create-user --e %%group_biz_admin%% --p %%password%% --account %%group_acct%% | was created |
+| st-admin | give-system-admin --e %%group_biz_admin%% | now has system admin access |
+| st-admin | add-member --e %%group_biz_admin%% --g %%group_id%% | is now a member of |  |
+| st-logoutin | %%group_biz_admin%% | %%password%% |
+| open_ok | /st/group/%%group_id%% |  |
+| wait_for_element_visible_ok | st-edit-group | 30000 |
+| wait_for_element_visible_ok | st-edit-layout | 30000 |
+| click_ok | st-edit-layout |  |
+| wait_for_text_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
+| wait_for_element_visible_ok | st-revert-layout | 30000 |
+
+| *Comment* | Test Case: Self Join Has Widgets- Control Panel ('accounts') Admin has edit group and edit layout buttons |  |
+| set | group_cp_admin | group_cp_admin%%start_time%%@matt.socialtext.net |  |
+| st-admin | create-user --e %%group_cp_admin%% --p %%password%% --account %%group_acct%% | was created |
+| st-admin | give-accounts-admin --e %%group_cp_admin%% | now has accounts admin access |
+| st-admin | add-member --e %%group_cp_admin%% --g %%group_id%% | is now a member of |  |
+| st-logoutin | %%group_cp_admin%% | %%password%% |  |
+| wait_for_element_visible_ok | st-edit-group | 30000 |
+| wait_for_element_visible_ok | st-edit-layout | 30000 |
+| click_ok | st-edit-layout |  |
+| wait_for_text_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
+| wait_for_element_visible_ok | st-revert-layout | 30000 |
 
 
 | *Comment* | Test Case: Self Join Has Widgets Login as %%group_user%%, do not see edit group or edit layout buttons |  |
+| st-logoutin | %%group_user%% | %%password%% |  |
 | open_ok | /st/group/%%group_id%% |  |
 | wait_for_element_not_present_ok | st-edit-group | 30000 |
 | wait_for_element_not_present_ok | st-edit-layout | 30000 |
@@ -94,6 +119,8 @@
 | wait_for_element_visible_ok | st-cancel-layout | 30000 |
 | wait_for_element_visible_ok | st-save-layout | 30000 |
 | wait_for_element_visible_ok | st-add-widget | 30000 |
+
+
 
 | *Comment* | Test Case: Group Home Has Widgets TEARDOWN |  |
 | setSpeed | 0 |  |
