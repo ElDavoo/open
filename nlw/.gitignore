@@ -612,3 +612,4 @@ template/small_form.tmpl
 template/overview.html
 template/health.sheet
 t/wikitests/dashboard/widget-editor.wiki
+t/wikitests/control/group_add_users.wiki
