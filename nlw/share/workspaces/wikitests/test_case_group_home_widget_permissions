@@ -4,43 +4,17 @@
 
 | *Comment* | Test Case: Group Home Widget Permissions Setup |  |  |
 | st-setup-a-group | 1 | 1 | 1 |
-| set | just_a_member | justgroupmbr%%start_time%%@matt.socialtext.net |  |
-| set | non_member | non_group_member%%start_time%%@matt.socialtext.net |  |
+| set | just_a_member_short | justgroupmbr%%start_time%% |  |
+| set | just_a_member | %%ust_a_member_short%%@matt.socialtext.net |  |
+
+| set | non_member_short | non_group_member%%start_time%% |  |
+| set | non_member | %%non_member_short%%@matt.socialtext.net |  |
 | st-admin | create-user --e %%just_a_member%% --p %%password%% --account %%group_acct%% | was created |  |
 | st-admin | add-member --e %%just_a_member%% --g %%group_id%% | is now a member of |  |
 | st-admin | creae-user --e %%non_member%% --p %%passwrod%% --account %%group_acct%% | was created |  |
 
-| *Comment* | Test Case: Group Home Widget Permissions TODO Tags in "People Tags" Widgeet are localized to the group |  |
-
-
-| *Comment* | Test Case: Group Home Widget Permissions Console ('system') Admin has edit group and edit layout buttons |  |
-| set | group_biz_admin | group_biz%%start_time%%@matt.socialtext.net |  |
-| st-admin | create-user --e %%group_biz_admin%% --p %%password%% --account %%group_acct%% | was created |
-| st-admin | give-system-admin --e %%group_biz_admin%% | now has system admin access |
-| st-admin | add-member --e %%group_biz_admin%% --g %%group_id%% | is now a member of |  |
-| st-logoutin | %%group_biz_admin%% | %%password%% |
-| open_ok | /st/group/%%group_id%% |  |
-| wait_for_element_visible_ok | st-edit-group | 30000 |
-| wait_for_element_visible_ok | st-edit-layout | 30000 |
-| click_ok | st-edit-layout |  |
-| wait_for_text_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
-| wait_for_element_visible_ok | st-revert-layout | 30000 |
-
-| *Comment* | Test Case: Group Home Widget Permissions - Control Panel ('accounts') Admin has edit group and edit layout buttons |  |
-| set | group_cp_admin | group_cp_admin%%start_time%%@matt.socialtext.net |  |
-| st-admin | create-user --e %%group_cp_admin%% --p %%password%% --account %%group_acct%% | was created |
-| st-admin | give-accounts-admin --e %%group_cp_admin%% | now has accounts admin access |
-| st-admin | add-member --e %%group_cp_admin%% --g %%group_id%% | is now a member of |  |
-| st-logoutin | %%group_cp_admin%% | %%password%% |  |
-| wait_for_element_visible_ok | st-edit-group | 30000 |
-| wait_for_element_visible_ok | st-edit-layout | 30000 |
-| click_ok | st-edit-layout |  |
-| wait_for_text_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
-| wait_for_element_visible_ok | st-revert-layout | 30000 |
-
-
 | *Comment* | Test Case: Group Home Widget Permissions Login as %%group_user%%, do not see edit group or edit layout buttons |  |
-| st-logoutin | %%group_user%% | %%password%% |  |
+| st-logoutin | %%group_user%% | %%password%% |
 | open_ok | /st/group/%%group_id%% |  |
 | wait_for_element_not_present_ok | st-edit-group | 30000 |
 | wait_for_element_not_present_ok | st-edit-layout | 30000 |
@@ -51,6 +25,61 @@
 | wait_for_element_visible_ok | st-edit-group | 30000 |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
 | click_ok | st-edit-layout |  |
+
+
+
+| *Comment* | Test Case: Group Home Widget Permissions Tags in "People Tags" Widget are localized to the group |  |  |
+| *Comment* | Test Case: Group Home Widget Permissions Tag %%group_user%% |  |  |
+| st-find-member | %%group_user_short%% |  |  |
+| set | tag_visible_one | groupusershort%%start_time%% |  |
+| call | [st-tag-user] | find_user_short=%%group_user_short%% | tag_to_apply=%%tag_visible_one%% |
+
+| *Comment* | Test Case: Group Home Widget Permissions Tag %%just_a_member%% |  |  |
+| st-find-member | %%just_a_member_short%% |  |  |
+| set | tag_visible_two | membershort%%start_time%% |  |
+| call | [st-tag-user] | find_user_short=%%just_a_member%% | tag_to_apply=%%tag_visible_two%% |  |
+
+| *Comment* | Test Case: Group Home Widget Permissions Tag %%non_member%% |  |  |
+| st-find-member | %%non_member_short%% |  |  |
+| set | tag_invisible | membershort%%start_time%% |  |
+| call | [st-tag-user] | find_user_short=%%non_member_short%% | tag_to_apply=%%tag_invisible%% |  |
+
+| *Comment* | Test Case: Group Home Widget Permissions - On Group Home, See %%tag_visible_one%% and %%tag_visible_two%% but not %%tag_invisible%% | open_ok | /st/group/%%group_id%% |  |
+| wait_for_element_visible_ok | link=%%tag_visible_one%% | 30000 |
+| wait_for_element_visible_ok | link=%%tag_visible_two%% | 30000 |
+| wait_for_element_not_present_ok | link=%%tag_invisible%% | 30000 |
+
+| *Comment* | Test Case: Group Home Widget Permissions TODO Active Content Widget disappears if you remove the workspace associated |  |
+| set | test_ws | testwsgroup%%start_time%% |
+| st-admin | create-workspace --name %%test_ws%% --title %%test_ws%% | was created |
+| st-admin | add-member --g %%group_id%% --w %%test_ws%% | now has the role of 'member' |
+
+| *Comment* | Test Case: Group Home Widget Permissions Console ('system') Admin has edit group and edit layout buttons |  |
+| set | group_biz_admin | group_biz%%start_time%%@matt.socialtext.net |
+| st-admin | create-user --e %%group_biz_admin%% --p %%password%% --account %%group_acct%% | was created |
+| st-admin | give-system-admin --e %%group_biz_admin%% | now has system admin access |
+| st-admin | add-member --e %%group_biz_admin%% --g %%group_id%% | is now a member of |
+| st-logoutin | %%group_biz_admin%% | %%password%% |
+| open_ok | /st/group/%%group_id%% |  |
+| wait_for_element_visible_ok | st-edit-group | 30000 |
+| wait_for_element_visible_ok | st-edit-layout | 30000 |
+| click_ok | st-edit-layout |  |
+| wait_for_text_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
+| wait_for_element_visible_ok | st-revert-layout | 30000 |
+
+| *Comment* | Test Case: Group Home Widget Permissions - Control Panel ('accounts') Admin has edit group and edit layout buttons |  |
+| set | group_cp_admin | group_cp_admin%%start_time%%@matt.socialtext.net |
+| st-admin | create-user --e %%group_cp_admin%% --p %%password%% --account %%group_acct%% | was created |
+| st-admin | give-accounts-admin --e %%group_cp_admin%% | now has accounts admin access |
+| st-admin | add-member --e %%group_cp_admin%% --g %%group_id%% | is now a member of |  |
+| st-logoutin | %%group_cp_admin%% | %%password%% |
+| wait_for_element_visible_ok | st-edit-group | 30000 |
+| wait_for_element_visible_ok | st-edit-layout | 30000 |
+| click_ok | st-edit-layout |  |
+| wait_for_text_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
+| wait_for_element_visible_ok | st-revert-layout | 30000 |
+
+
 
 
 
