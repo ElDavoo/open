@@ -4,7 +4,9 @@ use strict;
 use warnings;
 use base 'Exporter';
 
-our @EXPORT_OK = qw(best_locale system_locale loc loc_lang __);
+our @EXPORT = qw(__ loc lcmp lsort lsort_by);
+our @EXPORT_OK = qw(loc_lang system_locale best_locale getSortKey);
+our %EXPORT_TAGS = (all => [@EXPORT, @EXPORT_OK]);
 our $CUR_LOCALE = 'en';
 our $SYS_LOCALE = 'en';
 
@@ -14,18 +16,18 @@ sub _reload_l10n {
     local $SIG{__WARN__} = sub { 1 };
     require Socialtext::l10n;
     _rebind_overrides();
-    *__ = \&Socialtext::l10n::__;
-    *loc = \&Socialtext::l10n::loc;
+    for my $sym (@EXPORT, 'getSortKey') {
+        no strict 'refs';
+        *$sym = \&{"Socialtext::l10n::$sym"};
+    }
 }
 
-sub loc {
-    _reload_l10n();
-    goto &Socialtext::l10n::loc;
-}
-
-sub __ {
-    _reload_l10n();
-    goto &Socialtext::l10n::__;
+for my $sym (@EXPORT, 'getSortKey') {
+    no strict 'refs';
+    *$sym = sub {
+        _reload_l10n();
+        goto &{"Socialtext::l10n::$sym"};
+    }
 }
 
 sub __loc_lang__ {
