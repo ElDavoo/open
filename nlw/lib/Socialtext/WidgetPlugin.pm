@@ -70,7 +70,9 @@ sub gadget_vars {
 sub widget_setup_screen {
     my $self = shift;
 
-    my $workspace = $self->hub->current_workspace;
+    my $workspace = Socialtext::Workspace->new(
+        name => $self->cgi->workspace_name,
+    );
     my $account = $workspace->account;
 
     return $self->hub->template->process("view/container.setup",
