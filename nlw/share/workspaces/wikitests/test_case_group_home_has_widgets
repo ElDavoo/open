@@ -7,7 +7,7 @@
 | set | just_a_member | justgroupmbr%%start_time%%@matt.socialtext.net |  |
 | st-admin | create-user --e %%just_a_member%% --p %%password%% --account %%group_acct%% | was created |  |
 | st-admin | add-member --e %%just_a_member%% --g %%group_id%% | is now a member of |  |
-| st-admin | add-group-admin --g %%group_id%% --e %%group_user%% | is now a admin of the |
+| st-admin | add-group-admin --g %%group_id%% --e %%group_user%% | is now a admin of the |  |
 
 | *Comment* | Test Case: Self Join Has Widgets Promote to admin, *do* see edit group or edit layout buttons |  |
 | open_ok | /st/group/%%group_id%% |  |
