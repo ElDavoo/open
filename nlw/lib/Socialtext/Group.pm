@@ -545,10 +545,12 @@ use constant base_package => __PACKAGE__;
 sub accounts {
     my ($self, %p) = @_;
 
-    # all accounts with direct membership
-    my $sth = sql_execute(q{
+    my $table = $p{include_indirect} ? 'user_set_path' : 'user_set_include';
+
+    # all accounts with direct (or indirect) membership
+    my $sth = sql_execute(qq{
         SELECT DISTINCT account_id
-        FROM user_set_include
+        FROM $table
         JOIN "Account" ON (into_set_id = user_set_id)
         WHERE from_set_id = ?
     }, $self->user_set_id);
