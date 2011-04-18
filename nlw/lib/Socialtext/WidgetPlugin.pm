@@ -51,7 +51,7 @@ sub gadget_vars {
         $pref->{value} = $overridden;
     }
 
-    my $width = $overrides{__width__};
+    my $width = $overrides{__width__} // 600;
     $width .= "px" if $width =~ /^\d+$/;
 
     my $content_type = $renderer->content_type;
