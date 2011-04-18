@@ -1,4 +1,8 @@
+
 | *Comment* | Test Case: Group Home Has Widgets |
+
+
+
 
 * Fixture: SocialWidgets
 
@@ -23,7 +27,7 @@
 | wait_for_element_visible_ok | st-save-layout | 30000 |
 | wait_for_element_visible_ok | st-add-widget | 30000 |
 | click_ok | st-cancel-layout | 30000 |
-| wait_for_text_not_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
+| wait_for_text_not_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 10000 |
 | wait_for_element_visible_ok | st-edit-group | 30000 |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
 
@@ -33,29 +37,29 @@
 | wait_for_text_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
 | wait_for_element_visible_ok | st-add-widget | 30000 |
 | click_ok | st-add-widget |  |
-| wait_for_element_visible_ok | ///a[@id='gallery-widget-Wikipedia'] | 30000 |
+| wait_for_element_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 30000 |
 | click_ok | st-widget-opensocial-gallery-cancel |  |
-| wait_for_element_not_present_ok | ///a[@id='gallery-widget-Wikipedia'] | 30000 |
+| wait_for_element_not_present_ok | //a[@id='gallery-widget-Wikipedia'] | 30000 |
 | click_ok | st-add-widget |  |
-| wait_for_element_visible_ok | ///a[@id='gallery-widget-Wikipedia'] | 30000 |
-| click_ok | //a[@id='gallery-widget-SlideShare Feeds'] |  |
+| wait_for_element_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 30000 |
+| click_ok | //a[@id='gallery-widget-Wikipedia'] |  |
 | wait_for_text_present_ok | Wiki Search (English) | 30000 |
 | click_ok | st-cancel-layout |  |
-| wait_for_text_not_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
+| wait_for_text_not_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 10000 |
 | wait_for_text_not_present_ok | Wiki Search (English) | 30000 |
 
 | *Comment* | Test Case: Self Join Has Widgets Click Edit Layout Add widget, see widget, save widget is present |  |
 | click_ok | st-add-widget |  |
-| wait_for_element_visible_ok | ///a[@id='gallery-widget-Wikipedia'] | 30000 |
+| wait_for_element_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 30000 |
 | click_ok | st-add-widget |  |
-| wait_for_element_visible_ok | ///a[@id='gallery-widget-Wikipedia'] | 30000 |
-| click_ok | //a[@id='gallery-widget-SlideShare Feeds'] |  |
+| wait_for_element_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 30000 |
+| click_ok | //a[@id='gallery-widget-Wikipedia'] |  |
 | wait_for_text_present_ok | Wiki Search (English) | 30000 |
 | click_ok | st-save-layout |  |
 | wait_for_text_present_ok | Wiki Search (English) | 30000 |
 | wait_for_element_visible_ok | st-edit-group | 30000 |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
-| wait_for_text_not_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
+| wait_for_text_not_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 10000 |
 
 | *Comment* | Test Case: Self Join Has Widgets Login as non-member, see widget |  |
 | st-logoutin | %%just_a_member%% | %%password%% |
@@ -77,11 +81,11 @@
 | wait_for_element_not_visible_ok | dashboard-revert-no | 30000 |
 | wait_for_text_present_ok | Wiki Search (English) | 30000 |
 
- | *Comment* | Test Case: Self Join Has Widgets Edit Layout, click "yes I am sure", widget is gone but we are still on the edit layout page | |
-| click_ok | st-revert-layout | |
+| *Comment* | Test Case: Self Join Has Widgets Edit Layout, click "yes I am sure", widget is gone but we are still on the edit layout page |  |
+| click_ok | st-revert-layout |  |
 | wait_for_element_visible_ok | dashboard-revert-yes | 30000 |
 | wait_for_element_visible_ok | dashboard-revert-no | 30000 |
-| click_ok | dashboard-revert-yes | |
+| click_ok | dashboard-revert-yes |  |
 | wait_for_text_not_present_ok | Wiki Search (English) | 30000 |
 | wait_for_element_visible_ok | st-revert-layout | 30000 |
 | wait_for_element_visible_ok | st-cancel-layout | 30000 |
@@ -92,7 +96,9 @@
 
 | *Comment* | Test Case: Group Home Has Widgets TEARDOWN |  |
 | setSpeed | 0 |  |
+| st-process-jobs |  |  |
 | st-admin | delete-workspace --no-export --w %%group_acct%%_central | was deleted |
-| delete-group | %%group_id%% |  |
+| delete-group | %%group_id%% | Recklessly deleting group |
+| st-admin | deactivate-user --e %%just_a_member%% |  |
 
 | *Comment* | Test Case: Group Home Has Widgets COMPLETED |  |
