@@ -12,7 +12,7 @@ use POSIX qw();
 use Crypt::OpenToken;
 use Socialtext::Challenger::OpenToken;
 use Socialtext::User;
-use Test::Socialtext tests => 27;
+use Test::Socialtext tests => 37;
 
 ###############################################################################
 # Create our test fixtures *OUT OF PROCESS* as we're using a mocked Hub.
@@ -186,6 +186,57 @@ auto_update_user_no_middle_name: {
     isa_ok $user, 'Socialtext::User', '... auto-updated user';
     is $user->first_name, $new_first, '... ... with updated first_name';
     is $user->middle_name, $middle_name, '... ... middle_name left alone';
+    is $user->last_name, $new_last, '... ... with updated last_name';
+}
+
+###############################################################################
+# auto-update User w/empty Middle Name
+auto_update_user_empty_middle_name: {
+    my $guard       = Test::Socialtext::User->snapshot();
+    my $email_addr  = 'auto-update-user-' . time . $$ . '@ken.socialtext.net';
+    my $first_name  = 'Auto Updated';
+    my $middle_name = 'Middle';
+    my $last_name   = 'Test User';
+    my $new_first   = 'Changed First';
+    my $new_middle  = '';
+    my $new_last    = 'Changed Last';
+
+    # Issue first challenge, creating the User.
+    my $rc = _issue_auto_provisioning_challenge(
+        with_user => {
+            username        => $email_addr,
+            email_address   => $email_addr,
+            first_name      => $first_name,
+            middle_name     => $middle_name,
+            last_name       => $last_name,
+        },
+    );
+    ok $rc, 'challenge was successful';
+
+    # verify that we've got the "old" info for that User.
+    my $user = Socialtext::User->new(email_address => $email_addr);
+    isa_ok $user, 'Socialtext::User', '... auto-provisioned user';
+    is $user->first_name, $first_name, '... ... with original first_name';
+    is $user->middle_name, $middle_name, '... ... with original middle_name';
+    is $user->last_name, $last_name, '... ... with original last_name';
+
+    # Issue a second challenge, to update the User info.
+    $rc = _issue_auto_provisioning_challenge(
+        with_user => {
+            username        => $email_addr,
+            email_address   => $email_addr,
+            first_name      => $new_first,
+            middle_name     => $new_middle,
+            last_name       => $new_last,
+        },
+    );
+    ok $rc, 'updating challenge was successful';
+
+    # verify that we've got the "new" info for that User.
+    $user = Socialtext::User->new(email_address => $email_addr);
+    isa_ok $user, 'Socialtext::User', '... auto-updated user';
+    is $user->first_name, $new_first, '... ... with updated first_name';
+    is $user->middle_name, $new_middle, '... ... with updated (and blank) middle_name';
     is $user->last_name, $new_last, '... ... with updated last_name';
 }
 
