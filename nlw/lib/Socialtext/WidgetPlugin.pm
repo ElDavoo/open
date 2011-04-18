@@ -59,9 +59,8 @@ sub gadget_vars {
         %{$gadget->template_vars},
         instance_id => $overrides{instance_id},
         content_type => $content_type,
-        title => $renderer->render($gadget->title),
+        title => $overrides{__title__} || $renderer->render($gadget->title),
         width => $width,
-        title => $overrides{__title__},
         $content_type eq 'inline'
             ? (content => $renderer->content)
             : (href => $renderer->href),
