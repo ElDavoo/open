@@ -27,6 +27,35 @@
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
 | click_ok | st-edit-layout |  |
 
+
+| *Comment* | Test Case: Group Home Widget Permissions Active Content Widget disappears if you remove the workspace associated |  |  |
+| set | created_group | createdgroup%%start_time%% |  |
+| set | created_workspace | createdworkspace%%start_time%% |  |
+| st_create_group | %%created_group%% | Newly Created Group | private-radio |
+| wait_for_element_visible_ok | new_workspace | 30000 |  |
+| click_ok | new_workspace |  |  |
+| select-frame | relative=parent |  |  |
+| wait_for_element_visible_ok | new-workspace-next | 30000 |  |
+| wait_for_element_visible_ok | new_workspace_title | 30000 |  |
+| type_ok | new_workspace_title | %%created_workspace%% |  |
+| click_ok | new-workspace-next |  |  |
+| wait_for_element_visible_ok | new-workspace-create | 30000 |  |
+| wait_for_element_visible_ok | new-workspace-cancel | 30000 |  |
+| wait_for_element_visible_ok | new_workspace_name | 30000 |  |
+| type_ok | new_workspace_name | %%created_workspace%% |  |
+| click_ok | new-workspace-create |  |  |
+| pause | 5000 |  |  |
+| wait_for_element_visible_ok | %%created_workspace%% | 30000 |  |
+| click_and_wait | create-group |  |  |
+| get_id_from_url | created_group_id |  |  |
+| wait_for_text_present_ok | Active Content |  |  |
+
+| st-admin | remove_member --g %%created_group_id%% --w %%created_workspace%% | is no longer a member of |
+| open_ok | /st/group/%%created_group_id%% |  |
+| wait_for_text_not_present_ok | Active Content |  |
+
+
+
 | *Comment* | Test Case: Group Home Widget Permissions Tags in "People Tags" Widget are localized to the group |  |  |
 | *Comment* | Test Case: Group Home Widget Permissions Tag %%group_user%% |  |  |
 | set | tag_visible_one | groupusershort%%start_time%% |  |
@@ -34,11 +63,11 @@
 
 | *Comment* | Test Case: Group Home Widget Permissions Tag %%just_a_member%% |  |  |
 | set | tag_visible_two | membershortmbr%%start_time%% |  |
-| call | [st-tag-user] | find_user_short=%%just_a_member_short%% | tag_to_apply=%%tag_visible_two%% |  |
+| call | [st-tag-user] | find_user_short=%%just_a_member_short%% | tag_to_apply=%%tag_visible_two%% |
 
 | *Comment* | Test Case: Group Home Widget Permissions Tag %%non_member%% |  |  |
 | set | tag_invisible | nonmembernotamembert%%start_time%% |  |
-| call | [st-tag-user] | find_user_short=%%non_member_short%% | tag_to_apply=%%tag_invisible%% |  |
+| call | [st-tag-user] | find_user_short=%%non_member_short%% | tag_to_apply=%%tag_invisible%% |
 
 | *Comment* | Test Case: Group Home Widget Permissions - On Group Home, See %%tag_visible_one%% and %%tag_visible_two%% but not %%tag_invisible%% |  |
 | st-process-jobs |  |  |
@@ -48,16 +77,27 @@
 | wait_for_element_not_present_ok | link=%%tag_invisible%% | 30000 |
 | wait_for_text_not_present_ok | There are no People tags for people in this group yet. | 30000 |
 
-| *Comment* | Test Case: Group Home Widget Permissions TODO Active Content Widget disappears if you remove the workspace associated |  |
-| set | test_ws | testwsgroup%%start_time%% |
-| st-admin | create-workspace --name %%test_ws%% --title %%test_ws%% | was created |
-| st-admin | add-member --g %%group_id%% --w %%test_ws%% | now has the role of 'member' |
+
+
+| *Comment* | Test Case: Group Home Widget Permissions - Control Panel ('accounts') Admin has edit group and edit layout buttons |  |
+| set | group_cp_admin | group_cp_admin%%start_time%%@matt.socialtext.net |
+| st-admin | create-user --e %%group_cp_admin%% --p %%password%% --account %%group_acct%% | was created |
+| st-admin | give-accounts-admin --e %%group_cp_admin%% | now has accounts admin access |
+| st-process-jobs |  |  |
+| st-logoutin | %%group_cp_admin%% | %%password%% |
+| open_ok | /st/group/%%group_id%% |  |
+| wait_for_element_visible_ok | st-edit-group | 30000 |
+| wait_for_element_visible_ok | st-edit-layout | 30000 |
+| click_ok | st-edit-layout |  |
+| wait_for_text_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
+| wait_for_element_visible_ok | st-revert-layout | 30000 |
+
 
 | *Comment* | Test Case: Group Home Widget Permissions Console ('system') Admin has edit group and edit layout buttons |  |
 | set | group_biz_admin | group_biz%%start_time%%@matt.socialtext.net |
 | st-admin | create-user --e %%group_biz_admin%% --p %%password%% --account %%group_acct%% | was created |
 | st-admin | give-system-admin --e %%group_biz_admin%% | now has system admin access |
-| st-admin | add-member --e %%group_biz_admin%% --g %%group_id%% | is now a member of |
+| st-process-jobs |  |  |
 | st-logoutin | %%group_biz_admin%% | %%password%% |
 | open_ok | /st/group/%%group_id%% |  |
 | wait_for_element_visible_ok | st-edit-group | 30000 |
@@ -66,24 +106,10 @@
 | wait_for_text_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
 | wait_for_element_visible_ok | st-revert-layout | 30000 |
 
-| *Comment* | Test Case: Group Home Widget Permissions - Control Panel ('accounts') Admin has edit group and edit layout buttons |  |
-| set | group_cp_admin | group_cp_admin%%start_time%%@matt.socialtext.net |
-| st-admin | create-user --e %%group_cp_admin%% --p %%password%% --account %%group_acct%% | was created |
-| st-admin | give-accounts-admin --e %%group_cp_admin%% | now has accounts admin access |
-| st-admin | add-member --e %%group_cp_admin%% --g %%group_id%% | is now a member of |  |
-| st-logoutin | %%group_cp_admin%% | %%password%% |
-| wait_for_element_visible_ok | st-edit-group | 30000 |
-| wait_for_element_visible_ok | st-edit-layout | 30000 |
-| click_ok | st-edit-layout |  |
-| wait_for_text_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
-| wait_for_element_visible_ok | st-revert-layout | 30000 |
-
-
-
-
 
 | *Comment* | Test Case: Group Home Widget Permissions TEARDOWN |  |
-| st-admin | delete-workspace --no-export --w %%group_acct%%_central | was deleted |
+| st-admin | delete-workspace --no-export --w %%created_workspace%% | has been deleted |
 | delete-group | %%group_id%% |  |
+| delete-group | %%created_group_id%% |  |
 
 | *Comment* | Test Case: Group Home Widget Permissions COMPLETED |  |
