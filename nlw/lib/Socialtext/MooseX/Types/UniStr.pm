@@ -20,6 +20,15 @@ coerce 'Str'
     => from 'UniStr'
     => via { $_ };
 
+subtype 'MaybeUniStr'
+    => as 'Maybe[UniStr]';
+
+coerce 'MaybeUniStr'
+    => from 'Maybe[Str]'
+    => via {
+        Encode::decode_utf8($_); # This is no-op if _is_utf8 is on.
+    };
+
 1;
 
 =head1 NAME
