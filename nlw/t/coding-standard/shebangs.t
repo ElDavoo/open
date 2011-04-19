@@ -48,7 +48,7 @@ do {
     chomp @files; # strip nulls
 };
 
-ok grep(qr{plugin/(?push|widgets)/service/run},@files),
+ok grep(qr{plugin/(?:push|widgets)/service/run},@files),
     "spot check for plugin run scripts";
 
 sub gitignored {
