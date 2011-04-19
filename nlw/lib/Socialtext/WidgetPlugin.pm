@@ -26,7 +26,7 @@ sub gadget_vars {
     $src = "local:widgets:$src" unless $src =~ /:/;
 
     # Setup overrides and override preferences
-    my %overrides = (instance_id => time);
+    my %overrides = (instance_id => ((2 ** 30) + int(rand(2 ** 30))));
     for my $encoded_pref (split /\s+/, $encoded_prefs) {
         $encoded_pref =~ /^([^\s=]+)=(\S*)/ or next;
         my ($key, $val) = ($1, $2);
@@ -51,7 +51,7 @@ sub gadget_vars {
         $pref->{value} = $overridden;
     }
 
-    my $width = $overrides{__width__};
+    my $width = $overrides{__width__} // 600;
     $width .= "px" if $width =~ /^\d+$/;
 
     my $content_type = $renderer->content_type;
@@ -59,9 +59,8 @@ sub gadget_vars {
         %{$gadget->template_vars},
         instance_id => $overrides{instance_id},
         content_type => $content_type,
-        title => $renderer->render($gadget->title),
+        title => $overrides{__title__} || $renderer->render($gadget->title),
         width => $width,
-        title => $overrides{__title__},
         $content_type eq 'inline'
             ? (content => $renderer->content)
             : (href => $renderer->href),
@@ -71,7 +70,9 @@ sub gadget_vars {
 sub widget_setup_screen {
     my $self = shift;
 
-    my $workspace = $self->hub->current_workspace;
+    my $workspace = Socialtext::Workspace->new(
+        name => $self->cgi->workspace_name,
+    );
     my $account = $workspace->account;
 
     return $self->hub->template->process("view/container.setup",

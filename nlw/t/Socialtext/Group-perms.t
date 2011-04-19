@@ -2,11 +2,12 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::Socialtext tests => 42;
+use Test::More;
+use Test::Socialtext;
 use Test::Socialtext::Account qw/export_account export_and_reimport_account/;
 use Test::Socialtext::Fatal;
 use YAML qw/LoadFile/;
-
+use Socialtext::Permission qw(ST_ADMIN_PERM ST_READ_PERM);
 fixtures(qw( db ));
 
 ################################################################################
@@ -134,3 +135,42 @@ import_group_without_permission_set: {
     is $group->display_permission_set, 'Private',
         'display is correct';
 }
+
+admins_can_view_and_edit: {
+    my $account = create_test_account_bypassing_factory();
+    my $group   = create_test_group(account => $account);
+
+    my $user = create_test_user;
+    my $business_admin = create_test_user;
+    my $account_admin = create_test_user;
+    my $group_admin = create_test_user;
+
+    $account->add_user(user => $user, role => 'member');
+    $business_admin->set_business_admin(1);
+    $account->add_user(user => $account_admin, role => 'admin');
+    $group->add_user(user => $group_admin, role => 'admin'); 
+
+    is $group->permission_set, 'private', 'group is private';
+
+    ok !$group->user_can(user => $user, permission => ST_READ_PERM),
+        "regular user can't view group";
+    ok !$group->user_can(user => $user, permission => ST_ADMIN_PERM),
+        "regular user can't edit group";
+
+    ok $group->user_can(user => $business_admin, permission => ST_READ_PERM),
+        "business admin can view group";
+    ok $group->user_can(user => $business_admin, permission => ST_ADMIN_PERM),
+        "business admin can edit group";
+
+    ok $group->user_can(user => $account_admin, permission => ST_READ_PERM),
+        "account admin can view group";
+    ok $group->user_can(user => $account_admin, permission => ST_ADMIN_PERM),
+        "account admin can edit group";
+
+    ok $group->user_can(user => $group_admin, permission => ST_READ_PERM),
+        "group admin can view group";
+    ok $group->user_can(user => $group_admin, permission => ST_ADMIN_PERM),
+        "group admin can edit group";
+}
+
+done_testing;

@@ -6,7 +6,7 @@
 # '-j' option will _not_ minify javascript
 # '-p' option will _not_ start up nlw in this script
 # '-h' option will import the help-en wiki
-# '-s' option will create-socialtext-users
+# '-s' option will import staging users and signals
 
 HELPEN=0
 FIXTURE='ALL'
@@ -14,11 +14,13 @@ PAUSE=0
 UPDATE_WIDGETS=1
 MINIFY_JS=1
 CONTEXTUAL=0
+STAGING=0
 while getopts "jhmbpwsc" OPT; do
   case $OPT in
     h) HELPEN=1;;
     m) FIXTURE=admin_no_pages;;
     j) MINIFY_JS=0;;
+    s) STAGING=1;;
     p) PAUSE=1;;
     w) UPDATE_WIDGETS=0;;
     c) CONTEXTUAL=1;;
@@ -119,7 +121,9 @@ if [ $UPDATE_WIDGETS == 1 ]; then
     set +x
 fi
 
-create-staging-users
+if [ $STAGING == 1 ]; then
+    create-staging-users
+fi
 
 # Clean up dead symlinks
 find -L -type l -delete

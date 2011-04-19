@@ -52,9 +52,10 @@ const pattern_block =>
         (?:
         ^(?!        # All consecutive lines *not* starting with
         (?:
-            (?:\^+|\#+|\*+|\-+)[\ ] |   # Headers or bullets (spaces mandatory)
-            \> |                        # Quote marks (spaces optional)
-            \.[-\w]+\s*\n |             # .wafl blocks
+            (?:\^+|\#+|\*+|\-+)[\ ]   | # Headers or bullets (spaces mandatory)
+            (--+)[^\n\S]*\n           | # Horizontal rules
+            \>                        | # Quote marks (spaces optional)
+            \.[-\w]+\s*\n             | # .wafl blocks
             \{[^\}\n]+\}\s*\n           # {wafl} phrases
         )
         )

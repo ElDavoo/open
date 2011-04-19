@@ -1520,7 +1520,7 @@
 "profile.no-followers":"Zz zzz Zzzzzzz zzzz zzzzzz zzz.",
 "profile.no-following":"Zzzz zzzzzz Zzzzzzz zz zzz zzz.",
 "profile.no-groups-for-you":"Zzz zzz z zzzzzz zz zz zzzzzz.",
-"profile.no-people-tags":"Zzzzz zzz zz Zzzzzz zzzz zzz zzzzzz zz zzzz zzzzz zzz. Zz zzzzz zzzzzz zzz zzzzzzzzz, zz zz zzz Zzzzzzz Zzzzz zz zzzzzz zz zzzz zzzzz zz Zzz Zzzz",
+"profile.no-people-tags":"Zzzzz zzz zz zzzzzz zzzz zzz zzzzzz zz zzzz zzzzz zzz. Zz zzzzz zzzzzz zzz zzzzzzzzz, zz zz zzz Zzzzzzz Zzzzz zz zzzzzz zz zzzz zzzzz zz Zzz Zzzz",
 "profile.no-shared-groups":"Zzz zzzzz zz zzzzzz zzzz zzzz zzzzzz.",
 "profile.no-tags":"Zzzz zzzzzz zzz zz zzzz. Zzzzz <b>Zzz zzz</b> zz zzz zzz zzz.",
 "profile.no-tags-for-you":"Zzz zzzz zz zzzz. Zzz <b>Zzz Zzz</b> zz zzz zzz zzz.",
