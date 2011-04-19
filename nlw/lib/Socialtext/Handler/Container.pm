@@ -99,7 +99,7 @@ sub PUT_layout {
                 my $g = $col->[$y];
 
                 my $gadget;
-                if (delete $gadgets{$g->{instance_id}}) {
+                if (!$g->{install} and delete $gadgets{$g->{instance_id}}) {
                     # Existing widget, so move it
                     $gadget = $self->container->get_gadget_instance(
                         $g->{instance_id}

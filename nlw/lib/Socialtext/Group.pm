@@ -120,17 +120,29 @@ sub user_can {
 
     require Socialtext::Authz;
     my $authz = Socialtext::Authz->new();
-    if ($p{permission}->name eq 'admin') {
-        return 1 if $authz->user_has_permission_for_account(
-            account => $self->primary_account,
-            %p,
-        );
-    }
     return $authz->user_has_permission_for_group(
         group      => $self,
         %p,
     );
 }
+
+# Give account admins permission to read and admin the group
+around 'role_for_user' => sub {
+    my $orig = shift;
+    my $self = shift;
+    my $user = shift;
+    my %p = (@_==1) ? %{$_[0]} : @_;
+
+    my $can_admin = $self->primary_account->user_can(
+        user => $user,
+        permission => ST_ADMIN_PERM,
+    );
+    if ($can_admin) {
+        return Socialtext::Role->Admin->role_id if $p{ids_only};
+        return Socialtext::Role->Admin;
+    }
+    return $orig->($self, $user, %p);
+};
 
 sub uri {
     my $self = shift;
