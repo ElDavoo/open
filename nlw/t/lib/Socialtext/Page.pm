@@ -29,6 +29,8 @@ sub is_untitled {
     return '';
 }
 
+sub deleted { return $_[0]->{deleted} || 0; }
+
 sub to_html_or_default {
     my $self = shift;
     return $self->{html} || ($self->title . " Mock HTML");
