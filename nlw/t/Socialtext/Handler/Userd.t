@@ -14,7 +14,7 @@ BEGIN {
 
 use Socialtext::HTTP::Ports;
 
-fixtures(qw(db));
+fixtures(qw(db serial));
 
 my $logpath = Socialtext::Paths->log_directory();
 my $nlw_log_file = "$logpath/nlw.log";

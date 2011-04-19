@@ -38,11 +38,10 @@ PERL = @PERL@
 PROVE_ARGS =
 PROVE = nice st-prove --timer --state=save $(PROVE_ARGS)
 TEST_JOBS = 4
-UNIT_TESTS  = $(shell find -L t/ -name '*.t' -not -regex '^t/live/.*' | dev-bin/fixture-sort)
+SERIAL_UNIT_TESTS = $(shell grep -l 'fixtures(.*serial.*)' -r t | grep '\.t$$' | grep -v '^t/live/' | dev-bin/fixture-sort)
+PARALLEL_UNIT_TESTS = $(shell grep -L 'fixtures(.*serial.*)' -r t | grep '\.t$$' | grep -v '^t/live/' | dev-bin/fixture-sort)
 JS_TESTS  = $(shell find -L t/ -name '*.t.js')
 WIKID_TESTS = $(shell find -L t/wikitests/ -name '*.wiki')
-REPORTS_TESTS = $(shell find -L ../socialtext-reports/t/ -name '*.t')
-CONSOLE_TESTS = $(shell find -L ../appliance/libsocialtext-appliance-perl/t/ -name '*.t')
 
 # Program locations
 STCTL          = $(PERL) dev-bin/nlwctl
@@ -332,11 +331,15 @@ MANIFEST:
 tardist: MANIFEST $(PERL_MAKEFILE)
 	$(PERL_MAKE) tardist
 
-test:
-	@$(PROVE) --jobs $(TEST_JOBS) $(UNIT_TESTS) $(JS_TESTS) $(WIKID_TESTS)
+test: testunit testwikid testjs testreports testconsole
 
-testunit:
-	@$(PROVE) --jobs $(TEST_JOBS) $(UNIT_TESTS)
+testunit: testunit-parallel testunit-serial
+
+testunit-serial:
+	@$(PROVE) --jobs 1 $(SERIAL_UNIT_TESTS)
+
+testunit-parallel:
+	@$(PROVE) --jobs $(TEST_JOBS) $(PARALLEL_UNIT_TESTS)
 
 testwikid:
 	@$(PROVE) --jobs $(TEST_JOBS) $(WIKID_TESTS)
@@ -345,10 +348,10 @@ testjs:
 	@$(PROVE) --jobs $(TEST_JOBS) $(JS_TESTS)
 
 testreports:
-	@$(PROVE) --jobs $(TEST_JOBS) $(REPORTS_TESTS)
+	@cd ../socialtext-reports/ && $(PROVE) --jobs 1 t/
 
 testconsole:
-	@$(PROVE) --jobs $(TEST_JOBS) $(CONSOLE_TESTS)
+	@cd ../appliance/libsocialtext-appliance-perl/ && $(PROVE) --jobs 1 t/
 
 testplugin-%:
 	@$(PROVE) -s $(shell cd share/plugin/$(@:testplugin-%=%) && find -L t -name '*.t' -not -regex '^t/live.*' | dev-bin/fixture-sort)
@@ -356,7 +359,7 @@ testplugin-%:
 testlive:
 	@$(PROVE) -r t/live
 
-testall: test testlive testreports testconsole
+testall: test testlive
 
 quicktest: .prove
 	$(PROVE) --jobs $(TEST_JOBS) $(shell list-tests-faster-than 10)
@@ -367,13 +370,13 @@ hottest: .prove
 hudson-update: .prove
 
 .prove: hudson.prove
-	merge-prove
+	merge-prove hudson.prove .prove
 
 hudson.prove: get-hudson-prove
 
 get-hudson-prove:
 	curl --insecure https://lucite.socialtext.net:9080/job/Socialtext-`git branch | perl -ne '@x = split; print $$x[1] if $$x[0] eq "*";'`/lastCompletedBuild/artifact/artifacts/.prove \
-        --output hudson.prove  --time-cond hudson.prove
+        --output hudson.prove 
 
 # cd into custom-workspace-config and make all
 custom-workspaces:

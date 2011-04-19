@@ -46,6 +46,7 @@ sub GET {
         return '';
     }
 
+    $self->rest->header(-type => 'text/html; charset=utf-8');
     my $filename = $self->filename;
 
     if ($filename =~ /^(?:flair-)?badge(?:.html)?$/) {

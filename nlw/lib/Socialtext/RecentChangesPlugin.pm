@@ -1,7 +1,7 @@
 # @COPYRIGHT@
 package Socialtext::RecentChangesPlugin;
 use Socialtext::CategoryPlugin;
-use Socialtext::l10n qw/loc/;
+use Socialtext::l10n qw(loc __);
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::Pages;
 use Socialtext::Pageset;
@@ -11,11 +11,11 @@ use warnings;
 use base 'Socialtext::Query::Plugin';
 
 use Class::Field qw( const );
-use Socialtext::l10n qw ( loc );
+use Socialtext::l10n qw(loc __);
 use List::Util qw/min/;
 
-sub class_id { 'recent_changes' }
-const class_title      => "What's New";
+const class_id => 'recent_changes';
+const class_title      => __('class.recent_changes');
 const cgi_class        => 'Socialtext::RecentChanges::CGI';
 const default_category => 'recent changes';
 
@@ -36,15 +36,15 @@ sub register {
 sub changes_depth {
     my $self = shift;
     my $p = $self->new_preference('changes_depth');
-    $p->query(loc('config.changes-depth?'));
+    $p->query(__('config.changes-depth?'));
     $p->type('pulldown');
     my $choices = [
-        1 => loc('last.24hours'),
-        2 => loc('last.2days'),
-        3 => loc('last.3days'),
-        7 => loc('last.week'),
-        14 => loc('last.2weeks'),
-        31 => loc('last.month'),
+        1 => __('last.24hours'),
+        2 => __('last.2days'),
+        3 => __('last.3days'),
+        7 => __('last.week'),
+        14 => __('last.2weeks'),
+        31 => __('last.month'),
     ];
     $p->choices($choices);
     $p->default(7);
@@ -54,7 +54,7 @@ sub changes_depth {
 sub sidebox_changes_depth {
     my $self = shift;
     my $p = $self->new_preference('sidebox_changes_depth');
-    $p->query(loc('wiki.sidebox-number-of-changes?'));
+    $p->query(__('wiki.sidebox-number-of-changes?'));
     $p->type('pulldown');
     my $choices = [
         2 => 2, 4 => 4, 6 => 6, 8 => 8, 10 => 10, 15 => 15, 20 => 20
@@ -67,7 +67,7 @@ sub sidebox_changes_depth {
 sub include_in_pages {
     my $self = shift;
     my $p = $self->new_preference('include_in_pages');
-    $p->query(loc('wiki.show-sidebox?'));
+    $p->query(__('wiki.show-sidebox?'));
     $p->type('boolean');
     $p->default(0);
     return $p;
@@ -257,7 +257,7 @@ package Socialtext::RecentChanges::Wafl;
 
 use Socialtext::CategoryPlugin;
 use base 'Socialtext::Category::Wafl';
-use Socialtext::l10n qw/loc/;
+use Socialtext::l10n qw(loc __);
 
 sub _set_titles {
     my $self = shift;

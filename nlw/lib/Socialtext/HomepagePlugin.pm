@@ -5,14 +5,15 @@ use warnings;
 
 use base 'Socialtext::Plugin';
 use Socialtext::Watchlist;
-use Socialtext::l10n qw( loc );
+use Socialtext::l10n qw(loc __);
 use URI::Escape;
+use Class::Field qw( const );
 
 my $did_you_know_title;
 my $did_you_know_text;
 
-sub class_id    () { 'homepage' }
-sub class_title () { 'Home Link' }
+const class_id => 'homepage';
+const class_title => __('class.homepage');
 
 sub register {
     my $self = shift;

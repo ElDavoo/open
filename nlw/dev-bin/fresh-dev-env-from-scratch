@@ -6,7 +6,7 @@
 # '-j' option will _not_ minify javascript
 # '-p' option will _not_ start up nlw in this script
 # '-h' option will import the help-en wiki
-# '-s' option will create-socialtext-users
+# '-s' option will import staging users and signals
 
 HELPEN=0
 FIXTURE='ALL'
@@ -14,11 +14,13 @@ PAUSE=0
 UPDATE_WIDGETS=1
 MINIFY_JS=1
 CONTEXTUAL=0
+STAGING=0
 while getopts "jhmbpwsc" OPT; do
   case $OPT in
     h) HELPEN=1;;
     m) FIXTURE=admin_no_pages;;
     j) MINIFY_JS=0;;
+    s) STAGING=1;;
     p) PAUSE=1;;
     w) UPDATE_WIDGETS=0;;
     c) CONTEXTUAL=1;;
@@ -73,8 +75,7 @@ killall json-proxy.scgi 2>&1 || true;
 
 # Create the basic dev-env
 rm -rf $HOME/.nlw/
-PLUGINS=${PLUGINS:-widgets agile csskit dashboard people signals socialcalc apache socialpoint control groups provisioning push multilogin}
-dev-bin/link-plugins $PLUGINS
+dev-bin/link-externals --all --lib-only
 dev-bin/st-make-all @clean
 dev-bin/st-make-all @all
 
@@ -82,9 +83,6 @@ dev-bin/st-make-all @all
 (cd ../plugins/socialcalc && make)
 
 rm -f etc/socialtext/db/cache.*.sql
-set +e
-QUIET=1 dev-bin/link-console
-set -e
 dev-bin/make-test-fixture --home_dir $HOME --fixture clean
 dev-bin/make-test-fixture --home_dir $HOME --fixture base_config
 dev-bin/make-test-fixture --home_dir $HOME --fixture $FIXTURE
@@ -94,16 +92,11 @@ dev-bin/make-test-fixture --home_dir $HOME --fixture $FIXTURE
 # Setup robots.txt file to prevent dev-env heat death
 perl -le 'print "User-agent: *\nDisallow: /"' > ~/.nlw/root/docroot/robots.txt
 
-echo "Linking in extra modules ..."
-# We set +e here so that if these fail, fdefs continues
-# otherwise everyone is forced to have all this code checked out
-set +e
-QUIET=1 dev-bin/link-console
-dev-bin/link-reports
+# Finish linking in external repos
+dev-bin/link-externals --all
 
 # Start the supervisor
 dev-bin/setup-supervisors start
-set -e
 
 [ $MINIFY_JS == 0 ] && bin/st-config set minify_javascript 0
 
@@ -128,7 +121,9 @@ if [ $UPDATE_WIDGETS == 1 ]; then
     set +x
 fi
 
-create-staging-users
+if [ $STAGING == 1 ]; then
+    create-staging-users
+fi
 
 # Clean up dead symlinks
 find -L -type l -delete

@@ -3,8 +3,6 @@
 use strict;
 use warnings;
 
-use lib "$ENV{ST_SRC_BASE}/socialtext/nlw/t/share/plugin/fakeplugin/lib";
-
 use Socialtext::SQL;
 use Socialtext::Account;
 use Socialtext::User;
@@ -17,7 +15,7 @@ use Test::Socialtext tests => 46;
 # Fixtures: db
 fixtures(qw( db destructive ));
 
-ok $INC{'Socialtext/Pluggable/Plugin/FakePlugin.pm'}, "fake plugin loaded";
+ok $INC{'Socialtext/Pluggable/Plugin/TestPlugin.pm'}, "Test plugin loaded";
 
 my $adapt = Socialtext::Pluggable::Adapter->new;
 my $registry = Socialtext::Registry->new;
@@ -32,12 +30,12 @@ $hub->{current_user} = Socialtext::User->create(
     email_address => $email, username => $email
 );
 
-Socialtext::Account->Default->enable_plugin('fakeplugin');
+Socialtext::Account->Default->enable_plugin('testplugin');
 
 my $template_vars;
 
 # Setup hooks before register
-Socialtext::Pluggable::Plugin::FakePlugin->test_hooks(
+Socialtext::Pluggable::Plugin::TestPlugin->test_hooks(
     'test.name', sub { $_[0]->name },
     'action.test_action' , sub {
         my $self = shift;
@@ -49,17 +47,17 @@ Socialtext::Pluggable::Plugin::FakePlugin->test_hooks(
 
 $adapt->register($registry);
 
-ok scalar(grep { /Pluggable::Plugin::FakePlugin/ } $adapt->plugins),
+ok scalar(grep { /Pluggable::Plugin::TestPlugin/ } $adapt->plugins),
    'Mocked plugin is loaded';
 
-ok scalar(grep { $_ eq 'fakeplugin' } $adapt->plugin_list),
+ok scalar(grep { $_ eq 'testplugin' } $adapt->plugin_list),
    'Mocked plugin shows up in plugin_list';
 
-ok $adapt->plugin_exists('fakeplugin'), 'plugin_exists returns true when the plugin exists';
+ok $adapt->plugin_exists('testplugin'), 'plugin_exists returns true when the plugin exists';
 ok !$adapt->plugin_exists('something'), 'plugin_exists returns false when the plugin does not exist';
 
 # Test that name is properly based off the class name
-is $adapt->hook('test.name'), 'fakeplugin', 'FakePlugin name is "fakeplugin"';
+is $adapt->hook('test.name'), 'testplugin', 'TestPlugin name is "testplugin"';
 
 is $registry->call('wafl', 'test_wafl'), 'wafl contents',
    "wafl.test_wafl can be called through registry";
@@ -67,7 +65,7 @@ is $registry->call('wafl', 'test_wafl'), 'wafl contents',
 is $registry->call('action', 'test_action'), 'action contents',
    "action hooks autovivify and can be called through registry";
 ok $template_vars, 'was able to get template vars';
-is $template_vars->{action_plugin}, 'fakeplugin', 'action_plugin was provided to templates';
+is $template_vars->{action_plugin}, 'testplugin', 'action_plugin was provided to templates';
 
 # Test plugin dependencies and optional_dependencies
 my $acct = Socialtext::Account->Default;

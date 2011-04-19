@@ -50,11 +50,12 @@ sub events {
     );
 
     my ($events, $error, $base_uri);
+    my $loc_section = "nav.$args{section}";
     if ($args{mine}) {
         $base_uri = "/m/$args{section}?mine=1";
         $events = $reporter->get_events_activities(
            %event_args, actor_id => $viewer);
-        $error = loc("error.no-events-mine=section", $args{section}) unless @$events;
+        $error = loc("error.no-events-mine=section", loc($loc_section)) unless @$events;
     }
     elsif ($args{followed}) {
         $base_uri = "/m/$args{section}?followed=1";
@@ -62,7 +63,7 @@ sub events {
             $event_args{'action!'} = 'signal';
         }
         $events = $reporter->get_events_followed(\%event_args);
-        $error = loc("error.no-events-followers=section", $args{section}) unless @$events;
+        $error = loc("error.no-events-followers=section", loc($loc_section)) unless @$events;
     }
     elsif ($args{all}) {
         $base_uri = "/m/$args{section}?all=1";
@@ -72,13 +73,12 @@ sub events {
         }
 
         $events = $reporter->get_events(\%event_args);
-
-        $error = loc("error.no-events=section", $args{section}) unless @$events;
+        $error = loc("error.no-events=section", loc($loc_section)) unless @$events;
     }
     else {
         $base_uri = "/m/$args{section}";
         $events = $reporter->get_events_conversations($viewer, \%event_args);
-        $error = loc("error.no-events-conversations=section", $args{section}) unless @$events;
+        $error = loc("error.no-events-conversations=section", loc($loc_section)) unless @$events;
     }
     $events ||= [];
     my $more = pop @$events if @$events > 10;
@@ -88,19 +88,19 @@ sub events {
                 my $size = $attachment->{content_length};
                 my $humansize = '';
                 if ($size < 1000) {
-                    $humansize = $size . " bytes"
+                    $humansize = loc('file.size=bytes', $size);
                 } elsif ($size < 10000) {
-                    $humansize = sprintf("%.2f", ($size/1000)) . "K";
+                    $humansize = loc('file.size=kb', sprintf("%.2f", ($size/1000)));
                 } elsif ($size < 100000) {
-                    $humansize = sprintf("%.1f", ($size/1000)) . "K";
+                    $humansize = loc('file.size=kb', sprintf("%.1f", ($size/1000)));
                 } elsif ($size < 1000000) {
-                    $humansize = sprintf("%.0f", ($size/1000)) . "K";
+                    $humansize = loc('file.size=kb', sprintf("%.0f", ($size/1000)));
                 } elsif ($size < 10000000) {
-                    $humansize = sprintf("%.2f", ($size/1000000)) . "M";
+                    $humansize = loc('file.size=mb', sprintf("%.2f", ($size/1000000)));
                 } elsif ($size < 100000000) {
-                    $humansize = sprintf("%.1f", ($size/1000000)) . "M";
+                    $humansize = loc('file.size=mb', sprintf("%.1f", ($size/1000000)));
                 } else {
-                    $humansize = sprintf("%.0f", ($size/1000000)) . "M";
+                    $humansize = loc('file.size=mb', sprintf("%.0f", ($size/1000000)));
                 }
                 $attachment->{pretty_content_length} = $humansize;
             }

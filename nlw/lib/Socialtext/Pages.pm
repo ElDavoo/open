@@ -23,10 +23,10 @@ use Socialtext::User;
 use Socialtext::Validate qw( validate DIR_TYPE );
 use Socialtext::WeblogUpdates;
 use Socialtext::Workspace;
-use Socialtext::l10n qw( loc );
+use Socialtext::l10n qw(loc __);
 
-sub class_id { 'pages' }
-const class_title => 'NLW Pages';
+const class_id => 'pages';
+const class_title => __('class.pages');
 
 field current => 
       -init => '$self->new_page($self->current_name)';

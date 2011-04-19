@@ -3,9 +3,9 @@
 | standard-test-setup |
 | st-clear-events |
 
-| set | convos_empty | There are no activities to display because you haven't engaged in conversations with your colleagues. |
-| set | follow_empty | There are no activities to display, either because you aren't following anyone yet, or the people you're following haven't created any. Visit the profiles of your colleagues, and click 'Follow this person' to start following colleagues. |
-| set | all_empty | There are no activities to display because none have been created. |
+| set | convos_empty | There are no Activities to display because you haven't engaged in conversations with your colleagues.                                                                                                                                        |
+| set | follow_empty | There are no Activities to display, either because you aren't following anyone yet, or the people you're following haven't created any. Visit the profiles of your colleagues, and click 'Follow this person' to start following colleagues. |
+| set | all_empty    | There are no Activities to display because none have been created.                                                                                                                                                                           |
 
 | st-clear-events |
 

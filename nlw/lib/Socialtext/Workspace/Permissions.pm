@@ -12,7 +12,7 @@ use Socialtext::Validate qw(
     DIR_TYPE UNDEF_TYPE
 );
 use Socialtext::Permission qw( ST_EMAIL_IN_PERM ST_READ_PERM ST_EDIT_CONTROLS_PERM );
-use Socialtext::l10n qw(loc system_locale);
+use Socialtext::l10n qw(loc system_locale __);
 use Socialtext::Exceptions qw( rethrow_exception );
 use Socialtext::Role;
 use Socialtext::Timer qw/time_scope/;
@@ -238,15 +238,15 @@ EOSQL
     }
 
     my %display_names = (
-        'member-only' => 'Private',
-        'self-join'   => 'Self-Join',
-        'custom'      => 'Custom',
+        'member-only' => __('wiki.acl-private'),
+        'self-join'   => __('wiki.acl-self-join'),
+        'custom'      => __('wiki.acl-custom'),
     );
     sub current_set_display_name {
         my $self = shift;
 
         my $display_name = $display_names{$self->current_set_name};
-        return $display_name || 'Public';
+        return $display_name || __('wiki.acl-public');
     }
 
     sub _perm_set_as_string {

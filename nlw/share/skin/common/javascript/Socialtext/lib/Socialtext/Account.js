@@ -10,14 +10,14 @@ Socialtext.Account.prototype = new Socialtext.Base();
 $.extend(Socialtext.Account.prototype, {
     url: function(rest) {
         if (!this.account_name)
-            throw new Error(loc("Account name is required"));
+            throw new Error(loc("api.account-name-required"));
         if (!rest) rest = '';
         return '/data/accounts/' + this.account_name + rest;
     },
 
     addUser: function(user, callback) {
         var self = this;
-        if (!user.user_id) throw new Error(loc("user_id is required"));
+        if (!user.user_id) throw new Error(loc("api.user_id-required"));
         $.ajax({
             url: this.url('/users'),
             type: 'post',
@@ -30,7 +30,7 @@ $.extend(Socialtext.Account.prototype, {
 
     addGroup: function(group, callback) {
         var self = this;
-        if (!group.group_id) throw new Error(loc("group_id is required"));
+        if (!group.group_id) throw new Error(loc("api.group_id-required"));
         $.ajax({
             url: this.url('/groups'),
             type: 'post',
@@ -43,7 +43,7 @@ $.extend(Socialtext.Account.prototype, {
 
     removeGroup: function(group, callback) {
         var self = this;
-        if (!group.group_id) throw new Error(loc("group_id is required"));
+        if (!group.group_id) throw new Error(loc("api.group_id-required"));
         $.ajax({
             url: this.url('/groups/' + group.group_id),
             type: 'delete',

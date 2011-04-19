@@ -85,7 +85,7 @@ sub _call_link_control_panel {
 }
 
 sub _call_link_console {
-    shell_run("dev-bin/link-console");
+    shell_run("dev-bin/link-externals --console");
 }
 
 sub _get_branch_name {

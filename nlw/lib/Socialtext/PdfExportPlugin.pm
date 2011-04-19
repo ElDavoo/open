@@ -6,7 +6,7 @@ use base 'Socialtext::Plugin';
 
 use Socialtext::PdfExport::LinkDictionary;
 use File::chdir;
-use Socialtext::l10n qw(loc);
+use Socialtext::l10n qw(loc __);
 use Socialtext::Log qw(st_log);
 use IPC::Run 'run';
 use Readonly;
@@ -30,8 +30,8 @@ C<htmldoc>.
 
 =cut
 
-sub class_id {'pdf_export'};
-const class_title => 'PDF Export';
+const class_id => 'pdf_export';
+const class_title => __('class.pdf_export');
 const cgi_class   => 'Socialtext::PdfExportPlugin::CGI';
 
 # The full command for converting html files to PDF.  Set TMPDIR since htmldoc

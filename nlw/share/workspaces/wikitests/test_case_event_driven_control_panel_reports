@@ -1,3 +1,4 @@
+
 | *Comment* | Test case: Event-Driven Control Panel Reports |
 | *Comment* | Test case: Event-Driven Control Panel Reports INSTEAD of faking the logs or injecting SQL |
 | *Comment* | Test case: Event-Driven Control Panel Reports This test actually does all the stuff the reports show |
@@ -22,12 +23,25 @@
 
 | st-logoutin | %%reports_user%% | %%password%% |  |
 | open_ok | /%%ed_ws%%/ |  |  |
+
+| *Comment* | Test Case: Even-Driven Control Panel Reports - Create page hello_page |  |  |
 | st_create_wikipage | %%ed_ws%% | hello_page |  |
-| st_comment_on_page | %%ed_ws%% | hello_page | hello says Matt. This is a comment. |
+
+| *Comment* | Test Case: Even-Driven Control Panel Reports - Comment on page hello_page |  |  |
+| st_comment_on_page | %%ed_ws%%/hello_page | hello says Matt. This is a comment. |
+
+| *Comment* | Test Case: Even-Driven Control Panel Reports - Create page hello_page_two |  |  |
 | st_create_wikipage | %%ed_ws%% | hello_page_two |  |
-| st_comment_on_page | %%ed_ws%% | hello_page | hello says Matt. This is a comment. |
+
+| *Comment* | Test Case: Even-Driven Control Panel Reports - Comment on page hello_page_two |  |  |
+| st_comment_on_page | %%ed_ws%%/hello_page | hello says Matt. This is a comment. |
+
+| *Comment* | Test Case: Even-Driven Control Panel Reports - Create page hello_page_three |  |  |
 | st_create_wikipage | %%ed_ws%% | hello_page_three |  |
-| st_comment_on_page | %%ed_ws%% | hello_page | hello says Matt. This is a comment. |
+
+
+| *Comment* | Test Case: Even-Driven Control Panel Reports - Comment on page hello_page_three |  |  |
+| st_comment_on_page | %%ed_ws%%/hello_page_three | hello says Matt. This is a comment. |
 | open_ok | /st/dashboard/ |  |  |
 
 | *Comment* | Test Case: Even-Driven Control Panel Reports - Personalize my dashboard |  |
@@ -50,6 +64,7 @@
 | type_ok | company | Socialtext |
 | wait_for_element_visible_ok | update_profile | 30000 |
 | click_and_wait | update_profile |  |
+
 
 | *Comment* | Test Case: Event Driven Control Panel Reports. Verify names saved. |  |
 | st-name-widget | 1 | profile |
@@ -100,11 +115,13 @@
 | wait_for_element_visible_ok | update_profile | 30000 |
 | click_and_wait | update_profile |  |
 
+
 | *Comment* | Test Case: Event Driven Control Panel Reports Second User verify new names |  |
 | st-name-widget | 1 | profile |
 | st-select-widget-frame | profile |  |
 | text_like | //body | %%new_fname%% %%new_lname%% |
 | select-frame | relative=parent |  |
+
 
 | *Comment* | Test Case: Even-Driven Control Panel Reports Second user Send THREE signals |  |
 | http-user-pass | %%reports_user%% | %%password%% |
@@ -113,6 +130,7 @@
 | post-signal | ghi |  |
 | pause | 2000 |  |
 | post-signal | zxy |  |
+
 
 | *Comment* | Test Case: Even-Driven Control Panel Reports - And I've got a workspace |
 | *Comment* | Test Case: Even-Driven Control Panel Reports - And the pages are 3 |
@@ -126,7 +144,8 @@
 | wait_for_element_visible_ok | link=Growth Reports | 30000 |
 | click_and_wait | link=Growth Reports |  |
 | selectFrame | report-iframe |  |
-| text_like | //body | qr/3\s*1\s*1\s*1\s*1\s*4\s*8\s*5\s*1\s*3\s*17\s*6/ |
+| text_like | //body | qr/3\s*1\s*1\s*1\s*1\s*4\s*6\s*5\s*2\s*16\s*17\s*6/ |
+
 | select-frame | relative=parent |  |
 
 | *Comment* | Test case: Event-Driven Control Panel Reports - Teardown |  |

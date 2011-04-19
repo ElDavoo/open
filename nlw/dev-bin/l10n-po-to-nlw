@@ -9,6 +9,14 @@ use FindBin '$RealBin';
 use lib "$RealBin/../lib";
 use Socialtext::l10n::DevUtils;
 
+if (!@ARGV) {
+    push @ARGV, glob("share/l10n/new/*.po");
+    die << "." unless @ARGV;
+*** No files matching share/l10n/new/*.po
+    Usage: $0 [po-files].
+.
+}
+
 for my $po (@ARGV) {
     open my $in, '<', $po;
 
@@ -59,4 +67,5 @@ for my $po (@ARGV) {
             close $out;
         }
     }
+    say "*** Merged: $po";
 }

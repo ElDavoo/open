@@ -4,14 +4,14 @@ use warnings;
 
 use base 'Socialtext::Plugin';
 use Class::Field qw(const);
-use Socialtext::l10n 'loc';
+use Socialtext::l10n qw(loc __);
 use Socialtext::Formatter::Phrase ();
 use Socialtext::String ();
 use Socialtext::Paths ();
 use Encode ();
 
 const class_id    => 'widget';
-const class_title => 'WidgetPlugin';
+const class_title => __('class.widget');
 const cgi_class   => 'Socialtext::WidgetPlugin::CGI';
 
 sub register {
@@ -21,33 +21,12 @@ sub register {
     $registry->add(wafl => widget => 'Socialtext::WidgetPlugin::Wafl');
 }
 
-sub get_container_for_gadget {
-    my $self = shift;
-    my ($workspace_name, $page_id, $widget, $serial, $encoded_prefs) = @{$_[0]}{
-        qw( workspace_name page_id widget serial encoded_prefs )
-    };
+sub gadget_vars {
+    my ($self, $src, $encoded_prefs) = @_;
+    $src = "local:widgets:$src" unless $src =~ /:/;
 
-    return unless $widget and $workspace_name and $page_id;
-
-    $serial ||= 1;
-    $encoded_prefs ||= '';
-    $widget = "local:widgets:$widget" unless $widget =~ /:/;
-
-    my $ws = Socialtext::Workspace->new( name => $workspace_name ) or return;
-
-    my $container = eval { Socialtext::Gadgets::Container::Wafl->Fetch(
-        owner => $ws,
-        viewer => $self->hub->current_user,
-        name => "$widget##$workspace_name##$page_id##$serial",
-    ) } or return;
-
-    my $gadget = $container->gadgets->[0];
-    if (!$gadget) {
-        $container->delete;
-        return;
-    }
-
-    my %new_prefs;
+    # Setup overrides and override preferences
+    my %overrides = (instance_id => ((2 ** 30) + int(rand(2 ** 30))));
     for my $encoded_pref (split /\s+/, $encoded_prefs) {
         $encoded_pref =~ /^([^\s=]+)=(\S*)/ or next;
         my ($key, $val) = ($1, $2);
@@ -55,38 +34,45 @@ sub get_container_for_gadget {
         $val =~ s/%([0-9A-Fa-f]{2})/chr hex($1)/eg;
         Encode::_utf8_off($val);
         $val = Encode::decode_utf8($val);
-        $new_prefs{$key} = $val;
+        $key =~ s/^up_/UP_/;
+        $overrides{$key} = $val;
     }
 
-    for my $pref (@{ $gadget->preferences || [] }) {
-        my $val = $new_prefs{$pref->{name}};
-        $val = $pref->{default_value} unless defined $val;
+    my $gadget = Socialtext::Gadgets::Gadget->Fetch(src => $src);
+    my $renderer = Socialtext::Gadget::Renderer->new(
+        gadget => $gadget,
+        view => 'page',
+        overrides => \%overrides,
+    );
 
-        $val = $ws->name if $pref->{datatype} eq 'workspace';
-        $val = $ws->account->name if $pref->{datatype} eq 'account';
-
-        no warnings 'uninitialized';
-        if ($pref->{value} ne $val) {
-            $gadget->set_preference($pref->{name} => $val);
-        }
+    my $preferences = $gadget->preferences;
+    for my $pref (@$preferences) {
+        my $overridden = $overrides{"UP_$pref->{name}"} || next;
+        $pref->{value} = $overridden;
     }
 
-    return($container, $gadget, \%new_prefs);
+    my $width = $overrides{__width__} // 600;
+    $width .= "px" if $width =~ /^\d+$/;
+
+    my $content_type = $renderer->content_type;
+    return {
+        %{$gadget->template_vars},
+        instance_id => $overrides{instance_id},
+        content_type => $content_type,
+        title => $overrides{__title__} || $renderer->render($gadget->title),
+        width => $width,
+        $content_type eq 'inline'
+            ? (content => $renderer->content)
+            : (href => $renderer->href),
+    };
 }
 
 sub widget_setup_screen {
     my $self = shift;
-    my ($container, $gadget) = $self->get_container_for_gadget({
-        map { $_ => scalar $self->cgi->$_ }
-            qw( workspace_name page_id widget serial encoded_prefs )
-    }) or return;
 
-    if ($self->cgi->do_delete_container) {
-        $container->delete;
-        return '{"deleted": 1}';
-    }
-
-    my $workspace = $container->owner;
+    my $workspace = Socialtext::Workspace->new(
+        name => $self->cgi->workspace_name,
+    );
     my $account = $workspace->account;
 
     return $self->hub->template->process("view/container.setup",
@@ -103,7 +89,9 @@ sub widget_setup_screen {
             plugins => [$account->plugins_enabled],
         },
         pluggable => $self->hub->pluggable,
-        container => $container->template_vars,
+        gadget => $self->gadget_vars(
+            $self->cgi->widget, $self->cgi->encoded_prefs,
+        ),
     );
 }
 
@@ -127,112 +115,27 @@ use base 'Socialtext::Formatter::WaflPhraseDiv';
 use Class::Field qw( const );
 use Socialtext::l10n 'loc';
 use Socialtext::Formatter::Phrase ();
+use Socialtext::Gadget::Renderer;
+use Socialtext::Gadgets::Gadget;
 
 const wafl_id => 'widget';
 const wafl_reference_parse => qr/^\s*([^\s#]+)(?:\s*#(\d+))?((?:\s+[^\s=]+=\S*)*)\s*$/;
 
 sub html {
     my $self = shift;
-    my ($widget, $serial, $encoded_prefs) = $self->arguments =~ $self->wafl_reference_parse;
-    my ($container, $gadget, $pref) = $self->hub->widget->get_container_for_gadget({
-        workspace_name => $self->hub->current_workspace->name,
-        page_id => $self->current_page_id,
-        widget => $widget,
-        serial => $serial,
-        encoded_prefs => $encoded_prefs,
-    });
+    my ($src, $serial, $encoded_prefs) = $self->arguments =~ $self->wafl_reference_parse;
 
-    return loc("error.corrupted-widget-settings")
-        unless $container and $widget;
+    $serial ||= 1;
+    $encoded_prefs ||= '';
 
-    my $width = $pref->{__width__} || '';
-    if ($width =~ /^\d+$/) {
-        $width .= 'px';
-    }
-
-    my $html = $self->hub->template->process($container->view_template,
+    my $gadget_vars = $self->hub->widget->gadget_vars($src, $encoded_prefs);
+    return $self->hub->template->process('view/container.wafl',
         $self->hub->helpers->global_template_vars,
         pluggable => $self->hub->pluggable,
-        container => $container->template_vars,
-        width     => $width,
-    );
-
-    # Sometimes page widget's HTML block gets re-formatted again with newlines becoming
-    # <br/> on Firefox; apply this workaround before we find out the root cause.
-    $html =~ s[//\s.*$][]mg;
-    $html =~ s[\s*\n\s*][ ]g;
-    $html =~ s[(<script\b[^>]*>)\s*<!--(.*?)-->\s*</script>][$1$2</script>]ig;
-    return $html;
-}
-
-################################################################################
-package Socialtext::Gadgets::Container::Wafl;
-use Moose;
-use constant 'type'            => 'wafl';
-use constant 'links_template'  => '';
-use constant 'hello_template'  => '';
-use constant 'footer_template' => '';
-use constant 'header_template' => '';
-use constant 'global'          => 1;
-use constant 'title'           => '';
-use constant 'plugin'          => "widgets";
-use constant 'view_template'   => 'view/container.wafl';
-
-with 'Socialtext::Gadgets::Container';
-has '+owner' => ( isa => 'Socialtext::Workspace' );
-has 'src' => (
-    is => 'ro', isa => 'Str',
-    lazy_build => 1,
-);
-sub _build_src {
-    my $self = shift;
-    my $src = $self->name;
-    $src =~ s{^([^#]*)##.*}{$1};
-    return $src;
-}
-
-sub JoinSQL {''}
-
-sub _build_env {+{}}
-
-sub _build_columns {[
-    { style => 'width: 99%', borderless => 1 },
-]}
-
-sub default_gadgets {
-    my $self = shift;
-    return (
-        {
-            src => $self->src,
-            col => 0, fixed => 1,
-        },
+        gadget    => $gadget_vars,
     );
 }
 
-################################################################################
-package Socialtext::Handler::Gadget::Wafl;
-
-# @COPYRIGHT@
-use Moose;
-use Socialtext;
-use Socialtext::JSON qw(decode_json);
-use namespace::clean -except => 'meta';
-
-sub _build_container {
-    my $self = shift;
-    my $cname = $self->params->{cname} or return;
-    my ($widget, $ws_name, $page_id, $serial) = split(/##/, $cname);
-    return Socialtext::Gadgets::Container::Wafl->Fetch(
-        owner => Socialtext::Workspace->new(name => $ws_name),
-        viewer => $self->rest->user,
-        name => $cname,
-    );
-}
-
-extends 'Socialtext::Handler::Container::Dashboard';
-with 'Socialtext::Handler::Gadget';
-
-__PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
 __END__
 

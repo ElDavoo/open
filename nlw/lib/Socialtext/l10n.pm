@@ -2,9 +2,15 @@ package Socialtext::l10n;
 # @COPYRIGHT@
 use strict;
 use warnings;
+use Scalar::Defer qw(defer force);
 use base 'Exporter';
 use Socialtext::AppConfig;
-our @EXPORT_OK = qw(loc loc_lang system_locale best_locale);
+our @EXPORT = qw(__ loc lsort lsort_by);
+our @EXPORT_OK = qw(loc_lang system_locale best_locale);
+our %EXPORT_TAGS = (all => [@EXPORT, @EXPORT_OK]);
+
+use Socialtext::l10n::I18N::zz;
+use Unicode::Collate ();
 
 =head1 NAME
 
@@ -12,10 +18,19 @@ Socialtext::l10n - Provides localization functions
 
 =head1 SYNOPSIS
 
-  use Socialtext::l10n qw(loc loc_lang);
+    # Exports "__", "loc", "lsort" and "lsort_by"
+    use Socialtext::l10n;
 
-  loc_lang('fr');                 # set the locale
-  is loc('wiki.welcome'), 'Bienvenue'; # find localized text
+    my @foo = lsort("a", "B", "c");
+    my @bar = lsort_by( name => ($obj1, $obj2, $obj3));
+
+    # Exports "loc_lang", "system_locale" and "best_locale" too
+    use Socialtext::l10n ':all';
+
+    my $deferred = __('wiki.welcome');   # deferred loc()
+    loc_lang('fr');                      # set the locale
+    is loc('wiki.welcome'), 'Bienvenue'; # find localized text
+    is $deferred, 'Bienvenue';           # this also works
 
 =head1 Methods
 
@@ -26,7 +41,10 @@ no localized string can be found, the english string will be used.
 
 See Locale::Maketext::Simple for information on string formats.
 
-=cut
+=head2 __("example.string", $arg)
+
+Creates a I<deferred> string. It's evaluated in the active locale whenever
+its value is used.
 
 =head2 loc_lang
 
@@ -43,14 +61,35 @@ return the system locale.
 
 Returns the current system wide locale code.
 
+=head1 Unicode Collation
+
+=head2 lsort(@list)
+
+Sort a list of strings case-insensitively using Unicode collation algorithm,
+with proper ordering for accented characters.
+
+=head2 lsort_by($field => @list_of_hashes)
+
+Sort a list of hash references by a specific field, using Unicode collation algorithm.
+
 =head1 Localization Files
 
-The .po files are kept in share/l10n.
+The .po files are kept in F<share/l10n>.
 
 =cut
 
 my $share_dir = Socialtext::AppConfig->new->code_base();
 my $l10n_dir = "$share_dir/l10n";
+my $collator = Unicode::Collate->new;
+
+sub lsort_by {
+    my $field = shift;
+    sort { $collator->cmp($a->{$field}, $b->{$field}) } @_
+}
+
+sub lsort {
+    $collator->sort(@_)
+}
 
 require Locale::Maketext::Simple;
 Locale::Maketext::Simple->import (
@@ -58,6 +97,16 @@ Locale::Maketext::Simple->import (
     Decode => 1,
     Export => "_loc",  # We have our own loc()
 );
+
+
+sub Scalar::Defer::Deferred::TO_JSON {
+    force $_[0];
+}
+
+sub __ {
+    my @args = @_;
+    defer { loc(@args) };
+}
 
 sub loc {
     my $msg = shift;
@@ -121,8 +170,12 @@ sub loc {
 sub loc_lang { return _loc_lang(@_) }
 
 sub best_locale {
-    my $hub = shift;
-    my $loc = eval { no warnings; $hub->preferences_object->locale->value };
+    my $hub = shift || return system_locale();
+    local $@;
+    my $loc = eval {
+        $hub->pluggable->plugin_object('locales')->get_user_prefs()->{locale};
+    };
+    warn $@ if $@;
     return $loc || system_locale();
 }
 

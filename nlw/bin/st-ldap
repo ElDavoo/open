@@ -12,21 +12,21 @@ use Socialtext::LDAP::Operations;
 
 ###############################################################################
 # Read in our command line options.
-my ($help, $man);
-my $verbose = 0;
-my $force   = 0;
-my $dryrun  = 0;
-my $driver;
+my %opts;
 GetOptions(
-    'help|?'    => \$help,
-    'man'       => \$man,
-    'verbose'   => \$verbose,
-    'force'     => \$force,
-    'dryrun'    => \$dryrun,
-    'driver:s'  => \$driver,
+    \%opts,
+    'help|?',
+    'man',
+    'verbose',
+    'force',
+    'dryrun',
+    'driver:s',
+    'email:s',
+    'username:s',
+    'id:i',
 ) || pod2usage(1);
-pod2usage(1) if ($help);
-pod2usage( -exitstatus=>0, -verbose=>2 ) if ($man);
+pod2usage(1) if ($opts{help});
+pod2usage( -exitstatus=>0, -verbose=>2 ) if ($opts{man});
 
 my $command = shift @ARGV;
 pod2usage(1) unless ($command);
@@ -36,7 +36,7 @@ pod2usage(1) unless ($command);
 my $logger = Socialtext::Log->new();
 $logger->log->add( Log::Dispatch::Screen->new(
     name        => 'screen',
-    min_level   => $verbose ? 'info' : 'notice',
+    min_level   => $opts{verbose} ? 'info' : 'notice',
     stderr      => 1,
     callbacks   => [\&_add_newline],
 ) );
@@ -46,28 +46,40 @@ binmode(STDERR, ':utf8');
 # Execute the requested command.
 my %commands = (
     'refresh-users' => sub {
-        Socialtext::LDAP::Operations->RefreshUsers(force => $force);
+        Socialtext::LDAP::Operations->RefreshUsers(@_);
     },
     'refresh-groups' => sub {
-        Socialtext::LDAP::Operations->RefreshGroups(force => $force);
+        Socialtext::LDAP::Operations->RefreshGroups(@_);
     },
     'refresh' => sub {
-        Socialtext::LDAP::Operations->RefreshUsers(force => $force);
-        Socialtext::LDAP::Operations->RefreshGroups(force => $force);
+        Socialtext::LDAP::Operations->RefreshUsers(@_);
+        Socialtext::LDAP::Operations->RefreshGroups(@_);
     },
     'load-users' => sub {
-        Socialtext::LDAP::Operations->LoadUsers(dryrun => $dryrun);
+        Socialtext::LDAP::Operations->LoadUsers(@_);
     },
     'list-groups' => sub {
-        Socialtext::LDAP::Operations->ListGroups(driver => $driver);
+        Socialtext::LDAP::Operations->ListGroups(@_);
     },
 );
-unless ($commands{$command}) {
+
+my $callback = $commands{$command};
+unless ($callback) {
     die "Unknown command, '$command'.\n";
 }
 
-$commands{$command}->();
+# ... build the list of arguments for this command
+my %accepted_args = (
+    'refresh-users'  => [qw( force email username )],
+    'refresh-groups' => [qw( force id )],
+    'refresh'        => [qw( force )],
+    'load-users'     => [qw( dryrun email username )],
+    'list-groups'    => [qw( driver )],
+);
+my %args = map { $_ => $opts{$_} } @{$accepted_args{$command}};
 
+# ... execute the command
+$callback->(%args);
 exit;
 
 
@@ -89,16 +101,21 @@ st-ldap - Socialtext LDAP integration utility
 
   Commands:
     load-users      Loads Users from LDAP
-        --dryrun        Dry-run; show Users, but don't add them
+        --dryrun            Dry-run; show Users, but don't add them
+        --email <addr>      Load one User, by e-mail address
+        --username <name>   Load one User, by username
 
     list-groups     Lists Groups known in the specified LDAP directory
         --driver <id>   LDAP Group Factory id (from "group_factories")
 
     refresh-users   Refreshes user data from LDAP
-        --force         Force refresh for all LDAP users
+        --force             Force refresh for all LDAP users
+        --email <addr>      Refresh one User, by e-mail address
+        --username <name>   Refresh one User, by username
 
     refresh-groups  Refreshes group data from LDAP
-        --force         Force refresh for all LDAP groups
+        --force             Force refresh for all LDAP groups
+        --id <group_id>     Refresh one Group, by Id
 
     refresh         Refreshes user and group data from LDAP
         --force         Force refresh for all LDAP users/groups
@@ -128,6 +145,14 @@ Socialtext environment.
 Loads users from LDAP into Socialtext.
 
 =over
+
+=item B<--email E<lt>addrE<gt>>
+
+Loads a I<single> User, by e-mail address.
+
+=item B<--username E<lt>nameE<gt>>
+
+Loads a I<single> User, by username.
 
 =item B<--dryrun>
 
@@ -176,6 +201,14 @@ Refreshes the local DB cache with information on LDAP users.
 
 =over
 
+=item B<--email E<lt>addrE<gt>>
+
+Refreshes a I<single> User, by e-mail address.
+
+=item B<--username E<lt>nameE<gt>>
+
+Refreshes a I<single> User, by username.
+
 =item B<--force>
 
 Forces a refresh for B<all> LDAP users, not just those who are known to have
@@ -211,6 +244,10 @@ refresh of B<all> LDAP users.
 Refreshes the local DB cache with information on LDAP groups.
 
 =over
+
+=item B<--id E<lt>group_idE<gt>>
+
+Refreshes a single Group, by Id.
 
 =item B<--force>
 

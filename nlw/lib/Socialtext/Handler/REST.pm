@@ -61,6 +61,19 @@ sub handler ($$) {
     return $class->real_handler($r, $user);
 }
 
+sub header {
+    my $self = shift;
+    my @args;
+    while (my $key = shift) {
+        my $val = shift;
+        if ($key eq '-type' and $val ~~ [qw[ text/plain text/html application/xml application/json ]] ) {
+            $val .= '; charset=UTF-8';
+        }
+        push @args, ($key => $val);
+    }
+    $self->SUPER::header(@args);
+}
+
 sub _webkit_air_unauthorized_handler {
     my $class = shift;
     my $r     = shift;

@@ -1,6 +1,6 @@
 [% user.guess_real_name %],
 
-[% loc('The following pages in your watchlist in [_1] have recently changed. This email was generated on [_2] at [_3].', workspace.title, email_date, email_time) %]
+[% loc('email.following-pages-in-watchlist-have-recently-changed=wiki,date,time', workspace.title, email_date, email_time) %]
 
 [%- FOR page = pages %]
   [%- PROCESS 'email/page-details.txt' -%]
@@ -8,7 +8,7 @@
 
 --
 
-[% loc('To stop receiving or change how often you receive emails about changes to your watchlist in [_1], go to:', workspace.title) %]
+[% loc('email.change-watchlist-preferences-at=wiki:', workspace.title) %]
 
  [% watchlist_preference_uri %]
  

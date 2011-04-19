@@ -75,7 +75,13 @@ msgstr "Welcome"
 msgid "dashboard.widgets-to-push:"
 msgstr "The following widgets will be pushed:"
 
-#: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:20 share/plugin/dashboard/template/dashboard_links:18 share/plugin/dashboard/template/widget_editor_links:13
+#: share/plugin/dashboard/share/widgets/widget_editor/config.yaml:5
+msgid "description.widget_editor"
+msgstr "Edit a widget"
+
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:20
+#: share/plugin/dashboard/template/dashboard_links:18
+#: share/plugin/dashboard/template/widget_editor_links:13
 msgid "do.cancel"
 msgstr "Cancel"
 
@@ -122,3 +128,7 @@ msgstr "Pushing a widget to appear on the user's dashboard will cause it to appe
 #: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:4
 msgid "info.dashboard-save-layout"
 msgstr "Click <b>Save</b> below to make this the default dashboard for your account. All new users will have this dashboard when they first log in. To also force this dashboard for existing users, click the \"force update\" checkbox below."
+
+#: share/plugin/dashboard/share/widgets/widget_editor/config.yaml:4
+msgid "title.widget_editor"
+msgstr "Widget Editor"

@@ -126,6 +126,24 @@ sub user_can {
     );
 }
 
+# Give account admins permission to read and admin the group
+around 'role_for_user' => sub {
+    my $orig = shift;
+    my $self = shift;
+    my $user = shift;
+    my %p = (@_==1) ? %{$_[0]} : @_;
+
+    my $can_admin = $self->primary_account->user_can(
+        user => $user,
+        permission => ST_ADMIN_PERM,
+    );
+    if ($can_admin) {
+        return Socialtext::Role->Admin->role_id if $p{ids_only};
+        return Socialtext::Role->Admin;
+    }
+    return $orig->($self, $user, %p);
+};
+
 sub uri {
     my $self = shift;
     return Socialtext::URI::uri(
@@ -539,10 +557,12 @@ use constant base_package => __PACKAGE__;
 sub accounts {
     my ($self, %p) = @_;
 
-    # all accounts with direct membership
-    my $sth = sql_execute(q{
+    my $table = $p{include_indirect} ? 'user_set_path' : 'user_set_include';
+
+    # all accounts with direct (or indirect) membership
+    my $sth = sql_execute(qq{
         SELECT DISTINCT account_id
-        FROM user_set_include
+        FROM $table
         JOIN "Account" ON (into_set_id = user_set_id)
         WHERE from_set_id = ?
     }, $self->user_set_id);

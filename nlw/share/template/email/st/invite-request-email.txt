@@ -1,6 +1,6 @@
-[% loc('Hello,') %]
+[% loc('email.hello') %]
 
-[% loc('[_1] would like to ask you to invite new users into the [_2] workspace:', inviting_user, workspace_title) %]
+[% loc('email.request-invite=user,wiki:', inviting_user, workspace_title) %]
 
 [% FOREACH user = invited_users %]
     [% user %] [% END %]
@@ -8,8 +8,8 @@
 [% IF extra_text %]
     [% extra_text %]
 [% END %]
-[% loc('To invite these users into the workspace, visit the user invite page for the workspace and copy and paste the list above into the invite box.') %]
-[% loc('The User Invite page can be found at:') %]
+[% loc('email.to-invite-users-visit-wiki-invite-page') %]
+[% loc('email.user-invite-page-at:') %]
 
 [% url %]
 

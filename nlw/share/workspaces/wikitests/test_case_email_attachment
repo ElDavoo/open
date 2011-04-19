@@ -9,6 +9,22 @@
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | st-page-save |  |  |
 
+| *Comment* | Test Case: Email attachment attach something to the page |
+| wait_for_element_visible_ok | st-attachments-uploadbutton | 30000 |
+| click_ok | st-attachments-uploadbutton |  |
+| wait_for_text_present_ok | Upload Files | 30000 |
+| wait_for_text_present_ok | Maximum file size: 50MB | 30000 |
+| wait_for_element_visible_ok | st-attachments-attach-filename |  |
+| pause | 5000 |  |
+| type_ok | st-attachments-attach-filename | %%wikitest_files%%wikitestzip.zip |
+| wait_for_text_present_ok | Uploaded files: wikitestzip.zip | 30000 |
+| wait_for_element_visible_ok | st-attachments-attach-closebutton | 120000 |
+| click_and_wait | st-attachments-attach-closebutton |  |
+| wait_for_element_visible_ok | st-attachment-listing | 30000 |
+| wait_for_element_visible_ok | //a[contains(@href,'original/wikitestzip.zip')] | 30000 |
+| text_like | //a[contains(@href,'original/wikitestzip.zip')] | wikitestzip.zip |
+| text_like | contentRight | qr/wikitestzip.zip.+\w\w\w\s+\d+,\s+\d+\s+\d+\:\d\d[ap]m by %%short_username%%/ |
+
 | *Comment* | Test Case: Email attachment open the email-page |  |
 | wait_for_element_visible_ok | link=Email | 30000 |
 | click_ok | link=Email |  |
@@ -22,9 +38,12 @@
 
 | *Comment* | Test Case: Email attachment Email Note and Attachments |  |
 | text_like | email_page_add_note | Hello, this is a page from the workspace that I wanted you to see. This page is also available for viewing or editing on the web at: |
-| text_like | email_page_add_note | /%%workspace%%/?email_subject_%%start_time%% |
+| text_like | email_page_add_note | /%%workspace%%/email_subject_%%start_time%% |
 | wait_for_element_visible_ok | email_page_add_note | 30000 |
 | type_ok | email_page_add_note | Note %%start_time%% from Test Case: Email attachment |
+| wait_for_element_visible_ok | email_page_keep_attachments | 30000 |
+| check_ok | email_page_keep_attachments |  |
+| is_checked_ok | email_page_keep_attachments |  |
 
 | *Comment* | Test Case: Email attachment email sending page to %%workspace%%@%%wikiemail%% |  |
 | wait_for_element_visible_ok | email_send | 30000 |
@@ -34,17 +53,19 @@
 | pause | 90000 |  |
 | st-admin | index-page --workspace %%workspace%% --page email_subject_%%start_time%% |  |
 
-| *Comment* | Test Case: Email attachment email Check Reception with HTML attachment |  |
+| *Comment* | Test Case: Email attachment email Check Reception with HTML attachment and zip attachment |  |
 | open_ok | /%%workspace%%/index.cgi?Email subject %%start_time%% |  |
 | text_like | st-page-titletext | Email subject %%start_time%% |
 | text_like | contentContainer | Note %%start_time%% from Test Case: Email |
+| wait_for_element_visible_ok | link=wikitestzip.zip | 30000 |
+| text_like | st-attachment-listing | wikitestzip.zip |
 | type_ok | st-search-term | "Note %%start_time%%" |
 | click_and_wait | st-search-submit |  |
 | text_like | contentContainer | qr/Email\s*subject\s*%%start_time%%\s*in\s*%%title%%/ |
 | text_like | contentContainer | qr/attached\s*to\s*page\s*Email\s*subject\s*%%start_time%%/i |
 | pause | 10000 |  |
 
-| *Comment* | Test Case: Email attachment Deleting HTML attachment |  |
+| *Comment* | Test Case: Email attachment Deleting zip attachment |  |
 | open_ok | /%%workspace%%/index.cgi?Email subject %%start_time%% |  |
 | click_ok | //a[contains(@title,'Delete this attachment')] |  |
 | wait_for_element_visible_ok | link=Delete | 30000 |
@@ -59,10 +80,9 @@
 | select_ok | st-search-action | label=Search This Workspace: |
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | wait_for_element_visible_ok | st-search-submit | 30000 |
-| type_ok | st-search-term | "Note %%start_time%%" |
+| type_ok | st-search-term | "wikitestzip.zip" |
 | click_and_wait | st-search-submit |  |
-| text_like | contentContainer | Email subject %%start_time%% |
-| text_unlike | contentContainer | qr/attached to page Email subject %%start_time%%/i |
+| wait_for_text_present_ok | Showing 1 - 0 of 0 total. | 30000 |
 
 | *Comment* | Test Case: Email attachment TEARDOWN |  |
 | st-process-jobs |  |  |

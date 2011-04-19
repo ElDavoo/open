@@ -3,6 +3,8 @@ package Socialtext::Handler::Gadget;
 use Moose::Role;
 use Socialtext::JSON qw(encode_json decode_json);
 use Socialtext::HTTP qw(:codes);
+use Socialtext::SQL qw(:txn);
+use Guard;
 use namespace::clean -except => 'meta';
 
 requires qw(container if_authorized_to_edit if_authorized_to_view);
@@ -19,26 +21,31 @@ sub _build_gadget {
     return $self->container->get_gadget_instance($self->gadget_instance_id);
 }
 
-around 'if_authorized_to_view' => sub {
-    my ($orig, $self, $cb) = @_;
+sub if_authorized_to_view_gadget {
+    my ($self, $cb) = @_;
     return $self->not_found unless $self->gadget;
-    return $orig->($self, $cb);
-};
+    return $self->if_authorized_to_view($cb);
+}
 
-sub GET_json {
+sub extract_prefs {
     my $self = shift;
-    $self->if_authorized_to_view(sub {
-        $self->rest->header(-type => 'application/json');
-        return encode_json({
-            content => $self->gadget->content,
-            %{$self->gadget->template_vars},
-        });
-    });
+    my %prefs;
+    for my $param ($self->rest->query->param) {
+        if ($param =~ /^up_(.*)$/) {
+            $prefs{$1} = Encode::decode_utf8(
+                $self->rest->query->param($param)
+            );
+        }
+    }
+    return \%prefs;
 }
 
 sub GET_html {
     my $self = shift;
-    $self->if_authorized_to_view(sub {
+    $self->if_authorized_to_view_gadget(sub {
+        # Override any preferences from up_ cgi parameters
+        $self->gadget->override_preferences($self->extract_prefs);
+
         $self->rest->header(-type => 'text/html; charset=utf-8');
         return $self->gadget->expanded_content;
     });
@@ -54,7 +61,7 @@ sub DELETE {
 
 sub GET_prefs {
     my $self = shift;
-    $self->if_authorized_to_view(sub {
+    $self->if_authorized_to_view_gadget(sub {
         return encode_json($self->gadget->preference_hash);
     });
 }
@@ -94,7 +101,11 @@ sub PUT_prefs {
         }
 
         $self->_log_gadget_metadata;
-        return $self->gadget->full_href;
+        my $renderer = Socialtext::Gadget::Renderer->new(
+            gadget => $self->gadget->spec,
+            overrides => $self->gadget->hangman_dict,
+        );
+        return $renderer->href;
     });
 }
 

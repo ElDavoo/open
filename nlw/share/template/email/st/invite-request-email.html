@@ -1,13 +1,13 @@
 [%# @COPYRIGHT@ -%]
 <html>
     <head>
-         <title>[% loc('Invitation Request') %]</title>
+         <title>[% loc('email.invitation-request') %]</title>
      </head>
 
      <body>
-         [% loc('Hello,') %]
+         [% loc('email.hello') %]
          <p>
-[% loc('[_1] would like to ask you to invite new users into the [_2] workspace:', inviting_user, workspace_title) %]
+[% loc('email.request-invite=user,wiki:', inviting_user, workspace_title) %]
 </p>
 <p>
 
@@ -22,7 +22,7 @@
 </p>
 [% END %]
 <p>
-[% loc('To invite these users into the workspace, visit the user invite page for the <br />workspace and copy and paste the list above into the invite box. The User <br />Invite page can be found at:') %]
+[% loc('email.to-invite-users-visit-wiki-invite-page-link:') %]
 </p>
 
 <p>

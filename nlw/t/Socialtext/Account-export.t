@@ -48,6 +48,7 @@ sub dump_group {
         role_name            => ignore(),
         users                => ignore(),
         description          => ignore(),
+        containers           => ignore(),
     };
     return $data;
 }

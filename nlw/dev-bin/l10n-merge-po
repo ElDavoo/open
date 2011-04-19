@@ -18,3 +18,5 @@ for my $po (glob("share/l10n/new/*.po")) {
     system("(msgcat --width 99999 -s $po $en > $en.new) && (mv $en.new $en)");
     warn "*** Merged: $en\n";
 }
+
+system("dev-bin/l10n-make-po-js");

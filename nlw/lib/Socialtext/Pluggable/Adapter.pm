@@ -2,6 +2,7 @@ package Socialtext::Pluggable::Adapter;
 # @COPYRIGHT@
 use strict;
 use warnings;
+use Socialtext::l10n '__';
 
 our @libs;
 our $AUTOLOAD;
@@ -20,9 +21,10 @@ use Module::Pluggable search_path => ['Socialtext::Pluggable::Plugin'],
 use Socialtext::Pluggable::WaflPhrase;
 use List::Util qw(first);
 use Memoize;
+use Class::Field qw(const);
 
-sub class_id { 'pluggable' };
-sub class_title { 'Pluggable' };
+const class_id => 'pluggable';
+const class_title => __('class.pluggable');
 
 sub plugins { grep !/SUPER$/, _plugins() } # grep prevents a Pluggable bug?
 BEGIN { memoize('plugins', NORMALIZER => sub { '' } ) } # memoize ignores args

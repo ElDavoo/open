@@ -96,20 +96,6 @@ jQuery(function() {
     jQuery(window).bind("resize", set_main_frame_margin).trigger("resize");
 });
 
-function nlw_name_to_id(name) {
-    if (name == '')
-        return '';
-    return encodeURI(
-        name.replace(/[^A-Za-z0-9_+]/g, '_') /* For Safari, the similar regex below doesn't work in Safari */
-            .replace(/[^A-Za-z0-9_+\u00C0-\u00FF]/g, '_')
-            .replace(/_+/g, '_')
-            .replace(/^_*(.*?)_*$/g, '$1')
-            .replace(/^0$/, '_')
-            .replace(/^$/, '_')
-            .toLocaleLowerCase()
-    );
-}
-
 function check_revisions(form) {
     var r1;
     var r2;

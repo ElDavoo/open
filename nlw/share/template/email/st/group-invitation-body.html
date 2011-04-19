@@ -10,20 +10,20 @@
 
 [% IF requires_confirmation %]
 <p>
-[% loc('Hi,') %]
+[% loc('email.hi') %]
 </p>
 <p>
-[% loc("I'm inviting you to join the [_1] group at [_2].", group_name, host) %]
+[% loc("email.inviting-you-to-join=group,host", group_name, host) %]
 </p>
 <p>
 [% SET confirm_uri = confirmation_uri | html %]
-[% loc('Please <a href="[_1]">click on this link</a> to confirm your email address.', confirm_uri) %]
+[% loc('email.click-to-confirm-email=uri', confirm_uri) %]
 </p>
 <p>
-[% loc('Once you have confirmed your account, you will receive a second email with login details.') %]
+[% loc('email.once-confirmed-you-will-receive-second-email-with-login-details') %]
 </p>
 <p>
-[% loc('Thanks,') %]
+[% loc('email.thanks') %]
 </p>
 <p>
 [% inviting_user %]
@@ -33,15 +33,15 @@
 <a href="[% profile_uri_base %][% user.user_id %]">[% user.guess_real_name %]</a>,
 </p>
 <p>
-<a href="[% profile_uri_base %][% from_user.user_id %]">[% from_user.guess_real_name %]</a> [% loc('has added you to the group: [_1]', group_name) %] 
+<a href="[% profile_uri_base %][% from_user.user_id %]">[% from_user.guess_real_name %]</a> [% loc('email.added-you-to=group', group_name) %] 
 </p>
 <p>
-[% loc("As a member, you can send Signals to the group and use any of the group workspaces.") %]
+[% loc("email.as-member-you-can-send-signals-to-group-and-use-any-of-group-wikis") %]
 <p>
-[% loc('Go to the')%] <a href="[% group_uri | html %]">[% group_name %]</a> [% loc('Home Page.') %]
+[% loc('email.go-to')%] <a href="[% group_uri | html %]">[% group_name %]</a> [% loc('email.home-page') %]
 </p>
 <p>
-[% group_name %] [% loc('is a group on [_1].', host) %]
+[% group_name %] [% loc('email.is-group-on=host', host) %]
 </p>
 
 [% END %]

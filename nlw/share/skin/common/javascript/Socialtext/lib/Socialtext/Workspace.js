@@ -71,12 +71,12 @@ $.extend(Socialtext.Workspace.prototype, {
     updateMembers: function(members, callback) {
         var self = this;
         if (self._hasImpersonators(members)) {
-            callback({errors: ['Impersonators can only be managed by system administrators']});
+            callback({errors: [loc('api.impersonators-can-only-be-managed-by-admins')]});
         }
         else {
             var types = self._splitMemberRoles(members);
             if (!types.users.length && !types.groups.length) {
-                throw new Error("No members specified");
+                throw new Error(loc("api.no-members-specified"));
             }
             var jobs = [];
             if (types.users.length) {
@@ -159,8 +159,8 @@ Socialtext.Workspace.All = function(callback) {
 
 Socialtext.Workspace.Create = function(opts, callback) {
     try {
-        if (!opts.title) throw new Error("Title is required");
-        if (!opts.name) throw new Error("Name is required");
+        if (!opts.title) throw new Error(loc("api.title-required"));
+        if (!opts.name) throw new Error(loc("api.name-required"));
         Socialtext.Workspace.AssertValidTitle(opts.title);
         Socialtext.Workspace.AssertValidName(opts.name);
     }
@@ -204,25 +204,24 @@ Socialtext.Workspace.ReservedNames = [
 
 Socialtext.Workspace.AssertValidTitle = function (title) {
     if (title.match(/^-/)) {
-        throw new Error('Workspace titles cannot begin with a dash');
+        throw new Error(loc('api.wiki-title-cannot-begin-with-dash'));
     }
     if (title.length < 2 || title.length > 64) {
-        throw new Error("Workspace titles must be between 2 and 64 characters");
+        throw new Error(loc("api.about-wiki-title"));
     }
 };
 
 Socialtext.Workspace.AssertValidName = function (name) {
     var reserved = Socialtext.Workspace.ReservedNames;
     if ($.inArray(name, reserved) >= 0 || name.match(/^st_/)) {
-        throw new Error(name + " is a reserved word");
+        throw new Error(loc("api.is-reserved-word=name", name));
     }
     if (name.match(/^-/)) {
-        throw new Error('Workspace names cannot begin with a dash');
+        throw new Error(loc('api.wiki-name-cannot-begin-with-dash'));
     }
     if (!name.match(/^[a-z0-9_-]{3,30}$/)) {
         throw new Error(
-            'Workspace names must consist of 3-30 lowercase letters, ' +
-            'numbers, underscores or dashes.'
+            loc('api.about-wiki-name')
         );
     }
 };
@@ -258,7 +257,7 @@ Socialtext.Workspace.CheckExists = function (name, callback) {
                 callback(false);
             }
             else {
-                throw new Error("Error checking for workspace existence");
+                throw new Error(loc("api.error-checking-for-wiki-existence"));
             }
         }
     });

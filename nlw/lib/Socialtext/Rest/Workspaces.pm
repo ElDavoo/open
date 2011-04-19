@@ -20,6 +20,7 @@ use Socialtext::Workspace::Permissions;
 use Socialtext::JobCreator;
 use Socialtext::AppConfig;
 use Socialtext::Timer;
+use Socialtext::l10n 'loc';
 
 # Anybody can see these, since they are just the list of workspaces the user
 # has 'selected'.
@@ -155,18 +156,18 @@ sub POST {
 
             unless ($meta->{account_id}) {
                 die Socialtext::Exception::DataValidation->new(
-                    "You must specify a valid account for this workspace."
+                    loc("error.valid-account-for-this-wiki-required")
                 );
             }
 
             if (my $members = $meta->{members}) {
                 die Socialtext::Exception::Auth->new(
-                    'Must be a business admin to set members of a workspace'
+                    loc('error.must-be-business-admin-to-set-members-of-wiki')
                 ) unless $user->is_business_admin;
 
                 unless (grep { $_->{role_name} eq 'admin' } @$members) {
                     die Socialtext::Exception::DataValidation->new(
-                        "You must add at least one workspace administrator."
+                        loc("error.at-least-one-wiki-administrator-required")
                     );
                 }
             }
@@ -246,16 +247,16 @@ sub _create_workspace_from_meta {
     my $meta  = shift;
     my $actor = $self->rest->user;
 
-    die Socialtext::Exception::DataValidation->new('name, title required')
+    die Socialtext::Exception::DataValidation->new(loc('error.name-title-required'))
         unless $meta->{name} and $meta->{title};
 
     $meta->{account_id} ||= $actor->primary_account_id;
     my $acct = Socialtext::Account->new(account_id => $meta->{account_id});
-    die Socialtext::Exception::Auth->new('user cannot access account')
+    die Socialtext::Exception::Auth->new(loc('error.user-cannot-access-account'))
         unless $actor->is_business_admin || $acct->role_for_user($actor);
 
     Socialtext::Workspace->new(name => $meta->{name})
-        and die Socialtext::Exception::Conflict->new('workspace exists');
+        and die Socialtext::Exception::Conflict->new(loc('error.wiki-exists'));
 
     my $ws = Socialtext::Workspace->create(
         creator                         => $actor,
@@ -266,6 +267,7 @@ sub _create_workspace_from_meta {
         customjs_name                   => $meta->{customjs_name},
         customjs_uri                    => $meta->{customjs_uri},
         skin_name                       => $meta->{skin_name},
+        dont_add_creator                => 1,
         show_welcome_message_below_logo =>
             $meta->{show_welcome_message_below_logo},
         show_title_below_logo => $meta->{show_title_below_logo},
@@ -294,26 +296,26 @@ sub _add_groups_to_workspace {
     my $creator = $rest->user;
 
     $groups = ref($groups) eq 'HASH' ? [$groups] : $groups;
-    die Socialtext::Exceptions::DataValidation->new('bad json')
+    die Socialtext::Exceptions::DataValidation->new(loc('error.bad-json'))
         unless ref($groups) eq 'ARRAY';
 
     for my $meta (@$groups) {
         my $group = Socialtext::Group->GetGroup(
             group_id => $meta->{group_id}
-        ) or die Socialtext::Exception::NotFound->new('group does not exist');
+        ) or die Socialtext::Exception::NotFound->new(loc('error.group-does-not-exist'));
 
         $ws->has_group($group, {direct => 1})
             and die Socialtext::Exception::Conflict->new(
-                'group already in workspace');
+                loc('error.group-already-in-wiki'));
 
         $group->user_can(
             user => $creator,
             permission => ST_ADMIN_PERM,
-        ) or die Socialtext::Exception::Auth->new('user is not group admin');
+        ) or die Socialtext::Exception::Auth->new(loc('error.user-is-not-group-admin'));
 
         my $role = Socialtext::Role->new(
             name => $group->{role} ? $group->{role} : 'member'
-        ) or die Socialtext::Exception::Param->new('invalid role for group');
+        ) or die Socialtext::Exception::Param->new(loc('error.invalid-role-for-group'));
 
         $ws->add_group(
             group => $group,

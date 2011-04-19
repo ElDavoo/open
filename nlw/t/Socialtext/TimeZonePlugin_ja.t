@@ -3,6 +3,8 @@
 
 use strict;
 use warnings;
+use Scalar::Defer;
+use mocked 'Socialtext::l10n' => qw( loc loc_lang ); loc(); loc_lang('ja');
 use utf8;
 binmode STDOUT, ':utf8';
 binmode STDERR, ':utf8';
@@ -95,7 +97,6 @@ foreach my $z ( keys %$zones )
                         $prefs->dst->value($dst);
                         $prefs->time_display_12_24->value($h);
                         $prefs->time_display_seconds->value($s);
-                        $prefs->locale->value('ja');
                         run_tests($prefs);
                     }
                 }

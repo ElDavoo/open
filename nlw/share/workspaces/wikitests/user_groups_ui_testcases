@@ -21,11 +21,15 @@
 * [Test Case: Groups UI Delegate Membership]
 * [Test Case: Associate Group With Workspace]
 
-New as of self-join groups and workspaces
+Self-join groups and workspaces
 
 * [Test Case: Restrict Self-Join Workspaces]
 * [Test Case: Group No Change Link]
 
+Widgets in Groups:
+
+* [Test Case: Group Home Has Widgets]
+* [Test Case: Group Home Widget Permissions]
 
 
 ToDo:

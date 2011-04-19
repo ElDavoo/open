@@ -846,4 +846,89 @@ sub date_local {
     return $_[0]->hub->timezone->date_local($_[1]);
 }
 
+# Page Plugin Prefs
+
+sub _page_plugin_pt {
+    my $self = shift;
+    my $workspace_id = shift;
+    my $page_name = shift;
+
+    return Socialtext::PrefsTable->new(
+        table    => 'page_plugin_pref',
+        identity => {
+            workspace_id => $workspace_id,
+            page_name => $page_name,
+            plugin      => $self->name,
+        }
+    );
+}
+
+sub _ws_and_hub_for_page_prefs {
+    my $self = shift;
+    my %p = (
+        workspace_name => undef,
+        @_,
+    );
+
+    my $user_id = $self->hub->current_user->user_id || die "No user";
+    my $ws = Socialtext::Workspace->new(name => $p{workspace_name}) or return (undef, undef);
+    my $ws_id = $ws->workspace_id;
+    my $auth_check = Socialtext::Authz::SimpleChecker->new(
+        user => $self->hub->current_user,
+        container => $ws,
+    );
+
+    my $hub = $self->_hub_for_workspace($ws);
+    return (undef, undef) unless defined($hub);
+    return (undef, undef) unless $auth_check->check_permission('read');
+
+    return ($ws, $hub);
+}
+
+sub set_page_prefs {
+    my $self = shift;
+    my %p = (
+        workspace_name => undef,
+        page_id => undef,
+        @_,
+    );
+
+    my ($ws, $hub) = $self->_ws_and_hub_for_page_prefs(%p);
+    return unless ($ws and $hub);
+    my $workspace_name = delete $p{workspace_name};
+    my $page_id = delete $p{page_id};
+    
+    $self->_page_plugin_pt($ws->workspace_id, $page_id)->set(%p);
+}
+
+sub get_page_prefs {
+    my $self = shift;
+    my %p = (
+        workspace_name => undef,
+        page_id => undef,
+        @_,
+    );
+
+    my ($ws, $hub) = $self->_ws_and_hub_for_page_prefs(%p);
+    return unless ($ws and $hub);
+    my $workspace_name = delete $p{workspace_name};
+    my $page_id = delete $p{page_id};
+
+    return $self->_page_plugin_pt($ws->workspace_id, $page_id)->get();
+}
+
+sub clear_page_prefs {
+    my $self = shift;
+    my %p = (
+        workspace_name => undef,
+        page_id => undef,
+        @_,
+    );
+
+    my ($ws, $hub) = $self->_ws_and_hub_for_page_prefs(%p);
+    return unless ($ws and $hub);
+
+    $self->_page_plugin_pt($ws->workspace_id, $p{page_id})->clear();
+}
+
 1;

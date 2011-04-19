@@ -233,6 +233,10 @@ div.clear {
 .profile .section.last {
     border-bottom: none;
 }
+.profile .section h3 {
+    text-transform: uppercase;
+}
+
 
 .people_list {
     padding: 5px 0;

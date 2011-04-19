@@ -57,4 +57,17 @@ function loc() {
     }
 
     return l10n;
-}
+};
+
+loc.all_widgets = function(){
+    $(function(){
+        $('span[data-loc-text]').each(function(){
+            var $span = $(this);
+            $span.text(loc($span.data('loc-text')));
+        });
+        $('input[data-loc-val]').each(function(){
+            var $input = $(this);
+            $input.val(loc($input.data('loc-val')));
+        });
+    });
+};

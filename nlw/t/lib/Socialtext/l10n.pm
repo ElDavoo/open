@@ -4,39 +4,52 @@ use strict;
 use warnings;
 use base 'Exporter';
 
-our @EXPORT_OK = qw(best_locale system_locale loc loc_lang );
+our @EXPORT_OK = qw(best_locale system_locale loc loc_lang __);
 our $CUR_LOCALE = 'en';
 our $SYS_LOCALE = 'en';
 
-sub loc {
+sub _reload_l10n {
     delete $INC{'Socialtext/l10n.pm'};
     no warnings 'redefine';
     local $SIG{__WARN__} = sub { 1 };
     require Socialtext::l10n;
     _rebind_overrides();
+    *__ = \&Socialtext::l10n::__;
     *loc = \&Socialtext::l10n::loc;
+}
+
+sub loc {
+    _reload_l10n();
     goto &Socialtext::l10n::loc;
 }
 
-sub _loc_lang {
+sub __ {
+    _reload_l10n();
+    goto &Socialtext::l10n::__;
+}
+
+sub __loc_lang__ {
     $CUR_LOCALE = shift if @_;
     return $CUR_LOCALE;
 }
 
-sub _best_locale {
-    return loc_lang() || system_locale();
+sub __best_locale__ {
+    my $x = __loc_lang__() || __system_locale__();
+    return $x;
 }
 
-sub _system_locale {
+sub __system_locale__ {
     $SYS_LOCALE = shift if @_;
     return $SYS_LOCALE;
 }
 
 sub _rebind_overrides {
-    *loc_lang = \&_loc_lang;
-    *best_locale = \&_best_locale;
-    *system_locale = \&_system_locale;
+    *loc_lang = \&__loc_lang__;
+    *best_locale = \&__best_locale__;
+    *system_locale = \&__system_locale__;
 }
+
+
 
 _rebind_overrides();
 

@@ -1,7 +1,11 @@
 package Socialtext::l10n::DevUtils;
 use 5.12.0;
 use parent 'Exporter';
-our @EXPORT = qw( trim gettext_to_maketext str_to_regex is_key outs );
+our @EXPORT = qw( trim gettext_to_maketext str_to_regex is_key outs $po_revision_date );
+
+use DateTime;
+my $now = DateTime->now;
+our $po_revision_date = $now->ymd . ' ' . $now->hms . '+0000';
 
 sub trim {
     my $str = shift;
@@ -48,7 +52,7 @@ sub str_to_regex {
     $qm2 =~ s/\\'/(?:'|\\\\')/g;
     $qm2 =~ s/\\"/(?:"|\\\\")/g;
 
-    return(qr/loc\(\s*["']\K$qm1(?=["']\s*[,\)])/, qr/loc\(\s*["']\K$qm2(?=["']\s*[,\)])/);
+    return(qr/(?:loc|__)\(\s*["']\K$qm1(?=["']\s*[,\)])/, qr/(?:loc|__)\(\s*["']\K$qm2(?=["']\s*[,\)])/);
 }
 
 sub is_key {

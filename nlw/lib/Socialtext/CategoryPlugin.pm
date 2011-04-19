@@ -17,10 +17,10 @@ use Socialtext::Permission qw( ST_ADMIN_WORKSPACE_PERM );
 use Socialtext::SQL qw/:exec sql_txn/;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::Validate qw( validate SCALAR_TYPE USER_TYPE );
-use Socialtext::l10n qw(loc);
+use Socialtext::l10n qw(loc __);
 
-sub class_id {'category'}
-const class_title => 'Category Managment';
+const class_id => 'category';
+const class_title => __('class.category');
 const cgi_class   => 'Socialtext::Category::CGI';
 
 sub Decode_category_email {

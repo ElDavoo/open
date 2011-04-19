@@ -235,20 +235,16 @@ sub _part_to_text {
 
 sub _shindig_feature_to_text {
     my ($class, $part) = @_;
-    require Socialtext::Gadgets::Features;
-    my $feature = Socialtext::Gadgets::Features->new(
-        feature_dir => "$CWD/$part->{feature_dir}",
+    require Socialtext::Gadgets::Feature;
+    my $feature = Socialtext::Gadgets::Feature->new(
         type => $part->{type},
-        minify => $MINIFY_JS,
+        name => $part->{shindig_feature},
     );
-    my $text;
-    if ($part->{shindig_feature} eq 'default') {
-        $text = $feature->default_feature_js();
+    my $text = $feature->js || return;
+    if ($MINIFY_JS and $text) {
+        warn "Minifying feature $part->{shindig_feature}...\n";
+        $text = minify($text);
     }
-    else {
-        $text = $feature->feature_js($part->{shindig_feature});
-    }
-    return unless $text;
     return $part->{nocomment} ?
         "// BEGIN Shindig Feature $part->{shindig_feature}\n$text" : $text;
 }
@@ -310,7 +306,12 @@ sub _jemplate_to_text {
                 my $jemplate = $File::Find::name;
                 return unless -f $jemplate;
                 return if basename($File::Find::name) =~ /^\./;
-                (my $name = $jemplate) =~ s{^$part->{jemplate}/}{};
+
+                # Keep the directory name in the template name when
+                # include_paths is set
+                (my $name = $jemplate);
+                $name =~ s{^$part->{jemplate}/}{} unless $part->{include_paths};
+
                 $text .= $part->{nocomment} ? '' : "// BEGIN $jemplate\n";
                 $text .= Jemplate->compile_template_content(
                     scalar(slurp($jemplate)), $name

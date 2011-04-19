@@ -5,7 +5,7 @@ use strict;
 use warnings;
 use mocked 'Socialtext::Log', qw(:tests);
 use Test::Socialtext::Bootstrap::OpenLDAP;
-use Test::Socialtext tests => 36;
+use Test::Socialtext tests => 46;
 use Socialtext::LDAP::Operations;
 use File::Slurp qw(write_file);
 use Benchmark qw(timeit timestr);
@@ -200,6 +200,50 @@ test_dry_run: {
     my $count_after = Socialtext::User->Count();
     is $count_after, $count_before,
         '... and *none* of those Users were actually added to the system';
+}
+
+###############################################################################
+# TEST: Load *single* User, by e-mail address
+test_load_one_user_via_email: {
+    my $ldap = set_up_openldap();
+    clear_log();
+
+    my $count_before = Socialtext::User->Count();
+
+    my $rc = Socialtext::LDAP::Operations->LoadUsers(
+        email => 'john.doe@example.com',
+    );
+    is $rc, 1, 'loaded single LDAP User, by e-mail address';
+    logged_like 'info', qr/found 1 LDAP users to load/,
+        '... logged number of LDAP Users found';
+
+    logged_like 'info', qr/loading: john.doe/,    '... added John Doe';
+    logged_like 'info', qr/loaded 1 out of 1 total/, '... logged success count';
+
+    my $count_after = Socialtext::User->Count();
+    is $count_after, $count_before+1, '... new User count matches expectation';
+}
+
+###############################################################################
+# TEST: Load *single* User, by username
+test_load_one_user_via_username: {
+    my $ldap = set_up_openldap();
+    clear_log();
+
+    my $count_before = Socialtext::User->Count();
+
+    my $rc = Socialtext::LDAP::Operations->LoadUsers(
+        username => 'Jane Smith',
+    );
+    is $rc, 1, 'loaded single LDAP User, by username';
+    logged_like 'info', qr/found 1 LDAP users to load/,
+        '... logged number of LDAP Users found';
+
+    logged_like 'info', qr/loading: jane.smith/,    '... added Jane Smith';
+    logged_like 'info', qr/loaded 1 out of 1 total/, '... logged success count';
+
+    my $count_after = Socialtext::User->Count();
+    is $count_after, $count_before+1, '... new User count matches expectation';
 }
 
 ###############################################################################

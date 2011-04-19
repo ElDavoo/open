@@ -7,6 +7,7 @@ use List::MoreUtils qw(uniq);
 use Socialtext::LDAP;
 use Socialtext::Log qw(st_log);
 use Socialtext::SQL qw(sql_execute sql_txn);
+use Socialtext::SQL::Builder qw(sql_abstract);
 use Socialtext::Group;
 use Socialtext::Group::Factory;         # needed for cache/async over-ride
 use Socialtext::User::LDAP::Factory;    # needed for cache/async over-ride
@@ -20,7 +21,9 @@ our $LDAP_PAGE_SIZE = 500;
 # Refreshes existing LDAP Users.
 sub RefreshUsers {
     my ($class, %opts) = @_;
-    my $force = $opts{force};
+    my $force         = $opts{force};
+    my $want_email    = $opts{email};
+    my $want_username = $opts{username};
 
     # Disable cache freshness checks if we're forcing the refresh of all
     # users.
@@ -33,12 +36,21 @@ sub RefreshUsers {
     # for a single server together; if we spread them out we risk having the
     # LDAP connection time out in between user lookups.
     st_log->info( "getting list of LDAP users to refresh" );
-    my $sth = sql_execute( qq{
-        SELECT driver_key, driver_unique_id, driver_username
-          FROM users
-         WHERE driver_key ~* 'LDAP'
-         ORDER BY driver_key, driver_username
-    } );
+    my ($sql, @bind) = sql_abstract->select('users',
+        [qw( driver_key driver_unique_id driver_username )],
+        {
+            driver_key => { '~*' => 'LDAP' },
+            (
+                $want_email ? (email_address => $want_email) : ()
+            ),
+            (
+                $want_username ? (driver_username => lc($want_username)) : ()
+            ),
+        },
+        [qw( driver_key driver_username )],
+    );
+
+    my $sth = sql_execute($sql, @bind);
     st_log->info( "... found " . $sth->rows . " LDAP users" );
 
     my $rows_aref = $sth->fetchall_arrayref();
@@ -75,7 +87,9 @@ sub RefreshUsers {
 # Loads Users from LDAP into Socialtext.
 sub LoadUsers {
     my ($class, %opts) = @_;
-    my $dryrun = $opts{dryrun};
+    my $dryrun        = $opts{dryrun};
+    my $want_email    = $opts{email};
+    my $want_username = $opts{username};
 
     # SANITY CHECK: make sure that *ALL* of the LDAP configurations have a
     # "filter" specified.
@@ -94,8 +108,9 @@ sub LoadUsers {
     my @emails;
     st_log->info( "getting list of LDAP users to load" );
     foreach my $cfg (@configs) {
-        # get the LDAP attribute that contains the e-mail address
-        my $mail_attr = $cfg->attr_map->{email_address};
+        # figure out which LDAP attributes we need to query
+        my $mail_attr     = $cfg->attr_map->{email_address};
+        my $username_attr = $cfg->attr_map->{username};
 
         # the basic/unchanging parts of the query that we're going to ask
         my %query = (
@@ -116,31 +131,35 @@ sub LoadUsers {
         # Once we're done grabbing the letters we're expecting, we'll need to
         # do *one last* query to get "anyone else we may have missed"
         # (basically "anything that wasn't matched by an earlier query").
-        my @ltrs = ('a'..'z', '0'..'9');
         eval {
             my $ldap = Socialtext::LDAP->new($cfg);
-            my @clauses;
 
-            # First, get everyone by the first letter of their e-mail address.
-            foreach my $ltr (@ltrs) {
-                my $filter = "($mail_attr=$ltr*)";
-                push @clauses, $filter;
+            # Build up the full list of clauses to "get everyone by the first
+            # letter of their e-mail address, and *then* get anyone that
+            # didn't match any of the above".
+            my @filters = map { "($mail_attr=$_*)" } ('a'..'z', '0'..'9');
+            {
+                local $" = '';
+                push @filters, "(!(|@filters))";
+            }
 
+            # IF we're looking for a single specific User, over-ride the
+            # filters to search for *just* that one User
+            if ($want_email) {
+                @filters = ("($mail_attr=$want_email)");
+            }
+            if ($want_username) {
+                @filters = ("($username_attr=$want_username)");
+            }
+
+            # Execute all the queries, and load all of the Users
+            foreach my $f (@filters) {
                 $class->_paged_ldap_query(
                     %query,
                     ldap   => $ldap,
-                    filter => $filter,
+                    filter => $f,
                 );
             }
-
-            # Then, get anyone that didn't match any of the above.
-            local $" = '';
-            my $filter = "(!(|@clauses))";
-            $class->_paged_ldap_query(
-                %query,
-                ldap   => $ldap,
-                filter => $filter,
-            );
         };
         if ($@) {
             my $err = $@;
@@ -227,7 +246,8 @@ sub _paged_ldap_query {
 # Refreshes existing LDAP Groups.
 sub RefreshGroups {
     my ($class, %opts) = @_;
-    my $force = $opts{force};
+    my $force   = $opts{force};
+    my $want_id = $opts{id};
 
     # Disable cache freshness checks if we're forcing the refresh of all
     # Groups.
@@ -239,15 +259,18 @@ sub RefreshGroups {
     # for a single server together; if we spread them out we risk having the
     # LDAP connection time out between lookups.
     st_log->info( "getting list of LDAP groups to refresh" );
-    my $sth = sql_execute( qq{
-        SELECT group_id,
-               driver_key,
-               driver_unique_id,
-               driver_group_name
-          FROM groups
-         WHERE driver_key ~* 'LDAP'
-         ORDER BY driver_key, driver_group_name
-    } );
+    my ($sql, @bind) = sql_abstract->select('groups',
+        [qw( group_id driver_key driver_unique_id driver_group_name )],
+        {
+            driver_key => { '~*' => 'LDAP' },
+            (
+                $want_id ? (group_id => $want_id) : (),
+            ),
+        },
+        [qw( driver_key driver_group_name )],
+    );
+
+    my $sth = sql_execute($sql, @bind);
     st_log->info( "... found " . $sth->rows . " LDAP groups" );
 
     my $rows = $sth->fetchall_arrayref({});
@@ -404,9 +427,17 @@ Supports the following options:
 Forces a refresh of the LDAP User data regardless of whether our local cached
 copy is stale or not.  By default, only stale Users are refreshed.
 
+=item email => $email
+
+Refreshes a single User, selecting by e-mail address.
+
+=item username => $username
+
+Refreshes a single User, selecting by username.
+
 =back
 
-=item B<Socialtext::LDAP::Operations-e<gt>LoadUsers(%opts)>
+=item B<Socialtext::LDAP::Operations-E<gt>LoadUsers(%opts)>
 
 Loads User records from LDAP into Socialtext from all configured LDAP
 directories.
@@ -444,6 +475,14 @@ Supports the following options:
 Dry-run; Users are searched for in the configured LDAP directories, but are
 B<not> actually added to Socialtext.
 
+=item email => $email
+
+Loads a single LDAP User, selecting by e-mail address.
+
+=item username => $username
+
+Loads a single LDAP User, selecting by username.
+
 =back
 
 =item B<Socialtext::LDAP::Operations-E<gt>RefreshGroups(%opts)>
@@ -458,6 +497,10 @@ Supports the following options:
 
 Forces a refresh of the LDAP Group data regardless of whether our local cached
 copy is stale or not.  By default, only stale Groups are refreshed.
+
+=item id => $group_id
+
+Refreshes a single LDAP Group, selecting by internal Group Id.
 
 =back
 

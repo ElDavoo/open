@@ -16,7 +16,7 @@ BEGIN {
 
 use Socialtext::Page;
 
-plan tests => 49;
+plan tests => 58;
 
 $Socialtext::EmailSender::Base::SendClass = 'Test';
 
@@ -75,24 +75,30 @@ EOF
 
     my @parts = $emails[0]->parts;
     is( scalar @parts, 2, 'email has two parts' );
+    my ($message,$att) = @parts;
 
-    my @html_parts = $parts[1]->parts;
-    is( scalar @html_parts, 2, 'mp/related has two parts' );
+    check_attachment_part($att);
 
-    like( $html_parts[0]->body, qr/href="cid:socialtext-logo.gif"/,
-        'check HTML body (a tag)' );
-    like( $html_parts[0]->body, qr/src="cid:socialtext-logo.gif"/,
-        'check HTML body (img tag) - 1' );
+    my @msg_parts = $message->parts;
+    is( scalar @msg_parts, 2, 'mp/related has two parts' );
+    my $wiki = $msg_parts[0];
+    my $html = $msg_parts[1];
 
-    # XXX - Email::MIME::Creator for some reason appends the charset,
-    # but this doesn't seem to be harmful
-    is( $html_parts[1]->header('Content-Type'), 'image/gif',
-        q{third part content type is 'image/gif'} );
-    is( $html_parts[1]->header('Content-Transfer-Encoding'), 'base64',
-        'third part content transfer encoding is base64' );
-    is( $html_parts[1]->header('Content-Disposition'),
-        'attachment; filename="socialtext-logo.gif"',
-        q{third part content disposition is 'attachment; filename="socialtext-logo.gif"'} );
+    diag "checking wikitext";
+    like $wiki->header('Content-Type'), qr{^text/plain}, '... type';
+    is $wiki->header('Content-Disposition'), 'inline', '... disposition';
+    like $wiki->body, qr{WikiLink}, '... body';
+
+    my ($msg,$logo) = $html->parts;
+
+    diag "checking html message";
+    like $msg->header('Content-Type'), qr{^text/html}, '... type';
+    is $msg->header('Content-Disposition'), 'inline', '... disposition';
+    like $msg->body, qr{;page_name=WikiLink}, '... body';
+    like $msg->body, qr{href="cid:socialtext-logo.gif"}, '... a ctag';
+    like $msg->body, qr{src="cid:socialtext-logo.gif"}, '... img ctag';
+
+    check_attachment_part($logo);
 }
 
 {
@@ -346,3 +352,16 @@ EOF
     like( $text, qr/\Q| This | Is | A | Table |\E\n\Q| Do   | Not | F It | Up |\E/,
           'the table in the page was not reformatted.' );
 }
+
+exit;
+
+sub check_attachment_part {
+    my $part = shift;
+
+    diag 'checking attachment part';
+    is $part->header('Content-Type'), 'image/gif', "... type";
+    is $part->header('Content-Transfer-Encoding'), 'base64', '... encoding';
+    is $part->header('Content-Disposition'),
+        'attachment; filename="socialtext-logo.gif"', '... disposition';
+}
+

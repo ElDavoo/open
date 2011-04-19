@@ -2,7 +2,7 @@
 'socialtext-s3.js':
     compress: 1
     parts:
-        - {dir: 'skin/common/javascript', file: 'jquery-1.4.4.min.js'}
+        - {dir: 'skin/common/javascript', file: 'jquery-1.4.4.js'}
         - {dir: 'skin/common/javascript', file: 'jquery-json-1.3.js'}
         - {dir: 'skin/common/javascript', file: 'utf8.js'}
         - 'info.js'
@@ -30,7 +30,7 @@
         - {dir: 'skin/common/javascript', file: 'Socialtext/socialtext-api.js'}
         - 's3.js'
         - 'people-avatar.js'
-        - 'sametime.js'
+        - 'im.js'
 'info.js':
     parts:
         - { template: 'template/info.js', config: '../info.yaml' }
@@ -147,7 +147,15 @@
 #    compress: 1
 #    parts:
 #        - {dir: 'skin/s3/javascript/l10n', file: 'fr_CA.js'}
-#'l10n-zh_TW.js':
-#    compress: 1
-#    parts:
-#        - {dir: 'skin/s3/javascript/l10n', file: 'zh_TW.js'}
+'l10n-zh_TW.js':
+    compress: 1
+    parts:
+        - {dir: 'skin/s3/javascript/l10n', file: 'zh_TW.js'}
+'l10n-xx.js':
+    compress: 1
+    parts:
+        - {dir: 'skin/s3/javascript/l10n', file: 'xx.js'}
+'l10n-xq.js':
+    compress: 1
+    parts:
+        - {dir: 'skin/s3/javascript/l10n', file: 'xq.js'}

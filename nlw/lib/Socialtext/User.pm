@@ -354,11 +354,35 @@ sub recently_viewed_workspaces {
     return @viewed;
 }
 
+sub shares_account {
+    my $self = shift;
+    my %p = @_;
+    my $intersect_with = delete $p{intersect_with};
+
+    my $t = time_scope 'user_shares_acct';
+
+    my $sql = q{
+        SELECT into_set_id 
+        FROM user_set_path 
+        WHERE from_set_id = ?
+          AND into_set_id }.PG_ACCT_FILTER.q{
+          AND into_set_id in (
+            SELECT DISTINCT into_set_id 
+            FROM user_set_path 
+            WHERE from_set_id = ?
+              AND into_set_id }.PG_ACCT_FILTER
+          . ') 
+          LIMIT 1';
+    my @args = ($self->user_id, $intersect_with);
+
+   return sql_singlevalue($sql, @args);
+}
 
 sub accounts {
     my $self = shift;
     my %p = @_;
     my $plugin = delete $p{plugin};
+    my $intersect_user = delete $p{intersect_with};
 
     require Socialtext::Account;
     my @args = ($self->user_id);
@@ -383,6 +407,15 @@ sub accounts {
             FROM user_set_path 
             WHERE from_set_id = ?
               AND into_set_id }.PG_ACCT_FILTER;
+    }
+    if ($intersect_user) {
+        $sql .= q{ AND into_set_id in (
+            SELECT DISTINCT into_set_id 
+            FROM user_set_path 
+            WHERE from_set_id = ?
+              AND into_set_id }.PG_ACCT_FILTER
+          . ')';
+        push @args, $intersect_user;
     }
 
     my $cache_string = join "\0", @args;
@@ -626,6 +659,7 @@ sub to_hash {
 
     # This field should never default to ''
     delete $hash->{private_external_id} unless $hash->{private_external_id};
+    delete $hash->{password} if ($args{no_password});
 
     return $hash;
 }

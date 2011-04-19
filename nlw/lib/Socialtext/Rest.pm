@@ -25,7 +25,7 @@ use Socialtext::Log 'st_log';
 use Socialtext::URI;
 use Socialtext::Session;
 use Socialtext::JSON qw/decode_json/;
-use Socialtext::l10n qw(system_locale loc);
+use Socialtext::l10n qw( system_locale loc loc_lang best_locale );
 
 our $AUTOLOAD;
 
@@ -223,6 +223,8 @@ sub _new_main {
     $main->hub->registry->load;
     $main->debug;
 
+    loc_lang( best_locale($main->hub) );
+
     return $main;
 }
 
@@ -315,7 +317,7 @@ sub not_authorized {
             -type   => 'text/plain',
         );
     }
-    return 'User not authorized';
+    return loc('error.user-not-authorized');
 }
 
 =head2 no_workspace()
@@ -345,7 +347,7 @@ sub no_resource {
         -status => HTTP_404_Not_Found,
         -type   => 'text/plain',
     );
-    return "$resource_name not found";
+    return loc("error.not-found=entity", $resource_name);
 }
 
 =head2 conflict()
@@ -475,7 +477,7 @@ sub AUTOLOAD {
     croak("No such method '$AUTOLOAD' for type '$type'.");
 }
 
-sub nonexistence_message { 'The requested resource does not exist.' }
+sub nonexistence_message { loc('error.no-requested-resource') }
 
 sub http_404 {
     my ( $self, $rest ) = @_;

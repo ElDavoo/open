@@ -916,18 +916,24 @@ CREATE TABLE gadget (
     gadget_id bigint NOT NULL,
     src text,
     plugin text DEFAULT 'widgets',
-    href text,
     last_update timestamptz DEFAULT now() NOT NULL,
-    content_type text,
     features text[],
     preloads text[],
-    content text,
     title text,
     thumbnail text,
     scrolling boolean DEFAULT false,
     height integer,
     description text,
     xml text
+);
+
+CREATE TABLE gadget_content (
+    gadget_id bigint NOT NULL,
+    view_name text DEFAULT 'default' NOT NULL,
+    content_type text DEFAULT 'html',
+    content text,
+    href text,
+    "position" integer
 );
 
 CREATE SEQUENCE gadget_id
@@ -1001,7 +1007,8 @@ CREATE TABLE gallery_gadget (
     "position" integer NOT NULL,
     removed boolean DEFAULT false,
     socialtext boolean DEFAULT false,
-    global boolean DEFAULT false
+    global boolean DEFAULT false,
+    container_types text[]
 );
 
 CREATE TABLE group_photo (
@@ -1103,6 +1110,14 @@ CREATE TABLE page_link (
     to_page_id text NOT NULL,
     from_page_md5 text NOT NULL,
     to_page_md5 text NOT NULL
+);
+
+CREATE TABLE page_plugin_pref (
+    workspace_id bigint NOT NULL,
+    page_name text NOT NULL,
+    plugin text NOT NULL,
+    key text NOT NULL,
+    value text NOT NULL
 );
 
 CREATE TABLE page_revision (
@@ -1507,6 +1522,10 @@ ALTER TABLE ONLY funcmap
     ADD CONSTRAINT funcmap_pkey
             PRIMARY KEY (funcid);
 
+ALTER TABLE ONLY gadget_content
+    ADD CONSTRAINT gadget_content__gadget_id_position
+            UNIQUE (gadget_id, "position");
+
 ALTER TABLE ONLY gadget_instance
     ADD CONSTRAINT gadget_instace_pk
             PRIMARY KEY (gadget_instance_id);
@@ -1741,6 +1760,9 @@ CREATE INDEX exitstatus_deleteafter
 
 CREATE INDEX exitstatus_funcid
 	    ON exitstatus (funcid);
+
+CREATE INDEX gadget_content__gadget_id
+	    ON gadget_content (gadget_id);
 
 CREATE INDEX gallery_gadget_gadget_id_idx
 	    ON gallery_gadget (gadget_id);
@@ -2171,6 +2193,9 @@ CREATE UNIQUE INDEX page_pk_nodel
 	    ON page (workspace_id, page_id)
 	    WHERE (NOT deleted);
 
+CREATE INDEX page_plugin_pref_key_idx
+	    ON page_plugin_pref (workspace_id, page_name, plugin, key);
+
 CREATE INDEX page_tag__page_ix
 	    ON page_tag (workspace_id, page_id);
 
@@ -2388,6 +2413,11 @@ ALTER TABLE ONLY "WorkspaceRolePermission"
     ADD CONSTRAINT fk_d9034c52d2999d62d24bd2cfa30ac457
             FOREIGN KEY (workspace_id)
             REFERENCES "Workspace"(workspace_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY gadget_content
+    ADD CONSTRAINT gadget_content_gadget_fk
+            FOREIGN KEY (gadget_id)
+            REFERENCES gadget(gadget_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY gadget_instance
     ADD CONSTRAINT gadget_instance_container_fk
@@ -2750,4 +2780,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '136');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '138');

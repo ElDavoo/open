@@ -11,13 +11,13 @@ use Socialtext::AppConfig;
 use Socialtext::Helpers;
 use Socialtext::Exceptions;
 use Socialtext::TT2::Renderer;
-use Socialtext::l10n qw(loc system_locale);
+use Socialtext::l10n qw(loc system_locale __);
 use Socialtext::BrowserDetect;
 use Socialtext::JSON;
 use Encode;
 
-sub class_id { 'page_activity' }
-const class_title => 'PageActivity';
+const class_id => 'page_activity';
+const class_title => __('class.page_activity');
 const cgi_class   => 'Socialtext::PageActivityPlugin::CGI';
 
 

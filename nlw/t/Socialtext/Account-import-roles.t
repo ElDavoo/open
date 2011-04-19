@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::Socialtext tests => 159;
+use Test::Socialtext tests => 180;
 use Test::Differences;
 use Test::Output qw/stderr_is/;
 use Socialtext::CLI;
@@ -18,9 +18,9 @@ fixtures(qw(db));
 
 ###############################################################################
 # Grab short-hand versions of the Roles we're going to use
-my $Member         = Socialtext::Role->Member();
-my $WorkspaceAdmin = Socialtext::Role->Admin();
-my $Impersonator   = Socialtext::Role->Impersonator();
+my $Member       = Socialtext::Role->Member();
+my $Admin        = Socialtext::Role->Admin();
+my $Impersonator = Socialtext::Role->Impersonator();
 
 ###############################################################################
 # TEST: Account export/import preserves GAR, when Group has this Account as
@@ -81,7 +81,7 @@ account_import_preserves_gwrs: {
 
     # Give the Group a Role in a Workspace, indirectly giving it a Role in the
     # Account.
-    $workspace->add_group(group => $group, role => $WorkspaceAdmin);
+    $workspace->add_group(group => $group, role => $Admin);
 
     # Export and re-import the Account; GWRs/GARs should be preserved
     export_and_reimport_account(
@@ -133,7 +133,7 @@ account_import_preserves_multiple_indirect_roles: {
 
     # Give the Group some Roles in multiple Workspaces
     $ws_one->add_group(group => $group, role => $Member);
-    $ws_two->add_group(group => $group, role => $WorkspaceAdmin);
+    $ws_two->add_group(group => $group, role => $Admin);
 
     # Export and re-import the Account
     export_and_reimport_account(
@@ -178,33 +178,50 @@ account_import_preserves_uar: {
     my $impersonator      = create_test_user();
     my $impersonator_name = $impersonator->username();
 
+    my $acct_admin      = create_test_user();
+    my $acct_admin_name = $acct_admin->username();
+
     # give the User a direct Role in the Account
     $account->add_user(user => $user, role => $Member);
     $account->add_user(user => $impersonator, role => $Impersonator);
+    $account->add_user(user => $acct_admin, role => $Admin);
 
     # Export and re-import the Account
     export_and_reimport_account(
         account => $account,
-        users   => [$user, $impersonator],
+        users   => [$user, $impersonator, $acct_admin],
     );
 
-    # User should have the correct Role in the Account
+    # Users should have the correct Role in the Account
     $account = Socialtext::Account->new(name => $acct_name);
     isa_ok $account, 'Socialtext::Account', '... found re-imported Account';
 
-    $user = Socialtext::User->new(username => $user_name);
-    isa_ok $user, 'Socialtext::User', '... found re-imported User';
+    check_member: {
+        my $found = Socialtext::User->new(username => $user_name);
+        isa_ok $found, 'Socialtext::User', '... found re-imported User';
 
-    my $role = $account->role_for_user($user);
-    ok defined $role, '... User has Role in Account';
-    is $role->name, $Member->name, '... ... with *correct* Role';
+        my $role = $account->role_for_user($found);
+        ok defined $role, '... User has Role in Account';
+        is $role->name, $Member->name, '... ... with *correct* Role';
+    }
 
-    $impersonator = Socialtext::User->new(username => $impersonator_name);
-    isa_ok $impersonator, 'Socialtext::User', '... found re-imported Impersonator';
+    check_impersonator: {
+        my $found = Socialtext::User->new(username => $impersonator_name);
+        isa_ok $found, 'Socialtext::User', '... found re-imported Impersonator';
 
-    $role = $account->role_for_user($impersonator);
-    ok defined $role, '... Impersonator has Role in Account';
-    is $role->name, $Impersonator->name, '... ... Impersonator Role';
+        my $role = $account->role_for_user($found);
+        ok defined $role, '... Impersonator has Role in Account';
+        is $role->name, $Impersonator->name, '... ... Impersonator Role';
+    }
+
+    check_account_admin: {
+        my $found = Socialtext::User->new(username => $acct_admin_name);
+        isa_ok $found, 'Socialtext::User', '... found re-imported Account Admin';
+
+        my $role = $account->role_for_user($found);
+        ok defined $role, '... Impersonator has Role in Account';
+        is $role->name, $Admin->name, '... ... Admin Role';
+    }
 }
 
 ###############################################################################
@@ -371,12 +388,14 @@ account_import_preserves_direct_and_indirect_uars: {
     );
 }
 
+###############################################################################
+# TEST: "system created Users" revert to regular Users on import.
 account_import_system_user_roles: {
     pass 'TEST: importing of system-created user roles';
-    my $account = create_test_account_bypassing_factory();
+    my $account   = create_test_account_bypassing_factory();
     my $acct_name = $account->name;
-    my $user    = create_test_user(account => $account);
-    my $username = $user->username;
+    my $user      = create_test_user(account => $account);
+    my $username  = $user->username;
 
     sql_execute(q{UPDATE "UserMetadata" SET is_system_created = true WHERE user_id = ?}, $user->user_id);
 
@@ -389,8 +408,58 @@ account_import_system_user_roles: {
     } "$username was system created. Importing as regular user.\n";
 
     $account = Socialtext::Account->new(name => $acct_name);
-    $user = Socialtext::User->new(username => $username);
+    $user    = Socialtext::User->new(username => $username);
     is $account->user_count(direct => 1), 1, "still got imported";
     ok !$user->is_system_created, "but is not a system user";
 }
 
+###############################################################################
+# TEST: Preserve Role in Primary Account
+preserve_role_in_primary_account: {
+    pass 'TEST: preserve role in primary account';
+    my $account   = create_test_account_bypassing_factory();
+    my $acct_name = $account->name;
+
+    my $u_member = create_test_user(account => $account);
+
+    my $u_impersonator = create_test_user(account => $account);
+    $account->assign_role_to_user(user => $u_impersonator, role => $Impersonator);
+
+    my $u_admin = create_test_user(account => $account);
+    $account->assign_role_to_user(user => $u_admin, role => $Admin);
+
+    # Export and re-import the Account
+    export_and_reimport_account(
+        account => $account,
+        users   => [$u_member, $u_impersonator, $u_admin],
+    );
+
+    # Double-check Roles for the Users
+    $account = Socialtext::Account->new(name => $acct_name);
+    isa_ok $account, 'Socialtext::Account', '... found re-imported Account';
+
+    check_member: {
+        my $found = Socialtext::User->new(username => $u_member->username);
+        isa_ok $found, 'Socialtext::User', '... found re-imported Member';
+
+
+        my $role = $account->role_for_user($found);
+        is $role->name, $Member->name, '... ... with Member Role';
+    }
+
+    check_impersonator: {
+        my $found = Socialtext::User->new(username => $u_impersonator->username);
+        isa_ok $found, 'Socialtext::User', '... found re-imported Impersonator';
+
+        my $role = $account->role_for_user($found);
+        is $role->name, $Impersonator->name, '... ... with Impersonator Role';
+    }
+
+    check_admin: {
+        my $found = Socialtext::User->new(username => $u_admin->username);
+        isa_ok $found, 'Socialtext::User', '... found re-imported Admin';
+
+        my $role = $account->role_for_user($found);
+        is $role->name, $Admin->name, '... ... with Admin Role';
+    }
+}

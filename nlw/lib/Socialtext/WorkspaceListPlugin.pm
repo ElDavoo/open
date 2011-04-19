@@ -3,13 +3,13 @@ package Socialtext::WorkspaceListPlugin;
 use strict;
 use warnings;
 use Class::Field qw(const);
-use Socialtext::l10n qw(loc);
+use Socialtext::l10n qw(loc __);
 use Socialtext::Workspace;
 
 use base 'Socialtext::Plugin';
 
 const class_id    => 'workspace_list';
-const class_title => 'Workspace List';
+const class_title => __('class.workspace_list');
 
 sub WORKSPACE_LIST_SIZE { 10 }
 

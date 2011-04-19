@@ -4,17 +4,16 @@ use strict;
 use warnings;
 use Class::Field qw( const );
 use Socialtext::Pages;
-use Socialtext::l10n qw(loc);
+use Socialtext::l10n qw(loc __);
 use Socialtext::String();
 use Socialtext::Pageset;
 use Socialtext::PageLinks;
 
 use base 'Socialtext::Query::Plugin';
 
-sub class_id { 'backlinks' }
-const class_title          => 'Backlinks';
-const preference_query     =>
-      'How many backlinks to show in side pane box';
+const class_id => 'backlinks';
+const class_title          => __('class.backlinks');
+const preference_query     => __('wiki.sidebox-number-of-backlinks?');
 const cgi_class => 'Socialtext::Backlinks::CGI';
 
 sub register {

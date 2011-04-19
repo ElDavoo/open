@@ -9,7 +9,7 @@ use Class::Field qw( const field );
 use Socialtext::Pages;
 use URI;
 use URI::QueryParam;
-use Socialtext::l10n qw( loc );
+use Socialtext::l10n qw(loc __);
 use Encode;
 use Socialtext::Log qw(st_log);
 use Socialtext::String ();
@@ -17,8 +17,8 @@ use Socialtext::Encode ();
 use Socialtext::Timer qw/time_scope/;
 use utf8;
 
-sub class_id { 'weblog' }
-const class_title => 'Blogs';
+const class_id => 'weblog';
+const class_title => __('class.weblog');
 const cgi_class => 'Socialtext::Weblog::CGI';
 const default_weblog_depth => 10;
 field current_weblog => '';
@@ -46,7 +46,7 @@ sub register {
 sub weblog_depth {
     my $self = shift;
     my $p = $self->new_preference('weblog_depth');
-    $p->query(loc('blog.number-of-posts?'));
+    $p->query(__('blog.number-of-posts?'));
     $p->type('pulldown');
     my $choices = [
         5 => '5',
@@ -100,15 +100,8 @@ sub weblogs_create {
 sub _get_weblog_tag_suffix {
     my $self = shift;
     my $locale = $self->hub->best_locale;
-    my $blog_tag_suffix;
-    if ($locale eq 'ja') {
-        $blog_tag_suffix = qr/ブログ$/i;
-    } else {
-        $blog_tag_suffix = qr/blog$/i;
-    }
-
-    Encode::_utf8_on($blog_tag_suffix) if not Encode::is_utf8($blog_tag_suffix);
-    return $blog_tag_suffix;
+    my $suffix = loc('blog.blog');
+    return qr/\Q$suffix\E$/i;
 }
 
 sub _weblog_title_is_valid {
@@ -400,6 +393,7 @@ sub get_entries {
     );
 
     for my $page (@pages) {
+        $self->hub->pages->current($page);
         my $entry = $self->format_page_for_entry(
             no_post => $no_post,
             page => $page,

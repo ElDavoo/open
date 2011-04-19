@@ -239,6 +239,7 @@ around 'groups', 'group_count' => sub {
     $p{direct} = 1 unless exists $p{direct};
     $code->($self, %p);
 };
+# ' # <= fix vim highlighting
 
 sub invite {
     my $self = shift;
@@ -292,10 +293,20 @@ around 'users' => sub {
 
 sub to_hash {
     my $self = shift;
-    my $hash = {
-        map { $_ => $self->$_ } @ACCT_COLS
-    };
-    return $hash;
+    my %p = @_;
+
+    if ($p{minimal}) {
+        return +{
+            account_id => $self->account_id,
+            name => $self->name,
+        };
+    }
+    else {
+        my $hash = {
+            map { $_ => $self->$_ } @ACCT_COLS
+        };
+        return $hash;
+    }
 }
 
 sub is_placeholder {
@@ -310,6 +321,7 @@ after 'enable_plugin','disable_plugin' => sub {
     Socialtext::JSON::Proxy::Helper->ClearForAccount($self->account_id);
     Socialtext::Helpers->clean_user_frame_cache();
 };
+# ' # <= fix vim highlighting
 
 sub export {
     my $self = shift;
@@ -430,11 +442,15 @@ sub import_file {
         );
     }
 
-    my $name = $import_name || $hash->{name};
-    $hash->{import_name} = $name;
-    my $account = $class->new(name => $name);
+    # Make sure we've got a name for this Account that's being imported
+    my $export_name = $hash->{name};
+    $import_name ||= $export_name;
+    $hash->{import_name} = $import_name;
+
+    # Fail if the Account already exists
+    my $account = $class->new(name => $import_name);
     if ($account && !$account->is_placeholder()) {
-        die loc("error.exists=account!", $name) . "\n";
+        die loc("error.exists=account!", $import_name) . "\n";
     }
 
     my %acct_params = (
@@ -468,7 +484,7 @@ sub import_file {
     else {
         $account = $class->create(
             %acct_params,
-            name => $name,
+            name => $import_name,
         );
     }
 
@@ -487,13 +503,11 @@ sub import_file {
     for my $user_hash (@{ $hash->{users} }) {
 
         next unless Socialtext::User::Default::Users->CanImportUser($user_hash);
-#warn "Importing user $hash->{name}\n";
 
         # Import this user into the new account we're creating. If they were
         # in some other account we'll fix that up below.
-        my $user_orig_acct = $user_hash->{primary_account_name}
-            || $hash->{name};
-        $user_hash->{primary_account_name} = $name;
+        my $user_orig_acct = $user_hash->{primary_account_name} || $export_name;
+        $user_hash->{primary_account_name} = $import_name;
 
         my $existing_user
             = Socialtext::User->new(username => $user_hash->{username});
@@ -504,7 +518,7 @@ sub import_file {
         # we're currently importing, then keep that relationship, even if we
         # need to create a blank/empty account with that name.
         my $pri_acct = $account;
-        if ($user_orig_acct ne $hash->{name}) {
+        if ($user_orig_acct ne $export_name) {
             # User had a Primary Account that was *not* the Account that we're
             # re-importing (possibly under a new name).
             $pri_acct = Socialtext::Account->new(name => $user_orig_acct)
@@ -516,18 +530,28 @@ sub import_file {
 
         $user->primary_account($pri_acct, no_hooks => 1);
 
-        my $default = Socialtext::Account->Default();
-        if (!$existing_user and $pri_acct->account_id != $default->account_id) {
+        my $default_acct = Socialtext::Account->Default();
+        if (!$existing_user and $pri_acct->account_id != $default_acct->account_id) {
             # When we create a user, she is assigned to the default account
             # so we should remove her from that account.
-            $default->remove_user(user => $user);
+            $default_acct->remove_user(user => $user);
         }
 
+        # Give the User the correct Role in this Account (which could be
+        # either "give this User a new Role here that they didn't have before"
+        # or could be "change their role to the one specified in the import".
         eval {
-            my $role_name = $user_hash->{roles}{$hash->{name}} || 'member';
+            my $role_name = $user_hash->{roles}{$export_name} || 'member';
             my $acct_role = Socialtext::Role->new(name => $role_name);
-            $account->add_user(user => $user, role => $acct_role);
+            if ($account->has_user($user, direct => 1)) {
+                $account->assign_role_to_user(user => $user, role => $acct_role);
+            }
+            else {
+                $account->add_user(user => $user, role => $acct_role);
+            }
         };
+        warn $@ if $@;
+
         # Hang onto the profile so we can create it later.
         if (my $profile = delete $user_hash->{profile}) {
             $profile->{user} = $user;

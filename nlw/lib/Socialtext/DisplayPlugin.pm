@@ -10,7 +10,7 @@ use DateTime::Format::Strptime;
 use Socialtext::User;
 use Socialtext::String qw/html_escape title_to_id uri_escape/;
 use Socialtext::BrowserDetect ();
-use Socialtext::l10n qw/loc system_locale/;
+use Socialtext::l10n qw/loc system_locale __/;
 use Socialtext::Locales qw/available_locales/;
 use Socialtext::JSON;
 use Socialtext::Timer;
@@ -21,8 +21,8 @@ use Socialtext::Events;
 use File::Path qw/mkpath/;
 use List::MoreUtils qw/part/;
 
-sub class_id { 'display' }
-const class_title => 'Screen Layout';
+const class_id => 'display';
+const class_title => __('class.display');
 const maximum_header_attachments => 5;
 const cgi_class => 'Socialtext::Display::CGI';
 
@@ -37,7 +37,6 @@ sub register {
     $registry->add(action => 'preview');
     $registry->add(preference => $self->mouseover_length);
     $registry->add(preference => $self->include_breadcrumbs);
-    $registry->add(preference => $self->locale);
 }
 
 sub page_info {
@@ -107,7 +106,7 @@ sub preview {
 sub mouseover_length {
     my $self = shift;
     my $p = $self->new_preference('mouseover_length');
-    $p->query(loc('wiki.mouseover-link?'));
+    $p->query(__('wiki.mouseover-link?'));
     $p->default(1);
     return $p;
 }
@@ -115,23 +114,9 @@ sub mouseover_length {
 sub include_breadcrumbs {
     my $self = shift;
     my $p = $self->new_preference('include_breadcrumbs');
-    $p->query(loc('wiki.include-breadcrumbs?'));
+    $p->query(__('wiki.include-breadcrumbs?'));
     $p->type('boolean');
     $p->default(0);
-    return $p;
-}
-
-sub locale {
-    my $self = shift;
-    my $p = $self->new_preference('locale');
-    $p->query(loc('config.language?'));
-    $p->type('pulldown');
-    my $languages = available_locales();
-    my $choices = [ map {$_ => $languages->{$_}} sort keys %$languages ];
-    $p->choices($choices);
-
-    # XXX default value should be server locale
-    $p->default(system_locale());
     return $p;
 }
 

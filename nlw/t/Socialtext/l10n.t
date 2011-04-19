@@ -1,14 +1,15 @@
 #!/usr/bin/env perl
 # @COPYRIGHT@
+use utf8;
 use strict;
 use warnings;
-use Test::Socialtext tests => 8;
+use Test::Socialtext tests => 10;
 use Socialtext::AppConfig;
 
 fixtures(qw( empty ));
 
 BEGIN {
-    use_ok 'Socialtext::l10n', qw(loc loc_lang best_locale system_locale);
+    use_ok 'Socialtext::l10n', qw(:all);
 }
 
 set_system_locale('en');
@@ -38,6 +39,21 @@ Best_locale: {
     #is( best_locale($hub), 'en', "Checking best locale - from user" );
     is( best_locale(), 'xx', "Checking best locale - from system" );
 }
+
+UnicodeCollation: {
+    is(
+        join(',', lsort(qw[ Ångström xylophone ḿegashark numanuma LOLcat ])),
+        'Ångström,LOLcat,ḿegashark,numanuma,xylophone'
+    );
+
+    is(
+        join(',', map { $_->{name} } lsort_by(name => map {
+            +{ name => $_ }
+        } qw[ Ångström xylophone ḿegashark numanuma LOLcat ])),
+        'Ångström,LOLcat,ḿegashark,numanuma,xylophone'
+    );
+}
+
 exit;
 
 AutoBlockQuoting: {

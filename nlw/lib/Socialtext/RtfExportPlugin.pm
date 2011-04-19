@@ -6,7 +6,7 @@ use strict;
 use base 'Socialtext::Plugin';
 use Class::Field 'const';
 use Imager;
-use Socialtext::l10n qw(loc);
+use Socialtext::l10n qw(loc __);
 use Socialtext::BrowserDetect;
 
 =head1 NAME
@@ -27,8 +27,8 @@ L<HTML::FormatRTFWithImages>, described below.
 
 =cut
 
-sub class_id {'rtf_export'};
-const class_title => 'Word Export';
+const class_id => 'rtf_export';
+const class_title => __('class.rtf_export');
 const cgi_class   => 'Socialtext::RtfExportPlugin::CGI';
 
 sub register {

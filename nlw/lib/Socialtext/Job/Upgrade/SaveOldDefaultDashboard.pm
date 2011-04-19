@@ -25,7 +25,7 @@ my @old_default_gadgets = (
             [ page_title => 'welcome' ],
         ],
     },
-    { src => 'local:widgets:activities', col => 1 },
+    { src => 'local:widgets:activities.xml', col => 1 },
     { src => 'local:widgets:my_workspaces', col => 2 },
     { src => 'local:widgets:active_members', col => 2 },
     { src => 'local:widgets:top_content', col => 2 },

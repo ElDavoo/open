@@ -212,6 +212,7 @@ sub create {
 
     my $skip_pages       = delete $p{skip_default_pages};
     my $clone_pages_from = delete $p{clone_pages_from};
+    my $dont_add_creator = delete $p{dont_add_creator} || 0;
 
     my $self;
     sql_txn {
@@ -233,8 +234,8 @@ EOSQL
         $self = $class->new(workspace_id => $ws_id);
 
         my $creator = $self->creator;
-        unless ( $creator->is_system_created ) {
-            $self->add_user(
+        if (!$creator->is_system_created && !$dont_add_creator) {
+                 $self->add_user(
                 user => $creator,
                 role => Socialtext::Role->Admin(),
             );
@@ -668,6 +669,8 @@ sub _validate_and_clean_data {
     }
 
     if ($is_create) {
+        $p->{created_by_user_id} ||= $p->{creator}->user_id
+            if (exists $p->{creator});
         $p->{created_by_user_id} ||= Socialtext::User->SystemUser()->user_id();
     }
 

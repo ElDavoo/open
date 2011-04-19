@@ -10,9 +10,9 @@ Socialtext.UserAccountRole.prototype = new Socialtext.Base();
 
 $.extend(Socialtext.UserAccountRole.prototype, {
     url: function() {
-        if (!this.username) throw new Error(loc("username is required"));
+        if (!this.username) throw new Error(loc("api.username-required"));
         if (!this.account_name)
-            throw new Error(loc("account_name is required"));
+            throw new Error(loc("api.account_name-required"));
 
         return '/data/accounts/' + this.account_name +
                '/users/' + this.username;
@@ -32,15 +32,15 @@ $.extend(Socialtext.UserAccountRole.prototype, {
         var roles = [];
         if (this.is_primary != undefined) {
             if (this.is_primary) {
-                roles.push(loc("Primary Account"));
+                roles.push(loc("api.primary-account"));
             }
             else {
-                roles.push(loc("Member of Account"));
+                roles.push(loc("api.member-of-account"));
             }
         }
         if (this.via_workspace) {
             roles.push(loc(
-                "Via [quant,_1,Workspace]: [_2]",
+                "api.via-wiki-count=length,map",
                 this.via_workspace.length,
                 $.map(this.via_workspace, function (w) {
                     var href = "/nlw/control/workspace/" + w.workspace_id;
@@ -50,7 +50,7 @@ $.extend(Socialtext.UserAccountRole.prototype, {
         }
         if (this.via_group) {
             roles.push(loc(
-                "Via [quant,_1,Group]: [_2]",
+                "api.via-group-count=length,map",
                 this.via_group.length,
                 $.map(this.via_group, function (g) {
                     var href = "/nlw/control/group/" + g.group_id;

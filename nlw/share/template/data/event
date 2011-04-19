@@ -2,14 +2,14 @@
 [%- USE html_encode -%]
 
 [%- MACRO ago_text(minutes) BLOCK -%]
-    [%- IF minutes < 1 -%][% loc('less than a minute ago') -%]
-    [%- ELSIF minutes == 1 -%][% loc('one minute ago') -%]
-    [%- ELSIF minutes < 50 -%][% loc('[_1] minutes ago', minutes) -%]
-    [%- ELSIF minutes < 90 -%][% loc('about one hour ago') -%]
-    [%- ELSIF minutes < 1080 -%][% loc('[_1] hours ago', round(minutes / 60)) -%]
-    [%- ELSIF minutes < 1440 -%][% loc('one day ago') -%]
-    [%- ELSIF minutes < 2880 -%][% loc('about one day ago') -%]
-    [%- ELSE %][% loc('[_1] days ago', round(minutes / 1440)) -%]
+    [%- IF minutes < 1 -%][% loc('ago.<1minute') -%]
+    [%- ELSIF minutes == 1 -%][% loc('ago.1minute') -%]
+    [%- ELSIF minutes < 50 -%][% loc('ago.minutes=count', minutes) -%]
+    [%- ELSIF minutes < 90 -%][% loc('ago.about-1hour') -%]
+    [%- ELSIF minutes < 1080 -%][% loc('ago.hours=count', round(minutes / 60)) -%]
+    [%- ELSIF minutes < 1440 -%][% loc('ago.1day') -%]
+    [%- ELSIF minutes < 2880 -%][% loc('ago.about-1day') -%]
+    [%- ELSE %][% loc('ago.days=count', round(minutes / 1440)) -%]
     [%- END -%]
 [%- END -%]
 
@@ -50,7 +50,7 @@
 [%- END -%]
 
 [%- MACRO page_in_workspace BLOCK -%]
-    [%- loc("[_1] in [_2]", page, workspace) -%]
+    [%- loc("event.in=page,wiki", page, workspace) -%]
 [%- END -%]
 
 [%- SET event_class=event.event_class -%]
@@ -72,7 +72,7 @@
             [%- TRY -%]
                 [%- INCLUDE "data/events/$event_class" -%]
             [%- CATCH -%]
-                [%- loc('Unknown event class: [_1]', event.event_class) -%]
+                [%- loc('event.unknown=event-class', event.event_class) -%]
             [%- END -%]
         </div>
     </div>
@@ -87,6 +87,6 @@
     [%- TRY -%]
         [%- INCLUDE "data/events/$event_class" out=out -%]
     [%- CATCH -%]
-        [%- loc('Unknown event class: [_1]', event.event_class) -%]
+        [%- loc('event.unknown=event-class', event.event_class) -%]
     [%- END -%]
 [%- END -%]

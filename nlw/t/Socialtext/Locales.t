@@ -2,7 +2,7 @@
 # @COPYRIGHT@
 use strict;
 use warnings;
-use Test::More tests => 8;
+use Test::More tests => 9;
 use utf8;
 
 BEGIN {
@@ -10,7 +10,7 @@ BEGIN {
 }
 
 Valid_codes: {
-    for (qw(en zz zq xq zh_CN)) {
+    for (qw(en zz zq xq zh_CN zh_TW)) {
         ok valid_code($_), "$_ is valid";
     }
 }

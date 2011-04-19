@@ -56,6 +56,7 @@ test env properly and are not testing the test-workspace
 * [Test Case: Public]
 * [Test Case: Intranet]
 * [Test Case: Settings: Email Notification]
+* [Test Case: Settings: Custom Language]
 * [Test Case: Direct URI]
 * [Test Case: Inter Workspace Search]
 * [Test Case: Untitled Page]
@@ -100,6 +101,7 @@ test env properly and are not testing the test-workspace
 * [Explore Testcases]
 * [Test Case: Sticky Search Selection]
 * [Test Case: All Users Workspace]
+* [Test case: Event-Driven Control Panel Reports]
 
 Keep these Miki test cases at the end since they create a large number of users
 

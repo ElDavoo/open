@@ -1,3 +1,34 @@
+/*==============================================================================
+Wikiwyg - Turn any HTML div into a wikitext /and/ wysiwyg edit area.
+
+COPYRIGHT:
+
+    Copyright (c) 2005-2011 Socialtext Corporation 
+    655 High Street
+    Palo Alto, CA 94301 U.S.A.
+    All rights reserved.
+
+Wikiwyg is free software. 
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+ =============================================================================*/
 
 proto = new Subclass('Wikiwyg.Wikitext', 'Wikiwyg.Mode');
 klass = Wikiwyg.Wikitext;
@@ -977,7 +1008,7 @@ proto.format_embed = proto.skip;
 proto.format_field = proto.skip;
 proto.format_fieldset = proto.skip;
 proto.format_font = proto.pass;
-proto.format_form = proto.skip;
+proto.format_form = proto.pass;
 proto.format_frame = proto.skip;
 proto.format_frameset = proto.skip;
 proto.format_head = proto.skip;
@@ -1394,7 +1425,8 @@ proto.convertWikitextToHtml = function(wikitext, func, onError) {
         timeout: 30 * 1000,
         data: {
             action: 'wikiwyg_wikitext_to_html',
-            page_name: jQuery('#st-newpage-pagename-edit, #st-page-editing-pagename').val(),
+            page_name: jQuery('#st-attachments-attach-form input[name=page_name]').val()
+                    || jQuery('#st-newpage-pagename-edit, #st-page-editing-pagename').val(),
             content: wikitext
         },
         success: function(_data, _status, xhr) {
