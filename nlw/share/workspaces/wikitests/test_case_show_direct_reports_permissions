@@ -58,7 +58,7 @@
 | pause | 10000 |  |
 
 | *Comment* | Test Case: Show Direct Reports - Login as Manager, see no manager or peers |  |
-| st-logoutin | %%manager%% | %%password%% |
+| st-logoutin | %%manager%% | %%password%% |  |
 | wait_for_element_visible_ok | link=%%short_manager%% | 30000 |
 | click_and_wait | link=%%short_manager%% |  |
 | wait_for_text_not_present_ok | Manager: | 30000 |
@@ -124,22 +124,20 @@
 | wait_for_element_visible_ok | link=%%user9_short%% | 30000 |
 | wait_for_element_visible_ok | link=%%user10_short%% | 30000 |
 
-| *Comment* | Test Case: Show Direct Reports - Test Show All/Show Less |  |
-| text_unlike | //body | %%user11_short%% |
-| text_unlike | //body | %%user12_short%% |
-| text_unlike | //body | Show Less |
+| *Comment* | Test Case: Show Direct Reports - Test Show All/Show Less |
+| wait_for_element_not_present_ok | link=%%user11_short%% | 30000 |
+| wait_for_element_not_present_ok | link=%%user12_short%% | 30000 |
+| wait_for_element_not_present_ok | link=Show Less | 30000 |
 | wait_for_element_visible_ok | link=Show All | 30000 |
 | click_ok | link=Show All |  |
 | wait_for_element_visible_ok | link=%%user11_short%% | 30000 |
 | wait_for_element_visible_ok | link=%%user12_short%% | 30000 |
 | wait_for_element_visible_ok | link=Show Less | 30000 |
 | click_ok | link=Show Less | 30000 |
-| text_unlike | //body | %%user11_short%% |
-| text_unlike | //body | %%user12_short%% |
-| text_unlike | //body | Show Less |
-| text_like | //body | Show More |
+| wait_for_element_not_present_ok | link=%%user11_short%% | 30000 |
+| wait_for_element_not_present_ok | link=%%user12_short%% | 30000 |
 
-| *Comment* | Test Case: Show Direct Reports - Click on a direct report, see peer list |  |
+| *Comment* | Test Case: Show Direct Reports - Click on a direct report, see peer list |
 | click_and_wait | link=%%user1_short%% |  |
 | pause | 60000 |  |
 
