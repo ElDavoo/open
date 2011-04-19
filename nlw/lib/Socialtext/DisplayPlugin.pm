@@ -162,22 +162,31 @@ sub display {
 
     my @new_tags = ();
     if ($is_new_page) {
+        if ($page->deleted) {
+            $is_new_page = 0;
+            $start_in_edit_mode = 1;
+        }
         my $page_type = $self->cgi->page_type || '';
         $page->page_type(
             $page_type eq 'spreadsheet' && 'spreadsheet' || 'wiki'
         );
         push @new_tags, $self->_new_tags_to_add();
-
         if (my $template = $self->cgi->template) {
             my $tmpl_page = $self->hub->pages->new_from_name($template);
             if ($tmpl_page->exists) {
                 push @new_tags, grep { $_ !~ /^template$/i }
                                 @{ $tmpl_page->tags };
-                $page->content($tmpl_page->content);
-
-                # Attachments used to be copied to the new page here.  Since
-                # they can now exist in the database before the page is
-                # finalized, there's no longer this need.
+                if ($page->mutable) {
+                    $page->content($tmpl_page->content);
+                }
+                else {
+                    my $rev = $page->mutable ? $page : $page->edit_rev();
+                    my $content = $tmpl_page->content;
+                    $rev->body_ref(\$content);
+                    $page->store(
+                        user => $self->hub->current_user,
+                    );
+                }
             }
         }
     }
@@ -196,8 +205,12 @@ sub display {
         warn "Error storing view event: $@" if $@;
     }
 
-    return $self->_render_display($page, $is_new_page, $start_in_edit_mode,
-                                  \@new_tags);
+    return $self->_render_display(
+        $page, 
+        $is_new_page, 
+        $start_in_edit_mode,
+        \@new_tags,
+    );
 }
 
 sub _render_display {

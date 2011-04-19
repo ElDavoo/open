@@ -1008,7 +1008,7 @@ proto.format_embed = proto.skip;
 proto.format_field = proto.skip;
 proto.format_fieldset = proto.skip;
 proto.format_font = proto.pass;
-proto.format_form = proto.skip;
+proto.format_form = proto.pass;
 proto.format_frame = proto.skip;
 proto.format_frameset = proto.skip;
 proto.format_head = proto.skip;
@@ -1425,7 +1425,8 @@ proto.convertWikitextToHtml = function(wikitext, func, onError) {
         timeout: 30 * 1000,
         data: {
             action: 'wikiwyg_wikitext_to_html',
-            page_name: jQuery('#st-newpage-pagename-edit, #st-page-editing-pagename').val(),
+            page_name: jQuery('#st-attachments-attach-form input[name=page_name]').val()
+                    || jQuery('#st-newpage-pagename-edit, #st-page-editing-pagename').val(),
             content: wikitext
         },
         success: function(_data, _status, xhr) {

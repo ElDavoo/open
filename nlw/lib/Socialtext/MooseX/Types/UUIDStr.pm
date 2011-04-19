@@ -25,7 +25,7 @@ Socialtext::MooseX::Types::UUIDStr - type constraint for UUIDs
   use Socialtext::MooseX::Types::UUIDStr;
 
   has 'when' => (
-    is => 'rw', isa => 'UUIDStr'
+    is => 'rw', isa => 'Str.UUID'
   );
 
 =head1 DESCRIPTION
@@ -34,7 +34,7 @@ Type-checks for well-formed hex-with-dashes UUID strings.
 
 =head1 TYPES / COERCIONS
 
-=head2 UUIDStr
+=head2 Str.UUID
 
 Coercions provided: none
 

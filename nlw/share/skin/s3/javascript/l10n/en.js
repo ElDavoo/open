@@ -1520,7 +1520,7 @@
 "profile.no-followers":"No one Follows this person yet.",
 "profile.no-following":"This person Follows no one yet.",
 "profile.no-groups-for-you":"You are a member of no groups.",
-"profile.no-people-tags":"There are no People tags for people in this group yet. To share skills and interests, go to the Profile Pages of people in this group to Add Tags",
+"profile.no-people-tags":"There are no people tags for people in this group yet. To share skills and interests, go to the Profile Pages of people in this group to Add Tags",
 "profile.no-shared-groups":"You share no groups with this person.",
 "profile.no-tags":"This person has no tags. Click <b>Add tag</b> to add one now.",
 "profile.no-tags-for-you":"You have no tags. Use <b>Add Tag</b> to add one now.",
