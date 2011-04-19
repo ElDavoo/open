@@ -1,3 +1,4 @@
+
 | *Comment* | Test Case: Group Home Widget Permissions |
 
 * Fixture: SocialWidgets
@@ -53,7 +54,7 @@
 | *Comment* | Test Case: Group Home Widget Permissions. remove %%created_workspace%% from %%created_group_id%% |  |
 | st-admin | remove_member --g %%created_group_id%% --w %%created_workspace%% | is no longer a member of |
 | open_ok | /st/group/%%created_group_id%% |  |
-| wait_for_text_not_present_ok | Active Content |  |
+| wait_for_text_not_present_ok | Active Content |  10000 |
 
 | *Comment* | Test Case: Group Home Widget Permissions Tags in "People Tags" Widget are localized to the group |  |  |
 | *Comment* | Test Case: Group Home Widget Permissions Tag %%group_user%% |  |  |
@@ -74,7 +75,7 @@
 | wait_for_element_visible_ok | link=%%tag_visible_one%% | 30000 |
 | wait_for_element_visible_ok | link=%%tag_visible_two%% | 30000 |
 | wait_for_element_not_present_ok | link=%%tag_invisible%% | 30000 |
-| wait_for_text_not_present_ok | There are no People tags for people in this group yet | 30000 |
+| wait_for_text_not_present_ok | There are no people tags for people in this group yet | 30000 |
 
 | *Comment* | Test Case: Group Home Widget Permissions - Control Panel ('accounts') Admin has edit group and edit layout buttons |  |
 | set | group_cp_admin | group_cp_admin%%start_time%%@matt.socialtext.net |
@@ -90,6 +91,7 @@
 | wait_for_element_visible_ok | st-revert-layout | 30000 |
 
 | *Comment* | Test Case: Group Home Widget Permissions Account admin has edit group and edit layout buttons |  |
+|  Comment |  THIS WILL FAIL UNTIL account admins DO have editing permissions |  |
 | set | group_biz_admin | group_biz%%start_time%%@matt.socialtext.net |
 | st-admin | create-user --e %%group_biz_admin%% --p %%password%% --account %%group_acct%% | was created |
 | st-admin | add-account-admin --e %%group_biz_admin%% --account %%group_acct%% | now has the role of 'admin' |
