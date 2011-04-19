@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Test::More;
 
-plan tests => 3;
+plan tests => 4;
 
 my (@perlfail, @megaperlfail, @shfail);
 my $perl_re = qr{/usr(?:/local)?/bin/perl};
@@ -39,10 +39,17 @@ my %IGNORE_SH = map {$_=>1} qw(
     appliance/libsocialtext-appliance-perl/Makefile
 );
 
+diag "ST_CURRENT is $ENV{ST_CURRENT}";
 chdir $ENV{ST_CURRENT};
-local $/ = "\0"; # nulls
 my @files = `find . -type f -print0`;
-chomp @files; # strip nulls
+
+do {
+    local $/ = "\0"; # nulls
+    chomp @files; # strip nulls
+};
+
+ok grep(qr{plugin/(?push|widgets)/service/run},@files),
+    "spot check for plugin run scripts";
 
 sub gitignored {
     my $f = shift;
