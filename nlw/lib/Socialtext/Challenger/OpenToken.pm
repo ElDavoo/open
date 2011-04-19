@@ -95,13 +95,11 @@ sub challenge {
     if ($auto_provision) {
         # Extract the User data from the OpenToken
         my $data = $token->data;
-        my %proto_user = (
-            username      => $data->{subject},
-            email_address => $data->{email_address},
-            first_name    => $data->{first_name},
-            middle_name   => $data->{middle_name},
-            last_name     => $data->{last_name},
-        );
+        my %proto_user =
+            map  { $_ => $data->{$_} }
+            grep { defined $data->{$_} }
+            qw(subject email_address first_name middle_name last_name);
+        $proto_user{username} = delete $proto_user{subject};    # map this field
 
         # Create/Update the User record as necessary.
         my $action = '';
