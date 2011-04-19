@@ -144,7 +144,7 @@ sub authenticate {
         },
     );
     if ($mesg->code()) {
-        st_log->info( "ST::LDAP::Base: authentication failed for user; $user_id" );
+        st_log->info( "ST::LDAP::Base: authentication failed for user '$user_id'; " . $mesg->error() );
         return;
     }
     return 1;
