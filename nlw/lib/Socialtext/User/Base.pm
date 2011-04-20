@@ -20,7 +20,7 @@ sub user_set_id { $_[0]->user_id }
 has 'username'          => (is => 'rw', isa => 'Str');
 has 'email_address'     => (is => 'rw', isa => 'Str');
 has 'first_name'        => (is => 'rw', isa => 'UniStr', coerce => 1);
-has 'middle_name'       => (is => 'rw', isa => 'UniStr', coerce => 1);
+has 'middle_name'       => (is => 'rw', isa => 'MaybeUniStr', coerce => 1);
 has 'last_name'         => (is => 'rw', isa => 'UniStr', coerce => 1);
 has 'password'          => (is => 'rw', isa => 'Maybe[Str]');
 has 'display_name'      => (is => 'rw', isa => 'UniStr', coerce => 1);
