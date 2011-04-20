@@ -41,12 +41,16 @@ Manager see's 'em all
 | st-admin | create-account --name %%acct_three%% | was created |
 | st-admin | create-account --name %%acct_tmp%% | was created |
 | st-admin | create-account --name %%acct_joiner%% | was created |
-| st-admin | enable-plugin --plugin dashboard --account %%acct%% |  |
+| st-admin | enable-plugin --plugin dashboard --account %%acct_m%% |  |
+| st-admin | enable-plugin --plugin dashboard --account %%acct_one%% |  |
+| st-admin | enable-plugin --plugin dashboard --account %%acct_two%% |  |
+| st-admin | enable-plugin --plugin dashboard --account %%acct_tmp%% |  |
+| st-admin | enable-plugin --plugin dashboard --account %%acct_joiner%% |  |
 
 | *Comment* | Test Case: Show Direct Reports Permissions - Create Workspaces |  |
 | set | joiner1 | joiner1ws%%start_time%% |
 | set | joiner2 | joiner2ws%%start_time%% |
-| st-admin | create-workspace --name %%joiner1%% --title %%joiner1%% ---account %%acct_joiner%% | was created |
+| st-admin | create-workspace --name %%joiner1%% --title %%joiner1%% --account %%acct_joiner%% | was created |
 | st-admin | create-workspace --name %%joiner2%% --title %%joiner2%% --account %%acct_joiner%% | was created |
 
 | *Comment* | Test Case: Show Direct Reports Permissions - Create Users |  |
