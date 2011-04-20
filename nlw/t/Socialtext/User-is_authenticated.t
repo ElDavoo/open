@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use mocked 'Socialtext::Log', qw(:all);
-use Test::Socialtext tests => 8;
+use Test::Socialtext tests => 10;
 use Test::Socialtext::User;
 use Socialtext::User;
 
@@ -52,6 +52,17 @@ password_change: {
     clear_log;
     ok !$user->is_authenticated, 'User w/password change confirmation cannot be authenticated';
     logged_like 'info', qr/has outstanding 'password_change'/, '... because of password change confirmation';
+}
+
+###############################################################################
+# TEST: Deactivated User's are not authenticated
+deactivated_user: {
+    my $user = create_test_user();
+    $user->deactivate;
+
+    clear_log;
+    ok !$user->is_authenticated, 'Deactivated User cannot be authenticated';
+    logged_like 'info', qr/deactivated/, '... because they have been deactivated';
 }
 
 ###############################################################################
