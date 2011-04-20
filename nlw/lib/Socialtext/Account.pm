@@ -1263,32 +1263,37 @@ sub impersonation_ok {
     );
 }
 
-has 'central_workspace' => (
-    is => 'ro', isa => 'Socialtext::Workspace',
-    lazy_build => 1,
-);
+has 'pref_table' => (is => 'ro', isa => 'Socialtext::PrefsTable',
+    lazy_build => 1);
 
-sub _build_central_workspace {
+sub _build_pref_table {
     my $self = shift;
 
-    my $user = Socialtext::User->SystemUser();
-    my $wksp;
-
-    # Store the name of the workspace
-    my $pref_table = Socialtext::PrefsTable->new(
+    return Socialtext::PrefsTable->new(
         table    => 'user_set_plugin_pref',
         identity => {
             plugin      => 'widgets',
             user_set_id => $self->user_set_id,
         },
     );
+}
 
-    my $prefs = $pref_table->get();
-    if ($prefs->{central_workspace}) {
-        $wksp = Socialtext::Workspace->new(name => $prefs->{central_workspace});
-    }
+sub central_workspace {
+    my $self = shift;
 
+    my $prefs = $self->pref_table->get();
+    return $prefs->{central_workspace}
+        ? Socialtext::Workspace->new(name => $prefs->{central_workspace})
+        : undef;
+}
+
+sub create_central_workspace {
+    my $self = shift;
+
+    my $wksp = $self->central_workspace;
     return $wksp if $wksp;
+
+    my $user = Socialtext::User->SystemUser();
 
     # Enable the widgets plugin so we can set this preference
     $self->enable_plugin('widgets');
@@ -1338,7 +1343,7 @@ sub _build_central_workspace {
         },
     );
 
-    $pref_table->set(central_workspace => $wksp->name);
+    $self->pref_table->set(central_workspace => $wksp->name);
     return $wksp;
 }
 
