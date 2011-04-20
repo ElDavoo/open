@@ -733,8 +733,27 @@ proto._do_table_up_or_down = function(e, direction, selector) {
     var self = this;
     if (e.shiftKey) { return; }
 
-    var $cell = self.find_table_cell_with_cursor();
-    if (!$cell) { return; }
+    // Find the edge of the cursor as well as the containing cell...
+    var sel = self.get_edit_window().getSelection().getRangeAt(0);
+    var $cell = $(sel.endContainer);
+    if ($cell[0] && ("" + $cell[0].tagName).toLowerCase() != "td") {
+        $cell = $cell.parents("td");
+    }
+
+    if (!$cell.length) { return; }
+
+    // Compare to see if we're at the cell edge...
+    var cellSel = self.get_edit_document().createRange();
+    cellSel.selectNodeContents($cell[0]);
+    var key = ((direction == 'prev') ? 'top' : 'bottom');
+    var delta = Math.abs(
+        (sel.getBoundingClientRect() || sel.getClientRects()[0] || {})[key]
+        - (cellSel.getBoundingClientRect() || cellSel.getClientRects()[0] || {})[key]
+    );
+    if (delta >= ((Number($cell.css('line-height')) || 15) / 2)) {
+        // We're not at the edge yet; keep moving toward the edge.
+        return;
+    }
 
     var col = self._find_column_index($cell);
     if (!col) { return; }

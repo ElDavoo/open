@@ -2512,7 +2512,13 @@ proto.handle_wiki_link = function(label, href, elem) {
     var wksp = match ? match[1] : Socialtext.wiki_id;
 
     var href_orig = href;
-    href = href.replace(/.*\baction=display;is_incipient=1;page_name=/, '');
+    var is_incipient = false;
+
+    if (/.*\baction=display;is_incipient=1;page_name=/.test(href)) {
+        is_incipient = true;
+        href = href.replace(/.*\baction=display;is_incipient=1;page_name=/, '');
+    }
+
     href = href.replace(up_to_wksp, '');
     href = decodeURIComponent(href);
     href = href.replace(/_/g, ' ');
@@ -2534,7 +2540,7 @@ proto.handle_wiki_link = function(label, href, elem) {
         prefix = '"' + label + '"';
     }
 
-    if (/#/.test(page)) {
+    if (/#/.test(page) && (page == href) && !is_incipient) {
         var segments = page.split(/#/, 2);
         var section = segments[1];
         page = segments[0];
