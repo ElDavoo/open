@@ -3,11 +3,9 @@ package Test::Socialtext::Environment;
 use strict;
 use warnings;
 
-use Cwd;
-use lib Cwd::abs_path('./lib');
-
 use base 'Socialtext::Base';
 
+use Cwd;
 use Carp;
 use Class::Field qw( field );
 use File::chdir;

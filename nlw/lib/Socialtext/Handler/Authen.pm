@@ -230,6 +230,12 @@ sub login {
         return $self->_challenge();
     }
 
+    if ($user and $user->is_deactivated) {
+        $r->log_error($username . ' is deactivated');
+        $self->session->add_error(loc('info.login-disabled'));
+        return $self->_challenge();
+    }
+
     if ($user and $user->requires_email_confirmation) {
         $r->log_error($username . ' requires confirmation');
         return $self->require_email_confirmation_redirect($user->email_address);
