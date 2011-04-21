@@ -733,8 +733,27 @@ proto._do_table_up_or_down = function(e, direction, selector) {
     var self = this;
     if (e.shiftKey) { return; }
 
-    var $cell = self.find_table_cell_with_cursor();
-    if (!$cell) { return; }
+    // Find the edge of the cursor as well as the containing cell...
+    var sel = self.get_edit_window().getSelection().getRangeAt(0);
+    var $cell = $(sel.endContainer);
+    if ($cell[0] && ("" + $cell[0].tagName).toLowerCase() != "td") {
+        $cell = $cell.parents("td");
+    }
+
+    if (!$cell.length) { return; }
+
+    // Compare to see if we're at the cell edge...
+    var cellSel = self.get_edit_document().createRange();
+    cellSel.selectNodeContents($cell[0]);
+    var key = ((direction == 'prev') ? 'top' : 'bottom');
+    var delta = Math.abs(
+        (sel.getBoundingClientRect() || sel.getClientRects()[0] || {})[key]
+        - (cellSel.getBoundingClientRect() || cellSel.getClientRects()[0] || {})[key]
+    );
+    if (delta >= ((Number($cell.css('line-height')) || 15) / 2)) {
+        // We're not at the edge yet; keep moving toward the edge.
+        return;
+    }
 
     var col = self._find_column_index($cell);
     if (!col) { return; }
@@ -752,7 +771,12 @@ proto._do_table_up_or_down = function(e, direction, selector) {
         $new_cell = $cell.parents('table:first').find('tr'+selector+' td'+selector);
     }
 
-    self.set_focus_on_cell($new_cell);
+    if (direction == 'prev') {
+        self.set_focus_on_cell_end($new_cell);
+    }
+    else {
+        self.set_focus_on_cell($new_cell);
+    }
 }
 
 proto.enable_pastebin = function () {
@@ -1505,7 +1529,11 @@ proto.find_table_cell_with_cursor = function() {
     return $cell;
 }
 
-proto.set_focus_on_cell = function($new_cell) {
+proto.set_focus_on_cell_end = function($new_cell) {
+    this.set_focus_on_cell($new_cell, true);
+}
+
+proto.set_focus_on_cell = function($new_cell, isFocusOnEnd) {
     var self = this;
     self.set_focus();
 
@@ -1520,13 +1548,16 @@ proto.set_focus_on_cell = function($new_cell) {
             $span = $new_cell;
         }
 
-        var r = self.get_edit_document().createRange();
-        r.setStart( $span.get(0), 0 );
-        r.setEnd( $span.get(0), 0 );
-
         var s = self.get_edit_window().getSelection();
         s.removeAllRanges();
-        s.addRange(r);
+        s.selectAllChildren( $span.get(0) );
+
+        if (isFocusOnEnd) {
+            s.collapseToEnd();
+        }
+        else {
+            s.collapseToStart();
+        }
     }
     else if (jQuery.browser.msie) {
         var r = self.get_edit_document().selection.createRange();
