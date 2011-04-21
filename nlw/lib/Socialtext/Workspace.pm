@@ -245,7 +245,7 @@ EOSQL
     };
 
     if ( $clone_pages_from ) {
-        $self->_clone_workspace_pages( $clone_pages_from );
+        $self->clone_workspace_pages( $clone_pages_from );
     }
     else {
         $self->_copy_default_pages
@@ -287,7 +287,7 @@ sub Help_workspaces {
         glob("$help_dir/help-*.tar.gz");
 }
 
-sub _clone_workspace_pages {
+sub clone_workspace_pages {
     my $self    = shift;
     my $ws_name = shift;
 
