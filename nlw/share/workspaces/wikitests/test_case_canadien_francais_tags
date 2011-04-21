@@ -1,0 +1,62 @@
+| *Comment* | Test Case: Canadien Français (Tags) |  |
+
+| *Comment* | Test Case: Sorting for Canadien Français - Create ws, user, acct |  |
+| set | acct | cfpages%%start_time%% |
+| set | ws | cfpages%%start_time%% |
+| set | user_short | cfuser%%start_time%% |
+| set | user | %%user_short%%@matt.socialtext.net |
+| st-admin | create-account --name %%acct%% | was created |
+| st-admin | create-workspace --name %%ws%% --title %%ws%% --account %%acct%% | was created |
+| st-admin | create-user --e %%user%% --p %%password%% --account %%acct%% | was created |
+| st-admin | add-member --e %%user%% --w %%ws%% | now has the role of 'member' in the |
+
+| *Comment* | Test Case: Sorting for Canadien Français - Define Tags |  |
+| set | TagA | Ångström%%start_time%% |
+| set | TagL | LOLCat%%start_time |
+| set | TagM | ḿegashark%%start_time%% |
+| set | TagN | nunmanuma%%start_time%% |
+| set | TagX | Xylophone%%start_time%% |
+| set | user | cfuser%%start_time%%@matt.socialtext.net |
+
+
+| *Comment* | Test Case: Sorting for Canadien Français - Login, go to %%ws%%, add tags |  |
+| st-logoutin | %%user%% | %%password%% |
+| open_ok | /%%ws%% |  |
+| setSpeed | 2000 |
+| call | [st-tag-page] | tag_to_apply=%%tagA%% |
+| call | [st-tag-page] | tag_to_apply=%%tagL%% |
+| call | [st-tag-page] | tag_to_apply=%%tagM%% |
+| call | [st-tag-page] | tag_to_apply=%%tagN%% |
+| call | [st-tag-page] | tag_to_apply=%%tagN%% |
+
+
+| *Comment* | Test Case: Sorting for Canadien Français - see tags in order on the page |  |
+| open_ok | /%%ws%%/ |  |
+| wait_for_element_visible_ok | link=%%TagA%% | 30000 |
+| text_like | contentRight | qr/%%TagA%%.+%%TagL%%.+%%TagM%%.+%%TagN%%.+%%TagX%%/ |
+
+| *Comment* | Test Case: Sorting for Canadien Français - Test Sorting for Page in All Tags |  |
+| wait_for_element_visible_ok | link=What's New | 30000 |
+| click_and_wait | link=What's New |  |
+| wait_for_element_visible_ok | link=All Tags | 30000 |
+| click_and_wait | link=All Tags |  |
+| wait_for_element_visible_ok | link=%%TagA%% | 30000 |
+| wait_for_element_visible_ok | link=%%TagL%% | 30000 |
+| text_like | //body | qr/%%TagA%%.+%%TagL%%.+%%TagM%%.+%%TagN%%.+%%TagX%%/ |
+
+| *Comment* | Test Case: Sorting for Canadien Français - Now Tag /me/ |  |  |
+| call | [st-tag-user] | find_user_short=%%user_short%% | tag_to_appy=%%TagX%% |
+| call | [st-tag-user] | find_user_short=%%user_short%% | tag_to_appy=%%TagN%% |
+| call | [st-tag-user] | find_user_short=%%user_short%% | tag_to_appy=%%TagL%% |
+| call | [st-tag-user] | find_user_short=%%user_short%% | tag_to_appy=%%TagN%% |
+| call | [st-tag-user] | find_user_short=%%user_short%% | tag_to_appy=%%TagA%% |
+
+| *Comment* | Test Case: Sorting for Canadien Français - Tag Order on my profile |  |
+| wait_for_element_visible_ok | link=%%user_short%% | 30000 |
+| click_and_wait | link=%%user_short%% |  |
+| text_like | //body | qr/%%TagA%%.+%%TagL%%.+%%TagM%%.+%%TagN%%.+%%TagX%%/ |
+
+| *Comment* | Test Case: Canadien Français (Pages) TEARDOWN |  |
+| st-admin | delete-workspace --no-export -w %%ws%% | has been deleted |
+
+| *Comment* | Test Case: Canadien Français (Pages) COMPLETED |

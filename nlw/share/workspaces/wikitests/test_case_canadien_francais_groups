@@ -1,0 +1,48 @@
+| *Comment* | Test Case: Canadien Français (Groups) |  |
+
+| *Comment* | Test Case: Canadien Français (Groups) - Create Account, User |  |
+| set | acct | acctcfw%%start_time%% |
+| set | user | usercfg%%start_time%%@matt.socialtext.net |
+| st-admin | create-account --name %%acct%% | was created |
+| st-admin | create-user --e %%user%% --p %%password%% --account %%acct%% | was created |
+| st-admin | give-accounts-admin --e %%user%% | now has accounts admin access |
+| set | groupA | Ångström%%start_time%% |
+| set | groupL | LOLCat%%start_time |
+| set | groupM | ḿegashark%%start_time%% |
+| set | groupN | nunmanuma%%start_time%% |
+| set | groupX | Xylophone%%start_time%% |
+
+| *Comment* | Test Case: Canadien Français (Groups) Create Groups |  |  |
+| create-group | %%groupA%% | %%acct%% | %%user%% |
+| set | groupa_id | %%group_id%% |  |
+| create-group | %%groupL%% | %%acct%% | %%user%% |
+| set | groupl_id | %%group_id%% |  |
+| create-group | %%groupM%% | %%acct%% | %%user%% |
+| set | groupm_id | %%group_id%% |  |
+| create-group | %%groupN%% | %%acct%% | %%user%% |
+| set | groupn_id | %%group_id%% |  |
+| create-group | %%groupA%% | %%acct%% | %%user%% |
+| set | groupx_id | %%group_id%% |  |
+
+| *Comment* | Test Case: Canadien Français (Groups) Test Sorting for Groups in Dropdown (TOD: How?) |  |
+
+| *Comment* | Test Case: Canadien Français (Groups) Test Sorting for Groups in Groups Directory |  |
+| st-process-jobs |  |  |
+| st-logoutin | %%user%% | %%password%% |
+| wait_for_element_present_ok | link=Group Directory | 30000 |
+| click_and_wait | link=Group Directory |  |
+| wait_for_element_visible_ok | link=%%groupA%% | 30000 |
+| text_like | //body | qr/%%groupA%%.+%%groupL%%.+%%groupM%%.+%%groupN%%.+%%groupX%%/ |
+
+| *Comment* | Test Case: Canadien Français (Groups) TODO Test Sorting for Groups in Control Panel |  |
+| *Comment* | Test Case: Canadien Français (Groups) (/CP is multi-paged and current lacks search capability. Stinks.) |  |
+
+| *Comment* | Test Case: Canadien Français (Groups) TEARDOWN |  |
+| st-admin | delete-group --g %%groupa_id | Deleted group id: |
+| st-admin | delete-group --g %%groupl_id | Deleted group id: |
+| st-admin | delete-group --g %%groupm_id | Deleted group id: |
+| st-admin | delete-group --g %%groupn_id | Deleted group id: |
+| st-admin | delete-group --g %%groupx_id | Deleted group id: |
+
+
+| *Comment* | Test Case: Canadien Français (Groups) COMPLETED |  |
