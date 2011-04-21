@@ -725,6 +725,9 @@ proto.enable_table_navigation_bindings = function() {
                 self._do_table_up_or_down(e, 'next', ':last');
                 break;
             }
+            default: {
+                return true;
+            }
         }
     });
 }
@@ -748,8 +751,13 @@ proto._do_table_up_or_down = function(e, direction, selector) {
         var cellSel = self.get_edit_document().createRange();
         cellSel.selectNodeContents($cell[0]);
         var key = ((direction == 'prev') ? 'top' : 'bottom');
+        var selRects;
+        if (!$.browser.webkit) {
+            selRects = sel.getBoundingClientRect();
+        }
+        selRects = selRects || sel.getClientRects()[0];
         var delta = Math.abs(
-            (sel.getBoundingClientRect() || sel.getClientRects()[0] || {})[key]
+            (selRects || {})[key]
             - (cellSel.getBoundingClientRect() || cellSel.getClientRects()[0] || {})[key]
         );
         if (delta >= ((Number($cell.css('line-height')) || 15) / 2)) {
