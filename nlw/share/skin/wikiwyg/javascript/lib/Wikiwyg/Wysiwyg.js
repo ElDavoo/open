@@ -771,7 +771,12 @@ proto._do_table_up_or_down = function(e, direction, selector) {
         $new_cell = $cell.parents('table:first').find('tr'+selector+' td'+selector);
     }
 
-    self.set_focus_on_cell($new_cell);
+    if (direction == 'prev') {
+        self.set_focus_on_cell_end($new_cell);
+    }
+    else {
+        self.set_focus_on_cell($new_cell);
+    }
 }
 
 proto.enable_pastebin = function () {
@@ -1524,7 +1529,11 @@ proto.find_table_cell_with_cursor = function() {
     return $cell;
 }
 
-proto.set_focus_on_cell = function($new_cell) {
+proto.set_focus_on_cell_end = function($new_cell) {
+    this.set_focus_on_cell($new_cell, true);
+}
+
+proto.set_focus_on_cell = function($new_cell, isFocusOnEnd) {
     var self = this;
     self.set_focus();
 
@@ -1539,13 +1548,16 @@ proto.set_focus_on_cell = function($new_cell) {
             $span = $new_cell;
         }
 
-        var r = self.get_edit_document().createRange();
-        r.setStart( $span.get(0), 0 );
-        r.setEnd( $span.get(0), 0 );
-
         var s = self.get_edit_window().getSelection();
         s.removeAllRanges();
-        s.addRange(r);
+        s.selectAllChildren( $span.get(0) );
+
+        if (isFocusOnEnd) {
+            s.collapseToEnd();
+        }
+        else {
+            s.collapseToStart();
+        }
     }
     else if (jQuery.browser.msie) {
         var r = self.get_edit_document().selection.createRange();
