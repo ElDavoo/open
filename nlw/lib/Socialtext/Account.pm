@@ -1289,6 +1289,7 @@ sub central_workspace {
 
 sub create_central_workspace {
     my $self = shift;
+    my $template_ws = shift;
 
     my $wksp = $self->central_workspace;
     return $wksp if $wksp;
@@ -1328,20 +1329,26 @@ sub create_central_workspace {
         account_id          => $self->account_id,
         created_by_user_id  => $user->user_id(),
         allows_page_locking => 1,
+        skip_default_pages  => $template_ws ? 1 : 0,
     );
 
     $wksp->assign_role_to_account(account => $self);
 
-    my $share_dir = Socialtext::AppConfig->new->code_base();
-    $wksp->load_pages_from_disk(
-        clobber => 1,
-        dir => "$share_dir/workspaces/central",
-        replace => {
-            # Replace all pages with YourCo in the title with this account's
-            # name
-            'YourCo Central' => $main_page_name
-        },
-    );
+    if ($template_ws) {
+        $wksp->clone_workspace_pages($template_ws->name);
+    }
+    else {
+        my $share_dir = Socialtext::AppConfig->new->code_base();
+        $wksp->load_pages_from_disk(
+            clobber => 1,
+            dir => "$share_dir/workspaces/central",
+            replace => {
+                # Replace all pages with YourCo in the title with this account's
+                # name
+                'YourCo Central' => $main_page_name
+            },
+        );
+    }
 
     $self->pref_table->set(central_workspace => $wksp->name);
     return $wksp;
