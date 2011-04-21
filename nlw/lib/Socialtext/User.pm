@@ -828,6 +828,12 @@ sub is_authenticated {
         return 0;
     }
 
+    # If the User has been de-activated, we never treat them as Authenticated.
+    if ($self->is_deactivated) {
+        st_log->info( "user $username is deactivated; not treating as authenticated" );
+        return 0;
+    }
+
     # If they have any outstanding restrictions (e.g. e-mail confirmation,
     # password change), we don't treat them as Authenticated.
     my @restrictions = map { $_->restriction_type } $self->restrictions->all;
