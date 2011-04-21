@@ -734,24 +734,32 @@ proto._do_table_up_or_down = function(e, direction, selector) {
     if (e.shiftKey) { return; }
 
     // Find the edge of the cursor as well as the containing cell...
-    var sel = self.get_edit_window().getSelection().getRangeAt(0);
-    var $cell = $(sel.endContainer);
-    if ($cell[0] && ("" + $cell[0].tagName).toLowerCase() != "td") {
-        $cell = $cell.parents("td");
+    var $cell;
+    if (!Wikiwyg.is_ie && self.get_edit_window().getSelection) {
+        var sel = self.get_edit_window().getSelection().getRangeAt(0);
+        $cell = $(sel.endContainer);
+        if ($cell[0] && ("" + $cell[0].tagName).toLowerCase() != "td") {
+            $cell = $cell.parents("td");
+        }
+
+        if (!$cell || !$cell.length) { return; }
+
+        // Compare to see if we're at the cell edge...
+        var cellSel = self.get_edit_document().createRange();
+        cellSel.selectNodeContents($cell[0]);
+        var key = ((direction == 'prev') ? 'top' : 'bottom');
+        var delta = Math.abs(
+            (sel.getBoundingClientRect() || sel.getClientRects()[0] || {})[key]
+            - (cellSel.getBoundingClientRect() || cellSel.getClientRects()[0] || {})[key]
+        );
+        if (delta >= ((Number($cell.css('line-height')) || 15) / 2)) {
+            // We're not at the edge yet; keep moving toward the edge.
+            return;
+        }
     }
-
-    if (!$cell.length) { return; }
-
-    // Compare to see if we're at the cell edge...
-    var cellSel = self.get_edit_document().createRange();
-    cellSel.selectNodeContents($cell[0]);
-    var key = ((direction == 'prev') ? 'top' : 'bottom');
-    var delta = Math.abs(
-        (sel.getBoundingClientRect() || sel.getClientRects()[0] || {})[key]
-        - (cellSel.getBoundingClientRect() || cellSel.getClientRects()[0] || {})[key]
-    );
-    if (delta >= ((Number($cell.css('line-height')) || 15) / 2)) {
-        // We're not at the edge yet; keep moving toward the edge.
+    else {
+        // We're in MSIE (or some old browsers lacking window.getSelection);
+        // the up/down arrows already do what we want, so simply use the default.
         return;
     }
 
