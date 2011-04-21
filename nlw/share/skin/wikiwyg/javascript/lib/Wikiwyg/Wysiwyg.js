@@ -1562,6 +1562,10 @@ proto.set_focus_on_cell = function($new_cell, isFocusOnEnd) {
 
         if (isFocusOnEnd) {
             s.collapseToEnd();
+            if (s.modify) {
+                s.modify("move", "backward", "character");
+                s.modify("move", "forward", "character");
+            }
         }
         else {
             s.collapseToStart();
