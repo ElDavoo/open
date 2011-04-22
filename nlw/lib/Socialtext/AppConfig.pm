@@ -19,7 +19,7 @@ use User::pwent;
 use YAML ();
 use YAML::Dumper;
 use Socialtext::Build qw( get_build_setting get_prefixed_dir );
-use Socialtext::l10n;
+use Unicode::Collate;
 
 our $Auto_reload = 1;
 
@@ -651,7 +651,7 @@ sub write {
 
 EOF
 
-    for my $k ( lsort keys %Options ) {
+    for my $k ( Unicode::Collate->new->sort( keys %Options ) ) {
         my $desc = $Options{$k}{description};
         $desc =~ s/^/\# /mg;
 
