@@ -443,7 +443,7 @@ sub createdb {
     disconnect_dbh();
     eval {
         my $sudo = _sudo('postgres');
-        $self->_db_shell_run("$sudo createdb -T template0 -E UTF8 -O $c{user} $c{db_name}");
+        $self->_db_shell_run("$sudo createdb --locale en_US.UTF-8 -T template0 -E UTF8 -O $c{user} $c{db_name}");
     };
     if (my $e = $@) {
         die $e;
