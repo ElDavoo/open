@@ -3489,7 +3489,7 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
     }, 500);
 
     // When the lightbox is closed, decrement widget_editing so lightbox can pop up again. 
-    jQuery('#lightbox').unbind('lightbox-unload').bind("lightbox-unload", function(){
+    jQuery('#lightbox').unbind('lightbox-unload').one("lightbox-unload", function(){
         clearInterval(intervalId);
         Wikiwyg.Widgets.widget_editing--;
         if (self.wikiwyg && self.wikiwyg.current_mode && self.wikiwyg.current_mode.set_focus) {
