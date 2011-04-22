@@ -19,6 +19,7 @@ use User::pwent;
 use YAML ();
 use YAML::Dumper;
 use Socialtext::Build qw( get_build_setting get_prefixed_dir );
+use Socialtext::l10n;
 
 our $Auto_reload = 1;
 
@@ -650,7 +651,7 @@ sub write {
 
 EOF
 
-    for my $k ( sort { lc $a cmp lc $b } keys %Options ) {
+    for my $k ( lsort keys %Options ) {
         my $desc = $Options{$k}{description};
         $desc =~ s/^/\# /mg;
 

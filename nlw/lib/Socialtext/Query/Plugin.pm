@@ -218,16 +218,16 @@ sub _gen_sort_closure {
             return sub {
                 warn "$sortby is undef for $a->{Subject}!" unless defined $a->{$sortby};
                 warn "$sortby is undef for $b->{Subject}!" unless defined $b->{$sortby};
-                lc( $a->{$sortby}||'' ) cmp lc( $b->{$sortby}||'' )
-                    or lc( $a->{Subject} ) cmp lc( $b->{Subject} );
+                lcmp( ($a->{$sortby}//''), ($b->{$sortby}//'') )
+                    or lcmp( $a->{Subject}, $b->{Subject} );
             };
         }
         else {
             return sub {
                 warn "$sortby is undef for $a->{Subject}!" unless defined $a->{$sortby};
                 warn "$sortby is undef for $b->{Subject}!" unless defined $b->{$sortby};
-                lc( $b->{$sortby}||'' ) cmp lc( $a->{$sortby}||'' )
-                    or lc( $a->{Subject} ) cmp lc( $b->{Subject} );
+                lcmp( ($b->{$sortby}//''), ($a->{$sortby}//'') )
+                    or lcmp( $a->{Subject}, $b->{Subject} );
             };
         }
     }
