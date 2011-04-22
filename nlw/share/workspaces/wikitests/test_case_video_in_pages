@@ -40,7 +40,7 @@
 | click_ok | st-widget-savebutton |  |
 
 | *Comment* | Test Case: Video In Pages Check error |  |
-| wait_for_text_present_ok | is not a valid URL | 5000 |
+| wait_for_text_present_ok | is not a valid URL | 30000 |
 | wait_for_element_visible_ok | st-widget-video_url | 30000 |
 | wait_for_element_visible_ok | st-widget-savebutton | 30000 |
 | wait_for_element_visible_ok | st-widget-cancelbutton | 30000 |
@@ -55,7 +55,7 @@
 | wait_for_element_visible_ok | st-widget-cancelbutton | 30000 |
 | type_ok | st-widget-video_url | http://www.xndev.com/ |
 | click_ok | st-widget-savebutton |  |
-| wait_for_text_present_ok | Sorry | 5000 |
+| wait_for_text_present_ok | Sorry | 30000 |
 | text_like | //body | qr/Sorry, this URL is not hosted on any of our supported services \(GoogleVideo, SlideShare, Vimeo, YouTube\)/ism |
 | wait_for_element_visible_ok | st-widget-cancelbutton | 30000 |
 | click_ok | st-widget-cancelbutton |  |
