@@ -14,28 +14,28 @@
 | set | groupX | Xylophone%%start_time%% |
 
 | *Comment* | Test Case: Canadien Français (Groups) Create Groups |  |  |
-| create-group | %%groupAA%% | %%acct%% |
-| st-admin | set-permissions --g %%group_id%% --p self-join | have been changed to self-join |
+| create-group | %%groupAA%% | %%acct%% |  |
+| st-admin | set-permissions --g %%group_id%% --p self-join | have been changed to self-join |  |
 | set | groupaa_id | %%group_id%% |  |
 
-| create-group | %%groupA%% | %%acct%% |
-| st-admin | set-permissions --g %%group_id%% --p self-join | have been changed to self-join |
+| create-group | %%groupA%% | %%acct%% |  |
+| st-admin | set-permissions --g %%group_id%% --p self-join | have been changed to self-join |  |
 | set | groupa_id | %%group_id%% |  |
 
-| create-group | %%groupL%% | %%acct%% |
-| st-admin | set-permissions --g %%group_id%% --p self-join | have been changed to self-join |
+| create-group | %%groupL%% | %%acct%% |  |
+| st-admin | set-permissions --g %%group_id%% --p self-join | have been changed to self-join |  |
 | set | groupl_id | %%group_id%% |  |
 
-| create-group | %%groupM%% | %%acct%% |
-| st-admin | set-permissions --g %%group_id%% --p self-join | have been changed to self-join |
+| create-group | %%groupM%% | %%acct%% |  |
+| st-admin | set-permissions --g %%group_id%% --p self-join | have been changed to self-join |  |
 | set | groupm_id | %%group_id%% |  |
 
-| create-group | %%groupN%% | %%acct%% |
-| st-admin | set-permissions --g %%group_id%% --p self-join | have been changed to self-join |
+| create-group | %%groupN%% | %%acct%% |  |
+| st-admin | set-permissions --g %%group_id%% --p self-join | have been changed to self-join |  |
 | set | groupn_id | %%group_id%% |  |
 
-| create-group | %%groupX%% | %%acct%% |
-| st-admin | set-permissions --g %%group_id%% --p self-join | have been changed to self-join |
+| create-group | %%groupX%% | %%acct%% |  |
+| st-admin | set-permissions --g %%group_id%% --p self-join | have been changed to self-join |  |
 | set | groupx_id | %%group_id%% |  |
 
 | *Comment* | Test Case: Canadien Français (Groups) Test Sorting for Groups in Dropdown (TOD: How?) |  |
@@ -45,9 +45,10 @@
 | st-logoutin | %%user%% | %%password%% |
 | wait_for_element_present_ok | link=Group Directory | 30000 |
 | click_and_wait | link=Group Directory |  |
+| pause | 10000 |  |
 | wait_for_element_visible_ok | link=%%groupA%% | 30000 |
-| text_like | //body | qr/My Groups.+%%groupA%%.+%%groupL%%.+%%groupM%%.+%%groupN%%.+%%groupX%%.+All Available Groups/ |
-
+| pause | 10000 |  |
+| text_like | //body | qr/%%groupA%%.+%%groupL%%.+%%groupM%%.+%%groupN%%.+%%groupX%%/ |
 
 
 | *Comment* | Test Case: Canadien Français (Groups) Test Sorting for Groups-I-Belong-To in Groups Directory |  |
@@ -61,8 +62,10 @@
 | st-logoutin | %%user%% | %%password%% |
 | wait_for_element_present_ok | link=Group Directory | 30000 |
 | click_and_wait | link=Group Directory |  |
+| pause | 10000 |  |
 | wait_for_element_visible_ok | link=%%groupA%% | 30000 |
-| text_like | //body | qr/%%groupA%%.+%%groupL%%.+%%groupM%%.+%%groupN%%.+%%groupX%%/ |
+| pause | 10000 |  |
+| text_like | //body | qr/My Groups.+%%groupA%%.+%%groupL%%.+%%groupM%%.+%%groupN%%.+%%groupX%%.+All Available Groups/ |
 
 
 | *Comment* | Test Case: Canadien Français (Groups) TODO Test Sorting for Groups in Control Panel |  |

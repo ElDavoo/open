@@ -41,7 +41,7 @@
 | open_ok | /%%ws%% |  |
 | call | [st-tag-page] | tag_to_apply=%%tagM%% |
 | st-process-jobs |  |  |
-| pause | 30000 |  |  |
+| pause | 30000 |  |
 | open_ok | /%%ws%% |  |
 | call | [st-tag-page] | tag_to_apply=%%tagN%% |
 | st-process-jobs |  |  |
@@ -65,7 +65,7 @@
 | click_and_wait | link=All Tags |  |
 | wait_for_element_visible_ok | link=%%tagA%% | 30000 |
 | wait_for_element_visible_ok | link=%%tagL%% | 30000 |
-| text_like | //body | qr/%%tagAA%%.+%tagA%%.+%%tagL%%.+%%tagM%%.+%%tagN%%.+%%tagX%%/ |
+| text_like | //body | qr/%%tagAA%%.+%%tagA%%.+%%tagL%%.+%%tagM%%.+%%tagN%%.+%%tagX%%/ |
 
 | *Comment* | Test Case: Canadien Francais Tags Now Tag /me/ |  |  |
 | call | [st-tag-user] | find_user_short=%%user_short%% | tag_to_apply=%%tagX%% |
@@ -77,7 +77,7 @@
 | call | [st-tag-user] | find_user_short=%%user_short%% | tag_to_apply=%%tagN%% |
 | pause | 3000 |  |
 | call | [st-tag-user] | find_user_short=%%user_short%% | tag_to_apply=%%tagA%% |
-| pause | 5000 |  |
+| pause | 3000 |  |
 | call | [st-tag-user] | find_user_short=%%user_short%% | tag_to_apply=%%tagAA%% |
 | pause | 3000 |  |
 
@@ -86,7 +86,7 @@
 | wait_for_element_visible_ok | link=%%user_short%% | 30000 |
 | click_and_wait | link=%%user_short%% |  |
 | wait_for_element_visible_ok | link=%%tagA%% | 30000 |
-| text_like | //body | qr/%%tagAA%%.+%%tagA%%.+%%tagL%%.+%%tagM%%.+%%tagN%%.+%%tagX%%/ |
+| text_like | //body | qr/%%tagAA%%.*%%tagA%%.*%%tagL%%.*%%tagM%%.*%%tagN%%.*%%tagX%%/ |
 
 | *Comment* | Test Case: Canadien Francais Tags TEARDOWN |  |
 | st-admin | delete-workspace --no-export -w %%ws%% | has been deleted |

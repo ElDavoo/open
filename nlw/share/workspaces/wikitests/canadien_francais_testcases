@@ -3,8 +3,8 @@
 * [Test Case: Canadien Francais (Users)]
 * [Test Case: Canadien Francais (Workspaces)]
 * [Test Case: Canadien Francais (Accounts)]
-* [Test Case: Canadien Francais (Groups)]
 * [Test Case: Canadien Francais (Pages)]
 * [Test Case: Canadien Francais (Tags)]
 
+Looks like it's passing to matt but selenium can't 'see' the links: [Test Case: Canadien Francais (Groups)]
 TODO [Test Case: Canadien Français (User Typeahead)]

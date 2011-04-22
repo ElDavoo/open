@@ -66,7 +66,7 @@
 
 
 | *Comment* | Test Case: Canadien Francais (Users) Search Results |  |
-| open_ok | /?action=people |
+| open_ok | /?action=people |  |
 | wait_for_element_visible_ok | st-search-action | 30000 |
 | wait_for_element_visible_ok | st-search-term | 30000 |
 | wait_for_element_visible_ok | st-search-submit | 30000 |
@@ -99,6 +99,9 @@
 | call | [st-tag-user] | find_user_short=%%userB_short%% | tag_to_apply=%%tagme%% |
 | pause | 2000 |  |  |
 | call | [st-tag-user] | find_user_short=%%userL_short%% | tag_to_apply=%%tagme%% |
+| pause | 2000 |  |  |
+
+| call | [st-tag-user] | find_user_short=%%userE_short%% | tag_to_apply=%%tagme%% |
 | pause | 2000 |  |  |
 
 | call | [st-tag-user] | find_user_short=%%userP_short%% | tag_to_apply=%%tagme%% |
