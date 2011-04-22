@@ -48,7 +48,7 @@
 
 | *Comment* | Test Case: Canadien Francais (Workspaces) - Test Sorting in workspace_listall |  |
 | open_ok | /?action=workspaces_listall |  |
-| wait_for_element_visible_ok | link=%%wsAA%% | 30000 |
+| wait_for_text_present_ok | %%wsAA%% | 30000 |
 | text_like | //body | qr/%%wsAA%%.+%%wsA%%.+%%wsB%%.+%%wsE%%.+%%wsN%%.+%%wsX%%/ |
 
 | *Comment* | Test Case: Canadien Francais (Workspaces) - Test Display in Workspace Widget in Dashboard |  |
@@ -61,10 +61,11 @@
 
 
 | *Comment* | Test Case: Canadien Francais (Workspaces) Teardown |  |
-| st-admin | delete-workspace --no-export --w %%wsA%% | has been deleted |
-| st-admin | delete-workspace --no-export --w %%wsL%% | has been deleted |
-| st-admin | delete-workspace --no-export --w %%wsM%% | has been deleted |
-| st-admin | delete-workspace --no-export --w %%wsN%% | has been deleted |
-| st-admin | delete-workspace --no-export --w %%wsX%% | has been deleted |
+| st-admin | delete-workspace --no-export --w %%wsAname%% | has been deleted |
+| st-admin | delete-workspace --no-export --w %%wsAAname%% | has been deleted |
+| st-admin | delete-workspace --no-export --w %%wsBname%% | has been deleted |
+| st-admin | delete-workspace --no-export --w %%wsEname%% | has been deleted |
+| st-admin | delete-workspace --no-export --w %%wsNname%% | has been deleted |
+| st-admin | delete-workspace --no-export --w %%wsXname%% | has been deleted |
 
 | *Comment* | Test Case: Canadien Francais (Workspaces) COMPLETED |  |
