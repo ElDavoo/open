@@ -58,10 +58,9 @@
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
-| wait_for_text_present_ok | Group Type | 30000 |
-| text_like | //body | qr/Group Type.+Private/ism |
-| text_unlike | //body | qr/Group Type.+Self-join/ism |
-| wait_for_element_visible_ok | link=(Edit) | 30000 |
+| wait_for_text_present_ok | %%self_join_grp%% | 30000 |
+| text_like | //body | (private) |
+| text_unlike | //body | (self-join) |
 | select-frame | relative=parent |  |
 
 | *Comment* | Group Home at Different Levels do not click Edit, wrong frame level |  |
@@ -95,8 +94,8 @@ FOR SOME BIZARRE REASON, THIS create-group OPENS A NEW WINDOW.
 
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| wait_for_text_present_ok | Group Type | 10000 |
-| text_like | //body | qr/Group Type.+Self-join/ism |
+| wait_for_text_present_ok | %%self_join_grp%% | 10000 |
+| text_like | //body | (self-join) |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Group Home at Different Levels for self-join group - as group member |  |
