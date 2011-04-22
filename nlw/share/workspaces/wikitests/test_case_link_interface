@@ -1,6 +1,5 @@
 | *Comment* | STARTING Test Case: Link Interface |  |
 
-
 | *Comment* | Test Case: Link Interface create page to be linked to |  |
 | open_ok | /%%workspace%%/index.cgi?action=new_page |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
@@ -63,19 +62,22 @@
 | click_ok | st-widget-link-savebutton |  |
 
 | *Comment* | Test Case: Link Interface pause is necessary for the error to appear |  |
-| pause | 10000 |  |
+| pause | 5000 |  |
 | text_like | That workspace does not exist |  |
 | wait_for_element_visible_ok | st-widget-link-cancelbutton | 30000 |
 | click_ok | st-widget-link-cancelbutton |  |
 | wait_for_element_not_visible_ok | add-wiki-link | 30000 |
 
-| *Comment* | Test Case: Link Interface try setting the focus |  |
+| *Comment* | Test Case: Link Interface get a fresh page for Web Link |  |
+| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
+| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
+| type_ok | st-newpage-pagename-edit | Link Interface Web Link %%start_time%% |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | link=Rich Text | 30000 |
 | click_ok | link=Rich Text |  |
 | pause | 5000 |  |
-| include | [Test Case: Link Interface Web Link] | Only runs on FF3 |
+| include | [Test Case: Link Interface Web Link] |  |
 
 | *Comment* | Test Case: Link Interface make a section link |  |
 | *Comment* | Insert some required whitespace for the section link |  |
@@ -111,5 +113,6 @@
 | st-process-jobs |  |  |
 | st-admin | purge-page --w %%workspace%% --page link_interface_linkme_%%start_time%% | was purged |
 | st-admin | purge-page --w %%workspace%% --page link_interface_%%start_time%% | was purged |
+| st-admin | purge-page --w %%workspace%% --page link_interface_web_link_%%start_time%% | was purged |
 
 | *Comment* | Text Case: Link Interface COMPLETED |  |
