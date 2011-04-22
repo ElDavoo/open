@@ -87,7 +87,6 @@
 | click_and_wait | link=%%user_short%% |  |
 | wait_for_element_visible_ok | link=%%tagA%% | 30000 |
 | text_like | //body | qr/%%tagAA%%.+%%tagA%%.+%%tagL%%.+%%tagM%%.+%%tagN%%.+%%tagX%%/ |
-| pause | 30000 |  |
 
 | *Comment* | Test Case: Canadien Francais Tags TEARDOWN |  |
 | st-admin | delete-workspace --no-export -w %%ws%% | has been deleted |
