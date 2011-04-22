@@ -809,9 +809,20 @@ sub load_breadcrumbs {
         my $user_id = $self->get_user_id($user_dir);
         next unless $user_id;
 
-        my @page_ids =
-            map { Socialtext::String::title_to_id($_) }
-            split "\n", Socialtext::File::get_contents_utf8($trail);
+        # Work around entries with non-utf8 content. Don't try to work around
+        # it because it's bad content to begin with.
+        my @page_ids;
+        my $content = Socialtext::File::get_contents_utf8($trail);
+        for my $page (split(/\n/, $content)) {
+            try {
+                # title to id fails on non-utf8 chars
+                push @page_ids, Socialtext::String::title_to_id($page);
+            }
+            catch {
+                warn "skipping breadcrumb in ". $self->{workspace}->name
+                    .", $user_dir, not utf8 data\n";
+            };
+        }
 
         # The .trail files do not contain dates, so we will sythesize dates to
         # provide order. We will start at midnight of today and add a second
