@@ -527,6 +527,10 @@ msgstr "群組為"
 msgid "activities.you"
 msgstr "您"
 
+#: lib/Socialtext/Pluggable/Plugin/Agile.pm:110
+msgid "agile.clear-history"
+msgstr "Clear Agile History"
+
 #: share/plugin/widgets/share/javascript/template/activities/ago.tt2:7
 msgid "ago.1day"
 msgstr "1 天前"
@@ -580,6 +584,11 @@ msgstr "%1 分鐘前"
 #: share/plugin/analytics/template/cp_google_analytics:6
 msgid "analytics.id:"
 msgstr "Google Analytics 帳號"
+
+#. ($data->{ga_domains})
+#: lib/Socialtext/Pluggable/Plugin/Analytics.pm:31
+msgid "analytics.invalid-domains-setting=data"
+msgstr "Invalid domains setting: %1"
 
 #: share/plugin/analytics/template/cp_google_analytics:29
 msgid "analytics.mask"
@@ -2606,6 +2615,10 @@ msgstr "開放輸出用戶資料"
 msgid "control.enable-invitation-to-group"
 msgstr "開放邀請加入群組"
 
+#: share/plugin/control/template/control/report.html:108
+msgid "control.ending-on-midnight-of"
+msgstr "ending on midnight of"
+
 #. (exportable_accounts)
 #: share/plugin/control/template/control/accounts.html:24
 msgid "control.export-user-for-selected-accounts=count"
@@ -2685,6 +2698,10 @@ msgstr "名字："
 #: share/plugin/control/template/control/user.html:103
 msgid "control.for-cac-authentication"
 msgstr "（為 CAC 認証之用）"
+
+#: share/plugin/control/template/control/report.html:101
+msgid "control.for-report-duration"
+msgstr "For"
 
 #: share/plugin/control/template/control/user.html:103
 msgid "control.for-use-with-cac-authentication"
@@ -2858,6 +2875,15 @@ msgstr "群組名稱："
 #: share/plugin/control/template/control/accounts.html:12
 msgid "control.name:"
 msgstr "名稱："
+
+#. ($acct->name)
+#: lib/Socialtext/Handler/ControlPanel.pm:1953
+msgid "control.new-users-in=account"
+msgstr "New Users in %1"
+
+#: share/plugin/control/template/control/account.html:36
+msgid "control.new-users-report"
+msgstr "New Users Report"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:2190
 msgid "control.new-wiki"
@@ -3116,6 +3142,11 @@ msgstr "Socialtext 管理設定"
 #: share/plugin/control/template/control/wrapper:104 share/plugin/control/template/control/wrapper:19
 msgid "control.socialtext-control-panel"
 msgstr "Socialtext 控制台"
+
+#. (u.driver_name)
+#: share/plugin/control/template/control/user.html:47
+msgid "control.source=driver-name"
+msgstr "Source: %1"
 
 msgid "control.start-typing-account-name"
 msgstr "開始鍵入一個帳戶名稱"
@@ -7746,6 +7777,10 @@ msgstr "移除"
 msgid "groups.reset-photo"
 msgstr "重置照片"
 
+#: share/plugin/groups/template/group_links:24
+msgid "groups.revert-to-default"
+msgstr "Revert to Default…"
+
 #: share/plugin/groups/share/widgets/membership/widget.js:425
 msgid "groups.role-admin"
 msgstr "管理員"
@@ -7912,6 +7947,58 @@ msgstr "工作區"
 
 msgid "heading.workspaces"
 msgstr "工作區"
+
+#: share/skin/s3/javascript/im.js:54
+msgid "im.away"
+msgstr "Away"
+
+#: share/skin/s3/javascript/im.js:56
+msgid "im.be-right-back"
+msgstr "Be right back"
+
+#: share/skin/s3/javascript/im.js:55
+msgid "im.busy"
+msgstr "Busy"
+
+#: share/skin/s3/javascript/im.js:61
+msgid "im.do-not-disturb"
+msgstr "Do not disturb"
+
+#: share/skin/s3/javascript/im.js:62
+msgid "im.do-not-disturb-but-allowed"
+msgstr "Do not disturb but allowed"
+
+#: share/skin/s3/javascript/im.js:63
+msgid "im.idle-online"
+msgstr "Idle online"
+
+#: share/skin/s3/javascript/im.js:58
+msgid "im.lunch"
+msgstr "Lunch"
+
+#: share/skin/s3/javascript/im.js:59
+msgid "im.meeting"
+msgstr "Meeting"
+
+#: share/skin/s3/javascript/im.js:53
+msgid "im.offline"
+msgstr "Offline"
+
+#: share/skin/s3/javascript/im.js:57
+msgid "im.on-phone"
+msgstr "On the phone"
+
+#: share/skin/s3/javascript/im.js:52
+msgid "im.online"
+msgstr "Online"
+
+#: share/skin/s3/javascript/im.js:60
+msgid "im.out-of-office"
+msgstr "Out of office"
+
+#: share/skin/s3/javascript/im.js:70
+msgid "im.requires-internet-explorer"
+msgstr "(requires Internet Explorer)"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:32
 msgid "image.upload"
@@ -9124,6 +9211,10 @@ msgstr "註冊"
 msgid "login.remember-me"
 msgstr "在這台電腦上保持登入。"
 
+#: share/template/authen/element/login_form:25
+msgid "login.remember-me-on-this-device"
+msgstr "Remember me on this device"
+
 #: share/template/authen/forgot_password.html:3
 msgid "login.socialtext-password-help"
 msgstr "Socialtext 密碼支援"
@@ -9981,6 +10072,10 @@ msgstr "人員名單"
 msgid "people.edit-profile"
 msgstr "(編輯)"
 
+#: share/plugin/people/template/lite/profile.html:111
+msgid "people.employee=count"
+msgstr "%*(%1,Employee)"
+
 #: share/plugin/people/template/lite/profile.html:15
 msgid "people.follow"
 msgstr "關注"
@@ -9988,6 +10083,11 @@ msgstr "關注"
 #: share/plugin/people/template/profile_hcard:38
 msgid "people.mobile:"
 msgstr "移動電話："
+
+#. (peers.size)
+#: share/plugin/people/template/lite/profile.html:103
+msgid "people.peer=count"
+msgstr "%*(%1,Peer)"
 
 #: share/plugin/people/template/lite/profile.html:173
 msgid "people.private-message-send"
@@ -10275,6 +10375,10 @@ msgstr "此人沒有標籤。點選<b>新增標籤</b>來新增一個。"
 #: share/plugin/people/share/widgets/profile_tags/widget.js:11
 msgid "profile.no-tags-for-you"
 msgstr "您沒有標籤。點選<b>新增標籤</b>來新增一個。"
+
+#: share/plugin/people/template/profile_hcard:59
+msgid "profile.office-communicator:"
+msgstr "Office Communicator:"
 
 #: share/plugin/people/share/widgets/profile/widget.html:28 share/plugin/people/share/widgets/profile_edit/widget.html:49 share/plugin/people/template/lite/profile.html:95
 msgid "profile.organization"
@@ -10647,6 +10751,10 @@ msgstr "各工作區的編輯次數"
 msgid "reports.example-actions-today-1month-txt"
 msgstr "範例：/actions/today/-1month.txt"
 
+#: ../socialtext-reports/template/usage_by.tmpl:16 ../socialtext-reports/template/usage_by_workspace.tmpl:16
+msgid "reports.from-through=start,end"
+msgstr "From %1 through %2"
+
 msgid "reports.generate!"
 msgstr "制表！"
 
@@ -10740,6 +10848,10 @@ msgstr "標準差"
 msgid "reports.submit"
 msgstr "送出"
 
+#: ../socialtext-reports/template/new_users.tmpl:24
+msgid "reports.time-of-first-action"
+msgstr "Time of First Action"
+
 msgid "reports.total-members-current:"
 msgstr "完整成員（目前）："
 
@@ -10772,6 +10884,10 @@ msgstr "按帳戶顯示用量"
 
 msgid "reports.usage-by-wiki"
 msgstr "按工作區顯示用量"
+
+#: ../socialtext-reports/template/new_users.tmpl:23
+msgid "reports.user"
+msgstr "User"
 
 msgid "reports.username"
 msgstr "用戶名"
@@ -12236,6 +12352,10 @@ msgstr "報出個未來"
 msgid "title.workspaces"
 msgstr "工作區"
 
+#: lib/Socialtext/Pluggable/Plugin/Twilio.pm:72
+msgid "twilio.changes-saved"
+msgstr "Changes Saved"
+
 #: share/plugin/twilio/template/element/settings/twilio_settings_section:31
 msgid "twilio.edit-profile"
 msgstr "點選這裡編輯您的個人資料。"
@@ -12253,6 +12373,19 @@ msgstr "管理電話服務"
 #: share/plugin/twilio/template/element/settings/twilio_settings_section:28
 msgid "twilio.mobile-phone-required"
 msgstr "請新增您的手機號碼到您的個人資料以使用此功能。"
+
+#: lib/Socialtext/Pluggable/Plugin/Twilio.pm:119
+msgid "twilio.phone-services"
+msgstr "Phone Services"
+
+#: lib/Socialtext/Pluggable/Plugin/Twilio.pm:89
+msgid "twilio.pick-one"
+msgstr "Pick one"
+
+#. ($sender->best_full_name)
+#: lib/Socialtext/Job/TwilioNotify.pm:55
+msgid "twilio.private-message-from=sender"
+msgstr "Private message from %1"
 
 msgid "twilio.send-mentions-as-sms?"
 msgstr "以手機簡訊（SMS）接收提及您的訊息？"
@@ -13125,6 +13258,10 @@ msgstr "工具庫"
 #: share/plugin/widgets/template/view/gallery:34
 msgid "widgets.gallery-switch=account:"
 msgstr "這是『%1』賬號的工具庫。前往帳戶："
+
+#: share/plugin/widgets/share/javascript/gadgets.js:677
+msgid "widgets.in-layout-mode-click-save-or-cancel"
+msgstr "You are in layout mode. Click <b>Save</b> to keep your changes, <b>Cancel</b> to discard them."
 
 #: share/plugin/widgets/share/javascript/template/activities/widget.tt2:2 share/plugin/widgets/template/data/events/widget:2
 msgid "widgets.install-this"
