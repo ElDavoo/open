@@ -51,6 +51,12 @@
 | wait_for_text_present_ok | %%wsAA%% | 30000 |
 | text_like | //body | qr/%%wsAA%%.+%%wsA%%.+%%wsB%%.+%%wsE%%.+%%wsN%%.+%%wsX%%/ |
 
+| *Comment* | Test Case: Canadien Francais (Workspaces) - Test Sorting in mobile workspace list |  |
+| st-logoutin | %%user%% | %%password%% |
+| open_ok | /m/workspace_list |  |
+| wait_for_text_present_ok | %%wsAA%% | 30000 |
+| text_like | //body | qr/%%wsAA%%.*%%wsA%%.*%%wsB%%.*%%wsE%%.*%%wsN%%.*%%wsX%%/ |
+
 | *Comment* | Test Case: Canadien Francais (Workspaces) - Test Display in Workspace Widget in Dashboard |  |
 | open_ok | /st/dashboard |  |
 | wait_for_element_visible_ok | link=Add Widget | 30000 |
