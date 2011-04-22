@@ -1544,7 +1544,7 @@
 "profile.no-shared-groups":"\u00ABYou share no groups with this person.\u00BB",
 "profile.no-tags":"\u00ABThis person has no tags. Click <b>Add tag</b> to add one now.\u00BB",
 "profile.no-tags-for-you":"\u00ABYou have no tags. Use <b>Add Tag</b> to add one now.\u00BB",
-"profile.office-communicator:":"\u00ABOffice Communicator:\u00BB",
+"profile.office-communicator:":"\u00ABOffice Communicator&trade;:\u00BB",
 "profile.organization":"\u00ABOrganization\u00BB",
 "profile.personal:":"\u00ABPersonal:\u00BB",
 "profile.phone":"\u00ABPhone\u00BB",

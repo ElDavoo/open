@@ -1544,7 +1544,7 @@
 "profile.no-shared-groups":"Zzz zzzzz zz zzzzzz zzzz zzzz zzzzzz.",
 "profile.no-tags":"Zzzz zzzzzz zzz zz zzzz. Zzzzz <b>Zzz zzz</b> zz zzz zzz zzz.",
 "profile.no-tags-for-you":"Zzz zzzz zz zzzz. Zzz <b>Zzz Zzz</b> zz zzz zzz zzz.",
-"profile.office-communicator:":"Zzzzzz Zzzzzzzzzzzz:",
+"profile.office-communicator:":"Zzzzzz Zzzzzzzzzzzz&trade;:",
 "profile.organization":"Zzzzzzzzzzzz",
 "profile.personal:":"Zzzzzzzz:",
 "profile.phone":"Zzzzz",

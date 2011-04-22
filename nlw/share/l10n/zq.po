@@ -10800,7 +10800,7 @@ msgstr "«You have no tags. Use <b>Add Tag</b> to add one now.»"
 
 #: share/plugin/people/template/profile_hcard:59
 msgid "profile.office-communicator:"
-msgstr "«Office Communicator:»"
+msgstr "«Office Communicator&trade;:»"
 
 #: share/plugin/people/share/widgets/profile/widget.html:28 share/plugin/people/share/widgets/profile_edit/widget.html:49 share/plugin/people/template/lite/profile.html:95
 msgid "profile.organization"

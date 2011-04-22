@@ -10800,7 +10800,7 @@ msgstr "Zzz zzzz zz zzzz. Zzz <b>Zzz Zzz</b> zz zzz zzz zzz."
 
 #: share/plugin/people/template/profile_hcard:59
 msgid "profile.office-communicator:"
-msgstr "Zzzzzz Zzzzzzzzzzzz:"
+msgstr "Zzzzzz Zzzzzzzzzzzz&trade;:"
 
 #: share/plugin/people/share/widgets/profile/widget.html:28 share/plugin/people/share/widgets/profile_edit/widget.html:49 share/plugin/people/template/lite/profile.html:95
 msgid "profile.organization"

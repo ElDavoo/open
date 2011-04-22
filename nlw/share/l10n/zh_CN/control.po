@@ -476,6 +476,9 @@ msgstr "开放输出用户数据"
 msgid "control.enable-invitation-to-group"
 msgstr "开放邀请加入群组"
 
+msgid "control.ending-on-midnight-of"
+msgstr "至此日凌晨为止"
+
 #. (exportable_accounts)
 #: share/plugin/control/template/control/accounts.html:24
 msgid "control.export-user-for-selected-accounts=count"
@@ -555,6 +558,9 @@ msgstr "名字："
 #: share/plugin/control/template/control/user.html:103
 msgid "control.for-cac-authentication"
 msgstr "（为 CAC 认证之用）"
+
+msgid "control.for-report-duration"
+msgstr "对于"
 
 #: share/plugin/control/template/control/user.html:103
 msgid "control.for-use-with-cac-authentication"
@@ -728,6 +734,9 @@ msgstr "群组名称："
 #: share/plugin/control/template/control/accounts.html:12
 msgid "control.name:"
 msgstr "名称："
+
+msgid "control.new-users-report"
+msgstr "新用户报告"
 
 #: share/plugin/control/template/control/groups.html:92
 msgid "control.permission-set"
@@ -982,6 +991,9 @@ msgstr "Socialtext 管理设置"
 #: share/plugin/control/template/control/wrapper:104 share/plugin/control/template/control/wrapper:19
 msgid "control.socialtext-control-panel"
 msgstr "Socialtext 控制台"
+
+msgid "control.source=driver-name"
+msgstr "来源：%1"
 
 msgid "control.start-typing-account-name"
 msgstr "开始键入一个帐户名称"
