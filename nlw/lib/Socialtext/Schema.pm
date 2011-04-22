@@ -443,7 +443,29 @@ sub createdb {
     disconnect_dbh();
     eval {
         my $sudo = _sudo('postgres');
-        $self->_db_shell_run("$sudo createdb --locale en_US.UTF-8 -T template0 -E UTF8 -O $c{user} $c{db_name}");
+        $self->_db_shell_run("$sudo createdb -T template0 -E UTF8 -O $c{user} $c{db_name}");
+    };
+    if (my $e = $@) {
+        die $e;
+    }
+    $self->_createlang;
+}
+
+sub reset_db_locale {
+    my $self = shift;
+    my $locale = shift or die "locale needed";
+
+    $locale =~ s/^[a-zA-Z]\K-/_/; # en-US => en_US
+    $locale .= ".UTF-8" unless $locale =~ /\./ or $locale eq 'C'; # en_US => en_US.UTF-8
+
+    my %c = $self->connect_params();
+    disconnect_dbh();
+    eval {
+        my $sudo = _sudo('postgres');
+        $self->_db_shell_run("$sudo createdb -l $locale -T template0 -E UTF8 -O $c{user} $c{db_name}_$$");
+        $self->_db_shell_run("$sudo pg_dump $c{db_name} | $sudo psql $c{db_name}_$$");
+        $self->_db_shell_run("$sudo dropdb $c{db_name}");
+        $self->_db_shell_run(qq[$sudo psql -c 'ALTER DATABASE "$c{db_name}_$$" RENAME TO "$c{db_name}";' postgres $c{user}]);
     };
     if (my $e = $@) {
         die $e;

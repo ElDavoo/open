@@ -7,6 +7,7 @@
 # '-p' option will _not_ start up nlw in this script
 # '-h' option will import the help-en wiki
 # '-s' option will import staging users and signals
+# '-C' option will use "C" as the database locale (default is "en_US.UTF-8"
 
 HELPEN=0
 FIXTURE='ALL'
@@ -15,7 +16,8 @@ UPDATE_WIDGETS=1
 MINIFY_JS=1
 CONTEXTUAL=0
 STAGING=0
-while getopts "jhmbpwsc" OPT; do
+DATABASE_LOCALE=en_US.UTF-8
+while getopts "jhmbpwscC" OPT; do
   case $OPT in
     h) HELPEN=1;;
     m) FIXTURE=admin_no_pages;;
@@ -24,6 +26,7 @@ while getopts "jhmbpwsc" OPT; do
     p) PAUSE=1;;
     w) UPDATE_WIDGETS=0;;
     c) CONTEXTUAL=1;;
+    C) DATABASE_LOCALE=C;;
   esac
 done
 
@@ -86,6 +89,7 @@ rm -f etc/socialtext/db/cache.*.sql
 dev-bin/make-test-fixture --home_dir $HOME --fixture clean
 dev-bin/make-test-fixture --home_dir $HOME --fixture base_config
 dev-bin/make-test-fixture --home_dir $HOME --fixture $FIXTURE
+[ $DATABASE_LOCALE != 'C' ] && bin/st-db reset_db_locale $DATABASE_LOCALE
 [ $HELPEN == 1 ] && dev-bin/make-test-fixture --home_dir $HOME --fixture help
 [ $CONTEXTUAL == 1 ] && dev-bin/build-contextual-account --name ContextualAccount
 
