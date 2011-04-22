@@ -37,25 +37,30 @@
 | st-admin | create-workspace --name %%wsXname%% --title %%wsX%% | was created |
 | st-admin | add-member --e %%user%% --w %%wsXname%% | now has the role of |
 
-| *Comment* | Test Case: Canadien Francais (Workspaces)- Test Sorting in Global Nav Dropdown (TODO - How?) |  |
+| *Comment* | Test Case: Canadien Francais (Workspaces)- Test Sorting in Global Nav Dropdown |  |
+| st-logoutin | %%user%% | %%password%% |
+| open_ok | /?action=workspace_list |  |
+| wait_for_text_present_ok | %%wsAA%% | 30000 |
+| text_like | //body | qr/All My Workspaces.*%%wsAA%%.+%%wsA%%.+%%wsB%%.+%%wsE%%.+%%wsN%%.+%%wsX%%.*Explore/ |
+
 
 | *Comment* | Test Case: Canadien Francais (Workspaces) - Test Sorting in workspace_list |  |
 | st-logoutin | %%user%% | %%password%% |
 | open_ok | /?action=workspace_list |  |
 | wait_for_text_present_ok | %%wsAA%% | 30000 |
-| text_like | //body | qr/%%wsAA%%.+%%wsA%%.+%%wsB%%.+%%wsE%%.+%%wsN%%.+%%wsX%%/ |
+| text_like | //body | qr/Workspaces you belong to.*%%wsAA%%.+%%wsA%%.+%%wsB%%.+%%wsE%%.+%%wsN%%.+%%wsX%%/ |
 
 
 | *Comment* | Test Case: Canadien Francais (Workspaces) - Test Sorting in workspace_listall |  |
 | open_ok | /?action=workspaces_listall |  |
 | wait_for_text_present_ok | %%wsAA%% | 30000 |
-| text_like | //body | qr/%%wsAA%%.+%%wsA%%.+%%wsB%%.+%%wsE%%.+%%wsN%%.+%%wsX%%/ |
+| text_like | //body | qr/Workspace Title.*%%wsAA%%.+%%wsA%%.+%%wsB%%.+%%wsE%%.+%%wsN%%.+%%wsX%%/ |
 
 | *Comment* | Test Case: Canadien Francais (Workspaces) - Test Sorting in mobile workspace list |  |
 | st-logoutin | %%user%% | %%password%% |
 | open_ok | /m/workspace_list |  |
 | wait_for_text_present_ok | %%wsAA%% | 30000 |
-| text_like | //body | qr/%%wsAA%%.*%%wsA%%.*%%wsB%%.*%%wsE%%.*%%wsN%%.*%%wsX%%/ |
+| text_like | //body | qr/Hello.*%%wsAA%%.*%%wsA%%.*%%wsB%%.*%%wsE%%.+%%wsN%%.+%%wsX%%/ |
 
 | *Comment* | Test Case: Canadien Francais (Workspaces) - Test Display in Workspace Widget in Dashboard |  |
 | open_ok | /st/dashboard |  |
@@ -63,7 +68,7 @@
 | click_and_wait | link=Add Widget |  |
 | wait_for_element_visible_ok | gallery-widget-Workspaces | 30000 |
 | click_and_wait | gallery-widget-Workspaces |  |
-| text_like | //body | qr/%%wsAA%%.+%%wsA%%.+%%wsB%%.+%%wsE%%.+%%wsN%%.+%%wsX%%/ |
+| text_like | //body | qr/%%wsAA%%.+%%wsA%%.+%%wsB%%.+%%wsE%%.+%%wsN%%.+%%wsX%%(?!Workspace)/ |
 
 
 | *Comment* | Test Case: Canadien Francais (Workspaces) Teardown |  |
