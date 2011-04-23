@@ -464,9 +464,13 @@ sub reset_db_locale {
         my $sudo = _sudo('postgres');
         $self->_db_shell_run("$sudo createdb -l $locale -T template0 -E UTF8 -O $c{user} $c{db_name}_$$");
         $self->_db_shell_run("$sudo pg_dump $c{db_name} | $sudo psql $c{db_name}_$$");
-        $self->_db_shell_run("$sudo /etc/init.d/postgresql restart");
+        my $acting_user = $c{user};
+        if ($> == 0) {
+            $self->_db_shell_run("$sudo /etc/init.d/postgresql restart");
+            $acting_user = 'postgres';
+        }
         $self->_db_shell_run("$sudo dropdb $c{db_name}");
-        $self->_db_shell_run(qq[$sudo psql -c 'ALTER DATABASE "$c{db_name}_$$" RENAME TO "$c{db_name}";' postgres postgres]);
+        $self->_db_shell_run(qq[$sudo psql -c 'ALTER DATABASE "$c{db_name}_$$" RENAME TO "$c{db_name}";' postgres $acting_user]);
     };
     if (my $e = $@) {
         die $e;
