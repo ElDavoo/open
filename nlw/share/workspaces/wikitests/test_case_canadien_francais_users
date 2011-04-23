@@ -54,6 +54,8 @@
 | st-admin | set-user-profile --email %%userX%% preferred_name %%userX_short%% | Profile field 'preferred_name' set to |
 | st-admin | set-user-names --e %%userX%% --l "Smith%%userX_short%%" | updated |
 
+| st-process-jobs |  |  |  |
+
 | *Comment* | Test Case: Canadien Francais (Users) Test Sorting for Users |  |
 | st-logoutin | %%userA%% | %%password%% |
 | wait_for_element_present_ok | link=People Directory |  |
