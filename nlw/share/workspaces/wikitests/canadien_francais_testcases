@@ -5,6 +5,7 @@
 * [Test Case: Canadien Francais (Accounts)]
 * [Test Case: Canadien Francais (Pages)]
 * [Test Case: Canadien Francais (Tags)]
+* [Test Case: Canadien Francais (Groups)]
 
-Looks like it's passing to matt but selenium can't 'see' the links: [Test Case: Canadien Francais (Groups)]
+Looks like it's passing to matt but selenium can't 'see' the links:
 TODO [Test Case: Canadien Français (User Typeahead)]
