@@ -38,8 +38,6 @@ sub gadget_vars {
         $overrides{$key} = $val;
     }
 
-    use Data::Dump 'dump'; dump \%overrides;
-
     my $gadget = Socialtext::Gadgets::Gadget->Fetch(src => $src);
     my $preferences = $gadget->preferences;
     for my $pref (@$preferences) {
@@ -57,8 +55,6 @@ sub gadget_vars {
         view => 'page',
         overrides => \%overrides,
     );
-
-    dump $preferences;
 
     my $width = $overrides{__width__} // 600;
     $width .= "px" if $width =~ /^\d+$/;
