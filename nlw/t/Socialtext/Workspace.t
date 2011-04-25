@@ -1,7 +1,7 @@
 #!perl
 # @COPYRIGHT@
 use mocked qw(Socialtext::l10n system_locale); # Has to come firstest.
-use Test::Socialtext tests => 112;
+use Test::Socialtext tests => 114;
 use Test::Socialtext::Fatal;
 use Test::Differences;
 use strict;
@@ -441,6 +441,35 @@ Clone_from_workspace: {
     like $cloned_title_page->content(), qr/There are no pages/, 
         'New workspace inherits the homepage.';
 
+}
+
+clone_workspace_pages: {
+    my $user = create_test_user();
+    my $dest = create_test_workspace();
+    my $template = create_test_workspace();
+
+    my $hub = new_hub($template->name, $user->username);
+    my $keep = $hub->pages->new_from_name('some page to copy');
+    $hub->pages->current->create(
+        content => 'nothing special',
+        creator => $user,
+        title => 'some_page_to_copy'
+    );
+
+    my $toss = $hub->pages->new_from_name('some workspace usage 2011 04 23 past week');
+    $hub->pages->current->create(
+        content => 'lotsa usage',
+        creator => $user,
+        title => 'some_workspace_usage_2011_04_23_past_week',
+    );
+
+    $dest->clone_workspace_pages($template->name);
+
+    $hub->current_workspace($dest);
+    my @pages = map { $_->page_id } $hub->pages->all();
+
+    is scalar(@pages), 1, 'destination workspace has one page';
+    is $pages[0], 'some_page_to_copy', 'copied the correct page';
 }
 
 NON_ASCII_WS_NAME: {

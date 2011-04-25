@@ -293,7 +293,8 @@ sub clone_workspace_pages {
 
     my $ws = Socialtext::Workspace->new( name => $ws_name ) || return;
     my $clone_hub = $self->_hub_for_workspace( $ws_name );
-    my @pages = $clone_hub->pages->all();
+    my @pages =  grep { $_->page_id !~ /_workspace_usage_.+_past_week$/ }
+        $clone_hub->pages->all();
 
     my ( $main, $hub ) = $self->_main_and_hub();
     my $homepage_id = $hub->pages->new_from_name( $ws->title )->id;
