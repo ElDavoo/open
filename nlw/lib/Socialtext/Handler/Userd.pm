@@ -109,8 +109,8 @@ worker_function worker_extract_creds => sub {
         my $e = $_;
         st_log()->error('when trying to extract creds: '.$e);
         return {
-            code  => 500,
-            body => {error => $@},
+            code => 500,
+            body => { error => $e },
         };
     };
     return { code => $code, body => $creds };
