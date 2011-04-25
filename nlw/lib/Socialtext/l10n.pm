@@ -1,6 +1,6 @@
 package Socialtext::l10n;
 # @COPYRIGHT@
-use strict;
+use 5.12.0;
 use warnings;
 use Scalar::Defer qw(defer force);
 use base 'Exporter';
@@ -30,6 +30,7 @@ Socialtext::l10n - Provides localization functions
 
     my $deferred = __('wiki.welcome');   # deferred loc()
     loc_lang('fr');                      # set the locale
+    loc_lang();                          # get the current locale
     is loc('wiki.welcome'), 'Bienvenue'; # find localized text
     is $deferred, 'Bienvenue';           # this also works
 
@@ -47,9 +48,10 @@ See Locale::Maketext::Simple for information on string formats.
 Creates a I<deferred> string. It's evaluated in the active locale whenever
 its value is used.
 
-=head2 loc_lang
+=head2 loc_lang( [$locale] )
 
-Set the locale.
+Set the locale.  If C<$locale> is missing, returns the previous value
+passed to C<loc_lang>.
 
 =head2 best_locale( [$hub] )
 
@@ -187,7 +189,16 @@ sub loc {
 }
 
 # Have to wrap this b/c we renamed the real loc() function to _loc()
-sub loc_lang { return _loc_lang(@_) }
+sub loc_lang {
+    state $current_lang;
+    if (@_) {
+        $current_lang = shift;
+        return _loc_lang($current_lang);
+    }
+    else {
+        return $current_lang || system_locale();
+    }
+}
 
 sub best_locale {
     my $hub = shift || return system_locale();

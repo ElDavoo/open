@@ -48,7 +48,7 @@
 | wait_for_element_visible_ok | st-widget-opensocial-setup-save | 30000 |
 | click_ok | st-widget-opensocial-setup-save |  |
 | wait_for_element_not_present_ok | st-widget-opensocial-gallery-widgets | 15000 |
-| verifyValue | wikiwyg_wikitext_textarea | `{widget: top_content __title__=Active%20Content __width__=600 up_account=` |
+| verifyValue | wikiwyg_wikitext_textarea | `{widget: top_content __title__=Active%20Content __width__=600` |
 
 | *Comment* | Test Case: Widgets in Pages add 2nd widget, see sequential number |  |
 | click_ok | link=Widget... |  |
@@ -66,7 +66,7 @@
 | wait_for_element_visible_ok | st-widget-opensocial-setup-save | 30000 |
 | click_ok | st-widget-opensocial-setup-save |  |
 | wait_for_element_not_present_ok | st-widget-opensocial-gallery-widgets | 15000 |
-| verifyValue | wikiwyg_wikitext_textarea | `{widget: top_content#2 __title__=Active%20Content __width__=600 up_account=` |
+| verifyValue | wikiwyg_wikitext_textarea | `{widget: top_content#2 __title__=Active%20Content __width__=600` |
 
 | *Comment* | Test Case: Widgets in Pages save page, check widgets |  |
 | click_and_wait | st-save-button-link |  |

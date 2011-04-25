@@ -481,6 +481,10 @@ msgstr "Enable Export User Data"
 msgid "control.enable-invitation-to-group"
 msgstr "Enable Invitation to Group"
 
+#: share/plugin/control/template/control/report.html:108
+msgid "control.ending-on-midnight-of"
+msgstr "ending on midnight of"
+
 #. (exportable_accounts)
 #: share/plugin/control/template/control/accounts.html:24
 msgid "control.export-user-for-selected-accounts=count"
@@ -560,6 +564,10 @@ msgstr "First name:"
 #: share/plugin/control/template/control/add_users.html:46
 msgid "control.for-cac-authentication"
 msgstr "(for CAC authentication)"
+
+#: share/plugin/control/template/control/report.html:101
+msgid "control.for-report-duration"
+msgstr "For"
 
 #: share/plugin/control/template/control/user.html:103
 msgid "control.for-use-with-cac-authentication"
@@ -736,6 +744,10 @@ msgstr "Name of group:"
 #: share/plugin/control/template/control/accounts.html:12
 msgid "control.name:"
 msgstr "Name:"
+
+#: share/plugin/control/template/control/account.html:36
+msgid "control.new-users-report"
+msgstr "New Users Report"
 
 #: share/plugin/control/template/control/groups.html:92
 msgid "control.permission-set"
@@ -1003,6 +1015,11 @@ msgstr "Socialtext Admin Configuration"
 #: share/plugin/control/template/control/wrapper:104 share/plugin/control/template/control/wrapper:19
 msgid "control.socialtext-control-panel"
 msgstr "Socialtext Control Panel"
+
+#. (u.driver_name)
+#: share/plugin/control/template/control/user.html:47
+msgid "control.source=driver-name"
+msgstr "Source: %1"
 
 #: share/plugin/control/template/control/group.html:43
 msgid "control.start-typing-account-name"

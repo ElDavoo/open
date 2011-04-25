@@ -365,6 +365,9 @@ msgstr "移除"
 msgid "groups.reset-photo"
 msgstr "重置照片"
 
+msgid "groups.revert-to-default"
+msgstr "恢复为默认..."
+
 #: share/plugin/groups/share/widgets/membership/widget.js:425
 msgid "groups.role-admin"
 msgstr "管理员"

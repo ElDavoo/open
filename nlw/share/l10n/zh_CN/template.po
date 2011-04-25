@@ -1002,6 +1002,9 @@ msgstr "注册"
 msgid "login.remember-me"
 msgstr "在这台电脑上保持登入。"
 
+msgid "login.remember-me-on-this-device"
+msgstr "在此设备上记住我"
+
 #: share/template/authen/forgot_password.html:3
 msgid "login.socialtext-password-help"
 msgstr "Socialtext 密码支持"

@@ -1,4 +1,6 @@
+
 | *Comment* | Test Case: Self Join Group |
+
 
 * Fixture: SocialWidgets
 
@@ -34,8 +36,8 @@
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
-| text_like | //span[@id='permission-set'] | qr/self-join/ism |
-| text_unlike | //span[@id='permission-set'] | qr/private/ism |
+| text_like | //span[@id='permission-set-loc'] | qr/self-join/ism |
+| text_unlike | //span[@id='permission-set-loc'] | qr/private/ism |
 
 | wait_for_element_visible_ok | permission-change | 30000 |
 | click_ok | permission-change |  |
@@ -56,8 +58,8 @@
 
 | *Comment* | Test Case: Self Join Group - Verify Changed to private |  |
 | st-select-widget-frame | information_widget |  |
-| text_like | //span[@id='permission-set'] | qr/private/ism |
-| text_unlike | //span[@id='permission-set'] | qr/self-join/ism |
+| text_like | //span[@id='permission-set-loc'] | qr/private/ism |
+| text_unlike | //span[@id='permission-set-loc'] | qr/self-join/ism |
 | select-frame | relative=parent |  |
 
 | wait_for_element_visible_ok | create-group | 30000 |
@@ -67,8 +69,7 @@
 | *Comment* | Test Case: Self Join Group - See Group is Saved private |  |
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| text_like | //span[@class='permissionType'] | qr/private/ism |
-| text_unlike | //span[@class='permissionType'] | qr/self-join/ism |
+| text_like | //div[@class='groupsTitle'] | qr/private/ism |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Self Join Group - Create Private Group |  |
@@ -79,8 +80,8 @@
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
-| text_like | //span[@id='permission-set'] | qr/private/ism |
-| text_unlike | //span[@id='permission-set'] | qr/self-join/ism |
+| text_like | //span[@id='permission-set-loc'] | qr/private/ism |
+| text_unlike | //span[@id='permission-set-loc'] | qr/self-join/ism |
 | select-frame | relative=parent |  |
 
 | wait_for_element_visible_ok | create-group | 30000 |
@@ -97,15 +98,8 @@
 | st-admin | add-workspace-admin --email %%user%% --w %%wstwo%% | now has the role of 'admin' in the %%wstwo%% Workspace |
 | st-admin | add-member --workspace %%wstwo%% --g %%second_id%% | %%private_group%% now has the role of 'member' in the %%wstwo%% Workspace |
 
-| st-name-widget | 1 | information_widget |
-| st-widget-title-like | information_widget | Information |
-| st-select-widget-frame | information_widget |  |
-| text_like | //span[@class='permissionType'] | qr/private/ism |
-| text_unlike | //span[@class='permissionType'] | qr/self-join/ism |
-
-| wait_for_element_visible_ok | link=(Edit) | 30000 |
-| select-frame | relative=parent |  |
-
+| *Comment* | Test Case: Self Join Group - Open second group |  |
+| text_like | //div[@class='groupsTitle'] | qr/private/ism |
 | open_ok | /st/edit_group/%%second_id%% |
 
 | st-name-widget | 1 | information_widget |
@@ -130,8 +124,8 @@
 
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| text_like | //span[@id='permission-set'] | qr/self-join/ism |
-| text_unlike | //span[@id='permission-set'] | qr/private/ism |
+| text_like | //span[@id='permission-set-loc'] | qr/self-join/ism |
+| text_unlike | //span[@id='permission-set-loc'] | qr/private/ism |
 
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | create-group | 30000 |
@@ -139,11 +133,7 @@
 | get_id_from_url | group_id |  |
 
 | *Comment* | Test Case: Self Join Group - See Group is changed to self-join |  |
-| st-name-widget | 1 | information_widget |
-| st-select-widget-frame | information_widget |  |
-| text_like | //span[@class='permissionType'] | qr/self-join/ism |
-| text_unlike | //span[@class='permissionType'] | qr/private/ism |
-| select-frame | relative=parent |  |
+| text_like | //div[@class='groupsTitle'] | qr/self-join/ism |
 | st-admin | show-acls --w %%ws%% | permission set name: self-join |
 | st-admin | show-acls --w %%wstwo%% | permission set name: self-join |
 
@@ -165,7 +155,7 @@
 | click_ok | st-join-group | 30000 |
 | wait_for_element_visible_ok | st-leave-group | 30000 |
 
-| st-name-widget | 4 | members_widget |
+| st-name-widget | 3 | members_widget |
 | st-widget-title-like | members_widget | Membership |
 | st-select-widget-frame | members_widget |  |
 | text_like | //body | %%user_short%% |
@@ -176,7 +166,7 @@
 | click_ok | st-leave-group | 30000 |
 | wait_for_element_visible_ok | st-join-group | 30000 |
 
-| st-name-widget | 4 | members_widget |
+| st-name-widget | 3 | members_widget |
 | st-widget-title-like | members_widget | Membership |
 | st-select-widget-frame | members_widget |  |
 | text_like | //body | %%user_short%% |
@@ -216,8 +206,8 @@
 
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| text_unlike | //span[@id='permission-set'] | qr/self-join/ism |
-| text_like | //span[@id='permission-set'] | qr/private/ism |
+| text_unlike | //span[@id='permission-set-loc'] | qr/self-join/ism |
+| text_like | //span[@id='permission-set-loc'] | qr/private/ism |
 
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | create-group | 30000 |
@@ -225,11 +215,7 @@
 | get_id_from_url | group_id |  |
 
 | *Comment* | Test Case: Self Join Group - See Group is changed to private |  |
-| st-name-widget | 1 | information_widget |
-| st-select-widget-frame | information_widget |  |
-| text_unlike | //span[@class='permissionType'] | qr/self-join/ism |
-| text_like | //span[@class='permissionType'] | qr/private/ism |
-| select-frame | relative=parent |  |
+| text_like | //div[@class='groupsTitle'] | qr/private/ism |
 | st-admin | show-acls --w %%ws%% | permission set name: member-only |
 | st-admin | show-acls --w %%wstwo%% | permission set name: member-only |
 

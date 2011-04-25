@@ -6,7 +6,6 @@ use Socialtext::l10n qw(system_locale);
 use Socialtext::EmailReceiver::en;
 use Socialtext::Validate
     qw( validate SCALAR_TYPE HANDLE_TYPE WORKSPACE_TYPE );
-use Data::Dumper;
 use Email::MIME;
 
 Readonly my $spec_with_handle => {
