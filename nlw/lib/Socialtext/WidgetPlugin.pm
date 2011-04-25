@@ -38,18 +38,27 @@ sub gadget_vars {
         $overrides{$key} = $val;
     }
 
+    use Data::Dump 'dump'; dump \%overrides;
+
     my $gadget = Socialtext::Gadgets::Gadget->Fetch(src => $src);
+    my $preferences = $gadget->preferences;
+    for my $pref (@$preferences) {
+        my $name = $pref->{name};
+
+        # Backwards compat
+        $overrides{"UP_$name"} = $overrides{$name} if $overrides{$name};
+
+        my $overridden = $overrides{"UP_$name"} || next;
+        $pref->{value} = $overridden;
+    }
+
     my $renderer = Socialtext::Gadget::Renderer->new(
         gadget => $gadget,
         view => 'page',
         overrides => \%overrides,
     );
 
-    my $preferences = $gadget->preferences;
-    for my $pref (@$preferences) {
-        my $overridden = $overrides{"UP_$pref->{name}"} || next;
-        $pref->{value} = $overridden;
-    }
+    dump $preferences;
 
     my $width = $overrides{__width__} // 600;
     $width .= "px" if $width =~ /^\d+$/;
