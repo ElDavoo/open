@@ -49,7 +49,6 @@
 
 | *Comment* | Test Case: Group No Change Link Create %%public_group%% |  |  |
 | st-create-group | %%public_group%% | %%public_group_desc%% | self-join-radio |
-| st-process-jobs |  |  |
 
 | *Comment* | Test Case: Group No Change Link Self-Join group is open for editing |  |
 | st-name-widget | 1 | information_widget |
@@ -57,13 +56,15 @@
 | st-select-widget-frame | information_widget |  |
 | wait_for_text_present_ok | Change | 30000 |
 | wait_for_element_visible_ok | permission-change | 30000 |
-| text_like | //span[@id='permission-set'] | qr/self-join/ism |
-| text_unlike | //span[@id='permission-set'] | qr/private/ism |
+| text_like | //span[@id='permission-set-loc'] | qr/self-join/ism |
+| text_unlike | //span[@id='permission-set-loc'] | qr/private/ism |
 | select-frame | relative=parent |  |
 | wait_for_element_visible_ok | create-group | 30000 |
 | click_and_wait | create-group |  |
 | get_id_from_url | public_group_id |  |
 | wait_for_text_present_ok | %%public_group%% | 30000 |
+| text_like | //div[@class='groupsTitle'] | %%public_group%% |
+| get_id_from_url | public_group_id |  |
 
 | *Comment* | Test Case: Group No Change Link Save Group, add shared workspace to two groups |  |
 | st-process-jobs |  |  |
@@ -76,8 +77,8 @@
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_not_present_ok | permission-change | 15000 |
-| text_unlike | //span[@class='permissionType'] | qr/private/ism |
-| text_like | //span[@class='permissionType'] | qr/self-join/ism |
+| text_unlike | //span[@id='permission-set-loc'] | qr/private/ism |
+| text_like | //span[@id='permission-set-loc'] | qr/self-join/ism |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Group No Change Link Save Group, %%other_group%% no change link |  |
@@ -86,8 +87,8 @@
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_not_present_ok | permission-change | 15000 |
-| text_unlike | //span[@class='permissionType'] | qr/private/ism |
-| text_like | //span[@class='permissionType'] | qr/self-join/ism |
+| text_unlike | //span[@id='permission-set-loc'] | qr/private/ism |
+| text_like | //span[@id='permission-set-loc'] | qr/self-join/ism |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Group No Change Link Create %%other_private_group%% |  |
@@ -117,8 +118,8 @@
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_not_present_ok | permission-change | 15000 |
-| text_unlike | //span[@class='permissionType'] | qr/self-join/ism |
-| text_like | //span[@class='permissionType'] | qr/private/ism |
+| text_unlike | //span[@id='permission-set-loc'] | qr/self-join/ism |
+| text_like | //span[@id='permission-set-loc'] | qr/private/ism |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Group No Change Link for %%private_group%% |  |
@@ -128,8 +129,8 @@
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_not_present_ok | permission-change | 15000 |
-| text_unlike | //span[@class='permissionType'] | qr/self-join/ism |
-| text_like | //span[@class='permissionType'] | qr/private/ism |
+| text_unlike | //span[@id='permission-set-loc'] | qr/self-join/ism |
+| text_like | //span[@id='permission-set-loc'] | qr/private/ism |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Group No Change Link Save Group, remove %%wstwo%% from private group |  |
@@ -137,16 +138,14 @@
 
 | *Comment* | Test Case: Group No Change Link Restore %%other_private_group%% |  |
 | st-process-jobs |  |  |
-| open_ok | /st/group/%%other_priv_id%% |  |
-| wait_for_element_visible_ok | link=(Edit) | 30000 |
-| click_and_wait | link=(Edit) |  |
+| open_ok | /st/edit_group/%%other_priv_id%% |  |
 | wait_for_text_present_ok | Edit Group: | 30000 |
 | st-name-widget | 1 | information_widget |
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_visible_ok | permission-change | 15000 |
-| text_unlike | //span[@class='permissionType'] | qr/self-join/ism |
-| text_like | //span[@class='permissionType'] | qr/private/ism |
+| text_unlike | //span[@id='permission-set-loc'] | qr/self-join/ism |
+| text_like | //span[@id='permission-set-loc'] | qr/private/ism |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Group No Change Link Restore %%private_group%% |  |
@@ -156,8 +155,8 @@
 | st-widget-title-like | information_widget | Information |
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_visible_ok | permission-change | 15000 |
-| text_unlike | //span[@class='permissionType'] | qr/self-join/ism |
-| text_like | //span[@class='permissionType'] | qr/private/ism |
+| text_unlike | //span[@id='permission-set-loc'] | qr/self-join/ism |
+| text_like | //span[@id='permission-set-loc'] | qr/private/ism |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Group No Change Link Save Group, remove %%ws%% from s-j group |  |
@@ -170,8 +169,8 @@
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_visible_ok | permission-change | 15000 |
-| text_unlike | //span[@class='permissionType'] | qr/private/ism |
-| text_like | //span[@class='permissionType'] | qr/self-join/ism |
+| text_unlike | //span[@id='permission-set-loc'] | qr/private/ism |
+| text_like | //span[@id='permission-set-loc'] | qr/self-join/ism |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Group No Change Link Save Group, %%other_group%% restore change link |  |
@@ -180,8 +179,8 @@
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
 | wait_for_element_visible_ok | permission-change | 15000 |
-| text_unlike | //span[@class='permissionType'] | qr/private/ism |
-| text_like | //span[@class='permissionType'] | qr/self-join/ism |
+| text_unlike | //span[@id='permission-set-loc'] | qr/private/ism |
+| text_like | //span[@id='permission-set-loc'] | qr/self-join/ism |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Group No Change Link TEARDOWN |  |
