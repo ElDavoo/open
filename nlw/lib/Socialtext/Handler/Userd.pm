@@ -107,7 +107,7 @@ worker_function worker_extract_creds => sub {
     }
     catch {
         my $e = $_;
-        st_log()->error('when trying to extract creds: '.$e);
+        st_log()->error('when worker trying to extract creds: '.$e);
         return {
             code => 500,
             body => { error => $e },
