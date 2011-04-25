@@ -20,9 +20,6 @@
 | select-frame | relative=parent |  |
 | st-name-widget | 2 | available_groups |
 | st-widget-title-like | available_groups | All Available Groups |
-| st-select-widget-frame | available_groups |  |
-| wait_for_text_present_ok | Showing Groups 1-0 of 0 | 30000 |
-| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Group Directory Create one private, two self-join groups in the account SETUP |  |
 | set | alpha_first_selfjoin | alpha-selfjoin-%%start_time%% |
@@ -50,7 +47,6 @@
 | st-name-widget | 2 | available_groups |
 | st-widget-title-like | available_groups | All Available Groups |
 | st-select-widget-frame | available_groups |  |
-| wait_for_text_present_ok | Showing Groups 1-2 of 2 | 30000 |
 | wait_for_element_visible_ok | link=%%alpha_second_selfjoin%% | 30000 |
 | wait_for_element_visible_ok | link=%%alpha_first_selfjoin%% | 30000 |
 | wait_for_text_not_present_ok | %%private_group%% | 30000 |
@@ -83,7 +79,6 @@
 | st-name-widget | 2 | available_groups |
 | st-widget-title-like | available_groups | All Available Groups |
 | st-select-widget-frame | available_groups |  |
-| wait_for_text_present_ok | Showing Groups 1-2 of 2 | 30000 |
 | wait_for_element_visible_ok | link=%%alpha_second_selfjoin%% | 30000 |
 | wait_for_element_visible_ok | link=%%alpha_first_selfjoin%% | 30000 |
 | wait_for_text_not_present_ok | %%isolated_group%% | 30000 |

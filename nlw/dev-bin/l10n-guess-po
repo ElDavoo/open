@@ -89,6 +89,9 @@ for my $po (@ARGV) {
                     last;
                 }
             }
+            if ($sources =~ m{lib/Socialtext/(?:Pluggable/)?Plugin/(\w+)}) {
+                $section = "###-" . lc $1;
+            }
             print;
         }
         when (/^#\. \((.*)\)/) {

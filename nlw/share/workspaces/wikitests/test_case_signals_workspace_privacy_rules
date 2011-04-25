@@ -29,6 +29,7 @@
 | post-signal | %%signal1%% |  |
 | post-signal | %%signal2%% |  |
 | post-signal | %%signal3%% |  |
+| st-process-jobs |  |  |
 
 | st-logoutin | %%default_user%% | %%password%% |
 | open_ok | /st/dashboard |  |
@@ -48,6 +49,7 @@
 
 | *Comment* | Test Case: Signals Workspace Privacy Rules test error when signaling to nonexistent workspace |  |
 | open_ok | /st/signals |  |
+| pause | 10000 | for JS to load |
 | wait_for_element_visible_ok | //div[@class='wikilink'] | 30000 |
 | click_ok | //div[@class='wikilink'] |  |
 | wait_for_element_visible_ok | //input[@name='workspace'] | 30000 |

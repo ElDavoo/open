@@ -700,6 +700,10 @@ msgstr "«within»"
 msgid "activities.you"
 msgstr "«You»"
 
+#: lib/Socialtext/Pluggable/Plugin/Agile.pm:110
+msgid "agile.clear-history"
+msgstr "«Clear Agile History»"
+
 #: share/plugin/widgets/share/javascript/template/activities/ago.tt2:7 share/template/data/event:10 share/skin/s3/template/lite/page_list.html:13 share/skin/s3/template/view/page/display:14
 msgid "ago.1day"
 msgstr "«one day ago»"
@@ -772,6 +776,11 @@ msgstr "«%*(%1,minute) ago»"
 #: share/plugin/analytics/template/cp_google_analytics:6
 msgid "analytics.id:"
 msgstr "«Google Analytics ID:»"
+
+#. ($data->{ga_domains})
+#: lib/Socialtext/Pluggable/Plugin/Analytics.pm:31
+msgid "analytics.invalid-domains-setting=data"
+msgstr "«Invalid domains setting: %1»"
 
 #: share/plugin/analytics/template/cp_google_analytics:29
 msgid "analytics.mask"
@@ -2832,6 +2841,10 @@ msgstr "«Enable Export User Data»"
 msgid "control.enable-invitation-to-group"
 msgstr "«Enable Invitation to Group»"
 
+#: share/plugin/control/template/control/report.html:108
+msgid "control.ending-on-midnight-of"
+msgstr "«ending on midnight of»"
+
 #. (exportable_accounts)
 #: share/plugin/control/template/control/accounts.html:24
 msgid "control.export-user-for-selected-accounts=count"
@@ -2911,6 +2924,10 @@ msgstr "«First name:»"
 #: share/plugin/control/template/control/add_users.html:46
 msgid "control.for-cac-authentication"
 msgstr "«(for CAC authentication)»"
+
+#: share/plugin/control/template/control/report.html:101
+msgid "control.for-report-duration"
+msgstr "«For»"
 
 #: share/plugin/control/template/control/user.html:103
 msgid "control.for-use-with-cac-authentication"
@@ -3087,6 +3104,15 @@ msgstr "«Name of group:»"
 #: share/plugin/control/template/control/accounts.html:12
 msgid "control.name:"
 msgstr "«Name:»"
+
+#. ($acct->name)
+#: lib/Socialtext/Handler/ControlPanel.pm:1953
+msgid "control.new-users-in=account"
+msgstr "«New Users in %1»"
+
+#: share/plugin/control/template/control/account.html:36
+msgid "control.new-users-report"
+msgstr "«New Users Report»"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:2190
 msgid "control.new-wiki"
@@ -3358,6 +3384,11 @@ msgstr "«Socialtext Admin Configuration»"
 #: share/plugin/control/template/control/wrapper:104 share/plugin/control/template/control/wrapper:19
 msgid "control.socialtext-control-panel"
 msgstr "«Socialtext Control Panel»"
+
+#. (u.driver_name)
+#: share/plugin/control/template/control/user.html:47
+msgid "control.source=driver-name"
+msgstr "«Source: %1»"
 
 #: share/plugin/control/template/control/group.html:43
 msgid "control.start-typing-account-name"
@@ -8131,6 +8162,10 @@ msgstr "«remove»"
 msgid "groups.reset-photo"
 msgstr "«Reset Photo»"
 
+#: share/plugin/groups/template/group_links:24
+msgid "groups.revert-to-default"
+msgstr "«Revert to Default…»"
+
 #: share/plugin/groups/share/widgets/membership/widget.js:425
 msgid "groups.role-admin"
 msgstr "«Admin»"
@@ -8319,6 +8354,58 @@ msgstr "«workspace»"
 #: ../socialtext-reports/lib/Socialtext/Reports/Report.pm:265
 msgid "heading.workspaces"
 msgstr "«workspaces»"
+
+#: share/skin/s3/javascript/im.js:54
+msgid "im.away"
+msgstr "«Away»"
+
+#: share/skin/s3/javascript/im.js:56
+msgid "im.be-right-back"
+msgstr "«Be right back»"
+
+#: share/skin/s3/javascript/im.js:55
+msgid "im.busy"
+msgstr "«Busy»"
+
+#: share/skin/s3/javascript/im.js:61
+msgid "im.do-not-disturb"
+msgstr "«Do not disturb»"
+
+#: share/skin/s3/javascript/im.js:62
+msgid "im.do-not-disturb-but-allowed"
+msgstr "«Do not disturb but allowed»"
+
+#: share/skin/s3/javascript/im.js:63
+msgid "im.idle-online"
+msgstr "«Idle online»"
+
+#: share/skin/s3/javascript/im.js:58
+msgid "im.lunch"
+msgstr "«Lunch»"
+
+#: share/skin/s3/javascript/im.js:59
+msgid "im.meeting"
+msgstr "«Meeting»"
+
+#: share/skin/s3/javascript/im.js:53
+msgid "im.offline"
+msgstr "«Offline»"
+
+#: share/skin/s3/javascript/im.js:57
+msgid "im.on-phone"
+msgstr "«On the phone»"
+
+#: share/skin/s3/javascript/im.js:52
+msgid "im.online"
+msgstr "«Online»"
+
+#: share/skin/s3/javascript/im.js:60
+msgid "im.out-of-office"
+msgstr "«Out of office»"
+
+#: share/skin/s3/javascript/im.js:70
+msgid "im.requires-internet-explorer"
+msgstr "«(requires Internet Explorer)»"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:32
 msgid "image.upload"
@@ -9540,6 +9627,10 @@ msgstr "«Register»"
 msgid "login.remember-me"
 msgstr "«Remember me on this computer.»"
 
+#: share/template/authen/element/login_form:25
+msgid "login.remember-me-on-this-device"
+msgstr "«Remember me on this device»"
+
 #: share/template/authen/forgot_password.html:3
 msgid "login.socialtext-password-help"
 msgstr "«Socialtext password help»"
@@ -10403,6 +10494,10 @@ msgstr "«People Directory»"
 msgid "people.edit-profile"
 msgstr "«(Edit)»"
 
+#: share/plugin/people/template/lite/profile.html:111
+msgid "people.employee=count"
+msgstr "«%*(%1,Employee)»"
+
 #: share/plugin/people/template/lite/profile.html:15
 msgid "people.follow"
 msgstr "«Follow»"
@@ -10410,6 +10505,11 @@ msgstr "«Follow»"
 #: share/plugin/people/template/profile_hcard:38
 msgid "people.mobile:"
 msgstr "«Mobile:»"
+
+#. (peers.size)
+#: share/plugin/people/template/lite/profile.html:103
+msgid "people.peer=count"
+msgstr "«%*(%1,Peer)»"
 
 #: share/plugin/people/template/lite/profile.html:173
 msgid "people.private-message-send"
@@ -10697,6 +10797,10 @@ msgstr "«This person has no tags. Click <b>Add tag</b> to add one now.»"
 #: share/plugin/people/share/widgets/profile_tags/widget.js:11
 msgid "profile.no-tags-for-you"
 msgstr "«You have no tags. Use <b>Add Tag</b> to add one now.»"
+
+#: share/plugin/people/template/profile_hcard:59
+msgid "profile.office-communicator:"
+msgstr "«Office Communicator&trade;:»"
 
 #: share/plugin/people/share/widgets/profile/widget.html:28 share/plugin/people/share/widgets/profile_edit/widget.html:49 share/plugin/people/template/lite/profile.html:95
 msgid "profile.organization"
@@ -11094,6 +11198,10 @@ msgstr "«Edits per Workspace»"
 msgid "reports.example-actions-today-1month-txt"
 msgstr "«Example: /actions/today/-1month.txt»"
 
+#: ../socialtext-reports/template/usage_by.tmpl:16 ../socialtext-reports/template/usage_by_workspace.tmpl:16
+msgid "reports.from-through=start,end"
+msgstr "«From %1 through %2»"
+
 #: ../socialtext-reports/template/controls.tmpl:4
 msgid "reports.generate!"
 msgstr "«Generate!»"
@@ -11220,6 +11328,10 @@ msgstr "«StdDev»"
 msgid "reports.submit"
 msgstr "«Submit»"
 
+#: ../socialtext-reports/template/new_users.tmpl:24
+msgid "reports.time-of-first-action"
+msgstr "«Time of First Action»"
+
 #: ../socialtext-reports/template/usage_by.tmpl:21 ../socialtext-reports/template/usage_by_workspace.tmpl:21
 msgid "reports.total-members-current:"
 msgstr "«Total members (current):»"
@@ -11263,6 +11375,10 @@ msgstr "«Usage By Account»"
 #: ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByWorkspace.pm:14
 msgid "reports.usage-by-wiki"
 msgstr "«Usage By Workspace»"
+
+#: ../socialtext-reports/template/new_users.tmpl:23
+msgid "reports.user"
+msgstr "«User»"
 
 #: ../socialtext-reports/template/usage_by.tmpl:28 ../socialtext-reports/template/usage_by_workspace.tmpl:28
 msgid "reports.username"
@@ -12760,6 +12876,10 @@ msgstr "«Report-o-rama!»"
 msgid "title.workspaces"
 msgstr "«Workspaces»"
 
+#: lib/Socialtext/Pluggable/Plugin/Twilio.pm:72
+msgid "twilio.changes-saved"
+msgstr "«Changes Saved»"
+
 #: share/plugin/twilio/template/element/settings/twilio_settings_section:31
 msgid "twilio.edit-profile"
 msgstr "«Click here to edit your profile.»"
@@ -12779,6 +12899,19 @@ msgstr "«Manage Phone Services»"
 #: share/plugin/twilio/template/element/settings/twilio_settings_section:28
 msgid "twilio.mobile-phone-required"
 msgstr "«Please add your mobile phone number to your profile to use this feature.»"
+
+#: lib/Socialtext/Pluggable/Plugin/Twilio.pm:119
+msgid "twilio.phone-services"
+msgstr "«Phone Services»"
+
+#: lib/Socialtext/Pluggable/Plugin/Twilio.pm:89
+msgid "twilio.pick-one"
+msgstr "«Pick one»"
+
+#. ($sender->best_full_name)
+#: lib/Socialtext/Job/TwilioNotify.pm:55
+msgid "twilio.private-message-from=sender"
+msgstr "«Private message from %1»"
 
 #: share/plugin/twilio/template/element/settings/twilio_settings_section:19
 msgid "twilio.send-mentions-as-sms?"
@@ -13652,6 +13785,10 @@ msgstr "«Widget Gallery»"
 #: share/plugin/widgets/template/view/gallery:34
 msgid "widgets.gallery-switch=account:"
 msgstr "«This is the widget gallery for the \"%1\" account. Switch to account:»"
+
+#: share/plugin/widgets/share/javascript/gadgets.js:677
+msgid "widgets.in-layout-mode-click-save-or-cancel"
+msgstr "«You are in layout mode. Click <b>Save</b> to keep your changes, <b>Cancel</b> to discard them.»"
 
 #: share/plugin/widgets/share/javascript/template/activities/widget.tt2:2 share/plugin/widgets/template/data/events/widget:2
 msgid "widgets.install-this"

@@ -725,6 +725,9 @@ proto.enable_table_navigation_bindings = function() {
                 self._do_table_up_or_down(e, 'next', ':last');
                 break;
             }
+            default: {
+                return true;
+            }
         }
     });
 }
@@ -734,24 +737,37 @@ proto._do_table_up_or_down = function(e, direction, selector) {
     if (e.shiftKey) { return; }
 
     // Find the edge of the cursor as well as the containing cell...
-    var sel = self.get_edit_window().getSelection().getRangeAt(0);
-    var $cell = $(sel.endContainer);
-    if ($cell[0] && ("" + $cell[0].tagName).toLowerCase() != "td") {
-        $cell = $cell.parents("td");
+    var $cell;
+    if (!Wikiwyg.is_ie && self.get_edit_window().getSelection) {
+        var sel = self.get_edit_window().getSelection().getRangeAt(0);
+        $cell = $(sel.endContainer);
+        if ($cell[0] && ("" + $cell[0].tagName).toLowerCase() != "td") {
+            $cell = $cell.parents("td");
+        }
+
+        if (!$cell || !$cell.length) { return; }
+
+        // Compare to see if we're at the cell edge...
+        var cellSel = self.get_edit_document().createRange();
+        cellSel.selectNodeContents($cell[0]);
+        var key = ((direction == 'prev') ? 'top' : 'bottom');
+        var selRects;
+        if (!$.browser.webkit) {
+            selRects = sel.getBoundingClientRect();
+        }
+        selRects = selRects || sel.getClientRects()[0];
+        var delta = Math.abs(
+            (selRects || {})[key]
+            - (cellSel.getBoundingClientRect() || cellSel.getClientRects()[0] || {})[key]
+        );
+        if (delta >= ((Number($cell.css('line-height')) || 15) / 2)) {
+            // We're not at the edge yet; keep moving toward the edge.
+            return;
+        }
     }
-
-    if (!$cell.length) { return; }
-
-    // Compare to see if we're at the cell edge...
-    var cellSel = self.get_edit_document().createRange();
-    cellSel.selectNodeContents($cell[0]);
-    var key = ((direction == 'prev') ? 'top' : 'bottom');
-    var delta = Math.abs(
-        (sel.getBoundingClientRect() || sel.getClientRects()[0] || {})[key]
-        - (cellSel.getBoundingClientRect() || cellSel.getClientRects()[0] || {})[key]
-    );
-    if (delta >= ((Number($cell.css('line-height')) || 15) / 2)) {
-        // We're not at the edge yet; keep moving toward the edge.
+    else {
+        // We're in MSIE (or some old browsers lacking window.getSelection);
+        // the up/down arrows already do what we want, so simply use the default.
         return;
     }
 
@@ -771,7 +787,12 @@ proto._do_table_up_or_down = function(e, direction, selector) {
         $new_cell = $cell.parents('table:first').find('tr'+selector+' td'+selector);
     }
 
-    self.set_focus_on_cell($new_cell);
+    if (direction == 'prev') {
+        self.set_focus_on_cell_end($new_cell);
+    }
+    else {
+        self.set_focus_on_cell($new_cell);
+    }
 }
 
 proto.enable_pastebin = function () {
@@ -1524,7 +1545,11 @@ proto.find_table_cell_with_cursor = function() {
     return $cell;
 }
 
-proto.set_focus_on_cell = function($new_cell) {
+proto.set_focus_on_cell_end = function($new_cell) {
+    this.set_focus_on_cell($new_cell, true);
+}
+
+proto.set_focus_on_cell = function($new_cell, isFocusOnEnd) {
     var self = this;
     self.set_focus();
 
@@ -1539,13 +1564,20 @@ proto.set_focus_on_cell = function($new_cell) {
             $span = $new_cell;
         }
 
-        var r = self.get_edit_document().createRange();
-        r.setStart( $span.get(0), 0 );
-        r.setEnd( $span.get(0), 0 );
-
         var s = self.get_edit_window().getSelection();
         s.removeAllRanges();
-        s.addRange(r);
+        s.selectAllChildren( $span.get(0) );
+
+        if (isFocusOnEnd) {
+            s.collapseToEnd();
+            if (s.modify) {
+                s.modify("move", "backward", "character");
+                s.modify("move", "forward", "character");
+            }
+        }
+        else {
+            s.collapseToStart();
+        }
     }
     else if (jQuery.browser.msie) {
         var r = self.get_edit_document().selection.createRange();
@@ -3457,7 +3489,7 @@ proto.getWidgetInput = function(widget_element, selection, new_widget) {
     }, 500);
 
     // When the lightbox is closed, decrement widget_editing so lightbox can pop up again. 
-    jQuery('#lightbox').unbind('lightbox-unload').bind("lightbox-unload", function(){
+    jQuery('#lightbox').unbind('lightbox-unload').one("lightbox-unload", function(){
         clearInterval(intervalId);
         Wikiwyg.Widgets.widget_editing--;
         if (self.wikiwyg && self.wikiwyg.current_mode && self.wikiwyg.current_mode.set_focus) {
