@@ -1579,7 +1579,8 @@ sub _cache_using_questions {
                 $1, $2, $3, $4);
         }
         else {
-            die "Unknown question: " . Dumper $q;
+            require Data::Dumper;
+            die "Unknown question: " . Data::Dumper::Dumper($q);
         }
     }
 
