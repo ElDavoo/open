@@ -92,6 +92,10 @@ proto.update_templates = function () {
                         .html(pages[i].name)
                         .appendTo(self.from_template_select());
                 }
+                self.from_template_select()
+                    .change(function() {
+                        self.from_template_radio().attr('checked', 'true');
+                    });
             }
         }
     });

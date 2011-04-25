@@ -24,10 +24,7 @@
 | *Comment* | Test Case: Groups UI Edit an Existing Group - PAUSE |  |
 | pause | 5000 |  |
 
-| st-name-widget | 1 | info_widget |
-| st-widget-title-like | info_widget | Information |
-| st-select-widget-frame | info_widget |  |
-| wait_for_element_visible_ok | link=(Edit) | 30000 |
+| wait_for_element_visible_ok | st-edit-group | 30000 |
 
 | *Comment* | Test Case: Groups UI Edit an Existing Group - do not click Edit - frame will be wrong |  |
 | select-frame | relative=parent |  |
@@ -61,7 +58,6 @@
 | st-name-widget | 1 | info_widget |
 | st-widget-title-like | info_widget | Information |
 | st-select-widget-frame | info_widget |  |
-| wait_for_element_visible_ok | link=(Edit) | 30000 |
 | wait_for_element_visible_ok | link=%%group_user_short%% | 30000 |
 | text_like | //body | Administrators |
 | text_like | //body | %%new_group_name%% |

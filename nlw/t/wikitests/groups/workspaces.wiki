@@ -5,27 +5,34 @@ Tests for `/data/groups/:group_id/workspaces`, implemented to help fix {bz: 3450
 | standard-test-setup   |
 | delete-all-groups     |
 
+## We want an auw for the account, and this doesn't get created normally in 
+## the SocialBase fixture, so force it here
+| set                      | auw         | zzz-auw-%%start_time%% |
+| create-workspace         | %%auw%%     | %%account%%            |
+| add-account-to-workspace | %%account%% | %%auw%%                |
+
+
 ## Create a new group, add it to a couple of workspaces
 | *Comment*              | Setup        |                                        |       |
 | set                    | admin        | admin%%start_time%%@ken.socialtext.net |       |
-| create-user            | %%admin%%    | password                               |       |
+| create-user            | %%admin%%    | password                               | %%account%%      |
 | set                    | group        | group%%start_time%%                    |       |
-| create-group           | %%group%%    |                                        |       |
+| create-group           | %%group%%    | %%account%%                                       |       |
 | add-user-to-group      | %%admin%%    | %%group_id%%                           | admin |
 | set                    | gold         | gold%%start_time%%                     |       |
-| create-workspace       | %%gold%%     |                                        |       |
+| create-workspace       | %%gold%%     | %%account%%                                       |       |
 | set                    | gold_id      | %%workspace_id%%                       |       |
 | add-group-to-workspace | %%group_id%% | %%gold%%                               |       |
 | set                    | silver       | silver%%start_time%%                   |       |
-| create-workspace       | %%silver%%   |                                        |       |
+| create-workspace       | %%silver%%   | %%account%%                                       |       |
 | set                    | silver_id    | %%workspace_id%%                       |       |
 | add-group-to-workspace | %%group_id%% | %%silver%%                             |       |
 | set                    | bronze       | bronze%%start_time%%                   |       |
-| create-workspace       | %%bronze%%   |                                        |       |
+| create-workspace       | %%bronze%%   | %%account%%                                       |       |
 | set                    | bronze_id    | %%workspace_id%%                       |       |
 | add-group-to-workspace | %%group_id%% | %%bronze%%                             |       |
 | set                    | copper       | copper%%start_time%%                   |       |
-| create-workspace       | %%copper%%   |                                        |       |
+| create-workspace       | %%copper%%   | %%account%%                                       |       |
 | set                    | copper_id    | %%workspace_id%%                       |       |
 ################################################################################
 

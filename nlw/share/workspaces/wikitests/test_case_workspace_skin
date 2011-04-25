@@ -6,7 +6,7 @@
 
 | *Comment* | Test Case: Workspace Skin make a scratch workspace |  |
 | set | sws | sws-%%start_time%% |
-| st-admin | create-workspace --name %%sws%% --title %%sws%% | created |
+| st-admin | create-workspace --name %%sws%% --title %%sws%% --empty | created |
 | st-admin | add-member --w %%sws%% --u %%username%% | now has the role |
 | open_ok | /%%sws%%/ |  |
 
@@ -55,39 +55,35 @@
 | wait_for_element_visible_ok | st-workspaceskin-file | 30000 |
 | type_ok | st-workspaceskin-file | %%wikitest_files%%skin.tgz |
 | click_and_wait | st-workspaceskin-submit |  |
-| text_like | contentRight | button-green/left-top.gif |
 
-| *Comment* | Test Case: Workspace Skin cancel button |  |
-| check_ok | st-workspaceskin-custom |  |
-| click_ok | link=Cancel |  |
-| is_checked_ok | st-workspaceskin-default |  |
+| *Comment* | use text_like to check for uploaded-skin image |  |
+| text_like | images/thomaspublink03.gif |  |
 
 | *Comment* | Test Case: Workspace Skin swap to custom skin |  |
 | check_ok | st-workspaceskin-custom |  |
 | is_checked_ok | st-workspaceskin-custom |  |
-| click_and_wait | link=Save |  |
+| click_and_wait | css=a[id^='-savelink'] | Save Button in uploaded skin |
 
-| *Comment* | use text_like to check for uploaded-skin link because wait_for_element has a bug when trying to wait for links or anchors |  |
-| text_like | //link[contains(@href,'uploaded-skin')] | qr/^$/ |
+| *Comment* | thomaspub skin has Hot Topics |  |
+| text_like | Hot Topics |  |
+| text_like | Experts Exchange |  |
 | is_checked_ok | st-workspaceskin-custom |  |
 
 | *Comment* | Test Case: Workspace Skin swap to default skin |  |
 | check_ok | st-workspaceskin-default |  |
 | is_checked_ok | st-workspaceskin-default |  |
-| click_and_wait | st-standard-submitbutton | Save Button in uploaded skin |
-
-| wait_for_element_visible_ok | link=Save | 30000 |
-| wait_for_element_visible_ok | link=Community | 30000 |
+| click_and_wait | css=a[id^='-savelink'] | Save Button in uploaded skin |
 | is_checked_ok | st-workspaceskin-default |  |
+| text_unlike | //body | Hot Topics |  |
+| text_unlike | //body | Experts Exchange |  |
 
 | *Comment* | Test Case: Workspace Skin swap back to custom skin |  |
 | check_ok | st-workspaceskin-custom |  |
-| click_and_wait | link=Save | Save |
-| text_like | //link[contains(@href,'uploaded-skin')] | qr/^$/ |
+| click_and_wait | css=a[id^='-savelink'] | Save Button in uploaded skin |
 
 | *Comment* | Test Case: Workspace Skin remove existing files |  |
 | click_and_wait | st-workspaceskin-removesubmit |  |
-| wait_for_text_not_present_ok | button-green/left-top.gif | 30000 |
+| wait_for_text_not_present_ok | images/thomaspublink03.gif | 30000 |
 | wait_for_element_visible_ok | link=Save | 30000 |
 | wait_for_element_visible_ok | link=Community | 30000 |
 | is_checked_ok | st-workspaceskin-default |  |
@@ -121,6 +117,6 @@
 | text_like | contentRight | A custom skin file was not uploaded |
 
 | *Comment* | Test Case: Workspace Skin TEARDOWN |  |
-| st-admin | delete-workspace --w %%sws%% --no-export | deleted |
+| delete-workspace | %%sws%% | Recklessly deleting |
 
 | *Comment* | Test Case: Workspace Skin COMPLETED |  |

@@ -739,9 +739,7 @@ sub add_comment {
     my $summary = $signal_edit_to_network
         ? word_truncate($wikitext, $SignalCommentLength)
         : $self->preview_text($wikitext);
-    $rev->edit_summary($signal_edit_to_network
-        ? $summary
-        : loc('page.summary-comment'));
+    $rev->edit_summary($summary);
     $rev->summary($summary);
 
     my $signal = $self->store(

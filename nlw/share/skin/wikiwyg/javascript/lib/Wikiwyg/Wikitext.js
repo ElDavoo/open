@@ -1008,7 +1008,7 @@ proto.format_embed = proto.skip;
 proto.format_field = proto.skip;
 proto.format_fieldset = proto.skip;
 proto.format_font = proto.pass;
-proto.format_form = proto.skip;
+proto.format_form = proto.pass;
 proto.format_frame = proto.skip;
 proto.format_frameset = proto.skip;
 proto.format_head = proto.skip;
@@ -1425,7 +1425,8 @@ proto.convertWikitextToHtml = function(wikitext, func, onError) {
         timeout: 30 * 1000,
         data: {
             action: 'wikiwyg_wikitext_to_html',
-            page_name: jQuery('#st-newpage-pagename-edit, #st-page-editing-pagename').val(),
+            page_name: jQuery('#st-attachments-attach-form input[name=page_name]').val()
+                    || jQuery('#st-newpage-pagename-edit, #st-page-editing-pagename').val(),
             content: wikitext
         },
         success: function(_data, _status, xhr) {
@@ -2511,7 +2512,13 @@ proto.handle_wiki_link = function(label, href, elem) {
     var wksp = match ? match[1] : Socialtext.wiki_id;
 
     var href_orig = href;
-    href = href.replace(/.*\baction=display;is_incipient=1;page_name=/, '');
+    var is_incipient = false;
+
+    if (/.*\baction=display;is_incipient=1;page_name=/.test(href)) {
+        is_incipient = true;
+        href = href.replace(/.*\baction=display;is_incipient=1;page_name=/, '');
+    }
+
     href = href.replace(up_to_wksp, '');
     href = decodeURIComponent(href);
     href = href.replace(/_/g, ' ');
@@ -2533,7 +2540,7 @@ proto.handle_wiki_link = function(label, href, elem) {
         prefix = '"' + label + '"';
     }
 
-    if (/#/.test(page)) {
+    if (/#/.test(page) && (page == href) && !is_incipient) {
         var segments = page.split(/#/, 2);
         var section = segments[1];
         page = segments[0];

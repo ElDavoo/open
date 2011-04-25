@@ -26,10 +26,9 @@
 | wait_for_text_present_ok | Information | 10000 |
 | wait_for_text_present_ok | Workspaces | 10000 |
 | wait_for_text_present_ok | Members | 10000 |
-| st-name-widget | 1 | information_widget |
-| st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | link=(Edit) | 30000 |
-| select-frame | relative=parent |  |
+
+| wait_for_element_visible_ok | st-edit-group | 30000 |
+
 
 | *Comment* | Test Case: Groups UI mismatched Workspace Change group to private |  |
 | open_ok | /st/edit_group/%%first_group_id%% |  |
@@ -47,7 +46,7 @@
 
 | *Comment* | Test Case: Groups UI mismatched Workspace Verify private ready to change |  |
 | st-select-widget-frame | information_widget |  |
-| wait_for_text_present_ok | private | 30000 |
+| text_like | permission-set-loc | Private |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups UI mismatched Workspace Save the change |  |
@@ -58,11 +57,10 @@
 | wait_for_text_present_ok | Membership | 10000 |
 
 | *Comment* | Test Case: Groups UI mismatched Workspace Verify change to private |  |
-| st-name-widget | 1 | information_widget |
-| st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | link=(Edit) | 30000 |
 
-| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | st-edit-group | 30000 |
+
+
 | open_ok | /st/edit_group/%%first_group_id%% |  |
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
@@ -76,7 +74,7 @@
 | st-select-widget-frame | workspaces_widget |  |
 | wait_for_text_present_ok | Use the input | 30000 |
 | text_like | qr/Use the input.+above to select.+workspaces to associate.+with this group./ |  |
-| text_like | qr/You can only associate\s*member-only\s*workspaces with a\s*private\s*group/ism |  |
+| text_like | qr/You can only associate\s*Member Only\s*workspaces with a\s*private\s*group/ism |  |
 | wait_for_element_present_ok | lookahead | 30000 |
 | wait_for_element_present_ok | new_workspace | 30000 |
 | select-frame | relative=parent |  |
@@ -88,11 +86,10 @@
 | open_ok | / |  |
 | wait_for_element_present_ok | link=%%group_self_join%% | 30000 |
 | click_and_wait | link=%%group_self_join%% |  |
-| st-name-widget | 1 | information_widget |
-| st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | link=(Edit) | 30000 |
 
-| select-frame | relative=parent |  |
+| wait_for_element_visible_ok | st-edit-group | 30000 |
+
+
 | open_ok | /st/edit_group/%%first_group_id%% |  |
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
@@ -109,10 +106,9 @@
 | click_and_wait | create-group |  |  |
 | get_id_from_url | private_id |  |  |
 
-| st-name-widget | 1 | information_widget |  |
-| st-select-widget-frame | information_widget |  |  |
-| wait_for_element_visible_ok | link=(Edit) | 30000 |  |
-| select-frame | relative=parent |  |  |
+
+| wait_for_element_visible_ok | st-edit-group | 30000 |  |
+
 
 | open_ok | /st/edit_group/%%private_id%% |  |
 | st-name-widget | 1 | information_widget |
@@ -127,11 +123,9 @@
 | click_ok | st-create-group-next |  |
 | click_and_wait | create-group |  |
 
-| st-name-widget | 1 | information_widget |
-| st-select-widget-frame | information_widget |  |
-| wait_for_element_visible_ok | link=(Edit) | 30000 |
+| wait_for_element_visible_ok | st-edit-group | 30000 |
 
-| select-frame | relative=parent |  |
+
 | open_ok | /st/edit_group/%%private_id%% |  |
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |

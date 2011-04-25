@@ -157,6 +157,12 @@ msgstr "公开编辑"
 msgid "acl.public-read-only"
 msgstr "公开只读"
 
+msgid "agile.clear-history"
+msgstr "清除敏捷历史"
+
+msgid "analytics.invalid-domains-setting=data"
+msgstr "无效的域名设置：%1"
+
 #. (shift)
 #: lib/Socialtext/Handler/ControlPanel.pm:616
 msgid "appliance.added-business-admin=user"
@@ -831,6 +837,9 @@ msgstr "测试容器"
 #: lib/Socialtext/Gadgets/Container/WidgetEditor.pm:13
 msgid "containers.widget-editor"
 msgstr "Socialtext 小工具编辑器"
+
+msgid "control.new-users-in=account"
+msgstr "%1 中的新用户"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:2190
 msgid "control.new-wiki"
@@ -3465,6 +3474,18 @@ msgstr "%1 秒"
 #: lib/Socialtext/PageRevision.pm:378
 msgid "time.weeks=count"
 msgstr "%1 周"
+
+msgid "twilio.changes-saved"
+msgstr "更改已保存"
+
+msgid "twilio.phone-services"
+msgstr "电话服务"
+
+msgid "twilio.pick-one"
+msgstr "选择一个"
+
+msgid "twilio.private-message-from=sender"
+msgstr "來自 %1 的私人邮件"
 
 #: lib/Socialtext/TimeZonePlugin.pm:36
 msgid "tz.+0000"

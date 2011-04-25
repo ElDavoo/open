@@ -1,14 +1,14 @@
+
 | *Comment* | Test Case: Widgets In Pages |  |
+
 
 | set | wip_ws | widgets_wiki_%%start_time%% |
 | set | wip_page | widgets_page_%%start_time%% |
-| set | wip_user | wip_user_%%start_time%%@david.socialtext.net |
-| set | wip_tag | widget_tag_%%start_time%% |
+| set | wip_user | `wip_user_%%start_time%%@david.socialtext.net` |
 | create_workspace | %%wip_ws%% |  |
 | create_user | %%wip_user%% | %%password%% |
 | st-admin | add-member --workspace %%wip_ws%% --email %%username%% | now has the role |
 | st-admin | add-member --workspace %%wip_ws%% --email %%wip_user%% | now has the role |
-| tag_profile | %%wip_user%% | %%wip_tag%% |
 
 | *Comment* | Test Case: Widgets In Pages make a page |  |
 | open_ok | /%%wip_ws%%/?action=new_page |  |
@@ -27,19 +27,19 @@
 | wait_for_text-present_ok | Third Party widgets | 30000 |
 | text_like | qr/Socialtext widgets.+Third Party widgets/ |  |
 | click_ok | st-widget-opensocial-gallery-cancel |  |
-| wait_for_element_not_visible_ok | st-widget-opensocial-gallery-widgets | 15000 |
+| wait_for_element_not_present_ok | st-widget-opensocial-gallery-widgets | 15000 |
 | wait_for_element_present_ok | link=Widget... | 30000 |
 | click_ok | link=Widget... |  |
 | wait_for_element_visible_ok | st-widget-opensocial-gallery-widgets | 30000 |
 | wait_for_text-present_ok | Socialtext widgets | 30000 |
 | wait_for_text-present_ok | Third Party widgets | 30000 |
 
-| *Comment* | Test Case: Widgets in Pages add All People Tags *This test must assume that All People Tags is the first widget in the list* |  |
+| *Comment* | Test Case: Widgets in Pages add All People Tags *Add Active Content Widget* |  |
 | text_like | qr/Socialtext widgets.+Third Party widgets/ |  |
-| text_like | qr/All People Tags.+Active Content/ |  |
+| text_like | qr/Active Content/ |  |
 | pause | 10000 | wait for JS to load |
-| wait_for_element_visible_ok | //a[@class='greyButton' and contains(text(),'Insert')] | 30000 |
-| click_ok | //a[@class='greyButton' and contains(text(),'Insert')] |  |
+| wait_for_element_visible_ok | //a[@id='gallery-widget-Active Content'] | 30000 |
+| click_ok | //a[@id='gallery-widget-Active Content'] |  |
 | wait_for_text_present_ok | Edit Widget | 30000 |
 | wait_for_element_visible_ok | st-widget-opensocial-setup-width-options | 30000 |
 | wait_for_element_visible_ok | //input[@value='Preview'] | 30000 |
@@ -47,19 +47,17 @@
 | wait_for_element_visible_ok | st-widget-opensocial-setup-cancel | 30000 |
 | wait_for_element_visible_ok | st-widget-opensocial-setup-save | 30000 |
 | click_ok | st-widget-opensocial-setup-save |  |
-| wait_for_element_not_visible_ok | st-widget-opensocial-gallery-widgets | 15000 |
-| verifyValue | wikiwyg_wikitext_textarea | `{widget: local:people:all_tags __title__=All%20People%20Tags __width__=600 limit=all}` |
+| wait_for_element_not_present_ok | st-widget-opensocial-gallery-widgets | 15000 |
+| verifyValue | wikiwyg_wikitext_textarea | `{widget: top_content __title__=Active%20Content __width__=600` |
 
 | *Comment* | Test Case: Widgets in Pages add 2nd widget, see sequential number |  |
 | click_ok | link=Widget... |  |
 | wait_for_element_visible_ok | st-widget-opensocial-gallery-widgets | 30000 |
 | wait_for_text-present_ok | Socialtext widgets | 30000 |
 | wait_for_text-present_ok | Third Party widgets | 30000 |
-| text_like | qr/Socialtext widgets.+Third Party widgets/ |  |
-| text_like | qr/All People Tags.+Active Content/ |  |
 | pause | 10000 | wait for JS to load |
-| wait_for_element_visible_ok | //a[@class='greyButton' and contains(text(),'Insert')] | 30000 |
-| click_ok | //a[@class='greyButton' and contains(text(),'Insert')] |  |
+| wait_for_element_visible_ok | //a[@id='gallery-widget-Active Content'] | 30000 |
+| click_ok | //a[@id='gallery-widget-Active Content'] |  |
 | wait_for_text_present_ok | Edit Widget | 30000 |
 | wait_for_element_visible_ok | st-widget-opensocial-setup-width-options | 30000 |
 | wait_for_element_visible_ok | //input[@value='Preview'] | 30000 |
@@ -67,12 +65,12 @@
 | wait_for_element_visible_ok | st-widget-opensocial-setup-cancel | 30000 |
 | wait_for_element_visible_ok | st-widget-opensocial-setup-save | 30000 |
 | click_ok | st-widget-opensocial-setup-save |  |
-| wait_for_element_not_visible_ok | st-widget-opensocial-gallery-widgets | 15000 |
-| verifyValue | wikiwyg_wikitext_textarea | `{widget: local:people:all_tags#2 __title__=All%20People%20Tags __width__=600 limit=all}` |
+| wait_for_element_not_present_ok | st-widget-opensocial-gallery-widgets | 15000 |
+| verifyValue | wikiwyg_wikitext_textarea | `{widget: top_content#2 __title__=Active%20Content __width__=600` |
 
 | *Comment* | Test Case: Widgets in Pages save page, check widgets |  |
 | click_and_wait | st-save-button-link |  |
-| wait_for_element_visible_ok | link=%%wip_tag%% | 30000 |
+| wait_for_text_present_ok | Most viewed pages in the last 1 week | 30000 |
 
 | *Comment* | Test Case: Widgets in Pages TEARDOWN |  |
 | st-process-jobs |  |  |

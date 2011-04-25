@@ -484,6 +484,20 @@ td .wafl_box {
     overflow-y: hidden !important;
 }
 
+.wiki ul.waflWidget {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.wiki ul.waflWidget .widgetHeaderButtons {
+    display: none;
+}
+
+.wiki div.widget div.widgetHeaderTitle img {
+    display: none;
+}
+
 .wiki div.widget div.widgetHeaderTitle {
     font-size: 11px;
     padding-left: 12px;

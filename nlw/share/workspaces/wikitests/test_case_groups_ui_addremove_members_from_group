@@ -32,7 +32,7 @@
 | *Comment* | Test Case: Groups UI AddRemove Members From Group. Check member box for %%group_user%% and %%grp_mbr%% |  |
 | st-admin | add-group-admin --e %%username%% --g %%group_id%% |  |
 | open_ok | /?group/%%group_id%%/ |  |
-| st-name-widget | 4 | members_widget |
+| st-name-widget | 3 | members_widget |
 | st-widget-title-like | members_widget | Membership |
 | st-select-widget-frame | members_widget |  |
 | wait_for_element_visible_ok | link=%%short_username%% | 30000 |
@@ -71,8 +71,8 @@
 | wait_for_element_visible_ok | st-cancel-create-group | 30000 |
 | click_and_wait | create-group |  |
 
-| *Comment* | Test Case: Groups UI Confirm |  |
-| st-name-widget | 4 | members_widget |
+| *Comment* | Test Case: Groups UI AddRemove Members From Group Confirm |  |
+| st-name-widget | 3 | members_widget |
 | st-widget-title-like | members_widget | Membership |
 | st-select-widget-frame | members_widget |  |
 | wait_for_element_visible_ok | link=%%short_non_grp_mbr%% | 30000 |
@@ -112,7 +112,7 @@
 | click_and_wait | st-cancel-create-group |  |
 
 | *Comment* | Test Case: Groups UI AddRemove Members From Group. Inspect; DO NOT see changes |  |
-| st-name-widget | 4 | members_widget |
+| st-name-widget | 3 | members_widget |
 | st-widget-title-like | members_widget | Membership |
 | st-select-widget-frame | members_widget |  |
 | wait_for_element_visible_ok | link=%%short_non_grp_mbr%% | 30000 |

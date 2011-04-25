@@ -1304,7 +1304,7 @@ ADD_USERS_FROM: {
         qr/\QThe following users from the foobar workspace were added to the $NEW_WORKSPACE workspace:\E\s+
            \Q- devnull1\E\@\Qsocialtext.com\E\s+
            \Q- devnull2\E\@\Qsocialtext.com\E\s+
-           \Q- devnull\E\@\Qurth.org\E/xs,
+           \Q- devnull\E\@\Qsocialtext.com\E/xs,
         'copy-users-from success'
     );
 

@@ -17,7 +17,7 @@ fixtures(qw( clean populated_rdbms ));
     is_deeply(
         [ map { $_->username } $users->all() ],
         [
-            ( map { ("devnull$_\@urth.org") } 1 .. 7 ),
+            ( map { ("devnull$_\@socialtext.com") } 1 .. 7 ),
              'guest', 'system-user'
         ],
         'All() returns users sorted by name by default',
@@ -31,14 +31,14 @@ fixtures(qw( clean populated_rdbms ));
     $users = Socialtext::User->All( limit => 2 );
     is_deeply(
         [ map { $_->username } $users->all() ],
-        [ map { ("devnull$_\@urth.org") } 1 .. 2 ],
+        [ map { ("devnull$_\@socialtext.com") } 1 .. 2 ],
         'All() limit of 2',
     );
 
     $users = Socialtext::User->All( limit => 2, offset => 2 );
     is_deeply(
         [ map { $_->username } $users->all() ],
-        [ map { ("devnull$_\@urth.org") } 3 .. 4 ],
+        [ map { ("devnull$_\@socialtext.com") } 3 .. 4 ],
         'All() limit of 2',
     );
 
@@ -47,7 +47,7 @@ fixtures(qw( clean populated_rdbms ));
         [ map { $_->username } $users->all() ],
         [
             'system-user', 'guest',
-            reverse map { ("devnull$_\@urth.org") } 1 .. 7
+            reverse map { ("devnull$_\@socialtext.com") } 1 .. 7
         ],
         'All() in DESC order',
     );
@@ -57,7 +57,7 @@ fixtures(qw( clean populated_rdbms ));
         [ map { $_->username } $users->all() ],
         [
             'guest', 'system-user',
-            map { ("devnull$_\@urth.org") } 7, 6, 4, 5, 3, 2, 1
+            map { ("devnull$_\@socialtext.com") } 7, 6, 4, 5, 3, 2, 1
         ],
         'All() sorted by workspace_count',
     );
@@ -67,7 +67,7 @@ fixtures(qw( clean populated_rdbms ));
         [ map { $_->username } $users->all() ],
         [
             'guest', 'system-user',
-            ( map { ("devnull$_\@urth.org") } (1..7) ),
+            ( map { ("devnull$_\@socialtext.com") } (1..7) ),
         ],
         'All() sorted by creation_datetime',
     );
@@ -76,13 +76,13 @@ fixtures(qw( clean populated_rdbms ));
     is_deeply(
         [ map { $_->username } $users->all() ],
         [
-            ( map { ("devnull$_\@urth.org") } 3, 4, 5, 6, 7, 1, 2 ),
+            ( map { ("devnull$_\@socialtext.com") } 3, 4, 5, 6, 7, 1, 2 ),
             'guest', 'system-user'
         ],
         'All() sorted by creator',
     );
 
-    my $user = Socialtext::User->Resolve( 'devnull1@urth.org' );
+    my $user = Socialtext::User->Resolve( 'devnull1@socialtext.com' );
     my $account = Socialtext::Account->new(name => 'Other 1');
     $user->primary_account( $account );
     $users = Socialtext::User->All( 
@@ -92,9 +92,9 @@ fixtures(qw( clean populated_rdbms ));
     # Check the t/Fixtures/populated_rdbms/generate script for up-to-date
     # info, but users are added to either the Other 1 or Other 2 accounts.
     is( join(',', map { $_->username } $users->all() ),
-        'system-user,guest,devnull2@urth.org,devnull4@urth.org,'
-        . 'devnull6@urth.org,devnull1@urth.org,devnull3@urth.org,'
-        . 'devnull5@urth.org,devnull7@urth.org',
+        'system-user,guest,devnull2@socialtext.com,devnull4@socialtext.com,'
+        . 'devnull6@socialtext.com,devnull1@socialtext.com,devnull3@socialtext.com,'
+        . 'devnull5@socialtext.com,devnull7@socialtext.com',
         'All() sorted by primary account name',
     );
 }
@@ -103,7 +103,7 @@ fixtures(qw( clean populated_rdbms ));
     my $users = Socialtext::User->ByUserIds( $ids );
 
     is( join(',', map { $_->username } $users->all() ),
-        'system-user,guest,devnull1@urth.org',
+        'system-user,guest,devnull1@socialtext.com',
         'ByUserIds() returns users in the order that IDs are passed.'
     );
 }
@@ -127,7 +127,7 @@ fixtures(qw( clean populated_rdbms ));
             map { [ $_->[0]->username, $_->[1]->name ] }
                 $users_with_roles->all()
         ],
-        [ map { my $u = "devnull$_\@urth.org"; [ $u, $roles{$u} ] } 1 .. 7 ],
+        [ map { my $u = "devnull$_\@socialtext.com"; [ $u, $roles{$u} ] } 1 .. 7 ],
         'ByWorkspaceIdWithRoles() returns users sorted by name by default',
     );
 
@@ -140,7 +140,7 @@ fixtures(qw( clean populated_rdbms ));
             map { [ $_->[0]->username, $_->[1]->name ] }
                 $users_with_roles->all()
         ],
-        [ map { my $u = "devnull$_\@urth.org"; [ $u, $roles{$u} ] } 1 .. 2 ],
+        [ map { my $u = "devnull$_\@socialtext.com"; [ $u, $roles{$u} ] } 1 .. 2 ],
         'ByWorkspaceIdWithRoles() limit of 2',
     );
 
@@ -154,7 +154,7 @@ fixtures(qw( clean populated_rdbms ));
             map { [ $_->[0]->username, $_->[1]->name ] }
                 $users_with_roles->all()
         ],
-        [ map { my $u = "devnull$_\@urth.org"; [ $u, $roles{$u} ] } 3 .. 4 ],
+        [ map { my $u = "devnull$_\@socialtext.com"; [ $u, $roles{$u} ] } 3 .. 4 ],
         'ByWorkspaceIdWithRoles() limit of 2',
     );
 
@@ -168,7 +168,7 @@ fixtures(qw( clean populated_rdbms ));
                 $users_with_roles->all()
         ],
         [
-            reverse map { my $u = "devnull$_\@urth.org"; [ $u, $roles{$u} ] }
+            reverse map { my $u = "devnull$_\@socialtext.com"; [ $u, $roles{$u} ] }
                 1 .. 7
         ],
         'ByWorkspaceIdWithRoles() in DESC order',
@@ -183,7 +183,7 @@ fixtures(qw( clean populated_rdbms ));
             map { [ $_->[0]->username, $_->[1]->name ] }
                 $users_with_roles->all()
         ],
-        [ map { my $u = "devnull$_\@urth.org"; [ $u, $roles{$u} ] } (1..7) ],
+        [ map { my $u = "devnull$_\@socialtext.com"; [ $u, $roles{$u} ] } (1..7) ],
         'ByWorkspaceIdWithRoles() sorted by creation_datetime',
     );
 
@@ -197,7 +197,7 @@ fixtures(qw( clean populated_rdbms ));
                 $users_with_roles->all()
         ],
         [
-            map { my $u = "devnull$_\@urth.org"; [ $u, $roles{$u} ] } 3, 4, 5,
+            map { my $u = "devnull$_\@socialtext.com"; [ $u, $roles{$u} ] } 3, 4, 5,
             6, 7, 1, 2
         ],
         'ByWorkspaceIdWithRoles() sorted by creator',
@@ -212,7 +212,7 @@ fixtures(qw( clean populated_rdbms ));
             map { [ $_->[0]->username, $_->[1]->name ] }
                 $users_with_roles->all()
         ],
-        [ map { my $u = "devnull$_\@urth.org"; [ $u, $roles{$u} ] } 1 .. 7 ],
+        [ map { my $u = "devnull$_\@socialtext.com"; [ $u, $roles{$u} ] } 1 .. 7 ],
         'ByWorkspaceIdWithRoles() sorted by role_name',
     );
 }
@@ -348,62 +348,62 @@ fixtures(qw( clean populated_rdbms ));
 
 {
     is(
-        Socialtext::User->CountByUsername( username => 'urth' ), 7,
-        'seven users have usernames matching "%urth%"'
+        Socialtext::User->CountByUsername( username => '@socialtext' ), 7,
+        'seven users have usernames matching "%@socialtext%"'
     );
 
-    my $users = Socialtext::User->ByUsername( username => 'urth' );
+    my $users = Socialtext::User->ByUsername( username => '@socialtext' );
     is_deeply(
         [ map { $_->username } $users->all() ],
-        [ map { ("devnull$_\@urth.org") } 1 .. 7 ],
+        [ map { ("devnull$_\@socialtext.com") } 1 .. 7 ],
         'ByUsername() returns users sorted by name by default',
     );
 
-    $users = Socialtext::User->ByUsername( username => 'urth',
+    $users = Socialtext::User->ByUsername( username => '@socialtext',
         limit => 2 );
     is_deeply(
         [ map { $_->username } $users->all() ],
-        [ map { ("devnull$_\@urth.org") } 1 .. 2 ],
+        [ map { ("devnull$_\@socialtext.com") } 1 .. 2 ],
         'ByUsername() limit of 2',
     );
 
-    $users = Socialtext::User->ByUsername( username => 'urth',
+    $users = Socialtext::User->ByUsername( username => '@socialtext',
         limit => 2, offset => 2 );
     is_deeply(
         [ map { $_->username } $users->all() ],
-        [ map { ("devnull$_\@urth.org") } 3 .. 4 ],
+        [ map { ("devnull$_\@socialtext.com") } 3 .. 4 ],
         'ByUsername() limit of 2',
     );
 
-    $users = Socialtext::User->ByUsername( username => 'urth',
+    $users = Socialtext::User->ByUsername( username => '@socialtext',
         sort_order => 'DESC' );
     is_deeply(
         [ map         { $_->username } $users->all() ],
-        [ reverse map { ("devnull$_\@urth.org") } 1 .. 7 ],
+        [ reverse map { ("devnull$_\@socialtext.com") } 1 .. 7 ],
         'ByUsername() in DESC order',
     );
 
-    $users = Socialtext::User->ByUsername( username => 'urth',
+    $users = Socialtext::User->ByUsername( username => '@socialtext',
         order_by => 'workspace_count' );
     is_deeply(
         [ map { $_->username } $users->all() ],
-        [ map { ("devnull$_\@urth.org") } 7, 6, 4, 5, 3, 2, 1 ],
+        [ map { ("devnull$_\@socialtext.com") } 7, 6, 4, 5, 3, 2, 1 ],
         'ByUsername() sorted by workspace_count',
     );
 
-    $users = Socialtext::User->ByUsername( username => 'urth',
+    $users = Socialtext::User->ByUsername( username => '@socialtext',
         order_by => 'creation_datetime' );
     is_deeply(
         [ map { $_->username } $users->all() ],
-        [ map { ("devnull$_\@urth.org") } (1..7) ],
+        [ map { ("devnull$_\@socialtext.com") } (1..7) ],
         'ByUsername() sorted by creation_datetime',
     );
 
-    $users = Socialtext::User->ByUsername( username => 'urth',
+    $users = Socialtext::User->ByUsername( username => '@socialtext',
         order_by => 'creator' );
     is_deeply(
         [ map { $_->username } $users->all() ],
-        [ map { ("devnull$_\@urth.org") } 3, 4, 5, 6, 7, 1, 2 ],
+        [ map { ("devnull$_\@socialtext.com") } 3, 4, 5, 6, 7, 1, 2 ],
         'ByUsername() sorted by creator',
     );
 }

@@ -281,13 +281,10 @@ sub _create_workspaces {
             name       => $meta->{name},
             title      => $meta->{title},
             account_id => $creator->primary_account_id,
+            created_by_user_id => $creator->user_id,
         );
 
         $ws->permissions->set(set_name => $ws_perms);
-        $ws->add_user(
-            user => $creator,
-            role => Socialtext::Role->Admin(),
-        );
 
         push @ws_meta, {workspace_id => $ws->workspace_id, role => 'member'};
     }

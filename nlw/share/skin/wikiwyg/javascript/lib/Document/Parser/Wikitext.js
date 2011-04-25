@@ -219,7 +219,7 @@ proto.create_grammar = function() {
             }
         },
         p: {
-            match: /^((?:(?!(?:(?:\^+|\#+|\*+|\-+) |\>|\.\w+\s*\n|\{[^\}\n]+\}\s*\n))[^\n]*\S[^\n]*\n)+(?:(?=^|\n)\s*\n)*)/,
+            match: /^((?:(?!(?:(?:\^+|\#+|\*+|\-+) |(--+)[^\n\S]*\n|\>|\.\w+\s*\n|\{[^\}\n]+\}\s*\n))[^\n]*\S[^\n]*\n)+(?:(?=^|\n)\s*\n)*)/,
             phrases: all_phrases,
             filter: function(node) { return node.text.replace(/\n$/, '').replace(/\n/g, String.fromCharCode(0xFFFC)+'\n'); }
         },

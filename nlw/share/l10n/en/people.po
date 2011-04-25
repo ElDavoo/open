@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-04-08 06:35-0700\n"
+"PO-Revision-Date: 2011-04-18 11:13-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -350,6 +350,10 @@ msgstr "People Directory"
 msgid "people.edit-profile"
 msgstr "(Edit)"
 
+#: share/plugin/people/template/lite/profile.html:111
+msgid "people.employee=count"
+msgstr "%*(%1,Employee)"
+
 #: share/plugin/people/template/lite/profile.html:15
 msgid "people.follow"
 msgstr "Follow"
@@ -357,6 +361,11 @@ msgstr "Follow"
 #: share/plugin/people/template/profile_hcard:38
 msgid "people.mobile:"
 msgstr "Mobile:"
+
+#. (peers.size)
+#: share/plugin/people/template/lite/profile.html:103
+msgid "people.peer=count"
+msgstr "%*(%1,Peer)"
 
 #: share/plugin/people/template/lite/profile.html:173
 msgid "people.private-message-send"
@@ -499,7 +508,7 @@ msgstr "You are a member of no groups."
 
 #: share/plugin/people/share/widgets/all_tags/widget.js:20
 msgid "profile.no-people-tags"
-msgstr "There are no People tags for people in this group yet. To share skills and interests, go to the Profile Pages of people in this group to Add Tags"
+msgstr "There are no people tags for people in this group yet. To share skills and interests, go to the Profile Pages of people in this group to Add Tags"
 
 #: share/plugin/people/share/widgets/profile_network/widget.js:17
 msgid "profile.no-shared-groups"
@@ -512,6 +521,10 @@ msgstr "This person has no tags. Click <b>Add tag</b> to add one now."
 #: share/plugin/people/share/widgets/profile_tags/widget.js:11
 msgid "profile.no-tags-for-you"
 msgstr "You have no tags. Use <b>Add Tag</b> to add one now."
+
+#: share/plugin/people/template/profile_hcard:59
+msgid "profile.office-communicator:"
+msgstr "Office Communicator&trade;:"
 
 #: share/plugin/people/share/widgets/profile/widget.html:28 share/plugin/people/share/widgets/profile_edit/widget.html:49 share/plugin/people/template/lite/profile.html:95
 msgid "profile.organization"

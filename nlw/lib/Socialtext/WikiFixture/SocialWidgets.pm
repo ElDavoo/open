@@ -149,7 +149,7 @@ whose value is the id of the widget (ie the value of __MODULE_ID__)
 
 sub st_name_widget {
     my ($self, $position, $logical) = @_;
-    diag "Called st_name_widget with '$logical'. Sleeping 5. "."\n";
+    diag "Called st_name_widget with position '$position' and name '$logical'. Sleeping 5. "."\n";
     sleep(5);
     eval {
         my @widgetlist = $self->_getWidgetList;
@@ -210,7 +210,8 @@ sub st_widget_settings {
     my ($self, $logical) = @_;
     eval {
         my $widget = $self->{_widgets}{$logical};
-        my $xpath = "xpath=//a\[\@id='st-widget-settings" . $widget . "'\]";
+        my $xpath = "xpath=//a\[\@id='gadget-" . $widget . "-settings'\]";
+        diag "Clicking $xpath";
         $self->{selenium}->click("$xpath");
     };
     ok( !$@, "st-widget-settings" );
@@ -247,7 +248,7 @@ This assumes that the currently selected frame is the "parent" container frame.
 sub st_widget_title_like {
     my ($self, $logical, $opt1) = @_;
     eval {
-        $self->{selenium}->text_like_ok("//span[\@class='widgetHeaderTitleText' and \@id='".$self->{_widgets}{$logical}."-title-text']", $opt1);
+        $self->{selenium}->text_like_ok("//span[\@class='widgetHeaderTitleText' and \@id='gadget-".$self->{_widgets}{$logical}."-title-text']", $opt1);
     };
     ok( !$@, "st-widget-title-like" );
 

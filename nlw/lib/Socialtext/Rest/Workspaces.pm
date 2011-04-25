@@ -267,6 +267,7 @@ sub _create_workspace_from_meta {
         customjs_name                   => $meta->{customjs_name},
         customjs_uri                    => $meta->{customjs_uri},
         skin_name                       => $meta->{skin_name},
+        dont_add_creator                => 1,
         show_welcome_message_below_logo =>
             $meta->{show_welcome_message_below_logo},
         show_title_below_logo => $meta->{show_title_below_logo},

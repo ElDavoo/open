@@ -157,6 +157,15 @@ msgstr "public-join-to-edit"
 msgid "acl.public-read-only"
 msgstr "public-read-only"
 
+#: lib/Socialtext/Pluggable/Plugin/Agile.pm:110
+msgid "agile.clear-history"
+msgstr "Clear Agile History"
+
+#. ($data->{ga_domains})
+#: lib/Socialtext/Pluggable/Plugin/Analytics.pm:31
+msgid "analytics.invalid-domains-setting=data"
+msgstr "Invalid domains setting: %1"
+
 #. (shift)
 #: lib/Socialtext/Handler/ControlPanel.pm:616
 msgid "appliance.added-business-admin=user"
@@ -833,6 +842,11 @@ msgstr "Test Container"
 #: lib/Socialtext/Gadgets/Container/WidgetEditor.pm:13
 msgid "containers.widget-editor"
 msgstr "Socialtext Widget Editor"
+
+#. ($acct->name)
+#: lib/Socialtext/Handler/ControlPanel.pm:1953
+msgid "control.new-users-in=account"
+msgstr "New Users in %1"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:2190
 msgid "control.new-wiki"
@@ -3528,6 +3542,23 @@ msgstr "%1 seconds"
 #: lib/Socialtext/PageRevision.pm:378
 msgid "time.weeks=count"
 msgstr "%1 weeks"
+
+#: lib/Socialtext/Pluggable/Plugin/Twilio.pm:72
+msgid "twilio.changes-saved"
+msgstr "Changes Saved"
+
+#: lib/Socialtext/Pluggable/Plugin/Twilio.pm:119
+msgid "twilio.phone-services"
+msgstr "Phone Services"
+
+#: lib/Socialtext/Pluggable/Plugin/Twilio.pm:89
+msgid "twilio.pick-one"
+msgstr "Pick one"
+
+#. ($sender->best_full_name)
+#: lib/Socialtext/Job/TwilioNotify.pm:55
+msgid "twilio.private-message-from=sender"
+msgstr "Private message from %1"
 
 #: lib/Socialtext/TimeZonePlugin.pm:36
 msgid "tz.+0000"

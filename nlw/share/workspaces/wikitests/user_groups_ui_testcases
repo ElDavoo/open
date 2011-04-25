@@ -4,7 +4,7 @@
 * [Test Case: Private Group]
 * [Test Case: User Deactivates Group]
 * [Test Case: Groups in Global Nav]
-* [Test Case: Groups UI Invite Colleages to account-group]
+* [Test Case: Groups UI Invite Colleagues to account-group]
 * [Test Case: Groups UI Filter Search Results by Group]
 * [Test Case: Groups UI Acct 2 Group Web UI]
 * [Test Case: Groups UI Edit an Existing Group]
@@ -21,11 +21,15 @@
 * [Test Case: Groups UI Delegate Membership]
 * [Test Case: Associate Group With Workspace]
 
-New as of self-join groups and workspaces
+Self-join groups and workspaces
 
 * [Test Case: Restrict Self-Join Workspaces]
 * [Test Case: Group No Change Link]
 
+Widgets in Groups:
+
+* [Test Case: Group Home Has Widgets]
+* [Test Case: Group Home Widget Permissions]
 
 
 ToDo:
