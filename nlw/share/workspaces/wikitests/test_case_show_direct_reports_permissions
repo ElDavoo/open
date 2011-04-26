@@ -2,6 +2,10 @@
 | *Comment* | Test Case: Show Direct Reports |
 
 
+
+
+* Fixture: SocialWidgets
+
 Here's the basic setup:
 
 Manager will belong to accountM
@@ -34,24 +38,27 @@ Manager see's 'em all
 | set | acct_two | accttwo%%start_time%% |
 | set | acct_three | acctthree%%start_time%% |
 | set | acct_tmp | accttmp%%start_time%% |
-| set | acct_joiner | acctjoiner%%start_time%% |
+| set | acct_joiner_one | acctjoiner_one%%start_time%% |
+| set | acct_joiner_two | acctjoiner_two%%start_time%% |
 | st-admin | create-account --name %%acct_m%% | was created |
 | st-admin | create-account --name %%acct_one%% | was created |
 | st-admin | create-account --name %%acct_two%% | was created |
 | st-admin | create-account --name %%acct_three%% | was created |
 | st-admin | create-account --name %%acct_tmp%% | was created |
-| st-admin | create-account --name %%acct_joiner%% | was created |
+| st-admin | create-account --name %%acct_joiner_one%% | was created |
+| st-admin | create-account --name %%acct_joiner_two%% | was created |
 | st-admin | enable-plugin --plugin dashboard --account %%acct_m%% |  |
 | st-admin | enable-plugin --plugin dashboard --account %%acct_one%% |  |
 | st-admin | enable-plugin --plugin dashboard --account %%acct_two%% |  |
 | st-admin | enable-plugin --plugin dashboard --account %%acct_tmp%% |  |
-| st-admin | enable-plugin --plugin dashboard --account %%acct_joiner%% |  |
+| st-admin | enable-plugin --plugin dashboard --account %%acct_joiner_one%% |  |
+| st-admin | enable-plugin --plugin dashboard --account %%acct_joiner_two%% |  |
 
 | *Comment* | Test Case: Show Direct Reports Permissions - Create Workspaces |  |
 | set | joiner1 | joiner1ws%%start_time%% |
 | set | joiner2 | joiner2ws%%start_time%% |
-| st-admin | create-workspace --name %%joiner1%% --title %%joiner1%% --account %%acct_joiner%% | was created |
-| st-admin | create-workspace --name %%joiner2%% --title %%joiner2%% --account %%acct_joiner%% | was created |
+| st-admin | create-workspace --name %%joiner1%% --title %%joiner1%% --account %%acct_joiner_one%% | was created |
+| st-admin | create-workspace --name %%joiner2%% --title %%joiner2%% --account %%acct_joiner_two%% | was created |
 
 | *Comment* | Test Case: Show Direct Reports Permissions - Create Users |  |
 | set | user1_short | subordinate01%%start_time%% |
@@ -119,6 +126,7 @@ Manager see's 'em all
 
 | *Comment* | Test Case: Show Direct Reports Permissions - User02 will see Manager has user 01, user02 and user04 as direct reports ONLY (does not see 03 or 05) |  |
 | st-logoutin | %%user2%% | %%password%% |
+| st-process-jobs |  |  |
 | st-find-user | %%manager_short%% |  |
 | wait_for_element_visible_ok | link=%%user1_short%% | 30000 |
 | wait_for_element_visible_ok | link=%%user2_short%% | 30000 |
@@ -128,7 +136,8 @@ Manager see's 'em all
 
 | *Comment* | Test Case: Show Direct Reports Permissions - User02 will see user01, user04 as peers (does not see 03, 05) |  |
 | st-logoutin | %%user2%% | %%password%% |
-| wait_for_element_visible_ok | link=%%user2_short%% |
+| st-find-user | %%manager_short%% |  |
+| wait_for_element_visible_ok | link=%%user2_short%% | 30000 |
 | click_and_wait | link=%%user2_short%% |  |
 | wait_for_element_visible_ok | link=%%user1_short%% | 30000 |
 | wait_for_element_visible_ok | link=%%user4_short%% | 30000 |
@@ -143,7 +152,7 @@ Manager see's 'em all
 | wait_for_element_visible_ok | link=%%user2_short%% | 30000 |
 | wait_for_element_visible_ok | link=%%user4_short%% | 30000 |
 | wait_for_element_visible_ok | link=%%user5_short%% | 30000 |
-| wait_for_element_not_present_ok | link=%%user5_short%% | 30000 |
+| wait_for_element_not_present_ok | link=%%user3_short%% | 30000 |
 
 | *Comment* | Test Case: Show Direct Reports Permissions - ... We remove manager from Joiner1 |  |
 | st-admin | remove-member --e %%manager%% --w %%joiner1%% | no longer has the role of |
@@ -161,6 +170,7 @@ Manager see's 'em all
 
 | *Comment* | Test Case: Show Direct Reports Permissions - ... We remove Manager from joiner2 |  |
 | st-admin | remove-member --e %%manager%% --w %%joiner2%% | no longer has the role of |
+| st-process-jobs |  |  |
 
 | *Comment* | Test Case: Show Direct Reports Permissions - Manager does not think he has any direct reports |  |
 | st-logoutin | %%manager%% | %%password%% |
