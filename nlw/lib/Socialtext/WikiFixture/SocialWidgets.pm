@@ -652,7 +652,7 @@ sub st_create_group {
     $self->handle_command('comment','end of st_create_group.  Final create has not yet been clicked');
 }
 
-=head2 st_find_user ( $user_id ) 
+=head2 st_find_user ( $user_id, optional $label ) 
 
 Pass in a unique value for the user before the at sign, and selenium will 
 search for it and click on that user.
@@ -660,9 +660,10 @@ search for it and click on that user.
 =cut
 
 sub st_find_user {
-    my ($self, $user_id) = @_;
+    my ($self, $user_id, $label) = @_;
     eval {
-        $self->handle_command('open_ok','/?action=people');
+        $self->handle_command('open_ok','/?action=people;tag=;sortby=best_full_name;limit=20;account_id=all');
+        $self->handle_command('pause','10000');
         $self->handle_command('wait_for_element_visible_ok','st-search-action', 30000);
         $self->handle_command('wait_for_element_visible_ok', 'st-search-term', 30000);
         $self->handle_command('wait_for_element_visible_ok', 'st-search-submit', 30000);
@@ -670,6 +671,7 @@ sub st_find_user {
         $self->handle_command('type_ok', 'st-search-term', $user_id);
         $self->handle_command('pause', '1000');
         $self->handle_command('click_and_wait', 'st-search-submit');
+
         $self->handle_command('wait-for-element-visible-ok', "link=$user_id", 30000);
         $self->handle_command('click_and_wait',"link=$user_id");
         $self->handle_command('wait-for-element-visible-ok','new_tag',30000);
