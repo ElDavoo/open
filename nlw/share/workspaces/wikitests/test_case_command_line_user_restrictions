@@ -85,15 +85,19 @@
 
 | *Comment* | Test Case: Command-Line User Restrictions - Subtract 1 more restriction still can't log in |  |
 | st-admin | remove-restriction --e %%euser%% --restriction email_confirmation | 'email_confirmation' restriction has been lifted on '%%euser%%' |
-| st-logoutin | %%euser%% | %%password%% |
-| wait_for_text_present_ok | You need to have an External Id set in order to activate this account. | 3000 |
+
+| *Comment* | Test Case: Command-Line User Restrictions - Subtract 1 more restriction still can't log in |  |
+| open_ok | /st/dashboard |  |
+| st-login | %%euser%% | %%password%% |
 | wait_for_text_present_ok | For more information, please contact your system administrator. | 30000 |
+| text_like | You need to have an External ID set in order to activate this account. |  |
 | open_ok | /st/dashboard |  |
 | text_unlike | //body | Welcome, New User |
 | text_like | //body | Log in to Socialtext |
 
 | *Comment* | Test Case: Command-Line User Restrictions - Remove last restriction, can log in |  |
 | st-admin | remove-restriction --e %%euser%% --restriction require_external_id | 'require_external_id' restriction has been lifted on '%%euser%%' |
+| open_ok | /st/dashboard |  |
 | st-login | %%euser%% | %%password%% |
 | text_unlike | //body | You need to confirm your email address to activate this account |
 | text_unlike | //body | You should have received an email with a confirmation link. |

@@ -117,7 +117,7 @@
 | click_ok | userTable-select-0 |  |
 | click_ok | userTable-select-1 |  |
 | click_ok | userTable-action-0 |  |
-| VerifyConfirmation | Remove the 2 selected users from this workspace? |  |
+| VerifyConfirmation | Remove the selected 2 users from this workspace? |  |
 | wait_for_text_present_ok | Workspace role changes were successful. | 30000 |
 | text_like | //body | Users (2) |
 | st-search-cp-workspace | %%group_ws%% | 1 |
@@ -167,7 +167,7 @@
 | click_ok | userTable-select-0 |  |
 | click_ok | userTable-select-1 |  |
 | click_ok | userTable-action-0 |  |
-| verifyConfirmation | Remove the 2 selected users from this workspace? |  |
+| verifyConfirmation | Remove the selected 2 users from this workspace? |  |
 | wait_for_text_present_ok | Workspace role changes were successful. | 30000 |
 | wait_for_text_present_ok | Users (1) | 30000 |
 | text_unlike | //body | %%user3%% |

@@ -265,6 +265,10 @@ msgstr "Edits per Workspace"
 msgid "reports.example-actions-today-1month-txt"
 msgstr "Example: /actions/today/-1month.txt"
 
+#: ../socialtext-reports/template/usage_by.tmpl:16 ../socialtext-reports/template/usage_by_workspace.tmpl:16
+msgid "reports.from-through=start,end"
+msgstr "From %1 through %2"
+
 #: ../socialtext-reports/template/controls.tmpl:4
 msgid "reports.generate!"
 msgstr "Generate!"
@@ -391,6 +395,10 @@ msgstr "StdDev"
 msgid "reports.submit"
 msgstr "Submit"
 
+#: ../socialtext-reports/template/new_users.tmpl:24
+msgid "reports.time-of-first-action"
+msgstr "Time of First Action"
+
 #: ../socialtext-reports/template/usage_by.tmpl:21 ../socialtext-reports/template/usage_by_workspace.tmpl:21
 msgid "reports.total-members-current:"
 msgstr "Total members (current):"
@@ -434,6 +442,10 @@ msgstr "Usage By Account"
 #: ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByWorkspace.pm:14
 msgid "reports.usage-by-wiki"
 msgstr "Usage By Workspace"
+
+#: ../socialtext-reports/template/new_users.tmpl:23
+msgid "reports.user"
+msgstr "User"
 
 #: ../socialtext-reports/template/usage_by.tmpl:28 ../socialtext-reports/template/usage_by_workspace.tmpl:28
 msgid "reports.username"

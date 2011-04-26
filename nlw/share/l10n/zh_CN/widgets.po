@@ -1078,6 +1078,9 @@ msgstr "工具库"
 msgid "widgets.gallery-switch=account:"
 msgstr "这是“%1”账号的工具库。转到帐户："
 
+msgid "widgets.in-layout-mode-click-save-or-cancel"
+msgstr "您现在位于布局模式。点击<b>保存</b>以保存更改，或<b>取消</b>将其舍弃。"
+
 #: share/plugin/widgets/share/javascript/template/activities/widget.tt2:2 share/plugin/widgets/template/data/events/widget:2
 msgid "widgets.install-this"
 msgstr "安装小工具"

@@ -8,6 +8,7 @@ use base 'Socialtext::Plugin';
 use Socialtext::User;
 use Class::Field qw( const field );
 use Storable ();
+use Socialtext::l10n;
 
 const sortdir => {
     Summary        => 'asc',
@@ -152,13 +153,13 @@ sub _gen_sort_closure {
         if ( $direction eq 'asc' ) {
             return sub {
                 $a->{revision_count} <=> $b->{revision_count}
-                    or lc( $a->{Subject} ) cmp lc( $b->{Subject} );
+                    or lcmp( $a->{Subject}, $b->{Subject} );
                 }
         }
         else {
             return sub {
                 $b->{revision_count} <=> $a->{revision_count}
-                    or lc( $a->{Subject} ) cmp lc( $b->{Subject} );
+                    or lcmp( $a->{Subject}, $b->{Subject} );
                 }
         }
     }
@@ -167,52 +168,48 @@ sub _gen_sort_closure {
         # may not be the same as the From header.
         if ( $direction eq 'asc' ) {
             return sub {
-                lc( Socialtext::User->new( 
+                lcmp( Socialtext::User->new( 
                     username => $a->{username} 
-                )->guess_sortable_name )
-                cmp 
-                lc( Socialtext::User->new(
+                )->guess_sortable_name,
+                Socialtext::User->new(
                     username => $b->{username}
                 )->guess_sortable_name )
-                or lc( $a->{Subject} ) cmp lc( $b->{Subject} );
+                or lcmp( $a->{Subject}, $b->{Subject} );
             }
         }
         else {
             return sub {
-                lc( Socialtext::User->new( 
+                lcmp( Socialtext::User->new( 
                     username => $b->{username} 
-                )->guess_sortable_name )
-                cmp 
-                lc( Socialtext::User->new(
+                )->guess_sortable_name,
+                Socialtext::User->new(
                     username => $a->{username}
                 )->guess_sortable_name )
-                or lc( $b->{Subject} ) cmp lc( $a->{Subject} );
+                or lcmp( $b->{Subject}, $a->{Subject} );
             }
         }
     }
     elsif ( $sortby eq 'creator' ) { 
         if ( $direction eq 'asc' ) {
             return sub {
-                lc( Socialtext::User->new( 
+                lcmp( Socialtext::User->new( 
                     username => $a->{creator} 
-                )->guess_sortable_name )
-                cmp 
-                lc( Socialtext::User->new(
+                )->guess_sortable_name,
+                Socialtext::User->new(
                     username => $b->{creator}
                 )->guess_sortable_name )
-                or lc( $a->{Subject} ) cmp lc( $b->{Subject} );
+                or lcmp( $a->{Subject}, $b->{Subject} );
             }
         }
         else {
             return sub {
-                lc( Socialtext::User->new( 
+                lcmp( Socialtext::User->new( 
                     username => $b->{creator} 
-                )->guess_sortable_name )
-                cmp 
-                lc( Socialtext::User->new(
+                )->guess_sortable_name,
+                Socialtext::User->new(
                     username => $a->{creator}
                 )->guess_sortable_name )
-                or lc( $b->{Subject} ) cmp lc( $a->{Subject} );
+                or lcmp( $b->{Subject}, $a->{Subject} );
             }
         }
     }
@@ -221,16 +218,16 @@ sub _gen_sort_closure {
             return sub {
                 warn "$sortby is undef for $a->{Subject}!" unless defined $a->{$sortby};
                 warn "$sortby is undef for $b->{Subject}!" unless defined $b->{$sortby};
-                lc( $a->{$sortby}||'' ) cmp lc( $b->{$sortby}||'' )
-                    or lc( $a->{Subject} ) cmp lc( $b->{Subject} );
+                lcmp( ($a->{$sortby}//''), ($b->{$sortby}//'') )
+                    or lcmp( $a->{Subject}, $b->{Subject} );
             };
         }
         else {
             return sub {
                 warn "$sortby is undef for $a->{Subject}!" unless defined $a->{$sortby};
                 warn "$sortby is undef for $b->{Subject}!" unless defined $b->{$sortby};
-                lc( $b->{$sortby}||'' ) cmp lc( $a->{$sortby}||'' )
-                    or lc( $a->{Subject} ) cmp lc( $b->{Subject} );
+                lcmp( ($b->{$sortby}//''), ($a->{$sortby}//'') )
+                    or lcmp( $a->{Subject}, $b->{Subject} );
             };
         }
     }

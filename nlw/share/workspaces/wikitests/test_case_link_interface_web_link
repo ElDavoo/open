@@ -7,12 +7,15 @@
 | wait_for_element_visible_ok | wikiwyg_button_link | 30000 |
 | click_ok | wikiwyg_button_link |  |
 | wait_for_element_visible_ok | add-web-link | 30000 |
-| click_ok | add-web-link |  |
+| check_ok | add-web-link |  |
+| is_checked_ok | add-web-link |  |
 | type_ok | wiki-link-text |  |
 | type_ok | st-widget-workspace_id |  |
 | type_ok | st-widget-page_title |  |
 | type_ok | wiki-link-section |  |
+| wait_for_element_visible_ok | web-link-text | 30000 |
 | type_ok | web-link-text | Socialtext |
+| wait_for_element_visible_ok | web-link-destination | 30000 |
 | type_ok | web-link-destination | `http://www.socialtext.com` |
 
 | *Comment* | This is where the problem is in IE, but I can't quite figure out why it doesn't save properly |  |

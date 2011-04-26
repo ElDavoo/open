@@ -367,6 +367,10 @@ msgstr "remove"
 msgid "groups.reset-photo"
 msgstr "Reset Photo"
 
+#: share/plugin/groups/template/group_links:24
+msgid "groups.revert-to-default"
+msgstr "Revert to Default…"
+
 #: share/plugin/groups/share/widgets/membership/widget.js:425
 msgid "groups.role-admin"
 msgstr "Admin"

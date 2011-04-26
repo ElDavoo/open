@@ -45,7 +45,7 @@
 | click_ok | groupTable-select-0 |  |
 | wait_for_element_visible_ok | //input[@id='groupTable-action-0' and @value="Remove from Workspace"] | 30000 |
 | click_ok | //input[@id='groupTable-action-0' and @value="Remove from Workspace"] |  |
-| confirmation_like | qr/Remove the.+selected group/ism |  |
+| confirmation_like | qr/Remove the selected.+group/ism |  |
 | wait_for_text_present_ok | Workspaces need to include at least one admin | 30000 |
 
 | *Comment* | Test Case: Business Control Panel Workspace Add Group - give WS admin so group can be removed |  |
@@ -53,7 +53,7 @@
 | click_ok | groupTable-select-0 |  |
 | wait_for_element_visible_ok | //input[@id='groupTable-action-0' and @value="Remove from Workspace"] | 30000 |
 | click_ok | //input[@id='groupTable-action-0' and @value="Remove from Workspace"] |  |
-| confirmation_like | qr/Remove the.+selected group/ism |  |
+| confirmation_like | qr/Remove the selected.+group/ism |  |
 | wait_for_text_present_ok | Workspace role changes were successful | 30000 |
 
 | *Comment* | Test Case: Business Control Panel Workspace Add Group TEARDOWN |  |

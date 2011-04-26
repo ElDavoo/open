@@ -51,6 +51,8 @@
 | st-select-widget-frame | signals |  |
 | wait_for_element_present_ok | link=everyone | 30000 |
 | click_ok | link=everyone |  |
+| wait_for_element_present_ok | link=signals | 30000 |
+| click_ok | link=signals |  |
 | select-frame | relative=parent |  |
 
 | st_verify_text_in_activities_widget | signals | nfsig-%%start_time%% 65 |
@@ -90,6 +92,11 @@
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Signals Follow Filter With Pagination TEARDOWN |  |
-| st-admin | delete-workspace --w %%ws%% --no-export | has been deleted |
+| st-process-jobs |  |  |
+| delete-workspace | %%ws%% | Recklessly deleting |
+| st-admin | deactivate-user --e %%signaler%% |  |
+| st-admin | deactivate-user --e %%follower%% |  |
+| st-admin | deactivate-user --e %%notfollowed%% |  |
+| delete-account | %%acct%% | Recklessly deleted |
 
 | *Comment* | Test Case: Signals Follow Filter With Pagination COMPLETED |  |

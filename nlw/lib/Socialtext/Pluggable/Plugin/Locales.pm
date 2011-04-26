@@ -40,7 +40,7 @@ sub language_settings {
         value => $_,
         label => $languages->{$_},
         selected => ($locale eq $_),
-    }} sort { ($languages->{$a} =~ /DEV/ cmp $languages->{$b} =~ /DEV/) or ($a cmp $b) } grep {
+    }} sort { ($languages->{$a} =~ /DEV/ <=> $languages->{$b} =~ /DEV/) or ($a cmp $b) } grep {
         $_ ne $system_locale
     } keys %$languages ];
 

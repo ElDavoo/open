@@ -1,3 +1,4 @@
+
 | *Comment* | Test Case: Groups UI Delegate Membership |
 
 * Fixture: SocialWidgets
@@ -7,7 +8,7 @@
 | enable-acct-plugin | signals | %%group_acct%% |  |
 
 | set | group_mbr_short | grpmbr%%start_time%% |
-| set | group_mbr | %%group_mbr_short%%@ken.socialtext.net |
+| set | group_mbr | `%%group_mbr_short%%@ken.socialtext.net` |
 
 | create-user | %%group_mbr%% | %%password%% | %%group_acct%% |
 
@@ -49,7 +50,7 @@
 | *Comment* | Test Case: Groups UI Delegate Membership - Change back to Member |  |
 | select-frame | relative=parent |  |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-7-list'] | 30000 |
-| click_ok | //*[@id='st-dropdown-7-list']/li[1]/a |  |
+| click_ok | `//*[@id='st-dropdown-7-list']/li[1]/a` |  |
 | st-select-widget-frame | members_widget |  |
 | text_like | //body | qr/changed/ism |
 | text_like | //body | qr/%%group_mbr_short%%\s+Member/ |
@@ -85,11 +86,10 @@
 | text_like | //body | qr/%%group_user_short%%\s+Admin/ |
 | select-frame | relative=parent |  |
 | wait_for_element_present_ok | //ul[@id='st-dropdown-3-list'] | 30000 |
-| click_ok | //*[@id='st-dropdown-3-list']/li[1]/a |  |
+| click_ok | `//*[@id='st-dropdown-3-list']/li[1]/a` |  |
 | st-select-widget-frame | members_widget |  |
 | wait_for_text_present_ok | Groups need at least one admin | 30000 |
-| wait_for_text_not_present_ok | Groups need at least one admin | 30000 |
-| pause | 2000 |  |
+| pause | 15000 | error message removes Admin menu. Wait for it to return. |
 | text_like | //body | qr/%%group_user_short%%\s+Admin/ |
 | select-frame | relative=parent |  |
 

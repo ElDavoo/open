@@ -195,6 +195,9 @@ msgstr "各工作区的编辑次数"
 msgid "reports.example-actions-today-1month-txt"
 msgstr "范例：/actions/today/-1month.txt"
 
+msgid "reports.from-through=start,end"
+msgstr "从%1到%2"
+
 msgid "reports.generate!"
 msgstr "制表！"
 
@@ -288,6 +291,9 @@ msgstr "标准差"
 msgid "reports.submit"
 msgstr "提交"
 
+msgid "reports.time-of-first-action"
+msgstr "第一次行动时间"
+
 msgid "reports.total-members-current:"
 msgstr "完整成员（当前）："
 
@@ -320,6 +326,9 @@ msgstr "按帐户显示用量"
 
 msgid "reports.usage-by-wiki"
 msgstr "按工作区显示用量"
+
+msgid "reports.user"
+msgstr "用户"
 
 msgid "reports.username"
 msgstr "用户名"

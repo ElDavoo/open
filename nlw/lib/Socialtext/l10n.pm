@@ -1,12 +1,13 @@
 package Socialtext::l10n;
 # @COPYRIGHT@
-use strict;
+use 5.12.0;
 use warnings;
 use Scalar::Defer qw(defer force);
 use base 'Exporter';
+use Scalar::Util 'blessed';
 use Socialtext::AppConfig;
-our @EXPORT = qw(__ loc lsort lsort_by);
-our @EXPORT_OK = qw(loc_lang system_locale best_locale);
+our @EXPORT = qw(__ loc lcmp lsort lsort_by);
+our @EXPORT_OK = qw(loc_lang system_locale best_locale getSortKey);
 our %EXPORT_TAGS = (all => [@EXPORT, @EXPORT_OK]);
 
 use Socialtext::l10n::I18N::zz;
@@ -18,17 +19,18 @@ Socialtext::l10n - Provides localization functions
 
 =head1 SYNOPSIS
 
-    # Exports "__", "loc", "lsort" and "lsort_by"
+    # Exports "__", "loc", "lcmp", "lsort" and "lsort_by"
     use Socialtext::l10n;
 
     my @foo = lsort("a", "B", "c");
     my @bar = lsort_by( name => ($obj1, $obj2, $obj3));
 
-    # Exports "loc_lang", "system_locale" and "best_locale" too
+    # Exports "loc_lang", "system_locale", "best_locale" and "getSortKey" too
     use Socialtext::l10n ':all';
 
     my $deferred = __('wiki.welcome');   # deferred loc()
     loc_lang('fr');                      # set the locale
+    loc_lang();                          # get the current locale
     is loc('wiki.welcome'), 'Bienvenue'; # find localized text
     is $deferred, 'Bienvenue';           # this also works
 
@@ -46,9 +48,10 @@ See Locale::Maketext::Simple for information on string formats.
 Creates a I<deferred> string. It's evaluated in the active locale whenever
 its value is used.
 
-=head2 loc_lang
+=head2 loc_lang( [$locale] )
 
-Set the locale.
+Set the locale.  If C<$locale> is missing, returns the previous value
+passed to C<loc_lang>.
 
 =head2 best_locale( [$hub] )
 
@@ -70,7 +73,15 @@ with proper ordering for accented characters.
 
 =head2 lsort_by($field => @list_of_hashes)
 
-Sort a list of hash references by a specific field, using Unicode collation algorithm.
+Sort a list of objects or hash references by a specific field, using Unicode collation algorithm.
+
+=head2 lcmp($a, $b)
+
+Like C<$a cmp $b>, except with Unicode collation order.
+
+=head2 getSortKey($string)
+
+Return the collation key for a given string.
 
 =head1 Localization Files
 
@@ -84,11 +95,22 @@ my $collator = Unicode::Collate->new;
 
 sub lsort_by {
     my $field = shift;
-    sort { $collator->cmp($a->{$field}, $b->{$field}) } @_
+    sort { $collator->cmp(
+        ((blessed($a) and $a->can($field)) ? $a->$field : $a->{$field}),
+        ((blessed($b) and $b->can($field)) ? $b->$field : $b->{$field})
+    ) } @_
 }
 
 sub lsort {
-    $collator->sort(@_)
+    $collator->sort(@_);
+}
+
+sub lcmp {
+    $collator->cmp(@_);
+}
+
+sub getSortKey {
+    $collator->getSortKey(@_);
 }
 
 require Locale::Maketext::Simple;
@@ -167,7 +189,16 @@ sub loc {
 }
 
 # Have to wrap this b/c we renamed the real loc() function to _loc()
-sub loc_lang { return _loc_lang(@_) }
+sub loc_lang {
+    state $current_lang;
+    if (@_) {
+        $current_lang = shift;
+        return _loc_lang($current_lang);
+    }
+    else {
+        return $current_lang || system_locale();
+    }
+}
 
 sub best_locale {
     my $hub = shift || return system_locale();

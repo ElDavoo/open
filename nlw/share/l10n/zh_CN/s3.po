@@ -819,6 +819,45 @@ msgstr "所有群组"
 msgid "group.name"
 msgstr "群组名称"
 
+msgid "im.away"
+msgstr "暂离"
+
+msgid "im.be-right-back"
+msgstr "马上回来"
+
+msgid "im.busy"
+msgstr "忙碌"
+
+msgid "im.do-not-disturb"
+msgstr "请勿打扰"
+
+msgid "im.do-not-disturb-but-allowed"
+msgstr "除非必要请勿打扰"
+
+msgid "im.idle-online"
+msgstr "空闲在线"
+
+msgid "im.lunch"
+msgstr "午餐"
+
+msgid "im.meeting"
+msgstr "会议"
+
+msgid "im.offline"
+msgstr "离线"
+
+msgid "im.on-phone"
+msgstr "电话中"
+
+msgid "im.online"
+msgstr "在线"
+
+msgid "im.out-of-office"
+msgstr "离开办公室"
+
+msgid "im.requires-internet-explorer"
+msgstr "（需要Internet Explorer）"
+
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:32
 msgid "image.upload"
 msgstr "上传图片"

@@ -9,7 +9,7 @@ use Class::Field qw( const field );
 use Socialtext::AppConfig;
 use Socialtext::Helpers;
 use Socialtext::TT2::Renderer;
-use Socialtext::l10n qw(loc system_locale __);
+use Socialtext::l10n qw(:all);
 use Socialtext::String;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::Pageset;
@@ -279,13 +279,13 @@ sub _gen_sort_closure {
         if ( $direction eq 'asc' ) {
             return sub {
                 $a->{size} <=> $b->{size}
-                    or lc( $a->{subject} ) cmp lc( $b->{subject} );
+                    or lcmp( $a->{subject}, $b->{subject} );
                 }
         }
         else {
             return sub {
                 $b->{size} <=> $a->{size}
-                    or lc( $a->{subject} ) cmp lc( $b->{subject} );
+                    or lcmp( $a->{subject}, $b->{subject} );
                 }
         }
     }
@@ -298,7 +298,7 @@ sub _gen_sort_closure {
                 my $ub = Socialtext::User->new(username => $b->{user});
                 my $bfn_a = $ua->best_full_name;
                 my $bfn_b = $ub->best_full_name;
-                return lc($bfn_a) cmp lc($bfn_b) or lc($a->{subject}) cmp lc($b->{subject});
+                return lcmp($bfn_a, $bfn_b) or lcmp($a->{subject}, $b->{subject});
             }
         }
         else {
@@ -307,7 +307,7 @@ sub _gen_sort_closure {
                 my $ub = Socialtext::User->new(username => $b->{user});
                 my $bfn_a = $ua->best_full_name;
                 my $bfn_b = $ub->best_full_name;
-                return lc($bfn_b) cmp lc($bfn_a) or lc($b->{subject}) cmp lc($a->{subject});
+                return lcmp($bfn_b, $bfn_a) or lcmp($b->{subject}, $a->{subject});
             }
         }
     }
@@ -318,8 +318,8 @@ sub _gen_sort_closure {
                 my ($af, $bf) = ($a->{$sortby}, $b->{$sortby});
                 $af = &$af if ref $af eq 'CODE';
                 $bf = &$bf if ref $bf eq 'CODE';
-                (lc( $af ) cmp lc( $bf ))
-                    or lc( $a->{subject} ) cmp lc( $b->{subject} );
+                (lcmp( $af, $bf ))
+                    or lcmp( $a->{subject}, $b->{subject} );
             };
         }
         else {
@@ -327,8 +327,8 @@ sub _gen_sort_closure {
                 my ($af, $bf) = ($a->{$sortby}, $b->{$sortby});
                 $af = &$af if ref $af eq 'CODE';
                 $bf = &$bf if ref $bf eq 'CODE';
-                (lc( $bf ) cmp lc( $af ))
-                    or lc( $a->{subject} ) cmp lc( $b->{subject} );
+                (lcmp( $bf, $af ))
+                    or lcmp( $a->{subject}, $b->{subject} );
             };
         }
     }

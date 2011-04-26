@@ -350,6 +350,10 @@ msgstr "People Directory"
 msgid "people.edit-profile"
 msgstr "(Edit)"
 
+#: share/plugin/people/template/lite/profile.html:111
+msgid "people.employee=count"
+msgstr "%*(%1,Employee)"
+
 #: share/plugin/people/template/lite/profile.html:15
 msgid "people.follow"
 msgstr "Follow"
@@ -357,6 +361,11 @@ msgstr "Follow"
 #: share/plugin/people/template/profile_hcard:38
 msgid "people.mobile:"
 msgstr "Mobile:"
+
+#. (peers.size)
+#: share/plugin/people/template/lite/profile.html:103
+msgid "people.peer=count"
+msgstr "%*(%1,Peer)"
 
 #: share/plugin/people/template/lite/profile.html:173
 msgid "people.private-message-send"
@@ -512,6 +521,10 @@ msgstr "This person has no tags. Click <b>Add tag</b> to add one now."
 #: share/plugin/people/share/widgets/profile_tags/widget.js:11
 msgid "profile.no-tags-for-you"
 msgstr "You have no tags. Use <b>Add Tag</b> to add one now."
+
+#: share/plugin/people/template/profile_hcard:59
+msgid "profile.office-communicator:"
+msgstr "Office Communicator&trade;:"
 
 #: share/plugin/people/share/widgets/profile/widget.html:28 share/plugin/people/share/widgets/profile_edit/widget.html:49 share/plugin/people/template/lite/profile.html:95
 msgid "profile.organization"
