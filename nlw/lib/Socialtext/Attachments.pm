@@ -301,11 +301,12 @@ sub id_for_filename {
         SELECT pa.id FROM page_attachment pa
           JOIN attachment a USING (attachment_id)
          WHERE pa.workspace_id = $1
+           AND pa.page_id = $2
            AND NOT pa.deleted
            AND EXISTS (
               SELECT 1 FROM page p
               WHERE p.workspace_id = pa.workspace_id
-                AND p.page_id = $2
+                AND p.page_id = pa.page_id
                 AND NOT p.deleted
            )
            AND lower(a.filename) = lower($3)
