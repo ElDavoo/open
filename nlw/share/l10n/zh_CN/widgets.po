@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-19 19:39+0800\n"
+"PO-Revision-Date: 2011-04-27 14:17+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -545,7 +545,7 @@ msgstr "抱歉，显示板暂不支持此项特性。"
 
 #: share/plugin/widgets/share/javascript/activities/widget.js:423 share/plugin/widgets/share/javascript/activities/widget.js:589
 msgid "error.getting-activities"
-msgstr "参加活动时出错。"
+msgstr "读取活动时出错。"
 
 #: share/plugin/widgets/share/javascript/activities/editor.js:1439
 msgid "error.invalid-video-link"
@@ -562,7 +562,7 @@ msgstr "非有效工作区。请输入一个包含网页链接的有效工作区
 #. (action.error_title || action.title)
 #: share/plugin/widgets/share/javascript/template/activities/empty.tt2:4
 msgid "error.no-conversations-in-30days=title"
-msgstr "没有新的 %1 因为在过去的 30 天内，您没有与您的同事对话。"
+msgstr "没有新的 %1，因为在过去的 30 天内，您没有与您的同事对话。"
 
 #. (action.error_title || action.title)
 #: share/plugin/widgets/share/javascript/template/activities/empty.tt2:2 share/plugin/widgets/share/javascript/template/activities/empty.tt2:8
@@ -572,7 +572,7 @@ msgstr "在过去 30 天内，没有新的 %1。"
 #. (action.error_title || action.title)
 #: share/plugin/widgets/share/javascript/template/activities/empty.tt2:6
 msgid "error.no-followed-events-in-30days=title"
-msgstr "没有新的 %1，要么因为您还没有关注任何人，要么因为您关注的人在过去30天内还没有新的 %1。访问您同事的个人档案，然后点击“关注此人”来开始关注同事。"
+msgstr "没有新的 %1，可能是因为您还没有关注任何人，也可能是您关注的人在过去30天内还没有新的 %1。请访问您同事的个人档案，然后点击“关注此人”来开始关注同事。"
 
 #: share/plugin/widgets/share/javascript/activities/explore.js:15
 msgid "error.no-items-for-explore"
