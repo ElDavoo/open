@@ -5215,7 +5215,7 @@ msgstr "您沒有對任何帳戶共用該工具庫。"
 
 #: share/plugin/widgets/share/javascript/activities/widget.js:423 share/plugin/widgets/share/javascript/activities/widget.js:589
 msgid "error.getting-activities"
-msgstr "參加活動時出錯。"
+msgstr "讀取活動時出錯。"
 
 msgid "error.group-already-in-wiki"
 msgstr "該群組已經在工作區內"
@@ -5683,7 +5683,7 @@ msgstr "必須提供一個網誌標題。"
 #. (action.error_title || action.title)
 #: share/plugin/widgets/share/javascript/template/activities/empty.tt2:4
 msgid "error.no-conversations-in-30days=title"
-msgstr "沒有新的 %1 因為在過去的 30 天內，您沒有與您的同事對話。"
+msgstr "沒有新的 %1，因為在過去的 30 天內，您沒有與您的同事對話。"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1346
 msgid "error.no-data-to-sum"
@@ -5737,7 +5737,7 @@ msgstr "帳戶『%2』中不存在個人資料『%1』"
 #. (action.error_title || action.title)
 #: share/plugin/widgets/share/javascript/template/activities/empty.tt2:6
 msgid "error.no-followed-events-in-30days=title"
-msgstr "沒有新的 %1，要麼因為您還沒有關注任何人，要麼因為您關注的人在過去30天內還沒有新的 %1。存取您同事的個人檔案，然後點選『關注此人』來開始關注同事。"
+msgstr "沒有新的 %1，可能是因為您還沒有關注任何人，也可能是您關注的人在過去30天內還沒有新的 %1。請存取您同事的個人檔案，然後點選『關注此人』來開始關注同事。"
 
 #. ($group_id)
 #: lib/Socialtext/CLI.pm:3659
@@ -6856,7 +6856,7 @@ msgstr "對 %1 作出編輯：『%2』"
 #. (page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:7
 msgid "event.edit=page,wiki"
-msgstr "在 %2 中複製 %1。"
+msgstr "在 %2 中編輯 %1。"
 
 #. (page, workspace, event.context.edit_summary)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:5
@@ -6936,7 +6936,7 @@ msgstr "從 %2 移除了標籤 %1。"
 #. (page_in_workspace, page_tag)
 #: share/template/data/events/page:19
 msgid "event.tag=page,tag"
-msgstr "為 %2 新增了標籤 %1。"
+msgstr "為 %1 新增了標籤 %2。"
 
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:23

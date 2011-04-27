@@ -13,6 +13,7 @@ use Socialtext::Session;
 use Socialtext::Formatter::LiteLinkDictionary;
 use Socialtext::Encode;
 use Socialtext::Pages;
+use Socialtext::l10n;
 use Try::Tiny;
 
 use namespace::clean -except => 'meta';
@@ -548,7 +549,7 @@ sub _get_attachments {
     my $self = shift;
     my $page = shift;
 
-    my @attachments = sort { lc( $a->filename ) cmp lc( $b->filename ) }
+    my @attachments = lsort_by filename =>
         @{ $self->hub->attachments->all( page_id => $page->id ) };
 
     return \@attachments;

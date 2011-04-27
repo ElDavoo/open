@@ -17,7 +17,7 @@ use Socialtext::Encode qw/ensure_is_utf8 ensure_ref_is_utf8/;
 use Socialtext::String qw/title_to_id trim MAX_PAGE_ID_LEN/;
 use Socialtext::Workspace;
 use Socialtext::Exceptions qw/data_validation_error/;
-use Socialtext::l10n qw/loc/;
+use Socialtext::l10n;
 
 use namespace::clean -except => 'meta';
 
@@ -346,7 +346,7 @@ sub has_tag {
 
 sub tags_sorted {
     my $self = shift;
-    return sort {lc($a) cmp lc($b)} @{$self->tags};
+    return lsort @{$self->tags};
 }
 
 sub is_recently_modified {

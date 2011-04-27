@@ -8,6 +8,7 @@ use Socialtext::Permission qw/ST_READ_PERM ST_ADMIN_WORKSPACE_PERM
 use Socialtext::HTTP ':codes';
 use Socialtext::JSON;
 use Socialtext::SQL ':txn';
+use Socialtext::l10n;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Collection';
@@ -34,7 +35,7 @@ sub _entities_for_query {
            || $group->creator->user_id == $user->user_id
            || $can_read;
 
-    return sort { $a->title cmp $b->title }
+    return lsort_by title =>
        $group->workspaces(exclude_auw_paths => $exclude_auw)->all();
 }
 
