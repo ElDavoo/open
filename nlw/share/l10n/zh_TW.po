@@ -6936,7 +6936,7 @@ msgstr "從 %2 移除了標籤 %1。"
 #. (page_in_workspace, page_tag)
 #: share/template/data/events/page:19
 msgid "event.tag=page,tag"
-msgstr "為 %2 新增了標籤 %1。"
+msgstr "為 %1 新增了標籤 %2。"
 
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:23
