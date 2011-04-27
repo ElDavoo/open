@@ -680,7 +680,7 @@ msgstr "编辑 %1 的个人资料。"
 #. (page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:7
 msgid "event.edit=page,wiki"
-msgstr "在 %2 中复制 %1。"
+msgstr "在 %2 中编辑 %1。"
 
 #. (page, workspace, event.context.edit_summary)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:5
