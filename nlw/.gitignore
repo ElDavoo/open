@@ -614,3 +614,4 @@ template/health.sheet
 t/wikitests/dashboard/widget-editor.wiki
 t/wikitests/control/group_add_users.wiki
 lib/Socialtext/Gadgets/Gadget/XML.pm.rej
+lib/Socialtext/Gadgets/Gadget/XML.pm.orig
