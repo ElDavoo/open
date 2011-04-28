@@ -929,7 +929,7 @@ CREATE TABLE gadget (
 
 CREATE TABLE gadget_content (
     gadget_id bigint NOT NULL,
-    view_name text DEFAULT 'default',
+    view_name text DEFAULT 'default' NOT NULL,
     content_type text DEFAULT 'html',
     content text,
     href text,
@@ -2780,4 +2780,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '140');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '139');
