@@ -48,6 +48,12 @@ sub do_work {
     my $prefs = $hub->preferences->new_for_user($user);
     $pages = $self->_sort_pages_for_user($user, $pages, $prefs);
 
+    # If $interval is 0, it means "never", not "repeat always until end of time".
+    my $interval = $self->_frequency_pref($prefs);
+    if (!$interval) {
+        return $self->completed;
+    }
+
     my $tz = $hub->timezone;
     my $email_time = $tz->_now();
     my %vars = (
@@ -76,9 +82,10 @@ sub do_work {
     my @clone_args = map { $_ => $self->job->$_ }
         qw(funcid funcname priority uniqkey coalesce);
 
+
     my $next_interval_job = TheSchwartz::Moosified::Job->new({
         @clone_args,
-        run_after => $pages_fetched_at + $self->_frequency_pref($prefs),
+        run_after => $pages_fetched_at + $interval,
         arg => {
             %{$self->arg},
             pages_after => $pages_fetched_at,
