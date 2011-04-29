@@ -65,9 +65,11 @@
 | wait_for_element_visible_ok | wikiwyg_button_video | 30000 |
 | click_ok | wikiwyg_button_video | 30000 |
 | wait_for_element_visible_ok | st-widget-video_url | 30000 |
+| type_ok | st-widget-video_url | http://www.youtube.com/watch?v=lH4lcrxP8mo |
+| is_checked_ok | //input[@value='original'] |  |
 | wait_for_element_visible_ok | st-widget-savebutton | 30000 |
 | wait_for_element_visible_ok | st-widget-cancelbutton | 30000 |
-| type_ok | st-widget-video_url | http://www.youtube.com/watch?v=lH4lcrxP8mo |
+| pause | 5000 |  |
 | click_ok | st-widget-savebutton |  |
 | pause | 5000 | wait for insert |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
@@ -123,6 +125,7 @@
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | foo |
 | wait_for_element_visible_ok | link=Video | 30000 |
+| pause | 5000 |  |
 | click_ok | link=Video |  |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/{video: foo}/s` |
