@@ -100,9 +100,10 @@ sub do_work {
         qw(funcid funcname priority uniqkey coalesce);
 
 
+    my $run_after = $pages_fetched_at + $interval;
     my $next_interval_job = TheSchwartz::Moosified::Job->new({
         @clone_args,
-        run_after => $pages_fetched_at + $interval,
+        run_after => $run_after,
         arg => {
             %{$self->arg},
             pages_after => $pages_fetched_at,
@@ -111,7 +112,7 @@ sub do_work {
 
     my $class = ref($self);
     my $id = $self->job->jobid;
-    st_log->info("Replacing $id ($class) with interval $interval");
+    st_log->info("Replacing $id ($class) with interval $interval, to run $run_after");
 
     $self->job->replace_with($next_interval_job);
 }
