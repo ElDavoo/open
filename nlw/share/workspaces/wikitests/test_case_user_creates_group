@@ -83,12 +83,12 @@
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: User Creates Group. Inspect New Group Page Activities Widget |  |
-| st-name-widget | 3 | activity_widget |
+| st-name-widget | 4 | activity_widget |
 | st-widget-title-like | activity_widget | Activities |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: User Creates Group. Inspect New Group Page Membership |  |
-| st-name-widget | 4 | people_widget |
+| st-name-widget | 3 | people_widget |
 | st-widget-title-like | people_widget | Membership |
 | st-select-widget-frame | people_widget |  |
 | wait_for_element_visible_ok | //a[contains(@href,'?profile')] | 30000 |
