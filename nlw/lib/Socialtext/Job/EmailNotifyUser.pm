@@ -112,7 +112,7 @@ sub do_work {
 
     my $class = ref($self);
     my $id = $self->job->jobid;
-    st_log->info("Replacing $id ($class) with interval $interval, to run $run_after");
+    st_log->info("Replacing $id ($class) at time $pages_fetched_at with interval $interval, to run $run_after");
 
     $self->job->replace_with($next_interval_job);
 }
