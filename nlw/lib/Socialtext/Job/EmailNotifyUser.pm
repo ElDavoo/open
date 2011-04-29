@@ -3,6 +3,8 @@ package Socialtext::Job::EmailNotifyUser;
 use Moose;
 use Socialtext::EmailNotifier;
 use Socialtext::URI;
+use Socialtext::Log qw( st_log );
+use Socialtext::SQL qw/ sql_txn sql_singlevalue /;
 use Socialtext::l10n qw/loc loc_lang system_locale/;
 use namespace::clean -except => 'meta';
 
@@ -39,20 +41,24 @@ sub do_work {
 
     return $self->completed unless $ws->has_user($user);
 
+    my $prefs = $hub->preferences->new_for_user($user);
+    # If $interval is 0, it means "never", not "repeat always until end of time".
+    my $interval = $self->_frequency_pref($prefs);
+    if ($interval <= 0) {
+        return $self->completed;
+    }
+
+    if ($self->_mail_bomb_detected($interval)) {
+        return $self->completed;
+    }
+
     loc_lang(system_locale());
 
     my $pages = $self->_pages_to_send;
     my $pages_fetched_at = time;
     return $self->completed unless $pages && @$pages;
 
-    my $prefs = $hub->preferences->new_for_user($user);
     $pages = $self->_sort_pages_for_user($user, $pages, $prefs);
-
-    # If $interval is 0, it means "never", not "repeat always until end of time".
-    my $interval = $self->_frequency_pref($prefs);
-    if (!$interval) {
-        return $self->completed;
-    }
 
     my $tz = $hub->timezone;
     my $email_time = $tz->_now();
@@ -156,6 +162,43 @@ sub _frequency_pref {
     return $prefs->{notify_frequency}->value * 60;
 }
 
+around '_mail_bomb_detected' => \&sql_txn;
+sub _mail_bomb_detected {
+    my $self = shift;
+    my $interval = shift;
+    my $user_id = $self->user->user_id;
+    my $ws_id   = $self->workspace->workspace_id;
+
+    my $plugin_id = ref($self);
+    $plugin_id =~ s/^.*:://;
+
+    my $last_run = sql_singlevalue(<<EOT, $plugin_id, $user_id, $ws_id);
+SELECT value FROM user_plugin_pref
+    WHERE plugin = ?
+      AND user_id = ?
+      AND key = ?
+EOT
+
+    # Throttling: If we have already sent mail to this user/ws
+    # combination less than $interval seconds before, bail out.
+    if ($last_run and (time - $last_run) < $interval) {
+        st_log->info("EmailBomb DEFUSED: plugin=$plugin_id user=$user_id ws=$ws_id lastrun=$last_run interval=$interval time=".time);
+        return 1;
+    }
+
+    # Otherwise, insert/update the pref using PrefsTable code.
+    my $prefs = Socialtext::PrefsTable->new(
+        table    => 'user_plugin_pref',
+        identity => {
+            plugin  => $plugin_id,
+            user_id => $user_id,
+        }
+    );
+    $prefs->set($ws_id => time);
+    # st_log->info("EmailBomb updated: $plugin_id user=$user_id ws=$ws_id lastrun=$last_run interval=$interval time=".time);
+
+    return 0;
+}
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 1);
 1;
