@@ -1,7 +1,4 @@
-#!/usr/bin/env perl
+#!/bin/bash
 # @COPYRIGHT@
-use strict;
-use warnings;
-
-# We want to run this migration in all cases
-exit 0;
+# always run
+exit;
