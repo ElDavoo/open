@@ -930,6 +930,10 @@ msgstr "Zzzzzz zz zz zzzzzzzz - zzzzzzz zz zzzzz"
 msgid "appliance.backup-in-progress=started-at"
 msgstr "Zzzzzz zz zz zzzzzzzz - zzzzzzz zz %1"
 
+#: lib/Socialtext/Appliance/Model/Backup.pm:128
+msgid "appliance.backup-schedule-updated"
+msgstr "Zzzzzz zzzzzzzz zzzzzzz"
+
 #: lib/Socialtext/Appliance/Model/Backup.pm:33
 msgid "appliance.backup-server-name"
 msgstr "Zzzzzz Zzzzzz zzzz"
@@ -1124,6 +1128,108 @@ msgstr "Zzz zzzzz zzzzzzz zz %1"
 #: lib/Socialtext/Appliance/Model/Setup.pm:482
 msgid "appliance.wikis-initialized=log"
 msgstr "Zzzzzzzzzz zzzzzzzzzzz.<br>Zzz: %1"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:18
+msgid "backup.archived-sequence-id"
+msgstr "Zzzzzzzz Zzzzzzzz ZZ"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:46
+msgid "backup.choose-days-of-week-for-full-backup"
+msgstr "Zzzzzzzzz Zzzz zzzzzzz zzzz zz zzzzzzzzz zz zzz zzzzzzzz zzzz zz zzz zzzz. Zzzzzzzz zzz zz zzzzzzz."
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:61
+msgid "backup.choose-time-of-day-for-maintenance"
+msgstr "Zzzzzz zzzzzzzzzzz zzzzz zzz zzzzzzzzz zz zzzz zzzz zzzzz zzz. Zzzzzz z zzzz zz zzz zzzz zzz zzzzzzz."
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:10
+msgid "backup.continuous-archiving"
+msgstr "Zzzzzzzzzz Zzzzzzzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:25
+msgid "backup.date"
+msgstr "Zzzzzz Zzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:49
+msgid "backup.days-of-week:"
+msgstr "Zzz(z) zz zzz zzzz:"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:12
+msgid "backup.directory"
+msgstr "Zzzzzzzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:13
+msgid "backup.directory-writable"
+msgstr "Zzzzzzzzz Zzzzzzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:17
+msgid "backup.in-progress-sequence-id"
+msgstr "Zz-zzzzzzzz Zzzzzzzz ZZ"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:6
+msgid "backup.information"
+msgstr "Zzzzzz Zzzzzzzzzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:24
+msgid "backup.label"
+msgstr "Zzzzzz Zzzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:20
+msgid "backup.list"
+msgstr "Zzzzzz Zzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:10
+msgid "backup.logical-dumps"
+msgstr "Zzzzzzz Zzzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:40
+msgid "backup.maintenance-schedule"
+msgstr "Zzzzzz Zzzzzzzzzzz Zzzzzzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:10
+msgid "backup.method"
+msgstr "Zzzzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:23
+msgid "backup.mode"
+msgstr "Zzzzzz Zzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:30
+msgid "backup.mode-checkpoint"
+msgstr "zzzzzzzzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:30
+msgid "backup.mode-full"
+msgstr "zzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:11
+msgid "backup.no"
+msgstr "Zz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:11
+msgid "backup.paused"
+msgstr "Zzzzzz"
+
+#. ('/help-adminguide/#backup', 'https://www.socialtext.net/help-adminguide/#backup')
+#. ("/help-adminguide/#backup", "https://www.socialtext.net/help-adminguide/#backup")
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:7
+msgid "backup.read-this-first=guide-url-1,guide-url-2"
+msgstr "Zzzzzz zzzz zzz Zzzzzzzzzz Zzzzz Zzzzz <a href=\"%1\">Zzzzzz</a> zzzzzzzzzzzzz zzzzzz zzzzzzzzzz. Z zzzz zz zzzz zzzzzzzzzzzzz zz zzzzzzzzz zzzzzzzz <a href=\"%2\">zzzz</a>."
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:8
+msgid "backup.status"
+msgstr "Zzzzzz Zzzzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:13
+msgid "backup.unwritable"
+msgstr "zzzzzzzzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:13
+msgid "backup.writable"
+msgstr "zzzzzzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:11
+msgid "backup.yes"
+msgstr "Zzz"
 
 msgid "badge.close"
 msgstr "Zzzzz"
@@ -5184,6 +5290,14 @@ msgstr "Zzzzzz zzzzzz ..."
 
 msgid "error.backup-id-required"
 msgstr "Zzzz zzzzzz z zzzzzz ZZ - zz zzz --zzzz zz zzz zzzzzzzzz zzzzzzz."
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:124
+msgid "error.backup-schedule-update-failed=message"
+msgstr "Zzzzzz zzzzzzzz zzzzzz zzzzzz: %1"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:15
+msgid "error.backup-writability"
+msgstr "Zzzzzzzzzzz Zzzzz"
 
 #: lib/Socialtext/Rest/Workspaces.pm:297
 msgid "error.bad-json"
