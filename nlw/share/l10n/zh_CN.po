@@ -710,9 +710,8 @@ msgstr "正在进行备份 – 尚未开始"
 msgid "appliance.backup-in-progress=started-at"
 msgstr "正在进行备份 – 从 %1 开始"
 
-#: lib/Socialtext/Appliance/Model/Backup.pm:128
 msgid "appliance.backup-schedule-updated"
-msgstr "Backup schedule updated"
+msgstr "备份计划已更新"
 
 #: lib/Socialtext/Appliance/Model/Backup.pm:33
 msgid "appliance.backup-server-name"
@@ -907,107 +906,80 @@ msgstr "网络代理已更新为 %1"
 msgid "appliance.wikis-initialized=log"
 msgstr "工作区已初始化。<br>记录：%1"
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:18
 msgid "backup.archived-sequence-id"
-msgstr "Archived Sequence ID"
+msgstr "存档序列ID"
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:46
 msgid "backup.choose-days-of-week-for-full-backup"
-msgstr "Automatic Full backups will be initiated on the selected days of the week. Unselect all to disable."
+msgstr "完全备份将在每周选定的日子自动进行. 取消所有可以禁用此功能."
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:61
 msgid "backup.choose-time-of-day-for-maintenance"
-msgstr "Backup maintenance tasks are scheduled at this time every day. Choose a time of day with low traffic."
+msgstr "备份维护计划任务将在每天的这个时间进行. 选择一天内流量较低的时间."
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:10
 msgid "backup.continuous-archiving"
-msgstr "Continuous Archiving"
+msgstr "继续存档"
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:25
 msgid "backup.date"
-msgstr "Backup Date"
+msgstr "备份日期"
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:49
 msgid "backup.days-of-week:"
-msgstr "Day(s) of the week:"
+msgstr "每周："
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:12
 msgid "backup.directory"
-msgstr "Directory"
+msgstr "目录"
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:13
 msgid "backup.directory-writable"
-msgstr "Directory Writable"
+msgstr "目录可写"
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:17
 msgid "backup.in-progress-sequence-id"
-msgstr "In-progress Sequence ID"
+msgstr "进行中的序列号"
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:6
 msgid "backup.information"
-msgstr "Backup Information"
+msgstr "备份信息"
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:24
 msgid "backup.label"
-msgstr "Backup Label"
+msgstr "备份标签"
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:20
 msgid "backup.list"
-msgstr "Backup List"
+msgstr "备份列表"
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:10
 msgid "backup.logical-dumps"
-msgstr "Logical Dumps"
+msgstr "逻辑转储"
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:40
 msgid "backup.maintenance-schedule"
-msgstr "Backup Maintenance Schedule"
+msgstr "备份维护计划"
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:10
 msgid "backup.method"
-msgstr "Method"
+msgstr "方法"
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:23
 msgid "backup.mode"
-msgstr "Backup Mode"
+msgstr "备份模式"
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:30
 msgid "backup.mode-checkpoint"
-msgstr "checkpoint"
+msgstr "检出点"
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:30
 msgid "backup.mode-full"
-msgstr "full"
+msgstr "已满"
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:11
 msgid "backup.no"
-msgstr "No"
+msgstr "否"
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:11
 msgid "backup.paused"
-msgstr "Paused"
+msgstr "暂停"
 
-#. ('/help-adminguide/#backup', 'https://www.socialtext.net/help-adminguide/#backup')
-#. ("/help-adminguide/#backup", "https://www.socialtext.net/help-adminguide/#backup")
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:7
 msgid "backup.read-this-first=guide-url-1,guide-url-2"
-msgstr "Please read the Socialtext Admin Guide <a href=\"%1\">Backup</a> documentation before proceeding. A copy of this documentation is available publicly <a href=\"%2\">here</a>."
+msgstr "请在进行备份前阅读 Socialtext 的管理指南<a href=\"%1\">备份</a>文档. 该文档可<a href=\"%2\">由此</a>公开获取."
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:8
 msgid "backup.status"
-msgstr "Backup Status"
+msgstr "备份状态"
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:13
 msgid "backup.unwritable"
-msgstr "unwritable"
+msgstr "不可写入"
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:13
 msgid "backup.writable"
-msgstr "writable"
+msgstr "可写入"
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:11
 msgid "backup.yes"
-msgstr "Yes"
+msgstr "是"
 
 msgid "badge.close"
 msgstr "关闭"
@@ -4969,13 +4941,11 @@ msgstr "备份失败 ..."
 msgid "error.backup-id-required"
 msgstr "必须提供一个备份ID，或者使用列表查看可用备份"
 
-#: lib/Socialtext/Appliance/Model/Backup.pm:124
 msgid "error.backup-schedule-update-failed=message"
-msgstr "Backup schedule update failed: %1"
+msgstr "备份计划更新失败：%1"
 
-#: ../appliance/libsocialtext-appliance-perl/template/backup.html:15
 msgid "error.backup-writability"
-msgstr "Writability Error"
+msgstr "写入权限错误"
 
 msgid "error.bad-json"
 msgstr "错误的json"
