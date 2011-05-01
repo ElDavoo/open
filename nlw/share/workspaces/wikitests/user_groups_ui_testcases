@@ -9,9 +9,6 @@
 * [Test Case: Groups UI Acct 2 Group Web UI]
 * [Test Case: Groups UI Edit an Existing Group]
 
-* [Test Case: Groups UI Signal from group home]
-* [Test Case: Groups UI Send Signal to Group]
-* [Test Case: Signal Page to Group]
 * [Test Case: Groups UI Create New Workspace]
 * [Test Case: SJ Groups UI Create New Workspace]
 * [Test Case: Group Home At Different Levels]
@@ -25,8 +22,6 @@ New as of self-join groups and workspaces
 
 * [Test Case: Restrict Self-Join Workspaces]
 * [Test Case: Group No Change Link]
-
-
 
 ToDo:
 

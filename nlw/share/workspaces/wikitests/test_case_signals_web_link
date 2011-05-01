@@ -35,7 +35,6 @@
 | wait_for_element_visible_ok | //input[@name='label'] | 5000 |
 | wait_for_element_visible_ok | //input[@name='destination'] | 5000 |
 | wait_for_element_visible_ok | //a[@class='btn done'] | 5000 |
-| wait_for_element_visible_ok | //a[@class='btn cancel'] | 5000 |
 
 | *Comment* | Test Case: Signals Web Link setSpeed 3000 to allow for type-in |  |
 | set_Speed | 3000 |  |

@@ -205,9 +205,12 @@
 | wait_for_text_present_ok | Signals matching '%%group_acct%%' | 30000 |
 | text_unlike | //body | %%account_signal%% |
 
-| *Comment* | Groups UI Send Signal to Group Teardown |
+| *Comment* | Groups UI Send Signal to Group TEARDOWN |  |
+| st-process-jobs |  |  |
+| delete-group | %%group_id%% |  |
+| delete-workspace | %%group_ws%% |  |
+| st-admin | deactivate-user --email %%ssg_user%% | has been removed |
+| st-admin | deactivate-user --email %%ssg_non_member%% | has been removed |
+| delete_account | %%group_acct%% | Recklessly deleting |
 
-| delete-group | %%group_id%% |
-| st-admin | delete-workspace --workspace %%group_ws%% --no-export |
-
-| *Comment* | Groups UI Send Signal to Group COMPLETED |
+| *Comment* | Groups UI Send Signal to Group COMPLETED |  |

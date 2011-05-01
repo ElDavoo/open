@@ -54,12 +54,13 @@
 | text_like | //body | IM |
 | text_like | //body | Web |
 | text_like | //body | First Name |
+| text_like | //body | Middle Name |
 | text_like | //body | Last Name |
 | verifyValue | first_name | %%fname%% |
 | verifyValue | last_name | %%lname%% |
 | select-frame | relative=parent |  |
 
-| *Comment* | Test Case: Edit Profile. Verify by clicking link=(Edit) from Global Nav |  |
+| *Comment* | Test Case: Edit Profile. Verify by clicking link=(edit) from Global Nav |  |
 
 | open_ok | /st/dashboard/ |  |
 | wait_for_element_visible_ok | link=(edit) | 30000 |
@@ -75,6 +76,7 @@
 | text_like | //body | IM |
 | text_like | //body | Web |
 | text_like | //body | First Name |
+| text_like | //body | Middle Name |
 | text_like | //body | Last Name |
 | verifyValue | first_name | %%fname%% |
 | verifyValue | last_name | %%lname%% |

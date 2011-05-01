@@ -63,6 +63,7 @@ test env properly and are not testing the test-workspace
 * [Test Case: Link Interface]
 * [Test Case: Nasty Double Dashes]
 * [Test Case: Insert Menu]
+* [Test Case: Insert Blocks]
 * [Test Case: Tagged Pages Sorting]
 * [Test Case: Tools: Duplicate Page]
 * [Test Case: Tools: Rename Page]
