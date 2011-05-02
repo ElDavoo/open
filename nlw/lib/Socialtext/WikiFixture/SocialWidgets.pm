@@ -411,12 +411,12 @@ Parameters: You pass in the signal text, followed by 1 if this is a mobile signa
 
 sub st_send_reply {
     my ($self, $signaltosend, $is_mobile) = @_;
-    $self->handle_command('wait_for_element_visible_ok', '//a[@class="replyLink"]', 5000);
+    $self->handle_command('wait_for_element_visible_ok', '//a[@class="replyLink"]', 15000);
     $self->handle_command('click_ok', '//a[@class="replyLink"]');
 
     $self->handle_command('set_Speed',4000);
     if ($self->_is_wikiwyg() ) { #wikiwyg
-        $self->handle_command('wait_for_element_visible_ok', '//div[@class="replies"]//iframe[@name="signalFrame"]', 5000);
+        $self->handle_command('wait_for_element_visible_ok', '//div[@class="replies"]//iframe[@name="signalFrame"]', 15000);
         $self->handle_command('selectFrame', '//div[@class="replies"]//iframe[@name="signalFrame"]');
         $self->handle_command('click_ok' ,'//body', $signaltosend);
         $self->handle_command('type_ok' ,'//body', $signaltosend);
@@ -428,9 +428,9 @@ sub st_send_reply {
          } else {
              $textbox_name = 'wikiwyg_wikitext_textarea';
          }
-         $self->handle_command('wait_for_element_visible_ok','//div[@class="wikiwyg"][last()]', 5000);
+         $self->handle_command('wait_for_element_visible_ok','//div[@class="wikiwyg"][last()]', 15000);
          $self->handle_command('click_ok','//div[@class="wikiwyg"][last()]');
-         $self->handle_command('wait_for_element_visible_ok',$textbox_name, 5000);
+         $self->handle_command('wait_for_element_visible_ok',$textbox_name, 15000);
          $self->handle_command('type_ok',$textbox_name,$signaltosend);
     }
     
@@ -450,7 +450,7 @@ sub st_type_signal {
     $self->handle_command('set_Speed',4000);
    
     if ($self->_is_wikiwyg() ) { #wikiwyg
-        $self->handle_command('wait_for_element_visible_ok', 'signalFrame', 5000);
+        $self->handle_command('wait_for_element_visible_ok', 'signalFrame', 15000);
         $self->handle_command('selectFrame', 'signalFrame');
         $self->handle_command('type_ok' ,'//body', $signaltosend);
         $self->handle_command('select-frame' ,'relative=parent');
@@ -461,7 +461,7 @@ sub st_type_signal {
          } else {
              $textbox_name = 'wikiwyg_wikitext_textarea';
          }
-         $self->handle_command('wait_for_element_visible_ok',$textbox_name, 5000);
+         $self->handle_command('wait_for_element_visible_ok',$textbox_name, 15000);
          $self->handle_command('type_ok',$textbox_name,$signaltosend);
     }
 }
@@ -478,7 +478,7 @@ sub st_prepare_signal_within_activities_widget {
     my ($self, $signaltosend, $private) = @_;
     # The next two commands are REQUIRED to expose either the signalFrame or
     # the wikiwyg_wikitext_textarea before sending the signal
-    $self->handle_command('wait_for_element_present_ok', '//div[@class=' . "'mainWikiwyg setupWikiwyg wikiwyg']", 5000);
+    $self->handle_command('wait_for_element_present_ok', '//div[@class=' . "'mainWikiwyg setupWikiwyg wikiwyg']", 15000);
     $self->handle_command('click_ok', '//div[@class=' . "'mainWikiwyg setupWikiwyg wikiwyg']");
 
     $self->st_type_signal($signaltosend);

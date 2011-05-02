@@ -5,10 +5,12 @@
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
 | wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
+| verifyValue | st-newpage-pagename-edit | Untitled Page |
 | click_ok | st-newpage-pagename-edit |  |
 
+| *Comment* | Test Case: Untitled Page removed check for blank field which fails in IE |  |
+
 | *Comment* | Test Case: Untitled Page title field is empty after focus |  |
-| text_unlike | st-newpage-pagename-edit | Untitled Page |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | click_ok | st-save-button-link |  |
 | wait_for_element_visible_ok | st-newpage-save-pagename | 5000 |
@@ -23,7 +25,7 @@
 | click_ok | st-newpage-pagename-edit |  |
 
 | *Comment* | Test Case: Untitled Page title field is empty after focus back |  |
-| text_unlike | st-newpage-pagename-edit | `Untitled ---------- &&&&& ---- PaGe` |
+| *Comment* | Test Case: Untitled Page removed check for blank field which fails in IE |  |
 
 | *Comment* | Test Case: Untitled Page save attempt using bad title |  |
 | type_ok | st-newpage-pagename-edit | `Untitled ---------- &&&&& ---- PaGe` |
@@ -40,6 +42,9 @@
 | type_ok | st-newpage-save-pagename | untitled page %%start_time%% |
 | click_and_wait | st-newpage-save-savebutton |  |
 | wait_for_text_present_ok | untitled page %%start_time%% content | 30000 |
+
+| *Comment* | Test Case: Untitled Page verify page title clears in non-IE browsers |  |
+| include | [Test Case: Untitled Page Cleared] |  |
 
 | *Comment* | Test Case: Untitled Page TEARDOWN |  |
 | st-process-jobs | PageIndex | %%workspace%% |

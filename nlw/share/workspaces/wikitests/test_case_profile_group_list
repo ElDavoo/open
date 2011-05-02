@@ -151,17 +151,14 @@
 | wait_for_element_not_present_ok | link=%%group_h%% | 30000 |
 
 | *Comment* | Test Case: Profile Group List go to group D group page, remove viewer from connection to D by CLI, join button should produce error |  |
-| click_and_wait | link=%%group_d%% |  |
+| open_ok | /st/group/%%group_d_id%% |  |
 | st-admin | remove-member --account %%acct_b%% --email %%viewer%% | no longer has the role |
+| st-process-jobs |  |  |
 | click_ok | st-join-group |  |
 | wait_for_text_present_ok | group not found | 30000 |
 
 | *Comment* | Test Case: Profile Group List TEARDOWN |  |
-| st-process-jobs |  |  |
-| delete-workspace | %%wiki_a%% | Recklessly deleting |
-| delete-workspace | %%wiki_b%% | Recklessly deleting |
-| st-admin | deactivate-user --email %%viewer%% |  |
-| st-admin | deactivate-user --email %%member%% |  |
+| *Comment* | just did st-process-jobs |  |
 | delete-group | %%user_group_id%% | Recklessly deleting |
 | delete-group | %%member_group_id%% | Recklessly deleting |
 | delete-group | %%group_a_id%% | Recklessly deleting |
@@ -172,6 +169,10 @@
 | delete-group | %%group_f_id%% | Recklessly deleting |
 | delete-group | %%group_g_id%% | Recklessly deleting |
 | delete-group | %%group_h_id%% | Recklessly deleting |
+| delete-workspace | %%wiki_a%% | Recklessly deleting |
+| delete-workspace | %%wiki_b%% | Recklessly deleting |
+| st-admin | deactivate-user --email %%viewer%% |  |
+| st-admin | deactivate-user --email %%member%% |  |
 | delete_account | %%user_acct%% | Recklessly deleting |
 | delete_account | %%member_acct%% | Recklessly deleting |
 | delete_account | %%acct_b%% | Recklessly deleting |
@@ -179,5 +180,6 @@
 | delete_account | %%acct_d%% | Recklessly deleting |
 | delete_account | %%acct_e%% | Recklessly deleting |
 | delete_account | %%acct_f%% | Recklessly deleting |
+| st-process-jobs |  |  |
 
 | *Comment* | Test Case: Profile Group List COMPLETED |  |

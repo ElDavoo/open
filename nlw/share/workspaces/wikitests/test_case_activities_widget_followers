@@ -92,7 +92,11 @@
 | st_verify_text_in_activities_widget | activities_widget | qr/%%r4%%/ism |
 
 | *Comment* | Test Case: Activities Widget Followers TEARDOWN |  |
-| st-process-jobs | PageIndex | %%followws%% |
-| st-admin | delete-workspace --workspace %%followws%% --no-export | has been deleted |
+| st-process-jobs |  |  |
+| delete-workspace | %%followws%% | Recklessly |
+| st-admin | deactivate-user --email %%followinguser%% |  |
+| st-admin | deactivate-user --email %%notfollowinguser%% |  |
+| st-admin | deactivate-user --email %%loggedinuser%% |  |
+| delete-account | %%followacct%% |  |
 
 | *Comment* | Test Case: Activities Widget Followers COMPLETED |

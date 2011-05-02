@@ -19,6 +19,8 @@
 | set | ws | signalws%%start_time%%-ws |  |
 | set | secondaryacct | secondary%%start_time%% |  |
 | set | secondws | secondws-%%start_time%% |  |
+
+| *Comment* | Test Case: Signals/Activities Interaction - Creation |  |  |
 | create-account | %%acct%% |  |  |
 | create-account | %%secondaryacct%% |  |  |
 | create-workspace | %%ws%% | %%acct%% |  |
@@ -199,8 +201,18 @@
 | st-send-signal-via-activities-widget | signals_widget | d {user: %%emainuser%%} direct from %%second%% |
 
 | *Comment* | Test Case: Signals/Activities Interaction TEARDOWN |  |
+| st-process-jobs |  |  |
+| delete-workspace | %%secondws%% | Recklessly |
+| delete-workspace | %%ws%% | Recklessly |
 
-| st-admin | delete-workspace --no-export --w %%secondws%% | has been deleted |
-| st-admin | delete-workspace --no-export --w %%ws%% | has been deleted |
+| st-admin | deactivate-user --e %%emainuser%% |  |
+| st-admin | deactivate-user --e %%efollowed%% |  |
+| st-admin | deactivate-user --e%%efriend%% |  |
+| st-admin | deactivate-user --e %%econversant%% |  |
+| st-admin | deactivate-user --e %%esecond%% |  |
+| st-admin | deactivate-user --e %%ewsadmin%% |  |
+
+| delete_account | %%acct%% |  |
+| delete_account | %%secondaryacct%% |  |
 
 | *Comment* | Test Case: Signals/Activities Interaction COMPLETED |  |

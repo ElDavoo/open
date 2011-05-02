@@ -3,10 +3,29 @@ package Socialtext::Job::EmailNotifyUser;
 use Moose;
 use Socialtext::EmailNotifier;
 use Socialtext::URI;
+use Socialtext::Log qw/st_log/;
 use Socialtext::l10n qw/loc loc_lang system_locale/;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
+
+has 'prefs' => (is => 'ro', isa => 'Object', lazy_build => 1);
+has 'interval' => (is => 'ro', isa => 'Int', lazy_build => 1);
+
+sub _build_prefs {
+    my $self = shift;
+
+    my $user = $self->user or return;
+    my $hub  = $self->hub or return;
+
+    return $hub->preferences->new_for_user($user);
+}
+
+sub _build_interval {
+    my $self = shift;
+
+    return $self->_frequency_pref($self->prefs);
+}
 
 override 'retry_delay' => sub { 0 };
 
@@ -45,8 +64,12 @@ sub do_work {
     my $pages_fetched_at = time;
     return $self->completed unless $pages && @$pages;
 
-    my $prefs = $hub->preferences->new_for_user($user);
+    my $prefs = $self->prefs;
     $pages = $self->_sort_pages_for_user($user, $pages, $prefs);
+
+    # If $interval is 0, it means "never", not "repeat always until end of time".
+    my $interval = $self->interval;
+    return $self->completed unless $interval;
 
     my $tz = $hub->timezone;
     my $email_time = $tz->_now();
@@ -76,14 +99,20 @@ sub do_work {
     my @clone_args = map { $_ => $self->job->$_ }
         qw(funcid funcname priority uniqkey coalesce);
 
+
+    my $run_after = $pages_fetched_at + $interval;
     my $next_interval_job = TheSchwartz::Moosified::Job->new({
         @clone_args,
-        run_after => $pages_fetched_at + $self->_frequency_pref($prefs),
+        run_after => $run_after,
         arg => {
             %{$self->arg},
             pages_after => $pages_fetched_at,
         }
     });
+
+    my $class = ref($self);
+    my $id = $self->job->jobid;
+    st_log->info("Replacing $id ($class) at time $pages_fetched_at with interval $interval, to run $run_after");
 
     $self->job->replace_with($next_interval_job);
 }
