@@ -190,6 +190,10 @@ msgstr "Backup is in progress - started at never"
 msgid "appliance.backup-in-progress=started-at"
 msgstr "Backup is in progress - started at %1"
 
+#: lib/Socialtext/Appliance/Model/Backup.pm:128
+msgid "appliance.backup-schedule-updated"
+msgstr "Backup schedule updated"
+
 #: lib/Socialtext/Appliance/Model/Backup.pm:33
 msgid "appliance.backup-server-name"
 msgstr "Backup Server name"
@@ -1205,6 +1209,10 @@ msgstr "Backup already running"
 
 msgid "error.backup-failed"
 msgstr "Backup failed ..."
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:124
+msgid "error.backup-schedule-update-failed=message"
+msgstr "Backup schedule update failed: %1"
 
 #: lib/Socialtext/Rest/Workspaces.pm:297
 msgid "error.bad-json"

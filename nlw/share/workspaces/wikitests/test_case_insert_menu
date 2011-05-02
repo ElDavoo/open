@@ -4,234 +4,171 @@
 | open_ok | /%%workspace%%/index.cgi?action=new_page |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
 | click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| type_ok | st-newpage-pagename-edit | test case insert menu %%start_time%% |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | wikiwyg_wikitext_textarea | foo |
 
-| *Comment* | Test Case: Insert Menu click on the icons for link, image and table |  |
-| *Comment* | Test Case: Insert Menu links are handled in TC: Link Interface |  |
-
-| click_ok | wikiwyg_button_link |  |
-| verifyValue | wikiwyg_wikitext_textarea | `[foo]` |
-| click_ok | wikiwyg_button_link |  |
-| verifyValue | wikiwyg_wikitext_textarea | foo |
-
-| click_ok | wikiwyg_button_image |  |
-| verifyValue | wikiwyg_wikitext_textarea | `{image: foo}` |
-| click_ok | wikiwyg_button_image |  |
-| verifyValue | wikiwyg_wikitext_textarea | foo |
+| *Comment* | Test Case: Insert Menu table |  |
 
 | click_ok | wikiwyg_button_table |  |
 | answerOnNextPrompt | 3 |  |
 | verifyPrompt | Please enter the number of table rows: |  |
 
-TODO: Selenium up to 9.2 only recognizes the first prompt for table size. Check later versions for the ability to dismiss two prompts in a row.
-
-answerOnNextPrompt | 3 | |
-verifyPrompt | Please enter the number of table columns: | |
-
-
-| *Comment* | Test Case: Insert Menu Insert Code Snippet |  |
-| wait_for_element_visible_ok | link=Code... | 30000 |
-| click_ok | link=Code... |  |
-| wait_for_element_visible_ok | st-widget-block-content | 30000 |
-| wait_for_element_visible_ok | st-widget-block-save | 30000 |
-| wait_for_element_visible_ok | st-widget-block-cancel | 30000 |
-| wait_for_element_visible_ok | st-widget-block-syntax | 30000 |
-| type_ok | st-widget-block-content | print "very semantic text output here $user\n"; |
-| select_ok | st-widget-block-syntax | label=Perl |
-| click_ok | st-widget-block-cancel |  |
-| pause | 5000 |  |
-| text_unlike | wikiwyg_wikitext_textarea | very semantic text output here |
-| click_ok | link=Code... |  |
-| wait_for_element_visible_ok | st-widget-block-content | 30000 |
-| wait_for_element_visible_ok | st-widget-block-save | 30000 |
-| wait_for_element_visible_ok | st-widget-block-cancel | 30000 |
-| wait_for_element_visible_ok | st-widget-block-syntax | 30000 |
-| type_ok | st-widget-block-content | print "very specific text output here $user"; |
-| select_ok | st-widget-block-syntax | label=Perl |
-| click_ok | st-widget-block-save |  |
-| pause | 30000 |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/.code-perl.+very specific text output here/s` |
-
-| wait_for_element_visible_ok | st-cancel-button-link | 30000 |
-| click_ok | st-cancel-button-link | 30000 |
-| confirmation_is | Are you sure you want to cancel?\n\nYou have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page. |  |
-| open_ok | /%%workspace%%/index.cgi?action=new_page |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
-| type_ok | st-newpage-pagename-edit | test case insert menu %%start_time%% |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| type_ok | wikiwyg_wikitext_textarea | foo |
-
-
-
-| *Comment* | Test Case: Insert Menu click on the icons for spreadsheet, image, HR, and table |  |
-
-click_ok | link=Spreadsheet | |
-verifyValue | wikiwyg_wikitext_textarea | `{ss: foo}` |
-click_ok | link=Spreadsheet | |
-verifyValue | wikiwyg_wikitext_textarea | foo |
-
-| click_ok | link=Image |  |
-| verifyValue | wikiwyg_wikitext_textarea | `{image: foo}` |
-| click_ok | link=Image |  |
-| verifyValue | wikiwyg_wikitext_textarea | foo |
-
-| click_ok | link=Horizontal Line |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
-
 | click_ok | link=Table |  |
 | answerOnNextPrompt | 3 |  |
 | verifyPrompt | Please enter the number of table rows: |  |
+
+| *Comment* | Test Case: Insert Menu add HR which will become content of WAFLs |  |
+| click_ok | link=Horizontal Line |  |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
+
+| *Comment* | Test Case: Insert Menu wiki Link button |  |
+| click_ok | wikiwyg_button_link |  |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+[----]/s` |
+| click_ok | wikiwyg_button_link |  |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
+
+| *Comment* | Test Case: Insert Menu Image button |  |
+| click_ok | wikiwyg_button_image |  |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{image: ----}/s` |
+| click_ok | wikiwyg_button_image |  |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
+
+| *Comment* | Test Case: Insert Menu Image link |  |
+| click_ok | link=Image |  |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{image: ----}/s` |
+| click_ok | link=Image |  |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
+
+| *Comment* | Test Case: Insert Menu Video button |  |
+| click_ok | wikiwyg_button_video |  |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{video: ----}/s` |
+| click_ok | wikiwyg_button_video |  |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
+
+| *Comment* | Test Case: Insert Menu Video link |  |
+| click_ok | link=Video |  |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{video: ----}/s` |
+| click_ok | link=Video |  |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
 | *Comment* | Test Case: Insert Menu "A Link To..." |  |
 | click_ok | link=A Different Wiki Page |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{link: ----}/s` |
 | click_ok | link=A Different Wiki Page |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
 | click_ok | link=A Page on The Web |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+<http:\/\/---->/s` |
 | click_ok | link=A Page on The Web |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
 | click_ok | link=A Section in This Page |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{link: ----}/s` |
 | click_ok | link=A Section in This Page |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
 | click_ok | link=Pages Related to a Tag |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{tag: ----}/s` |
 | click_ok | link=Pages Related to a Tag |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
 | click_ok | link=A Person's Blog |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{blog: ----}/s` |
 | click_ok | link=A Person's Blog |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
 | click_ok | link=A File Attached to This Page |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{file: ----}/s` |
 | click_ok | link=A File Attached to This Page |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
 | *Comment* | Test Case: Insert Menu "From workspaces..." |  |
 | click_ok | link=A Page Include |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{include: ----}/s` |
 | click_ok | link=A Page Include |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
 | click_ok | link=Recent Changes |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{recent_changes: ----}/s` |
 | click_ok | link=Recent Changes |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
 | click_ok | link=Blog Postings |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{blog_list: ----}/s` |
 | click_ok | link=Blog Postings |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
 | click_ok | link=Tagged Pages |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{tag_list: ----}/s` |
 | click_ok | link=Tagged Pages |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
 | click_ok | link=Wiki Search Results |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{search: ----}/s` |
 | click_ok | link=Wiki Search Results |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
 | *Comment* | Test Case: Insert Menu "Organizing Your Page..." |  |
 | click_ok | link=Table of Contents |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{toc: ----}/s` |
 | click_ok | link=Table of Contents |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
 | click_ok | link=Section Marker |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{section: ----}/s` |
 | click_ok | link=Section Marker |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
 | *Comment* | Test Case: Insert Menu "From the web..." |  |
 | click_ok | link=Google Search Results |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{googlesearch: ----}/s` |
 | click_ok | link=Google Search Results |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
 | click_ok | link=RSS Feed Items |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{fetchrss: ----}/s` |
 | click_ok | link=RSS Feed Items |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
 | click_ok | link=Atom Feed Items |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{fetchatom: ----}/s` |
 | click_ok | link=Atom Feed Items |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
 | *Comment* | Test Case: Insert Menu "Communicating..." |  |
 | click_ok | link=AIM Link |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+aim:----/s` |
 | click_ok | link=AIM Link |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
 | click_ok | link=Yahoo! Messenger Link |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+yahoo:----/s` |
 | click_ok | link=Yahoo! Messenger Link |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
 | click_ok | link=Skype Link |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+skype:----/s` |
 | click_ok | link=Skype Link |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
 | *Comment* | Test Case: Insert Menu "Name and Date..." |  |
 | click_ok | link=User Name |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{user: ----}/s` |
 | click_ok | link=User Name |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
 | click_ok | link=Local Date & Time |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{date: ----}/s` |
 | click_ok | link=Local Date & Time |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
 | *Comment* | Test Case: Insert Menu "Unformatted text..." |  |
 | click_ok | link=Unformatted Text... |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+{{----}}/s` |
 | click_ok | link=Unformatted Text... |  |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/foo\s+----/sm` |
 
-| *Comment* | Test Case: Insert Menu "HTML..." |  |
-| click_ok | link=HTML... |  |
-| wait_for_text_present_ok | Use the text area below to compose your HTML block. |  |
-| wait_for_element_visible_ok | st-widget-block-content | 30000 |
-| wait_for_element_visible_ok | st-widget-block-cancel | 30000 |
-| verifyValue | st-widget-block-content | ---- |
-| click_ok | st-widget-block-cancel |  |
-| wait_for_element_not_visible_ok | st-widget-block-cancel | 30000 |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+----/s` |
-
-| include | [Test Case: Insert Menu HTML] |  |
-
-
-| *Comment* | Test Case: Insert Menu "Preformatted Text..." |  |
-| type_ok | wikiwyg_wikitext_textarea | foo |
-| click_ok | link=Preformatted Text... |  |
-| wait_for_text_present_ok | Use the text area below to compose your preformatted text block. |  |
-| wait_for_element_visible_ok | st-widget-block-content | 30000 |
-| wait_for_element_visible_ok | st-widget-block-cancel | 30000 |
-| click_ok | st-widget-block-cancel |  |
-| wait_for_element_not_visible_ok | st-widget-block-cancel | 30000 |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo/s` |
-| click_ok | link=Preformatted Text... |  |
-| wait_for_element_visible_ok | st-widget-block-content | 30000 |
-| wait_for_element_visible_ok | st-widget-block-save | 30000 |
-| type_ok | st-widget-block-content | preform |
-| click_ok | st-widget-block-save |  |
-| wait_for_element_not_visible_ok | st-widget-block-save | 30000 |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+pre.+preform.+pre/s` |
+| *Comment* | Test Case: Insert Menu clear Untitled Page from new page |  |
+| click_ok | st-newpage-pagename-edit |  |
 
 | *Comment* | Test Case: Insert Menu COMPLETED |  |

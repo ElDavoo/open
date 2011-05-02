@@ -455,11 +455,13 @@
 			};
 			
 			function sortText(a,b) {
-				return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+                                return a.localeCompare(b);
+				//return ((a < b) ? -1 : ((a > b) ? 1 : 0));
 			};
 			
 			function sortTextDesc(a,b) {
-				return ((b < a) ? -1 : ((b > a) ? 1 : 0));
+                                return b.localeCompare(a);
+				//return ((b < a) ? -1 : ((b > a) ? 1 : 0));
 			};	
 			
 	 		function sortNumeric(a,b) {

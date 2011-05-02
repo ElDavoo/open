@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 22:57+0800\n"
+"PO-Revision-Date: 2011-04-28 03:23+0800\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -738,7 +738,7 @@ msgstr "从 %2 移除了标签 %1。"
 #. (page_in_workspace, page_tag)
 #: share/template/data/events/page:19
 msgid "event.tag=page,tag"
-msgstr "为 %2 添加了标签 %1。"
+msgstr "为 %1 添加了标签 %2。"
 
 #. (event.event_class)
 #: share/template/data/event:75 share/template/data/event:90

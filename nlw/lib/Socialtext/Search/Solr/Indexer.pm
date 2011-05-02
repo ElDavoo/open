@@ -23,6 +23,7 @@ use WebService::Solr;
 use Socialtext::WikiText::Parser::Messages;
 use Socialtext::WikiText::Emitter::Messages::Solr;
 use Socialtext::String;
+use Socialtext::l10n qw(getSortKey);
 use namespace::clean -except => 'meta';
 
 =head1 NAME
@@ -489,7 +490,7 @@ sub _add_person_doc {
         [name_pf_t => $user->proper_name],      # first/last
         [name_pf_t => $user->best_full_name],   # calculated; preferred, proper, guess
         # explicitly specify how we want to sort Users by name
-        [name_asort => $user->best_full_name],
+        [name_asort => join '', map sprintf('%04X', $_), unpack("U*", getSortKey($user->best_full_name))],
     );
 
     my $profile = eval {

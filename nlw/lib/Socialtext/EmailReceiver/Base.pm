@@ -16,7 +16,6 @@ use Fcntl qw( SEEK_SET );
 use HTML::TreeBuilder ();
 use Text::Flowed ();
 use DateTime::Format::Mail;
-use Data::Dumper;
 use HTML::WikiConverter ();
 use IO::Scalar;
 use Filesys::DfPortable ();

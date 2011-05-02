@@ -52,8 +52,6 @@
 
 | *Comment* | Test Case: Add Comment Check for the signal |  |
 | open_ok | /st/signals |  |
-| wait_for_element_present_ok | css=a:contains('signals') | 10000 |
-| click_ok | css=a:contains('signals') |  |
 | wait_for_text_present_ok | %%comment_signal%% | 10000 |
 | wait_for_text_not_present_ok | %%comment_nosignal%% | 10000 |
 | wait_for_element_visible_ok | //a[contains(text(),'Comment Test Page %%start_time%%')] | 30000 |

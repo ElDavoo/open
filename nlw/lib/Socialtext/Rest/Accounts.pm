@@ -6,6 +6,7 @@ use Socialtext::JSON;
 use Socialtext::HTTP ':codes';
 use Socialtext::Account;
 use Socialtext::Exceptions;
+use Socialtext::l10n;
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Rest::Collection';
@@ -157,8 +158,8 @@ sub add_error {
 sub SORTS {
     return +{
         alpha => sub {
-            $Socialtext::Rest::Collection::a->{account_name}
-                cmp $Socialtext::Rest::Collection::b->{account_name};
+            lcmp($Socialtext::Rest::Collection::a->{account_name},
+                 $Socialtext::Rest::Collection::b->{account_name});
         },
         newest => sub {
             $Socialtext::Rest::Collection::b->{modified_time} <=>
