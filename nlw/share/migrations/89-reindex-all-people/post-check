@@ -1,16 +1,4 @@
-#!/usr/bin/env perl
+#!/bin/bash
 # @COPYRIGHT@
-use strict;
-use warnings;
-use Socialtext::Jobs;
-
-my $stats = Socialtext::Jobs->stat_jobs();
-my $queued_jobs = $stats->{'Socialtext::Job::Upgrade::ReindexPeople'}{queued} || 0;
-
-if ($queued_jobs > 0) {
-    print "Looks like we have a reindex job for people.\n";
-    exit 0;
-}
-
-print "Looks like we didn't create a ReindexPeople job.\n";
-exit 1;
+# This migration is done asynchronously by TheCeq, so nothing to check here.
+exit;

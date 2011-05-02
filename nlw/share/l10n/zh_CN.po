@@ -710,6 +710,9 @@ msgstr "正在进行备份 – 尚未开始"
 msgid "appliance.backup-in-progress=started-at"
 msgstr "正在进行备份 – 从 %1 开始"
 
+msgid "appliance.backup-schedule-updated"
+msgstr "备份计划已更新"
+
 #: lib/Socialtext/Appliance/Model/Backup.pm:33
 msgid "appliance.backup-server-name"
 msgstr "备份服务器名称"
@@ -902,6 +905,81 @@ msgstr "网络代理已更新为 %1"
 #: lib/Socialtext/Appliance/Model/Setup.pm:482
 msgid "appliance.wikis-initialized=log"
 msgstr "工作区已初始化。<br>记录：%1"
+
+msgid "backup.archived-sequence-id"
+msgstr "存档序列ID"
+
+msgid "backup.choose-days-of-week-for-full-backup"
+msgstr "完全备份将在每周选定的日子自动进行. 取消所有可以禁用此功能."
+
+msgid "backup.choose-time-of-day-for-maintenance"
+msgstr "备份维护计划任务将在每天的这个时间进行. 选择一天内流量较低的时间."
+
+msgid "backup.continuous-archiving"
+msgstr "继续存档"
+
+msgid "backup.date"
+msgstr "备份日期"
+
+msgid "backup.days-of-week:"
+msgstr "每周："
+
+msgid "backup.directory"
+msgstr "目录"
+
+msgid "backup.directory-writable"
+msgstr "目录可写"
+
+msgid "backup.in-progress-sequence-id"
+msgstr "进行中的序列号"
+
+msgid "backup.information"
+msgstr "备份信息"
+
+msgid "backup.label"
+msgstr "备份标签"
+
+msgid "backup.list"
+msgstr "备份列表"
+
+msgid "backup.logical-dumps"
+msgstr "逻辑转储"
+
+msgid "backup.maintenance-schedule"
+msgstr "备份维护计划"
+
+msgid "backup.method"
+msgstr "方法"
+
+msgid "backup.mode"
+msgstr "备份模式"
+
+msgid "backup.mode-checkpoint"
+msgstr "检出点"
+
+msgid "backup.mode-full"
+msgstr "已满"
+
+msgid "backup.no"
+msgstr "否"
+
+msgid "backup.paused"
+msgstr "暂停"
+
+msgid "backup.read-this-first=guide-url-1,guide-url-2"
+msgstr "请在进行备份前阅读 Socialtext 的管理指南<a href=\"%1\">备份</a>文档. 该文档可<a href=\"%2\">由此</a>公开获取."
+
+msgid "backup.status"
+msgstr "备份状态"
+
+msgid "backup.unwritable"
+msgstr "不可写入"
+
+msgid "backup.writable"
+msgstr "可写入"
+
+msgid "backup.yes"
+msgstr "是"
 
 msgid "badge.close"
 msgstr "关闭"
@@ -4863,6 +4941,12 @@ msgstr "备份失败 ..."
 msgid "error.backup-id-required"
 msgstr "必须提供一个备份ID，或者使用列表查看可用备份"
 
+msgid "error.backup-schedule-update-failed=message"
+msgstr "备份计划更新失败：%1"
+
+msgid "error.backup-writability"
+msgstr "写入权限错误"
+
 msgid "error.bad-json"
 msgstr "错误的json"
 
@@ -5215,7 +5299,7 @@ msgstr "您没有对任何帐户共享该工具库。"
 
 #: share/plugin/widgets/share/javascript/activities/widget.js:423 share/plugin/widgets/share/javascript/activities/widget.js:589
 msgid "error.getting-activities"
-msgstr "参加活动时出错。"
+msgstr "读取活动时出错。"
 
 msgid "error.group-already-in-wiki"
 msgstr "该群组已经在工作区内"
@@ -5683,7 +5767,7 @@ msgstr "必须提供一个博客标题。"
 #. (action.error_title || action.title)
 #: share/plugin/widgets/share/javascript/template/activities/empty.tt2:4
 msgid "error.no-conversations-in-30days=title"
-msgstr "没有新的 %1 因为在过去的 30 天内，您没有与您的同事对话。"
+msgstr "没有新的 %1，因为在过去的 30 天内，您没有与您的同事对话。"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1346
 msgid "error.no-data-to-sum"
@@ -5737,7 +5821,7 @@ msgstr "帐户“%2”中不存在个人资料“%1”"
 #. (action.error_title || action.title)
 #: share/plugin/widgets/share/javascript/template/activities/empty.tt2:6
 msgid "error.no-followed-events-in-30days=title"
-msgstr "没有新的 %1，要么因为您还没有关注任何人，要么因为您关注的人在过去30天内还没有新的 %1。访问您同事的个人档案，然后点击“关注此人”来开始关注同事。"
+msgstr "没有新的 %1，可能是因为您还没有关注任何人，也可能是您关注的人在过去30天内还没有新的 %1。请访问您同事的个人档案，然后点击“关注此人”来开始关注同事。"
 
 #. ($group_id)
 #: lib/Socialtext/CLI.pm:3659
@@ -6856,7 +6940,7 @@ msgstr "对 %1 作出编辑：“%2”"
 #. (page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:7
 msgid "event.edit=page,wiki"
-msgstr "在 %2 中复制 %1。"
+msgstr "在 %2 中编辑 %1。"
 
 #. (page, workspace, event.context.edit_summary)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:5
@@ -6936,7 +7020,7 @@ msgstr "从 %2 移除了标签 %1。"
 #. (page_in_workspace, page_tag)
 #: share/template/data/events/page:19
 msgid "event.tag=page,tag"
-msgstr "为 %2 添加了标签 %1。"
+msgstr "为 %1 添加了标签 %2。"
 
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:23

@@ -51,8 +51,6 @@
 | st-select-widget-frame | signals |  |
 | wait_for_element_present_ok | link=everyone | 30000 |
 | click_ok | link=everyone |  |
-| wait_for_element_present_ok | link=signals | 30000 |
-| click_ok | link=signals |  |
 | select-frame | relative=parent |  |
 
 | st_verify_text_in_activities_widget | signals | nfsig-%%start_time%% 65 |

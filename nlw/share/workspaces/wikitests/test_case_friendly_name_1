@@ -55,7 +55,7 @@
 | st-select-widget-frame | info_widget |  |
 | wait_for_element_present_ok | link=%%fname%% | 30000 |
 | select-frame | relative=parent |  |
-| st-name-widget | 4 | members_widget |
+| st-name-widget | 3 | members_widget |
 | st-widget-title-like | members_widget | Membership |
 | st-select-widget-frame | members_widget |  |
 | wait_for_element_present_ok | link=%%fname%% | 30000 |

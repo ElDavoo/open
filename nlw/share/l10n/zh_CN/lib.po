@@ -187,6 +187,9 @@ msgstr "正在进行备份 – 尚未开始"
 msgid "appliance.backup-in-progress=started-at"
 msgstr "正在进行备份 – 从 %1 开始"
 
+msgid "appliance.backup-schedule-updated"
+msgstr "备份计划已更新"
+
 #: lib/Socialtext/Appliance/Model/Backup.pm:33
 msgid "appliance.backup-server-name"
 msgstr "备份服务器名称"
@@ -1169,6 +1172,9 @@ msgstr "备份已经开始"
 
 msgid "error.backup-failed"
 msgstr "备份失败 ..."
+
+msgid "error.backup-schedule-update-failed=message"
+msgstr "备份计划更新失败：%1"
 
 msgid "error.bad-json"
 msgstr "错误的json"
