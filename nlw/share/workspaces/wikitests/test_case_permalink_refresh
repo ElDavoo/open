@@ -17,10 +17,10 @@
 | set | ps_id | %%group_id%% |  |
 
 | *Comment* | Test Case: Permalink Refresh. post a topic and two replies to %%p_prgroup%% |  |
-| post-signal | %%ps1%% | {"group_ids":[%%ps_id%%],"account_ids":[]} |
+| post-signal | %%ps1%% | `{"group_ids":[%%ps_id%%],"account_ids":[]}` |
 | set | parent | %%last_signal_id%% |
-| post-json | /data/signals | {"signal":"%%pr1%%", "in_reply_to":{"signal_id":%%parent%%},"group_ids":[%%ps_id%%]} |
-| post-json | /data/signals | {"signal":"%%pr2%%", "in_reply_to":{"signal_id":%%parent%%},"group_ids":[%%ps_id%%]} |
+| post-json | /data/signals | `{"signal":"%%pr1%%", "in_reply_to":{"signal_id":%%parent%%},"group_ids":[%%ps_id%%]}` |
+| post-json | /data/signals | `{"signal":"%%pr2%%", "in_reply_to":{"signal_id":%%parent%%},"group_ids":[%%ps_id%%]}` |
 
 | *Comment* | Test Case: Permalink Refresh. Open the group permalinks page and verify received |  |
 | open_ok | /st/signals/%%parent%% |  |
@@ -34,7 +34,7 @@
 | wait_for_text_present_ok | one minute ago | 120000 |
 
 | *Comment* | Test Case: Permalink Refresh. Send new group reply and wait for it |  |
-| post-json | /data/signals | {"signal":"%%pr3%%", "in_reply_to":{"signal_id":%%parent%%},"group_ids":[%%ps_id%%]} |
+| post-json | /data/signals | `{"signal":"%%pr3%%", "in_reply_to":{"signal_id":%%parent%%},"group_ids":[%%ps_id%%]}` |
 | wait_for_text_present_ok | %%pr3%% | 20000 |
 
 | *Comment* | Test Case: Permalink Refresh. Click group Reply to Conversation and reply |  |  |
@@ -73,12 +73,13 @@
 | wait_for_text_present_ok | %%r3%% | 30000 |
 
 | *Comment* | Test Case: Permalink Refresh. Click Reply to Conversation and reply |  |
-| st-send-reply | %%r4%% |
+| st-send-reply | %%r4%% |  |
 
 | *Comment* | Test Case: Permalink Refresh. Wait for the new reply |  |
 | wait_for_text_present_ok | %%r4%% | 30000 |
 
 | *Comment* | Test Case: Permalink Refresh TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | delete-group --g %%ps_id%% | Deleted group id |
 
 | *Comment* | Test Case: Permalink Refresh COMPLETED |  |

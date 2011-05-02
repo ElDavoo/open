@@ -90,7 +90,7 @@ sub do_work {
 
     Inserting_jobs: {
         my $t = time_scope 'insert_jobs';
-        $hub->log->info("Creating " . scalar(@jobs) . " new $job_class jobs");
+        $hub->log->info("Creating " . scalar(@jobs) . " new $job_class jobs for workspace $ws_id");
         $self->job->client->bulk_insert(
             TheSchwartz::Moosified::Job->new(
                 funcname => $job_class,

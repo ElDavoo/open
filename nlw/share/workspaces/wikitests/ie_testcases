@@ -25,7 +25,7 @@ It will re-enable LDAP when it finishes.
 
 * [Default User Testcases]
 
-People and Dasboard plugin tests. Keep these two cases together in order.
+People and Dasboard plugin tests. Keep these two cases together in alpha order.
 
 * [Test Case: People Dashboard Plugins]
 * [Test Case: People Dashboard Plugins Reset]
@@ -37,7 +37,5 @@ People tests
 * [Test Case: People Relevance Search]
 
 * [Dashboard Testcases]
-
-Server down testcases
 
 * [Test Case: Save Race Conditions]
