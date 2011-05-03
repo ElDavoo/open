@@ -1528,6 +1528,7 @@
 "people.profile":"Profile",
 "people.search":"Search People",
 "people.search:":"Search People:",
+"people.see-all-peers":"(see all)",
 "people.showing=from,to,total":"Showing [_1] - [_2] of [_3] total.",
 "people.sort-name":"Name",
 "people.sort-relevance":"Relevance",

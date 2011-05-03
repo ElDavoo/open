@@ -1528,6 +1528,7 @@
 "people.profile":"Zzzzzzz",
 "people.search":"Zzzzzz Zzzzzz",
 "people.search:":"Zzzzzz Zzzzzz:",
+"people.see-all-peers":"(zzz zzz)",
 "people.showing=from,to,total":"Zzzzzzz [_1] - [_2] zz [_3] zzzzz.",
 "people.sort-name":"Zzzz",
 "people.sort-relevance":"Zzzzzzzzz",

@@ -385,6 +385,9 @@ msgstr "搜索人员"
 msgid "people.search:"
 msgstr "搜索人员："
 
+msgid "people.see-all-peers"
+msgstr "（检视所有人）"
+
 #. (offset + 1, last, pager.total_entries)
 #: share/plugin/people/template/view/peoplelist:44
 msgid "people.showing=from,to,total"

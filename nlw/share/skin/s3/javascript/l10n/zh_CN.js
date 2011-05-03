@@ -1530,6 +1530,7 @@
 "people.profile":"\u4E2A\u4EBA\u8D44\u6599",
 "people.search":"\u641C\u7D22\u4EBA\u5458",
 "people.search:":"\u641C\u7D22\u4EBA\u5458\uFF1A",
+"people.see-all-peers":"\uFF08\u68C0\u89C6\u6240\u6709\u4EBA\uFF09",
 "people.showing=from,to,total":"\u663E\u793A\u7B2C [_1] - [_2] \u9879\uFF0C\u5171 [_3] \u9879\u3002",
 "people.sort-name":"\u540D\u5B57",
 "people.sort-relevance":"\u76F8\u5173\u5EA6",

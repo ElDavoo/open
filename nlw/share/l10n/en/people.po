@@ -388,6 +388,10 @@ msgstr "Search People"
 msgid "people.search:"
 msgstr "Search People:"
 
+#: share/plugin/people/template/lite/profile.html:109 share/plugin/people/template/lite/profile.html:126
+msgid "people.see-all-peers"
+msgstr "(see all)"
+
 #. (offset + 1, last, pager.total_entries)
 #: share/plugin/people/template/view/peoplelist:44
 msgid "people.showing=from,to,total"
