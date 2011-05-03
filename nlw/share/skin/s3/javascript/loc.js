@@ -61,13 +61,13 @@ function loc() {
 
 loc.all_widgets = function(){
     $(function(){
-        $('span[data-loc-text]').each(function(){
+        $('span[data-loc_text]').each(function(){
             var $span = $(this);
-            $span.text(loc($span.data('loc-text')));
+            $span.text(loc($span.data('loc_text')));
         });
-        $('input[data-loc-val]').each(function(){
+        $('input[data-loc_val]').each(function(){
             var $input = $(this);
-            $input.val(loc($input.data('loc-val')));
+            $input.val(loc($input.data('loc_val')));
         });
     });
 };
