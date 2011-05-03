@@ -637,7 +637,8 @@ sub to_hash {
         return {
             user_id        => $self->user_id,
             username       => $self->username,
-            best_full_name => $self->best_full_name,
+            best_full_name => $self->display_name,
+            display_name   => $self->display_name,
         };
     }
 
