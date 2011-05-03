@@ -1110,6 +1110,7 @@
 "groups.leave":"\u96E2\u958B\u7FA4\u7D44",
 "groups.member":"\u6210\u54E1",
 "groups.member-plural":"\u6210\u54E1",
+"groups.member=count":"[_1] \u4F4D\u6210\u54E1",
 "groups.members":"\u6210\u54E1",
 "groups.name":"\u540D\u7A31",
 "groups.name-of-group:":"\u7FA4\u7D44\u540D\u7A31\uFF1A",

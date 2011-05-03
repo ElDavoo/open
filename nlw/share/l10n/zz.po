@@ -8212,6 +8212,10 @@ msgstr "zzzzzz"
 msgid "groups.member-plural"
 msgstr "zzzzzzz"
 
+#: share/plugin/people/share/widgets/profile_network/widget.js:62
+msgid "groups.member=count"
+msgstr "%*(%1,zzzzzz)"
+
 #: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:6 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:3
 msgid "groups.members"
 msgstr "Zzzzzzz"

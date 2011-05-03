@@ -158,6 +158,10 @@ msgstr "performed action '%1' on %2."
 msgid "event.unfollow=person"
 msgstr "stopped following %1."
 
+#: share/plugin/people/share/widgets/profile_network/widget.js:62
+msgid "groups.member=count"
+msgstr "%*(%1,member)"
+
 #: share/plugin/people/template/email/invitation-body.html:39
 msgid "invite.account-password-exists"
 msgstr "Because you already have an account, the password is the same as the password you use for your other groups."

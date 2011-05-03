@@ -1108,6 +1108,7 @@
 "groups.leave":"Zzzzz Zzzzz",
 "groups.member":"zzzzzz",
 "groups.member-plural":"zzzzzzz",
+"groups.member=count":"[*,_1,zzzzzz]",
 "groups.members":"Zzzzzzz",
 "groups.name":"Zzzz",
 "groups.name-of-group:":"Zzzz zz Zzzzz:",

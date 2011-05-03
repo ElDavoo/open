@@ -7785,6 +7785,9 @@ msgstr "成員"
 msgid "groups.member-plural"
 msgstr "成員"
 
+msgid "groups.member=count"
+msgstr "%1 位成員"
+
 #: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:6 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:3
 msgid "groups.members"
 msgstr "成員"

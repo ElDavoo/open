@@ -1108,6 +1108,7 @@
 "groups.leave":"Leave Group",
 "groups.member":"member",
 "groups.member-plural":"members",
+"groups.member=count":"[*,_1,member]",
 "groups.members":"Members",
 "groups.name":"Name",
 "groups.name-of-group:":"Name of Group:",
