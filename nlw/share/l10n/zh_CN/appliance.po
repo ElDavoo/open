@@ -27,6 +27,81 @@ msgstr "正在清除前一个快照..."
 msgid "appliance.taking-database-snapshot"
 msgstr "生成数据库快照..."
 
+msgid "backup.archived-sequence-id"
+msgstr "存档序列ID"
+
+msgid "backup.choose-days-of-week-for-full-backup"
+msgstr "完全备份将在每周选定的日子自动进行. 取消所有可以禁用此功能."
+
+msgid "backup.choose-time-of-day-for-maintenance"
+msgstr "备份维护计划任务将在每天的这个时间进行. 选择一天内流量较低的时间."
+
+msgid "backup.continuous-archiving"
+msgstr "继续存档"
+
+msgid "backup.date"
+msgstr "备份日期"
+
+msgid "backup.days-of-week:"
+msgstr "每周："
+
+msgid "backup.directory"
+msgstr "目录"
+
+msgid "backup.directory-writable"
+msgstr "目录可写"
+
+msgid "backup.in-progress-sequence-id"
+msgstr "进行中的序列号"
+
+msgid "backup.information"
+msgstr "备份信息"
+
+msgid "backup.label"
+msgstr "备份标签"
+
+msgid "backup.list"
+msgstr "备份列表"
+
+msgid "backup.logical-dumps"
+msgstr "逻辑转储"
+
+msgid "backup.maintenance-schedule"
+msgstr "备份维护计划"
+
+msgid "backup.method"
+msgstr "方法"
+
+msgid "backup.mode"
+msgstr "备份模式"
+
+msgid "backup.mode-checkpoint"
+msgstr "检出点"
+
+msgid "backup.mode-full"
+msgstr "已满"
+
+msgid "backup.no"
+msgstr "否"
+
+msgid "backup.paused"
+msgstr "暂停"
+
+msgid "backup.read-this-first=guide-url-1,guide-url-2"
+msgstr "请在进行备份前阅读 Socialtext 的管理指南<a href=\"%1\">备份</a>文档. 该文档可<a href=\"%2\">由此</a>公开获取."
+
+msgid "backup.status"
+msgstr "备份状态"
+
+msgid "backup.unwritable"
+msgstr "不可写入"
+
+msgid "backup.writable"
+msgstr "可写入"
+
+msgid "backup.yes"
+msgstr "是"
+
 #: ../appliance/libsocialtext-appliance-perl/template/setup.html:52
 msgid "console.about-authentication-token-timeout"
 msgstr "出于安全的原因，认证标记在预先定义的期间过后将自动失效，即使用户选择了“在本计算机上记住我”。该期间最短为“1天”，最长为“365天”，默认为“14天”。您可以在此更改该期间。"
@@ -447,6 +522,9 @@ msgstr "关闭"
 
 msgid "error.backup-id-required"
 msgstr "必须提供一个备份ID，或者使用列表查看可用备份"
+
+msgid "error.backup-writability"
+msgstr "写入权限错误"
 
 #: ../appliance/libsocialtext-appliance-perl/sbin/st-appliance-mount-samba:84
 msgid "error.create-test-file-on-samba-share!"

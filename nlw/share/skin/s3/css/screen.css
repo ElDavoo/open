@@ -3984,6 +3984,11 @@ body#dashBoard #st-editing-tools-edit #lastsignal {
     width: 50%;
 }
 
+pre.wrap {
+    white-space: pre-wrap; /* FF, webkit, IE8+ */
+    word-wrap: break-word; /* Internet Explorer 6,7 */
+}
+
 ul li.flexButtonBlue a.addButton {
     background: url(../images/addFlexButtonBlue.png) no-repeat;
 }

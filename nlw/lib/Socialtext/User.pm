@@ -22,7 +22,7 @@ use Socialtext::UserSet qw/:const/;
 use Socialtext::User::Default::Users qw(:system-user :guest-user);
 use Socialtext::User::Restrictions;
 use Email::Address;
-use Socialtext::l10n qw(system_locale loc);
+use Socialtext::l10n qw(:all);
 use Socialtext::EmailSender::Factory;
 use Socialtext::User::Cache;
 use Socialtext::Cache;
@@ -435,7 +435,7 @@ sub accounts {
         return (wantarray ? @$acct_ids : $acct_ids);
     }
     else {
-        my @accounts = sort {$a->name cmp $b->name} 
+        my @accounts = lsort_by name =>
                        map {
                            Socialtext::Account->new(account_id => $_)
                        } @$acct_ids;
@@ -637,7 +637,8 @@ sub to_hash {
         return {
             user_id        => $self->user_id,
             username       => $self->username,
-            best_full_name => $self->best_full_name,
+            best_full_name => $self->display_name,
+            display_name   => $self->display_name,
         };
     }
 
@@ -806,6 +807,7 @@ sub workspaces {
     return Socialtext::Workspace::Roles->WorkspacesByUserId(
         @_,
         user_id => $self->user_id,
+        order_by => 'alpha',
     );
 }
 
@@ -824,6 +826,12 @@ sub is_authenticated {
     # Authenticated.
     unless ($self->has_valid_password()) {
         st_log->info( "user $username has invalid password; not treating as authenticated" );
+        return 0;
+    }
+
+    # If the User has been de-activated, we never treat them as Authenticated.
+    if ($self->is_deactivated) {
+        st_log->info( "user $username is deactivated; not treating as authenticated" );
         return 0;
     }
 
@@ -1734,7 +1742,7 @@ sub accounts_and_groups {
     my $group_count = 0;
     my %acct_group_set;
 
-    my @accounts = sort { lc($a->name) cmp lc($b->name)} 
+    my @accounts = lsort_by name =>
         @{$self->accounts(plugin => $p{plugin})};
     for my $acct (@accounts) {
         # List groups this user is in that are directly-connected to the

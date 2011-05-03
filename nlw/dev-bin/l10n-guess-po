@@ -35,6 +35,7 @@ my %SectionMap = (
     "share/template/authen" => "login",
     "share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu" => "insert",
     "common/javascript/Socialtext" => "api",
+    "libsocialtext-appliance-perl/template/backup.html" => "backup",
 );
 
 sub words {
@@ -88,6 +89,9 @@ for my $po (@ARGV) {
                     $section = "###-" . $SectionMap{$key};
                     last;
                 }
+            }
+            if ($sources =~ m{lib/Socialtext/(?:Pluggable/)?Plugin/(\w+)}) {
+                $section = "###-" . lc $1;
             }
             print;
         }

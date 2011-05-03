@@ -819,6 +819,58 @@ msgstr "All Groups"
 msgid "group.name"
 msgstr "Group name"
 
+#: share/skin/s3/javascript/im.js:54
+msgid "im.away"
+msgstr "Away"
+
+#: share/skin/s3/javascript/im.js:56
+msgid "im.be-right-back"
+msgstr "Be right back"
+
+#: share/skin/s3/javascript/im.js:55
+msgid "im.busy"
+msgstr "Busy"
+
+#: share/skin/s3/javascript/im.js:61
+msgid "im.do-not-disturb"
+msgstr "Do not disturb"
+
+#: share/skin/s3/javascript/im.js:62
+msgid "im.do-not-disturb-but-allowed"
+msgstr "Do not disturb but allowed"
+
+#: share/skin/s3/javascript/im.js:63
+msgid "im.idle-online"
+msgstr "Idle online"
+
+#: share/skin/s3/javascript/im.js:58
+msgid "im.lunch"
+msgstr "Lunch"
+
+#: share/skin/s3/javascript/im.js:59
+msgid "im.meeting"
+msgstr "Meeting"
+
+#: share/skin/s3/javascript/im.js:53
+msgid "im.offline"
+msgstr "Offline"
+
+#: share/skin/s3/javascript/im.js:57
+msgid "im.on-phone"
+msgstr "On the phone"
+
+#: share/skin/s3/javascript/im.js:52
+msgid "im.online"
+msgstr "Online"
+
+#: share/skin/s3/javascript/im.js:60
+msgid "im.out-of-office"
+msgstr "Out of office"
+
+#: share/skin/s3/javascript/im.js:70
+msgid "im.requires-internet-explorer"
+msgstr "(requires Internet Explorer)"
+
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:32
 msgid "image.upload"
 msgstr "Upload An Image"

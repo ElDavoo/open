@@ -66,6 +66,6 @@
 
 | GET-json         | %%url%%?order=alpha |                  |
 | json-response-is | 200                | 3                |
-| json-path-is     | $[0].name          | Test.txt         |
-| json-path-is     | $[1].name          | another-test.txt |
-| json-path-is     | $[2].name          | test.txt         |
+| json-path-is     | $[0].name          | another-test.txt |
+| json-path-is     | $[1].name          | test.txt         |
+| json-path-is     | $[2].name          | Test.txt         |

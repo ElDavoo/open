@@ -527,6 +527,9 @@ msgstr "群组为"
 msgid "activities.you"
 msgstr "您"
 
+msgid "agile.clear-history"
+msgstr "清除敏捷历史"
+
 #: share/plugin/widgets/share/javascript/template/activities/ago.tt2:7
 msgid "ago.1day"
 msgstr "1 天前"
@@ -580,6 +583,9 @@ msgstr "%1 分钟前"
 #: share/plugin/analytics/template/cp_google_analytics:6
 msgid "analytics.id:"
 msgstr "Google Analytics 帐号"
+
+msgid "analytics.invalid-domains-setting=data"
+msgstr "无效的域名设置：%1"
 
 #: share/plugin/analytics/template/cp_google_analytics:29
 msgid "analytics.mask"
@@ -703,6 +709,9 @@ msgstr "正在进行备份 – 尚未开始"
 
 msgid "appliance.backup-in-progress=started-at"
 msgstr "正在进行备份 – 从 %1 开始"
+
+msgid "appliance.backup-schedule-updated"
+msgstr "备份计划已更新"
 
 #: lib/Socialtext/Appliance/Model/Backup.pm:33
 msgid "appliance.backup-server-name"
@@ -896,6 +905,81 @@ msgstr "网络代理已更新为 %1"
 #: lib/Socialtext/Appliance/Model/Setup.pm:482
 msgid "appliance.wikis-initialized=log"
 msgstr "工作区已初始化。<br>记录：%1"
+
+msgid "backup.archived-sequence-id"
+msgstr "存档序列ID"
+
+msgid "backup.choose-days-of-week-for-full-backup"
+msgstr "完全备份将在每周选定的日子自动进行. 取消所有可以禁用此功能."
+
+msgid "backup.choose-time-of-day-for-maintenance"
+msgstr "备份维护计划任务将在每天的这个时间进行. 选择一天内流量较低的时间."
+
+msgid "backup.continuous-archiving"
+msgstr "继续存档"
+
+msgid "backup.date"
+msgstr "备份日期"
+
+msgid "backup.days-of-week:"
+msgstr "每周："
+
+msgid "backup.directory"
+msgstr "目录"
+
+msgid "backup.directory-writable"
+msgstr "目录可写"
+
+msgid "backup.in-progress-sequence-id"
+msgstr "进行中的序列号"
+
+msgid "backup.information"
+msgstr "备份信息"
+
+msgid "backup.label"
+msgstr "备份标签"
+
+msgid "backup.list"
+msgstr "备份列表"
+
+msgid "backup.logical-dumps"
+msgstr "逻辑转储"
+
+msgid "backup.maintenance-schedule"
+msgstr "备份维护计划"
+
+msgid "backup.method"
+msgstr "方法"
+
+msgid "backup.mode"
+msgstr "备份模式"
+
+msgid "backup.mode-checkpoint"
+msgstr "检出点"
+
+msgid "backup.mode-full"
+msgstr "已满"
+
+msgid "backup.no"
+msgstr "否"
+
+msgid "backup.paused"
+msgstr "暂停"
+
+msgid "backup.read-this-first=guide-url-1,guide-url-2"
+msgstr "请在进行备份前阅读 Socialtext 的管理指南<a href=\"%1\">备份</a>文档. 该文档可<a href=\"%2\">由此</a>公开获取."
+
+msgid "backup.status"
+msgstr "备份状态"
+
+msgid "backup.unwritable"
+msgstr "不可写入"
+
+msgid "backup.writable"
+msgstr "可写入"
+
+msgid "backup.yes"
+msgstr "是"
 
 msgid "badge.close"
 msgstr "关闭"
@@ -2606,6 +2690,9 @@ msgstr "开放输出用户数据"
 msgid "control.enable-invitation-to-group"
 msgstr "开放邀请加入群组"
 
+msgid "control.ending-on-midnight-of"
+msgstr "至此日凌晨为止"
+
 #. (exportable_accounts)
 #: share/plugin/control/template/control/accounts.html:24
 msgid "control.export-user-for-selected-accounts=count"
@@ -2685,6 +2772,9 @@ msgstr "名字："
 #: share/plugin/control/template/control/user.html:103
 msgid "control.for-cac-authentication"
 msgstr "（为 CAC 认证之用）"
+
+msgid "control.for-report-duration"
+msgstr "对于"
 
 #: share/plugin/control/template/control/user.html:103
 msgid "control.for-use-with-cac-authentication"
@@ -2858,6 +2948,12 @@ msgstr "群组名称："
 #: share/plugin/control/template/control/accounts.html:12
 msgid "control.name:"
 msgstr "名称："
+
+msgid "control.new-users-in=account"
+msgstr "%1 中的新用户"
+
+msgid "control.new-users-report"
+msgstr "新用户报告"
 
 #: lib/Socialtext/Handler/ControlPanel.pm:2190
 msgid "control.new-wiki"
@@ -3116,6 +3212,9 @@ msgstr "Socialtext 管理设置"
 #: share/plugin/control/template/control/wrapper:104 share/plugin/control/template/control/wrapper:19
 msgid "control.socialtext-control-panel"
 msgstr "Socialtext 控制台"
+
+msgid "control.source=driver-name"
+msgstr "来源：%1"
 
 msgid "control.start-typing-account-name"
 msgstr "开始键入一个帐户名称"
@@ -4842,6 +4941,12 @@ msgstr "备份失败 ..."
 msgid "error.backup-id-required"
 msgstr "必须提供一个备份ID，或者使用列表查看可用备份"
 
+msgid "error.backup-schedule-update-failed=message"
+msgstr "备份计划更新失败：%1"
+
+msgid "error.backup-writability"
+msgstr "写入权限错误"
+
 msgid "error.bad-json"
 msgstr "错误的json"
 
@@ -5194,7 +5299,7 @@ msgstr "您没有对任何帐户共享该工具库。"
 
 #: share/plugin/widgets/share/javascript/activities/widget.js:423 share/plugin/widgets/share/javascript/activities/widget.js:589
 msgid "error.getting-activities"
-msgstr "参加活动时出错。"
+msgstr "读取活动时出错。"
 
 msgid "error.group-already-in-wiki"
 msgstr "该群组已经在工作区内"
@@ -5662,7 +5767,7 @@ msgstr "必须提供一个博客标题。"
 #. (action.error_title || action.title)
 #: share/plugin/widgets/share/javascript/template/activities/empty.tt2:4
 msgid "error.no-conversations-in-30days=title"
-msgstr "没有新的 %1 因为在过去的 30 天内，您没有与您的同事对话。"
+msgstr "没有新的 %1，因为在过去的 30 天内，您没有与您的同事对话。"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1346
 msgid "error.no-data-to-sum"
@@ -5716,7 +5821,7 @@ msgstr "帐户“%2”中不存在个人资料“%1”"
 #. (action.error_title || action.title)
 #: share/plugin/widgets/share/javascript/template/activities/empty.tt2:6
 msgid "error.no-followed-events-in-30days=title"
-msgstr "没有新的 %1，要么因为您还没有关注任何人，要么因为您关注的人在过去30天内还没有新的 %1。访问您同事的个人档案，然后点击“关注此人”来开始关注同事。"
+msgstr "没有新的 %1，可能是因为您还没有关注任何人，也可能是您关注的人在过去30天内还没有新的 %1。请访问您同事的个人档案，然后点击“关注此人”来开始关注同事。"
 
 #. ($group_id)
 #: lib/Socialtext/CLI.pm:3659
@@ -6835,7 +6940,7 @@ msgstr "对 %1 作出编辑：“%2”"
 #. (page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:7
 msgid "event.edit=page,wiki"
-msgstr "在 %2 中复制 %1。"
+msgstr "在 %2 中编辑 %1。"
 
 #. (page, workspace, event.context.edit_summary)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:5
@@ -6915,7 +7020,7 @@ msgstr "从 %2 移除了标签 %1。"
 #. (page_in_workspace, page_tag)
 #: share/template/data/events/page:19
 msgid "event.tag=page,tag"
-msgstr "为 %2 添加了标签 %1。"
+msgstr "为 %1 添加了标签 %2。"
 
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:23
@@ -7746,6 +7851,9 @@ msgstr "移除"
 msgid "groups.reset-photo"
 msgstr "重置照片"
 
+msgid "groups.revert-to-default"
+msgstr "恢复为默认..."
+
 #: share/plugin/groups/share/widgets/membership/widget.js:425
 msgid "groups.role-admin"
 msgstr "管理员"
@@ -7912,6 +8020,45 @@ msgstr "工作区"
 
 msgid "heading.workspaces"
 msgstr "工作区"
+
+msgid "im.away"
+msgstr "暂离"
+
+msgid "im.be-right-back"
+msgstr "马上回来"
+
+msgid "im.busy"
+msgstr "忙碌"
+
+msgid "im.do-not-disturb"
+msgstr "请勿打扰"
+
+msgid "im.do-not-disturb-but-allowed"
+msgstr "除非必要请勿打扰"
+
+msgid "im.idle-online"
+msgstr "空闲在线"
+
+msgid "im.lunch"
+msgstr "午餐"
+
+msgid "im.meeting"
+msgstr "会议"
+
+msgid "im.offline"
+msgstr "离线"
+
+msgid "im.on-phone"
+msgstr "电话中"
+
+msgid "im.online"
+msgstr "在线"
+
+msgid "im.out-of-office"
+msgstr "离开办公室"
+
+msgid "im.requires-internet-explorer"
+msgstr "（需要Internet Explorer）"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_appearance_section:32
 msgid "image.upload"
@@ -9124,6 +9271,9 @@ msgstr "注册"
 msgid "login.remember-me"
 msgstr "在这台电脑上保持登入。"
 
+msgid "login.remember-me-on-this-device"
+msgstr "在此设备上记住我"
+
 #: share/template/authen/forgot_password.html:3
 msgid "login.socialtext-password-help"
 msgstr "Socialtext 密码支持"
@@ -9981,6 +10131,9 @@ msgstr "人员名单"
 msgid "people.edit-profile"
 msgstr "(编辑)"
 
+msgid "people.employee=count"
+msgstr "%* 位员工"
+
 #: share/plugin/people/template/lite/profile.html:15
 msgid "people.follow"
 msgstr "关注"
@@ -9988,6 +10141,9 @@ msgstr "关注"
 #: share/plugin/people/template/profile_hcard:38
 msgid "people.mobile:"
 msgstr "移动电话："
+
+msgid "people.peer=count"
+msgstr "%* 位同事"
 
 #: share/plugin/people/template/lite/profile.html:173
 msgid "people.private-message-send"
@@ -10275,6 +10431,9 @@ msgstr "此人没有标签。点击<b>添加标签</b>来添加一个。"
 #: share/plugin/people/share/widgets/profile_tags/widget.js:11
 msgid "profile.no-tags-for-you"
 msgstr "您没有标签。点击<b>添加标签</b>来添加一个。"
+
+msgid "profile.office-communicator:"
+msgstr "Office Communicator&trade;："
 
 #: share/plugin/people/share/widgets/profile/widget.html:28 share/plugin/people/share/widgets/profile_edit/widget.html:49 share/plugin/people/template/lite/profile.html:95
 msgid "profile.organization"
@@ -10647,6 +10806,9 @@ msgstr "各工作区的编辑次数"
 msgid "reports.example-actions-today-1month-txt"
 msgstr "范例：/actions/today/-1month.txt"
 
+msgid "reports.from-through=start,end"
+msgstr "从%1到%2"
+
 msgid "reports.generate!"
 msgstr "制表！"
 
@@ -10740,6 +10902,9 @@ msgstr "标准差"
 msgid "reports.submit"
 msgstr "提交"
 
+msgid "reports.time-of-first-action"
+msgstr "第一次行动时间"
+
 msgid "reports.total-members-current:"
 msgstr "完整成员（当前）："
 
@@ -10772,6 +10937,9 @@ msgstr "按帐户显示用量"
 
 msgid "reports.usage-by-wiki"
 msgstr "按工作区显示用量"
+
+msgid "reports.user"
+msgstr "用户"
 
 msgid "reports.username"
 msgstr "用户名"
@@ -12236,6 +12404,9 @@ msgstr "报出个未来"
 msgid "title.workspaces"
 msgstr "工作区"
 
+msgid "twilio.changes-saved"
+msgstr "更改已保存"
+
 #: share/plugin/twilio/template/element/settings/twilio_settings_section:31
 msgid "twilio.edit-profile"
 msgstr "点击这里编辑您的个人资料。"
@@ -12253,6 +12424,15 @@ msgstr "管理电话服务"
 #: share/plugin/twilio/template/element/settings/twilio_settings_section:28
 msgid "twilio.mobile-phone-required"
 msgstr "请添加您的手机号码到您的个人资料以使用此功能。"
+
+msgid "twilio.phone-services"
+msgstr "电话服务"
+
+msgid "twilio.pick-one"
+msgstr "选择一个"
+
+msgid "twilio.private-message-from=sender"
+msgstr "來自 %1 的私人邮件"
 
 msgid "twilio.send-mentions-as-sms?"
 msgstr "以手机简讯（SMS）接收提及您的讯息？"
@@ -13125,6 +13305,9 @@ msgstr "工具库"
 #: share/plugin/widgets/template/view/gallery:34
 msgid "widgets.gallery-switch=account:"
 msgstr "这是“%1”账号的工具库。转到帐户："
+
+msgid "widgets.in-layout-mode-click-save-or-cancel"
+msgstr "您现在位于布局模式。点击<b>保存</b>以保存更改，或<b>取消</b>将其舍弃。"
 
 #: share/plugin/widgets/share/javascript/template/activities/widget.tt2:2 share/plugin/widgets/template/data/events/widget:2
 msgid "widgets.install-this"

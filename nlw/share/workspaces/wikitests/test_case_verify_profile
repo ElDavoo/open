@@ -3,6 +3,7 @@
 | *Comment* | Test Case: Verify Profile |  |
 | *Comment* | [Test Case: Edit Profile] should have run before Verify Profile |  |
 
+
 | *Comment* | THESE VALUES MUST MATCH the ones in [Test Case: Edit Profile] |  |
 | set | e_user | profile.editor@ken.socialtext.net |
 | set | short_e_user | profile.editor |
@@ -37,9 +38,9 @@
 
 | *Comment* | Headings appear uppercase via CSS: actual headings are titlecase |
 | text_like | Phone |
-| text_like | Work phone: 555-work-%%short_e_user%% |
-| text_like | Mobile phone: 555-mobile-%%short_e_user%% |
-| text_like | Home phone: 555-home-%%short_e_user%% |
+| text_like | Work: 555-work-%%short_e_user%% |
+| text_like | Mobile: 555-mobile-%%short_e_user%% |
+| text_like | Home: 555-home-%%short_e_user%% |
 
 | *Comment* | regexs needed becausing whitespace is missing in the page layout |
 | text_like | IM |

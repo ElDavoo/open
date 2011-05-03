@@ -1084,6 +1084,10 @@ msgstr "Widget Gallery"
 msgid "widgets.gallery-switch=account:"
 msgstr "This is the widget gallery for the \"%1\" account. Switch to account:"
 
+#: share/plugin/widgets/share/javascript/gadgets.js:677
+msgid "widgets.in-layout-mode-click-save-or-cancel"
+msgstr "You are in layout mode. Click <b>Save</b> to keep your changes, <b>Cancel</b> to discard them."
+
 #: share/plugin/widgets/share/javascript/template/activities/widget.tt2:2 share/plugin/widgets/template/data/events/widget:2
 msgid "widgets.install-this"
 msgstr "Install this widget"

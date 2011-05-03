@@ -49,25 +49,25 @@ var sametime_helper = {
 
 var ocs_helper = {
     statuses: {
-        0: [loc('Online'), 'ocs-green.png'], 
-        1: [loc('Offline'), 'ocs-gray.png'],
-        2: [loc('Away'), 'ocs-gold.png'], 
-        3: [loc('Busy'), 'ocs-orange.png'],
-        4: [loc('Be right back'), 'ocs-gold.png'], 
-        5: [loc('On the phone'), 'ocs-gold.png'],
-        6: [loc('Lunch'), 'ocs-gold.png'],
-        7: [loc('Meeting'), 'ocs-gold.png'],
-        8: [loc('Out of office'), 'ocs-gold.png'],
-        9: [loc('Do not disturb'), 'ocs-donotenter.png'],
-        15: [loc('Do not disturb but allowed'), 'ocs-donotenter.png'],
-        16: [loc('Idle online'), 'ocs-turquoise.png']
+        0: [loc('im.online'), 'ocs-green.png'], 
+        1: [loc('im.offline'), 'ocs-gray.png'],
+        2: [loc('im.away'), 'ocs-gold.png'], 
+        3: [loc('im.busy'), 'ocs-orange.png'],
+        4: [loc('im.be-right-back'), 'ocs-gold.png'], 
+        5: [loc('im.on-phone'), 'ocs-gold.png'],
+        6: [loc('im.lunch'), 'ocs-gold.png'],
+        7: [loc('im.meeting'), 'ocs-gold.png'],
+        8: [loc('im.out-of-office'), 'ocs-gold.png'],
+        9: [loc('im.do-not-disturb'), 'ocs-donotenter.png'],
+        15: [loc('im.do-not-disturb-but-allowed'), 'ocs-donotenter.png'],
+        16: [loc('im.idle-online'), 'ocs-turquoise.png']
     },
 
     create_ocs_field: function($span, username) {
         if (! $.browser.msie) {
             $span.text(username+' ').append(
                 $('<span></span>').addClass('requiresie').
-                    text(loc('(requires Internet Explorer)')));
+                    text(loc('im.requires-internet-explorer')));
         } 
         else {
             $span.text(username); 

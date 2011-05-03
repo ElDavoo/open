@@ -62,21 +62,18 @@ msgid "error.delete-profile-tag"
 msgstr "无法删除标签。"
 
 #. (users_already_present.size)
-#: share/plugin/people/template/invite_done:17
-#: share/plugin/people/template/invite_done:18
+#: share/plugin/people/template/invite_done:17 share/plugin/people/template/invite_done:18
 msgid "error.group-member-exists=count:"
 msgstr "对不起，下面的 %1 名用户已经是群组成员："
 
 #. (wrong_domain.size, '<span style="color: red">' _ restrict_to_domain _ '</span>')
 #. (wrong_domain.size, "<span style=\"color: red\">' _ restrict_to_domain _ '</span>")
-#: share/plugin/people/template/invite_done:17
-#: share/plugin/people/template/invite_done:26
+#: share/plugin/people/template/invite_done:17 share/plugin/people/template/invite_done:26
 msgid "error.invalid-email-address=count,domain"
 msgstr "对不起，下面的 %1 项电子邮件地址不在域名 %2 下面"
 
 #. (invalid_addresses.size)
-#: share/plugin/people/template/invite_done:17
-#: share/plugin/people/template/invite_done:22
+#: share/plugin/people/template/invite_done:17 share/plugin/people/template/invite_done:22
 msgid "error.invalid-email-address=count:"
 msgstr "对不起，下面的 %1 项电子邮件地址是无效的："
 
@@ -171,8 +168,7 @@ msgid "invite.account-password-exists=app-name"
 msgstr "由于您已经拥有帐户%1，其它群组的密码将和%1的密码相同。"
 
 #. (users_invited.size)
-#: share/plugin/people/template/invite_done:17
-#: share/plugin/people/template/invite_done:30
+#: share/plugin/people/template/invite_done:17 share/plugin/people/template/invite_done:30
 msgid "invite.added-to-group=users:"
 msgstr "下面的 %1 名用户已经被成功的邀请到这个群组："
 
@@ -290,13 +286,7 @@ msgstr "标准欢迎辞"
 msgid "invite.thanks"
 msgstr "谢谢，"
 
-#: share/plugin/people/template/invite:13
-#: share/plugin/people/template/invite:4
-#: share/plugin/people/template/invite_disabled:13
-#: share/plugin/people/template/invite_disabled:4
-#: share/plugin/people/template/invite_disabled_by_group:13
-#: share/plugin/people/template/invite_disabled_by_group:4
-#: share/plugin/people/template/invite_done:3
+#: share/plugin/people/template/invite:13 share/plugin/people/template/invite:4 share/plugin/people/template/invite_disabled:13 share/plugin/people/template/invite_disabled:4 share/plugin/people/template/invite_disabled_by_group:13 share/plugin/people/template/invite_disabled_by_group:4 share/plugin/people/template/invite_done:3
 msgid "invite.to-your-group"
 msgstr "邀请人员到您的群组"
 
@@ -313,8 +303,7 @@ msgstr "用户名："
 msgid "invite.web-address:"
 msgstr "网址："
 
-#: share/plugin/people/template/invite:73
-#: share/plugin/people/template/invite:80
+#: share/plugin/people/template/invite:73 share/plugin/people/template/invite:80
 msgid "invite.your-personal-message"
 msgstr "<此处是您的个人消息。>"
 
@@ -336,8 +325,7 @@ msgstr "给某人添加这个标签"
 
 #. (tag)
 #. (tagname)
-#: share/plugin/people/share/people.js:11
-#: share/plugin/people/template/tagged_people_links:13
+#: share/plugin/people/share/people.js:11 share/plugin/people/template/tagged_people_links:13
 msgid "people.add-tag-to-user=name:"
 msgstr "为用户添加标签\"%1\"："
 
@@ -351,8 +339,7 @@ msgstr "请填写<a href=\"/st/edit_profile\">您的个人资料</a>。"
 
 #. (acc.user_count)
 #. (group.user_count)
-#: share/plugin/people/template/invite:28
-#: share/plugin/people/template/invite:31
+#: share/plugin/people/template/invite:28 share/plugin/people/template/invite:31
 msgid "people.count=users"
 msgstr "%1 名用户"
 
@@ -363,6 +350,9 @@ msgstr "人员名单"
 msgid "people.edit-profile"
 msgstr "(编辑)"
 
+msgid "people.employee=count"
+msgstr "%* 位员工"
+
 #: share/plugin/people/template/lite/profile.html:15
 msgid "people.follow"
 msgstr "关注"
@@ -370,6 +360,9 @@ msgstr "关注"
 #: share/plugin/people/template/profile_hcard:38
 msgid "people.mobile:"
 msgstr "移动电话："
+
+msgid "people.peer=count"
+msgstr "%* 位同事"
 
 #: share/plugin/people/template/lite/profile.html:173
 msgid "people.private-message-send"
@@ -380,8 +373,7 @@ msgstr "发送"
 msgid "people.private-message-to=user:"
 msgstr "给%1的短消息："
 
-#: share/plugin/people/template/lite/profile.html:54
-#: share/plugin/people/template/lite/profile.html:56
+#: share/plugin/people/template/lite/profile.html:54 share/plugin/people/template/lite/profile.html:56
 msgid "people.profile"
 msgstr "个人资料"
 
@@ -426,8 +418,7 @@ msgstr "尚未有人关注您。当某人查看您的个人页面时，他可通
 msgid "profile.about-no-following"
 msgstr "您尚未关注他人。当查看某人的个人页面时，您可以通过点击页面顶部的“关注”来关注此人。"
 
-#: share/plugin/people/template/lite/profile.html:59
-#: share/plugin/people/template/lite/profile.html:61
+#: share/plugin/people/template/lite/profile.html:59 share/plugin/people/template/lite/profile.html:61
 msgid "profile.activities"
 msgstr "活动"
 
@@ -452,9 +443,7 @@ msgstr "博客："
 msgid "profile.contact"
 msgstr "联系方式"
 
-#: share/plugin/people/share/widgets/profile/widget.html:64
-#: share/plugin/people/share/widgets/profile_edit/widget.html:69
-#: share/plugin/people/template/lite/profile.html:153
+#: share/plugin/people/share/widgets/profile/widget.html:64 share/plugin/people/share/widgets/profile_edit/widget.html:69 share/plugin/people/template/lite/profile.html:153
 msgid "profile.custom"
 msgstr "自定义"
 
@@ -490,8 +479,7 @@ msgstr "家庭地址："
 msgid "profile.i"
 msgstr "我"
 
-#: share/plugin/people/share/widgets/profile/widget.html:38
-#: share/plugin/people/template/lite/profile.html:108
+#: share/plugin/people/share/widgets/profile/widget.html:38 share/plugin/people/template/lite/profile.html:108
 msgid "profile.im"
 msgstr "聊天室"
 
@@ -531,9 +519,10 @@ msgstr "此人没有标签。点击<b>添加标签</b>来添加一个。"
 msgid "profile.no-tags-for-you"
 msgstr "您没有标签。点击<b>添加标签</b>来添加一个。"
 
-#: share/plugin/people/share/widgets/profile/widget.html:28
-#: share/plugin/people/share/widgets/profile_edit/widget.html:49
-#: share/plugin/people/template/lite/profile.html:95
+msgid "profile.office-communicator:"
+msgstr "Office Communicator&trade;："
+
+#: share/plugin/people/share/widgets/profile/widget.html:28 share/plugin/people/share/widgets/profile_edit/widget.html:49 share/plugin/people/template/lite/profile.html:95
 msgid "profile.organization"
 msgstr "组织"
 
@@ -541,8 +530,7 @@ msgstr "组织"
 msgid "profile.personal:"
 msgstr "个人："
 
-#: share/plugin/people/share/widgets/profile/widget.html:17
-#: share/plugin/people/template/lite/profile.html:79
+#: share/plugin/people/share/widgets/profile/widget.html:17 share/plugin/people/template/lite/profile.html:79
 msgid "profile.phone"
 msgstr "电话"
 
@@ -582,9 +570,7 @@ msgstr "上传照片"
 msgid "profile.use-photo-on-web:"
 msgstr "使用网络上的照片："
 
-#: share/plugin/people/share/widgets/profile/widget.html:51
-#: share/plugin/people/share/widgets/profile_edit/widget.html:64
-#: share/plugin/people/template/lite/profile.html:119
+#: share/plugin/people/share/widgets/profile/widget.html:51 share/plugin/people/share/widgets/profile_edit/widget.html:64 share/plugin/people/template/lite/profile.html:119
 msgid "profile.web"
 msgstr "网页"
 

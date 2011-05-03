@@ -90,6 +90,11 @@
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Signals Follow Filter With Pagination TEARDOWN |  |
-| st-admin | delete-workspace --w %%ws%% --no-export | has been deleted |
+| st-process-jobs |  |  |
+| delete-workspace | %%ws%% | Recklessly deleting |
+| st-admin | deactivate-user --e %%signaler%% |  |
+| st-admin | deactivate-user --e %%follower%% |  |
+| st-admin | deactivate-user --e %%notfollowed%% |  |
+| delete-account | %%acct%% | Recklessly deleted |
 
 | *Comment* | Test Case: Signals Follow Filter With Pagination COMPLETED |  |

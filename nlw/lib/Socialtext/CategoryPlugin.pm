@@ -17,7 +17,7 @@ use Socialtext::Permission qw( ST_ADMIN_WORKSPACE_PERM );
 use Socialtext::SQL qw/:exec sql_txn/;
 use Socialtext::Timer qw/time_scope/;
 use Socialtext::Validate qw( validate SCALAR_TYPE USER_TYPE );
-use Socialtext::l10n qw(loc __);
+use Socialtext::l10n;
 
 const class_id => 'category';
 const class_title => __('class.category');
@@ -70,7 +70,7 @@ sub category_list {
             escaped    => $self->uri_escape( $_->{name} ),
             page_count => $_->{page_count},
         }
-    } sort { $a->{name} cmp $b->{name} } @$tags;
+    } lsort_by name => @$tags;
 
     my $is_admin = $self->hub->authz->user_has_permission_for_workspace(
         user       => $self->hub->current_user,
@@ -235,13 +235,13 @@ sub _gen_sort_closure {
         if ( $direction eq 'asc' ) {
             return sub {
                 $a->{revision_count} <=> $b->{revision_count}
-                    or lc( $a->{Subject} ) cmp lc( $b->{Subject} );
+                    or lcmp($a->{Subject}, $b->{Subject});
                 }
         }
         else {
             return sub {
                 $b->{revision_count} <=> $a->{revision_count}
-                    or lc( $a->{Subject} ) cmp lc( $b->{Subject} );
+                    or lcmp($a->{Subject}, $b->{Subject});
                 }
         }
     }
@@ -250,40 +250,38 @@ sub _gen_sort_closure {
         # may not be the same as the From header.
         if ( $direction eq 'asc' ) {
             return sub {
-                Socialtext::User->new( 
+                lcmp(Socialtext::User->new( 
                     username => $a->{username} 
-                )->best_full_name 
-                cmp 
+                )->best_full_name,
                 Socialtext::User->new(
                     username => $b->{username}
-                )->best_full_name
-                or lc( $a->{Subject} ) cmp lc( $b->{Subject} );
+                )->best_full_name)
+                or lcmp($a->{Subject}, $b->{Subject});
             }
         }
         else {
             return sub {
-                Socialtext::User->new( 
+                lcmp(Socialtext::User->new( 
                     username => $b->{username} 
-                )->best_full_name 
-                cmp 
+                )->best_full_name,
                 Socialtext::User->new(
                     username => $a->{username}
-                )->best_full_name
-                or lc( $b->{Subject} ) cmp lc( $a->{Subject} );
+                )->best_full_name)
+                or lcmp($a->{Subject}, $b->{Subject});
             }
         }
     }
     else { # anything else, most likely a string
         if ( $direction eq 'asc' ) {
             return sub {
-                lc( $a->{$sortby} ) cmp lc( $b->{$sortby} )
-                    or lc( $a->{Subject} ) cmp lc( $b->{Subject} );
+                lcmp($a->{$sortby}, $b->{$sortby})
+                    or lcmp($a->{Subject}, $b->{Subject});
             };
         }
         else {
             return sub {
-                lc( $b->{$sortby} ) cmp lc( $a->{$sortby} )
-                    or lc( $a->{Subject} ) cmp lc( $b->{Subject} );
+                lcmp($b->{$sortby}, $a->{$sortby})
+                    or lcmp($a->{Subject}, $b->{Subject});
             };
         }
     }

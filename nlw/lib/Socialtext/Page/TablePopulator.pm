@@ -10,6 +10,7 @@ use Socialtext::Paths;
 use Socialtext::Hub;
 use Socialtext::User;
 use Socialtext::File;
+use Socialtext::Encode;
 use Socialtext::Page::Legacy;
 use Socialtext::PageRevision;
 use Socialtext::String;
@@ -809,9 +810,27 @@ sub load_breadcrumbs {
         my $user_id = $self->get_user_id($user_dir);
         next unless $user_id;
 
-        my @page_ids =
-            map { Socialtext::String::title_to_id($_) }
-            split "\n", Socialtext::File::get_contents_utf8($trail);
+
+        my @page_ids;
+        my $content = Socialtext::File::get_contents($trail);
+        for my $name (split(/\n/, $content)) {
+            my $decoded = Socialtext::Encode::guess_decode($name);
+
+            # we've done our best to properly decode the string, override
+            # warnings so we can skip and move on if there's further issues.
+            local $SIG{__WARN__} = sub {
+                die "improper UTF8 encoding for title_to_id() in $trail\n"
+                    if $_[0] =~ /^Malformed UTF-8 character/;
+                warn $_[0];
+            };
+
+            try {
+                push @page_ids, Socialtext::String::title_to_id($decoded);
+            }
+            catch {
+                warn "$_";
+            };
+        }
 
         # The .trail files do not contain dates, so we will sythesize dates to
         # provide order. We will start at midnight of today and add a second

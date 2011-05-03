@@ -41,7 +41,7 @@
 
 | st-name-widget | 1 | information_widget |
 | st-select-widget-frame | information_widget |  |
-| wait_for_text_present_ok | self-join | 30000 |
+| wait_for_text_present_ok | Self-Join | 30000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: SJ Groups UI Create New Workspace Get to Workspaces Widget |  |

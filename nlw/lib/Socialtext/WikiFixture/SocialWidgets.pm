@@ -412,12 +412,12 @@ Parameters: You pass in the signal text, followed by 1 if this is a mobile signa
 
 sub st_send_reply {
     my ($self, $signaltosend, $is_mobile) = @_;
-    $self->handle_command('wait_for_element_visible_ok', '//a[@class="replyLink"]', 5000);
+    $self->handle_command('wait_for_element_visible_ok', '//a[@class="replyLink"]', 15000);
     $self->handle_command('click_ok', '//a[@class="replyLink"]');
 
     $self->handle_command('set_Speed',4000);
     if ($self->_is_wikiwyg() ) { #wikiwyg
-        $self->handle_command('wait_for_element_visible_ok', '//div[@class="replies"]//iframe[@name="signalFrame"]', 5000);
+        $self->handle_command('wait_for_element_visible_ok', '//div[@class="replies"]//iframe[@name="signalFrame"]', 15000);
         $self->handle_command('selectFrame', '//div[@class="replies"]//iframe[@name="signalFrame"]');
         $self->handle_command('click_ok' ,'//body', $signaltosend);
         $self->handle_command('type_ok' ,'//body', $signaltosend);
@@ -429,9 +429,9 @@ sub st_send_reply {
          } else {
              $textbox_name = 'wikiwyg_wikitext_textarea';
          }
-         $self->handle_command('wait_for_element_visible_ok','//div[@class="wikiwyg"][last()]', 5000);
+         $self->handle_command('wait_for_element_visible_ok','//div[@class="wikiwyg"][last()]', 15000);
          $self->handle_command('click_ok','//div[@class="wikiwyg"][last()]');
-         $self->handle_command('wait_for_element_visible_ok',$textbox_name, 5000);
+         $self->handle_command('wait_for_element_visible_ok',$textbox_name, 15000);
          $self->handle_command('type_ok',$textbox_name,$signaltosend);
     }
     
@@ -451,7 +451,7 @@ sub st_type_signal {
     $self->handle_command('set_Speed',4000);
    
     if ($self->_is_wikiwyg() ) { #wikiwyg
-        $self->handle_command('wait_for_element_visible_ok', 'signalFrame', 5000);
+        $self->handle_command('wait_for_element_visible_ok', 'signalFrame', 15000);
         $self->handle_command('selectFrame', 'signalFrame');
         $self->handle_command('type_ok' ,'//body', $signaltosend);
         $self->handle_command('select-frame' ,'relative=parent');
@@ -462,7 +462,7 @@ sub st_type_signal {
          } else {
              $textbox_name = 'wikiwyg_wikitext_textarea';
          }
-         $self->handle_command('wait_for_element_visible_ok',$textbox_name, 5000);
+         $self->handle_command('wait_for_element_visible_ok',$textbox_name, 15000);
          $self->handle_command('type_ok',$textbox_name,$signaltosend);
     }
 }
@@ -479,7 +479,7 @@ sub st_prepare_signal_within_activities_widget {
     my ($self, $signaltosend, $private) = @_;
     # The next two commands are REQUIRED to expose either the signalFrame or
     # the wikiwyg_wikitext_textarea before sending the signal
-    $self->handle_command('wait_for_element_present_ok', '//div[@class=' . "'mainWikiwyg setupWikiwyg wikiwyg']", 5000);
+    $self->handle_command('wait_for_element_present_ok', '//div[@class=' . "'mainWikiwyg setupWikiwyg wikiwyg']", 15000);
     $self->handle_command('click_ok', '//div[@class=' . "'mainWikiwyg setupWikiwyg wikiwyg']");
 
     $self->st_type_signal($signaltosend);
@@ -652,7 +652,7 @@ sub st_create_group {
     $self->handle_command('comment','end of st_create_group.  Final create has not yet been clicked');
 }
 
-=head2 st_find_user ( $user_id ) 
+=head2 st_find_user ( $user_id, optional $label ) 
 
 Pass in a unique value for the user before the at sign, and selenium will 
 search for it and click on that user.
@@ -660,9 +660,10 @@ search for it and click on that user.
 =cut
 
 sub st_find_user {
-    my ($self, $user_id) = @_;
+    my ($self, $user_id, $label) = @_;
     eval {
-        $self->handle_command('open_ok','/?action=people');
+        $self->handle_command('open_ok','/?action=people;tag=;sortby=best_full_name;limit=20;account_id=all');
+        $self->handle_command('pause','10000');
         $self->handle_command('wait_for_element_visible_ok','st-search-action', 30000);
         $self->handle_command('wait_for_element_visible_ok', 'st-search-term', 30000);
         $self->handle_command('wait_for_element_visible_ok', 'st-search-submit', 30000);
@@ -670,6 +671,7 @@ sub st_find_user {
         $self->handle_command('type_ok', 'st-search-term', $user_id);
         $self->handle_command('pause', '1000');
         $self->handle_command('click_and_wait', 'st-search-submit');
+
         $self->handle_command('wait-for-element-visible-ok', "link=$user_id", 30000);
         $self->handle_command('click_and_wait',"link=$user_id");
         $self->handle_command('wait-for-element-visible-ok','new_tag',30000);

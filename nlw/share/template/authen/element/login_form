@@ -22,7 +22,7 @@
     <input class="checkbox" name="remember" type="checkbox" id="remember" value="1" />
     [% IF lite %]
       <span class="description">
-        <label for="remember">[% loc('Remember me on this device') %]</label>
+        <label for="remember">[% loc('login.remember-me-on-this-device') %]</label>
       </span>
     [% ELSE %]
       <span class="description">

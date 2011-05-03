@@ -153,7 +153,7 @@
 | wait_for_element_visible_ok | //input[@type='button' and @value="Remove from group"] | 30000 |
 | click_ok | //input[@type='button' and @value="Remove from group"] |  |
 
-| verifyConfirmation | Remove the 2 selected users from this group? |  |
+| verifyConfirmation | Remove the selected 2 users from this group? |  |
 
 | *Comment* | Test Case: Control Panel Groups Remove from group - needs admin |  |
 | wait_for_text_present_ok | The group needs to include at least one admin | 30000 |

@@ -103,7 +103,7 @@ TODO: find a way to test user chooser
 
 | *Comment* | Test Case: Email Note and Attachments |  |
 | text_like | email_page_add_note | Hello, this is a page from the workspace that I wanted you to see. This page is also available for viewing or editing on the web at: |
-| text_like | email_page_add_note | /%%workspace%%/?email_title_%%start_time%% |
+| text_like | email_page_add_note | /%%workspace%%/email_title_%%start_time%% |
 | type_ok | email_page_add_note | Note %%start_time%% from Test Case: Email |
 
 | *Comment* | Test Case: Email sending page to %%workspace%%@%%wikiemail%% |  |
