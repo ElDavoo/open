@@ -1,10 +1,8 @@
-
 | *Comment* | Test Case: Show Direct Reports |
 
-
-
-
 * Fixture: SocialWidgets
+
+skip.ie because update-profile causes Se to exit in IE
 
 Here's the basic setup:
 
@@ -15,7 +13,8 @@ User 03 will belong to account Three
 User 04 will belong to account tmp
 User 05 will belong to account tmp
 
-We will all create account Joiner1 and Jointer2
+We will all create accounts Joiner1 and Joiner2
+and workspaces joiner1 and joiner2 in those accounts
 Manager will belong to both workspaces
 User 01 will belong to both workspaces
 User 02 will belong to joiner1
@@ -27,10 +26,8 @@ Therefore ...
 
 User02 will see Manager has user 01, user02 and user04 as direct reports ONLY (does not see 03 or 05)
 User02 will see user01, user04 as peers (does not see 03, 05)
-User04 will see Manager has user01, User02, User04, User05 as direct report (Not user03)
+User04 will see Manager has user01, User02, User04, User05 (because 04 and 05 share account tmp) as direct report (Not user03)
 Manager see's 'em all
-
-
 
 | *Comment* | Test Case: Show Direct Reports Permissions - Create Accounts |  |
 | set | acct_m | acctm%%start_time%% |
@@ -57,8 +54,8 @@ Manager see's 'em all
 | *Comment* | Test Case: Show Direct Reports Permissions - Create Workspaces |  |
 | set | joiner1 | joiner1ws%%start_time%% |
 | set | joiner2 | joiner2ws%%start_time%% |
-| st-admin | create-workspace --name %%joiner1%% --title %%joiner1%% --account %%acct_joiner_one%% | was created |
-| st-admin | create-workspace --name %%joiner2%% --title %%joiner2%% --account %%acct_joiner_two%% | was created |
+| st-admin | create-workspace --empty --name %%joiner1%% --title %%joiner1%% --account %%acct_joiner_one%% | was created |
+| st-admin | create-workspace --empty --name %%joiner2%% --title %%joiner2%% --account %%acct_joiner_two%% | was created |
 
 | *Comment* | Test Case: Show Direct Reports Permissions - Create Users |  |
 | set | user1_short | subordinate01%%start_time%% |
@@ -198,9 +195,9 @@ Manager see's 'em all
 | wait_for_element_not_present_ok | link=user5_short%% | 30000 |
 
 
-| *Comment* | Test Case: Show Direct Reports Permissions - User02 sees user03 has no peers |  |
+| *Comment* | Test Case: Show Direct Reports Permissions - User02 sees user04 has no peers |  |
 | st-logoutin | %%user2%% | %%password%% |
-| st-find-user | %%user3_short%% |  |
+| st-find-user | %%user4_short%% |  |
 | wait_for_element_not_present_ok | link=%%manager_short%% | 30000 |
 | text_unlike | //body | Peers: |
 | text_unlike | //body | Manager: |
@@ -224,6 +221,7 @@ Manager see's 'em all
 
 
 | *Comment* | Test Case: Show Direct Reports Permissions TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | delete-workspace --w %%joiner1%% --no-export | has been deleted |
 | st-admin | delete-workspace --w %%joiner1\2%% --no-export | has been deleted |
 
