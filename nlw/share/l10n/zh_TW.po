@@ -5999,6 +5999,9 @@ msgstr "對不起，訊息不存在。使用訊息搜尋框可以查找想要的
 msgid "error.no-such-user=email"
 msgstr "%1 用戶郵箱未註冊。試試其他的郵箱？"
 
+msgid "error.no-such-widget=src"
+msgstr "小工具 %1 不存在"
+
 #: share/plugin/widgets/share/javascript/activities/editor.js:659
 msgid "error.no-such-wikilink-wiki"
 msgstr "您輸入的工作區不存在，請重試"
@@ -7781,6 +7784,9 @@ msgstr "成員"
 #: share/plugin/groups/template/grouplist:105 share/plugin/groups/template/grouplist:38
 msgid "groups.member-plural"
 msgstr "成員"
+
+msgid "groups.member=count"
+msgstr "%1 位成員"
 
 #: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:6 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:3
 msgid "groups.members"
@@ -10165,6 +10171,9 @@ msgstr "搜尋人員"
 #: share/plugin/people/template/search_box_people:1
 msgid "people.search:"
 msgstr "搜尋人員："
+
+msgid "people.see-all-peers"
+msgstr "（檢視所有人）"
 
 #. (offset + 1, last, pager.total_entries)
 #: share/plugin/people/template/view/peoplelist:44

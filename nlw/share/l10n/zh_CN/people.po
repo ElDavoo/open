@@ -158,6 +158,9 @@ msgstr "在 %2 执行动作 %1。"
 msgid "event.unfollow=person"
 msgstr "停止关注 %1。"
 
+msgid "groups.member=count"
+msgstr "%1 位成员"
+
 #: share/plugin/people/template/email/invitation-body.html:39
 msgid "invite.account-password-exists"
 msgstr "由于您已经拥有一个帐户，其它群组的密码将与其密码相同。"
@@ -384,6 +387,9 @@ msgstr "搜索人员"
 #: share/plugin/people/template/search_box_people:1
 msgid "people.search:"
 msgstr "搜索人员："
+
+msgid "people.see-all-peers"
+msgstr "（检视所有人）"
 
 #. (offset + 1, last, pager.total_entries)
 #: share/plugin/people/template/view/peoplelist:44

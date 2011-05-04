@@ -1927,6 +1927,9 @@ msgstr "对不起，讯息不存在。使用讯息搜索框可以查找想要的
 msgid "error.no-such-user=email"
 msgstr "%1 用户邮箱未注册。试试其他的邮箱？"
 
+msgid "error.no-such-widget=src"
+msgstr "小工具 %1 不存在"
+
 #. ($opts{search}, $hub->current_workspace()
 #: lib/Socialtext/CLI.pm:3825
 msgid "error.no-tag=query,wiki"

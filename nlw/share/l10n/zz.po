@@ -6369,6 +6369,11 @@ msgstr "Zz'zz zzzzz, zzz zzzz Zzzzzz zzzz zzz zzzzz. Zzz zzz zzz zzz zzzzzz zzzz
 msgid "error.no-such-user=email"
 msgstr "%1 zz zzz zzzzzzzzzz zz z zzzz. Zzz z zzzzzzzzz zzzzz zzzzzzz?"
 
+#. ($widget->{src})
+#: lib/Socialtext/Pluggable/Plugin/Widgets.pm:281
+msgid "error.no-such-widget=src"
+msgstr "zzzzzz %1 zzzzz'z zzzzz"
+
 #: share/plugin/widgets/share/javascript/activities/editor.js:659
 msgid "error.no-such-wikilink-wiki"
 msgstr "Zzz zzzzzzzzz zzz zzzzzzzzz zzzz zzz zzzzz, zzzzzz zzz zzzzz"
@@ -8206,6 +8211,10 @@ msgstr "zzzzzz"
 #: share/plugin/groups/template/grouplist:105 share/plugin/groups/template/grouplist:38
 msgid "groups.member-plural"
 msgstr "zzzzzzz"
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:62
+msgid "groups.member=count"
+msgstr "%*(%1,zzzzzz)"
 
 #: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:6 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:3
 msgid "groups.members"
@@ -10645,6 +10654,10 @@ msgstr "Zzzzzz Zzzzzz"
 #: share/plugin/people/template/search_box_people:1
 msgid "people.search:"
 msgstr "Zzzzzz Zzzzzz:"
+
+#: share/plugin/people/template/lite/profile.html:109 share/plugin/people/template/lite/profile.html:126
+msgid "people.see-all-peers"
+msgstr "(zzz zzz)"
 
 #. (offset + 1, last, pager.total_entries)
 #: share/plugin/people/template/view/peoplelist:44

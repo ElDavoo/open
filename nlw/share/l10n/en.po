@@ -6369,6 +6369,11 @@ msgstr "We're sorry, but that Signal does not exist. You can use the signal sear
 msgid "error.no-such-user=email"
 msgstr "%1 is not registered as a user. Try a different email address?"
 
+#. ($widget->{src})
+#: lib/Socialtext/Pluggable/Plugin/Widgets.pm:281
+msgid "error.no-such-widget=src"
+msgstr "widget %1 doesn't exist"
+
 #: share/plugin/widgets/share/javascript/activities/editor.js:659
 msgid "error.no-such-wikilink-wiki"
 msgstr "The workspace you specified does not exist, please try again"
@@ -8206,6 +8211,10 @@ msgstr "member"
 #: share/plugin/groups/template/grouplist:105 share/plugin/groups/template/grouplist:38
 msgid "groups.member-plural"
 msgstr "members"
+
+#: share/plugin/people/share/widgets/profile_network/widget.js:62
+msgid "groups.member=count"
+msgstr "%*(%1,member)"
 
 #: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:6 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:3
 msgid "groups.members"
@@ -10645,6 +10654,10 @@ msgstr "Search People"
 #: share/plugin/people/template/search_box_people:1
 msgid "people.search:"
 msgstr "Search People:"
+
+#: share/plugin/people/template/lite/profile.html:109 share/plugin/people/template/lite/profile.html:126
+msgid "people.see-all-peers"
+msgstr "(see all)"
 
 #. (offset + 1, last, pager.total_entries)
 #: share/plugin/people/template/view/peoplelist:44

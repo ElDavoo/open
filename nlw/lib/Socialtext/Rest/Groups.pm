@@ -233,6 +233,7 @@ sub _add_members_to_group {
     my $notify  = $data->{send_message} || 0;
     my $message = $data->{additional_message} || '';
 
+    my $abdicated_role;
     for my $meta (@{$data->{users}}) {
         my $name_or_id = $meta->{username} || $meta->{user_id};
         my $invitee = Socialtext::User->Resolve($name_or_id)
@@ -246,6 +247,14 @@ sub _add_members_to_group {
             name => ($meta->{role}) ? $meta->{role} : 'member' );
         die "no such role: '$meta->{role}'\n" unless $role;
 
+        if ($invitee->user_id == $invitor->user_id) {
+            if ($role->role_id != Socialtext::Role->Admin->role_id) {
+                # The creating user wish to become a non-admin;
+                # remember this decision but postpone it until after
+                # adding the rest of the users into the new group.
+                $abdicated_role = $role;
+            }
+        }
         next if $group->role_for_user($invitee, {direct => 1});
 
         $group->add_user(
@@ -266,6 +275,14 @@ sub _add_members_to_group {
                 }
             );
         }
+    }
+
+    if ($abdicated_role) {
+        $group->assign_role_to_user(
+            user  => $invitor,
+            role  => $abdicated_role,
+            actor => $invitor,
+        );
     }
 }
 

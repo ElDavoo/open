@@ -2,26 +2,12 @@ Saving profile changes causes selenium top-level to disappear. Until we get that
 
 I tried to hook these tests together using %%start_time%% and other tricks to pass a username between them, but failed. So the username is always `profile.editor@ken.socialtext.net`
 
-fill in the users profile
 
 * [Test Case: Edit Profile]
-
-verify the filled in profile
-
 * [Test Case: Verify Profile]
-
-verify the profile avatar popup
-
 * [Test Case: Verify Avatar Popup]
-
-test profile (People) tagging
-
 * [Test Case: Tagging Profile]
-
-test Collegues widget in other user's profile
-
 * [Test Case: Profile Group List]
-
-There is a further glitch in that wait_for_element_... does not seem to work for widgets. If the profile does not open immediately, the test just runs on. This may need a frame select - Matt to investigate.
-
 * [Test Case: Clear Profile Fields]
+* [Test Case: Show Direct Reports]
+* [Test Case: Show Direct Reports Permissions]

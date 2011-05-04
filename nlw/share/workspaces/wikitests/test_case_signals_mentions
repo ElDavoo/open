@@ -94,6 +94,8 @@
 
 | *Comment* | Test Case: Signals Mentions reopen dashboard |  |
 | open_ok | /st/dashboard |  |
+| wait_for_element_present_ok | link=signals | 10000 |
+| click_ok | link=signals |  |
 
 | *Comment* | Test Case: Signals Mentions First four signals are there; no filtering yet |  |
 
