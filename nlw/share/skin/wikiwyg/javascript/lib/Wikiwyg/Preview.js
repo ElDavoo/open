@@ -73,8 +73,7 @@ proto.disableFinished = function() {
 }
 
 proto.fromHtml = function(html) {
-    this.div.innerHTML = html;
-    this.div.style.display = 'block';
+    $(this.div).html(html).show();
     this.wikiwyg.enableLinkConfirmations();
     if (/SyntaxHighlighter\.all/.test(html)) {
         $('#st-page-preview script[src]').each(function(){
