@@ -1974,6 +1974,11 @@ msgstr "We're sorry, but that Signal does not exist. You can use the signal sear
 msgid "error.no-such-user=email"
 msgstr "%1 is not registered as a user. Try a different email address?"
 
+#. ($widget->{src})
+#: lib/Socialtext/Pluggable/Plugin/Widgets.pm:281
+msgid "error.no-such-widget=src"
+msgstr "widget %1 doesn't exist"
+
 #. ($opts{search}, $hub->current_workspace()
 #: lib/Socialtext/CLI.pm:3825
 msgid "error.no-tag=query,wiki"

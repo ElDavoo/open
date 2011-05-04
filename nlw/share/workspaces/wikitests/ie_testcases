@@ -15,6 +15,7 @@
 * [User Groups UI Testcases]
 * [Calc Testcases]
 * [Signals Testcases]
+* [Localization Testcases]
 
 LDAP Testcases will Enable LDAP and use a known LDAP user instead of a Default user where required
 
