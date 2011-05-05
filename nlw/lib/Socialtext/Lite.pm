@@ -504,6 +504,7 @@ sub _process_template {
     my $user = $self->hub->current_user;
     return $self->hub->template->process(
         $template, %$template_vars, %ws_vars, %vars,
+        app_version => Socialtext->product_version,
     );
 }
 
