@@ -376,6 +376,30 @@ CREATE FUNCTION rboolop(query_int, integer[]) RETURNS boolean
     LANGUAGE c IMMUTABLE STRICT
     AS '$libdir/_int', 'rboolop';
 
+CREATE FUNCTION shares_account(user1 bigint, user2 bigint) RETURNS boolean
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    myrec RECORD;
+BEGIN
+    SELECT into_set_id INTO myrec
+    FROM
+        user_set_path
+    WHERE
+        from_set_id = user1
+    AND
+        into_set_id > x'30000000'::int
+    AND
+        into_set_id in (
+            SELECT DISTINCT into_set_id
+            FROM user_set_path
+            WHERE from_set_id = user2
+              AND into_set_id > x'30000000'::int)
+    LIMIT 1;
+    RETURN FOUND;
+END
+$$;
+
 CREATE FUNCTION signal_hide() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
@@ -467,6 +491,87 @@ CREATE FUNCTION update_recent_signal() RETURNS trigger
         RETURN NULL;    -- trigger return val is ignored
     END
     $$;
+
+CREATE FUNCTION user_removed_from_account() RETURNS trigger
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    rel RECORD;
+BEGIN
+    IF user_set_is_user(OLD.from_set_id) AND user_set_is_account(OLD.into_set_id) THEN
+        FOR rel IN
+            SELECT 
+                user_id, profile_field_id, other_user_id
+            FROM
+                profile_relationship 
+            WHERE
+                (user_id = OLD.from_set_id OR other_user_id = OLD.from_set_id) 
+            AND
+                profile_field_id IN (select profile_field_id FROM profile_field WHERE field_class = 'relationship')
+        LOOP
+            IF NOT shares_account(rel.user_id, rel.other_user_id) THEN
+                DELETE FROM
+                    PROFILE_RELATIONSHIP
+                WHERE
+                    user_id = rel.user_id
+                AND
+                    profile_field_id = rel.profile_field_id
+                AND
+                    other_user_id = rel.other_user_id;
+            END IF;
+        END LOOP;
+    END IF;
+    RETURN OLD;
+END
+$$;
+
+CREATE FUNCTION user_set_is_account(id bigint) RETURNS boolean
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF id > x'30000000'::int THEN
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
+    END IF;
+END
+$$;
+
+CREATE FUNCTION user_set_is_group(id bigint) RETURNS boolean
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF id > x'10000000'::int AND id <= x'20000000'::int THEN
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
+    END IF;
+END
+$$;
+
+CREATE FUNCTION user_set_is_user(id bigint) RETURNS boolean
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF id <= x'10000000'::int THEN
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
+    END IF;
+END
+$$;
+
+CREATE FUNCTION user_set_is_workspace(id bigint) RETURNS boolean
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF id > x'20000000'::int AND id <= x'30000000'::int THEN
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
+    END IF;
+END
+$$;
 
 CREATE AGGREGATE array_accum(anyelement) (
     SFUNC = array_append,
@@ -2324,6 +2429,8 @@ CREATE TRIGGER signal_update_recent AFTER UPDATE ON signal FOR EACH ROW EXECUTE 
 
 CREATE TRIGGER signal_uset_insert_recent AFTER INSERT ON signal_user_set FOR EACH ROW EXECUTE PROCEDURE insert_recent_signal_user_set();
 
+CREATE TRIGGER user_set_path_delete AFTER DELETE ON user_set_path FOR EACH ROW EXECUTE PROCEDURE user_removed_from_account();
+
 CREATE TRIGGER user_set_path_insert AFTER INSERT ON user_set_path FOR EACH ROW EXECUTE PROCEDURE on_user_set_path_insert();
 
 CREATE TRIGGER user_user_set_delete AFTER DELETE ON users FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
@@ -2780,4 +2887,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '139');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '140');
