@@ -317,6 +317,9 @@ Avatar.prototype = {
 
 };
 
-$(function(){ Avatar.createAll() });
+$(function(){
+    if (Socialtext.mobile) { return; }
+    Avatar.createAll();
+});
 
 })(jQuery);
