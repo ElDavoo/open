@@ -625,3 +625,4 @@ etc/socialtext/uri_map.d/agile.yaml
 t/Socialtext/Pluggable/Plugin/Widgets.t
 lib/Socialtext/Job/ProvisionTrial.pm
 t/Socialtext/Job/ProvisionTrial.t
+t/Socialtext/People/profile-account.t
