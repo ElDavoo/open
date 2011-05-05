@@ -109,4 +109,3 @@ UPDATE "System"
  WHERE field = 'socialtext-schema-version';
 
 COMMIT;
-
