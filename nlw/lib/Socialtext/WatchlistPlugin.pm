@@ -33,7 +33,7 @@ sub init {
     $self->SUPER::init(@_);
 }
 
-our $Default_notify_frequency = 1440;
+our $Default_notify_frequency_in_minutes = 1440;
 
 sub watchlist_notify_frequency {
     my $self = shift;
@@ -52,7 +52,7 @@ sub watchlist_notify_frequency {
         10080 => __('every.week'),
     ];
     $p->choices($choices);
-    $p->default($Default_notify_frequency);
+    $p->default($Default_notify_frequency_in_minutes);
     return $p;
 }
 

@@ -5,6 +5,7 @@ use Socialtext::PreferencesPlugin;
 use Socialtext::EmailNotifyPlugin;
 use Socialtext::Timer qw/time_scope/;
 use namespace::clean -except => 'meta';
+use List::Util 'max';
 
 extends 'Socialtext::Job';
 
@@ -18,7 +19,11 @@ sub _user_job_class {
 }
 
 sub _default_freq {
-    return $Socialtext::EmailNotifyPlugin::Default_notify_frequency;
+    return $Socialtext::EmailNotifyPlugin::Default_notify_frequency_in_minutes;
+}
+
+sub _minimum_freq {
+    return $Socialtext::EmailNotifyPlugin::Minimum_notify_frequency_in_minutes;
 }
 
 sub _pref_name {
@@ -55,6 +60,9 @@ sub do_work {
             uniqkey => "$ws_id-$user_id",
             arg => "$user_id-$ws_id-$pages_after",
         };
+
+        # Debug only
+        # $hub->log->info( "UserID $user_id has freq $freq");
     };
 
     my $default_freq = $self->_default_freq * 60;
@@ -80,8 +88,8 @@ sub do_work {
             my ($user_id, $blob) = @$pref;
 
             my $freq = $default_freq;
-            if ($blob and $blob =~ m/"\Q$pref_name\E":"(\d+)"/) {
-                $freq = $1 * 60;
+            if ($blob and $blob =~ m/"\Q$pref_name\E":"(\d+)"/ and $1 > 0) {
+                $freq = max(int($1), $self->_minimum_freq) * 60;
             }
             $create_job->($user_id, $freq) if $freq;
         }

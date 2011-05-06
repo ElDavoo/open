@@ -2,9 +2,11 @@ package Socialtext::Job::EmailNotifyUser;
 # @COPYRIGHT@
 use Moose;
 use Socialtext::EmailNotifier;
+use Socialtext::EmailNotifyPlugin;
 use Socialtext::URI;
 use Socialtext::Log qw/st_log/;
 use Socialtext::l10n qw/loc loc_lang system_locale/;
+use List::Util 'max';
 use namespace::clean -except => 'meta';
 
 extends 'Socialtext::Job';
@@ -23,8 +25,13 @@ sub _build_prefs {
 
 sub _build_interval {
     my $self = shift;
+    my $freq = $self->_frequency_pref($self->prefs);
 
-    return $self->_frequency_pref($self->prefs);
+    return 0 if $freq <= 0;
+    return max(
+        $freq,
+        ($Socialtext::EmailNotifyPlugin::Minimum_notify_frequency_in_minutes * 60)
+    );
 }
 
 override 'retry_delay' => sub { 0 };
@@ -69,6 +76,10 @@ sub do_work {
 
     # If $interval is 0, it means "never", not "repeat always until end of time".
     my $interval = $self->interval;
+
+    # Debug only
+    # $self->hub->log->info( "UserID ".$self->user->user_id." is receiving with interval (secs) $interval");
+
     return $self->completed unless $interval;
 
     my $tz = $hub->timezone;
