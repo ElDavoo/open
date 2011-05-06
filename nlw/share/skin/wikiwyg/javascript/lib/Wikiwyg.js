@@ -115,7 +115,6 @@ Wikiwyg.is_gecko = (
 Wikiwyg.is_safari = (
     Wikiwyg.ua.indexOf('safari') != -1
 );
-
 /* Safari 5+ is Gecko-compatible. */
 if ($.browser.safari && parseInt($.browser.version) > 500) {
     if (Wikiwyg.ua.indexOf('mobile') == -1) {
@@ -130,6 +129,9 @@ Wikiwyg.is_opera = (
 Wikiwyg.is_konqueror = (
     Wikiwyg.ua.indexOf("konqueror") != -1
 )
+Wikiwyg.is_chrome = (
+    Wikiwyg.ua.indexOf("chrome") != -1
+);
 Wikiwyg.browserIsSupported = (
     Wikiwyg.is_gecko ||
     Wikiwyg.is_ie ||

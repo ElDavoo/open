@@ -902,6 +902,19 @@ proto.enable_pastebin_webkit = function () {
             } catch (e) {}
             sel.removeAllRanges();
             sel.addRange(oldRange);
+            if (Wikiwyg.is_chrome) {
+                if (/<table /.test(pastedHtml)
+                    && !/<\/td>\s*<td\b/.test(pastedHtml)
+                    && !/<\/tr>\s*<tr\b/.test(pastedHtml)
+                ) {
+                    // {bz: 5266}: Text-in-single-cell paste in Chrome results
+                    // in a <table><tr><td><span>...</span></td></tr></table> wrapper, so
+                    // we need to unwrap it here.
+                    pastedHtml = pastedHtml
+                        .replace(/^.*<td\b[^>]*>(?:<span\b[^>]*>)?/, '')
+                        .replace(/(?:<\/span>)?<\/td>.*/, '')
+                }
+            }
             self.on_pasted(pastedHtml);
         }, 1);
     }, false);
