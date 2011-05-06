@@ -30,13 +30,14 @@ User04 will see Manager has user01, User02, User04, User05 (because 04 and 05 sh
 Manager see's 'em all
 
 | *Comment* | Test Case: Show Direct Reports Permissions - Create Accounts |  |
-| set | acct_m | acctm%%start_time%% |
-| set | acct_one | acctone%%start_time%% |
-| set | acct_two | accttwo%%start_time%% |
-| set | acct_three | acctthree%%start_time%% |
-| set | acct_tmp | accttmp%%start_time%% |
-| set | acct_joiner_one | acctjoiner_one%%start_time%% |
-| set | acct_joiner_two | acctjoiner_two%%start_time%% |
+| set | acct_m | acctm-%%start_time%% |
+| set | acct_one | acctone-%%start_time%% |
+| set | acct_two | accttwo-%%start_time%% |
+| set | acct_three | acctthree-%%start_time%% |
+| set | acct_tmp | accttmp-%%start_time%% |
+| set | acct_joiner_one | acctjoiner_one-%%start_time%% |
+| set | acct_joiner_two | acctjoiner_two-%%start_time%% |
+
 | st-admin | create-account --name %%acct_m%% | was created |
 | st-admin | create-account --name %%acct_one%% | was created |
 | st-admin | create-account --name %%acct_two%% | was created |
@@ -44,6 +45,7 @@ Manager see's 'em all
 | st-admin | create-account --name %%acct_tmp%% | was created |
 | st-admin | create-account --name %%acct_joiner_one%% | was created |
 | st-admin | create-account --name %%acct_joiner_two%% | was created |
+
 | st-admin | enable-plugin --plugin dashboard --account %%acct_m%% |  |
 | st-admin | enable-plugin --plugin dashboard --account %%acct_one%% |  |
 | st-admin | enable-plugin --plugin dashboard --account %%acct_two%% |  |
@@ -79,7 +81,6 @@ Manager see's 'em all
 | st-admin | create-user --e %%user4%% --p %%password%% --account %%acct_tmp%% | was created |
 | st-admin | create-user --e %%user5%% --p %%password%% --account %%acct_tmp%% | was created |
 | st-admin | create-user --e %%manager%% --p %%password%% --account %%acct_m%% | was created |
-| st-process-jobs |  |  |
 
 | *Comment* | Test Case: Show Direct Reports Create Users Permissions - Add-members |  |
 | st-admin | add-member --e %%manager%% --w %%joiner1%% | now has the role of 'member' in the |
@@ -91,7 +92,7 @@ Manager see's 'em all
 | st-admin | add-member --e %%user4%% --w %%joiner1%% | now has the role of 'member' in the |
 | st-admin | add-member --e %%user5%% --w %%joiner2%% | now has the role of 'member' in the |
 
-| pause | 10000 |  |
+| st-process-jobs | PersonIndex |  |
 
 | *Comment* | Test Case: Show Direct Reports Permissions - Edit Manager field for the users |  |
 | st-logoutin | %%user1%% | %%password%% |
@@ -104,9 +105,6 @@ Manager see's 'em all
 | call | [st-add-manager] | manager_short=%%manager_short%% |
 | st-logoutin | %%user5%% | %%password%% |
 | call | [st-add-manager] | manager_short=%%manager_short%% |
-
-| st-process-jobs |  |  |
-
 
 | *Comment* | Test Case: Show Direct Reports Permissions - Login as Manager, see all direct reports |  |
 | st-logoutin | %%manager%% | %%password%% |
@@ -206,7 +204,6 @@ Manager see's 'em all
 | wait_for_element_not_present_ok | link=user4_short%% | 30000 |
 | wait_for_element_not_present_ok | link=user5_short%% | 30000 |
 
-
 | *Comment* | Test Case: Show Direct Reports Permissions - User05 does not think he has peers |  |
 | st-logoutin | %%user5%% | %%password%% |
 | wait_for_element_visible_ok | link=%%user5_short%% | 30000 |
@@ -219,11 +216,24 @@ Manager see's 'em all
 | wait_for_element_not_present_ok | link=user3_short%% | 30000 |
 | wait_for_element_not_present_ok | link=user4_short%% | 30000 |
 
-
 | *Comment* | Test Case: Show Direct Reports Permissions TEARDOWN |  |
 | st-process-jobs |  |  |
-| st-admin | delete-workspace --w %%joiner1%% --no-export | has been deleted |
-| st-admin | delete-workspace --w %%joiner1\2%% --no-export | has been deleted |
+| delete-workspace | %%joiner1%% | Recklessly |
+| delete-workspace | %%joiner2%% | Recklessly |
 
+| st-admin | deactivate-user --e %%user1%% | has been deactivated |
+| st-admin | deactivate-user --e %%user2%% | has been deactivated |
+| st-admin | deactivate-user --e %%user3%% | has been deactivated |
+| st-admin | deactivate-user --e %%user4%% | has been deactivated |
+| st-admin | deactivate-user --e %%user5%% | has been deactivated |
+| st-admin | deactivate-user --e %%manager%% | has been deactivated |
+
+| delete-account | %%acct_m%% |  |
+| delete-account | %%acct_one%% |  |
+| delete-account | %%acct_two%% |  |
+| delete-account | %%acct_three%% |  |
+| delete-account | %%acct_tmp%% |  |
+| delete-account | %%acct_joiner_one%% |  |
+| delete-account | %%acct_joiner_two%% |  |
 
 | *Comment* | Test Case: Show Direct Reports Permissions COMPLETED |  |

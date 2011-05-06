@@ -205,7 +205,7 @@ Set things back to "normal"
 | job-count       | EmailNotifyUser | 1                            |       |
 | job-exists      | EmailNotifyUser | %%workspace_id%%-%%theuser_id%% |       |
 
-| post-form  | /%%workspace%%/index.cgi | %%pref_prefix%%=5&%%pref_suffix%% |
+| post-form  | /%%workspace%%/index.cgi | %%pref_prefix%%=15&%%pref_suffix%% |
 | code-is    | 200                      |                                   |
 | body-like  | Preferences saved        |                                   |
 | job-count  | EmailNotifyUser          | 1                                 |
@@ -220,9 +220,9 @@ job doesn't run yet:
 | job-exists           | EmailNotifyUser | %%workspace_id%%-%%theuser_id%% |
 | email-like           | __NO CONTENT!__ |                              |
 
-but after another 3 mins or so:
+but after another 15 mins or so:
 
-| st-fast-forward-jobs | 3               |   |
+| st-fast-forward-jobs | 15              |   |
 | st-process-jobs      |                 |   |
 | job-count            | EmailNotifyUser | 1 |
 | email-like           | qr/Foo/         |   |
@@ -231,7 +231,7 @@ but after another 3 mins or so:
 and do the "gap protector" job too:
 
 | clear-email          |                 |   |
-| st-fast-forward-jobs | 6               |   |
+| st-fast-forward-jobs | 15              |   |
 | st-process-jobs      |                 |   |
 | job-count            | EmailNotifyUser | 0 |
 | email-like           | __NO CONTENT!__ |   |
