@@ -42,8 +42,8 @@ sub watchlist_notify_frequency {
     $p->type('pulldown');
     my $choices = [
         0     => __('time.never'),
-        1     => __('every.minute'),
-        5     => __('every.5minutes'),
+#       1     => __('every.minute'),
+#       5     => __('every.5minutes'),
         15    => __('every.15minutes'),
         60    => __('every.hour'),
         360   => __('every.6hours'),
