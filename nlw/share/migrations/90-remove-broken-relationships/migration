@@ -12,7 +12,4 @@ sql_execute(q{
 
 create_job('ReindexPeople');
 
-require Socialtext::JobCreator;
-Socialtext::JobCreator->index_person(123);
-
 exit 0;
