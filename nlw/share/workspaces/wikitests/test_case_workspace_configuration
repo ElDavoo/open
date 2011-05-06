@@ -44,6 +44,7 @@ TODO: Figure out a way to test the other config functions
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | st-pause-click | 2000 | st-save-button-link |
 | wait_for_text_present_ok | Order post 1 content %%start_time%% | 30000 |
+| wait_for_text_present_ok | Blog: Order %%start_time%% Blog | 30000 |
 
 | open_ok | /%%workspace%%/index.cgi?action=display;page_name=first_post_in_order_%%start_time%%_blog;caller_action=blog_display;category=order_%%start_time%%_blog;js=show_edit_div#edit |  |
 | wait_for_element_visible_ok | link=Wiki Text | 30000 |
