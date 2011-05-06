@@ -14,7 +14,7 @@
 | open_ok | /%%ldapy_ws%%/ |  |
 | text_like | //body | You are not authorized to view this workspace |
 
-| *Comment* | Test Case: Exercise LDAP Group Add am account |  |
+| *Comment* | Test Case: Exercise LDAP Group Add an account |  |
 | create-account | %%ldapy_account%% |  |
 | st-admin | add-member --g %%created_group_id%% --account %%ldapy_account%% | Motorhead now has the role of 'member' in the %%ldapy_account%% Account |
 | st-admin | show-members --account ldapy-acct-%%start_time%% | lemmy@socialtext.com |
@@ -51,7 +51,7 @@
 | st-select-widget-frame | workspaces_widget |  |
 | wait_for_element_visible_ok | link=%%ldapy_ws%% | 30000 |
 | select-frame | relative=parent |  |
-| st-name-widget | 4 | membership_widget |
+| st-name-widget | 3 | membership_widget |
 | st-widget-title-like | membership_widget | Membership |
 | st-select-widget-frame | membership_widget |  |
 | wait_for_element_visible_ok | link=Eddie Clarke | 30000 |
