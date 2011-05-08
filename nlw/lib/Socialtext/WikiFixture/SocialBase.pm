@@ -2937,6 +2937,7 @@ sub st_purge_uploaded_widgets {
         DELETE FROM gadget
          WHERE src IS NULL
             OR src like 'file:/tmp/acct-%/%.xml'
+            OR src like 'urn:%'
     });
     diag loc("test.deleted-uploaded-widgets=count", $sth->rows)."\n";
 }
