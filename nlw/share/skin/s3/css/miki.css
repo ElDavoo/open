@@ -359,3 +359,29 @@ li.divider {
 .wiki .syntaxhighlighter .toolbar {
     display: none !important;
 }
+
+.wiki ul.waflWidget {
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+}
+.wiki ul.waflWidget .widgetHeaderButtons {
+    display: none;
+}
+
+caption, th, td {
+    font-weight: normal;
+    text-align: left;
+}
+
+.wiki div.widget div.widgetHeaderTitle img {
+    display: none;
+}
+
+.wiki div.widget div.widgetHeaderTitle {
+    font-size: 11px;
+    font-weight: bold;
+    padding-left: 12px;
+    padding-top: 6px;
+    white-space: nowrap;
+}

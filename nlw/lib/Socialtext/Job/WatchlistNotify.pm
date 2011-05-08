@@ -12,7 +12,7 @@ override '_user_job_class' => sub {
 };
 
 override '_default_freq' => sub {
-    return $Socialtext::WatchlistPlugin::Default_notify_frequency;
+    return $Socialtext::WatchlistPlugin::Default_notify_frequency_in_minutes;
 };
 
 override '_pref_name' => sub {

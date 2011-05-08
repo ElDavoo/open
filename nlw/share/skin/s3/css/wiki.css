@@ -193,11 +193,11 @@ html .wiki a:hover {
 
 .wiki li ul,
 .wiki li ol {
-    margin: 0 1.5em;
+    margin: 0 0 0 1.5em;
 }
 .wiki ul,
 .wiki ol {
-    margin: 0 1.5em 1.5em 1.5em;
+    margin: 0 0 0.5em 1.5em;
     line-height: 1.2em;
 }
 
@@ -224,7 +224,6 @@ html .wiki a:hover {
 
 .wiki table {
     border-collapse: collapse;
-    margin-bottom: 1.4em;
     width: auto;
     margin-left: 1px;
 }

@@ -174,7 +174,7 @@ Set things back to "normal"
 | job-exists      | WatchlistNotifyUser | %%workspace_id%%-%%user_id%% |       |
 | email-like      | __NO CONTENT!__     |                              |       |
 
-| post-form  | /%%workspace%%/index.cgi | %%pref_prefix%%=5 |
+| post-form  | /%%workspace%%/index.cgi | %%pref_prefix%%=15 |
 | code-is    | 200                      |                   |
 | body-like  | Preferences saved        |                   |
 | job-count  | WatchlistNotifyUser      | 1                 |
@@ -188,9 +188,9 @@ Set things back to "normal"
 | job-exists           | WatchlistNotifyUser | %%workspace_id%%-%%user_id%% |
 | email-like           | __NO CONTENT!__     |                              |
 
-| Comment | but after another 3 mins or so |
+| Comment | but after another 15 mins or so |
 
-| st-fast-forward-jobs | 3                   |   |
+| st-fast-forward-jobs | 15                  |   |
 | st-process-jobs      |                     |   |
 | job-count            | WatchlistNotifyUser | 1 |
 | email-like           | qr/Foo/             |   |
@@ -199,7 +199,7 @@ Set things back to "normal"
 | Comment | Process the "gap protector" job |
 
 | clear-email          |                     |   |
-| st-fast-forward-jobs | 6                   |   |
+| st-fast-forward-jobs | 15                  |   |
 | st-process-jobs      |                     |   |
 | job-count            | WatchlistNotifyUser | 0 |
 | email-like           | __NO CONTENT!__     |   |

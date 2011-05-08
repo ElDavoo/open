@@ -33,7 +33,7 @@ sub init {
     $self->SUPER::init(@_);
 }
 
-our $Default_notify_frequency = 1440;
+our $Default_notify_frequency_in_minutes = 1440;
 
 sub watchlist_notify_frequency {
     my $self = shift;
@@ -42,8 +42,8 @@ sub watchlist_notify_frequency {
     $p->type('pulldown');
     my $choices = [
         0     => __('time.never'),
-        1     => __('every.minute'),
-        5     => __('every.5minutes'),
+#       1     => __('every.minute'),
+#       5     => __('every.5minutes'),
         15    => __('every.15minutes'),
         60    => __('every.hour'),
         360   => __('every.6hours'),
@@ -52,7 +52,7 @@ sub watchlist_notify_frequency {
         10080 => __('every.week'),
     ];
     $p->choices($choices);
-    $p->default($Default_notify_frequency);
+    $p->default($Default_notify_frequency_in_minutes);
     return $p;
 }
 

@@ -3,7 +3,7 @@
 | click_ok | link=HTML... |  |
 | wait_for_element_visible_ok | st-widget-block-content | 30000 |
 | wait_for_element_visible_ok | st-widget-block-save | 30000 |
-| verifyValue | st-widget-block-content | ---- |
+| type_ok | st-widget-block-content | `Eric The Bold` |
 | click_ok | st-widget-block-save |  |
 | wait_for_element_not_visible_ok | st-widget-block-save | 30000 |
-| verifyValue | wikiwyg_wikitext_textarea | `qr/foo.+html.+----.+html/s` |
+| verifyValue | wikiwyg_wikitext_textarea | `qr/block.+\.html.+Eric The Bold.+\.html/ms` |

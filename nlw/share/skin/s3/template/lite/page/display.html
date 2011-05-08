@@ -1,10 +1,6 @@
 [%# @COPYRIGHT@ -%]
 [% USE decorate %]
 [% PROCESS lite/header.html %]
-[% MACRO user_link BLOCK %]
-    [% name | decorate('user_link') %]
-[% END %]
-[% USE JSON %]
 <script><!--
 var Socialtext = Socialtext || {};
 [% IF user %]
@@ -13,8 +9,37 @@ Socialtext.username = [% user.username.json || '' %];
 [% IF ws %]
 Socialtext.wiki_title = [% ws.title.json || '' %];
 [% END %]
---></script>
 
+[% IF page_html.search("gadgets\.container\.renderGadget") %]
+function nlw_make_s2_path(rest) {
+      return "/static/[% app_version %]/skin/s2" + rest;
+}
+function nlw_make_s3_path(rest) {
+      return "/static/[% app_version %]/skin/s3" + rest;
+}
+function nlw_make_skin_path(rest) {
+      return "/static/[% app_version %]/skin/s3" + rest;
+}
+function nlw_make_static_path(rest) {
+      return "/static/[% app_version %]" + rest;
+}
+
+function nlw_make_plugin_path(rest) {
+      return "/static/[% app_version %]".replace(/static/, 'nlw/plugin') + rest;
+}
+--></script>
+    [% FILTER decorate "head" %]
+<script type="text/javascript" charset="utf-8" src="/static/[% app_version %]/skin/s3/javascript/socialtext-s3.js.gz"></script>
+    [% END %]
+    <link rel="stylesheet" href="/static/[% app_version %]/skin/common/css/jquery.mobile-1.0a3.min.css" />
+[% ELSE %]
+--></script>
+[% END %]
+
+[% MACRO user_link BLOCK %]
+    [% name | decorate('user_link') %]
+[% END %]
+[% USE JSON %]
 <div class="content">
     [% page_html %]
 </div>

@@ -18,18 +18,18 @@
 | select_ok | st-widget-block-syntax | label=Perl |
 | click_ok | st-widget-block-cancel |  |
 | pause | 5000 |  |
+| verifyValue | wikiwyg_wikitext_textarea | block |
 | text_unlike | wikiwyg_wikitext_textarea | very semantic text output here |
 
 | *Comment* | Test Case: Insert Blocks Insert Code Block |  |
 | click_ok | link=Code... |  |
-| wait_for_element_visible_ok | st-widget-block-content | 30000 |
 | wait_for_element_visible_ok | st-widget-block-save | 30000 |
-| wait_for_element_visible_ok | st-widget-block-cancel | 30000 |
+| wait_for_element_visible_ok | st-widget-block-content | 30000 |
 | wait_for_element_visible_ok | st-widget-block-syntax | 30000 |
 | type_ok | st-widget-block-content | print "very specific text output here $user"; |
 | select_ok | st-widget-block-syntax | label=Perl |
 | click_ok | st-widget-block-save |  |
-| pause | 30000 |  |
+| pause | 5000 |  |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/.code-perl.+very specific text output here/s` |
 
 | *Comment* | Test Case: Insert Blocks another new page |  |
@@ -77,7 +77,7 @@
 | wait_for_element_not_visible_ok | st-widget-block-save | 30000 |
 | verifyValue | wikiwyg_wikitext_textarea | `qr/block.+pre.+some preformatted text.+pre/s` |
 
-| *Comment* | Test Case: Insert Blocks clear Untitled Page from new page |  |
+| *Comment* | Test Case: Insert Blocks clear Untitled Page from new page to avoid confusion |  |
 | click_ok | st-newpage-pagename-edit |  |
 
 | *Comment* | Test Case: Insert Blocks COMPLETED |  |

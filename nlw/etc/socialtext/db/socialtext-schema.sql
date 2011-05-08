@@ -376,6 +376,30 @@ CREATE FUNCTION rboolop(query_int, integer[]) RETURNS boolean
     LANGUAGE c IMMUTABLE STRICT
     AS '$libdir/_int', 'rboolop';
 
+CREATE FUNCTION shares_account(user1 bigint, user2 bigint) RETURNS boolean
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    myrec RECORD;
+BEGIN
+    SELECT into_set_id INTO myrec
+    FROM
+        user_set_path
+    WHERE
+        from_set_id = user1
+    AND
+        into_set_id > x'30000000'::int
+    AND
+        into_set_id in (
+            SELECT DISTINCT into_set_id
+            FROM user_set_path
+            WHERE from_set_id = user2
+              AND into_set_id > x'30000000'::int)
+    LIMIT 1;
+    RETURN FOUND;
+END
+$$;
+
 CREATE FUNCTION signal_hide() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
@@ -467,6 +491,54 @@ CREATE FUNCTION update_recent_signal() RETURNS trigger
         RETURN NULL;    -- trigger return val is ignored
     END
     $$;
+
+CREATE FUNCTION user_set_is_account(id bigint) RETURNS boolean
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF id > x'30000000'::int THEN
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
+    END IF;
+END
+$$;
+
+CREATE FUNCTION user_set_is_group(id bigint) RETURNS boolean
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF id > x'10000000'::int AND id <= x'20000000'::int THEN
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
+    END IF;
+END
+$$;
+
+CREATE FUNCTION user_set_is_user(id bigint) RETURNS boolean
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF id <= x'10000000'::int THEN
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
+    END IF;
+END
+$$;
+
+CREATE FUNCTION user_set_is_workspace(id bigint) RETURNS boolean
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF id > x'20000000'::int AND id <= x'30000000'::int THEN
+        RETURN TRUE;
+    ELSE
+        RETURN FALSE;
+    END IF;
+END
+$$;
 
 CREATE AGGREGATE array_accum(anyelement) (
     SFUNC = array_append,
@@ -2780,4 +2852,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '139');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '140');

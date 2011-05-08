@@ -624,3 +624,4 @@ lib/Socialtext/Agile/Rest.pm
 etc/socialtext/uri_map.d/agile.yaml
 t/Socialtext/Pluggable/Plugin/Widgets.t
 t/Socialtext/Pluggable/Plugin/People.t
+t/Socialtext/People/profile-account.t

@@ -103,13 +103,14 @@
 
 | *Comment* | Test Case: Groups UI Signal from group home. Use optional space in regex for IE |  |
 | st-name-widget | 1 | signals_widget |
-| st_verify_text_in_activities_widget | signals_widget | `qr/Showing.+all.+events.+from/` |
+| st_verify_text_in_activities_widget | signals_widget | `qr/Showing.+signals.+from/` |
 | st_verify_text_in_activities_widget | signals_widget | %%mysignal_1%% |
 | st_verify_text_in_activities_widget | signals_widget | `qr/%%group_user_short%%.*minute.*ago\s*to\s*%%group_name%%/` |
 | st_verify_text_in_activities_widget | signals_widget | %%mysignal_2%% |
 
 | *Comment* | Test Case: Groups UI Signal from group home TEARDOWN |
+| st-process-jobs |  |  |
 | delete-group | %%group_id%% |
-| st-admin | delete-workspace --w %%group_ws%% --no-export |
+| delete-workspace | %%group_ws%% | Recklessly |
 
 | *Comment* | Test Case: Groups UI Signal from group home COMPLETED |
