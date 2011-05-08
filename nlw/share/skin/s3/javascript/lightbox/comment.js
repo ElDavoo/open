@@ -112,10 +112,10 @@ GuiEdit.prototype.show = function () {
     }
 
     this.scrollTo(function () {
-        jQuery('.comment', this.container).fadeIn(
+        jQuery('.comment', self.container).fadeIn(
             'normal',
             function() {
-                jQuery('textarea', this.container).focus();
+                jQuery('textarea', self.container).focus();
             }
         );
     });
@@ -137,7 +137,15 @@ GuiEdit.prototype.scrollTo = function (callback) {
     // middle of the screen
     var wrapper = jQuery('.commentWrapper', this.container);
     var offset = wrapper.offset().top;
-    $('html,body').animate({scrollTop: offset}, 'normal', 'linear', callback);
+
+    // Workaround jQuery+IE bug in {bz: 5265}; may revisit later with jQuery 1.6
+    if ($.browser.msie && $('div.syntaxhighlighter').length) {
+        document.body.scrollTop = offset;
+        callback();
+    }
+    else {
+        $('html,body').animate({scrollTop: offset}, 'normal', 'linear', callback);
+    }
 }
 
 GuiEdit.prototype.alarm_on = function() {

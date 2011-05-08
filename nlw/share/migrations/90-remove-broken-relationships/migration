@@ -3,8 +3,13 @@
 use strict;
 use warnings;
 use Socialtext::SQL qw/sql_execute/;
+use Socialtext::Migration::Utils qw/create_job/;
 
 sql_execute(q{
     DELETE FROM profile_relationship
     WHERE NOT shares_account(user_id, other_user_id)
 });
+
+create_job('ReindexPeople');
+
+exit 0;
