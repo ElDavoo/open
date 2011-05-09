@@ -2,7 +2,7 @@
 
 # detect whether running in dev env
 SUDO='sudo'
-HOST=`hostname`
+HOST=`hostname --fqdn`
     if [ $HOST == 'lucite.socialtext.net' ] || [ $HOST == 'topaz.socialtext.net' ] || [ $HOST == 'borax.socialtext.net' ]; then
         SUDO=''
     fi
