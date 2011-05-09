@@ -26,7 +26,10 @@ sub gadget_vars {
     $src = "local:widgets:$src" unless $src =~ /:/;
 
     # Setup overrides and override preferences
-    my %overrides = (instance_id => ((2 ** 30) + int(rand(2 ** 30))));
+    my %overrides = (
+        instance_id => ((2 ** 30) + int(rand(2 ** 30))),
+        UP_workspace_name => $self->cgi->workspace_name,
+    );
     for my $encoded_pref (split /\s+/, $encoded_prefs) {
         $encoded_pref =~ /^([^\s=]+)=(\S*)/ or next;
         my ($key, $val) = ($1, $2);
