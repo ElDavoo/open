@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>4.7.0.4</version>
-  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.7.0.4.air</url>
-  <description><![CDATA[[4.7.0.4 - Wed Mar 23 22:55:49 PDT 2011]
+  <version>4.7.2.0</version>
+  <url>http://www.socialtext.com/desktop/SocialtextDesktop-4.7.2.0.air</url>
+  <description><![CDATA[[4.7.2.0 - Sun May  8 02:56:08 PDT 2011]
+(Enhancements)
+* Improved OpenSocial Widgets rendering for ST server version 4.7.2+.
+
+[4.7.0.4 - Wed Mar 23 22:55:49 PDT 2011]
 (Enhancements)
 * Signals: Posted signals show up much faster than before.
 * Signals: Expanding thread replies is now much faster than before.
