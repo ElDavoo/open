@@ -10,26 +10,18 @@
 
 | *Comment* | Test Case: Groups UI Edit an Existing Group - Not Admin - No Edit Link |  |
 | open_ok | /?group/%%group_id%% |  |
+| wait_for_element_not_present_ok | link=Edit Group | 10000 |
+| wait_for_element_not_present_ok | link=Edit Layout | 10000 |
 
-| st-name-widget | 1 | info_widget |
-| st-widget-title-like | info_widget | Information |
-| st-select-widget-frame | info_widget |  |
-| wait_for_element_not_present_ok | link=(Edit) | 30000 |
-| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Groups UI Edit an Existing Group - Become Admin - Yes Edit Link |  |
 | st-admin | add-group-admin --group %%group_id%% --email %%group_user%% | is now a admin of the %%group_name%% Group |
 | open_ok | /?group/%%group_id%% |  |
 
-| *Comment* | Test Case: Groups UI Edit an Existing Group - PAUSE |  |
-| pause | 5000 |  |
-
-| wait_for_element_visible_ok | st-edit-group | 30000 |
-
-| *Comment* | Test Case: Groups UI Edit an Existing Group - do not click Edit - frame will be wrong |  |
-| select-frame | relative=parent |  |
-
-| open_ok | /st/edit_group/%%group_id%% |  |
+| *Comment* | Test Case: Groups UI Edit an Existing Group - edit the group |  |
+| wait_for_element_visible_ok | link=Edit Group | 30000 |
+| wait_for_element_visible_ok | link=Edit Layout | 30000 |
+| click_and_wait | link=Edit Group | 30000 |
 
 | *Comment* | Test Case: Groups UI Edit an Existing Group - PAUSE |  |
 | pause | 5000 |  |

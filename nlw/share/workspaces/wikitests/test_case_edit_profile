@@ -39,8 +39,8 @@
 | *Comment* | Test Case: Edit Profile. Open for editing |  |
 | st-name-widget | 1 | profile |
 | st-select-widget-frame | profile |  |
-| wait_for_element_visible_ok | link=(Edit) | 60000 |
-| click_and_wait | link=(Edit) |  |
+| wait_for_element_visible_ok | link=Edit Profile | 60000 |
+| click_and_wait | link=Edit Profile |  |
 
 | *Comment* | Test Case: Edit Profile. Verify profile present. |  |
 | st-name-widget | 1 | profile_details |
