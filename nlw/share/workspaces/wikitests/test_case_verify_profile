@@ -3,7 +3,6 @@
 | *Comment* | Test Case: Verify Profile |  |
 | *Comment* | [Test Case: Edit Profile] should have run before Verify Profile |  |
 
-
 | *Comment* | THESE VALUES MUST MATCH the ones in [Test Case: Edit Profile] |  |
 | set | e_user | profile.editor@ken.socialtext.net |
 | set | short_e_user | profile.editor |
@@ -14,15 +13,9 @@
 | set | short_assistant | epassistant |
 
 | *Comment* | Test Case: Verify Profile. Access profile |  |
-| open_ok | /nlw/submit/logout |  |
-| wait_for_element_visible_ok | username | 60000 |
-| wait_for_element_visible_ok | password | 60000 |
-| type_ok | username | %%e_user%% |
-| type_ok | password | %%password%% |
-| clickAndWait | login_btn |  |
-
+| st-logoutin | %%e_user%% | %%password%% |
 | open_ok | /st/profile |  |
-| wait_for_element_visible_ok | `link=(Edit)` | 30000 |
+| wait_for_element_visible_ok | `link=Edit Profile` | 30000 |
 
 | *Comment* | Test Case: Verify Profile. Verify profile present. |  |
 | st-name-widget | 1 | profile |
@@ -43,16 +36,16 @@
 | text_like | Home: 555-home-%%short_e_user%% |
 
 | *Comment* | regexs needed becausing whitespace is missing in the page layout |
-| text_like | IM |
-| text_like | qr/AIM.+AOL %%short_e_user%%/ |
+| text_like | IM |  |
+| text_like | qr/AIM.+AOL %%short_e_user%%/ |  |
 | wait_for_element_present_ok | //img[contains(@src,'api.oscar.aol.com')] | 5000 |
-| text_like | qr/Yahoo!.+Yahoo %%short_e_user%%/ |
+| text_like | qr/Yahoo!.+Yahoo %%short_e_user%%/ |  |
 | wait_for_element_present_ok | //img[contains(@src,'opi.yahoo.com')] | 5000 |
-| text_like | qr/GTalk.+GTalk %%short_e_user%%/ |
-| text_like | qr/Skype.+Skype %%short_e_user%%/ |
+| text_like | qr/GTalk.+GTalk %%short_e_user%%/ |  |
+| text_like | qr/Skype.+Skype %%short_e_user%%/ |  |
 | wait_for_element_present_ok | //img[contains(@src,'mystatus.skype.com')] | 5000 |
-| text_like | qr/Sametime.+Sametime %%short_e_user%%/ |
-| text_like | qr/Twitter.+Twitter %%short_e_user%%/ |
+| text_like | qr/Sametime.+Sametime %%short_e_user%%/ |  |
+| text_like | qr/Twitter.+Twitter %%short_e_user%%/ |  |
 
 | text_like | Web |
 | text_like | `Blog: http://blog/%%short_e_user%%` |
@@ -100,6 +93,5 @@
 | text_like | Follows |  |
 | text_like | Followers |  |
 | select-frame | relative=parent |  |
-
 
 | *Comment* | Test Case: Verify Profile COMPLETED |  |
