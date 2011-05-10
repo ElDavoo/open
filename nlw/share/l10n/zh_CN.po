@@ -7351,6 +7351,9 @@ msgstr "公司"
 msgid "field.email"
 msgstr "电子邮件地址"
 
+msgid "field.employee"
+msgstr "下屬"
+
 msgid "field.facebook_url"
 msgstr "Facebook™"
 
@@ -7377,6 +7380,9 @@ msgstr "中间名"
 
 msgid "field.mobile_phone"
 msgstr "移动电话"
+
+msgid "field.peer"
+msgstr "同仁"
 
 msgid "field.personal_url"
 msgstr "个人网址"

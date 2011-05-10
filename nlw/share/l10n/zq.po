@@ -133,7 +133,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  fields.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-20 10:43+0800\n"
+"PO-Revision-Date: 2011-05-09 19:37-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -7761,6 +7761,9 @@ msgstr "«Company»"
 msgid "field.email"
 msgstr "«E-Mail»"
 
+msgid "field.employee"
+msgstr ""
+
 msgid "field.facebook_url"
 msgstr "«Facebook™»"
 
@@ -7787,6 +7790,9 @@ msgstr "«Middle Name»"
 
 msgid "field.mobile_phone"
 msgstr "«Mobile»"
+
+msgid "field.peer"
+msgstr ""
 
 msgid "field.personal_url"
 msgstr "«Personal»"
