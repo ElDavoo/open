@@ -4,11 +4,9 @@
 
 | *Comment* | Test Case: Active Members Actions - View Profile for %%logged_in_user%% |  |
 | open_ok | /st/profile |  |
+| wait_for_element_visible_ok | link=Edit Profile | 30000 |
+| wait_for_element_visible_ok | link=Edit Layout | 30000 |
 | text-like | st-editing-tools-edit | %%logged_in_user%% |
-| st-name-widget | 1 | profile |
-| st-select-widget-frame | profile |  |
-| wait_for_element_visible_ok | link=(Edit) | 60000 |
-| select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Active Members Actions - A couple Edits for %%logged_in_user%% |  |
 | open_ok | /%%am_ws_1%%/ |  |

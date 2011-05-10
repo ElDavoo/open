@@ -879,6 +879,7 @@ use Socialtext::CGI qw( cgi );
 
 cgi 'content' => '-newlines';
 cgi 'page_id';
+cgi 'template';
 cgi 'dff_count';
 cgi 'dff_server';
 cgi 'url';

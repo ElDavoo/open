@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <update xmlns="http://ns.adobe.com/air/framework/update/description/1.0">
-  <version>400</version>
-<url>http://topaz.socialtext.net/flair/flairSignals-400.air</url>
-<description><![CDATA[[Build 400 - Wed Mar 23 22:59:54 PDT 2011]
+  <version>401</version>
+<url>http://topaz.socialtext.net/flair/flairSignals-401.air</url>
+<description><![CDATA[[Build 401 - Sun May  8 02:05:09 PDT 2011]
+* Sync to the latest wiki.css stylesheet. {bz: 5264}
+
+[Build 400 - Wed Mar 23 22:59:54 PDT 2011]
 * Sync to the latest AW code. {bz: 5050}
 
 [Build 399 - Wed Mar 23 01:36:27 PDT 2011]

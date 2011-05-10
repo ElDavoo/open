@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-20 10:43+0800\n"
+"PO-Revision-Date: 2011-05-09 19:38-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -77,3 +77,10 @@ msgstr "办公电话"
 
 msgid "field.yahoo_sn"
 msgstr "Yahoo!™"
+
+msgid "field.peer"
+msgstr "同仁"
+
+msgid "field.employee"
+msgstr "下屬"
+

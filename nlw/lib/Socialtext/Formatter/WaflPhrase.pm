@@ -153,7 +153,7 @@ sub hub_for_workspace_name {
 }
 
 sub get_file_id {
-    my ($self, $workspace_name, $page_id, $filename) = @_;
+    my ($self, $workspace_name, $page_id, $filename, $page_uri_ref) = @_;
     my $t = time_scope 'get_file_id';
 
     my $ws = Socialtext::Workspace->new(name => $workspace_name);
@@ -169,6 +169,19 @@ sub get_file_id {
         page_id => $page_id,
         filename => $filename,
     );
+
+    unless ($id) {
+        my $template = $self->hub->wikiwyg->cgi->template;
+        if ($template) {
+            $page_id = Socialtext::String::title_to_id($template);
+            $id = Socialtext::Attachments->IDForFilename(
+                workspace_id => $ws->workspace_id,
+                page_id => $page_id,
+                filename => $filename,
+            );
+            $$page_uri_ref = Socialtext::Pages->id_to_uri($page_id);
+        }
+    }
     return $self->set_error($self->existence_error) unless $id;
     return $id;
 }
@@ -263,7 +276,18 @@ sub html {
             page_id => $page_id,
             filename => $image_name,
         );
-        return $self->set_error($self->existence_error) unless $att;
+        unless ($att) {
+            my $template = $self->hub->wikiwyg->cgi->template;
+            if ($template) {
+                $page_id = Socialtext::String::title_to_id($template);
+                $att = $hub->attachments->latest_with_filename(
+                    page_id => $page_id,
+                    filename => $image_name,
+                );
+                $page_uri = Socialtext::Pages->id_to_uri($page_id);
+            }
+            return $self->set_error($self->existence_error) unless $att;
+        }
 
         $size ||= 'scaled';
         my $full_path = $att->prepare_to_serve($size);
@@ -315,7 +339,7 @@ sub html {
             and ( $self->current_workspace_name ne $workspace_name );
     }
 
-    my $file_id = $self->get_file_id($workspace_name, $page_id, $file_name)
+    my $file_id = $self->get_file_id($workspace_name, $page_id, $file_name, \$page_uri)
         or return $self->error;
 
     $file_name = $self->uri_escape($file_name);
@@ -345,7 +369,7 @@ sub html {
         = $self->parse_wafl_reference;
     return $self->syntax_error unless $file_name;
 
-    my $file_id = $self->get_file_id($workspace_name, $page_id, $file_name)
+    my $file_id = $self->get_file_id($workspace_name, $page_id, $file_name, \$page_uri)
         or return $self->error;
 
     my $label = $file_name;
@@ -387,7 +411,7 @@ sub html {
 
     return $self->syntax_error unless $file_name;
 
-    my $file_id = $self->get_file_id($workspace_name, $page_id, $file_name)
+    my $file_id = $self->get_file_id($workspace_name, $page_id, $file_name, \$page_uri)
         or return $self->error;
 
     my $link = $self->hub->viewer->link_dictionary->format_link(

@@ -131,21 +131,17 @@ sub edit_content {
         if ($att_id =~ /^(.+?):(.+)$/) {
             $att_id = $1;
             $att_page = $2;
-            if ($att_page ne $page->id) {
-                if (Socialtext::PageRevision->is_bad_page_title($att_page))  {
-                    # It was attached during "create new page" to untitled page;
-                    # that's fine and we'll move it under the new name in the
-                    # $att->make_permanent call below.
-                }
-                else {
-                    die "$att_id is attached to $att_page - not to this page: " . $page->id
-                }
-            }
         }
         my $att = $self->hub->attachments->load(id => $att_id, page_id => $att_page);
-        die "attachment is not temporary!" unless $att->is_temporary;
-        $att->make_permanent(
-            page => $page, user => $self->hub->current_user);
+        if ($att->is_temporary) {
+            $att->make_permanent(
+                page => $page,
+                user => $self->hub->current_user
+            );
+        }
+        else {
+            $att->clone(page => $page);
+        }
     }
 
     my $signal = $page->store(

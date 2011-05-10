@@ -48,7 +48,10 @@ proto.deleteAllAttachments = function () {
 };
 
 proto.deleteNewAttachments = function (cb) {
-    this.deleteAttachments(this._newAttachmentList);
+    // Only delete temporary attachments, not new ones from a template.
+    this.deleteAttachments($.grep(this._newAttachmentList, function(att){
+        return(att.is_temporary ? true : false);
+    }));
 };
 
 proto.refreshAttachments = function (cb) {

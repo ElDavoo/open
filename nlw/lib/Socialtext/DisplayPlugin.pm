@@ -161,6 +161,7 @@ sub display {
     ) ? 0 : 1;
 
     my @new_tags = ();
+    my @template_attachments = ();
     if ($is_new_page) {
         if ($page->deleted) {
             $is_new_page = 0;
@@ -187,6 +188,10 @@ sub display {
                         user => $self->hub->current_user,
                     );
                 }
+
+                for my $source_attachment ($tmpl_page->attachments) {
+                    push @template_attachments, $source_attachment;
+                }
             }
         }
     }
@@ -210,6 +215,7 @@ sub display {
         $is_new_page, 
         $start_in_edit_mode,
         \@new_tags,
+        \@template_attachments,
     );
 }
 
@@ -219,6 +225,7 @@ sub _render_display {
     my $is_new_page = shift;
     my $start_in_edit_mode = shift;
     my $new_tags = shift;
+    my $template_attachments = shift;
 
     my $include_recent_changes
         = $self->preferences->include_in_pages->value;
@@ -250,6 +257,10 @@ sub _render_display {
         part { $_->{is_temporary} ? 1 : 0 } 
         map { $_->to_hash(formatted => 1) }
         @{$self->hub->attachments->all(page_id => $page->id)};
+
+    push @$new_attachments, map {
+        $_->to_hash(formatted => 1)
+    } @$template_attachments if $template_attachments;
 
     # TODO: Thunk like in global_template_vars?
     return $self->template_render(

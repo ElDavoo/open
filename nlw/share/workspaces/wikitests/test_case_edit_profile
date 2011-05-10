@@ -39,8 +39,8 @@
 | *Comment* | Test Case: Edit Profile. Open for editing |  |
 | st-name-widget | 1 | profile |
 | st-select-widget-frame | profile |  |
-| wait_for_element_visible_ok | link=(Edit) | 60000 |
-| click_and_wait | link=(Edit) |  |
+| wait_for_element_visible_ok | link=Edit Profile | 60000 |
+| click_and_wait | link=Edit Profile |  |
 
 | *Comment* | Test Case: Edit Profile. Verify profile present. |  |
 | st-name-widget | 1 | profile_details |
@@ -56,7 +56,7 @@
 | text_like | //body | First Name |
 | text_like | //body | Middle Name |
 | text_like | //body | Last Name |
-| text_like | //body | Preferred Name |
+| text_like | //body | Preferred |
 | verifyValue | first_name | %%fname%% |
 | verifyValue | last_name | %%lname%% |
 | select-frame | relative=parent |  |
@@ -79,7 +79,7 @@
 | text_like | //body | First Name |
 | text_like | //body | Middle Name |
 | text_like | //body | Last Name |
-| text_like | //body | Preferred Name |
+| text_like | //body | Preferred |
 | verifyValue | first_name | %%fname%% |
 | verifyValue | last_name | %%lname%% |
 
@@ -103,6 +103,7 @@
 | type_ok | personal_url | personal/%%short_e_user%% |
 | type_ok | linkedin_url | linkedIn/%%short_e_user%% |
 | type_ok | facebook_url | facebook/%%short_e_user%% |
+| type_ok | communicator_sn | MSOCS %%short_e_user%% |
 
 | *Comment* | Test Case: Edit Profile. Need to select users in a common account |  |
 | wait_for_element_visible_ok | field_supervisor | 30000 |
