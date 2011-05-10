@@ -1426,7 +1426,9 @@ proto.convertWikitextToHtml = function(wikitext, func, onError) {
         data: {
             action: 'wikiwyg_wikitext_to_html',
             page_name: jQuery('#st-attachments-attach-form input[name=page_name]').val()
-                    || jQuery('#st-newpage-pagename-edit, #st-page-editing-pagename').val(),
+                    || jQuery('#st-page-editing-pagename').val()
+                    || jQuery('#st-newpage-pagename-edit').val(),
+            template: Socialtext.template_name,
             content: wikitext
         },
         success: function(_data, _status, xhr) {
