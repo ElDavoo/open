@@ -7,8 +7,4 @@
 | wait_for_element_visible_ok | update_profile | 30000 |
 | pause | 5000 | settling time |
 | click_and_wait | update_profile |  |
-| wait_for_text_not_present_ok | Edit Profile | 30000 |
-| wait_for_text_present_ok | Profile | 30000 |
-| wait_for_text_present_ok | Tag | 30000 |
-| wait_for_text_present_ok | Activities | 30000 |
 | wait_for_element_visible_ok | link=%%manager_short%% | 30000 |
