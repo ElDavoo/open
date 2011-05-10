@@ -31,14 +31,15 @@
 
 | *Comment* | Headings appear uppercase via CSS: actual headings are titlecase |
 | text_like | Phone |
-| text_like | Work: 555-work-%%short_e_user%% |
-| text_like | Mobile: 555-mobile-%%short_e_user%% |
-| text_like | Home: 555-home-%%short_e_user%% |
+| text_like | qr/Work.+555-work-%%short_e_user%%/ |
+| text_like | qr/Mobile.+555-mobile-%%short_e_user%%/ |
+| text_like | qr/Home.+555-home-%%short_e_user%%/ |
 
 | *Comment* | regexs needed becausing whitespace is missing in the page layout |
 | text_like | IM |  |
 | text_like | qr/AIM.+AOL %%short_e_user%%/ |  |
-| wait_for_element_present_ok | //img[contains(@src,'api.oscar.aol.com')] | 5000 |
+| text_like | qr/Office Communicator.+MSOCS %%short_e_user%%/ |  |
+|  | wait_for_element_present_ok | //img[contains(@src,'api.oscar.aol.com')] | 5000 |
 | text_like | qr/Yahoo!.+Yahoo %%short_e_user%%/ |  |
 | wait_for_element_present_ok | //img[contains(@src,'opi.yahoo.com')] | 5000 |
 | text_like | qr/GTalk.+GTalk %%short_e_user%%/ |  |
@@ -48,10 +49,10 @@
 | text_like | qr/Twitter.+Twitter %%short_e_user%%/ |  |
 
 | text_like | Web |
-| text_like | `Blog: http://blog/%%short_e_user%%` |
-| text_like | `Personal: http://personal/%%short_e_user%%` |
-| text_like | qr/Linked.+http\:\/\/linkedIn\/%%short_e_user%%/ |
-| text_like | qr/Facebook.+http\:\/\/facebook\/%%short_e_user%%/ |
+| text_like | `qr/Blog.+http\:\/\/blog\/%%short_e_user%%/ism` |
+| text_like | `qr/Personal.+http\:\/\/personal\/%%short_e_user%%/ism` |
+| text_like | `qr/Linked.+http\:\/\/linkedIn\/%%short_e_user%%/ism` |
+| text_like | `qr/Facebook.+http\:\/\/facebook\/%%short_e_user%%/sim` |
 
 | text_like | Manager |
 | text_like | supervisor |
