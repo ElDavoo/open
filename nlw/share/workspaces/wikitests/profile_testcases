@@ -11,3 +11,4 @@ I tried to hook these tests together using %%start_time%% and other tricks to pa
 * [Test Case: Clear Profile Fields]
 * [Test Case: Show Direct Reports]
 * [Test Case: Show Direct Reports Permissions]
+* [Test Case: Widgets in Profile]
