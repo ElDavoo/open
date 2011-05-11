@@ -1,4 +1,6 @@
+
 | *Comment* | Test Case: Preferences UI User 4 |  |
+
 
 | set | new_account | userPrefs.%%start_time%%.4 |
 | set | new_ws | userprefs-%%start_time%%-4 |
@@ -99,16 +101,16 @@
 | verifyValue | //input[@value='chrono'] | on |
 | verifyValue | //input[@value='expanded'] | on |
 
-| *Comment* | Test Case: Preferences UI User 4. Email Notification. Set: Every Minute, page name, expanded |  |
-| select_ok | email_notify__notify_frequency | label=Every Minute |
+| *Comment* | Test Case: Preferences UI User 4. Email Notification. Set: Every 15 Minutes, page name, expanded |  |
+| select_ok | email_notify__notify_frequency | label=Every 15 Minutes |
 | check_ok | //input[@value='name'] |  |
 | check_ok | //input[@value='expanded'] |  |
-| is_selected_ok | email_notify__notify_frequency | label=Every Minute |
+| is_selected_ok | email_notify__notify_frequency | label=Every 15 Minutes |
 | verifyValue | //input[@value='name'] | on |
 | verifyValue | //input[@value='expanded'] | on |
 | click_and_wait | link=Save |  |
 | text_like | qr/Preferences Saved/i |  |
-| is_selected_ok | email_notify__notify_frequency | label=Every Minute |
+| is_selected_ok | email_notify__notify_frequency | label=Every 15 Minutes |
 | verifyValue | //input[@value='name'] | on |
 | verifyValue | //input[@value='expanded'] | on |
 

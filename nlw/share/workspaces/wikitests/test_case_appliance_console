@@ -37,10 +37,11 @@
 
 | is_element_present_ok | set_destination |
 | is_text_present_ok | Backup Destination |
-| is_text_present_ok | The appliance can store backup files on a Windows- or SMB-compatible shared directory/folder on another computer. Set the backup server, directory and username here. |
+| is_text_present_ok | Backup files can be stored on a Windows shared directory (a SMB/CIFS share). |
+|  is_text_present_ok |  Choosing an "Archive Directory" will store backups inside that sub-directory within the share. |
 | is_text_present_ok | Backup Server name |
 | is_element_present_ok | smbhost |
-| is_text_present_ok | Shared Directory Name |
+| is_text_present_ok | Backup Share Name |
 | is_element_present_ok | smbshare |
 | is_text_present_ok | Username |
 | is_element_present_ok | smbuser |

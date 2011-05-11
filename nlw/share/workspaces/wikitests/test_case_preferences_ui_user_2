@@ -1,4 +1,6 @@
+
 | *Comment* | Test Case: Preferences UI User 2 |  |
+
 
 | set | new_account | userPrefs.%%start_time%%.2 |
 | set | new_ws | userprefs-%%start_time%%-2 |
@@ -78,14 +80,14 @@
 | is_selected_ok | watchlist__watchlist_notify_frequency | label=Every Day |
 | verifyValue | //input[@value='expanded'] | on |
 
-| *Comment* | Test Case: Preferences UI User 2. Watchlist Notification. Set: Every Minute, expanded |  |
-| select_ok | watchlist__watchlist_notify_frequency | label=Every Minute |
+| *Comment* | Test Case: Preferences UI User 2. Watchlist Notification. Set: Every 15 Minutes, expanded |  |
+| select_ok | watchlist__watchlist_notify_frequency | label=Every 15 Minutes |
 | check_ok | //input[@value='expanded'] |  |
-| is_selected_ok | watchlist__watchlist_notify_frequency | label=Every Minute |
+| is_selected_ok | watchlist__watchlist_notify_frequency | label=Every 15 Minutes |
 | verifyValue | //input[@value='expanded'] | on |
 | click_and_wait | link=Save |  |
 | text_like | qr/Preferences Saved/i |  |
-| is_selected_ok | watchlist__watchlist_notify_frequency | label=Every Minute |
+| is_selected_ok | watchlist__watchlist_notify_frequency | label=Every 15 Minutes |
 | verifyValue | //input[@value='expanded'] | on |
 
 | *Comment* | Test Case: Preferences UI User 2. Watchlist Notification. Set: Every week, reverse chronologically, condensed |  |
