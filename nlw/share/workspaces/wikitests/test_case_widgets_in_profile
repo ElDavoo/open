@@ -51,11 +51,11 @@
 | text_like | `xpath=(//div[@class='widgetHeaderTitle'])[3]` | Tags |
 | click_ok | st-save-layout |  |
 | wait_for_text_not_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
+| wait_for_element_visible_ok | st-edit-group | 30000 |
+| wait_for_element_visible_ok | st-edit-layout | 30000 |
 | wait_for_text_present_ok | Wikipedia | 30000 |
 | text_like | `xpath=(//div[@class='widgetHeaderTitle'])[2]` | Wikipedia |
 | text_like | `xpath=(//div[@class='widgetHeaderTitle'])[3]` | Tags |
-| wait_for_element_visible_ok | st-edit-group | 30000 |
-| wait_for_element_visible_ok | st-edit-layout | 30000 |
 | text_unlike | contentContainer | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
 
 | *Comment* | Test Case: Widgets in Profile change widget preferences |  |
@@ -82,7 +82,40 @@
 | st-widget-title-like | wiki | Wikipedia |
 | st-select-widget-frame | wiki |  |
 | text_like | //body | Wiki Search (French) |
-| select-frame | relative=parent |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Widgets in Profile use X button to remove widget |  |
+| click_ok | st-edit-layout |  |
+| wait_for_text_present_ok | You are in layout mode | 30000 |
+| wait_for_element_visible_ok | `xpath=(//a[@class='close'])[2]` | 30000 |
+| click_ok | `xpath=(//a[@class='close'])[2]` |  |
+| wait_for_text_not_present_ok | Wikipedia | 30000 |
+| click_ok | st-save-layout |  |
+| wait_for_element_visible_ok | st-edit-group | 30000 |
+| wait_for_element_visible_ok | st-edit-layout | 30000 |
+| wait_for_text_not_present_ok | Wikipedia | 30000 |
+| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[2]` | Tags |
+
+| *Comment* | Test Case: Widgets in Profile add widget back |  |
+| wait_for_element_visible_ok | st-edit-layout | 10000 |
+| click_ok | st-edit-layout |  |
+| wait_for_text_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
+| wait_for_element_visible_ok | st-add-widget | 10000 |
+| click_ok | st-add-widget |  |
+| wait_for_element_visible_ok | //a[@id='gallery-widget-Wikipedia'] | 30000 |
+| click_ok | //a[@id='gallery-widget-Wikipedia'] |  |
+| wait_for_element_not_present_ok | //a[@id='gallery-widget-Wikipedia'] | 10000 |
+| wait_for_text_present_ok | Wikipedia | 30000 |
+| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[2]` | Wikipedia |
+| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[3]` | Tags |
+| click_ok | st-save-layout |  |
+| wait_for_text_not_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
+| wait_for_text_present_ok | Wikipedia | 30000 |
+| wait_for_element_visible_ok | st-edit-group | 30000 |
+| wait_for_element_visible_ok | st-edit-layout | 30000 |
+| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[2]` | Wikipedia |
+| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[3]` | Tags |
+| text_unlike | contentContainer | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
 
 | *Comment* | Test Case: Widgets in Profile start to revert to default, click no |  |
 | click_ok | st-edit-layout |  |
