@@ -898,15 +898,15 @@ sub deactivate {
     }
 
     # leaves things referencing this user in place
-    my $accounts = $self->accounts(ids_only => 1);
+    my $accounts = $self->accounts;
     try {
-        Socialtext::UserSet->new->remove_set($self, roles_only => 1);
+        Socialtext::UserSet->new->remove_set($self->user_id, roles_only => 1);
         require Socialtext::Pluggable::Adapter;
         my $adapter = Socialtext::Pluggable::Adapter->new;
         $adapter->make_hub($self);
-        foreach my $acct_id (@$accounts) {
+        foreach my $acct (@$accounts) {
             $adapter->hook(
-                'nlw.remove_user_account_role' => [$acct_id, $self, undef]
+                'nlw.remove_user_account_role' => [$acct, $self, undef]
             );
         }
     }
