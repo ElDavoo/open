@@ -1,9 +1,6 @@
-
 | *Comment* | Test Case: Show Direct Reports |
 
-
 | *Comment* | Test Case: Show Direct Reports - Create Account, Users |  |
-| set | ws | directreportws%%start_time%% |
 | set | acct | directreportacct%%start_time%% |
 | st-admin | create-account --name %%acct%% | was created |
 | st-admin | enable-plugin --plugin dashboard --account %%acct%% |  |
@@ -38,8 +35,7 @@
 | set | manager_short | managerwithdirects%%start_time%% |
 | set | manager | %%manager_short%%@matt.socialtext.net |
 
-
-| *Comment* | Test Case: Show Direct Reports Create Users. Add --account %%acct%% when {bz: 5166} is fixed |  |
+| *Comment* | Test Case: Show Direct Reports Create Users. |  |
 | st-admin | create-user --e %%user1%% --p %%password%% --account %%acct%% | was created |
 | st-admin | create-user --e %%user2%% --p %%password%% --account %%acct%% | was created |
 | st-admin | create-user --e %%user3%% --p %%password%% --account %%acct%% | was created |
@@ -97,22 +93,8 @@
 | st-logoutin | %%manager%% | %%password%% |
 | wait_for_element_visible_ok | link=%%manager_short%% | 30000 |
 | click_and_wait | link=%%manager_short%% |  |
-| wait_for_text_present_ok | Profile | 30000 |
 | wait_for_text_present_ok | Activities | 30000 |
 | wait_for_text_present_ok | Employees | 30000 |
-| wait_for_text_present_ok | %%user1_short%% | 30000 |
-| wait_for_text_present_ok | %%user2_short%% | 30000 |
-| wait_for_text_present_ok | %%user3_short%% | 30000 |
-| wait_for_text_present_ok | %%user4_short%% | 30000 |
-| wait_for_text_present_ok | %%user5_short%% | 30000 |
-| wait_for_text_present_ok | %%user6_short%% | 30000 |
-| wait_for_text_present_ok | %%user7_short%% | 30000 |
-| wait_for_text_present_ok | %%user8_short%% | 30000 |
-| wait_for_text_present_ok | %%user9_short%% | 30000 |
-| wait_for_text_present_ok | %%user10_short%% | 30000 |
-| text_unlike | //body | %%user11_short%% |
-| text_unlike | //body | %%user12_short%% |
-
 | wait_for_element_visible_ok | link=%%user1_short%% | 30000 |
 | wait_for_element_visible_ok | link=%%user2_short%% | 30000 |
 | wait_for_element_visible_ok | link=%%user3_short%% | 30000 |
@@ -123,6 +105,8 @@
 | wait_for_element_visible_ok | link=%%user8_short%% | 30000 |
 | wait_for_element_visible_ok | link=%%user9_short%% | 30000 |
 | wait_for_element_visible_ok | link=%%user10_short%% | 30000 |
+| text_unlike | //body | %%user11_short%% |
+| text_unlike | //body | %%user12_short%% |
 | text_unlike | //body | Show less |
 
 | *Comment* | Test Case: Show Direct Reports - Test Show All/Show Less |  |
@@ -139,8 +123,9 @@
 
 | *Comment* | Test Case: Show Direct Reports - Click on a direct report, see peer list |  |
 | click_and_wait | link=%%user1_short%% |  |
-| wait_for_text_present_ok | Manager: %%manager_short%% | 30000 |
+| wait_for_text_present_ok | Manager | 30000 |
 | wait_for_text_present_ok | Peers | 30000 |
+| wait_for_element_visible_ok | link=%%manager_short%% | 30000 |
 | wait_for_element_visible_ok | link=%%user2_short%% | 30000 |
 | wait_for_element_visible_ok | link=%%user3_short%% | 30000 |
 | wait_for_element_visible_ok | link=%%user4_short%% | 30000 |
@@ -151,7 +136,7 @@
 | wait_for_element_visible_ok | link=%%user9_short%% | 30000 |
 | wait_for_element_visible_ok | link=%%user10_short%% | 30000 |
 | wait_for_element_visible_ok | link=%%user11_short%% | 30000 |
-| wait_for_element_not_present_ok | link=%%user12_short%% | 30000 |
+| wait_for_element_not_visible_ok | link=%%user12_short%% | 30000 |
 | text_unlike | //body | Show less |
 | wait_for_element_visible_ok | link=Show all | 30000 |
 | click_ok | link=Show all |  |
@@ -163,7 +148,20 @@
 | text_like | //body | Show all |
 
 
-| *Comment* | Test Case: Show Direct Reports Check Peer List |  |
+| *Comment* | Test Case: Show Direct Reports TEARDOWN |  |
 
+| st-admin | deactivate-user --e %%user1%% |  |
+| st-admin | deactivate-user --e %%user2%% |  |
+| st-admin | deactivate-user --e %%user3%% |  |
+| st-admin | deactivate-user --e %%user4%% |  |
+| st-admin | deactivate-user --e %%user5%% |  |
+| st-admin | deactivate-user --e %%user6%% |  |
+| st-admin | deactivate-user --e %%user7%% |  |
+| st-admin | deactivate-user --e %%user8%% |  |
+| st-admin | deactivate-user --e %%user9%% |  |
+| st-admin | deactivate-user --e %%user10%% |  |
+| st-admin | deactivate-user --e %%user11%% |  |
+| st-admin | deactivate-user --e %%user12%% |  |
+| delete-account | %%acct%% |  |
 
 | *Comment* | Test Case: Show Direct Reports COMPLETED |  |

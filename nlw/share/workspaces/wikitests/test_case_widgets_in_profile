@@ -59,28 +59,30 @@
 | text_unlike | contentContainer | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
 
 | *Comment* | Test Case: Widgets in Profile change widget preferences |  |
-| *Comment* | TODO: Find functional xpath for Settings Wrench |  |
+| click_ok | st-edit-layout |  |
+| wait_for_text_present_ok | You are in layout mode | 30000 |
+| wait_for_element_visible_ok | `xpath=(//a[@class='settings'])[2]` | 30000 |
+| click_ok | `xpath=(//a[@class='settings'])[2]` |  |
+| wait_for_text_present_ok | Language: | 30000 |
+| wait_for_element_visible_ok | //select[@name='lang'] | 30000 |
+| select_ok | //select[@name='lang'] | label=French |
+| is_selected_ok | //select[@name='lang'] | label=French |
+| wait_for_element_visible_ok | `xpath=(//input[@type='submit' and @value="Save"])[2]` | 30000 |
+| click_ok | `xpath=(//input[@type='submit' and @value="Save"])[2]` |  |
+| wait_for_element_not_visible_ok | `xpath=(//input[@type='submit' and @value="Save"])[2]` | 30000 |
+| click_ok | st-save-layout |  |
+| wait_for_element_visible_ok | st-edit-group | 30000 |
+| wait_for_element_visible_ok | st-edit-layout | 30000 |
 
- click_ok | st-edit-layout | |
-wait_for_text_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
-wait_for_element_visible_ok | //a[@class='settings'] | 30000 |
-click_ok | //a[@class='settings'] | |
-wait_for_text_present_ok | Language: | 30000 |
-wait_for_element_visible_ok | //select[@name='lang'] | 30000 |
-select_ok | //select[@name='lang'] | label=French |
-is_selected_ok | //select[@name='lang'] | label=French |
-wait_for_element_visible_ok | //input[@value='Save'] | 30000 |
-click_ok | //input[@value='Save'] | |
-wait_for_element_not_present_ok | //input[@value='Save'] | 30000 |
-wait_for_text_not_present_ok | Language: | 30000 |
-wait_for_element_not_present_ok | //select[@name='lang'] | 30000 |
-click_ok | st-save-layout | |
-wait_for_text_not_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
-st-name-widget | 2 | wiki |
-st-widget-title-like | wiki | Wikipedia |
-st-select-widget-frame | wiki | |
-wait_for_text_present_ok | Wiki Search (French) | 30000 |
-select-frame | relative=parent |
+| *Comment* | Test Case: Widgets in Profile verify changed preferences |  |
+| *Comment* | Must reopen profile to refresh widget IDs for Selenium |  |
+| open_ok | /st/profile |  |
+| wait_for_element_visible_ok | st-edit-layout | 30000 |
+| st-name-widget | 2 | wiki |
+| st-widget-title-like | wiki | Wikipedia |
+| st-select-widget-frame | wiki |  |
+| text_like | //body | Wiki Search (French) |
+| select-frame | relative=parent |
 
 | *Comment* | Test Case: Widgets in Profile start to revert to default, click no |  |
 | click_ok | st-edit-layout |  |
