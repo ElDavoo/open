@@ -49,7 +49,7 @@ __END__
 
 =head1 NAME
 
-Socialtext::Job::PageIndex - index a page
+Socialtext::Job::AttachmentIndex - index an attachment
 
 =head1 SYNOPSIS
 
