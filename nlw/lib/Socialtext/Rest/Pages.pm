@@ -194,9 +194,8 @@ sub _searched_pages {
 
     my $t = time_scope 'searched_pages';
 
-    my %page_ids_by_workspace;
+    my @all_pages;
     eval { 
-        my $index = $self->rest->query->param('index');
         my $count = $self->items_per_page;
         my ($hits, $hits_count) = search_on_behalf(
                 $self->hub->current_workspace->name,
@@ -205,7 +204,6 @@ sub _searched_pages {
                 $self->hub->current_user,
                 undef,
                 undef,
-                use_index => $index,
                 limit => $count,
                 offset => $self->start_index,
                 order => ($self->rest->query->param('order') || ''),
@@ -213,7 +211,7 @@ sub _searched_pages {
             );
         $self->total_result_count($hits_count);
         for my $hit (grep { $_->isa('Socialtext::Search::PageHit') } @$hits) {
-            push @{$page_ids_by_workspace{$hit->workspace_name} ||= []}, $hit->page_uri;
+            push @all_pages, $self->hub->pages->new_from_uri($hit->page_uri);
         }
     };
     if ($@ and $@->isa('Socialtext::Exception::TooManyResults')) {
@@ -225,23 +223,6 @@ sub _searched_pages {
         }
         $self->{_too_many} = $@->num_results;
         return ();
-    }
-
-    my @all_pages;
-    for my $workspace_name (sort keys %page_ids_by_workspace) {
-        my $wksp = Socialtext::Workspace->new( name => $workspace_name ) or next;
-        my $pages = Socialtext::Pages->By_id(
-            hub              => $self->hub,
-            workspace_id     => $wksp->workspace_id,
-            page_id          => $page_ids_by_workspace{$workspace_name}
-        );
-
-        if (ref $pages eq 'ARRAY') {
-            push @all_pages, @$pages;
-        }
-        else {
-            push @all_pages, $pages;
-        }
     }
 
     return @all_pages;
