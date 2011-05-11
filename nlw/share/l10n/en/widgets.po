@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-20 10:43+0800\n"
+"PO-Revision-Date: 2011-05-11 04:27-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -402,6 +402,9 @@ msgstr "All Available Groups"
 msgid "description.all_tags"
 msgstr "Displays a tag cloud of all tags on people in Socialtext People."
 
+msgid "description.bug_board"
+msgstr "Visualize Bugzilla tickets and tagged pages with multiple columns."
+
 #: share/plugin/widgets/share/widgets/blockerbugs/config.yaml:4
 msgid "description.blockerbugs"
 msgstr "Display a list of the open blocker bugs."
@@ -482,6 +485,9 @@ msgstr "Displays a tag cloud of all tags in a particular workspace."
 #: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:4
 msgid "description.tagged_pages"
 msgstr "Displays a list of pages with a certain tag"
+
+msgid "description.task_board"
+msgstr "Visualize tagged pages in a workspace with multiple columns."
 
 msgid "description.teaser"
 msgstr "Coming Soon"
@@ -912,6 +918,9 @@ msgstr "Activities"
 msgid "title.all_tags"
 msgstr "All People Tags"
 
+msgid "title.bug_board"
+msgstr "Bug Board"
+
 #: share/plugin/widgets/share/widgets/blockerbugs/config.yaml:3
 msgid "title.blockerbugs"
 msgstr "Open Blocker Bugs"
@@ -970,6 +979,9 @@ msgstr "RSS Viewer"
 #: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:3
 msgid "title.tag_cloud"
 msgstr "Workspace Tags"
+
+msgid "title.task_board"
+msgstr "Task Board"
 
 #: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:3
 msgid "title.tagged_pages"
