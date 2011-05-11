@@ -149,7 +149,7 @@ sub latest_with_filename {
          WHERE workspace_id = $1 AND page_id = $2
            AND lower(filename) = lower($3)
            AND NOT pa.deleted
-         ORDER BY a.created_at ASC
+         ORDER BY a.created_at DESC
          LIMIT 1
     }, $ws_id, $page_id, $filename);
     return if $sth->rows == 0;
