@@ -26,6 +26,9 @@ for my $target (@targets) {
     elsif ($target eq 'clean') {
         Socialtext::MakeJS->CleanDir($dir);
     }
+    elsif ($target eq 'loc') {
+        system("$base/nlw/dev-bin/l10n-make-po-js");
+    }
     else {
         Socialtext::MakeJS->Build($dir, $target);
     }
