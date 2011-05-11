@@ -1120,7 +1120,7 @@
 "groups.next-step":"\u00ABNext\u00BB",
 "groups.no-other-members-use-form-below-to-invite":"\u00ABCurrently, you are the only member of this group.<br/>Use the form below to invite your colleagues.\u00BB",
 "groups.no-wikis-use-form-below-to-select":"\u00ABCurrently, there are no workspaces associated with this group. Use the form below to select workspaces.\u00BB",
-"groups.note-click-at-bottom-of-screen-to-save-changes=button":"\u00ABNOTE: Click <b>[_1]</b> at the bottom of the screen to save changes.\u00BB",
+"groups.note-click-at-bottom-of-screen-to-save-changes=button":"\u00ABNOTE: Click <b>[_1]</b> to save changes.\u00BB",
 "groups.note-message-sent-to-added-members-only":"\u00ABNOTE: message sent to added members only\u00BB",
 "groups.personal-message-optional:":"\u00ABPersonal message (optional):\u00BB",
 "groups.previous":"\u00ABprevious\u00BB",
