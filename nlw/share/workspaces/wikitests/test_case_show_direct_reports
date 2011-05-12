@@ -157,20 +157,18 @@
 | wait_for_text_not_present_ok | Manager: | 30000 |
 | wait_for_text_not_present_ok | Peers: | 30000 |
 | wait_for_element_not_present_ok | link=Show all | 30000 |
-
-TODO: Figure out why Sel still "sees" all these, even though they're not there.
-wait_for_element_not_visible_ok | link=%%manager_short%% | 30000 |
-wait_for_element_not_visible_ok | link=%%user2_short%% | 30000 |
-wait_for_element_not_visible_ok | link=%%user3_short%% | 30000 |
-wait_for_element_not_visible_ok | link=%%user4_short%% | 30000 |
-wait_for_element_not_visible_ok | link=%%user5_short%% | 30000 |
-wait_for_element_not_visible_ok | link=%%user6_short%% | 30000 |
-wait_for_element_not_visible_ok | link=%%user7_short%% | 30000 |
-wait_for_element_not_visible_ok | link=%%user8_short%% | 30000 |
-wait_for_element_not_visible_ok | link=%%user9_short%% | 30000 |
-wait_for_element_not_visible_ok | link=%%user10_short%% | 30000 |
-wait_for_element_not_visible_ok | link=%%user11_short%% | 30000 |
-wait_for_element_not_visible_ok | link=%%user12_short%% | 30000 |
+| wait_for_element_not_present_ok | link=%%manager_short%% | 30000 |
+| wait_for_element_not_present_ok | link=%%user2_short%% | 30000 |
+| wait_for_element_not_present_ok | link=%%user3_short%% | 30000 |
+| wait_for_element_not_present_ok | link=%%user4_short%% | 30000 |
+| wait_for_element_not_present_ok | link=%%user5_short%% | 30000 |
+| wait_for_element_not_present_ok | link=%%user6_short%% | 30000 |
+| wait_for_element_not_present_ok | link=%%user7_short%% | 30000 |
+| wait_for_element_not_present_ok | link=%%user8_short%% | 30000 |
+| wait_for_element_not_present_ok | link=%%user9_short%% | 30000 |
+| wait_for_element_not_present_ok | link=%%user10_short%% | 30000 |
+| wait_for_element_not_present_ok | link=%%user11_short%% | 30000 |
+| wait_for_element_not_present_ok | link=%%user12_short%% | 30000 |
 
 | *Comment* | Test Case: Show Direct Reports TEARDOWN |  |
 | st-admin | deactivate-user --e %%user1%% |  |

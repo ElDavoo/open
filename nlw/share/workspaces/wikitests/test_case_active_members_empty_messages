@@ -9,21 +9,10 @@
 | st-admin | create-account --name %%empty_acct%% |  |
 | st-admin | create-user --e %%empty_member%% --p %%password%% --account %%empty_acct%% |  |
 
-| *Comment* | Test Case: Active Members Empty Messages explicit logout |  |
-| open_ok | /nlw/submit/logout |  |
-| pause | 5000 |  |
-
-| *Comment* | Test Case: Active Members Empty Messages explicit login |  |
-| open_ok | / |  |
-| wait_for_element_visible_ok | username |  |
-| wait_for_element_visible_ok | password |  |
-| type_ok | username | %%empty_member%% |
-| type_ok | password | %%password%% |
-| wait_for_element_visible_ok | login_btn | 5000 |
-| click_and_wait | login_btn |  |
+| *Comment* | Test Case: Active Members Empty Messages login %%empty_member%% |  |
+| st-logoutin | %%empty_member%% | %%password%% |
 
 | *Comment* | Test Case: Active Members Empty Messages get an empty Active People widget |  |
-
 | st_single_widget_in_dashboard | gallery-widget-Active People |  |
 | st-name-widget | 1 | active_members |
 | st-widget-title-like | active_members | Active People |
@@ -41,7 +30,7 @@
 | set | EmptySignals | The most active signalers will be listed here. Try sending a signal from this Dashboard! |
 
 | *Comment* | Test Case: Active Members Empty Messages Check the Empty People messages |  |
-| wait_for_text_present_ok | Viewed | 5000 |
+| wait_for_text_present_ok | Viewed | 30000 |
 | wait_for_text_present_ok | %%EmptyViews%% | 30000 |
 
 | wait_for_element_visible_ok | link=Readers | 30000 |
@@ -61,5 +50,7 @@
 | wait_for_text_present_ok | %%EmptyViews%% | 30000 |
 
 | *Comment* | Test Case: Active Members Empty Messages TEARDOWN |  |
+| st-admin | deactivate-user --e %%empty_member%% |  |
+| delete-account | %%empty_acct%% |  |
 
 | *Comment* | Test Case: Active Members Empty Messages COMPLETED |  |

@@ -2,10 +2,11 @@
 
 | *Comment* | Test Case: Weblog Archive and Navigation |
 
-
-
 | wait_for_element_visible_ok | link=Blogs | 5000 |
 | click_and_wait | link=Blogs |  |
+| wait_for_element_visible_ok | page-control-category-selector | 30000 |
+| select_ok | page-control-category-selector | label=Recent Changes |
+| is_selected_ok | page-control-category-selector | label=Recent Changes |
 | wait_for_text_present_ok | December 2006 | 60000 |
 | text_like | contentRight | qr/2007.+2006/ |
 | click_and_wait | link=December 2006 |  |

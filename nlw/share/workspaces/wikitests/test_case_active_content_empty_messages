@@ -9,21 +9,10 @@
 | st-admin | create-account --name %%empty_acct%% |  |
 | st-admin | create-user --e %%empty_member%% --p %%password%% --account %%empty_acct%% |  |
 
-| *Comment* | Test Case: Active Content Empty Messages explicit logout |  |
-| open_ok | /nlw/submit/logout |  |
-| pause | 5000 |  |
-
-| *Comment* | Test Case: Active Members Empty Messages explicit login |  |
-| open_ok | / |  |
-| wait_for_element_visible_ok | username |  |
-| wait_for_element_visible_ok | password |  |
-| type_ok | username | %%empty_member%% |
-| type_ok | password | %%password%% |
-| wait_for_element_visible_ok | login_btn | 5000 |
-| click_and_wait | login_btn |  |
+| *Comment* | Test Case: Active Members Empty Messages login %%empty_member%% |  |
+| st-logoutin | %%empty_member%% | %%password%% |
 
 | *Comment* | Test Case: Active Content Empty Messages get an empty Active Content widget |  |
-
 | st_single_widget_in_dashboard | gallery-widget-Active Content |  |
 | st-name-widget | 1 | active_content |
 | st-widget-title-like | active_content | Active Content |
@@ -34,14 +23,13 @@
 | wait_for_element_not_visible_ok | st-savebutton-%%active_content%% | 30000 |
 
 | *Comment* | Test Case: Active Content Empty Messages set the empty Content messages |  |
-
 | set | EmptyViews | The most frequently viewed pages will be listed here. After you explore your new workspaces, you can see the most viewed pages here. |
 | set | EmptyEdits | The most frequently edited pages will be listed here. Try editing a page in one of your new workspaces. |
 | set | EmptyWatch | The most frequently watched pages will be listed here. Try watching a page in one of your new workspaces by clicking on the Watch icon in the page's toolbar. |
 | set | EmptyEmail | The most frequently emailed pages will be listed here. Try emailing a page to a colleague by clicking on the Email icon in the page's toolbar. |
 
 | *Comment* | Test Case: Active Content Empty Messages Check the Empty Content messages |  |
-| text_like | //body | Viewed |
+| wait_for_text_present_ok | Viewed | 30000 |
 | wait_for_text_present_ok | %%EmptyViews%% | 30000 |
 
 | wait_for_element_visible_ok | link=Edited | 30000 |
@@ -61,5 +49,7 @@
 | wait_for_text_present_ok | %%EmptyViews%% | 30000 |
 
 | *Comment* | Test Case: Active Content Empty Messages TEARDOWN |  |
+| st-admin | deactivate-user --e %%empty_member%% |  |
+| delete-account | %%empty_acct%% |  |
 
 | *Comment* | Test Case: Active Content Empty Messages COMPLETED |  |
