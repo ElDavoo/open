@@ -1,3 +1,5 @@
+Note: This test relies on the default content of the test-data workspace
+
 | *Comment* | Starting Test Case: Sidebar: Incoming Links |  |
 
 Add a link to a non-existent page in an existing page | incipient page link appears in existing page | incipient page link has dotted underline
@@ -10,7 +12,7 @@ Navigate to a page known to have zero incoming links | system displays "There ar
 | wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
 | wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
 | type_ok | st-newpage-pagename-edit | TC Incoming Links %%start_time%% |
-| type_ok | wikiwyg_wikitext_textarea | [TC Incoming Links New Page %%start_time%%] |
+| type_ok | wikiwyg_wikitext_textarea | [TC Incoming Links New Page %%start_time%%] [House Payment] |
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | st-page-save |  |  |
 
@@ -33,8 +35,11 @@ edit and save new page | existing page appears in new page incoming links
 | wait_for_element_visible_ok | st-save-button-link | 30000 |
 | st-page-save |  |  |
 
-| *Comment* | Test Case: Sidebar: Incoming Links. verify backlink |  |
+| *Comment* | Test Case: Sidebar: Incoming Links. verify backlinks |  |
 | wait_for_element_visible_ok | link=TC Incoming Links %%start_time%% | 10000 |
+| text_like | contentRight | TC Incoming Links %%start_time%% |
+| open_ok | /%%workspace%%/house_payment |  |
+| wait_for_element_visible_ok | link=TC Incoming Links %%start_time%% | 30000 |
 | text_like | contentRight | TC Incoming Links %%start_time%% |
 
 navigate to and delete existing page | page is gone

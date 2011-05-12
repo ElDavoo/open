@@ -3,6 +3,9 @@
 * Fixture: SocialWidgets
 
 | set | Greeting | What are you working on? |  |
+| set | greet_grp | greeting_group_%%start_time%% |
+
+| create-group | %%greet_grp%% |  | %%username%% |
 
 | *Comment* | Test Case: Activities Widget Greeting Dashboard |  |
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
@@ -25,6 +28,29 @@
 | click_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] |  |
 | wait_for_text_not_present_ok | %%Greeting%% | 5000 |
 
-TODO: profile and group activity widget greetings
+| *Comment* | Test Case: Activities Widget Greeting profile widget |  |
+| open_ok | /st/profile |  |
+| st-name-widget | 3 | activities_widget |
+| st-widget-title-like | activities_widget | Activities |
+| st-select-widget-frame | activities_widget |  |
+| wait_for_text_present_ok | %%Greeting%% | 10000 |
+| wait_for_element_present_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] | 5000 |
+| click_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] |  |
+| wait_for_text_not_present_ok | %%Greeting%% | 5000 |
+| select-frame | relative=parent |  |
+
+| *Comment* | Test Case: Activities Widget Greeting group widget |  |
+| open_ok | /st/group/%%group_id%% |  |
+| st-name-widget | 4 | activities_widget |
+| st-widget-title-like | activities_widget | Activities |
+| st-select-widget-frame | activities_widget |  |
+| wait_for_text_present_ok | %%Greeting%% | 10000 |
+| wait_for_element_present_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] | 5000 |
+| click_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] |  |
+| wait_for_text_not_present_ok | %%Greeting%% | 5000 |
+| select-frame | relative=parent |  |
+
+
+| delete-group | %%group_id%% | Recklessly deleting |
 
 | *Comment* | Test Case: Activities Widget Greeting COMPLETED |  |
