@@ -3633,6 +3633,9 @@ msgstr "以标签云方式显示所有人员标签。"
 msgid "description.blockerbugs"
 msgstr "显示阻滞开发的瑕疵列表。"
 
+msgid "description.bug_board"
+msgstr "以多栏方式呈现 Bugzilla 事项，以及具有特定标签的页面。"
+
 msgid "description.edit_information"
 msgstr "编辑群组信息"
 
@@ -3709,6 +3712,9 @@ msgstr "以标签云方式显示特定工作区中的页面标签。"
 #: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:4
 msgid "description.tagged_pages"
 msgstr "显示具特定标签的页面列表"
+
+msgid "description.task_board"
+msgstr "以多栏方式呈现具有特定标签的页面。"
 
 msgid "description.teaser"
 msgstr "即将推出"
@@ -12319,6 +12325,9 @@ msgstr "所有人员标签"
 msgid "title.blockerbugs"
 msgstr "阻滞开发瑕疵"
 
+msgid "title.bug_board"
+msgstr "虫板"
+
 msgid "title.edit_information"
 msgstr "信息"
 
@@ -12395,6 +12404,9 @@ msgstr "工作区标签"
 #: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:3
 msgid "title.tagged_pages"
 msgstr "具有某标签的页面"
+
+msgid "title.task_board"
+msgstr "看板"
 
 msgid "title.teaser"
 msgstr "工作区"

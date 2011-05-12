@@ -45,7 +45,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-20 10:43+0800\n"
+"PO-Revision-Date: 2011-05-11 04:27-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -3936,6 +3936,9 @@ msgstr "Zzzzzzzz z zzz zzzzz zz zzz zzzz zz zzzzzz zz Zzzzzzzzzz Zzzzzz."
 msgid "description.blockerbugs"
 msgstr "Zzzzzzz z zzzz zz zzz zzzz zzzzzzz zzzz."
 
+msgid "description.bug_board"
+msgstr "Zzzzzzzzz Zzzzzzzz zzzzzzz zzz zzzzzz zzzzz zzzz zzzzzzzz zzzzzzz."
+
 #: share/plugin/groups/share/widgets/edit_information/config.yaml:4
 msgid "description.edit_information"
 msgstr "Zzzz Zzzzz Zzzzzzzzzzz"
@@ -4026,6 +4029,9 @@ msgstr "Zzzzzzzz z zzz zzzzz zz zzz zzzz zz z zzzzzzzzzz zzzzzzzzz."
 #: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:4
 msgid "description.tagged_pages"
 msgstr "Zzzzzzzz z zzzz zz zzzzz zzzz z zzzzzzz zzz"
+
+msgid "description.task_board"
+msgstr "Zzzzzzzzz zzzzzz zzzzz zz z zzzzzzzzz zzzz zzzzzzzz zzzzzzz."
 
 #: share/plugin/groups/share/widgets/teaser/config.yaml:4
 msgid "description.teaser"
@@ -12899,6 +12905,9 @@ msgstr "Zzz Zzzzzz Zzzz"
 msgid "title.blockerbugs"
 msgstr "Zzzz Zzzzzzz Zzzz"
 
+msgid "title.bug_board"
+msgstr "Zzz Zzzzz"
+
 #: share/plugin/groups/share/widgets/edit_information/config.yaml:3
 msgid "title.edit_information"
 msgstr "Zzzzzzzzzzz"
@@ -12984,6 +12993,9 @@ msgstr "Zzzzzzzzz Zzzz"
 #: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:3
 msgid "title.tagged_pages"
 msgstr "Zzzzz zzzzzz Z"
+
+msgid "title.task_board"
+msgstr "Zzzz Zzzzz"
 
 #: share/plugin/groups/share/widgets/teaser/config.yaml:3
 msgid "title.teaser"

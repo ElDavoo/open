@@ -3633,6 +3633,9 @@ msgstr "以標籤雲方式顯示所有人員標籤。"
 msgid "description.blockerbugs"
 msgstr "顯示阻滯開發的瑕疵列表。"
 
+msgid "description.bug_board"
+msgstr "以多欄方式呈現 Bugzilla 事項，以及具有特定標籤的頁面。"
+
 msgid "description.edit_information"
 msgstr "編輯群組資訊"
 
@@ -3709,6 +3712,9 @@ msgstr "以標籤雲方式顯示特定工作區中的頁面標籤。"
 #: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:4
 msgid "description.tagged_pages"
 msgstr "顯示具特定標籤的頁面列表"
+
+msgid "description.task_board"
+msgstr "以多欄方式呈現具有特定標籤的頁面。"
 
 msgid "description.teaser"
 msgstr "即將推出"
@@ -12319,6 +12325,9 @@ msgstr "所有人員標籤"
 msgid "title.blockerbugs"
 msgstr "阻滯開發瑕疵"
 
+msgid "title.bug_board"
+msgstr "蟲板"
+
 msgid "title.edit_information"
 msgstr "資訊"
 
@@ -12395,6 +12404,9 @@ msgstr "工作區標籤"
 #: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:3
 msgid "title.tagged_pages"
 msgstr "具有某標籤的頁面"
+
+msgid "title.task_board"
+msgstr "看板"
 
 msgid "title.teaser"
 msgstr "工作區"
