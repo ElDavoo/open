@@ -16,11 +16,6 @@ sub handler {
     my ($self, $rest) = @_;
 
     my $is_mobile  = Socialtext::BrowserDetect::is_mobile();
-    my $default_ws = Socialtext::Workspace->Default();
-
-    if ($default_ws) {
-        return $self->redirect('/' . $default_ws->name);
-    }
 
     return $self->redirect_to_login unless $rest->user->is_authenticated;
 
@@ -49,7 +44,12 @@ sub handler {
     }
     else {
         my $redirect_to;
-        if ($self->hub->helpers->signals_only) {
+
+        my $default_ws = Socialtext::Workspace->Default();
+        if ($default_ws) {
+            $redirect_to = '/' . $default_ws->name;
+        }
+        elsif ($self->hub->helpers->signals_only) {
             $redirect_to = '/st/signals';
         }
         elsif ($rest->user->can_use_plugin('dashboard')) {
