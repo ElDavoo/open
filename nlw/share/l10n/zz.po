@@ -4774,6 +4774,10 @@ msgstr "Zzz zzzzzzzzz zzzzz zz zzzz <a href=\"%1\">zzzzzzzzz</a> zz <a href=\"%3
 msgid "email.following-pages-in-watchlist-have-recently-changed=wiki,date,time"
 msgstr "Zzz zzzzzzzzz zzzzz zz zzzz zzzzzzzzz zz %1 zzzz zzzzzzzz zzzzzzz. Zzzz zzzzz zzz zzzzzzzzz zz %2 zz %3."
 
+#: lib/Socialtext/EmailNotifyPlugin.pm:31
+msgid "email.frequency-capped"
+msgstr "(Zzzz: 'Zzzzz zzzzzz' zzz 'Zzzzz 5 zzzzzz' zzzzzzz zzz zzzzzzz zz 15 zzzzzzz zzzzz zzzzzzz zzzzzz.)"
+
 #: lib/Socialtext/EmailNotifyPlugin.pm:29
 msgid "email.frequency?"
 msgstr "Zzz zzzzz zzzzz zzz zzzz zz zzzzzzz zzzzz zzzzzzz?"

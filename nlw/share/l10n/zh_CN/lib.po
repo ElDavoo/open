@@ -1025,6 +1025,9 @@ msgstr "已登陆到工作区 %1"
 msgid "email.date:"
 msgstr "日期："
 
+msgid "email.frequency-capped"
+msgstr "（注：“每分钟”和“每5分钟”的选择目前视同15分钟。）"
+
 #: lib/Socialtext/EmailNotifyPlugin.pm:29
 msgid "email.frequency?"
 msgstr "您想要多长时间收到一次邮件更新？"

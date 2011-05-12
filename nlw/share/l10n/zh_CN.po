@@ -4425,6 +4425,9 @@ msgstr "您在 <a href=\"%3\">%2</a> 的<a href=\"%1\">关注列表</a>中的下
 msgid "email.following-pages-in-watchlist-have-recently-changed=wiki,date,time"
 msgstr "您在 %1 的关注列表中的下列页面最近被更改。本电子邮件于 %2 的 %3 创建。"
 
+msgid "email.frequency-capped"
+msgstr "（注：“每分钟”和“每5分钟”的选择目前视同15分钟。）"
+
 #: lib/Socialtext/EmailNotifyPlugin.pm:29
 msgid "email.frequency?"
 msgstr "您想要多长时间收到一次邮件更新？"

@@ -1065,6 +1065,10 @@ msgstr "Date:"
 msgid "email.frequency?"
 msgstr "How often would you like to receive email updates?"
 
+#: lib/Socialtext/EmailNotifyPlugin.pm:31
+msgid "email.frequency-capped"
+msgstr "(Note: 'Every minute' and 'Every 5 minute' choices are treated as 15 minutes until further notice.)"
+
 #: lib/Socialtext/EmailReceiver/Base.pm:654
 msgid "email.from:"
 msgstr "From:"

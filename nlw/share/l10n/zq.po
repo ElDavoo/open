@@ -4774,6 +4774,10 @@ msgstr "«The following pages in your <a href=\"%1\">watchlist</a> in <a href=\"
 msgid "email.following-pages-in-watchlist-have-recently-changed=wiki,date,time"
 msgstr "«The following pages in your watchlist in %1 have recently changed. This email was generated on %2 at %3.»"
 
+#: lib/Socialtext/EmailNotifyPlugin.pm:31
+msgid "email.frequency-capped"
+msgstr "«(Note: 'Every minute' and 'Every 5 minute' choices are treated as 15 minutes until further notice.)»"
+
 #: lib/Socialtext/EmailNotifyPlugin.pm:29
 msgid "email.frequency?"
 msgstr "«How often would you like to receive email updates?»"
