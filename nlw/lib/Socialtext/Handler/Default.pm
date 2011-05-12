@@ -15,9 +15,13 @@ extends 'Socialtext::Rest::Entity';
 sub handler {
     my ($self, $rest) = @_;
 
-    my $is_mobile  = Socialtext::BrowserDetect::is_mobile();
-
-    return $self->redirect_to_login unless $rest->user->is_authenticated;
+    if (!$rest->user->is_authenticated) {
+        my $default_ws = Socialtext::Workspace->Default();
+        if ($default_ws) {
+            return $self->redirect( '/' . $default_ws->name );
+        }
+        return $self->redirect_to_login;
+    }
 
     if (my $action = $rest->query->param('action')) {
         my $res;
@@ -56,6 +60,7 @@ sub handler {
             $redirect_to = '/st/dashboard';
         }
         else {
+            my $is_mobile  = Socialtext::BrowserDetect::is_mobile();
             $redirect_to = $is_mobile
                 ? '/lite/workspace_list'
                 : 'action=workspace_list';
