@@ -3295,7 +3295,7 @@ msgid "control.updating"
 msgstr "正在更新 ..."
 
 msgid "control.updating-users-with-csv"
-msgstr "用CSV檔案來更新用戶資訊"
+msgstr "用 CSV 檔案來更新用戶資訊"
 
 #: share/plugin/control/template/control/design-account.html:24
 msgid "control.upload-account-logo-optional"
@@ -3894,7 +3894,7 @@ msgstr "匯出"
 
 #: lib/Socialtext/Pluggable/Plugin/SocialCalc.pm:50
 msgid "do.export-csv"
-msgstr "匯出為CSV"
+msgstr "匯出為 CSV"
 
 #: share/skin/s3/javascript/lightbox/comment.tt2:15
 msgid "do.file"
@@ -6181,7 +6181,7 @@ msgstr "匯出頁面不能為空"
 
 #: lib/Socialtext/MassAdd.pm:76
 msgid "error.parse-csv-header"
-msgstr "無法解析非法 CSV 頭部資訊，正在中止。"
+msgstr "無法解析 CSV 標頭資訊，處理中止。"
 
 #: lib/Socialtext/MassAdd.pm:116
 msgid "error.parse-extra-fields"
@@ -6194,7 +6194,7 @@ msgstr "無法解析，跳過此用戶。"
 #. ($missing)
 #: lib/Socialtext/MassAdd.pm:95
 msgid "error.parse-header-missing=fields"
-msgstr "無法解析，檔案中缺失必要欄位（%1），並且必須包含欄位列表。"
+msgstr "無法解析，檔案中缺失必要欄位（%1）。檔案標頭必須包含欄位列表。"
 
 #: lib/Socialtext/MassAdd.pm:109
 msgid "error.parse-missing-fields"
@@ -6215,7 +6215,7 @@ msgstr "密碼不符合。"
 
 #: lib/Socialtext/User.pm:924 lib/Socialtext/User/Base.pm:263
 msgid "error.password-too-short"
-msgstr "密碼必須為6位字符或以上。"
+msgstr "密碼必須至少由 6 個字符組成。"
 
 #: lib/Socialtext/PdfExportPlugin.pm:87
 msgid "error.pdf-conversion-failed"
@@ -10837,13 +10837,13 @@ msgid "reports.generate!"
 msgstr "制表！"
 
 msgid "reports.healthy"
-msgstr "健康"
+msgstr "健全"
 
 msgid "reports.healthy-csv"
-msgstr "健康CSV"
+msgstr "健全 CSV"
 
 msgid "reports.healthy-wikis"
-msgstr "健康工作區"
+msgstr "健全工作區"
 
 msgid "reports.in-past-week=name"
 msgstr "過去一周的%1"
@@ -10861,7 +10861,7 @@ msgid "reports.no-user-stats-for-this-period"
 msgstr "這段時期沒有可用的用戶狀態。"
 
 msgid "reports.other-csv"
-msgstr "其他CSV"
+msgstr "其他 CSV"
 
 msgid "reports.other-wikis"
 msgstr "其他工作區"

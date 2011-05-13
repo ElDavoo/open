@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 22:57+0800\n"
+"PO-Revision-Date: 2011-05-13 00:08-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -1074,7 +1074,7 @@ msgid "control.updating"
 msgstr "正在更新 ..."
 
 msgid "control.updating-users-with-csv"
-msgstr "用CSV文件来更新用户信息"
+msgstr "用 CSV 文件来更新用户信息"
 
 #: share/plugin/control/template/control/design-account.html:24
 msgid "control.upload-account-logo-optional"

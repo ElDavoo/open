@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 22:57+0800\n"
+"PO-Revision-Date: 2011-05-13 00:12-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -1005,7 +1005,7 @@ msgstr "添加用户到 %1 群组"
 
 #: lib/Socialtext/Pluggable/Plugin/SocialCalc.pm:50
 msgid "do.export-csv"
-msgstr "导出为CSV"
+msgstr "导出为 CSV"
 
 #: lib/Socialtext/Page.pm:1134
 msgid "edit.default-text"
@@ -2073,7 +2073,7 @@ msgstr "导出页面不能为空"
 
 #: lib/Socialtext/MassAdd.pm:76
 msgid "error.parse-csv-header"
-msgstr "无法解析非法 CSV 头部信息，正在中止。"
+msgstr "无法解析 CSV 标头信息，处理中止。"
 
 #: lib/Socialtext/MassAdd.pm:116
 msgid "error.parse-extra-fields"
@@ -2086,7 +2086,7 @@ msgstr "无法解析，跳过此用户。"
 #. ($missing)
 #: lib/Socialtext/MassAdd.pm:95
 msgid "error.parse-header-missing=fields"
-msgstr "无法解析，文件中缺失必要字段（%1），并且必须包含字段列表。"
+msgstr "无法解析，文件中缺失必要字段（%1）。文件标头必须包含字段列表。"
 
 #: lib/Socialtext/MassAdd.pm:109
 msgid "error.parse-missing-fields"
@@ -2103,7 +2103,7 @@ msgstr "密码不匹配。"
 
 #: lib/Socialtext/User.pm:924 lib/Socialtext/User/Base.pm:263
 msgid "error.password-too-short"
-msgstr "密码必须为6位字符或以上。"
+msgstr "密码必须至少由 6 个字符组成。"
 
 #: lib/Socialtext/PdfExportPlugin.pm:87
 msgid "error.pdf-conversion-failed"

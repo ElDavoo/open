@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-24 07:31:35+0000\n"
+"PO-Revision-Date: 2011-05-13 00:08-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -202,13 +202,13 @@ msgid "reports.generate!"
 msgstr "制表！"
 
 msgid "reports.healthy"
-msgstr "健康"
+msgstr "健全"
 
 msgid "reports.healthy-csv"
-msgstr "健康CSV"
+msgstr "健全 CSV"
 
 msgid "reports.healthy-wikis"
-msgstr "健康工作区"
+msgstr "健全工作区"
 
 msgid "reports.in-past-week=name"
 msgstr "过去一周的%1"
@@ -226,7 +226,7 @@ msgid "reports.no-user-stats-for-this-period"
 msgstr "这段时期没有可用的用户状态。"
 
 msgid "reports.other-csv"
-msgstr "其他CSV"
+msgstr "其他 CSV"
 
 msgid "reports.other-wikis"
 msgstr "其他工作区"

@@ -600,7 +600,7 @@
 "control.update-successful":"\u5347\u7D1A\u6210\u529F",
 "control.update-user":"\u66F4\u65B0\u7528\u6236\uFF1A[_1]",
 "control.updating":"\u6B63\u5728\u66F4\u65B0 ...",
-"control.updating-users-with-csv":"\u7528CSV\u6A94\u6848\u4F86\u66F4\u65B0\u7528\u6236\u8CC7\u8A0A",
+"control.updating-users-with-csv":"\u7528 CSV \u6A94\u6848\u4F86\u66F4\u65B0\u7528\u6236\u8CC7\u8A0A",
 "control.upload-account-logo-optional":"\u4E0A\u50B3\u5E33\u6236\u6A19\u8A8C\uFF08\u975E\u5FC5\u586B\uFF09",
 "control.uri":"URI",
 "control.use-default-logo":"\u4F7F\u7528\u9810\u8A2D Socialtext \u6A19\u8A8C",
