@@ -4334,6 +4334,10 @@ msgstr "«Duplicate»"
 msgid "do.edit-layout"
 msgstr "«Edit Layout»"
 
+#: share/plugin/people/template/profile_links:5
+msgid "do.edit-profile"
+msgstr "«Edit Profile»"
+
 #: share/skin/s3/template/view/listview:21
 msgid "do.export"
 msgstr "«Export»"

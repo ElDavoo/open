@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-13 07:57-0700\n"
+"PO-Revision-Date: 2011-05-13 08:00-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -43,6 +43,10 @@ msgstr "取消"
 
 msgid "do.edit-layout"
 msgstr "编辑布局"
+
+#: share/plugin/people/template/profile_links:5
+msgid "do.edit-profile"
+msgstr "编辑个人资料"
 
 #: share/plugin/people/template/invite:102
 msgid "do.invite"

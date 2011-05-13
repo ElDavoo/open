@@ -722,6 +722,7 @@
 "do.done":"\u5B8C\u6210",
 "do.duplicate":"\u8907\u88FD",
 "do.edit-layout":"\u7DE8\u8F2F\u5E03\u5C40",
+"do.edit-profile":"\u7DE8\u8F2F\u500B\u4EBA\u8CC7\u6599",
 "do.export":"\u532F\u51FA",
 "do.file":"\u9644\u4EF6\u93C8\u7D50",
 "do.follow":"\u95DC\u6CE8\u6B64\u4EBA",

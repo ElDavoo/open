@@ -4334,6 +4334,10 @@ msgstr "Zzzzzzzzz"
 msgid "do.edit-layout"
 msgstr "Zzzz Zzzzzz"
 
+#: share/plugin/people/template/profile_links:5
+msgid "do.edit-profile"
+msgstr "Zzzz Zzzzzzz"
+
 #: share/skin/s3/template/view/listview:21
 msgid "do.export"
 msgstr "Zzzzzz"

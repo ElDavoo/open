@@ -719,6 +719,7 @@
 "do.done":"Done",
 "do.duplicate":"Duplicate",
 "do.edit-layout":"Edit Layout",
+"do.edit-profile":"Edit Profile",
 "do.export":"Export",
 "do.file":"Attachment Link",
 "do.follow":"Follow this person",

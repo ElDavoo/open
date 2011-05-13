@@ -719,6 +719,7 @@
 "do.done":"Zzzz",
 "do.duplicate":"Zzzzzzzzz",
 "do.edit-layout":"Zzzz Zzzzzz",
+"do.edit-profile":"Zzzz Zzzzzzz",
 "do.export":"Zzzzzz",
 "do.file":"Zzzzzzzzzz Zzzz",
 "do.follow":"Zzzzzz zzzz zzzzzz",

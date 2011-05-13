@@ -55,6 +55,10 @@ msgstr "Cancel"
 msgid "do.edit-layout"
 msgstr "Edit Layout"
 
+#: share/plugin/people/template/profile_links:5
+msgid "do.edit-profile"
+msgstr "Edit Profile"
+
 #: share/plugin/people/template/invite:102
 msgid "do.invite"
 msgstr "Invite"

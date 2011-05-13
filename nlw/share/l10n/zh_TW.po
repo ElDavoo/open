@@ -3954,6 +3954,10 @@ msgstr "複製"
 msgid "do.edit-layout"
 msgstr "編輯布局"
 
+#: share/plugin/people/template/profile_links:5
+msgid "do.edit-profile"
+msgstr "編輯個人資料"
+
 #: share/skin/s3/template/view/listview:21
 msgid "do.export"
 msgstr "匯出"
