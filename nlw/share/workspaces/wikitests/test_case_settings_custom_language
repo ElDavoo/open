@@ -1,3 +1,6 @@
+
+Note: Does not work in IE8. If done manually in IE8 it works fine, but when Sel is automating, the select_ok of locale does not trigger a page reload as it should.
+
 | *Comment* | Test Case: Settings: Custom Language |  |
 
 | *Comment* | Test Case: Settings: Custom Language - Create User |  |
@@ -19,27 +22,16 @@
 | wait_for_element_visible_ok | link=Language Settings | 30000 |
 | click_and_wait | link=Language Settings |  |
 | wait_for_element_visible_ok | locale | 30000 |
-| is_selected_ok | locale | label=System Default: English |
-| wait_for_element_visible_ok | -savelink | 30000 |
-| wait_for_element_visible_ok | -cancellink | 30000 |
-| select_ok | locale | label=zz - DEV_MODE ONLY |
-| is_selected_ok | locale | label=zz - DEV_MODE ONLY |
-| click_ok | -cancellink |  |
-| pause | 1000 |  |
-| is_selected_ok | locale | label=System Default: English |
-| select_ok | locale | label=zz - DEV_MODE ONLY |
-| is_selected_ok | locale | label=zz - DEV_MODE ONLY |
-| click_and_wait | -savelink |  |
+| is_selected_ok | locale | label=English (Default) |
+| select_and_wait | locale | label=zz - DEV_MODE ONLY |
+| wait_for_text_present_ok | Zzzzzzzz Zzzzzzzz | 30000 |
 | wait_for_text_present_ok | Zzzzzzz Zzzzz | 30000 |
 | wait_for_element_present_ok | link=Zzzzzzz Zzzzzzzz | 30000 |
 | is_selected_ok | locale | label=zz - DEV_MODE ONLY |
 
 | *Comment* | Test Case: Settings: Custom Language - Logout, login, still customized |  |
 | st-process-jobs |  |  |
-| wait_for_element_visible_ok | logout_btn | 30000 |
-| click_and_wait | logout_btn |  |
-| pause | 25000 | needed. If you *immediately* log out and log in to a workspace you don't have access to, (faster than humans type), the software can get confused. |
-| st-login | %%custom_user%% | %%password%% |
+| st-logoutin | %%custom_user%% | %%password%% |
 | open_ok | /st/dashboard |  |
 | wait_for_text_present_ok | Zzzzzzz, Zzz Zzzz | 300000 |
 | open_ok | /%%ws%%/ |  |
@@ -88,10 +80,7 @@
 | text_like | //body | Zzzz |
 
 | *Comment* | Test Case: Settings: Custom Language - but for %%username%% it's still english |  |
-| open_ok | /st/dashboard |  |
-| wait_for_element_visible_ok | logout_btn | 30000 |
-| click_and_wait | logout_btn |  |
-| st-login |  |  |
+| st-logoutin | %%username%% | %%password%% |
 | open_ok | /%%workspace%%/ |  |
 | wait_for_element_visible_ok | link=Edit | 30000 |
 | wait_for_element_visible_ok | link=Comment | 30000 |
@@ -101,12 +90,9 @@
 | open_ok | /?action=language_settings |  |
 | wait_for_element_visible_ok | locale | 30000 |
 | is_selected_ok | locale | label=zz - DEV_MODE ONLY |
-| wait_for_element_visible_ok | -savelink | 30000 |
-| select_ok | locale | label=Zzzzzz Zzzzzzz: Zzzzzzz (English) |
-| is_selected_ok | locale | label=Zzzzzz Zzzzzzz: Zzzzzzz (English) |
-| click_and_wait | -savelink |  |
+| select_and_wait | locale | label=Zzzzzzz (English) (Zzzzzzz) |
 | wait_for_text_present_ok | Changes Saved | 30000 |
-| is_selected_ok | locale | label=System Default: English |
+| is_selected_ok | locale | label=English (Default) |
 | open_ok | /st/dashboard |  |
 | wait_for_text_present_ok | Welcome, New User | 30000 |
 
@@ -124,33 +110,23 @@
 | wait_for_element_visible_ok | link=Language Settings | 30000 |
 | click_and_wait | link=Language Settings | 30000 |
 | wait_for_element_visible_ok | locale | 30000 |
-| is_selected_ok | locale | label=System Default: English |
-| wait_for_element_visible_ok | -savelink | 30000 |
-| wait_for_element_visible_ok | -cancellink | 30000 |
-| select_ok | locale | label=zz - DEV_MODE ONLY |
-| is_selected_ok | locale | label=zz - DEV_MODE ONLY |
-| click_ok | -cancellink |  |
-| select_ok | locale | label=zz - DEV_MODE ONLY |
-| is_selected_ok | locale | label=zz - DEV_MODE ONLY |
-| click_and_wait | -savelink |  |
+| is_selected_ok | locale | label=English (Default) |
+| select_and_wait | locale | label=zz - DEV_MODE ONLY |
 | wait_for_text_present_ok | Zzzzzzz Zzzzz | 30000 |
-| wait_for_element_present_ok | link=Zzzzzzz Zzzzzzzz | 30000 |
 | is_selected_ok | locale | label=zz - DEV_MODE ONLY |
+| wait_for_element_present_ok | link=Zzzzzzz Zzzzzzzz | 30000 |
 
 | *Comment* | Test Case: Settings: Custom Language - login as %%username%%, see ENGLISH |  |
-| st-login |  |  |
+| st-logoutin | %%username%% | %%password%% |
 | wait-for-element-visible-ok | link=Settings | 30000 |
 | click_and_wait | link=Settings |  |
 | wait_for_element_visible_ok | link=Language Settings | 30000 |
 | click_and_wait | link=Language Settings |  |
 | wait_for_element_visible_ok | locale | 30000 |
-| is_selected_ok | locale | label=System Default: English |
-| click_and_wait | logout_btn |  |
-| st-login | %%custom_user%% | %%password%% |
+| is_selected_ok | locale | label=English (Default) |
 
 | *Comment* | Test Case: Settings: Custom Language - Test ServerWide Settings |  |
-| wait_for_element_visible_ok | logout_btn | 30000 |
-| click_and_wait | logout_btn |  |
+| st-logout |  |  |
 | st-config | set locale zz |  |
 | open_ok | / |  |
 | wait_for_text_present_ok | Zzz zz zz Zzzzzzzzzz | 30000 |
@@ -160,5 +136,9 @@
 | wait_for_text_present_ok | Log in to Socialtext | 30000 |
 | text_unlike | //body | Zzz zz zz Zzzzzzzzzz |
 
+| *Comment* | Test Case: Settings: Custom Language TEARDOWN |  |
+| delete-account | %%acct%% | Recklessly deleting |
+| st-admin | deactivate-user --email %%custom_user%% | been removed |
+| delete-workspace | %%ws%% | Recklessly deleting |
 
 | *Comment* | Test Case: Settings: Custom Language COMPLETED |  |
