@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 22:57+0800\n"
+"PO-Revision-Date: 2011-05-13 07:57-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -68,6 +68,9 @@ msgstr "离开"
 #: share/plugin/groups/share/widgets/membership/jemplate/create_workspace.tt2:64
 msgid "do.next"
 msgstr "下一步"
+
+msgid "do.revert-to-default"
+msgstr "恢复为默认…"
 
 #: share/plugin/groups/share/widgets/membership/jemplate/members.tt2:3
 msgid "do.save"

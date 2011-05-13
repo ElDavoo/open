@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 22:57+0800\n"
+"PO-Revision-Date: 2011-05-13 07:51-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -27,8 +27,23 @@ msgstr "正在清除前一个快照..."
 msgid "appliance.taking-database-snapshot"
 msgstr "生成数据库快照..."
 
+msgid "backup.about-automatic-backup"
+msgstr "当上一次备份达到“备份计划”中所设置的寿命后，即可自动开始进行备份。“周内天数”决定了什么时候可以进行在线备份，因此请选择通讯流量小的天数。如果您正在使用持续存档，则建议定期进行完整备份，以减少还原时间并提升安全性。"
+
+msgid "backup.about-automatic-expiry"
+msgstr "当寿命达到某一期限后，备份可能会自动过期。上一次进行的备份将永不过期。自动过期行为会每天进行。如果同一天还需要进行自动备份，则自动过期机制会在该备份进行完毕后生效。"
+
+msgid "backup.about-destination"
+msgstr "备份文件可保存在 Windows 共享目录（即 SMB/CIFS 共享）中。选择“存档目录”即可将备份保存到该共享下的子目录中。"
+
 msgid "backup.archived-sequence-id"
 msgstr "存档序列ID"
+
+msgid "backup.automatic-backups"
+msgstr "自动备份"
+
+msgid "backup.automatic-cleanup"
+msgstr "自动清理"
 
 msgid "backup.choose-days-of-week-for-full-backup"
 msgstr "完全备份将在每周选定的日子自动进行. 取消所有可以禁用此功能."
@@ -45,14 +60,23 @@ msgstr "备份日期"
 msgid "backup.days-of-week:"
 msgstr "每周："
 
+msgid "backup.delete-expired-files"
+msgstr "删除过期的文件"
+
 msgid "backup.directory"
 msgstr "目录"
 
 msgid "backup.directory-writable"
 msgstr "目录可写"
 
+msgid "backup.expiry-action:"
+msgstr "过期操作："
+
 msgid "backup.in-progress-sequence-id"
 msgstr "进行中的序列号"
+
+msgid "backup.indefinitely"
+msgstr "无限期"
 
 msgid "backup.information"
 msgstr "备份信息"
@@ -69,6 +93,12 @@ msgstr "逻辑转储"
 msgid "backup.maintenance-schedule"
 msgstr "备份维护计划"
 
+msgid "backup.maintenance-window"
+msgstr "维护窗口"
+
+msgid "backup.manually"
+msgstr "手动"
+
 msgid "backup.method"
 msgstr "方法"
 
@@ -81,20 +111,38 @@ msgstr "检出点"
 msgid "backup.mode-full"
 msgstr "已满"
 
+msgid "backup.move-expired-files-to-expired-sub-folder"
+msgstr "将过期的文件移动到“已过期”子文件夹中"
+
 msgid "backup.no"
 msgstr "否"
 
 msgid "backup.paused"
 msgstr "暂停"
 
+msgid "backup.postgresql-running?"
+msgstr "PostgreSQL 是否正在运行？"
+
 msgid "backup.read-this-first=guide-url-1,guide-url-2"
 msgstr "请在进行备份前阅读 Socialtext 的管理指南<a href=\"%1\">备份</a>文档. 该文档可<a href=\"%2\">由此</a>公开获取."
+
+msgid "backup.schedule:"
+msgstr "备份计划："
 
 msgid "backup.status"
 msgstr "备份状态"
 
+msgid "backup.status-unavailable-check-error-log"
+msgstr "备份状态不可用，请在日志中检查错误"
+
 msgid "backup.unwritable"
 msgstr "不可写入"
+
+msgid "backup.week=count"
+msgstr "%1 周"
+
+msgid "backup.weeks-to-keep-backups:"
+msgstr "备份的保存周数"
 
 msgid "backup.writable"
 msgstr "可写入"

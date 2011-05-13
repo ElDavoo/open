@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-19 19:39+0800\n"
+"PO-Revision-Date: 2011-05-13 07:57-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -41,6 +41,9 @@ msgstr "标签"
 msgid "do.cancel"
 msgstr "取消"
 
+msgid "do.edit-layout"
+msgstr "编辑布局"
+
 #: share/plugin/people/template/invite:102
 msgid "do.invite"
 msgstr "邀请"
@@ -48,6 +51,9 @@ msgstr "邀请"
 #: share/plugin/people/share/widgets/profile_edit/widget.html:10
 msgid "do.remove"
 msgstr "移除"
+
+msgid "do.revert-to-default"
+msgstr "恢复为默认…"
 
 #: share/plugin/people/share/widgets/profile_tags/widget.js:86
 msgid "error.add-profile-tag"
@@ -108,6 +114,15 @@ msgstr "无法显示您关注的人。"
 #: share/plugin/people/share/widgets/profile_network/widget.js:18
 msgid "error.show-profile-groups"
 msgstr "无法显示群组列表。"
+
+msgid "error.their-twitter-username-missing"
+msgstr "该用户尚未输入自己的 Twitter 用户名"
+
+msgid "error.twitter-feed-protected=user"
+msgstr "@<a href=\"http://www.twitter.com/%1\">%1</a> 的 Twitter 来源受到保护，不能显示在这个小工具中。"
+
+msgid "error.your-twitter-username-missing"
+msgstr "您的 Twitter 用户名尚未添加到您的个人资料中。请点击“编辑个人资料”并输入您的 Twitter 用户名。"
 
 #. (person_tag)
 #: share/plugin/people/template/data/events/person:6
@@ -390,6 +405,12 @@ msgstr "搜索人员："
 
 msgid "people.see-all-peers"
 msgstr "（检视所有人）"
+
+msgid "people.show-all"
+msgstr "全部显示"
+
+msgid "people.show-less"
+msgstr "收缩显示"
 
 #. (offset + 1, last, pager.total_entries)
 #: share/plugin/people/template/view/peoplelist:44

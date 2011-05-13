@@ -371,6 +371,21 @@ msgstr "网络代理已更新为 %1"
 msgid "appliance.wikis-initialized=log"
 msgstr "工作区已初始化。<br>记录：%1"
 
+msgid "backup.postgresql-pitr-target=date-time,timeline,inclusive"
+msgstr "PostgreSQL 时间点还原目标适用于日期-时间“%1”，时间线“%2”，包括“%3”"
+
+msgid "backup.postgresql-pitr-target=transaction-id,timeline,inclusive"
+msgstr "PostgreSQL 时间点还原目标适用于更动编号“%1”，时间线\"%2\"，包括\"%3\""
+
+msgid "backup.postgresql-will-recover-to-most-recent-commit=timeline,inclusive"
+msgstr "PostgreSQL 将被还原到最近的提交状态，时间线“%1”，包括“%2”"
+
+msgid "backup.share-name"
+msgstr "备份共享名"
+
+msgid "backup.starting-recovery=options"
+msgstr "正在开始还原，选项“%1”"
+
 #. ($self->current_blog_str)
 #: lib/Socialtext/WeblogPlugin.pm:202
 msgid "blog.atom=blog"
@@ -1268,6 +1283,9 @@ msgstr "无法创建帐户 %1。"
 msgid "error.create=wiki"
 msgstr "无法创建工作区 %1。"
 
+msgid "error.date-must-be-in-iso8601-format"
+msgstr "日期必须使用 ISO8601 格式 YYYY-mm-dd HH:MM:SS(.NNNNNN)[+-]zzzz。可以使用“T”分隔日期与时间，而分数形式的秒数是可选的。"
+
 #. ($user->username)
 #: lib/Socialtext/Handler/ControlPanel.pm:580
 msgid "error.deactivate=user"
@@ -1500,6 +1518,9 @@ msgstr "无效的确认网址。"
 msgid "error.invalid-email-placement"
 msgstr "新邮件位置必须位于顶部，底部或覆盖。"
 
+msgid "error.invalid-expire-to-folder-parameter"
+msgstr "Expire-to-folder 参数设置无效；此处只能使用字母与数字（a-z、0-9）、除斜线、反斜线，以及底线字符。"
+
 #. ($source)
 #: lib/Socialtext/Pluggable/Plugin/People.pm:672
 msgid "error.invalid-field=source"
@@ -1679,6 +1700,24 @@ msgstr "没有提供预期的用户清单。"
 #: lib/Socialtext/FetchRSSPlugin.pm:194
 msgid "error.load-feed=url"
 msgstr "加载订阅出错：%1"
+
+msgid "error.maintenance-hour-not-integer"
+msgstr "维护小时数不是整数"
+
+msgid "error.maintenance-hour-out-of-range"
+msgstr "维护小时数超出范围"
+
+msgid "error.maintenance-minutes-not-integer"
+msgstr "维护分钟数不是整数"
+
+msgid "error.maintenance-minutes-out-of-range"
+msgstr "维护分钟数超出范围"
+
+msgid "error.maintenance-weeks-not-integer"
+msgstr "维护周数不是整数"
+
+msgid "error.maintenance-weeks-out-of-range"
+msgstr "维护周数超出范围"
 
 #. ($group_info->{role_name})
 #: lib/Socialtext/Pluggable/Plugin/Groups.pm:100 lib/Socialtext/Pluggable/Plugin/Groups.pm:183
@@ -2338,6 +2377,9 @@ msgstr "与时间服务器 %1 同步时发生错误"
 msgid "error.testing-timeserver=new-ts"
 msgstr "测试时间服务器 %1 时发生错误"
 
+msgid "error.timeline-identifier-must-be-eight-hex-digits-or-latest"
+msgstr "时间线标识符必须是八位十六进制数字或“latest”"
+
 #: lib/Socialtext/DeletePagePlugin.pm:53
 msgid "error.undelete-page-one-revision"
 msgstr "不能恢复只带有一次修订的页面。返回首页。"
@@ -2446,6 +2488,12 @@ msgstr "令牌有效，但用户“%1”未被识别。"
 #: lib/Socialtext/WikiwygPlugin.pm:659
 msgid "error.validation-called-outside-validator"
 msgstr "验证子程序调用外部验证器"
+
+msgid "error.weeks-to-retain-backups-not-integer"
+msgstr "备份的保留周数不是整数"
+
+msgid "error.weeks-to-retain-backups-out-of-range"
+msgstr "备份的保留周数超出范围"
 
 #: lib/Socialtext/Gadgets/Gallery.pm:144
 msgid "error.widget-exists-in-gallery"
@@ -3822,6 +3870,9 @@ msgstr "第三方小工具"
 #: lib/Socialtext/Gadgets/Gadget.pm:784
 msgid "widget.url"
 msgstr "网址"
+
+msgid "widgets.importing-profile-for-user=email"
+msgstr "正在导入用户 %1 的配置文件"
 
 #: lib/Socialtext/Workspace/Permissions.pm:243
 msgid "wiki.acl-custom"
