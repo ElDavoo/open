@@ -377,6 +377,30 @@ msgstr "Web proxy updated to %1"
 msgid "appliance.wikis-initialized=log"
 msgstr "Workspaces initialized.<br>Log: %1"
 
+#. (@params{qw(pg_recovery_target_time pg_recovery_target_timeline pg_recovery_target_inclusive)
+#: lib/Socialtext/Appliance/PgRestore.pm:409
+msgid "backup.postgresql-pitr-target=date-time,timeline,inclusive"
+msgstr "PostgreSQL point-in-time recovery target is for date-time \"%1\", timeline \"%2\", inclusive \"%3\""
+
+#. (@params{qw(pg_recovery_target_txid pg_recovery_target_timeline pg_recovery_target_inclusive)
+#: lib/Socialtext/Appliance/PgRestore.pm:413
+msgid "backup.postgresql-pitr-target=transaction-id,timeline,inclusive"
+msgstr "PostgreSQL point-in-time recovery target is for transaction \"%1\", timeline \"%2\", inclusive \"%3\""
+
+#. (@params{qw(pg_recovery_target_timeline pg_recovery_target_inclusive)
+#: lib/Socialtext/Appliance/PgRestore.pm:416
+msgid "backup.postgresql-will-recover-to-most-recent-commit=timeline,inclusive"
+msgstr "PostgreSQL will recover to the most recent commit, timeline \"%1\", inclusive \"%2\""
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:44
+msgid "backup.share-name"
+msgstr "Backup Share Name"
+
+#. ($parms)
+#: lib/Socialtext/Appliance/PgRestore.pm:558
+msgid "backup.starting-recovery=options"
+msgstr "starting recovery, options \"%1\""
+
 #. ($self->current_blog_str)
 #: lib/Socialtext/WeblogPlugin.pm:202
 msgid "blog.atom=blog"
@@ -1061,13 +1085,13 @@ msgstr "You can now login to the %1 workspace"
 msgid "email.date:"
 msgstr "Date:"
 
-#: lib/Socialtext/EmailNotifyPlugin.pm:29
-msgid "email.frequency?"
-msgstr "How often would you like to receive email updates?"
-
 #: lib/Socialtext/EmailNotifyPlugin.pm:31
 msgid "email.frequency-capped"
 msgstr "(Note: 'Every minute' and 'Every 5 minute' choices are treated as 15 minutes until further notice.)"
+
+#: lib/Socialtext/EmailNotifyPlugin.pm:29
+msgid "email.frequency?"
+msgstr "How often would you like to receive email updates?"
 
 #: lib/Socialtext/EmailReceiver/Base.pm:654
 msgid "email.from:"
@@ -1308,6 +1332,10 @@ msgstr "Could not create account %1."
 msgid "error.create=wiki"
 msgstr "Could not create workspace %1"
 
+#: lib/Socialtext/Appliance/PgRestore.pm:85
+msgid "error.date-must-be-in-iso8601-format"
+msgstr "Date must be in the ISO8601 format YYYY-mm-dd HH:MM:SS(.NNNNNN)[+-]zzzz.  A \"T\" may be used to separate the date and time and the fractional seconds are optional."
+
 #. ($user->username)
 #: lib/Socialtext/Handler/ControlPanel.pm:580
 msgid "error.deactivate=user"
@@ -1543,6 +1571,10 @@ msgstr "Invalid confirmation URL."
 msgid "error.invalid-email-placement"
 msgstr "Incoming email placement must be one of top, bottom, or replace."
 
+#: lib/Socialtext/Appliance/Model/Backup.pm:127
+msgid "error.invalid-expire-to-folder-parameter"
+msgstr "Invalid expire-to-folder parameter; must be alphanumeric (a-z,0-9) with no special characters except dash, forward-slash & underscore"
+
 #. ($source)
 #: lib/Socialtext/Pluggable/Plugin/People.pm:672
 msgid "error.invalid-field=source"
@@ -1724,6 +1756,30 @@ msgstr "Expected a list of users, got none."
 #: lib/Socialtext/FetchRSSPlugin.pm:194
 msgid "error.load-feed=url"
 msgstr "Error loading feed: %1"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:109
+msgid "error.maintenance-hour-not-integer"
+msgstr "Maintenance hour isn't an integer"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:110
+msgid "error.maintenance-hour-out-of-range"
+msgstr "Maintenance hour is out of range"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:114
+msgid "error.maintenance-minutes-not-integer"
+msgstr "Maintenance minutes isn't an integer"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:115
+msgid "error.maintenance-minutes-out-of-range"
+msgstr "Maintenance minutes is out of range"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:119
+msgid "error.maintenance-weeks-not-integer"
+msgstr "Maintenance weeks isn't an integer"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:120
+msgid "error.maintenance-weeks-out-of-range"
+msgstr "Maintenance weeks out of range"
 
 #. ($group_info->{role_name})
 #: lib/Socialtext/Pluggable/Plugin/Groups.pm:100 lib/Socialtext/Pluggable/Plugin/Groups.pm:183
@@ -2389,6 +2445,10 @@ msgstr "Error synchronizing with timeserver %1"
 msgid "error.testing-timeserver=new-ts"
 msgstr "Error testing timeserver %1"
 
+#: lib/Socialtext/Appliance/PgRestore.pm:102
+msgid "error.timeline-identifier-must-be-eight-hex-digits-or-latest"
+msgstr "timeline identifier must be eight hexadecimal digits or \"latest\""
+
 #: lib/Socialtext/DeletePagePlugin.pm:53
 msgid "error.undelete-page-one-revision"
 msgstr "Cannot undelete a page with only one revision. Returning to front page."
@@ -2505,6 +2565,14 @@ msgstr "Have valid token, but for unknown user '%1'."
 #: lib/Socialtext/WikiwygPlugin.pm:659
 msgid "error.validation-called-outside-validator"
 msgstr "Validation subroutine called outside of validator"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:123
+msgid "error.weeks-to-retain-backups-not-integer"
+msgstr "Weeks to retain backups isn't an integer"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:124
+msgid "error.weeks-to-retain-backups-out-of-range"
+msgstr "Weeks to retain backups out of range"
 
 #: lib/Socialtext/Gadgets/Gallery.pm:144
 msgid "error.widget-exists-in-gallery"
@@ -3900,6 +3968,11 @@ msgstr "Third Party widgets"
 #: lib/Socialtext/Gadgets/Gadget.pm:784
 msgid "widget.url"
 msgstr "URL"
+
+#. ($email)
+#: lib/Socialtext/Pluggable/Plugin/Widgets.pm:266
+msgid "widgets.importing-profile-for-user=email"
+msgstr "Importing profile for user %1"
 
 #: lib/Socialtext/Workspace/Permissions.pm:243
 msgid "wiki.acl-custom"

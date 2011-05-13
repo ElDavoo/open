@@ -100,6 +100,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
+"#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-05-13 06:35-0700\n"
+"Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
 "PO-Revision-Date: 2011-04-18 11:13-0700\n"
 "Last-Translator: Socialtext i18n team\n"
@@ -125,7 +134,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  groups.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-10 12:50-0700\n"
+"PO-Revision-Date: 2011-05-13 06:20-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -141,7 +150,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  dashboard.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-20 10:52+0800\n"
+"PO-Revision-Date: 2011-05-13 06:21-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -1129,9 +1138,29 @@ msgstr "Zzz zzzzz zzzzzzz zz %1"
 msgid "appliance.wikis-initialized=log"
 msgstr "Zzzzzzzzzz zzzzzzzzzzz.<br>Zzz: %1"
 
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:54
+msgid "backup.about-automatic-backup"
+msgstr "Zzzzzzz zzz zz zzzzz zzzzzzzzzzzzz zzzzz zzz zzzzzz zzzzzz zzzzzzz zzz zzz zzzzzzzz zzz zzz \"Zzzzzz zzzzzzzz\". Zzz \"Zzz(z) zz zzz zzzz\" zzzzzzzzz zzzz zz zz zzzzzzzzzz zz zzzz zzz zzzzzz zzzzzz, zz zzzzzz zzz(z) zzzz zzz zzzzzzz. Zz zzz zzz zzzzz Zzzzzzzzzz Zzzzzzzzz, zzzzzzzz Zzzz Zzzzzzz zzz zzzzzzzzzzz zz zzzzzz zzzzzzzzzzz zzzzz zzz zzzzzzzz zzzzzz."
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:80
+msgid "backup.about-automatic-expiry"
+msgstr "Zzzzzzz zzz zz zzzzzzzzzzzzz zzzzzzz zzzz zzzz zzzzz z zzzzzzz zzz. Zzz zzzz zzzzzzzzz zzzzzz zzzz zzzzz zz zzzzzzz. Zzzzzzzzz zzzzzz zzzzz zzzzz zzzzz zzz. Zz zz zzzzzzzzz zzzzzz zz zzzzzzzz zz zzz zzzz zzz, zzzzzzzzz zzzzzz zzzzzz zzzzz zzzz zzzzzz zzzzz zzzzz."
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:144
+msgid "backup.about-destination"
+msgstr "Zzzzzz zzzzz zzz zz zzzzzz zz z Zzzzzzz zzzzzz zzzzzzzzz (z ZZZ/ZZZZ zzzzz). Zzzzzzzz zz \"Zzzzzzz Zzzzzzzzz\" zzzz zzzzz zzzzzzz zzzzzz zzzz zzz-zzzzzzzzz zzzzzz zzz zzzzz."
+
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:18
 msgid "backup.archived-sequence-id"
 msgstr "Zzzzzzzz Zzzzzzzz ZZ"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:53
+msgid "backup.automatic-backups"
+msgstr "Zzzzzzzzz Zzzzzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:79
+msgid "backup.automatic-cleanup"
+msgstr "Zzzzzzzzz Zzzzzzz"
 
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:46
 msgid "backup.choose-days-of-week-for-full-backup"
@@ -1153,6 +1182,10 @@ msgstr "Zzzzzz Zzzz"
 msgid "backup.days-of-week:"
 msgstr "Zzz(z) zz zzz zzzz:"
 
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:98
+msgid "backup.delete-expired-files"
+msgstr "Zzzzzz zzzzzzz zzzzz"
+
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:12
 msgid "backup.directory"
 msgstr "Zzzzzzzzz"
@@ -1161,9 +1194,17 @@ msgstr "Zzzzzzzzz"
 msgid "backup.directory-writable"
 msgstr "Zzzzzzzzz Zzzzzzzz"
 
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:95
+msgid "backup.expiry-action:"
+msgstr "Zzzzzz zzzzzz:"
+
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:17
 msgid "backup.in-progress-sequence-id"
 msgstr "Zz-zzzzzzzz Zzzzzzzz ZZ"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:86
+msgid "backup.indefinitely"
+msgstr "zzzzzzzzzzzz"
 
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:6
 msgid "backup.information"
@@ -1185,6 +1226,14 @@ msgstr "Zzzzzzz Zzzzz"
 msgid "backup.maintenance-schedule"
 msgstr "Zzzzzz Zzzzzzzzzzz Zzzzzzzz"
 
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:106
+msgid "backup.maintenance-window"
+msgstr "Zzzzzzzzzzz Zzzzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:60
+msgid "backup.manually"
+msgstr "zzzzzzzz"
+
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:10
 msgid "backup.method"
 msgstr "Zzzzzz"
@@ -1201,6 +1250,10 @@ msgstr "zzzzzzzzzz"
 msgid "backup.mode-full"
 msgstr "zzzz"
 
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:101
+msgid "backup.move-expired-files-to-expired-sub-folder"
+msgstr "Zzzz zzzzzzz zzzzz zz \"zzzzzzz\" zzz-zzzzzz"
+
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:11
 msgid "backup.no"
 msgstr "Zz"
@@ -1209,19 +1262,63 @@ msgstr "Zz"
 msgid "backup.paused"
 msgstr "Zzzzzz"
 
+#. (@params{qw(pg_recovery_target_time pg_recovery_target_timeline pg_recovery_target_inclusive)
+#: lib/Socialtext/Appliance/PgRestore.pm:409
+msgid "backup.postgresql-pitr-target=date-time,timeline,inclusive"
+msgstr "ZzzzzzzZZZ zzzzz-zz-zzzz zzzzzzzz zzzzzz zz zzz zzzz-zzzz \"%1\", zzzzzzzz \"%2\", zzzzzzzzz \"%3\""
+
+#. (@params{qw(pg_recovery_target_txid pg_recovery_target_timeline pg_recovery_target_inclusive)
+#: lib/Socialtext/Appliance/PgRestore.pm:413
+msgid "backup.postgresql-pitr-target=transaction-id,timeline,inclusive"
+msgstr "ZzzzzzzZZZ zzzzz-zz-zzzz zzzzzzzz zzzzzz zz zzz zzzzzzzzzzz \"%1\", zzzzzzzz \"%2\", zzzzzzzzz \"%3\""
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:13
+msgid "backup.postgresql-running?"
+msgstr "ZzzzzzzZZZ zzzzzzz?"
+
+#. (@params{qw(pg_recovery_target_timeline pg_recovery_target_inclusive)
+#: lib/Socialtext/Appliance/PgRestore.pm:416
+msgid "backup.postgresql-will-recover-to-most-recent-commit=timeline,inclusive"
+msgstr "ZzzzzzzZZZ zzzz zzzzzzz zz zzz zzzz zzzzzz zzzzzz, zzzzzzzz \"%1\", zzzzzzzzz \"%2\""
+
 #. ('/help-adminguide/#backup', 'https://www.socialtext.net/help-adminguide/#backup')
 #. ("/help-adminguide/#backup", "https://www.socialtext.net/help-adminguide/#backup")
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:7
 msgid "backup.read-this-first=guide-url-1,guide-url-2"
 msgstr "Zzzzzz zzzz zzz Zzzzzzzzzz Zzzzz Zzzzz <a href=\"%1\">Zzzzzz</a> zzzzzzzzzzzzz zzzzzz zzzzzzzzzz. Z zzzz zz zzzz zzzzzzzzzzzzz zz zzzzzzzzz zzzzzzzz <a href=\"%2\">zzzz</a>."
 
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:57
+msgid "backup.schedule:"
+msgstr "Zzzzzz zzzzzzzz:"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:44
+msgid "backup.share-name"
+msgstr "Zzzzzz Zzzzz Zzzz"
+
+#. ($parms)
+#: lib/Socialtext/Appliance/PgRestore.pm:558
+msgid "backup.starting-recovery=options"
+msgstr "zzzzzzzz zzzzzzzz, zzzzzzz \"%1\""
+
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:8
 msgid "backup.status"
 msgstr "Zzzzzz Zzzzzz"
 
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:24
+msgid "backup.status-unavailable-check-error-log"
+msgstr "Zzzzzz zzzzzz zzzzzzzzzzz, zzzzz zzzz zzz zzzzzz"
+
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:13
 msgid "backup.unwritable"
 msgstr "zzzzzzzzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:62 ../appliance/libsocialtext-appliance-perl/template/backup.html:88
+msgid "backup.week=count"
+msgstr "%*(%1,zzzz)"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:83
+msgid "backup.weeks-to-keep-backups:"
+msgstr "Zzzzz zz zzzz zzzzzzz:"
 
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:13
 msgid "backup.writable"
@@ -3759,10 +3856,6 @@ msgstr "Zzzzzzz"
 msgid "dashboard.publish-widget-now"
 msgstr "Zzzzzz zzzzzzzz zzzzzzzzz zzz zzz zzz zzzz zzzzz. Zzzzz zzzzzzz zz zzzzzz zzz zzzzzz zzzzzzz zzz."
 
-#: share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:2
-msgid "dashboard.revert"
-msgstr "Zzzzzz zz zzzzzzz"
-
 #: share/plugin/dashboard/template/dashboard_links:11
 msgid "dashboard.save"
 msgstr "Zzzz..."
@@ -4344,6 +4437,10 @@ msgstr "Zzzzzzz"
 #: share/plugin/dashboard/template/dashboard_links:25
 msgid "do.revert-dashboard"
 msgstr "Zzzzzz zz Zzzzzzz..."
+
+#: share/plugin/people/template/profile_links:21 share/plugin/groups/template/group_links:24 share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:2
+msgid "do.revert-to-default"
+msgstr "Zzzzzz zz Zzzzzzz…"
 
 #: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:58 share/skin/wikiwyg/javascript/jemplate/add-a-link.html:74 share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:18 share/skin/wikiwyg/javascript/jemplate/table-create.html:43 share/skin/wikiwyg/javascript/jemplate/table-options.html:53 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:169 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:370 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:8 share/skin/wikiwyg/javascript/template/widget_edit.tt2:68 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:14 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:444 share/plugin/groups/share/widgets/membership/jemplate/members.tt2:3 share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:25
 msgid "do.save"
@@ -5460,6 +5557,10 @@ msgstr "Zzzzz zzzzzzzzz zzzzzzzzzz"
 msgid "error.dashboard-save-default-layout"
 msgstr "Zzzzz zzzzzz zzz zzzzzzz zzzzzz."
 
+#: lib/Socialtext/Appliance/PgRestore.pm:85
+msgid "error.date-must-be-in-iso8601-format"
+msgstr "Zzzz zzzz zz zz zzz ZZZ8601 zzzzzz ZZZZ-zz-zz ZZ:ZZ:ZZ(.ZZZZZZ)[+-]zzzz.  Z \"Z\" zzz zz zzzz zz zzzzzzzz zzz zzzz zzz zzzz zzz zzz zzzzzzzzzz zzzzzzz zzz zzzzzzzz."
+
 #. ($user->username)
 #: lib/Socialtext/Handler/ControlPanel.pm:580
 msgid "error.deactivate=user"
@@ -5791,6 +5892,10 @@ msgstr "Zzzzz, Zzz zzzzzzzzz %*(%1,zzzzz zzzzzzz zzz,zzzzz zzzzzzzzz zzzz) zzzzz
 msgid "error.invalid-email-placement"
 msgstr "Zzzzzzzz zzzzz zzzzzzzzz zzzz zz zzz zz zzz, zzzzzz, zz zzzzzzz."
 
+#: lib/Socialtext/Appliance/Model/Backup.pm:127
+msgid "error.invalid-expire-to-folder-parameter"
+msgstr "Zzzzzzz zzzzzz-zz-zzzzzz zzzzzzzzz; zzzz zz zzzzzzzzzzzz (z-z,0-9) zzzz zz zzzzzzz zzzzzzzzzz zzzzzz zzzz, zzzzzzz-zzzzz & zzzzzzzzzz"
+
 #. ($source)
 #: lib/Socialtext/Pluggable/Plugin/People.pm:672
 msgid "error.invalid-field=source"
@@ -6059,6 +6164,30 @@ msgstr "Zzz zzzz zz zzzzzz zz zz zzzz zzz %1 zzzzzzzzz. Zz zzz zzzzzzz zzzz zz z
 #: share/skin/s3/javascript/st-lightbox.js:91
 msgid "error.long-page-name=title"
 msgstr "Zzz zzzz zzzz zzz zzzzzzzz, \"%1\", zz zzz zzzz zzzzz ZZZ zzzzzzzz."
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:109
+msgid "error.maintenance-hour-not-integer"
+msgstr "Zzzzzzzzzzz zzzz zzz'z zz zzzzzzz"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:110
+msgid "error.maintenance-hour-out-of-range"
+msgstr "Zzzzzzzzzzz zzzz zz zzz zz zzzzz"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:114
+msgid "error.maintenance-minutes-not-integer"
+msgstr "Zzzzzzzzzzz zzzzzzz zzz'z zz zzzzzzz"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:115
+msgid "error.maintenance-minutes-out-of-range"
+msgstr "Zzzzzzzzzzz zzzzzzz zz zzz zz zzzzz"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:119
+msgid "error.maintenance-weeks-not-integer"
+msgstr "Zzzzzzzzzzz zzzzz zzz'z zz zzzzzzz"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:120
+msgid "error.maintenance-weeks-out-of-range"
+msgstr "Zzzzzzzzzzz zzzzz zzz zz zzzzz"
 
 #. ($group_info->{role_name})
 #: lib/Socialtext/Pluggable/Plugin/Groups.pm:100 lib/Socialtext/Pluggable/Plugin/Groups.pm:183
@@ -7030,6 +7159,10 @@ msgstr "Zzzzz zzzzzzzzzzzzz zzzz zzzzzzzzzz %1"
 msgid "error.testing-timeserver=new-ts"
 msgstr "Zzzzz zzzzzzz zzzzzzzzzz %1"
 
+#: lib/Socialtext/Appliance/PgRestore.pm:102
+msgid "error.timeline-identifier-must-be-eight-hex-digits-or-latest"
+msgstr "zzzzzzzz zzzzzzzzzz zzzz zz zzzzz zzzzzzzzzzz zzzzzz zz \"zzzzzz\""
+
 #. (template,                        self.selected_visible_type()
 #: share/skin/s3/javascript/lightbox/create_content.js:239
 msgid "error.type-mismatch=template,type"
@@ -7190,6 +7323,14 @@ msgstr "Zzzzzzzzzz zzzzzzzzzz zzzzzz zzzzzzz zz zzzzzzzzz"
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3169
 msgid "error.video-url-required"
 msgstr "Zzzzz ZZZ zz zzzzzzzz"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:123
+msgid "error.weeks-to-retain-backups-not-integer"
+msgstr "Zzzzz zz zzzzzz zzzzzzz zzz'z zz zzzzzzz"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:124
+msgid "error.weeks-to-retain-backups-out-of-range"
+msgstr "Zzzzz zz zzzzzz zzzzzzz zzz zz zzzzz"
 
 #: lib/Socialtext/Gadgets/Gallery.pm:144
 msgid "error.widget-exists-in-gallery"
@@ -8300,10 +8441,6 @@ msgstr "zzzzzz"
 #: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:31
 msgid "groups.reset-photo"
 msgstr "Zzzzz Zzzzz"
-
-#: share/plugin/groups/template/group_links:24
-msgid "groups.revert-to-default"
-msgstr "Zzzzzz zz Zzzzzzz…"
 
 #: share/plugin/groups/share/widgets/membership/widget.js:425
 msgid "groups.role-admin"
@@ -13934,6 +14071,11 @@ msgstr "Zzzzzz Zzzzzzz"
 #: share/plugin/widgets/template/view/gallery:34
 msgid "widgets.gallery-switch=account:"
 msgstr "Zzzz zz zzz zzzzzz zzzzzzz zzz zzz \"%1\" zzzzzzz. Zzzzzz zz zzzzzzz:"
+
+#. ($email)
+#: lib/Socialtext/Pluggable/Plugin/Widgets.pm:266
+msgid "widgets.importing-profile-for-user=email"
+msgstr "Zzzzzzzzz zzzzzzz zzz zzzz %1"
 
 #: share/plugin/widgets/share/javascript/gadgets.js:677
 msgid "widgets.in-layout-mode-click-save-or-cancel"

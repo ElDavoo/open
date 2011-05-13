@@ -100,6 +100,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
+"#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-05-13 06:35-0700\n"
+"Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
 "PO-Revision-Date: 2011-04-18 11:13-0700\n"
 "Last-Translator: Socialtext i18n team\n"
@@ -125,7 +134,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  groups.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-10 12:50-0700\n"
+"PO-Revision-Date: 2011-05-13 06:20-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -141,7 +150,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  dashboard.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-20 10:52+0800\n"
+"PO-Revision-Date: 2011-05-13 06:21-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -1129,9 +1138,29 @@ msgstr "«Web proxy updated to %1»"
 msgid "appliance.wikis-initialized=log"
 msgstr "«Workspaces initialized.<br>Log: %1»"
 
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:54
+msgid "backup.about-automatic-backup"
+msgstr "«Backups can be taken automatically after the latest backup reaches the age selected for the \"Backup schedule\". The \"Day(s) of the week\" specifies when it is acceptable to make the online backup, so choose day(s) with low traffic. If you are using Continuous Archiving, periodic Full Backups are recommended to reduce restoration times and increase safety.»"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:80
+msgid "backup.about-automatic-expiry"
+msgstr "«Backups can be automatically expired when they reach a certain age. The last remaining backup will never be expired. Automatic expiry takes place every day. If an automatic backup is required on the same day, automatic expiry occurs after that backup takes place.»"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:144
+msgid "backup.about-destination"
+msgstr "«Backup files can be stored on a Windows shared directory (a SMB/CIFS share). Choosing an \"Archive Directory\" will store backups inside that sub-directory within the share.»"
+
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:18
 msgid "backup.archived-sequence-id"
 msgstr "«Archived Sequence ID»"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:53
+msgid "backup.automatic-backups"
+msgstr "«Automatic Backups»"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:79
+msgid "backup.automatic-cleanup"
+msgstr "«Automatic Cleanup»"
 
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:46
 msgid "backup.choose-days-of-week-for-full-backup"
@@ -1153,6 +1182,10 @@ msgstr "«Backup Date»"
 msgid "backup.days-of-week:"
 msgstr "«Day(s) of the week:»"
 
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:98
+msgid "backup.delete-expired-files"
+msgstr "«Delete expired files»"
+
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:12
 msgid "backup.directory"
 msgstr "«Directory»"
@@ -1161,9 +1194,17 @@ msgstr "«Directory»"
 msgid "backup.directory-writable"
 msgstr "«Directory Writable»"
 
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:95
+msgid "backup.expiry-action:"
+msgstr "«Expiry action:»"
+
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:17
 msgid "backup.in-progress-sequence-id"
 msgstr "«In-progress Sequence ID»"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:86
+msgid "backup.indefinitely"
+msgstr "«indefinitely»"
 
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:6
 msgid "backup.information"
@@ -1185,6 +1226,14 @@ msgstr "«Logical Dumps»"
 msgid "backup.maintenance-schedule"
 msgstr "«Backup Maintenance Schedule»"
 
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:106
+msgid "backup.maintenance-window"
+msgstr "«Maintenance Window»"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:60
+msgid "backup.manually"
+msgstr "«manually»"
+
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:10
 msgid "backup.method"
 msgstr "«Method»"
@@ -1201,6 +1250,10 @@ msgstr "«checkpoint»"
 msgid "backup.mode-full"
 msgstr "«full»"
 
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:101
+msgid "backup.move-expired-files-to-expired-sub-folder"
+msgstr "«Move expired files to \"expired\" sub-folder»"
+
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:11
 msgid "backup.no"
 msgstr "«No»"
@@ -1209,19 +1262,63 @@ msgstr "«No»"
 msgid "backup.paused"
 msgstr "«Paused»"
 
+#. (@params{qw(pg_recovery_target_time pg_recovery_target_timeline pg_recovery_target_inclusive)
+#: lib/Socialtext/Appliance/PgRestore.pm:409
+msgid "backup.postgresql-pitr-target=date-time,timeline,inclusive"
+msgstr "«PostgreSQL point-in-time recovery target is for date-time \"%1\", timeline \"%2\", inclusive \"%3\"»"
+
+#. (@params{qw(pg_recovery_target_txid pg_recovery_target_timeline pg_recovery_target_inclusive)
+#: lib/Socialtext/Appliance/PgRestore.pm:413
+msgid "backup.postgresql-pitr-target=transaction-id,timeline,inclusive"
+msgstr "«PostgreSQL point-in-time recovery target is for transaction \"%1\", timeline \"%2\", inclusive \"%3\"»"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:13
+msgid "backup.postgresql-running?"
+msgstr "«PostgreSQL running?»"
+
+#. (@params{qw(pg_recovery_target_timeline pg_recovery_target_inclusive)
+#: lib/Socialtext/Appliance/PgRestore.pm:416
+msgid "backup.postgresql-will-recover-to-most-recent-commit=timeline,inclusive"
+msgstr "«PostgreSQL will recover to the most recent commit, timeline \"%1\", inclusive \"%2\"»"
+
 #. ('/help-adminguide/#backup', 'https://www.socialtext.net/help-adminguide/#backup')
 #. ("/help-adminguide/#backup", "https://www.socialtext.net/help-adminguide/#backup")
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:7
 msgid "backup.read-this-first=guide-url-1,guide-url-2"
 msgstr "«Please read the Socialtext Admin Guide <a href=\"%1\">Backup</a> documentation before proceeding. A copy of this documentation is available publicly <a href=\"%2\">here</a>.»"
 
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:57
+msgid "backup.schedule:"
+msgstr "«Backup schedule:»"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:44
+msgid "backup.share-name"
+msgstr "«Backup Share Name»"
+
+#. ($parms)
+#: lib/Socialtext/Appliance/PgRestore.pm:558
+msgid "backup.starting-recovery=options"
+msgstr "«starting recovery, options \"%1\"»"
+
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:8
 msgid "backup.status"
 msgstr "«Backup Status»"
 
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:24
+msgid "backup.status-unavailable-check-error-log"
+msgstr "«Backup status unavailable, check logs for errors»"
+
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:13
 msgid "backup.unwritable"
 msgstr "«unwritable»"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:62 ../appliance/libsocialtext-appliance-perl/template/backup.html:88
+msgid "backup.week=count"
+msgstr "«%*(%1,week)»"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:83
+msgid "backup.weeks-to-keep-backups:"
+msgstr "«Weeks to keep backups:»"
 
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:13
 msgid "backup.writable"
@@ -3759,10 +3856,6 @@ msgstr "«Publish»"
 msgid "dashboard.publish-widget-now"
 msgstr "«Widget rendered correctly but has not been saved. Click publish to update the widget gallery now.»"
 
-#: share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:2
-msgid "dashboard.revert"
-msgstr "«Revert to default»"
-
 #: share/plugin/dashboard/template/dashboard_links:11
 msgid "dashboard.save"
 msgstr "«Save...»"
@@ -4344,6 +4437,10 @@ msgstr "«Replace»"
 #: share/plugin/dashboard/template/dashboard_links:25
 msgid "do.revert-dashboard"
 msgstr "«Revert to Default...»"
+
+#: share/plugin/people/template/profile_links:21 share/plugin/groups/template/group_links:24 share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:2
+msgid "do.revert-to-default"
+msgstr "«Revert to Default…»"
 
 #: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:58 share/skin/wikiwyg/javascript/jemplate/add-a-link.html:74 share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:18 share/skin/wikiwyg/javascript/jemplate/table-create.html:43 share/skin/wikiwyg/javascript/jemplate/table-options.html:53 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:169 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:370 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:8 share/skin/wikiwyg/javascript/template/widget_edit.tt2:68 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:14 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:444 share/plugin/groups/share/widgets/membership/jemplate/members.tt2:3 share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:25
 msgid "do.save"
@@ -5460,6 +5557,10 @@ msgstr "«Error resetting dashboards»"
 msgid "error.dashboard-save-default-layout"
 msgstr "«Error saving the default layout.»"
 
+#: lib/Socialtext/Appliance/PgRestore.pm:85
+msgid "error.date-must-be-in-iso8601-format"
+msgstr "«Date must be in the ISO8601 format YYYY-mm-dd HH:MM:SS(.NNNNNN)[+-]zzzz.  A \"T\" may be used to separate the date and time and the fractional seconds are optional.»"
+
 #. ($user->username)
 #: lib/Socialtext/Handler/ControlPanel.pm:580
 msgid "error.deactivate=user"
@@ -5791,6 +5892,10 @@ msgstr "«Sorry, The following %*(%1,email address was,email addresses were) inv
 msgid "error.invalid-email-placement"
 msgstr "«Incoming email placement must be one of top, bottom, or replace.»"
 
+#: lib/Socialtext/Appliance/Model/Backup.pm:127
+msgid "error.invalid-expire-to-folder-parameter"
+msgstr "«Invalid expire-to-folder parameter; must be alphanumeric (a-z,0-9) with no special characters except dash, forward-slash & underscore»"
+
 #. ($source)
 #: lib/Socialtext/Pluggable/Plugin/People.pm:672
 msgid "error.invalid-field=source"
@@ -6059,6 +6164,30 @@ msgstr "«You must be logged in to view the %1 workspace. If you already have an
 #: share/skin/s3/javascript/st-lightbox.js:91
 msgid "error.long-page-name=title"
 msgstr "«The page name you selected, \"%1\", is too long after URL encoding.»"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:109
+msgid "error.maintenance-hour-not-integer"
+msgstr "«Maintenance hour isn't an integer»"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:110
+msgid "error.maintenance-hour-out-of-range"
+msgstr "«Maintenance hour is out of range»"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:114
+msgid "error.maintenance-minutes-not-integer"
+msgstr "«Maintenance minutes isn't an integer»"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:115
+msgid "error.maintenance-minutes-out-of-range"
+msgstr "«Maintenance minutes is out of range»"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:119
+msgid "error.maintenance-weeks-not-integer"
+msgstr "«Maintenance weeks isn't an integer»"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:120
+msgid "error.maintenance-weeks-out-of-range"
+msgstr "«Maintenance weeks out of range»"
 
 #. ($group_info->{role_name})
 #: lib/Socialtext/Pluggable/Plugin/Groups.pm:100 lib/Socialtext/Pluggable/Plugin/Groups.pm:183
@@ -7030,6 +7159,10 @@ msgstr "«Error synchronizing with timeserver %1»"
 msgid "error.testing-timeserver=new-ts"
 msgstr "«Error testing timeserver %1»"
 
+#: lib/Socialtext/Appliance/PgRestore.pm:102
+msgid "error.timeline-identifier-must-be-eight-hex-digits-or-latest"
+msgstr "«timeline identifier must be eight hexadecimal digits or \"latest\"»"
+
 #. (template,                        self.selected_visible_type()
 #: share/skin/s3/javascript/lightbox/create_content.js:239
 msgid "error.type-mismatch=template,type"
@@ -7190,6 +7323,14 @@ msgstr "«Validation subroutine called outside of validator»"
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3169
 msgid "error.video-url-required"
 msgstr "«Video URL is required»"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:123
+msgid "error.weeks-to-retain-backups-not-integer"
+msgstr "«Weeks to retain backups isn't an integer»"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:124
+msgid "error.weeks-to-retain-backups-out-of-range"
+msgstr "«Weeks to retain backups out of range»"
 
 #: lib/Socialtext/Gadgets/Gallery.pm:144
 msgid "error.widget-exists-in-gallery"
@@ -8300,10 +8441,6 @@ msgstr "«remove»"
 #: share/plugin/groups/share/widgets/edit_information/jemplate/widget.tt2:31
 msgid "groups.reset-photo"
 msgstr "«Reset Photo»"
-
-#: share/plugin/groups/template/group_links:24
-msgid "groups.revert-to-default"
-msgstr "«Revert to Default…»"
 
 #: share/plugin/groups/share/widgets/membership/widget.js:425
 msgid "groups.role-admin"
@@ -13934,6 +14071,11 @@ msgstr "«Widget Gallery»"
 #: share/plugin/widgets/template/view/gallery:34
 msgid "widgets.gallery-switch=account:"
 msgstr "«This is the widget gallery for the \"%1\" account. Switch to account:»"
+
+#. ($email)
+#: lib/Socialtext/Pluggable/Plugin/Widgets.pm:266
+msgid "widgets.importing-profile-for-user=email"
+msgstr "«Importing profile for user %1»"
 
 #: share/plugin/widgets/share/javascript/gadgets.js:677
 msgid "widgets.in-layout-mode-click-save-or-cancel"

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-20 10:52+0800\n"
+"PO-Revision-Date: 2011-05-13 06:21-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -43,8 +43,8 @@ msgid "dashboard.publish-widget-now"
 msgstr "Widget rendered correctly but has not been saved. Click publish to update the widget gallery now."
 
 #: share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:2
-msgid "dashboard.revert"
-msgstr "Revert to default"
+msgid "do.revert-to-default"
+msgstr "Revert to Default…"
 
 #: share/plugin/dashboard/template/dashboard_links:11
 msgid "dashboard.save"

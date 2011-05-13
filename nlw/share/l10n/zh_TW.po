@@ -906,8 +906,28 @@ msgstr "網路代理已更新為 %1"
 msgid "appliance.wikis-initialized=log"
 msgstr "工作區已初始化。<br>記錄：%1"
 
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:54
+msgid "backup.about-automatic-backup"
+msgstr "Backups can be taken automatically after the latest backup reaches the age selected for the \"Backup schedule\". The \"Day(s) of the week\" specifies when it is acceptable to make the online backup, so choose day(s) with low traffic. If you are using Continuous Archiving, periodic Full Backups are recommended to reduce restoration times and increase safety."
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:80
+msgid "backup.about-automatic-expiry"
+msgstr "Backups can be automatically expired when they reach a certain age. The last remaining backup will never be expired. Automatic expiry takes place every day. If an automatic backup is required on the same day, automatic expiry occurs after that backup takes place."
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:144
+msgid "backup.about-destination"
+msgstr "Backup files can be stored on a Windows shared directory (a SMB/CIFS share). Choosing an \"Archive Directory\" will store backups inside that sub-directory within the share."
+
 msgid "backup.archived-sequence-id"
 msgstr "封存序列ID"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:53
+msgid "backup.automatic-backups"
+msgstr "Automatic Backups"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:79
+msgid "backup.automatic-cleanup"
+msgstr "Automatic Cleanup"
 
 msgid "backup.choose-days-of-week-for-full-backup"
 msgstr "完全備份將在每周選定的日子自動進行. 取消所有可以停用此功能."
@@ -924,14 +944,26 @@ msgstr "備份日期"
 msgid "backup.days-of-week:"
 msgstr "每周："
 
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:98
+msgid "backup.delete-expired-files"
+msgstr "Delete expired files"
+
 msgid "backup.directory"
 msgstr "目錄"
 
 msgid "backup.directory-writable"
 msgstr "目錄可寫"
 
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:95
+msgid "backup.expiry-action:"
+msgstr "Expiry action:"
+
 msgid "backup.in-progress-sequence-id"
 msgstr "進行中的序列號"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:86
+msgid "backup.indefinitely"
+msgstr "indefinitely"
 
 msgid "backup.information"
 msgstr "備份資訊"
@@ -948,6 +980,14 @@ msgstr "邏輯轉儲"
 msgid "backup.maintenance-schedule"
 msgstr "備份維護計劃"
 
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:106
+msgid "backup.maintenance-window"
+msgstr "Maintenance Window"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:60
+msgid "backup.manually"
+msgstr "manually"
+
 msgid "backup.method"
 msgstr "方法"
 
@@ -960,20 +1000,68 @@ msgstr "檢出點"
 msgid "backup.mode-full"
 msgstr "已滿"
 
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:101
+msgid "backup.move-expired-files-to-expired-sub-folder"
+msgstr "Move expired files to \"expired\" sub-folder"
+
 msgid "backup.no"
 msgstr "否"
 
 msgid "backup.paused"
 msgstr "暫停"
 
+#. (@params{qw(pg_recovery_target_time pg_recovery_target_timeline pg_recovery_target_inclusive)
+#: lib/Socialtext/Appliance/PgRestore.pm:409
+msgid "backup.postgresql-pitr-target=date-time,timeline,inclusive"
+msgstr "PostgreSQL point-in-time recovery target is for date-time \"%1\", timeline \"%2\", inclusive \"%3\""
+
+#. (@params{qw(pg_recovery_target_txid pg_recovery_target_timeline pg_recovery_target_inclusive)
+#: lib/Socialtext/Appliance/PgRestore.pm:413
+msgid "backup.postgresql-pitr-target=transaction-id,timeline,inclusive"
+msgstr "PostgreSQL point-in-time recovery target is for transaction \"%1\", timeline \"%2\", inclusive \"%3\""
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:13
+msgid "backup.postgresql-running?"
+msgstr "PostgreSQL running?"
+
+#. (@params{qw(pg_recovery_target_timeline pg_recovery_target_inclusive)
+#: lib/Socialtext/Appliance/PgRestore.pm:416
+msgid "backup.postgresql-will-recover-to-most-recent-commit=timeline,inclusive"
+msgstr "PostgreSQL will recover to the most recent commit, timeline \"%1\", inclusive \"%2\""
+
 msgid "backup.read-this-first=guide-url-1,guide-url-2"
 msgstr "請在進行備份前閱讀 Socialtext 的管理指南<a href=\"%1\">備份</a>文檔. 該文檔可<a href=\"%2\">由此</a>公開獲取."
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:57
+msgid "backup.schedule:"
+msgstr "Backup schedule:"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:44
+msgid "backup.share-name"
+msgstr "Backup Share Name"
+
+#. ($parms)
+#: lib/Socialtext/Appliance/PgRestore.pm:558
+msgid "backup.starting-recovery=options"
+msgstr "starting recovery, options \"%1\""
 
 msgid "backup.status"
 msgstr "備份狀態"
 
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:24
+msgid "backup.status-unavailable-check-error-log"
+msgstr "Backup status unavailable, check logs for errors"
+
 msgid "backup.unwritable"
 msgstr "不可寫入"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:62 ../appliance/libsocialtext-appliance-perl/template/backup.html:88
+msgid "backup.week=count"
+msgstr "%*(%1,week)"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backup.html:83
+msgid "backup.weeks-to-keep-backups:"
+msgstr "Weeks to keep backups:"
 
 msgid "backup.writable"
 msgstr "可寫入"
@@ -3994,7 +4082,11 @@ msgstr "替換"
 
 #: share/plugin/dashboard/template/dashboard_links:25
 msgid "do.revert-dashboard"
-msgstr "恢復為預設..."
+msgstr "Revert to Default..."
+
+#: share/plugin/dashboard/template/dashboard_links:25
+msgid "do.revert-to-default"
+msgstr "恢復為預設…"
 
 #: share/skin/wikiwyg/javascript/jemplate/add-a-block.html:58 share/skin/wikiwyg/javascript/jemplate/add-a-link.html:74 share/skin/wikiwyg/javascript/jemplate/opensocial-setup.html:18 share/skin/wikiwyg/javascript/jemplate/table-create.html:43 share/skin/wikiwyg/javascript/jemplate/table-options.html:53 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:169 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:370 share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:8 share/skin/wikiwyg/javascript/template/widget_edit.tt2:68
 msgid "do.save"
@@ -5106,6 +5198,10 @@ msgstr "重置顯示板發生錯誤"
 msgid "error.dashboard-save-default-layout"
 msgstr "儲存預設布局錯誤。"
 
+#: lib/Socialtext/Appliance/PgRestore.pm:85
+msgid "error.date-must-be-in-iso8601-format"
+msgstr "Date must be in the ISO8601 format YYYY-mm-dd HH:MM:SS(.NNNNNN)[+-]zzzz.  A \"T\" may be used to separate the date and time and the fractional seconds are optional."
+
 #. ($user->username)
 #: lib/Socialtext/Handler/ControlPanel.pm:580
 msgid "error.deactivate=user"
@@ -5432,6 +5528,10 @@ msgstr "對不起，下面的 %1 項電子郵件位址是無效的："
 msgid "error.invalid-email-placement"
 msgstr "新郵件位置必須位於頂部，底部或覆蓋。"
 
+#: lib/Socialtext/Appliance/Model/Backup.pm:127
+msgid "error.invalid-expire-to-folder-parameter"
+msgstr "Invalid expire-to-folder parameter; must be alphanumeric (a-z,0-9) with no special characters except dash, forward-slash & underscore"
+
 #. ($source)
 #: lib/Socialtext/Pluggable/Plugin/People.pm:672
 msgid "error.invalid-field=source"
@@ -5691,6 +5791,30 @@ msgstr "您必須登入才可以瀏覽 %1 工作區。如果您已經擁有帳�
 #: share/skin/s3/javascript/st-lightbox.js:91
 msgid "error.long-page-name=title"
 msgstr "您選擇的新頁面名稱『%1』，在網址編碼之後太長了。"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:109
+msgid "error.maintenance-hour-not-integer"
+msgstr "Maintenance hour isn't an integer"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:110
+msgid "error.maintenance-hour-out-of-range"
+msgstr "Maintenance hour is out of range"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:114
+msgid "error.maintenance-minutes-not-integer"
+msgstr "Maintenance minutes isn't an integer"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:115
+msgid "error.maintenance-minutes-out-of-range"
+msgstr "Maintenance minutes is out of range"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:119
+msgid "error.maintenance-weeks-not-integer"
+msgstr "Maintenance weeks isn't an integer"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:120
+msgid "error.maintenance-weeks-out-of-range"
+msgstr "Maintenance weeks out of range"
 
 #. ($group_info->{role_name})
 #: lib/Socialtext/Pluggable/Plugin/Groups.pm:100 lib/Socialtext/Pluggable/Plugin/Groups.pm:183
@@ -6630,6 +6754,10 @@ msgstr "與時間伺服器 %1 同步時發生錯誤"
 msgid "error.testing-timeserver=new-ts"
 msgstr "測試時間伺服器 %1 時發生錯誤"
 
+#: lib/Socialtext/Appliance/PgRestore.pm:102
+msgid "error.timeline-identifier-must-be-eight-hex-digits-or-latest"
+msgstr "timeline identifier must be eight hexadecimal digits or \"latest\""
+
 #. (template,                        self.selected_visible_type()
 #: share/skin/s3/javascript/lightbox/create_content.js:239
 msgid "error.type-mismatch=template,type"
@@ -6780,6 +6908,14 @@ msgstr "驗証副程式調用外部驗証器"
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3169
 msgid "error.video-url-required"
 msgstr "必需填入影片網址"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:123
+msgid "error.weeks-to-retain-backups-not-integer"
+msgstr "Weeks to retain backups isn't an integer"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:124
+msgid "error.weeks-to-retain-backups-out-of-range"
+msgstr "Weeks to retain backups out of range"
 
 #: lib/Socialtext/Gadgets/Gallery.pm:144
 msgid "error.widget-exists-in-gallery"
@@ -13335,6 +13471,11 @@ msgstr "工具庫"
 #: share/plugin/widgets/template/view/gallery:34
 msgid "widgets.gallery-switch=account:"
 msgstr "這是『%1』賬號的工具庫。前往帳戶："
+
+#. ($email)
+#: lib/Socialtext/Pluggable/Plugin/Widgets.pm:266
+msgid "widgets.importing-profile-for-user=email"
+msgstr "Importing profile for user %1"
 
 msgid "widgets.in-layout-mode-click-save-or-cancel"
 msgstr "您現在位於布局模式。點選<b>儲存</b>以儲存更改，或<b>取消</b>將其舍棄。"

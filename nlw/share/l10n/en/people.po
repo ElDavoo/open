@@ -1,6 +1,16 @@
 # @COPYRIGHT@
+#, fuzzy
 msgid ""
 msgstr ""
+"#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-05-13 06:35-0700\n"
+"Last-Translator: Socialtext i18n team\n"
+"Language-Team: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
 "PO-Revision-Date: 2011-04-18 11:13-0700\n"
 "Last-Translator: Socialtext i18n team\n"
@@ -48,6 +58,10 @@ msgstr "Invite"
 #: share/plugin/people/share/widgets/profile_edit/widget.html:10
 msgid "do.remove"
 msgstr "Remove"
+
+#: share/plugin/people/template/profile_links:21
+msgid "do.revert-to-default"
+msgstr "Revert to Default…"
 
 #: share/plugin/people/share/widgets/profile_tags/widget.js:86
 msgid "error.add-profile-tag"
