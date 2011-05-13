@@ -51,6 +51,10 @@ msgstr "Tags"
 msgid "do.cancel"
 msgstr "Cancel"
 
+#: share/plugin/people/template/profile_links:13
+msgid "do.edit-layout"
+msgstr "Edit Layout"
+
 #: share/plugin/people/template/invite:102
 msgid "do.invite"
 msgstr "Invite"
@@ -122,6 +126,18 @@ msgstr "Unable to show list of Followed people."
 #: share/plugin/people/share/widgets/profile_network/widget.js:18
 msgid "error.show-profile-groups"
 msgstr "Unable to show list of groups."
+
+#: share/plugin/people/share/widgets/mytweets.xml:98
+msgid "error.their-twitter-username-missing"
+msgstr "This user hasn't entered their twitter username"
+
+#: share/plugin/people/share/widgets/mytweets.xml:71
+msgid "error.twitter-feed-protected=user"
+msgstr "@<a href=\"http://www.twitter.com/%1\">%1</a> has a protected twitter feed which cannot be displayed in this widget."
+
+#: share/plugin/people/share/widgets/mytweets.xml:95
+msgid "error.your-twitter-username-missing"
+msgstr "Your twitter username hasn't been added to your profile. Please click \"Edit Profile\" and enter your twitter username."
 
 #. (person_tag)
 #: share/plugin/people/template/data/events/person:6
@@ -365,6 +381,7 @@ msgstr "%*(%1,user)"
 msgid "people.directory"
 msgstr "People Directory"
 
+#: share/plugin/people/template/profile_links:5
 msgid "people.edit-profile"
 msgstr "(Edit)"
 
@@ -409,6 +426,14 @@ msgstr "Search People:"
 #: share/plugin/people/template/lite/profile.html:109 share/plugin/people/template/lite/profile.html:126
 msgid "people.see-all-peers"
 msgstr "(see all)"
+
+#: share/plugin/people/share/widgets/profile/jemplate/profile_information.tt2:19 share/plugin/people/share/widgets/profile/widget.js:221
+msgid "people.show-all"
+msgstr "Show all"
+
+#: share/plugin/people/share/widgets/profile/widget.js:220
+msgid "people.show-less"
+msgstr "Show less"
 
 #. (offset + 1, last, pager.total_entries)
 #: share/plugin/people/template/view/peoplelist:44

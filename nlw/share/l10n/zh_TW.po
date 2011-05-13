@@ -3976,6 +3976,10 @@ msgstr "完成"
 msgid "do.duplicate"
 msgstr "複製"
 
+#: share/plugin/people/template/profile_links:13
+msgid "do.edit-layout"
+msgstr "Edit Layout"
+
 #: share/skin/s3/template/view/listview:21
 msgid "do.export"
 msgstr "匯出"
@@ -6754,9 +6758,17 @@ msgstr "與時間伺服器 %1 同步時發生錯誤"
 msgid "error.testing-timeserver=new-ts"
 msgstr "測試時間伺服器 %1 時發生錯誤"
 
+#: share/plugin/people/share/widgets/mytweets.xml:98
+msgid "error.their-twitter-username-missing"
+msgstr "This user hasn't entered their twitter username"
+
 #: lib/Socialtext/Appliance/PgRestore.pm:102
 msgid "error.timeline-identifier-must-be-eight-hex-digits-or-latest"
 msgstr "timeline identifier must be eight hexadecimal digits or \"latest\""
+
+#: share/plugin/people/share/widgets/mytweets.xml:71
+msgid "error.twitter-feed-protected=user"
+msgstr "@<a href=\"http://www.twitter.com/%1\">%1</a> has a protected twitter feed which cannot be displayed in this widget."
 
 #. (template,                        self.selected_visible_type()
 #: share/skin/s3/javascript/lightbox/create_content.js:239
@@ -6997,6 +7009,10 @@ msgstr "您應該已經收到一封含有認証鏈結的電子郵件。"
 #: share/template/errors/requires_password_change:4
 msgid "error.you-should-have-received-email-with-link-allowing-you-to-do-so"
 msgstr "您應該已經收到一封電子郵件，該郵件含有的鏈結可以讓您如此操作。"
+
+#: share/plugin/people/share/widgets/mytweets.xml:95
+msgid "error.your-twitter-username-missing"
+msgstr "Your twitter username hasn't been added to your profile. Please click \"Edit Profile\" and enter your twitter username."
 
 #. (person_tag)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:6
@@ -10325,6 +10341,14 @@ msgstr "搜尋人員："
 
 msgid "people.see-all-peers"
 msgstr "（檢視所有人）"
+
+#: share/plugin/people/share/widgets/profile/jemplate/profile_information.tt2:19 share/plugin/people/share/widgets/profile/widget.js:221
+msgid "people.show-all"
+msgstr "Show all"
+
+#: share/plugin/people/share/widgets/profile/widget.js:220
+msgid "people.show-less"
+msgstr "Show less"
 
 #. (offset + 1, last, pager.total_entries)
 #: share/plugin/people/template/view/peoplelist:44

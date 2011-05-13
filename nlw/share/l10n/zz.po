@@ -4330,6 +4330,10 @@ msgstr "Zzzz"
 msgid "do.duplicate"
 msgstr "Zzzzzzzzz"
 
+#: share/plugin/people/template/profile_links:13
+msgid "do.edit-layout"
+msgstr "Zzzz Zzzzzz"
+
 #: share/skin/s3/template/view/listview:21
 msgid "do.export"
 msgstr "Zzzzzz"
@@ -7159,9 +7163,17 @@ msgstr "Zzzzz zzzzzzzzzzzzz zzzz zzzzzzzzzz %1"
 msgid "error.testing-timeserver=new-ts"
 msgstr "Zzzzz zzzzzzz zzzzzzzzzz %1"
 
+#: share/plugin/people/share/widgets/mytweets.xml:98
+msgid "error.their-twitter-username-missing"
+msgstr "Zzzz zzzz zzzz'z zzzzzzz zzzzz zzzzzzz zzzzzzzz"
+
 #: lib/Socialtext/Appliance/PgRestore.pm:102
 msgid "error.timeline-identifier-must-be-eight-hex-digits-or-latest"
 msgstr "zzzzzzzz zzzzzzzzzz zzzz zz zzzzz zzzzzzzzzzz zzzzzz zz \"zzzzzz\""
+
+#: share/plugin/people/share/widgets/mytweets.xml:71
+msgid "error.twitter-feed-protected=user"
+msgstr "@<a href=\"http://www.twitter.com/%1\">%1</a> zzz z zzzzzzzzz zzzzzzz zzzz zzzzz zzzzzz zz zzzzzzzzz zz zzzz zzzzzz."
 
 #. (template,                        self.selected_visible_type()
 #: share/skin/s3/javascript/lightbox/create_content.js:239
@@ -7413,6 +7425,10 @@ msgstr "Zzz zzzzzz zzzz zzzzzzzz zz zzzzz zzzz z zzzzzzzzzzzz zzzz."
 #: share/template/errors/requires_password_change:4
 msgid "error.you-should-have-received-email-with-link-allowing-you-to-do-so"
 msgstr "Zzz zzzzzz zzzz zzzzzzzz zz zzzzz zzzz z zzzz zzzzzzzz zzz zz zz zz."
+
+#: share/plugin/people/share/widgets/mytweets.xml:95
+msgid "error.your-twitter-username-missing"
+msgstr "Zzzz zzzzzzz zzzzzzzz zzzz'z zzzz zzzzz zz zzzz zzzzzzz. Zzzzzz zzzzz \"Zzzz Zzzzzzz\" zzz zzzzz zzzz zzzzzzz zzzzzzzz."
 
 #. (person_tag)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:6 share/plugin/people/template/data/events/person:6
@@ -10767,6 +10783,7 @@ msgstr "%*(%1,zzzz)"
 msgid "people.directory"
 msgstr "Zzzzzz Zzzzzzzzz"
 
+#: share/plugin/people/template/profile_links:5
 msgid "people.edit-profile"
 msgstr "(Zzzz)"
 
@@ -10811,6 +10828,14 @@ msgstr "Zzzzzz Zzzzzz:"
 #: share/plugin/people/template/lite/profile.html:109 share/plugin/people/template/lite/profile.html:126
 msgid "people.see-all-peers"
 msgstr "(zzz zzz)"
+
+#: share/plugin/people/share/widgets/profile/jemplate/profile_information.tt2:19 share/plugin/people/share/widgets/profile/widget.js:221
+msgid "people.show-all"
+msgstr "Zzzz zzz"
+
+#: share/plugin/people/share/widgets/profile/widget.js:220
+msgid "people.show-less"
+msgstr "Zzzz zzzz"
 
 #. (offset + 1, last, pager.total_entries)
 #: share/plugin/people/template/view/peoplelist:44
