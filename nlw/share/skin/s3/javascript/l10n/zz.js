@@ -744,7 +744,6 @@
 "do.remove-all":"Zzzzzz Zzz",
 "do.rename":"Zzzzzz",
 "do.replace":"Zzzzzzz",
-"do.revert-dashboard":"Zzzzzz zz Zzzzzzz...",
 "do.revert-to-default":"Zzzzzz zz Zzzzzzz\u2026",
 "do.save":"Zzzz",
 "do.source-view":"Zzzzzz Zzzz",

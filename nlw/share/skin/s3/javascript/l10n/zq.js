@@ -744,7 +744,6 @@
 "do.remove-all":"\u00ABRemove All\u00BB",
 "do.rename":"\u00ABRename\u00BB",
 "do.replace":"\u00ABReplace\u00BB",
-"do.revert-dashboard":"\u00ABRevert to Default...\u00BB",
 "do.revert-to-default":"\u00ABRevert to Default\u2026\u00BB",
 "do.save":"\u00ABSave\u00BB",
 "do.source-view":"\u00ABSource View\u00BB",

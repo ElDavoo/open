@@ -4085,10 +4085,6 @@ msgid "do.replace"
 msgstr "替換"
 
 #: share/plugin/dashboard/template/dashboard_links:25
-msgid "do.revert-dashboard"
-msgstr "Revert to Default..."
-
-#: share/plugin/dashboard/template/dashboard_links:25
 msgid "do.revert-to-default"
 msgstr "恢復為預設…"
 

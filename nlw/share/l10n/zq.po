@@ -150,7 +150,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  dashboard.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-13 06:21-0700\n"
+"PO-Revision-Date: 2011-05-13 06:44-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -4438,11 +4438,7 @@ msgstr "«Rename»"
 msgid "do.replace"
 msgstr "«Replace»"
 
-#: share/plugin/dashboard/template/dashboard_links:25
-msgid "do.revert-dashboard"
-msgstr "«Revert to Default...»"
-
-#: share/plugin/people/template/profile_links:21 share/plugin/groups/template/group_links:24 share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:2
+#: share/plugin/people/template/profile_links:21 share/plugin/groups/template/group_links:24 share/plugin/dashboard/template/dashboard_links:25 share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:2
 msgid "do.revert-to-default"
 msgstr "«Revert to Default…»"
 

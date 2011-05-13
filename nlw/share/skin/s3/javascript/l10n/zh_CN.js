@@ -747,7 +747,6 @@
 "do.remove-all":"\u79FB\u9664\u5168\u90E8",
 "do.rename":"\u91CD\u547D\u540D",
 "do.replace":"\u66FF\u6362",
-"do.revert-dashboard":"Revert to Default...",
 "do.revert-to-default":"\u6062\u590D\u4E3A\u9ED8\u8BA4\u2026",
 "do.save":"\u4FDD\u5B58",
 "do.source-view":"\u6E90\u7801\u67E5\u770B",
