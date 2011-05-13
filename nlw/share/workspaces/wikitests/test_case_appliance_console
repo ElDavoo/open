@@ -38,7 +38,7 @@
 | is_element_present_ok | set_destination |
 | is_text_present_ok | Backup Destination |
 | is_text_present_ok | Backup files can be stored on a Windows shared directory (a SMB/CIFS share). |
-|  is_text_present_ok |  Choosing an "Archive Directory" will store backups inside that sub-directory within the share. |
+| is_text_present_ok | Choosing an "Archive Directory" will store backups inside that sub-directory within the share. |
 | is_text_present_ok | Backup Server name |
 | is_element_present_ok | smbhost |
 | is_text_present_ok | Backup Share Name |
@@ -65,6 +65,33 @@
 | config_is | smbpass | test_pass |
 | config_is | smbshare | test_dir |
 | config_is | smbuser | test_user |
+
+| *Comment* | *Change More Stuff* |  |
+| wait_for_element_visible_ok | //select[@name='weeks'] | 30000 |
+| select_ok | //select[@name='weeks'] | label=manually |
+| is_selected_ok | //select[@name='weeks'] | label=manually |
+| wait_for_element_visible_ok | dow_2 | 30000 |
+| check_ok | dow_2 |  |
+| is_checked_ok | dow_2 |  |
+| wait_for_element_visible_ok | //select[@name='retain_weeks'] | 30000 |
+| select_ok | //select[@name='retain_weeks'] | label=indefinitely |
+| is_selected_ok | //select[@name='retain_weeks'] | label=indefinitely |
+| wait_for_element_visible_ok | //select[@name='hour'] | 30000 |
+| select_ok | //select[@name='hour'] | label=2 |
+| is_selected_ok | //select[@name='hour'] | label=2 |
+| wait_for_element_visible_ok | //select[@name='minutes'] | 30000 |
+| select_ok | //select[@name='minutes'] | label=15 |
+| is_selected_ok | //select[@name='minutes'] | label=15 |
+| wait_for_element_visible_ok | //input[@name='save_schedule'] | 30000 |
+| click_and_wait | //input[@name='save_schedule'] |  |
+
+| *Comment* | *Check Changes* |  |
+| wait_for_element_visible_ok | //select[@name='weeks'] | 30000 |
+| is_selected_ok | //select[@name='weeks'] | label=manually |
+| is_checked_ok | dow_2 |  |
+| is_selected_ok | //select[@name='retain_weeks'] | label=indefinitely |
+| is_selected_ok | //select[@name='hour'] | label=2 |
+| is_selected_ok | //select[@name='minutes'] | label=15 |
 
 | *Comment* | *Report a Problem tab* |  |
 
