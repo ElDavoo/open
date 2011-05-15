@@ -47,9 +47,9 @@ sub gadget_vars {
         my $name = $pref->{name};
 
         # Backwards compat
-        $overrides{"UP_$name"} = $overrides{$name} if $overrides{$name};
+        $overrides{"UP_$name"} = $overrides{$name} if defined $overrides{$name};
 
-        my $overridden = $overrides{"UP_$name"} || next;
+        my $overridden = $overrides{"UP_$name"} // next;
         $pref->{value} = $overridden;
     }
 
