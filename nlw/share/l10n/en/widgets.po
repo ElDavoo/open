@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-16 05:02-0700\n"
+"PO-Revision-Date: 2011-05-16 08:12-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -403,7 +403,7 @@ msgid "description.all_groups"
 msgstr "All Available Groups"
 
 msgid "description.all_tags"
-msgstr "Displays a tag cloud of all tags on people in Socialtext People."
+msgstr "Displays a tag cloud of all tags on members of this group."
 
 #: share/plugin/widgets/share/widgets/blockerbugs/config.yaml:4
 msgid "description.blockerbugs"
@@ -438,6 +438,9 @@ msgstr "Post signals and display activities, including signals and workspace eve
 
 msgid "description.explore_filters"
 msgstr "Filter bookmarks"
+
+msgid "description.group-workspaces"
+msgstr "Lists all of the workspaces this group is a member of."
 
 msgid "description.flickr_google"
 msgstr "Display images from any Flickr account."
@@ -1000,6 +1003,9 @@ msgstr "Flickr Photos - English"
 msgid "title.forbidden_profile"
 msgstr "Profile"
 
+msgid "title.group-workspaces"
+msgstr "Workspaces"
+
 msgid "title.information"
 msgstr "Information"
 
@@ -1114,6 +1120,9 @@ msgstr "Delete"
 #: share/plugin/widgets/template/view/gallery:0 share/plugin/widgets/template/view/gallery:81
 msgid "widget.add-it-now"
 msgstr "Add it now"
+
+msgid "widget.add-now"
+msgstr "Add Now"
 
 #: share/plugin/widgets/template/view/container.setup:148
 msgid "widget.preview"

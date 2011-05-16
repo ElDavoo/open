@@ -45,7 +45,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-16 05:02-0700\n"
+"PO-Revision-Date: 2011-05-16 08:12-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -4026,7 +4026,7 @@ msgstr "«All Available Groups»"
 
 #: share/plugin/people/share/widgets/all_tags/config.yaml:4
 msgid "description.all_tags"
-msgstr "«Displays a tag cloud of all tags on people in Socialtext People.»"
+msgstr "«Displays a tag cloud of all tags on members of this group.»"
 
 #: share/plugin/widgets/share/widgets/blockerbugs/config.yaml:4
 msgid "description.blockerbugs"
@@ -4072,6 +4072,9 @@ msgstr "«Display images from any Flickr account.»"
 #: share/plugin/people/share/widgets/forbidden_profile/config.yaml:5
 msgid "description.forbidden_profile"
 msgstr "«Profile»"
+
+msgid "description.group-workspaces"
+msgstr "«Lists all of the workspaces this group is a member of.»"
 
 #: share/plugin/groups/share/widgets/information/config.yaml:4
 msgid "description.information"
@@ -14064,6 +14067,9 @@ msgstr "«Delete»"
 #: share/plugin/widgets/template/view/gallery:0 share/plugin/widgets/template/view/gallery:81
 msgid "widget.add-it-now"
 msgstr "«Add it now»"
+
+msgid "widget.add-now"
+msgstr "«Add Now»"
 
 #. ($widget->{src})
 #: lib/Socialtext/Pluggable/Plugin/Widgets.pm:313

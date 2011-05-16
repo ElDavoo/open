@@ -3693,7 +3693,7 @@ msgid "description.all_groups"
 msgstr "所有可用群组。"
 
 msgid "description.all_tags"
-msgstr "以标签云方式显示所有人员标签。"
+msgstr "以标签云方式显示群组内的人员标签。"
 
 #: share/plugin/widgets/share/widgets/blockerbugs/config.yaml:4
 msgid "description.blockerbugs"
@@ -3734,6 +3734,9 @@ msgstr "Display images from any Flickr account."
 
 msgid "description.forbidden_profile"
 msgstr "个人档案。"
+
+msgid "description.group-workspaces"
+msgstr "列出所有与此群组相关的工作区。"
 
 msgid "description.information"
 msgstr "群组信息。"
@@ -12497,16 +12500,16 @@ msgid "title.bug_board"
 msgstr "页虫看板"
 
 msgid "title.calc"
-msgstr "LabPixies Calculator"
+msgstr "LabPixies 计算机"
 
 msgid "title.calendar3"
-msgstr "Google Calendar"
+msgstr "谷歌日历"
 
 msgid "title.clock"
-msgstr "Clock & Date"
+msgstr "时钟及日期"
 
 msgid "title.delicious"
-msgstr "My del.icio.us"
+msgstr "我的 del.icio.us 书签"
 
 msgid "title.edit_information"
 msgstr "信息"
@@ -12519,7 +12522,7 @@ msgid "title.explore_filters"
 msgstr "筛选"
 
 msgid "title.flickr_google"
-msgstr "Flickr Photos - English"
+msgstr "Flickr 照片 - 英文"
 
 msgid "title.forbidden_profile"
 msgstr "个人档案"
@@ -12538,7 +12541,7 @@ msgid "title.iterationbugs"
 msgstr "开发周期瑕疵"
 
 msgid "title.msoutlookwidget"
-msgstr "Microsoft Outlook"
+msgstr "微软 Outlook"
 
 msgid "title.my_groups"
 msgstr "我的群组"
@@ -12593,7 +12596,7 @@ msgid "title.rss"
 msgstr "RSS 阅读器"
 
 msgid "title.slide-feeds"
-msgstr "SlideShare Feeds"
+msgstr "SlideShare 简报列表"
 
 #: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:3
 msgid "title.tag_cloud"
@@ -12614,7 +12617,7 @@ msgid "title.testrunner"
 msgstr "测试结果"
 
 msgid "title.todo"
-msgstr "ToDo"
+msgstr "待办事项"
 
 #: share/plugin/widgets/share/widgets/top_content/config.yaml:4
 msgid "title.top_content"
@@ -12629,7 +12632,7 @@ msgid "title.widget_editor"
 msgstr "小工具编辑器"
 
 msgid "title.wikigadget"
-msgstr "Wikipedia"
+msgstr "维基百科"
 
 #: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:3
 msgid "title.workspace_activity"
@@ -12639,7 +12642,7 @@ msgid "title.workspaces"
 msgstr "工作区"
 
 msgid "title.youtubeplayer"
-msgstr "Youtube Video Player"
+msgstr "YouTube 视频播放器"
 
 msgid "twilio.changes-saved"
 msgstr "更改已保存"
@@ -13418,6 +13421,9 @@ msgstr "删除"
 
 #: share/plugin/widgets/template/view/gallery:0 share/plugin/widgets/template/view/gallery:81
 msgid "widget.add-it-now"
+msgstr "现在添加"
+
+msgid "widget.add-now"
 msgstr "现在添加"
 
 #. ($widget->{src})
