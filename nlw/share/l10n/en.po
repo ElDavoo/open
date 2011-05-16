@@ -45,7 +45,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-11 04:27-0700\n"
+"PO-Revision-Date: 2011-05-16 05:02-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -4014,6 +4014,9 @@ msgstr "Tue"
 msgid "date.wed"
 msgstr "Wed"
 
+msgid "description.active_members"
+msgstr "Shows what users are most active."
+
 msgid "description.activities"
 msgstr "Post signals and display activities, including signals and workspace events."
 
@@ -4029,8 +4032,23 @@ msgstr "Displays a tag cloud of all tags on people in Socialtext People."
 msgid "description.blockerbugs"
 msgstr "Display a list of the open blocker bugs."
 
+msgid "description.blognews2"
+msgstr "Tabbed theXblogs RSS Reader. Edit the gadget settings to view between 1 to 15 items. Choose long or short summaries. Customize categories with personalized feeds such as Top Stories, World, Business, Technology, Sports, Entertainment, Politics etc."
+
 msgid "description.bug_board"
 msgstr "Visualize Bugzilla tickets and tagged pages with multiple columns."
+
+msgid "description.calc"
+msgstr "The coolest calculator for your Personalized Homepage! This simple and useful calculator lets you perform most of the basic arithmetic operations. LabPixies also offers a cool selection of skins that make your homepage come alive. Just click the arrow buttons to navigate between them and select your favorite one. Calculate with style!"
+
+msgid "description.calendar3"
+msgstr "Google Calendar (Firefox only. Does not work in Internet Explorer)"
+
+msgid "description.clock"
+msgstr "Adds a nice digital clock to your dashboard. You can choose between different time formats (12/24h), different date formats (English, German and French date format), timezones and enable daylight savings. Until now it is translated into German, French, Croatian and Serbian; more translations will follow."
+
+msgid "description.delicious"
+msgstr "My del.icio.us gadget. Get the del.icio.us hotlist right on your homepage! Browse your bookmarks or see the latest entries from your network. Easily switch from user to user or simply click the my del.cio.us button to return to your data. Get all the relevant information to any website and easily add items to you list."
 
 #: share/plugin/groups/share/widgets/edit_information/config.yaml:4
 msgid "description.edit_information"
@@ -4048,6 +4066,9 @@ msgstr "Post signals and display activities, including signals and workspace eve
 msgid "description.explore_filters"
 msgstr "Filter bookmarks"
 
+msgid "description.flickr_google"
+msgstr "Display images from any Flickr account."
+
 #: share/plugin/people/share/widgets/forbidden_profile/config.yaml:5
 msgid "description.forbidden_profile"
 msgstr "Profile"
@@ -4064,6 +4085,9 @@ msgstr "Display a list of the bugs assigned to an iteration."
 msgid "description.membership"
 msgstr "Edit Group Membership"
 
+msgid "description.msoutlookwidget"
+msgstr "Microsoft Outlook Inbox, Calendar, Tasks, and Contacts"
+
 #: share/plugin/groups/share/widgets/my_groups/config.yaml:4
 msgid "description.my_groups"
 msgstr "My Groups"
@@ -4072,12 +4096,21 @@ msgstr "My Groups"
 msgid "description.my_workspaces"
 msgstr "Lists all of the workspaces you have access to."
 
+msgid "description.mytweets"
+msgstr "Displays your twitter feed"
+
 #: share/plugin/widgets/share/widgets/one_page/config.yaml:5
 msgid "description.one_page"
 msgstr "Displays a single wiki page within a Socialtext Widget."
 
 #: share/plugin/widgets/share/widgets/one_spreadsheet/config.yaml:4
 msgid "description.one_spreadsheet"
+msgstr "Displays a single spreadsheet within a Socialtext Widget."
+
+msgid "description.one_web_page"
+msgstr "Displays a single web page within a Socialtext Widget."
+
+msgid "description.oneimage"
 msgstr "Displays a single spreadsheet within a Socialtext Widget."
 
 #: share/plugin/groups/share/widgets/people/config.yaml:4
@@ -4115,6 +4148,9 @@ msgstr "Displays an RSS feed."
 msgid "description.signals-profile"
 msgstr "Lets a user create signals and display signals from others."
 
+msgid "description.slide-feeds"
+msgstr "Share SlideShare feeds on your dashboard."
+
 #: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:4
 msgid "description.tag_cloud"
 msgstr "Displays a tag cloud of all tags in a particular workspace."
@@ -4134,6 +4170,12 @@ msgstr "Coming Soon"
 msgid "description.testrunner"
 msgstr "Keep an eye on Testrunner results."
 
+msgid "description.todo"
+msgstr "Easily manage and track your daily to-do list. ToDo gadget lets you add your tasks, highlight them in different colors, change their order on the list and strikethrough or delete tasks that are done - everything you need to get things done!"
+
+msgid "description.top_content"
+msgstr "Gives you several views of the activity around the content in your workspaces."
+
 #: share/plugin/widgets/share/widgets/userlist/config.yaml:5
 msgid "description.userlist"
 msgstr "Post signals and display activities, including signals and workspace events."
@@ -4142,6 +4184,9 @@ msgstr "Post signals and display activities, including signals and workspace eve
 msgid "description.widget_editor"
 msgstr "Edit a widget"
 
+msgid "description.wikigadget"
+msgstr "This will search for the keyword in Wikipedia and provide results in a new Window. Edit settings to Choose language."
+
 #: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:4
 msgid "description.workspace_activity"
 msgstr "Show edits"
@@ -4149,6 +4194,9 @@ msgstr "Show edits"
 #: share/plugin/groups/share/widgets/workspaces/config.yaml:4
 msgid "description.workspaces"
 msgstr "Lists all of the workspaces in the current group"
+
+msgid "description.youtubeplayer"
+msgstr "This gadget lets you select, include and play a Youtube video on your dashboard."
 
 #: lib/Socialtext/Handler/ControlPanel.pm:703
 msgid "desktop.2nd-bg-color"
@@ -13067,8 +13115,23 @@ msgstr "All People Tags"
 msgid "title.blockerbugs"
 msgstr "Open Blocker Bugs"
 
+msgid "title.blognews2"
+msgstr "theXblogs™"
+
 msgid "title.bug_board"
-msgstr "Bug Board"
+msgstr "Page/Bug Tracker"
+
+msgid "title.calc"
+msgstr "LabPixies Calculator"
+
+msgid "title.calendar3"
+msgstr "Google Calendar"
+
+msgid "title.clock"
+msgstr "Clock & Date"
+
+msgid "title.delicious"
+msgstr "My del.icio.us"
 
 #: share/plugin/groups/share/widgets/edit_information/config.yaml:3
 msgid "title.edit_information"
@@ -13081,6 +13144,9 @@ msgstr "Membership"
 #: share/plugin/signals/share/widgets/explore_filters/config.yaml:4
 msgid "title.explore_filters"
 msgstr "Filters"
+
+msgid "title.flickr_google"
+msgstr "Flickr Photos - English"
 
 #: share/plugin/people/share/widgets/forbidden_profile/config.yaml:4
 msgid "title.forbidden_profile"
@@ -13100,6 +13166,9 @@ msgstr "Information"
 msgid "title.iterationbugs"
 msgstr "Iteration Bugs"
 
+msgid "title.msoutlookwidget"
+msgstr "Microsoft Outlook"
+
 #: share/plugin/groups/share/widgets/my_groups/config.yaml:3
 msgid "title.my_groups"
 msgstr "My Groups"
@@ -13108,6 +13177,9 @@ msgstr "My Groups"
 msgid "title.my_workspaces"
 msgstr "Workspaces"
 
+msgid "title.mytweets"
+msgstr "My Twitter Feed"
+
 #: share/plugin/widgets/share/widgets/one_page/config.yaml:4
 msgid "title.one_page"
 msgstr "Wiki Page"
@@ -13115,6 +13187,12 @@ msgstr "Wiki Page"
 #: share/plugin/widgets/share/widgets/one_spreadsheet/config.yaml:3
 msgid "title.one_spreadsheet"
 msgstr "Spreadsheet Page"
+
+msgid "title.one_web_page"
+msgstr "Web Page"
+
+msgid "title.oneimage"
+msgstr "Image"
 
 #: share/plugin/groups/share/widgets/people/config.yaml:3
 msgid "title.people"
@@ -13148,6 +13226,9 @@ msgstr "Rest API Devtool"
 msgid "title.rss"
 msgstr "RSS Viewer"
 
+msgid "title.slide-feeds"
+msgstr "SlideShare Feeds"
+
 #: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:3
 msgid "title.tag_cloud"
 msgstr "Workspace Tags"
@@ -13157,7 +13238,7 @@ msgid "title.tagged_pages"
 msgstr "Pages tagged X"
 
 msgid "title.task_board"
-msgstr "Task Board"
+msgstr "Page Tracker"
 
 #: share/plugin/groups/share/widgets/teaser/config.yaml:3
 msgid "title.teaser"
@@ -13166,6 +13247,9 @@ msgstr "Workspaces"
 #: share/plugin/widgets/share/widgets/testrunner/config.yaml:3
 msgid "title.testrunner"
 msgstr "Test Results"
+
+msgid "title.todo"
+msgstr "ToDo"
 
 #: share/plugin/widgets/share/widgets/top_content/config.yaml:4
 msgid "title.top_content"
@@ -13179,6 +13263,9 @@ msgstr "Online Users"
 msgid "title.widget_editor"
 msgstr "Widget Editor"
 
+msgid "title.wikigadget"
+msgstr "Wikipedia"
+
 #: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:3
 msgid "title.workspace_activity"
 msgstr "Report-o-rama!"
@@ -13186,6 +13273,9 @@ msgstr "Report-o-rama!"
 #: share/plugin/groups/share/widgets/workspaces/config.yaml:3
 msgid "title.workspaces"
 msgstr "Workspaces"
+
+msgid "title.youtubeplayer"
+msgstr "Youtube Video Player"
 
 #: lib/Socialtext/Pluggable/Plugin/Twilio.pm:72
 msgid "twilio.changes-saved"

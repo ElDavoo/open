@@ -45,7 +45,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-11 04:27-0700\n"
+"PO-Revision-Date: 2011-05-16 05:02-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -4014,6 +4014,9 @@ msgstr "Zzz"
 msgid "date.wed"
 msgstr "Zzz"
 
+msgid "description.active_members"
+msgstr "Zzzzz zzzz zzzzz zzz zzzz zzzzzz."
+
 msgid "description.activities"
 msgstr "Zzzz zzzzzzz zzz zzzzzzz zzzzzzzzzz, zzzzzzzzz zzzzzzz zzz zzzzzzzzz zzzzzz."
 
@@ -4029,8 +4032,23 @@ msgstr "Zzzzzzzz z zzz zzzzz zz zzz zzzz zz zzzzzz zz Zzzzzzzzzz Zzzzzz."
 msgid "description.blockerbugs"
 msgstr "Zzzzzzz z zzzz zz zzz zzzz zzzzzzz zzzz."
 
+msgid "description.blognews2"
+msgstr "Zzzzzz zzzZzzzzz ZZZ Zzzzzz. Zzzz zzz zzzzzz zzzzzzzz zz zzzz zzzzzzz 1 zz 15 zzzzz. Zzzzzz zzzz zz zzzzz zzzzzzzzz. Zzzzzzzzz zzzzzzzzzz zzzz zzzzzzzzzzzz zzzzz zzzz zz Zzz Zzzzzzz, Zzzzz, Zzzzzzzz, Zzzzzzzzzz, Zzzzzz, Zzzzzzzzzzzzz, Zzzzzzzz zzz."
+
 msgid "description.bug_board"
 msgstr "Zzzzzzzzz Zzzzzzzz zzzzzzz zzz zzzzzz zzzzz zzzz zzzzzzzz zzzzzzz."
+
+msgid "description.calc"
+msgstr "Zzz zzzzzzz zzzzzzzzzz zzz zzzz Zzzzzzzzzzzz Zzzzzzzz! Zzzz zzzzzz zzz zzzzzz zzzzzzzzzz zzzz zzz zzzzzzz zzzz zz zzz zzzzz zzzzzzzzzz zzzzzzzzzz. ZzzZzzzzz zzzz zzzzzz z zzzz zzzzzzzzz zz zzzzz zzzz zzzz zzzz zzzzzzzz zzzz zzzzz. Zzzz zzzzz zzz zzzzz zzzzzzz zz zzzzzzzz zzzzzzz zzzz zzz zzzzzz zzzz zzzzzzzz zzz. Zzzzzzzzz zzzz zzzzz!"
+
+msgid "description.calendar3"
+msgstr "Zzzzzz Zzzzzzzz (Zzzzzzz zzzz. Zzzz zzz zzzz zz Zzzzzzzz Zzzzzzzz)"
+
+msgid "description.clock"
+msgstr "Zzzz z zzzz zzzzzzz zzzzz zz zzzz zzzzzzzzz. Zzz zzz zzzzzz zzzzzzz zzzzzzzzz zzzz zzzzzzz (12/24z), zzzzzzzzz zzzz zzzzzzz (Zzzzzzz, Zzzzzz zzz Zzzzzz zzzz zzzzzz), zzzzzzzzz zzz zzzzzz zzzzzzzz zzzzzzz. Zzzzz zzz zz zz zzzzzzzzzz zzzz Zzzzzz, Zzzzzz, Zzzzzzzz zzz Zzzzzzz; zzzz zzzzzzzzzzzz zzzz zzzzzz."
+
+msgid "description.delicious"
+msgstr "Zz zzz.zzzz.zz zzzzzz. Zzz zzz zzz.zzzz.zz zzzzzzz zzzzz zz zzzz zzzzzzzz! Zzzzzz zzzz zzzzzzzzz zz zzz zzz zzzzzz zzzzzzz zzzz zzzz zzzzzzz. Zzzzzz zzzzzz zzzz zzzz zz zzzz zz zzzzzz zzzzz zzz zz zzz.zzz.zz zzzzzz zz zzzzzz zz zzzz zzzz. Zzz zzz zzz zzzzzzzz zzzzzzzzzzz zz zzz zzzzzzz zzz zzzzzz zzz zzzzz zz zzz zzzz."
 
 #: share/plugin/groups/share/widgets/edit_information/config.yaml:4
 msgid "description.edit_information"
@@ -4048,6 +4066,9 @@ msgstr "Zzzz zzzzzzz zzz zzzzzzz zzzzzzzzzz, zzzzzzzzz zzzzzzz zzz zzzzzzzzz zzz
 msgid "description.explore_filters"
 msgstr "Zzzzzz zzzzzzzzz"
 
+msgid "description.flickr_google"
+msgstr "Zzzzzzz zzzzzz zzzz zzz Zzzzzz zzzzzzz."
+
 #: share/plugin/people/share/widgets/forbidden_profile/config.yaml:5
 msgid "description.forbidden_profile"
 msgstr "Zzzzzzz"
@@ -4064,6 +4085,9 @@ msgstr "Zzzzzzz z zzzz zz zzz zzzz zzzzzzzz zz zz zzzzzzzzz."
 msgid "description.membership"
 msgstr "Zzzz Zzzzz Zzzzzzzzzz"
 
+msgid "description.msoutlookwidget"
+msgstr "Zzzzzzzzz Zzzzzzz Zzzzz, Zzzzzzzz, Zzzzz, zzz Zzzzzzzz"
+
 #: share/plugin/groups/share/widgets/my_groups/config.yaml:4
 msgid "description.my_groups"
 msgstr "Zz Zzzzzz"
@@ -4072,12 +4096,21 @@ msgstr "Zz Zzzzzz"
 msgid "description.my_workspaces"
 msgstr "Zzzzz zzz zz zzz zzzzzzzzzz zzz zzzz zzzzzz zz."
 
+msgid "description.mytweets"
+msgstr "Zzzzzzzz zzzz zzzzzzz zzzz"
+
 #: share/plugin/widgets/share/widgets/one_page/config.yaml:5
 msgid "description.one_page"
 msgstr "Zzzzzzzz z zzzzzz zzzz zzzz zzzzzz z Zzzzzzzzzz Zzzzzz."
 
 #: share/plugin/widgets/share/widgets/one_spreadsheet/config.yaml:4
 msgid "description.one_spreadsheet"
+msgstr "Zzzzzzzz z zzzzzz zzzzzzzzzzz zzzzzz z Zzzzzzzzzz Zzzzzz."
+
+msgid "description.one_web_page"
+msgstr "Zzzzzzzz z zzzzzz zzz zzzz zzzzzz z Zzzzzzzzzz Zzzzzz."
+
+msgid "description.oneimage"
 msgstr "Zzzzzzzz z zzzzzz zzzzzzzzzzz zzzzzz z Zzzzzzzzzz Zzzzzz."
 
 #: share/plugin/groups/share/widgets/people/config.yaml:4
@@ -4115,6 +4148,9 @@ msgstr "Zzzzzzzz zz ZZZ zzzz."
 msgid "description.signals-profile"
 msgstr "Zzzz z zzzz zzzzzz zzzzzzz zzz zzzzzzz zzzzzzz zzzz zzzzzz."
 
+msgid "description.slide-feeds"
+msgstr "Zzzzz ZzzzzZzzzz zzzzz zz zzzz zzzzzzzzz."
+
 #: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:4
 msgid "description.tag_cloud"
 msgstr "Zzzzzzzz z zzz zzzzz zz zzz zzzz zz z zzzzzzzzzz zzzzzzzzz."
@@ -4134,6 +4170,12 @@ msgstr "Zzzzzz Zzzz"
 msgid "description.testrunner"
 msgstr "Zzzz zz zzz zz Zzzzzzzzzz zzzzzzz."
 
+msgid "description.todo"
+msgstr "Zzzzzz zzzzzz zzz zzzzz zzzz zzzzz zz-zz zzzz. ZzZz zzzzzz zzzz zzz zzz zzzz zzzzz, zzzzzzzzz zzzz zz zzzzzzzzz zzzzzz, zzzzzz zzzzz zzzzz zz zzz zzzz zzz zzzzzzzzzzzzz zz zzzzzz zzzzz zzzz zzz zzzz - zzzzzzzzzz zzz zzzz zz zzz zzzzzz zzzz!"
+
+msgid "description.top_content"
+msgstr "Zzzzz zzz zzzzzzz zzzzz zz zzz zzzzzzzz zzzzzz zzz zzzzzzz zz zzzz zzzzzzzzzz."
+
 #: share/plugin/widgets/share/widgets/userlist/config.yaml:5
 msgid "description.userlist"
 msgstr "Zzzz zzzzzzz zzz zzzzzzz zzzzzzzzzz, zzzzzzzzz zzzzzzz zzz zzzzzzzzz zzzzzz."
@@ -4142,6 +4184,9 @@ msgstr "Zzzz zzzzzzz zzz zzzzzzz zzzzzzzzzz, zzzzzzzzz zzzzzzz zzz zzzzzzzzz zzz
 msgid "description.widget_editor"
 msgstr "Zzzz z zzzzzz"
 
+msgid "description.wikigadget"
+msgstr "Zzzz zzzz zzzzzz zzz zzz zzzzzzz zz Zzzzzzzzz zzz zzzzzzz zzzzzzz zz z zzz Zzzzzz. Zzzz zzzzzzzz zz Zzzzzz zzzzzzzz."
+
 #: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:4
 msgid "description.workspace_activity"
 msgstr "Zzzz zzzzz"
@@ -4149,6 +4194,9 @@ msgstr "Zzzz zzzzz"
 #: share/plugin/groups/share/widgets/workspaces/config.yaml:4
 msgid "description.workspaces"
 msgstr "Zzzzz zzz zz zzz zzzzzzzzzz zz zzz zzzzzzz zzzzz"
+
+msgid "description.youtubeplayer"
+msgstr "Zzzz zzzzzz zzzz zzz zzzzzz, zzzzzzz zzz zzzz z Zzzzzzz zzzzz zz zzzz zzzzzzzzz."
 
 #: lib/Socialtext/Handler/ControlPanel.pm:703
 msgid "desktop.2nd-bg-color"
@@ -13067,8 +13115,23 @@ msgstr "Zzz Zzzzzz Zzzz"
 msgid "title.blockerbugs"
 msgstr "Zzzz Zzzzzzz Zzzz"
 
+msgid "title.blognews2"
+msgstr "zzzZzzzzz™"
+
 msgid "title.bug_board"
-msgstr "Zzz Zzzzz"
+msgstr "Zzzz/Zzz Zzzzzzz"
+
+msgid "title.calc"
+msgstr "ZzzZzzzzz Zzzzzzzzzz"
+
+msgid "title.calendar3"
+msgstr "Zzzzzz Zzzzzzzz"
+
+msgid "title.clock"
+msgstr "Zzzzz & Zzzz"
+
+msgid "title.delicious"
+msgstr "Zz zzz.zzzz.zz"
 
 #: share/plugin/groups/share/widgets/edit_information/config.yaml:3
 msgid "title.edit_information"
@@ -13081,6 +13144,9 @@ msgstr "Zzzzzzzzzz"
 #: share/plugin/signals/share/widgets/explore_filters/config.yaml:4
 msgid "title.explore_filters"
 msgstr "Zzzzzzz"
+
+msgid "title.flickr_google"
+msgstr "Zzzzzz Zzzzzz - Zzzzzzz"
 
 #: share/plugin/people/share/widgets/forbidden_profile/config.yaml:4
 msgid "title.forbidden_profile"
@@ -13100,6 +13166,9 @@ msgstr "Zzzzzzzzzzz"
 msgid "title.iterationbugs"
 msgstr "Zzzzzzzzz Zzzz"
 
+msgid "title.msoutlookwidget"
+msgstr "Zzzzzzzzz Zzzzzzz"
+
 #: share/plugin/groups/share/widgets/my_groups/config.yaml:3
 msgid "title.my_groups"
 msgstr "Zz Zzzzzz"
@@ -13108,6 +13177,9 @@ msgstr "Zz Zzzzzz"
 msgid "title.my_workspaces"
 msgstr "Zzzzzzzzzz"
 
+msgid "title.mytweets"
+msgstr "Zz Zzzzzzz Zzzz"
+
 #: share/plugin/widgets/share/widgets/one_page/config.yaml:4
 msgid "title.one_page"
 msgstr "Zzzz Zzzz"
@@ -13115,6 +13187,12 @@ msgstr "Zzzz Zzzz"
 #: share/plugin/widgets/share/widgets/one_spreadsheet/config.yaml:3
 msgid "title.one_spreadsheet"
 msgstr "Zzzzzzzzzzz Zzzz"
+
+msgid "title.one_web_page"
+msgstr "Zzz Zzzz"
+
+msgid "title.oneimage"
+msgstr "Zzzzz"
 
 #: share/plugin/groups/share/widgets/people/config.yaml:3
 msgid "title.people"
@@ -13148,6 +13226,9 @@ msgstr "Zzzz ZZZ Zzzzzzz"
 msgid "title.rss"
 msgstr "ZZZ Zzzzzz"
 
+msgid "title.slide-feeds"
+msgstr "ZzzzzZzzzz Zzzzz"
+
 #: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:3
 msgid "title.tag_cloud"
 msgstr "Zzzzzzzzz Zzzz"
@@ -13157,7 +13238,7 @@ msgid "title.tagged_pages"
 msgstr "Zzzzz zzzzzz Z"
 
 msgid "title.task_board"
-msgstr "Zzzz Zzzzz"
+msgstr "Zzzz Zzzzzzz"
 
 #: share/plugin/groups/share/widgets/teaser/config.yaml:3
 msgid "title.teaser"
@@ -13166,6 +13247,9 @@ msgstr "Zzzzzzzzzz"
 #: share/plugin/widgets/share/widgets/testrunner/config.yaml:3
 msgid "title.testrunner"
 msgstr "Zzzz Zzzzzzz"
+
+msgid "title.todo"
+msgstr "ZzZz"
 
 #: share/plugin/widgets/share/widgets/top_content/config.yaml:4
 msgid "title.top_content"
@@ -13179,6 +13263,9 @@ msgstr "Zzzzzz Zzzzz"
 msgid "title.widget_editor"
 msgstr "Zzzzzz Zzzzzz"
 
+msgid "title.wikigadget"
+msgstr "Zzzzzzzzz"
+
 #: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:3
 msgid "title.workspace_activity"
 msgstr "Zzzzzz-z-zzzz!"
@@ -13186,6 +13273,9 @@ msgstr "Zzzzzz-z-zzzz!"
 #: share/plugin/groups/share/widgets/workspaces/config.yaml:3
 msgid "title.workspaces"
 msgstr "Zzzzzzzzzz"
+
+msgid "title.youtubeplayer"
+msgstr "Zzzzzzz Zzzzz Zzzzzz"
 
 #: lib/Socialtext/Pluggable/Plugin/Twilio.pm:72
 msgid "twilio.changes-saved"

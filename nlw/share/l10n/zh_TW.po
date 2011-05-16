@@ -3607,7 +3607,7 @@ msgstr "顯示時間為 12 小時制或是 24 小時制？"
 
 #: lib/Socialtext/TimeZonePlugin.pm:193
 msgid "date.include-seconds?"
-msgstr "在時間里顯示秒數？"
+msgstr "在時間裡顯示秒數？"
 
 msgid "date.jan"
 msgstr "一月"
@@ -3683,11 +3683,14 @@ msgstr "周二"
 msgid "date.wed"
 msgstr "周三"
 
+msgid "description.active_members"
+msgstr "顯示最活躍的用戶列表。"
+
 msgid "description.activities"
 msgstr "發布訊息及顯示活動，包含訊息與工作區活動。"
 
 msgid "description.all_groups"
-msgstr "所有可用群組"
+msgstr "所有可用群組。"
 
 msgid "description.all_tags"
 msgstr "以標籤雲方式顯示所有人員標籤。"
@@ -3696,95 +3699,134 @@ msgstr "以標籤雲方式顯示所有人員標籤。"
 msgid "description.blockerbugs"
 msgstr "顯示阻滯開發的瑕疵列表。"
 
+msgid "description.blognews2"
+msgstr "Tabbed theXblogs RSS Reader. Edit the gadget settings to view between 1 to 15 items. Choose long or short summaries. Customize categories with personalized feeds such as Top Stories, World, Business, Technology, Sports, Entertainment, Politics etc."
+
 msgid "description.bug_board"
 msgstr "以多欄方式呈現 Bugzilla 事項，以及具有特定標籤的頁面。"
 
+msgid "description.calc"
+msgstr "The coolest calculator for your Personalized Homepage! This simple and useful calculator lets you perform most of the basic arithmetic operations. LabPixies also offers a cool selection of skins that make your homepage come alive. Just click the arrow buttons to navigate between them and select your favorite one. Calculate with style!"
+
+msgid "description.calendar3"
+msgstr "Google Calendar (Firefox only. Does not work in Internet Explorer)"
+
+msgid "description.clock"
+msgstr "Adds a nice digital clock to your dashboard. You can choose between different time formats (12/24h), different date formats (English, German and French date format), timezones and enable daylight savings. Until now it is translated into German, French, Croatian and Serbian; more translations will follow."
+
+msgid "description.delicious"
+msgstr "My del.icio.us gadget. Get the del.icio.us hotlist right on your homepage! Browse your bookmarks or see the latest entries from your network. Easily switch from user to user or simply click the my del.cio.us button to return to your data. Get all the relevant information to any website and easily add items to you list."
+
 msgid "description.edit_information"
-msgstr "編輯群組資訊"
+msgstr "編輯群組資訊。"
 
 msgid "description.edit_people"
-msgstr "編輯群組成員"
+msgstr "編輯群組成員。"
 
 msgid "description.explore"
 msgstr "發布訊息及顯示活動，包含訊息與工作區活動。"
 
 msgid "description.explore_filters"
-msgstr "書籤過濾器"
+msgstr "書籤過濾器。"
+
+msgid "description.flickr_google"
+msgstr "Display images from any Flickr account."
 
 msgid "description.forbidden_profile"
-msgstr "個人檔案"
+msgstr "個人檔案。"
 
 msgid "description.information"
-msgstr "群組資訊"
+msgstr "群組資訊。"
 
 #: share/plugin/widgets/share/widgets/iterationbugs/config.yaml:4
 msgid "description.iterationbugs"
-msgstr "顯示目前開發周期的錯誤列表"
+msgstr "顯示目前開發周期的錯誤列表。"
 
 msgid "description.membership"
-msgstr "編輯群組成員"
+msgstr "編輯群組成員。"
+
+msgid "description.msoutlookwidget"
+msgstr "Microsoft Outlook Inbox, Calendar, Tasks, and Contacts"
 
 msgid "description.my_groups"
-msgstr "我的群組"
+msgstr "我的群組。"
 
 #: share/plugin/widgets/share/widgets/my_workspaces/config.yaml:5
 msgid "description.my_workspaces"
-msgstr "您所有的工作區"
+msgstr "您所有的工作區。"
+
+msgid "description.mytweets"
+msgstr "顯示您的的 Twitter 訊息列表。"
 
 #: share/plugin/widgets/share/widgets/one_page/config.yaml:5
 msgid "description.one_page"
-msgstr "在小工具里顯示一個共筆頁面。"
+msgstr "在小工具裡顯示一個共筆頁面。"
 
 #: share/plugin/widgets/share/widgets/one_spreadsheet/config.yaml:4
 msgid "description.one_spreadsheet"
-msgstr "在小工具里顯示一個試算表。"
+msgstr "在小工具裡顯示一個試算表。"
+
+msgid "description.one_web_page"
+msgstr "在小工具內顯示一份網頁。"
+
+msgid "description.oneimage"
+msgstr "在小工具內顯示一份試算表。"
 
 msgid "description.people"
 msgstr "群組內的成員。"
 
 msgid "description.profile"
-msgstr "個人檔案"
+msgstr "個人檔案。"
 
 msgid "description.profile_activities"
-msgstr "活動"
+msgstr "活動。"
 
 msgid "description.profile_edit"
-msgstr "編輯個人檔案"
+msgstr "編輯個人檔案。"
 
 msgid "description.profile_network"
-msgstr "與您有關聯的人"
+msgstr "與您有關聯的人。"
 
 msgid "description.profile_tags"
-msgstr "標籤"
+msgstr "標籤。"
 
 #: share/plugin/widgets/share/widgets/rest_api/config.yaml:4
 msgid "description.rest_api"
-msgstr "REST API 開發工具"
+msgstr "REST API 開發工具。"
 
 #: share/plugin/widgets/share/widgets/rss/config.yaml:4
 msgid "description.rss"
-msgstr "訂閱一個 RSS 來源"
+msgstr "訂閱一個 RSS 來源。"
 
 msgid "description.signals-profile"
-msgstr "建立及顯示訊息"
+msgstr "建立及顯示訊息。"
+
+msgid "description.slide-feeds"
+msgstr "Share SlideShare feeds on your dashboard."
 
 #: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:4
 msgid "description.tag_cloud"
-msgstr "以標籤雲方式顯示特定工作區中的頁面標籤。"
+msgstr "以標籤雲方式，顯示特定工作區中的頁面標籤。"
 
 #: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:4
 msgid "description.tagged_pages"
-msgstr "顯示具特定標籤的頁面列表"
+msgstr "顯示具特定標籤的頁面列表。"
 
 msgid "description.task_board"
 msgstr "以多欄方式呈現具有特定標籤的頁面。"
 
 msgid "description.teaser"
-msgstr "即將推出"
+msgstr "即將推出。"
 
 #: share/plugin/widgets/share/widgets/testrunner/config.yaml:4
 msgid "description.testrunner"
-msgstr "測試運行現況"
+msgstr "測試運行現況。"
+
+msgid "description.todo"
+msgstr "Easily manage and track your daily to-do list. ToDo gadget lets you add your tasks, highlight them in different colors, change their order on the list and strikethrough or delete tasks that are done - everything you need to get things done!"
+
+msgid "description.top_content"
+msgstr "顯示您工作區內的各項活動狀態。"
 
 #: share/plugin/widgets/share/widgets/userlist/config.yaml:5
 msgid "description.userlist"
@@ -3793,12 +3835,18 @@ msgstr "發布訊息及顯示活動，包含訊息與工作區活動。"
 msgid "description.widget_editor"
 msgstr "編輯小工具"
 
+msgid "description.wikigadget"
+msgstr "This will search for the keyword in Wikipedia and provide results in a new Window. Edit settings to Choose language."
+
 #: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:4
 msgid "description.workspace_activity"
-msgstr "顯示編輯活動"
+msgstr "顯示編輯活動。"
 
 msgid "description.workspaces"
-msgstr "列出群組中的所有工作區"
+msgstr "列出群組中的所有工作區。"
+
+msgid "description.youtubeplayer"
+msgstr "This gadget lets you select, include and play a Youtube video on your dashboard."
 
 msgid "desktop.2nd-bg-color"
 msgstr "次要背景顏色"
@@ -4390,12 +4438,12 @@ msgstr "請選擇新的 Socialtext 密碼"
 
 #: share/template/email/password-change.txt:7
 msgid "email.click-to-choose-password"
-msgstr "當您點選該鏈結後，您將被帶往一個頁面，在那里您可以選擇新密碼。"
+msgstr "當您點選該鏈結後，您將被帶往一個頁面，在那裡您可以選擇新密碼。"
 
 #. (escaped_str1)
 #: share/template/email/password-change.html:16
 msgid "email.click-to-choose-password=uri"
-msgstr "當您<a href=\"%1\">點選該鏈結</a>後，您將被帶往一個頁面，在那里您可以選擇新密碼。"
+msgstr "當您<a href=\"%1\">點選該鏈結</a>後，您將被帶往一個頁面，在那裡您可以選擇新密碼。"
 
 #. (uri)
 #: share/template/email/free50/account-invitation-body.html:11
@@ -4667,7 +4715,7 @@ msgstr "只有頁面名稱和鏈結"
 
 #: share/skin/s3/template/element/settings/workspaces_settings_features_section:8
 msgid "email.position?"
-msgstr "如果已經有此標題的頁面存在，郵件正文應該加在哪里？"
+msgstr "如果已經有此標題的頁面存在，郵件正文應該加在哪裡？"
 
 #. ($sender->best_full_name)
 #: lib/Socialtext/Job/SignalDMNotify.pm:55
@@ -8043,7 +8091,7 @@ msgstr "標題："
 
 #: share/plugin/groups/share/javascript/lightbox/create-group.tt2:24
 msgid "groups.toggling-self-join-and-private"
-msgstr "將私密群組轉變為自行加入群組後，群組帳戶里的任何用戶都可以加入群組，之後還可以選擇邀請其他人加入。將自行加入群組轉變為私密群組後，該群組將會在群組名單中消失，只能由群組管理員邀請加入。"
+msgstr "將私密群組轉變為自行加入群組後，群組帳戶裡的任何用戶都可以加入群組，之後還可以選擇邀請其他人加入。將自行加入群組轉變為私密群組後，該群組將會在群組名單中消失，只能由群組管理員邀請加入。"
 
 #: share/plugin/groups/share/widgets/membership/jemplate/list.tt2:60
 msgid "groups.undo"
@@ -8640,7 +8688,7 @@ msgstr "網頁"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu:12
 msgid "insert.link2-section"
-msgstr "本頁里的段落"
+msgstr "本頁裡的段落"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/insert_menu:50
 msgid "insert.name-and-date"
@@ -12442,8 +12490,23 @@ msgstr "所有人員標籤"
 msgid "title.blockerbugs"
 msgstr "阻滯開發瑕疵"
 
+msgid "title.blognews2"
+msgstr "theXblogs™"
+
 msgid "title.bug_board"
-msgstr "蟲板"
+msgstr "頁蟲看板"
+
+msgid "title.calc"
+msgstr "LabPixies Calculator"
+
+msgid "title.calendar3"
+msgstr "Google Calendar"
+
+msgid "title.clock"
+msgstr "Clock & Date"
+
+msgid "title.delicious"
+msgstr "My del.icio.us"
 
 msgid "title.edit_information"
 msgstr "資訊"
@@ -12454,6 +12517,9 @@ msgstr "成員"
 #: share/plugin/signals/share/widgets/explore_filters/config.yaml:4
 msgid "title.explore_filters"
 msgstr "篩選"
+
+msgid "title.flickr_google"
+msgstr "Flickr Photos - English"
 
 msgid "title.forbidden_profile"
 msgstr "個人檔案"
@@ -12471,12 +12537,18 @@ msgstr "資訊"
 msgid "title.iterationbugs"
 msgstr "開發周期瑕疵"
 
+msgid "title.msoutlookwidget"
+msgstr "Microsoft Outlook"
+
 msgid "title.my_groups"
 msgstr "我的群組"
 
 #: share/plugin/widgets/share/widgets/my_workspaces/config.yaml:4
 msgid "title.my_workspaces"
 msgstr "工作區"
+
+msgid "title.mytweets"
+msgstr "我的 Twitter 訊息"
 
 #: share/plugin/widgets/share/widgets/one_page/config.yaml:4
 msgid "title.one_page"
@@ -12485,6 +12557,12 @@ msgstr "共筆頁面"
 #: share/plugin/widgets/share/widgets/one_spreadsheet/config.yaml:3
 msgid "title.one_spreadsheet"
 msgstr "試算表頁面"
+
+msgid "title.one_web_page"
+msgstr "網頁"
+
+msgid "title.oneimage"
+msgstr "圖片"
 
 #: share/plugin/groups/share/widgets/people/config.yaml:3
 msgid "title.people"
@@ -12514,6 +12592,9 @@ msgstr "REST API 開發工具"
 msgid "title.rss"
 msgstr "RSS 閱讀器"
 
+msgid "title.slide-feeds"
+msgstr "SlideShare Feeds"
+
 #: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:3
 msgid "title.tag_cloud"
 msgstr "工作區標籤"
@@ -12523,7 +12604,7 @@ msgid "title.tagged_pages"
 msgstr "具有某標籤的頁面"
 
 msgid "title.task_board"
-msgstr "看板"
+msgstr "頁面看板"
 
 msgid "title.teaser"
 msgstr "工作區"
@@ -12531,6 +12612,9 @@ msgstr "工作區"
 #: share/plugin/widgets/share/widgets/testrunner/config.yaml:3
 msgid "title.testrunner"
 msgstr "測試結果"
+
+msgid "title.todo"
+msgstr "ToDo"
 
 #: share/plugin/widgets/share/widgets/top_content/config.yaml:4
 msgid "title.top_content"
@@ -12544,12 +12628,18 @@ msgstr "在線用戶"
 msgid "title.widget_editor"
 msgstr "小工具編輯器"
 
+msgid "title.wikigadget"
+msgstr "Wikipedia"
+
 #: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:3
 msgid "title.workspace_activity"
 msgstr "報出個未來"
 
 msgid "title.workspaces"
 msgstr "工作區"
+
+msgid "title.youtubeplayer"
+msgstr "Youtube Video Player"
 
 msgid "twilio.changes-saved"
 msgstr "更改已儲存"
