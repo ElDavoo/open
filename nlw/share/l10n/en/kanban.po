@@ -1,0 +1,46 @@
+# @COPYRIGHT@
+msgid ""
+msgstr ""
+"Project-Id-Version: Socialtext i18n\n"
+"PO-Revision-Date: 2011-05-16 09:51-0700\n"
+"Language-Team: Socialtext i18n team\n"
+"Last-Translator: Socialtext i18n team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: share/plugin/kanban/share/widgets/task_board/widget.html:100 share/plugin/kanban/share/widgets/task_board/widget.html:136 share/plugin/kanban/share/widgets/task_board/widget.html:168 share/plugin/kanban/share/widgets/task_board/widget.html:70
+msgid "kanban.optional"
+msgstr "(optional)"
+
+#: share/plugin/kanban/share/widgets/task_board/widget.html:168
+msgid "kanban.advanced"
+msgstr "Advanced"
+
+#: share/plugin/kanban/share/widgets/task_board/widget.html:32
+msgid "kanban.basics"
+msgstr "Basics"
+
+#: share/plugin/kanban/share/widgets/task_board/widget.html:26
+msgid "kanban.cancel"
+msgstr "Cancel"
+
+#: share/plugin/kanban/share/widgets/task_board/widget.html:38
+msgid "kanban.columns"
+msgstr "Columns"
+
+#: share/plugin/kanban/share/widgets/task_board/widget.html:70
+msgid "kanban.page-filtering"
+msgstr "Page Filtering"
+
+#: share/plugin/kanban/share/widgets/task_board/widget.html:177 share/plugin/kanban/share/widgets/task_board/widget.html:26
+msgid "kanban.save"
+msgstr "Save"
+
+#: share/plugin/kanban/share/widgets/task_board/widget.html:100
+msgid "kanban.item-background"
+msgstr "Item Background"
+
+#: share/plugin/kanban/share/widgets/task_board/widget.html:136
+msgid "kanban.item-notes"
+msgstr "Item Notes"

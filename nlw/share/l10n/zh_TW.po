@@ -9169,6 +9169,42 @@ msgstr "作業總數"
 msgid "job.type"
 msgstr "作業類型"
 
+#: share/plugin/kanban/share/widgets/task_board/widget.html:168
+msgid "kanban.advanced"
+msgstr "進階設定"
+
+#: share/plugin/kanban/share/widgets/task_board/widget.html:32
+msgid "kanban.basics"
+msgstr "基本設定"
+
+#: share/plugin/kanban/share/widgets/task_board/widget.html:26
+msgid "kanban.cancel"
+msgstr "取消"
+
+#: share/plugin/kanban/share/widgets/task_board/widget.html:38
+msgid "kanban.columns"
+msgstr "欄位"
+
+#: share/plugin/kanban/share/widgets/task_board/widget.html:100
+msgid "kanban.item-background"
+msgstr "項目背景色"
+
+#: share/plugin/kanban/share/widgets/task_board/widget.html:136
+msgid "kanban.item-notes"
+msgstr "項目標注"
+
+#: share/plugin/kanban/share/widgets/task_board/widget.html:100 share/plugin/kanban/share/widgets/task_board/widget.html:136 share/plugin/kanban/share/widgets/task_board/widget.html:168 share/plugin/kanban/share/widgets/task_board/widget.html:70
+msgid "kanban.optional"
+msgstr "（非必填）"
+
+#: share/plugin/kanban/share/widgets/task_board/widget.html:70
+msgid "kanban.page-filtering"
+msgstr "篩選頁面"
+
+#: share/plugin/kanban/share/widgets/task_board/widget.html:177 share/plugin/kanban/share/widgets/task_board/widget.html:26
+msgid "kanban.save"
+msgstr "儲存"
+
 #. ($user->username, $new_locale)
 #: lib/Socialtext/CLI.pm:1895
 msgid "lang.changed=user,locale"
