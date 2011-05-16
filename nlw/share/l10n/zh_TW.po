@@ -3700,22 +3700,22 @@ msgid "description.blockerbugs"
 msgstr "顯示阻滯開發的瑕疵列表。"
 
 msgid "description.blognews2"
-msgstr "Tabbed theXblogs RSS Reader. Edit the gadget settings to view between 1 to 15 items. Choose long or short summaries. Customize categories with personalized feeds such as Top Stories, World, Business, Technology, Sports, Entertainment, Politics etc."
+msgstr "分頁 theXblogs RSS 閱讀器。編輯小工具設定，以查看最多 1 至 15 項。可選擇長或短的摘要。個性化定制消息來源，包含焦點新聞，世界，商業，科技，體育，娛樂，政治等等。"
 
 msgid "description.bug_board"
 msgstr "以多欄方式呈現 Bugzilla 事項，以及具有特定標籤的頁面。"
 
 msgid "description.calc"
-msgstr "The coolest calculator for your Personalized Homepage! This simple and useful calculator lets you perform most of the basic arithmetic operations. LabPixies also offers a cool selection of skins that make your homepage come alive. Just click the arrow buttons to navigate between them and select your favorite one. Calculate with style!"
+msgstr "為您的個性化主頁上最酷的計算機！這種簡單實用的計算機，您可以執行絕大多數的基本算術運算。LabPixies 還提供了各式主題，使您的首頁栩栩如生。只要按一下箭頭按鈕，就能從中選擇您最喜歡的主題。酷吧！"
 
 msgid "description.calendar3"
-msgstr "Google Calendar (Firefox only. Does not work in Internet Explorer)"
+msgstr "谷歌日歷（僅限 Firefox 瀏覽器。無法在 Internet Explorer 中使用。）"
 
 msgid "description.clock"
-msgstr "Adds a nice digital clock to your dashboard. You can choose between different time formats (12/24h), different date formats (English, German and French date format), timezones and enable daylight savings. Until now it is translated into German, French, Croatian and Serbian; more translations will follow."
+msgstr "不錯的數字時鐘。您可以選擇不同的時間格式（12/24h），不同的日期格式（英文，德文和法文），時區及啟用夏令時間。"
 
 msgid "description.delicious"
-msgstr "My del.icio.us gadget. Get the del.icio.us hotlist right on your homepage! Browse your bookmarks or see the latest entries from your network. Easily switch from user to user or simply click the my del.cio.us button to return to your data. Get all the relevant information to any website and easily add items to you list."
+msgstr "我的 del.icio.us 小工具。在主頁上顯示 del.icio.us 熱門網站！瀏覽您的書籤或從您的人際網路上取得最新連結。輕鬆在用戶之間切換，只需點選『我的 del.cio.us』按鈕即可返回到您的書籤。獲取所有網站的相關資訊，並輕鬆地將項目新增到您的列表。"
 
 msgid "description.edit_information"
 msgstr "編輯群組資訊。"
@@ -3730,7 +3730,7 @@ msgid "description.explore_filters"
 msgstr "書籤過濾器。"
 
 msgid "description.flickr_google"
-msgstr "Display images from any Flickr account."
+msgstr "顯示任何 Flickr 帳戶裡的圖像。"
 
 msgid "description.forbidden_profile"
 msgstr "個人檔案。"
@@ -3749,7 +3749,7 @@ msgid "description.membership"
 msgstr "編輯群組成員。"
 
 msgid "description.msoutlookwidget"
-msgstr "Microsoft Outlook Inbox, Calendar, Tasks, and Contacts"
+msgstr "Microsoft Outlook 收件箱，日歷，任務和聯絡人。"
 
 msgid "description.my_groups"
 msgstr "我的群組。"
@@ -3805,7 +3805,7 @@ msgid "description.signals-profile"
 msgstr "建立及顯示訊息。"
 
 msgid "description.slide-feeds"
-msgstr "Share SlideShare feeds on your dashboard."
+msgstr "分享您的 SlideShare 投影片。"
 
 #: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:4
 msgid "description.tag_cloud"
@@ -3826,7 +3826,7 @@ msgid "description.testrunner"
 msgstr "測試運行現況。"
 
 msgid "description.todo"
-msgstr "Easily manage and track your daily to-do list. ToDo gadget lets you add your tasks, highlight them in different colors, change their order on the list and strikethrough or delete tasks that are done - everything you need to get things done!"
+msgstr "輕鬆管理和跟蹤您的每日待辦事項。您可以新增您的任務，以多種顏色顯示，更改順序，並且刪除完成的任務 - 讓您心想事成！"
 
 msgid "description.top_content"
 msgstr "顯示您工作區內的各項活動狀態。"
@@ -3839,7 +3839,7 @@ msgid "description.widget_editor"
 msgstr "編輯小工具"
 
 msgid "description.wikigadget"
-msgstr "This will search for the keyword in Wikipedia and provide results in a new Window. Edit settings to Choose language."
+msgstr "在維基百科搜尋關鍵字，並將結果顯示在新的視窗。可修改設定來選擇語言。"
 
 #: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:4
 msgid "description.workspace_activity"
@@ -3849,7 +3849,7 @@ msgid "description.workspaces"
 msgstr "列出群組中的所有工作區。"
 
 msgid "description.youtubeplayer"
-msgstr "This gadget lets you select, include and play a Youtube video on your dashboard."
+msgstr "播放一段 YouTube 影片。"
 
 msgid "desktop.2nd-bg-color"
 msgstr "次要背景顏色"
