@@ -3767,10 +3767,10 @@ msgid "description.one_spreadsheet"
 msgstr "在小工具裡顯示一個試算表。"
 
 msgid "description.one_web_page"
-msgstr "在小工具內顯示一份網頁。"
+msgstr "在小工具裡顯示一份網頁。"
 
 msgid "description.oneimage"
-msgstr "在小工具內顯示一份試算表。"
+msgstr "在小工具裡顯示一張圖片。"
 
 msgid "description.people"
 msgstr "群組內的成員。"

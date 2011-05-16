@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-16 05:04-0700\n"
+"PO-Revision-Date: 2011-05-16 05:11-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -454,10 +454,10 @@ msgid "description.one_spreadsheet"
 msgstr "在小工具里显示一个电子表格。"
 
 msgid "description.one_web_page"
-msgstr "在小工具内显示一份网页。"
+msgstr "在小工具里显示一份网页。"
 
 msgid "description.oneimage"
-msgstr "在小工具内显示一份电子表格。"
+msgstr "在小工具里显示一张图片。"
 
 msgid "description.people"
 msgstr "群组内的成员。"
