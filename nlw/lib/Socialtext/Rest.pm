@@ -127,6 +127,7 @@ sub _initialize {
     $self->rest($rest);
     $self->params($params) if ($params);
     $self->workspace($self->_new_workspace);
+    $self->main; # Initializes loc_lang()
 }
 
 sub _new_workspace {
