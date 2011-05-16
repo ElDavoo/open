@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-04-27 14:17+0800\n"
+"PO-Revision-Date: 2011-05-15 20:59-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -916,7 +916,7 @@ msgid "title.blockerbugs"
 msgstr "阻滞开发瑕疵"
 
 msgid "title.bug_board"
-msgstr "虫板"
+msgstr "页虫看板"
 
 msgid "title.edit_information"
 msgstr "信息"
@@ -978,7 +978,7 @@ msgid "title.tagged_pages"
 msgstr "具有某标签的页面"
 
 msgid "title.task_board"
-msgstr "看板"
+msgstr "页面看板"
 
 msgid "title.teaser"
 msgstr "工作区"
