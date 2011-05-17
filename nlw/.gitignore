@@ -647,3 +647,4 @@ t/ConsoleTestUtils.pm
 t/workspace-usage.t
 t/health.t
 t/searchdatapoint.t
+t/proc-mdstat
