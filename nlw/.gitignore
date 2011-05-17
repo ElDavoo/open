@@ -629,3 +629,4 @@ t/Socialtext/Pluggable/Plugin/People.t
 t/Socialtext/People/profile-account.t
 lib/Socialtext/Pluggable/Plugin/Kanban.pm
 t/users.txt
+t/configurator.t
