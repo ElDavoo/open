@@ -115,7 +115,7 @@
 | wait_for_element_visible_ok | //a[contains(@id,'gallery-widget-Cheeky')] | 30000 |
 | click_and_wait | //a[contains(@id,'gallery-widget-Cheeky')] |  |
 | wait_for_element_visible_ok | link=Add Widget | 30000 |
-| st-name-widget | 1 | cheeky_quote |
+| st-name-widget | 5 | cheeky_quote |
 | st-widget-title-like | cheeky_quote | Cheeky Quotes |
 
 | *Comment* | Test Case: Upload Update Gallery Widgets add a Boss Spy |  |
@@ -123,10 +123,11 @@
 | wait_for_element_visible_ok | //a[@id='gallery-widget-Boss Spy'] | 30000 |
 | click_and_wait | //a[@id='gallery-widget-Boss Spy'] |  |
 | wait_for_element_visible_ok | link=Add Widget | 30000 |
-| st-name-widget | 1 | boss_spy |
+| st-name-widget | 5 | boss_spy |
 | st-widget-title-like | boss_spy | Boss Spy |
 
 | *Comment* | Test Case: Upload Update Gallery Widgets TEARDOWN |  |
-| *Comment* | Test Case: Upload Update Gallery Widgets. No teardown, throw away the account and the user. |  |
+| delete-account | %%acct%% | Recklessly deleting |
+| st-admin | deactivate-user --email %%mwgmail%% | been deactivated |
 
 | *Comment* | Test Case: Upload Update Gallery Widgets COMPLETED |
