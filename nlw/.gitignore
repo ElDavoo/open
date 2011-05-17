@@ -642,3 +642,4 @@ t/summarize-perf.t
 t/st-admin.pl
 t/hosts
 t/summarize-search.t
+t/fake-sudo.pl
