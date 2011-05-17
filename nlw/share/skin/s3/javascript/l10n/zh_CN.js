@@ -1979,7 +1979,7 @@
 "title.blockerbugs":"\u963B\u6EDE\u5F00\u53D1\u7455\u75B5",
 "title.blognews2":"theXblogs\u2122",
 "title.bug_board":"\u9875\u866B\u770B\u677F",
-"title.calc":"LabPixies \u8BA1\u7B97\u673A",
+"title.calc":"LabPixies \u8BA1\u7B97\u5668",
 "title.calendar3":"\u8C37\u6B4C\u65E5\u5386",
 "title.clock":"\u65F6\u949F\u53CA\u65E5\u671F",
 "title.delicious":"\u6211\u7684 del.icio.us \u4E66\u7B7E",

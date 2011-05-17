@@ -12614,7 +12614,7 @@ msgid "title.bug_board"
 msgstr "页虫看板"
 
 msgid "title.calc"
-msgstr "LabPixies 计算机"
+msgstr "LabPixies 计算器"
 
 msgid "title.calendar3"
 msgstr "谷歌日历"

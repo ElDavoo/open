@@ -3709,7 +3709,7 @@ msgid "description.calc"
 msgstr "為您的個性化主頁上最酷的計算機！這種簡單實用的計算機，您可以執行絕大多數的基本算術運算。LabPixies 還提供了各式主題，使您的首頁栩栩如生。只要按一下箭頭按鈕，就能從中選擇您最喜歡的主題。酷吧！"
 
 msgid "description.calendar3"
-msgstr "谷歌日歷（僅限 Firefox 瀏覽器。無法在 Internet Explorer 中使用。）"
+msgstr "谷歌日曆（僅限 Firefox 瀏覽器。無法在 Internet Explorer 中使用。）"
 
 msgid "description.clock"
 msgstr "不錯的數字時鐘。您可以選擇不同的時間格式（12/24h），不同的日期格式（英文，德文和法文），時區及啟用夏令時間。"
@@ -3749,7 +3749,7 @@ msgid "description.membership"
 msgstr "編輯群組成員。"
 
 msgid "description.msoutlookwidget"
-msgstr "Microsoft Outlook 收件箱，日歷，任務和聯絡人。"
+msgstr "Microsoft Outlook 收件箱，日曆，任務和聯絡人。"
 
 msgid "description.my_groups"
 msgstr "我的群組。"
@@ -12614,10 +12614,10 @@ msgid "title.bug_board"
 msgstr "頁蟲看板"
 
 msgid "title.calc"
-msgstr "LabPixies 電腦"
+msgstr "LabPixies 計算機"
 
 msgid "title.calendar3"
-msgstr "谷歌日歷"
+msgstr "谷歌日曆"
 
 msgid "title.clock"
 msgstr "時鐘及日期"
