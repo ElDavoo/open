@@ -650,3 +650,4 @@ t/searchdatapoint.t
 t/proc-mdstat
 t/ConsoleTestEnv.pm
 t/test-pgpitr.pl
+t/perfdatapoint.t
