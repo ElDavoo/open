@@ -8,6 +8,7 @@ use Socialtext::l10n qw(loc __);
 use Socialtext::Formatter::Phrase ();
 use Socialtext::String ();
 use Socialtext::Paths ();
+use Socialtext::JSON qw( encode_json decode_json_utf8 );
 use Encode ();
 
 const class_id    => 'widget';
@@ -63,8 +64,16 @@ sub gadget_vars {
     $width .= "px" if $width =~ /^\d+$/;
 
     my $content_type = $renderer->content_type;
+
+    # Render the preferences so __('') in options localizes correctly.
+    my $rendered_vars = decode_json_utf8(
+        $renderer->render(
+            encode_json($gadget->template_vars)
+        )
+    ) || {};
+
     return {
-        %{$gadget->template_vars},
+        %$rendered_vars,
         instance_id => $overrides{instance_id},
         content_type => $content_type,
         title => $overrides{__title__} || $renderer->render($gadget->title),
