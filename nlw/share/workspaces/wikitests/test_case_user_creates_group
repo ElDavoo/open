@@ -1,5 +1,7 @@
+
 | *Comment* | Test Case: User Creates Group |
 | *Comment* | Avatar will be uploaded from %%wikitest_client_files%% |
+
 
 * Fixture: SocialWidgets
 
@@ -58,7 +60,7 @@
 | wait_for_element_visible_ok | reset | 30000 |
 | type_ok | name | %%groupname%% |
 | type_ok | description | Russian letters really suck and mess with everything |
-| type_ok | upload | %%wikitest_client_files%%wikitest.jpg |
+| type_ok | upload | %%wikitest_files%%wikitest.jpg |
 | include | [Test Case: User Creates Group Image Uploaded] |  |
 | select-frame | relative=parent |  |
 

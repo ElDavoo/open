@@ -27,7 +27,7 @@
 | wait_for_element_visible_ok | link=Add Widget |  |
 | wait_for_element_visible_ok | link=Save... |  |
 | wait_for_element_visible_ok | link=Cancel |  |
-| wait_for_element_visible_ok | link=Revert to Default... |  |
+| wait_for_element_visible_ok | //a[contains(text(),'Revert to Default')] |  |
 
 | *Comment* | Test Case: Administer Dashboards - Cancel |  |
 | click_and_wait | link=Cancel |  |
@@ -43,11 +43,11 @@
 
 | *Comment* | Test Case: Administer Dashboards - Test for RSS Viewer, then remove it |  |
 | wait_for_text_present_ok | Enterprise Social Software Blog | 30000 |
-| st-name-widget | 1 | rssv |
+| st-name-widget | 5 | rssv |
 | st-widget-title-like | rssv | Enterprise Social Software Blog |
 | text_like | Push to all dashboards |  |
-| wait_for_element_visible_ok | //a[contains(@class,'close')] | 30000 |
-| click_ok | //a[contains(@class,'close')] |  |
+| wait_for_element_visible_ok | xpath=(//a[contains(@class,'close')])[5] | 30000 |
+| click_ok | xpath=(//a[contains(@class,'close')])[5] |  |
 
 | *Comment* | Test Case: Administer Dashboards - Add Wikipedia |  |
 | open_ok | /?dashboard | 60000 |
@@ -60,12 +60,12 @@
 
 | *Comment* | Test Case: Administer Dashboards - Test for Wikipedia |  |
 | wait_for_text_present_ok | Wikipedia | 30000 |
-| st-name-widget | 1 | wikipedia |
+| st-name-widget | 5 | wikipedia |
 | st-widget-title-like | wikipedia | Wikipedia |
 | text_like | Push to all dashboards |  |
 
 | *Comment* | Test Case: Administer Dashboards - Save... and force update |  |
-| click_ok | link=Save... |  |
+| click_ok | //a[contains(text(),'Save')] |  |
 | wait_for_text_present_ok | Save Confirmation | 30000 |
 | wait_for_element_visible_ok | st-save-widget-template | 30000 |
 | wait_for_element_visible_ok | force-update | 30000 |
@@ -81,7 +81,7 @@ click_ok | //a[contains(@class,'cancel genericOrangeButton')] | |
 | *Comment* | Test Case: Administer Dashboards - verify force update |  |
 | open_ok | /?dashboard | 60000 |
 | wait_for_text_present_ok | Wikipedia | 30000 |
-| st-name-widget | 1 | wikipedia |
+| st-name-widget | 5 | wikipedia |
 | st-widget-title-like | wikipedia | Wikipedia |
 | st-select-widget-frame | wikipedia |  |
 | text_unlike | //body | Push to all dashboards |  |
@@ -98,8 +98,8 @@ click_ok | //a[contains(@class,'cancel genericOrangeButton')] | |
 | click_and_wait | //a[@id='gallery-widget-RSS Viewer'] |  |
 
 | *Comment* | Test Case: Administer Dashboards - Save... but no force update |  |
-| wait_for_element_visible_ok | link=Save... | 30000 |
-| click_ok | link=Save... |  |
+| wait_for_element_visible_ok | //a[contains(text(),'Save')] | 30000 |
+| click_ok | //a[contains(text(),'Save')] |  |
 | wait_for_text_present_ok | Save Confirmation | 30000 |
 | wait_for_element_visible_ok | st-save-widget-template | 30000 |
 | wait_for_element_visible_ok | force-update | 30000 |
@@ -116,13 +116,13 @@ click_ok | //a[contains(@class,'cancel genericOrangeButton')] | |
 | wait_for_element_visible_ok | link=Administer Dashboards | 30000 |
 | click_and_wait | link=Administer Dashboards |  |
 | wait_for_text_present_ok | Enterprise Social Software Blog | 30000 |
-| st-name-widget | 1 | rssv |
+| st-name-widget | 5 | rssv |
 | st-widget-title-like | rssv | Enterprise Social Software Blog |
 
 | *Comment* | Test Case: Administer Dashboards - verify no force update occurred |  |
 | open_ok | /?dashboard | 60000 |
 | wait_for_text_present_ok | Wikipedia | 30000 |
-| st-name-widget | 1 | topdog |
+| st-name-widget | 5 | topdog |
 | st-widget-title-like | topdog | Wikipedia |
 | st-select-widget-frame | topdog |  |
 | text_unlike | //body | Push to all dashboards |
@@ -144,8 +144,8 @@ click_ok | //a[contains(@class,'cancel genericOrangeButton')] | |
 | wait_for_element_visible_ok | link=Add Widget | 30000 |
 | wait_for_element_visible_ok | link=Administer Dashboards | 5000 |
 | click_and_wait | link=Administer Dashboards |  |
-| wait_for_element_visible_ok | link=Revert to Default... |  |
-| click_ok | link=Revert to Default... |  |
+| wait_for_element_visible_ok | //a[contains(text(),'Revert to Default')] |  |
+| click_ok | //a[contains(text(),'Revert to Default')] |  |
 | wait_for_text_present_ok | Are you sure you want to revert to the Socialtext defaults? | 30000 |
 | wait_for_element_visible_ok | link=No | 30000 |
 | click_ok | link=No |  |
@@ -155,8 +155,8 @@ click_ok | //a[contains(@class,'cancel genericOrangeButton')] | |
 | wait_for_element_visible_ok | link=Add Widget | 30000 |
 | wait_for_element_visible_ok | link=Administer Dashboards | 5000 |
 | click_and_wait | link=Administer Dashboards |  |
-| wait_for_element_visible_ok | link=Revert to Default... |  |
-| click_ok | link=Revert to Default... |  |
+| wait_for_element_visible_ok | //a[contains(text(),'Revert to Default')] |  |
+| click_ok | //a[contains(text(),'Revert to Default')] |  |
 | wait_for_text_present_ok | Are you sure you want to revert to the Socialtext defaults? | 30000 |
 | wait_for_element_visible_ok | link=Yes | 30000 |
 | click_ok | link=Yes |  |
@@ -179,6 +179,7 @@ st-name-widget | 1 | topcat |
 st-widget-title-like | topcat | Welcome |
 
 | *Comment* | Test Case: Administer Dashboards TEARDOWN |  |
-| *Comment* | Test Case: Administer Dashboards. No teardown, throw away the account and the users. |  |
+| delete-account | %%acct%% | Recklessly deleting |
+| st-admin | deactivate-user --email %%mwgmail%% | been deactivated |
 
 | *Comment* | Test Case: Administer Dashboards COMPLETED |
