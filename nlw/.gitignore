@@ -635,3 +635,4 @@ t/st-admin.output
 t/config.t
 t/configcheck.t
 t/daemon.t
+t/fake-tool.pl
