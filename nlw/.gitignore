@@ -645,3 +645,4 @@ t/summarize-search.t
 t/fake-sudo.pl
 t/ConsoleTestUtils.pm
 t/workspace-usage.t
+t/health.t
