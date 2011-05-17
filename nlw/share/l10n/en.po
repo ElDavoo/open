@@ -14308,6 +14308,10 @@ msgstr "Add Widget"
 msgid "widgets.added"
 msgstr "Successfully added your widget"
 
+#: share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:3
+msgid "widgets.all"
+msgstr "all"
+
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:14
 msgid "widgets.changes"
 msgstr "changes"
@@ -14368,6 +14372,15 @@ msgstr "new page"
 msgid "widgets.no-description"
 msgstr "No description provided"
 
+#. ('__UP_workspace__')
+#: share/plugin/widgets/share/widgets/tag_cloud/widget.js:18
+msgid "widgets.no-tags-for=wiki"
+msgstr "Workspace <b>%1</b> has no tags. You may go to the workspace and add a page tag in the right-hand sidebar."
+
+#: share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:2
+msgid "widgets.number-of-tags-to-show"
+msgstr "Number of tags to show"
+
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:33
 msgid "widgets.permanent-remove"
 msgstr "Permanently Remove Widget"
@@ -14402,9 +14415,18 @@ msgstr "Successfully restored the \"%1\" widget"
 msgid "widgets.rss-feed"
 msgstr "RSS feed"
 
+#: share/plugin/widgets/share/widgets/tag_cloud/widget.js:47
+msgid "widgets.tags-for=wiki"
+msgstr "Tags for %1 workspace"
+
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:6
 msgid "widgets.this-person-belongs-to-no-wikis"
 msgstr "This person belongs to no workspaces."
+
+#. ('__UP_workspace__')
+#: share/plugin/widgets/share/widgets/tag_cloud/widget.js:57
+msgid "widgets.unable-to-build-tag-cloud-for=wiki"
+msgstr "Unable to build tag cloud for <b>%1</b>."
 
 #: share/plugin/widgets/template/view/gallery:107
 msgid "widgets.update"
@@ -14433,6 +14455,10 @@ msgstr "Use the Widget Editor"
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:13
 msgid "widgets.views"
 msgstr "views"
+
+#: share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:1
+msgid "widgets.wiki"
+msgstr "Workspace"
 
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:4
 msgid "widgets.you-belong-to-no-wikis"

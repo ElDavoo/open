@@ -14308,6 +14308,10 @@ msgstr "Zzz Zzzzzz"
 msgid "widgets.added"
 msgstr "Zzzzzzzzzzzz zzzzz zzzz zzzzzz"
 
+#: share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:3
+msgid "widgets.all"
+msgstr "zzz"
+
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:14
 msgid "widgets.changes"
 msgstr "zzzzzzz"
@@ -14368,6 +14372,15 @@ msgstr "zzz zzzz"
 msgid "widgets.no-description"
 msgstr "Zz zzzzzzzzzzz zzzzzzzz"
 
+#. ('__UP_workspace__')
+#: share/plugin/widgets/share/widgets/tag_cloud/widget.js:18
+msgid "widgets.no-tags-for=wiki"
+msgstr "Zzzzzzzzz <b>%1</b> zzz zz zzzz. Zzz zzz zz zz zzz zzzzzzzzz zzz zzz z zzzz zzz zz zzz zzzzz-zzzz zzzzzzz."
+
+#: share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:2
+msgid "widgets.number-of-tags-to-show"
+msgstr "Zzzzzz zz zzzz zz zzzz"
+
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:33
 msgid "widgets.permanent-remove"
 msgstr "Zzzzzzzzzzz Zzzzzz Zzzzzz"
@@ -14402,9 +14415,18 @@ msgstr "Zzzzzzzzzzzz zzzzzzzz zzz \"%1\" zzzzzz"
 msgid "widgets.rss-feed"
 msgstr "ZZZ zzzz"
 
+#: share/plugin/widgets/share/widgets/tag_cloud/widget.js:47
+msgid "widgets.tags-for=wiki"
+msgstr "Zzzz zzz %1 zzzzzzzzz"
+
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:6
 msgid "widgets.this-person-belongs-to-no-wikis"
 msgstr "Zzzz zzzzzz zzzzzzz zz zz zzzzzzzzzz."
+
+#. ('__UP_workspace__')
+#: share/plugin/widgets/share/widgets/tag_cloud/widget.js:57
+msgid "widgets.unable-to-build-tag-cloud-for=wiki"
+msgstr "Zzzzzz zz zzzzz zzz zzzzz zzz <b>%1</b>."
 
 #: share/plugin/widgets/template/view/gallery:107
 msgid "widgets.update"
@@ -14433,6 +14455,10 @@ msgstr "Zzz zzz Zzzzzz Zzzzzz"
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:13
 msgid "widgets.views"
 msgstr "zzzzz"
+
+#: share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:1
+msgid "widgets.wiki"
+msgstr "Zzzzzzzzz"
 
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:4
 msgid "widgets.you-belong-to-no-wikis"

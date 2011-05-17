@@ -13627,6 +13627,9 @@ msgstr "新增小工具"
 msgid "widgets.added"
 msgstr "成功新增您的小工具"
 
+msgid "widgets.all"
+msgstr "全部"
+
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:14
 msgid "widgets.changes"
 msgstr "更改"
@@ -13685,6 +13688,12 @@ msgstr "開新頁面"
 msgid "widgets.no-description"
 msgstr "無描述"
 
+msgid "widgets.no-tags-for=wiki"
+msgstr "<b>%1</b> 工作區目前沒有標籤。您可在工作區頁面右側區塊新增標籤。"
+
+msgid "widgets.number-of-tags-to-show"
+msgstr "顯示標籤數量"
+
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:33
 msgid "widgets.permanent-remove"
 msgstr "永久移除小工具"
@@ -13719,9 +13728,15 @@ msgstr "成功恢復『%1』小工具"
 msgid "widgets.rss-feed"
 msgstr "RSS 訂閱"
 
+msgid "widgets.tags-for=wiki"
+msgstr "%1 工作區的標籤"
+
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:6
 msgid "widgets.this-person-belongs-to-no-wikis"
 msgstr "此人不屬於任何工作區。"
+
+msgid "widgets.unable-to-build-tag-cloud-for=wiki"
+msgstr "無法為 <b>%1</b> 工作區建立標籤雲。"
 
 #: share/plugin/widgets/template/view/gallery:107
 msgid "widgets.update"
@@ -13750,6 +13765,9 @@ msgstr "使用小工具編輯器"
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:13
 msgid "widgets.views"
 msgstr "檢視"
+
+msgid "widgets.wiki"
+msgstr "工作區"
 
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:4
 msgid "widgets.you-belong-to-no-wikis"
