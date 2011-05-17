@@ -636,3 +636,4 @@ t/config.t
 t/configcheck.t
 t/daemon.t
 t/fake-tool.pl
+t/phone-home.t
