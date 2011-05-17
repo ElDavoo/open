@@ -9169,13 +9169,34 @@ msgstr "作業總數"
 msgid "job.type"
 msgstr "作業類型"
 
+msgid "kanban.add"
+msgstr "新增"
+
 #: share/plugin/kanban/share/widgets/task_board/widget.html:168
 msgid "kanban.advanced"
 msgstr "進階設定"
 
+msgid "kanban.background-color:"
+msgstr "…套用底色："
+
 #: share/plugin/kanban/share/widgets/task_board/widget.html:32
 msgid "kanban.basics"
 msgstr "基本設定"
+
+msgid "kanban.bug-columns"
+msgstr "瑕疵欄位"
+
+msgid "kanban.bug-notes"
+msgstr "瑕疵標注"
+
+msgid "kanban.bug-stamp-color:"
+msgstr "…將欄位值以此顏色顯示："
+
+msgid "kanban.bz-search:"
+msgstr "…執行此項 BZ 搜尋："
+
+msgid "kanban.bz-sharer-id"
+msgstr "由此分享者 ID…"
 
 #: share/plugin/kanban/share/widgets/task_board/widget.html:26
 msgid "kanban.cancel"
@@ -9185,6 +9206,27 @@ msgstr "取消"
 msgid "kanban.columns"
 msgstr "欄位"
 
+msgid "kanban.default-color:"
+msgstr "預設底色："
+
+msgid "kanban.editable?"
+msgstr "允許在欄位之間拖放頁面？"
+
+msgid "kanban.exclude-tags:"
+msgstr "…但不包含具有下列任一標籤的頁面："
+
+msgid "kanban.heading"
+msgstr "欄位標題"
+
+msgid "kanban.if-bug-has-field"
+msgstr "如果瑕疵有此欄位…"
+
+msgid "kanban.if-page-has-tag"
+msgstr "如果頁面有此標籤…"
+
+msgid "kanban.include-tags:"
+msgstr "僅顯示具有下列任一標籤的頁面："
+
 #: share/plugin/kanban/share/widgets/task_board/widget.html:100
 msgid "kanban.item-background"
 msgstr "項目背景色"
@@ -9192,6 +9234,12 @@ msgstr "項目背景色"
 #: share/plugin/kanban/share/widgets/task_board/widget.html:136
 msgid "kanban.item-notes"
 msgstr "項目標注"
+
+msgid "kanban.notes"
+msgstr "標注"
+
+msgid "kanban.omit-page-prefix:"
+msgstr "省略頁面標題的開頭部份："
 
 #: share/plugin/kanban/share/widgets/task_board/widget.html:100 share/plugin/kanban/share/widgets/task_board/widget.html:136 share/plugin/kanban/share/widgets/task_board/widget.html:168 share/plugin/kanban/share/widgets/task_board/widget.html:70
 msgid "kanban.optional"
@@ -9201,9 +9249,39 @@ msgstr "（非必填）"
 msgid "kanban.page-filtering"
 msgstr "篩選頁面"
 
+msgid "kanban.page-tag"
+msgstr "頁面標籤"
+
+msgid "kanban.query-suffix:"
+msgstr "額外的頁面搜尋條件："
+
+msgid "kanban.refresh-interval"
+msgstr "內容自動更新頻率"
+
 #: share/plugin/kanban/share/widgets/task_board/widget.html:177 share/plugin/kanban/share/widgets/task_board/widget.html:26
 msgid "kanban.save"
 msgstr "儲存"
+
+msgid "kanban.seconds"
+msgstr "（秒）"
+
+msgid "kanban.settings"
+msgstr "設定"
+
+msgid "kanban.stamp-color:"
+msgstr "…文字顏色："
+
+msgid "kanban.stamp-note"
+msgstr "…顯示此標注…"
+
+msgid "kanban.widget-title:"
+msgstr "小工具標題："
+
+msgid "kanban.wiki:"
+msgstr "工作區："
+
+msgid "kanban.yes"
+msgstr "是"
 
 #. ($user->username, $new_locale)
 #: lib/Socialtext/CLI.pm:1895

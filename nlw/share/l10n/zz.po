@@ -136,7 +136,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  kanban.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-16 09:51-0700\n"
+"PO-Revision-Date: 2011-05-17 04:45-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -9691,13 +9691,41 @@ msgstr "Zzzzz"
 msgid "job.type"
 msgstr "Zzz Zzzz"
 
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:64 share/plugin/kanban/share/widgets/bug_board/widget.html:80 share/plugin/kanban/share/widgets/bug_board/widget.html:94
+msgid "kanban.add"
+msgstr "Zzz"
+
 #: share/plugin/kanban/share/widgets/task_board/widget.html:168
 msgid "kanban.advanced"
 msgstr "Zzzzzzzz"
 
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:121
+msgid "kanban.background-color:"
+msgstr "…zzz zzzz zzzzz:"
+
 #: share/plugin/kanban/share/widgets/task_board/widget.html:32
 msgid "kanban.basics"
 msgstr "Zzzzzz"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:169
+msgid "kanban.bug-columns"
+msgstr "Zzz Zzzzzzz"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:183
+msgid "kanban.bug-notes"
+msgstr "Zzz zzzzz"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:187
+msgid "kanban.bug-stamp-color:"
+msgstr "…zzzz zzz zzzzz zz zzzz zzzzz:"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:173
+msgid "kanban.bz-search:"
+msgstr "…zzz zzzz ZZ zzzzzz:"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:172
+msgid "kanban.bz-sharer-id"
+msgstr "Zzzz zzzz zzzzzz ZZ…"
 
 #: share/plugin/kanban/share/widgets/task_board/widget.html:26
 msgid "kanban.cancel"
@@ -9707,6 +9735,34 @@ msgstr "Zzzzzz"
 msgid "kanban.columns"
 msgstr "Zzzzzzz"
 
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:105
+msgid "kanban.default-color:"
+msgstr "Zzzzzzz zzzzz:"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:198
+msgid "kanban.editable?"
+msgstr "Zzzzz zzzzzz zzzzz zzzzzzz zzzzzzz?"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:89
+msgid "kanban.exclude-tags:"
+msgstr "…zzz zzz zzzzz zzzz zzz zz zzzzz zzzz:"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:47
+msgid "kanban.heading"
+msgstr "Zzzzzzz"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:186
+msgid "kanban.if-bug-has-field"
+msgstr "Zz zzz zzz zzzz zzzzz…"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:117 share/plugin/kanban/share/widgets/bug_board/widget.html:141
+msgid "kanban.if-page-has-tag"
+msgstr "Zz zzzz zzz zzzz zzz…"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:75
+msgid "kanban.include-tags:"
+msgstr "Zzzz zzzz zzzzz zzzz zzz zz zzzzz zzzz:"
+
 #: share/plugin/kanban/share/widgets/task_board/widget.html:100
 msgid "kanban.item-background"
 msgstr "Zzzz Zzzzzzzzzz"
@@ -9714,6 +9770,14 @@ msgstr "Zzzz Zzzzzzzzzz"
 #: share/plugin/kanban/share/widgets/task_board/widget.html:136
 msgid "kanban.item-notes"
 msgstr "Zzzz Zzzzz"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:51
+msgid "kanban.notes"
+msgstr "Zzzzz"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:200
+msgid "kanban.omit-page-prefix:"
+msgstr "Zzzz zzzz zzzz zzzz zzzz zzzzzz zzzzzzzz zzzz:"
 
 #: share/plugin/kanban/share/widgets/task_board/widget.html:100 share/plugin/kanban/share/widgets/task_board/widget.html:136 share/plugin/kanban/share/widgets/task_board/widget.html:168 share/plugin/kanban/share/widgets/task_board/widget.html:70
 msgid "kanban.optional"
@@ -9723,9 +9787,49 @@ msgstr "(zzzzzzzz)"
 msgid "kanban.page-filtering"
 msgstr "Zzzz Zzzzzzzzz"
 
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:43
+msgid "kanban.page-tag"
+msgstr "Zzzz Zzz"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:202
+msgid "kanban.query-suffix:"
+msgstr "Zzzzzzzzzz zzzzz zzzzzzzzzzz zzz zzzzz:"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:204
+msgid "kanban.refresh-interval"
+msgstr "Zzzzzzz zzzzzzzz"
+
 #: share/plugin/kanban/share/widgets/task_board/widget.html:177 share/plugin/kanban/share/widgets/task_board/widget.html:26
 msgid "kanban.save"
 msgstr "Zzzz"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:204
+msgid "kanban.seconds"
+msgstr "(zzzzzzz)"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:26
+msgid "kanban.settings"
+msgstr "Zzzzzzzz"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:149
+msgid "kanban.stamp-color:"
+msgstr "…zz zzzz zzzzz:"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:145
+msgid "kanban.stamp-note"
+msgstr "…zzzz zzzz zzzz…"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:36
+msgid "kanban.widget-title:"
+msgstr "Zzzzzz Zzzzz:"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:34
+msgid "kanban.wiki:"
+msgstr "Zzzzzzzzz:"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:198
+msgid "kanban.yes"
+msgstr "Zzz"
 
 #. ($user->username, $new_locale)
 #: lib/Socialtext/CLI.pm:1895

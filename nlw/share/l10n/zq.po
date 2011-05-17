@@ -136,7 +136,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  kanban.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-16 09:51-0700\n"
+"PO-Revision-Date: 2011-05-17 04:45-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -9691,13 +9691,41 @@ msgstr "«Total»"
 msgid "job.type"
 msgstr "«Job Type»"
 
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:64 share/plugin/kanban/share/widgets/bug_board/widget.html:80 share/plugin/kanban/share/widgets/bug_board/widget.html:94
+msgid "kanban.add"
+msgstr "«Add»"
+
 #: share/plugin/kanban/share/widgets/task_board/widget.html:168
 msgid "kanban.advanced"
 msgstr "«Advanced»"
 
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:121
+msgid "kanban.background-color:"
+msgstr "«…use this color:»"
+
 #: share/plugin/kanban/share/widgets/task_board/widget.html:32
 msgid "kanban.basics"
 msgstr "«Basics»"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:169
+msgid "kanban.bug-columns"
+msgstr "«Bug Columns»"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:183
+msgid "kanban.bug-notes"
+msgstr "«Bug notes»"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:187
+msgid "kanban.bug-stamp-color:"
+msgstr "«…show its value in this color:»"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:173
+msgid "kanban.bz-search:"
+msgstr "«…run this BZ search:»"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:172
+msgid "kanban.bz-sharer-id"
+msgstr "«From this sharer ID…»"
 
 #: share/plugin/kanban/share/widgets/task_board/widget.html:26
 msgid "kanban.cancel"
@@ -9707,6 +9735,34 @@ msgstr "«Cancel»"
 msgid "kanban.columns"
 msgstr "«Columns»"
 
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:105
+msgid "kanban.default-color:"
+msgstr "«Default color:»"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:198
+msgid "kanban.editable?"
+msgstr "«Allow moving pages between columns?»"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:89
+msgid "kanban.exclude-tags:"
+msgstr "«…but not pages with any of these tags:»"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:47
+msgid "kanban.heading"
+msgstr "«Heading»"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:186
+msgid "kanban.if-bug-has-field"
+msgstr "«If bug has this field…»"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:117 share/plugin/kanban/share/widgets/bug_board/widget.html:141
+msgid "kanban.if-page-has-tag"
+msgstr "«If page has this tag…»"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:75
+msgid "kanban.include-tags:"
+msgstr "«Show only pages with any of these tags:»"
+
 #: share/plugin/kanban/share/widgets/task_board/widget.html:100
 msgid "kanban.item-background"
 msgstr "«Item Background»"
@@ -9714,6 +9770,14 @@ msgstr "«Item Background»"
 #: share/plugin/kanban/share/widgets/task_board/widget.html:136
 msgid "kanban.item-notes"
 msgstr "«Item Notes»"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:51
+msgid "kanban.notes"
+msgstr "«Notes»"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:200
+msgid "kanban.omit-page-prefix:"
+msgstr "«Omit this part from page titles starting with:»"
 
 #: share/plugin/kanban/share/widgets/task_board/widget.html:100 share/plugin/kanban/share/widgets/task_board/widget.html:136 share/plugin/kanban/share/widgets/task_board/widget.html:168 share/plugin/kanban/share/widgets/task_board/widget.html:70
 msgid "kanban.optional"
@@ -9723,9 +9787,49 @@ msgstr "«(optional)»"
 msgid "kanban.page-filtering"
 msgstr "«Page Filtering»"
 
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:43
+msgid "kanban.page-tag"
+msgstr "«Page Tag»"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:202
+msgid "kanban.query-suffix:"
+msgstr "«Additional query constraints for pages:»"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:204
+msgid "kanban.refresh-interval"
+msgstr "«Refresh interval»"
+
 #: share/plugin/kanban/share/widgets/task_board/widget.html:177 share/plugin/kanban/share/widgets/task_board/widget.html:26
 msgid "kanban.save"
 msgstr "«Save»"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:204
+msgid "kanban.seconds"
+msgstr "«(seconds)»"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:26
+msgid "kanban.settings"
+msgstr "«Settings»"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:149
+msgid "kanban.stamp-color:"
+msgstr "«…in this color:»"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:145
+msgid "kanban.stamp-note"
+msgstr "«…show this note…»"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:36
+msgid "kanban.widget-title:"
+msgstr "«Widget Title:»"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:34
+msgid "kanban.wiki:"
+msgstr "«Workspace:»"
+
+#: share/plugin/kanban/share/widgets/bug_board/widget.html:198
+msgid "kanban.yes"
+msgstr "«Yes»"
 
 #. ($user->username, $new_locale)
 #: lib/Socialtext/CLI.pm:1895
