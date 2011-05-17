@@ -632,3 +632,4 @@ t/users.txt
 t/configurator.t
 t/appliance.conf
 t/st-admin.output
+t/config.t
