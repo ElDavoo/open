@@ -639,3 +639,4 @@ t/fake-tool.pl
 t/phone-home.t
 t/controller.t
 t/summarize-perf.t
+t/st-admin.pl
