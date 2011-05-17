@@ -651,3 +651,4 @@ t/proc-mdstat
 t/ConsoleTestEnv.pm
 t/test-pgpitr.pl
 t/perfdatapoint.t
+t/templates/backup_status.t
