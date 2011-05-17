@@ -660,3 +660,4 @@ t/data/search-minimal.log
 t/data/support.tar.gz
 t/data/backup_status.yaml
 t/data/search-nlw.log
+t/bin/sleep.sh
