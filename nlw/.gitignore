@@ -631,3 +631,4 @@ lib/Socialtext/Pluggable/Plugin/Kanban.pm
 t/users.txt
 t/configurator.t
 t/appliance.conf
+t/st-admin.output
