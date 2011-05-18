@@ -97,7 +97,7 @@ for my $key (sort keys %Sections) {
 
 if ($reuse) {
     system("msgcat --no-wrap share/l10n/new/*.po > new.po");
-    system("dev-bin/l10n-reverse-po share/l10n/en.po  | msguniq --no-wrap -s > en.pot");
+    system("msggrep --no-wrap -T -e . share/l10n/en.po | dev-bin/l10n-reverse-po - | msguniq --no-wrap -s > en.pot");
     system("msgmerge --no-wrap -N -s en.pot new.po | msggrep --no-wrap -T -e . | grep -v '^#[,~]' > reusable.po.new");
     system("msgcat --no-wrap reusable.po.new | perl -ne 'print if /^\$/..0' > reusable.po");
     unlink "reusable.po.new";
