@@ -505,7 +505,7 @@ msgstr "zzzzzzz"
 msgid "activities.following"
 msgstr "zzzzzz Z zzzzzz"
 
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:72
+#: share/plugin/widgets/share/javascript/template/top_content.tt2:19 share/plugin/widgets/share/javascript/template/top_content.tt2:55 share/plugin/widgets/share/widgets/one_page/widget.html:30 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:37 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:72
 msgid "activities.from"
 msgstr "zzzz"
 
@@ -5765,6 +5765,10 @@ msgstr "Zzzzz, zzzz zzzzzzz zz zzz zzz zzzzzzzzz zz zzz Zzzzzzzzzz Zzzzzzzzz."
 msgid "error.feed"
 msgstr "Zzzz Zzzzz"
 
+#: share/plugin/widgets/share/javascript/top_content.js:75
+msgid "error.fetching-data"
+msgstr "Zzzzz Zzzzzzzz Zzzz"
+
 #. ($from_class, $to_class)
 #: lib/Socialtext/Pluggable/Plugin/People.pm:761
 msgid "error.field-conversion-failed=from-class,to-class"
@@ -10697,7 +10701,7 @@ msgstr "Zzzzzzzzz Zzzz"
 msgid "page.duplicate=title"
 msgstr "Zzzzzzzzz zz %1"
 
-#: share/plugin/widgets/share/widgets/workspace_activity/widget.html:7 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:41 share/skin/s3/template/element/page/display/edit-button:13 share/skin/s3/template/element/page/display/edit-button:7 share/skin/s3/template/lite/subnav.html:40 share/skin/s3/template/view/weblog:98
+#: share/plugin/widgets/share/widgets/one_page/widget.html:28 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:34 share/plugin/widgets/share/widgets/workspace_activity/widget.html:7 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:41 share/skin/s3/template/element/page/display/edit-button:13 share/skin/s3/template/element/page/display/edit-button:7 share/skin/s3/template/lite/subnav.html:40 share/skin/s3/template/view/weblog:98
 msgid "page.edit"
 msgstr "Zzzz"
 
@@ -14357,6 +14361,14 @@ msgstr "3 zzzzzz"
 msgid "widgets.6months"
 msgstr "6 zzzzzz"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:5
+msgid "widgets.a-page-named"
+msgstr "Z zzzz zzzzz"
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:11
+msgid "widgets.a-sheet-named"
+msgstr "Z zzzzzzzzzzz zzzzz"
+
 #: share/plugin/widgets/share/widgets/workspace_activity/widget.html:13
 msgid "widgets.about-duration"
 msgstr "Zzzz zzz zz zzzzzz zzzzzzz (zzzzzzzz) zz zzzzzzzzz (zzzzzzzz) zzzzz zz zzz zzzzz zzzz. Z.z.: 1zzzzz, -3 zzzzz, 48 zzzzzzz, 1zzzz"
@@ -14409,6 +14421,10 @@ msgstr "zzzzzz"
 msgid "widgets.changes"
 msgstr "zzzzzzz"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:12 share/plugin/widgets/share/widgets/one_page/widget.html:18 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:18 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:24
+msgid "widgets.click"
+msgstr "Zzzzz"
+
 #. (this.title)
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:46
 msgid "widgets.confirm-delete=widget?"
@@ -14433,9 +14449,17 @@ msgstr "Zzzzzz zzz zzzz zz %1"
 msgid "widgets.delete"
 msgstr "(zzzzzz)"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:7 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:13
+msgid "widgets.does-not-exist-in"
+msgstr "zzzz zzz zzzzz zz zzz"
+
 #: share/plugin/widgets/share/widgets/workspace_activity/widget.html:13
 msgid "widgets.duration"
 msgstr "Zzzzzzzz"
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:34
+msgid "widgets.edit"
+msgstr "Zzzz"
 
 #: share/plugin/widgets/share/widgets/top_content/widget.js:23
 msgid "widgets.edited"
@@ -14457,6 +14481,10 @@ msgstr "Zzzzzzz"
 msgid "widgets.emailed-pages"
 msgstr "zzzzzzz zzzzz"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:30 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:37
+msgid "widgets.from"
+msgstr "zzzz"
+
 msgid "widgets.gallery"
 msgstr "Zzzzzz Zzzzzzz"
 
@@ -14471,6 +14499,10 @@ msgstr "Zzzzz"
 #: share/plugin/widgets/share/widgets/empty/prefs.xml:2 share/plugin/widgets/share/widgets/one_spreadsheet/prefs.xml:3 share/plugin/widgets/share/widgets/one_web_page.xml:13
 msgid "widgets.height"
 msgstr "Zzzzzz"
+
+#: share/plugin/widgets/share/widgets/one_page/widget.html:13 share/plugin/widgets/share/widgets/one_page/widget.html:19 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:19 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:25
+msgid "widgets.here"
+msgstr "zzzz"
 
 #: share/plugin/widgets/share/widgets/oneimage/prefs.xml:1
 msgid "widgets.image-source"
@@ -14488,6 +14520,10 @@ msgstr "Zzz zzz zz zzzzzz zzzz. Zzzzz <b>Zzzz</b> zz zzzz zzzz zzzzzzz, <b>Zzzzz
 #: share/plugin/widgets/share/javascript/template/activities/widget.tt2:2 share/plugin/widgets/template/data/events/widget:2
 msgid "widgets.install-this"
 msgstr "Zzzzzzz zzzz zzzzzz"
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:7
+msgid "widgets.is-not-sheet"
+msgstr "zz zzz z zzzzzzzzzzz."
 
 #: share/plugin/widgets/share/widgets/rss/prefs.xml:3
 msgid "widgets.items-displayed"
@@ -14516,6 +14552,11 @@ msgstr "Zzzzzzz zzzzzzzzzzz zzzzzzzzzz"
 #: share/plugin/widgets/share/widgets/activities.xml:32
 msgid "widgets.mentions-and-private-signals-only"
 msgstr "zzzz Z zz zzzzzzzzz zz zzzzzzzzz zzzzzzzzz"
+
+#. (tabs.$action.noun, period)
+#: share/plugin/widgets/share/javascript/template/top_content.tt2:17
+msgid "widgets.most-active-in=noun,period"
+msgstr "Zzzz <strong>%1</strong> zz zzz zzzz <strong>%2</strong>"
 
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:21
 msgid "widgets.new-page"
@@ -14566,6 +14607,10 @@ msgstr "Zzzzzz zz Zzzzzzzzzz Zz Zzzzzzz"
 msgid "widgets.number-of-tags-to-show"
 msgstr "Zzzzzz zz zzzz zz zzzz"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:27 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:33
+msgid "widgets.or"
+msgstr "zz"
+
 #: share/plugin/widgets/share/widgets/active_members/widget.js:24
 msgid "widgets.page-views"
 msgstr "zzzz zzzzz"
@@ -14586,6 +14631,14 @@ msgstr "Zzzzzzzzzz"
 #: share/plugin/widgets/share/widgets/active_members/widget.js:23
 msgid "widgets.readers"
 msgstr "Zzzzzzz"
+
+#: share/plugin/widgets/share/widgets/one_page/widget.html:20
+msgid "widgets.reload-page-after-editing"
+msgstr "zzzz zzz zzz zzzz zzzzzzz zzz zzzz zz zzzzz zz zzzzzz zzz zzzzzzz."
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:26
+msgid "widgets.reload-sheet-after-editing"
+msgstr "zzzz zzz zzz zzzz zzzzzzz zzz zzzzzzzzzzz zz zzzzz zz zzzzzz zzz zzzzzzz."
 
 #: share/plugin/widgets/template/view/gallery:126
 msgid "widgets.remove"
@@ -14612,6 +14665,10 @@ msgstr "Zzzzzzz Zzzzzz"
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:89
 msgid "widgets.restored=widget"
 msgstr "Zzzzzzzzzzzz zzzzzzzz zzz \"%1\" zzzzzz"
+
+#: share/plugin/widgets/share/javascript/template/top_content.tt2:24
+msgid "widgets.rotate-is-on"
+msgstr "(Zzzzzz zz zz)"
 
 #: share/plugin/widgets/share/widgets/active_members/prefs.xml:24 share/plugin/widgets/share/widgets/top_content/prefs.xml:27
 msgid "widgets.rotate?"
@@ -14646,6 +14703,10 @@ msgstr "Zzzz Zzzzzzzzzzzzz"
 msgid "widgets.signals"
 msgstr "Zzzzzzz"
 
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:5
+msgid "widgets.sorry-but"
+msgstr "Zzzzz, zzz"
+
 #: share/plugin/widgets/share/widgets/workspace_activity/widget.html:12
 msgid "widgets.start-date"
 msgstr "Zzzzz zzzz"
@@ -14658,9 +14719,17 @@ msgstr "Zzzzzzzz"
 msgid "widgets.tags-for=wiki"
 msgstr "Zzzz zzz %1 zzzzzzzzz"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:30
+msgid "widgets.this-page"
+msgstr "zzzz zzzz"
+
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:6
 msgid "widgets.this-person-belongs-to-no-wikis"
 msgstr "Zzzz zzzzzz zzzzzzz zz zz zzzzzzzzzz."
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:36
+msgid "widgets.this-sheet"
+msgstr "zzzz zzzzzzzzzzz"
 
 #: share/plugin/widgets/share/widgets/active_members/prefs.xml:4 share/plugin/widgets/share/widgets/top_content/prefs.xml:7
 msgid "widgets.time"
@@ -14669,6 +14738,14 @@ msgstr "Zzzz"
 #: share/plugin/widgets/share/widgets/empty/prefs.xml:1 share/plugin/widgets/share/widgets/one_web_page.xml:11 share/plugin/widgets/share/widgets/oneimage/prefs.xml:2
 msgid "widgets.title"
 msgstr "Zzzzz"
+
+#: share/plugin/widgets/share/widgets/one_page/widget.html:14
+msgid "widgets.to-create-page"
+msgstr "zz zzzzzz zzz zzzz."
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:20
+msgid "widgets.to-create-sheet"
+msgstr "zz zzzzzz zzz zzzzzzzzzzz."
 
 #. ('__UP_workspace__')
 #: share/plugin/widgets/share/widgets/tag_cloud/widget.js:57
@@ -14703,7 +14780,7 @@ msgstr "Zzzzzz Zzzzzz ZZZ Zzzz:"
 msgid "widgets.use-editor"
 msgstr "Zzz zzz Zzzzzz Zzzzzz"
 
-#: share/plugin/widgets/share/widgets/active_members/prefs.xml:16 share/plugin/widgets/share/widgets/top_content/prefs.xml:19 share/plugin/widgets/share/widgets/workspace_activity/widget.html:6
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:31 share/plugin/widgets/share/widgets/one_page/widget.html:25 share/plugin/widgets/share/widgets/active_members/prefs.xml:16 share/plugin/widgets/share/widgets/top_content/prefs.xml:19 share/plugin/widgets/share/widgets/workspace_activity/widget.html:6
 msgid "widgets.view"
 msgstr "Zzzz"
 

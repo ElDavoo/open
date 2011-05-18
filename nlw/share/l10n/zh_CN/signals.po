@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 22:57+0800\n"
+"PO-Revision-Date: 2011-05-18 08:09-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -399,6 +399,9 @@ msgstr "您在做什么呢？"
 #: share/plugin/signals/template/email/direct-message.html:29
 msgid "signals.your-settings"
 msgstr "您的设置"
+
+msgid "title.activities"
+msgstr "活动"
 
 #: share/plugin/signals/share/widgets/explore_filters/config.yaml:4
 msgid "title.explore_filters"

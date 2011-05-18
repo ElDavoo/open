@@ -130,7 +130,7 @@ msgstr "expunge"
 msgid "activities.following"
 msgstr "people I follow"
 
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:72
+#: share/plugin/widgets/share/javascript/template/top_content.tt2:19 share/plugin/widgets/share/javascript/template/top_content.tt2:55 share/plugin/widgets/share/widgets/one_page/widget.html:30 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:37 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:72
 msgid "activities.from"
 msgstr "from"
 
@@ -615,6 +615,10 @@ msgstr "error"
 msgid "error.feature-not-supported-in-dashboard"
 msgstr "Sorry, this feature is not yet supported in the Socialtext Dashboard."
 
+#: share/plugin/widgets/share/javascript/top_content.js:75
+msgid "error.fetching-data"
+msgstr "Error Fetching Data"
+
 #: share/plugin/widgets/share/javascript/activities/widget.js:423 share/plugin/widgets/share/javascript/activities/widget.js:589
 msgid "error.getting-activities"
 msgstr "There was a problem getting activities"
@@ -956,7 +960,7 @@ msgstr "Workspaces"
 msgid "page.comment"
 msgstr "Comment"
 
-#: share/plugin/widgets/share/widgets/workspace_activity/widget.html:7
+#: share/plugin/widgets/share/widgets/one_page/widget.html:28 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:34 share/plugin/widgets/share/widgets/workspace_activity/widget.html:7
 msgid "page.edit"
 msgstr "Edit"
 
@@ -1216,6 +1220,14 @@ msgstr "3 months"
 msgid "widgets.6months"
 msgstr "6 months"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:5
+msgid "widgets.a-page-named"
+msgstr "A page named"
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:11
+msgid "widgets.a-sheet-named"
+msgstr "A spreadsheet named"
+
 #: share/plugin/widgets/share/widgets/workspace_activity/widget.html:13
 msgid "widgets.about-duration"
 msgstr "This can be things forward (positive) or backwards (negative) based on the start date. E.g.: 1month, -3 weeks, 48 minutes, 1year"
@@ -1268,6 +1280,10 @@ msgstr "always"
 msgid "widgets.changes"
 msgstr "changes"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:12 share/plugin/widgets/share/widgets/one_page/widget.html:18 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:18 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:24
+msgid "widgets.click"
+msgstr "Click"
+
 #. (this.title)
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:46
 msgid "widgets.confirm-delete=widget?"
@@ -1292,9 +1308,17 @@ msgstr "Create new page in %1"
 msgid "widgets.delete"
 msgstr "(delete)"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:7 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:13
+msgid "widgets.does-not-exist-in"
+msgstr "does not exist in the"
+
 #: share/plugin/widgets/share/widgets/workspace_activity/widget.html:13
 msgid "widgets.duration"
 msgstr "Duration"
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:34
+msgid "widgets.edit"
+msgstr "Edit"
 
 #: share/plugin/widgets/share/widgets/top_content/widget.js:23
 msgid "widgets.edited"
@@ -1316,6 +1340,10 @@ msgstr "Emailed"
 msgid "widgets.emailed-pages"
 msgstr "emailed pages"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:30 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:37
+msgid "widgets.from"
+msgstr "from"
+
 msgid "widgets.gallery"
 msgstr "Widget Gallery"
 
@@ -1331,6 +1359,10 @@ msgstr "Group"
 msgid "widgets.height"
 msgstr "Height"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:13 share/plugin/widgets/share/widgets/one_page/widget.html:19 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:19 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:25
+msgid "widgets.here"
+msgstr "here"
+
 #: share/plugin/widgets/share/widgets/oneimage/prefs.xml:1
 msgid "widgets.image-source"
 msgstr "Image Source"
@@ -1342,6 +1374,10 @@ msgstr "You are in layout mode. Click <b>Save</b> to keep your changes, <b>Cance
 #: share/plugin/widgets/share/javascript/template/activities/widget.tt2:2 share/plugin/widgets/template/data/events/widget:2
 msgid "widgets.install-this"
 msgstr "Install this widget"
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:7
+msgid "widgets.is-not-sheet"
+msgstr "is not a spreadsheet."
 
 #: share/plugin/widgets/share/widgets/rss/prefs.xml:3
 msgid "widgets.items-displayed"
@@ -1370,6 +1406,11 @@ msgstr "Maximum description characters"
 #: share/plugin/widgets/share/widgets/activities.xml:32
 msgid "widgets.mentions-and-private-signals-only"
 msgstr "when I am mentioned or privately signalled"
+
+#. (tabs.$action.noun, period)
+#: share/plugin/widgets/share/javascript/template/top_content.tt2:17
+msgid "widgets.most-active-in=noun,period"
+msgstr "Most <strong>%1</strong> in the last <strong>%2</strong>"
 
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:21
 msgid "widgets.new-page"
@@ -1420,6 +1461,10 @@ msgstr "Number of Activities To Display"
 msgid "widgets.number-of-tags-to-show"
 msgstr "Number of tags to show"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:27 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:33
+msgid "widgets.or"
+msgstr "or"
+
 #: share/plugin/widgets/share/widgets/active_members/widget.js:24
 msgid "widgets.page-views"
 msgstr "page views"
@@ -1440,6 +1485,14 @@ msgstr "Priorities"
 #: share/plugin/widgets/share/widgets/active_members/widget.js:23
 msgid "widgets.readers"
 msgstr "Readers"
+
+#: share/plugin/widgets/share/widgets/one_page/widget.html:20
+msgid "widgets.reload-page-after-editing"
+msgstr "when you are done editing the page in order to reload its content."
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:26
+msgid "widgets.reload-sheet-after-editing"
+msgstr "when you are done editing the spreadsheet in order to reload its content."
 
 #: share/plugin/widgets/template/view/gallery:126
 msgid "widgets.remove"
@@ -1466,6 +1519,10 @@ msgstr "Restore Widget"
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:89
 msgid "widgets.restored=widget"
 msgstr "Successfully restored the \"%1\" widget"
+
+#: share/plugin/widgets/share/javascript/template/top_content.tt2:24
+msgid "widgets.rotate-is-on"
+msgstr "(Rotate is on)"
 
 #: share/plugin/widgets/share/widgets/active_members/prefs.xml:24 share/plugin/widgets/share/widgets/top_content/prefs.xml:27
 msgid "widgets.rotate?"
@@ -1500,6 +1557,10 @@ msgstr "Show Notifications"
 msgid "widgets.signals"
 msgstr "Signals"
 
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:5
+msgid "widgets.sorry-but"
+msgstr "Sorry, but"
+
 #: share/plugin/widgets/share/widgets/workspace_activity/widget.html:12
 msgid "widgets.start-date"
 msgstr "Start date"
@@ -1512,9 +1573,17 @@ msgstr "Statuses"
 msgid "widgets.tags-for=wiki"
 msgstr "Tags for %1 workspace"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:30
+msgid "widgets.this-page"
+msgstr "this page"
+
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:6
 msgid "widgets.this-person-belongs-to-no-wikis"
 msgstr "This person belongs to no workspaces."
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:36
+msgid "widgets.this-sheet"
+msgstr "this spreadsheet"
 
 #: share/plugin/widgets/share/widgets/active_members/prefs.xml:4 share/plugin/widgets/share/widgets/top_content/prefs.xml:7
 msgid "widgets.time"
@@ -1523,6 +1592,14 @@ msgstr "Time"
 #: share/plugin/widgets/share/widgets/empty/prefs.xml:1 share/plugin/widgets/share/widgets/one_web_page.xml:11 share/plugin/widgets/share/widgets/oneimage/prefs.xml:2
 msgid "widgets.title"
 msgstr "Title"
+
+#: share/plugin/widgets/share/widgets/one_page/widget.html:14
+msgid "widgets.to-create-page"
+msgstr "to create the page."
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:20
+msgid "widgets.to-create-sheet"
+msgstr "to create the spreadsheet."
 
 #. ('__UP_workspace__')
 #: share/plugin/widgets/share/widgets/tag_cloud/widget.js:57
@@ -1557,7 +1634,7 @@ msgstr "Upload Widget XML File:"
 msgid "widgets.use-editor"
 msgstr "Use the Widget Editor"
 
-#: share/plugin/widgets/share/widgets/active_members/prefs.xml:16 share/plugin/widgets/share/widgets/top_content/prefs.xml:19 share/plugin/widgets/share/widgets/workspace_activity/widget.html:6
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:31 share/plugin/widgets/share/widgets/one_page/widget.html:25 share/plugin/widgets/share/widgets/active_members/prefs.xml:16 share/plugin/widgets/share/widgets/top_content/prefs.xml:19 share/plugin/widgets/share/widgets/workspace_activity/widget.html:6
 msgid "widgets.view"
 msgstr "View"
 

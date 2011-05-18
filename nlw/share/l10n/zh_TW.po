@@ -4006,7 +4006,7 @@ msgstr "編輯布局"
 
 #: share/plugin/people/template/profile_links:5
 msgid "do.edit-profile"
-msgstr "編輯個人資料"
+msgstr "編輯個人檔案"
 
 #: share/skin/s3/template/view/page/display:79
 msgid "do.email"
@@ -5362,6 +5362,9 @@ msgstr "抱歉，顯示板暫不支援此項特性。"
 #: lib/Socialtext/Syndicate/Atom.pm:147 lib/Socialtext/Syndicate/RSS20.pm:31
 msgid "error.feed"
 msgstr "訂閱錯誤"
+
+msgid "error.fetching-data"
+msgstr "擷取資料時發生錯誤。"
 
 #. ($from_class, $to_class)
 #: lib/Socialtext/Pluggable/Plugin/People.pm:761
@@ -7111,12 +7114,12 @@ msgstr "在 %2 中複製 %1。"
 
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:4
 msgid "event.edit-profile-self"
-msgstr "編輯自己的個人資料。"
+msgstr "編輯自己的個人檔案。"
 
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:15
 msgid "event.edit-profile=person"
-msgstr "編輯 %1 的個人資料。"
+msgstr "編輯 %1 的個人檔案。"
 
 #. (page_in_workspace)
 #: share/template/data/events/page:8
@@ -13648,6 +13651,12 @@ msgstr "三個月"
 msgid "widgets.6months"
 msgstr "六個月"
 
+msgid "widgets.a-page-named"
+msgstr "頁面名稱"
+
+msgid "widgets.a-sheet-named"
+msgstr "試算表名稱"
+
 msgid "widgets.about-duration"
 msgstr "自起始時間起算，可以選擇之後（正數）或是之前（負數）。例如：『1month』，『-3 weeks』，『48 minutes』，『1 year』"
 
@@ -13695,6 +13704,9 @@ msgstr "所有訊息"
 msgid "widgets.changes"
 msgstr "更改"
 
+msgid "widgets.click"
+msgstr "點選"
+
 #. (this.title)
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:46
 msgid "widgets.confirm-delete=widget?"
@@ -13719,8 +13731,14 @@ msgstr "在 %1 中建立新頁面"
 msgid "widgets.delete"
 msgstr "（刪除）"
 
+msgid "widgets.does-not-exist-in"
+msgstr "不存在於"
+
 msgid "widgets.duration"
 msgstr "持續時間"
+
+msgid "widgets.edit"
+msgstr "編輯"
 
 msgid "widgets.edited"
 msgstr "編輯"
@@ -13737,6 +13755,12 @@ msgstr "寄出"
 msgid "widgets.emailed-pages"
 msgstr "被寄出的頁面"
 
+msgid "widgets.from"
+msgstr "在"
+
+msgid "widgets.from-account"
+msgstr "於帳戶"
+
 msgid "widgets.gallery"
 msgstr "工具庫"
 
@@ -13751,6 +13775,9 @@ msgstr "群組"
 msgid "widgets.height"
 msgstr "高度"
 
+msgid "widgets.here"
+msgstr "這裡"
+
 msgid "widgets.image-source"
 msgstr "圖片來源"
 
@@ -13763,6 +13790,9 @@ msgstr "您現在位於布局模式。點選<b>儲存</b>以儲存更改，或<b
 #: share/plugin/widgets/share/javascript/template/activities/widget.tt2:2 share/plugin/widgets/template/data/events/widget:2
 msgid "widgets.install-this"
 msgstr "安裝小工具"
+
+msgid "widgets.is-not-sheet"
+msgstr "不是一份試算表。"
 
 msgid "widgets.items-displayed"
 msgstr "顯示項目數量"
@@ -13786,6 +13816,9 @@ msgstr "內文字數上限"
 msgid "widgets.mentions-and-private-signals-only"
 msgstr "提及我的訊息與私人訊息"
 
+msgid "widgets.most-active-in=noun,period"
+msgstr "<strong>%2</strong>以來，<strong>%1</strong>"
+
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:21
 msgid "widgets.new-page"
 msgstr "開新頁面"
@@ -13806,7 +13839,7 @@ msgid "widgets.no-active-viewed-pages"
 msgstr "被檢視次數最多的頁面會列在這裡。當您開始探索自己的新工作區之後，最熱門的頁面會出現在這裡。"
 
 msgid "widgets.no-active-viewed-profiles"
-msgstr "被檢視次數最多的個人資料會列在這裡。您可以檢視自己的個人資料，或是邀請同事加入您的人際網路。"
+msgstr "被檢視次數最多的個人檔案會列在這裡。您可以檢視自己的個人檔案，或是邀請同事加入您的人際網路。"
 
 msgid "widgets.no-active-watched-pages"
 msgstr "最受關注的頁面會列在這裡。您可以在頁面的工具欄上按『關注』圖示，來開始關注頁面。"
@@ -13824,8 +13857,11 @@ msgstr "顯示活動筆數上限"
 msgid "widgets.number-of-tags-to-show"
 msgstr "顯示標籤數量"
 
+msgid "widgets.or"
+msgstr "或"
+
 msgid "widgets.page-views"
-msgstr "頁面檢視"
+msgstr "頁面檢視次數最多的用戶"
 
 msgid "widgets.pages-tagged=tag"
 msgstr "具有『%1』標籤的頁面"
@@ -13839,6 +13875,12 @@ msgstr "優先順序"
 
 msgid "widgets.readers"
 msgstr "讀者"
+
+msgid "widgets.reload-page-after-editing"
+msgstr "，以重新載入編輯後的頁面。"
+
+msgid "widgets.reload-sheet-after-editing"
+msgstr "，以重新載入編輯後的試算表。"
 
 #: share/plugin/widgets/template/view/gallery:126
 msgid "widgets.remove"
@@ -13866,6 +13908,9 @@ msgstr "恢復小工具"
 msgid "widgets.restored=widget"
 msgstr "成功恢復『%1』小工具"
 
+msgid "widgets.rotate-is-on"
+msgstr "（自動交替檢視已啟動）"
+
 msgid "widgets.rotate?"
 msgstr "交替檢視？"
 
@@ -13888,6 +13933,9 @@ msgstr "顯示通知"
 msgid "widgets.signals"
 msgstr "訊息"
 
+msgid "widgets.sorry-but"
+msgstr "抱歉，但是"
+
 msgid "widgets.start-date"
 msgstr "起始日"
 
@@ -13897,15 +13945,27 @@ msgstr "狀態"
 msgid "widgets.tags-for=wiki"
 msgstr "%1 工作區的標籤"
 
+msgid "widgets.this-page"
+msgstr "此頁面"
+
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:6
 msgid "widgets.this-person-belongs-to-no-wikis"
 msgstr "此人不屬於任何工作區。"
+
+msgid "widgets.this-sheet"
+msgstr "此試算表"
 
 msgid "widgets.time"
 msgstr "時間"
 
 msgid "widgets.title"
 msgstr "標題"
+
+msgid "widgets.to-create-page"
+msgstr "以建立頁面。"
+
+msgid "widgets.to-create-sheet"
+msgstr "以建立試算表。"
 
 msgid "widgets.unable-to-build-tag-cloud-for=wiki"
 msgstr "無法為 <b>%1</b> 工作區建立標籤雲。"
@@ -13953,10 +14013,10 @@ msgid "widgets.view-email_page"
 msgstr "被寄出的頁面"
 
 msgid "widgets.view-profile_views"
-msgstr "被檢視的個人資料"
+msgstr "個人檔案"
 
 msgid "widgets.view-reads"
-msgstr "讀者"
+msgstr "閱讀"
 
 msgid "widgets.view-signals"
 msgstr "訊息"
@@ -13965,13 +14025,13 @@ msgid "widgets.view-view_page"
 msgstr "被檢視的頁面"
 
 msgid "widgets.viewed"
-msgstr "被檢視"
+msgstr "個人檔案"
 
 msgid "widgets.viewed-pages"
-msgstr "被檢視的頁面"
+msgstr "最熱門的頁面"
 
 msgid "widgets.viewed-profiles"
-msgstr "被檢視的個人資料"
+msgstr "最熱門的個人檔案"
 
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:13
 msgid "widgets.views"
