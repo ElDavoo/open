@@ -383,6 +383,9 @@ msgstr "关注"
 msgid "people.mobile:"
 msgstr "移动电话："
 
+msgid "people.number-of-tweets"
+msgstr "显示推特数量上限"
+
 msgid "people.peer=count"
 msgstr "%* 位同事"
 
@@ -432,6 +435,9 @@ msgstr "相关度"
 #: share/plugin/people/template/lite/profile.html:13
 msgid "people.stop-following"
 msgstr "停止下面的"
+
+msgid "people.tag-name"
+msgstr "标签名称"
 
 #: share/plugin/people/template/view/peoplelist:13
 msgid "people.tools"

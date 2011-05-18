@@ -94,6 +94,10 @@ msgstr "Mine"
 msgid "explore.now"
 msgstr "now"
 
+#: share/plugin/signals/share/widgets/explore/prefs.xml:1
+msgid "explore.number-of-activities-to-display"
+msgstr "Number of Activities To Display"
+
 #: share/plugin/signals/share/widgets/explore_filters/jemplate/filters.tt2:46
 msgid "explore.people"
 msgstr "PEOPLE"
@@ -237,6 +241,10 @@ msgstr "Maximum value for this appliance is %1"
 #: share/plugin/signals/template/lite/signals.html:52 share/plugin/signals/template/lite/signals.html:63
 msgid "signals.network-count=users"
 msgstr "%*(%1,user)"
+
+#: share/plugin/signals/share/widgets/profile/prefs.xml:1
+msgid "signals.number-of-signals-to-display"
+msgstr "Number of Signals To Display"
 
 #. (user_link(row.signal.user_id)
 #. (user_link(row.signal.user_id), row.signal.uri, to_localtime(row.signal.at), networks(row.signal))

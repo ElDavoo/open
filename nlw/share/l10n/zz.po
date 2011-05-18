@@ -7848,6 +7848,10 @@ msgstr "(zz zzzzz zz zzzz)"
 msgid "explore.now"
 msgstr "zzz"
 
+#: share/plugin/signals/share/widgets/explore/prefs.xml:1
+msgid "explore.number-of-activities-to-display"
+msgstr "Zzzzzz zz Zzzzzzzzzz Zz Zzzzzzz"
+
 #: share/plugin/widgets/share/javascript/activities/explore.js:196
 msgid "explore.oldies"
 msgstr "ZZZZZZ"
@@ -11001,6 +11005,10 @@ msgstr "Zzzzzz"
 msgid "people.mobile:"
 msgstr "Zzzzzz:"
 
+#: share/plugin/people/share/widgets/mytweets.xml:8
+msgid "people.number-of-tweets"
+msgstr "Zzzzzz zz zzzzzz"
+
 #. (peers.size)
 #: share/plugin/people/template/lite/profile.html:103
 msgid "people.peer=count"
@@ -11055,6 +11063,10 @@ msgstr "Zzzzzzzzz"
 #: share/plugin/people/template/lite/profile.html:13
 msgid "people.stop-following"
 msgstr "Zzzz zzzzzzzzz"
+
+#: share/plugin/people/share/template/all_people-prefs.xml:2
+msgid "people.tag-name"
+msgstr "Zzz Zzzz"
 
 #. ($tag)
 #: lib/Socialtext/Pluggable/Plugin/People.pm:271
@@ -12769,6 +12781,10 @@ msgstr "%*(%1,zzzz)"
 #: lib/Socialtext/Pluggable/Plugin/Signals.pm:466
 msgid "signals.no-imported-parent=old-id,old-parent-id,new-id"
 msgstr "Zzzzzz zzzzzz %1 zzz zzzzzzzzzz zz zzzzz zz zzzzzz %2, zzz zzzz zzzzzz zz zzz zzzzz.  Zzzz zzzzzz'z zzz ZZ zz %3"
+
+#: share/plugin/signals/share/widgets/profile/prefs.xml:1
+msgid "signals.number-of-signals-to-display"
+msgstr "Zzzzzz zz Zzzzzzz Zz Zzzzzzz"
 
 #. (user_link(row.signal.user_id)
 #. (user_link(row.signal.user_id), row.signal.uri, to_localtime(row.signal.at), networks(row.signal))

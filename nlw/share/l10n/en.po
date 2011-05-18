@@ -7848,6 +7848,10 @@ msgstr "(no items to show)"
 msgid "explore.now"
 msgstr "now"
 
+#: share/plugin/signals/share/widgets/explore/prefs.xml:1
+msgid "explore.number-of-activities-to-display"
+msgstr "Number of Activities To Display"
+
 #: share/plugin/widgets/share/javascript/activities/explore.js:196
 msgid "explore.oldies"
 msgstr "OLDIES"
@@ -11001,6 +11005,10 @@ msgstr "Follow"
 msgid "people.mobile:"
 msgstr "Mobile:"
 
+#: share/plugin/people/share/widgets/mytweets.xml:8
+msgid "people.number-of-tweets"
+msgstr "Number of tweets"
+
 #. (peers.size)
 #: share/plugin/people/template/lite/profile.html:103
 msgid "people.peer=count"
@@ -11055,6 +11063,10 @@ msgstr "Relevance"
 #: share/plugin/people/template/lite/profile.html:13
 msgid "people.stop-following"
 msgstr "Stop following"
+
+#: share/plugin/people/share/template/all_people-prefs.xml:2
+msgid "people.tag-name"
+msgstr "Tag Name"
 
 #. ($tag)
 #: lib/Socialtext/Pluggable/Plugin/People.pm:271
@@ -12769,6 +12781,10 @@ msgstr "%*(%1,user)"
 #: lib/Socialtext/Pluggable/Plugin/Signals.pm:466
 msgid "signals.no-imported-parent=old-id,old-parent-id,new-id"
 msgstr "Signal number %1 was originally in reply to signal %2, but that signal is not found.  This signal's new ID is %3"
+
+#: share/plugin/signals/share/widgets/profile/prefs.xml:1
+msgid "signals.number-of-signals-to-display"
+msgstr "Number of Signals To Display"
 
 #. (user_link(row.signal.user_id)
 #. (user_link(row.signal.user_id), row.signal.uri, to_localtime(row.signal.at), networks(row.signal))

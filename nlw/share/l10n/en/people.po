@@ -401,6 +401,10 @@ msgstr "Follow"
 msgid "people.mobile:"
 msgstr "Mobile:"
 
+#: share/plugin/people/share/widgets/mytweets.xml:8
+msgid "people.number-of-tweets"
+msgstr "Number of tweets"
+
 #. (peers.size)
 #: share/plugin/people/template/lite/profile.html:103
 msgid "people.peer=count"
@@ -455,6 +459,10 @@ msgstr "Relevance"
 #: share/plugin/people/template/lite/profile.html:13
 msgid "people.stop-following"
 msgstr "Stop following"
+
+#: share/plugin/people/share/template/all_people-prefs.xml:2
+msgid "people.tag-name"
+msgstr "Tag Name"
 
 #: share/plugin/people/template/view/peoplelist:13
 msgid "people.tools"
