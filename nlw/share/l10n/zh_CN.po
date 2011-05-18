@@ -12443,7 +12443,7 @@ msgid "title.blockerbugs"
 msgstr "阻滞开发瑕疵"
 
 msgid "title.bug_board"
-msgstr "虫板"
+msgstr "页虫看板"
 
 msgid "title.edit_information"
 msgstr "信息"
@@ -12523,7 +12523,7 @@ msgid "title.tagged_pages"
 msgstr "具有某标签的页面"
 
 msgid "title.task_board"
-msgstr "看板"
+msgstr "页面看板"
 
 msgid "title.teaser"
 msgstr "工作区"
