@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-18 04:00-0700\n"
+"PO-Revision-Date: 2011-05-18 04:26-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -576,7 +576,7 @@ msgstr "完成"
 
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.tt2:18
 msgid "do.no"
-msgstr "无"
+msgstr "否"
 
 #: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:17 share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:16 share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:22
 msgid "do.ok"
@@ -1256,7 +1256,7 @@ msgstr "工具库"
 #. (gallery.account_name)
 #: share/plugin/widgets/template/view/gallery:34
 msgid "widgets.gallery-switch=account:"
-msgstr "这是“%1”账号的工具库。转到帐户："
+msgstr "这是“%1”帐户的工具库。转到帐户："
 
 msgid "widgets.group"
 msgstr "群组"
@@ -1288,7 +1288,7 @@ msgstr "网址"
 
 #: share/plugin/widgets/template/view/gallery:0 share/plugin/widgets/template/view/gallery:24
 msgid "widgets.manage-gallery-for-accounts"
-msgstr "管理各账号工具库"
+msgstr "管理各账戶工具库"
 
 msgid "widgets.max-description-length"
 msgstr "内文字数上限"
@@ -1377,7 +1377,7 @@ msgid "widgets.restored=widget"
 msgstr "成功恢复“%1”小工具"
 
 msgid "widgets.rotate?"
-msgstr "交替显示？"
+msgstr "交替检视？"
 
 #: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:24
 msgid "widgets.rss-feed"
@@ -1451,7 +1451,7 @@ msgid "widgets.view"
 msgstr "检视"
 
 msgid "widgets.view-add_to_watchlist"
-msgstr "Watched Pages"
+msgstr "受关注的页面"
 
 msgid "widgets.view-contribs"
 msgstr "编辑"

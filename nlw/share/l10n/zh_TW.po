@@ -4078,7 +4078,7 @@ msgstr "下一步"
 
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.tt2:18
 msgid "do.no"
-msgstr "無"
+msgstr "否"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:141
 msgid "do.ok"
@@ -13719,7 +13719,7 @@ msgstr "工具庫"
 #. (gallery.account_name)
 #: share/plugin/widgets/template/view/gallery:34
 msgid "widgets.gallery-switch=account:"
-msgstr "這是『%1』賬號的工具庫。前往帳戶："
+msgstr "這是『%1』帳戶的工具庫。前往帳戶："
 
 msgid "widgets.group"
 msgstr "群組"
@@ -13754,7 +13754,7 @@ msgstr "網址"
 
 #: share/plugin/widgets/template/view/gallery:0 share/plugin/widgets/template/view/gallery:24
 msgid "widgets.manage-gallery-for-accounts"
-msgstr "管理各賬號工具庫"
+msgstr "管理各賬戶工具庫"
 
 msgid "widgets.max-description-length"
 msgstr "內文字數上限"
@@ -13843,17 +13843,17 @@ msgid "widgets.restored=widget"
 msgstr "成功恢復『%1』小工具"
 
 msgid "widgets.rotate?"
-msgstr "交替顯示？"
+msgstr "交替檢視？"
 
 #: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:24
 msgid "widgets.rss-feed"
 msgstr "RSS 訂閱"
 
 msgid "widgets.scroll-to"
-msgstr "卷動到"
+msgstr "捲動到"
 
 msgid "widgets.scrolling?"
-msgstr "顯示卷動軸？"
+msgstr "顯示捲動軸？"
 
 msgid "widgets.sheet"
 msgstr "試算表"
@@ -13917,7 +13917,7 @@ msgid "widgets.view"
 msgstr "檢視"
 
 msgid "widgets.view-add_to_watchlist"
-msgstr "Watched Pages"
+msgstr "受關注的頁面"
 
 msgid "widgets.view-contribs"
 msgstr "編輯"

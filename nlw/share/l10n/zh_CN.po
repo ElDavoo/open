@@ -4078,7 +4078,7 @@ msgstr "下一步"
 
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.tt2:18
 msgid "do.no"
-msgstr "无"
+msgstr "否"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/edit_wikiwyg:141
 msgid "do.ok"
@@ -13719,7 +13719,7 @@ msgstr "工具库"
 #. (gallery.account_name)
 #: share/plugin/widgets/template/view/gallery:34
 msgid "widgets.gallery-switch=account:"
-msgstr "这是“%1”账号的工具库。转到帐户："
+msgstr "这是“%1”帐户的工具库。转到帐户："
 
 msgid "widgets.group"
 msgstr "群组"
@@ -13754,7 +13754,7 @@ msgstr "网址"
 
 #: share/plugin/widgets/template/view/gallery:0 share/plugin/widgets/template/view/gallery:24
 msgid "widgets.manage-gallery-for-accounts"
-msgstr "管理各账号工具库"
+msgstr "管理各账戶工具库"
 
 msgid "widgets.max-description-length"
 msgstr "内文字数上限"
@@ -13843,7 +13843,7 @@ msgid "widgets.restored=widget"
 msgstr "成功恢复“%1”小工具"
 
 msgid "widgets.rotate?"
-msgstr "交替显示？"
+msgstr "交替检视？"
 
 #: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:24
 msgid "widgets.rss-feed"
@@ -13917,7 +13917,7 @@ msgid "widgets.view"
 msgstr "检视"
 
 msgid "widgets.view-add_to_watchlist"
-msgstr "Watched Pages"
+msgstr "受关注的页面"
 
 msgid "widgets.view-contribs"
 msgstr "编辑"
