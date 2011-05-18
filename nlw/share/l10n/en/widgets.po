@@ -393,9 +393,14 @@ msgstr "Signal This!"
 msgid "bookmarklet.tip"
 msgstr "Tip: Use the"
 
+#: share/plugin/widgets/share/widgets/activities.xml:31
+msgid "date.never"
+msgstr "never"
+
 msgid "description.active_members"
 msgstr "Shows what users are most active."
 
+#: share/plugin/widgets/share/widgets/activities.xml:5
 msgid "description.activities"
 msgstr "Post signals and display activities, including signals and workspace events."
 
@@ -593,6 +598,10 @@ msgstr "Yes"
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:78
 msgid "error.delete=widget,message"
 msgstr "Error deleting the \"%1\" widget: %2"
+
+#: share/plugin/widgets/share/widgets/my_workspaces/widget.js:34
+msgid "error.display-list-of-wikis"
+msgstr "Unable to display list of workspaces."
 
 #: share/plugin/widgets/share/javascript/activities/editor.js:376
 msgid "error.error"
@@ -873,6 +882,10 @@ msgstr "%1M"
 msgid "files.none"
 msgstr "none"
 
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:1 share/plugin/widgets/share/widgets/top_content/prefs.xml:1
+msgid "groups.group"
+msgstr "Group"
+
 #: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:5
 msgid "info.browse"
 msgstr "Click \"Browse\" and select an image or file to upload."
@@ -916,6 +929,21 @@ msgstr "Signals"
 #: share/plugin/widgets/template/mobile-signals.tt2:131
 msgid "nav.wikis"
 msgstr "Workspaces"
+
+#: share/plugin/widgets/share/widgets/workspace_activity/widget.html:8
+msgid "page.comment"
+msgstr "Comment"
+
+#: share/plugin/widgets/share/widgets/workspace_activity/widget.html:7
+msgid "page.edit"
+msgstr "Edit"
+
+msgid "page.type-spreadsheet"
+msgstr "Spreadsheet"
+
+#: share/plugin/widgets/share/widgets/one_page/prefs.xml:2
+msgid "page.type-wiki"
+msgstr "Page"
 
 #: share/plugin/widgets/share/javascript/activities/editor.js:1508
 msgid "signals.insert-mention:"
@@ -963,6 +991,7 @@ msgstr "What are you working on?"
 msgid "title.active_members"
 msgstr "Active People"
 
+#: share/plugin/signals/share/widgets/explore/prefs.xml:14 share/plugin/widgets/share/widgets/activities.xml:21 share/plugin/widgets/share/widgets/userlist/prefs.xml:14
 msgid "title.activities"
 msgstr "Activities"
 
@@ -1037,6 +1066,7 @@ msgstr "Spreadsheet Page"
 msgid "title.one_web_page"
 msgstr "Web Page"
 
+#: share/plugin/widgets/share/widgets/empty/prefs.xml:1 share/plugin/widgets/share/widgets/oneimage/prefs.xml:2
 msgid "title.oneimage"
 msgstr "Image"
 
@@ -1056,7 +1086,7 @@ msgstr "Tags"
 msgid "title.rest_api"
 msgstr "Rest API Devtool"
 
-#: share/plugin/widgets/share/widgets/rss/config.yaml:3
+#: share/plugin/widgets/share/widgets/rss/prefs.xml:2 share/plugin/widgets/share/widgets/rss/config.yaml:3
 msgid "title.rss"
 msgstr "RSS Viewer"
 
@@ -1303,10 +1333,14 @@ msgstr "Use the Widget Editor"
 msgid "widgets.views"
 msgstr "views"
 
-#: share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:1
+#: share/plugin/widgets/share/widgets/blockerbugs/prefs.xml:1 share/plugin/widgets/share/widgets/iterationbugs/prefs.xml:1 share/plugin/widgets/share/widgets/one_page/prefs.xml:1 share/plugin/widgets/share/widgets/one_spreadsheet/prefs.xml:1 share/plugin/widgets/share/widgets/tagged_pages/prefs.xml:1 share/plugin/widgets/share/widgets/top_content/prefs.xml:4 share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:1
 msgid "widgets.wiki"
 msgstr "Workspace"
 
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:4
 msgid "widgets.you-belong-to-no-wikis"
 msgstr "You belong to no workspaces."
+
+#: share/plugin/widgets/share/widgets/tagged_pages/prefs.xml:2
+msgid "wiki.tag"
+msgstr "Tag"

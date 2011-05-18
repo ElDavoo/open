@@ -676,3 +676,11 @@ msgstr "Tags"
 #: share/plugin/people/share/widgets/profile_edit/widget.html:44
 msgid "user.name"
 msgstr "Name"
+
+#: share/plugin/people/share/widgets/all_tags.xml:10
+msgid "widgets.all"
+msgstr "all"
+
+#: share/plugin/people/share/widgets/all_tags.xml:9
+msgid "widgets.number-of-tags-to-show"
+msgstr "Number of tags to show"

@@ -394,6 +394,10 @@ msgstr "What are you working on?"
 msgid "signals.your-settings"
 msgstr "your settings"
 
+#: share/plugin/signals/share/widgets/explore/prefs.xml:14 share/plugin/widgets/share/widgets/activities.xml:21 share/plugin/widgets/share/widgets/userlist/prefs.xml:14
+msgid "title.activities"
+msgstr "Activities"
+
 #: share/plugin/signals/share/widgets/explore_filters/config.yaml:4
 msgid "title.explore_filters"
 msgstr "Filters"

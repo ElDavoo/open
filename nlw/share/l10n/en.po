@@ -3981,7 +3981,7 @@ msgstr "May"
 msgid "date.mon"
 msgstr "Mon"
 
-#: share/plugin/control/template/control/date_cell:2
+#: share/plugin/widgets/share/widgets/activities.xml:31 share/plugin/control/template/control/date_cell:2
 msgid "date.never"
 msgstr "never"
 
@@ -4027,6 +4027,7 @@ msgstr "Wed"
 msgid "description.active_members"
 msgstr "Shows what users are most active."
 
+#: share/plugin/widgets/share/widgets/activities.xml:5
 msgid "description.activities"
 msgstr "Post signals and display activities, including signals and workspace events."
 
@@ -5655,7 +5656,7 @@ msgstr "Error deleting the \"%1\" widget: %2"
 msgid "error.desktop-runtime-required=target"
 msgstr "%1 is required."
 
-#: share/plugin/groups/share/widgets/workspaces/widget.js:66
+#: share/plugin/widgets/share/widgets/my_workspaces/widget.js:34 share/plugin/groups/share/widgets/workspaces/widget.js:66
 msgid "error.display-list-of-wikis"
 msgstr "Unable to display list of workspaces."
 
@@ -8405,7 +8406,7 @@ msgstr "Edit Group: %1"
 msgid "groups.first"
 msgstr "first"
 
-#: share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:8 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:4 share/plugin/groups/template/create_group_hello:2 share/plugin/groups/template/edit_group_hello:3
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:1 share/plugin/widgets/share/widgets/top_content/prefs.xml:1 share/plugin/groups/share/widgets/all_groups/jemplate/list.tt2:8 share/plugin/groups/share/widgets/my_groups/jemplate/list.tt2:4 share/plugin/groups/template/create_group_hello:2 share/plugin/groups/template/edit_group_hello:3
 msgid "groups.group"
 msgstr "Group"
 
@@ -10579,7 +10580,7 @@ msgstr "Recently Viewed Pages"
 msgid "page.changes=time,changed,total"
 msgstr "Changes in %1 (%2) out of (%3) Total Pages"
 
-#: share/skin/s3/template/element/page/display/comment-button:6 share/skin/s3/template/view/weblog:73
+#: share/plugin/widgets/share/widgets/workspace_activity/widget.html:8 share/skin/s3/template/element/page/display/comment-button:6 share/skin/s3/template/view/weblog:73
 msgid "page.comment"
 msgstr "Comment"
 
@@ -10666,7 +10667,7 @@ msgstr "Duplicate Page"
 msgid "page.duplicate=title"
 msgstr "Duplicate of %1"
 
-#: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:41 share/skin/s3/template/element/page/display/edit-button:13 share/skin/s3/template/element/page/display/edit-button:7 share/skin/s3/template/lite/subnav.html:40 share/skin/s3/template/view/weblog:98
+#: share/plugin/widgets/share/widgets/workspace_activity/widget.html:7 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:41 share/skin/s3/template/element/page/display/edit-button:13 share/skin/s3/template/element/page/display/edit-button:7 share/skin/s3/template/lite/subnav.html:40 share/skin/s3/template/view/weblog:98
 msgid "page.edit"
 msgstr "Edit"
 
@@ -10881,7 +10882,7 @@ msgstr "Top of page"
 msgid "page.type-spreadsheet"
 msgstr "Spreadsheet"
 
-#: share/skin/s3/javascript/lightbox/create_content.js:9 lib/Socialtext/Pluggable/Plugin/Default.pm:45
+#: share/plugin/widgets/share/widgets/one_page/prefs.xml:2 share/skin/s3/javascript/lightbox/create_content.js:9 lib/Socialtext/Pluggable/Plugin/Default.pm:45
 msgid "page.type-wiki"
 msgstr "Page"
 
@@ -13253,6 +13254,7 @@ msgstr "%1 weeks"
 msgid "title.active_members"
 msgstr "Active People"
 
+#: share/plugin/signals/share/widgets/explore/prefs.xml:14 share/plugin/widgets/share/widgets/activities.xml:21 share/plugin/widgets/share/widgets/userlist/prefs.xml:14
 msgid "title.activities"
 msgstr "Activities"
 
@@ -13344,6 +13346,7 @@ msgstr "Spreadsheet Page"
 msgid "title.one_web_page"
 msgstr "Web Page"
 
+#: share/plugin/widgets/share/widgets/empty/prefs.xml:1 share/plugin/widgets/share/widgets/oneimage/prefs.xml:2
 msgid "title.oneimage"
 msgstr "Image"
 
@@ -13375,7 +13378,7 @@ msgstr "Tags"
 msgid "title.rest_api"
 msgstr "Rest API Devtool"
 
-#: share/plugin/widgets/share/widgets/rss/config.yaml:3
+#: share/plugin/widgets/share/widgets/rss/prefs.xml:2 share/plugin/widgets/share/widgets/rss/config.yaml:3
 msgid "title.rss"
 msgstr "RSS Viewer"
 
@@ -14308,7 +14311,7 @@ msgstr "Add Widget"
 msgid "widgets.added"
 msgstr "Successfully added your widget"
 
-#: share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:3
+#: share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:3 share/plugin/people/share/widgets/all_tags.xml:10
 msgid "widgets.all"
 msgstr "all"
 
@@ -14377,7 +14380,7 @@ msgstr "No description provided"
 msgid "widgets.no-tags-for=wiki"
 msgstr "Workspace <b>%1</b> has no tags. You may go to the workspace and add a page tag in the right-hand sidebar."
 
-#: share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:2
+#: share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:2 share/plugin/people/share/widgets/all_tags.xml:9
 msgid "widgets.number-of-tags-to-show"
 msgstr "Number of tags to show"
 
@@ -14456,7 +14459,7 @@ msgstr "Use the Widget Editor"
 msgid "widgets.views"
 msgstr "views"
 
-#: share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:1
+#: share/plugin/widgets/share/widgets/blockerbugs/prefs.xml:1 share/plugin/widgets/share/widgets/iterationbugs/prefs.xml:1 share/plugin/widgets/share/widgets/one_page/prefs.xml:1 share/plugin/widgets/share/widgets/one_spreadsheet/prefs.xml:1 share/plugin/widgets/share/widgets/tagged_pages/prefs.xml:1 share/plugin/widgets/share/widgets/top_content/prefs.xml:4 share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:1
 msgid "widgets.wiki"
 msgstr "Workspace"
 
@@ -14761,7 +14764,7 @@ msgstr "How many items from that time period should be displayed as a side box o
 msgid "wiki.skin"
 msgstr "Workspace Skin"
 
-#: share/skin/s3/template/view/taglistview:24
+#: share/plugin/widgets/share/widgets/tagged_pages/prefs.xml:2 share/skin/s3/template/view/taglistview:24
 msgid "wiki.tag"
 msgstr "Tag"
 
