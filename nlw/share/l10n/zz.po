@@ -87,7 +87,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-25 12:38+0800\n"
+"PO-Revision-Date: 2011-05-18 03:27-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -4400,6 +4400,10 @@ msgstr "Zzzz Zzzzzz"
 msgid "do.edit-profile"
 msgstr "Zzzz Zzzzzzz"
 
+#: share/skin/s3/template/view/page/display:79
+msgid "do.email"
+msgstr "Zzzzz"
+
 #: share/skin/s3/template/view/listview:21
 msgid "do.export"
 msgstr "Zzzzzz"
@@ -5505,6 +5509,10 @@ msgstr "Zzzzzz zz zzzzz zzz zzzz."
 msgid "error.cannot-change-account-logo-with-custom-skin=name"
 msgstr "Zzzzzzz z zzzzzz zzzz zz zz zzz, zzz zzzzzzz zzzz zzzzzz zz zzzzzzz.  Zzz zzzz zz zzz zz zzzzzz '%1'"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.js:52 share/plugin/widgets/share/widgets/one_page/widget.js:57
+msgid "error.cannot-embed-page-within-itself"
+msgstr "Zzzzz: Zzzzzz zzzzz z zzzz zzzzzz zzzzzz."
+
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:3009
 msgid "error.cannot-load-revision"
 msgstr "Zzzzzz zzzz zzzzzzzz"
@@ -6208,6 +6216,10 @@ msgstr "Zzzzzz zz zzzz zzzzzzz."
 msgid "error.loading-revision-failed"
 msgstr "Zzzzzz zz zzzz zzzzzzzz."
 
+#: share/plugin/widgets/share/widgets/one_page/widget.js:26
+msgid "error.loading-wiki-data"
+msgstr "Zzzzz zzzzzzz zzzzzzzzz zzzz"
+
 #. (workspace_name)
 #: share/template/errors/login_to_edit:3
 msgid "error.login-to-edit=wiki"
@@ -6280,6 +6292,10 @@ msgstr "Zzzz zz z zzzzzzzz zzzzz zz zzz zzzzzzz zz z zzzzzzzzz"
 #: lib/Socialtext/Rest/Workspaces.pm:249
 msgid "error.name-title-required"
 msgstr "zzzz, zzzzz zzzzzzzz"
+
+#: share/plugin/widgets/share/widgets/one_page/widget.js:62
+msgid "error.nested-embedding-limit-reached"
+msgstr "Zzzzz: Zzzzzz zzzzzzzzz zzzzz zzzzzzz."
 
 #: lib/Socialtext/Handler/ControlPanel.pm:470
 msgid "error.new-account-name-required"
@@ -6582,6 +6598,11 @@ msgstr "zzzzzz %1 zzzzz'z zzzzz"
 #: share/plugin/widgets/share/javascript/activities/editor.js:659
 msgid "error.no-such-wikilink-wiki"
 msgstr "Zzz zzzzzzzzz zzz zzzzzzzzz zzzz zzz zzzzz, zzzzzz zzz zzzzz"
+
+#. ('__UP_workspace_name__')
+#: share/plugin/widgets/share/widgets/one_page/widget.js:21
+msgid "error.no-such=wiki"
+msgstr "Zzzzzzzzz \"%1\" zzzz zzz zzzzz."
 
 #. ($opts{search}, $hub->current_workspace()
 #: lib/Socialtext/CLI.pm:3825
@@ -7397,6 +7418,11 @@ msgstr "Zzzzzzzzzz zzzzzzzzzz zzzzzz zzzzzzz zz zzzzzzzzz"
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3169
 msgid "error.video-url-required"
 msgstr "Zzzzz ZZZ zz zzzzzzzz"
+
+#. ('__UP_workspace_name__')
+#: share/plugin/widgets/share/widgets/one_page/widget.js:16
+msgid "error.view-forbidden=wiki"
+msgstr "Zzz zz zzz zzzz zzzzzzzzzzz zz zzzz zzzzzzzzz \"%1\"."
 
 #: lib/Socialtext/Appliance/Model/Backup.pm:123
 msgid "error.weeks-to-retain-backups-not-integer"
@@ -13362,7 +13388,7 @@ msgstr "Zzzzzzzzzzz Zzzz"
 msgid "title.one_web_page"
 msgstr "Zzz Zzzz"
 
-#: share/plugin/widgets/share/widgets/empty/prefs.xml:1 share/plugin/widgets/share/widgets/oneimage/prefs.xml:2
+#: share/plugin/widgets/share/widgets/oneimage/prefs.xml:2 share/plugin/widgets/share/widgets/empty/prefs.xml:1
 msgid "title.oneimage"
 msgstr "Zzzzz"
 
@@ -13683,7 +13709,7 @@ msgstr "Zzz zzzz zzz zzzz zzzzzzz zzzz zzzzzzzzzz zzz zzzzzzzzzzz."
 msgid "user.deactivated=name"
 msgstr "Zzzz %1 zzz zzzz zzzzzzzzzzz."
 
-#: share/skin/s3/template/element/settings/users_settings_section:8 share/skin/s3/template/view/page/display:79
+#: share/skin/s3/template/element/settings/users_settings_section:8
 msgid "user.email"
 msgstr "Zzzzz"
 
@@ -14299,6 +14325,10 @@ msgstr "ZZZ"
 msgid "widget.width:"
 msgstr "Zzzzzz zzzzz:"
 
+#: share/plugin/widgets/share/widgets/workspace_activity/widget.html:13
+msgid "widgets.about-duration"
+msgstr "Zzzz zzz zz zzzzzz zzzzzzz (zzzzzzzz) zz zzzzzzzzz (zzzzzzzz) zzzzz zz zzz zzzzz zzzz. Z.z.: 1zzzzz, -3 zzzzz, 48 zzzzzzz, 1zzzz"
+
 #: share/plugin/widgets/template/view/gallery:110
 msgid "widgets.about-restore"
 msgstr "Zzzzzzz"
@@ -14306,6 +14336,14 @@ msgstr "Zzzzzzz"
 #: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:55 share/plugin/widgets/template/view/gallery:104
 msgid "widgets.about-update"
 msgstr "Zzzzzz"
+
+#: share/plugin/widgets/share/widgets/active_members/widget.js:30
+msgid "widgets.active-contributions"
+msgstr "zzzzzz zzzzzzzzzzzzz"
+
+#: share/plugin/widgets/share/widgets/active_members/widget.js:36
+msgid "widgets.active-signalers"
+msgstr "zzzzzz zzzzzzzzz"
 
 #: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:55
 msgid "widgets.add"
@@ -14330,6 +14368,10 @@ msgstr "Zzzzzzzzzzzz zzzzz zzzz zzzzzz"
 #: share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:3 share/plugin/people/share/widgets/all_tags.xml:10
 msgid "widgets.all"
 msgstr "zzz"
+
+#: share/plugin/widgets/share/widgets/activities.xml:33
+msgid "widgets.always"
+msgstr "zzzzzz"
 
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:14
 msgid "widgets.changes"
@@ -14359,12 +14401,48 @@ msgstr "Zzzzzz zzz zzzz zz %1"
 msgid "widgets.delete"
 msgstr "(zzzzzz)"
 
+#: share/plugin/widgets/share/widgets/workspace_activity/widget.html:13
+msgid "widgets.duration"
+msgstr "Zzzzzzzz"
+
+#: share/plugin/widgets/share/widgets/top_content/widget.js:23
+msgid "widgets.edited"
+msgstr "Zzzzzz"
+
+#: share/plugin/widgets/share/widgets/top_content/widget.js:24
+msgid "widgets.edited-pages"
+msgstr "zzzzzz zzzzz"
+
+#: share/plugin/widgets/share/widgets/active_members/widget.js:29
+msgid "widgets.edits"
+msgstr "Zzzzz"
+
+#: share/plugin/widgets/share/widgets/top_content/widget.js:35
+msgid "widgets.emailed"
+msgstr "Zzzzzzz"
+
+#: share/plugin/widgets/share/widgets/top_content/widget.js:36
+msgid "widgets.emailed-pages"
+msgstr "zzzzzzz zzzzz"
+
 msgid "widgets.gallery"
 msgstr "Zzzzzz Zzzzzzz"
 
 #: share/plugin/widgets/template/view/gallery:34
 msgid "widgets.gallery-switch=account:"
 msgstr "Zzzz zz zzz zzzzzz zzzzzzz zzz zzz \"%1\" zzzzzzz. Zzzzzz zz zzzzzzz:"
+
+#: share/plugin/widgets/share/widgets/top_content/prefs.xml:1
+msgid "widgets.group"
+msgstr "Zzzzz"
+
+#: share/plugin/widgets/share/widgets/empty/prefs.xml:2 share/plugin/widgets/share/widgets/one_spreadsheet/prefs.xml:3 share/plugin/widgets/share/widgets/one_web_page.xml:13
+msgid "widgets.height"
+msgstr "Zzzzzz"
+
+#: share/plugin/widgets/share/widgets/oneimage/prefs.xml:1
+msgid "widgets.image-source"
+msgstr "Zzzzz Zzzzzz"
 
 #. ($email)
 #: lib/Socialtext/Pluggable/Plugin/Widgets.pm:266
@@ -14379,13 +14457,65 @@ msgstr "Zzz zzz zz zzzzzz zzzz. Zzzzz <b>Zzzz</b> zz zzzz zzzz zzzzzzz, <b>Zzzzz
 msgid "widgets.install-this"
 msgstr "Zzzzzzz zzzz zzzzzz"
 
+#: share/plugin/widgets/share/widgets/rss/prefs.xml:3
+msgid "widgets.items-displayed"
+msgstr "Zzzzz Zzzzzzzzz"
+
+#: share/plugin/widgets/share/widgets/iterationbugs/prefs.xml:2
+msgid "widgets.iteration"
+msgstr "Zzzzzzzzz"
+
+#: share/plugin/widgets/share/widgets/one_page/widget.js:66
+msgid "widgets.loading"
+msgstr "Zzzzzzz..."
+
+#: share/plugin/widgets/share/widgets/one_web_page.xml:12
+msgid "widgets.location"
+msgstr "Zzzzzzzz"
+
 #: share/plugin/widgets/template/view/gallery:0 share/plugin/widgets/template/view/gallery:24
 msgid "widgets.manage-gallery-for-accounts"
 msgstr "Zzzzzz Zzzzzzz zzz Zzzzzzzz"
 
+#: share/plugin/widgets/share/widgets/rss/prefs.xml:10
+msgid "widgets.max-description-length"
+msgstr "Zzzzzzz zzzzzzzzzzz zzzzzzzzzz"
+
+#: share/plugin/widgets/share/widgets/activities.xml:32
+msgid "widgets.mentions-and-private-signals-only"
+msgstr "zzzz Z zz zzzzzzzzz zz zzzzzzzzz zzzzzzzzz"
+
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:21
 msgid "widgets.new-page"
 msgstr "zzz zzzz"
+
+#: share/plugin/widgets/share/widgets/active_members/widget.js:31
+msgid "widgets.no-active-contributors"
+msgstr "Zzz zzzz zzzzzz zzzzzzz zzzz zz zzzzzz zzzz. Zz zzz zzzzz zz zzzzz zzz zzzzzz zzzz zzz zzzzzzzzzz, zzzz zzzzzz zzzzzzzz zzzz zzzz."
+
+#: share/plugin/widgets/share/widgets/top_content/widget.js:37
+msgid "widgets.no-active-emailed-pages"
+msgstr "Zzz zzzz zzzzzzzzzz zzzzzzz zzzzz zzzz zz zzzzzz zzzz. Zzz zzzzzzzz z zzzz zz z zzzzzzzzz zz zzzzzzzz zz zzz Zzzzz zzzz zz zzz zzzz'z zzzzzzz."
+
+#: share/plugin/widgets/share/widgets/active_members/widget.js:25
+msgid "widgets.no-active-readers"
+msgstr "Zzz zzzz zzzzzz zzzzzzz zzzz zz zzzzzz zzzz. Zz zzz zzzzzzz zzzz zzz zzzzzzzzzz, zzzz zzzzzz zzzzzzzz zzzz zzzz."
+
+#: share/plugin/widgets/share/widgets/active_members/widget.js:37
+msgid "widgets.no-active-signalers"
+msgstr "Zzz zzzz zzzzzz zzzzzzzzz zzzz zz zzzzzz zzzz. Zzz zzzzzzz z zzzzzz zzzz zzzz Zzzzzzzzz!"
+
+#: share/plugin/widgets/share/widgets/top_content/widget.js:19
+msgid "widgets.no-active-viewed-pages"
+msgstr "Zzz zzzz zzzzzzzzzz zzzzzz zzzzz zzzz zz zzzzzz zzzz. Zzzzz zzz zzzzzzz zzzz zzz zzzzzzzzzz, zzz zzz zzz zzz zzzz zzzzzz zzzzz zzzz."
+
+#: share/plugin/widgets/share/widgets/active_members/widget.js:19
+msgid "widgets.no-active-viewed-profiles"
+msgstr "Zzz zzzz zzzzzzzzzz zzzzzz zzzzzzzz zzzz zz zzzzzz zzzz. Zzz zzz zzzz zzzz zzz zzzzzzz zz zzzzzz z zzzzzzzzz zzz zzzz zzzz zzz zzzzzzz."
+
+#: share/plugin/widgets/share/widgets/top_content/widget.js:31
+msgid "widgets.no-active-watched-pages"
+msgstr "Zzz zzzz zzzzzzzzzz zzzzzzz zzzzz zzzz zz zzzzzz zzzz. Zzz zzzzzzzz z zzzz zz zzz zz zzzz zzz zzzzzzzzzz zz zzzzzzzz zz zzz Zzzzz zzzz zz zzz zzzz'z zzzzzzz."
 
 #: share/plugin/widgets/template/view/gallery:75
 msgid "widgets.no-description"
@@ -14396,13 +14526,34 @@ msgstr "Zz zzzzzzzzzzz zzzzzzzz"
 msgid "widgets.no-tags-for=wiki"
 msgstr "Zzzzzzzzz <b>%1</b> zzz zz zzzz. Zzz zzz zz zz zzz zzzzzzzzz zzz zzz z zzzz zzz zz zzz zzzzz-zzzz zzzzzzz."
 
+#: share/plugin/widgets/share/widgets/activities.xml:10 share/plugin/widgets/share/widgets/userlist/prefs.xml:1
+msgid "widgets.number-of-activities-to-display"
+msgstr "Zzzzzz zz Zzzzzzzzzz Zz Zzzzzzz"
+
 #: share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:2 share/plugin/people/share/widgets/all_tags.xml:9
 msgid "widgets.number-of-tags-to-show"
 msgstr "Zzzzzz zz zzzz zz zzzz"
 
+#: share/plugin/widgets/share/widgets/active_members/widget.js:24
+msgid "widgets.page-views"
+msgstr "zzzz zzzzz"
+
+#. ('__UP_tag_name__')
+#: share/plugin/widgets/share/widgets/tagged_pages/widget.js:20
+msgid "widgets.pages-tagged=tag"
+msgstr "Zzzzz zzzzzz '%1'"
+
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:33
 msgid "widgets.permanent-remove"
 msgstr "Zzzzzzzzzzz Zzzzzz Zzzzzz"
+
+#: share/plugin/widgets/share/widgets/bugzilla.xml:10
+msgid "widgets.priorities"
+msgstr "Zzzzzzzzzz"
+
+#: share/plugin/widgets/share/widgets/active_members/widget.js:23
+msgid "widgets.readers"
+msgstr "Zzzzzzz"
 
 #: share/plugin/widgets/template/view/gallery:126
 msgid "widgets.remove"
@@ -14430,9 +14581,46 @@ msgstr "Zzzzzzz Zzzzzz"
 msgid "widgets.restored=widget"
 msgstr "Zzzzzzzzzzzz zzzzzzzz zzz \"%1\" zzzzzz"
 
-#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:24
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:24 share/plugin/widgets/share/widgets/top_content/prefs.xml:27
+msgid "widgets.rotate?"
+msgstr "Zzzzzz?"
+
+#: share/plugin/widgets/share/widgets/rss/prefs.xml:1 share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:24
+#, fuzzy
 msgid "widgets.rss-feed"
-msgstr "ZZZ zzzz"
+msgstr ""
+"#-#-#-#-#  zzzzzzz.zz  #-#-#-#-#\z"
+"ZZZ Zzzz\z"
+"#-#-#-#-#  zzzzzzz.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\z"
+"ZZZ zzzz"
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/prefs.xml:11
+msgid "widgets.scroll-to"
+msgstr "Zzzzzz zz"
+
+#: share/plugin/widgets/share/widgets/one_web_page.xml:14
+msgid "widgets.scrolling?"
+msgstr "Zzzz zzzzzz zzzz?"
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/prefs.xml:2
+msgid "widgets.sheet"
+msgstr "Zzzzzzzzzzz"
+
+#: share/plugin/widgets/share/widgets/activities.xml:30
+msgid "widgets.show-notifications"
+msgstr "Zzzz Zzzzzzzzzzzzz"
+
+#: share/plugin/widgets/share/widgets/active_members/widget.js:35
+msgid "widgets.signals"
+msgstr "Zzzzzzz"
+
+#: share/plugin/widgets/share/widgets/workspace_activity/widget.html:12
+msgid "widgets.start-date"
+msgstr "Zzzzz zzzz"
+
+#: share/plugin/widgets/share/widgets/bugzilla.xml:9
+msgid "widgets.statuses"
+msgstr "Zzzzzzzz"
 
 #: share/plugin/widgets/share/widgets/tag_cloud/widget.js:47
 msgid "widgets.tags-for=wiki"
@@ -14442,10 +14630,22 @@ msgstr "Zzzz zzz %1 zzzzzzzzz"
 msgid "widgets.this-person-belongs-to-no-wikis"
 msgstr "Zzzz zzzzzz zzzzzzz zz zz zzzzzzzzzz."
 
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:4 share/plugin/widgets/share/widgets/top_content/prefs.xml:7
+msgid "widgets.time"
+msgstr "Zzzz"
+
+#: share/plugin/widgets/share/widgets/empty/prefs.xml:1 share/plugin/widgets/share/widgets/one_web_page.xml:11 share/plugin/widgets/share/widgets/oneimage/prefs.xml:2
+msgid "widgets.title"
+msgstr "Zzzzz"
+
 #. ('__UP_workspace__')
 #: share/plugin/widgets/share/widgets/tag_cloud/widget.js:57
 msgid "widgets.unable-to-build-tag-cloud-for=wiki"
 msgstr "Zzzzzz zz zzzzz zzz zzzzz zzz <b>%1</b>."
+
+#: share/plugin/widgets/share/widgets/rss/prefs.xml:13
+msgid "widgets.unlimited"
+msgstr "Zzzzzzzzz"
 
 #: share/plugin/widgets/template/view/gallery:107
 msgid "widgets.update"
@@ -14471,11 +14671,67 @@ msgstr "Zzzzzz Zzzzzz ZZZ Zzzz:"
 msgid "widgets.use-editor"
 msgstr "Zzz zzz Zzzzzz Zzzzzz"
 
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:16 share/plugin/widgets/share/widgets/top_content/prefs.xml:19 share/plugin/widgets/share/widgets/workspace_activity/widget.html:6
+msgid "widgets.view"
+msgstr "Zzzz"
+
+#: share/plugin/widgets/share/widgets/top_content/prefs.xml:23
+msgid "widgets.view-add_to_watchlist"
+msgstr "Zzzzzzz Zzzzz"
+
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:20
+msgid "widgets.view-contribs"
+msgstr "Zzzzz"
+
+#: share/plugin/widgets/share/widgets/top_content/prefs.xml:22
+msgid "widgets.view-edit_page"
+msgstr "Zzzzzz Zzzzz"
+
+#: share/plugin/widgets/share/widgets/top_content/prefs.xml:24
+msgid "widgets.view-email_page"
+msgstr "Zzzzzzz Zzzzz"
+
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:18
+msgid "widgets.view-profile_views"
+msgstr "Zzzzzz Zzzzzzzz"
+
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:19
+msgid "widgets.view-reads"
+msgstr "Zzzzzzz"
+
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:21
+msgid "widgets.view-signals"
+msgstr "Zzzzzzz"
+
+#: share/plugin/widgets/share/widgets/top_content/prefs.xml:21
+msgid "widgets.view-view_page"
+msgstr "Zzzzzz Zzzzz"
+
+#: share/plugin/widgets/share/widgets/active_members/widget.js:17 share/plugin/widgets/share/widgets/top_content/widget.js:17
+msgid "widgets.viewed"
+msgstr "Zzzzzz"
+
+#: share/plugin/widgets/share/widgets/top_content/widget.js:18
+msgid "widgets.viewed-pages"
+msgstr "zzzzzz zzzzz"
+
+#: share/plugin/widgets/share/widgets/active_members/widget.js:18
+msgid "widgets.viewed-profiles"
+msgstr "zzzzzz zzzzzzzz"
+
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:13
 msgid "widgets.views"
 msgstr "zzzzz"
 
-#: share/plugin/widgets/share/widgets/blockerbugs/prefs.xml:1 share/plugin/widgets/share/widgets/iterationbugs/prefs.xml:1 share/plugin/widgets/share/widgets/one_page/prefs.xml:1 share/plugin/widgets/share/widgets/one_spreadsheet/prefs.xml:1 share/plugin/widgets/share/widgets/tagged_pages/prefs.xml:1 share/plugin/widgets/share/widgets/top_content/prefs.xml:4 share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:1
+#: share/plugin/widgets/share/widgets/top_content/widget.js:29
+msgid "widgets.watched"
+msgstr "Zzzzzzz"
+
+#: share/plugin/widgets/share/widgets/top_content/widget.js:30
+msgid "widgets.watched-pages"
+msgstr "zzzzzzz zzzzz"
+
+#: share/plugin/widgets/share/widgets/iterationbugs/prefs.xml:1 share/plugin/widgets/share/widgets/one_page/prefs.xml:1 share/plugin/widgets/share/widgets/one_spreadsheet/prefs.xml:1 share/plugin/widgets/share/widgets/tagged_pages/prefs.xml:1 share/plugin/widgets/share/widgets/top_content/prefs.xml:4 share/plugin/widgets/share/widgets/workspace_activity/widget.html:3 share/plugin/widgets/share/widgets/blockerbugs/prefs.xml:1 share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:1
 msgid "widgets.wiki"
 msgstr "Zzzzzzzzz"
 

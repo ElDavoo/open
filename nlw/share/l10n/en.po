@@ -87,7 +87,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-02-25 12:38+0800\n"
+"PO-Revision-Date: 2011-05-18 03:27-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -4400,6 +4400,10 @@ msgstr "Edit Layout"
 msgid "do.edit-profile"
 msgstr "Edit Profile"
 
+#: share/skin/s3/template/view/page/display:79
+msgid "do.email"
+msgstr "Email"
+
 #: share/skin/s3/template/view/listview:21
 msgid "do.export"
 msgstr "Export"
@@ -5505,6 +5509,10 @@ msgstr "Unable to build tag list."
 msgid "error.cannot-change-account-logo-with-custom-skin=name"
 msgstr "Because a custom skin is in use, the account logo cannot be changed.  The skin in use is called '%1'"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.js:52 share/plugin/widgets/share/widgets/one_page/widget.js:57
+msgid "error.cannot-embed-page-within-itself"
+msgstr "Error: Cannot embed a page within itself."
+
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:3009
 msgid "error.cannot-load-revision"
 msgstr "Cannot load revision"
@@ -6208,6 +6216,10 @@ msgstr "Failed to load preview."
 msgid "error.loading-revision-failed"
 msgstr "Failed to load revision."
 
+#: share/plugin/widgets/share/widgets/one_page/widget.js:26
+msgid "error.loading-wiki-data"
+msgstr "Error loading workspace data"
+
 #. (workspace_name)
 #: share/template/errors/login_to_edit:3
 msgid "error.login-to-edit=wiki"
@@ -6280,6 +6292,10 @@ msgstr "Must be a business admin to set members of a workspace"
 #: lib/Socialtext/Rest/Workspaces.pm:249
 msgid "error.name-title-required"
 msgstr "name, title required"
+
+#: share/plugin/widgets/share/widgets/one_page/widget.js:62
+msgid "error.nested-embedding-limit-reached"
+msgstr "Error: Nested embedding limit reached."
 
 #: lib/Socialtext/Handler/ControlPanel.pm:470
 msgid "error.new-account-name-required"
@@ -6582,6 +6598,11 @@ msgstr "widget %1 doesn't exist"
 #: share/plugin/widgets/share/javascript/activities/editor.js:659
 msgid "error.no-such-wikilink-wiki"
 msgstr "The workspace you specified does not exist, please try again"
+
+#. ('__UP_workspace_name__')
+#: share/plugin/widgets/share/widgets/one_page/widget.js:21
+msgid "error.no-such=wiki"
+msgstr "Workspace \"%1\" does not exist."
 
 #. ($opts{search}, $hub->current_workspace()
 #: lib/Socialtext/CLI.pm:3825
@@ -7397,6 +7418,11 @@ msgstr "Validation subroutine called outside of validator"
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3169
 msgid "error.video-url-required"
 msgstr "Video URL is required"
+
+#. ('__UP_workspace_name__')
+#: share/plugin/widgets/share/widgets/one_page/widget.js:16
+msgid "error.view-forbidden=wiki"
+msgstr "You do not have permissions to view workspace \"%1\"."
 
 #: lib/Socialtext/Appliance/Model/Backup.pm:123
 msgid "error.weeks-to-retain-backups-not-integer"
@@ -13362,7 +13388,7 @@ msgstr "Spreadsheet Page"
 msgid "title.one_web_page"
 msgstr "Web Page"
 
-#: share/plugin/widgets/share/widgets/empty/prefs.xml:1 share/plugin/widgets/share/widgets/oneimage/prefs.xml:2
+#: share/plugin/widgets/share/widgets/oneimage/prefs.xml:2 share/plugin/widgets/share/widgets/empty/prefs.xml:1
 msgid "title.oneimage"
 msgstr "Image"
 
@@ -13683,7 +13709,7 @@ msgstr "The user has been removed from workspaces and directories."
 msgid "user.deactivated=name"
 msgstr "User %1 has been deactivated."
 
-#: share/skin/s3/template/element/settings/users_settings_section:8 share/skin/s3/template/view/page/display:79
+#: share/skin/s3/template/element/settings/users_settings_section:8
 msgid "user.email"
 msgstr "Email"
 
@@ -14299,6 +14325,10 @@ msgstr "URL"
 msgid "widget.width:"
 msgstr "Widget width:"
 
+#: share/plugin/widgets/share/widgets/workspace_activity/widget.html:13
+msgid "widgets.about-duration"
+msgstr "This can be things forward (positive) or backwards (negative) based on the start date. E.g.: 1month, -3 weeks, 48 minutes, 1year"
+
 #: share/plugin/widgets/template/view/gallery:110
 msgid "widgets.about-restore"
 msgstr "Restore"
@@ -14306,6 +14336,14 @@ msgstr "Restore"
 #: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:55 share/plugin/widgets/template/view/gallery:104
 msgid "widgets.about-update"
 msgstr "Update"
+
+#: share/plugin/widgets/share/widgets/active_members/widget.js:30
+msgid "widgets.active-contributions"
+msgstr "active contributions"
+
+#: share/plugin/widgets/share/widgets/active_members/widget.js:36
+msgid "widgets.active-signalers"
+msgstr "active signalers"
 
 #: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:55
 msgid "widgets.add"
@@ -14330,6 +14368,10 @@ msgstr "Successfully added your widget"
 #: share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:3 share/plugin/people/share/widgets/all_tags.xml:10
 msgid "widgets.all"
 msgstr "all"
+
+#: share/plugin/widgets/share/widgets/activities.xml:33
+msgid "widgets.always"
+msgstr "always"
 
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:14
 msgid "widgets.changes"
@@ -14359,12 +14401,48 @@ msgstr "Create new page in %1"
 msgid "widgets.delete"
 msgstr "(delete)"
 
+#: share/plugin/widgets/share/widgets/workspace_activity/widget.html:13
+msgid "widgets.duration"
+msgstr "Duration"
+
+#: share/plugin/widgets/share/widgets/top_content/widget.js:23
+msgid "widgets.edited"
+msgstr "Edited"
+
+#: share/plugin/widgets/share/widgets/top_content/widget.js:24
+msgid "widgets.edited-pages"
+msgstr "edited pages"
+
+#: share/plugin/widgets/share/widgets/active_members/widget.js:29
+msgid "widgets.edits"
+msgstr "Edits"
+
+#: share/plugin/widgets/share/widgets/top_content/widget.js:35
+msgid "widgets.emailed"
+msgstr "Emailed"
+
+#: share/plugin/widgets/share/widgets/top_content/widget.js:36
+msgid "widgets.emailed-pages"
+msgstr "emailed pages"
+
 msgid "widgets.gallery"
 msgstr "Widget Gallery"
 
 #: share/plugin/widgets/template/view/gallery:34
 msgid "widgets.gallery-switch=account:"
 msgstr "This is the widget gallery for the \"%1\" account. Switch to account:"
+
+#: share/plugin/widgets/share/widgets/top_content/prefs.xml:1
+msgid "widgets.group"
+msgstr "Group"
+
+#: share/plugin/widgets/share/widgets/empty/prefs.xml:2 share/plugin/widgets/share/widgets/one_spreadsheet/prefs.xml:3 share/plugin/widgets/share/widgets/one_web_page.xml:13
+msgid "widgets.height"
+msgstr "Height"
+
+#: share/plugin/widgets/share/widgets/oneimage/prefs.xml:1
+msgid "widgets.image-source"
+msgstr "Image Source"
 
 #. ($email)
 #: lib/Socialtext/Pluggable/Plugin/Widgets.pm:266
@@ -14379,13 +14457,65 @@ msgstr "You are in layout mode. Click <b>Save</b> to keep your changes, <b>Cance
 msgid "widgets.install-this"
 msgstr "Install this widget"
 
+#: share/plugin/widgets/share/widgets/rss/prefs.xml:3
+msgid "widgets.items-displayed"
+msgstr "Items Displayed"
+
+#: share/plugin/widgets/share/widgets/iterationbugs/prefs.xml:2
+msgid "widgets.iteration"
+msgstr "Iteration"
+
+#: share/plugin/widgets/share/widgets/one_page/widget.js:66
+msgid "widgets.loading"
+msgstr "Loading..."
+
+#: share/plugin/widgets/share/widgets/one_web_page.xml:12
+msgid "widgets.location"
+msgstr "Location"
+
 #: share/plugin/widgets/template/view/gallery:0 share/plugin/widgets/template/view/gallery:24
 msgid "widgets.manage-gallery-for-accounts"
 msgstr "Manage Gallery for Accounts"
 
+#: share/plugin/widgets/share/widgets/rss/prefs.xml:10
+msgid "widgets.max-description-length"
+msgstr "Maximum description characters"
+
+#: share/plugin/widgets/share/widgets/activities.xml:32
+msgid "widgets.mentions-and-private-signals-only"
+msgstr "when I am mentioned or privately signalled"
+
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:21
 msgid "widgets.new-page"
 msgstr "new page"
+
+#: share/plugin/widgets/share/widgets/active_members/widget.js:31
+msgid "widgets.no-active-contributors"
+msgstr "The most active editors will be listed here. As you begin to build and modify your new workspaces, your editor activity will grow."
+
+#: share/plugin/widgets/share/widgets/top_content/widget.js:37
+msgid "widgets.no-active-emailed-pages"
+msgstr "The most frequently emailed pages will be listed here. Try emailing a page to a colleague by clicking on the Email icon in the page's toolbar."
+
+#: share/plugin/widgets/share/widgets/active_members/widget.js:25
+msgid "widgets.no-active-readers"
+msgstr "The most active readers will be listed here. As you explore your new workspaces, your reader activity will grow."
+
+#: share/plugin/widgets/share/widgets/active_members/widget.js:37
+msgid "widgets.no-active-signalers"
+msgstr "The most active signalers will be listed here. Try sending a signal from this Dashboard!"
+
+#: share/plugin/widgets/share/widgets/top_content/widget.js:19
+msgid "widgets.no-active-viewed-pages"
+msgstr "The most frequently viewed pages will be listed here. After you explore your new workspaces, you can see the most viewed pages here."
+
+#: share/plugin/widgets/share/widgets/active_members/widget.js:19
+msgid "widgets.no-active-viewed-profiles"
+msgstr "The most frequently viewed profiles will be listed here. You can view your own profile or invite a colleague and help them get started."
+
+#: share/plugin/widgets/share/widgets/top_content/widget.js:31
+msgid "widgets.no-active-watched-pages"
+msgstr "The most frequently watched pages will be listed here. Try watching a page in one of your new workspaces by clicking on the Watch icon in the page's toolbar."
 
 #: share/plugin/widgets/template/view/gallery:75
 msgid "widgets.no-description"
@@ -14396,13 +14526,34 @@ msgstr "No description provided"
 msgid "widgets.no-tags-for=wiki"
 msgstr "Workspace <b>%1</b> has no tags. You may go to the workspace and add a page tag in the right-hand sidebar."
 
+#: share/plugin/widgets/share/widgets/activities.xml:10 share/plugin/widgets/share/widgets/userlist/prefs.xml:1
+msgid "widgets.number-of-activities-to-display"
+msgstr "Number of Activities To Display"
+
 #: share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:2 share/plugin/people/share/widgets/all_tags.xml:9
 msgid "widgets.number-of-tags-to-show"
 msgstr "Number of tags to show"
 
+#: share/plugin/widgets/share/widgets/active_members/widget.js:24
+msgid "widgets.page-views"
+msgstr "page views"
+
+#. ('__UP_tag_name__')
+#: share/plugin/widgets/share/widgets/tagged_pages/widget.js:20
+msgid "widgets.pages-tagged=tag"
+msgstr "Pages tagged '%1'"
+
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:33
 msgid "widgets.permanent-remove"
 msgstr "Permanently Remove Widget"
+
+#: share/plugin/widgets/share/widgets/bugzilla.xml:10
+msgid "widgets.priorities"
+msgstr "Priorities"
+
+#: share/plugin/widgets/share/widgets/active_members/widget.js:23
+msgid "widgets.readers"
+msgstr "Readers"
 
 #: share/plugin/widgets/template/view/gallery:126
 msgid "widgets.remove"
@@ -14430,9 +14581,46 @@ msgstr "Restore Widget"
 msgid "widgets.restored=widget"
 msgstr "Successfully restored the \"%1\" widget"
 
-#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:24
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:24 share/plugin/widgets/share/widgets/top_content/prefs.xml:27
+msgid "widgets.rotate?"
+msgstr "Rotate?"
+
+#: share/plugin/widgets/share/widgets/rss/prefs.xml:1 share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:24
+#, fuzzy
 msgid "widgets.rss-feed"
-msgstr "RSS feed"
+msgstr ""
+"#-#-#-#-#  widgets.po  #-#-#-#-#\n"
+"RSS Feed\n"
+"#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
+"RSS feed"
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/prefs.xml:11
+msgid "widgets.scroll-to"
+msgstr "Scroll to"
+
+#: share/plugin/widgets/share/widgets/one_web_page.xml:14
+msgid "widgets.scrolling?"
+msgstr "Show scroll bars?"
+
+#: share/plugin/widgets/share/widgets/one_spreadsheet/prefs.xml:2
+msgid "widgets.sheet"
+msgstr "Spreadsheet"
+
+#: share/plugin/widgets/share/widgets/activities.xml:30
+msgid "widgets.show-notifications"
+msgstr "Show Notifications"
+
+#: share/plugin/widgets/share/widgets/active_members/widget.js:35
+msgid "widgets.signals"
+msgstr "Signals"
+
+#: share/plugin/widgets/share/widgets/workspace_activity/widget.html:12
+msgid "widgets.start-date"
+msgstr "Start date"
+
+#: share/plugin/widgets/share/widgets/bugzilla.xml:9
+msgid "widgets.statuses"
+msgstr "Statuses"
 
 #: share/plugin/widgets/share/widgets/tag_cloud/widget.js:47
 msgid "widgets.tags-for=wiki"
@@ -14442,10 +14630,22 @@ msgstr "Tags for %1 workspace"
 msgid "widgets.this-person-belongs-to-no-wikis"
 msgstr "This person belongs to no workspaces."
 
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:4 share/plugin/widgets/share/widgets/top_content/prefs.xml:7
+msgid "widgets.time"
+msgstr "Time"
+
+#: share/plugin/widgets/share/widgets/empty/prefs.xml:1 share/plugin/widgets/share/widgets/one_web_page.xml:11 share/plugin/widgets/share/widgets/oneimage/prefs.xml:2
+msgid "widgets.title"
+msgstr "Title"
+
 #. ('__UP_workspace__')
 #: share/plugin/widgets/share/widgets/tag_cloud/widget.js:57
 msgid "widgets.unable-to-build-tag-cloud-for=wiki"
 msgstr "Unable to build tag cloud for <b>%1</b>."
+
+#: share/plugin/widgets/share/widgets/rss/prefs.xml:13
+msgid "widgets.unlimited"
+msgstr "Unlimited"
 
 #: share/plugin/widgets/template/view/gallery:107
 msgid "widgets.update"
@@ -14471,11 +14671,67 @@ msgstr "Upload Widget XML File:"
 msgid "widgets.use-editor"
 msgstr "Use the Widget Editor"
 
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:16 share/plugin/widgets/share/widgets/top_content/prefs.xml:19 share/plugin/widgets/share/widgets/workspace_activity/widget.html:6
+msgid "widgets.view"
+msgstr "View"
+
+#: share/plugin/widgets/share/widgets/top_content/prefs.xml:23
+msgid "widgets.view-add_to_watchlist"
+msgstr "Watched Pages"
+
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:20
+msgid "widgets.view-contribs"
+msgstr "Edits"
+
+#: share/plugin/widgets/share/widgets/top_content/prefs.xml:22
+msgid "widgets.view-edit_page"
+msgstr "Edited Pages"
+
+#: share/plugin/widgets/share/widgets/top_content/prefs.xml:24
+msgid "widgets.view-email_page"
+msgstr "Emailed Pages"
+
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:18
+msgid "widgets.view-profile_views"
+msgstr "Viewed Profiles"
+
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:19
+msgid "widgets.view-reads"
+msgstr "Readers"
+
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:21
+msgid "widgets.view-signals"
+msgstr "Signals"
+
+#: share/plugin/widgets/share/widgets/top_content/prefs.xml:21
+msgid "widgets.view-view_page"
+msgstr "Viewed Pages"
+
+#: share/plugin/widgets/share/widgets/active_members/widget.js:17 share/plugin/widgets/share/widgets/top_content/widget.js:17
+msgid "widgets.viewed"
+msgstr "Viewed"
+
+#: share/plugin/widgets/share/widgets/top_content/widget.js:18
+msgid "widgets.viewed-pages"
+msgstr "viewed pages"
+
+#: share/plugin/widgets/share/widgets/active_members/widget.js:18
+msgid "widgets.viewed-profiles"
+msgstr "viewed profiles"
+
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:13
 msgid "widgets.views"
 msgstr "views"
 
-#: share/plugin/widgets/share/widgets/blockerbugs/prefs.xml:1 share/plugin/widgets/share/widgets/iterationbugs/prefs.xml:1 share/plugin/widgets/share/widgets/one_page/prefs.xml:1 share/plugin/widgets/share/widgets/one_spreadsheet/prefs.xml:1 share/plugin/widgets/share/widgets/tagged_pages/prefs.xml:1 share/plugin/widgets/share/widgets/top_content/prefs.xml:4 share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:1
+#: share/plugin/widgets/share/widgets/top_content/widget.js:29
+msgid "widgets.watched"
+msgstr "Watched"
+
+#: share/plugin/widgets/share/widgets/top_content/widget.js:30
+msgid "widgets.watched-pages"
+msgstr "watched pages"
+
+#: share/plugin/widgets/share/widgets/iterationbugs/prefs.xml:1 share/plugin/widgets/share/widgets/one_page/prefs.xml:1 share/plugin/widgets/share/widgets/one_spreadsheet/prefs.xml:1 share/plugin/widgets/share/widgets/tagged_pages/prefs.xml:1 share/plugin/widgets/share/widgets/top_content/prefs.xml:4 share/plugin/widgets/share/widgets/workspace_activity/widget.html:3 share/plugin/widgets/share/widgets/blockerbugs/prefs.xml:1 share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:1
 msgid "widgets.wiki"
 msgstr "Workspace"
 
