@@ -13624,6 +13624,30 @@ msgstr "網址"
 msgid "widget.width:"
 msgstr "小工具寬度："
 
+msgid "widgets.1day"
+msgstr "一天"
+
+msgid "widgets.1month"
+msgstr "一個月"
+
+msgid "widgets.1week"
+msgstr "一周"
+
+msgid "widgets.1year"
+msgstr "一年"
+
+msgid "widgets.2weeks"
+msgstr "兩周"
+
+msgid "widgets.3days"
+msgstr "三天"
+
+msgid "widgets.3months"
+msgstr "三個月"
+
+msgid "widgets.6months"
+msgstr "六個月"
+
 msgid "widgets.about-duration"
 msgstr "自起始時間起算，可以選擇之後（正數）或是之前（負數）。例如：『1month』，『-3 weeks』，『48 minutes』，『1 year』"
 

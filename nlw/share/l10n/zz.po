@@ -14325,6 +14325,38 @@ msgstr "ZZZ"
 msgid "widget.width:"
 msgstr "Zzzzzz zzzzz:"
 
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:6 share/plugin/widgets/share/widgets/top_content/prefs.xml:9
+msgid "widgets.1day"
+msgstr "1 zzz"
+
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:10 share/plugin/widgets/share/widgets/top_content/prefs.xml:13
+msgid "widgets.1month"
+msgstr "1 zzzzz"
+
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:8 share/plugin/widgets/share/widgets/top_content/prefs.xml:11
+msgid "widgets.1week"
+msgstr "1 zzzz"
+
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:13 share/plugin/widgets/share/widgets/top_content/prefs.xml:16
+msgid "widgets.1year"
+msgstr "1 zzzz"
+
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:9 share/plugin/widgets/share/widgets/top_content/prefs.xml:12
+msgid "widgets.2weeks"
+msgstr "2 zzzzz"
+
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:7 share/plugin/widgets/share/widgets/top_content/prefs.xml:10
+msgid "widgets.3days"
+msgstr "3 zzzz"
+
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:11 share/plugin/widgets/share/widgets/top_content/prefs.xml:14
+msgid "widgets.3months"
+msgstr "3 zzzzzz"
+
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:12 share/plugin/widgets/share/widgets/top_content/prefs.xml:15
+msgid "widgets.6months"
+msgstr "6 zzzzzz"
+
 #: share/plugin/widgets/share/widgets/workspace_activity/widget.html:13
 msgid "widgets.about-duration"
 msgstr "Zzzz zzz zz zzzzzz zzzzzzz (zzzzzzzz) zz zzzzzzzzz (zzzzzzzz) zzzzz zz zzz zzzzz zzzz. Z.z.: 1zzzzz, -3 zzzzz, 48 zzzzzzz, 1zzzz"

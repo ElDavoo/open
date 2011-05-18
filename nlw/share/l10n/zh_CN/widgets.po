@@ -1161,6 +1161,30 @@ msgstr "预览"
 msgid "widget.push-all"
 msgstr "推送到所有显示板"
 
+msgid "widgets.1day"
+msgstr "一天"
+
+msgid "widgets.1month"
+msgstr "一个月"
+
+msgid "widgets.1week"
+msgstr "一周"
+
+msgid "widgets.1year"
+msgstr "一年"
+
+msgid "widgets.2weeks"
+msgstr "两周"
+
+msgid "widgets.3days"
+msgstr "三天"
+
+msgid "widgets.3months"
+msgstr "三个月"
+
+msgid "widgets.6months"
+msgstr "六个月"
+
 msgid "widgets.about-duration"
 msgstr "自起始时间起算，可以选择之后（正数）或是之前（负数）。例如：“1month”，“-3 weeks”，“48 minutes”，“1 year”"
 

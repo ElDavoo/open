@@ -1184,6 +1184,38 @@ msgstr "Preview"
 msgid "widget.push-all"
 msgstr "Push to all dashboards"
 
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:6 share/plugin/widgets/share/widgets/top_content/prefs.xml:9
+msgid "widgets.1day"
+msgstr "1 day"
+
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:10 share/plugin/widgets/share/widgets/top_content/prefs.xml:13
+msgid "widgets.1month"
+msgstr "1 month"
+
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:8 share/plugin/widgets/share/widgets/top_content/prefs.xml:11
+msgid "widgets.1week"
+msgstr "1 week"
+
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:13 share/plugin/widgets/share/widgets/top_content/prefs.xml:16
+msgid "widgets.1year"
+msgstr "1 year"
+
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:9 share/plugin/widgets/share/widgets/top_content/prefs.xml:12
+msgid "widgets.2weeks"
+msgstr "2 weeks"
+
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:7 share/plugin/widgets/share/widgets/top_content/prefs.xml:10
+msgid "widgets.3days"
+msgstr "3 days"
+
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:11 share/plugin/widgets/share/widgets/top_content/prefs.xml:14
+msgid "widgets.3months"
+msgstr "3 months"
+
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:12 share/plugin/widgets/share/widgets/top_content/prefs.xml:15
+msgid "widgets.6months"
+msgstr "6 months"
+
 #: share/plugin/widgets/share/widgets/workspace_activity/widget.html:13
 msgid "widgets.about-duration"
 msgstr "This can be things forward (positive) or backwards (negative) based on the start date. E.g.: 1month, -3 weeks, 48 minutes, 1year"
