@@ -21,7 +21,7 @@ msgstr ""
 
 #: share/plugin/people/share/widgets/all_tags/config.yaml:4
 msgid "description.all_tags"
-msgstr "Displays a tag cloud of all tags on people in Socialtext People."
+msgstr "Displays a tag cloud of all tags on members of this group."
 
 #: share/plugin/people/share/widgets/forbidden_profile/config.yaml:5
 msgid "description.forbidden_profile"

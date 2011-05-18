@@ -45,7 +45,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-11 04:27-0700\n"
+"PO-Revision-Date: 2011-05-18 08:50-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -4023,7 +4023,7 @@ msgstr "All Available Groups"
 
 #: share/plugin/people/share/widgets/all_tags/config.yaml:4
 msgid "description.all_tags"
-msgstr "Displays a tag cloud of all tags on people in Socialtext People."
+msgstr "Displays a tag cloud of all tags on members of this group."
 
 #: share/plugin/widgets/share/widgets/blockerbugs/config.yaml:4
 msgid "description.blockerbugs"
@@ -13068,7 +13068,7 @@ msgid "title.blockerbugs"
 msgstr "Open Blocker Bugs"
 
 msgid "title.bug_board"
-msgstr "Bug Board"
+msgstr "Page/Bug Tracker"
 
 #: share/plugin/groups/share/widgets/edit_information/config.yaml:3
 msgid "title.edit_information"
@@ -13157,7 +13157,7 @@ msgid "title.tagged_pages"
 msgstr "Pages tagged X"
 
 msgid "title.task_board"
-msgstr "Task Board"
+msgstr "Page Tracker"
 
 #: share/plugin/groups/share/widgets/teaser/config.yaml:3
 msgid "title.teaser"
