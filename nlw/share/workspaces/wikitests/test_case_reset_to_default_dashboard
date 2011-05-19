@@ -25,7 +25,7 @@
 
 | *Comment* | Test Case: Reset to Default Dashboard - Test for RSS Viewer |  |
 | wait_for_text_present_ok | Enterprise Social Software Blog | 30000 |
-| st-name-widget | 1 | rssv |
+| st-name-widget | 5 | rssv |
 | st-widget-title-like | rssv | Enterprise Social Software Blog |
 | text_like | Push to all dashboards |  |
 
@@ -37,12 +37,12 @@
 
 | *Comment* | Test Case: Reset to Default Dashboard - Test for Wikipedia |  |
 | wait_for_text_present_ok | Wikipedia | 30000 |
-| st-name-widget | 1 | wikipedia |
+| st-name-widget | 5 | wikipedia |
 | st-widget-title-like | wikipedia | Wikipedia |
 | text_like | Push to all dashboards |  |
 
 | *Comment* | Test Case: Reset to Default Dashboard - Save... and force update |  |
-| click_ok | link=Save... |  |
+| click_ok | //a[contains(text(),'Save')] |  |
 | wait_for_text_present_ok | Save Confirmation | 30000 |
 | wait_for_element_visible_ok | st-save-widget-template | 30000 |
 | wait_for_element_visible_ok | force-update | 30000 |
@@ -53,7 +53,7 @@
 | *Comment* | Test Case: Reset to Default Dashboard - verify force update |  |
 | open_ok | /?dashboard | 60000 |
 | wait_for_text_present_ok | Wikipedia | 30000 |
-| st-name-widget | 1 | wikipedia |
+| st-name-widget | 5 | wikipedia |
 | st-widget-title-like | wikipedia | Wikipedia |
 | st-select-widget-frame | wikipedia |  |
 | text_unlike | //body | Push to all dashboards |
@@ -75,8 +75,8 @@
 | wait_for_element_visible_ok | link=Add Widget | 30000 |
 | wait_for_element_visible_ok | link=Administer Dashboards | 30000 |
 | click_and_wait | link=Administer Dashboards |  |
-| wait_for_element_visible_ok | link=Revert to Default... |  |
-| click_ok | link=Revert to Default... |  |
+| wait_for_element_visible_ok | //a[contains(text(),'Revert to Default')] |  |
+| click_ok | //a[contains(text(),'Revert to Default')] |  |
 | *Comment* | must wait for page to load but can't use click and wait because lightbox comes up immediately. |  |
 | pause | 15000 | I hate pause |
 | wait_for_text_present_ok | Are you sure you want to revert to the Socialtext defaults? | 30000 |
@@ -90,7 +90,7 @@
 | wait_for_element_visible_ok | link=Add Widget | 30000 |
 | wait_for_element_visible_ok | link=Administer Dashboards | 30000 |
 | click_and_wait | link=Administer Dashboards |  |
-| wait_for_element_visible_ok | link=Revert to Default... |  |
+| wait_for_element_visible_ok | //a[contains(text(),'Revert to Default')] |  |
 | wait_for_text_not_present_ok | Wikipedia | 30000 |
 | wait_for_text_not_present_ok | Enterprise Social Software Blog | 30000 |
 
@@ -100,6 +100,7 @@
 | text_like | contentColumns | Learning Resources |
 
 | *Comment* | Test Case: Reset to Default Dashboard TEARDOWN |  |
-| *Comment* | Test Case: Reset to Default Dashboard. No teardown, throw away the account and the users. |  |
+| delete-account | %%acct%% | Recklessly deleting |
+| st-admin | deactivate-user --email %%mwgmail%% | been deactivated |
 
 | *Comment* | Test Case: Reset to Default Dashboard COMPLETED |
