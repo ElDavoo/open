@@ -18,8 +18,6 @@
 # @COPYRIGHT@
 # #-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
-# #-#-#-#-#  kanban.po (Socialtext i18n)  #-#-#-#-#
-# @COPYRIGHT@
 # #-#-#-#-#  groups.po (Socialtext i18n)  #-#-#-#-#
 # @COPYRIGHT@
 # #-#-#-#-#  fields.po (Socialtext i18n)  #-#-#-#-#
@@ -47,7 +45,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-16 08:12-0700\n"
+"PO-Revision-Date: 2011-05-18 23:06-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -102,17 +100,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
-"#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-13 06:35-0700\n"
-"Last-Translator: Socialtext i18n team\n"
-"Language-Team: Socialtext i18n team\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"#-#-#-#-#  people.po (Socialtext i18n)  #-#-#-#-#\n"
-"Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-04-18 11:13-0700\n"
+"PO-Revision-Date: 2011-05-18 23:12-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -129,14 +118,6 @@ msgstr ""
 "#-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
 "PO-Revision-Date: 2011-03-12 20:31+0800\n"
-"Language-Team: Socialtext i18n team\n"
-"Last-Translator: Socialtext i18n team\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"#-#-#-#-#  kanban.po (Socialtext i18n)  #-#-#-#-#\n"
-"Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-17 04:45-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -4046,7 +4027,7 @@ msgstr "«Display a list of the open blocker bugs.»"
 msgid "description.blognews2"
 msgstr "«Tabbed theXblogs RSS Reader. Edit the gadget settings to view between 1 to 15 items. Choose long or short summaries. Customize categories with personalized feeds such as Top Stories, World, Business, Technology, Sports, Entertainment, Politics etc.»"
 
-msgid "description.bug_board"
+msgid "description.bz_page_tracker"
 msgstr "«Visualize Bugzilla tickets and tagged pages with multiple columns.»"
 
 msgid "description.calc"
@@ -4127,6 +4108,9 @@ msgstr "«Displays a single web page within a Socialtext Widget.»"
 msgid "description.oneimage"
 msgstr "«Displays a single spreadsheet within a Socialtext Widget.»"
 
+msgid "description.page_tracker"
+msgstr "«Visualize tagged pages in a workspace with multiple columns.»"
+
 #: share/plugin/groups/share/widgets/people/config.yaml:4
 msgid "description.people"
 msgstr "«People in this group.»"
@@ -4172,9 +4156,6 @@ msgstr "«Displays a tag cloud of all tags in a particular workspace.»"
 #: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:4
 msgid "description.tagged_pages"
 msgstr "«Displays a list of pages with a certain tag»"
-
-msgid "description.task_board"
-msgstr "«Visualize tagged pages in a workspace with multiple columns.»"
 
 #: share/plugin/groups/share/widgets/teaser/config.yaml:4
 msgid "description.teaser"
@@ -9726,145 +9707,129 @@ msgstr "«Total»"
 msgid "job.type"
 msgstr "«Job Type»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:64 share/plugin/kanban/share/widgets/bug_board/widget.html:80 share/plugin/kanban/share/widgets/bug_board/widget.html:94
-msgid "kanban.add"
-msgstr "«Add»"
-
-#: share/plugin/kanban/share/widgets/task_board/widget.html:168
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:168
 msgid "kanban.advanced"
 msgstr "«Advanced»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:121
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:121
 msgid "kanban.background-color:"
 msgstr "«…use this color:»"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:32
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:32
 msgid "kanban.basics"
 msgstr "«Basics»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:169
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:169
 msgid "kanban.bug-columns"
 msgstr "«Bug Columns»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:183
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:183
 msgid "kanban.bug-notes"
 msgstr "«Bug notes»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:187
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:187
 msgid "kanban.bug-stamp-color:"
 msgstr "«…show its value in this color:»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:173
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:173
 msgid "kanban.bz-search:"
 msgstr "«…run this BZ search:»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:172
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:172
 msgid "kanban.bz-sharer-id"
 msgstr "«From this sharer ID…»"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:26
-msgid "kanban.cancel"
-msgstr "«Cancel»"
-
-#: share/plugin/kanban/share/widgets/task_board/widget.html:38
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:38
 msgid "kanban.columns"
 msgstr "«Columns»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:105
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:105
 msgid "kanban.default-color:"
 msgstr "«Default color:»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:198
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:198
 msgid "kanban.editable?"
 msgstr "«Allow moving pages between columns?»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:89
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:89
 msgid "kanban.exclude-tags:"
 msgstr "«…but not pages with any of these tags:»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:47
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:47
 msgid "kanban.heading"
 msgstr "«Heading»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:186
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:186
 msgid "kanban.if-bug-has-field"
 msgstr "«If bug has this field…»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:117 share/plugin/kanban/share/widgets/bug_board/widget.html:141
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:117 share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:141
 msgid "kanban.if-page-has-tag"
 msgstr "«If page has this tag…»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:75
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:75
 msgid "kanban.include-tags:"
 msgstr "«Show only pages with any of these tags:»"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:100
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:100
 msgid "kanban.item-background"
 msgstr "«Item Background»"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:136
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:136
 msgid "kanban.item-notes"
 msgstr "«Item Notes»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:51
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:51
 msgid "kanban.notes"
 msgstr "«Notes»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:200
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:200
 msgid "kanban.omit-page-prefix:"
 msgstr "«Omit this part from page titles starting with:»"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:100 share/plugin/kanban/share/widgets/task_board/widget.html:136 share/plugin/kanban/share/widgets/task_board/widget.html:168 share/plugin/kanban/share/widgets/task_board/widget.html:70
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:100 share/plugin/widgets/share/widgets/page_tracker/widget.html:136 share/plugin/widgets/share/widgets/page_tracker/widget.html:168 share/plugin/widgets/share/widgets/page_tracker/widget.html:70
 msgid "kanban.optional"
 msgstr "«(optional)»"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:70
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:70
 msgid "kanban.page-filtering"
 msgstr "«Page Filtering»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:43
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:43
 msgid "kanban.page-tag"
 msgstr "«Page Tag»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:202
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:202
 msgid "kanban.query-suffix:"
 msgstr "«Additional query constraints for pages:»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:204
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:204
 msgid "kanban.refresh-interval"
 msgstr "«Refresh interval»"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:177 share/plugin/kanban/share/widgets/task_board/widget.html:26
-msgid "kanban.save"
-msgstr "«Save»"
-
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:204
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:204
 msgid "kanban.seconds"
 msgstr "«(seconds)»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:26
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:26
 msgid "kanban.settings"
 msgstr "«Settings»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:149
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:149
 msgid "kanban.stamp-color:"
 msgstr "«…in this color:»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:145
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:145
 msgid "kanban.stamp-note"
 msgstr "«…show this note…»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:36
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:36
 msgid "kanban.widget-title:"
 msgstr "«Widget Title:»"
 
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:34
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:34
 msgid "kanban.wiki:"
 msgstr "«Workspace:»"
-
-#: share/plugin/kanban/share/widgets/bug_board/widget.html:198
-msgid "kanban.yes"
-msgstr "«Yes»"
 
 #. ($user->username, $new_locale)
 #: lib/Socialtext/CLI.pm:1895
@@ -13319,7 +13284,7 @@ msgstr "«Open Blocker Bugs»"
 msgid "title.blognews2"
 msgstr "«theXblogs™»"
 
-msgid "title.bug_board"
+msgid "title.bz_page_tracker"
 msgstr "«Page/Bug Tracker»"
 
 msgid "title.calc"
@@ -13396,6 +13361,9 @@ msgstr "«Web Page»"
 msgid "title.oneimage"
 msgstr "«Image»"
 
+msgid "title.page_tracker"
+msgstr "«Page Tracker»"
+
 #: share/plugin/groups/share/widgets/people/config.yaml:3
 msgid "title.people"
 msgstr "«Membership»"
@@ -13438,9 +13406,6 @@ msgstr "«Workspace Tags»"
 #: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:3
 msgid "title.tagged_pages"
 msgstr "«Pages tagged X»"
-
-msgid "title.task_board"
-msgstr "«Page Tracker»"
 
 #: share/plugin/groups/share/widgets/teaser/config.yaml:3
 msgid "title.teaser"
@@ -14675,13 +14640,8 @@ msgid "widgets.rotate?"
 msgstr "«Rotate?»"
 
 #: share/plugin/widgets/share/widgets/rss/prefs.xml:1 share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:24
-#, fuzzy
 msgid "widgets.rss-feed"
-msgstr ""
-"«#-#-#-#-#  widgets.po  #-#-#-#-#\n»"
-"«RSS Feed\n»"
-"«#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n»"
-"«RSS feed»"
+msgstr "«RSS Feed»"
 
 #: share/plugin/widgets/share/widgets/one_spreadsheet/prefs.xml:11
 msgid "widgets.scroll-to"
