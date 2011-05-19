@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-18 23:11-0700\n"
+"PO-Revision-Date: 2011-05-18 23:49-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -593,6 +593,9 @@ msgstr "移除"
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.tt2:11
 msgid "do.yes"
 msgstr "是"
+
+msgid "error.at-least-one-column-required"
+msgstr "错误：请指定至少一个字段。"
 
 #: share/plugin/widgets/share/widgets/one_page/widget.js:52 share/plugin/widgets/share/widgets/one_page/widget.js:57
 msgid "error.cannot-embed-page-within-itself"

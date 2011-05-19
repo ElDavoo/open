@@ -5048,6 +5048,9 @@ msgstr "在 %2 上 %1 的套用錯誤為：%3"
 msgid "error.at-least-one-admin-required"
 msgstr "您必須至少選擇一個管理員"
 
+msgid "error.at-least-one-column-required"
+msgstr "錯誤：請指定至少一個欄位。"
+
 #: share/plugin/groups/share/widgets/membership/widget.js:490 share/plugin/groups/share/widgets/membership/widget.js:549
 msgid "error.at-least-one-group-admin-needed"
 msgstr "群組必須有至少一位管理員。"

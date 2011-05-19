@@ -844,6 +844,7 @@
 "error.add-profile-tag":"Zzzzzz zz zzz zzz.",
 "error.already-exists-in-group=member":"[_1] zzzzzzz zzzzzz zz zzzz Zzzzz",
 "error.at-least-one-admin-required":"Zzz zzzz zzzzzz zz zzzzz zzz zzzzzzzzzzzzz.",
+"error.at-least-one-column-required":"Zzzzz: Zzzzzz zzzzzz zz zzzzz zzz zzzzzz.",
 "error.at-least-one-group-admin-needed":"Zzzzzz zzzz zz zzzzz zzz zzzzz",
 "error.at-least-one-wiki-required":"Zzz zzzz zzzzzz zz zzzzz zzz zzzzzzzzz",
 "error.backup-id-required":"Zzzz zzzzzz z zzzzzz ZZ - zz zzz --zzzz zz zzz zzzzzzzzz zzzzzzz.",

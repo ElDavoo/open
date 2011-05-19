@@ -5048,6 +5048,9 @@ msgstr "在 %2 上 %1 的应用错误为：%3"
 msgid "error.at-least-one-admin-required"
 msgstr "您必须至少选择一个管理员"
 
+msgid "error.at-least-one-column-required"
+msgstr "错误：请指定至少一个字段。"
+
 #: share/plugin/groups/share/widgets/membership/widget.js:490 share/plugin/groups/share/widgets/membership/widget.js:549
 msgid "error.at-least-one-group-admin-needed"
 msgstr "群组必须有至少一位管理员。"

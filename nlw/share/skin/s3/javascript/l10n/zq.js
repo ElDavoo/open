@@ -844,6 +844,7 @@
 "error.add-profile-tag":"\u00ABUnable to add tag.\u00BB",
 "error.already-exists-in-group=member":"\u00AB[_1] already exists in this Group\u00BB",
 "error.at-least-one-admin-required":"\u00ABYou must choose at least one administrator.\u00BB",
+"error.at-least-one-column-required":"\u00ABError: Please define at least one column.\u00BB",
 "error.at-least-one-group-admin-needed":"\u00ABGroups need at least one admin\u00BB",
 "error.at-least-one-wiki-required":"\u00ABYou must choose at least one workspace\u00BB",
 "error.backup-id-required":"\u00ABMust supply a backup ID - or use --list to see available backups.\u00BB",

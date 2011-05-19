@@ -45,7 +45,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-18 23:06-0700\n"
+"PO-Revision-Date: 2011-05-18 23:46-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -5418,6 +5418,9 @@ msgstr "«Application error in %1 on %2: %3»"
 #: share/plugin/control/template/control/workspace_invite.html:324
 msgid "error.at-least-one-admin-required"
 msgstr "«You must choose at least one administrator.»"
+
+msgid "error.at-least-one-column-required"
+msgstr "«Error: Please define at least one column.»"
 
 #: share/plugin/groups/share/widgets/membership/widget.js:490 share/plugin/groups/share/widgets/membership/widget.js:549
 msgid "error.at-least-one-group-admin-needed"
