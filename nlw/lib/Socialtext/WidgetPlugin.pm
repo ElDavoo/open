@@ -65,15 +65,9 @@ sub gadget_vars {
 
     my $content_type = $renderer->content_type;
 
-    # Render the preferences so __('') in options localizes correctly.
-    my $rendered_vars = decode_json_utf8(
-        $renderer->render(
-            encode_json($gadget->template_vars)
-        )
-    ) || {};
-
     return {
-        %$rendered_vars,
+        # Render the preferences so __('') in options localizes correctly.
+        %{ $renderer->render($gadget->template_vars) || {} },
         instance_id => $overrides{instance_id},
         content_type => $content_type,
         title => $overrides{__title__} || $renderer->render($gadget->title),
