@@ -47,29 +47,29 @@
 | click_ok | //a[@id='gallery-widget-Wikipedia'] |  |
 | wait_for_element_not_present_ok | //a[@id='gallery-widget-Wikipedia'] | 10000 |
 | wait_for_text_present_ok | Wikipedia | 30000 |
-| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[2]` | Wikipedia |
-| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[3]` | Tags |
+| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[4]` | Wikipedia |
+| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[5]` | Colleagues |
 | click_ok | st-save-layout |  |
 | wait_for_text_not_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
 | wait_for_element_visible_ok | st-edit-group | 30000 |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
 | wait_for_text_present_ok | Wikipedia | 30000 |
-| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[2]` | Wikipedia |
-| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[3]` | Tags |
+| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[4]` | Wikipedia |
+| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[5]` | Colleagues |
 | text_unlike | contentContainer | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
 
 | *Comment* | Test Case: Widgets in Profile change widget preferences |  |
 | click_ok | st-edit-layout |  |
 | wait_for_text_present_ok | You are in layout mode | 30000 |
-| wait_for_element_visible_ok | `xpath=(//a[@class='settings'])[2]` | 30000 |
-| click_ok | `xpath=(//a[@class='settings'])[2]` |  |
+| wait_for_element_visible_ok | `xpath=(//a[@class='settings'])[4]` | 30000 |
+| click_ok | `xpath=(//a[@class='settings'])[4]` |  |
 | wait_for_text_present_ok | Language: | 30000 |
 | wait_for_element_visible_ok | //select[@name='lang'] | 30000 |
 | select_ok | //select[@name='lang'] | label=French |
 | is_selected_ok | //select[@name='lang'] | label=French |
-| wait_for_element_visible_ok | `xpath=(//input[@type='submit' and @value="Save"])[2]` | 30000 |
-| click_ok | `xpath=(//input[@type='submit' and @value="Save"])[2]` |  |
-| wait_for_element_not_visible_ok | `xpath=(//input[@type='submit' and @value="Save"])[2]` | 30000 |
+| wait_for_element_visible_ok | `xpath=(//input[@type='submit' and @value="Save"])[4]` | 30000 |
+| click_ok | `xpath=(//input[@type='submit' and @value="Save"])[4]` |  |
+| wait_for_element_not_visible_ok | `xpath=(//input[@type='submit' and @value="Save"])[4]` | 30000 |
 | click_ok | st-save-layout |  |
 | wait_for_element_visible_ok | st-edit-group | 30000 |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
@@ -78,7 +78,7 @@
 | *Comment* | Must reopen profile to refresh widget IDs for Selenium |  |
 | open_ok | /st/profile |  |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
-| st-name-widget | 2 | wiki |
+| st-name-widget | 4 | wiki |
 | st-widget-title-like | wiki | Wikipedia |
 | st-select-widget-frame | wiki |  |
 | text_like | //body | Wiki Search (French) |
@@ -87,14 +87,14 @@
 | *Comment* | Test Case: Widgets in Profile use X button to remove widget |  |
 | click_ok | st-edit-layout |  |
 | wait_for_text_present_ok | You are in layout mode | 30000 |
-| wait_for_element_visible_ok | `xpath=(//a[@class='close'])[2]` | 30000 |
-| click_ok | `xpath=(//a[@class='close'])[2]` |  |
+| wait_for_element_visible_ok | `xpath=(//a[@class='close'])[3]` | 30000 |
+| click_ok | `xpath=(//a[@class='close'])[3]` |  |
 | wait_for_text_not_present_ok | Wikipedia | 30000 |
 | click_ok | st-save-layout |  |
 | wait_for_element_visible_ok | st-edit-group | 30000 |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
 | wait_for_text_not_present_ok | Wikipedia | 30000 |
-| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[2]` | Tags |
+| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[4]` | Colleagues |
 
 | *Comment* | Test Case: Widgets in Profile add widget back |  |
 | wait_for_element_visible_ok | st-edit-layout | 10000 |
@@ -106,15 +106,15 @@
 | click_ok | //a[@id='gallery-widget-Wikipedia'] |  |
 | wait_for_element_not_present_ok | //a[@id='gallery-widget-Wikipedia'] | 10000 |
 | wait_for_text_present_ok | Wikipedia | 30000 |
-| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[2]` | Wikipedia |
-| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[3]` | Tags |
+| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[4]` | Wikipedia |
+| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[5]` | Colleagues |
 | click_ok | st-save-layout |  |
 | wait_for_text_not_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
 | wait_for_text_present_ok | Wikipedia | 30000 |
 | wait_for_element_visible_ok | st-edit-group | 30000 |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
-| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[2]` | Wikipedia |
-| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[3]` | Tags |
+| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[4]` | Wikipedia |
+| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[5]` | Colleagues |
 | text_unlike | contentContainer | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
 
 | *Comment* | Test Case: Widgets in Profile start to revert to default, click no |  |
@@ -133,8 +133,8 @@
 | click_ok | st-save-layout |  |
 | wait_for_text_not_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
 | wait_for_text_present_ok | Wikipedia | 30000 |
-| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[2]` | Wikipedia |
-| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[3]` | Tags |
+| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[4]` | Wikipedia |
+| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[5]` | Colleagues |
 | wait_for_element_visible_ok | st-edit-group | 30000 |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
 | text_unlike | contentContainer | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
@@ -158,7 +158,7 @@
 | wait_for_text_present_ok | Tags | 30000 |
 | wait_for_text_present_ok | Activities | 30000 |
 | text_like | `xpath=(//div[@class='widgetHeaderTitle'])[2]` | Tags |
-| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[3]` | Activities |
+| text_like | `xpath=(//div[@class='widgetHeaderTitle'])[4]` | Colleagues |
 
 | *Comment* | Test Case: Widgets in Profile TEARDOWN |  |
 | st-admin | deactivate-user --email %%wip_user%% | been removed |

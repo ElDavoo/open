@@ -69,7 +69,7 @@ TO DO - Add testability hooks and confirm Grey Ghost Icon
 | wait_for_element_visible_ok | //a[@id='gallery-widget-ToDo'] | 30000 |
 
 | *Comment* | Test Case: People Dashboard Navigation - Add Widget has correct text |  |
-| text_like | Displays a tag cloud of all tags on people in Socialtext People |  |
+| text_like | Displays a tag cloud of all tags on members of this group |  |
 | text_like | Displays a tag cloud of all tags in a particular workspace |  |
 | text_like | Microsoft Outlook Inbox, Calendar, Tasks, and Contacts |  |
 | text_like | Easily manage and track your daily to-do list |  |
