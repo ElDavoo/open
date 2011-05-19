@@ -27,8 +27,11 @@ my @data = (
 
 my $rest = Test::MockObject->new();
 my $query = Test::MockObject->new();
+my $user = Test::MockObject->new();
+$user->mock('user_id', sub { 1 });
 $query->mock('param', sub { return undef; } );
 $rest->mock('query', sub { return $query; } );
+$rest->mock('user', sub { return $user; } );
 
 ONE_FILTER: {
     my $collection = new Socialtext::Rest::Collection($rest,);

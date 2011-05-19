@@ -29,7 +29,7 @@ sub gadget_vars {
     # Setup overrides and override preferences
     my %overrides = (
         instance_id => ((2 ** 30) + int(rand(2 ** 30))),
-        UP_workspace_name => $self->cgi->workspace_name,
+        UP_workspace_name => $self->cgi->workspace_name || $self->hub->current_workspace->name,
     );
     for my $encoded_pref (split /\s+/, $encoded_prefs) {
         $encoded_pref =~ /^([^\s=]+)=(\S*)/ or next;
@@ -82,7 +82,7 @@ sub widget_setup_screen {
     my $self = shift;
 
     my $workspace = Socialtext::Workspace->new(
-        name => $self->cgi->workspace_name,
+        name => $self->cgi->workspace_name || $self->hub->current_workspace->name,
     );
     my $account = $workspace->account;
 
