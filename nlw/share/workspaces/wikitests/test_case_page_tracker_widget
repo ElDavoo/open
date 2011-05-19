@@ -1,0 +1,85 @@
+| *Comment* | Test Case: Page Tracker Widget |  |
+
+* Fixture: SocialWidgets
+
+| *Comment* | Test Case: Page Tracker Widget setup a page to tag and track |  |
+| set | ptw_page_1 | tracked_page_%%start_time%% |
+| set | ptw_page_2 | widget_page_%%start_time%% |
+| set | ptw_tag_1 | tracked_tag_%%start_time%% |
+| set | ptw_tag_1_prefix | tracked |
+| set | ptw_tag_1_suffix | tag_%%start_time%% |
+| set | ptw_tag_2 | filtered_tag_%%start_time%% |
+| set | ptw_title | widget_title_%%start_time%% |
+
+| st-create-wikipage | %%workspace%% | %%ptw_page_1%% |
+| st-add-page-tag | /%%workspace%%/index.cgi?%%ptw_page_1%% | %%ptw_tag_1%% |
+| st-add-page-tag | /%%workspace%%/index.cgi?%%ptw_page_1%% | %%ptw_tag_2%% |
+
+| *Comment* | Test Case: Page Tracker Widget open tracker widget in new page |  |
+| open_ok | /%%workspace%%/index.cgi?%%ptw_page_2%% |  |
+| wait_for_element_visible_ok | st-create-content-savelink | 30000 |
+| click_and_wait | st-create-content-savelink |  |
+| wait_for_element_visible_ok | link=Wiki Text | 30000 |
+| click_ok | link=Wiki Text |  |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| click_ok | wikiwyg_button_widget |  |
+| wait_for_element_visible_ok | gallery-widget-Page Tracker | 30000 |
+| click_ok | gallery-widget-Page Tracker |  |
+| wait_for_text_present_ok | Edit Widget | 30000 |
+| pause | 10000 |  |
+| selectFrame | `xpath=(//iframe)[1]` |  |
+| pause | 1000 |  |
+| selectFrame | `xpath=(//iframe)[1]` |  |
+
+tried this, didn't work
+st-name-widget | 1 | editor |
+st-widget-title-like | editor | Page Tracker |
+st-select-widget-frame | editor | |
+
+| *Comment* | Test Case: Page Tracker Widget basics section |  |
+| wait_for_text_present_ok | Basics | 30000 |
+| wait_for_element_visible_ok | //input[@name='Workspace'] | 30000 |
+| type_lookahead_ok | //input[@name='Workspace'] | %%workspace%% |
+| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'Canonical')] | 30000 |
+| click_ok | //div[@class='lookaheadItem']/a[contains(text(),'Canonical')] |  |
+| wait_for_element_not_present_ok | //div[@class='lookaheadItem']/a[contains(text(),'Canonical')] | 30000 |
+| wait_for_element_visible_ok | //input[@name='Title'] | 30000 |
+| type_ok | //input[@name='Title'] | %%ptw_title%% |
+
+| *Comment* | Test Case: Page Tracker Widget columns section *Heading and Notes need ids* |  |
+| wait_for_element_visible_ok | //input[@class='tag ui-input-text ui-body-null ui-corner-all ui-shadow-inset ui-body-c ui-focus'] | 30000 |
+| type_lookahead_ok | //input[@class='tag ui-input-text ui-body-null ui-corner-all ui-shadow-inset ui-body-c ui-focus'] | %%ptw_tag_1_prefix%% |
+| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%ptw_tag_1_suffix%%')] | 30000 |
+| click_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%ptw_tag_1_suffix%%')] |  |
+
+| *Comment* | Test Case: Page Tracker Widget page filtering section *Both inputs need ids* |  |
+
+| *Comment* | Test Case: Page Tracker Widget item background section *input needs id* |  |
+
+| *Comment* | Test Case: Page Tracker Widget item notes section *all inputs need ids* |  |
+
+| *Comment* | Test Case: Page Tracker Widget preview and save widget *preview button needs id* |  |
+| *Comment* | click Preview manually |
+| wait_for_element_visible_ok | st-widget-opensocial-setup-save | 30000 |
+| wait_for_element_visible_ok | st-widget-opensocial-setup-cancel | 30000 |
+| wait_for_text_present_ok | %%ptw_title%% | 30000 |
+| wait_for_text_present_ok | %%ptw_tag_1%% | 30000 |
+| wait_for_text_present_ok | %%ptw_page_1%% | 30000 |
+| click_ok | st-widget-opensocial-setup-save |  |
+| wait_for_element_not_present_ok | st-widget-opensocial-setup-save | 30000 |
+
+| *Comment* | Test Case: Page Tracker Widget check inserted code, save page |  |
+| pause | 2000 |  |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
+| verifyValue | wikiwyg_wikitext_textarea | `{widget: page_tracker __title__=Page%20Tracker __width__=600 up_Title=%%ptw_title%% up_Workspace=%%workspace%% up_IncludeTags=%%ptw_tag_2%% up_ExcludeTags= up_QuerySuffix= up_StateTags=%%ptw_tag_1%%= up_BackgroundTags=%%ptw_tag_2%%=#ABCDEF up_StampTags=%%ptw_tag_2%%=Filter= up_PagePrefix= up_HoverBackground=#FFFFCC up_RefreshInterval=1800 up_Editable=1}` |
+| st-page-save |  |  |
+
+| *Comment* | Test Case: Page Tracker Widget check page |  |
+| wait_for_element_visible_ok | //div[@class='regular widget'] | 30000 |
+| wait_for_text_present_ok | %%ptw_title%% | 30000 |
+| wait_for_text_present_ok | %%ptw_tag_1%% | 30000 |
+| wait_for_text_present_ok | %%ptw_page_1%% | 30000 |
+
+| *Comment* | Test Case: Page Tracker Widget TEARDOWN |  |
+| st-admin | purge-page --workspace %%workspace%% --page %%ptw_page_1%% |  |
+| st-admin | purge-page --workspace %%workspace%% --page %%ptw_page_2%% |  |
