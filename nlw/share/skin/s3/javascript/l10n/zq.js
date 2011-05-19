@@ -2260,7 +2260,7 @@
 "widgets.restored=widget":"\u00ABSuccessfully restored the \"[_1]\" widget\u00BB",
 "widgets.rotate-is-on":"\u00AB(Rotate is on)\u00BB",
 "widgets.rotate?":"\u00ABRotate?\u00BB",
-"widgets.rss-feed":"\u00AB#-#-#-#-#  widgets.po  #-#-#-#-#\nRSS Feed\n#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\nRSS feed\u00BB",
+"widgets.rss-feed":"\u00ABRSS Feed\u00BB",
 "widgets.scroll-to":"\u00ABScroll to\u00BB",
 "widgets.scrolling?":"\u00ABShow scroll bars?\u00BB",
 "widgets.sheet":"\u00ABSpreadsheet\u00BB",

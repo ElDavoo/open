@@ -2260,7 +2260,7 @@
 "widgets.restored=widget":"Zzzzzzzzzzzz zzzzzzzz zzz \"[_1]\" zzzzzz",
 "widgets.rotate-is-on":"(Zzzzzz zz zz)",
 "widgets.rotate?":"Zzzzzz?",
-"widgets.rss-feed":"#-#-#-#-#  zzzzzzz.zz  #-#-#-#-#\nZZZ Zzzz\n#-#-#-#-#  zzzzzzz.zz (Zzzzzzzzzz z18z)  #-#-#-#-#\nZZZ zzzz",
+"widgets.rss-feed":"ZZZ Zzzz",
 "widgets.scroll-to":"Zzzzzz zz",
 "widgets.scrolling?":"Zzzz zzzzzz zzzz?",
 "widgets.sheet":"Zzzzzzzzzzz",
