@@ -20,20 +20,11 @@ my $date_format = {
         locale    => 'ja',
     ),
 
-    'mm_dd_sl' => DateTime::Format::Strptime->new(
-        pattern   => '%m/%d',
-        locale    => 'ja',
-    ),
-
     'yyyy_mm_dd_jp' => DateTime::Format::Strptime->new(
         pattern   => '%Y年%m月%d日',
         locale    => 'ja',
     ),
 
-    'mm_dd_jp' => DateTime::Format::Strptime->new(
-        pattern   => '%m月%d日',
-        locale    => 'ja',
-    ),
 };
 
 my $date_to_year_key_map = {
