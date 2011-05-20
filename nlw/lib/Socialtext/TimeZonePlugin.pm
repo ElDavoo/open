@@ -14,6 +14,7 @@ use Socialtext::Date::l10n;
 use Socialtext::l10n qw(loc __);
 
 const class_id => 'timezone';
+const pref_scope => 'global';
 const class_title => __('class.timezone');
 const dcDATE => 1;
 const dcTIME => 2;

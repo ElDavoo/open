@@ -19,6 +19,7 @@ use Socialtext::TT2::Renderer;
 use Module::Pluggable search_path => ['Socialtext::Plugin'];
 
 const cgi_class       => '';
+const pref_scope => 'workspace';
 
 field cgi         => -init => '$self->hub->cgi';
 field display_title => '';
