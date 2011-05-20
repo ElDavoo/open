@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-15 20:59-0700\n"
+"PO-Revision-Date: 2011-05-18 08:04-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -391,53 +391,86 @@ msgstr "分享此页!"
 msgid "bookmarklet.tip"
 msgstr "小秘诀：您可利用“"
 
+msgid "date.never"
+msgstr "从未"
+
+msgid "description.active_members"
+msgstr "显示最活跃的用户列表。"
+
 msgid "description.activities"
 msgstr "发布讯息及显示活动，包含讯息与工作区活动。"
 
 msgid "description.all_groups"
-msgstr "所有可用群组"
+msgstr "所有可用群组。"
 
 msgid "description.all_tags"
-msgstr "以标签云方式显示所有人员标签。"
+msgstr "以标签云方式显示群组内的人员标签。"
 
 #: share/plugin/widgets/share/widgets/blockerbugs/config.yaml:4
 msgid "description.blockerbugs"
 msgstr "显示阻滞开发的瑕疵列表。"
 
+msgid "description.blognews2"
+msgstr "分页 theXblogs RSS 阅读器。编辑小工具设置，以查看最多 1 至 15 项。可选择长或短的摘要。个性化定制消息来源，包含焦点新闻，世界，商业，科技，体育，娱乐，政治等等。"
+
 msgid "description.bug_board"
 msgstr "以多栏方式呈现 Bugzilla 事项，以及具有特定标签的页面。"
 
+msgid "description.calc"
+msgstr "为您的个性化主页上最酷的计算器！这种简单实用的计算器，您可以执行绝大多数的基本算术运算。LabPixies 还提供了各式主题，使您的首页栩栩如生。只要按一下箭头按钮，就能从中选择您最喜欢的主题。酷吧！"
+
+msgid "description.calendar3"
+msgstr "谷歌日历（仅限 Firefox 浏览器。无法在 Internet Explorer 中使用。）"
+
+msgid "description.clock"
+msgstr "不错的数字时钟。您可以选择不同的时间格式（12/24h），不同的日期格式（英文，德文和法文），时区及启用夏令时间。"
+
+msgid "description.delicious"
+msgstr "我的 del.icio.us 小工具。在主页上显示 del.icio.us 热门网站！浏览您的书签或从您的人际网络上取得最新连结。轻松在用户之间切换，只需点击“我的 del.cio.us”按钮即可返回到您的书签。获取所有网站的相关信息，并轻松地将项目添加到您的列表。"
+
 msgid "description.edit_information"
-msgstr "编辑群组信息"
+msgstr "编辑群组信息。"
 
 msgid "description.edit_people"
-msgstr "编辑群组成员"
+msgstr "编辑群组成员。"
 
 msgid "description.explore"
 msgstr "发布讯息及显示活动，包含讯息与工作区活动。"
 
 msgid "description.explore_filters"
-msgstr "书签过滤器"
+msgstr "书签过滤器。"
+
+msgid "description.flickr_google"
+msgstr "显示任何 Flickr 帐户里的图像。"
 
 msgid "description.forbidden_profile"
-msgstr "个人档案"
+msgstr "个人档案。"
+
+msgid "description.group-workspaces"
+msgstr "列出所有与此群组相关的工作区。"
 
 msgid "description.information"
-msgstr "群组信息"
+msgstr "群组信息。"
 
 #: share/plugin/widgets/share/widgets/iterationbugs/config.yaml:4
 msgid "description.iterationbugs"
-msgstr "显示当前开发周期的错误列表"
+msgstr "显示当前开发周期的错误列表。"
 
 msgid "description.membership"
-msgstr "编辑群组成员"
+msgstr "编辑群组成员。"
+
+msgid "description.msoutlookwidget"
+msgstr "Microsoft Outlook 收件箱，日历，任务和联系人。"
 
 msgid "description.my_groups"
-msgstr "我的群组"
+msgstr "我的群组。"
 
 #: share/plugin/widgets/share/widgets/my_workspaces/config.yaml:5
 msgid "description.my_workspaces"
-msgstr "您所有的工作区"
+msgstr "您所有的工作区。"
+
+msgid "description.mytweets"
+msgstr "显示您的的 Twitter 讯息列表。"
 
 #: share/plugin/widgets/share/widgets/one_page/config.yaml:5
 msgid "description.one_page"
@@ -447,52 +480,67 @@ msgstr "在小工具里显示一个共笔页面。"
 msgid "description.one_spreadsheet"
 msgstr "在小工具里显示一个电子表格。"
 
+msgid "description.one_web_page"
+msgstr "在小工具里显示一份网页。"
+
+msgid "description.oneimage"
+msgstr "在小工具里显示一张图片。"
+
 msgid "description.people"
 msgstr "群组内的成员。"
 
 msgid "description.profile"
-msgstr "个人档案"
+msgstr "个人档案。"
 
 msgid "description.profile_activities"
-msgstr "活动"
+msgstr "活动。"
 
 msgid "description.profile_edit"
-msgstr "编辑个人档案"
+msgstr "编辑个人档案。"
 
 msgid "description.profile_network"
-msgstr "与您有关联的人"
+msgstr "与您有关联的人。"
 
 msgid "description.profile_tags"
-msgstr "标签"
+msgstr "标签。"
 
 #: share/plugin/widgets/share/widgets/rest_api/config.yaml:4
 msgid "description.rest_api"
-msgstr "REST API 开发工具"
+msgstr "REST API 开发工具。"
 
 #: share/plugin/widgets/share/widgets/rss/config.yaml:4
 msgid "description.rss"
-msgstr "订阅一个 RSS 来源"
+msgstr "订阅一个 RSS 来源。"
 
 msgid "description.signals-profile"
-msgstr "创建及显示讯息"
+msgstr "创建及显示讯息。"
+
+msgid "description.slide-feeds"
+msgstr "分享您的 SlideShare 投影片。"
 
 #: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:4
 msgid "description.tag_cloud"
-msgstr "以标签云方式显示特定工作区中的页面标签。"
+msgstr "以标签云方式，显示特定工作区中的页面标签。"
 
 #: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:4
 msgid "description.tagged_pages"
-msgstr "显示具特定标签的页面列表"
+msgstr "显示具特定标签的页面列表。"
 
 msgid "description.task_board"
 msgstr "以多栏方式呈现具有特定标签的页面。"
 
 msgid "description.teaser"
-msgstr "即将推出"
+msgstr "即将推出。"
 
 #: share/plugin/widgets/share/widgets/testrunner/config.yaml:4
 msgid "description.testrunner"
-msgstr "测试运行现况"
+msgstr "测试运行现况。"
+
+msgid "description.todo"
+msgstr "轻松管理和跟踪您的每日待办事项。您可以添加您的任务，以多种颜色显示，更改顺序，并且删除完成的任务 - 让您心想事成！"
+
+msgid "description.top_content"
+msgstr "显示您工作区内的各项活动状态。"
 
 #: share/plugin/widgets/share/widgets/userlist/config.yaml:5
 msgid "description.userlist"
@@ -501,12 +549,18 @@ msgstr "发布讯息及显示活动，包含讯息与工作区活动。"
 msgid "description.widget_editor"
 msgstr "编辑小工具"
 
+msgid "description.wikigadget"
+msgstr "在维基百科搜索关键字，并将结果显示在新的窗口。可修改设置来选择语言。"
+
 #: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:4
 msgid "description.workspace_activity"
-msgstr "显示编辑活动"
+msgstr "显示编辑活动。"
 
 msgid "description.workspaces"
-msgstr "列出群组中的所有工作区"
+msgstr "列出群组中的所有工作区。"
+
+msgid "description.youtubeplayer"
+msgstr "播放一段 YouTube 视频。"
 
 #: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:18 share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:17 share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:23
 msgid "do.cancel"
@@ -522,7 +576,7 @@ msgstr "完成"
 
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.tt2:18
 msgid "do.no"
-msgstr "无"
+msgstr "否"
 
 #: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:17 share/plugin/widgets/share/javascript/template/activities/weblink_popup.tt2:16 share/plugin/widgets/share/javascript/template/activities/wikilink_popup.tt2:22
 msgid "do.ok"
@@ -536,10 +590,16 @@ msgstr "移除"
 msgid "do.yes"
 msgstr "是"
 
+msgid "error.cannot-embed-page-within-itself"
+msgstr "错误：无法将页面嵌入到自身里。"
+
 #. (this.title, error)
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:78
 msgid "error.delete=widget,message"
 msgstr "删除“%1”小工具时出错：%2"
+
+msgid "error.display-list-of-wikis"
+msgstr "无法显示工作区列表。"
 
 #: share/plugin/widgets/share/javascript/activities/editor.js:376
 msgid "error.error"
@@ -548,6 +608,9 @@ msgstr "错误"
 #: share/plugin/widgets/share/javascript/gadgets.js:353
 msgid "error.feature-not-supported-in-dashboard"
 msgstr "抱歉，显示板暂不支持此项特性。"
+
+msgid "error.fetching-data"
+msgstr "撷取资料时发生错误。"
 
 #: share/plugin/widgets/share/javascript/activities/widget.js:423 share/plugin/widgets/share/javascript/activities/widget.js:589
 msgid "error.getting-activities"
@@ -564,6 +627,12 @@ msgstr "非有效网址（如 http://www.google.com）"
 #: share/plugin/widgets/share/javascript/activities/editor.js:1218
 msgid "error.invalid-wikilink-wiki"
 msgstr "非有效工作区。请输入一个包含网页链接的有效工作区。"
+
+msgid "error.loading-wiki-data"
+msgstr "载入工作区数据时出错。"
+
+msgid "error.nested-embedding-limit-reached"
+msgstr "错误：页面嵌入层数过多。"
 
 #. (action.error_title || action.title)
 #: share/plugin/widgets/share/javascript/template/activities/empty.tt2:4
@@ -587,6 +656,9 @@ msgstr "没有可显示的项目。可能是没人发布链接或附件，也可
 #: share/plugin/widgets/share/javascript/activities/editor.js:659
 msgid "error.no-such-wikilink-wiki"
 msgstr "您输入的工作区不存在，请重试"
+
+msgid "error.no-such=wiki"
+msgstr "工作区“%1”不存在。"
 
 #. (ws)
 #. (workspace)
@@ -613,6 +685,9 @@ msgstr "传递讯息时出错，请重试。"
 #: share/plugin/widgets/share/javascript/activities/editor.js:357 share/plugin/widgets/share/javascript/activities/editor.js:653
 msgid "error.signal-too-long=max-length"
 msgstr "讯息长度限制为 %1，请编辑您的讯息"
+
+msgid "error.view-forbidden=wiki"
+msgstr "您没有检视“%1”工作区的权限。"
 
 #: share/plugin/widgets/share/javascript/activities/editor.js:1210
 msgid "error.wikilink-page-required"
@@ -676,12 +751,12 @@ msgstr "在 %2 中复制 %1。"
 
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:4
 msgid "event.edit-profile-self"
-msgstr "编辑自己的个人资料。"
+msgstr "编辑自己的个人档案。"
 
 #. (person)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:15
 msgid "event.edit-profile=person"
-msgstr "编辑 %1 的个人资料。"
+msgstr "编辑 %1 的个人档案。"
 
 #. (page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:7
@@ -815,6 +890,9 @@ msgstr "%1M"
 msgid "files.none"
 msgstr "无"
 
+msgid "groups.group"
+msgstr "群组"
+
 #: share/plugin/widgets/share/javascript/template/activities/attachment_popup.tt2:5
 msgid "info.browse"
 msgstr "点击“浏览”并选择上传图片或文件。"
@@ -858,6 +936,18 @@ msgstr "讯息"
 #: share/plugin/widgets/template/mobile-signals.tt2:131
 msgid "nav.wikis"
 msgstr "工作区"
+
+msgid "page.comment"
+msgstr "评论"
+
+msgid "page.edit"
+msgstr "编辑"
+
+msgid "page.type-spreadsheet"
+msgstr "电子表格"
+
+msgid "page.type-wiki"
+msgstr "页面"
 
 #: share/plugin/widgets/share/javascript/activities/editor.js:1508
 msgid "signals.insert-mention:"
@@ -915,8 +1005,23 @@ msgstr "所有人员标签"
 msgid "title.blockerbugs"
 msgstr "阻滞开发瑕疵"
 
+msgid "title.blognews2"
+msgstr "theXblogs™"
+
 msgid "title.bug_board"
 msgstr "页虫看板"
+
+msgid "title.calc"
+msgstr "LabPixies 计算器"
+
+msgid "title.calendar3"
+msgstr "谷歌日历"
+
+msgid "title.clock"
+msgstr "时钟及日期"
+
+msgid "title.delicious"
+msgstr "我的 del.icio.us 书签"
 
 msgid "title.edit_information"
 msgstr "信息"
@@ -924,8 +1029,14 @@ msgstr "信息"
 msgid "title.edit_people"
 msgstr "成员"
 
+msgid "title.flickr_google"
+msgstr "Flickr 照片 - 英文"
+
 msgid "title.forbidden_profile"
 msgstr "个人档案"
+
+msgid "title.group-workspaces"
+msgstr "工作区"
 
 msgid "title.information"
 msgstr "信息"
@@ -934,12 +1045,18 @@ msgstr "信息"
 msgid "title.iterationbugs"
 msgstr "开发周期瑕疵"
 
+msgid "title.msoutlookwidget"
+msgstr "微软 Outlook"
+
 msgid "title.my_groups"
 msgstr "我的群组"
 
 #: share/plugin/widgets/share/widgets/my_workspaces/config.yaml:4
 msgid "title.my_workspaces"
 msgstr "工作区"
+
+msgid "title.mytweets"
+msgstr "我的 Twitter 讯息"
 
 #: share/plugin/widgets/share/widgets/one_page/config.yaml:4
 msgid "title.one_page"
@@ -948,6 +1065,12 @@ msgstr "共笔页面"
 #: share/plugin/widgets/share/widgets/one_spreadsheet/config.yaml:3
 msgid "title.one_spreadsheet"
 msgstr "电子表格页面"
+
+msgid "title.one_web_page"
+msgstr "网页"
+
+msgid "title.oneimage"
+msgstr "图片"
 
 msgid "title.profile"
 msgstr "个人档案"
@@ -969,6 +1092,9 @@ msgstr "REST API 开发工具"
 msgid "title.rss"
 msgstr "RSS 阅读器"
 
+msgid "title.slide-feeds"
+msgstr "SlideShare 简报列表"
+
 #: share/plugin/widgets/share/widgets/tag_cloud/config.yaml:3
 msgid "title.tag_cloud"
 msgstr "工作区标签"
@@ -987,6 +1113,9 @@ msgstr "工作区"
 msgid "title.testrunner"
 msgstr "测试结果"
 
+msgid "title.todo"
+msgstr "待办事项"
+
 #: share/plugin/widgets/share/widgets/top_content/config.yaml:4
 msgid "title.top_content"
 msgstr "热门内容"
@@ -995,12 +1124,18 @@ msgstr "热门内容"
 msgid "title.userlist"
 msgstr "在线用户"
 
+msgid "title.wikigadget"
+msgstr "维基百科"
+
 #: share/plugin/widgets/share/widgets/workspace_activity/config.yaml:3
 msgid "title.workspace_activity"
 msgstr "报出个未来"
 
 msgid "title.workspaces"
 msgstr "工作区"
+
+msgid "title.youtubeplayer"
+msgstr "YouTube 视频播放器"
 
 #: share/plugin/widgets/share/javascript/template/activities/video_popup.tt2:9
 msgid "video.title:"
@@ -1018,6 +1153,9 @@ msgstr "删除"
 msgid "widget.add-it-now"
 msgstr "现在添加"
 
+msgid "widget.add-now"
+msgstr "现在添加"
+
 #: share/plugin/widgets/template/view/container.setup:148
 msgid "widget.preview"
 msgstr "预览"
@@ -1026,6 +1164,39 @@ msgstr "预览"
 msgid "widget.push-all"
 msgstr "推送到所有显示板"
 
+msgid "widgets.1day"
+msgstr "一天"
+
+msgid "widgets.1month"
+msgstr "一个月"
+
+msgid "widgets.1week"
+msgstr "一周"
+
+msgid "widgets.1year"
+msgstr "一年"
+
+msgid "widgets.2weeks"
+msgstr "两周"
+
+msgid "widgets.3days"
+msgstr "三天"
+
+msgid "widgets.3months"
+msgstr "三个月"
+
+msgid "widgets.6months"
+msgstr "六个月"
+
+msgid "widgets.a-page-named"
+msgstr "页面名称"
+
+msgid "widgets.a-sheet-named"
+msgstr "电子表格名称"
+
+msgid "widgets.about-duration"
+msgstr "自起始时间起算，可以选择之后（正数）或是之前（负数）。例如：“1month”，“-3 weeks”，“48 minutes”，“1 year”"
+
 #: share/plugin/widgets/template/view/gallery:110
 msgid "widgets.about-restore"
 msgstr "恢复"
@@ -1033,6 +1204,12 @@ msgstr "恢复"
 #: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:55 share/plugin/widgets/template/view/gallery:104
 msgid "widgets.about-update"
 msgstr "更新"
+
+msgid "widgets.active-contributions"
+msgstr "最活跃的编辑者"
+
+msgid "widgets.active-signalers"
+msgstr "最活跃的讯息用户"
 
 #: share/plugin/widgets/share/javascript/lightbox/add-update-content.tt2:55
 msgid "widgets.add"
@@ -1054,9 +1231,18 @@ msgstr "添加小工具"
 msgid "widgets.added"
 msgstr "成功添加您的小工具"
 
+msgid "widgets.all"
+msgstr "全部"
+
+msgid "widgets.always"
+msgstr "所有讯息"
+
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:14
 msgid "widgets.changes"
 msgstr "更改"
+
+msgid "widgets.click"
+msgstr "点击"
 
 #. (this.title)
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:46
@@ -1082,13 +1268,55 @@ msgstr "在 %1 中创建新页面"
 msgid "widgets.delete"
 msgstr "（删除）"
 
+msgid "widgets.does-not-exist-in"
+msgstr "不存在于"
+
+msgid "widgets.duration"
+msgstr "持续时间"
+
+msgid "widgets.edit"
+msgstr "编辑"
+
+msgid "widgets.edited"
+msgstr "编辑"
+
+msgid "widgets.edited-pages"
+msgstr "被编辑的页面"
+
+msgid "widgets.edits"
+msgstr "编辑"
+
+msgid "widgets.emailed"
+msgstr "寄出"
+
+msgid "widgets.emailed-pages"
+msgstr "被寄出的页面"
+
+msgid "widgets.from"
+msgstr "在"
+
+msgid "widgets.from-account"
+msgstr "于帐户"
+
 msgid "widgets.gallery"
 msgstr "工具库"
 
 #. (gallery.account_name)
 #: share/plugin/widgets/template/view/gallery:34
 msgid "widgets.gallery-switch=account:"
-msgstr "这是“%1”账号的工具库。转到帐户："
+msgstr "这是“%1”帐户的工具库。转到帐户："
+
+msgid "widgets.group"
+msgstr "群组"
+
+msgid "widgets.height"
+msgstr "高度"
+
+msgid "widgets.here"
+msgstr "这里"
+
+msgid "widgets.image-source"
+msgstr "图片来源"
 
 msgid "widgets.in-layout-mode-click-save-or-cancel"
 msgstr "您现在位于布局模式。点击<b>保存</b>以保存更改，或<b>取消</b>将其舍弃。"
@@ -1097,21 +1325,96 @@ msgstr "您现在位于布局模式。点击<b>保存</b>以保存更改，或<b
 msgid "widgets.install-this"
 msgstr "安装小工具"
 
+msgid "widgets.is-not-sheet"
+msgstr "不是一份电子表格。"
+
+msgid "widgets.items-displayed"
+msgstr "显示项目数量"
+
+msgid "widgets.iteration"
+msgstr "开发周期"
+
+msgid "widgets.loading"
+msgstr "正在加载..."
+
+msgid "widgets.location"
+msgstr "网址"
+
 #: share/plugin/widgets/template/view/gallery:0 share/plugin/widgets/template/view/gallery:24
 msgid "widgets.manage-gallery-for-accounts"
-msgstr "管理各账号工具库"
+msgstr "管理各账戶工具库"
+
+msgid "widgets.max-description-length"
+msgstr "内文字数上限"
+
+msgid "widgets.mentions-and-private-signals-only"
+msgstr "提及我的讯息与私人讯息"
+
+msgid "widgets.most-active-in=noun,period"
+msgstr "<strong>%2</strong>以来，<strong>%1</strong>"
 
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:21
 msgid "widgets.new-page"
 msgstr "开新页面"
 
+msgid "widgets.no-active-contributors"
+msgstr "最活跃的编辑者会列在这里。当您开始建立您的工作区时，编辑活动也会随之增加。"
+
+msgid "widgets.no-active-emailed-pages"
+msgstr "被寄出次数最多的页面会列在这里。您可以在页面的工具栏上按“寄送”图示，透过电子邮件寄出页面。"
+
+msgid "widgets.no-active-readers"
+msgstr "最活跃的读者会列在这里。当您开始探索自己的新工作区之后，阅读活动也会随之增加。"
+
+msgid "widgets.no-active-signalers"
+msgstr "最活跃的讯息用户会列在这里。不妨试试从显示板上发送一则讯息！"
+
+msgid "widgets.no-active-viewed-pages"
+msgstr "被检视次数最多的页面会列在这里。当您开始探索自己的新工作区之后，最热门的页面会出现在这里。"
+
+msgid "widgets.no-active-viewed-profiles"
+msgstr "被检视次数最多的个人档案会列在这里。您可以检视自己的个人档案，或是邀请同事加入您的人际网络。"
+
+msgid "widgets.no-active-watched-pages"
+msgstr "最受关注的页面会列在这里。您可以在页面的工具栏上按“关注”图示，来开始关注页面。"
+
 #: share/plugin/widgets/template/view/gallery:75
 msgid "widgets.no-description"
 msgstr "无描述"
 
+msgid "widgets.no-tags-for=wiki"
+msgstr "<b>%1</b> 工作区目前没有标签。您可在工作区页面右侧区块添加标签。"
+
+msgid "widgets.number-of-activities-to-display"
+msgstr "显示活动笔数上限"
+
+msgid "widgets.number-of-tags-to-show"
+msgstr "显示标签数量"
+
+msgid "widgets.or"
+msgstr "或"
+
+msgid "widgets.page-views"
+msgstr "页面检视次数最多的用戶"
+
+msgid "widgets.pages-tagged=tag"
+msgstr "具有“%1”标签的页面"
+
 #: share/plugin/widgets/share/javascript/lightbox/remove-content.js:33
 msgid "widgets.permanent-remove"
 msgstr "永久移除小工具"
+
+msgid "widgets.priorities"
+msgstr "优先顺序"
+
+msgid "widgets.readers"
+msgstr "读者"
+
+msgid "widgets.reload-page-after-editing"
+msgstr "，以重新加载编辑后的页面。"
+
+msgid "widgets.reload-sheet-after-editing"
+msgstr "，以重新加载编辑后的电子表格。"
 
 #: share/plugin/widgets/template/view/gallery:126
 msgid "widgets.remove"
@@ -1139,13 +1442,70 @@ msgstr "恢复小工具"
 msgid "widgets.restored=widget"
 msgstr "成功恢复“%1”小工具"
 
+msgid "widgets.rotate-is-on"
+msgstr "（自动交替检视已启动）"
+
+msgid "widgets.rotate?"
+msgstr "交替检视？"
+
 #: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:24
 msgid "widgets.rss-feed"
 msgstr "RSS 订阅"
 
+msgid "widgets.scroll-to"
+msgstr "卷动到"
+
+msgid "widgets.scrolling?"
+msgstr "显示卷动轴？"
+
+msgid "widgets.sheet"
+msgstr "电子表格"
+
+msgid "widgets.show-notifications"
+msgstr "显示通知"
+
+msgid "widgets.signals"
+msgstr "讯息"
+
+msgid "widgets.sorry-but"
+msgstr "抱歉，但是"
+
+msgid "widgets.start-date"
+msgstr "起始日"
+
+msgid "widgets.statuses"
+msgstr "状态"
+
+msgid "widgets.tags-for=wiki"
+msgstr "%1 工作区的标签"
+
+msgid "widgets.this-page"
+msgstr "此页面"
+
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:6
 msgid "widgets.this-person-belongs-to-no-wikis"
 msgstr "此人不属于任何工作区。"
+
+msgid "widgets.this-sheet"
+msgstr "此电子表格"
+
+msgid "widgets.time"
+msgstr "时间"
+
+msgid "widgets.title"
+msgstr "标题"
+
+msgid "widgets.to-create-page"
+msgstr "以建立页面。"
+
+msgid "widgets.to-create-sheet"
+msgstr "以建立电子表格。"
+
+msgid "widgets.unable-to-build-tag-cloud-for=wiki"
+msgstr "无法为 <b>%1</b> 工作区建立标签云。"
+
+msgid "widgets.unlimited"
+msgstr "无限制"
 
 #: share/plugin/widgets/template/view/gallery:107
 msgid "widgets.update"
@@ -1171,10 +1531,58 @@ msgstr "上传小工具 XML 文件："
 msgid "widgets.use-editor"
 msgstr "使用小工具编辑器"
 
+msgid "widgets.view"
+msgstr "检视"
+
+msgid "widgets.view-add_to_watchlist"
+msgstr "受关注的页面"
+
+msgid "widgets.view-contribs"
+msgstr "编辑"
+
+msgid "widgets.view-edit_page"
+msgstr "被编辑的页面"
+
+msgid "widgets.view-email_page"
+msgstr "被寄出的页面"
+
+msgid "widgets.view-profile_views"
+msgstr "个人档案"
+
+msgid "widgets.view-reads"
+msgstr "阅读"
+
+msgid "widgets.view-signals"
+msgstr "讯息"
+
+msgid "widgets.view-view_page"
+msgstr "被检视的页面"
+
+msgid "widgets.viewed"
+msgstr "个人档案"
+
+msgid "widgets.viewed-pages"
+msgstr "最热门的页面"
+
+msgid "widgets.viewed-profiles"
+msgstr "最热门的个人档案"
+
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:13
 msgid "widgets.views"
 msgstr "检视"
 
+msgid "widgets.watched"
+msgstr "受关注"
+
+msgid "widgets.watched-pages"
+msgstr "受关注的页面"
+
+msgid "widgets.wiki"
+msgstr "工作区"
+
 #: share/plugin/widgets/share/widgets/my_workspaces/jemplate/my_workspaces.tt2:4
 msgid "widgets.you-belong-to-no-wikis"
 msgstr "您不属于任何工作区。"
+
+msgid "wiki.tag"
+msgstr "标签"

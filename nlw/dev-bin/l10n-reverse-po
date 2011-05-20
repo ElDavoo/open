@@ -24,7 +24,12 @@ die "Cannot specify both --msgid and --msgstr; please choose one as the field fo
 
 my ($in, $out);
 for my $po (@ARGV) {
-    open $in, '<', $po;
+    if ($po eq '-') {
+        $in = *STDIN;
+    }
+    else {
+        open $in, '<', $po;
+    }
 
     if ($inplace) {
         open $out, '>', "$po.new";

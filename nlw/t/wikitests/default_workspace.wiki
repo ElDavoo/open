@@ -57,7 +57,7 @@
 | code-is            | 200                                                                                        |                 |
 
 | Comment   | ... user clicks home. they navigate to the default workspace |                |
-| body-like | qr/\Q<a id="st-home-link" href="\/">Dashboard<\/a>\E/              |                |
+| body-like | <a id="st-home-link" href="/">Dashboard</a>              |                |
 | get       | /                                                            |                |
 | code-is   | 302                                                          |                |
 | header-is | Location                                                     | /%%workspace%% |
