@@ -15,34 +15,17 @@
 | st-add-page-tag | /%%workspace%%/index.cgi?%%ptw_page_1%% | %%ptw_tag_1%% |
 | st-add-page-tag | /%%workspace%%/index.cgi?%%ptw_page_1%% | %%ptw_tag_2%% |
 
-| *Comment* | Test Case: Page Tracker Widget open tracker widget in new page |  |
-| open_ok | /%%workspace%%/index.cgi?%%ptw_page_2%% |  |
-| wait_for_element_visible_ok | st-create-content-savelink | 30000 |
-| click_and_wait | st-create-content-savelink |  |
-| wait_for_element_visible_ok | link=Wiki Text | 30000 |
-| click_ok | link=Wiki Text |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| click_ok | wikiwyg_button_widget |  |
-| wait_for_element_visible_ok | gallery-widget-Page Tracker | 30000 |
-| click_ok | gallery-widget-Page Tracker |  |
-| wait_for_text_present_ok | Edit Widget | 30000 |
-| pause | 10000 |  |
-| selectFrame | `xpath=(//iframe)[1]` |  |
-| pause | 1000 |  |
-| selectFrame | `xpath=(//iframe)[1]` |  |
+| st-single-widget-in-dashboard | gallery-widget-Page Tracker |  |
 
-tried this, didn't work
-st-name-widget | 1 | editor |
-st-widget-title-like | editor | Page Tracker |
-st-select-widget-frame | editor | |
+| selectFrame | //div[@class='widgetContent']//iframe[@class='widgetWindow'] |  |
+| text_like | //form[@id='formPrefs'] | Widget Title: |
+| text_like | //form[@id='formPrefs'] | Basics |
 
 | *Comment* | Test Case: Page Tracker Widget basics section |  |
-| wait_for_text_present_ok | Basics | 30000 |
 | wait_for_element_visible_ok | //input[@name='Workspace'] | 30000 |
 | type_lookahead_ok | //input[@name='Workspace'] | %%workspace%% |
 | wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'Canonical')] | 30000 |
 | click_ok | //div[@class='lookaheadItem']/a[contains(text(),'Canonical')] |  |
-| wait_for_element_not_present_ok | //div[@class='lookaheadItem']/a[contains(text(),'Canonical')] | 30000 |
 | wait_for_element_visible_ok | //input[@name='Title'] | 30000 |
 | type_ok | //input[@name='Title'] | %%ptw_title%% |
 
@@ -81,5 +64,26 @@ st-select-widget-frame | editor | |
 | wait_for_text_present_ok | %%ptw_page_1%% | 30000 |
 
 | *Comment* | Test Case: Page Tracker Widget TEARDOWN |  |
+| st-process-jobs |  |  |
 | st-admin | purge-page --workspace %%workspace%% --page %%ptw_page_1%% |  |
 | st-admin | purge-page --workspace %%workspace%% --page %%ptw_page_2%% |  |
+
+
+^ END
+
+and everything (including plus/minus) have IDs now
+
+[8:14pm] au: so the last row has ID
+[8:14pm] au: StateTags-PageTag-new
+[8:14pm] ken: will see if the elements are visible after the selectFrame without having to qualify everything with //form but that's not awful ...
+[8:15pm] au: while the fields in the rows before the last one in a fieldset will be
+[8:15pm] au: StateTags-PageTag-0
+[8:15pm] au: StateTags-PageTag-1
+[8:15pm] au: etc
+[8:15pm] au: to click the add/plus button, use
+[8:15pm] au: StateTags-row-0
+[8:15pm] au: StateTags-row-1
+[8:15pm] au: (for minus) and
+[8:15pm] au: StateTags-row-new
+[8:15pm] au: (for plus)
+[8:20pm] au: @name='Workspace' can simply use ID = Workspace now
