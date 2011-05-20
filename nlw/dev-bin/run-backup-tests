@@ -1,37 +1,21 @@
 #!/bin/bash -e
 
-USAGE="USAGE: $0 -v VE -r RELEASE -t TEST -p VEHOST -h(elp) -d(ry)"
+USAGE="USAGE: run-backup-tests -v VE [-r RELEASE (none)] -d(ebug)"
 
 VE=""
 RELEASE=""
-TEST=""
-VEHOST=""
-DRY=""
+DEBUG=""
 
-while getopts "v:r:t:p:dh" optionName; do
+while getopts "v:r:hd" optionName; do
         case "$optionName" in
           v) VE="$OPTARG";;
-          r) RELEASE="$OPTARG";;
-          t) TEST="$OPTARG";;
-          p) VEHOST="$OPTARG";;
-          d) DRY="1";;
+          r) RELEASE="-r $OPTARG";;
+          d) DEBUG="-d";;
           h) echo $USAGE; exit;;
           [?]) echo $USAGE; exit;;
         esac
 done
 
-if [ $DRY ]; then
-        echo "VE: $VE, RELEASE: $RELEASE, TEST: $TEST, VEHOST: $VEHOST"
-fi
-
-if [ $VE ] && [ $RELEASE ]; then
-    cd $ST_CURRENT
-    echo "running: vest -v $VE -r $RELEASE"
-    if [ "$DRY" == "" ]; then vest -v $VE -r $RELEASE; fi
-fi
-
-cd $ST_CURRENT/appliance/libsocialtext-appliance-perl
-export ST_VE_NAME=$VE
-export ST_VE_HOST=$VEHOST.socialtext.net
-echo "running: perl -Ilib t/test-$TEST.pl"
-if [ "$DRY" == "" ]; then perl -Ilib t/test-$TEST.pl; fi
+for T in {pgpitr,pgpitr-purge}; do
+    run-backup-test -v $VE -t $T $RELEASE $DEBUG;
+done
