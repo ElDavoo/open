@@ -1,89 +1,119 @@
+*End of test fails. Is the widget not "really" being saved even though it looks like it is when the test is watched?*
+
 | *Comment* | Test Case: Page Tracker Widget |  |
 
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Page Tracker Widget setup a page to tag and track |  |
+| set | ptw_user | ptw_user_%%start_time%%@david.socialtext.net |
 | set | ptw_page_1 | tracked_page_%%start_time%% |
-| set | ptw_page_2 | widget_page_%%start_time%% |
 | set | ptw_tag_1 | tracked_tag_%%start_time%% |
 | set | ptw_tag_1_prefix | tracked |
 | set | ptw_tag_1_suffix | tag_%%start_time%% |
 | set | ptw_tag_2 | filtered_tag_%%start_time%% |
+| set | ptw_tag_2_prefix | filtered |
+| set | ptw_tag_2_suffix | tag_%%start_time%% |
 | set | ptw_title | widget_title_%%start_time%% |
+| set | ptw_head | ptw_heading_%%start_time%% |
+| set | ptw_head_note | ptw_head_note_%%start_time%% |
+| set | ptw_note | ptw_note_%%start_time%% |
 
+| create-user | %%ptw_user%% | %%password%% |
+| st-admin | add-member --email %%ptw_user%% --workspace %%workspace%% | now has the role |
+| st-logoutin | %%ptw_user%% | %%password%% |
 | st-create-wikipage | %%workspace%% | %%ptw_page_1%% |
 | st-add-page-tag | /%%workspace%%/index.cgi?%%ptw_page_1%% | %%ptw_tag_1%% |
 | st-add-page-tag | /%%workspace%%/index.cgi?%%ptw_page_1%% | %%ptw_tag_2%% |
 
 | st-single-widget-in-dashboard | gallery-widget-Page Tracker |  |
+| pause | 5000 |  |
 
 | selectFrame | //div[@class='widgetContent']//iframe[@class='widgetWindow'] |  |
 | text_like | //form[@id='formPrefs'] | Widget Title: |
-| text_like | //form[@id='formPrefs'] | Basics |
 
 | *Comment* | Test Case: Page Tracker Widget basics section |  |
-| wait_for_element_visible_ok | //input[@name='Workspace'] | 30000 |
-| type_lookahead_ok | //input[@name='Workspace'] | %%workspace%% |
+| text_like | //form[@id='formPrefs'] | Basics |
+| wait_for_element_visible_ok | Workspace | 30000 |
+| type_lookahead_ok | Workspace | %%workspace%% |
 | wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'Canonical')] | 30000 |
 | click_ok | //div[@class='lookaheadItem']/a[contains(text(),'Canonical')] |  |
 | wait_for_element_visible_ok | //input[@name='Title'] | 30000 |
-| type_ok | //input[@name='Title'] | %%ptw_title%% |
+| type_ok | Title | %%ptw_title%% |
 
-| *Comment* | Test Case: Page Tracker Widget columns section *Heading and Notes need ids* |  |
-| wait_for_element_visible_ok | //input[@class='tag ui-input-text ui-body-null ui-corner-all ui-shadow-inset ui-body-c ui-focus'] | 30000 |
-| type_lookahead_ok | //input[@class='tag ui-input-text ui-body-null ui-corner-all ui-shadow-inset ui-body-c ui-focus'] | %%ptw_tag_1_prefix%% |
+| *Comment* | Test Case: Page Tracker Widget columns section |  |
+| text_like | //form[@id='formPrefs'] | Columns |
+| wait_for_element_visible_ok | StateTags-PageTag-new | 30000 |
+| type_lookahead_ok | StateTags-PageTag-new | %%ptw_tag_1_prefix%% |
 | wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%ptw_tag_1_suffix%%')] | 30000 |
 | click_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%ptw_tag_1_suffix%%')] |  |
+| wait_for_element_visible_ok | StateTags-Heading-new | 30000 |
+| type_ok | StateTags-Heading-new | %%ptw_head%% |
+| wait_for_element_visible_ok | StateTags-Notes-new | 30000 |
+| type_ok | StateTags-Notes-new | %%ptw_head_note%% |
+| wait_for_element_visible_ok | StateTags-row-new | 30000 |
+| click_ok | StateTags-row-new |  |
+| wait_for_element_visible_ok | StateTags-PageTag-0 | 30000 |
+| wait_for_element_visible_ok | StateTags-PageTag-new | 30000 |
 
-| *Comment* | Test Case: Page Tracker Widget page filtering section *Both inputs need ids* |  |
+| *Comment* | Test Case: Page Tracker Widget page filtering section |  |
+| text_like | //form[@id='formPrefs'] | Page Filtering (optional) |
+| wait_for_element_visible_ok | IncludeTags-PageTag-new | 30000 |
+| type_lookahead_ok | IncludeTags-PageTag-new | %%ptw_tag_2_prefix%% |
+| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%ptw_tag_2_suffix%%')] | 30000 |
+| click_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%ptw_tag_2_suffix%%')] |  |
+| wait_for_element_visible_ok | IncludeTags-row-new | 30000 |
+| click_ok | IncludeTags-row-new |  |
+| wait_for_element_visible_ok | IncludeTags-PageTag-0 | 30000 |
+| wait_for_element_visible_ok | IncludeTags-PageTag-new | 30000 |
+| wait_for_element_visible_ok | ExcludeTags-PageTag-new | 30000 |
+| type_lookahead_ok | ExcludeTags-PageTag-new | %%ptw_tag_2_prefix%% |
+| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%ptw_tag_2_suffix%%')] | 30000 |
+| type_lookahead_ok | ExcludeTags-PageTag-new | zzzzzz |
+| wait_for_element_not_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%ptw_tag_2_suffix%%')] | 30000 |
 
-| *Comment* | Test Case: Page Tracker Widget item background section *input needs id* |  |
+| *Comment* | Test Case: Page Tracker Widget item background section |  |
+| text_like | //form[@id='formPrefs'] | Item Background (optional) |
+| wait_for_element_visible_ok | BackgroundTags-PageTag-new | 30000 |
+| type_lookahead_ok | BackgroundTags-PageTag-new | %%ptw_tag_2_prefix%% |
+| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%ptw_tag_2_suffix%%')] | 30000 |
+| click_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%ptw_tag_2_suffix%%')] |  |
+| wait_for_element_visible_ok | BackgroundTags-BackgroundColor-new | 30000 |
+| type_ok | BackgroundTags-BackgroundColor-new | #ABCDEF |
+| wait_for_element_visible_ok | BackgroundTags-row-new | 30000 |
+| click_ok | BackgroundTags-row-new |  |
+| wait_for_element_visible_ok | BackgroundTags-PageTag-0 | 30000 |
+| wait_for_element_visible_ok | BackgroundTags-PageTag-new | 30000 |
 
-| *Comment* | Test Case: Page Tracker Widget item notes section *all inputs need ids* |  |
+| *Comment* | Test Case: Page Tracker Widget item notes section |  |
+| text_like | //form[@id='formPrefs'] | Item Notes (optional) |
+| wait_for_element_visible_ok | StampTags-PageTag-new | 30000 |
+| type_lookahead_ok | StampTags-PageTag-new | %%ptw_tag_2_prefix%% |
+| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%ptw_tag_2_suffix%%')] | 30000 |
+| click_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%ptw_tag_2_suffix%%')] |  |
+| wait_for_element_visible_ok | StampTags-StampNote-new | 30000 |
+| type_ok | StampTags-StampNote-new | %%ptw_note%% |
+| wait_for_element_visible_ok | StampTags-row-new | 30000 |
+| click_ok | StampTags-row-new |  |
+| wait_for_element_visible_ok | StampTags-PageTag-0 | 30000 |
+| wait_for_element_visible_ok | StampTags-StampNote-new | 30000 |
 
-| *Comment* | Test Case: Page Tracker Widget preview and save widget *preview button needs id* |  |
-| *Comment* | click Preview manually |
-| wait_for_element_visible_ok | st-widget-opensocial-setup-save | 30000 |
-| wait_for_element_visible_ok | st-widget-opensocial-setup-cancel | 30000 |
-| wait_for_text_present_ok | %%ptw_title%% | 30000 |
-| wait_for_text_present_ok | %%ptw_tag_1%% | 30000 |
-| wait_for_text_present_ok | %%ptw_page_1%% | 30000 |
-| click_ok | st-widget-opensocial-setup-save |  |
-| wait_for_element_not_present_ok | st-widget-opensocial-setup-save | 30000 |
-
-| *Comment* | Test Case: Page Tracker Widget check inserted code, save page |  |
-| pause | 2000 |  |
-| wait_for_element_visible_ok | wikiwyg_wikitext_textarea | 30000 |
-| verifyValue | wikiwyg_wikitext_textarea | `{widget: page_tracker __title__=Page%20Tracker __width__=600 up_Title=%%ptw_title%% up_Workspace=%%workspace%% up_IncludeTags=%%ptw_tag_2%% up_ExcludeTags= up_QuerySuffix= up_StateTags=%%ptw_tag_1%%= up_BackgroundTags=%%ptw_tag_2%%=#ABCDEF up_StampTags=%%ptw_tag_2%%=Filter= up_PagePrefix= up_HoverBackground=#FFFFCC up_RefreshInterval=1800 up_Editable=1}` |
-| st-page-save |  |  |
+| *Comment* | Test Case: Page Tracker Widget save widget |  |
+| wait_for_element_visible_ok | link-save | 30000 |
+| click_and_wait | link-save |  |
+| wait_for_element_not_present_ok | link-save | 30000 |
+| wait_for_element_not_present_ok | link-cancel | 30000 |
 
 | *Comment* | Test Case: Page Tracker Widget check page |  |
 | wait_for_element_visible_ok | //div[@class='regular widget'] | 30000 |
 | wait_for_text_present_ok | %%ptw_title%% | 30000 |
-| wait_for_text_present_ok | %%ptw_tag_1%% | 30000 |
+| wait_for_text_present_ok | %%ptw_note%% | 30000 |
 | wait_for_text_present_ok | %%ptw_page_1%% | 30000 |
+| wait_for_text_present_ok | %%ptw_head%% | 30000 |
+| wait_for_text_present_ok | %%ptw_head_note%% | 30000 |
 
 | *Comment* | Test Case: Page Tracker Widget TEARDOWN |  |
 | st-process-jobs |  |  |
-| st-admin | purge-page --workspace %%workspace%% --page %%ptw_page_1%% |  |
-| st-admin | purge-page --workspace %%workspace%% --page %%ptw_page_2%% |  |
+| st-admin | purge-page --workspace %%workspace%% --page %%ptw_page_1%% | purged |
+| st-admin | deactivate-user --email %%ptw_user%% | been removed |
 
-
-^ END
-
-and everything (including plus/minus) have IDs now
-
-[8:14pm] au: so the last row has ID
-[8:14pm] au: StateTags-PageTag-new
-[8:14pm] ken: will see if the elements are visible after the selectFrame without having to qualify everything with //form but that's not awful ...
-[8:15pm] au: while the fields in the rows before the last one in a fieldset will be
-[8:15pm] au: StateTags-PageTag-0
-[8:15pm] au: StateTags-PageTag-1
-[8:15pm] au: etc
-[8:15pm] au: to click the add/plus button, use
-[8:15pm] au: StateTags-row-0
-[8:15pm] au: StateTags-row-1
-[8:15pm] au: (for minus) and
-[8:15pm] au: StateTags-row-new
-[8:15pm] au: (for plus)
-[8:20pm] au: @name='Workspace' can simply use ID = Workspace now
+| *Comment* | Test Case: Page Tracker Widget COMPLETED |  |
