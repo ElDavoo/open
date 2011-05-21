@@ -192,7 +192,7 @@ sub page_key {
 
 # Load an attachment and then add it to the index.
 sub index_attachment {
-    my ( $self, $page_id, $attachment_or_id ) = @_;
+    my ( $self, $page_id, $attachment_or_id, $check_skip ) = @_;
 
     my $attachment = blessed($attachment_or_id)
         ? $attachment_or_id
@@ -202,6 +202,17 @@ sub index_attachment {
         );
     my $attachment_id = $attachment->id;
     _debug("Loaded attachment: page_id=$page_id attachment_id=$attachment_id");
+
+    if ($check_skip) {
+        my $doc_id = join(':',
+            $self->workspace->workspace_id,$page_id,$attachment_id);
+        my $resp = $self->solr->query("id:$doc_id", {fl=>'id',qt=>'standard'});
+        my $docs = $resp->docs;
+        if ($docs && @$docs == 1) {
+            _debug("Skipping indexing $attachment_id, already present");
+            return;
+        }
+    }
 
     $self->_add_attachment_doc($attachment);
     $self->_commit();
