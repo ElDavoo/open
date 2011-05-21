@@ -6,6 +6,8 @@ use Socialtext::Job::AttachmentIndex;
 extends 'Socialtext::Job', 'Socialtext::Job::AttachmentIndex::Base';
 with 'Socialtext::ReIndexJob', 'Socialtext::IndexingJob';
 
+use constant 'check_skip_index' => 0;
+
 __PACKAGE__->meta->make_immutable(inline_constructor => 1);
 no Moose;
 1;
