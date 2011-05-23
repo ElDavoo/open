@@ -1,11 +1,13 @@
-*End of test fails. Is the widget not "really" being saved even though it looks like it is when the test is watched?*
-
 | *Comment* | Test Case: Page Tracker Widget |  |
 
 * Fixture: SocialWidgets
 
 | *Comment* | Test Case: Page Tracker Widget setup a page to tag and track |  |
 | set | ptw_user | ptw_user_%%start_time%%@david.socialtext.net |
+| set | ptw_acct | ptw_account_%%start_time%% |
+| set | ptw_wiki | ptw-workspace-%%start_time%% |
+| set | ptw_wiki_prefix | ptw-work |
+| set | ptw_wiki_suffix | space-%%start_time%% |
 | set | ptw_page_1 | tracked_page_%%start_time%% |
 | set | ptw_tag_1 | tracked_tag_%%start_time%% |
 | set | ptw_tag_1_prefix | tracked |
@@ -18,12 +20,18 @@
 | set | ptw_head_note | ptw_head_note_%%start_time%% |
 | set | ptw_note | ptw_note_%%start_time%% |
 
-| create-user | %%ptw_user%% | %%password%% |
-| st-admin | add-member --email %%ptw_user%% --workspace %%workspace%% | now has the role |
+| create_account | %%ptw_acct%% |  |  |
+| create_workspace | %%ptw_wiki%% | %%ptw_acct%% |  |
+| create_user | %%ptw_user%% | %%password%% | %%ptw_acct%% |
+
+
+| st-admin | add-member --email %%ptw_user%% --workspace %%ptw_wiki%% | now has the role |
 | st-logoutin | %%ptw_user%% | %%password%% |
-| st-create-wikipage | %%workspace%% | %%ptw_page_1%% |
-| st-add-page-tag | /%%workspace%%/index.cgi?%%ptw_page_1%% | %%ptw_tag_1%% |
-| st-add-page-tag | /%%workspace%%/index.cgi?%%ptw_page_1%% | %%ptw_tag_2%% |
+
+| st-admin | update-page --w %%ptw_wiki%% --e %%ptw_user%% --p "%%ptw_page_1%%" < %%wikitest_client_files%%wikitest.txt | has been created |
+| st-process-jobs |  |  |
+| st-add-page-tag | /%%ptw_wiki%%/index.cgi?%%ptw_page_1%% | %%ptw_tag_1%% |
+| st-add-page-tag | /%%ptw_wiki%%/index.cgi?%%ptw_page_1%% | %%ptw_tag_2%% |
 
 | st-single-widget-in-dashboard | gallery-widget-Page Tracker |  |
 | pause | 5000 |  |
@@ -34,9 +42,9 @@
 | *Comment* | Test Case: Page Tracker Widget basics section |  |
 | text_like | //form[@id='formPrefs'] | Basics |
 | wait_for_element_visible_ok | Workspace | 30000 |
-| type_lookahead_ok | Workspace | %%workspace%% |
-| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'Canonical')] | 30000 |
-| click_ok | //div[@class='lookaheadItem']/a[contains(text(),'Canonical')] |  |
+| type_lookahead_ok | Workspace | %%ptw_wiki_prefix%% |
+| wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%ptw_wiki_suffix%%')] | 30000 |
+| click_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%ptw_wiki_suffix%%')] |  |
 | wait_for_element_visible_ok | //input[@name='Title'] | 30000 |
 | type_ok | Title | %%ptw_title%% |
 
@@ -68,6 +76,7 @@
 | wait_for_element_visible_ok | ExcludeTags-PageTag-new | 30000 |
 | type_lookahead_ok | ExcludeTags-PageTag-new | %%ptw_tag_2_prefix%% |
 | wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%ptw_tag_2_suffix%%')] | 30000 |
+| pause | 2000 |  |
 | type_lookahead_ok | ExcludeTags-PageTag-new | zzzzzz |
 | wait_for_element_not_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'%%ptw_tag_2_suffix%%')] | 30000 |
 
@@ -100,12 +109,15 @@
 | *Comment* | Test Case: Page Tracker Widget save widget |  |
 | wait_for_element_visible_ok | link-save | 30000 |
 | click_and_wait | link-save |  |
-| wait_for_element_not_present_ok | link-save | 30000 |
-| wait_for_element_not_present_ok | link-cancel | 30000 |
+| select_frame | relative=parent |  |
+| open_ok | /st/dashboard |  |
 
 | *Comment* | Test Case: Page Tracker Widget check page |  |
 | wait_for_element_visible_ok | //div[@class='regular widget'] | 30000 |
 | wait_for_text_present_ok | %%ptw_title%% | 30000 |
+| st-name-widget | 1 | tracker |
+| st-widget-title-like | tracker | %%ptw_title%% |
+| st-select-widget-frame | tracker |  |
 | wait_for_text_present_ok | %%ptw_note%% | 30000 |
 | wait_for_text_present_ok | %%ptw_page_1%% | 30000 |
 | wait_for_text_present_ok | %%ptw_head%% | 30000 |
@@ -113,7 +125,8 @@
 
 | *Comment* | Test Case: Page Tracker Widget TEARDOWN |  |
 | st-process-jobs |  |  |
-| st-admin | purge-page --workspace %%workspace%% --page %%ptw_page_1%% | purged |
-| st-admin | deactivate-user --email %%ptw_user%% | been removed |
+| st-admin | delete-workspace --workspace %%ptw_wiki%% --no-export | has been deleted |
+| deactivate-user | %%ptw_user%% | been removed |
+| delete-account | %%ptw_acct%% | Recklessly deleting |
 
 | *Comment* | Test Case: Page Tracker Widget COMPLETED |  |
