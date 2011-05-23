@@ -67,46 +67,73 @@ sub _load_all_for_user {
 
     my $wksp  = $self->hub->current_workspace;
     my $email = $user->email_address;
-    my $cache_key = join ':', $wksp->name, $email;
 
-    my $cache = $self->_cache;
-    if (my $prefs = $cache->get($cache_key)) {
-        return $prefs;
-    }
+    my $global = $self->Global_user_prefs($user);
+    return $global unless $wksp->real;
 
-    my $prefs = $self->Prefs_for_user($user, $wksp);
-    $cache->set($cache_key => $prefs);
+    my $prefs = $self->Workspace_user_prefs($user, $wksp);
+
+    # global prefs override local.
+    $prefs->{$_} = $global->{$_} for keys %$global;
+
     return $prefs;
 }
 
-
-
-sub Prefs_for_user {
+sub Workspace_user_prefs {
     my $class_or_self = shift;
     my $user          = shift;
-    my $workspace     = shift or die "workspace required";
-    my $workspace_id  = $workspace->workspace_id;
+    my $wksp          = shift or die "workspace required";
+    my $wksp_id       = $wksp->workspace_id;
     my $email         = $user->email_address;
 
-    return {} unless $workspace->real;
+    my $cache_key = join ':', $wksp->name, $email;
+    my $cache = $class_or_self->_cache;
+    my $cached_values = $cache->get($cache_key);
+    return $cached_values if $cached_values;
 
-    my $sth = sql_execute('
+    my $blob = sql_singlevalue(qq{
         SELECT pref_blob
           FROM user_workspace_pref
          WHERE user_id = ?
            AND workspace_id = ?
-       ', $user->user_id, $workspace_id,
-    );
-    return if $sth->rows == 0;
-    my $result = {};
-    {
-        local $@;
-        $result = eval { decode_json($sth->fetchrow_array()); };
-        st_log->error(
-            "failed to load prefs blob '${email}:$workspace_id': $@"
-        ) if $@;
+    }, $user->user_id, $wksp_id);
+    return {} unless $blob;
+
+    my $prefs = eval { decode_json($blob); };
+    if (my $e = $@) {
+        st_log->error("failed to load prefs '${email}:$wksp_id': $@");
+        $prefs = {};
     }
-    return $result;
+
+    $cache->set($cache_key => $prefs);
+    return $prefs;
+}
+
+sub Global_user_prefs {
+    my $class_or_self = shift;
+    my $user          = shift;
+    my $email         = $user->email_address;
+
+    my $cache_key = join ':', 'global-prefs', $email;
+    my $cache = $class_or_self->_cache;
+    my $cached_values = $cache->get($cache_key);
+    return $cached_values if $cached_values;
+
+    my $blob = sql_singlevalue(qq{
+        SELECT pref_blob
+          FROM user_pref
+         WHERE user_id = ?
+    }, $user->user_id);
+    return {} unless $blob;
+
+    my $prefs = eval { decode_json($blob) };
+    if (my $e = $@) { 
+        st_log->error("failed to load global prefs blob '$email': $@");
+        return {};
+    }
+   
+    $cache->set($cache_key => $prefs);
+    return $prefs;
 }
 
 
