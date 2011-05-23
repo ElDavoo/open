@@ -9,48 +9,33 @@
 
 | *Comment* | Test Case: Activities Widget Greeting Dashboard |  |
 | st-single-widget-in-dashboard | gallery-widget-Activities |  |
-| st-name-widget | 1 | activities_widget |
-| st-widget-title-like | activities_widget | Activities |
-| wait_for_text_present_ok | %%Greeting%% | 10000 |
-
-| *Comment* | Test Case: Activities Widget Greeting Dashboard click - Greeting disappears |  |
-| wait_for_element_present_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] | 5000 |
+| wait_for_text_present_ok | %%Greeting%% | 30000 |
+| wait_for_element_present_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] | 30000 |
 | click_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] |  |
-| wait_for_text_not_present_ok | %%Greeting%% | 5000 |
+| wait_for_text_not_present_ok | %%Greeting%% | 10000 |
 
-| *Comment* | Test Case: Activities Widget Greeting Signals present |  |
+| *Comment* | Test Case: Activities Widget Greeting Signals |  |
 | open_ok | /st/signals/ |
-| wait_for_text_present_ok | Signal | 10000 |
-| wait_for_text_present_ok | %%Greeting%% | 10000 |
-
-| *Comment* | Test Case: Activities Widget Greeting Signals click - Greeting disappears |  |
-| wait_for_element_present_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] | 5000 |
+| wait_for_text_present_ok | %%Greeting%% | 30000 |
+| wait_for_element_present_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] | 30000 |
 | click_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] |  |
-| wait_for_text_not_present_ok | %%Greeting%% | 5000 |
+| wait_for_text_not_present_ok | %%Greeting%% | 10000 |
 
 | *Comment* | Test Case: Activities Widget Greeting profile widget |  |
 | open_ok | /st/profile |  |
-| st-name-widget | 3 | activities_widget |
-| st-widget-title-like | activities_widget | Activities |
-| st-select-widget-frame | activities_widget |  |
-| wait_for_text_present_ok | %%Greeting%% | 10000 |
-| wait_for_element_present_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] | 5000 |
+| wait_for_text_present_ok | %%Greeting%% | 30000 |
+| wait_for_element_present_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] | 30000 |
 | click_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] |  |
-| wait_for_text_not_present_ok | %%Greeting%% | 5000 |
-| select-frame | relative=parent |  |
+| wait_for_text_not_present_ok | %%Greeting%% | 10000 |
 
 | *Comment* | Test Case: Activities Widget Greeting group widget |  |
 | open_ok | /st/group/%%group_id%% |  |
-| st-name-widget | 4 | activities_widget |
-| st-widget-title-like | activities_widget | Activities |
-| st-select-widget-frame | activities_widget |  |
-| wait_for_text_present_ok | %%Greeting%% | 10000 |
-| wait_for_element_present_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] | 5000 |
+| wait_for_text_present_ok | %%Greeting%% | 30000 |
+| wait_for_element_present_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] | 30000 |
 | click_ok | //div[@class='mainWikiwyg setupWikiwyg wikiwyg'] |  |
-| wait_for_text_not_present_ok | %%Greeting%% | 5000 |
-| select-frame | relative=parent |  |
+| wait_for_text_not_present_ok | %%Greeting%% | 10000 |
 
-
+| *Comment* | Test Case: Activities Widget Greeting TEARDOWN |  |
 | delete-group | %%group_id%% | Recklessly deleting |
 
 | *Comment* | Test Case: Activities Widget Greeting COMPLETED |  |
