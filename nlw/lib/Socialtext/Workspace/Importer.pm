@@ -232,7 +232,7 @@ sub Import_user_workspace_prefs {
                     my $prefs = do $f;
                     die "can't load prefs, exception: $@" if $@;
                     die "can't load prefs: $!" unless ref($prefs) eq 'HASH';
-                    Socialtext::PreferencesPlugin->Store_prefs_for_user(
+                    Socialtext::PreferencesPlugin->Store_workspace_user_prefs(
                         $user, $workspace, $prefs);
                 };
                 if ($@) {
