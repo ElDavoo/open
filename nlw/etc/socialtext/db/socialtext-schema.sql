@@ -1387,6 +1387,12 @@ CREATE TABLE user_plugin_pref (
     value text NOT NULL
 );
 
+CREATE TABLE user_pref (
+    user_id bigint NOT NULL,
+    last_updated timestamptz DEFAULT now() NOT NULL,
+    pref_blob text
+);
+
 CREATE TABLE user_restrictions (
     user_id bigint NOT NULL,
     restriction_type varchar(256) NOT NULL,
@@ -1753,6 +1759,10 @@ ALTER TABLE ONLY topic_signal_page
 ALTER TABLE ONLY topic_signal_user
     ADD CONSTRAINT topic_signal_user_pk
             PRIMARY KEY (signal_id, user_id);
+
+ALTER TABLE ONLY user_pref
+    ADD CONSTRAINT user_pref_pkey
+            PRIMARY KEY (user_id);
 
 ALTER TABLE ONLY user_restrictions
     ADD CONSTRAINT user_restrictions_pkey
@@ -2771,6 +2781,11 @@ ALTER TABLE ONLY user_plugin_pref
             FOREIGN KEY (user_id)
             REFERENCES users(user_id) ON DELETE CASCADE;
 
+ALTER TABLE ONLY user_pref
+    ADD CONSTRAINT user_pref_fk
+            FOREIGN KEY (user_id)
+            REFERENCES users(user_id) ON DELETE CASCADE;
+
 ALTER TABLE ONLY user_restrictions
     ADD CONSTRAINT user_restrictions_user_id_fkey
             FOREIGN KEY (user_id)
@@ -2852,4 +2867,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '140');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '141');
