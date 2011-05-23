@@ -83,8 +83,10 @@ sub Workspace_user_prefs {
     my $class_or_self = shift;
     my $user          = shift;
     my $wksp          = shift or die "workspace required";
-    my $wksp_id       = $wksp->workspace_id;
     my $email         = $user->email_address;
+
+    return {} unless $wksp->real;
+    my $wksp_id = $wksp->workspace_id;
 
     my $cache_key = join ':', $wksp->name, $email;
     my $cache = $class_or_self->_cache;
