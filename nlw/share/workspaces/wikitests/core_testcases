@@ -12,6 +12,7 @@ test env properly and are not testing the test-workspace
 
 * [Test Case: Home]
 * [Test Case: Workspace Navigation]
+* [Test Case: Weblog Archive and Navigation]
 * [Test Case: Global Navigation]
 * [Test case: Invite Anonymous User]
 * [Test case: Self Register]
@@ -43,7 +44,6 @@ test env properly and are not testing the test-workspace
 * [Test Case: All Pages]
 * [Test Case: Tools: Delete Page]
 * [Test Case: Tools: Export as HTML]
-* [Test Case: Weblog Archive and Navigation]
 * [Test Case: Connections]
 * [Test Case: Settings: Admin]
 * [Test Case: User Settings Create Workspace]
