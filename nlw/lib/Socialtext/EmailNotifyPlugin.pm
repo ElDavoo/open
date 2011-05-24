@@ -27,13 +27,7 @@ our $Minimum_notify_frequency_in_minutes = 1;
 sub notify_frequency {
     my $self = shift;
     my $p = $self->new_preference('notify_frequency');
-    $p->query(
-        __('email.frequency?')
-        . '<br /><i>' .
-        __('email.frequency-capped')
-        . '</i><br />'
-    );
-
+    $p->query(__('email.frequency?'));
     $p->type('pulldown');
     my $choices = [
         0 => __('time.never'),

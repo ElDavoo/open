@@ -119,7 +119,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 20:31+0800\n"
+"PO-Revision-Date: 2011-05-24 06:39-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -4941,10 +4941,6 @@ msgstr "Zzz zzzzzzzzz zzzzz zz zzzz <a href=\"%1\">zzzzzzzzz</a> zz <a href=\"%3
 #: share/template/email/watchlist.txt:3
 msgid "email.following-pages-in-watchlist-have-recently-changed=wiki,date,time"
 msgstr "Zzz zzzzzzzzz zzzzz zz zzzz zzzzzzzzz zz %1 zzzz zzzzzzzz zzzzzzz. Zzzz zzzzz zzz zzzzzzzzz zz %2 zz %3."
-
-#: lib/Socialtext/EmailNotifyPlugin.pm:31
-msgid "email.frequency-capped"
-msgstr "(Zzzz: 'Zzzzz zzzzzz' zzz 'Zzzzz 5 zzzzzz' zzzzzzz zzz zzzzzzz zz 15 zzzzzzz zzzzz zzzzzzz zzzzzz.)"
 
 #: lib/Socialtext/EmailNotifyPlugin.pm:29
 msgid "email.frequency?"
