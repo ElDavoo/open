@@ -23,7 +23,7 @@ sub register {
 }
 
 our $Default_notify_frequency_in_minutes = 24 * 60;
-our $Minimum_notify_frequency_in_minutes = 15;
+our $Minimum_notify_frequency_in_minutes = 1;
 
 sub notify_frequency {
     my $self = shift;
