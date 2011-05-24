@@ -148,7 +148,28 @@ sub session {
 
 sub redirect {
     my $self = shift;
-    $self->r->header_out(Location => shift);
+    my $redirect_to = shift;
+
+    # Make sure that the URI is *relative* (no absolute URIs allowed)
+    my $uri = URI->new($redirect_to);
+    if ($uri->scheme) {
+        # Given an absolute URI.  If it points to somewhere _other_than_ this
+        # machine, fail.
+        my $host      = $uri->host();
+        my $this_host = Socialtext::AppConfig->web_hostname();
+        if ($host ne $this_host) {
+            require Socialtext::Log;
+            Socialtext::Log::st_log->error(
+                "redirect attempted to external source; $redirect_to");
+            return FORBIDDEN;
+        }
+    }
+
+    # force the URI to be relative (preserving embedded query string), and
+    # redirect to it
+    my $relative_uri = $uri->path_query();
+
+    $self->r->header_out(Location => $relative_uri);
     return REDIRECT;
 }
 

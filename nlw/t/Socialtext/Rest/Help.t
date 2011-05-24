@@ -60,6 +60,12 @@ sub new {
 # To support $r->query->url(...)
 sub url { shift->{_uri} }
 sub query { shift }
+sub user {
+    require Test::MockObject;
+    my $user = Test::MockObject->new();
+    $user->mock('user_id', sub { 1 });
+    return $user;
+}
 
 sub AUTOLOAD {
     our $AUTOLOAD;

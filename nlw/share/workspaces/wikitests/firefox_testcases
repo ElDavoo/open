@@ -8,9 +8,15 @@ Socialcalc enabled is required because we run Calc Testcases
 * [Disable Google Analytics]
 
 * [Test Case: A Enable LDAP]
-
 * [Control Panel Testcases]
 * [Core Testcases]
+
+People tests
+
+* [Profile Testcases]
+* [Test Case: People Search]
+* [Test Case: People Relevance Search]
+
 * [User Groups UI Testcases]
 * [Signals Testcases]
 * [Calc Testcases]
@@ -32,12 +38,6 @@ People and Dasboard plugin tests. Keep these two cases together in alpha order.
 
 * [Test Case: People Dashboard Plugins]
 * [Test Case: People Dashboard Plugins Reset]
-
-People tests
-
-* [Profile Testcases]
-* [Test Case: People Search]
-* [Test Case: People Relevance Search]
 
 * [Dashboard Testcases]
 

@@ -103,15 +103,6 @@
 | click_and_wait | link=Workspace Skin |  |
 
 | wait_for_element_visible_ok | st-workspaceskin-file | 30000 |
-| type_ok | st-workspaceskin-file | %%wikitest_files%%wikitest.tgz |
-| click_and_wait | st-workspaceskin-submit |  |
-| text_like | contentRight | Could not extract files from the skin archive |
-
-| *Comment* | Test Case: Workspace Skin navigate away and back to clear error box |  |
-| click_and_wait | link=Workspace Privacy |  |
-| click_and_wait | link=Workspace Skin |  |
-
-| wait_for_element_visible_ok | st-workspaceskin-file | 30000 |
 | type_ok | st-workspaceskin-file | xxxx |
 | click_and_wait | st-workspaceskin-submit |  |
 | text_like | contentRight | A custom skin file was not uploaded |

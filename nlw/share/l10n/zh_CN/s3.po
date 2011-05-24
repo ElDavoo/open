@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 22:57+0800\n"
+"PO-Revision-Date: 2011-05-18 03:25-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -287,6 +287,10 @@ msgstr "完成"
 #: share/skin/s3/javascript/lightbox/duplicate.tt2:29 share/skin/s3/javascript/lightbox/duplicate.tt2:8
 msgid "do.duplicate"
 msgstr "复制"
+
+#: share/skin/s3/template/view/page/display:79
+msgid "do.email"
+msgstr "寄送"
 
 #: share/skin/s3/template/view/listview:21
 msgid "do.export"
@@ -2032,7 +2036,7 @@ msgstr "开启 Socialtext 脱机"
 msgid "user.admin"
 msgstr "管理员"
 
-#: share/skin/s3/template/element/settings/users_settings_section:8 share/skin/s3/template/view/page/display:79
+#: share/skin/s3/template/element/settings/users_settings_section:8
 msgid "user.email"
 msgstr "邮件"
 

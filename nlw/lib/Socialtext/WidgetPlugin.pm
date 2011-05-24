@@ -8,6 +8,7 @@ use Socialtext::l10n qw(loc __);
 use Socialtext::Formatter::Phrase ();
 use Socialtext::String ();
 use Socialtext::Paths ();
+use Socialtext::JSON qw( encode_json decode_json_utf8 );
 use Encode ();
 
 const class_id    => 'widget';
@@ -28,7 +29,7 @@ sub gadget_vars {
     # Setup overrides and override preferences
     my %overrides = (
         instance_id => ((2 ** 30) + int(rand(2 ** 30))),
-        UP_workspace_name => $self->cgi->workspace_name,
+        UP_workspace_name => $self->cgi->workspace_name || $self->hub->current_workspace->name,
     );
     for my $encoded_pref (split /\s+/, $encoded_prefs) {
         $encoded_pref =~ /^([^\s=]+)=(\S*)/ or next;
@@ -63,8 +64,10 @@ sub gadget_vars {
     $width .= "px" if $width =~ /^\d+$/;
 
     my $content_type = $renderer->content_type;
+
     return {
-        %{$gadget->template_vars},
+        # Render the preferences so __('') in options localizes correctly.
+        %{ $renderer->render($gadget->template_vars) || {} },
         instance_id => $overrides{instance_id},
         content_type => $content_type,
         title => $overrides{__title__} || $renderer->render($gadget->title),
@@ -79,7 +82,7 @@ sub widget_setup_screen {
     my $self = shift;
 
     my $workspace = Socialtext::Workspace->new(
-        name => $self->cgi->workspace_name,
+        name => $self->cgi->workspace_name || $self->hub->current_workspace->name,
     );
     my $account = $workspace->account;
 

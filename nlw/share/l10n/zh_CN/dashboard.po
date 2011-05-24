@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-13 06:21-0700\n"
+"PO-Revision-Date: 2011-05-18 04:24-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -87,7 +87,7 @@ msgstr "取消"
 
 #: share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:13
 msgid "do.no"
-msgstr "无"
+msgstr "否"
 
 #: share/plugin/dashboard/template/dashboard_links:25
 msgid "do.revert-to-default"
