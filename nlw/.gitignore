@@ -628,5 +628,4 @@ t/Socialtext/Job/ProvisionTrial.t
 t/Socialtext/Pluggable/Plugin/People.t
 t/Socialtext/People/profile-account.t
 lib/Socialtext/Pluggable/Plugin/Kanban.pm
-template/backups.inc
 lib/Test/Socialtext/PgPITR.pm

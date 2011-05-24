@@ -3533,7 +3533,6 @@ msgstr "发布"
 msgid "dashboard.publish-widget-now"
 msgstr "小工具生成正确但是尚未保存。点击发布来更新小工具库。"
 
-#: share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:2
 msgid "dashboard.revert"
 msgstr "恢复为默认"
 
@@ -4553,9 +4552,6 @@ msgstr "您在 <a href=\"%3\">%2</a> 的<a href=\"%1\">关注列表</a>中的下
 #: share/template/email/watchlist.txt:3
 msgid "email.following-pages-in-watchlist-have-recently-changed=wiki,date,time"
 msgstr "您在 %1 的关注列表中的下列页面最近被更改。本电子邮件于 %2 的 %3 创建。"
-
-msgid "email.frequency-capped"
-msgstr "（注：“每分钟”和“每5分钟”的选择目前视同15分钟。）"
 
 #: lib/Socialtext/EmailNotifyPlugin.pm:29
 msgid "email.frequency?"
@@ -13825,6 +13821,9 @@ msgstr "开新页面"
 
 msgid "widgets.no-active-contributors"
 msgstr "最活跃的编辑者会列在这里。当您开始建立您的工作区时，编辑活动也会随之增加。"
+
+msgid "widgets.no-active-edited-pages"
+msgstr "最常编辑的页面将在这里列出。不妨试试在您的新工作区里开始编辑页面。"
 
 msgid "widgets.no-active-emailed-pages"
 msgstr "被寄出次数最多的页面会列在这里。您可以在页面的工具栏上按“寄送”图示，透过电子邮件寄出页面。"

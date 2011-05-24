@@ -42,10 +42,9 @@ msgstr "Publish"
 msgid "dashboard.publish-widget-now"
 msgstr "Widget rendered correctly but has not been saved. Click publish to update the widget gallery now."
 
-#: share/plugin/dashboard/template/dashboard_links:25
-#: share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:2
-msgid "do.revert-to-default"
-msgstr "Revert to Default…"
+#: share/plugin/dashboard/template/dashboard_links:36
+msgid "dashboard.revert"
+msgstr "Revert to default"
 
 #: share/plugin/dashboard/template/dashboard_links:11
 msgid "dashboard.save"
@@ -80,15 +79,17 @@ msgstr "The following widgets will be pushed:"
 msgid "description.widget_editor"
 msgstr "Edit a widget"
 
-#: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:20
-#: share/plugin/dashboard/template/dashboard_links:18
-#: share/plugin/dashboard/template/widget_editor_links:13
+#: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:20 share/plugin/dashboard/template/dashboard_links:18 share/plugin/dashboard/template/widget_editor_links:13
 msgid "do.cancel"
 msgstr "Cancel"
 
 #: share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:13
 msgid "do.no"
 msgstr "No"
+
+#: share/plugin/dashboard/template/dashboard_links:25 share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:2
+msgid "do.revert-to-default"
+msgstr "Revert to Default…"
 
 #: share/plugin/dashboard/share/javascript/lightbox/save-layout.tt2:25
 msgid "do.save"

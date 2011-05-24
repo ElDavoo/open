@@ -1,4 +1,7 @@
+
 | *Comment* | Test Case: Widgets in Profile |  |
+
+
 
 * Fixture: SocialWidgets
 
@@ -70,6 +73,7 @@
 | wait_for_element_visible_ok | `xpath=(//input[@type='submit' and @value="Save"])[4]` | 30000 |
 | click_ok | `xpath=(//input[@type='submit' and @value="Save"])[4]` |  |
 | wait_for_element_not_visible_ok | `xpath=(//input[@type='submit' and @value="Save"])[4]` | 30000 |
+| wait_for_element_visible_ok | st-save-layout |  |
 | click_ok | st-save-layout |  |
 | wait_for_element_visible_ok | st-edit-group | 30000 |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
@@ -78,10 +82,14 @@
 | *Comment* | Must reopen profile to refresh widget IDs for Selenium |  |
 | open_ok | /st/profile |  |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
+
+| *Comment* | Test Case: Widgets in Profile wait for iframe headers |  |
+| wait_for_text_present_ok | Wikipedia | 10000 |
+| wait_for_text_present_ok | Colleagues | 10000 |
 | st-name-widget | 4 | wiki |
 | st-widget-title-like | wiki | Wikipedia |
 | st-select-widget-frame | wiki |  |
-| text_like | //body | Wiki Search (French) |
+| wait_for_text_present_ok | Wiki Search (French) | 10000 |
 | select-frame | relative=parent |  |
 
 | *Comment* | Test Case: Widgets in Profile use X button to remove widget |  |
@@ -110,9 +118,9 @@
 | text_like | `xpath=(//div[@class='widgetHeaderTitle'])[5]` | Colleagues |
 | click_ok | st-save-layout |  |
 | wait_for_text_not_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
-| wait_for_text_present_ok | Wikipedia | 30000 |
 | wait_for_element_visible_ok | st-edit-group | 30000 |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
+| wait_for_text_present_ok | Wikipedia | 30000 |
 | text_like | `xpath=(//div[@class='widgetHeaderTitle'])[4]` | Wikipedia |
 | text_like | `xpath=(//div[@class='widgetHeaderTitle'])[5]` | Colleagues |
 | text_unlike | contentContainer | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |

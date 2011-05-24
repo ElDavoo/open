@@ -1,7 +1,8 @@
 #!perl
 # @COPYRIGHT@
 use mocked qw(Socialtext::l10n system_locale); # Has to come firstest.
-use Test::Socialtext tests => 114;
+use Test::More;
+use Test::Socialtext;
 use Test::Socialtext::Fatal;
 use Test::Differences;
 use strict;
@@ -463,13 +464,19 @@ clone_workspace_pages: {
         title => 'some_workspace_usage_2011_04_23_past_week',
     );
 
+    my $deleted = $hub->pages->new_from_name('Deleted Page');
+    $hub->pages->current->create(
+        content => 'i should not be here',
+        creator => $user,
+        title => 'deleted_page',
+    );
+    $deleted->delete(user=>$user);
+
     $dest->clone_workspace_pages($template->name);
 
     $hub->current_workspace($dest);
     my @pages = map { $_->page_id } $hub->pages->all();
-
-    is scalar(@pages), 1, 'destination workspace has one page';
-    is $pages[0], 'some_page_to_copy', 'copied the correct page';
+    eq_or_diff \@pages, [qw/some_page_to_copy/], 'correct pages cloned';
 }
 
 NON_ASCII_WS_NAME: {
@@ -771,6 +778,7 @@ Rudimentary_Plugin_Test: {
     ok(!$ws->is_plugin_enabled('whatevs'), 'fake plugin did not get enabled');
 }
 
+done_testing;
 exit;
 
 
