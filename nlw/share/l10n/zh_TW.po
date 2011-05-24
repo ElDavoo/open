@@ -3533,7 +3533,6 @@ msgstr "發布"
 msgid "dashboard.publish-widget-now"
 msgstr "小工具生成正確但是尚未儲存。點選發布來更新小工具庫。"
 
-#: share/plugin/dashboard/share/javascript/lightbox/revert-layout.tt2:2
 msgid "dashboard.revert"
 msgstr "恢復為預設"
 
@@ -13825,6 +13824,9 @@ msgstr "開新頁面"
 
 msgid "widgets.no-active-contributors"
 msgstr "最活躍的編輯者會列在這裡。當您開始建立您的工作區時，編輯活動也會隨之增加。"
+
+msgid "widgets.no-active-edited-pages"
+msgstr "最常編輯的頁面將在這裡列出。不妨試試在您的新工作區裡開始編輯頁面。"
 
 msgid "widgets.no-active-emailed-pages"
 msgstr "被寄出次數最多的頁面會列在這裡。您可以在頁面的工具欄上按『寄送』圖示，透過電子郵件寄出頁面。"

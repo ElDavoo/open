@@ -3857,6 +3857,10 @@ msgstr "«Publish»"
 msgid "dashboard.publish-widget-now"
 msgstr "«Widget rendered correctly but has not been saved. Click publish to update the widget gallery now.»"
 
+#: share/plugin/widgets/share/javascript/lightbox/confirm.tt2:2 share/plugin/dashboard/template/dashboard_links:36
+msgid "dashboard.revert"
+msgstr "«Revert to default»"
+
 #: share/plugin/dashboard/template/dashboard_links:11
 msgid "dashboard.save"
 msgstr "«Save...»"
@@ -14556,6 +14560,10 @@ msgstr "«new page»"
 #: share/plugin/widgets/share/widgets/active_members/widget.js:31
 msgid "widgets.no-active-contributors"
 msgstr "«The most active editors will be listed here. As you begin to build and modify your new workspaces, your editor activity will grow.»"
+
+#: share/plugin/widgets/share/widgets/top_content/widget.js:25
+msgid "widgets.no-active-edited-pages"
+msgstr "«The most frequently edited pages will be listed here. Try editing a page in one of your new workspaces.»"
 
 #: share/plugin/widgets/share/widgets/top_content/widget.js:37
 msgid "widgets.no-active-emailed-pages"

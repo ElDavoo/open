@@ -3857,6 +3857,10 @@ msgstr "Zzzzzzz"
 msgid "dashboard.publish-widget-now"
 msgstr "Zzzzzz zzzzzzzz zzzzzzzzz zzz zzz zzz zzzz zzzzz. Zzzzz zzzzzzz zz zzzzzz zzz zzzzzz zzzzzzz zzz."
 
+#: share/plugin/widgets/share/javascript/lightbox/confirm.tt2:2 share/plugin/dashboard/template/dashboard_links:36
+msgid "dashboard.revert"
+msgstr "Zzzzzz zz zzzzzzz"
+
 #: share/plugin/dashboard/template/dashboard_links:11
 msgid "dashboard.save"
 msgstr "Zzzz..."
@@ -14556,6 +14560,10 @@ msgstr "zzz zzzz"
 #: share/plugin/widgets/share/widgets/active_members/widget.js:31
 msgid "widgets.no-active-contributors"
 msgstr "Zzz zzzz zzzzzz zzzzzzz zzzz zz zzzzzz zzzz. Zz zzz zzzzz zz zzzzz zzz zzzzzz zzzz zzz zzzzzzzzzz, zzzz zzzzzz zzzzzzzz zzzz zzzz."
+
+#: share/plugin/widgets/share/widgets/top_content/widget.js:25
+msgid "widgets.no-active-edited-pages"
+msgstr "Zzz zzzz zzzzzzzzzz zzzzzz zzzzz zzzz zz zzzzzz zzzz. Zzz zzzzzzz z zzzz zz zzz zz zzzz zzz zzzzzzzzzz."
 
 #: share/plugin/widgets/share/widgets/top_content/widget.js:37
 msgid "widgets.no-active-emailed-pages"
