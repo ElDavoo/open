@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 20:31+0800\n"
+"PO-Revision-Date: 2011-05-24 06:39-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -1084,10 +1084,6 @@ msgstr "You can now login to the %1 workspace"
 #: lib/Socialtext/EmailReceiver/Base.pm:671
 msgid "email.date:"
 msgstr "Date:"
-
-#: lib/Socialtext/EmailNotifyPlugin.pm:31
-msgid "email.frequency-capped"
-msgstr "(Note: 'Every minute' and 'Every 5 minute' choices are treated as 15 minutes until further notice.)"
 
 #: lib/Socialtext/EmailNotifyPlugin.pm:29
 msgid "email.frequency?"

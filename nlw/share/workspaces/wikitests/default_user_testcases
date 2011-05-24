@@ -5,6 +5,7 @@ Carefully set up the environment so the tests will run.
 | *Comment* | Set up required Default user values to override possibly being logged in as an LDAP user |  |
 | *Comment* | This test explicitly uses wikitester@ken.socialtext.net as the Default user |  |
 
+
 | set | username | wikitester@ken.socialtext.net |
 | set | password | d3vnu11l |
 | set | email | wikitester@ken.socialtext.net |
@@ -19,10 +20,10 @@ Carefully set up the environment so the tests will run.
 
 | *Comment* | Default User Testcases: By INCLUDING these tests, they will run with the overridden username, pwd, and email |  |
 
+| include | [Test Case: User Restrictions] |  |
 | include | [Test case: Login Logout] |  |
 | include | [Test case: User Resets Password] |  |
 | include | [Test case: Admin Resets Password] |  |
-| include | [Test Case: User Restrictions] |  |
 
 | *Comment* | Default User Testcases: Re-enable LDAP. Bring the LDAP user back to life |  |
 | include | [Enable LDAP] |  |
