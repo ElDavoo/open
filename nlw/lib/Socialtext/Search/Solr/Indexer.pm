@@ -22,7 +22,7 @@ use Socialtext::File::Stringify;
 use WebService::Solr;
 use Socialtext::WikiText::Parser::Messages;
 use Socialtext::WikiText::Emitter::Messages::Solr;
-use Socialtext::String;
+use Socialtext::String qw(uri_escape);
 use Socialtext::l10n qw(getSortKey);
 use namespace::clean -except => 'meta';
 
@@ -74,7 +74,7 @@ sub index_workspace {
     for my $page_id ( $self->hub->pages->all_ids ) {
         my $page = $self->_load_page($page_id) || next;
         $self->_add_page_doc($page);
-        $self->_index_page_attachments($page);
+        $self->_index_page_attachments($page,0);
     }
     $self->_commit;
 }
@@ -206,10 +206,11 @@ sub index_attachment {
     if ($check_skip) {
         my $doc_id = join(':',
             $self->workspace->workspace_id,$page_id,$attachment_id);
-        my $resp = $self->solr->query("id:$doc_id", {fl=>'id',qt=>'standard'});
+        $doc_id = qq{"$doc_id"};
+        my $resp = $self->solr->search("id:$doc_id", {fl=>'id',qt=>'standard'});
         my $docs = $resp->docs;
         if ($docs && @$docs == 1) {
-            _debug("Skipping indexing $attachment_id, already present");
+            _debug("Skipping $attachment_id, doc id $doc_id already present");
             return;
         }
     }
@@ -223,9 +224,10 @@ sub delete_attachment {
     my ( $self, $page_id, $attachment_id ) = @_;
     my $ws_id = $self->workspace->workspace_id;
     my $page = $self->_load_page($page_id, 'deleted ok') || return;
-    my $id = join(':',$ws_id,$page->id,$attachment_id);
-    $self->solr->delete_by_id($id);
+    my $doc_id = join(':',$ws_id,$page->id,$attachment_id);
+    $self->solr->delete_by_id($doc_id);
     $self->_commit();
+    _debug("Deleted attachment $doc_id");
 }
 
 # Get the attachments content, create a new Document, set the Doc's fields,
@@ -276,6 +278,8 @@ sub _add_attachment_doc {
         [date => $date],
         [created => $date],
         [revisions => $revisions],
+        # NOTE if you add any more fields, check that the "skip indexing"
+        # check in index_attachment() is still valid.
         Socialtext::Search::Solr::BigField->new(body => \$body),
     );
 
