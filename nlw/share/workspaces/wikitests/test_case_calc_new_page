@@ -17,6 +17,7 @@
 | wait_for_element_present_ok | link=Export to CSV | 30000 |
 
 | *Comment* | Test Case: Calc New Page. try to save with existing page title: np ss %%start_time%% |  |
+| pause | 5000 |  |
 | open_ok | /%%workspace%%/?action=display;page_type=spreadsheet;page_name=Untitled%20Spreadsheet#edit |  |
 | wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
 | type_ok | st-newpage-pagename-edit | np ss %%start_time%% |
@@ -37,6 +38,7 @@
 | location_like | /%%workspace%%/np_ss_%%start_time%%_two |  |
 
 | *Comment* | Test Case: Calc New Page. try to save with existing page title: np ss %%start_time%% Two |  |
+| pause | 5000 |  |
 | open_ok | /%%workspace%%/?action=display;page_type=spreadsheet;page_name=Untitled%20Spreadsheet#edit |  |
 | wait_for_element_visible_ok | st-newpage-pagename-edit | 30000 |
 | type_ok | st-newpage-pagename-edit | np ss %%start_time%% Two |
