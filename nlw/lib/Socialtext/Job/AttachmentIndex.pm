@@ -5,6 +5,8 @@ use Moose;
 extends 'Socialtext::Job', 'Socialtext::Job::AttachmentIndex::Base';
 with 'Socialtext::CoalescingJob', 'Socialtext::IndexingJob';
 
+use constant 'check_skip_index' => 1;
+
 __PACKAGE__->meta->make_immutable(inline_constructor => 1);
 no Moose;
 
@@ -26,17 +28,21 @@ sub do_work {
         );
         return;
     }
+
+    my $page_id = $page->id;
     my $attachment = $page->hub->attachments->load(
         id      => $args->{attach_id},
-        page_id => $page->id,
+        page_id => $page_id,
         deleted_ok => 1,
     );
+    $attachment->_page($page); # avoid lazy-loading
 
     if ($attachment->deleted) {
-        $indexer->delete_attachment($page->id, $attachment->id);
+        $indexer->delete_attachment($page_id, $attachment->id);
     }
     else {
-        $indexer->index_attachment($page->id, $attachment);
+        $indexer->index_attachment($page_id, $attachment,
+            $self->check_skip_index);
     }
 
     $self->completed();
