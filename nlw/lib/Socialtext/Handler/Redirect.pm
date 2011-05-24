@@ -20,25 +20,8 @@ sub real_handler {
     # Get the URI that we're supposed to be redirect the User off to
     my $redirect_to = $req->param('redirect_to') || '/';
 
-    # Make sure that the URI is *relative* (no absolute URIs allowed)
-    my $uri = URI->new($redirect_to);
-    if ($uri->scheme) {
-        # Given an absolute URI.  If it points to somewhere _other_than_ this
-        # machine, fail.
-        my $host      = $uri->host();
-        my $this_host = Socialtext::AppConfig->web_hostname();
-        if ($host ne $this_host) {
-            st_log->error(
-                "redirect attempted to external source; $redirect_to");
-            return FORBIDDEN;
-        }
-    }
-
-    # force the URI to be relative (preserving embedded query string), and
-    # redirect to it
-    my $relative_uri = $uri->path_query();
-    st_log->debug("redirect: $relative_uri");
-    return $self->redirect($relative_uri);
+    st_log->debug("redirect: $redirect_to");
+    return $self->redirect($redirect_to);
 }
 
 1;

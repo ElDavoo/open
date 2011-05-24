@@ -6,7 +6,6 @@ use base 'Socialtext::Plugin';
 use Class::Field qw( const field );
 use Socialtext::EmailNotifier;
 use Socialtext::l10n qw( loc loc_lang system_locale __ );
-use Scalar::Defer 'defer';
 
 const class_id => 'email_notify';
 const class_title => __('class.email_notify');
@@ -23,18 +22,12 @@ sub register {
 }
 
 our $Default_notify_frequency_in_minutes = 24 * 60;
-our $Minimum_notify_frequency_in_minutes = 15;
+our $Minimum_notify_frequency_in_minutes = 1;
 
 sub notify_frequency {
     my $self = shift;
     my $p = $self->new_preference('notify_frequency');
-    $p->query(defer {
-        __('email.frequency?')
-        . '<br /><i>' .
-        __('email.frequency-capped')
-        . '</i><br />'
-    });
-
+    $p->query(__('email.frequency?'));
     $p->type('pulldown');
     my $choices = [
         0 => __('time.never'),

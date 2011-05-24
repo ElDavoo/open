@@ -22,9 +22,6 @@
 | st-widget-title-like | webpage | Web Page %%start_time%% |
 | wait_for_element_visible_ok | `xpath=(//iframe[@src='http://socialtext.com' and @scrolling='no'])` | 10000 |
 | select_frame_ok | `xpath=(//iframe[@src='http://socialtext.com' and @scrolling='no'])` |  |
-| wait_for_text_present_ok | Solutions | 30000 |
-| wait_for_text_present_ok | Products | 30000 |
-| wait_for_text_present_ok | Customers | 30000 |
 | selectFrame | relative=parent |  |
 
 | *Comment* | Test Case: Web Page Widget. Verify scrolling |  |
@@ -36,5 +33,11 @@
 | wait_for_element_not_visible_ok | st-savebutton-%%webpage%% | 30000 |
 | wait_for_element_visible_ok | `xpath=(//iframe[@src='http://socialtext.com' and @scrolling='yes'])` | 10000 |
 
+| *Comment* | Test Case: Web Page Widget. Verify content |
+| select_frame_ok | `xpath=(//iframe[@src='http://socialtext.com' and @scrolling='yes'])` |  |
+| wait_for_text_present_ok | Solutions | 30000 |
+| wait_for_text_present_ok | Products | 10000 |
+| wait_for_text_present_ok | Customers | 10000 |
+| selectFrame | relative=parent |  |
 
 | *Comment* | Test Case: Web Page Widget COMPLETED |  |

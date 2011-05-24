@@ -119,7 +119,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-03-12 20:31+0800\n"
+"PO-Revision-Date: 2011-05-24 06:39-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -3857,6 +3857,10 @@ msgstr "Zzzzzzz"
 msgid "dashboard.publish-widget-now"
 msgstr "Zzzzzz zzzzzzzz zzzzzzzzz zzz zzz zzz zzzz zzzzz. Zzzzz zzzzzzz zz zzzzzz zzz zzzzzz zzzzzzz zzz."
 
+#: share/plugin/widgets/share/javascript/lightbox/confirm.tt2:2 share/plugin/dashboard/template/dashboard_links:36
+msgid "dashboard.revert"
+msgstr "Zzzzzz zz zzzzzzz"
+
 #: share/plugin/dashboard/template/dashboard_links:11
 msgid "dashboard.save"
 msgstr "Zzzz..."
@@ -4937,10 +4941,6 @@ msgstr "Zzz zzzzzzzzz zzzzz zz zzzz <a href=\"%1\">zzzzzzzzz</a> zz <a href=\"%3
 #: share/template/email/watchlist.txt:3
 msgid "email.following-pages-in-watchlist-have-recently-changed=wiki,date,time"
 msgstr "Zzz zzzzzzzzz zzzzz zz zzzz zzzzzzzzz zz %1 zzzz zzzzzzzz zzzzzzz. Zzzz zzzzz zzz zzzzzzzzz zz %2 zz %3."
-
-#: lib/Socialtext/EmailNotifyPlugin.pm:31
-msgid "email.frequency-capped"
-msgstr "(Zzzz: 'Zzzzz zzzzzz' zzz 'Zzzzz 5 zzzzzz' zzzzzzz zzz zzzzzzz zz 15 zzzzzzz zzzzz zzzzzzz zzzzzz.)"
 
 #: lib/Socialtext/EmailNotifyPlugin.pm:29
 msgid "email.frequency?"
@@ -14556,6 +14556,10 @@ msgstr "zzz zzzz"
 #: share/plugin/widgets/share/widgets/active_members/widget.js:31
 msgid "widgets.no-active-contributors"
 msgstr "Zzz zzzz zzzzzz zzzzzzz zzzz zz zzzzzz zzzz. Zz zzz zzzzz zz zzzzz zzz zzzzzz zzzz zzz zzzzzzzzzz, zzzz zzzzzz zzzzzzzz zzzz zzzz."
+
+#: share/plugin/widgets/share/widgets/top_content/widget.js:25
+msgid "widgets.no-active-edited-pages"
+msgstr "Zzz zzzz zzzzzzzzzz zzzzzz zzzzz zzzz zz zzzzzz zzzz. Zzz zzzzzzz z zzzz zz zzz zz zzzz zzz zzzzzzzzzz."
 
 #: share/plugin/widgets/share/widgets/top_content/widget.js:37
 msgid "widgets.no-active-emailed-pages"

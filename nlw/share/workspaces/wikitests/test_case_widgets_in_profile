@@ -82,6 +82,10 @@
 | *Comment* | Must reopen profile to refresh widget IDs for Selenium |  |
 | open_ok | /st/profile |  |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
+
+| *Comment* | Test Case: Widgets in Profile wait for iframe headers |  |
+| wait_for_text_present_ok | Wikipedia | 10000 |
+| wait_for_text_present_ok | Colleagues | 10000 |
 | st-name-widget | 4 | wiki |
 | st-widget-title-like | wiki | Wikipedia |
 | st-select-widget-frame | wiki |  |
@@ -116,7 +120,7 @@
 | wait_for_text_not_present_ok | You are in layout mode. Click Save to keep your changes, Cancel to discard them. | 30000 |
 | wait_for_element_visible_ok | st-edit-group | 30000 |
 | wait_for_element_visible_ok | st-edit-layout | 30000 |
-|  wait_for_text_present_ok |  Wikipedia |  30000 |
+| wait_for_text_present_ok | Wikipedia | 30000 |
 | text_like | `xpath=(//div[@class='widgetHeaderTitle'])[4]` | Wikipedia |
 | text_like | `xpath=(//div[@class='widgetHeaderTitle'])[5]` | Colleagues |
 | text_unlike | contentContainer | You are in layout mode. Click Save to keep your changes, Cancel to discard them. |
