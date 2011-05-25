@@ -1,0 +1,72 @@
+| *Comment* | WidgetShow |  |
+
+| set | ws_user | widgetshow_user_%%start_time%%@david.socialtext.net |
+| set | ws_acct | widgetshow_account_%%start_time%% |
+| set_default | pt | 5000 |
+
+| create-account | %%ws_acct%% |  |  |
+| create-user | %%ws_user%% | %%password%% | %%ws_acct%% |
+
+| st-logoutin | %%ws_user%% | %%password%% |
+
+| open_ok | /st/dashboard |  |
+| wait_for_element_visible_ok | link=Add Widget | 30000 |
+| click_and_wait | link=Add Widget |  |
+
+| *Comment* | SEE Widget Gallery |  |
+| pause | %%pt%% |  |
+| *Comment* | SEE widgets from ST on left: All People Tags, Active Content, Active People, Activities, Workspaces, Wiki Page, Web Page, Spreadsheet Page, Image, Page Tracker, RSS Viewer, Workspace Tags |  |
+| pause | %%pt%% |  |
+| pause | %%pt%% |  |
+| *Comment* | SEE 3rd-party widgets on right: Microsoft Outlook, Google Calender, Youtube, Slideshare, theXblogs, Wikipedia, Flickr, LabPixies Calculator, Clock & Date, ToDo |  |
+| pause | %%pt%% |  |
+| pause | %%pt%% |  |
+
+| click_and_wait | gallery-widget-All People Tags |  |
+| wait_for_text_present_ok | All People Tags | 30000 |
+| *Comment* | SEE All People Tags widget in right-side column of dashboard. In default setup, SEE "no tags yet" message. |  |
+| pause | %%pt%% |  |
+
+| click_ok | xpath=(//a[@class='settings'])[5] |  |
+| *Comment* | SEE All People Tags widget is now showing widget preferences, Number of Tags to Show |  |
+| pause | %%pt%% |  |
+
+| click_ok | xpath=(//input[@class='searchButton st-savebutton'])[5] |  |
+| *Comment* | SEE All People Tags widget is back to showing content |  |
+| pause | %%pt%% |  |
+
+| click_ok | xpath=(//a[@class='close'])[5] |  |
+| *Comment* | SEE All People Tags widget has disappeared |  |
+| pause | %%pt%% |  |
+
+| open_ok | /st/profile |  |
+| wait_for_element_visible_ok | st-edit-layout | 30000 |
+| click_ok | st-edit-layout |  |
+| wait_for_element_visible_ok | st-add-widget | 30000 |
+| click_ok | st-add-widget |  |
+| *Comment* | SEE Insert Widget Lightbox with ST widgets on top, 3rd-party widgets on bottom |  |
+| pause | %%pt%% |  |
+
+| wait_for_element_visible_ok | gallery-widget-Youtube Video Player | 30000 |
+| click_ok | gallery-widget-Youtube Video Player |  |
+| *Comment* | SEE Lightbox gallery disappears, YouTube Video Player widget appears in right-side column of profile |  |
+| pause | %%pt%% |  |
+
+| click_ok | xpath=(//a[@class='settings'])[4] |  |
+| *Comment* | SEE Youtube widget now has text boxes for entering video or playlist link |  |
+| pause | %%pt%% |  |
+
+| type_ok | //input[@name='vlink'] | http://www.youtube.com/watch?v=lH4lcrxP8mo |
+| click_ok | xpath=(//input[@class='searchButton st-savebutton'])[4] |  |
+| *Comment* | SEE Ross Mayfield YouTube video in widget |  |
+| pause | %%pt%% |  |
+
+| click_ok | xpath=(//a[@class='close'])[3] |  |
+| *Comment* | SEE Youtube widget is gone |  |
+| pause | %%pt%% |  |
+
+
+
+| *Comment* | WidgetShow TEARDOWN |  |
+| deactivate-user | %%ws_user%% | been removed |
+| delete-account | %%ws_acct%% | Recklessly deleting |
