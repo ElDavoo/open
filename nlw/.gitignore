@@ -628,3 +628,4 @@ t/Socialtext/Job/ProvisionTrial.t
 t/Socialtext/Pluggable/Plugin/People.t
 t/Socialtext/People/profile-account.t
 lib/Test/Socialtext/PgPITR.pm
+template/backups.inc
