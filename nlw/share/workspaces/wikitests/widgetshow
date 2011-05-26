@@ -2,10 +2,15 @@
 
 | set | ws_user | widgetshow_user_%%start_time%%@david.socialtext.net |
 | set | ws_acct | widgetshow_account_%%start_time%% |
+| set | ws_grp | widgetshow_group_%%start_time%% |
+| set | ws_wiki | widgetshow_wiki_%%start_time%% |
 | set_default | pt | 5000 |
 
 | create-account | %%ws_acct%% |  |  |
 | create-user | %%ws_user%% | %%password%% | %%ws_acct%% |
+| create-group | %%ws_grp%% | %%ws_acct%% | %%ws_user%% |
+| create-workspace | %%ws_wiki%% | %%ws_acct%% |  |
+| st-admin | add-member --email %%ws_user%% --workspace %%ws_wiki%% | created |  |
 
 | st-logoutin | %%ws_user%% | %%password%% |
 
@@ -65,8 +70,57 @@
 | *Comment* | SEE Youtube widget is gone |  |
 | pause | %%pt%% |  |
 
+| open_ok | /st/group/%%group_id%% |  |
+| wait_for_element_visible_ok | st-edit-layout | 30000 |
+| click_ok | st-edit-layout |  |
+| wait_for_element_visible_ok | st-add-widget | 30000 |
+| click_ok | st-add-widget |  |
+| *Comment* | SEE Widget Gallery |  |
+| pause | %%pt%% |  |
 
+| click_ok | gallery-widget-Image |  |
+| *Comment* | SEE Image widget with ST logo in right-side column of group page |  |
+| pause | %%pt%% |  |
+
+| click_ok | xpath=(//a[@class='settings'])[5] |  |
+| *Comment* | SEE Image widget now displays settings, Image Source and Title |  |
+| pause | %%pt%% |  |
+
+| type_ok | //input[@name='title'] | New Title |
+| click_ok | xpath=(//input[@class='searchButton st-savebutton'])[5] |  |
+| *Comment* | SEE Image Widget now has title, "New Title" |  |
+| pause | %%pt%% |  |
+
+| click_ok | xpath=(//a[@class='close'])[5] |  |
+| *Comment* | SEE Image Widget is gone |  |
+| pause | %%pt%% |  |
+
+| open_ok | /%%ws_wiki%%/%%start_time%% |  |
+| wait_for_element_visible_ok | st-create-content-savelink | 30000 |
+| click_and_wait | st-create-content-savelink |  |
+| wait_for_element_visible_ok | st-mode-wikitext-button |  |
+| click_ok | st-mode-wikitext-button |  |
+| wait_for_element_visible_ok | wikiwyg_button_widget | 30000 |
+| click_ok | wikiwyg_button_widget |  |
+| wait_for_element_visible_ok | gallery-widget-Web Page | 30000 |
+
+| *Comment* | SEE Widget Gallery |  |
+| pause | %%pt%% |  |
+
+| click_and_wait | gallery-widget-Web Page |  |
+| *Comment* | SEE Edit Widget lightbox for web page widget |  |
+| pause | %%pt%% |  |
+
+| click_ok | //input[@value='Preview'] |  |
+| *Comment* | SEE web page widget with Google in lightbox |  |
+| pause | %%pt%% |  |
+
+| click_and_wait | st-widget-opensocial-setup-save |  |
+| *Comment* | SEE plaintext code for widget in Editing box |  |
+| pause | %%pt%% |  |
 
 | *Comment* | WidgetShow TEARDOWN |  |
 | deactivate-user | %%ws_user%% | been removed |
+| delete-group | %%ws_grp%% | Recklessly deleting |
+| delete-workspace | %%ws_wiki%% | Recklessly deleting |
 | delete-account | %%ws_acct%% | Recklessly deleting |
