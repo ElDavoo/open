@@ -987,7 +987,7 @@
 "event.add-widget=user,widget,context":"[_1] \u589e\u52a0 [_2] \u5c0f\u5de5\u5177\uff08[_3]\uff09\u3002",
 "event.comment=page,wiki,summary":"\u5728 [_2] \u4e2d\u8bc4\u8bba [_1]\uff1a\u201c[_3]\u201d",
 "event.delete-tag-self=tag":"\u7ed9\u81ea\u5df1\u79fb\u9664\u6807\u7b7e [_1]\u3002",
-"event.delete-tag=tag,page,wiki":"\u4ece [_3] \u4e2d\u7684 [_2] \u79fb\u9664 [_1]\u3002",
+"event.delete-tag=tag,page,wiki":"\u4ece [_3] \u4e2d\u7684 [_2] \u79fb\u9664\u6807\u7b7e [_1]\u3002",
 "event.delete-tag=tag,person":"\u7ed9 [_2] \u79fb\u9664\u6807\u7b7e [_1]\u3002",
 "event.delete=page,wiki":"\u5728 [_2] \u4e2d\u5220\u9664 [_1]\u3002",
 "event.duplicate=page,wiki":"\u5728 [_2] \u4e2d\u590d\u5236 [_1]\u3002",

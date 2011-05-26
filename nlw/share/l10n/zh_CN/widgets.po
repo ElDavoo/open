@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-24 07:25-0700\n"
+"PO-Revision-Date: 2011-05-25 19:29-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -750,7 +750,7 @@ msgstr "给自己移除标签 %1。"
 #. (page_tag, page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:20
 msgid "event.delete-tag=tag,page,wiki"
-msgstr "从 %3 中的 %2 移除 %1。"
+msgstr "从 %3 中的 %2 移除标签 %1。"
 
 #. (person_tag, person)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:19

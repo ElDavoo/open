@@ -7096,7 +7096,7 @@ msgstr "給自己移除標籤 %1。"
 #. (page_tag, page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:20
 msgid "event.delete-tag=tag,page,wiki"
-msgstr "從 %3 中的 %2 移除 %1。"
+msgstr "從 %3 中的 %2 移除標籤 %1。"
 
 #. (person_tag, person)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:19
