@@ -630,3 +630,4 @@ t/Socialtext/People/profile-account.t
 lib/Test/Socialtext/PgPITR.pm
 template/backups.inc
 lib/Socialtext/Like.pm
+lib/Socialtext/Pluggable/Plugin/Like.pm
