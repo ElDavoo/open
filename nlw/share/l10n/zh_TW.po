@@ -9300,6 +9300,9 @@ msgstr "篩選頁面"
 msgid "kanban.page-tag"
 msgstr "頁面標籤"
 
+msgid "kanban.please-fill-in-wiki-field-first"
+msgstr "請先填入工作區欄位。"
+
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:202
 msgid "kanban.query-suffix:"
 msgstr "額外的頁面搜尋條件："

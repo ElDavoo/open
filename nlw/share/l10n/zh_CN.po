@@ -9300,6 +9300,9 @@ msgstr "筛选页面"
 msgid "kanban.page-tag"
 msgstr "页面标签"
 
+msgid "kanban.please-fill-in-wiki-field-first"
+msgstr "请先填入工作区字段。"
+
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:202
 msgid "kanban.query-suffix:"
 msgstr "额外的页面搜寻条件："

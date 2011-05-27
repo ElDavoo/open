@@ -9802,6 +9802,10 @@ msgstr "«Page Filtering»"
 msgid "kanban.page-tag"
 msgstr "«Page Tag»"
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.js:48
+msgid "kanban.please-fill-in-wiki-field-first"
+msgstr "«Please fill in the Workspace field first.»"
+
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:202
 msgid "kanban.query-suffix:"
 msgstr "«Additional query constraints for pages:»"

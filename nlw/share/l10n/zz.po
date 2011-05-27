@@ -9802,6 +9802,10 @@ msgstr "Zzzz Zzzzzzzzz"
 msgid "kanban.page-tag"
 msgstr "Zzzz Zzz"
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.js:48
+msgid "kanban.please-fill-in-wiki-field-first"
+msgstr "Zzzzzz zzzz zz zzz Zzzzzzzzz zzzzz zzzzz."
+
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:202
 msgid "kanban.query-suffix:"
 msgstr "Zzzzzzzzzz zzzzz zzzzzzzzzzz zzz zzzzz:"

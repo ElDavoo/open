@@ -1419,6 +1419,7 @@
 "kanban.optional":"\uff08\u975e\u5fc5\u586b\uff09",
 "kanban.page-filtering":"\u7be9\u9078\u9801\u9762",
 "kanban.page-tag":"\u9801\u9762\u6a19\u7c64",
+"kanban.please-fill-in-wiki-field-first":"\u8acb\u5148\u586b\u5165\u5de5\u4f5c\u5340\u6b04\u4f4d\u3002",
 "kanban.query-suffix:":"\u984d\u5916\u7684\u9801\u9762\u641c\u5c0b\u689d\u4ef6\uff1a",
 "kanban.refresh-interval":"\u5167\u5bb9\u81ea\u52d5\u66f4\u65b0\u983b\u7387",
 "kanban.seconds":"\uff08\u79d2\uff09",

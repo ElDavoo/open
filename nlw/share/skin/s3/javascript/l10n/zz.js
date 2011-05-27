@@ -1416,6 +1416,7 @@
 "kanban.optional":"(zzzzzzzz)",
 "kanban.page-filtering":"Zzzz Zzzzzzzzz",
 "kanban.page-tag":"Zzzz Zzz",
+"kanban.please-fill-in-wiki-field-first":"Zzzzzz zzzz zz zzz Zzzzzzzzz zzzzz zzzzz.",
 "kanban.query-suffix:":"Zzzzzzzzzz zzzzz zzzzzzzzzzz zzz zzzzz:",
 "kanban.refresh-interval":"Zzzzzzz zzzzzzzz",
 "kanban.seconds":"(zzzzzzz)",

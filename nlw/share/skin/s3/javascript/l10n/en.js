@@ -1416,6 +1416,7 @@
 "kanban.optional":"(optional)",
 "kanban.page-filtering":"Page Filtering",
 "kanban.page-tag":"Page Tag",
+"kanban.please-fill-in-wiki-field-first":"Please fill in the Workspace field first.",
 "kanban.query-suffix:":"Additional query constraints for pages:",
 "kanban.refresh-interval":"Refresh interval",
 "kanban.seconds":"(seconds)",
