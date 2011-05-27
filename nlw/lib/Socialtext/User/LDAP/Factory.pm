@@ -109,58 +109,19 @@ sub GetUser {
     local $Socialtext::User::LDAP::Factory::CacheEnabled = 1;
 
     # Look the User up in LDAP
-    local $self->{_user_not_found};
-    my $proto_user = eval { $self->lookup($key => $val) };
-    if ($@) {
-        st_log->error($@);
-        return;
-    }
+    my $proto_user = $self->lookup($key => $val);
 
-    # If we found the User in LDAP, cache the data in the DB and return that
-    # back to the caller as the homunculus.
     if ($proto_user) {
+        if ($cache_lookup) {
+            $proto_user->{user_id} = $cache_lookup->{user_id};
+            $proto_user->{cached_at} = $cache_lookup->{cached_at};
+        }
+
         $self->_vivify($proto_user);
         return $self->new_homunculus($proto_user);
     }
 
-    # Didn't find User in LDAP, but they *do* exist in the DB
-    if ($cache_lookup) {
-        my $homey = $self->NewHomunculus($cache_lookup);
-        if ($self->{_user_not_found}) {
-            # User was previously cached, so they existed at some point but
-            # can't be found in LDAP any longer.  Must be a Deleted User.
-            $self->_mark_as_missing($homey);
-            $self->UpdateUserRecord( {
-                user_id   => $homey->{user_id},
-                cached_at => $self->Now(),
-            } );
-            require Socialtext::User::Deleted;
-            return Socialtext::User::Deleted->new($homey);
-        }
-        else {
-            # Something else caused LDAP lookup to fail; return previously
-            # cached data (its better than nothing).
-            return $homey;
-        }
-    }
-
-    # Didn't find User in LDAP, don't exist in DB; unknown User.
-    return;
-}
-
-sub _mark_as_missing {
-    my $self  = shift;
-    my $homey = shift;
-    unless ($homey->{missing}) {
-        $homey->{missing}   = 1;
-        $homey->{cached_at} = $self->Now();
-        $self->UpdateUserRecord( {
-            user_id   => $homey->{user_id},
-            cached_at => $homey->{cached_at},
-            missing   => $homey->{missing},
-        } );
-        st_log->info("LDAP User '$homey->{driver_unique_id}' missing");
-    }
+    return undef;
 }
 
 sub _mark_as_found {
@@ -231,7 +192,6 @@ sub lookup {
     my $result = $mesg->shift_entry();
     unless ($result) {
         st_log->debug( "ST::User::LDAP: unable to find user in LDAP; $key/$val" );
-        $self->{_user_not_found} = 1;
         return;
     }
 
@@ -262,6 +222,7 @@ sub _is_cached_proto_user_valid {
 
     return unless $proto_user;
     return unless $proto_user->{cached_at};
+    return unless $proto_user->{driver_key} eq $self->driver_key;
 
     my $ttl = $proto_user->{missing}
         ? $self->cache_not_found_ttl
@@ -309,9 +270,7 @@ sub _vivify {
     # don't encrypt the placeholder password; just store it as-is
     $user_attrs->{no_crypt} = 1;
 
-    # depending on whether or not this User exists in the DB already, we're
-    # either updating an existing User or creating a new one.
-    my $user_id = $self->ResolveId($proto_user);
+    my $user_id = $proto_user->{user_id} || $self->ResolveId($proto_user);
     if ($user_id) {
         ### Update existing User record
 

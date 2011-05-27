@@ -31,6 +31,7 @@ use Carp qw/croak/;
 use Try::Tiny;
 use Readonly;
 use Scalar::Util qw/blessed/;
+use List::MoreUtils qw(any);
 
 BEGIN {
     extends 'Socialtext::Base','Socialtext::MultiPlugin';
@@ -192,14 +193,40 @@ sub new_homunculus {
         $homunculus = $factory->GetUser($key => $val);
     }
     else {
-        $homunculus = $class->_first('GetUser', $key => $val);
+        my $proto_user = $class->GetProtoUser($key => $val);
 
-        if (!$homunculus && $key ne 'user_id') {
-            # maybe it was deleted?  do a search for users that don't have a
-            # registered driver key.
-            $homunculus = Socialtext::User::Factory->GetHomunculus(
-                $key, $val, [$class->_drivers]
-            );
+        $homunculus = eval {
+            $class->_first('GetUser', $key => $val, preload => $proto_user)
+        };
+        if (my $e = $@) {
+            st_log->error($e);
+
+            $homunculus = Socialtext::User::Factory->NewHomunculus($proto_user)
+                if $proto_user;
+                
+            if ($e =~ /no suitable LDAP response/) {
+                return $homunculus;
+            }
+            elsif ($e =~ /LDAP error while finding user/) {
+                return $homunculus;
+            }
+            elsif ($e =~ /found multiple matches for user/) {
+                return undef;
+            }
+            else {
+                die $e;
+            }
+        }
+        
+        if ($proto_user && !$homunculus) {
+            $proto_user->{missing} = 1;
+            $proto_user->{cached_at} = 'now';
+            Socialtext::User::Factory->UpdateUserRecord($proto_user);
+            st_log->info("LDAP User '$proto_user->{driver_unique_id}' missing");
+
+            $proto_user->{username} = $proto_user->{driver_username};
+            require Socialtext::User::Deleted;
+            $homunculus = Socialtext::User::Deleted->new($proto_user);
         }
     }
 
