@@ -119,6 +119,7 @@ sub Now {
     return Socialtext::Date->now(hires=>1);
 }
 
+# XXX Wrapper for ST::User->GetProtoUser??
 sub GetHomunculus {
     my $class = shift;
     my $id_key = shift;

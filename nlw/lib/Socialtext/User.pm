@@ -158,6 +158,7 @@ sub new_homunculus {
         # table; we're going to pass it through to the Factory as a pre-loaded
         # proto-user, so don't skimp here and try to just query one or two
         # columns (we're going to need them all).
+        # XXX: $class->GetProtoUser here?
         my $sth = sql_execute(qq{SELECT * FROM users WHERE user_id = ?}, $val);
         my $row = $sth->fetchrow_hashref();
         return unless $row;
@@ -204,6 +205,45 @@ sub new_homunculus {
 
     Socialtext::User::Cache->Store($key, $val, $homunculus);
     return $homunculus;
+}
+
+sub GetProtoUser {
+    my $class = shift;
+    my $key = shift;
+    my $value = shift;
+    my %opts = @_;
+
+    my @binds;
+    my @where;
+    if ($opts{driver_keys}) {
+        push @binds, @{$opts{driver_keys}};
+        my $filter = $opts{exclude_driver_keys} ? 'NOT IN' : 'IN';
+        push @where, "driver_key $filter (" . join(",", map {'?'} @binds) .")";
+    }
+
+    if (any { $key eq $_ } qw/user_id driver_unique_id private_external_id/) {
+        push @where, "$key = ?";
+    }
+    elsif ($key eq 'username' || $key eq 'email_address') {
+        $value = Socialtext::String::trim(lc $value);
+        $key = 'driver_username' if $key eq 'username';
+        push @where, "LOWER($key) = ?";
+    }
+    else {
+        warn "invalid user ID lookup key '$key'";
+        return undef;
+    }
+    push @binds, $value;
+
+    my $where_clause = join(' AND ', @where);
+    my $sth = sql_execute(qq{
+        SELECT * FROM users WHERE $where_clause
+    }, @binds);
+    my $rows = $sth->fetchall_arrayref({});
+    use Data::Dumper; warn Dumper $rows  if scalar(@$rows) > 1;
+#    die "found more than one record for $key" if scalar(@$rows) > 1;
+
+    return $rows->[0];
 }
 
 sub _update_profile_with_extra_attrs {
