@@ -632,3 +632,4 @@ template/backups.inc
 lib/Socialtext/Like.pm
 lib/Socialtext/Pluggable/Plugin/Like.pm
 t/Socialtext/Like.t
+lib/Socialtext/Liked.pm
