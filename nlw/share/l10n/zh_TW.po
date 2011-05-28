@@ -13818,6 +13818,9 @@ msgstr "被寄出的頁面"
 msgid "widgets.from"
 msgstr "在"
 
+msgid "widgets.from-account"
+msgstr "於帳戶"
+
 msgid "widgets.gallery"
 msgstr "工具庫"
 
@@ -14146,7 +14149,7 @@ msgstr "被檢視的頁面"
 
 #: share/plugin/widgets/share/widgets/active_members/widget.js:17 share/plugin/widgets/share/widgets/top_content/widget.js:17
 msgid "widgets.viewed"
-msgstr "個人檔案"
+msgstr "被檢視"
 
 #: share/plugin/widgets/share/widgets/top_content/widget.js:18
 msgid "widgets.viewed-pages"

@@ -2214,6 +2214,7 @@
 "widgets.emailed":"Zzzzzzz",
 "widgets.emailed-pages":"zzzzzzz zzzzz",
 "widgets.from":"zzzz",
+"widgets.from-account":"zzzz zzzzzzz",
 "widgets.gallery":"Zzzzzz Zzzzzzz",
 "widgets.gallery-switch=account:":"Zzzz zz zzz zzzzzz zzzzzzz zzz zzz \"[_1]\" zzzzzzz. Zzzzzz zz zzzzzzz:",
 "widgets.group":"Zzzzz",

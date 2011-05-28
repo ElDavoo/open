@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-19 02:19-0700\n"
+"PO-Revision-Date: 2011-05-28 09:55-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -1478,6 +1478,9 @@ msgstr "emailed pages"
 #: share/plugin/widgets/share/widgets/one_page/widget.html:30 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:37
 msgid "widgets.from"
 msgstr "from"
+
+msgid "widgets.from-account"
+msgstr "from account"
 
 msgid "widgets.gallery"
 msgstr "Widget Gallery"

@@ -2214,6 +2214,7 @@
 "widgets.emailed":"Emailed",
 "widgets.emailed-pages":"emailed pages",
 "widgets.from":"from",
+"widgets.from-account":"from account",
 "widgets.gallery":"Widget Gallery",
 "widgets.gallery-switch=account:":"This is the widget gallery for the \"[_1]\" account. Switch to account:",
 "widgets.group":"Group",
