@@ -72,7 +72,7 @@ set_user_factories($foo->as_factory, $bar->as_factory, 'Default');
 user_switches_ldap: {
     $user = Socialtext::User->new(username=>'warren maxwell');
     isa_ok $user, 'Socialtext::User', 'found a user';
-    is $user->homunculus->driver_key, $foo->as_factory, 'user in bar';
+    is $user->homunculus->driver_key, $foo->as_factory, 'user in foo';
     user_is_unique_to_socialtext('warren maxwell');
 }
 
@@ -89,6 +89,7 @@ cannot_find_user_in_ldap: {
     $user = Socialtext::User->new(username=>'warren maxwell');
     isa_ok $user, 'Socialtext::User', 'found a user';
     is $user->missing, 1, 'user is flagged as missing';
+    isa_ok $user->homunculus, 'Socialtext::User::Deleted';
     user_is_unique_to_socialtext('warren maxwell');
 }
 
@@ -100,7 +101,12 @@ sub initialize_ldap {
     my $dir = shift || tempdir(TMPDIR=>1, CLEANUP=>1); 
 
     my $dn = "dc=${dc},dc=com";
-    my $ldap = Test::Socialtext::Bootstrap::OpenLDAP->new(base_dn=>$dn);
+    my $ldap = Test::Socialtext::Bootstrap::OpenLDAP->new(
+        base_dn=>$dn,
+        statedir => "$dir/run",
+        datadir => "$dir/data",
+        logfile => "$dir/ldap.log",
+    );
 
     my $entry = Net::LDAP::Entry->new();
     $entry->changetype('add');

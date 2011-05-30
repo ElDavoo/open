@@ -63,29 +63,30 @@ setup: { # same user 2x, but with different dn's in different LDAPs.
     );
 }
 
-set_user_factories($one->as_factory, $two->as_factory);
+set_user_factories($two->as_factory, 'Default');
 vivify_user: {
     $user = Socialtext::User->new(username=>'warren maxwell');
     isa_ok $user, 'Socialtext::User', 'vivified user';
-    is $user->homunculus->driver_key, $one->as_factory, 'user has factory';
-    is $user->driver_unique_id, $one_dn, 'user has dn';
+    is $user->homunculus->driver_key, $two->as_factory, 'user has factory';
+    is $user->driver_unique_id, $two_dn, 'user has dn';
 }
 
 simple_refresh: {
     Socialtext::LDAP::Operations->RefreshUsers();
     $user = Socialtext::User->new(username=>'warren maxwell');
     isa_ok $user, 'Socialtext::User', 'freshened user';
-    is $user->homunculus->driver_key, $one->as_factory, 'user has factory';
-    is $user->driver_unique_id, $one_dn, 'user has dn';
+    is $user->homunculus->driver_key, $two->as_factory, 'user has factory';
+    is $user->driver_unique_id, $two_dn, 'user has dn';
 }
 
-set_user_factories($two->as_factory, $one->as_factory);
+set_user_factories($one->as_factory, $two->as_factory, 'Default');
 refresh_with_updated_ldap: {
     Socialtext::LDAP::Operations->RefreshUsers();
     $user = Socialtext::User->new(username=>'warren maxwell');
     isa_ok $user, 'Socialtext::User', 'freshened user with new ldap';
     is $user->homunculus->driver_key, $one->as_factory, 'user has factory';
     is $user->driver_unique_id, $one_dn, 'user has dn';
+    user_is_unique_to_socialtext('warren maxwell');
 }
 
 done_testing;
@@ -96,7 +97,12 @@ sub initialize_ldap {
     my $dir = shift || tempdir(TMPDIR=>1, CLEANUP=>1); 
 
     my $dn = "dc=${dc},dc=com";
-    my $ldap = Test::Socialtext::Bootstrap::OpenLDAP->new(base_dn=>$dn);
+    my $ldap = Test::Socialtext::Bootstrap::OpenLDAP->new(
+        base_dn=>$dn,
+        statedir => "$dir/run",
+        datadir => "$dir/data",
+        logfile => "$dir/ldap.log",
+    );
 
     my $entry = Net::LDAP::Entry->new();
     $entry->changetype('add');
@@ -125,3 +131,16 @@ sub set_user_factories {
 
     return $factories;
 }
+
+sub user_is_unique_to_socialtext {
+    my $username = shift;
+    my $driver_key = shift;
+
+    my $count = sql_singlevalue(qq{
+        SELECT COUNT(*) 
+          FROM users
+         WHERE driver_username = ?
+    }, $username);
+    is $count, 1, "one copy of $username exists";
+}
+
