@@ -2070,6 +2070,22 @@ div#controls div#controlsRight ul li a.watch.on {
        background: url(../images/watchingIcon.png) no-repeat center left;
 }
 
+/* Like */
+div#controls div#controlsRight ul li a.like {
+    padding: 0 10px 0 28px;
+    background: url(/nlw/plugin/like/images/like-nobody.png)
+                no-repeat center left
+}
+div#controls div#controlsRight ul li a.like.me {
+    background-image: url(/nlw/plugin/like/images/like-me.png);
+}
+div#controls div#controlsRight ul li a.like.others {
+    background-image: url(/nlw/plugin/like/images/like-others.png);
+}
+div#controls div#controlsRight ul li a.like.me.others {
+    background-image: url(/nlw/plugin/like/images/like-me-others.png);
+}
+
 td.listview-watchlist {
     width: 200px;
 }
