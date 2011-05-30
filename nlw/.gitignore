@@ -634,3 +634,4 @@ lib/Socialtext/Pluggable/Plugin/Like.pm
 t/Socialtext/Like.t
 lib/Socialtext/Liked.pm
 lib/Socialtext/Liker.pm
+lib/Socialtext/Rest/PageLikes.pm
