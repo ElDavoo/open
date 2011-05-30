@@ -39,7 +39,7 @@ sub bootstrap_openldap {
 # TEST: instantiate an LDAP Group Factory
 instantiate_ldap_group_factory: {
     my $openldap    = bootstrap_openldap();
-    my $factory_key = $openldap->_as_factory();
+    my $factory_key = $openldap->as_factory();
     my $factory = Socialtext::Group->Factory(driver_key => $factory_key);
     isa_ok $factory, 'Socialtext::Group::LDAP::Factory';
 }
@@ -339,7 +339,7 @@ group_lookup_reuses_ldap_connection: {
 # TEST: List available LDAP Groups
 available_ldap_groups: {
     my $openldap   = bootstrap_openldap();
-    my $driver_key = $openldap->_as_factory();
+    my $driver_key = $openldap->as_factory();
     my $factory    = Socialtext::Group->Factory(driver_key => $driver_key);
     isa_ok $factory, 'Socialtext::Group::LDAP::Factory';
 
@@ -369,7 +369,7 @@ available_ldap_groups: {
 # TEST: List *ALL* available LDAP Groups
 all_available_ldap_groups: {
     my $openldap   = bootstrap_openldap();
-    my $driver_key = $openldap->_as_factory();
+    my $driver_key = $openldap->as_factory();
     my $factory    = Socialtext::Group->Factory(driver_key => $driver_key);
     isa_ok $factory, 'Socialtext::Group::LDAP::Factory';
 
@@ -444,7 +444,7 @@ perf_test_big_ldap_groups: {
         # how long does it take to do "$factory->available(all=>1)" ?
         diag "Querying list of available Groups...";
         $t = timeit(1, sub {
-            my $driver    = $openldap->_as_factory();
+            my $driver    = $openldap->as_factory();
             my $factory   = Socialtext::Group->Factory(driver_key => $driver);
             my @available = $factory->Available(all => 1);
 
