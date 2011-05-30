@@ -469,8 +469,7 @@ sub st_create_wikipage {
     $self->handle_command('wait_for_element_visible_ok','st-newpage-pagename-edit',30000);
     $self->handle_command('type_ok','st-newpage-pagename-edit',$pagename);
     $self->handle_command('wait_for_element_visible_ok','st-save-button-link',30000);
-    $self->handle_command('click_ok','st-save-button-link');
-    $self->handle_command('wait_for_element_visible_ok','st-edit-button-link',30000);                
+    $self->handle_command('click_and_wait','st-save-button-link');
     $self->handle_command('set_Speed',0);
 }
 
