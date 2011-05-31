@@ -2071,18 +2071,18 @@ div#controls div#controlsRight ul li a.watch.on {
 }
 
 /* Like */
-div#controls div#controlsRight ul li a.like {
+.like-indicator {
     padding: 0 10px 0 28px;
     background: url(/nlw/plugin/like/images/like-nobody.png)
                 no-repeat center left
 }
-div#controls div#controlsRight ul li a.like.me {
+.like-indicator.me {
     background-image: url(/nlw/plugin/like/images/like-me.png);
 }
-div#controls div#controlsRight ul li a.like.others {
+.like-indicator.others {
     background-image: url(/nlw/plugin/like/images/like-others.png);
 }
-div#controls div#controlsRight ul li a.like.me.others {
+.like-indicator.me.others {
     background-image: url(/nlw/plugin/like/images/like-me-others.png);
 }
 
