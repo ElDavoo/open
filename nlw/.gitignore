@@ -637,3 +637,4 @@ lib/Socialtext/Liker.pm
 lib/Socialtext/Rest/PageLikes.pm
 t/wikitests/like/page.wiki
 etc/socialtext/uri_map.d/like.yaml
+lib/Socialtext/Rest/PageRevisionLikes.pm
