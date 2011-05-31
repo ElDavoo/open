@@ -591,6 +591,9 @@ msgstr "对不起，此功能不支持电子表格。"
 msgid "error.filename-too-long"
 msgstr "网址编码后文件名太长。"
 
+msgid "error.groups-member-exists=count:"
+msgstr "下面的 %1 名用户已经是这些群组的成员："
+
 #. (new_title)
 #: share/skin/s3/javascript/st-lightbox.js:86
 msgid "error.invalid-page-name=title"
@@ -675,6 +678,9 @@ msgstr "“%1”存在，但并不是%2"
 #: share/skin/s3/javascript/people-avatar.js:195
 msgid "error.user-data"
 msgstr "错误恢复用户数据"
+
+msgid "error.wiki-member-exists=count:"
+msgstr "下面的 %1 名用户已经是工作区成员："
 
 #: share/skin/s3/template/element/settings/weblog_create:13
 msgid "example.blog"
@@ -1069,6 +1075,12 @@ msgstr "这是您工作区的标题。需要的话稍后可以更改。"
 msgid "info.wikis"
 msgstr "...列出您所属的工作区。您必须登录查看您的列表。"
 
+msgid "invite.added-to-groups=users:"
+msgstr "下面的 %1 名用户已经被成功的邀请到这些群组："
+
+msgid "invite.added-to-wiki=users:"
+msgstr "下面的 %1 名用户已经被成功的邀请到工作区："
+
 #: share/skin/s3/template/element/settings/users_invite_search_section:126 share/skin/s3/template/element/settings/users_invite_section:81
 msgid "invite.append?"
 msgstr "添加下面的个人消息？"
@@ -1144,6 +1156,9 @@ msgstr "邀请其他用户"
 #: share/skin/s3/template/element/settings/users_invite_search_section:122 share/skin/s3/template/element/settings/users_invite_section:77
 msgid "invite.personal-message"
 msgstr "个人消息"
+
+msgid "invite.request-sent=users:"
+msgstr "已经成功寄出给下面 %1 名用户的邀请函："
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:6
 msgid "invite.search-users"
