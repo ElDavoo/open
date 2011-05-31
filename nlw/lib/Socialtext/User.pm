@@ -152,35 +152,21 @@ sub new_homunculus {
     if ($key eq 'user_id') {
         return undef if $val =~ /\D/;
 
-        # Go get this User from the DB (so we know what driver it came from,
-        # and what it looked like _last time_ we saw it.
-        #
-        # Its *REALLY* important here to grab *ALL* of the columns from this
-        # table; we're going to pass it through to the Factory as a pre-loaded
-        # proto-user, so don't skimp here and try to just query one or two
-        # columns (we're going to need them all).
-        # XXX: $class->GetProtoUser here?
-        my $sth = sql_execute(qq{SELECT * FROM users WHERE user_id = ?}, $val);
-        my $row = $sth->fetchrow_hashref();
-        return unless $row;
+        my $proto_user = $class->GetProtoUser($key => $val);
+        return unless $proto_user;
 
         # if driver doesn't exist any more, we don't have an instance of it to
         # query.  e.g. customer removed an LDAP data store.
-        my $driver = eval {$class->_realize($row->{driver_key}, 'GetUser')};
-        if ($driver) {
-            # look the user up by *user_id*; *ALL* factories must support this
-            # lookup.
-            #
-            # "preload" is an optimization; we've already pulled the row from
-            # the DB for this User so pass it through to the factory so they
-            # can avoid looking the record up in the DB _again_.
-            $homunculus = $driver->GetUser($key, $val, preload => $row);
-        }
+        my $driver = eval {
+            $class->_realize($proto_user->{driver_key}, 'GetUser')
+        };
 
-        $homunculus ||= Socialtext::User::Deleted->new(
-            %{$row},
-            username => $row->{driver_username},    # ugh.
-        );
+        $homunculus = $driver
+            ? $driver->GetUser($key, $val, preload => $proto_user)
+            : Socialtext::User::Deleted->new(
+                %{$proto_user},
+                username => $proto_user->{driver_username},
+            );
     }
     # system generated users MUST come from the Default user store; we don't
     # allow for them to live anywhere else.
