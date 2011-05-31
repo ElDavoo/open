@@ -267,8 +267,7 @@ sub GetProtoUser {
         SELECT * FROM users WHERE $where_clause
     }, @binds);
     my $rows = $sth->fetchall_arrayref({});
-    use Data::Dumper; warn Dumper $rows  if scalar(@$rows) > 1;
-#    die "found more than one record for $key" if scalar(@$rows) > 1;
+    die "found more than one record for $key" if scalar(@$rows) > 1;
 
     return $rows->[0];
 }
