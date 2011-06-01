@@ -1583,7 +1583,7 @@
 "page.titles":"Titles",
 "page.top":"Top of page",
 "page.type-spreadsheet":"Static Page",
-"page.type-wiki":"Page",
+"page.type-wiki":"Wiki Page",
 "page.unlock":"Unlock Page",
 "page.untitled":"Untitled Page",
 "page.updated=user,date":"Updated by [_1] on [_2].",

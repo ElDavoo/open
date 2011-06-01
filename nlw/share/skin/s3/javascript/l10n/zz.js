@@ -1583,7 +1583,7 @@
 "page.titles":"Zzzzzz",
 "page.top":"Zzz zz zzzz",
 "page.type-spreadsheet":"Zzzzzz Zzzz",
-"page.type-wiki":"Zzzz",
+"page.type-wiki":"Zzzz Zzzz",
 "page.unlock":"Zzzzzz Zzzz",
 "page.untitled":"Zzzzzzzz Zzzz",
 "page.updated=user,date":"Zzzzzzz zz [_1] zz [_2].",
