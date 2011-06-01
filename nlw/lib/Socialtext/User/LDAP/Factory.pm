@@ -83,14 +83,9 @@ sub _attr_map {
 sub GetUser {
     my ($self, $key, $val, %opts) = @_;
 
-    # SANITY CHECK: have inbound parameters
-    return unless $key;
-    return unless $val;
-
-    # SANITY CHECK: get user term is acceptable
+    return unless $key && $val;
     return unless ($valid_get_user_terms{$key});
 
-    # If we have a valid/fresh cached copy of the User, use that
     my $cache_lookup = $opts{preload};
     if ($CacheEnabled) {
         time_scope 'ldap_user_check_cache';
@@ -104,22 +99,27 @@ sub GetUser {
     # want to end up chasing circular relationship.  So, break the chain now.
     local $Socialtext::User::LDAP::Factory::CacheEnabled = 1;
 
-    # Look the User up in LDAP
     my $proto_user;
     if ($cache_lookup) {
-        $proto_user = $self->lookup(
-            username => $cache_lookup->{driver_username});
+        for my $field (qw/username driver_unique_id email_address/) {
+            my $value = $field eq 'username'
+                ? $cache_lookup->{driver_username}
+                : $cache_lookup->{$field};
 
-        $proto_user ||= eval {
-            $self->lookup(driver_unique_id=>$cache_lookup->{driver_unique_id});
-        };
+            if ($field eq 'driver_unique_id') {
+                $proto_user = eval {
+                    $proto_user = $self->lookup($field => $value) };
+                st_log->warning($@) if $@;
+            }
+            else {
+                $proto_user = $self->lookup($field => $value);
+            }
 
-        $proto_user ||= $self->lookup(
-            email_address => $cache_lookup->{email_address});
-
-        if ($proto_user) {
-            $proto_user->{user_id} = $cache_lookup->{user_id};
-            $proto_user->{cached_at} = $cache_lookup->{cached_at};
+            if ($proto_user) {
+                $proto_user->{user_id} = $cache_lookup->{user_id};
+                $proto_user->{cached_at} = $cache_lookup->{cached_at};
+                last;
+            }
         }
     }
     else {

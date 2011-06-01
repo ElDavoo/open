@@ -46,17 +46,14 @@ resolve_user_by_email_finds_ldap_first: {
     ok $openldap->add_ldif('t/test-data/ldap/base_dn.ldif'), 'added LDAP data; base_dn';
     ok $openldap->add_ldif('t/test-data/ldap/people.ldif'), 'added LDAP data; people';
 
-    # VERIFY: explicit lookup by username finds the Default User
     $user = Socialtext::User->new(username => $email_address);
     isa_ok $user, 'Socialtext::User', 'User found by explicit username lookup';
     is $user->homunculus->driver_name, 'LDAP', '... is an LDAP user';
 
-    # VERIFY: explicit lookup by e-mail address finds the LDAP User
     $user = Socialtext::User->new(email_address => $email_address);
     isa_ok $user, 'Socialtext::User', 'User found by explicit e-mail lookup';
     is $user->homunculus->driver_name, 'LDAP', '... is the LDAP user';
 
-    # TEST: Resolving the user by e-mail address should give us the LDAP user
     $user = Socialtext::User->Resolve($email_address);
     isa_ok $user, 'Socialtext::User', 'Resolved User';
     is $user->homunculus->driver_name, 'LDAP', '... is the LDAP user';
