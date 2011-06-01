@@ -119,72 +119,29 @@ sub Now {
     return Socialtext::Date->now(hires=>1);
 }
 
-# XXX Wrapper for ST::User->GetProtoUser??
 sub GetHomunculus {
     my $class = shift;
     my $id_key = shift;
     my $id_val = shift;
     my $driver_key = shift;
-    my $return_raw_proto_user = shift || 0;
 
-    my $where;
-    if (   ($id_key eq 'user_id')
-        || ($id_key eq 'driver_unique_id')
-        || ($id_key eq 'private_external_id')) {
-        $where = $id_key;
-    }
-    elsif ($id_key eq 'username' || $id_key eq 'email_address') {
-        $id_key = 'driver_username' if $id_key eq 'username';
-        $id_val = Socialtext::String::trim(lc $id_val);
-        $where = "LOWER($id_key)";
-    }
-    else {
-        warn "invalid user ID lookup key '$id_key'";
-        return undef;
-    }
-
-    my $where_clause = { };
-    my $was_deleted;
-    if ($where eq 'user_id') {
-        # Don't allow for non-numeric lookups; we *KNOW* that user_id is
-        # numeric, so don't even let non-numerics get to the DB.
-        return undef if ($id_val =~ /\D/);
-
-        $where_clause = { user_id => $id_val };
-    }
-    else {
-        die "no driver key?!" unless $driver_key;
-
-        my $search_deleted = (ref($driver_key) eq 'ARRAY');
-        if (!$search_deleted) {
-            $where_clause = {
-                driver_key => $driver_key,
-                $where     => $id_val,
-            };
+    my $deleted;
+    my %opts;
+    if ($driver_key && $id_key ne 'user_id') {
+        if (ref($driver_key) eq 'ARRAY') {
+            $opts{driver_keys} = $driver_key;
+            $opts{exclude_driver_keys} = 1;
         }
         else {
-            die "no user factories configured?!" unless @$driver_key;
-
-            $where_clause = {
-                driver_key => { -not_in => $driver_key },
-                $where     => $id_val,
-            };
-            $was_deleted = 1;
+            $opts{driver_keys} = [$driver_key];
         }
     }
 
-    my ($sql, @bindings) = sql_abstract->select('users', ['*'], $where_clause);
-    my $sth = sql_execute($sql, @bindings);
+    my $proto_user = Socialtext::User->GetProtoUser($id_key, $id_val, %opts);
+    return unless $proto_user;
 
-    my $row = $sth->fetchrow_hashref();
-    return undef unless $row;
-
-    # Always set this; the query returns the same value *except* when we're
-    # looking for Deleted users.
-    $row->{driver_key} = 'Deleted' if ($was_deleted);
-
-    $row->{username} = delete $row->{driver_username};
-    return ($return_raw_proto_user) ? $row : $class->NewHomunculus($row);
+    $proto_user->{username} = delete $proto_user->{driver_username};
+    return $class->NewHomunculus($proto_user);
 }
 
 sub NewUserRecord {

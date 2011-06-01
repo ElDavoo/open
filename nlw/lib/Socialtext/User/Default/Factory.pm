@@ -95,7 +95,10 @@ sub GetUser {
 
 sub lookup {
     my ($self, $key, $val) = @_;
-    return $self->GetHomunculus($key, $val, $self->driver_key, 1);
+    return Socialtext::User->GetProtoUser(
+        $key, $val, 
+        driver_keys => [$self->driver_key],
+    );
 }
 
 sub create {
