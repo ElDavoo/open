@@ -6,12 +6,18 @@ use warnings;
 use Socialtext::User;
 use Test::Socialtext::Bootstrap::OpenLDAP;
 use Test::Socialtext tests => 11;
+use Socialtext::User;
+use Socialtext::User::LDAP::Factory;
 
 ###############################################################################
 # FIXTURE: db
 #
 # Need to have Pg running, but it doesn't have to contain any data.
 fixtures(qw( db ));
+
+$Socialtext::LDAP::CacheEnabled = 0;
+$Socialtext::User::Cache::Enabled = 0;
+$Socialtext::User::LDAP::Factory::CacheEnabled = 0;
 
 ###############################################################################
 # TEST: Resolving a User by e-mail address should find the LDAP record first
@@ -43,7 +49,7 @@ resolve_user_by_email_finds_ldap_first: {
     # VERIFY: explicit lookup by username finds the Default User
     $user = Socialtext::User->new(username => $email_address);
     isa_ok $user, 'Socialtext::User', 'User found by explicit username lookup';
-    is $user->homunculus->driver_name, 'Default', '... is the old Default user';
+    is $user->homunculus->driver_name, 'LDAP', '... is an LDAP user';
 
     # VERIFY: explicit lookup by e-mail address finds the LDAP User
     $user = Socialtext::User->new(email_address => $email_address);

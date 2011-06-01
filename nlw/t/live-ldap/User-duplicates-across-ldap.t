@@ -15,7 +15,7 @@ $Socialtext::User::Cache::Enabled = 0;
 $Socialtext::User::LDAP::Factory::CacheEnabled = 0;
 
 my ($foo,$bar); # LDAP stores.
-my $user; # test user
+my ($user, $user_id); # test user
 
 setup: {
     $foo = initialize_ldap('foo');
@@ -53,7 +53,9 @@ create_user_in_default: {
     );
     isa_ok $user, 'Socialtext::User', 'created a user';
     is $user->homunculus->driver_key, 'Default', 'user in default';
-    Test::Socialtext::Bootstrap::OpenLDAP::user_is_unique_to_socialtext('warren maxwell');
+    user_is_unique_to_socialtext('warren maxwell');
+
+    $user_id = $user->user_id;
 }
 
 set_user_factories($bar->as_factory, 'Default');
@@ -88,5 +90,73 @@ cannot_find_user_in_ldap: {
     isa_ok $user->homunculus, 'Socialtext::User::Deleted';
     user_is_unique_to_socialtext('warren maxwell');
 }
+
+# User ID lookups need to be treated as a special case, there are no LDAP
+# mappings for User ID.
+
+diag "User ID cases";
+
+set_user_factories('Default');
+setup_user_id_searches: {
+    $foo->add(
+        'cn=Milo Toboggan,dc=foo,dc=com',
+        objectClass => 'inetOrgPerson',
+        cn => 'Milo Toboggan',
+        gn => 'Milo',
+        sn => 'Toboggan',
+        mail => 'milo@example.com',
+        userPassword => 'password',
+    );
+    $bar->add(
+        'cn=Milo Toboggan,dc=bar,dc=com',
+        objectClass => 'inetOrgPerson',
+        cn => 'Milo Toboggan',
+        gn => 'Milo',
+        sn => 'Toboggan',
+        mail => 'milo@example.com',
+        userPassword => 'password',
+    );
+
+    $user = Socialtext::User->new(username=>'warren');
+    is $user, undef, 'user does not exist in socialtext';
+
+    $user = Socialtext::User->create(
+        email_address => 'milo@example.com',
+        username => 'milo toboggan',
+        password => 'password',
+    );
+    isa_ok $user, 'Socialtext::User', 'created a user';
+    is $user->homunculus->driver_key, 'Default', 'user in default';
+    user_is_unique_to_socialtext('milo toboggan');
+
+    $user_id = $user->user_id;
+}
+
+set_user_factories($bar->as_factory, 'Default');
+user_id_in_ldap: {
+    $user = Socialtext::User->new(user_id=>$user_id);
+    isa_ok $user, 'Socialtext::User', 'found a user';
+    is $user->homunculus->driver_key, $bar->as_factory, 'user in foo';
+    user_is_unique_to_socialtext('milo toboggan');
+}
+
+set_user_factories($foo->as_factory, $bar->as_factory, 'Default');
+user_id_switches_ldap: {
+    $user = Socialtext::User->new(user_id=>$user_id);
+    isa_ok $user, 'Socialtext::User', 'found a user';
+    is $user->homunculus->driver_key, $foo->as_factory, 'user in foo';
+    user_is_unique_to_socialtext('milo toboggan');
+}
+
+$foo->remove('cn=Milo Toboggan,dc=foo,dc=com');
+$bar->remove('cn=Milo Toboggan,dc=bar,dc=com');
+user_id_removed_from_ldap: {
+    $user = Socialtext::User->new(user_id=>$user_id);
+    isa_ok $user, 'Socialtext::User', 'found a user';
+    is $user->missing, 1, 'user is flagged as missing';
+    isa_ok $user->homunculus, 'Socialtext::User::Deleted';
+    user_is_unique_to_socialtext('milo toboggan');
+}
+
 
 done_testing;

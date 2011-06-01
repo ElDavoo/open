@@ -146,74 +146,52 @@ sub new_homunculus {
     my $homunculus = Socialtext::User::Cache->Fetch($key, $val);
     return $homunculus if $homunculus;
 
-    # if we pass in user_id, it will be one of the system-wide
-    # ids, we must short-circuit and immediately go to the driver
-    # associated with that system id
+    my $proto_user = $class->GetProtoUser($key => $val);
+
+    # The user_id key does not exist in LDAP, so map to username
     if ($key eq 'user_id') {
-        return undef if $val =~ /\D/;
-
-        my $proto_user = $class->GetProtoUser($key => $val);
         return unless $proto_user;
-
-        # if driver doesn't exist any more, we don't have an instance of it to
-        # query.  e.g. customer removed an LDAP data store.
-        my $driver = eval {
-            $class->_realize($proto_user->{driver_key}, 'GetUser')
-        };
-
-        $homunculus = $driver
-            ? $driver->GetUser($key, $val, preload => $proto_user)
-            : Socialtext::User::Deleted->new(
-                %{$proto_user},
-                username => $proto_user->{driver_username},
-            );
+        $key = 'username';
+        $val = $proto_user->{driver_username};
     }
-    # system generated users MUST come from the Default user store; we don't
-    # allow for them to live anywhere else.
-    #
-    # this prevents possible conflict with other stores having their own
-    # notion of what the "guest" or "system-user" is (e.g. Active Directory
-    # and its "Guest" user)
-    elsif (Socialtext::User::Default::Users->IsDefaultUser($key => $val)) {
+    # Weed out system users (called 'Default' users here).
+    if (Socialtext::User::Default::Users->IsDefaultUser($key => $val)) {
         my $factory = $class->_realize('Default', 'GetUser');
-        $homunculus = $factory->GetUser($key => $val);
+        return $factory->GetUser($key => $val);
     }
-    else {
-        my $proto_user = $class->GetProtoUser($key => $val);
 
-        $homunculus = eval {
-            $class->_first('GetUser', $key => $val, preload => $proto_user)
-        };
-        if (my $e = $@) {
-            st_log->error($e);
+    $homunculus = eval {
+        $class->_first('GetUser', $key => $val, preload => $proto_user)
+    };
+    if (my $e = $@) {
+        st_log->error($e);
 
-            $homunculus = Socialtext::User::Factory->NewHomunculus($proto_user)
-                if $proto_user;
-                
-            if ($e =~ /no suitable LDAP response/) {
-                return $homunculus;
-            }
-            elsif ($e =~ /LDAP error while finding user/) {
-                return $homunculus;
-            }
-            elsif ($e =~ /found multiple matches for user/) {
-                return undef;
-            }
-            else {
-                die $e;
-            }
+        $homunculus = Socialtext::User::Factory->NewHomunculus($proto_user)
+            if $proto_user;
+            
+        if ($e =~ /no suitable LDAP response/) {
+            return $homunculus;
         }
-        
-        if ($proto_user && !$homunculus) {
-            $proto_user->{missing} = 1;
-            $proto_user->{cached_at} = 'now';
-            Socialtext::User::Factory->UpdateUserRecord($proto_user);
-            st_log->info("LDAP User '$proto_user->{driver_unique_id}' missing");
-
-            $proto_user->{username} = $proto_user->{driver_username};
-            require Socialtext::User::Deleted;
-            $homunculus = Socialtext::User::Deleted->new($proto_user);
+        elsif ($e =~ /LDAP error while finding user/) {
+            return $homunculus;
         }
+        elsif ($e =~ /found multiple matches for user/) {
+            return undef;
+        }
+        else {
+            die $e;
+        }
+    }
+    
+    if ($proto_user && !$homunculus) {
+        $proto_user->{missing} = 1;
+        $proto_user->{cached_at} = 'now';
+        Socialtext::User::Factory->UpdateUserRecord($proto_user);
+        st_log->info("LDAP User '$proto_user->{driver_unique_id}' missing");
+
+        $proto_user->{username} = $proto_user->{driver_username};
+        require Socialtext::User::Deleted;
+        $homunculus = Socialtext::User::Deleted->new($proto_user);
     }
 
     Socialtext::User::Cache->Store($key, $val, $homunculus);

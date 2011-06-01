@@ -91,11 +91,7 @@ sub GetUser {
     return unless ($valid_get_user_terms{$key});
 
     # If we have a valid/fresh cached copy of the User, use that
-    my $cache_lookup
-        = $opts{preload}
-        || $self->GetHomunculus(
-            $key, $val, $self->driver_key, 'raw_proto_user_please',
-           );
+    my $cache_lookup = $opts{preload};
     if ($CacheEnabled) {
         time_scope 'ldap_user_check_cache';
         if ($self->_is_cached_proto_user_valid($cache_lookup)) {
@@ -109,19 +105,31 @@ sub GetUser {
     local $Socialtext::User::LDAP::Factory::CacheEnabled = 1;
 
     # Look the User up in LDAP
-    my $proto_user = $self->lookup($key => $val);
+    my $proto_user;
+    if ($cache_lookup) {
+        $proto_user = $self->lookup(
+            username => $cache_lookup->{driver_username});
 
-    if ($proto_user) {
-        if ($cache_lookup) {
+        $proto_user ||= eval {
+            $self->lookup(driver_unique_id=>$cache_lookup->{driver_unique_id});
+        };
+
+        $proto_user ||= $self->lookup(
+            email_address => $cache_lookup->{email_address});
+
+        if ($proto_user) {
             $proto_user->{user_id} = $cache_lookup->{user_id};
             $proto_user->{cached_at} = $cache_lookup->{cached_at};
         }
-
-        $self->_vivify($proto_user);
-        return $self->new_homunculus($proto_user);
+    }
+    else {
+        $proto_user = $self->lookup($key => $val);
     }
 
-    return undef;
+    return unless $proto_user;
+
+    $self->_vivify($proto_user);
+    return $self->new_homunculus($proto_user);
 }
 
 sub _mark_as_found {

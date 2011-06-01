@@ -87,8 +87,8 @@ sub NewUserId {
 }
 
 my @resolve_id_order = (
-    [ driver_unique_id => 'driver_unique_id = ?' ],
     [ driver_username  => 'LOWER(driver_username) = LOWER(?)' ],
+    [ driver_unique_id => 'driver_unique_id = ?' ],
     [ email_address    => 'LOWER(email_address) = LOWER(?)' ],
 );
 sub ResolveId {
