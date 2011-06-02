@@ -107,7 +107,14 @@
 | wait_for_text_present_ok | Welcome, New User | 30000 |
 
 | *Comment* | Test Case: User Restrictions make sure old password is deactivated |  |
-| st-logoutin | %%emailaddr%% | %%password%% |
+| *Comment* | Test Case: User Restrictions avoid going too fast by using explicit login |  |
+| st-logout |  |  |
+| wait_for_element_visible_ok | username | 30000 |
+| wait_for_element_visible_ok | password | 30000 |
+| wait_for_element_visible_ok | login_btn | 30000 |
+| type_ok | username | %%emailaddr%% |
+| type_ok | password | %%password%% |
+| click_and_wait | login_btn |  |
 | wait_for_text_present_ok | Wrong email address or password - please try again | 30000 |
 | st-login | %%emailaddr%% | %%new_pw%% |
 | wait_for_text_present_ok | You are not authorized to view this workspace. | 30000 |

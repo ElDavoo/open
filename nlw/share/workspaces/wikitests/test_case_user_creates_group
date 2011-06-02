@@ -123,6 +123,9 @@
 | open_ok | /st/dashboard |  |
 | wait_for_element_present_ok | link=Create Group... | 30000 |
 | click_ok | link=Create Group... |  |
+
+| *Comment* | Test Case: User Creates Group lookahead fails if you go too fast |  |
+| set_speed_ok | 2000 |  |
 | wait_for_text_present_ok | Before creating a group, you can search names and descriptions for existing groups. | 30000 |
 | wait_for_element_visible_ok | //input[@class='lookahead-prompt'] | 30000 |
 | type_lookahead_ok | //input[@class='lookahead-prompt'] | %%group_prefix%% |
@@ -130,6 +133,7 @@
 | wait_for_element_visible_ok | //div[@class='lookaheadItem']/a[contains(text(),'Show all results...')] | 30000 |
 | click_and_wait | //div[@class='lookaheadItem']/a[contains(text(),'Show all results...')] |  |
 | wait_for_text_present_ok | Group names and descriptions matching '%%group_prefix%% OR %%group_prefix%%*' | 30000 |
+| set_speed_ok | 0 |  |
 
 | *Comment* | Test Case: User Creates Group. Create Identical Group Name |  |
 | open_ok | /st/dashboard |  |
