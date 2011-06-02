@@ -11,13 +11,13 @@ Socialtext.new_page = [% IF is_new %] true; [% ELSE %] false; [% END %]
 Socialtext.accept_encoding = '[% accept_encoding %]';
 Socialtext.loc_lang = '[% loc_lang %]';
 Socialtext.wiki_id = '[% wiki.name.replace('\'', '\\\'') %]';
-Socialtext.wiki_title = '[% wiki.title.replace('\'', '\\\'') %]';
+Socialtext.wiki_title = '[% wiki.title.replace('\'', '\\\'').replace('</script>', "</scr' + 'ipt>") %]';
 Socialtext.start_in_edit_mode = [% IF start_in_edit_mode %] true; [% ELSE %] false; [% END %]
 
 [%# XXX Fix these values so they match other parts of the system! %]
 Socialtext.real_user_id = [% user.id %];
 Socialtext.userid = '[% user.userid.replace('\'', '\\\'')  %]';
-Socialtext.username = '[% user.username.replace('\'', '\\\'') %]';
+Socialtext.username = '[% user.username.replace('\'', '\\\'').replace('</script>', "</scr' + 'ipt>") %]';
 Socialtext.email_address = '[% user.email_address.replace('\'', '\\\'') %]';
 
 Socialtext.workspaces = [% workspaceslist.json %];
@@ -26,13 +26,14 @@ Socialtext.accounts = [% user.accounts.json %];
 Socialtext.dev_env = [% IF dev_mode %]true[% ELSE %]false[% END %];
 
 Socialtext.page_id = '[% page.id %]';
-Socialtext.page_title = '[% page.title.replace('\'', '\\\'') %]';
-Socialtext.template_name = '[% template_name.replace('\'', '\\\'') %]';
+Socialtext.page_title = '[% page.title.replace('\'', '\\\'').replace('</script>', "</scr' + 'ipt>") %]';
+
+Socialtext.template_name = '[% template_name.replace('\'', '\\\'').replace('</script>', "</scr' + 'ipt>") %]';
 [% DEFAULT content_types = [] %]
 Socialtext.content_types = [% content_types.json %];
 Socialtext.page_type = '[% page.page_type %]';
 Socialtext.page_size = [% page.size || 0 %];
-Socialtext.wiki_title = '[% wiki.title.replace('\'', '\\\'') %]';
+Socialtext.wiki_title = '[% wiki.title.replace('\'', '\\\'').replace('</script>', "</scr' + 'ipt>") %]';
 Socialtext.revision_id = '[% page.revision_id %]';
 Socialtext.comment_form_window_height = '[% wiki.comment_form_window_height %]'
 Socialtext.plugins_enabled = [% plugins_enabled.json %];
@@ -110,9 +111,9 @@ v.dropshadow.defined = "[% dropshadow.defined %]";
 v.is_new = ("[% is_new %]" != "0");
 v.is_incipient = ("[% is_incipient %]" != "0");
 v.page = {};
-v.page.title = "[% page.title.replace('"', '\\"') %]";
+v.page.title = "[% page.title.replace('"', '\\"').replace('"', '\\"').replace('</script>', '</scr" + "ipt>') %]";
 v.page.page_type = "[% page.page_type %]";
-v.page.display_title = "[% page.display_title.replace('"', '\\"') %]";
+v.page.display_title = "[% page.display_title.replace('"', '\\"').replace('</script>', '</scr" + "ipt>') %]";
 v.page.revision_id = "[% page.revision_id %]";
 v.page.caller = "[% page.caller %]";
 v.wiki = {};
@@ -133,7 +134,7 @@ v.new_tags = [];
 v.new_tags.push("[% tag | html %]");
 [% END %]
 
-v.miki_url = [% miki_url.json %];
+v.miki_url = [% miki_url.json.replace('</script>', '</scr" + "ipt>') %]
 
 v.user = {};
 v.user.is_guest = "[% user.is_guest %]";
