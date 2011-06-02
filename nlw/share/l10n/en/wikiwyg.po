@@ -264,7 +264,7 @@ msgstr "Signal this edit to"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3213
 msgid "edit.spreadsheet-title-required-for-wiki"
-msgstr "Static Page Title required if Workspace ID specified"
+msgstr "Page Title required if Workspace ID specified"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/element/edit_summary.html.tt2:5
 msgid "edit.summarize"

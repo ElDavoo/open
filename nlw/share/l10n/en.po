@@ -45,7 +45,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-01 08:15-0700\n"
+"PO-Revision-Date: 2011-06-02 07:33-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -85,7 +85,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  s3.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-01 07:34-0700\n"
+"PO-Revision-Date: 2011-06-02 07:32-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -117,7 +117,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  lib.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-01 07:34-0700\n"
+"PO-Revision-Date: 2011-06-02 07:32-0700\n"
 "Language-Team: Socialtext i18n team\n"
 "Last-Translator: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -4698,7 +4698,7 @@ msgstr "Signal this edit to"
 
 #: share/skin/wikiwyg/javascript/lib/Wikiwyg/Wysiwyg.js:3213
 msgid "edit.spreadsheet-title-required-for-wiki"
-msgstr "Static Page Title required if Workspace ID specified"
+msgstr "Page Title required if Workspace ID specified"
 
 #: share/skin/wikiwyg/javascript/jemplate_wikiwyg/element/edit_summary.html.tt2:5
 msgid "edit.summarize"
@@ -6299,7 +6299,7 @@ msgstr "New passwords do not match"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2171
 msgid "error.new-sheet-name-required"
-msgstr "Please provide a name for the new static page."
+msgstr "Please provide a name for the new page."
 
 #: lib/Socialtext/Handler/ControlPanel.pm:1139 lib/Socialtext/Handler/ControlPanel.pm:1187
 msgid "error.no-account-id!"
@@ -7161,7 +7161,7 @@ msgstr "You cannot change the name of a system-created user."
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:479
 msgid "error.sheet-contention:"
-msgstr "While you were editing, <span style=\"font-weight: bold\" id=\"st-contention-user\">XXX</span> saved a version of this static page, and we are unable to reconcile the changes. Would you like to:"
+msgstr "While you were editing, <span style=\"font-weight: bold\" id=\"st-contention-user\">XXX</span> saved a version of this page, and we are unable to reconcile the changes. Would you like to:"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2183
 msgid "error.sheet-name-exists"
@@ -7173,7 +7173,7 @@ msgstr "<a id=\"st-newspreadsheet-duplicate-link\" href=\"#\" target=\"\">XXX</a
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2098 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2179
 msgid "error.sheet-title-too-long"
-msgstr "Static Page title is too long. Please shorten the name and try again."
+msgstr "Page title is too long. Please shorten the name and try again."
 
 #: lib/Socialtext/CLI.pm:428
 msgid "error.show-pref-for-multiple-plugins"
@@ -10006,7 +10006,7 @@ msgstr "email address"
 
 #: share/template/authen/element/register_form:10
 msgid "login.email-address:"
-msgstr "Email Address:"
+msgstr "Email Address (q@q.q):"
 
 #. (from_address)
 #: share/template/authen/element/forgot_password_page:13
@@ -10015,7 +10015,7 @@ msgstr "The email we will send you will come from <strong>%1</strong>. To ensure
 
 #: lib/Socialtext/Authen.pm:37
 msgid "login.email:"
-msgstr "Email Address:"
+msgstr "Email Address (q@q.q):"
 
 #: share/template/authen/element/forgot_password_page:6
 msgid "login.enter-email-below-to-recover-password"
@@ -10113,7 +10113,7 @@ msgstr "(Optional)"
 
 #: share/template/authen/element/login_form:17 share/template/authen/element/register_form:15
 msgid "login.password:"
-msgstr "Password:"
+msgstr "Password (qwerty):"
 
 #: share/template/authen/element/choose_password_form:25 share/template/authen/element/register_form:20
 msgid "login.re-type-password:"
@@ -10886,11 +10886,11 @@ msgstr "Top of page"
 
 #: lib/Socialtext/Pluggable/Plugin/SocialCalc.pm:23
 msgid "page.type-spreadsheet"
-msgstr "Static Page"
+msgstr "Page (using new editor prototype)"
 
 #: share/plugin/widgets/share/widgets/one_page/prefs.xml:2 share/skin/s3/javascript/lightbox/create_content.js:9 lib/Socialtext/Pluggable/Plugin/Default.pm:45
 msgid "page.type-wiki"
-msgstr "Wiki Page"
+msgstr "Page"
 
 #: share/skin/s3/template/view/page/display:96
 msgid "page.unlock"
@@ -12111,7 +12111,7 @@ msgstr "Apply settings above to the current selection"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:194
 msgid "sc.apply-sheet-default"
-msgstr "Apply settings above as the static page default"
+msgstr "Apply settings above as the page default"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:235
 msgid "sc.apply-to-current-cell"
@@ -12225,11 +12225,11 @@ msgstr "Editing:"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:439
 msgid "sc.enter-sheet-name"
-msgstr "Enter a New Static Page Name"
+msgstr "Enter a New Page Name"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:440
 msgid "sc.enter-sheet-title"
-msgstr "Enter a meaningful and distinctive title for your static page."
+msgstr "Enter a meaningful and distinctive title for your page."
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:56
 msgid "sc.erase"
@@ -12430,7 +12430,7 @@ msgstr "Range"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2496
 msgid "sc.recalc-finished"
-msgstr "Data that this static page depends on has changed. When you save, these changes will be saved as well."
+msgstr "Data that this page depends on has changed. When you save, these changes will be saved as well."
 
 #: share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:179
 msgid "sc.recalculation"
@@ -12446,7 +12446,7 @@ msgstr "Refresh"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:18
 msgid "sc.refresh-sheet"
-msgstr "Refresh Static Page"
+msgstr "Refresh Page"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:253
 msgid "sc.restore-revision"
@@ -12482,7 +12482,7 @@ msgstr "Save As..."
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:480
 msgid "sc.save-as-new-revision"
-msgstr "Save as a new revision in the current static page"
+msgstr "Save as a new revision in the current page"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:14
 msgid "sc.save-changes"
@@ -12502,19 +12502,19 @@ msgstr "Save with a new name:"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:455
 msgid "sc.save-with-suggested-name"
-msgstr "Save the static page with the name \"<span id=\"st-newspreadsheet-duplicate-suggest\">XXX</span>\""
+msgstr "Save the page with the name \"<span id=\"st-newspreadsheet-duplicate-suggest\">XXX</span>\""
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:451
 msgid "sc.sheet-already-exists"
-msgstr "Static Page Already Exists"
+msgstr "Page Already Exists"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1029 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:214
 msgid "sc.sheet-settings"
-msgstr "Static Page Settings"
+msgstr "Page Settings"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:442
 msgid "sc.sheet-title:"
-msgstr "Static Page Title:"
+msgstr "Page Title:"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:16
 msgid "sc.show-preview"
@@ -12666,7 +12666,7 @@ msgstr "The search you have entered is too general; %1 pages and/or attachments 
 
 #: lib/Socialtext/Page.pm:1133
 msgid "sheet.creating"
-msgstr "Creating a New Static Page..."
+msgstr "Creating a Page using new editor prototype..."
 
 #: share/skin/s3/javascript/s3.js:1074 share/skin/s3/javascript/s3.js:16 lib/Socialtext/DisplayPlugin.pm:68 lib/Socialtext/PageRevision.pm:412
 msgid "sheet.untitled"

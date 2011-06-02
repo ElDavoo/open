@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-06-01 08:15-0700\n"
+"PO-Revision-Date: 2011-06-02 07:33-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -1100,11 +1100,11 @@ msgid "page.edit"
 msgstr "Edit"
 
 msgid "page.type-spreadsheet"
-msgstr "Static Page"
+msgstr "Page (using new editor prototype)"
 
 #: share/plugin/widgets/share/widgets/one_page/prefs.xml:2
 msgid "page.type-wiki"
-msgstr "Wiki Page"
+msgstr "Page"
 
 #: share/plugin/widgets/share/javascript/activities/editor.js:1508
 msgid "signals.insert-mention:"

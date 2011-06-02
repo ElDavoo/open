@@ -43,7 +43,7 @@ msgstr "Failed to load revision."
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2171
 msgid "error.new-sheet-name-required"
-msgstr "Please provide a name for the new static page."
+msgstr "Please provide a name for the new page."
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1346
 msgid "error.no-data-to-sum"
@@ -64,7 +64,7 @@ msgstr "Please select one of the options, or click cancel."
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:479
 msgid "error.sheet-contention:"
-msgstr "While you were editing, <span style=\"font-weight: bold\" id=\"st-contention-user\">XXX</span> saved a version of this static page, and we are unable to reconcile the changes. Would you like to:"
+msgstr "While you were editing, <span style=\"font-weight: bold\" id=\"st-contention-user\">XXX</span> saved a version of this page, and we are unable to reconcile the changes. Would you like to:"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2183
 msgid "error.sheet-name-exists"
@@ -76,7 +76,7 @@ msgstr "<a id=\"st-newspreadsheet-duplicate-link\" href=\"#\" target=\"\">XXX</a
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2098 share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2179
 msgid "error.sheet-title-too-long"
-msgstr "Static Page title is too long. Please shorten the name and try again."
+msgstr "Page title is too long. Please shorten the name and try again."
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:41
 msgid "page.edit"
@@ -112,7 +112,7 @@ msgstr "Apply settings above to the current selection"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:194
 msgid "sc.apply-sheet-default"
-msgstr "Apply settings above as the static page default"
+msgstr "Apply settings above as the page default"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:235
 msgid "sc.apply-to-current-cell"
@@ -226,11 +226,11 @@ msgstr "Editing:"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:439
 msgid "sc.enter-sheet-name"
-msgstr "Enter a New Static Page Name"
+msgstr "Enter a New Page Name"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:440
 msgid "sc.enter-sheet-title"
-msgstr "Enter a meaningful and distinctive title for your static page."
+msgstr "Enter a meaningful and distinctive title for your page."
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:56
 msgid "sc.erase"
@@ -431,7 +431,7 @@ msgstr "Range"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:2496
 msgid "sc.recalc-finished"
-msgstr "Data that this static page depends on has changed. When you save, these changes will be saved as well."
+msgstr "Data that this page depends on has changed. When you save, these changes will be saved as well."
 
 #: share/plugin/socialcalc/share/javascript/jemplate/sheet_settings:179
 msgid "sc.recalculation"
@@ -447,7 +447,7 @@ msgstr "Refresh"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:18
 msgid "sc.refresh-sheet"
-msgstr "Refresh Static Page"
+msgstr "Refresh Page"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:253
 msgid "sc.restore-revision"
@@ -483,7 +483,7 @@ msgstr "Save As..."
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:480
 msgid "sc.save-as-new-revision"
-msgstr "Save as a new revision in the current static page"
+msgstr "Save as a new revision in the current page"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:14
 msgid "sc.save-changes"
@@ -503,19 +503,19 @@ msgstr "Save with a new name:"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:455
 msgid "sc.save-with-suggested-name"
-msgstr "Save the static page with the name \"<span id=\"st-newspreadsheet-duplicate-suggest\">XXX</span>\""
+msgstr "Save the page with the name \"<span id=\"st-newspreadsheet-duplicate-suggest\">XXX</span>\""
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:451
 msgid "sc.sheet-already-exists"
-msgstr "Static Page Already Exists"
+msgstr "Page Already Exists"
 
 #: share/plugin/socialcalc/share/javascript/SocialCalc/Socialtext.js:1029 share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:214
 msgid "sc.sheet-settings"
-msgstr "Static Page Settings"
+msgstr "Page Settings"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:442
 msgid "sc.sheet-title:"
-msgstr "Static Page Title:"
+msgstr "Page Title:"
 
 #: share/plugin/socialcalc/share/javascript/jemplate/edit_spreadsheet:16
 msgid "sc.show-preview"
