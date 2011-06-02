@@ -14,30 +14,37 @@ $(function() {
     var $dropbox = $('#dropbox');
     if (!$dropbox.size()) return; // Early out on non-page urls
 
-    $('#mainWrap').get(0).addEventListener("dragenter", function (evt) {
-        $dropbox.show();
+    var over_document = false;
+    var over_dropbox = false;
+
+    document.addEventListener("dragleave", function (evt) {
+        over_document = false;
+        setTimeout(function() {
+            if (!over_document && !over_dropbox) $dropbox.hide();
+        }, 500);
     }, false);
-    $('#mainWrap').get(0).addEventListener("dragover", function (evt) {
+    document.addEventListener("dragover", function (evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+        over_document = true;
         $dropbox.show();
-    }, false);
-    $('#mainWrap').get(0).addEventListener("dragexit", function (evt) {
-        $dropbox.hide();
     }, false);
 
-    $dropbox.get(0).addEventListener("dragenter", function (evt) {
-        evt.stopPropagation();
-        evt.preventDefault();
-        $dropbox.show().addClass('over');
-    }, false);
-    $dropbox.get(0).addEventListener("dragexit", function (evt) {
-        evt.stopPropagation();
-        evt.preventDefault();
-        $dropbox.hide().removeClass('over');
-    }, false);
     $dropbox.get(0).addEventListener("dragover", function (evt) {
         evt.stopPropagation();
         evt.preventDefault();
+        over_dropbox = true
+        $dropbox.show().addClass('over');
     }, false);
+    $dropbox.get(0).addEventListener("dragleave", function (evt) {
+        evt.stopPropagation();
+        evt.preventDefault();
+        over_dropbox = false;
+        setTimeout(function() {
+            if (!over_dropbox) $dropbox.removeClass('over');
+        }, 500);
+    }, false);
+
     $dropbox.get(0).addEventListener('drop', function(evt) {
         evt.stopPropagation();
         evt.preventDefault();
