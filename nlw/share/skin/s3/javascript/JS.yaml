@@ -31,6 +31,7 @@
         - 's3.js'
         - 'people-avatar.js'
         - 'im.js'
+        - 'html5-file-upload.js'
 'info.js':
     parts:
         - { template: 'template/info.js', config: '../info.yaml' }
