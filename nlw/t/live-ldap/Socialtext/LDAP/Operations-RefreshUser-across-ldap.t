@@ -22,7 +22,7 @@ my $two_dn = 'cn=Warren Maxwell,ou=terminated,dc=foo,dc=com';
 my $user; # test user
 
 setup: { # same user 2x, but with different dn's in different LDAPs.
-    $one = Test::Socialtext::Bootstrap::OpenLDAP::initialize_ldap('foo');
+    $one = initialize_ldap('foo');
     $one->add(
         'ou=people,dc=foo,dc=com',
         objectClass => 'organizationalUnit',
@@ -40,7 +40,7 @@ setup: { # same user 2x, but with different dn's in different LDAPs.
         userPassword => 'password',
     );
 
-    $two = Test::Socialtext::Bootstrap::OpenLDAP::initialize_ldap('foo');
+    $two = initialize_ldap('foo');
     $two->add(
         'ou=terminated,dc=foo,dc=com',
         objectClass => 'organizationalUnit',
@@ -59,7 +59,7 @@ setup: { # same user 2x, but with different dn's in different LDAPs.
     );
 }
 
-Test::Socialtext::Bootstrap::OpenLDAP::set_user_factories($two->as_factory, 'Default');
+set_user_factories($two->as_factory, 'Default');
 vivify_user: {
     $user = Socialtext::User->new(username=>'warren maxwell');
     isa_ok $user, 'Socialtext::User', 'vivified user';
@@ -75,14 +75,14 @@ simple_refresh: {
     is $user->driver_unique_id, $two_dn, 'user has dn';
 }
 
-Test::Socialtext::Bootstrap::OpenLDAP::set_user_factories($one->as_factory, $two->as_factory, 'Default');
+set_user_factories($one->as_factory, $two->as_factory, 'Default');
 refresh_with_updated_ldap: {
     Socialtext::LDAP::Operations->RefreshUsers();
     $user = Socialtext::User->new(username=>'warren maxwell');
     isa_ok $user, 'Socialtext::User', 'freshened user with new ldap';
     is $user->homunculus->driver_key, $one->as_factory, 'user has factory';
     is $user->driver_unique_id, $one_dn, 'user has dn';
-    Test::Socialtext::Bootstrap::OpenLDAP::user_is_unique_to_socialtext('warren maxwell');
+    user_is_unique_to_socialtext('warren maxwell');
 }
 
 done_testing;
