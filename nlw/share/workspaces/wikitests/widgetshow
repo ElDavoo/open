@@ -10,7 +10,7 @@
 | create-user | %%ws_user%% | %%password%% | %%ws_acct%% |
 | create-group | %%ws_grp%% | %%ws_acct%% | %%ws_user%% |
 | create-workspace | %%ws_wiki%% | %%ws_acct%% |  |
-| st-admin | add-member --email %%ws_user%% --workspace %%ws_wiki%% | created |  |
+| st-admin | add-member --email %%ws_user%% --workspace %%ws_wiki%% | now has the role |  |
 
 | st-logoutin | %%ws_user%% | %%password%% |
 
@@ -107,7 +107,7 @@
 | *Comment* | SEE Widget Gallery |  |
 | pause | %%pt%% |  |
 
-| click_and_wait | gallery-widget-Web Page |  |
+| click_ok | gallery-widget-Web Page |  |
 | *Comment* | SEE Edit Widget lightbox for web page widget |  |
 | pause | %%pt%% |  |
 
@@ -119,8 +119,29 @@
 | *Comment* | SEE plaintext code for widget in Editing box |  |
 | pause | %%pt%% |  |
 
+| click_ok | st-mode-wysiwyg-button |  |
+| *Comment* | SEE widget is displayed as a grey lozange in Rich Text mode |  |
+| pause | %%pt%% |  |
+
+| st-page-save |  |  |
+| *Comment* | SEE Web Page widget displaying Google in page |  |
+| pause | %%pt%% |  |
+
+| wait_for_element_visible_ok | st-edit-button-link | 30000 |
+| click_ok | st-edit-button-link |  |
+| wait_for_element_visible_ok | st-mode-wikitext-button | 30000 |
+| click_ok | st-mode-wikitext-button |  |
+| wait_for_element_visible_ok | wikiwyg_wikitext_textarea |  |
+| type_ok | wikiwyg_wikitext_textarea | New Content |
+| *Comment* | SEE widget code is gone from Editing box |  |
+| pause | %%pt%% |  |
+
+| st-page-save |  |  |
+| *Comment* | SEE widget is gone from page |  |
+| pause | %%pt%% |  |
+
 | *Comment* | WidgetShow TEARDOWN |  |
 | deactivate-user | %%ws_user%% | been removed |
-| delete-group | %%ws_grp%% | Recklessly deleting |
+| delete-group | %%group_id%% | Recklessly deleting |
 | delete-workspace | %%ws_wiki%% | Recklessly deleting |
 | delete-account | %%ws_acct%% | Recklessly deleting |

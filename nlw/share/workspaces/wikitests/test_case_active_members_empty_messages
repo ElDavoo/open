@@ -30,6 +30,9 @@
 | set | EmptySignals | The most active signalers will be listed here. Try sending a signal from this Dashboard! |
 
 | *Comment* | Test Case: Active Members Empty Messages Check the Empty People messages |  |
+| *Comment* | Test Case: Active Members Empty Messages clicks don't work if you go too fast |  |
+| set_speed_ok | 2000 |  |
+
 | wait_for_text_present_ok | Viewed | 30000 |
 | wait_for_text_present_ok | %%EmptyViews%% | 30000 |
 
