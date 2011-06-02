@@ -106,14 +106,11 @@ sub GetUser {
                 ? $cache_lookup->{driver_username}
                 : $cache_lookup->{$field};
 
-            if ($field eq 'driver_unique_id') {
-                $proto_user = eval {
-                    $proto_user = $self->lookup($field => $value) };
-                st_log->warning($@) if $@;
-            }
-            else {
-                $proto_user = $self->lookup($field => $value);
-            }
+            (my $cached_driver = $cache_lookup->{driver_key}) =~ s/:.+$//;
+            next if $field eq 'driver_unique_id'
+                && $self->driver_name ne $cached_driver;
+                
+            $proto_user = $self->lookup($field => $value);
 
             if ($proto_user) {
                 $proto_user->{user_id} = $cache_lookup->{user_id};
