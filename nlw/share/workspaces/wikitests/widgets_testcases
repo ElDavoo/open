@@ -1,7 +1,9 @@
 * Fixture: SocialWidgets
 
 * [Test Case: Active Content Widget]
-* [Test Case: Active Members Widget]
+
+Test Case: Active Members Widget moved to [Stubborn Testcases]
+
 * [Test Case: Active Content Empty Messages]
 * [Test Case: Active Members Empty Messages]
 
