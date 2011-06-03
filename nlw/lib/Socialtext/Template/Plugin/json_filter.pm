@@ -16,23 +16,31 @@ sub init {
 
 # {bz: 4826}: Our templates use Unicode-strings, so we need to decode the
 # octets back into unicode strings to avoid mojibake.
-sub filter { return ensure_is_utf8(Socialtext::JSON::encode_json($_[1])); }
+sub filter {
+    my $json = ensure_is_utf8(Socialtext::JSON::encode_json($_[1]));
+    $json =~ s!</script>!</scr" + "ipt>!g;
+    return $json;
+}
 
 1;
 __END__
 
 =head1 NAME
 
-Socialtext::Template::Plugin::json - json tt2 filter
+Socialtext::Template::Plugin::json_filter - json tt2 filter
 
 =head1 SYNOPSIS
 
-    [% USE json %]
+    [% USE json_filter %]
     ...
     [% "foo\n" | json %][%# outputs literally "foo\n" %]
 
 =head1 DESCRIPTION
 
 Runs the filter input through C<Socialtext::JSON::encode_json>.
+
+=head1 NOTES
+
+This filter is B<deprecated>; please consider using the C<.json> vmethod at L<Socialtext::Template::Plugin::JSON> instead.
 
 =cut
