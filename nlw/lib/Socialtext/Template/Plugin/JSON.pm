@@ -60,7 +60,7 @@ sub json {
         my ( $self, $value ) = @_;
 
         my $json = ensure_is_utf8($self->json_converter->allow_blessed->convert_blessed->ascii->encode($value));
-        $json =~ s!</script>!</scr" + "ipt>!g;
+        $json =~ s!</(scr)(ipt)>!</$1" + "$2>!gi;
         return $json;
 }
 

@@ -18,7 +18,7 @@ sub init {
 # octets back into unicode strings to avoid mojibake.
 sub filter {
     my $json = ensure_is_utf8(Socialtext::JSON::encode_json($_[1]));
-    $json =~ s!</script>!</scr" + "ipt>!g;
+    $json =~ s!</(scr)(ipt)>!</$1" + "$2>!gi;
     return $json;
 }
 
