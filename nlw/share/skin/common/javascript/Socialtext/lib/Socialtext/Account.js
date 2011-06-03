@@ -9,10 +9,10 @@ Socialtext.Account.prototype = new Socialtext.Base();
 
 $.extend(Socialtext.Account.prototype, {
     url: function(rest) {
-        if (!this.account_name)
+        if (!this.account_name && this.account_name)
             throw new Error(loc("api.account-name-required"));
         if (!rest) rest = '';
-        return '/data/accounts/' + this.account_name + rest;
+        return '/data/accounts/' + (this.account_id || this.account_name) + rest;
     },
 
     addUser: function(user, callback) {

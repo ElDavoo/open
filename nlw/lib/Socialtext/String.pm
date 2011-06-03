@@ -110,14 +110,14 @@ sub trim ($) {
 
 =head2 scrub $str
 
-Returns a copy of C<$str> with XML tags, C<< < / > >> characters and leading and trailing whitespace removed.
+Returns a copy of C<$str> with XML tags, C<< < > >> characters and leading and trailing whitespace removed.
 
 =cut
 
 sub scrub ($) {
     my $str = shift;
     $str =~ s/<[^>]*>//g;
-    $str =~ s![<>/]!!g;
+    $str =~ s![<>]!!g;
     $str =~ s/^\s+//;
     $str =~ s/\s+$//;
     return $str;

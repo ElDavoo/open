@@ -17,7 +17,7 @@ has 'account' => (
 );
 sub _build_account {
     my $self = shift;
-    Socialtext::Account->new(name => $self->acct);
+    Socialtext::Account->Resolve($self->acct);
 };
 
 sub allowed_methods { 'POST', 'GET', 'DELETE' }
@@ -90,9 +90,7 @@ sub _POST_json {
     my $self = shift;
     my $rest = shift;
 
-    my $account = Socialtext::Account->new( 
-        name => Socialtext::String::uri_unescape( $self->acct ),
-    );
+    my $account = Socialtext::Account->Resolve(Socialtext::String::uri_unescape( $self->acct ));
     unless ( defined $account ) {
         $rest->header( -status => HTTP_404_Not_Found );
         return "Could not find that account.";
@@ -155,9 +153,7 @@ sub DELETE {
 sub _DELETE {
     my ( $self, $rest ) = @_;
 
-    my $account = Socialtext::Account->new( 
-        name => Socialtext::String::uri_unescape( $self->acct ),
-    );
+    my $account = Socialtext::Account->Resolve(Socialtext::String::uri_unescape( $self->acct ));
     unless ( defined $account ) {
         $rest->header( -status => HTTP_404_Not_Found );
         return "Could not find that account.";
