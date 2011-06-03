@@ -1104,8 +1104,11 @@ sub _validate_and_clean_data {
 
     my $is_create = ref $self ? 0 : 1;
 
-    $p->{name} = Socialtext::String::trim( $p->{name} )
-        if $p->{name};
+    if ($p->{name}) {
+        $p->{name} =~ s/<[^>]*>//g;
+        $p->{name} =~ s![<>/]!!g;
+        $p->{name} = Socialtext::String::trim( $p->{name} );
+    }
 
     my @errors;
     if ( ( exists $p->{name} or $is_create )
