@@ -14,7 +14,7 @@ our @EXPORT = ();
 our @EXPORT_OK = qw/
     MAX_PAGE_ID_LEN BOM
     html_escape html_unescape
-    trim 
+    trim scrub
     uri_escape uri_unescape
     double_space_harden
     word_truncate html_truncate
@@ -103,6 +103,21 @@ Returns a copy of C<$str> with leading and trailing whitespace removed.
 
 sub trim ($) {
     my $str = shift;
+    $str =~ s/^\s+//;
+    $str =~ s/\s+$//;
+    return $str;
+}
+
+=head2 scrub $str
+
+Returns a copy of C<$str> with XML tags, C<< < / > >> characters and leading and trailing whitespace removed.
+
+=cut
+
+sub scrub ($) {
+    my $str = shift;
+    $str =~ s/<[^>]*>//g;
+    $str =~ s![<>/]!!g;
     $str =~ s/^\s+//;
     $str =~ s/\s+$//;
     return $str;

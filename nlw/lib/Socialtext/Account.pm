@@ -1104,10 +1104,8 @@ sub _validate_and_clean_data {
 
     my $is_create = ref $self ? 0 : 1;
 
-    if ($p->{name}) {
-        $p->{name} =~ s/<[^>]*>//g;
-        $p->{name} =~ s![<>/]!!g;
-        $p->{name} = Socialtext::String::trim( $p->{name} );
+    if (defined $p->{name}) {
+        $p->{name} = Socialtext::String::scrub( $p->{name} );
     }
 
     my @errors;
