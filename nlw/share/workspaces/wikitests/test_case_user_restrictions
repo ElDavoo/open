@@ -116,8 +116,9 @@
 | type_ok | password | %%password%% |
 | click_and_wait | login_btn |  |
 
-| *Comment* | WAIT FOR Wrong email address or password - please try again |  |
-| wait_for_text_present_ok | Wrong email address or password - please try again | 10000 |
+| *Comment* | Error message may contain 'username' or 'email address' depending on LDAP enabled |  |
+| wait_for_text_present_ok | Wrong | 10000 |
+| text_like | //body | qr/Wrong.+please try again/ |
 | st-login | %%emailaddr%% | %%new_pw%% |
 | wait_for_text_present_ok | You are not authorized to view this workspace. | 30000 |
 
