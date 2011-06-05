@@ -97,7 +97,6 @@ test env properly and are not testing the test-workspace
 * [Test Case: Hidden Email Address for Public Wiki]
 * [Test Case: Friendly Name]
 * [Preferences UI User Testcases]
-* [Edit Contention Testcases]
 * [Mobile Testcases]
 * [Explore Testcases]
 * [Test Case: Sticky Search Selection]
@@ -129,3 +128,6 @@ Return to last login fails when People and Dashboard are installed. Keep the tes
 we may test in a mode where People and Dashboard are not installed.
 
 * [Test Case: Return to last login]
+
+Moved to [Stubborn Testcases]
+Edit Contention Testcases

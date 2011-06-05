@@ -46,6 +46,8 @@
 
 | wait_for_element_visible_ok | //li[@class='signals']//a | 30000 |
 | click_ok | //li[@class='signals']//a |  |
+
+| *Comment* | THIS TEST FAILS BECAUSE IT DISPLAYS A USER WITH a bar showing zero signals !! {bz: 5340} |  |
 | wait_for_text_present_ok | %%EmptySignals%% | 30000 |
 
 | wait_for_element_visible_ok | link=Viewed | 30000 |
