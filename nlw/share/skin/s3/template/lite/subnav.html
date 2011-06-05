@@ -4,9 +4,9 @@
     <ul>
         <li>
         [% IF section == 'workspace' %]
-        <a id="mobile-workspace-home" class="current ui-btn-active">[% ws.title %]</a>
+        <a id="mobile-workspace-home" class="current ui-btn-active">[% ws.title |html %]</a>
         [% ELSE %]
-        <a id="mobile-workspace-home" href="/m/page/[% ws.name %]/">[% ws.title %]</a>
+        <a id="mobile-workspace-home" href="/m/page/[% ws.name %]/">[% ws.title |html %]</a>
         [% END %]
         <span class="menu-padding">&nbsp;</span>
         </li><li>
@@ -35,7 +35,7 @@
 [% IF page AND page.page_type == 'wiki' %]
         <span class="menu-padding"><hr></span>
         <div data-role="header" data-position="inline" data-theme="d">
-            <h4>[% page.title %]</h4>
+            <h4>[% page.title |html %]</h4>
             [% IF user_can_edit_page %]
             <a data-role="button" class="ui-btn-right" data-icon="arrow-d" href="/m/page/[% ws.name %]/[% page.uri %]?action=edit">[% loc('page.edit') %]</a>
             [% ELSIF user_can_join_to_edit_page %]
