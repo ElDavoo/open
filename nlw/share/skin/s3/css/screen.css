@@ -2121,6 +2121,10 @@ div#controls div#controlsRight ul li a.watch.on {
     font-size: 9px;
     font-weight: bold;
 }
+.like-bubble .paging  {
+    padding: 10px;
+    text-align: center;
+}
 
 td.listview-watchlist {
     width: 200px;

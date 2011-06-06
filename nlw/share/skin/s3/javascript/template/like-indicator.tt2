@@ -4,9 +4,14 @@
 [% BLOCK 'like-bubble' %]
     <div class="like-bubble">
         <div class="liker-count">
-            [% loc('[_1] people like this page:', count) %]
+            [% loc('[_1] people like this page:', likers.totalResults) %]
         </div>
-        [% FOR liker = likers %]
+        [% IF startIndex %]
+            <div class="paging">
+                <a href="#" class="prev">[% loc('Show previous...') %]</a>
+            </div>
+        [% END %]
+        [% FOR liker = likers.entry %]
         <div class="liker">
             <a href="/st/profile/[% liker.user_id %]">
                 <img class="photo" src="/data/people/[% liker.user_id %]/small_photo"/>
@@ -16,6 +21,12 @@
             </a>
         </div>
         <div class="clear"></div>
+        [% END %]
+
+        [% IF likers.totalResults > likers.entry.size + startIndex %]
+            <div class="paging">
+                <a href="#" class="next">[% loc('Show next...') %]</a>
+            </div>
         [% END %]
         <div class="like-button">
             <a class="like-indicator [% className %]" href="#" title="[% text %]">[% text(1) %]</a>

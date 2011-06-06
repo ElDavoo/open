@@ -11,29 +11,59 @@ LikeIndicator.prototype = {
     render: function ($node) {
         var self = this;
 
-        $node.html(Jemplate.process('like-indicator.tt2', self));
-        var $indicator = $node.find('a.like-indicator');
+        if ($node) self.node = $node;
+
+        self.node.html(Jemplate.process('like-indicator.tt2', self));
+        var $indicator = self.node.find('a.like-indicator');
 
         // If we already have a bubble, hide it quick before we recreate it
         if (self.bubble) self.bubble.hide();
+        self.startIndex = 0; // reset startIndex in case it's set
 
         self.bubble = new Bubble({
             node: $indicator.get(0),
             onFirstShow: function() {
-                $.getJSON(self.url, function(likers) {
-                    self.likers = likers;
-                    self.bubble.html(Jemplate.process('like-bubble', self));
-                    self.bubble.contentNode.find('.like-indicator')
-                        .click(function() { return self.toggleLike($node) });
-                    self.bubble.show();
-                });
+                self.renderBubble();
             }
         });
 
-        $indicator.click(function() { return self.toggleLike($node) });
+        $indicator.click(function() { return self.toggleLike(); return false });
     },
 
-    toggleLike: function($node) {
+    renderBubble: function() {
+        var self = this;
+
+        var url = self.url + '?' + $.param({
+            startIndex: self.startIndex,
+            limit: 10
+        });
+
+        $.getJSON(url, function(likers) {
+            self.likers = likers;
+            self.bubble.html(Jemplate.process('like-bubble', self));
+
+            // Actions:
+            var $node = self.bubble.contentNode;
+            $node.find('.like-indicator').click(function() {
+                self.toggleLike();
+                return false;
+            });
+            $node.find('.prev').click(function() {
+                self.startIndex -= 10;
+                self.renderBubble();
+                return false;
+            });
+            $node.find('.next').click(function() {
+                self.startIndex += 10;
+                self.renderBubble();
+                return false;
+            });
+
+            self.bubble.show();
+        });
+    },
+
+    toggleLike: function() {
         var self = this;
         $.ajax({
             url: self.url + '/' + Socialtext.userid,
@@ -47,10 +77,9 @@ LikeIndicator.prototype = {
                     self.isLikedByMe = true;
                     self.count++;
                 }
-                self.render($node);
+                self.render();
             }
         });
-        return false;
     },
 
     className: function() {
