@@ -2073,17 +2073,53 @@ div#controls div#controlsRight ul li a.watch.on {
 /* Like */
 .like-indicator {
     padding: 0 10px 0 28px;
-    background: url(/nlw/plugin/like/images/like-nobody.png)
+    background: url(/nlw/plugin/like/images/like-nobody.gif)
                 no-repeat center left
 }
 .like-indicator.me {
-    background-image: url(/nlw/plugin/like/images/like-me.png);
+    background-image: url(/nlw/plugin/like/images/like-me.gif);
 }
 .like-indicator.others {
-    background-image: url(/nlw/plugin/like/images/like-others.png);
+    background-image: url(/nlw/plugin/like/images/like-others.gif);
 }
 .like-indicator.me.others {
-    background-image: url(/nlw/plugin/like/images/like-me-others.png);
+    background-image: url(/nlw/plugin/like/images/like-me-others.gif);
+}
+
+.like-bubble {
+    width: 200px;
+}
+.like-bubble .liker {
+    padding: 5px 0;
+}
+.like-bubble .photo {
+    white-space: nowrap;
+}
+.like-bubble .photo {
+    width: 27px;
+    height: 27px;
+    vertical-align: middle;
+}
+.like-bubble .name {
+    font-weight: bold;
+    padding: 5px;
+}
+.like-bubble .liker-count {
+    font-weight: bold;
+    font-style: italic;
+    padding: 5px 0;
+}
+.like-bubble .like-button {
+    border-top: 1px solid #666;
+    padding-top: 8px;
+    padding-bottom: 3px;
+}
+.like-bubble .like-button .like-indicator {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    color: #000;
+    font-size: 9px;
+    font-weight: bold;
 }
 
 td.listview-watchlist {

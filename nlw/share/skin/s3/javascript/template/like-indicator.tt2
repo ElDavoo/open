@@ -1,0 +1,24 @@
+[% SET node = url ? 'a' : 'span' %]
+<[% node %] class="like-indicator [% className %]" href="#" title="[% text %]">[% text %]</[% node %]>
+
+[% BLOCK 'like-bubble' %]
+    <div class="like-bubble">
+        <div class="liker-count">
+            [% loc('[_1] people like this page:', count) %]
+        </div>
+        [% FOR liker = likers %]
+        <div class="liker">
+            <a href="/st/profile/[% liker.user_id %]">
+                <img class="photo" src="/data/people/[% liker.user_id %]/small_photo"/>
+            </a>
+            <a class="name" href="/st/profile/[% liker.user_id %]">
+                [% liker.best_full_name %]
+            </a>
+        </div>
+        <div class="clear"></div>
+        [% END %]
+        <div class="like-button">
+            <a class="like-indicator [% className %]" href="#" title="[% text %]">[% text(1) %]</a>
+        </div>
+    </div>
+[% END %]
