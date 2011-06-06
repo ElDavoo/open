@@ -49,7 +49,7 @@ sql_execute(qq{
      WHERE EXISTS (
              SELECT 1
                FROM "UserMetadata"
-              WHERE "UserMetadata".user_id = users.user_id
+              WHERE "UserMetadata".user_id = all_users.user_id
                 AND "UserMetadata".primary_account_id = ?
            )
 }, $deleted);
@@ -105,7 +105,7 @@ sub condemn {
     my $placeholders = join(',', map { '?' } @condemned);
     sql_execute(qq{
         UPDATE all_users
-           SET is_deleted = 1
+           SET is_deleted = true
          WHERE user_id IN ($placeholders)
     }, @condemned);
 
@@ -124,7 +124,7 @@ sub activity_to_canon {
         { table => 'event_archive',           field => 'actor_id', key => [qw/at action actor_id event_class/] },
         { table => 'event_archive',           field => 'person_id', key => [qw/at action actor_id event_class/] },
         { table => 'event_page_contrib',      field => 'actor_id', key => [qw/at action actor_id page_id page_workspace_id/] },
-        { table => 'group',                   field => 'created_by_user_id', key => [qw/group_id/] },
+        { table => 'groups',                  field => 'created_by_user_id', key => [qw/group_id/] },
         { table => 'page',                    field => 'creator_id', key => [qw/workspace_id page_id/] },
         { table => 'page',                    field => 'last_editor_id', key => [qw/workspace_id page_id/] },
         { table => 'page_revision',           field => 'editor_id', key => [qw/revision_id/] },
@@ -132,7 +132,7 @@ sub activity_to_canon {
         { table => 'recent_signal',           field => 'recipient_id', key => [qw/signal_id/] },
         { table => 'signal',                  field => 'user_id', key => [qw/signal_id/] },
         { table => 'signal',                  field => 'recipient_id', key => [qw/signal_id/] },
-        { table => 'signal_user_set',         field => 'signal_user_set_id', key => [qw/signal_id user_set_id/] },
+        { table => 'signal_user_set',         field => 'user_set_id', key => [qw/signal_id user_set_id/] },
         { table => 'signal_thread_tag',       field => 'user_id', key => [qw/signal_id user_id tag/] },
         { table => 'topic_signal_user',       field => 'user_id', key => [qw/signal_id user_id/] },
         { table => 'view_event',              field => 'actor_id', key => [qw/at action actor_id event_class/] },
@@ -165,7 +165,7 @@ sub activity_to_canon {
             UPDATE $rel->{table}
                SET $rel->{field} = ?
              WHERE $rel->{field} IN ($placeholder)
-        !, $canon, );
+        !, $canon, @condemned);
     }
 
     return $updates;
