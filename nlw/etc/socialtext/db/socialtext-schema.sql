@@ -288,7 +288,7 @@ CREATE FUNCTION on_user_set_delete() RETURNS trigger
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    IF (TG_RELNAME = 'users') THEN
+    IF (TG_RELNAME = 'all_users') THEN
         PERFORM purge_user_set(OLD.user_id::integer);
     ELSE
         PERFORM purge_user_set(OLD.user_set_id);
@@ -863,6 +863,25 @@ CREATE VIEW accounts_for_user AS
    FROM user_sets_for_user
   WHERE user_sets_for_user.user_set_id >= B'00110000000000000000000000000001'::"bit"::integer AND user_sets_for_user.user_set_id <= B'01000000000000000000000000000000'::"bit"::integer;
 
+CREATE TABLE all_users (
+    user_id bigint NOT NULL,
+    driver_key text NOT NULL,
+    driver_unique_id text NOT NULL,
+    driver_username text NOT NULL,
+    email_address text DEFAULT '' NOT NULL,
+    password text DEFAULT '*none*' NOT NULL,
+    first_name text DEFAULT '' NOT NULL,
+    middle_name text DEFAULT '',
+    last_name text DEFAULT '' NOT NULL,
+    cached_at timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
+    last_profile_update timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
+    is_profile_hidden boolean DEFAULT false NOT NULL,
+    display_name text NOT NULL,
+    missing boolean DEFAULT false NOT NULL,
+    private_external_id text,
+    is_deleted boolean DEFAULT false NOT NULL
+);
+
 CREATE TABLE attachment (
     attachment_id integer NOT NULL,
     attachment_uuid text NOT NULL,
@@ -1380,6 +1399,20 @@ CREATE TABLE topic_signal_user (
     user_id bigint NOT NULL
 );
 
+CREATE TABLE user_mapping (
+    user_mapping_id bigint NOT NULL,
+    at timestamptz DEFAULT now() NOT NULL,
+    actor_id bigint NOT NULL,
+    current_user_id bigint NOT NULL,
+    original_user_id bigint NOT NULL
+);
+
+CREATE SEQUENCE user_mapping_id_seq
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
 CREATE TABLE user_plugin_pref (
     user_id bigint NOT NULL,
     plugin text NOT NULL,
@@ -1445,23 +1478,10 @@ CREATE TABLE user_workspace_pref (
     pref_blob text NOT NULL
 );
 
-CREATE TABLE users (
-    user_id bigint NOT NULL,
-    driver_key text NOT NULL,
-    driver_unique_id text NOT NULL,
-    driver_username text NOT NULL,
-    email_address text DEFAULT '' NOT NULL,
-    password text DEFAULT '*none*' NOT NULL,
-    first_name text DEFAULT '' NOT NULL,
-    middle_name text DEFAULT '',
-    last_name text DEFAULT '' NOT NULL,
-    cached_at timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
-    last_profile_update timestamptz DEFAULT '-infinity'::timestamptz NOT NULL,
-    is_profile_hidden boolean DEFAULT false NOT NULL,
-    display_name text NOT NULL,
-    missing boolean DEFAULT false NOT NULL,
-    private_external_id text
-);
+CREATE VIEW users AS
+ SELECT all_users.user_id, all_users.driver_key, all_users.driver_unique_id, all_users.driver_username, all_users.email_address, all_users.password, all_users.first_name, all_users.middle_name, all_users.last_name, all_users.cached_at, all_users.last_profile_update, all_users.is_profile_hidden, all_users.display_name, all_users.missing, all_users.private_external_id
+   FROM all_users
+  WHERE all_users.is_deleted = false;
 
 CREATE SEQUENCE users___user_id
     INCREMENT BY 1
@@ -1754,6 +1774,10 @@ ALTER TABLE ONLY topic_signal_user
     ADD CONSTRAINT topic_signal_user_pk
             PRIMARY KEY (signal_id, user_id);
 
+ALTER TABLE ONLY user_mapping
+    ADD CONSTRAINT user_mapping_pkey
+            PRIMARY KEY (user_mapping_id);
+
 ALTER TABLE ONLY user_restrictions
     ADD CONSTRAINT user_restrictions_pkey
             PRIMARY KEY (user_id, restriction_type);
@@ -1774,7 +1798,7 @@ ALTER TABLE ONLY user_set_plugin
     ADD CONSTRAINT user_set_plugin_pkey
             PRIMARY KEY (user_set_id, plugin);
 
-ALTER TABLE ONLY users
+ALTER TABLE ONLY all_users
     ADD CONSTRAINT users_pkey
             PRIMARY KEY (user_id);
 
@@ -2320,31 +2344,31 @@ CREATE INDEX user_workspace_pref_idx
 	    ON user_workspace_pref (user_id, workspace_id);
 
 CREATE UNIQUE INDEX users_driver_unique_id
-	    ON users (driver_key, driver_unique_id);
+	    ON all_users (driver_key, driver_unique_id);
 
 CREATE INDEX users_lower_email
-	    ON users (lower(email_address) text_pattern_ops);
+	    ON all_users (lower(email_address) text_pattern_ops);
 
 CREATE UNIQUE INDEX users_lower_email_address_driver_key
-	    ON users (lower(email_address), driver_key);
+	    ON all_users (lower(email_address), driver_key);
 
 CREATE INDEX users_lower_first_name
-	    ON users (lower(first_name) text_pattern_ops);
+	    ON all_users (lower(first_name) text_pattern_ops);
 
 CREATE INDEX users_lower_last_name
-	    ON users (lower(last_name) text_pattern_ops);
+	    ON all_users (lower(last_name) text_pattern_ops);
 
 CREATE INDEX users_lower_username
-	    ON users (lower(driver_username) text_pattern_ops);
+	    ON all_users (lower(driver_username) text_pattern_ops);
 
 CREATE UNIQUE INDEX users_lower_username_driver_key
-	    ON users (lower(driver_username), driver_key);
+	    ON all_users (lower(driver_username), driver_key);
 
 CREATE UNIQUE INDEX users_private_external_id
-	    ON users (private_external_id);
+	    ON all_users (private_external_id);
 
 CREATE INDEX users_that_are_hidden
-	    ON users (user_id)
+	    ON all_users (user_id)
 	    WHERE is_profile_hidden;
 
 CREATE INDEX watchlist_user_workspace
@@ -2367,6 +2391,12 @@ CREATE INDEX webhook__workspace_class_ix
 
 CREATE UNIQUE INDEX workspace_user_set_id
 	    ON "Workspace" (user_set_id);
+
+CREATE RULE users_delete AS ON DELETE TO users DO INSTEAD DELETE FROM all_users WHERE (all_users.user_id = old.user_id);
+
+CREATE RULE users_insert AS ON INSERT TO users DO INSTEAD INSERT INTO all_users (user_id, driver_key, driver_unique_id, driver_username, email_address, password, first_name, middle_name, last_name, cached_at, last_profile_update, is_profile_hidden, display_name, missing, private_external_id, is_deleted) VALUES (new.user_id, new.driver_key, new.driver_unique_id, new.driver_username, new.email_address, new.password, new.first_name, new.middle_name, new.last_name, new.cached_at, new.last_profile_update, new.is_profile_hidden, new.display_name, new.missing, new.private_external_id, false);
+
+CREATE RULE users_update AS ON UPDATE TO users DO INSTEAD UPDATE all_users SET driver_key = new.driver_key, driver_unique_id = new.driver_unique_id, driver_username = new.driver_username, email_address = new.email_address, password = new.password, first_name = new.first_name, middle_name = new.middle_name, last_name = new.last_name, cached_at = new.cached_at, last_profile_update = new.last_profile_update, is_profile_hidden = new.is_profile_hidden, display_name = new.display_name, missing = new.missing, private_external_id = new.private_external_id WHERE (all_users.user_id = old.user_id);
 
 CREATE TRIGGER account_user_set_delete AFTER DELETE ON "Account" FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
 
@@ -2398,11 +2428,11 @@ CREATE TRIGGER signal_uset_insert_recent AFTER INSERT ON signal_user_set FOR EAC
 
 CREATE TRIGGER user_set_path_insert AFTER INSERT ON user_set_path FOR EACH ROW EXECUTE PROCEDURE on_user_set_path_insert();
 
-CREATE TRIGGER user_user_set_delete AFTER DELETE ON users FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
+CREATE TRIGGER user_user_set_delete AFTER DELETE ON all_users FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
 
-CREATE TRIGGER users_insert AFTER INSERT ON users FOR EACH ROW EXECUTE PROCEDURE auto_vivify_user_rollups();
+CREATE TRIGGER users_insert AFTER INSERT ON all_users FOR EACH ROW EXECUTE PROCEDURE auto_vivify_user_rollups();
 
-CREATE TRIGGER users_mark_as_updated_when_changed BEFORE INSERT OR UPDATE ON users FOR EACH ROW EXECUTE PROCEDURE mark_user_as_updated_when_user_changes();
+CREATE TRIGGER users_mark_as_updated_when_changed BEFORE INSERT OR UPDATE ON all_users FOR EACH ROW EXECUTE PROCEDURE mark_user_as_updated_when_user_changes();
 
 CREATE TRIGGER workspace_user_set_delete AFTER DELETE ON "Workspace" FOR EACH ROW EXECUTE PROCEDURE on_user_set_delete();
 
@@ -2414,12 +2444,12 @@ ALTER TABLE ONLY account_logo
 ALTER TABLE ONLY attachment
     ADD CONSTRAINT attachment_creator_fk
             FOREIGN KEY (creator_id)
-            REFERENCES users(user_id) ON DELETE RESTRICT;
+            REFERENCES all_users(user_id) ON DELETE RESTRICT;
 
 ALTER TABLE ONLY event
     ADD CONSTRAINT event_actor_id_fk
             FOREIGN KEY (actor_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY event
     ADD CONSTRAINT event_group_id_fk
@@ -2434,7 +2464,7 @@ ALTER TABLE ONLY event
 ALTER TABLE ONLY event
     ADD CONSTRAINT event_person_id_fk
             FOREIGN KEY (person_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY event
     ADD CONSTRAINT event_signal_id_fk
@@ -2454,7 +2484,7 @@ ALTER TABLE ONLY "WorkspaceRolePermission"
 ALTER TABLE ONLY "UserMetadata"
     ADD CONSTRAINT fk_51604686f50dc445f1d697a101a6a5cb
             FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY "WorkspaceBreadcrumb"
     ADD CONSTRAINT fk_537b27b50b95eea3e12ec792db0553f5
@@ -2464,7 +2494,7 @@ ALTER TABLE ONLY "WorkspaceBreadcrumb"
 ALTER TABLE ONLY "WorkspaceBreadcrumb"
     ADD CONSTRAINT fk_55d1290a6baacca3b4fec189a739ab5b
             FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY "WorkspaceRolePermission"
     ADD CONSTRAINT fk_82421c1ae80e2402c554a4bdec97ef4d
@@ -2549,7 +2579,7 @@ ALTER TABLE ONLY group_photo
 ALTER TABLE ONLY groups
     ADD CONSTRAINT groups_created_by_user_id_fk
             FOREIGN KEY (created_by_user_id)
-            REFERENCES users(user_id) ON DELETE RESTRICT;
+            REFERENCES all_users(user_id) ON DELETE RESTRICT;
 
 ALTER TABLE ONLY groups
     ADD CONSTRAINT groups_primary_account_id_fk
@@ -2579,12 +2609,12 @@ ALTER TABLE ONLY page_attachment
 ALTER TABLE ONLY page
     ADD CONSTRAINT page_creator_id_fk
             FOREIGN KEY (creator_id)
-            REFERENCES users(user_id) ON DELETE RESTRICT;
+            REFERENCES all_users(user_id) ON DELETE RESTRICT;
 
 ALTER TABLE ONLY page
     ADD CONSTRAINT page_last_editor_id_fk
             FOREIGN KEY (last_editor_id)
-            REFERENCES users(user_id) ON DELETE RESTRICT;
+            REFERENCES all_users(user_id) ON DELETE RESTRICT;
 
 ALTER TABLE ONLY page_link
     ADD CONSTRAINT page_link__from_page_id_fk
@@ -2594,7 +2624,7 @@ ALTER TABLE ONLY page_link
 ALTER TABLE ONLY page_revision
     ADD CONSTRAINT page_rev_last_editor_id_fk
             FOREIGN KEY (editor_id)
-            REFERENCES users(user_id) ON DELETE RESTRICT;
+            REFERENCES all_users(user_id) ON DELETE RESTRICT;
 
 ALTER TABLE ONLY page_revision
     ADD CONSTRAINT page_rev_workspace_id_fk
@@ -2614,17 +2644,17 @@ ALTER TABLE ONLY page
 ALTER TABLE ONLY tag_people__person_tags
     ADD CONSTRAINT person_tags_fk
             FOREIGN KEY (person_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY person_watched_people__person
     ADD CONSTRAINT person_watched_people_fk
             FOREIGN KEY (person_id1)
-            REFERENCES users(user_id) ON DELETE CASCADE;
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY person_watched_people__person
     ADD CONSTRAINT person_watched_people_inverse_fk
             FOREIGN KEY (person_id2)
-            REFERENCES users(user_id) ON DELETE CASCADE;
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY profile_attribute
     ADD CONSTRAINT profile_attribute_field_fk
@@ -2634,7 +2664,7 @@ ALTER TABLE ONLY profile_attribute
 ALTER TABLE ONLY profile_attribute
     ADD CONSTRAINT profile_attribute_user_fk
             FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY profile_field
     ADD CONSTRAINT profile_field_account_fk
@@ -2644,7 +2674,7 @@ ALTER TABLE ONLY profile_field
 ALTER TABLE ONLY profile_photo
     ADD CONSTRAINT profile_photo_user_id_fk
             FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY profile_relationship
     ADD CONSTRAINT profile_relationship_field_fk
@@ -2654,12 +2684,12 @@ ALTER TABLE ONLY profile_relationship
 ALTER TABLE ONLY profile_relationship
     ADD CONSTRAINT profile_relationship_other_user_fk
             FOREIGN KEY (other_user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY profile_relationship
     ADD CONSTRAINT profile_relationship_user_fk
             FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY recent_signal
     ADD CONSTRAINT recent_signal_signal_id
@@ -2679,7 +2709,7 @@ ALTER TABLE ONLY recent_signal_user_set
 ALTER TABLE ONLY rollup_user_signal
     ADD CONSTRAINT rollup_user_signal_user_id_fk
             FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY signal_asset
     ADD CONSTRAINT signal_asset_attach_fk
@@ -2714,7 +2744,7 @@ ALTER TABLE ONLY signal_tag
 ALTER TABLE ONLY signal
     ADD CONSTRAINT signal_recipient_fk
             FOREIGN KEY (recipient_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY signal_thread_tag
     ADD CONSTRAINT signal_thread_tag_signal_fk
@@ -2724,12 +2754,12 @@ ALTER TABLE ONLY signal_thread_tag
 ALTER TABLE ONLY signal_thread_tag
     ADD CONSTRAINT signal_thread_tag_user_fk
             FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE RESTRICT;
+            REFERENCES all_users(user_id) ON DELETE RESTRICT;
 
 ALTER TABLE ONLY signal
     ADD CONSTRAINT signal_user_id_fk
             FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY signal_user_set
     ADD CONSTRAINT signal_user_set_signal_fk
@@ -2764,17 +2794,32 @@ ALTER TABLE ONLY topic_signal_user
 ALTER TABLE ONLY topic_signal_user
     ADD CONSTRAINT tsu_user_fk
             FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY user_mapping
+    ADD CONSTRAINT user_mapping_actor_id_fk
+            FOREIGN KEY (original_user_id)
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY user_mapping
+    ADD CONSTRAINT user_mapping_current_user_id_fk
+            FOREIGN KEY (current_user_id)
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
+
+ALTER TABLE ONLY user_mapping
+    ADD CONSTRAINT user_mapping_original_user_id_fk
+            FOREIGN KEY (original_user_id)
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY user_plugin_pref
     ADD CONSTRAINT user_plugin_pref_user_fk
             FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY user_restrictions
     ADD CONSTRAINT user_restrictions_user_id_fkey
             FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY user_restrictions
     ADD CONSTRAINT user_restrictions_workspace_id_fkey
@@ -2804,7 +2849,7 @@ ALTER TABLE ONLY user_set_plugin_pref
 ALTER TABLE ONLY user_workspace_pref
     ADD CONSTRAINT user_workspace_pref_user_fk
             FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY user_workspace_pref
     ADD CONSTRAINT user_workspace_pref_workspace_fk
@@ -2819,7 +2864,7 @@ ALTER TABLE ONLY "UserMetadata"
 ALTER TABLE ONLY "Watchlist"
     ADD CONSTRAINT watchlist_user_fk
             FOREIGN KEY (user_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY webhook
     ADD CONSTRAINT webhook_account_id_fk
@@ -2834,7 +2879,7 @@ ALTER TABLE ONLY webhook
 ALTER TABLE ONLY webhook
     ADD CONSTRAINT webhook_user_id_fk
             FOREIGN KEY (creator_id)
-            REFERENCES users(user_id) ON DELETE CASCADE;
+            REFERENCES all_users(user_id) ON DELETE CASCADE;
 
 ALTER TABLE ONLY webhook
     ADD CONSTRAINT webhook_workspace_id_fk
@@ -2849,7 +2894,7 @@ ALTER TABLE ONLY "Workspace"
 ALTER TABLE ONLY "Workspace"
     ADD CONSTRAINT workspace_created_by_user_id_fk
             FOREIGN KEY (created_by_user_id)
-            REFERENCES users(user_id) ON DELETE RESTRICT;
+            REFERENCES all_users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '140');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '141');
