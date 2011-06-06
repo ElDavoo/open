@@ -12,23 +12,39 @@ LikeIndicator.prototype = {
     render: function ($node) {
         var self = this;
 
-        if ($node) self.node = $node;
+        if ($node) {
+            self.node = $node;
+            self.node.html(Jemplate.process('like-indicator.tt2', self));
+        }
+        else {
+            self.node.find('.like-indicator')
+                .removeClass('me')
+                .removeClass('others')
+                .addClass(self.className())
+                .attr('title', self.text())
+                .html(self.text());
+        }
 
-        self.node.html(Jemplate.process('like-indicator.tt2', self));
         var $indicator = self.node.find('a.like-indicator');
 
         // If we already have a bubble, hide it quick before we recreate it
-        if (self.bubble) self.bubble.hide();
         self.startIndex = 0; // reset startIndex in case it's set
 
-        self.bubble = new Bubble({
-            node: $indicator.get(0),
-            onFirstShow: function() {
-                self.renderBubble();
-            }
-        });
+        if (self.bubble) {
+            self. renderBubble();
+        }
+        else {
+            self.bubble = new Bubble({
+                node: $indicator.get(0),
+                onFirstShow: function() {
+                    self.renderBubble();
+                }
+            });
+        }
 
-        $indicator.click(function() { return self.toggleLike(); return false });
+        $indicator
+            .unbind('click')
+            .click(function() { self.toggleLike(); return false });
     },
 
     renderBubble: function() {
