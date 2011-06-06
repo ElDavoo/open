@@ -124,6 +124,7 @@ sub activity_to_canon {
         { table => 'event_archive',           field => 'actor_id', key => [qw/at action actor_id event_class/] },
         { table => 'event_archive',           field => 'person_id', key => [qw/at action actor_id event_class/] },
         { table => 'event_page_contrib',      field => 'actor_id', key => [qw/at action actor_id page_id page_workspace_id/] },
+        { table => 'group',                   field => 'created_by_user_id', key => [qw/group_id/] },
         { table => 'page',                    field => 'creator_id', key => [qw/workspace_id page_id/] },
         { table => 'page',                    field => 'last_editor_id', key => [qw/workspace_id page_id/] },
         { table => 'page_revision',           field => 'editor_id', key => [qw/revision_id/] },
@@ -150,7 +151,7 @@ sub activity_to_canon {
              WHERE $rel->{field} IN ($placeholder)
         !, @condemned);
 
-        while (my $row = $sth->fetchrow_arrayref()) {
+        while (my $row = $sth->fetchrow_hashref()) {
             my @values = (
                 "table=$rel->{table}",
                 "canonical_user_id=$canon",
