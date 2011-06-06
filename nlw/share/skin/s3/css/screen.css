@@ -2076,6 +2076,9 @@ div#controls div#controlsRight ul li a.watch.on {
     background: url(/nlw/plugin/like/images/like-nobody.gif)
                 no-repeat center left
 }
+.like-indicator.immutable {
+    color: #000;
+}
 .like-indicator.me {
     background-image: url(/nlw/plugin/like/images/like-me.gif);
 }

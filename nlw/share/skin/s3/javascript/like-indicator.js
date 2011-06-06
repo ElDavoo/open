@@ -7,6 +7,7 @@ LikeIndicator = function(opts) {
 
 LikeIndicator.prototype = {
     loc: loc,
+    limit: 5,
 
     render: function ($node) {
         var self = this;
@@ -35,11 +36,21 @@ LikeIndicator.prototype = {
 
         var url = self.url + '?' + $.param({
             startIndex: self.startIndex,
-            limit: 10
+            limit: self.limit
         });
 
         $.getJSON(url, function(likers) {
             self.likers = likers;
+
+            self.pages = [];
+            for (var i=0; i * self.limit < likers.totalResults; i++) {
+                self.pages.push({
+                    num: i+1,
+                    current: i * self.limit == self.startIndex
+                });
+            }
+            var i = 0;
+
             self.bubble.html(Jemplate.process('like-bubble', self));
 
             // Actions:
@@ -48,15 +59,13 @@ LikeIndicator.prototype = {
                 self.toggleLike();
                 return false;
             });
-            $node.find('.prev').click(function() {
-                self.startIndex -= 10;
-                self.renderBubble();
-                return false;
-            });
-            $node.find('.next').click(function() {
-                self.startIndex += 10;
-                self.renderBubble();
-                return false;
+
+            $.each(self.pages, function(count, page) {
+                $node.find('.page' + page.num).click(function() {
+                    self.startIndex = count * self.limit;
+                    self.renderBubble();
+                    return false;
+                });
             });
 
             self.bubble.show();
@@ -86,13 +95,17 @@ LikeIndicator.prototype = {
         var classes = [];
         if (this.isLikedByMe) classes.push('me');
         if (this.others) classes.push('others');
+        if (!this.mutable) classes.push('immutable');
         return classes.join(' ');
     },
 
     text: function(extended) {
-        if (extended)
-            return this.isLikedByMe ? loc('Unlike this page') : loc('Like this page')
-        return this.isLikedByMe ? loc('Unlike') : loc('Like')
+        if (this.mutable) {
+            return this.isLikedByMe ? loc('Unlike') : loc('Like')
+        }
+        else {
+            return loc('[quant,_1,liker]', this.count);
+        }
     }
 };
 

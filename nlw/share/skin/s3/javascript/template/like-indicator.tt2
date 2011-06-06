@@ -1,16 +1,10 @@
-[% SET node = url ? 'a' : 'span' %]
-<[% node %] class="like-indicator [% className %]" href="#" title="[% text %]">[% text %]</[% node %]>
+<a class="like-indicator [% className %]" href="#" title="[% text %]">[% text %]</a>
 
 [% BLOCK 'like-bubble' %]
     <div class="like-bubble">
         <div class="liker-count">
-            [% loc('[_1] people like this page:', likers.totalResults) %]
+            [% loc('[quant,_1,person likes this page,people like this page].', likers.totalResults) %]
         </div>
-        [% IF startIndex %]
-            <div class="paging">
-                <a href="#" class="prev">[% loc('Show previous...') %]</a>
-            </div>
-        [% END %]
         [% FOR liker = likers.entry %]
         <div class="liker">
             <a href="/st/profile/[% liker.user_id %]">
@@ -23,13 +17,25 @@
         <div class="clear"></div>
         [% END %]
 
-        [% IF likers.totalResults > likers.entry.size + startIndex %]
+        [% IF pages.size > 1 %]
             <div class="paging">
-                <a href="#" class="next">[% loc('Show next...') %]</a>
+                [% loc('page:') %]
+                [% FOR page IN pages %] 
+                    [% IF page.current %]
+                        <span>[% page.num %]</span>
+                    [% ELSE %]
+                        <a class="page[% page.num %]" href="#">
+                            [% page.num %]
+                        </a>
+                    [% END %]
+                [% END %]
             </div>
         [% END %]
+
+        [% IF mutable %]
         <div class="like-button">
             <a class="like-indicator [% className %]" href="#" title="[% text %]">[% text(1) %]</a>
         </div>
+        [% END %]
     </div>
 [% END %]
