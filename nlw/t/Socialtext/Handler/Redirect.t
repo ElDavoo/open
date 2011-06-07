@@ -7,7 +7,7 @@ use mocked 'Socialtext::Log', qw(:tests);
 use mocked 'Apache::Request';
 use mocked 'Apache::Constants', qw(REDIRECT FORBIDDEN);
 use Socialtext::HTTP::Ports;
-use Test::Socialtext tests => 9;
+use Test::Socialtext tests => 10;
 
 use_ok 'Socialtext::Handler::Redirect';
 
@@ -73,6 +73,7 @@ redirect_to_offsite_absolute_uri_forbidden: {
     my $response     = Socialtext::Handler::Redirect->handler($mock_request);
 
     is $response, FORBIDDEN(), 'external redirect forbidden';
+    next_log_like 'debug', qr/redirect/;
     next_log_like 'error', qr/redirect attempted to external/,
         "... and logged an appropriate error";
 }

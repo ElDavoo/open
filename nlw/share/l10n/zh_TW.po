@@ -265,14 +265,14 @@ msgstr "您正在編輯回覆給 %1 的訊息"
 #: share/plugin/widgets/share/javascript/activities/event_list.js:938
 msgid "activities.confirm-delete=target"
 msgstr ""
-"您確定要刪除這%1？\n"
+"您確定要刪除此%1？\n"
 "一旦刪除，無法恢復。"
 
 #. (evt.replies.length ? loc('entire Conversation')
 #: share/plugin/widgets/share/javascript/activities/event_list.js:953
 msgid "activities.confirm-expunge=target"
 msgstr ""
-"您確定要將這%1從系統中刪除？\n"
+"您確定要將此%1從系統中刪除？\n"
 "一旦刪除，無法恢復。"
 
 #: share/plugin/widgets/share/javascript/activities/appdata.js:351
@@ -315,7 +315,7 @@ msgstr "刪除"
 msgid "activities.following"
 msgstr "我關注的人"
 
-#: share/plugin/widgets/share/javascript/template/activities/blocks.tt2:72
+#: share/plugin/widgets/share/javascript/template/top_content.tt2:19 share/plugin/widgets/share/javascript/template/top_content.tt2:55 share/plugin/widgets/share/widgets/one_page/widget.html:30 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:37 share/plugin/widgets/share/javascript/template/activities/blocks.tt2:72
 msgid "activities.from"
 msgstr "來自"
 
@@ -352,6 +352,7 @@ msgstr "最大檔案大小：%1MB"
 msgid "activities.me"
 msgstr "我"
 
+#: share/plugin/widgets/share/javascript/template/activities/event.tt2:16
 msgid "activities.mention"
 msgstr "  提及"
 
@@ -416,6 +417,7 @@ msgstr "發送"
 msgid "activities.post-to"
 msgstr "發送至"
 
+#: share/plugin/widgets/share/javascript/template/activities/event.tt2:14
 msgid "activities.private"
 msgstr "  私人"
 
@@ -3684,6 +3686,7 @@ msgstr "周三"
 msgid "description.active_members"
 msgstr "顯示最活躍的用戶列表。"
 
+#: share/plugin/widgets/share/widgets/activities.xml:5
 msgid "description.activities"
 msgstr "發布訊息及顯示活動，包含訊息與工作區活動。"
 
@@ -3700,7 +3703,7 @@ msgstr "顯示阻滯開發的瑕疵列表。"
 msgid "description.blognews2"
 msgstr "分頁 theXblogs RSS 閱讀器。編輯小工具設定，以查看最多 1 至 15 項。可選擇長或短的摘要。個性化定制消息來源，包含焦點新聞，世界，商業，科技，體育，娛樂，政治等等。"
 
-msgid "description.bug_board"
+msgid "description.bz_page_tracker"
 msgstr "以多欄方式呈現 Bugzilla 事項，以及具有特定標籤的頁面。"
 
 msgid "description.calc"
@@ -3773,6 +3776,9 @@ msgstr "在小工具裡顯示一份網頁。"
 msgid "description.oneimage"
 msgstr "在小工具裡顯示一張圖片。"
 
+msgid "description.page_tracker"
+msgstr "以多欄方式呈現具有特定標籤的頁面。"
+
 msgid "description.people"
 msgstr "群組內的成員。"
 
@@ -3812,9 +3818,6 @@ msgstr "以標籤雲方式，顯示特定工作區中的頁面標籤。"
 #: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:4
 msgid "description.tagged_pages"
 msgstr "顯示具特定標籤的頁面列表。"
-
-msgid "description.task_board"
-msgstr "以多欄方式呈現具有特定標籤的頁面。"
 
 msgid "description.teaser"
 msgstr "即將推出。"
@@ -5040,6 +5043,9 @@ msgstr "在 %2 上 %1 的套用錯誤為：%3"
 msgid "error.at-least-one-admin-required"
 msgstr "您必須至少選擇一個管理員"
 
+msgid "error.at-least-one-column-required"
+msgstr "錯誤：請指定至少一個欄位。"
+
 #: share/plugin/groups/share/widgets/membership/widget.js:490 share/plugin/groups/share/widgets/membership/widget.js:549
 msgid "error.at-least-one-group-admin-needed"
 msgstr "群組必須有至少一位管理員。"
@@ -5107,6 +5113,7 @@ msgstr "無法建立標籤列表。"
 msgid "error.cannot-change-account-logo-with-custom-skin=name"
 msgstr "由於目前使用的是自訂視覺主題，因此帳戶標誌不可更改。正在使用的視覺主題名為『%1』"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.js:52 share/plugin/widgets/share/widgets/one_page/widget.js:57
 msgid "error.cannot-embed-page-within-itself"
 msgstr "錯誤：無法將頁面嵌入到自身裡。"
 
@@ -5259,6 +5266,7 @@ msgstr "刪除『%1』小工具時出錯：%2"
 msgid "error.desktop-runtime-required=target"
 msgstr "必須要有 %1。"
 
+#: share/plugin/widgets/share/widgets/my_workspaces/widget.js:34
 msgid "error.display-list-of-wikis"
 msgstr "無法顯示工作區列表。"
 
@@ -5359,6 +5367,7 @@ msgstr "抱歉，顯示板暫不支援此項特性。"
 msgid "error.feed"
 msgstr "訂閱錯誤"
 
+#: share/plugin/widgets/share/javascript/top_content.js:75
 msgid "error.fetching-data"
 msgstr "擷取資料時發生錯誤。"
 
@@ -5487,6 +5496,9 @@ msgstr "只能更改群組或工作區的權限。"
 #: lib/Socialtext/CLI.pm:3646
 msgid "error.group-required=command"
 msgstr "命令（%1）必須帶有 --group 參數。"
+
+msgid "error.groups-member-exists=count:"
+msgstr "下面的 %1 名用戶已經是這些群組的成員："
 
 msgid "error.html-report-not-implemented"
 msgstr "HTML 報告未實作"
@@ -5799,6 +5811,7 @@ msgstr "無法載入預覽。"
 msgid "error.loading-revision-failed"
 msgstr "無法載入修訂。"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.js:26
 msgid "error.loading-wiki-data"
 msgstr "載入工作區資料時出錯。"
 
@@ -5867,6 +5880,7 @@ msgstr "必須是業務管理員才能設定工作區成員。"
 msgid "error.name-title-required"
 msgstr "必須要有名字和標題"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.js:62
 msgid "error.nested-embedding-limit-reached"
 msgstr "錯誤：頁面嵌入層數過多。"
 
@@ -6169,6 +6183,8 @@ msgstr "小工具 %1 不存在"
 msgid "error.no-such-wikilink-wiki"
 msgstr "您輸入的工作區不存在，請重試"
 
+#. ('__UP_workspace_name__')
+#: share/plugin/widgets/share/widgets/one_page/widget.js:21
 msgid "error.no-such=wiki"
 msgstr "工作區『%1』不存在。"
 
@@ -6947,6 +6963,8 @@ msgstr "驗証副程式調用外部驗証器"
 msgid "error.video-url-required"
 msgstr "必需填入影片網址"
 
+#. ('__UP_workspace_name__')
+#: share/plugin/widgets/share/widgets/one_page/widget.js:16
 msgid "error.view-forbidden=wiki"
 msgstr "您沒有檢視『%1』工作區的權限。"
 
@@ -6991,6 +7009,9 @@ msgstr "用戶 %1 未得到查看 %2 工作區的認証"
 #: lib/Socialtext/Handler/ControlPanel.pm:1773
 msgid "error.wiki-id-required=uri"
 msgstr "必須指定一個workspace_id到網址（%1）。"
+
+msgid "error.wiki-member-exists=count:"
+msgstr "下面的 %1 名用戶已經是工作區成員："
 
 #: lib/Socialtext/Workspace.pm:600
 msgid "error.wiki-name-required"
@@ -7081,7 +7102,7 @@ msgstr "給自己移除標籤 %1。"
 #. (page_tag, page, workspace)
 #: share/plugin/widgets/share/javascript/template/activities/page.tt2:20
 msgid "event.delete-tag=tag,page,wiki"
-msgstr "從 %3 中的 %2 移除 %1。"
+msgstr "從 %3 中的 %2 移除標籤 %1。"
 
 #. (person_tag, person)
 #: share/plugin/widgets/share/javascript/template/activities/person.tt2:19
@@ -7683,12 +7704,17 @@ msgstr "此檔案（最近更新：%2，由%3於%4上傳）有<span class=\"emph
 msgid "file.size"
 msgstr "大小"
 
+#: share/plugin/widgets/share/javascript/activities/event_list.js:1027
 msgid "file.size=bytes"
 msgstr "%1 位元組"
 
+#. ((rawcl/1000)
+#: share/plugin/widgets/share/javascript/activities/event_list.js:1029 share/plugin/widgets/share/javascript/activities/event_list.js:1031 share/plugin/widgets/share/javascript/activities/event_list.js:1033
 msgid "file.size=kb"
 msgstr "%1K"
 
+#. ((rawcl/1000000)
+#: share/plugin/widgets/share/javascript/activities/event_list.js:1035 share/plugin/widgets/share/javascript/activities/event_list.js:1037 share/plugin/widgets/share/javascript/activities/event_list.js:1039
 msgid "file.size=mb"
 msgstr "%1M"
 
@@ -7940,6 +7966,7 @@ msgstr "編輯群組：%1"
 msgid "groups.first"
 msgstr "最前"
 
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:1 share/plugin/widgets/share/widgets/top_content/prefs.xml:1
 msgid "groups.group"
 msgstr "群組"
 
@@ -8789,6 +8816,12 @@ msgstr "由於您已經擁有帳戶%1，其他群組的密碼將和%1的密碼�
 msgid "invite.added-to-group=users:"
 msgstr "下面的 %1 名用戶已經被成功的邀請到這個群組："
 
+msgid "invite.added-to-groups=users:"
+msgstr "下面的 %1 名用戶已經被成功的邀請到這些群組："
+
+msgid "invite.added-to-wiki=users:"
+msgstr "下面的 %1 名用戶已經被成功的邀請到工作區："
+
 #: share/plugin/people/template/invite:47
 msgid "invite.another-example-email-address"
 msgstr "another.friend@example.com"
@@ -8960,6 +8993,9 @@ msgstr "在下面的邀請信中加入個人資訊？"
 #: share/plugin/people/template/invite:26
 msgid "invite.primary-account=users"
 msgstr "主要，%1 名用戶"
+
+msgid "invite.request-sent=users:"
+msgstr "已經成功寄出給下面 %1 名用戶的邀請函："
 
 #. ($self->hub->current_workspace->title)
 #: lib/Socialtext/UserSettingsPlugin.pm:530
@@ -9187,119 +9223,132 @@ msgstr "作業總數"
 msgid "job.type"
 msgstr "作業類型"
 
-msgid "kanban.add"
-msgstr "新增"
-
-#: share/plugin/kanban/share/widgets/task_board/widget.html:168
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:168
 msgid "kanban.advanced"
 msgstr "進階設定"
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:121
 msgid "kanban.background-color:"
 msgstr "…套用底色："
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:32
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:32
 msgid "kanban.basics"
 msgstr "基本設定"
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:169
 msgid "kanban.bug-columns"
 msgstr "瑕疵欄位"
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:183
 msgid "kanban.bug-notes"
 msgstr "瑕疵標注"
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:187
 msgid "kanban.bug-stamp-color:"
 msgstr "…將欄位值以此顏色顯示："
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:173
 msgid "kanban.bz-search:"
 msgstr "…執行此項 BZ 搜尋："
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:172
 msgid "kanban.bz-sharer-id"
 msgstr "由此分享者 ID…"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:26
-msgid "kanban.cancel"
-msgstr "取消"
-
-#: share/plugin/kanban/share/widgets/task_board/widget.html:38
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:38
 msgid "kanban.columns"
 msgstr "欄位"
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:105
 msgid "kanban.default-color:"
 msgstr "預設底色："
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:198
 msgid "kanban.editable?"
 msgstr "允許在欄位之間拖放頁面？"
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:89
 msgid "kanban.exclude-tags:"
 msgstr "…但不包含具有下列任一標籤的頁面："
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:47
 msgid "kanban.heading"
 msgstr "欄位標題"
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:186
 msgid "kanban.if-bug-has-field"
 msgstr "如果瑕疵有此欄位…"
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:117 share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:141
 msgid "kanban.if-page-has-tag"
 msgstr "如果頁面有此標籤…"
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:75
 msgid "kanban.include-tags:"
 msgstr "僅顯示具有下列任一標籤的頁面："
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:100
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:100
 msgid "kanban.item-background"
 msgstr "項目背景色"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:136
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:136
 msgid "kanban.item-notes"
 msgstr "項目標注"
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:51
 msgid "kanban.notes"
 msgstr "標注"
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:200
 msgid "kanban.omit-page-prefix:"
 msgstr "省略頁面標題的開頭部份："
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:100 share/plugin/kanban/share/widgets/task_board/widget.html:136 share/plugin/kanban/share/widgets/task_board/widget.html:168 share/plugin/kanban/share/widgets/task_board/widget.html:70
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:100 share/plugin/widgets/share/widgets/page_tracker/widget.html:136 share/plugin/widgets/share/widgets/page_tracker/widget.html:168 share/plugin/widgets/share/widgets/page_tracker/widget.html:70
 msgid "kanban.optional"
 msgstr "（非必填）"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:70
+#: share/plugin/widgets/share/widgets/page_tracker/widget.html:70
 msgid "kanban.page-filtering"
 msgstr "篩選頁面"
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:43
 msgid "kanban.page-tag"
 msgstr "頁面標籤"
 
+msgid "kanban.please-fill-in-wiki-field-first"
+msgstr "請先填入工作區欄位。"
+
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:202
 msgid "kanban.query-suffix:"
 msgstr "額外的頁面搜尋條件："
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:204
 msgid "kanban.refresh-interval"
 msgstr "內容自動更新頻率"
 
-#: share/plugin/kanban/share/widgets/task_board/widget.html:177 share/plugin/kanban/share/widgets/task_board/widget.html:26
-msgid "kanban.save"
-msgstr "儲存"
-
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:204
 msgid "kanban.seconds"
 msgstr "（秒）"
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:26
 msgid "kanban.settings"
 msgstr "設定"
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:149
 msgid "kanban.stamp-color:"
 msgstr "…文字顏色："
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:145
 msgid "kanban.stamp-note"
 msgstr "…顯示此標注…"
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:36
 msgid "kanban.widget-title:"
 msgstr "小工具標題："
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:34
 msgid "kanban.wiki:"
 msgstr "工作區："
-
-msgid "kanban.yes"
-msgstr "是"
 
 #. ($user->username, $new_locale)
 #: lib/Socialtext/CLI.pm:1895
@@ -10043,6 +10092,7 @@ msgstr "最近瀏覽頁面"
 msgid "page.changes=time,changed,total"
 msgstr "%1更新（%2 個頁面，共 %3 個頁面）"
 
+#: share/plugin/widgets/share/widgets/workspace_activity/widget.html:8
 msgid "page.comment"
 msgstr "評論"
 
@@ -10129,6 +10179,7 @@ msgstr "複製頁面"
 msgid "page.duplicate=title"
 msgstr "%1的副本"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:28 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:34 share/plugin/widgets/share/widgets/workspace_activity/widget.html:7
 msgid "page.edit"
 msgstr "編輯"
 
@@ -10338,6 +10389,7 @@ msgstr "頁面頂部"
 msgid "page.type-spreadsheet"
 msgstr "試算表"
 
+#: share/plugin/widgets/share/widgets/one_page/prefs.xml:2
 msgid "page.type-wiki"
 msgstr "頁面"
 
@@ -12617,6 +12669,7 @@ msgstr "%1 周"
 msgid "title.active_members"
 msgstr "熱門用戶"
 
+#: share/plugin/signals/share/widgets/explore/prefs.xml:14 share/plugin/widgets/share/widgets/activities.xml:21 share/plugin/widgets/share/widgets/userlist/prefs.xml:14
 msgid "title.activities"
 msgstr "活動"
 
@@ -12634,7 +12687,7 @@ msgstr "阻滯開發瑕疵"
 msgid "title.blognews2"
 msgstr "theXblogs™"
 
-msgid "title.bug_board"
+msgid "title.bz_page_tracker"
 msgstr "頁蟲看板"
 
 msgid "title.calc"
@@ -12702,8 +12755,12 @@ msgstr "試算表頁面"
 msgid "title.one_web_page"
 msgstr "網頁"
 
+#: share/plugin/widgets/share/widgets/oneimage/prefs.xml:2 share/plugin/widgets/share/widgets/empty/prefs.xml:1
 msgid "title.oneimage"
 msgstr "圖片"
+
+msgid "title.page_tracker"
+msgstr "頁面看板"
 
 #: share/plugin/groups/share/widgets/people/config.yaml:3
 msgid "title.people"
@@ -12729,7 +12786,7 @@ msgstr "標籤"
 msgid "title.rest_api"
 msgstr "REST API 開發工具"
 
-#: share/plugin/widgets/share/widgets/rss/config.yaml:3
+#: share/plugin/widgets/share/widgets/rss/prefs.xml:2 share/plugin/widgets/share/widgets/rss/config.yaml:3
 msgid "title.rss"
 msgstr "RSS 閱讀器"
 
@@ -12743,9 +12800,6 @@ msgstr "工作區標籤"
 #: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:3
 msgid "title.tagged_pages"
 msgstr "具有某標籤的頁面"
-
-msgid "title.task_board"
-msgstr "頁面看板"
 
 msgid "title.teaser"
 msgstr "工作區"
@@ -13589,7 +13643,7 @@ msgstr "插入小工具"
 msgid "widget.preview"
 msgstr "預覽"
 
-#: share/plugin/widgets/template/widget/element:57
+#: share/plugin/widgets/template/widget/element:56 share/plugin/widgets/template/widget/element:57
 msgid "widget.push-all"
 msgstr "推送到所有顯示板"
 
@@ -13623,36 +13677,47 @@ msgstr "網址"
 msgid "widget.width:"
 msgstr "小工具寬度："
 
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:6 share/plugin/widgets/share/widgets/top_content/prefs.xml:9
 msgid "widgets.1day"
 msgstr "一天"
 
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:10 share/plugin/widgets/share/widgets/top_content/prefs.xml:13
 msgid "widgets.1month"
 msgstr "一個月"
 
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:8 share/plugin/widgets/share/widgets/top_content/prefs.xml:11
 msgid "widgets.1week"
 msgstr "一周"
 
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:13 share/plugin/widgets/share/widgets/top_content/prefs.xml:16
 msgid "widgets.1year"
 msgstr "一年"
 
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:9 share/plugin/widgets/share/widgets/top_content/prefs.xml:12
 msgid "widgets.2weeks"
 msgstr "兩周"
 
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:7 share/plugin/widgets/share/widgets/top_content/prefs.xml:10
 msgid "widgets.3days"
 msgstr "三天"
 
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:11 share/plugin/widgets/share/widgets/top_content/prefs.xml:14
 msgid "widgets.3months"
 msgstr "三個月"
 
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:12 share/plugin/widgets/share/widgets/top_content/prefs.xml:15
 msgid "widgets.6months"
 msgstr "六個月"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:5
 msgid "widgets.a-page-named"
 msgstr "頁面名稱"
 
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:11
 msgid "widgets.a-sheet-named"
 msgstr "試算表名稱"
 
+#: share/plugin/widgets/share/widgets/workspace_activity/widget.html:13
 msgid "widgets.about-duration"
 msgstr "自起始時間起算，可以選擇之後（正數）或是之前（負數）。例如：『1month』，『-3 weeks』，『48 minutes』，『1 year』"
 
@@ -13664,9 +13729,11 @@ msgstr "恢復"
 msgid "widgets.about-update"
 msgstr "更新"
 
+#: share/plugin/widgets/share/widgets/active_members/widget.js:30
 msgid "widgets.active-contributions"
 msgstr "最活躍的編輯者"
 
+#: share/plugin/widgets/share/widgets/active_members/widget.js:36
 msgid "widgets.active-signalers"
 msgstr "最活躍的訊息用戶"
 
@@ -13690,9 +13757,11 @@ msgstr "新增小工具"
 msgid "widgets.added"
 msgstr "成功新增您的小工具"
 
+#: share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:3
 msgid "widgets.all"
 msgstr "全部"
 
+#: share/plugin/widgets/share/widgets/activities.xml:33
 msgid "widgets.always"
 msgstr "所有訊息"
 
@@ -13700,6 +13769,7 @@ msgstr "所有訊息"
 msgid "widgets.changes"
 msgstr "更改"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:12 share/plugin/widgets/share/widgets/one_page/widget.html:18 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:18 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:24
 msgid "widgets.click"
 msgstr "點選"
 
@@ -13727,30 +13797,39 @@ msgstr "在 %1 中建立新頁面"
 msgid "widgets.delete"
 msgstr "（刪除）"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:7 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:13
 msgid "widgets.does-not-exist-in"
 msgstr "不存在於"
 
+#: share/plugin/widgets/share/widgets/workspace_activity/widget.html:13
 msgid "widgets.duration"
 msgstr "持續時間"
 
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:34
 msgid "widgets.edit"
 msgstr "編輯"
 
+#: share/plugin/widgets/share/widgets/top_content/widget.js:23
 msgid "widgets.edited"
 msgstr "編輯"
 
+#: share/plugin/widgets/share/widgets/top_content/widget.js:24
 msgid "widgets.edited-pages"
 msgstr "被編輯的頁面"
 
+#: share/plugin/widgets/share/widgets/active_members/widget.js:29
 msgid "widgets.edits"
 msgstr "編輯"
 
+#: share/plugin/widgets/share/widgets/top_content/widget.js:35
 msgid "widgets.emailed"
 msgstr "寄出"
 
+#: share/plugin/widgets/share/widgets/top_content/widget.js:36
 msgid "widgets.emailed-pages"
 msgstr "被寄出的頁面"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:30 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:37
 msgid "widgets.from"
 msgstr "在"
 
@@ -13760,26 +13839,30 @@ msgstr "於帳戶"
 msgid "widgets.gallery"
 msgstr "工具庫"
 
-#. (gallery.account_name)
 #: share/plugin/widgets/template/view/gallery:34
 msgid "widgets.gallery-switch=account:"
 msgstr "這是『%1』帳戶的工具庫。前往帳戶："
 
+#: share/plugin/widgets/share/widgets/top_content/prefs.xml:1
 msgid "widgets.group"
 msgstr "群組"
 
+#: share/plugin/widgets/share/widgets/empty/prefs.xml:2 share/plugin/widgets/share/widgets/one_spreadsheet/prefs.xml:3 share/plugin/widgets/share/widgets/one_web_page.xml:13
 msgid "widgets.height"
 msgstr "高度"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:13 share/plugin/widgets/share/widgets/one_page/widget.html:19 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:19 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:25
 msgid "widgets.here"
 msgstr "這裡"
 
+#: share/plugin/widgets/share/widgets/oneimage/prefs.xml:1
 msgid "widgets.image-source"
 msgstr "圖片來源"
 
 msgid "widgets.importing-profile-for-user=email"
 msgstr "正在導入用戶 %1 的配置檔案"
 
+#: share/plugin/widgets/share/javascript/gadgets.js:677
 msgid "widgets.in-layout-mode-click-save-or-cancel"
 msgstr "您現在位於布局模式。點選<b>儲存</b>以儲存更改，或<b>取消</b>將其舍棄。"
 
@@ -13787,18 +13870,23 @@ msgstr "您現在位於布局模式。點選<b>儲存</b>以儲存更改，或<b
 msgid "widgets.install-this"
 msgstr "安裝小工具"
 
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:7
 msgid "widgets.is-not-sheet"
 msgstr "不是一份試算表。"
 
+#: share/plugin/widgets/share/widgets/rss/prefs.xml:3
 msgid "widgets.items-displayed"
 msgstr "顯示項目數量"
 
+#: share/plugin/widgets/share/widgets/iterationbugs/prefs.xml:2
 msgid "widgets.iteration"
 msgstr "開發周期"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.js:66
 msgid "widgets.loading"
 msgstr "正在載入..."
 
+#: share/plugin/widgets/share/widgets/one_web_page.xml:12
 msgid "widgets.location"
 msgstr "網址"
 
@@ -13806,12 +13894,16 @@ msgstr "網址"
 msgid "widgets.manage-gallery-for-accounts"
 msgstr "管理各賬戶工具庫"
 
+#: share/plugin/widgets/share/widgets/rss/prefs.xml:10
 msgid "widgets.max-description-length"
 msgstr "內文字數上限"
 
+#: share/plugin/widgets/share/widgets/activities.xml:32
 msgid "widgets.mentions-and-private-signals-only"
 msgstr "提及我的訊息與私人訊息"
 
+#. (tabs.$action.noun, period)
+#: share/plugin/widgets/share/javascript/template/top_content.tt2:17
 msgid "widgets.most-active-in=noun,period"
 msgstr "<strong>%2</strong>以來，<strong>%1</strong>"
 
@@ -13819,6 +13911,7 @@ msgstr "<strong>%2</strong>以來，<strong>%1</strong>"
 msgid "widgets.new-page"
 msgstr "開新頁面"
 
+#: share/plugin/widgets/share/widgets/active_members/widget.js:31
 msgid "widgets.no-active-contributors"
 msgstr "最活躍的編輯者會列在這裡。當您開始建立您的工作區時，編輯活動也會隨之增加。"
 
@@ -13828,18 +13921,23 @@ msgstr "最常編輯的頁面將在這裡列出。不妨試試在您的新工作
 msgid "widgets.no-active-emailed-pages"
 msgstr "被寄出次數最多的頁面會列在這裡。您可以在頁面的工具欄上按『寄送』圖示，透過電子郵件寄出頁面。"
 
+#: share/plugin/widgets/share/widgets/active_members/widget.js:25
 msgid "widgets.no-active-readers"
 msgstr "最活躍的讀者會列在這裡。當您開始探索自己的新工作區之後，閱讀活動也會隨之增加。"
 
+#: share/plugin/widgets/share/widgets/active_members/widget.js:37
 msgid "widgets.no-active-signalers"
 msgstr "最活躍的訊息用戶會列在這裡。不妨試試從顯示板上發送一則訊息！"
 
+#: share/plugin/widgets/share/widgets/top_content/widget.js:19
 msgid "widgets.no-active-viewed-pages"
 msgstr "被檢視次數最多的頁面會列在這裡。當您開始探索自己的新工作區之後，最熱門的頁面會出現在這裡。"
 
+#: share/plugin/widgets/share/widgets/active_members/widget.js:19
 msgid "widgets.no-active-viewed-profiles"
 msgstr "被檢視次數最多的個人檔案會列在這裡。您可以檢視自己的個人檔案，或是邀請同事加入您的人際網路。"
 
+#: share/plugin/widgets/share/widgets/top_content/widget.js:31
 msgid "widgets.no-active-watched-pages"
 msgstr "最受關注的頁面會列在這裡。您可以在頁面的工具欄上按『關注』圖示，來開始關注頁面。"
 
@@ -13847,21 +13945,29 @@ msgstr "最受關注的頁面會列在這裡。您可以在頁面的工具欄上
 msgid "widgets.no-description"
 msgstr "無描述"
 
+#. ('__UP_workspace__')
+#: share/plugin/widgets/share/widgets/tag_cloud/widget.js:18
 msgid "widgets.no-tags-for=wiki"
 msgstr "<b>%1</b> 工作區目前沒有標籤。您可在工作區頁面右側區塊新增標籤。"
 
+#: share/plugin/widgets/share/widgets/activities.xml:10 share/plugin/widgets/share/widgets/userlist/prefs.xml:1
 msgid "widgets.number-of-activities-to-display"
 msgstr "顯示活動筆數上限"
 
+#: share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:2
 msgid "widgets.number-of-tags-to-show"
 msgstr "顯示標籤數量"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:27 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:33
 msgid "widgets.or"
 msgstr "或"
 
+#: share/plugin/widgets/share/widgets/active_members/widget.js:24
 msgid "widgets.page-views"
 msgstr "頁面檢視次數最多的用戶"
 
+#. ('__UP_tag_name__')
+#: share/plugin/widgets/share/widgets/tagged_pages/widget.js:20
 msgid "widgets.pages-tagged=tag"
 msgstr "具有『%1』標籤的頁面"
 
@@ -13869,15 +13975,19 @@ msgstr "具有『%1』標籤的頁面"
 msgid "widgets.permanent-remove"
 msgstr "永久移除小工具"
 
+#: share/plugin/widgets/share/widgets/bugzilla.xml:10
 msgid "widgets.priorities"
 msgstr "優先順序"
 
+#: share/plugin/widgets/share/widgets/active_members/widget.js:23
 msgid "widgets.readers"
 msgstr "讀者"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:20
 msgid "widgets.reload-page-after-editing"
 msgstr "，以重新載入編輯後的頁面。"
 
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:26
 msgid "widgets.reload-sheet-after-editing"
 msgstr "，以重新載入編輯後的試算表。"
 
@@ -13907,43 +14017,55 @@ msgstr "恢復小工具"
 msgid "widgets.restored=widget"
 msgstr "成功恢復『%1』小工具"
 
+#: share/plugin/widgets/share/javascript/template/top_content.tt2:24
 msgid "widgets.rotate-is-on"
 msgstr "（自動交替檢視已啟動）"
 
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:24 share/plugin/widgets/share/widgets/top_content/prefs.xml:27
 msgid "widgets.rotate?"
 msgstr "交替檢視？"
 
-#: share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:24
+#: share/plugin/widgets/share/widgets/rss/prefs.xml:1 share/plugin/widgets/share/javascript/template/activities/ui.activities.tt2:24
 msgid "widgets.rss-feed"
 msgstr "RSS 訂閱"
 
+#: share/plugin/widgets/share/widgets/one_spreadsheet/prefs.xml:11
 msgid "widgets.scroll-to"
 msgstr "捲動到"
 
+#: share/plugin/widgets/share/widgets/one_web_page.xml:14
 msgid "widgets.scrolling?"
 msgstr "顯示捲動軸？"
 
+#: share/plugin/widgets/share/widgets/one_spreadsheet/prefs.xml:2
 msgid "widgets.sheet"
 msgstr "試算表"
 
+#: share/plugin/widgets/share/widgets/activities.xml:30
 msgid "widgets.show-notifications"
 msgstr "顯示通知"
 
+#: share/plugin/widgets/share/widgets/active_members/widget.js:35
 msgid "widgets.signals"
 msgstr "訊息"
 
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:5
 msgid "widgets.sorry-but"
 msgstr "抱歉，但是"
 
+#: share/plugin/widgets/share/widgets/workspace_activity/widget.html:12
 msgid "widgets.start-date"
 msgstr "起始日"
 
+#: share/plugin/widgets/share/widgets/bugzilla.xml:9
 msgid "widgets.statuses"
 msgstr "狀態"
 
+#: share/plugin/widgets/share/widgets/tag_cloud/widget.js:47
 msgid "widgets.tags-for=wiki"
 msgstr "%1 工作區的標籤"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:30
 msgid "widgets.this-page"
 msgstr "此頁面"
 
@@ -13951,24 +14073,32 @@ msgstr "此頁面"
 msgid "widgets.this-person-belongs-to-no-wikis"
 msgstr "此人不屬於任何工作區。"
 
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:36
 msgid "widgets.this-sheet"
 msgstr "此試算表"
 
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:4 share/plugin/widgets/share/widgets/top_content/prefs.xml:7
 msgid "widgets.time"
 msgstr "時間"
 
+#: share/plugin/widgets/share/widgets/empty/prefs.xml:1 share/plugin/widgets/share/widgets/one_web_page.xml:11 share/plugin/widgets/share/widgets/oneimage/prefs.xml:2
 msgid "widgets.title"
 msgstr "標題"
 
+#: share/plugin/widgets/share/widgets/one_page/widget.html:14
 msgid "widgets.to-create-page"
 msgstr "以建立頁面。"
 
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:20
 msgid "widgets.to-create-sheet"
 msgstr "以建立試算表。"
 
+#. ('__UP_workspace__')
+#: share/plugin/widgets/share/widgets/tag_cloud/widget.js:57
 msgid "widgets.unable-to-build-tag-cloud-for=wiki"
 msgstr "無法為 <b>%1</b> 工作區建立標籤雲。"
 
+#: share/plugin/widgets/share/widgets/rss/prefs.xml:13
 msgid "widgets.unlimited"
 msgstr "無限制"
 
@@ -13996,39 +14126,51 @@ msgstr "上傳小工具 XML 檔案："
 msgid "widgets.use-editor"
 msgstr "使用小工具編輯器"
 
+#: share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:31 share/plugin/widgets/share/widgets/one_page/widget.html:25 share/plugin/widgets/share/widgets/active_members/prefs.xml:16 share/plugin/widgets/share/widgets/top_content/prefs.xml:19 share/plugin/widgets/share/widgets/workspace_activity/widget.html:6
 msgid "widgets.view"
 msgstr "檢視"
 
+#: share/plugin/widgets/share/widgets/top_content/prefs.xml:23
 msgid "widgets.view-add_to_watchlist"
 msgstr "受關注的頁面"
 
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:20
 msgid "widgets.view-contribs"
 msgstr "編輯"
 
+#: share/plugin/widgets/share/widgets/top_content/prefs.xml:22
 msgid "widgets.view-edit_page"
 msgstr "被編輯的頁面"
 
+#: share/plugin/widgets/share/widgets/top_content/prefs.xml:24
 msgid "widgets.view-email_page"
 msgstr "被寄出的頁面"
 
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:18
 msgid "widgets.view-profile_views"
 msgstr "個人檔案"
 
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:19
 msgid "widgets.view-reads"
 msgstr "閱讀"
 
+#: share/plugin/widgets/share/widgets/active_members/prefs.xml:21
 msgid "widgets.view-signals"
 msgstr "訊息"
 
+#: share/plugin/widgets/share/widgets/top_content/prefs.xml:21
 msgid "widgets.view-view_page"
 msgstr "被檢視的頁面"
 
+#: share/plugin/widgets/share/widgets/active_members/widget.js:17 share/plugin/widgets/share/widgets/top_content/widget.js:17
 msgid "widgets.viewed"
-msgstr "個人檔案"
+msgstr "被檢視"
 
+#: share/plugin/widgets/share/widgets/top_content/widget.js:18
 msgid "widgets.viewed-pages"
 msgstr "最熱門的頁面"
 
+#: share/plugin/widgets/share/widgets/active_members/widget.js:18
 msgid "widgets.viewed-profiles"
 msgstr "最熱門的個人檔案"
 
@@ -14036,12 +14178,15 @@ msgstr "最熱門的個人檔案"
 msgid "widgets.views"
 msgstr "檢視"
 
+#: share/plugin/widgets/share/widgets/top_content/widget.js:29
 msgid "widgets.watched"
 msgstr "受關注"
 
+#: share/plugin/widgets/share/widgets/top_content/widget.js:30
 msgid "widgets.watched-pages"
 msgstr "受關注的頁面"
 
+#: share/plugin/widgets/share/widgets/iterationbugs/prefs.xml:1 share/plugin/widgets/share/widgets/one_page/prefs.xml:1 share/plugin/widgets/share/widgets/one_spreadsheet/prefs.xml:1 share/plugin/widgets/share/widgets/tagged_pages/prefs.xml:1 share/plugin/widgets/share/widgets/top_content/prefs.xml:4 share/plugin/widgets/share/widgets/workspace_activity/widget.html:3 share/plugin/widgets/share/widgets/blockerbugs/prefs.xml:1 share/plugin/widgets/share/widgets/tag_cloud/prefs.xml:1
 msgid "widgets.wiki"
 msgstr "工作區"
 
@@ -14346,6 +14491,7 @@ msgstr "一段時間內，頁面側邊欄應該顯示多少項目？"
 msgid "wiki.skin"
 msgstr "工作區視覺主題"
 
+#: share/plugin/widgets/share/widgets/tagged_pages/prefs.xml:2
 msgid "wiki.tag"
 msgstr "標籤"
 

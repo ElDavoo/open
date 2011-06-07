@@ -591,6 +591,10 @@ msgstr "Sorry, this feature is not available for spreadsheets"
 msgid "error.filename-too-long"
 msgstr "Filename is too long after URL encoding."
 
+#: share/skin/s3/template/element/settings/users_invited_section:10 share/skin/s3/template/element/settings/users_invited_section:5
+msgid "error.groups-member-exists=count:"
+msgstr "The following %*(%1,user already has,users already have) roles in the following Groups:"
+
 #. (new_title)
 #: share/skin/s3/javascript/st-lightbox.js:86
 msgid "error.invalid-page-name=title"
@@ -675,6 +679,11 @@ msgstr "'%1' exists, but is not a %2"
 #: share/skin/s3/javascript/people-avatar.js:195
 msgid "error.user-data"
 msgstr "Error retreiving user data"
+
+#. (users_already_present.size)
+#: share/skin/s3/template/element/settings/users_invited_section:5 share/skin/s3/template/element/settings/users_invited_section:6
+msgid "error.wiki-member-exists=count:"
+msgstr "The following %*(%1,user was already a member,users were already members) of this Workspace:"
 
 #: share/skin/s3/template/element/settings/weblog_create:13
 msgid "example.blog"
@@ -1082,6 +1091,16 @@ msgstr "This is the title of your workspace. It may be changed later if you want
 msgid "info.wikis"
 msgstr "...lists the workspaces you belong to. You must be logged in to see your list."
 
+#. (no_role_in_group.size)
+#: share/skin/s3/template/element/settings/users_invited_section:14 share/skin/s3/template/element/settings/users_invited_section:5
+msgid "invite.added-to-groups=users:"
+msgstr "The following %*(%1,user was,users were) invited to the following Groups:"
+
+#. (users_invited.size)
+#: share/skin/s3/template/element/settings/users_invited_section:26 share/skin/s3/template/element/settings/users_invited_section:5
+msgid "invite.added-to-wiki=users:"
+msgstr "The following %*(%1,user was,users were) invited into this Workspace:"
+
 #: share/skin/s3/template/element/settings/users_invite_search_section:126 share/skin/s3/template/element/settings/users_invite_section:81
 msgid "invite.append?"
 msgstr "Append the personal message below?"
@@ -1157,6 +1176,11 @@ msgstr "Invite Other Users"
 #: share/skin/s3/template/element/settings/users_invite_search_section:122 share/skin/s3/template/element/settings/users_invite_section:77
 msgid "invite.personal-message"
 msgstr "Personal Message"
+
+#. (users_invited.size)
+#: share/skin/s3/template/element/settings/users_invited_section:30 share/skin/s3/template/element/settings/users_invited_section:5
+msgid "invite.request-sent=users:"
+msgstr "Your request to invite the following %*(%1,user) has been sent:"
 
 #: share/skin/s3/template/element/settings/users_invite_search_section:6
 msgid "invite.search-users"

@@ -1,6 +1,7 @@
 [%# vim: set et sts=2 sw=2: %]
 [%# @COPYRIGHT@ -%]
 [%- USE decorate -%]
+[%- USE JSON -%]
 [% WRAPPER $frame_name id="listPage" %]
   [% INCLUDE element/listview_tabs %]
   [% IF !too_many %]
@@ -74,7 +75,7 @@
           </div>
           </th>
           <th class="toggle">
-          [% predicate_with_params = BLOCK %]?[% predicate %];scope=[% scope %];orig_search_term=[% search_term %];sortby=[% sortby %];direction=[% direction || sortdir.$sortby %][%- END %]
+          [% predicate_with_params = BLOCK %]?[% predicate |html %];scope=[% scope |html %];orig_search_term=[% search_term |html %];sortby=[% sortby |html %];direction=[% (direction || sortdir.$sortby) |html %][%- END %]
           <div class="toggle">
             [% loc('nav.show:') %]
             [% IF summaries %]
@@ -111,10 +112,9 @@
           </select>
           </th>
           [% END %]
+          [% query_start = BLOCK %]?[% predicate %];scope=[% scope %];orig_search_term=[% search_term %];summaries=[% summaries %][%- END %]
           <script language="javascript">
-            var query_start = "?[% predicate %];scope=[% scope %];"
-                            + "orig_search_term=[% search_term %];"
-                            + "summaries=[% summaries %]";
+            var query_start = [% query_start.json %];
             function sort_by() {
               var selected = jQuery('select#sort-picker').val();
               window.location = query_start + ';' + selected;

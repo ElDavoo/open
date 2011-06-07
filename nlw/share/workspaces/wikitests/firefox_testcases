@@ -8,13 +8,24 @@ Socialcalc enabled is required because we run Calc Testcases
 * [Disable Google Analytics]
 
 * [Test Case: A Enable LDAP]
+
+LDAP groups only works in a pristine environment where the groups are not yet formed
+
+* [Test Case: LDAP Groups]
+
+Stubborn Testcases succeed if run early but sporadically fail in context for no discernable reason
+
+* [Stubborn Testcases]
+
 * [Control Panel Testcases]
 * [Core Testcases]
 
 People tests
 
 * [Profile Testcases]
-* [Test Case: People Search]
+
+Test Case: People Search moved to Stubborn Testcases
+
 * [Test Case: People Relevance Search]
 
 * [User Groups UI Testcases]

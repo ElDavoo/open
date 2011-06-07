@@ -9,7 +9,7 @@
 | set | groupsacct | groups-acct-%%start_time%% |
 | set | gpt | 6000 |
 
-| *Comment* | SEE no groups |  |  |
+| *Comment* | SEE default groups |  |  |
 | open_ok | /nlw/control/group |  |  |
 | pause | %%gpt%% |  |  |
 | create-account | %%groupsacct%% |  |  |
@@ -24,13 +24,13 @@
 | *Comment* | SEE Two Groups Added - On a 'vanilla' test build now they will be on page 2 |  |
 | open_ok | /nlw/control/group/ |  |
 | wait_for_element_visible_ok | groupTable-page-2 | 30000 |
-| click_and_wait | groupTable-page-2 |  |
+| click_ok | groupTable-page-2 |  |
 | wait_for_element_visible_ok | link=%%samplegroup1%% | 30000 |
 | wait_for_element_visible_ok | link=%%samplegroup2%% | 30000 |
 | pause | %%gpt%% |  |
 
 | *Comment* | SEE Created Date is today |  |
-| click_ok | link=%%samplegroup1%% | 30000 |
+| click_ok | link=%%samplegroup2%% | 30000 |
 | pause | %%gpt%% |  |
 | *Comment* | SEE account is %%groupsacct%% |  |
 | *Comment* | SEE createdby is %%username%% |  |
@@ -44,17 +44,18 @@
 
 | open_ok | /nlw/control/group/ |  |
 | wait_for_element_visible_ok | groupTable-page-2 | 30000 |
-| click_and_wait | groupTable-page-2 |  |
+| click_ok | groupTable-page-2 |  |
 
 | wait_for_element_visible_ok | link=%%samplegroup2%% | 30000 |
-| click_ok | link=%%samplegroup1%% | 30000 |
+| click_ok | link=%%samplegroup2%% | 30000 |
 
 | *Comment* | See workspaces added |  |
 | pause | %%gpt%% |  |
 
 | *Comment* | SEE DEFAULT Sorted by # of users, desc |
 | open_ok | /nlw/control/group |
-| wait_for_element_visible_ok | link=Users |
+| wait_for_element_visible_ok | groupTable-orderBy-3 |
+| pause | %%gpt%% |
 
 | click_ok | groupTable-orderBy-3 |
 | *Comment* | SEE Sorted by # of users, asc |
@@ -94,7 +95,7 @@
 | wait_for_element_visible_ok | link=%%groupsacct%% |  |
 | click_ok | link=%%groupsacct%% |  |
 
-| *Comment* | SCROLL DOWN; see %%username%% is a member, see %%groupsacct%% is a group |
+| *Comment* | SCROLL DOWN; see %%username%% is a member, see %%samplegroup2%% is a group |
 | pause | %%gpt%% |
 
 | *Comment* | Tearing Down Groups |
