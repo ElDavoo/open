@@ -4,7 +4,7 @@ use strict;
 use warnings FATAL => 'all';
 use mocked 'Net::LDAP';
 use mocked 'Socialtext::Log', qw(:tests);
-use Test::Socialtext tests => 48;
+use Test::Socialtext tests => 47;
 use Test::Socialtext::User;
 
 # FIXTURE:  ldap_*
@@ -193,12 +193,10 @@ get_user_multiple_matches: {
     my $factory = Socialtext::User::LDAP::Factory->new();
     isa_ok $factory, 'Socialtext::User::LDAP::Factory';
 
-    my $user = $factory->GetUser(email_address=>'user@example.com');
+    my $user = eval { $factory->GetUser(email_address=>'user@example.com') };
+    my $e = $@;
+    like $e, qr/found multiple matches/, '... died finding multiple matches';
     ok !defined $user, 'get user w/multiple matches should fail';
-
-    # VERIFY logs; make sure we failed for the right reason
-    is logged_count(), 1, '... logged right number of entries';
-    next_log_like 'error', qr/found multiple matches/, '... logged multiple matches';
 }
 
 ###############################################################################
