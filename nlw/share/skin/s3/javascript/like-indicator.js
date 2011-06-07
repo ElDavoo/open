@@ -132,6 +132,10 @@ LikeIndicator.prototype = {
         else {
             return loc('[quant,_1,liker]', this.count);
         }
+    },
+
+    likersPercentage: function() {
+        return Math.floor(100 * this.count / this.total);
     }
 };
 
