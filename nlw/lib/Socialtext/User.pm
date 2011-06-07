@@ -213,6 +213,8 @@ sub GetProtoUser {
     }
 
     if (any { $key eq $_ } qw/user_id driver_unique_id private_external_id/) {
+        return undef if ($key eq 'user_id' && $value !~ /^\d+$/);
+
         push @where, "$key = ?";
     }
     elsif ($key eq 'username' || $key eq 'email_address') {
