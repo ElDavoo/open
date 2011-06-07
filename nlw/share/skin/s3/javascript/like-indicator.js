@@ -3,6 +3,7 @@
 LikeIndicator = function(opts) {
     $.extend(this, opts);
     this.others = this.isLikedByMe ? this.count - 1 : this.count;
+    this.onlyFollows = true;
 };
 
 LikeIndicator.prototype = {
@@ -52,7 +53,8 @@ LikeIndicator.prototype = {
 
         var url = self.url + '?' + $.param({
             startIndex: self.startIndex,
-            limit: self.limit
+            limit: self.limit,
+            only_follows: self.onlyFollows ? 1 : 0
         });
 
         $.getJSON(url, function(likers) {
@@ -73,6 +75,14 @@ LikeIndicator.prototype = {
             var $node = self.bubble.contentNode;
             $node.find('.like-indicator').click(function() {
                 self.toggleLike();
+                return false;
+            });
+
+            $node.find('.like-filter a').click(function() {
+                if (!$(this).parent().hasClass(this.className)) {
+                    self.onlyFollows = !self.onlyFollows;
+                    self.renderBubble();
+                }
                 return false;
             });
 

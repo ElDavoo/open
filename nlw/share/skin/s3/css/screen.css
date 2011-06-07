@@ -2107,10 +2107,25 @@ div#controls div#controlsRight ul li a.watch.on {
     font-weight: bold;
     padding: 5px;
 }
-.like-bubble .liker-count {
+.like-bubble .like-count {
     font-weight: bold;
     font-style: italic;
     padding: 5px 0;
+}
+.like-filter {
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding: 5px 0;
+}
+.like-filter a {
+    font-weight: bold;
+    margin: 10px;
+}
+.like-filter.colleagues a.colleagues,
+.like-filter.all a.all {
+    color: #000;
+    cursor: default;
+    text-decoration: none;
 }
 .like-bubble .like-button {
     border-top: 1px solid #666;
