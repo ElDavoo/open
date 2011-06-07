@@ -103,6 +103,10 @@ div.clear {
 	clear: both;
 }
 
+.nowrap {
+    white-space: nowrap;
+}
+
 div#mainWrap {
         min-width: 947px;
 	width: 90%;
