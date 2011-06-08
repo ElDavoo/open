@@ -68,3 +68,18 @@ sub POST_json {
 
 __PACKAGE__->meta->make_immutable(inline_constructor => 0);
 1;
+
+=head1 NAME
+
+Socialtext::Rest::UserPreferences - Handler for Global User Preferences
+
+=head1 SYNOPSIS
+
+    GET /data/users/:username/preferences
+    POST /data/users/:username/preferences
+
+=head1 DESCRIPTION
+
+View and alter Global User Preferences
+
+=cut

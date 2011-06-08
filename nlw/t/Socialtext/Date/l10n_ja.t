@@ -8,7 +8,7 @@ use Test::Socialtext;
 use Socialtext::Date::l10n;
 
 my @locale = qw( ja );
-my @date_key = ('mm_dd_jp', 'unknown');
+my @date_key = ('unknown');
 my %strftime_date_formats = ( 'mm_dd_jp'   => '%m月%d日',
                               'unknown' => '%Y-%m-%d',
 );
@@ -25,7 +25,7 @@ my %strftime_time_sec_formats = ( '24_ja'   => '%H時%M分%S秒',
                               'unknown' => '%H:%M:%S',
 );
 
-my @date_all_key = sort qw( default yyyy_mm_dd yyyy_mm_dd_sl mm_dd_sl yyyy_mm_dd_jp mm_dd_jp );
+my @date_all_key = sort qw( default yyyy_mm_dd yyyy_mm_dd_sl yyyy_mm_dd_jp );
 my @time_all_key = sort qw( default 24 12ampm 24_ja );
 
 my $dt = DateTime->new(

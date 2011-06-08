@@ -1,5 +1,5 @@
--- add a user_pref table for [Story: Global user settings for timezone]
 BEGIN;
+-- add a user_pref table for [Story: Global user settings for timezone]
 
 CREATE TABLE user_pref (
     user_id bigint NOT NULL,
