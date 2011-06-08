@@ -514,8 +514,9 @@ sub html {
     }
 
     my $incipient_class = $page_exists ? '' : 'class="incipient"';
+    my $escaped_title = $self->html_escape($page_title);
 
-    my $link = qq(<a class="wiki-include-title-link" href="$view_url" $incipient_class>$page_title</a>);
+    my $link = qq(<a class="wiki-include-title-link" href="$view_url" $incipient_class>$escaped_title</a>);
 
     my $edit_icon = '';
     if ($edit_url) {
