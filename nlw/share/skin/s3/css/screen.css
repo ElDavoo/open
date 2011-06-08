@@ -2076,10 +2076,11 @@ div#controls div#controlsRight ul li a.watch.on {
 
 /* Like */
 .like-indicator {
-    padding: 0 10px 0 28px;
+    padding: 5px 10px 5px 23px;
     background: url(/nlw/plugin/like/images/like-nobody.gif)
                 no-repeat center left
 }
+#controlsRight .like-indicator { padding: 0 10px 0 28px }
 .like-indicator.immutable {
     color: #000;
 }
@@ -2137,8 +2138,6 @@ div#controls div#controlsRight ul li a.watch.on {
     padding-bottom: 3px;
 }
 .like-bubble .like-button .like-indicator {
-    padding-top: 5px;
-    padding-bottom: 5px;
     color: #000;
     font-size: 9px;
     font-weight: bold;

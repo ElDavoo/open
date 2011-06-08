@@ -130,7 +130,7 @@ LikeIndicator.prototype = {
             return this.isLikedByMe ? loc('Unlike') : loc('Like')
         }
         else {
-            return loc('[quant,_1,liker]', this.count);
+            return loc('[quant,_1,like]', this.count);
         }
     },
 

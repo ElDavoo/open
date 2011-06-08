@@ -5,12 +5,14 @@
   <div id="tabs">
     <div class="tableTabs">
       <ul>
+        [% FILTER decorate('workspace_tabs_left') %]
         <li class="recentchanges[% IF action == 'recent_changes' %] selected[% END %]"><a class="first" href="/[% current_workspace.name %]?action=recent_changes">[% loc("nav.news") %]</a></li>
         <li class="recentlyviewed[% IF action == 'breadcrumbs_list' %] selected[% END %]"><a href="/[% current_workspace.name %]?action=breadcrumbs_list">[% loc("nav.recently-viewed") %]</a></li>
         [% UNLESS user.is_guest %]
         <li class="yourwatchlist[% IF action == 'display_watchlist' %] selected[% END %]"><a href="/[% current_workspace.name %]?action=display_watchlist">[% loc("watch.list") %]</a></li>
         [% END %]
         <li class="orphanpages[% IF action == 'orphans_list' %] selected[% END %]"><a href="/[% current_workspace.name %]?action=orphans_list">[% loc("page.orphaned") %]</a></li>
+        [% END %]
       </ul>
     </div><!-- tableTabs END -->
     <div class="tableFilter">
