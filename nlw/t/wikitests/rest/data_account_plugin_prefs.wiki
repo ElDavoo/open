@@ -24,7 +24,13 @@
 | *Comment*      | User is not logged in                                  |                              |
 | http-user-pass |                                                        |                              |
 | PUT-json       | /data/accounts/%%acct_id%%/plugins/signals/preferences | {"signals_size_limit":"350"} |
-| code-is        | 404                                                    |                              |
+| code-is        | 401                                                    |                              |
+
+## User is not logged in
+| *Comment*      | User is not logged in                                  |                              |
+| http-user-pass |                                                        |                              |
+| PUT-json       | /data/accounts/%%acct%%/plugins/signals/preferences    | {"signals_size_limit":"350"} |
+| code-is        | 401                                                    |                              |
 
 ## User is not business admin
 | *Comment*      | User is not business admin                          |                              |
