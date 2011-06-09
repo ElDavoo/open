@@ -213,7 +213,7 @@ sub UpdateUserRecord {
             sql_format_timestamptz($update_args{cached_at});
     }
 
-    sql_update('users' => \%update_args, 'user_id');
+    sql_update('all_users' => \%update_args, 'user_id');
 
     # flush cache; updated User in DB
     require Socialtext::User::Cache;
