@@ -482,12 +482,16 @@ sub _teardown_cleanup {
     my %Initial;
     my %Objects = (
         user => {
-            get_iterator => sub { Socialtext::User->All() },
-            get_id       => sub { $_[0]->user_id },
+            get_iterator => sub {
+                my $sth = sql_execute("SELECT user_id FROM all_users");
+                return Socialtext::MultiCursor->new(
+                    iterables => $sth->fetchall_arrayref(),
+                    apply => sub { $_[0] },
+                );
+            },
+            get_id       => sub { $_[0] },
             identifier   => sub {
-                my $u = shift;
-                return $u->driver_name . ':' . $u->user_id
-                     . ' (' . $u->username . ')';
+                return $_[0];
             },
             delete_item => sub {
                 Test::Socialtext::User->delete_recklessly($_[0]);

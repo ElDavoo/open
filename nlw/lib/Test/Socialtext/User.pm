@@ -77,7 +77,7 @@ sub delete_recklessly {
     # Delete the User from the DB, and let this cascade across all other DB
     # tables, nuking data from the DB as it goes.
     Socialtext::SQL::sql_execute( q{
-        DELETE FROM users
+        DELETE FROM all_users
          WHERE user_id = ?
         }, $user_id
     );
@@ -103,7 +103,7 @@ sub snapshot {
 sub _get_user_ids {
     require Socialtext::SQL;
     my $rows = Socialtext::SQL::get_dbh()->selectall_arrayref( qq{
-        SELECT user_id FROM users ORDER BY user_id;
+        SELECT user_id FROM all_users ORDER BY user_id;
     } );
     return map { $_->[0] } @{$rows};
 }
