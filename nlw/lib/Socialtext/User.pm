@@ -1169,20 +1169,20 @@ SELECT user_id
     ORDER BY driver_username $p{sort_order}
     LIMIT ? OFFSET ?
 EOSQL
-            workspace_count => qq{
+            workspace_count => qq!
 SELECT users.user_id, COALESCE(workspace_count,0) AS workspace_count
     FROM users
     LEFT JOIN (
         SELECT from_set_id AS user_id,
             COUNT(DISTINCT(into_set_id)) AS workspace_count
           FROM user_set_path
-         WHERE into_set_id } . PG_WKSP_FILTER . qq{
+         WHERE into_set_id ! . PG_WKSP_FILTER . qq!
         GROUP BY from_set_id
     ) temp1 USING (user_id)
     ORDER BY workspace_count $p{sort_order},
              users.driver_username ASC
     LIMIT ? OFFSET ?
-},
+!,
             user_id => <<EOSQL,
 SELECT user_id
     FROM users
