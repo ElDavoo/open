@@ -203,6 +203,7 @@ sub GetProtoUser {
     my $key = shift;
     my $value = shift;
     my %opts = @_;
+    my $collection = $opts{collection} || 'active';
 
     my @binds;
     my @where;
@@ -229,12 +230,23 @@ sub GetProtoUser {
     push @binds, $value;
 
     my $where_clause = join(' AND ', @where);
+    my $table = 'users';
+    if ($collection eq 'all') {
+        $table = 'all_users';
+    }
+    elsif ($collection eq 'deleted') {
+        $table = 'all_users';
+        $where_clause .= ' AND is_deleted';
+    }
+
     my $sth = sql_execute(qq{
-        SELECT * FROM users WHERE $where_clause
+        SELECT * FROM $table WHERE $where_clause
     }, @binds);
     my $rows = $sth->fetchall_arrayref({});
-    die "found more than one record for $key" if scalar(@$rows) > 1;
 
+    return $rows if $collection eq 'all';
+
+    die "found more than one record for $key => $value" if scalar(@$rows) > 1;
     return $rows->[0];
 }
 
