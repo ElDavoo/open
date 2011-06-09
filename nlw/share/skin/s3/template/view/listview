@@ -102,7 +102,8 @@
             [% END %]
             [% IF pager %]
             &mdash;
-            [% PROCESS list_pager %] 
+            <b>[% loc('info.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b>
+            [% INCLUDE "view/paging" %]
             [% END %]
           </div>
           </th>
@@ -110,20 +111,22 @@
           <th class="sort">
           [% loc('sort.by:') %]
             <select id="sort-picker" onchange="sort_by();">
+              [% FILTER decorate('search_sort_options') %]
               [% IF allow_relevance %]
-                [% PROCESS sort_by_option name = loc('sort.relevance') field = 'Relevance' %]
+                [% PROCESS element/listview_sort_option name = loc('sort.relevance') field = 'Relevance' %]
               [% END %]
-                [% PROCESS sort_by_option name = loc('sort.title') field = 'Subject' %]
+                [% PROCESS element/listview_sort_option name = loc('sort.title') field = 'Subject' %]
               [% IF show_workspace %]
-                [% PROCESS sort_by_option name = loc('sort.wiki') field = 'Workspace' %]
+                [% PROCESS element/listview_sort_option name = loc('sort.wiki') field = 'Workspace' %]
               [% END %]
               [% IF ! no_user_sorting %]
-                [% PROCESS sort_by_option name = loc('sort.last-edited') field = 'username' %]
-                [% PROCESS sort_by_option name = loc('sort.creator') field = 'creator' %]
+                [% PROCESS element/listview_sort_option name = loc('sort.last-edited') field = 'username' %]
+                [% PROCESS element/listview_sort_option name = loc('sort.creator') field = 'creator' %]
               [% END %]
-              [% PROCESS sort_by_option name = loc('sort.edited') field = 'Date' %]
-              [% PROCESS sort_by_option name = loc('sort.created') field = 'create_time' %]
-              [% PROCESS sort_by_option name = loc('sort.revisions') field = 'revision_count' %]
+              [% PROCESS element/listview_sort_option name = loc('sort.edited') field = 'Date' %]
+              [% PROCESS element/listview_sort_option name = loc('sort.created') field = 'create_time' %]
+              [% PROCESS element/listview_sort_option name = loc('sort.revisions') field = 'revision_count' %]
+              [% END %]
           </select>
           </th>
           [% END %]
@@ -194,26 +197,12 @@
         &nbsp;
         </th>
         <th class="toggle">
-          [% PROCESS list_pager %] 
+           <b>[% loc('info.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b>
+           [% INCLUDE "view/paging" %]
         </th>
       </tr>
       </table>
       [% END %]
     </form>
   </div><!-- contentContainer -->
-[% END %]
-[% BLOCK sort_by_option %]
-  [% IF (sortby == field ) %]
-    <option [% IF direction == "asc" %]selected="selected"[% END %] value="sortby=[% field %];direction=asc">[% name %] [% IF direction != "asc" %](&uarr;)[% END %]</option>
-    <option [% IF direction == "desc" %]selected="selected"[% END %] value="sortby=[% field %];direction=desc">[% name %] [% IF direction != "desc" %](&darr;)[% END %]</option>
-  [% ELSE %]
-    <option value="sortby=[% field %];direction=[% sortdir.$field %]">[% name %]</option>
-  [% END %]
-
-[% END %]
-
-
-[% BLOCK list_pager %]
-    <b>[% loc('info.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b>
-    [% INCLUDE "view/paging" %]
 [% END %]
