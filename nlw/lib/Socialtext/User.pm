@@ -165,18 +165,23 @@ sub new_homunculus {
     };
     if (my $e = $@) {
         st_log->error($e);
-
-        $homunculus = Socialtext::User::Factory->NewHomunculus($proto_user)
-            if $proto_user;
             
         if ($e =~ /no suitable LDAP response/) {
-            return $homunculus;
+            return $proto_user
+                ? Socialtext::User::Factory->NewHomunculus($proto_user)
+                : undef;
         }
         elsif ($e =~ /LDAP error while finding user/) {
-            return $homunculus;
+            return $proto_user
+                ? Socialtext::User::Factory->NewHomunculus($proto_user)
+                : undef;
         }
         elsif ($e =~ /found multiple matches for user/) {
             return undef;
+        }
+        elsif ($e =~ /duplicate key value violates unique constraint/) {
+            $proto_user = 
+                $class->GetProtoUser($key=>$val, collection=>'deleted');
         }
         else {
             die $e;
