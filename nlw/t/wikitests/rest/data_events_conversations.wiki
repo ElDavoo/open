@@ -243,7 +243,7 @@ Test the all-combined feed does not accidentally show edit_cancel and edit_start
 | get              | /data/events/conversations/%%user_c%%?activity=all-combined;with_my_signals=1;limit=100;direct=both | application/json |
 | code-is         | 200 |
 | json-parse      |     |
-| json-array-size | 18  |
+| json-array-size | 28  |
 
 | body-unlike | "tk":"100"             |
 | body-like   | "tk":"101"             |
@@ -265,7 +265,7 @@ Allow filtering on the event actions.
 | get              | /data/events/conversations/%%user_c%%?action=comment | application/json |        |
 | code-is         | 200                                   |        |
 | json-parse      |                                       |        |
-| json-array-size | 7                                    |        |
+| json-array-size | 8                                     |        |
 
 | comment     | check that the first user's events show up |
 | body-unlike | "tk":"100" |
@@ -446,7 +446,7 @@ The `before` and `after` clauses work.
 | get              | /data/events/conversations/%%user_c%%?offset=50;limit=50 | application/json |
 | code-is         | 200                                                      |
 | json-parse      |                                                          |
-| json-array-size | 18                                                       |
+| json-array-size | 25                                                       |
 | body-unlike     | qr/"tk":"4/                                              |
 
 | comment | check that we can't access another user's conversations |
