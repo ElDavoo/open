@@ -45,7 +45,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-19 02:19-0700\n"
+"PO-Revision-Date: 2011-05-28 09:55-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -5882,6 +5882,10 @@ msgstr "Can only change permissions on a group or workspace."
 msgid "error.group-required=command"
 msgstr "The command you called (%1) requires a '--group' parameter."
 
+#: share/skin/s3/template/element/settings/users_invited_section:10 share/skin/s3/template/element/settings/users_invited_section:5
+msgid "error.groups-member-exists=count:"
+msgstr "The following %*(%1,user already has,users already have) roles in the following Groups:"
+
 #: ../socialtext-reports/lib/Socialtext/Reports/Report/GrowthByAppliance.pm:16 ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByAppliance.pm:17
 msgid "error.html-report-not-implemented"
 msgstr "HTML Report is not implemented"
@@ -7456,6 +7460,11 @@ msgstr "User %1 is not authorized to view workspace %2"
 #: lib/Socialtext/Handler/ControlPanel.pm:1773
 msgid "error.wiki-id-required=uri"
 msgstr "You must provide a workspace_id to this URI (%1)."
+
+#. (users_already_present.size)
+#: share/skin/s3/template/element/settings/users_invited_section:5 share/skin/s3/template/element/settings/users_invited_section:6
+msgid "error.wiki-member-exists=count:"
+msgstr "The following %*(%1,user was already a member,users were already members) of this Workspace:"
 
 #: lib/Socialtext/Workspace.pm:600 share/plugin/control/template/control/workspace_invite.html:269
 msgid "error.wiki-name-required"
@@ -9312,6 +9321,16 @@ msgstr "Because you already have a %1 account, the password is the same as the p
 msgid "invite.added-to-group=users:"
 msgstr "The following %*(%1,user was,users were) successfully invited into this Group:"
 
+#. (no_role_in_group.size)
+#: share/skin/s3/template/element/settings/users_invited_section:14 share/skin/s3/template/element/settings/users_invited_section:5
+msgid "invite.added-to-groups=users:"
+msgstr "The following %*(%1,user was,users were) invited to the following Groups:"
+
+#. (users_invited.size)
+#: share/skin/s3/template/element/settings/users_invited_section:26 share/skin/s3/template/element/settings/users_invited_section:5
+msgid "invite.added-to-wiki=users:"
+msgstr "The following %*(%1,user was,users were) invited into this Workspace:"
+
 #: share/plugin/people/template/invite:47
 msgid "invite.another-example-email-address"
 msgstr "another.friend@example.com"
@@ -9483,6 +9502,11 @@ msgstr "Include the personal message below in the invitation email?"
 #: share/plugin/people/template/invite:26
 msgid "invite.primary-account=users"
 msgstr "primary, %*(%1,user)"
+
+#. (users_invited.size)
+#: share/skin/s3/template/element/settings/users_invited_section:30 share/skin/s3/template/element/settings/users_invited_section:5
+msgid "invite.request-sent=users:"
+msgstr "Your request to invite the following %*(%1,user) has been sent:"
 
 #. ($self->hub->current_workspace->title)
 #: lib/Socialtext/UserSettingsPlugin.pm:530
@@ -9801,6 +9825,10 @@ msgstr "Page Filtering"
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:43
 msgid "kanban.page-tag"
 msgstr "Page Tag"
+
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.js:48
+msgid "kanban.please-fill-in-wiki-field-first"
+msgstr "Please fill in the Workspace field first."
 
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:202
 msgid "kanban.query-suffix:"
@@ -14452,6 +14480,9 @@ msgstr "emailed pages"
 #: share/plugin/widgets/share/widgets/one_page/widget.html:30 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:37
 msgid "widgets.from"
 msgstr "from"
+
+msgid "widgets.from-account"
+msgstr "from account"
 
 msgid "widgets.gallery"
 msgstr "Widget Gallery"

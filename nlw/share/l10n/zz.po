@@ -45,7 +45,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "#-#-#-#-#  widgets.po (Socialtext i18n)  #-#-#-#-#\n"
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-19 02:19-0700\n"
+"PO-Revision-Date: 2011-05-28 09:55-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -5882,6 +5882,10 @@ msgstr "Zzz zzzz zzzzzz zzzzzzzzzzz zz z zzzzz zz zzzzzzzzz."
 msgid "error.group-required=command"
 msgstr "Zzz zzzzzzz zzz zzzzzz (%1) zzzzzzzz z '--zzzzz' zzzzzzzzz."
 
+#: share/skin/s3/template/element/settings/users_invited_section:10 share/skin/s3/template/element/settings/users_invited_section:5
+msgid "error.groups-member-exists=count:"
+msgstr "Zzz zzzzzzzzz %*(%1,zzzz zzzzzzz zzz,zzzzz zzzzzzz zzzz) zzzzz zz zzz zzzzzzzzz Zzzzzz:"
+
 #: ../socialtext-reports/lib/Socialtext/Reports/Report/GrowthByAppliance.pm:16 ../socialtext-reports/lib/Socialtext/Reports/Report/UsageByAppliance.pm:17
 msgid "error.html-report-not-implemented"
 msgstr "ZZZZ Zzzzzz zz zzz zzzzzzzzzzz"
@@ -7456,6 +7460,11 @@ msgstr "Zzzz %1 zz zzz zzzzzzzzzz zz zzzz zzzzzzzzz %2"
 #: lib/Socialtext/Handler/ControlPanel.pm:1773
 msgid "error.wiki-id-required=uri"
 msgstr "Zzz zzzz zzzzzzz z zzzzzzzzz_zz zz zzzz ZZZ (%1)."
+
+#. (users_already_present.size)
+#: share/skin/s3/template/element/settings/users_invited_section:5 share/skin/s3/template/element/settings/users_invited_section:6
+msgid "error.wiki-member-exists=count:"
+msgstr "Zzz zzzzzzzzz %*(%1,zzzz zzz zzzzzzz z zzzzzz,zzzzz zzzz zzzzzzz zzzzzzz) zz zzzz Zzzzzzzzz:"
 
 #: lib/Socialtext/Workspace.pm:600 share/plugin/control/template/control/workspace_invite.html:269
 msgid "error.wiki-name-required"
@@ -9312,6 +9321,16 @@ msgstr "Zzzzzzz zzz zzzzzzz zzzz z %1 zzzzzzz, zzz zzzzzzzz zz zzz zzzz zz zzz z
 msgid "invite.added-to-group=users:"
 msgstr "Zzz zzzzzzzzz %*(%1,zzzz zzz,zzzzz zzzz) zzzzzzzzzzzz zzzzzzz zzzz zzzz Zzzzz:"
 
+#. (no_role_in_group.size)
+#: share/skin/s3/template/element/settings/users_invited_section:14 share/skin/s3/template/element/settings/users_invited_section:5
+msgid "invite.added-to-groups=users:"
+msgstr "Zzz zzzzzzzzz %*(%1,zzzz zzz,zzzzz zzzz) zzzzzzz zz zzz zzzzzzzzz Zzzzzz:"
+
+#. (users_invited.size)
+#: share/skin/s3/template/element/settings/users_invited_section:26 share/skin/s3/template/element/settings/users_invited_section:5
+msgid "invite.added-to-wiki=users:"
+msgstr "Zzz zzzzzzzzz %*(%1,zzzz zzz,zzzzz zzzz) zzzzzzz zzzz zzzz Zzzzzzzzz:"
+
 #: share/plugin/people/template/invite:47
 msgid "invite.another-example-email-address"
 msgstr "zzzzzzz.zzzzzz@zzzzzzz.zzz"
@@ -9483,6 +9502,11 @@ msgstr "Zzzzzzz zzz zzzzzzzz zzzzzzz zzzzz zz zzz zzzzzzzzzz zzzzz?"
 #: share/plugin/people/template/invite:26
 msgid "invite.primary-account=users"
 msgstr "zzzzzzz, %*(%1,zzzz)"
+
+#. (users_invited.size)
+#: share/skin/s3/template/element/settings/users_invited_section:30 share/skin/s3/template/element/settings/users_invited_section:5
+msgid "invite.request-sent=users:"
+msgstr "Zzzz zzzzzzz zz zzzzzz zzz zzzzzzzzz %*(%1,zzzz) zzz zzzz zzzz:"
 
 #. ($self->hub->current_workspace->title)
 #: lib/Socialtext/UserSettingsPlugin.pm:530
@@ -9801,6 +9825,10 @@ msgstr "Zzzz Zzzzzzzzz"
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:43
 msgid "kanban.page-tag"
 msgstr "Zzzz Zzz"
+
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.js:48
+msgid "kanban.please-fill-in-wiki-field-first"
+msgstr "Zzzzzz zzzz zz zzz Zzzzzzzzz zzzzz zzzzz."
 
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:202
 msgid "kanban.query-suffix:"
@@ -14452,6 +14480,9 @@ msgstr "zzzzzzz zzzzz"
 #: share/plugin/widgets/share/widgets/one_page/widget.html:30 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:37
 msgid "widgets.from"
 msgstr "zzzz"
+
+msgid "widgets.from-account"
+msgstr "zzzz zzzzzzz"
 
 msgid "widgets.gallery"
 msgstr "Zzzzzz Zzzzzzz"

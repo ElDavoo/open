@@ -51,7 +51,7 @@ sub gadget_vars {
         $overrides{"UP_$name"} = $overrides{$name} if defined $overrides{$name};
 
         my $overridden = $overrides{"UP_$name"} // next;
-        $pref->{value} = $overridden;
+        $pref->{value} = $overridden; # This affects $gadget->requires_preferences
     }
 
     my $renderer = Socialtext::Gadget::Renderer->new(

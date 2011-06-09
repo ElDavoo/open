@@ -4374,6 +4374,10 @@ body#dashBoard .widget.regular .widgetHeader {
     cursor: move;
 }
 
+body#dashBoard .wiki .widget.regular .widgetHeader {
+    cursor: default;
+}
+
 body#dashBoard ul.stuck .widget.regular .widgetHeader,
 body#dashBoard .widget.tan .widgetHeader,
 body#dashBoard .widget.gray .widgetHeader {

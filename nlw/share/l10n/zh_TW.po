@@ -5497,6 +5497,9 @@ msgstr "只能更改群組或工作區的權限。"
 msgid "error.group-required=command"
 msgstr "命令（%1）必須帶有 --group 參數。"
 
+msgid "error.groups-member-exists=count:"
+msgstr "下面的 %1 名用戶已經是這些群組的成員："
+
 msgid "error.html-report-not-implemented"
 msgstr "HTML 報告未實作"
 
@@ -7006,6 +7009,9 @@ msgstr "用戶 %1 未得到查看 %2 工作區的認証"
 #: lib/Socialtext/Handler/ControlPanel.pm:1773
 msgid "error.wiki-id-required=uri"
 msgstr "必須指定一個workspace_id到網址（%1）。"
+
+msgid "error.wiki-member-exists=count:"
+msgstr "下面的 %1 名用戶已經是工作區成員："
 
 #: lib/Socialtext/Workspace.pm:600
 msgid "error.wiki-name-required"
@@ -8810,6 +8816,12 @@ msgstr "由於您已經擁有帳戶%1，其他群組的密碼將和%1的密碼�
 msgid "invite.added-to-group=users:"
 msgstr "下面的 %1 名用戶已經被成功的邀請到這個群組："
 
+msgid "invite.added-to-groups=users:"
+msgstr "下面的 %1 名用戶已經被成功的邀請到這些群組："
+
+msgid "invite.added-to-wiki=users:"
+msgstr "下面的 %1 名用戶已經被成功的邀請到工作區："
+
 #: share/plugin/people/template/invite:47
 msgid "invite.another-example-email-address"
 msgstr "another.friend@example.com"
@@ -8981,6 +8993,9 @@ msgstr "在下面的邀請信中加入個人資訊？"
 #: share/plugin/people/template/invite:26
 msgid "invite.primary-account=users"
 msgstr "主要，%1 名用戶"
+
+msgid "invite.request-sent=users:"
+msgstr "已經成功寄出給下面 %1 名用戶的邀請函："
 
 #. ($self->hub->current_workspace->title)
 #: lib/Socialtext/UserSettingsPlugin.pm:530
@@ -9299,6 +9314,9 @@ msgstr "篩選頁面"
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:43
 msgid "kanban.page-tag"
 msgstr "頁面標籤"
+
+msgid "kanban.please-fill-in-wiki-field-first"
+msgstr "請先填入工作區欄位。"
 
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:202
 msgid "kanban.query-suffix:"
@@ -13815,6 +13833,9 @@ msgstr "被寄出的頁面"
 msgid "widgets.from"
 msgstr "在"
 
+msgid "widgets.from-account"
+msgstr "於帳戶"
+
 msgid "widgets.gallery"
 msgstr "工具庫"
 
@@ -14143,7 +14164,7 @@ msgstr "被檢視的頁面"
 
 #: share/plugin/widgets/share/widgets/active_members/widget.js:17 share/plugin/widgets/share/widgets/top_content/widget.js:17
 msgid "widgets.viewed"
-msgstr "個人檔案"
+msgstr "被檢視"
 
 #: share/plugin/widgets/share/widgets/top_content/widget.js:18
 msgid "widgets.viewed-pages"

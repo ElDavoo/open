@@ -299,8 +299,9 @@ sub _sort_opts {
     $direction ||= $default_dir{$order} || 'desc';
 
     # If a valid sort order is supplied, then we secondary sort by date,
-    # unless the primary sort is already date.
-    my $sec_sort = $order eq 'date' ? 'score desc' : 'date desc';
+    # unless the primary sort is already date, in which case we tie-break
+    # by ID to accomodate sub-second differences in Signals.
+    my $sec_sort = $order eq 'date' ? "id $direction" : 'date desc, id desc';
     return ('sort' => "$sortable{$order} $direction, $sec_sort");
 }
 

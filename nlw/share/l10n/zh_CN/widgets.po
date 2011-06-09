@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-25 19:29-0700\n"
+"PO-Revision-Date: 2011-05-28 10:08-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -1025,6 +1025,9 @@ msgstr "筛选页面"
 msgid "kanban.page-tag"
 msgstr "页面标签"
 
+msgid "kanban.please-fill-in-wiki-field-first"
+msgstr "请先填入工作区字段。"
+
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:202
 msgid "kanban.query-suffix:"
 msgstr "额外的页面搜寻条件："
@@ -1473,6 +1476,9 @@ msgstr "被寄出的页面"
 msgid "widgets.from"
 msgstr "在"
 
+msgid "widgets.from-account"
+msgstr "于帐户"
+
 msgid "widgets.gallery"
 msgstr "工具库"
 
@@ -1798,7 +1804,7 @@ msgstr "被检视的页面"
 
 #: share/plugin/widgets/share/widgets/active_members/widget.js:17 share/plugin/widgets/share/widgets/top_content/widget.js:17
 msgid "widgets.viewed"
-msgstr "个人档案"
+msgstr "被检视"
 
 #: share/plugin/widgets/share/widgets/top_content/widget.js:18
 msgid "widgets.viewed-pages"

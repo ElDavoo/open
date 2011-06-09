@@ -217,8 +217,9 @@ sub _freelink_url {
     );
     my $escaped_page = $self->html_escape($page);
     my $page_attr = qq{ wiki_page="$escaped_page" };
+    my $escaped_label = $self->html_escape($label);
     
-    return qq{<a href="$link"$page_attr $page_disposition>$label</a>};
+    return qq{<a href="$link"$page_attr $page_disposition>$escaped_label</a>};
 }
 
 ################################################################################

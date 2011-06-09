@@ -88,6 +88,8 @@ has 'rev' => (
     handles => {
         last_editor => 'editor',
         last_editor_id => 'editor_id',
+        has_last_editor => 'has_editor',
+        has_last_editor_id => 'has_editor_id',
         last_edit_time => 'edit_time',
         prev_rev => 'prev',
         has_prev_rev => 'has_prev',
@@ -547,11 +549,18 @@ sub hash_representation {
         ($self->deleted ? (deleted => 1) : ()),
     };
 
-    $hash->{$_} = $self->$_->masked_email_address(
-        user => $self->hub->current_user,
-        workspace => $self->hub->current_workspace,
-    ) for qw(creator last_editor);
-
+    for my $field (qw(creator last_editor)) {
+        my $field_id = $field . '_id';
+        my $has_field = "has_$field";
+        my $has_field_id = "has_$field_id";
+        if ($self->$has_field_id or $self->$has_field) {
+            $hash->{$field_id} = $self->$field->user_id;
+            $hash->{$field} = $self->$field->masked_email_address(
+                user => $self->hub->current_user,
+                workspace => $self->hub->current_workspace,
+            );
+        }
+    }
 
     return $hash;
 }

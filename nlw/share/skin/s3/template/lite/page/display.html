@@ -5,10 +5,10 @@
 <script><!--
 var Socialtext = Socialtext || {};
 [% IF user %]
-Socialtext.username = [% user.username.json || '' %];
+Socialtext.username = [% user.username.json || "''" %];
 [% END %]
 [% IF ws %]
-Socialtext.wiki_title = [% ws.title.json || '' %];
+Socialtext.wiki_title = [% ws.title.json || "''" %];
 [% END %]
 
 [% IF page_html.search("gadgets\.container\.renderGadget") %]

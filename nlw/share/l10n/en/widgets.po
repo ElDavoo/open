@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Socialtext i18n\n"
-"PO-Revision-Date: 2011-05-19 02:19-0700\n"
+"PO-Revision-Date: 2011-05-28 09:55-0700\n"
 "Last-Translator: Socialtext i18n team\n"
 "Language-Team: Socialtext i18n team\n"
 "MIME-Version: 1.0\n"
@@ -494,6 +494,9 @@ msgstr "Displays a single web page within a Socialtext Widget."
 msgid "description.oneimage"
 msgstr "Displays a single spreadsheet within a Socialtext Widget."
 
+msgid "description.page_tracker"
+msgstr "Visualize tagged pages in a workspace with multiple columns."
+
 msgid "description.people"
 msgstr "People in this group."
 
@@ -533,9 +536,6 @@ msgstr "Displays a tag cloud of all tags in a particular workspace."
 #: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:4
 msgid "description.tagged_pages"
 msgstr "Displays a list of pages with a certain tag"
-
-msgid "description.page_tracker"
-msgstr "Visualize tagged pages in a workspace with multiple columns."
 
 msgid "description.teaser"
 msgstr "Coming Soon"
@@ -1027,6 +1027,10 @@ msgstr "Page Filtering"
 msgid "kanban.page-tag"
 msgstr "Page Tag"
 
+#: share/plugin/widgets/share/widgets/bz_page_tracker/widget.js:48
+msgid "kanban.please-fill-in-wiki-field-first"
+msgstr "Please fill in the Workspace field first."
+
 #: share/plugin/widgets/share/widgets/bz_page_tracker/widget.html:202
 msgid "kanban.query-suffix:"
 msgstr "Additional query constraints for pages:"
@@ -1227,6 +1231,9 @@ msgstr "Web Page"
 msgid "title.oneimage"
 msgstr "Image"
 
+msgid "title.page_tracker"
+msgstr "Page Tracker"
+
 msgid "title.profile"
 msgstr "Profile"
 
@@ -1257,9 +1264,6 @@ msgstr "Workspace Tags"
 #: share/plugin/widgets/share/widgets/tagged_pages/config.yaml:3
 msgid "title.tagged_pages"
 msgstr "Pages tagged X"
-
-msgid "title.page_tracker"
-msgstr "Page Tracker"
 
 msgid "title.teaser"
 msgstr "Workspaces"
@@ -1474,6 +1478,9 @@ msgstr "emailed pages"
 #: share/plugin/widgets/share/widgets/one_page/widget.html:30 share/plugin/widgets/share/widgets/one_spreadsheet/widget.html:37
 msgid "widgets.from"
 msgstr "from"
+
+msgid "widgets.from-account"
+msgstr "from account"
 
 msgid "widgets.gallery"
 msgstr "Widget Gallery"

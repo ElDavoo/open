@@ -38,11 +38,11 @@
 
 | *Comment* | Test Case: Create LDAP Group. Process jobs after Motorhead |  |
 | pause | 10000 | maybe this will work. LDAP group creation is asynchronous |
-| st-ldap-vanilla | refresh-users --force |  |
-| st-process-jobs | GroupRefresh |  |
-
-| get_group_id | Motorhead | created_group_id |
+| st-process-jobs |  |  |
+| st-ldap-vanilla | refresh --force |  |
+| st-process-jobs |  |  |
 | pause | 15000 |  |
+| get_group_id | Motorhead | created_group_id |
 | open_ok | /nlw/control/group/%%created_group_id%% |  |
 
 | wait_for_element_visible_ok | addToAccountLookahead | 30000 |
