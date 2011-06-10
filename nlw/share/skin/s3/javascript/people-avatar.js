@@ -23,7 +23,8 @@ Person.prototype = {
     },
 
     isSelf: function() {
-        return this.self || (Socialtext.email_address == this.email);
+        console.log(this);
+        return this.self || (Socialtext.real_user_id == this.id);
     },
 
     isFollowing: function() {
