@@ -134,6 +134,37 @@ LikeIndicator.prototype = {
         }
     },
 
+    likeText: function() {
+        var others = this.isLikedByMe
+            ? this.likers.totalResults - 1
+            : this.likers.totalResults;
+
+        if (this.isLikedByMe) {
+            if (this.onlyFollows) {
+                return loc('You and [quant,_1,person you follow,people you follow] like this page.', others);
+            }
+            else {
+                return loc('You and [quant,_1,person,people] like this page.', others);
+            }
+        }
+        else if (others){
+            if (this.onlyFollows) {
+                return loc('[quant,_1,person you follow likes this page,people you follow like this page].', others);
+            }
+            else {
+                return loc('[quant,_1,person likes this page,people like this page].', others);
+            }
+        }
+        else {
+            if (this.onlyFollows) {
+                return loc('None of the people you follow have chosen to like this page.');
+            }
+            else {
+                return loc('Nobody has chosen to like this page yet.');
+            }
+        }
+    },
+
     likersPercentage: function() {
         return Math.floor(100 * this.count / this.total);
     }

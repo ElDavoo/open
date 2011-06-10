@@ -1,28 +1,28 @@
-<a class="like-indicator [% className %]" href="#" title="[% text %]">[% text %]</a>
+<a class="like-indicator [% className %]" href="#">[% text %]</a>
 
 [% BLOCK 'like-bubble' %]
     <div class="like-bubble">
-        <div class="like-count">
-            [% onlyFollows
-                ? loc('[quant,_1,colleague likes this page,colleagues like this page].', likers.totalResults, likersPercentage)
-                : loc('[quant,_1,person likes this page,people like this page].', likers.totalResults, likersPercentage)
-            %]
-            <span class="nowrap">[% loc('([_1]% of all users)', likersPercentage) %]</span>
-        </div>
         <div class="like-filter [% onlyFollows ? 'colleagues' : 'all' %]">
             <a class="colleagues" href="#">[% loc('People I Follow') %]</a>
             <a class="all" href="#">[% loc('All People') %]</a>
         </div>
-        [% FOR liker = likers.entry %]
-        <div class="liker">
-            <a href="/st/profile/[% liker.user_id %]">
-                <img class="photo" src="/data/people/[% liker.user_id %]/small_photo"/>
-            </a>
-            <a class="name" href="/st/profile/[% liker.user_id %]">
-                [% liker.best_full_name %]
-            </a>
+        <div class="like-count">
+            [% likeText %]
         </div>
-        <div class="clear"></div>
+        [% IF likers.entry.size %]
+        <div class="likers">
+            [% FOR liker = likers.entry %]
+            <div class="liker">
+                <a href="/st/profile/[% liker.user_id %]">
+                    <img class="photo" src="/data/people/[% liker.user_id %]/small_photo"/>
+                </a>
+                <a class="name" href="/st/profile/[% liker.user_id %]">
+                    [% liker.best_full_name %]
+                </a>
+            </div>
+            <div class="clear"></div>
+            [% END %]
+        </div>
         [% END %]
 
         [% IF pages.size > 1 %]
