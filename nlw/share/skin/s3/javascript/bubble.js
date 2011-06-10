@@ -12,7 +12,7 @@ Bubble = function (opts) {
 
 Bubble.prototype = {
     defaults: {
-        topOffset: 25,
+        topOffset: 28,
         bottomOffset: 25,
         hoverTimeout: 500
     },

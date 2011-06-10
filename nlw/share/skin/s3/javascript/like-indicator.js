@@ -35,13 +35,16 @@ LikeIndicator.prototype = {
             self.renderBubble();
         }
         else {
-            self.bubble = new Bubble({
+            var vars = {
                 node: $indicator.get(0),
-                topOffset: 10,
                 onFirstShow: function() {
                     self.renderBubble();
                 }
-            });
+            };
+            if ($indicator.parents('#controlsRight').size()) {
+                vars.topOffset = 10; // XXX: weird
+            }
+            self.bubble = new Bubble(vars);
         }
 
         $indicator
