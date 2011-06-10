@@ -401,6 +401,10 @@ msgstr "Backup Share Name"
 msgid "backup.starting-recovery=options"
 msgstr "starting recovery, options \"%1\""
 
+#: lib/Socialtext/Appliance/Model/Backup.pm:48
+msgid "backup.successfully-deleted=label"
+msgstr "%1 successfully deleted"
+
 #. ($self->current_blog_str)
 #: lib/Socialtext/WeblogPlugin.pm:202
 msgid "blog.atom=blog"
@@ -1230,6 +1234,11 @@ msgstr "Authentication token soft limit must be lower than the hard limit."
 
 msgid "error.backup-already-running"
 msgstr "Backup already running"
+
+#. ($_)
+#: lib/Socialtext/Appliance/Model/Backup.pm:53
+msgid "error.backup-delete-failed=error"
+msgstr "Backup delete failed: %1"
 
 msgid "error.backup-failed"
 msgstr "Backup failed ..."
