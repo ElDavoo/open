@@ -58,20 +58,20 @@
 | st-admin | add-member --w %%primws%% --u %%newuser%% | now has the role |
 | click_and_wait | //a[contains(text(),'%%newuser%%')] | 30000 |
 
-| set | accountTable | `//div[@id='accountTable']/table/tbody` |
-| set | workspaceTable | `//div[@id='workspaceTable']/table/tbody` |
+| set | accountTable | `//div[@id='accountTable']/table/tbody//tr` |
+| set | workspaceTable | `//div[@id='workspaceTable']/table/tbody//tr` |
 
 | *Comment* | Test Case: Business Control Panel Workspace table and links |  |
 | is_element_present_ok | %%workspaceTable%% | //a[contains(text(),'%%primws%%')] |
-| text_like | %%workspaceTable%%//tr | system-user |
-| text_unlike | %%workspaceTable%%//tr | href |
+| text_like | %%workspaceTable%% | system-user |
+| text_unlike | %%workspaceTable%% | href |
 
 | *Comment* | Test Case: Business Control Panel Account table and links |  |
 | is_element_present_ok | %%accountTable%% | //a[contains(text(),'%%primws%%')] |
-| text_like | %%accountTable%%//tr | Primary Account |
+| text_like | %%accountTable%% | Primary Account |
 
 | *Comment* | FAILING TEST FOR {bz: 5349} |  |
-| text_unlike | %%accountTable%%//tr | href |
+| text_unlike | %%accountTable%% | href |
 
 | *Comment* | Test Case: Business Control Panel User Multiple Accounts TEARDOWN |  |
 | st-process-jobs |  |  |
