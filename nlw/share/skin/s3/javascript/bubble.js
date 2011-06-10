@@ -2,7 +2,7 @@
 
 Bubble = function (opts) {
     var self = this;
-    $.extend(self, opts);
+    $.extend(self, {}, self.defaults, opts);
     $(this.node)
         .unbind('mouseover')
         .unbind('mouseout')
@@ -11,7 +11,11 @@ Bubble = function (opts) {
 };
 
 Bubble.prototype = {
-    HOVER_TIMEOUT: 500,
+    defaults: {
+        topOffset: 25,
+        bottomOffset: 25,
+        hoverTimeout: 500
+    },
 
     mouseOver: function() {
         this._state = 'showing';
@@ -27,7 +31,7 @@ Bubble.prototype = {
                 }
                 self._state = 'shown';
             }
-        }, this.HOVER_TIMEOUT);
+        }, this.hoverTimeout);
     },
 
     mouseOut: function() {
@@ -38,7 +42,7 @@ Bubble.prototype = {
                 self.hide();
                 self._state = 'hidden';
             }
-        }, this.HOVER_TIMEOUT);
+        }, this.hoverTimeout);
     },
 
     createPopup: function() {
@@ -83,12 +87,14 @@ Bubble.prototype = {
         if ((offset.top - winOffset) > ($(window).height() / 2)) {
             this.popup
                 .removeClass('top')
-                .css('top', offset.top - this.popup.height() - 25);
+                .css(
+                    'top', offset.top - this.popup.height() - this.bottomOffset
+                );
         }
         else {
             this.popup
                 .addClass('top')
-                .css('top', offset.top + $node.height() + 10);
+                .css('top', offset.top + $node.height() + this.topOffset);
         }
 
         this.popup.css('left', offset.left - 43 );

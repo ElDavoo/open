@@ -32,11 +32,12 @@ LikeIndicator.prototype = {
         self.startIndex = 0; // reset startIndex in case it's set
 
         if (self.bubble) {
-            self. renderBubble();
+            self.renderBubble();
         }
         else {
             self.bubble = new Bubble({
                 node: $indicator.get(0),
+                topOffset: 10,
                 onFirstShow: function() {
                     self.renderBubble();
                 }
