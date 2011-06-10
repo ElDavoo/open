@@ -2112,30 +2112,35 @@ div#controls div#controlsRight ul li a.watch.on {
     font-weight: bold;
     padding: 5px;
 }
+.like-bubble .like-count,
+.like-bubble .likers,
+.like-bubble .like-button {
+    border-top: 1px solid #aaa;
+}
+.like-bubble .like-filter {
+    padding: 5px 0;
+}
 .like-bubble .like-count {
     font-weight: bold;
     font-style: italic;
-    padding: 5px 0;
+    color: #666;
+    padding: 5px 10px;
 }
-.like-filter {
-    border-top: 1px solid black;
-    border-bottom: 1px solid black;
-    padding: 5px 0;
-}
-.like-filter a {
+.like-bubble .like-filter a {
     font-weight: bold;
     margin: 10px;
 }
-.like-filter.colleagues a.colleagues,
-.like-filter.all a.all {
+.like-bubble .like-filter.colleagues a.colleagues,
+.like-bubble .like-filter.all a.all {
     color: #000;
     cursor: default;
     text-decoration: none;
 }
+.like-bubble .likers {
+    padding: 0 10px;
+}
 .like-bubble .like-button {
-    border-top: 1px solid #666;
-    padding-top: 8px;
-    padding-bottom: 3px;
+    padding: 8px 0 3px 8px;
 }
 .like-bubble .like-button .like-indicator {
     color: #000;
@@ -4502,7 +4507,7 @@ body#dashBoard div#controls div#controlsRight ul {
     filter: alpha(opacity = 50);
 }
 
-.avatarPopup {
+.bubbleWrap {
     position: absolute;
     display: none;
     font-size: 90%;
@@ -4510,87 +4515,103 @@ body#dashBoard div#controls div#controlsRight ul {
     -width: 300px;
 }
 
-.avatarPopup .top, .avatarPopup .bottom {
-    height: 19px;
-    width: 100%;
-}
-
-.avatarPopup .fn {
-    font-weight: bold;
-}
-
-.avatarPopup .inner {
+/**
+ * Border and thought bubble triangle
+ */
+.bubble {
     background: #FFF;
-    border: 1px solid black;
     padding: 6px;
     text-align: left;
     float: left;
+
+    /* Rounded border */
+    border: 2px solid #666;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
 }
 
-.avatarPopup .inner .vcard {
+/**
+ * Thought bubble adapted from:
+ * http://nicolasgallagher.com/pure-css-speech-bubbles/demo/default.css
+ *
+ * Dual licensed under MIT and GNU GPLv2 © Nicolas Gallagher
+ */
+.bubbleWrap .before,
+.bubbleWrap .after {
+    position: absolute; 
+    display: block; 
+    width: 0;
+    height: 0;
+}
+.bubbleWrap .before {
+    bottom:-20px;
+    left:40px;
+    border-width:20px 20px 0;
+    border-style:solid;
+    border-color:#666 transparent;
+}
+.bubbleWrap .after {
+    bottom:-17px;
+    left:41px;
+    border-width:19px 19px 0;
+    border-style:solid;
+    border-color:#fff transparent;
+}
+.bubbleWrap.top .before {
+    top:-20px;
+    bottom:auto;
+    left:40px;
+    border-width:0 20px 20px;
+}
+.bubbleWrap.top .after {
+    top:-17px;
+    bottom:auto;
+    left:41px;
+    border-width:0 19px 19px;
+}
+
+/* Avatar popup stuff */
+.bubble .fn {
+    font-weight: bold;
+}
+.bubble .vcard {
     min-height: 62px;
 }
-
-.avatarPopup img.avatarPhoto {
+.bubble img.avatarPhoto {
     float: left;
     padding: 5px;
 }
-
-.avatarPopup .userinfo {
+.bubble .userinfo {
     margin-left: 72px;
 }
-
-.avatarPopup .userinfo.web {
+.bubble .userinfo.web {
     display: none; /* not a requirement to show web stuff in the popup */
 }
-
-.avatarPopup .vcard .photo {
+.bubble .vcard .photo {
     float: left;
 }
-
-.avatarPopup .userinfo img {
+.bubble .userinfo img {
     vertical-align: middle !important;
 }
-
-.avatarPopup ul {
+.bubble ul {
     list-style-type: none !important;
     padding-left: 0;
     margin-left: 0;
 }
-
-.avatarPopup .follow {
+.bubble .follow {
     text-align: left;
     border-top: 1px solid #CCCBCC;
     margin-top: 5px;
     padding: 5px;
     height: 13px;
 }
-
-.avatarPopup .followPersonButton,
-.avatarPopup .followPersonButton:hover {
+.bubble .followPersonButton,
+.bubble .followPersonButton:hover {
     color: #000;
     text-decoration: none;
     height: 18px;
     float: left;
-}
-
-/* logic for showing the avatar popup under the avatar */
-.avatarPopup .top {
-    display: none;
-}
-.avatarPopup .inner {
-    border-bottom: none;
-}
-
-.avatarPopup.underneath .top {
-    display: block;
-}
-.avatarPopup.underneath .bottom {
-    display: none;
-}
-.avatarPopup.underneath .inner {
-    border-bottom: 1px solid black;
-    border-top: none;
 }
 
 table.st-ss th span {

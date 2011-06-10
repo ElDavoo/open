@@ -44,42 +44,22 @@ Bubble.prototype = {
     createPopup: function() {
         var self = this;
         this.contentNode = $('<div></div>')
-            .addClass('inner');
+            .addClass('bubble');
 
         this.popup = $('<div></div>')
-            .addClass('avatarPopup')
+            .addClass('bubbleWrap')
             .mouseover(function() { self.mouseOver() })
             .mouseout(function() { self.mouseOut() })
             .appendTo('body');
 
-        // Add quote bubbles
-        this.makeBubble('top', '/images/avatarPopupTop.png')
-            .appendTo(this.popup);
-
         this.popup.append(this.contentNode)
+
+        if (!$.browser.msie || ($.browser.msie && $.browser.version > 6)) {
+            this.popup.append('<div class="before"></div>');
+            this.popup.append('<div class="after"></div>');
+        }
+
         this.popup.append('<div class="clear"></div>');
-
-        this.makeBubble('bottom', '/images/avatarPopupBottom.png')
-            .appendTo(this.popup);
-    },
-
-    makeBubble: function(className, src) {
-        var absoluteSrc = (''+document.location.href).replace(
-            /^(\w+:\/+[^\/]+).*/, '$1' + nlw_make_s3_path(src)
-        );
-        var $div = $('<div></div>').addClass(className);
-	if ($.browser.msie && $.browser.version < 7) {
-            var args = "src='" + absoluteSrc + "', sizingMethod='crop'";
-            $div.css(
-                'filter',
-                "progid:DXImageTransform.Microsoft"
-                + ".AlphaImageLoader(" + args + ")"
-            );
-        }
-        else {
-            $div.css('background', 'transparent url('+absoluteSrc+') no-repeat');
-        }
-        return $div;
     },
 
     html: function(html) {
@@ -102,13 +82,13 @@ Bubble.prototype = {
                                        : window.pageYOffset;
         if ((offset.top - winOffset) > ($(window).height() / 2)) {
             this.popup
-                .removeClass('underneath')
-                .css('top', offset.top - this.popup.height() - 15);
+                .removeClass('top')
+                .css('top', offset.top - this.popup.height() - 25);
         }
         else {
             this.popup
-                .addClass('underneath')
-                .css('top', offset.top + $node.height() + 5);
+                .addClass('top')
+                .css('top', offset.top + $node.height() + 10);
         }
 
         this.popup.css('left', offset.left - 43 );
