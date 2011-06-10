@@ -70,7 +70,7 @@
 | is_element_present_ok | %%accountTable%% | //a[contains(text(),'%%primws%%')] |
 | text_like | %%accountTable%% | Primary Account |
 
-| *Comment* | FAILING TEST FOR {bz: 5349} |  |
+| *Comment* | TEST FOR {bz: 5349} should pass |  |
 | text_unlike | %%accountTable%% | href |
 
 | *Comment* | Test Case: Business Control Panel User Multiple Accounts TEARDOWN |  |
