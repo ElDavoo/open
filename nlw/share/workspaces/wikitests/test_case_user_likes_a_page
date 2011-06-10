@@ -20,6 +20,7 @@
 | create_account | %%acct%% |  |  |
 | create_workspace | %%wiki%% | %%acct%% |  |
 | create_user | %%user1%% | %%password%% | %%acct%% |
+| set | user1_id | %%user_id%% |  |
 | create_user | %%user2%% | %%password%% | %%acct%% |
 | create_user | %%user3%% | %%password%% | %%acct%% |
 | create_user | %%user4%% | %%password%% | %%acct%% |
@@ -129,11 +130,10 @@
 | open_ok | /%%wiki%% |  |
 | wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
 | MouseOver | //a[@class='like-indicator me others'] |  |
-| wait_for_text_present_ok | 0 colleagues like this page. | 30000 |
-| wait_for_text_present_ok | (100% of all users) | 30000 |
+| wait_for_text_present_ok | You and 0 people you follow like this page. | 30000 |
 | wait_for_element_visible_ok | link=All People | 30000 |
 | click_ok | link=All People |  |
-| wait_for_text_present_ok | 7 people like this page. | 30000 |
+| wait_for_text_present_ok | You and 6 people like this page. | 30000 |
 | wait_for_element_visible_ok | link=%%user1_short%% | 30000 |
 | wait_for_element_visible_ok | link=%%user2_short%% | 30000 |
 | wait_for_element_visible_ok | link=%%user3_short%% | 30000 |
@@ -151,7 +151,8 @@
 | wait_for_element_visible_ok | link=%%user1_short%% | 30000 |
 
 | *Comment* | Test Case: User Likes a Page follow user 1, then check mouseover bubble for colleague list |  |
-| click_and_wait | link=%%user1_short%% |  |
+| open_ok | /st/dashboard |  |
+| open_ok | /st/profile/%%user1_id%% |  |
 | wait_for_element_visible_ok | link=Follow this person | 30000 |
 | pause | 5000 | needed for IE7 |
 | click_ok | link=Follow this person |  |
@@ -159,7 +160,7 @@
 | open_ok | /%%wiki%% |  |
 | wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
 | MouseOver | //a[@class='like-indicator me others'] |  |
-| wait_for_text_present_ok | 1 colleague likes this page. | 30000 |
+| wait_for_text_present_ok | You and 1 person you follow like this page. | 30000 |
 | wait_for_element_visible_ok | link=%%user1_short%% | 30000 |
 
 | *Comment* | Test Case: User Like a Page TEARDOWN |  |
