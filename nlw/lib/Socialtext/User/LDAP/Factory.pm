@@ -482,6 +482,17 @@ sub Search {
     return @users;
 }
 
+sub _is_dn_search_in_base {
+    my $self = shift;
+    my $search_attr = shift;
+    my $dn = shift;
+  
+    return 0 unless ($search_attr =~ m{^(dn|distinguishedName)$});
+
+    my $base = $self->ldap_config->base;
+    return $dn =~ /\Q$base\E$/;
+}
+
 sub _find_user {
     my ($self, $key, $val) = @_;
     my $attr_map = $self->attr_map();
@@ -495,7 +506,7 @@ sub _find_user {
     my %options = (
         attrs => [ values %$attr_map ],
     );
-    if ($search_attr =~ m{^(dn|distinguishedName)$}) {
+    if ($self->_is_dn_search_in_base($search_attr, $val)) {
         # DN searches are best done as -exact- searches
         $options{'base'}    = $val;
         $options{'scope'}   = 'base';
