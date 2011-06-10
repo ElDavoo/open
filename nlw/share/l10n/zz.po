@@ -1153,6 +1153,10 @@ msgstr "Zzzzzzzzz Zzzzzzz"
 msgid "backup.automatic-cleanup"
 msgstr "Zzzzzzzzz Zzzzzzz"
 
+#: ../appliance/libsocialtext-appliance-perl/template/backups.inc:19
+msgid "backup.cannot-delete-last-backup"
+msgstr "Zz zz zzzzzzzz zzzz zz zzzzz zzz zzzzzz zzzzzz. Zz zzzz zzz zzzzzz zz zzzzzzz zzzz zz zzzzzz zz zzzzzzz."
+
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:46
 msgid "backup.choose-days-of-week-for-full-backup"
 msgstr "Zzzzzzzzz Zzzz zzzzzzz zzzz zz zzzzzzzzz zz zzz zzzzzzzz zzzz zz zzz zzzz. Zzzzzzzz zzz zz zzzzzzz."
@@ -1176,6 +1180,10 @@ msgstr "Zzz(z) zz zzz zzzz:"
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:98
 msgid "backup.delete-expired-files"
 msgstr "Zzzzzz zzzzzzz zzzzz"
+
+#: ../appliance/libsocialtext-appliance-perl/template/backups.inc:10
+msgid "backup.delete=label?"
+msgstr "Zzzzzz \"%1\" zzzzzz?"
 
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:12
 msgid "backup.directory"
@@ -1282,6 +1290,16 @@ msgstr "Zzzzzz zzzz zzz Zzzzzzzzzz Zzzzz Zzzzz <a href=\"%1\">Zzzzzz</a> zzzzzzz
 msgid "backup.schedule:"
 msgstr "Zzzzzz zzzzzzzz:"
 
+#. ('/help-adminguide/#backup', 'https://www.socialtext.net/help-adminguide/#backup')
+#. ("/help-adminguide/#backup", "https://www.socialtext.net/help-adminguide/#backup")
+#: ../appliance/libsocialtext-appliance-perl/template/backups.inc:18
+msgid "backup.see-admin-guide-about-backup-mode"
+msgstr "Zzz zzz <a href=\"%1\">Zzzzz Zzzzz</a> zzz zz zzzzzzzzzzz zz Zzzzzz Zzzz. Z zzzz zz zzzz zzzzzzzzzzzzz zz zzzzzzzzz zzzzzzzzzz <a href=\"%2\">zzzz</a>."
+
+#: ../appliance/libsocialtext-appliance-perl/template/backups.inc:6
+msgid "backup.select-backup-to-delete"
+msgstr "Zzz zzzz zzzzzz z zzzzzz zz zzzzzz."
+
 #: lib/Socialtext/Appliance/Model/Backup.pm:44
 msgid "backup.share-name"
 msgstr "Zzzzzz Zzzzz Zzzz"
@@ -1298,6 +1316,10 @@ msgstr "Zzzzzz Zzzzzz"
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:24
 msgid "backup.status-unavailable-check-error-log"
 msgstr "Zzzzzz zzzzzz zzzzzzzzzzz, zzzzz zzzz zzz zzzzzz"
+
+#: lib/Socialtext/Appliance/Model/Backup.pm:48
+msgid "backup.successfully-deleted=label"
+msgstr "%1 zzzzzzzzzzzz zzzzzzz"
 
 #: ../appliance/libsocialtext-appliance-perl/template/backup.html:13
 msgid "backup.unwritable"
@@ -5445,6 +5467,11 @@ msgstr "Zzzzzzzzzzzzzz zzzzz zzzz zzzzz zzzz zz zzzzz zzzz zzz zzzz zzzzz."
 
 msgid "error.backup-already-running"
 msgstr "Zzzzzz zzzzzzz zzzzzzz"
+
+#. ($_)
+#: lib/Socialtext/Appliance/Model/Backup.pm:53
+msgid "error.backup-delete-failed=error"
+msgstr "Zzzzzz zzzzzz zzzzzz: %1"
 
 msgid "error.backup-failed"
 msgstr "Zzzzzz zzzzzz ..."
@@ -11102,6 +11129,10 @@ msgstr "Zzz Zzzzzz Zzzzzz '%1'"
 #: share/plugin/people/template/view/peoplelist:13
 msgid "people.tools"
 msgstr "Zzzzz"
+
+#: share/plugin/people/share/widgets/mytweets.xml:9
+msgid "people.twitter-id"
+msgstr "Zzzzzzz ZZ"
 
 #: share/plugin/people/template/dashboard_hello_incomplete:5
 msgid "people.welcome-new-user"

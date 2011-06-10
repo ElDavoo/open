@@ -926,6 +926,9 @@ msgstr "自動備份"
 msgid "backup.automatic-cleanup"
 msgstr "自動清理"
 
+msgid "backup.cannot-delete-last-backup"
+msgstr "至少需要有一份備份，因此不能刪除最後一份備份。"
+
 msgid "backup.choose-days-of-week-for-full-backup"
 msgstr "完全備份將在每周選定的日子自動進行. 取消所有可以停用此功能."
 
@@ -943,6 +946,9 @@ msgstr "每周："
 
 msgid "backup.delete-expired-files"
 msgstr "刪除過期的檔案"
+
+msgid "backup.delete=label?"
+msgstr "刪除備份『%1』？"
 
 msgid "backup.directory"
 msgstr "目錄"
@@ -1019,6 +1025,12 @@ msgstr "請在進行備份前閱讀 Socialtext 的管理指南<a href=\"%1\">備
 msgid "backup.schedule:"
 msgstr "備份計劃："
 
+msgid "backup.see-admin-guide-about-backup-mode"
+msgstr "請參考 <a href=\"%1\">管理指南</a> 關於備份模式的說明。該文檔可<a href=\"%2\">由此</a>公開獲取。"
+
+msgid "backup.select-backup-to-delete"
+msgstr "請選擇要刪除的備份。"
+
 msgid "backup.share-name"
 msgstr "備份共用名"
 
@@ -1030,6 +1042,9 @@ msgstr "備份狀態"
 
 msgid "backup.status-unavailable-check-error-log"
 msgstr "備份狀態不可用，請在日誌中檢查錯誤"
+
+msgid "backup.successfully-deleted=label"
+msgstr "成功刪除備份：%1"
 
 msgid "backup.unwritable"
 msgstr "不可寫入"
@@ -5068,6 +5083,9 @@ msgstr "認証所採用的軟限制須低於硬限制。"
 
 msgid "error.backup-already-running"
 msgstr "備份已經開始"
+
+msgid "error.backup-delete-failed=error"
+msgstr "刪除備份失敗：%1"
 
 msgid "error.backup-failed"
 msgstr "備份失敗 ..."
@@ -10570,6 +10588,9 @@ msgstr "標記為『%1』的所有成員"
 #: share/plugin/people/template/view/peoplelist:13
 msgid "people.tools"
 msgstr "工具"
+
+msgid "people.twitter-id"
+msgstr "Twitter 用戶名"
 
 #: share/plugin/people/template/dashboard_hello_incomplete:5
 msgid "people.welcome-new-user"
