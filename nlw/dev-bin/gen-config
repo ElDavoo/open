@@ -805,6 +805,8 @@ sub copy_static_files {
         'topaz.socialtext.net'
     );
 
+    $to_use ||= 'lucite.socialtext.net';
+
     my $crt_source = "$inc/static/ssl/$to_use.crt";
     my $crt_target = "$dirs{ssl_base}/certs/$to_use.crt";
     my $crt_target_alt = "$dirs{ssl_base}/certs/.crt";
