@@ -14,13 +14,13 @@ our $VERSION = '0.01';
 # sort of stuff would be good.
 
 sub hostname {
-    my $local = Sys::Hostname::hostname();
+    my $local = $ENV{HOSTNAME} || Sys::Hostname::hostname();
 
     return (split /\./, $local)[0];
 }
 
 sub fqdn {
-    my $local = Sys::Hostname::hostname();
+    my $local = $ENV{HOSTNAME} || Sys::Hostname::hostname();
 
     return $local unless _is_short($local);
 
