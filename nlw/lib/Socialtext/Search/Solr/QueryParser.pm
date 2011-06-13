@@ -62,6 +62,8 @@ sub _build_searchable_fields {
         qw/phone tag_exact tag_count sounds_like/,
         # Group fields
         qw/name description desc/,
+        # Like fields
+        qw/like like_count/,
     ]
 }
 

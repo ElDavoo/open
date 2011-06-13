@@ -269,6 +269,7 @@ sub _sort_opts {
         sender         => 'creator_name',
         name           => 'name_asort',
         title          => 'plain_title',
+        likes          => 'like_count',
     );
     my %default_dir = (
         title => 'asc',

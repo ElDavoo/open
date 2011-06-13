@@ -33,7 +33,23 @@
   [% END %]
   <div id="contentContainer">
     <h2 class="tableTitle wrap" title="[% display_title | html %]">[% display_title | html %]</h2>
-    [% IF too_many %]
+    [% IF !rows.size %]
+      <div style="font-size:110%" id="tooManyResults">
+          [% IF empty_message; empty_message; ELSE %]
+            <p style="margin:10px 0">
+              [% loc('Your search returned 0 results.') %]
+            </p>
+            <p style="margin:8px 0">
+              [% loc('Please make sure your query is spelled correctly and try again:') %]
+            </p>
+          [% END %]
+        [% IF action == 'search_workspace' %]
+          <div id="inlineSearch">
+            [% INCLUDE element/search_form sid='search-again' %]
+          </div>
+        [% END %]
+      </div>
+    [% ELSIF too_many %]
       <div id="tooManyResults">
         <p>
           [% loc('search.too-many=count', too_many) %]
@@ -87,7 +103,8 @@
             [% END %]
             [% IF pager %]
             &mdash;
-            [% PROCESS list_pager %] 
+            <b>[% loc('info.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b>
+            [% INCLUDE "view/paging" %]
             [% END %]
           </div>
           </th>
@@ -95,20 +112,22 @@
           <th class="sort">
           [% loc('sort.by:') %]
             <select id="sort-picker" onchange="sort_by();">
+              [% FILTER decorate('search_sort_options') %]
               [% IF allow_relevance %]
-                [% PROCESS sort_by_option name = loc('sort.relevance') field = 'Relevance' %]
+                [% PROCESS element/listview_sort_option name = loc('sort.relevance') field = 'Relevance' %]
               [% END %]
-                [% PROCESS sort_by_option name = loc('sort.title') field = 'Subject' %]
+                [% PROCESS element/listview_sort_option name = loc('sort.title') field = 'Subject' %]
               [% IF show_workspace %]
-                [% PROCESS sort_by_option name = loc('sort.wiki') field = 'Workspace' %]
+                [% PROCESS element/listview_sort_option name = loc('sort.wiki') field = 'Workspace' %]
               [% END %]
               [% IF ! no_user_sorting %]
-                [% PROCESS sort_by_option name = loc('sort.last-edited') field = 'username' %]
-                [% PROCESS sort_by_option name = loc('sort.creator') field = 'creator' %]
+                [% PROCESS element/listview_sort_option name = loc('sort.last-edited') field = 'username' %]
+                [% PROCESS element/listview_sort_option name = loc('sort.creator') field = 'creator' %]
               [% END %]
-              [% PROCESS sort_by_option name = loc('sort.edited') field = 'Date' %]
-              [% PROCESS sort_by_option name = loc('sort.created') field = 'create_time' %]
-              [% PROCESS sort_by_option name = loc('sort.revisions') field = 'revision_count' %]
+              [% PROCESS element/listview_sort_option name = loc('sort.edited') field = 'Date' %]
+              [% PROCESS element/listview_sort_option name = loc('sort.created') field = 'create_time' %]
+              [% PROCESS element/listview_sort_option name = loc('sort.revisions') field = 'revision_count' %]
+              [% END %]
           </select>
           </th>
           [% END %]
@@ -140,14 +159,16 @@
         [% ELSE %]
            <img class="pageType" src="[% wiki.skin_uri('s3') %]/images/docIcon.png" />
         [% END %]
-        [% IF row.is_attachment %]
-          <a class="titleLink" href="/data/workspaces/[% row.workspace_name || current_workspace.name %]/attachments/[% row.page_uri %]:[% row.id %]/original/[% row.document_title %]">[% row.document_title %]</a>
-          [% loc('file.attached-to-page') %]
-          <a href="/[% row.workspace_name || current_workspace.name %]/[% row.page_uri %]">[% row.Subject | html %]</a>
-        [% ELSE %]
-          <a class="titleLink" href="/[% row.workspace_name || current_workspace.name %]/[% row.page_uri %]">[% row.Subject | html %]</a>
+        [% FILTER decorate('search_result_title', [row]) %]
+          [% IF row.is_attachment %]
+            <a class="titleLink" href="/data/workspaces/[% row.workspace_name || current_workspace.name %]/attachments/[% row.page_uri %]:[% row.id %]/original/[% row.document_title %]">[% row.document_title %]</a>
+            [% loc('file.attached-to-page') %]
+            <a href="/[% row.workspace_name || current_workspace.name %]/[% row.page_uri %]">[% row.Subject | html %]</a>
+          [% ELSE %]
+            <a class="titleLink" href="/[% row.workspace_name || current_workspace.name %]/[% row.page_uri %]">[% row.Subject | html %]</a>
+          [% END %]
+          [% IF row.workspace_title %][% loc('info.in') %] <a href="/[% row.workspace_name %]">[% row.workspace_title %]</a>[% END %]
         [% END %]
-        [% IF row.workspace_title %][% loc('info.in') %] <a href="/[% row.workspace_name %]">[% row.workspace_title %]</a>[% END %]
         [% IF summaries %]
           <div class="summary">[% row.Summary %]</div>
           [% IF row.edit_summary %]
@@ -176,26 +197,12 @@
         &nbsp;
         </th>
         <th class="toggle">
-          [% PROCESS list_pager %] 
+           <b>[% loc('info.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b>
+           [% INCLUDE "view/paging" %]
         </th>
       </tr>
       </table>
       [% END %]
     </form>
   </div><!-- contentContainer -->
-[% END %]
-[% BLOCK sort_by_option %]
-  [% IF (sortby == field ) %]
-    <option [% IF direction == "asc" %]selected="selected"[% END %] value="sortby=[% field %];direction=asc">[% name %] [% IF direction != "asc" %](&uarr;)[% END %]</option>
-    <option [% IF direction == "desc" %]selected="selected"[% END %] value="sortby=[% field %];direction=desc">[% name %] [% IF direction != "desc" %](&darr;)[% END %]</option>
-  [% ELSE %]
-    <option value="sortby=[% field %];direction=[% sortdir.$field %]">[% name %]</option>
-  [% END %]
-
-[% END %]
-
-
-[% BLOCK list_pager %]
-    <b>[% loc('info.showing=from,to,total', offset + 1, last, pager.total_entries) %]</b>
-    [% INCLUDE "view/paging" %]
 [% END %]

@@ -150,6 +150,7 @@ sub _add_page_doc {
     my $title = $page->title;
     _scrub_field(\$title);
 
+    my $likes = [ map { $_->user_id } @{$page->likes} ];
     my $tags = $page->tags;
     my @fields = (
         [id => $id], # composite of workspace and page
@@ -167,6 +168,8 @@ sub _add_page_doc {
         [revisions => $revisions],
         [tag_count => scalar(@$tags) ],
         (map { [ tag => $_ ] } @$tags),
+        [like_count => scalar(@$likes) ],
+        (map { [ like => $_ ] } @$likes),
         Socialtext::Search::Solr::BigField->new(body => \$body),
     );
     if (my $mtime = _datetime_to_iso($page->last_edit_time)) {

@@ -1,0 +1,49 @@
+<a class="like-indicator [% className %]" href="#">[% text %]</a>
+
+[% BLOCK 'like-bubble' %]
+    <div class="like-bubble">
+        <div class="like-filter [% onlyFollows ? 'colleagues' : 'all' %]">
+            <a class="colleagues" href="#">[% loc('People I Follow') %]</a>
+            <a class="all" href="#">[% loc('All People') %]</a>
+        </div>
+        <div class="like-count">
+            [% likeText %]
+        </div>
+        [% IF likers.entry.size %]
+        <div class="likers">
+            [% FOR liker = likers.entry %]
+            <div class="liker">
+                <a href="/st/profile/[% liker.user_id %]">
+                    <img class="photo" src="/data/people/[% liker.user_id %]/small_photo"/>
+                </a>
+                <a class="name" href="/st/profile/[% liker.user_id %]">
+                    [% liker.best_full_name %]
+                </a>
+            </div>
+            <div class="clear"></div>
+            [% END %]
+        </div>
+        [% END %]
+
+        [% IF pages.size > 1 %]
+            <div class="paging">
+                [% loc('page:') %]
+                [% FOR page IN pages %] 
+                    [% IF page.current %]
+                        <span>[% page.num %]</span>
+                    [% ELSE %]
+                        <a class="page[% page.num %]" href="#">
+                            [% page.num %]
+                        </a>
+                    [% END %]
+                [% END %]
+            </div>
+        [% END %]
+
+        [% IF mutable %]
+        <div class="like-button">
+            <a class="like-indicator [% className %]" href="#" title="[% text %]">[% text(1) %]</a>
+        </div>
+        [% END %]
+    </div>
+[% END %]

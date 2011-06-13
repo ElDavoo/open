@@ -2,6 +2,7 @@
 [%# @COPYRIGHT@ -%]
 [% USE decorate %]
 [% USE label_ellipsis %]
+
 [% WRAPPER $frame_name id="contentPage" title = loc("revision.all=page", display_title) %]
 <script language="javascript"><!--
     function preventSameRevisionCompare () {
@@ -20,7 +21,7 @@
   <div id="st-editing-tools-edit">
     <ul id="revision-tools">
   [% IF page.page_type != 'spreadsheet';
-    PROCESS compare_revisions;
+    PROCESS element/page/compare_revisions;
   END %]
       <li class="flexButtonBlue">
         <a class="genericBlueButton" href="[% "${script_name}?${page_uri}" %]">[% loc('revision.current') %]</a>
@@ -39,23 +40,29 @@
   <table class="dataTable">
     <tbody>
     <tr>
+    [% FILTER decorate('revision_header') %]
       <th colspan="2" class="selectColumn">[% loc("nav.select") %]</th>
       <th>[% loc("page.revision") %]</th>
       <th>[% loc("revision.edited-by") %]</th>
       <th>[% loc("revision.date") %]</th>
       <th>[% loc("revision.summary") %]</th>
+    [% END %]
     </tr>
-    [% FOREACH row IN rows;
-      PROCESS revision_row id = row.id,
-                even      = loop.count % 2,
-                check_old = loop.index == 1,
-                check_new = loop.index == 0,
-                revision  = row.number,
-                from      = row.from,
-                date      = row.date,
-                is_deleted = row.is_deleted,
-                edit_summary = row.edit_summary;
-    END %]
+    [% FOREACH row IN rows %]
+      <tr class="[% IF even %]even[% ELSE %]odd[% END %]Row">
+        [% INCLUDE element/page/revision_row 
+              id           = row.id,
+              even         = loop.count % 2,
+              check_old    = loop.index == 1,
+              check_new    = loop.index == 0,
+              revision     = row.number,
+              from         = row.from,
+              date         = row.date,
+              is_deleted   = row.is_deleted,
+              edit_summary = row.edit_summary | decorate('revision', row.id)
+         %]
+      </tr>
+    [% END %]
     </tbody>
   </table><!-- dataTable END -->
   </form>
@@ -63,7 +70,7 @@
   <div id="bottomButtons">
     <ul>
     [% IF page.page_type != 'spreadsheet'; 
-      PROCESS compare_revisions; 
+      PROCESS element/page/compare_revisions; 
     END %]
     </ul>
     <!-- Filler here to get the neccessary height padding for the compare button. -->
@@ -91,37 +98,3 @@
 --></script>
 [% END %]
 
-[% BLOCK compare_revisions %]
-  <ul class="widgetButton">
-    <li class="flexButtonBlue">
-      <a class="compareRevisions genericBlueButton" href="#">
-        [% loc("do.compare-revisions") %]
-      </a>
-    </li>
-  </ul>
-[% END %]
-
-[% BLOCK revision_row %]
-  <tr class="[% IF even %]even[% ELSE %]odd[% END %]Row">
-    <td><input onclick="preventSameRevisionCompare()" name="old_revision_id" value="[% id %]" type="radio"
-      [% IF check_old %] checked="checked"[% END %] 
-      [% UNLESS page.page_type != 'spreadsheet' %] disabled="disabled"[% END %] />
-    </td>
-    <td><input onclick="preventSameRevisionCompare()" name="new_revision_id" value="[% id %]" type="radio"
-      [% IF check_new %] checked="checked"[% END %] 
-      [% UNLESS page.page_type != 'spreadsheet' %] disabled="disabled"[% END %] />
-    </td>
-    <td>
-      [% IF is_deleted %]
-        [% loc("page.deleted=revision", revision) %]
-      [% ELSE %]
-      <a href="[% script_name %]?action=revision_view;page_name=[% page_uri %];revision_id=[% id %]">
-        [% loc("page.revision=revision", revision) %]
-      </a>
-      [% END %]
-    </td>
-    <td class="person">[% from | decorate('user_avatar') %]</td>
-    <td class="date">[% date %]</td>
-    <td class="edit-summary">[% edit_summary | label_ellipsis(edit_summary_maxlength) | html %]</td>
-  </tr>
-[% END %]

@@ -2401,5 +2401,12 @@ sub _log_page_action {
     );
 }
 
+sub likes {
+    my $self = shift;
+    eval { require Socialtext::Liked };
+    return [] if $@;
+    return Socialtext::Liked->new(object => $self)->likers;
+}
+
 __PACKAGE__->meta->make_immutable(inline_constructor => 1);
 1;

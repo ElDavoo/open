@@ -1380,6 +1380,14 @@ CREATE TABLE topic_signal_user (
     user_id bigint NOT NULL
 );
 
+CREATE TABLE user_like (
+    liker_user_id bigint NOT NULL,
+    workspace_id bigint,
+    page_id text,
+    revision_id numeric(19,5),
+    signal_id bigint
+);
+
 CREATE TABLE user_plugin_pref (
     user_id bigint NOT NULL,
     plugin text NOT NULL,
@@ -2852,4 +2860,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '140');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '141');

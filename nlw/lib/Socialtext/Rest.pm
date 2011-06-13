@@ -334,6 +334,19 @@ sub not_authorized {
     return loc('error.user-not-authorized');
 }
 
+=head2 no_content()
+
+Informs the client that we operated successfully, but aren't returning content
+
+=cut
+
+sub no_content {
+    my $self = shift;
+    $self->rest->header(-status => HTTP_204_No_Content);
+    return '';
+}
+
+
 =head2 no_workspace()
 
 Informs the client that we can't operate because no valid workspace
