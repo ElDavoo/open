@@ -9,8 +9,7 @@
 | include | [Test Case: Preferences UI User Setup] |  |
 
 | *Comment* | Test Case: Preferences UI User 2. Time. Defaults: Pacific, auto, M-D-Y, 12, no |  |
-| click_and_wait | link=Settings |  |
-| click_and_wait | link=Time |  |
+| open_ok | /%%new_ws%%/?action=preferences_settings;preferences_class_id=timezone |  |
 | text_like | contentContainer | What time zone should times be displayed in |
 | text_like | contentContainer | How should Daylight Savings/Summer Time be handled |
 | text_like | contentContainer | How should displayed dates be formatted |
@@ -64,8 +63,7 @@
 | value_is | //input[@name='timezone__time_display_seconds'] | on |
 
 | *Comment* | Test Case: Preferences UI User 2. Time. Navigate away, return, verify values |  |
-| click_and_wait | link=Settings |  |
-| click_and_wait | link=Time |  |
+| open_ok | /%%new_ws%%/?action=preferences_settings;preferences_class_id=timezone |  |
 | is_selected_ok | timezone__timezone | label=-1100 Nome |
 | is_selected_ok | timezone__dst | label=currently in DST |
 | is_selected_ok | timezone__date_display_format | value=mmm_d_yyyy |

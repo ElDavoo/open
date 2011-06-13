@@ -1,0 +1,54 @@
+| *Comment* | Test Case: Global Time |  |
+
+| set | wiki | global-time-wiki-%%start_time%% |
+| set | acct | global-time-account-%%start_time%% |
+| set | user | global.time.user.%%start_time%%@david.socialtext.net |
+
+| create-account | %%acct%% |  |  |
+| create-workspace | %%wiki%% | %%acct%% |  |
+| create-user | %%user%% | %%password%% | %%acct%% |
+| st-admin | add-member --email %%user%% --workspace %%wiki%% | now has the role |  |
+
+| *Comment* | Test Case: Global Time check the navigation to the timezone page |  |
+| st-logoutin | %%user%% | %%password%% |
+| open_ok | /st/dashboard |  |
+| wait_for_element_visible_ok | link=Settings | 30000 |
+| click_and_wait | link=Settings |  |
+| wait_for_element_visible_ok | link=Time | 30000 |
+| click_and_wait | link=Time |  |
+| wait_for_text_present_ok | What time zone | 30000 |
+| location_like | /?action=preferences_settings;preferences_class_id=timezone |  |
+
+| *Comment* | Test Case: Global Time check the contents of page and default settings |  |
+| wait_for_text_present_ok | What time zone should times be displayed in? | 30000 |
+| wait_for_text_present_ok | How should Daylight Savings/Summer Time be handled? | 30000 |
+| wait_for_text_present_ok | How should displayed dates be formatted? | 30000 |
+| wait_for_text_present_ok | Should times be displayed in 12-hour or 24-hour format? | 30000 |
+| wait_for_text_present_ok | Should seconds be included on displayed times? | 30000 |
+| wait_for_element_visible_ok | timezone__timezone | 30000 |
+| wait_for_element_visible_ok | timezone__dst | 30000 |
+| wait_for_element_visible_ok | timezone__date_display_format | 30000 |
+| wait_for_element_visible_ok | timezone__time_display_12_24 | 30000 |
+| wait_for_element_visible_ok | timezone__time_display_seconds | 30000 |
+| is_selected_ok | timezone__timezone | label=-0800 Pacific |
+| is_selected_ok | timezone__dst | label=automatic, United States |
+| is_selected_ok | timezone__date_display_format | value=mmm_d_yyyy |
+| is_selected_ok | timezone__time_display_12_24 | value=12 |
+| verifyValue | //input[@name='timezone__time_display_seconds'] | off |
+
+
+
+
+
+
+
+
+
+
+
+
+
+| *Comment* | Test Case: Global Time TEARDOWN |  |
+| deactivate-user | %%user%% |  |
+| delete-workspace | %%wiki%% | Recklessly deleting |
+| delete-account | %%acct%% | Recklessly deleting |
