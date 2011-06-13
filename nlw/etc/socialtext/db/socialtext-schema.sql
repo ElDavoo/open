@@ -1622,7 +1622,7 @@ ALTER TABLE ONLY funcmap
     ADD CONSTRAINT funcmap_pkey
             PRIMARY KEY (funcid);
 
-    ALTER TABLE ONLY gadget_content
+ALTER TABLE ONLY gadget_content
     ADD CONSTRAINT gadget_content__gadget_id_position
             UNIQUE (gadget_id, "position");
 
@@ -2905,4 +2905,4 @@ ALTER TABLE ONLY "Workspace"
             REFERENCES all_users(user_id) ON DELETE RESTRICT;
 
 DELETE FROM "System" WHERE field = 'socialtext-schema-version';
-INSERT INTO "System" VALUES ('socialtext-schema-version', '141');
+INSERT INTO "System" VALUES ('socialtext-schema-version', '142');
