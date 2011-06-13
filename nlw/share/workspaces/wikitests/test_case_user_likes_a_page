@@ -1,5 +1,7 @@
 | *Comment* | Test Case: User Likes a Page |  |
 
+* Fixture: SocialWidgets
+
 | set | user1 | user.one.%%start_time%%@david.socialtext.net |
 | set | user1_short | user one %%start_time%% |
 | set | user2 | user.two.%%start_time%%@david.socialtext.net |
@@ -40,6 +42,7 @@
 
 | *Comment* | Test Case: User Likes a Page first user likes the page, sees the proper icons |  |
 | st-logoutin | %%user1%% | %%password%% |
+| open_ok | /st/dashboard |  |
 | open_ok | /%%wiki%% |  |
 | wait_for_text_present_ok | Like | 30000 |
 | wait_for_element_visible_ok | //a[@class='like-indicator '] | 30000 |
@@ -58,8 +61,14 @@
 | open_ok | /%%wiki%% |  |
 | wait_for_element_visible_ok | //a[@class='like-indicator me others'] | 30000 |
 
+| *Comment* | Test Case: User Likes a Page check that search results show like numbers |  |
+| type_ok | st-search-term | %%wiki%% |
+| click_and_wait | st-search-submit |  |
+| wait_for_text_present_ok | Pages matching '%%wiki%%' | 30000 |
+| wait_for_text_present_ok | 2 likes | 30000 |
+| wait_for_element_visible_ok | //a[@class='like-indicator me others immutable'] | 30000 |
+
 | *Comment* | Test Case: User Likes a Page follow user 1, then check mouseover bubble for colleague list |  |
-| open_ok | /st/dashboard |  |
 | open_ok | /st/profile/%%user1_id%% |  |
 | wait_for_element_visible_ok | link=Follow this person | 30000 |
 | pause | 5000 | needed for IE7 |
@@ -164,8 +173,22 @@
 | click_ok | //a[@class='page1'] |  |
 | wait_for_element_visible_ok | link=%%user1_short%% | 30000 |
 
+| *Comment* | Test Case: User Likes a Page check activities widget for liking posts |  |
+| open_ok | /st/dashboard |  |
+| st-name-widget | 4 | ticker |
+| st-widget-title-like | ticker | Activities |
+| st-select-widget-frame | ticker |  |
+| wait_for_text_present_ok | liked %%wiki%% in %%wiki%% | 30000 |
+| wait_for_text_present_ok | unliked %%wiki%% in %%wiki%% | 30000 |
+| text_like | qr/You.+%%user6_short%%.+%%user5_short%%.+%%user4_short%%.+%%user3_short%%.+%%user2_short%%.+%%user1_short%%/ |  |
+
 | *Comment* | Test Case: User Like a Page TEARDOWN |  |
 | deactivate-user | %%user1%% | was deactivated |
 | deactivate-user | %%user2%% | was deactivated |
+| deactivate-user | %%user3%% | was deactivated |
+| deactivate-user | %%user4%% | was deactivated |
+| deactivate-user | %%user5%% | was deactivated |
+| deactivate-user | %%user6%% | was deactivated |
+| deactivate-user | %%user7%% | was deactivated |
 | delete-workspace | %%wiki%% | Recklessly deleting |
 | delete-account | %%acct%% | Recklessly deleting |
