@@ -212,7 +212,7 @@ sub export_user_prefs {
     make_path($ws_dir) or die "Cannot make $ws_dir: $!";
     my $users = $ws->users(direct => 1);
     while (my $user = $users->next) {
-        my $prefs = Socialtext::PreferencesPlugin->Prefs_for_user($user,$ws);
+        my $prefs = Socialtext::PreferencesPlugin->Workspace_user_prefs($user,$ws);
         next unless $prefs && %$prefs;
 
         # We export these prefs to the `preferences.dd` format (instead of 

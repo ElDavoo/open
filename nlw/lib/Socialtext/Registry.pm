@@ -114,11 +114,11 @@ sub _set_class_info {
         $self->_plugin_redefined( $class_id, $class_name, $prev_name );
     }
     $lookup->{classes}{$class_id} = $class_name;
-    push @{ $lookup->{plugins} },
-        {
+    push @{ $lookup->{plugins} }, {
         id    => $class_id,
         title => $object->class_title,
-        };
+        pref_scope => $object->pref_scope,
+    };
     return $class_id;
 }
 
